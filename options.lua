@@ -58,8 +58,7 @@ aObj.blizzFrames[ftype].SetupDefaults = function(self)
 	-- NPC Frames
 		DisableAllNPC        = false,
 		AlliedRacesUI        = true,
-		AuctionUI            = not self.isPTR and true or nil,
-		AuctionHouseUI       = self.isPTR and true or nil,
+		AuctionHouseUI       = true,
 		AzeriteRespecUI      = true,
 		BankFrame            = true,
 		BarbershopUI         = true,
@@ -67,7 +66,7 @@ aObj.blizzFrames[ftype].SetupDefaults = function(self)
 		FlightMap            = true,
 		GossipFrame          = true,
 		GuildRegistrar       = true,
-		ItemInteractionUI    = self.isPTR and true or nil,
+		ItemInteractionUI    = true,
 		ItemUpgradeUI        = true,
 		MerchantFrame        = true,
 		Petition             = true,
@@ -805,16 +804,11 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 					name = self.L["Allied Races UI"],
 					desc = self.L["Toggle the skin of the Allied Races UI"],
 				},
-				AuctionUI = not self.isPTR and {
-					type = "toggle",
-					name = self.L["Auction UI"],
-					desc = self.L["Toggle the skin of the Auction UI"],
-				} or nil,
-				AuctionHouseUI = self.isPTR and {
+				AuctionHouseUI = {
 					type = "toggle",
 					name = self.L["AuctionHouse UI"],
 					desc = self.L["Toggle the skin of the AuctionHouse UI"],
-				} or nil,
+				},
 				AzeriteRespecUI ={
 					type = "toggle",
 					name = self.L["Azerite Respec UI"],
@@ -850,11 +844,11 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 					name = self.L["Guild Registrar Frame"],
 					desc = self.L["Toggle the skin of the Guild Registrar Frame"],
 				},
-				ItemInteractionUI = self.isPTR and {
+				ItemInteractionUI = {
 					type = "toggle",
 					name = self.L["Item Interaction UI"],
 					desc = self.L["Toggle the skin of the Item Interaction UI"],
-				} or nil,
+				},
 				ItemUpgradeUI = {
 					type = "toggle",
 					name = self.L["Item Upgrade UI"],

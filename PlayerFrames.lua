@@ -338,25 +338,14 @@ aObj.blizzLoDFrames[ftype].AchievementUI = function(self)
 		self:adjHeight{obj=spc, adj=((4 * 27) + 30)}
 		self:addSkinFrame{obj=spc, ft=ftype, kfs=true, nb=true, y1=4, y2=2}
 		_G.LowerFrameLevel(spc.sf)
-		if not aObj.isPTR then
-			for i = 1, #this.searchPreview do
-				this.searchPreview[i]:SetNormalTexture(nil)
-				this.searchPreview[i]:SetPushedTexture(nil)
-				this.searchPreview[i].iconFrame:SetTexture(nil)
-				self:addButtonBorder{obj=this.searchPreview[i], relTo=this.searchPreview[i].icon}
-			end
-			this.showAllSearchResults:SetNormalTexture(nil)
-			this.showAllSearchResults:SetPushedTexture(nil)
-		else
-			for i = 1, 5 do
-				spc["searchPreview" .. i]:SetNormalTexture(nil)
-				spc["searchPreview" .. i]:SetPushedTexture(nil)
-				spc["searchPreview" .. i].iconFrame:SetTexture(nil)
-				self:addButtonBorder{obj=spc["searchPreview" .. i], relTo=spc["searchPreview" .. i].icon}
-			end
-			spc.showAllSearchResults:SetNormalTexture(nil)
-			spc.showAllSearchResults:SetPushedTexture(nil)
+		for i = 1, 5 do
+			spc["searchPreview" .. i]:SetNormalTexture(nil)
+			spc["searchPreview" .. i]:SetPushedTexture(nil)
+			spc["searchPreview" .. i].iconFrame:SetTexture(nil)
+			self:addButtonBorder{obj=spc["searchPreview" .. i], relTo=spc["searchPreview" .. i].icon}
 		end
+		spc.showAllSearchResults:SetNormalTexture(nil)
+		spc.showAllSearchResults:SetPushedTexture(nil)
 		spc = nil
 		self:skinStatusBar{obj=this.searchProgressBar, fi=0, bgTex=this.searchProgressBar.bg}
 		self:addSkinFrame{obj=this.searchResults, ft=ftype, kfs=true, x1=-8, y1=-1, x2=1}
@@ -1288,23 +1277,13 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 		this:DisableDrawLayer("ARTWORK")
 		self:removeInset(this.Inset)
 		self:skinDropDown{obj=this.OutfitDropDown, y2=-4}
-		if not aObj.isPTR then
-			for i = 1, #this.Model.SlotButtons do
-				this.Model.SlotButtons[i].Border:SetTexture(nil)
-				if self.modBtnBs then
-					 self:addButtonBorder{obj=this.Model.SlotButtons[i], ofs=-2}
-				end
+		for i = 1, #this.ModelScene.SlotButtons do
+			this.ModelScene.SlotButtons[i].Border:SetTexture(nil)
+			if self.modBtnBs then
+				 self:addButtonBorder{obj=this.ModelScene.SlotButtons[i], ofs=-2}
 			end
-			this.Model.controlFrame:DisableDrawLayer("BACKGROUND")
-		else
-			for i = 1, #this.ModelScene.SlotButtons do
-				this.ModelScene.SlotButtons[i].Border:SetTexture(nil)
-				if self.modBtnBs then
-					 self:addButtonBorder{obj=this.ModelScene.SlotButtons[i], ofs=-2}
-				end
-			end
-			this.ModelScene.ControlFrame:DisableDrawLayer("BACKGROUND")
 		end
+		this.ModelScene.ControlFrame:DisableDrawLayer("BACKGROUND")
 		self:skinDropDown{obj=this.SpecDropDown}
 
 		if self.modBtns then
@@ -1312,11 +1291,7 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 			self:skinStdButton{obj=this.ApplyButton, ofs=0}
 		end
 		if self.modBtnBs then
-			if not aObj.isPTR then
-				self:addButtonBorder{obj=this.Model.ClearAllPendingButton, ofs=1, x2=0, relTo=this.Model.ClearAllPendingButton.Icon, clr="grey"}
-			else
-				self:addButtonBorder{obj=this.ModelScene.ClearAllPendingButton, ofs=1, x2=0, relTo=this.ModelScene.ClearAllPendingButton.Icon, clr="grey"}
-			end
+			self:addButtonBorder{obj=this.ModelScene.ClearAllPendingButton, ofs=1, x2=0, relTo=this.ModelScene.ClearAllPendingButton.Icon, clr="grey"}
 			self:addButtonBorder{obj=this.SpecButton, ofs=0, clr="grey"}
 		end
 
@@ -2571,9 +2546,6 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 			if self.modBtns then
 				self:skinStdButton{obj=_G.FriendsFrameBattlenetFrame.BroadcastFrame.UpdateButton}
 				self:skinStdButton{obj=_G.FriendsFrameBattlenetFrame.BroadcastFrame.CancelButton}
-				if not aObj.isPTR then
-					self:skinStdButton{obj=this.OldRAFRewardsButton}
-				end
 			end
 			self:addSkinFrame{obj=_G.FriendsFrameBattlenetFrame.BroadcastFrame, ft=ftype, ofs=-10}
 			self:removeNineSlice(_G.FriendsFrameBattlenetFrame.UnavailableInfoFrame)
@@ -4128,13 +4100,8 @@ aObj.blizzLoDFrames[ftype].PVPUI = function(self)
 		_G.PVPQueueFrame.NewSeasonPopup.NewSeason:SetTextColor(self.HT:GetRGB())
 		_G.PVPQueueFrame.NewSeasonPopup.SeasonDescription:SetTextColor(self.BT:GetRGB())
 		_G.PVPQueueFrame.NewSeasonPopup.SeasonDescription2:SetTextColor(self.BT:GetRGB())
-		if not aObj.isPTR then
-			_G.SeasonRewardFrame.Ring:SetTexture(nil)
-			self:getRegion(_G.SeasonRewardFrame, 3):SetTextColor(self.BT:GetRGB())
-		else
-			_G.PVPQueueFrame.NewSeasonPopup.SeasonRewardFrame.Ring:SetTexture(nil)
-			self:getRegion(_G.PVPQueueFrame.NewSeasonPopup.SeasonRewardFrame, 3):SetTextColor(self.BT:GetRGB())
-		end
+		_G.PVPQueueFrame.NewSeasonPopup.SeasonRewardFrame.Ring:SetTexture(nil)
+		self:getRegion(_G.PVPQueueFrame.NewSeasonPopup.SeasonRewardFrame, 3):SetTextColor(self.BT:GetRGB())
 		self:addSkinFrame{obj=_G.PVPQueueFrame.NewSeasonPopup, ft=ftype, kfs=true, nb=true, ofs=-13}
 		if self.modBtns then
 			self:skinStdButton{obj=_G.PVPQueueFrame.NewSeasonPopup.Leave}

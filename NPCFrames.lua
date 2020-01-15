@@ -41,415 +41,260 @@ aObj.blizzLoDFrames[ftype].AlliedRacesUI = function(self)
 
 end
 
-if aObj.isPTR then
-	aObj.blizzLoDFrames[ftype].AuctionHouseUI = function(self)
-		if not self.prdb.AuctionHouseUI or self.initialized.AuctionHouseUI then return end
-		self.initialized.AuctionHouseUI = true
+aObj.blizzLoDFrames[ftype].AuctionHouseUI = function(self)
+	if not self.prdb.AuctionHouseUI or self.initialized.AuctionHouseUI then return end
+	self.initialized.AuctionHouseUI = true
 
-		self:SecureHookScript(_G.AuctionHouseFrame, "OnShow", function(this)
+	self:SecureHookScript(_G.AuctionHouseFrame, "OnShow", function(this)
 
-			local function skinItemListHdrs(hdrPool)
-				for hdr in hdrPool:EnumerateActive() do
-					aObj:removeRegions(hdr, {1, 2, 3})
-					aObj:addSkinFrame{obj=hdr, ft=ftype, nb=true, ofs=1}
-				end
-			end
-			local function skinItemList(frame)
-				if aObj.modBtnBs then
-					aObj:addButtonBorder{obj=frame.RefreshFrame.RefreshButton, ofs=-2, x1=1, clr="gold"}
-				end
-				aObj:removeNineSlice(frame.NineSlice)
-				frame.Background:SetTexture(nil)
-				aObj:SecureHook(frame, "RefreshScrollFrame", function(this)
-					skinItemListHdrs(this.tableBuilder.headerPoolCollection)
-				end)
-				aObj:skinSlider{obj=frame.ScrollFrame.scrollBar, rt="background", wdth=-5}
-			end
-			local function skinBidAmt(frame)
-				aObj:skinEditBox{obj=frame.gold, regs={6, 7}, noHeight=true, noWidth=true} -- 6 is text, 7 is icon
-				aObj:skinEditBox{obj=frame.silver, regs={6, 7}, noHeight=true, noWidth=true} -- 6 is text, 7 is icon
-				frame.silver:SetWidth(38)
-				aObj:moveObject{obj=frame.silver.texture, x=10}
-				aObj:skinEditBox{obj=frame.copper, regs={6, 7}, noHeight=true, noWidth=true} -- 6 is text, 7 is icon
-				frame.copper:SetWidth(38)
-				aObj:moveObject{obj=frame.copper.texture, x=10}
-			end
-			self:removeNineSlice(this.NineSlice)
-			self:removeInset(self:getChild(this, 3)) -- MerchantMoneyInset
-			this.MoneyFrameBorder:DisableDrawLayer("BACKGROUND")
-			this.MoneyFrameBorder:DisableDrawLayer("BORDER")
-			local tabID, tab = this.selectedTab or 1
-			for i = 1, #this.Tabs do
-				tab = this.Tabs[i]
-				self:keepRegions(tab, {7, 8})
-				self:addSkinFrame{obj=tab, ft=ftype, noBdr=self.isTT, x1=6, y1=0, x2=-6, y2=2}
-				if self.isTT then
-					if i == tabID then
-						self:setActiveTab(tab.sf)
-					else
-						self:setInactiveTab(tab.sf)
-					end
-				end
-				-- change highlight texture
-				local ht = tab:GetHighlightTexture()
-				ht:SetTexture([[Interface\PaperDollInfoFrame\UI-Character-Tab-Highlight]])
-				ht:ClearAllPoints()
-				ht:SetPoint("TOPLEFT", 8, 2)
-				ht:SetPoint("BOTTOMRIGHT", -8, 0)
-				ht = nil
-			end
-			if self.isTT then
-				self:SecureHook(this, "SetDisplayMode", function(this, displayMode)
-					if not this.tabsForDisplayMode[displayMode] then return end
-					for i, tab in ipairs(this.Tabs) do
-						if i == this.tabsForDisplayMode[displayMode] then
-							self:setActiveTab(tab.sf)
-						else
-							self:setInactiveTab(tab.sf)
-						end
-					end
-				end)
-			end
-			tab = nil
-			-- .FavoriteDropDown ?
-			if self.modBtnBs then
-				self:addButtonBorder{obj=this.SearchBar.FavoritesSearchButton, ofs=-2, x1=1, clr="grey"}
-			end
-
-			-- Browsing frames
-			self:skinEditBox{obj=this.SearchBar.SearchBox, regs={6, 7}, mi=true} -- 6 is text, 7 is icon
-			self:skinEditBox{obj=this.SearchBar.FilterButton.LevelRangeFrame.MinLevel, regs={6}} -- 6 is text
-			self:skinEditBox{obj=this.SearchBar.FilterButton.LevelRangeFrame.MaxLevel, regs={6}, x=-5} -- 6 is text
-			if self.modBtns then
-				self:skinStdButton{obj=this.SearchBar.FilterButton, aso={bbclr="grey"}}
-				self:skinStdButton{obj=this.SearchBar.SearchButton}
-			end
-			this.CategoriesList:DisableDrawLayer("BACKGROUND")
-			self:removeNineSlice(this.CategoriesList.NineSlice)
-			for i = 1, _G.NUM_FILTERS_TO_DISPLAY do
-				self:keepRegions(this.CategoriesList.FilterButtons[i], {3, 4, 5}) -- N.B. region 3 is highlight, 4 is selected, 5 is text
-				self:addSkinFrame{obj=this.CategoriesList.FilterButtons[i], ft=ftype, nb=true, aso={bd=5}, y2=-1}
-			end
-			self:SecureHook("FilterButton_SetUp", function(button, _)
-				button.NormalTexture:SetAlpha(0)
-			end)
-			self:skinSlider{obj=this.CategoriesList.ScrollFrame.ScrollBar, rt="border"}
-			this.CategoriesList.ScrollFrame:DisableDrawLayer("BACKGROUND")
-			this.CategoriesList.Background:SetTexture(nil)
-			skinItemList(this.BrowseResultsFrame.ItemList)
-			this.WoWTokenResults.Background:SetTexture(nil)
-			self:removeNineSlice(this.WoWTokenResults.NineSlice)
-			self:SecureHookScript(this.WoWTokenResults.GameTimeTutorial, "OnShow", function(this)
-				self:removeInset(this.Inset)
-				this.LeftDisplay.Label:SetTextColor(self.HT:GetRGB())
-				this.LeftDisplay.Tutorial1:SetTextColor(self.BT:GetRGB())
-				this.RightDisplay.Label:SetTextColor(self.HT:GetRGB())
-				this.RightDisplay.Tutorial1:SetTextColor(self.BT:GetRGB())
-				self:addSkinFrame{obj=this, ft=ftype, kfs=true, y2=220}
-				if self.modBtns then
-					self:skinStdButton{obj=this.RightDisplay.StoreButton, aso={bbclr="gold"}, x1=14, y1=2, x2=-14, y2=2}
-				end
-
-				self:Unhook(this, "OnShow")
-			end)
-			self:removeRegions(this.WoWTokenResults.TokenDisplay, {3}) -- background texture
-			local btn = this.WoWTokenResults.TokenDisplay.ItemButton
-			btn.IconBorder:SetTexture(nil)
-			if self.modBtnBs then
-				self:addButtonBorder{obj=btn, relTo=btn.Icon, reParent={btn.Count}}
-				self:clrButtonBorder(btn)
-			end
-			btn = nil
-			if self.modBtns then
-				self:skinStdButton{obj=this.WoWTokenResults.Buyout}
-			end
-			this.WoWTokenResults.DummyScrollBar:DisableDrawLayer("BACKGROUND")
-			this.WoWTokenResults.DummyScrollBar:DisableDrawLayer("ARTWORK")
-
-			-- Buy frames
-			self:removeNineSlice(this.CommoditiesBuyFrame.BuyDisplay.NineSlice)
-			this.CommoditiesBuyFrame.BuyDisplay.Background:SetTexture(nil)
-			self:removeRegions(this.CommoditiesBuyFrame.BuyDisplay.ItemDisplay, {3})
-			self:skinEditBox{obj=this.CommoditiesBuyFrame.BuyDisplay.QuantityInput.InputBox, regs={6}} -- 6 is text
-			if self.modBtns then
-				self:skinStdButton{obj=this.CommoditiesBuyFrame.BackButton}
-				self:skinStdButton{obj=this.CommoditiesBuyFrame.BuyDisplay.BuyButton}
-				self:skinStdButton{obj=this.CommoditiesBuyFrame.BuyDisplay.QuantityInput.MaxButton}
-			end
-			skinItemList(this.CommoditiesBuyFrame.ItemList)
-			self:removeNineSlice(this.ItemBuyFrame.ItemDisplay.NineSlice)
-			self:removeRegions(this.ItemBuyFrame.ItemDisplay, {1})
-			skinBidAmt(this.ItemBuyFrame.BidFrame.BidAmount)
-			skinItemList(this.ItemBuyFrame.ItemList)
-			if self.modBtns then
-				self:skinStdButton{obj=this.ItemBuyFrame.BackButton}
-				self:skinStdButton{obj=this.ItemBuyFrame.BuyoutFrame.BuyoutButton}
-				self:skinStdButton{obj=this.ItemBuyFrame.BidFrame.BidButton}
-			end
-
-			-- Sell frames
-			local function skinPriceInp(frame)
-				aObj:skinEditBox{obj=frame.CopperBox, regs={6}, noHeight=true, noWidth=true} -- 6 is text
-				aObj:skinEditBox{obj=frame.SilverBox, regs={6}, noHeight=true, noWidth=true} -- 6 is text
-				aObj:skinEditBox{obj=frame.GoldBox, regs={6}, noHeight=true, noWidth=true} -- 6 is text
-			end
-			local function skinSellFrame(frame)
-				aObj:removeNineSlice(frame.NineSlice)
-				frame.Background:SetTexture(nil)
-				aObj:keepFontStrings(frame)
-				aObj:removeNineSlice(frame.ItemDisplay.NineSlice)
-				aObj:removeRegions(frame.ItemDisplay, {3})
-				aObj:skinEditBox{obj=frame.QuantityInput.InputBox, regs={6}, noHeight=true, noWidth=true} -- 6 is text
-				skinPriceInp(frame.PriceInput.MoneyInputFrame)
-				aObj:skinDropDown{obj=frame.DurationDropDown.DropDown, lrg=true, x1=0, y1=1, x2=-1, y2=3}
-				if aObj.modBtns then
-					aObj:skinStdButton{obj=frame.QuantityInput.MaxButton}
-					aObj:skinStdButton{obj=frame.PostButton}
-				end
-				if aObj.modBtnBs then
-					aObj:addButtonBorder{obj=frame.ItemDisplay.ItemButton, gibt=true}
-				end
-			end
-			skinSellFrame(this.ItemSellFrame)
-			if self.modChkBtns then
-				self:skinCheckButton{obj=this.ItemSellFrame.BuyoutModeCheckButton}
-			end
-			skinPriceInp(this.ItemSellFrame.SecondaryPriceInput.MoneyInputFrame)
-			skinItemList(this.ItemSellList)
-			skinSellFrame(this.CommoditiesSellFrame)
-			skinItemList(this.CommoditiesSellList)
-
-			-- .WoWTokenSellFrame
-			self:removeNineSlice(this.WoWTokenSellFrame.ItemDisplay.NineSlice)
-			self:removeRegions(this.WoWTokenSellFrame.ItemDisplay, {3})
-			self:removeNineSlice(this.WoWTokenSellFrame.DummyItemList.NineSlice)
-			this.WoWTokenSellFrame.DummyItemList.Background:SetTexture(nil)
-			this.WoWTokenSellFrame.DummyItemList.DummyScrollBar:DisableDrawLayer("BACKGROUND")
-			this.WoWTokenSellFrame.DummyItemList.DummyScrollBar:DisableDrawLayer("ARTWORK")
-			if self.modBtns then
-				self:skinStdButton{obj=this.WoWTokenSellFrame.PostButton}
-			end
-
-			-- Auctions frames
-			local tabID, tab = this.AuctionsFrame.selectedTab or 1
-			for i = 1, #this.AuctionsFrame.Tabs do
-				tab = this.AuctionsFrame.Tabs[i]
-				self:keepRegions(tab, {7, 8})
-				self:addSkinFrame{obj=tab, ft=ftype, noBdr=self.isTT, x1=6, y1=-4, x2=-6, y2=-4}
-				tab.sf.ignore = true -- ignore size changes
-				if self.isTT then
-					if i == tabID then
-						self:setActiveTab(tab.sf)
-					else
-						self:setInactiveTab(tab.sf)
-					end
-				end
-				-- change highlight texture
-				local ht = tab:GetHighlightTexture()
-				ht:SetTexture([[Interface\PaperDollInfoFrame\UI-Character-Tab-Highlight]])
-				ht:ClearAllPoints()
-				ht:SetPoint("TOPLEFT", 8, -8)
-				ht:SetPoint("BOTTOMRIGHT", -8, -4)
-				ht = nil
-			end
-			if self.isTT then
-				self:SecureHook(this.AuctionsFrame, "SetDisplayMode", function(this, displayMode)
-					-- aObj:Debug("AuctionsFrame SetDisplayMode: [%s, %s]", this, displayMode)
-					if self.displayMode == displayMode then return end
-					for i, tab in ipairs(this.Tabs) do
-						if i == displayMode then
-							self:setActiveTab(tab.sf)
-						else
-							self:setInactiveTab(tab.sf)
-						end
-					end
-				end)
-			end
-			tab = nil
-			skinBidAmt(this.AuctionsFrame.BidFrame.BidAmount)
-			self:removeNineSlice(this.AuctionsFrame.SummaryList.NineSlice)
-			this.AuctionsFrame.SummaryList.Background:SetTexture(nil)
-			self:skinSlider{obj=this.AuctionsFrame.SummaryList.ScrollFrame.scrollBar, rt="background"}
-			self:removeInset(this.AuctionsFrame.SummaryList)
-			self:removeNineSlice(this.AuctionsFrame.ItemDisplay.NineSlice)
-			self:removeRegions(this.AuctionsFrame.ItemDisplay, {3})
-			skinItemList(this.AuctionsFrame.AllAuctionsList)
-			skinItemList(this.AuctionsFrame.BidsList)
-			skinItemList(this.AuctionsFrame.ItemList)
-			skinItemList(this.AuctionsFrame.CommoditiesList)
-			self:addSkinFrame{obj=this.AuctionsFrame, ft=ftype, kfs=true, nb=true, x1=-5, y1=-30, x2=1, y2=-2} -- add frame for tabs
-			if self.modBtns then
-				self:skinStdButton{obj=this.AuctionsFrame.CancelAuctionButton}
-				self:skinStdButton{obj=this.AuctionsFrame.BuyoutFrame.BuyoutButton}
-				self:skinStdButton{obj=this.AuctionsFrame.BidFrame.BidButton}
-			end
-
-			-- Dialogs
-			self:addSkinFrame{obj=this.BuyDialog.Border, ft=ftype, kfs=true, nb=true, ofs=-10}
-			if self.modBtns then
-				self:skinStdButton{obj=this.BuyDialog.BuyNowButton}
-				self:skinStdButton{obj=this.BuyDialog.CancelButton}
-			end
-
-			self:addSkinFrame{obj=this, ft=ftype, kfs=true, x2=3, y2=-3}
-
-			self:Unhook(this, "OnShow")
-		end)
-
-	end
-else
-	aObj.blizzLoDFrames[ftype].AuctionUI = function(self)
-		if not self.prdb.AuctionUI or self.initialized.AuctionUI then return end
-		self.initialized.AuctionUI = true
-
-		local function skinBtn(btnName, idx)
-			aObj:keepFontStrings(_G[btnName .. idx])
-			_G[btnName .. idx .. "Highlight"]:SetAlpha(1)
-			_G[btnName .. idx .. "ItemNormalTexture"]:SetAlpha(0) -- texture changed in code
-			if aObj.modBtnBs then
-				aObj:addButtonBorder{obj=_G[btnName .. idx .. "Item"], reParent={_G[btnName .. idx .. "Count"], _G[btnName .. idx .. "Stock"]}}
-				aObj:clrButtonBorder(_G[btnName .. idx .. "Item"])
+		local function skinItemListHdrs(hdrPool)
+			for hdr in hdrPool:EnumerateActive() do
+				aObj:removeRegions(hdr, {1, 2, 3})
+				aObj:addSkinFrame{obj=hdr, ft=ftype, nb=true, ofs=1}
 			end
 		end
-
-		self:SecureHookScript(_G.AuctionFrame, "OnShow", function(this)
-			-- hide filter texture when filter is clicked
-			self:SecureHook("FilterButton_SetUp", function(button, _)
-				_G[button:GetName() .. "NormalTexture"]:SetAlpha(0)
+		local function skinItemList(frame)
+			if aObj.modBtnBs then
+				aObj:addButtonBorder{obj=frame.RefreshFrame.RefreshButton, ofs=-2, x1=1, clr="gold"}
+			end
+			aObj:removeNineSlice(frame.NineSlice)
+			frame.Background:SetTexture(nil)
+			aObj:SecureHook(frame, "RefreshScrollFrame", function(this)
+				skinItemListHdrs(this.tableBuilder.headerPoolCollection)
 			end)
-
-			self:skinTabs{obj=this, lod=true}
-			self:addSkinFrame{obj=_G.AuctionFrame, ft=ftype, kfs=true, hdr=true, x1=10, y1=-11, x2=0, y2=5}
-
-			-- AuctionFrame Browse
-			for i = 1, _G.NUM_FILTERS_TO_DISPLAY do
-				self:keepRegions(_G["AuctionFilterButton" .. i], {3, 4}) -- N.B. region 3 is the highlight, 4 is the text
-				self:addSkinFrame{obj=_G["AuctionFilterButton" .. i], ft=ftype, nb=true, aso={bd=5}, y2=-1}
-			end
-			self:skinSlider{obj=_G.BrowseFilterScrollFrame.ScrollBar, rt="artwork"}
-			self:skinSlider{obj=_G.BrowseScrollFrame.ScrollBar, rt="artwork"}
-			for _, type in pairs{"Quality", "Level", "Duration", "HighBidder", "CurrentBid"} do
-				self:keepRegions(_G["Browse" .. type .. "Sort"], {4, 5, 6}) -- N.B. region 4 is the text, 5 is the arrow, 6 is the highlight
-				self:addSkinFrame{obj=_G["Browse" .. type .. "Sort"], ft=ftype, nb=true, aso={bd=5}, x2=-2}
-			end
-			for i = 1, _G.NUM_BROWSE_TO_DISPLAY do
-				if _G["BrowseButton" .. i].Orig then break end -- Auctioneer CompactUI loaded
-				skinBtn("BrowseButton", i)
-			end
-			for _, type in pairs{"Name", "MinLevel", "MaxLevel"} do
-				self:skinEditBox{obj=_G["Browse" .. type], regs={6, type == "Name" and 7 or nil}, mi=true} -- 6 is text, 7 is icon
-				self:moveObject{obj=_G["Browse" .. type], x=type == "MaxLevel" and -6 or -4, y=type ~= "MaxLevel" and 3 or 0}
-			end
-			self:skinDropDown{obj=_G.BrowseDropDown, x2=109}
-			self:skinMoneyFrame{obj=_G.BrowseBidPrice, moveSEB=true}
-			_G.BrowseBidButton:DisableDrawLayer("BORDER")
-			_G.BrowseBuyoutButton:DisableDrawLayer("BORDER")
-			_G.BrowseCloseButton:DisableDrawLayer("BORDER")
-
-			if self.modChkBtns then
-				self:skinCheckButton{obj=_G.IsUsableCheckButton}
-				self:skinCheckButton{obj=_G.ShowOnPlayerCheckButton}
-				self:skinCheckButton{obj=_G.ExactMatchCheckButton}
-			end
-			if self.modBtnBs then
-				self:addButtonBorder{obj=_G.BrowsePrevPageButton, ofs=-2, y1=-3, x2=-3}
-				self:addButtonBorder{obj=_G.BrowseNextPageButton, ofs=-2, y1=-3, x2=-3}
-				self:SecureHookScript(_G.BrowseSearchButton, "OnUpdate", function(this, _)
-					if _G.CanSendAuctionQuery("list") then
-						self:clrPNBtns("Browse")
-					end
-				end)
-			end
-			if self.modBtns then
-				self:skinStdButton{obj=_G.BrowseSearchButton}
-				self:skinStdButton{obj=_G.BrowseResetButton}
-				self:skinStdButton{obj=_G.BrowseBidButton}
-				self:skinStdButton{obj=_G.BrowseBuyoutButton}
-				self:skinStdButton{obj=_G.BrowseCloseButton}
-			end
-
-			self:SecureHookScript(_G.BrowseWowTokenResults, "OnShow", function(this)
-				this.Token:DisableDrawLayer("BACKGROUND")
-				if self.modBtns then
-					self:skinStdButton{obj=this.Buyout}
-					self:skinStdButton{obj=_G.StoreButton, aso={bbclr="gold"}, x1=14, y1=2, x2=-14, y2=2}
+			aObj:skinSlider{obj=frame.ScrollFrame.scrollBar, rt="background", wdth=-5}
+		end
+		local function skinBidAmt(frame)
+			aObj:skinEditBox{obj=frame.gold, regs={6, 7}, noHeight=true, noWidth=true} -- 6 is text, 7 is icon
+			aObj:skinEditBox{obj=frame.silver, regs={6, 7}, noHeight=true, noWidth=true} -- 6 is text, 7 is icon
+			frame.silver:SetWidth(38)
+			aObj:moveObject{obj=frame.silver.texture, x=10}
+			aObj:skinEditBox{obj=frame.copper, regs={6, 7}, noHeight=true, noWidth=true} -- 6 is text, 7 is icon
+			frame.copper:SetWidth(38)
+			aObj:moveObject{obj=frame.copper.texture, x=10}
+		end
+		self:removeNineSlice(this.NineSlice)
+		self:removeInset(self:getChild(this, 3)) -- MerchantMoneyInset
+		this.MoneyFrameBorder:DisableDrawLayer("BACKGROUND")
+		this.MoneyFrameBorder:DisableDrawLayer("BORDER")
+		local tabID, tab = this.selectedTab or 1
+		for i = 1, #this.Tabs do
+			tab = this.Tabs[i]
+			self:keepRegions(tab, {7, 8})
+			self:addSkinFrame{obj=tab, ft=ftype, noBdr=self.isTT, x1=6, y1=0, x2=-6, y2=2}
+			if self.isTT then
+				if i == tabID then
+					self:setActiveTab(tab.sf)
+				else
+					self:setInactiveTab(tab.sf)
 				end
-				self:Unhook(this, "OnShow")
-			end)
-			self:SecureHookScript(_G.WowTokenGameTimeTutorial, "OnShow", function(this)
-				this.LeftDisplay.Label:SetTextColor(self.HT:GetRGB())
-				this.LeftDisplay.Tutorial1:SetTextColor(self.BT:GetRGB())
-				this.RightDisplay.Label:SetTextColor(self.HT:GetRGB())
-				this.RightDisplay.Tutorial1:SetTextColor(self.BT:GetRGB())
-				self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, ofs=1, y1=2, y2=220}
-
-				self:Unhook(this, "OnShow")
-			end)
-			self:Unhook(this, "OnShow")
-
-			-- AuctionFrame Bid
-			for _, type in pairs{"Quality", "Level", "Duration", "Buyout", "Status", "Bid"} do
-				self:keepRegions(_G["Bid" .. type .. "Sort"], {4, 5, 6}) -- N.B. region 4 is the text, 5 is the arrow, 6 is the highlight
-				self:addSkinFrame{obj=_G["Bid" .. type .. "Sort"], ft=ftype, aso={bd=5}, x2=-2}
 			end
-			for i = 1, _G.NUM_BIDS_TO_DISPLAY do
-				skinBtn("BidButton", i)
-			end
-			self:skinSlider{obj=_G.BidScrollFrame.ScrollBar, rt="artwork"}
-			self:skinMoneyFrame{obj=_G.BidBidPrice, moveSEB=true}
-			_G.BidCloseButton:DisableDrawLayer("BORDER")
-			_G.BidBuyoutButton:DisableDrawLayer("BORDER")
-			_G.BidBidButton:DisableDrawLayer("BORDER")
+			-- change highlight texture
+			local ht = tab:GetHighlightTexture()
+			ht:SetTexture([[Interface\PaperDollInfoFrame\UI-Character-Tab-Highlight]])
+			ht:ClearAllPoints()
+			ht:SetPoint("TOPLEFT", 8, 2)
+			ht:SetPoint("BOTTOMRIGHT", -8, 0)
+			ht = nil
+		end
+		if self.isTT then
+			self:SecureHook(this, "SetDisplayMode", function(this, displayMode)
+				if not this.tabsForDisplayMode[displayMode] then return end
+				for i, tab in ipairs(this.Tabs) do
+					if i == this.tabsForDisplayMode[displayMode] then
+						self:setActiveTab(tab.sf)
+					else
+						self:setInactiveTab(tab.sf)
+					end
+				end
+			end)
+		end
+		tab = nil
+		-- .FavoriteDropDown ?
+		if self.modBtnBs then
+			self:addButtonBorder{obj=this.SearchBar.FavoritesSearchButton, ofs=-2, x1=1, clr="grey"}
+		end
+
+		-- Browsing frames
+		self:skinEditBox{obj=this.SearchBar.SearchBox, regs={6, 7}, mi=true} -- 6 is text, 7 is icon
+		self:skinEditBox{obj=this.SearchBar.FilterButton.LevelRangeFrame.MinLevel, regs={6}} -- 6 is text
+		self:skinEditBox{obj=this.SearchBar.FilterButton.LevelRangeFrame.MaxLevel, regs={6}, x=-5} -- 6 is text
+		if self.modBtns then
+			self:skinStdButton{obj=this.SearchBar.FilterButton, aso={bbclr="grey"}}
+			self:skinStdButton{obj=this.SearchBar.SearchButton}
+		end
+		this.CategoriesList:DisableDrawLayer("BACKGROUND")
+		self:removeNineSlice(this.CategoriesList.NineSlice)
+		for i = 1, _G.NUM_FILTERS_TO_DISPLAY do
+			self:keepRegions(this.CategoriesList.FilterButtons[i], {3, 4, 5}) -- N.B. region 3 is highlight, 4 is selected, 5 is text
+			self:addSkinFrame{obj=this.CategoriesList.FilterButtons[i], ft=ftype, nb=true, aso={bd=5}, y2=-1}
+		end
+		self:SecureHook("FilterButton_SetUp", function(button, _)
+			button.NormalTexture:SetAlpha(0)
+		end)
+		self:skinSlider{obj=this.CategoriesList.ScrollFrame.ScrollBar, rt="border"}
+		this.CategoriesList.ScrollFrame:DisableDrawLayer("BACKGROUND")
+		this.CategoriesList.Background:SetTexture(nil)
+		skinItemList(this.BrowseResultsFrame.ItemList)
+		this.WoWTokenResults.Background:SetTexture(nil)
+		self:removeNineSlice(this.WoWTokenResults.NineSlice)
+		self:SecureHookScript(this.WoWTokenResults.GameTimeTutorial, "OnShow", function(this)
+			self:removeInset(this.Inset)
+			this.LeftDisplay.Label:SetTextColor(self.HT:GetRGB())
+			this.LeftDisplay.Tutorial1:SetTextColor(self.BT:GetRGB())
+			this.RightDisplay.Label:SetTextColor(self.HT:GetRGB())
+			this.RightDisplay.Tutorial1:SetTextColor(self.BT:GetRGB())
+			self:addSkinFrame{obj=this, ft=ftype, kfs=true, y2=220}
 			if self.modBtns then
-				self:skinStdButton{obj=_G.BidBidButton}
-				self:skinStdButton{obj=_G.BidBuyoutButton}
-				self:skinStdButton{obj=_G.BidCloseButton}
+				self:skinStdButton{obj=this.RightDisplay.StoreButton, aso={bbclr="gold"}, x1=14, y1=2, x2=-14, y2=2}
 			end
-			self:Unhook(this, "OnShow")
-
-			-- AuctionFrame Auctions
-			for _, type in pairs{"Quality", "Duration", "HighBidder", "Bid"} do
-				self:keepRegions(_G["Auctions" .. type .. "Sort"], {4, 5, 6}) -- N.B. region 4 is the text, 5 is the arrow, 6 is the highlight
-				self:addSkinFrame{obj=_G["Auctions" .. type .. "Sort"], ft=ftype, aso={bd=5}, x2=-2}
-			end
-			self:skinSlider{obj=_G.AuctionsScrollFrame.ScrollBar, rt="artwork"}
-			for i = 1, _G.NUM_AUCTIONS_TO_DISPLAY do
-				skinBtn("AuctionsButton", i)
-			end
-			if not self.modBtnBs then
-				self:resizeEmptyTexture(self:getRegion(_G.AuctionsItemButton, 2))
-			else
-				self:getRegion(_G.AuctionsItemButton, 2):SetAlpha(0) -- texture is changed in blizzard code
-				self:addButtonBorder{obj=_G.AuctionsItemButton}
-			end
-			self:skinEditBox{obj=_G.AuctionsStackSizeEntry, regs={6}, noWidth=true} -- 6 is text
-			self:skinEditBox{obj=_G.AuctionsNumStacksEntry, regs={6}, noWidth=true} -- 6 is text
-			self:skinDropDown{obj=_G.PriceDropDown}
-			self:skinMoneyFrame{obj=_G.StartPrice, moveSEB=true}
-			self:skinMoneyFrame{obj=_G.BuyoutPrice, moveSEB=true}
-			self:skinDropDown{obj=_G.DurationDropDown}
-			if self.modBtns then
-				self:skinStdButton{obj=_G.AuctionsStackSizeMaxButton}
-				self:skinStdButton{obj=_G.AuctionsNumStacksMaxButton}
-				self:skinStdButton{obj=_G.AuctionsCreateAuctionButton}
-				self:skinStdButton{obj=_G.AuctionsCancelAuctionButton, x2=-1}
-				self:skinStdButton{obj=_G.AuctionsCloseButton}
-			end
-			self:Unhook(this, "OnShow")
-
-			self:SecureHookScript(_G.AuctionProgressFrame, "OnShow", function(this)
-				this:DisableDrawLayer("BACKGROUND")
-				this:DisableDrawLayer("ARTWORK")
-				self:keepFontStrings(_G.AuctionProgressBar)
-				self:moveObject{obj=_G.AuctionProgressBar.Text, y=-2}
-				self:skinStatusBar{obj=_G.AuctionProgressBar, fi=0}
-				self:Unhook(this, "OnShow")
-			end)
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:removeRegions(this.WoWTokenResults.TokenDisplay, {3}) -- background texture
+		local btn = this.WoWTokenResults.TokenDisplay.ItemButton
+		btn.IconBorder:SetTexture(nil)
+		if self.modBtnBs then
+			self:addButtonBorder{obj=btn, relTo=btn.Icon, reParent={btn.Count}}
+			self:clrButtonBorder(btn)
+		end
+		btn = nil
+		if self.modBtns then
+			self:skinStdButton{obj=this.WoWTokenResults.Buyout}
+		end
+		this.WoWTokenResults.DummyScrollBar:DisableDrawLayer("BACKGROUND")
+		this.WoWTokenResults.DummyScrollBar:DisableDrawLayer("ARTWORK")
 
-	end
+		-- Buy frames
+		self:removeNineSlice(this.CommoditiesBuyFrame.BuyDisplay.NineSlice)
+		this.CommoditiesBuyFrame.BuyDisplay.Background:SetTexture(nil)
+		self:removeRegions(this.CommoditiesBuyFrame.BuyDisplay.ItemDisplay, {3})
+		self:skinEditBox{obj=this.CommoditiesBuyFrame.BuyDisplay.QuantityInput.InputBox, regs={6}} -- 6 is text
+		if self.modBtns then
+			self:skinStdButton{obj=this.CommoditiesBuyFrame.BackButton}
+			self:skinStdButton{obj=this.CommoditiesBuyFrame.BuyDisplay.BuyButton}
+			self:skinStdButton{obj=this.CommoditiesBuyFrame.BuyDisplay.QuantityInput.MaxButton}
+		end
+		skinItemList(this.CommoditiesBuyFrame.ItemList)
+		self:removeNineSlice(this.ItemBuyFrame.ItemDisplay.NineSlice)
+		self:removeRegions(this.ItemBuyFrame.ItemDisplay, {1})
+		skinBidAmt(this.ItemBuyFrame.BidFrame.BidAmount)
+		skinItemList(this.ItemBuyFrame.ItemList)
+		if self.modBtns then
+			self:skinStdButton{obj=this.ItemBuyFrame.BackButton}
+			self:skinStdButton{obj=this.ItemBuyFrame.BuyoutFrame.BuyoutButton}
+			self:skinStdButton{obj=this.ItemBuyFrame.BidFrame.BidButton}
+		end
+
+		-- Sell frames
+		local function skinPriceInp(frame)
+			aObj:skinEditBox{obj=frame.CopperBox, regs={6}, noHeight=true, noWidth=true} -- 6 is text
+			aObj:skinEditBox{obj=frame.SilverBox, regs={6}, noHeight=true, noWidth=true} -- 6 is text
+			aObj:skinEditBox{obj=frame.GoldBox, regs={6}, noHeight=true, noWidth=true} -- 6 is text
+		end
+		local function skinSellFrame(frame)
+			aObj:removeNineSlice(frame.NineSlice)
+			frame.Background:SetTexture(nil)
+			aObj:keepFontStrings(frame)
+			aObj:removeNineSlice(frame.ItemDisplay.NineSlice)
+			aObj:removeRegions(frame.ItemDisplay, {3})
+			aObj:skinEditBox{obj=frame.QuantityInput.InputBox, regs={6}, noHeight=true, noWidth=true} -- 6 is text
+			skinPriceInp(frame.PriceInput.MoneyInputFrame)
+			aObj:skinDropDown{obj=frame.DurationDropDown.DropDown, lrg=true, x1=0, y1=1, x2=-1, y2=3}
+			if aObj.modBtns then
+				aObj:skinStdButton{obj=frame.QuantityInput.MaxButton}
+				aObj:skinStdButton{obj=frame.PostButton}
+			end
+			if aObj.modBtnBs then
+				aObj:addButtonBorder{obj=frame.ItemDisplay.ItemButton, gibt=true}
+			end
+		end
+		skinSellFrame(this.ItemSellFrame)
+		if self.modChkBtns then
+			self:skinCheckButton{obj=this.ItemSellFrame.BuyoutModeCheckButton}
+		end
+		skinPriceInp(this.ItemSellFrame.SecondaryPriceInput.MoneyInputFrame)
+		skinItemList(this.ItemSellList)
+		skinSellFrame(this.CommoditiesSellFrame)
+		skinItemList(this.CommoditiesSellList)
+
+		-- .WoWTokenSellFrame
+		self:removeNineSlice(this.WoWTokenSellFrame.ItemDisplay.NineSlice)
+		self:removeRegions(this.WoWTokenSellFrame.ItemDisplay, {3})
+		self:removeNineSlice(this.WoWTokenSellFrame.DummyItemList.NineSlice)
+		this.WoWTokenSellFrame.DummyItemList.Background:SetTexture(nil)
+		this.WoWTokenSellFrame.DummyItemList.DummyScrollBar:DisableDrawLayer("BACKGROUND")
+		this.WoWTokenSellFrame.DummyItemList.DummyScrollBar:DisableDrawLayer("ARTWORK")
+		if self.modBtns then
+			self:skinStdButton{obj=this.WoWTokenSellFrame.PostButton}
+		end
+
+		-- Auctions frames
+		local tabID, tab = this.AuctionsFrame.selectedTab or 1
+		for i = 1, #this.AuctionsFrame.Tabs do
+			tab = this.AuctionsFrame.Tabs[i]
+			self:keepRegions(tab, {7, 8})
+			self:addSkinFrame{obj=tab, ft=ftype, noBdr=self.isTT, x1=6, y1=-4, x2=-6, y2=-4}
+			tab.sf.ignore = true -- ignore size changes
+			if self.isTT then
+				if i == tabID then
+					self:setActiveTab(tab.sf)
+				else
+					self:setInactiveTab(tab.sf)
+				end
+			end
+			-- change highlight texture
+			local ht = tab:GetHighlightTexture()
+			ht:SetTexture([[Interface\PaperDollInfoFrame\UI-Character-Tab-Highlight]])
+			ht:ClearAllPoints()
+			ht:SetPoint("TOPLEFT", 8, -8)
+			ht:SetPoint("BOTTOMRIGHT", -8, -4)
+			ht = nil
+		end
+		if self.isTT then
+			self:SecureHook(this.AuctionsFrame, "SetDisplayMode", function(this, displayMode)
+				-- aObj:Debug("AuctionsFrame SetDisplayMode: [%s, %s]", this, displayMode)
+				if self.displayMode == displayMode then return end
+				for i, tab in ipairs(this.Tabs) do
+					if i == displayMode then
+						self:setActiveTab(tab.sf)
+					else
+						self:setInactiveTab(tab.sf)
+					end
+				end
+			end)
+		end
+		tab = nil
+		skinBidAmt(this.AuctionsFrame.BidFrame.BidAmount)
+		self:removeNineSlice(this.AuctionsFrame.SummaryList.NineSlice)
+		this.AuctionsFrame.SummaryList.Background:SetTexture(nil)
+		self:skinSlider{obj=this.AuctionsFrame.SummaryList.ScrollFrame.scrollBar, rt="background"}
+		self:removeInset(this.AuctionsFrame.SummaryList)
+		self:removeNineSlice(this.AuctionsFrame.ItemDisplay.NineSlice)
+		self:removeRegions(this.AuctionsFrame.ItemDisplay, {3})
+		skinItemList(this.AuctionsFrame.AllAuctionsList)
+		skinItemList(this.AuctionsFrame.BidsList)
+		skinItemList(this.AuctionsFrame.ItemList)
+		skinItemList(this.AuctionsFrame.CommoditiesList)
+		self:addSkinFrame{obj=this.AuctionsFrame, ft=ftype, kfs=true, nb=true, x1=-5, y1=-30, x2=1, y2=-2} -- add frame for tabs
+		if self.modBtns then
+			self:skinStdButton{obj=this.AuctionsFrame.CancelAuctionButton}
+			self:skinStdButton{obj=this.AuctionsFrame.BuyoutFrame.BuyoutButton}
+			self:skinStdButton{obj=this.AuctionsFrame.BidFrame.BidButton}
+		end
+
+		-- Dialogs
+		self:addSkinFrame{obj=this.BuyDialog.Border, ft=ftype, kfs=true, nb=true, ofs=-10}
+		if self.modBtns then
+			self:skinStdButton{obj=this.BuyDialog.BuyNowButton}
+			self:skinStdButton{obj=this.BuyDialog.CancelButton}
+		end
+
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true, x2=3, y2=-3}
+
+		self:Unhook(this, "OnShow")
+	end)
+
 end
 
 aObj.blizzLoDFrames[ftype].AzeriteRespecUI = function(self)
@@ -1181,15 +1026,13 @@ aObj.blizzFrames[ftype].QuestInfo = function(self)
 			 self:addButtonBorder{obj=axp, relTo=axp.Icon, reParent={axp.Count}, clr="grey"}
 		end
 		axp = nil
-		if aObj.isPTR then
-			-- WarModeBonusFrame
-			local wmb = this.WarModeBonusFrame
-			wmb.NameFrame:SetTexture(nil)
-			if self.modBtnBs then
-				 self:addButtonBorder{obj=wmb, relTo=wmb.Icon, reParent={wmb.Count}, clr="grey"}
-			end
-			wmb = nil
+		-- WarModeBonusFrame
+		local wmb = this.WarModeBonusFrame
+		wmb.NameFrame:SetTexture(nil)
+		if self.modBtnBs then
+			 self:addButtonBorder{obj=wmb, relTo=wmb.Icon, reParent={wmb.Count}, clr="grey"}
 		end
+		wmb = nil
 		-- QuestInfoPlayerTitleFrame
 		if self.modBtnBs then
 			 self:addButtonBorder{obj=_G.QuestInfoPlayerTitleFrame, relTo=_G.QuestInfoPlayerTitleFrame.Icon, clr="grey"}

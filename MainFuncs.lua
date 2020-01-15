@@ -175,11 +175,9 @@ local function hideHeader(obj)
 		obj.header:DisableDrawLayer("BORDER")
 		aObj:moveObject{obj=obj.header.text, y=-6}
 	end
-	if aObj.isPTR then
-		if obj.Header then
-			aObj:removeRegions(obj.Header, {1, 2, 3})
-			aObj:moveObject{obj=obj.Header.Text, y=-6}
-		end
+	if obj.Header then
+		aObj:removeRegions(obj.Header, {1, 2, 3})
+		aObj:moveObject{obj=obj.Header.Text, y=-6}
 	end
 
 end

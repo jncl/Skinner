@@ -1741,9 +1741,6 @@ aObj.blizzFrames[ftype].ColorPicker = function(self)
 	self:SecureHookScript(_G.ColorPickerFrame, "OnShow", function(this)
 		this:SetBackdrop(nil)
 		self:removeNineSlice(this.Border)
-		if not aObj.isPTR then
-			_G.ColorPickerFrameHeader:SetTexture(nil)
-		end
 		self:skinSlider{obj=_G.OpacitySliderFrame, size=4}
 		self:addSkinFrame{obj=this, ft=ftype, nb=true, hdr=not aObj.PTR and true or nil, ofs=0}
 		if self.modBtns then
@@ -2610,10 +2607,6 @@ aObj.blizzLoDFrames[ftype].GMSurveyUI = function(self)
 	self.initialized.GMSurveyUI = true
 
 	self:SecureHookScript(_G.GMSurveyFrame, "OnShow", function(this)
-		if not aObj.isPTR then
-			self:keepFontStrings(_G.GMSurveyHeader)
-			self:moveObject{obj=_G.GMSurveyHeaderText, y=-8}
-		end
 		self:skinSlider{obj=_G.GMSurveyScrollFrame.ScrollBar, rt="artwork"}
 		for i = 1, _G.MAX_SURVEY_QUESTIONS do
 			self:applySkin{obj=_G["GMSurveyQuestion" .. i], ft=ftype} -- must use applySkin otherwise text is behind gradient
@@ -2622,7 +2615,7 @@ aObj.blizzLoDFrames[ftype].GMSurveyUI = function(self)
 		end
 		self:skinSlider{obj=_G.GMSurveyCommentScrollFrame.ScrollBar}
 		self:applySkin{obj=_G.GMSurveyCommentFrame, ft=ftype} -- must use applySkin otherwise text is behind gradient
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, hdr=aObj.isPTR and true or nil, y1=-6, x2=-45}
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true, hdr=true, y1=-6, x2=-45}
 
 		self:Unhook(this, "OnShow")
 	end)
@@ -2697,13 +2690,9 @@ aObj.blizzFrames[ftype].HelpFrame = function(self)
 	self.initialized.HelpFrame = true
 
 	self:SecureHookScript(_G.HelpFrame, "OnShow", function(this)
-		if not aObj.isPTR then
-			self:keepFontStrings(this.header)
-			self:moveObject{obj=this.header, y=-12}
-		end
 		self:removeInset(this.leftInset)
 		self:removeInset(this.mainInset)
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, hdr=aObj.isPTR and true or nil, ofs=0, y2=7}
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true, hdr=true, ofs=0, y2=7}
 		-- widen buttons so text fits better
 		for i = 1, 6 do
 			this["button" .. i]:SetWidth(180)
@@ -3503,9 +3492,14 @@ aObj.blizzFrames[ftype].MailFrame = function(self)
 		end
 
 		-- Invoice Frame Text fields
-		for _, type in pairs{"ItemLabel", "Purchaser", "BuyMode", "SalePrice", "Deposit", "HouseCut", "AmountReceived", "NotYetSent", "MoneyDelay"} do
+		local fields = {"ItemLabel", "Purchaser", "SalePrice", "Deposit", "HouseCut", "AmountReceived", "NotYetSent", "MoneyDelay"}
+		if self.isClassic then
+			self:add2Table(fields, "BuyMode")
+		end
+		for _, type in pairs(fields) do
 			_G["OpenMailInvoice" .. type]:SetTextColor(self.BT:GetRGB())
 		end
+		fields = nil
 
 		self:Unhook(this, "OnShow")
 	end)
@@ -4466,10 +4460,8 @@ aObj.blizzLoDFrames[ftype].OrderHallUI = function(self)
 			end
 			btn.Border:SetTexture(nil)
 		end
-		if aObj.isPTR then
-			for talentRank in frame.talentRankPool:EnumerateActive() do
-				aObj:changeTandC(talentRank.Background, aObj.lvlBG)
-			end
+		for talentRank in frame.talentRankPool:EnumerateActive() do
+			aObj:changeTandC(talentRank.Background, aObj.lvlBG)
 		end
 	end
 	self:SecureHookScript(_G.OrderHallTalentFrame, "OnShow", function(this)
@@ -4700,39 +4692,6 @@ aObj.blizzFrames[ftype].PetBattleUI = function(self)
 		end)
 	end
 
-end
-
-if not aObj.isPTR then
-	aObj.blizzFrames[ftype].ProductChoiceFrame = function(self) -- a.k.a. RaF Rewards Frame
-		if not self.prdb.ProductChoiceFrame or self.initialized.ProductChoiceFrame then return end
-		self.initialized.ProductChoiceFrame = true
-
-		-- close with Esc
-		self:add2Table(_G.UISpecialFrames, "ProductChoiceFrame")
-
-		self:SecureHookScript(_G.ProductChoiceFrame, "OnShow", function(this)
-			self:removeNineSlice(this.Inset.NoTakeBacksies.Dialog.Border)
-			if self.modBtns then
-				self:skinStdButton{obj=this.Inset.NoTakeBacksies.Dialog.AcceptButton}
-				self:skinStdButton{obj=this.Inset.NoTakeBacksies.Dialog.DeclineButton}
-				self:skinStdButton{obj=this.Inset.ClaimButton}
-			end
-			self:addSkinFrame{obj=this.Inset.NoTakeBacksies.Dialog, ft=ftype}
-			if self.modBtnBs then
-				self:addButtonBorder{obj=this.Inset.PrevPageButton, ofs=-2, x2=-3}
-				self:addButtonBorder{obj=this.Inset.NextPageButton, ofs=-2, x2=-3}
-				self:clrPNBtns(this.Inset, true)
-				self:SecureHook("ProductChoiceFrame_SetUp", function(this, _)
-					self:clrPNBtns(this.Inset, true)
-				end)
-			end
-
-			self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true}
-
-			self:Unhook(this, "OnShow")
-		end)
-
-	end
 end
 
 aObj.blizzFrames[ftype].PVEFrame = function(self)
