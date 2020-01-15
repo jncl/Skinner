@@ -1,3 +1,13 @@
+beta8.32861.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	updated version numbers
+	More Globe related changes
+	Updated Bagnon & Pawn skins
+	Updated .pkgmeta
+	Updated ColorPickerFrame skin
+
 beta8.32846.1
 Jncl:
 	ToDo.txt
