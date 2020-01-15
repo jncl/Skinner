@@ -83,8 +83,12 @@ x			- AzeriteEssencesUI
 	N	Classic 1.13.3
 ≈		- Keyring button added
 
-√	N	Bagnon, reported by StormFX, 22.12.19
+	I	Bagnon, reported by StormFX, 01.01.20
+√		- Skinner\MainFuncs.lua:222: attempt to index field 'obj' (a nil value)
+   		Skinner\MainFuncs.lua:222: in function <Skinner\MainFuncs.lua:187>
+		Skinner\AddonSkins\Bagnon-8.2.27.lua:15: in function <Skinner\AddonSkins\Bagnon.lua:14>
+		Skinner\AddonSkins\Bagnon-8.2.27.lua:76: in function <Skinner\AddonSkins\Bagnon.lua:74>
 
-	N	Pawn, reported by EpidemeDaBear, 23.12.19
-≈		- Skinner\MainFuncs.lua:219: attempt to index field 'obj' (a nil value)
-		Skinner\AddonSkins\Pawn-2.3.13.lua:73: in function <Skinner\AddonSkins\Pawn.lua:5>
+	I	Pawn, reported by Macallan1824, 13.01.20
+√		- Skinner\MainFuncs.lua:222: attempt to index field 'obj' (a nil value)
+		  Skinner\AddonSkins\Pawn-2.3.15.lua:86: in function <Skinner\AddonSkins\Pawn.lua:5>
