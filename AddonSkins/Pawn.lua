@@ -2,7 +2,7 @@ local aName, aObj = ...
 if not aObj:isAddonEnabled("Pawn") then return end
 local _G = _G
 
-aObj.addonsToSkin.Pawn = function(self) -- v 2.3.12
+aObj.addonsToSkin.Pawn = function(self) -- v 2.3.16
 
 	-- remove button textures from behind buttons
 	_G.PawnUI_InventoryPawnButton:DisableDrawLayer("BACKGROUND")
@@ -82,12 +82,16 @@ aObj.addonsToSkin.Pawn = function(self) -- v 2.3.12
 		end
 	end
 
-	-- Dialog Frame
-	self:addSkinFrame{obj=self:getChild(_G.PawnUIStringDialog, 2), ft="a", kfs=true, nb=true}
-	self:addSkinFrame{obj=_G.PawnUIStringDialog, ft="a", kfs=true, nb=true}
+	-- Dialog Frames
+	self:skinEditBox{obj=_G.PawnUIStringDialogSingleLine.TextBox, regs={6}} -- 6 is text
+	self:addSkinFrame{obj=_G.PawnUIStringDialogSingleLine, ft="a", kfs=true, nb=true}
+	self:addSkinFrame{obj=self:getChild(_G.PawnUIStringDialogMultiLine, 2), ft="a", kfs=true, nb=true}
+	self:addSkinFrame{obj=_G.PawnUIStringDialogMultiLine, ft="a", kfs=true, nb=true}
 	if self.modBtns then
-		self:skinStdButton{obj=_G.PawnUIStringDialog_OKButton}
-		self:skinStdButton{obj=_G.PawnUIStringDialog_CancelButton}
+		self:skinStdButton{obj=_G.PawnUIStringDialogSingleLine.OKButton}
+		self:skinStdButton{obj=_G.PawnUIStringDialogSingleLine.CancelButton}
+		self:skinStdButton{obj=_G.PawnUIStringDialogMultiLine.OKButton}
+		self:skinStdButton{obj=_G.PawnUIStringDialogMultiLine.CancelButton}
 	end
 
 	-- Tooltips

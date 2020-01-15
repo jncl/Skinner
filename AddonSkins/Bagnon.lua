@@ -2,7 +2,7 @@ local aName, aObj = ...
 if not aObj:isAddonEnabled("Bagnon") then return end
 local _G = _G
 
-aObj.addonsToSkin.Bagnon = function(self) -- v 8.2.24
+aObj.addonsToSkin.Bagnon = function(self) -- v 8.2.29
 	if not self.db.profile.ContainerFrames or self.initialized.Bagnon then return end
 	self.initialized.Bagnon = true
 
@@ -73,8 +73,12 @@ aObj.addonsToSkin.Bagnon = function(self) -- v 8.2.24
 	-- hook this to skin new frames
 	self:RawHook(Bagnon.Frames, "New", function(this, id)
 		local frame = self.hooks[this].New(this, id)
-		skinFrame(frame, id)
-		return frame
+		if frame then
+			skinFrame(frame, id)
+			return frame
+		else
+			return
+		end
 	end)
 
 end
@@ -82,7 +86,7 @@ end
 -- Bagnon_GuildBank frame handled in above skinFrame function
 -- Bagnon_VoidStorage frame handled in above skinFrame function
 
-aObj.lodAddons.Bagnon_Config = function(self) -- v 8.2.24
+aObj.lodAddons.Bagnon_Config = function(self) -- v 8.2.29
 
 	-- hook this to manage the Sushi Dropdowns
 	local sushi = _G.LibStub:GetLibrary("Sushi-3.1")
