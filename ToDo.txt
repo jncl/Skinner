@@ -25,70 +25,10 @@ ToDos
 
 ≈	O	Make sure all buttons with GOLD button borders need them as opposed to having a GREY border
 
-	N	PTR 8.3.0 (Visions of Z'Noth)
-		- Added
-¶√			- AuctionHouseUI
-x			- WorldMapThreatFrameTemplate
-≈			- CircularGiantItemButtonTemplate
-?			- GiantItemButtonTemplate
-≈			- MoneyDenominationDisplayTemplate
-≈			- MoneyDisplayFrameTemplate
-≈			- LargeMoneyInputBoxTemplate
-≈			- LargeMoneyInputFrameTemplate
-≈			- LargeUIDropDownMenuTemplate
-?			- Blizzard_UIWidgetPowerBarFrame
-x			- WM_EventOverlayDataProvider
-x			- WM_InvasionDataProvider
-x			- DropDownToggleButton.xml
-?			- QueueUpdater.lua
-?			- TalentRankDisplayTemplate
-¶√			- ItemInteractionUI
-?			- Helix
-?			- AudioVoiceOptionsPanel - VoiceChatDucking
-		- Deleted
-√			- AuctionUI
-		- Updated
-≈			- DropDown buttons are now "DropDownToggleButton"
-≈			- MoneyFrame
-x			- Blizzard_Wardrobe, Model now ModelScene
-x			- Garrison Talents
-x			- SideDressUpFrame now has a ControlFrame
-x			- MailFrame now has a count for Invoice
-x			- DressUpFrame
-√			- AchievementsUI
-√			- AuctionHouseUI
-h			- BindingUI
-√			- WardrobeTransmogFrame
-x			- Calendar
-x			- Communities
-h			- GMSurveyUI
-?			- OrderHallTalents
-h			- ChatConfigFrame
-h			- ColorPickerFrame
-h			- GameMenuFrame
-h			- HelpFrame
-h			- InterfaceOptionsFrame
-?			- MacOptionsPanel (FolderPicker)
-h			- OptionsFrame Templates
-?			- RaidFrame
-h			- RatingMenuFrame
-≈			- RecruitAFriendFrame
-x			- ReputationFrame
-?			- SharedUIPanelTemplates
-?			- UIPanelTemplates
-?			- UnitPowerBarAlt
-x			- AzeriteEssencesUI
-√			- QuestInfo
-
 	N	Classic 1.13.3
 ≈		- Keyring button added
 
-	I	Bagnon, reported by StormFX, 01.01.20
-√		- Skinner\MainFuncs.lua:222: attempt to index field 'obj' (a nil value)
-   		Skinner\MainFuncs.lua:222: in function <Skinner\MainFuncs.lua:187>
-		Skinner\AddonSkins\Bagnon-8.2.27.lua:15: in function <Skinner\AddonSkins\Bagnon.lua:14>
-		Skinner\AddonSkins\Bagnon-8.2.27.lua:76: in function <Skinner\AddonSkins\Bagnon.lua:74>
-
-	I	Pawn, reported by Macallan1824, 13.01.20
-√		- Skinner\MainFuncs.lua:222: attempt to index field 'obj' (a nil value)
-		  Skinner\AddonSkins\Pawn-2.3.15.lua:86: in function <Skinner\AddonSkins\Pawn.lua:5>
+	I	Calendar Frames, reported by Shiv_G3/BNS333, 15.01.20/17.01.20
+√		- Skinner\UtilFuncs.lua:728: attempt to index local 'obj' (a nil value)
+		[string "@Skinner\UtilFuncs.lua"]:728: in function `keepFontStrings'
+		[string "@Skinner\UIFrames.lua"]:948: in function <Skinner\UIFrames.lua:946>
