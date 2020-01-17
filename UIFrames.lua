@@ -945,11 +945,9 @@ aObj.blizzLoDFrames[ftype].Calendar = function(self)
 
 	self:SecureHookScript(_G.CalendarViewHolidayFrame, "OnShow", function(this)
 		self:removeNineSlice(this.Border)
-		self:keepFontStrings(_G.CalendarViewHolidayTitleFrame)
-		self:moveObject{obj=_G.CalendarViewHolidayTitleFrame, y=-6}
 		self:skinSlider{obj=_G.CalendarViewHolidayScrollFrame.ScrollBar}
 		self:removeRegions(_G.CalendarViewHolidayCloseButton, {5})
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, x1=2, y1=-3, x2=-3, y2=-2}
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, hdr=true, x1=2, y1=-3, x2=-3, y2=-2}
 		if self.modBtns then
 			self:skinCloseButton{obj=_G.CalendarViewHolidayCloseButton}
 		end
@@ -959,11 +957,9 @@ aObj.blizzLoDFrames[ftype].Calendar = function(self)
 
 	self:SecureHookScript(_G.CalendarViewRaidFrame, "OnShow", function(this)
 		self:removeNineSlice(this.Border)
-		self:keepFontStrings(_G.CalendarViewRaidTitleFrame)
-		self:moveObject{obj=_G.CalendarViewRaidTitleFrame, y=-6}
 		self:skinSlider{obj=_G.CalendarViewRaidScrollFrame.ScrollBar}
 		self:removeRegions(_G.CalendarViewRaidCloseButton, {5})
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, x1=2, y1=-3, x2=-3, y2=2}
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, hdr=true, x1=2, y1=-3, x2=-3, y2=2}
 		if self.modBtns then
 			self:skinCloseButton{obj=_G.CalendarViewRaidCloseButton}
 		end
@@ -973,15 +969,13 @@ aObj.blizzLoDFrames[ftype].Calendar = function(self)
 
 	self:SecureHookScript(_G.CalendarViewEventFrame, "OnShow", function(this)
 		self:removeNineSlice(this.Border)
-		self:keepFontStrings(_G.CalendarViewEventTitleFrame)
-		self:moveObject{obj=_G.CalendarViewEventTitleFrame, y=-6}
 		self:addSkinFrame{obj=_G.CalendarViewEventDescriptionContainer, ft=ftype}
 		self:skinSlider{obj=_G.CalendarViewEventDescriptionScrollFrame.ScrollBar}
 		self:keepFontStrings(_G.CalendarViewEventInviteListSection)
 		self:skinSlider{obj=_G.CalendarViewEventInviteListScrollFrameScrollBar}
 		self:addSkinFrame{obj=_G.CalendarViewEventInviteList, ft=ftype}
 		self:removeRegions(_G.CalendarViewEventCloseButton, {5})
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, x1=2, y1=-3, x2=-3, y2=2}
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, hdr=true, x1=2, y1=-3, x2=-3, y2=2}
 		if self.modBtns then
 			self:skinCloseButton{obj=_G.CalendarViewEventCloseButton}
 		end
@@ -992,8 +986,6 @@ aObj.blizzLoDFrames[ftype].Calendar = function(self)
 	self:SecureHookScript(_G.CalendarCreateEventFrame, "OnShow", function(this)
 		self:removeNineSlice(this.Border)
 		_G.CalendarCreateEventIcon:SetAlpha(1) -- show event icon
-		self:keepFontStrings(_G.CalendarCreateEventTitleFrame)
-		self:moveObject{obj=_G.CalendarCreateEventTitleFrame, y=-6}
 		self:skinEditBox{obj=_G.CalendarCreateEventTitleEdit, regs={6}}
 		self:skinDropDown{obj=_G.CalendarCreateEventTypeDropDown}
 		self:skinDropDown{obj=_G.CalendarCreateEventHourDropDown, x2=-6}
@@ -1010,7 +1002,7 @@ aObj.blizzLoDFrames[ftype].Calendar = function(self)
 		_G.CalendarCreateEventRaidInviteButtonBorder:SetAlpha(0)
 		_G.CalendarCreateEventCreateButtonBorder:SetAlpha(0)
 		self:removeRegions(_G.CalendarCreateEventCloseButton, {5})
- 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, x1=2, y1=-3, x2=-3, y2=2}
+ 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, hdr=true, x1=2, y1=-3, x2=-3, y2=2}
 		if self.modBtns then
 			self:skinStdButton{obj=_G.CalendarCreateEventInviteButton}
 			self:skinStdButton{obj=_G.CalendarCreateEventMassInviteButton}
@@ -1028,15 +1020,14 @@ aObj.blizzLoDFrames[ftype].Calendar = function(self)
 
 	self:SecureHookScript(_G.CalendarMassInviteFrame, "OnShow", function(this)
 		self:removeNineSlice(this.Border)
-		self:keepFontStrings(_G.CalendarMassInviteTitleFrame)
-		self:moveObject{obj=_G.CalendarMassInviteTitleFrame, y=-6}
-		self:skinEditBox{obj=_G.CalendarMassInviteGuildMinLevelEdit, regs={6}}
-		self:skinEditBox{obj=_G.CalendarMassInviteGuildMaxLevelEdit, regs={6}}
-		self:skinDropDown{obj=_G.CalendarMassInviteGuildRankMenu}
+		self:skinDropDown{obj=_G.CalendarMassInviteCommunityDropDown}
+		self:skinEditBox{obj=_G.CalendarMassInviteMinLevelEdit, regs={6}}
+		self:skinEditBox{obj=_G.CalendarMassInviteMaxLevelEdit, regs={6}}
+		self:skinDropDown{obj=_G.CalendarMassInviteRankMenu}
 		self:removeRegions(_G.CalendarMassInviteCloseButton, {5})
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, x1=4, y1=-3, x2=-3, y2=26}
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, hdr=true, x1=4, y1=-3, x2=-3, y2=20}
 		if self.modBtns then
-		self:skinStdButton{obj=_G.CalendarMassInviteGuildAcceptButton}
+			self:skinStdButton{obj=_G.CalendarMassInviteAcceptButton}
 			self:skinCloseButton{obj=_G.CalendarMassInviteCloseButton}
 		end
 
@@ -1045,12 +1036,10 @@ aObj.blizzLoDFrames[ftype].Calendar = function(self)
 
 	self:SecureHookScript(_G.CalendarEventPickerFrame, "OnShow", function(this)
 		self:removeNineSlice(this.Border)
-		self:keepFontStrings(_G.CalendarEventPickerTitleFrame)
-		self:moveObject{obj=_G.CalendarEventPickerTitleFrame, y=-6}
 		self:keepFontStrings(_G.CalendarEventPickerFrame)
 		self:skinSlider(_G.CalendarEventPickerScrollBar)
 		self:removeRegions(_G.CalendarEventPickerCloseButton, {7})
-		self:addSkinFrame{obj=this, ft=ftype, nb=true, x1=2, y1=-3, x2=-3, y2=2}
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, hdr=true, x1=2, y1=-3, x2=-3, y2=2}
 		if self.modBtns then
 			self:skinCloseButton{obj=_G.CalendarEventPickerCloseButton}
 		end
@@ -1060,12 +1049,10 @@ aObj.blizzLoDFrames[ftype].Calendar = function(self)
 
 	self:SecureHookScript(_G.CalendarTexturePickerFrame, "OnShow", function(this)
 		self:removeNineSlice(this.Border)
-		self:keepFontStrings(_G.CalendarTexturePickerTitleFrame)
-		self:moveObject{obj=_G.CalendarTexturePickerTitleFrame, y=-6}
 		self:skinSlider(_G.CalendarTexturePickerScrollBar)
 		_G.CalendarTexturePickerCancelButtonBorder:SetAlpha(0)
 		_G.CalendarTexturePickerAcceptButtonBorder:SetAlpha(0)
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, x1=5, y1=-3, x2=-3, y2=2}
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, hdr=true, x1=5, y1=-3, x2=-3, y2=2}
 		if self.modBtns then
 			self:skinStdButton{obj=_G.CalendarTexturePickerCancelButton}
 			self:skinStdButton{obj=_G.CalendarTexturePickerAcceptButton}
@@ -1742,7 +1729,7 @@ aObj.blizzFrames[ftype].ColorPicker = function(self)
 		this:SetBackdrop(nil)
 		self:removeNineSlice(this.Border)
 		self:skinSlider{obj=_G.OpacitySliderFrame, size=4}
-		self:addSkinFrame{obj=this, ft=ftype, nb=true, hdr=not aObj.PTR and true or nil, ofs=0}
+		self:addSkinFrame{obj=this, ft=ftype, nb=true, hdr=true, ofs=0}
 		if self.modBtns then
 			self:skinStdButton{obj=_G.ColorPickerOkayButton}
 			self:skinStdButton{obj=_G.ColorPickerCancelButton}
