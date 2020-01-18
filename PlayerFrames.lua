@@ -1,6 +1,7 @@
 local aName, aObj = ...
 
 local _G = _G
+
 local ftype = "p"
 
 local ipairs, pairs = _G.ipairs, _G.pairs

@@ -1,6 +1,7 @@
 local aName, aObj = ...
 
 local _G = _G
+
 local module = aObj:NewModule("UIButtons", "AceEvent-3.0", "AceHook-3.0")
 
 --@alpha@

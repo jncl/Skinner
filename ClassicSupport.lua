@@ -1,5 +1,7 @@
 local aName, aObj = ...
+
 if not aObj.isClassic then return end
+
 local _G = _G
 
 local pairs, ipairs, IsAddOnLoaded = _G.pairs, _G.ipairs, _G.IsAddOnLoaded

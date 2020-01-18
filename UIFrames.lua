@@ -1,6 +1,7 @@
 local _, aObj = ...
 
 local _G = _G
+
 local ftype = "u"
 
 local ipairs, pairs, Round = _G.ipairs, _G.pairs, _G.Round
