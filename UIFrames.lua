@@ -4029,6 +4029,7 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 			-- aObj:Debug("mmKids: [%s, %s, %s]", objName, objType, obj:GetNumRegions())
 			if not obj.sb
 			and not obj.sf
+			and not obj.point -- TomTom waypoint
 			and objType == "Button"
 			or (objType == "Frame" and objName == "MiniMapMailFrame")
 			and objName ~= "QueueStatusMinimapButton"
