@@ -1,3 +1,12 @@
+beta8.33073.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Updated TOC interface version
+	Bugfix for Calendar frames skin
+	Updated EnhancedColourPicker skin
+
 beta8.33062.1
 Jncl:
 	ToDo.txt
