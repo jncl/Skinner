@@ -95,9 +95,16 @@ function module:OnEnable()
 
 	if db.shown then self:adjustViewPort("init") end
 
+	-- handle Viewport being reset when certain cutscenes are shown
+	aObj:RegisterEvent("CINEMATIC_STOP", function(event, ...)
+		module:adjustViewPort("shown")
+	end)
+
 end
 
 function module:adjustViewPort(opt)
+
+	-- aObj:Debug("adjustViewPort: [%s]", opt)
 
 	local scale = _G.UIParent:GetEffectiveScale()
 
