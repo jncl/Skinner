@@ -7,7 +7,6 @@ local pairs, ipairs, IsAddOnLoaded = _G.pairs, _G.ipairs, _G.IsAddOnLoaded
 local ftype
 local funcs = {
 	NPC = {
-		AuctionUI = {keep = false, keepOpts = true},
 		BankFrame = {keep = false, keepOpts = true},
 		GossipFrame = {keep = true, keepOpts = true},
 		GuildRegistrar = {keep = true, keepOpts = true},
@@ -138,6 +137,15 @@ aObj.ClassicSupport = function(self)
 	self.skinGlowBox = _G.nop
 
 	-- Add options for new frames
+	if self.db.profile.AuctionUI == nil then
+		self.db.profile.AuctionUI = true
+		self.db.defaults.profile.AuctionUI = true
+	end
+	self.optTables["NPC Frames"].args.AuctionUI = {
+		type = "toggle",
+		name = self.L["Auction UI"],
+		desc = self.L["Toggle the skin of the Auction UI"],
+	}
 	if self.db.profile.CraftUI == nil then
 		self.db.profile.CraftUI = true
 		self.db.defaults.profile.CraftUI = true
