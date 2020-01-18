@@ -59,10 +59,12 @@ aObj.blizzLoDFrames[ftype].AuctionHouseUI = function(self)
 			end
 			aObj:removeNineSlice(frame.NineSlice)
 			frame.Background:SetTexture(nil)
-			aObj:SecureHook(frame, "RefreshScrollFrame", function(this)
-				skinItemListHdrs(this.tableBuilder.headerPoolCollection)
-			end)
 			aObj:skinSlider{obj=frame.ScrollFrame.scrollBar, rt="background", wdth=-5}
+			aObj:SecureHook(frame, "RefreshScrollFrame", function(this)
+				if this.tableBuilder then
+					skinItemListHdrs(this.tableBuilder.headerPoolCollection)
+				end
+			end)
 		end
 		local function skinBidAmt(frame)
 			aObj:skinEditBox{obj=frame.gold, regs={6, 7}, noHeight=true, noWidth=true} -- 6 is text, 7 is icon
