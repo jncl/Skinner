@@ -4594,13 +4594,10 @@ aObj.blizzFrames[ftype].PetBattleUI = function(self)
 			self:addButtonBorder{obj=this.BottomFrame.SwitchPetButton}
 			self:addButtonBorder{obj=this.BottomFrame.CatchButton}
 			self:addButtonBorder{obj=this.BottomFrame.ForfeitButton}
-			-- hook these for pet ability buttons
-			self:SecureHook("PetBattleFrame_UpdateActionBarLayout", function(this)
-				for i = 1, _G.NUM_BATTLE_PET_ABILITIES do
-					self:addButtonBorder{obj=this.BottomFrame.abilityButtons[i], reParent={this.BottomFrame.abilityButtons[i].BetterIcon}}
-				end
-				self:Unhook("PetBattleFrame_UpdateActionBarLayout")
-			end)
+			for i = 1, _G.NUM_BATTLE_PET_ABILITIES do
+				self:addButtonBorder{obj=this.BottomFrame.abilityButtons[i], reParent={this.BottomFrame.abilityButtons[i].BetterIcon}}
+			end
+			-- hook this for pet ability buttons
 			self:SecureHook("PetBattleActionButton_UpdateState", function(this)
 				if this.sbb then
 					if this.Icon
