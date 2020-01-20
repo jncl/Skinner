@@ -4595,11 +4595,14 @@ aObj.blizzFrames[ftype].PetBattleUI = function(self)
 			self:addButtonBorder{obj=this.BottomFrame.SwitchPetButton}
 			self:addButtonBorder{obj=this.BottomFrame.CatchButton}
 			self:addButtonBorder{obj=this.BottomFrame.ForfeitButton}
-			for i = 1, _G.NUM_BATTLE_PET_ABILITIES do
+			for i = 1, # this.BottomFrame.abilityButtons do
 				self:addButtonBorder{obj=this.BottomFrame.abilityButtons[i], reParent={this.BottomFrame.abilityButtons[i].BetterIcon}}
 			end
 			-- hook this for pet ability buttons
 			self:SecureHook("PetBattleActionButton_UpdateState", function(this)
+				if not this.sbb then
+					self:addButtonBorder{obj=this, reParent={this.BetterIcon}}
+				end
 				if this.sbb then
 					if this.Icon
 					and this.Icon:IsDesaturated()
