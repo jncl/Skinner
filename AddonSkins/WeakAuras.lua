@@ -2,24 +2,27 @@ local aName, aObj = ...
 if not aObj:isAddonEnabled("WeakAuras") then return end
 local _G = _G
 
-aObj.addonsToSkin.WeakAuras = function(self) -- v 2.12.0-beta6
+aObj.addonsToSkin.WeakAuras = function(self) -- v 2.16.1
 
 	-- hook this to skin the WeakAuras added elements
 	local s1, s2, s3, s4
 	self:SecureHook(_G.WeakAuras, "ShowDisplayTooltip", function(this, ...)
-		if _G.ItemRefTooltip.WeakAuras_Tooltip_Thumbnail
+		if self.modBtnBs
+		and _G.ItemRefTooltip.WeakAuras_Tooltip_Thumbnail
 		and not s1
 		then
 			self:addButtonBorder{obj=_G.ItemRefTooltip.WeakAuras_Tooltip_Thumbnail}
 			s1 = true
 		end
-		if _G.ItemRefTooltip.WeakAuras_Tooltip_Button
+		if self.modBtns
+		and _G.ItemRefTooltip.WeakAuras_Tooltip_Button
 		and not s2
 		then
 			self:skinStdButton{obj=_G.ItemRefTooltip.WeakAuras_Tooltip_Button}
 			s2 = true
 		end
-		if _G.ItemRefTooltip.WeakAuras_Tooltip_Button2
+		if self.modBtns
+		and _G.ItemRefTooltip.WeakAuras_Tooltip_Button2
 		and not s3
 		then
 			self:skinStdButton{obj=_G.ItemRefTooltip.WeakAuras_Tooltip_Button2}
@@ -43,40 +46,42 @@ aObj.addonsToSkin.WeakAuras = function(self) -- v 2.12.0-beta6
 
 end
 
-aObj.lodAddons.WeakAurasOptions = function(self) -- v 2.12.0-beta6
+aObj.lodAddons.WeakAurasOptions = function(self) -- v 2.16.1
 
 	-- wait until frame is created
-	if not _G.WeakAuras.OptionsFrame() then
+	if not _G.WeakAurasOptions then
 		_G.C_Timer.After(0.1, function()
-			aObj.lodAddons.WeakAurasOptions(self)
+			self.lodAddons.WeakAurasOptions(self)
 		end)
 		return
 	end
 
-	local optFrame = _G.WeakAuras.OptionsFrame()
+	local optFrame = _G.WeakAurasOptions
 	if optFrame then
 		self:skinDropDown{obj=_G.WeakAuras_DropDownMenu}
 		self:skinEditBox{obj=optFrame.filterInput, regs={6}, mi=true}
 		-- make filter input box higher
 	    optFrame.filterInput:SetPoint("TOPLEFT", optFrame.buttonsContainer.frame, "TOPLEFT", 6, 8)
-
+		self:moveObject{obj=self:getRegion(self:getChild(optFrame, 2), 1), y=-10} -- title text
+		optFrame.moversizer:SetBackdropBorderColor(self.bbClr:GetRGB())
+		self:addSkinFrame{obj=optFrame, ft="a", kfs=true, nb=true, ofs=-1, y1=5}
 		if self.modBtns then
 			local function skinBtn(id)
-
 				local frame = aObj:getChild(optFrame, id)
 				aObj:keepFontStrings(frame)
-				aObj:moveObject{obj=frame, x=23, y= id ~= 2 and 1 or 0}
+				aObj:moveObject{obj=frame, x=23, y=id ~= 2 and 1 or 0}
 				if id == 1 then aObj:skinCloseButton{obj=aObj:getChild(frame, 1)} end
-				if id == 2 then aObj:skinCheckButton{obj=aObj:getChild(frame, 1)} end
-				if id == 6 then aObj:skinOtherButton{obj=aObj:getChild(frame, 1), font=self.fontS, text="↕"} end -- up-down arrow
+				if id == 5 then -- up-down arrow
+					aObj:skinOtherButton{obj=aObj:getChild(frame, 1), font=aObj.fontS, text="↕"}
+					aObj:getChild(frame, 1):SetSize(28, 28)
+				end
 				frame = nil
-
 			end
 			skinBtn(1) -- close button frame
-			skinBtn(2) -- import button frame
-			skinBtn(6) -- minimize button frame
+			skinBtn(5) -- minimize button frame
 			self:skinStdButton{obj=self:getLastChild(optFrame.importexport.frame)} -- close/done button
 		end
+
 		local _, _, _, enabled, loadable = _G.GetAddOnInfo("WeakAurasTutorials")
     	if enabled
 		and loadable
@@ -84,17 +89,14 @@ aObj.lodAddons.WeakAurasOptions = function(self) -- v 2.12.0-beta6
 			self:keepFontStrings(self:getChild(optFrame, 5)) -- tutorial button frame
 		end
 		enabled, loadable = nil, nil
-		self:addSkinFrame{obj=optFrame, ft="a", kfs=true, nb=true, ofs=0, y1=6}
-		optFrame.moversizer:SetBackdropBorderColor(self.bbClr:GetRGB())
-
 	end
 	optFrame = nil
 
 	-- Templates
 	if self.modBtns then
 		self:SecureHook(_G.WeakAuras, "OpenTriggerTemplate", function(data)
-			self:skinStdButton{obj=_G.WeakAuras.OptionsFrame().newView.backButton}
-			self:skinStdButton{obj=self:getLastChild(_G.WeakAuras.OptionsFrame().newView.frame)}
+			self:skinStdButton{obj=_G.WeakAurasOptions.newView.backButton}
+			self:skinStdButton{obj=self:getLastChild(_G.WeakAurasOptions.newView.frame)}
 			self:Unhook(this, "OpenTriggerTemplate")
 		end)
 	end
