@@ -28,20 +28,14 @@ ToDos
 	N	Classic 1.13.3
 ≈		- Keyring button added
 
-	I	Viewport, reported by pwnpallythemultiboxer, 18.01.20
-√		- After the new patch came out, everytime a ingame cutscene has ended, the viewport goes away / turns off, by this i mean:
-		All i have to do is to go to the skinner settings... modules.... then viewport.... then uncheck "viewport show", then check it again (and the viewport works as normal again).
+	I	PetBattleUI, reported by Shiv_G3, 20.01.20
+√		- Skinner\UIFrames.lua:4599: attempt to index field '?' (a nil value)
+		[string "@Skinner\UIFrames.lua"]:4599: in function <Skinner\UIFrames.lua:4497>
 
-	I	BattlePetCount, reported by BNS333, 18.01.20
-√		- Skinner\MainFuncs.lua:220: attempt to index field 'obj' (a nil value)
-		[string "@Skinner\MainFuncs.lua"]:220: in function <Skinner\MainFuncs.lua:185>
-		[string "=(tail call)"]: ?
-		[string "@Skinner\AddonSkins\BattlePetCount-1.8.16.lua"]:9: in function <Skinner\AddonSkins\BattlePetCount.lua:8>
-		[string "@Skinner\AddonSkins\BattlePetCount-1.8.16.lua"]:25: in function <Skinner\AddonSkins\BattlePetCount.lua:25>
-
-	I	AuctionHouseUI, reported by BNS333, 18.01.20
-√		- Skinner\NPCFrames.lua:63: attempt to index field 'tableBuilder' (a nil value)
-		[string "@Skinner\NPCFrames.lua"]:63: in function <Skinner\NPCFrames.lua:62>
-
-	I	TomTom, reported by Shimiya, 18.01.20
-√		- Latest(s) versions skins Tomtom waypoints & Arrows inside the minimap like buttons minimap (squared frame with borders).
+	I	WeakAuras, reported by aexxl, 20.01.20
+√		- Skinner\Modules\UIButtons.lua:744: attempt to index field 'obj' (a nil value)
+		[string "@Skinner\Modules\UIButtons.lua"]:744: in function <Skinner\Modules\UIButtons.lua:731>
+		[string "@Skinner\Modules\UIButtons.lua"]:785: in function `skinCheckButton'
+		[string "@Skinner\AddonSkins\WeakAuras-2.16.1.lua"]:70: in function `skinBtn'
+		[string "@Skinner\AddonSkins\WeakAuras-2.16.1.lua"]:76: in function `WeakAurasOptions'
+		[string "@Skinner\AddonSkins\WeakAuras-2.16.1.lua"]:51: in function <Skinner\AddonSkins\WeakAuras.lua:50>
