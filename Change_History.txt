@@ -1,3 +1,16 @@
+beta8.33084.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Added spacer lines
+	Updated ClassicSupport to support AuctionUI
+	Bugfix for AuctionHouseUI
+	Updated PetBattleUI skin
+	Bugfix for MinimapButtons skin
+	Updated BattlePetCount skin
+	Updated Viewport code
+
 beta8.33073.1
 Jncl:
 	ToDo.txt
