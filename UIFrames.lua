@@ -4296,7 +4296,7 @@ aObj.blizzFrames[ftype].MovieFrame = function(self)
 
 end
 
-aObj.blizzFrames[ftype].NamePlates = function(self)
+aObj.blizzFrames[ftype].Nameplates = function(self)
 	if not self.prdb.Nameplates or self.initialized.Nameplates then return end
 	self.initialized.Nameplates = true
 
