@@ -857,7 +857,7 @@ function module:GetOptions()
 			UIButtons = {
 				type = "toggle",
 				order = 1,
-				name = aObj.L["UI Buttons"],
+				name = aObj.L["Buttons"],
 				desc = aObj.L["Toggle the skinning of the UI Buttons, reload required"],
 			},
 			ButtonBorders = {
