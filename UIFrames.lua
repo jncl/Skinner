@@ -2755,9 +2755,6 @@ aObj.blizzFrames[ftype].HelpFrame = function(self)
 		self:skinGlowBox(_G.HelpOpenTicketButton.tutorial, ftype)
 		-- HelpOpenWebTicketButton
 
-		-- TicketStatus Frame
-		self:addSkinFrame{obj=_G.TicketStatusFrameButton, ft=ftype}
-
 		-- ReportCheating Dialog
 		self:removeNineSlice(_G.ReportCheatingDialog.Border)
 		self:addSkinFrame{obj=_G.ReportCheatingDialog.CommentFrame, ft=ftype, kfs=true, y2=-2}
@@ -2766,6 +2763,9 @@ aObj.blizzFrames[ftype].HelpFrame = function(self)
 
 		self:Unhook(this, "OnShow")
 	end)
+
+	-- TicketStatus Frame
+	self:addSkinFrame{obj=_G.TicketStatusFrameButton, ft=ftype}
 
 end
 
