@@ -1299,7 +1299,7 @@ function aObj:skinTooltip(tooltip)
 	assert(tooltip, "Missing object sT\n" .. debugstack(2, 3, 2))
 --@end-alpha@
 
-	aObj:Debug2("skinTooltip: [%s, %s, %s]", tooltip, tooltip:GetName(), tooltip.sf)
+	aObj:Debug3("skinTooltip: [%s, %s, %s]", tooltip, tooltip:GetName(), tooltip.sf)
 
 	if not tooltip then return end
 

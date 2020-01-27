@@ -281,7 +281,7 @@ function aObj:checkAndRun(funcName, funcType, LoD, quiet)
 		tObj[funcName] = nil
 		return
 	else
-		-- aObj:Debug("checkAndRun #2: [%s]", type(tObj[funcName]))
+		aObj:Debug2("checkAndRun #2: [%s]", type(tObj[funcName]))
 		if type(tObj[funcName]) == "function" then
 			return safecall(funcName, tObj[funcName], nil, quiet)
 		else
@@ -1238,6 +1238,9 @@ function aObj:Debug(fStr, ...)
 
 end
 function aObj:Debug2(...)
+	-- self:Debug(...)
+end
+function aObj:Debug3(...)
 	-- self:Debug(...)
 end
 --@end-debug@
