@@ -1522,7 +1522,6 @@ aObj.blizzFrames[ftype].ChatEditBox = function(self)
 	or IsAddOnLoaded("Chatter")
 	or IsAddOnLoaded("Prat-3.0")
 	then
-		aObj.blizzFrames[ftype].ChatEditBox = nil
 		return
 	end
 
