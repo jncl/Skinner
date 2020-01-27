@@ -2,7 +2,7 @@ local aName, aObj = ...
 if not aObj:isAddonEnabled("RollTrackerClassic") then return end
 local _G = _G
 
-aObj.addonsToSkin.RollTrackerClassic = function(self) -- v 1.72
+aObj.addonsToSkin.RollTrackerClassic = function(self) -- v 2.10
 
 	self:SecureHookScript(_G.RollTrackerClassicMainWindow, "OnShow", function(this)
 
@@ -28,5 +28,27 @@ aObj.addonsToSkin.RollTrackerClassic = function(self) -- v 1.72
 
 	-- minimap button
 	self.mmButs["RollTrackerClassic"] = _G.Lib_GPI_Minimap_RollTrackerClassic
+
+	-- Option panels
+	local RTC, op = _G.RollTrackerClassic_Addon, {}
+	self.RegisterCallback("RollTrackerClassic", "IOFPanel_After_Skinning", function(this, panel)
+		if not panel:GetName():find("RollTrackerClassic") then return end
+		op[panel:GetName():match("(%d)")] = true
+
+		for _, eb in pairs(RTC.Options.Edit) do
+			self:skinEditBox{obj=eb, regs={6}} -- 6 is text
+		end
+
+		if self.modChkBtns then
+			for _, cb in pairs(RTC.Options.CBox) do
+				self:skinCheckButton{obj=cb}
+			end
+		end
+
+		if op[1] and op[2] and op[3] then
+			self.UnregisterCallback("RollTrackerClassic", "IOFPanel_After_Skinning")
+			RTC, op = nil, nil
+		end
+	end)
 
 end

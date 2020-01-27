@@ -115,11 +115,13 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 34
 				end
 				obj.titletext:SetPoint("TOP", obj.frame, "TOP", 0, -6)
 			elseif objType == "Window" then
+				obj.titletext:SetPoint("TOP", obj.frame, "TOP", 0, -6)
 				aObj:applySkin{obj=obj.frame, kfs=true}
-				if aObj.modBtns then
+				if aObj.modBtns
+				and obj.closebutton
+				then
 					aObj:skinCloseButton{obj=obj.closebutton}
 				end
-				obj.titletext:SetPoint("TOP", obj.frame, "TOP", 0, -6)
 			elseif objType == "ScrollFrame" then
 				aObj:skinSlider{obj=obj.scrollbar, wdth=-2}
 			elseif objType == "TreeGroup" then
