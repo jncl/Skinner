@@ -26,16 +26,9 @@ ToDos
 ≈	O	Make sure all buttons with GOLD button borders need them as opposed to having a GREY border
 
 	N	Classic 1.13.3
-≈		- Keyring button added
+√		- Keyring button added
 
-	I	PetBattleUI, reported by Shiv_G3, 20.01.20
-√		- Skinner\UIFrames.lua:4599: attempt to index field '?' (a nil value)
-		[string "@Skinner\UIFrames.lua"]:4599: in function <Skinner\UIFrames.lua:4497>
-
-	I	WeakAuras, reported by aexxl, 20.01.20
-√		- Skinner\Modules\UIButtons.lua:744: attempt to index field 'obj' (a nil value)
-		[string "@Skinner\Modules\UIButtons.lua"]:744: in function <Skinner\Modules\UIButtons.lua:731>
-		[string "@Skinner\Modules\UIButtons.lua"]:785: in function `skinCheckButton'
-		[string "@Skinner\AddonSkins\WeakAuras-2.16.1.lua"]:70: in function `skinBtn'
-		[string "@Skinner\AddonSkins\WeakAuras-2.16.1.lua"]:76: in function `WeakAurasOptions'
-		[string "@Skinner\AddonSkins\WeakAuras-2.16.1.lua"]:51: in function <Skinner\AddonSkins\WeakAuras.lua:50>
+	I	Ace3, reported by Shiv_G3, 24.01.20
+√		- Skinner\Modules\UIButtons.lua:221: attempt to index field 'obj' (a nil value)
+		[string "@Skinner\AddonSkins\Ace3.lua"]:120: in function `skinAceGUI'
+		[string "@Skinner\AddonSkins\Ace3.lua"]:501: in function <Skinner\AddonSkins\Ace3.lua:18>
