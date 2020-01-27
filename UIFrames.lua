@@ -1261,7 +1261,7 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 		end
 		self:addSkinFrame{obj=_G.ChatConfigCategoryFrame, ft=ftype, kfs=true, nb=true, x1=-2, y1=-1, x2=2, y2=2}
 		self:addSkinFrame{obj=_G.ChatConfigBackgroundFrame, ft=ftype, kfs=true, nb=true, x1=-2, y1=-1, x2=2, y2=2}
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, ofs=-4, y1=4}
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, hdr=true, ofs=-4, y1=0}
 		-- add skin frame, so tabs look better than without a frame
 		self:addSkinFrame{obj=this.ChatTabManager, ft=ftype, kfs=true, nb=true, aso={bd=10, ng=true}, x1=-5, y1=3, x2=725, y2=-512}
 		-- ChatTabManager
