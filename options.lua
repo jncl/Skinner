@@ -1890,17 +1890,14 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 
 	-- add DisabledSkins options
 	local function addDSOpt(name, lib, lod)
-
 		local name2 = name .. (lib and " (Lib)" or lod and " (LoD)" or "")
-		local width2 = name2:len() > 22 and "double" or nil
 		aObj.optTables["Disabled Skins"].args[name] = {
 			type = "toggle",
 			name = name2,
 			desc = aObj.L["Toggle the skinning of "] .. name,
-			width = width2,
+			width = name2:len() > 22 and "double" or nil,
 		}
-		name2, width2 = nil, nil
-
+		name2 = nil
 	end
 	for addonName in pairs(self.addonsToSkin) do
 		if self:isAddonEnabled(addonName) then
@@ -1908,7 +1905,9 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 		end
 	end
 	for libName in pairs(self.libsToSkin) do
-		if _G.LibStub(libName, true) then
+		if _G.LibStub(libName, true)
+		and self:isAddonEnabled(libName)
+		then
 			addDSOpt(libName, true)
 		end
 	end
