@@ -4,9 +4,8 @@ local _G = _G
 
 aObj.ItemPimper = true -- to stop IP skinning its frame
 
-local objectsToSkin = {}
-
 local AceGUI = _G.LibStub:GetLibrary("AceGUI-3.0", true)
+local objectsToSkin = {}
 if AceGUI then
 	aObj:RawHook(AceGUI, "Create", function(this, objType)
 		local obj = aObj.hooks[this].Create(this, objType)
@@ -18,6 +17,12 @@ end
 aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 34
 	if self.initialized.Ace3 then return end
 	self.initialized.Ace3 = true
+
+	-- create function(s) to be used in other skins
+	function self:skinAceDropdown(obj, x2, y2)
+		self:skinDropDown{obj=obj.dropdown, rp=true, x2=x2 or nil, y2=y2 or nil}
+		self:applySkin{obj=obj.pullout.frame}
+	end
 
 	local function skinAceGUI(obj, objType)
 
@@ -35,8 +40,7 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 34
 		then
 			-- aObj:Debug("Skinning: [%s, %s]", obj, objType)
 			if objType == "Dropdown" then
-				aObj:skinDropDown{obj=obj.dropdown, rp=true, y2=1}
-				aObj:applySkin{obj=obj.pullout.frame}
+				aObj:skinAceDropdown(obj, nil, 1)
 			elseif objType == "Dropdown-Pullout" then
 				aObj:applySkin{obj=obj.frame}
 			elseif objType == "DropdownGroup"
@@ -282,8 +286,7 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 34
 				obj.frame.background:SetTexture(nil)
 
 			elseif objType == "WeakAurasSortedDropdown" then
-				aObj:skinDropDown{obj=obj.dropdown, rp=true, y2=0}
-				aObj:applySkin{obj=obj.pullout.frame}
+				aObj:skinAceDropdown(obj, nil, 0)
 
             -- TradeSkillMaster (TSM) objects
             elseif objType == "TSMMainFrame" then
@@ -347,8 +350,7 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 34
 				aObj:addSkinFrame{obj=obj.frame, ft="a", nb=true, ofs=2}
                 obj.sknrTSM = true
 			elseif objType == "TSMDropdown" then
-				aObj:skinDropDown{obj=obj.dropdown, rp=true, x2=0, y2=0}
-				aObj:applySkin{obj=obj.pullout.frame}
+				aObj:skinAceDropdown(obj, 0, 0)
                 obj.sknrTSM = true
 			elseif objType == "TSMDropdown-Pullout" then
 				aObj:applySkin{obj=obj.frame}

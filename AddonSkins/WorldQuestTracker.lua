@@ -2,7 +2,7 @@ local aName, aObj = ...
 if not aObj:isAddonEnabled("WorldQuestTracker") then return end
 local _G = _G
 
-aObj.addonsToSkin.WorldQuestTracker = function(self) -- v 8.2.5.385
+aObj.addonsToSkin.WorldQuestTracker = function(self) -- v 8.3.0.389
 
 	self:SecureHook(_G.WorldQuestTrackerAddon, "OnToggleWorldMap", function(this)
 		if _G.WorldMapFrame.firstRun then
@@ -11,19 +11,19 @@ aObj.addonsToSkin.WorldQuestTracker = function(self) -- v 8.2.5.385
 			_G.WorldQuestTrackerCloseSummaryButton.Background:SetTexture(nil)
 			self:skinSlider{obj=_G.WorldQuestTrackerSummaryUpPanel.CharsQuestsScroll.ScrollBar, adj=-4, size=3}
 			if self.modBtns then
-				self:addButtonBorder{obj=_G.WorldQuestTrackerGoToHordeButton, clr="gold"}
-				self:addButtonBorder{obj=_G.WorldQuestTrackerGoToAllianceButton, clr="gold"}
+				self:addButtonBorder{obj=_G.WorldQuestTrackerGoToHordeButton, clr="gold", x1=-1, x2=1}
+				self:addButtonBorder{obj=_G.WorldQuestTrackerGoToAllianceButton, clr="gold", x1=-1, x2=1}
 				self:skinStdButton{obj=_G._G.WorldQuestTrackerToggleQuestsSummaryButton, aso={bbclr="gold"}, x1=4, x2=-4}
 				self:skinStdButton{obj=_G._G.WorldQuestTrackerToggleQuestsButton, aso={bbclr="gold"}, x1=4, x2=-4}
 				self:skinOtherButton{obj=_G._G.WorldQuestTrackerCloseSummaryButton, font=self.fontS, text="Close", aso={bbclr="gold"}}
 			end
+
 			self:Unhook(this, "OnToggleWorldMap")
 		end
 	end)
 
 	_G.WorldQuestTrackerZoneSummaryFrame.Header.Background:SetTexture(nil)
 	_G.WorldQuestTrackerSummaryHeader.BlackBackground:SetTexture(nil)
-
 	_G.WorldQuestTrackerQuestsHeader.Background:SetTexture(nil)
 	if self.modBtnBs then
 		self:addButtonBorder{obj=_G.WorldQuestTrackerQuestsHeaderMinimizeButton, es=12, ofs=0}
@@ -46,6 +46,7 @@ aObj.addonsToSkin.WorldQuestTracker = function(self) -- v 8.2.5.385
 				end
 			end)
 		end
+
 		self:Unhook(this, "OnShow")
 	end)
 	-- WorldQuestTrackerRareFrame (only holds data, not a displayed frame)
