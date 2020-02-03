@@ -134,7 +134,8 @@
 <script file="AddonSkins\LibInit.lua"/>
 <script file="AddonSkins\LibKeyBound.lua"/>
 <script file="AddonSkins\LibQTip.lua"/>
-<script file="AddonSkins\lib-st.lua"/>
+<script file="AddonSkins\LibScrollingTable.lua"/>
+<script file="AddonSkins\LibTextDump.lua"/>
 <script file="AddonSkins\LibToast.lua"/>
 <script file="AddonSkins\LibTradeSkillScan.lua"/>
 <script file="AddonSkins\LibXUI.lua"/>
