@@ -71,7 +71,7 @@ local funcs = {
 		MinimapButtons = {keep = true, keepOpts = true},
 		MovePad = {keep = true, keepOpts = true},
 		MovieFrame = {keep = true, keepOpts = true},
-		NamePlates = {keep = true, keepOpts = true},
+		Nameplates = {keep = true, keepOpts = true},
 		ProductChoiceFrame = {keep = true, keepOpts = true},
 		RaidFrame = {keep = false, keepOpts = true},
 		StaticPopups = {keep = true, keepOpts = true},
@@ -636,7 +636,7 @@ aObj.ClassicSupport = function(self)
 
 		end
 
-		self:SecureHook("ContainerFrame_GenerateFrame", function(frame, _)
+		self:SecureHook("ContainerFrame_GenerateFrame", function(frame, id)
 			-- skin the frame if required
 			if not frame.sf then
 				skinBag(frame, id)
