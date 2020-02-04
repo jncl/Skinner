@@ -1369,7 +1369,6 @@ aObj.ClassicSupport = function(self)
 			self:skinStatusBar{obj=_G.ReputationWatchBar.StatusBar, fi=0, bgTex=_G.ReputationWatchBar.StatusBar.Background}
 			self:keepFontStrings(_G.StanceBarFrame)
 			self:keepFontStrings(_G.PetActionBarFrame)
-			self:addSkinFrame{obj=_G.MainMenuBar, ft=ftype, kfs=true, nb=true, bg=true, noBdr=true, ofs=4, y1=-7}
 			if self.modBtnBs then
 				for i = 1, _G.NUM_STANCE_SLOTS do
 					self:addButtonBorder{obj=_G["StanceButton" .. i], abt=true, sec=true}
