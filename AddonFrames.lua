@@ -221,7 +221,7 @@ end
 function aObj:ADDON_LOADED(event, addon)
 	-- self:Debug("ADDON_LOADED: [%s]", addon)
 
-	aObj:LoDFrames(addon)
+	self:LoDFrames(addon)
 
 end
 

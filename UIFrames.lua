@@ -3552,7 +3552,6 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 			-- ActionBar buttons
 			self:addButtonBorder{obj=_G.ActionBarUpButton, clr="gold"}
 			self:addButtonBorder{obj=_G.ActionBarDownButton, clr="gold"}
-
 			-- Micro buttons
 			local mBut
 			for i = 1, #_G.MICRO_BUTTONS do
@@ -3560,21 +3559,18 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 				self:addButtonBorder{obj=mBut, ofs=0, y1=0, reParent=mBut == "MainMenuMicroButton" and {mBut.Flash, _G.MainMenuBarPerformanceBar, _G.MainMenuBarDownload} or {mBut.Flash}, clr="grey"}
 			end
 			mBut = nil
-
 			-- skin bag buttons
 			self:addButtonBorder{obj=_G.MainMenuBarBackpackButton, ibt=true}
 			self:addButtonBorder{obj=_G.CharacterBag0Slot, ibt=true}
 			self:addButtonBorder{obj=_G.CharacterBag1Slot, ibt=true}
 			self:addButtonBorder{obj=_G.CharacterBag2Slot, ibt=true}
 			self:addButtonBorder{obj=_G.CharacterBag3Slot, ibt=true}
-
 			-- MultiCastActionBarFrame
 			self:addButtonBorder{obj=_G.MultiCastSummonSpellButton, abt=true, sec=true, ofs=5}
 			self:addButtonBorder{obj=_G.MultiCastRecallSpellButton, abt=true, sec=true, ofs=5}
 			for i = 1, _G.NUM_MULTI_CAST_PAGES * _G.NUM_MULTI_CAST_BUTTONS_PER_PAGE do
 				self:addButtonBorder{obj=_G["MultiCastActionButton" .. i], abt=true, seca=true, ofs=5}
 			end
-
 			-- MultiBar Buttons
 			for _, type in pairs{"BottomLeft", "BottomRight", "Right", "Left"} do
 				local btn
@@ -3590,8 +3586,6 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 				end
 				btn = nil
 			end
-
-
 		end
 
 	end
