@@ -28,7 +28,5 @@ ToDos
 	N	Classic 1.13.3
 √		- Keyring button added
 
-	I	Ace3, reported by Shiv_G3, 24.01.20
-√		- Skinner\Modules\UIButtons.lua:221: attempt to index field 'obj' (a nil value)
-		[string "@Skinner\AddonSkins\Ace3.lua"]:120: in function `skinAceGUI'
-		[string "@Skinner\AddonSkins\Ace3.lua"]:501: in function <Skinner\AddonSkins\Ace3.lua:18>
+	N	REFlex, reported by Acivien, 02.02.20
+√		- Skinner\AddonSkins\REFlex-2.7.5.lua:6: Usage: SecureHook([object], method, [handler]): Attempting to hook a non existing target
