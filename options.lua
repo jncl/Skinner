@@ -1888,44 +1888,6 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 		end
 	end
 
-	-- add DisabledSkins options
-	local function addDSOpt(name, lib, lod)
-		local name2 = name .. (lib and " (Lib)" or lod and " (LoD)" or "")
-		aObj.optTables["Disabled Skins"].args[name] = {
-			type = "toggle",
-			name = name2,
-			desc = aObj.L["Toggle the skinning of "] .. name,
-			width = name2:len() > 22 and "double" or nil,
-		}
-		name2 = nil
-	end
-	for addonName in pairs(self.addonsToSkin) do
-		if self:isAddonEnabled(addonName) then
-			addDSOpt(addonName)
-		end
-	end
-	for libName in pairs(self.libsToSkin) do
-		if _G.LibStub(libName, true)
-		and self:isAddonEnabled(libName)
-		then
-			addDSOpt(libName, true)
-		end
-	end
-	for addonName in pairs(self.lodAddons) do
-		if self:isAddonEnabled(addonName) then
-			addDSOpt(addonName, nil, true)
-		end
-	end
-	for addonName in pairs(self.otherAddons) do
-		if self:isAddonEnabled(addonName) then
-			if addonName == "tekKonfig" then
-				addDSOpt(addonName, true)
-			else
-				addDSOpt(addonName)
-			end
-		end
-	end
-
 	-- add DB profile options
 	self.optTables.Profiles = LibStub:GetLibrary("AceDBOptions-3.0"):GetOptionsTable(self.db)
 
@@ -1936,18 +1898,17 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 	self.ACR:RegisterOptionsTable(aName, self.optTables.General, {aName, "skin"})
 	self.optionsFrame = self.ACD:AddToBlizOptions(aName, aName)
 
-	-- register the options, add them to the Blizzard Options
-	-- build the table used by the chatCommand function
+	-- register the options, add them to the Blizzard Options in the order specified
+	local optCheck = {}
 	-- option tables list
-	local optNames = {
+	local optNames, optTitle = {
 		"Backdrop", "Background", "Colours", "Gradient", "Modules", "NPC Frames", "Player Frames", "UI Frames", "Disabled Skins", "Profiles"
 	}
-	local optCheck, optTitle = {}
 	for _, v in _G.ipairs(optNames) do
 		optTitle = (" "):join(aName, v)
 		self.ACR:RegisterOptionsTable(optTitle, self.optTables[v])
 		self.optionsFrame[self.L[v]] = self.ACD:AddToBlizOptions(optTitle, self.L[v], aName)
-		optCheck[v:lower()] = v
+		optCheck[v:lower()] = v -- store option name in table
 	end
 	optNames, optTitle = nil, nil
 
@@ -2038,5 +1999,59 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 
 	-- register the data object to the Icon library
 	self.DBIcon:Register(aName, self.DBObj, db.MinimapIcon)
+
+	-- defer populating Disabled Skins panel until required
+	self.RegisterCallback("Skinner_SO", "IOFPanel_Before_Skinning", function(this, panel)
+		if panel.parent ~= "Skinner"
+		or panel.name ~= "Disabled Skins"
+		then
+			return
+		end
+
+		-- add DisabledSkins options
+		local function addDSOpt(name, lib, lod)
+			local name2 = name .. (lib and " (Lib)" or lod and " (LoD)" or "")
+			aObj.optTables["Disabled Skins"].args[name] = {
+				type = "toggle",
+				name = name2,
+				desc = aObj.L["Toggle the skinning of "] .. name,
+				width = name2:len() > 22 and "double" or nil,
+			}
+			name2 = nil
+		end
+		for addonName in pairs(self.addonsToSkin) do
+			if self:isAddonEnabled(addonName) then
+				addDSOpt(addonName)
+			end
+		end
+		self.addonsToSkin = nil
+		for libName in pairs(self.libsToSkin) do
+			if _G.LibStub(libName, true)
+			and self:isAddonEnabled(libName)
+			then
+				addDSOpt(libName, true)
+			end
+		end
+		for addonName in pairs(self.lodAddons) do
+			if self:isAddonEnabled(addonName) then
+				addDSOpt(addonName, nil, true)
+			end
+		end
+		for addonName in pairs(self.otherAddons) do
+			if self:isAddonEnabled(addonName) then
+				if addonName == "tekKonfig" then
+					addDSOpt(addonName, true)
+				else
+					addDSOpt(addonName)
+				end
+			end
+		end
+		self.otherAddons = nil
+
+		addDSOpt = nil
+		self.UnregisterCallback("Skinner_SO", "IOFPanel_Before_Skinning")
+		-- ensure new entries are displayed
+		_G.InterfaceOptionsList_DisplayPanel(panel)
+	end)
 
 end

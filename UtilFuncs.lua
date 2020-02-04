@@ -700,7 +700,8 @@ function aObj:isAddonEnabled(addonName)
 --@end-alpha@
 
 	if addonIdx[addonName] then
-		return (_G.GetAddOnEnableState(self.uName, addonIdx[addonName]) > 0) or select(5, GetAddOnInfo(addonIdx[addonName])) == "DEMAND_LOADED" and IsAddOnLoadOnDemand(addonName) or false
+		-- aObj:Debug("isAddonEnabled: [%s, %s, %s, %s, %s]", addonName, _G.GetAddOnEnableState(self.uName, addonIdx[addonName]))
+		return (_G.GetAddOnEnableState(self.uName, addonIdx[addonName]) > 0)
 	end
 
 end

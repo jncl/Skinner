@@ -4,6 +4,32 @@ local _G = _G
 
 local IsAddOnLoaded, pairs = _G.IsAddOnLoaded, _G.pairs
 
+--@alpha@
+local index = {}	-- create private index
+local mt = {		-- create metatable
+	__index = function (t, k)
+		-- print("*access to element " .. tostring(k))
+		return t[index][k] -- access the original table
+	end,
+	__newindex = function (t, k, v)
+		-- print("*update of element " .. tostring(k) .. " to " .. tostring(v))
+		if _G.rawget(t[index], k) then
+			aObj:CustomPrint(1, 0, 0, k, "already exists in the table, please remove the static entry in AddonFrames code")
+		end
+		t[index][k] = v -- update original table
+	end
+}
+local function track (t)
+	local proxy = {}
+	proxy[index] = t
+	_G.setmetatable(proxy, mt)
+	return proxy
+end
+local function untrack (t)
+	return t[index]
+end
+--@end-alpha@
+
 function aObj:BlizzardFrames()
 	-- self:Debug("BlizzardFrames")
 
@@ -50,7 +76,10 @@ end
 addonSkins = nil
 -- oddly named addons
 aObj.addonsToSkin["Enchantrix-Barker"] = "EnchantrixBarker"
-aObj.addonsToSkin["Prat-3.0"] = "Prat30"
+--@alpha@
+aObj.addonsToSkin = track(aObj.addonsToSkin)
+--@end-alpha@
+
 -- libraries
 aObj.libsToSkin = {
 	["LibTradeLinks-1.0"] = "LibTradeSkillScan",
@@ -58,6 +87,9 @@ aObj.libsToSkin = {
 	["tektip-1.0"] = "tektip",
 	["X-UI"] = "LibXUI",
 }
+--@alpha@
+aObj.libsToSkin = track(aObj.libsToSkin)
+--@end-alpha@
 -- store other AddOns not previously referenced, here so they can be enabled/disabled on the options panel
 local otherAddons = {
 	"ReagentMaker",
@@ -68,6 +100,26 @@ for i = 1, #otherAddons do
 	aObj.otherAddons[otherAddons[i]] = otherAddons[i]
 end
 otherAddons = nil
+--@alpha@
+aObj.otherAddons = track(aObj.otherAddons)
+--@end-alpha@
+local lodFrames = {
+	"DoTimer_Options",
+	"Enchantrix",
+	"GarrisonMissionManager", "GuildBankSearch",
+	"LilSparkysWorkshop", "Ludwig_Window",
+	"PetJournalEnhanced",
+	"Scrap_Merchant", "Scrap_Options", "Scrap_Visualizer",
+}
+aObj.lodAddons = {}
+for i = 1, #lodFrames do
+	aObj.lodAddons[lodFrames[i]] = lodFrames[i]
+end
+--@alpha@
+aObj.lodAddons = track(aObj.lodAddons)
+--@end-alpha@
+lodFrames = nil
+
 local function skinLibs()
 
 	-- skin library objects
@@ -103,13 +155,18 @@ local function skinBLoD(addon)
 
 end
 function aObj:AddonFrames()
+--@alpha@
+	aObj.addonsToSkin = untrack(aObj.addonsToSkin)
+	aObj.libsToSkin = untrack(aObj.libsToSkin)
+	aObj.otherAddons = untrack(aObj.otherAddons)
+	aObj.lodAddons = untrack(aObj.lodAddons)
+--@end-alpha@
 	-- self:Debug("AddonFrames")
 
 	-- used for Addons that aren't LoadOnDemand
 	for addonName, skinFunc in pairs(self.addonsToSkin) do
 		self:checkAndRunAddOn(addonName, nil, skinFunc)
 	end
-    self.addonsToSkin = nil
 
 	-- skin tekKonfig framework objects
 	if self.otherAddons["tekKonfig"] then self:checkAndRun("tekKonfig", "o") end
@@ -130,20 +187,6 @@ function aObj:AddonFrames()
 	skinLibs()
 
 end
-
-local lodFrames = {
-	"DoTimer_Options",
-	"Enchantrix",
-	"GarrisonMissionManager", "GuildBankSearch",
-	"LilSparkysWorkshop", "Ludwig_Window",
-	"PetJournalEnhanced",
-	"Scrap_Merchant", "Scrap_Options", "Scrap_Visualizer",
-}
-aObj.lodAddons = {}
-for i = 1, #lodFrames do
-	aObj.lodAddons[lodFrames[i]] = lodFrames[i]
-end
-lodFrames = nil
 
 function aObj:LoDFrames(addon)
 	-- self:Debug("LoDFrames: [%s, %s]", addon, self.lodAddons[addon])

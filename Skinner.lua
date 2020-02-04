@@ -59,6 +59,9 @@ do
 	-- pointer to LibSharedMedia-3.0 library (done here for TukUI & ElvUI)
 	aObj.LSM = LibStub:GetLibrary("LibSharedMedia-3.0")
 
+	-- store player name (done here to fix enabled addon check)
+	aObj.uName = _G.UnitName("player")
+
 end
 
 function aObj:OnInitialize()
@@ -87,8 +90,6 @@ function aObj:OnInitialize()
 	self.DBIcon = LibStub:GetLibrary("LibDBIcon-1.0")
 	-- store player class
 	self.uCls = _G.select(2, _G.UnitClass("player"))
-	-- store player name
-	self.uName = _G.UnitName("player")
 
 	-- setup the default DB values and register them
 	self:checkAndRun("SetupDefaults", "opt", false, true)
