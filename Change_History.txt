@@ -1,3 +1,18 @@
+beta8.33169.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Code tidy
+	Remove extraeneous Addon names from table
+	Don't skin MainMenuBar in ClassicSupport
+	Bugfix for ClassicSupport
+	Changes to properly display enabled addons on Disabled Skins panel
+	Update LibScrollingTable skin
+	Update options code for Disabled Skins selection panel
+	Updated Ace3, REFlex & WorldQuestTracker skins
+	Skinned LibTextDump, renamed lib-st to LibScrollingTable
+
 beta8.33115.1
 Jncl:
 	ToDo.txt
