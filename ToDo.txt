@@ -25,8 +25,4 @@ ToDos
 
 ≈	O	Make sure all buttons with GOLD button borders need them as opposed to having a GREY border
 
-	N	Classic 1.13.3
-√		- Keyring button added
-
-	N	REFlex, reported by Acivien, 02.02.20
-√		- Skinner\AddonSkins\REFlex-2.7.5.lua:6: Usage: SecureHook([object], method, [handler]): Attempting to hook a non existing target
+√	I	Debug3 function missing, reported by MacallanTwoFour, 28.01.20
