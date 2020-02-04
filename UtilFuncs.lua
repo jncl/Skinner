@@ -1250,6 +1250,7 @@ end
 aObj.debugFrame = nil
 aObj.Debug = _G.nop
 aObj.Debug2 = _G.nop
+aObj.Debug3 = _G.nop
 --@end-non-debug@]===]
 
 function aObj:RaiseFrameLevelByFour(frame)
