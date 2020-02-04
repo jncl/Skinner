@@ -1,3 +1,18 @@
+beta8.33115.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Updated option text for UI Buttons
+	Skinned KeyRingButton in ClassicSupport
+	Updated Debug messages
+	Bugfix for Nameplates function
+	Updated HelpFrames skin
+	Updated ChatEditBox skin
+	Updated ChatConfig skin
+	Skinned BagSync
+	Updated Ace3, Prat3 & RollTrackerClassic skins
+
 beta8.33084.2
 Jncl:
 	ToDo.txt
