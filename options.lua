@@ -2032,11 +2032,13 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 				addDSOpt(libName, true)
 			end
 		end
+		self.libsToSkin = nil
 		for addonName in pairs(self.lodAddons) do
 			if self:isAddonEnabled(addonName) then
 				addDSOpt(addonName, nil, true)
 			end
 		end
+		self.lodAddons = nil
 		for addonName in pairs(self.otherAddons) do
 			if self:isAddonEnabled(addonName) then
 				if addonName == "tekKonfig" then

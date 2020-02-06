@@ -71,7 +71,9 @@ local addonSkins = {
 }
 aObj.addonsToSkin = {}
 for i = 1, #addonSkins do
-	aObj.addonsToSkin[addonSkins[i]] = addonSkins[i]
+	if aObj:isAddonEnabled(addonSkins[i]) then
+		aObj.addonsToSkin[addonSkins[i]] = addonSkins[i]
+	end
 end
 addonSkins = nil
 -- oddly named addons
@@ -97,7 +99,9 @@ local otherAddons = {
 }
 aObj.otherAddons = {}
 for i = 1, #otherAddons do
-	aObj.otherAddons[otherAddons[i]] = otherAddons[i]
+	if aObj:isAddonEnabled(otherAddons[i]) then
+		aObj.otherAddons[otherAddons[i]] = otherAddons[i]
+	end
 end
 otherAddons = nil
 --@alpha@
@@ -113,7 +117,9 @@ local lodFrames = {
 }
 aObj.lodAddons = {}
 for i = 1, #lodFrames do
-	aObj.lodAddons[lodFrames[i]] = lodFrames[i]
+	if aObj:isAddonEnabled(lodFrames[i]) then
+		aObj.lodAddons[lodFrames[i]] = lodFrames[i]
+	end
 end
 --@alpha@
 aObj.lodAddons = track(aObj.lodAddons)
