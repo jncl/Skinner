@@ -25,4 +25,5 @@ ToDos
 
 ≈	O	Make sure all buttons with GOLD button borders need them as opposed to having a GREY border
 
-√	I	Debug3 function missing, reported by MacallanTwoFour, 28.01.20
+	I	Lib ScrollingTable, reported by krzysiek_7_5, 05.02.20
+√		- line 20: local st = self.hooks[this].CreateST(this, cols, ...), cols should not be there
