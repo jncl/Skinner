@@ -21,8 +21,8 @@ do
 	local buildInfo = {
 		beta    = {"9.0.0", 99999}, -- Shadowlands 2020
 		classic = {"1.13.3", 32887},
-		ptr     = {"8.3.0", 33183},
-		retail  = {"8.3.0", 33169},
+		ptr     = {"8.3.0", 33237},
+		retail  = {"8.3.0", 33237},
 		curr    = {_G.GetBuildInfo()},
    	}
 
@@ -50,7 +50,7 @@ do
 		aObj.isPTR = true
 	end
 
-	_G.wipe(buildInfo)
+	buildInfo = nil
 
 	-- define tables to hold skin functions
 	aObj.blizzFrames = {p = {}, n = {}, u = {}, opt = {}}
