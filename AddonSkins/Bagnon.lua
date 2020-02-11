@@ -88,23 +88,6 @@ end
 
 aObj.lodAddons.Bagnon_Config = function(self) -- v 8.2.29
 
-	-- hook this to manage the Sushi Dropdowns
-	local sushi = _G.LibStub:GetLibrary("Sushi-3.1")
-	self:RawHook(sushi.Dropdown, "Toggle", function(this, obj)
-		local drop = self.hooks[this].Toggle(this, obj)
-		self:addSkinFrame{obj=drop.Bg, ft="a", kfs=true, nb=true}
-		drop.Bg.SetBackdrop = _G.nop
-		return drop
-	end, true)
-	-- hook this to manage width of check boxes
-	if aObj.modChkBtns then
-		self:RawHook(sushi.Check, "Construct", function(this)
-			local frame = self.hooks[this].Construct(this)
-			self:skinCheckButton{obj=frame}
-			frame.sb:SetPoint("BOTTOMRIGHT", frame, "BOTTOMLEFT", 22, 5)
-			return frame
-		end, true)
-	end
 	-- register callback to skin elements
 	self.RegisterCallback("Bagnon_Config", "IOFPanel_After_Skinning", function(this, panel)
 		local function skinKids(panel)

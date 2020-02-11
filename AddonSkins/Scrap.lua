@@ -1,66 +1,50 @@
-local aName, aObj = ...
+local _, aObj = ...
 if not aObj:isAddonEnabled("Scrap") then return end
-local tab, tabSF
+local _G = _G
 
-function aObj:Scrap_Merchant() -- LoD
+aObj.lodAddons.Scrap_Merchant = function(self) -- v 8.3.0
 
-	-- replace border if required
 	if self.modBtnBs then
-		self:getRegion(Scrap, 3):SetTexture(nil)
-		self:addButtonBorder{obj=Scrap, ofs=0}
+		-- wait for button to be created
+		_G.C_Timer.After(0.2, function()
+			_G.Scrap.Merchant.border:SetTexture(nil)
+			self:addButtonBorder{obj=_G.Scrap.Merchant, clr="grey", ofs=0}
+		end)
 	end
 
-	-- check to see if Visualizer addon is loaded
-	-- if so then skin the additional tab
-	if select(5, GetAddOnInfo("Scrap_Visualizer")) then
-		tab = _G["MerchantFrameTab"..MerchantFrame.numTabs]
-		self:keepRegions(tab, {7, 8}) -- N.B. region 7 is text, 8 is highlight
-		tabSF = self:addSkinFrame{obj=tab, noBdr=self.isTT, x1=6, y1=0, x2=-6, y2=2}
-		if self.isTT then self:setInactiveTab(tabSF) end
-	end
+	self:SecureHookScript(_G.ScrapVisualizer, "OnShow", function(this)
+		self:skinTabs{obj=this, regs={7, 8}, ignore=true, up=true, lod=true, y1=-3, y2=-3}
+		self:skinSlider{obj=_G.ScrapVisualizerScrollBar, size=3}
+		self:removeNineSlice(this.NineSlice)
+		self:addSkinFrame{obj=this, ft="a", kfs=true, ri=true, noBdr=true}
+		if self.modBtns then
+			self:skinStdButton{obj=this.Button}
+		end
 
-end
+		self:Unhook(this, "OnShow")
+	end)
 
-function aObj:Scrap_Options() -- LoD
-
-	local lib = LibStub("CustomTutorials-2.0", true)
-	if not lib then return end
-
-	-- skin existing frames
-	for k, frame in pairs(lib.frames) do
-		frame:DisableDrawLayer("BORDER")
-		frame:DisableDrawLayer("OVERLAY")
-		frame.TitleText:SetDrawLayer("ARTWORK") -- move title text draw layer so it is shown
-		frame.shine:SetBackdrop(nil)
-		self:removeRegions(frame, {20})
-		-- turn off the animation
-		frame.flash:Stop()
-		self:addSkinFrame{obj=frame, ri=true, ofs=2, x2=1}
-	end
-
-end
-
-function aObj:Scrap_Visualizer() -- LoD
-
-	self:skinSlider{obj=ScrapVisualizerScrollBar, size=3}
-	self:addSkinFrame{obj=ScrapVisualizer, kfs=true, ri=true, noBdr=true}
-	self:removeMagicBtnTex(ScrapVisualizer.button)
-
-	-- Tabs
-	for i = 1, ScrapVisualizer.numTabs do
-		tab = _G["ScrapVisualizerTab"..i]
-		self:keepRegions(tab, {7, 8}) -- N.B. region 7 is text, 8 is highlight
-		self:moveObject{obj=_G["ScrapVisualizerTab"..i.."HighlightTexture"], x=-2, y=4}
-		tabSF = self:addSkinFrame{obj=tab, noBdr=self.isTT, y1=-3, y2=-3}
-		tabSF.ignore = true -- ignore size changes
-		tabSF.up = true -- tabs grow upwards
-		-- set textures here first time thru as it's LoD
-		if i == 1 then
-			if self.isTT then self:setActiveTab(tabSF) end
-		else
-			if self.isTT then self:setInactiveTab(tabSF) end
+	if _G.Scrap.Tutorials then
+		local frame = _G.LibStub:GetLibrary("CustomTutorials-2.1", true).frames[_G.Scrap.Tutorials]
+		if frame then
+			self:addSkinFrame{obj=frame, ft="a", kfs=true, ri=true}
+			if self.modBtnBs then
+				self:addButtonBorder{obj=frame.prev, ofs=-2, x1=1, clr=frame.prev:IsEnabled() and "gold" or "disabled"}
+				self:addButtonBorder{obj=frame.next, ofs=-2, x1=1, clr=frame.next:IsEnabled() and "gold" or "disabled"}
+				local function clrBtnBdr()
+					local ppb, npb = frame.prev,frame.next
+					aObj:clrBtnBdr(ppb, ppb:IsEnabled() and "gold" or "disabled", 1)
+					aObj:clrBtnBdr(npb, npb:IsEnabled() and "gold" or "disabled", 1)
+					ppb, npb = nil, nil
+				end
+				self:SecureHookScript(frame.prev, "OnClick", function(this)
+					clrBtnBdr()
+				end)
+				self:SecureHookScript(frame.next, "OnClick", function(this)
+					clrBtnBdr()
+				end)
+			end
 		end
 	end
-	self.tabFrames[ScrapVisualizer] = true
 
 end
