@@ -25,5 +25,9 @@ ToDos
 
 ≈	O	Make sure all buttons with GOLD button borders need them as opposed to having a GREY border
 
-	I	Lib ScrollingTable, reported by krzysiek_7_5, 05.02.20
-√		- line 20: local st = self.hooks[this].CreateST(this, cols, ...), cols should not be there
+	N	Scrap, reported by Shiv_G3, 10.02.20
+√		- Skinner\UtilFuncs.lua:587: attempt to call method 'GetRegions' (a nil value)
+		[string "@Skinner\AddonSkins\Scrap-8.3.0.lua"]:9: in function <Skinner\AddonSkins\Scrap.lua:5>
+
+	N	Combuctor, reported by Shiv_G3, 10.02.20
+√		- Skinner\AddonSkins\Combuctor-8.3.1.lua:10: attempt to get length of field 'frames' (a nil value)
