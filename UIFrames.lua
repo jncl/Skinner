@@ -5207,12 +5207,6 @@ aObj.blizzFrames[ftype].StaticPopups = function(self)
 		self:checkShown(_G["StaticPopup" .. i])
 	end
 
-end
-
-aObj.blizzFrames[ftype].StaticPopupSpecial = function(self)
-	if not self.prdb.StaticPopup or self.initialized.StaticPopup then return end
-	self.initialized.StaticPopupSpecial = true
-
 	if not self.isClassic then
 		self:SecureHookScript(_G.PetBattleQueueReadyFrame, "OnShow", function(this)
 			self:removeNineSlice(this.Border)
@@ -5226,17 +5220,24 @@ aObj.blizzFrames[ftype].StaticPopupSpecial = function(self)
 		end)
 	end
 
-	self:SecureHook(_G.PlayerReportFrame, "OnShow", function(this)
-		self:removeNineSlice(this.Border)
-		-- this.Comment.ScrollFrame.CommentBox
-		self:addSkinFrame{obj=this.Comment, ft=ftype, kfs=true, nb=true}
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true}
-		if self.modBtns then
-			self:skinStdButton{obj=this.ReportButton}
-			self:skinStdButton{obj=this.CancelButton}
+	local function skinReportFrame(frame)
+		aObj:removeNineSlice(frame.Border)
+		aObj:addSkinFrame{obj=frame.Comment, ft=ftype, kfs=true, nb=true}
+		aObj:addSkinFrame{obj=frame, ft=ftype, kfs=true, nb=true}
+		if aObj.modBtns then
+			aObj:skinStdButton{obj=frame.ReportButton}
+			aObj:skinStdButton{obj=frame.CancelButton}
 		end
 
-		self:Unhook(this, "OnShow")
+	end
+	self:SecureHook(_G.PlayerReportFrame, "ShowReportDialog", function(this, ...)
+		skinReportFrame(this)
+		self:Unhook(this, "ShowReportDialog")
+	end)
+
+	self:SecureHook(_G.ClubFinderReportFrame, "ShowReportDialog", function(this, ...)
+		skinReportFrame(this)
+		self:Unhook(this, "ShowReportDialog")
 	end)
 
 end

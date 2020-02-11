@@ -75,7 +75,6 @@ local funcs = {
 		ProductChoiceFrame = {keep = true, keepOpts = true},
 		RaidFrame = {keep = false, keepOpts = true},
 		StaticPopups = {keep = true, keepOpts = true},
-		StaticPopupSpecial = {keep = true, keepOpts = true},
 		TimeManager = {keep = true, keepOpts = true},
 		Tooltips = {keep = true, keepOpts = true},
 		Tutorial = {keep = false, keepOpts = true},
