@@ -1,3 +1,13 @@
+beta8.33237.2
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Updated StaticPopups skinning code
+	Updated UIButton skinning code
+	Skinned LibShushi
+	Updated Bagnon, Combuctor & Scrap skins
+
 beta8.33237.1
 Jncl:
 	ToDo.txt
