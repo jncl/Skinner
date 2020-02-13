@@ -25,9 +25,5 @@ ToDos
 
 ≈	O	Make sure all buttons with GOLD button borders need them as opposed to having a GREY border
 
-	N	Scrap, reported by Shiv_G3, 10.02.20
-√		- Skinner\UtilFuncs.lua:587: attempt to call method 'GetRegions' (a nil value)
-		[string "@Skinner\AddonSkins\Scrap-8.3.0.lua"]:9: in function <Skinner\AddonSkins\Scrap.lua:5>
-
-	N	Combuctor, reported by Shiv_G3, 10.02.20
-√		- Skinner\AddonSkins\Combuctor-8.3.1.lua:10: attempt to get length of field 'frames' (a nil value)
+	I	HandyNotes, reported by Shimiya, 13.02.20
+√		- Same issue with HandyNotes treasures icons on the minimap as TomTom
