@@ -4024,6 +4024,7 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 			if not obj.sb
 			and not obj.sf
 			and not obj.point -- TomTom waypoint
+			and not obj.texture -- HandyNotes pin
 			and objType == "Button"
 			or (objType == "Frame" and objName == "MiniMapMailFrame")
 			and objName ~= "QueueStatusMinimapButton"
