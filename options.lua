@@ -2019,27 +2019,24 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 			}
 			name2 = nil
 		end
-		for addonName in pairs(self.addonsToSkin) do
+		for addonName, _ in pairs(self.addonsToSkin) do
 			if self:isAddonEnabled(addonName) then
 				addDSOpt(addonName)
 			end
 		end
-		self.addonsToSkin = nil
-		for libName in pairs(self.libsToSkin) do
+		for libName, _ in pairs(self.libsToSkin) do
 			if _G.LibStub(libName, true)
 			and self:isAddonEnabled(libName)
 			then
 				addDSOpt(libName, true)
 			end
 		end
-		self.libsToSkin = nil
-		for addonName in pairs(self.lodAddons) do
+		for addonName, _ in pairs(self.lodAddons) do
 			if self:isAddonEnabled(addonName) then
 				addDSOpt(addonName, nil, true)
 			end
 		end
-		self.lodAddons = nil
-		for addonName in pairs(self.otherAddons) do
+		for addonName, _ in pairs(self.otherAddons) do
 			if self:isAddonEnabled(addonName) then
 				if addonName == "tekKonfig" then
 					addDSOpt(addonName, true)
@@ -2048,7 +2045,6 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 				end
 			end
 		end
-		self.otherAddons = nil
 
 		addDSOpt = nil
 		self.UnregisterCallback("Skinner_SO", "IOFPanel_Before_Skinning")

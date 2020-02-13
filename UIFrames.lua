@@ -5184,6 +5184,10 @@ aObj.blizzFrames[ftype].StaticPopups = function(self)
 			local objName = this:GetName()
 			self:removeNineSlice(this.Border)
 			this.Separator:SetTexture(nil)
+			self:skinEditBox{obj=_G[objName .. "EditBox"], regs={6}, mi=true}
+			self:skinMoneyFrame{obj=_G[objName .. "MoneyInputFrame"]}
+			_G[objName .. "ItemFrameNameFrame"]:SetTexture(nil)
+			self:addSkinFrame{obj=this, ft=ftype, x1=6, y1=-6, x2=-6, y2=6}
 			if self.modBtns then
 				self:skinStdButton{obj=this.button1}
 				self:skinStdButton{obj=this.button2}
@@ -5191,10 +5195,6 @@ aObj.blizzFrames[ftype].StaticPopups = function(self)
 				self:skinStdButton{obj=this.button4}
 				self:skinStdButton{obj=this.extraButton}
 			end
-			self:skinEditBox{obj=_G[objName .. "EditBox"], regs={6}, mi=true}
-			self:skinMoneyFrame{obj=_G[objName .. "MoneyInputFrame"]}
-			_G[objName .. "ItemFrameNameFrame"]:SetTexture(nil)
-			self:addSkinFrame{obj=this, ft=ftype, x1=6, y1=-6, x2=-6, y2=6}
 			if self.modBtnBs then
 				self:addButtonBorder{obj=_G[objName .. "ItemFrame"], ibt=true}
 			end
