@@ -5222,24 +5222,35 @@ aObj.blizzFrames[ftype].StaticPopups = function(self)
 	end
 
 	local function skinReportFrame(frame)
-		aObj:removeNineSlice(frame.Border)
+		if not aObj.isClassic then
+			aObj:removeNineSlice(frame.Border)
+		end
 		aObj:addSkinFrame{obj=frame.Comment, ft=ftype, kfs=true, nb=true}
 		aObj:addSkinFrame{obj=frame, ft=ftype, kfs=true, nb=true}
 		if aObj.modBtns then
 			aObj:skinStdButton{obj=frame.ReportButton}
 			aObj:skinStdButton{obj=frame.CancelButton}
 		end
-
 	end
-	self:SecureHook(_G.PlayerReportFrame, "ShowReportDialog", function(this, ...)
-		skinReportFrame(this)
-		self:Unhook(this, "ShowReportDialog")
-	end)
 
-	self:SecureHook(_G.ClubFinderReportFrame, "ShowReportDialog", function(this, ...)
-		skinReportFrame(this)
-		self:Unhook(this, "ShowReportDialog")
-	end)
+	if not self.isClassic then
+		self:SecureHook(_G.PlayerReportFrame, "ShowReportDialog", function(this, ...)
+			skinReportFrame(this)
+
+			self:Unhook(this, "ShowReportDialog")
+		end)
+		self:SecureHook(_G.ClubFinderReportFrame, "ShowReportDialog", function(this, ...)
+			skinReportFrame(this)
+
+			self:Unhook(this, "ShowReportDialog")
+		end)
+	else
+		self:SecureHook(_G.PlayerReportFrame, "InitiateReport", function(this, ...)
+			skinReportFrame(this)
+
+			self:Unhook(this, "InitiateReport")
+		end)
+	end
 
 end
 
