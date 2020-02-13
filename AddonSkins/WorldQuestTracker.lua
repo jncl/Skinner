@@ -4,22 +4,29 @@ local _G = _G
 
 aObj.addonsToSkin.WorldQuestTracker = function(self) -- v 8.3.0.389
 
-	self:SecureHook(_G.WorldQuestTrackerAddon, "OnToggleWorldMap", function(this)
+	local function skinWMF(obj)
 		if _G.WorldMapFrame.firstRun then
 			_G.WorldQuestTrackerToggleQuestsSummaryButton.Background:SetTexture(nil)
 			_G.WorldQuestTrackerToggleQuestsButton.Background:SetTexture(nil)
 			_G.WorldQuestTrackerCloseSummaryButton.Background:SetTexture(nil)
-			self:skinSlider{obj=_G.WorldQuestTrackerSummaryUpPanel.CharsQuestsScroll.ScrollBar, adj=-4, size=3}
-			if self.modBtns then
-				self:addButtonBorder{obj=_G.WorldQuestTrackerGoToHordeButton, clr="gold", x1=-1, x2=1}
-				self:addButtonBorder{obj=_G.WorldQuestTrackerGoToAllianceButton, clr="gold", x1=-1, x2=1}
-				self:skinStdButton{obj=_G._G.WorldQuestTrackerToggleQuestsSummaryButton, aso={bbclr="gold"}, x1=4, x2=-4}
-				self:skinStdButton{obj=_G._G.WorldQuestTrackerToggleQuestsButton, aso={bbclr="gold"}, x1=4, x2=-4}
-				self:skinOtherButton{obj=_G._G.WorldQuestTrackerCloseSummaryButton, font=self.fontS, text="Close", aso={bbclr="gold"}}
+			aObj:skinSlider{obj=_G.WorldQuestTrackerSummaryUpPanel.CharsQuestsScroll.ScrollBar, adj=-4, size=3}
+			if aObj.modBtns then
+				aObj:addButtonBorder{obj=_G.WorldQuestTrackerGoToHordeButton, clr="gold", x1=-1, x2=1}
+				aObj:addButtonBorder{obj=_G.WorldQuestTrackerGoToAllianceButton, clr="gold", x1=-1, x2=1}
+				aObj:skinStdButton{obj=_G._G.WorldQuestTrackerToggleQuestsSummaryButton, aso={bbclr="gold"}, x1=4, x2=-4}
+				aObj:skinStdButton{obj=_G._G.WorldQuestTrackerToggleQuestsButton, aso={bbclr="gold"}, x1=4, x2=-4}
+				aObj:skinOtherButton{obj=_G._G.WorldQuestTrackerCloseSummaryButton, font=self.fontS, text="Close", aso={bbclr="gold"}}
 			end
-
-			self:Unhook(this, "OnToggleWorldMap")
+			aObj:Unhook(obj, "SetDisplayState")
+		else
+			-- delay to allow WQTA to do it's stuff
+			_G.C_Timer.After(0.1, function()
+				skinWMF()
+			end)
 		end
+	end
+	self:SecureHook(_G.WorldMapFrame, "SetDisplayState", function(this, ...)
+		skinWMF(this)
 	end)
 
 	_G.WorldQuestTrackerZoneSummaryFrame.Header.Background:SetTexture(nil)
@@ -61,7 +68,7 @@ aObj.addonsToSkin.WorldQuestTracker = function(self) -- v 8.3.0.389
 		if _G.WorldQuestTrackerAddon.db.profile.TutorialPopupID == 4 then
 			-- no more steps
 		else
-			self:SecureHook(_G.WorldQuestTrackerAddon, "ShowTutorialAlert", function()
+			self:SecureHook(_G.WorldQuestTrackerAddon, "ShowTutorialAlert", function(this)
 				if _G.WorldQuestTrackerAddon.db.profile.TutorialPopupID == 1 then
 					_G.C_Timer.After(4.25, function()
 						if _G.WorldQuestTrackerTutorialAlert1 then
