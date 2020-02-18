@@ -4653,20 +4653,22 @@ aObj.blizzFrames[ftype].TradeFrame = function(self)
 	self.initialized.TradeFrame = true
 
 	self:SecureHookScript(_G.TradeFrame, "OnShow", function(this)
+		this.RecipientOverlay.portrait:SetAlpha(0)
+		this.RecipientOverlay.portraitFrame:SetTexture(nil)
 		self:removeInset(_G.TradeRecipientItemsInset)
 		self:removeInset(_G.TradeRecipientEnchantInset)
 		self:removeInset(_G.TradePlayerItemsInset)
 		self:removeInset(_G.TradePlayerEnchantInset)
-		self:skinStdButton{obj=_G.TradeFrameTradeButton}
-		self:skinStdButton{obj=_G.TradeFrameCancelButton}
 		self:removeInset(_G.TradePlayerInputMoneyInset)
-		self:skinMoneyFrame{obj=_G.TradePlayerInputMoneyFrame, moveSEB=true}
 		self:removeInset(_G.TradeRecipientMoneyInset)
+		self:skinMoneyFrame{obj=_G.TradePlayerInputMoneyFrame, moveSEB=true}
 		_G.TradeRecipientMoneyBg:DisableDrawLayer("BACKGROUND")
-
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, x2=1}
-
-		if self.modUIBtns then
+		if self.modBtns then
+			self:skinStdButton{obj=_G.TradeFrameTradeButton}
+			self:skinStdButton{obj=_G.TradeFrameCancelButton}
+		end
+		if self.modBtnBs then
 			for i = 1, _G.MAX_TRADE_ITEMS do
 				for _, type in pairs{"Player", "Recipient"} do
 					_G["Trade" .. type .. "Item" .. i .. "SlotTexture"]:SetTexture(nil)
