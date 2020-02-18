@@ -164,18 +164,6 @@ function aObj:OnInitialize()
 	-- register the statubar texture used by Nameplates
 	self.LSM:Register("statusbar", "Blizzard2", [[Interface\TargetingFrame\UI-TargetingFrame-BarFill]])
 
-	-- Heading, Body & Ignored Text colours
-	local c = self.prdb.HeadText
-	self.HT = _G.CreateColor(c.r, c.g, c.b)
-	c = self.prdb.BodyText
-	self.BT = _G.CreateColor(c.r, c.g, c.b)
-	c = self.prdb.IgnoredText
-	self.IT = _G.CreateColor(c.r, c.g, c.b)
-	-- The following variables are used by the GossipFrame & QuestFrame
-	self.NORMAL_QUEST_DISPLAY = self.HT:WrapTextInColorCode("%s|r")
-	self.TRIVIAL_QUEST_DISPLAY = self.BT:WrapTextInColorCode("%s (low level)|r")
-	self.IGNORED_QUEST_DISPLAY = self.IT:WrapTextInColorCode("%s (ignored)|r")
-
 	-- EditBox regions to keep
 	self.ebRgns = {1, 2} -- 1 is text, 2 is a texture
 
@@ -252,6 +240,18 @@ function aObj:OnInitialize()
 		end
 	end
 
+	-- Heading, Body & Ignored Text colours
+	local c = self.prdb.HeadText
+	self.HT = _G.CreateColor(c.r, c.g, c.b)
+	c = self.prdb.BodyText
+	self.BT = _G.CreateColor(c.r, c.g, c.b)
+	c = self.prdb.IgnoredText
+	self.IT = _G.CreateColor(c.r, c.g, c.b)
+	-- The following variables are used by the GossipFrame & QuestFrame
+	self.NORMAL_QUEST_DISPLAY = self.HT:WrapTextInColorCode("%s|r")
+	self.TRIVIAL_QUEST_DISPLAY = self.BT:WrapTextInColorCode("%s (low level)|r")
+	self.IGNORED_QUEST_DISPLAY = self.IT:WrapTextInColorCode("%s (ignored)|r")
+
 	-- StatusBar texture
 	c = self.prdb.StatusBar
 	self.sbTexture = self.LSM:Fetch("statusbar", c.texture)
@@ -277,10 +277,10 @@ function aObj:OnInitialize()
 
 	-- highlight outdated colour variables use when testing
 --[===[@non-debug@
-	self.bColour = {self.bClr:GetRGBA()}
-	self.bbColour = {self.bbClr:GetRGBA()}
 	self.HTr, self.HTg, self.HTb = self.HT:GetRGB()
 	self.BTr, self.BTg, self.BTb = self.BT:GetRGB()
+	self.bColour = {self.bClr:GetRGBA()}
+	self.bbColour = {self.bbClr:GetRGBA()}
 --@end-non-debug@]===]
 
 	-- Inactive Tab & DropDowns texture
