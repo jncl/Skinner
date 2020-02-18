@@ -834,7 +834,7 @@ aObj.blizzLoDFrames[ftype].BattlefieldMap = function(self)
 		end
 
 		if IsAddOnLoaded("Mapster") then
-			local mBM = _G.LibStub:GetLibrary("AceAddon-3.0"):GetAddon("Mapster"):GetModule("BattleMap", true)
+			local mBM = _G.LibStub:GetLibrary("AceAddon-3.0", true):GetAddon("Mapster", true):GetModule("BattleMap", true)
 			if mBM then
 				local function updBMVisibility(db)
 					if db.hideTextures then
@@ -4202,7 +4202,7 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 		end)
 
 		-- skin existing LibDBIcon buttons
-		for name, button in pairs(_G.LibStub:GetLibrary("LibDBIcon-1.0").objects) do
+		for name, button in pairs(self.DBIcon.objects) do
 			skinMMBtn("Existing LibDBIcon btns", button, name)
 		end
 		-- skin LibDBIcon Minimap Buttons when created

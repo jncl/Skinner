@@ -7,7 +7,7 @@ local CopyTable, LibStub = _G.CopyTable, _G.LibStub
 do
 	-- check to see if required libraries are loaded
 	_G.assert(LibStub, aName .. " requires LibStub")
-	local lTab = {"CallbackHandler-1.0", "LibDataBroker-1.1", "LibDBIcon-1.0", "AceAddon-3.0", "AceConsole-3.0", "AceEvent-3.0", "AceHook-3.0", "AceDB-3.0", "AceDBOptions-3.0", "AceLocale-3.0", "AceGUI-3.0",  "AceConfig-3.0", "AceConfigRegistry-3.0", "AceConfigCmd-3.0", "AceConfigDialog-3.0", "LibSharedMedia-3.0"}
+	local lTab = {"AceAddon-3.0", "AceConfig-3.0", "AceConfigRegistry-3.0", "AceConfigCmd-3.0", "AceConfigDialog-3.0", "AceConsole-3.0", "AceDB-3.0", "AceDBOptions-3.0", "AceEvent-3.0", "AceGUI-3.0", "AceHook-3.0", "AceLocale-3.0", "CallbackHandler-1.0", "LibDataBroker-1.1", "LibDBIcon-1.0", "LibSharedMedia-3.0"}
 	local hasError
 	for _, lib in _G.pairs(lTab) do
 		hasError = not _G.assert(LibStub:GetLibrary(lib, true), aName .. " requires " .. lib)
@@ -16,7 +16,7 @@ do
 	if hasError then return end
 
 	-- create the addon
-	LibStub:GetLibrary("AceAddon-3.0"):NewAddon(aObj, aName, "AceConsole-3.0", "AceEvent-3.0", "AceHook-3.0")
+	LibStub:GetLibrary("AceAddon-3.0", true):NewAddon(aObj, aName, "AceConsole-3.0", "AceEvent-3.0", "AceHook-3.0")
 
 	local buildInfo = {
 		beta    = {"9.0.0", 99999}, -- Shadowlands 2020
@@ -57,7 +57,7 @@ do
 	aObj.blizzLoDFrames = {p = {}, n = {}, u = {}}
 
 	-- pointer to LibSharedMedia-3.0 library (done here for TukUI & ElvUI)
-	aObj.LSM = LibStub:GetLibrary("LibSharedMedia-3.0")
+	aObj.LSM = LibStub:GetLibrary("LibSharedMedia-3.0", true)
 
 	-- store player name (done here to fix enabled addon check)
 	aObj.uName = _G.UnitName("player")
@@ -83,11 +83,11 @@ function aObj:OnInitialize()
 --@end-alpha@
 
 	-- add callbacks
-	self.callbacks = LibStub:GetLibrary("CallbackHandler-1.0"):New(aObj)
+	self.callbacks = LibStub:GetLibrary("CallbackHandler-1.0", true):New(aObj)
 	-- get Locale
-	self.L = LibStub:GetLibrary("AceLocale-3.0"):GetLocale(aName)
+	self.L = LibStub:GetLibrary("AceLocale-3.0", true):GetLocale(aName)
 	-- pointer to LibDBIcon-1.0 library
-	self.DBIcon = LibStub:GetLibrary("LibDBIcon-1.0")
+	self.DBIcon = LibStub:GetLibrary("LibDBIcon-1.0", true)
 	-- store player class
 	self.uCls = _G.select(2, _G.UnitClass("player"))
 

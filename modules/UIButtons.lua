@@ -817,7 +817,7 @@ function module:OnEnable()
 	then
 		-- remove options
 		aObj.optTables["Modules"].args["Skinner_UIButtons"].args["Quality"].disabled = true
-		_G.LibStub:GetLibrary("AceConfigRegistry-3.0"):NotifyChange(aName .. " Modules")
+		_G.LibStub:GetLibrary("AceConfigRegistry-3.0", true):NotifyChange(aName .. " Modules")
 		return
 	end
 

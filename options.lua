@@ -194,7 +194,7 @@ aObj.blizzFrames[ftype].SetupDefaults = function(self)
 
 	},}
 
-	self.db = LibStub:GetLibrary("AceDB-3.0"):New(aName .. "DB", defaults, "Default")
+	self.db = LibStub:GetLibrary("AceDB-3.0", true):New(aName .. "DB", defaults, "Default")
 
 end
 
@@ -1889,7 +1889,7 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 	end
 
 	-- add DB profile options
-	self.optTables.Profiles = LibStub:GetLibrary("AceDBOptions-3.0"):GetOptionsTable(self.db)
+	self.optTables.Profiles = LibStub:GetLibrary("AceDBOptions-3.0", true):GetOptionsTable(self.db)
 
 	-- register the options tables and add them to the blizzard frame
 	self.ACR = LibStub:GetLibrary("AceConfigRegistry-3.0", true)
@@ -1977,7 +1977,7 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 			InterfaceOptionsFrame_OpenToCategory(aObj.optionsFrame[optCheck[input:lower()]])
 			InterfaceOptionsFrame_OpenToCategory(aObj.optionsFrame[optCheck[input:lower()]])
 		else
-			LibStub:GetLibrary("AceConfigCmd-3.0"):HandleCommand(aName, aName, input)
+			LibStub:GetLibrary("AceConfigCmd-3.0", true):HandleCommand(aName, aName, input)
 		end
 
 	end
@@ -1987,7 +1987,7 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 	self:RegisterChatCommand("skin", chatCommand)
 
 	-- setup the DB object
-	self.DBObj = LibStub:GetLibrary("LibDataBroker-1.1"):NewDataObject(aName, {
+	self.DBObj = LibStub:GetLibrary("LibDataBroker-1.1", true):NewDataObject(aName, {
 		type = "launcher",
 		icon = [[Interface\Icons\INV_Misc_Pelt_Wolf_01]],
 		OnClick = function()
