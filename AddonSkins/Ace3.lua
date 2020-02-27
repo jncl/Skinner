@@ -170,6 +170,13 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 34
 					obj.checkbg:SetTexture(nil)
 				end
 
+			-- handle HybridScrollFrame child (created by HonorSpy [Classic])
+			elseif objType == "SimpleGroup" then
+				if obj.frame:GetNumChildren() == 2
+				and self:getChild(obj.frame, 2):IsObjectType("ScrollFrame") then
+					self:skinSlider{obj=self:getChild(obj.frame, 2).scrollBar, rt="artwork", wdth=-4}
+				end
+
 			-- Snowflake objects (Producer AddOn)
 			elseif objType == "SnowflakeGroup" then
 				aObj:applySkin{obj=obj.frame}
@@ -433,7 +440,6 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 34
 			or objType == "Label"
 			or objType == "Heading"
 			or objType == "ColorPicker"
-			or objType == "SimpleGroup"
 			or objType == "Icon"
 			or objType == "InteractiveLabel"
 			-- Snowflake objects
