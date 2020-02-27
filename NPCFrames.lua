@@ -485,7 +485,7 @@ aObj.blizzFrames[ftype].GossipFrame = function(self)
 			self:getRegion(_G["GossipTitleButton" .. i], 3):SetTextColor(self.BT:GetRGB())
 			self:hookQuestText(_G["GossipTitleButton" .. i])
 		end
-		if not self.isClassic then
+		if not self.isClsc then
 			self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true}
 		else
 			self:addSkinFrame{obj=this, ft=ftype, kfs=true, x1=10, y1=-18, x2=-29, y2=60}
@@ -511,7 +511,7 @@ aObj.blizzFrames[ftype].GuildRegistrar = function(self)
 		self:getRegion(_G.GuildRegistrarButton2, 3):SetTextColor(self.BT:GetRGB())
 		_G.GuildRegistrarPurchaseText:SetTextColor(self.BT:GetRGB())
 		self:skinEditBox{obj=_G.GuildRegistrarFrameEditBox}
-		if not self.isClassic then
+		if not self.isClsc then
 			self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true}
 		else
 			self:addSkinFrame{obj=this, ft=ftype, kfs=true, x1=10, y1=-17, x2=-29, y2=62}
@@ -612,10 +612,10 @@ aObj.blizzFrames[ftype].MerchantFrame = function(self)
 	self.initialized.MerchantFrame = true
 
 	self:SecureHookScript(_G.MerchantFrame, "OnShow", function(this)
-		self:skinTabs{obj=this, lod=true, ignore=self.isClassic and true or nil} -- do first otherwise error when TradeSkillMaster Addon is loaded
+		self:skinTabs{obj=this, lod=true, ignore=self.isClsc and true or nil} -- do first otherwise error when TradeSkillMaster Addon is loaded
 		self:removeInset(_G.MerchantMoneyInset)
 		_G.MerchantMoneyBg:DisableDrawLayer("BACKGROUND")
-		if not self.isClassic then
+		if not self.isClsc then
 			self:skinDropDown{obj=_G.MerchantFrameLootFilter}
 			self:removeInset(_G.MerchantExtraCurrencyInset)
 			_G.MerchantExtraCurrencyBg:DisableDrawLayer("BACKGROUND")
@@ -686,7 +686,7 @@ aObj.blizzFrames[ftype].Petition = function(self)
 			_G["PetitionFrameMemberName" .. i]:SetTextColor(self.BT:GetRGB())
 		end
 		_G.PetitionFrameInstructions:SetTextColor(self.BT:GetRGB())
-		if not self.isClassic then
+		if not self.isClsc then
 			self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true}
 		else
 			self:addSkinFrame{obj=this, ft=ftype, kfs=true, x1=10, y1=-17, x2=-29, y2=62}
@@ -790,7 +790,7 @@ aObj.blizzFrames[ftype].QuestFrame = function(self)
 			fontString:SetTextColor(self.BT:GetRGB())
 		end, true)
 
-		if not self.isClassic then
+		if not self.isClsc then
 			self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true}
 		else
 			self:addSkinFrame{obj=this, ft=ftype, kfs=true, x1=10, y1=-18, x2=-29, y2=65}
@@ -839,7 +839,7 @@ aObj.blizzFrames[ftype].QuestFrame = function(self)
 			_G.CurrentQuestsText:SetTextColor(self.HT:GetRGB())
 			_G.AvailableQuestsText:SetTextColor(self.HT:GetRGB())
 		end
-		if not self.isClassic then
+		if not self.isClsc then
 			-- hook this to colour quest button text
 			self:RawHook(_G.QuestFrameGreetingPanel.titleButtonPool, "Acquire", function(this)
 				local btn = self.hooks[this].Acquire(this)
@@ -861,7 +861,7 @@ aObj.blizzFrames[ftype].QuestFrame = function(self)
 			self:skinStdButton{obj=_G.QuestFrameDeclineButton}
 			self:skinStdButton{obj=_G.QuestFrameAcceptButton}
 			self:skinStdButton{obj=_G.QuestFrameGreetingGoodbyeButton}
-			if self.isClassic then
+			if self.isClsc then
 				self:skinStdButton{obj=_G.QuestFrameCancelButton}
 			end
 		end
@@ -1029,7 +1029,7 @@ aObj.blizzFrames[ftype].QuestInfo = function(self)
 			 self:addButtonBorder{obj=axp, relTo=axp.Icon, reParent={axp.Count}, clr="grey"}
 		end
 		axp = nil
-		if not self.isClassic then
+		if not self.isClsc then
 			-- WarModeBonusFrame
 			local wmb = this.WarModeBonusFrame
 			wmb.NameFrame:SetTexture(nil)
@@ -1082,7 +1082,7 @@ aObj.blizzFrames[ftype].Tabard = function(self)
 				self:addButtonBorder{obj=_G["TabardFrameCustomization" .. i .. "RightButton"], ofs=-2, x1=1, clr="gold"}
 			end
 		end
-		if not self.isClassic then
+		if not self.isClsc then
 			self:removeInset(_G.TabardFrameMoneyInset)
 			_G.TabardFrameMoneyBg:DisableDrawLayer("BACKGROUND")
 			self:addSkinFrame{obj=this, ft=ftype, ri=true}

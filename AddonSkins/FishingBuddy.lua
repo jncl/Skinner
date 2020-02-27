@@ -50,18 +50,18 @@ aObj.addonsToSkin.FishingBuddy = function(self) -- v 1.9.8
 	-- Fishing Tab
 	self:skinDropDown{obj=_G.FBMouseEventMenu}
 	self:skinDropDown{obj=_G.FBEasyKeysMenu}
-	if not self.isClassic then
+	if not self.isClsc then
 		self:skinDropDown{obj=_G.FishingBobbers}
 	end
 	-- Watcher Tab
-	if not self.isClassic then
+	if not self.isClsc then
 		-- Fishing Fun Tab
 		self:skinDropDown{obj=_G.FishingPets}
 	end
 	-- About Tab
 
 	-- Outfit Tab
-	if self.isClassic then
+	if self.isClsc then
 		self:SecureHookScript(_G.FishingOutfitFrameTab, "OnShow", function(this)
 
 			for _, btn in ipairs{this.Outfit:GetChildren()} do
@@ -160,7 +160,7 @@ aObj.addonsToSkin.FishingBuddy = function(self) -- v 1.9.8
 
 end
 
-if not aObj.isClassic then
+if not aObj.isClsc then
 	aObj.addonsToSkin.FB_OutfitDisplayFrame = function(self) -- v 1.9.8
 
 		-- FishingOutfit Frame

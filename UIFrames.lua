@@ -1324,7 +1324,7 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 
 		--	Channel Settings
 		self:addSkinFrame{obj=_G.ChatConfigChannelSettingsLeft, ft=ftype, kfs=true, nb=true, ofs=0}
-		if not self.isClassic then
+		if not self.isClsc then
 			self:SecureHookScript(_G.ChatConfigChannelSettings, "OnShow", function(this)
 				for i = 1, #_G.CHAT_CONFIG_CHANNEL_LIST do
 					skinCB("ChatConfigChannelSettingsLeftCheckBox" .. i)
@@ -1458,7 +1458,7 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 			-- Formatting
 			self:skinCheckButton{obj=_G.CombatConfigFormattingShowTimeStamp}
 			self:skinCheckButton{obj=_G.CombatConfigFormattingFullText}
-			if not self.isClassic then
+			if not self.isClsc then
 				self:skinCheckButton{obj=_G.CombatConfigFormattingShowBraces}
 				self:skinCheckButton{obj=_G.CombatConfigFormattingUnitNames}
 				self:skinCheckButton{obj=_G.CombatConfigFormattingSpellNames}
@@ -2900,7 +2900,7 @@ aObj.blizzFrames[ftype].ItemText = function(self)
 			self:skinSlider{obj=_G.ItemTextScrollFrame.ScrollBar, wdth=-4}
 			self:skinStatusBar{obj=_G.ItemTextStatusBar, fi=0}
 			self:moveObject{obj=_G.ItemTextPrevPageButton, x=-55} -- move prev button left
-			if not self.isClassic then
+			if not self.isClsc then
 				self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true}
 			else
 				_G.ItemTextScrollFrame:DisableDrawLayer("BACKGROUND")
@@ -3376,7 +3376,7 @@ aObj.blizzLoDFrames[ftype].MacroUI = function(self)
 				self:addButtonBorder{obj=_G["MacroButton" .. i], relTo=_G["MacroButton" .. i .. "Icon"], reParent={_G["MacroButton" .. i .. "Name"]}, clr="grey", ca=0.85}
 			end
 		end
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, hdr=true, ri=true, x2=self.isClassic and 1 or nil}
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true, hdr=true, ri=true, x2=self.isClsc and 1 or nil}
 
 		self:Unhook(this, "OnShow")
 	end)
@@ -3409,8 +3409,8 @@ aObj.blizzFrames[ftype].MailFrame = function(self)
 	self.initialized.MailFrame = true
 
 	self:SecureHookScript(_G.MailFrame, "OnShow", function(this)
-		self:skinTabs{obj=this, ignore=self.isClassic and true or nil}
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, x2=self.isClassic and 1 or nil, y2=-5}
+		self:skinTabs{obj=this, ignore=self.isClsc and true or nil}
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, x2=self.isClsc and 1 or nil, y2=-5}
 
 		--	Inbox Frame
 		for i = 1, _G.INBOXITEMS_TO_DISPLAY do
@@ -3480,7 +3480,7 @@ aObj.blizzFrames[ftype].MailFrame = function(self)
 
 		-- Invoice Frame Text fields
 		local fields = {"ItemLabel", "Purchaser", "SalePrice", "Deposit", "HouseCut", "AmountReceived", "NotYetSent", "MoneyDelay"}
-		if self.isClassic then
+		if self.isClsc then
 			self:add2Table(fields, "BuyMode")
 		end
 		for _, type in pairs(fields) do
@@ -3929,7 +3929,7 @@ aObj.blizzFrames[ftype].Minimap = function(self)
 		_G.LowerFrameLevel(_G.Minimap.sf)
 	end
 
-	if not self.isClassic then
+	if not self.isClsc then
 		-- N.B. copied from SexyMap
 		-- Removes the circular "waffle-like" texture that shows when using a non-circular minimap in the blue quest objective area.
 		_G.Minimap:SetArchBlobRingScalar(0)
@@ -3964,7 +3964,7 @@ aObj.blizzFrames[ftype].Minimap = function(self)
 	_G.MiniMapMailFrame:ClearAllPoints()
 	_G.MiniMapMailFrame:SetPoint("LEFT", _G.Minimap, "RIGHT", -10, 28)
 
-	if not self.isClassic then
+	if not self.isClsc then
 		-- Difficulty indicators
 		-- hook this to mamage MiniMapInstanceDifficulty texture
 		self:SecureHook("MiniMapInstanceDifficulty_Update", function()
@@ -4000,7 +4000,7 @@ aObj.blizzFrames[ftype].Minimap = function(self)
 		end, true)
 	end
 
-	if not self.isClassic then
+	if not self.isClsc then
 		self:moveObject{obj=_G.GarrisonLandingPageMinimapButton, x=0, y=-20}
 		_G.GarrisonLandingPageMinimapButton.AlertBG:SetTexture(nil)
 	end
@@ -4084,7 +4084,7 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 	-- skin Minimap children, allow for delayed addons to be loaded (e.g. Baggins)
 	_G.C_Timer.After(0.5, function() mmKids(_G.Minimap) end)
 
-	if not self.isClassic then
+	if not self.isClsc then
 		-- Calendar button
 		makeBtnSquare(_G.GameTimeFrame, 0.1, 0.31, 0.16, 0.6)
 		-- MinimapBackdrop
@@ -4128,7 +4128,7 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 		if btnName == "In" then
 			btn = _G.MinimapZoomIn
 			txt = self.modUIBtns.plus
-			if not self.isClassic then
+			if not self.isClsc then
 				xOfs, yOfs = 14, -12 -- 72, -25
 			else
 				xOfs, yOfs = 9, -24 -- 77, -13
@@ -4136,7 +4136,7 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 		else
 			btn = _G.MinimapZoomOut
 			txt = self.modUIBtns.minus
-			if not self.isClassic then
+			if not self.isClsc then
 				xOfs, yOfs = 20, -10 -- 50, -43
 			else
 				xOfs, yOfs = 19, -12 -- 51, -41
@@ -4209,7 +4209,7 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 		self.DBIcon.RegisterCallback(self, "LibDBIcon_IconCreated", skinMMBtn)
 	end
 
-	if not self.isClassic then
+	if not self.isClsc then
 		-- Garrison Landing Page Minimap button
 		local function skinGLPM(btn)
 			if _G.C_Garrison.GetLandingPageGarrisonType() == _G.LE_GARRISON_TYPE_8_0 then -- BfA
@@ -4299,7 +4299,7 @@ aObj.blizzFrames[ftype].Nameplates = function(self)
 
 		local nP = frame.UnitFrame
 		if nP then
-			if not self.isClassic then
+			if not self.isClsc then
 				-- handle in combat
 				if _G.InCombatLockdown() then
 				    aObj:add2Table(aObj.oocTab, {skinNamePlate, {frame}})
@@ -4338,7 +4338,7 @@ aObj.blizzFrames[ftype].Nameplates = function(self)
 		mF = nil
 	end
 
-	if not self.isClassic then
+	if not self.isClsc then
 		-- DeathKnight (nothing to skin)
 		-- Mage (nothing to skin)
 		-- Monk
@@ -5208,7 +5208,7 @@ aObj.blizzFrames[ftype].StaticPopups = function(self)
 		self:checkShown(_G["StaticPopup" .. i])
 	end
 
-	if not self.isClassic then
+	if not self.isClsc then
 		self:SecureHookScript(_G.PetBattleQueueReadyFrame, "OnShow", function(this)
 			self:removeNineSlice(this.Border)
 			self:addSkinFrame{obj=this, ft=ftype, kfs=true}
@@ -5222,7 +5222,7 @@ aObj.blizzFrames[ftype].StaticPopups = function(self)
 	end
 
 	local function skinReportFrame(frame)
-		if not aObj.isClassic then
+		if not aObj.isClsc then
 			aObj:removeNineSlice(frame.Border)
 		end
 		aObj:addSkinFrame{obj=frame.Comment, ft=ftype, kfs=true, nb=true}
@@ -5233,7 +5233,7 @@ aObj.blizzFrames[ftype].StaticPopups = function(self)
 		end
 	end
 
-	if not self.isClassic then
+	if not self.isClsc then
 		self:SecureHook(_G.PlayerReportFrame, "ShowReportDialog", function(this, ...)
 			skinReportFrame(this)
 
@@ -5498,7 +5498,7 @@ aObj.blizzFrames[ftype].UIDropDownMenu = function(self)
 	self.initialized.UIDropDownMenu = true
 
 	local function skinDDMenu(frame)
-		if not aObj.isClassic then
+		if not aObj.isClsc then
 			aObj:removeNineSlice(frame.Border)
 		else
 			_G[frame:GetName() .. "Backdrop"]:SetBackdrop(nil)
@@ -5619,7 +5619,7 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 		end
 	end
 
-	if not self.isClassic then
+	if not self.isClsc then
 		local function getWidgets(widgetContainer)
 			local count = 0
 			for widget in widgetContainer.widgetPools:EnumerateActive() do

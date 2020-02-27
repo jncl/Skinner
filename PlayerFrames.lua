@@ -2051,7 +2051,7 @@ aObj.blizzFrames[ftype].CompactFrames = function(self)
 		_G.CompactRaidFrameManagerDisplayFrameHeaderBackground:SetTexture(nil)
 		_G.CompactRaidFrameManagerDisplayFrameHeaderDelineator:SetTexture(nil)
 		-- Buttons
-		if not self.isClassic then
+		if not self.isClsc then
 			for _, type in pairs{"Tank", "Healer", "Damager"} do
 				self:skinStdButton{obj=this.displayFrame.filterOptions["filterRole" .. type]}
 			end
@@ -2067,7 +2067,7 @@ aObj.blizzFrames[ftype].CompactFrames = function(self)
 			self:skinStdButton{obj=this.displayFrame.convertToRaid}
 			-- Leader Options
 			self:skinStdButton{obj=this.displayFrame.leaderOptions.readyCheckButton}
-			if not self.isClassic then
+			if not self.isClsc then
 				self:skinStdButton{obj=this.displayFrame.leaderOptions.rolePollButton}
 				self:skinStdButton{obj=_G.CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton}
 				_G.CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton:GetNormalTexture():SetAlpha(1) -- icon
@@ -3381,7 +3381,7 @@ aObj.blizzFrames[ftype].LootFrames = function(self)
 					btn:SetPoint("TOPLEFT", 9, yOfs)
 					yOfs = yOfs - 41
 				end
-				if not aObj.isClassic then
+				if not aObj.isClsc then
 					_G.CreateFrame("ItemButton", "LootButton5", this, "LootButtonTemplate")
 				else
 					_G.CreateFrame("Button", "LootButton5", this, "LootButtonTemplate")
@@ -3418,7 +3418,7 @@ aObj.blizzFrames[ftype].LootFrames = function(self)
 
 		frame:DisableDrawLayer("BACKGROUND")
 		frame:DisableDrawLayer("BORDER")
-		if aObj.isClassic then
+		if aObj.isClsc then
 			local fName = frame:GetName()
 			_G[fName .. "SlotTexture"]:SetTexture(nil)
 			_G[fName .. "NameFrame"]:SetTexture(nil)
@@ -3436,7 +3436,7 @@ aObj.blizzFrames[ftype].LootFrames = function(self)
 		end)
 
 		frame:SetScale(aObj.prdb.LootFrames.size ~= 1 and 0.75 or 1)
-		if not aObj.isClassic then
+		if not aObj.isClsc then
 			frame.IconFrame.Border:SetAlpha(0)
 		end
 		if aObj.modBtns then
@@ -3453,7 +3453,7 @@ aObj.blizzFrames[ftype].LootFrames = function(self)
 			frame.PassButton:SetPoint("LEFT", frame.NeedButton, "RIGHT", 0, 2)
 			frame.GreedButton:ClearAllPoints()
 			frame.GreedButton:SetPoint("RIGHT", frame.NeedButton, "LEFT")
-			if not self.isClassic then
+			if not self.isClsc then
 				frame.DisenchantButton:ClearAllPoints()
 				frame.DisenchantButton:SetPoint("RIGHT", frame.GreedButton, "LEFT", 2, 0)
 			end
@@ -3489,7 +3489,7 @@ aObj.blizzFrames[ftype].LootFrames = function(self)
 		self:Unhook(this, "OnShow")
 	end)
 
-	if not self.isClassic then
+	if not self.isClsc then
 		self:SecureHookScript(_G.BonusRollFrame, "OnShow", function(this)
 			self:removeRegions(this, {1, 2, 3, 5})
 			self:skinStatusBar{obj=this.PromptFrame.Timer, fi=0}
@@ -3586,7 +3586,7 @@ aObj.blizzFrames[ftype].MirrorTimers = function(self)
 	end
 	objName, obj, objBG, objSB = nil, nil, nil, nil
 
-	if not self.isClassic then
+	if not self.isClsc then
 		-- Battleground/Arena/Island Expeditions Start Timer
 		local function skinTT(timer)
 
@@ -4173,7 +4173,7 @@ aObj.blizzLoDFrames[ftype].RaidUI = function(self)
 	-- skin existing frames
 	skinPulloutFrames()
 
-	if self.isClassic then
+	if self.isClsc then
 		if self.modBtns then
 			self:skinStdButton{obj=_G.RaidFrameReadyCheckButton}
 		end
@@ -4291,7 +4291,7 @@ aObj.blizzFrames[ftype].SpellBookFrame = function(self)
 		for i = 1, _G.SPELLS_PER_PAGE do
 			btn = _G["SpellButton" .. i]
 			btn:DisableDrawLayer("BACKGROUND")
-			if not self.isClassic then
+			if not self.isClsc then
 				btn:DisableDrawLayer("BORDER")
 				_G["SpellButton" .. i .. "SlotFrame"]:SetAlpha(0)
 				btn.UnlearnedFrame:SetAlpha(0)
@@ -4300,7 +4300,7 @@ aObj.blizzFrames[ftype].SpellBookFrame = function(self)
 				btn:GetNormalTexture():SetTexture(nil)
 			end
 			if self.modBtnBs then
-				if not self.isClassic then
+				if not self.isClsc then
 					self:addButtonBorder{obj=btn, sec=true, reParent={btn.FlyoutArrow, _G["SpellButton" .. i .. "AutoCastable"]}}
 				else
 					self:addButtonBorder{obj=btn, sec=true, reParent={_G["SpellButton" .. i .. "AutoCastable"]}}

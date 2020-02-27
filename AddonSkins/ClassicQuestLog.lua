@@ -4,7 +4,7 @@ local _G = _G
 
 aObj.addonsToSkin["Classic Quest Log"] = function(self) -- v
 
-	if not self.isClassic then
+	if not self.isClsc then
 	    if self.modBtns then
 	        local function qlUpd()
 

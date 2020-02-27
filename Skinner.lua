@@ -7,7 +7,7 @@ local CopyTable, LibStub = _G.CopyTable, _G.LibStub
 do
 	-- check to see if required libraries are loaded
 	_G.assert(LibStub, aName .. " requires LibStub")
-	local lTab = {"AceAddon-3.0", "AceConfig-3.0", "AceConfigRegistry-3.0", "AceConfigCmd-3.0", "AceConfigDialog-3.0", "AceConsole-3.0", "AceDB-3.0", "AceDBOptions-3.0", "AceEvent-3.0", "AceGUI-3.0", "AceHook-3.0", "AceLocale-3.0", "CallbackHandler-1.0", "LibDataBroker-1.1", "LibDBIcon-1.0", "LibSharedMedia-3.0"}
+	local lTab = {"AceAddon-3.0", "AceConfig-3.0", "AceConfigCmd-3.0", "AceConfigDialog-3.0", "AceConfigRegistry-3.0", "AceConsole-3.0", "AceDB-3.0", "AceDBOptions-3.0", "AceEvent-3.0", "AceGUI-3.0", "AceHook-3.0", "AceLocale-3.0", "CallbackHandler-1.0", "LibDataBroker-1.1", "LibDBIcon-1.0", "LibSharedMedia-3.0"}
 	local hasError
 	for _, lib in _G.pairs(lTab) do
 		hasError = not _G.assert(LibStub:GetLibrary(lib, true), aName .. " requires " .. lib)
@@ -19,38 +19,46 @@ do
 	LibStub:GetLibrary("AceAddon-3.0", true):NewAddon(aObj, aName, "AceConsole-3.0", "AceEvent-3.0", "AceHook-3.0")
 
 	local buildInfo = {
-		beta    = {"9.0.0", 99999}, -- Shadowlands 2020
-		classic = {"1.13.3", 33302},
-		ptr     = {"8.3.0", 33237},
-		retail  = {"8.3.0", 33237},
-		curr    = {_G.GetBuildInfo()},
+		beta        = {"9.0.0", 99999}, -- Shadowlands 2020
+		classic     = {"1.13.3", 33302},
+		classic_ptr = {"1.13.3", 33485},
+		retail      = {"8.3.0", 33369},
+		retail_ptr  = {"8.3.0", 33369},
+		curr        = {_G.GetBuildInfo()},
    	}
 
 	local agentUID = _G.GetCVar("agentUID")
-	-- check to see which server we are running on
-	aObj.isClassic = agentUID:find("wow_classic") and true or false
-	aObj.isBeta    = agentUID:find("_beta") and true or false
-	aObj.isPTR     = agentUID:find("wow_ptr") and true or false
-	-- check current build number against live, if greater then it's a patch
-	aObj.isPatch = not aObj.isClassic and not aObj.isBeta and not aObj.isPTR and _G.tonumber(buildInfo.curr[2]) > buildInfo.retail[2] and true or false
+	-- check to see which WoW version we are running on
+	aObj.isBeta = agentUID:find("_beta") and true
+	aObj.isClsc = agentUID:find("_classic") and true
+	aObj.isPTR  = agentUID:find("_ptr") and true
+
+	local isRetail = not aObj.isBeta and not aObj.isClsc and not aObj.isPTR and true
+
+	-- check for Classic PTR
+	if aObj.isClsc and aObj.isPTR then
+		aObj.isClscPTR = true
+		aObj.isPTR = nil
+	end
+	-- check current build number against Classic, if greater then it's a patch
+	aObj.isPatch = aObj.isClsc and _G.tonumber(buildInfo.curr[2]) > buildInfo.classic[2] and true
+	-- check current build number against Retail, if greater then it's a patch
+	aObj.isPatch = aObj.isPatch or isRetail and _G.tonumber(buildInfo.curr[2]) > buildInfo.retail[2] and true
 
 --@alpha@
-	local vType = aObj.isClassic and "Classic" or aObj.isBeta and "Beta" or aObj.isPTR and "PTR" or "Retail"
+	local vType = aObj.isBeta and "Beta" or aObj.isPTR and "Retail_PTR" or aObj.isClscPTR and "Classic_PTR" or aObj.isClsc and "Classic" or "Retail"
 	aObj:Printf("%s, %s, %s, %s, %s, %s, %s", buildInfo[vType:lower()][1], buildInfo[vType:lower()][2], buildInfo.curr[1], buildInfo.curr[2], buildInfo.curr[3], buildInfo.curr[4] , agentUID)
-	vType = aObj.isPatch and "Patched" or vType
+	vType = aObj.isPatch and vType .. " (Patched)" or vType
 	_G.DEFAULT_CHAT_FRAME:AddMessage(aName .. ": Detected that we're running on a " .. vType .. " version", 0.75, 0.5, 0.25, nil, true)
 	vType = nil
 --@end-alpha@
 	agentUID = nil
 
 	-- handle PTR changes going Live
-	if aObj.isPatch
-	and buildInfo.curr[1] > buildInfo.retail[1]
-	then
-		aObj.isPTR = true
-	end
+	aObj.isClscPTR = aObj.isClscPTR or aObj.isPatch and aObj.isClsc and buildInfo.curr[1] > buildInfo.classic[1] and true
+	aObj.isPTR = aObj.isPTR or aObj.isPatch and isRetail and buildInfo.curr[1] > buildInfo.retail[1] and true
 
-	buildInfo = nil
+	isRetail, buildInfo = nil, nil
 
 	-- define tables to hold skin functions
 	aObj.blizzFrames = {p = {}, n = {}, u = {}, opt = {}}
@@ -71,14 +79,18 @@ function aObj:OnInitialize()
 --@end-debug@
 
 --@alpha@
-	if self.isClassic then
-		self:Debug("Classic detected")
-	elseif self.isBeta then
+	if self.isBeta then
 		self:Debug("Beta detected")
+	elseif self.isClscPTR then
+		self:Debug("Classic_PTR detected")
+	elseif self.isClsc then
+		self:Debug("Classic detected")
 	elseif self.isPTR then
-		self:Debug("PTR detected")
+		self:Debug("Retail_PTR detected")
 	elseif self.isPatch then
 		self:Debug("Patch detected")
+	else
+		self:Debug("Retail detected")
 	end
 --@end-alpha@
 
@@ -319,7 +331,7 @@ function aObj:OnInitialize()
 	self.ttHook = {}
 
 	-- Load Classic Support, if required (added here for ElvUI/TukUI)
-	if self.isClassic then
+	if self.isClsc then
 		local success, _ = _G.xpcall(function() return aObj.ClassicSupport(aObj) end, _G.geterrorhandler())
 		if not success then
 			aObj:CustomPrint(1, 0, 0, "Error running ClassicSupport")

@@ -2,7 +2,7 @@ local aName, aObj = ...
 if not aObj:isAddonEnabled("ClassicCensusPlus") then return end
 local _G = _G
 
-if not aObj.isClassic then return end
+if not aObj.isClsc then return end
 
 aObj.addonsToSkin.ClassicCensusPlus = function(self) -- v 1.0.0
 

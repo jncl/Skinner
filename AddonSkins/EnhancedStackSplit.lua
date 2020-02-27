@@ -15,7 +15,7 @@ aObj.addonsToSkin.EnhancedStackSplit = function(self) -- v 60100-1
 	end)
 
 	-- hook these to show/hide stack split value
-	if not self.isClassic then
+	if not self.isClsc then
 		_G.StackSplitFrame.OkayButton:HookScript("OnShow", function(this) _G.StackSplitFrame.StackSplitText:Show() end)
 		_G.StackSplitFrame.OkayButton:HookScript("OnHide", function(this) _G.StackSplitFrame.StackSplitText:Hide() end)
 	else

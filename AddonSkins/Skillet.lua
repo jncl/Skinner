@@ -1,7 +1,7 @@
 local aName, aObj = ...
-if not aObj.isClassic
+if not aObj.isClsc
 and not aObj:isAddonEnabled("Skillet")
-or aObj.isClassic
+or aObj.isClsc
 and not aObj:isAddonEnabled("Skillet-Classic")
 then
 	return
@@ -21,7 +21,7 @@ local function skinSkillet(self)
 		self:skinEditBox{obj=_G.SkilletSearchBox, regs={6}, noHeight=true}
 		self:skinSlider{obj=_G.SkilletSkillList.ScrollBar, size=3}
 		self:applySkin(_G.SkilletSkillListParent)
-		if not self.isClassic then
+		if not self.isClsc then
 			-- hook this to skin SkillBars
 			self:SecureHook(this, "UpdateTradeSkillWindow", function(this)
 				local bar
@@ -46,7 +46,7 @@ local function skinSkillet(self)
 			_G.SkilletShowOptionsButton:SetSize(28, 28)
 			_G.SkilletShowOptionsButton:GetHighlightTexture():SetTexture([[Interface\Buttons\UI-Panel-MinimizeButton-Highlight]])
 			self:moveObject{obj=_G.SkilletShowOptionsButton, x=0, y=-6}
-			if not self.isClassic then
+			if not self.isClsc then
 				self:skinStdButton{obj=_G.SkilletPluginButton}
 			end
 			self:skinStdButton{obj=_G.SkilletIgnoredMatsButton}
@@ -66,7 +66,7 @@ local function skinSkillet(self)
 		end
 		if self.modBtnBs then
 			self:addButtonBorder{obj=_G.SkilletRecipeGroupOperations, ofs=0, clr="gold"}
-			if not self.isClassic then
+			if not self.isClsc then
 				self:addButtonBorder{obj=_G.SkilletFilterOperations, ofs=0, clr="gold"}
 				self:addButtonBorder{obj=_G.SkilletSearchFilterClear, ofs=-4, x1=6, y2=7, clr="grey"}
 			else
@@ -95,7 +95,7 @@ local function skinSkillet(self)
 		end
 		if self.modChkBtns then
 			self:skinCheckButton{obj=_G.SkilletShowQueuesFromAllAlts}
-			if not self.isClassic then
+			if not self.isClsc then
 				self:skinCheckButton{obj=_G.SkilletShowQueuesFromSameFaction}
 				self:skinCheckButton{obj=_G.SkilletShowQueuesIncludeGuild}
 			end
@@ -158,12 +158,12 @@ local function skinSkillet(self)
 
 end
 
-if not aObj.isClassic then
+if not aObj.isClsc then
 	aObj.addonsToSkin.Skillet = function(self) -- v
 		skinSkillet(aObj)
 	end
 end
-if aObj.isClassic then
+if aObj.isClsc then
 	aObj.addonsToSkin["Skillet-Classic"] = function(self) -- v
 		skinSkillet(aObj)
 	end
