@@ -66,7 +66,7 @@ local addonSkins = {
 	"TargetCharms", "TooManyAddons",
 	"UrbanAchiever",
 	"Vendomatic", "VuhDo", "VuhDoOptions",
-	"Warden", "WoWPro", "WTFLatencyMeter",
+	"Warden", "WTFLatencyMeter",
 	"XLoot", "xMerchant",
 }
 aObj.addonsToSkin = {}

@@ -1,57 +1,75 @@
-local aName, aObj = ...
+local _, aObj = ...
 if not aObj:isAddonEnabled("WoWPro") then return end
+local _G = _G
 
-function aObj:WoWPro()
+aObj.addonsToSkin.WoWPro = function(self) -- v 8.3.0-A1
 
-	self:addSkinFrame{obj=WoWPro.MainFrame, y2=-2}
-	-- stop backgrounds being changed
-	WoWPro.BackgroundSet = function() end
+	self:addSkinFrame{obj=_G.WoWPro.MainFrame, ft="a", kfs=true, nb=true, y2=-2}
+	_G.WoWPro.BackgroundSet = _G.nop
 
-	-- Tabs
-	for k, tab in pairs(WoWPro.GuideList.TabTable) do
-		-- skin tabs here
-		tab:SetBackdrop(nil)
-		tab.SetBackdrop = function() end
-		tab.border:SetTexture(nil)
-		-- hook these to manage the GuideList TitleRow backdrop
-		self:SecureHook(WoWPro[tab.name], "Setup_TitleRow", function(this, frame)
-			WoWPro.GuideList.TitleRow.buffer:SetBackdrop(nil)
-			WoWPro.GuideList.TitleRow.buffer.SetBackdrop = function() end
-			for i = 1, #WoWPro.GuideList.TitleRow do
-				local btn = WoWPro.GuideList.TitleRow[i]
-				btn:SetBackdrop(nil)
-				btn.SetBackdrop = function() end
+	-- WoWPro.GuideFrame objects
+	self:skinSlider{obj=_G.WoWPro.Scrollbar}
+	self:getChild(_G.WoWPro.Scrollbar, 3):SetBackdrop(nil)
+	for i, row in ipairs(_G.WoWPro.rows) do
+		-- N.B. skinning checkboxes causes then to not be displayed ?
+		-- tooltip
+		_G.C_Timer.After(0.1, function()
+			self:add2Table(self.ttList, row.action.tooltip)
+		end)
+	end
+
+	-- Options panels
+	local cnt = 0
+	self.RegisterCallback("WoWPro", "IOFPanel_Before_Skinning", function(this, panel)
+		if panel.parent ~= "WoW-Pro" then return end
+
+		if panel.name == "Guide List" then
+			-- TODO: tab(s)
+			for _, child in pairs{panel.TitleRow:GetChildren()} do
+				child:SetBackdrop(nil)
 			end
-			self:Unhook(WoWPro, "Setup_TitleRow")
-		end)
-	end
+			self:addSkinFrame{obj=panel.TitleRow, ft="a", kfs=true, nb=true, y1=2}
+			self:addSkinFrame{obj=panel.scrollBox, ft="a", kfs=true, nb=true}
+			self:skinSlider{obj=panel.scrollBar}
+			self:getChild(panel.scrollBar, 3):SetBackdrop(nil) -- remove border texture
+			cnt = cnt + 1
+		end
 
-	-- skin existing frames
-	if WoWPro.GuideList then
-		self:addSkinFrame{obj=WoWPro.GuideList.TitleRow, y1=2}
-		self:addSkinFrame{obj=WoWPro.GuideList.scrollBox}
-		self:skinSlider{obj=WoWPro.GuideList.scrollBar}
-		self:getChild(WoWPro.GuideList.scrollBar, 3):SetBackdrop(nil) -- remove border texture
-	end
-	if WoWPro_Leveling_CurrentGuide then
-		self:SecureHook(WoWPro_Leveling_CurrentGuide, "Show", function(this)
-			self:Debug("WoWPro_Leveling_CurrentGuide Show: [%s]", this)
-			self:Unhook(WoWPro_Leveling_CurrentGuide, "Show")
-		end)
-	end
-	-- hook these to skin CurrentGuide option panel
-	self:RawHook(WoWPro, "CreateBG", function(this, frame)
-		local box = self.hooks[this].CreateBG(this, frame)
-		self:addSkinFrame{obj=box}
-		self:Unhook(WoWPro, "CreateBG")
-		return box
-	end, true)
-	self:RawHook(WoWPro, "CreateScrollbar", function(this, parent, offset, step, where)
-		local frame, up, down, border = self.hooks[this].CreateScrollbar(this, parent, offset, step, where)
-		self:skinSlider{obj=frame}
-		border:SetBackdrop(nil)
-		self:Unhook(WoWPro, "CreateScrollbar")
-		return frame, up, down, border
-	end, true)
+		if panel.name == "Current Guide" then
+			-- skin box
+			local cgframe = self:getChild(panel, 1)
+			self:addSkinFrame{obj=cgframe, ft="a", kfs=true, nb=true}
+			-- skin scrollbar
+			local slider = self:getChild(cgframe, 1)
+			self:skinSlider{obj=slider}
+			self:getChild(slider, 3):SetBackdrop(nil)
+			slider = nil
+			-- skin lines
+			if self.modChkBtns then
+				local cBtn
+				for i = 1, cgframe:GetNumChildren() do
+					cBtn = self:getChild(cgframe, i).check
+					if cBtn then
+						cBtn:SetSize(20, 20)
+						self:skinCheckButton{obj=cBtn}
+					end
+				end
+				cBtn = nil
+			end
+			cgframe = nil
+			-- tooltip
+			_G.C_Timer.After(0.1, function()
+				self:add2Table(self.ttList, panel.tooltip)
+			end)
+			cnt = cnt + 1
+		end
+
+		self.iofSkinnedPanels[panel] = true
+
+		if cnt == 2 then
+			self.UnregisterCallback("WoWPro", "IOFPanel_Before_Skinning")
+			cnd = nil
+		end
+	end)
 
 end
