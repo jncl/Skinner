@@ -20,9 +20,9 @@ do
 
 	local buildInfo = {
 		beta        = {"9.0.0", 99999}, -- Shadowlands 2020
-		classic     = {"1.13.3", 33302},
-		classic_ptr = {"1.13.3", 33485},
-		retail      = {"8.3.0", 33369},
+		classic     = {"1.13.3", 33526},
+		classic_ptr = {"1.13.3", 33491},
+		retail      = {"8.3.0", 33528},
 		retail_ptr  = {"8.3.0", 33369},
 		curr        = {_G.GetBuildInfo()},
    	}
@@ -41,7 +41,7 @@ do
 		aObj.isPTR = nil
 	end
 	-- check current build number against Classic, if greater then it's a patch
-	aObj.isPatch = aObj.isClsc and _G.tonumber(buildInfo.curr[2]) > buildInfo.classic[2] and true
+	aObj.isPatch = not aObj.isClscPTR and aObj.isClsc and _G.tonumber(buildInfo.curr[2]) > buildInfo.classic[2] and true
 	-- check current build number against Retail, if greater then it's a patch
 	aObj.isPatch = aObj.isPatch or isRetail and _G.tonumber(buildInfo.curr[2]) > buildInfo.retail[2] and true
 
