@@ -160,25 +160,33 @@ function aObj:addSkinButton(...)
 
 end
 
+local hOfs = -7
 local function hideHeader(obj)
 
-	-- hide the Header Texture and move the Header text, if required
+	local hAdj = false
+	-- move the Header texture, if required
 	for _, suff in pairs{"Header", "_Header", "_HeaderBox", "_FrameHeader", "FrameHeader", "HeaderTexture", "HeaderFrame"} do
 		if _G[obj:GetName() .. suff] then
-			_G[obj:GetName() .. suff]:Hide()
 			_G[obj:GetName() .. suff]:SetPoint("TOP", obj, "TOP", 0, 7)
+			hAdj = true
 			break
 		end
 	end
-	if obj.header then
+	if obj.header then -- Classic
 		obj.header:DisableDrawLayer("BACKGROUND")
 		obj.header:DisableDrawLayer("BORDER")
-		aObj:moveObject{obj=obj.header.text, y=-6}
+		if obj.header.text
+		then
+			aObj:moveObject{obj=obj.header.text, y=hAdj and 0 or hOfs}
+		else
+			aObj:moveObject{obj=aObj:getRegion(obj.header, obj.header:GetNumRegions()), y=hAdj and 0 or hOfs}
+		end
 	end
 	if obj.Header then
 		aObj:removeRegions(obj.Header, {1, 2, 3})
-		aObj:moveObject{obj=obj.Header.Text, y=-6}
+		aObj:moveObject{obj=obj.Header.Text, y=hAdj and 0 or hOfs}
 	end
+	hAdj = nil
 
 end
 
