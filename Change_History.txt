@@ -1,3 +1,13 @@
+beta8.33302.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Code updates
+	Bugfix for StaticPopupSpecial skinning code
+	Don't skin HandyNotes minimap pins
+	Updated WoredQuestTracker skin
+
 beta8.33237.2
 Jncl:
 	ToDo.txt
