@@ -3722,6 +3722,9 @@ aObj.blizzFrames[ftype].MenuFrames = function(self)
 			self:skinStdButton{obj=_G.VideoOptionsFrameCancel}
 			self:skinStdButton{obj=_G.VideoOptionsFrameOkay}
 			self:skinStdButton{obj=_G.VideoOptionsFrameDefaults}
+			if self.isClsc then
+				self:skinStdButton{obj=_G.VideoOptionsFrameClassic}
+			end
 		end
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, hdr=true}
 
