@@ -864,16 +864,13 @@ aObj.blizzLoDFrames[ftype].BindingUI = function(self)
 
 	self:SecureHookScript(_G.KeyBindingFrame, "OnShow", function(this)
 		self:removeNineSlice(this.BG)
-		if self.modChkBtns then
-			self:skinCheckButton{obj=this.characterSpecificButton}
-		end
 		self:keepRegions(this.categoryList, {})
 		this.categoryList:SetBackdrop(self.Backdrop[10])
 		this.categoryList:SetBackdropBorderColor(self.bbClr:GetRGBA())
 		this.bindingsContainer:SetBackdrop(self.Backdrop[10])
 		this.bindingsContainer:SetBackdropBorderColor(self.bbClr:GetRGBA())
 		self:skinSlider{obj=this.scrollFrame.ScrollBar, rt={"background", "border"}}
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, hdr=true}
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, hdr=true}
 		if self.modBtns then
 			for i = 1, #this.keyBindingRows do
 				self:skinStdButton{obj=this.keyBindingRows[i].key1Button}
@@ -889,6 +886,9 @@ aObj.blizzLoDFrames[ftype].BindingUI = function(self)
 					self:skinStdButton{obj=button}
 				end
 			end)
+		end
+		if self.modChkBtns then
+			self:skinCheckButton{obj=this.characterSpecificButton}
 		end
 
 		self:Unhook(this, "OnShow")
@@ -3685,7 +3685,7 @@ aObj.blizzFrames[ftype].MenuFrames = function(self)
 
 	self:SecureHookScript(_G.GameMenuFrame, "OnShow", function(this)
 		self:removeNineSlice(this.Border)
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, hdr=true}
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, hdr=true}
 		if self.modBtns then
 			for _, child in ipairs{this:GetChildren()} do
 				if child:IsObjectType("Button") then
