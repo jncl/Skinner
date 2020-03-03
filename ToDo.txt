@@ -25,5 +25,25 @@ ToDos
 
 ≈	O	Make sure all buttons with GOLD button borders need them as opposed to having a GREY border
 
-	I	HandyNotes, reported by Shimiya, 13.02.20
-√		- Same issue with HandyNotes treasures icons on the minimap as TomTom
+	O	Classic_PTR
+		- Added
+			- AuctionUI
+				- HelpButton
+			- Commentator
+				- misc changes to unit frames
+			- UIPanelTemplates
+				- MainHelpPlateButton
+				- HelpPlate
+				- HelpPlateTooltip
+				- HelpPlateButton
+				- HelpPlateBox
+				- HelpPlateBoxHighlight
+
+	I	Errors on Login/reload, reported by amey, 22.02.20
+?		- 36x Error loading Skinner\AddonSkins\Carbonite.lua
+?		- 16x Error loading Skinner\AddonSkins\WoWPro.lua
+
+√	S/C	HonorSpy, requested by Sojiroi, 23.02.20
+
+	I/C	Cosplay, reported by the9thresident
+?		- breaks ElvUI/Skinner when enabled, due to OptionalDeps entry, PM'ed author to get it removed
