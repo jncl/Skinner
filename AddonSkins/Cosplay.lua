@@ -1,30 +1,28 @@
-local aName, aObj = ...
+local _, aObj = ...
 if not aObj:isAddonEnabled("Cosplay") then return end
+local _G = _G
 
-function aObj:Cosplay()
+aObj.addonsToSkin.Cosplay = function(self) -- v 80300-1
 
 	if self.modBtns then
-		if not DUFUndressButton then
-			self:SecureHook(Cosplay, "CreateMainButtons", function(this)
-				self:skinButton{obj=DUFUndressButton}
-				self:skinButton{obj=DUFDressTargetButton}
-				self:Unhook(Cosplay, "CreateMainButtons")
+		if not _G.DUFUndressButton then
+			self:SecureHook(_G.Cosplay, "CreateMainButtons", function(this)
+				self:skinStdButton{obj=_G.DUFUndressButton}
+				self:skinStdButton{obj=_G.DUFDressTargetButton}
+				self:Unhook(this, "CreateMainButtons")
 			end)
 		else
-			self:skinButton{obj=DUFUndressButton}
-			self:skinButton{obj=DUFDressTargetButton}
+			self:skinStdButton{obj=_G.DUFUndressButton}
+			self:skinStdButton{obj=_G.DUFDressTargetButton}
 		end
-		if not ADUFUndressButton then
-			self:SecureHook(Cosplay, "CreateAHButtons", function(this)
-				self:skinButton{obj=ADUFUndressButton}
-				self:Unhook(Cosplay, "CreateAHButtons")
+		if not _G.ADUFUndressButton then
+			self:SecureHook(_G.Cosplay, "CreateAHButtons", function(this)
+				self:skinStdButton{obj=_G.ADUFUndressButton}
+				self:Unhook(this, "CreateAHButtons")
 			end)
 		else
-			self:skinButton{obj=ADUFUndressButton}
+			self:skinStdButton{obj=_G.ADUFUndressButton}
 		end
 	end
-	
-	-- disable rotate function
-	Cosplay.ToggleRotatable = function() end
 
 end

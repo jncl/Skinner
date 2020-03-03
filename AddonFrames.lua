@@ -47,7 +47,7 @@ end
 local addonSkins = {
 	"Accountant", "Acheron", "ACP", "AdvancedInterfaceOptions", "AngryKeystones", "Archy", "Atlas", "Auctionsnatch", "AutoDecline",
 	"BankItems", "BaudManifest", "BetterInbox", "BGDefender", "BindPad", "BlackList", "BossInfo", "BossNotes", "BossNotes_PersonalNotes", "Bugger", "BulkMail2", "BulkMail2Inbox", "BuyEmAll",
-	"CensusPlus", "CFM", "Chatter", "Clique", "CollectMe", "CombustionHelper", "CompactMissions", "Cosplay",
+	"CensusPlus", "CFM", "Chatter", "Clique", "CollectMe", "CombustionHelper", "CompactMissions",
 	"DeathNote", "Dominos", "DressUp",
 	"EnergyWatch", "EnhancedFlightMap", "epgp_lootmaster", "epgp_lootmaster_ml", "epgp", "Examiner", "ExtVendor",
 	"FarmIt2", "FeedMachine", "FlaresThatWork", "FlightMapEnhanced", "FramesResized", "FreierGeist_InstanceTime",
