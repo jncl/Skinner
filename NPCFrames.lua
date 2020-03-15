@@ -869,6 +869,23 @@ aObj.blizzFrames[ftype].QuestFrame = function(self)
 		self:Unhook(this, "OnShow")
 	end)
 
+	-- parentFrame, portraitDisplayID, mountPortraitDisplayID, text, name, x, y
+	self:SecureHook("QuestFrame_ShowQuestPortrait", function(...)
+		local frame
+		if not aObj.isClsc then
+			frame = _G.QuestModelScene
+		else
+			frame = _G.QuestNPCModel
+		end
+		if not frame.sf then
+			self:keepFontStrings(_G.QuestNPCModelTextFrame)
+			self:addSkinFrame{obj=frame, ft=ftype, kfs=true, nb=true, y2=-81}
+		end
+		local parentFrame, _, _, _, _, x, y = ...
+		frame:SetPoint("TOPLEFT", parentFrame, "TOPRIGHT", x + 4, y)
+		frame, parentFrame, x, y = nil, nil, nil, nil
+	end)
+
 end
 
 aObj.blizzFrames[ftype].QuestInfo = function(self)
