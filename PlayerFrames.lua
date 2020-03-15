@@ -4666,8 +4666,10 @@ aObj.blizzFrames[ftype].TradeFrame = function(self)
 	self.initialized.TradeFrame = true
 
 	self:SecureHookScript(_G.TradeFrame, "OnShow", function(this)
-		this.RecipientOverlay.portrait:SetAlpha(0)
-		this.RecipientOverlay.portraitFrame:SetTexture(nil)
+		if not self.isClsc then
+			this.RecipientOverlay.portrait:SetAlpha(0)
+			this.RecipientOverlay.portraitFrame:SetTexture(nil)
+		end
 		self:removeInset(_G.TradeRecipientItemsInset)
 		self:removeInset(_G.TradeRecipientEnchantInset)
 		self:removeInset(_G.TradePlayerItemsInset)
