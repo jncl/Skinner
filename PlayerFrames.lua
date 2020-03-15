@@ -2959,12 +2959,12 @@ aObj.blizzLoDFrames[ftype].GuildUI = function(self)
 	self.initialized.GuildUI = true
 
 	self:SecureHookScript(_G.GuildFrame, "OnShow", function(this)
-		self:keepRegions(this, {8, 19, 20, 18, 21, 22}) -- regions 8, 19, 20 are text, 18, 21 & 22 are tabard
+		this.TopTileStreaks:SetTexture(nil)
+		self:removeNineSlice(this.NineSlice)
 		self:moveObject{obj=_G.GuildFrameTabardBackground, x=8, y=-11}
 		self:moveObject{obj=_G.GuildFrameTabardEmblem, x=9, y=-12}
 		self:moveObject{obj=_G.GuildFrameTabardBorder, x=7, y=-10}
 		self:skinTabs{obj=this, lod=true}
-		self:removeInset(_G.GuildFrameBottomInset)
 		self:skinDropDown{obj=_G.GuildDropDown}
 		_G.GuildPointFrame.LeftCap:SetTexture(nil)
 		_G.GuildPointFrame.RightCap:SetTexture(nil)
@@ -2973,13 +2973,14 @@ aObj.blizzLoDFrames[ftype].GuildUI = function(self)
 		_G.GuildFactionBarShadow:SetAlpha(0)
 		_G.GuildFactionBarCap:SetTexture(self.sbTexture)
 		_G.GuildFactionBarCapMarker:SetAlpha(0)
+		self:skinGlowBox(_G.GuildNameChangeAlertFrame, ftype)
 		self:skinEditBox{obj=_G.GuildNameChangeFrame.editBox, regs={6}}
 		self:addSkinFrame{obj=this, ft=ftype, ri=true, y2=-5}
 		if self.modBtns then
 			-- N.B. NO CloseButton for GuildNameChangeAlertFrame
 			self:skinStdButton{obj=_G.GuildNameChangeFrame.button}
 		end
-		self:skinGlowBox(_G.GuildNameChangeAlertFrame, ftype)
+
 		self:Unhook(this, "OnShow")
 	end)
 
@@ -2992,6 +2993,7 @@ aObj.blizzLoDFrames[ftype].GuildUI = function(self)
 			_G.GuildPerksContainer.buttons[i].disabledBorder:DisableDrawLayer("BACKGROUND")
 			self:addButtonBorder{obj=_G.GuildPerksContainer.buttons[i], relTo=_G.GuildPerksContainer.buttons[i].icon, reParent={_G.GuildPerksContainer.buttons[i].lock}}
 		end
+
 		self:Unhook(this, "OnShow")
 	end)
 
@@ -3008,20 +3010,21 @@ aObj.blizzLoDFrames[ftype].GuildUI = function(self)
 			self:applySkin{obj=_G.GuildRosterContainer.buttons[i].header} -- hide underlaying text
 		end
 		self:skinCheckButton{obj=_G.GuildRosterShowOfflineButton}
-		self:Unhook(this, "OnShow")
-	end)
 
-	self:SecureHookScript(_G.GuildMemberDetailFrame, "OnShow", function(this)
+		-- GuildMemberDetailFrame
 		self:skinDropDown{obj=_G.GuildMemberRankDropdown}
 		-- adjust text position & font so it overlays correctly
 		self:moveObject{obj=_G.GuildMemberRankDropdown, x=-6, y=2}
 		_G.GuildMemberRankDropdownText:SetFontObject(_G.GameFontHighlight)
 		self:addSkinFrame{obj=_G.GuildMemberNoteBackground, ft=ftype}
 		self:addSkinFrame{obj=_G.GuildMemberOfficerNoteBackground, ft=ftype}
-		self:skinStdButton{obj=_G.GuildMemberRemoveButton}
-		self:skinStdButton{obj=_G.GuildMemberGroupInviteButton}
-		self:skinCloseButton{obj=_G.GuildMemberDetailCloseButton}
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ofs=-6}
+		self:addSkinFrame{obj=_G.GuildMemberDetailFrame, ft=ftype, kfs=true, ofs=-6}
+		if self.modBtns then
+			self:skinStdButton{obj=_G.GuildMemberRemoveButton}
+			self:skinStdButton{obj=_G.GuildMemberGroupInviteButton}
+			self:skinCloseButton{obj=_G.GuildMemberDetailCloseButton}
+		end
+
 		self:Unhook(this, "OnShow")
 	end)
 
@@ -3036,17 +3039,20 @@ aObj.blizzLoDFrames[ftype].GuildUI = function(self)
 			if btn.UpdateTooltip then btn.UpdateTooltip = nil end
 		end)
 		self:skinDropDown{obj=_G.GuildNewsDropDown}
+
 		self:Unhook(this, "OnShow")
 	end)
 
 	self:SecureHookScript(_G.GuildNewsFiltersFrame, "OnShow", function(this)
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ofs=-7}
+
 		self:Unhook(this, "OnShow")
 	end)
 
 	self:SecureHookScript(_G.GuildNewsBossModel, "OnShow", function(this)
 		self:keepFontStrings(_G.GuildNewsBossModelTextFrame)
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ofs=4, y2=-81} -- similar to QuestNPCModel
+
 		self:Unhook(this, "OnShow")
 	end)
 
@@ -3059,12 +3065,14 @@ aObj.blizzLoDFrames[ftype].GuildUI = function(self)
 			self:addButtonBorder{obj=_G.GuildRewardsContainer.buttons[i], relTo=_G.GuildRewardsContainer.buttons[i].icon, reParent={_G.GuildRewardsContainer.buttons[i].lock}}
 		end
 		self:skinDropDown{obj=_G.GuildRewardsDropDown}
+
 		self:Unhook(this, "OnShow")
 	end)
 
 	self:SecureHookScript(_G.GuildInfoFrame, "OnShow", function(this)
 		self:removeRegions(this, {1, 2, 3, 4, 5, 6 ,7, 8}) -- Background textures and bars
 		self:skinTabs{obj=this, up=true, lod=true, x1=2, y1=-5, x2=2, y2=-5}
+
 		self:Unhook(this, "OnShow")
 	end)
 
@@ -3077,6 +3085,7 @@ aObj.blizzLoDFrames[ftype].GuildUI = function(self)
 		self:skinStdButton{obj=_G.GuildControlButton}
 		self:removeMagicBtnTex(_G.GuildViewLogButton)
 		self:skinStdButton{obj=_G.GuildViewLogButton}
+
 		self:Unhook(this, "OnShow")
 	end)
 
@@ -3101,6 +3110,7 @@ aObj.blizzLoDFrames[ftype].GuildUI = function(self)
 		self:addSkinFrame{obj=_G.GuildRecruitmentCommentInputFrame, ft=ftype, kfs=true}
 		self:removeMagicBtnTex(_G.GuildRecruitmentListGuildButton)
 		self:skinStdButton{obj=_G.GuildRecruitmentListGuildButton}
+
 		self:Unhook(this, "OnShow")
 	end)
 
@@ -3118,6 +3128,7 @@ aObj.blizzLoDFrames[ftype].GuildUI = function(self)
 		self:skinStdButton{obj=_G.GuildRecruitmentMessageButton}
 		self:removeMagicBtnTex(_G.GuildRecruitmentDeclineButton)
 		self:skinStdButton{obj=_G.GuildRecruitmentDeclineButton}
+
 		self:Unhook(this, "OnShow")
 	end)
 
@@ -3127,6 +3138,7 @@ aObj.blizzLoDFrames[ftype].GuildUI = function(self)
 		self:skinStdButton{obj=_G.GuildTextEditFrameAcceptButton}
 		self:skinStdButton{obj=self:getChild(_G.GuildTextEditFrame, 4)} -- bottom close button
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, ofs=-7}
+
 		self:Unhook(this, "OnShow")
 	end)
 
@@ -3135,6 +3147,7 @@ aObj.blizzLoDFrames[ftype].GuildUI = function(self)
 		self:addSkinFrame{obj=_G.GuildLogContainer, ft=ftype}
 		self:skinStdButton{obj=self:getChild(this, 3)} -- bottom close button
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ofs=-7}
+
 		self:Unhook(this, "OnShow")
 	end)
 
