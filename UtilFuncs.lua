@@ -901,6 +901,7 @@ function aObj:removeInset(frame)
 
 	frame:DisableDrawLayer("BACKGROUND")
 	frame:DisableDrawLayer("BORDER")
+	frame:DisableDrawLayer("OVERLAY")
 
 	if frame.NineSlice then
 		self:removeNineSlice(frame.NineSlice)
