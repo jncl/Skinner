@@ -39,11 +39,17 @@ ToDos
 				- HelpPlateBox
 				- HelpPlateBoxHighlight
 
-	I	Errors on Login/reload, reported by amey, 22.02.20
-?		- 36x Error loading Skinner\AddonSkins\Carbonite.lua
-?		- 16x Error loading Skinner\AddonSkins\WoWPro.lua
+	N/C	HonorSpy, reported by Sojiroi, 23.02.20/04.03.20
+		- Not being skinned on their system
 
-√	S/C	HonorSpy, requested by Sojiroi, 23.02.20
+√	S	World Quest Tab, requested by MacallanTwoFive, 05.02.20
 
-	I/C	Cosplay, reported by the9thresident
-?		- breaks ElvUI/Skinner when enabled, due to OptionalDeps entry, PM'ed author to get it removed
+	I	TradeFrame, reported by Psykosik, 07.03.20
+√		- Interface\AddOns\Skinner\PlayerFrames.lua:4656: attempt to index field 'RecipientOverlay' (a nil value)
+
+	N	GRM, reported by EpiDemeDaBear, 13.03.20
+√		- Skinner\UtilFuncs.lua:902: attempt to index local 'frame' (a nil value)
+		[string "@Skinner\AddonSkins\Guild_Roster_Manager-1.87.lua"]:34: in function <...eSkinner\AddonSkins\Guild_Roster_Manager.lua:5>
+
+	I/C	Who List, reported by Sojiroi, 14.03.20
+		- not skinned on their system
