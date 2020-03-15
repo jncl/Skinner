@@ -1585,11 +1585,11 @@ aObj.ClassicSupport = function(self)
 		end)
 
 		if self.modBtns then
-			-- wait for function to be declared
 			_G.C_Timer.After(0.5, function()
 				local btn
 				for i = 1, 10 do
 					btn = _G["TutorialFrameAlertButton" .. i]
+					self:moveObject{obj=btn:GetHighlightTexture(), x=3}
 					self:skinOtherButton{obj=btn, ft=ftype, sap=true, font="ZoneTextFont", text="!"}
 				end
 				btn = nil

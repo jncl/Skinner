@@ -5485,11 +5485,7 @@ aObj.blizzFrames[ftype].Tutorial = function(self)
 
 	-- Alert button
 	self:SecureHookScript(_G.TutorialFrameAlertButton, "OnShow", function(this)
-		this:GetNormalTexture():SetAlpha(0)
-		this:SetNormalFontObject("ZoneTextFont")
-		this:SetText("?")
-		self:moveObject{obj=this:GetFontString(), x=4}
-		self:addSkinButton{obj=this, x1=30, y1=-1, x2=-25, y2=10}
+		self:skinOtherButton{obj=this, ft=ftype, font="ZoneTextFont", text="?", x1=30, y1=-1, x2=-25, y2=10}
 
 		self:Unhook(this, "OnShow")
 	end)
