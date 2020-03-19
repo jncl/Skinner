@@ -1455,7 +1455,7 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 
 		frame:DisableDrawLayer("BACKGROUND")
 
-		aObj:skinDropDown{obj=frame.OptionsList.ClubFocusDropdown}
+		aObj:skinDropDown{obj=frame.OptionsList.ClubFilterDropdown}
 		aObj:skinDropDown{obj=frame.OptionsList.ClubSizeDropdown}
 		aObj:skinDropDown{obj=frame.OptionsList.SortByDropdown}
 		aObj:skinEditBox{obj=frame.OptionsList.SearchBox, regs={6, 7}, mi=true} -- 6 is text, 7 is icon
@@ -4505,6 +4505,7 @@ aObj.blizzLoDFrames[ftype].TalentUI = function(self)
 		self:SecureHook("PlayerTalentFrame_CreateSpecSpellButton", function(this, index)
 			this.spellsScroll.child["abilityButton" .. index].ring:SetTexture(nil)
 		end)
+
 		self:Unhook(this, "OnShow")
 	end)
 
@@ -4577,6 +4578,7 @@ aObj.blizzLoDFrames[ftype].TalentUI = function(self)
 		if this.learnButton.sb then -- anim fix
 			this.learnButton.sb:SetParent(this)
 		end
+
 		self:Unhook(this, "OnShow")
 	end)
 
@@ -4587,6 +4589,7 @@ aObj.blizzLoDFrames[ftype].TalentUI = function(self)
 			self:skinStdButton{obj=this.learnButton}
 			this.learnButton.sb:SetParent(this)
 		end
+
 		self:Unhook(this, "OnShow")
 	end)
 
