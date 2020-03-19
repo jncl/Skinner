@@ -2,7 +2,7 @@ local aName, aObj = ...
 if not aObj:isAddonEnabled("Leatrix_Plus") then return end
 local _G = _G
 
-aObj.addonsToSkin.Leatrix_Plus = function(self) -- v 1.13.33
+aObj.addonsToSkin.Leatrix_Plus = function(self) -- v 1.13.53
 
 	self:SecureHookScript(_G.LeaPlusGlobalPanel, "OnShow", function(this)
 		local function skinKids(frame)
@@ -40,7 +40,7 @@ aObj.addonsToSkin.Leatrix_Plus = function(self) -- v 1.13.33
 
 		-- LeaPlusGlobalPanel
 		skinKids(_G.LeaPlusGlobalPanel)
-		self:addSkinFrame{obj=_G.LeaPlusGlobalPanel, ft="a", kfs=true, nb=true}
+		self:addSkinFrame{obj=_G.LeaPlusGlobalPanel, ft="a", kfs=true, nb=true, ofs=-1}
 		if self.modBtns then
 			self:skinCloseButton{obj=self:getChild(_G.LeaPlusGlobalPanel, 2)}
 		end

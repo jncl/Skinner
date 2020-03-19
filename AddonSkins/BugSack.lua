@@ -1,4 +1,4 @@
-local aName, aObj = ...
+local _, aObj = ...
 if not aObj:isAddonEnabled("BugSack") then return end
 local _G = _G
 
@@ -21,6 +21,7 @@ aObj.addonsToSkin.BugSack = function(self) -- v r300-release
 		for _, tabObj in _G.pairs{_G.BugSackTabAll, _G.BugSackTabSession, _G.BugSackTabLast} do
 			self:keepRegions(tabObj, {7, 8}) -- N.B. region 7 is text, 8 is highlight
 			self:addSkinFrame{obj=tabObj, ft="a", nb=true, noBdr=self.isTT, x1=6, y1=0, x2=-6, y2=2}
+			tabObj.sf.ignore = true
 			if self.isTT then
 				if tabObj == _G.BugSackTabAll then
 					self:setActiveTab(tabObj.sf)
