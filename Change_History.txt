@@ -1,3 +1,16 @@
+beta8.33645.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Skinned QuestNPCModelFrame
+	Bugfix for TradeFrame on Classic
+	Updated GuildFrame & associated frames skinning code
+	Updated TutorialFrameAlertButton skinning code
+	Updated removeInset skinning code
+	Updated Ace3 & Guild_Roster_Manager skins
+	Skinned WorldQuestTab, LibAddonDropDownTemplates, HonorSpy (for export frame)
+
 beta8.33528.1
 Jncl:
 	ToDo.txt
