@@ -510,22 +510,25 @@ aObj.ClassicSupport = function(self)
 			end)
 		end
 		for _, btn in pairs{_G.PaperDollItemsFrame:GetChildren()} do
-			btn:DisableDrawLayer("BACKGROUND")
-			if btn ~= _G.CharacterAmmoSlot then
-				if self.modBtnBs then
-					self:addButtonBorder{obj=btn, ibt=true, reParent={btn.ignoreTexture}, clr="grey"}
+			-- handle non button children [ECS_StatsFrame]
+			if btn:IsObjectType("Button") then
+				btn:DisableDrawLayer("BACKGROUND")
+				if btn ~= _G.CharacterAmmoSlot then
+					if self.modBtnBs then
+						self:addButtonBorder{obj=btn, ibt=true, reParent={btn.ignoreTexture}, clr="grey"}
+					end
+				else
+					btn:DisableDrawLayer("OVERLAY")
+					btn:GetNormalTexture():SetTexture(nil)
+					btn:GetPushedTexture():SetTexture(nil)
+					if self.modBtnBs then
+						self:addButtonBorder{obj=btn, reParent={btn.Count, self:getRegion(btn, 4)}, clr="grey"}
+						btn.icon = _G.CharacterAmmoSlotIconTexture
+					end
 				end
-			else
-				btn:DisableDrawLayer("OVERLAY")
-				btn:GetNormalTexture():SetTexture(nil)
-				btn:GetPushedTexture():SetTexture(nil)
-				if self.modBtnBs then
-					self:addButtonBorder{obj=btn, reParent={btn.Count, self:getRegion(btn, 4)}, clr="grey"}
-					btn.icon = _G.CharacterAmmoSlotIconTexture
-				end
+				-- force quality border update
+				_G.PaperDollItemSlotButton_Update(btn)
 			end
-			-- force quality border update
-			_G.PaperDollItemSlotButton_Update(btn)
 		end
 
 		self:SecureHookScript(_G.ReputationFrame, "OnShow", function(this)
@@ -1250,6 +1253,44 @@ aObj.ClassicSupport = function(self)
 
 	end
 
+	self.blizzLoDFrames[ftype].TalentUI = function(self)
+		if not self.prdb.TalentUI or self.initialized.TalentUI then return end
+		self.initialized.TalentUI = true
+
+		self:SecureHookScript(_G.TalentFrame, "OnShow", function(this)
+			self:skinTabs{obj=this, lod=true, ignore=true}
+			self:skinSlider{obj=_G.TalentFrameScrollFrameScrollBar, rt="artwork"}
+			-- keep background Texture
+			self:removeRegions(this, {1, 2, 3, 4, 5, 11, 12, 13}) -- remove portrait, border & points border
+			self:addSkinFrame{obj=this, ft=ftype, x1=10, y1=-12, x2=-31, y2=71}
+			if self.modBtns then
+				self:skinStdButton{obj=_G.TalentFrameCancelButton}
+			end
+			if self.modBtnBs then
+				local function colourBtn(btn)
+					btn.sbb:SetBackdropBorderColor(_G[btn:GetName() .. "Slot"]:GetVertexColor())
+				end
+				local btn
+				for i = 1, _G.MAX_NUM_TALENTS do
+					btn = _G["TalentFrameTalent" .. i]
+					btn:DisableDrawLayer("BACKGROUND")
+					_G["TalentFrameTalent" .. i .. "RankBorder"]:SetTexture(nil)
+					self:addButtonBorder{obj=btn, x1=-3, y2=-3, reParent={_G["TalentFrameTalent" .. i .. "Rank"]}}
+					colourBtn(btn)
+				end
+				btn = nil
+				self:SecureHook("TalentFrame_Update", function()
+					for i = 1, _G.MAX_NUM_TALENTS do
+						colourBtn(_G["TalentFrameTalent" .. i])
+					end
+				end)
+			end
+
+			self:Unhook(this, "OnShow")
+		end)
+
+	end
+
 	self.blizzLoDFrames[ftype].TradeSkillUI = function(self)
 		if not self.prdb.TradeSkillUI or self.initialized.TradeSkillUI then return end
 		self.initialized.TradeSkillUI = true
@@ -1461,7 +1502,7 @@ aObj.ClassicSupport = function(self)
 				end
 			end
 			btnName = nil
-			self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, x1=10, y1=-11, x2=-33, y2=50}
+			self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, x1=10, y1=-11, x2=-33, y2=48}
 			if self.modBtns then
 				self:skinExpandButton{obj=_G.QuestLogCollapseAllButton, onSB=true}
 				for i = 1, _G.QUESTS_DISPLAYED do
@@ -1523,43 +1564,6 @@ aObj.ClassicSupport = function(self)
 			end
 			if self.modChkBtns then
 				self:skinCheckButton{obj=_G.RaidFrameAllAssistCheckButton}
-			end
-
-			self:Unhook(this, "OnShow")
-		end)
-
-	end
-
-	self.blizzLoDFrames[ftype].TalentUI = function(self)
-		if not self.prdb.TalentUI or self.initialized.TalentUI then return end
-		self.initialized.TalentUI = true
-
-		self:SecureHookScript(_G.TalentFrame, "OnShow", function(this)
-			self:skinTabs{obj=this, regs={}, ignore=true, up=true, lod=true, ignht=true, x1=6, x2=-6}
-			self:skinSlider{obj=_G.TalentFrameScrollFrameScrollBar, rt="artwork"}
-			self:removeRegions(this, {1, 2, 3, 4, 5, 11, 12, 13}) -- remove portrait, border & points border
-			self:addSkinFrame{obj=this, ft=ftype, x1=10, y1=-12, x2=-31, y2=71}
-			if self.modBtns then
-				self:skinStdButton{obj=_G.TalentFrameCancelButton}
-			end
-			if self.modBtnBs then
-				local function colourBtn(btn)
-					btn.sbb:SetBackdropBorderColor(_G[btn:GetName() .. "Slot"]:GetVertexColor())
-				end
-				local btn
-				for i = 1, _G.MAX_NUM_TALENTS do
-					btn = _G["TalentFrameTalent" .. i]
-					btn:DisableDrawLayer("BACKGROUND")
-					_G["TalentFrameTalent" .. i .. "RankBorder"]:SetTexture(nil)
-					self:addButtonBorder{obj=btn, x1=-3, y2=-3, reParent={_G["TalentFrameTalent" .. i .. "Rank"]}}
-					colourBtn(btn)
-				end
-				btn = nil
-				self:SecureHook("TalentFrame_Update", function()
-					for i = 1, _G.MAX_NUM_TALENTS do
-						colourBtn(_G["TalentFrameTalent" .. i])
-					end
-				end)
 			end
 
 			self:Unhook(this, "OnShow")
