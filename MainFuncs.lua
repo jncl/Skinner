@@ -497,7 +497,6 @@ local function __applySkin(opts)
 
 	aObj:Debug2("__applySkin: [%s, %s]", opts.obj, opts.obj:GetName())
 
-
 	-- don't skin it twice
 	if opts.obj.sknd then
 		return
@@ -824,7 +823,6 @@ function aObj:skinGlowBox(gBox, ftype, ncb)
 --@end-alpha@
 
 	aObj:Debug2("skinGlowBox: [%s, %s, %s]", gBox, ftype, ncb)
-
 
 	local function findArrowGlowTex(gBox)
 		-- aObj:Debug("findArrowGlowTex: [%s, %s]", gBox:GetNumChildren(), gBox:GetNumRegions())
