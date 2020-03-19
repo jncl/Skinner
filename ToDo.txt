@@ -25,31 +25,19 @@ ToDos
 
 ≈	O	Make sure all buttons with GOLD button borders need them as opposed to having a GREY border
 
-	O	Classic_PTR
-		- Added
-			- AuctionUI
-				- HelpButton
-			- Commentator
-				- misc changes to unit frames
-			- UIPanelTemplates
-				- MainHelpPlateButton
-				- HelpPlate
-				- HelpPlateTooltip
-				- HelpPlateButton
-				- HelpPlateBox
-				- HelpPlateBoxHighlight
+	I/C	TalentUI, reported by Sojiroi, 16.03.20
+√		- Align Higlight on Tabs
 
-	N/C	HonorSpy, reported by Sojiroi, 23.02.20/04.03.20
-		- Not being skinned on their system
+	I	Communities, reported by EpidemeDaBear, 19.03.20
+√		- Skinner\MainFuncs.lua:610: attempt to index field 'obj' (a nil value)
+		[string "@Skinner\MainFuncs.lua"]:702: in function `skinDropDown'
+		[string "@Skinner\PlayerFrames.lua"]:1458: in function `skinCFGaCF'
+		[string "@Skinner\PlayerFrames.lua"]:1561: in function <Skinner\PlayerFrames.lua:1315>
 
-√	S	World Quest Tab, requested by MacallanTwoFive, 05.02.20
-
-	I	TradeFrame, reported by Psykosik, 07.03.20
-√		- Interface\AddOns\Skinner\PlayerFrames.lua:4656: attempt to index field 'RecipientOverlay' (a nil value)
-
-	N	GRM, reported by EpiDemeDaBear, 13.03.20
-√		- Skinner\UtilFuncs.lua:902: attempt to index local 'frame' (a nil value)
-		[string "@Skinner\AddonSkins\Guild_Roster_Manager-1.87.lua"]:34: in function <...eSkinner\AddonSkins\Guild_Roster_Manager.lua:5>
-
-	I/C	Who List, reported by Sojiroi, 14.03.20
-		- not skinned on their system
+	I/C	PaperDollItemsFrame, - reported by hastrox77, 19.03.20
+√		-  ..\FrameXML\ItemButtonTemplate.lua line 53: attempt to index local 'icon' (a nil value)
+		Debug:
+		..\FrameXML\ItemButtonTemplate.lua:53: SetItemButtonTexture()
+		..\FrameXML\PaperDollFrame.lua:791: PaperDollItemSlotButton_Update()
+		Skinner\ClassicSupport.lua:528:
+		Skinner\ClassicSupport.lua:487
