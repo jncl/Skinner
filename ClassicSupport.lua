@@ -496,7 +496,7 @@ aObj.ClassicSupport = function(self)
 		_G.CharacterAttributesFrame:DisableDrawLayer("BACKGROUND")
 		if self.modBtnBs then
 			for i = 1, 5 do
-				self:addButtonBorder{obj=_G["MagicResFrame" .. i], ofs=0, x1=1, y2=-2, clr="white"}
+				self:addButtonBorder{obj=_G["MagicResFrame" .. i], es=24, ofs=2, x1=-1, y2=-4, clr="grey"}
 			end
 			self:SecureHook("PaperDollItemSlotButton_Update", function(btn)
 				-- handle buttons with no border
@@ -570,7 +570,7 @@ aObj.ClassicSupport = function(self)
 			if self.modBtnBs then
 				self:addButtonBorder{obj=_G.PetPaperDollPetInfo, ofs=1, x2=0, clr="gold"}
 				for i = 1, 5 do
-					self:addButtonBorder{obj=_G["PetMagicResFrame" .. i], ofs=0, x1=1, y2=-2, clr="white"}
+					self:addButtonBorder{obj=_G["PetMagicResFrame" .. i], es=24, ofs=2, x1=-1, y2=-49, clr="grey"}
 				end
 				self:skinStdButton{obj=_G.PetPaperDollCloseButton}
 			end
@@ -1397,18 +1397,23 @@ aObj.ClassicSupport = function(self)
 		self.initialized.MainMenuBar = true
 
 		if self.prdb.MainMenuBar.skin then
+			_G.MainMenuExpBar:SetSize(1011, 13)
 			_G.MainMenuExpBar:DisableDrawLayer("OVERLAY")
-			self:moveObject{obj=_G.MainMenuExpBar, y=2}
+			self:moveObject{obj=_G.MainMenuExpBar, x=1, y=2}
 			self:skinStatusBar{obj=_G.MainMenuExpBar, fi=0, bgTex=self:getRegion(_G.MainMenuExpBar, 6), otherTex={_G.ExhaustionLevelFillBar}}
+			_G.MainMenuBarMaxLevelBar:DisableDrawLayer("BACKGROUND")
 			_G.MainMenuBarArtFrame:DisableDrawLayer("BACKGROUND")
 			_G.MainMenuBarLeftEndCap:SetTexture(nil)
 			_G.MainMenuBarRightEndCap:SetTexture(nil)
+
 			_G.ExhaustionTick:GetNormalTexture():SetTexture(nil)
 			_G.ExhaustionTick:GetHighlightTexture():SetTexture(nil)
 			_G.ReputationWatchBar.StatusBar:DisableDrawLayer("ARTWORK")
 			self:skinStatusBar{obj=_G.ReputationWatchBar.StatusBar, fi=0, bgTex=_G.ReputationWatchBar.StatusBar.Background}
+
 			self:keepFontStrings(_G.StanceBarFrame)
 			self:keepFontStrings(_G.PetActionBarFrame)
+
 			if self.modBtnBs then
 				for i = 1, _G.NUM_STANCE_SLOTS do
 					self:addButtonBorder{obj=_G["StanceButton" .. i], abt=true, sec=true}
@@ -1421,7 +1426,7 @@ aObj.ClassicSupport = function(self)
 				for i = 1, _G.NUM_ACTIONBAR_BUTTONS do
 					_G["ActionButton" .. i].FlyoutBorder:SetTexture(nil)
 					_G["ActionButton" .. i].FlyoutBorderShadow:SetTexture(nil)
-					self:addButtonBorder{obj=_G["ActionButton" .. i], abt=true, seca=true}
+					self:addButtonBorder{obj=_G["ActionButton" .. i], abt=true, seca=true, ofs=2.5}
 				end
 				-- ActionBar buttons
 				self:addButtonBorder{obj=_G.ActionBarUpButton, ofs=-4, clr="gold"}
@@ -1431,17 +1436,17 @@ aObj.ClassicSupport = function(self)
 				local mBut
 				for i = 1, #_G.MICRO_BUTTONS do
 					mBut = _G[_G.MICRO_BUTTONS[i]]
-					self:addButtonBorder{obj=mBut, ofs=0, y1=-20, reParent=mBut == "MainMenuMicroButton" and {mBut.Flash, _G.MainMenuBarDownload} or {mBut.Flash}, clr="grey"}
+					self:addButtonBorder{obj=mBut, es=24, ofs=2, y1=-18, reParent=mBut == "MainMenuMicroButton" and {mBut.Flash, _G.MainMenuBarDownload} or {mBut.Flash}, clr="grey"}
 				end
 				mBut = nil
 
 				-- skin bag buttons
-				self:addButtonBorder{obj=_G.MainMenuBarBackpackButton, ibt=true}
-				self:addButtonBorder{obj=_G.CharacterBag0Slot, ibt=true}
-				self:addButtonBorder{obj=_G.CharacterBag1Slot, ibt=true}
-				self:addButtonBorder{obj=_G.CharacterBag2Slot, ibt=true}
-				self:addButtonBorder{obj=_G.CharacterBag3Slot, ibt=true}
-				self:addButtonBorder{obj=_G.KeyRingButton, clr="grey"} -- size is 18, 39
+				self:addButtonBorder{obj=_G.MainMenuBarBackpackButton, ibt=true, ofs=2.5}
+				self:addButtonBorder{obj=_G.CharacterBag0Slot, ibt=true, ofs=2.5}
+				self:addButtonBorder{obj=_G.CharacterBag1Slot, ibt=true, ofs=2.5}
+				self:addButtonBorder{obj=_G.CharacterBag2Slot, ibt=true, ofs=2.5}
+				self:addButtonBorder{obj=_G.CharacterBag3Slot, ibt=true, ofs=2.5}
+				self:addButtonBorder{obj=_G.KeyRingButton, ofs=2.5, clr="grey"} -- size is 18, 39
 
 				-- MultiBar Buttons
 				for _, type in pairs{"BottomLeft", "BottomRight", "Right", "Left"} do
@@ -1454,7 +1459,7 @@ aObj.ClassicSupport = function(self)
 						if not btn.noGrid then
 							_G[btn:GetName() .. "FloatingBG"]:SetAlpha(0)
 						end
-						self:addButtonBorder{obj=btn, abt=true, seca=true}
+						self:addButtonBorder{obj=btn, abt=true, seca=true, ofs=2.5}
 					end
 					btn = nil
 				end
@@ -1465,7 +1470,7 @@ aObj.ClassicSupport = function(self)
 
 		-- these are done here as other AddOns may require them to be skinned
 		if self.modBtnBs then
-			self:addButtonBorder{obj=_G.MainMenuBarVehicleLeaveButton, clr="grey"}
+			self:addButtonBorder{obj=_G.MainMenuBarVehicleLeaveButton, ofs=2.5, clr="grey"}
 		end
 
 	end

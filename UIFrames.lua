@@ -375,6 +375,11 @@ local function skinChatTab(tab)
 
 end
 
+if not aObj.isClsc then
+	-- hoook this (used by Blizzard_OrderHallTalents, PVPMatchResults, PVPMatchScoreboard & Blizzard_WarboardUI)
+	aObj:RawHook("UIPanelCloseButton_SetBorderAtlas", function(...) end, true)
+end
+
 aObj.blizzFrames[ftype].AddonList = function(self)
 	if not self.prdb.AddonList or self.initialized.AddonList then return end
 	self.initialized.AddonList = true
@@ -1114,7 +1119,7 @@ aObj.blizzLoDFrames[ftype].ChallengesUI = function(self)
 		-- DungeonIcons
 		if self.modBtnBs then
 			for _, dungeon in ipairs(this.DungeonIcons) do
-				self:addButtonBorder{obj=dungeon, ofs=3, clr="grey", ca=0.85}
+				self:addButtonBorder{obj=dungeon, clr="grey", ca=0.85}
 				self:SecureHook(dungeon, "SetUp", function(this, mapInfo, _)
 					if mapInfo.quality >= _G.LE_ITEM_QUALITY_COMMON
 					and _G.ITEM_QUALITY_COLORS[mapInfo.quality]
@@ -1992,7 +1997,7 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 		-- aObj:Debug("GMP_SR: [%s, %s, %s]", frame, reward, missionComplete)
         frame.BG:SetTexture(nil)
 		if self.modBtnBs then
-			self:addButtonBorder{obj=frame, relTo=frame.Icon, reParent={frame.Quantity}}
+			self:addButtonBorder{obj=frame, relTo=frame.Icon, reParent={frame.Quantity}, ofs=Round(frame:GetWidth()) ~= 24 and 2 or nil}
 			self:clrButtonBorder(frame)
 		end
     end)
@@ -2001,7 +2006,7 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 		for i = 1, #btn.Rewards do
 			self:removeRegions(btn.Rewards[i], {1}) -- background shadow
 			if self.modBtnBs then
-				self:addButtonBorder{obj=btn.Rewards[i], relTo=btn.Rewards[i].Icon, reParent={btn.Rewards[i].Quantity}}
+				self:addButtonBorder{obj=btn.Rewards[i], relTo=btn.Rewards[i].Icon, reParent={btn.Rewards[i].Quantity}, ofs=2}
 				self:clrButtonBorder(btn.Rewards[i])
 			end
 		end
@@ -2323,8 +2328,8 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 			self:Unhook(this, "OnShow")
 		end)
 
-		self:Unhook(this, "OnShow")
 		-- N.B. Garrison Landing Page Minimap Button skinned with other minimap buttons
+		self:Unhook(this, "OnShow")
 	end)
 	self:checkShown(_G.GarrisonLandingPage)
 	self:skinGlowBox(_G.GarrisonLandingPageTutorialBox, ftype)
@@ -2526,7 +2531,6 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 		end)
 
 		self:Unhook(this, "OnShow")
-
 	end)
 
 end
@@ -3539,15 +3543,18 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 			for i = 1, _G.NUM_POSSESS_SLOTS do
 				self:addButtonBorder{obj=_G["PossessButton" .. i], abt=true, sec=true}
 			end
+			local bName
 			for i = 1, _G.NUM_PET_ACTION_SLOTS do
-				self:addButtonBorder{obj=_G["PetActionButton" .. i], abt=true, sec=true, reParent={_G["PetActionButton" .. i .. "AutoCastable"], _G["PetActionButton" .. i .. "SpellHighlightTexture"]}, ofs=3}
-				_G["PetActionButton" .. i .. "Shine"]:SetParent(_G["PetActionButton" .. i].sbb)
+				bName = "PetActionButton" .. i
+				self:addButtonBorder{obj=_G[bName], abt=true, sec=true, ofs=3, reParent={_G[bName .. "AutoCastable"], _G[bName .. "SpellHighlightTexture"]}}
+				_G[bName .. "Shine"]:SetParent(_G[bName].sbb)
 			end
+			bName = nil
 			-- Action Buttons
 			for i = 1, _G.NUM_ACTIONBAR_BUTTONS do
 				_G["ActionButton" .. i].FlyoutBorder:SetTexture(nil)
 				_G["ActionButton" .. i].FlyoutBorderShadow:SetTexture(nil)
-				self:addButtonBorder{obj=_G["ActionButton" .. i], abt=true, seca=true}
+				self:addButtonBorder{obj=_G["ActionButton" .. i], abt=true, seca=true, ofs=2.5}
 			end
 			-- ActionBar buttons
 			self:addButtonBorder{obj=_G.ActionBarUpButton, clr="gold"}
@@ -3556,15 +3563,15 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 			local mBut
 			for i = 1, #_G.MICRO_BUTTONS do
 				mBut = _G[_G.MICRO_BUTTONS[i]]
-				self:addButtonBorder{obj=mBut, ofs=0, y1=0, reParent=mBut == "MainMenuMicroButton" and {mBut.Flash, _G.MainMenuBarPerformanceBar, _G.MainMenuBarDownload} or {mBut.Flash}, clr="grey"}
+				self:addButtonBorder{obj=mBut, es=24, ofs=2.5, reParent=mBut == "MainMenuMicroButton" and {mBut.Flash, _G.MainMenuBarPerformanceBar, _G.MainMenuBarDownload} or {mBut.Flash}, clr="grey"}
 			end
 			mBut = nil
 			-- skin bag buttons
-			self:addButtonBorder{obj=_G.MainMenuBarBackpackButton, ibt=true}
-			self:addButtonBorder{obj=_G.CharacterBag0Slot, ibt=true}
-			self:addButtonBorder{obj=_G.CharacterBag1Slot, ibt=true}
-			self:addButtonBorder{obj=_G.CharacterBag2Slot, ibt=true}
-			self:addButtonBorder{obj=_G.CharacterBag3Slot, ibt=true}
+			self:addButtonBorder{obj=_G.MainMenuBarBackpackButton, ibt=true, ofs=2.5}
+			self:addButtonBorder{obj=_G.CharacterBag0Slot, ibt=true, ofs=2.5}
+			self:addButtonBorder{obj=_G.CharacterBag1Slot, ibt=true, ofs=2.5}
+			self:addButtonBorder{obj=_G.CharacterBag2Slot, ibt=true, ofs=2.5}
+			self:addButtonBorder{obj=_G.CharacterBag3Slot, ibt=true, ofs=2.5}
 			-- MultiCastActionBarFrame
 			self:addButtonBorder{obj=_G.MultiCastSummonSpellButton, abt=true, sec=true, ofs=5}
 			self:addButtonBorder{obj=_G.MultiCastRecallSpellButton, abt=true, sec=true, ofs=5}
@@ -3582,7 +3589,7 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 					if not btn.noGrid then
 						_G[btn:GetName() .. "FloatingBG"]:SetAlpha(0)
 					end
-					self:addButtonBorder{obj=btn, abt=true, seca=true}
+					self:addButtonBorder{obj=btn, abt=true, seca=true, ofs=2.5}
 				end
 				btn = nil
 			end
@@ -4431,7 +4438,7 @@ aObj.blizzLoDFrames[ftype].OrderHallUI = function(self)
 	local function skinBtns(frame)
 		for btn in frame.buttonPool:EnumerateActive() do
 			if aObj.modBtnBs then
-				aObj:addButtonBorder{obj=btn, relTo=btn.Icon, ofs=3}
+				aObj:addButtonBorder{obj=btn, relTo=btn.Icon, ofs=2}
 				if btn.Border:GetAtlas() == "orderhalltalents-spellborder-yellow"
 				and btn.Border:IsShown()
 				or btn.talent.researched then
@@ -5302,7 +5309,7 @@ aObj.blizzFrames[ftype].TimeManager = function(self)
 		self:removeRegions(_G.TimeManagerAlarmEnabledButton, {6, 7})
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, x2=1}
 		if self.modBtnBs then
-			self:addButtonBorder{obj=_G.TimeManagerStopwatchCheck, ofs=3, y1=2, y2=-4, clr="grey"} -- This isn't really a checkbutton
+			self:addButtonBorder{obj=_G.TimeManagerStopwatchCheck, y1=2, y2=-4, clr="grey"} -- This isn't really a checkbutton
 		end
 		if self.modChkBtns then
 			self:skinCheckButton{obj=_G.TimeManagerAlarmEnabledButton}
@@ -5698,7 +5705,6 @@ aObj.blizzLoDFrames[ftype].WarboardUI = function(self)
 		end
 
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ofs=0}
-		self:nilTexture(this.CloseButton.Border, true)
 		self:SecureHook(this, "TryShow", function(this)
 			for _, choice in pairs(this.Options) do
 				choice.Header.Text:SetTextColor(self.HT:GetRGB())
