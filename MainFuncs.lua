@@ -43,7 +43,8 @@ local function __addSkinButton(opts)
 	-- make all textures transparent, if required
 	if opts.kfs then aObj:keepFontStrings(opts.obj) end
 
-	opts.parent = opts.parent or opts.obj:GetParent()
+	opts.parent = opts.parent or opts.obj
+	-- opts.parent = opts.parent or opts.obj:GetParent()
 
 	-- store button object within original button
 	opts.obj.sb = _G.CreateFrame("Button", nil, opts.parent, opts.secu and "SecureUnitButtonTemplate" or opts.seca and "SecureActionButtonTemplate" or nil)
@@ -99,8 +100,8 @@ local function __addSkinButton(opts)
 	opts.aso.obj = btn
 	aObj:applySkin(opts.aso)
 
-	-- hide button skin, if required or not shown
-	btn:SetShown(opts.obj:IsShown() and not opts.hide)
+	-- hide button skin, if required
+	if opts.hide then btn:Hide() end
 
 	 -- make sure it's lower than its parent's Frame Strata
 	if opts.bg then btn:SetFrameStrata("BACKGROUND") end
