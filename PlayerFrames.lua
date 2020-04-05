@@ -3193,45 +3193,42 @@ aObj.blizzLoDFrames[ftype].InspectUI = function(self)
 	end)
 
 	self:SecureHookScript(_G.InspectPVPFrame, "OnShow", function(this)
-			self:keepFontStrings(this)
-			for _, slot in ipairs(this.Slots) do
-				slot.Border:SetTexture(nil)
-				self:makeIconSquare(slot, "Texture", true)
-			end
-			self:moveObject{obj=this.PortraitBackground, x=8, y=-10}
-			self:SecureHook(this, "Hide", function(this)
-				_G.InspectFrame.portrait:SetAlpha(0)
-			end)
-
-			self:Unhook(this, "OnShow")
+		self:keepFontStrings(this)
+		for _, slot in ipairs(this.Slots) do
+			slot.Border:SetTexture(nil)
+			self:makeIconSquare(slot, "Texture", true)
+		end
+		self:moveObject{obj=this.PortraitBackground, x=8, y=-10}
+		self:SecureHook(this, "Hide", function(this)
+			_G.InspectFrame.portrait:SetAlpha(0)
 		end)
+
+		self:Unhook(this, "OnShow")
+	end)
+
 	self:SecureHookScript(_G.InspectTalentFrame, "OnShow", function(this)
-			self:keepFontStrings(this)
-			this.InspectSpec.ring:SetTexture(nil)
-			self:makeIconSquare(this.InspectSpec, "specIcon", true)
-			for i = 1, _G.MAX_TALENT_TIERS do
-				for j = 1, _G.NUM_TALENT_COLUMNS do
-					this.InspectTalents["tier" .. i]["talent" .. j].Slot:SetTexture(nil)
-					if self.modBtnBs then
-						this.InspectTalents["tier" .. i]["talent" .. j].border:SetAlpha(0)
-						self:addButtonBorder{obj=this.InspectTalents["tier" .. i]["talent" .. j], relTo=this.InspectTalents["tier" .. i]["talent" .. j].icon}
-					end
+		self:keepFontStrings(this)
+		this.InspectSpec.ring:SetTexture(nil)
+		self:makeIconSquare(this.InspectSpec, "specIcon", true)
+		for i = 1, _G.MAX_TALENT_TIERS do
+			for j = 1, _G.NUM_TALENT_COLUMNS do
+				this.InspectTalents["tier" .. i]["talent" .. j].Slot:SetTexture(nil)
+				if self.modBtnBs then
+					this.InspectTalents["tier" .. i]["talent" .. j].border:SetAlpha(0)
+					self:addButtonBorder{obj=this.InspectTalents["tier" .. i]["talent" .. j], relTo=this.InspectTalents["tier" .. i]["talent" .. j].icon, clr="grey"}
 				end
 			end
-			if self.modBtnBs then
-				-- run function again to correct button border colours
-				this:Hide()
-				this:Show()
-			end
+		end
 
-			self:Unhook(this, "OnShow")
-		end)
+		self:Unhook(this, "OnShow")
+	end)
+
 	self:SecureHookScript(_G.InspectGuildFrame, "OnShow", function(this)
-			_G.InspectGuildFrameBG:SetAlpha(0)
-			this.Points:DisableDrawLayer("BACKGROUND")
+		_G.InspectGuildFrameBG:SetAlpha(0)
+		this.Points:DisableDrawLayer("BACKGROUND")
 
-			self:Unhook(this, "OnShow")
-		end)
+		self:Unhook(this, "OnShow")
+	end)
 
 end
 
