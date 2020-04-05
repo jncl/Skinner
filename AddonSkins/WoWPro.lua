@@ -4,35 +4,53 @@ local _G = _G
 
 aObj.addonsToSkin.WoWPro = function(self) -- v 8.3.0-A1/1.13.3.L7
 
-	self:addSkinFrame{obj=_G.WoWPro.MainFrame, ft="a", kfs=true, nb=true, y2=-2}
-	_G.WoWPro.BackgroundSet = _G.nop
-	_G.WoWPro.Titlebar:SetBackdrop(nil)
-	-- WoWPro.GuideFrame objects
-	self:skinSlider{obj=_G.WoWPro.Scrollbar}
-	self:getChild(_G.WoWPro.Scrollbar, 3):SetBackdrop(nil)
-	for _, row in ipairs(_G.WoWPro.rows) do
-		-- N.B. skinning checkboxes causes then to not be displayed ?
-		-- tooltip
-		_G.C_Timer.After(0.1, function()
-			self:add2Table(self.ttList, row.action.tooltip)
-		end)
-	end
-	for _, row in ipairs(_G.WoWPro.mousenotes) do
-		self:addSkinFrame{obj=row, ft="a", kfs=true, nb=true, ofs=0}
-	end
+	self:SecureHookScript(_G.WoWPro.MainFrame, "OnShow", function(this)
+		_G.WoWPro.BackgroundSet = _G.nop
+		_G.WoWPro.Titlebar:SetBackdrop(nil)
+		self:addSkinFrame{obj=this, ft="a", kfs=true, nb=true, y2=-2}
 
-	self:addSkinFrame{obj=_G.WoWPro_SkipSteps, ft="a", kfs=true, nb=true}
-	if self.modBtns then
-		self:skinStdButton{obj=_G.WoWPro_SkipOkay}
-		self:skinStdButton{obj=_G.WoWPro_SkipCancel}
-	end
-	self:addSkinFrame{obj=_G.WoWPro_GuideCompleted, ft="a", kfs=true, nb=true}
-	if self.modBtns then
-		self:skinStdButton{obj=_G.WoWPro_LoadNextGuide}
-		self:skinStdButton{obj=_G.WoWPro_OpenLevelingGuidelist}
-		self:skinStdButton{obj=_G.WoWPro_ResetGuide}
-	end
+		self:skinSlider{obj=_G.WoWPro.Scrollbar}
+		self:getChild(_G.WoWPro.Scrollbar, 3):SetBackdrop(nil)
 
+		for _, row in ipairs(_G.WoWPro.rows) do
+			-- N.B. skinning checkboxes causes then to not be displayed ?
+			-- tooltip
+			_G.C_Timer.After(0.1, function()
+				self:add2Table(self.ttList, row.action.tooltip)
+			end)
+			if self.modBtnBs then
+				self:addButtonBorder{obj=row.itembutton, seca=true, ofs=3, clr="grey"}
+				self:addButtonBorder{obj=row.targetbutton, seca=true, ofs=3, clr="grey"}
+				self:addButtonBorder{obj=row.lootsbutton, ofs=3, clr="grey"}
+			end
+		end
+		for _, row in ipairs(_G.WoWPro.mousenotes) do
+			self:addSkinFrame{obj=row, ft="a", kfs=true, nb=true, ofs=0}
+		end
+
+		self:Unhook(this, "OnShow")
+	end)
+	self:checkShown(_G.WoWPro.MainFrame)
+
+	self:SecureHookScript(_G.WoWPro_SkipSteps, "OnShow", function(this)
+		self:addSkinFrame{obj=this, ft="a", kfs=true, nb=true}
+		if self.modBtns then
+			self:skinStdButton{obj=_G.WoWPro_SkipOkay}
+			self:skinStdButton{obj=_G.WoWPro_SkipCancel}
+		end
+
+		self:Unhook(this, "OnShow")
+	end)
+	self:SecureHookScript(_G.WoWPro_GuideCompleted, "OnShow", function(this)
+		self:addSkinFrame{obj=this, ft="a", kfs=true, nb=true}
+		if self.modBtns then
+			self:skinStdButton{obj=_G.WoWPro_LoadNextGuide}
+			self:skinStdButton{obj=_G.WoWPro_OpenLevelingGuidelist}
+			self:skinStdButton{obj=_G.WoWPro_ResetGuide}
+		end
+
+		self:Unhook(this, "OnShow")
+	end)
 	self:SecureHook(_G.WoWPro, "CreateErrorLog", function(this, title)
 		self:skinSlider{obj=_G.WoWProErrorLog.Scroll.ScrollBar}
 		self:addSkinFrame{obj=_G.WoWProErrorLog, ft="a", kfs=true, nb=true}
