@@ -25,19 +25,5 @@ ToDos
 
 ≈	O	Make sure all buttons with GOLD button borders need them as opposed to having a GREY border
 
-	I/C	TalentUI, reported by Sojiroi, 16.03.20
-√		- Align Higlight on Tabs
-
-	I	Communities, reported by EpidemeDaBear, 19.03.20
-√		- Skinner\MainFuncs.lua:610: attempt to index field 'obj' (a nil value)
-		[string "@Skinner\MainFuncs.lua"]:702: in function `skinDropDown'
-		[string "@Skinner\PlayerFrames.lua"]:1458: in function `skinCFGaCF'
-		[string "@Skinner\PlayerFrames.lua"]:1561: in function <Skinner\PlayerFrames.lua:1315>
-
-	I/C	PaperDollItemsFrame, - reported by hastrox77, 19.03.20
-√		-  ..\FrameXML\ItemButtonTemplate.lua line 53: attempt to index local 'icon' (a nil value)
-		Debug:
-		..\FrameXML\ItemButtonTemplate.lua:53: SetItemButtonTexture()
-		..\FrameXML\PaperDollFrame.lua:791: PaperDollItemSlotButton_Update()
-		Skinner\ClassicSupport.lua:528:
-		Skinner\ClassicSupport.lua:487
+	I	Auctionaror [Alpha], reported by Acivien, 24.03.20
+√		- Skinner\AddonSkins\Auctionator-8.3.0.lua:95: Usage: SecureHook([object], method, [handler]): Attempting to hook a non existing target
