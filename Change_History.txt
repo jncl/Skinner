@@ -1,3 +1,13 @@
+beta8.33728.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Removed space lines
+	Bugfix for PaperDollItemsFrame
+	Bugfix for GuildFinderFrame
+	Updated BugSack, Leatrix_Plus & WoWPro skins
+
 beta8.33645.1
 Jncl:
 	ToDo.txt
