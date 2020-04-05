@@ -766,27 +766,32 @@ local function __skinEditBox(opts)
 	-- move left/right & up/down, if required
 	if opts.x ~= 0 or opts.y ~= 0 then aObj:moveObject{obj=opts.obj, x=opts.x or 0, y=opts.y or 0} end
 
-	-- move the search icon to the right, if required
+	-- move the search icon/instructions to the right, if required
 	if opts.mi then
+		local xOfs = 6
 		if opts.obj.searchIcon then
-			aObj:moveObject{obj=opts.obj.searchIcon, x=4} -- e.g. BagItemSearchBox
-		elseif opts.obj.Instructions then -- e.g. InputBoxInstructionsTemplate (WoD)
-			opts.obj.Instructions:ClearAllPoints()
-			opts.obj.Instructions:SetPoint("Left", opts.obj, "Left", 6, 0)
-		elseif opts.obj.PromptText then -- e.g. BroadcastFrame EditBox (BfA)
-			opts.obj.PromptText:ClearAllPoints()
-			opts.obj.PromptText:SetPoint("Left", opts.obj, "Left", 6, 0)
+			aObj:moveObject{obj=opts.obj.searchIcon, x=xOfs} -- e.g. BagItemSearchBox
 		elseif opts.obj.icon then
-			aObj:moveObject{obj=opts.obj.icon, x=4} -- e.g. FriendsFrameBroadcastInput
+			aObj:moveObject{obj=opts.obj.icon, x=xOfs} -- e.g. FriendsFrameBroadcastInput
 		elseif _G[opts.obj:GetName() .. "SearchIcon"] then
-			aObj:moveObject{obj=_G[opts.obj:GetName() .. "SearchIcon"], x=4} -- e.g. TradeSkillFrameSearchBox
+			aObj:moveObject{obj=_G[opts.obj:GetName() .. "SearchIcon"], x=xOfs} -- e.g. TradeSkillFrameSearchBox
 		else -- e.g. WeakAurasFilterInput
 			for _, reg in ipairs{opts.obj:GetRegions()} do
 				if aObj:hasTextInTexture(reg, "UI-Searchbox-Icon", true) then
-					aObj:moveObject{obj=reg, x=4}
+					aObj:moveObject{obj=reg, x=xOfs}
 				end
 			end
 		end
+		xOfs = 20
+		if opts.obj.Instructions then -- e.g. InputBoxInstructionsTemplate (WoD)
+			opts.obj.Instructions:ClearAllPoints()
+			opts.obj.Instructions:SetPoint("LEFT", opts.obj, "LEFT", xOfs, 0)
+		end
+		if opts.obj.PromptText then -- e.g. BroadcastFrame EditBox (BfA)
+			opts.obj.PromptText:ClearAllPoints()
+			opts.obj.PromptText:SetPoint("LEFT", opts.obj, "LEFT", xOfs, 0)
+		end
+		xOfs = nil
 	end
 
 end
