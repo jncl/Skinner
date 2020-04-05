@@ -217,24 +217,29 @@ function module:skinPetF()
 	if db.pet
 	and not self.isSkinned["Pet"]
 	then
-		_G.PetFrameTexture:SetAlpha(0) -- texture file is changed dependant upon in vehicle or not
-		_G.PetAttackModeTexture:SetTexture(nil)
-		-- status bars
-		self:adjustStatusBarPosn(_G.PetFrameHealthBar, 0)
-		aObj:skinStatusBar{obj=_G.PetFrameHealthBar, fi=0}
-		self:adjustStatusBarPosn(_G.PetFrameManaBar, -1)
-		aObj:skinStatusBar{obj=_G.PetFrameManaBar, fi=0, nilFuncs=true}
-		-- casting bar handled in CastingBar function
-		aObj:moveObject{obj=_G.PetFrame, x=21, y=-2} -- align under Player Health/Mana bars
+		self:SecureHookScript(_G.PetFrame, "OnShow", function(this)
+			_G.PetPortrait:SetDrawLayer("BORDER") -- move portrait to BORDER layer, so it is displayed
+			aObj:moveObject{obj=this, x=21, y=-2} -- align under Player Health/Mana bars
+			self:skinUnitButton{obj=this, ti=true, x1=1}
 
-		-- skin the PetFrame
-		_G.PetPortrait:SetDrawLayer("BORDER") -- move portrait to BORDER layer, so it is displayed
-		self:skinUnitButton{obj=_G.PetFrame, ti=true, x1=1}
-		-- remove debuff border
-		for i = 1, 4 do
-			_G["PetFrameDebuff" .. i .. "Border"]:SetTexture(nil)
-		end
+			_G.PetFrameTexture:SetAlpha(0) -- texture file is changed dependant upon in vehicle or not
+			_G.PetAttackModeTexture:SetTexture(nil)
+			-- status bars
+			self:adjustStatusBarPosn(_G.PetFrameHealthBar, 0)
+			aObj:skinStatusBar{obj=_G.PetFrameHealthBar, fi=0}
+			self:adjustStatusBarPosn(_G.PetFrameManaBar, -1)
+			aObj:skinStatusBar{obj=_G.PetFrameManaBar, fi=0, nilFuncs=true}
+			-- casting bar handled in CastingBar function
+
+			-- remove debuff border
+			for i = 1, 4 do
+				_G["PetFrameDebuff" .. i .. "Border"]:SetTexture(nil)
+			end
+
+			self:Unhook(this, "OnShow")
+		end)
 	end
+
 	if db.petspec
 	and aObj.uCls == "HUNTER"
 	then
@@ -331,19 +336,28 @@ function module:skinTargetF()
 	and not self.isSkinned["Target"]
 	then
 
-		self:skinButton("TargetFrame")
+		self:SecureHookScript(_G.TargetFrame, "OnShow", function(this)
 
-		-- move level text down, so it is more visible
-		self:SecureHook("TargetFrame_UpdateLevelTextAnchor", function(this, targetLevel)
-			-- aObj:Debug("TF_ULTA: [%s, %s]", this, targetLevel)
-			this.levelText:SetPoint("CENTER", targetLevel == 100 and 61 or 62, -20 + lOfs)
+			self:skinButton(this:GetName())
+
+			-- move level text down, so it is more visible
+			self:SecureHook("TargetFrame_UpdateLevelTextAnchor", function(this, targetLevel)
+				-- aObj:Debug("TF_ULTA: [%s, %s]", this, targetLevel)
+				this.levelText:SetPoint("CENTER", targetLevel == 100 and 61 or 62, -20 + lOfs)
+			end)
+
+			self:Unhook(this, "OnShow")
 		end)
 
 		--Boss Target Frames
 		for i = 1, _G.MAX_BOSS_FRAMES do
-			self:skinButton("Boss" .. i .. "TargetFrame", false)
-			-- always an Elite mob
-			_G["Boss" .. i .. "TargetFrame"].ucTex:SetTexture([[Interface\Tooltips\EliteNameplateIcon]])
+			self:SecureHookScript(_G["Boss" .. i .. "TargetFrame"], "OnShow", function(this)
+				self:skinButton(this:GetName(), false)
+				-- always an Elite mob
+				this.ucTex:SetTexture([[Interface\Tooltips\EliteNameplateIcon]])
+
+				self:Unhook(this, "OnShow")
+			end)
 		end
 
 		-- hook this to show/hide the elite texture
@@ -375,7 +389,11 @@ function module:skinFocusF()
 	if db.focus
 	and not self.isSkinned["Focus"]
 	then
-		self:skinButton("FocusFrame", false)
+		self:SecureHookScript(_G.FocusFrame, "OnShow", function(this)
+			self:skinButton(this:GetName(), false)
+
+			self:Unhook(this, "OnShow")
+		end)
 	end
 
 end
@@ -385,30 +403,34 @@ function module:skinPartyF()
 	and not self.isSkinned["Party"]
 	then
 
-		local pMF, pPF
 		for i = 1, _G.MAX_PARTY_MEMBERS do
-			pMF = "PartyMemberFrame" .. i
-			self:skinUnitButton{obj=_G[pMF], ti=true, x1=2, y1=5, x2=-1}
+			self:SecureHookScript(_G["PartyMemberFrame" .. i], "OnShow", function(this)
+				self:skinUnitButton{obj=this, ti=true, x1=2, y1=5, x2=-1}
 
-			_G[pMF .. "Background"]:SetTexture(nil)
-			_G[pMF .. "Texture"]:SetAlpha(0) -- texture file is changed dependant upon in vehicle or not
-			_G[pMF .. "VehicleTexture"]:SetAlpha(0) -- texture file is changed dependant upon in vehicle or not
-			_G[pMF .. "Status"]:SetTexture(nil)
-			-- status bars
-			aObj:skinStatusBar{obj=_G[pMF .. "HealthBar"], fi=0}
-			aObj:skinStatusBar{obj=_G[pMF .. "ManaBar"], fi=0, nilFuncs=true}
+				local pMF = this:GetName()
+				_G[pMF .. "Background"]:SetTexture(nil)
+				_G[pMF .. "Texture"]:SetAlpha(0) -- texture file is changed dependant upon in vehicle or not
+				_G[pMF .. "VehicleTexture"]:SetAlpha(0) -- texture file is changed dependant upon in vehicle or not
+				_G[pMF .. "Status"]:SetTexture(nil)
+				-- status bars
+				aObj:skinStatusBar{obj=_G[pMF .. "HealthBar"], fi=0}
+				aObj:skinStatusBar{obj=_G[pMF .. "ManaBar"], fi=0, nilFuncs=true}
 
-			-- PowerBarAlt handled in MainMenuBar function (UIFrames.lua)
+				-- PowerBarAlt handled in MainMenuBar function (UIFrames.lua)
 
-			-- pet frame
-			pPF = pMF .. "PetFrame"
-			self:skinUnitButton{obj=_G[pPF], ti=true, x1=-2, y1=1, y2=1}
-			_G[pPF .. "Texture"]:SetAlpha(0) -- texture file is changed dependant upon in vehicle or not
-			-- status bar
-			aObj:skinStatusBar{obj=_G[pPF .. "HealthBar"], fi=0}
+				-- pet frame
+				local pPF = pMF .. "PetFrame"
+				self:skinUnitButton{obj=_G[pPF], ti=true, x1=-2, y1=1, y2=1}
+				_G[pPF .. "Texture"]:SetAlpha(0) -- texture file is changed dependant upon in vehicle or not
+				-- status bar
+				aObj:skinStatusBar{obj=_G[pPF .. "HealthBar"], fi=0}
+				pMF, pPF = nil, nil
+
+				self:Unhook(this, "OnShow")
+			end)
+			aObj:checkShown(_G["PartyMemberFrame" .. i])
 
 		end
-		pMF, pPF = nil, nil
 
 		-- PartyMemberBackground
 		aObj:addSkinFrame{obj=_G.PartyMemberBackground, ft=ftype, nb=true, x1=4, y2=2}
