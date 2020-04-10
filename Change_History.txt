@@ -1,3 +1,16 @@
+beta8.33941.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Updated SkinButton code
+	Updated EditBox skinning code
+	Updated InspectUI skin
+	Updated ButtonBorder sizes
+	Updated UnitFrames skinning code
+	Updated Auctionator & WoWPro skins
+	Obsoleted Auctinator skin (v4.0.19)
+
 beta8.33728.1
 Jncl:
 	ToDo.txt
