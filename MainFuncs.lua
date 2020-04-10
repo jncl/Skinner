@@ -164,12 +164,16 @@ end
 local hOfs = -7
 local function hideHeader(obj)
 
-	local hAdj = false
+	local hAdj, hObj = false
 	-- move the Header texture, if required
 	for _, suff in pairs{"Header", "_Header", "_HeaderBox", "_FrameHeader", "FrameHeader", "HeaderTexture", "HeaderFrame"} do
-		if _G[obj:GetName() .. suff] then
-			_G[obj:GetName() .. suff]:SetPoint("TOP", obj, "TOP", 0, 7)
+		hObj = _G[obj:GetName() .. suff]
+		if hObj then
+			hObj:SetPoint("TOP", obj, "TOP", 0, 7)
 			hAdj = true
+			if aObj:hasTextInTexture(hObj, "UI-DialogBox-Header", 1) then
+				hObj:SetTexture(nil)
+			end
 			break
 		end
 	end
