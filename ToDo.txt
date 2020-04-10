@@ -25,5 +25,16 @@ ToDos
 
 ≈	O	Make sure all buttons with GOLD button borders need them as opposed to having a GREY border
 
-	I	Auctionaror [Alpha], reported by Acivien, 24.03.20
-√		- Skinner\AddonSkins\Auctionator-8.3.0.lua:95: Usage: SecureHook([object], method, [handler]): Attempting to hook a non existing target
+≈	S	CEPGP, requested by Psykosik, 07.04.20
+
+	I	FriendsTabHeader, reported by MacallanTwoFive/Shiv_G3, 07.04.20
+√		- 3x Skinner\MainFuncs.lua:777: attempt to concatenate a nil value
+		[string "@Skinner\MainFuncs.lua"]:777: in function <Skinner\MainFuncs.lua:707>
+		[string "@Skinner\MainFuncs.lua"]:821: in function `skinEditBox'
+		[string "@Skinner\PlayerFrames.lua"]:2546: in function <Skinner\PlayerFrames.lua:2538>
+
+	I	LFGListFrame, reported by EpidemeDaBear, 09.04.20
+√		- Skinner\MainFuncs.lua:777: attempt to concatenate a nil value
+		[string "@Skinner\MainFuncs.lua"]:777: in function <Skinner\MainFuncs.lua:707>
+		[string "@Skinner\MainFuncs.lua"]:821: in function `skinEditBox'
+		[string "@Skinner\UIFrames.lua"]:3232: in function <Skinner\UIFrames.lua:3158>
