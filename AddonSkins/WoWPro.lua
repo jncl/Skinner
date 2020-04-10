@@ -64,7 +64,7 @@ aObj.addonsToSkin.WoWPro = function(self) -- v 8.3.0-A1/1.13.3.L7
 		if panel.parent ~= "WoW-Pro" then return end
 
 		if panel.name == "Guide List"
-		and cnt ~= 1
+		and not self.iofSkinnedPanels[panel]
 		then
 			-- TODO: tab(s)
 			for _, child in pairs{panel.TitleRow:GetChildren()} do
@@ -78,39 +78,41 @@ aObj.addonsToSkin.WoWPro = function(self) -- v 8.3.0-A1/1.13.3.L7
 		end
 
 		if panel.name == "Current Guide"
-		and cnt ~= 2
+		and not self.iofSkinnedPanels[panel]
 		then
-			-- skin box
-			local cgframe = self:getChild(panel, 1)
-			self:addSkinFrame{obj=cgframe, ft="a", kfs=true, nb=true}
-			-- skin scrollbar
-			local slider = self:getChild(cgframe, 1)
-			self:skinSlider{obj=slider}
-			self:getChild(slider, 3):SetBackdrop(nil)
-			slider = nil
-			-- skin lines
-			if self.modChkBtns then
-				local cBtn
-				for i = 1, cgframe:GetNumChildren() do
-					cBtn = self:getChild(cgframe, i).check
-					if cBtn then
-						cBtn:SetSize(20, 20)
-						self:skinCheckButton{obj=cBtn}
+			_G.C_Timer.After(0.1, function()
+				-- skin box
+				local cgframe = self:getChild(panel, 1)
+				self:addSkinFrame{obj=cgframe, ft="a", kfs=true, nb=true}
+				-- skin scrollbar
+				local slider = self:getChild(cgframe, 1)
+				self:skinSlider{obj=slider}
+				self:getChild(slider, 3):SetBackdrop(nil)
+				slider = nil
+				-- skin lines
+				if self.modChkBtns then
+					local cBtn
+					for i = 1, cgframe:GetNumChildren() do
+						cBtn = self:getChild(cgframe, i).check
+						if cBtn then
+							cBtn:SetSize(20, 20)
+							self:skinCheckButton{obj=cBtn}
+						end
 					end
+					cBtn = nil
 				end
-				cBtn = nil
-			end
-			cgframe = nil
+				cgframe = nil
+			end)
 			-- tooltip
 			_G.C_Timer.After(0.1, function()
 				self:add2Table(self.ttList, panel.tooltip)
 			end)
-			cnt = cnt + 2
+			cnt = cnt + 1
 		end
 
 		self.iofSkinnedPanels[panel] = true
 
-		if cnt == 3 then
+		if cnt == 2 then
 			self.UnregisterCallback("WoWPro", "IOFPanel_Before_Skinning")
 			cnd = nil
 		end
