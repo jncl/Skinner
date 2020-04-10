@@ -3724,6 +3724,7 @@ aObj.blizzFrames[ftype].MenuFrames = function(self)
 		self:addSkinFrame{obj=_G.VideoOptionsFrameCategoryFrame, ft=ftype, kfs=true} -- LHS panel
 		self:skinSlider(_G.VideoOptionsFrameCategoryFrameListScrollBar)
 		self:addSkinFrame{obj=_G.VideoOptionsFramePanelContainer, ft=ftype} -- RHS Panel
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true, hdr=true}
 		if self.modBtns then
 			self:skinStdButton{obj=_G.VideoOptionsFrameApply}
 			self:skinStdButton{obj=_G.VideoOptionsFrameCancel}
@@ -3733,7 +3734,6 @@ aObj.blizzFrames[ftype].MenuFrames = function(self)
 				self:skinStdButton{obj=_G.VideoOptionsFrameClassic}
 			end
 		end
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, hdr=true}
 
 		-- Graphics
 		skinKids(_G.Display_)
@@ -3803,8 +3803,10 @@ aObj.blizzFrames[ftype].MenuFrames = function(self)
 		skinKids(this)
 		self:addSkinFrame{obj=_G.AudioOptionsVoicePanel, ft=ftype}
 		_G.AudioOptionsVoicePanel.TestInputDevice.ToggleTest:DisableDrawLayer("BACKGROUND")
-		self:addButtonBorder{obj=_G.AudioOptionsVoicePanel.TestInputDevice.ToggleTest, ofs=0, y2=-2}
 		self:addSkinFrame{obj=_G.AudioOptionsVoicePanel.TestInputDevice.VUMeter, ft=ftype, aso={bd=10, ng=true}}
+		if self.modBtnBs then
+			self:addButtonBorder{obj=_G.AudioOptionsVoicePanel.TestInputDevice.ToggleTest, ofs=0, y2=-2}
+		end
 
 		self:Unhook(this, "OnShow")
 	end)
@@ -3813,12 +3815,12 @@ aObj.blizzFrames[ftype].MenuFrames = function(self)
 	self:SecureHookScript(_G.InterfaceOptionsFrame, "OnShow", function(this)
 		self:removeNineSlice(this.Border)
 		self:skinTabs{obj=this, up=true, lod=true, ignore=true, ignht=true, x1=6, y1=2, x2=-6, y2=-3}
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true, hdr=true}
 		if self.modBtns then
 			self:skinStdButton{obj=_G.InterfaceOptionsFrameCancel}
 			self:skinStdButton{obj=_G.InterfaceOptionsFrameOkay}
 			self:skinStdButton{obj=_G.InterfaceOptionsFrameDefaults}
 		end
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, hdr=true}
 
 		-- LHS panel (Game Tab)
 		self:SecureHookScript(_G.InterfaceOptionsFrameCategories, "OnShow", function(this)
