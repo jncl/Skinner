@@ -774,7 +774,8 @@ local function __skinEditBox(opts)
 			aObj:moveObject{obj=opts.obj.searchIcon, x=xOfs} -- e.g. BagItemSearchBox
 		elseif opts.obj.icon then
 			aObj:moveObject{obj=opts.obj.icon, x=xOfs} -- e.g. FriendsFrameBroadcastInput
-		elseif _G[opts.obj:GetName() .. "SearchIcon"] then
+		elseif opts.obj:GetName()
+		and _G[opts.obj:GetName() .. "SearchIcon"] then
 			aObj:moveObject{obj=_G[opts.obj:GetName() .. "SearchIcon"], x=xOfs} -- e.g. TradeSkillFrameSearchBox
 		else -- e.g. WeakAurasFilterInput
 			for _, reg in ipairs{opts.obj:GetRegions()} do
