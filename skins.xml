@@ -69,6 +69,7 @@
 <script file="AddonSkins\CombustionHelper.lua"/>
 <script file="AddonSkins\CompactMissions.lua"/>
 <script file="AddonSkins\Configator.lua"/>
+<script file="AddonSkins\CoolDownWatcher.lua"/>
 <script file="AddonSkins\CoolLine.lua"/>
 <script file="AddonSkins\Cork.lua"/>
 <script file="AddonSkins\Cosplay.lua"/>
