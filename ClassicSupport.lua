@@ -1673,75 +1673,10 @@ aObj.ClassicSupport = function(self)
 		ufDB.defaults.profile.arena = nil
 		ufDB = nil
 	end
-	self:UnregisterEvent("UNIT_PET")
 	self.optTables["Modules"].args[aName .. "_UnitFrames"].args.petspec = nil
 	self.optTables["Modules"].args[aName .. "_UnitFrames"].args.focus = nil
 	self.optTables["Modules"].args[aName .. "_UnitFrames"].args.arena = nil
-
-	-- UnitFrames
-	local uFrames = self:GetModule("UnitFrames", true)
-	uFrames.skinFocusF = _G.nop
-
-	function uFrames:skinPlayerF()
-
-		if self.db.profile.player
-		and not self.isSkinned["Player"]
-		then
-
-			local pF = _G.PlayerFrame
-			_G.PlayerFrameBackground:SetTexture(nil)
-			_G.PlayerFrameTexture:SetAlpha(0) -- texture file is changed dependant upon in vehicle or not
-			_G.PlayerFrameVehicleTexture:SetAlpha(0) -- texture file is changed dependant upon in vehicle or not
-			_G.PlayerStatusTexture:SetTexture(nil)
-			pF.threatIndicator = _G.PlayerAttackBackground
-			_G.PlayerRestGlow:SetTexture(nil)
-			_G.PlayerAttackGlow:SetTexture(nil)
-
-			-- status bars
-			aObj:skinStatusBar{obj=pF.healthbar, fi=0}
-			aObj:skinStatusBar{obj=pF.manabar, fi=0, nilFuncs=true}
-			self:adjustStatusBarPosn(pF.healthbar)
-
-			-- PowerBarAlt handled in MainMenuBar function (UIF)
-
-			-- casting bar handled in CastingBar function (PF)
-
-			-- move level & rest icon down, so they are more visible
-			self:SecureHook("PlayerFrame_UpdateLevelTextAnchor", function(level)
-				_G.PlayerLevelText:SetPoint("CENTER", _G.PlayerFrameTexture, "CENTER", level == 100 and -62 or -61, -20 + -9)
-			end)
-			_G.PlayerRestIcon:SetPoint("TOPLEFT", 36, -63)
-
-			-- remove group indicator textures
-			aObj:keepFontStrings(_G.PlayerFrameGroupIndicator)
-			aObj:moveObject{obj=_G.PlayerFrameGroupIndicatorText, y=-1}
-
-			self:skinUnitButton{obj=pF, ti=true, x1=35, y1=-5, x2=2, y2=2}
-
-			pF = nil
-
-		end
-
-	end
-	function uFrames:skinPetF()
-
-		if self.db.profile.pet
-		and not self.isSkinned["Pet"]
-		then
-			_G.PetFrameTexture:SetAlpha(0) -- texture file is changed dependant upon in vehicle or not
-			_G.PetFrame.threatIndicator = _G.PetAttackModeTexture
-			self:adjustStatusBarPosn(_G.PetFrameHealthBar, 0)
-			aObj:skinStatusBar{obj=_G.PetFrameHealthBar, fi=0}
-			self:adjustStatusBarPosn(_G.PetFrameManaBar, -1)
-			aObj:skinStatusBar{obj=_G.PetFrameManaBar, fi=0, nilFuncs=true}
-			-- casting bar handled in CastingBar function
-			aObj:moveObject{obj=_G.PetFrame, x=21, y=-2} -- align under Player Health/Mana bars
-			_G.PetPortrait:SetDrawLayer("BORDER") -- move portrait to BORDER layer, so it is displayed
-			aObj:moveObject{obj=_G.PetFrameHappiness, x=5}
-			self:skinUnitButton{obj=_G.PetFrame, ti=true, x1=1}
-		end
-
-	end
-	uFrames = nil
+	self:GetModule("UnitFrames", true).skinFocusF = _G.nop
+	self:UnregisterEvent("UNIT_PET")
 
 end

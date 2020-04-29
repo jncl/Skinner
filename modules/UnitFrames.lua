@@ -87,27 +87,36 @@ function module:skinPlayerF()
 		_G.PlayerFrameTexture:SetAlpha(0) -- texture file is changed dependant upon in vehicle or not
 		_G.PlayerFrameVehicleTexture:SetAlpha(0) -- texture file is changed dependant upon in vehicle or not
 		_G.PlayerStatusTexture:SetTexture(nil)
-		_G.PlayerAttackBackground:SetTexture(nil)
 		_G.PlayerRestGlow:SetTexture(nil)
 		_G.PlayerAttackGlow:SetTexture(nil)
+		_G.PlayerAttackBackground:SetTexture(nil)
+		if aObj.isClsc then
+			pF.threatIndicator = _G.PlayerAttackBackground
+		end
 
 		-- status bars
-		aObj:skinStatusBar{obj=pF.PlayerFrameHealthBarAnimatedLoss, fi=0}
-		aObj:skinStatusBar{obj=pF.healthbar, fi=0, otherTex={pF.myHealPredictionBar, pF.otherHealPredictionBar}}
+		if not aObj.isClsc then
+			aObj:skinStatusBar{obj=pF.PlayerFrameHealthBarAnimatedLoss, fi=0}
+			aObj:skinStatusBar{obj=pF.healthbar, fi=0, otherTex={pF.myHealPredictionBar, pF.otherHealPredictionBar}}
+			aObj:skinStatusBar{obj=pF.manabar, fi=0, otherTex={pF.manabar.FeedbackFrame.BarTexture, pF.myManaCostPredictionBar}, nilFuncs=true}
+			-- AlternateManaBar
+			aObj:rmRegionsTex(_G.PlayerFrameAlternateManaBar, {2, 3, 4, 5, 6}) -- border textures
+			aObj:skinStatusBar{obj=_G.PlayerFrameAlternateManaBar, fi=0, bgTex=_G.PlayerFrameAlternateManaBar.DefaultBackground}
+			aObj:moveObject{obj=_G.PlayerFrameAlternateManaBar, y=1}
+		else
+			aObj:skinStatusBar{obj=pF.healthbar, fi=0}
+			aObj:skinStatusBar{obj=pF.manabar, fi=0, nilFuncs=true}
+		end
 		self:adjustStatusBarPosn(pF.healthbar)
-		aObj:skinStatusBar{obj=pF.manabar, fi=0, otherTex={pF.manabar.FeedbackFrame.BarTexture, pF.myManaCostPredictionBar}, nilFuncs=true}
-
-		-- AlternateManaBar
-		aObj:rmRegionsTex(_G.PlayerFrameAlternateManaBar, {2, 3, 4, 5, 6}) -- border textures
-		aObj:skinStatusBar{obj=_G.PlayerFrameAlternateManaBar, fi=0, bgTex=_G.PlayerFrameAlternateManaBar.DefaultBackground}
-		aObj:moveObject{obj=_G.PlayerFrameAlternateManaBar, y=1}
 
 		-- PowerBarAlt handled in MainMenuBar function (UIF)
 
 		-- casting bar handled in CastingBar function (PF)
 
-		-- move PvP Timer text down
-		aObj:moveObject{obj=_G.PlayerPVPTimerText, y=-10}
+		if not aObj.isClsc then
+			-- move PvP Timer text down
+			aObj:moveObject{obj=_G.PlayerPVPTimerText, y=-10}
+		end
 		-- move level & rest icon down, so they are more visible
 		self:SecureHook("PlayerFrame_UpdateLevelTextAnchor", function(level)
 			_G.PlayerLevelText:SetPoint("CENTER", _G.PlayerFrameTexture, "CENTER", level == 100 and -62 or -61, -20 + lOfs)
@@ -118,90 +127,90 @@ function module:skinPlayerF()
 		aObj:keepFontStrings(_G.PlayerFrameGroupIndicator)
 		aObj:moveObject{obj=_G.PlayerFrameGroupIndicatorText, y=-1}
 
-		local function skinComboPointPlayerFrame()
+		local function skinComboPoints()
 
-			_G.ComboPointPlayerFrame.Background:SetTexture(nil)
-			for i = 1, #_G.ComboPointPlayerFrame.ComboPoints do
-				_G.ComboPointPlayerFrame.ComboPoints[i].PointOff:SetTexture(nil)
-			end
-
-		end
-
-		local y2Ofs
-		-- skin the EclipseBarFrame/ComboPointPlayerFrame, if required
-		if aObj.uCls == "DRUID" then
-			skinComboPointPlayerFrame() -- Cat Form
-		end
-
-		-- skin the ArcaneChargesFrame, if required
-		if aObj.uCls == "MAGE" then
-			_G.MageArcaneChargesFrame:DisableDrawLayer("BACKGROUND")
-		end
-
-		-- skin the MonkHarmonyBar/MonkStaggerBar, if required
-		if aObj.uCls == "MONK" then
-			-- MonkHarmonyBarFrame (Windwalker)
-			aObj:removeRegions(_G.MonkHarmonyBarFrame, {1, 2})
-			for i = 1, #_G.MonkHarmonyBarFrame.LightEnergy do
-				_G.MonkHarmonyBarFrame.LightEnergy[i]:DisableDrawLayer("BACKGROUND")
-			end
-			-- hook this to handle orb 5
-			self:SecureHook(_G.MonkPowerBar, "UpdateMaxPower", function(this)
-				if this.maxLight == 5 then
-					_G.MonkHarmonyBarFrame.LightEnergy[5]:DisableDrawLayer("BACKGROUND")
-					aObj:Unhook(_G.MonkPowerBar, "UpdateMaxPower")
+			if not aObj.isClsc then
+				_G.ComboPointPlayerFrame.Background:SetTexture(nil)
+				for i = 1, #_G.ComboPointPlayerFrame.ComboPoints do
+					_G.ComboPointPlayerFrame.ComboPoints[i].PointOff:SetTexture(nil)
 				end
-			end)
-			-- MonkStaggerBar (Brewmaster)
-			aObj:removeRegions(_G.MonkStaggerBar, {2, 3, 4, 5, 6}) -- border textures
-			aObj:skinStatusBar{obj=_G.MonkStaggerBar, fi=0, bgTex=_G.MonkStaggerBar.DefaultBackground}
-			-- extend frame if Brewmaster specialization
-			if _G.MonkStaggerBar.class == aObj.uCls
-			and _G.MonkStaggerBar.specRestriction == _G.GetSpecialization()
-			then
-				y2Ofs = 3
+			else
+				for i = 1, #_G.ComboFrame.ComboPoints do
+					_G.ComboFrame.ComboPoints[i]:DisableDrawLayer("BACKGROUND")
+				end
 			end
+
 		end
 
-		-- skin the PaladinPowerBarFrame, if required
-		if aObj.uCls == "PALADIN" then
-			_G.PaladinPowerBarFrame:DisableDrawLayer("BACKGROUND")
-			_G.PaladinPowerBarFrame.glow:DisableDrawLayer("BACKGROUND")
-			y2Ofs = 6
+		local y2Ofs = 2
+		-- skin the EclipseBarFrame/ComboPoints, if required
+		if aObj.uCls == "DRUID"
+		or aObj.uCls == "ROGUE"
+		then
+			skinComboPoints() -- Cat Form
 		end
 
-		-- skin the PriestBarFrame/InsanityBarFrame, if required
-		if aObj.uCls == "PRIEST" then
-			_G.PriestBarFrame:DisableDrawLayer("BACKGROUND")
-			for i = 1, #_G.PriestBarFrame.LargeOrbs do
-				_G.PriestBarFrame.LargeOrbs[i].Highlight:SetTexture(nil)
+		if not aObj.isClsc then
+			-- skin the ArcaneChargesFrame, if required
+			if aObj.uCls == "MAGE" then
+				_G.MageArcaneChargesFrame:DisableDrawLayer("BACKGROUND")
 			end
-			for i = 1, #_G.PriestBarFrame.SmallOrbs do
-				_G.PriestBarFrame.SmallOrbs[i].Highlight:SetTexture(nil)
+			-- skin the MonkHarmonyBar/MonkStaggerBar, if required
+			if aObj.uCls == "MONK" then
+				-- MonkHarmonyBarFrame (Windwalker)
+				aObj:removeRegions(_G.MonkHarmonyBarFrame, {1, 2})
+				for i = 1, #_G.MonkHarmonyBarFrame.LightEnergy do
+					_G.MonkHarmonyBarFrame.LightEnergy[i]:DisableDrawLayer("BACKGROUND")
+				end
+				-- hook this to handle orb 5
+				self:SecureHook(_G.MonkPowerBar, "UpdateMaxPower", function(this)
+					if this.maxLight == 5 then
+						_G.MonkHarmonyBarFrame.LightEnergy[5]:DisableDrawLayer("BACKGROUND")
+						aObj:Unhook(_G.MonkPowerBar, "UpdateMaxPower")
+					end
+				end)
+				-- MonkStaggerBar (Brewmaster)
+				aObj:removeRegions(_G.MonkStaggerBar, {2, 3, 4, 5, 6}) -- border textures
+				aObj:skinStatusBar{obj=_G.MonkStaggerBar, fi=0, bgTex=_G.MonkStaggerBar.DefaultBackground}
+				-- extend frame if Brewmaster specialization
+				if _G.MonkStaggerBar.class == aObj.uCls
+				and _G.MonkStaggerBar.specRestriction == _G.GetSpecialization()
+				then
+					y2Ofs = 3
+				end
 			end
-			-- InsanityBarFrame
-			_G.InsanityBarFrame.InsanityOn.PortraitOverlay:SetTexture(nil)
-			_G.InsanityBarFrame.InsanityOn.TopShadowStay:SetTexture(nil)
-		end
-
-		-- skin the ComboPointPlayerFrame, if required
-		if aObj.uCls == "ROGUE" then
-			skinComboPointPlayerFrame()
-		end
-
-		--	skin the TotemFrame, if required
-		if aObj.uCls == "SHAMAN" then
-			for i = 1, _G.MAX_TOTEMS do
-				_G["TotemFrameTotem" .. i .. "Background"]:SetAlpha(0) -- texture is changed
-				aObj:getRegion(aObj:getChild(_G["TotemFrameTotem" .. i], 2), 1):SetAlpha(0) -- Totem Border texture
+			-- skin the PaladinPowerBarFrame, if required
+			if aObj.uCls == "PALADIN" then
+				_G.PaladinPowerBarFrame:DisableDrawLayer("BACKGROUND")
+				_G.PaladinPowerBarFrame.glow:DisableDrawLayer("BACKGROUND")
+				y2Ofs = 6
 			end
-			aObj:moveObject{obj=_G.TotemFrameTotem1, y=lOfs} -- covers level text when active
-			y2Ofs = 9
-		end
-
-		-- skin the WarlockPowerFrame, if required
-		if aObj.uCls == "WARLOCK" then
-			_G.WarlockPowerFrame:DisableDrawLayer("BACKGROUND") -- Shard(s) background texture
+			-- skin the PriestBarFrame/InsanityBarFrame, if required
+			if aObj.uCls == "PRIEST" then
+				_G.PriestBarFrame:DisableDrawLayer("BACKGROUND")
+				for i = 1, #_G.PriestBarFrame.LargeOrbs do
+					_G.PriestBarFrame.LargeOrbs[i].Highlight:SetTexture(nil)
+				end
+				for i = 1, #_G.PriestBarFrame.SmallOrbs do
+					_G.PriestBarFrame.SmallOrbs[i].Highlight:SetTexture(nil)
+				end
+				-- InsanityBarFrame
+				_G.InsanityBarFrame.InsanityOn.PortraitOverlay:SetTexture(nil)
+				_G.InsanityBarFrame.InsanityOn.TopShadowStay:SetTexture(nil)
+			end
+			--	skin the TotemFrame, if required
+			if aObj.uCls == "SHAMAN" then
+				for i = 1, _G.MAX_TOTEMS do
+					_G["TotemFrameTotem" .. i .. "Background"]:SetAlpha(0) -- texture is changed
+					aObj:getRegion(aObj:getChild(_G["TotemFrameTotem" .. i], 2), 1):SetAlpha(0) -- Totem Border texture
+				end
+				aObj:moveObject{obj=_G.TotemFrameTotem1, y=lOfs} -- covers level text when active
+				y2Ofs = 9
+			end
+			-- skin the WarlockPowerFrame, if required
+			if aObj.uCls == "WARLOCK" then
+				_G.WarlockPowerFrame:DisableDrawLayer("BACKGROUND") -- Shard(s) background texture
+			end
 		end
 
 		-- skin the PlayerFrame, here as preceeding code changes yOfs value
@@ -213,6 +222,12 @@ function module:skinPlayerF()
 
 end
 function module:skinPetF()
+
+	if not aObj.uCls == "HUNTER"
+	and not aObj.uCls == "WARLOCK"
+	then
+		return
+	end
 
 	if db.pet
 	and not self.isSkinned["Pet"]
@@ -231,9 +246,11 @@ function module:skinPetF()
 			aObj:skinStatusBar{obj=_G.PetFrameManaBar, fi=0, nilFuncs=true}
 			-- casting bar handled in CastingBar function
 
-			-- remove debuff border
-			for i = 1, 4 do
-				_G["PetFrameDebuff" .. i .. "Border"]:SetTexture(nil)
+			if not aObj.isClsc then
+				-- remove debuff border
+				for i = 1, 4 do
+					_G["PetFrameDebuff" .. i .. "Border"]:SetTexture(nil)
+				end
 			end
 
 			self:Unhook(this, "OnShow")
