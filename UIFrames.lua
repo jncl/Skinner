@@ -4598,16 +4598,12 @@ aObj.blizzFrames[ftype].PetBattleUI = function(self)
 		self:removeRegions(this.BottomFrame.MicroButtonFrame, {1, 2, 3})
 		self:addSkinFrame{obj=this.BottomFrame, ft=ftype, y1=10}
 		if self.modBtnBs then
-			self:addButtonBorder{obj=this.BottomFrame.SwitchPetButton}
-			self:addButtonBorder{obj=this.BottomFrame.CatchButton}
-			self:addButtonBorder{obj=this.BottomFrame.ForfeitButton}
-			for i = 1, # this.BottomFrame.abilityButtons do
-				self:addButtonBorder{obj=this.BottomFrame.abilityButtons[i], reParent={this.BottomFrame.abilityButtons[i].BetterIcon}}
-			end
+			-- skin forfeit button
+			self:addButtonBorder{obj=this.BottomFrame.ForfeitButton, es=20, ofs=3, x1=-5, y1=5, clr="grey"}
 			-- hook this for pet ability buttons
 			self:SecureHook("PetBattleActionButton_UpdateState", function(this)
 				if not this.sbb then
-					self:addButtonBorder{obj=this, reParent={this.BetterIcon}}
+					self:addButtonBorder{obj=this, reParent={this.BetterIcon}, es=20, ofs=3, x1=-5, y1=5}
 				end
 				if this.sbb then
 					if this.Icon
