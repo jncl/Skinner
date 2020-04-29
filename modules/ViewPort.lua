@@ -104,6 +104,12 @@ end
 
 function module:adjustViewPort(opt)
 
+	-- handle in combat
+	if _G.InCombatLockdown() then
+	    aObj:add2Table(aObj.oocTab, {self.adjustViewPort, {self, opt}})
+	    return
+	end
+
 	-- aObj:Debug("adjustViewPort: [%s]", opt)
 
 	local scale = _G.UIParent:GetEffectiveScale()
