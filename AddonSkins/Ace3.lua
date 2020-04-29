@@ -430,6 +430,10 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 39
 			elseif objType == "QuantifyInlineGroup" then
 				aObj:applySkin{obj=obj.border, kfs=true}
 
+			-- AdiBags
+			elseif objType == "ItemList" then
+				aObj:addSkinFrame{obj=obj.content:GetParent(), kfs=true, nb=true}
+
 			-- ignore these types for now
 			elseif objType == "BlizOptionsGroup"
 			or objType == "Dropdown-Item-Execute"
@@ -486,6 +490,8 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 39
 			-- quantify
 			or objType == "QuantifyContainerWrapper"
 			or objType == "QuantifyInlineGroup"
+			-- AdiBags
+			or objType == "ItemListElement"
 			then
 				-- aObj:Debug("Ignoring: [%s]", objType)
 			-- any other types

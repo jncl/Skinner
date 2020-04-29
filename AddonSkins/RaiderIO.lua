@@ -2,7 +2,7 @@ local aName, aObj = ...
 if not aObj:isAddonEnabled("RaiderIO") then return end
 local _G = _G
 
-aObj.addonsToSkin.RaiderIO = function(self) -- v 8.1.0 (v201901160600)
+aObj.addonsToSkin.RaiderIO = function(self) -- v 8.3.0 (v202004201150)
 
 	-- Config
 	local cPF -- configParentFrame
@@ -19,36 +19,34 @@ aObj.addonsToSkin.RaiderIO = function(self) -- v 8.1.0 (v201901160600)
 	if cPF then
 		self:skinSlider{obj=cPF.scrollbar}
 		self:addSkinFrame{obj=cPF, ft="a", kfs=true, nb=true}
-		if self.modChkBtns then
-			local cF = cPF.scrollframe.content
-			for _, opt in ipairs{cF:GetChildren()} do
-				if opt.text then
-					self:skinCheckButton{obj=opt.checkButton}
-					self:skinCheckButton{obj=opt.checkButton2}
-				end
-			end
-			cF = nil
-		end
 		if self.modBtns then
 			-- buttons are children of configButtonFrame which is 3rd child of cPF
 			-- N.B. NOT really buttons
 			local function skinBtn(id)
 				local btn = aObj:getChild(aObj:getChild(cPF, 3), id)
-				aObj:addSkinButton{obj=btn, parent=btn, hook=btn, hide=true, ofs=0}
-				btn.sb:SetBackdropBorderColor(0.5, 0.5, 0.5, 1)
-				btn:SetScript("OnEnter", function(this) this.sb:SetBackdropBorderColor(aObj.bbClr:GetRGBA()) end)
-				btn:SetScript("OnLeave",  function(this) this.sb:SetBackdropBorderColor(0.5, 0.5, 0.5, 1) end)
-				btn = nil
+				if btn then
+					aObj:addSkinButton{obj=btn, parent=btn, hook=btn, hide=true, ofs=0}
+					btn.sb:SetBackdropBorderColor(0.5, 0.5, 0.5, 1)
+					btn:SetScript("OnEnter", function(this) this.sb:SetBackdropBorderColor(aObj.bbClr:GetRGBA()) end)
+					btn:SetScript("OnLeave",  function(this) this.sb:SetBackdropBorderColor(0.5, 0.5, 0.5, 1) end)
+					btn = nil
+				end
 			end
 			if self:getChild(cPF, 3) then
-				_G.C_Timer.After(0.5, function()
-					skinBtn(2)
-					skinBtn(3)
-					cPF = nil
-				end)
+				skinBtn(2)
+				skinBtn(3)
+			end
+		end
+		if self.modChkBtns then
+			for _, opt in ipairs{cPF.scrollframe.content:GetChildren()} do
+				if opt.text then
+					self:skinCheckButton{obj=opt.checkButton}
+					self:skinCheckButton{obj=opt.checkButton2}
+				end
 			end
 		end
 	end
+    cPF = nil
 
 	-- _CustomDropDownList
 	_G.RaiderIO_CustomDropDownListBackdrop:SetBackdrop(nil)
@@ -94,6 +92,7 @@ aObj.addonsToSkin.RaiderIO = function(self) -- v 8.1.0 (v201901160600)
 			_G.SlashCmdList["RaiderIO"] = orig_sCLH
 			orig_sCLH = nil
 		end
+		sUI = nil
 	end
 
 end

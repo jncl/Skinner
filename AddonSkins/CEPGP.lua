@@ -217,7 +217,9 @@ aObj.addonsToSkin.CEPGP = function(self) -- v 1.12.9
 		self:Unhook(this, "OnShow")
 	end)
 	self:SecureHookScript(_G.CEPGP_respond, "OnShow", function(this)
-		self:addSkinFrame{obj=this, ft="a", kfs=true, nb=true}
+		-- don't remove item texture by using kfs=true on addSkinFrame
+		this:DisableDrawLayer("ARTWORK")
+		self:addSkinFrame{obj=this, ft="a", nb=true}
 		if self.modBtns then
 			self:skinStdButton{obj=_G.CEPGP_respond_1}
 			self:skinStdButton{obj=_G.CEPGP_respond_2}
