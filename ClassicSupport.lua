@@ -499,13 +499,14 @@ aObj.ClassicSupport = function(self)
 				self:addButtonBorder{obj=_G["MagicResFrame" .. i], es=24, ofs=2, x1=-1, y2=-4, clr="grey"}
 			end
 			self:SecureHook("PaperDollItemSlotButton_Update", function(btn)
-				-- handle buttons with no border
-				if not btn.sbb then return end
-				if not btn.hasItem then
-					self:clrBtnBdr(btn, "grey", 1)
-					btn.icon:SetTexture(nil)
-				else
-					btn.sbb:SetBackdropBorderColor(btn.icon:GetVertexColor())
+				-- ignore buttons with no border
+				if btn.sbb then
+					if not btn.hasItem then
+						self:clrBtnBdr(btn, "grey", 1)
+						btn.icon:SetTexture(nil)
+					else
+						btn.sbb:SetBackdropBorderColor(btn.icon:GetVertexColor())
+					end
 				end
 			end)
 		end
@@ -526,8 +527,10 @@ aObj.ClassicSupport = function(self)
 						btn.icon = _G.CharacterAmmoSlotIconTexture
 					end
 				end
-				-- force quality border update
-				_G.PaperDollItemSlotButton_Update(btn)
+				if self.modBtnBs then
+					-- force quality border update
+					_G.PaperDollItemSlotButton_Update(btn)
+				end
 			end
 		end
 
@@ -1498,15 +1501,12 @@ aObj.ClassicSupport = function(self)
 			_G.QuestLogItemChooseText:SetTextColor(self.BT:GetRGB())
 			_G.QuestLogItemReceiveText:SetTextColor(self.BT:GetRGB())
 			_G.QuestLogSpellLearnText:SetTextColor(self.BT:GetRGB())
-			local btnName
 			for i = 1, _G.MAX_NUM_ITEMS do
-				btnName = "QuestLogItem" .. i
-				_G[btnName .. "NameFrame"]:SetTexture(nil)
+				_G["QuestLogItem" .. i .. "NameFrame"]:SetTexture(nil)
 				if self.modBtns then
-					 self:addButtonBorder{obj=_G[btnName], libt=true, clr="grey"}
+					 self:addButtonBorder{obj=_G["QuestLogItem" .. i], libt=true, clr="grey"}
 				end
 			end
-			btnName = nil
 			self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, x1=10, y1=-11, x2=-33, y2=48}
 			if self.modBtns then
 				self:skinExpandButton{obj=_G.QuestLogCollapseAllButton, onSB=true}
