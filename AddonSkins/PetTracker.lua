@@ -134,8 +134,10 @@ end
 
 aObj.lodAddons.PetTracker_Journal = function(self) -- v 8.3.6
 
-	-- wait for List entries to be created
-	if not ptRJ.List.buttons then
+	-- wait for RivalsJournal and its List entries to be created
+	if not ptRJ
+	or not ptRJ.List.buttons
+	then
 		_G.C_Timer.After(0.1, function()
 		    self.lodAddons.PetTracker_Journal(self)
 		end)
