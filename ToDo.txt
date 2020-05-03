@@ -25,25 +25,17 @@ ToDos
 
 ≈	O	Make sure all buttons with GOLD button borders need them as opposed to having a GREY border
 
-	I	CEPGP, reported by Psykosik, 12.04.20
-≈		-	Item icon doesn't appear on dialog frame. (CEPGP_respond)
+	I/C	, reported by rial_jang, 02.04.20
+≈		- Interface\AddOns\Skinner\ClassicSupport.lua:497: attempt to index field 'sbb' (a nil value)
+ 		  Interface\AddOns\Skinner\ClassicSupport.lua:497: in function <Interface\AddOns\Skinner\ClassicSupport.lua:492>
 
-	I	PetTracker, reported by Talyrius, 20.04.20
-√		- Skinner\AddonSkins\PetTracker-8.3.6.lua:21: attempt to get length of field 'usedFrames' (a nil value)
-√		- Skinner\AddonSkins\PetTracker-8.3.6.lua:109: Usage: SecureHookScript(object, method, [handler]): You can only hook a script on a frame object
+	I/C	, reported by rial_jang, 02.04.20 (when using Wide Quest Log)
+≈		- ...\Accountant_Classic\Libs\AceHook-3.0\AceHook-3.0-8.lua:180: Attempting to rehook already active hook SetNormalTexture.
+		  ...\Accountant_Classic\Libs\AceHook-3.0\AceHook-3.0-8.lua:180: in function <...\Accountant_Classic\Libs\AceHook-3.0\AceHook-3.0.lua:118>
+		  ...\Accountant_Classic\Libs\AceHook-3.0\AceHook-3.0-8.lua:341: in function `SecureHook'
+		  Interface\AddOns\Skinner\Modules\UIButtons.lua:309: in function `skinExpandButton'
+		  Interface\AddOns\Skinner\ClassicSupport.lua:1457: in function <Interface\AddOns\Skinner\ClassicSupport.lua:1427>
 
-	I	RaiderIO, reported by Talyrius, 20.04.20
-≈		- Skinner\MainFuncs.lua:35: attempt to index field 'obj' (a nil value)
-		[string "@Skinner\MainFuncs.lua"]:35: in function <Skinner\MainFuncs.lua:10>
-		[string "=(tail call)"]: ?
-		[string "@Skinner\AddonSkins\RaiderIO-8.1.0 (v202004201327).lua"]:37: in function <Skinner\AddonSkins\RaiderIO.lua:35>
-		[string "@Skinner\AddonSkins\RaiderIO-8.1.0 (v202004201327).lua"]:45: in function <Skinner\AddonSkins\RaiderIO.lua:44>
-
-	I	Viewport, reported by EpidemeDaBear, 21.04.20
-≈		-  [ADDON_ACTION_BLOCKED] AddOn 'Skinner' tried to call the protected function 'WorldFrame:ClearAllPoints()'.
-		[string "@!BugGrabber\BugGrabber.lua"]:519: in function <!BugGrabber\BugGrabber.lua:519>
-		[string "=[C]"]: in function `ClearAllPoints'
-		[string "@Skinner\Modules\ViewPort.lua"]:120: in function `adjustViewPort'
-		[string "@Skinner\Modules\ViewPort.lua"]:100: in function <Skinner\Modules\ViewPort.lua:99>
-
-√	S/C	Cooldown-Watcher, requested by amey0, 25.04.20
+	I/C	RollTrackerClassic, reported by amey0, 02.04.20
+≈		-  ...aceSkinner\AddonSkins\RollTrackerClassic-2.21.lua:35: attempt to index a nil value
+		   ...aceSkinner\AddonSkins\RollTrackerClassic-2.21.lua:35: in function <...aceSkinner\AddonSkins\RollTrackerClassic.lua:34>
