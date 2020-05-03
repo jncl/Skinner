@@ -25,17 +25,5 @@ ToDos
 
 ≈	O	Make sure all buttons with GOLD button borders need them as opposed to having a GREY border
 
-	I/C	, reported by rial_jang, 02.04.20
-≈		- Interface\AddOns\Skinner\ClassicSupport.lua:497: attempt to index field 'sbb' (a nil value)
- 		  Interface\AddOns\Skinner\ClassicSupport.lua:497: in function <Interface\AddOns\Skinner\ClassicSupport.lua:492>
-
-	I/C	, reported by rial_jang, 02.04.20 (when using Wide Quest Log)
-≈		- ...\Accountant_Classic\Libs\AceHook-3.0\AceHook-3.0-8.lua:180: Attempting to rehook already active hook SetNormalTexture.
-		  ...\Accountant_Classic\Libs\AceHook-3.0\AceHook-3.0-8.lua:180: in function <...\Accountant_Classic\Libs\AceHook-3.0\AceHook-3.0.lua:118>
-		  ...\Accountant_Classic\Libs\AceHook-3.0\AceHook-3.0-8.lua:341: in function `SecureHook'
-		  Interface\AddOns\Skinner\Modules\UIButtons.lua:309: in function `skinExpandButton'
-		  Interface\AddOns\Skinner\ClassicSupport.lua:1457: in function <Interface\AddOns\Skinner\ClassicSupport.lua:1427>
-
-	I/C	RollTrackerClassic, reported by amey0, 02.04.20
-≈		-  ...aceSkinner\AddonSkins\RollTrackerClassic-2.21.lua:35: attempt to index a nil value
-		   ...aceSkinner\AddonSkins\RollTrackerClassic-2.21.lua:35: in function <...aceSkinner\AddonSkins\RollTrackerClassic.lua:34>
+	I	PetTracker, reported by Talyrius, 02.02.20
+≈		- Skinner\AddonSkins\PetTracker-8.3.6.lua:138: attempt to index upvalue 'ptRJ' (a nil value)
