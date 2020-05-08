@@ -1482,6 +1482,11 @@ aObj.ClassicSupport = function(self)
 		if not self.prdb.QuestLog or self.initialized.QuestLog then return end
 		self.initialized.QuestLog = true
 
+		if IsAddOnLoaded("QuestLogEx") then
+			self.blizzFrames[ftype].QuestLog = nil
+			return
+		end
+
 		self:SecureHookScript(_G.QuestLogFrame, "OnShow", function(this)
 			_G.QuestLogCollapseAllButton:DisableDrawLayer("BACKGROUND")
 			self:keepFontStrings(_G.EmptyQuestLogFrame)
