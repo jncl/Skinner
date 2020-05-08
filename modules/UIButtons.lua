@@ -301,7 +301,7 @@ function module:skinExpandButton(opts)
 --]]
 
 	-- don't skin it twice (BUGFIX)
-	if opts.obj.sb then return end
+	if opts.obj and opts.obj.sb then return end
 
 	opts.obj:DisableDrawLayer("BACKGROUND")
 	if opts.obj:GetNormalTexture() then opts.obj:GetNormalTexture():SetAlpha(0) end
