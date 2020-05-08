@@ -25,5 +25,14 @@ ToDos
 
 ≈	O	Make sure all buttons with GOLD button borders need them as opposed to having a GREY border
 
-	I	PetTracker, reported by Talyrius, 02.02.20
-≈		- Skinner\AddonSkins\PetTracker-8.3.6.lua:138: attempt to index upvalue 'ptRJ' (a nil value)
+	I/C	BankItems, reported by rial_jang, 04.05.20
+√		-  Interface\AddOns\Skinner\AddonSkins\BankItems-2.55.lua:7: Usage: SecureHook([object], method, [handler]): Attempting to hook a non existing target
+
+	I/C reported by rial_jang, 04.05.20 (caused by QuestLogEx)
+≈		- Interface\AddOns\Skinner\Modules\UIButtons.lua:304: attempt to index field 'obj' (a nil value)
+		  Interface\AddOns\Skinner\Modules\UIButtons.lua:304: in function `skinExpandButton'
+		  Interface\AddOns\Skinner\ClassicSupport.lua:1514: in function <Interface\AddOns\Skinner\ClassicSupport.lua:1485>
+
+	I	Auctionator, reported by sunnyjang00, 08.05.20
+		- Interface\AddOns\Skinner\AddonSkins\Auctionator-100.0.6.lua:11: attempt to index field 'AuctionatorButtonFrame' (a nil value)
+		  Interface\AddOns\Skinner\AddonSkins\Auctionator-100.0.6.lua:11: in function <Interface\AddOns\Skinner\AddonSkins\Auctionator.lua:7>
