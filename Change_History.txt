@@ -1,3 +1,11 @@
+beta8.34266.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated code
+	Updated Ace3 & Altoholic skins
+	Skinned PowerRaid
+
 beta8.34220.3
 Jncl:
 	ToDo.txt
