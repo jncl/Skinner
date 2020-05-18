@@ -184,6 +184,7 @@
 <script file="AddonSkins\Possessions.lua"/>
 <script file="AddonSkins\Postal.lua"/>
 <script file="AddonSkins\PowerAuras.lua"/>
+<script file="AddonSkins\PowerRaid.lua"/>
 <script file="AddonSkins\Prat3.lua"/>
 <script file="AddonSkins\PreformAVEnabler.lua"/>
 <script file="AddonSkins\PremadeGroupsFilter.lua"/>

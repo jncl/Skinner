@@ -144,6 +144,7 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 39
 				end
 			elseif objType == "Button" then
 				if aObj.modBtns then
+					obj.frame.sb = nil -- allow button to be reskinned (Power Raid does this)
 					aObj:skinStdButton{obj=obj.frame, x1=5, x2=-5}
 				end
 			elseif objType == "Keybinding" then
