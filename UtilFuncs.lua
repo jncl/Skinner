@@ -1352,8 +1352,7 @@ function aObj:SetupCmds()
 			if not showKids then return end
 			if type(lvl) == "string" and lvl:find("c") == 2 and noDepth then return end
 
-	        local kids = {frame:GetChildren()}
-	        for k, child in ipairs(kids) do
+	        for k, child in ipairs{frame:GetChildren()} do
 				local objType = child:GetObjectType()
 				showIt("[lvl%sc%s : %s : %s : %s : %s : %s]", lvl, k, child, child.GetWidth and Round(child:GetWidth()) or "nil", child.GetHeight and Round(child:GetHeight()) or "nil", child:GetFrameLevel() or "nil", child:GetFrameStrata() or "nil")
 				if objType == "Frame"
@@ -1366,7 +1365,6 @@ function aObj:SetupCmds()
 					getChildren(child, lvl .. "c" .. k)
 				end
 	        end
-	        kids = nil
 
 		end
 
