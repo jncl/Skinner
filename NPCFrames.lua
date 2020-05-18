@@ -910,11 +910,11 @@ aObj.blizzFrames[ftype].QuestInfo = function(self)
 			frame.XPFrame.ReceiveText:SetTextColor(aObj.BT:GetRGB())
 		end
 		-- RewardButtons
-		for i = 1, #frame.RewardButtons do
-			frame.RewardButtons[i].NameFrame:SetTexture(nil)
+		for _, btn in pairs(frame.RewardButtons) do
+			btn.NameFrame:SetTexture(nil)
 			if aObj.modBtnBs then
-				aObj:addButtonBorder{obj=frame.RewardButtons[i], libt=true}
-				aObj:clrButtonBorder(frame.RewardButtons[i])
+				aObj:addButtonBorder{obj=btn, libt=true}
+				aObj:clrButtonBorder(btn)
 			end
 		end
 		-- SpellReward
