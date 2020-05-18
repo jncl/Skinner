@@ -42,7 +42,8 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 39
 			if objType == "Dropdown" then
 				aObj:skinAceDropdown(obj, nil, 1)
 			elseif objType == "Dropdown-Pullout" then
-				aObj:applySkin{obj=obj.frame}
+				aObj:skinSlider{obj=obj.slider}
+				aObj:adjWidth{obj=obj.slider, adj=6}
 			elseif objType == "DropdownGroup"
 			or objType == "InlineGroup"
 			or objType == "TabGroup"

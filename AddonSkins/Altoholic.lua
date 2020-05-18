@@ -1,4 +1,4 @@
-local aName, aObj = ...
+local _, aObj = ...
 if not aObj:isAddonEnabled("Altoholic") then return end
 local _G = _G
 
@@ -19,9 +19,10 @@ local function skinSortBtns(btnArray)
 	for i = 1, btnArray.numButtons do
 		btn = btnArray["Sort" .. i]
 		if i == 1 then aObj:moveObject{obj=btn, y=6} end
-		aObj:adjHeight{obj=btn, adj=5}
+		-- aObj:adjHeight{obj=btn, adj=5}
 		aObj:keepRegions(btn, {4, 5, 6}) -- N.B. region 6 is the highlight, 4 is the text & 5 is the arrow
-		aObj:applySkin(btn)
+		-- aObj:applySkin(btn)
+		aObj:addSkinFrame{obj=btn, ft="a", nb=true, y1=-1, x2=-1, y2=-3}
 	end
 	btn = nil
 
@@ -78,7 +79,7 @@ local function skinDDMLists()
 
 end
 
-aObj.addonsToSkin.Altoholic = function(self) -- r190
+aObj.addonsToSkin.Altoholic = function(self) -- 8.3-008
 
 	-- Main Frame
 	self:skinEditBox{obj=_G.AltoholicFrame_SearchEditBox, regs={9}}
@@ -157,7 +158,7 @@ end
 
 aObj.lodAddons.Altoholic_Summary = function(self)
 
-	skinMenuItems(_G.AltoholicTabSummary, 6) -- ? 7 CurrentMode
+	skinMenuItems(_G.AltoholicTabSummary, 7)
 	skinSortBtns(_G.AltoholicTabSummary.SortButtons)
 	if self.modBtns then
 		self:skinExpandButton{obj=_G.AltoholicTabSummary.ToggleView, sap=true}
@@ -330,6 +331,11 @@ aObj.lodAddons.Altoholic_Achievements = function(self)
 
 	skinDDMLists()
 
+	if self.modBtnBs then
+		self:addButtonBorder{obj=_G.AltoholicTabAchievementsScrollLeftButton, ofs=0, y1=1, y2=-2, clr="grey"}
+		self:addButtonBorder{obj=_G.AltoholicTabAchievementsScrollRightButton, ofs=0, y1=1, y2=-2, clr="grey"}
+	end
+
 end
 
 aObj.lodAddons.Altoholic_Agenda = function(self)
@@ -351,5 +357,10 @@ aObj.lodAddons.Altoholic_Grids = function(self)
 	UIDDM_SetButtonWidth(_G.AltoholicTabGrids.SelectRealm, 24)
 
 	skinDDMLists()
+
+	if self.modBtnBs then
+		self:addButtonBorder{obj=_G.AltoholicFrameGridsScrollLeftButton, ofs=0, y1=1, y2=-2, clr="grey"}
+		self:addButtonBorder{obj=_G.AltoholicFrameGridsScrollRightButton, ofs=0, y1=1, y2=-2, clr="grey"}
+	end
 
 end
