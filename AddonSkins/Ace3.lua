@@ -18,12 +18,6 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 39
 	if self.initialized.Ace3 then return end
 	self.initialized.Ace3 = true
 
-	-- create function(s) to be used in other skins
-	function self:skinAceDropdown(obj, x2, y2)
-		self:skinDropDown{obj=obj.dropdown, rp=true, x2=x2 or nil, y2=y2 or nil}
-		self:applySkin{obj=obj.pullout.frame}
-	end
-
 	local function skinAceGUI(obj, objType)
 
 		local objVer = AceGUI.GetWidgetVersion and AceGUI:GetWidgetVersion(objType) or 0
