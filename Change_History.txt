@@ -1,3 +1,11 @@
+beta8.34266.2
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Bugfix for QuestReward button skinning
+	Move function from Ace3 skin to UtilFuncs
+	Bugfix for PowerRaid skin
+
 beta8.34266.1
 Jncl:
 	ToDo.txt
