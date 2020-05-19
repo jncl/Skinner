@@ -79,7 +79,7 @@ local function skinDDMLists()
 
 end
 
-aObj.addonsToSkin.Altoholic = function(self) -- 8.3-008
+aObj.addonsToSkin.Altoholic = function(self) -- 8.3-006/8.3-008
 
 	-- Main Frame
 	self:skinEditBox{obj=_G.AltoholicFrame_SearchEditBox, regs={9}}
@@ -158,7 +158,7 @@ end
 
 aObj.lodAddons.Altoholic_Summary = function(self)
 
-	skinMenuItems(_G.AltoholicTabSummary, 7)
+	skinMenuItems(_G.AltoholicTabSummary, _G.AltoholicTabSummary.MenuItem7 and 7 or 6)
 	skinSortBtns(_G.AltoholicTabSummary.SortButtons)
 	if self.modBtns then
 		self:skinExpandButton{obj=_G.AltoholicTabSummary.ToggleView, sap=true}
