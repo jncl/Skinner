@@ -213,6 +213,7 @@
 <script file="AddonSkins\Recount.lua"/>
 <script file="AddonSkins\REFlex.lua"/>
 <script file="AddonSkins\Rematch.lua"/>
+<script file="AddonSkins\RepHelper.lua"/>
 <script file="AddonSkins\RollTrackerClassic.lua"/>
 <script file="AddonSkins\Scrap.lua"/>
 <script file="AddonSkins\ScrollMaster.lua"/>
