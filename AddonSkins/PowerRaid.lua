@@ -35,7 +35,7 @@ aObj.addonsToSkin.PowerRaid = function(self) -- v 3.2.0
 				end)
 			elseif child.type == "Button" then
 				-- resize Consumable Tabs' min/max button skins
-				if aObj.modBtns
+				if child.frame.sb
 				and _G.Round(child.frame:GetWidth()) == 12 then
 					child.frame.sb:SetPoint("TOPLEFT", child.frame, "TOPLEFT", -2, 2)
 					child.frame.sb:SetPoint("BOTTOMRIGHT", child.frame, "BOTTOMRIGHT", 2, -2)
