@@ -25,11 +25,12 @@ ToDos
 
 ≈	O	Make sure all buttons with GOLD button borders need them as opposed to having a GREY border
 
-	I	SorhaQuestLog, reported by Talyrius, 18.05.20
-√		- Skinner\NPCFrames.lua:914: attempt to index field '?' (a nil value)
-		[string "@Skinner\NPCFrames.lua"]:914: in function <Skinner\NPCFrames.lua:901>
-		[string "@Skinner\NPCFrames.lua"]:963: in function <Skinner\NPCFrames.lua:942>
-		[string "@Skinner\NPCFrames.lua"]:995: in function <Skinner\NPCFrames.lua:994>
+√	S+C	RepHelper, requested by a0dfan, 18.05.20
 
-	I/C	PowerRaid, reported by Psykosik, 18.05.20
-√		-  Interface\AddOns\Skinner\AddonSkins\PowerRaid.lua:39: attempt to index field 'sb' (a nil value)
+	I/C	PowerRaid, reported by Psykosik, 19.05.20
+√		- Interface\AddOns\Skinner\AddonSkins\PowerRaid.lua:40: attempt to index field 'sb' (a nil value)
+
+	I	Altoholic 8.3.006, reported by Shimiya, 19.05.20
+√		- Skinner\UtilFuncs.lua:749: attempt to index local 'obj' (a nil value)
+		[string "@Skinner\AddonSkins\Altoholic-8.3-006.lua"]:10: in function <Skinner\AddonSkins\Altoholic.lua:5>
+		[string "@Skinner\AddonSkins\Altoholic-8.3-006.lua"]:161: in function <Skinner\AddonSkins\Altoholic.lua:159>
