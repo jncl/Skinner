@@ -3,7 +3,6 @@
 
 <!-- Addon skins are here, must be prefixed by AddonSkins\ -->
 
-<script file="AddonSkins\_DevPadGUI.lua"/>
 <script file="AddonSkins\Accountant.lua"/>
 <script file="AddonSkins\Accountant_Classic.lua"/>
 <script file="AddonSkins\Ace3.lua"/>
@@ -63,8 +62,8 @@
 <script file="AddonSkins\ClassTrainerPlus.lua"/>
 <script file="AddonSkins\Clique.lua"/>
 <script file="AddonSkins\Collectinator.lua"/>
-<script file="AddonSkins\CollectMe.lua"/>
 <script file="AddonSkins\CollectionShop.lua"/>
+<script file="AddonSkins\CollectMe.lua"/>
 <script file="AddonSkins\Combuctor.lua"/>
 <script file="AddonSkins\CombustionHelper.lua"/>
 <script file="AddonSkins\CompactMissions.lua"/>
@@ -112,9 +111,9 @@
 <script file="AddonSkins\GnomishVendorShrinker.lua"/>
 <script file="AddonSkins\GroupCalendar5.lua"/>
 <script file="AddonSkins\Growler.lua"/>
-<script file="AddonSkins\Guild_Roster_Manager.lua"/>
 <script file="AddonSkins\GuildBankSearch.lua"/>
 <script file="AddonSkins\GuildLaunchCT_RaidTracker.lua"/>
+<script file="AddonSkins\Guild_Roster_Manager.lua"/>
 <script file="AddonSkins\HandyNotes.lua"/>
 <script file="AddonSkins\HaveWeMet.lua"/>
 <script file="AddonSkins\HealBot.lua"/>
@@ -122,18 +121,19 @@
 <script file="AddonSkins\HoloFriends.lua"/>
 <script file="AddonSkins\honorspy.lua"/>
 <script file="AddonSkins\InboxMailBag.lua"/>
-<script file="AddonSkins\ItemDB.lua"/>
 <script file="AddonSkins\InspectorGadgetzan.lua"/>
+<script file="AddonSkins\InvenRaidFrames3.lua"/>
 <script file="AddonSkins\Inventorian.lua"/>
+<script file="AddonSkins\ItemDB.lua"/>
 <script file="AddonSkins\KeystoneCommander.lua"/>
 <script file="AddonSkins\Leatrix_Plus.lua"/>
 <script file="AddonSkins\LegacyQuest.lua"/>
-<script file="AddonSkins\LibAddonDropDownTemplates.lua"/>
 <script file="AddonSkins\LibAboutPanel.lua"/>
+<script file="AddonSkins\LibAddonDropDownTemplates.lua"/>
+<script file="AddonSkins\LibBlueOption.lua"/>
 <script file="AddonSkins\LibDBIcon.lua"/>
 <script file="AddonSkins\LibDialog.lua"/>
 <script file="AddonSkins\LibDropdown.lua"/>
-<script file="AddonSkins\LibUIDropDownMenu.lua"/>
 <script file="AddonSkins\LibExtraTip.lua"/>
 <script file="AddonSkins\LibInit.lua"/>
 <script file="AddonSkins\LibKeyBound.lua"/>
@@ -143,6 +143,7 @@
 <script file="AddonSkins\LibTextDump.lua"/>
 <script file="AddonSkins\LibToast.lua"/>
 <script file="AddonSkins\LibTradeSkillScan.lua"/>
+<script file="AddonSkins\LibUIDropDownMenu.lua"/>
 <script file="AddonSkins\LibXUI.lua"/>
 <script file="AddonSkins\LilSparkysWorkshop.lua"/>
 <script file="AddonSkins\LiteBag.lua"/>
@@ -188,6 +189,7 @@
 <script file="AddonSkins\Prat3.lua"/>
 <script file="AddonSkins\PreformAVEnabler.lua"/>
 <script file="AddonSkins\PremadeGroupsFilter.lua"/>
+<script file="AddonSkins\ProfessionsComplete.lua"/>
 <script file="AddonSkins\ProfessionsVault.lua"/>
 <script file="AddonSkins\ProspectBar.lua"/>
 <script file="AddonSkins\Puggle.lua"/>
@@ -217,8 +219,8 @@
 <script file="AddonSkins\RollTrackerClassic.lua"/>
 <script file="AddonSkins\Scrap.lua"/>
 <script file="AddonSkins\ScrollMaster.lua"/>
-<script file="AddonSkins\ServerHop.lua"/>
 <script file="AddonSkins\SecureTabs.lua"/>
+<script file="AddonSkins\ServerHop.lua"/>
 <script file="AddonSkins\SilverDragon.lua"/>
 <script file="AddonSkins\Simulationcraft.lua"/>
 <script file="AddonSkins\Skada.lua"/>
@@ -258,5 +260,6 @@
 <script file="AddonSkins\xMerchant.lua"/>
 <script file="AddonSkins\ZPerl.lua"/>
 <script file="AddonSkins\ZygorGuidesViewer.lua"/>
+<script file="AddonSkins\_DevPadGUI.lua"/>
 
 </Ui>
