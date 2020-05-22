@@ -14,7 +14,7 @@ if AceGUI then
 	end, true)
 end
 
-aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 39
+aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 	if self.initialized.Ace3 then return end
 	self.initialized.Ace3 = true
 
