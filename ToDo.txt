@@ -25,6 +25,4 @@ ToDos
 
 ≈	O	Make sure all buttons with GOLD button borders need them as opposed to having a GREY border
 
-√	S/C	InvenRaidFrames3_Classic, requested by sunnyjang00, 20.05.20
-
-√	S	ProfessionsComplete, requested by a0dfan, 21.05.20
+√	S/C	Restocker, requested by amey0, 26.05.20
