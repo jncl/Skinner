@@ -661,26 +661,25 @@ local function __skinDropDown(opts)
 		opts.obj.ddTex:SetHeight(17)
 	end
 
-	local xOfs1 = opts.x1 or 16
-	local yOfs1 = opts.y1 or -1
-	local xOfs2 = opts.x2 or -16
-	local yOfs2 = opts.y2 or 7
+	opts.x1 = opts.x1 or 16
+	opts.y1 = opts.y1 or -1
+	opts.x2 = opts.x2 or -16
+	opts.y2 = opts.y2 or 7
 	-- skin the frame
 	if aObj.prdb.UIDropDownMenu then
 		-- CHANGED: ft ... or "a" is used to stop buttons being skinned automatically
-		aObj:addSkinFrame{obj=opts.obj, ft=opts.ftype or "a", aso={ng=true, bd=5}, rp=opts.rp, x1=xOfs1, y1=yOfs1, x2=xOfs2, y2=yOfs2}
+		aObj:addSkinFrame{obj=opts.obj, ft=opts.ftype or "a", aso={ng=true, bd=5}, rp=opts.rp, x1=opts.x1, y1=opts.y1, x2=opts.x2, y2=opts.y2}
 	end
 	-- add a button border around the dd button
 	if not opts.noBB then
 		if opts.lrg then
 			aObj:addButtonBorder{obj=opts.obj.Button, es=12, ofs=0}
 		else
-			xOfs1 = opts.bx1 and opts.obj:GetWidth() + 10 or 1
+			local xOfs1 = opts.bx1 and opts.obj:GetWidth() + 10 or 1
 			aObj:addButtonBorder{obj=opts.obj.Button or _G[opts.obj:GetName() .. "Button"], es=12, ofs=-2, x1=xOfs1}
+			xOfs1 = nil
 		end
 	end
-
-	xOfs1, yOfs1, xOfs2, yOfs2 = nil, nil, nil, nil
 
 end
 function aObj:skinDropDown(...)
