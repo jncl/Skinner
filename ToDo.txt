@@ -25,4 +25,6 @@ ToDos
 
 ≈	O	Make sure all buttons with GOLD button borders need them as opposed to having a GREY border
 
-√	S/C	Restocker, requested by amey0, 26.05.20
+	I/C	Auctionator, reported by sunnyjang00, 02.06.20
+√		- Interface\AddOns\Skinner\AddonSkins\Auctionator-100.0.7.lua:9: attempt to index field 'State' (a nil value)
+		  Interface\AddOns\Skinner\AddonSkins\Auctionator-100.0.7.lua:9: in function <Interface\AddOns\Skinner\AddonSkins\Auctionator.lua:7>
