@@ -21,9 +21,9 @@ do
 	local buildInfo = {
 		beta        = {"9.0.0", 99999}, -- Shadowlands 2020
 		classic_ptr = {"1.13.5", 34138},
-		retail_ptr  = {"8.3.0", 33775},
-		retail      = {"8.3.0", 34220},
-		classic     = {"1.13.4", 34266},
+		retail_ptr  = {"8.3.0", 34601},
+		retail      = {"8.3.0", 34601},
+		classic     = {"1.13.4", 34600},
 		curr        = {_G.GetBuildInfo()},
    	}
 
