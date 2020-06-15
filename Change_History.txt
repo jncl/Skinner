@@ -1,3 +1,11 @@
+beta8.34601.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Updated DropDown skinning code
+	Skinned Auctionator Classic Fix
+
 beta8.34266.5
 Jncl:
 	ToDo.txt
