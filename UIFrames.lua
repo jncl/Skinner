@@ -4108,6 +4108,8 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 		end
 		_G.QueueStatusMinimapButtonBorder:SetTexture(nil)
 		self:addSkinButton{obj=_G.QueueStatusMinimapButton, ft=ftype, sap=true}
+		-- stop Eye texture being moved below skin frame
+		_G.QueueStatusMinimapButton.Eye.SetFrameLevel = _G.nop
 		-- skin any moved Minimap buttons if required
 		if IsAddOnLoaded("MinimapButtonFrame") then mmKids(_G.MinimapButtonFrame) end
 		-- show the Bongos minimap icon if required
