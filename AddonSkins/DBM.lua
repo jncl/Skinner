@@ -3,7 +3,9 @@ if not aObj:isAddonEnabled("DBM-Core") then return end
 local _G = _G
 local pairs, ipairs = _G.pairs, _G.ipairs
 
-aObj.addonsToSkin["DBM-Core"] = function(self) -- v 8.0.1
+aObj.addonsToSkin["DBM-Core"] = function(self) -- v 8.3.25
+
+	local ver = _G.tonumber(_G.GetAddOnMetadata("DBM-Core", "Version"):sub(1, 2))
 
 	-- hook this to skin the InfoFrame frame (actually a tooltip)
 	self:SecureHook(_G.DBM.InfoFrame, "Show", function(this, _, event, ...)
@@ -31,8 +33,10 @@ aObj.addonsToSkin["DBM-Core"] = function(self) -- v 8.0.1
 	end)
 
 	-- set default Timer bar texture
-	_G.DBT_PersistentOptions.Texture = self.db.profile.StatusBar.texture
-	-- apply the change
+	if _G.DBT_PersistentOptions then
+		_G.DBT_PersistentOptions.Texture = self.db.profile.StatusBar.texture
+	end
+	-- apply the new texture
 	_G.DBM.Bars:SetOption("Texture", self.sbTexture)
 
 	-- minimap button
@@ -47,109 +51,125 @@ aObj.addonsToSkin["DBM-Core"] = function(self) -- v 8.0.1
 
 end
 
-aObj.lodAddons["DBM-GUI"] = function(self) -- v 8.0.1
+aObj.lodAddons["DBM-GUI"] = function(self) -- v 8.3.25
 
 	--	Options Frame
 	self:SecureHookScript(_G.DBM_GUI_OptionsFrame, "OnShow", function(this)
-		self:skinSlider{obj=_G.DBM_GUI_OptionsFrameBossModsListScrollBar}
-		self:addSkinFrame{obj=_G.DBM_GUI_OptionsFrameBossMods, ft="a", kfs=true, nb=true}
-		self:addSkinFrame{obj=_G.DBM_GUI_OptionsFrameDBMOptions, ft="a", kfs=true, nb=true}
-		self:skinSlider{obj=_G.DBM_GUI_OptionsFramePanelContainerFOVScrollBar}
+		self:addSkinFrame{obj=_G.DBM_GUI_OptionsFrameList, ft="a", kfs=true, nb=true}
 		self:addSkinFrame{obj=_G.DBM_GUI_OptionsFramePanelContainer, ft="a", nb=true}
-		self:addSkinFrame{obj=_G.DBM_GUI_OptionsFrame, ft="a", kfs=true, hdr=true, nb=true}
-		self:skinStdButton{obj=_G.DBM_GUI_OptionsFrameOkay}
-		self:skinStdButton{obj=_G.DBM_GUI_OptionsFrameWebsiteButton}
+		self:skinSlider{obj=_G.DBM_GUI_OptionsFramePanelContainerFOV.ScrollBar}
+		self:getLastChild( _G.DBM_GUI_OptionsFramePanelContainerFOVScrollBar):SetBackdrop(nil)
+		self:addSkinFrame{obj=this, ft="a", kfs=true, hdr=true, nb=true}
+		if self.modBtns then
+			self:skinStdButton{obj=_G.DBM_GUI_OptionsFrameOkay}
+			self:skinStdButton{obj=_G.DBM_GUI_OptionsFrameWebsiteButton}
+		end
 		-- Tabs
 		_G.DBM_GUI_OptionsFrame.numTabs = 2
-		self:skinTabs{obj=_G.DBM_GUI_OptionsFrame, ignore=true, up=true, lod=true, y2=-3}
+		self:skinTabs{obj=_G.DBM_GUI_OptionsFrame, ignore=true, up=true, lod=true, ignht=true, y2=-3}
 		-- hook this to manage tabs
 		self:SecureHook(_G.DBM_GUI_OptionsFrame, "ShowTab", function(this, tab)
 			_G.PanelTemplates_SetTab(this, tab)
 		end)
 		-- skin toggle buttons
 		local frame, plus
-		for _, v in pairs{"BossMods", "DBMOptions"} do
-			frame = _G["DBM_GUI_OptionsFrame" .. v]
-			for i = 1, #frame.buttons do
-	            plus = false
-	            if frame.buttons[i].element
-	            and frame.buttons[i].element.haschilds
-	            and not frame.buttons[i].element.showsub
-	            then
-	                plus = true
-            	end
-				self:skinExpandButton{obj=_G["DBM_GUI_OptionsFrame" .. v .. "Button" .. i .. "Toggle"], sap=true, plus=plus}
-			end
+		frame = _G["DBM_GUI_OptionsFrameList"]
+		for i = 1, #frame.buttons do
+            plus = false
+            if frame.buttons[i].element
+            and frame.buttons[i].element.haschilds
+            and not frame.buttons[i].element.showsub
+            then
+                plus = true
+        	end
+			self:skinExpandButton{obj=_G["DBM_GUI_OptionsFrameListButton" .. i .. "Toggle"], sap=true, plus=plus}
 		end
 		-- skin the Bosses LoadAddOn buttons
-		for k, addon in ipairs(_G.DBM.AddOns) do
-			if addon.panel.frame:GetNumChildren() == 1 then
-				self:skinStdButton{obj=self:getChild(addon.panel.frame, 1)}
+		if self.modBtns then
+			for _, addon in ipairs(_G.DBM.AddOns) do
+				if addon.panel.frame:GetNumChildren() == 1 then
+					self:skinStdButton{obj=self:getChild(addon.panel.frame, 1)}
+				end
 			end
 		end
 		-- skin dropdown menu
 		self:addSkinFrame{obj=_G.DBM_GUI_DropDown, ft="a", nb=true}
+
 		self:Unhook(this, "OnShow")
 	end)
 
 	local function skinSubPanels(panel)
 
 		for _, subPanel in pairs(panel.areas) do
-			if not subPanel.frame.sf then
-				aObj:addSkinFrame{obj=subPanel.frame, ft="a", nb=true}
-			end
-			-- check to see if any children are dropdowns or buttons
-			for _, child in ipairs{subPanel.frame:GetChildren()} do
-				if aObj:isDropDown(child) then
-					aObj:skinDropDown{obj=child, rp=true, x2=34}
-                elseif child:IsObjectType("CheckButton") then -- NewSpecialWarning object
-					aObj:skinCheckButton{obj=child}
-                    for _, child2 in ipairs{child:GetChildren()} do
-                        if aObj:isDropDown(child2) then
-        					aObj:skinDropDown{obj=child2, rp=true, x1=16, x2=34, y2=-1}
-                        end
-                    end
-				elseif child:IsObjectType("Button")
-				and not child.sb
-				then
-					-- handle expand button (Spell/Skill Cooldowns)
-					if _G.Round(child:GetHeight()) == 15
-					and _G.Round(child:GetWidth()) == 15
+			if not subPanel.sknd then
+				aObj:applySkin{obj=subPanel.frame, kfs=true} -- N.B. use applySkin instead os addSkinFrame to maintain size
+				-- check to see if any children are dropdowns or buttons
+				for _, child in ipairs{subPanel.frame:GetChildren()} do
+					if aObj:isDropDown(child) then
+						aObj:skinDropDown{obj=child, rp=true, x2=34}
+	                elseif child:IsObjectType("CheckButton")
+					and aObj.modChkBtns
+					then -- NewSpecialWarning object
+						aObj:skinCheckButton{obj=child}
+	                    for _, child2 in ipairs{child:GetChildren()} do
+	                        if aObj:isDropDown(child2) then
+	        					aObj:skinDropDown{obj=child2, rp=true, x1=16, x2=34, y2=-1}
+	                        end
+	                    end
+					elseif child:IsObjectType("Button")
+					and aObj.modBtns
 					then
-						child:SetSize(8, 8)
-						aObj:skinExpandButton{obj=child}
-					else
-						-- increase high of short, narrow buttons
-						if _G.Round(child:GetHeight()) < 15 then
-							child:SetHeight(15)
+						-- handle expand button (Spell/Skill Cooldowns)
+						if _G.Round(child:GetHeight()) == 15
+						and _G.Round(child:GetWidth()) == 15
+						then
+							child:SetSize(8, 8)
+							aObj:skinExpandButton{obj=child}
+						else
+							-- increase high of short, narrow buttons
+							if _G.Round(child:GetHeight()) < 15 then
+								child:SetHeight(15)
+							end
+							aObj:skinStdButton{obj=child, x1=2, x2=-2}
 						end
-						aObj:skinStdButton{obj=child}
+	                elseif child:IsObjectType("EditBox") then
+	                    aObj:skinEditBox{obj=child, regs={15}}
+					elseif child:IsObjectType("Slider") then
+						aObj:skinSlider{obj=child, hgt=-2}
 					end
-                elseif child:IsObjectType("EditBox") then
-                    aObj:skinEditBox{obj=child, regs={6}}
-				elseif child:IsObjectType("Slider") then
-					aObj:skinSlider{obj=child}
 				end
+				subPanel.sknd = true
 			end
 		end
 
 	end
 
+	-- skin existing config panels
+	for _, panel in pairs(_G.DBM_GUI.panels) do
+		skinSubPanels(panel)
+	end
 	-- hook this to skin sub panels
 	self:SecureHook(_G.DBM_GUI, "CreateNewPanel", function(this, ...)
-		for _, panel in pairs(_G.DBM_GUI.panels) do
-			self:secureHook(panel, "CreateArea", function(this, ...)
-				_G.C_Timer.After(0.25, function() -- wait for it to be populated
-					skinSubPanels(this)
+		if this.frame then
+			if not this.panels[#this.panels].areas then
+				self:SecureHook(this.panels[#this.panels], "CreateArea", function(this, ...)
+					_G.C_Timer.After(0.25, function() -- wait for it to be populated
+						skinSubPanels(this)
+					end)
+					self:Unhook(this, "CreateArea")
 				end)
-			end)
+			end
 		end
 	end)
 
 	-- hook this to skin BossMod sub panels button in TRHC
 	self:SecureHook(_G.DBM_GUI, "CreateBossModPanel", function(this, mod)
-		self:skinStdButton{obj=self:getChild(mod.panel.frame, 1)}
-		self:skinCheckButton{obj=self:getChild(mod.panel.frame, 2)}
+		if self.modBtns then
+			self:skinStdButton{obj=self:getChild(mod.panel.frame, 1), ofs=0}
+		end
+		if self.modChkBtns then
+			self:skinCheckButton{obj=self:getChild(mod.panel.frame, 2)}
+		end
 	end)
 
 end

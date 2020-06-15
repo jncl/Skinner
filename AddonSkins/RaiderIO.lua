@@ -2,7 +2,7 @@ local aName, aObj = ...
 if not aObj:isAddonEnabled("RaiderIO") then return end
 local _G = _G
 
-aObj.addonsToSkin.RaiderIO = function(self) -- v 8.3.0 (v202004201150)
+aObj.addonsToSkin.RaiderIO = function(self) -- v 8.1.0 (v202006100600)
 
 	-- Config
 	local cPF -- configParentFrame
@@ -54,10 +54,8 @@ aObj.addonsToSkin.RaiderIO = function(self) -- v 8.3.0 (v202004201150)
 	self:addSkinFrame{obj=_G.RaiderIO_CustomDropDownList, ft="a", kfs=true, nb=true}
 
 	-- _ProfileTooltip
-	_G.C_Timer.After(0.1, function()
-		self:add2Table(self.ttList, _G.RaiderIO_ProfileTooltip)
-		_G.RaiderIO_ProfileTooltip:SetScript("OnShow", nil)
-	end)
+	_G.RaiderIO_ProfileTooltip:SetScript("OnShow", nil)
+	self:add2Table(self.ttList, _G.RaiderIO_ProfileTooltip)
 
 	-- SearchUI
 	-- hook original function to skin searchUI
@@ -85,10 +83,7 @@ aObj.addonsToSkin.RaiderIO = function(self) -- v 8.3.0 (v202004201150)
 			btn:SetPoint("TOP", aObj:getChild(sUI, 1), "BOTTOM", 0, 0)
 			aObj:addSkinFrame{obj=sUI, ft="a", kfs=true, nb=true}
 			sUI, btn = nil, nil
-			-- _SearchTooltip
-			_G.C_Timer.After(0.1, function()
-				aObj:add2Table(aObj.ttList, _G.RaiderIO_SearchTooltip)
-			end)
+			aObj:add2Table(aObj.ttList, _G.RaiderIO_SearchTooltip)
 			_G.SlashCmdList["RaiderIO"] = orig_sCLH
 			orig_sCLH = nil
 		end
