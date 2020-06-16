@@ -15,7 +15,6 @@ aObj.addonsToSkin.RaiderIO = function(self) -- v 8.1.0 (v202006100600)
 		end
 	end)
 	self:scanUIParentsChildren()
-
 	if cPF then
 		self:skinSlider{obj=cPF.scrollbar}
 		self:addSkinFrame{obj=cPF, ft="a", kfs=true, nb=true}
@@ -54,8 +53,11 @@ aObj.addonsToSkin.RaiderIO = function(self) -- v 8.1.0 (v202006100600)
 	self:addSkinFrame{obj=_G.RaiderIO_CustomDropDownList, ft="a", kfs=true, nb=true}
 
 	-- _ProfileTooltip
-	_G.RaiderIO_ProfileTooltip:SetScript("OnShow", nil)
 	self:add2Table(self.ttList, _G.RaiderIO_ProfileTooltip)
+	-- allow for slow startup
+	_G.C_Timer.After(0.5, function()
+		_G.RaiderIO_ProfileTooltip:SetScript("OnShow", nil)
+	end)
 
 	-- SearchUI
 	-- hook original function to skin searchUI
