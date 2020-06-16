@@ -1,3 +1,10 @@
+beta8.34601.2
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated Minimap Buttons skin
+	Updated DBM & RaiderIO skins
+
 beta8.34601.1
 Jncl:
 	ToDo.txt
