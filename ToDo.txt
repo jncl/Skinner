@@ -25,8 +25,11 @@ ToDos
 
 ≈	O	Make sure all buttons with GOLD button borders need them as opposed to having a GREY border
 
-	I	RaiderIO, reported by a0dfan, 10.06.20
-√		- ProfileTooltip isn't being skinned.
+	I/C	CEPGP, reported by thesinba, 16.06.20
+√		- Interface\AddOns\Skinner\AddonSkins\CEPGP.lua:283: Usage: SecureHookScript(object, method, [handler]): You can only hook a script on a frame object
 
-	I	DBM, reported by Shimiya, 11.06.20
-√		- Skinner\AddonSkins\DBM-8.3.26 alpha.20200605000000.lua:34: attempt to index field 'DBT_PersistentOptions' (a nil value)
+	I	Altoholic, reported by MacallanTwoFive, 16.06.20
+√		- button needs skinning
+
+	I	RaiderIO, reported by a0dfan, 16.06.20
+≈		- ProfileTooltip still has original border
