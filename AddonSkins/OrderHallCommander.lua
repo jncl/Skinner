@@ -2,7 +2,7 @@ local aName, aObj = ...
 if not aObj:isAddonEnabled("OrderHallCommander") then return end
 local _G = _G
 
-aObj.lodAddons.OrderHallCommander = function(self) -- v 1.7.2 80000
+aObj.lodAddons.OrderHallCommander = function(self) -- v 1.7.6 80300
 
 	local OHC = _G.LibStub:GetLibrary("AceAddon-3.0"):GetAddon("OrderHallCommander", true)
 
@@ -30,7 +30,7 @@ aObj.lodAddons.OrderHallCommander = function(self) -- v 1.7.2 80000
 		self:RawHook(cache, "GetTroopsFrame", function(this)
 			local frame = self.hooks[this].GetTroopsFrame(this)
 			frame.Top:SetTexture(nil)
-			self:addSkinFrame{obj=frame, ft="a", kfs=true, nb=true, ofs=-1, x1=2, y2=2}
+			self:addSkinFrame{obj=frame, ft="a", kfs=true, nb=true, ofs=-1, x1=2, y2=0}
 			self:Unhook(this, "GetTroopsFrame")
 			return frame
 		end, true)
@@ -47,7 +47,7 @@ aObj.lodAddons.OrderHallCommander = function(self) -- v 1.7.2 80000
 			self:moveObject{obj=frame.Tutorial, x=2, y=6}
 			self:skinCloseButton{obj=frame.Close}
 			self:moveObject{obj=frame.Close, x=3, y=5}
-			self:addSkinFrame{obj=frame, ft="a", kfs=true, nb=true, y1=2, y2=-5}
+			self:addSkinFrame{obj=frame, ft="a", kfs=true, nb=true, y1=2, x2=0, y2=-4}
 			if self.modBtnBs then
 				-- replace the mission menu tab texture
 				local mBtn = self:getLastChild(_G.OrderHallMissionFrame.MissionTab)
@@ -61,6 +61,7 @@ aObj.lodAddons.OrderHallCommander = function(self) -- v 1.7.2 80000
 				mBtn = nil
 			end
 			frame = nil
+
 			self:Unhook(this, "Menu")
 		end)
 		self:SecureHook(mLst, "AddMembers", function(this, frame)
@@ -73,6 +74,7 @@ aObj.lodAddons.OrderHallCommander = function(self) -- v 1.7.2 80000
 		end)
 		self:SecureHook(mLst, "NoMartiniNoParty", function(this, text)
 			self:addSkinFrame{obj=_G.OHCWarner, ft="a", kfs=true, nb=true}
+
 			self:Unhook(this, "NoMartiniNoParty")
 		end)
 	end
@@ -95,10 +97,11 @@ aObj.lodAddons.OrderHallCommander = function(self) -- v 1.7.2 80000
 					self:skinCloseButton{obj=Clicker.Close}
 				end
 				if self.modBtnBs then
-					self:addButtonBorder{obj=Clicker.Forward, ofs=-2, x2=-3}
-					self:addButtonBorder{obj=Clicker.Backward, ofs=-2, x2=-3}
+					self:addButtonBorder{obj=Clicker.Forward, ofs=-2, x2=-3, clr="gold"}
+					self:addButtonBorder{obj=Clicker.Backward, ofs=-2, x2=-3, clr="gold"}
 				end
 				Clicker = nil
+
 				self:Unhook(this, "Show")
 			end)
 		end

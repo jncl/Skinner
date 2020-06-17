@@ -531,6 +531,9 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 		end, true)
 	end
 
+	-- AceConfigDialog tooltip
+	self:add2Table(self.ttList, self.ACD.tooltip)
+
 end
 
 -- hook this to capture the creation of AceConfig IOF panels

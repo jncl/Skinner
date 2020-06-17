@@ -3,7 +3,7 @@ if not aObj:isAddonEnabled("ChampionCommander") then return end
 local _G = _G
 
 -- loads with Blizzard_GarrisonUI
-aObj.lodAddons.ChampionCommander = function(self) -- v 1.2.3.1 80205
+aObj.lodAddons.ChampionCommander = function(self) -- v 1.2.4 80300
 
 	-- tooltip
 	_G.C_Timer.After(0.1, function()
@@ -127,8 +127,8 @@ aObj.lodAddons.ChampionCommander = function(self) -- v 1.2.3.1 80205
 					 self:skinCloseButton{obj=Clicker.Close, noSkin=true}
 				end
 				if self.modBtnBs then
-					self:addButtonBorder{obj=Clicker.Forward, ofs=-2, x2=-3}
-					self:addButtonBorder{obj=Clicker.Backward, ofs=-2, x2=-3}
+					self:addButtonBorder{obj=Clicker.Forward, ofs=-2, x2=-3, clr="gold"}
+					self:addButtonBorder{obj=Clicker.Backward, ofs=-2, x2=-3, clr="gold"}
 				end
 			end
 			Clicker = nil
