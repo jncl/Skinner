@@ -5343,9 +5343,15 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 	if not self.prdb.Tooltips.skin or self.initialized.Tooltips then return end
 	self.initialized.Tooltips = true
 
-	if IsAddOnLoaded("TipTac")
-	or IsAddOnLoaded("TinyTooltip")
-	then
+	if IsAddOnLoaded("TipTac") then return end
+
+	if IsAddOnLoaded("TinyTooltip") then
+		local LibEvent = _G.LibStub:GetLibrary("LibEvent.7000")
+		_G.setmetatable(self.ttList, {__newindex = function(tab, _, tTip)
+			tTip = _G.type(tTip) == "string" and _G[tTip] or tTip
+			LibEvent:trigger("tooltip.style.init", tTip)
+			self.callbacks:Fire("Tooltip_Setup", tTip)
+		end})
 		return
 	end
 
@@ -5399,17 +5405,30 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 	end})
 
 	-- add tooltips to table
-	for _, tooltip in pairs{_G.GameTooltip, _G.ShoppingTooltip1, _G.ShoppingTooltip2, _G.SmallTextTooltip, _G.EmbeddedItemTooltip, _G.ItemRefTooltip, _G.ItemRefShoppingTooltip1, _G.ItemRefShoppingTooltip2} do
-		tooltip:DisableDrawLayer("OVERLAY")
-		tooltip.ftype = ftype
-		self:add2Table(self.ttList, tooltip)
+	local function addTooltip(tTip)
+		tTip:DisableDrawLayer("OVERLAY")
+		tTip.ftype = ftype
+		aObj:add2Table(aObj.ttList, tTip)
+	end
+	for _, tTip in pairs{_G.GameTooltip, _G.SmallTextTooltip, _G.EmbeddedItemTooltip, _G.ItemRefTooltip} do
+		addTooltip(tTip)
+		if tTip.shoppingTooltips then
+			for _, tip in pairs(tTip.shoppingTooltips) do
+				if not _G.rawget(self.ttList, tip) then
+					addTooltip(tip)
+				end
+			end
+		end
 	end
 
 	self:SecureHookScript(_G.ItemRefTooltip, "OnShow", function(this)
-		self:skinCloseButton{obj=_G.ItemRefCloseButton}
 		self:moveObject{obj=_G.ItemRefCloseButton, x=2, y=3}
+		if self.modBtns then
+			self:skinCloseButton{obj=_G.ItemRefCloseButton}
+		end
 		-- ensure it gets updated
 		self.ttHook[_G.ItemRefTooltip] = true
+
 		self:Unhook(this, "OnShow")
 	end)
 
@@ -5430,11 +5449,6 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 	self:RawHook(_G.GameTooltip, "GetBackdropBorderColor", function(this)
 		return aObj.bbClr:GetRGBA()
 	end, true)
-
-	self:skinGlowBox(_G.HelpPlateTooltip, ftype, true)
-
-	-- AceConfigDialog tooltip
-	self:add2Table(self.ttList, self.ACD.tooltip)
 
 end
 
@@ -5496,6 +5510,8 @@ aObj.blizzFrames[ftype].Tutorial = function(self)
 
 		self:Unhook(this, "OnShow")
 	end)
+
+	self:skinGlowBox(_G.HelpPlateTooltip, ftype, true)
 
 end
 
