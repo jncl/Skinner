@@ -171,7 +171,7 @@ aObj.blizzLoDFrames[ftype].AchievementUI = function(self)
 		skinCategories()
 
 		self:getChild(_G.AchievementFrameAchievements, 2):SetBackdrop(nil)
-		self:addSkinFrame{obj=_G.AchievementFrameAchievements, ft=ftype, kfs=true, nb=true, aso={bd=10, ng=true}, y1=0, x2=29}
+		self:addFrameBorder{obj=_G.AchievementFrameAchievements, y1=0, x2=29}
 		self:skinSlider{obj=_G.AchievementFrameAchievementsContainerScrollBar, wdth=-4}
 		if self.prdb.AchievementUI.style == 2 then
 			-- remove textures etc from buttons
@@ -228,7 +228,7 @@ aObj.blizzLoDFrames[ftype].AchievementUI = function(self)
 		self:skinSlider{obj=_G.AchievementFrameStatsContainerScrollBar, wdth=-4}
 		_G.AchievementFrameStatsBG:SetAlpha(0)
 		self:getChild(_G.AchievementFrameStats, 3):SetBackdrop(nil)
-		self:addSkinFrame{obj=_G.AchievementFrameStats, ft=ftype, kfs=true, nb=true, aso={bd=10, ng=true}, y1=0, x2=29}
+		self:addFrameBorder{obj=_G.AchievementFrameStats, y1=0, x2=29}
 		-- hook these to stop Categories skinFrame from changing
 		self:SecureHook(_G.AchievementFrameStatsContainerScrollBar, "Show", function(this)
 			_G.AchievementFrameStats.sf:SetPoint("BOTTOMRIGHT", _G.AchievementFrameStats, "BOTTOMRIGHT", 29, -2)
@@ -265,7 +265,7 @@ aObj.blizzLoDFrames[ftype].AchievementUI = function(self)
 			skinSB("AchievementFrameSummaryCategoriesCategory" .. i, "Label")
 		end
 		self:getChild(_G.AchievementFrameSummary, 1):SetBackdrop(nil)
-		self:addSkinFrame{obj=_G.AchievementFrameSummary, ft=ftype, kfs=true, nb=true, aso={bd=10, ng=true}, y1=-1}
+		self:addFrameBorder{obj=_G.AchievementFrameSummary, y1=-1}
 		skinSB("AchievementFrameSummaryCategoriesStatusBar", "Title")
 
 		_G.AchievementFrameComparisonBackground:SetAlpha(0)
@@ -285,7 +285,7 @@ aObj.blizzLoDFrames[ftype].AchievementUI = function(self)
 		self:skinSlider(_G.AchievementFrameComparisonContainerScrollBar)
 		-- Summary Panel
 		self:getChild(_G.AchievementFrameComparison, 5):SetBackdrop(nil)
-		self:addSkinFrame{obj=_G.AchievementFrameComparison, ft=ftype, kfs=true, nb=true, aso={bd=10, ng=true}, y1=0, x2=31}
+		self:addFrameBorder{obj=_G.AchievementFrameComparison, y1=0, x2=31}
 		for _, type in pairs{"Player", "Friend"} do
 			_G["AchievementFrameComparisonSummary" .. type]:SetBackdrop(nil)
 			_G["AchievementFrameComparisonSummary" .. type .. "Background"]:SetAlpha(0)
@@ -1193,11 +1193,9 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 					self:clrBtnBdr(btn, "gold", 1)
 				end
 			end
-			-- this:DisableDrawLayer("BACKGROUND")
 			self:skinDropDown{obj=this.RightClickDropDown}
 			self:skinDropDown{obj=this.WeaponDropDown}
-			-- add skin frame, so tabs look better than without a frame
-			self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, aso={bd=10, ng=true}, x1=x1Ofs, y1=y1Ofs, x2=x2Ofs, y2=y2Ofs}
+			self:addFrameBorder{obj=this, x1=x1Ofs, y1=y1Ofs, x2=x2Ofs, y2=y2Ofs}
 			if self.modBtnBs then
 				skinPageBtns(this)
 				local btn
@@ -1247,19 +1245,17 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 			end
 
 			-- add skin frame, so tabs look better than without a frame
-			self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, aso={bd=10, ng=true}, x1=x1Ofs, y1=y1Ofs, x2=x2Ofs, y2=y2Ofs}
+			self:addFrameBorder{obj=this, x1=x1Ofs, y1=y1Ofs, x2=x2Ofs, y2=y2Ofs}
 
 			self:Unhook(this, "OnShow")
 		end)
 
 		self:SecureHookScript(this.SetsTransmogFrame, "OnShow", function(this)
 			self:skinDropDown{obj=this.RightClickDropDown}
+			self:addFrameBorder{obj=this, x1=x1Ofs, y1=y1Ofs, x2=x2Ofs, y2=y2Ofs}
 			if self.modBtnBs then
 				skinPageBtns(this)
 			end
-
-			-- add skin frame, so tabs look better than without a frame
-			self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, aso={bd=10, ng=true}, x1=x1Ofs, y1=y1Ofs, x2=x2Ofs, y2=y2Ofs}
 
 			self:Unhook(this, "OnShow")
 		end)
@@ -1767,9 +1763,9 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 	self:SecureHook(cFrame.GuildMemberDetailFrame, "DisplayMember", function(this, _)
 		self:removeNineSlice(this.Border)
 		self:skinDropDown{obj=this.RankDropdown}
-		self:addSkinFrame{obj=this.NoteBackground, ft=ftype}
-		self:addSkinFrame{obj=this.OfficerNoteBackground, ft=ftype}
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ofs=-6}
+		self:addFrameBorder{obj=this.NoteBackground}
+		self:addFrameBorder{obj=this.OfficerNoteBackground}
 		if self.modBtns then
 			self:skinStdButton{obj=this.RemoveButton}
 			self:skinStdButton{obj=this.GroupInviteButton}
@@ -2275,7 +2271,7 @@ aObj.blizzLoDFrames[ftype].EncounterJournal = function(self) -- a.k.a. Adenture 
 		this.instanceSelect.bg:SetAlpha(0)
 		self:skinDropDown{obj=this.instanceSelect.tierDropDown}
 		self:skinSlider{obj=this.instanceSelect.scroll.ScrollBar, wdth=-6}
-		self:addSkinFrame{obj=this.instanceSelect.scroll, ft=ftype, kfs=true, nb=true, aso={bd=10, ng=true}, x1=-9, y1=6, x2=6, y2=-8}
+		self:addFrameBorder{obj=this.instanceSelect.scroll, x1=-9, y1=6, x2=6, y2=-8}
 		self:SecureHook("EncounterJournal_ListInstances", function()
 			local btn
 			for i = 1, 30 do
@@ -2465,8 +2461,7 @@ aObj.blizzLoDFrames[ftype].EncounterJournal = function(self) -- a.k.a. Adenture 
 		end
 		ejsfs = nil
 
-		-- add skin frame to surround all the Suggestions, so tabs look better than without a frame
-		self:addSkinFrame{obj=this.suggestFrame, ft=ftype, kfs=true, nb=true, aso={bd=10, ng=true}, x1=-9, y1=6, x2=7, y2=-5}
+		self:addFrameBorder{obj=this.suggestFrame, x1=-9, y1=6, x2=7, y2=-5}
 
 		self:Unhook(this, "OnShow")
 	end)
@@ -2486,8 +2481,8 @@ aObj.blizzLoDFrames[ftype].EncounterJournal = function(self) -- a.k.a. Adenture 
 		for i = 1 , #this.ItemSetsFrame.buttons do
 			this.ItemSetsFrame.buttons[i].Background:SetTexture(nil)
 		end
-		-- add skin frame to surround the Loot Journal, so tabs look better than without a frame
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, aso={bd=10, ng=true}, x1=-8, y1=6, x2=8, y2=-5}
+		self:addFrameBorder{obj=this, x1=-8, y1=6, x2=8, y2=-5}
+
 		self:Unhook(this, "OnShow")
 	end)
 
@@ -2527,7 +2522,7 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 	self.initialized.FriendsFrame = true
 
 	local function addTabFrame(frame)
-		aObj:addSkinFrame{obj=frame, ft=ftype, kfs=true, nb=true, ofs=0, y1=-81, y2=-2, aso={bd=10, ng=true}}
+
 	end
 
 	self:SecureHookScript(_G.FriendsFrame, "OnShow", function(this)
@@ -2562,22 +2557,21 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 		self:checkShown(_G.FriendsTabHeader)
 
 		self:SecureHookScript(_G.FriendsListFrame, "OnShow", function(this)
+			_G.FriendsListFrameScrollFrame.PendingInvitesHeaderButton.BG:SetTexture(nil)
+			self:skinSlider{obj=_G.FriendsListFrameScrollFrame.Slider, wdth=-4}
+			self:addFrameBorder{obj=this, y1=-81, y2=-2}
 			if self.modBtns then
 				self:skinStdButton{obj=_G.FriendsFrameAddFriendButton, x1=1}
 				self:skinStdButton{obj=_G.FriendsFrameSendMessageButton}
 				self:skinStdButton{obj=self:getChild(this.RIDWarning, 1)} -- unnamed parent frame
-			end
-			if self.modBtnBs then
-				self:addButtonBorder{obj=_G.FriendsListFrameScrollFrame.PendingInvitesHeaderButton}
-			end
-			_G.FriendsListFrameScrollFrame.PendingInvitesHeaderButton.BG:SetTexture(nil)
-			if self.modBtns then
 				for invite in _G.FriendsListFrameScrollFrame.invitePool:EnumerateActive() do
 					self:skinStdButton{obj=invite.DeclineButton}
 					self:skinStdButton{obj=invite.AcceptButton}
 				end
 			end
-			self:skinSlider{obj=_G.FriendsListFrameScrollFrame.Slider, wdth=-4}
+			if self.modBtnBs then
+				self:addButtonBorder{obj=_G.FriendsListFrameScrollFrame.PendingInvitesHeaderButton}
+			end
 			local btn
 			for i = 1, _G.FRIENDS_FRIENDS_TO_DISPLAY do
 				btn = _G["FriendsListFrameScrollFrameButton" .. i]
@@ -2617,7 +2611,6 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 				end
 			end
 			btn = nil
-			addTabFrame(this)
 
 			self:Unhook(this, "OnShow")
 		end)
@@ -2625,12 +2618,12 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 
 		self:SecureHookScript(_G.IgnoreListFrame, "OnShow", function(this)
 			this:DisableDrawLayer("BACKGROUND")
+			self:skinSlider{obj=_G.IgnoreListFrameScrollFrame.Slider, wdth=-4}
+			self:addFrameBorder{obj=this, y1=-81, y2=-2}
 			if self.modBtns then
 				self:skinStdButton{obj=_G.FriendsFrameIgnorePlayerButton, x1=1}
 				self:skinStdButton{obj=_G.FriendsFrameUnsquelchButton}
 			end
-			self:skinSlider{obj=_G.IgnoreListFrameScrollFrame.Slider, wdth=-4}
-			addTabFrame(this)
 
 			self:Unhook(this, "OnShow")
 		end)
@@ -2710,34 +2703,23 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 	end)
 
 	self:SecureHookScript(_G.RecruitAFriendFrame, "OnShow", function(this)
-		-- RewardClaiming
+		self:skinDropDown{obj=this.DropDown, noSkin=true, x1=0, y1=0, x2=0, y2=0}
 		this.RewardClaiming:DisableDrawLayer("BACKGROUND")
 		self:nilTexture(this.RewardClaiming.NextRewardButton.IconBorder, true)
 		self:removeInset(this.RewardClaiming.Inset)
-		if self.modBtns then
-			self:skinStdButton{obj=this.RewardClaiming.ClaimOrViewRewardButton}
-		end
-
-		-- RecruitList
 		this.RecruitList.Header:DisableDrawLayer("BACKGROUND")
 		self:removeInset(this.RecruitList.ScrollFrameInset)
 		self:skinSlider{obj=this.RecruitList.ScrollFrame.Slider, wdth=-4}
-
-		if self.modBtns then
-			self:skinStdButton{obj=this.RecruitmentButton}
-		end
-		self:skinDropDown{obj=this.DropDown, noSkin=true, x1=0, y1=0, x2=0, y2=0}
-
-		-- SplashFrame
 		this.SplashFrame:DisableDrawLayer("BACKGROUND")
 		this.SplashFrame:DisableDrawLayer("OVERLAY")
 		this.SplashFrame.Description:SetTextColor(self.BT:GetRGB())
 		self:addSkinFrame{obj=this.SplashFrame, ft=ftype, nb=true, ofs=2, y1=4, y2=-5}
+		self:addFrameBorder{obj=this, y1=-81, y2=-2}
 		if self.modBtns then
+			self:skinStdButton{obj=this.RewardClaiming.ClaimOrViewRewardButton}
+			self:skinStdButton{obj=this.RecruitmentButton}
 			self:skinStdButton{obj=this.SplashFrame.OKButton}
 		end
-
-		addTabFrame(this)
 
 		self:Unhook(this, "OnShow")
 	end)
@@ -2777,7 +2759,7 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 		_G.QuickJoinFrame.ScrollFrame.scrollBar:SetPoint("TOPRIGHT", "FriendsFrame", "TOPRIGHT", -8, -101)
 		_G.QuickJoinFrame.ScrollFrame.scrollBar:SetPoint("BOTTOMLEFT", "FriendsFrame", "BOTTOMRIGHT", -24, 40)
 		self:removeMagicBtnTex(_G.QuickJoinFrame.JoinQueueButton)
-		self:addSkinFrame{obj=_G.QuickJoinScrollFrame, ft=ftype, kfs=true, nb=true, x1=-8, y1=7, x2=28, y2=-32, aso={bd=10, ng=true}}
+		self:addFrameBorder{obj=_G.QuickJoinScrollFrame, x1=-8, y1=7, x2=28, y2=-32}
 		if self.modBtns then
 			self:skinStdButton{obj=_G.QuickJoinFrame.JoinQueueButton, x2=0}
 		end
@@ -3297,11 +3279,6 @@ aObj.blizzLoDFrames[ftype].LookingForGuildUI = function(self)
 
 	self.initialized.LookingForGuildUI = true
 
-	local function addTabFrame(frame)
-		-- add border around frame for tabs
-		aObj:addSkinFrame{obj=frame, ft=ftype, kfs=true, nb=true, aso={bd=10, ng=true}, x1=-5, y1=2, x2=7, y2=-28}
-	end
-
 	self:skinTabs{obj=_G.LookingForGuildFrame, up=true, lod=true, x1=0, y1=-5, x2=3, y2=-5}
 	self:addSkinFrame{obj=_G.LookingForGuildFrame, ft=ftype, kfs=true, ri=true, y2=-4}
 	-- raise Tab level so they appear above Tab frames
@@ -3333,7 +3310,7 @@ aObj.blizzLoDFrames[ftype].LookingForGuildUI = function(self)
 		if self.modBtns then
 			self:skinStdButton{obj=_G.LookingForGuildBrowseButton}
 		end
-		addTabFrame(this)
+		self:addFrameBorder{obj=this, x1=-5, y1=2, x2=7, y2=-28}
 
 		self:Unhook(this, "OnShow")
 	end)
@@ -3347,7 +3324,7 @@ aObj.blizzLoDFrames[ftype].LookingForGuildUI = function(self)
 		end
 		self:removeMagicBtnTex(_G.LookingForGuildRequestButton)
 		self:skinStdButton{obj=_G.LookingForGuildRequestButton}
-		addTabFrame(this)
+		self:addFrameBorder{obj=this, x1=-5, y1=2, x2=7, y2=-28}
 
 		self:Unhook(this, "OnShow")
 	end)
@@ -3358,7 +3335,7 @@ aObj.blizzLoDFrames[ftype].LookingForGuildUI = function(self)
 		for i = 1, #_G.LookingForGuildAppsFrameContainer.buttons do
 			self:applySkin{obj=_G.LookingForGuildAppsFrameContainer.buttons[i]}
 		end
-		addTabFrame(this)
+		self:addFrameBorder{obj=this, x1=-5, y1=2, x2=7, y2=-28}
 
 		self:Unhook(this, "OnShow")
 	end)
@@ -4753,7 +4730,7 @@ aObj.blizzLoDFrames[ftype].TradeSkillUI = function(self)
 		end
 		skinTabs(this.RecipeList)
 		self:skinSlider{obj=self:getChild(this.RecipeList, 4), wdth=-4, size=3} -- unamed slider object
-		self:addSkinFrame{obj=this.RecipeList, ft=ftype, kfs=true, nb=true, aso={bd=10, ng=true}, ofs=8, y1=6, x2=24}
+		self:addFrameBorder{obj=this.RecipeList, ofs=8, y1=6, x2=24}
 
 		for i = 1, #this.RecipeList.buttons do
 			if self.modBtns then

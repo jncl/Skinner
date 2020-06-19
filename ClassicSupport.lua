@@ -746,10 +746,6 @@ aObj.ClassicSupport = function(self)
 		if not self.prdb.FriendsFrame or self.initialized.FriendsFrame then return end
 		self.initialized.FriendsFrame = true
 
-		local function addTabFrame(frame)
-			aObj:addSkinFrame{obj=frame, ft=ftype, kfs=true, nb=true, ofs=0, y1=-81, y2=-2, aso={bd=10, ng=true}}
-		end
-
 		self:SecureHookScript(_G.FriendsFrame, "OnShow", function(this)
 			self:skinTabs{obj=this, lod=true, ignore=true}
 			self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, y2=-5}
@@ -834,7 +830,7 @@ aObj.ClassicSupport = function(self)
 					end
 				end
 				btn = nil
-				addTabFrame(this)
+				self:addFrameBorder{obj=this, y1=-81, y2=-2}
 				if self.modBtns then
 					self:skinStdButton{obj=_G.FriendsFrameAddFriendButton, x1=1}
 					self:skinStdButton{obj=_G.FriendsFrameSendMessageButton}
@@ -855,7 +851,7 @@ aObj.ClassicSupport = function(self)
 			self:SecureHookScript(_G.IgnoreListFrame, "OnShow", function(this)
 				this:DisableDrawLayer("BACKGROUND")
 				self:skinSlider{obj=_G.FriendsFrameIgnoreScrollFrame.ScrollBar}
-				addTabFrame(this)
+				self:addFrameBorder{obj=this, y1=-81, y2=-2}
 				if self.modBtns then
 					self:skinStdButton{obj=_G.FriendsFrameIgnorePlayerButton, x1=1}
 					self:skinStdButton{obj=_G.FriendsFrameUnsquelchButton}

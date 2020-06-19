@@ -198,6 +198,12 @@ function aObj:add2Table(table, value)
 
 end
 
+function aObj:addFrameBorder(opts)
+
+	self:addSkinFrame{obj=opts.obj, ft=ftype, kfs=true, nb=true, aso={bd=10, ng=true}, ofs=opts.ofs or 0, x1=opts.x1, y1=opts.y1, x2=opts.x2, y2=opts.y2}
+
+end
+
 aObj.mpTex = [[Interface\Common\UI-ModelControlPanel]]
 function aObj:changeMinusPlusTex(obj, minus)
 --@alpha@
