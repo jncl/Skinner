@@ -1763,9 +1763,9 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 	self:SecureHook(cFrame.GuildMemberDetailFrame, "DisplayMember", function(this, _)
 		self:removeNineSlice(this.Border)
 		self:skinDropDown{obj=this.RankDropdown}
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ofs=-6}
 		self:addFrameBorder{obj=this.NoteBackground}
 		self:addFrameBorder{obj=this.OfficerNoteBackground}
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ofs=0, x2=6}
 		if self.modBtns then
 			self:skinStdButton{obj=this.RemoveButton}
 			self:skinStdButton{obj=this.GroupInviteButton}
