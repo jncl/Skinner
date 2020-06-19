@@ -4853,6 +4853,12 @@ aObj.blizzFrames[ftype].QuestMap = function(self)
 		self:skinSlider{obj=this.QuestsFrame.ScrollBar}
 		self:addSkinFrame{obj=this.QuestsFrame.StoryTooltip, ft=ftype}
 
+		-- QuestSessionManagement
+		this.QuestSessionManagement.BG:SetTexture(nil)
+		if self.modBtnBs then
+			self:addButtonBorder{obj=this.QuestSessionManagement.ExecuteSessionCommand, ofs=1, clr="gold"}
+		end
+
 		-- Details Frame
 		self:keepFontStrings(this.DetailsFrame)
 		self:keepFontStrings(this.DetailsFrame.RewardsFrame)
@@ -4924,6 +4930,30 @@ aObj.blizzFrames[ftype].QuestMap = function(self)
 			self:moveObject{obj=_G.QuestMapFrame.QuestsFrame.WarCampaignTooltip, x=2}
 		end
 	end)
+
+end
+
+aObj.blizzFrames[ftype].QuestSession = function(self)
+	if not self.prdb.QuestSession or self.initialized.QuestSession then return end
+	self.initialized.QuestSession = true
+
+	local function skinQSDialog(frame)
+		frame.BG:SetTexture(nil)
+		frame.Border:DisableDrawLayer("BORDER")
+		frame.Border.Bg:SetTexture(nil)
+		frame.Divider:SetTexture(nil)
+		aObj:addSkinFrame{obj=frame, ft=ftype, kfs=true, nb=true, ofs=-4}
+		if aObj.modBtns then
+			aObj:skinStdButton{obj=frame.ButtonContainer.Confirm}
+			aObj:skinStdButton{obj=frame.ButtonContainer.Decline}
+			if frame.MinimizeButton then
+				aObj:skinStdButton{obj=frame.MinimizeButton}
+			end
+		end
+	end
+	for _, frame in ipairs(_G.QuestSessionManager.SessionManagementDialogs) do
+		skinQSDialog(frame)
+	end
 
 end
 

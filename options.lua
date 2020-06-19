@@ -171,6 +171,7 @@ aObj.blizzFrames[ftype].SetupDefaults = function(self)
 		PVEFrame             = true, -- (inc, LFD, LFG, RaidFinder, ScenarioFinder)
 		PVPMatch             = true,
 		QuestMap             = true,
+		QuestSession         = true, -- a.k.a. Party Sync
 		QueueStatusFrame     = true,
 		RaidFrame            = true, -- (inc. LFR)
 		SharedBasicControls  = true,
@@ -1708,6 +1709,11 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 					type = "toggle",
 					name = self.L["Quest Map"],
 					desc = self.L["Toggle the skin of the Quest Map"],
+				},
+				QuestSession = {
+					type = "toggle",
+					name = self.L["Quest Session"],
+					desc = self.L["Toggle the skin of the Quest Session frames"],
 				},
 				QueueStatusFrame = {
 					type = "toggle",
