@@ -25,5 +25,7 @@ ToDos
 
 ≈	O	Make sure all buttons with GOLD button borders need them as opposed to having a GREY border
 
-	I	TinyToolTips, reported by a0dfan, 16.06.20
-		- causing issue with skinning RaiderIO ProfileTooltip
+¶≈	N	QuestSession a.k.a. Party Sync
+
+√	I	GuildMemberDetailFrame skin is too small
+	
