@@ -122,6 +122,7 @@
 <script file="AddonSkins\honorspy.lua"/>
 <script file="AddonSkins\InboxMailBag.lua"/>
 <script file="AddonSkins\InspectorGadgetzan.lua"/>
+<script file="AddonSkins\InstanceBoostTracker.lua"/>
 <script file="AddonSkins\InvenRaidFrames3.lua"/>
 <script file="AddonSkins\Inventorian.lua"/>
 <script file="AddonSkins\ItemDB.lua"/>
