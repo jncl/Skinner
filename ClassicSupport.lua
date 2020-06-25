@@ -830,7 +830,7 @@ aObj.ClassicSupport = function(self)
 					end
 				end
 				btn = nil
-				self:addFrameBorder{obj=this, y1=-81, y2=-2}
+				self:addFrameBorder{obj=this, ft=ftype, y1=-81, y2=-2}
 				if self.modBtns then
 					self:skinStdButton{obj=_G.FriendsFrameAddFriendButton, x1=1}
 					self:skinStdButton{obj=_G.FriendsFrameSendMessageButton}
@@ -851,7 +851,7 @@ aObj.ClassicSupport = function(self)
 			self:SecureHookScript(_G.IgnoreListFrame, "OnShow", function(this)
 				this:DisableDrawLayer("BACKGROUND")
 				self:skinSlider{obj=_G.FriendsFrameIgnoreScrollFrame.ScrollBar}
-				self:addFrameBorder{obj=this, y1=-81, y2=-2}
+				self:addFrameBorder{obj=this, ft=ftype, y1=-81, y2=-2}
 				if self.modBtns then
 					self:skinStdButton{obj=_G.FriendsFrameIgnorePlayerButton, x1=1}
 					self:skinStdButton{obj=_G.FriendsFrameUnsquelchButton}

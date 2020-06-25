@@ -283,7 +283,7 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 	end
 	function skinMissionList(ml, oFs)
 
-		aObj:addFrameBorder{obj=ml, x1=1, y1=1, x2=-2, y2=2}
+		aObj:addFrameBorder{obj=ml, ft=ftype, x1=1, y1=1, x2=-2, y2=2}
 
 		ml:DisableDrawLayer("BORDER")
 		ml.MaterialFrame:DisableDrawLayer("BACKGROUND")
@@ -1267,7 +1267,7 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 		self:addSkinFrame{obj=_G.ChatConfigCategoryFrame, ft=ftype, kfs=true, nb=true, x1=-2, y1=-1, x2=2, y2=2}
 		self:addSkinFrame{obj=_G.ChatConfigBackgroundFrame, ft=ftype, kfs=true, nb=true, x1=-2, y1=-1, x2=2, y2=2}
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, hdr=true, ofs=-4, y1=0}
-		self:addFrameBorder{obj=this.ChatTabManager, x1=-5, y1=3, x2=725, y2=-512}
+		self:addFrameBorder{obj=this.ChatTabManager, ft=ftype, x1=-5, y1=3, x2=725, y2=-512}
 		-- ChatTabManager
 		local setTabState
 		if aObj.isTT then
@@ -2279,7 +2279,7 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 				end
 			end
 			btn = nil
-			self:addFrameBorder{obj=this.List, ofs=5}
+			self:addFrameBorder{obj=this.List, ft=ftype, ofs=5}
 			-- tabs at top
 			for _, type in pairs{"InProgress", "Available"} do
 				this[type]:GetNormalTexture():SetAlpha(0)
@@ -3355,11 +3355,11 @@ aObj.blizzLoDFrames[ftype].MacroUI = function(self)
 		self:skinTabs{obj=this, up=true, lod=true, x1=-3, y1=-3, x2=3, y2=-3, hx=-2, hy=3}
 		_G.RaiseFrameLevel(_G.MacroFrameTab1)
 		_G.RaiseFrameLevel(_G.MacroFrameTab2)
-		self:addFrameBorder{obj=_G.MacroButtonScrollFrame, ofs=12, y1=10, x2=32}
+		self:addFrameBorder{obj=_G.MacroButtonScrollFrame, ft=ftype, ofs=12, y1=10, x2=31}
 		self:skinSlider{obj=_G.MacroButtonScrollFrame.ScrollBar, rt="artwork"}
 		self:skinSlider{obj=_G.MacroFrameScrollFrame.ScrollBar}
 		self:skinEditBox{obj=_G.MacroFrameText, noSkin=true}
-		self:addSkinFrame{obj=_G.MacroFrameTextBackground, ft=ftype}
+		self:addFrameBorder{obj=_G.MacroFrameTextBackground, ft=ftype}
 		if self.modBtns then
 			self:skinStdButton{obj=_G.MacroEditButton}
 			self:skinStdButton{obj=_G.MacroCancelButton}
@@ -3801,7 +3801,7 @@ aObj.blizzFrames[ftype].MenuFrames = function(self)
 		skinKids(this)
 		self:addSkinFrame{obj=_G.AudioOptionsVoicePanel, ft=ftype}
 		_G.AudioOptionsVoicePanel.TestInputDevice.ToggleTest:DisableDrawLayer("BACKGROUND")
-		self:addFrameBorder{obj=_G.AudioOptionsVoicePanel.TestInputDevice.VUMeter}
+		self:addFrameBorder{obj=_G.AudioOptionsVoicePanel.TestInputDevice.VUMeter, ft=ftype}
 		if self.modBtnBs then
 			self:addButtonBorder{obj=_G.AudioOptionsVoicePanel.TestInputDevice.ToggleTest, ofs=0, y2=-2}
 		end
