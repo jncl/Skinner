@@ -1,3 +1,14 @@
+beta8.34769.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated Version numbers
+	Skinned QuestSession frames (a.k.a. Party Sync)
+	Updated GuildMemberDetailsFrame skin
+	Aded new Function to Add a Frame Border
+	Changed skinning code to use new function
+	Updated Altoholic skin
+
 beta8.34601.4
 Jncl:
 	ToDo.txt
