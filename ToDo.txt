@@ -25,7 +25,9 @@ ToDos
 
 ≈	O	Make sure all buttons with GOLD button borders need them as opposed to having a GREY border
 
-¶≈	N	QuestSession a.k.a. Party Sync
+√	I	AchievementFrame subframe borders need width adjusting
 
-√	I	GuildMemberDetailFrame skin is too small
-	
+	I	Auctionator, reported by hastrox77, 20.06.20
+√		- \AddOns\Skinner\AddonSkins\Auctionator.lua line 14: attempt to index field 'State' (a nil value)
+
+√	S/C	Instance Tracker, requested by amey0, 22.06.20
