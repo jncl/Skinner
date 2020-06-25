@@ -2,14 +2,16 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("Auctionator") then return end
 local _G = _G
 
-aObj.addonsToSkin.Auctionator = function(self) -- v 8.3.1.2/100.0.7
+aObj.addonsToSkin.Auctionator = function(self) -- v 8.3.1.4/100.0.9
 
 	-- get first part of the version number
 	local verNoPrefix = _G.tonumber(_G.GetAddOnMetadata("Auctionator", "Version"):match("(%d+)%..*"))
 
-	self.RegisterCallback("Auctionator", "Auction_House_Show", function(this)
+	local skinFrames, skinConfigFrames
+	local pCnt = 0
 
-		if _G.tonumber(verNoPrefix) < 100 then
+	if verNoPrefix < 100 then
+		function skinFrames()
 			-- Retail version
 			if _G.Auctionator.State.SplashScreenRef then
 				_G.Auctionator.State.SplashScreenRef.Bg:SetTexture(nil)
@@ -27,7 +29,7 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 8.3.1.2/100.0.7
 			-- Tabs
 			if _G.Auctionator.State.TabFrameRef then
 				for key, tab in pairs(_G.Auctionator.State.TabFrameRef.Tabs) do
-					aObj:Debug("Auctionator Tab: [%s, %s, %s, %s]", key, tab, tab.displayMode, tab.ahTabIndex)
+					-- aObj:Debug("Auctionator Tab: [%s, %s, %s, %s]", key, tab, tab.displayMode, tab.ahTabIndex)
 					self:keepRegions(tab, {7, 8})
 					self:addSkinFrame{obj=tab, ft=ftype, kfs=true, nb=true, noBdr=self.isTT, x1=6, y1=0, x2=-6, y2=2}
 					if self.isTT then
@@ -90,7 +92,34 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 8.3.1.2/100.0.7
 				self:skinStdButton{obj=_G.AuctionatorConfigFrame.ScanButton}
 				self:skinStdButton{obj=_G.AuctionatorConfigFrame.OptionsButton}
 			end
-		else
+		end
+		local function skinKids(panel)
+			for _, child in _G.ipairs{panel:GetChildren()} do
+				if child:IsObjectType("CheckButton")
+				and aObj.modChkBtns
+				then
+					aObj:skinCheckButton{obj=child}
+				elseif child:IsObjectType("EditBox") then
+					aObj:skinEditBox{obj=child, regs={1, 6}} --1 & 6 are text
+				elseif child:IsObjectType("Frame") then
+					skinKids(child)
+				end
+			end
+		end
+		function skinConfigFrames(panel)
+			if aObj:hasTextInName(panel, "AuctionatorConfig")
+			and not aObj.iofSkinnedPanels[panel]
+			then
+				aObj.iofSkinnedPanels[panel] = true
+				pCnt = pCnt + 1
+				skinKids(panel)
+			end
+			if pCnt == 6 then
+				aObj.UnregisterCallback("Auctionator_Config", "IOFPanel_Before_Skinning")
+			end
+		end
+	else
+		function skinFrames()
 			-- Classic version
 			-- Buy Tab
 			self:skinDropDown{obj=_G.Atr_DropDownSL}
@@ -136,147 +165,109 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 8.3.1.2/100.0.7
 			end
 
 		end
-
-		self.UnregisterCallback("Auctionator", "Auction_House_Show")
-	end)
-
-	-- skin Config panels as required
-	local pCnt = 0
-	if verNoPrefix < 100 then
-		self.RegisterCallback("Auctionator_Config", "IOFPanel_Before_Skinning", function(this, panel)
-			if self:hasTextInName(panel, "AuctionatorConfig")
-			and not self.iofSkinnedPanels[panel]
-			then
-				self.iofSkinnedPanels[panel] = true
-				pCnt = pCnt + 1
-			end
-			if pCnt == 6 then
-				self.UnregisterCallback("Auctionator_Config", "IOFPanel_Before_Skinning")
-			end
-		end)
-		-- register callback to skin elements
-		self.RegisterCallback("Auctionator_Config", "IOFPanel_After_Skinning", function(this, panel)
-			local function skinKids(panel)
-
-				for _, child in _G.ipairs{panel:GetChildren()} do
-					if child:IsObjectType("CheckButton")
-					and aObj.modChkBtns
-					then
-						aObj:skinCheckButton{obj=child}
-					elseif child:IsObjectType("EditBox") then
-						aObj:skinEditBox{obj=child, regs={1, 6}} --1 & 6 are text
-					elseif child:IsObjectType("Frame") then
-						skinKids(child)
-					end
-				end
-
-			end
-
-			if self:hasTextInName(panel, "AuctionatorConfig")
-			and not panel.sknd
-			then
-				skinKids(panel)
-				panel.sknd = true
-			end
-			if pCnt == 6 then
-				self.UnregisterCallback("Auctionator_Config", "IOFPanel_After_Skinning")
-				pCnt = nil
-			end
-		end)
-	else
-		self.RegisterCallback("Auctionator", "IOFPanel_Before_Skinning", function(this, panel)
+		function skinConfigFrames(panel)
 			if panel.parent ~= "Auctionator" then return end
-			if not self.iofSkinnedPanels[panel] then
-				self.iofSkinnedPanels[panel] = true
+			if not aObj.iofSkinnedPanels[panel] then
+				aObj.iofSkinnedPanels[panel] = true
 				pCnt = pCnt + 1
 				panel:SetBackdrop(nil)
 				if panel.name == "Basic Options" then
-					self:skinDropDown{obj=_G.AuctionatorOption_Deftab, x1=17, x2=109}
-					if self.modChkBtns then
-						self:skinCheckButton{obj=_G.AuctionatorOption_Enable_Alt_CB}
-						self:skinCheckButton{obj=_G.AuctionatorOption_Enable_Autocomplete_CB}
-						self:skinCheckButton{obj=_G.AuctionatorOption_Show_StartingPrice_CB}
-						self:skinCheckButton{obj=_G.AuctionatorOption_Enable_Debug_CB}
+					aObj:skinDropDown{obj=_G.AuctionatorOption_Deftab, x1=17, x2=109}
+					if aObj.modChkBtns then
+						aObj:skinCheckButton{obj=_G.AuctionatorOption_Enable_Alt_CB}
+						aObj:skinCheckButton{obj=_G.AuctionatorOption_Enable_Autocomplete_CB}
+						aObj:skinCheckButton{obj=_G.AuctionatorOption_Show_StartingPrice_CB}
+						aObj:skinCheckButton{obj=_G.AuctionatorOption_Enable_Debug_CB}
 					end
 				elseif panel.name == "Tooltips" then
-					self:skinDropDown{obj=_G.Atr_tipsShiftDD, x1=17, x2=109}
-					self:skinDropDown{obj=_G.Atr_deDetailsDD, x2=29}
-					if self.modChkBtns then
-						self:skinCheckButton{obj=_G.ATR_tipsVendorOpt_CB}
-						self:skinCheckButton{obj=_G.ATR_tipsAuctionOpt_CB}
-						self:skinCheckButton{obj=_G.ATR_tipsAuctionWeekOpt_CB}
-						self:skinCheckButton{obj=_G.ATR_tipsAuctionMonthOpt_CB}
-						self:skinCheckButton{obj=_G.ATR_tipsDisenchantOpt_CB}
-						self:skinCheckButton{obj=_G.ATR_tipsReagentOpt_CB}
+					aObj:skinDropDown{obj=_G.Atr_tipsShiftDD, x1=17, x2=109}
+					aObj:skinDropDown{obj=_G.Atr_deDetailsDD, x2=29}
+					if aObj.modChkBtns then
+						aObj:skinCheckButton{obj=_G.ATR_tipsVendorOpt_CB}
+						aObj:skinCheckButton{obj=_G.ATR_tipsAuctionOpt_CB}
+						aObj:skinCheckButton{obj=_G.ATR_tipsAuctionWeekOpt_CB}
+						aObj:skinCheckButton{obj=_G.ATR_tipsAuctionMonthOpt_CB}
+						aObj:skinCheckButton{obj=_G.ATR_tipsDisenchantOpt_CB}
+						aObj:skinCheckButton{obj=_G.ATR_tipsReagentOpt_CB}
 					end
 				elseif panel.name == "Undercutting" then
-					self:skinMoneyFrame{obj=_G.UC_5000000_MoneyInput}
-					self:skinMoneyFrame{obj=_G.UC_1000000_MoneyInput}
-					self:skinMoneyFrame{obj=_G.UC_200000_MoneyInput}
-					self:skinMoneyFrame{obj=_G.UC_50000_MoneyInput}
-					self:skinMoneyFrame{obj=_G.UC_10000_MoneyInput}
-					self:skinMoneyFrame{obj=_G.UC_2000_MoneyInput}
-					self:skinMoneyFrame{obj=_G.UC_500_MoneyInput}
-					self:skinEditBox{obj=_G.Atr_Starting_Discount, regs={6}} -- 6 is text
-					if self.modBtns then
-						self:skinStdButton{obj=_G.Atr_UCConfigFrame_Reset}
+					aObj:skinMoneyFrame{obj=_G.UC_5000000_MoneyInput}
+					aObj:skinMoneyFrame{obj=_G.UC_1000000_MoneyInput}
+					aObj:skinMoneyFrame{obj=_G.UC_200000_MoneyInput}
+					aObj:skinMoneyFrame{obj=_G.UC_50000_MoneyInput}
+					aObj:skinMoneyFrame{obj=_G.UC_10000_MoneyInput}
+					aObj:skinMoneyFrame{obj=_G.UC_2000_MoneyInput}
+					aObj:skinMoneyFrame{obj=_G.UC_500_MoneyInput}
+					aObj:skinEditBox{obj=_G.Atr_Starting_Discount, regs={6}} -- 6 is text
+					if aObj.modBtns then
+						aObj:skinStdButton{obj=_G.Atr_UCConfigFrame_Reset}
 					end
 				elseif panel.name == "Selling" then
-					self:addSkinFrame{obj=_G.Atr_Stacking_List, ft="a", kfs=true, nb=true}
-					if self.modBtns then
-						self:skinStdButton{obj=_G.Atr_StackingOptionsFrame_Edit}
-						self:skinStdButton{obj=_G.Atr_StackingOptionsFrame_New}
-					end
-					self:skinEditBox{obj=_G.Atr_Mem_EB_itemName, regs={6}} -- 6 is text
-					self:skinDropDown{obj=_G.Atr_Mem_DD_numStacks}
-					self:skinEditBox{obj=_G.Atr_Mem_EB_stackSize, regs={6}} -- 6 is text
-					self:addSkinFrame{obj=_G.Atr_MemorizeFrame, ft="a", kfs=true, nb=true}
-					if self.modBtns then
-						self:skinStdButton{obj=_G.Atr_Mem_Forget}
-						self:skinStdButton{obj=_G.Atr_Mem_Cancel}
-						self:skinStdButton{obj=self:getPenultimateChild(_G.Atr_MemorizeFrame)} -- OKAY button
+					aObj:addSkinFrame{obj=_G.Atr_Stacking_List, ft="a", kfs=true, nb=true}
+					aObj:skinEditBox{obj=_G.Atr_Mem_EB_itemName, regs={6}} -- 6 is text
+					aObj:skinDropDown{obj=_G.Atr_Mem_DD_numStacks}
+					aObj:skinEditBox{obj=_G.Atr_Mem_EB_stackSize, regs={6}} -- 6 is text
+					aObj:addSkinFrame{obj=_G.Atr_MemorizeFrame, ft="a", kfs=true, nb=true}
+					if aObj.modBtns then
+						aObj:skinStdButton{obj=_G.Atr_StackingOptionsFrame_Edit}
+						aObj:skinStdButton{obj=_G.Atr_StackingOptionsFrame_New}
+						aObj:skinStdButton{obj=_G.Atr_Mem_Forget}
+						aObj:skinStdButton{obj=_G.Atr_Mem_Cancel}
+						aObj:skinStdButton{obj=aObj:getPenultimateChild(_G.Atr_MemorizeFrame)} -- OKAY button
 					end
 				elseif panel.name == "Database" then
-					self:skinDropDown{obj=_G.Atr_scanLevelDD, x2=-71}
-					self:skinEditBox{obj=_G.Atr_ScanOpts_MaxHistAge, regs={6}} -- 6 is text
+					aObj:skinDropDown{obj=_G.Atr_scanLevelDD, x2=-71}
+					aObj:skinEditBox{obj=_G.Atr_ScanOpts_MaxHistAge, regs={6}} -- 6 is text
 				elseif panel.name == "Pulizia" then
-					if self.modBtns then
+					if aObj.modBtns then
 						for _, btn in pairs{panel:GetChildren()} do
-							self:skinStdButton{obj=btn}
+							aObj:skinStdButton{obj=btn}
 						end
 					end
-					self:addSkinFrame{obj=_G.Atr_ConfirmClear_Frame, ft="a", kfs=true, nb=true}
-					if self.modBtns then
-						self:skinStdButton{obj=_G.Atr_ClearConfirm_Cancel}
-						self:skinStdButton{obj=self:getPenultimateChild(_G.Atr_ConfirmClear_Frame)}
+					aObj:addSkinFrame{obj=_G.Atr_ConfirmClear_Frame, ft="a", kfs=true, nb=true}
+					if aObj.modBtns then
+						aObj:skinStdButton{obj=_G.Atr_ClearConfirm_Cancel}
+						aObj:skinStdButton{obj=aObj:getPenultimateChild(_G.Atr_ConfirmClear_Frame)}
 					end
 				elseif panel.name == "Shopping Lists" then
-					self:addSkinFrame{obj=_G.Atr_ShpList_Frame, ft="a", kfs=true, nb=true}
-					if self.modBtns then
-						self:skinStdButton{obj=_G.Atr_ShpList_DeleteButton}
-						self:skinStdButton{obj=_G.Atr_ShpList_EditButton}
-						self:skinStdButton{obj=_G.Atr_ShpList_RenameButton}
-						self:skinStdButton{obj=_G.Atr_ShpList_ImportButton}
-						self:skinStdButton{obj=self:getPenultimateChild(panel)} -- duplicate object name
-						self:skinStdButton{obj=_G.Atr_ShpList_ExportButton}
+					aObj:addSkinFrame{obj=_G.Atr_ShpList_Frame, ft="a", kfs=true, nb=true}
+					if aObj.modBtns then
+						aObj:skinStdButton{obj=_G.Atr_ShpList_DeleteButton}
+						aObj:skinStdButton{obj=_G.Atr_ShpList_EditButton}
+						aObj:skinStdButton{obj=_G.Atr_ShpList_RenameButton}
+						aObj:skinStdButton{obj=_G.Atr_ShpList_ImportButton}
+						aObj:skinStdButton{obj=aObj:getPenultimateChild(panel)} -- duplicate object name
+						aObj:skinStdButton{obj=_G.Atr_ShpList_ExportButton}
 					end
 					_G.Atr_ShpList_Edit_FrameScrollFrame:SetBackdrop(nil)
-					self:skinSlider{obj=_G.Atr_ShpList_Edit_FrameScrollFrame.ScrollBar, rt="artwork"}
-					self:addSkinFrame{obj=_G.Atr_ShpList_Edit_Frame, ft="a", kfs=true, nb=true}
-					if self.modBtns then
-						self:skinStdButton{obj=self:getChild(_G.Atr_ShpList_Edit_Frame, _G.Atr_ShpList_Edit_Frame:GetNumChildren() - 4)} -- cancel button
-						self:skinStdButton{obj=_G.Atr_ShpList_ImportSaveBut}
-						self:skinStdButton{obj=_G.Atr_ShpList_SaveBut}
-						self:skinStdButton{obj=_G.Atr_ShpList_SelectAllBut}
+					aObj:skinSlider{obj=_G.Atr_ShpList_Edit_FrameScrollFrame.ScrollBar, rt="artwork"}
+					aObj:addSkinFrame{obj=_G.Atr_ShpList_Edit_Frame, ft="a", kfs=true, nb=true}
+					if aObj.modBtns then
+						aObj:skinStdButton{obj=aObj:getChild(_G.Atr_ShpList_Edit_Frame, _G.Atr_ShpList_Edit_Frame:GetNumChildren() - 4)} -- cancel button
+						aObj:skinStdButton{obj=_G.Atr_ShpList_ImportSaveBut}
+						aObj:skinStdButton{obj=_G.Atr_ShpList_SaveBut}
+						aObj:skinStdButton{obj=_G.Atr_ShpList_SelectAllBut}
 					end
 				-- About
 				end
 			end
 
 			if pCnt == 8 then
-				self.UnregisterCallback("Auctionator", "IOFPanel_Before_Skinning")
+				aObj.UnregisterCallback("Auctionator", "IOFPanel_Before_Skinning")
 			end
-		end)
+		end
 	end
+
+	self.RegisterCallback("Auctionator", "Auction_House_Show", function(this)
+		_G.C_Timer.After(0.25, function()
+			skinFrames()
+		end)
+
+		self.UnregisterCallback("Auctionator", "Auction_House_Show")
+	end)
+
+	self.RegisterCallback("Auctionator_Config", "IOFPanel_Before_Skinning", function(this, panel)
+		skinConfigFrames(panel)
+	end)
 
 end
