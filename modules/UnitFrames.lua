@@ -1,7 +1,9 @@
 local aName, aObj = ...
 
 local _G = _G
+
 local ftype = "p"
+
 local module = aObj:NewModule("UnitFrames", "AceEvent-3.0", "AceHook-3.0")
 
 local db

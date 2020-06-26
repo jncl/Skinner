@@ -3,9 +3,6 @@ local aName, aObj = ...
 local _G = _G
 local ftype = "opt"
 
--- Add locals to see if it speeds things up
-local AceGUIWidgetLSMlists, InterfaceOptionsFrame_OpenToCategory, LibStub, IsAddOnLoaded, pairs = _G.AceGUIWidgetLSMlists,  _G.InterfaceOptionsFrame_OpenToCategory, _G.LibStub, _G.IsAddOnLoaded, _G.pairs
-
 aObj.blizzFrames[ftype].SetupDefaults = function(self)
 
 	local defaults = { profile = {
@@ -195,7 +192,7 @@ aObj.blizzFrames[ftype].SetupDefaults = function(self)
 
 	},}
 
-	self.db = LibStub:GetLibrary("AceDB-3.0", true):New(aName .. "DB", defaults, "Default")
+	self.db = _G.LibStub:GetLibrary("AceDB-3.0", true):New(aName .. "DB", defaults, "Default")
 
 end
 
@@ -203,7 +200,7 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 
 	local db = self.db.profile
 	local dflts = self.db.defaults.profile
-	local bggns = IsAddOnLoaded("Baggins") and self.Baggins and true or false
+	local bggns = _G.IsAddOnLoaded("Baggins") and self.Baggins and true or false
 
 	local function reskinIOFBackdrop()
 		-- show changes by reskinning the Interface Options Frame with the new settings
@@ -284,14 +281,14 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 							name = self.L["Inactive Tab & DropDown Texture File"],
 							desc = self.L["Set Inactive Tab & DropDown Texture Filename"],
 						},
-						TabDDTexture = AceGUIWidgetLSMlists and {
+						TabDDTexture = _G.AceGUIWidgetLSMlists and {
 							type = "select",
 							order = 4,
 							width = "double",
 							name = self.L["Inactive Tab & DropDown Texture"],
 							desc = self.L["Choose the Texture for the Inactive Tab & DropDowns"],
 							dialogControl = "LSM30_Background",
-							values = AceGUIWidgetLSMlists.background,
+							values = _G.AceGUIWidgetLSMlists.background,
 						} or nil,
 					},
 				},
@@ -354,13 +351,13 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 					inline = true,
 					name = self.L["StatusBar"],
 					args = {
-						texture = AceGUIWidgetLSMlists and {
+						texture = _G.AceGUIWidgetLSMlists and {
 							type = "select",
 							order = 1,
 							name = self.L["Texture"],
 							desc = self.L["Choose the Texture for the Status Bars"],
 							dialogControl = "LSM30_Statusbar",
-							values = AceGUIWidgetLSMlists.statusbar,
+							values = _G.AceGUIWidgetLSMlists.statusbar,
 							get = function(info) return db.StatusBar.texture end,
 							set = function(info, value)
 								db.StatusBar.texture = value
@@ -412,14 +409,14 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 					name = self.L["Backdrop Texture File"],
 					desc = self.L["Set Backdrop Texture Filename"],
 				},
-				BdTexture = AceGUIWidgetLSMlists and {
+				BdTexture = _G.AceGUIWidgetLSMlists and {
 					type = "select",
 					order = 3,
 					width = "double",
 					name = self.L["Backdrop Texture"],
 					desc = self.L["Choose the Texture for the Backdrop"],
 					dialogControl = "LSM30_Background",
-					values = AceGUIWidgetLSMlists.background,
+					values = _G.AceGUIWidgetLSMlists.background,
 				} or nil,
 				BdTileSize = {
 					type = "range",
@@ -435,14 +432,14 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 					name = self.L["Border Texture File"],
 					desc = self.L["Set Border Texture Filename"],
 				},
-				BdBorderTexture = AceGUIWidgetLSMlists and {
+				BdBorderTexture = _G.AceGUIWidgetLSMlists and {
 					type = "select",
 					order = 6,
 					width = "double",
 					name = self.L["Border Texture"],
 					desc = self.L["Choose the Texture for the Border"],
 					dialogControl = 'LSM30_Border',
-					values = AceGUIWidgetLSMlists.border,
+					values = _G.AceGUIWidgetLSMlists.border,
 				} or nil,
 				BdEdgeSize = {
 					type = "range",
@@ -489,14 +486,14 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 					name = self.L["Background Texture File"],
 					desc = self.L["Set Background Texture Filename"],
 				},
-				BgTexture = AceGUIWidgetLSMlists and {
+				BgTexture = _G.AceGUIWidgetLSMlists and {
 					type = "select",
 					order = 3,
 					width = "double",
 					name = self.L["Background Texture"],
 					desc = self.L["Choose the Texture for the Background"],
 					dialogControl = "LSM30_Background",
-					values = AceGUIWidgetLSMlists.background,
+					values = _G.AceGUIWidgetLSMlists.background,
 				} or nil,
 				BgTile = {
 					type = "toggle",
@@ -668,7 +665,7 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 					desc = self.L["Set Gradient Maximum Colour"],
 					hasAlpha = true,
 				},
-				BagginsBBC = IsAddOnLoaded("Baggins") and self.Baggins and {
+				BagginsBBC = _G.IsAddOnLoaded("Baggins") and self.Baggins and {
 					type = "color",
 					order = -1,
 					width = "double",
@@ -692,14 +689,14 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 					name = self.L["Gradient Effect"],
 					desc = self.L["Toggle the Gradient Effect"],
 				},
-				texture = AceGUIWidgetLSMlists and {
+				texture = _G.AceGUIWidgetLSMlists and {
 					type = "select",
 					order = 2,
 					width = "double",
 					name = self.L["Gradient Texture"],
 					desc = self.L["Choose the Texture for the Gradient"],
 					dialogControl = "LSM30_Background",
-					values = AceGUIWidgetLSMlists.background,
+					values = _G.AceGUIWidgetLSMlists.background,
 				} or nil,
 				invert = {
 					type = "toggle",
@@ -766,7 +763,7 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 				db[info[#info]] = value
 				-- handle Blizzard LoD Addons
 				if self.blizzLoDFrames.n[info[#info]] then
-					if IsAddOnLoaded("Blizzard_" .. info[#info]) then
+					if _G.IsAddOnLoaded("Blizzard_" .. info[#info]) then
 						self:checkAndRun(info[#info], "n", true)
 					end
 				else self:checkAndRun(info[#info], "n") end
@@ -774,11 +771,11 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 				-- as they both change the quest text colours
 				if info[#info] == "GossipFrame" then
 					db.QuestFrame = value
-					_G.InterfaceOptionsFrame_OpenToCategory(self.optionsFrame[self.L["NPC Frames"]])
+					_G._G.InterfaceOptionsFrame_OpenToCategory(self.optionsFrame[self.L["NPC Frames"]])
 				end
 				if info[#info] == "QuestFrame" then
 					db.GossipFrame = value
-					_G.InterfaceOptionsFrame_OpenToCategory(self.optionsFrame[self.L["NPC Frames"]])
+					_G._G.InterfaceOptionsFrame_OpenToCategory(self.optionsFrame[self.L["NPC Frames"]])
 				end
 			end,
 			args = {
@@ -911,7 +908,7 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 				db[info[#info]] = value
 				-- handle Blizzard LoD Addons
 				if self.blizzLoDFrames.p[info[#info]] then
-					if IsAddOnLoaded("Blizzard_" .. info[#info]) then
+					if _G.IsAddOnLoaded("Blizzard_" .. info[#info]) then
 						self:checkAndRun(info[#info], "p", true)
 					end
 				else self:checkAndRun(info[#info], "p") end
@@ -943,7 +940,7 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 					get = function(info) return db.AchievementUI[info[#info]] end,
 					set = function(info, value)
 						db.AchievementUI[info[#info]] = value
-						if IsAddOnLoaded("Blizzard_AchievementUI") then	self:checkAndRun("AchievementUI", "p", true) end
+						if _G.IsAddOnLoaded("Blizzard_AchievementUI") then	self:checkAndRun("AchievementUI", "p", true) end
 					end,
 					args = {
 						skin = {
@@ -1252,7 +1249,7 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 				elseif info[#info] == "ChatTabsFade" then return
 				-- handle Blizzard LoD Addons
 				elseif self.blizzLoDFrames.u[info[#info]] then
-					if IsAddOnLoaded("Blizzard_" .. info[#info]) then
+					if _G.IsAddOnLoaded("Blizzard_" .. info[#info]) then
 						self:checkAndRun(info[#info], "u", true)
 					end
 				else self:checkAndRun(info[#info], "u") end
@@ -1305,7 +1302,7 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 					set = function(info, value)
 						db.BattlefieldMap[info[#info]] = value
 						if info[#info] == "skin" then
-							if IsAddOnLoaded("Blizzard_BattlefieldMap") then
+							if _G.IsAddOnLoaded("Blizzard_BattlefieldMap") then
 								self:checkAndRun("BattlefieldMap", "u", true)
 							end
 						elseif info[#info] == "gloss" and _G.BattlefieldMap.sf then
@@ -1895,11 +1892,11 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 	end
 
 	-- add DB profile options
-	self.optTables.Profiles = LibStub:GetLibrary("AceDBOptions-3.0", true):GetOptionsTable(self.db)
+	self.optTables.Profiles = _G.LibStub:GetLibrary("AceDBOptions-3.0", true):GetOptionsTable(self.db)
 
 	-- register the options tables and add them to the blizzard frame
-	self.ACR = LibStub:GetLibrary("AceConfigRegistry-3.0", true)
-	self.ACD = LibStub:GetLibrary("AceConfigDialog-3.0", true)
+	self.ACR = _G.LibStub:GetLibrary("AceConfigRegistry-3.0", true)
+	self.ACD = _G.LibStub:GetLibrary("AceConfigDialog-3.0", true)
 
 	self.ACR:RegisterOptionsTable(aName, self.optTables.General, {aName, "skin"})
 	self.optionsFrame = self.ACD:AddToBlizOptions(aName, aName)
@@ -1929,7 +1926,7 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 		db.BdEdgeSize = dflts.BdEdgeSize
 		db.BdInset = dflts.BdInset
 		-- refresh panel
-		InterfaceOptionsFrame_OpenToCategory(self.optionsFrame[self.L["Backdrop"]])
+		_G.InterfaceOptionsFrame_OpenToCategory(self.optionsFrame[self.L["Backdrop"]])
 		reskinIOFBackdrop()
 	end
 	self.optionsFrame[self.L["Background"]].default = function()
@@ -1938,7 +1935,7 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 		db.BgTexture = dflts.BgTexture
 		db.BgTile = dflts.BgTile
 		-- refresh panel
-		InterfaceOptionsFrame_OpenToCategory(self.optionsFrame[self.L["Background"]])
+		_G.InterfaceOptionsFrame_OpenToCategory(self.optionsFrame[self.L["Background"]])
 	end
 	self.optionsFrame[self.L["Colours"]].default = function()
 		db.ClassClrBd = dflts.ClassClrBd
@@ -1957,7 +1954,7 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 			db.BagginsBBC = dflts.BagginsBBC
 		end
 		-- refresh panel
-		InterfaceOptionsFrame_OpenToCategory(self.optionsFrame[self.L["Colours"]])
+		_G.InterfaceOptionsFrame_OpenToCategory(self.optionsFrame[self.L["Colours"]])
 	end
 	self.optionsFrame[self.L["Gradient"]].default = function()
 		db.Gradient.enable = dflts.Gradient.enable
@@ -1969,7 +1966,7 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 		db.Gradient.npc = dflts.Gradient.npc
 		db.Gradient.skinner = dflts.Gradient.skinner
 		-- refresh panel
-		InterfaceOptionsFrame_OpenToCategory(self.optionsFrame[self.L["Gradient"]])
+		_G.InterfaceOptionsFrame_OpenToCategory(self.optionsFrame[self.L["Gradient"]])
 	end
 
 	-- Slash command handler
@@ -1977,13 +1974,13 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 
 		if not input or input:trim() == "" then
 			-- Open general panel if there are no parameters, do twice to overcome Blizzard bug
-			InterfaceOptionsFrame_OpenToCategory(aObj.optionsFrame)
-			InterfaceOptionsFrame_OpenToCategory(aObj.optionsFrame)
+			_G.InterfaceOptionsFrame_OpenToCategory(aObj.optionsFrame)
+			_G.InterfaceOptionsFrame_OpenToCategory(aObj.optionsFrame)
 		elseif optCheck[input:lower()] then
-			InterfaceOptionsFrame_OpenToCategory(aObj.optionsFrame[optCheck[input:lower()]])
-			InterfaceOptionsFrame_OpenToCategory(aObj.optionsFrame[optCheck[input:lower()]])
+			_G.InterfaceOptionsFrame_OpenToCategory(aObj.optionsFrame[optCheck[input:lower()]])
+			_G.InterfaceOptionsFrame_OpenToCategory(aObj.optionsFrame[optCheck[input:lower()]])
 		else
-			LibStub:GetLibrary("AceConfigCmd-3.0", true):HandleCommand(aName, aName, input)
+			_G.LibStub:GetLibrary("AceConfigCmd-3.0", true):HandleCommand(aName, aName, input)
 		end
 
 	end
@@ -1993,13 +1990,13 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 	self:RegisterChatCommand("skin", chatCommand)
 
 	-- setup the DB object
-	self.DBObj = LibStub:GetLibrary("LibDataBroker-1.1", true):NewDataObject(aName, {
+	self.DBObj = _G.LibStub:GetLibrary("LibDataBroker-1.1", true):NewDataObject(aName, {
 		type = "launcher",
 		icon = [[Interface\Icons\INV_Misc_Pelt_Wolf_01]],
 		OnClick = function()
 			-- do twice to overcome Blizzard bug
-			InterfaceOptionsFrame_OpenToCategory(aObj.optionsFrame)
-			InterfaceOptionsFrame_OpenToCategory(aObj.optionsFrame)
+			_G.InterfaceOptionsFrame_OpenToCategory(aObj.optionsFrame)
+			_G.InterfaceOptionsFrame_OpenToCategory(aObj.optionsFrame)
 		end,
 	})
 
@@ -2025,24 +2022,24 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 			}
 			name2 = nil
 		end
-		for addonName, _ in pairs(self.addonsToSkin) do
+		for addonName, _ in _G.pairs(self.addonsToSkin) do
 			if self:isAddonEnabled(addonName) then
 				addDSOpt(addonName)
 			end
 		end
-		for libName, _ in pairs(self.libsToSkin) do
-			if _G.LibStub(libName, true)
+		for libName, _ in _G.pairs(self.libsToSkin) do
+			if _G.LibStub:GetLibrary(libName, true)
 			and self:isAddonEnabled(libName)
 			then
 				addDSOpt(libName, true)
 			end
 		end
-		for addonName, _ in pairs(self.lodAddons) do
+		for addonName, _ in _G.pairs(self.lodAddons) do
 			if self:isAddonEnabled(addonName) then
 				addDSOpt(addonName, nil, true)
 			end
 		end
-		for addonName, _ in pairs(self.otherAddons) do
+		for addonName, _ in _G.pairs(self.otherAddons) do
 			if self:isAddonEnabled(addonName) then
 				if addonName == "tekKonfig" then
 					addDSOpt(addonName, true)

@@ -1,8 +1,10 @@
 local aName, aObj = ...
 
 local _G = _G
-local module = aObj:NewModule("MiddleFrames")
+
 local ftype = "s"
+
+local module = aObj:NewModule("MiddleFrames")
 
 local db
 local defaults = {

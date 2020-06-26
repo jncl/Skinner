@@ -4,11 +4,6 @@ local _G = _G
 
 local module = aObj:NewModule("UIButtons", "AceEvent-3.0", "AceHook-3.0")
 
---@alpha@
-local assert, debugstack = _G.assert, _G.debugstack
---@end-alpha@
-local rawget, select, type, CreateFont, Round = _G.rawget, _G.select, _G.type, _G.CreateFont, _G.Round
-
 local db
 local defaults = {
 	profile = {
@@ -25,35 +20,35 @@ do
 	module.plus = "+"
 	module.minus = "-" -- using Hyphen-minus(-) instead of minus sign(−) for font compatiblity reasons
 	-- create font to use for Close Buttons
-	module.fontX = CreateFont("fontX")
+	module.fontX = _G.CreateFont("fontX")
 	module.fontX:SetFont([[Fonts\FRIZQT__.TTF]], 20)
 	module.fontX:SetTextColor(_G.NORMAL_FONT_COLOR:GetRGB())
 	-- create font to use for Black Close Buttons (TalkingHeadFrame)
-	module.fontBX = CreateFont("fontBX")
+	module.fontBX = _G.CreateFont("fontBX")
 	module.fontBX:SetFont([[Fonts\FRIZQT__.TTF]], 20)
 	module.fontBX:SetTextColor(_G.BLACK_FONT_COLOR:GetRGB())
 	-- create font for disabled text
-	module.fontDX = CreateFont("fontDX")
+	module.fontDX = _G.CreateFont("fontDX")
 	module.fontDX:SetFont([[Fonts\FRIZQT__.TTF]], 20)
 	module.fontDX:SetTextColor(_G.DISABLED_FONT_COLOR:GetRGB())
 	-- create font to use for small blue Close Buttons (e.g. BNToastFrame)
-	module.fontSBX = CreateFont("fontSBX")
+	module.fontSBX = _G.CreateFont("fontSBX")
 	module.fontSBX:SetFont([[Fonts\FRIZQT__.TTF]], 14)
 	module.fontSBX:SetTextColor(_G.BATTLENET_FONT_COLOR:GetRGB())
 	-- create font to use for small Buttons (e.g. MinimalArchaeology)
-	module.fontSB = CreateFont("fontSB")
+	module.fontSB = _G.CreateFont("fontSB")
 	module.fontSB:SetFont([[Fonts\FRIZQT__.TTF]], 14)
 	module.fontSB:SetTextColor(_G.NORMAL_FONT_COLOR:GetRGB())
 	-- create font to use for Minus/Plus Buttons
-	module.fontP = CreateFont("fontP")
+	module.fontP = _G.CreateFont("fontP")
 	module.fontP:SetFont([[Fonts\ARIALN.TTF]], 16)
 	module.fontP:SetTextColor(_G.NORMAL_FONT_COLOR:GetRGB())
 	-- create font for disabled text (used by WeakAuras)
-	module.fontDP = CreateFont("fontDP")
+	module.fontDP = _G.CreateFont("fontDP")
 	module.fontDP:SetFont([[Fonts\ARIALN.TTF]], 16)
 	module.fontDP:SetTextColor(_G.DISABLED_FONT_COLOR:GetRGB())
 	-- create font to use for WorldMap SizeUp/Down buttons
-	module.fontS = CreateFont("fontA")
+	module.fontS = _G.CreateFont("fontA")
 	module.fontS:SetFont([[Fonts\ARIALN.TTF]], 14)
 	module.fontS:SetTextColor(_G.NORMAL_FONT_COLOR:GetRGB())
 end
@@ -65,7 +60,7 @@ local function __checkTex(opts)
 		mp2 = minus/plus type 2
 --]]
 --@alpha@
-	assert(opts.obj, "Missing object __cT\n" .. debugstack(2, 3, 2))
+	 _G.assert(opts.obj, "Missing object __cT\n" .. _G.debugstack(2, 3, 2))
 --@end-alpha@
 
 	-- hide existing textures if they exist (Armory/GupCharacter requires this)
@@ -116,21 +111,21 @@ local function __checkTex(opts)
 end
 function module:checkTex(...)
 
-	local opts = select(1, ...)
+	local opts = _G.select(1, ...)
 
 --@alpha@
-	assert(opts, "Missing object cT\n" .. debugstack(2, 3, 2))
+	 _G.assert(opts, "Missing object cT\n" .. _G.debugstack(2, 3, 2))
 --@end-alpha@
 
 	-- handle missing object (usually when addon changes)
 	if not opts then return end
 
-	if type(rawget(opts, 0)) == "userdata" and type(opts.GetObjectType) == "function" then
+	if _G.type(_G.rawget(opts, 0)) == "userdata" and _G.type(opts.GetObjectType) == "function" then
 		-- old style call
 		opts = {}
-		opts.obj = select(1, ...) and select(1, ...) or nil
-		opts.nTex = select(2, ...) and select(2, ...) or nil
-		opts.mp2 = select(3, ...) and select(3, ...) or nil
+		opts.obj = _G.select(1, ...) and _G.select(1, ...) or nil
+		opts.nTex = _G.select(2, ...) and _G.select(2, ...) or nil
+		opts.mp2 = _G.select(3, ...) and _G.select(3, ...) or nil
 	end
 	__checkTex(opts)
 	opts = nil
@@ -139,7 +134,7 @@ end
 
 function module:clrButtonBorder(btn)
 --@alpha@
-	assert(btn.sbb, "Missing object__cBB\n" .. debugstack(2, 3, 2))
+	 _G.assert(btn.sbb, "Missing object__cBB\n" .. _G.debugstack(2, 3, 2))
 --@end-alpha@
 
 	-- aObj:Debug("UIB cBB: [%s, %s, %s, %s]", btn.IconBorder:IsShown(), btn.IconBorder:GetVertexColor())
@@ -176,7 +171,7 @@ function module:isButton(obj)
 	and not (obj.obj and obj.obj.checkbg) -- an Ace3 checkbutton
 	and not obj.SetSlot -- and not a lootbutton
 	then
-		local oW, oH, nR = Round(obj:GetWidth()), Round(obj:GetHeight()), obj:GetNumRegions()
+		local oW, oH, nR = _G.Round(obj:GetWidth()), _G.Round(obj:GetHeight()), obj:GetNumRegions()
 		-- aObj:Debug("isButton: [%s, %s, %s, %s]", obj, oW, oH, nR)
 		if oH == 18 and oW == 18 and nR == 3 -- BNToast close button
 		then
@@ -232,7 +227,7 @@ function module:skinCloseButton(opts) -- text on button
 --@alpha@
 	-- skin GlowBox frame
 	if opts.obj:GetParent().GlowTop then
-		assert(opts.noSkin, "GlowBox should be skinned" .. debugstack(2, 3, 2))
+		 _G.assert(opts.noSkin, "GlowBox should be skinned" .. _G.debugstack(2, 3, 2))
 	end
 --@end-alpha@
 
@@ -242,7 +237,7 @@ function module:skinCloseButton(opts) -- text on button
 			aObj:addSkinButton{obj=opts.obj, ft=opts.ftype or "a", parent=opts.obj, sap=true, aso=aso}
 		else
 			aso.bd = 5
-			local bW = Round(opts.obj:GetWidth())
+			local bW = _G.Round(opts.obj:GetWidth())
 			opts.x1 = opts.x1 or bW == 32 and 6 or 4
 			opts.y1 = opts.y1 or bW == 32 and -6 or -4
 			opts.x2 = opts.x2 or bW == 32 and -6 or -4
@@ -359,8 +354,8 @@ function module:skinOtherButton(opts)
 		text = text to use
 --]]
 --@alpha@
-	assert(opts.obj, "Missing object skinOtherButton\n" .. debugstack(2, 3, 2))
-	assert(opts.text, "Missing text to use skinOtherButton\n" .. debugstack(2, 3, 2))
+	 _G.assert(opts.obj, "Missing object skinOtherButton\n" .. _G.debugstack(2, 3, 2))
+	 _G.assert(opts.text, "Missing text to use skinOtherButton\n" .. _G.debugstack(2, 3, 2))
 --@end-alpha@
 
 	opts.obj:DisableDrawLayer("BACKGROUND")
@@ -383,7 +378,7 @@ function module:skinOtherButton(opts)
 			aObj:addSkinButton{obj=opts.obj, ft=opts.ftype or "a", parent=opts.obj, sap=true, aso=aso}
 		else
 			aso.bd = 5
-			local bW = Round(opts.obj:GetWidth())
+			local bW = _G.Round(opts.obj:GetWidth())
 			opts.x1 = opts.x1 or bW == 32 and 6 or 4
 			opts.y1 = opts.y1 or bW == 32 and -6 or -4
 			opts.x2 = opts.x2 or bW == 32 and -6 or -4
@@ -444,7 +439,7 @@ function module:skinStdButton(opts) -- standard panel button
 	if opts.obj:GetPushedTexture() then opts.obj:GetPushedTexture():SetAlpha(0) end
 	if opts.obj:GetDisabledTexture() then opts.obj:GetDisabledTexture():SetAlpha(0) end
 
-	local bW, bH = Round(opts.obj:GetWidth()), Round(opts.obj:GetHeight())
+	local bW, bH = _G.Round(opts.obj:GetWidth()), _G.Round(opts.obj:GetHeight())
 
 	local aso = opts.aso or {}
 	aso.bd = bH > 18 and 5 or 6 -- use narrower backdrop if required
@@ -482,9 +477,9 @@ function module:skinButton(opts)
 		nc = don't check to see if already skinned (Ace3)
 --]]
 --@alpha@
-	assert(opts.obj, "Missing object skinButton\n" .. debugstack(2, 3, 2))
+	 _G.assert(opts.obj, "Missing object skinButton\n" .. _G.debugstack(2, 3, 2))
 	aObj:CustomPrint(1, 0, 0, "Not using a specific Button skinning function", opts.obj, opts.cb)
-	if not opts.obj:GetName() then _G.print("No Name supplied __sB\n", debugstack(2, 5, 2)) end
+	if not opts.obj:GetName() then _G.print("No Name supplied __sB\n", _G.debugstack(2, 5, 2)) end
 --@end-alpha@
 
 	if not opts.obj then return end
@@ -528,7 +523,7 @@ local function __skinAllButtons(opts, bgen)
 		other options as per skinButton
 --]]
 --@alpha@
-	assert(opts.obj, "Missing object__sAB\n" .. debugstack(2, 3, 2))
+	 _G.assert(opts.obj, "Missing object__sAB\n" .. _G.debugstack(2, 3, 2))
 --@end-alpha@
 	if not opts.obj then return end
 
@@ -562,10 +557,10 @@ local function __skinAllButtons(opts, bgen)
 end
 function module:skinAllButtons(...)
 
-	local opts = select(1, ...)
+	local opts = _G.select(1, ...)
 
 --@alpha@
-	assert(opts, "Missing object sAB\n" .. debugstack(2, 3, 2))
+	 _G.assert(opts, "Missing object sAB\n" .. _G.debugstack(2, 3, 2))
 	-- handle AddOn skins still using this code rather than skinning button individually
 	aObj:CustomPrint(1, 0, 0, "Using deprecated function - skinAllButtons, use skin???Button instead", opts.obj)
 --@end-alpha@
@@ -573,10 +568,10 @@ function module:skinAllButtons(...)
 	-- handle missing object (usually when addon changes)
 	if not opts then return end
 
-	if type(rawget(opts, 0)) == "userdata" and type(opts.GetObjectType) == "function" then
+	if _G.type(_G.rawget(opts, 0)) == "userdata" and _G.type(opts.GetObjectType) == "function" then
 		-- old style call
 		opts = {}
-		opts.obj = select(1, ...) and select(1, ...) or nil
+		opts.obj = _G.select(1, ...) and _G.select(1, ...) or nil
 	end
 	__skinAllButtons(opts)
 	opts = nil
@@ -612,7 +607,7 @@ local function __addButtonBorder(opts)
 		ca = set colour alpha
 --]]
 --@alpha@
-	assert(opts.obj, "Missing object__aBB\n" .. debugstack(2, 3, 2))
+	 _G.assert(opts.obj, "Missing object__aBB\n" .. _G.debugstack(2, 3, 2))
 --@end-alpha@
 	if not opts.obj then return end
 
@@ -712,19 +707,19 @@ local function __addButtonBorder(opts)
 end
 function module:addButtonBorder(...)
 
-	local opts = select(1, ...)
+	local opts = _G.select(1, ...)
 
 --@alpha@
-	assert(opts, "Missing object sAB\n" .. debugstack(2, 3, 2))
+	 _G.assert(opts, "Missing object sAB\n" .. _G.debugstack(2, 3, 2))
 --@end-alpha@
 
 	-- handle missing object (usually when addon changes)
 	if not opts then return end
 
-	if type(rawget(opts, 0)) == "userdata" and type(opts.GetObjectType) == "function" then
+	if _G.type(_G.rawget(opts, 0)) == "userdata" and _G.type(opts.GetObjectType) == "function" then
 		-- old style call
 		opts = {}
-		opts.obj = select(1, ...) and select(1, ...) or nil
+		opts.obj = _G.select(1, ...) and _G.select(1, ...) or nil
 	end
 	__addButtonBorder(opts)
 	opts = nil
@@ -739,7 +734,7 @@ local function __skinCheckButton(opts)
 		hf = hook show/hide functions
 --]]
 --@alpha@
-	assert(opts.obj, "Missing object __sCB\n" .. debugstack(2, 3, 2))
+	 _G.assert(opts.obj, "Missing object __sCB\n" .. _G.debugstack(2, 3, 2))
 --@end-alpha@
 
 	-- don't skin it twice unless required
@@ -770,19 +765,19 @@ local function __skinCheckButton(opts)
 end
 function module:skinCheckButton(...)
 
-	local opts = select(1, ...)
+	local opts = _G.select(1, ...)
 
 --@alpha@
-	assert(opts, "Missing object sCB\n" .. debugstack(2, 3, 2))
+	 _G.assert(opts, "Missing object sCB\n" .. _G.debugstack(2, 3, 2))
 --@end-alpha@
 
 	-- handle missing object (usually when addon changes)
 	if not opts then return end
 
-	if type(rawget(opts, 0)) == "userdata" and type(opts.GetObjectType) == "function" then
+	if _G.type(_G.rawget(opts, 0)) == "userdata" and _G.type(opts.GetObjectType) == "function" then
 		-- old style call
 		opts = {}
-		opts.obj = select(1, ...) and select(1, ...) or nil
+		opts.obj = _G.select(1, ...) and _G.select(1, ...) or nil
 	end
 
 	__skinCheckButton(opts)
@@ -891,14 +886,14 @@ function module:GetOptions()
 						name = aObj.L["Border Texture File"],
 						desc = aObj.L["Set Border Texture Filename"],
 					},
-					texture = _G.AceGUIWidgetLSMlists and {
+					texture = _G._G.AceGUIWidgetLSMlists and {
 						type = "select",
 						order = 2,
 						width = "double",
 						name = aObj.L["Border Texture"],
 						desc = aObj.L["Choose the Texture for the Border"],
 						dialogControl = 'LSM30_Border',
-						values = _G.AceGUIWidgetLSMlists.border,
+						values = _G._G.AceGUIWidgetLSMlists.border,
 					} or nil,
 				},
 			},

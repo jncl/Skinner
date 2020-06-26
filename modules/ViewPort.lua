@@ -1,6 +1,7 @@
 local _, aObj = ...
 
 local _G = _G
+
 local module = aObj:NewModule("ViewPort")
 
 local db

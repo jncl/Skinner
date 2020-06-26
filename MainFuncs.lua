@@ -2,11 +2,6 @@ local _, aObj = ...
 
 local _G = _G
 
---@alpha@
-local assert, debugstack = _G.assert, _G.debugstack
---@end-alpha@
-local ipairs, pairs, rawget, select, type, Round = _G.ipairs, _G.pairs, _G.rawget, _G.select, _G.type, _G.Round
-
 local function __addSkinButton(opts)
 --[[
 	Calling parameters:
@@ -29,7 +24,7 @@ local function __addSkinButton(opts)
 		nohooks = don't hook methods
 --]]
 --@alpha@
-	assert(opts.obj, "Missing object __aSB\n" .. debugstack(2, 3, 2))
+	_G.assert(opts.obj, "Missing object __aSB\n" .. _G.debugstack(2, 3, 2))
 --@end-alpha@
 
 	aObj:Debug2("__addSkinButton: [%s, %s]", opts.obj, opts.obj:GetName())
@@ -109,7 +104,7 @@ local function __addSkinButton(opts)
 	-- change the draw layer of the Icon and Count, if necessary
 	if opts.obj.GetNumRegions then
 		local regOT
-		for _, reg in ipairs{opts.obj:GetRegions()} do
+		for _, reg in _G.ipairs{opts.obj:GetRegions()} do
 			regOT = reg:GetObjectType()
 			if regOT == "Texture" or regOT == "FontString" then
 				-- change the DrawLayer to make the Icon show if required
@@ -139,22 +134,22 @@ local function __addSkinButton(opts)
 end
 function aObj:addSkinButton(...)
 
-	local opts = select(1, ...)
+	local opts = _G.select(1, ...)
 
 --@alpha@
-	assert(opts, "Missing object aSB\n" .. debugstack(2, 3, 2))
+	_G.assert(opts, "Missing object aSB\n" .. _G.debugstack(2, 3, 2))
 --@end-alpha@
 
 	-- handle missing object (usually when addon changes)
 	if not opts then return end
 
-	if type(rawget(opts, 0)) == "userdata" and type(opts.GetObjectType) == "function" then
+	if _G.type(_G.rawget(opts, 0)) == "userdata" and _G.type(opts.GetObjectType) == "function" then
 		-- old style call
 		opts = {}
-		opts.obj = select(1, ...) and select(1, ...) or nil
-		opts.parent = select(2, ...) and select(2, ...) or nil
-		opts.hook = select(3, ...) and select(3, ...) or nil
-		opts.hide = select(4, ...) and select(4, ...) or nil
+		opts.obj = _G.select(1, ...) and _G.select(1, ...) or nil
+		opts.parent = _G.select(2, ...) and _G.select(2, ...) or nil
+		opts.hook = _G.select(3, ...) and _G.select(3, ...) or nil
+		opts.hide = _G.select(4, ...) and _G.select(4, ...) or nil
 	end
 	-- new style call
 	return __addSkinButton(opts)
@@ -166,7 +161,7 @@ local function hideHeader(obj)
 
 	local hAdj, hObj = false
 	-- move the Header texture, if required
-	for _, suff in pairs{"Header", "_Header", "_HeaderBox", "_FrameHeader", "FrameHeader", "HeaderTexture", "HeaderFrame"} do
+	for _, suff in _G.pairs{"Header", "_Header", "_HeaderBox", "_FrameHeader", "FrameHeader", "HeaderTexture", "HeaderFrame"} do
 		hObj = _G[obj:GetName() .. suff]
 		if hObj then
 			hObj:SetPoint("TOP", obj, "TOP", 0, 7)
@@ -221,11 +216,11 @@ local function __addSkinFrame(opts)
 		sec = use the "SecureFrameTemplate"
 --]]
 --@alpha@
-	assert(opts.obj, "Missing object __aSF\n" .. debugstack(2, 3, 2))
+	_G.assert(opts.obj, "Missing object __aSF\n" .. _G.debugstack(2, 3, 2))
 	-- CHANGED: show AddOn skins still using skinAllButtons
 	if not opts.ft and not opts.nb then
 		aObj:CustomPrint(1, 0, 0, "Not using nb=true", opts.obj)
-		if not opts.obj:GetName() then _G.print("No Name supplied __aSF\n", debugstack(2, 3, 2)) end
+		if not opts.obj:GetName() then _G.print("No Name supplied __aSF\n", _G.debugstack(2, 3, 2)) end
 	end
 	-- FIXME: use ft="a" when AddOn skin has been changed to manually skin buttons
 --@end-alpha@
@@ -253,7 +248,7 @@ local function __addSkinFrame(opts)
 
 	-- remove all textures, if required
 	if opts.rt then
-		for _, reg in ipairs{opts.obj:GetRegions()} do
+		for _, reg in _G.ipairs{opts.obj:GetRegions()} do
 			if not reg:IsObjectType("FontString") then
 				reg:SetTexture(nil)
 			end
@@ -347,25 +342,25 @@ local function __addSkinFrame(opts)
 end
 function aObj:addSkinFrame(...)
 
-	local opts = select(1, ...)
+	local opts = _G.select(1, ...)
 
 --@alpha@
-	assert(opts, "Missing object aSF\n" .. debugstack(2, 3, 2))
+	_G.assert(opts, "Missing object aSF\n" .. _G.debugstack(2, 3, 2))
 --@end-alpha@
 
 	-- handle missing object (usually when addon changes)
 	if not opts then return end
 
-	if type(rawget(opts, 0)) == "userdata" and type(opts.GetObjectType) == "function" then
+	if _G.type(_G.rawget(opts, 0)) == "userdata" and _G.type(opts.GetObjectType) == "function" then
 		-- old style call
 		opts = {}
-		opts.obj = select(1, ...) and select(1, ...) or nil
-		opts.x1 = select(2, ...) and select(2, ...) or -3
-		opts.y1 = select(3, ...) and select(3, ...) or 3
-		opts.x2 = select(4, ...) and select(4, ...) or 3
-		opts.y2 = select(5, ...) and select(5, ...) or -3
-		opts.ft = select(6, ...) and select(6, ...) or nil
-		opts.noBdr = select(7, ...) and select(7, ...) or nil
+		opts.obj = _G.select(1, ...) and _G.select(1, ...) or nil
+		opts.x1 = _G.select(2, ...) and _G.select(2, ...) or -3
+		opts.y1 = _G.select(3, ...) and _G.select(3, ...) or 3
+		opts.x2 = _G.select(4, ...) and _G.select(4, ...) or 3
+		opts.y2 = _G.select(5, ...) and _G.select(5, ...) or -3
+		opts.ft = _G.select(6, ...) and _G.select(6, ...) or nil
+		opts.noBdr = _G.select(7, ...) and _G.select(7, ...) or nil
 	end
 
 	return __addSkinFrame(opts)
@@ -408,11 +403,11 @@ function aObj:applyGradient(obj, fh, invert, rotate)
 
 	if self.prdb.FadeHeight.enable
 	and (self.prdb.FadeHeight.force or not fh)
-	and Round(obj:GetHeight()) ~= obj.hgt
+	and _G.Round(obj:GetHeight()) ~= obj.hgt
 	then
 		-- set the Fade Height if not already passed to this function or 'forced'
 		-- making sure that it isn't greater than the frame height
-		obj.hgt = Round(obj:GetHeight())
+		obj.hgt = _G.Round(obj:GetHeight())
 		fh = self.prdb.FadeHeight.value <= obj.hgt and self.prdb.FadeHeight.value or obj.hgt
 	end
 
@@ -489,8 +484,8 @@ local function __applySkin(opts)
 		bbclr = BackdropBorder colour name
 --]]
 --@alpha@
-	assert(opts.obj, "Missing object __aS\n" .. debugstack(2, 3, 2))
-	local hasIOT = assert(opts.obj.IsObjectType, "The Object passed isn't a Frame") -- throw an error here to get its original location reported
+	_G.assert(opts.obj, "Missing object __aS\n" .. _G.debugstack(2, 3, 2))
+	local hasIOT = _G.assert(opts.obj.IsObjectType, "The Object passed isn't a Frame") -- throw an error here to get its original location reported
 	if hasIOT and not opts.obj:IsObjectType("Frame") then
 		if aObj.prdb.Errors then
 			aObj:CustomPrint(1, 0, 0, "Error skinning", opts.obj.GetName and opts.obj:GetName() or opts.obj, "not a Frame or subclass of Frame:", opts.obj:GetObjectType())
@@ -552,24 +547,24 @@ local function __applySkin(opts)
 end
 function aObj:applySkin(...)
 
-	local opts = select(1, ...)
+	local opts = _G.select(1, ...)
 
 --@alpha@
-	assert(opts, "Missing object aS\n" .. debugstack(2, 3, 2))
+	_G.assert(opts, "Missing object aS\n" .. _G.debugstack(2, 3, 2))
 --@end-alpha@
 
 	-- handle missing object (usually when addon changes)
 	if not opts then return end
 
-	if type(rawget(opts, 0)) == "userdata" and type(opts.GetObjectType) == "function" then
+	if _G.type(_G.rawget(opts, 0)) == "userdata" and _G.type(opts.GetObjectType) == "function" then
 		-- old style call
 		opts = {}
-		opts.obj = select(1, ...) and select(1, ...) or nil
-		opts.hdr = select(2, ...) and select(2, ...) or nil
-		opts.bba = select(3, ...) and select(3, ...) or nil
-		opts.ba = select(4, ...) and select(4, ...) or nil
-		opts.fh = select(5, ...) and select(5, ...) or nil
-		opts.bd = select(6, ...) and select(6, ...) or nil
+		opts.obj = _G.select(1, ...) and _G.select(1, ...) or nil
+		opts.hdr = _G.select(2, ...) and _G.select(2, ...) or nil
+		opts.bba = _G.select(3, ...) and _G.select(3, ...) or nil
+		opts.ba = _G.select(4, ...) and _G.select(4, ...) or nil
+		opts.fh = _G.select(5, ...) and _G.select(5, ...) or nil
+		opts.bd = _G.select(6, ...) and _G.select(6, ...) or nil
 	end
 	__applySkin(opts)
 	opts = nil
@@ -608,7 +603,7 @@ local function __skinDropDown(opts)
 		lrg = Large UI template used (AuctionHouseUI)
 --]]
 --@alpha@
-	assert(opts.obj, "Missing object __sDD\n" .. debugstack(2, 3, 2))
+	_G.assert(opts.obj, "Missing object __sDD\n" .. _G.debugstack(2, 3, 2))
 --@end-alpha@
 
 	aObj:Debug2("__skinDropDown: [%s, %s]", opts.obj, opts.obj:GetName())
@@ -684,22 +679,22 @@ local function __skinDropDown(opts)
 end
 function aObj:skinDropDown(...)
 
-	local opts = select(1, ...)
+	local opts = _G.select(1, ...)
 
 --@alpha@
-	assert(opts, "Missing object sDD\n" .. debugstack(2, 3, 2))
+	_G.assert(opts, "Missing object sDD\n" .. _G.debugstack(2, 3, 2))
 --@end-alpha@
 
 	-- handle missing object (usually when addon changes)
 	if not opts then return end
 
-	if type(rawget(opts, 0)) == "userdata" and type(opts.GetObjectType) == "function" then
+	if _G.type(_G.rawget(opts, 0)) == "userdata" and _G.type(opts.GetObjectType) == "function" then
 		-- old style call
 		opts = {}
-		opts.obj = select(1, ...) and select(1, ...) or nil
-		opts.moveTex = select(2, ...) and select(2, ...) or nil
-		opts.noSkin = select(3, ...) and select(3, ...) or nil
-		opts.noMove = select(4, ...) and select(4, ...) or nil
+		opts.obj = _G.select(1, ...) and _G.select(1, ...) or nil
+		opts.moveTex = _G.select(2, ...) and _G.select(2, ...) or nil
+		opts.noSkin = _G.select(3, ...) and _G.select(3, ...) or nil
+		opts.noMove = _G.select(4, ...) and _G.select(4, ...) or nil
 	end
 
 	__skinDropDown(opts)
@@ -723,8 +718,8 @@ local function __skinEditBox(opts)
 		ign = ignore this editbox when skinning IOF panels
 --]]
 --@alpha@
-	assert(opts.obj, "Missing object __sEB\n" .. debugstack(2, 3, 2))
-	assert(opts.obj:IsObjectType("EditBox"), "Not an EditBox\n" .. debugstack(2, 3, 2))
+	_G.assert(opts.obj, "Missing object __sEB\n" .. _G.debugstack(2, 3, 2))
+	_G.assert(opts.obj:IsObjectType("EditBox"), "Not an EditBox\n" .. _G.debugstack(2, 3, 2))
 --@end-alpha@
 
 	aObj:Debug2("__skinEditBox: [%s, %s]", opts.obj, opts.obj:GetName())
@@ -781,7 +776,7 @@ local function __skinEditBox(opts)
 		and _G[opts.obj:GetName() .. "SearchIcon"] then
 			aObj:moveObject{obj=_G[opts.obj:GetName() .. "SearchIcon"], x=xOfs} -- e.g. TradeSkillFrameSearchBox
 		else -- e.g. WeakAurasFilterInput
-			for _, reg in ipairs{opts.obj:GetRegions()} do
+			for _, reg in _G.ipairs{opts.obj:GetRegions()} do
 				if aObj:hasTextInTexture(reg, "UI-Searchbox-Icon", true) then
 					aObj:moveObject{obj=reg, x=xOfs}
 				end
@@ -802,24 +797,24 @@ local function __skinEditBox(opts)
 end
 function aObj:skinEditBox(...)
 
-	local opts = select(1, ...)
+	local opts = _G.select(1, ...)
 
 --@alpha@
-	assert(opts, "Missing object sEB\n" .. debugstack(2, 3, 2))
+	_G.assert(opts, "Missing object sEB\n" .. _G.debugstack(2, 3, 2))
 --@end-alpha@
 
 	-- handle missing object (usually when addon changes)
 	if not opts then return end
 
-	if type(rawget(opts, 0)) == "userdata" and type(opts.GetObjectType) == "function" then
+	if _G.type(_G.rawget(opts, 0)) == "userdata" and _G.type(opts.GetObjectType) == "function" then
 		-- old style call
 		opts = {}
-		opts.obj = select(1, ...) and select(1, ...) or nil
-		opts.regs = select(2, ...) and select(2, ...) or {}
-		opts.noSkin = select(3, ...) and select(3, ...) or nil
-		opts.noHeight = select(4, ...) and select(4, ...) or nil
-		opts.noWidth = select(5, ...) and select(5, ...) or nil
-		opts.move = select(6, ...) and select(6, ...) or nil
+		opts.obj = _G.select(1, ...) and _G.select(1, ...) or nil
+		opts.regs = _G.select(2, ...) and _G.select(2, ...) or {}
+		opts.noSkin = _G.select(3, ...) and _G.select(3, ...) or nil
+		opts.noHeight = _G.select(4, ...) and _G.select(4, ...) or nil
+		opts.noWidth = _G.select(5, ...) and _G.select(5, ...) or nil
+		opts.move = _G.select(6, ...) and _G.select(6, ...) or nil
 	end
 
 	__skinEditBox(opts)
@@ -829,7 +824,7 @@ end
 
 function aObj:skinGlowBox(gBox, ftype, ncb)
 --@alpha@
-	assert(gBox, "Missing object __sGB\n" .. debugstack(2, 3, 2))
+	_G.assert(gBox, "Missing object __sGB\n" .. _G.debugstack(2, 3, 2))
 --@end-alpha@
 
 	aObj:Debug2("skinGlowBox: [%s, %s, %s]", gBox, ftype, ncb)
@@ -878,7 +873,7 @@ local function __skinMoneyFrame(opts)
 		moveGEB = move the Gold edit box left
 --]]
 --@alpha@
-	assert(opts.obj, "Missing object __sMF\n" .. debugstack(2, 3, 2))
+	_G.assert(opts.obj, "Missing object __sMF\n" .. _G.debugstack(2, 3, 2))
 --@end-alpha@
 
 	aObj:Debug2("__skinMoneyFrame: [%s, %s]", opts.obj, opts.obj:GetName())
@@ -891,7 +886,7 @@ local function __skinMoneyFrame(opts)
 	end
 
 	local obj
-	for key, type in pairs{"Gold", "Silver", "Copper"} do
+	for key, type in _G.pairs{"Gold", "Silver", "Copper"} do
 		obj = _G[opts.obj:GetName() .. type]
 		aObj:skinEditBox{obj=obj, regs={6, 7}, noHeight=true, noWidth=true, ign=true} -- N.B. region 6 is the icon, 7 is text
 		-- move label to the right for colourblind mode
@@ -914,23 +909,23 @@ local function __skinMoneyFrame(opts)
 end
 function aObj:skinMoneyFrame(...)
 
-	local opts = select(1, ...)
+	local opts = _G.select(1, ...)
 
 --@alpha@
-	assert(opts, "Missing object sMF\n" .. debugstack(2, 3, 2))
+	_G.assert(opts, "Missing object sMF\n" .. _G.debugstack(2, 3, 2))
 --@end-alpha@
 
 	-- handle missing object (usually when addon changes)
 	if not opts then return end
 
-	if type(rawget(opts, 0)) == "userdata" and type(opts.GetObjectType) == "function" then
+	if _G.type(_G.rawget(opts, 0)) == "userdata" and _G.type(opts.GetObjectType) == "function" then
 		-- old style call
 		opts = {}
-		opts.obj = select(1, ...) and select(1, ...) or nil
-		opts.moveGIcon = select(2, ...) and select(2, ...) or nil
-		opts.noWidth = select(3, ...) and select(3, ...) or nil
-		opts.moveSEB = select(4, ...) and select(4, ...) or nil
-		opts.moveGEB = select(5, ...) and select(5, ...) or nil
+		opts.obj = _G.select(1, ...) and _G.select(1, ...) or nil
+		opts.moveGIcon = _G.select(2, ...) and _G.select(2, ...) or nil
+		opts.noWidth = _G.select(3, ...) and _G.select(3, ...) or nil
+		opts.moveSEB = _G.select(4, ...) and _G.select(4, ...) or nil
+		opts.moveGEB = _G.select(5, ...) and _G.select(5, ...) or nil
 	end
 
 	__skinMoneyFrame(opts)
@@ -948,9 +943,9 @@ local function __skinScrollBar(opts)
 		noRR = Don't remove regions
 --]]
 --@alpha@
-	assert(opts.obj, "Missing object __sSB\n" .. debugstack(2, 3, 2))
-	assert(opts.obj:IsObjectType("Frame"), "Not a ScrollFrame\n" .. debugstack(2, 3, 2))
-	assert(_G[opts.obj:GetName() .. "ScrollBar"]:IsObjectType("Slider"), "Not a Slider\n" .. debugstack(2, 3, 2))
+	_G.assert(opts.obj, "Missing object __sSB\n" .. _G.debugstack(2, 3, 2))
+	_G.assert(opts.obj:IsObjectType("Frame"), "Not a ScrollFrame\n" .. _G.debugstack(2, 3, 2))
+	_G.assert(_G[opts.obj:GetName() .. "ScrollBar"]:IsObjectType("Slider"), "Not a Slider\n" .. _G.debugstack(2, 3, 2))
 	-- handle AddOn skins still using this code rather than skinSlider
 	aObj:CustomPrint(1, 0, 0, "Using deprecated function - skinScrollBar, use skinSlider instead", opts.obj)
 --@end-alpha@
@@ -973,22 +968,22 @@ local function __skinScrollBar(opts)
 end
 function aObj:skinScrollBar(...)
 
-	local opts = select(1, ...)
+	local opts = _G.select(1, ...)
 
 --@alpha@
-	assert(opts, "Missing object sSB\n" .. debugstack(2, 3, 2))
+	_G.assert(opts, "Missing object sSB\n" .. _G.debugstack(2, 3, 2))
 --@end-alpha@
 
 	-- handle missing object (usually when addon changes)
 	if not opts then return end
 
-	if type(rawget(opts, 0)) == "userdata" and type(opts.GetObjectType) == "function" then
+	if _G.type(_G.rawget(opts, 0)) == "userdata" and _G.type(opts.GetObjectType) == "function" then
 		-- old style call
 		opts = {}
-		opts.obj = select(1, ...) and select(1, ...) or nil
-		-- opts.sbPrefix = select(2, ...) and select(2, ...) or nil
-		-- opts.sbObj = select(3, ...) and select(3, ...) or nil
-		opts.size = select(4, ...) and select(4, ...) or 2
+		opts.obj = _G.select(1, ...) and _G.select(1, ...) or nil
+		-- opts.sbPrefix = _G.select(2, ...) and _G.select(2, ...) or nil
+		-- opts.sbObj = _G.select(3, ...) and _G.select(3, ...) or nil
+		opts.size = _G.select(4, ...) and _G.select(4, ...) or 2
 	end
 
 	__skinScrollBar(opts)
@@ -1007,8 +1002,8 @@ local function __skinSlider(opts)
 		rt = remove textures from parent
 --]]
 --@alpha@
-	assert(opts.obj, "Missing object __sS\n" .. debugstack(2, 3, 2))
-	assert(opts.obj:IsObjectType("Slider"), "Not a Slider\n" .. debugstack(2, 3, 2))
+	_G.assert(opts.obj, "Missing object __sS\n" .. _G.debugstack(2, 3, 2))
+	_G.assert(opts.obj:IsObjectType("Slider"), "Not a Slider\n" .. _G.debugstack(2, 3, 2))
 --@end-alpha@
 
 	aObj:Debug2("__skinSlider: [%s, %s]", opts.obj, opts.obj:GetName())
@@ -1033,7 +1028,7 @@ local function __skinSlider(opts)
 
 	-- remove parent's textures if required
 	if opts.rt then
-		if type(opts.rt) == "table" then
+		if _G.type(opts.rt) == "table" then
 			for i = 1, #opts.rt do
 				opts.obj:GetParent():DisableDrawLayer(opts.rt[i])
 			end
@@ -1045,20 +1040,20 @@ local function __skinSlider(opts)
 end
 function aObj:skinSlider(...)
 
-	local opts = select(1, ...)
+	local opts = _G.select(1, ...)
 
 --@alpha@
-	assert(opts, "Missing object sS\n" .. debugstack(2, 3, 2))
+	_G.assert(opts, "Missing object sS\n" .. _G.debugstack(2, 3, 2))
 --@end-alpha@
 
 	-- handle missing object (usually when addon changes)
 	if not opts then return end
 
-	if type(rawget(opts, 0)) == "userdata" and type(opts.GetObjectType) == "function" then
+	if _G.type(_G.rawget(opts, 0)) == "userdata" and _G.type(opts.GetObjectType) == "function" then
 		-- old style call
 		opts = {}
-		opts.obj = select(1, ...) and select(1, ...) or nil
-		opts.size = select(2, ...) and select(2, ...) or 2
+		opts.obj = _G.select(1, ...) and _G.select(1, ...) or nil
+		opts.size = _G.select(2, ...) and _G.select(2, ...) or 2
 	end
 
 	-- handle change of parameter name: adj -> wdth
@@ -1084,8 +1079,8 @@ local function __skinStatusBar(opts)
 		nilFuncs = nop Atlas funcs
 --]]
 --@alpha@
-	assert(opts.obj, "Missing object __sSB\n" .. debugstack(2, 3, 2))
-	assert(opts.obj:IsObjectType("StatusBar"), "Not a StatusBar\n" .. debugstack(2, 3, 2))
+	_G.assert(opts.obj, "Missing object __sSB\n" .. _G.debugstack(2, 3, 2))
+	_G.assert(opts.obj:IsObjectType("StatusBar"), "Not a StatusBar\n" .. _G.debugstack(2, 3, 2))
 --@end-alpha@
 
 	aObj:Debug2("__skinStatusBar: [%s, %s]", opts.obj, opts.obj:GetName())
@@ -1123,7 +1118,7 @@ local function __skinStatusBar(opts)
 
 	-- apply texture to and store other texture objects
 	if opts.otherTex
-	and type(opts.otherTex) == "table"
+	and _G.type(opts.otherTex) == "table"
 	then
 		local tex
 		for i = 1, #opts.otherTex do
@@ -1144,27 +1139,27 @@ local function __skinStatusBar(opts)
 end
 function aObj:skinStatusBar(...)
 
-	local opts = select(1, ...)
+	local opts = _G.select(1, ...)
 
 --@alpha@
-	assert(opts, "Missing object gSB\n" .. debugstack(2, 3, 2))
+	_G.assert(opts, "Missing object gSB\n" .. _G.debugstack(2, 3, 2))
 --@end-alpha@
 
 	-- handle missing object (usually when addon changes)
 	if not opts then return end
 
-	if type(rawget(opts, 0)) == "userdata" and type(opts.GetObjectType) == "function" then
+	if _G.type(_G.rawget(opts, 0)) == "userdata" and _G.type(opts.GetObjectType) == "function" then
 	--@alpha@
 		-- handle AddOn skins still using this code rather than skinSlider
-		aObj:CustomPrint(1, 0, 0, "Using old style call - skinStatusBar", select(1, ...), debugstack(2, 3, 2))
+		aObj:CustomPrint(1, 0, 0, "Using old style call - skinStatusBar", _G.select(1, ...), _G.debugstack(2, 3, 2))
 	--@end-alpha@
 		-- old style call
 		opts = {}
-		opts.obj = select(1, ...) and select(1, ...) or nil
-		opts.fi = select(2, ...) and select(2, ...) or nil
-		opts.bgTex = select(3, ...) and select(3, ...) or nil
-		opts.otherTex = select(4, ...) and select(4, ...) or nil
-		opts.hookFunc = select(5, ...) and select(5, ...) or nil
+		opts.obj = _G.select(1, ...) and _G.select(1, ...) or nil
+		opts.fi = _G.select(2, ...) and _G.select(2, ...) or nil
+		opts.bgTex = _G.select(3, ...) and _G.select(3, ...) or nil
+		opts.otherTex = _G.select(4, ...) and _G.select(4, ...) or nil
+		opts.hookFunc = _G.select(5, ...) and _G.select(5, ...) or nil
 	end
 
 	__skinStatusBar(opts)
@@ -1175,7 +1170,7 @@ end
 function aObj:glazeStatusBar(...)
 --@alpha@
 	-- handle AddOn skins still using this code rather than skinStatusBar
-	aObj:CustomPrint(1, 0, 0, "Using deprecated function - glazeStatusBar, use skinStatusBar instead", select(1, ...),  debugstack(2, 3, 2))
+	aObj:CustomPrint(1, 0, 0, "Using deprecated function - glazeStatusBar, use skinStatusBar instead", _G.select(1, ...),  _G.debugstack(2, 3, 2))
 --@end-alpha@
 
 	self:skinStatusBar(...)
@@ -1200,8 +1195,8 @@ local function __skinTabs(opts)
 		nc = don't check to see if already skinned
 --]]
 --@alpha@
-	assert(opts.obj, "Missing object __sT\n" .. debugstack(2, 3, 2))
-	assert(opts.obj:IsObjectType("Frame"), "Not a Frame\n" .. debugstack(2, 3, 2))
+	_G.assert(opts.obj, "Missing object __sT\n" .. _G.debugstack(2, 3, 2))
+	_G.assert(opts.obj:IsObjectType("Frame"), "Not a Frame\n" .. _G.debugstack(2, 3, 2))
 --@end-alpha@
 
 	aObj:Debug2("__skinTabs: [%s, %s]", opts.obj, opts.obj:GetName())
@@ -1272,19 +1267,19 @@ local function __skinTabs(opts)
 end
 function aObj:skinTabs(...)
 
-	local opts = select(1, ...)
+	local opts = _G.select(1, ...)
 
 --@alpha@
-	assert(opts, "Missing object sT\n" .. debugstack(2, 3, 2))
+	_G.assert(opts, "Missing object sT\n" .. _G.debugstack(2, 3, 2))
 --@end-alpha@
 
 	-- handle missing object (usually when addon changes)
 	if not opts then return end
 
-	if type(rawget(opts, 0)) == "userdata" and type(opts.GetObjectType) == "function" then
+	if _G.type(_G.rawget(opts, 0)) == "userdata" and _G.type(opts.GetObjectType) == "function" then
 		-- old style call
 		opts = {}
-		opts.obj = select(1, ...) and select(1, ...) or nil
+		opts.obj = _G.select(1, ...) and _G.select(1, ...) or nil
 	end
 
 	__skinTabs(opts)
@@ -1312,7 +1307,7 @@ end
 function aObj:skinTooltip(tooltip)
 	if not self.prdb.Tooltips.skin then return end
 --@alpha@
-	assert(tooltip, "Missing object sT\n" .. debugstack(2, 3, 2))
+	_G.assert(tooltip, "Missing object sT\n" .. _G.debugstack(2, 3, 2))
 --@end-alpha@
 
 	aObj:Debug3("skinTooltip: [%s, %s, %s]", tooltip, tooltip:GetName(), tooltip.sf)
@@ -1341,7 +1336,7 @@ function aObj:skinTooltip(tooltip)
 	elseif self.prdb.Tooltips.style == 2 then -- Flat
 		self:applyGradient(tooltip.sf)
 	elseif self.prdb.Tooltips.style == 3 then -- Custom
-		self:applyGradient(tooltip.sf, self.prdb.FadeHeight.value <= Round(tooltip:GetHeight()) and self.prdb.FadeHeight.value or Round(tooltip:GetHeight()))
+		self:applyGradient(tooltip.sf, self.prdb.FadeHeight.value <= _G.Round(tooltip:GetHeight()) and self.prdb.FadeHeight.value or _G.Round(tooltip:GetHeight()))
 	end
 
 end
@@ -1353,7 +1348,7 @@ local function __skinUsingBD(opts)
 		size = backdrop size to use (2 - wide, 3 - medium, 4 - narrow)
 --]]
 --@alpha@
-	assert(opts.obj, "Missing object __sUBD\n" .. debugstack(2, 3, 2))
+	_G.assert(opts.obj, "Missing object __sUBD\n" .. _G.debugstack(2, 3, 2))
 --@end-alpha@
 
 	opts.size = opts.size or 3 -- default to medium
@@ -1365,20 +1360,20 @@ local function __skinUsingBD(opts)
 end
 function aObj:skinUsingBD(...)
 
-	local opts = select(1, ...)
+	local opts = _G.select(1, ...)
 
 --@alpha@
-	assert(opts, "Missing object sUBD\n" .. debugstack(2, 3, 2))
+	_G.assert(opts, "Missing object sUBD\n" .. _G.debugstack(2, 3, 2))
 --@end-alpha@
 
 	-- handle missing object (usually when addon changes)
 	if not opts then return end
 
-	if type(rawget(opts, 0)) == "userdata" and type(opts.GetObjectType) == "function" then
+	if _G.type(_G.rawget(opts, 0)) == "userdata" and _G.type(opts.GetObjectType) == "function" then
 		-- old style call
 		opts = {}
-		opts.obj = select(1, ...) and select(1, ...) or nil
-		opts.size = select(2, ...) and select(2, ...) or 3
+		opts.obj = _G.select(1, ...) and _G.select(1, ...) or nil
+		opts.size = _G.select(2, ...) and _G.select(2, ...) or 3
 	end
 
 	__skinUsingBD(opts)

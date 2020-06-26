@@ -4,8 +4,6 @@ if not aObj.isClsc then return end
 
 local _G = _G
 
-local pairs, ipairs, IsAddOnLoaded = _G.pairs, _G.ipairs, _G.IsAddOnLoaded
-
 local ftype
 local funcs = {
 	NPC = {
@@ -97,10 +95,10 @@ aObj.ClassicSupport = function(self)
 		aObj.db.defaults.profile[fName] = nil
 		aObj.optTables[fType .. " Frames"].args[fName] = nil
 	end
-	for _, fType in pairs{"NPC", "Player", "UI"} do
+	for _, fType in _G.pairs{"NPC", "Player", "UI"} do
 		local ltr = fType:sub(1, 1):lower()
-		for _, tabName in pairs{"blizzFrames", "blizzLoDFrames"} do
-			for fName, _ in pairs(self[tabName][ltr]) do
+		for _, tabName in _G.pairs{"blizzFrames", "blizzLoDFrames"} do
+			for fName, _ in _G.pairs(self[tabName][ltr]) do
 				-- aObj:Debug("type: [%s]", _G.type(funcs[fType][fName]))
 				if funcs[fType][fName] then
 					-- aObj:Debug("keep: [%s]", funcs[fType][fName].keep)
@@ -226,7 +224,7 @@ aObj.ClassicSupport = function(self)
 			end
 			self:skinSlider{obj=_G.BrowseFilterScrollFrame.ScrollBar, rt="artwork"}
 			self:skinSlider{obj=_G.BrowseScrollFrame.ScrollBar, rt="artwork"}
-			for _, type in pairs{"Quality", "Level", "Duration", "HighBidder", "CurrentBid"} do
+			for _, type in _G.pairs{"Quality", "Level", "Duration", "HighBidder", "CurrentBid"} do
 				self:keepRegions(_G["Browse" .. type .. "Sort"], {4, 5, 6}) -- N.B. region 4 is the text, 5 is the arrow, 6 is the highlight
 				self:addSkinFrame{obj=_G["Browse" .. type .. "Sort"], ft=ftype, nb=true, aso={bd=5}, x2=-2}
 			end
@@ -234,7 +232,7 @@ aObj.ClassicSupport = function(self)
 				if _G["BrowseButton" .. i].Orig then break end -- Auctioneer CompactUI loaded
 				skinBtn("BrowseButton", i)
 			end
-			for _, type in pairs{"Name", "MinLevel", "MaxLevel"} do
+			for _, type in _G.pairs{"Name", "MinLevel", "MaxLevel"} do
 				self:skinEditBox{obj=_G["Browse" .. type], regs={6, type == "Name" and 7 or nil}, mi=true} -- 6 is text, 7 is icon
 				self:moveObject{obj=_G["Browse" .. type], x=type == "MaxLevel" and -6 or -4, y=type ~= "MaxLevel" and 3 or 0}
 			end
@@ -283,7 +281,7 @@ aObj.ClassicSupport = function(self)
 			end)
 
 			-- AuctionFrame Bid
-			for _, type in pairs{"Quality", "Level", "Duration", "Buyout", "Status", "Bid"} do
+			for _, type in _G.pairs{"Quality", "Level", "Duration", "Buyout", "Status", "Bid"} do
 				self:keepRegions(_G["Bid" .. type .. "Sort"], {4, 5, 6}) -- N.B. region 4 is the text, 5 is the arrow, 6 is the highlight
 				self:addSkinFrame{obj=_G["Bid" .. type .. "Sort"], ft=ftype, aso={bd=5}, x2=-2}
 			end
@@ -302,7 +300,7 @@ aObj.ClassicSupport = function(self)
 			end
 
 			-- AuctionFrame Auctions
-			for _, type in pairs{"Quality", "Duration", "HighBidder", "Bid"} do
+			for _, type in _G.pairs{"Quality", "Duration", "HighBidder", "Bid"} do
 				self:keepRegions(_G["Auctions" .. type .. "Sort"], {4, 5, 6}) -- N.B. region 4 is the text, 5 is the arrow, 6 is the highlight
 				self:addSkinFrame{obj=_G["Auctions" .. type .. "Sort"], ft=ftype, aso={bd=5}, x2=-2}
 			end
@@ -321,7 +319,7 @@ aObj.ClassicSupport = function(self)
 				self:skinStdButton{obj=_G.AuctionsCreateAuctionButton}
 				self:skinStdButton{obj=_G.AuctionsCancelAuctionButton, x2=-1}
 				self:skinStdButton{obj=_G.AuctionsCloseButton}
-				if IsAddOnLoaded("Leatrix_Plus")
+				if _G.IsAddOnLoaded("Leatrix_Plus")
 				and _G.LeaPlusDB["AhExtras"] == "On"
 				then
 					self:skinStdButton{obj=self:getLastChild(_G.AuctionFrameAuctions)}
@@ -333,7 +331,7 @@ aObj.ClassicSupport = function(self)
 				self:getRegion(_G.AuctionsItemButton, 2):SetAlpha(0) -- texture is changed in blizzard code
 				self:addButtonBorder{obj=_G.AuctionsItemButton, clr="grey"}
 			end
-			if IsAddOnLoaded("Leatrix_Plus")
+			if _G.IsAddOnLoaded("Leatrix_Plus")
 			and _G.LeaPlusDB["AhExtras"] == "On"
 			and self.modChkBtns
 			then
@@ -452,7 +450,7 @@ aObj.ClassicSupport = function(self)
 			self:skinSlider{obj=_G.ClassTrainerListScrollFrame.ScrollBar, rt="background"}
 			self:skinSlider{obj=_G.ClassTrainerDetailScrollFrame.ScrollBar, rt="background"}
 			local x1, y1, x2, y2
-			if IsAddOnLoaded("Leatrix_Plus")
+			if _G.IsAddOnLoaded("Leatrix_Plus")
 			and _G.LeaPlusDB["EnhanceTrainers"] == "On"
 			then
 				x1, y1, x2, y2 = 10, -11, -33, 49
@@ -510,7 +508,7 @@ aObj.ClassicSupport = function(self)
 				end
 			end)
 		end
-		for _, btn in pairs{_G.PaperDollItemsFrame:GetChildren()} do
+		for _, btn in _G.pairs{_G.PaperDollItemsFrame:GetChildren()} do
 			-- handle non button children [ECS_StatsFrame]
 			if btn:IsObjectType("Button") then
 				btn:DisableDrawLayer("BACKGROUND")
@@ -670,7 +668,7 @@ aObj.ClassicSupport = function(self)
 			self:skinSlider{obj=_G.CraftDetailScrollFrameScrollBar, rt="background"}
 			self:keepFontStrings(_G.CraftDetailScrollChildFrame)
 			local x1, y1, x2, y2
-			if IsAddOnLoaded("Leatrix_Plus")
+			if _G.IsAddOnLoaded("Leatrix_Plus")
 			and _G.LeaPlusDB["EnhanceProfessions"] == "On"
 			then
 				x1, y1, x2, y2 = 10, -11, -33, 49
@@ -698,7 +696,7 @@ aObj.ClassicSupport = function(self)
 		if not self.prdb.DressUpFrame or self.initialized.DressUpFrame then return end
 		self.initialized.DressUpFrame = true
 
-		if IsAddOnLoaded("DressUp") then
+		if _G.IsAddOnLoaded("DressUp") then
 			self.blizzFrames[ftype].DressUpFrame = nil
 			return
 		end
@@ -711,7 +709,7 @@ aObj.ClassicSupport = function(self)
 			if self.modBtns then
 				self:skinStdButton{obj=_G.SideDressUpModelResetButton}
 				self:skinCloseButton{obj=_G.SideDressUpModelCloseButton}
-				if IsAddOnLoaded("Leatrix_Plus")
+				if _G.IsAddOnLoaded("Leatrix_Plus")
 				and _G.LeaPlusDB["EnhanceDressup"] == "On"
 				then
 					self:skinStdButton{obj=self:getPenultimateChild(this)}
@@ -729,7 +727,7 @@ aObj.ClassicSupport = function(self)
 				self:skinStdButton{obj=_G.DressUpFrameCloseButton}
 				self:skinStdButton{obj=_G.DressUpFrameCancelButton}
 				self:skinStdButton{obj=this.ResetButton}
-				if IsAddOnLoaded("Leatrix_Plus")
+				if _G.IsAddOnLoaded("Leatrix_Plus")
 				and _G.LeaPlusDB["EnhanceDressup"] == "On"
 				then
 					self:skinStdButton{obj=self:getPenultimateChild(this)}
@@ -1095,7 +1093,7 @@ aObj.ClassicSupport = function(self)
 			_G.InspectModelFrame:DisableDrawLayer("OVERLAY")
 			self:makeMFRotatable(_G.InspectModelFrame)
 			this:DisableDrawLayer("BORDER")
-			for _, btn in ipairs{_G.InspectPaperDollItemsFrame:GetChildren()} do
+			for _, btn in _G.ipairs{_G.InspectPaperDollItemsFrame:GetChildren()} do
 				btn:DisableDrawLayer("BACKGROUND")
 				if self.modBtnBs then
 					self:addButtonBorder{obj=btn, ibt=true, clr="grey"}
@@ -1233,7 +1231,7 @@ aObj.ClassicSupport = function(self)
 
 		self:SecureHookScript(_G.StackSplitFrame, "OnShow", function(this)
 			-- handle different addons being loaded
-			if IsAddOnLoaded("EnhancedStackSplit") then
+			if _G.IsAddOnLoaded("EnhancedStackSplit") then
 				if _G.Round(_G.EnhancedStackSplitBottomTextureFrame:GetHeight()) == 30 then
 					self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, y2=-45}
 				else
@@ -1314,7 +1312,7 @@ aObj.ClassicSupport = function(self)
 			btnName = nil
 			self:skinEditBox{obj=_G.TradeSkillInputBox, regs={6}, noHeight=true, x=-6} -- 6 is text
 			local x1, y1, x2, y2
-			if IsAddOnLoaded("Leatrix_Plus")
+			if _G.IsAddOnLoaded("Leatrix_Plus")
 			and _G.LeaPlusDB["EnhanceProfessions"] == "On"
 			then
 				x1, y1, x2, y2 = 10, -11, -33, 49
@@ -1387,7 +1385,7 @@ aObj.ClassicSupport = function(self)
 	self.cebRgns2 = {6, 7}
 
 	self.blizzFrames[ftype].MainMenuBar = function(self)
-		if IsAddOnLoaded("Dominos") then
+		if _G.IsAddOnLoaded("Dominos") then
 			self.blizzFrames[ftype].MainMenuBar = nil
 			return
 		end
@@ -1448,7 +1446,7 @@ aObj.ClassicSupport = function(self)
 				self:addButtonBorder{obj=_G.KeyRingButton, ofs=2.5, clr="grey"} -- size is 18, 39
 
 				-- MultiBar Buttons
-				for _, type in pairs{"BottomLeft", "BottomRight", "Right", "Left"} do
+				for _, type in _G.pairs{"BottomLeft", "BottomRight", "Right", "Left"} do
 					local btn
 					for i = 1, _G.NUM_MULTIBAR_BUTTONS do
 						btn = _G["MultiBar" .. type .. "Button" .. i]
@@ -1478,7 +1476,7 @@ aObj.ClassicSupport = function(self)
 		if not self.prdb.QuestLog or self.initialized.QuestLog then return end
 		self.initialized.QuestLog = true
 
-		if IsAddOnLoaded("QuestLogEx") then
+		if _G.IsAddOnLoaded("QuestLogEx") then
 			self.blizzFrames[ftype].QuestLog = nil
 			return
 		end
@@ -1613,8 +1611,8 @@ aObj.ClassicSupport = function(self)
 		self.initialized.WorldMap = true
 
 		self:SecureHookScript(_G.WorldMapFrame, "OnShow", function(this)
-			if not IsAddOnLoaded("Mapster")
-			and not IsAddOnLoaded("AlleyMap")
+			if not _G.IsAddOnLoaded("Mapster")
+			and not _G.IsAddOnLoaded("AlleyMap")
 			then
 				self:keepFontStrings(_G.WorldMapFrame)
 				self:addSkinFrame{obj=_G.WorldMapFrame.BorderFrame, ft="u", kfs=true, nb=true, ofs=1}

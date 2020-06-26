@@ -2,8 +2,6 @@ local _, aObj = ...
 
 local _G = _G
 
-local IsAddOnLoaded, pairs = _G.IsAddOnLoaded, _G.pairs
-
 --@alpha@
 local index = {}	-- create private index
 local mt = {		-- create metatable
@@ -34,9 +32,9 @@ function aObj:BlizzardFrames()
 	-- self:Debug("BlizzardFrames")
 
 	-- skin Blizzard frames
-	for type, fTab in pairs(self.blizzFrames) do
+	for type, fTab in _G.pairs(self.blizzFrames) do
 		if type ~= "opt" then -- ignore options functions
-			for func, _ in pairs(fTab) do
+			for func, _ in _G.pairs(fTab) do
 				self:checkAndRun(func, type)
 			end
 		end
@@ -128,8 +126,8 @@ lodFrames = nil
 local function skinLibs()
 
 	-- skin library objects
-	for libName, skinFunc in pairs(aObj.libsToSkin) do
-		if _G.LibStub(libName, true) then
+	for libName, skinFunc in _G.pairs(aObj.libsToSkin) do
+		if _G.LibStub:GetLibrary(libName, true) then
 			if _G.type(skinFunc) == "function" then
 				aObj:checkAndRun(libName, "l")
 			elseif aObj[skinFunc] then
@@ -146,11 +144,11 @@ end
 local function skinBLoD(addon)
 
 	local bLoD
-	for fType, fTab in pairs(aObj.blizzLoDFrames) do
-		for fName, _ in pairs(fTab) do
+	for fType, fTab in _G.pairs(aObj.blizzLoDFrames) do
+		for fName, _ in _G.pairs(fTab) do
 			bLoD = "Blizzard_" .. fName
 			if (addon and addon == bLoD)
-			or IsAddOnLoaded(bLoD)
+			or _G.IsAddOnLoaded(bLoD)
 			then
 				aObj:checkAndRun(fName, fType, true)
 			end
@@ -169,7 +167,7 @@ function aObj:AddonFrames()
 	-- self:Debug("AddonFrames")
 
 	-- used for Addons that aren't LoadOnDemand
-	for addonName, skinFunc in pairs(self.addonsToSkin) do
+	for addonName, skinFunc in _G.pairs(self.addonsToSkin) do
 		self:checkAndRunAddOn(addonName, nil, skinFunc)
 	end
 
@@ -183,8 +181,8 @@ function aObj:AddonFrames()
 	-- (Tukui does this for the PetJournal, other addons do it as well)
 	_G.C_Timer.After(0.2, function()
 		skinBLoD()
-		for name, skinFunc in pairs(self.lodAddons) do
-			if IsAddOnLoaded(name) then self:checkAndRunAddOn(name, true, skinFunc) end
+		for name, skinFunc in _G.pairs(self.lodAddons) do
+			if _G.IsAddOnLoaded(name) then self:checkAndRunAddOn(name, true, skinFunc) end
 		end
 	end)
 
@@ -210,7 +208,7 @@ function aObj:LoDFrames(addon)
 	end
 
 	-- handle FramesResized changes
-	if IsAddOnLoaded("FramesResized") then
+	if _G.IsAddOnLoaded("FramesResized") then
 		if addon == "Blizzard_TradeSkillUI" and self.FR_TradeSkillUI then self:checkAndRun("FR_TradeSkillUI", "s") -- not an addon in its own right
 		elseif addon == "Blizzard_TrainerUI" and self.FR_TrainerUI then self:checkAndRun("FR_TrainerUI", "s") -- not an addon in its own right
 		end
@@ -293,7 +291,7 @@ function aObj:PLAYER_LEVEL_UP(...)
 	if newPlayerLevel < _G.MAX_PLAYER_LEVEL then return end
 
 	-- max XP level reached, adjust watchbar positions
-	for _, bar in pairs{_G.ReputationWatchBar, _G.ArtifactWatchBar, _G.HonorWatchBar} do
+	for _, bar in _G.pairs{_G.ReputationWatchBar, _G.ArtifactWatchBar, _G.HonorWatchBar} do
 		bar.SetPoint = bar.OrigSetPoint
 		aObj:moveObject{obj=bar, y=2}
 		bar.SetPoint = _G.nop

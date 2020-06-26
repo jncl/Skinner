@@ -4,8 +4,6 @@ local _G = _G
 
 local ftype = "n"
 
-local pairs, ipairs = _G.pairs, _G.ipairs
-
 aObj.blizzLoDFrames[ftype].AlliedRacesUI = function(self)
 	if not self.prdb.AlliedRacesUI or self.initialized.AlliedRacesUI then return end
 	self.initialized.AlliedRacesUI = true
@@ -103,7 +101,7 @@ aObj.blizzLoDFrames[ftype].AuctionHouseUI = function(self)
 		if self.isTT then
 			self:SecureHook(this, "SetDisplayMode", function(this, displayMode)
 				if not this.tabsForDisplayMode[displayMode] then return end
-				for i, tab in ipairs(this.Tabs) do
+				for i, tab in _G.ipairs(this.Tabs) do
 					if i == this.tabsForDisplayMode[displayMode] then
 						self:setActiveTab(tab.sf)
 					else
@@ -258,7 +256,7 @@ aObj.blizzLoDFrames[ftype].AuctionHouseUI = function(self)
 			self:SecureHook(this.AuctionsFrame, "SetDisplayMode", function(this, displayMode)
 				-- aObj:Debug("AuctionsFrame SetDisplayMode: [%s, %s]", this, displayMode)
 				if self.displayMode == displayMode then return end
-				for i, tab in ipairs(this.Tabs) do
+				for i, tab in _G.ipairs(this.Tabs) do
 					if i == displayMode then
 						self:setActiveTab(tab.sf)
 					else
@@ -412,7 +410,7 @@ aObj.blizzLoDFrames[ftype].BlackMarketUI = function(self)
 		-- move title text
 		self:moveObject{obj=self:getRegion(this, 22), y=-4}
 		-- column headings
-		for _, type in pairs{"Name", "Level", "Type", "Duration", "HighBidder", "CurrentBid"} do
+		for _, type in _G.pairs{"Name", "Level", "Type", "Duration", "HighBidder", "CurrentBid"} do
 			self:addSkinFrame{obj=this["Column" .. type], ft=ftype, kfs=true, aso={bd=5}, ofs=0}
 		end
 		self:skinSlider{obj=_G.BlackMarketScrollFrameScrollBar, wdth=-4}
@@ -460,7 +458,7 @@ aObj.blizzLoDFrames[ftype].FlightMap = function(self)
 	_G.FlightMapFrame.BorderFrame.sf:SetFrameStrata("LOW") -- allow map textures to be visible
 
 	-- remove ZoneLabel background texture
-	for dP, _ in pairs(_G.FlightMapFrame.dataProviders) do
+	for dP, _ in _G.pairs(_G.FlightMapFrame.dataProviders) do
 		if dP.ZoneLabel then
 			dP.ZoneLabel.TextBackground:SetTexture(nil)
 			dP.ZoneLabel.TextBackground.SetTexture = _G.nop
@@ -756,7 +754,7 @@ aObj.blizzLoDFrames[ftype].QuestChoice = function(self)
 
 	self:SecureHookScript(_G.QuestChoiceFrame, "OnShow", function(this)
 		this.DummyString:SetTextColor(self.BT:GetRGB())
-		for _, choice in pairs(this.Options) do
+		for _, choice in _G.pairs(this.Options) do
 			choice.Header.Background:SetTexture(nil)
 			choice.Header.Text:SetTextColor(self.HT:GetRGB())
 			choice.OptionText:SetTextColor(self.BT:GetRGB())
@@ -910,7 +908,7 @@ aObj.blizzFrames[ftype].QuestInfo = function(self)
 			frame.XPFrame.ReceiveText:SetTextColor(aObj.BT:GetRGB())
 		end
 		-- RewardButtons
-		for _, btn in pairs(frame.RewardButtons) do
+		for _, btn in _G.pairs(frame.RewardButtons) do
 			btn.NameFrame:SetTexture(nil)
 			if aObj.modBtnBs then
 				aObj:addButtonBorder{obj=btn, libt=true}
@@ -1066,7 +1064,7 @@ aObj.blizzFrames[ftype].QuestInfo = function(self)
 
 	self:SecureHookScript(_G.MapQuestInfoRewardsFrame, "OnShow", function(this)
 		-- other rewards
-		for _, type in pairs{"XPFrame", "HonorFrame", "ArtifactXPFrame", "MoneyFrame", "SkillPointFrame", "TitleFrame"} do
+		for _, type in _G.pairs{"XPFrame", "HonorFrame", "ArtifactXPFrame", "MoneyFrame", "SkillPointFrame", "TitleFrame"} do
 			this[type].NameFrame:SetTexture(nil)
 			if self.modBtnBs then
 				if type ~= "SkillPointFrame" then
@@ -1176,7 +1174,7 @@ aObj.blizzLoDFrames[ftype].VoidStorageUI = function(self)
 	self.initialized.VoidStorageUI = true
 
 	self:SecureHookScript(_G.VoidStorageFrame, "OnShow", function(this)
-		for _, type in pairs{"Deposit", "Withdraw", "Storage", "Cost"} do
+		for _, type in _G.pairs{"Deposit", "Withdraw", "Storage", "Cost"} do
 			self:removeNineSlice(_G["VoidStorage" .. type .. "Frame"].NineSlice)
 		end
 		self:keepFontStrings(_G.VoidStorageBorderFrame)

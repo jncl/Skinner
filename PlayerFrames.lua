@@ -4,9 +4,6 @@ local _G = _G
 
 local ftype = "p"
 
-local ipairs, pairs = _G.ipairs, _G.pairs
-local IsAddOnLoaded = _G.IsAddOnLoaded
-
 aObj.blizzLoDFrames[ftype].AchievementUI = function(self)
 	if not self.prdb.AchievementUI.skin or self.initialized.AchievementUI then return end
 	self.initialized.AchievementUI = true
@@ -19,7 +16,7 @@ aObj.blizzLoDFrames[ftype].AchievementUI = function(self)
 	end
 
 	-- handle Overachiever hijacking OnShow script first time through
-	if IsAddOnLoaded("Overachiever") then
+	if _G.IsAddOnLoaded("Overachiever") then
 		self:SecureHook("AchievementFrame_OnShow", function(this)
 			_G.AchievementFrame:Hide()
 			_G.AchievementFrame:Show()
@@ -179,8 +176,8 @@ aObj.blizzLoDFrames[ftype].AchievementUI = function(self)
 			-- hook this to handle objectives text colour changes
 			self:SecureHookScript(_G.AchievementFrameAchievementsObjectives, "OnShow", function(this)
 				if this.completed then
-					for _, child in ipairs{this:GetChildren()} do
-						for _, reg in ipairs{child:GetChildren()} do
+					for _, child in _G.ipairs{this:GetChildren()} do
+						for _, reg in _G.ipairs{child:GetChildren()} do
 							if reg:IsObjectType("FontString") then
 								reg:SetTextColor(self.BT:GetRGB())
 							end
@@ -208,7 +205,7 @@ aObj.blizzLoDFrames[ftype].AchievementUI = function(self)
 		end, true)
 		-- hook this to colour the metaCriteria & Criteria text
 		self:SecureHook("AchievementObjectives_DisplayCriteria", function(objectivesFrame, _)
-			for _, child in ipairs{objectivesFrame:GetChildren()} do
+			for _, child in _G.ipairs{objectivesFrame:GetChildren()} do
 				if child.shield then -- miniAchievement
 					-- do nothing
 				elseif child.label then -- metaCriteria
@@ -279,7 +276,7 @@ aObj.blizzLoDFrames[ftype].AchievementUI = function(self)
 		-- Summary Panel
 		self:getChild(_G.AchievementFrameComparison, 5):SetBackdrop(nil)
 		self:addFrameBorder{obj=_G.AchievementFrameComparison, ft=ftype, y2=-2}
-		for _, type in pairs{"Player", "Friend"} do
+		for _, type in _G.pairs{"Player", "Friend"} do
 			_G["AchievementFrameComparisonSummary" .. type]:SetBackdrop(nil)
 			_G["AchievementFrameComparisonSummary" .. type .. "Background"]:SetAlpha(0)
 			skinSB("AchievementFrameComparisonSummary" .. type .. "StatusBar", "Title")
@@ -318,7 +315,7 @@ aObj.blizzLoDFrames[ftype].AchievementUI = function(self)
 			end
 			if self.modBtnBs then
 				local xOfs = 1
-				if IsAddOnLoaded("Overachiever") then xOfs = 102 end
+				if _G.IsAddOnLoaded("Overachiever") then xOfs = 102 end
 			    self:addButtonBorder{obj=_G.AchievementFrameFilterDropDownButton, es=12, ofs=-2, x1=xOfs}
 				xOfs = nil
 			end
@@ -497,9 +494,9 @@ aObj.blizzLoDFrames[ftype].AzeriteEssenceUI = function(self)
 		this.StarsAnimationFrame2:DisableDrawLayer("BORDER")
 		this.StarsAnimationFrame3:DisableDrawLayer("BORDER")
 		-- remove ring etc from milestones
-		for i, slot in ipairs(this.Slots) do
+		for i, slot in _G.ipairs(this.Slots) do
 			-- print("Slot", i, slot)
-			for j, stateFrame in ipairs(slot.StateFrames) do
+			for j, stateFrame in _G.ipairs(slot.StateFrames) do
 				-- print("StateFrames", j, stateFrame, stateFrame:GetNumRegions())
 				if i == 1 then -- Major Milestone
 					stateFrame.Glow:SetAlpha(0)
@@ -520,12 +517,12 @@ aObj.blizzLoDFrames[ftype].AzeriteEssenceUI = function(self)
 		self:skinGlowBox(this.EssenceList.Tutorial, ftype, true)
 		if self.modBtnBs then
 			local function clrBB(sf)
-				for _, btn in ipairs(sf.buttons) do
+				for _, btn in _G.ipairs(sf.buttons) do
 					btn.sbb:SetBackdropBorderColor(btn.Name:GetTextColor())
 				end
 			end
 			-- self:skinStdButton{obj=this.ScrollFrame.HeaderButton}
-			for _, btn in ipairs(this.EssenceList.buttons) do
+			for _, btn in _G.ipairs(this.EssenceList.buttons) do
 				self:nilTexture(btn.Background, true)
 				self:addButtonBorder{obj=btn, relTo=btn.Icon, reParent={btn.IconCover, btn.Glow, btn.Glow2, btn.Glow3}, clr="grey"}
 			end
@@ -601,8 +598,8 @@ aObj.blizzFrames[ftype].Buffs = function(self)
 end
 
 aObj.blizzFrames[ftype].CastingBar = function(self)
-	if IsAddOnLoaded("Quartz")
-	or IsAddOnLoaded("Dominos_Cast")
+	if _G.IsAddOnLoaded("Quartz")
+	or _G.IsAddOnLoaded("Dominos_Cast")
 	then
 		aObj.blizzFrames[ftype].CastingBar = nil
 		return
@@ -611,7 +608,7 @@ aObj.blizzFrames[ftype].CastingBar = function(self)
 	if not self.prdb.CastingBar.skin or self.initialized.CastingBar then return end
 	self.initialized.CastingBar = true
 
-	for _, type in pairs{"", "Pet"} do
+	for _, type in _G.pairs{"", "Pet"} do
 		_G[type .. "CastingBarFrame"].Border:SetAlpha(0)
 		self:changeShield(_G[type .. "CastingBarFrame"].BorderShield, _G[type .. "CastingBarFrame"].Icon)
 		_G[type .. "CastingBarFrame"].Flash:SetAllPoints()
@@ -1364,7 +1361,7 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 		self:Unhook(this, "OnShow")
 	end)
 
-	for _, tabName in pairs{"ChatTab", "RosterTab", "GuildBenefitsTab", "GuildInfoTab"} do
+	for _, tabName in _G.pairs{"ChatTab", "RosterTab", "GuildBenefitsTab", "GuildInfoTab"} do
 		cFrame[tabName]:DisableDrawLayer("BORDER")
 		if self.modBtnBs then
 			self:addButtonBorder{obj=cFrame[tabName]}
@@ -1936,8 +1933,8 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 end
 
 aObj.blizzFrames[ftype].CompactFrames = function(self)
-	if IsAddOnLoaded("Tukui")
-	or IsAddOnLoaded("ElvUI")
+	if _G.IsAddOnLoaded("Tukui")
+	or _G.IsAddOnLoaded("ElvUI")
 	then
 		aObj.blizzFrames[ftype].CompactFrames = nil
 		return
@@ -1996,7 +1993,7 @@ aObj.blizzFrames[ftype].CompactFrames = function(self)
 			return
 		end
 
-		for type, fTab in pairs(_G.CompactRaidFrameContainer.frameUpdateList) do
+		for type, fTab in _G.pairs(_G.CompactRaidFrameContainer.frameUpdateList) do
 			local frame
 			for i = 1, #fTab do
 				frame = fTab[i]
@@ -2041,7 +2038,7 @@ aObj.blizzFrames[ftype].CompactFrames = function(self)
 		_G.CompactRaidFrameManagerDisplayFrameHeaderDelineator:SetTexture(nil)
 		-- Buttons
 		if not self.isClsc then
-			for _, type in pairs{"Tank", "Healer", "Damager"} do
+			for _, type in _G.pairs{"Tank", "Healer", "Damager"} do
 				self:skinStdButton{obj=this.displayFrame.filterOptions["filterRole" .. type]}
 			end
 		end
@@ -2082,7 +2079,7 @@ aObj.blizzFrames[ftype].ContainerFrames = function(self)
 	if not self.prdb.ContainerFrames.skin or self.initialized.ContainerFrames then return end
 	self.initialized.ContainerFrames = true
 
-	if not IsAddOnLoaded("LiteBag") then
+	if not _G.IsAddOnLoaded("LiteBag") then
 		local objName
 		local function skinBag(frame, id)
 
@@ -2175,7 +2172,7 @@ aObj.blizzFrames[ftype].DressUpFrame = function(self)
 	if not self.prdb.DressUpFrame or self.initialized.DressUpFrame then return end
 	self.initialized.DressUpFrame = true
 
-	if IsAddOnLoaded("DressUp") then
+	if _G.IsAddOnLoaded("DressUp") then
 		aObj.blizzFrames[ftype].DressUpFrame = nil
 		return
 	end
@@ -2400,7 +2397,7 @@ aObj.blizzLoDFrames[ftype].EncounterJournal = function(self) -- a.k.a. Adenture 
 				hTex = nil
 			end
 			-- creature(s)
-			for _, cBtn in ipairs(this.info.creatureButtons) do
+			for _, cBtn in _G.ipairs(this.info.creatureButtons) do
 				skinCreatureBtn(cBtn)
 			end
 			-- hook this to skin additional buttons
@@ -2411,7 +2408,7 @@ aObj.blizzLoDFrames[ftype].EncounterJournal = function(self) -- a.k.a. Adenture 
 
 			-- Tabs (side)
 			self:moveObject{obj=this.info.overviewTab, x=10}
-			for _, type in pairs{"overviewTab", "lootTab", "bossTab", "modelTab"} do
+			for _, type in _G.pairs{"overviewTab", "lootTab", "bossTab", "modelTab"} do
 				this.info[type]:SetNormalTexture(nil)
 				this.info[type]:SetPushedTexture(nil)
 				this.info[type]:GetDisabledTexture():SetAlpha(0) -- tab texture is modified
@@ -2869,7 +2866,7 @@ aObj.blizzLoDFrames[ftype].GuildControlUI = function(self)
 			_G.UIDropDownMenu_SetButtonWidth(this.dropdown, 24)
 			self:skinEditBox{obj=this.goldBox, regs={6}}
 			if self.modChkBtns then
-				for _, child in ipairs{this:GetChildren()} do
+				for _, child in _G.ipairs{this:GetChildren()} do
 					if child:IsObjectType("CheckButton") then
 						self:skinCheckButton{obj=child}
 					end
@@ -3153,7 +3150,7 @@ aObj.blizzLoDFrames[ftype].InspectUI = function(self)
 				end
 			end)
 		end
-		for _, btn in ipairs{_G.InspectPaperDollItemsFrame:GetChildren()} do
+		for _, btn in _G.ipairs{_G.InspectPaperDollItemsFrame:GetChildren()} do
 			btn:DisableDrawLayer("BACKGROUND")
 			if self.modBtnBs then
 				self:addButtonBorder{obj=btn, ibt=true, clr="grey"}
@@ -3165,7 +3162,7 @@ aObj.blizzLoDFrames[ftype].InspectUI = function(self)
 
 	self:SecureHookScript(_G.InspectPVPFrame, "OnShow", function(this)
 		self:keepFontStrings(this)
-		for _, slot in ipairs(this.Slots) do
+		for _, slot in _G.ipairs(this.Slots) do
 			slot.Border:SetTexture(nil)
 			self:makeIconSquare(slot, "Texture", true)
 		end
@@ -3349,7 +3346,7 @@ aObj.blizzFrames[ftype].LootFrames = function(self)
 	self:SecureHookScript(_G.LootFrame, "OnShow", function(this)
 		if self.prdb.LootFrames.extra then
 			-- Add another loot button and move them all up to fit if FramesResized isn't loaded
-			if not IsAddOnLoaded("FramesResized") then
+			if not _G.IsAddOnLoaded("FramesResized") then
 				local yOfs, btn = -27
 				for i = 1, _G.LOOTFRAME_NUMBUTTONS do
 					btn = _G["LootButton" .. i]
@@ -3576,7 +3573,7 @@ aObj.blizzFrames[ftype].MirrorTimers = function(self)
 			skinTT(timer)
 		end)
 		-- skin existing timers
-		for _, timer in pairs(_G.TimerTracker.timerList) do
+		for _, timer in _G.pairs(_G.TimerTracker.timerList) do
 			skinTT(timer)
 		end
 	end
@@ -3584,7 +3581,7 @@ aObj.blizzFrames[ftype].MirrorTimers = function(self)
 end
 
 aObj.blizzFrames[ftype].ModelFrames = function(self)
-	if IsAddOnLoaded("CloseUp") then
+	if _G.IsAddOnLoaded("CloseUp") then
 		aObj.blizzFrames[ftype].ModelFrames = nil
 		return
 	end
@@ -3619,8 +3616,8 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 		end)
 		-- skin existing buttons
 		local btn
-		for _, mod in ipairs(_G.ObjectiveTrackerFrame.MODULES) do
-			for _, blk in pairs(mod.usedBlocks) do
+		for _, mod in _G.ipairs(_G.ObjectiveTrackerFrame.MODULES) do
+			for _, blk in _G.pairs(mod.usedBlocks) do
 				if blk.rightButton then
 					btn = blk.rightButton
 					self:addButtonBorder{obj=btn, ofs=btn.Icon and -2 or nil, x1=btn.Icon and 0 or nil, reParent=btn.Count and {btn.Count} or nil} -- adjust x offset for FindGroup button(s), reparent Item Count if required
@@ -3677,8 +3674,8 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 	end)
 	-- skin existing Timer & Progress bars
 	local function skinBars(table)
-		for _, block in pairs(table) do
-				for _, line in pairs(block) do
+		for _, block in _G.pairs(table) do
+				for _, line in _G.pairs(block) do
 				skinBar(line)
 			end
 		end
@@ -3824,8 +3821,8 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 		for i = 1, #_G.ObjectiveTrackerFrame.MODULES do
 			module = _G.ObjectiveTrackerFrame.MODULES[i]
 			if module.ShowWorldQuests then
-				for _, blk in pairs(module.usedBlocks) do
-					for _, child in pairs{blk.ScrollContents:GetChildren()} do
+				for _, blk in _G.pairs(module.usedBlocks) do
+					for _, child in _G.pairs{blk.ScrollContents:GetChildren()} do
 						if child.Glow then
 							child.Glow:SetTexture(nil)
 							child.Sheen:SetTexture(nil)
@@ -3985,7 +3982,7 @@ aObj.blizzLoDFrames[ftype].PVPUI = function(self)
 				this.SpecificFrame.buttons[i].Border:SetTexture(nil)
 			end
 			local btn
-			for _, bName in pairs{"RandomBG", "RandomEpicBG", "Arena1", "Brawl", "SpecialEvent"} do
+			for _, bName in _G.pairs{"RandomBG", "RandomEpicBG", "Arena1", "Brawl", "SpecialEvent"} do
 				btn = this.BonusFrame[bName .. "Button"]
 				btn.NormalTexture:SetTexture(nil)
 				btn:SetPushedTexture(nil)
@@ -4118,7 +4115,7 @@ aObj.blizzLoDFrames[ftype].RaidUI = function(self)
 		local pfName = pullOutFrame:GetName()
 		for i = 1, pullOutFrame.numPulloutButtons do
 			if not _G[pfName .. "Button" .. i].sf then
-				for _, bName in pairs{"HealthBar", "ManaBar", "Target", "TargetTarget"} do
+				for _, bName in _G.pairs{"HealthBar", "ManaBar", "Target", "TargetTarget"} do
 					self:removeRegions(_G[pfName .. "Button" .. i .. bName], {2})
 					self:skinStatusBar{obj=_G[pfName .. "Button" .. i .. bName], fi=0, bgTex=_G[pfName .. "Button" .. i .. bName .. "Background"]}
 				end
@@ -4394,7 +4391,7 @@ aObj.blizzFrames[ftype].StackSplit = function(self)
 
 	self:SecureHookScript(_G.StackSplitFrame, "OnShow", function(this)
 		-- handle different addons being loaded
-		if IsAddOnLoaded("EnhancedStackSplit") then
+		if _G.IsAddOnLoaded("EnhancedStackSplit") then
 			if _G.Round(_G.EnhancedStackSplitBottomTextureFrame:GetHeight()) == 30 then
 				self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, y2=-45}
 			else
@@ -4651,7 +4648,7 @@ aObj.blizzFrames[ftype].TradeFrame = function(self)
 		end
 		if self.modBtnBs then
 			for i = 1, _G.MAX_TRADE_ITEMS do
-				for _, type in pairs{"Player", "Recipient"} do
+				for _, type in _G.pairs{"Player", "Recipient"} do
 					_G["Trade" .. type .. "Item" .. i .. "SlotTexture"]:SetTexture(nil)
 					_G["Trade" .. type .. "Item" .. i .. "NameFrame"]:SetTexture(nil)
 					self:addButtonBorder{obj=_G["Trade" .. type .. "Item" .. i .. "ItemButton"], ibt=true}

@@ -2,24 +2,22 @@ local aName, aObj = ...
 
 local _G = _G
 
-local CopyTable, LibStub = _G.CopyTable, _G.LibStub
-
 do
 	-- check to see if required libraries are loaded
-	_G.assert(LibStub, aName .. " requires LibStub")
+	_G.assert(_G.LibStub, aName .. " requires LibStub")
 	local lTab = {"AceAddon-3.0", "AceConfig-3.0", "AceConfigCmd-3.0", "AceConfigDialog-3.0", "AceConfigRegistry-3.0", "AceConsole-3.0", "AceDB-3.0", "AceDBOptions-3.0", "AceEvent-3.0", "AceGUI-3.0", "AceHook-3.0", "AceLocale-3.0", "CallbackHandler-1.0", "LibDataBroker-1.1", "LibDBIcon-1.0", "LibSharedMedia-3.0"}
 	local hasError
 	for _, lib in _G.pairs(lTab) do
-		hasError = not _G.assert(LibStub:GetLibrary(lib, true), aName .. " requires " .. lib)
+		hasError = not _G.assert(_G.LibStub:GetLibrary(lib, true), aName .. " requires " .. lib)
 	end
 	lTab = nil
 	if hasError then return end
 
 	-- create the addon
-	LibStub:GetLibrary("AceAddon-3.0", true):NewAddon(aObj, aName, "AceConsole-3.0", "AceEvent-3.0", "AceHook-3.0")
+	_G.LibStub:GetLibrary("AceAddon-3.0", true):NewAddon(aObj, aName, "AceConsole-3.0", "AceEvent-3.0", "AceHook-3.0")
 
 	local buildInfo = {
-		beta        = {"9.0.0", 99999}, -- Shadowlands 2020
+		beta        = {"9.0.1", 34902 }, -- Shadowlands 2020
 		classic_ptr = {"1.13.5", 34713},
 		retail_ptr  = {"8.3.7", 34872},
 		retail      = {"8.3.0", 34769},
@@ -65,7 +63,7 @@ do
 	aObj.blizzLoDFrames = {p = {}, n = {}, u = {}}
 
 	-- pointer to LibSharedMedia-3.0 library (done here for TukUI & ElvUI)
-	aObj.LSM = LibStub:GetLibrary("LibSharedMedia-3.0", true)
+	aObj.LSM = _G.LibStub:GetLibrary("LibSharedMedia-3.0", true)
 
 	-- store player name (done here to fix enabled addon check)
 	aObj.uName = _G.UnitName("player")
@@ -95,11 +93,11 @@ function aObj:OnInitialize()
 --@end-alpha@
 
 	-- add callbacks
-	self.callbacks = LibStub:GetLibrary("CallbackHandler-1.0", true):New(aObj)
+	self.callbacks = _G.LibStub:GetLibrary("CallbackHandler-1.0", true):New(aObj)
 	-- get Locale
-	self.L = LibStub:GetLibrary("AceLocale-3.0", true):GetLocale(aName)
+	self.L = _G.LibStub:GetLibrary("AceLocale-3.0", true):GetLocale(aName)
 	-- pointer to LibDBIcon-1.0 library
-	self.DBIcon = LibStub:GetLibrary("LibDBIcon-1.0", true)
+	self.DBIcon = _G.LibStub:GetLibrary("LibDBIcon-1.0", true)
 	-- store player class
 	self.uCls = _G.select(2, _G.UnitClass("player"))
 
@@ -190,51 +188,51 @@ function aObj:OnInitialize()
 	self:setupBackdrop()
 
 	self.Backdrop = {}
-	self.Backdrop[1] = CopyTable(self.backdrop)
+	self.Backdrop[1] = _G.CopyTable(self.backdrop)
 	-- wide backdrop for ScrollBars & EditBoxes (16,16,4)
-	self.Backdrop[2] = CopyTable(self.backdrop)
+	self.Backdrop[2] = _G.CopyTable(self.backdrop)
 	self.Backdrop[2].edgeFile = self.LSM:Fetch("border", aName .. " Border")
 	-- medium backdrop for ScrollBars (12,12,3)
-	self.Backdrop[3] = CopyTable(self.Backdrop[2])
+	self.Backdrop[3] = _G.CopyTable(self.Backdrop[2])
 	self.Backdrop[3].tileSize = 12
 	self.Backdrop[3].edgeSize = 12
 	self.Backdrop[3].insets = {left = 3, right = 3, top = 3, bottom = 3}
 	-- narrow backdrop for ScrollBars (8,8,2)
-	self.Backdrop[4] = CopyTable(self.Backdrop[2])
+	self.Backdrop[4] = _G.CopyTable(self.Backdrop[2])
 	self.Backdrop[4].tileSize = 8
 	self.Backdrop[4].edgeSize = 8
 	self.Backdrop[4].insets = {left = 2, right = 2, top = 2, bottom = 2}
 	-- these backdrops are for small UI buttons, e.g. minus/plus in QuestLog/IOP/Skills etc
-	self.Backdrop[5] = CopyTable(self.backdrop)
+	self.Backdrop[5] =_G. CopyTable(self.backdrop)
 	self.Backdrop[5].tileSize = 12
 	self.Backdrop[5].edgeSize = 12
 	self.Backdrop[5].insets = {left = 3, right = 3, top = 3, bottom = 3}
-	self.Backdrop[6] = CopyTable(self.backdrop)
+	self.Backdrop[6] = _G.CopyTable(self.backdrop)
 	self.Backdrop[6].tileSize = 10
 	self.Backdrop[6].edgeSize = 10
 	self.Backdrop[6].insets = {left = 3, right = 3, top = 3, bottom = 3}
-	self.Backdrop[7] = CopyTable(self.backdrop)
+	self.Backdrop[7] = _G.CopyTable(self.backdrop)
 	self.Backdrop[7].edgeSize = 10
 	-- this backdrop is for the BattlefieldMinimap/Minimap/Pet LoadOut frames
-	self.Backdrop[8] = CopyTable(self.backdrop)
+	self.Backdrop[8] = _G.CopyTable(self.backdrop)
 	self.Backdrop[8].bgFile = nil
 	self.Backdrop[8].tile = false
 	self.Backdrop[8].tileSize = 0
 	-- this backdrop is for vertical sliders frame
-	self.Backdrop[9] = CopyTable(self.backdrop)
+	self.Backdrop[9] = _G.CopyTable(self.backdrop)
 	self.Backdrop[9].bgFile = nil
 	self.Backdrop[9].tile = false
 	self.Backdrop[9].tileSize = 0
 	self.Backdrop[9].edgeSize = 12
 	-- this backdrop has no background
-	self.Backdrop[10] = CopyTable(self.backdrop)
+	self.Backdrop[10] = _G.CopyTable(self.backdrop)
 	self.Backdrop[10].bgFile = nil
 	-- this backdrop has no border
-	self.Backdrop[11] = CopyTable(self.backdrop)
+	self.Backdrop[11] = _G.CopyTable(self.backdrop)
 	self.Backdrop[11].edgeFile = nil
 	self.Backdrop[11].edgeSize = 0
 	-- this backdrop is for smaller CheckButtons
-	self.Backdrop[12] = CopyTable(self.backdrop)
+	self.Backdrop[12] = _G.CopyTable(self.backdrop)
 	self.Backdrop[12].tile = false
 	self.Backdrop[12].tileSize = 9
 	self.Backdrop[12].edgeSize = 9

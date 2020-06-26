@@ -4,9 +4,6 @@ local _G = _G
 
 local ftype = "u"
 
-local ipairs, pairs, Round = _G.ipairs, _G.pairs, _G.Round
-local IsAddOnLoaded = _G.IsAddOnLoaded
-
 -- The following functions are used by the GarrisonUI & OrderHallUI
 local stageRegs, navalStageRegs, cdStageRegs, skinMissionFrame, skinPortrait, skinFollower, skinFollowerListButtons, skinFollowerAbilitiesAndCounters, skinFollowerList, skinFollowerPage, skinFollowerTraitsAndEquipment, skinCompleteDialog, skinMissionPage, skinMissionComplete, skinMissionList
 if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
@@ -177,7 +174,7 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 			aObj:moveObject{obj=frame, x=4, y=20}
 			_G.RaiseFrameLevelByTwo(frame) -- raise above markers on mission frame
 		end
-		frame:SetSize(naval and 935 or 948, IsAddOnLoaded("GarrisonCommander") and 640 or naval and 648 or 630)
+		frame:SetSize(naval and 935 or 948, _G.IsAddOnLoaded("GarrisonCommander") and 640 or naval and 648 or 630)
 
 		frame.BorderFrame:DisableDrawLayer("BACKGROUND")
 		frame.BorderFrame:DisableDrawLayer("BORDER")
@@ -196,7 +193,7 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 
 		aObj:removeRegions(frame.Stage, stageRegs)
 		aObj:skinStdButton{obj=frame.StartMissionButton}
-		aObj:addSkinFrame{obj=frame, ft=ftype, x1=IsAddOnLoaded("GarrisonCommander") and 0 or -320, y1=5, x2=3, y2=-20}
+		aObj:addSkinFrame{obj=frame, ft=ftype, x1=_G.IsAddOnLoaded("GarrisonCommander") and 0 or -320, y1=5, x2=3, y2=-20}
 		-- handle animation of StartMissionButton
 		if aObj.modBtns then
 			 frame.StartMissionButton.sb.tfade:SetParent(frame.sf)
@@ -205,7 +202,7 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 		frame.BuffsFrame.BuffsBG:SetTexture(nil)
 		frame.RewardsFrame:DisableDrawLayer("BACKGROUND")
 		frame.RewardsFrame:DisableDrawLayer("BORDER")
-		if not IsAddOnLoaded("MasterPlan") then
+		if not _G.IsAddOnLoaded("MasterPlan") then
 			frame.CloseButton:SetSize(28, 28) -- make button smaller
 		end
 
@@ -462,7 +459,7 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 
 	local function skinACAlertFrames(frame)
 
-		local fH = Round(frame:GetHeight())
+		local fH = _G.Round(frame:GetHeight())
 
 		aObj:nilTexture(frame.Background, true)
 		frame.Unlocked:SetTextColor(aObj.BT:GetRGB())
@@ -731,7 +728,7 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 
 		-- aObj:Debug("AlertFrame AddAlertFrame: [%s, %s]", this, frame)
 
-		if IsAddOnLoaded("Overachiever") then
+		if _G.IsAddOnLoaded("Overachiever") then
 			local ocScript = frame:GetScript("OnClick")
 			if ocScript
 			and ocScript == _G.OverachieverAlertFrame_OnClick
@@ -834,11 +831,11 @@ aObj.blizzLoDFrames[ftype].BattlefieldMap = function(self)
 			alpha= nil
 		end)
 
-		if IsAddOnLoaded("Capping") then
+		if _G.IsAddOnLoaded("Capping") then
 			if _G.type(self["Capping_ModMap"]) == "function" then self:Capping_ModMap() end
 		end
 
-		if IsAddOnLoaded("Mapster") then
+		if _G.IsAddOnLoaded("Mapster") then
 			local mBM = _G.LibStub:GetLibrary("AceAddon-3.0", true):GetAddon("Mapster", true):GetModule("BattleMap", true)
 			if mBM then
 				local function updBMVisibility(db)
@@ -1118,7 +1115,7 @@ aObj.blizzLoDFrames[ftype].ChallengesUI = function(self)
 
 		-- DungeonIcons
 		if self.modBtnBs then
-			for _, dungeon in ipairs(this.DungeonIcons) do
+			for _, dungeon in _G.ipairs(this.DungeonIcons) do
 				self:addButtonBorder{obj=dungeon, clr="grey", ca=0.85}
 				self:SecureHook(dungeon, "SetUp", function(this, mapInfo, _)
 					if mapInfo.quality >= _G.LE_ITEM_QUALITY_COMMON
@@ -1159,7 +1156,7 @@ aObj.blizzFrames[ftype].ChatBubbles = function(self)
 
 		_G.C_Timer.After(0.1, function()
 			 -- don't include forbidden Chat Bubbles (Bosses in Garrisons/Dungeons/Raids)
-			for _, cBubble in pairs(_G.C_ChatBubbles.GetAllChatBubbles(false)) do
+			for _, cBubble in _G.pairs(_G.C_ChatBubbles.GetAllChatBubbles(false)) do
 				aObj:addSkinFrame{obj=cBubble, ft=ftype, kfs=true, nb=true, aso={ba=0.5}, ofs=-10}
 				-- Region 1 is ChatBubbleTail texture, region 2 is the font string
 				if cBubble:GetNumRegions() == 2 then
@@ -1227,7 +1224,7 @@ aObj.blizzFrames[ftype].ChatButtons = function(self)
 		self:addButtonBorder{obj=_G.ChatFrameMenuButton, ofs=-2, x1=1, clr="grey"}
 		-- QuickJoinToastButton(s)
 		self:addButtonBorder{obj=_G.QuickJoinToastButton, x1=1, y1=2, x2=-3, y2=-3, clr="grey"}
-		for _, type in pairs{"Toast", "Toast2"} do
+		for _, type in _G.pairs{"Toast", "Toast2"} do
 			_G.QuickJoinToastButton[type]:DisableDrawLayer("BACKGROUND")
 			self:moveObject{obj=_G.QuickJoinToastButton[type], x=7}
 			_G.QuickJoinToastButton[type]:Hide()
@@ -1411,26 +1408,26 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 		self:addSkinFrame{obj=_G.CombatConfigMessageSourcesDoneTo, ft=ftype, kfs=true, nb=true,ofs=0}
 
 		-- Message Type
-		for i, val in ipairs(_G.COMBAT_CONFIG_MESSAGETYPES_LEFT) do
+		for i, val in _G.ipairs(_G.COMBAT_CONFIG_MESSAGETYPES_LEFT) do
 			skinCB("CombatConfigMessageTypesLeftCheckBox" .. i)
 			if val.subTypes then
-				for k, _ in pairs(val.subTypes) do
+				for k, _ in _G.pairs(val.subTypes) do
 					skinCB("CombatConfigMessageTypesLeftCheckBox" .. i .. "_" .. k)
 				end
 			end
 		end
-		for i, val in ipairs(_G.COMBAT_CONFIG_MESSAGETYPES_RIGHT) do
+		for i, val in _G.ipairs(_G.COMBAT_CONFIG_MESSAGETYPES_RIGHT) do
 			skinCB("CombatConfigMessageTypesRightCheckBox" .. i)
 			if val.subTypes then
-				for k, _ in pairs(val.subTypes) do
+				for k, _ in _G.pairs(val.subTypes) do
 					skinCB("CombatConfigMessageTypesRightCheckBox" .. i .. "_" .. k)
 				end
 			end
 		end
-		for i, val in ipairs(_G.COMBAT_CONFIG_MESSAGETYPES_MISC) do
+		for i, val in _G.ipairs(_G.COMBAT_CONFIG_MESSAGETYPES_MISC) do
 			skinCB("CombatConfigMessageTypesMiscCheckBox" .. i)
 			if val.subTypes then
-				for k, _ in pairs(val.subTypes) do
+				for k, _ in _G.pairs(val.subTypes) do
 					skinCB("CombatConfigMessageTypesMiscCheckBox" .. i .. "_" .. k)
 				end
 			end
@@ -1522,9 +1519,9 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 end
 
 aObj.blizzFrames[ftype].ChatEditBox = function(self)
-	if IsAddOnLoaded("NeonChat")
-	or IsAddOnLoaded("Chatter")
-	or IsAddOnLoaded("Prat-3.0")
+	if _G.IsAddOnLoaded("NeonChat")
+	or _G.IsAddOnLoaded("Chatter")
+	or _G.IsAddOnLoaded("Prat-3.0")
 	then
 		return
 	end
@@ -1906,7 +1903,7 @@ aObj.blizzFrames[ftype].DestinyFrame = function(self)
 		_G.DestinyFrameHordeFinalText:SetTextColor(self.BT:GetRGB())
 
 		-- buttons
-		for _, type in pairs{"alliance", "horde"} do
+		for _, type in _G.pairs{"alliance", "horde"} do
 			self:removeRegions(this[type .. "Button"], {1})
 			self:changeRecTex(this[type .. "Button"]:GetHighlightTexture())
 			self:adjWidth{obj=this[type .. "Button"], adj=-60}
@@ -1996,7 +1993,7 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 		-- aObj:Debug("GMP_SR: [%s, %s, %s]", frame, reward, missionComplete)
         frame.BG:SetTexture(nil)
 		if self.modBtnBs then
-			self:addButtonBorder{obj=frame, relTo=frame.Icon, reParent={frame.Quantity}, ofs=Round(frame:GetWidth()) ~= 24 and 2 or nil}
+			self:addButtonBorder{obj=frame, relTo=frame.Icon, reParent={frame.Quantity}, ofs=_G.Round(frame:GetWidth()) ~= 24 and 2 or nil}
 			self:clrButtonBorder(frame)
 		end
     end)
@@ -2281,7 +2278,7 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 			btn = nil
 			self:addFrameBorder{obj=this.List, ft=ftype, ofs=5}
 			-- tabs at top
-			for _, type in pairs{"InProgress", "Available"} do
+			for _, type in _G.pairs{"InProgress", "Available"} do
 				this[type]:GetNormalTexture():SetAlpha(0)
 				self:addSkinFrame{obj=this[type], ft=ftype, noBdr=self.isTT, x1=4, y1=-2, x2=-4, y2=-4}
 				this[type].sf.ignore = true
@@ -2988,7 +2985,7 @@ if _G.PVEFrame then
 	-- The following function is used by the LFDFrame & RaidFinder functions
 	function skinCheckBtns(frame)
 
-		for _, type in pairs{"Tank", "Healer", "DPS", "Leader"} do
+		for _, type in _G.pairs{"Tank", "Healer", "DPS", "Leader"} do
 			if aObj.modChkBtns then
 				aObj:skinCheckButton{obj=_G[frame .. "QueueFrameRoleButton" .. type].checkButton}
 			end
@@ -3199,7 +3196,7 @@ aObj.blizzFrames[ftype].LFGList = function(self)
 		local av = this.ApplicationViewer
 		av:DisableDrawLayer("BACKGROUND")
 		self:removeInset(av.Inset)
-		for _ ,type in pairs{"Name", "Role", "ItemLevel"} do
+		for _ ,type in _G.pairs{"Name", "Role", "ItemLevel"} do
 			self:removeRegions(av[type .. "ColumnHeader"], {1, 2, 3})
 			if self.modBtns then
 				 self:skinStdButton{obj=av[type .. "ColumnHeader"]}
@@ -3485,7 +3482,7 @@ aObj.blizzFrames[ftype].MailFrame = function(self)
 		if self.isClsc then
 			self:add2Table(fields, "BuyMode")
 		end
-		for _, type in pairs(fields) do
+		for _, type in _G.pairs(fields) do
 			_G["OpenMailInvoice" .. type]:SetTextColor(self.BT:GetRGB())
 		end
 		fields = nil
@@ -3496,7 +3493,7 @@ aObj.blizzFrames[ftype].MailFrame = function(self)
 end
 
 aObj.blizzFrames[ftype].MainMenuBar = function(self)
-	if IsAddOnLoaded("Dominos") then
+	if _G.IsAddOnLoaded("Dominos") then
 		aObj.blizzFrames[ftype].MainMenuBar = nil
 		return
 	end
@@ -3577,7 +3574,7 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 				self:addButtonBorder{obj=_G["MultiCastActionButton" .. i], abt=true, seca=true, ofs=5}
 			end
 			-- MultiBar Buttons
-			for _, type in pairs{"BottomLeft", "BottomRight", "Right", "Left"} do
+			for _, type in _G.pairs{"BottomLeft", "BottomRight", "Right", "Left"} do
 				local btn
 				for i = 1, _G.NUM_MULTIBAR_BUTTONS do
 					btn = _G["MultiBar" .. type .. "Button" .. i]
@@ -3598,7 +3595,7 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 	-- these are done here as other AddOns may require them to be skinned
 	if self.modBtns then
 		-- MicroButtonAlert frames
-		for _, type in pairs{"Character", "Talent", "Guild", "LFD", "Collections", "EJ", "Store"} do
+		for _, type in _G.pairs{"Character", "Talent", "Guild", "LFD", "Collections", "EJ", "Store"} do
 			self:skinGlowBox(_G[type .. "MicroButtonAlert"], ftype)
 			_G.RaiseFrameLevelByTwo(_G[type .. "MicroButtonAlert"]) -- move above button borders
 		end
@@ -3665,7 +3662,7 @@ aObj.blizzFrames[ftype].MenuFrames = function(self)
 			-- apply specific adjustment if required
 			aObj:skinDropDown{obj=child, x2=aObj.iofDD[cName] or nil}
 		elseif child:IsObjectType("Slider") then
-			aObj:skinSlider{obj=child, hgt=Round(child:GetHeight()) == 22 and -7 or -2}
+			aObj:skinSlider{obj=child, hgt=_G.Round(child:GetHeight()) == 22 and -7 or -2}
 		elseif child:IsObjectType("CheckButton") then
 			aObj:skinCheckButton{obj=child, hf=true} -- handle hide/show
 		elseif child:IsObjectType("EditBox") then
@@ -3681,7 +3678,7 @@ aObj.blizzFrames[ftype].MenuFrames = function(self)
 
 		-- wait for all objects to be created
 		_G.C_Timer.After(0.1, function()
-			for _, child in ipairs{obj:GetChildren()} do
+			for _, child in _G.ipairs{obj:GetChildren()} do
 				checkChild(child)
 			end
 		end)
@@ -3692,7 +3689,7 @@ aObj.blizzFrames[ftype].MenuFrames = function(self)
 		self:removeNineSlice(this.Border)
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, hdr=true}
 		if self.modBtns then
-			for _, child in ipairs{this:GetChildren()} do
+			for _, child in _G.ipairs{this:GetChildren()} do
 				if child:IsObjectType("Button") then
 					self:skinStdButton{obj=child}
 				end
@@ -3737,7 +3734,7 @@ aObj.blizzFrames[ftype].MenuFrames = function(self)
 		skinKids(_G.Display_)
 		self:addSkinFrame{obj=_G.Display_, ft=ftype} -- RHS Top Panel
 		-- skin tabs
-		for _, btn in pairs{_G.GraphicsButton, _G.RaidButton} do
+		for _, btn in _G.pairs{_G.GraphicsButton, _G.RaidButton} do
 			btn:DisableDrawLayer("BACKGROUND")
 			self:addSkinFrame{obj=btn, ft=ftype, noBdr=self.isTT, bg=false, x1=4, y1=0, x2=0, y2=-4}
 			btn.sf.up = true
@@ -3908,13 +3905,13 @@ aObj.blizzFrames[ftype].Minimap = function(self)
 	if not self.prdb.Minimap.skin or self.initialized.Minimap then return end
 	self.initialized.Minimap = true
 
-	if IsAddOnLoaded("SexyMap") then
+	if _G.IsAddOnLoaded("SexyMap") then
 		self.blizzFrames[ftype].Minimap = nil
 		return
 	end
 
 	-- fix for Titan Panel moving MinimapCluster
-	if IsAddOnLoaded("Titan") then _G.TitanMovable_AddonAdjust("MinimapCluster", true) end
+	if _G.IsAddOnLoaded("Titan") then _G.TitanMovable_AddonAdjust("MinimapCluster", true) end
 
 	-- Cluster Frame
 	_G.MinimapBorderTop:Hide()
@@ -4028,7 +4025,7 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 	local function mmKids(mmObj)
 
 		local objName, objType
-		for _, obj in ipairs{mmObj:GetChildren()} do
+		for _, obj in _G.ipairs{mmObj:GetChildren()} do
 			objName, objType = obj:GetName(), obj:GetObjectType()
 			-- aObj:Debug("mmKids: [%s, %s, %s]", objName, objType, obj:GetNumRegions())
 			if not obj.sb
@@ -4040,7 +4037,7 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 			and objName ~= "QueueStatusMinimapButton"
 			and objName ~= "OQ_MinimapButton"
 			then
-				for _, reg in ipairs{obj:GetRegions()} do
+				for _, reg in _G.ipairs{obj:GetRegions()} do
 					if reg:GetObjectType() == "Texture" then
 						-- change the DrawLayer to make the Icon show if required
 						if aObj:hasTextInName(reg, "[Ii]con")
@@ -4109,9 +4106,9 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 		-- stop Eye texture being moved below skin frame
 		_G.QueueStatusMinimapButton.Eye.SetFrameLevel = _G.nop
 		-- skin any moved Minimap buttons if required
-		if IsAddOnLoaded("MinimapButtonFrame") then mmKids(_G.MinimapButtonFrame) end
+		if _G.IsAddOnLoaded("MinimapButtonFrame") then mmKids(_G.MinimapButtonFrame) end
 		-- show the Bongos minimap icon if required
-		if IsAddOnLoaded("Bongos") then _G.Bongos3MinimapButton.icon:SetDrawLayer("ARTWORK") end
+		if _G.IsAddOnLoaded("Bongos") then _G.Bongos3MinimapButton.icon:SetDrawLayer("ARTWORK") end
 	else
 		-- remove ring from GameTimeFrame texture
 		self:RawHook(_G.GameTimeTexture, "SetTexCoord", function(this, minx, maxx, miny, maxy)
@@ -4136,7 +4133,7 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 
 	-- Zoom Buttons
 	local btn, txt, xOfs, yOfs
-	for _, btnName in pairs{"In", "Out"} do
+	for _, btnName in _G.pairs{"In", "Out"} do
 		if btnName == "In" then
 			btn = _G.MinimapZoomIn
 			txt = self.modUIBtns.plus
@@ -4164,7 +4161,7 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 		end
 		local function clrZoomBtns()
 			local r, g, b
-			for _, btnName in pairs{"In", "Out"} do
+			for _, btnName in _G.pairs{"In", "Out"} do
 				btn = btnName == "In" and _G.MinimapZoomIn or _G.MinimapZoomOut
 				r, g, b = aObj:getColourByName(btn:IsEnabled() and "gold" or "disabled")
 				btn.sb:SetBackdropBorderColor(r, g, b, 1)
@@ -4188,7 +4185,7 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 	if not minBtn then
 		local function skinMMBtn(_, btn, _)
 			-- aObj:Debug("skinMMBtn#1: [%s, %s, %s]", cb, btn, name)
-			for _, reg in ipairs{btn:GetRegions()} do
+			for _, reg in _G.ipairs{btn:GetRegions()} do
 				if reg:GetObjectType() == "Texture" then
 					-- aObj:Debug("skinMMBtn#2: [%s, %s, %s]", reg, reg:GetName(), reg:GetTexture())
 					if aObj:hasTextInName(reg, "Border")
@@ -4205,8 +4202,8 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 		end
 		-- wait until all AddOn skins have been loaded
 		_G.C_Timer.After(0.5, function()
-			for addon, obj in pairs(self.mmButs) do
-				if IsAddOnLoaded(addon) then
+			for addon, obj in _G.pairs(self.mmButs) do
+				if _G.IsAddOnLoaded(addon) then
 					skinMMBtn("Loaded Addons btns", obj)
 				end
 			end
@@ -4214,7 +4211,7 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 		end)
 
 		-- skin existing LibDBIcon buttons
-		for name, button in pairs(self.DBIcon.objects) do
+		for name, button in _G.pairs(self.DBIcon.objects) do
 			skinMMBtn("Existing LibDBIcon btns", button, name)
 		end
 		-- skin LibDBIcon Minimap Buttons when created
@@ -4331,7 +4328,7 @@ aObj.blizzFrames[ftype].Nameplates = function(self)
 	end
 
 	-- skin any existing NamePlates
-	for _, frame in ipairs(_G.C_NamePlate.GetNamePlates(_G.issecure())) do
+	for _, frame in _G.ipairs(_G.C_NamePlate.GetNamePlates(_G.issecure())) do
 		skinNamePlate(frame)
 	end
 
@@ -4511,7 +4508,7 @@ aObj.blizzFrames[ftype].PetBattleUI = function(self)
 
 		-- Active Allies/Enemies
 		local pbf
-		for _, type in pairs{"Ally", "Enemy"} do
+		for _, type in _G.pairs{"Ally", "Enemy"} do
 			pbf = this["Active" .. type]
 			self:addButtonBorder{obj=pbf, relTo=pbf.Icon, ofs=1, reParent={pbf.LevelUnderlay, pbf.Level, pbf.SpeedUnderlay, pbf.SpeedIcon}}
 			pbf.Border:SetTexture(nil)
@@ -4664,7 +4661,7 @@ aObj.blizzFrames[ftype].PetBattleUI = function(self)
 
 	if self.prdb.Tooltips.skin then
 		-- skin the tooltips
-		for _, prefix in pairs{"PetBattlePrimaryUnit", "PetBattlePrimaryAbility", "FloatingBattlePet", "FloatingPetBattleAbility", "BattlePet"} do
+		for _, prefix in _G.pairs{"PetBattlePrimaryUnit", "PetBattlePrimaryAbility", "FloatingBattlePet", "FloatingPetBattleAbility", "BattlePet"} do
 			_G[prefix .. "Tooltip"]:DisableDrawLayer("BACKGROUND")
 			if _G[prefix .. "Tooltip"].Delimiter then _G[prefix .. "Tooltip"].Delimiter:SetTexture(nil) end
 			if _G[prefix .. "Tooltip"].Delimiter1 then _G[prefix .. "Tooltip"].Delimiter1:SetTexture(nil) end
@@ -4834,7 +4831,7 @@ aObj.blizzFrames[ftype].PVPMatch = function(self)
 end
 
 aObj.blizzFrames[ftype].QuestMap = function(self)
-	if IsAddOnLoaded("EQL3") then
+	if _G.IsAddOnLoaded("EQL3") then
 		aObj.blizzFrames[ftype].QuestMap = nil
 		return
 	end
@@ -4951,7 +4948,7 @@ aObj.blizzFrames[ftype].QuestSession = function(self)
 			end
 		end
 	end
-	for _, frame in ipairs(_G.QuestSessionManager.SessionManagementDialogs) do
+	for _, frame in _G.ipairs(_G.QuestSessionManager.SessionManagementDialogs) do
 		skinQSDialog(frame)
 	end
 
@@ -4963,7 +4960,7 @@ aObj.blizzFrames[ftype].QueueStatusFrame = function(self)
 
 	self:SecureHookScript(_G.QueueStatusFrame, "OnShow", function(this)
 		this:DisableDrawLayer("BACKGROUND")
-		self:addSkinFrame{obj=this, ft=ftype, anim=IsAddOnLoaded("SexyMap") and true or nil}
+		self:addSkinFrame{obj=this, ft=ftype, anim=_G.IsAddOnLoaded("SexyMap") and true or nil}
 
 		-- change the colour of the Entry Separator texture
 		for sEntry in this.statusEntriesPool:EnumerateActive() do
@@ -4971,7 +4968,7 @@ aObj.blizzFrames[ftype].QueueStatusFrame = function(self)
 		end
 
 		-- handle SexyMap's use of AnimationGroups to show and hide frames
-		if IsAddOnLoaded("SexyMap") then
+		if _G.IsAddOnLoaded("SexyMap") then
 			local rtEvt
 			local function checkForAnimGrp()
 				if _G.QueueStatusMinimapButton.smAlphaAnim then
@@ -5359,7 +5356,7 @@ aObj.blizzFrames[ftype].TimeManager = function(self)
 	end)
 
 	-- TimeManagerClockButton on the Minimap
-	if not IsAddOnLoaded("SexyMap") then
+	if not _G.IsAddOnLoaded("SexyMap") then
 		if not self.prdb.Minimap.style then
 			self:addSkinFrame{obj=_G.TimeManagerClockButton, ft=ftype, kfs=true, nb=true, aso={bbclr="grey"}, x1=14, y1=-3, x2=-8, y2=5}
 		end
@@ -5371,9 +5368,9 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 	if not self.prdb.Tooltips.skin or self.initialized.Tooltips then return end
 	self.initialized.Tooltips = true
 
-	if IsAddOnLoaded("TipTac") then return end
+	if _G.IsAddOnLoaded("TipTac") then return end
 
-	if IsAddOnLoaded("TinyTooltip") then
+	if _G.IsAddOnLoaded("TinyTooltip") then
 		local LibEvent = _G.LibStub:GetLibrary("LibEvent.7000")
 		_G.setmetatable(self.ttList, {__newindex = function(tab, _, tTip)
 			tTip = _G.type(tTip) == "string" and _G[tTip] or tTip
@@ -5438,10 +5435,10 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 		tTip.ftype = ftype
 		aObj:add2Table(aObj.ttList, tTip)
 	end
-	for _, tTip in pairs{_G.GameTooltip, _G.SmallTextTooltip, _G.EmbeddedItemTooltip, _G.ItemRefTooltip} do
+	for _, tTip in _G.pairs{_G.GameTooltip, _G.SmallTextTooltip, _G.EmbeddedItemTooltip, _G.ItemRefTooltip} do
 		addTooltip(tTip)
 		if tTip.shoppingTooltips then
-			for _, tip in pairs(tTip.shoppingTooltips) do
+			for _, tip in _G.pairs(tTip.shoppingTooltips) do
 				if not _G.rawget(self.ttList, tip) then
 					addTooltip(tip)
 				end
@@ -5735,7 +5732,7 @@ aObj.blizzLoDFrames[ftype].WarboardUI = function(self)
 		this.Title:DisableDrawLayer("BACKGROUND")
 
 		-- Options array
-		for _, choice in pairs(this.Options) do
+		for _, choice in _G.pairs(this.Options) do
 			self:removeRegions(choice, {1, 2, 3})
 			if self.modBtns then
 				for i = 1, #choice.OptionButtonsContainer.Buttons do
@@ -5750,7 +5747,7 @@ aObj.blizzLoDFrames[ftype].WarboardUI = function(self)
 
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ofs=0}
 		self:SecureHook(this, "TryShow", function(this)
-			for _, choice in pairs(this.Options) do
+			for _, choice in _G.pairs(this.Options) do
 				choice.Header.Text:SetTextColor(self.HT:GetRGB())
 				choice.OptionText:SetTextColor(self.BT:GetRGB())
 			end
@@ -5785,8 +5782,8 @@ aObj.blizzFrames[ftype].WorldMap = function(self)
 
 	self:SecureHookScript(_G.WorldMapFrame, "OnShow", function(this)
 
-		if not IsAddOnLoaded("Mapster")
-		and not IsAddOnLoaded("AlleyMap")
+		if not _G.IsAddOnLoaded("Mapster")
+		and not _G.IsAddOnLoaded("AlleyMap")
 		then
 			self:keepFontStrings(_G.WorldMapFrame)
 			self:addSkinFrame{obj=_G.WorldMapFrame.BorderFrame, ft=ftype, kfs=true, nb=true}

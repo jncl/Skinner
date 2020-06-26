@@ -1,8 +1,10 @@
 local _, aObj = ...
 
 local _G = _G
-local module = aObj:NewModule("BottomFrame")
+
 local ftype = "s"
+
+local module = aObj:NewModule("BottomFrame")
 
 local db
 local defaults = {
