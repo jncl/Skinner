@@ -1,3 +1,13 @@
+beta8.34872.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Updated TOC interface number
+	Updated addFrameBorder skinning code
+	Updated Auctionator skin
+	Skinned InstanceBoostTracker
+
 beta8.34769.1
 Jncl:
 	ToDo.txt
