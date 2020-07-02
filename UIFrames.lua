@@ -2709,14 +2709,14 @@ aObj.blizzFrames[ftype].HelpFrame = function(self)
 
 		-- Report Bug panel
 		self:skinSlider{obj=_G.HelpFrameReportBugScrollFrame.ScrollBar}
-		self:addSkinFrame{obj=self:getChild(this.bug, 3), ft=ftype}
+		self:addFrameBorder{obj=self:getChild(this.bug, 3), ft=ftype}
 		if self.modBtns then
 			self:skinStdButton{obj=this.bug.submitButton}
 		end
 
 		-- Submit Suggestion panel
 		self:skinSlider{obj=_G.HelpFrameSubmitSuggestionScrollFrame.ScrollBar}
-		self:addSkinFrame{obj=self:getChild(this.suggestion, 3), ft=ftype}
+		self:addFrameBorder{obj=self:getChild(this.suggestion, 3), ft=ftype}
 		if self.modBtns then
 			self:skinStdButton{obj=this.suggestion.submitButton}
 		end
@@ -5260,7 +5260,7 @@ aObj.blizzFrames[ftype].StaticPopups = function(self)
 		if not aObj.isClsc then
 			aObj:removeNineSlice(frame.Border)
 		end
-		aObj:addSkinFrame{obj=frame.Comment, ft=ftype, kfs=true, nb=true}
+		aObj:addFrameBorder{obj=frame.Comment, ft=ftype}
 		aObj:addSkinFrame{obj=frame, ft=ftype, kfs=true, nb=true}
 		if aObj.modBtns then
 			aObj:skinStdButton{obj=frame.ReportButton}

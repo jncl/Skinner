@@ -931,7 +931,7 @@ aObj.ClassicSupport = function(self)
 
 			self:SecureHookScript(_G.GuildInfoFrame, "OnShow", function(this)
 				self:skinSlider{obj=_G.GuildInfoFrameScrollFrame.ScrollBar, rt="artwork"}
-				self:addSkinFrame{obj=_G.GuildInfoTextBackground, ft=ftype, kfs=true, nb=true, ofs=0}
+				self:addFrameBorder{obj=_G.GuildInfoTextBackground, ft=ftype}
 				self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, ofs=0}
 				if self.modBtns then
 					self:skinCloseButton{obj=_G.GuildInfoCloseButton}
@@ -944,8 +944,8 @@ aObj.ClassicSupport = function(self)
 
 			self:SecureHookScript(_G.GuildMemberDetailFrame, "OnShow", function(this)
 				this:DisableDrawLayer("OVERLAY")
-				self:addSkinFrame{obj=_G.GuildMemberNoteBackground, ft=ftype, kfs=true, nb=true, ofs=0}
-				self:addSkinFrame{obj=_G.GuildMemberOfficerNoteBackground, ft=ftype, kfs=true, nb=true, ofs=0}
+				self:addFrameBorder{obj=_G.GuildMemberNoteBackground, ft=ftype}
+				self:addFrameBorder{obj=_G.GuildMemberOfficerNoteBackground, ft=ftype}
 				self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, ofs=0}
 				if self.modBtns then
 					self:skinCloseButton{obj=_G.GuildMemberDetailCloseButton}
@@ -969,8 +969,8 @@ aObj.ClassicSupport = function(self)
 		self:SecureHookScript(_G.AddFriendFrame, "OnShow", function(this)
 			self:skinEditBox{obj=_G.AddFriendNameEditBox, regs={6}} -- 6 is text
 			self:skinSlider{obj=_G.AddFriendNoteFrameScrollFrame.ScrollBar}
-			self:addSkinFrame{obj=_G.AddFriendNoteFrame, ft=ftype, kfs=true}
-			self:addSkinFrame{obj=this, ft=ftype, kfs=true}
+			self:addFrameBorder{obj=_G.AddFriendNoteFrame, ft=ftype}
+			self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true}
 			if self.modBtns then
 				self:skinStdButton{obj=_G.AddFriendInfoFrameContinueButton}
 				self:skinStdButton{obj=_G.AddFriendEntryFrameAcceptButton}
@@ -982,9 +982,9 @@ aObj.ClassicSupport = function(self)
 
 		self:SecureHookScript(_G.FriendsFriendsFrame, "OnShow", function(this)
 			self:skinDropDown{obj=_G.FriendsFriendsFrameDropDown}
-			self:addSkinFrame{obj=_G.FriendsFriendsList, ft=ftype}
+			self:addFrameBorder{obj=_G.FriendsFriendsList, ft=ftype}
 			self:skinSlider{obj=_G.FriendsFriendsScrollFrame.ScrollBar}
-			self:addSkinFrame{obj=this, ft=ftype}
+			self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true}
 			if self.modBtns then
 				self:skinStdButton{obj=_G.FriendsFriendsSendRequestButton}
 				self:skinStdButton{obj=_G.FriendsFriendsCloseButton}
@@ -1006,13 +1006,17 @@ aObj.ClassicSupport = function(self)
 		self:SecureHookScript(_G.RecruitAFriendFrame, "OnShow", function(this)
 			self:skinEditBox{obj=_G.RecruitAFriendNameEditBox, regs={6}} -- 6 is text
 			_G.RecruitAFriendNameEditBox.Fill:SetTextColor(self.BT:GetRGB())
-			self:addSkinFrame{obj=_G.RecruitAFriendNoteFrame, ft=ftype, kfs=true}
+			self:addFrameBorder{obj=this.NoteFrame, ft=ftype}
 			_G.RecruitAFriendNoteEditBox.Fill:SetTextColor(self.BT:GetRGB())
-			self:skinStdButton{obj=_G.RecruitAFriendFrame.SendButton}
 			self:addSkinFrame{obj=this, ft=ftype, kfs=true, ofs=-6, y1=-7}
+			if self.modBtns then
+				self:skinStdButton{obj=_G.RecruitAFriendFrame.SendButton}
+			end
 			-- RecruitAFriendSentFrame
-			self:skinStdButton{obj=_G.RecruitAFriendSentFrame.OKButton}
-			self:addSkinFrame{obj=_G.RecruitAFriendSentFrame, ft=ftype, ofs=-7, y2=4}
+			self:addSkinFrame{obj=_G.RecruitAFriendSentFrame, ft=ftype, kfs=true, ofs=-7, y2=4}
+			if self.modBtns then
+				self:skinStdButton{obj=_G.RecruitAFriendSentFrame.OKButton}
+			end
 
 			self:Unhook(this, "OnShow")
 		end)
