@@ -25,9 +25,5 @@ ToDos
 
 ≈	O	Make sure all buttons with GOLD button borders need them as opposed to having a GREY border
 
-√	I	AchievementFrame subframe borders need width adjusting
-
-	I	Auctionator, reported by hastrox77, 20.06.20
-√		- \AddOns\Skinner\AddonSkins\Auctionator.lua line 14: attempt to index field 'State' (a nil value)
-
-√	S/C	Instance Tracker, requested by amey0, 22.06.20
+	I	Dominos, reported by MacallanTwoFive, 28.06.20
+√		- Skinner\AddonSkins\Dominos-8.3.11.lua:51: attempt to index field 'buttons' (a nil value)
