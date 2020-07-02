@@ -3997,8 +3997,8 @@ aObj.blizzFrames[ftype].Minimap = function(self)
 		self:moveObject{obj=_G.MiniMapChallengeMode, x=6, y=-12}
 	end
 
-	-- move BuffFrame
-	self:moveObject{obj=_G.BuffFrame, x=-40}
+	-- DON'T move BuffFrame as it causes taint
+	-- self:moveObject{obj=_G.BuffFrame, x=-40}
 
 	-- hook this to handle Jostle Library
 	if _G.LibStub:GetLibrary("LibJostle-3.0", true) then
