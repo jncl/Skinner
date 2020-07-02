@@ -635,6 +635,13 @@ aObj.ClassicSupport = function(self)
 				_G.ContainerFrame_Update(frame)
 			end
 
+			if aObj.isClscPTR then
+				if aObj.modBtns then
+					_G[objName .. "AddSlotsButton"]:DisableDrawLayer("OVERLAY")
+					aObj:skinStdButton{obj=_G[objName .. "AddSlotsButton"]}
+				end
+			end
+
 			objName = nil
 
 		end
