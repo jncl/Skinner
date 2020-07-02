@@ -12,7 +12,7 @@ aObj.addonsToSkin.WoWPro = function(self) -- v 8.3.0-A1/1.13.3.L7
 		self:skinSlider{obj=_G.WoWPro.Scrollbar}
 		self:getChild(_G.WoWPro.Scrollbar, 3):SetBackdrop(nil)
 
-		for _, row in ipairs(_G.WoWPro.rows) do
+		for _, row in _G.ipairs(_G.WoWPro.rows) do
 			-- N.B. skinning checkboxes causes then to not be displayed ?
 			-- tooltip
 			_G.C_Timer.After(0.1, function()
@@ -24,7 +24,7 @@ aObj.addonsToSkin.WoWPro = function(self) -- v 8.3.0-A1/1.13.3.L7
 				self:addButtonBorder{obj=row.lootsbutton, ofs=3, clr="grey"}
 			end
 		end
-		for _, row in ipairs(_G.WoWPro.mousenotes) do
+		for _, row in _G.ipairs(_G.WoWPro.mousenotes) do
 			self:addSkinFrame{obj=row, ft="a", kfs=true, nb=true, ofs=0}
 		end
 
@@ -67,7 +67,7 @@ aObj.addonsToSkin.WoWPro = function(self) -- v 8.3.0-A1/1.13.3.L7
 		and not self.iofSkinnedPanels[panel]
 		then
 			-- TODO: tab(s)
-			for _, child in pairs{panel.TitleRow:GetChildren()} do
+			for _, child in _G.pairs{panel.TitleRow:GetChildren()} do
 				child:SetBackdrop(nil)
 			end
 			self:addSkinFrame{obj=panel.TitleRow, ft="a", kfs=true, nb=true, y1=2}

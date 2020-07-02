@@ -1,70 +1,74 @@
-local aName, aObj = ...
+local _, aObj = ...
 if not aObj:isAddonEnabled("Dominos") then return end
 local _G = _G
 
-function aObj:Dominos()
+aObj.addonsToSkin.Dominos = function(self) -- v 8.3.11
 
-	local Dominos = _G.LibStub("AceAddon-3.0"):GetAddon("Dominos", true)
-	if not Dominos then return end
+	-- ConfigOverlay
+	local mod = _G.Dominos:GetModule('ConfigOverlay', true)
+	if mod then
+		-- hook to skin the configHelper panel
+		self:RawHook(mod, "CreateHelpDialog", function(this)
+			local dialog = self.hooks[this].CreateHelpDialog(this)
+			self:rmRegionsTex(dialog, {10}) -- header texture, N.B. created after other textures
+			self:addSkinFrame{obj=dialog, ft="a", kfs=true, nb=true, ofs=0, y1=4, y2=4}
+			if self.modBtns then
+				self:skinStdButton{obj=self:getChild(dialog, 1)} -- this is a CheckButton object
+			end
+
+			self:Unhook(this, "CreateHelpDialog")
+			return dialog
+		end, true)
+	end
+	mod = nil
+
+end
+
+aObj.lodAddons.Dominos_Config = function(self) -- v 8.3.11
+
+	local Options = _G.Dominos.Options
 
 	-- hook this to skin first menu displayed and its dropdown
-	self:RawHook(Dominos, "NewMenu", function(this, id)
-		local menu = self.hooks[this].NewMenu(this, id)
-		if not menu.sknd then
-			self:addSkinFrame{obj=menu, x1=6, y1=-8, x2=-8, y2=6}
-			self:SecureHookScript(menu, "OnShow", function(this)
-				if this.dropdown then
-					self:skinDropDown{obj=this.dropdown}
-				end
-				self:Unhook(this, "OnShow")
-			end)
+	self:RawHook(Options.Menu, "New", function(this, parent)
+		local menu = self.hooks[this].New(this, parent)
+		self:addSkinFrame{obj=menu, ft="a", kfs=true, nb=true, ofs=0, y1=-2, x2=-1}
+		if self.modBtns then
+			self:skinCloseButton{obj=_G[menu:GetName() .. "Close"]}
 		end
-		self:Unhook(this, "NewMenu")
 		return menu
 	end, true)
 
-	local mod
-	-- ConfigOverlay
-	mod = Dominos:GetModule('ConfigOverlay', true)
-	if mod then
-		-- hook to skin the configHelper panel
-		self:SecureHook(mod, "Show", function(this)
-			self:rmRegionsTex(this.helpDialog, {10}) -- header texture, N.B. created after other textures
-			self:skinButton{obj=self:getChild(this.helpDialog, 1)} -- this is a CheckButton object
-			self:addSkinFrame{obj=this.helpDialog, y1=4, y2=4, nb=true}
-			self:Unhook(this, "Show")
-		end)
+	self:RawHook(Options.ScrollableContainer, "New", function(this, options)
+		local container = self.hooks[this].New(this, options)
+		self:skinSlider{obj=container.scrollFrame.ScrollBar, wdth=-6}
+		return container
+	end, true)
+
+	self:RawHook(Options.Slider, "New", function(this, options)
+		local slider = self.hooks[this].New(this, options)
+		self:skinSlider{obj=slider, wdth=-6}
+		return slider
+	end, true)
+
+	self:RawHook(Options.Dropdown, "New", function(this, options)
+		local dropdown = self.hooks[this].New(this, options)
+		self:skinDropDown{obj=dropdown.dropdownMenu, x2=109}
+		return dropdown
+	end, true)
+
+	self:RawHook(Options.TextInput, "New", function(this, options)
+		local textInput = self.hooks[this].New(this, options)
+		-- self:skinEditBox{obj=textInput.editBox, regs={6}} -- 6 is text
+		self:skinSlider{obj=textInput.vScrollBar, rt="backgroubd", wdth=-6}
+		return textInput
+	end, true)
+
+	if self.modChkBtns then
+		self:RawHook(Options.CheckButton, "New", function(this, options)
+			local button = self.hooks[this].New(this, options)
+			self:skinCheckButton{obj=button}
+			return button
+		end, true)
 	end
-	-- PlayerPowerBarAlt
-	mod = Dominos:GetModule("PlayerPowerBarAlt", true)
-	if mod then
-		mod.frame.buttons[1].frame:SetTexture(nil)
-	end
-	-- EncounterBar
-	mod = Dominos:GetModule("encounter", true)
-	if mod then
-		mod.frame.PlayerPowerBarAlt.frame:SetTexture(nil)
-	end
-	-- ExtraBar
-	mod = Dominos.Frame:Get("extra", true)
-	if mod then
-		mod.buttons[1].style:SetTexture(nil)
-		mod.buttons[1].style.SetTexture = function() end
-	end
-	-- CastingBar
-	mod = Dominos:GetModule("CastingBar", true)
-	if mod then
-		local castBar = mod.frame.__cbf
-		castBar.Border:SetAlpha(0)
-		castBar.Flash:SetAllPoints()
-		castBar.Flash:SetTexture([[Interface\Buttons\WHITE8X8]])
-		castBar.Text:SetPoint("TOP", 0, 2)
-		castBar.Spark.offsetY = -1
-		if self.db.profile.CastingBar.glaze then
-			self:glazeStatusBar(castBar, 0, self:getRegion(castBar, 1))
-		end
-		castBar = nil
-	end
-	mod, Dominos = nil, nil
 
 end
