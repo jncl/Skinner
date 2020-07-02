@@ -236,7 +236,7 @@ function module:skinPetF()
 	then
 		self:SecureHookScript(_G.PetFrame, "OnShow", function(this)
 			_G.PetPortrait:SetDrawLayer("BORDER") -- move portrait to BORDER layer, so it is displayed
-			aObj:moveObject{obj=this, x=21, y=-2} -- align under Player Health/Mana bars
+			-- N.B. DON'T move the frame as it causes taint
 			self:skinUnitButton{obj=this, ti=true, x1=1}
 
 			_G.PetFrameTexture:SetAlpha(0) -- texture file is changed dependant upon in vehicle or not
