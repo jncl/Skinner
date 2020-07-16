@@ -150,11 +150,16 @@ function module:clrButtonBorder(btn)
 
 end
 
-function module:clrBtnBdr(btn, clrName, alpha)
+local function clrBtnBdr(btn, clrName, alpha)
 
 	local r, g, b = aObj:getColourByName(clrName)
-	btn.sbb:SetBackdropBorderColor(r, g, b, alpha or 1)
+	btn:SetBackdropBorderColor(r, g, b, alpha or 1)
 	r, g, b = nil, nil ,nil
+
+end
+function module:clrBtnBdr(btn, clrName, alpha)
+
+	clrBtnBdr(btn.sbb, clrName, alpha)
 
 end
 
@@ -432,6 +437,8 @@ function module:skinStdButton(opts) -- standard panel button
 		ft = Frame Type (Skinner classification)
 		aso = applySkin options
 		as = use applySkin rather than addSkinButton, used when text appears behind the gradient
+		clr = set colour
+		ca = set colour alpha
 --]]
 
 	opts.obj:DisableDrawLayer("BACKGROUND")
@@ -458,6 +465,10 @@ function module:skinStdButton(opts) -- standard panel button
 		opts.obj.sb = true
 	end
 	bW, bH, aso = nil, nil, nil
+
+	if opts.clr then
+		clrBtnBdr(opts.obj.sb, opts.clr, opts.ca)
+	end
 
 end
 

@@ -940,7 +940,7 @@ aObj.blizzLoDFrames[ftype].Calendar = function(self)
 				self:clrBtnBdr(_G.CalendarPrevMonthButton, _G.CalendarPrevMonthButton:IsEnabled() and "gold" or "disabled", 1)
 				self:clrBtnBdr(_G.CalendarNextMonthButton, _G.CalendarNextMonthButton:IsEnabled() and "gold" or "disabled", 1)
 			end)
-			self:addButtonBorder{obj=_G.CalendarFilterButton, es=14, x1=3, y1=0, x2=3, y2=0, clr="gold"}
+			self:addButtonBorder{obj=_G.CalendarFilterButton, es=14, x1=3, y1=0, x2=3, y2=0, clr="grey"}
 		end
 
 		self:Unhook(this, "OnShow")
@@ -3178,10 +3178,6 @@ aObj.blizzFrames[ftype].LFGList = function(self)
 		self:skinSlider{obj=sp.ScrollFrame.scrollBar, wdth=-4}
 		self:removeMagicBtnTex(sp.BackButton)
 		self:removeMagicBtnTex(sp.SignUpButton)
-		if self.modBtnBs then
-		    self:addButtonBorder{obj=sp.FilterButton, ofs=0}
-			self:addButtonBorder{obj=sp.RefreshButton, ofs=-2}
-		end
 		if self.modBtns then
 			for i = 1, #sp.ScrollFrame.buttons do
 				self:skinStdButton{obj=sp.ScrollFrame.buttons[i].CancelButton}
@@ -3189,6 +3185,10 @@ aObj.blizzFrames[ftype].LFGList = function(self)
 			self:skinStdButton{obj=sp.ScrollFrame.StartGroupButton, as=true} -- use as otherwise button skin not visible
 			self:skinStdButton{obj=sp.BackButton}
 			self:skinStdButton{obj=sp.SignUpButton}
+		end
+		if self.modBtnBs then
+		    self:addButtonBorder{obj=sp.FilterButton, ofs=0}
+			self:addButtonBorder{obj=sp.RefreshButton, ofs=-2}
 		end
 		sp = nil
 
@@ -4389,7 +4389,7 @@ aObj.blizzFrames[ftype].NavigationBar = function(self)
 			and this.navList[i].MenuArrowButton -- Home button doesn't have one
 			and not this.navList[i].MenuArrowButton.sbb
 			then
-				self:addButtonBorder{obj=this.navList[i].MenuArrowButton, ofs=-2, x1=-1, x2=0}
+				self:addButtonBorder{obj=this.navList[i].MenuArrowButton, ofs=-2, x1=-1, x2=0, clr="gold", ca=0.75}
 				this.navList[i].MenuArrowButton.sbb:SetAlpha(0) -- hide button border
 				self:HookScript(this.navList[i].MenuArrowButton, "OnEnter", function(this)
 					this.sbb:SetAlpha(1)
