@@ -3792,21 +3792,8 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 							then
 								blockContents = block.ScrollChild
 								aObj:removeRegions(blockContents, {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 13, 17, 18}, true)
-								-- blockContents.Bg:SetTexture(nil)
-								-- blockContents.BorderTopLeft:SetTexture(nil)
-								-- blockContents.BorderTopRight:SetTexture(nil)
-								-- blockContents.BorderBotLeft:SetTexture(nil)
-								-- blockContents.BorderBotRight:SetTexture(nil)
-								-- blockContents.BorderLeft:SetTexture(nil)
-								-- blockContents.BorderRight:SetTexture(nil)
-								-- blockContents.BorderTop:SetTexture(nil)
-								-- blockContents.BorderBottom:SetTexture(nil)
-								-- blockContents.QuestIconBg:SetTexture(nil)
-								-- blockContents.QuestIconBadgeBorder:SetTexture(nil)
-								-- blockContents.Shine:SetTexture(nil)
-								-- blockContents.IconShine:SetTexture(nil)
 								blockContents.FlashFrame.IconFlash:SetTexture(nil)
-								aObj:addSkinFrame{obj=blockContents, ft=ftype, x1=32}
+								aObj:addSkinFrame{obj=blockContents, ft=ftype, ofs=0}
 								-- TODO: prevent Background being changed, causes border art to appear broken ?
 							end
 						end
