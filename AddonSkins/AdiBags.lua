@@ -6,31 +6,25 @@ aObj.addonsToSkin.AdiBags = function(self) -- v1.9.17/v1.9.17-classic
 
 	local aBag = _G.LibStub("AceAddon-3.0"):GetAddon("AdiBags", true)
 
-	local function skinBag(bag)
-		local frame = bag:GetFrame()
-		aObj:skinEditBox{obj=_G[frame:GetName() .. "SearchBox"], regs={6}, mi=true}
-		aObj:addSkinFrame{obj=frame, ft="a", kfs=true, nb=true}
+	-- hook this for bag creation
+	aBag:RegisterMessage("AdiBags_BagFrameCreated", function(msg, bag)
+		-- print("AdiBags_BagFrameCreated", bag)
+		aObj:skinEditBox{obj=_G[bag.frame:GetName() .. "SearchBox"], regs={6}, mi=true}
+		aObj:addSkinFrame{obj=bag.frame, ft="a", kfs=true, nb=true}
 		if aObj.modBtns then
-			aObj:skinCloseButton{obj=frame.CloseButton}
+			aObj:skinCloseButton{obj=bag.frame.CloseButton}
 			-- delay to allow all buttons to be created
 			_G.C_Timer.After(0.1, function()
-				for _, object in _G.pairs(frame.HeaderRightRegion.widgets) do
+				for _, object in _G.pairs(bag.frame.HeaderRightRegion.widgets) do
 					if object.widget:IsObjectType("Button") then
 						aObj:skinStdButton{obj=object.widget}
 					end
 				end
-				frame = nil
 			end)
 		end
 		if aObj.modBtnBs then
-			aObj:addButtonBorder{obj=frame.HeaderLeftRegion.widgets[1].widget, ofs=3} -- bag icon
+			aObj:addButtonBorder{obj=bag.frame.HeaderLeftRegion.widgets[1].widget, ofs=3} -- bag icon
 		end
-
-	end
-	-- hook this for bag creation
-	aBag:RegisterMessage("AdiBags_BagFrameCreated", function(msg, bag)
-		-- print("AdiBags_BagFrameCreated", bag)
-		skinBag(bag)
 	end)
 
 	-- hook this for equipped bag panel creation
