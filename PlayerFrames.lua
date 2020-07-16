@@ -847,6 +847,7 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 		self:skinDropDown{obj=this.mountOptionsMenu}
 		self:removeInset(this.RightInset)
 		self:skinEditBox{obj=this.searchBox, regs={6, 7}, mi=true, noHeight=true, noInsert=true, x=-6, y=-2} -- 6 is text, 7 is icon
+		self:skinDropDown{obj=_G.MountJournalFilterDropDown}
 		self:removeInset(this.MountCount)
 		self:keepFontStrings(this.MountDisplay)
 		self:keepFontStrings(this.MountDisplay.ShadowOverlay)
@@ -1346,7 +1347,7 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 		this.FilligreeOverlay:DisableDrawLayer("BORDER")
 		self:removeInset(this.InsetFrame)
 		for i = 1, #this.ListScrollFrame.buttons do
-			self:removeRegions(this.ListScrollFrame.buttons[i], {1})
+			this.ListScrollFrame.buttons[i].IconRing:SetAlpha(0) -- texture changed in code
 			self:changeRecTex(this.ListScrollFrame.buttons[i].Selection, true)
 			this.ListScrollFrame.buttons[i].Selection:SetHeight(60)
 			self:changeRecTex(this.ListScrollFrame.buttons[i]:GetHighlightTexture())
@@ -1359,6 +1360,7 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 				cList.ListScrollFrame.buttons[i].Selection:SetHeight(60)
 			end
 		end)
+
 		self:Unhook(this, "OnShow")
 	end)
 
@@ -1722,6 +1724,7 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 	self:SecureHookScript(cFrame.RecruitmentDialog, "OnShow", function(this)
 		self:skinDropDown{obj=this.ClubFocusDropdown}
 		self:skinDropDown{obj=this.LookingForDropdown}
+		self:skinDropDown{obj=this.LanguageDropdown}
 		this.RecruitmentMessageFrame:DisableDrawLayer("BACKGROUND")
 		self:addFrameBorder{obj=this.RecruitmentMessageFrame.RecruitmentMessageInput, ft=ftype, ofs=6}
 		self:skinEditBox{obj=this.MinIlvlOnly.EditBox, regs={6}} -- 6 is text
@@ -1831,6 +1834,7 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 		this.MinIlvlOnly.EditBox.Text:SetPoint("Left", this.MinIlvlOnly.EditBox, "Left", 6, 0)
 		self:skinDropDown{obj=this.ClubFocusDropdown}
 		self:skinDropDown{obj=this.LookingForDropdown}
+		self:skinDropDown{obj=this.LanguageDropdown}
 		self:addFrameBorder{obj=this.Description, ft=ftype, ofs=8}
 		self:addSkinFrame{obj=this, ft=ftype, nb=true, ofs=-10}
 		if self.modBtns then
