@@ -1219,6 +1219,7 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 			this.DetailsFrame:DisableDrawLayer("BACKGROUND")
 			this.DetailsFrame:DisableDrawLayer("BORDER")
 			self:skinDropDown{obj=this.DetailsFrame.VariantSetsDropDown}
+			self:addFrameBorder{obj=this, ft=ftype, x1=x1Ofs, y1=y1Ofs, x2=x2Ofs, y2=y2Ofs}
 			if self.modBtns then
 				 self:skinStdButton{obj=this.DetailsFrame.VariantSetsButton}
 			end
@@ -1228,9 +1229,6 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 					colourBtns(this)
 				end)
 			end
-
-			-- add skin frame, so tabs look better than without a frame
-			self:addFrameBorder{obj=this, ft=ftype, x1=x1Ofs, y1=y1Ofs, x2=x2Ofs, y2=y2Ofs}
 
 			self:Unhook(this, "OnShow")
 		end)
@@ -1425,7 +1423,7 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 
 		frame.RequestToJoinFrame.MessageFrame:DisableDrawLayer("BACKGROUND")
 		frame.RequestToJoinFrame.MessageFrame.MessageScroll:DisableDrawLayer("BACKGROUND")
-		aObj:addSkinFrame{obj=frame.RequestToJoinFrame.MessageFrame, ft=ftype, kfs=true, nb=true}
+		aObj:addFrameBorder{obj=frame.RequestToJoinFrame.MessageFrame, ft=ftype, ofs=2}
 		aObj:addSkinFrame{obj=frame.RequestToJoinFrame.BG, ft=ftype, kfs=true, nb=true}
 		if aObj.modBtns then
 			 aObj:skinStdButton{obj=frame.RequestToJoinFrame.Apply}
@@ -1725,7 +1723,7 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 		self:skinDropDown{obj=this.ClubFocusDropdown}
 		self:skinDropDown{obj=this.LookingForDropdown}
 		this.RecruitmentMessageFrame:DisableDrawLayer("BACKGROUND")
-		self:addSkinFrame{obj=this.RecruitmentMessageFrame.RecruitmentMessageInput, ft=ftype, kfs=true, nb=true, ofs=6}
+		self:addFrameBorder{obj=this.RecruitmentMessageFrame.RecruitmentMessageInput, ft=ftype, ofs=6}
 		self:skinEditBox{obj=this.MinIlvlOnly.EditBox, regs={6}} -- 6 is text
 		this.MinIlvlOnly.EditBox.Text:ClearAllPoints()
 		this.MinIlvlOnly.EditBox.Text:SetPoint("Left", this.MinIlvlOnly.EditBox, "Left", 6, 0)
@@ -1807,7 +1805,7 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 				end
 			end
 		end
-		self:addSkinFrame{obj=this.InviteManager, ft=ftype, kfs=true, nb=true, x1=8, y1=-10, x2=-11, y2=-4}
+		self:addFrameBorder{obj=this.InviteManager, ft=ftype, ofs=-4, x2=-7, y2=-5}
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, y1=-8, y2=6}
 		if self.modBtns then
 			self:skinStdButton{obj=this.LinkToChat}
@@ -1827,13 +1825,13 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 		self:keepFontStrings(this.BG)
 		self:skinEditBox{obj=this.NameEdit, regs={6}} -- 6 is text
 		self:skinEditBox{obj=this.ShortNameEdit, regs={6}} -- 6 is text
-		self:addSkinFrame{obj=this.MessageOfTheDay, ft=ftype, kfs=true, nb=true, ofs=8}
+		self:addFrameBorder{obj=this.MessageOfTheDay, ft=ftype, ofs=8}
 		self:skinEditBox{obj=this.MinIlvlOnly.EditBox, regs={6}} -- 6 is text
 		this.MinIlvlOnly.EditBox.Text:ClearAllPoints()
 		this.MinIlvlOnly.EditBox.Text:SetPoint("Left", this.MinIlvlOnly.EditBox, "Left", 6, 0)
 		self:skinDropDown{obj=this.ClubFocusDropdown}
 		self:skinDropDown{obj=this.LookingForDropdown}
-		self:addSkinFrame{obj=this.Description, ft=ftype, kfs=true, nb=true, ofs=8}
+		self:addFrameBorder{obj=this.Description, ft=ftype, ofs=8}
 		self:addSkinFrame{obj=this, ft=ftype, nb=true, ofs=-10}
 		if self.modBtns then
 			self:skinStdButton{obj=this.ChangeAvatarButton}
@@ -1861,7 +1859,7 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 		self:skinSlider{obj=this.Recruitment.CommentFrame.CommentInputFrame.ScrollFrame.ScrollBar}
 		this.Recruitment.CommentFrame.CommentInputFrame.ScrollFrame.CommentEditBox.Fill:SetTextColor(self.BT:GetRGB())
 		self:removeMagicBtnTex(this.Recruitment.ListGuildButton)
-		self:addSkinFrame{obj=this.Recruitment.CommentFrame.CommentInputFrame, ft=ftype, kfs=true}
+		self:addFrameBorder{obj=this.Recruitment.CommentFrame.CommentInputFrame, ft=ftype}
 		if self.modBtns then
 			 self:skinStdButton{obj=this.Recruitment.ListGuildButton}
 		end
@@ -1901,7 +1899,7 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 
 	self:SecureHookScript(_G.CommunitiesGuildTextEditFrame, "OnShow", function(this)
 		self:skinSlider{obj=_G.CommunitiesGuildTextEditFrame.Container.ScrollFrame.ScrollBar, wdth=-6}
-		self:addSkinFrame{obj=_G.CommunitiesGuildTextEditFrame.Container, ft=ftype}
+		self:addFrameBorder{obj=_G.CommunitiesGuildTextEditFrame.Container, ft=ftype}
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ofs=-7}
 		if self.modBtns then
 			self:skinStdButton{obj=_G.CommunitiesGuildTextEditFrameAcceptButton}
@@ -1913,7 +1911,7 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 
 	self:SecureHookScript(_G.CommunitiesGuildLogFrame, "OnShow", function(this)
 		self:skinSlider{obj=this.Container.ScrollFrame.ScrollBar, wdth=-6}
-		self:addSkinFrame{obj=this.Container, ft=ftype}
+		self:addFrameBorder{obj=this.Container, ft=ftype}
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ofs=-7}
 		if self.modBtns then
 			 self:skinStdButton{obj=self:getChild(this, 3)} -- bottom close button

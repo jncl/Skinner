@@ -3267,7 +3267,7 @@ aObj.blizzFrames[ftype].LFGList = function(self)
 			self:skinCheckButton{obj=this.DamagerButton.CheckButton}
 		end
 		self:skinSlider{obj=this.Description.ScrollBar, wdth=-4}
-		self:addSkinFrame{obj=this.Description, ft=ftype, kfs=true, ofs=6}
+		self:addFrameBorder{obj=this.Description, ft=ftype, ofs=6}
 		this.Description.EditBox.Instructions:SetTextColor(self.BT:GetRGB())
 		if self.modBtns then
 			self:skinStdButton{obj=this.SignUpButton}
