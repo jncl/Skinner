@@ -3999,21 +3999,17 @@ aObj.blizzFrames[ftype].Minimap = function(self)
 		self:moveObject{obj=_G.GuildInstanceDifficulty, x=7}
 		self:getRegion(_G.MiniMapChallengeMode, 1):SetTexCoord(0, 1, 0.27, 1.27) -- remove top hanger texture
 		self:moveObject{obj=_G.MiniMapChallengeMode, x=6, y=-12}
+		self:moveObject{obj=_G.GarrisonLandingPageMinimapButton, x=0, y=-20}
+		_G.GarrisonLandingPageMinimapButton.AlertBG:SetTexture(nil)
 	end
 
-	-- DON'T move BuffFrame as it causes taint
-	-- self:moveObject{obj=_G.BuffFrame, x=-40}
+	self:moveObject{obj=_G.BuffFrame, x=-40}
 
 	-- hook this to handle Jostle Library
 	if _G.LibStub:GetLibrary("LibJostle-3.0", true) then
 		self:RawHook(_G.MinimapCluster, "SetPoint", function(this, point, relTo, relPoint, _)
 			self.hooks[this].SetPoint(this, point, relTo, relPoint, -6, -18)
 		end, true)
-	end
-
-	if not self.isClsc then
-		self:moveObject{obj=_G.GarrisonLandingPageMinimapButton, x=0, y=-20}
-		_G.GarrisonLandingPageMinimapButton.AlertBG:SetTexture(nil)
 	end
 
 end
