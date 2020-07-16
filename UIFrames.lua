@@ -4467,9 +4467,7 @@ aObj.blizzLoDFrames[ftype].OrderHallUI = function(self)
 		if self.modBtnBs then
 			self:addButtonBorder{obj=this.Currency, relTo=this.Currency.Icon, clr="grey"}
 		end
-		this.Inset:DisableDrawLayer("BACKGROUND")
-		self:removeNineSlice(this.Inset.NineSlice)
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ofs=2, x2=3}
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, ofs=2, x2=3}
 		skinBtns(this)
 		self:SecureHook(this, "RefreshAllData", function(this)
 			for choiceTex in this.choiceTexturePool:EnumerateActive() do
