@@ -24,6 +24,3 @@ ToDos
 	O	Skin CommentatorTeamDisplay
 
 ≈	O	Make sure all buttons with GOLD button borders need them as opposed to having a GREY border
-
-	I	Dominos, reported by MacallanTwoFive, 28.06.20
-√		- Skinner\AddonSkins\Dominos-8.3.11.lua:51: attempt to index field 'buttons' (a nil value)
