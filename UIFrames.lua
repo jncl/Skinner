@@ -1535,7 +1535,11 @@ aObj.blizzFrames[ftype].ChatEditBox = function(self)
 	-- if editBox has a skin frame then hook these to manage its Alpha setting
 	if self.prdb.ChatEditBox.style ~= 2 then
 		local function setAlpha(eBox)
-			if eBox and eBox.sf then eBox.sf:SetAlpha(eBox:GetAlpha()) end
+			if eBox
+			and eBox.sf
+			then
+				eBox.sf:SetAlpha(eBox:GetAlpha())
+			end
 		end
 		self:secureHook("ChatEdit_ActivateChat", function(editBox)
 			setAlpha(editBox)
