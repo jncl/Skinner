@@ -1,3 +1,15 @@
+beta8.34963.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Update Version numbers
+	Hopefully taint fix for BuffFrame
+	Hopefully taint fix for PetFrame
+	ClassicPTR update
+	Changed  some SkinFrames to SkinBorders
+	Updated Dominos & WoWPro skins
+	Remove all local definitions of global functions as they're already localised
+
 beta8.34872.1
 Jncl:
 	ToDo.txt
