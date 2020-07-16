@@ -161,6 +161,7 @@ aObj.blizzFrames[ftype].SetupDefaults = function(self)
 		MovePad              = true,
 		MovieFrame           = true,
 		Nameplates           = true,
+		NavigationBar        = true,
 		ObliterumUI          = true,
 		OrderHallUI          = true,
 		PetBattleUI          = true,
@@ -1670,6 +1671,11 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 					type = "toggle",
 					name = self.L["Nameplates"],
 					desc = self.L["Toggle the skin of the Nameplates"],
+				},
+				NavigationBar = {
+					type = "toggle",
+					name = self.L["Navigation Bar"],
+					desc = self.L["Toggle the skin of the Navigation Bar"],
 				},
 				ObliterumUI = {
 					type = "toggle",

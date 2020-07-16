@@ -4377,6 +4377,8 @@ aObj.blizzFrames[ftype].Nameplates = function(self)
 end
 
 aObj.blizzFrames[ftype].NavigationBar = function(self)
+	if not self.prdb.NavigationBar or self.initialized.NavigationBar then return end
+	self.initialized.NavigationBar = true
 	-- Helper function, used by several frames
 
 	-- hook this to handle navbar buttons
