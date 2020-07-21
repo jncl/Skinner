@@ -21,7 +21,7 @@ local function __addSkinButton(opts)
 		rp = re-parent, reverse the parent child relationship
 		secu = use the "SecureUnitButtonTemplate"
 		seca = use the "SecureActionButtonTemplate"
-		nohooks = don't hook methods
+		noHooks = don't hook methods
 --]]
 --@alpha@
 	_G.assert(opts.obj, "Missing object __aSB\n" .. _G.debugstack(2, 3, 2))
@@ -47,7 +47,7 @@ local function __addSkinButton(opts)
 	_G.LowerFrameLevel(btn)
 	btn:EnableMouse(false) -- allow clickthrough
 
-	if not opts.nohooks then
+	if not opts.noHooks then
 		opts.hook = opts.hook or opts.obj
 		-- hook Show/Hide methods
         -- changed to hook scripts as functions don't always work

@@ -4151,7 +4151,7 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 				xOfs, yOfs = 19, -12 -- 51, -41
 			end
 		end
-		self:skinOtherButton{obj=btn, text=txt, aso={bbclr=btn:IsEnabled() and "gold" or "disabled"}, nohooks=true}
+		self:skinOtherButton{obj=btn, text=txt, aso={bbclr=btn:IsEnabled() and "gold" or "disabled"}, noHooks=true}
 		self:moveObject{obj=btn, x=xOfs, y=yOfs}
 		-- make button text appear in correct colour
 		btn:SetNormalFontObject(btn:IsEnabled() and self.modUIBtns.fontP or self.modUIBtns.fontDP)
