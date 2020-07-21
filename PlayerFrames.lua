@@ -1222,7 +1222,7 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 			self:skinDropDown{obj=this.DetailsFrame.VariantSetsDropDown}
 			self:addFrameBorder{obj=this, ft=ftype, x1=x1Ofs, y1=y1Ofs, x2=x2Ofs, y2=y2Ofs}
 			if self.modBtns then
-				 self:skinStdButton{obj=this.DetailsFrame.VariantSetsButton}
+				 self:skinStdButton{obj=this.DetailsFrame.VariantSetsButton, clr="grey"}
 			end
 			if self.modBtnBs then
 				colourBtns(this.ScrollFrame)
