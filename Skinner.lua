@@ -17,11 +17,11 @@ do
 	_G.LibStub:GetLibrary("AceAddon-3.0", true):NewAddon(aObj, aName, "AceConsole-3.0", "AceEvent-3.0", "AceHook-3.0")
 
 	local buildInfo = {
-		beta        = {"9.0.1", 34902 }, -- Shadowlands 2020
+		beta        = {"9.0.1", 35213}, -- Shadowlands 2020
 		classic_ptr = {"1.13.5", 35000},
 		retail_ptr  = {"8.3.7", 35114},
 		retail      = {"8.3.0", 34963},
-		classic     = {"1.13.5", 35000},
+		classic     = {"1.13.5", 35186},
 		curr        = {_G.GetBuildInfo()},
    	}
 
