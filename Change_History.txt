@@ -1,3 +1,18 @@
+beta8.35000.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Update version numbers
+	Update AdiBags skin
+	Update OrderHallTalents skin
+	Update MinimapButtons skin
+	Update ChatEditBox skin
+	Update ObjectivePopup skin
+	Update Collections & Cummunities skins
+	Add option for NavigationBar
+	Change SkinFrames to BorderFrames
+	Update button border colour as required
+
 beta8.34963.1
 Jncl:
 	ToDo.txt
