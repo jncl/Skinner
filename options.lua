@@ -2004,6 +2004,10 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 			_G.InterfaceOptionsFrame_OpenToCategory(aObj.optionsFrame)
 			_G.InterfaceOptionsFrame_OpenToCategory(aObj.optionsFrame)
 		end,
+		OnTooltipShow = function(tooltip)
+			tooltip:AddLine(self.L["Skinner"])
+			tooltip:AddLine(self.L["Click to open config panel"], 1, 1, 1)
+		end,
 	})
 
 	-- register the data object to the Icon library
