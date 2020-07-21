@@ -24,3 +24,5 @@ ToDos
 	O	Skin CommentatorTeamDisplay
 
 ≈	O	Make sure all buttons with GOLD button borders need them as opposed to having a GREY border
+
+≈	S/C	Group Calendar for Classic requested by amey0, 18.07.20
