@@ -196,6 +196,13 @@ function aObj:addFrameBorder(opts)
 
 end
 
+function aObj:capitStr(str)
+
+	return str:sub(1,1):upper() .. str:sub(2):lower()
+
+end
+
+
 aObj.mpTex = [[Interface\Common\UI-ModelControlPanel]]
 function aObj:changeMinusPlusTex(obj, minus)
 --@alpha@

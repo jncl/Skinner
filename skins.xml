@@ -109,6 +109,7 @@
 <script file="AddonSkins\GarrisonMissionManager.lua"/>
 <script file="AddonSkins\Glamour.lua"/>
 <script file="AddonSkins\GnomishVendorShrinker.lua"/>
+<script file="AddonSkins\GroupCalendar.lua"/>
 <script file="AddonSkins\GroupCalendar5.lua"/>
 <script file="AddonSkins\Growler.lua"/>
 <script file="AddonSkins\GuildBankSearch.lua"/>
