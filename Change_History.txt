@@ -1,3 +1,14 @@
+beta8.35186.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version nmubers
+	Added tooltip to DataBroker object
+	Coloured a button border
+	Updated PTR frames code
+	Updated addSkinButton code
+	Skinned GroupCalendar
+
 beta8.35000.1
 Jncl:
 	ToDo.txt
