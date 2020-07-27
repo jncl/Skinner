@@ -1216,7 +1216,8 @@ aObj.blizzFrames[ftype].ChatButtons = function(self)
 	if self.modBtnBs then
 		for i = 1, _G.NUM_CHAT_WINDOWS do
 			self:addButtonBorder{obj=_G["ChatFrame" .. i].buttonFrame.minimizeButton, ofs=-2, clr="grey"}
-			self:addButtonBorder{obj=_G["ChatFrame" .. i].ScrollToBottomButton, ofs=-1, x=0, reParent={_G["ChatFrame" .. i].ScrollToBottomButton.Flash}, clr="grey"}
+			self:addButtonBorder{obj=_G["ChatFrame" .. i].ScrollToBottomButton, ofs=-1, x1=0, reParent={_G["ChatFrame" .. i].ScrollToBottomButton.Flash}, clr="grey"}
+			_G["ChatFrame" .. i].buttonFrame.sknd = true
 		end
 		self:addButtonBorder{obj=_G.ChatFrameChannelButton, ofs=0, clr="grey"}
 		self:addButtonBorder{obj=_G.ChatFrameToggleVoiceDeafenButton, ofs=0, clr="grey"}
@@ -1627,7 +1628,7 @@ aObj.blizzFrames[ftype].ChatTemporaryWindow = function(self)
 	local function skinTempWindow(obj)
 
 		if aObj.prdb.ChatTabs
-		and not obj.sf
+		and not _G[obj:GetName() .. "Tab"].sf
 		then
 			skinChatTab(_G[obj:GetName() .. "Tab"])
 		end
@@ -1642,11 +1643,12 @@ aObj.blizzFrames[ftype].ChatTemporaryWindow = function(self)
 			skinChatEB(obj.editBox)
 			obj.editBox.sknd = true
 		end
-		if aObj.prdb.ChatButtons
+		if aObj.modBtnBs
+		and aObj.prdb.ChatButtons
 		and not obj.buttonFrame.sknd
 		then
-			aObj:addButtonBorder{obj=obj.buttonFrame.minimizeButton, ofs=-2}
-			aObj:addButtonBorder{obj=obj.ScrollToBottomButton, ofs=-1}
+			aObj:addButtonBorder{obj=obj.buttonFrame.minimizeButton, ofs=-2, clr="grey"}
+			aObj:addButtonBorder{obj=obj.ScrollToBottomButton, ofs=-1, x1=0, reParent={obj.ScrollToBottomButton.Flash}, clr="grey"}
 			obj.buttonFrame.sknd = true
 		end
 
