@@ -202,7 +202,6 @@ function aObj:capitStr(str)
 
 end
 
-
 aObj.mpTex = [[Interface\Common\UI-ModelControlPanel]]
 function aObj:changeMinusPlusTex(obj, minus)
 --@alpha@
