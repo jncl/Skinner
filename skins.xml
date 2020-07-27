@@ -45,6 +45,7 @@
 <script file="AddonSkins\BonusRollPreview.lua"/>
 <script file="AddonSkins\BossInfo.lua"/>
 <script file="AddonSkins\BossNotes.lua"/>
+<script file="AddonSkins\BtWQuests.lua"/>
 <script file="AddonSkins\buffOmat.lua"/>
 <script file="AddonSkins\Bugger.lua"/>
 <script file="AddonSkins\BugSack.lua"/>
