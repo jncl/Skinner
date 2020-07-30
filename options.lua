@@ -1899,11 +1899,9 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 
 	-- add DB profile options
 	self.optTables.Profiles = _G.LibStub:GetLibrary("AceDBOptions-3.0", true):GetOptionsTable(self.db)
+	self.ACR = _G.LibStub:GetLibrary("AceConfigRegistry-3.0", true)
 
 	-- register the options tables and add them to the blizzard frame
-	self.ACR = _G.LibStub:GetLibrary("AceConfigRegistry-3.0", true)
-	self.ACD = _G.LibStub:GetLibrary("AceConfigDialog-3.0", true)
-
 	self.ACR:RegisterOptionsTable(aName, self.optTables.General, {aName, "skin"})
 	self.optionsFrame = self.ACD:AddToBlizOptions(aName, aName)
 

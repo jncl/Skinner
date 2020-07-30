@@ -5477,6 +5477,9 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 		return aObj.bbClr:GetRGBA()
 	end, true)
 
+	-- AceConfigDialog tooltip
+	addTooltip(self.ACD.tooltip)
+
 end
 
 aObj.blizzFrames[ftype].Tutorial = function(self)

@@ -531,20 +531,16 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 		end, true)
 	end
 
-	-- AceConfigDialog tooltip
-	self:add2Table(self.ttList, self.ACD.tooltip)
-
 end
 
 -- hook this to capture the creation of AceConfig IOF panels
 aObj.iofSkinnedPanels = {}
-local ACD = _G.LibStub:GetLibrary("AceConfigDialog-3.0", true)
-if ACD then
+aObj.ACD = _G.LibStub:GetLibrary("AceConfigDialog-3.0", true)
+if aObj.ACD then
 	-- hook this to manage IOF panels that have already been skinned by Ace3 skin
-	aObj:RawHook(ACD, "AddToBlizOptions", function(this, ...)
+	aObj:RawHook(aObj.ACD, "AddToBlizOptions", function(this, ...)
 		local frame = aObj.hooks[this].AddToBlizOptions(this, ...)
 		aObj.iofSkinnedPanels[frame] = true
 		return frame
 	end, true)
 end
-ACD = nil
