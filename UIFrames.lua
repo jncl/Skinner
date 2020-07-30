@@ -1746,7 +1746,7 @@ aObj.blizzFrames[ftype].ColorPicker = function(self)
 		this:SetBackdrop(nil)
 		self:removeNineSlice(this.Border)
 		self:skinSlider{obj=_G.OpacityFrameSlider}
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true} -- DON'T skin CloseButton as it is the frame
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, ofs=0, y1=-1} -- DON'T skin CloseButton as it is the frame
 
 		self:Unhook(this, "OnShow")
 	end)
