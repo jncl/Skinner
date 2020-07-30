@@ -1391,8 +1391,8 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 			self:skinStdButton{obj=_G.ChatConfigCombatSettingsFiltersCopyFilterButton}
 		end
 		if self.modBtnBs then
-			self:addButtonBorder{obj=_G.ChatConfigMoveFilterUpButton, es=12, ofs=-5, x2=-6, y2=7}
-			self:addButtonBorder{obj=_G.ChatConfigMoveFilterDownButton, es=12, ofs=-5, x2=-6, y2=7}
+			self:addButtonBorder{obj=_G.ChatConfigMoveFilterUpButton, es=12, ofs=-5, x2=-6, y2=7, clr="grey"}
+			self:addButtonBorder{obj=_G.ChatConfigMoveFilterDownButton, es=12, ofs=-5, x2=-6, y2=7, clr="grey"}
 		end
 
 		self:addSkinFrame{obj=_G.ChatConfigCombatSettingsFilters, ft=ftype, kfs=true, nb=true, x1=-2, y1=-1, x2=2, y2=2}
@@ -3193,7 +3193,7 @@ aObj.blizzFrames[ftype].LFGList = function(self)
 			self:skinStdButton{obj=sp.SignUpButton}
 		end
 		if self.modBtnBs then
-		    self:addButtonBorder{obj=sp.FilterButton, ofs=0}
+		    self:addButtonBorder{obj=sp.FilterButton, ofs=0, clr="grey"}
 			self:addButtonBorder{obj=sp.RefreshButton, ofs=-2}
 		end
 		sp = nil

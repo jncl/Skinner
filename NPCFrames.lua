@@ -121,7 +121,7 @@ aObj.blizzLoDFrames[ftype].AuctionHouseUI = function(self)
 		self:skinEditBox{obj=this.SearchBar.FilterButton.LevelRangeFrame.MinLevel, regs={6}} -- 6 is text
 		self:skinEditBox{obj=this.SearchBar.FilterButton.LevelRangeFrame.MaxLevel, regs={6}, x=-5} -- 6 is text
 		if self.modBtns then
-			self:skinStdButton{obj=this.SearchBar.FilterButton, aso={bbclr="grey"}}
+			self:skinStdButton{obj=this.SearchBar.FilterButton, clr="grey"}
 			self:skinStdButton{obj=this.SearchBar.SearchButton}
 		end
 		this.CategoriesList:DisableDrawLayer("BACKGROUND")
