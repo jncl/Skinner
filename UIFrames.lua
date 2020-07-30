@@ -801,33 +801,29 @@ aObj.blizzFrames[ftype].AutoComplete = function(self)
 end
 
 aObj.blizzLoDFrames[ftype].BattlefieldMap = function(self)
-	if not self.prdb.BattlefieldMap.skin or self.initialized.BattlefieldMap then return end
+	if not self.prdb.BattlefieldMap or self.initialized.BattlefieldMap then return end
 	self.initialized.BattlefieldMap = true
 
 	self:SecureHookScript(_G.BattlefieldMapTab, "OnShow", function(this)
 		self:keepRegions(this, {4, 5}) -- N.B. region 4 is the Text, 5 is the highlight
 		self:moveObject{obj=this.Text, y=-1} -- move text down
 		self:addSkinFrame{obj=this, ft=ftype, noBdr=self.isTT, aso=self.isTT and {ba=1} or nil, y1=-7, y2=-7}
+
 		self:Unhook(this, "OnShow")
 	end)
 
 	self:SecureHookScript(_G.BattlefieldMapFrame, "OnShow", function(this)
-		this.BorderFrame:DisableDrawLayer("BORDER")
-		this.BorderFrame:DisableDrawLayer("ARTWORK")
-		self:skinCloseButton{obj=this.BorderFrame.CloseButton}
 		-- use a backdrop with no Texture otherwise the map tiles are obscured
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, aso={bd=8}, ofs=4, y1=6, x2=2}
-		if self.prdb.BattlefieldMap.gloss then
-			_G.RaiseFrameLevel(this.sf)
-		else
-			_G.LowerFrameLevel(this.sf)
+		self:addFrameBorder{obj=this.BorderFrame, ft=ftype, ofs=4, y1=6, x2=2}
+		if self.modBtns then
+			self:skinCloseButton{obj=this.BorderFrame.CloseButton}
 		end
 
 		-- change the skinFrame's opacity as required
 		self:SecureHook(this, "RefreshAlpha", function(this)
 			local alpha = 1.0 - _G.BattlefieldMapOptions.opacity
 			alpha = (alpha >= 0.15) and alpha - 0.15 or alpha
-			_G.BattlefieldMapFrame.sf:SetAlpha(alpha)
+			this.BorderFrame.sf:SetAlpha(alpha)
 			alpha= nil
 		end)
 
@@ -840,9 +836,9 @@ aObj.blizzLoDFrames[ftype].BattlefieldMap = function(self)
 			if mBM then
 				local function updBMVisibility(db)
 					if db.hideTextures then
-						_G.BattlefieldMapFrame.sf:Hide()
+						this.BorderFrame.sf:Hide()
 					else
-						_G.BattlefieldMapFrame.sf:Show()
+						this.BorderFrame.sf:Show()
 					end
 				end
 				-- change visibility as required

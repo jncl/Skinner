@@ -161,6 +161,14 @@ function aObj:OnInitialize()
 	if self.prdb.DropDownButttons then
 		self.prdb.DropDownButtons = nil
 	end
+	-- BattlefieldMap options changed from table to entry
+	if _G.type(self.prdb.BattlefieldMap) == "table" then
+		if self.prdb.BattlefieldMap.skin then
+			self.prdb.BattlefieldMap = true
+		else
+			self.prdb.BattlefieldMap = false
+		end
+	end
 
 	-- setup the Addon's options
 	self:checkAndRun("SetupOptions", "opt")

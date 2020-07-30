@@ -119,7 +119,7 @@ aObj.blizzFrames[ftype].SetupDefaults = function(self)
 		AdventureMap         = true,
 		AlertFrames          = true,
 		AutoComplete         = true,
-		BattlefieldMap       = {skin = true, gloss = false},
+		BattlefieldMap       = true,
 		BNFrames             = true,
 		Calendar             = true,
 		ChallengesUI         = true,
@@ -1294,40 +1294,10 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 					name = self.L["Auto Complete"],
 					desc = self.L["Toggle the skin of the Auto Complete Frame"],
 				},
-				BattlefieldMap ={
-					type = "group",
-					inline = true,
-					order = -1,
-					name = self.L["Battlefield Map Options"],
-					get = function(info) return db.BattlefieldMap[info[#info]] end,
-					set = function(info, value)
-						db.BattlefieldMap[info[#info]] = value
-						if info[#info] == "skin" then
-							if _G.IsAddOnLoaded("Blizzard_BattlefieldMap") then
-								self:checkAndRun("BattlefieldMap", "u", true)
-							end
-						elseif info[#info] == "gloss" and _G.BattlefieldMap.sf then
-							if value then
-								_G.RaiseFrameLevel(_G.BattlefieldMap.sf)
-							else
-								_G.LowerFrameLevel(_G.BattlefieldMap.sf)
-							end
-						end
-					end,
-					args = {
-						skin = {
-							type = "toggle",
-							name = self.L["Skin Frame"],
-							desc = self.L["Toggle the skin of the Battlefield Map Frame"],
-							order = 1,
-						},
-						gloss = {
-							type = "toggle",
-							name = self.L["Gloss Effect"],
-							desc = self.L["Toggle the Gloss Effect for the Battlefield Map"],
-							order = 2,
-						},
-					},
+				BattlefieldMap = {
+					type = "toggle",
+					name = self.L["Battlefield Map Frame"],
+					desc = self.L["Toggle the skin of the Battlefield Map Frame"],
 				},
 				BNFrames = {
 					type = "toggle",
