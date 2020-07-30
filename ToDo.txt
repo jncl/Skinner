@@ -23,6 +23,11 @@ ToDos
 
 	O	Skin CommentatorTeamDisplay
 
-≈	O	Make sure all buttons bordrsd have the correct border colour, e.g. "gold"/"grey"
+≈	O	Make sure all buttons borders have the correct border colour, e.g. "gold"/"grey"
 
-√	S	BtWQuests, requested by MacallanTwoFive, 25.07.20
+	I	Battleground/Areana Timer skin option, reported by icedawg, 27.07.20
+?		- when disabled, still skinned until /reload
+
+	I	BattlefieldMap option, reported by BNS333, 27.07.20
+√		- The correct name for the BattlefieldMap is BattlefieldMapFrame
+√		- removed gloss effect option due to change of Frame construction
