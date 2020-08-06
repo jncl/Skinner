@@ -614,15 +614,18 @@ aObj.ClassicSupport = function(self)
 		if not self.prdb.ContainerFrames.skin or self.initialized.ContainerFrames then return end
 		self.initialized.ContainerFrames = true
 
-		local objName
 		local function skinBag(frame, _)
 
 			aObj:addSkinFrame{obj=frame, ft=ftype, kfs=true, x1=8, y1=-4, x2=-3}
 			-- resize and move the bag name to make it more readable
-			objName = frame:GetName()
+			local objName = frame:GetName()
 			_G[objName .. "Name"]:SetWidth(137)
 			aObj:moveObject{obj=_G[objName .. "Name"], x=-17}
 
+			if aObj.modBtns then
+				_G[objName .. "AddSlotsButton"]:DisableDrawLayer("OVERLAY")
+				aObj:skinStdButton{obj=_G[objName .. "AddSlotsButton"]}
+			end
 			if aObj.modBtnBs then
 				-- skin the item buttons
 				local bo
@@ -633,13 +636,6 @@ aObj.ClassicSupport = function(self)
 				bo = nil
 				-- update Button quality borders
 				_G.ContainerFrame_Update(frame)
-			end
-
-			if aObj.isClscPTR then
-				if aObj.modBtns then
-					_G[objName .. "AddSlotsButton"]:DisableDrawLayer("OVERLAY")
-					aObj:skinStdButton{obj=_G[objName .. "AddSlotsButton"]}
-				end
 			end
 
 			objName = nil

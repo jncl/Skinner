@@ -2089,10 +2089,9 @@ aObj.blizzFrames[ftype].ContainerFrames = function(self)
 	self.initialized.ContainerFrames = true
 
 	if not _G.IsAddOnLoaded("LiteBag") then
-		local objName
 		local function skinBag(frame, id)
 
-			objName = frame:GetName()
+			local objName = frame:GetName()
 
 			aObj:addSkinFrame{obj=frame, ft=ftype, kfs=true, x1=8, y1=-4, x2=-3}
 			-- resize and move the bag name to make it more readable
