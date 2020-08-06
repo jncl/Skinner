@@ -2491,7 +2491,7 @@ aObj.blizzFrames[ftype].EquipmentFlyout = function(self)
 	self.initialized.EquipmentFlyout = true
 
 	self:SecureHookScript(_G.EquipmentFlyoutFrame, "OnShow", function(this)
-		self:addSkinFrame{obj=this.buttonFrame, ft=ftype, ofs=2, x2=5}
+		self:addSkinFrame{obj=this.buttonFrame, ft=ftype, ofs=2, x2=5, aso={bbclr="white"}}
 		self:SecureHook("EquipmentFlyout_Show", function(_)
 			for i = 1, _G.EquipmentFlyoutFrame.buttonFrame.numBGs do
 				_G.EquipmentFlyoutFrame.buttonFrame["bg" .. i]:SetAlpha(0)
