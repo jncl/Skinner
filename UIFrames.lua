@@ -5330,7 +5330,7 @@ aObj.blizzFrames[ftype].TimeManager = function(self)
 		self:skinDropDown{obj=_G.TimeManagerAlarmAMPMDropDown, x2=-5}
 		self:skinEditBox{obj=_G.TimeManagerAlarmMessageEditBox, regs={6}}
 		self:removeRegions(_G.TimeManagerAlarmEnabledButton, {6, 7})
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, x2=1}
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, x2=self.isClsc and 1 or 3}
 		if self.modBtnBs then
 			self:addButtonBorder{obj=_G.TimeManagerStopwatchCheck, y1=2, y2=-4, clr="grey"} -- This isn't really a checkbutton
 		end
@@ -5341,7 +5341,7 @@ aObj.blizzFrames[ftype].TimeManager = function(self)
 		end
 		-- Stopwatch Frame
 		self:keepFontStrings(_G.StopwatchTabFrame)
-		self:addSkinFrame{obj=_G.StopwatchFrame, ft=ftype, kfs=true, y1=-16, y2=2}
+		self:addSkinFrame{obj=_G.StopwatchFrame, ft=ftype, kfs=true, y1=-16, x2=-1, y2=2}
 		if self.modBtns then
 			self:skinCloseButton{obj=_G.StopwatchCloseButton, sap=true}
 		end
