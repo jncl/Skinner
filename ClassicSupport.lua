@@ -460,8 +460,8 @@ aObj.ClassicSupport = function(self)
 			self:addSkinFrame{obj=this, ft=ftype, kfs=true, x1=x1, y1=y1, x2=x2, y2=y2}
 			x1, y1, x2, y2 = nil, nil, nil, nil
 			if self.modBtns then
-				 self:skinStdButton{obj=_G.ClassTrainerTrainButton}
-				 self:skinStdButton{obj=_G.ClassTrainerCancelButton}
+				self:skinStdButton{obj=_G.ClassTrainerTrainButton}
+				self:skinStdButton{obj=_G.ClassTrainerCancelButton}
  				self:skinExpandButton{obj=_G.ClassTrainerCollapseAllButton, onSB=true}
  				for i = 1, _G.CLASS_TRAINER_SKILLS_DISPLAYED do
  					self:skinExpandButton{obj=_G["ClassTrainerSkill" .. i], onSB=true}
