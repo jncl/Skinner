@@ -863,10 +863,8 @@ aObj.blizzLoDFrames[ftype].BindingUI = function(self)
 	self:SecureHookScript(_G.KeyBindingFrame, "OnShow", function(this)
 		self:removeNineSlice(this.BG)
 		self:keepRegions(this.categoryList, {})
-		this.categoryList:SetBackdrop(self.Backdrop[10])
-		this.categoryList:SetBackdropBorderColor(self.bbClr:GetRGBA())
-		this.bindingsContainer:SetBackdrop(self.Backdrop[10])
-		this.bindingsContainer:SetBackdropBorderColor(self.bbClr:GetRGBA())
+		self:addFrameBorder{obj=this.categoryList, ft=ftype}
+		self:addFrameBorder{obj=this.bindingsContainer, ft=ftype}
 		self:skinSlider{obj=this.scrollFrame.ScrollBar, rt={"background", "border"}}
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, hdr=true}
 		if self.modBtns then
@@ -1251,6 +1249,9 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 
 	self:SecureHookScript(_G.ChatConfigFrame, "OnShow", function(this)
 		self:removeNineSlice(this.Border)
+		self:addFrameBorder{obj=_G.ChatConfigCategoryFrame, ft=ftype, ofs=-2}
+		self:addFrameBorder{obj=_G.ChatConfigBackgroundFrame, ft=ftype, ofs=-2}
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, hdr=true, ofs=-4, y1=0}
 		if self.modBtns then
 			self:skinStdButton{obj=this.DefaultButton}
 			self:skinStdButton{obj=this.RedockButton}
@@ -1258,11 +1259,8 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 			self:skinStdButton{obj=_G.ChatConfigFrameCancelButton}
 			self:skinStdButton{obj=_G.ChatConfigFrameOkayButton}
 		end
-		self:addSkinFrame{obj=_G.ChatConfigCategoryFrame, ft=ftype, kfs=true, nb=true, x1=-2, y1=-1, x2=2, y2=2}
-		self:addSkinFrame{obj=_G.ChatConfigBackgroundFrame, ft=ftype, kfs=true, nb=true, x1=-2, y1=-1, x2=2, y2=2}
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, hdr=true, ofs=-4, y1=0}
-		self:addFrameBorder{obj=this.ChatTabManager, ft=ftype, x1=-5, y1=3, x2=725, y2=-512}
 		-- ChatTabManager
+		self:addFrameBorder{obj=this.ChatTabManager, ft=ftype, x1=-5, y1=3, x2=725, y2=-512}
 		local setTabState
 		if aObj.isTT then
 			function setTabState(tab)
@@ -1318,10 +1316,10 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 		for i = 1, #_G.CHAT_CONFIG_CHAT_LEFT do
 			skinCB("ChatConfigChatSettingsLeftCheckBox" .. i)
 		end
-		self:addSkinFrame{obj=_G._G.ChatConfigChatSettingsLeft, ft=ftype, kfs=true, nb=true, ofs=0}
+		self:addFrameBorder{obj=_G.ChatConfigChatSettingsLeft, ft=ftype}
 
 		--	Channel Settings
-		self:addSkinFrame{obj=_G.ChatConfigChannelSettingsLeft, ft=ftype, kfs=true, nb=true, ofs=0}
+		self:addFrameBorder{obj=_G.ChatConfigChannelSettingsLeft, ft=ftype}
 		if not self.isClsc then
 			self:SecureHookScript(_G.ChatConfigChannelSettings, "OnShow", function(this)
 				for i = 1, #_G.CHAT_CONFIG_CHANNEL_LIST do
@@ -1360,22 +1358,22 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 		for i = 1, #_G.CHAT_CONFIG_OTHER_COMBAT do
 			skinCB("ChatConfigOtherSettingsCombatCheckBox" .. i)
 		end
-		self:addSkinFrame{obj=_G.ChatConfigOtherSettingsCombat, ft=ftype, kfs=true, nb=true, ofs=0}
+		self:addFrameBorder{obj=_G.ChatConfigOtherSettingsCombat, ft=ftype}
 
 		for i = 1, #_G.CHAT_CONFIG_OTHER_PVP do
 			skinCB("ChatConfigOtherSettingsPVPCheckBox" .. i)
 		end
-		self:addSkinFrame{obj=_G.ChatConfigOtherSettingsPVP, ft=ftype, kfs=true, nb=true, ofs=0}
+		self:addFrameBorder{obj=_G.ChatConfigOtherSettingsPVP, ft=ftype}
 
 		for i = 1, #_G.CHAT_CONFIG_OTHER_SYSTEM do
 			skinCB("ChatConfigOtherSettingsSystemCheckBox" .. i)
 		end
-		self:addSkinFrame{obj=_G.ChatConfigOtherSettingsSystem, ft=ftype, kfs=true, nb=true, ofs=0}
+		self:addFrameBorder{obj=_G.ChatConfigOtherSettingsSystem, ft=ftype}
 
 		for i = 1, #_G.CHAT_CONFIG_CHAT_CREATURE_LEFT do
 			skinCB("ChatConfigOtherSettingsCreatureCheckBox" .. i)
 		end
-		self:addSkinFrame{obj=_G.ChatConfigOtherSettingsCreature, ft=ftype, kfs=true, nb=true, ofs=0}
+		self:addFrameBorder{obj=_G.ChatConfigOtherSettingsCreature, ft=ftype}
 
 		--	Combat Settings
 		-- Filters
@@ -1391,18 +1389,18 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 			self:addButtonBorder{obj=_G.ChatConfigMoveFilterDownButton, es=12, ofs=-5, x2=-6, y2=7, clr="grey"}
 		end
 
-		self:addSkinFrame{obj=_G.ChatConfigCombatSettingsFilters, ft=ftype, kfs=true, nb=true, x1=-2, y1=-1, x2=2, y2=2}
+		self:addFrameBorder{obj=_G.ChatConfigCombatSettingsFilters, ft=ftype}
 		_G.LowerFrameLevel(_G.ChatConfigCombatSettingsFilters) -- make frame appear below tab texture
 
 		-- Message Sources
 		for i = 1, #_G.COMBAT_CONFIG_MESSAGESOURCES_BY do
 			skinCB("CombatConfigMessageSourcesDoneByCheckBox" .. i)
 		end
-		self:addSkinFrame{obj=_G.CombatConfigMessageSourcesDoneBy, ft=ftype, kfs=true, nb=true,ofs=0}
+		self:addFrameBorder{obj=_G.CombatConfigMessageSourcesDoneBy, ft=ftype}
 		for i = 1, #_G.COMBAT_CONFIG_MESSAGESOURCES_TO do
 			skinCB("CombatConfigMessageSourcesDoneToCheckBox" .. i)
 		end
-		self:addSkinFrame{obj=_G.CombatConfigMessageSourcesDoneTo, ft=ftype, kfs=true, nb=true,ofs=0}
+		self:addFrameBorder{obj=_G.CombatConfigMessageSourcesDoneTo, ft=ftype}
 
 		-- Message Type
 		for i, val in _G.ipairs(_G.COMBAT_CONFIG_MESSAGETYPES_LEFT) do
@@ -1434,13 +1432,13 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 		for i = 1, #_G.COMBAT_CONFIG_UNIT_COLORS do
 			_G["CombatConfigColorsUnitColorsSwatch" .. i]:SetBackdrop(nil)
 		end
-		self:addSkinFrame{obj=_G.CombatConfigColorsUnitColors, ft=ftype, kfs=true, nb=true, ofs=0}
-		self:addSkinFrame{obj=_G.CombatConfigColorsHighlighting, ft=ftype, kfs=true, nb=true, ofs=0}
-		self:addSkinFrame{obj=_G.CombatConfigColorsColorizeUnitName, ft=ftype, kfs=true, nb=true, ofs=0}
-		self:addSkinFrame{obj=_G.CombatConfigColorsColorizeSpellNames, ft=ftype, kfs=true, nb=true, ofs=0}
-		self:addSkinFrame{obj=_G.CombatConfigColorsColorizeDamageNumber, ft=ftype, kfs=true, nb=true, ofs=0}
-		self:addSkinFrame{obj=_G.CombatConfigColorsColorizeDamageSchool, ft=ftype, kfs=true, nb=true, ofs=0}
-		self:addSkinFrame{obj=_G.CombatConfigColorsColorizeEntireLine, ft=ftype, kfs=true, nb=true, ofs=0}
+		self:addFrameBorder{obj=_G.CombatConfigColorsUnitColors, ft=ftype}
+		self:addFrameBorder{obj=_G.CombatConfigColorsHighlighting, ft=ftype}
+		self:addFrameBorder{obj=_G.CombatConfigColorsColorizeUnitName, ft=ftype}
+		self:addFrameBorder{obj=_G.CombatConfigColorsColorizeSpellNames, ft=ftype}
+		self:addFrameBorder{obj=_G.CombatConfigColorsColorizeDamageNumber, ft=ftype}
+		self:addFrameBorder{obj=_G.CombatConfigColorsColorizeDamageSchool, ft=ftype}
+		self:addFrameBorder{obj=_G.CombatConfigColorsColorizeEntireLine, ft=ftype}
 		if self.modChkBtns then
 			self:skinCheckButton{obj=_G.CombatConfigColorsHighlightingLine}
 			self:skinCheckButton{obj=_G.CombatConfigColorsHighlightingAbility}
