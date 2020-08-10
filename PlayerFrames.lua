@@ -3656,28 +3656,6 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 
 	end
 
-	-- TimerBars
-	self:SecureHook(_G.DEFAULT_OBJECTIVE_TRACKER_MODULE, "AddTimerBar", function(this, block, line, _)
-		-- aObj:Debug("DEFAULT_OBJECTIVE_TRACKER_MODULE AddTimerBar: [%s, %s, %s]", this, block, line)
-		skinBar(this.usedTimerBars[block] and this.usedTimerBars[block][line])
-	end)
-	-- ProgressBars
-	self:SecureHook(_G.DEFAULT_OBJECTIVE_TRACKER_MODULE, "AddProgressBar", function(this, block, line, _)
-		-- aObj:Debug("DEFAULT_OBJECTIVE_TRACKER_MODULE AddProgressBar: [%s, %s, %s]", this, block, line)
-		skinBar(this.usedProgressBars[block] and this.usedProgressBars[block][line])
-	end)
-	self:SecureHook(_G.SCENARIO_TRACKER_MODULE, "AddProgressBar", function(this, block, line, _)
-		-- aObj:Debug("SCENARIO_TRACKER_MODULE AddProgressBar: [%s, %s, %s]", this, block, line)
-		skinBar(this.usedProgressBars[block] and this.usedProgressBars[block][line])
-	end)
-	self:SecureHook(_G.BONUS_OBJECTIVE_TRACKER_MODULE, "AddProgressBar", function(this, block, line, _)
-		-- aObj:Debug("BONUS_OBJECTIVE_TRACKER_MODULE AddProgressBar: [%s, %s, %s]", this, block, line)
-		skinBar(this.usedProgressBars[block] and this.usedProgressBars[block][line])
-	end)
-	self:SecureHook(_G.WORLD_QUEST_TRACKER_MODULE, "AddProgressBar", function(this, block, line, _)
-		-- aObj:Debug("WORLD_QUEST_TRACKER_MODULE AddProgressBar: [%s, %s, %s]", this, block, line)
-		skinBar(this.usedProgressBars[block] and this.usedProgressBars[block][line])
-	end)
 	-- skin existing Timer & Progress bars
 	local function skinBars(table)
 		for _, block in _G.pairs(table) do
@@ -3686,15 +3664,24 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 			end
 		end
 	end
-	skinBars(_G.DEFAULT_OBJECTIVE_TRACKER_MODULE.usedTimerBars)
-	skinBars(_G.DEFAULT_OBJECTIVE_TRACKER_MODULE.usedProgressBars)
-	skinBars(_G.QUEST_TRACKER_MODULE.usedTimerBars)
-	skinBars(_G.QUEST_TRACKER_MODULE.usedProgressBars)
-	skinBars(_G.SCENARIO_TRACKER_MODULE.usedTimerBars)
-	skinBars(_G.SCENARIO_TRACKER_MODULE.usedProgressBars)
-	skinBars(_G.ACHIEVEMENT_TRACKER_MODULE.usedTimerBars)
-	skinBars(_G.BONUS_OBJECTIVE_TRACKER_MODULE.usedProgressBars)
-	skinBars(_G.WORLD_QUEST_TRACKER_MODULE.usedProgressBars)
+	for _, module in _G.pairs(_G.ObjectiveTrackerFrame.MODULES) do
+		if module.usedTimerBars then
+			skinBars(module.usedTimerBars)
+			if module.AddTimerBar then
+				self:SecureHook(module, "AddTimerBar", function(this, block, line, _)
+					skinBar(this.usedTimerBars[block] and this.usedTimerBars[block][line])
+				end)
+			end
+		end
+		if module.usedProgressBars then
+			skinBars(module.usedProgressBars)
+			if module.AddProgressBar then
+				self:SecureHook(module, "AddProgressBar", function(this, block, line, _)
+					skinBar(this.usedProgressBars[block] and this.usedProgressBars[block][line])
+				end)
+			end
+		end
+	end
 
 	local function skinRewards(frame)
 
