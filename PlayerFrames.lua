@@ -243,6 +243,7 @@ aObj.blizzLoDFrames[ftype].AchievementUI = function(self)
 			if not _G.AchievementFrameSummary:IsVisible() then
 				self:SecureHookScript(_G.AchievementFrameSummary, "OnShow", function()
 					cleanButtons(_G.AchievementFrameSummaryAchievements, "Summary")
+
 					self:Unhook(_G.AchievementFrameSummary, "OnShow")
 				end)
 			else
@@ -2508,6 +2509,7 @@ aObj.blizzFrames[ftype].EquipmentFlyout = function(self)
 				btn = nil
 			end
 		end)
+
 		self:Unhook(this, "OnShow")
 	end)
 

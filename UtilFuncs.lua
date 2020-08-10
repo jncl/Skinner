@@ -92,8 +92,10 @@ local function safecall(funcName, funcObj, LoD, quiet)
 end
 
 function aObj:skinAceDropdown(obj, x2, y2)
+
 	self:skinDropDown{obj=obj.dropdown, rp=true, x2=x2, y2=y2}
 	self:addSkinFrame{obj=obj.pullout.frame, ft="a", kfs=true, nb=true}
+
 end
 
 local function __adjHeight(opts)

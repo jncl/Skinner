@@ -238,7 +238,6 @@ function aObj:OnInitialize()
 	-- this backdrop has no border
 	self.Backdrop[11] = _G.CopyTable(self.backdrop)
 	self.Backdrop[11].edgeFile = nil
-	self.Backdrop[11].edgeSize = 0
 	-- this backdrop is for smaller CheckButtons
 	self.Backdrop[12] = _G.CopyTable(self.backdrop)
 	self.Backdrop[12].tile = false
@@ -266,7 +265,7 @@ function aObj:OnInitialize()
 	c = self.prdb.IgnoredText
 	self.IT = _G.CreateColor(c.r, c.g, c.b)
 	-- The following variables are used by the GossipFrame & QuestFrame
-	self.NORMAL_QUEST_DISPLAY = self.HT:WrapTextInColorCode("%s|r")
+	self.NORMAL_QUEST_DISPLAY  = self.HT:WrapTextInColorCode("%s|r")
 	self.TRIVIAL_QUEST_DISPLAY = self.BT:WrapTextInColorCode("%s (low level)|r")
 	self.IGNORED_QUEST_DISPLAY = self.IT:WrapTextInColorCode("%s (ignored)|r")
 
