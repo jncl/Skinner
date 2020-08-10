@@ -4913,15 +4913,9 @@ aObj.blizzFrames[ftype].QuestMap = function(self)
 	wct.ItemTooltip.FollowerTooltip.PortraitFrame.PortraitRing:SetTexture(nil)
 	wct.ItemTooltip.FollowerTooltip.PortraitFrame.LevelBorder:SetAlpha(0)
 	_G.C_Timer.After(0.1, function()
+		wct.ofs = -2
 		self:add2Table(self.ttList, wct)
 		wct = nil
-	end)
-
-	-- hook this to move tooltip to the right, to match other displayed tooltips
-	self:SecureHookScript(_G.QuestMapFrame.QuestsFrame.Contents.WarCampaignHeader, "OnEnter", function(this)
-		if _G.select(4, _G.QuestMapFrame.QuestsFrame.WarCampaignTooltip:GetPoint()) == 27 then -- xOfs
-			self:moveObject{obj=_G.QuestMapFrame.QuestsFrame.WarCampaignTooltip, x=2}
-		end
 	end)
 
 end
