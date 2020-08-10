@@ -147,7 +147,7 @@ aObj.blizzLoDFrames[ftype].AuctionHouseUI = function(self)
 			this.RightDisplay.Tutorial1:SetTextColor(self.BT:GetRGB())
 			self:addSkinFrame{obj=this, ft=ftype, kfs=true, y2=220}
 			if self.modBtns then
-				self:skinStdButton{obj=this.RightDisplay.StoreButton, aso={bbclr="gold"}, x1=14, y1=2, x2=-14, y2=2}
+				self:skinStdButton{obj=this.RightDisplay.StoreButton, x1=14, y1=2, x2=-14, y2=2, clr="gold"}
 			end
 
 			self:Unhook(this, "OnShow")
@@ -475,9 +475,6 @@ aObj.blizzFrames[ftype].GossipFrame = function(self)
 	self:SecureHookScript(_G.GossipFrame, "OnShow", function(this)
 		self:keepFontStrings(_G.GossipFrameGreetingPanel)
 		_G.GossipGreetingText:SetTextColor(self.HT:GetRGB())
-		if self.modBtns then
-			self:skinStdButton{obj=_G.GossipFrameGreetingGoodbyeButton}
-		end
 		self:skinSlider{obj=_G.GossipGreetingScrollFrame.ScrollBar, rt="artwork"}
 		for i = 1, _G.NUMGOSSIPBUTTONS do
 			self:getRegion(_G["GossipTitleButton" .. i], 3):SetTextColor(self.BT:GetRGB())
@@ -487,6 +484,9 @@ aObj.blizzFrames[ftype].GossipFrame = function(self)
 			self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true}
 		else
 			self:addSkinFrame{obj=this, ft=ftype, kfs=true, x1=10, y1=-18, x2=-29, y2=60}
+		end
+		if self.modBtns then
+			self:skinStdButton{obj=_G.GossipFrameGreetingGoodbyeButton}
 		end
 
 		-- NPCFriendshipStatusBar

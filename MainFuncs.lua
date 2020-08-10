@@ -857,8 +857,7 @@ function aObj:skinGlowBox(gBox, ftype, ncb)
 	then
 		self:skinCloseButton{obj=gBox.CloseButton or _G[gBox:GetName() .. "CloseButton"], noSkin=true}
 	end
-	self:addSkinFrame{obj=gBox, ft=ftype, nb=true}
-	gBox.sf:SetBackdropBorderColor(1, 0.82, 0)
+	self:addSkinFrame{obj=gBox, ft=ftype, nb=true, aso={bbclr="gold"}, ofs=0}
 
 end
 

@@ -4865,7 +4865,7 @@ aObj.blizzFrames[ftype].QuestMap = function(self)
 		self:removeRegions(this.DetailsFrame.ShareButton, {6, 7}) -- divider textures
 
 		if self.modBtns then
-			self:skinStdButton{obj=this.DetailsFrame.BackButton}
+			self:skinStdButton{obj=this.DetailsFrame.BackButton, clr="grey"}
 			self:skinStdButton{obj=this.DetailsFrame.CompleteQuestFrame.CompleteButton}
 			self:skinStdButton{obj=this.DetailsFrame.AbandonButton}
 			self:skinStdButton{obj=this.DetailsFrame.ShareButton}
@@ -5798,7 +5798,7 @@ aObj.blizzFrames[ftype].WorldMap = function(self)
 			-- Tracking Options Button
 			if oFrame.IconOverlay then
 				if self.modBtns then
-					self:skinStdButton{obj=oFrame, aso={bbclr="gold"}, y2=3}
+					self:skinStdButton{obj=oFrame, y2=3, clr="gold"}
 				end
 				oFrame:DisableDrawLayer("BACKGROUND")
 				oFrame.Border:SetTexture(nil)
