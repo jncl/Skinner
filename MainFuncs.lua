@@ -636,7 +636,6 @@ local function __skinDropDown(opts)
 
 	-- return if not to be skinned
 	if not aObj.prdb.TexturedDD
-	and not aObj.prdb.DropDownButtons
 	or opts.noSkin
 	then
 		return
@@ -660,11 +659,7 @@ local function __skinDropDown(opts)
 	opts.y1 = opts.y1 or -1
 	opts.x2 = opts.x2 or -16
 	opts.y2 = opts.y2 or 7
-	-- skin the frame
-	if aObj.prdb.UIDropDownMenu then
-		-- CHANGED: ft ... or "a" is used to stop buttons being skinned automatically
-		aObj:addSkinFrame{obj=opts.obj, ft=opts.ftype or "a", aso={ng=true, bd=5}, rp=opts.rp, x1=opts.x1, y1=opts.y1, x2=opts.x2, y2=opts.y2}
-	end
+	aObj:addSkinFrame{obj=opts.obj, ft=opts.ftype or "a", aso={ng=true, bd=5}, rp=opts.rp, x1=opts.x1, y1=opts.y1, x2=opts.x2, y2=opts.y2}
 	-- add a button border around the dd button
 	if not opts.noBB then
 		if opts.lrg then

@@ -213,9 +213,7 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 			or objType == "LSM30_Statusbar"
 			or objType == "RS_Markers" -- RareScanner
 			then
-			    if not aObj.db.profile.TexturedDD
-				and not aObj.db.profile.DropDownButtons
-				then
+			    if not aObj.db.profile.TexturedDD then
 			        aObj:keepFontStrings(obj.frame)
 			    else
     				obj.frame.DLeft:SetAlpha(0)
@@ -226,25 +224,23 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
     				obj.frame.DMiddle:ClearAllPoints()
     				obj.frame.DMiddle:SetPoint("LEFT", obj.frame.DLeft, "RIGHT", -5, 2)
     				obj.frame.DMiddle:SetPoint("RIGHT", obj.frame.DRight, "LEFT", 5, 2)
-					if aObj.db.profile.DropDownButtons then
-						local xOfs1, yOfs1, xOfs2, yOfs2
-						if objType == "LSM30_Background"
-						or objType == "LSM30_Border"
-						then
-							xOfs1, yOfs1, xOfs2, yOfs2 = 41, -18, 1, 2
-						elseif objType == "LSM30_Font"
-						or objType == "LSM30_Sound"
-						or objType == "LSM30_Statusbar"
-						then
-							xOfs1, yOfs1, xOfs2, yOfs2 = 0, -19, 1, 1
-						elseif objType == "RS_Markers" then
-							xOfs1, yOfs1, xOfs2, yOfs2 = 0, -18, 1, 0
-						end
-						aObj:addSkinFrame{obj=obj.frame, ft="a", nb=true, aso={ng=true, bd=5}, rp=true, x1=xOfs1, y1=yOfs1, x2=xOfs2, y2=yOfs2}
-						if aObj.modBtnBs then
-							-- add a button border around the dd button
-							aObj:addButtonBorder{obj=obj.frame.dropButton, es=12, ofs=-2, x1=1}
-						end
+					local xOfs1, yOfs1, xOfs2, yOfs2
+					if objType == "LSM30_Background"
+					or objType == "LSM30_Border"
+					then
+						xOfs1, yOfs1, xOfs2, yOfs2 = 41, -18, 1, 2
+					elseif objType == "LSM30_Font"
+					or objType == "LSM30_Sound"
+					or objType == "LSM30_Statusbar"
+					then
+						xOfs1, yOfs1, xOfs2, yOfs2 = 0, -19, 1, 1
+					elseif objType == "RS_Markers" then
+						xOfs1, yOfs1, xOfs2, yOfs2 = 0, -18, 1, 0
+					end
+					aObj:addSkinFrame{obj=obj.frame, ft="a", nb=true, aso={ng=true, bd=5}, rp=true, x1=xOfs1, y1=yOfs1, x2=xOfs2, y2=yOfs2}
+					if aObj.modBtnBs then
+						-- add a button border around the dd button
+						aObj:addButtonBorder{obj=obj.frame.dropButton, es=12, ofs=-2, x1=1}
 					end
     			end
 

@@ -11,7 +11,6 @@ aObj.blizzFrames[ftype].SetupDefaults = function(self)
 		Errors               = true,
 		MinimapIcon          = {hide = false, minimapPos = 210, radius = 80},
 		UIDropDownMenu       = true,
-		DropDownButtons      = false,
 		-- Tab and DropDown Texture settings
 		TexturedTab          = false,
 		TexturedDD           = false,
