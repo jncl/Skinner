@@ -5533,6 +5533,21 @@ aObj.blizzFrames[ftype].Tutorial = function(self)
 
 end
 
+aObj.blizzLoDFrames[ftype].TutorialPointerFrame = function(self)
+	if not self.prdb.Tutorial or self.initialized.TutorialPointerFrame then return end
+	self.initialized.TutorialPointerFrame = true
+
+	self:RawHook(_G.NPE_TutorialPointerFrame, "Show", function(this, ...)
+		local id = self.hooks[this].Show(this, ...)
+		local frame = this.InUseFrames[id]
+		self:skinGlowBox(frame.Content)
+		frame.Glow:SetBackdrop(nil)
+		frame = nil
+		return id
+	end, true)
+
+end
+
 aObj.blizzFrames[ftype].UIDropDownMenu = function(self)
 	if not self.prdb.UIDropDownMenu or self.initialized.UIDropDownMenu then return end
 	self.initialized.UIDropDownMenu = true
