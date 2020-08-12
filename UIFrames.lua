@@ -5871,10 +5871,9 @@ aObj.blizzFrames[ftype].ZoneAbility = function(self)
 
 end
 
--- PTR Feedback Tool, OnlyBetaAndPTR
-if aObj.isBeta
-or aObj.isPTR
-or _G.GetCVar("portal") == "test"
+-- PTR Feedback Tool
+if aObj.isPTR
+or aObj.isBeta
 then
 
 	local PTR_IR = _G.PTR_IssueReporter
@@ -5885,9 +5884,9 @@ then
 			if frame.Border then frame.Border:SetBackdrop(nil) end
 			if frame.GetPushedTexture then frame:SetPushedTexture(nil) end
 			if border then
-				aObj:addFrameBorder{obj=frame, ft=ftype, ofs=ofs or 4}
+					aObj:addFrameBorder{obj=frame, ft=ftype, ofs=ofs or 4, aso={bbclr="blue"}}
 			else
-				aObj:addSkinFrame{obj=frame, ft=ftype, nb=true, ofs=ofs or 4}
+				aObj:addSkinFrame{obj=frame, ft=ftype, nb=true, ofs=ofs or 4, aso={bbclr="blue"}}
 			end
 		end
 
@@ -5904,7 +5903,7 @@ then
 			skinFrame(PTR_IR.StandaloneSurvey.SurveyFrame)
 			if aObj.modBtns then
 				aObj:skinCloseButton{obj=aObj:getChild(PTR_IR.StandaloneSurvey.SurveyFrame, 2), noSkin=true}
-				aObj:skinStdButton{obj=aObj:getChild(PTR_IR.StandaloneSurvey.SurveyFrame, 3), ofs=-2}
+				aObj:skinStdButton{obj=aObj:getChild(PTR_IR.StandaloneSurvey.SurveyFrame, 3), ofs=-2, clr="blue"}
 			end
 
 			aObj:Unhook(this, "GetStandaloneSurveyFrame")
