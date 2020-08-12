@@ -717,12 +717,9 @@ aObj.blizzFrames[ftype].PetStableFrame = function(self)
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true}
 		if self.modBtnBs then
 			self:addButtonBorder{obj=_G.PetStablePetInfo, relTo=_G.PetStableSelectedPetIcon, clr="grey", ca=0.85}
-			self:addButtonBorder{obj=_G.PetStableDiet, ofs=0, x2=-1}
-			self:addButtonBorder{obj=_G.PetStableNextPageButton, ofs=0}
-			self:addButtonBorder{obj=_G.PetStablePrevPageButton, ofs=0}
-			self:SecureHook("PetStable_Update", function(_)
-				self:clrPNBtns("PetStable")
-			end)
+			self:addButtonBorder{obj=_G.PetStableDiet, ofs=1, x2=0, clr="gold"}
+			self:addButtonBorder{obj=_G.PetStableNextPageButton, ofs=0, clr="grey"}
+			self:addButtonBorder{obj=_G.PetStablePrevPageButton, ofs=0, clr="grey"}
 		end
 		-- slots
 		for i = 1, _G.NUM_PET_ACTIVE_SLOTS do
@@ -731,7 +728,7 @@ aObj.blizzFrames[ftype].PetStableFrame = function(self)
 				self:resizeEmptyTexture(_G["PetStableActivePet" .. i].Background)
 			else
 				_G["PetStableActivePet" .. i].Background:Hide()
-				self:addButtonBorder{obj=_G["PetStableActivePet" .. i], clr="grey", ca=0.85}
+				self:addButtonBorder{obj=_G["PetStableActivePet" .. i], clr="gold"}
 			end
 		end
 		for i = 1, _G.NUM_PET_STABLE_SLOTS do
