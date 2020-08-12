@@ -777,6 +777,15 @@ aObj.blizzFrames[ftype].QuestFrame = function(self)
 	if not self.prdb.QuestFrame or self.initialized.QuestFrame then return end
 	self.initialized.QuestFrame = true
 
+	if not self.isClsc then
+		-- hook this to colour quest button text
+		self:RawHook(_G.QuestFrameGreetingPanel.titleButtonPool, "Acquire", function(this)
+			local btn = self.hooks[this].Acquire(this)
+			self:hookQuestText(btn)
+			return btn
+		end, true)
+	end
+
 	self:SecureHookScript(_G.QuestFrame, "OnShow", function(this)
 		self:RawHook("QuestFrame_SetTitleTextColor", function(fontString, _)
 			fontString:SetTextColor(self.HT:GetRGB())
@@ -834,14 +843,7 @@ aObj.blizzFrames[ftype].QuestFrame = function(self)
 			_G.CurrentQuestsText:SetTextColor(self.HT:GetRGB())
 			_G.AvailableQuestsText:SetTextColor(self.HT:GetRGB())
 		end
-		if not self.isClsc then
-			-- hook this to colour quest button text
-			self:RawHook(_G.QuestFrameGreetingPanel.titleButtonPool, "Acquire", function(this)
-				local btn = self.hooks[this].Acquire(this)
-				self:hookQuestText(btn)
-				return btn
-			end, true)
-		else
+		if self.isClsc then
 			for i = 1, _G.MAX_NUM_QUESTS do
 				self:hookQuestText(_G["QuestTitleButton" .. i])
 			end
@@ -867,14 +869,14 @@ aObj.blizzFrames[ftype].QuestFrame = function(self)
 	-- parentFrame, portraitDisplayID, mountPortraitDisplayID, text, name, x, y
 	self:SecureHook("QuestFrame_ShowQuestPortrait", function(...)
 		local frame
-		if not aObj.isClsc then
+		if not self.isClsc then
 			frame = _G.QuestModelScene
 		else
 			frame = _G.QuestNPCModel
 		end
 		if not frame.sf then
 			self:keepFontStrings(_G.QuestNPCModelTextFrame)
-			self:addSkinFrame{obj=frame, ft=ftype, kfs=true, nb=true, y2=-81}
+			self:addSkinFrame{obj=frame, ft=ftype, kfs=true, nb=true, x2=5, y2=-81}
 		end
 		local parentFrame, _, _, _, _, x, y = ...
 		frame:SetPoint("TOPLEFT", parentFrame, "TOPRIGHT", x + 4, y)
