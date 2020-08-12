@@ -3,11 +3,11 @@ local aName, aObj = ...
 local _G = _G
 
 local buildInfo = {
-	beta        = {"9.0.1", 35213}, -- Shadowlands 2020
+	beta        = {"9.0.1", 35432},
 	classic_ptr = {"1.13.5", 35000},
 	retail_ptr  = {"8.3.7", 35284},
-	retail      = {"8.3.7", 35284},
-	classic     = {"1.13.5", 35186},
+	retail      = {"8.3.7", 35435},
+	classic     = {"1.13.5", 35395},
 	curr        = {_G.GetBuildInfo()},
 }
 
