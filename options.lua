@@ -182,7 +182,7 @@ aObj.blizzFrames[ftype].SetupDefaults = function(self)
 		UIWidgets            = true,
 		UnitPopup            = true,
 		WarboardUI           = true,
-		WarfrontsPartyPoseUI = true ,
+		WarfrontsPartyPoseUI = true,
 		WorldMap             = {skin = true, size = 1},
 		ZoneAbility          = true,
 	-- Disabled Skins
