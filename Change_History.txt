@@ -1,3 +1,12 @@
+beta8.35284.2
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Update OpacityFrame skin
+	Update Battlefield Map options
+	Update ButtonBorder colours
+	Updated code to properly handle AceConfigDialog Tooltip
+
 beta8.35284.1
 Jncl:
 	ToDo.txt
