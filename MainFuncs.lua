@@ -510,6 +510,9 @@ local function __applySkin(opts)
 	-- make all textures transparent, if required
 	if opts.kfs then aObj:keepFontStrings(opts.obj) end
 
+	if aObj.isBeta then
+		aObj:addBackdrop(opts.obj)
+	end
 	-- setup the backdrop
 	opts.obj:SetBackdrop(aObj.Backdrop[opts.bd or 1])
 	if not opts.ebc then
@@ -852,7 +855,7 @@ function aObj:skinGlowBox(gBox, ftype, ncb)
 	then
 		self:skinCloseButton{obj=gBox.CloseButton or _G[gBox:GetName() .. "CloseButton"], noSkin=true}
 	end
-	self:addSkinFrame{obj=gBox, ft=ftype, nb=true, aso={bbclr="gold"}, ofs=0}
+	self:addSkinFrame{obj=gBox, ft=ftype, nb=true, aso={bbclr="gold"}, ofs=aObj.isBeta and -2 or 0}
 
 end
 
@@ -1013,7 +1016,12 @@ local function __skinSlider(opts)
 	opts.obj:SetAlpha(1)
 	opts.obj:GetThumbTexture():SetAlpha(1)
 
-	aObj:skinUsingBD{obj=opts.obj, size=opts.size}
+	-- if aObj.isBeta then
+	-- 	opts.obj.sf = _G.CreateFrame("Frame", nil, opts.obj, "BackdropTemplate")
+	-- 	aObj:skinUsingBD{obj=opts.obj.sf, size=opts.size}
+	-- else
+		aObj:skinUsingBD{obj=opts.obj, size=opts.size}
+	-- end
 
 	-- adjust width if required
 	if opts.wdth then aObj:adjWidth{obj=opts.obj, adj=opts.wdth} end
@@ -1347,6 +1355,9 @@ local function __skinUsingBD(opts)
 
 	opts.size = opts.size or 3 -- default to medium
 
+	if aObj.isBeta then
+		aObj:addBackdrop(opts.obj)
+	end
 	opts.obj:SetBackdrop(aObj.Backdrop[opts.size])
 	opts.obj:SetBackdropBorderColor(.2, .2, .2, 1)
 	opts.obj:SetBackdropColor(.1, .1, .1, 1)

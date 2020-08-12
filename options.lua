@@ -183,6 +183,7 @@ aObj.blizzFrames[ftype].SetupDefaults = function(self)
 		UnitPopup            = true,
 		WarboardUI           = true,
 		WarfrontsPartyPoseUI = true,
+		WeeklyRewards        = aObj.isBeta and true or nil,
 		WorldMap             = {skin = true, size = 1},
 		ZoneAbility          = true,
 	-- Disabled Skins
@@ -1795,6 +1796,11 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 					name = self.L["Warfronts Party Pose UI"],
 					desc = self.L["Toggle the skin of the Warfronts Party Pose UI"],
 				},
+				WeeklyRewards = aObj.isBeta and{
+					type = "toggle",
+					name = self.L["Weekly Rewards Frame"],
+					desc = self.L["Toggle the skin of the Weekly Rewards Frame"],
+				} or nil,
 				WorldMap = {
 					type = "group",
 					inline = true,

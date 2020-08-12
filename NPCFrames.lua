@@ -17,9 +17,15 @@ aObj.blizzLoDFrames[ftype].AlliedRacesUI = function(self)
 		this.RaceInfoFrame.ScrollFrame.Child.ObjectivesFrame.HeaderBackground:SetTexture(nil)
 		this.RaceInfoFrame.ScrollFrame.Child.ObjectivesFrame:DisableDrawLayer("BACKGROUND")
 		self:skinSlider{obj=this.RaceInfoFrame.ScrollFrame.ScrollBar, rt="background", wdth=-5}
-		this.RaceInfoFrame.ScrollFrame.ScrollBar.ScrollUpBorder:SetBackdrop(nil)
-		this.RaceInfoFrame.ScrollFrame.ScrollBar.ScrollDownBorder:SetBackdrop(nil)
-		this.RaceInfoFrame.ScrollFrame.ScrollBar.Border:SetBackdrop(nil)
+		if not aObj.isBeta then
+			this.RaceInfoFrame.ScrollFrame.ScrollBar.ScrollUpBorder:SetBackdrop(nil)
+			this.RaceInfoFrame.ScrollFrame.ScrollBar.ScrollDownBorder:SetBackdrop(nil)
+			this.RaceInfoFrame.ScrollFrame.ScrollBar.Border:SetBackdrop(nil)
+		else
+			this.RaceInfoFrame.ScrollFrame.ScrollBar.ScrollUpBorder:ClearBackdrop()
+			this.RaceInfoFrame.ScrollFrame.ScrollBar.ScrollDownBorder:ClearBackdrop()
+			this.RaceInfoFrame.ScrollFrame.ScrollBar.Border:ClearBackdrop()
+		end
 		this.RaceInfoFrame.AlliedRacesRaceName:SetTextColor(self.HT:GetRGB())
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true}
 		if self.modBtnBs then
@@ -339,7 +345,9 @@ aObj.blizzFrames[ftype].BankFrame = function(self)
 			self:skinStdButton{obj=_G.ReagentBankFrameUnlockInfoPurchaseButton}
 			self:skinStdButton{obj=_G.ReagentBankFrame.DespositButton}
 		end
-		self:skinGlowBox(_G.ReagentBankHelpBox, ftype)
+		if not aObj.isBeta then
+			self:skinGlowBox(_G.ReagentBankHelpBox, ftype)
+		end
 
 		if self.modBtnBs then
 			self:SecureHook("BankFrameItemButton_Update", function(btn)
@@ -472,13 +480,25 @@ aObj.blizzFrames[ftype].GossipFrame = function(self)
 	if not self.prdb.GossipFrame or self.initialized.GossipFrame then return end
 	self.initialized.GossipFrame = true
 
+	if aObj.isBeta then
+		self:RawHook(_G.GossipFrame.titleButtonPool, "Acquire", function(this)
+			-- aObj:Debug("GF.titleButtonPool Acquire: [%s, %s]", #GossipFrame.buttons)
+			local btn = self.hooks[this].Acquire(this)
+			self:getRegion(btn, 3):SetTextColor(self.BT:GetRGB())
+			self:hookQuestText(btn)
+			return btn
+		end, true)
+	end
+
 	self:SecureHookScript(_G.GossipFrame, "OnShow", function(this)
 		self:keepFontStrings(_G.GossipFrameGreetingPanel)
 		_G.GossipGreetingText:SetTextColor(self.HT:GetRGB())
 		self:skinSlider{obj=_G.GossipGreetingScrollFrame.ScrollBar, rt="artwork"}
-		for i = 1, _G.NUMGOSSIPBUTTONS do
-			self:getRegion(_G["GossipTitleButton" .. i], 3):SetTextColor(self.BT:GetRGB())
-			self:hookQuestText(_G["GossipTitleButton" .. i])
+		if not aObj.isBeta then
+			for i = 1, _G.NUMGOSSIPBUTTONS do
+				self:getRegion(_G["GossipTitleButton" .. i], 3):SetTextColor(self.BT:GetRGB())
+				self:hookQuestText(_G["GossipTitleButton" .. i])
+			end
 		end
 		if not self.isClsc then
 			self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true}
@@ -1087,7 +1107,11 @@ aObj.blizzFrames[ftype].Tabard = function(self)
 
 		self:keepRegions(this, {4, 17, 18, 19, 20, 21, 22}) -- N.B. regions 4, 21 & 22 are text, 17-20 are icon textures
 		self:removeNineSlice(this.NineSlice)
-		_G.TabardFrameCostFrame:SetBackdrop(nil)
+		if not aObj.isBeta then
+			_G.TabardFrameCostFrame:SetBackdrop(nil)
+		else
+			_G.TabardFrameCostFrame:ClearBackdrop()
+		end
 		self:keepFontStrings(_G.TabardFrameCustomizationFrame)
 		for i = 1, 5 do
 			self:keepFontStrings(_G["TabardFrameCustomization" .. i])
@@ -1182,11 +1206,15 @@ aObj.blizzLoDFrames[ftype].VoidStorageUI = function(self)
 		if self.modBtns then
 			self:skinStdButton{obj=_G.VoidStorageTransferButton}
 			self:skinCloseButton{obj=_G.VoidStorageBorderFrame.CloseButton}
-			-- N.B. NO CloseButton for VoidStorageHelpBox
-			self:skinStdButton{obj=_G.VoidStorageHelpBoxButton}
 			self:skinStdButton{obj=_G.VoidStoragePurchaseButton}
 		end
-		self:skinGlowBox(_G.VoidStorageHelpBox, ftype, true)
+		if not aObj.isBeta then
+			self:skinGlowBox(_G.VoidStorageHelpBox, ftype, true)
+			if self.modBtns then
+				-- N.B. NO CloseButton for VoidStorageHelpBox
+				self:skinStdButton{obj=_G.VoidStorageHelpBoxButton}
+			end
+		end
 		self:addSkinFrame{obj=_G.VoidStoragePurchaseFrame, ft=ftype, kfs=true}
 		-- Tabs
 		for i = 1, 2 do

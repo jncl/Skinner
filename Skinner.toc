@@ -1,4 +1,4 @@
-﻿## Interface: 80307
+﻿## Interface: 90001
 ## Title: Skinner
 ## Notes: Changes the look of the default UI (Retail & Classic)
 ## Notes-esES: Cambia el aspecto del UI predeterminado
@@ -71,3 +71,6 @@ Skins.xml
 #
 # WoW Classic Support
 ClassicSupport.lua
+#
+# Shadowlands expansion support
+Shadowlands.lua

@@ -98,6 +98,20 @@ function aObj:skinAceDropdown(obj, x2, y2)
 
 end
 
+if aObj.isBeta then
+	function aObj:addBackdrop(obj)
+
+		if not obj.SetBackdrop then
+			_G.Mixin(obj, _G.BackdropTemplateMixin)
+			-- remove existing backdrop if it exists
+			if obj.ClearBackdrop then
+				obj:ClearBackdrop()
+			end
+		end
+
+	end
+end
+
 local function __adjHeight(opts)
 --[[
 	Calling parameters:
