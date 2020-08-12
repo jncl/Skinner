@@ -1149,8 +1149,7 @@ aObj.blizzFrames[ftype].ChatBubbles = function(self)
 	local function skinChatBubbles()
 
 		_G.C_Timer.After(0.1, function()
-			 -- don't include forbidden Chat Bubbles (Bosses in Garrisons/Dungeons/Raids)
-			for _, cBubble in _G.pairs(_G.C_ChatBubbles.GetAllChatBubbles(false)) do
+			for _, cBubble in _G.pairs(_G.C_ChatBubbles.GetAllChatBubbles()) do
 				aObj:addSkinFrame{obj=cBubble, ft=ftype, kfs=true, nb=true, aso={ba=0.5}, ofs=-10}
 				-- Region 1 is ChatBubbleTail texture, region 2 is the font string
 				if cBubble:GetNumRegions() == 2 then
