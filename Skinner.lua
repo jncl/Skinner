@@ -440,13 +440,6 @@ function aObj:OnEnable()
 		self:RegisterEvent("PLAYER_LEVEL_UP")
 	end
 
-	-- skin the Blizzard frames
-	_G.C_Timer.After(self.prdb.Delay.Init, function() self:BlizzardFrames() end)
-	-- skin the loaded AddOns frames
-	_G.C_Timer.After(self.prdb.Delay.Init + self.prdb.Delay.Addons, function() self:AddonFrames() end)
-	-- schedule scan of UIParent's Children after all AddOns have been loaded
-	_G.C_Timer.After(self.prdb.Delay.Init + self.prdb.Delay.Addons + 1, function() self:scanUIParentsChildren() end)
-
 	-- handle statusbar changes
 	self.LSM.RegisterCallback(self, "LibSharedMedia_SetGlobal", function(mtype, override)
 		if mtype == "statusbar" then
@@ -514,6 +507,13 @@ function aObj:OnEnable()
 --@alpha@
 	self:SetupCmds()
 --@end-alpha@
+
+	-- skin the Blizzard frames
+	_G.C_Timer.After(self.prdb.Delay.Init, function() self:BlizzardFrames() end)
+	-- skin the loaded AddOns frames
+	_G.C_Timer.After(self.prdb.Delay.Init + self.prdb.Delay.Addons, function() self:AddonFrames() end)
+	-- schedule scan of UIParent's Children after all AddOns have been loaded
+	_G.C_Timer.After(self.prdb.Delay.Init + self.prdb.Delay.Addons + 1, function() self:scanUIParentsChildren() end)
 
 end
 
