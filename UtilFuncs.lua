@@ -539,6 +539,8 @@ function aObj:getColourByName(clrName)
 		r, g, b = _G.HIGHLIGHT_FONT_COLOR:GetRGB()
 	elseif clrName == "yellow" then
 		r, g, b = _G.YELLOW_FONT_COLOR:GetRGB()
+	elseif clrName == "blue" then
+		r, g, b = _G.LIGHTBLUE_FONT_COLOR:GetRGB()
 	end
 	-- aObj:Debug("getColourByName: [%s, %s, %s, %s]", clrName, r, g ,b)
 	return r, g, b
