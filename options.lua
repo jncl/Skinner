@@ -165,6 +165,7 @@ aObj.blizzFrames[ftype].SetupDefaults = function(self)
 		OrderHallUI          = true,
 		PetBattleUI          = true,
 		ProductChoiceFrame   = true,
+		PTRFeedback          = aObj.isPTR or aObj.isBeta and true or nil,
 		PVEFrame             = true, -- (inc, LFD, LFG, RaidFinder, ScenarioFinder)
 		PVPMatch             = true,
 		QuestMap             = true,
@@ -1667,6 +1668,11 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 					name = self.L["Product Choice Frame"],
 					desc = self.L["Toggle the skin of the Product Choice Frame"],
 				},
+				PTRFeedback = aObj.isPTR or aObj.isBeta and {
+					type = "toggle",
+					name = self.L["PTR Feedback Frames"],
+					desc = self.L["Toggle the skin of the PTR Feedback Frames"],
+				} or nil,
 				PVEFrame = {
 					-- inc. LFD, LFG, Scenario
 					type = "toggle",

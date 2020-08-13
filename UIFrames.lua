@@ -5975,12 +5975,18 @@ end
 if aObj.isPTR
 or aObj.isBeta
 then
+	aObj.blizzFrames[ftype].PTRFeedback = function(self)
+		if not self.prdb.PTRFeedback or self.initialized.PTRFeedback then return end
+		self.initialized.PTRFeedback = true
 
-	local PTR_IR = _G.PTR_IssueReporter
-	if PTR_IR then
+		local PTR_IR = _G.PTR_IssueReporter
 
 		local function skinFrame(frame, ofs, border)
-			if frame.Background then frame.Background:SetTexture(nil) end
+			if border then
+				aObj:addFrameBorder{obj=frame, ft=ftype, ofs=ofs or 4, aso={bbclr="blue"}}
+			else
+				aObj:addSkinFrame{obj=frame, ft=ftype, kfs=true, nb=true, ofs=ofs or 4, aso={bbclr="blue"}}
+			end
 			if frame.Border then
 				if not aObj.isBeta then
 					frame.Border:SetBackdrop(nil)
@@ -5988,39 +5994,36 @@ then
 					frame.Border:ClearBackdrop()
 				end
 			end
-			if frame.GetPushedTexture then frame:SetPushedTexture(nil) end
+		end
+
+		skinFrame(PTR_IR)
+		for _, name in _G.pairs{"Confused", "ReportBug"} do
+			aObj:addSkinButton{obj=PTR_IR[name], aso={bbclr="blue"}}
+			PTR_IR[name]:SetPushedTexture(nil)
 			if not aObj.isBeta then
-				if border then
-					aObj:addFrameBorder{obj=frame, ft=ftype, ofs=ofs or 4, aso={bbclr="blue"}}
-				else
-					aObj:addSkinFrame{obj=frame, ft=ftype, nb=true, ofs=ofs or 4, aso={bbclr="blue"}}
-				end
+				PTR_IR[name].Border:SetBackdrop(nil)
 			else
-				aObj:addSkinFrame{obj=frame, ft=ftype, nb=true, ofs=ofs or 4, aso={bbclr="blue"}}
+				PTR_IR[name].Border:ClearBackdrop()
 			end
 		end
 
-		aObj:SecureHook(PTR_IR, "CreateMainView", function(this)
-			skinFrame(PTR_IR)
-			skinFrame(PTR_IR.Confused)
-			skinFrame(PTR_IR.ReportBug)
-
-			aObj:Unhook(this, "CreateMainView")
-		end)
-
 		aObj:SecureHook(PTR_IR, "GetStandaloneSurveyFrame", function(this)
-			skinFrame(PTR_IR.StandaloneSurvey, 2) -- header frame
+			skinFrame(PTR_IR.StandaloneSurvey, 3) -- header frame
 			skinFrame(PTR_IR.StandaloneSurvey.SurveyFrame)
 			if aObj.modBtns then
 				aObj:skinCloseButton{obj=aObj:getChild(PTR_IR.StandaloneSurvey.SurveyFrame, 2), noSkin=true}
-				aObj:skinStdButton{obj=aObj:getChild(PTR_IR.StandaloneSurvey.SurveyFrame, 3), ofs=-2, clr="blue"}
+				if not aObj.isBeta then
+					aObj:skinStdButton{obj=aObj:getChild(PTR_IR.StandaloneSurvey.SurveyFrame, 3), ofs=-2, clr="blue"}
+				else
+					aObj:skinStdButton{obj=PTR_IR.StandaloneSurvey.submitButton, ofs=-2, clr="blue"}
+				end
 			end
 
 			aObj:Unhook(this, "GetStandaloneSurveyFrame")
 		end)
 
 		aObj:SecureHook(PTR_IR, "BuildSurveyFrameFromSurveyData", function(surveyFrame, _)
-			skinFrame(surveyFrame, nil, true)
+			skinFrame(surveyFrame)
 			for _, frame in _G.ipairs(surveyFrame.FrameComponents) do
 				skinFrame(frame, 2, true)
 				if frame.FrameType == "StandaloneQuestion" then
@@ -6036,5 +6039,4 @@ then
 		end)
 
 	end
-
 end
