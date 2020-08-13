@@ -4466,7 +4466,6 @@ aObj.blizzLoDFrames[ftype].TalentUI = function(self)
 	self.initialized.TalentUI = true
 
 	local function skinBtnBBC(frame, button)
-
 		if button
 		and button.sbb
 		then
@@ -4474,7 +4473,7 @@ aObj.blizzLoDFrames[ftype].TalentUI = function(self)
 			if (button.knownSelection and button.knownSelection:IsShown())
 			or (frame.inspect and button.border:IsShown()) -- inspect frame
 			then
-				aObj:clrBtnBdr(button, "default", 1)
+				aObj:clrBtnBdr(button, "gold", 1)
 				if bnObj then bnObj:SetTextColor(aObj.BT:GetRGB()) end
 			else
 				aObj:clrBtnBdr(button, "grey", 1)
@@ -4482,7 +4481,6 @@ aObj.blizzLoDFrames[ftype].TalentUI = function(self)
 			end
 			bnObj = nil
 		end
-
 	end
 	aObj:SecureHook("TalentFrame_Update", function(this, _)
 		if not aObj.modBtnBs then
@@ -4506,11 +4504,11 @@ aObj.blizzLoDFrames[ftype].TalentUI = function(self)
 				 self:addButtonBorder{obj=_G["PlayerSpecTab" .. i]}
 			end
 		end
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, y2=-6}
 		if self.modBtns then
 			self:skinStdButton{obj=_G.PlayerTalentFrameActivateButton}
 			self:skinCloseButton{obj=_G.PlayerTalentFrameCloseButton}
 		end
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, y2=-6}
 
 		-- handle extra abilities (Player and Pet)
 		self:SecureHook("PlayerTalentFrame_CreateSpecSpellButton", function(this, index)
@@ -4526,7 +4524,7 @@ aObj.blizzLoDFrames[ftype].TalentUI = function(self)
 			if obj.disabled then
 				aObj:clrBtnBdr(sc, "disabled", 1)
 			else
-				aObj:clrBtnBdr(sc, "default", 1)
+				aObj:clrBtnBdr(sc, "gold", 1)
 			end
 		end
 		local btn
@@ -4548,17 +4546,21 @@ aObj.blizzLoDFrames[ftype].TalentUI = function(self)
 				if this["specButton" .. i].disabled then
 					self:clrBtnBdr(this["specButton" .. i], "disabled", 1)
 				else
-					self:clrBtnBdr(this["specButton" .. i], "default", 1)
+					self:clrBtnBdr(this["specButton" .. i], "gold", 1)
 				end
 			end
 		end
 		skinAbilities(this)
 	end)
 	local function skinSpec(frame)
-		aObj:removeRegions(frame, {1, 2, 3, 4, 5, 6})
+		aObj:keepFontStrings(frame)
 		frame.MainHelpButton.Ring:SetTexture(nil)
 		aObj:moveObject{obj=frame.MainHelpButton, y=-4}
-        aObj:skinStdButton{obj=frame.learnButton}
+		aObj:removeMagicBtnTex(frame.learnButton)
+		if aObj.modBtns then
+			aObj:skinStdButton{obj=frame.learnButton}
+			frame.learnButton.sb:SetParent(frame)
+		end
 		for i = 1, _G.MAX_TALENT_TABS do
 			frame["specButton" .. i].bg:SetTexture(nil)
 			frame["specButton" .. i].ring:SetTexture(nil)
@@ -4571,7 +4573,7 @@ aObj.blizzLoDFrames[ftype].TalentUI = function(self)
 			aObj:makeIconSquare(frame["specButton" .. i], "specIcon", true)
 		end
 		-- shadow frame (LHS)
-		aObj:keepFontStrings(aObj:getChild(frame, 7))
+		aObj:keepFontStrings(aObj:getChild(frame, aObj.isBeta and 8 or 7))
 		-- spellsScroll (RHS)
 		aObj:skinSlider{obj=frame.spellsScroll.ScrollBar}
 		frame.spellsScroll.child.gradient:SetTexture(nil)
@@ -4584,22 +4586,12 @@ aObj.blizzLoDFrames[ftype].TalentUI = function(self)
 
 	self:SecureHookScript(_G.PlayerTalentFrameSpecialization, "OnShow", function(this)
 		skinSpec(this)
-		self:removeMagicBtnTex(this.learnButton)
-		self:skinStdButton{obj=this.learnButton}
-		if this.learnButton.sb then -- anim fix
-			this.learnButton.sb:SetParent(this)
-		end
 
 		self:Unhook(this, "OnShow")
 	end)
 
 	self:SecureHookScript(_G.PlayerTalentFramePetSpecialization, "OnShow", function(this)
 		skinSpec(this)
-		self:removeMagicBtnTex(this.learnButton)
-		if self.modBtns then
-			self:skinStdButton{obj=this.learnButton}
-			this.learnButton.sb:SetParent(this)
-		end
 
 		self:Unhook(this, "OnShow")
 	end)
