@@ -97,7 +97,7 @@ aObj.blizzFrames[ftype].SetupDefaults = function(self)
 		InspectUI            = true,
 		ItemSocketingUI      = true,
 		LookingForGuildUI    = true,
-		LootFrames           = {skin = true, extra = true, size = 1},
+		LootFrames           = {skin = true, size = 1},
 		LootHistory          = true,
 		MirrorTimers         = {skin = true, glaze = true},
 		ObjectiveTracker     = {skin = false, popups = true},
@@ -1121,12 +1121,6 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 							order = 1,
 							name = self.L["Loot Frames"],
 							desc = self.L["Toggle the skin of the Loot Frames"],
-						},
-						extra = {
-							type = "toggle",
-							order = 2,
-							name = self.L["Extra Item"],
-							desc = self.L["Add another Item to the Loot Frame"],
 						},
 						size = {
 							type = "range",

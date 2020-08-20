@@ -3392,27 +3392,6 @@ aObj.blizzFrames[ftype].LootFrames = function(self)
 	self.initialized.LootFrames = true
 
 	self:SecureHookScript(_G.LootFrame, "OnShow", function(this)
-		if self.prdb.LootFrames.extra then
-			-- Add another loot button and move them all up to fit if FramesResized isn't loaded
-			if not _G.IsAddOnLoaded("FramesResized") then
-				local yOfs, btn = -27
-				for i = 1, _G.LOOTFRAME_NUMBUTTONS do
-					btn = _G["LootButton" .. i]
-					btn:ClearAllPoints()
-					btn:SetPoint("TOPLEFT", 9, yOfs)
-					yOfs = yOfs - 41
-				end
-				if not aObj.isClsc then
-					_G.CreateFrame("ItemButton", "LootButton5", this, "LootButtonTemplate")
-				else
-					_G.CreateFrame("Button", "LootButton5", this, "LootButtonTemplate")
-				end
-				_G.LootButton5:SetPoint("TOPLEFT", 9, yOfs)
-				_G.LootButton5.id = 5
-				_G.LOOTFRAME_NUMBUTTONS = 5
-				yOfs = nil
-			end
-		end
 		for i = 1, _G.LOOTFRAME_NUMBUTTONS do
 			_G["LootButton" .. i .. "NameFrame"]:SetTexture(nil)
 			if self.modBtnBs then
