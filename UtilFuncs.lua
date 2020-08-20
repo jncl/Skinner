@@ -211,7 +211,10 @@ function aObj:addFrameBorder(opts)
 	local aso = opts.aso or {}
 	aso.bd = 10
 	aso.ng = true
-	self:addSkinFrame{obj=opts.obj, ft=opts.ft or "a", kfs=true, nb=true, aso=aso, ofs=opts.ofs or 0, x1=opts.x1, y1=opts.y1, x2=opts.x2, y2=opts.y2}
+	-- setup some defaults
+	if opts.kfs == nil then opts.kfs = true end
+	if opts.nb == nil then opts.nb = true end
+	self:addSkinFrame{obj=opts.obj, ft=opts.ft or "a", kfs=opts.kfs, nb=opts.nb, aso=aso, ofs=opts.ofs or 0, x1=opts.x1, y1=opts.y1, x2=opts.x2, y2=opts.y2}
 	aso = nil
 
 end
