@@ -60,11 +60,12 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 	function skinFollowerAbilitiesAndCounters(frame)
 
 		if aObj.modBtnBs then
-			-- CombatAllySpell buttons
-			for i = 1, #frame.AbilitiesFrame.CombatAllySpell do
-				aObj:addButtonBorder{obj=frame.AbilitiesFrame.CombatAllySpell[i], relTo=frame.AbilitiesFrame.CombatAllySpell[i].iconTexture}
+			if frame.AbilitiesFrame.CombatAllySpell then
+				-- CombatAllySpell buttons
+				for i = 1, #frame.AbilitiesFrame.CombatAllySpell do
+					aObj:addButtonBorder{obj=frame.AbilitiesFrame.CombatAllySpell[i], relTo=frame.AbilitiesFrame.CombatAllySpell[i].iconTexture}
+				end
 			end
-
 			-- Ability buttons
 			for ability in frame.abilitiesPool:EnumerateActive() do
 				aObj:addButtonBorder{obj=ability.IconButton, reParent={ability.IconButton.Border}}
@@ -227,6 +228,9 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 		if frame.FollowerModel then
 			aObj:moveObject{obj=frame.FollowerModel, x=-6, y=0}
 		end
+			aObj:SecureHook(frame:GetParent():GetParent(), "UpdateStartButton", function(this, missionPage)
+				aObj:clrBtnBdr(missionPage.StartMissionButton)
+			end)
 
 	end
 	function skinMissionComplete(frame, naval)
@@ -433,12 +437,15 @@ aObj.blizzLoDFrames[ftype].AdventureMap = function(self)
 		this.Details.Child.DescriptionText:SetTextColor(self.BT:GetRGB())
 		this.Details.Child.ObjectivesHeader:SetTextColor(self.HT:GetRGB())
 		this.Details.Child.ObjectivesText:SetTextColor(self.BT:GetRGB())
-		self:skinStdButton{obj=this.DeclineButton}
-		self:skinStdButton{obj=this.AcceptButton}
-		self:addSkinFrame{obj=this, ft=ftype, y1=-12, y2=-4}
 		if this.CloseButton:GetNormalTexture() then
 			this.CloseButton:GetNormalTexture():SetTexture(nil) -- frame is animated in
 		end
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true, y1=-12, x2=aObj.isBeta and 0, y2=-4}
+		if self.modBtns then
+			self:skinStdButton{obj=this.DeclineButton}
+			self:skinStdButton{obj=this.AcceptButton}
+		end
+
 		self:Unhook(this, "OnShow")
 	end)
 
@@ -882,6 +889,16 @@ aObj.blizzLoDFrames[ftype].BindingUI = function(self)
 					self:skinStdButton{obj=button}
 				end
 			end)
+			-- hook this to handle button enabling/disabling
+			if not aObj.isBeta then
+				self:SecureHook("KeyBindingFrame_UpdateUnbindKey", function()
+					self:clrBtnBdr(_G.KeyBindingFrame.unbindButton)
+				end)
+			else
+				self:SecureHook(this, "UpdateUnbindKey", function(this)
+					self:clrBtnBdr(this.unbindButton)
+				end)
+			end
 		end
 		if self.modChkBtns then
 			self:skinCheckButton{obj=this.characterSpecificButton}
@@ -931,10 +948,10 @@ aObj.blizzLoDFrames[ftype].Calendar = function(self)
 			self:addButtonBorder{obj=_G.CalendarPrevMonthButton, ofs=-1, y1=-2, x2=-2, clr="gold"}
 			self:addButtonBorder{obj=_G.CalendarNextMonthButton, ofs=-1, y1=-2, x2=-2, clr="gold"}
 			self:SecureHook("CalendarFrame_UpdateMonthOffsetButtons", function()
-				self:clrBtnBdr(_G.CalendarPrevMonthButton, _G.CalendarPrevMonthButton:IsEnabled() and "gold" or "disabled", 1)
-				self:clrBtnBdr(_G.CalendarNextMonthButton, _G.CalendarNextMonthButton:IsEnabled() and "gold" or "disabled", 1)
+				self:clrBtnBdr(_G.CalendarPrevMonthButton, "gold")
+				self:clrBtnBdr(_G.CalendarNextMonthButton, "gold")
 			end)
-			self:addButtonBorder{obj=_G.CalendarFilterButton, es=14, x1=3, y1=0, x2=3, y2=0, clr="grey"}
+			self:addButtonBorder{obj=_G.CalendarFilterButton, es=14, x1=3, y1=0, x2=3, y2=0}
 		end
 
 		self:Unhook(this, "OnShow")
@@ -1110,7 +1127,7 @@ aObj.blizzLoDFrames[ftype].ChallengesUI = function(self)
 		-- DungeonIcons
 		if self.modBtnBs then
 			for _, dungeon in _G.ipairs(this.DungeonIcons) do
-				self:addButtonBorder{obj=dungeon, clr="grey", ca=0.85}
+				self:addButtonBorder{obj=dungeon, ofs=3, clr="disabled"}
 				self:SecureHook(dungeon, "SetUp", function(this, mapInfo, _)
 					-- BETA: Constant value changed
 					if mapInfo.quality >= (aObj.isBeta and _G.Enum.ItemQuality.Common or _G.LE_ITEM_QUALITY_COMMON)
@@ -1118,7 +1135,7 @@ aObj.blizzLoDFrames[ftype].ChallengesUI = function(self)
 					then
 						this.sbb:SetBackdropBorderColor(_G.ITEM_QUALITY_COLORS[mapInfo.quality].r, _G.ITEM_QUALITY_COLORS[mapInfo.quality].g, _G.ITEM_QUALITY_COLORS[mapInfo.quality].b, 1)
 					else
-						self:clrBtnBdr(this, "grey", 1)
+						self:clrBtnBdr(this, "disabled")
 					end
 				end)
 			end
@@ -2359,11 +2376,34 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 	-- a.k.a. Work Order Frame
 	self:SecureHookScript(_G.GarrisonCapacitiveDisplayFrame, "OnShow", function(this)
 		self:removeMagicBtnTex(this.StartWorkOrderButton)
-		self:skinStdButton{obj=this.StartWorkOrderButton}
 		self:removeMagicBtnTex(this.CreateAllWorkOrdersButton)
-		self:skinStdButton{obj=this.CreateAllWorkOrdersButton}
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true}
 		this.CapacitiveDisplay.IconBG:SetTexture(nil)
+		skinPortrait(this.CapacitiveDisplay.ShipmentIconFrame.Follower)
+		self:skinEditBox{obj=this.Count, regs={6}, noHeight=true}
+		self:moveObject{obj=this.Count, x=-6}
+		-- hook this to skin reagents
+		self:SecureHook("GarrisonCapacitiveDisplayFrame_Update", function(this, success, _)
+			if success ~= 0 then
+				local btn
+				for i = 1, #this.CapacitiveDisplay.Reagents do
+					btn = this.CapacitiveDisplay.Reagents[i]
+					btn.NameFrame:SetTexture(nil)
+					if self.modBtnBs then
+						aObj:addButtonBorder{obj=btn, relTo=btn.Icon, reParent={btn.Count}}
+					end
+				end
+				btn = nil
+			end
+			if self.modBtns then
+				self:clrBtnBdr(this.StartWorkOrderButton)
+				self:clrBtnBdr(this.CreateAllWorkOrdersButton)
+			end
+		end)
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true}
+		if self.modBtns then
+			self:skinStdButton{obj=this.StartWorkOrderButton}
+			self:skinStdButton{obj=this.CreateAllWorkOrdersButton}
+		end
 		if self.modBtnBs then
 			self:addButtonBorder{obj=this.CapacitiveDisplay.ShipmentIconFrame, relTo=this.CapacitiveDisplay.ShipmentIconFrame.Icon}
 			this.CapacitiveDisplay.ShipmentIconFrame.sbb:SetShown(this.CapacitiveDisplay.ShipmentIconFrame.Icon:IsShown())
@@ -2376,24 +2416,9 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 			self:SecureHook(this.CapacitiveDisplay.ShipmentIconFrame.Icon, "SetShown", function(this, show)
 				this:GetParent().sbb:SetShown(this, show)
 			end)
+			self:addButtonBorder{obj=this.DecrementButton, ofs=0, x2=-1, clr="gold"}
+			self:addButtonBorder{obj=this.IncrementButton, ofs=0, x2=-1, clr="gold"}
 		end
-		skinPortrait(this.CapacitiveDisplay.ShipmentIconFrame.Follower)
-		self:skinEditBox{obj=this.Count, regs={6}, noHeight=true}
-		self:moveObject{obj=this.Count, x=-6}
-		self:addButtonBorder{obj=this.DecrementButton, ofs=0, x2=-1, clr="gold"}
-		self:addButtonBorder{obj=this.IncrementButton, ofs=0, x2=-1, clr="gold"}
-		-- hook this to skin reagents
-		self:SecureHook("GarrisonCapacitiveDisplayFrame_Update", function(this, success, _)
-			if success ~= 0 then
-				local btn
-				for i = 1, #this.CapacitiveDisplay.Reagents do
-					btn = this.CapacitiveDisplay.Reagents[i]
-					aObj:addButtonBorder{obj=btn, relTo=btn.Icon, reParent={btn.Count}}
-					btn.NameFrame:SetTexture(nil)
-				end
-				btn = nil
-			end
-		end)
 
 		self:Unhook(this, "OnShow")
 	end)
@@ -2735,18 +2760,30 @@ aObj.blizzFrames[ftype].HelpFrame = function(self)
 			self:skinStdButton{obj=_G.HelpFrameCharacterStuckStuck}
 		end
 
+		local skinSubmit
+		if self.modBtns then
+			function skinSubmit(frame)
+				aObj:skinStdButton{obj=frame.submitButton}
+				aObj:SecureHookScript(frame, "OnShow", function(this)
+					aObj:clrBtnBdr(this.submitButton)
+				end)
+				aObj:SecureHookScript(frame.editbox, "OnTextChanged", function(this)
+					aObj:clrBtnBdr(this.submitButton)
+				end)
+			end
+		end
 		-- Report Bug panel
 		self:skinSlider{obj=_G.HelpFrameReportBugScrollFrame.ScrollBar}
 		self:addFrameBorder{obj=self:getChild(this.bug, 3), ft=ftype}
 		if self.modBtns then
-			self:skinStdButton{obj=this.bug.submitButton}
+			skinSubmit(this.bug)
 		end
 
 		-- Submit Suggestion panel
 		self:skinSlider{obj=_G.HelpFrameSubmitSuggestionScrollFrame.ScrollBar}
 		self:addFrameBorder{obj=self:getChild(this.suggestion, 3), ft=ftype}
 		if self.modBtns then
-			self:skinStdButton{obj=this.suggestion.submitButton}
+			skinSubmit(this.suggestion)
 		end
 
 		-- Help Browser
@@ -2757,11 +2794,11 @@ aObj.blizzFrames[ftype].HelpFrame = function(self)
 		if self.modBtnBs then
 			self:addButtonBorder{obj=_G.HelpBrowser.settings, ofs=-2, x1=1, clr="gold"}
 			self:addButtonBorder{obj=_G.HelpBrowser.home, ofs=-2, x1=1, clr="gold"}
-			self:addButtonBorder{obj=_G.HelpBrowser.back, ofs=-2, x1=1, clr=_G.HelpBrowser.back:IsEnabled() and "gold" or "disabled"}
-			self:addButtonBorder{obj=_G.HelpBrowser.forward, ofs=-2, x1=1, clr=_G.HelpBrowser.forward:IsEnabled() and "gold" or "disabled"}
-			self:SecureHook("Browser_UpdateButtons", function()
-				self:clrBtnBdr(_G.HelpBrowser.back, _G.HelpBrowser.back:IsEnabled() and "gold" or "disabled", 1)
-				self:clrBtnBdr(_G.HelpBrowser.forward, _G.HelpBrowser.forward:IsEnabled() and "gold" or "disabled", 1)
+			self:addButtonBorder{obj=_G.HelpBrowser.back, ofs=-2, x1=1, clr="gold"}
+			self:addButtonBorder{obj=_G.HelpBrowser.forward, ofs=-2, x1=1, clr="gold"}
+			self:SecureHookScript(_G.HelpBrowser, "OnButtonUpdate", function(this)
+				self:clrBtnBdr(this.back, "gold")
+				self:clrBtnBdr(this.forward, "gold")
 			end)
 			self:addButtonBorder{obj=_G.HelpBrowser.reload, ofs=-2, x1=1, clr="gold"}
 			self:addButtonBorder{obj=_G.HelpBrowser.stop, ofs=-2, x1=1, clr="gold"}
@@ -3080,8 +3117,9 @@ aObj.blizzFrames[ftype].LFDFrame = function(self)
 						self:addButtonBorder{obj=_G["LFDQueueFrameRandomScrollFrameChildFrameItem" .. i], libt=true}
 					end
 				end
+				self:clrBtnBdr(_G.LFDQueueFrameFindGroupButton)
 			end)
-			self:addButtonBorder{obj=_G.LFDQueueFrameRandomScrollFrameChildFrame.MoneyReward, libt=true, clr="grey"}
+			self:addButtonBorder{obj=_G.LFDQueueFrameRandomScrollFrameChildFrame.MoneyReward, libt=true}
 		end
 
 		-- Specific List subFrame
@@ -3188,8 +3226,12 @@ aObj.blizzFrames[ftype].LFGList = function(self)
 		self:removeMagicBtnTex(this.CategorySelection.FindGroupButton)
 		self:removeMagicBtnTex(this.CategorySelection.StartGroupButton)
 		if self.modBtns then
-			self:skinStdButton{obj=this.CategorySelection.FindGroupButton}
 			self:skinStdButton{obj=this.CategorySelection.StartGroupButton}
+			self:skinStdButton{obj=this.CategorySelection.FindGroupButton}
+			self:SecureHook("LFGListCategorySelection_UpdateNavButtons", function(this)
+				self:clrBtnBdr(this.StartGroupButton)
+				self:clrBtnBdr(this.FindGroupButton)
+			end)
 		end
 		self:SecureHook("LFGListCategorySelection_AddButton", function(this, _)
 			for i = 1, #this.CategoryButtons do
@@ -3217,7 +3259,7 @@ aObj.blizzFrames[ftype].LFGList = function(self)
 			self:skinStdButton{obj=sp.SignUpButton}
 		end
 		if self.modBtnBs then
-		    self:addButtonBorder{obj=sp.FilterButton, ofs=0, clr="grey"}
+		    self:addButtonBorder{obj=sp.FilterButton, ofs=0}
 			self:addButtonBorder{obj=sp.RefreshButton, ofs=-2}
 		end
 		sp = nil
@@ -3486,6 +3528,12 @@ aObj.blizzFrames[ftype].MailFrame = function(self)
 		if self.modBtns then
 			self:skinStdButton{obj=_G.SendMailMailButton}
 			self:skinStdButton{obj=_G.SendMailCancelButton}
+			self:SecureHook(_G.SendMailMailButton, "Disable", function(this, _)
+				self:clrBtnBdr(this)
+			end)
+			self:SecureHook(_G.SendMailMailButton, "Enable", function(this, _)
+				self:clrBtnBdr(this)
+			end)
 		end
 
 		--	Open Mail Frame
@@ -3498,6 +3546,11 @@ aObj.blizzFrames[ftype].MailFrame = function(self)
 			self:skinStdButton{obj=_G.OpenMailCancelButton}
 			self:skinStdButton{obj=_G.OpenMailDeleteButton}
 			self:skinStdButton{obj=_G.OpenMailReplyButton}
+			self:SecureHook("OpenMail_Update", function()
+				self:clrBtnBdr(_G.OpenMailReportSpamButton)
+				self:clrBtnBdr(_G.OpenMailReplyButton)
+			end)
+
 		end
 		if self.modBtnBs then
 			self:addButtonBorder{obj=_G.OpenMailLetterButton, ibt=true}
@@ -3760,6 +3813,12 @@ aObj.blizzFrames[ftype].MenuFrames = function(self)
 			if self.isClsc then
 				self:skinStdButton{obj=_G.VideoOptionsFrameClassic}
 			end
+			self:SecureHook(_G.VideoOptionsFrameApply, "Disable", function(this)
+				self:clrBtnBdr(this)
+			end)
+			self:SecureHook(_G.VideoOptionsFrameApply, "Enable", function(this)
+				self:clrBtnBdr(this)
+			end)
 		end
 
 		-- Graphics
@@ -4192,19 +4251,12 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 			btn:Disable()
 		end
 		local function clrZoomBtns()
-			local r, g, b
 			for _, btnName in _G.pairs{"In", "Out"} do
 				btn = btnName == "In" and _G.MinimapZoomIn or _G.MinimapZoomOut
-				r, g, b = aObj:getColourByName(btn:IsEnabled() and "gold" or "disabled")
-				btn.sb:SetBackdropBorderColor(r, g, b, 1)
+				aObj:clrBBC(btn.sb, btn:IsEnabled() and "gold" or "disabled")
 				-- make button text appear in correct colour
 				btn:SetNormalFontObject(btn:IsEnabled() and aObj.modUIBtns.fontP or aObj.modUIBtns.fontDP)
-				if not btn:IsEnabled() then
-					btn:Enable()
-					btn:Disable()
-				end
 			end
-			r, g, b = nil, nil, nil
 		end
 		self:SecureHookScript(btn, "OnClick", function(this)
 			clrZoomBtns()
@@ -4475,13 +4527,13 @@ aObj.blizzLoDFrames[ftype].OrderHallUI = function(self)
 				if btn.Border:GetAtlas() == "orderhalltalents-spellborder-yellow"
 				and btn.Border:IsShown()
 				or btn.talent.researched then
-					aObj:clrBtnBdr(btn, "yellow", 1)
+					aObj:clrBtnBdr(btn, "yellow")
 				elseif btn.Border:GetAtlas() == "orderhalltalents-spellborder-green"
 				and btn.Border:IsShown()
 				then
-					aObj:clrBtnBdr(btn, "green", 1)
+					aObj:clrBtnBdr(btn, "green")
 				else
-					aObj:clrBtnBdr(btn, "grey", 1)
+					aObj:clrBtnBdr(btn, "grey")
 				end
 			end
 			btn.Border:SetTexture(nil)
@@ -4638,9 +4690,9 @@ aObj.blizzFrames[ftype].PetBattleUI = function(self)
 					if this.Icon
 					and this.Icon:IsDesaturated()
 					then
-						self:clrBtnBdr(this, "disabled", 1)
+						self:clrBtnBdr(this, "disabled")
 					else
-						self:clrBtnBdr(this, "default", 1)
+						self:clrBtnBdr(this)
 					end
 				end
 			end)
@@ -4753,11 +4805,7 @@ aObj.blizzFrames[ftype].PVEFrame = function(self)
 			-- hook this to change button border colour
 			self:SecureHook("GroupFinderFrame_EvaluateButtonVisibility", function(this, _)
 				for i = 1, 4 do
-					if _G.GroupFinderFrame["groupButton" .. i]:IsEnabled() then
-						self:clrBtnBdr(_G.GroupFinderFrame["groupButton" .. i], "default", 1)
-					else
-						self:clrBtnBdr(_G.GroupFinderFrame["groupButton" .. i], "grey", 1)
-					end
+					self:clrBtnBdr(_G.GroupFinderFrame["groupButton" .. i])
 				end
 			end)
 		end
@@ -4932,9 +4980,8 @@ aObj.blizzFrames[ftype].QuestMap = function(self)
 		self:adjWidth{obj=this.DetailsFrame.AbandonButton, adj=-2} -- moves buttons to the right slightly
 		self:moveObject{obj=this.DetailsFrame.AbandonButton, y=2}
 		self:removeRegions(this.DetailsFrame.ShareButton, {6, 7}) -- divider textures
-
 		if self.modBtns then
-			self:skinStdButton{obj=this.DetailsFrame.BackButton, clr="grey"}
+			self:skinStdButton{obj=this.DetailsFrame.BackButton}
 			self:skinStdButton{obj=this.DetailsFrame.CompleteQuestFrame.CompleteButton}
 			self:skinStdButton{obj=this.DetailsFrame.AbandonButton}
 			self:skinStdButton{obj=this.DetailsFrame.ShareButton}
@@ -4958,6 +5005,17 @@ aObj.blizzFrames[ftype].QuestMap = function(self)
 					tex = nil
 				end)
 			end
+			self:SecureHook("QuestMapFrame_UpdateQuestDetailsButtons", function()
+				self:clrBtnBdr(_G.QuestMapFrame.DetailsFrame.AbandonButton)
+				self:clrBtnBdr(_G.QuestMapFrame.DetailsFrame.TrackButton)
+				self:clrBtnBdr(_G.QuestMapFrame.DetailsFrame.ShareButton)
+				if _G.QuestLogPopupDetailFrame.AbandonButton.sb then
+					self:clrBtnBdr(_G.QuestLogPopupDetailFrame.AbandonButton)
+					self:clrBtnBdr(_G.QuestLogPopupDetailFrame.TrackButton)
+					self:clrBtnBdr(_G.QuestLogPopupDetailFrame.ShareButton)
+				end
+			end)
+		end
 		end
 
 		self:Unhook(this, "OnShow")
@@ -5194,13 +5252,16 @@ aObj.blizzLoDFrames[ftype].ScrappingMachineUI = function(self)
 		self.modUIBtns:addButtonBorder{obj=slot, relTo=slot.Icon, clr="grey"} -- use module function to force button border
 		-- hook this to reset sbb colour
 		self:SecureHook(slot, "ClearSlot", function(this)
-			self:clrBtnBdr(this, "grey", 1)
+			self:clrBtnBdr(this, "grey")
 		end)
 	end
 	self:removeMagicBtnTex(_G.ScrappingMachineFrame.ScrapButton)
 	self:addSkinFrame{obj=_G.ScrappingMachineFrame, ft=ftype, kfs=true, ri=true}
 	if self.modBtns then
 		 self:skinStdButton{obj=_G.ScrappingMachineFrame.ScrapButton}
+		 self:SecureHook(_G.ScrappingMachineFrame, "UpdateScrapButtonState", function(this)
+			 self:clrBtnBdr(this.ScrapButton)
+		 end)
 	end
 
 end
@@ -5225,11 +5286,11 @@ aObj.blizzFrames[ftype].SharedBasicControls = function(self)
 			self:skinStdButton{obj=this.Close}
 		end
 		if self.modBtnBs then
-			self:addButtonBorder{obj=this.PreviousError, ofs=-3, x1=2, clr=this.PreviousError:IsEnabled() and "gold" or "disabled", 1}
-			self:addButtonBorder{obj=this.NextError, ofs=-3, x1=2, clr=this.NextError:IsEnabled() and "gold" or "disabled", 1}
+			self:addButtonBorder{obj=this.PreviousError, ofs=-3, x1=2, clr="gold"}
+			self:addButtonBorder{obj=this.NextError, ofs=-3, x1=2, clr="gold"}
 			self:SecureHook(this, "UpdateButtons", function(this)
-				self:clrBtnBdr(this.PreviousError, this.PreviousError:IsEnabled() and "gold" or "disabled", 1)
-				self:clrBtnBdr(this.NextError, this.NextError:IsEnabled() and "gold" or "disabled", 1)
+				self:clrBtnBdr(this.PreviousError,"gold")
+				self:clrBtnBdr(this.NextError, "gold")
 			end)
 		end
 
@@ -5396,7 +5457,7 @@ aObj.blizzFrames[ftype].TimeManager = function(self)
 		self:removeRegions(_G.TimeManagerAlarmEnabledButton, {6, 7})
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, x2=self.isClsc and 1 or 3}
 		if self.modBtnBs then
-			self:addButtonBorder{obj=_G.TimeManagerStopwatchCheck, y1=2, y2=-4, clr="grey"} -- This isn't really a checkbutton
+			self:addButtonBorder{obj=_G.TimeManagerStopwatchCheck, y1=2, y2=-4}
 		end
 		if self.modChkBtns then
 			self:skinCheckButton{obj=_G.TimeManagerAlarmEnabledButton}
@@ -5420,7 +5481,7 @@ aObj.blizzFrames[ftype].TimeManager = function(self)
 	-- TimeManagerClockButton on the Minimap
 	if not _G.IsAddOnLoaded("SexyMap") then
 		if not self.prdb.Minimap.style then
-			self:addSkinFrame{obj=_G.TimeManagerClockButton, ft=ftype, kfs=true, nb=true, aso={bbclr="grey"}, x1=14, y1=-3, x2=-8, y2=5}
+			self:addSkinFrame{obj=_G.TimeManagerClockButton, ft=ftype, kfs=true, nb=true, x1=14, y1=-3, x2=-8, y2=5}
 		end
 	end
 
@@ -5588,8 +5649,8 @@ aObj.blizzFrames[ftype].Tutorial = function(self)
 			self:addButtonBorder{obj=_G.TutorialFramePrevButton, ofs=-2}
 			self:addButtonBorder{obj=_G.TutorialFrameNextButton, ofs=-2}
 			self:SecureHook("TutorialFrame_CheckNextPrevButtons", function()
-				self:clrBtnBdr(_G.TutorialFramePrevButton, _G.TutorialFramePrevButton:IsEnabled() and "gold" or "disabled", 1)
-				self:clrBtnBdr(_G.TutorialFrameNextButton, _G.TutorialFrameNextButton:IsEnabled() and "gold" or "disabled", 1)
+				self:clrBtnBdr(_G.TutorialFramePrevButton, "gold")
+				self:clrBtnBdr(_G.TutorialFrameNextButton, "gold")
 			end)
 		end
 
@@ -5710,9 +5771,9 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 			if aObj.modBtnBs then
 				aObj:addButtonBorder{obj=wFrame, relTo=wFrame.Icon}
 				if wInfo.visInfoDataFunction(wFrame.widgetID) then
-					self:clrBtnBdr(wFrame, "grey", 1)
+					self:clrBtnBdr(wFrame, "grey")
 				else
-					self:clrBtnBdr(wFrame, "default", 1)
+					self:clrBtnBdr(wFrame)
 				end
 			end
 		elseif wFrame.widgetType == 8 then -- TextWithState
@@ -5738,7 +5799,7 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 			if aObj.modBtnBs then
 				aObj:addButtonBorder{obj=wFrame.Spell, relTo=wFrame.Spell.Icon, reParent={wFrame.Spell.StackCount}}
 				if tcr == 0.5 then
-					self:clrBtnBdr(wFrame.Spell, "grey", 1)
+					self:clrBtnBdr(wFrame.Spell, "grey")
 				end
 			end
 			tcr = nil

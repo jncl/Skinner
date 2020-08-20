@@ -385,7 +385,7 @@ function aObj:OnEnable()
 						then
 							button.sbb:SetBackdropBorderColor(_G.BAG_ITEM_QUALITY_COLORS[quality].r, _G.BAG_ITEM_QUALITY_COLORS[quality].g, _G.BAG_ITEM_QUALITY_COLORS[quality].b, 1)
 						else
-							self:clrBtnBdr(button, "grey", 1)
+							self:clrBtnBdr(button, "grey")
 						end
 					else
 						self:clrBtnBdr(button, "grey", 0.5)
@@ -393,7 +393,7 @@ function aObj:OnEnable()
 						and _G.TradeSkillFrame.DetailsFrame
 						and button == _G.TradeSkillFrame.DetailsFrame.Contents.ResultIcon
 						then
-							self:clrBtnBdr(button, "normal", 1)
+							self:clrBtnBdr(button, "normal")
 						end
 					end
 				end

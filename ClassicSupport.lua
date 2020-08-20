@@ -367,7 +367,7 @@ aObj.ClassicSupport = function(self)
 			if self.modBtnBs then
 				self:SecureHook("BankFrameItemButton_Update", function(btn)
 					if not btn.hasItem then
-						self:clrBtnBdr(btn, "grey", 1)
+						self:clrBtnBdr(btn, "grey")
 					end
 				end)
 				-- add button borders to bank items
@@ -500,7 +500,7 @@ aObj.ClassicSupport = function(self)
 				-- ignore buttons with no border
 				if btn.sbb then
 					if not btn.hasItem then
-						self:clrBtnBdr(btn, "grey", 1)
+						self:clrBtnBdr(btn, "grey")
 						btn.icon:SetTexture(nil)
 					else
 						btn.sbb:SetBackdropBorderColor(btn.icon:GetVertexColor())
@@ -810,24 +810,18 @@ aObj.ClassicSupport = function(self)
 						btn.sbb:SetShown(btn.gameIcon:IsShown())
 						self:addButtonBorder{obj=btn.travelPassButton, ofs=0, y1=3, y2=-2}
 						self:SecureHook(btn.travelPassButton, "Enable", function(this)
-							self:clrBtnBdr(this, "default", 1)
+							self:clrBtnBdr(this)
 						end)
 						self:SecureHook(btn.travelPassButton, "Disable", function(this)
-							self:clrBtnBdr(this, "disabled", 1)
+							self:clrBtnBdr(this)
 						end)
-						if not btn.travelPassButton:IsEnabled() then
-							self:clrBtnBdr(btn.travelPassButton, "disabled", 1)
-						end
 						self:addButtonBorder{obj=btn.summonButton}
 						self:SecureHook(btn.summonButton, "Enable", function(this)
-							self:clrBtnBdr(this, "default", 1)
+							self:clrBtnBdr(this)
 						end)
 						self:SecureHook(btn.summonButton, "Disable", function(this)
-							self:clrBtnBdr(this, "disabled", 1)
+							self:clrBtnBdr(this)
 						end)
-						if not btn.summonButton:IsEnabled() then
-							self:clrBtnBdr(btn.summonButton, "disabled", 1)
-						end
 					end
 				end
 				btn = nil
@@ -1109,7 +1103,7 @@ aObj.ClassicSupport = function(self)
 			if self.modBtnBs then
 				self:SecureHook("InspectPaperDollItemSlotButton_Update", function(btn)
 					if not btn.hasItem then
-						self:clrBtnBdr(btn, "grey", 1)
+						self:clrBtnBdr(btn, "grey")
 						btn.icon:SetTexture(nil)
 					end
 				end)
@@ -1168,7 +1162,6 @@ aObj.ClassicSupport = function(self)
 
 			-- Spellbook Panel
 			local function updBtn(btn)
-
 	            -- handle in combat
 	            if _G.InCombatLockdown() then
 	                aObj:add2Table(aObj.oocTab, {updBtn, {btn}})
@@ -1183,20 +1176,15 @@ aObj.ClassicSupport = function(self)
 					else
 						btn.sbb:Show()
 					end
+					aObj:clrBtnBdr(btn)
 				end
 				local spellString, subSpellString = _G[btn:GetName() .. "SpellName"], _G[btn:GetName() .. "SubSpellName"]
 				if _G[btn:GetName() .. "IconTexture"]:IsDesaturated() then -- player level too low, see Trainer, or offSpec
-					if btn.sbb then
-						self:clrBtnBdr(btn, "disabled", 1)
-					end
 					spellString:SetTextColor(_G.DISABLED_FONT_COLOR:GetRGB())
 					subSpellString:SetTextColor(_G.DISABLED_FONT_COLOR:GetRGB())
 					btn.RequiredLevelString:SetTextColor(_G.DISABLED_FONT_COLOR:GetRGB())
 					btn.SeeTrainerString:SetTextColor(_G.DISABLED_FONT_COLOR:GetRGB())
 				else
-					if btn.sbb then
-						aObj:clrBtnBdr(btn, "default", 1)
-					end
 					spellString:SetTextColor(aObj.HT:GetRGB())
 					subSpellString:SetTextColor(aObj.BT:GetRGB())
 				end

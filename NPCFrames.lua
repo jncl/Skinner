@@ -127,7 +127,7 @@ aObj.blizzLoDFrames[ftype].AuctionHouseUI = function(self)
 		self:skinEditBox{obj=this.SearchBar.FilterButton.LevelRangeFrame.MinLevel, regs={6}} -- 6 is text
 		self:skinEditBox{obj=this.SearchBar.FilterButton.LevelRangeFrame.MaxLevel, regs={6}, x=-5} -- 6 is text
 		if self.modBtns then
-			self:skinStdButton{obj=this.SearchBar.FilterButton, clr="grey"}
+			self:skinStdButton{obj=this.SearchBar.FilterButton}
 			self:skinStdButton{obj=this.SearchBar.SearchButton}
 		end
 		this.CategoriesList:DisableDrawLayer("BACKGROUND")
@@ -353,7 +353,7 @@ aObj.blizzFrames[ftype].BankFrame = function(self)
 			self:SecureHook("BankFrameItemButton_Update", function(btn)
 				if btn.sbb -- ReagentBank buttons may not be skinned yet
 				and not btn.hasItem then
-					self:clrBtnBdr(btn, "grey", 1)
+					self:clrBtnBdr(btn, "grey")
 				end
 			end)
 			self:addButtonBorder{obj=_G.BankItemAutoSortButton, ofs=0, y1=1, clr="grey"}
@@ -375,6 +375,7 @@ aObj.blizzFrames[ftype].BankFrame = function(self)
 					-- force quality border update
 					_G.BankFrameItemButton_Update(this["Item" .. i])
 				end
+
 				self:Unhook(this, "OnShow")
 			end)
 		end
@@ -605,7 +606,7 @@ aObj.blizzLoDFrames[ftype].ItemUpgradeUI = function(self)
 			else
 				_G.ItemUpgradeFrame.ItemButton.IconTexture:SetAlpha(0)
 				if self.modBtnBs then
-					self:clrBtnBdr(_G.ItemUpgradeFrame.ItemButton, "grey", 1)
+					self:clrBtnBdr(_G.ItemUpgradeFrame.ItemButton, "grey")
 				end
 			end
 			icon = nil
@@ -678,9 +679,15 @@ aObj.blizzFrames[ftype].MerchantFrame = function(self)
 			self:getRegion(_G.MerchantRepairItemButton, 1):SetTexCoord(0.01375, 0.2675, 0.01375, 0.54875)
 			_G.MerchantRepairAllIcon:SetTexCoord(0.295, 0.54875, 0.01375, 0.54875)
 			_G.MerchantGuildBankRepairButtonIcon:SetTexCoord(0.57375, 0.83, 0.01375, 0.54875)
-			self:addButtonBorder{obj=_G.MerchantRepairAllButton, clr="grey"}
-			self:addButtonBorder{obj=_G.MerchantRepairItemButton, clr="grey"}
-			self:addButtonBorder{obj=_G.MerchantGuildBankRepairButton, clr="grey"}
+			self:addButtonBorder{obj=_G.MerchantRepairAllButton, clr="gold", ca=0.5}
+			self:addButtonBorder{obj=_G.MerchantRepairItemButton, clr="gold", ca=0.5}
+			self:addButtonBorder{obj=_G.MerchantGuildBankRepairButton, clr="gold", ca=0.5}
+			self:SecureHook("MerchantFrame_UpdateCanRepairAll", function()
+				self:clrBtnBdr(_G.MerchantRepairAllButton, "gold", 0.5)
+			end)
+			self:SecureHook("MerchantFrame_UpdateGuildBankRepair", function()
+				self:clrBtnBdr(_G.MerchantGuildBankRepairButton, "gold", 0.5)
+			end)
 		else
 			_G.MerchantBuyBackItemSlotTexture:SetTexture(self.esTex)
 		end

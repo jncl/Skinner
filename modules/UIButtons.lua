@@ -146,22 +146,17 @@ function module:clrButtonBorder(btn)
 	if btn.IconBorder:IsShown() then
 		btn.sbb:SetBackdropBorderColor(btn.IconBorder:GetVertexColor())
 	else
-		module:clrBtnBdr(btn, "common", 1)
+		module:clrBtnBdr(btn, "common")
 	end
 	btn.IconBorder:SetAlpha(0)
 
 end
 
-local function clrBtnBdr(btn, clrName, alpha)
-
-	local r, g, b = aObj:getColourByName(clrName)
-	btn:SetBackdropBorderColor(r, g, b, alpha or 1)
-	r, g, b = nil, nil ,nil
-
-end
 function module:clrBtnBdr(btn, clrName, alpha)
 
-	clrBtnBdr(btn.sbb, clrName, alpha)
+	-- check button state and alter colour accordingly
+	clrName = btn.IsEnabled and not btn:IsEnabled() and "disabled" or clrName
+	aObj:clrBBC(btn.sbb or btn.sb or btn, clrName, alpha)
 
 end
 
@@ -311,7 +306,8 @@ function module:skinExpandButton(opts)
 
 	local aso = opts.aso or {}
 	aso.bd = 6
-	aso.bbclr = "grey"
+	-- TODO: is this better grey or default ?
+	-- aso.bbclr = "grey"
 	if not opts.as then
 		aObj:addSkinButton{obj=opts.obj, ft=opts.ftype or "a", parent=opts.obj, sap=opts.sap, aso=aso}
 		if not opts.noHook then
@@ -470,13 +466,12 @@ function module:skinStdButton(opts) -- standard panel button
 		if bH < 16 then opts.obj:SetHeight(16) end -- set minimum button height (DBM option buttons)
 		if bW < 16 then opts.obj:SetWidth(16) end -- set minimum button width (oQueue remove buttons)
 		aObj:applySkin(aso)
-		opts.obj.sb = true
+		-- FIXME:?? What was this used for ??
+		-- opts.obj.sb = true
 	end
 	bW, bH, aso = nil, nil, nil
 
-	if opts.clr then
-		clrBtnBdr(opts.obj.sb, opts.clr, opts.ca)
-	end
+	module:clrBtnBdr(opts.obj, opts.clr, opts.ca)
 
 end
 
@@ -679,11 +674,7 @@ local function __addButtonBorder(opts)
 	-- setup and apply the backdrop
 	opts.obj.sbb:SetBackdrop({edgeFile = aObj.Backdrop[1].edgeFile, edgeSize = opts.es or aObj.Backdrop[1].edgeSize})
 
-	if opts.clr then
-		module:clrBtnBdr(opts.obj, opts.clr, opts.ca)
-	else
-		module:clrBtnBdr(opts.obj, "default", 1)
-	end
+	module:clrBtnBdr(opts.obj, opts.clr, opts.ca)
 
 	-- position the frame
 	opts.ofs = opts.ofs or 2

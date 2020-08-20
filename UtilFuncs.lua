@@ -404,6 +404,14 @@ function aObj:checkShown(frame)
 
 end
 
+function aObj:clrBBC(obj, clrName, alpha)
+
+	local r, g, b, a = self:getColourByName(clrName)
+	obj:SetBackdropBorderColor(r, g, b, alpha or a)
+	r, g, b, a = nil, nil ,nil
+
+end
+
 function aObj:clrPNBtns(framePrefix, notPrefix)
 
 	local ppb, npb
@@ -412,8 +420,8 @@ function aObj:clrPNBtns(framePrefix, notPrefix)
 	else
 		ppb, npb = _G[framePrefix .. "PrevPageButton"], _G[framePrefix .. "NextPageButton"]
 	end
-	self:clrBtnBdr(ppb, ppb:IsEnabled() and "gold" or "disabled", 1)
-	self:clrBtnBdr(npb, npb:IsEnabled() and "gold" or "disabled", 1)
+	self:clrBtnBdr(ppb, "gold")
+	self:clrBtnBdr(npb, "gold")
 	ppb, npb = nil, nil
 
 end
@@ -522,42 +530,33 @@ function aObj:getChild(obj, childNo)
 
 end
 
+local clrTab = {
+	blue     = _G.LIGHTBLUE_FONT_COLOR,
+	common   = _G.LIGHTGRAY_FONT_COLOR,
+	disabled = _G.DISABLED_FONT_COLOR,
+	green    = _G.GREEN_FONT_COLOR,
+	grey     = _G.GRAY_FONT_COLOR,
+	gold     = _G.PASSIVE_SPELL_FONT_COLOR,
+	normal   = _G.NORMAL_FONT_COLOR,
+	orange   = _G.ORANGE_FONT_COLOR,
+	red      = _G.DULL_RED_FONT_COLOR,
+	selected = _G.PAPER_FRAME_EXPANDED_COLOR,
+	sepia    = _G.SEPIA_COLOR,
+	silver   = _G.QUEST_OBJECTIVE_FONT_COLOR,
+	unused   = _G.DULL_RED_FONT_COLOR,
+	white    = _G.HIGHLIGHT_FONT_COLOR,
+	yellow   = _G.YELLOW_FONT_COLOR,
+}
 function aObj:getColourByName(clrName)
 
-	local r, g, b
-	if clrName == "common" then
-		r, g, b = _G.LIGHTGRAY_FONT_COLOR:GetRGB()
-	elseif clrName == "default" then
-		r, g, b = self.bbClr:GetRGB()
-	elseif clrName == "disabled" then
-		r, g, b = _G.DISABLED_FONT_COLOR:GetRGB()
-	elseif clrName == "green" then
-		r, g, b = _G.GREEN_FONT_COLOR:GetRGB()
-	elseif clrName == "grey" then
-		r, g, b = _G.GRAY_FONT_COLOR:GetRGB()
-	elseif clrName == "gold" then
-		r, g, b = _G.PASSIVE_SPELL_FONT_COLOR:GetRGB()
-	elseif clrName == "normal" then
-		r, g, b = _G.NORMAL_FONT_COLOR:GetRGB()
-	elseif clrName == "orange" then -- GarrisonLandingPageMinimapButton border
-		r, g, b = _G.ORANGE_FONT_COLOR:GetRGB()
-	elseif clrName == "selected" then
-		r, g, b = _G.PAPER_FRAME_EXPANDED_COLOR:GetRGB()
-	elseif clrName == "sepia" then -- RAF rewards
-		r, g, b = _G.SEPIA_COLOR:GetRGB()
-	elseif clrName == "silver" then
-		r, g, b = 222.0 / 255.0, 222.0 / 255.0, 222.0 / 255.0
-	elseif clrName == "unused" then
-		r, g, b = _G.DULL_RED_FONT_COLOR:GetRGB()
-	elseif clrName == "white" then
-		r, g, b = _G.HIGHLIGHT_FONT_COLOR:GetRGB()
-	elseif clrName == "yellow" then
-		r, g, b = _G.YELLOW_FONT_COLOR:GetRGB()
-	elseif clrName == "blue" then
-		r, g, b = _G.LIGHTBLUE_FONT_COLOR:GetRGB()
+	local r, g, b, a
+	if clrTab[clrName] then
+		r, g, b, a = clrTab[clrName]:GetRGBA()
+	else
+		r, g, b, a = self.bbClr:GetRGBA()
 	end
-	-- aObj:Debug("getColourByName: [%s, %s, %s, %s]", clrName, r, g ,b)
-	return r, g, b
+	-- aObj:Debug("getColourByName: [%s, %s, %s, %s, %s]", clrName, r, g ,b, a)
+	return r, g, b, a
 
 end
 
@@ -821,15 +820,6 @@ function aObj:makeIconSquare(obj, iconObjName, chkDisabled)
 
 	if self.modBtnBs then
 		self:addButtonBorder{obj=obj, relTo=obj[iconObjName], ofs=3}
-		if chkDisabled then
-			if obj.disabled
-			or (obj.IsEnabled and not obj:IsEnabled())
-			then
-				self:clrBtnBdr(obj, "disabled", 1)
-			else
-				self:clrBtnBdr(obj, "white", 1)
-			end
-		end
 	end
 
 end

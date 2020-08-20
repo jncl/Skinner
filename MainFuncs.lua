@@ -71,10 +71,11 @@ local function __addSkinButton(opts)
 			end
 			opts.obj.sb:Hide()
 		end)
-		if opts.obj:IsObjectType("Button") then -- hook Enable/Disable methods
-			aObj:secureHook(opts.hook, "Enable", function(this) opts.obj.sb:Enable() end)
-			aObj:secureHook(opts.hook, "Disable", function(this) opts.obj.sb:Disable() end)
-		end
+		-- FIXME: Do we need these as we check for IsEnabled in clrBtnBdr ?
+		-- if opts.obj:IsObjectType("Button") then -- hook Enable/Disable methods
+		-- 	aObj:secureHook(opts.hook, "Enable", function(this) opts.obj.sb:Enable() end)
+		-- 	aObj:secureHook(opts.hook, "Disable", function(this) opts.obj.sb:Disable() end)
+		-- end
 	end
 
 	-- position the button skin
@@ -519,12 +520,13 @@ local function __applySkin(opts)
 		-- colour the backdrop as required
 		local r, g, b, a = aObj.bClr:GetRGBA()
 		opts.obj:SetBackdropColor(r, g, b, opts.ba or a)
-		if opts.bbclr then
-			r, g, b, a = aObj:getColourByName(opts.bbclr)
-		else
-			r, g, b, a = aObj:getColourByName("default")
-		end
-		opts.obj:SetBackdropBorderColor(r, g, b, opts.bba or a)
+		aObj:clrBBC(opts.obj, opts.bbclr)
+		-- if opts.bbclr then
+		-- 	r, g, b, a = aObj:getColourByName(opts.bbclr)
+		-- else
+		-- 	r, g, b, a = aObj:getColourByName("default")
+		-- end
+		-- opts.obj:SetBackdropBorderColor(r, g, b, opts.bba or a)
 		r, g, b, a = nil, nil ,nil ,nil
 	else
 		opts.obj:SetBackdropColor(.1, .1, .1, 1)
@@ -590,6 +592,18 @@ function aObj:skinColHeads(buttonName, noCols, ftype)
 
 end
 
+do
+	aObj:SecureHook("UIDropDownMenu_DisableDropDown", function(dropDown)
+		if dropDown.Button.sbb or _G[dropDown:GetName() .. "Button"].sbb then
+			aObj:clrBtnBdr(dropDown.Button or _G[dropDown:GetName() .. "Button"])
+		end
+	end)
+	aObj:SecureHook("UIDropDownMenu_EnableDropDown", function(dropDown)
+		if dropDown.Button.sbb or _G[dropDown:GetName() .. "Button"].sbb then
+			aObj:clrBtnBdr(dropDown.Button or _G[dropDown:GetName() .. "Button"])
+		end
+	end)
+end
 local function __skinDropDown(opts)
 --[[
 	Calling parameters:
@@ -855,7 +869,7 @@ function aObj:skinGlowBox(gBox, ftype, ncb)
 	then
 		self:skinCloseButton{obj=gBox.CloseButton or _G[gBox:GetName() .. "CloseButton"], noSkin=true}
 	end
-	self:addSkinFrame{obj=gBox, ft=ftype, nb=true, aso={bbclr="gold"}, ofs=aObj.isBeta and -2 or 0}
+	self:addSkinFrame{obj=gBox, ft=ftype, nb=true, aso={bbclr="gold"}, ofs= -2}
 
 end
 
@@ -1359,8 +1373,8 @@ local function __skinUsingBD(opts)
 		aObj:addBackdrop(opts.obj)
 	end
 	opts.obj:SetBackdrop(aObj.Backdrop[opts.size])
-	opts.obj:SetBackdropBorderColor(.2, .2, .2, 1)
 	opts.obj:SetBackdropColor(.1, .1, .1, 1)
+	opts.obj:SetBackdropBorderColor(.2, .2, .2, 1)
 
 end
 function aObj:skinUsingBD(...)
