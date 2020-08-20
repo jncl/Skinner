@@ -25,6 +25,8 @@ do
 	-- create the addon
 	_G.LibStub:GetLibrary("AceAddon-3.0", true):NewAddon(aObj, aName, "AceConsole-3.0", "AceEvent-3.0", "AceHook-3.0")
 
+	aObj.tocVer = _G.select(4, _G.GetBuildInfo())
+
 	local agentUID = _G.GetCVar("agentUID")
 	-- check to see which WoW version we are running on
 	aObj.isBeta = agentUID:find("_beta") and true
@@ -52,6 +54,8 @@ do
 --@end-alpha@
 	agentUID = nil
 
+	-- handle Beta changes in PTR
+	aObj.isBeta = aObj.isBeta or aObj.isPTR and buildInfo.retail_ptr[1] == buildInfo.beta[1]
 	-- handle PTR changes going Live
 	aObj.isClscPTR = aObj.isClscPTR or aObj.isPatch and aObj.isClsc and buildInfo.curr[1] > buildInfo.classic[1] and true
 	aObj.isPTR = aObj.isPTR or aObj.isPatch and isRetail and buildInfo.curr[1] > buildInfo.retail[1] and true
@@ -98,7 +102,7 @@ function aObj:OnInitialize()
 	self.L = _G.LibStub:GetLibrary("AceLocale-3.0", true):GetLocale(aName)
 	-- pointer to LibDBIcon-1.0 library
 	self.DBIcon = _G.LibStub:GetLibrary("LibDBIcon-1.0", true)
-	-- store player class
+	-- store player class as English Spelling
 	self.uCls = _G.select(2, _G.UnitClass("player"))
 
 	-- setup the default DB values and register them
@@ -167,6 +171,17 @@ function aObj:OnInitialize()
 			self.prdb.BattlefieldMap = true
 		else
 			self.prdb.BattlefieldMap = false
+		end
+	end
+	-- Removed LootFrames extra button option
+	if self.prdb.LootFrames.extra then
+		self.prdb.LootFrames.extra = nil
+	end
+	if aObj.isBeta then
+		for _, option in pairs{"BarbershopUI", "QuestChoice", "WarboardUI"} do
+			if self.prdb[option] then
+				self.prdb[option] = nil
+			end
 		end
 	end
 
@@ -437,8 +452,8 @@ function aObj:OnEnable()
 	if _G.UnitLevel("player") >= _G.MAX_PLAYER_LEVEL - 5
 	and not _G.IsTrialAccount()
 	then
-		-- track when player levels up, to manage MainMenuBars' WatchBars' placement
-		self:RegisterEvent("PLAYER_LEVEL_UP")
+		-- track when player changes level, to manage MainMenuBars' WatchBars' placement
+		self:RegisterEvent(aObj.isBeta and "PLAYER_LEVEL_CHANGED" or "PLAYER_LEVEL_UP")
 	end
 
 	-- handle statusbar changes

@@ -261,40 +261,77 @@ function aObj:TRADE_SKILL_SHOW()
 
 end
 
-function aObj:PLAYER_LEVEL_UP(...)
---[[
-	arg1 - event name
-	arg2 - new player level
-	arg3 - hit points gained from levelling
-	arg4 - mana points gained from levelling
-	arg5 - Talent points gained from levelling
-	arg6-arg10 - attribute score increases from levelling:
-		Strength (6)
-		Agility (7)
-		Stamina (8)
-		Intellect (9)
-		Spirit (10)
+if not aObj.isBeta then
+	function aObj:PLAYER_LEVEL_UP(...)
+	--[[
+		arg1 - event name
+		arg2 - new player level
+		arg3 - hit points gained from levelling
+		arg4 - mana points gained from levelling
+		arg5 - Talent points gained from levelling
+		arg6-arg10 - attribute score increases from levelling:
+			Strength (6)
+			Agility (7)
+			Stamina (8)
+			Intellect (9)
+			Spirit (10)
 
-	Expansion Level number: (Level cap)
-		0 : Classic (60)
-		1 : Burning Crusade (70)
-		2 : Wrath of the Lich King (80)
-		3 : Cataclysm (85)
-		4 : Mists of Pandaria (90)
-		5 : Warlords of Draenor (100)
-		6 : Legion (110)
-		7 : Battle for Azeroth (120)
---]]
+		Expansion Level number: (Level cap)
+			0 : Classic (60)
+			1 : Burning Crusade (70)
+			2 : Wrath of the Lich King (80)
+			3 : Cataclysm (85)
+			4 : Mists of Pandaria (90)
+			5 : Warlords of Draenor (100)
+			6 : Legion (110)
+			7 : Battle for Azeroth (120)
+	--]]
 
-	local newPlayerLevel = _G.select(2, ...)
+		local newPlayerLevel = _G.select(2, ...)
 
-	if newPlayerLevel < _G.MAX_PLAYER_LEVEL then return end
+		if newPlayerLevel < _G.MAX_PLAYER_LEVEL then return end
 
-	-- max XP level reached, adjust watchbar positions
-	for _, bar in _G.pairs{_G.ReputationWatchBar, _G.ArtifactWatchBar, _G.HonorWatchBar} do
-		bar.SetPoint = bar.OrigSetPoint
-		aObj:moveObject{obj=bar, y=2}
-		bar.SetPoint = _G.nop
+		-- max XP level reached, adjust watchbar positions
+		for _, bar in _G.pairs{_G.ReputationWatchBar, _G.ArtifactWatchBar, _G.HonorWatchBar} do
+			bar.SetPoint = bar.OrigSetPoint
+			aObj:moveObject{obj=bar, y=2}
+			bar.SetPoint = _G.nop
+		end
+
 	end
+else
+	function aObj:PLAYER_LEVEL_CHANGED(...)
+	--[[
+		arg1 - event name
+		arg2 - old player level
+		arg3 - new player level
+		...
 
+		Expansion Level number: (Level cap)
+			0 : Classic (60)
+			1 : Burning Crusade (70)
+			2 : Wrath of the Lich King (80)
+			3 : Cataclysm (85)
+			4 : Mists of Pandaria (90)
+			5 : Warlords of Draenor (100)
+			6 : Legion (110)
+			7 : Battle for Azeroth (120)
+			8 : Shadowlands (60), start @ 50
+	--]]
+
+		local oldPLevel = _G.select(2, ...)
+		local newPLevel = _G.select(3, ...)
+
+		-- if new level < old level then just started shadowlands expansion
+
+		if newLevel < _G.MAX_PLAYER_LEVEL then return end
+
+		-- max XP level reached, adjust watchbar positions
+		for _, bar in _G.pairs{_G.ReputationWatchBar, _G.ArtifactWatchBar, _G.HonorWatchBar} do
+			bar.SetPoint = bar.OrigSetPoint
+			aObj:moveObject{obj=bar, y=2}
+			bar.SetPoint = _G.nop
+		end
+
+	end
 end

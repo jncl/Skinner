@@ -2101,6 +2101,11 @@ aObj.blizzFrames[ftype].CompactFrames = function(self)
 			self:skinStdButton{obj=this.displayFrame.leaderOptions.readyCheckButton}
 			if not self.isClsc then
 				self:skinStdButton{obj=this.displayFrame.leaderOptions.rolePollButton}
+				if aObj.isBeta then
+					this.displayFrame.leaderOptions.countdownButton:DisableDrawLayer("ARTWORK") -- alpha values are changed in code
+					this.displayFrame.leaderOptions.countdownButton.Text:SetDrawLayer("OVERLAY") -- move draw layer so it is displayed
+					self:skinStdButton{obj=this.displayFrame.leaderOptions.countdownButton}
+				end
 				self:skinStdButton{obj=_G.CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton}
 				_G.CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton:GetNormalTexture():SetAlpha(1) -- icon
 			end
@@ -2112,7 +2117,7 @@ aObj.blizzFrames[ftype].CompactFrames = function(self)
 		-- Resize Frame
 		self:addSkinFrame{obj=this.containerResizeFrame, ft=ftype, kfs=true, x1=-2, y1=-1, y2=4}
 		-- Raid Frame Manager Frame
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true}
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, ofs=0}
 
 		self:Unhook(this, "OnShow")
 	end)
@@ -2251,6 +2256,19 @@ aObj.blizzFrames[ftype].DressUpFrame = function(self)
 		self:Unhook(this, "OnShow")
 	end)
 
+	if aObj.isBeta then
+		self:SecureHookScript(_G.TransmogAndMountDressupFrame, "OnShow", function(this)
+
+			if self.modBtns then
+				self:skinStdButton{obj=this.ResetButton}
+			end
+			if self.modChkBtns then
+				self:skinCheckButton{obj=this.ShowMountCheckButton}
+			end
+
+			self:Unhook(this, "OnShow")
+		end)
+	end
 end
 
 aObj.blizzLoDFrames[ftype].EncounterJournal = function(self) -- a.k.a. Adenture Guide
@@ -2509,19 +2527,21 @@ aObj.blizzLoDFrames[ftype].EncounterJournal = function(self) -- a.k.a. Adenture 
 		self:Unhook(this, "OnShow")
 	end)
 
-	-- LootJournal panel
-	self:SecureHookScript(_G.EncounterJournal.LootJournal, "OnShow", function(this)
-		self:skinDropDown{obj=this.ClassDropDown}
-		-- ItemSetsFrame
-		self:skinSlider{obj=self:getChild(this.ItemSetsFrame, 2), wdth=-4, size=3}
-		skinFilterBtn(this.ItemSetsFrame.ClassButton)
-		for i = 1 , #this.ItemSetsFrame.buttons do
-			this.ItemSetsFrame.buttons[i].Background:SetTexture(nil)
-		end
-		self:addFrameBorder{obj=this, ft=ftype, x1=-8, y1=6, x2=8, y2=-5}
+	if not aObj.isBeta then
+		-- LootJournal panel
+		self:SecureHookScript(_G.EncounterJournal.LootJournal, "OnShow", function(this)
+			self:skinDropDown{obj=this.ClassDropDown}
+			-- ItemSetsFrame
+			self:skinSlider{obj=self:getChild(this.ItemSetsFrame, 2), wdth=-4, size=3}
+			skinFilterBtn(this.ItemSetsFrame.ClassButton)
+			for i = 1 , #this.ItemSetsFrame.buttons do
+				this.ItemSetsFrame.buttons[i].Background:SetTexture(nil)
+			end
+			self:addFrameBorder{obj=this, ft=ftype, x1=-8, y1=6, x2=8, y2=-5}
 
-		self:Unhook(this, "OnShow")
-	end)
+			self:Unhook(this, "OnShow")
+		end)
+	end
 
 end
 
@@ -3635,8 +3655,9 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 	if self.modBtnBs then
 		self:addButtonBorder{obj=_G.ObjectiveTrackerFrame.HeaderMenu.MinimizeButton, es=12, ofs=aObj.isBeta and 1 or 0, x1=-1}
 		if aObj.isBeta then
-			self:addButtonBorder{obj=_G.ObjectiveTrackerBlocksFrame.QuestHeader.MinimizeButton, es=12, ofs=1, x1=-1}
-			self:addButtonBorder{obj=_G.ObjectiveTrackerBlocksFrame.CampaignQuestHeader.MinimizeButton, es=12, ofs=1, x1=-1}
+			for _, hdr in pairs{"CampaignQuestHeader", "QuestHeader", "AchievementHeader", "ScenarioHeader", "UIWidgetsHeader"} do
+				self:addButtonBorder{obj=_G.ObjectiveTrackerBlocksFrame[hdr].MinimizeButton, es=12, ofs=1, x1=-1}
+			end
 		end
 		-- hook this to skin QuestObjective Block Button(s)
 		self:SecureHook("QuestObjectiveSetupBlockButton_AddRightButton", function(_, button, _)
@@ -3766,6 +3787,13 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 		aObj:add2Table(aObj.ttList, _G.ScenarioStepRewardTooltip)
 	end)
 
+	if aObj.isBeta then
+		_G.ScenarioBlocksFrame.MawBuffsBlock.Container.List:DisableDrawLayer("BACKGROUND")
+		if self.modBtns then
+			self:skinStdButton{obj=_G.ScenarioBlocksFrame.MawBuffsBlock.Container, ofs=-10, x1=12, x2=-2}
+		end
+	end
+
 	-- remove Shadow texture
 	_G.BONUS_OBJECTIVE_TRACKER_MODULE.Header:DisableDrawLayer("BACKGROUND")
 	_G.WORLD_QUEST_TRACKER_MODULE.Header:DisableDrawLayer("BACKGROUND")
@@ -3795,7 +3823,7 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 			for i = 1, _G.GetNumAutoQuestPopUps() do
 				questID, _ = _G.GetAutoQuestPopUp(i)
 				-- BETA: API change
-				if not (_G.IsQuestBounty and _G.IsQuestBounty(questID) or _G.C_QuestLog.IsQuestBounty(questID)) then
+				if not (_G.IsQuestBounty and _G.IsQuestBounty(questID) or _G.C_QuestLog.IsQuestBounty and _G.C_QuestLog.IsQuestBounty(questID)) then
 					-- BETA: API change
 					questTitle = _G.GetQuestLogTitle and _G.GetQuestLogTitle(_G.GetQuestLogIndexByID(questID)) or _G.C_QuestLog.GetTitleForQuestID(questID)
 					if questTitle
@@ -4023,22 +4051,19 @@ aObj.blizzLoDFrames[ftype].PVPUI = function(self)
 			skinCommon(this)
 			this:DisableDrawLayer("BACKGROUND")
 			this:DisableDrawLayer("BORDER")
-			this.ShadowOverlay:DisableDrawLayer("OVERLAY")
 			this.Arena2v2.Reward.Border:SetTexture(nil)
 			this.Arena2v2.NormalTexture:SetTexture(nil)
 			this.Arena3v3.Reward.Border:SetTexture(nil)
 			this.Arena3v3.NormalTexture:SetTexture(nil)
 			this.RatedBG.Reward.Border:SetTexture(nil)
 			this.RatedBG.NormalTexture:SetTexture(nil)
+			this.ShadowOverlay:DisableDrawLayer("OVERLAY")
+			self:skinGlowBox(this.NoSeason, ftype, true) -- N.B. NO CloseButton for NoSeason & Disabled
+			self:skinGlowBox(this.Disabled, ftype, true)
 			self:skinDropDown{obj=this.ArenaInviteMenu}
 			self:removeMagicBtnTex(this.JoinButton)
 			if self.modBtns then
 				 self:skinStdButton{obj=this.JoinButton}
-		 		-- N.B. NO CloseButton for NoSeason & Disabled
-			end
-			if not aObj.isBeta then
-				self:skinGlowBox(this.NoSeason, ftype, true)
-				self:skinGlowBox(this.Disabled, ftype, true)
 			end
 
 			self:Unhook(this, "OnShow")
@@ -4762,17 +4787,38 @@ aObj.blizzLoDFrames[ftype].TradeSkillUI = function(self)
 			end)
 		end
 		cmib = nil
-		this.DetailsFrame.Contents.ResultIcon.ResultBorder:SetTexture(nil)
+		local cnts = this.DetailsFrame.Contents
+		if self.modBtnBs then
+			self:addButtonBorder{obj=cnts.ResultIcon, reParent={cnts.ResultIcon.Count}}
+		end
+		cnts.ResultIcon.ResultBorder:SetTexture(nil)
+		if aObj.isBeta then
+			cnts.RecipeLevel.BorderLeft:SetTexture(nil)
+			cnts.RecipeLevel.BorderRight:SetTexture(nil)
+			cnts.RecipeLevel.BorderMid:SetTexture(nil)
+			self:skinStatusBar{obj=cnts.RecipeLevel, fi=0}
+			if self.modBtns then
+				self:skinStdButton{obj=cnts.RecipeLevelSelector, ofs=0, clr="grey"}
+			end
+		end
 		local btn
-		for i = 1, #this.DetailsFrame.Contents.Reagents do
-			btn = this.DetailsFrame.Contents.Reagents[i]
+		for i = 1, #cnts.Reagents do
+			btn = cnts.Reagents[i]
 			btn.NameFrame:SetTexture(nil)
 			if self.modBtnBs then
 				 self:addButtonBorder{obj=btn, relTo=btn.Icon, reParent={btn.Count}, clr="common"}
 			end
 		end
-		btn = nil
-
+		if aObj.isBeta then
+			for i = 1, #cnts.OptionalReagents do
+				btn = cnts.OptionalReagents[i]
+				btn.NameFrame:SetTexture(nil)
+				if self.modBtnBs then
+					 self:addButtonBorder{obj=btn, relTo=btn.Icon, reParent={btn.Count}, clr="green"}
+				end
+			end
+		end
+		btn, cnts = nil, nil
 		if self.modBtns then
 			self:skinStdButton{obj=this.DetailsFrame.ViewGuildCraftersButton}
 			self:skinStdButton{obj=this.DetailsFrame.ExitButton}
@@ -4789,8 +4835,27 @@ aObj.blizzLoDFrames[ftype].TradeSkillUI = function(self)
 			self:skinSlider{obj=this.Container.ScrollFrame.scrollBar, wdth=-4}
 			self:addSkinFrame{obj=this.Container, ft=ftype, ofs=2, x2=-2}
 			self:addSkinFrame{obj=this, ft=ftype, kfs=true, ofs=-7}
+
 			self:Unhook(this, "OnShow")
 		end)
+
+		-- OptionalReagentList
+		if aObj.isBeta then
+			self:SecureHookScript(this.OptionalReagentList, "OnShow", function(this)
+				self:removeInset(this.ScrollList.InsetFrame)
+				self:skinSlider{obj=this.ScrollList.ScrollFrame.scrollBar, rt="background", wdth=-4}
+				self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, ri=true, ofs=0}
+				-- TODO: skin scrolllist elements
+				if self.modBtns then
+					self:skinStdButton{obj=this.CloseButton}
+				end
+				if self.modChkBtns then
+					self:skinCheckButton{obj=this.HideUnownedButton}
+				end
+
+				self:Unhook(this, "OnShow")
+			end)
+		end
 
 		-- send message when UI is skinned (used by oGlow skin)
 		self:SendMessage("TradeSkillUI_Skinned", self)

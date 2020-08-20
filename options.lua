@@ -57,8 +57,10 @@ aObj.blizzFrames[ftype].SetupDefaults = function(self)
 		AuctionHouseUI       = true,
 		AzeriteRespecUI      = true,
 		BankFrame            = true,
-		BarbershopUI         = true,
+		BarbershopUI         = not aObj.isBeta and true or nil,
 		BlackMarketUI        = true,
+		CovenantSanctum      = aObj.isBeta and true or nil,
+		CovenantPreviewUI    = aObj.isBeta and true or nil,
 		FlightMap            = true,
 		GossipFrame          = true,
 		GuildRegistrar       = true,
@@ -67,8 +69,9 @@ aObj.blizzFrames[ftype].SetupDefaults = function(self)
 		MerchantFrame        = true,
 		Petition             = true,
 		PetStableFrame       = true,
-		QuestChoice          = true,
+		QuestChoice          = not aObj.isBeta and true or nil,
 		QuestFrame           = true,
+		RuneForgeUI          = aObj.isBeta and true or nil,
 		Tabard               = true,
 		TaxiFrame            = true,
 		TrainerUI            = true,
@@ -122,6 +125,7 @@ aObj.blizzFrames[ftype].SetupDefaults = function(self)
 		BNFrames             = true,
 		Calendar             = true,
 		ChallengesUI         = true,
+		CharacterCustomize   = aObj.isBeta and true or nil,
 		ChatBubbles          = true,
 		ChatButtons          = true,
 		ChatConfig           = true,
@@ -164,6 +168,7 @@ aObj.blizzFrames[ftype].SetupDefaults = function(self)
 		ObliterumUI          = true,
 		OrderHallUI          = true,
 		PetBattleUI          = true,
+		PlayerChoiceUI       = aObj.isBeta and true or nil,
 		ProductChoiceFrame   = true,
 		PTRFeedback          = aObj.isPTR or aObj.isBeta and true or nil,
 		PVEFrame             = true, -- (inc, LFD, LFG, RaidFinder, ScenarioFinder)
@@ -174,6 +179,7 @@ aObj.blizzFrames[ftype].SetupDefaults = function(self)
 		RaidFrame            = true, -- (inc. LFR)
 		SharedBasicControls  = true,
 		ScrappingMachineUI   = true,
+		Soulbinds            = aObj.isBeta and true or nil,
 		SplashFrame          = true,
 		StaticPopups         = true,
 		TalkingHeadUI        = true,
@@ -182,7 +188,7 @@ aObj.blizzFrames[ftype].SetupDefaults = function(self)
 		Tutorial             = true,
 		UIWidgets            = true,
 		UnitPopup            = true,
-		WarboardUI           = true,
+		WarboardUI           = not aObj.isBeta and true or nil,
 		WarfrontsPartyPoseUI = true,
 		WeeklyRewards        = aObj.isBeta and true or nil,
 		WorldMap             = {skin = true, size = 1},
@@ -819,16 +825,26 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 					name = self.L["Bank Frame"],
 					desc = self.L["Toggle the skin of the Bank Frame"],
 				},
-				BarbershopUI = {
+				BarbershopUI = not aObj.isBeta and {
 					type = "toggle",
 					name = self.L["Barbershop UI"],
 					desc = self.L["Toggle the skin of the Barbershop UI"],
-				},
+				} or nil,
 				BlackMarketUI = {
 					type = "toggle",
 					name = self.L["Black Market UI"],
 					desc = self.L["Toggle the skin of the Black Market UI"],
 				},
+				CovenantSanctum = aObj.isBeta and {
+					type = "toggle",
+					name = self.L["Covenant Sanctum"],
+					desc = self.L["Toggle the skin of the Covenant Sanctum"],
+				} or nil,
+				CovenantPreviewUI = aObj.isBeta and {
+					type = "toggle",
+					name = self.L["Covenant Preview UI"],
+					desc = self.L["Toggle the skin of the Covenant Preview UI"],
+				} or nil,
 				FlightMap = {
 					type = "toggle",
 					name = self.L["Flight Map"],
@@ -869,16 +885,21 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 					name = self.L["Stable Frame"],
 					desc = self.L["Toggle the skin of the Stable Frame"],
 				},
-				QuestChoice = {
+				QuestChoice = not aObj.isBeta and {
 					type = "toggle",
 					name = self.L["Quest Choice Frame"],
 					desc = self.L["Toggle the skin of the Quest Choice Frame"],
-				},
+				} or nil,
 				QuestFrame = {
 					type = "toggle",
 					name = self.L["Quest Frame"],
 					desc = self.L["Toggle the skin of the Quest Frame"],
 				},
+				RuneForgeUI = aObj.isBeta and {
+					type = "toggle",
+					name = self.L["RuneForge UI"],
+					desc = self.L["Toggle the skin of the RuneForge UI"],
+				} or nil,
 				Tabard = {
 					type = "toggle",
 					name = self.L["Tabard Frame"],
@@ -1309,6 +1330,11 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 					name = self.L["Challenges UI"],
 					desc = self.L["Toggle the skin of the Challenges UI"],
 				},
+				CharacterCustomize = aObj.isBeta and {
+					type = "toggle",
+					name = self.L["Character Customize Frame"],
+					desc = self.L["Toggle the skin of the Character Customize Frame"],
+				} or nil,
 				chatopts = {
 					type = "group",
 					inline = true,
@@ -1662,7 +1688,12 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 					name = self.L["Product Choice Frame"],
 					desc = self.L["Toggle the skin of the Product Choice Frame"],
 				},
-				PTRFeedback = aObj.isPTR or aObj.isBeta and {
+				PlayerChoiceUI = aObj.isBeta and {
+					type = "toggle",
+					name = self.L["Player Choice UI"],
+					desc = self.L["Toggle the skin of the Player Choice UI"],
+				} or nil,
+				PTRFeedback = (aObj.isPTR or aObj.isBeta) and {
 					type = "toggle",
 					name = self.L["PTR Feedback Frames"],
 					desc = self.L["Toggle the skin of the PTR Feedback Frames"],
@@ -1709,6 +1740,11 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 					name = self.L["Script Errors Frame"],
 					desc = self.L["Toggle the skin of the Script Errors Frame"],
 				},
+				Soulbinds = aObj.isBeta and {
+					type = "toggle",
+					name = self.L["Soulbinds Frame"],
+					desc = self.L["Toggle the skin of the Soulbinds Frame"],
+				} or nil,
 				SplashFrame = {
 					type = "toggle",
 					name = self.L["What's New Frame"],
@@ -1786,11 +1822,11 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 					name = self.L["Unit Popups"],
 					desc = self.L["Toggle the skin of the Unit Popups"],
 				},
-				WarboardUI = {
+				WarboardUI = not aObj.isBeta and {
 					type = "toggle",
 					name = self.L["Warboard UI"],
 					desc = self.L["Toggle the skin of the Warboard UI"],
-				},
+				} or nil,
 				WarfrontsPartyPoseUI = {
 					type = "toggle",
 					name = self.L["Warfronts Party Pose UI"],

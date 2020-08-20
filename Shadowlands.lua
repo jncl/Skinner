@@ -5,13 +5,13 @@ if not aObj.isBeta then return end
 local _G = _G
 
 -- NPC Frames additions
-ftype = "n"
+local ftype = "n"
 
 -- Player Frames additions
-ftype = "p"
+local ftype = "p"
 
 -- UI Frames additions
-ftype = "u"
+local ftype = "u"
 -- WeeklyRewardsFrame (Hall of Holding - Oribos)
 aObj.blizzLoDFrames[ftype].WeeklyRewards = function(self)
 	if not self.prdb.WeeklyRewards or self.initialized.WeeklyRewards then return end
@@ -22,11 +22,11 @@ aObj.blizzLoDFrames[ftype].WeeklyRewards = function(self)
 		self:removeNineSlice(this.NineSlice)
 		this.HeaderFrame:DisableDrawLayer("BACKGROUND")
 		this.HeaderFrame:DisableDrawLayer("BORDER")
-		for _, frame in pairs{"RaidFrame", "MythicFrame", "PVPFrame"} do
+		for _, frame in _G.pairs{"RaidFrame", "MythicFrame", "PVPFrame"} do
 			self:addFrameBorder{obj=this[frame], ft=ftype, ofs=3, aso={bbclr="sepia"}}
 			this[frame].Background:SetAlpha(1)
 		end
-		for i, frame in ipairs(this.Activities) do
+		for i, frame in _G.ipairs(this.Activities) do
 			-- _G.Spew("", frame)
 			self:addFrameBorder{obj=frame, ft=ftype, ofs=3, x1=3, y1=-3, aso={bbclr="grey"}}
 			-- show required textures
@@ -53,20 +53,5 @@ aObj.blizzLoDFrames[ftype].WeeklyRewards = function(self)
 
 		self:Unhook(this, "OnShow")
 	end)
-
-end
-
-aObj.blizzLoDFrames[ftype].TutorialPointerFrame = function(self)
-	if not self.prdb.Tutorial or self.initialized.TutorialPointerFrame then return end
-	self.initialized.TutorialPointerFrame = true
-
-	self:RawHook(_G.NPE_TutorialPointerFrame, "Show", function(this, ...)
-		local id = self.hooks[this].Show(this, ...)
-		local frame = this.InUseFrames[id]
-		self:skinGlowBox(frame.Content)
-		frame.Glow:SetBackdrop(nil)
-		frame = nil
-		return id
-	end, true)
 
 end

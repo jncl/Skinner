@@ -385,30 +385,31 @@ aObj.blizzFrames[ftype].BankFrame = function(self)
 
 end
 
-aObj.blizzLoDFrames[ftype].BarbershopUI = function(self)
-	if not self.prdb.BarbershopUI or self.initialized.Barbershop then return end
-	self.initialized.Barbershop = true
+if not aObj.isBeta then
+	aObj.blizzLoDFrames[ftype].BarbershopUI = function(self)
+		if not self.prdb.BarbershopUI or self.initialized.Barbershop then return end
+		self.initialized.Barbershop = true
 
-	self:SecureHookScript(_G.BarberShopFrame, "OnShow", function(this)
-		for i = 1, #this.Selector do
-			self:addButtonBorder{obj=self:getChild(this.Selector[i], 1), ofs=-2}
-			self:addButtonBorder{obj=self:getChild(this.Selector[i], 2), ofs=-2}
-		end
-		self:keepFontStrings(_G.BarberShopFrameMoneyFrame)
-		self:skinStdButton{obj=_G.BarberShopFrameOkayButton}
-		self:skinStdButton{obj=_G.BarberShopFrameCancelButton}
-		self:skinStdButton{obj=_G.BarberShopFrameResetButton}
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, x1=35, y1=-32, x2=-32, y2=42}
+		self:SecureHookScript(_G.BarberShopFrame, "OnShow", function(this)
+			for i = 1, #this.Selector do
+				self:addButtonBorder{obj=self:getChild(this.Selector[i], 1), ofs=-2}
+				self:addButtonBorder{obj=self:getChild(this.Selector[i], 2), ofs=-2}
+			end
+			self:keepFontStrings(_G.BarberShopFrameMoneyFrame)
+			self:skinStdButton{obj=_G.BarberShopFrameOkayButton}
+			self:skinStdButton{obj=_G.BarberShopFrameCancelButton}
+			self:skinStdButton{obj=_G.BarberShopFrameResetButton}
+			self:addSkinFrame{obj=this, ft=ftype, kfs=true, x1=35, y1=-32, x2=-32, y2=42}
 
-		-- Banner Frame
-		self:keepFontStrings(_G.BarberShopBannerFrame)
-		_G.BarberShopBannerFrameCaption:ClearAllPoints()
-		_G.BarberShopBannerFrameCaption:SetPoint("CENTER", this, "TOP", 0, -46)
-		_G.BarberShopBannerFrame:SetParent(this) -- make text appear above skinFrame
+			-- Banner Frame
+			self:keepFontStrings(_G.BarberShopBannerFrame)
+			_G.BarberShopBannerFrameCaption:ClearAllPoints()
+			_G.BarberShopBannerFrameCaption:SetPoint("CENTER", this, "TOP", 0, -46)
+			_G.BarberShopBannerFrame:SetParent(this) -- make text appear above skinFrame
 
-		self:Unhook(this, "OnShow")
-	end)
-
+			self:Unhook(this, "OnShow")
+		end)
+	end
 end
 
 aObj.blizzLoDFrames[ftype].BlackMarketUI = function(self)
@@ -456,6 +457,95 @@ aObj.blizzLoDFrames[ftype].BlackMarketUI = function(self)
 
 		self:Unhook(this, "OnShow")
 	end)
+
+end
+
+if aObj.isBeta then
+	aObj.blizzLoDFrames[ftype].CovenantPreviewUI = function(self)
+		if not self.prdb.CovenantPreviewUI or self.initialized.CovenantPreviewUI then return end
+		self.initialized.CovenantPreviewUI = true
+
+
+		self:SecureHookScript(_G.CovenantPreviewFrame, "OnShow", function(this)
+
+			this.BorderFrame:DisableDrawLayer("BORDER")
+			this.Background.BackgroundTile:SetTexture(nil)
+			this.Title:DisableDrawLayer("BACKGROUND")
+			this.ModelSceneContainer.ModelSceneBorder:SetTexture(nil)
+			self:addFrameBorder{obj=this.ModelSceneContainer, ft=ftype, aso={bbclr="sepia"}}
+			this.ModelSceneContainer.Background:SetAlpha(1) -- make it visible
+			this.InfoPanel:DisableDrawLayer("BACKGROUND")
+			this.InfoPanel.Description:SetTextColor(self.BT:GetRGB())
+			this.InfoPanel.AbilitiesLabel:SetTextColor(self.HT:GetRGB())
+			for btn in this.AbilityButtonsPool:EnumerateActive() do
+				self:nilTexture(btn.Background, true)
+				self:nilTexture(btn.IconBorder, true)
+			end
+			self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, aso={bbclr="sepia"}}
+			if self.modBtns then
+				self:skinCloseButton{obj=this.CloseButton, noSkin=true}
+				self:skinStdButton{obj=this.SelectButton, clr="grey"}
+			end
+
+			self:Unhook(this, "OnShow")
+		end)
+
+	end
+	aObj.blizzLoDFrames[ftype].CovenantSanctum = function(self)
+		if not self.prdb.CovenantSanctum or self.initialized.CovenantSanctum then return end
+		self.initialized.CovenantSanctum = true
+
+		self:SecureHookScript(_G.CovenantSanctumFrame, "OnShow", function(this)
+
+			self:skinTabs{obj=this, lod=true}
+			this.LevelFrame.Background:SetTexture(nil)
+			self:addSkinFrame{obj=this, ft=ftype, kfs=true, ofs=-3}
+
+			-- UpgradesTab
+			local frame
+			for i = 1, #this.UpgradesTab.Upgrades do
+				frame = this.UpgradesTab.Upgrades[i]
+				if frame.Border then self:nilTexture(frame.Border, true) end
+				self:changeTandC(frame.RankBorder, self.lvlBG)
+			end
+			frame = nil
+			this.UpgradesTab.TalentsList:DisableDrawLayer("BACKGROUND")
+			this.UpgradesTab.TalentsList:DisableDrawLayer("BORDER")
+			self:SecureHook(this.UpgradesTab.TalentsList, "Refresh", function(this)
+				for frame in this.talentPool:EnumerateActive() do
+					self:removeRegions(frame, {1, 2})
+					self:addSkinFrame{obj=frame, ft=ftype, ofs=2.5, aso={bbclr="red"}}
+				end
+				if self.modBtns then
+					self:clrBtnBdr(this.UpgradeButton)
+				end
+			end)
+			if self.modBtns then
+				self:skinStdButton{obj=this.UpgradesTab.DepositButton}
+				self:skinStdButton{obj=this.UpgradesTab.TalentsList.UpgradeButton}
+			end
+
+			-- RenownTab
+			self:nilTexture(this.RenownTab.BackgroundTile, true)
+			self:nilTexture(this.RenownTab.Divider, true)
+			this.RenownTab.MilestonesFrame:DisableDrawLayer("BACKGROUND")
+			self:SecureHook(this.RenownTab, "Refresh", function(this)
+				for frame in this.milestonesPool:EnumerateActive() do
+					self:changeTandC(frame.LevelBorder, self.lvlBG)
+				end
+			end)
+			self:SecureHook(this.RenownTab, "RefreshRewards", function(this)
+				for frame in this.rewardsPool:EnumerateActive() do
+					frame.Toast:SetTexture(nil)
+					frame.IconBorder:SetTexture(nil)
+					self:addFrameBorder{obj=frame, ft=ftype, kfs=false, ofs=-14, aso={bbclr="red"}}
+				end
+			end)
+
+			self:Unhook(this, "OnShow")
+		end)
+
+	end
 
 end
 
@@ -772,32 +862,34 @@ aObj.blizzFrames[ftype].PetStableFrame = function(self)
 
 end
 
-aObj.blizzLoDFrames[ftype].QuestChoice = function(self)
-	if not self.prdb.QuestChoice or self.initialized.QuestChoice then return end
-	self.initialized.QuestChoice = true
+if not aObj.isBeta then
+	aObj.blizzLoDFrames[ftype].QuestChoice = function(self)
+		if not self.prdb.QuestChoice or self.initialized.QuestChoice then return end
+		self.initialized.QuestChoice = true
 
-	self:SecureHookScript(_G.QuestChoiceFrame, "OnShow", function(this)
-		this.DummyString:SetTextColor(self.BT:GetRGB())
-		for _, choice in _G.pairs(this.Options) do
-			choice.Header.Background:SetTexture(nil)
-			choice.Header.Text:SetTextColor(self.HT:GetRGB())
-			choice.OptionText:SetTextColor(self.BT:GetRGB())
-			if self.modBtnBs then
-				self:addButtonBorder{obj=choice.Rewards.Item, relTo=choice.Rewards.Item.Icon}
+		self:SecureHookScript(_G.QuestChoiceFrame, "OnShow", function(this)
+			this.DummyString:SetTextColor(self.BT:GetRGB())
+			for _, choice in _G.pairs(this.Options) do
+				choice.Header.Background:SetTexture(nil)
+				choice.Header.Text:SetTextColor(self.HT:GetRGB())
+				choice.OptionText:SetTextColor(self.BT:GetRGB())
+				if self.modBtnBs then
+					self:addButtonBorder{obj=choice.Rewards.Item, relTo=choice.Rewards.Item.Icon}
+				end
+				choice.Rewards.Item.Name:SetTextColor(self.BT:GetRGB())
+				choice.Rewards.ReputationsFrame.Reputation1.Faction:SetTextColor(self.BT:GetRGB())
+				self:moveObject{obj=choice.Header, y=15}
+				if self.modBtns then
+					self:skinStdButton{obj=choice.OptionButtonsContainer.OptionButton1}
+					self:skinStdButton{obj=choice.OptionButtonsContainer.OptionButton2}
+				end
 			end
-			choice.Rewards.Item.Name:SetTextColor(self.BT:GetRGB())
-			choice.Rewards.ReputationsFrame.Reputation1.Faction:SetTextColor(self.BT:GetRGB())
-			self:moveObject{obj=choice.Header, y=15}
-			if self.modBtns then
-				self:skinStdButton{obj=choice.OptionButtonsContainer.OptionButton1}
-				self:skinStdButton{obj=choice.OptionButtonsContainer.OptionButton2}
-			end
-		end
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ofs=-13, y1=-13}
+			self:addSkinFrame{obj=this, ft=ftype, kfs=true, ofs=-13, y1=-13}
 
-		self:Unhook(this, "OnShow")
-	end)
+			self:Unhook(this, "OnShow")
+		end)
 
+	end
 end
 
 aObj.blizzFrames[ftype].QuestFrame = function(self)
@@ -1106,6 +1198,43 @@ aObj.blizzFrames[ftype].QuestInfo = function(self)
 
 end
 
+if aObj.isBeta then
+	aObj.blizzLoDFrames[ftype].RuneForgeUI = function(self)
+		if not self.prdb.RuneForgeUI or self.initialized.RuneForgeUI then return end
+		self.initialized.RuneForgeUI = true
+
+		_G.print("RuneForgeUI skin loaded")
+
+		self:SecureHookScript(_G.RuneforgeFrame, "OnShow", function(this)
+
+			-- .CraftingFrame
+				-- .BaseItemSlot
+				-- .UpgradeItemSlot
+				-- .ModifierFrame
+				-- .PowerSlot
+				-- .PowerFrame
+			-- .CreateFrame
+			if self.modBtns then
+				self:skinStdButton{obj=this.CreateFrame.CraftItemButton}
+				self:SecureHook(this.CreateFrame.CraftItemButton, "SetCraftState", function(this, ...)
+					self:clrBtnBdr(this)
+				end)
+				self:skinStdButton{obj=this.CreateFrame.CloseButton}
+			end
+			-- .CurrencyDisplay
+
+			self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, ofs=-20, y2=30}
+
+			-- tooltip
+			_G.C_Timer.After(0.1, function()
+				self:add2Table(self.ttList, this.ResultTooltip)
+			end)
+
+			self:Unhook(this, "OnShow")
+		end)
+
+	end
+end
 aObj.blizzFrames[ftype].Tabard = function(self)
 	if not self.prdb.Tabard or self.initialized.Tabard then return end
 	self.initialized.Tabard = true
