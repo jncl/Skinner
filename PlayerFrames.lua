@@ -1450,11 +1450,10 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 	end)
 
 	local function skinReqToJoin(frame)
-
-		frame.RequestToJoinFrame.MessageFrame:DisableDrawLayer("BACKGROUND")
-		frame.RequestToJoinFrame.MessageFrame.MessageScroll:DisableDrawLayer("BACKGROUND")
-		aObj:addFrameBorder{obj=frame.RequestToJoinFrame.MessageFrame, ft=ftype, ofs=2}
-		aObj:addSkinFrame{obj=frame.RequestToJoinFrame.BG, ft=ftype, kfs=true, nb=true}
+		frame.MessageFrame:DisableDrawLayer("BACKGROUND")
+		frame.MessageFrame.MessageScroll:DisableDrawLayer("BACKGROUND")
+		aObj:addFrameBorder{obj=frame.MessageFrame, ft=ftype, ofs=2}
+		aObj:addSkinFrame{obj=frame.BG, ft=ftype, kfs=true, nb=true}
 		if aObj.modBtns then
 			 aObj:skinStdButton{obj=frame.Apply}
 			 aObj:skinStdButton{obj=frame.Cancel}
@@ -1463,18 +1462,15 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 			 end)
 		end
 		if aObj.modChkBtns then
-			aObj:SecureHook(frame.RequestToJoinFrame, "Initialize", function(this)
+			aObj:SecureHook(frame, "Initialize", function(this)
 				for spec in this.SpecsPool:EnumerateActive() do
 					aObj:skinCheckButton{obj=spec.CheckBox}
 				end
 			end)
 		end
-
 	end
 	local function skinCFGaCF(frame)
-
 		frame:DisableDrawLayer("BACKGROUND")
-
 		aObj:skinDropDown{obj=frame.OptionsList.ClubFilterDropdown}
 		aObj:skinDropDown{obj=frame.OptionsList.ClubSizeDropdown}
 		aObj:skinDropDown{obj=frame.OptionsList.SortByDropdown}
@@ -1629,7 +1625,7 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 				self:clrBtnBdr(this.AcceptButton)
 			end)
 		end
-		skinReqToJoin(this)
+		skinReqToJoin(this.RequestToJoinFrame)
 
 		self:Unhook(this, "OnShow")
 	end)
