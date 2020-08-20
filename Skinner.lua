@@ -3,9 +3,9 @@ local aName, aObj = ...
 local _G = _G
 
 local buildInfo = {
-	beta        = {"9.0.1", 35432},
+	beta        = {"9.0.1", 35598},
 	classic_ptr = {"1.13.5", 35000},
-	retail_ptr  = {"8.3.7", 35284},
+	retail_ptr  = {"9.0.1", 35598},
 	retail      = {"8.3.7", 35435},
 	classic     = {"1.13.5", 35395},
 	curr        = {_G.GetBuildInfo()},
