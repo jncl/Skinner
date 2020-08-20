@@ -1,3 +1,31 @@
+beta9.35432.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Beta changes
+	Updated version numbers
+	Update options
+	Updated QuestFrame code
+	Updated PetStable code
+	Updated Blizzard Frames skinning sequence
+	Updated PTR Feedback skin
+	Updated ScriptErrorsFrame code
+	Updated ChatBubbles code
+	Updated border colour code
+	Updated addFrameBorder code
+	Updated BugSack skin
+	Skin TutorialPointerFrame
+	Code Layout Tidyup
+	Updated ObjectivesTracker modules skinning of StatusBars
+	Updated code to change Tooltip SkinFrame size as required
+	Remove all code related to deprecated DropDownButtons option
+	Colour Buttons & Frames
+	Replace SkinFrames with FrameBorders
+	Updated ClassTrainer skin for ClassicSupport
+	Updated TimeManagerFrame skin
+	Updated EquipmentFlyoutFrame border colour
+	Update ContainerFrame skin code
+
 beta8.35284.2
 Jncl:
 	ToDo.txt
