@@ -2,11 +2,11 @@ local aName, aObj = ...
 -- This is a Library
 local _G = _G
 
-aObj.libsToSkin.ArkDewdrop = function(self) -- v 30102
+aObj.libsToSkin.ArkDewdrop = function(self) -- v 30108
 	if self.initialized.ArkDewdrop then return end
 	self.initialized.ArkDewdrop = true
 
-	local libver = 30102
+	local libver = 30108
 	local loopcnt = 100
 
 	local sf, eb
@@ -15,7 +15,7 @@ aObj.libsToSkin.ArkDewdrop = function(self) -- v 30102
 		local frame
 		for i = 0, loopcnt do
 			frame = _G["ArkDewdrop" .. libver .. "Level" .. i]
-			aObj:Debug("ArkDewdropLevel: [%s, %s]", i, frame or nil)
+			-- aObj:Debug("ArkDewdropLevel: [%s, %s]", i, frame or nil)
 			if frame
 			and not frame.sf
 			then
