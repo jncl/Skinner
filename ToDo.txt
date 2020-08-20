@@ -25,25 +25,11 @@ ToDos
 
 ≈	O	Make sure all buttons borders have the correct border colour, e.g. "gold"/"grey"
 
-	N	Shadowlands [Beta] 9.0.1
-		- Changed
-≈			- Backdrop removed from all frames, use the BackdropTemplateMixin as a Mixin for the frame/button objects as required
-		- Added
-¶			- WeeklyRewards
-		- Issues
-			- ChatBubbles need skinning, currently cause errors especially in combat
-√			- ChatEditBoxes need skinning
-√			- ItemButtons Quality checks
-√			- GossipButtons text colours
-≈			- QuestFrameGreetingPanelButtons text colours
-√			- Most Glowboxes have been removed
-√			- Bug reporter borders are visible
-√			- DropDown Menu border visible
-√			- ObjectivesTracker Blocks need skinning
-√			- LSM DropDowns have no skinFrame
-√			- QuestMap CampaignHeaders
-√			- Add Backdrop to ScrollFrames
-≈			- Use ClearBackdrop() on frames that previously used SetBackdrop(nil)
-√			- Auto popup objectives cause error
-			- ChatBubbles seem to generate error, which cause ScriptErrorFrame to be displayed with additional errors and not skinned??
-			-
+≈	O	Add checks for Button state as required
+
+¶	O	PTRFeedback option added
+
+	I	ArkInventory, reported by Acivien, 14.08.20
+√		- 1832x Skinner\AddonSkins\ArkInventory-30931.lua:20: attempt to index field '?' (a nil value)
+		[string "@Skinner\AddonSkins\ArkInventory-30931.lua"]:20: in function <Skinner\AddonSkins\ArkInventory.lua:8>
+		[string "@Skinner\AddonSkins\ArkInventory-30931.lua"]:40: in function <Skinner\AddonSkins\ArkInventory.lua:39>
