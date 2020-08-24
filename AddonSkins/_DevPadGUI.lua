@@ -10,8 +10,10 @@ aObj.lodAddons["_DevPad.GUI"] = function(self) -- v 5.0.0.1
 	self:skinEditBox{obj=_G._DevPad.GUI.List.RenameEdit, regs={6}}
 	self:skinEditBox{obj=_G._DevPad.GUI.List.Search, regs={6}, mi=true}
 	self:getRegion(_G._DevPad.GUI.List.Bottom, 1):SetTexture(nil)
-	self:skinCloseButton{obj=_G._DevPad.GUI.List.Close}
 	self:addSkinFrame{obj=_G._DevPad.GUI.List, ft="a", nb=true, ofs=1}
+	if self.modBtns then
+		self:skinCloseButton{obj=_G._DevPad.GUI.List.Close}
+	end
 
 	-- Editor frame
 	self:moveObject{obj=_G._DevPad.GUI.Editor.Run, y=-1}
@@ -20,7 +22,12 @@ aObj.lodAddons["_DevPad.GUI"] = function(self) -- v 5.0.0.1
 	_G._DevPad.GUI.Editor.LineNumbers.Gutter:SetTexture(nil)
 	self:skinEditBox{obj=_G._DevPad.GUI.Editor.Edit, regs={6}}
 	self:getRegion(_G._DevPad.GUI.Editor.Bottom, 1):SetTexture(nil)
-	self:skinCloseButton{obj=_G._DevPad.GUI.Editor.Close}
 	self:addSkinFrame{obj=_G._DevPad.GUI.Editor, ft="a", nb=true, ofs=1}
+	if self.modBtns then
+		self:skinCloseButton{obj=_G._DevPad.GUI.Editor.Close}
+	end
+	if self.modBtnBs then
+		self:addButtonBorder{obj=_G._DevPad.GUI.Editor.Run, ofs=-1, x1=0, clr="gold"}
+	end
 
 end

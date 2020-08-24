@@ -76,7 +76,7 @@ aObj.lodAddons.ChampionCommander = function(self) -- v 1.2.4 80300
 				for j = 1, #btn.Rewards do
 					btn:DisableDrawLayer("BACKGROUND")
 					self:addButtonBorder{obj=btn.Rewards[j], relTo=btn.Rewards[j].Icon, reParent={btn.Rewards[j].Quantity}}
-					self:clrButtonBorder(btn.Rewards[j])
+					self:clrButtonFromBorder(btn.Rewards[j])
 				end
 				for j = 1, #btn.Followers.Champions do
 					btn.Followers.Champions[j].PortraitRing:SetTexture(nil)

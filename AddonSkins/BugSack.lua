@@ -13,10 +13,16 @@ aObj.addonsToSkin.BugSack = function(self) -- v r300-release
 		self:addSkinFrame{obj=_G.BugSackFrame, ft="a", kfs=true, nb=true, y1=-2, x2=-1, y2=2}
 		_G.RaiseFrameLevelByTwo(_G.BugSackFrame)
 		if self.modBtns then
-			self:skinStdButton{obj=_G.BugSackPrevButton}
-			self:skinStdButton{obj=_G.BugSackSendButton}
-			self:skinStdButton{obj=_G.BugSackNextButton}
 			self:skinCloseButton{obj=self:getChild(_G.BugSackFrame, 1)}
+			for _, btn in _G.pairs{_G.BugSackPrevButton, _G.BugSackSendButton, _G.BugSackNextButton} do
+				self:skinStdButton{obj=btn}
+				self:SecureHook(btn, "Disable", function(this, _)
+					self:clrBtnBdr(this)
+				end)
+				self:SecureHook(btn, "Enable", function(this, _)
+					self:clrBtnBdr(this)
+				end)
+			end
 		end
 
 		-- tabs
@@ -42,7 +48,7 @@ aObj.addonsToSkin.BugSack = function(self) -- v r300-release
 			end
 		end
 
-		self:Unhook(_G.BugSack, "OpenSack")
+		self:Unhook(this, "OpenSack")
 	end)
 
 	-- Config
