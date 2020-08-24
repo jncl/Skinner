@@ -1180,6 +1180,14 @@ function aObj:setupBackdrop()
 
 end
 
+function aObj:skinNavBarButton(btn)
+
+	btn:DisableDrawLayer("OVERLAY")
+	btn:GetNormalTexture():SetAlpha(0)
+	btn:GetPushedTexture():SetAlpha(0)
+
+end
+
 --@debug@
 function aObj:tableCount(table)
 

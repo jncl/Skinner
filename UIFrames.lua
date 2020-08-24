@@ -4782,9 +4782,7 @@ aObj.blizzFrames[ftype].NavigationBar = function(self)
 	-- hook this to handle navbar buttons
 	self:SecureHook("NavBar_AddButton", function(this, _)
 		for i = 1, #this.navList do
-			this.navList[i]:DisableDrawLayer("OVERLAY")
-			this.navList[i]:GetNormalTexture():SetAlpha(0)
-			this.navList[i]:GetPushedTexture():SetAlpha(0)
+			self:skinNavBarButton(this.navList[i])
 			if self.modBtnBs
 			and this.navList[i].MenuArrowButton -- Home button doesn't have one
 			and not this.navList[i].MenuArrowButton.sbb

@@ -2306,12 +2306,8 @@ aObj.blizzLoDFrames[ftype].EncounterJournal = function(self) -- a.k.a. Adenture 
 
 		this.navBar:DisableDrawLayer("BACKGROUND")
 		this.navBar:DisableDrawLayer("BORDER")
-		this.navBar.overlay:DisableDrawLayer("OVERLAY")
-		this.navBar.overflow:GetNormalTexture():SetAlpha(0)
-		this.navBar.overflow:GetPushedTexture():SetAlpha(0)
-		this.navBar.home:DisableDrawLayer("OVERLAY")
-		this.navBar.home:GetNormalTexture():SetAlpha(0)
-		this.navBar.home:GetPushedTexture():SetAlpha(0)
+		self:skinNavBarButton(this.navBar.overlay)
+		self:skinNavBarButton(this.navBar.home)
 		this.navBar.home.text:SetPoint("RIGHT", -20, 0)
 		self:removeInset(this.inset)
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true}
