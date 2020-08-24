@@ -1196,6 +1196,7 @@ local function __skinTabs(opts)
 --[[
 	Calling parameters:
 		obj = object (Mandatory)
+		name = tab name
 		suffix = tab name suffix
 		regs = regions to keep
 		ignore = ignore size changes
