@@ -1233,6 +1233,15 @@ function aObj:updateSBTexture()
 
 end
 
+function aObj:unwrapTextFromColourCode(text)
+
+	local newText = _G.gsub(text, "\124", "\124\124") -- turn Hex string into text
+	newText = _G.strsub(newText, 12, -4) -- remove colour prefix and suffix
+	newText = _G.gsub(newText, "\124\124", "\124") -- convert string to Hex for any embedded characters (e.g. newlines)
+	return newText
+
+end
+
 local function printIt(text, frame, r, g, b)
 
 	(frame or _G.DEFAULT_CHAT_FRAME):AddMessage(text, r, g, b)

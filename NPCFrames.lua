@@ -1126,11 +1126,13 @@ aObj.blizzFrames[ftype].QuestInfo = function(self)
 			 aObj:addButtonBorder{obj=_G.QuestInfoSpellObjectiveFrame, relTo=_G.QuestInfoSpellObjectiveFrame.Icon, clr="grey"}
 		end
 
-		-- QuestInfoSeal Frame
-		if _G.QuestInfoSealFrame.sealInfo
-		and _G.QuestInfoSealFrame.sealInfo.text
+		-- QuestInfoSeal Frame text colour
+		if _G.QuestInfoSealFrame:IsShown()
+		and _G.QuestInfoSealFrame.theme
 		then
-			_G.QuestInfoSealFrame.Text:SetText(_G.RGBToColorCode(aObj.HT:GetRGB()) .. _G.QuestInfoSealFrame.sealInfo.text:sub(11))
+			local sealText = aObj:unwrapTextFromColourCode(_G.QuestInfoSealFrame.theme.signature)
+			_G.QuestInfoSealFrame.Text:SetText(aObj.HT:WrapTextInColorCode(sealText)) -- re-colour text
+			sealText = nil
 		end
 
 	end
