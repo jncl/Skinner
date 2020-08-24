@@ -737,13 +737,18 @@ function aObj:isDropDown(obj)
 	_G.assert(obj, "Unknown object isDropDown\n" .. _G.debugstack(2, 3, 2))
 --@end-alpha@
 
-	if obj:IsObjectType("Frame")
-	and obj:GetName()
-	then
-		return self:hasTextInTexture(_G[obj:GetName() .. "Left"], "CharacterCreate")
-	else
-		return false
+	if obj:IsObjectType("Frame") then
+		if obj:GetName()
+		and self:hasTextInTexture(_G[obj:GetName() .. "Left"], "CharacterCreate")
+		then
+			return true
+		elseif obj.Left
+		and self:hasTextInTexture(obj.Left, "CharacterCreate")
+		then
+			return true
+		end
 	end
+	return false
 
 end
 
