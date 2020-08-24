@@ -52,12 +52,6 @@ aObj.blizzLoDFrames[ftype].AuctionHouseUI = function(self)
 
 	self:SecureHookScript(_G.AuctionHouseFrame, "OnShow", function(this)
 
-		local function skinItemListHdrs(hdrPool)
-			for hdr in hdrPool:EnumerateActive() do
-				aObj:removeRegions(hdr, {1, 2, 3})
-				aObj:addSkinFrame{obj=hdr, ft=ftype, nb=true, ofs=1}
-			end
-		end
 		local function skinItemList(frame)
 			if aObj.modBtnBs then
 				aObj:addButtonBorder{obj=frame.RefreshFrame.RefreshButton, ofs=-2, x1=1, clr="gold"}
@@ -67,7 +61,10 @@ aObj.blizzLoDFrames[ftype].AuctionHouseUI = function(self)
 			aObj:skinSlider{obj=frame.ScrollFrame.scrollBar, rt="background", wdth=-5}
 			aObj:SecureHook(frame, "RefreshScrollFrame", function(this)
 				if this.tableBuilder then
-					skinItemListHdrs(this.tableBuilder.headerPoolCollection)
+					for hdr in this.tableBuilder.headerPoolCollection:EnumerateActive() do
+						aObj:removeRegions(hdr, {1, 2, 3})
+						aObj:addSkinFrame{obj=hdr, ft=ftype, nb=true, ofs=1}
+					end
 				end
 			end)
 		end
