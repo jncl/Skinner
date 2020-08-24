@@ -71,6 +71,3 @@ Skins.xml
 #
 # WoW Classic Support
 ClassicSupport.lua
-#
-# Shadowlands expansion support
-Shadowlands.lua
