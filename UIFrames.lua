@@ -2314,7 +2314,7 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 		end
 		-- N.B. NO CloseButton
 		if not aObj.isBeta then
-			self:skinGlowBox(this.GlowBox, ftype, true)
+			self:skinGlowBox(this.GlowBox, ftype)
 		end
 
 		self:Unhook(this, "OnShow")
@@ -6143,7 +6143,7 @@ aObj.blizzFrames[ftype].Tutorial = function(self)
 		self:Unhook(this, "OnShow")
 	end)
 
-	self:skinGlowBox(_G.HelpPlateTooltip, ftype, true)
+	self:skinGlowBox(_G.HelpPlateTooltip, ftype)
 
 end
 

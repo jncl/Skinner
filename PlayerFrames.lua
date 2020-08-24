@@ -534,7 +534,7 @@ aObj.blizzLoDFrames[ftype].AzeriteEssenceUI = function(self)
 		self:removeInset(this.RightInset)
 		self:skinSlider{obj=this.EssenceList.ScrollBar, size=2}
 		if not aObj.isBeta then
-			self:skinGlowBox(this.EssenceList.Tutorial, ftype, true)
+			self:skinGlowBox(this.EssenceList.Tutorial, ftype)
 		end
 		if self.modBtnBs then
 			local function clrBB(sf)
@@ -1702,7 +1702,7 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 	end)
 
 	if not aObj.isBeta then
-		self:skinGlowBox(cFrame.GuildNameAlertFrame, ftype, true)
+		self:skinGlowBox(cFrame.GuildNameAlertFrame, ftype)
 	end
 
 	self:SecureHookScript(cFrame.GuildNameChangeFrame, "OnShow", function(this)
@@ -4055,8 +4055,8 @@ aObj.blizzLoDFrames[ftype].PVPUI = function(self)
 			this.RatedBG.Reward.Border:SetTexture(nil)
 			this.RatedBG.NormalTexture:SetTexture(nil)
 			this.ShadowOverlay:DisableDrawLayer("OVERLAY")
-			self:skinGlowBox(this.NoSeason, ftype, true) -- N.B. NO CloseButton for NoSeason & Disabled
-			self:skinGlowBox(this.Disabled, ftype, true)
+			self:skinGlowBox(this.NoSeason, ftype)
+			self:skinGlowBox(this.Disabled, ftype)
 			self:skinDropDown{obj=this.ArenaInviteMenu}
 			self:removeMagicBtnTex(this.JoinButton)
 			if self.modBtns then

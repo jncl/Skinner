@@ -834,12 +834,12 @@ function aObj:skinEditBox(...)
 
 end
 
-function aObj:skinGlowBox(gBox, ftype, ncb)
+function aObj:skinGlowBox(gBox, ftype)
 --@alpha@
 	_G.assert(gBox, "Missing object __sGB\n" .. _G.debugstack(2, 3, 2))
 --@end-alpha@
 
-	aObj:Debug2("skinGlowBox: [%s, %s, %s]", gBox, ftype, ncb)
+	aObj:Debug2("skinGlowBox: [%s, %s]", gBox, ftype)
 
 	local function findArrowGlowTex(gBox)
 		-- aObj:Debug("findArrowGlowTex: [%s, %s]", gBox:GetNumChildren(), gBox:GetNumRegions())
@@ -864,8 +864,7 @@ function aObj:skinGlowBox(gBox, ftype, ncb)
 	findArrowGlowTex(gBox)
 	gBox:DisableDrawLayer("BACKGROUND")
 	if self.modBtns
-	and not ncb
-	and gBox:GetNumChildren() > 0 -- don't check after adding skin frames otherwise it fails
+	and (gBox.CloseButton or _G[gBox:GetName() .. "CloseButton"])
 	then
 		self:skinCloseButton{obj=gBox.CloseButton or _G[gBox:GetName() .. "CloseButton"], noSkin=true}
 	end

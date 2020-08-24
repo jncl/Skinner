@@ -524,6 +524,7 @@ if aObj.isBeta then
 		end)
 
 	end
+
 	aObj.blizzLoDFrames[ftype].CovenantSanctum = function(self)
 		if not self.prdb.CovenantSanctum or self.initialized.CovenantSanctum then return end
 		self.initialized.CovenantSanctum = true
@@ -579,7 +580,6 @@ if aObj.isBeta then
 		end)
 
 	end
-
 end
 
 aObj.blizzLoDFrames[ftype].FlightMap = function(self)
@@ -1375,7 +1375,7 @@ aObj.blizzLoDFrames[ftype].VoidStorageUI = function(self)
 			self:skinStdButton{obj=_G.VoidStoragePurchaseButton}
 		end
 		if not aObj.isBeta then
-			self:skinGlowBox(_G.VoidStorageHelpBox, ftype, true)
+			self:skinGlowBox(_G.VoidStorageHelpBox, ftype)
 			if self.modBtns then
 				-- N.B. NO CloseButton for VoidStorageHelpBox
 				self:skinStdButton{obj=_G.VoidStorageHelpBoxButton}
