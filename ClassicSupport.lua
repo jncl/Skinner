@@ -203,7 +203,7 @@ aObj.ClassicSupport = function(self)
 			_G[btnName .. idx .. "ItemNormalTexture"]:SetAlpha(0) -- texture changed in code
 			if aObj.modBtnBs then
 				aObj:addButtonBorder{obj=_G[btnName .. idx .. "Item"], reParent={_G[btnName .. idx .. "Count"], _G[btnName .. idx .. "Stock"]}}
-				aObj:clrButtonBorder(_G[btnName .. idx .. "Item"])
+				aObj:clrButtonFromBorder(_G[btnName .. idx .. "Item"])
 			end
 		end
 
@@ -246,6 +246,14 @@ aObj.ClassicSupport = function(self)
 				self:skinStdButton{obj=_G.BrowseCloseButton}
 				self:skinStdButton{obj=_G.BrowseBuyoutButton}
 				self:skinStdButton{obj=_G.BrowseBidButton}
+				for _, btn in _G.pairs{_G.BrowseBuyoutButton, _G.BrowseBidButton} do
+					self:SecureHook(btn, "Disable", function(this, _)
+						self:clrBtnBdr(this)
+					end)
+					self:SecureHook(btn, "Enable", function(this, _)
+						self:clrBtnBdr(this)
+					end)
+				end
 			end
 			if self.modBtnBs then
 				self:addButtonBorder{obj=_G.BrowsePrevPageButton, ofs=-2, y1=-3, x2=-3}
@@ -297,6 +305,10 @@ aObj.ClassicSupport = function(self)
 				self:skinStdButton{obj=_G.BidBidButton}
 				self:skinStdButton{obj=_G.BidBuyoutButton}
 				self:skinStdButton{obj=_G.BidCloseButton}
+				self:SecureHook("AuctionFrameBid_Update", function()
+					self:clrBtnBdr(_G.BidBidButton)
+					self:clrBtnBdr(_G.BidBuyoutButton)
+				end)
 			end
 
 			-- AuctionFrame Auctions
@@ -319,6 +331,15 @@ aObj.ClassicSupport = function(self)
 				self:skinStdButton{obj=_G.AuctionsCreateAuctionButton}
 				self:skinStdButton{obj=_G.AuctionsCancelAuctionButton, x2=-1}
 				self:skinStdButton{obj=_G.AuctionsCloseButton}
+				self:SecureHook(_G.AuctionsCreateAuctionButton, "Disable", function(this, _)
+					self:clrBtnBdr(this)
+				end)
+				self:SecureHook(_G.AuctionsCreateAuctionButton, "Enable", function(this, _)
+					self:clrBtnBdr(this)
+				end)
+				self:SecureHook("AuctionFrameAuctions_Update", function()
+					self:clrBtnBdr(_G.AuctionsCancelAuctionButton)
+				end)
 				if _G.IsAddOnLoaded("Leatrix_Plus")
 				and _G.LeaPlusDB["AhExtras"] == "On"
 				then
@@ -758,7 +779,7 @@ aObj.ClassicSupport = function(self)
 			self:SecureHookScript(_G.FriendsTabHeader, "OnShow", function(this)
 				_G.FriendsFrameBattlenetFrame:DisableDrawLayer("BACKGROUND")
 				if self.modBtnBs then
-					self:addButtonBorder{obj=_G.FriendsFrameBattlenetFrame.BroadcastButton, ofs=-2, x1=1, y1=-1, clr="grey"}
+					self:addButtonBorder{obj=_G.FriendsFrameBattlenetFrame.BroadcastButton, ofs=-2, x1=1, y1=-1}
 				end
 				self:addFrameBorder{obj=_G.FriendsFrameBattlenetFrame.BroadcastFrame.ScrollFrame, ft=ftype, ofs=4}
 				if self.modBtns then
@@ -809,19 +830,15 @@ aObj.ClassicSupport = function(self)
 						end)
 						btn.sbb:SetShown(btn.gameIcon:IsShown())
 						self:addButtonBorder{obj=btn.travelPassButton, ofs=0, y1=3, y2=-2}
-						self:SecureHook(btn.travelPassButton, "Enable", function(this)
-							self:clrBtnBdr(this)
-						end)
-						self:SecureHook(btn.travelPassButton, "Disable", function(this)
-							self:clrBtnBdr(this)
-						end)
 						self:addButtonBorder{obj=btn.summonButton}
-						self:SecureHook(btn.summonButton, "Enable", function(this)
-							self:clrBtnBdr(this)
-						end)
-						self:SecureHook(btn.summonButton, "Disable", function(this)
-							self:clrBtnBdr(this)
-						end)
+						for _, btn in _G.pairs{btn.travelPassButton. btn.summonButton} do
+							self:SecureHook(btn, "Disable", function(this, _)
+								self:clrBtnBdr(this)
+							end)
+							self:SecureHook(btn, "Enable", function(this, _)
+								self:clrBtnBdr(this)
+							end)
+						end
 					end
 				end
 				btn = nil
@@ -850,6 +867,9 @@ aObj.ClassicSupport = function(self)
 				if self.modBtns then
 					self:skinStdButton{obj=_G.FriendsFrameIgnorePlayerButton, x1=1}
 					self:skinStdButton{obj=_G.FriendsFrameUnsquelchButton}
+					self:SecureHook("IgnoreList_Update", function()
+						self:clrBtnBdr(_G.FriendsFrameUnsquelchButton)
+					end)
 				end
 
 				self:Unhook(this, "OnShow")
@@ -875,6 +895,10 @@ aObj.ClassicSupport = function(self)
 				if self.modBtns then
 					self:skinStdButton{obj=_G.WhoFrameGroupInviteButton}
 					self:skinStdButton{obj=_G.WhoFrameAddFriendButton}
+					self:SecureHook("WhoList_Update", function()
+						self:clrBtnBdr(_G.WhoFrameGroupInviteButton)
+						self:clrBtnBdr(_G.WhoFrameAddFriendButton)
+					end)
 					self:skinStdButton{obj=_G.WhoFrameWhoButton}
 				end
 
@@ -1559,7 +1583,16 @@ aObj.ClassicSupport = function(self)
 			if self.modBtns then
 				self:skinCloseButton{obj=_G.RaidInfoCloseButton}
 				self:skinStdButton{obj=_G.RaidFrameConvertToRaidButton}
+				self:SecureHook("RaidFrame_Update", function()
+					self:clrBtnBdr(_G.RaidFrameConvertToRaidButton)
+				end)
 				self:skinStdButton{obj=_G.RaidFrameRaidInfoButton}
+				self:SecureHook(_G.RaidFrameRaidInfoButton, "Disable", function(this, _)
+					self:clrBtnBdr(this)
+				end)
+				self:SecureHook(_G.RaidFrameRaidInfoButton, "Enable", function(this, _)
+					self:clrBtnBdr(this)
+				end)
 			end
 			if self.modChkBtns then
 				self:skinCheckButton{obj=_G.RaidFrameAllAssistCheckButton}

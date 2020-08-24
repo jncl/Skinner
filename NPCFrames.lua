@@ -119,7 +119,7 @@ aObj.blizzLoDFrames[ftype].AuctionHouseUI = function(self)
 		tab = nil
 		-- .FavoriteDropDown ?
 		if self.modBtnBs then
-			self:addButtonBorder{obj=this.SearchBar.FavoritesSearchButton, ofs=-2, x1=1, clr="grey"}
+			self:addButtonBorder{obj=this.SearchBar.FavoritesSearchButton, ofs=-2, x1=1}
 		end
 
 		-- Browsing frames
@@ -163,11 +163,14 @@ aObj.blizzLoDFrames[ftype].AuctionHouseUI = function(self)
 		btn.IconBorder:SetTexture(nil)
 		if self.modBtnBs then
 			self:addButtonBorder{obj=btn, relTo=btn.Icon, reParent={btn.Count}}
-			self:clrButtonBorder(btn)
+			self:clrButtonFromBorder(btn)
 		end
 		btn = nil
 		if self.modBtns then
 			self:skinStdButton{obj=this.WoWTokenResults.Buyout}
+			self:SecureHook(this.WoWTokenResults.Buyout, "SetEnabled", function(this)
+				self:clrBtnBdr(this)
+			end)
 		end
 		this.WoWTokenResults.DummyScrollBar:DisableDrawLayer("BACKGROUND")
 		this.WoWTokenResults.DummyScrollBar:DisableDrawLayer("ARTWORK")
@@ -179,8 +182,11 @@ aObj.blizzLoDFrames[ftype].AuctionHouseUI = function(self)
 		self:skinEditBox{obj=this.CommoditiesBuyFrame.BuyDisplay.QuantityInput.InputBox, regs={6}} -- 6 is text
 		if self.modBtns then
 			self:skinStdButton{obj=this.CommoditiesBuyFrame.BackButton}
-			self:skinStdButton{obj=this.CommoditiesBuyFrame.BuyDisplay.BuyButton}
 			self:skinStdButton{obj=this.CommoditiesBuyFrame.BuyDisplay.QuantityInput.MaxButton}
+			self:skinStdButton{obj=this.CommoditiesBuyFrame.BuyDisplay.BuyButton}
+			self:SecureHook(this.CommoditiesBuyFrame.BuyDisplay.BuyButton, "SetEnabled", function(this)
+				self:clrBtnBdr(this)
+			end)
 		end
 		skinItemList(this.CommoditiesBuyFrame.ItemList)
 		self:removeNineSlice(this.ItemBuyFrame.ItemDisplay.NineSlice)
@@ -190,7 +196,13 @@ aObj.blizzLoDFrames[ftype].AuctionHouseUI = function(self)
 		if self.modBtns then
 			self:skinStdButton{obj=this.ItemBuyFrame.BackButton}
 			self:skinStdButton{obj=this.ItemBuyFrame.BuyoutFrame.BuyoutButton}
+			self:SecureHook(this.ItemBuyFrame.BuyoutFrame.BuyoutButton, "SetEnabled", function(this)
+				self:clrBtnBdr(this)
+			end)
 			self:skinStdButton{obj=this.ItemBuyFrame.BidFrame.BidButton}
+			self:SecureHook(this.ItemBuyFrame.BidFrame.BidButton, "SetEnabled", function(this)
+				self:clrBtnBdr(this)
+			end)
 		end
 
 		-- Sell frames
@@ -211,6 +223,9 @@ aObj.blizzLoDFrames[ftype].AuctionHouseUI = function(self)
 			if aObj.modBtns then
 				aObj:skinStdButton{obj=frame.QuantityInput.MaxButton}
 				aObj:skinStdButton{obj=frame.PostButton}
+				self:SecureHook(frame.PostButton, "SetEnabled", function(this)
+					self:clrBtnBdr(this)
+				end)
 			end
 			if aObj.modBtnBs then
 				aObj:addButtonBorder{obj=frame.ItemDisplay.ItemButton, gibt=true}
@@ -234,6 +249,9 @@ aObj.blizzLoDFrames[ftype].AuctionHouseUI = function(self)
 		this.WoWTokenSellFrame.DummyItemList.DummyScrollBar:DisableDrawLayer("ARTWORK")
 		if self.modBtns then
 			self:skinStdButton{obj=this.WoWTokenSellFrame.PostButton}
+			self:SecureHook(this.WoWTokenSellFrame.PostButton, "SetEnabled", function(this)
+				self:clrBtnBdr(this)
+			end)
 		end
 
 		-- Auctions frames
@@ -286,15 +304,30 @@ aObj.blizzLoDFrames[ftype].AuctionHouseUI = function(self)
 		self:addSkinFrame{obj=this.AuctionsFrame, ft=ftype, kfs=true, nb=true, x1=-5, y1=-30, x2=1, y2=-2} -- add frame for tabs
 		if self.modBtns then
 			self:skinStdButton{obj=this.AuctionsFrame.CancelAuctionButton}
+			self:SecureHook(this.AuctionsFrame.CancelAuctionButton, "SetEnabled", function(this)
+				self:clrBtnBdr(this)
+			end)
 			self:skinStdButton{obj=this.AuctionsFrame.BuyoutFrame.BuyoutButton}
+			self:SecureHook(this.AuctionsFrame.BuyoutFrame.BuyoutButton, "SetEnabled", function(this)
+				self:clrBtnBdr(this)
+			end)
 			self:skinStdButton{obj=this.AuctionsFrame.BidFrame.BidButton}
+			self:SecureHook(this.AuctionsFrame.BidFrame.BidButton, "SetEnabled", function(this)
+				self:clrBtnBdr(this)
+			end)
 		end
 
 		-- Dialogs
 		self:addSkinFrame{obj=this.BuyDialog.Border, ft=ftype, kfs=true, nb=true, ofs=-10}
 		if self.modBtns then
 			self:skinStdButton{obj=this.BuyDialog.BuyNowButton}
+			self:SecureHook(this.BuyDialog.BuyNowButton, "SetEnabled", function(this)
+				self:clrBtnBdr(this)
+			end)
 			self:skinStdButton{obj=this.BuyDialog.CancelButton}
+			self:SecureHook(this.BuyDialog.CancelButton, "SetEnabled", function(this)
+				self:clrBtnBdr(this)
+			end)
 		end
 
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, x2=3, y2=-3}
@@ -446,7 +479,7 @@ aObj.blizzLoDFrames[ftype].BlackMarketUI = function(self)
 				btn.Item:GetPushedTexture():SetTexture(nil)
 				if aObj.modBtnBs then
 					aObj:addButtonBorder{obj=btn.Item, reParent={btn.Item.Count, btn.Item.Stock}}
-					aObj:clrButtonBorder(btn.Item)
+					aObj:clrButtonFromBorder(btn.Item)
 				end
 			end
 			btn = nil
@@ -737,17 +770,8 @@ aObj.blizzFrames[ftype].MerchantFrame = function(self)
 			self:removeRegions(_G.MerchantNextPageButton, {2})
 			self:addButtonBorder{obj=_G.MerchantPrevPageButton, ofs=-2, y1=-3, x2=-3}
 			self:addButtonBorder{obj=_G.MerchantNextPageButton, ofs=-2, y1=-3, x2=-3}
-			local function clrBtnBrdr(cnt)
-				for i = 1, cnt do
-					_G["MerchantItem" .. i].ItemButton.sbb:SetBackdropBorderColor(self:getCandSetA(_G["MerchantItem" .. i .. "SlotTexture"]))
-				end
-			end
 			self:SecureHook("MerchantFrame_UpdateMerchantInfo", function()
-				clrBtnBrdr(_G.MERCHANT_ITEMS_PER_PAGE)
 				self:clrPNBtns("Merchant")
-			end)
-			self:SecureHook("MerchantFrame_UpdateBuybackInfo", function()
-				clrBtnBrdr(_G.BUYBACK_ITEMS_PER_PAGE)
 			end)
 		end
 
@@ -837,6 +861,10 @@ aObj.blizzFrames[ftype].PetStableFrame = function(self)
 			self:addButtonBorder{obj=_G.PetStableDiet, ofs=1, x2=0, clr="gold"}
 			self:addButtonBorder{obj=_G.PetStableNextPageButton, ofs=0, clr="grey"}
 			self:addButtonBorder{obj=_G.PetStablePrevPageButton, ofs=0, clr="grey"}
+			self:SecureHook("PetStable_Update", function(_)
+				self:clrBtnBdr(_G.PetStableNextPageButton, "gold")
+				self:clrBtnBdr(_G.PetStablePrevPageButton, "gold")
+			end)
 		end
 		-- slots
 		for i = 1, _G.NUM_PET_ACTIVE_SLOTS do
@@ -1030,7 +1058,7 @@ aObj.blizzFrames[ftype].QuestInfo = function(self)
 			btn.NameFrame:SetTexture(nil)
 			if aObj.modBtnBs then
 				aObj:addButtonBorder{obj=btn, libt=true}
-				aObj:clrButtonBorder(btn)
+				aObj:clrButtonFromBorder(btn)
 			end
 		end
 		-- SpellReward

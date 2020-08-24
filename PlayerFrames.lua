@@ -914,13 +914,6 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 	end)
 
 	self:SecureHookScript(_G.PetJournal, "OnShow", function(this)
-		local function updBtnClr(btn)
-			if btn.iconBorder:IsShown() then
-				btn.sbb:SetBackdropBorderColor(aObj:getCandSetA(btn.iconBorder))
-			else
-				aObj:clrBtnBdr(btn, "grey")
-			end
-		end
 		self:removeInset(this.PetCount)
 		this.MainHelpButton.Ring:SetTexture(nil)
 		self:moveObject{obj=this.MainHelpButton, y=-4}
@@ -930,7 +923,7 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 			self:addButtonBorder{obj=this.SummonRandomFavoritePetButton, ofs=3, clr="grey", ca=1}
 			self:SecureHook(this.listScroll, "update", function(this)
 				for i = 1, #this.buttons do
-					updBtnClr(this.buttons[i])
+					self:clrButtonFromBorder(this.buttons[i])
 				end
 			end)
 		end
@@ -952,10 +945,19 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 			self:changeTandC(btn.dragButton.levelBG, self.lvlBG)
 			if self.modBtnBs then
 				self:addButtonBorder{obj=btn, relTo=btn.icon, reParent={btn.dragButton.levelBG, btn.dragButton.level, btn.dragButton.favorite}}
-				updBtnClr(btn)
 			end
 		end
 		btn = nil
+		if self.modBtnBs then
+			self:SecureHook("PetJournal_UpdatePetList", function()
+				local btn
+				for i = 1, #_G.PetJournal.listScroll.buttons do
+					btn = _G.PetJournal.listScroll.buttons[i]
+					self:clrButtonFromBorder(btn, "iconBorder")
+				end
+				btn = nil
+			end)
+		end
 
 		self:keepFontStrings(this.loadoutBorder)
 		self:moveObject{obj=this.loadoutBorder, y=8} -- battle pet slots title
@@ -966,7 +968,7 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 			lop = this.Loadout["Pet" .. i]
 			self:removeRegions(lop, {1, 2, 5})
 			-- add button border for empty slots
-	        self.modUIBtns:addButtonBorder{obj=lop, relTo=lop.icon, reParent={lop.levelBG, lop.level, lop.favorite}, clr="grey", ca=0.85} -- use module function here to force creation
+	        self.modUIBtns:addButtonBorder{obj=lop, relTo=lop.icon, reParent={lop.levelBG, lop.level, lop.favorite}, clr="disabled"} -- use module function here to force creation
 			self:changeTandC(lop.levelBG, self.lvlBG)
 			self:keepFontStrings(lop.helpFrame)
 			lop.healthFrame.healthBar:DisableDrawLayer("OVERLAY")
@@ -977,7 +979,7 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 			for i = 1, 3 do
 				self:removeRegions(lop["spell" .. i], {1, 3}) -- background, blackcover
 				if self.modBtnBs then
-					self:addButtonBorder{obj=lop["spell" .. i], relTo=lop["spell" .. i].icon, reParent={lop["spell" .. i].FlyoutArrow}, clr="grey", ca=0.85}
+					self:addButtonBorder{obj=lop["spell" .. i], relTo=lop["spell" .. i].icon, reParent={lop["spell" .. i].FlyoutArrow}, clr="disabled"}
 				end
 			end
 		end
@@ -1005,20 +1007,13 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 		pc = nil
 
 		if self.modBtnBs then
-			local function skinPetIcon(pet)
-				if pet.qualityBorder:IsShown() then
-					pet.sbb:SetBackdropBorderColor(aObj:getCandSetA(pet.qualityBorder))
-				else
-					aObj:clrBtnBdr(pet, "grey")
-				end
-			end
 			self:SecureHook("PetJournal_UpdatePetLoadOut", function()
 				for i = 1, 3 do
-					skinPetIcon(_G.PetJournal.Loadout["Pet" .. i])
+					self:clrButtonFromBorder(_G.PetJournal.Loadout["Pet" .. i], "qualityBorder")
 				end
 			end)
 			self:SecureHook("PetJournal_UpdatePetCard", function(this)
-				skinPetIcon(this.PetInfo)
+				self:clrButtonFromBorder(this.PetInfo, "qualityBorder")
 			end)
 		end
 
@@ -2587,7 +2582,7 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 		self:SecureHookScript(_G.FriendsTabHeader, "OnShow", function(this)
 			_G.FriendsFrameBattlenetFrame:DisableDrawLayer("BACKGROUND")
 			if self.modBtnBs then
-				self:addButtonBorder{obj=_G.FriendsFrameBattlenetFrame.BroadcastButton, ofs=-2, clr="grey"}
+				self:addButtonBorder{obj=_G.FriendsFrameBattlenetFrame.BroadcastButton, ofs=-2}
 			end
 			_G.FriendsFrameBattlenetFrame.BroadcastFrame.Border:DisableDrawLayer("BACKGROUND")
 			_G.FriendsFrameBattlenetFrame.BroadcastFrame.Border:DisableDrawLayer("BORDER")
@@ -2643,19 +2638,15 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 					end)
 					btn.sbb:SetShown(btn.gameIcon:IsShown())
 					self:addButtonBorder{obj=btn.travelPassButton, ofs=0, y1=3, y2=-2}
-					self:SecureHook(btn.travelPassButton, "Enable", function(this)
-						self:clrBtnBdr(this)
- 					end)
-					self:SecureHook(btn.travelPassButton, "Disable", function(this)
-						self:clrBtnBdr(this)
-					end)
 					self:addButtonBorder{obj=btn.summonButton}
-					self:SecureHook(btn.summonButton, "Enable", function(this)
-						self:clrBtnBdr(this)
-					end)
-					self:SecureHook(btn.summonButton, "Disable", function(this)
-						self:clrBtnBdr(this)
-					end)
+					for _, btn in _G.pairs{btn.travelPassButton, btn.summonButton} do
+						self:SecureHook(btn, "Disable", function(this, _)
+							self:clrBtnBdr(this)
+						end)
+						self:SecureHook(btn, "Enable", function(this, _)
+							self:clrBtnBdr(this)
+						end)
+					end
 				end
 			end
 			btn = nil
@@ -2671,6 +2662,9 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 			if self.modBtns then
 				self:skinStdButton{obj=_G.FriendsFrameIgnorePlayerButton, x1=1}
 				self:skinStdButton{obj=_G.FriendsFrameUnsquelchButton}
+				self:SecureHook("IgnoreList_Update", function()
+					self:clrBtnBdr(_G.FriendsFrameUnsquelchButton)
+				end)
 			end
 
 			self:Unhook(this, "OnShow")
@@ -2688,6 +2682,10 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 			if self.modBtns then
 				self:skinStdButton{obj=_G.WhoFrameGroupInviteButton}
 				self:skinStdButton{obj=_G.WhoFrameAddFriendButton}
+				self:SecureHook("WhoList_Update", function()
+					self:clrBtnBdr(_G.WhoFrameGroupInviteButton)
+					self:clrBtnBdr(_G.WhoFrameAddFriendButton)
+				end)
 				self:skinStdButton{obj=_G.WhoFrameWhoButton}
 			end
 			self:removeInset(_G.WhoFrameEditBoxInset)
@@ -2812,6 +2810,9 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 		self:addFrameBorder{obj=_G.QuickJoinScrollFrame, ft=ftype, x1=-8, y1=7, x2=28, y2=-32}
 		if self.modBtns then
 			self:skinStdButton{obj=_G.QuickJoinFrame.JoinQueueButton, x2=0}
+			self:SecureHook(this, "UpdateJoinButtonState", function(this)
+				self:clrBtnBdr(this.JoinQueueButton)
+			end)
 		end
 
 		-- QuickJoinRoleSelectionFrame
@@ -4518,6 +4519,7 @@ aObj.blizzLoDFrames[ftype].TalentUI = function(self)
 				btn.subText:SetTextColor(aObj.BT:GetRGB())
 				-- make icon square
 				aObj:makeIconSquare(btn, "icon", true)
+				aObj:clrBtnBdr(btn, btn.icon:IsDesaturated() and "disabled" or "gold")
 			end
 		end
 		sc, btn = nil, nil

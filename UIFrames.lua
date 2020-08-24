@@ -302,8 +302,16 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 		for i = 1, #frame.BonusRewards.Rewards do
 			aObj:addButtonBorder{obj=frame.BonusRewards.Rewards[i], relTo=frame.BonusRewards.Rewards[i].Icon, reParent={frame.BonusRewards.Rewards[i].Quantity}}
 		end
-		aObj:skinStdButton{obj=frame.NextMissionButton}
 	    aObj:addSkinFrame{obj=frame, ft=ftype, x1=3, y1=6, y2=-16}
+		if aObj.modBtns then
+			aObj:skinStdButton{obj=frame.NextMissionButton}
+			aObj:SecureHook(frame.NextMissionButton, "Disable", function(this, _)
+				aObj:clrBtnBdr(this)
+			end)
+			aObj:SecureHook(frame.NextMissionButton, "Enable", function(this, _)
+				aObj:clrBtnBdr(this)
+			end)
+		end
 
 		for i = 1, #frame.Stage.EncountersFrame.Encounters do
 			if not naval then
@@ -2154,7 +2162,7 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
         frame.BG:SetTexture(nil)
 		if self.modBtnBs then
 			self:addButtonBorder{obj=frame, relTo=frame.Icon, reParent={frame.Quantity}, ofs=_G.Round(frame:GetWidth()) ~= 24 and 2 or nil}
-			self:clrButtonBorder(frame)
+			self:clrButtonFromBorder(frame)
 		end
     end)
 	self:SecureHook("GarrisonMissionButton_SetRewards", function(btn, _t)
@@ -2163,7 +2171,7 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 			self:removeRegions(btn.Rewards[i], {1}) -- background shadow
 			if self.modBtnBs then
 				self:addButtonBorder{obj=btn.Rewards[i], relTo=btn.Rewards[i].Icon, reParent={btn.Rewards[i].Quantity}, ofs=2}
-				self:clrButtonBorder(btn.Rewards[i])
+				self:clrButtonFromBorder(btn.Rewards[i])
 			end
 		end
 	end)
@@ -2437,7 +2445,7 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 				for j = 1, #btn.Rewards do
 					btn:DisableDrawLayer("BACKGROUND")
 					self:addButtonBorder{obj=btn.Rewards[j], relTo=btn.Rewards[j].Icon, reParent={btn.Rewards[j].Quantity}}
-					self:clrButtonBorder(btn.Rewards[j])
+					self:clrButtonFromBorder(btn.Rewards[j])
 				end
 			end
 			btn = nil
@@ -3732,6 +3740,14 @@ aObj.blizzLoDFrames[ftype].MacroUI = function(self)
 			self:skinStdButton{obj=_G.MacroDeleteButton}
 			self:skinStdButton{obj=_G.MacroNewButton, x2=-2}
 			self:skinStdButton{obj=_G.MacroExitButton, x1=2}
+			for _, btn in _G.pairs{_G.MacroEditButton, _G.MacroDeleteButton, _G.MacroNewButton} do
+				self:SecureHook(btn, "Disable", function(this, _)
+					self:clrBtnBdr(this)
+				end)
+				self:SecureHook(btn, "Enable", function(this, _)
+					self:clrBtnBdr(this)
+				end)
+			end
 		end
 		_G.MacroFrameSelectedMacroButton:DisableDrawLayer("BACKGROUND")
 		if self.modBtnBs then
@@ -3758,6 +3774,9 @@ aObj.blizzLoDFrames[ftype].MacroUI = function(self)
 		if self.modBtns then
 			self:skinStdButton{obj=this.BorderBox.CancelButton}
 			self:skinStdButton{obj=this.BorderBox.OkayButton}
+			self:SecureHook("MacroPopupOkayButton_Update", function()
+				self:clrBtnBdr(this.BorderBox.OkayButton)
+			end)
 		end
 		for i = 1, _G.NUM_MACRO_ICONS_SHOWN do
 			_G["MacroPopupButton" .. i]:DisableDrawLayer("BACKGROUND")
@@ -3797,7 +3816,7 @@ aObj.blizzFrames[ftype].MailFrame = function(self)
 			self:addButtonBorder{obj=_G.InboxNextPageButton, ofs=-2, y1=-3, x2=-3}
 			self:SecureHook("InboxFrame_Update", function(this)
 				for i = 1, _G.INBOXITEMS_TO_DISPLAY do
-					self:clrButtonBorder(_G["MailItem" .. i].Button)
+					self:clrButtonFromBorder(_G["MailItem" .. i].Button)
 				end
 				self:clrPNBtns("Inbox")
 			end)
@@ -5539,8 +5558,20 @@ aObj.blizzFrames[ftype].RaidFrame = function(self)
 		if self.modBtns then
 			self:skinCloseButton{obj=_G.RaidInfoCloseButton}
 			self:skinStdButton{obj=_G.RaidFrameConvertToRaidButton}
+			self:SecureHook("RaidFrame_Update", function()
+				self:clrBtnBdr(_G.RaidFrameConvertToRaidButton)
+			end)
 			self:skinStdButton{obj=_G.RaidFrameRaidInfoButton}
+			self:SecureHook(_G.RaidFrameRaidInfoButton, "Disable", function(this, _)
+				self:clrBtnBdr(this)
+			end)
+			self:SecureHook(_G.RaidFrameRaidInfoButton, "Enable", function(this, _)
+				self:clrBtnBdr(this)
+			end)
 			self:skinStdButton{obj=_G.RaidInfoExtendButton}
+			self:SecureHook("RaidInfoFrame_UpdateSelectedIndex", function()
+				self:clrBtnBdr(_G.RaidInfoExtendButton)
+			end)
 			self:skinStdButton{obj=_G.RaidInfoCancelButton}
 		end
 		if self.modChkBtns then
@@ -5745,6 +5776,9 @@ aObj.blizzFrames[ftype].StaticPopups = function(self)
 					_G["StaticPopup" .. i .. "CloseButton"]:SetText(self.modUIBtns.mult)
 				end
 			end
+		end)
+		self:SecureHook("StaticPopup_OnUpdate", function(dialog, _)
+			self:clrBtnBdr(dialog.button1 or _G[dialog:GetName() .. "Button1"])
 		end)
 	end
 

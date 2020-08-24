@@ -134,21 +134,23 @@ function module:checkTex(...)
 
 end
 
-function module:clrButtonBorder(btn)
+function module:clrButtonFromBorder(btn, texture)
 --@alpha@
 	 _G.assert(btn.sbb, "Missing object__cBB\n" .. _G.debugstack(2, 3, 2))
 --@end-alpha@
 
-	-- aObj:Debug("UIB cBB: [%s, %s, %s, %s]", btn.IconBorder:IsShown(), btn.IconBorder:GetVertexColor())
+	local iBdr = btn.IconBorder or btn[texture]
+	-- aObj:Debug("UIB cBB: [%s, %s, %s, %s]", iBdr:IsShown(), iBdr:GetVertexColor())
 
-	btn.IconBorder:SetAlpha(1) -- ensure alpha is 1 otherwise btn.sbb isn't displayed
+	iBdr:SetAlpha(1) -- ensure alpha is 1 otherwise btn.sbb isn't displayed
 	-- use the colour of the quality border as the BackdropBorderColor if shown
-	if btn.IconBorder:IsShown() then
-		btn.sbb:SetBackdropBorderColor(btn.IconBorder:GetVertexColor())
+	if iBdr:IsShown() then
+		btn.sbb:SetBackdropBorderColor(iBdr:GetVertexColor())
 	else
 		module:clrBtnBdr(btn, "common")
 	end
-	btn.IconBorder:SetAlpha(0)
+	iBdr:SetAlpha(0)
+	iBdr = nil
 
 end
 
@@ -700,7 +702,7 @@ local function __addButtonBorder(opts)
 		opts.obj.Count:SetParent(opts.obj.sbb)
 		aObj:getRegion(opts.obj, aObj:hasTextInName(opts.obj, "MerchantItem") and 2 or 3):SetParent(opts.obj.sbb) -- Stock region
 		opts.obj.searchOverlay:SetParent(opts.obj.sbb)
-		module:clrButtonBorder(opts.obj)
+		module:clrButtonFromBorder(opts.obj)
 	elseif opts.abt then -- Action Buttons
 		opts.obj.Flash:SetParent(opts.obj.sbb)
 		opts.obj.FlyoutArrow:SetParent(opts.obj.sbb)
@@ -714,7 +716,7 @@ local function __addButtonBorder(opts)
 		opts.obj.Count:SetParent(opts.obj.sbb)
 	elseif opts.gibt then -- Giant Item Buttons
 		opts.obj.Count:SetParent(opts.obj.sbb)
-		module:clrButtonBorder(opts.obj)
+		module:clrButtonFromBorder(opts.obj)
 	end
 
 end
