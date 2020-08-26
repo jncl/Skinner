@@ -33,7 +33,16 @@ local function __addSkinButton(opts)
 	if opts.obj.sb then return end
 
 	-- remove the object's Backdrop if it has one
-	if opts.obj.GetBackdrop and opts.obj:GetBackdrop() then opts.obj:SetBackdrop(nil) end
+	if opts.obj.GetBackdrop
+	and opts.obj:GetBackdrop()
+	then
+		opts.obj:SetBackdrop(nil)
+	end
+	if aObj.isBeta then
+		if opts.obj.ClearBackdrop then
+			opts.obj:ClearBackdrop()
+		end
+	end
 
 	-- make all textures transparent, if required
 	if opts.kfs then aObj:keepFontStrings(opts.obj) end
