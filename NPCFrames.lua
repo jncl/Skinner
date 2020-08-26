@@ -491,6 +491,36 @@ aObj.blizzLoDFrames[ftype].BlackMarketUI = function(self)
 end
 
 if aObj.isBeta then
+	aObj.blizzLoDFrames[ftype].ChromieTimeUI = function(self)
+		if not self.prdb.ChromieTimeUI or self.initialized.ChromieTimeUI then return end
+		self.initialized.ChromieTimeUI = true
+
+		self:SecureHookScript(_G.ChromieTimeFrame, "OnShow", function(this)
+
+			self:removeNineSlice(this.NineSlice)
+			this.Background:DisableDrawLayer("BACKGROUND")
+			self:keepFontStrings(this.Title)
+			this.CurrentlySelectedExpansionInfoFrame:DisableDrawLayer("BACKGROUND")
+			this.CurrentlySelectedExpansionInfoFrame:DisableDrawLayer("ARTWORK")
+			this.CurrentlySelectedExpansionInfoFrame.Name:SetTextColor(self.HT:GetRGB())
+			this.CurrentlySelectedExpansionInfoFrame.Description:SetTextColor(self.BT:GetRGB())
+			for btn in this.ExpansionOptionsPool:EnumerateActive() do
+				btn:GetNormalTexture():SetTexture(nil) -- remove border texture
+				self:addButtonBorder{obj=btn, ofs=-5, es=20, clr="gold", ca=0.4}
+			end
+			self:addSkinFrame{obj=this, ft=ftype, kfs=true, ofs=0, y1=-1}
+			if self.modBtns then
+				self:skinStdButton{obj=this.SelectButton}
+				self:SecureHook(this.SelectButton, "UpdateButtonState", function(this, _)
+					self:clrBtnBdr(this)
+				end)
+			end
+
+			self:Unhook(this, "OnShow")
+		end)
+
+	end
+
 	aObj.blizzLoDFrames[ftype].CovenantPreviewUI = function(self)
 		if not self.prdb.CovenantPreviewUI or self.initialized.CovenantPreviewUI then return end
 		self.initialized.CovenantPreviewUI = true

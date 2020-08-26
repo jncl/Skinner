@@ -840,6 +840,37 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 
 end
 
+if aObj.isBeta then
+	aObj.blizzLoDFrames[ftype].AnimaDiversionUI = function(self)
+		if not self.prdb.AnimaDiversionUI or self.initialized.AnimaDiversionUI then return end
+		self.initialized.AnimaDiversionUI = true
+
+		self:SecureHookScript(_G.AnimaDiversionFrame, "OnShow", function(this)
+
+			self:removeNineSlice(this.NineSlice)
+			self:keepFontStrings(this.BorderFrame)
+			-- .ScrollContainer
+			-- .AnimaDiversionCurrencyFrame
+				-- .CurrencyFrame
+			-- .ReinforceProgressFrame
+				-- .bolsterProgressGemPool
+			-- .ReinforceInfoFrame
+			-- .SelectPinInfoFrame
+				-- .NineSlice
+				-- .SelectButton
+			self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, aso={bbclr="sepia"}}
+			if self.modBtns then
+				self:skinCloseButton{obj=this.CloseButton , noSkin=true}
+				self:skinStdButton{obj=this.AnimaNodeReinforceButton}
+			end
+
+			self:Unhook(this, "OnShow")
+		end)
+
+	end
+
+end
+
 aObj.blizzFrames[ftype].ArtifactToasts = function(self)
 	if not self.prdb.ArtifactUI or self.initialized.ArtifactToasts then return end
 	self.initialized.ArtifactToasts = true
@@ -4814,6 +4845,32 @@ aObj.blizzFrames[ftype].NavigationBar = function(self)
 
 end
 
+if aObj.isBeta then
+	aObj.blizzLoDFrames[ftype].NewPlayerExperience = function(self)
+		if not self.prdb.NewPlayerExperience or self.initialized.NewPlayerExperience then return end
+		self.initialized.NewPlayerExperience = true
+
+		if skinPointerFrame then
+			skinPointerFrame()
+		end
+
+		local function skinFrame(frame)
+			frame:DisableDrawLayer("BORDER") -- hide NineSlice UniqueCornersLayout
+			aObj:addSkinFrame{obj=frame, ft=ftype, nb=true, ofs=-30}
+		end
+
+		skinFrame(_G.NPE_TutorialMainFrame_Frame)
+		skinFrame(_G.NPE_TutorialSingleKey_Frame)
+		skinFrame(_G.NPE_TutorialWalk_Frame)
+
+		skinFrame(_G.NPE_TutorialKeyboardMouseFrame_Frame)
+		if self.modBtns then
+			self:skinStdButton{obj=_G.KeyboardMouseConfirmButton}
+		end
+
+	end
+end
+
 aObj.blizzLoDFrames[ftype].ObliterumUI = function(self)
 	if not self.prdb.ObliterumUI or self.initialized.ObliterumUI then return end
 	self.initialized.ObliterumUI = true
@@ -5092,9 +5149,15 @@ if aObj.isBeta then
 
 		self:SecureHookScript(_G.PlayerChoiceFrame, "OnShow", function(this)
 
+			-- aObj:Debug("PlayerChoiceFrame: [%s, %s, %s]", this, this.uiTextureKit, _G.C_PlayerChoice.GetPlayerChoiceInfo())
+			-- _G.Spew("", _G.C_PlayerChoice.GetPlayerChoiceInfo())
+
 			self:removeNineSlice(this.NineSlice)
 			this.BlackBackground.BlackBackground:SetTexture(nil)
 			this.BorderFrame.Header:SetTexture(nil)
+			this.Background.BackgroundTile:SetTexture(nil)
+			this.Title:DisableDrawLayer("BACKGROUND")
+
 			-- Option 1-4
 				-- MouseOverOverride
 				-- Header
@@ -5116,21 +5179,28 @@ if aObj.isBeta then
 					end
 				end
 			end
-			local opt, gOfs, x1Ofs, y1Ofs, x2Ofs, y2Ofs
+			local opts, gOfs, y1Ofs, y2Ofs
+			if tKit == "jailerstower" then
+				gOfs = -40
+				y1Ofs = 0
+				y2Ofs = -40
+			elseif tKit == "Oribos" then
+				gOfs = 13
+				y1Ofs = 40
+				y2Ofs = -34
+			else
+				gOfs = 11
+				y1Ofs = 70
+				y2Ofs = 0
+			end
 			for i = 1, #this.Options do
 				opt = this.Options[i]
 
-				if _G.IsInJailersTower() then
-					gOfs = -40
-					y1Ofs = 0
-					y2Ofs = -40
-				else
-					gOfs = 13
-					y1Ofs = 40
-					y2Ofs = -34
-				end
-
 				opt:DisableDrawLayer("BACKGROUND")
+				self:nilTexture(opt.Header.Ribbon, true)
+				opt.Header.Text:SetTextColor(self.HT:GetRGB())
+				opt.OptionText:SetTextColor(self.BT:GetRGB())
+				self:nilTexture(opt.ArtworkBorder, true)
 				self:addSkinFrame{obj=opt, ft=ftype, nb=true, aso={bbclr="grey"}, ofs=gOfs, y1=y1Ofs, y2=y2Ofs}
 				if self.modBtns then
 					skinBtns(opt.OptionButtonsContainer)
@@ -5139,24 +5209,24 @@ if aObj.isBeta then
 					end)
 				end
 
-				-- hook these to handle size changes on mouseover (for covenant choice display)
+				-- hook these to handle size changes on mouseover (used in Oribos for covenant choice)
 				self:SecureHook(opt, "OnEnterOverride", function(this)
-					if _G.IsInJailersTower() then return end
-					this.sf:ClearAllPoints()
-					this.sf:SetPoint("TOPLEFT",this, "TOPLEFT", -34, 40)
-					this.sf:SetPoint("BOTTOMRIGHT", this, "BOTTOMRIGHT", 34, -30)
+					if this:GetOptionLayoutInfo().enlargeBackgroundOnMouseOver then
+						this.sf:ClearAllPoints()
+						this.sf:SetPoint("TOPLEFT",this, "TOPLEFT", -34, 40)
+						this.sf:SetPoint("BOTTOMRIGHT", this, "BOTTOMRIGHT", 34, -30)
+					end
 				end)
 				self:SecureHook(opt, "OnLeaveOverride", function(this)
-					if _G.IsInJailersTower() then return end
-					this.sf:ClearAllPoints()
-					this.sf:SetPoint("TOPLEFT", this, "TOPLEFT", -13, 40)
-					this.sf:SetPoint("BOTTOMRIGHT", this, "BOTTOMRIGHT", 13, -34)
+					if this:GetOptionLayoutInfo().enlargeBackgroundOnMouseOver then
+						this.sf:ClearAllPoints()
+						this.sf:SetPoint("TOPLEFT", this, "TOPLEFT", -13, 40)
+						this.sf:SetPoint("BOTTOMRIGHT", this, "BOTTOMRIGHT", 13, -34)
+					end
 				end)
 
-				opt, gOfs, x1Ofs, y1Ofs, x2Ofs, y2Ofs = nil, nil, nil, nil, nil, nil
 			end
-			this.Background.BackgroundTile:SetTexture(nil)
-			this.Title:DisableDrawLayer("BACKGROUND")
+			opt, gOfs, y1Ofs, y2Ofs = nil, nil, nil, nil
 
 			self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, aso={bbclr="sepia"}}
 			if self.modBtns then
@@ -5165,24 +5235,23 @@ if aObj.isBeta then
 
 			-- hook this to determine if skinFrame should be shown
 			-- NOT in Torghast (Anima Power displays)
-			this.sf:SetShown(not _G.IsInJailersTower())
+			this.sf:SetShown(this.uiTextureKit ~= "jailerstower")
 			self:SecureHook(this, "TryShow", function(this)
-				local ijt = _G.IsInJailersTower()
-				aObj:Debug("PlayerChoiceFrame TryShow: [%s, %s]", ijt)
-				this.sf:SetShown(not _G.IsInJailersTower())
-				for i = 1, #this.Options do
-					this.Options[i]:SetShown(_G.IsInJailersTower())
-				end
-				ijt = nil
+				this.sf:SetShown(this.uiTextureKit ~= "jailerstower")
 			end)
 
 			-- disable ModelScene effects in JailersTower
-			_G.C_Timer.After(0.05, function()
-				this.ModelScene:ClearEffects()
-			end)
+			local function disableModelScene(frame)
+				if frame.uiTextureKit == "jailerstower" then
+					_G.C_Timer.After(0.05, function()
+						frame.HighStrataModelScene:ClearEffects()
+					end)
+				end
+			end
+			disableModelScene(this)
 			-- hook this to prevent further effects
 			self:SecureHook(this, "Update", function(this)
-				this.ModelScene:ClearEffects()
+				disableModelScene(this)
 			end)
 
 			self:Unhook(this, "OnShow")
@@ -5895,6 +5964,26 @@ if aObj.isBeta then
 
 	end
 
+	aObj.blizzLoDFrames[ftype].SubscriptionInterstitialUI = function(self)
+		if not self.prdb.SubscriptionInterstitialUI or self.initialized.SubscriptionInterstitialUI then return end
+		self.initialized.SubscriptionInterstitialUI = true
+
+		self:SecureHookScript(_G.SubscriptionInterstitialFrame, "OnShow", function(this)
+
+			this:DisableDrawLayer("BACKGROUND")
+			self:removeNineSlice(this.NineSlice)
+			this.ShadowOverlay:DisableDrawLayer("OVERLAY")
+			-- .SubscribeButton
+			-- .UpgradeButton
+			self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, ofs=1, x2=2}
+			if self.modBtns then
+				self:skinStdButton{obj=this.ClosePanelButton}
+			end
+
+			self:Unhook(this, "OnShow")
+		end)
+
+	end
 end
 
 aObj.blizzLoDFrames[ftype].TalkingHeadUI = function(self)
@@ -6089,6 +6178,28 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 	-- AceConfigDialog tooltip
 	addTooltip(self.ACD.tooltip)
 
+end
+
+if aObj.isBeta then
+	aObj.blizzLoDFrames[ftype].TorghastLevelPicker = function(self)
+		if not self.prdb.TorghastLevelPicker or self.initialized.TorghastLevelPicker then return end
+		self.initialized.TorghastLevelPicker = true
+
+		self:SecureHookScript(_G.TorghastLevelPickerFrame, "OnShow", function(this)
+
+			-- .Pager
+			-- .ModelScene
+			-- TODO: skin frame, adjust visible part of background texture
+			self:addSkinFrame{obj=this, ft=ftype, nb=true, bg=true, ofs=-30}
+			if self.modBtns then
+				self:skinCloseButton{obj=this.CloseButton , noSkin=true}
+				self:skinStdButton{obj=this.OpenPortalButton}
+			end
+
+			self:Unhook(this, "OnShow")
+		end)
+
+	end
 end
 
 aObj.blizzFrames[ftype].Tutorial = function(self)
@@ -6412,6 +6523,51 @@ aObj.blizzLoDFrames[ftype].WarfrontsPartyPoseUI = function(self)
 
 end
 
+if aObj.isBeta then
+	aObj.blizzLoDFrames[ftype].WeeklyRewards = function(self)
+		if not self.prdb.WeeklyRewards or self.initialized.WeeklyRewards then return end
+		self.initialized.WeeklyRewards = true
+
+		self:SecureHookScript(_G.WeeklyRewardsFrame, "OnShow", function(this)
+
+			self:removeNineSlice(this.NineSlice)
+			this.HeaderFrame:DisableDrawLayer("BACKGROUND")
+			this.HeaderFrame:DisableDrawLayer("BORDER")
+			for _, frame in _G.pairs{"RaidFrame", "MythicFrame", "PVPFrame"} do
+				self:addFrameBorder{obj=this[frame], ft=ftype, ofs=3, aso={bbclr="sepia"}}
+				this[frame].Background:SetAlpha(1)
+			end
+			for i, frame in _G.ipairs(this.Activities) do
+				-- _G.Spew("", frame)
+				self:addFrameBorder{obj=frame, ft=ftype, ofs=3, x1=3, y1=-3, aso={bbclr="grey"}}
+				-- show required textures
+				if frame.Background then
+					frame.Background:SetAlpha(1)
+					frame.Orb:SetAlpha(1)
+					frame.LockIcon:SetAlpha(1)
+				end
+				-- .ItemFrame
+				-- .UnselectedFrame
+				self:SecureHook(frame, "Refresh", function(this)
+					if this.unlocked or this.hasRewards then
+					end
+				end)
+			end
+			-- .ConcessionFrame
+				-- .RewardsFrame
+				-- .UnselectedFrame
+
+			self:addSkinFrame{obj=this, ft=ftype, kfs=true, ofs=-5}
+			if self.modBtns then
+				self:skinStdButton{obj=this.SelectRewardButton}
+			end
+
+			self:Unhook(this, "OnShow")
+		end)
+
+	end
+end
+
 aObj.blizzFrames[ftype].WorldMap = function(self)
 	if not self.prdb.WorldMap.skin or self.initialized.WorldMap then return end
 	self.initialized.WorldMap = true
@@ -6465,6 +6621,9 @@ aObj.blizzFrames[ftype].WorldMap = function(self)
 		end
 		oFrame = nil
 		-- Nav Bar
+		if aObj.isBeta then
+			self:skinNavBarButton(this.NavBar.home)
+		end
 		this.NavBar:DisableDrawLayer("BACKGROUND")
 		this.NavBar:DisableDrawLayer("BORDER")
 		this.NavBar.overlay:DisableDrawLayer("OVERLAY")
