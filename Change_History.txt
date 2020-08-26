@@ -1,3 +1,20 @@
+beta9.35598.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated .gitignore
+	Updated version numbers
+	More Beta/PTR changes
+	Bugfix for TradeSkillUI
+	Removed Extra Loot Button code & option
+	Updated CommunitiesUI code
+	Updated MovePad skin
+	Updated addFrameBorder code
+	Updated Button skinning code to handle button state
+	Updated ArkInventory & ArkDewdrop skins
+	Updated TalentUI skin
+	Turned PTRFeedback code into function & added option for it
+
 beta9.35432.1
 Jncl:
 	ToDo.txt
