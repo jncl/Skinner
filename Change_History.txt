@@ -1,3 +1,20 @@
+beta9.35598.2
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	More Beta changes
+	Updated addSkinFrame code
+	Updated TutorialTemplates skin
+	Updated AuctionHouseFrame skin
+	Updated tab skin code comment
+	Updated skinGlowBox code
+	Updated isDropDown check code
+	Updated NavBar skin code
+	Updated QuestInfo Seal Text code
+	Updated more ButtonBorder colour code
+	Removed Shadowlands skin file
+	Updated _DevPadGui, Auctionator, BugSack & ChampionCommander skins
+
 beta9.35598.1
 Jncl:
 	ToDo.txt
