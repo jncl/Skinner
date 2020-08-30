@@ -346,6 +346,9 @@ aObj.blizzLoDFrames[ftype].AzeriteRespecUI = function(self)
 	self:addSkinFrame{obj=_G.AzeriteRespecFrame, ft=ftype, kfs=true}
 	if self.modBtns then
 		self:skinStdButton{obj=_G.AzeriteRespecFrame.ButtonFrame.AzeriteRespecButton}
+		self:SecureHook(_G.AzeriteRespecFrame, "UpdateAzeriteRespecButtonState", function(this)
+			self:clrBtnBdr(this.ButtonFrame.AzeriteRespecButton)
+		end)
 	end
 
 end
@@ -374,6 +377,12 @@ aObj.blizzFrames[ftype].BankFrame = function(self)
 		if self.modBtns then
 			self:skinStdButton{obj=_G.ReagentBankFrameUnlockInfoPurchaseButton}
 			self:skinStdButton{obj=_G.ReagentBankFrame.DespositButton}
+			self:SecureHook(_G.ReagentBankFrame.DespositButton, "Disable", function(this, _)
+				self:clrBtnBdr(this)
+			end)
+			self:SecureHook(_G.ReagentBankFrame.DespositButton, "Enable", function(this, _)
+				self:clrBtnBdr(this)
+			end)
 		end
 		if not aObj.isBeta then
 			self:skinGlowBox(_G.ReagentBankHelpBox, ftype)
@@ -560,7 +569,10 @@ if aObj.isBeta then
 
 			self:skinTabs{obj=this, lod=true}
 			this.LevelFrame.Background:SetTexture(nil)
-			self:addSkinFrame{obj=this, ft=ftype, kfs=true, ofs=-3}
+			self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, ofs=-3, aso={bbclr="red"}}
+			if self.modBtns then
+				self:skinCloseButton{obj=this.CloseButton, noSkin=true}
+			end
 
 			-- UpgradesTab
 			local frame
@@ -1398,8 +1410,17 @@ aObj.blizzLoDFrames[ftype].VoidStorageUI = function(self)
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, x2=1}
 		if self.modBtns then
 			self:skinStdButton{obj=_G.VoidStorageTransferButton}
+			self:SecureHook(_G.VoidStorageTransferButton, "Disable", function(this, _)
+				self:clrBtnBdr(this)
+			end)
+			self:SecureHook(_G.VoidStorageTransferButton, "Enable", function(this, _)
+				self:clrBtnBdr(this)
+			end)
 			self:skinCloseButton{obj=_G.VoidStorageBorderFrame.CloseButton}
 			self:skinStdButton{obj=_G.VoidStoragePurchaseButton}
+			self:SecureHook("VoidStorageFrame_Update", function()
+				self:clrBtnBdr(_G.VoidStoragePurchaseButton)
+			end)
 		end
 		if not aObj.isBeta then
 			self:skinGlowBox(_G.VoidStorageHelpBox, ftype)

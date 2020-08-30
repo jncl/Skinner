@@ -1298,11 +1298,17 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 
 		if self.modBtns then
 			self:skinStdButton{obj=this.OutfitDropDown.SaveButton}
+			self:SecureHook(this.OutfitDropDown, "UpdateSaveButton", function(this)
+				self:clrBtnBdr(this.SaveButton)
+			end)
 			self:skinStdButton{obj=this.ApplyButton, ofs=0}
+			self:SecureHook("WardrobeTransmogFrame_UpdateApplyButton", function()
+				self:clrBtnBdr(_G.WardrobeTransmogFrame.ApplyButton)
+			end)
 		end
 		if self.modBtnBs then
-			self:addButtonBorder{obj=this.ModelScene.ClearAllPendingButton, ofs=1, x2=0, relTo=this.ModelScene.ClearAllPendingButton.Icon, clr="grey"}
-			self:addButtonBorder{obj=this.SpecButton, ofs=0, clr="grey"}
+			self:addButtonBorder{obj=this.ModelScene.ClearAllPendingButton, ofs=1, x2=0, relTo=this.ModelScene.ClearAllPendingButton.Icon}
+			self:addButtonBorder{obj=this.SpecButton, ofs=0}
 		end
 
 		if not aObj.isBeta then
@@ -2104,6 +2110,11 @@ aObj.blizzFrames[ftype].CompactFrames = function(self)
 				self:skinStdButton{obj=_G.CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton}
 				_G.CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton:GetNormalTexture():SetAlpha(1) -- icon
 			end
+			self:SecureHook("CompactRaidFrameManager_UpdateOptionsFlowContainer", function(this)
+				self:clrBtnBdr(this.displayFrame.leaderOptions.rolePollButton)
+				self:clrBtnBdr(this.displayFrame.leaderOptions.readyCheckButton)
+				self:clrBtnBdr(this.displayFrame.leaderOptions.countdownButton)
+			end)
 		end
 		if self.modChkBtns then
 			self:skinCheckButton{obj=this.displayFrame.everyoneIsAssistButton}
@@ -3651,11 +3662,6 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 
 	if self.modBtnBs then
 		self:addButtonBorder{obj=_G.ObjectiveTrackerFrame.HeaderMenu.MinimizeButton, es=12, ofs=aObj.isBeta and 1 or 0, x1=-1}
-		if aObj.isBeta then
-			for _, hdr in pairs{"CampaignQuestHeader", "QuestHeader", "AchievementHeader", "ScenarioHeader", "UIWidgetsHeader"} do
-				self:addButtonBorder{obj=_G.ObjectiveTrackerBlocksFrame[hdr].MinimizeButton, es=12, ofs=1, x1=-1}
-			end
-		end
 		-- hook this to skin QuestObjective Block Button(s)
 		self:SecureHook("QuestObjectiveSetupBlockButton_AddRightButton", function(_, button, _)
 			-- aObj:Debug("QOSBB_ARB: [%s, %s]", block, button)
@@ -3788,6 +3794,9 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 		_G.ScenarioBlocksFrame.MawBuffsBlock.Container.List:DisableDrawLayer("BACKGROUND")
 		if self.modBtns then
 			self:skinStdButton{obj=_G.ScenarioBlocksFrame.MawBuffsBlock.Container, ofs=-10, x1=12, x2=-2}
+			self:SecureHook(_G.ScenarioBlocksFrame.MawBuffsBlock.Container, "UpdateListState", function(this, _)
+				self:clrBtnBdr(this)
+			end)
 		end
 	end
 
@@ -3865,6 +3874,13 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 							child.Sheen:SetTexture(nil)
 						end
 					end
+				end
+			end
+			if aObj.modBtnBs then
+				if module.Header
+				and module.Header.MinimizeButton
+				then
+					aObj:addButtonBorder{obj=module.Header.MinimizeButton, es=12, ofs=1, x1=-1}
 				end
 			end
 		end
@@ -4505,7 +4521,7 @@ aObj.blizzLoDFrames[ftype].TalentUI = function(self)
 	local function skinAbilities(obj)
 		local sc = obj.spellsScroll.child
 		if aObj.modBtnBs then
-			aObj:clrBtnBdr(sc, "gold")
+			aObj:clrBtnBdr(sc, obj.disabled and "disabled" or "gold")
 		end
 		local btn
 		for i = 1, sc:GetNumChildren() do
@@ -4523,6 +4539,11 @@ aObj.blizzLoDFrames[ftype].TalentUI = function(self)
 	-- hook this as subText text colour is changed
 	self:SecureHook("PlayerTalentFrame_UpdateSpecFrame", function(this, _)
 		if self.modBtnBs then
+			if this.disabled then
+				self:clrBtnBdr(this.spellsScroll.child, "disabled")
+			else
+				self:clrBtnBdr(this.spellsScroll.child, "gold")
+			end
 			for i = 1, _G.MAX_TALENT_TABS do
 				-- N.B. MUST check for disabled state here
 				if this["specButton" .. i].disabled then

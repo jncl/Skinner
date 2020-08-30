@@ -3043,6 +3043,9 @@ aObj.blizzLoDFrames[ftype].GuildBankUI = function(self)
 			self:skinStdButton{obj=_G.GuildBankFrameDepositButton, x1=0} -- don't overlap withdraw button
 			self:skinStdButton{obj=_G.GuildBankFrameWithdrawButton, x2=0} -- don't overlap deposit button
 			self:skinStdButton{obj=_G.GuildBankFramePurchaseButton}
+			self:SecureHook("GuildBankFrame_UpdateTabBuyingInfo", function()
+				self:clrBtnBdr(_G.GuildBankFramePurchaseButton)
+			end)
 			self:skinStdButton{obj=_G.GuildBankInfoSaveButton}
 		end
 
