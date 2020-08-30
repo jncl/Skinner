@@ -147,7 +147,7 @@ local function skinBLoD(addon)
 	for fType, fTab in _G.pairs(aObj.blizzLoDFrames) do
 		for fName, _ in _G.pairs(fTab) do
 			bLoD = "Blizzard_" .. fName
-			if (addon and addon == bLoD)
+			if addon and addon == bLoD
 			or _G.IsAddOnLoaded(bLoD)
 			then
 				aObj:checkAndRun(fName, fType, true)

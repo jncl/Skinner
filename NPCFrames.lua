@@ -1272,8 +1272,6 @@ if aObj.isBeta then
 		if not self.prdb.RuneForgeUI or self.initialized.RuneForgeUI then return end
 		self.initialized.RuneForgeUI = true
 
-		_G.print("RuneForgeUI skin loaded")
-
 		self:SecureHookScript(_G.RuneforgeFrame, "OnShow", function(this)
 
 			-- .CraftingFrame
@@ -1288,12 +1286,14 @@ if aObj.isBeta then
 				self:SecureHook(this.CreateFrame.CraftItemButton, "SetCraftState", function(this, ...)
 					self:clrBtnBdr(this)
 				end)
-				self:skinStdButton{obj=this.CreateFrame.CloseButton}
 			end
 			-- .CurrencyDisplay
 
+			this.CloseButton.CustomBorder:SetTexture(nil)
 			self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, ofs=-20, y2=30}
-
+			if self.modBtns then
+				self:skinCloseButton{obj=this.CloseButton, noSkin=true}
+			end
 			-- tooltip
 			_G.C_Timer.After(0.1, function()
 				self:add2Table(self.ttList, this.ResultTooltip)
