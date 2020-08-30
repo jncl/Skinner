@@ -873,7 +873,7 @@ function aObj:skinGlowBox(gBox, ftype)
 	findArrowGlowTex(gBox)
 	gBox:DisableDrawLayer("BACKGROUND")
 	if self.modBtns
-	and (gBox.CloseButton or _G[gBox:GetName() .. "CloseButton"])
+	and gBox.CloseButton or gBox:GetName() and _G[gBox:GetName() .. "CloseButton"]
 	then
 		self:skinCloseButton{obj=gBox.CloseButton or _G[gBox:GetName() .. "CloseButton"], noSkin=true}
 	end
