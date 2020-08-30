@@ -2027,9 +2027,11 @@ aObj.blizzLoDFrames[ftype].DeathRecap = function(self)
 	self:SecureHookScript(_G.DeathRecapFrame, "OnShow", function(this)
 		this:DisableDrawLayer("BORDER")
 		this.Background:SetTexture(nil)
-		self:skinStdButton{obj=this.CloseButton}
-		self:skinCloseButton{obj=this.CloseXButton}
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, ofs=-1, y1=-2}
+		if self.modBtns then
+			self:skinCloseButton{obj=this.CloseXButton}
+			self:skinStdButton{obj=this.CloseButton}
+		end
 		_G.RaiseFrameLevelByTwo(this)
 
 		self:Unhook(this, "OnShow")
