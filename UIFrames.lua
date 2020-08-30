@@ -6158,9 +6158,8 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 	end
 
 	self:SecureHookScript(_G.ItemRefTooltip, "OnShow", function(this)
-		self:moveObject{obj=_G.ItemRefCloseButton, x=2, y=3}
 		if self.modBtns then
-			self:skinCloseButton{obj=_G.ItemRefCloseButton}
+			self:skinCloseButton{obj=aObj.isBeta and this.CloseButton or _G.ItemRefCloseButton, noSkin=true}
 		end
 		-- ensure it gets updated
 		self.ttHook[_G.ItemRefTooltip] = true
