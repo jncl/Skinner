@@ -26,6 +26,3 @@ ToDos
 ≈	O	Make sure all buttons borders have the correct border colour, e.g. "gold"/"grey"
 
 ≈	O	Add checks for Button state as required
-
-	I	Auctionator, reported by hastrox77, 23.08.20
-√		- ..\AddOns\Skinner\AddonSkins\Auctionator.lua line 16: attempt to index field 'State' (a nil value)
