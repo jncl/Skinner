@@ -424,13 +424,22 @@ local function skinChatTab(tab)
 	end)
 
 end
-local function skinPointerFrame()
+local function skinPointerFrame(frame)
+	aObj:skinGlowBox(frame.Content)
+	frame.Glow:SetBackdrop(nil)
+end
+local function hookPointerFrame()
 	aObj:RawHook(_G.NPE_TutorialPointerFrame, "_GetFrame", function(this, ...)
 		local frame = aObj.hooks[this]._GetFrame(this, ...)
-		aObj:skinGlowBox(frame.Content)
-		frame.Glow:SetBackdrop(nil)
+		skinPointerFrame(frame)
 		return frame
 	end, true)
+	if _G.NPE_PointerFrame_1
+	and not _G.NPE_PointerFrame_1.sf
+	then
+		skinPointerFrame(_G.NPE_PointerFrame_1)
+	end
+	hookPointerFrame = nil
 end
 if not aObj.isClsc then
 	-- hoook this (used by Blizzard_OrderHallTalents, PVPMatchResults, PVPMatchScoreboard & Blizzard_WarboardUI)
@@ -4852,8 +4861,8 @@ if aObj.isBeta then
 		if not self.prdb.NewPlayerExperience or self.initialized.NewPlayerExperience then return end
 		self.initialized.NewPlayerExperience = true
 
-		if skinPointerFrame then
-			skinPointerFrame()
+		if hookPointerFrame then
+			hookPointerFrame()
 		end
 
 		local function skinFrame(frame)
@@ -6271,8 +6280,8 @@ aObj.blizzLoDFrames[ftype].TutorialTemplates = function(self)
 	if not self.prdb.Tutorial or self.initialized.TutorialTemplates then return end
 	self.initialized.TutorialTemplates = true
 
-	if skinPointerFrame then
-		skinPointerFrame()
+	if hookPointerFrame then
+		hookPointerFrame()
 	end
 
 end
