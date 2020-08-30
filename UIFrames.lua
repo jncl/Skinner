@@ -6667,14 +6667,14 @@ aObj.blizzFrames[ftype].ZoneAbility = function(self)
 			end
 			self:skinGlowBox(_G.ZoneAbilityButtonAlert, ftype)
 		else
-			this.Style:SetAlpha(0) -- texture is changed
+			self:nilTexture(this.Style, true)
 			if self.modBtnBs then
 				local function abb2Btn(container)
 					for btn in container.contentFramePool:EnumerateActive() do
-						aObj:addButtonBorder{obj=btn, reParent={btn.Count}, ofs=2, clr="gold"}
+						aObj:addButtonBorder{obj=btn, reParent={btn.Count}, ofs=2}
 					end
 				end
-				self:SecureHook(this.SpellButtonContainer, "SetContents", function(this, contents)
+				self:SecureHook(this.SpellButtonContainer, "SetContents", function(this, _)
 					abb2Btn(this)
 				end)
 				-- skin existing entries
