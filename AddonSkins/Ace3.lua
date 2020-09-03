@@ -165,6 +165,8 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 					end)
 					obj.checkbg:SetTexture(nil)
 				end
+			elseif objType == "ColorPicker" then
+				obj.alignoffset = 10 -- align to neighbouring DropDowns
 
 			-- handle HybridScrollFrame child (created by HonorSpy [Classic])
 			elseif objType == "SimpleGroup" then
@@ -216,6 +218,7 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 			    if not aObj.db.profile.TexturedDD then
 			        aObj:keepFontStrings(obj.frame)
 			    else
+					obj.alignoffset = 29 -- align to neighbouring DropDowns
     				obj.frame.DLeft:SetAlpha(0)
     				obj.frame.DRight:SetAlpha(0)
     				obj.frame.DMiddle:SetHeight(18)
@@ -238,6 +241,7 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 						xOfs1, yOfs1, xOfs2, yOfs2 = 0, -18, 1, 0
 					end
 					aObj:addSkinFrame{obj=obj.frame, ft="a", nb=true, aso={ng=true, bd=5}, rp=true, x1=xOfs1, y1=yOfs1, x2=xOfs2, y2=yOfs2}
+					aObj:moveObject{obj=obj.frame, y=-2}
 					if aObj.modBtnBs then
 						-- add a button border around the dd button
 						aObj:addButtonBorder{obj=obj.frame.dropButton, es=12, ofs=-2, x1=1}
@@ -435,7 +439,6 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 			or objType == "Dropdown-Item-Toggle"
 			or objType == "Label"
 			or objType == "Heading"
-			or objType == "ColorPicker"
 			or objType == "Icon"
 			or objType == "InteractiveLabel"
 			-- Snowflake objects
