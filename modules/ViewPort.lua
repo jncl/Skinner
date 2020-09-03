@@ -1,4 +1,4 @@
-local _, aObj = ...
+local aName, aObj = ...
 
 local _G = _G
 
@@ -19,13 +19,11 @@ local defaults = {
 	}
 }
 
-local function checkOverlay()
-
-	local vpoF
+local vpoF, texAreas = nil, {"top", "btm", "left", "right"}
+local function checkOverlay(scale)
 
 	if db.shown then
 		if db.overlay then
-			local scale = _G.UIParent:GetEffectiveScale()
 			if not vpoF then
 				vpoF = _G.CreateFrame("Frame", nil)
 				vpoF:SetAllPoints(_G.UIParent)
@@ -33,15 +31,10 @@ local function checkOverlay()
 				vpoF:SetFrameStrata("BACKGROUND")
 				vpoF:EnableMouse(false)
 				vpoF:SetMovable(false)
-				vpoF.top = vpoF:CreateTexture(nil, "BACKGROUND")
-				vpoF.btm = vpoF:CreateTexture(nil, "BACKGROUND")
-				vpoF.left = vpoF:CreateTexture(nil, "BACKGROUND")
-				vpoF.right = vpoF:CreateTexture(nil, "BACKGROUND")
+				for _, area in _G.pairs(texAreas) do
+					vpoF[area] = vpoF:CreateTexture(nil, "BACKGROUND")
+				end
 			end
-			vpoF.top:SetTexture(db.colour.r, db.colour.g, db.colour.b, db.colour.a)
-			vpoF.btm:SetTexture(db.colour.r, db.colour.g, db.colour.b, db.colour.a)
-			vpoF.left:SetTexture(db.colour.r, db.colour.g, db.colour.b, db.colour.a)
-			vpoF.right:SetTexture(db.colour.r, db.colour.g, db.colour.b, db.colour.a)
 			vpoF.top:ClearAllPoints()
 			vpoF.top:SetPoint("TOPLEFT")
 			vpoF.top:SetPoint("BOTTOMRIGHT", vpoF, "TOPRIGHT", 0, -(db.top * scale))
@@ -49,11 +42,31 @@ local function checkOverlay()
 			vpoF.btm:SetPoint("BOTTOMLEFT")
 			vpoF.btm:SetPoint("TOPRIGHT", vpoF, "BOTTOMRIGHT", 0, (db.bottom * scale))
 			vpoF.left:ClearAllPoints()
-			vpoF.left:SetPoint("TOPLEFT", vpoF, "TOPLEFT", 0, -(db.top * scale))
+			vpoF.left:SetPoint("TOPLEFT", 0, -(db.top * scale))
 			vpoF.left:SetPoint("BOTTOMRIGHT", vpoF, "BOTTOMLEFT", (db.left * scale), (db.bottom * scale))
 			vpoF.right:ClearAllPoints()
-			vpoF.right:SetPoint("TOPRIGHT", vpoF, "TOPRIGHT", 0, -(db.top * scale))
+			vpoF.right:SetPoint("TOPRIGHT", 0, -(db.top * scale))
 			vpoF.right:SetPoint("BOTTOMLEFT", vpoF, "BOTTOMRIGHT", -(db.right * scale), (db.bottom * scale))
+			-- use Texture file or Colour
+			if (db.texfile
+			and db.texfile ~= "None")
+			or (db.texture
+			and db.texture ~= "None")
+			then
+				local tex = aObj.LSM:Fetch("background", db.texfile ~= "None" and db.texfile or db.texture ~= "None" and db.texture)
+				for _, area in _G.pairs(texAreas) do
+					-- the texture will be stretched if the following tiling methods are set to false
+					vpoF[area]:SetHorizTile(db.tile and true or nil)
+					vpoF[area]:SetVertTile(db.tile and true or nil)
+					vpoF[area]:SetTexture(tex, db.tile, db.tile)
+				end
+				tex = nil
+			else
+				vpoF.top:SetColorTexture(db.colour.r, db.colour.g, db.colour.b, db.colour.a)
+				vpoF.btm:SetColorTexture(db.colour.r, db.colour.g, db.colour.b, db.colour.a)
+				vpoF.left:SetColorTexture(db.colour.r, db.colour.g, db.colour.b, db.colour.a)
+				vpoF.right:SetColorTexture(db.colour.r, db.colour.g, db.colour.b, db.colour.a)
+			end
 			-- show the overlay frame
 			vpoF:Show()
 		elseif vpoF then
@@ -111,111 +124,145 @@ function module:adjustViewPort(opt)
 	    return
 	end
 
-	-- aObj:Debug("adjustViewPort: [%s]", opt)
-
 	local scale = _G.UIParent:GetEffectiveScale()
 
-	if (opt == "init" and db.shown)
-	or (opt == "shown" and db.shown)
-	or (opt == "top" and db.shown)
-	or (opt == "bottom" and db.shown)
-	or (opt == "left" and db.shown)
-	or (opt == "right" and db.shown)
-	or (opt == "XRes" and db.shown)
-	or (opt == "YRes" and db.shown)
-	then
+	if db.shown then
 		_G.WorldFrame:ClearAllPoints()
 		_G.WorldFrame:SetPoint("TOPLEFT", (db.left * scale), -(db.top * scale))
 		_G.WorldFrame:SetPoint("BOTTOMRIGHT", -(db.right * scale), (db.bottom * scale))
-		checkOverlay()
-	elseif opt == "overlay"
-	or opt == "colour"
-	then
-		checkOverlay()
-	elseif opt == "shown" and not db.shown
-	then
+		checkOverlay(scale)
+	else
 		_G.WorldFrame:ClearAllPoints()
 		_G.WorldFrame:SetPoint("TOPLEFT")
 		_G.WorldFrame:SetPoint("BOTTOMRIGHT")
-		checkOverlay()
+		checkOverlay(scale)
 	end
+
+	scale = nil
 
 end
 
 function module:GetOptions()
 
+	local c
 	local options = {
 		type = "group",
 		order = 1,
 		name = aObj.L["View Port"],
 		desc = aObj.L["Change the ViewPort settings"],
-		get = function(info) return module.db.profile[info[#info]] end,
-		set = function(info, value)
+		get = function(info)
+			if info[#info] == "colour" then
+				c = module.db.profile[info[#info]]
+				return c.r, c.g, c.b, c.a
+			else
+				return module.db.profile[info[#info]]
+			end
+		end,
+		set = function(info, r, g, b, a)
 			if not module:IsEnabled() then module:Enable() end
-			module.db.profile.shown = true -- always enable if any option is changed
-			module.db.profile[info[#info]] = value
+			if info[#info] ~= "shown" then
+				module.db.profile.shown = true -- always enable if any option other than show is changed
+			end
+			if info[#info] == "colour"
+			or info[#info] == "texfile"
+			or info[#info] == "texture"
+			or info[#info] == "tile"
+			then
+				module.db.profile.overlay = true
+			end
+			if info[#info] == "colour" then
+				c = module.db.profile[info[#info]]
+				c.r, c.g, c.b, c.a = r, g, b, a
+			else
+				module.db.profile[info[#info]] = r
+			end
+			if module.db.profile.texfile
+			and module.db.profile.texfile ~= "None"
+			then
+				aObj.LSM:Register("background", aName .. " Viewport Background", module.db.profile.texfile)
+			end
 			module:adjustViewPort(info[#info])
 		end,
 		args = {
 			shown = {
 				type = "toggle",
 				order = 1,
-				width = "full",
+				-- width = "full",
 				name = aObj.L["ViewPort Show"],
 				desc = aObj.L["Toggle the ViewPort"],
 			},
+			overlay = {
+				type = "toggle",
+				order = 3,
+				name = aObj.L["ViewPort Overlay"],
+				desc = aObj.L["Toggle the ViewPort Overlay"],
+			},
+			overlaysettings = {
+				type = "group",
+				order = 5,
+				inline = true,
+				name = aObj.L["Overlay Settings"],
+				disabled = function() return not module.db.profile.overlay end,
+				args = {
+					colour = {
+						type = "color",
+						order = 1,
+						name = aObj.L["ViewPort Colour"],
+						desc = aObj.L["Set ViewPort Colour"],
+						hasAlpha = true,
+					},
+					texfile = {
+						type = "input",
+						order = 3,
+						width = "full",
+						name = aObj.L["Viewport Texture File"],
+						desc = aObj.L["Set Viewport Texture Filename"],
+					},
+					texture = _G.AceGUIWidgetLSMlists and {
+						type = "select",
+						order = 5,
+						width = "double",
+						name = aObj.L["Viewport Texture"],
+						desc = aObj.L["Choose the Texture for the Viewport"],
+						dialogControl = "LSM30_Background",
+						values = _G.AceGUIWidgetLSMlists.background,
+					},
+					tile = {
+						type = "select",
+						order = 7,
+						name = "  " .. aObj.L["Tile Type"],
+						desc = aObj.L["Tile or Stretch the Texture"],
+						values = {["None"] = aObj.L["No Tiling"], ["Mirror"] = aObj.L["Mirror Texture"], ["Repeat"] = aObj.L["Repeat Texture"]},
+					},
+				},
+			},
 			top = {
 				type = "range",
-				order = 4,
+				order = 10,
 				name = aObj.L["VP Top"],
 				desc = aObj.L["Change Height of the Top Band"],
 				min = 0, max = 256, step = 1,
 			},
 			bottom = {
 				type = "range",
-				order = 5,
+				order = 11,
 				name = aObj.L["VP Bottom"],
 				desc = aObj.L["Change Height of the Bottom Band"],
 				min = 0, max = 256, step = 1,
 			},
 			left = {
 				type = "range",
-				order = 6,
+				order = 12,
 				name = aObj.L["VP Left"],
 				desc = aObj.L["Change Width of the Left Band"],
 				min = 0, max = 1800, step = 1,
 			},
 			right = {
 				type = "range",
-				order = 7,
+				order = 13,
 				name = aObj.L["VP Right"],
 				desc = aObj.L["Change Width of the Right Band"],
 				min = 0, max = 1800, step = 1,
-			},
-			overlay = {
-				type = "toggle",
-				order = 2,
-				name = aObj.L["ViewPort Overlay"],
-				desc = aObj.L["Toggle the ViewPort Overlay"],
-			},
-			colour = {
-				type = "color",
-				order = 3,
-				width = "double",
-				name = aObj.L["ViewPort Colour"],
-				desc = aObj.L["Set ViewPort Colour"],
-				hasAlpha = true,
-				get = function(info)
-					local c = module.db.profile[info[#info]]
-					return c.r, c.g, c.b, c.a
-				end,
-				set = function(info, r, g, b, a)
-					local c = module.db.profile[info[#info]]
-					c.r, c.g, c.b, c.a = r, g, b, a
-					module.db.profile.shown = true -- enable viewport
-					module.db.profile.overlay = true -- enable overlay
-					module:adjustViewPort("colour")
-				end,
 			},
 		}
 	}
