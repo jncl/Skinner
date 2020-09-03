@@ -193,7 +193,9 @@ aObj.blizzLoDFrames[ftype].AchievementUI = function(self)
 			self:RawHook("AchievementButton_GetMeta", function(...)
 				local obj = self.hooks.AchievementButton_GetMeta(...)
 				obj:DisableDrawLayer("BORDER")
-				self:addButtonBorder{obj=obj, es=12, relTo=obj.icon}
+				if self.modBtnBs then
+					self:addButtonBorder{obj=obj, es=12, relTo=obj.icon}
+				end
 				return obj
 			end, true)
 		end
@@ -215,13 +217,14 @@ aObj.blizzLoDFrames[ftype].AchievementUI = function(self)
 				elseif child.label then -- metaCriteria
 					if _G.select(2, child.label:GetTextColor()) == 0 then -- completed criteria
 						child.label:SetTextColor(_G.HIGHLIGHT_FONT_COLOR:GetRGB())
-						child.label:SetShadowOffset(1, -1)
 					end
 				elseif child.name then -- criteria
 					if _G.select(2, child.name:GetTextColor()) == 0 then -- completed criteria
 						child.name:SetTextColor(_G.HIGHLIGHT_FONT_COLOR:GetRGB())
-						child.name:SetShadowOffset(1, -1)
 					end
+				end
+				if child.sbb then
+					self:clrBtnBdr(child.sbb, child.check:IsShown() and "default" or "disabled")
 				end
 			end
 		end)
@@ -306,6 +309,7 @@ aObj.blizzLoDFrames[ftype].AchievementUI = function(self)
 		if not _G.AchievementFrameComparison:IsVisible() and self.prdb.AchievementUI.style == 2 then
 			self:SecureHookScript(_G.AchievementFrameComparison, "OnShow", function()
 				cleanButtons(_G.AchievementFrameComparisonContainer, "Comparison")
+
 				self:Unhook(_G.AchievementFrameSummary, "OnShow")
 			end)
 		else
@@ -334,10 +338,7 @@ aObj.blizzLoDFrames[ftype].AchievementUI = function(self)
 			tex = nil
 			self:addSkinFrame{obj=_G.AchievementFrameFilterDropDown, ft=ftype, aso={ng=true}, x1=aObj.isBeta and -7 or -8, y1=aObj.isBeta and 1 or 2, x2=aObj.isBeta and 1 or 2, y2=7}
 			if self.modBtnBs then
-				local xOfs = 1
-				if _G.IsAddOnLoaded("Overachiever") then xOfs = 102 end
-			    self:addButtonBorder{obj=_G.AchievementFrameFilterDropDownButton, es=12, ofs=-2, x1=xOfs}
-				xOfs = nil
+			    self:addButtonBorder{obj=_G.AchievementFrameFilterDropDownButton, es=12, ofs=-2, x1=_G.IsAddOnLoaded("Overachiever") and 102 or 1}
 			end
 		end
 
@@ -352,19 +353,23 @@ aObj.blizzLoDFrames[ftype].AchievementUI = function(self)
 			spc["searchPreview" .. i]:SetNormalTexture(nil)
 			spc["searchPreview" .. i]:SetPushedTexture(nil)
 			spc["searchPreview" .. i].iconFrame:SetTexture(nil)
-			self:addButtonBorder{obj=spc["searchPreview" .. i], relTo=spc["searchPreview" .. i].icon}
+			if self.modBtnBs then
+				self:addButtonBorder{obj=spc["searchPreview" .. i], relTo=spc["searchPreview" .. i].icon}
+			end
 		end
 		spc.showAllSearchResults:SetNormalTexture(nil)
 		spc.showAllSearchResults:SetPushedTexture(nil)
 		spc = nil
 		self:skinStatusBar{obj=this.searchProgressBar, fi=0, bgTex=this.searchProgressBar.bg}
-		self:addSkinFrame{obj=this.searchResults, ft=ftype, kfs=true, x1=-8, y1=-1, x2=1}
 		self:skinSlider{obj=this.searchResults.scrollFrame.scrollBar, wdth=-4}
+		self:addSkinFrame{obj=this.searchResults, ft=ftype, kfs=true, x1=-8, y1=-1, x2=1}
 		for i = 1, #this.searchResults.scrollFrame.buttons do
 			this.searchResults.scrollFrame.buttons[i]:SetNormalTexture(nil)
 			this.searchResults.scrollFrame.buttons[i]:SetPushedTexture(nil)
 			this.searchResults.scrollFrame.buttons[i].iconFrame:SetTexture(nil)
-			self:addButtonBorder{obj=this.searchResults.scrollFrame.buttons[i], relTo=this.searchResults.scrollFrame.buttons[i].icon}
+			if self.modBtnBs then
+				self:addButtonBorder{obj=this.searchResults.scrollFrame.buttons[i], relTo=this.searchResults.scrollFrame.buttons[i].icon}
+			end
 		end
 
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, y1=7, x2=0, y2=-3}
@@ -390,8 +395,10 @@ aObj.blizzLoDFrames[ftype].ArchaeologyUI = function(self)
 		for i = 1, _G.ARCHAEOLOGY_MAX_RACES do
 			this.summaryPage["race" .. i].raceName:SetTextColor(self.BT:GetRGB())
 		end
-		self:addButtonBorder{obj=this.summaryPage.prevPageButton, ofs=0, clr="disabled"}
-		self:addButtonBorder{obj=this.summaryPage.nextPageButton, ofs=0, clr="disabled"}
+		if self.modBtnBs then
+			self:addButtonBorder{obj=this.summaryPage.prevPageButton, ofs=0, clr="disabled"}
+			self:addButtonBorder{obj=this.summaryPage.nextPageButton, ofs=0, clr="disabled"}
+		end
 		self:SecureHook(this.summaryPage, "UpdateFrame", function(this)
 			self:clrPNBtns(this:GetName())
 		end)
@@ -406,28 +413,39 @@ aObj.blizzLoDFrames[ftype].ArchaeologyUI = function(self)
 			this.completedPage["artifact" .. i].artifactSubText:SetTextColor(self.BT:GetRGB())
 			this.completedPage["artifact" .. i].border:Hide()
 			_G["ArchaeologyFrameCompletedPageArtifact" .. i .. "Bg"]:Hide()
-			self:addButtonBorder{obj=this.completedPage["artifact" .. i], relTo=this.completedPage["artifact" .. i].icon}
+			if self.modBtnBs then
+				self:addButtonBorder{obj=this.completedPage["artifact" .. i], relTo=this.completedPage["artifact" .. i].icon}
+			end
 		end
-		self:addButtonBorder{obj=this.completedPage.prevPageButton, ofs=0, clr="disabled"}
-		self:addButtonBorder{obj=this.completedPage.nextPageButton, ofs=0, clr="disabled"}
+		if self.modBtnBs then
+			self:addButtonBorder{obj=this.completedPage.prevPageButton, ofs=0, clr="disabled"}
+			self:addButtonBorder{obj=this.completedPage.nextPageButton, ofs=0, clr="disabled"}
+		end
 		self:SecureHook(this.completedPage, "UpdateFrame", function(this)
 			self:clrPNBtns(this:GetName())
 		end)
+
 		self:removeRegions(this.artifactPage, {2, 3, 7, 9}) -- title textures, backgrounds
-		self:addButtonBorder{obj=this.artifactPage, relTo=this.artifactPage.icon, ofs=1}
-		self:skinStdButton{obj=this.artifactPage.backButton}
-		self:skinStdButton{obj=this.artifactPage.solveFrame.solveButton}
+		if self.modBtns then
+			self:skinStdButton{obj=this.artifactPage.backButton}
+			self:skinStdButton{obj=this.artifactPage.solveFrame.solveButton}
+		end
+		if self.modBtnBs then
+			self:addButtonBorder{obj=this.artifactPage, relTo=this.artifactPage.icon, ofs=1}
+		end
 		self:getRegion(this.artifactPage.solveFrame.statusBar, 1):Hide() -- BarBG texture
 		self:skinStatusBar{obj=this.artifactPage.solveFrame.statusBar, fi=0}
 		this.artifactPage.solveFrame.statusBar:SetStatusBarColor(0.75, 0.45, 0, 0.7)
 		this.artifactPage.historyTitle:SetTextColor(self.HT:GetRGB())
 		this.artifactPage.historyScroll.child.text:SetTextColor(self.BT:GetRGB())
 		self:skinSlider{obj=this.artifactPage.historyScroll.ScrollBar, wdth=-4}
+
 		self:removeRegions(this.helpPage, {2, 3}) -- title textures
 		this.helpPage.titleText:SetTextColor(self.HT:GetRGB())
 		_G.ArchaeologyFrameHelpPageDigTex:SetTexCoord(0.05, 0.885, 0.055, 0.9) -- remove texture surrounds
 		_G.ArchaeologyFrameHelpPageDigTitle:SetTextColor(self.HT:GetRGB())
 		_G.ArchaeologyFrameHelpPageHelpScrollHelpText:SetTextColor(self.BT:GetRGB())
+
 		self:Unhook(this, "OnShow")
 	end)
 

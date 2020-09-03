@@ -754,8 +754,16 @@ aObj.blizzLoDFrames[ftype].ItemUpgradeUI = function(self)
 		this.ButtonFrame:DisableDrawLayer("BORDER", 2)
 		_G.ItemUpgradeFrameMoneyFrame:DisableDrawLayer("BACKGROUND")
 		self:removeMagicBtnTex(_G.ItemUpgradeFrameUpgradeButton)
-		self:skinStdButton{obj=_G.ItemUpgradeFrameUpgradeButton}
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true}
+		if self.modBtns then
+			self:skinStdButton{obj=_G.ItemUpgradeFrameUpgradeButton}
+			self:SecureHook(_G.ItemUpgradeFrameUpgradeButton, "Disable", function(this, _)
+				self:clrBtnBdr(this)
+			end)
+			self:SecureHook(_G.ItemUpgradeFrameUpgradeButton, "Enable", function(this, _)
+				self:clrBtnBdr(this)
+			end)
+		end
 
 		-- hook this to hide the ItemButton texture if empty
 		self:SecureHook("ItemUpgradeFrame_Update", function()
@@ -1038,7 +1046,19 @@ aObj.blizzFrames[ftype].QuestFrame = function(self)
 		end
 
 		if self.modBtns then
+			self:SecureHook(this.CloseButton, "Disable", function(this, _)
+				self:clrBtnBdr(this)
+			end)
+			self:SecureHook(this.CloseButton, "Enable", function(this, _)
+				self:clrBtnBdr(this)
+			end)
 			self:skinStdButton{obj=_G.QuestFrameCompleteQuestButton}
+			self:SecureHook(_G.QuestFrameCompleteQuestButton, "Disable", function(this, _)
+				self:clrBtnBdr(this)
+			end)
+			self:SecureHook(_G.QuestFrameCompleteQuestButton, "Enable", function(this, _)
+				self:clrBtnBdr(this)
+			end)
 			self:skinStdButton{obj=_G.QuestFrameGoodbyeButton}
 			self:skinStdButton{obj=_G.QuestFrameCompleteButton}
 			self:skinStdButton{obj=_G.QuestFrameDeclineButton}
