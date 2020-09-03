@@ -324,7 +324,7 @@ else
 
 		-- if new level < old level then just started shadowlands expansion
 
-		if newLevel < _G.MAX_PLAYER_LEVEL then return end
+		if newPLevel < _G.MAX_PLAYER_LEVEL then return end
 
 		-- max XP level reached, adjust watchbar positions
 		for _, bar in _G.pairs{_G.ReputationWatchBar, _G.ArtifactWatchBar, _G.HonorWatchBar} do
