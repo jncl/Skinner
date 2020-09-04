@@ -11,7 +11,7 @@ ToDos
 		- replace table in AddonFrames with individual entries in each skin file
 
 ?	O	Make role icons square with a button border
-		- use UI-LFG-ICON-ROLES.BLP as source for all, size them as required
+		- use UI-LFG-ICON-ROLES.BLP as source for all, size them as requiredm
 
 ?	O	Eliminate bugs from skinning the PartyFrames, BossFrames, TargetFrameToT
 
@@ -26,3 +26,16 @@ ToDos
 ≈	O	Make sure all buttons borders have the correct border colour, e.g. "gold"/"grey"
 
 ≈	O	Add checks for Button state as required
+
+	O	Viewport, requested by Fey_Dragon_Shawnyve, 31.08.20
+√		- Use a texture or a colour as an overlay
+
+	I	AchievementUI, reported by EpidemeDaBear, 01.09.20
+≈		- ...ns\Blizzard_AchievementUI\Blizzard_AchievementUI-1.0.lua:1194: Attempt to access forbidden object from code tainted by an AddOn
+			in function `SetBackdropBorderColor'
+		- occurs when trying to use Twitter functionality from ChatFrame
+
+	I	EncounterJournal, reported by Shiv_G3, 02.09.20
+√		-  Skinner\UtilFuncs.lua:1191: attempt to call method 'GetNormalTexture' (a nil value)
+		[string "@Skinner\UtilFuncs.lua"]:1191: in function `skinNavBarButton'
+		[string "@Skinner\PlayerFrames.lua"]:2320: in function <Skinner\PlayerFrames.lua:2291>
