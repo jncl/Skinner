@@ -3,7 +3,7 @@ local aName, aObj = ...
 local _G = _G
 
 local buildInfo = {
-	beta        = {"9.0.1", 35707},
+	beta        = {"9.0.1", 35755},
 	classic_ptr = {"1.13.5", 35000},
 	retail_ptr  = {"9.0.1", 35707},
 	retail      = {"8.3.7", 35662},
@@ -40,8 +40,10 @@ do
 		aObj.isClscPTR = true
 		aObj.isPTR = nil
 	end
+	-- check current build number against Beta, if greater then it's a patch
+	aObj.isPatch = aObj.isBeta and _G.tonumber(buildInfo.curr[2]) > buildInfo.beta[2] and true
 	-- check current build number against Classic, if greater then it's a patch
-	aObj.isPatch = not aObj.isClscPTR and aObj.isClsc and _G.tonumber(buildInfo.curr[2]) > buildInfo.classic[2] and true
+	aObj.isPatch = aObj.isPatch or not aObj.isClscPTR and aObj.isClsc and _G.tonumber(buildInfo.curr[2]) > buildInfo.classic[2] and true
 	-- check current build number against Retail, if greater then it's a patch
 	aObj.isPatch = aObj.isPatch or isRetail and _G.tonumber(buildInfo.curr[2]) > buildInfo.retail[2] and true
 
@@ -178,7 +180,7 @@ function aObj:OnInitialize()
 		self.prdb.LootFrames.extra = nil
 	end
 	if aObj.isBeta then
-		for _, option in pairs{"BarbershopUI", "QuestChoice", "WarboardUI"} do
+		for _, option in _G.pairs{"BarbershopUI", "QuestChoice", "WarboardUI"} do
 			if self.prdb[option] then
 				self.prdb[option] = nil
 			end
