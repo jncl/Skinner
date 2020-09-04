@@ -2336,7 +2336,7 @@ aObj.blizzLoDFrames[ftype].EncounterJournal = function(self) -- a.k.a. Adenture 
 
 		this.navBar:DisableDrawLayer("BACKGROUND")
 		this.navBar:DisableDrawLayer("BORDER")
-		self:skinNavBarButton(this.navBar.overlay)
+		this.navBar.overlay:DisableDrawLayer("OVERLAY")
 		self:skinNavBarButton(this.navBar.home)
 		this.navBar.home.text:SetPoint("RIGHT", -20, 0)
 		self:removeInset(this.inset)
@@ -2345,7 +2345,7 @@ aObj.blizzLoDFrames[ftype].EncounterJournal = function(self) -- a.k.a. Adenture 
 		this.instanceSelect.bg:SetAlpha(0)
 		self:skinDropDown{obj=this.instanceSelect.tierDropDown}
 		self:skinSlider{obj=this.instanceSelect.scroll.ScrollBar, wdth=-6}
-		self:addFrameBorder{obj=this.instanceSelect.scroll, ft=ftype, x1=-9, y1=6, x2=6, y2=-8}
+		self:addFrameBorder{obj=this.instanceSelect.scroll, ft=ftype, x1=-9, y1=6, x2=6, y2=-7}
 		if self.modBtnBs then
 			self:SecureHook("EncounterJournal_ListInstances", function()
 				local btn
@@ -2537,7 +2537,7 @@ aObj.blizzLoDFrames[ftype].EncounterJournal = function(self) -- a.k.a. Adenture 
 		end
 		ejsfs = nil
 
-		self:addFrameBorder{obj=this.suggestFrame, ft=ftype, x1=-9, y1=6, x2=7, y2=-5}
+		self:addFrameBorder{obj=this.suggestFrame, ft=ftype, x1=-9, y1=6, x2=7, y2=-4}
 
 		self:Unhook(this, "OnShow")
 	end)
@@ -2558,7 +2558,7 @@ aObj.blizzLoDFrames[ftype].EncounterJournal = function(self) -- a.k.a. Adenture 
 			for i = 1 , #this.ItemSetsFrame.buttons do
 				this.ItemSetsFrame.buttons[i].Background:SetTexture(nil)
 			end
-			self:addFrameBorder{obj=this, ft=ftype, x1=-8, y1=6, x2=8, y2=-5}
+			self:addFrameBorder{obj=this, ft=ftype, x1=-8, y1=6, x2=8, y2=-4}
 
 			self:Unhook(this, "OnShow")
 		end)
