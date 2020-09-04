@@ -579,22 +579,25 @@ if aObj.isBeta then
 			for i = 1, #this.UpgradesTab.Upgrades do
 				frame = this.UpgradesTab.Upgrades[i]
 				if frame.Border then self:nilTexture(frame.Border, true) end
-				self:changeTandC(frame.RankBorder, self.lvlBG)
+				if frame.RankBorder then self:changeTandC(frame.RankBorder, self.lvlBG) end
 			end
 			frame = nil
 			this.UpgradesTab.TalentsList:DisableDrawLayer("BACKGROUND")
 			this.UpgradesTab.TalentsList:DisableDrawLayer("BORDER")
 			self:SecureHook(this.UpgradesTab.TalentsList, "Refresh", function(this)
+				local tA
 				for frame in this.talentPool:EnumerateActive() do
 					self:removeRegions(frame, {1, 2})
-					self:addSkinFrame{obj=frame, ft=ftype, ofs=2.5, aso={bbclr="red"}}
+					tA = frame.info.talentAvailability == _G.Enum.GarrisonTalentAvailability.Available
+					self:addSkinFrame{obj=frame, ft=ftype, ofs=2.5, y2=-2, aso={bbclr="red", bbca=tA and 1 or 0.45}}
 				end
+				tA = nil
 				if self.modBtns then
-					self:clrBtnBdr(this.UpgradeButton)
+					self:clrBtnBdr(this.UpgradeButton, "red")
 				end
 			end)
 			if self.modBtns then
-				self:skinStdButton{obj=this.UpgradesTab.DepositButton}
+				self:skinStdButton{obj=this.UpgradesTab.DepositButton, clr="red"}
 				self:skinStdButton{obj=this.UpgradesTab.TalentsList.UpgradeButton}
 			end
 
@@ -737,7 +740,12 @@ aObj.blizzLoDFrames[ftype].ItemUpgradeUI = function(self)
 		self:removeNineSlice(this.Inset.NineSlice)
 		this.HorzBar:SetTexture(nil)
 		this.MissingDescription:SetTextColor(self.BT:GetRGB())
-		this.NoMoreUpgrades:SetTextColor(self.BT:GetRGB())
+		if not aObj.isBeta then
+			this.NoMoreUpgrades:SetTextColor(self.BT:GetRGB())
+		else
+			this.ItemUpgradedNotification:SetTextColor(self.BT:GetRGB())
+			this.FeedbackMessage:SetTextColor(self.BT:GetRGB())
+		end
 		this.TitleTextLeft:SetTextColor(self.BT:GetRGB())
 		this.TitleTextRight:SetTextColor(self.BT:GetRGB())
 

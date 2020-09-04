@@ -6,39 +6,21 @@ local ftype = "u"
 
 -- The following functions are used by the GarrisonUI & OrderHallUI
 local stageRegs, navalStageRegs, cdStageRegs, skinMissionFrame, skinPortrait, skinCovenantFollowerPortrait, skinFollower, skinFollowerListButtons, skinFollowerAbilitiesAndCounters, skinFollowerList, skinFollowerPage, skinFollowerTraitsAndEquipment, skinCompleteDialog, skinMissionPage, skinMissionComplete, skinMissionList
+local isShadowlands = false
 
 -- [WoD] LE_FOLLOWER_TYPE_GARRISON_6_0
 -- [WoD] LE_FOLLOWER_TYPE_GARRISON_6_2 (Shipyards)
 -- [Legion] LE_FOLLOWER_TYPE_GARRISON_7_0
 -- [BfA] LE_FOLLOWER_TYPE_GARRISON_8_0
 -- [Shadowlands] Enum.GarrisonType.Type_9_0
-local isShadowlands
-if aObj.isBeta then
-	function isShadowlands()
-		local garrisonType = _G.C_Garrison.GetLandingPageGarrisonType()
-		if _G.Enum.GarrisonType
-		and garrisonType == _G.Enum.GarrisonType.Type_9_0
-		then
-			return true
-		else
-			return false
-		end
-	end
-else
-	isShadowlands = _G.nop
-end
 if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
-	if isShadowlands() then
-		stageRegs = {1}
-	else
-		stageRegs = {1, 2, 3, 4, 5}
-	end
+	stageRegs = {1, 2, 3, 4, 5}
 	navalStageRegs = {1, 2, 3, 4}
 	cdStageRegs = {1, 2, 3, 4, 5, 6}
 	function skinMissionFrame(frame)
 
 		local x1Ofs, y1Ofs, y2Ofs
-		if isShadowlands() then
+		if isShadowlands then
 			x1Ofs = frame == _G.CovenantMissionFrame and -2
 			y1Ofs = frame == _G.CovenantMissionFrame and 1
 			y2Ofs = frame == _G.CovenantMissionFrame and -4
@@ -54,7 +36,7 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 	end
 	function skinPortrait(frame)
 
-		if isShadowlands() then
+		if isShadowlands then
 			frame.PuckBorder:SetTexture(nil)
 			frame.PortraitRingQuality:SetTexture(nil)
 			frame.PortraitRingCover:SetTexture(nil)
@@ -148,22 +130,28 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 	end
 	function skinFollowerList(frame)
 
-		if not isShadowlands() then
+		if not isShadowlands then
 			frame:DisableDrawLayer("BORDER")
+			aObj:removeRegions(frame, {1, 2, frame:GetParent() ~= _G.GarrisonLandingPage and 3 or nil})
+		else
+			aObj:removeRegions(frame, {1})
 		end
 
 		if frame.MaterialFrame then
 			frame.MaterialFrame:DisableDrawLayer("BACKGROUND")
 		end
 
-		aObj:removeRegions(frame, {1, 2, frame:GetParent() ~= _G.GarrisonLandingPage and 3 or nil})
-
 		if frame.SearchBox then
 			aObj:skinEditBox{obj=frame.SearchBox, regs={6, 7, 8}, mi=true} -- 6 is text, 7 is icon, 8 is text
 			-- need to do this as background isn't visible on Shipyard Mission page
 			_G.RaiseFrameLevel(frame.SearchBox)
 		end
-		aObj:skinSlider{obj=frame.listScroll.scrollBar, wdth=-6}
+		if not isShadowlands then
+			aObj:skinSlider{obj=frame.listScroll.scrollBar, wdth=-6}
+		else
+			frame.ElevatedFrame:DisableDrawLayer("OVERLAY")
+			frame.listScroll.scrollBar:DisableDrawLayer("BACKGROUND")
+		end
 
 		-- if FollowerList not yet populated, hook the function
 		if not frame.listScroll.buttons then
@@ -184,7 +172,7 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 	end
 	function skinFollowerPage(frame)
 
-		if isShadowlands() then -- Shadowloands
+		if isShadowlands then
 			skinPortrait(frame.CovenantFollowerPortraitFrame)
 			if aObj.modBtnBs then
 				for btn in frame.autoSpellPool:EnumerateActive() do
@@ -275,7 +263,12 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 		if not _G.IsAddOnLoaded("MasterPlan") then
 			frame.CloseButton:SetSize(28, 28) -- make button smaller
 		end
-		aObj:addSkinFrame{obj=frame, ft=ftype, kfs=true, x1=_G.IsAddOnLoaded("GarrisonCommander") and 0 or -320, y1=5, x2=3, y2=-20}
+		local y1Ofs, x2Ofs = 5, 3
+		if isShadowlands then
+			frame.CloseButton.CloseButtonBorder:SetTexture(nil)
+			y1Ofs, x2Ofs = 2, 1
+		end
+		aObj:addSkinFrame{obj=frame, ft=ftype, kfs=true, x1=_G.IsAddOnLoaded("GarrisonCommander") and 0 or -320, y1=y1Ofs, x2=x2Ofs, y2=-20}
 		if aObj.modBtns then
 			aObj:skinStdButton{obj=frame.StartMissionButton}
 			-- handle animation of StartMissionButton
@@ -350,7 +343,7 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 		ml:DisableDrawLayer("BORDER")
 		ml.MaterialFrame:DisableDrawLayer("BACKGROUND")
 
-		if not aObj.isBeta then
+		if not isShadowlands then
 			-- tabs at top
 			for i = 1, 2 do
 				ml["Tab" .. i]:DisableDrawLayer("BORDER")
@@ -376,7 +369,7 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 			end
 			aObj:skinSlider{obj=ml.listScroll.scrollBar, wdth=-4}
 		else
-			aObj:skinSlider{obj=ml.listScroll.scrollBar, rt={"background", "artwork"}, wdth=-4}
+			ml.listScroll.scrollBar:DisableDrawLayer("BACKGROUND")
 			ml.RaisedFrameEdges:DisableDrawLayer("BORDER")
 		end
 		local btn
@@ -407,7 +400,7 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 end
 
 -- The following functions are used by several Chat* functions
-aObj.cebRgns1 = {1, 2, 9, 10} -- 1, 9, 10 are font strings, 2 is cursor texture
+aObj.cebRgns1 = {1, 2, 9, 10, aObj.isBeta and 11 or nil} -- 1, 9, 10 are font strings, 2 is cursor texture
 aObj.cebRgns2 = {9, 10}
 local function skinChatEB(obj)
 
@@ -1434,12 +1427,12 @@ aObj.blizzFrames[ftype].ChatBubbles = function(self)
 	 -- events which create chat bubbles
 	local evtTab = {"CHAT_MSG_SAY", "CHAT_MSG_YELL", "CHAT_MSG_MONSTER_SAY", "CHAT_MSG_MONSTER_YELL", "CINEMATIC_START"}
 	local function registerEvents()
-		for _, event in pairs(evtTab) do
+		for _, event in _G.pairs(evtTab) do
 			self:RegisterEvent(event, skinChatBubbles)
 		end
 	end
 	local function unRegisterEvents()
-		for _, event in pairs(evtTab) do
+		for _, event in _G.pairs(evtTab) do
 			self:UnregisterEvent(event)
 		end
 	end
@@ -2272,6 +2265,13 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 
 	self.initialized.GarrisonUI = true
 
+	local garrisonType = _G.C_Garrison.GetLandingPageGarrisonType()
+	if aObj.isBeta then
+		isShadowlands = garrisonType == _G.Enum.GarrisonType.Type_9_0
+		stageRegs = {1}
+	-- aObj:Debug("garrisonType: [%s, %s]", _G.C_Garrison.GetLandingPageGarrisonType(), isShadowlands)
+	end
+
 	-- hook these to skin mission rewards & OvermaxItem
     self:SecureHook("GarrisonMissionPage_SetReward", function(frame, _)
 		-- aObj:Debug("GMP_SR: [%s, %s, %s]", frame, reward, missionComplete)
@@ -2868,7 +2868,7 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 			end
 
 			frame.OverlayElements.CloseButtonBorder:SetTexture(nil)
-			self:addSkinFrame{obj=frame, ft=ftype, kfs=true, x2=1}
+			self:addSkinFrame{obj=frame, ft=ftype, kfs=true, x2=1, y2=-6}
 			frame.sf:SetFrameStrata("LOW") -- allow map textures to be visible
 
 			skinMissionFrame(frame)
@@ -2949,10 +2949,13 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 					end)
 				end
 
-				this.AdventuresCombatLog:DisableDrawLayer("BORDER")
-				self:skinSlider{obj=this.AdventuresCombatLog.CombatLogMessageFrame.ScrollBar, rt={"background", "artwork"}, wdth=-4}
+				self:removeRegions(this.AdventuresCombatLog, {1})
+				this.AdventuresCombatLog.ElevatedFrame:DisableDrawLayer("OVERLAY")
+				this.AdventuresCombatLog.CombatLogMessageFrame.ScrollBar:DisableDrawLayer("BACKGROUND")
 
 				-- .MissionInfo
+				this.MissionInfo.Header:SetTexture(nil)
+				self:nilTexture(this.MissionInfo.IconBG, true)
 
 				skinBoard(this.Board)
 				this.CompleteFrame:DisableDrawLayer("BACKGROUND")
@@ -4746,7 +4749,7 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 			anchor = _G.AnchorUtil.CreateAnchor("TOPLEFT", "MinimapBackdrop", "TOPLEFT", 32, -140)
 		end
 		local function skinGLPM(btn)
-			if isShadowlands()
+			if isShadowlands
 			and _G.C_Covenants.GetCovenantData(_G.C_Covenants.GetActiveCovenantID())
 			then
 				makeBtnSquare(btn, 0.2, 0.76, 0.2, 0.76)
@@ -4835,13 +4838,11 @@ aObj.blizzFrames[ftype].Nameplates = function(self)
 	if not self.prdb.Nameplates or self.initialized.Nameplates then return end
 	self.initialized.Nameplates = true
 
-	-- if aObj.isBeta then return end
-
 	local function skinNamePlate(frame)
 
 		local nP = frame.UnitFrame
 		if nP then
-			if not self.isClsc then
+			if not aObj.isClsc then
 				-- handle in combat
 				if _G.InCombatLockdown() then
 				    aObj:add2Table(aObj.oocTab, {skinNamePlate, {frame}})
@@ -4867,9 +4868,10 @@ aObj.blizzFrames[ftype].Nameplates = function(self)
 
 	-- hook this to skin created Nameplates
 	self:SecureHook(_G.NamePlateDriverFrame, "OnNamePlateAdded", function(this, namePlateUnitToken)
-		local namePlateFrameBase = _G.C_NamePlate.GetNamePlateForUnit(namePlateUnitToken, _G.issecure())
-		-- aObj:Debug("NPDF OnNamePlateAdded: [%s, %s, %s]", namePlateUnitToken, namePlateFrameBase, issecure())
-		skinNamePlate(namePlateFrameBase)
+		local frame = _G.C_NamePlate.GetNamePlateForUnit(namePlateUnitToken, _G.issecure())
+		-- aObj:Debug("NPDF OnNamePlateAdded: [%s, %s, %s]", namePlateUnitToken, frame, _G.issecure())
+		skinNamePlate(frame)
+		frame = nil
 	end)
 
 	-- Class Nameplate Frames
@@ -5277,7 +5279,7 @@ if aObj.isBeta then
 				end
 			end
 
-			local opts, gOfs, y1Ofs, y2Ofs
+			local opt, gOfs, y1Ofs, y2Ofs
 			if this.uiTextureKit == "jailerstower" then
 				gOfs = -40
 				y1Ofs = 0
@@ -5516,43 +5518,56 @@ aObj.blizzFrames[ftype].QuestMap = function(self)
 	self.initialized.QuestMap = true
 
 	self:SecureHookScript(_G.QuestMapFrame, "OnShow", function(this)
+		if aObj.isBeta then
+			this.Background:SetAlpha(0) -- N.B. Texture changed in code
+		end
 		this.VerticalSeparator:SetTexture(nil)
 		self:skinDropDown{obj=_G.QuestMapQuestOptionsDropDown}
+
+		-- QuestsFrame
 		this.QuestsFrame:DisableDrawLayer("BACKGROUND")
+		this.QuestsFrame.Contents.Separator:DisableDrawLayer("OVERLAY")
 		this.QuestsFrame.Contents.StoryHeader:DisableDrawLayer("BACKGROUND")
 		if not aObj.isBeta then
 			this.QuestsFrame.Contents.WarCampaignHeader:DisableDrawLayer("BACKGROUND")
 		else
-			this.Background:SetAlpha(0) -- N.B. Texture changed in code
 			self:SecureHook("QuestLogQuests_Update", function(poiTable)
 				for hdr in this.QuestsFrame.campaignHeaderFramePool:EnumerateActive() do
 					hdr.Background:SetTexture(nil)
 					hdr.TopFiligree:SetTexture(nil)
 					hdr.HighlightTexture:SetAtlas("CampaignHeader_SelectedGlow")
 					hdr.SelectedHighlight:SetTexture(nil)
-					if self.modBtnBs then
+					if self.modBtns then
 		 				self:skinExpandButton{obj=hdr.CollapseButton, onSB=true}
 					end
 				end
-				if self.modBtns then
-					local tex
-					for hdr in _G.QuestScrollFrame.headerFramePool:EnumerateActive() do
-						tex = hdr:GetNormalTexture() and hdr:GetNormalTexture():GetTexture()
-						if tex
-						and not _G.tonumber(tex)
-						and (tex:find("MinusButton")
-						or tex:find("PlusButton"))
-						and not hdr.sb
-						then
-							self:skinExpandButton{obj=hdr, onSB=true}
-						end
-						self:checkTex{obj=hdr}
+				local tex
+				local function skinEB(hdr)
+					tex = hdr:GetNormalTexture() and hdr:GetNormalTexture():GetTexture()
+					if tex
+					and _G.tonumber(tex)
+					and tex == 904010 -- Campaign_HeaderIcon_* [Atlas]
+					and not hdr.sb
+					then
+						aObj:skinExpandButton{obj=hdr, onSB=true}
+						aObj:checkTex{obj=hdr}
 					end
-					tex = nil
 				end
+				for hdr in this.QuestsFrame.covenantCallingsHeaderFramePool:EnumerateActive() do
+					self:removeRegions(hdr, {2, 3, 4})
+					hdr.Background:SetTexture([[Interface\QuestFrame\UI-QuestLogTitleHighlight]])
+					if self.modBtns then
+						skinEB(hdr)
+					end
+				end
+				if self.modBtns then
+					for hdr in _G.QuestScrollFrame.headerFramePool:EnumerateActive() do
+						skinEB(hdr)
+					end
+				end
+				tex = nil
 			end)
 		end
-		this.QuestsFrame.Contents.Separator:DisableDrawLayer("OVERLAY")
 		this.QuestsFrame.DetailFrame:DisableDrawLayer("ARTWORK")
 		self:skinSlider{obj=this.QuestsFrame.ScrollBar}
 		self:addSkinFrame{obj=this.QuestsFrame.StoryTooltip, ft=ftype}
@@ -5920,12 +5935,23 @@ aObj.blizzFrames[ftype].SplashFrame = function(self)
 
 	self:SecureHookScript(_G.SplashFrame, "OnShow", function(this)
 		this.Label:SetTextColor(self.HT:GetRGB())
-		this.StartButton:DisableDrawLayer("BACKGROUND")
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true}
+		if not aObj.isBeta then
+			this.StartButton:DisableDrawLayer("BACKGROUND")
+		else
+			this.RightFeature.StartQuestButton:DisableDrawLayer("BACKGROUND")
+		end
+		-- self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true}
 		if self.modBtns then
-			self:skinCloseButton{obj=this.TopCloseButton}
-			self:skinStdButton{obj=this.StartButton}
+			self:skinCloseButton{obj=this.TopCloseButton, noSkin=true}
 			self:skinStdButton{obj=this.BottomCloseButton}
+			if not aObj.isBeta then
+				self:skinStdButton{obj=this.StartButton}
+			else
+				self:skinStdButton{obj=this.RightFeature.StartQuestButton, ofs=0, x1=40}
+				self:SecureHook(this.RightFeature.StartQuestButton, "SetButtonState", function(this, _)
+					self:clrBtnBdr(this)
+				end)
+			end
 		end
 
 		self:Unhook(this, "OnShow")
@@ -6046,15 +6072,25 @@ if aObj.isBeta then
 				-- .LinkContainer
 				-- .NodeContainer
 			-- .ConduitList
-				-- .Lists / .Sections
+				-- ScrollBox.ScrollTarget
+					-- .Lists / .Sections
+						-- CategoryButton
+							-- Container
+			for _, list in pairs(this.ConduitList.ScrollBox.ScrollTarget.Lists) do
+				self:removeRegions(list.CategoryButton.Container, {1})
+				if self.modBtns then
+					self:skinStdButton{obj=list.CategoryButton, clr="sepia"}
+				end
+			end
+
 			self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, ofs=-5, aso={bbclr="sepia"}}
 			if self.modBtns then
 				self:skinCloseButton{obj=this.CloseButton, noSkin=true}
 				self:skinStdButton{obj=this.ActivateSoulbindButton}
-				self:skinStdButton{obj=this.CommitConduitsButton}
 				self:SecureHook(this, "UpdateActivateSoulbindButton", function(this)
 					self:clrBtnBdr(this.ActivateSoulbindButton)
 				end)
+				self:skinStdButton{obj=this.CommitConduitsButton}
 			end
 
 			self:Unhook(this, "OnShow")
@@ -6765,6 +6801,11 @@ aObj.blizzFrames[ftype].ZoneAbility = function(self)
 				end)
 				-- skin existing entries
 				abb2Btn(this.SpellButtonContainer)
+				-- hook this to remove button border to prevent taint ?
+				self:RawHook(_G.ExtraAbilityContainer, "RemoveFrame", function(this, ...)
+					if this.sbb then this.sbb = nil end
+					self.hooks[this].RemoveFrame(this, ...)
+				end, true)
 			end
 		end
 
