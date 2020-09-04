@@ -8,13 +8,6 @@ aObj.blizzLoDFrames[ftype].AchievementUI = function(self)
 	if not self.prdb.AchievementUI.skin or self.initialized.AchievementUI then return end
 	self.initialized.AchievementUI = true
 
-	if self.prdb.AchievementUI.style == 2 then
-		_G.ACHIEVEMENTUI_REDBORDER_R = self.bbClr.r
-		_G.ACHIEVEMENTUI_REDBORDER_G = self.bbClr.g
-		_G.ACHIEVEMENTUI_REDBORDER_B = self.bbClr.b
-		_G.ACHIEVEMENTUI_REDBORDER_A = self.bbClr.a
-	end
-
 	-- handle Overachiever hijacking OnShow script first time through
 	if _G.IsAddOnLoaded("Overachiever") then
 		self:SecureHook("AchievementFrame_OnShow", function(this)
@@ -81,41 +74,47 @@ aObj.blizzLoDFrames[ftype].AchievementUI = function(self)
 		local function skinBtn(btn)
 
 			btn:DisableDrawLayer("BACKGROUND")
-			-- don't DisableDrawLayer("BORDER") as the button border won't show if skinned
+			btn:DisableDrawLayer("BORDER")
 			btn:DisableDrawLayer("ARTWORK")
-			aObj:applySkin{obj=btn, bd=10, ng=true} -- use applySkin to allow border colour to be changed and icon borders to be visible
-			-- TODO: show plusMinus as plus/minus without background
-			if btn.plusMinus then btn.plusMinus:SetAlpha(0) end
-			btn.icon:DisableDrawLayer("BACKGROUND")
-			btn.icon:DisableDrawLayer("BORDER")
-			btn.icon:DisableDrawLayer("OVERLAY")
-			-- set textures to nil and prevent them from being changed as guildview changes the textures
-			aObj:nilTexture(btn.icon.frame, true)
-			-- colour text and button border
-			if btn.description then btn.description:SetTextColor(aObj.BT:GetRGB()) end
-			if btn.hiddenDescription then btn.hiddenDescription:SetTextColor(aObj.BT:GetRGB()) end
-
-			if aObj.modBtnBs then
-				aObj:addButtonBorder{obj=btn.icon, x1=4, y1=-1, x2=-4, y2=6}
-				btn.icon.sbb:SetBackdropBorderColor(btn:GetBackdropBorderColor())
-				-- hook these to handle description text  & button border colour changes
-				aObj:SecureHook(btn, "Desaturate", function(this)
-					this.icon.sbb:SetBackdropBorderColor(this:GetBackdropBorderColor())
-				end)
+			if btn.hiddenDescription then
+				btn.hiddenDescription:SetTextColor(aObj.BT:GetRGB())
 			end
-			aObj:SecureHook(btn, "Saturate", function(this)
-				if this.description then
-					this.description:SetTextColor(aObj.BT:GetRGB())
-				end
-				if this.icon.sbb then
+			aObj:nilTexture(btn.icon.frame, true)
+			aObj:SecureHook(btn, "Desaturate", function(this)
+				if this.sbb then
+					this.sbb:SetBackdropBorderColor(this:GetBackdropBorderColor())
 					this.icon.sbb:SetBackdropBorderColor(this:GetBackdropBorderColor())
 				end
 			end)
-
+			aObj:SecureHook(btn, "Saturate", function(this)
+				if this.sbb then
+					this.sbb:SetBackdropBorderColor(this:GetBackdropBorderColor())
+					this.icon.sbb:SetBackdropBorderColor(this:GetBackdropBorderColor())
+				end
+				if this.description then
+					this.description:SetTextColor(aObj.BT:GetRGB())
+				end
+			end)
+			-- if aObj.modBtns then
+				-- TODO: PlusMinus is really a texture NOT a button
+				-- aObj:SecureHook("AchievementButton_UpdatePlusMinusTexture", function(btn)
+					-- if not btn.id then return end
+					-- if btn:IsShown() then
+						-- btn.collapsed
+						-- btn.saturatedStyle
+						-- check for both, one of each and none to determine colour
+						-- testure used is: Interface\AchievementFrame\UI-Achievement-PlusMinus
+					-- end
+				-- end)
+			-- end
+			if aObj.modBtnBs then
+				aObj:addButtonBorder{obj=btn.icon, relTo=btn.texture, x1=4, y1=-1, x2=-4, y2=6}
+				aObj:addButtonBorder{obj=btn, ofs=0}
+			end
 			if aObj.modChkBtns
 			and btn.tracked
 			then
-				aObj:skinCheckButton{obj=btn.tracked, hf=true}
+				aObj:skinCheckButton{obj=btn.tracked}
 			end
 
 		end
@@ -130,8 +129,8 @@ aObj.blizzLoDFrames[ftype].AchievementUI = function(self)
 				skinBtn(_G[btnName])
 				if type == "Achievements" then
 					-- set textures to nil and prevent them from being changed as guildview changes the textures
-					self:nilTexture(_G[btnName .. "TopTsunami1"], true)
-					self:nilTexture(_G[btnName .. "BottomTsunami1"], true)
+					-- self:nilTexture(_G[btnName .. "TopTsunami1"], true)
+					-- self:nilTexture(_G[btnName .. "BottomTsunami1"], true)
 				elseif type == "Summary" then
 					if not _G[btnName].tooltipTitle then _G[btnName]:Saturate() end
 				elseif type == "Comparison" then
