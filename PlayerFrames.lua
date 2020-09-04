@@ -388,7 +388,8 @@ aObj.blizzLoDFrames[ftype].ArchaeologyUI = function(self)
 		_G.ArchaeologyFrameRankBarBackground:SetAllPoints(this.rankBar)
 		_G.ArchaeologyFrameRankBarBorder:Hide()
 		self:skinStatusBar{obj=this.rankBar, fi=0, bgTex=_G.ArchaeologyFrameRankBarBackground}
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, x1=30}
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, x1=30, x2=2.5}
+
 		self:keepFontStrings(this.summaryPage) -- remove title textures
 		_G.ArchaeologyFrameSummaryPageTitle:SetTextColor(self.HT:GetRGB())
 		for i = 1, _G.ARCHAEOLOGY_MAX_RACES do
@@ -401,6 +402,7 @@ aObj.blizzLoDFrames[ftype].ArchaeologyUI = function(self)
 		self:SecureHook(this.summaryPage, "UpdateFrame", function(this)
 			self:clrPNBtns(this:GetName())
 		end)
+
 		self:keepFontStrings(this.completedPage) -- remove title textures
 		this.completedPage.infoText:SetTextColor(self.BT:GetRGB())
 		this.completedPage.titleBig:SetTextColor(self.HT:GetRGB())
