@@ -831,11 +831,11 @@ aObj.ClassicSupport = function(self)
 						btn.sbb:SetShown(btn.gameIcon:IsShown())
 						self:addButtonBorder{obj=btn.travelPassButton, ofs=0, y1=3, y2=-2}
 						self:addButtonBorder{obj=btn.summonButton}
-						for _, btn in _G.pairs{btn.travelPassButton. btn.summonButton} do
-							self:SecureHook(btn, "Disable", function(this, _)
+						for _, name in _G.pairs{"travelPassButton", "summonButton"} do
+							self:SecureHook(btn[name], "Disable", function(this, _)
 								self:clrBtnBdr(this)
 							end)
-							self:SecureHook(btn, "Enable", function(this, _)
+							self:SecureHook(btn[name], "Enable", function(this, _)
 								self:clrBtnBdr(this)
 							end)
 						end
