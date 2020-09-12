@@ -780,8 +780,8 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 						self:checkAndRun(info[#info], "n", true)
 					end
 				else self:checkAndRun(info[#info], "n") end
-				-- treat GossipFrame & QuestFrame as one
-				-- as they both change the quest text colours
+				-- treat GossipFrame, QuestFrame & QuestInfo as one
+				-- as they all change the quest text colours
 				if info[#info] == "GossipFrame" then
 					db.QuestFrame = value
 					_G._G.InterfaceOptionsFrame_OpenToCategory(self.optionsFrame[self.L["NPC Frames"]])

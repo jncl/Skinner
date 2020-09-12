@@ -1,4 +1,4 @@
-﻿## Interface: 90001
+﻿## Interface: 90002
 ## Title: Skinner
 ## Notes: Changes the look of the default UI (Retail & Classic)
 ## Notes-esES: Cambia el aspecto del UI predeterminado

@@ -1246,12 +1246,17 @@ function aObj:updateSBTexture()
 
 end
 
-function aObj:unwrapTextFromColourCode(text)
+function aObj:unwrapTextFromColourCode(text, sOfs, eOfs)
 
 	local newText = _G.gsub(text, "\124", "\124\124") -- turn Hex string into text
-	newText = _G.strsub(newText, 12, -4) -- remove colour prefix and suffix
+	if _G.strlen(newText) == _G.strlen(text) then return text end
+
+	-- aObj:Debug("unwrapTextFromColourCode: [%s, %s, %s, %s]", text, newText, sOfs, eOfs)
+
+	local clrCode =  _G.strsub(newText, 6, 11)
+	newText = _G.strsub(newText, sOfs or 12, eOfs or -4) -- remove colour prefix and suffix
 	newText = _G.gsub(newText, "\124\124", "\124") -- convert string to Hex for any embedded characters (e.g. newlines)
-	return newText
+	return newText, clrCode
 
 end
 

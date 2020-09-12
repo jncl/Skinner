@@ -3844,6 +3844,7 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 	-- AutoPopup frames
 	if self.prdb.ObjectiveTracker.popups then
 		local function skinAutoPopUps(owningModule)
+			if _G.SplashFrame:IsShown() then return end
 			local questID, questTitle, block, blockContents
 			for i = 1, _G.GetNumAutoQuestPopUps() do
 				questID, _ = _G.GetAutoQuestPopUp(i)
@@ -3878,21 +3879,17 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 			end
 			questID, questTitle, block, blockContents = nil, nil, nil, nil
 		end
-
-		if not aObj.isBeta then
+			if not aObj.isBeta then
 			-- hook this to skin the AutoPopUps
 			self:SecureHook(_G.AUTO_QUEST_POPUP_TRACKER_MODULE, "Update", function(this)
-				if _G.SplashFrame:IsShown() then return end
-				skinAutoPopUps()
+				skinAutoPopUps(_G.QUEST_TRACKER_MODULE)
 			end)
 		else
 			self:SecureHook("AutoQuestPopupTracker_Update", function(owningModule)
-				if _G.SplashFrame:IsShown() then return end
-				aObj:Debug("AutoQuestPopupTracker_Update: [%s, %s]", owningModule)
 				skinAutoPopUps(owningModule)
 			end)
 		end
-		-- skinAutoPopUps()
+		skinAutoPopUps(_G.QUEST_TRACKER_MODULE)
 	end
 
 	-- remove Glow/Sheen textures from WorldQuest modules

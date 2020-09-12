@@ -585,11 +585,17 @@ if aObj.isBeta then
 			this.UpgradesTab.TalentsList:DisableDrawLayer("BACKGROUND")
 			this.UpgradesTab.TalentsList:DisableDrawLayer("BORDER")
 			self:SecureHook(this.UpgradesTab.TalentsList, "Refresh", function(this)
+				-- aObj:Debug("TalentsList Refresh: [%s, %s]", this.upgradeTalentID)
 				local tA
 				for frame in this.talentPool:EnumerateActive() do
+					-- aObj:Debug("talentPool: [%s, %s]", frame.talentID)
 					self:removeRegions(frame, {1, 2})
-					tA = frame.info.talentAvailability == _G.Enum.GarrisonTalentAvailability.Available
-					self:addSkinFrame{obj=frame, ft=ftype, ofs=2.5, y2=-2, aso={bbclr="red", bbca=tA and 1 or 0.45}}
+					tA = frame.talentID == this.upgradeTalentID or nil
+					if not frame.sf then
+						self:addSkinFrame{obj=frame, ft=ftype, ofs=2.5, y2=-2, aso={bbclr="red", bbca=tA and 1 or 0.45}}
+					else
+						self:clrBBC(frame.sf, "red", tA and 1 or 0.45)
+					end
 				end
 				tA = nil
 				if self.modBtns then
@@ -598,6 +604,9 @@ if aObj.isBeta then
 			end)
 			if self.modBtns then
 				self:skinStdButton{obj=this.UpgradesTab.DepositButton, clr="red"}
+				self:SecureHook(this.UpgradesTab, "UpdateDepositButton", function(this)
+					self:clrBtnBdr(this.DepositButton, "red")
+				end)
 				self:skinStdButton{obj=this.UpgradesTab.TalentsList.UpgradeButton}
 			end
 
@@ -646,14 +655,35 @@ aObj.blizzFrames[ftype].GossipFrame = function(self)
 	if not self.prdb.GossipFrame or self.initialized.GossipFrame then return end
 	self.initialized.GossipFrame = true
 
+	local gossipOffsets = {
+		["(Quest)"] = {22, -1},
+	}
 	if aObj.isBeta then
-		self:RawHook(_G.GossipFrame.titleButtonPool, "Acquire", function(this)
-			-- aObj:Debug("GF.titleButtonPool Acquire: [%s, %s]", #GossipFrame.buttons)
-			local btn = self.hooks[this].Acquire(this)
-			self:getRegion(btn, 3):SetTextColor(self.BT:GetRGB())
-			self:hookQuestText(btn)
-			return btn
-		end, true)
+		self:SecureHook("GossipFrameUpdate", function()
+			for i = 1, _G.GossipFrame_GetTitleButtonCount() do
+				-- check to see if text has embedded color code
+				-- if so remove it and change alpha value
+				local text, clrCode = _G.GossipFrame.buttons[i]:GetText()
+				for str2Chk, offsets in _G.pairs(gossipOffsets) do
+					if text:find(str2Chk) then
+						text, clrCode = self:unwrapTextFromColourCode(text, offsets[1], offsets[2])
+						text = str2Chk .. text
+					end
+				end
+				if not clrCode then
+					text, clrCode = self:unwrapTextFromColourCode(text)
+				end
+				-- aObj:Debug("GossipFrameUpdate: [%s, %s]", text, clrCode)
+				if clrCode ~= nil then
+					_G.GossipFrame.buttons[i]:SetText(self.BT:WrapTextInColorCode(text))
+					_G.GossipFrame.buttons[i]:SetAlpha(clrCode == "414141" and 0.65 or 1)
+				else
+					_G.GossipFrame.buttons[i]:GetFontString():SetTextColor(self.BT:GetRGB())
+					_G.GossipFrame.buttons[i]:SetAlpha(1)
+				end
+				text, clrCode, ofs = nil, nil, nil
+			end
+		end)
 	end
 
 	self:SecureHookScript(_G.GossipFrame, "OnShow", function(this)
@@ -662,7 +692,7 @@ aObj.blizzFrames[ftype].GossipFrame = function(self)
 		self:skinSlider{obj=_G.GossipGreetingScrollFrame.ScrollBar, rt="artwork"}
 		if not aObj.isBeta then
 			for i = 1, _G.NUMGOSSIPBUTTONS do
-				self:getRegion(_G["GossipTitleButton" .. i], 3):SetTextColor(self.BT:GetRGB())
+				_G["GossipTitleButton" .. i]:GetFontString():SetTextColor(self.HT:GetRGBA())
 				self:hookQuestText(_G["GossipTitleButton" .. i])
 			end
 		end
@@ -1069,6 +1099,9 @@ aObj.blizzFrames[ftype].QuestFrame = function(self)
 			end)
 			self:skinStdButton{obj=_G.QuestFrameGoodbyeButton}
 			self:skinStdButton{obj=_G.QuestFrameCompleteButton}
+			self:SecureHookScript(_G.QuestFrameProgressPanel, "OnShow", function(this)
+				self:clrBtnBdr(_G.QuestFrameCompleteButton)
+			end)
 			self:skinStdButton{obj=_G.QuestFrameDeclineButton}
 			self:skinStdButton{obj=_G.QuestFrameAcceptButton}
 			self:skinStdButton{obj=_G.QuestFrameGreetingGoodbyeButton}
@@ -1100,13 +1133,7 @@ aObj.blizzFrames[ftype].QuestFrame = function(self)
 end
 
 aObj.blizzFrames[ftype].QuestInfo = function(self)
-	if not self.prdb.GossipFrame
-	and not self.prdb.QuestFrame
-	and not self.prdb.QuestMap
-	or self.initialized.QuestInfo
-	then
-		return
-	end
+	if self.initialized.QuestInfo then return end
 	self.initialized.QuestInfo = true
 
 	local function skinRewards(frame)

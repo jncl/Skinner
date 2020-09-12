@@ -36,14 +36,7 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 	end
 	function skinPortrait(frame)
 
-		if isShadowlands then
-			frame.PuckBorder:SetTexture(nil)
-			frame.PortraitRingQuality:SetTexture(nil)
-			frame.PortraitRingCover:SetTexture(nil)
-			aObj:changeTandC(frame.LevelCircle, aObj.lvlBG)
-			frame.HealthBar.Health:SetTexture(aObj.sbTexture)
-			frame.HealthBar.Border:SetTexture(nil)
-		else
+		if not isShadowlands then
 			frame.PortraitRing:SetTexture(nil)
 			frame.LevelBorder:SetAlpha(0) -- texture changed
 			if frame.PortraitRingCover then frame.PortraitRingCover:SetTexture(nil) end
@@ -56,6 +49,14 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 					fp.PortraitRing:SetAtlas("GarrMission_PortraitRing_Quality") -- reset after legion titled follower
 				end)
 			end
+		else
+			-- FIXME: colour of PuckBorder changes for troops, is it important to show it?
+			aObj:nilTexture(frame.PuckBorder, true)
+			frame.PortraitRingQuality:SetTexture(nil)
+			frame.PortraitRingCover:SetTexture(nil)
+			aObj:changeTandC(frame.LevelCircle, aObj.lvlBG)
+			frame.HealthBar.Health:SetTexture(aObj.sbTexture)
+			frame.HealthBar.Border:SetTexture(nil)
 		end
 
 	end
@@ -134,6 +135,9 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 			frame:DisableDrawLayer("BORDER")
 			aObj:removeRegions(frame, {1, 2, frame:GetParent() ~= _G.GarrisonLandingPage and 3 or nil})
 		else
+			if frame.FollowerScrollFrame then
+				frame.FollowerScrollFrame:SetTexture(nil)
+			end
 			aObj:removeRegions(frame, {1})
 		end
 
@@ -149,8 +153,10 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 		if not isShadowlands then
 			aObj:skinSlider{obj=frame.listScroll.scrollBar, wdth=-6}
 		else
-			frame.ElevatedFrame:DisableDrawLayer("OVERLAY")
 			frame.listScroll.scrollBar:DisableDrawLayer("BACKGROUND")
+			if frame.ElevatedFrame then
+				frame.ElevatedFrame:DisableDrawLayer("OVERLAY")
+			end
 		end
 
 		-- if FollowerList not yet populated, hook the function
@@ -172,15 +178,17 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 	end
 	function skinFollowerPage(frame)
 
-		if isShadowlands then
+		if not isShadowlands then
+			skinPortrait(frame.PortraitFrame)
+		else
 			skinPortrait(frame.CovenantFollowerPortraitFrame)
 			if aObj.modBtnBs then
 				for btn in frame.autoSpellPool:EnumerateActive() do
+					btn.Border:SetTexture(nil)
+					btn.SpellBorder:SetTexture(nil)
 					aObj:addButtonBorder{obj=btn, relTo=btn.Icon}
 				end
 			end
-		else
-			skinPortrait(frame.PortraitFrame)
 		end
 		aObj:skinStatusBar{obj=frame.XPBar, fi=0}
 		frame.XPBar:DisableDrawLayer("OVERLAY")
@@ -369,6 +377,8 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 			end
 			aObj:skinSlider{obj=ml.listScroll.scrollBar, wdth=-4}
 		else
+			ml.MaterialFrame.LeftFiligree:SetTexture(nil)
+			ml.MaterialFrame.RightFiligree:SetTexture(nil)
 			ml.listScroll.scrollBar:DisableDrawLayer("BACKGROUND")
 			ml.RaisedFrameEdges:DisableDrawLayer("BORDER")
 		end
@@ -379,13 +389,13 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 			btn:DisableDrawLayer("BORDER")
 			-- btn.Overlay:DisableDrawLayer("OVERLAY") -- indicates that it cannot be interacted with
 			-- extend the top & bottom highlight texture
-			btn.HighlightT:ClearAllPoints()
-			btn.HighlightT:SetPoint("TOPLEFT", 0, 4)
-			btn.HighlightT:SetPoint("TOPRIGHT", 0, 4)
-	        btn.HighlightB:ClearAllPoints()
-	        btn.HighlightB:SetPoint("BOTTOMLEFT", 0, -4)
-	        btn.HighlightB:SetPoint("BOTTOMRIGHT", 0, -4)
 			if not aObj.isBeta then
+				btn.HighlightT:ClearAllPoints()
+				btn.HighlightT:SetPoint("TOPLEFT", 0, 4)
+				btn.HighlightT:SetPoint("TOPRIGHT", 0, 4)
+		        btn.HighlightB:ClearAllPoints()
+		        btn.HighlightB:SetPoint("BOTTOMLEFT", 0, -4)
+		        btn.HighlightB:SetPoint("BOTTOMRIGHT", 0, -4)
 				aObj:removeRegions(btn, {13, 14, 23, 24, 25, 26}) -- LocBG, RareOverlay, Highlight corners
 			else
 				aObj:removeRegions(btn, {13, 20, 21, 22, 23}) -- LocBG, Highlight corners
@@ -867,23 +877,28 @@ if aObj.isBeta then
 		if not self.prdb.AnimaDiversionUI or self.initialized.AnimaDiversionUI then return end
 		self.initialized.AnimaDiversionUI = true
 
+		-- FIXME: ScrollContainer moves to the right when Anima flowing
 		self:SecureHookScript(_G.AnimaDiversionFrame, "OnShow", function(this)
 
 			self:removeNineSlice(this.NineSlice)
 			self:keepFontStrings(this.BorderFrame)
-			-- .ScrollContainer
-			-- .AnimaDiversionCurrencyFrame
-				-- .CurrencyFrame
-			-- .ReinforceProgressFrame
-				-- .bolsterProgressGemPool
-			-- .ReinforceInfoFrame
-			-- .SelectPinInfoFrame
-				-- .NineSlice
-				-- .SelectButton
-			self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, aso={bbclr="sepia"}}
+			self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, aso={bbclr="sepia"}, x2=1, y2=-3}
 			if self.modBtns then
 				self:skinCloseButton{obj=this.CloseButton , noSkin=true}
-				self:skinStdButton{obj=this.AnimaNodeReinforceButton}
+				self:skinStdButton{obj=this.ReinforceInfoFrame.AnimaNodeReinforceButton}
+			end
+
+			-- .ScrollContainer
+
+			this.AnimaDiversionCurrencyFrame:DisableDrawLayer("BACKGROUND")
+
+			-- .ReinforceProgressFrame
+				-- .bolsterProgressGemPool
+
+			self:removeNineSlice(this.SelectPinInfoFrame.NineSlice)
+			self:addSkinFrame{obj=this.SelectPinInfoFrame, ft=ftype, kfs=true}
+			if self.modBtns then
+				self:skinStdButton{obj=this.SelectPinInfoFrame.SelectButton}
 			end
 
 			self:Unhook(this, "OnShow")
@@ -2613,12 +2628,9 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 			self:Unhook(this, "OnShow")
 		end)
 
-		if this.CovenantCallings then
+		if isShadowlands then
 			this.CovenantCallings:DisableDrawLayer("BACKGROUND")
 			-- TODO: Callings Quests ?
-		end
-
-		if this.SoulbindPanel then
 			this.SoulbindPanel:DisableDrawLayer("BACKGROUND")
 			self:addSkinFrame{obj=this.SoulbindPanel.SoulbindButton, ft=ftype, kfs=true, nb=true, ofs=-4, y2=6}
 		end
@@ -2844,7 +2856,8 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 	if aObj.isBeta then
 		local function skinCovenantMissionFrame(frame)
 			local function skinPuck(btn)
-				btn.PuckBorder:SetTexture(nil)
+				aObj:nilTexture(btn.PuckShadow, true)
+				aObj:nilTexture(btn.PuckBorder, true)
 				for i = 1, #btn.AbilityButtons do
 					btn.AbilityButtons[i].Border:SetTexture(nil)
 				end
@@ -2856,139 +2869,134 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 					skinPuck(btn)
 				end
 				for btn in frame.enemySocketFramePool:EnumerateActive() do
-					self:addFrameBorder{obj=btn, ft=ftype, ofs=2, aso={bbclr="grey"}}
+					aObj:addFrameBorder{obj=btn, ft=ftype, ofs=2, aso={bbclr="grey"}}
 				end
 				for btn in frame.followerFramePool:EnumerateActive() do
 					skinPuck(btn)
 				end
 				for btn in frame.followerSocketFramePool:EnumerateActive() do
-					self:addFrameBorder{obj=btn, ft=ftype, ofs=3, aso={bbclr="grey"}}
+					aObj:addFrameBorder{obj=btn, ft=ftype, ofs=3, aso={bbclr="grey"}}
 				end
-
 			end
 
 			frame.OverlayElements.CloseButtonBorder:SetTexture(nil)
-			self:addSkinFrame{obj=frame, ft=ftype, kfs=true, x2=1, y2=-6}
+			aObj:addSkinFrame{obj=frame, ft=ftype, kfs=true, x2=1, y2=-6}
 			frame.sf:SetFrameStrata("LOW") -- allow map textures to be visible
 
 			skinMissionFrame(frame)
 
-			self:SecureHookScript(frame.FollowerList, "OnShow", function(this)
+			aObj:SecureHookScript(frame.FollowerList, "OnShow", function(this)
 				this:DisableDrawLayer("BORDER")
 				skinFollowerList(this)
 
-				self:Unhook(this, "OnShow")
+				aObj:Unhook(this, "OnShow")
 			end)
 
-			self:SecureHookScript(frame.MissionTab, "OnShow", function(this)
+			aObj:SecureHookScript(frame.MissionTab, "OnShow", function(this)
 				skinMissionList(this.MissionList)
-
 				-- ZoneSupportMissionPage
-
 				skinMissionPage(this.MissionPage)
-
 				skinBoard(this.MissionPage.Board)
 
-				self:Unhook(this, "OnShow")
+				aObj:Unhook(this, "OnShow")
 			end)
-			self:checkShown(frame.MissionTab)
+			aObj:checkShown(frame.MissionTab)
 
-			self:SecureHookScript(frame.FollowerTab, "OnShow", function(this)
+			aObj:SecureHookScript(frame.FollowerTab, "OnShow", function(this)
 				this:DisableDrawLayer("BORDER")
+				skinFollowerPage(this)
+
 				this.RaisedFrameEdges:DisableDrawLayer("BORDER")
 				this.HealFollowerFrame.ButtonFrame:SetTexture(nil)
-				if self.modBtns then
-					self:skinStdButton{obj=this.HealFollowerFrame.HealFollowerButton}
-					self:SecureHook(this, "UpdateHealCost", function(this)
-						self:clrBtnBdr(this.HealFollowerFrame.HealFollowerButton)
+				if aObj.modBtns then
+					aObj:skinStdButton{obj=this.HealFollowerFrame.HealFollowerButton}
+					aObj:SecureHook(this, "UpdateHealCost", function(this)
+						aObj:clrBtnBdr(this.HealFollowerFrame.HealFollowerButton)
 					end)
 				end
-				if self.modBtnBs then
-					self:SecureHook(this, "UpdateAutoSpellAbilities", function(this, followerInfo)
-						for btn in this.autoSpellPool:EnumerateActive() do
-							self:addButtonBorder{obj=btn, relTo=btn.Icon}
-						end
-					end)
+				if aObj.modBtnBs then
+					for btn in this.autoSpellPool:EnumerateActive() do
+						btn.Border:SetTexture(nil)
+						btn.SpellBorder:SetTexture(nil)
+						aObj:addButtonBorder{obj=btn, relTo=btn.Icon}
+					end
 				end
 
-				self:Unhook(this, "OnShow")
+				aObj:Unhook(this, "OnShow")
 			end)
 
 			-- MissionComplete
-			self:adjWidth(frame.MissionCompleteBackground, -3)
+			aObj:adjWidth(frame.MissionCompleteBackground, -3)
 			local function skinFollowers(frame)
 				for btn in frame.followerPool:EnumerateActive() do
 					btn.RewardsFollower.PuckBorder:SetTexture(nil)
-					aObj:changeTandC(btn.RewardsFollower.LevelDisplayFrame.LevelCircle, self.lvlBG)
+					aObj:changeTandC(btn.RewardsFollower.LevelDisplayFrame.LevelCircle, aObj.lvlBG)
 				end
 			end
-			self:SecureHookScript(frame.MissionComplete, "OnShow", function(this)
+			aObj:SecureHookScript(frame.MissionComplete, "OnShow", function(this)
 				this:DisableDrawLayer("OVERLAY")
-				self:removeNineSlice(this.NineSlice)
+				aObj:removeNineSlice(this.NineSlice)
 				-- .RewardsScreen
 					-- .CombatCompleteSuccessFrame
 				this.RewardsScreen.CombatCompleteSuccessFrame.CombatCompleteLineTop:SetTexture(nil)
 				this.RewardsScreen.CombatCompleteSuccessFrame.CombatCompleteLineBottom:SetTexture(nil)
-				self:keepFontStrings(this.RewardsScreen.FinalRewardsPanel)
+				aObj:keepFontStrings(this.RewardsScreen.FinalRewardsPanel)
 				-- hook this to skin followers
-				self:SecureHook(this.RewardsScreen, "PopulateFollowerInfo", function(this, ...)
+				aObj:SecureHook(this.RewardsScreen, "PopulateFollowerInfo", function(this, ...)
 					skinFollowers(this)
 				end)
 				-- skin any existing ones
 				skinFollowers(this.RewardsScreen)
-				if self.modBtns then
-					self:skinStdButton{obj=this.RewardsScreen.FinalRewardsPanel.ContinueButton}
+				if aObj.modBtns then
+					aObj:skinStdButton{obj=this.RewardsScreen.FinalRewardsPanel.ContinueButton}
 				end
-				if self.modBtnBs then
-					self:SecureHook(this.RewardsScreen, "SetRewards", function(this, _, victoryState)
+				if aObj.modBtnBs then
+					aObj:SecureHook(this.RewardsScreen, "SetRewards", function(this, _, victoryState)
 						if victoryState then
 							for btn in this.rewardsPool:EnumerateActive() do
-								self:addButtonBorder{obj=btn, relTo=btn.Icon, reParent={btn.Quantity}, clr="grey"}
+								aObj:addButtonBorder{obj=btn, relTo=btn.Icon, reParent={btn.Quantity}}
 							end
 						end
 					end)
 				end
 
-				self:removeRegions(this.AdventuresCombatLog, {1})
+				aObj:removeRegions(this.AdventuresCombatLog, {1})
 				this.AdventuresCombatLog.ElevatedFrame:DisableDrawLayer("OVERLAY")
 				this.AdventuresCombatLog.CombatLogMessageFrame.ScrollBar:DisableDrawLayer("BACKGROUND")
 
 				-- .MissionInfo
 				this.MissionInfo.Header:SetTexture(nil)
-				self:nilTexture(this.MissionInfo.IconBG, true)
+				aObj:nilTexture(this.MissionInfo.IconBG, true)
 
 				skinBoard(this.Board)
 				this.CompleteFrame:DisableDrawLayer("BACKGROUND")
-				if self.modBtns then
-					self:skinStdButton{obj=this.CompleteFrame.ContinueButton}
-					self:skinStdButton{obj=this.CompleteFrame.SpeedButton}
-					self:SecureHook(this, "DisableCompleteFrameButtons", function(this)
-						self:clrBtnBdr(this.CompleteFrame.ContinueButton)
-						self:clrBtnBdr(this.CompleteFrame.SpeedButton)
-						-- self:clrBBC(this.CompleteFrame.ContinueButton.sb, "disabled")
-						-- self:clrBBC(this.CompleteFrame.SpeedButton.sb, "disabled")
+				if aObj.modBtns then
+					aObj:skinStdButton{obj=this.CompleteFrame.ContinueButton}
+					aObj:skinStdButton{obj=this.CompleteFrame.SpeedButton}
+					aObj:SecureHook(this, "DisableCompleteFrameButtons", function(this)
+						aObj:clrBtnBdr(this.CompleteFrame.ContinueButton)
+						aObj:clrBtnBdr(this.CompleteFrame.SpeedButton)
 					end)
-					self:SecureHook(this, "EnableCompleteFrameButtons", function(this)
-						self:clrBtnBdr(this.CompleteFrame.ContinueButton)
-						self:clrBtnBdr(this.CompleteFrame.SpeedButton)
-						-- self:clrBBC(this.CompleteFrame.ContinueButton.sb, "default")
-						-- self:clrBBC(this.CompleteFrame.SpeedButton.sb, "default")
+					aObj:SecureHook(this, "EnableCompleteFrameButtons", function(this)
+						aObj:clrBtnBdr(this.CompleteFrame.ContinueButton)
+						aObj:clrBtnBdr(this.CompleteFrame.SpeedButton)
 					end)
 				end
 
-				self:Unhook(this, "OnShow")
+				aObj:Unhook(this, "OnShow")
 			end)
 
 			-- Follower as mouse pointer when dragging
-			self:SecureHook(frame, "GetPlacerFrame", function(this)
-				_G.CovenantFollowerPlacer.PuckBorder:SetTexture(nil)
+			aObj:SecureHook(frame, "GetPlacerFrame", function(this)
+				aObj:nilTexture(_G.CovenantFollowerPlacer.PuckShadow, true)
+				aObj:nilTexture(_G.CovenantFollowerPlacer.PuckBorder, true)
 				for i = 1, #_G.CovenantFollowerPlacer.AbilityButtons do
 					_G.CovenantFollowerPlacer.AbilityButtons[i].Border:SetTexture(nil)
 				end
 				_G.CovenantFollowerPlacer.HealthBar.Health:SetTexture(aObj.sbTexture)
 				_G.CovenantFollowerPlacer.HealthBar.Border:SetTexture(nil)
 
-				self:Unhook(this, "GetPlacerFrame")
+				aObj:Unhook(this, "GetPlacerFrame")
 			end)
 		end
 		self:SecureHookScript(_G.CovenantMissionFrame, "OnShow", function(this)
@@ -6076,7 +6084,7 @@ if aObj.isBeta then
 					-- .Lists / .Sections
 						-- CategoryButton
 							-- Container
-			for _, list in pairs(this.ConduitList.ScrollBox.ScrollTarget.Lists) do
+			for _, list in _G.pairs(this.ConduitList.ScrollBox.ScrollTarget.Lists) do
 				self:removeRegions(list.CategoryButton.Container, {1})
 				if self.modBtns then
 					self:skinStdButton{obj=list.CategoryButton, clr="sepia"}
@@ -6792,8 +6800,13 @@ aObj.blizzFrames[ftype].ZoneAbility = function(self)
 			self:nilTexture(this.Style, true)
 			if self.modBtnBs then
 				local function abb2Btn(container)
+					-- handle in combat
+					if _G.InCombatLockdown() then
+					    aObj:add2Table(aObj.oocTab, {abb2Btn, {container}})
+					    return
+					end
 					for btn in container.contentFramePool:EnumerateActive() do
-						aObj:addButtonBorder{obj=btn, reParent={btn.Count}, ofs=2}
+						aObj:addButtonBorder{obj=btn, seca=true, ofs=2, reParent={btn.Count}}
 					end
 				end
 				self:SecureHook(this.SpellButtonContainer, "SetContents", function(this, _)
@@ -6801,11 +6814,6 @@ aObj.blizzFrames[ftype].ZoneAbility = function(self)
 				end)
 				-- skin existing entries
 				abb2Btn(this.SpellButtonContainer)
-				-- hook this to remove button border to prevent taint ?
-				self:RawHook(_G.ExtraAbilityContainer, "RemoveFrame", function(this, ...)
-					if this.sbb then this.sbb = nil end
-					self.hooks[this].RemoveFrame(this, ...)
-				end, true)
 			end
 		end
 
