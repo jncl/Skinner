@@ -249,14 +249,17 @@ function module:skinCloseButton(opts) -- text on button
 			bW = nil
 			aObj:addSkinButton{obj=opts.obj, ft=opts.ftype or "a", parent=opts.obj, aso=aso, x1=opts.x1, y1=opts.y1, x2=opts.x2, y2=opts.y2}
 		end
+		module:clrBtnBdr(opts.obj, opts.clr, opts.ca)
 	end
 	aso = nil
 	if not opts.onSB then
 		opts.obj:SetNormalFontObject(opts.font or module.fontX)
+		opts.obj:SetDisabledFontObject(opts.font or module.fontDX)
 		opts.obj:SetText(module.mult)
 		opts.obj:SetPushedTextOffset(-1, -1)
 	else -- Ace3, ArkInventory & BNToastFrame
 		opts.obj.sb:SetNormalFontObject(opts.font or module.fontX)
+		opts.obj.sb:SetDisabledFontObject(opts.font or module.fontDX)
 		opts.obj.sb:SetText(module.mult)
 	end
 	if opts.storeOnParent then
@@ -328,6 +331,7 @@ function module:skinExpandButton(opts)
 		aObj:applySkin(aso)
 		opts.obj.sb = true
 	end
+	aso = nil
 	opts.obj.onSB = opts.onSB -- store this for use in checkTex function
 	if not opts.onSB then
 		opts.obj:SetNormalFontObject(module.fontP)
