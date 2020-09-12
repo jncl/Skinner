@@ -1406,7 +1406,7 @@ if aObj.isBeta then
 end
 
 aObj.blizzFrames[ftype].ChatBubbles = function(self)
-	if not self.prdb.ChatBubbles or self.initialized.ChatBubbles then return end
+	if not self.prdb.ChatBubbles.skin or self.initialized.ChatBubbles then return end
 	self.initialized.ChatBubbles = true
 
 	-- N.B. ChatBubbles in Raids, Dungeons and Garrisons are fobidden and can't be skinned
@@ -1416,7 +1416,7 @@ aObj.blizzFrames[ftype].ChatBubbles = function(self)
 				if aObj.isBeta then
 					cBubble = aObj:getChild(cBubble, 1)
 				end
-				aObj:addSkinFrame{obj=cBubble, ft=ftype, kfs=true, nb=true, aso={ba=0.65, ng=true}, ofs=-8}
+				aObj:addSkinFrame{obj=cBubble, ft=ftype, kfs=true, nb=true, aso={ba=self.prdb.ChatBubbles.alpha, ng=true}, ofs=-8}
 				-- Region 1 is ChatBubbleTail texture, region 2 is the font string
 				if cBubble:GetNumRegions() == 2 then
 					aObj:getRegion(cBubble, 2):SetParent(cBubble.sf) -- make text visible

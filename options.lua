@@ -128,7 +128,7 @@ aObj.blizzFrames[ftype].SetupDefaults = function(self)
 		Calendar                   = true,
 		ChallengesUI               = true,
 		CharacterCustomize         = aObj.isBeta and true or nil,
-		ChatBubbles                = true,
+		ChatBubbles                = {skin = true, alpha = 0.45},
 		ChatButtons                = true,
 		ChatConfig                 = true,
 		ChatEditBox                = {skin = true, style = 3},
@@ -1399,11 +1399,31 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 							name = self.L["CombatLog Quick Button Frame"],
 							desc = self.L["Toggle the skin of the CombatLog Quick Button Frame"],
 						},
-						ChatBubbles = {
+					},
+				},
+				ChatBubbles = {
+					type = "group",
+					inline = true,
+					order = -1,
+					name = self.L["Chat Bubbles"],
+					get = function(info) return db.ChatBubbles[info[#info]] end,
+					set = function(info, value)
+						db.ChatBubbles[info[#info]] = value
+						self:checkAndRun("ChatBubbles", "u")
+					end,
+					args = {
+						skin = {
 							type = "toggle",
-							order = 8,
-							name = self.L["Chat Bubbles"],
+							order = 1,
+							name = self.L["Chat Bubbles Skin"],
 							desc = self.L["Toggle the skin of the Chat Bubbles"],
+						},
+						alpha = {
+							type = "range",
+							order = 2,
+							name = self.L["Background Alpha"],
+							desc = self.L["Set the Background Alpha value"],
+							min = 0, max = 1, step = 0.05,
 						},
 					},
 				},
