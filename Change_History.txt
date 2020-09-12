@@ -1,3 +1,19 @@
+beta9.35755.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Added Beta patch check
+	More Beta changes
+	Updated EncounterJournal
+	Updated ArchaeologyUI
+	Updated AchievementUI
+	More ButtonBorder colour updates
+	Updated addSkin code
+	Correct variable name
+	Updated Ace3 & BtwQuests skins
+	Updated ViewPort code to use a Texture on the overlay if required
+
 beta9.35707.1
 Jncl:
 	ToDo.txt
