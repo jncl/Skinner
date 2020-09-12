@@ -95,6 +95,7 @@
 <script file="AddonSkins\epgp_lootmaster.lua"/>
 <script file="AddonSkins\ERC.lua"/>
 <script file="AddonSkins\Examiner.lua"/>
+<script file="AddonSkins\ExtendedCharacterStats.lua"/>
 <script file="AddonSkins\ExtVendor.lua"/>
 <script file="AddonSkins\FarmIt2.lua"/>
 <script file="AddonSkins\FeedMachine.lua"/>
