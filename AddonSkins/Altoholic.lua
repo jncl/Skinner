@@ -80,8 +80,18 @@ local function skinDDMLists()
 	frame = nil
 
 end
+local function skinLeftRightBtns(frameName)
+	local lb, rb = _G[frameName .. "ScrollLeftButton"], _G[frameName .. "ScrollRightButton"]
+	aObj:skinOtherButton{obj=lb, text="<"}
+	aObj:skinOtherButton{obj=rb, text=">"}
+	lb:SetSize(34, 30)
+	rb:SetSize(34, 30)
+	aObj:moveObject{obj=lb, y=-6}
+	aObj:moveObject{obj=rb, y=-6}
+	lb, rb = nil, nil
+end
 
-aObj.addonsToSkin.Altoholic = function(self) -- 8.3-013
+aObj.addonsToSkin.Altoholic = function(self) -- 8.3.7.040
 
 	-- Main Frame
 	self:skinEditBox{obj=_G.AltoholicFrame_SearchEditBox, regs={9}}
@@ -164,6 +174,7 @@ aObj.lodAddons.Altoholic_Summary = function(self)
 	skinSortBtns(_G.AltoholicTabSummary.SortButtons)
 	if self.modBtns then
 		self:skinExpandButton{obj=_G.AltoholicTabSummary.ToggleView, sap=true}
+		self:skinStdButton{obj=_G.AltoholicTabSummary_DesMephistoButton}
 	end
 	-- N.B. when toggle is clicked the entries are toggled but the texture remains the same
 
@@ -298,6 +309,9 @@ aObj.lodAddons.Altoholic_Search = function(self)
 	UIDDM_SetButtonWidth(_G.AltoholicTabSearch.SelectLocation, 24)
 	skinScrollBar(_G.AltoholicFrameSearch.ScrollFrame)
 	skinSortBtns(_G.AltoholicTabSearch.SortButtons)
+	if self.modChkBtns then
+		self:skinCheckButton{obj=_G.AltoholicTabSearch.IncludeDescriptionButton}
+	end
 
 end
 
@@ -323,8 +337,8 @@ end
 
 aObj.lodAddons.Altoholic_Achievements = function(self)
 
-	self:skinDropDown{obj=_G.AltoholicTabAchievements.SelectRealm}
-	UIDDM_SetButtonWidth(_G.AltoholicTabAchievements.SelectRealm, 24)
+	self:skinDropDown{obj=_G.AltoholicTabAchievements.SelectAccount}
+	UIDDM_SetButtonWidth(_G.AltoholicTabAchievements.SelectAccount, 24)
 
 	skinMenuItems(_G.AltoholicTabAchievements, _G.AltoholicTabAchievements.ScrollFrame.numRows, "Entry")
 	skinScrollBar(_G.AltoholicTabAchievements.ScrollFrame)
@@ -332,9 +346,8 @@ aObj.lodAddons.Altoholic_Achievements = function(self)
 
 	skinDDMLists()
 
-	if self.modBtnBs then
-		self:addButtonBorder{obj=_G.AltoholicTabAchievementsScrollLeftButton, ofs=0, y1=1, y2=-2, clr="grey"}
-		self:addButtonBorder{obj=_G.AltoholicTabAchievementsScrollRightButton, ofs=0, y1=1, y2=-2, clr="grey"}
+	if self.modBtns then
+		skinLeftRightBtns("AltoholicTabAchievements")
 	end
 
 end
@@ -342,6 +355,10 @@ end
 aObj.lodAddons.Altoholic_Agenda = function(self)
 
 	skinMenuItems(_G.AltoholicTabAgenda, 5)
+	if self.modBtnBs then
+		self:addButtonBorder{obj=_G.AltoholicTabAgenda.Calendar.PrevMonth, ofs=-2, x1=1, clr="gold"}
+		self:addButtonBorder{obj=_G.AltoholicTabAgenda.Calendar.NextMonth, ofs=-2, x1=1, clr="gold"}
+	end
 
 end
 
@@ -351,17 +368,14 @@ aObj.lodAddons.Altoholic_Grids = function(self)
 	skinScrollBar(_G.AltoholicFrameGrids.ScrollFrame)
 	-- TabGrids
 	self:skinDropDown{obj=_G.AltoholicTabGrids.SelectView}
-	self:RawHook(_G.AltoholicTabGrids.SelectView, "SetButtonWidth", function(this, width)
-		-- do nothing so it remains 24
-	end, true)
-	self:skinDropDown{obj=_G.AltoholicTabGrids.SelectRealm}
-	UIDDM_SetButtonWidth(_G.AltoholicTabGrids.SelectRealm, 24)
+	_G.AltoholicTabGrids.SelectView.SetButtonWidth = _G.nop
+	self:skinDropDown{obj=_G.AltoholicTabGrids.SelectAccount}
+	UIDDM_SetButtonWidth(_G.AltoholicTabGrids.SelectAccount, 24)
 
 	skinDDMLists()
 
-	if self.modBtnBs then
-		self:addButtonBorder{obj=_G.AltoholicFrameGridsScrollLeftButton, ofs=0, y1=1, y2=-2, clr="grey"}
-		self:addButtonBorder{obj=_G.AltoholicFrameGridsScrollRightButton, ofs=0, y1=1, y2=-2, clr="grey"}
+	if self.modBtns then
+		skinLeftRightBtns("AltoholicFrameGrids")
 	end
 
 end
