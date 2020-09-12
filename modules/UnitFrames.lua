@@ -384,6 +384,7 @@ function module:skinTargetF()
 			-- aObj:Debug("TF_CC: [%s, %s]", frame, ...)
 			if frame == _G.TargetFrame
 			or (frame == _G.FocusFrame and db.focus)
+			and frame.ucTex
 			then
 				local classification = _G.UnitClassification(frame.unit)
 				if classification == "worldboss"
