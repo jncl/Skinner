@@ -1,3 +1,16 @@
+beta9.35854.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated Version numbers
+	More Beta changes
+	Updated ClassicSupport
+	Changed ChatBubbles options
+	Bugfix for UnitFrames
+	Updated Button skinning code
+	Updated Altoholic skin
+	Skinned ExtendedCharacterStats
+
 beta9.35755.1
 Jncl:
 	ToDo.txt
