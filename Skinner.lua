@@ -57,7 +57,7 @@ do
 	agentUID = nil
 
 	-- handle Beta changes in PTR
-	aObj.isBeta = aObj.isBeta or aObj.isPTR and buildInfo.retail_ptr[1] == buildInfo.beta[1]
+	aObj.isBeta = aObj.isBeta or aObj.isPTR-- and buildInfo.retail_ptr[1] == buildInfo.beta[1]
 	-- handle PTR changes going Live
 	aObj.isClscPTR = aObj.isClscPTR or aObj.isPatch and aObj.isClsc and buildInfo.curr[1] > buildInfo.classic[1] and true
 	aObj.isPTR = aObj.isPTR or aObj.isPatch and isRetail and buildInfo.curr[1] > buildInfo.retail[1] and true
