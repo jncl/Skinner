@@ -3698,6 +3698,10 @@ aObj.blizzFrames[ftype].LFGList = function(self)
 			self:skinStdButton{obj=sp.ScrollFrame.StartGroupButton, as=true} -- use as otherwise button skin not visible
 			self:skinStdButton{obj=sp.BackButton}
 			self:skinStdButton{obj=sp.SignUpButton}
+			self:SecureHook("LFGListSearchPanel_UpdateButtonStatus", function(this)
+				self:clrBtnBdr(this.SignUpButton)
+				self:clrBtnBdr(this.ScrollFrame.StartGroupButton)
+			end)
 		end
 		if self.modBtnBs then
 		    self:addButtonBorder{obj=sp.FilterButton, ofs=0}
