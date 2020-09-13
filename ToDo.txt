@@ -26,10 +26,3 @@ ToDos
 ≈	O	Make sure all buttons borders have the correct border colour, e.g. "gold"/"grey"
 
 ≈	O	Add checks for Button state as required
-
-	I	Altoholic, reported by MacallanTwoFive, 06.09.20
-√		- Skinner\MainFuncs.lua:630: attempt to index field 'obj' (a nil value)
-		[string "@Skinner\MainFuncs.lua"]:716: in function `skinDropDown'
-		[string "@Skinner\AddonSkins\Altoholic-8.3.7.040.lua"]:357: in function <Skinner\AddonSkins\Altoholic.lua:348>
-
-√	S/C	ExtendedCharacterStats, requested by hastrox77, 06.09.20
