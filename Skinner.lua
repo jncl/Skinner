@@ -49,7 +49,7 @@ do
 
 --@alpha@
 	local vType = aObj.isBeta and "Beta" or aObj.isPTR and "Retail_PTR" or aObj.isClscPTR and "Classic_PTR" or aObj.isClsc and "Classic" or "Retail"
-	aObj:Printf("%s, %s, %s, %s, %s, %s, %s", buildInfo[vType:lower()][1], buildInfo[vType:lower()][2], buildInfo.curr[1], buildInfo.curr[2], buildInfo.curr[3], buildInfo.curr[4] , agentUID)
+	aObj:Printf("%s, %d, %s, %d, %s, %d, %s", buildInfo[vType:lower()][1], buildInfo[vType:lower()][2], buildInfo.curr[1], buildInfo.curr[2], buildInfo.curr[3], buildInfo.curr[4] , agentUID)
 	vType = aObj.isPatch and vType .. " (Patched)" or vType
 	_G.DEFAULT_CHAT_FRAME:AddMessage(aName .. ": Detected that we're running on a " .. vType .. " version", 0.75, 0.5, 0.25, nil, true)
 	vType = nil
@@ -57,7 +57,7 @@ do
 	agentUID = nil
 
 	-- handle Beta changes in PTR
-	aObj.isBeta = aObj.isBeta or aObj.isPTR-- and buildInfo.retail_ptr[1] == buildInfo.beta[1]
+	aObj.isBeta = aObj.isBeta or aObj.isPTR and buildInfo.curr[4] > 90000
 	-- handle PTR changes going Live
 	aObj.isClscPTR = aObj.isClscPTR or aObj.isPatch and aObj.isClsc and buildInfo.curr[1] > buildInfo.classic[1] and true
 	aObj.isPTR = aObj.isPTR or aObj.isPatch and isRetail and buildInfo.curr[1] > buildInfo.retail[1] and true

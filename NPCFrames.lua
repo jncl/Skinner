@@ -509,13 +509,16 @@ if aObj.isBeta then
 			self:removeNineSlice(this.NineSlice)
 			this.Background:DisableDrawLayer("BACKGROUND")
 			self:keepFontStrings(this.Title)
+			this.CloseButton.Border:SetTexture(nil)
 			this.CurrentlySelectedExpansionInfoFrame:DisableDrawLayer("BACKGROUND")
 			this.CurrentlySelectedExpansionInfoFrame:DisableDrawLayer("ARTWORK")
 			this.CurrentlySelectedExpansionInfoFrame.Name:SetTextColor(self.HT:GetRGB())
 			this.CurrentlySelectedExpansionInfoFrame.Description:SetTextColor(self.BT:GetRGB())
 			for btn in this.ExpansionOptionsPool:EnumerateActive() do
 				btn:GetNormalTexture():SetTexture(nil) -- remove border texture
-				self:addButtonBorder{obj=btn, ofs=-5, es=20, clr="gold", ca=0.4}
+				if self.modBtnBs then
+					self:addButtonBorder{obj=btn, ofs=-4, es=20, clr="gold", ca=0.4}
+				end
 			end
 			self:addSkinFrame{obj=this, ft=ftype, kfs=true, ofs=0, y1=-1}
 			if self.modBtns then
@@ -894,6 +897,37 @@ aObj.blizzFrames[ftype].MerchantFrame = function(self)
 		self:Unhook(this, "OnShow")
 	end)
 
+end
+
+if aObj.isBeta then
+	aObj.blizzLoDFrames[ftype].NewPlayerExperienceGuide = function(self)
+		if not self.prdb.NewPlayerExperienceGuide or self.initialized.NewPlayerExperienceGuide then return end
+		self.initialized.NewPlayerExperienceGuide = true
+
+		self:SecureHookScript(_G.GuideFrame, "OnShow", function(this)
+
+			self:removeNineSlice(this.NineSlice)
+			this:DisableDrawLayer("BACKGROUND")
+			this.Title:SetTextColor(self.HT:GetRGB())
+			this.ScrollFrame.Child.Text:SetTextColor(self.BT:GetRGB())
+			this.ScrollFrame.Child.ObjectivesFrame:DisableDrawLayer("BORDER")
+			this.ScrollFrame.Child.ObjectivesFrame:DisableDrawLayer("BACKGROUND")
+			this.ScrollFrame.ScrollBar.ScrollUpBorder:SetBackdrop(nil)
+			this.ScrollFrame.ScrollBar.ScrollDownBorder:SetBackdrop(nil)
+			this.ScrollFrame.ScrollBar.Border:SetBackdrop(nil)
+			self:skinSlider{obj=this.ScrollFrame.ScrollBar, wdth=-4}
+			self:addSkinFrame{obj=this, ft=ftype, kfs=true}
+			if self.modBtns then
+				self:skinStdButton{obj=this.ScrollFrame.ConfirmationButton}
+				self:SecureHook(this, "SetStateInternal", function(this)
+					self:clrBtnBdr(this.ScrollFrame.ConfirmationButton)
+				end)
+			end
+
+			self:Unhook(this, "OnShow")
+		end)
+
+	end
 end
 
 aObj.blizzFrames[ftype].Petition = function(self)
@@ -1431,7 +1465,13 @@ aObj.blizzLoDFrames[ftype].TrainerUI = function(self)
 		self:skinDropDown{obj=_G.ClassTrainerFrameFilterDropDown}
 		self:removeMagicBtnTex(_G.ClassTrainerTrainButton)
 		if self.modBtns then
-			 self:skinStdButton{obj=_G.ClassTrainerTrainButton}
+			self:skinStdButton{obj=_G.ClassTrainerTrainButton}
+			self:SecureHook(_G.ClassTrainerTrainButton, "Disable", function(this, _)
+				self:clrBtnBdr(this)
+			end)
+			self:SecureHook(_G.ClassTrainerTrainButton, "Enable", function(this, _)
+				self:clrBtnBdr(this)
+			end)
 		end
 		_G.ClassTrainerFrame.skillStepButton:GetNormalTexture():SetTexture(nil)
 		if self.modBtnBs then

@@ -4850,7 +4850,7 @@ aObj.blizzLoDFrames[ftype].TradeSkillUI = function(self)
 			cnts.RecipeLevel.BorderMid:SetTexture(nil)
 			self:skinStatusBar{obj=cnts.RecipeLevel, fi=0}
 			if self.modBtns then
-				self:skinStdButton{obj=cnts.RecipeLevelSelector, ofs=0, clr="grey"}
+				self:skinStdButton{obj=cnts.RecipeLevelSelector, ofs=0}
 			end
 		end
 		local btn
@@ -4896,8 +4896,18 @@ aObj.blizzLoDFrames[ftype].TradeSkillUI = function(self)
 			self:SecureHookScript(this.OptionalReagentList, "OnShow", function(this)
 				self:removeInset(this.ScrollList.InsetFrame)
 				self:skinSlider{obj=this.ScrollList.ScrollFrame.scrollBar, rt="background", wdth=-4}
+				local btn
+				for i = 1, this.ScrollList:GetNumElementFrames() do
+					btn = this.ScrollList:GetElementFrame(i)
+					btn.NameFrame:SetTexture(nil)
+					if self.modBtnBs then
+						self:addButtonBorder{obj=btn, libt=true}
+					end
+				end
+				btn = nil
+				-- apply button changes
+				this:RefreshScrollFrame()
 				self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, ri=true, ofs=0}
-				-- TODO: skin scrolllist elements
 				if self.modBtns then
 					self:skinStdButton{obj=this.CloseButton}
 				end

@@ -68,6 +68,7 @@ aObj.blizzFrames[ftype].SetupDefaults = function(self)
 		ItemInteractionUI          = true,
 		ItemUpgradeUI              = true,
 		MerchantFrame              = true,
+		NewPlayerExperienceGuide   = true,
 		Petition                   = true,
 		PetStableFrame             = true,
 		QuestChoice                = not aObj.isBeta and true or nil,
@@ -884,6 +885,11 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 					type = "toggle",
 					name = self.L["Merchant Frame"],
 					desc = self.L["Toggle the skin of the Merchant Frame"],
+				},
+				NewPlayerExperienceGuide = {
+					type = "toggle",
+					name = self.L["New Player Experience Guide Frame"],
+					desc = self.L["Toggle the skin of the New Player Experience Guide Frame"],
 				},
 				Petition = {
 					type = "toggle",

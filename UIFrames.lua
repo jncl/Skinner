@@ -387,18 +387,20 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 			btn = ml.listScroll.buttons[i]
 			btn:DisableDrawLayer("BACKGROUND")
 			btn:DisableDrawLayer("BORDER")
-			-- btn.Overlay:DisableDrawLayer("OVERLAY") -- indicates that it cannot be interacted with
-			-- extend the top & bottom highlight texture
-			if not aObj.isBeta then
+			aObj:nilTexture(btn.LocBG, true)
+			if not isShadowlands then
+				-- extend the top & bottom highlight texture
 				btn.HighlightT:ClearAllPoints()
 				btn.HighlightT:SetPoint("TOPLEFT", 0, 4)
 				btn.HighlightT:SetPoint("TOPRIGHT", 0, 4)
 		        btn.HighlightB:ClearAllPoints()
 		        btn.HighlightB:SetPoint("BOTTOMLEFT", 0, -4)
 		        btn.HighlightB:SetPoint("BOTTOMRIGHT", 0, -4)
-				aObj:removeRegions(btn, {13, 14, 23, 24, 25, 26}) -- LocBG, RareOverlay, Highlight corners
-			else
-				aObj:removeRegions(btn, {13, 20, 21, 22, 23}) -- LocBG, Highlight corners
+				-- remove highlight corners
+				btn.HighlightTL:SetTexture(nil)
+				btn.HighlightTR:SetTexture(nil)
+				btn.HighlightBL:SetTexture(nil)
+				btn.HighlightBR:SetTexture(nil)
 			end
 		end
 		btn = nil
@@ -2283,8 +2285,8 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 	local garrisonType = _G.C_Garrison.GetLandingPageGarrisonType()
 	if aObj.isBeta then
 		isShadowlands = garrisonType == _G.Enum.GarrisonType.Type_9_0
-		stageRegs = {1}
-	-- aObj:Debug("garrisonType: [%s, %s]", _G.C_Garrison.GetLandingPageGarrisonType(), isShadowlands)
+		stageRegs = isShadowlands and {1} or stageRegs
+		-- aObj:Debug("garrisonType: [%s, %s]", _G.C_Garrison.GetLandingPageGarrisonType(), isShadowlands)
 	end
 
 	-- hook these to skin mission rewards & OvermaxItem
@@ -5260,7 +5262,7 @@ if aObj.isBeta then
 
 		self:SecureHookScript(_G.PlayerChoiceFrame, "OnShow", function(this)
 
-			-- aObj:Debug("PlayerChoiceFrame: [%s, %s, %s]", this, this.uiTextureKit, _G.C_PlayerChoice.GetPlayerChoiceInfo())
+			aObj:Debug("PlayerChoiceFrame: [%s, %s, %s]", this, this.uiTextureKit, _G.C_PlayerChoice.GetPlayerChoiceInfo())
 			-- _G.Spew("", _G.C_PlayerChoice.GetPlayerChoiceInfo())
 
 			self:removeNineSlice(this.NineSlice)
@@ -5269,16 +5271,6 @@ if aObj.isBeta then
 			this.Background.BackgroundTile:SetTexture(nil)
 			this.Title:DisableDrawLayer("BACKGROUND")
 
-			-- Option 1-4
-				-- MouseOverOverride
-				-- Header
-				-- SubHeader
-				-- RewardsFrame
-					-- .CurrencyRewardsPool
-					-- .ReputationRewardsPool
-					-- .ItemRewardsPool
-				-- WidgetContainer
-				-- OptionButtonsContainer
 			local skinBtns
 			if self.modBtns then
 				function skinBtns(array)
@@ -5292,26 +5284,37 @@ if aObj.isBeta then
 			end
 
 			local opt, gOfs, y1Ofs, y2Ofs
-			if this.uiTextureKit == "jailerstower" then
+			if this.uiTextureKit == "jailerstower" then -- Torghast
 				gOfs = -40
 				y1Ofs = 0
 				y2Ofs = -80
-			elseif this.uiTextureKit == "Oribos" then
+			elseif this.uiTextureKit == "Oribos" then -- Covenant selection
 				gOfs = 13
 				y1Ofs = 40
 				y2Ofs = -34
+			elseif this.uiTextureKit == "neutral" then -- WoD Strategic Assault Choice
+				gOfs = 11
+				y1Ofs = 40
+				y2Ofs = -10
 			else
 				gOfs = 11
 				y1Ofs = 70
 				y2Ofs = 0
 			end
+			-- Option 1-4
+				-- RewardsFrame
+					-- .CurrencyRewardsPool
+					-- .ReputationRewardsPool
+					-- .ItemRewardsPool
+				-- WidgetContainer
 			for i = 1, #this.Options do
 				opt = this.Options[i]
 				opt:DisableDrawLayer("BACKGROUND")
 				self:nilTexture(opt.Header.Ribbon, true)
 				opt.Header.Text:SetTextColor(self.HT:GetRGB())
 				opt.OptionText:SetTextColor(self.BT:GetRGB())
-				-- self:nilTexture(opt.ArtworkBorder, true)
+				-- FIXME: when do we NOT do this?
+				self:nilTexture(opt.ArtworkBorder, true)
 				self:addSkinFrame{obj=opt, ft=ftype, nb=true, aso={bbclr="grey"}, ofs=gOfs, y1=y1Ofs, y2=y2Ofs}
 				if self.modBtns then
 					skinBtns(opt.OptionButtonsContainer)
@@ -5342,11 +5345,18 @@ if aObj.isBeta then
 				self:skinCloseButton{obj=this.CloseButton, noSkin=true}
 			end
 
+			this.sf:SetShown(this.uiTextureKit ~= "jailerstower")
 			-- hook this to determine if skinFrame should be shown
 			-- NOT in Torghast (Anima Power displays)
-			this.sf:SetShown(this.uiTextureKit ~= "jailerstower")
 			self:SecureHook(this, "TryShow", function(this)
 				this.sf:SetShown(this.uiTextureKit ~= "jailerstower")
+				local opt
+				for i = 1, #this.Options do
+					opt = this.Options[i]
+					opt.Header.Text:SetTextColor(self.HT:GetRGB())
+					opt.OptionText:SetTextColor(self.BT:GetRGB())
+				end
+				opt = nil
 			end)
 
 			-- disable ModelScene effects in JailersTower
@@ -5946,13 +5956,11 @@ aObj.blizzFrames[ftype].SplashFrame = function(self)
 	self.initialized.SplashFrame = true
 
 	self:SecureHookScript(_G.SplashFrame, "OnShow", function(this)
-		this.Label:SetTextColor(self.HT:GetRGB())
 		if not aObj.isBeta then
 			this.StartButton:DisableDrawLayer("BACKGROUND")
 		else
 			this.RightFeature.StartQuestButton:DisableDrawLayer("BACKGROUND")
 		end
-		-- self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true}
 		if self.modBtns then
 			self:skinCloseButton{obj=this.TopCloseButton, noSkin=true}
 			self:skinStdButton{obj=this.BottomCloseButton}
@@ -6809,8 +6817,9 @@ aObj.blizzFrames[ftype].ZoneAbility = function(self)
 					    aObj:add2Table(aObj.oocTab, {abb2Btn, {container}})
 					    return
 					end
-					for btn in container.contentFramePool:EnumerateActive() do
-						aObj:addButtonBorder{obj=btn, seca=true, ofs=2, reParent={btn.Count}}
+					-- for btn in container.contentFramePool:EnumerateActive() do
+					for btn in container:EnumerateActive() do
+						aObj:addButtonBorder{obj=btn--[[, seca=true]], ofs=2, reParent={btn.Count}}
 					end
 				end
 				self:SecureHook(this.SpellButtonContainer, "SetContents", function(this, _)
