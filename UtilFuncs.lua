@@ -705,30 +705,12 @@ function aObj:hookScript(obj, method, func)
 
 end
 
--- populate addon Index table
-local addonIdx = {}
-do
-	for i = 1, _G.GetNumAddOns() do
-		-- aObj:Printf("%s, %s", i, _G.GetAddOnInfo(i))
-		addonIdx[_G.GetAddOnInfo(i)] = i
-	end
-
-	-- handle specific lowercase name
-	if addonIdx["spew"] then
-		addonIdx["Spew"] = addonIdx["spew"]
-		addonIdx["spew"] = nil
-	end
-
-end
 function aObj:isAddonEnabled(addonName)
 --@alpha@
 	_G.assert(addonName, "Unknown object isAddonEnabled\n" .. _G.debugstack(2, 3, 2))
 --@end-alpha@
 
-	if addonIdx[addonName] then
-		-- aObj:Debug("isAddonEnabled: [%s, %s, %s, %s, %s]", addonName, _G.GetAddOnEnableState(self.uName, addonIdx[addonName]))
-		return (_G.GetAddOnEnableState(self.uName, addonIdx[addonName]) > 0)
-	end
+	return _G.GetAddOnEnableState(self.uName, addonName) == 2 and true or false
 
 end
 
