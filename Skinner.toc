@@ -1,4 +1,9 @@
-﻿## Interface: 90002
+﻿#@retail@
+## Interface: 90002
+#@end-retail@
+#@non-retail@
+## Interface: 11305
+#@end-non-retail@
 ## Title: Skinner
 ## Notes: Changes the look of the default UI (Retail & Classic)
 ## Notes-esES: Cambia el aspecto del UI predeterminado
@@ -69,5 +74,7 @@ Modules\MiddleFrames.lua
 Modules\BottomFrame.lua
 Skins.xml
 #
+#@non-retail@
 # WoW Classic Support
 ClassicSupport.lua
+#@end-non-retail@
