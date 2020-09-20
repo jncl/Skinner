@@ -26,3 +26,20 @@ ToDos
 ≈	O	Make sure all buttons borders have the correct border colour, e.g. "gold"/"grey"
 
 ≈	O	Add checks for Button state as required
+
+	I	ChatBubbles option, reported by therealdeerez, 14.09.20
+√		- Unable to disable skinning of ChatBubbles as option turns back on after relogging.
+
+	I	Auctionator, reported by Acivien, 16.09.20
+√		- Skinner\AddonSkins\Auctionator-8.3.3.2.lua:252: attempt to index field 'AuctionatorShoppingListsFrame' (a nil value)
+		[string "@Skinner\AddonSkins\Auctionator-8.3.3.2.lua"]:252: in function <Skinner\AddonSkins\Auctionator.lua:197>
+		[string "@Skinner\AddonSkins\Auctionator-8.3.3.2.lua"]:372: in function <Skinner\AddonSkins\Auctionator.lua:371>
+
+≈	I	List of Addons to disable isn't populated in Russian Client, reported by Fakelessgaming, 17.09.20
+		- suggestion in another post is to delete SV file
+
+	I	WeakAuras, reported by MacallanTwoFive, 18.09.20
+√		- Skinner\AddonSkins\WeakAuras-@project-version@.lua:9: Usage: SecureHook([object], method, [handler]): Attempting to hook a non existing target
+
+	I	RaiderIO, reported by EpidemeDaBear, 19.09.20
+?		- Skinner\AddonSkins\RaiderIO-8.3.0 (v202009191822).lua:51: attempt to index field 'RaiderIO_CustomDropDownListBackdrop' (a nil value)
