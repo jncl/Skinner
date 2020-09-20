@@ -1,3 +1,11 @@
+beta9.35897.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Update version numbers
+	Bugfix to update Beta/PTR checks
+	Updated Button Colour checks
+
 beta9.35854.1
 Jncl:
 	ToDo.txt
