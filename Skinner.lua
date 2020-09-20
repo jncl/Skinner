@@ -179,7 +179,9 @@ function aObj:OnInitialize()
 	if self.prdb.LootFrames.extra then
 		self.prdb.LootFrames.extra = nil
 	end
-	if self.prdb.ChatBubbles ~= nil then
+	if _G.type(self.prdb.ChatBubbles) ~= "table"
+	and self.prdb.ChatBubbles ~= nil
+	then
 		local val = self.prdb.ChatBubbles
 		self.prdb.ChatBubbles.skin = val
 		val = nil
