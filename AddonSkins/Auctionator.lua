@@ -230,36 +230,56 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 8.3.3.2/100.0.9
 				end
 			end
 
-			_G.AuctionatorShoppingListFrame.Bg:SetTexture(nil)
-			aObj:removeNineSlice(_G.AuctionatorShoppingListFrame.NineSlice)
-			aObj:skinDropDown{obj=_G.AuctionatorShoppingListFrame.ListDropdown}
-			_G.AuctionatorShoppingListFrame.ScrollList.ScrollFrame.ArtOverlay:DisableDrawLayer("OVERLAY")
-			aObj:removeInset(_G.AuctionatorShoppingListFrame.ScrollList.InsetFrame)
-			aObj:skinSlider{obj=_G.AuctionatorShoppingListFrame.ScrollList.ScrollFrame.scrollBar, wdth=-4}
-			aObj:skinSlider{obj=_G.AuctionatorShoppingListFrame.ResultsListing.ScrollFrame.scrollBar, wdth=-4}
-			aObj:getChild(_G.AuctionatorShoppingListFrame, 8).Bg:SetTexture(nil) -- Background for Add & Search buttons
-			for _, child in ipairs{_G.AuctionatorShoppingListFrame.ResultsListing.HeaderContainer:GetChildren()} do
+			local aslf = _G.AuctionatorShoppingListFrame
+			aslf.Bg:SetTexture(nil)
+			aObj:removeNineSlice(aslf.NineSlice)
+			aObj:skinDropDown{obj=aslf.ListDropdown}
+			aslf.ScrollList.ScrollFrame.ArtOverlay:DisableDrawLayer("OVERLAY")
+			aObj:removeInset(aslf.ScrollList.InsetFrame)
+			aObj:skinSlider{obj=aslf.ScrollList.ScrollFrame.scrollBar, wdth=-4}
+			aObj:skinSlider{obj=aslf.ResultsListing.ScrollFrame.scrollBar, wdth=-4}
+			aObj:getChild(aslf, 8).Bg:SetTexture(nil) -- Background for Add & Search buttons
+			for _, child in ipairs{aslf.ResultsListing.HeaderContainer:GetChildren()} do
 				aObj:keepRegions(child, {4, 5, 6}) -- N.B. regions 4 is text, 5 is highlight, 6 is arrow
 				aObj:addSkinFrame{obj=child, ft="a", kfs=true, nb=true, ofs=1, x1=-2, x2=2}
 			end
 			if aObj.modBtns then
-				aObj:skinStdButton{obj=_G.AuctionatorShoppingListFrame.CreateList}
-				aObj:skinStdButton{obj=_G.AuctionatorShoppingListFrame.DeleteList}
-				aObj:SecureHook(_G.AuctionatorShoppingListFrame.DeleteList, "UpdateDisabled", function(this)
+				aObj:skinStdButton{obj=aslf.CreateList}
+				aObj:skinStdButton{obj=aslf.DeleteList}
+				aObj:SecureHook(aslf.DeleteList, "UpdateDisabled", function(this)
 					aObj:clrBtnBdr(this)
 				end)
-				aObj:skinStdButton{obj=_G.AuctionatorShoppingListFrame.Rename}
-				aObj:skinStdButton{obj=_G.AuctionatorShoppingListsFrame.AddItem}
-				aObj:skinStdButton{obj=_G.AuctionatorShoppingListFrame.ManualSearch}
+				aObj:skinStdButton{obj=aslf.Rename}
+				aObj:skinStdButton{obj=aslf.AddItem}
+				aObj:skinStdButton{obj=aslf.ManualSearch}
 				for _, btn in _G.pairs{"AddItem", "Rename", "ManualSearch"} do
-					aObj:SecureHook(_G.AuctionatorShoppingListFrame[btn], "Disable", function(this, _)
+					aObj:SecureHook(aslf[btn], "Disable", function(this, _)
 						aObj:clrBtnBdr(this)
 					end)
-					aObj:SecureHook(_G.AuctionatorShoppingListFrame[btn], "Enable", function(this, _)
+					aObj:SecureHook(aslf[btn], "Enable", function(this, _)
 						aObj:clrBtnBdr(this)
 					end)
 				end
 			end
+			aslf = nil
+
+			local aaif = _G.AuctionatorAddItemFrame
+			aObj:skinEditBox{obj=aaif.SearchContainer.SearchString, regs={6}} -- 6 is text
+			aObj:skinDropDown{obj=aaif.FilterKeySelector}
+			for _, level in pairs{"LevelRange", "ItemLevelRange", "PriceRange", "CraftedLevelRange"} do
+				aObj:skinEditBox{obj=aaif[level].MinBox, regs={6}} -- 6 is text
+				aObj:skinEditBox{obj=aaif[level].MaxBox, regs={6}} -- 6 is text
+			end
+			aObj:addSkinFrame{obj=aaif, ft="a", kfs=true, nb=true, ri=true}
+			if aObj.modBtns then
+				aObj:skinStdButton{obj=aaif.AddItem}
+				aObj:skinStdButton{obj=aaif.Cancel}
+				aObj:skinStdButton{obj=aaif.ResetAllButton}
+			end
+			if aObj.modChkBtns then
+				aObj:skinCheckButton{obj=aaif.SearchContainer.IsExact}
+			end
+			aaif = nil
 
 			_G.AuctionatorSellingFrame.Bg:SetTexture(nil)
 			aObj:removeNineSlice(_G.AuctionatorSellingFrame.NineSlice)
@@ -272,11 +292,11 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 8.3.3.2/100.0.9
 			aObj:skinEditBox{obj=asi.Quantity.InputBox, regs={6}} -- 6 is text
 			if aObj.modBtns then
 				aObj:skinStdButton{obj=asi.MaxButton}
-				aObj:SecureHook(asi.MaxButton, "Disable", function(this, _)
-					aObj:clrBtnBdr(this)
+				aObj:SecureHookScript(asi, "OnUpdate", function(this)
+					aObj:clrBtnBdr(this.MaxButton)
 				end)
-				aObj:SecureHook(asi.MaxButton, "Enable", function(this, _)
-					aObj:clrBtnBdr(this)
+				aObj:SecureHook(asi, "UpdateForNoItem", function(this)
+					aObj:clrBtnBdr(this.MaxButton)
 				end)
 				aObj:skinStdButton{obj=asi.PostButton}
 				aObj:SecureHook(asi, "UpdatePostButtonState", function(this)

@@ -450,10 +450,17 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 			or objType == "LSM30_Statusbar_Overlay"
 			or objType == "LSM30_Statusbar_Overlay-Item-Toggle"
 			-- WeakAuras objects
+			or objType == "WeakAurasExpand"
+			or objType == "WeakAurasExpandAnchor"
+			or objType == "WeakAurasExpandSmall"
+			or objType == "WeakAurasIcon"
 			or objType == "WeakAurasIconButton"
 			or objType == "WeakAurasImportButton"
-			or objType == "WeakAurasTextureButton"
+			or objType == "WeakAurasInlineGroup"
 			or objType == "WeakAurasTemplateGroup"
+			or objType == "WeakAurasTextureButton"
+			or objType == "WeakAurasToolbarButton"
+			or objType == "WeakAurasTreeGroup"
 			-- ReagentRestocker object
 			or objType == "DragDropTarget"
 			-- TradeSkillMaster objects
