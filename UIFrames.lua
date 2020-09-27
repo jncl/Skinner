@@ -389,6 +389,7 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 			btn:DisableDrawLayer("BORDER")
 			aObj:nilTexture(btn.LocBG, true)
 			if not isShadowlands then
+				btn.RareOverlay:SetTexture(nil)
 				-- extend the top & bottom highlight texture
 				btn.HighlightT:ClearAllPoints()
 				btn.HighlightT:SetPoint("TOPLEFT", 0, 4)
