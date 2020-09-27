@@ -1,3 +1,14 @@
+beta9.35944.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version nmubers
+	Updated .toc to handle retail & non-retail versions
+	More Beta/PTR changes
+	Bugfix for ChatBubbles option setting
+	Updated code which checked if an AddOn was enabled
+	Updated Ace3, Auctionator & WeakAuras skins
+
 beta9.35897.1
 Jncl:
 	ToDo.txt
