@@ -2,7 +2,7 @@ local aName, aObj = ...
 if not aObj:isAddonEnabled("RaiderIO") then return end
 local _G = _G
 
-aObj.addonsToSkin.RaiderIO = function(self) -- v 8.1.0 (v202006100600)
+aObj.addonsToSkin.RaiderIO = function(self) -- v 8.1.0 (v202009260600)
 
 	-- Config
 	local cPF -- configParentFrame
@@ -46,18 +46,6 @@ aObj.addonsToSkin.RaiderIO = function(self) -- v 8.1.0 (v202006100600)
 		end
 	end
     cPF = nil
-
-	-- _CustomDropDownList
-	_G.RaiderIO_CustomDropDownListBackdrop:SetBackdrop(nil)
-	_G.RaiderIO_CustomDropDownListMenuBackdrop:SetBackdrop(nil)
-	self:addSkinFrame{obj=_G.RaiderIO_CustomDropDownList, ft="a", kfs=true, nb=true}
-
-	-- _ProfileTooltip
-	self:add2Table(self.ttList, _G.RaiderIO_ProfileTooltip)
-	-- allow for slow startup
-	_G.C_Timer.After(0.5, function()
-		_G.RaiderIO_ProfileTooltip:SetScript("OnShow", nil)
-	end)
 
 	-- SearchUI
 	-- hook original function to skin searchUI
