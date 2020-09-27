@@ -611,7 +611,7 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 			local itemLink = ...
 			if frame.isCurrency then
 				-- BETA: API change
-				itemRarity = _G.C_CurrencyInfo and _G.C_CurrencyInfo.GetCurrencyInfoFromLink(itemLink).quality or _G.select(8, _G.GetCurrencyInfo(itemLink))
+				itemRarity = _G.C_CurrencyInfo and _G.C_CurrencyInfo.GetCurrencyInfoFromLink and _G.C_CurrencyInfo.GetCurrencyInfoFromLink(itemLink).quality or _G.select(8, _G.GetCurrencyInfo(itemLink))
 			else
 				itemRarity = _G.select(3, _G.GetItemInfo(itemLink))
 			end
