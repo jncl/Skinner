@@ -1960,22 +1960,18 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 	self.ACR = _G.LibStub:GetLibrary("AceConfigRegistry-3.0", true)
 
 	-- register the options tables and add them to the blizzard frame
-	self.ACR:RegisterOptionsTable(aName, self.optTables.General, {aName, "skin"})
-	self.optionsFrame = self.ACD:AddToBlizOptions(aName, aName)
+	self.ACR:RegisterOptionsTable(aName, self.optTables.General)
+	self.optionsFrame = self.ACD:AddToBlizOptions(aName, self.L[aName]) -- N.B. display localised name
 
 	-- register the options, add them to the Blizzard Options in the order specified
-	local optCheck = {}
-	-- option tables list
-	local optNames, optTitle = {
-		"Backdrop", "Background", "Colours", "Gradient", "Modules", "NPC Frames", "Player Frames", "UI Frames", "Disabled Skins", "Profiles"
-	}
-	for _, v in _G.ipairs(optNames) do
-		optTitle = (" "):join(aName, v)
-		self.ACR:RegisterOptionsTable(optTitle, self.optTables[v])
-		self.optionsFrame[self.L[v]] = self.ACD:AddToBlizOptions(optTitle, self.L[v], aName)
-		optCheck[v:lower()] = v -- store option name in table
+	local optCheck, optTitle = {}
+	for _, oName in _G.pairs{"Backdrop", "Background", "Colours", "Gradient", "Modules", "NPC Frames", "Player Frames", "UI Frames", "Disabled Skins", "Profiles"} do
+		optTitle = (" "):join(aName, oName)
+		self.ACR:RegisterOptionsTable(optTitle, self.optTables[oName])
+		self.optionsFrame[self.L[oName]] = self.ACD:AddToBlizOptions(optTitle, self.L[oName], self.L[aName]) -- N.B. use localised name
+		optCheck[oName:lower()] = oName -- store option name in table
 	end
-	optNames, optTitle = nil, nil
+	optTitle = nil
 
 	-- runs when the player clicks "Defaults"
 	self.optionsFrame[self.L["Backdrop"]].default = function()
@@ -2042,13 +2038,13 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 			_G.InterfaceOptionsFrame_OpenToCategory(aObj.optionsFrame[optCheck[input:lower()]])
 			_G.InterfaceOptionsFrame_OpenToCategory(aObj.optionsFrame[optCheck[input:lower()]])
 		else
-			_G.LibStub:GetLibrary("AceConfigCmd-3.0", true):HandleCommand(aName, aName, input)
+			_G.LibStub:GetLibrary("AceConfigCmd-3.0", true):HandleCommand(aName, self.L[aName], input)
 		end
 
 	end
 
 	-- Register slash command handlers
-	self:RegisterChatCommand(aName, chatCommand)
+	self:RegisterChatCommand(self.L[aName], chatCommand) -- N.B. use localised name
 	self:RegisterChatCommand("skin", chatCommand)
 
 	-- setup the DB object
@@ -2070,14 +2066,14 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 	self.DBIcon:Register(aName, self.DBObj, db.MinimapIcon)
 
 	-- defer populating Disabled Skins panel until required
-	self.RegisterCallback("Skinner_SO", "IOFPanel_Before_Skinning", function(this, panel)
-		if panel.parent ~= "Skinner"
-		or panel.name ~= "Disabled Skins"
+	self.RegisterCallback("Skinner_SO", "IOFPanel_Before_Skinning", function(_, panel)
+		if panel.parent ~= self.L[aName] -- N.B. use localised name
+		or panel.name ~= self.L["Disabled Skins"] -- N.B. use localised name
 		then
 			return
 		end
 
-		-- add DisabledSkins options
+		-- add Disabled Skins entries
 		local function addDSOpt(name, lib, lod)
 			local name2 = name .. (lib and " (Lib)" or lod and " (LoD)" or "")
 			aObj.optTables["Disabled Skins"].args[name] = {
@@ -2114,11 +2110,14 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 				end
 			end
 		end
-
 		addDSOpt = nil
+
 		self.UnregisterCallback("Skinner_SO", "IOFPanel_Before_Skinning")
+
 		-- ensure new entries are displayed
+		-- N.B. AFTER callback is unregistered otherwise a stack overflow occurs
 		_G.InterfaceOptionsList_DisplayPanel(panel)
+
 	end)
 
 end
