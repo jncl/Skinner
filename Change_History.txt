@@ -1,3 +1,11 @@
+beta9.36230.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated code to handle Shadowlands Pre-Patch
+	Updated options localisations
+	Bug-fixes
+
 beta9.36037.1
 Jncl:
 	ToDo.txt
