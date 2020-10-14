@@ -27,20 +27,7 @@ ToDos
 
 ≈	O	Add checks for Button state as required
 
-≈¶	O	Rework option descriptions to reduce the number of translations required.
-
 	I	Options, reported by BNS333/Fakelessgaming, Jul/Aug/Sep 2020
 ?		- Disabled AddOns, names not bing displayed on zhTW & ruRU clients
 
-	I	Nameplates, reported by MacallanTwoFive, 06.10.20
-≈		- Skinner\UIFrames.lua:4858: attempt to index local 'frame' (a nil value)
-
-	I/B	reported by MacallanTwoFive, 09.10.20
-√		- Skinner\NPCFrames.lua:551: attempt to index field 'AbilitiesLabel' (a nil value)
-		[string "@Skinner\NPCFrames.lua"]:551: in function <Skinner\NPCFrames.lua:541>
-
-	I/B	reported by MacallanTwoFive, 09.10.20
-√		- Skinner\UIFrames.lua:2637: attempt to index field 'SoulbindPanel' (a nil value)
-		[string "@Skinner\UIFrames.lua"]:2637: in function <Skinner\UIFrames.lua:2560>
-
-√	O	Remove all Beta checks as Shadowlands Pre-Patch now live
+√	I	Missing Localisations, reported by EpidemeDaBear/MacallanTwoFive, 14.10.20
