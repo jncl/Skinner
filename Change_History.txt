@@ -1,3 +1,14 @@
+beta9.36037.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Bugfix for LootAlert
+	Updated MissionList skin code
+	Updated options
+	Reverted TOC updates
+	Updated RaiderIO & Simulationcraft skins
+
 beta9.35944.1
 Jncl:
 	ToDo.txt
