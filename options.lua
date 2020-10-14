@@ -1093,7 +1093,7 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 				EquipmentFlyout = {
 					type = "toggle",
 					name = self.L["Equipment Flyout"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Equipment Flyout Frame"],
+					desc = self.L["Toggle the skin of the "] .. self.L["Equipment Flyout"],
 				},
 				FriendsFrame = {
 					type = "toggle",
@@ -1756,8 +1756,8 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 				},
 				QuestSession = {
 					type = "toggle",
-					name = self.L["Quest Session"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Quest Session frames"],
+					name = self.L["Quest Session Frames"],
+					desc = self.L["Toggle the skin of the "] .. self.L["Quest Session Frames"],
 				},
 				QueueStatusFrame = {
 					type = "toggle",
@@ -1808,7 +1808,7 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 				},
 				TimeManager = {
 					type = "toggle",
-					name = self.L["Time Manager"],
+					name = self.L["Time Manager Frame"],
 					desc = self.L["Toggle the skin of the "] .. self.L["Time Manager Frame"],
 				},
 				Tooltips = {
