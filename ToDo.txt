@@ -1,11 +1,11 @@
 ToDos
 ±±±±±
 
-	√ is Alt+v	- indicates completed
-	≈ is Alt+x	- indicates partially completed or dry-coded
-	x			- indicates nothing to change
-	¶ is Alt+7	- indicates localisation changes required
-	S/N/I/U/O/C	- Skin request/New Version/Issue(Bug)/Unobsolete skin/Other changes/Classic
+	√ is Alt+v	    - indicates completed
+	≈ is Alt+x	    - indicates partially completed or dry-coded
+	x			    - indicates nothing to change
+	¶ is Alt+7	    - indicates localisation changes required
+	S/N/I/U/O/C/B	- Skin request/New Version/Issue(Bug)/Unobsolete skin/Other changes/Classic/Beta
 
 ≈	O	Rework how Addon skins are handled
 		- replace table in AddonFrames with individual entries in each skin file
@@ -27,13 +27,20 @@ ToDos
 
 ≈	O	Add checks for Button state as required
 
-≈	I	List of Addons to disable isn't populated in Russian Client, reported by Fakelessgaming, 17.09.20
-		- suggestion in another post is to delete SV file
+≈¶	O	Rework option descriptions to reduce the number of translations required.
 
-	I	RaiderIO, reported by EpidemeDaBear, 19.09.20
-√		- Skinner\AddonSkins\RaiderIO-8.3.0 (v202009191822).lua:51: attempt to index field 'RaiderIO_CustomDropDownListBackdrop' (a nil value)
+	I	Options, reported by BNS333/Fakelessgaming, Jul/Aug/Sep 2020
+?		- Disabled AddOns, names not bing displayed on zhTW & ruRU clients
 
-√	I	Missing Localisations, reported by Fakelessgaming/Moxieface, 21.09.20/22.09.20
+	I	Nameplates, reported by MacallanTwoFive, 06.10.20
+≈		- Skinner\UIFrames.lua:4858: attempt to index local 'frame' (a nil value)
 
-	I	Simulationcraft, reported by MaccallanTwoFive, 22.09.20
-√		- Skinner\AddonSkins\Simulationcraft-9.0.1-alpha-9.lua:7: attempt to index field 'SimcCopyFrameScroll' (a nil value)
+	I/B	reported by MacallanTwoFive, 09.10.20
+√		- Skinner\NPCFrames.lua:551: attempt to index field 'AbilitiesLabel' (a nil value)
+		[string "@Skinner\NPCFrames.lua"]:551: in function <Skinner\NPCFrames.lua:541>
+
+	I/B	reported by MacallanTwoFive, 09.10.20
+√		- Skinner\UIFrames.lua:2637: attempt to index field 'SoulbindPanel' (a nil value)
+		[string "@Skinner\UIFrames.lua"]:2637: in function <Skinner\UIFrames.lua:2560>
+
+√	O	Remove all Beta checks as Shadowlands Pre-Patch now live
