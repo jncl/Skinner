@@ -2,15 +2,6 @@ local aName, aObj = ...
 
 local _G = _G
 
-local buildInfo = {
-	beta        = {"9.0.2", 36037},
-	classic_ptr = {"1.13.5", 35000},
-	retail_ptr  = {"9.0.1", 36036},
-	classic     = {"1.13.5", 35753},
-	retail      = {"8.3.7", 35662},
-	curr        = {_G.GetBuildInfo()},
-}
-
 do
 	-- check to see if required libraries are loaded
 	_G.assert(_G.LibStub, aName .. " requires LibStub")
@@ -25,44 +16,7 @@ do
 	-- create the addon
 	_G.LibStub:GetLibrary("AceAddon-3.0", true):NewAddon(aObj, aName, "AceConsole-3.0", "AceEvent-3.0", "AceHook-3.0")
 
-	aObj.tocVer = _G.select(4, _G.GetBuildInfo())
-
-	local agentUID = _G.GetCVar("agentUID")
-	-- check to see which WoW version we are running on
-	aObj.isBeta = agentUID:find("_beta") and true
-	aObj.isClsc = agentUID:find("_classic") and true
-	aObj.isPTR  = agentUID:find("_ptr") and true
-
-	local isRetail = not aObj.isBeta and not aObj.isClsc and not aObj.isPTR and true
-
-	-- check for Classic PTR
-	if aObj.isClsc and aObj.isPTR then
-		aObj.isClscPTR = true
-		aObj.isPTR = nil
-	end
-	-- check current build number against Beta, if greater then it's a patch
-	aObj.isPatch = aObj.isBeta and _G.tonumber(buildInfo.curr[2]) > buildInfo.beta[2] and true
-	-- check current build number against Classic, if greater then it's a patch
-	aObj.isPatch = aObj.isPatch or not aObj.isClscPTR and aObj.isClsc and _G.tonumber(buildInfo.curr[2]) > buildInfo.classic[2] and true
-	-- check current build number against Retail, if greater then it's a patch
-	aObj.isPatch = aObj.isPatch or isRetail and _G.tonumber(buildInfo.curr[2]) > buildInfo.retail[2] and true
-
---@alpha@
-	local vType = aObj.isBeta and "Beta" or aObj.isPTR and "Retail_PTR" or aObj.isClscPTR and "Classic_PTR" or aObj.isClsc and "Classic" or "Retail"
-	aObj:Printf("%s, %d, %s, %d, %s, %d, %s", buildInfo[vType:lower()][1], buildInfo[vType:lower()][2], buildInfo.curr[1], buildInfo.curr[2], buildInfo.curr[3], buildInfo.curr[4] , agentUID)
-	vType = aObj.isPatch and vType .. " (Patched)" or vType
-	_G.DEFAULT_CHAT_FRAME:AddMessage(aName .. ": Detected that we're running on a " .. vType .. " version", 0.75, 0.5, 0.25, nil, true)
-	vType = nil
---@end-alpha@
-	agentUID = nil
-
-	-- handle Beta changes in PTR
-	aObj.isBeta = aObj.isBeta or aObj.isPTR and buildInfo.curr[4] > 90000
-	-- handle PTR changes going Live
-	aObj.isClscPTR = aObj.isClscPTR or aObj.isPatch and aObj.isClsc and buildInfo.curr[1] > buildInfo.classic[1] and true
-	aObj.isPTR = aObj.isPTR or aObj.isPatch and isRetail and buildInfo.curr[1] > buildInfo.retail[1] and true
-
-	isRetail, buildInfo = nil, nil
+	aObj:checkVersion()
 
 	-- define tables to hold skin functions
 	aObj.blizzFrames = {p = {}, n = {}, u = {}, opt = {}}
@@ -186,11 +140,10 @@ function aObj:OnInitialize()
 		self.prdb.ChatBubbles.skin = val
 		val = nil
 	end
-	if aObj.isBeta then
-		for _, option in _G.pairs{"BarbershopUI", "QuestChoice", "WarboardUI"} do
-			if self.prdb[option] then
-				self.prdb[option] = nil
-			end
+	-- Shadowlands changes
+	for _, option in _G.pairs{"BarbershopUI", "QuestChoice", "WarboardUI"} do
+		if self.prdb[option] then
+			self.prdb[option] = nil
 		end
 	end
 
@@ -404,7 +357,7 @@ function aObj:OnEnable()
 				if button.sbb then
 					if quality then
 						-- BETA: Constant value changed
-						if quality >= (aObj.isBeta and _G.Enum.ItemQuality.Common or _G.LE_ITEM_QUALITY_COMMON)
+						if quality >= (_G.Enum.ItemQuality.Common)
 						and _G.BAG_ITEM_QUALITY_COLORS[quality]
 						then
 							button.sbb:SetBackdropBorderColor(_G.BAG_ITEM_QUALITY_COLORS[quality].r, _G.BAG_ITEM_QUALITY_COLORS[quality].g, _G.BAG_ITEM_QUALITY_COLORS[quality].b, 1)
@@ -462,7 +415,7 @@ function aObj:OnEnable()
 	and not _G.IsTrialAccount()
 	then
 		-- track when player changes level, to manage MainMenuBars' WatchBars' placement
-		self:RegisterEvent(aObj.isBeta and "PLAYER_LEVEL_CHANGED" or "PLAYER_LEVEL_UP")
+		self:RegisterEvent("PLAYER_LEVEL_CHANGED")
 	end
 
 	-- handle statusbar changes

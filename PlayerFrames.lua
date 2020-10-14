@@ -166,11 +166,7 @@ aObj.blizzLoDFrames[ftype].AchievementUI = function(self)
 		end)
 		skinCategories()
 
-		if not aObj.isBeta then
-			self:getChild(_G.AchievementFrameAchievements, 2):SetBackdrop(nil)
-		else
-			self:getChild(_G.AchievementFrameAchievements, 2):ClearBackdrop()
-		end
+		self:getChild(_G.AchievementFrameAchievements, 2):ClearBackdrop()
 		self:addFrameBorder{obj=_G.AchievementFrameAchievements, ft=ftype, y2=-2}
 		self:skinSlider{obj=_G.AchievementFrameAchievementsContainerScrollBar, wdth=-4}
 		if self.prdb.AchievementUI.style == 2 then
@@ -230,11 +226,7 @@ aObj.blizzLoDFrames[ftype].AchievementUI = function(self)
 
 		self:skinSlider{obj=_G.AchievementFrameStatsContainerScrollBar, wdth=-4}
 		_G.AchievementFrameStatsBG:SetAlpha(0)
-		if not aObj.isBeta then
-			self:getChild(_G.AchievementFrameStats, 3):SetBackdrop(nil)
-		else
-			self:getChild(_G.AchievementFrameStats, 3):ClearBackdrop()
-		end
+		self:getChild(_G.AchievementFrameStats, 3):ClearBackdrop()
 		self:addFrameBorder{obj=_G.AchievementFrameStats, ft=ftype, y2=-2}
 
 		-- hook this to skin buttons
@@ -265,11 +257,7 @@ aObj.blizzLoDFrames[ftype].AchievementUI = function(self)
 		for i = 1, 12 do
 			skinSB("AchievementFrameSummaryCategoriesCategory" .. i, "Label")
 		end
-		if not aObj.isBeta then
-			self:getChild(_G.AchievementFrameSummary, 1):SetBackdrop(nil)
-		else
-			self:getChild(_G.AchievementFrameSummary, 1):ClearBackdrop()
-		end
+		self:getChild(_G.AchievementFrameSummary, 1):ClearBackdrop()
 		self:addFrameBorder{obj=_G.AchievementFrameSummary, ft=ftype, y1=-1, y2=-2}
 		skinSB("AchievementFrameSummaryCategoriesStatusBar", "Title")
 
@@ -289,18 +277,10 @@ aObj.blizzLoDFrames[ftype].AchievementUI = function(self)
 		-- Container
 		self:skinSlider(_G.AchievementFrameComparisonContainerScrollBar)
 		-- Summary Panel
-		if not aObj.isBeta then
-			self:getChild(_G.AchievementFrameComparison, 5):SetBackdrop(nil)
-		else
-			self:getChild(_G.AchievementFrameComparison, 5):ClearBackdrop()
-		end
+		self:getChild(_G.AchievementFrameComparison, 5):ClearBackdrop()
 		self:addFrameBorder{obj=_G.AchievementFrameComparison, ft=ftype, y2=-2}
 		for _, type in _G.pairs{"Player", "Friend"} do
-			if not aObj.isBeta then
-				_G["AchievementFrameComparisonSummary" .. type]:SetBackdrop(nil)
-			else
-				_G["AchievementFrameComparisonSummary" .. type]:ClearBackdrop()
-			end
+			_G["AchievementFrameComparisonSummary" .. type]:ClearBackdrop()
 			_G["AchievementFrameComparisonSummary" .. type .. "Background"]:SetAlpha(0)
 			skinSB("AchievementFrameComparisonSummary" .. type .. "StatusBar", "Title")
 		end
@@ -335,7 +315,7 @@ aObj.blizzLoDFrames[ftype].AchievementUI = function(self)
 			tex:SetSize(110, 19)
 			tex:SetPoint("RIGHT", _G.AchievementFrameFilterDropDown, "RIGHT", -3, 4)
 			tex = nil
-			self:addSkinFrame{obj=_G.AchievementFrameFilterDropDown, ft=ftype, aso={ng=true}, x1=aObj.isBeta and -7 or -8, y1=aObj.isBeta and 1 or 2, x2=aObj.isBeta and 1 or 2, y2=7}
+			self:addSkinFrame{obj=_G.AchievementFrameFilterDropDown, ft=ftype, aso={ng=true}, x1=-7, y1=1, x2=1, y2=7}
 			if self.modBtnBs then
 			    self:addButtonBorder{obj=_G.AchievementFrameFilterDropDownButton, es=12, ofs=-2, x1=_G.IsAddOnLoaded("Overachiever") and 102 or 1}
 			end
@@ -552,9 +532,6 @@ aObj.blizzLoDFrames[ftype].AzeriteEssenceUI = function(self)
 		-- RHS
 		self:removeInset(this.RightInset)
 		self:skinSlider{obj=this.EssenceList.ScrollBar, size=2}
-		if not aObj.isBeta then
-			self:skinGlowBox(this.EssenceList.Tutorial, ftype)
-		end
 		if self.modBtnBs then
 			local function clrBB(sf)
 				for _, btn in _G.ipairs(sf.buttons) do
@@ -691,9 +668,6 @@ aObj.blizzFrames[ftype].CharacterFrames = function(self)
 
 	self:SecureHookScript(_G.CharacterFrame, "OnShow", function(this)
 		self:skinTabs{obj=this, lod=true}
-		if not aObj.isBeta then
-			self:skinGlowBox(this.ReputationTabHelpBox, ftype)
-		end
 		self:removeInset(_G.CharacterFrameInsetRight)
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, x1=-5, y2=-5}
 
@@ -772,12 +746,6 @@ aObj.blizzFrames[ftype].CharacterFrames = function(self)
 		for i = 1, #_G.PaperDollItemsFrame.WeaponSlots do
 			skinSlot(_G.PaperDollItemsFrame.WeaponSlots[i])
 		end
-		if not aObj.isBeta then
-			-- fixupNotificationFrame (anchored to CharacterMainHandSlot)
-			if this.fixupNotificationFrame then
-				self:skinGlowBox(this.fixupNotificationFrame, ftype)
-			end
-		end
 
 		self:SecureHookScript(_G.GearManagerDialogPopup, "OnShow", function(this)
 			self:adjHeight{obj=_G.GearManagerDialogPopupScrollFrame, adj=20}
@@ -848,9 +816,6 @@ aObj.blizzFrames[ftype].CharacterFrames = function(self)
 				self:skinCheckButton{obj=_G.ReputationDetailAtWarCheckBox}
 				self:skinCheckButton{obj=_G.ReputationDetailInactiveCheckBox}
 				self:skinCheckButton{obj=_G.ReputationDetailMainScreenCheckBox}
-				if not aObj.isBeta then
-					self:skinCheckButton{obj=_G.ReputationDetailLFGBonusReputationCheckBox}
-				end
 			end
 			self:addSkinFrame{obj=_G.ReputationDetailFrame, ft=ftype, kfs=true, x1=6, y1=-6, x2=-6, y2=6}
 
@@ -1122,11 +1087,6 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 			end)
 		end
 
-		if not aObj.isBeta then
-			self:skinGlowBox(this.favoriteHelpBox, ftype)
-			self:skinGlowBox(this.mousewheelPagingHelpBox, ftype)
-		end
-
 		self:Unhook(this, "OnShow")
 	end)
 
@@ -1190,9 +1150,6 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 			self:skinStdButton{obj=this.FilterButton}
 			_G.RaiseFrameLevelByTwo(this.FilterButton) -- raise above SetsCollectionFrame when displayed on it
 		end
-		if not aObj.isBeta then
-			self:skinGlowBox(this.SetsTabHelpBox, ftype)
-		end
 
 		self:SecureHookScript(this.searchProgressFrame, "OnShow", function(this)
 			this:DisableDrawLayer("BACKGROUND")
@@ -1226,7 +1183,7 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 				for i = 1, #this.Models do
 					btn = this.Models[i]
 					self:removeRegions(btn, {2}) -- background & border
-					self:addButtonBorder{obj=btn, reParent={btn.Favorite.Icon, btn.HideVisual.Icon}, ofs=6}
+					self:addButtonBorder{obj=btn, reParent={btn.NewString, btn.Favorite.Icon, btn.HideVisual.Icon}, ofs=6}
 					updBtnClr(btn)
 				end
 				btn = nil
@@ -1235,10 +1192,6 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 						updBtnClr(this.Models[i])
 					end
 				end)
-			end
-
-			if not aObj.isBeta then
-				self:skinGlowBox(this.HelpBox, ftype)
 			end
 
 			self:Unhook(this, "OnShow")
@@ -1328,19 +1281,6 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 		if self.modBtnBs then
 			self:addButtonBorder{obj=this.ModelScene.ClearAllPendingButton, ofs=1, x2=0, relTo=this.ModelScene.ClearAllPendingButton.Icon}
 			self:addButtonBorder{obj=this.SpecButton, ofs=0}
-		end
-
-		if not aObj.isBeta then
-			self:SecureHookScript(this.OutfitHelpBox, "OnShow", function(this)
-				self:skinGlowBox(this, ftype)
-
-				self:Unhook(this, "OnShow")
-			end)
-			self:SecureHookScript(this.SpecHelpBox, "OnShow", function(this)
-				self:skinGlowBox(this, ftype)
-
-				self:Unhook(this, "OnShow")
-			end)
 		end
 
 		self:Unhook(this, "OnShow")
@@ -1725,10 +1665,6 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 
 		self:Unhook(this, "OnShow")
 	end)
-
-	if not aObj.isBeta then
-		self:skinGlowBox(cFrame.GuildNameAlertFrame, ftype)
-	end
 
 	self:SecureHookScript(cFrame.GuildNameChangeFrame, "OnShow", function(this)
 		this:DisableDrawLayer("BACKGROUND")
@@ -2121,18 +2057,18 @@ aObj.blizzFrames[ftype].CompactFrames = function(self)
 			self:skinStdButton{obj=this.displayFrame.leaderOptions.readyCheckButton}
 			if not self.isClsc then
 				self:skinStdButton{obj=this.displayFrame.leaderOptions.rolePollButton}
-				if aObj.isBeta then
-					this.displayFrame.leaderOptions.countdownButton:DisableDrawLayer("ARTWORK") -- alpha values are changed in code
-					this.displayFrame.leaderOptions.countdownButton.Text:SetDrawLayer("OVERLAY") -- move draw layer so it is displayed
-					self:skinStdButton{obj=this.displayFrame.leaderOptions.countdownButton}
-				end
+				this.displayFrame.leaderOptions.countdownButton:DisableDrawLayer("ARTWORK") -- alpha values are changed in code
+				this.displayFrame.leaderOptions.countdownButton.Text:SetDrawLayer("OVERLAY") -- move draw layer so it is displayed
+				self:skinStdButton{obj=this.displayFrame.leaderOptions.countdownButton}
 				self:skinStdButton{obj=_G.CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton}
 				_G.CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton:GetNormalTexture():SetAlpha(1) -- icon
 			end
 			self:SecureHook("CompactRaidFrameManager_UpdateOptionsFlowContainer", function(this)
-				self:clrBtnBdr(this.displayFrame.leaderOptions.rolePollButton)
 				self:clrBtnBdr(this.displayFrame.leaderOptions.readyCheckButton)
-				self:clrBtnBdr(this.displayFrame.leaderOptions.countdownButton)
+				if not self.isClsc then
+					self:clrBtnBdr(this.displayFrame.leaderOptions.rolePollButton)
+					self:clrBtnBdr(this.displayFrame.leaderOptions.countdownButton)
+				end
 			end)
 		end
 		if self.modChkBtns then
@@ -2178,7 +2114,7 @@ aObj.blizzFrames[ftype].ContainerFrames = function(self)
 			if aObj.modBtnBs then
 				-- skin the item buttons
 				local bo
-				for i = 1, aObj.isBeta and 36 or _G.MAX_CONTAINER_ITEMS do
+				for i = 1, 36 do
 					bo = _G[objName .. "Item" .. i]
 					aObj:addButtonBorder{obj=bo, ibt=true, reParent={_G[objName .. "Item" .. i .. "IconQuestTexture"], bo.JunkIcon, bo.UpgradeIcon, bo.flash, bo.NewItemTexture, bo.BattlepayItemTexture}}
 				end
@@ -2202,10 +2138,6 @@ aObj.blizzFrames[ftype].ContainerFrames = function(self)
 				aObj:skinStdButton{obj=_G[objName .. "AddSlotsButton"]}
 			end
 
-			if not aObj.isBeta then
-				aObj:skinGlowBox(frame.ExtraBagSlotsHelpBox, ftype)
-			end
-
 			objName = nil
 
 		end
@@ -2223,24 +2155,6 @@ aObj.blizzFrames[ftype].ContainerFrames = function(self)
 		self:RawHook(_G.BagItemSearchBox, "SetPoint", function(this, point, relTo, relPoint, _)
 			self.hooks[this].SetPoint(this, point, relTo, relPoint, 50, -35)
 		end, true)
-	end
-
-	if not self.isBeta then
-		self:SecureHookScript(_G.ArtifactRelicHelpBox, "OnShow", function(this)
-			self:skinGlowBox(this, ftype)
-
-			self:Unhook(this, "OnShow")
-		end)
-		self:SecureHookScript(_G.BagHelpBox, "OnShow", function(this)
-			self:skinGlowBox(this, ftype)
-
-			self:Unhook(this, "OnShow")
-		end)
-		self:SecureHookScript(_G.AzeriteItemInBagHelpBox, "OnShow", function(this)
-			self:skinGlowBox(this, ftype)
-
-			self:Unhook(this, "OnShow")
-		end)
 	end
 
 end
@@ -2281,19 +2195,17 @@ aObj.blizzFrames[ftype].DressUpFrame = function(self)
 		self:Unhook(this, "OnShow")
 	end)
 
-	if aObj.isBeta then
-		self:SecureHookScript(_G.TransmogAndMountDressupFrame, "OnShow", function(this)
+	self:SecureHookScript(_G.TransmogAndMountDressupFrame, "OnShow", function(this)
+		if self.modBtns then
+			self:skinStdButton{obj=this.ResetButton}
+		end
+		if self.modChkBtns then
+			self:skinCheckButton{obj=this.ShowMountCheckButton}
+		end
 
-			if self.modBtns then
-				self:skinStdButton{obj=this.ResetButton}
-			end
-			if self.modChkBtns then
-				self:skinCheckButton{obj=this.ShowMountCheckButton}
-			end
+		self:Unhook(this, "OnShow")
+	end)
 
-			self:Unhook(this, "OnShow")
-		end)
-	end
 end
 
 aObj.blizzLoDFrames[ftype].EncounterJournal = function(self) -- a.k.a. Adenture Guide
@@ -2548,22 +2460,6 @@ aObj.blizzLoDFrames[ftype].EncounterJournal = function(self) -- a.k.a. Adenture 
 		self:Unhook(this, "OnShow")
 	end)
 
-	if not aObj.isBeta then
-		-- LootJournal panel
-		self:SecureHookScript(_G.EncounterJournal.LootJournal, "OnShow", function(this)
-			self:skinDropDown{obj=this.ClassDropDown}
-			-- ItemSetsFrame
-			self:skinSlider{obj=self:getChild(this.ItemSetsFrame, 2), wdth=-4, size=3}
-			skinFilterBtn(this.ItemSetsFrame.ClassButton)
-			for i = 1 , #this.ItemSetsFrame.buttons do
-				this.ItemSetsFrame.buttons[i].Background:SetTexture(nil)
-			end
-			self:addFrameBorder{obj=this, ft=ftype, x1=-8, y1=6, x2=8, y2=-4}
-
-			self:Unhook(this, "OnShow")
-		end)
-	end
-
 end
 
 aObj.blizzFrames[ftype].EquipmentFlyout = function(self)
@@ -2726,10 +2622,6 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 		self:skinTabs{obj=this, lod=true}
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, y2=-5}
 
-		if not aObj.isBeta then
-			self:skinGlowBox(this.FriendsFrameQuickJoinHelpTip, ftype)
-		end
-
 		-- tooltip
 		_G.C_Timer.After(0.1, function()
 			self:add2Table(self.ttList, _G.FriendsTooltip)
@@ -2861,9 +2753,6 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 		if self.modBtns then
 			self:skinStdButton{obj=this.NewButton}
 			self:skinStdButton{obj=this.SettingsButton}
-		end
-		if not aObj.isBeta then
-			self:skinGlowBox(this.Tutorial, ftype)
 		end
 		self:skinSlider{obj=this.ChannelList.ScrollBar, wdth=-4}
 		self:skinSlider{obj=this.ChannelRoster.ScrollFrame.scrollBar, wdth=-4}
@@ -3034,9 +2923,6 @@ aObj.blizzLoDFrames[ftype].GuildUI = function(self)
 		_G.GuildFactionBarShadow:SetAlpha(0)
 		_G.GuildFactionBarCap:SetTexture(self.sbTexture)
 		_G.GuildFactionBarCapMarker:SetAlpha(0)
-		if not aObj.isBeta then
-			self:skinGlowBox(_G.GuildNameChangeAlertFrame, ftype)
-		end
 		self:skinEditBox{obj=_G.GuildNameChangeFrame.editBox, regs={6}}
 		self:addSkinFrame{obj=this, ft=ftype, ri=true, y2=-5}
 		if self.modBtns then
@@ -3680,7 +3566,7 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 	self:skinDropDown{obj=_G.ObjectiveTrackerFrame.BlockDropDown}
 
 	if self.modBtnBs then
-		self:addButtonBorder{obj=_G.ObjectiveTrackerFrame.HeaderMenu.MinimizeButton, es=12, ofs=aObj.isBeta and 1 or 0, x1=-1}
+		self:addButtonBorder{obj=_G.ObjectiveTrackerFrame.HeaderMenu.MinimizeButton, es=12, ofs=1, x1=-1}
 		-- hook this to skin QuestObjective Block Button(s)
 		self:SecureHook("QuestObjectiveSetupBlockButton_AddRightButton", function(_, button, _)
 			-- aObj:Debug("QOSBB_ARB: [%s, %s]", block, button)
@@ -3703,7 +3589,6 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 
 	-- skin timerBar(s) & progressBar(s)
 	local function skinBar(bar)
-
 		if not aObj.sbGlazed[bar.Bar] then
 			if bar.Bar.BorderLeft then
 				bar.Bar.BorderLeft:SetTexture(nil)
@@ -3721,10 +3606,7 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 				bar.FullBarFlare1.BarGlow:SetTexture(nil)
 			end
 		end
-
 	end
-
-	-- skin existing Timer & Progress bars
 	local function skinBars(table)
 		for _, block in _G.pairs(table) do
 				for _, line in _G.pairs(block) do
@@ -3732,6 +3614,7 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 			end
 		end
 	end
+	-- skin existing Timer & Progress bars
 	for _, module in _G.pairs(_G.ObjectiveTrackerFrame.MODULES) do
 		if module.usedTimerBars then
 			skinBars(module.usedTimerBars)
@@ -3763,12 +3646,20 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 		end
 
 	end
-
 	self:SecureHook("BonusObjectiveTracker_AnimateReward", function(block)
 		skinRewards(block.module.rewardsFrame)
 	end)
+	self:SecureHook("ScenarioObjectiveTracker_AnimateReward", function(_)
+		_G.ObjectiveTrackerScenarioRewardsFrame:DisableDrawLayer("ARTWORK")
+		_G.ObjectiveTrackerScenarioRewardsFrame:DisableDrawLayer("BORDER")
+		skinRewards(_G.ObjectiveTrackerScenarioRewardsFrame)
+	end)
 
 	-- ScenarioObjectiveBlock
+	skinBars(_G.SCENARIO_TRACKER_MODULE.usedProgressBars)
+	self:SecureHook(_G.SCENARIO_TRACKER_MODULE, "AddProgressBar", function(this, block, line, _)
+		skinBar(this.usedProgressBars[block] and this.usedProgressBars[block][line])
+	end)
 
 	-- ScenarioStageBlock
 	self:nilTexture(_G.ScenarioStageBlock.NormalBG, true)
@@ -3794,29 +3685,17 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 
 	-- ScenarioWidgetContainerBlock
 
-	self:SecureHook("ScenarioObjectiveTracker_AnimateReward", function(_)
-		_G.ObjectiveTrackerScenarioRewardsFrame:DisableDrawLayer("ARTWORK")
-		_G.ObjectiveTrackerScenarioRewardsFrame:DisableDrawLayer("BORDER")
-		skinRewards(_G.ObjectiveTrackerScenarioRewardsFrame)
-	end)
-
-	if not aObj.isBeta then
-		self:skinGlowBox(_G.ScenarioBlocksFrame.WarfrontHelpBox, ftype)
-	end
-
 	-- tooltip
 	_G.C_Timer.After(0.1, function()
 		aObj:add2Table(aObj.ttList, _G.ScenarioStepRewardTooltip)
 	end)
 
-	if aObj.isBeta then
-		_G.ScenarioBlocksFrame.MawBuffsBlock.Container.List:DisableDrawLayer("BACKGROUND")
-		if self.modBtns then
-			self:skinStdButton{obj=_G.ScenarioBlocksFrame.MawBuffsBlock.Container, ofs=-10, x1=12, x2=-2}
-			self:SecureHook(_G.ScenarioBlocksFrame.MawBuffsBlock.Container, "UpdateListState", function(this, _)
-				self:clrBtnBdr(this)
-			end)
-		end
+	_G.ScenarioBlocksFrame.MawBuffsBlock.Container.List:DisableDrawLayer("BACKGROUND")
+	if self.modBtns then
+		self:skinStdButton{obj=_G.ScenarioBlocksFrame.MawBuffsBlock.Container, ofs=-10, x1=12, x2=-2}
+		self:SecureHook(_G.ScenarioBlocksFrame.MawBuffsBlock.Container, "UpdateListState", function(this, _)
+			self:clrBtnBdr(this)
+		end)
 	end
 
 	-- remove Shadow texture
@@ -3824,9 +3703,7 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 	_G.WORLD_QUEST_TRACKER_MODULE.Header:DisableDrawLayer("BACKGROUND")
 	-- remove Header backgrounds
 	_G.ObjectiveTrackerFrame.BlocksFrame.AchievementHeader.Background:SetTexture(nil)
-	if aObj.isBeta then
-		_G.ObjectiveTrackerFrame.BlocksFrame.CampaignQuestHeader.Background:SetTexture(nil)
-	end
+	_G.ObjectiveTrackerFrame.BlocksFrame.CampaignQuestHeader.Background:SetTexture(nil)
 	_G.ObjectiveTrackerFrame.BlocksFrame.QuestHeader.Background:SetTexture(nil)
 	_G.ObjectiveTrackerFrame.BlocksFrame.ScenarioHeader.Background:SetTexture(nil)
 	_G.BONUS_OBJECTIVE_TRACKER_MODULE.Header.Background:SetTexture(nil)
@@ -3848,21 +3725,14 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 			local questID, questTitle, block, blockContents
 			for i = 1, _G.GetNumAutoQuestPopUps() do
 				questID, _ = _G.GetAutoQuestPopUp(i)
-				if (aObj.isBeta
-				and (not _G.C_QuestLog.IsQuestBounty(questID) and owningModule:ShouldDisplayQuest(_G.QuestCache:Get(questID))))
-				or (not aObj.isBeta
-				and not _G.IsQuestBounty(questID))
+				if not _G.C_QuestLog.IsQuestBounty(questID) and owningModule:ShouldDisplayQuest(_G.QuestCache:Get(questID))
 				then
 					-- BETA: API change
 					questTitle = _G.GetQuestLogTitle and _G.GetQuestLogTitle(_G.GetQuestLogIndexByID(questID)) or _G.C_QuestLog.GetTitleForQuestID and _G.C_QuestLog.GetTitleForQuestID(questID)
 					if questTitle
 					and questTitle ~= ""
 					then
-						if not aObj.isBeta then
-							block = _G.AUTO_QUEST_POPUP_TRACKER_MODULE:GetBlock(questID)
-						else
-							block = owningModule:GetBlock(questID, "ScrollFrame", "AutoQuestPopUpBlockTemplate")
-						end
+						block = owningModule:GetBlock(questID, "ScrollFrame", "AutoQuestPopUpBlockTemplate")
 						if not block.module.hasSkippedBlocks then
 							if block.init
 							and not block.ScrollChild.sf
@@ -3879,16 +3749,9 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 			end
 			questID, questTitle, block, blockContents = nil, nil, nil, nil
 		end
-			if not aObj.isBeta then
-			-- hook this to skin the AutoPopUps
-			self:SecureHook(_G.AUTO_QUEST_POPUP_TRACKER_MODULE, "Update", function(this)
-				skinAutoPopUps(_G.QUEST_TRACKER_MODULE)
-			end)
-		else
-			self:SecureHook("AutoQuestPopupTracker_Update", function(owningModule)
-				skinAutoPopUps(owningModule)
-			end)
-		end
+		self:SecureHook("AutoQuestPopupTracker_Update", function(owningModule)
+			skinAutoPopUps(owningModule)
+		end)
 		skinAutoPopUps(_G.QUEST_TRACKER_MODULE)
 	end
 
@@ -4034,9 +3897,6 @@ aObj.blizzLoDFrames[ftype].PVPUI = function(self)
 			end
 		end)
 		_G.PVPQueueFrame_SelectButton(1) -- select Honor button
-		if not aObj.isBeta then
-			self:skinGlowBox(_G.PremadeGroupsPvPTutorialAlert, ftype)
-		end
 
 		-- skin common elements (Honor & Conquest frames)
 		local function skinCommon(frame)
@@ -4083,9 +3943,6 @@ aObj.blizzLoDFrames[ftype].PVPUI = function(self)
 			self:removeMagicBtnTex(this.QueueButton)
 			if self.modBtns then
 				self:skinStdButton{obj=this.QueueButton}
-			end
-			if not aObj.isBeta then
-				self:skinGlowBox(this.BonusFrame.BrawlHelpBox, ftype)
 			end
 
 			self:Unhook(this, "OnShow")
@@ -4176,11 +4033,7 @@ aObj.blizzLoDFrames[ftype].RaidUI = function(self)
 		for i = 1, _G.NUM_RAID_PULLOUT_FRAMES do
 			if not _G["RaidPullout" .. i].sf then
 				aObj:skinDropDown{obj=_G["RaidPullout" .. i .. "DropDown"]}
-				if not aObj.isBeta then
-					_G["RaidPullout" .. i .. "MenuBackdrop"]:SetBackdrop(nil)
-				else
-					_G["RaidPullout" .. i .. "MenuBackdrop"]:ClearBackdrop()
-				end
+				_G["RaidPullout" .. i .. "MenuBackdrop"]:ClearBackdrop()
 				aObj:addSkinFrame{obj=_G["RaidPullout" .. i], ft=ftype, kfs=true, x1=3, y1=-1, x2=-1, y2=1}
 			end
 		end
@@ -4449,10 +4302,6 @@ aObj.blizzFrames[ftype].SpellBookFrame = function(self)
 		-- Secondary professions
 		skinProf("Secondary", 3)
 
-		if not aObj.isBeta then
-			self:skinGlowBox(_G.SpellLockedTooltip, ftype)
-		end
-
 		if self.modBtnBs then
 			-- hook this to change Primary Profession Button border colours if required
 			self:SecureHook("SpellBook_UpdateProfTab", function()
@@ -4611,7 +4460,7 @@ aObj.blizzLoDFrames[ftype].TalentUI = function(self)
 			aObj:makeIconSquare(frame["specButton" .. i], "specIcon", true)
 		end
 		-- shadow frame (LHS)
-		aObj:keepFontStrings(aObj:getChild(frame, aObj.isBeta and 8 or 7))
+		aObj:keepFontStrings(aObj:getChild(frame, 8))
 		-- spellsScroll (RHS)
 		aObj:skinSlider{obj=frame.spellsScroll.ScrollBar}
 		frame.spellsScroll.child.gradient:SetTexture(nil)
@@ -4737,7 +4586,7 @@ aObj.blizzLoDFrames[ftype].TradeSkillUI = function(self)
 		self:removeInset(this.RecipeInset)
 		self:removeInset(this.DetailsInset)
 		self:skinStatusBar{obj=this.RankFrame, fi=0, bgTex=this.RankFrameBackground}
-		self:removeRegions(this.RankFrame, aObj.isBeta and {1, 2, 3} or {2, 3, 4})
+		self:removeRegions(this.RankFrame, {1, 2, 3})
 		self:skinEditBox{obj=this.SearchBox, regs={6, 7}, mi=true} -- 6 is text, 7 is icon
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true}
 		if self.modBtns then
@@ -4844,14 +4693,12 @@ aObj.blizzLoDFrames[ftype].TradeSkillUI = function(self)
 			self:addButtonBorder{obj=cnts.ResultIcon, reParent={cnts.ResultIcon.Count}}
 		end
 		cnts.ResultIcon.ResultBorder:SetTexture(nil)
-		if aObj.isBeta then
-			cnts.RecipeLevel.BorderLeft:SetTexture(nil)
-			cnts.RecipeLevel.BorderRight:SetTexture(nil)
-			cnts.RecipeLevel.BorderMid:SetTexture(nil)
-			self:skinStatusBar{obj=cnts.RecipeLevel, fi=0}
-			if self.modBtns then
-				self:skinStdButton{obj=cnts.RecipeLevelSelector, ofs=0}
-			end
+		cnts.RecipeLevel.BorderLeft:SetTexture(nil)
+		cnts.RecipeLevel.BorderRight:SetTexture(nil)
+		cnts.RecipeLevel.BorderMid:SetTexture(nil)
+		self:skinStatusBar{obj=cnts.RecipeLevel, fi=0}
+		if self.modBtns then
+			self:skinStdButton{obj=cnts.RecipeLevelSelector, ofs=0}
 		end
 		local btn
 		for i = 1, #cnts.Reagents do
@@ -4861,13 +4708,11 @@ aObj.blizzLoDFrames[ftype].TradeSkillUI = function(self)
 				 self:addButtonBorder{obj=btn, relTo=btn.Icon, reParent={btn.Count}, clr="common"}
 			end
 		end
-		if aObj.isBeta then
-			for i = 1, #cnts.OptionalReagents do
-				btn = cnts.OptionalReagents[i]
-				btn.NameFrame:SetTexture(nil)
-				if self.modBtnBs then
-					 self:addButtonBorder{obj=btn, relTo=btn.Icon, reParent={btn.Count}, clr="green"}
-				end
+		for i = 1, #cnts.OptionalReagents do
+			btn = cnts.OptionalReagents[i]
+			btn.NameFrame:SetTexture(nil)
+			if self.modBtnBs then
+				 self:addButtonBorder{obj=btn, relTo=btn.Icon, reParent={btn.Count}, clr="green"}
 			end
 		end
 		btn, cnts = nil, nil
@@ -4892,32 +4737,30 @@ aObj.blizzLoDFrames[ftype].TradeSkillUI = function(self)
 		end)
 
 		-- OptionalReagentList
-		if aObj.isBeta then
-			self:SecureHookScript(this.OptionalReagentList, "OnShow", function(this)
-				self:removeInset(this.ScrollList.InsetFrame)
-				self:skinSlider{obj=this.ScrollList.ScrollFrame.scrollBar, rt="background", wdth=-4}
-				local btn
-				for i = 1, this.ScrollList:GetNumElementFrames() do
-					btn = this.ScrollList:GetElementFrame(i)
-					btn.NameFrame:SetTexture(nil)
-					if self.modBtnBs then
-						self:addButtonBorder{obj=btn, libt=true}
-					end
+		self:SecureHookScript(this.OptionalReagentList, "OnShow", function(this)
+			self:removeInset(this.ScrollList.InsetFrame)
+			self:skinSlider{obj=this.ScrollList.ScrollFrame.scrollBar, rt="background", wdth=-4}
+			local btn
+			for i = 1, this.ScrollList:GetNumElementFrames() do
+				btn = this.ScrollList:GetElementFrame(i)
+				btn.NameFrame:SetTexture(nil)
+				if self.modBtnBs then
+					self:addButtonBorder{obj=btn, libt=true}
 				end
-				btn = nil
-				-- apply button changes
-				this:RefreshScrollFrame()
-				self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, ri=true, ofs=0}
-				if self.modBtns then
-					self:skinStdButton{obj=this.CloseButton}
-				end
-				if self.modChkBtns then
-					self:skinCheckButton{obj=this.HideUnownedButton}
-				end
+			end
+			btn = nil
+			-- apply button changes
+			this:RefreshScrollFrame()
+			self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, ri=true, ofs=0}
+			if self.modBtns then
+				self:skinStdButton{obj=this.CloseButton}
+			end
+			if self.modChkBtns then
+				self:skinCheckButton{obj=this.HideUnownedButton}
+			end
 
-				self:Unhook(this, "OnShow")
-			end)
-		end
+			self:Unhook(this, "OnShow")
+		end)
 
 		-- send message when UI is skinned (used by oGlow skin)
 		self:SendMessage("TradeSkillUI_Skinned", self)

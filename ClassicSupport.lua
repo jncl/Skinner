@@ -143,7 +143,7 @@ aObj.ClassicSupport = function(self)
 	self.optTables["NPC Frames"].args.AuctionUI = {
 		type = "toggle",
 		name = self.L["Auction UI"],
-		desc = self.L["Toggle the skin of the Auction UI"],
+		desc = self.L["Toggle the skin of the "] .. self.L["Auction UI"],
 	}
 	if self.db.profile.CraftUI == nil then
 		self.db.profile.CraftUI = true
@@ -151,8 +151,8 @@ aObj.ClassicSupport = function(self)
 	end
 	self.optTables["Player Frames"].args.CraftUI = {
 		type = "toggle",
-		name = self.L["CraftUI"],
-		desc = self.L["Toggle the skin of the CraftUI"],
+		name = self.L["Craft UI"],
+		desc = self.L["Toggle the skin of the "] .. self.L["Craft UI"],
 	}
 	if self.db.profile.BattlefieldFrame == nil then
 		self.db.profile.BattlefieldFrame = true
@@ -161,7 +161,7 @@ aObj.ClassicSupport = function(self)
 	self.optTables["UI Frames"].args.BattlefieldFrame = {
 		type = "toggle",
 		name = self.L["Battlefield Frame"],
-		desc = self.L["Toggle the skin of the Battlefield Frame"],
+		desc = self.L["Toggle the skin of the "] .. self.L["Battlefield Frame"],
 	}
 	if self.db.profile.QuestLog == nil then
 		self.db.profile.QuestLog = true
@@ -170,7 +170,7 @@ aObj.ClassicSupport = function(self)
 	self.optTables["UI Frames"].args.QuestLog = {
 		type = "toggle",
 		name = self.L["Quest Log"],
-		desc = self.L["Toggle the skin of the Quest Log"],
+		desc = self.L["Toggle the skin of the "] .. self.L["Quest Log"],
 	}
 	if self.db.profile.QuestTimer == nil then
 		self.db.profile.QuestTimer = true
@@ -179,7 +179,7 @@ aObj.ClassicSupport = function(self)
 	self.optTables["UI Frames"].args.QuestTimer = {
 		type = "toggle",
 		name = self.L["Quest Timer"],
-		desc = self.L["Toggle the skin of the Quest Timer"],
+		desc = self.L["Toggle the skin of the "] .. self.L["Quest Timer"],
 	}
 	if self.db.profile.WorldStateScoreFrame == nil then
 		self.db.profile.WorldStateScoreFrame = true
@@ -188,7 +188,7 @@ aObj.ClassicSupport = function(self)
 	self.optTables["UI Frames"].args.WorldStateScoreFrame = {
 		type = "toggle",
 		name = self.L["Battle Score Frame"],
-		desc = self.L["Toggle the skin of the Battle Score Frame"],
+		desc = self.L["Toggle the skin of the "] .. self.L["Battle Score Frame"],
 	}
 
 	-- add/replace code for frames that do exist

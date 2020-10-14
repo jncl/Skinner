@@ -98,18 +98,16 @@ function aObj:skinAceDropdown(obj, x2, y2)
 
 end
 
-if aObj.isBeta then
-	function aObj:addBackdrop(obj)
+function aObj:addBackdrop(obj)
 
-		if not obj.SetBackdrop then
-			_G.Mixin(obj, _G.BackdropTemplateMixin)
-			-- remove existing backdrop if it exists
-			if obj.ClearBackdrop then
-				obj:ClearBackdrop()
-			end
+	if not obj.SetBackdrop then
+		_G.Mixin(obj, _G.BackdropTemplateMixin)
+		-- remove existing backdrop if it exists
+		if obj.ClearBackdrop then
+			obj:ClearBackdrop()
 		end
-
 	end
+
 end
 
 local function __adjHeight(opts)
@@ -404,6 +402,56 @@ function aObj:checkShown(frame)
 		frame:Hide()
 		frame:Show()
 	end
+
+end
+
+local buildInfo = {
+	beta        = {"9.0.2", 36165},
+	classic_ptr = {"1.13.6", 36149},
+	retail_ptr  = {"9.0.1", 36216},
+	classic     = {"1.13.5", 36035},
+	-- retail      = {"8.3.7", 35662},
+	retail      = {"9.0.1", 36230},
+	curr        = {_G.GetBuildInfo()},
+}
+function aObj:checkVersion()
+
+	local agentUID = _G.GetCVar("agentUID")
+	-- check to see which WoW version we are running on
+	self.isBeta = agentUID:find("_beta") and true
+	self.isClsc = agentUID:find("_classic") and true
+	self.isPTR  = agentUID:find("_ptr") and true
+
+	local isRetail = not self.isBeta and not self.isClsc and not self.isPTR and true
+
+	-- check for Classic PTR
+	if self.isClsc and self.isPTR then
+		self.isClscPTR = true
+		self.isPTR = nil
+	end
+	-- check current build number against Beta, if greater then it's a patch
+	self.isPatch = self.isBeta and _G.tonumber(buildInfo.curr[2]) > buildInfo.beta[2]
+	-- check current build number against Classic, if greater then it's a patch
+	self.isPatch = self.isPatch or not self.isClscPTR and self.isClsc and _G.tonumber(buildInfo.curr[2]) > buildInfo.classic[2]
+	-- check current build number against Retail, if greater then it's a patch
+	self.isPatch = self.isPatch or isRetail and _G.tonumber(buildInfo.curr[2]) > buildInfo.retail[2]
+
+--@alpha@
+	local vType = self.isBeta and "Beta" or self.isPTR and "Retail_PTR" or self.isClscPTR and "Classic_PTR" or self.isClsc and "Classic" or "Retail"
+	self:Printf("%s, %d, %s, %d, %s, %d, %s", buildInfo[vType:lower()][1], buildInfo[vType:lower()][2], buildInfo.curr[1], buildInfo.curr[2], buildInfo.curr[3], buildInfo.curr[4] , agentUID)
+	vType = self.isPatch and vType .. " (Patched)" or vType
+	_G.DEFAULT_CHAT_FRAME:AddMessage(aName .. ": Detected that we're running on a " .. vType .. " version", 0.75, 0.5, 0.25, nil, true)
+	vType = nil
+--@end-alpha@
+	agentUID = nil
+
+	-- handle PTR changes going Live
+	self.isClscPTR = self.isClscPTR or self.isPatch and self.isClsc and buildInfo.curr[1] > buildInfo.classic[1]
+	self.isPTR = self.isPTR or self.isPatch and isRetail and buildInfo.curr[1] > buildInfo.retail[1]
+	-- handle Beta changes in PTR or Live
+	self.isBeta = self.isBeta or self.isPTR and buildInfo.curr[4] > 90000
+
+	isRetail, buildInfo = nil, nil
 
 end
 
@@ -712,6 +760,10 @@ function aObj:isAddonEnabled(addonName)
 
 	return _G.GetAddOnEnableState(self.uName, addonName) == 2 and true or false
 
+end
+
+function aObj:inCombat()
+	return _G.InCombatLockdown() or _G.UnitAffectingCombat("Pet") or false
 end
 
 function aObj:isDropDown(obj)
@@ -1228,19 +1280,45 @@ function aObj:updateSBTexture()
 
 end
 
+function aObj:removeColourCodes(text)
+
+	if text
+	and text:find("\124") then
+		local newText = text:gsub("\124\99%x+", "") -- remove colour code string prefix [7C 63 x x x x x x x x]
+		newText = newText:gsub("\124\114", "") -- remove colour code string suffix [7C 72]
+		return newText
+	else
+		return text
+	end
+
+end
+
 function aObj:unwrapTextFromColourCode(text, sOfs, eOfs)
 
 	local newText = _G.gsub(text, "\124", "\124\124") -- turn Hex string into text
-	if _G.strlen(newText) == _G.strlen(text) then return text end
-
 	-- aObj:Debug("unwrapTextFromColourCode: [%s, %s, %s, %s]", text, newText, sOfs, eOfs)
 
-	local clrCode =  _G.strsub(newText, 6, 11)
+	if _G.strlen(newText) == _G.strlen(text) then return text end
+
+
+	local clrCode = _G.strsub(newText, 6, 11)
 	newText = _G.strsub(newText, sOfs or 12, eOfs or -4) -- remove colour prefix and suffix
 	newText = _G.gsub(newText, "\124\124", "\124") -- convert string to Hex for any embedded characters (e.g. newlines)
 	return newText, clrCode
 
 end
+
+-- function aObj:fromhex(str)
+--     return (str:gsub('..', function (cc)
+--         return _G.string.char(_G.tonumber(cc, 16))
+--     end))
+-- end
+--
+-- function aObj:tohex(str)
+--     return (str:gsub('.', function (c)
+--         return _G.string.format('%02X', _G.string.byte(c))
+--     end))
+-- end
 
 local function printIt(text, frame, r, g, b)
 
@@ -1405,30 +1483,29 @@ function aObj:SetupCmds()
 
 	end
 
-	self:RegisterChatCommand("lo", function() _G.UIErrorsFrame:AddMessage("Use /camp instead of /lo", 1.0, 0.1, 0.1, 1.0) end)
-	self:RegisterChatCommand("rl", function() _G.C_UI.Reload() end)
-	self:RegisterChatCommand("pin", function(msg)  _G.print(msg, "is item:", (_G.GetItemInfoFromHyperlink(msg))) end)
-	self:RegisterChatCommand("pii", function(msg)  _G.print(_G.GetItemInfo(msg)) end)
-	self:RegisterChatCommand("pil", function(msg)  _G.print(_G.gsub(msg, "\124", "\124\124")) end)
 	self:RegisterChatCommand("ft", function() print_family_tree(GetMouseFocus()) end)
 	self:RegisterChatCommand("ftp", function() print_family_tree(GetMouseFocus():GetParent()) end)
-	self:RegisterChatCommand("sid", function(msg) showInfo(getObj(msg), true, false) end) -- detailed
-	self:RegisterChatCommand("si1", function(msg) showInfo(getObj(msg), true, true) end) -- 1 level only
-	self:RegisterChatCommand("sir", function(msg) showInfo(getObj(msg), false, false) end) -- regions only
-	self:RegisterChatCommand("sidp", function(msg) showInfo(getObjP(msg), true, false) end) -- detailed
-	self:RegisterChatCommand("si1p", function(msg) showInfo(getObjP(msg), true, true) end) -- 1 level only
-	self:RegisterChatCommand("sirp", function(msg) showInfo(getObjP(msg), false, false) end) -- regions only
-	self:RegisterChatCommand("sidgp", function(msg) showInfo(getObjGP(msg), true, false) end) -- detailed
-	self:RegisterChatCommand("si1gp", function(msg) showInfo(getObjGP(msg), true, false) end) -- 1 level only
-	self:RegisterChatCommand("sirgp", function(msg) showInfo(getObjGP(msg), false, false) end) -- regions only
 	self:RegisterChatCommand("gp", function()  _G.print(GetMouseFocus():GetPoint()) end)
 	self:RegisterChatCommand("gpp", function()  _G.print(GetMouseFocus():GetParent():GetPoint()) end)
+	self:RegisterChatCommand("lo", function() _G.UIErrorsFrame:AddMessage("Use /camp instead of /lo", 1.0, 0.1, 0.1, 1.0) end)
+	self:RegisterChatCommand("pii", function(msg)  _G.print(_G.GetItemInfo(msg)) end)
+	self:RegisterChatCommand("pil", function(msg)  _G.print(_G.gsub(msg, "\124", "\124\124")) end)
+	self:RegisterChatCommand("pin", function(msg)  _G.print(msg, "is item:", (_G.GetItemInfoFromHyperlink(msg))) end)
+	self:RegisterChatCommand("rl", function() _G.C_UI.Reload() end)
+	self:RegisterChatCommand("si1", function(msg) showInfo(getObj(msg), true, true) end) -- 1 level only
+	self:RegisterChatCommand("si1gp", function(msg) showInfo(getObjGP(msg), true, false) end) -- 1 level only
+	self:RegisterChatCommand("si1p", function(msg) showInfo(getObjP(msg), true, true) end) -- 1 level only
+	self:RegisterChatCommand("sid", function(msg) showInfo(getObj(msg), true, false) end) -- detailed
+	self:RegisterChatCommand("sidgp", function(msg) showInfo(getObjGP(msg), true, false) end) -- detailed
+	self:RegisterChatCommand("sidp", function(msg) showInfo(getObjP(msg), true, false) end) -- detailed
+	self:RegisterChatCommand("sir", function(msg) showInfo(getObj(msg), false, false) end) -- regions only
+	self:RegisterChatCommand("sirgp", function(msg) showInfo(getObjGP(msg), false, false) end) -- regions only
+	self:RegisterChatCommand("sirp", function(msg) showInfo(getObjP(msg), false, false) end) -- regions only
 	self:RegisterChatCommand("sspew", function(msg) return Spew and Spew(msg, getObj(msg)) end)
-	self:RegisterChatCommand("sspewp", function(msg) return Spew and Spew(msg, getObjP(msg)) end)
 	self:RegisterChatCommand("sspewgp", function(msg) return Spew and Spew(msg, getObjGP(msg)) end)
+	self:RegisterChatCommand("sspewp", function(msg) return Spew and Spew(msg, getObjP(msg)) end)
 
-	self:RegisterChatCommand("shc", function(msg) self:Debug("Hooks table Count: [%s]", self:tableCount(self.hooks))
- end)
+	self:RegisterChatCommand("shc", function(msg) self:Debug("Hooks table Count: [%s]", self:tableCount(self.hooks)) end)
 
 	self:RegisterChatCommand("wai", function() -- where am I ?
 		local posTab = _G.C_Map.GetPlayerMapPosition(_G.C_Map.GetBestMapForUnit("player"), "player")

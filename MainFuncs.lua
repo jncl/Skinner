@@ -33,15 +33,11 @@ local function __addSkinButton(opts)
 	if opts.obj.sb then return end
 
 	-- remove the object's Backdrop if it has one
-	if opts.obj.GetBackdrop
-	and opts.obj:GetBackdrop()
-	then
-		opts.obj:SetBackdrop(nil)
-	end
-	if aObj.isBeta then
-		if opts.obj.ClearBackdrop then
-			opts.obj:ClearBackdrop()
-		end
+	-- if opts.obj.SetBackdrop then
+	-- 	opts.obj:SetBackdrop(nil)
+	-- end
+	if opts.obj.ClearBackdrop then
+		opts.obj:ClearBackdrop()
 	end
 
 	-- make all textures transparent, if required
@@ -521,9 +517,7 @@ local function __applySkin(opts)
 	-- make all textures transparent, if required
 	if opts.kfs then aObj:keepFontStrings(opts.obj) end
 
-	if aObj.isBeta then
-		aObj:addBackdrop(opts.obj)
-	end
+	aObj:addBackdrop(opts.obj)
 	-- setup the backdrop
 	opts.obj:SetBackdrop(aObj.Backdrop[opts.bd or 1])
 	if not opts.ebc then
@@ -1033,12 +1027,8 @@ local function __skinSlider(opts)
 	opts.obj:SetAlpha(1)
 	opts.obj:GetThumbTexture():SetAlpha(1)
 
-	-- if aObj.isBeta then
-	-- 	opts.obj.sf = _G.CreateFrame("Frame", nil, opts.obj, "BackdropTemplate")
-	-- 	aObj:skinUsingBD{obj=opts.obj.sf, size=opts.size}
-	-- else
-		aObj:skinUsingBD{obj=opts.obj, size=opts.size}
-	-- end
+	opts.obj.sf = _G.CreateFrame("Frame", nil, opts.obj, "BackdropTemplate")
+	aObj:skinUsingBD{obj=opts.obj.sf, size=opts.size}
 
 	-- adjust width if required
 	if opts.wdth then aObj:adjWidth{obj=opts.obj, adj=opts.wdth} end
@@ -1373,9 +1363,7 @@ local function __skinUsingBD(opts)
 
 	opts.size = opts.size or 3 -- default to medium
 
-	if aObj.isBeta then
-		aObj:addBackdrop(opts.obj)
-	end
+	aObj:addBackdrop(opts.obj)
 	opts.obj:SetBackdrop(aObj.Backdrop[opts.size])
 	opts.obj:SetBackdropColor(.1, .1, .1, 1)
 	opts.obj:SetBackdropBorderColor(.2, .2, .2, 1)

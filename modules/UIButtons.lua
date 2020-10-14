@@ -316,15 +316,9 @@ function module:skinExpandButton(opts)
 	if not opts.as then
 		aObj:addSkinButton{obj=opts.obj, ft=opts.ftype or "a", parent=opts.obj, sap=opts.sap, aso=aso}
 		if not opts.noHook then
-			if not aObj.isBeta then
-				module:SecureHook(opts.obj, "SetNormalTexture", function(this, nTex)
+			module:SecureHook(opts.obj, "SetNormalAtlas", function(this, nTex)
 					module:checkTex{obj=this, nTex=nTex}
 				end)
-			else
-				module:SecureHook(opts.obj, "SetNormalAtlas", function(this, nTex)
-					module:checkTex{obj=this, nTex=nTex}
-				end)
-			end
 		end
 	else -- Ace3, Archy, ReagentRestocker
 		aso.obj = opts.obj
@@ -673,9 +667,7 @@ local function __addButtonBorder(opts)
 	opts.obj.sbb = _G.CreateFrame(opts.obj:GetObjectType(), nil, opts.obj, opts.sec and "SecureFrameTemplate" or opts.seca and "SecureActionButtonTemplate" or opts.secu and "SecureUnitButtonTemplate" or nil)
 	opts.obj.sbb:EnableMouse(false) -- enable clickthrough
 
-	if aObj.isBeta then
-		aObj:addBackdrop(opts.obj.sbb)
-	end
+	aObj:addBackdrop(opts.obj.sbb)
 	-- DON'T lower the frame level otherwise the border appears below the frame
 	-- setup and apply the backdrop
 	opts.obj.sbb:SetBackdrop({edgeFile = aObj.Backdrop[1].edgeFile, edgeSize = opts.es or aObj.Backdrop[1].edgeSize})
