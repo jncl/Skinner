@@ -4339,12 +4339,15 @@ aObj.blizzFrames[ftype].MenuFrames = function(self)
 	end)
 	-- Voice
 	self:SecureHookScript(_G.AudioOptionsVoicePanel, "OnShow", function(this)
+		self.iofBtn[this.PushToTalkKeybindButton] = true
 		skinKids(this)
-		self:addSkinFrame{obj=_G.AudioOptionsVoicePanel, ft=ftype}
-		_G.AudioOptionsVoicePanel.TestInputDevice.ToggleTest:DisableDrawLayer("BACKGROUND")
-		self:addFrameBorder{obj=_G.AudioOptionsVoicePanel.TestInputDevice.VUMeter, ft=ftype}
+		this.TestInputDevice.ToggleTest:DisableDrawLayer("BACKGROUND")
+		self:addFrameBorder{obj=this.TestInputDevice.VUMeter, ft=ftype}
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true}
 		if self.modBtnBs then
-			self:addButtonBorder{obj=_G.AudioOptionsVoicePanel.TestInputDevice.ToggleTest, ofs=0, y2=-2}
+			self:addButtonBorder{obj=this.TestInputDevice.ToggleTest, ofs=0, y2=-2}
+			self:skinStdButton{obj=this.PushToTalkKeybindButton, ofs=0}
+			self:skinStdButton{obj=this.MacMicrophoneAccessWarning.OpenAccessButton}
 		end
 
 		self:Unhook(this, "OnShow")
