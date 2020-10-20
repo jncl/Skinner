@@ -91,21 +91,10 @@ local function safecall(funcName, funcObj, LoD, quiet)
 
 end
 
-function aObj:skinAceDropdown(obj, x2, y2)
-
-	self:skinDropDown{obj=obj.dropdown, rp=true, x2=x2, y2=y2}
-	self:addSkinFrame{obj=obj.pullout.frame, ft="a", kfs=true, nb=true}
-
-end
-
 function aObj:addBackdrop(obj)
 
-	if not obj.SetBackdrop then
+	if not obj.ApplyBackdrop then
 		_G.Mixin(obj, _G.BackdropTemplateMixin)
-		-- remove existing backdrop if it exists
-		if obj.ClearBackdrop then
-			obj:ClearBackdrop()
-		end
 	end
 
 end
@@ -406,34 +395,26 @@ function aObj:checkShown(frame)
 end
 
 local buildInfo = {
-	beta        = {"9.0.2", 36165},
-	classic_ptr = {"1.13.6", 36149},
-	retail_ptr  = {"9.0.1", 36216},
+	beta        = {"9.0.2", 36267},
+	classic_ptr = {"1.13.6", 36231},
+	retail_ptr  = {"9.0.1", 36272},
 	classic     = {"1.13.5", 36035},
-	retail      = {"9.0.1", 36230},
+	retail      = {"9.0.1", 36272},
 	curr        = {_G.GetBuildInfo()},
 }
 function aObj:checkVersion()
 
 	local agentUID = _G.GetCVar("agentUID")
 	-- check to see which WoW version we are running on
-	self.isBeta = agentUID:find("_beta") and true
-	self.isClsc = agentUID:find("_classic") and true
-	self.isPTR  = agentUID:find("_ptr") and true
-
-	local isRetail = not self.isBeta and not self.isClsc and not self.isPTR and true
-
-	-- check for Classic PTR
-	if self.isClsc and self.isPTR then
-		self.isClscPTR = true
-		self.isPTR = nil
-	end
-	-- check current build number against Beta, if greater then it's a patch
-	self.isPatch = self.isBeta and _G.tonumber(buildInfo.curr[2]) > buildInfo.beta[2]
+	self.isBeta    = agentUID:find("_beta") and true
+	self.isClsc    = agentUID:find("_classic") and true
+	self.isPTR     = agentUID:find("_ptr") and true
+	self.isClscPTR = agentUID:find("classic_ptr") and true
+	self.isRetail  = not self.isBeta and not self.isPTR and not self.isClsc and not self.isClscPTR and true
 	-- check current build number against Classic, if greater then it's a patch
-	self.isPatch = self.isPatch or not self.isClscPTR and self.isClsc and _G.tonumber(buildInfo.curr[2]) > buildInfo.classic[2]
+	self.isPatch = self.isPatch or self.isClsc and _G.tonumber(buildInfo.curr[2]) > buildInfo.classic[2]
 	-- check current build number against Retail, if greater then it's a patch
-	self.isPatch = self.isPatch or isRetail and _G.tonumber(buildInfo.curr[2]) > buildInfo.retail[2]
+	self.isPatch = self.isPatch or self.isRetail and _G.tonumber(buildInfo.curr[2]) > buildInfo.retail[2]
 
 --@alpha@
 	local vType = self.isBeta and "Beta" or self.isPTR and "Retail_PTR" or self.isClscPTR and "Classic_PTR" or self.isClsc and "Classic" or "Retail"
@@ -446,11 +427,11 @@ function aObj:checkVersion()
 
 	-- handle PTR changes going Live
 	self.isClscPTR = self.isClscPTR or self.isPatch and self.isClsc and buildInfo.curr[1] > buildInfo.classic[1]
-	self.isPTR = self.isPTR or self.isPatch and isRetail and buildInfo.curr[1] > buildInfo.retail[1]
+	self.isPTR = self.isPTR or self.isPatch and self.isRetail and buildInfo.curr[1] > buildInfo.retail[1]
 	-- handle Beta changes in PTR or Live
 	self.isBeta = self.isBeta or self.isPTR and buildInfo.curr[4] > 90000
 
-	isRetail, buildInfo = nil, nil
+	buildInfo = nil
 
 end
 
@@ -945,6 +926,50 @@ function aObj:rawHook(obj, method, func, sec)
 
 end
 
+function aObj:removeBackdrop(obj, nop)
+
+	if obj.ClearBackdrop then
+		obj:ClearBackdrop()
+		if nop then
+			obj.ApplyBackdrop = _G.nop
+		end
+	elseif obj.SetBackdrop then
+		obj:SetBackdrop(nil)
+		if nop then
+			obj.SetBackdrop = _G.nop
+		end
+	else
+		-- NO backdrop to remove
+	end
+
+end
+
+--@debug
+local function fromhex(str)
+    return (str:gsub('..', function (cc)
+        return _G.string.char(_G.tonumber(cc, 16))
+    end))
+end
+local function tohex(str)
+    return (str:gsub('.', function (c)
+        return _G.string.format('%02X', _G.string.byte(c))
+    end))
+end
+--@end-debug
+function aObj:removeColourCodes(text)
+
+	if text
+	and text:find("\124") then
+		local newText = text:gsub("\124\99%x%x%x%x%x%x%x%x", "") -- remove colour code string prefix [7C 63 x x x x x x x x]
+		newText = newText:gsub("\124\108", "") -- remove colour code string suffix [7C 72]
+		-- aObj:Debug("removeColourCodes: [%s], [%s], [%s]", text, tohex(text), newText)
+		return newText, true
+	else
+		return text, false
+	end
+
+end
+
 function aObj:removeInset(frame)
 --@alpha@
 	_G.assert(frame, "Unknown object removeInset\n" .. _G.debugstack(2, 3, 2))
@@ -960,17 +985,6 @@ function aObj:removeInset(frame)
 
 end
 
-function aObj:removeNineSlice(frame)
---@alpha@
-	_G.assert(frame, "Unknown object removeNineSlice\n" .. _G.debugstack(2, 3, 2))
---@end-alpha@
-
-	frame:DisableDrawLayer("BACKGROUND")
-	frame:DisableDrawLayer("BORDER")
-	frame:DisableDrawLayer("OVERLAY")
-
-end
-
 function aObj:removeMagicBtnTex(btn)
 --@alpha@
 	_G.assert(btn, "Unknown object removeMagicBtnTex\n" .. _G.debugstack(2, 3, 2))
@@ -979,6 +993,17 @@ function aObj:removeMagicBtnTex(btn)
 	-- Magic Button textures
 	if btn.LeftSeparator then btn.LeftSeparator:SetTexture(nil) end
 	if btn.RightSeparator then btn.RightSeparator:SetTexture(nil) end
+
+end
+
+function aObj:removeNineSlice(frame)
+--@alpha@
+	_G.assert(frame, "Unknown object removeNineSlice\n" .. _G.debugstack(2, 3, 2))
+--@end-alpha@
+
+	frame:DisableDrawLayer("BACKGROUND")
+	frame:DisableDrawLayer("BORDER")
+	frame:DisableDrawLayer("OVERLAY")
 
 end
 
@@ -1214,6 +1239,13 @@ function aObj:setupBackdrop()
 
 end
 
+function aObj:skinAceDropdown(obj, x2, y2)
+
+	self:skinDropDown{obj=obj.dropdown, rp=true, x2=x2, y2=y2}
+	self:addSkinFrame{obj=obj.pullout.frame, ft="a", kfs=true, nb=true}
+
+end
+
 function aObj:skinNavBarButton(btn)
 
 	btn:DisableDrawLayer("OVERLAY")
@@ -1275,19 +1307,6 @@ function aObj:updateSBTexture()
 
 end
 
-function aObj:removeColourCodes(text)
-
-	if text
-	and text:find("\124") then
-		local newText = text:gsub("\124\99%x+", "") -- remove colour code string prefix [7C 63 x x x x x x x x]
-		newText = newText:gsub("\124\114", "") -- remove colour code string suffix [7C 72]
-		return newText
-	else
-		return text
-	end
-
-end
-
 function aObj:unwrapTextFromColourCode(text, sOfs, eOfs)
 
 	local newText = _G.gsub(text, "\124", "\124\124") -- turn Hex string into text
@@ -1302,18 +1321,6 @@ function aObj:unwrapTextFromColourCode(text, sOfs, eOfs)
 	return newText, clrCode
 
 end
-
--- function aObj:fromhex(str)
---     return (str:gsub('..', function (cc)
---         return _G.string.char(_G.tonumber(cc, 16))
---     end))
--- end
---
--- function aObj:tohex(str)
---     return (str:gsub('.', function (c)
---         return _G.string.format('%02X', _G.string.byte(c))
---     end))
--- end
 
 local function printIt(text, frame, r, g, b)
 
