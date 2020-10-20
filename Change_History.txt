@@ -1,3 +1,9 @@
+beta9.36230.3
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated options handling to deal with localised names etc
+
 beta9.36230.2
 Jncl:
 	ToDo.txt
