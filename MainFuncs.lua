@@ -32,13 +32,7 @@ local function __addSkinButton(opts)
 	-- don't skin it twice
 	if opts.obj.sb then return end
 
-	-- remove the object's Backdrop if it has one
-	-- if opts.obj.SetBackdrop then
-	-- 	opts.obj:SetBackdrop(nil)
-	-- end
-	if opts.obj.ClearBackdrop then
-		opts.obj:ClearBackdrop()
-	end
+	aObj:removeBackdrop(opts.obj)
 
 	-- make all textures transparent, if required
 	if opts.kfs then aObj:keepFontStrings(opts.obj) end
@@ -75,11 +69,6 @@ local function __addSkinButton(opts)
 			end
 			opts.obj.sb:Hide()
 		end)
-		-- FIXME: Do we need these as we check for IsEnabled in clrBtnBdr ?
-		-- if opts.obj:IsObjectType("Button") then -- hook Enable/Disable methods
-		-- 	aObj:secureHook(opts.hook, "Enable", function(this) opts.obj.sb:Enable() end)
-		-- 	aObj:secureHook(opts.hook, "Disable", function(this) opts.obj.sb:Disable() end)
-		-- end
 	end
 
 	-- position the button skin
@@ -236,7 +225,7 @@ local function __addSkinFrame(opts)
 	if opts.obj.sf then return end
 
 	-- remove the object's Backdrop if it has one
-	if opts.obj.GetBackdrop and opts.obj:GetBackdrop() then opts.obj:SetBackdrop(nil) end
+	aObj:removeBackdrop(opts.obj)
 
 	-- store frame obj, if required
 	if opts.ft then aObj:add2Table(aObj.gradFrames[opts.ft], opts.obj) end
