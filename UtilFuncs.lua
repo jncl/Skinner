@@ -93,8 +93,10 @@ end
 
 function aObj:addBackdrop(obj)
 
-	if not obj.ApplyBackdrop then
-		_G.Mixin(obj, _G.BackdropTemplateMixin)
+	if not self.isClsc then
+		if not obj.ApplyBackdrop then
+			_G.Mixin(obj, _G.BackdropTemplateMixin)
+		end
 	end
 
 end
