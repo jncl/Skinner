@@ -599,7 +599,7 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 
 	-- called params: self, itemLink, originalQuantity, rollType, roll, specID, isCurrency, showFactionBG, lootSource, lessAwesome, isUpgraded, wonRoll, showRatedBG, isSecondaryResult
 	self:SecureHook(_G.LootAlertSystem, "setUpFunction", function(frame, ...)
-		aObj:Debug("LootAlertSystem: [%s, %s]", frame, ...)
+		-- aObj:Debug("LootAlertSystem: [%s, %s]", frame, ...)
 		frame:DisableDrawLayer("BACKGROUND")
 		frame.lootItem.SpecRing:SetTexture(nil)
 		self:addSkinFrame{obj=frame, ft=ftype, ofs=-10, y2=8}
@@ -1045,6 +1045,7 @@ aObj.blizzLoDFrames[ftype].BindingUI = function(self)
 
 		self:Unhook(this, "OnShow")
 	end)
+
 	-- tooltip
 	_G.C_Timer.After(0.1, function()
 		self:add2Table(self.ttList, _G.QuickKeybindTooltip)
@@ -4194,7 +4195,6 @@ aObj.blizzFrames[ftype].MenuFrames = function(self)
 
 	local cName
 	local function checkChild(child)
-
 		cName = child:GetName()
 		if aObj:isDropDown(child) then
 			-- apply specific adjustment if required
@@ -4210,17 +4210,14 @@ aObj.blizzFrames[ftype].MenuFrames = function(self)
 		then
 			aObj:skinStdButton{obj=child}
 		end
-
 	end
 	local function skinKids(obj)
-
 		-- wait for all objects to be created
 		_G.C_Timer.After(0.1, function()
 			for _, child in _G.ipairs{obj:GetChildren()} do
 				checkChild(child)
 			end
 		end)
-
 	end
 
 	self:SecureHookScript(_G.GameMenuFrame, "OnShow", function(this)

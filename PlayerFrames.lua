@@ -757,9 +757,14 @@ aObj.blizzFrames[ftype].CharacterFrames = function(self)
 				self:addButtonBorder{obj=this.buttons[i]}
 			end
 			self:skinEditBox{obj=_G.GearManagerDialogPopupEditBox, regs={6}}
-			self:skinStdButton{obj=_G.GearManagerDialogPopupCancel}
-			self:skinStdButton{obj=_G.GearManagerDialogPopupOkay}
 			self:addSkinFrame{obj=this, ft=ftype, kfs=true, x1=4, y1=-2, x2=-1, y2=3}
+			if self.modBtns then
+				self:skinStdButton{obj=_G.GearManagerDialogPopupCancel}
+				self:skinStdButton{obj=_G.GearManagerDialogPopupOkay}
+				self:SecureHook("GearManagerDialogPopupOkay_Update", function()
+					self:clrBtnBdr(_G.GearManagerDialogPopupOkay)
+				end)
+			end
 
 			self:Unhook(this, "OnShow")
 		end)
@@ -1988,13 +1993,11 @@ aObj.blizzFrames[ftype].CompactFrames = function(self)
 	if not self:checkLoadable("Blizzard_CompactRaidFrames") then return end
 
 	local function skinCRFCframes()
-
 		-- handle in combat as UnitFrame uses SecureUnitButtonTemplate
 		if _G.InCombatLockdown() then
 			aObj:add2Table(aObj.oocTab, {skinCRFCframes, {nil}})
 			return
 		end
-
 		for type, fTab in _G.pairs(_G.CompactRaidFrameContainer.frameUpdateList) do
 			local frame
 			for i = 1, #fTab do
@@ -2011,7 +2014,6 @@ aObj.blizzFrames[ftype].CompactFrames = function(self)
 			end
 			frame = nil
 		end
-
 	end
 	-- hook this to skin any new CompactRaidFrameContainer entries
 	self:SecureHook("FlowContainer_AddObject", function(container, _)
