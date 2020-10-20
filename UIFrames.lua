@@ -6417,7 +6417,7 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 			-- aObj:Debug("SetTextColor: [%s, %s, %s, %s, %s]", this:GetText(), tcr, tcg, tcb)
 			if (tcr == 0.41 or tcr == 0.28 and tcg == 0.02 and tcb == 0.02) -- Red
 			or (tcr == 0.08 and tcg == 0.17 or tcg == 0.16 and tcb == 0.37) -- Blue
-			or (tcr == 0.19 and tcg == 0.05 and tcb == 0.01) -- WarboardUI
+			-- or (tcr == 0.19 and tcg == 0.05 and tcb == 0.01) -- WarboardUI
 			then
 				self.hooks[this].SetTextColor(this, aObj.BT:GetRGBA())
 			else
@@ -6429,7 +6429,7 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 		return textObject:SetTextColor(textObject:GetTextColor())
 	end
 
-	-- Documentation in UIWidgetManagerDocumentation.lua (UIWidgetVisualizationType)
+	-- Documentation in UIWidgetManagerSharedDocumentation.lua (UIWidgetVisualizationType)
 	local function skinWidget(wFrame, wInfo)
 		-- handle in combat
 		if wFrame:IsProtected()
@@ -6438,7 +6438,6 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 		    aObj:add2Table(aObj.oocTab, {skinWidget, {wFrame, wInfo}})
 		    return
 		end
-		local tcr
 		-- aObj:Debug("skinWidget: [%s, %s, %s, %s]", wFrame, wFrame.widgetType, wFrame.widgetTag, wInfo)
 		if wFrame.widgetType == 0 then -- IconAndText (World State: ICONS at TOP)
 			-- N.B. DON'T add buttonborder to Icon(s)
@@ -6490,11 +6489,11 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 			setTextColor(wFrame.Text)
 		elseif wFrame.widgetType == 13 then -- SpellDisplay
 			wFrame.Spell.Border:SetTexture(nil)
-			tcr = setTextColor(wFrame.Spell.Text)
+			local tcr = setTextColor(wFrame.Spell.Text)
 			if aObj.modBtnBs then
 				aObj:addButtonBorder{obj=wFrame.Spell, relTo=wFrame.Spell.Icon, reParent={wFrame.Spell.StackCount}}
 				if tcr == 0.5 then
-					self:clrBtnBdr(wFrame.Spell, "grey")
+					aObj:clrBtnBdr(wFrame.Spell, "grey")
 				end
 			end
 			tcr = nil
@@ -6526,30 +6525,34 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 		end
 		-- hook this to skin new widgets
 		self:SecureHook(_G.UIWidgetManager, "OnWidgetContainerRegistered", function(this, widgetContainer)
-			aObj:Debug("UIWM OnWidgetContainerRegistered: [%s, %s]", this, widgetContainer)
-				getWidgets(widgetContainer)
+			-- aObj:Debug("UIWM OnWidgetContainerRegistered: [%s, %s]", this, widgetContainer)
+			getWidgets(widgetContainer)
 		end)
 		-- handle existing WidgetContainers
-		local ieCnt, shCnt
+		for widgetContainer, _ in _G.pairs(_G.UIWidgetManager.registeredWidgetContainers) do
+			getWidgets(widgetContainer)
+		end
+		--handle widgets in Instances/Scenarios
 		self.RegisterCallback("UIWidgetsUI", "Player_Entering_World", function(this)
 			-- name, instanceType, difficultyID, difficultyName, maxPlayers, dynamicDifficulty, isDynamic, instanceMapID, instanceGroupSize[, lfgDungeonsID] = GetInstanceInfo
 			-- aObj:Debug("PEW - InstanceInfo: [%s, %s, %s, %s, %s, %s, %s, %s, %s, %s]", _G.GetInstanceInfo())
 
 			-- handle the DoubleStatusBar widget on Island Expeditions
-			ieCnt = getWidgets(_G.UIWidgetTopCenterContainerFrame)
+			local ieCnt = getWidgets(_G.UIWidgetTopCenterContainerFrame)
 			-- handle ScenarioHeaderCurrenciesAndBackground
-			shCnt = getWidgets(_G.ScenarioStageBlock.WidgetContainer)
+			local shCnt = getWidgets(_G.ScenarioStageBlock.WidgetContainer)
 			if ieCnt > 0
 			and shCnt > 0 then
 				self.UnregisterCallback("UIWidgetsUI", "Player_Entering_World")
-				ieCnt, shCnt = nil, nil
 			end
+			ieCnt, shCnt = nil, nil
 		end)
 		if _G.UIWidgetPowerBarContainerFrame:IsShown() then
 			getWidgets(_G.UIWidgetPowerBarContainerFrame)
 		else
 			self:SecureHookScript(_G.UIWidgetPowerBarContainerFrame, "OnShow", function(this)
 				getWidgets(this)
+
 				self:Unhook(this, "OnShow")
 			end)
 		end
