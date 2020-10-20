@@ -946,7 +946,7 @@ function aObj:removeBackdrop(obj, nop)
 
 end
 
---@debug
+--@debug@
 local function fromhex(str)
     return (str:gsub('..', function (cc)
         return _G.string.char(_G.tonumber(cc, 16))
@@ -957,7 +957,7 @@ local function tohex(str)
         return _G.string.format('%02X', _G.string.byte(c))
     end))
 end
---@end-debug
+--@end-debug@
 function aObj:removeColourCodes(text)
 
 	if text
