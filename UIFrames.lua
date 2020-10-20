@@ -474,30 +474,31 @@ aObj.blizzFrames[ftype].AddonList = function(self)
 	self.initialized.AddonList = true
 
 	self:SecureHookScript(_G.AddonList, "OnShow", function(this)
-		if self.modChkBtns then
-			self:skinCheckButton{obj=_G.AddonListForceLoad}
-		end
 		self:removeMagicBtnTex(this.CancelButton)
 		self:removeMagicBtnTex(this.OkayButton)
 		self:removeMagicBtnTex(this.EnableAllButton)
 		self:removeMagicBtnTex(this.DisableAllButton)
+		for i = 1, _G.MAX_ADDONS_DISPLAYED do
+			if self.modBtns then
+				self:skinStdButton{obj=_G["AddonListEntry" .. i .. "Load"]}
+			end
+			if self.modChkBtns then
+				self:skinCheckButton{obj=_G["AddonListEntry" .. i .. "Enabled"]}
+			end
+		end
+		self:skinSlider{obj=_G.AddonListScrollFrame.ScrollBar, rt="background"}
+		self:skinDropDown{obj=_G.AddonCharacterDropDown, x2=109} -- created in OnLoad
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true}
 		if self.modBtns then
 			self:skinStdButton{obj=this.CancelButton}
 			self:skinStdButton{obj=this.OkayButton}
 			self:skinStdButton{obj=this.EnableAllButton}
 			self:skinStdButton{obj=this.DisableAllButton}
 		end
-		for i = 1, _G.MAX_ADDONS_DISPLAYED do
-			if self.modChkBtns then
-				self:skinCheckButton{obj=_G["AddonListEntry" .. i .. "Enabled"]}
-			end
-			if self.modBtns then
-				self:skinStdButton{obj=_G["AddonListEntry" .. i .. "Load"]}
-			end
+		if self.modChkBtns then
+			self:skinCheckButton{obj=_G.AddonListForceLoad}
 		end
-		self:skinSlider{obj=_G.AddonListScrollFrame.ScrollBar, rt="background"}
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true}
-		self:skinDropDown{obj=_G.AddonCharacterDropDown, x2=109} -- created in OnLoad
+
 		self:Unhook(this, "OnShow")
 	end)
 
