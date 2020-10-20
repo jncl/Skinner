@@ -272,32 +272,33 @@ function module:skinPetF()
 
 			self:Unhook(this, "OnShow")
 		end)
-	end
 
-	if db.petspec
-	and aObj.uCls == "HUNTER"
-	then
-		-- Add pet spec icon to pet frame, if required
-		_G.PetFrame.roleIcon = _G.PetFrame:CreateTexture(nil, "artwork")
-		_G.PetFrame.roleIcon:SetSize(24, 24)
-		_G.PetFrame.roleIcon:SetPoint("left", -10, 0)
-		_G.PetFrame.roleIcon:SetTexture([[Interface\LFGFrame\UI-LFG-ICON-ROLES]])
-	end
+		if db.petspec
+		and aObj.uCls == "HUNTER"
+		then
+			-- Add pet spec icon to pet frame, if required
+			_G.PetFrame.roleIcon = _G.PetFrame:CreateTexture(nil, "artwork")
+			_G.PetFrame.roleIcon:SetSize(24, 24)
+			_G.PetFrame.roleIcon:SetPoint("left", -10, 0)
+			_G.PetFrame.roleIcon:SetTexture([[Interface\LFGFrame\UI-LFG-ICON-ROLES]])
+		end
 
-	if db.petspec then
-		-- get Pet's Specialization Role to set roleIcon TexCoord
-		self:RegisterEvent("UNIT_PET", function(event, arg1)
-			if arg1 == "player"
-			and _G.UnitIsVisible("pet")
-			then
-				local petSpec = _G.GetSpecialization(nil, true)
-				if petSpec then
-					_G.PetFrame.roleIcon:SetTexCoord(_G.GetTexCoordsForRole(_G.GetSpecializationRole(petSpec, nil, true)))
+		if db.petspec then
+			-- get Pet's Specialization Role to set roleIcon TexCoord
+			self:RegisterEvent("UNIT_PET", function(event, arg1)
+				if arg1 == "player"
+				and _G.UnitIsVisible("pet")
+				then
+					local petSpec = _G.GetSpecialization(nil, true)
+					if petSpec then
+						_G.PetFrame.roleIcon:SetTexCoord(_G.GetTexCoordsForRole(_G.GetSpecializationRole(petSpec, nil, true)))
+					end
+					petSpec = nil
 				end
-				petSpec = nil
-			end
-		end)
+			end)
+		end
 	end
+
 
 end
 function module:skinCommon(frame, adjSB)
@@ -734,20 +735,29 @@ aObj.blizzLoDFrames[ftype].ArenaUI = function(self)
 			aObj:skinStatusBar{obj=_G[cBar], fi=0, bgTex=aObj:getRegion(_G[cBar], 1), otherTex={_G[cBar].Flash}}
 			cBar = nil
 		end
+		local function skinArenaPetFrame(fName)
+			-- handle in combat
+			if _G[fname]:IsProtected()
+			and _G.InCombatLockdown()
+			then
+			    aObj:add2Table(aObj.oocTab, {skinArenaPetFrame, {fName}})
+			    return
+			end
+			module:skinUnitButton{obj=_G[fName], y1=1, x2=1, y2=2}
+			_G[fName .. "Flash"]:SetTexture(nil)
+			_G[fName .. "Texture"]:SetTexture(nil)
+			-- status bar
+			aObj:skinStatusBar{obj=_G[fName .. "HealthBar"], fi=0}
+			aObj:skinStatusBar{obj=_G[fName .. "ManaBar"], fi=0}
+			-- move pet frame
+			aObj:moveObject{obj=_G[fName], x=-17} -- align under ArenaEnemy Health/Mana bars
+		end
 		local aPF
 		for i = 1, _G.MAX_ARENA_ENEMIES do
 			skinArenaFrame("ArenaPrepFrame" .. i)
 			skinArenaFrame("ArenaEnemyFrame" .. i)
 			-- pet frame
-			aPF = "ArenaEnemyFrame" .. i .. "PetFrame"
-			module:skinUnitButton{obj=_G[aPF], y1=1, x2=1, y2=2}
-			_G[aPF .. "Flash"]:SetTexture(nil)
-			_G[aPF .. "Texture"]:SetTexture(nil)
-			-- status bar
-			aObj:skinStatusBar{obj=_G[aPF .. "HealthBar"], fi=0}
-			aObj:skinStatusBar{obj=_G[aPF .. "ManaBar"], fi=0}
-			-- move pet frame
-			aObj:moveObject{obj=_G[aPF], x=-17} -- align under ArenaEnemy Health/Mana bars
+			skinArenaPetFrame("ArenaEnemyFrame" .. i .. "PetFrame")
 		end
 		aPF = nil
 		-- ArenaPrepBackground
