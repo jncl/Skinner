@@ -99,6 +99,8 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 				aObj:skinEditBox{obj=obj.editbox, noHeight=true}
 				obj.editbox:SetSize(60, 20)
 				aObj:skinSlider{obj=obj.slider}
+				obj.lowtext:SetPoint("TOPLEFT", obj.slider, "BOTTOMLEFT", 2, 0)
+				obj.hightext:SetPoint("TOPRIGHT", obj.slider, "BOTTOMRIGHT", -2, 0)
 			elseif objType == "Frame" then
 				aObj:applySkin{obj=obj.frame, kfs=true}
 				if objVer < 20 then

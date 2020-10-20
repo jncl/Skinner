@@ -3,7 +3,7 @@ if not aObj:isAddonEnabled("Tukui") then return end
 local _G = _G
 
 -- The following code handles the Initial setup of Skinner when the TukUI is loaded
-aObj.otherAddons.TukuiInit = function(self) -- v 17.16
+aObj.otherAddons.TukuiInit = function(self) -- v 20.02
 
 	-- handle version 12 and above
 	local ver = _G.tonumber(_G.GetAddOnMetadata("Tukui", "Version"):sub(1, 2))
@@ -29,9 +29,9 @@ aObj.otherAddons.TukuiInit = function(self) -- v 17.16
 		self.Defaults = nil -- only need to run this once
 
 		-- Register Textures
-		self.LSM:Register("background", "Tukui Background", mediapath.."blank")
-		self.LSM:Register("border", "Tukui Border", mediapath.."blank")
-		self.LSM:Register("statusbar", "Tukui StatusBar", mediapath.."normTex")
+		self.LSM:Register("background", "Tukui Background", mediapath .. "Others\\Blank")
+		self.LSM:Register("border", "Tukui Border", mediapath .. "Others\\Blank")
+		self.LSM:Register("statusbar", "Tukui StatusBar", mediapath .. "Status\\Tukui")
 
 		-- create and use a new db profile called Tukui
 		local dbProfile = self.db:GetCurrentProfile()

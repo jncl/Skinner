@@ -2,7 +2,7 @@ local aName, aObj = ...
 if not aObj:isAddonEnabled("WeakAuras") then return end
 local _G = _G
 
-aObj.addonsToSkin.WeakAuras = function(self) -- v 2.16.1/3.0.0
+aObj.addonsToSkin.WeakAuras = function(self) -- v 2.16.1/3.0.2
 
 	if _G.WeakAuras.ShowDisplayTooltip then
 		-- hook this to skin the WeakAuras added elements
@@ -50,7 +50,7 @@ aObj.addonsToSkin.WeakAuras = function(self) -- v 2.16.1/3.0.0
 
 end
 
-aObj.lodAddons.WeakAurasOptions = function(self) -- v 2.16.1/3.0.0
+aObj.lodAddons.WeakAurasOptions = function(self) -- v 2.16.1/3.0.2
 
 	-- wait until frame is created
 	if not _G.WeakAurasOptions then
@@ -62,6 +62,8 @@ aObj.lodAddons.WeakAurasOptions = function(self) -- v 2.16.1/3.0.0
 
 	local optFrame = _G.WeakAurasOptions
 	if optFrame then
+		-- hide spurious Gradient texture
+		optFrame.container.content:GetParent().tfade:Hide()
 		self:skinDropDown{obj=_G.WeakAuras_DropDownMenu}
 		self:skinEditBox{obj=optFrame.filterInput, regs={6}, mi=true}
 		-- make filter input box higher
@@ -112,7 +114,7 @@ aObj.lodAddons.WeakAurasOptions = function(self) -- v 2.16.1/3.0.0
 	and eb:GetObjectType() == "EditBox"
 	then
 		self:skinEditBox{obj=eb, regs={6}} -- 6 is text
-		self:addSkinFrame{obj=tipPopup, ft="a", kfs=true, nb=true}
+		self:addSkinFrame{obj=tipPopup, ft="a", kfs=true, nb=true, ofs=0}
 	end
 	tipPopup, eb = nil, nil
 

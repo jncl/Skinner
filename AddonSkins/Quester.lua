@@ -2,7 +2,7 @@ local aName, aObj = ...
 if not aObj:isAddonEnabled("Quester") then return end
 local _G = _G
 
-aObj.addonsToSkin.Quester = function(self) -- v 7.3.0.0
+aObj.addonsToSkin.Quester = function(self) -- v 9.0.1.2
 
 	local Quester = _G.LibStub("AceAddon-3.0"):GetAddon("Quester", true)
 
@@ -15,19 +15,15 @@ aObj.addonsToSkin.Quester = function(self) -- v 7.3.0.0
 		end
 		return text
 	end
-	local btn
-	for i = 1, _G.NUMGOSSIPBUTTONS do
-		btn = _G["GossipTitleButton" .. i]
-		self:RawHook(btn, "SetText", function(this, text)
-			self.hooks[this].SetText(this, chgTxtClr(text))
-		end, true)
-	end
-	for i = 1, _G.MAX_NUM_QUESTS do
-		btn = _G["QuestTitleButton" .. i]
-		self:RawHook(btn, "SetText", function(this, text)
-			self.hooks[this].SetText(this, chgTxtClr(text))
-		end, true)
-	end
-	btn = nil
+	self:SecureHook(Quester, "GOSSIP_SHOW", function()
+		for btn in _G.GossipFrame.titleButtonPool:EnumerateActive() do
+			btn:SetText(chgTxtClr(btn:GetText()))
+		end
+	end)
+	self:SecureHook(Quester, "QUEST_GREETING", function()
+		for btn in _G.QuestFrameGreetingPanel.titleButtonPool:EnumerateActive() do
+			btn:SetText(chgTxtClr(btn:GetText()))
+		end
+	end)
 
 end

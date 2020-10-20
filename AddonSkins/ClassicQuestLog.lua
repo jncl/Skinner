@@ -2,80 +2,81 @@ local aName, aObj = ...
 if not aObj:isAddonEnabled("Classic Quest Log") then return end
 local _G = _G
 
-aObj.addonsToSkin["Classic Quest Log"] = function(self) -- v
+aObj.addonsToSkin["Classic Quest Log"] = function(self) -- v 2.0.2
 
-	if not self.isClsc then
+	self:SecureHookScript(_G.ClassicQuestLog, "OnShow", function(this)
+		this:DisableDrawLayer("BACKGROUND")
+		this.log:DisableDrawLayer("BACKGROUND")
+		this.log:DisableDrawLayer("BORDER")
+		this.log.expandAll:DisableDrawLayer("BACKGROUND")
+		self:skinSlider{obj=this.log.scrollBar, rt="background"}
+		this.detail:DisableDrawLayer("ARTWORK")
+		self:skinSlider{obj=_G.ClassicQuestLog.detail.ScrollBar}
+		this.detail.DetailBG:SetTexture(nil)
+		self:addSkinFrame{obj=this, ft="a", kfs=true, ri=true, y1=2, x2=2}
 	    if self.modBtns then
 	        local function qlUpd()
-
 	            -- handle in combat
 	            if _G.InCombatLockdown() then
 	                aObj:add2Table(aObj.oocTab, {qlUpd, {nil}})
 	                return
 	            end
-
-	            for i = 1, #_G.ClassicQuestLog.scrollFrame.buttons do
-	                aObj:checkTex(_G.ClassicQuestLog.scrollFrame.buttons[i])
+	            for i = 1, #_G.ClassicQuestLog.log.buttons do
+	                aObj:checkTex(_G.ClassicQuestLog.log.buttons[i])
 	            end
-
 	        end
 	        -- hook to manage changes to button textures
-	        self:SecureHook(_G.ClassicQuestLog, "UpdateLogList", function()
+	        self:SecureHook(this.log, "UpdateLog", function()
 	            qlUpd()
 	        end)
+			self:skinExpandButton{obj=this.log.expandAll, onSB=true}
 	        -- skin minus/plus buttons
-	        for i = 1, #_G.ClassicQuestLog.scrollFrame.buttons do
-	            self:skinButton{obj=_G.ClassicQuestLog.scrollFrame.buttons[i], mp=true}
+	        for i = 1, #this.log.buttons do
+	            self:skinExpandButton{obj=this.log.buttons[i], onSB=true--[[, noHook=true]]}
 	        end
 		end
-		self:skinScrollBar{obj=_G.ClassicQuestLog.scrollFrame, size=2}
-		self:skinScrollBar{obj=_G.ClassicQuestLog.detail}
-		self:addSkinFrame{obj=_G.ClassicQuestLog, kfs=true, ri=true, y1=2, x2=2}
-	else -- v 1.4.5-Classic
-		self:SecureHookScript(_G.ClassicQuestLog, "OnShow", function(this)
-			self:skinExpandButton{obj=this.scrollFrame.expandAll, onSB=true}
-			this.scrollFrame:DisableDrawLayer("BACKGROUND")
-			this.scrollFrame:DisableDrawLayer("BORDER")
-			self:skinSlider{obj=this.scrollFrame.scrollBar, wdth=-4}
-			this.detail:DisableDrawLayer("BACKGROUND")
-			self:skinSlider{obj=this.detail.ScrollBar, rt="artwork"}
-			self:removeMagicBtnTex(this.close)
-			self:removeMagicBtnTex(this.abandon)
-			self:removeMagicBtnTex(this.push)
-			self:removeMagicBtnTex(this.track)
-			self:removeMagicBtnTex(this.options)
-			self:addSkinFrame{obj=this, ft="a", kfs=true, ri=true, x2=1}
-			if self.modBtns then
-		        -- hook to manage changes to button textures
-		        self:SecureHook(this, "UpdateLog", function(this)
-					for i = 1, #this.scrollFrame.buttons do
-						self:checkTex(this.scrollFrame.buttons[i])
-					end
-		        end)
-		        -- skin minus/plus buttons
-		        for i = 1, #this.scrollFrame.buttons do
-		            self:skinExpandButton{obj=this.scrollFrame.buttons[i], onSB=true, noHook=true}
-		        end
-				self:skinStdButton{obj=this.close}
-				self:skinStdButton{obj=this.abandon}
-				self:skinStdButton{obj=this.push}
-				self:skinStdButton{obj=this.track}
-				self:skinStdButton{obj=this.options}
-			end
-
-			-- optionsFrame
-			self:addSkinFrame{obj=this.optionsFrame, ft="a", kfs=true, x2=1}
-			if self.modChkBtns then
-				for _, bName in pairs{"UndockWindow", "LockWindow", "ShowResizeGrip", "ShowLevels", "ShowTooltips", "SolidBackground"} do
-					self:skinCheckButton{obj=this.optionsFrame[bName]}
+		self:removeInset(this.chrome.countFrame)
+		if self.modBtns then
+			self:skinStdButton{obj=this.chrome.abandonButton}
+			self:skinStdButton{obj=this.chrome.pushButton}
+			self:skinStdButton{obj=this.chrome.trackButton}
+			self:skinStdButton{obj=this.chrome.closeButton}
+			self:skinStdButton{obj=this.chrome.optionsButton}
+			self:skinStdButton{obj=this.chrome.syncButton}
+			self:SecureHook(this.chrome, "Update", function(this)
+				self:clrBtnBdr(this.abandonButton)
+				self:clrBtnBdr(this.pushButton)
+				if this.mapButton.sbb then
+					self:clrBtnBdr(this.mapButton)
 				end
+			end)
+		end
+		if self.modBtnBs then
+			self:addButtonBorder{obj=this.chrome.mapButton, ofs=-2, y1=0, y2=0}
+		end
+		-- options
+		this.options:DisableDrawLayer("BACKGROUND")
+		this.options:DisableDrawLayer("BORDER")
+		this.options.content.headerBack:SetTexture(nil)
+		if self.modBtns then
+			self:skinCloseButton{obj=this.options.content.close, clr="gold"}
+		end
+		if self.modChkBtns then
+			for _, bName in pairs{"LockWindow", "ShowResizeGrip", "ShowLevels", "ShowTooltips", "SolidBackground", "ShowFromObjectiveTracker"} do
+				self:skinCheckButton{obj=this.options.content[bName].check}
 			end
+		end
 
-			self:Unhook(this, "OnShow")
+		-- tooltip
+		_G.C_Timer.After(0.1, function()
+			self:add2Table(self.ttList, this.campaignTooltip)
 		end)
-	end
 
-	self:removeInset(_G.ClassicQuestLog.count)
-	self:addButtonBorder{obj=_G.ClassicQuestLog.mapButton, x1=2, y1=-1, x2=-2, y2=1}
+		self:Unhook(this, "OnShow")
+		if self.modBtns then
+			-- Hide then show to update quest buttons
+			self:checkShown(this)
+		end
+	end)
 
 end

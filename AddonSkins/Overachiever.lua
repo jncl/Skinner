@@ -2,16 +2,32 @@ local aName, aObj = ...
 if not aObj:isAddonEnabled("Overachiever") then return end
 local _G = _G
 
-aObj.addonsToSkin.Overachiever = function(self) -- v 1.0.4
+aObj.addonsToSkin.Overachiever = function(self) -- v 1.1.0
 	if not self.db.profile.AchievementUI then return end
 
 	--- Options
+	local function skinKids(panel)
+		if panel.TjOpt_tab.scrolling then
+			aObj:skinSlider{obj=panel.TjOpt_scrollchild:GetParent().ScrollBar, wdth=0}
+		end
+		for i = 1, #panel.TjOpt_tab.items do
+			local itm = _G[panel.TjOpt_tab.items[i].name]
+			if itm then
+				if itm.TjDDM then
+					aObj:skinDropDown{obj=itm, x2=26, bx1=true}
+				elseif itm:IsObjectType("CheckButton") then
+					aObj:skinCheckButton{obj=itm}
+				end
+			end
+		end
+	end
 	local pCnt = 0
 	self.RegisterCallback("Overachiever", "IOFPanel_Before_Skinning", function(this, panel)
 		if panel.name == "Overachiever"
 		or panel.parent == "Overachiever"
 		and not self.iofSkinnedPanels[panel]
 		then
+			skinKids(panel)
 			self.iofSkinnedPanels[panel] = true
 			pCnt = pCnt + 1
 		end
@@ -20,42 +36,12 @@ aObj.addonsToSkin.Overachiever = function(self) -- v 1.0.4
 		end
 	end)
 
-	self.RegisterCallback("Overachiever", "IOFPanel_After_Skinning", function(this, panel)
-		local function skinKids(panel)
-			if panel.TjOpt_tab.scrolling then
-				aObj:skinSlider{obj=panel.TjOpt_scrollchild:GetParent().ScrollBar, wdth=0}
-			end
-			for i = 1, #panel.TjOpt_tab.items do
-				local itm = _G[panel.TjOpt_tab.items[i].name]
-				if itm then
-					if itm.TjDDM then
-						aObj:skinDropDown{obj=itm, x2=26, bx1=true}
-					elseif itm:IsObjectType("CheckButton") then
-						aObj:skinCheckButton{obj=itm}
-					end
-				end
-			end
-		end
-		if panel.name == "Overachiever"
-		or panel.parent == "Overachiever"
-		and not panel.sknd
-		then
-			skinKids(panel)
-			panel.sknd = true
-		end
-		if pCnt == 2 then
-			self.UnregisterCallback("Overachiever", "IOFPanel_After_Skinning")
-			pCnt = nil
-		end
-	end)
-
 end
 
-aObj.lodAddons.Overachiever_Tabs = function(self) -- v 1.0.4
+aObj.lodAddons.Overachiever_Tabs = function(self) -- v 1.1.0
 	if not self.db.profile.AchievementUI then return end
 
 	local function cleanButtons(frame)
-
 		-- remove textures etc from buttons
 		local btn
 		for i = 1, #frame.buttons do
@@ -73,8 +59,12 @@ aObj.lodAddons.Overachiever_Tabs = function(self) -- v 1.0.4
 			-- set textures to nil and prevent them from being changed as guildview changes the textures
 			aObj:nilTexture(btn.icon.frame, true)
 			-- colour text and button border
-			if btn.description then btn.description:SetTextColor(aObj.BTr, aObj.BTg, aObj.BTb) end
-			if btn.hiddenDescription then btn.hiddenDescription:SetTextColor(aObj.BTr, aObj.BTg, aObj.BTb) end
+			if btn.description then
+				btn.description:SetTextColor(aObj.BT:GetRGB())
+			end
+			if btn.hiddenDescription then
+				btn.hiddenDescription:SetTextColor(aObj.BT:GetRGB())
+			end
 
 			if aObj.modBtnBs then
 				aObj:addButtonBorder{obj=btn.icon, x1=4, y1=-1, x2=-4, y2=6}
@@ -87,7 +77,7 @@ aObj.lodAddons.Overachiever_Tabs = function(self) -- v 1.0.4
 			end
 			aObj:SecureHook(btn, "Saturate", function(this)
 				if this.description then
-					this.description:SetTextColor(aObj.BTr, aObj.BTg, aObj.BTb)
+					this.description:SetTextColor(aObj.BT:GetRGB())
 				end
 				if this.icon.sbb then
 					this.icon.sbb:SetBackdropBorderColor(this:GetBackdropBorderColor())
@@ -95,7 +85,6 @@ aObj.lodAddons.Overachiever_Tabs = function(self) -- v 1.0.4
 			end)
 		end
 		btn = nil
-
 	end
 
 	-- Search Frame

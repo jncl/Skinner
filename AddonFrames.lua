@@ -54,7 +54,7 @@ local addonSkins = {
 	"InboxMailBag", "InspectorGadgetzan", "Inventorian", "ItemDB",
 	"KeystoneCommander",
 	"LegacyQuest", "Livestock", "ls_Prospector", "ls_Toasts",
-	"MacroToolkit", "MarkingBar", "Megaphone", "MobileVault", "MogIt", "MoveAnything", "MyGarrisons",
+	"MacroToolkit", "MarkingBar", "Megaphone", "MobileVault", "MogIt", "MyGarrisons",
 	"Notes",
 	"Omen", "OneBag3", "OneBank3",
 	"PetBattleMaster", "Possessions", "PowerAuras", "PowerAurasButtons", "PreformAVEnabler", "ProfessionsVault", "ProspectBar",

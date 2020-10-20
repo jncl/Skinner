@@ -2,7 +2,7 @@ local aName, aObj = ...
 if not aObj:isAddonEnabled("Rematch") then return end
 local _G = _G
 
-aObj.addonsToSkin.Rematch = function(self) -- v 4.9.0
+aObj.addonsToSkin.Rematch = function(self) -- v 4.11.5
 
     local tab, btn, pet
 
@@ -40,6 +40,12 @@ aObj.addonsToSkin.Rematch = function(self) -- v 4.9.0
 		end
 	end
     self:addSkinFrame{obj=_G.RematchJournal, ft="a", kfs=true, aso={ba=1}, x1=-4, y1=2, x2=1, y2=-5}
+	if self.modChkBtns then
+		self:SecureHook(_G.RematchJournal, "SetupUseRematchButton", function(this)
+			self:skinCheckButton{obj=_G.UseRematchButton}
+			self:Unhook(this, "SetupUseRematchButton")
+		end)
+	end
 
     -- Frame (used when standalone)
     _G.RematchFrame:DisableDrawLayer("BACKGROUND")
@@ -81,22 +87,22 @@ aObj.addonsToSkin.Rematch = function(self) -- v 4.9.0
             end
         end
     end)
+	local yOfs = 2
 	if _G.RematchFrame.TitleBar:IsShown() then
-		self:addSkinFrame{obj=_G.RematchFrame, ft="a", kfs=true, nb=true, x1=-4, y1=2, x2=1, y2=-5}
-	else
-        self:addSkinFrame{obj=_G.RematchFrame, ft="a", kfs=true, nb=true, x1=-4, y1=-24, x2=1, y2=-5}
+		yOfs = -24
 	end
+	self:addSkinFrame{obj=_G.RematchFrame, ft="a", kfs=true, nb=true, x1=-4, y1=yOfs, x2=1, y2=-5}
+	yOfs = nil
     -- hook these to handle resize of skinframe when TitleBar is hidden/shown
     local function resizeFrame(showTitleBar)
+		local yOfs = 2
         if showTitleBar then
-			_G.RematchFrame.sf:ClearAllPoints()
-			_G.RematchFrame.sf:SetPoint("TOPLEFT", _G.RematchFrame, "TOPLEFT", -4, 2)
-			_G.RematchFrame.sf:SetPoint("BOTTOMRIGHT", _G.RematchFrame, "BOTTOMRIGHT", 1, -5)
-        else
-			_G.RematchFrame.sf:ClearAllPoints()
-			_G.RematchFrame.sf:SetPoint("TOPLEFT", _G.RematchFrame, "TOPLEFT", -4, -24)
-			_G.RematchFrame.sf:SetPoint("BOTTOMRIGHT", _G.RematchFrame, "BOTTOMRIGHT", 1, -5)
-        end
+			yOfs = -24
+		end
+		_G.RematchFrame.sf:ClearAllPoints()
+		_G.RematchFrame.sf:SetPoint("TOPLEFT", _G.RematchFrame, "TOPLEFT", -4, yOfs)
+		_G.RematchFrame.sf:SetPoint("BOTTOMRIGHT", _G.RematchFrame, "BOTTOMRIGHT", 1, -5)
+		yOfs = nil
     end
     self:SecureHook(_G.RematchFrame.TitleBar, "SetShown", function(this, value)
         resizeFrame(value)
@@ -153,6 +159,10 @@ aObj.addonsToSkin.Rematch = function(self) -- v 4.9.0
         return frame
     end, true)
 
+	local function skinSearchBox(frame)
+	    aObj:skinUsingBD{obj=frame.Top.SearchBox}
+	    frame.Top.SearchBox:SetWidth(frame.Top.SearchBox:GetWidth() - 5)
+	end
 	local function skinScrollFrame(frame)
 	    aObj:removeInset(frame.List.Background)
 	    aObj:skinSlider{obj=frame.List.ScrollFrame.ScrollBar, adj=-4, rt="artwork"}
@@ -161,7 +171,6 @@ aObj.addonsToSkin.Rematch = function(self) -- v 4.9.0
 			local btn
 		    for i = 1, #this.ScrollFrame.Buttons do
 		        btn = this.ScrollFrame.Buttons[i]
-		        btn:SetBackdrop(nil)
 		        btn:DisableDrawLayer("BACKGROUND")
 		    end
 			btn = nil
@@ -173,8 +182,7 @@ aObj.addonsToSkin.Rematch = function(self) -- v 4.9.0
 	    self:addButtonBorder{obj=_G.RematchPetPanel.Top.Toggle, ofs=0}
 	    self:addButtonBorder{obj=_G.RematchPetPanel.Top.Filter, ofs=0}
 	end
-    self:skinUsingBD{obj=_G.RematchPetPanel.Top.SearchBox}
-    _G.RematchPetPanel.Top.SearchBox:SetWidth(_G.RematchPetPanel.Top.SearchBox:GetWidth() - 5)
+	skinSearchBox(_G.RematchPetPanel)
     -- tabs (3)
     for i = 1, 3 do
         tab = _G.RematchPetPanel.Top.TypeBar.Tabs[i]
@@ -204,7 +212,6 @@ aObj.addonsToSkin.Rematch = function(self) -- v 4.9.0
         _G.RematchPetPanel.Top.TypeBar.Buttons[i].IconBorder:SetTexture(nil)
     end
     self:addSkinFrame{obj=_G.RematchPetPanel.Top.TypeBar, ft="a", kfs=true, nb=true, y1=1}
-
     self:removeInset(_G.RematchPetPanel.Results)
 	skinScrollFrame(_G.RematchPetPanel)
 
@@ -242,14 +249,20 @@ aObj.addonsToSkin.Rematch = function(self) -- v 4.9.0
 	    self:addButtonBorder{obj=_G.RematchLoadoutPanel.Target.TargetButton, ofs=0}
 	    self:addButtonBorder{obj=_G.RematchLoadoutPanel.Target.ModelBorder}
 	end
+	--> TargetPanel
+    self:removeInset(_G.RematchLoadoutPanel.TargetPanel.Top)
+	skinSearchBox(_G.RematchLoadoutPanel.TargetPanel)
+	skinScrollFrame(_G.RematchLoadoutPanel.TargetPanel)
+	if self.modBtns then
+		self:skinStdButton{obj=_G.RematchLoadoutPanel.TargetPanel.Top.BackButton}
+	end
 
     -- TeamPanel (Tab2)
     self:removeInset(_G.RematchTeamPanel.Top)
 	if self.modBtnBs then
 		self:addButtonBorder{obj=_G.RematchTeamPanel.Top.Teams, ofs=0}
 	end
-    self:skinUsingBD{obj=_G.RematchTeamPanel.Top.SearchBox}
-    _G.RematchTeamPanel.Top.SearchBox:SetWidth(_G.RematchTeamPanel.Top.SearchBox:GetWidth() - 5)
+	skinSearchBox(_G.RematchTeamPanel)
 	skinScrollFrame(_G.RematchTeamPanel)
 
     -- TeamTabs
@@ -272,7 +285,9 @@ aObj.addonsToSkin.Rematch = function(self) -- v 4.9.0
 
     -- OptionPanel (Tab4)
     self:removeInset(_G.RematchOptionPanel)
+    self:removeInset(_G.RematchOptionPanel.Top)
 	skinScrollFrame(_G.RematchOptionPanel)
+	skinSearchBox(_G.RematchOptionPanel)
 
     -- LoadedTeamPanel
     _G.RematchLoadedTeamPanel:DisableDrawLayer("BACKGROUND")
@@ -298,18 +313,14 @@ aObj.addonsToSkin.Rematch = function(self) -- v 4.9.0
         this.PetCardTitle:SetAlpha(alpha)
         this.CloseButton:SetAlpha(alpha)
     end, true)
-    _G.RematchPetCard.PinButton:SetBackdrop(nil)
     self:removeRegions(_G.RematchPetCard.PinButton, {1})
     _G.RematchPetCard.Title:DisableDrawLayer("BACKGROUND")
-    _G.RematchPetCard.Front:SetBackdrop(nil)
     _G.RematchPetCard.Front.Bottom:DisableDrawLayer("BACKGROUND")
     self:removeRegions(_G.RematchPetCard.Front.Bottom, {2}) -- line
     _G.RematchPetCard.Front.Middle:DisableDrawLayer("BACKGROUND")
     self:removeRegions(_G.RematchPetCard.Front.Middle, {12}) -- line
     _G.RematchPetCard.Front.Middle.XP:DisableDrawLayer("OVERLAY")
 	self:skinStatusBar{obj=_G.RematchPetCard.Front.Middle.XP, fi=0, bgTex=self:getRegion(_G.RematchPetCard.Front.Middle.XP, 11)}
-    _G.RematchPetCard.Front.Middle.BreedTable:SetBackdrop(nil)
-    _G.RematchPetCard.Back:SetBackdrop(nil)
     _G.RematchPetCard.Back.Source:DisableDrawLayer("BACKGROUND")
     self:removeRegions(_G.RematchPetCard.Back.Source, {3}) -- line
     _G.RematchPetCard.Back.Bottom:DisableDrawLayer("BACKGROUND")
@@ -354,7 +365,6 @@ aObj.addonsToSkin.Rematch = function(self) -- v 4.9.0
 	end
 
     -- Notes
-    _G.RematchNotes.Content:SetBackdrop(nil)
     self:removeRegions(_G.RematchNotes.Content, {1, 2, 3, 4})
     self:skinSlider{obj=_G.RematchNotes.Content.ScrollFrame.ScrollBar, adj=-4}
     self:addSkinFrame{obj=_G.RematchNotes, ft="a", kfs=true, x1=-3, y1=2, x2=1, y2=-2}

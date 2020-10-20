@@ -2,36 +2,43 @@ local aName, aObj = ...
 -- This is a Library
 local _G = _G
 
-aObj.libsToSkin.ArkDewdrop = function(self) -- v 30108
+aObj.libsToSkin.ArkDewdrop = function(self) -- v 30109
 	if self.initialized.ArkDewdrop then return end
 	self.initialized.ArkDewdrop = true
 
-	local libver = 30108
-	local loopcnt = 100
+	local ArkDewdrop, libver = _G.LibStub:GetLibrary("ArkDewdrop", true)
+	local loopCnt = 127 -- not sure why it is, but it is
 
 	local sf, eb
-	local function skinArkDewdrop(parent, ...)
-
+	local function skinArkDewdrop()
 		local frame
-		for i = 0, loopcnt do
+		for i = 0, loopCnt do
 			frame = _G["ArkDewdrop" .. libver .. "Level" .. i]
-			-- aObj:Debug("ArkDewdropLevel: [%s, %s]", i, frame or nil)
 			if frame
-			and not frame.sf
+			and not	frame.sf
 			then
-				aObj:addSkinFrame{obj=frame, ft="a"}
-				aObj:getChild(frame, 1):SetBackdrop(nil)
+				aObj:addSkinFrame{obj=frame, ft="a", kfs=true, nb=true}
+				aObj:removeBackdrop(aObj:getChild(frame, 1))
 			end
 		end
 		frame = nil
+		-- handle reuse of level 127 frame name
+		local lc = aObj:getLastChild(_G.UIParent)
+		if not lc.sf then
+			aObj:addSkinFrame{obj=lc, ft="a", kfs=true, nb=true}
+			aObj:removeBackdrop(aObj:getChild(lc, 1))
+		end
+		lc = nil
 		local btn
 		-- hook the OnEnter script for the buttons and use that to skin from
-		for i = 0, loopcnt do
+		for i = 1, loopCnt do
 			btn = _G["ArkDewdrop" .. libver .. "Button" .. i]
 			if btn then
 				aObj:secureHookScript(btn, "OnEnter", function(this) -- do after original script
-					if not this.disabled and this.hasArrow then
-						skinArkDewdrop()
+					if not this.disabled
+					and this.hasArrow
+					then
+						 skinArkDewdrop()
 					end
 				end)
 			end
@@ -45,7 +52,6 @@ aObj.libsToSkin.ArkDewdrop = function(self) -- v 30108
 			if sf
 			and not sf.sknd
 			then
-				sf.sknd = true
 				aObj:skinEditBox(sf.currentText, {9})
 				-- Make it wider to display 4 digits
 				sf.currentText:ClearAllPoints()
@@ -59,7 +65,6 @@ aObj.libsToSkin.ArkDewdrop = function(self) -- v 30108
 			if eb
 			and not eb.sknd
 			then
-				eb.sknd = true
 				aObj:skinEditBox(eb.editBox, {9})
 				eb.editBox:SetWidth(180)
 				aObj:applySkin(eb)
@@ -68,8 +73,8 @@ aObj.libsToSkin.ArkDewdrop = function(self) -- v 30108
 	end
 
 	-- Hook this to skin new ArkDewdrop components
-	self:SecureHook(_G.LibStub("ArkDewdrop", true), "Open", function(this, parent, ...)
-		skinArkDewdrop(parent, ...)
+	self:SecureHook(ArkDewdrop, "Open", function(this, _)
+		skinArkDewdrop()
 	end)
 
 	skinArkDewdrop()

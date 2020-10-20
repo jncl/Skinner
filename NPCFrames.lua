@@ -634,35 +634,21 @@ aObj.blizzFrames[ftype].GossipFrame = function(self)
 	if not self.prdb.GossipFrame or self.initialized.GossipFrame then return end
 	self.initialized.GossipFrame = true
 
-	local gossipOffsets = {
-		["(Quest)"] = {22, -1},
-	}
-	self:SecureHook("GossipFrameUpdate", function()
-		for i = 1, _G.GossipFrame_GetTitleButtonCount() do
-			-- check to see if text has embedded color code
-			-- if so remove it and change alpha value
-			local text, clrCode = _G.GossipFrame.buttons[i]:GetText()
-			-- TODO: can this be replaced by removeColourCodes function ?
-			for str2Chk, offsets in _G.pairs(gossipOffsets) do
-				if text:find(str2Chk) then
-					text, clrCode = self:unwrapTextFromColourCode(text, offsets[1], offsets[2])
-					text = str2Chk .. text
+	if aObj:isAddonEnabled("Quester")
+	and _G.QuesterDB.gossipColor
+	then
+		-- DON'T colour the gossip text
+	else
+		self:SecureHook("GossipFrameUpdate", function()
+			for i = 1, _G.GossipFrame_GetTitleButtonCount() do
+				local newText, upd = self:removeColourCodes(_G.GossipFrame.buttons[i]:GetText())
+				if upd then
+					_G.GossipFrame.buttons[i]:SetText(newText)
 				end
-			end
-			if not clrCode then
-				text, clrCode = self:unwrapTextFromColourCode(text)
-			end
-			-- aObj:Debug("GossipFrameUpdate: [%s, %s]", text, clrCode)
-			if clrCode ~= nil then
-				_G.GossipFrame.buttons[i]:SetText(self.BT:WrapTextInColorCode(text))
-				_G.GossipFrame.buttons[i]:SetAlpha(clrCode == "414141" and 0.65 or 1)
-			else
 				_G.GossipFrame.buttons[i]:GetFontString():SetTextColor(self.BT:GetRGB())
-				_G.GossipFrame.buttons[i]:SetAlpha(1)
 			end
-			text, clrCode, ofs = nil, nil, nil
-		end
-	end)
+		end)
+	end
 
 	self:SecureHookScript(_G.GossipFrame, "OnShow", function(this)
 		self:keepFontStrings(_G.GossipFrameGreetingPanel)
@@ -977,12 +963,18 @@ aObj.blizzFrames[ftype].QuestFrame = function(self)
 	self.initialized.QuestFrame = true
 
 	if not self.isClsc then
-		-- hook this to colour quest button text
-		self:RawHook(_G.QuestFrameGreetingPanel.titleButtonPool, "Acquire", function(this)
-			local btn = self.hooks[this].Acquire(this)
-			self:hookQuestText(btn)
-			return btn
-		end, true)
+		if aObj:isAddonEnabled("Quester")
+		and _G.QuesterDB.gossipColor
+		then
+			-- DON'T colour the gossip text
+		else
+			-- hook this to colour quest button text
+			self:RawHook(_G.QuestFrameGreetingPanel.titleButtonPool, "Acquire", function(this)
+				local btn = self.hooks[this].Acquire(this)
+				self:hookQuestText(btn)
+				return btn
+			end, true)
+		end
 	end
 
 	self:SecureHookScript(_G.QuestFrame, "OnShow", function(this)

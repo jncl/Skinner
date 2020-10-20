@@ -2,7 +2,7 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("WoWPro") then return end
 local _G = _G
 
-aObj.addonsToSkin.WoWPro = function(self) -- v 8.3.0-A1/1.13.3.L7
+aObj.addonsToSkin.WoWPro = function(self) -- v 9.0.1-A1/1.13.5.C1
 
 	self:SecureHookScript(_G.WoWPro.MainFrame, "OnShow", function(this)
 		_G.WoWPro.BackgroundSet = _G.nop
@@ -67,13 +67,12 @@ aObj.addonsToSkin.WoWPro = function(self) -- v 8.3.0-A1/1.13.3.L7
 		and not self.iofSkinnedPanels[panel]
 		then
 			-- TODO: tab(s)
-			for _, child in _G.pairs{panel.TitleRow:GetChildren()} do
+			for _, child in _G.pairs{panel.scrollBox.titleRow:GetChildren()} do
 				child:SetBackdrop(nil)
 			end
-			self:addSkinFrame{obj=panel.TitleRow, ft="a", kfs=true, nb=true, y1=2}
-			self:addSkinFrame{obj=panel.scrollBox, ft="a", kfs=true, nb=true}
-			self:skinSlider{obj=panel.scrollBar}
-			self:getChild(panel.scrollBar, 3):SetBackdrop(nil) -- remove border texture
+			self:addSkinFrame{obj=panel.scrollBox.titleRow, ft="a", nb=true, y1=2}
+			self:skinSlider{obj=panel.scrollBox.scrollBar}
+			self:addSkinFrame{obj=panel.scrollBox, ft="a", nb=true}
 			cnt = cnt + 1
 		end
 

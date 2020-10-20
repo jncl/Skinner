@@ -2,7 +2,7 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("Auctionator") then return end
 local _G = _G
 
-aObj.addonsToSkin.Auctionator = function(self) -- v 8.3.3.2/100.0.9
+aObj.addonsToSkin.Auctionator = function(self) -- v 8.3.4/100.0.9
 
 	local skinFrames, skinConfigFrames
 	local pCnt = 0
@@ -40,7 +40,7 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 8.3.3.2/100.0.9
 				aObj:SecureHook("Atr_Shop_OnFinishScan", function()
 					aObj:clrBtnBdr(_G.Atr_Search_Button)
 				end)
-				aObj:SecureHook(Auctionator.SearchUI, "Disable", function()
+				aObj:SecureHook(_G.Auctionator.SearchUI, "Disable", function()
 					aObj:clrBtnBdr(_G.Atr_Buy1_Button)
 					aObj:clrBtnBdr(_G.Atr_AddToSListButton)
 					aObj:clrBtnBdr(_G.Atr_RemFromSListButton)
@@ -142,7 +142,7 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 8.3.3.2/100.0.9
 					aObj:skinEditBox{obj=_G.Atr_ScanOpts_MaxHistAge, regs={6}} -- 6 is text
 				elseif panel.name == "Pulizia" then
 					if aObj.modBtns then
-						for _, btn in pairs{panel:GetChildren()} do
+						for _, btn in _G.pairs{panel:GetChildren()} do
 							aObj:skinStdButton{obj=btn}
 						end
 					end
@@ -189,7 +189,7 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 8.3.3.2/100.0.9
 				if this.tableBuilder then
 					for hdr in this.tableBuilder.headerPoolCollection:EnumerateActive() do
 						aObj:removeRegions(hdr, {1, 2, 3})
-						aObj:addSkinFrame{obj=hdr, ft=ftype, nb=true, ofs=1}
+						aObj:addSkinFrame{obj=hdr, ft="a", nb=true, ofs=1}
 					end
 				end
 			end)
@@ -212,13 +212,13 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 8.3.3.2/100.0.9
 			-- Tabs
 			if _G.Auctionator.State.TabFrameRef then
 				for key, tab in _G.pairs(_G.Auctionator.State.TabFrameRef.Tabs) do
-					-- aObj:Debug("Auctionator Tab: [%s, %s, %s, %s]", key, tab, tab.displayMode, tab.ahTabIndex)
+					aObj:Debug("Auctionator Tab: [%s, %s, %s, %s, %s]", key, tab, tab.displayMode, tab.ahTabIndex)
 					aObj:keepRegions(tab, {7, 8})
-					aObj:addSkinFrame{obj=tab, ft=ftype, kfs=true, nb=true, noBdr=aObj.isTT, x1=6, y1=0, x2=-6, y2=2}
+					aObj:addSkinFrame{obj=tab, ft="a", kfs=true, nb=true, noBdr=aObj.isTT, x1=6, y1=0, x2=-6, y2=2}
 					if aObj.isTT then
 						aObj:setInactiveTab(tab.sf)
 						-- add to table to display tab textures
-						_G.AuctionHouseFrame.tabsForDisplayMode[tab.displayMode] = tab.ahTabIndex
+						_G.AuctionHouseFrame.tabsForDisplayMode[tab.displayMode] = key + 3
 					end
 					-- change highlight texture
 					local ht = tab:GetHighlightTexture()
@@ -231,15 +231,15 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 8.3.3.2/100.0.9
 			end
 
 			local aslf = _G.AuctionatorShoppingListFrame
-			aslf.Bg:SetTexture(nil)
+			aslf:DisableDrawLayer("BACKGROUND")
 			aObj:removeNineSlice(aslf.NineSlice)
 			aObj:skinDropDown{obj=aslf.ListDropdown}
-			aslf.ScrollList.ScrollFrame.ArtOverlay:DisableDrawLayer("OVERLAY")
+			aslf.ScrollList:DisableDrawLayer("BACKGROUND")
 			aObj:removeInset(aslf.ScrollList.InsetFrame)
 			aObj:skinSlider{obj=aslf.ScrollList.ScrollFrame.scrollBar, wdth=-4}
 			aObj:skinSlider{obj=aslf.ResultsListing.ScrollFrame.scrollBar, wdth=-4}
-			aObj:getChild(aslf, 8).Bg:SetTexture(nil) -- Background for Add & Search buttons
-			for _, child in ipairs{aslf.ResultsListing.HeaderContainer:GetChildren()} do
+			aObj:getChild(aslf, 10).Bg:SetTexture(nil) -- Background for Add & Search buttons
+			for _, child in _G.ipairs{aslf.ResultsListing.HeaderContainer:GetChildren()} do
 				aObj:keepRegions(child, {4, 5, 6}) -- N.B. regions 4 is text, 5 is highlight, 6 is arrow
 				aObj:addSkinFrame{obj=child, ft="a", kfs=true, nb=true, ofs=1, x1=-2, x2=2}
 			end
@@ -250,29 +250,44 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 8.3.3.2/100.0.9
 					aObj:clrBtnBdr(this)
 				end)
 				aObj:skinStdButton{obj=aslf.Rename}
+				aObj:skinStdButton{obj=aslf.Export}
+				aObj:skinStdButton{obj=aslf.Import}
 				aObj:skinStdButton{obj=aslf.AddItem}
 				aObj:skinStdButton{obj=aslf.ManualSearch}
-				for _, btn in _G.pairs{"AddItem", "Rename", "ManualSearch"} do
-					aObj:SecureHook(aslf[btn], "Disable", function(this, _)
-						aObj:clrBtnBdr(this)
-					end)
-					aObj:SecureHook(aslf[btn], "Enable", function(this, _)
-						aObj:clrBtnBdr(this)
-					end)
-				end
+				aObj:SecureHook(aslf, "ReceiveEvent", function(this, _)
+					aObj:clrBtnBdr(this.Rename)
+					aObj:clrBtnBdr(this.Export)
+					aObj:clrBtnBdr(this.Import)
+					aObj:clrBtnBdr(this.AddItem)
+					aObj:clrBtnBdr(this.ManualSearch)
+				end)
 			end
 			aslf = nil
+
+			-- ExportDialog/ImportDialog
+			aObj:skinSlider{obj=_G.AuctionatorExportListFrame.ScrollFrame.ScrollBar, rt="artwork", wdth=-4}
+			aObj:addSkinFrame{obj=_G.AuctionatorExportListFrame, ft="a", kfs=true, nb=true, ri=true}
+			aObj:skinSlider{obj=_G.AuctionatorImportListFrame.ScrollFrame.ScrollBar, rt="artwork", wdth=-4}
+			aObj:addSkinFrame{obj=_G.AuctionatorImportListFrame, ft="a", kfs=true, nb=true, ri=true}
+			if aObj.modBtns then
+				 aObj:skinCloseButton{obj=_G.AuctionatorExportListFrame.CloseDialog}
+				 aObj:skinStdButton{obj=_G.AuctionatorExportListFrame.SelectAll}
+				 aObj:skinStdButton{obj=_G.AuctionatorExportListFrame.UnselectAll}
+				 aObj:skinStdButton{obj=_G.AuctionatorExportListFrame.Export}
+				 aObj:skinCloseButton{obj=_G.AuctionatorImportListFrame.CloseDialog}
+				 aObj:skinStdButton{obj=_G.AuctionatorImportListFrame.Import}
+			end
 
 			local aaif = _G.AuctionatorAddItemFrame
 			aObj:skinEditBox{obj=aaif.SearchContainer.SearchString, regs={6}} -- 6 is text
 			aObj:skinDropDown{obj=aaif.FilterKeySelector}
-			for _, level in pairs{"LevelRange", "ItemLevelRange", "PriceRange", "CraftedLevelRange"} do
+			for _, level in _G.pairs{"LevelRange", "ItemLevelRange", "PriceRange", "CraftedLevelRange"} do
 				aObj:skinEditBox{obj=aaif[level].MinBox, regs={6}} -- 6 is text
 				aObj:skinEditBox{obj=aaif[level].MaxBox, regs={6}} -- 6 is text
 			end
 			aObj:addSkinFrame{obj=aaif, ft="a", kfs=true, nb=true, ri=true}
 			if aObj.modBtns then
-				aObj:skinStdButton{obj=aaif.AddItem}
+				aObj:skinStdButton{obj=aaif.Finished}
 				aObj:skinStdButton{obj=aaif.Cancel}
 				aObj:skinStdButton{obj=aaif.ResetAllButton}
 			end
@@ -281,8 +296,6 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 8.3.3.2/100.0.9
 			end
 			aaif = nil
 
-			_G.AuctionatorSellingFrame.Bg:SetTexture(nil)
-			aObj:removeNineSlice(_G.AuctionatorSellingFrame.NineSlice)
 			local asi = _G.AuctionatorSellingFrame.AuctionatorSaleItem
 			asi.Icon.EmptySlot:SetTexture(nil)
 			aObj.modUIBtns:addButtonBorder{obj=asi.Icon, relTo=asi.Icon.Icon}
@@ -309,22 +322,24 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 8.3.3.2/100.0.9
 				aObj:addButtonBorder{obj=aObj:getPenultimateChild(asi), ofs=-2, x1=1, clr="gold"} -- RefreshButton
 			end
 			asi = nil
+
+			aObj:removeInset(_G.AuctionatorSellingFrame.BagInset)
 			aObj:skinSlider{obj=_G.AuctionatorSellingFrame.BagListing.ScrollFrame.ScrollBar, rt="artwork", wdth=-4}--, size=3, hgt=-10}
 			local ilf = _G.AuctionatorSellingFrame.BagListing.ScrollFrame.ItemListingFrame
 			local kids, child = {ilf:GetChildren()}
 			for i = 1, #kids do
 				child = kids[i]
 				aObj:keepRegions(child.SectionTitle, {3, 4, 5}) -- N.B. region 3 is highlight, 4 is selected, 5 is text
-				aObj:addSkinFrame{obj=child.SectionTitle, ft=ftype, kfs=true, nb=true, aso={bd=5}, ofs=0, x1=-2, x2=2}
+				aObj:addSkinFrame{obj=child.SectionTitle, ft="a", kfs=true, nb=true, aso={bd=5}, ofs=0, x1=-2, x2=2}
 			end
 			ilf, kids, child = nil, nil, nil
+			aObj:removeInset(_G.AuctionatorSellingFrame.CurrentItemInset)
 			aObj:skinSlider{obj=_G.AuctionatorSellingFrame.CurrentItemListing.ScrollFrame.scrollBar, rt="artwork", wdth=-4}
 			skinHdrs(_G.AuctionatorSellingFrame.CurrentItemListing)
+			aObj:removeInset(_G.AuctionatorSellingFrame.HistoricalPriceInset)
 			aObj:skinSlider{obj=_G.AuctionatorSellingFrame.HistoricalPriceListing.ScrollFrame.scrollBar, rt="artwork", wdth=-4}
 			skinHdrs(_G.AuctionatorSellingFrame.HistoricalPriceListing)
 
-			_G.AuctionatorCancellingFrame.Bg:SetTexture(nil)
-			aObj:removeNineSlice(_G.AuctionatorCancellingFrame.NineSlice)
 			if aObj.modBtnBs then
 				aObj:addButtonBorder{obj=aObj:getChild(_G.AuctionatorCancellingFrame, 2), ofs=-2, x1=1, clr="gold"} -- RefreshButton
 			end
@@ -334,8 +349,8 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 8.3.3.2/100.0.9
 				aObj:keepRegions(child, {4, 5, 6}) -- N.B. regions 4 is text, 5 is highlight, 6 is arrow
 				aObj:addSkinFrame{obj=child, ft="a", kfs=true, nb=true, ofs=1, x1=-2, x2=2}
 			end
-			local frame = self:getLastChild(_G.AuctionatorCancellingFrame)
-			frame.Bg:SetTexture(nil)
+			aObj:removeInset(_G.AuctionatorCancellingFrame.HistoricalPriceInset)
+			local frame = aObj:getLastChild(_G.AuctionatorCancellingFrame)
 			if aObj.modBtns then
 				aObj:skinStdButton{obj=frame.StartScanButton}
 				aObj:SecureHook(frame.StartScanButton, "SetEnabled", function(this)
@@ -348,8 +363,8 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 8.3.3.2/100.0.9
 			end
 			frame = nil
 
-			_G.AuctionatorConfigFrame.Bg:SetTexture(nil)
-			aObj:removeNineSlice(_G.AuctionatorConfigFrame.NineSlice)
+			aObj:removeInset(_G.AuctionatorConfigFrame)
+			_G.AuctionatorConfigFrame:DisableDrawLayer("BACKGROUND")
 			aObj:skinEditBox{obj=_G.AuctionatorConfigFrame.DiscordLink.InputBox, regs={6}} -- 6 is text
 			aObj:skinEditBox{obj=_G.AuctionatorConfigFrame.BugReportLink.InputBox, regs={6}} -- 6 is text
 			aObj:skinEditBox{obj=_G.AuctionatorConfigFrame.TechnicalRoadmap.InputBox, regs={6}} -- 6 is text
@@ -381,7 +396,7 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 8.3.3.2/100.0.9
 				pCnt = pCnt + 1
 				skinKids(panel)
 			end
-			if pCnt == 7 then
+			if pCnt == 9 then
 				aObj.UnregisterCallback("Auctionator_Config", "IOFPanel_Before_Skinning")
 			end
 		end

@@ -53,12 +53,12 @@ end
 aObj.addonsToSkin.ArkInventoryRules = function(self)
 
 	--	Rules Frame
-	if self.modBtns then
-		self:skinCloseButton{obj=_G.ARKINV_RulesTitleClose, onSB=true, sap=true}
-	end
 	self:applyGradient(_G.ARKINV_RulesFrameViewTitle)
 	self:applyGradient(_G.ARKINV_RulesFrameViewSearch)
 	self:applyGradient(_G.ARKINV_RulesFrameViewSort)
+	if self.modBtns then
+		self:skinCloseButton{obj=_G.ARKINV_RulesTitleClose, onSB=true, sap=true}
+	end
 
 	-- View
 	self:skinEditBox(_G.ARKINV_RulesFrameViewSearchFilter, {6})
@@ -73,8 +73,6 @@ aObj.addonsToSkin.ArkInventoryRules = function(self)
 	self:applyGradient(_G.ARKINV_RulesFrameModifyTitle)
 	self:skinEditBox(_G.ARKINV_RulesFrameModifyDataOrder, {6})
 	self:skinEditBox(_G.ARKINV_RulesFrameModifyDataDescription, {6})
-	_G.ARKINV_RulesFrameModifyDataScrollTextBorder:SetBackdrop(self.Backdrop[10]) -- no background
-	_G.ARKINV_RulesFrameModifyDataScrollTextBorder:SetBackdropBorderColor(self.bbClr:GetRGBA())
 	self:skinSlider{obj=_G.ARKINV_RulesFrameModifyDataScroll.ScrollBar}
 	if self.modBtns then
 		self:skinStdButton{obj=_G.ARKINV_RulesFrameModifyMenuOk, as=true}
