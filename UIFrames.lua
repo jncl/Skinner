@@ -6197,6 +6197,9 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 		-- skin here so tooltip initially skinned
 		self:skinTooltip(tTip)
 
+		-- stop backdrop being changed
+		self:removeBackdrop(tTip, true)
+
 		-- hook this to prevent Gradient overlay when tooltip reshown
 		self:HookScript(tTip, "OnUpdate", function(this)
 			-- aObj:Debug("tTip OnUpdate: [%s, %s]", this, this.ItemTooltip)
@@ -6209,11 +6212,6 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 				self:skinTooltip(this)
 			end)
 		end
-
-		self:addBackdrop(tTip)
-		-- stop backdrop being changed
-		tTip:SetBackdrop(nil)
-		tTip.SetBackdrop = _G.nop
 
 		if self.modBtnBs then
 			-- if it has an ItemTooltip then add a button border
