@@ -1,3 +1,23 @@
+beta9.36272.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Code tidyup
+	Updated UIDropDown skin code
+	Updated UIWidgets skin code
+	Updated  Tooltip skin code
+	Updated Nameplates skin code
+	Updated AudioOptionPanel skin code
+	Updated AddonList skin code
+	More Beta changes
+	Updated Backdrop removal code
+	Updated Slider skin code
+	Updated UtilFuncs code to handle Colourcodes better
+	Improved version checks
+	Updated UnitFrames code
+	Updated how combat lockdown is handled
+	Updated Ace3, ArkDewdrop, ArkInventory, Auctionator, ClassicQuestLog, MoveAnything, Overachiever, Quester, Rematch, Tukui, WeakAuras & WoWPro skins
+
 beta9.36230.3
 Jncl:
 	ToDo.txt
