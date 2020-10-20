@@ -4846,12 +4846,13 @@ aObj.blizzFrames[ftype].Nameplates = function(self)
 		    aObj:add2Table(aObj.oocTab, {skinNamePlate, {frame}})
 		    return
 		end
+		-- aObj:Debug("skinNamePlate: [%s, %s, %s]", frame, frame.template)
 		local nP = frame.UnitFrame
 		if nP then
 			if not aObj.isClsc then
 				aObj:skinStatusBar{obj=nP.healthBar, fi=0, bgTex=nP.healthBar.background, otherTex={nP.healthBar.myHealPrediction, nP.healthBar.otherHealPrediction}}
 				aObj:skinStatusBar{obj=nP.castBar, fi=0, bgTex=nP.castBar.background}
-				-- WidgetContainer objects managed in UIWidgets code
+				-- N.B. WidgetContainer objects managed in UIWidgets code
 			else
 				aObj:skinStatusBar{obj=nP.healthBar, fi=0, bgTex=nP.healthBar.background}
 				nP.healthBar.border:DisableDrawLayer("ARTWORK")
@@ -4859,23 +4860,14 @@ aObj.blizzFrames[ftype].Nameplates = function(self)
 		end
 		nP = nil
 	end
-
-	-- skin any existing NamePlates
-	for _, frame in _G.ipairs(_G.C_NamePlate.GetNamePlates(_G.issecure())) do
-		if frame.template == "NamePlateUnitFrameTemplate" then
-			skinNamePlate(frame)
-		end
-	end
-
 	-- hook this to skin created Nameplates
 	self:SecureHook(_G.NamePlateDriverFrame, "OnNamePlateAdded", function(this, namePlateUnitToken)
-		local frame = _G.C_NamePlate.GetNamePlateForUnit(namePlateUnitToken, _G.issecure())
-		-- aObj:Debug("NPDF OnNamePlateAdded: [%s, %s, %s, %s]", namePlateUnitToken, _G.issecure(), frame, frame.template)
-		if frame.template == "NamePlateUnitFrameTemplate" then
-			skinNamePlate(frame)
-		end
-		frame = nil
+		skinNamePlate(_G.C_NamePlate.GetNamePlateForUnit(namePlateUnitToken, _G.issecure()))
 	end)
+	-- skin any existing NamePlates
+	for _, frame in _G.pairs(_G.C_NamePlate.GetNamePlates(_G.issecure())) do
+		skinNamePlate(frame)
+	end
 
 	-- Class Nameplate Frames
 	-- ManaFrame
