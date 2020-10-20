@@ -27,50 +27,6 @@ ToDos
 
 ≈	O	Add checks for Button state as required
 
-√	I	ClassicQuestLog, reported by BNS333, 15.10.20
-
-	I	Rematch, reported by Moxieface/Shiv_G3/neoseph82, 15.10.20 --> 19.10.20
-√		- Skinner\AddonSkins\Rematch-4.11.5.lua:164: attempt to call method 'SetBackdrop' (a nil value)
-		[string "@Skinner\AddonSkins\Rematch-4.11.5.lua"]:164: in function <Skinner\AddonSkins\Rematch.lua:159>
-
-	I	Auctionator, reported by BNS333/ Moxieface/Shimiya, 16.10.20
-√		- Skinner\AddonSkins\Auctionator-360 (alpha).lua:237: attempt to index field 'ArtOverlay' (a nil value)
-		[string "@Skinner\AddonSkins\Auctionator-360 (alpha).lua"]:237: in function <Skinner\AddonSkins\Auctionator.lua:197>
-		[string "@Skinner\AddonSkins\Auctionator-360 (alpha).lua"]:392: in function <Skinner\AddonSkins\Auctionator.lua:391>
-
-√	I	MoveAnything, reported by Shimiya/Shiv_G3, 16.10.20
-
 <-- N.B. ALL the below addons have NOT been updated for 9.0.1
 ?	I	WarCampaignsComplete, reported by Shimiya, 16.10.20
 -->
-
-	I	Overachiever_Tabs, reported by Shimiya, 16.10.20
-√		- Skinner\MainFuncs.lua:624: attempt to index field 'obj' (a nil value)
-		[string "@Skinner\MainFuncs.lua"]:710: in function `skinDropDown'
-		[string "@Skinner\AddonSkins\Overachiever-1.0.9.lua"]:103: in function <Skinner\AddonSkins\Overachiever.lua:54>
-
-	I	Tukui, reported by Moxieface, 17.10.20
-√		- When running Skinner alongside Tukui's latest version, certain windows are bright green because the texture path isn't valid any more (I think he removed some textures?).
-
-	I/C	WoWPro, reported by amey0, 17.10.20
-√		- Skinner\AddonSkins\WoWPro-1.13.5-C1.lua:70: attempt to index field 'TitleRow' (a nil value)
-		[string "@Skinner\AddonSkins\WoWPro-1.13.5-C1.lua"]:70: in function <Skinner\AddonSkins\WoWPro.lua:63>
-
-	I	Mail, reported by unrealcrom96, 18.1020
-?		- mailframe send name edit box huge.
-
-	I	WeakAuras, reported by hastrox77, 18.10.20
-√		- ..\AddOns\Skinner\AddonSkins\WeakAuras.lua line 9:
-		Usage: SecureHook([object], method, [handler]): Attempting to hook a non existing target
-
-	I	Nameplates, reported by MacallanTwoFive/tovrin, 18.10.20
-?		- Skinner\UIFrames.lua:4858: attempt to index local 'frame' (a nil value)
-		[string "@Skinner\UIFrames.lua"]:4858: in function <Skinner\UIFrames.lua:4855>
-
-√	I	ArkInventory, reported by Shiv_G3, 18.10.20
-
-	I	Sliders, reportedby by Fakelessgaming, 19.10.20
-√		- Missing textures on Horizontal/Vertical Sliders
-
-	I	Quester, reported by MacallanTwoFive, 19.10.20
-√		- Skinner\AddonSkins\Quester-9.0.1.2.lua:19: 'for' limit must be a number
