@@ -83,6 +83,13 @@ function module:skinPlayerF()
 	if db.player
 	and not self.isSkinned["Player"]
 	then
+		-- handle in combat
+		if _G.PlayerFrame:IsProtected()
+		and _G.InCombatLockdown()
+		then
+		    aObj:add2Table(aObj.oocTab, {self.skinPlayerF, {self}})
+		    return
+		end
 
 		local pF = _G.PlayerFrame
 		_G.PlayerFrameBackground:SetTexture(nil)
@@ -234,6 +241,14 @@ function module:skinPetF()
 	if db.pet
 	and not self.isSkinned["Pet"]
 	then
+		-- handle in combat
+		if _G.PetFrame:IsProtected()
+		and _G.InCombatLockdown()
+		then
+		    aObj:add2Table(aObj.oocTab, {self.skinPetF, {self}})
+		    return
+		end
+
 		self:SecureHookScript(_G.PetFrame, "OnShow", function(this)
 			_G.PetPortrait:SetDrawLayer("BORDER") -- move portrait to BORDER layer, so it is displayed
 			-- N.B. DON'T move the frame as it causes taint
@@ -354,6 +369,13 @@ function module:skinTargetF()
 	if db.target
 	and not self.isSkinned["Target"]
 	then
+		-- handle in combat
+		if _G.TargetFrame:IsProtected()
+		and _G.InCombatLockdown()
+		then
+		    aObj:add2Table(aObj.oocTab, {self.skinTargetF, {self}})
+		    return
+		end
 
 		self:SecureHookScript(_G.TargetFrame, "OnShow", function(this)
 
@@ -409,6 +431,14 @@ function module:skinFocusF()
 	if db.focus
 	and not self.isSkinned["Focus"]
 	then
+		-- handle in combat
+		if _G.FocusFrame:IsProtected()
+		and _G.InCombatLockdown()
+		then
+		    aObj:add2Table(aObj.oocTab, {self.skinFocusF, {self}})
+		    return
+		end
+
 		self:SecureHookScript(_G.FocusFrame, "OnShow", function(this)
 			self:skinButton(this:GetName(), false)
 
@@ -422,6 +452,13 @@ function module:skinPartyF()
 	if db.party
 	and not self.isSkinned["Party"]
 	then
+		-- handle in combat
+		if _G.PartyMemberFrame1:IsProtected()
+		and _G.InCombatLockdown()
+		then
+		    aObj:add2Table(aObj.oocTab, {self.skinPartyF, {self}})
+		    return
+		end
 
 		for i = 1, _G.MAX_PARTY_MEMBERS do
 			self:SecureHookScript(_G["PartyMemberFrame" .. i], "OnShow", function(this)
@@ -463,6 +500,13 @@ function module:skinPartyTooltip()
 	if not aObj.ttList[_G.PartyMemberBuffTooltip]
 	and( db.pet or db.party)
 	then
+		-- handle in combat
+		if _G.PartyMemberBuffTooltip:IsProtected()
+		and _G.InCombatLockdown()
+		then
+		    aObj:add2Table(aObj.oocTab, {self.skinPartyTooltip, {self}})
+		    return
+		end
 
 		aObj:addSkinFrame{obj=_G.PartyMemberBuffTooltip, ft=ftype, kfs=true, nb=true, ofs=0}
 
@@ -482,6 +526,12 @@ function module:skinPartyTooltip()
 
 end
 local function changeUFOpacity()
+
+	-- handle in combat
+	if _G.InCombatLockdown() then
+	    aObj:add2Table(aObj.oocTab, {changeUFOpacity, {}})
+	    return
+	end
 
 	for i = 1 ,#unitFrames do
 		if _G[unitFrames[i]].sf then
@@ -556,13 +606,7 @@ end
 
 function module:OnEnable()
 
-	-- handle in combat as it uses SecureUnitButtonTemplate
-	if _G.InCombatLockdown() then
-		aObj:add2Table(aObj.oocTab, {self.adjustUnitFrames, {self, "init"}})
-		return
-	else
-		self:adjustUnitFrames("init")
-	end
+	self:adjustUnitFrames("init")
 
 end
 
@@ -667,6 +711,13 @@ aObj.blizzLoDFrames[ftype].ArenaUI = function(self)
 
 	if db.arena then
 		local function skinArenaFrame(fName)
+			-- handle in combat
+			if _G[fname]:IsProtected()
+			and _G.InCombatLockdown()
+			then
+			    aObj:add2Table(aObj.oocTab, {skinArenaFrame, {fName}})
+			    return
+			end
 			module:skinUnitButton{obj=_G[fName], x1=-3, x2=3, y2=-6}
 			_G[fName .. "Background"]:SetTexture(nil)
 			_G[fName .. "Texture"]:SetTexture(nil)

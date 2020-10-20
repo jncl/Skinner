@@ -4161,13 +4161,13 @@ aObj.blizzFrames[ftype].SpellBookFrame = function(self)
 
 		-- Spellbook Panel
 		local function updBtn(btn)
-
-            -- handle in combat
-            if _G.InCombatLockdown() then
-                aObj:add2Table(aObj.oocTab, {updBtn, {btn}})
-                return
-            end
-
+			-- handle in combat
+			if btn:IsProtected()
+			and _G.InCombatLockdown()
+			then
+			    aObj:add2Table(aObj.oocTab, {updBtn, {btn}})
+			    return
+			end
 			if aObj.modBtnBs
 			and btn.sbb -- allow for not skinned during combat
 			then

@@ -761,10 +761,6 @@ function aObj:isAddonEnabled(addonName)
 
 end
 
-function aObj:inCombat()
-	return _G.InCombatLockdown() or _G.UnitAffectingCombat("Pet") or false
-end
-
 function aObj:isDropDown(obj)
 --@alpha@
 	_G.assert(obj, "Unknown object isDropDown\n" .. _G.debugstack(2, 3, 2))
