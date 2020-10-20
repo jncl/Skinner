@@ -134,11 +134,16 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 		if not isShadowlands then
 			frame:DisableDrawLayer("BORDER")
 			aObj:removeRegions(frame, {1, 2, frame:GetParent() ~= _G.GarrisonLandingPage and 3 or nil})
+			aObj:skinSlider{obj=frame.listScroll.scrollBar, wdth=-6}
 		else
 			if frame.FollowerScrollFrame then
 				frame.FollowerScrollFrame:SetTexture(nil)
 			end
 			aObj:removeRegions(frame, {1})
+			frame.listScroll.scrollBar:DisableDrawLayer("BACKGROUND")
+			if frame.ElevatedFrame then
+				frame.ElevatedFrame:DisableDrawLayer("OVERLAY")
+			end
 		end
 
 		if frame.MaterialFrame then
@@ -149,14 +154,6 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 			aObj:skinEditBox{obj=frame.SearchBox, regs={6, 7, 8}, mi=true} -- 6 is text, 7 is icon, 8 is text
 			-- need to do this as background isn't visible on Shipyard Mission page
 			_G.RaiseFrameLevel(frame.SearchBox)
-		end
-		if not isShadowlands then
-			aObj:skinSlider{obj=frame.listScroll.scrollBar, wdth=-6}
-		else
-			frame.listScroll.scrollBar:DisableDrawLayer("BACKGROUND")
-			if frame.ElevatedFrame then
-				frame.ElevatedFrame:DisableDrawLayer("OVERLAY")
-			end
 		end
 
 		-- if FollowerList not yet populated, hook the function
@@ -180,6 +177,10 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 
 		if not isShadowlands then
 			skinPortrait(frame.PortraitFrame)
+			aObj:addButtonBorder{obj=frame.ItemWeapon, relTo=frame.ItemWeapon.Icon}
+			frame.ItemWeapon.Border:SetTexture(nil)
+			aObj:addButtonBorder{obj=frame.ItemArmor, relTo=frame.ItemArmor.Icon}
+			frame.ItemArmor.Border:SetTexture(nil)
 		else
 			skinPortrait(frame.CovenantFollowerPortraitFrame)
 			if aObj.modBtnBs then
@@ -192,10 +193,6 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 		end
 		aObj:skinStatusBar{obj=frame.XPBar, fi=0}
 		frame.XPBar:DisableDrawLayer("OVERLAY")
-		aObj:addButtonBorder{obj=frame.ItemWeapon, relTo=frame.ItemWeapon.Icon}
-		frame.ItemWeapon.Border:SetTexture(nil)
-		aObj:addButtonBorder{obj=frame.ItemArmor, relTo=frame.ItemArmor.Icon}
-		frame.ItemArmor.Border:SetTexture(nil)
 
 	end
 	function skinFollowerTraitsAndEquipment(frame)
@@ -271,12 +268,12 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 		if not _G.IsAddOnLoaded("MasterPlan") then
 			frame.CloseButton:SetSize(28, 28) -- make button smaller
 		end
-		local y1Ofs, x2Ofs = 5, 3
+		local y1Ofs, x2Ofs, y2Ofs = 5, 3, -20
 		if isShadowlands then
 			frame.CloseButton.CloseButtonBorder:SetTexture(nil)
-			y1Ofs, x2Ofs = 2, 1
+			y1Ofs, x2Ofs, y2Ofs = 2, 1, -30
 		end
-		aObj:addSkinFrame{obj=frame, ft=ftype, kfs=true, x1=_G.IsAddOnLoaded("GarrisonCommander") and 0 or -320, y1=y1Ofs, x2=x2Ofs, y2=-20}
+		aObj:addSkinFrame{obj=frame, ft=ftype, kfs=true, x1=_G.IsAddOnLoaded("GarrisonCommander") and 0 or -320, y1=y1Ofs, x2=x2Ofs, y2=y2Ofs}
 		if aObj.modBtns then
 			aObj:skinStdButton{obj=frame.StartMissionButton}
 			-- handle animation of StartMissionButton
@@ -884,6 +881,7 @@ aObj.blizzLoDFrames[ftype].AnimaDiversionUI = function(self)
 
 		self:removeNineSlice(this.NineSlice)
 		self:keepFontStrings(this.BorderFrame)
+		this.CloseButton.Border:SetTexture(nil)
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, aso={bbclr="sepia"}, x2=1, y2=-3}
 		if self.modBtns then
 			self:skinCloseButton{obj=this.CloseButton , noSkin=true}
@@ -898,7 +896,7 @@ aObj.blizzLoDFrames[ftype].AnimaDiversionUI = function(self)
 			-- .bolsterProgressGemPool
 
 		self:removeNineSlice(this.SelectPinInfoFrame.NineSlice)
-		self:addSkinFrame{obj=this.SelectPinInfoFrame, ft=ftype, kfs=true}
+		self:addSkinFrame{obj=this.SelectPinInfoFrame, ft=ftype, kfs=true, x2=2}
 		if self.modBtns then
 			self:skinStdButton{obj=this.SelectPinInfoFrame.SelectButton}
 		end
@@ -2075,6 +2073,8 @@ aObj.blizzFrames[ftype].CovenantToasts = function(self)
 
 	self:SecureHookScript(_G.CovenantRenownToast, "OnShow", function(this)
 		this.ToastBG:SetTexture(nil)
+		this.GlowLineTopBottom:SetTexture(nil)
+		this.RewardIconRing:SetTexture(nil)
 
 		self:Unhook(this, "OnShow")
 	end)
@@ -2910,6 +2910,12 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 		aObj:SecureHookScript(frame.FollowerList, "OnShow", function(this)
 			this:DisableDrawLayer("BORDER")
 			skinFollowerList(this)
+			if aObj.modBtns then
+				aObj:skinStdButton{obj=this.HealAllButton}
+				aObj:SecureHook(this, "CalculateHealAllFollowersCost", function(this)
+					aObj:clrBtnBdr(this.HealAllButton)
+				end)
+			end
 
 			aObj:Unhook(this, "OnShow")
 		end)
@@ -2926,8 +2932,6 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 
 		aObj:SecureHookScript(frame.FollowerTab, "OnShow", function(this)
 			this:DisableDrawLayer("BORDER")
-			skinFollowerPage(this)
-
 			this.RaisedFrameEdges:DisableDrawLayer("BORDER")
 			this.HealFollowerFrame.ButtonFrame:SetTexture(nil)
 			if aObj.modBtns then
@@ -2937,11 +2941,13 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 				end)
 			end
 			if aObj.modBtnBs then
-				for btn in this.autoSpellPool:EnumerateActive() do
-					btn.Border:SetTexture(nil)
-					btn.SpellBorder:SetTexture(nil)
-					aObj:addButtonBorder{obj=btn, relTo=btn.Icon}
-				end
+				aObj:SecureHook(this, "UpdateAutoSpellAbilities", function(this, _)
+					for btn in this.autoSpellPool:EnumerateActive() do
+						btn.Border:SetTexture(nil)
+						btn.SpellBorder:SetTexture(nil)
+						aObj:addButtonBorder{obj=btn, relTo=btn.Icon}
+					end
+				end)
 			end
 
 			aObj:Unhook(this, "OnShow")
@@ -5244,7 +5250,7 @@ aObj.blizzLoDFrames[ftype].PlayerChoiceUI = function(self)
 
 		self:removeNineSlice(this.NineSlice)
 		this.BlackBackground.BlackBackground:SetTexture(nil)
-		this.BorderFrame.Header:SetTexture(nil)
+		self:nilTexture(this.BorderFrame.Header, true)
 		this.Background.BackgroundTile:SetTexture(nil)
 		this.Title:DisableDrawLayer("BACKGROUND")
 
@@ -5261,7 +5267,8 @@ aObj.blizzLoDFrames[ftype].PlayerChoiceUI = function(self)
 		end
 
 		local opt, gOfs, y1Ofs, y2Ofs
-		if this.uiTextureKit == "jailerstower" then -- Torghast
+		-- if this.uiTextureKit == "jailerstower" then -- Torghast
+		if pci.choiceID == 588 then -- Torghast
 			gOfs = -40
 			y1Ofs = 0
 			y2Ofs = -80
@@ -5269,20 +5276,22 @@ aObj.blizzLoDFrames[ftype].PlayerChoiceUI = function(self)
 			gOfs = 13
 			y1Ofs = 40
 			y2Ofs = -34
-		elseif this.uiTextureKit == "neutral"
-		and pci.choiceID == 73 -- WoD Strategic Assault Choice
+		elseif pci.choiceID == 73 -- WoD Strategic Assault Choice
 		then
 			gOfs = 11
 			y1Ofs = 40
 			y2Ofs = 0
-		elseif this.uiTextureKit == "neutral"
-		and pci.choiceID == 240 -- Legion Artifact Weapon
+		elseif pci.choiceID == 240 -- Legion Artifact Weapon
 		then
 			gOfs = 11
 			y1Ofs = 60
 			y2Ofs = -30
-		elseif this.uiTextureKit == "neutral"
-		and pci.choiceID == 667 -- Shadowlands Experience
+		elseif pci.choiceID == 342 -- Warchief's Command Board
+		then
+			gOfs = 11
+			y1Ofs = 70
+			y2Ofs = -10
+		elseif pci.choiceID == 667 -- Shadowlands Experience
 		then
 			gOfs = 11
 			y1Ofs = 70
@@ -5300,20 +5309,27 @@ aObj.blizzLoDFrames[ftype].PlayerChoiceUI = function(self)
 			-- WidgetContainer
 		for i = 1, #this.Options do
 			opt = this.Options[i]
-			opt.BackgroundShadowSmall:SetAlpha(0) -- texture changes
-			opt.BackgroundShadowLarge:SetAlpha(0) -- texture changes
-			self:nilTexture(opt.Header.Ribbon, true)
-			-- FIXME: when do we NOT do this?
-			self:nilTexture(opt.ArtworkBorder, true)
-			opt.Header.Text:SetTextColor(self.HT:GetRGB())
-			opt.SubHeader.Text:SetTextColor(self.HT:GetRGB())
-			opt.OptionText.String:SetTextColor(self.BT:GetRGB())
-			opt.OptionText.HTML:SetTextColor(self.BT:GetRGB())
-			self:addSkinFrame{obj=opt, ft=ftype, nb=true, aso={bbclr="grey"}, ofs=gOfs, y1=y1Ofs, y2=y2Ofs}
+			if this.uiTextureKit ~= "jailerstower" then -- N.B. DON'T skin JailersTowers' Anima Powers
+				opt.BackgroundShadowSmall:SetAlpha(0) -- texture changes
+				opt.BackgroundShadowLarge:SetAlpha(0) -- texture changes
+				self:nilTexture(opt.Header.Ribbon, true)
+				-- FIXME: when do we NOT do this?
+				self:nilTexture(opt.ArtworkBorder, true)
+				opt.Header.Text:SetTextColor(self.HT:GetRGB())
+				opt.SubHeader.Text:SetTextColor(self.HT:GetRGB())
+				opt.OptionText.String:SetTextColor(self.BT:GetRGB())
+				opt.OptionText.HTML:SetTextColor(self.BT:GetRGB())
+				self:addSkinFrame{obj=opt, ft=ftype, nb=true, aso={bbclr="grey"}, ofs=gOfs, y1=y1Ofs, y2=y2Ofs}
+			end
 			if self.modBtns then
 				skinBtns(opt.OptionButtonsContainer)
 				self:SecureHook(opt.OptionButtonsContainer, "ConfigureButtons", function(this, ...)
 					skinBtns(this)
+				end)
+				self:SecureHook(opt.OptionButtonsContainer, "DisableButtons", function(this)
+					for btn in this.buttonPool:EnumerateActive() do
+						self:clrBtnBdr(btn)
+					end
 				end)
 			end
 			-- hook these to handle size changes on mouseover (used in Oribos for covenant choice)
@@ -5343,19 +5359,19 @@ aObj.blizzLoDFrames[ftype].PlayerChoiceUI = function(self)
 
 		this.sf:SetShown(this.uiTextureKit ~= "jailerstower")
 
-		-- disable ModelScene effects in JailersTower
-		local function disableModelScene(frame)
-			if frame.uiTextureKit == "jailerstower" then
-				_G.C_Timer.After(0.05, function()
-					frame.HighStrataModelScene:ClearEffects()
-				end)
-			end
-		end
-		disableModelScene(this)
+		-- -- disable ModelScene effects in JailersTower
+		-- local function disableModelScene(frame)
+		-- 	if frame.uiTextureKit == "jailerstower" then
+		-- 		_G.C_Timer.After(0.05, function()
+		-- 			frame.HighStrataModelScene:ClearEffects()
+		-- 		end)
+		-- 	end
+		-- end
+		-- disableModelScene(this)
 
 		-- hook these to handle setup & updates to frame
 		self:SecureHook(this, "TryShow", function(this)
-			-- aObj:Debug("TryShow: [%s, %s]", this.uiTextureKit)
+			aObj:Debug("PCUI - TryShow: [%s, %s]", this.uiTextureKit)
 			this.sf:SetShown(this.uiTextureKit ~= "jailerstower")
 			local opt
 			for i = 1, #this.Options do
@@ -5368,8 +5384,10 @@ aObj.blizzLoDFrames[ftype].PlayerChoiceUI = function(self)
 			opt = nil
 		end)
 		self:SecureHook(this, "Update", function(this)
-			-- aObj:Debug("Update: [%s, %s]")
-			if this.uiTextureKit == "neutral" then
+			aObj:Debug("PCUI - Update: [%s, %s]", this.uiTextureKit)
+			if this.uiTextureKit ~= "Oribos"
+			and this.uiTextureKit ~= "jailerstower"
+			then
 				local opt
 				for i = 1, #this.Options do
 					opt = this.Options[i]
@@ -5382,17 +5400,17 @@ aObj.blizzLoDFrames[ftype].PlayerChoiceUI = function(self)
 					end
 				end
 				opt = nil
-			elseif this.uiTextureKit == "jailerstower" then
-				disableModelScene(this)
+			-- elseif this.uiTextureKit == "jailerstower" then
+			-- 	disableModelScene(this)
 			end
 		end)
 
 		self:Unhook(this, "OnShow")
 	end)
 
-	if self.modBtns then
-		self:skinStdButton{obj=_G.PlayerChoiceToggleButton, ofs=-45}
-	end
+	-- if self.modBtns then
+	-- 	self:skinStdButton{obj=_G.PlayerChoiceToggleButton, ofs=-45}
+	-- end
 
 end
 
@@ -6267,12 +6285,23 @@ aObj.blizzLoDFrames[ftype].TorghastLevelPicker = function(self)
 	self:SecureHookScript(_G.TorghastLevelPickerFrame, "OnShow", function(this)
 
 		-- .Pager
+		if self.modBtnBs then
+			self:addButtonBorder{obj=this.Pager.PreviousPage, clr="gold", ofs=-2, y1=-3, x2=-3}
+			self:addButtonBorder{obj=this.Pager.NextPage, clr="gold", ofs=-2, y1=-3, x2=-3}
+			self:SecureHook(this.Pager, "SetupPagingButtonStates", function(this)
+				self:clrBtnBdr(this.PreviousPage, "gold")
+				self:clrBtnBdr(this.NextPage, "gold")
+			end)
+		end
 		-- .ModelScene
 		-- TODO: skin frame, adjust visible part of background texture
 		self:addSkinFrame{obj=this, ft=ftype, nb=true, bg=true, ofs=-30}
 		if self.modBtns then
 			self:skinCloseButton{obj=this.CloseButton , noSkin=true}
 			self:skinStdButton{obj=this.OpenPortalButton}
+			self:SecureHook(this, "UpdatePortalButtonState", function(this, _)
+				self:clrBtnBdr(this.OpenPortalButton)
+			end)
 		end
 
 		self:Unhook(this, "OnShow")
@@ -6483,6 +6512,12 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 				-- .Foreground
 				setTextColor(entryFrame.Text)
 			end
+		elseif wFrame.widgetType == 16 then -- ZoneControl
+		elseif wFrame.widgetType == 17 then -- CaptureZone
+		elseif wFrame.widgetType == 18 then -- TextureWithAnimation
+		elseif wFrame.widgetType == 19 then -- DiscreteProgressSteps
+		elseif wFrame.widgetType == 20 then -- ScenarioHeaderTimer
+			aObj:skinStatusBar{obj=wFrame.TimerBar, fi=0, bgTex=wFrame.TimerBar.BG, nilFuncs=true}
 		end
 	end
 

@@ -479,6 +479,11 @@ aObj.blizzLoDFrames[ftype].ChromieTimeUI = function(self)
 		this.CurrentlySelectedExpansionInfoFrame.Description:SetTextColor(self.BT:GetRGB())
 		for btn in this.ExpansionOptionsPool:EnumerateActive() do
 			btn:GetNormalTexture():SetTexture(nil) -- remove border texture
+			self:SecureHook(btn, "SetNormalAtlas", function(this, name, _)
+				if name == "ChromieTime-Button-Frame" then
+					this:GetNormalTexture():SetTexture(nil) -- remove border texture
+				end
+			end)
 			if self.modBtnBs then
 				self:addButtonBorder{obj=btn, ofs=-4, es=20, clr="gold", ca=0.4}
 			end
