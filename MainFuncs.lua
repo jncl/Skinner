@@ -1022,17 +1022,22 @@ local function __skinSlider(opts)
 		opts.obj.sknd = true
 	end
 
+	-- remove textures if required
 	aObj:keepFontStrings(opts.obj)
+	-- make objects visible
 	opts.obj:SetAlpha(1)
 	opts.obj:GetThumbTexture():SetAlpha(1)
 
-	opts.obj.sf = _G.CreateFrame("Frame", nil, opts.obj, "BackdropTemplate")
-	aObj:skinUsingBD{obj=opts.obj.sf, size=opts.size}
+	aObj:skinUsingBD{obj=opts.obj, size=opts.size}
 
 	-- adjust width if required
-	if opts.wdth then aObj:adjWidth{obj=opts.obj, adj=opts.wdth} end
+	if opts.wdth then
+		aObj:adjWidth{obj=opts.obj, adj=opts.wdth}
+	end
 	-- adjust height if required (horizontal orientation)
-	if opts.hgt then aObj:adjHeight{obj=opts.obj, adj=opts.hgt} end
+	if opts.hgt then
+		aObj:adjHeight{obj=opts.obj, adj=opts.hgt}
+	end
 
 	-- remove parent's textures if required
 	if opts.rt then
