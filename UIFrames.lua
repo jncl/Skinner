@@ -6383,10 +6383,10 @@ aObj.blizzFrames[ftype].UIDropDownMenu = function(self)
 	local function skinDDMenu(frame)
 		if not aObj.isClsc then
 			aObj:removeNineSlice(frame.Border)
+			_G[frame:GetName() .. "MenuBackdrop"]:ClearBackdrop()
 		else
-			frame.Border.Bg:SetTexture(nil)
+			_G[frame:GetName() .. "MenuBackdrop"]:SetBackdrop(nil)
 		end
-		_G[frame:GetName() .. "MenuBackdrop"]:ClearBackdrop()
 		aObj:addSkinFrame{obj=frame, ft=ftype, kfs=true, nb=true}
 	end
 
