@@ -595,10 +595,10 @@ local function __skinDropDown(opts)
 	Calling parameters:
 		obj = object (Mandatory)
 		noSkin = don't skin the DropDown
-		x1 = X offset for TOPLEFT
-		y1 = Y offset for TOPLEFT
-		x2 = X offset for BOTTOMRIGHT
-		y2 = Y offset for BOTTOMRIGHT
+		x1 = X offset for LEFT
+		y1 = Y offset for TOP
+		x2 = X offset for RIGHT
+		y2 = Y offset for BOTTOM
 		rp = re-parent, reverse the parent child relationship (addSkinFrame option)
 		ign = ignore this dropdown when skinning IOF panels
 		noBB = don't add a border around the button
@@ -1313,7 +1313,7 @@ function aObj:skinTooltip(tooltip)
 	_G.assert(tooltip, "Missing object sT\n" .. _G.debugstack(2, 3, 2))
 --@end-alpha@
 
-	aObj:Debug3("skinTooltip: [%s, %s, %s]", tooltip, tooltip:GetName(), tooltip.sf)
+	aObj:Debug3("skinTooltip: [%s, %s, %s]", tooltip, tooltip.GetName and tooltip:GetName() or "<ANON>", tooltip.sf)
 
 	if not tooltip then return end
 
