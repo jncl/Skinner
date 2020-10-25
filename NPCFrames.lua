@@ -645,12 +645,22 @@ aObj.blizzFrames[ftype].GossipFrame = function(self)
 		-- DON'T colour the gossip text
 	else
 		self:SecureHook("GossipFrameUpdate", function()
-			for i = 1, _G.GossipFrame_GetTitleButtonCount() do
-				local newText, upd = self:removeColourCodes(_G.GossipFrame.buttons[i]:GetText())
-				if upd then
-					_G.GossipFrame.buttons[i]:SetText(newText)
+			if not self.isClsc then
+				for i = 1, _G.GossipFrame_GetTitleButtonCount() do
+					local newText, upd = self:removeColourCodes(_G.GossipFrame.buttons[i]:GetText())
+					if upd then
+						_G.GossipFrame.buttons[i]:SetText(newText)
+					end
+					_G.GossipFrame.buttons[i]:GetFontString():SetTextColor(self.BT:GetRGB())
 				end
-				_G.GossipFrame.buttons[i]:GetFontString():SetTextColor(self.BT:GetRGB())
+			else
+				for i = 1, _G.NUMGOSSIPBUTTONS do
+					local newText, upd = self:removeColourCodes(_G["GossipTitleButton" .. i]:GetText())
+					if upd then
+						_G["GossipTitleButton" .. i]:SetText(newText)
+					end
+					_G["GossipTitleButton" .. i]:GetFontString():SetTextColor(self.BT:GetRGB())
+				end
 			end
 		end)
 	end
@@ -843,9 +853,18 @@ aObj.blizzFrames[ftype].MerchantFrame = function(self)
 			self:SecureHook("MerchantFrame_UpdateCanRepairAll", function()
 				self:clrBtnBdr(_G.MerchantRepairAllButton, "gold", 0.5)
 			end)
-			self:SecureHook("MerchantFrame_UpdateGuildBankRepair", function()
-				self:clrBtnBdr(_G.MerchantGuildBankRepairButton, "gold", 0.5)
-			end)
+			if not self.isClsc then
+				self:SecureHook("MerchantFrame_UpdateGuildBankRepair", function()
+					self:clrBtnBdr(_G.MerchantGuildBankRepairButton, "gold", 0.5)
+				end)
+			else
+				self:SecureHook(_G.MerchantGuildBankRepairButton, "Disable", function(this, _)
+					self:clrBtnBdr(this)
+				end)
+				self:SecureHook(_G.MerchantGuildBankRepairButton, "Enable", function(this, _)
+					self:clrBtnBdr(this)
+				end)
+			end
 		else
 			_G.MerchantBuyBackItemSlotTexture:SetTexture(self.esTex)
 		end
@@ -1048,10 +1067,10 @@ aObj.blizzFrames[ftype].QuestFrame = function(self)
 		end
 
 		if self.modBtns then
-			self:SecureHook(this.CloseButton, "Disable", function(this, _)
+			self:SecureHook(_G.QuestFrameCloseButton, "Disable", function(this, _)
 				self:clrBtnBdr(this)
 			end)
-			self:SecureHook(this.CloseButton, "Enable", function(this, _)
+			self:SecureHook(_G.QuestFrameCloseButton, "Enable", function(this, _)
 				self:clrBtnBdr(this)
 			end)
 			self:skinStdButton{obj=_G.QuestFrameCompleteQuestButton}
