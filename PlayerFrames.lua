@@ -3434,9 +3434,6 @@ aObj.blizzFrames[ftype].LootFrames = function(self)
 			if self.modBtnBs then
 				 self:addButtonBorder{obj=this.PromptFrame, relTo=this.PromptFrame.Icon, reParent={this.SpecIcon}}
 			end
-			if self.modBtns then
-				self:skinCloseButton{obj=this.PromptFrame.EncounterJournalLinkButtonHelp.CloseButton, noSkin=true}
-			end
 
 			self:Unhook(this, "OnShow")
 		end)
