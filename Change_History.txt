@@ -1,3 +1,8 @@
+beta9.36272.3
+Jncl:
+	Updated Change_History.txt
+	Bugfix for missing @ on debug indicator lines
+
 beta9.36272.2
 Jncl:
 	ToDo.txt
