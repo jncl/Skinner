@@ -1057,16 +1057,18 @@ aObj.blizzFrames[ftype].BNFrames = function(self)
 	if not self.prdb.BNFrames or self.initialized.BNFrames then return end
 	self.initialized.BNFrames = true
 
-	self:skinCloseButton{obj=_G.BNToastFrame.CloseButton, font=self.fontSBX, aso={bd=5, bba=0}, noSkin=true}
 	self:addSkinFrame{obj=_G.BNToastFrame, ft=ftype, nb=true} -- show textures
 	self:hookSocialToastFuncs(_G.BNToastFrame)
-
+	if self.modBtns then
+		self:skinCloseButton{obj=_G.BNToastFrame.CloseButton, font=self.fontSBX, aso={bd=5, bba=0}, noSkin=true}
+	end
 	self:addSkinFrame{obj=_G.BNToastFrame.TooltipFrame, ft=ftype, kfs=true, nb=true}
 	_G.BNToastFrame.TooltipFrame:SetScript("OnLoad", nil)
-
-	self:skinCloseButton{obj=_G.TimeAlertFrame.CloseButton, font=self.fontSBX, aso={bd=5, bba=0}, noSkin=true}
 	self:addSkinFrame{obj=_G.TimeAlertFrame, ft=ftype, nb=true} -- show textures
 	self:hookSocialToastFuncs(_G.TimeAlertFrame)
+	if self.modBtns then
+		self:skinCloseButton{obj=_G.TimeAlertFrame.CloseButton, font=self.fontSBX, aso={bd=5, bba=0}, noSkin=true}
+	end
 
 end
 
@@ -4465,11 +4467,13 @@ aObj.blizzFrames[ftype].Minimap = function(self)
 	_G.MinimapZoneTextButton:SetPoint("BOTTOMRIGHT", _G.Minimap, "TOPRIGHT", 0, 5)
 	_G.MinimapZoneText:ClearAllPoints()
 	_G.MinimapZoneText:SetPoint("CENTER")
-	self:addSkinButton{obj=_G.MinimapZoneTextButton, parent=_G.MinimapZoneTextButton, ft=ftype, x1=-5, x2=5}
 	-- World Map Button
 	_G.MiniMapWorldMapButton:ClearAllPoints()
 	_G.MiniMapWorldMapButton:SetPoint("LEFT", _G.MinimapZoneTextButton, "RIGHT", -4, 0)
-	self:skinOtherButton{obj=_G.MiniMapWorldMapButton, font=self.fontP, text="M"}
+	if self.modBtns then
+		self:addSkinButton{obj=_G.MinimapZoneTextButton, parent=_G.MinimapZoneTextButton, ft=ftype, x1=-5, x2=5}
+		self:skinOtherButton{obj=_G.MiniMapWorldMapButton, font=self.fontP, text="M"}
+	end
 
 	-- Minimap
 	_G.Minimap:SetMaskTexture([[Interface\Buttons\WHITE8X8]]) -- needs to be a square texture

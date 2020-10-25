@@ -2790,18 +2790,22 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 	end)
 
 	self:SecureHookScript(_G.VoiceChatPromptActivateChannel, "OnShow", function(this)
-		self:skinCloseButton{obj=this.CloseButton, font=self.fontSBX, aso={bd=5, bba=0}, onSB=true, storeOnParent=true}
-		self:skinStdButton{obj=this.AcceptButton}
 		self:addSkinFrame{obj=this, ft=ftype, nb=true}
 		self:hookSocialToastFuncs(this)
+		if self.modBtns then
+			self:skinCloseButton{obj=this.CloseButton, font=self.fontSBX, aso={bd=5, bba=0}, onSB=true, storeOnParent=true}
+			self:skinStdButton{obj=this.AcceptButton}
+		end
 
 		self:Unhook(this, "OnShow")
 	end)
 
 	self:SecureHookScript(_G.VoiceChatChannelActivatedNotification, "OnShow", function(this)
-		self:skinCloseButton{obj=this.CloseButton, font=self.fontSBX, aso={bd=5, bba=0}, onSB=true, storeOnParent=true}
 		self:addSkinFrame{obj=this, ft=ftype, nb=true}
 		self:hookSocialToastFuncs(this)
+		if self.modBtns then
+			self:skinCloseButton{obj=this.CloseButton, font=self.fontSBX, aso={bd=5, bba=0}, onSB=true, storeOnParent=true}
+		end
 
 		self:Unhook(this, "OnShow")
 	end)
