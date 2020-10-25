@@ -4935,7 +4935,7 @@ aObj.blizzFrames[ftype].NavigationBar = function(self)
 		this.overflowButton:GetPushedTexture():SetAlpha(0)
 		this.overflowButton:GetHighlightTexture():SetAlpha(0)
 		this.overflowButton:SetText("<<")
-		this.overflowButton:SetNormalFontObject(self.fontP)
+		this.overflowButton:SetNormalFontObject(self.modUIBtns.fontP) -- use module name instead of shortcut
 
 	end)
 
