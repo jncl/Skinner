@@ -19,6 +19,10 @@ do
 	module.mult = "×" -- multiplication sign NOT lower case X
 	module.plus = "+"
 	module.minus = "-" -- using Hyphen-minus(-) instead of minus sign(−) for font compatiblity reasons
+	module.updown = "↕"
+	-- using double chevrons
+	module.leftdc = "«"
+	module.rightdc = "»"
 	-- create font to use for Close Buttons
 	module.fontX = _G.CreateFont("fontX")
 	module.fontX:SetFont([[Fonts\FRIZQT__.TTF]], 20)
@@ -48,7 +52,7 @@ do
 	module.fontDP:SetFont([[Fonts\ARIALN.TTF]], 16)
 	module.fontDP:SetTextColor(_G.DISABLED_FONT_COLOR:GetRGB())
 	-- create font to use for WorldMap SizeUp/Down buttons
-	module.fontS = _G.CreateFont("fontA")
+	module.fontS = _G.CreateFont("fontS")
 	module.fontS:SetFont([[Fonts\ARIALN.TTF]], 14)
 	module.fontS:SetTextColor(_G.NORMAL_FONT_COLOR:GetRGB())
 end

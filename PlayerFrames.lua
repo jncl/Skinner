@@ -1326,8 +1326,8 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 
 	cFrame.MaximizeMinimizeFrame:DisableDrawLayer("BACKGROUND")
 	if self.modBtns then
-		self:skinOtherButton{obj=cFrame.MaximizeMinimizeFrame.MaximizeButton, font=self.fontS, text="↕"}
-		self:skinOtherButton{obj=cFrame.MaximizeMinimizeFrame.MinimizeButton, font=self.fontS, text="↕"}
+		self:skinOtherButton{obj=cFrame.MaximizeMinimizeFrame.MaximizeButton, font=self.fontS, text=self.updown}
+		self:skinOtherButton{obj=cFrame.MaximizeMinimizeFrame.MinimizeButton, font=self.fontS, text=self.updown}
 	end
 
 	self:SecureHookScript(cFrame.CommunitiesList, "OnShow", function(this)
@@ -2190,8 +2190,8 @@ aObj.blizzFrames[ftype].DressUpFrame = function(self)
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, y2=-4}
 		if self.modBtns then
 			self:skinStdButton{obj=this.OutfitDropDown.SaveButton}
-			self:skinOtherButton{obj=this.MaxMinButtonFrame.MaximizeButton, font=self.fontS, text="↕"} -- up-down arrow
-			self:skinOtherButton{obj=this.MaxMinButtonFrame.MinimizeButton, font=self.fontS, text="↕"} -- up-down arrow
+			self:skinOtherButton{obj=this.MaxMinButtonFrame.MaximizeButton, font=self.fontS, text=self.updown}
+			self:skinOtherButton{obj=this.MaxMinButtonFrame.MinimizeButton, font=self.fontS, text=self.updown}
 			self:skinStdButton{obj=_G.DressUpFrameCancelButton}
 			self:skinStdButton{obj=this.ResetButton}
 		end
