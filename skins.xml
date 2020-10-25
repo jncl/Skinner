@@ -67,7 +67,9 @@
 <script file="AddonSkins\CollectMe.lua"/>
 <script file="AddonSkins\Combuctor.lua"/>
 <script file="AddonSkins\CombustionHelper.lua"/>
+<script file="AddonSkins\CommunityDKP.lua"/>
 <script file="AddonSkins\CompactMissions.lua"/>
+<script file="AddonSkins\CompactVendor.lua"/>
 <script file="AddonSkins\Configator.lua"/>
 <script file="AddonSkins\CoolDownWatcher.lua"/>
 <script file="AddonSkins\CoolLine.lua"/>
@@ -233,6 +235,7 @@
 <script file="AddonSkins\Smoker.lua"/>
 <script file="AddonSkins\SnapShot.lua"/>
 <script file="AddonSkins\SorhaQuestLog.lua"/>
+<script file="AddonSkins\Sorted.lua"/>
 <script file="AddonSkins\Spew.lua"/>
 <script file="AddonSkins\Squeenix.lua"/>
 <script file="AddonSkins\StaggerMeter.lua"/>

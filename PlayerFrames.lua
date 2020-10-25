@@ -2093,7 +2093,9 @@ aObj.blizzFrames[ftype].ContainerFrames = function(self)
 	if not self.prdb.ContainerFrames.skin or self.initialized.ContainerFrames then return end
 	self.initialized.ContainerFrames = true
 
-	if not _G.IsAddOnLoaded("LiteBag") then
+	if not _G.IsAddOnLoaded("LiteBag")
+	and not _G.IsAddOnLoaded("Sorted")
+	then
 		local function skinBag(frame, id)
 
 			local objName = frame:GetName()
