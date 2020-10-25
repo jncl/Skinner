@@ -1,3 +1,21 @@
+beta9.36372.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Bugfix for Item Quality check in Classic
+	Updated UIFrames code
+	Updated options code
+	Updated MainFuncs code
+	Bugfixes for GossipFrame, MerchantFrame & QuestFrame in Classic
+	Bugfix for BonusRollFrame
+	Bugfix for Nameplates
+	Bugfix for ChatBubbles on Classic
+	Updated UtilFuncs code
+	Updated UnitFrames code
+	Updated UIButtons code & button font and text skinning code
+	Updated Ace3, LibScrollingTable, LUI, MoveAnything, RCLootCouncil, WeakAuras & ZygorGuidesViewer skins
+	Skinned CommunityDKP, CompactVendor & Sorted
+
 beta9.36272.3
 Jncl:
 	Updated Change_History.txt
