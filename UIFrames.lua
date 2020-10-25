@@ -3311,6 +3311,7 @@ aObj.blizzFrames[ftype].HelpTip = function(self)
 		for hTip in _G.HelpTip.framePool:EnumerateActive() do
 			self:skinGlowBox(hTip, ftype)
 			if self.modBtns then
+				-- N.B. .CloseButton already skinned in skinGlowBox function
 				self:skinStdButton{obj=hTip.OkayButton}
 			end
 		end
@@ -6184,7 +6185,8 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 
 		-- glaze the Status bar(s) if required
 		if self.prdb.Tooltips.glazesb then
-			if tTip:GetName() -- named tooltips only
+			if tTip.GetName -- named tooltips only
+			and tTip:GetName()
 			and _G[tTip:GetName() .. "StatusBar"]
 			and not _G[tTip:GetName() .. "StatusBar"].Bar -- ignore ReputationParagonTooltip
 			then
@@ -6386,9 +6388,10 @@ aObj.blizzFrames[ftype].UIDropDownMenu = function(self)
 			aObj:removeNineSlice(frame.Border)
 			_G[frame:GetName() .. "MenuBackdrop"]:ClearBackdrop()
 		else
+			_G[frame:GetName() .. "Backdrop"]:SetBackdrop(nil)
 			_G[frame:GetName() .. "MenuBackdrop"]:SetBackdrop(nil)
 		end
-		aObj:addSkinFrame{obj=frame, ft=ftype, kfs=true, nb=true}
+		aObj:addSkinFrame{obj=frame, ft=ftype, kfs=true, nb=true, ofs=-2}
 	end
 
 	for i = 1, _G.UIDROPDOWNMENU_MAXLEVELS do
@@ -6439,7 +6442,7 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 		    aObj:add2Table(aObj.oocTab, {skinWidget, {wFrame, wInfo}})
 		    return
 		end
-		-- aObj:Debug("skinWidget: [%s, %s, %s, %s]", wFrame, wFrame.widgetType, wFrame.widgetTag, wInfo)
+		aObj:Debug("skinWidget: [%s, %s, %s, %s, %s, %s]", wFrame, wFrame.widgetType, wFrame.widgetTag, wFrame.widgetSetID, wFrame.widgetID, wInfo)
 		if wFrame.widgetType == 0 then -- IconAndText (World State: ICONS at TOP)
 			-- N.B. DON'T add buttonborder to Icon(s)
 		elseif wFrame.widgetType == 1 then -- CaptureBar (World State: Capture bar on RHS)
