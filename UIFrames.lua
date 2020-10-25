@@ -1414,7 +1414,9 @@ aObj.blizzFrames[ftype].ChatBubbles = function(self)
 	local function skinChatBubbles()
 		_G.C_Timer.After(0.1, function()
 			for _, cBubble in _G.pairs(_G.C_ChatBubbles.GetAllChatBubbles(false)) do
-				cBubble = aObj:getChild(cBubble, 1)
+				if not aObj.isClsc then
+					cBubble = aObj:getChild(cBubble, 1)
+				end
 				aObj:addSkinFrame{obj=cBubble, ft=ftype, kfs=true, nb=true, aso={ba=self.prdb.ChatBubbles.alpha, ng=true}, ofs=-8}
 				-- Region 1 is ChatBubbleTail texture, region 2 is the font string
 				if cBubble:GetNumRegions() == 2 then
