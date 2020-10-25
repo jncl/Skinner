@@ -30,3 +30,38 @@ ToDos
 <-- N.B. ALL the below addons have NOT been updated for 9.0.1
 ?	I	WarCampaignsComplete, reported by Shimiya, 16.10.20
 -->
+
+√	S	Compact Vendor, requsted by Moxieface, 19.10.20
+
+	I	Nameplates, reported by MacallanTwoFive, 20.10.20
+√		- Skinner\UIFrames.lua:4838: attempt to index local 'frame' (a nil value)
+		[string "@Skinner\UIFrames.lua"]:4838: in function <Skinner\UIFrames.lua:4837>
+		[string "@Skinner\UIFrames.lua"]:4862: in function <Skinner\UIFrames.lua:4861>
+
+≈	S	Sorted, requested by Siinba, 20.10.20
+
+√	S/C	RCLootCouncil Classic, requested by Sojiroi, 20.10.20
+
+√≈	S/C	CommunityDKP, requested by Sojiroi, 20.10.20
+
+x	I	EK minimap getting border from Skinner, reported by Fakelessgaming, 21.10.20
+
+	I	LUI, reported by therealdeerez, 21.10.20
+√		- Skinner\AddonSkins\LUI-3.32.lua:109: attempt to index field 'LUI_Chat_CopyScrollFrame' (a nil value)
+
+	I	ZygorGuidesViewer, reported by therealdeerez, 21.10.20
+≈		- Skinner\AddonSkins\ZygorGuidesViewer-7.0.lua:40: attempt to call method 'SetBackdrop' (a nil value)
+
+	I	MoveAnything, reported by neoseph82, 22.10.20
+≈		- Skinner\AddonSkins\MoveAnything-18.0.1.lua:156: attempt to call method 'ClearBackdrop' (a nil value)
+
+	I/C	ChatBubbles, reported by hastrox777, 23.10.20
+√		-  ..\AddOns\Skinner\MainFuncs.lua line 222: attempt to index field 'obj' (a nil value)
+		Skinner\MainFuncs.lua:222:
+		Skinner\MainFuncs.lua:187
+		Skinner\UIFrames.lua:1418:
+		Skinner\UIFrames.lua:1415
+
+	I	EncounterJournal, reported by Fakelessgaming, 25.1.20
+√		- Skinner\PlayerFrames.lua:3436: attempt to index field 'EncounterJournalLinkButtonHelp' (a nil value)
+		[string "@Skinner\PlayerFrames.lua"]:3436: in function <Skinner\PlayerFrames.lua:3428>
