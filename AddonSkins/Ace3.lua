@@ -34,7 +34,7 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 		then
 			-- aObj:Debug("Skinning: [%s, %s]", obj, objType)
 			if objType == "Dropdown" then
-				aObj:skinAceDropdown(obj, nil, 1)
+				aObj:skinAceDropdown(obj, nil, 0)
 			elseif objType == "Dropdown-Pullout" then
 				aObj:skinSlider{obj=obj.slider}
 				aObj:adjWidth{obj=obj.slider, adj=6}
@@ -551,4 +551,16 @@ if aObj.ACD then
 		aObj.iofSkinnedPanels[frame] = true
 		return frame
 	end, true)
+	aObj:SecureHookScript(aObj.ACD.popup, "OnShow", function(this)
+		if not aObj.isClsc then
+			aObj:keepFontStrings(aObj:getChild(this, 1))
+		end
+		aObj:addSkinFrame{obj=this, ft="a", kfs=true, nb=true, ofs=-4}
+		if aObj.modBtnBs then
+			aObj:skinStdButton{obj=this.accept}
+			aObj:skinStdButton{obj=this.cancel}
+		end
+
+		aObj:Unhook(this, "OnShow")
+	end)
 end

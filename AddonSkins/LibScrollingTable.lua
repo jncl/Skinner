@@ -12,7 +12,7 @@ aObj.libsToSkin["ScrollingTable"] = function(self) -- v ScrollingTable, 40300
 			self:skinSlider{obj=obj.scrollframe.ScrollBar}
 			_G[obj.frame:GetName() .. "ScrollTrough"].background:SetTexture(nil)
 			_G[obj.frame:GetName() .. "ScrollTroughBorder"].background:SetTexture(nil)
-			self:addSkinFrame{obj=obj.frame, ft="a", kfs=true, nb=true, y1=2, y2=-1}
+			self:addFrameBorder{obj=obj.frame, ft="a", kfs=true, nb=true, y1=2, y2=-1}
 		end
 		self:RawHook(_G.LibStub:GetLibrary("ScrollingTable", true), "CreateST", function(this, ...)
 			local st = self.hooks[this].CreateST(this, ...)

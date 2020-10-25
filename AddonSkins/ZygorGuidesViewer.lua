@@ -37,8 +37,8 @@ aObj.addonsToSkin.ZygorGuidesViewer = function(self) -- v 6.1.18339
 	end)
 
 	-- Viewer frame
-	_G.ZygorGuidesViewerFrame:SetBackdrop(nil)
-	_G.ZygorGuidesViewerFrame_Border:SetBackdrop(nil)
+	-- _G.ZygorGuidesViewerFrame:SetBackdrop(nil)
+	-- _G.ZygorGuidesViewerFrame_Border:SetBackdrop(nil)
 	self:addSkinFrame{obj=_G.ZygorGuidesViewerFrame, ft="a", kfs=true, nb=true, ofs=4}
 
 	-- Gear Finder
@@ -67,9 +67,9 @@ aObj.addonsToSkin.ZygorGuidesViewer = function(self) -- v 6.1.18339
 	self:addSkinFrame{obj=_G.ZygorGuidesViewerMaintenanceFrame, ft="a", kfs=true, nb=true}
 
 	-- DropDownForkLists
-	_G.DropDownForkList1MenuBackdrop:SetBackdrop(nil)
+	-- _G.DropDownForkList1MenuBackdrop:SetBackdrop(nil)
 	self:addSkinFrame{obj=_G.DropDownForkList1, ft="a", kfs=true, nb=true}
-	_G.DropDownForkList2MenuBackdrop:SetBackdrop(nil)
+	-- _G.DropDownForkList2MenuBackdrop:SetBackdrop(nil)
 	self:addSkinFrame{obj=_G.DropDownForkList2, ft="a", kfs=true, nb=true}
 
 	-- minimap button

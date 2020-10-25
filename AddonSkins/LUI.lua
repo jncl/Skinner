@@ -3,7 +3,7 @@ if not aObj:isAddonEnabled("LUI") then return end
 local _G = _G
 
 -- The following code handles the Initial setup of Skinner when the LUI is loaded
-aObj.otherAddons.LUIInit = function(self) -- v 3.18
+aObj.otherAddons.LUIInit = function(self) -- v 3.32
 
 	self:RawHook(self, "OnInitialize", function(this)
 		-- Do these before we run the function
@@ -106,8 +106,11 @@ aObj.otherAddons.LUIInit = function(self) -- v 3.18
 			local db, dbd = chat:Namespace(btns)
 			if db.CopyChat then
 				self:SecureHook(btns, "OnEnable", function(this)
-					self:skinSlider{obj=_G.LUI_Chat_CopyScrollFrame.ScrollBar}
-					self:addSkinFrame{obj=_G.LUI_Chat_CopyFrame, ft="a", kfs=true, nb=true, y1=-3, x2=-3}
+					if _G.LUI_Chat_CopyFrame then
+						self:skinSlider{obj=_G.LUI_Chat_CopyScrollFrame.ScrollBar}
+						self:addSkinFrame{obj=_G.LUI_Chat_CopyFrame, ft="a", kfs=true, nb=true, y1=-3, x2=-3}
+					end
+
 					self:Unhook(this, "OnEnable")
 				end)
 			end

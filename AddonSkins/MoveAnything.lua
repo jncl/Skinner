@@ -153,7 +153,7 @@ aObj.addonsToSkin.MoveAnything = function(self) -- v 18.0.0
 
 	-- Options frame
 	self:skinSlider{obj=_G.MAScrollFrame.ScrollBar}
-	_G.MAScrollBorder:ClearBackdrop()
+	self:removeBackdrop(_G.MAScrollBorder)
 	self:skinEditBox{obj=_G.MA_Search, regs={6}, noHeight=true} -- 6 is text
 	self:addSkinFrame{obj=_G.MAOptions, ft="a", kfs=true, nb=true, hdr=true}
 	if self.modBtns then

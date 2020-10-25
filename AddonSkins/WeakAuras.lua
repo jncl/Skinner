@@ -78,7 +78,7 @@ aObj.lodAddons.WeakAurasOptions = function(self) -- v 2.16.1/3.0.2
 				aObj:moveObject{obj=frame, x=23, y=id ~= 2 and 1 or 0}
 				if id == 1 then aObj:skinCloseButton{obj=aObj:getChild(frame, 1)} end
 				if id == 5 then -- up-down arrow
-					aObj:skinOtherButton{obj=aObj:getChild(frame, 1), font=aObj.fontS, text="↕"}
+					aObj:skinOtherButton{obj=aObj:getChild(frame, 1), font=aObj.fontS, text=aObj.modUIBtns.updown}
 					aObj:getChild(frame, 1):SetSize(28, 28)
 				end
 				frame = nil
