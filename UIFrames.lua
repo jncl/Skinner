@@ -4691,7 +4691,7 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 		self:skinOtherButton{obj=btn, text=txt, aso={bbclr=btn:IsEnabled() and "gold" or "disabled"}, noHooks=true}
 		self:moveObject{obj=btn, x=xOfs, y=yOfs}
 		-- make button text appear in correct colour
-		btn:SetNormalFontObject(btn:IsEnabled() and self.fontP or self.fontDP)
+		btn:SetNormalFontObject(btn:IsEnabled() and self.modUIBtns.fontP or self.modUIBtns.fontDP) -- N.B. use module name instead of shortcut
 		if not btn:IsEnabled() then
 			btn:Enable()
 			btn:Disable()
@@ -4701,7 +4701,7 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 				btn = btnName == "In" and _G.MinimapZoomIn or _G.MinimapZoomOut
 				aObj:clrBBC(btn.sb, btn:IsEnabled() and "gold" or "disabled")
 				-- make button text appear in correct colour
-				btn:SetNormalFontObject(btn:IsEnabled() and aObj.fontP or aObj.fontDP)
+				btn:SetNormalFontObject(btn:IsEnabled() and aObj.modUIBtns.fontP or aObj.modUIBtns.fontDP) -- N.B. use module name instead of shortcut
 			end
 		end
 		self:SecureHookScript(btn, "OnClick", function(this)
