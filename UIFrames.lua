@@ -4837,6 +4837,7 @@ aObj.blizzFrames[ftype].Nameplates = function(self)
 	self.initialized.Nameplates = true
 
 	local function skinNamePlate(frame)
+		if not frame then return end -- happens when called again after combat and frame doesn't exist any more
 		if frame:IsForbidden() then return end
 		-- handle in combat
 		if frame:IsProtected()
