@@ -713,7 +713,7 @@ aObj.blizzLoDFrames[ftype].ArenaUI = function(self)
 	if db.arena then
 		local function skinArenaFrame(fName)
 			-- handle in combat
-			if _G[fname]:IsProtected()
+			if _G[fName]:IsProtected()
 			and _G.InCombatLockdown()
 			then
 			    aObj:add2Table(aObj.oocTab, {skinArenaFrame, {fName}})
@@ -737,7 +737,7 @@ aObj.blizzLoDFrames[ftype].ArenaUI = function(self)
 		end
 		local function skinArenaPetFrame(fName)
 			-- handle in combat
-			if _G[fname]:IsProtected()
+			if _G[fName]:IsProtected()
 			and _G.InCombatLockdown()
 			then
 			    aObj:add2Table(aObj.oocTab, {skinArenaPetFrame, {fName}})
