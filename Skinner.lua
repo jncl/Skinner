@@ -350,7 +350,7 @@ function aObj:OnEnable()
 				if button.sbb then
 					if quality then
 						-- BETA: Constant value changed
-						if quality >= (_G.Enum.ItemQuality.Common)
+						if quality >= (self.isClsc and _G.LE_ITEM_QUALITY_COMMON or _G.Enum.ItemQuality.Common)
 						and _G.BAG_ITEM_QUALITY_COLORS[quality]
 						then
 							button.sbb:SetBackdropBorderColor(_G.BAG_ITEM_QUALITY_COLORS[quality].r, _G.BAG_ITEM_QUALITY_COLORS[quality].g, _G.BAG_ITEM_QUALITY_COLORS[quality].b, 1)
