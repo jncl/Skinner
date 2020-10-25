@@ -126,7 +126,7 @@ aObj.blizzFrames[ftype].SetupDefaults = function(self)
 		BNFrames                   = true,
 		Calendar                   = true,
 		ChallengesUI               = true,
-		CharacterCustomize         = truenil,
+		CharacterCustomize         = true,
 		ChatBubbles                = {skin = true, alpha = 0.45},
 		ChatButtons                = true,
 		ChatConfig                 = true,
@@ -1975,54 +1975,31 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 
 	-- runs when the player clicks "Defaults"
 	self.optionsFrame[self.L["Backdrop"]].default = function()
-		db.BdDefault = dflts.BdDefault
-		db.BdFile = dflts.BdFile
-		db.BdTexture = dflts.BdTexture
-		db.BdTileSize = dflts.BdTileSize
-		db.BdEdgeFile = dflts.BdEdgeFile
-		db.BdBorderTexture = dflts.BdBorderTexture
-		db.BdEdgeSize = dflts.BdEdgeSize
-		db.BdInset = dflts.BdInset
+		for name, _ in _G.pairs(self.optTables.Backdrop.args) do
+			db[name] = dflts[name]
+		end
 		-- refresh panel
 		_G.InterfaceOptionsFrame_OpenToCategory(self.optionsFrame[self.L["Backdrop"]])
 		reskinIOFBackdrop()
 	end
 	self.optionsFrame[self.L["Background"]].default = function()
-		db.BgUseTex = dflts.BgUseTex
-		db.BgFile = dflts.BgFile
-		db.BgTexture = dflts.BgTexture
-		db.BgTile = dflts.BgTile
+		for name, _ in _G.pairs(self.optTables.Background.args) do
+			db[name] = dflts[name]
+		end
 		-- refresh panel
 		_G.InterfaceOptionsFrame_OpenToCategory(self.optionsFrame[self.L["Background"]])
 	end
 	self.optionsFrame[self.L["Colours"]].default = function()
-		db.ClassClrBd = dflts.ClassClrBd
-		db.ClassClrBg = dflts.ClassClrBg
-		db.ClassClrGr = dflts.ClassClrGr
-		db.ClassClrTT = dflts.ClassClrTT
-		db.TooltipBorder = dflts.TooltipBorder
-		db.Backdrop = dflts.Backdrop
-		db.BackdropBorder = dflts.BackdropBorder
-		db.HeadText = dflts.HeadText
-		db.BodyText = dflts.BodyText
-		db.IgnoredText = dflts.IgnoredText
-		db.GradientMin = dflts.GradientMin
-		db.GradientMax = dflts.GradientMax
-		if bggns then
-			db.BagginsBBC = dflts.BagginsBBC
+		for name, _ in _G.pairs(self.optTables.Colours.args) do
+			db[name] = dflts[name]
 		end
 		-- refresh panel
 		_G.InterfaceOptionsFrame_OpenToCategory(self.optionsFrame[self.L["Colours"]])
 	end
 	self.optionsFrame[self.L["Gradient"]].default = function()
-		db.Gradient.enable = dflts.Gradient.enable
-		db.Gradient.texture = dflts.Gradient.texture
-		db.Gradient.invert = dflts.Gradient.invert
-		db.Gradient.rotate = dflts.Gradient.rotate
-		db.Gradient.char = dflts.Gradient.char
-		db.Gradient.ui = dflts.Gradient.ui
-		db.Gradient.npc = dflts.Gradient.npc
-		db.Gradient.skinner = dflts.Gradient.skinner
+		for name, _ in _G.pairs(self.optTables.Gradient.args) do
+			db.Gradient[name] = dflts.Gradient[name]
+		end
 		-- refresh panel
 		_G.InterfaceOptionsFrame_OpenToCategory(self.optionsFrame[self.L["Gradient"]])
 	end
