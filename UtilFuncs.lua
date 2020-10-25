@@ -399,27 +399,32 @@ end
 local buildInfo = {
 	beta        = {"9.0.2", 36267},
 	classic_ptr = {"1.13.6", 36231},
-	retail_ptr  = {"9.0.1", 36272},
-	classic     = {"1.13.5", 36035},
-	retail      = {"9.0.1", 36272},
+	retail_ptr  = {"9.0.1", 36372},
+	classic     = {"1.13.5", 36325},
+	retail      = {"9.0.1", 36322},
 	curr        = {_G.GetBuildInfo()},
 }
 function aObj:checkVersion()
 
 	local agentUID = _G.GetCVar("agentUID")
 	-- check to see which WoW version we are running on
-	self.isBeta    = agentUID:find("_beta") and true
-	self.isClsc    = agentUID:find("_classic") and true
-	self.isPTR     = agentUID:find("_ptr") and true
-	self.isClscPTR = agentUID:find("classic_ptr") and true
-	self.isRetail  = not self.isBeta and not self.isPTR and not self.isClsc and not self.isClscPTR and true
-	-- check current build number against Classic, if greater then it's a patch
-	self.isPatch = self.isPatch or self.isClsc and _G.tonumber(buildInfo.curr[2]) > buildInfo.classic[2]
+	self.isRetail  = agentUID == "wow" and true
+	self.isPTR     = agentUID == "wow_ptr" and true
+	self.isClsc    = agentUID == "wow_classic" and true
+	self.isClscPTR = agentUID == "wow_classic_ptr" and true
+	self.isBeta    = agentUID == "wow_beta" and true
+
 	-- check current build number against Retail, if greater then it's a patch
 	self.isPatch = self.isPatch or self.isRetail and _G.tonumber(buildInfo.curr[2]) > buildInfo.retail[2]
+	-- check current build number against Retail PTR, if greater then it's a patch
+	self.isPatch = self.isPatch or self.isPTR and _G.tonumber(buildInfo.curr[2]) > buildInfo.retail_ptr[2]
+	-- check current build number against Classic, if greater then it's a patch
+	self.isPatch = self.isPatch or self.isClsc and _G.tonumber(buildInfo.curr[2]) > buildInfo.classic[2]
+	-- check current build number against Classic PTR, if greater then it's a patch
+	self.isPatch = self.isPatch or self.isClscPTR and _G.tonumber(buildInfo.curr[2]) > buildInfo.classic_ptr[2]
 
 --@alpha@
-	local vType = self.isBeta and "Beta" or self.isPTR and "Retail_PTR" or self.isClscPTR and "Classic_PTR" or self.isClsc and "Classic" or "Retail"
+	local vType = self.isPTR and "Retail_PTR" or self.isClsc and "Classic" or self.isClscPTR and "Classic_PTR" or self.isBeta and "Beta" or "Retail"
 	self:Printf("%s, %d, %s, %d, %s, %d, %s", buildInfo[vType:lower()][1], buildInfo[vType:lower()][2], buildInfo.curr[1], buildInfo.curr[2], buildInfo.curr[3], buildInfo.curr[4] , agentUID)
 	vType = self.isPatch and vType .. " (Patched)" or vType
 	_G.DEFAULT_CHAT_FRAME:AddMessage(aName .. ": Detected that we're running on a " .. vType .. " version", 0.75, 0.5, 0.25, nil, true)
@@ -429,9 +434,9 @@ function aObj:checkVersion()
 
 	-- handle PTR changes going Live
 	self.isClscPTR = self.isClscPTR or self.isPatch and self.isClsc and buildInfo.curr[1] > buildInfo.classic[1]
-	self.isPTR = self.isPTR or self.isPatch and self.isRetail and buildInfo.curr[1] > buildInfo.retail[1]
+	self.isPTR     = self.isPTR or self.isPatch and self.isRetail and buildInfo.curr[1] > buildInfo.retail[1]
 	-- handle Beta changes in PTR or Live
-	self.isBeta = self.isBeta or self.isPTR and buildInfo.curr[4] > 90000
+	self.isBeta    = self.isBeta or self.isPTR and buildInfo.curr[4] > 90000
 
 	buildInfo = nil
 
@@ -1108,10 +1113,10 @@ end
 
 local function scanChildren(obj)
 
-	for _, child in _G.ipairs{_G[obj]:GetChildren()} do
+	for idx, child in _G.ipairs{_G[obj]:GetChildren()} do
 		-- check for forbidden objects (StoreUI components etc.)
 		if not child:IsForbidden() then
-			aObj.callbacks:Fire(obj .. "_GetChildren", child)
+			aObj.callbacks:Fire(obj .. "_GetChildren", child, idx)
 		end
 	end
 
