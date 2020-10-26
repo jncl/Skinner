@@ -123,6 +123,7 @@ aObj.blizzFrames[ftype].SetupDefaults = function(self)
 		AnimaDiversionUI           = true,
 		AutoComplete               = true,
 		BattlefieldMap             = true,
+		BindingUI				   = true,
 		BNFrames                   = true,
 		Calendar                   = true,
 		ChallengesUI               = true,
@@ -153,11 +154,13 @@ aObj.blizzFrames[ftype].SetupDefaults = function(self)
 		GuildBankUI                = true,
 		HelpFrame                  = true,
 		HelpTip                    = true,
+		InterfaceOptions           = true,
 		IslandsPartyPoseUI         = true,
 		IslandsQueueUI             = true,
 		ItemText                   = true,
 		LevelUpDisplay             = true,
 		LossOfControl              = true,
+		MacroUI                    = true,
 		MailFrame                  = true,
 		MainMenuBar                = {skin = true, glazesb = true, extraab=true, altpowerbar=true},
 		MenuFrames                 = true, -- (inc. MacroUI & BindingUI)
@@ -186,6 +189,7 @@ aObj.blizzFrames[ftype].SetupDefaults = function(self)
 		SubscriptionInterstitialUI = true,
 		SplashFrame                = true,
 		StaticPopups               = true,
+		SystemOptions              = true,
 		TalkingHeadUI              = true,
 		TimeManager                = true,
 		Tooltips                   = {skin = true, style = 1, glazesb = true, border = 1},
@@ -1324,6 +1328,11 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 					name = self.L["Battlefield Map Frame"],
 					desc = self.L["Toggle the skin of the "] .. self.L["Battlefield Map Frame"],
 				},
+				BindingUI = {
+					type = "toggle",
+					name = self.L["Key Bindings UI"],
+					desc = self.L["Toggle the skin of the "] .. self.L["Key Bindings UI"],
+				},
 				BNFrames = {
 					type = "toggle",
 					name = self.L["BattleNet Frames"],
@@ -1542,6 +1551,11 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 					name = self.L["Help Tips"],
 					desc = self.L["Toggle the skin of the "] .. self.L["Help Tips"],
 				},
+				InterfaceOptions = {
+					type = "toggle",
+					name = self.L["Interface Options"],
+					desc = self.L["Toggle the skin of the "] .. self.L["Interface Options"],
+				},
 				IslandsPartyPoseUI ={
 					type = "toggle",
 					name = self.L["Islands Party Pose UI"],
@@ -1566,6 +1580,11 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 					type = "toggle",
 					name = self.L["Loss Of Control Frame"],
 					desc = self.L["Toggle the skin of the "] .. self.L["Loss Of Control Frame"],
+				},
+				MacroUI = {
+					type = "toggle",
+					name = self.L["Macros UI"],
+					desc = self.L["Toggle the skin of the "] .. self.L["Macros UI"],
 				},
 				MailFrame = {
 					type = "toggle",
@@ -1780,6 +1799,16 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 					name = self.L["Script Errors Frame"],
 					desc = self.L["Toggle the skin of the "] .. self.L["Script Errors Frame"],
 				},
+				SplashFrame = {
+					type = "toggle",
+					name = self.L["What's New Frame"],
+					desc = self.L["Toggle the skin of the "] .. self.L["What's New Frame"],
+				},
+				StaticPopups = {
+					type = "toggle",
+					name = self.L["Static Popups"],
+					desc = self.L["Toggle the skin of the "] .. self.L["Static Popups"],
+				},
 				Soulbinds = {
 					type = "toggle",
 					name = self.L["Soulbinds Frame"],
@@ -1791,15 +1820,10 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 					name = self.L["Subscription Interstitial UI"],
 					desc = self.L["Toggle the skin of the "] .. self.L["Subscription Interstitial UI"],
 				},
-				SplashFrame = {
+				SystemOptions = {
 					type = "toggle",
-					name = self.L["What's New Frame"],
-					desc = self.L["Toggle the skin of the "] .. self.L["What's New Frame"],
-				},
-				StaticPopups = {
-					type = "toggle",
-					name = self.L["Static Popups"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Static Popups"],
+					name = self.L["System Options"],
+					desc = self.L["Toggle the skin of the "] .. self.L["System Options"],
 				},
 				TalkingHeadUI = {
 					type = "toggle",
