@@ -31,8 +31,5 @@ ToDos
 ?	I	WarCampaignsComplete, reported by Shimiya, 16.10.20
 -->
 
-	I	PetTracker, reported by Moxieface, 26.10.20
-√		- Skinner\AddonSkins\PetTracker-9.0.1.lua:21: attempt to index field 'Header' (a nil value)
-
-	I	RCLootCouncil, reported by therealdeerez, 26.10.20
-√		- Skinner\AddonSkins\RCLootCouncil-2.19.3.lua:81: Usage: SecureHook([object], method, [handler]): Attempting to hook a non existing target
+	I	MenuFrames, reported by vagrant_zero, 26.10.20
+√		- If I uncheck Menu Frames under UI Frames, the Disabled Skins options break. If I recheck Menu Frames, they're working again.
