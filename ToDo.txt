@@ -27,11 +27,12 @@ ToDos
 
 ≈	O	Add checks for Button state as required
 
-<-- N.B. ALL the below addons have NOT been updated for 9.0.1
+<-- N.B. the below addon(s) have NOT been updated for 9.0.1
 ?	I	WarCampaignsComplete, reported by Shimiya, 16.10.20
 -->
 
-	I	NavigationBar, reported by MacallanTwoFive, 25.10.20
-√		- Skinner\UIFrames.lua:4938: Usage: WorldMapFrameOverflowButton:SetNormalFontObject("fontname" or fontObject)
-		[string "=[C]"]: in function `SetNormalFontObject'
-		[string "@Skinner\UIFrames.lua"]:4938: in function <Skinner\UIFrames.lua:4916>
+	I	PetTracker, reported by Moxieface, 26.10.20
+√		- Skinner\AddonSkins\PetTracker-9.0.1.lua:21: attempt to index field 'Header' (a nil value)
+
+	I	RCLootCouncil, reported by therealdeerez, 26.10.20
+√		- Skinner\AddonSkins\RCLootCouncil-2.19.3.lua:81: Usage: SecureHook([object], method, [handler]): Attempting to hook a non existing target
