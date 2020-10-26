@@ -143,7 +143,7 @@ function module:clrButtonFromBorder(btn, texture)
 	 _G.assert(btn.sbb, "Missing object__cBB\n" .. _G.debugstack(2, 3, 2))
 --@end-alpha@
 
-	local iBdr = btn.IconBorder or btn[texture]
+	local iBdr = btn.IconBorder or btn.iconBorder or btn[texture]
 	-- aObj:Debug("UIB cBB: [%s, %s, %s, %s]", iBdr:IsShown(), iBdr:GetVertexColor())
 
 	iBdr:SetAlpha(1) -- ensure alpha is 1 otherwise btn.sbb isn't displayed
