@@ -3202,9 +3202,15 @@ aObj.blizzFrames[ftype].HelpFrame = function(self)
 	self.initialized.HelpFrame = true
 
 	self:SecureHookScript(_G.HelpFrame, "OnShow", function(this)
+		if self.isBeta then
+			self:removeInset(this.Browser.BrowserInset)
+			self:addSkinFrame{obj=this, ft=ftype, kfs=true, hdr=true, ofs=0}
+			return
+		end
+
 		self:removeInset(this.leftInset)
 		self:removeInset(this.mainInset)
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, hdr=true, ofs=0, y2=7}
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true, hdr=true, ofs=0, y2=self.isBeta and 0 or 7}
 		-- widen buttons so text fits better
 		for i = 1, 6 do
 			this["button" .. i]:SetWidth(180)

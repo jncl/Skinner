@@ -545,6 +545,41 @@ aObj.blizzLoDFrames[ftype].CovenantPreviewUI = function(self)
 
 end
 
+aObj.blizzLoDFrames[ftype].CovenantRenown = function(self)
+	if not self.prdb.CovenantRenown or self.initialized.CovenantRenown then return end
+	self.initialized.CovenantRenown = true
+
+	local function skinRewards(frame)
+		for reward in frame.rewardsPool:EnumerateActive() do
+			aObj:addFrameBorder{obj=reward, ft="a", ofs=-14, aso={bbclr="sepia"}}
+			reward.Icon:SetAlpha(1) -- make Icon visible
+		end
+	end
+	self:SecureHookScript(_G.CovenantRenownFrame, "OnShow", function(this)
+
+		self:removeNineSlice(this.NineSlice)
+		this.HeaderFrame.Background:SetTexture(nil)
+		self:moveObject{obj=this.HeaderFrame, y=-6}
+		-- .CelebrationModelScene
+		-- .TrackFrame
+		-- .FinalToast
+		-- .FinalToast.IconSwirlModelScene
+		-- .FinalToast.SlabTexture
+		self:SecureHook(this, "SetRewards", function(this, level)
+			skinRewards(this)
+		end)
+		skinRewards(this)
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, aso={bbclr="sepia"}}
+		if self.modBtns then
+			self:skinCloseButton{obj=this.CloseButton , noSkin=true}
+		end
+
+		self:Unhook(this, "OnShow")
+	end)
+
+end
+
+
 aObj.blizzLoDFrames[ftype].CovenantSanctum = function(self)
 	if not self.prdb.CovenantSanctum or self.initialized.CovenantSanctum then return end
 	self.initialized.CovenantSanctum = true
@@ -594,23 +629,6 @@ aObj.blizzLoDFrames[ftype].CovenantSanctum = function(self)
 			end)
 			self:skinStdButton{obj=this.UpgradesTab.TalentsList.UpgradeButton}
 		end
-
-		-- RenownTab
-		self:nilTexture(this.RenownTab.BackgroundTile, true)
-		self:nilTexture(this.RenownTab.Divider, true)
-		this.RenownTab.MilestonesFrame:DisableDrawLayer("BACKGROUND")
-		self:SecureHook(this.RenownTab, "Refresh", function(this)
-			for frame in this.milestonesPool:EnumerateActive() do
-				self:changeTandC(frame.LevelBorder, self.lvlBG)
-			end
-		end)
-		self:SecureHook(this.RenownTab, "RefreshRewards", function(this)
-			for frame in this.rewardsPool:EnumerateActive() do
-				frame.Toast:SetTexture(nil)
-				frame.IconBorder:SetTexture(nil)
-				self:addFrameBorder{obj=frame, ft=ftype, kfs=false, ofs=-14, aso={bbclr="red"}}
-			end
-		end)
 
 		self:Unhook(this, "OnShow")
 	end)
