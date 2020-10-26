@@ -4,21 +4,39 @@ local _G = _G
 local pairs = _G.pairs
 
 local ptRJ
-aObj.addonsToSkin.PetTracker = function(self) -- v 8.3.6
+aObj.addonsToSkin.PetTracker = function(self) -- v 9.0.1
 
 	-- Custom Tutorials
 	local cTut = _G.LibStub:GetLibrary('CustomTutorials-2.1', true)
 	if cTut then
 		for _, frame in _G.pairs(cTut.frames) do
 			self:addSkinFrame{obj=frame, ft="a", kfs=true, ri=true, ofs=2, x2=1}
-			self:addButtonBorder{obj=frame.prev, ofs=-1}
-			self:addButtonBorder{obj=frame.next, ofs=-1}
+			if self.modBtns then
+				self:addButtonBorder{obj=frame.prev, ofs=-1, clr="gold"}
+				self:addButtonBorder{obj=frame.next, ofs=-1, clr="gold"}
+				self:SecureHook(frame.prev, "Disable", function(this, _)
+					self:clrBtnBdr(this, "gold")
+				end)
+				self:SecureHook(frame.prev, "Enable", function(this, _)
+					self:clrBtnBdr(this, "gold")
+				end)
+				self:SecureHook(frame.next, "Disable", function(this, _)
+					self:clrBtnBdr(this, "gold")
+				end)
+				self:SecureHook(frame.next, "Enable", function(this, _)
+					self:clrBtnBdr(this, "gold")
+				end)
+			end
 		end
 	end
 	cTut = nil
 
-	-- Objectives Header
-	_G.PetTracker.Objectives.Header.Background:SetTexture(nil)
+	if _G.PetTracker.Objectives then
+		_G.PetTracker.Objectives.Header.Background:SetTexture(nil)
+		if self.modBtnBs then
+			self:addButtonBorder{obj=_G.PetTracker.Objectives.Header.MinimizeButton, es=12, ofs=1, x1=-1}
+		end
+	end
 
 	-- ProgressBars
 	local function skinBarObj(obj)
@@ -132,7 +150,7 @@ aObj.addonsToSkin.PetTracker = function(self) -- v 8.3.6
 
 end
 
-aObj.lodAddons.PetTracker_Journal = function(self) -- v 8.3.6
+aObj.lodAddons.PetTracker_Journal = function(self) -- v 9.0.1
 
 	-- wait for RivalsJournal and its List entries to be created
 	if not ptRJ
@@ -149,9 +167,7 @@ aObj.lodAddons.PetTracker_Journal = function(self) -- v 8.3.6
 	self:removeInset(ptRJ.ListInset)
 	self:skinEditBox{obj=ptRJ.SearchBox, regs={6}}
 	self:skinSlider{obj=ptRJ.List.scrollBar, wdth=-4}
-	local btn
-	for i = 1, #ptRJ.List.buttons do
-		btn = ptRJ.List.buttons[i]
+	for _, btn in _G.pairs(ptRJ.List.buttons) do
 		self:removeRegions(btn, {1}) -- background
 		btn.model.quality:SetTexture(nil)
 		self:changeTandC(btn.model.levelRing, aObj.lvlBG)
@@ -160,7 +176,6 @@ aObj.lodAddons.PetTracker_Journal = function(self) -- v 8.3.6
 		end
 		-- TODO: make model appear below frame
 	end
-	btn = nil
 	if self.modBtnBs then
 		-- hook this to update button border quality
 		self:SecureHook(ptRJ.List, "update", function(this)

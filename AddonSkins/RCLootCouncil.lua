@@ -2,7 +2,7 @@ local aName, aObj = ...
 if not (aObj:isAddonEnabled("RCLootCouncil") or aObj:isAddonEnabled("RCLootCouncil_Classic")) then return end
 local _G = _G
 
-local skinFunction = function(self) -- v 3.0.0/0.11.2
+local skinFunction = function(self) -- v 2.19.3/3.0.0/0.11.2
 
 	-- hook this to skin buttons
 	if self.modBtns then
@@ -77,7 +77,7 @@ local skinFunction = function(self) -- v 3.0.0/0.11.2
 	end)
 
 	-- Version Check frame
-	local RCVCF = _G.RCLootCouncil:GetModule(self.isClsc and "RCVersionCheck" or "VersionCheck", true)
+	local RCVCF = _G.RCLootCouncil:GetModule("RCVersionCheck", true) or _G.RCLootCouncil:GetModule("VersionCheck", true) -- ver 3
 	self:SecureHook(RCVCF, "OnEnable", function(this)
 		skinFrame(this.frame)
 
@@ -102,7 +102,7 @@ local skinFunction = function(self) -- v 3.0.0/0.11.2
 	end)
 
 	-- TradeUI
-	local RCTUI = _G.RCLootCouncil:GetModule(self.isClsc and "RCTradeUI" or "TradeUI", true)
+	local RCTUI = _G.RCLootCouncil:GetModule("RCTradeUI", true) or _G.RCLootCouncil:GetModule("TradeUI", true) -- ver 3
 	self:SecureHook(RCTUI, "OnEnable", function(this)
 		skinFrame(this.frame)
 
