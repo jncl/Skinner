@@ -31,5 +31,7 @@ ToDos
 ?	I	WarCampaignsComplete, reported by Shimiya, 16.10.20
 -->
 
-	I	MenuFrames, reported by vagrant_zero, 26.10.20
-√		- If I uncheck Menu Frames under UI Frames, the Disabled Skins options break. If I recheck Menu Frames, they're working again.
+?	I 	Nameplates & Plater, reported by Shiv_G3, 26.10.20
+
+	I	MoveAnything, reported by Shimiya, 27.10.20
+√		- Skinner\AddonSkins\MoveAnything-18.0.3.lua:175: attempt to call method 'SetBackdrop' (a nil value)
