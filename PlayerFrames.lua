@@ -612,15 +612,15 @@ aObj.blizzFrames[ftype].Buffs = function(self)
 end
 
 aObj.blizzFrames[ftype].CastingBar = function(self)
+	if not self.prdb.CastingBar.skin or self.initialized.CastingBar then return end
+	self.initialized.CastingBar = true
+
 	if _G.IsAddOnLoaded("Quartz")
 	or _G.IsAddOnLoaded("Dominos_Cast")
 	then
-		aObj.blizzFrames[ftype].CastingBar = nil
+		self.blizzFrames[ftype].CastingBar = nil
 		return
 	end
-
-	if not self.prdb.CastingBar.skin or self.initialized.CastingBar then return end
-	self.initialized.CastingBar = true
 
 	for _, type in _G.pairs{"", "Pet"} do
 		_G[type .. "CastingBarFrame"].Border:SetAlpha(0)
@@ -1940,15 +1940,15 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 end
 
 aObj.blizzFrames[ftype].CompactFrames = function(self)
+	if not self.prdb.CompactFrames or self.initialized.CompactFrames then return end
+	self.initialized.CompactFrames = true
+
 	if _G.IsAddOnLoaded("Tukui")
 	or _G.IsAddOnLoaded("ElvUI")
 	then
-		aObj.blizzFrames[ftype].CompactFrames = nil
+		self.blizzFrames[ftype].CompactFrames = nil
 		return
 	end
-
-	if not self.prdb.CompactFrames or self.initialized.CompactFrames then return end
-	self.initialized.CompactFrames = true
 
 	local function skinUnit(unit)
 
@@ -2093,73 +2093,70 @@ aObj.blizzFrames[ftype].ContainerFrames = function(self)
 	if not self.prdb.ContainerFrames.skin or self.initialized.ContainerFrames then return end
 	self.initialized.ContainerFrames = true
 
-	if not _G.IsAddOnLoaded("LiteBag")
-	and not _G.IsAddOnLoaded("Sorted")
+	if _G.IsAddOnLoaded("LiteBag")
+	or _G.IsAddOnLoaded("Sorted")
 	then
-		local function skinBag(frame, id)
+		self.blizzFrames[ftype].ContainerFrames = nil
+		return
+	end
 
-			local objName = frame:GetName()
-
-			aObj:addSkinFrame{obj=frame, ft=ftype, kfs=true, x1=8, y1=-4, x2=-3}
-			-- resize and move the bag name to make it more readable
-			_G[objName .. "Name"]:SetWidth(137)
-			aObj:moveObject{obj=_G[objName .. "Name"], x=-17}
-			-- Add gear texture to portrait button for settings
-			local cfpb = frame.PortraitButton
-			cfpb.gear = cfpb:CreateTexture(nil, "artwork")
-			cfpb.gear:SetAllPoints()
-			cfpb.gear:SetTexture(gearTex)
-			cfpb:SetSize(18, 18)
-			cfpb.Highlight:ClearAllPoints()
-			cfpb.Highlight:SetPoint("center")
-			cfpb.Highlight:SetSize(22, 22)
-			aObj:moveObject{obj=cfpb, x=7, y=-5}
-			cfpb = nil
+	local function skinBag(frame, id)
+		local objName = frame:GetName()
+		aObj:addSkinFrame{obj=frame, ft=ftype, kfs=true, x1=8, y1=-4, x2=-3}
+		-- resize and move the bag name to make it more readable
+		_G[objName .. "Name"]:SetWidth(137)
+		aObj:moveObject{obj=_G[objName .. "Name"], x=-17}
+		-- Add gear texture to portrait button for settings
+		local cfpb = frame.PortraitButton
+		cfpb.gear = cfpb:CreateTexture(nil, "artwork")
+		cfpb.gear:SetAllPoints()
+		cfpb.gear:SetTexture(gearTex)
+		cfpb:SetSize(18, 18)
+		cfpb.Highlight:ClearAllPoints()
+		cfpb.Highlight:SetPoint("center")
+		cfpb.Highlight:SetSize(22, 22)
+		aObj:moveObject{obj=cfpb, x=7, y=-5}
+		cfpb = nil
+		if aObj.modBtnBs then
+			-- skin the item buttons
+			local bo
+			for i = 1, 36 do
+				bo = _G[objName .. "Item" .. i]
+				aObj:addButtonBorder{obj=bo, ibt=true, reParent={_G[objName .. "Item" .. i .. "IconQuestTexture"], bo.JunkIcon, bo.UpgradeIcon, bo.flash, bo.NewItemTexture, bo.BattlepayItemTexture}}
+			end
+			bo = nil
+			-- update Button quality borders
+			_G.ContainerFrame_Update(frame)
+		end
+		-- Backpack
+		if id == 0 then
+			aObj:skinEditBox{obj=_G.BagItemSearchBox, regs={6, 7}, mi=true, noInsert=true} -- 6 is text, 7 is icon
 			if aObj.modBtnBs then
-				-- skin the item buttons
-				local bo
-				for i = 1, 36 do
-					bo = _G[objName .. "Item" .. i]
-					aObj:addButtonBorder{obj=bo, ibt=true, reParent={_G[objName .. "Item" .. i .. "IconQuestTexture"], bo.JunkIcon, bo.UpgradeIcon, bo.flash, bo.NewItemTexture, bo.BattlepayItemTexture}}
-				end
-				bo = nil
-				-- update Button quality borders
-				_G.ContainerFrame_Update(frame)
+				aObj:addButtonBorder{obj=_G.BagItemAutoSortButton, ofs=0, y1=1, clr="grey"}
 			end
+			-- TokenFrame
+			_G.BackpackTokenFrame:DisableDrawLayer("BACKGROUND")
+		end
+		if aObj.modBtns then
+			_G[objName .. "AddSlotsButton"]:DisableDrawLayer("OVERLAY")
+			aObj:skinStdButton{obj=_G[objName .. "AddSlotsButton"]}
+		end
+		objName = nil
+	end
 
-			-- Backpack
-			if id == 0 then
-				aObj:skinEditBox{obj=_G.BagItemSearchBox, regs={6, 7}, mi=true, noInsert=true} -- 6 is text, 7 is icon
-				if aObj.modBtnBs then
-					aObj:addButtonBorder{obj=_G.BagItemAutoSortButton, ofs=0, y1=1, clr="grey"}
-				end
-				-- TokenFrame
-				_G.BackpackTokenFrame:DisableDrawLayer("BACKGROUND")
-			end
-
-			if aObj.modBtns then
-				_G[objName .. "AddSlotsButton"]:DisableDrawLayer("OVERLAY")
-				aObj:skinStdButton{obj=_G[objName .. "AddSlotsButton"]}
-			end
-
-			objName = nil
-
+	-- Hook this to skinhide/show the gear button
+	self:SecureHook("ContainerFrame_GenerateFrame", function(frame, _, id)
+		-- skin the frame if required
+		if not frame.sf then
+			skinBag(frame, id)
 		end
 
-		-- Hook this to skinhide/show the gear button
-		self:SecureHook("ContainerFrame_GenerateFrame", function(frame, _, id)
-			-- skin the frame if required
-			if not frame.sf then
-				skinBag(frame, id)
-			end
+	end)
 
-		end)
-
-		-- hook this to move the Search Box to the left, away from the AutoSort button
-		self:RawHook(_G.BagItemSearchBox, "SetPoint", function(this, point, relTo, relPoint, _)
-			self.hooks[this].SetPoint(this, point, relTo, relPoint, 50, -35)
-		end, true)
-	end
+	-- hook this to move the Search Box to the left, away from the AutoSort button
+	self:RawHook(_G.BagItemSearchBox, "SetPoint", function(this, point, relTo, relPoint, _)
+		self.hooks[this].SetPoint(this, point, relTo, relPoint, 50, -35)
+	end, true)
 
 end
 
@@ -2168,7 +2165,7 @@ aObj.blizzFrames[ftype].DressUpFrame = function(self)
 	self.initialized.DressUpFrame = true
 
 	if _G.IsAddOnLoaded("DressUp") then
-		aObj.blizzFrames[ftype].DressUpFrame = nil
+		self.blizzFrames[ftype].DressUpFrame = nil
 		return
 	end
 

@@ -1405,13 +1405,13 @@ aObj.ClassicSupport = function(self)
 	self.cebRgns2 = {6, 7}
 
 	self.blizzFrames[ftype].MainMenuBar = function(self)
+		if self.initialized.MainMenuBar then return end
+		self.initialized.MainMenuBar = true
+
 		if _G.IsAddOnLoaded("Dominos") then
 			self.blizzFrames[ftype].MainMenuBar = nil
 			return
 		end
-
-		if self.initialized.MainMenuBar then return end
-		self.initialized.MainMenuBar = true
 
 		if self.prdb.MainMenuBar.skin then
 			_G.MainMenuExpBar:SetSize(1011, 13)

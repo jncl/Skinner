@@ -1769,15 +1769,16 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 end
 
 aObj.blizzFrames[ftype].ChatEditBox = function(self)
+	if not self.prdb.ChatEditBox.skin or self.initialized.ChatEditBox then return end
+	self.initialized.ChatEditBox = true
+
 	if _G.IsAddOnLoaded("NeonChat")
 	or _G.IsAddOnLoaded("Chatter")
 	or _G.IsAddOnLoaded("Prat-3.0")
 	then
+		self.blizzFrames[ftype].ChatEditBox = nil
 		return
 	end
-
-	if not self.prdb.ChatEditBox.skin or self.initialized.ChatEditBox then return end
-	self.initialized.ChatEditBox = true
 
 	for i = 1, _G.NUM_CHAT_WINDOWS do
 		skinChatEB(_G["ChatFrame" .. i].editBox)
@@ -4190,13 +4191,13 @@ aObj.blizzFrames[ftype].MailFrame = function(self)
 end
 
 aObj.blizzFrames[ftype].MainMenuBar = function(self)
-	if _G.IsAddOnLoaded("Dominos") then
-		aObj.blizzFrames[ftype].MainMenuBar = nil
-		return
-	end
-
 	if self.initialized.MainMenuBar then return end
 	self.initialized.MainMenuBar = true
+
+	if _G.IsAddOnLoaded("Dominos") then
+		self.blizzFrames[ftype].MainMenuBar = nil
+		return
+	end
 
 	if self.prdb.MainMenuBar.skin then
 
@@ -4293,7 +4294,6 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 	if self.modBtnBs then
 		self:addButtonBorder{obj=_G.MainMenuBarVehicleLeaveButton, clr="grey"}
 	end
-
 
 	-- UnitPowerBarAlt (inc. PlayerPowerBarAlt)
 	if self.prdb.MainMenuBar.altpowerbar then
@@ -4747,6 +4747,11 @@ end
 aObj.blizzFrames[ftype].Nameplates = function(self)
 	if not self.prdb.Nameplates or self.initialized.Nameplates then return end
 	self.initialized.Nameplates = true
+
+	if _G.IsAddOnLoaded("Plater") then
+		self.blizzFrames[ftype].Nameplates = nil
+		return
+	end
 
 	local function skinNamePlate(frame)
 		if not frame then return end -- happens when called again after combat and frame doesn't exist any more
@@ -5468,13 +5473,13 @@ aObj.blizzFrames[ftype].PVPMatch = function(self)
 end
 
 aObj.blizzFrames[ftype].QuestMap = function(self)
-	if _G.IsAddOnLoaded("EQL3") then
-		aObj.blizzFrames[ftype].QuestMap = nil
-		return
-	end
-
 	if not self.prdb.QuestMap or self.initialized.QuestMap then return end
 	self.initialized.QuestMap = true
+
+	if _G.IsAddOnLoaded("EQL3") then
+		self.blizzFrames[ftype].QuestMap = nil
+		return
+	end
 
 	self:SecureHookScript(_G.QuestMapFrame, "OnShow", function(this)
 		this.Background:SetAlpha(0) -- N.B. Texture changed in code
@@ -6184,7 +6189,10 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 	if not self.prdb.Tooltips.skin or self.initialized.Tooltips then return end
 	self.initialized.Tooltips = true
 
-	if _G.IsAddOnLoaded("TipTac") then return end
+	if _G.IsAddOnLoaded("TipTac") then
+		self.blizzFrames[ftype].Tooltips = nil
+		return
+	end
 
 	if _G.IsAddOnLoaded("TinyTooltip") then
 		local LibEvent = _G.LibStub:GetLibrary("LibEvent.7000")
