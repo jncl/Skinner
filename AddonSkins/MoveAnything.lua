@@ -2,7 +2,7 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("MoveAnything") then return end
 local _G = _G
 
-aObj.addonsToSkin.MoveAnything = function(self) -- v 18.0.0
+aObj.addonsToSkin.MoveAnything = function(self) -- v 18.0.3
 
 	local function skinPortDialog()
 		if not _G.MAPortDialog.sf then
@@ -30,7 +30,8 @@ aObj.addonsToSkin.MoveAnything = function(self) -- v 18.0.0
 		local i, frameBD = 1
 		while true do
 			if not _G["MAMover" .. i] then break end
-			frameBD = _G["MAMover" .. i .. "Backdrop"]
+			aObj:removeBackdrop(_G["MAMover" .. i].background)
+			frameBD = _G["MAMover" .. i .. "Backdrop"].background
 			frameBD:SetBackdrop(aObj.Backdrop[1])
 			frameBD:SetBackdropColor(aObj.bClr:GetRGBA())
 			frameBD:SetBackdropBorderColor(aObj.bbClr:GetRGBA())
@@ -153,8 +154,9 @@ aObj.addonsToSkin.MoveAnything = function(self) -- v 18.0.0
 
 	-- Options frame
 	self:skinSlider{obj=_G.MAScrollFrame.ScrollBar}
-	self:removeBackdrop(_G.MAScrollBorder)
+	self:removeBackdrop(_G.MAScrollBorder.background)
 	self:skinEditBox{obj=_G.MA_Search, regs={6}, noHeight=true} -- 6 is text
+	self:removeBackdrop(_G.MAOptions.background)
 	self:addSkinFrame{obj=_G.MAOptions, ft="a", kfs=true, nb=true, hdr=true}
 	if self.modBtns then
 		self:skinStdButton{obj=_G.MAOptionsSync}
@@ -172,7 +174,7 @@ aObj.addonsToSkin.MoveAnything = function(self) -- v 18.0.0
 	local i = 1
 	while true do
 		if not _G["MAMove" .. i] then break end
-		_G["MAMove" .. i .. "Backdrop"]:SetBackdrop(nil)
+		self:removeBackdrop(_G["MAMove" .. i .. "Backdrop"].background)
 		if self.modBtns then
 			self:skinStdButton{obj=_G["MAMove" .. i .. "Reset"]}
 		end
@@ -202,6 +204,7 @@ aObj.addonsToSkin.MoveAnything = function(self) -- v 18.0.0
 	end)
 
 	-- Nudger frame
+	self:removeBackdrop(_G.MANudger.background)
 	self:addSkinFrame{obj=_G.MANudger, ft="a", kfs=true, nb=true}
 	if self.modBtns then
 		self:skinStdButton{obj=_G.MANudger_NudgeUp}

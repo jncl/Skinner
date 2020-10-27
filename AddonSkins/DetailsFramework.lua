@@ -2,8 +2,6 @@ local aName, aObj = ...
 local _G = _G
 -- This is a Library
 
-local select = _G.select
-
 aObj.libsToSkin["DetailsFramework-1.0"] = function(self) -- v 136
 
 	local DF = _G.LibStub("DetailsFramework-1.0", true)
@@ -17,7 +15,7 @@ aObj.libsToSkin["DetailsFramework-1.0"] = function(self) -- v 136
 	-- button (parent, container, name, member, w, h, func, param1, param2, texture, text, short_method, button_template, text_template)
 	if self.modBtns then
 		self:RawHook(DF, "NewButton", function(this, ...)
-			local varCnt = select("#", ...)
+			local varCnt = _G.select("#", ...)
 			-- aObj:Debug("DF NewButton: [%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s]", varCnt, ...)
 			local btnObj = self.hooks[this].NewButton(this, ...)
 
@@ -25,8 +23,8 @@ aObj.libsToSkin["DetailsFramework-1.0"] = function(self) -- v 136
 			if varCnt == 13 then
 				if btnObj.param2 == "param2" then
 					-- colour pick button
-				elseif select(5, ...) == 20
-				or select(5, ...) == 21
+				elseif _G.select(5, ...) == 20
+				or _G.select(5, ...) == 21
 				then
 					-- icon button
 				else
@@ -34,7 +32,7 @@ aObj.libsToSkin["DetailsFramework-1.0"] = function(self) -- v 136
 				end
 			-- non template button
 			elseif varCnt == 12
-			and select(11, ...) ~= ""
+			and _G.select(11, ...) ~= ""
 			then
 				self:skinStdButton{obj=btnObj.button}
 				btnObj.button.SetBackdrop = _G.nop
@@ -42,9 +40,9 @@ aObj.libsToSkin["DetailsFramework-1.0"] = function(self) -- v 136
 				btnObj.button.SetBackdropBorderColor = _G.nop
 				-- if it has 6 params, name contains slider, width is 60 then it's a checkbox
 			elseif varCnt == 6
-			and select(4, ...)
-			and (select(4, ...):find("Slider")
-			or select(4, ...):find("Switch"))
+			and _G.select(4, ...)
+			and (_G.select(4, ...):find("Slider")
+			or _G.select(4, ...):find("Switch"))
 			then
 				self:skinStdButton{obj=btnObj.button}
 				btnObj.button.sb.tfade:SetTexture(nil)
@@ -58,11 +56,9 @@ aObj.libsToSkin["DetailsFramework-1.0"] = function(self) -- v 136
 
 	-- coooltip
 	local function skinCooltip(frame)
-
 		frame:DisableDrawLayer("BACKGROUND")
 		frame:DisableDrawLayer("BORDER")
-		aObj:addSkinFrame{obj=frame, ft="a", nb=true, x1=-3, x2=3}
-
+		aObj:addSkinFrame{obj=frame, ft="a", kfs=true, nb=true, x1=-3, x2=3}
 	end
 	if _G.GameCooltip2 then
 		_G.GameCooltip2.SetBackdrop = _G.nop
@@ -86,7 +82,7 @@ aObj.libsToSkin["DetailsFramework-1.0"] = function(self) -- v 136
 	self:RawHook(DF, "CreateNewDropdownFrame", function(this, ...)
 		-- aObj:Debug("DF CreateNewDropdownFrame: [%s, %s, %s]", this, ...)
 		local button = self.hooks[this].CreateNewDropdownFrame(this, ...)
-		self:addSkinFrame{obj=button.dropdownborder, ft="a", nb=true}
+		self:addSkinFrame{obj=button.dropdownborder, ft="a", kfs=true, nb=true, ofs=4}
 		button.dropdownframe:GetScrollChild():SetBackdrop(nil)
 		return button
 	end, true)
@@ -114,7 +110,10 @@ aObj.libsToSkin["DetailsFramework-1.0"] = function(self) -- v 136
 		-- aObj:Debug("DF CreateSimplePanel: [%s, %s, %s, %s, %s, %s, %s, %s]", this, ...)
 		local frame = self.hooks[this].CreateSimplePanel(this, ...)
 		frame.TitleBar:SetBackdrop(nil)
-		self:addSkinFrame{obj=frame, ft="a", kfs=true, nb=true}
+		self:addSkinFrame{obj=frame, ft="a", kfs=true, nb=true, ofs=4}
+		frame.SetBackdrop = _G.nop
+		frame.SetBackdropColor = _G.nop
+		frame.SetBackdropBorderColor = _G.nop
 		return frame
 	end, true)
 
@@ -169,7 +168,7 @@ aObj.libsToSkin["DetailsFramework-1.0"] = function(self) -- v 136
 		-- aObj:Debug("DF NewTextEntry: [%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s]", this, ...)
 		local obj = self.hooks[this].NewTextEntry(this, ...)
 		obj.editbox:SetBackdrop(nil)
-		self:skinEditBox{obj=obj.editbox, regs={3}, noHeight=true}
+		self:skinEditBox{obj=obj.editbox, regs={3, 12}, noHeight=true} -- 12 is the label
 		obj.editbox.SetBackdropColor = _G.nop
 		obj.editbox.SetBackdropBorderColor = _G.nop
 		return obj
@@ -180,7 +179,7 @@ aObj.libsToSkin["DetailsFramework-1.0"] = function(self) -- v 136
 		-- aObj:Debug("DF NewSpecialLuaEditorEntry: [%s, %s, %s, %s, %s, %s, %s]", this, ...)
 		local frame = self.hooks[this].NewSpecialLuaEditorEntry(this, ...)
 		self:skinSlider{obj=frame.scroll.ScrollBar}
-		self:addSkinFrame{obj=frame, ft="a", nb=true}
+		self:addSkinFrame{obj=frame, ft="a", kfs=true, nb=true, x2=22}
 		frame.SetBackdrop = _G.nop
 		frame.SetBackdropColor = _G.nop
 		frame.SetBackdropBorderColor = _G.nop
