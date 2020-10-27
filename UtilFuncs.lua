@@ -432,6 +432,8 @@ function aObj:checkVersion()
 --@end-alpha@
 	agentUID = nil
 
+	-- indicate we're on Classic if on Classic PTR
+	self.isClsc = self.isClsc or self.isClscPTR
 	-- handle PTR changes going Live
 	self.isClscPTR = self.isClscPTR or self.isPatch and self.isClsc and buildInfo.curr[1] > buildInfo.classic[1]
 	self.isPTR     = self.isPTR or self.isPatch and self.isRetail and buildInfo.curr[1] > buildInfo.retail[1]
