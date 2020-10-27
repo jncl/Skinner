@@ -1,3 +1,10 @@
+beta9.36372.4
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	More Beta changes
+	Separated MenuFrame parts into their own functions
+
 beta9.36372.3
 Jncl:
 	ToDo.txt
