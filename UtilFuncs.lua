@@ -398,7 +398,7 @@ end
 
 local buildInfo = {
 	beta        = {"9.0.2", 36267},
-	classic_ptr = {"1.13.6", 36231},
+	classic_ptr = {"1.13.6", 36324},
 	retail_ptr  = {"9.0.1", 36372},
 	classic     = {"1.13.5", 36325},
 	retail      = {"9.0.1", 36322},
