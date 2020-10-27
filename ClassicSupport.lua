@@ -31,7 +31,6 @@ local funcs = {
 		LootFrames = {keep = true, keepOpts = true},
 		LootHistory = {keep = true, keepOpts = true},
 		MirrorTimers = {keep = true, keepOpts = true},
-		ModelFrames = {keep = true, keepOpts = true},
 		RaidUI = {keep = true, keepOpts = true},
 		ReadyCheck = {keep = true, keepOpts = true},
 		SpellBookFrame = {keep = false, keepOpts = true},

@@ -3542,16 +3542,6 @@ aObj.blizzFrames[ftype].MirrorTimers = function(self)
 
 end
 
-aObj.blizzFrames[ftype].ModelFrames = function(self)
-	if _G.IsAddOnLoaded("CloseUp") then
-		aObj.blizzFrames[ftype].ModelFrames = nil
-		return
-	end
-
-	if not self.prdb.CharacterFrames then return end
-
-end
-
 aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 	if not self.prdb.ObjectiveTracker.skin and not self.prdb.ObjectiveTracker.popups then return end
 	self.initialized.ObjectiveTracker = true
