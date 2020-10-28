@@ -27,11 +27,14 @@ ToDos
 
 ≈	O	Add checks for Button state as required
 
-<-- N.B. the below addon(s) have NOT been updated for 9.0.1
-?	I	WarCampaignsComplete, reported by Shimiya, 16.10.20
--->
+√	I	WarCampaignsComplete, reported by Shimiya, 16.10.20
 
-?	I 	Nameplates & Plater, reported by Shiv_G3, 26.10.20
+	I	PetTracker, reported by Moxieface, 27.10.20
+≈		- Skinner\AddonSkins\PetTracker-9.0.1.lua:35: attempt to index field 'Header' (a nil value)
 
-	I	MoveAnything, reported by Shimiya, 27.10.20
-√		- Skinner\AddonSkins\MoveAnything-18.0.3.lua:175: attempt to call method 'SetBackdrop' (a nil value)
+	I/B	reported by MacallanTwoFive,  28.10.20
+√		- Skinner\UtilFuncs.lua:794: attempt to index local 'obj' (a nil value)
+	[string "@Skinner\UtilFuncs.lua"]:794: in function `keepRegions'
+	[string "@Skinner\MainFuncs.lua"]:1235: in function <Skinner\MainFuncs.lua:1182>
+	[string "@Skinner\MainFuncs.lua"]:1288: in function `skinTabs'
+	[string "@Skinner\NPCFrames.lua"]:589: in function <Skinner\NPCFrames.lua:587>
