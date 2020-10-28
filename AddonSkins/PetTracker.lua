@@ -31,7 +31,10 @@ aObj.addonsToSkin.PetTracker = function(self) -- v 9.0.1
 	end
 	cTut = nil
 
-	if _G.PetTracker.Objectives then
+
+	if _G.PetTracker.Objectives
+	and _G.PetTracker.Objectives.Header
+	then
 		_G.PetTracker.Objectives.Header.Background:SetTexture(nil)
 		if self.modBtnBs then
 			self:addButtonBorder{obj=_G.PetTracker.Objectives.Header.MinimizeButton, es=12, ofs=1, x1=-1}
