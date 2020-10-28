@@ -585,49 +585,39 @@ aObj.blizzLoDFrames[ftype].CovenantSanctum = function(self)
 	self.initialized.CovenantSanctum = true
 
 	self:SecureHookScript(_G.CovenantSanctumFrame, "OnShow", function(this)
-
-		self:skinTabs{obj=this, lod=true}
 		this.LevelFrame.Background:SetTexture(nil)
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, ofs=-3, aso={bbclr="red"}}
-		if self.modBtns then
-			self:skinCloseButton{obj=this.CloseButton, noSkin=true}
-		end
-
-		-- UpgradesTab
-		local frame
-		for i = 1, #this.UpgradesTab.Upgrades do
-			frame = this.UpgradesTab.Upgrades[i]
-			if frame.Border then self:nilTexture(frame.Border, true) end
-			if frame.RankBorder then self:changeTandC(frame.RankBorder, self.lvlBG) end
-		end
-		frame = nil
-		this.UpgradesTab.TalentsList:DisableDrawLayer("BACKGROUND")
-		this.UpgradesTab.TalentsList:DisableDrawLayer("BORDER")
-		this.UpgradesTab.TalentsList.IntroBox:DisableDrawLayer("BORDER")
-		self:SecureHook(this.UpgradesTab.TalentsList, "Refresh", function(this)
-			-- aObj:Debug("TalentsList Refresh: [%s, %s]", this.upgradeTalentID)
-			local tA
-			for frame in this.talentPool:EnumerateActive() do
-				-- aObj:Debug("talentPool: [%s, %s]", frame.talentID)
-				self:removeRegions(frame, {1, 2})
-				tA = frame.talentID == this.upgradeTalentID or nil
-				if not frame.sf then
-					self:addSkinFrame{obj=frame, ft=ftype, ofs=2.5, y2=-2, aso={bbclr="red", bbca=tA and 1 or 0.45}}
-				else
-					self:clrBBC(frame.sf, "red", tA and 1 or 0.45)
-				end
+		local list = this.UpgradesTab.TalentsList
+		list:DisableDrawLayer("BACKGROUND")
+		list:DisableDrawLayer("BORDER")
+		list.IntroBox:DisableDrawLayer("BORDER")
+		local function skinTalents(list)
+			for talentFrame in list.talentPool:EnumerateActive() do
+				aObj:removeRegions(talentFrame, {1, 2})
+				if talentFrame.TierBorder then aObj:changeTandC(talentFrame.TierBorder, aObj.lvlBG) end
+				aObj:addSkinFrame{obj=talentFrame, ft=ftype, ofs=2.5, y2=-2, aso={bbclr="sepia"}}
 			end
-			tA = nil
+		end
+		self:SecureHook(list, "Refresh", function(this)
+			skinTalents(this)
 			if self.modBtns then
-				self:clrBtnBdr(this.UpgradeButton, "red")
+				self:clrBtnBdr(this.UpgradeButton, "sepia")
 			end
 		end)
+		skinTalents(list)
+		for _, frame in _G.pairs(this.UpgradesTab.Upgrades) do
+			if frame.Border then self:nilTexture(frame.Border, true) end
+			if frame.TierBorder then self:changeTandC(frame.TierBorder, self.lvlBG) end
+		end
 		if self.modBtns then
-			self:skinStdButton{obj=this.UpgradesTab.DepositButton, clr="red"}
-			self:SecureHook(this.UpgradesTab, "UpdateDepositButton", function(this)
-				self:clrBtnBdr(this.DepositButton, "red")
-			end)
 			self:skinStdButton{obj=this.UpgradesTab.TalentsList.UpgradeButton}
+			self:skinStdButton{obj=this.UpgradesTab.DepositButton}
+			self:SecureHook(this.UpgradesTab, "UpdateDepositButton", function(this)
+				self:clrBtnBdr(this.DepositButton)
+			end)
+		end
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, ofs=-3, aso={bbclr="sepia"}}
+		if self.modBtns then
+			self:skinCloseButton{obj=this.CloseButton, noSkin=true}
 		end
 
 		self:Unhook(this, "OnShow")
