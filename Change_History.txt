@@ -1,3 +1,13 @@
+beta9.36372.5
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Bugfix for Classic check on Classic PTR
+	Removed redundant ModelFrames code
+	Updated checks for competing Addons
+	Updated DetailsFramework & MoveAnything skins
+
 beta9.36372.4
 Jncl:
 	ToDo.txt
