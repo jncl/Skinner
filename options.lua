@@ -1957,7 +1957,7 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 
 		["Disabled Skins"] = {
 			type = "group",
-			name = self.L["Disable Addon Skins"],
+			name = self.L["Disable Addon/Library Skins"],
 			get = function(info) return db.DisabledSkins[info[#info]] end,
 			set = function(info, value) db.DisabledSkins[info[#info]] = value and value or nil end,
 			args = {
@@ -1970,15 +1970,15 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 					order = 2,
 					width = "full",
 					type = "toggle",
-					name = self.L["Disable all Addon Skins"],
-					desc = self.L["Disable all the Addon skins"],
+					name = self.L["Disable all Addon/Library Skins"],
+					desc = self.L["Disable all the Addon/Library skins"],
 					get = function(info) return db[info[#info]] end,
 					set = function(info, value) db[info[#info]] = value end,
 				},
 				head2 = {
 					order = 3,
 					type = "header",
-					name = self.L["or choose which Addon skins to disable"],
+					name = self.L["or choose which Addon/Library skins to disable"],
 				},
 			},
 		},
@@ -2043,7 +2043,6 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 
 	-- Slash command handler
 	local function chatCommand(input)
-
 		if not input or input:trim() == "" then
 			-- Open general panel if there are no parameters, do twice to overcome Blizzard bug
 			_G.InterfaceOptionsFrame_OpenToCategory(aObj.optionsFrame)
@@ -2054,7 +2053,6 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 		else
 			_G.LibStub:GetLibrary("AceConfigCmd-3.0", true):HandleCommand(aName, self.L[aName], input)
 		end
-
 	end
 
 	-- Register slash command handlers
@@ -2088,39 +2086,36 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 		end
 
 		-- add Disabled Skins entries
-		local function addDSOpt(name, lib, lod)
-			local name2 = name .. (lib and " (Lib)" or lod and " (LoD)" or "")
+		local function addDSOpt(name)--, lib, lod)
 			aObj.optTables["Disabled Skins"].args[name] = {
 				type = "toggle",
-				name = name2,
+				name = name,
 				desc = aObj.L["Toggle the skinning of "] .. name,
-				width = name2:len() > 22 and "double" or nil,
+				width = name:len() > 22 and "double" or nil,
 			}
 			name2 = nil
 		end
-		for addonName, _ in _G.pairs(self.addonsToSkin) do
-			if self:isAddonEnabled(addonName) then
-				addDSOpt(addonName)
+		for name, _ in _G.pairs(self.addonsToSkin) do
+			if self:isAddonEnabled(name) then
+				addDSOpt(name)
 			end
 		end
-		for libName, _ in _G.pairs(self.libsToSkin) do
-			if _G.LibStub:GetLibrary(libName, true)
-			and self:isAddonEnabled(libName)
-			then
-				addDSOpt(libName, true)
+		for name, _ in _G.pairs(self.libsToSkin) do
+			if _G.LibStub:GetLibrary(name, true) then
+				addDSOpt(name .. " (Lib)")
 			end
 		end
-		for addonName, _ in _G.pairs(self.lodAddons) do
-			if self:isAddonEnabled(addonName) then
-				addDSOpt(addonName, nil, true)
+		for name, _ in _G.pairs(self.lodAddons) do
+			if self:isAddonEnabled(name) then
+				addDSOpt(name .. " (LoD)")
 			end
 		end
-		for addonName, _ in _G.pairs(self.otherAddons) do
-			if self:isAddonEnabled(addonName) then
-				if addonName == "tekKonfig" then
-					addDSOpt(addonName, true)
+		for name, _ in _G.pairs(self.otherAddons) do
+			if self:isAddonEnabled(name) then
+				if name == "tekKonfig" then
+					addDSOpt(name .. " (Lib)")
 				else
-					addDSOpt(addonName)
+					addDSOpt(name)
 				end
 			end
 		end
