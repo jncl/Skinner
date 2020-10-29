@@ -2914,6 +2914,7 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 		end
 
 		frame.OverlayElements.CloseButtonBorder:SetTexture(nil)
+		aObj:keepFontStrings(frame.RaisedBorder)
 		aObj:addSkinFrame{obj=frame, ft=ftype, kfs=true, x2=1, y2=-6}
 		frame.sf:SetFrameStrata("LOW") -- allow map textures to be visible
 
