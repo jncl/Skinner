@@ -85,10 +85,7 @@
 <script file="AddonSkins\Dominos.lua"/>
 <script file="AddonSkins\DoTimer.lua"/>
 <script file="AddonSkins\DressUp.lua"/>
-<script file="AddonSkins\DropDownMenu.lua"/>
 <script file="AddonSkins\ElvUI.lua"/>
-<script file="AddonSkins\Enchantrix.lua"/>
-<script file="AddonSkins\EnchantrixBarker.lua"/>
 <script file="AddonSkins\EnergyWatch.lua"/>
 <script file="AddonSkins\EnhancedColourPicker.lua"/>
 <script file="AddonSkins\EnhancedFlightMap.lua"/>
@@ -215,7 +212,6 @@
 <script file="AddonSkins\RAQ.lua"/>
 <script file="AddonSkins\RareScanner.lua"/>
 <script file="AddonSkins\RCLootCouncil.lua"/>
-<script file="AddonSkins\ReagentMaker.lua"/>
 <script file="AddonSkins\ReagentRestocker.lua"/>
 <script file="AddonSkins\RecipeRadarClassic.lua"/>
 <script file="AddonSkins\Recount.lua"/>

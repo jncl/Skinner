@@ -74,8 +74,6 @@ for i = 1, #addonSkins do
 	end
 end
 addonSkins = nil
--- oddly named addons
-aObj.addonsToSkin["Enchantrix-Barker"] = "EnchantrixBarker"
 --@alpha@
 aObj.addonsToSkin = track(aObj.addonsToSkin)
 --@end-alpha@
@@ -90,24 +88,12 @@ aObj.libsToSkin = {
 --@alpha@
 aObj.libsToSkin = track(aObj.libsToSkin)
 --@end-alpha@
--- store other AddOns not previously referenced, here so they can be enabled/disabled on the options panel
-local otherAddons = {
-	"ReagentMaker",
-	"TradeSkillDW",
-}
 aObj.otherAddons = {}
-for i = 1, #otherAddons do
-	if aObj:isAddonEnabled(otherAddons[i]) then
-		aObj.otherAddons[otherAddons[i]] = otherAddons[i]
-	end
-end
-otherAddons = nil
 --@alpha@
 aObj.otherAddons = track(aObj.otherAddons)
 --@end-alpha@
 local lodFrames = {
 	"DoTimer_Options",
-	"Enchantrix",
 	"GarrisonMissionManager", "GuildBankSearch",
 	"LilSparkysWorkshop", "Ludwig_Window",
 	"PetJournalEnhanced",
@@ -173,9 +159,6 @@ function aObj:AddonFrames()
 
 	-- skin tekKonfig framework objects
 	if self.otherAddons["tekKonfig"] then self:checkAndRun("tekKonfig", "o") end
-
-	-- skin DropDownMenu framework objects (used by RCLootCouncil)
-	if self.otherAddons["DropDownMenu"] then self:checkAndRun("DropDownMenu", "o") end
 
 	-- skin any Blizzard LoD frames or LoD addons that have already been loaded by other addons, waiting to allow them to be loaded
 	-- (Tukui does this for the PetJournal, other addons do it as well)
@@ -250,7 +233,6 @@ end
 function aObj:TRADE_SKILL_SHOW()
 	-- self:Debug("TRADE_SKILL_SHOW")
 
-	self:checkAndRunAddOn("ReagentMaker")
 	self:checkAndRunAddOn("TradeSkillDW")
 
 	if _G.Auctionator_Search then
