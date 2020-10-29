@@ -1336,19 +1336,29 @@ aObj.ClassicSupport = function(self)
 			then
 				x1, y1, x2, y2 = 10, -11, -33, 49
 			else
-				x1, y1, x2, y2 = 10, -11, -31, 70
+				x1, y1, x2, y2 = 10, -11, -32, 70
 			end
-			self:addSkinFrame{obj=_G.TradeSkillFrame, ft=ftype, kfs=true, nb=true, x1=x1, y1=y1, x2=x2, y2=y2}
+			self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, x1=x1, y1=y1, x2=x2, y2=y2}
 			x1, y1, x2, y2 = nil, nil, nil, nil
 			if self.modBtns then
+				self:skinCloseButton{obj=_G.TradeSkillFrameCloseButton}
 				self:skinExpandButton{obj=_G.TradeSkillCollapseAllButton, onSB=true}
 				for i = 1, _G.TRADE_SKILLS_DISPLAYED do
 					self:skinExpandButton{obj=_G["TradeSkillSkill" .. i], onSB=true}
+					self:checkTex{obj=_G["TradeSkillSkill" .. i]}
 				end
-				self:skinCloseButton{obj=_G.TradeSkillFrameCloseButton}
-				self:skinStdButton{obj=_G.TradeSkillCreateButton}
-				self:skinStdButton{obj=_G.TradeSkillCancelButton}
-				self:skinStdButton{obj=_G.TradeSkillCreateAllButton}
+				self:SecureHook("TradeSkillFrame_Update", function()
+					for i = 1, _G.TRADE_SKILLS_DISPLAYED do
+						self:checkTex{obj=_G["TradeSkillSkill" .. i]}
+					end
+				end)
+				self:skinStdButton{obj=_G.TradeSkillCreateAllButton, ofs=0}
+				self:skinStdButton{obj=_G.TradeSkillCreateButton, ofs=0}
+				self:skinStdButton{obj=_G.TradeSkillCancelButton, ofs=0}
+				self:SecureHook("TradeSkillFrame_SetSelection", function(id)
+					self:clrBtnBdr(_G.TradeSkillCreateButton)
+					self:clrBtnBdr(_G.TradeSkillCreateAllButton)
+				end)
 			end
 			if self.modBtnBs then
 				self:addButtonBorder{obj=_G.TradeSkillSkillIcon, clr="gold"}
