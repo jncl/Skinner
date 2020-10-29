@@ -397,11 +397,11 @@ function aObj:checkShown(frame)
 end
 
 local buildInfo = {
-	beta        = {"9.0.2", 36267},
+	beta        = {"9.0.2", 36401},
 	classic_ptr = {"1.13.6", 36324},
 	retail_ptr  = {"9.0.1", 36372},
 	classic     = {"1.13.5", 36325},
-	retail      = {"9.0.1", 36322},
+	retail      = {"9.0.1", 36372},
 	curr        = {_G.GetBuildInfo()},
 }
 function aObj:checkVersion()
@@ -422,6 +422,8 @@ function aObj:checkVersion()
 	self.isPatch = self.isPatch or self.isClsc and _G.tonumber(buildInfo.curr[2]) > buildInfo.classic[2]
 	-- check current build number against Classic PTR, if greater then it's a patch
 	self.isPatch = self.isPatch or self.isClscPTR and _G.tonumber(buildInfo.curr[2]) > buildInfo.classic_ptr[2]
+	-- check current build number against Classic PTR, if greater then it's a patch
+	self.isPatch = self.isPatch or self.isBeta and _G.tonumber(buildInfo.curr[2]) > buildInfo.beta[2]
 
 --@alpha@
 	local vType = self.isPTR and "Retail_PTR" or self.isClsc and "Classic" or self.isClscPTR and "Classic_PTR" or self.isBeta and "Beta" or "Retail"
