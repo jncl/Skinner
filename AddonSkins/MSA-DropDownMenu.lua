@@ -7,9 +7,9 @@ aObj.libsToSkin["MSA-DropDownMenu-1.0"] = function(self) -- v 7
 	self.initialized["MSA-DropDownMenu"] = true
 
 	local function skinDDL(ddlName)
-		aObj:removeBackdrop(_G[ddlName .. i .. "Backdrop"])
-		aObj:removeBackdrop(_G[ddlName .. i .. "MenuBackdrop"])
-		aObj:addSkinFrame{obj=_G[ddlName .. i], ft="a", kfs=true, nb=true}
+		aObj:removeBackdrop(_G[ddlName .. "Backdrop"])
+		aObj:removeBackdrop(_G[ddlName .. "MenuBackdrop"])
+		aObj:addSkinFrame{obj=_G[ddlName], ft="a", kfs=true, nb=true}
 	end
 	skinDDL("MSA_DropDownList1")
 	skinDDL("MSA_DropDownList2")

@@ -82,7 +82,7 @@ aObj.libsToSkin["DetailsFramework-1.0"] = function(self) -- v 209
 		-- aObj:Debug("DF CreateNewDropdownFrame: [%s, %s, %s]", this, ...)
 		local button = self.hooks[this].CreateNewDropdownFrame(this, ...)
 		self:addSkinFrame{obj=button.dropdownborder, ft="a", kfs=true, nb=true, ofs=4}
-		selfaObj:removeBackdrop(button.dropdownframe:GetScrollChild())
+		self:removeBackdrop(button.dropdownframe:GetScrollChild())
 		return button
 	end, true)
 	-- dropdownbutton (parent, name)

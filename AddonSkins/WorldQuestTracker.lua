@@ -2,7 +2,7 @@ local aName, aObj = ...
 if not aObj:isAddonEnabled("WorldQuestTracker") then return end
 local _G = _G
 
-aObj.addonsToSkin.WorldQuestTracker = function(self) -- v 8.3.0.389
+aObj.addonsToSkin.WorldQuestTracker = function(self) -- v 9.0.1.406
 
 	local function skinWMF(obj)
 		if _G.WorldMapFrame.firstRun then
@@ -65,9 +65,9 @@ aObj.addonsToSkin.WorldQuestTracker = function(self) -- v 8.3.0.389
 				self:Unhook(this, "OpenGroupFinderForQuest")
 			end
 		end)
-		if _G.WorldQuestTrackerAddon.db.profile.TutorialPopupID == 4 then
-			-- no more steps
-		else
+		if _G.WorldQuestTrackerAddon.db.profile.TutorialPopupID
+		and _G.WorldQuestTrackerAddon.db.profile.is_BFA_version
+		then
 			self:SecureHook(_G.WorldQuestTrackerAddon, "ShowTutorialAlert", function(this)
 				if _G.WorldQuestTrackerAddon.db.profile.TutorialPopupID == 1 then
 					_G.C_Timer.After(4.25, function()
@@ -90,14 +90,15 @@ aObj.addonsToSkin.WorldQuestTracker = function(self) -- v 8.3.0.389
 						end
 					end)
 				end
-				if _G.WorldQuestTrackerAddon.db.profile.TutorialPopupID == 4 then
-					_G.C_Timer.After(.75, function()
-						if _G.WorldQuestTrackerTutorialAlert4 then
-							self:skinCloseButton{obj=_G.WorldQuestTrackerTutorialAlert4.CloseButton, noSkin=true}
-						end
-					end)
-				end
-				if _G.WorldQuestTrackerAddon.db.profile.TutorialPopupID >= 4 then
+				-- if _G.WorldQuestTrackerAddon.db.profile.TutorialPopupID == 4 then
+				-- 	_G.C_Timer.After(.75, function()
+				-- 		if _G.WorldQuestTrackerTutorialAlert4 then
+				-- 			self:skinCloseButton{obj=_G.WorldQuestTrackerTutorialAlert4.CloseButton, noSkin=true}
+				-- 		end
+				-- 	end)
+				-- end
+				if _G.WorldQuestTrackerAddon.db.profile.TutorialPopupID >= 3 then
+				-- if _G.WorldQuestTrackerAddon.db.profile.TutorialPopupID >= 4 then
 					self:Unhook(this, "ShowTutorialAlert")
 				end
 			end)

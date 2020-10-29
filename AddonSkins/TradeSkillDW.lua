@@ -2,7 +2,7 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("TradeSkillDW") then return end
 local _G = _G
 
-aObj.lodAddons.TradeSkillDW = function(self) -- v 1.99.3
+aObj.addonsToSkin.TradeSkillDW = function(self) -- v 1.99.3
 
 	self:SecureHook("TradeSkillDW_Update", function()
 		-- handle in combat
