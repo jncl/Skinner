@@ -78,36 +78,41 @@ local function __checkTex(opts)
 
 	-- aObj:Debug("__checkTex: [%s, %s, %s, %s]", nTex, opts.obj.onSB, btn, btn:IsShown())
 	-- handle numbers instead of text (e.g. Armory icon)
-	if nTex	then
-		if _G.tonumber(nTex) then
-			if nTex == 130821 then
-				btn:SetText(module.minus)
-				btn:Show()
-			elseif nTex == 130838 then
-				btn:SetText(module.plus)
-				btn:Show()
-			else -- not a header line
-				btn:SetText("")
-				btn:Hide()
+	if btn:IsShown() then
+		if nTex	then
+			if _G.tonumber(nTex) then
+				if nTex == 130821 then
+					btn:SetText(module.minus)
+					btn:Show()
+				elseif nTex == 130838 then
+					btn:SetText(module.plus)
+					btn:Show()
+				else -- not a header line
+					btn:SetText("")
+					btn:Hide()
+				end
+			else
+				if nTex:find("MinusButton")
+				or nTex:find("ZoomOutButton") -- ARL
+				or nTex:find("_Open") -- BETA: Campaign_Header
+				then
+					btn:SetText(module.minus)
+					btn:Show()
+				elseif (_G.tonumber(nTex) and nTex == 130821)
+				or nTex:find("PlusButton")
+				or nTex:find("ZoomInButton") -- ARL
+				or nTex:find("_Closed") -- BETA: Campaign_Header
+				then
+					btn:SetText(module.plus)
+					btn:Show()
+				else -- not a header line
+					btn:SetText("")
+					btn:Hide()
+				end
 			end
-		else
-			if nTex:find("MinusButton")
-			or nTex:find("ZoomOutButton") -- ARL
-			or nTex:find("_Open") -- BETA: Campaign_Header
-			then
-				btn:SetText(module.minus)
-				btn:Show()
-			elseif (_G.tonumber(nTex) and nTex == 130821)
-			or nTex:find("PlusButton")
-			or nTex:find("ZoomInButton") -- ARL
-			or nTex:find("_Closed") -- BETA: Campaign_Header
-			then
-				btn:SetText(module.plus)
-				btn:Show()
-			else -- not a header line
-				btn:SetText("")
-				btn:Hide()
-			end
+		else -- not a header line
+			btn:SetText("")
+			btn:Hide()
 		end
 	else -- not a header line
 		btn:SetText("")
@@ -321,8 +326,8 @@ function module:skinExpandButton(opts)
 		aObj:addSkinButton{obj=opts.obj, ft=opts.ftype or "a", parent=opts.obj, sap=opts.sap, aso=aso}
 		if not opts.noHook then
 			module:SecureHook(opts.obj, "SetNormalAtlas", function(this, nTex)
-					module:checkTex{obj=this, nTex=nTex}
-				end)
+				module:checkTex{obj=this, nTex=nTex}
+			end)
 		end
 	else -- Ace3, Archy, ReagentRestocker
 		aso.obj = opts.obj

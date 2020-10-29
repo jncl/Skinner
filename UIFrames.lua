@@ -3387,9 +3387,17 @@ aObj.blizzFrames[ftype].InterfaceOptions = function(self)
 		self:SecureHookScript(_G.InterfaceOptionsFrameAddOns, "OnShow", function(this)
 			self:skinSlider{obj=_G.InterfaceOptionsFrameAddOnsListScrollBar}
 			self:addSkinFrame{obj=_G.InterfaceOptionsFrameAddOns, ft=ftype, kfs=true}
-			-- skin toggle buttons
-			for i = 1, #_G.InterfaceOptionsFrameAddOns.buttons do
-				self:skinExpandButton{obj=_G.InterfaceOptionsFrameAddOns.buttons[i].toggle, sap=true, plus=true}
+			if self.modBtns then
+				-- skin toggle buttons
+				for _, btn in _G.pairs(_G.InterfaceOptionsFrameAddOns.buttons) do
+					self:skinExpandButton{obj=btn.toggle, sap=true}
+					self:checkTex{obj=btn.toggle}
+				end
+				self:SecureHook("InterfaceAddOnsList_Update", function()
+					for _, btn in _G.pairs(_G.InterfaceOptionsFrameAddOns.buttons) do
+						self:checkTex{obj=btn.toggle}
+					end
+				end)
 			end
 
 			self:Unhook(this, "OnShow")
