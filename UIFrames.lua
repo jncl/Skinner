@@ -1013,11 +1013,16 @@ aObj.blizzLoDFrames[ftype].BindingUI = function(self)
 					self:skinStdButton{obj=button}
 				end
 			end)
-			-- hook this to handle button enabling/disabling
-			self:skinStdButton{obj=this.quickKeybindButton}
-			self:SecureHook(this, "UpdateUnbindKey", function(this)
-				self:clrBtnBdr(this.unbindButton)
-			end)
+			if not aObj.isClsc then
+				self:skinStdButton{obj=this.quickKeybindButton}
+				self:SecureHook(this, "UpdateUnbindKey", function(this)
+					self:clrBtnBdr(this.unbindButton)
+				end)
+			else
+				self:SecureHook("KeyBindingFrame_UpdateUnbindKey", function()
+					self:clrBtnBdr(this.unbindButton)
+				end)
+			end
 		end
 		if self.modChkBtns then
 			self:skinCheckButton{obj=this.characterSpecificButton}
@@ -1026,30 +1031,30 @@ aObj.blizzLoDFrames[ftype].BindingUI = function(self)
 		self:Unhook(this, "OnShow")
 	end)
 
-	self:SecureHookScript(_G.QuickKeybindFrame, "OnShow", function(this)
+	if not aObj.isClsc then
+		self:SecureHookScript(_G.QuickKeybindFrame, "OnShow", function(this)
+			self:removeNineSlice(this.BG)
+			this.BG.Bg:SetTexture(nil)
+			self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, hdr=true, ofs=0}
+			if self.modBtns then
+				self:skinStdButton{obj=this.defaultsButton}
+				self:skinStdButton{obj=this.cancelButton}
+				self:skinStdButton{obj=this.okayButton}
+			end
+			if self.modBtnBs then
+				self:addButtonBorder{obj=this.phantomExtraActionButton, x2=1, y2=-1}
+			end
+			if self.modChkBtns then
+				self:skinCheckButton{obj=this.characterSpecificButton}
+			end
 
-		self:removeNineSlice(this.BG)
-		this.BG.Bg:SetTexture(nil)
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, hdr=true, ofs=0}
-		if self.modBtns then
-			self:skinStdButton{obj=this.defaultsButton}
-			self:skinStdButton{obj=this.cancelButton}
-			self:skinStdButton{obj=this.okayButton}
-		end
-		if self.modBtnBs then
-			self:addButtonBorder{obj=this.phantomExtraActionButton, x2=1, y2=-1}
-		end
-		if self.modChkBtns then
-			self:skinCheckButton{obj=this.characterSpecificButton}
-		end
-
-		self:Unhook(this, "OnShow")
-	end)
-
-	-- tooltip
-	_G.C_Timer.After(0.1, function()
-		self:add2Table(self.ttList, _G.QuickKeybindTooltip)
-	end)
+			self:Unhook(this, "OnShow")
+		end)
+		-- tooltip
+		_G.C_Timer.After(0.1, function()
+			self:add2Table(self.ttList, _G.QuickKeybindTooltip)
+		end)
+	end
 
 end
 
