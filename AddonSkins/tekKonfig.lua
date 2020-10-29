@@ -1,53 +1,50 @@
 local aName, aObj = ...
 local _G = _G
--- This is a Framework
+-- These are Libraries
 
-local allHooked
-aObj.otherAddons.tekKonfig = function(self) -- v1-Beta
-	if not self.db.profile.MenuFrames then return end
+aObj.libsToSkin["tekKonfig-Button"] = function(self) -- v 5
+	if self.initialized["tekKonfig-Button"] then return end
+	self.initialized["tekKonfig-Button"] = true
 
-	if allHooked then return end
-
-	local tKAP = tKAP or _G.LibStub:GetLibrary("tekKonfig-AboutPanel", true)
-	if tKAP then
-		self:secureHook(tKAP, "OpenEditbox", function(this)
-			if not tKAP.editbox.sknd then
-				tKAP.editbox.sknd = true
-				tKAP.editbox:SetHeight(24)
-				local l, r, t, b = tKAP.editbox:GetTextInsets()
-				tKAP.editbox:SetTextInsets(l + 5, r + 5, t, b)
-				self:keepFontStrings(tKAP.editbox)
-				self:skinUsingBD2(tKAP.editbox)
-			end
-			tKAP.editbox:SetPoint("LEFT", -5, 0)
-		end)
-	end
-
-	local tKB = tKB or _G.LibStub:GetLibrary("tekKonfig-Button", true)
+	local tKB = _G.LibStub:GetLibrary("tekKonfig-Button", true)
 	if tKB then
-		self:rawHook(tKB, "new", function(parent, ...)
-			local btn = self.hooks[tKB].new(parent, ...)
+		self:RawHook(tKB, "new", function(...)
+			local btn = self.hooks[tKB].new(...)
 			self:skinStdButton{obj=btn}
 			return btn
-		end)
+		end, true)
+		tKB = nil
 	end
 
-	local tKCb = tKCb or _G.LibStub:GetLibrary("tekKonfig-Checkbox", true)
+end
+
+aObj.libsToSkin["tekKonfig-Checkbox"] = function(self) -- v 3
+	if self.initialized["tekKonfig-Checkbox"] then return end
+	self.initialized["tekKonfig-Checkbox"] = true
+
+	local tKCb = _G.LibStub:GetLibrary("tekKonfig-Checkbox", true)
 	if tKCb then
-		self:rawHook(tKCb, "new", function(parent, size, label, ...)
-			local cBtn = self.hooks[tKCb].new(parent, size, label, ...)
+		self:RawHook(tKCb, "new", function(...)
+			local cBtn = self.hooks[tKCb].new(...)
 			self:skinCheckButton{obj=cBtn}
 			return cBtn
 		end, true)
+		tKCb = nil
 	end
 
-	local tKDd = tKDd or _G.LibStub:GetLibrary("tekKonfig-Dropdown", true)
+end
+
+aObj.libsToSkin["tekKonfig-Dropdown"] = function(self) -- v 3
+	if self.initialized["tekKonfig-Dropdown"] then return end
+	self.initialized["tekKonfig-Dropdown"] = true
+
+	local tKDd = _G.LibStub:GetLibrary("tekKonfig-Dropdown", true)
 	if tKDd then
-		self:rawHook(tKDd, "new", function(parent, label, ...)
-			local frame, text, container, labeltext = self.hooks[tKDd].new(parent, label, ...)
+		self:RawHook(tKDd, "new", function(...)
+			local frame, text, container, labeltext = self.hooks[tKDd].new(...)
 			if not self.db.profile.TexturedDD then self:keepFontStrings(frame)
 			else
-				local leftTex, rightTex, icon, midTex = frame:GetRegions()
+				local leftTex, rightTex, _, midTex = frame:GetRegions()
 				leftTex:SetAlpha(0)
 				midTex:SetTexture(self.itTex)
 				midTex:SetPoint("LEFT", leftTex, "RIGHT", -5, 1)
@@ -58,44 +55,57 @@ aObj.otherAddons.tekKonfig = function(self) -- v1-Beta
 			end
 			if self.db.profile.DropDownButtons then
 				self:addSkinFrame{obj=frame, ft="a", aso={ng=true}, nb=true, x1=16, y1=-1, x2=-15, y2=5}
-				self:addButtonBorder{obj=self:getChild(frame, 1), es=12, ofs=-2}
+				if self.modBtnBs then
+					self:addButtonBorder{obj=self:getChild(frame, 1), es=12, ofs=-2}
+				end
 			end
 			return frame, text, container, labeltext
 		end, true)
+		tKDd = nil
 	end
 
-	-- tekKonfig-FadeIn
+end
 
-	local tKG = tKG or _G.LibStub:GetLibrary("tekKonfig-Group", true)
+-- tekKonfig-FadeIn
+
+aObj.libsToSkin["tekKonfig-Group"] = function(self) -- v 2
+	if self.initialized["tekKonfig-Group"] then return end
+	self.initialized["tekKonfig-Group"] = true
+
+	local tKG = _G.LibStub:GetLibrary("tekKonfig-Group", true)
 	if tKG then
-		self:rawHook(tKG, "new", function(parent, label, ...)
-			local box = self.hooks[tKG].new(parent, label, ...)
+		self:RawHook(tKG, "new", function(...)
+			local box = self.hooks[tKG].new(...)
 			self:addSkinFrame{obj=box, ft="a", nb=true}
 			return box
 		end, true)
+		tKG = nil
 	end
 
-	-- tekKonfig-Heading
-	-- tekKonfig-Scroll
+end
 
-	local tKS = tKS or _G.LibStub:GetLibrary("tekKonfig-Slider", true)
+-- tekKonfig-Heading
+-- tekKonfig-Scroll
+
+aObj.libsToSkin["tekKonfig-Slider"] = function(self) -- v 3
+	if self.initialized["tekKonfig-Slider"] then return end
+	self.initialized["tekKonfig-Slider"] = true
+
+	local tKS = _G.LibStub:GetLibrary("tekKonfig-Slider", true)
 	if tKS then
-		self:rawHook(tKS, "new", function(parent, label, lowvalue, highvalue, ...)
-			local slider, text, container, low, high = self.hooks[tKS].new(parent, label, lowvalue, highvalue, ...)
+		self:RawHook(tKS, "new", function(...)
+			local slider, text, container, low, high = self.hooks[tKS].new(...)
 			self:skinSlider{obj=slider, size=3}
 			return slider, text, container, low, high
 		end, true)
 		if tKS.newbare then
-			self:rawHook(tKS, "newbare", function(parent, ...)
-				local slider = self.hooks[tKS].newbare(parent, ...)
+			self:RawHook(tKS, "newbare", function(...)
+				local slider = self.hooks[tKS].newbare(...)
 				self:skinSlider{obj=slider, size=3}
 				return slider
 			end, true)
 		end
+		tKS = nil
 	end
-
-	-- tekKonfig-TopTab
-
-	if tKAP and tKB and tKCb and tKDd and tKG and tKS then allHooked = true end
 
 end

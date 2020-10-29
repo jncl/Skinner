@@ -2,15 +2,21 @@ local aName, aObj = ...
 local _G = _G
 -- This is a Library
 
-aObj.libsToSkin["MSA-DropDownMenu-1.0"] = function(self) -- v 2
+aObj.libsToSkin["MSA-DropDownMenu-1.0"] = function(self) -- v 7
 	if self.initialized["MSA-DropDownMenu"] then return end
 	self.initialized["MSA-DropDownMenu"] = true
 
-	_G.MSA_DropDownList1Backdrop:SetBackdrop(nil)
-	_G.MSA_DropDownList1MenuBackdrop:SetBackdrop(nil)
-	self:addSkinFrame{obj=_G.MSA_DropDownList1, ft="a", nb=true}
-	_G.MSA_DropDownList2Backdrop:SetBackdrop(nil)
-	_G.MSA_DropDownList2MenuBackdrop:SetBackdrop(nil)
-	self:addSkinFrame{obj=_G.MSA_DropDownList2, ft="a", nb=true}
+	local function skinDDL(ddlName)
+		aObj:removeBackdrop(_G[ddlName .. i .. "Backdrop"])
+		aObj:removeBackdrop(_G[ddlName .. i .. "MenuBackdrop"])
+		aObj:addSkinFrame{obj=_G[ddlName .. i], ft="a", kfs=true, nb=true}
+	end
+	skinDDL("MSA_DropDownList1")
+	skinDDL("MSA_DropDownList2")
+	self:SecureHook("MSA_DropDownMenu_CreateFrames", function(level, index)
+		for i = 1, _G.MSA_DROPDOWNMENU_MAXLEVELS do
+			skinDDL("MSA_DropDownList" .. i)
+		end
+	end)
 
 end

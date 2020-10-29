@@ -1,34 +1,27 @@
 local aName, aObj = ...
--- This is a Library
 local _G = _G
+-- This is a Library
 
 aObj.libsToSkin.ArkDewdrop = function(self) -- v 30109
 	if self.initialized.ArkDewdrop then return end
 	self.initialized.ArkDewdrop = true
 
 	local ArkDewdrop, libver = _G.LibStub:GetLibrary("ArkDewdrop", true)
-	local loopCnt = 127 -- not sure why it is, but it is
+	local loopCnt = 150 -- should be < 25, there is a bug in the AcquireLevel code
 
 	local sf, eb
 	local function skinArkDewdrop()
 		local frame
 		for i = 0, loopCnt do
 			frame = _G["ArkDewdrop" .. libver .. "Level" .. i]
-			if frame
-			and not	frame.sf
-			then
-				aObj:addSkinFrame{obj=frame, ft="a", kfs=true, nb=true}
+			if frame then
 				aObj:removeBackdrop(aObj:getChild(frame, 1))
+				if not frame.sf then
+					aObj:addSkinFrame{obj=frame, ft="a", kfs=true, nb=true}
+				end
 			end
 		end
 		frame = nil
-		-- handle reuse of level 127 frame name
-		local lc = aObj:getLastChild(_G.UIParent)
-		if not lc.sf then
-			aObj:addSkinFrame{obj=lc, ft="a", kfs=true, nb=true}
-			aObj:removeBackdrop(aObj:getChild(lc, 1))
-		end
-		lc = nil
 		local btn
 		-- hook the OnEnter script for the buttons and use that to skin from
 		for i = 1, loopCnt do
@@ -73,7 +66,7 @@ aObj.libsToSkin.ArkDewdrop = function(self) -- v 30109
 	end
 
 	-- Hook this to skin new ArkDewdrop components
-	self:SecureHook(ArkDewdrop, "Open", function(this, _)
+	self:SecureHook(ArkDewdrop, "Open", function(this, ...)
 		skinArkDewdrop()
 	end)
 

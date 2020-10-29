@@ -157,9 +157,6 @@ function aObj:AddonFrames()
 		self:checkAndRunAddOn(addonName, nil, skinFunc)
 	end
 
-	-- skin tekKonfig framework objects
-	if self.otherAddons["tekKonfig"] then self:checkAndRun("tekKonfig", "o") end
-
 	-- skin any Blizzard LoD frames or LoD addons that have already been loaded by other addons, waiting to allow them to be loaded
 	-- (Tukui does this for the PetJournal, other addons do it as well)
 	_G.C_Timer.After(0.2, function()
@@ -232,8 +229,6 @@ end
 
 function aObj:TRADE_SKILL_SHOW()
 	-- self:Debug("TRADE_SKILL_SHOW")
-
-	self:checkAndRunAddOn("TradeSkillDW")
 
 	if _G.Auctionator_Search then
 		self:skinStdButton{obj=_G.Auctionator_Search}

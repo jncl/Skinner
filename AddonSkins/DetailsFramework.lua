@@ -2,13 +2,12 @@ local aName, aObj = ...
 local _G = _G
 -- This is a Library
 
-aObj.libsToSkin["DetailsFramework-1.0"] = function(self) -- v 136
+aObj.libsToSkin["DetailsFramework-1.0"] = function(self) -- v 209
+	if self.initialized.DetailsFramework then return end
+	self.initialized.DetailsFramework = true
 
 	local DF = _G.LibStub("DetailsFramework-1.0", true)
 	if not DF then return end
-
-	if self.initialized.DetailsFramework then return end
-	self.initialized.DetailsFramework = true
 
 	-- addon ()
 
@@ -83,7 +82,7 @@ aObj.libsToSkin["DetailsFramework-1.0"] = function(self) -- v 136
 		-- aObj:Debug("DF CreateNewDropdownFrame: [%s, %s, %s]", this, ...)
 		local button = self.hooks[this].CreateNewDropdownFrame(this, ...)
 		self:addSkinFrame{obj=button.dropdownborder, ft="a", kfs=true, nb=true, ofs=4}
-		button.dropdownframe:GetScrollChild():SetBackdrop(nil)
+		selfaObj:removeBackdrop(button.dropdownframe:GetScrollChild())
 		return button
 	end, true)
 	-- dropdownbutton (parent, name)
@@ -109,7 +108,7 @@ aObj.libsToSkin["DetailsFramework-1.0"] = function(self) -- v 136
 	self:RawHook(DF, "CreateSimplePanel", function(this, ...)
 		-- aObj:Debug("DF CreateSimplePanel: [%s, %s, %s, %s, %s, %s, %s, %s]", this, ...)
 		local frame = self.hooks[this].CreateSimplePanel(this, ...)
-		frame.TitleBar:SetBackdrop(nil)
+		self:removeBackdrop(frame.TitleBar)
 		self:addSkinFrame{obj=frame, ft="a", kfs=true, nb=true, ofs=4}
 		frame.SetBackdrop = _G.nop
 		frame.SetBackdropColor = _G.nop
@@ -119,8 +118,25 @@ aObj.libsToSkin["DetailsFramework-1.0"] = function(self) -- v 136
 
 	-- 1pxpanel (parent, w, h, title, name, config, title_anchor, no_special_frame)
 
-	-- ShowPromptPanel ()
-	-- ShowTextPromptPanel ()
+	-- prompt_panel (message, func_true, func_false, no_repeated, width)
+	self:SecureHook(DF, "ShowPromptPanel", function(this, ...)
+		if not DF.prompt_panel then
+			DF.prompt_panel = DF.promtp_panel -- N.B. TYPO!!
+		end
+		self:removeBackdrop(DF.prompt_panel.TitleBar)
+		self:addSkinFrame{obj=DF.prompt_panel, ft="a", kfs=true, nb=true}
+
+		self:Unhook(this, "ShowPromptPanel")
+	end)
+
+	-- text_prompt_panel (message, callback)
+	self:SecureHook(DF, "ShowTextPromptPanel", function(this, ...)
+		self:removeBackdrop(DF.text_prompt_panel.TitleBar)
+		self:addSkinFrame{obj=DF.text_prompt_panel, ft="a", kfs=true, nb=true}
+
+		self:Unhook(this, "ShowTextPromptPanel")
+	end)
+
 	-- CreateOptionsButton ()
 	-- CreateFeedbackButton ()
 	-- ShowFeedbackPanel ()
@@ -167,7 +183,7 @@ aObj.libsToSkin["DetailsFramework-1.0"] = function(self) -- v 136
 	self:RawHook(DF, "NewTextEntry", function(this, ...)
 		-- aObj:Debug("DF NewTextEntry: [%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s]", this, ...)
 		local obj = self.hooks[this].NewTextEntry(this, ...)
-		obj.editbox:SetBackdrop(nil)
+		self:removeBackdrop(obj.editbox)
 		self:skinEditBox{obj=obj.editbox, regs={3, 12}, noHeight=true} -- 12 is the label
 		obj.editbox.SetBackdropColor = _G.nop
 		obj.editbox.SetBackdropBorderColor = _G.nop
@@ -185,17 +201,5 @@ aObj.libsToSkin["DetailsFramework-1.0"] = function(self) -- v 136
 		frame.SetBackdropBorderColor = _G.nop
 		return frame
 	end, true)
-
-	-- prompt_panel (message, func_true, func_false)
-	self:SecureHook(DF, "ShowPromptPanel", function(this, ...)
-		if not DF.prompt_panel then
-			DF.prompt_panel = DF.promtp_panel -- N.B. TYPO!!
-		end
-		DF.prompt_panel.TitleBar:SetBackdrop(nil)
-		-- DF.prompt_panel.button_true:SetBackdrop(nil)
-		-- DF.prompt_panel.button_false:SetBackdrop(nil)
-		self:addSkinFrame{obj=DF.prompt_panel, ft="a", kfs=true, nb=true}
-		self:Unhook(this, "ShowPromptPanel")
-	end)
 
 end
