@@ -3,7 +3,7 @@ local aName, aObj = ...
 local _G = _G
 local ftype = "opt"
 
-aObj.blizzFrames[ftype].SetupDefaults = function(self)
+aObj.SetupDefaults = function(self)
 
 	local defaults = { profile = {
 	-- General
@@ -213,7 +213,7 @@ aObj.blizzFrames[ftype].SetupDefaults = function(self)
 
 end
 
-aObj.blizzFrames[ftype].SetupOptions = function(self)
+aObj.SetupOptions = function(self)
 
 	local db = self.db.profile
 	local dflts = self.db.defaults.profile
@@ -2039,6 +2039,12 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 		end
 		-- refresh panel
 		_G.InterfaceOptionsFrame_OpenToCategory(self.optionsFrame[self.L["Gradient"]])
+	end
+	self.optionsFrame[self.L["Disabled Skins"]].default = function()
+		db.DisableAllAS = false
+		_G.wipe(db.DisabledSkins)
+		-- refresh panel
+		_G.InterfaceOptionsFrame_OpenToCategory(self.optionsFrame[self.L["Disabled Skins"]])
 	end
 
 	-- Slash command handler

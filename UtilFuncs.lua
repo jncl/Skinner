@@ -269,13 +269,14 @@ function aObj:changeTandC(obj, tex)
 
 end
 
+local hadWarning = {}
 function aObj:checkAndRun(funcName, funcType, LoD, quiet)
 --@alpha@
 	_G.assert(funcName, "Unknown functionName checkAndRun\n" .. _G.debugstack(2, 3, 2))
 	_G.assert(funcType, "Unknown functionType checkAndRun\n" .. _G.debugstack(2, 3, 2))
 --@end-alpha@
 
-	aObj:Debug2("checkAndRun: [%s, %s, %s, %s]", funcName, funcType, LoD, quiet)
+	self:Debug2("checkAndRun: [%s, %s, %s, %s]", funcName, funcType, LoD, quiet)
 
 	-- handle in combat
 	if _G.InCombatLockdown() then
@@ -288,6 +289,7 @@ function aObj:checkAndRun(funcName, funcType, LoD, quiet)
 	if funcType     == "s" then tObj = self
 	elseif funcType == "l" then tObj = self.libsToSkin
 	elseif funcType == "o" then tObj = self.otherAddons
+	elseif funcType == "opt" then tObj = self
 	else tObj = LoD and self.blizzLoDFrames[funcType] or self.blizzFrames[funcType]
 	end
 
@@ -295,14 +297,19 @@ function aObj:checkAndRun(funcName, funcType, LoD, quiet)
 	if (funcType == "n" and self.prdb.DisableAllNPC)
 	or (funcType == "p" and self.prdb.DisableAllP)
 	or (funcType == "u" and self.prdb.DisableAllUI)
-	or (funcType == "s" and (self.prdb.DisabledSkins[funcName] or self.prdb.DisableAllAS))
-	or (funcType == "l" and (self.prdb.DisabledSkins[funcName] or self.prdb.DisableAllAS))
+	or (funcType == "s" and (self.prdb.DisabledSkins[funcName] or self.prdb.DisabledSkins[funcName .. " (LoD)"] or self.prdb.DisableAllAS))
+	or (funcType == "l" and (self.prdb.DisabledSkins[funcName .. " (Lib)"] or self.prdb.DisableAllAS))
 	or (funcType == "o" and (self.prdb.DisabledSkins[funcName] or self.prdb.DisableAllAS))
 	then
-		tObj[funcName] = nil
+		if self.prdb.Warnings
+		and not hadWarning[funcName]
+		then
+			self:CustomPrint(1, 0, 0, funcName, "not skinned, flagged as disabled (c&R)")
+			hadWarning[funcName] = true
+		end
 		return
 	else
-		aObj:Debug2("checkAndRun #2: [%s]", _G.type(tObj[funcName]))
+		self:Debug2("checkAndRun #2: [%s]", _G.type(tObj[funcName]))
 		if _G.type(tObj[funcName]) == "function" then
 			return safecall(funcName, tObj[funcName], nil, quiet)
 		else
@@ -319,7 +326,7 @@ function aObj:checkAndRunAddOn(addonName, LoD, addonFunc)
 	_G.assert(addonName, "Unknown object checkAndRunAddOn\n" .. _G.debugstack(2, 3, 2))
 --@end-alpha@
 
-	-- self:Debug("checkAndRunAddOn#1: [%s, %s, %s, %s]", addonName, LoD, addonFunc, _G.type(addonFunc))
+	self:Debug2("checkAndRunAddOn#1: [%s, %s, %s, %s]", addonName, LoD, addonFunc, _G.type(addonFunc))
 
 	-- handle in combat
 	if _G.InCombatLockdown() then
@@ -334,16 +341,20 @@ function aObj:checkAndRunAddOn(addonName, LoD, addonFunc)
 
 	-- don't skin any Addons whose skins are flagged as disabled
 	if self.prdb.DisabledSkins[addonName]
+	or self.prdb.DisabledSkins[addonName .. " (LoD)"]
 	or self.prdb.DisableAllAS
 	then
-		if self.prdb.Warnings then
+		if self.prdb.Warnings
+		and not hadWarning[addonName]
+		then
 			self:CustomPrint(1, 0, 0, addonName, "not skinned, flagged as disabled (c&RA)")
+			hadWarning[addonName] = true
 		end
 		aFunc = nil
 		return
 	end
 
-	-- self:Debug("checkAndRunAddOn #2: [%s, %s, %s, %s]", _G.IsAddOnLoaded(addonName), _G.IsAddOnLoadOnDemand(addonName), aFunc, _G.type(aFunc))
+	self:Debug2("checkAndRunAddOn #2: [%s, %s, %s, %s]", _G.IsAddOnLoaded(addonName), _G.IsAddOnLoadOnDemand(addonName), aFunc, _G.type(aFunc))
 
 	if not _G.IsAddOnLoaded(addonName) then
 		-- deal with Addons under the control of an LoadManager
