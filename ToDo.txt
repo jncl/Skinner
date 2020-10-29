@@ -27,14 +27,8 @@ ToDos
 
 ≈	O	Add checks for Button state as required
 
-√	I	WarCampaignsComplete, reported by Shimiya, 16.10.20
+	I	ArkDewdrop, reported by Shiv_G3, 28.10.20
+√		- Skinning spurious frames in a mistaken attempt to fix another issue :(
 
-	I	PetTracker, reported by Moxieface, 27.10.20
-≈		- Skinner\AddonSkins\PetTracker-9.0.1.lua:35: attempt to index field 'Header' (a nil value)
-
-	I/B	reported by MacallanTwoFive,  28.10.20
-√		- Skinner\UtilFuncs.lua:794: attempt to index local 'obj' (a nil value)
-	[string "@Skinner\UtilFuncs.lua"]:794: in function `keepRegions'
-	[string "@Skinner\MainFuncs.lua"]:1235: in function <Skinner\MainFuncs.lua:1182>
-	[string "@Skinner\MainFuncs.lua"]:1288: in function `skinTabs'
-	[string "@Skinner\NPCFrames.lua"]:589: in function <Skinner\NPCFrames.lua:587>
+	I	SavedInstances, reported byMoxieface, 29.10.20
+√		- displays 'horrid' transparent tooltips, actually a DetachHeader is added
