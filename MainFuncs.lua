@@ -227,9 +227,6 @@ local function __addSkinFrame(opts)
 	-- remove the object's Backdrop if it has one
 	aObj:removeBackdrop(opts.obj)
 
-	-- store frame obj, if required
-	if opts.ft then aObj:add2Table(aObj.gradFrames[opts.ft], opts.obj) end
-
 	-- make all textures transparent, if required
 	if opts.kfs
 	or opts.hat
@@ -365,35 +362,28 @@ function aObj:applyGradient(obj, fh, invert, rotate)
 
 	-- don't apply a gradient if required
 	if not self.prdb.Gradient.char then
-		for i = 1, #self.gradFrames["p"] do
-			if self.gradFrames["p"][i] == obj then return end
-		end
+		if self.gradFrames.p[obj] then return end
 	end
 	if not self.prdb.Gradient.ui then
-		for i = 1, #self.gradFrames["u"] do
-			if self.gradFrames["u"][i] == obj then return end
-		end
+		if self.gradFrames.u[obj] then return end
 	end
 	if not self.prdb.Gradient.npc then
-		for i = 1, #self.gradFrames["n"] do
-			if self.gradFrames["n"][i] == obj then return end
-		end
+		if self.gradFrames.n[obj] then return end
 	end
 	if not self.prdb.Gradient.skinner then
-		for i = 1, #self.gradFrames["s"] do
-			if self.gradFrames["s"][i] == obj then return end
-		end
+		if self.gradFrames.s[obj] then return end
+	end
+	if not self.prdb.Gradient.addon then
+		if self.gradFrames.a[obj] then return end
 	end
 
 	invert = invert or self.prdb.Gradient.invert
 	rotate = rotate or self.prdb.Gradient.rotate
 
-	if not obj.tfade then
-		obj.tfade = obj:CreateTexture(nil, "BORDER", nil, -1)
-		obj.tfade:SetTexture(self.gradientTex)
-		obj.tfade:SetBlendMode("ADD")
-		obj.tfade:SetGradientAlpha(self:getGradientInfo(invert, rotate))
-	end
+	obj.tfade = obj.tfade or obj:CreateTexture(nil, "BORDER", nil, -1)
+	obj.tfade:SetTexture(self.gradientTex)
+	obj.tfade:SetBlendMode("ADD")
+	obj.tfade:SetGradientAlpha(self:getGradientInfo(invert, rotate))
 
 	if self.prdb.FadeHeight.enable
 	and (self.prdb.FadeHeight.force or not fh)
@@ -500,7 +490,9 @@ local function __applySkin(opts)
 	end
 
 	-- store frame obj, if required
-	if opts.ft then aObj:add2Table(aObj.gradFrames[opts.ft], opts.obj) end
+	if opts.ft then
+		aObj.gradFrames[opts.ft][opts.obj] = true
+	end
 
 	-- make all textures transparent, if required
 	if opts.kfs then aObj:keepFontStrings(opts.obj) end

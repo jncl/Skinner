@@ -49,7 +49,7 @@ aObj.blizzFrames[ftype].SetupDefaults = function(self)
 		GradientMax                = {r = 0.25, g = 0.25, b = 0.25, a = 1},
 		BagginsBBC                 = {r = 0.5, g = 0.5, b = 0.5, a = 1},
 	-- Gradient
-		Gradient                   = {enable = true, invert = false, rotate = false, char = true, ui = true, npc = true, skinner = true, texture = "Blizzard ChatFrame Background"},
+		Gradient                   = {enable = true, invert = false, rotate = false, char = true, ui = true, npc = true, skinner = true, addon = true, texture = "Blizzard ChatFrame Background"},
 	-- Modules (populated below)
 	-- NPC Frames
 		DisableAllNPC              = false,
@@ -756,6 +756,13 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 					width = "double",
 					name = self.L["Enable Skinner Frames Gradient"],
 					desc = self.L["Enable the Gradient Effect for the Skinner Frames"],
+				},
+				addon = {
+					type = "toggle",
+					order = 9,
+					width = "double",
+					name = self.L["Enable AddOn Frames Gradient"],
+					desc = self.L["Enable the Gradient Effect for AddOn Frames"],
 				},
 			},
 		},
