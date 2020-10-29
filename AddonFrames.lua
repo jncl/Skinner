@@ -94,8 +94,10 @@ aObj.otherAddons = track(aObj.otherAddons)
 --@end-alpha@
 local lodFrames = {
 	"DoTimer_Options",
-	"GarrisonMissionManager", "GuildBankSearch",
-	"LilSparkysWorkshop", "Ludwig_Window",
+	"GarrisonMissionManager",
+	"GuildBankSearch",
+	"LilSparkysWorkshop",
+	"Ludwig_Window",
 	"PetJournalEnhanced",
 }
 aObj.lodAddons = {}
@@ -110,8 +112,6 @@ aObj.lodAddons = track(aObj.lodAddons)
 lodFrames = nil
 
 local function skinLibs()
-
-	-- skin library objects
 	for libName, skinFunc in _G.pairs(aObj.libsToSkin) do
 		if _G.LibStub:GetLibrary(libName, true) then
 			if _G.type(skinFunc) == "function" then
@@ -125,23 +125,18 @@ local function skinLibs()
 			end
 		end
 	end
-
 end
 local function skinBLoD(addon)
-
-	local bLoD
 	for fType, fTab in _G.pairs(aObj.blizzLoDFrames) do
 		for fName, _ in _G.pairs(fTab) do
-			bLoD = "Blizzard_" .. fName
-			if addon and addon == bLoD
-			or _G.IsAddOnLoaded(bLoD)
+			if addon
+			and addon == "Blizzard_" .. fName
+			or _G.IsAddOnLoaded("Blizzard_" .. fName)
 			then
 				aObj:checkAndRun(fName, fType, true)
 			end
 		end
 	end
-	bLoD = nil
-
 end
 function aObj:AddonFrames()
 --@alpha@

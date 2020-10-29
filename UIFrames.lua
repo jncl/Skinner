@@ -3333,7 +3333,7 @@ aObj.blizzFrames[ftype].HelpTip = function(self)
 end
 
 -- These functions are used by the InterfaceOptions & SystemOptions functions
-local cNam
+local checkChild, skinKids, cName
 function checkChild(child)
 	cName = child:GetName()
 	if aObj:isDropDown(child) then
