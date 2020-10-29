@@ -1,3 +1,19 @@
+beta9.36401.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Beta changes
+	Bugfix for BindingsUI on Classic
+	Code tidy
+	Updated Disabled skin option panel to show libraries
+	Updated Gradient Handling
+	Updated TradeSkillUI in ClassicSupport skin
+	Updated InterfaceOptions skin code
+	Updated ArkDewdrop, DetailsFramework, MSA_DropDownMenu, tekKonfig & TradeSkillDW skins
+	Skinned SavedInstances
+	Obsoleted DropDownMenu, Enchantrix, Enchantrix-Barker & ReagentMaker skins
+
 beta9.36372.6
 Jncl:
 	ToDo.txt
