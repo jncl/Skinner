@@ -747,89 +747,89 @@ aObj.blizzFrames[ftype].CharacterFrames = function(self)
 			skinSlot(_G.PaperDollItemsFrame.WeaponSlots[i])
 		end
 
-		self:SecureHookScript(_G.GearManagerDialogPopup, "OnShow", function(this)
-			self:adjHeight{obj=_G.GearManagerDialogPopupScrollFrame, adj=20}
-			self:skinSlider{obj=_G.GearManagerDialogPopupScrollFrame.ScrollBar, size=3, rt="background"}
-			self:removeRegions(this.BorderBox, {1, 2, 3, 4, 5, 6, 7, 8})
-			self:adjHeight{obj=this, adj=20}
-			for i = 1, #this.buttons do
-				this.buttons[i]:DisableDrawLayer("BACKGROUND")
-				self:addButtonBorder{obj=this.buttons[i]}
-			end
-			self:skinEditBox{obj=_G.GearManagerDialogPopupEditBox, regs={6}}
-			self:addSkinFrame{obj=this, ft=ftype, kfs=true, x1=4, y1=-2, x2=-1, y2=3}
-			if self.modBtns then
-				self:skinStdButton{obj=_G.GearManagerDialogPopupCancel}
-				self:skinStdButton{obj=_G.GearManagerDialogPopupOkay}
-				self:SecureHook("GearManagerDialogPopupOkay_Update", function()
-					self:clrBtnBdr(_G.GearManagerDialogPopupOkay)
-				end)
-			end
+		self:Unhook(this, "OnShow")
+	end)
 
-			self:Unhook(this, "OnShow")
-		end)
-
-		self:SecureHookScript(_G.TokenFrame, "OnShow", function(this) -- a.k.a Currency Tab
-			self:keepFontStrings(this)
-			self:skinSlider{obj=_G.TokenFrameContainerScrollBar, wdth=-4}
-			-- remove background & header textures
-			for i = 1, #_G.TokenFrameContainer.buttons do
-				self:removeRegions(_G.TokenFrameContainer.buttons[i], {1, 6, 7, 8})
-			end
-			-- TokenFramePopup
-			_G.TokenFramePopup.Border:DisableDrawLayer("BACKGROUND")
-			self:skinCheckButton{obj=_G.TokenFramePopupInactiveCheckBox}
-			self:skinCheckButton{obj=_G.TokenFramePopupBackpackCheckBox}
-			self:addSkinFrame{obj=_G.TokenFramePopup,ft=ftype, kfs=true, y1=-6, x2=-6, y2=6}
-
-			self:Unhook(_G.TokenFrame, "OnShow")
-		end)
-
-		self:SecureHookScript(_G.ReputationFrame, "OnShow", function(this)
-			self:keepFontStrings(this)
-			for i = 1, _G.NUM_FACTIONS_DISPLAYED do
-				self:skinExpandButton{obj=_G["ReputationBar" .. i .. "ExpandOrCollapseButton"], sap=true}
-				_G["ReputationBar" .. i .. "Background"]:SetAlpha(0)
-				_G["ReputationBar" .. i .. "ReputationBarLeftTexture"]:SetAlpha(0)
-				_G["ReputationBar" .. i .. "ReputationBarRightTexture"]:SetAlpha(0)
-				self:skinStatusBar{obj=_G["ReputationBar" .. i .. "ReputationBar"], fi=0}
-			end
-			if self.modBtns then
-				-- hook to manage changes to button textures
-				self:SecureHook("ReputationFrame_Update", function()
-					for i = 1, _G.NUM_FACTIONS_DISPLAYED do
-						if _G["ReputationBar" .. i].isCollapsed then
-							_G["ReputationBar" .. i .. "ExpandOrCollapseButton"]:SetText("+")
-						else
-							_G["ReputationBar" .. i .. "ExpandOrCollapseButton"]:SetText("-")
-						end
-						if _G["ReputationBar" .. i .. "ExpandOrCollapseButton"]:IsShown() then
-							_G["ReputationBar" .. i .. "ExpandOrCollapseButton"].sb:Show()
-						else
-							_G["ReputationBar" .. i .. "ExpandOrCollapseButton"].sb:Hide()
-						end
-					end
-				end)
-			end
-			self:skinSlider{obj=_G.ReputationListScrollFrame.ScrollBar, size=3, rt="background"}
-			-- ReputationDetailFrame
-			self:removeNineSlice(_G.ReputationDetailFrame.Border)
-			if self.modBtns then
-				self:skinCloseButton{obj=_G.ReputationDetailCloseButton}
-			end
-			if self.modChkBtns then
-				self:skinCheckButton{obj=_G.ReputationDetailAtWarCheckBox}
-				self:skinCheckButton{obj=_G.ReputationDetailInactiveCheckBox}
-				self:skinCheckButton{obj=_G.ReputationDetailMainScreenCheckBox}
-			end
-			self:addSkinFrame{obj=_G.ReputationDetailFrame, ft=ftype, kfs=true, x1=6, y1=-6, x2=-6, y2=6}
-
-			self:Unhook(this, "OnShow")
-		end)
-		self:checkShown(_G.ReputationFrame)
+	self:SecureHookScript(_G.GearManagerDialogPopup, "OnShow", function(this)
+		self:adjHeight{obj=_G.GearManagerDialogPopupScrollFrame, adj=20}
+		self:skinSlider{obj=_G.GearManagerDialogPopupScrollFrame.ScrollBar, size=3, rt="background"}
+		self:removeRegions(this.BorderBox, {1, 2, 3, 4, 5, 6, 7, 8})
+		self:adjHeight{obj=this, adj=20}
+		for i = 1, #this.buttons do
+			this.buttons[i]:DisableDrawLayer("BACKGROUND")
+			self:addButtonBorder{obj=this.buttons[i]}
+		end
+		self:skinEditBox{obj=_G.GearManagerDialogPopupEditBox, regs={6}}
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true, x1=4, y1=-2, x2=-1, y2=3}
+		if self.modBtns then
+			self:skinStdButton{obj=_G.GearManagerDialogPopupCancel}
+			self:skinStdButton{obj=_G.GearManagerDialogPopupOkay}
+			self:SecureHook("GearManagerDialogPopupOkay_Update", function()
+				self:clrBtnBdr(_G.GearManagerDialogPopupOkay)
+			end)
+		end
 
 		self:Unhook(this, "OnShow")
 	end)
+
+	self:SecureHookScript(_G.TokenFrame, "OnShow", function(this) -- a.k.a Currency Tab
+		self:keepFontStrings(this)
+		self:skinSlider{obj=_G.TokenFrameContainerScrollBar, wdth=-4}
+		-- remove background & header textures
+		for i = 1, #_G.TokenFrameContainer.buttons do
+			self:removeRegions(_G.TokenFrameContainer.buttons[i], {1, 6, 7, 8})
+		end
+		-- TokenFramePopup
+		_G.TokenFramePopup.Border:DisableDrawLayer("BACKGROUND")
+		self:skinCheckButton{obj=_G.TokenFramePopupInactiveCheckBox}
+		self:skinCheckButton{obj=_G.TokenFramePopupBackpackCheckBox}
+		self:addSkinFrame{obj=_G.TokenFramePopup,ft=ftype, kfs=true, y1=-6, x2=-6, y2=6}
+
+		self:Unhook(_G.TokenFrame, "OnShow")
+	end)
+
+	self:SecureHookScript(_G.ReputationFrame, "OnShow", function(this)
+		self:keepFontStrings(this)
+		for i = 1, _G.NUM_FACTIONS_DISPLAYED do
+			self:skinExpandButton{obj=_G["ReputationBar" .. i .. "ExpandOrCollapseButton"], sap=true}
+			_G["ReputationBar" .. i .. "Background"]:SetAlpha(0)
+			_G["ReputationBar" .. i .. "ReputationBarLeftTexture"]:SetAlpha(0)
+			_G["ReputationBar" .. i .. "ReputationBarRightTexture"]:SetAlpha(0)
+			self:skinStatusBar{obj=_G["ReputationBar" .. i .. "ReputationBar"], fi=0}
+		end
+		if self.modBtns then
+			-- hook to manage changes to button textures
+			self:SecureHook("ReputationFrame_Update", function()
+				for i = 1, _G.NUM_FACTIONS_DISPLAYED do
+					if _G["ReputationBar" .. i].isCollapsed then
+						_G["ReputationBar" .. i .. "ExpandOrCollapseButton"]:SetText("+")
+					else
+						_G["ReputationBar" .. i .. "ExpandOrCollapseButton"]:SetText("-")
+					end
+					if _G["ReputationBar" .. i .. "ExpandOrCollapseButton"]:IsShown() then
+						_G["ReputationBar" .. i .. "ExpandOrCollapseButton"].sb:Show()
+					else
+						_G["ReputationBar" .. i .. "ExpandOrCollapseButton"].sb:Hide()
+					end
+				end
+			end)
+		end
+		self:skinSlider{obj=_G.ReputationListScrollFrame.ScrollBar, size=3, rt="background"}
+		-- ReputationDetailFrame
+		self:removeNineSlice(_G.ReputationDetailFrame.Border)
+		if self.modBtns then
+			self:skinCloseButton{obj=_G.ReputationDetailCloseButton}
+		end
+		if self.modChkBtns then
+			self:skinCheckButton{obj=_G.ReputationDetailAtWarCheckBox}
+			self:skinCheckButton{obj=_G.ReputationDetailInactiveCheckBox}
+			self:skinCheckButton{obj=_G.ReputationDetailMainScreenCheckBox}
+		end
+		self:addSkinFrame{obj=_G.ReputationDetailFrame, ft=ftype, kfs=true, x1=6, y1=-6, x2=-6, y2=6}
+
+		self:Unhook(this, "OnShow")
+	end)
+	self:checkShown(_G.ReputationFrame)
 
 end
 
