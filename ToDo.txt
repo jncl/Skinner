@@ -23,9 +23,6 @@ ToDos
 
 ?	O	Skin CommentatorTeamDisplay
 
-≈	O	Make sure all buttons borders have the correct border colour, e.g. "gold"/"grey"
+≈	O	Make sure all buttons borders have the correct border colour, e.g. "gold"
 
 ≈	O	Add checks for Button state as required
-
-	I	SavedInstances, reported by Moxieface, 29.10.20
-√		- has transparent skin
