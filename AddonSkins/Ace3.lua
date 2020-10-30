@@ -4,7 +4,7 @@ local _G = _G
 
 aObj.ItemPimper = true -- to stop IP skinning its frame
 
-local AceGUI = _G.LibStub:GetLibrary("AceAddon-3.0"):GetAddon("AceGUI-3.0", true)
+local AceGUI = _G.LibStub:GetLibrary("AceGUI-3.0", true)
 local objectsToSkin = {}
 if AceGUI then
 	aObj:RawHook(AceGUI, "Create", function(this, objType)
