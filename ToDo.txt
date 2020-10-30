@@ -27,13 +27,5 @@ ToDos
 
 ≈	O	Add checks for Button state as required
 
-	I	MSA-DropDownMenu, reported by Shiv_G3, 29.10.230
-√		- ...rfaceSkinner\AddonSkins\MSA-DropDownMenu.lua:10: attempt to concatenate global 'i' (a nil value)
-		[string "@Skinner\AddonSkins\MSA-DropDownMenu.lua"]:14: in function <...rfaceSkinner\AddonSkins\MSA-DropDownMenu.lua:5>
-
-	I	Disabled Skins, reported by Shiv_G3, 29.10.20
-√		 - disabling Libs doesn't actually work
-
-√	I	DetailsFramework, reported by Shiv_G3, 29.10.230
-
-√	N 	WorldQuestTracker, reported by the therealdeerez, 29.10.20
+	I	SavedInstances, reported by Moxieface, 29.10.20
+√		- has transparent skin
