@@ -346,13 +346,11 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 	end
 	local mlTabSkin = aObj.skinTPLs.new("tabs", {fType=ftype, numTabs=2, ignoreSize=true, lod=true, regions={7, 8, 9}, track=false})
 	function skinMissionList(ml, tabOfs)
-
-		aObj:addFrameBorder{obj=ml, ft=ftype, x1=1, y1=1, x2=-2, y2=2}
-
 		ml:DisableDrawLayer("BORDER")
 		ml.MaterialFrame:DisableDrawLayer("BACKGROUND")
-
+		aObj:addFrameBorder{obj=ml, ft=ftype, x1=1, y1=1, x2=-2, y2=2}
 		if not isShadowlands then
+			aObj:skinSlider{obj=ml.listScroll.scrollBar, wdth=-4}
 			-- tabs
 			mlTabSkin.obj = ml
 			mlTabSkin.prefix = ml:GetName()
@@ -370,7 +368,6 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 					end
 				end)
 			end
-			aObj:skinSlider{obj=ml.listScroll.scrollBar, wdth=-4}
 		else
 			ml.MaterialFrame.LeftFiligree:SetTexture(nil)
 			ml.MaterialFrame.RightFiligree:SetTexture(nil)
