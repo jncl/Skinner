@@ -292,18 +292,22 @@ aObj.blizzLoDFrames[ftype].AzeriteRespecUI = function(self)
 	if not self.prdb.AzeriteRespecUI or self.initialized.AzeriteRespecUI then return end
 	self.initialized.AzeriteRespecUI = true
 
-	self.modUIBtns:addButtonBorder{obj=_G.AzeriteRespecFrame.ItemSlot, clr="grey"} -- use module function
-	_G.AzeriteRespecFrame.ButtonFrame:DisableDrawLayer("BORDER")
-	self:removeMagicBtnTex(_G.AzeriteRespecFrame.ButtonFrame.AzeriteRespecButton)
-	_G.AzeriteRespecFrame.ButtonFrame.MoneyFrameEdge:DisableDrawLayer("BACKGROUND")
-	_G.AzeriteRespecFrame.ButtonFrame.AzeriteRespecButton:SetPoint("BOTTOMRIGHT", -6, 5)
-	self:addSkinFrame{obj=_G.AzeriteRespecFrame, ft=ftype, kfs=true}
-	if self.modBtns then
-		self:skinStdButton{obj=_G.AzeriteRespecFrame.ButtonFrame.AzeriteRespecButton}
-		self:SecureHook(_G.AzeriteRespecFrame, "UpdateAzeriteRespecButtonState", function(this)
-			self:clrBtnBdr(this.ButtonFrame.AzeriteRespecButton)
-		end)
-	end
+	self:SecureHookScript(_G.AzeriteRespecFrame, "OnShow", function(this)
+		self.modUIBtns:addButtonBorder{obj=this.ItemSlot, clr="grey"} -- use module function
+		this.ButtonFrame:DisableDrawLayer("BORDER")
+		self:removeMagicBtnTex(this.ButtonFrame.AzeriteRespecButton)
+		this.ButtonFrame.MoneyFrameEdge:DisableDrawLayer("BACKGROUND")
+		this.ButtonFrame.AzeriteRespecButton:SetPoint("BOTTOMRIGHT", -6, 5)
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true}
+		if self.modBtns then
+			self:skinStdButton{obj=this.ButtonFrame.AzeriteRespecButton}
+			self:SecureHook(this, "UpdateAzeriteRespecButtonState", function(this)
+				self:clrBtnBdr(this.ButtonFrame.AzeriteRespecButton)
+			end)
+		end
+
+		self:Unhook(this, "OnShow")
+	end)
 
 end
 
