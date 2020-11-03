@@ -7,7 +7,7 @@ ToDos
 	¶ is Alt+7	    - indicates localisation changes required
 	S/N/I/U/O/C/B	- Skin request/New Version/Issue(Bug)/Unobsolete skin/Other changes/Classic/Beta
 
-≈	O	Rework how Addon skins are handled
+≈	O	Rework how AddOn skins are handled
 		- replace table in AddonFrames with individual entries in each skin file
 
 ?	O	Make role icons square with a button border
@@ -26,3 +26,21 @@ ToDos
 ≈	O	Make sure all buttons borders have the correct border colour, e.g. "gold"
 
 ≈	O	Add checks for Button state as required
+
+√	O 	Refactor Tab skinning code in NPC, Player & UI Frames
+
+≈	O	Refactor Tab skinning in AddOn skins
+
+	I	Game Menu, reported by Fakelessgaming, 30.10.20
+?		-  Getting slight button overlap on game manu at BETA. Border scale doesn't affetc it at all (but it works on retail) this is only on beta.
+
+	I	MinimalArchaeology, reported by MacallanTwoFive, 02.11.20
+√		- ...aceSkinner\AddonSkins\MinimalArchaeology-9.0.3.3.lua:51: Usage: SecureHook([object], method, [handler]): Attempting to hook a non existing target
+
+√	S	mOnArs WardrobeHelper, requested by MacallanTwoFive, 02.11.20
+
+	I	MoveAnything, reported by neoseph82, 02.11.20
+?		- Skinner\AddonSkins\MoveAnything-18.0.3.lua:156: attempt to call method 'ClearBackdrop' (a nil value)
+
+	I	Azeroth Auto Pilot, reported by Acivien, 03.11.20
+√		-  ...aceSkinner\AddonSkins\Azeroth Auto Pilot.lua:8: attempt to index field 'Banners' (a nil value)
