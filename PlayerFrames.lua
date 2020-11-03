@@ -3984,7 +3984,7 @@ aObj.blizzLoDFrames[ftype].RaidUI = function(self)
 		for i = 1, _G.NUM_RAID_PULLOUT_FRAMES do
 			if not _G["RaidPullout" .. i].sf then
 				aObj:skinDropDown{obj=_G["RaidPullout" .. i .. "DropDown"]}
-				_G["RaidPullout" .. i .. "MenuBackdrop"]:ClearBackdrop()
+				aObj:removeBackdrop(_G["RaidPullout" .. i .. "MenuBackdrop"])
 				aObj:addSkinFrame{obj=_G["RaidPullout" .. i], ft=ftype, kfs=true, x1=3, y1=-1, x2=-1, y2=1}
 			end
 		end

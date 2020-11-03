@@ -1502,18 +1502,16 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 			skinTabs(this)
 		end)
 		local function skinCB(cBox)
-			if _G[cBox].ClearBackdrop then
-				_G[cBox]:ClearBackdrop()
-			end
-			if self.modChkBtns then
-				if _G[cBox .. "Check"] then
-					aObj:skinCheckButton{obj=_G[cBox .. "Check"]}
-				elseif _G[cBox] then
-					aObj:skinCheckButton{obj=_G[cBox]}
+			aObj:removeBackdrop(_G[cBox])
+			if aObj.modChkBtns then
+				local box
+				for _, suffix in pairs{"", "Check", "ColorClasses"} do
+					box = _G[box .. suffix]
+					if box then
+						aObj:skinCheckButton{obj=box}
+					end
 				end
-				if _G[cBox .. "ColorClasses"] then
-					aObj:skinCheckButton{obj=_G[cBox .. "ColorClasses"]}
-				end
+				box = nil
 			end
 		end
 		--	Chat Settings
@@ -1537,7 +1535,7 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 				local box
 				for i = 1, #frame.checkBoxTable do
 					box = _G[frame:GetName() .. "CheckBox" .. i]
-					box:ClearBackdrop()
+					self:removeBackdrop(box)
 					if self.modChkBtns then
 						 self:skinCheckButton{obj=box.CheckButton}
 					end
@@ -1548,7 +1546,7 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 				local box
 				for i = 1, #frame.boxTable do
 					box = _G[frame:GetName() .. "Box" .. i]
-					box:ClearBackdrop()
+					self:removeBackdrop(box)
 					if self.modBtns then
 						self:skinStdButton{obj=box.Button, ofs=0}
 					end
@@ -1624,7 +1622,7 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 		end
 		-- Colors
 		for i = 1, #_G.COMBAT_CONFIG_UNIT_COLORS do
-			_G["CombatConfigColorsUnitColorsSwatch" .. i]:ClearBackdrop()
+			self:removeBackdrop(_G["CombatConfigColorsUnitColorsSwatch" .. i])
 		end
 		self:addFrameBorder{obj=_G.CombatConfigColorsUnitColors, ft=ftype}
 		self:addFrameBorder{obj=_G.CombatConfigColorsHighlighting, ft=ftype}
@@ -6314,11 +6312,10 @@ aObj.blizzFrames[ftype].UIDropDownMenu = function(self)
 	local function skinDDMenu(frame)
 		if not aObj.isClsc then
 			aObj:removeNineSlice(frame.Border)
-			_G[frame:GetName() .. "MenuBackdrop"]:ClearBackdrop()
 		else
-			_G[frame:GetName() .. "Backdrop"]:SetBackdrop(nil)
-			_G[frame:GetName() .. "MenuBackdrop"]:SetBackdrop(nil)
+			aObj:removeBackdrop(_G[frame:GetName() .. "Backdrop"])
 		end
+		aObj:removeBackdrop(_G[frame:GetName() .. "MenuBackdrop"])
 		aObj:addSkinFrame{obj=frame, ft=ftype, kfs=true, nb=true, ofs=-2}
 	end
 
@@ -6653,7 +6650,7 @@ then
 				aObj:addSkinFrame{obj=frame, ft=ftype, kfs=true, nb=true, ofs=ofs or 4, aso={bbclr="blue"}}
 			end
 			if frame.Border then
-				frame.Border:ClearBackdrop()
+				self:removeBackdrop(frame.Border)
 			end
 		end
 
@@ -6661,7 +6658,7 @@ then
 		for _, name in _G.pairs{"Confused", "ReportBug"} do
 			aObj:addSkinButton{obj=PTR_IR[name], aso={bbclr="blue"}}
 			PTR_IR[name]:SetPushedTexture(nil)
-			PTR_IR[name].Border:ClearBackdrop()
+			self:removeBackdrop(PTR_IR[name].Border)
 		end
 
 		aObj:SecureHook(PTR_IR, "GetStandaloneSurveyFrame", function(this)

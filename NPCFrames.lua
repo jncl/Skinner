@@ -1292,7 +1292,7 @@ aObj.blizzFrames[ftype].Tabard = function(self)
 	self:SecureHookScript(_G.TabardFrame, "OnShow", function(this)
 		self:keepRegions(this, {4, 17, 18, 19, 20, 21, 22}) -- N.B. regions 4, 21 & 22 are text, 17-20 are icon textures
 		self:removeNineSlice(this.NineSlice)
-		_G.TabardFrameCostFrame:ClearBackdrop()
+		self:removeBackdrop(_G.TabardFrameCostFrame)
 		self:keepFontStrings(_G.TabardFrameCustomizationFrame)
 		for i = 1, 5 do
 			self:keepFontStrings(_G["TabardFrameCustomization" .. i])
