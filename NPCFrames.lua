@@ -26,8 +26,10 @@ aObj.blizzLoDFrames[ftype].AlliedRacesUI = function(self)
 			self:addButtonBorder{obj=this.ModelFrame.AlliedRacesMaleButton, ofs=0}
 			self:addButtonBorder{obj=this.ModelFrame.AlliedRacesFemaleButton, ofs=0}
 		end
+
 		self:Unhook(this, "OnShow")
 	end)
+
 	self:SecureHook(_G.AlliedRacesFrame, "LoadRaceData", function(this, _)
 		for ability in this.abilityPool:EnumerateActive() do
 			ability.Text:SetTextColor(self.BT:GetRGB())
@@ -45,7 +47,6 @@ aObj.blizzLoDFrames[ftype].AuctionHouseUI = function(self)
 	self.initialized.AuctionHouseUI = true
 
 	self:SecureHookScript(_G.AuctionHouseFrame, "OnShow", function(this)
-
 		local function skinItemList(frame)
 			if aObj.modBtnBs then
 				aObj:addButtonBorder{obj=frame.RefreshFrame.RefreshButton, ofs=-2, x1=1, clr="gold"}
@@ -79,7 +80,6 @@ aObj.blizzLoDFrames[ftype].AuctionHouseUI = function(self)
 		if self.modBtnBs then
 			self:addButtonBorder{obj=this.SearchBar.FavoritesSearchButton, ofs=-2, x1=1}
 		end
-
 		-- Browsing frames
 		self:skinEditBox{obj=this.SearchBar.SearchBox, regs={6, 7}, mi=true} -- 6 is text, 7 is icon
 		self:skinEditBox{obj=this.SearchBar.FilterButton.LevelRangeFrame.MinLevel, regs={6}} -- 6 is text
@@ -132,7 +132,6 @@ aObj.blizzLoDFrames[ftype].AuctionHouseUI = function(self)
 		end
 		this.WoWTokenResults.DummyScrollBar:DisableDrawLayer("BACKGROUND")
 		this.WoWTokenResults.DummyScrollBar:DisableDrawLayer("ARTWORK")
-
 		-- Buy frames
 		self:removeNineSlice(this.CommoditiesBuyFrame.BuyDisplay.NineSlice)
 		this.CommoditiesBuyFrame.BuyDisplay.Background:SetTexture(nil)
@@ -162,7 +161,6 @@ aObj.blizzLoDFrames[ftype].AuctionHouseUI = function(self)
 				self:clrBtnBdr(this)
 			end)
 		end
-
 		-- Sell frames
 		local function skinPriceInp(frame)
 			aObj:skinEditBox{obj=frame.CopperBox, regs={6}, noHeight=true, noWidth=true} -- 6 is text
@@ -197,7 +195,6 @@ aObj.blizzLoDFrames[ftype].AuctionHouseUI = function(self)
 		skinItemList(this.ItemSellList)
 		skinSellFrame(this.CommoditiesSellFrame)
 		skinItemList(this.CommoditiesSellList)
-
 		-- .WoWTokenSellFrame
 		self:removeNineSlice(this.WoWTokenSellFrame.ItemDisplay.NineSlice)
 		self:removeRegions(this.WoWTokenSellFrame.ItemDisplay, {3})
@@ -211,7 +208,6 @@ aObj.blizzLoDFrames[ftype].AuctionHouseUI = function(self)
 				self:clrBtnBdr(this)
 			end)
 		end
-
 		-- Auctions frames
 		self:skinObject(self.skinTPLs.new("tabs", {obj=this.AuctionsFrame, names=this.AuctionsFrame.Tabs, fType=ftype, ignoreSize=true, lod=true, offsets={x1=6, y1=-4, x2=-6, y2=-4}, ignoreHLTex=true, offsetsHL={x1=8, y1=-8, x2=-8, y2=-4}, track=false}))
 		if self.isTT then
@@ -227,7 +223,6 @@ aObj.blizzLoDFrames[ftype].AuctionHouseUI = function(self)
 				end
 			end)
 		end
-		tab = nil
 		skinBidAmt(this.AuctionsFrame.BidFrame.BidAmount)
 		self:removeNineSlice(this.AuctionsFrame.SummaryList.NineSlice)
 		this.AuctionsFrame.SummaryList.Background:SetTexture(nil)
@@ -254,7 +249,6 @@ aObj.blizzLoDFrames[ftype].AuctionHouseUI = function(self)
 				self:clrBtnBdr(this)
 			end)
 		end
-
 		-- Dialogs
 		self:addSkinFrame{obj=this.BuyDialog.Border, ft=ftype, kfs=true, nb=true, ofs=-10}
 		if self.modBtns then
@@ -267,7 +261,6 @@ aObj.blizzLoDFrames[ftype].AuctionHouseUI = function(self)
 				self:clrBtnBdr(this)
 			end)
 		end
-
 		self:skinObject(self.skinTPLs.new("tabs", {obj=this, names=this.Tabs, fType=ftype, lod=true, track=false}))
 		if self.isTT then
 			self:SecureHook(this, "SetDisplayMode", function(this, displayMode)
@@ -403,7 +396,6 @@ aObj.blizzLoDFrames[ftype].BlackMarketUI = function(self)
 			self:addButtonBorder{obj=this.HotDeal.Item, reParent={this.HotDeal.Item.Count, this.HotDeal.Item.Stock}}
 		end
 
-
 		local function skinSFButtons(scrollFrame)
 			for _, btn in _G.pairs(scrollFrame.buttons) do
 				aObj:removeRegions(btn, {1, 2, 3})
@@ -414,7 +406,6 @@ aObj.blizzLoDFrames[ftype].BlackMarketUI = function(self)
 					aObj:clrButtonFromBorder(btn.Item)
 				end
 			end
-			btn = nil
 		end
 		self:SecureHook("BlackMarketScrollFrame_Update", function(this)
 			skinSFButtons(_G.BlackMarketScrollFrame)
@@ -430,7 +421,6 @@ aObj.blizzLoDFrames[ftype].ChromieTimeUI = function(self)
 	self.initialized.ChromieTimeUI = true
 
 	self:SecureHookScript(_G.ChromieTimeFrame, "OnShow", function(this)
-
 		self:removeNineSlice(this.NineSlice)
 		this.Background:DisableDrawLayer("BACKGROUND")
 		self:keepFontStrings(this.Title)
@@ -468,7 +458,6 @@ aObj.blizzLoDFrames[ftype].CovenantPreviewUI = function(self)
 	self.initialized.CovenantPreviewUI = true
 
 	self:SecureHookScript(_G.CovenantPreviewFrame, "OnShow", function(this)
-
 		this.BorderFrame:DisableDrawLayer("BORDER")
 		this.Background.BackgroundTile:SetTexture(nil)
 		this.Title:DisableDrawLayer("BACKGROUND")
@@ -540,7 +529,6 @@ aObj.blizzLoDFrames[ftype].CovenantRenown = function(self)
 	end)
 
 end
-
 
 aObj.blizzLoDFrames[ftype].CovenantSanctum = function(self)
 	if not self.prdb.CovenantSanctum or self.initialized.CovenantSanctum then return end
@@ -796,7 +784,6 @@ aObj.blizzFrames[ftype].MerchantFrame = function(self)
 				self:clrPNBtns("Merchant")
 			end)
 		end
-
 		-- Items/Buyback Items
 		for i = 1, _G.math.max(_G.MERCHANT_ITEMS_PER_PAGE, _G.BUYBACK_ITEMS_PER_PAGE) do
 			_G["MerchantItem" .. i .. "NameFrame"]:SetTexture(nil)
@@ -847,7 +834,6 @@ aObj.blizzLoDFrames[ftype].NewPlayerExperienceGuide = function(self)
 	self.initialized.NewPlayerExperienceGuide = true
 
 	self:SecureHookScript(_G.GuideFrame, "OnShow", function(this)
-
 		self:removeNineSlice(this.NineSlice)
 		this:DisableDrawLayer("BACKGROUND")
 		this.Title:SetTextColor(self.HT:GetRGB())
@@ -907,7 +893,6 @@ aObj.blizzFrames[ftype].PetStableFrame = function(self)
 	self.initialized.PetStableFrame = true
 
 	self:SecureHookScript(_G.PetStableFrame, "OnShow", function(this)
-
 		_G.PetStableFrameModelBg:Hide()
 		self:removeInset(this.LeftInset)
 		self:removeInset(this.BottomInset)
@@ -1088,7 +1073,6 @@ aObj.blizzFrames[ftype].QuestInfo = function(self)
 	self.initialized.QuestInfo = true
 
 	local function skinRewards(frame)
-
 		if frame.Header:IsObjectType("FontString") then -- QuestInfoRewardsFrame
 			frame.Header:SetTextColor(aObj.HT:GetRGB())
 		end
@@ -1126,18 +1110,14 @@ aObj.blizzFrames[ftype].QuestInfo = function(self)
 		for spellLine in frame.spellHeaderPool:EnumerateActive() do
 			spellLine:SetVertexColor(aObj.BT:GetRGB())
 		end
-
 	end
 	local function updateQIDisplay(_)
 		-- aObj:Debug("updateQIDisplay")
-
 		local br, bg, bb = aObj.BT:GetRGB()
-
 		-- headers
 		_G.QuestInfoTitleHeader:SetTextColor(aObj.HT:GetRGB())
 		_G.QuestInfoDescriptionHeader:SetTextColor(aObj.HT:GetRGB())
 		_G.QuestInfoObjectivesHeader:SetTextColor(aObj.HT:GetRGB())
-
 		-- other text
 		_G.QuestInfoQuestType:SetTextColor(aObj.BT:GetRGB())
 		_G.QuestInfoObjectivesText:SetTextColor(aObj.BT:GetRGB())
@@ -1149,10 +1129,8 @@ aObj.blizzFrames[ftype].QuestInfo = function(self)
 		-- remove any embedded colour codes
 		_G.QuestInfoDescriptionText:SetText(aObj:removeColourCodes(_G.QuestInfoDescriptionText:GetText()))
 		_G.QuestInfoDescriptionText:SetTextColor(aObj.BT:GetRGB())
-
 		-- skin rewards
 		skinRewards(_G.QuestInfoFrame.rewardsFrame)
-
 		-- Objectives
 		local obj
 		for i = 1, #_G.QuestInfoObjectivesFrame.Objectives do
@@ -1164,7 +1142,6 @@ aObj.blizzFrames[ftype].QuestInfo = function(self)
 			end
 		end
 		obj, r, g, b, br, bg, bb = nil, nil, nil, nil, nil, nil ,nil
-
 		-- QuestInfoSpecialObjectives Frame
 		_G.QuestInfoSpellObjectiveLearnLabel:SetTextColor(aObj.BT:GetRGB())
 		_G.QuestInfoSpellObjectiveFrameNameFrame:SetTexture(nil)
@@ -1172,7 +1149,6 @@ aObj.blizzFrames[ftype].QuestInfo = function(self)
 		if aObj.modBtnBs then
 			 aObj:addButtonBorder{obj=_G.QuestInfoSpellObjectiveFrame, relTo=_G.QuestInfoSpellObjectiveFrame.Icon, clr="grey"}
 		end
-
 		-- QuestInfoSeal Frame text colour
 		-- TODO: can this be replaced with removeColourCodes function ?
 		if _G.QuestInfoSealFrame:IsShown()
@@ -1182,7 +1158,6 @@ aObj.blizzFrames[ftype].QuestInfo = function(self)
 			_G.QuestInfoSealFrame.Text:SetText(aObj.HT:WrapTextInColorCode(sealText)) -- re-colour text
 			sealText = nil
 		end
-
 	end
 
 	self:SecureHook("QuestInfo_Display", function(...)
@@ -1281,7 +1256,6 @@ aObj.blizzLoDFrames[ftype].RuneForgeUI = function(self)
 	self.initialized.RuneForgeUI = true
 
 	self:SecureHookScript(_G.RuneforgeFrame, "OnShow", function(this)
-
 		-- .CraftingFrame
 			-- .BaseItemSlot
 			-- .UpgradeItemSlot
@@ -1296,7 +1270,6 @@ aObj.blizzLoDFrames[ftype].RuneForgeUI = function(self)
 			end)
 		end
 		-- .CurrencyDisplay
-
 		this.CloseButton.CustomBorder:SetTexture(nil)
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, ofs=-20, y2=30}
 		if self.modBtns then
@@ -1317,7 +1290,6 @@ aObj.blizzFrames[ftype].Tabard = function(self)
 	self.initialized.Tabard = true
 
 	self:SecureHookScript(_G.TabardFrame, "OnShow", function(this)
-
 		self:keepRegions(this, {4, 17, 18, 19, 20, 21, 22}) -- N.B. regions 4, 21 & 22 are text, 17-20 are icon textures
 		self:removeNineSlice(this.NineSlice)
 		_G.TabardFrameCostFrame:ClearBackdrop()
@@ -1440,6 +1412,7 @@ aObj.blizzLoDFrames[ftype].VoidStorageUI = function(self)
 				self:addButtonBorder{obj=_G.VoidStorageFrame["Page" .. i]}
 			end
 		end
+
 		self:Unhook(this, "OnShow")
 	end)
 

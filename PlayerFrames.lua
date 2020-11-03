@@ -146,7 +146,6 @@ aObj.blizzLoDFrames[ftype].AchievementUI = function(self)
 			btnName, btn = nil, nil
 
 		end
-
 		self:keepFontStrings(_G.AchievementFrameHeader)
 		self:moveObject{obj=_G.AchievementFrameHeaderTitle, x=-60, y=-25}
 		self:moveObject{obj=_G.AchievementFrameHeaderPoints, x=40, y=-5}
@@ -164,7 +163,6 @@ aObj.blizzLoDFrames[ftype].AchievementUI = function(self)
 			skinCategories()
 		end)
 		skinCategories()
-
 		self:getChild(_G.AchievementFrameAchievements, 2):ClearBackdrop()
 		self:addFrameBorder{obj=_G.AchievementFrameAchievements, ft=ftype, y2=-2}
 		self:skinSlider{obj=_G.AchievementFrameAchievementsContainerScrollBar, wdth=-4}
@@ -227,13 +225,11 @@ aObj.blizzLoDFrames[ftype].AchievementUI = function(self)
 		_G.AchievementFrameStatsBG:SetAlpha(0)
 		self:getChild(_G.AchievementFrameStats, 3):ClearBackdrop()
 		self:addFrameBorder{obj=_G.AchievementFrameStats, ft=ftype, y2=-2}
-
 		-- hook this to skin buttons
 		self:SecureHook("AchievementFrameStats_Update", function()
 			skinStats()
 		end)
 		skinStats()
-
 		self:keepFontStrings(_G.AchievementFrameSummary)
 		_G.AchievementFrameSummaryBackground:SetAlpha(0)
 		_G.AchievementFrameSummaryAchievementsEmptyText:SetText() -- remove 'No recently completed Achievements' text
@@ -259,7 +255,6 @@ aObj.blizzLoDFrames[ftype].AchievementUI = function(self)
 		self:getChild(_G.AchievementFrameSummary, 1):ClearBackdrop()
 		self:addFrameBorder{obj=_G.AchievementFrameSummary, ft=ftype, y1=-1, y2=-2}
 		skinSB("AchievementFrameSummaryCategoriesStatusBar", "Title")
-
 		_G.AchievementFrameComparisonBackground:SetAlpha(0)
 		_G.AchievementFrameComparisonDark:SetAlpha(0)
 		_G.AchievementFrameComparisonWatermark:SetAlpha(0)
@@ -301,9 +296,7 @@ aObj.blizzLoDFrames[ftype].AchievementUI = function(self)
 		self:SecureHook(_G.AchievementFrameComparisonStatsContainer, "Show", function()
 			skinComparisonStats()
 		end)
-
 		self:moveObject{obj=_G.AchievementFrameCloseButton, y=6}
-
 		self:skinObject(self.skinTPLs.new("tabs", {obj=this, prefix=this:GetName(), fType=ftype, ignoreSize=true, lod=true, offsets={x1=9, y1=2, x2=-9, y2=-10}, regions={7, 8, 9, 10}}))
 		-- this is not a standard dropdown
 		self:moveObject{obj=_G.AchievementFrameFilterDropDown, y=-7}
@@ -319,7 +312,6 @@ aObj.blizzLoDFrames[ftype].AchievementUI = function(self)
 			    self:addButtonBorder{obj=_G.AchievementFrameFilterDropDownButton, es=12, ofs=-2, x1=_G.IsAddOnLoaded("Overachiever") and 102 or 1}
 			end
 		end
-
 		-- Search function
 		self:skinEditBox{obj=this.searchBox, regs={6, 7}, mi=true} -- 6 is text, 7 is icon
 		self:moveObject{obj=_G.AchievementFrame.searchBox, y=-10}
@@ -349,7 +341,6 @@ aObj.blizzLoDFrames[ftype].AchievementUI = function(self)
 				self:addButtonBorder{obj=this.searchResults.scrollFrame.buttons[i], relTo=this.searchResults.scrollFrame.buttons[i].icon}
 			end
 		end
-
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, y1=7, x2=0, y2=-3}
 
 		self:Unhook(this, "OnShow")
@@ -450,10 +441,9 @@ aObj.blizzLoDFrames[ftype].ArtifactUI = function(self)
 		self:keepFontStrings(this.BorderFrame)
 		this.ForgeBadgeFrame:DisableDrawLayer("OVERLAY") -- this hides the frame
 		this.ForgeBadgeFrame.ForgeLevelLabel:SetDrawLayer("ARTWORK") -- this shows the artifact level
-
 		self:skinObject(self.skinTPLs.new("tabs", {obj=this, prefix=this:GetName(), fType=ftype, ignoreSize=true, lod=true, offsets={x1=6, y1=9, x2=-6, y2=-4}}))
 		self:addSkinFrame{obj=this, ft=ftype, ofs=5, y1=4}
-
+		-- Perks
 		this.PerksTab:DisableDrawLayer("BORDER")
 		this.PerksTab:DisableDrawLayer("OVERLAY")
 		this.PerksTab.TitleContainer.Background:SetAlpha(0) -- title underline texture
@@ -465,21 +455,19 @@ aObj.blizzLoDFrames[ftype].ArtifactUI = function(self)
 		-- hook this to stop Background being Refreshed
 		_G.ArtifactPerksMixin.RefreshBackground = _G.nop
 		local function skinPowerBtns()
-
 			if this.PerksTab.PowerButtons then
 				for i = 1, #this.PerksTab.PowerButtons do
 					aObj:changeTandC(this.PerksTab.PowerButtons[i].RankBorder)
 					aObj:changeTandC(this.PerksTab.PowerButtons[i].RankBorderFinal)
 				end
 			end
-
 		end
 		skinPowerBtns()
 		-- hook this to skin new buttons
 		self:SecureHook(this.PerksTab, "RefreshPowers", function(this, _)
 			skinPowerBtns()
 		end)
-
+		-- Appearances
 		self:SecureHook(this.AppearancesTab, "Refresh", function(this)
 			for appearanceSet in this.appearanceSetPool:EnumerateActive() do
 				appearanceSet:DisableDrawLayer("BACKGROUND")
@@ -669,7 +657,6 @@ aObj.blizzFrames[ftype].CharacterFrames = function(self)
 		self:skinObject(self.skinTPLs.new("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=true}))
 		self:removeInset(_G.CharacterFrameInsetRight)
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, x1=-5, y2=-5}
-
 		-- Sidebar Tabs
 		_G.PaperDollSidebarTabs.DecorLeft:SetAlpha(0)
 		_G.PaperDollSidebarTabs.DecorRight:SetAlpha(0)
@@ -698,7 +685,6 @@ aObj.blizzFrames[ftype].CharacterFrames = function(self)
 
 			self:Unhook(this, "OnShow")
 		end)
-
 		self:SecureHookScript(_G.PaperDollEquipmentManagerPane, "OnShow", function(this)
 			self:skinSlider{obj=this.scrollBar, wdth=-4}
 			this.EquipSet:DisableDrawLayer("BACKGROUND")
@@ -719,12 +705,10 @@ aObj.blizzFrames[ftype].CharacterFrames = function(self)
 
 			self:Unhook(this, "OnShow")
 		end)
-
 		_G.CharacterModelFrame:DisableDrawLayer("BACKGROUND")
 		_G.CharacterModelFrame:DisableDrawLayer("BORDER")
 		_G.CharacterModelFrame:DisableDrawLayer("OVERLAY")
 		_G.CharacterModelFrame.controlFrame:DisableDrawLayer("BACKGROUND")
-
 		local function skinSlot(btn)
 			btn:DisableDrawLayer("BACKGROUND")
 			if aObj.modBtnBs then
@@ -746,7 +730,6 @@ aObj.blizzFrames[ftype].CharacterFrames = function(self)
 				end
 			end)
 		end
-
 		for i = 1, #_G.PaperDollItemsFrame.EquipmentSlots do
 			skinSlot(_G.PaperDollItemsFrame.EquipmentSlots[i])
 		end
@@ -925,7 +908,6 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 			 self:skinStdButton{obj=_G.PetJournalFilterButton}
 		end
 		self:skinDropDown{obj=_G.PetJournalFilterDropDown}
-
 		-- PetList
 		self:skinSlider{obj=this.listScroll.scrollBar, wdth=-4}
 		local btn
@@ -948,10 +930,8 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 				btn = nil
 			end)
 		end
-
 		self:keepFontStrings(this.loadoutBorder)
 		self:moveObject{obj=this.loadoutBorder, y=8} -- battle pet slots title
-
 		-- Pet LoadOut Plates
 		local lop
 		for i = 1, 3 do
@@ -974,7 +954,6 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 			end
 		end
 		lop = nil
-
 		-- PetCard
 		local pc = this.PetCard
 		self:changeTandC(pc.PetInfo.levelBG)
@@ -995,7 +974,6 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 			end
 		end
 		pc = nil
-
 		if self.modBtnBs then
 			self:SecureHook("PetJournal_UpdatePetLoadOut", function()
 				for i = 1, 3 do
@@ -1006,7 +984,6 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 				self:clrButtonFromBorder(this.PetInfo, "qualityBorder")
 			end)
 		end
-
 		self:removeMagicBtnTex(this.FindBattleButton)
 		self:removeMagicBtnTex(this.SummonButton)
 		if self.modBtns then
@@ -1076,7 +1053,6 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 			end
 		end
 		self:skinDropDown{obj=this.toyOptionsMenu}
-
 		if self.modBtnBs then
 			skinPageBtns(this)
 			self:SecureHook("ToySpellButton_UpdateButton", function(this)
@@ -1120,7 +1096,6 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 			end
 			heirloom = nil
 		end)
-
 		if self.modBtnBs then
 			skinPageBtns(this)
 			self:SecureHook(this, "UpdateButton", function(this, button)
@@ -1135,19 +1110,16 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 	end)
 
 	self:SecureHookScript(_G.WardrobeCollectionFrame, "OnShow", function(this)
-
 		self:skinObject(self.skinTPLs.new("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=true, upwards=true, ignoreHLTex=true, offsets={x1=2, y1=-4, x2=-2, y2=-4}}))
 		self:skinEditBox{obj=this.searchBox, regs={6, 7}, mi=true, noHeight=true, noInsert=true} -- 6 is text, 7 is icon
 		_G.RaiseFrameLevelByTwo(this.searchBox) -- raise above SetsCollectionFrame when displayed on it
 		self:skinStatusBar{obj=this.progressBar, fi=0}
 		self:removeRegions(this.progressBar, {2, 3})
 		self:skinDropDown{obj=this.FilterDropDown}
-
 		if self.modBtns then
 			self:skinStdButton{obj=this.FilterButton}
 			_G.RaiseFrameLevelByTwo(this.FilterButton) -- raise above SetsCollectionFrame when displayed on it
 		end
-
 		self:SecureHookScript(this.searchProgressFrame, "OnShow", function(this)
 			this:DisableDrawLayer("BACKGROUND")
 			this:DisableDrawLayer("ARTWORK")
@@ -1157,7 +1129,6 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 
 			self:Unhook(this, "OnShow")
 		end)
-
 		local x1Ofs, y1Ofs, x2Ofs, y2Ofs = -5, 3, 7, -8
 
 		local function updBtnClr(btn)
@@ -2248,7 +2219,7 @@ aObj.blizzLoDFrames[ftype].EncounterJournal = function(self) -- a.k.a. Adenture 
 			end
 		end
 		btn = nil
-
+		-- NavBar
 		this.navBar:DisableDrawLayer("BACKGROUND")
 		this.navBar:DisableDrawLayer("BORDER")
 		this.navBar.overlay:DisableDrawLayer("OVERLAY")
@@ -2256,7 +2227,7 @@ aObj.blizzLoDFrames[ftype].EncounterJournal = function(self) -- a.k.a. Adenture 
 		this.navBar.home.text:SetPoint("RIGHT", -20, 0)
 		self:removeInset(this.inset)
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true}
-
+		-- InstanceSelect
 		this.instanceSelect.bg:SetAlpha(0)
 		self:skinDropDown{obj=this.instanceSelect.tierDropDown}
 		self:SecureHook("EncounterJournal_EnableTierDropDown", function()
@@ -2291,9 +2262,8 @@ aObj.blizzLoDFrames[ftype].EncounterJournal = function(self) -- a.k.a. Adenture 
 				end
 			end)
 		end
-
+		-- Encounter
 		self:SecureHookScript(this.encounter, "OnShow", function(this)
-
 			-- Instance frame
 			this.instance.loreBG:SetTexCoord(0.06, 0.70, 0.08, 0.58)
 			this.instance.loreBG:SetSize(370, 308)
@@ -2318,7 +2288,6 @@ aObj.blizzLoDFrames[ftype].EncounterJournal = function(self) -- a.k.a. Adenture 
 			end)
 			-- skin any existing Boss Buttons
 			skinBossBtns()
-
 			-- Info frame
 			this.info:DisableDrawLayer("BACKGROUND")
 			this.info.encounterTitle:SetTextColor(self.HT:GetRGB())
@@ -2360,7 +2329,6 @@ aObj.blizzLoDFrames[ftype].EncounterJournal = function(self) -- a.k.a. Adenture 
 				end
 				objName = nil
 			end)
-
 			-- Loot Frame
 			self:skinSlider{obj=this.info.lootScroll.scrollBar, wdth=-4}
 			skinFilterBtn(this.info.lootScroll.filter)
@@ -2376,7 +2344,6 @@ aObj.blizzLoDFrames[ftype].EncounterJournal = function(self) -- a.k.a. Adenture 
 					self:addButtonBorder{obj=this.info.lootScroll.buttons[i], relTo=this.info.lootScroll.buttons[i].icon}
 				end
 			end)
-
 			-- Model Frame
 			this.info.model:DisableDrawLayer("BACKGROUND") -- dungeonBG (updated with dungeon type change)
 			self:removeRegions(this.info.model, {2, 3}, true) -- Shadow, TitleBG
@@ -2402,7 +2369,6 @@ aObj.blizzLoDFrames[ftype].EncounterJournal = function(self) -- a.k.a. Adenture 
 				if index > 9 then return end -- MAX_CREATURES_PER_ENCOUNTER
 				skinCreatureBtn(_G.EncounterJournal.encounter.info.creatureButtons[index])
 			end)
-
 			-- Tabs (side)
 			self:moveObject{obj=this.info.overviewTab, x=10}
 			for _, type in _G.pairs{"overviewTab", "lootTab", "bossTab", "modelTab"} do
@@ -2414,7 +2380,7 @@ aObj.blizzLoDFrames[ftype].EncounterJournal = function(self) -- a.k.a. Adenture 
 
 			self:Unhook(this, "OnShow")
 		end)
-
+		-- Suggest Frame
 		local ejsfs
 		for i = 1, _G.AJ_MAX_NUM_SUGGESTIONS do
 			ejsfs = this.suggestFrame["Suggestion" .. i]
@@ -2447,7 +2413,6 @@ aObj.blizzLoDFrames[ftype].EncounterJournal = function(self) -- a.k.a. Adenture 
 			end
 		end
 		ejsfs = nil
-
 		self:addFrameBorder{obj=this.suggestFrame, ft=ftype, x1=-9, y1=6, x2=7, y2=-4}
 
 		self:Unhook(this, "OnShow")
@@ -2618,6 +2583,7 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 		end)
 
 		self:skinObject(self.skinTPLs.new("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=true}))
+
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, y2=-5}
 
 		-- tooltip
@@ -4109,7 +4075,6 @@ aObj.blizzFrames[ftype].SpellBookFrame = function(self)
 	self.initialized.SpellBookFrame = true
 
 	self:SecureHookScript(_G.SpellBookFrame, "OnShow", function(this)
-
 		this.MainHelpButton.Ring:SetTexture(nil)
 		self:moveObject{obj=this.MainHelpButton, y=-4}
 		this.numTabs = 5
@@ -4143,7 +4108,6 @@ aObj.blizzFrames[ftype].SpellBookFrame = function(self)
 			-- set correct tab
 			setTab(this.bookType)
 		end
-
 		-- Spellbook Panel
 		local function updBtn(btn)
 			-- handle in combat
@@ -4180,7 +4144,6 @@ aObj.blizzFrames[ftype].SpellBookFrame = function(self)
 			end
 			spellString, subSpellString = nil, nil
 		end
-
 		_G.SpellBookPageText:SetTextColor(self.BT:GetRGB())
 		local btn
 		for i = 1, _G.SPELLS_PER_PAGE do
@@ -4204,12 +4167,10 @@ aObj.blizzFrames[ftype].SpellBookFrame = function(self)
 			updBtn(btn)
 		end
 		btn = nil
-
 		-- hook this to change text colour as required
 		self:SecureHook("SpellButton_UpdateButton", function(this)
 			updBtn(this)
 		end)
-
 		-- Tabs (side)
 		local btn
 		for i = 1, _G.MAX_SKILLLINE_TABS do
@@ -4233,10 +4194,8 @@ aObj.blizzFrames[ftype].SpellBookFrame = function(self)
 				btn = nil
 			end)
 		end
-
 		-- Professions Panel
 		local function skinProf(type, times)
-
 			local objName, obj
 			for i = 1, times do
 				objName = type .. "Profession" .. i
@@ -4280,13 +4239,11 @@ aObj.blizzFrames[ftype].SpellBookFrame = function(self)
 				end
 			end
 			objName, obj = nil, nil
-
 		end
 		-- Primary professions
 		skinProf("Primary", 2)
 		-- Secondary professions
 		skinProf("Secondary", 3)
-
 		if self.modBtnBs then
 			-- hook this to change Primary Profession Button border colours if required
 			self:SecureHook("SpellBook_UpdateProfTab", function()
@@ -4376,7 +4333,6 @@ aObj.blizzLoDFrames[ftype].TalentUI = function(self)
 			self:skinStdButton{obj=_G.PlayerTalentFrameActivateButton}
 			self:skinCloseButton{obj=_G.PlayerTalentFrameCloseButton}
 		end
-
 		-- handle extra abilities (Player and Pet)
 		self:SecureHook("PlayerTalentFrame_CreateSpecSpellButton", function(this, index)
 			this.spellsScroll.child["abilityButton" .. index].ring:SetTexture(nil)
@@ -4580,7 +4536,6 @@ aObj.blizzLoDFrames[ftype].TradeSkillUI = function(self)
 		if self.modBtnBs then
 			 self:addButtonBorder{obj=this.LinkToButton, x1=1, y1=-5, x2=-2, y2=2, clr="grey"}
 		end
-
 		-- RecipeList
 		self:skinObject(self.skinTPLs.new("tabs", {obj=this.RecipeList, names=this.RecipeList.Tabs, fType=ftype, lod=true, upwards=true, offsets={x1=2, y1=-4, x2=2, y2=-4}, track=false}))
 		if self.isTT then
@@ -4602,7 +4557,6 @@ aObj.blizzLoDFrames[ftype].TradeSkillUI = function(self)
 		end
 		self:skinSlider{obj=self:getChild(this.RecipeList, 4), wdth=-4, size=3} -- unamed slider object
 		self:addFrameBorder{obj=this.RecipeList, ft=ftype, ofs=8, y1=6, x2=24}
-
 		for i = 1, #this.RecipeList.buttons do
 			if self.modBtns then
 				 self:skinExpandButton{obj=this.RecipeList.buttons[i], onSB=true, noHook=true}
@@ -4635,7 +4589,6 @@ aObj.blizzLoDFrames[ftype].TradeSkillUI = function(self)
 				end
 			end)
 		end
-
 		-- DetailsFrame
 		this.DetailsFrame.Background:SetAlpha(0)
 		self:skinSlider{obj=this.DetailsFrame.ScrollBar, wdth=-4, size=3}
@@ -4694,7 +4647,6 @@ aObj.blizzLoDFrames[ftype].TradeSkillUI = function(self)
 				self:clrBtnBdr(this.CreateButton)
 			end)
 		end
-
 		-- Guild Crafters
 		self:SecureHookScript(this.DetailsFrame.GuildFrame, "OnShow", function(this)
 			self:skinSlider{obj=this.Container.ScrollFrame.scrollBar, wdth=-4}
@@ -4703,7 +4655,6 @@ aObj.blizzLoDFrames[ftype].TradeSkillUI = function(self)
 
 			self:Unhook(this, "OnShow")
 		end)
-
 		-- OptionalReagentList
 		self:SecureHookScript(this.OptionalReagentList, "OnShow", function(this)
 			self:removeInset(this.ScrollList.InsetFrame)
@@ -4729,7 +4680,6 @@ aObj.blizzLoDFrames[ftype].TradeSkillUI = function(self)
 
 			self:Unhook(this, "OnShow")
 		end)
-
 		-- send message when UI is skinned (used by oGlow skin)
 		self:SendMessage("TradeSkillUI_Skinned", self)
 

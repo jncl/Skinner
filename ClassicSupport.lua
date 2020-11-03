@@ -213,11 +213,9 @@ aObj.ClassicSupport = function(self)
 			self:SecureHook("FilterButton_SetUp", function(button, ...)
 				_G[button:GetName() .. "NormalTexture"]:SetAlpha(0)
 			end)
-
 			self:skinObject(self.skinTPLs.new("tabs", {obj=this, prefix=this:GetName(), fType=ftype, ignoreSize=true, lod=true}))
 			self:addSkinFrame{obj=_G.AuctionFrame, ft=ftype, kfs=true, hdr=true, x1=10, y1=-11, y2=5}
 			self:moveObject{obj=_G.AuctionFrameCloseButton, x=3}
-
 			-- AuctionFrame Browse
 			for i = 1, _G.NUM_FILTERS_TO_DISPLAY do
 				self:keepRegions(_G["AuctionFilterButton" .. i], {3, 4}) -- N.B. region 3 is the highlight, 4 is the text
@@ -269,7 +267,7 @@ aObj.ClassicSupport = function(self)
 				self:skinCheckButton{obj=_G.IsUsableCheckButton}
 				self:skinCheckButton{obj=_G.ShowOnPlayerCheckButton}
 			end
-
+			-- WoW Token
 			self:SecureHookScript(_G.BrowseWowTokenResults, "OnShow", function(this)
 				this.Token:DisableDrawLayer("BACKGROUND")
 				if self.modBtns then
@@ -288,7 +286,6 @@ aObj.ClassicSupport = function(self)
 
 				self:Unhook(this, "OnShow")
 			end)
-
 			-- AuctionFrame Bid
 			for _, type in _G.pairs{"Quality", "Level", "Duration", "Buyout", "Status", "Bid"} do
 				self:keepRegions(_G["Bid" .. type .. "Sort"], {4, 5, 6}) -- N.B. region 4 is the text, 5 is the arrow, 6 is the highlight
@@ -311,7 +308,6 @@ aObj.ClassicSupport = function(self)
 					self:clrBtnBdr(_G.BidBuyoutButton)
 				end)
 			end
-
 			-- AuctionFrame Auctions
 			for _, type in _G.pairs{"Quality", "Duration", "HighBidder", "Bid"} do
 				self:keepRegions(_G["Auctions" .. type .. "Sort"], {4, 5, 6}) -- N.B. region 4 is the text, 5 is the arrow, 6 is the highlight
@@ -360,7 +356,6 @@ aObj.ClassicSupport = function(self)
 				self:skinCheckButton{obj=self:getPenultimateChild(_G.AuctionFrameAuctions)}
 				self:skinCheckButton{obj=self:getChild(_G.AuctionFrameAuctions, _G.AuctionFrameAuctions:GetNumChildren() - 2)}
 			end
-
 			self:SecureHookScript(_G.AuctionProgressFrame, "OnShow", function(this)
 				this:DisableDrawLayer("ARTWORK")
 				self:keepFontStrings(_G.AuctionProgressBar)
@@ -1186,7 +1181,6 @@ aObj.ClassicSupport = function(self)
 					self:clrPNBtns("SpellBook")
 				end)
 			end
-
 			-- Spellbook Panel
 			local function updBtn(btn)
 				-- handle in combat
@@ -1218,7 +1212,6 @@ aObj.ClassicSupport = function(self)
 				end
 				spellString, subSpellString = nil, nil
 			end
-
 			_G.SpellBookPageText:SetTextColor(self.BT:GetRGB())
 			local btn
 			for i = 1, _G.SPELLS_PER_PAGE do
@@ -1231,12 +1224,10 @@ aObj.ClassicSupport = function(self)
 				updBtn(btn)
 			end
 			btn = nil
-
 			-- hook self to change text colour as required
 			self:SecureHook("SpellButton_UpdateButton", function(this)
 				updBtn(this)
 			end)
-
 			-- Tabs (side)
 			for i = 1, _G.MAX_SKILLLINE_TABS do
 				self:removeRegions(_G["SpellBookSkillLineTab" .. i], {1}) -- N.B. other regions are icon and highlight
@@ -1679,11 +1670,9 @@ aObj.ClassicSupport = function(self)
 		self.initialized.WorldStateScoreFrame = true
 
 		self:SecureHookScript(_G.WorldStateScoreFrame, "OnShow", function(this)
-
 			self:skinSlider{obj=_G.WorldStateScoreScrollFrame.ScrollBar, rt="artwork"}
 			self:skinObject(self.skinTPLs.new("tabs", {obj=this, prefix=this:GetName(), fType=ftype, ignoreSize=true, lod=true}))
 			self:addSkinFrame{obj=this, ft=ftype, kfs=true, x1=12, y1=-15, x2=-114, y2=65}
-
 			if self.modBtns then
 				self:skinStdButton{obj=_G.WorldStateScoreFrameLeaveButton}
 			end

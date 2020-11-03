@@ -19,7 +19,6 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 	cdStageRegs = {1, 2, 3, 4, 5, 6}
 	local mfTabSkin = aObj.skinTPLs.new("tabs", {fType=ftype, ignoreSize=true, lod=true, ignoreHLTex=true, regions={7, 8, 9, 10}})
 	function skinMissionFrame(frame)
-
 		local x1Ofs, y1Ofs, y2Ofs
 		if isShadowlands then
 			x1Ofs = frame == _G.CovenantMissionFrame and -2
@@ -37,10 +36,8 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 		mfTabSkin.offsets = {x1=9, y1=2, x2=-9, y2=frame==_G.GarrisonMissionFrame and 0 or -4}
 		aObj:skinObject(mfTabSkin)
 		x1Ofs, y1Ofs, y2Ofs = nil, nil, nil
-
 	end
 	function skinPortrait(frame)
-
 		if not isShadowlands then
 			frame.PortraitRing:SetTexture(nil)
 			frame.LevelBorder:SetAlpha(0) -- texture changed
@@ -63,17 +60,13 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 			frame.HealthBar.Health:SetTexture(aObj.sbTexture)
 			frame.HealthBar.Border:SetTexture(nil)
 		end
-
 	end
 	function skinFollower(frame)
-
 		frame.BG:SetTexture(nil)
 		if frame.AbilitiesBG then frame.AbilitiesBG:SetTexture(nil) end -- Mission Follower
 		if frame.PortraitFrame then skinPortrait(frame.PortraitFrame) end
-
 	end
 	function skinFollowerListButtons(frame)
-
 		for i = 1, #frame.listScroll.buttons do
 			if frame ~= _G.GarrisonShipyardFrameFollowers
 			and frame ~= _G.GarrisonLandingPageShipFollowerList
@@ -83,10 +76,8 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 				skinFollower(frame.listScroll.buttons[i])
 			end
 		end
-
 	end
 	function skinFollowerAbilitiesAndCounters(frame)
-
 		if aObj.modBtnBs then
 			if frame.AbilitiesFrame.CombatAllySpell then
 				-- CombatAllySpell buttons
@@ -127,15 +118,12 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 		end
 		-- skin existing entries
 		skinEquipment()
-
 		-- hook this to handle additional entries
 		aObj:SecureHook(frame, "ShowEquipment", function(this, _)
 			skinEquipment()
 		end)
-
 	end
 	function skinFollowerList(frame)
-
 		if not isShadowlands then
 			frame:DisableDrawLayer("BORDER")
 			aObj:removeRegions(frame, {1, 2, frame:GetParent() ~= _G.GarrisonLandingPage and 3 or nil})
@@ -150,17 +138,14 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 				frame.ElevatedFrame:DisableDrawLayer("OVERLAY")
 			end
 		end
-
 		if frame.MaterialFrame then
 			frame.MaterialFrame:DisableDrawLayer("BACKGROUND")
 		end
-
 		if frame.SearchBox then
 			aObj:skinEditBox{obj=frame.SearchBox, regs={6, 7, 8}, mi=true} -- 6 is text, 7 is icon, 8 is text
 			-- need to do this as background isn't visible on Shipyard Mission page
 			_G.RaiseFrameLevel(frame.SearchBox)
 		end
-
 		-- if FollowerList not yet populated, hook the function
 		if not frame.listScroll.buttons then
 			aObj:SecureHook(frame, "Initialize", function(this, _)
@@ -170,16 +155,13 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 		else
 			skinFollowerListButtons(frame)
 		end
-
 		if frame.followerTab
 		and not frame:GetName():find("Ship") -- Shipyard & ShipFollowers
 		then
 			skinFollowerAbilitiesAndCounters(frame.followerTab)
 		end
-
 	end
 	function skinFollowerPage(frame)
-
 		if not isShadowlands then
 			skinPortrait(frame.PortraitFrame)
 			aObj:addButtonBorder{obj=frame.ItemWeapon, relTo=frame.ItemWeapon.Icon}
@@ -198,10 +180,8 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 		end
 		aObj:skinStatusBar{obj=frame.XPBar, fi=0}
 		frame.XPBar:DisableDrawLayer("OVERLAY")
-
 	end
 	function skinFollowerTraitsAndEquipment(frame)
-
 		aObj:skinStatusBar{obj=frame.XPBar, fi=0}
 		frame.XPBar:DisableDrawLayer("OVERLAY")
 		for i = 1, #frame.Traits do
@@ -213,10 +193,8 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 			frame.EquipmentFrame.Equipment[i].Border:SetTexture(nil)
 			aObj:addButtonBorder{obj=frame.EquipmentFrame.Equipment[i], relTo=frame.EquipmentFrame.Equipment[i].Icon, ofs=1}
 		end
-
 	end
 	function skinCompleteDialog(frame, naval)
-
 		if not naval then
 			frame:ClearAllPoints()
 			frame:SetPoint("TOPLEFT", -28, 42)
@@ -225,23 +203,19 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 			_G.RaiseFrameLevelByTwo(frame) -- raise above markers on mission frame
 		end
 		frame:SetSize(naval and 935 or 948, _G.IsAddOnLoaded("GarrisonCommander") and 640 or naval and 648 or 630)
-
 		frame.BorderFrame:DisableDrawLayer("BACKGROUND")
 		frame.BorderFrame:DisableDrawLayer("BORDER")
 		frame.BorderFrame:DisableDrawLayer("OVERLAY")
 		aObj:removeRegions(frame.BorderFrame.Stage, cdStageRegs)
 		aObj:skinStdButton{obj=frame.BorderFrame.ViewButton}
 	    aObj:addSkinFrame{obj=frame.BorderFrame, ft=ftype, y2=-2}
-
 	end
 	function skinMissionPage(frame)
-
 		frame:DisableDrawLayer("BACKGROUND")
 		frame:DisableDrawLayer("BORDER")
 		frame:DisableDrawLayer("OVERLAY")
 		if frame.ButtonFrame then frame.ButtonFrame:SetTexture(nil) end
 		if frame.StartMissionFrame then frame.StartMissionFrame.ButtonFrame:SetTexture(nil) end
-
 		aObj:removeRegions(frame.Stage, stageRegs)
 		frame.Stage.MissionEnvIcon.Texture:SetTexture(nil)
 		if frame.BuffsFrame then frame.BuffsFrame.BuffsBG:SetTexture(nil) end
@@ -287,15 +261,12 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 				aObj:clrBtnBdr(missionPage.StartMissionButton)
 			end)
 		end
-
 	end
 	function skinMissionComplete(frame, naval)
-
 		local mcb = frame:GetParent().MissionCompleteBackground
 		mcb:SetSize(naval and 953 or 949 , naval and 661 or 638)
 		aObj:moveObject{obj=mcb, x=4, y=naval and 20 or -1}
 		mcb = nil
-
 	    frame:DisableDrawLayer("BACKGROUND")
 		frame:DisableDrawLayer("BORDER")
 		frame:DisableDrawLayer("ARTWORK")
@@ -334,7 +305,6 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 				aObj:clrBtnBdr(this)
 			end)
 		end
-
 		for i = 1, #frame.Stage.EncountersFrame.Encounters do
 			if not naval then
 				frame.Stage.EncountersFrame.Encounters[i].Ring:SetTexture(nil)
@@ -397,10 +367,8 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 			end
 		end
 		btn = nil
-
 		-- CompleteDialog
 		skinCompleteDialog(ml.CompleteDialog)
-
 	end
 end
 
@@ -408,7 +376,6 @@ end
 aObj.cebRgns1 = {1, 2, 9, 10, 11} -- 1, 9, 10 are font strings, 2 is cursor texture
 aObj.cebRgns2 = {9, 10}
 local function skinChatEB(obj)
-
 	if aObj.prdb.ChatEditBox.style == 1 then -- Frame
 		aObj:keepRegions(obj, aObj.cebRgns1)
 		aObj:addSkinFrame{obj=obj, ft=ftype, x1=2, y1=-2, x2=-2}
@@ -420,7 +387,6 @@ local function skinChatEB(obj)
 		aObj:addSkinFrame{obj=obj, ft=ftype, noBdr=true, x1=5, y1=-4, x2=-5, y2=2}
 		obj.sf:SetAlpha(obj:GetAlpha())
 	end
-
 end
 local function skinChatTab(tab)
 	aObj:removeRegions(tab, {1, 2, 3, 4, 5, 6}, true)
@@ -439,7 +405,6 @@ local function skinChatTab(tab)
 	aObj:secureHook(tab, "SetAlpha", function(this, alpha)
 		this.sf:SetAlpha(alpha)
 	end)
-
 end
 local function skinPointerFrame(frame)
 	aObj:skinGlowBox(frame.Content)
@@ -1536,7 +1501,6 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 		self:SecureHook(this.ChatTabManager, "UpdateSelection", function(this, _)
 			skinTabs(this)
 		end)
-
 		local function skinCB(cBox)
 			if _G[cBox].ClearBackdrop then
 				_G[cBox]:ClearBackdrop()
@@ -1552,13 +1516,11 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 				end
 			end
 		end
-
 		--	Chat Settings
 		for i = 1, #_G.CHAT_CONFIG_CHAT_LEFT do
 			skinCB("ChatConfigChatSettingsLeftCheckBox" .. i)
 		end
 		self:addFrameBorder{obj=_G.ChatConfigChatSettingsLeft, ft=ftype}
-
 		--	Channel Settings
 		self:addFrameBorder{obj=_G.ChatConfigChannelSettingsLeft, ft=ftype}
 		if not self.isClsc then
@@ -1594,28 +1556,23 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 				box = nil
 			end)
 		end
-
 		--	Other Settings
 		for i = 1, #_G.CHAT_CONFIG_OTHER_COMBAT do
 			skinCB("ChatConfigOtherSettingsCombatCheckBox" .. i)
 		end
 		self:addFrameBorder{obj=_G.ChatConfigOtherSettingsCombat, ft=ftype}
-
 		for i = 1, #_G.CHAT_CONFIG_OTHER_PVP do
 			skinCB("ChatConfigOtherSettingsPVPCheckBox" .. i)
 		end
 		self:addFrameBorder{obj=_G.ChatConfigOtherSettingsPVP, ft=ftype}
-
 		for i = 1, #_G.CHAT_CONFIG_OTHER_SYSTEM do
 			skinCB("ChatConfigOtherSettingsSystemCheckBox" .. i)
 		end
 		self:addFrameBorder{obj=_G.ChatConfigOtherSettingsSystem, ft=ftype}
-
 		for i = 1, #_G.CHAT_CONFIG_CHAT_CREATURE_LEFT do
 			skinCB("ChatConfigOtherSettingsCreatureCheckBox" .. i)
 		end
 		self:addFrameBorder{obj=_G.ChatConfigOtherSettingsCreature, ft=ftype}
-
 		--	Combat Settings
 		-- Filters
 		_G.ChatConfigCombatSettingsFiltersScrollFrameScrollBarBorder:Hide()
@@ -1629,10 +1586,8 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 			self:addButtonBorder{obj=_G.ChatConfigMoveFilterUpButton, es=12, ofs=-5, x2=-6, y2=7, clr="grey"}
 			self:addButtonBorder{obj=_G.ChatConfigMoveFilterDownButton, es=12, ofs=-5, x2=-6, y2=7, clr="grey"}
 		end
-
 		self:addFrameBorder{obj=_G.ChatConfigCombatSettingsFilters, ft=ftype}
 		_G.LowerFrameLevel(_G.ChatConfigCombatSettingsFilters) -- make frame appear below tab texture
-
 		-- Message Sources
 		for i = 1, #_G.COMBAT_CONFIG_MESSAGESOURCES_BY do
 			skinCB("CombatConfigMessageSourcesDoneByCheckBox" .. i)
@@ -1642,7 +1597,6 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 			skinCB("CombatConfigMessageSourcesDoneToCheckBox" .. i)
 		end
 		self:addFrameBorder{obj=_G.CombatConfigMessageSourcesDoneTo, ft=ftype}
-
 		-- Message Type
 		for i, val in _G.ipairs(_G.COMBAT_CONFIG_MESSAGETYPES_LEFT) do
 			skinCB("CombatConfigMessageTypesLeftCheckBox" .. i)
@@ -1668,7 +1622,6 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 				end
 			end
 		end
-
 		-- Colors
 		for i = 1, #_G.COMBAT_CONFIG_UNIT_COLORS do
 			_G["CombatConfigColorsUnitColorsSwatch" .. i]:ClearBackdrop()
@@ -1702,7 +1655,6 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 				self:skinCheckButton{obj=_G.CombatConfigFormattingItemNames}
 			end
 		end
-
 		-- Settings
 		self:skinEditBox{obj=_G.CombatConfigSettingsNameEditBox , regs={6}} -- 6 is text
 		if self.modBtns then
@@ -1843,7 +1795,6 @@ aObj.blizzFrames[ftype].ChatTemporaryWindow = function(self)
 	then return end
 
 	local function skinTempWindow(obj)
-
 		if aObj.prdb.ChatTabs
 		and not _G[obj:GetName() .. "Tab"].sf
 		then
@@ -1868,7 +1819,6 @@ aObj.blizzFrames[ftype].ChatTemporaryWindow = function(self)
 			aObj:addButtonBorder{obj=obj.ScrollToBottomButton, ofs=-1, x1=0, reParent={obj.ScrollToBottomButton.Flash}, clr="grey"}
 			obj.buttonFrame.sknd = true
 		end
-
 	end
 	-- hook this to handle Temporary windows (BN Conversations, Pet Battles etc)
 	self:RawHook("FCF_OpenTemporaryWindow", function(...)
@@ -2546,7 +2496,6 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 		this.HeaderBar:SetTexture(nil)
 		self:skinObject(self.skinTPLs.new("tabs", {obj=this, prefix=this:GetName(), fType=ftype, ignoreSize=true, lod=true, offsets={x1=4, y1=-10, x2=-4, y2=-3}, regions={7, 8, 9, 10}}))
 		aObj:addSkinFrame{obj=this, ft=ftype, ofs=-6, y1=-13, x2=-13, y2=4}
-
 		-- ReportTab
 		self:SecureHookScript(this.Report, "OnShow", function(this)
 			this.List:DisableDrawLayer("BACKGROUND")
@@ -2862,14 +2811,11 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 				aObj:addFrameBorder{obj=btn, ft=ftype, ofs=3, aso={bbclr="grey"}}
 			end
 		end
-
 		frame.OverlayElements.CloseButtonBorder:SetTexture(nil)
 		aObj:keepFontStrings(frame.RaisedBorder)
 		aObj:addSkinFrame{obj=frame, ft=ftype, kfs=true, x2=1, y2=-6}
 		frame.sf:SetFrameStrata("LOW") -- allow map textures to be visible
-
 		skinMissionFrame(frame)
-
 		aObj:SecureHookScript(frame.FollowerList, "OnShow", function(this)
 			this:DisableDrawLayer("BORDER")
 			skinFollowerList(this)
@@ -2882,7 +2828,6 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 
 			aObj:Unhook(this, "OnShow")
 		end)
-
 		aObj:SecureHookScript(frame.MissionTab, "OnShow", function(this)
 			skinMissionList(this.MissionList)
 			-- ZoneSupportMissionPage
@@ -2892,7 +2837,6 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 			aObj:Unhook(this, "OnShow")
 		end)
 		aObj:checkShown(frame.MissionTab)
-
 		aObj:SecureHookScript(frame.FollowerTab, "OnShow", function(this)
 			this:DisableDrawLayer("BORDER")
 			this.RaisedFrameEdges:DisableDrawLayer("BORDER")
@@ -2915,7 +2859,6 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 
 			aObj:Unhook(this, "OnShow")
 		end)
-
 		-- MissionComplete
 		aObj:adjWidth(frame.MissionCompleteBackground, -3)
 		local function skinFollowers(frame)
@@ -2976,7 +2919,6 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 
 			aObj:Unhook(this, "OnShow")
 		end)
-
 		-- Follower as mouse pointer when dragging
 		aObj:SecureHook(frame, "GetPlacerFrame", function(this)
 			aObj:nilTexture(_G.CovenantFollowerPlacer.PuckShadow, true)
@@ -3124,7 +3066,6 @@ aObj.blizzLoDFrames[ftype].GuildBankUI = function(self)
 			end)
 			self:skinStdButton{obj=_G.GuildBankInfoSaveButton}
 		end
-
 		-- send message when UI is skinned (used by oGlow skin)
 		self:SendMessage("GuildBankUI_Skinned", self)
 
@@ -3330,7 +3271,6 @@ aObj.blizzFrames[ftype].InterfaceOptions = function(self)
 			self:skinStdButton{obj=_G.InterfaceOptionsFrameOkay}
 			self:skinStdButton{obj=_G.InterfaceOptionsFrameDefaults}
 		end
-
 		-- LHS panel (Game Tab)
 		self:SecureHookScript(_G.InterfaceOptionsFrameCategories, "OnShow", function(this)
 			self:skinSlider{obj=_G.InterfaceOptionsFrameCategoriesListScrollBar}
@@ -3339,7 +3279,6 @@ aObj.blizzFrames[ftype].InterfaceOptions = function(self)
 			self:Unhook(this, "OnShow")
 		end)
 		self:checkShown(_G.InterfaceOptionsFrameCategories)
-
 		-- LHS panel (AddOns tab)
 		self:SecureHookScript(_G.InterfaceOptionsFrameAddOns, "OnShow", function(this)
 			self:skinSlider{obj=_G.InterfaceOptionsFrameAddOnsListScrollBar}
@@ -3360,10 +3299,8 @@ aObj.blizzFrames[ftype].InterfaceOptions = function(self)
 			self:Unhook(this, "OnShow")
 		end)
 		self:checkShown(_G.InterfaceOptionsFrameAddOns)
-
 		-- RHS Panel
 		self:addSkinFrame{obj=_G.InterfaceOptionsFramePanelContainer, ft=ftype, kfs=true, nb=true}
-
 		-- Social Browser Frame (Twitter integration)
 		self:SecureHookScript(_G.SocialBrowserFrame, "OnShow", function(this)
 			self:addSkinFrame{obj=_G.SocialBrowserFrame, ft=ftype, kfs=true, ofs=2, x2=0}
@@ -4062,7 +3999,6 @@ aObj.blizzFrames[ftype].MailFrame = function(self)
 	self:SecureHookScript(_G.MailFrame, "OnShow", function(this)
 		self:skinObject(self.skinTPLs.new("tabs", {obj=this, prefix=this:GetName(), fType=ftype, ignoreSize=self.isClsc and true}))
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, x2=self.isClsc and 1 or nil, y2=-5}
-
 		--	Inbox Frame
 		for i = 1, _G.INBOXITEMS_TO_DISPLAY do
 			self:keepFontStrings(_G["MailItem" .. i])
@@ -4086,7 +4022,6 @@ aObj.blizzFrames[ftype].MailFrame = function(self)
 				self:clrPNBtns("Inbox")
 			end)
 		end
-
 		--	Send Mail Frame
 		self:keepFontStrings(_G.SendMailFrame)
 		self:skinSlider{obj=_G.SendMailScrollFrame.ScrollBar, rt={"background", "artwork"}}
@@ -4115,7 +4050,6 @@ aObj.blizzFrames[ftype].MailFrame = function(self)
 				self:clrBtnBdr(this)
 			end)
 		end
-
 		--	Open Mail Frame
 		_G.OpenMailScrollFrame:DisableDrawLayer("BACKGROUND")
 		self:skinSlider{obj=_G.OpenMailScrollFrame.ScrollBar, rt="overlay"}
@@ -4139,7 +4073,6 @@ aObj.blizzFrames[ftype].MailFrame = function(self)
 				self:addButtonBorder{obj=_G["OpenMailAttachmentButton" .. i], ibt=true}
 			end
 		end
-
 		-- Invoice Frame Text fields
 		local fields = {"ItemLabel", "Purchaser", "SalePrice", "Deposit", "HouseCut", "AmountReceived", "NotYetSent", "MoneyDelay"}
 		if self.isClsc then
@@ -4937,10 +4870,8 @@ aObj.blizzFrames[ftype].PetBattleUI = function(self)
 		this.TopArtLeft:SetTexture(nil)
 		this.TopArtRight:SetTexture(nil)
 		this.TopVersus:SetTexture(nil)
-
 		local tvw = this.TopVersus:GetWidth()
 		local tvh = this.TopVersus:GetHeight()
-
 		-- Active Allies/Enemies
 		local pbf
 		for _, type in _G.pairs{"Ally", "Enemy"} do
@@ -4996,7 +4927,6 @@ aObj.blizzFrames[ftype].PetBattleUI = function(self)
 			end
 		end
 		pbf= nil
-
 		-- create a frame behind the VS text
 		this.sfm = _G.CreateFrame("Frame", nil, this)
 		this.sfm:SetFrameStrata("BACKGROUND")
@@ -5005,7 +4935,6 @@ aObj.blizzFrames[ftype].PetBattleUI = function(self)
 		this.sfm:SetPoint("TOPRIGHT", this.sfr, "TOPLEFT", 8, 0)
 		this.sfm:SetHeight(tvh * 0.8)
 		tvw, tvh = nil, nil
-
 		-- Bottom Frame
 		this.BottomFrame.RightEndCap:SetTexture(nil)
 		this.BottomFrame.LeftEndCap:SetTexture(nil)
@@ -5048,7 +4977,6 @@ aObj.blizzFrames[ftype].PetBattleUI = function(self)
 				end
 			end)
 		end
-
 		-- Tooltip frames
 		if self.prdb.Tooltips.skin then
 			-- hook these to stop tooltip gradient being whiteouted !!
@@ -5305,7 +5233,6 @@ aObj.blizzFrames[ftype].PVEFrame = function(self)
 		self:keepFontStrings(this.shadows)
 		self:skinObject(self.skinTPLs.new("tabs", {obj=this, prefix=this:GetName(), fType=ftype, ignoreHLTex=true}))
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, y2=-5}
-
 		-- GroupFinder Frame
 		for i = 1,gbCnt do
 			_G.GroupFinderFrame["groupButton" .. i].bg:SetTexture(nil)
@@ -5314,7 +5241,6 @@ aObj.blizzFrames[ftype].PVEFrame = function(self)
 			-- make icon square
 			self:makeIconSquare(_G.GroupFinderFrame["groupButton" .. i], "icon", true)
 		end
-
 		-- hook this to change selected texture
 		self:SecureHook("GroupFinderFrame_SelectGroupButton", function(index)
 			for i = 1, gbCnt do
@@ -5325,7 +5251,6 @@ aObj.blizzFrames[ftype].PVEFrame = function(self)
 				end
 			end
 		end)
-
 		if self.modBtnBs then
 			-- hook this to change button border colour
 			self:SecureHook("GroupFinderFrame_EvaluateButtonVisibility", function(this, _)
@@ -5450,7 +5375,6 @@ aObj.blizzFrames[ftype].QuestMap = function(self)
 		this.Background:SetAlpha(0) -- N.B. Texture changed in code
 		this.VerticalSeparator:SetTexture(nil)
 		self:skinDropDown{obj=_G.QuestMapQuestOptionsDropDown}
-
 		-- QuestsFrame
 		this.QuestsFrame:DisableDrawLayer("BACKGROUND")
 		this.QuestsFrame.Contents.Separator:DisableDrawLayer("OVERLAY")
@@ -5494,13 +5418,11 @@ aObj.blizzFrames[ftype].QuestMap = function(self)
 		this.QuestsFrame.DetailFrame:DisableDrawLayer("ARTWORK")
 		self:skinSlider{obj=this.QuestsFrame.ScrollBar}
 		self:addSkinFrame{obj=this.QuestsFrame.StoryTooltip, ft=ftype}
-
 		-- QuestSessionManagement
 		this.QuestSessionManagement.BG:SetTexture(nil)
 		if self.modBtnBs then
 			self:addButtonBorder{obj=this.QuestSessionManagement.ExecuteSessionCommand, ofs=1, clr="gold"}
 		end
-
 		-- Details Frame
 		self:keepFontStrings(this.DetailsFrame)
 		self:keepFontStrings(this.DetailsFrame.RewardsFrame)
@@ -5529,7 +5451,6 @@ aObj.blizzFrames[ftype].QuestMap = function(self)
 				end
 			end)
 		end
-
 		-- CampaignOverview
 		this.CampaignOverview.BG:SetTexture(nil)
 		self:keepFontStrings(this.CampaignOverview.Header)

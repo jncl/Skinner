@@ -1165,7 +1165,6 @@ function aObj:glazeStatusBar(...)
 	self:skinStatusBar(...)
 
 end
-
 local function __skinTabs(opts)
 --[[
 	Calling parameters:
