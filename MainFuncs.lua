@@ -817,10 +817,10 @@ function aObj:skinGlowBox(gBox, ftype)
 	_G.assert(gBox, "Missing object __sGB\n" .. _G.debugstack(2, 3, 2))
 --@end-alpha@
 
-	aObj:Debug2("skinGlowBox: [%s, %s]", gBox, ftype)
+	self:Debug2("skinGlowBox: [%s, %s]", gBox, ftype)
 
-	local function findArrowGlowTex(gBox)
-		-- aObj:Debug("findArrowGlowTex: [%s, %s]", gBox:GetNumChildren(), gBox:GetNumRegions())
+	local function removeArrowGlowTex(gBox)
+		-- aObj:Debug("removeArrowGlowTex: [%s, %s]", gBox:GetNumChildren(), gBox:GetNumRegions())
 		if gBox.Glow then
 			gBox.Glow:SetTexture(nil)
 		elseif gBox.Arrow
@@ -828,25 +828,19 @@ function aObj:skinGlowBox(gBox, ftype)
 			gBox.Arrow.Glow:SetTexture(nil)
 		elseif gBox.ArrowGlow then
 			gBox.ArrowGlow:SetTexture(nil)
-		elseif gBox.ArrowGlowUp then
-			gBox.ArrowGlowUp:SetTexture(nil)
-		elseif gBox.ArrowGlowDown then
-			gBox.ArrowGlowDown:SetTexture(nil)
-		elseif gBox.ArrowGlowLeft then
-			gBox.ArrowGlowLeft:SetTexture(nil)
-		elseif gBox.ArrowGlowRight then
-			gBox.ArrowGlowRight:SetTexture(nil)
 		end
 	end
 
-	findArrowGlowTex(gBox)
+	removeArrowGlowTex(gBox)
 	gBox:DisableDrawLayer("BACKGROUND")
+	self:addSkinFrame{obj=gBox, ft=ftype, nb=true, aso={bbclr="gold"}}
+	local btn = gBox.CloseButton or gBox:GetName() and _G[gBox:GetName() .. "CloseButton"]
 	if self.modBtns
-	and gBox.CloseButton or gBox:GetName() and _G[gBox:GetName() .. "CloseButton"]
+	and btn
 	then
-		self:skinCloseButton{obj=gBox.CloseButton or _G[gBox:GetName() .. "CloseButton"], noSkin=true}
+		self:skinCloseButton{obj=btn, noSkin=true}
 	end
-	self:addSkinFrame{obj=gBox, ft=ftype, nb=true, aso={bbclr="gold"}, ofs= -2}
+	btn = nil
 
 end
 

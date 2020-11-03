@@ -6407,7 +6407,18 @@ aObj.blizzFrames[ftype].Tutorial = function(self)
 		self:Unhook(this, "OnShow")
 	end)
 
-	self:skinGlowBox(_G.HelpPlateTooltip, ftype)
+	self:SecureHookScript(_G.HelpPlateTooltip, "OnShow", function(this)
+		this:DisableDrawLayer("BORDER") -- hide Arrow glow textures
+		self:skinGlowBox(this, ftype)
+		-- move Arrow textures to align with frame border
+		self:moveObject{obj=this.ArrowUP, y=-2}
+		self:moveObject{obj=this.ArrowDOWN, y=2}
+		self:moveObject{obj=this.ArrowRIGHT, x=-2}
+		self:moveObject{obj=this.ArrowLEFT, x=2}
+
+		self:Unhook(this, "OnShow")
+	end)
+	self:checkShown(_G.HelpPlateTooltip)
 
 end
 
