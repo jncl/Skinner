@@ -701,12 +701,20 @@ aObj.blizzFrames[ftype].CharacterFrames = function(self)
 
 		self:SecureHookScript(_G.PaperDollEquipmentManagerPane, "OnShow", function(this)
 			self:skinSlider{obj=this.scrollBar, wdth=-4}
-			self:skinStdButton{obj=this.EquipSet}
 			this.EquipSet:DisableDrawLayer("BACKGROUND")
-			self:skinStdButton{obj=this.SaveSet}
-			for i = 1, #this.buttons do
-				this.buttons[i]:DisableDrawLayer("BACKGROUND")
-				self:addButtonBorder{obj=this.buttons[i], relTo=this.buttons[i].icon}
+			for _, btn in _G.pairs(this.buttons) do
+				btn:DisableDrawLayer("BACKGROUND")
+				if self.modBtnBs then
+					self:addButtonBorder{obj=btn, relTo=btn.icon}
+				end
+			end
+			if self.modBtns then
+				self:skinStdButton{obj=this.EquipSet}
+				self:skinStdButton{obj=this.SaveSet}
+				self:SecureHook("PaperDollEquipmentManagerPane_Update", function()
+					self:clrBtnBdr(_G.PaperDollEquipmentManagerPane.EquipSet)
+					self:clrBtnBdr(_G.PaperDollEquipmentManagerPane.SaveSet)
+				end)
 			end
 
 			self:Unhook(this, "OnShow")
@@ -780,9 +788,11 @@ aObj.blizzFrames[ftype].CharacterFrames = function(self)
 		end
 		-- TokenFramePopup
 		_G.TokenFramePopup.Border:DisableDrawLayer("BACKGROUND")
-		self:skinCheckButton{obj=_G.TokenFramePopupInactiveCheckBox}
-		self:skinCheckButton{obj=_G.TokenFramePopupBackpackCheckBox}
 		self:addSkinFrame{obj=_G.TokenFramePopup,ft=ftype, kfs=true, y1=-6, x2=-6, y2=6}
+		if self.modChkBtns then
+			self:skinCheckButton{obj=_G.TokenFramePopupInactiveCheckBox}
+			self:skinCheckButton{obj=_G.TokenFramePopupBackpackCheckBox}
+		end
 
 		self:Unhook(_G.TokenFrame, "OnShow")
 	end)
@@ -790,16 +800,21 @@ aObj.blizzFrames[ftype].CharacterFrames = function(self)
 	self:SecureHookScript(_G.ReputationFrame, "OnShow", function(this)
 		self:keepFontStrings(this)
 		for i = 1, _G.NUM_FACTIONS_DISPLAYED do
+			self:skinStatusBar{obj=_G["ReputationBar" .. i .. "ReputationBar"], fi=0}
 			_G["ReputationBar" .. i .. "Background"]:SetAlpha(0)
 			_G["ReputationBar" .. i .. "ReputationBarLeftTexture"]:SetAlpha(0)
 			_G["ReputationBar" .. i .. "ReputationBarRightTexture"]:SetAlpha(0)
-			self:skinStatusBar{obj=_G["ReputationBar" .. i .. "ReputationBar"], fi=0}
 			if self.modBtns then
 				self:skinExpandButton{obj=_G["ReputationBar" .. i .. "ExpandOrCollapseButton"], onSB=true}
 				self:checkTex(_G["ReputationBar" .. i .. "ExpandOrCollapseButton"])
 			end
 		end
+		self:skinSlider{obj=_G.ReputationListScrollFrame.ScrollBar, size=3, rt="background"}
+		-- ReputationDetailFrame
+		self:removeNineSlice(_G.ReputationDetailFrame.Border)
+		self:addSkinFrame{obj=_G.ReputationDetailFrame, ft=ftype, kfs=true, ofs=-6}
 		if self.modBtns then
+			self:skinCloseButton{obj=_G.ReputationDetailCloseButton}
 			-- hook to manage changes to button textures
 			self:SecureHook("ReputationFrame_Update", function()
 				for i = 1, _G.NUM_FACTIONS_DISPLAYED do
@@ -807,18 +822,11 @@ aObj.blizzFrames[ftype].CharacterFrames = function(self)
 				end
 			end)
 		end
-		self:skinSlider{obj=_G.ReputationListScrollFrame.ScrollBar, size=3, rt="background"}
-		-- ReputationDetailFrame
-		self:removeNineSlice(_G.ReputationDetailFrame.Border)
-		if self.modBtns then
-			self:skinCloseButton{obj=_G.ReputationDetailCloseButton}
-		end
 		if self.modChkBtns then
 			self:skinCheckButton{obj=_G.ReputationDetailAtWarCheckBox}
 			self:skinCheckButton{obj=_G.ReputationDetailInactiveCheckBox}
 			self:skinCheckButton{obj=_G.ReputationDetailMainScreenCheckBox}
 		end
-		self:addSkinFrame{obj=_G.ReputationDetailFrame, ft=ftype, kfs=true, x1=6, y1=-6, x2=-6, y2=6}
 
 		self:Unhook(this, "OnShow")
 	end)
