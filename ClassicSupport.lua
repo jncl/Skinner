@@ -774,12 +774,11 @@ aObj.ClassicSupport = function(self)
 		self.initialized.FriendsFrame = true
 
 		self:SecureHookScript(_G.FriendsFrame, "OnShow", function(this)
-			self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, y2=-5}
-			self:moveObject{obj=this.CloseButton, x=2}
-
 			self:skinDropDown{obj=_G.FriendsDropDown}
 			self:skinDropDown{obj=_G.TravelPassDropDown}
 			self:skinObject(self.skinTPLs.new("tabs", {obj=this, prefix=this:GetName(), fType=ftype, ignoreSize=true, lod=true}))
+			self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, y2=-5}
+			self:moveObject{obj=this.CloseButton, x=1}
 
 			self:SecureHookScript(_G.FriendsTabHeader, "OnShow", function(this)
 				_G.FriendsFrameBattlenetFrame:DisableDrawLayer("BACKGROUND")
