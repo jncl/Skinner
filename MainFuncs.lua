@@ -572,14 +572,10 @@ end
 
 do
 	aObj:SecureHook("UIDropDownMenu_DisableDropDown", function(dropDown)
-		if dropDown.Button.sbb or _G[dropDown:GetName() .. "Button"].sbb then
-			aObj:clrBtnBdr(dropDown.Button or _G[dropDown:GetName() .. "Button"])
-		end
+		aObj:checkDisabledDD(dropDown)
 	end)
 	aObj:SecureHook("UIDropDownMenu_EnableDropDown", function(dropDown)
-		if dropDown.Button.sbb or _G[dropDown:GetName() .. "Button"].sbb then
-			aObj:clrBtnBdr(dropDown.Button or _G[dropDown:GetName() .. "Button"])
-		end
+		aObj:checkDisabledDD(dropDown)
 	end)
 end
 local function __skinDropDown(opts)
@@ -596,6 +592,7 @@ local function __skinDropDown(opts)
 		noBB = don't add a border around the button
 		bx1 = adjust x1 offset for the button (used by Overachiever)
 		lrg = Large UI template used (AuctionHouseUI)
+		regs = regions to remove
 --]]
 --@alpha@
 	_G.assert(opts.obj, "Missing object __sDD\n" .. _G.debugstack(2, 3, 2))
@@ -627,7 +624,8 @@ local function __skinDropDown(opts)
 	end
 
 	-- hide textures
-	aObj:removeRegions(opts.obj, {1, 2, 3})
+	-- N.B. to make sure System Options Languages DropDown shows the language, use {1, 2, 3}
+	aObj:removeRegions(opts.obj, opts.regs or {1, 2, 3})
 
 	-- return if not to be skinned
 	if not aObj.prdb.TexturedDD
@@ -639,32 +637,42 @@ local function __skinDropDown(opts)
 	-- add texture
 	opts.obj.ddTex = opts.obj:CreateTexture(nil, "ARTWORK", -5) -- appear behind text
 	opts.obj.ddTex:SetTexture(aObj.prdb.TexturedDD and aObj.itTex or nil)
+
 	-- align it to the middle texture
+	local lTex = opts.obj.Left or opts.obj.DLeft or _G[opts.obj:GetName() .. "Left"]
+	local rTex = opts.obj.Right or opts.obj.DRight or _G[opts.obj:GetName() .. "Right"]
 	if opts.lrg then
-		opts.obj.ddTex:SetPoint("LEFT", opts.obj.Left or _G[opts.obj:GetName() .. "Left"], "RIGHT", -11, 2)
-		opts.obj.ddTex:SetPoint("RIGHT", opts.obj.Right or _G[opts.obj:GetName() .. "Right"], "LEFT", -15, 0)
+		opts.obj.ddTex:SetPoint("LEFT", lTex, "RIGHT", -11, 2)
+		opts.obj.ddTex:SetPoint("RIGHT", rTex, "LEFT", -15, 0)
 		opts.obj.ddTex:SetHeight(24)
 	else
-		opts.obj.ddTex:SetPoint("LEFT", opts.obj.Left or _G[opts.obj:GetName() .. "Left"], "RIGHT", -5, 2)
-		opts.obj.ddTex:SetPoint("RIGHT", opts.obj.Right or _G[opts.obj:GetName() .. "Right"], "LEFT", 5, 2)
+		opts.obj.ddTex:SetPoint("LEFT", lTex, "RIGHT", -5, 2)
+		opts.obj.ddTex:SetPoint("RIGHT", rTex, "LEFT", 5, 2)
 		opts.obj.ddTex:SetHeight(17)
 	end
+	lTex, rTex = nil, nil
 
 	opts.x1 = opts.x1 or 16
 	opts.y1 = opts.y1 or -1
 	opts.x2 = opts.x2 or -16
 	opts.y2 = opts.y2 or 7
 	aObj:addSkinFrame{obj=opts.obj, ft=opts.ftype or "a", aso={ng=true, bd=5}, rp=opts.rp, x1=opts.x1, y1=opts.y1, x2=opts.x2, y2=opts.y2}
+
 	-- add a button border around the dd button
 	if not opts.noBB then
+		local btn = opts.obj.Button or opts.obj.dropButton or _G[opts.obj:GetName() .. "Button"]
 		if opts.lrg then
-			aObj:addButtonBorder{obj=opts.obj.Button, es=12, ofs=0}
+			aObj:addButtonBorder{obj=btn, es=12, ofs=0}
 		else
 			local xOfs1 = opts.bx1 and opts.obj:GetWidth() + 10 or 1
-			aObj:addButtonBorder{obj=opts.obj.Button or _G[opts.obj:GetName() .. "Button"], es=12, ofs=-2, x1=xOfs1}
+			aObj:addButtonBorder{obj=btn, es=12, ofs=-2, x1=xOfs1}
 			xOfs1 = nil
 		end
+		btn = nil
 	end
+
+	-- handle already disabled
+	aObj:checkDisabledDD(opts.obj)
 
 end
 function aObj:skinDropDown(...)

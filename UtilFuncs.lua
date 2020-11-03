@@ -407,6 +407,21 @@ function aObj:checkShown(frame)
 
 end
 
+function aObj:checkDisabledDD(obj, disabled)
+
+	local disabled = disabled or obj.isDisabled
+	if obj.sf then
+		self:clrBBC(obj.sf,  disabled and "grey")
+		if self.modBtnBs then
+			local btn = obj.Button and obj.Button.sbb or obj.dropButton and obj.dropButton.sbb or _G[obj:GetName() .. "Button"].sbb
+			self:clrBtnBdr(btn, disabled and "grey")
+			btn = nil
+		end
+	end
+	disabled = nil
+
+end
+
 local buildInfo = {
 	beta        = {"9.0.2", 36401},
 	classic_ptr = {"1.13.6", 36324},
@@ -1264,6 +1279,9 @@ function aObj:skinAceDropdown(obj, x2, y2)
 
 	self:skinDropDown{obj=obj.dropdown, rp=true, x2=x2, y2=y2}
 	self:addSkinFrame{obj=obj.pullout.frame, ft="a", kfs=true, nb=true}
+	self:secureHook(obj, "SetDisabled", function(this, disabled)
+		self:checkDisabledDD(this.dropdown, disabled)
+	end)
 
 end
 

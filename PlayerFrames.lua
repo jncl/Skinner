@@ -2251,6 +2251,12 @@ aObj.blizzLoDFrames[ftype].EncounterJournal = function(self) -- a.k.a. Adenture 
 
 		this.instanceSelect.bg:SetAlpha(0)
 		self:skinDropDown{obj=this.instanceSelect.tierDropDown}
+		self:SecureHook("EncounterJournal_EnableTierDropDown", function()
+			self:checkDisabledDD(this.instanceSelect.tierDropDown)
+		end)
+		self:SecureHook("EncounterJournal_DisableTierDropDown", function()
+			self:checkDisabledDD(this.instanceSelect.tierDropDown)
+		end)
 		self:skinSlider{obj=this.instanceSelect.scroll.ScrollBar, wdth=-6}
 		self:addFrameBorder{obj=this.instanceSelect.scroll, ft=ftype, x1=-9, y1=6, x2=6, y2=-7}
 		if self.modBtnBs then

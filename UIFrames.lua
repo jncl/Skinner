@@ -6068,6 +6068,15 @@ aObj.blizzFrames[ftype].SystemOptions = function(self)
 
 		self:Unhook(this, "OnShow")
 	end)
+	if aObj.isClsc then
+		self:SecureHook("VideoOptionsDropDownMenu_DisableDropDown", function(dropDown)
+			self:checkDisabledDD(dropDown)
+		end)
+		self:SecureHook("VideoOptionsDropDownMenu_EnableDropDown", function(dropDown)
+			self:checkDisabledDD(dropDown)
+		end)
+	end
+
 	-- Advanced
 	self:SecureHookScript(_G.Advanced_, "OnShow", function(this)
 		skinKids(this)

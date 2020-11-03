@@ -32,7 +32,7 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 		then
 			-- aObj:Debug("Skinning: [%s, %s]", obj, objType)
 			if objType == "Dropdown" then
-				aObj:skinAceDropdown(obj, nil, 0)
+				aObj:skinAceDropdown(obj, nil, 1)
 			elseif objType == "Dropdown-Pullout" then
 				aObj:skinSlider{obj=obj.slider}
 				aObj:adjWidth{obj=obj.slider, adj=6}
@@ -226,14 +226,6 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 			        aObj:keepFontStrings(obj.frame)
 			    else
 					obj.alignoffset = 29 -- align to neighbouring DropDowns
-    				obj.frame.DLeft:SetAlpha(0)
-    				obj.frame.DRight:SetAlpha(0)
-    				obj.frame.DMiddle:SetHeight(18)
-    				obj.frame.DMiddle:SetTexture(aObj.itTex)
-    				obj.frame.DMiddle:SetTexCoord(0, 1, 0, 1)
-    				obj.frame.DMiddle:ClearAllPoints()
-    				obj.frame.DMiddle:SetPoint("LEFT", obj.frame.DLeft, "RIGHT", -5, 2)
-    				obj.frame.DMiddle:SetPoint("RIGHT", obj.frame.DRight, "LEFT", 5, 2)
 					local xOfs1, yOfs1, xOfs2, yOfs2
 					if objType == "LSM30_Background"
 					or objType == "LSM30_Border"
@@ -247,12 +239,10 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 					elseif objType == "RS_Markers" then
 						xOfs1, yOfs1, xOfs2, yOfs2 = 0, -18, 1, 0
 					end
-					aObj:addSkinFrame{obj=obj.frame, ft="a", nb=true, aso={ng=true, bd=5}, rp=true, x1=xOfs1, y1=yOfs1, x2=xOfs2, y2=yOfs2}
-					aObj:moveObject{obj=obj.frame, y=-2}
-					if aObj.modBtnBs then
-						-- add a button border around the dd button
-						aObj:addButtonBorder{obj=obj.frame.dropButton, es=12, ofs=-2, x1=1}
-					end
+					aObj:skinDropDown{obj=obj.frame, ft="a", regs={2, 3, 4}, rp=true, x1=xOfs1, y1=yOfs1, x2=xOfs2, y2=yOfs2}
+					aObj:secureHook(obj, "SetDisabled", function(this, disabled)
+						aObj:checkDisabledDD(this.frame, disabled)
+					end)
     			end
 
 			-- WeakAuras objects
@@ -296,7 +286,7 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 				obj.frame.background:SetTexture(nil)
 
 			elseif objType == "WeakAurasSortedDropdown" then
-				aObj:skinAceDropdown(obj, nil, 0)
+				aObj:skinAceDropdown(obj, nil, 1)
 
             -- TradeSkillMaster (TSM) objects
             elseif objType == "TSMMainFrame" then
