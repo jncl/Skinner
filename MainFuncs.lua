@@ -246,15 +246,8 @@ local function __addSkinFrame(opts)
 		end
 	end
 
-	-- setup defaults used by majority of frames
-	if not opts.ofs then
-		opts.x1 = opts.x1 or -3
-		opts.y1 = opts.y1 or 2
-		opts.x2 = opts.x2 or 3
-		opts.y2 = opts.y2 or -2
-	end
 	-- setup offset values
-	opts.ofs = opts.ofs or 0
+	opts.ofs = opts.ofs or 2
 	opts.x1 = opts.x1 or opts.ofs * -1
 	opts.y1 = opts.y1 or opts.ofs
 	opts.x2 = opts.x2 or opts.ofs
