@@ -1399,19 +1399,16 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 	self:skinDropDown{obj=cFrame.ApplicantList.DropDown}
 	self:removeNineSlice(cFrame.ApplicantList.InsetFrame.NineSlice)
 	cFrame.ApplicantList.InsetFrame.Bg:SetTexture(nil)
-	self:SecureHook(cFrame.ApplicantList, "RefreshLayout", function(this)
-		local btn
-		for i = 1, #this.ListScrollFrame.buttons do
-			btn = this.ListScrollFrame.buttons[i]
-			if self.modBtns then
+	if self.modBtns then
+		self:SecureHook(cFrame.ApplicantList, "RefreshLayout", function(this)
+			for _, btn in _G.pairs(this.ListScrollFrame.buttons) do
 				self:skinStdButton{obj=btn.CancelInvitationButton}
 				self:skinStdButton{obj=btn.InviteButton}
 			end
-		end
-		btn = nil
 
-		self:Unhook(this, "RefreshLayout")
-	end)
+			self:Unhook(this, "RefreshLayout")
+		end)
+	end
 
 	local function skinReqToJoin(frame)
 		frame.MessageFrame:DisableDrawLayer("BACKGROUND")
@@ -1745,8 +1742,14 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 
 	if self.modBtns then
 		self:skinStdButton{obj=cFrame.InviteButton}
+		self:SecureHook(cFrame.InviteButton, "SetEnabled", function(this)
+			self:clrBtnBdr(this)
+		end)
 		self:skinStdButton{obj=cFrame.CommunitiesControlFrame.CommunitiesSettingsButton}
 		self:skinStdButton{obj=cFrame.CommunitiesControlFrame.GuildRecruitmentButton}
+		self:SecureHook(cFrame.CommunitiesControlFrame.GuildRecruitmentButton, "SetEnabled", function(this)
+			self:clrBtnBdr(this)
+		end)
 		self:skinStdButton{obj=cFrame.CommunitiesControlFrame.GuildControlButton}
 		self:skinStdButton{obj=cFrame.GuildLogButton}
 	end
