@@ -3393,7 +3393,7 @@ aObj.blizzFrames[ftype].InterfaceOptions = function(self)
 			if self.modBtns then
 				-- skin toggle buttons
 				for _, btn in _G.pairs(_G.InterfaceOptionsFrameAddOns.buttons) do
-					self:skinExpandButton{obj=btn.toggle, sap=true}
+					self:skinExpandButton{obj=btn.toggle, onSB=true}
 					self:checkTex{obj=btn.toggle}
 				end
 				self:SecureHook("InterfaceAddOnsList_Update", function()

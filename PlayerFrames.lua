@@ -791,26 +791,20 @@ aObj.blizzFrames[ftype].CharacterFrames = function(self)
 	self:SecureHookScript(_G.ReputationFrame, "OnShow", function(this)
 		self:keepFontStrings(this)
 		for i = 1, _G.NUM_FACTIONS_DISPLAYED do
-			self:skinExpandButton{obj=_G["ReputationBar" .. i .. "ExpandOrCollapseButton"], sap=true}
 			_G["ReputationBar" .. i .. "Background"]:SetAlpha(0)
 			_G["ReputationBar" .. i .. "ReputationBarLeftTexture"]:SetAlpha(0)
 			_G["ReputationBar" .. i .. "ReputationBarRightTexture"]:SetAlpha(0)
 			self:skinStatusBar{obj=_G["ReputationBar" .. i .. "ReputationBar"], fi=0}
+			if self.modBtns then
+				self:skinExpandButton{obj=_G["ReputationBar" .. i .. "ExpandOrCollapseButton"], onSB=true}
+				self:checkTex(_G["ReputationBar" .. i .. "ExpandOrCollapseButton"])
+			end
 		end
 		if self.modBtns then
 			-- hook to manage changes to button textures
 			self:SecureHook("ReputationFrame_Update", function()
 				for i = 1, _G.NUM_FACTIONS_DISPLAYED do
-					if _G["ReputationBar" .. i].isCollapsed then
-						_G["ReputationBar" .. i .. "ExpandOrCollapseButton"]:SetText("+")
-					else
-						_G["ReputationBar" .. i .. "ExpandOrCollapseButton"]:SetText("-")
-					end
-					if _G["ReputationBar" .. i .. "ExpandOrCollapseButton"]:IsShown() then
-						_G["ReputationBar" .. i .. "ExpandOrCollapseButton"].sb:Show()
-					else
-						_G["ReputationBar" .. i .. "ExpandOrCollapseButton"].sb:Hide()
-					end
+					self:checkTex(_G["ReputationBar" .. i .. "ExpandOrCollapseButton"])
 				end
 			end)
 		end

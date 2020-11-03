@@ -56,6 +56,18 @@ do
 	module.fontS:SetFont([[Fonts\ARIALN.TTF]], 14)
 	module.fontS:SetTextColor(_G.NORMAL_FONT_COLOR:GetRGB())
 end
+local texNumbers = {
+	[130838] = "plus",
+	[130821] = "minus",
+}
+local texSuffixes = {
+	["PlusButton"]    = "plus",
+	["ZoomInButton"]  = "plus",
+	["_Closed"]       = "plus",
+	["MinusButton"]   = "minus",
+	["ZoomOutButton"] = "minus",
+	["_Open"]         = "minus",
+}
 local function __checkTex(opts)
 --[[
 	Calling parameters:
@@ -76,48 +88,34 @@ local function __checkTex(opts)
 	if not btn then return end -- allow for unskinned buttons
 	local nTex = opts.nTex or opts.obj:GetNormalTexture() and opts.obj:GetNormalTexture():GetTexture() or nil
 
-	-- aObj:Debug("__checkTex: [%s, %s, %s, %s]", nTex, opts.obj.onSB, btn, btn:IsShown())
-	-- handle numbers instead of text (e.g. Armory icon)
-	if btn:IsShown() then
-		if nTex	then
-			if _G.tonumber(nTex) then
-				if nTex == 130821 then
-					btn:SetText(module.minus)
+	-- aObj:Debug("__checkTex: [%s, %s, %s]", nTex, opts.obj.onSB, btn)
+	local header = false
+	if nTex	then
+		if _G.tonumber(nTex) then
+			for num, type in _G.pairs(texNumbers) do
+				if nTex == num then
+					btn:SetText(module[type])
 					btn:Show()
-				elseif nTex == 130838 then
-					btn:SetText(module.plus)
-					btn:Show()
-				else -- not a header line
-					btn:SetText("")
-					btn:Hide()
-				end
-			else
-				if nTex:find("MinusButton")
-				or nTex:find("ZoomOutButton") -- ARL
-				or nTex:find("_Open") -- BETA: Campaign_Header
-				then
-					btn:SetText(module.minus)
-					btn:Show()
-				elseif (_G.tonumber(nTex) and nTex == 130821)
-				or nTex:find("PlusButton")
-				or nTex:find("ZoomInButton") -- ARL
-				or nTex:find("_Closed") -- BETA: Campaign_Header
-				then
-					btn:SetText(module.plus)
-					btn:Show()
-				else -- not a header line
-					btn:SetText("")
-					btn:Hide()
+					header = true
+					break
 				end
 			end
-		else -- not a header line
-			btn:SetText("")
-			btn:Hide()
+		else
+			for str, type in _G.pairs(texSuffixes) do
+				if nTex:find(str) then
+					btn:SetText(module[type])
+					btn:Show()
+					header = true
+					break
+				end
+			end
 		end
-	else -- not a header line
+	end
+	if not header then
 		btn:SetText("")
 		btn:Hide()
 	end
+	header = nil
 
 end
 function module:checkTex(...)
@@ -310,6 +308,9 @@ function module:skinExpandButton(opts)
 		onSB = put text on skinButton
 		plus = use plus sign
 --]]
+--@alpha@
+	_G.assert(opts.obj, "Missing object skinExpandButton\n" .. _G.debugstack(2, 3, 2))
+--@end-alpha@
 
 	-- don't skin it twice (BUGFIX)
 	if opts.obj and opts.obj.sb then return end

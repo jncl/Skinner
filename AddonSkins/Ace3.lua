@@ -136,10 +136,11 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 				if aObj.modBtns then
 					-- hook to manage changes to button textures
 					aObj:secureHook(obj, "RefreshTree", function(this)
-						for i = 1, #this.buttons do
-							if not this.buttons[i].toggle.sb then
-								aObj:skinExpandButton{obj=this.buttons[i].toggle, sap=true, plus=true} -- default to plus
+						for _, btn in _G.pairs(this.buttons) do
+							if not btn.toggle.sb then
+								aObj:skinExpandButton{obj=btn.toggle, onSB=true}
 							end
+							aObj:checkTex(btn.toggle)
 						end
 					end)
 				end
@@ -258,15 +259,22 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 			elseif objType == "WeakAurasLoadedHeaderButton" then
 				obj.frame.background:SetTexture(nil)
 				if aObj.modBtns then
-					aObj:skinExpandButton{obj=obj.expand, sap=true, as=true, nc=true}
+					aObj:skinExpandButton{obj=obj.expand, onSB=true}
 					aObj:secureHook(obj.expand, "SetNormalTexture", function(this, nTex)
-						aObj.modUIBtns:checkTex{obj=this, nTex=nTex, mp2=true}
+						aObj:checkTex{obj=this, nTex=nTex}
 					end)
 				end
 			elseif objType == "WeakAurasDisplayButton" then
 				aObj:skinEditBox{obj=obj.renamebox, regs={9}, noHeight=true}
 				obj.renamebox:SetHeight(18)
 				obj.background:SetTexture(nil)
+				if aObj.modBtns then
+					aObj:skinExpandButton{obj=obj.expand, onSB=true}
+					obj.expand:SetDisabledFontObject(aObj.fontDP)
+					aObj:secureHook(obj.expand, "SetNormalTexture", function(this, nTex)
+						aObj:checkTex{obj=this, nTex=nTex}
+					end)
+				end
 				if aObj.modBtnBs then
 					aObj:addButtonBorder{obj=obj.frame, relTo=obj.frame.icon}
 					-- make sure button border frame is visible
@@ -274,13 +282,6 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 						_G.RaiseFrameLevel(this.frame.sbb)
 					end)
 					aObj:addButtonBorder{obj=obj.group, es=10, ofs=0}
-				end
-				if aObj.modBtns then
-					aObj:skinExpandButton{obj=obj.expand, sap=true, plus=true, as=true, nc=true}
-					obj.expand:SetDisabledFontObject(aObj.modUIBtns.fontDP)
-					aObj:secureHook(obj.expand, "SetNormalTexture", function(this, nTex)
-						aObj.modUIBtns:checkTex{obj=this, nTex=nTex, mp2=true}
-					end)
 				end
 			elseif objType == "WeakAurasNewButton" then
 				obj.background:SetTexture(nil)
