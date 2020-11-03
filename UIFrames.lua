@@ -1495,7 +1495,7 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 	self:SecureHookScript(_G.ChatConfigFrame, "OnShow", function(this)
 		self:removeNineSlice(this.Border)
 		self:addFrameBorder{obj=_G.ChatConfigCategoryFrame, ft=ftype, ofs=-2}
-		self:addFrameBorder{obj=_G.ChatConfigBackgroundFrame, ft=ftype, ofs=-2}
+		self:addFrameBorder{obj=_G.ChatConfigBackgroundFrame, ft=ftype, ofs=0, y1=1}
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, hdr=true, ofs=-4, y1=0}
 		if self.modBtns then
 			self:skinStdButton{obj=this.DefaultButton}
