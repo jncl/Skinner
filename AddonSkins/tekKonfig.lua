@@ -13,7 +13,6 @@ aObj.libsToSkin["tekKonfig-Button"] = function(self) -- v 5
 			self:skinStdButton{obj=btn}
 			return btn
 		end, true)
-		tKB = nil
 	end
 
 end
@@ -29,7 +28,6 @@ aObj.libsToSkin["tekKonfig-Checkbox"] = function(self) -- v 3
 			self:skinCheckButton{obj=cBtn}
 			return cBtn
 		end, true)
-		tKCb = nil
 	end
 
 end
@@ -61,7 +59,6 @@ aObj.libsToSkin["tekKonfig-Dropdown"] = function(self) -- v 3
 			end
 			return frame, text, container, labeltext
 		end, true)
-		tKDd = nil
 	end
 
 end
@@ -79,7 +76,6 @@ aObj.libsToSkin["tekKonfig-Group"] = function(self) -- v 2
 			self:addSkinFrame{obj=box, ft="a", nb=true}
 			return box
 		end, true)
-		tKG = nil
 	end
 
 end
@@ -105,7 +101,6 @@ aObj.libsToSkin["tekKonfig-Slider"] = function(self) -- v 3
 				return slider
 			end, true)
 		end
-		tKS = nil
 	end
 
 end
