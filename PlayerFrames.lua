@@ -1034,7 +1034,7 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 	skinTTip(_G.PetJournalPrimaryAbilityTooltip)
 	skinTTip(_G.PetJournalSecondaryAbilityTooltip)
 
-	local skinPageBtns, skinCollectionBtn, colourBtns
+	local skinPageBtns, skinCollectionBtn
 	if self.modBtnBs then
 		function skinPageBtns(frame)
 			aObj:addButtonBorder{obj=frame.PagingFrame.PrevPageButton, ofs=-2, y1=-3, x2=-3}
@@ -1052,15 +1052,6 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 					aObj:clrBtnBdr(btn)
 				end
 			end
-		end
-		function colourBtns(sFrame)
-			local btn
-			for i = 1, #sFrame.buttons do
-				btn = sFrame.buttons[i]
-				btn:DisableDrawLayer("BACKGROUND")
-				aObj:clrBtnBdr(btn)
-			end
-			btn = nil
 		end
 	end
 
@@ -1210,10 +1201,10 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 			self:removeNineSlice(this.RightInset.NineSlice)
 			self:skinSlider{obj=this.ScrollFrame.scrollBar, wdth=-4, size=3}
 			self:skinDropDown{obj=this.ScrollFrame.FavoriteDropDown}
-			for i = 1, #this.ScrollFrame.buttons do
-				this.ScrollFrame.buttons[i]:DisableDrawLayer("BACKGROUND")
+			for _, btn in _G.pairs(this.ScrollFrame.buttons) do
+				btn:DisableDrawLayer("BACKGROUND")
 				if self.modBtnBs then
-					 self:addButtonBorder{obj=this.ScrollFrame.buttons[i], relTo=this.ScrollFrame.buttons[i].Icon}
+					 self:addButtonBorder{obj=btn, relTo=btn.Icon, reParent={btn.Favorite}}
 				end
 			end
 			this.DetailsFrame:DisableDrawLayer("BACKGROUND")
@@ -1224,6 +1215,13 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 				 self:skinStdButton{obj=this.DetailsFrame.VariantSetsButton}
 			end
 			if self.modBtnBs then
+				local function colourBtns(sFrame)
+					for _, btn in _G.pairs(sFrame.buttons) do
+						btn:DisableDrawLayer("BACKGROUND")
+						aObj:clrBtnBdr(btn, btn.Icon:IsDesaturated() and "grey")
+					end
+				end
+
 				colourBtns(this.ScrollFrame)
 				self:SecureHook(this.ScrollFrame, "update", function(this) -- use lowercase for scrollframe function
 					colourBtns(this)
