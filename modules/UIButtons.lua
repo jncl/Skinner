@@ -224,6 +224,10 @@ function module:skinCloseButton(opts) -- text on button
 		storeOnParent = store reference to close button on object's parent
 		noSkin = don't add skin frame
 --]]
+--@alpha@
+	_G.assert(opts.obj, "Missing object skinCloseButton\n" .. _G.debugstack(2, 3, 2))
+--@end-alpha@
+
 	opts.obj:DisableDrawLayer("BACKGROUND")
 	opts.obj:SetNormalTexture(nil)
 	opts.obj:SetPushedTexture(nil)
@@ -454,6 +458,9 @@ function module:skinStdButton(opts) -- standard panel button
 		clr = set colour
 		ca = set colour alpha
 --]]
+--@alpha@
+	_G.assert(opts.obj, "Missing object skinStdButton\n" .. _G.debugstack(2, 3, 2))
+--@end-alpha@
 
 	opts.obj:DisableDrawLayer("BACKGROUND")
 	if opts.obj:GetNormalTexture() then opts.obj:GetNormalTexture():SetAlpha(0) end
