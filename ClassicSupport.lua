@@ -214,7 +214,7 @@ aObj.ClassicSupport = function(self)
 				_G[button:GetName() .. "NormalTexture"]:SetAlpha(0)
 			end)
 
-			self:skinTabs{obj=this, lod=true, ignore=true}
+			self:skinObject(self.skinTPLs.new("tabs", {obj=this, prefix=this:GetName(), fType=ftype, ignoreSize=true, lod=true}))
 			self:addSkinFrame{obj=_G.AuctionFrame, ft=ftype, kfs=true, hdr=true, x1=10, y1=-11, y2=5}
 			self:moveObject{obj=_G.AuctionFrameCloseButton, x=3}
 
@@ -508,7 +508,6 @@ aObj.ClassicSupport = function(self)
 		if not self.prdb.CharacterFrames or self.initialized.CharacterFrames then return end
 		self.initialized.CharacterFrames = true
 
-		self:skinTabs{obj=_G.CharacterFrame, lod=true, ignore=true}
 		self:addSkinFrame{obj=_G.CharacterFrame, ft=ftype, kfs=true, x1=10, y1=-12, x2=-31, y2=71}
 
 		self:keepFontStrings(_G.PaperDollFrame)
@@ -517,6 +516,7 @@ aObj.ClassicSupport = function(self)
 		if self.modBtnBs then
 			for i = 1, 5 do
 				self:addButtonBorder{obj=_G["MagicResFrame" .. i], es=24, ofs=2, x1=-1, y2=-4, clr="grey"}
+			self:skinObject(self.skinTPLs.new("tabs", {obj=this, prefix=this:GetName(), fType=ftype, ignoreSize=true, lod=true}))
 			end
 			self:SecureHook("PaperDollItemSlotButton_Update", function(btn)
 				-- ignore buttons with no border
@@ -770,12 +770,12 @@ aObj.ClassicSupport = function(self)
 		self.initialized.FriendsFrame = true
 
 		self:SecureHookScript(_G.FriendsFrame, "OnShow", function(this)
-			self:skinTabs{obj=this, lod=true, ignore=true}
 			self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, y2=-5}
 			self:moveObject{obj=this.CloseButton, x=2}
 
 			self:skinDropDown{obj=_G.FriendsDropDown}
 			self:skinDropDown{obj=_G.TravelPassDropDown}
+			self:skinObject(self.skinTPLs.new("tabs", {obj=this, prefix=this:GetName(), fType=ftype, ignoreSize=true, lod=true}))
 
 			self:SecureHookScript(_G.FriendsTabHeader, "OnShow", function(this)
 				_G.FriendsFrameBattlenetFrame:DisableDrawLayer("BACKGROUND")
@@ -795,8 +795,7 @@ aObj.ClassicSupport = function(self)
 				_G.FriendsFrameStatusDropDownStatus:SetAlpha(1) -- display status icon
 				self:skinEditBox{obj=_G.FriendsFrameBroadcastInput, regs={6, 7}, mi=true, noWidth=true, noHeight=true, noMove=true} -- 6 is text, 7 is icon
 				_G.FriendsFrameBroadcastInputFill:SetTextColor(self.BT:GetRGB())
-				_G.PanelTemplates_SetNumTabs(this, 2) -- adjust for Friends & Ignore
-				self:skinTabs{obj=this, up=true, lod=true, x1=0, y1=-5, x2=0, y2=-5}
+				self:skinObject(self.skinTPLs.new("tabs", {obj=this, prefix=this:GetName(), numTabs=2, fType=ftype, lod=true, upwards=true, offsets={x1=0, y1=-5, x2=0, y2=-5}}))
 				if self.modBtnBs then
 					self:addButtonBorder{obj=_G.FriendsTabHeaderRecruitAFriendButton}
 					self:addButtonBorder{obj=_G.FriendsTabHeaderSoRButton}
@@ -1107,7 +1106,7 @@ aObj.ClassicSupport = function(self)
 		self.initialized.InspectUI = true
 
 		self:SecureHookScript(_G.InspectFrame, "OnShow", function(this)
-			self:skinTabs{obj=this, lod=true}
+			self:skinObject(self.skinTPLs.new("tabs", {obj=this, prefix=this:GetName(), fType=ftype, ignoreSize=true, lod=true}))
 			self:addSkinFrame{obj=this, ft=ftype, kfs=true, x1=10, y1=-12, x2=-31, y2=71}
 
 			self:Unhook(this, "OnShow")
@@ -1151,7 +1150,7 @@ aObj.ClassicSupport = function(self)
 
 		self:SecureHookScript(_G.SpellBookFrame, "OnShow", function(this)
 			this.numTabs = 3
-			self:skinTabs{obj=this, suffix="Button", regs={1, 3}, lod=true, ignore=true, x1=13, y1=-14, x2=-13, y2=16}
+			self:skinObject(self.skinTPLs.new("tabs", {obj=this, prefix=this:GetName(), suffix="Button", fType=ftype, ignoreSize=true, lod=true, offsets={x1=13, y1=-14, x2=-13, y2=16}, regions={1, 3}, track=false}))
 			if self.isTT then
 				local function setTab(bookType)
 					local tab
@@ -1276,7 +1275,7 @@ aObj.ClassicSupport = function(self)
 		self.initialized.TalentUI = true
 
 		self:SecureHookScript(_G.TalentFrame, "OnShow", function(this)
-			self:skinTabs{obj=this, lod=true, ignore=true}
+			self:skinObject(self.skinTPLs.new("tabs", {obj=this, prefix=this:GetName(), fType=ftype, ignoreSize=true, lod=true}))
 			self:skinSlider{obj=_G.TalentFrameScrollFrameScrollBar, rt="artwork"}
 			-- keep background Texture
 			self:removeRegions(this, {1, 2, 3, 4, 5, 11, 12, 13}) -- remove portrait, border & points border
@@ -1583,7 +1582,7 @@ aObj.ClassicSupport = function(self)
 		self.initialized.RaidFrame = true
 
 		self:SecureHookScript(_G.RaidParentFrame, "OnShow", function(this)
-			self:skinTabs{obj=this, lod=true}
+			self:skinObject(self.skinTPLs.new("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=true}))
 			self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, y2=-5}
 
 			self:Unhook(this, "OnShow")
@@ -1679,7 +1678,7 @@ aObj.ClassicSupport = function(self)
 		self:SecureHookScript(_G.WorldStateScoreFrame, "OnShow", function(this)
 
 			self:skinSlider{obj=_G.WorldStateScoreScrollFrame.ScrollBar, rt="artwork"}
-			self:skinTabs{obj=this, ignore=true, lod=true}
+			self:skinObject(self.skinTPLs.new("tabs", {obj=this, prefix=this:GetName(), fType=ftype, ignoreSize=true, lod=true}))
 			self:addSkinFrame{obj=this, ft=ftype, kfs=true, x1=12, y1=-15, x2=-114, y2=65}
 
 			if self.modBtns then

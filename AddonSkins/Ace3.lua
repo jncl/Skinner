@@ -51,9 +51,7 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 				then
 					aObj:secureHook(obj, "BuildTabs", function(this)
 						this.frame.numTabs = #obj.tabs
-						aObj:skinTabs{obj=this.frame, name="AceGUITabGroup" .. this.num, up=true, ignore=true, lod=true, ignht=true, nc=true, x1=8, y1=-2, x2=-8, y2=-6}
-						-- don't check for automatic tab changes
-						aObj.tabFrames[this.frame] = nil
+						aObj:skinObject(aObj.skinTPLs.new("tabs", {obj=this.frame, prefix="AceGUITabGroup" .. this.num, ignoreSize=true, lod=true, upwards=true, offsets={x1=8, y1=-2, x2=-8, y2=-6}, noCheck=true, track=false}))
 						aObj:Unhook(this, "BuildTabs")
 					end)
 					if aObj.isTT then

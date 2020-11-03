@@ -304,8 +304,8 @@ aObj.blizzLoDFrames[ftype].AchievementUI = function(self)
 		end)
 
 		self:moveObject{obj=_G.AchievementFrameCloseButton, y=6}
-		self:skinTabs{obj=this, regs={9, 10}, ignore=true, lod=true, x1=9, y1=2, x2=-9, y2=-10}
 
+		self:skinObject(self.skinTPLs.new("tabs", {obj=this, prefix=this:GetName(), fType=ftype, ignoreSize=true, lod=true, offsets={x1=9, y1=2, x2=-9, y2=-10}, regions={7, 8, 9, 10}}))
 		-- this is not a standard dropdown
 		self:moveObject{obj=_G.AchievementFrameFilterDropDown, y=-7}
 		-- skin the dropdown frame
@@ -452,7 +452,7 @@ aObj.blizzLoDFrames[ftype].ArtifactUI = function(self)
 		this.ForgeBadgeFrame:DisableDrawLayer("OVERLAY") -- this hides the frame
 		this.ForgeBadgeFrame.ForgeLevelLabel:SetDrawLayer("ARTWORK") -- this shows the artifact level
 
-		self:skinTabs{obj=this, regs={}, ignore=true, lod=true, x1=6, y1=9, x2=-6, y2=-4}
+		self:skinObject(self.skinTPLs.new("tabs", {obj=this, prefix=this:GetName(), fType=ftype, ignoreSize=true, lod=true, offsets={x1=6, y1=9, x2=-6, y2=-4}}))
 		self:addSkinFrame{obj=this, ft=ftype, ofs=5, y1=4}
 
 		this.PerksTab:DisableDrawLayer("BORDER")
@@ -667,7 +667,7 @@ aObj.blizzFrames[ftype].CharacterFrames = function(self)
 	_G.PaperDollFrame_UpdateStats()
 
 	self:SecureHookScript(_G.CharacterFrame, "OnShow", function(this)
-		self:skinTabs{obj=this, lod=true}
+		self:skinObject(self.skinTPLs.new("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=true}))
 		self:removeInset(_G.CharacterFrameInsetRight)
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, x1=-5, y2=-5}
 
@@ -832,7 +832,7 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 	self.initialized.Collections = true
 
 	self:SecureHookScript(_G.CollectionsJournal, "OnShow", function(this)
-		self:skinTabs{obj=this, lod=true}
+		self:skinObject(self.skinTPLs.new("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=true, selectedTab=this.selectedTab}))
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, y2=-5}
 
 		self:Unhook(this, "OnShow")
@@ -1138,7 +1138,7 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 
 	self:SecureHookScript(_G.WardrobeCollectionFrame, "OnShow", function(this)
 
-		self:skinTabs{obj=this, up=true, lod=true, x1=2, y1=-4, x2=-2, y2=-4}
+		self:skinObject(self.skinTPLs.new("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=true, upwards=true, ignoreHLTex=true, offsets={x1=2, y1=-4, x2=-2, y2=-4}}))
 		self:skinEditBox{obj=this.searchBox, regs={6, 7}, mi=true, noHeight=true, noInsert=true} -- 6 is text, 7 is icon
 		_G.RaiseFrameLevelByTwo(this.searchBox) -- raise above SetsCollectionFrame when displayed on it
 		self:skinStatusBar{obj=this.progressBar, fi=0}
@@ -1882,7 +1882,7 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 		self:removeMagicBtnTex(this.Applicants.InviteButton)
 		self:removeMagicBtnTex(this.Applicants.MessageButton)
 		self:removeMagicBtnTex(this.Applicants.DeclineButton)
-		self:skinTabs{obj=this, up=true, lod=true, x1=2, y1=-5, x2=2, y2=-5}
+		self:skinObject(self.skinTPLs.new("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=true, upwards=true, offsets={x1=2, y1=-5, x2=2, y2=-5}}))
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true}
 		if self.modBtns then
 			self:skinStdButton{obj=this.Applicants.InviteButton}
@@ -2271,24 +2271,14 @@ aObj.blizzLoDFrames[ftype].EncounterJournal = function(self) -- a.k.a. Adenture 
 				btn = nil
 			end)
 		end
-		for i = 1, #this.instanceSelect.Tabs do
-			this.instanceSelect.Tabs[i]:DisableDrawLayer("BACKGROUND") -- background textures
-			this.instanceSelect.Tabs[i]:DisableDrawLayer("OVERLAY") -- selected textures
-			self:addSkinFrame{obj=this.instanceSelect.Tabs[i], ft=ftype, noBdr=self.isTT, x1=-11, y1=-2, x2=11, y2=-4}
-			this.instanceSelect.Tabs[i].sf.ignore = true
-			if i == 1 then
-				if self.isTT then self:setActiveTab(this.instanceSelect.Tabs[i].sf) end
-			else
-				if self.isTT then self:setInactiveTab(this.instanceSelect.Tabs[i].sf) end
-			end
-		end
+		self:skinObject(self.skinTPLs.new("tabs", {obj=this.instanceSelect, names=this.instanceSelect.Tabs, fType=ftype, ignoreSize=true, lod=true, offsets={x1=-11, y1=-2, x2=11, y2=-4}, regions={11}, track=false}))
 		if self.isTT then
 			self:SecureHook("EJ_ContentTab_Select", function(id)
-				for i = 1, #_G.EncounterJournal.instanceSelect.Tabs do
+				for i, tab in _G.pairs(_G.EncounterJournal.instanceSelect.Tabs) do
 					if i == id then
-						self:setActiveTab(_G.EncounterJournal.instanceSelect.Tabs[i].sf)
+						self:setActiveTab(tab.sf)
 					else
-						self:setInactiveTab(_G.EncounterJournal.instanceSelect.Tabs[i].sf)
+						self:setInactiveTab(tab.sf)
 					end
 				end
 			end)
@@ -2520,8 +2510,7 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 			self:addSkinFrame{obj=_G.FriendsFrameBattlenetFrame.UnavailableInfoFrame, ft=ftype}
 			self:skinDropDown{obj=_G.FriendsFrameStatusDropDown}
 			_G.FriendsFrameStatusDropDownStatus:SetAlpha(1) -- display status icon
-			_G.PanelTemplates_SetNumTabs(this, 3) -- adjust for Friends, Ignore & RaF
-			self:skinTabs{obj=this, up=true, lod=true, x1=0, y1=-5, x2=0, y2=-5}
+			self:skinObject(self.skinTPLs.new("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=true, upwards=true, offsets={x1=0, y1=-5, x2=0, y2=-5}}))
 			_G.RaiseFrameLevel(this)
 
 			self:Unhook(this, "OnShow")
@@ -2620,7 +2609,7 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 			self:Unhook(this, "OnShow")
 		end)
 
-		self:skinTabs{obj=this, lod=true}
+		self:skinObject(self.skinTPLs.new("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=true}))
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, y2=-5}
 
 		-- tooltip
@@ -2919,7 +2908,7 @@ aObj.blizzLoDFrames[ftype].GuildUI = function(self)
 		self:moveObject{obj=_G.GuildFrameTabardBackground, x=8, y=-11}
 		self:moveObject{obj=_G.GuildFrameTabardEmblem, x=9, y=-12}
 		self:moveObject{obj=_G.GuildFrameTabardBorder, x=7, y=-10}
-		self:skinTabs{obj=this, lod=true}
+		self:skinObject(self.skinTPLs.new("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=true}))
 		self:skinDropDown{obj=_G.GuildDropDown}
 		_G.GuildPointFrame.LeftCap:SetTexture(nil)
 		_G.GuildPointFrame.RightCap:SetTexture(nil)
@@ -3025,7 +3014,7 @@ aObj.blizzLoDFrames[ftype].GuildUI = function(self)
 
 	self:SecureHookScript(_G.GuildInfoFrame, "OnShow", function(this)
 		self:removeRegions(this, {1, 2, 3, 4, 5, 6 ,7, 8}) -- Background textures and bars
-		self:skinTabs{obj=this, up=true, lod=true, x1=2, y1=-5, x2=2, y2=-5}
+		self:skinObject(self.skinTPLs.new("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=true, upwards=true, offsets={x1=2, y1=-5, x2=2, y2=-5}}))
 
 		self:Unhook(this, "OnShow")
 	end)
@@ -3112,7 +3101,7 @@ aObj.blizzLoDFrames[ftype].InspectUI = function(self)
 	self.initialized.InspectUI = true
 
 	self:SecureHookScript(_G.InspectFrame, "OnShow", function(this)
-		self:skinTabs{obj=this, lod=true}
+		self:skinObject(self.skinTPLs.new("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=true}))
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, y2=-5}
 		-- send message when UI is skinned (used by oGlow skin)
 		self:SendMessage("InspectUI_Skinned", self)
@@ -3251,12 +3240,8 @@ aObj.blizzLoDFrames[ftype].LookingForGuildUI = function(self)
 
 	self.initialized.LookingForGuildUI = true
 
-	self:skinTabs{obj=_G.LookingForGuildFrame, up=true, lod=true, x1=0, y1=-5, x2=3, y2=-5}
+	self:skinObject(self.skinTPLs.new("tabs", {obj=_G.LookingForGuildFrame, prefix="LookingForGuildFrame", fType=ftype, lod=true, upwards=true, offsets={x1=0, y1=-5, x2=3, y2=-5}, func=function(tab) _G.RaiseFrameLevelByTwo(tab) end}))
 	self:addSkinFrame{obj=_G.LookingForGuildFrame, ft=ftype, kfs=true, ri=true, y2=-4}
-	-- raise Tab level so they appear above Tab frames
-	_G.RaiseFrameLevelByTwo(_G.LookingForGuildFrameTab1)
-	_G.RaiseFrameLevelByTwo(_G.LookingForGuildFrameTab2)
-	_G.RaiseFrameLevelByTwo(_G.LookingForGuildFrameTab3)
 
 	self:SecureHookScript(_G.LookingForGuildStartFrame, "OnShow", function(this)
 		if self.modChkBtns then
@@ -4120,7 +4105,7 @@ aObj.blizzFrames[ftype].SpellBookFrame = function(self)
 		this.MainHelpButton.Ring:SetTexture(nil)
 		self:moveObject{obj=this.MainHelpButton, y=-4}
 		this.numTabs = 5
-		self:skinTabs{obj=this, suffix="Button", lod=true, x1=8, y1=1, x2=-8, y2=2}
+		self:skinObject(self.skinTPLs.new("tabs", {obj=this, prefix=this:GetName(), suffix="Button", fType=ftype, offsets={x1=8, y1=1, x2=-8, y2=2}, track=false}))
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, y2=-5}
 		if self.modBtnBs then
 			self:addButtonBorder{obj=_G.SpellBookPrevPageButton, ofs=-2, y1=-3, x2=-3}
@@ -4370,7 +4355,7 @@ aObj.blizzLoDFrames[ftype].TalentUI = function(self)
 	end
 
 	self:SecureHookScript(_G.PlayerTalentFrame, "OnShow", function(this)
-		self:skinTabs{obj=this, lod=true}
+		self:skinObject(self.skinTPLs.new("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=true}))
 		-- Dual Spec Tabs
 		for i = 1, _G.MAX_TALENT_GROUPS do
 			self:removeRegions(_G["PlayerSpecTab" .. i], {1}) -- N.B. other regions are icon and highlight
@@ -4589,30 +4574,14 @@ aObj.blizzLoDFrames[ftype].TradeSkillUI = function(self)
 		end
 
 		-- RecipeList
-		local function skinTabs(frame)
-
-			local tab
-			for i = 1, frame.numTabs do
-				tab = frame.Tabs[i]
-				tab:DisableDrawLayer("BACKGROUND")
-				aObj:addSkinFrame{obj=tab, ft=ftype, noBdr=aObj.isTT, x1=2, y1=-4, x2=2, y2=-4}
-				tab.sf.up = true
-				if i == 1 then
-					if aObj.isTT then aObj:setActiveTab(tab.sf) end
-				else
-					if aObj.isTT then aObj:setInactiveTab(tab.sf) end
-				end
-			end
-			tab = nil
-
-		end
+		self:skinObject(self.skinTPLs.new("tabs", {obj=this.RecipeList, names=this.RecipeList.Tabs, fType=ftype, lod=true, upwards=true, offsets={x1=2, y1=-4, x2=2, y2=-4}, track=false}))
 		if self.isTT then
 			local function changeTabTex(frame)
-				for i = 1, frame.numTabs do
+				for i, tab in _G.pairs(frame.Tabs) do
 					if i == frame.selectedTab then
-						self:setActiveTab(frame.Tabs[i].sf)
+						self:setActiveTab(tab.sf)
 					else
-						self:setInactiveTab(frame.Tabs[i].sf)
+						self:setInactiveTab(tab.sf)
 					end
 				end
 			end
@@ -4623,7 +4592,6 @@ aObj.blizzLoDFrames[ftype].TradeSkillUI = function(self)
 				changeTabTex(this)
 			end)
 		end
-		skinTabs(this.RecipeList)
 		self:skinSlider{obj=self:getChild(this.RecipeList, 4), wdth=-4, size=3} -- unamed slider object
 		self:addFrameBorder{obj=this.RecipeList, ft=ftype, ofs=8, y1=6, x2=24}
 

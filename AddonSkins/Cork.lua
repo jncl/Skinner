@@ -19,43 +19,21 @@ aObj.addonsToSkin.Cork = function(self) -- v 7.1.0.62-Beta
 		self:add2Table(self.ttList, _G.Corkboard)
 	end)
 
-	-- register callback to indicate already skinned by tekKonfig
 	self.RegisterCallback("Cork", "IOFPanel_Before_Skinning", function(this, panel)
 		if panel.name ~= "Cork" then return end
 		self.iofSkinnedPanels[panel] = true
-		self.UnregisterCallback("Cork", "IOFPanel_Before_Skinning")
-	end)
-
-	-- register callback to skin Tabs (not handled by tekKonfig)
-	self.RegisterCallback("Cork", "IOFPanel_After_Skinning", function(this, panel)
-		if panel.name ~= "Cork" then return end
+		-- find tab buttons
+		_G.CorkFrame.Tabs = {} -- store on Button
 		for _, child in _G.ipairs{panel:GetChildren()} do
 			if child:IsObjectType("Button")
 			and child.OrigSetText
 			then
-				-- hide textures (changed in code)
-				child.left:SetAlpha(0)
-				child.right:SetAlpha(0)
-				child.middle:SetAlpha(0)
-				self:addSkinFrame{obj=child, ft="a", nb=true, noBdr=aObj.isTT, x1=6, y1=0, x2=-6, y2=-1}
-				if self.isTT then
-					child.sf.ignore = true
-					if child:IsEnabled() then
-						self:setInactiveTab(child.sf)
-					else
-						self:setActiveTab(child.sf)
-					end
-					self:secureHook(child.left, "SetTexture", function(this, tex)
-						if self:hasTextInTexture(this, "InActiveTab", true) then
-							self:setInactiveTab(this:GetParent().sf)
-						else
-							self:setActiveTab(this:GetParent().sf)
-						end
-					end)
-				end
+				aObj:add2Table(_G.CorkFrame.Tabs, child)
 			end
 		end
-		self.UnregisterCallback("Cork", "IOFPanel_After_Skinning")
+		self:skinObject(self.skinTPLs.new("tabs", {obj=_G.CorkFrame, names=_G.CorkFrame.Tabs, fType=ftype, ignoreSize=true, lod=true, offsets={x1=6, y1=0, x2=-6, y2=-1}, regions={5}, func=aObj.isTT and function(tab) aObj:SecureHookScript(tab, "OnClick", function(this) for _, tab in _G.pairs(_G.CorkFrame.Tabs) do if tab == this then aObj:setActiveTab(tab. sf) else aObj:setInactiveTab(tab.sf) end end end) end}))
+
+		self.UnregisterCallback("Cork", "IOFPanel_Before_Skinning")
 	end)
 
 end

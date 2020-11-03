@@ -1194,6 +1194,8 @@ local function __skinTabs(opts)
 --@alpha@
 	_G.assert(opts.obj, "Missing object __sT\n" .. _G.debugstack(2, 3, 2))
 	_G.assert(opts.obj:IsObjectType("Frame"), "Not a Frame\n" .. _G.debugstack(2, 3, 2))
+	-- handle AddOn skins still using this code rather than using a template
+	aObj:CustomPrint(1, 0, 0, "Using deprecated function - skinTabs without a Template", opts.obj)
 --@end-alpha@
 
 	aObj:Debug2("__skinTabs: [%s, %s]", opts.obj, opts.obj:GetName())

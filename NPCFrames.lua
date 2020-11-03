@@ -75,39 +75,6 @@ aObj.blizzLoDFrames[ftype].AuctionHouseUI = function(self)
 		self:removeInset(self:getChild(this, 3)) -- MerchantMoneyInset
 		this.MoneyFrameBorder:DisableDrawLayer("BACKGROUND")
 		this.MoneyFrameBorder:DisableDrawLayer("BORDER")
-		local tabID, tab = this.selectedTab or 1
-		for i = 1, #this.Tabs do
-			tab = this.Tabs[i]
-			self:keepRegions(tab, {7, 8})
-			self:addSkinFrame{obj=tab, ft=ftype, noBdr=self.isTT, x1=6, y1=0, x2=-6, y2=2}
-			if self.isTT then
-				if i == tabID then
-					self:setActiveTab(tab.sf)
-				else
-					self:setInactiveTab(tab.sf)
-				end
-			end
-			-- change highlight texture
-			local ht = tab:GetHighlightTexture()
-			ht:SetTexture([[Interface\PaperDollInfoFrame\UI-Character-Tab-Highlight]])
-			ht:ClearAllPoints()
-			ht:SetPoint("TOPLEFT", 8, 2)
-			ht:SetPoint("BOTTOMRIGHT", -8, 0)
-			ht = nil
-		end
-		if self.isTT then
-			self:SecureHook(this, "SetDisplayMode", function(this, displayMode)
-				if not this.tabsForDisplayMode[displayMode] then return end
-				for i, tab in _G.ipairs(this.Tabs) do
-					if i == this.tabsForDisplayMode[displayMode] then
-						self:setActiveTab(tab.sf)
-					else
-						self:setInactiveTab(tab.sf)
-					end
-				end
-			end)
-		end
-		tab = nil
 		-- .FavoriteDropDown ?
 		if self.modBtnBs then
 			self:addButtonBorder{obj=this.SearchBar.FavoritesSearchButton, ofs=-2, x1=1}
@@ -246,27 +213,7 @@ aObj.blizzLoDFrames[ftype].AuctionHouseUI = function(self)
 		end
 
 		-- Auctions frames
-		local tabID, tab = this.AuctionsFrame.selectedTab or 1
-		for i = 1, #this.AuctionsFrame.Tabs do
-			tab = this.AuctionsFrame.Tabs[i]
-			self:keepRegions(tab, {7, 8})
-			self:addSkinFrame{obj=tab, ft=ftype, noBdr=self.isTT, x1=6, y1=-4, x2=-6, y2=-4}
-			tab.sf.ignore = true -- ignore size changes
-			if self.isTT then
-				if i == tabID then
-					self:setActiveTab(tab.sf)
-				else
-					self:setInactiveTab(tab.sf)
-				end
-			end
-			-- change highlight texture
-			local ht = tab:GetHighlightTexture()
-			ht:SetTexture([[Interface\PaperDollInfoFrame\UI-Character-Tab-Highlight]])
-			ht:ClearAllPoints()
-			ht:SetPoint("TOPLEFT", 8, -8)
-			ht:SetPoint("BOTTOMRIGHT", -8, -4)
-			ht = nil
-		end
+		self:skinObject(self.skinTPLs.new("tabs", {obj=this.AuctionsFrame, names=this.AuctionsFrame.Tabs, fType=ftype, ignoreSize=true, lod=true, offsets={x1=6, y1=-4, x2=-6, y2=-4}, ignoreHLTex=true, offsetsHL={x1=8, y1=-8, x2=-8, y2=-4}, track=false}))
 		if self.isTT then
 			self:SecureHook(this.AuctionsFrame, "SetDisplayMode", function(this, displayMode)
 				-- aObj:Debug("AuctionsFrame SetDisplayMode: [%s, %s]", this, displayMode)
@@ -321,6 +268,19 @@ aObj.blizzLoDFrames[ftype].AuctionHouseUI = function(self)
 			end)
 		end
 
+		self:skinObject(self.skinTPLs.new("tabs", {obj=this, names=this.Tabs, fType=ftype, lod=true, track=false}))
+		if self.isTT then
+			self:SecureHook(this, "SetDisplayMode", function(this, displayMode)
+				if not this.tabsForDisplayMode[displayMode] then return end
+				for i, tab in _G.ipairs(this.Tabs) do
+					if i == this.tabsForDisplayMode[displayMode] then
+						self:setActiveTab(tab.sf)
+					else
+						self:setInactiveTab(tab.sf)
+					end
+				end
+			end)
+		end
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, x2=3, y2=-3}
 
 		self:Unhook(this, "OnShow")
@@ -358,7 +318,7 @@ aObj.blizzFrames[ftype].BankFrame = function(self)
 		end
 		self:removeInset(_G.BankFrameMoneyFrameInset)
 		_G.BankFrameMoneyFrameBorder:DisableDrawLayer("BACKGROUND")
-		self:skinTabs{obj=this, x1=6, y1=0, x2=-6, y2=2}
+		self:skinObject(self.skinTPLs.new("tabs", {obj=this, prefix=this:GetName(), fType=ftype}))
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, y2=-4}
 		self:keepFontStrings(_G.BankSlotsFrame)
 
@@ -816,7 +776,7 @@ aObj.blizzFrames[ftype].MerchantFrame = function(self)
 	self.initialized.MerchantFrame = true
 
 	self:SecureHookScript(_G.MerchantFrame, "OnShow", function(this)
-		self:skinTabs{obj=this, lod=true, ignore=self.isClsc and true or nil} -- do first otherwise error when TradeSkillMaster Addon is loaded
+		self:skinObject(self.skinTPLs.new("tabs", {obj=this, prefix=this:GetName(), fType=ftype, ignoreSize=self.isClsc and true, lod=true}))
 		self:removeInset(_G.MerchantMoneyInset)
 		_G.MerchantMoneyBg:DisableDrawLayer("BACKGROUND")
 		if not self.isClsc then
