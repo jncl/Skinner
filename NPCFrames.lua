@@ -325,24 +325,6 @@ aObj.blizzFrames[ftype].BankFrame = function(self)
 		self:skinObject(self.skinTPLs.new("tabs", {obj=this, prefix=this:GetName(), fType=ftype}))
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, y2=-4}
 		self:keepFontStrings(_G.BankSlotsFrame)
-
-		-- ReagentBankFrame
-		_G.ReagentBankFrame:DisableDrawLayer("ARTWORK") -- bank slots texture
-		_G.ReagentBankFrame:DisableDrawLayer("BACKGROUND") -- bank slots shadow texture
-		_G.ReagentBankFrame:DisableDrawLayer("BORDER") -- shadow textures
-		_G.ReagentBankFrame.UnlockInfo:DisableDrawLayer("BORDER")
-		_G.RaiseFrameLevelByTwo(_G.ReagentBankFrame.UnlockInfo) -- hide the slot button textures
-		if self.modBtns then
-			self:skinStdButton{obj=_G.ReagentBankFrameUnlockInfoPurchaseButton}
-			self:skinStdButton{obj=_G.ReagentBankFrame.DespositButton}
-			self:SecureHook(_G.ReagentBankFrame.DespositButton, "Disable", function(this, _)
-				self:clrBtnBdr(this)
-			end)
-			self:SecureHook(_G.ReagentBankFrame.DespositButton, "Enable", function(this, _)
-				self:clrBtnBdr(this)
-			end)
-		end
-
 		if self.modBtnBs then
 			self:SecureHook("BankFrameItemButton_Update", function(btn)
 				if btn.sbb -- ReagentBank buttons may not be skinned yet
@@ -362,6 +344,24 @@ aObj.blizzFrames[ftype].BankFrame = function(self)
 				self:addButtonBorder{obj=_G.BankSlotsFrame["Bag" .. i], ibt=true}
 				_G.BankSlotsFrame["Bag" .. i].sbb:SetBackdropBorderColor(_G.BankSlotsFrame["Bag" .. i].icon:GetVertexColor())
 			end
+		end
+		-- ReagentBankFrame
+		_G.ReagentBankFrame:DisableDrawLayer("ARTWORK") -- bank slots texture
+		_G.ReagentBankFrame:DisableDrawLayer("BACKGROUND") -- bank slots shadow texture
+		_G.ReagentBankFrame:DisableDrawLayer("BORDER") -- shadow textures
+		_G.ReagentBankFrame.UnlockInfo:DisableDrawLayer("BORDER")
+		_G.RaiseFrameLevelByTwo(_G.ReagentBankFrame.UnlockInfo) -- hide the slot button textures
+		if self.modBtns then
+			self:skinStdButton{obj=_G.ReagentBankFrameUnlockInfoPurchaseButton}
+			self:skinStdButton{obj=_G.ReagentBankFrame.DespositButton}
+			self:SecureHook(_G.ReagentBankFrame.DespositButton, "Disable", function(this, _)
+				self:clrBtnBdr(this)
+			end)
+			self:SecureHook(_G.ReagentBankFrame.DespositButton, "Enable", function(this, _)
+				self:clrBtnBdr(this)
+			end)
+		end
+		if self.modBtnBs then
 			-- add button borders to reagent bank items
 			self:SecureHookScript(_G.ReagentBankFrame, "OnShow", function(this)
 				for i = 1, this.size do
