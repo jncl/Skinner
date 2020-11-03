@@ -876,27 +876,16 @@ aObj.blizzLoDFrames[ftype].AnimaDiversionUI = function(self)
 
 	-- FIXME: ScrollContainer moves to the right when Anima flowing
 	self:SecureHookScript(_G.AnimaDiversionFrame, "OnShow", function(this)
-
 		self:removeNineSlice(this.NineSlice)
 		self:keepFontStrings(this.BorderFrame)
 		this.CloseButton.Border:SetTexture(nil)
+		this.AnimaDiversionCurrencyFrame:DisableDrawLayer("BACKGROUND")
+		self:moveObject{obj=this.AnimaDiversionCurrencyFrame, y=-1}
+		self:moveObject{obj=this.ReinforceProgressFrame, y=1}
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, aso={bbclr="sepia"}, x2=1, y2=-3}
 		if self.modBtns then
 			self:skinCloseButton{obj=this.CloseButton , noSkin=true}
 			self:skinStdButton{obj=this.ReinforceInfoFrame.AnimaNodeReinforceButton}
-		end
-
-		-- .ScrollContainer
-
-		this.AnimaDiversionCurrencyFrame:DisableDrawLayer("BACKGROUND")
-
-		-- .ReinforceProgressFrame
-			-- .bolsterProgressGemPool
-
-		self:removeNineSlice(this.SelectPinInfoFrame.NineSlice)
-		self:addSkinFrame{obj=this.SelectPinInfoFrame, ft=ftype, kfs=true, x2=2}
-		if self.modBtns then
-			self:skinStdButton{obj=this.SelectPinInfoFrame.SelectButton}
 		end
 
 		self:Unhook(this, "OnShow")
