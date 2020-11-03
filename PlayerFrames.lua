@@ -2381,7 +2381,7 @@ aObj.blizzLoDFrames[ftype].EncounterJournal = function(self) -- a.k.a. Adenture 
 
 			-- Model Frame
 			this.info.model:DisableDrawLayer("BACKGROUND") -- dungeonBG (updated with dungeon type change)
-			self:rmRegionsTex(this.info.model, {2, 3}) -- Shadow, TitleBG
+			self:removeRegions(this.info.model, {2, 3}, true) -- Shadow, TitleBG
 			local function skinCreatureBtn(cBtn)
 				local hTex
 				if cBtn
@@ -4276,7 +4276,7 @@ aObj.blizzFrames[ftype].SpellBookFrame = function(self)
 					end
 				end
 				btn = nil
-				aObj:rmRegionsTex(obj.statusBar, {2, 3, 4, 5, 6})
+				aObj:removeRegions(obj.statusBar, {2, 3, 4, 5, 6}, true)
 				aObj:skinStatusBar{obj=obj.statusBar, fi=0}
 				obj.statusBar:SetStatusBarColor(0, 1, 0, 1)
 				obj.statusBar:SetHeight(12)

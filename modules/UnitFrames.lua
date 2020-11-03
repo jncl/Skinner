@@ -109,7 +109,7 @@ function module:skinPlayerF()
 			aObj:skinStatusBar{obj=pF.healthbar, fi=0, otherTex={pF.myHealPredictionBar, pF.otherHealPredictionBar}}
 			aObj:skinStatusBar{obj=pF.manabar, fi=0, otherTex={pF.manabar.FeedbackFrame.BarTexture, pF.myManaCostPredictionBar}, nilFuncs=true}
 			-- AlternateManaBar
-			aObj:rmRegionsTex(_G.PlayerFrameAlternateManaBar, {2, 3, 4, 5, 6}) -- border textures
+			aObj:removeRegions(_G.PlayerFrameAlternateManaBar, {2, 3, 4, 5, 6}, true) -- border textures
 			aObj:skinStatusBar{obj=_G.PlayerFrameAlternateManaBar, fi=0, bgTex=_G.PlayerFrameAlternateManaBar.DefaultBackground}
 			aObj:moveObject{obj=_G.PlayerFrameAlternateManaBar, y=1}
 		else

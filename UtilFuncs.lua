@@ -791,7 +791,11 @@ function aObj:keepFontStrings(obj, hide)
 
 	for _, reg in _G.ipairs{obj:GetRegions()} do
 		if not reg:IsObjectType("FontString") then
-			if not hide then reg:SetAlpha(0) else reg:Hide() end
+			if not hide then
+				reg:SetAlpha(0)
+			else
+				reg:Hide()
+			end
 		end
 	end
 
@@ -1029,7 +1033,10 @@ function aObj:removeNineSlice(frame)
 
 end
 
-local function __rmRegs(obj, regions, rmTex)
+function aObj:removeRegions(obj, regions, rmTex)
+--@alpha@
+	_G.assert(obj, "Missing object rR\n" .. _G.debugstack(2, 3, 2))
+--@end-alpha@
 
 	local regions = revTable(regions)
 
@@ -1053,14 +1060,6 @@ local function __rmRegs(obj, regions, rmTex)
 --@end-debug@
 		end
 	end
-
-end
-function aObj:removeRegions(obj, regions)
---@alpha@
-	_G.assert(obj, "Missing object rR\n" .. _G.debugstack(2, 3, 2))
---@end-alpha@
-
-	__rmRegs(obj, regions)
 
 end
 
@@ -1110,10 +1109,10 @@ end
 
 function aObj:rmRegionsTex(obj, regions)
 --@alpha@
-	_G.assert(obj, "Missing object rRT\n" .. _G.debugstack(2, 3, 2))
+	aObj:CustomPrint(1, 0, 0, "Using deprecated function - rmRegionsTex, use removeRegions(obj, regions, true) instead", opts.obj)
 --@end-alpha@
 
-	__rmRegs(obj, regions, true)
+	self:removeRegions(obj, regions, true)
 
 end
 

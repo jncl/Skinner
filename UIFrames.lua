@@ -337,9 +337,7 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 				frame.Stage.EncountersFrame.Encounters[i].PortraitRing:SetTexture(nil)
 			end
 		end
-
-	    aObj:rmRegionsTex(frame.Stage.MissionInfo, naval and {1, 2, 3, 4, 5, 8, 9, 10} or {1, 2, 3, 4, 5, 11, 12, 13})
-
+	    aObj:removeRegions(frame.Stage.MissionInfo, naval and {1, 2, 3, 4, 5, 8, 9, 10} or {1, 2, 3, 4, 5, 11, 12, 13}, true)
 	end
 	function skinMissionList(ml, tabOfs)
 
@@ -428,8 +426,7 @@ local function skinChatEB(obj)
 
 end
 local function skinChatTab(tab)
-
-	aObj:rmRegionsTex(tab, {1, 2, 3, 4, 5, 6})
+	aObj:removeRegions(tab, {1, 2, 3, 4, 5, 6}, true)
 	aObj:addSkinFrame{obj=tab, ft=ftype, noBdr=aObj.isTT, x1=2, y1=-9, x2=-2, y2=-4}
 	tab.sf:SetAlpha(tab:GetAlpha())
 	-- hook this to fix tab gradient texture overlaying text & highlight
@@ -1850,7 +1847,7 @@ aObj.blizzFrames[ftype].ChatMinimizedFrames = function(self)
 
 	-- minimized chat frames
 	self:SecureHook("FCF_CreateMinimizedFrame", function(chatFrame)
-		self:rmRegionsTex(_G[chatFrame:GetName() .. "Minimized"], {1, 2, 3})
+		self:removeRegions(_G[chatFrame:GetName() .. "Minimized"], {1, 2, 3}, true)
 		self:addSkinFrame{obj=_G[chatFrame:GetName() .. "Minimized"], ft=ftype, x1=1, y1=-2, x2=-1, y2=2}
 		self:addButtonBorder{obj=_G[chatFrame:GetName() .. "MinimizedMaximizeButton"], ofs=-1}
 	end)
