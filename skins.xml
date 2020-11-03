@@ -164,6 +164,7 @@
 <script file="AddonSkins\MinimapButtonFrame.lua"/>
 <script file="AddonSkins\MobileVault.lua"/>
 <script file="AddonSkins\MogIt.lua"/>
+<script file="AddonSkins\mOnArs_WardrobeHelper.lua"/>
 <script file="AddonSkins\MoveAnything.lua"/>
 <script file="AddonSkins\MSA-DropDownMenu.lua"/>
 <script file="AddonSkins\MyGarrisons.lua"/>
