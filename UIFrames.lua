@@ -4304,16 +4304,16 @@ aObj.blizzFrames[ftype].MenuFrames = function(self)
 			end
 		end
 
-		-- Rating Menu
-		self:SecureHookScript(_G.RatingMenuFrame, "OnShow", function(this)
-			self:removeNineSlice(this.Border)
-			self:addSkinFrame{obj=_G.RatingMenuFrame, ft=ftype, hdr=true}
-			if self.modBtns then
-				self:skinStdButton{obj=_G.RatingMenuButtonOkay}
-			end
+		self:Unhook(this, "OnShow")
+	end)
 
-			self:Unhook(this, "OnShow")
-		end)
+	-- Rating Menu
+	self:SecureHookScript(_G.RatingMenuFrame, "OnShow", function(this)
+		self:removeNineSlice(this.Border)
+		self:addSkinFrame{obj=_G.RatingMenuFrame, ft=ftype, hdr=true}
+		if self.modBtns then
+			self:skinStdButton{obj=_G.RatingMenuButtonOkay}
+		end
 
 		self:Unhook(this, "OnShow")
 	end)
