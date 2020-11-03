@@ -469,8 +469,8 @@ aObj.blizzLoDFrames[ftype].ArtifactUI = function(self)
 
 			if this.PerksTab.PowerButtons then
 				for i = 1, #this.PerksTab.PowerButtons do
-					aObj:changeTandC(this.PerksTab.PowerButtons[i].RankBorder, aObj.lvlBG)
-					aObj:changeTandC(this.PerksTab.PowerButtons[i].RankBorderFinal, aObj.lvlBG)
+					aObj:changeTandC(this.PerksTab.PowerButtons[i].RankBorder)
+					aObj:changeTandC(this.PerksTab.PowerButtons[i].RankBorderFinal)
 				end
 			end
 
@@ -725,7 +725,7 @@ aObj.blizzFrames[ftype].CharacterFrames = function(self)
 				-- force quality border update
 				_G.PaperDollItemSlotButton_Update(btn)
 				-- RankFrame
-				aObj:changeTandC(btn.RankFrame.Texture, self.lvlBG)
+				aObj:changeTandC(btn.RankFrame.Texture)
 				btn.RankFrame.Texture:SetSize(20, 20)
 				btn.RankFrame.Label:ClearAllPoints()
 				btn.RankFrame.Label:SetPoint("CENTER", btn.RankFrame.Texture)
@@ -925,7 +925,7 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 		for i = 1, #this.listScroll.buttons do
 			btn = this.listScroll.buttons[i]
 			self:removeRegions(btn, {1, 4}) -- background, iconBorder
-			self:changeTandC(btn.dragButton.levelBG, self.lvlBG)
+			self:changeTandC(btn.dragButton.levelBG)
 			if self.modBtnBs then
 				self:addButtonBorder{obj=btn, relTo=btn.icon, reParent={btn.dragButton.levelBG, btn.dragButton.level, btn.dragButton.favorite}}
 			end
@@ -952,7 +952,7 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 			self:removeRegions(lop, {1, 2, 5})
 			-- add button border for empty slots
 	        self.modUIBtns:addButtonBorder{obj=lop, relTo=lop.icon, reParent={lop.levelBG, lop.level, lop.favorite}, clr="disabled"} -- use module function here to force creation
-			self:changeTandC(lop.levelBG, self.lvlBG)
+			self:changeTandC(lop.levelBG)
 			self:keepFontStrings(lop.helpFrame)
 			lop.healthFrame.healthBar:DisableDrawLayer("OVERLAY")
 			self:skinStatusBar{obj=lop.healthFrame.healthBar, fi=0}
@@ -970,7 +970,7 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 
 		-- PetCard
 		local pc = this.PetCard
-		self:changeTandC(pc.PetInfo.levelBG, self.lvlBG)
+		self:changeTandC(pc.PetInfo.levelBG)
 		pc.PetInfo.qualityBorder:SetAlpha(0)
 		if self.modBtnBs then
 			self:addButtonBorder{obj=pc.PetInfo, relTo=pc.PetInfo.icon, reParent={pc.PetInfo.levelBG, pc.PetInfo.level, pc.PetInfo.favorite}}
@@ -1128,7 +1128,7 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 			self:SecureHook(this, "UpdateButton", function(this, button)
 				skinCollectionBtn(button)
 				if button.levelBackground:GetAtlas() == "collections-levelplate-black" then
-					self:changeTandC(button.levelBackground, self.lvlBG)
+					self:changeTandC(button.levelBackground)
 				end
 			end)
 		end

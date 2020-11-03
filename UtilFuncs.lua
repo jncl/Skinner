@@ -262,9 +262,12 @@ aObj.lvlBG = [[Interface\PetBattles\BattleBar-AbilityBadge-Neutral]]
 function aObj:changeTandC(obj, tex)
 --@alpha@
 	_G.assert(obj, "Unknown object changeTandC\n" .. _G.debugstack(2, 3, 2))
+	if tex == self.lvlBG then
+		self:CustomPrint(1, 0, 0, "changeTandC - Using default texture")
+	end
 --@end-alpha@
 
-	obj:SetTexture(tex)
+	obj:SetTexture(tex or self.lvlBG)
 	obj:SetTexCoord(0, 1, 0, 1)
 
 end

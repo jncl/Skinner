@@ -593,7 +593,7 @@ aObj.blizzLoDFrames[ftype].CovenantSanctum = function(self)
 		local function skinTalents(list)
 			for talentFrame in list.talentPool:EnumerateActive() do
 				aObj:removeRegions(talentFrame, {1, 2})
-				if talentFrame.TierBorder then aObj:changeTandC(talentFrame.TierBorder, aObj.lvlBG) end
+				if talentFrame.TierBorder then aObj:changeTandC(talentFrame.TierBorder) end
 				aObj:addSkinFrame{obj=talentFrame, ft=ftype, ofs=2.5, y2=-2, aso={bbclr="sepia"}}
 			end
 		end
@@ -606,7 +606,7 @@ aObj.blizzLoDFrames[ftype].CovenantSanctum = function(self)
 		skinTalents(list)
 		for _, frame in _G.pairs(this.UpgradesTab.Upgrades) do
 			if frame.Border then self:nilTexture(frame.Border, true) end
-			if frame.TierBorder then self:changeTandC(frame.TierBorder, self.lvlBG) end
+			if frame.TierBorder then self:changeTandC(frame.TierBorder) end
 		end
 		if self.modBtns then
 			self:skinStdButton{obj=this.UpgradesTab.TalentsList.UpgradeButton}

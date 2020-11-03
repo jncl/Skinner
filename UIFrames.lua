@@ -54,7 +54,7 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 			aObj:nilTexture(frame.PuckBorder, true)
 			frame.PortraitRingQuality:SetTexture(nil)
 			frame.PortraitRingCover:SetTexture(nil)
-			aObj:changeTandC(frame.LevelCircle, aObj.lvlBG)
+			aObj:changeTandC(frame.LevelCircle)
 			frame.HealthBar.Health:SetTexture(aObj.sbTexture)
 			frame.HealthBar.Border:SetTexture(nil)
 		end
@@ -2968,7 +2968,7 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 		local function skinFollowers(frame)
 			for btn in frame.followerPool:EnumerateActive() do
 				btn.RewardsFollower.PuckBorder:SetTexture(nil)
-				aObj:changeTandC(btn.RewardsFollower.LevelDisplayFrame.LevelCircle, aObj.lvlBG)
+				aObj:changeTandC(btn.RewardsFollower.LevelDisplayFrame.LevelCircle)
 			end
 		end
 		aObj:SecureHookScript(frame.MissionComplete, "OnShow", function(this)
@@ -4936,7 +4936,7 @@ aObj.blizzLoDFrames[ftype].OrderHallUI = function(self)
 			btn.Border:SetTexture(nil)
 		end
 		for talentRank in frame.talentRankPool:EnumerateActive() do
-			aObj:changeTandC(talentRank.Background, aObj.lvlBG)
+			aObj:changeTandC(talentRank.Background)
 		end
 	end
 	self:SecureHookScript(_G.OrderHallTalentFrame, "OnShow", function(this)
@@ -5000,8 +5000,8 @@ aObj.blizzFrames[ftype].PetBattleUI = function(self)
 					this:GetParent().sbb:SetBackdropBorderColor(...)
 				end)
 			end
-			self:changeTandC(pbf.LevelUnderlay, self.lvlBG)
-			self:changeTandC(pbf.SpeedUnderlay, self.lvlBG)
+			self:changeTandC(pbf.LevelUnderlay)
+			self:changeTandC(pbf.SpeedUnderlay)
 			self:changeTandC(pbf.HealthBarBG, self.sbTexture)
 			pbf.HealthBarBG:SetVertexColor(0.2, 0.2, 0.2, 0.8) -- black
 			self:adjWidth{obj=pbf.HealthBarBG, adj=-10}
