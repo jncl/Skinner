@@ -71,6 +71,7 @@ local funcs = {
 		MovieFrame = {keep = true, keepOpts = true},
 		Nameplates = {keep = true, keepOpts = true},
 		ProductChoiceFrame = {keep = true, keepOpts = true},
+		PTRFeedback = (aObj.isPTR or aObj.isClscPTR or aObj.isBeta) and {keep = true, keepOpts = true} or nil,
 		RaidFrame = {keep = false, keepOpts = true},
 		StaticPopups = {keep = true, keepOpts = true},
 		SystemOptions = {keep = true, keepOpts = true},
@@ -100,7 +101,7 @@ aObj.ClassicSupport = function(self)
 		local ltr = fType:sub(1, 1):lower()
 		for _, tabName in _G.pairs{"blizzFrames", "blizzLoDFrames"} do
 			for fName, _ in _G.pairs(self[tabName][ltr]) do
-				-- aObj:Debug("type: [%s]", _G.type(funcs[fType][fName]))
+				-- aObj:Debug("type: [%s, %s]", fName, _G.type(funcs[fType][fName]))
 				if funcs[fType][fName] then
 					-- aObj:Debug("keep: [%s]", funcs[fType][fName].keep)
 					if not funcs[fType][fName].keep then

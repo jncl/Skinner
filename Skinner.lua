@@ -38,11 +38,11 @@ function aObj:OnInitialize()
 
 --@alpha@
 	if self.isBeta then self:Debug("Beta detected") end
-	if self.isClscPTR then self:Debug("Classic_PTR detected") end
-	if self.isClsc then self:Debug("Classic detected") end
+	if self.isClscPTR then self:Debug("Classic_PTR detected")
+	elseif self.isClsc then self:Debug("Classic detected") end
 	if self.isPTR then self:Debug("Retail_PTR detected") end
-	if self.isPatch then self:Debug("Patch detected") end
 	if self.isRetail then self:Debug("Retail detected") end
+	if self.isPatch then self:Debug("Patch detected") end
 --@end-alpha@
 
 	-- add callbacks

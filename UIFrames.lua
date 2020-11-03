@@ -6633,8 +6633,9 @@ aObj.blizzFrames[ftype].WorldMap = function(self)
 end
 
 -- PTR Feedback Tool
-if (aObj.isPTR
-or aObj.isBeta)
+if aObj.isPTR
+or aObj.isClscPTR
+or aObj.isBeta
 and not aObj.isPatch
 then
 	aObj.blizzFrames[ftype].PTRFeedback = function(self)
@@ -6666,7 +6667,7 @@ then
 			skinFrame(PTR_IR.StandaloneSurvey.SurveyFrame)
 			if aObj.modBtns then
 				aObj:skinCloseButton{obj=aObj:getChild(PTR_IR.StandaloneSurvey.SurveyFrame, 2), noSkin=true}
-				aObj:skinStdButton{obj=PTR_IR.StandaloneSurvey.submitButton, ofs=-2, clr="blue"}
+				aObj:skinStdButton{obj=aObj:getChild(PTR_IR.StandaloneSurvey.SurveyFrame, 3), ofs=0, clr="blue"}
 			end
 
 			aObj:Unhook(this, "GetStandaloneSurveyFrame")
@@ -6676,14 +6677,14 @@ then
 			skinFrame(surveyFrame)
 			for _, frame in _G.ipairs(surveyFrame.FrameComponents) do
 				skinFrame(frame, 2, true)
-				if frame.FrameType == "StandaloneQuestion" then
-				elseif frame.FrameType == "MultipleChoice"
+				if frame.FrameType == "MultipleChoice"
 				and aObj.modChkBtns then
 					for _, checkBox in _G.ipairs(frame.Checkboxes) do
 						aObj:skinCheckButton{obj=checkBox}
 					end
-				elseif frame.FrameType == "ModelViewer" then
-				elseif frame.FrameType == "IconViewer" then
+				-- elseif frame.FrameType == "StandaloneQuestion" then
+				-- elseif frame.FrameType == "ModelViewer" then
+				-- elseif frame.FrameType == "IconViewer" then
 				end
 			end
 		end)

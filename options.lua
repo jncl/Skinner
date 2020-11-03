@@ -177,7 +177,7 @@ aObj.SetupDefaults = function(self)
 		PetBattleUI                = true,
 		PlayerChoiceUI             = true,
 		ProductChoiceFrame         = true,
-		PTRFeedback                = aObj.isPTR or aObj.isBeta and true or nil,
+		PTRFeedback                = aObj.isPTR or aObj.isClscPTR or aObj.isBeta and true or nil,
 		PVEFrame                   = true, -- (inc, LFD, LFG, RaidFinder) [ScenarioFinder removed in Beta]
 		PVPMatch                   = true,
 		QuestMap                   = true,
@@ -1765,7 +1765,7 @@ aObj.SetupOptions = function(self)
 					name = self.L["Player Choice UI"],
 					desc = self.L["Toggle the skin of the "] .. self.L["Player Choice UI"],
 				},
-				PTRFeedback = (aObj.isPTR or aObj.isBeta) and {
+				PTRFeedback = aObj.isPTR or aObj.isClscPTR or aObj.isBeta and {
 					type = "toggle",
 					name = self.L["PTR Feedback Frames"],
 					desc = self.L["Toggle the skin of the "] .. self.L["PTR Feedback Frames"],
