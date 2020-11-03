@@ -508,51 +508,55 @@ aObj.ClassicSupport = function(self)
 		if not self.prdb.CharacterFrames or self.initialized.CharacterFrames then return end
 		self.initialized.CharacterFrames = true
 
-		self:addSkinFrame{obj=_G.CharacterFrame, ft=ftype, kfs=true, x1=10, y1=-12, x2=-31, y2=71}
-
-		self:keepFontStrings(_G.PaperDollFrame)
-		self:makeMFRotatable(_G.CharacterModelFrame)
-		_G.CharacterAttributesFrame:DisableDrawLayer("BACKGROUND")
-		if self.modBtnBs then
-			for i = 1, 5 do
-				self:addButtonBorder{obj=_G["MagicResFrame" .. i], es=24, ofs=2, x1=-1, y2=-4, clr="grey"}
+		self:SecureHookScript(_G.CharacterFrame, "OnShow", function(this)
 			self:skinObject(self.skinTPLs.new("tabs", {obj=this, prefix=this:GetName(), fType=ftype, ignoreSize=true, lod=true}))
+			self:addSkinFrame{obj=this, ft=ftype, kfs=true, x1=10, y1=-12, x2=-31, y2=71}
+			-- PaperDoll Frame
+			self:keepFontStrings(_G.PaperDollFrame)
+			self:makeMFRotatable(_G.CharacterModelFrame)
+			_G.CharacterAttributesFrame:DisableDrawLayer("BACKGROUND")
+			if self.modBtnBs then
+				for i = 1, 5 do
+					self:addButtonBorder{obj=_G["MagicResFrame" .. i], es=24, ofs=2, x1=-1, y2=-4, clr="grey"}
+				end
+				self:SecureHook("PaperDollItemSlotButton_Update", function(btn)
+					-- ignore buttons with no border
+					if btn.sbb then
+						if not btn.hasItem then
+							self:clrBtnBdr(btn, "grey")
+							btn.icon:SetTexture(nil)
+						else
+							btn.sbb:SetBackdropBorderColor(btn.icon:GetVertexColor())
+						end
+					end
+				end)
 			end
-			self:SecureHook("PaperDollItemSlotButton_Update", function(btn)
-				-- ignore buttons with no border
-				if btn.sbb then
-					if not btn.hasItem then
-						self:clrBtnBdr(btn, "grey")
-						btn.icon:SetTexture(nil)
+			for _, btn in _G.pairs{_G.PaperDollItemsFrame:GetChildren()} do
+				-- handle non button children [ECS_StatsFrame]
+				if btn:IsObjectType("Button") then
+					btn:DisableDrawLayer("BACKGROUND")
+					if btn ~= _G.CharacterAmmoSlot then
+						if self.modBtnBs then
+							self:addButtonBorder{obj=btn, ibt=true, reParent={btn.ignoreTexture}, clr="grey"}
+						end
 					else
-						btn.sbb:SetBackdropBorderColor(btn.icon:GetVertexColor())
+						btn:DisableDrawLayer("OVERLAY")
+						btn:GetNormalTexture():SetTexture(nil)
+						btn:GetPushedTexture():SetTexture(nil)
+						if self.modBtnBs then
+							self:addButtonBorder{obj=btn, reParent={btn.Count, self:getRegion(btn, 4)}, clr="grey"}
+							btn.icon = _G.CharacterAmmoSlotIconTexture
+						end
 					end
-				end
-			end)
-		end
-		for _, btn in _G.pairs{_G.PaperDollItemsFrame:GetChildren()} do
-			-- handle non button children [ECS_StatsFrame]
-			if btn:IsObjectType("Button") then
-				btn:DisableDrawLayer("BACKGROUND")
-				if btn ~= _G.CharacterAmmoSlot then
 					if self.modBtnBs then
-						self:addButtonBorder{obj=btn, ibt=true, reParent={btn.ignoreTexture}, clr="grey"}
+						-- force quality border update
+						_G.PaperDollItemSlotButton_Update(btn)
 					end
-				else
-					btn:DisableDrawLayer("OVERLAY")
-					btn:GetNormalTexture():SetTexture(nil)
-					btn:GetPushedTexture():SetTexture(nil)
-					if self.modBtnBs then
-						self:addButtonBorder{obj=btn, reParent={btn.Count, self:getRegion(btn, 4)}, clr="grey"}
-						btn.icon = _G.CharacterAmmoSlotIconTexture
-					end
-				end
-				if self.modBtnBs then
-					-- force quality border update
-					_G.PaperDollItemSlotButton_Update(btn)
 				end
 			end
-		end
+
+			self:Unhook(this, "OnShow")
+		end)
 
 		self:SecureHookScript(_G.ReputationFrame, "OnShow", function(this)
 			self:keepFontStrings(this)
