@@ -19,7 +19,6 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 	self.initialized.Ace3 = true
 
 	local function skinAceGUI(obj, objType)
-
 		local objVer = AceGUI.GetWidgetVersion and AceGUI:GetWidgetVersion(objType) or 0
 		-- if not objType:find("CollectMe") then
 			-- aObj:Debug("skinAceGUI: [%s, %s, %s]", obj, objType, objVer)
@@ -27,7 +26,6 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 		-- if objType:find("TSM") then
 			-- aObj:Debug("skinAceGUI: [%s, %s, %s, %s, %s, %s]", obj, objType, objVer, obj.sknd, objType:find("TSM"), obj.sknrTSM)
 		-- end
-
 		if obj
 		and not obj.sknd
 		and not (objType:find("TSM") and obj.sknrTSM) -- check objType as TSM overlays existing objects
@@ -85,15 +83,21 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 					end
 				end
 			elseif objType == "MultiLineEditBox" then
-				if aObj.modBtns then
-					aObj:skinStdButton{obj=obj.button, as=true}
-				end
 				if objVer < 20 then
-					aObj:skinSlider{obj=obj.scrollframe.ScrollBar, wdth=-4, size=3}
-					aObj:applySkin{obj=obj.backdrop}
+					aObj:skinSlider{obj=obj.scrollframe.ScrollBar}
+					aObj:addFrameBorder{obj=obj.backdrop, ft="a", x2=-2}
 				else
-					aObj:skinSlider{obj=obj.scrollFrame.ScrollBar, wdth=-4, size=3}
-					aObj:applySkin{obj=aObj:getChild(obj.frame, 2)} -- backdrop frame
+					aObj:skinSlider{obj=obj.scrollFrame.ScrollBar}
+					aObj:addFrameBorder{obj=aObj:getChild(obj.frame, 2), ft="a", x2=-2}
+				end
+				if aObj.modBtns then
+					aObj:skinStdButton{obj=obj.button, y1=-2, y2=-2}
+					aObj:secureHook(obj.button, "Disable", function(this, _)
+						aObj:clrBtnBdr(this)
+					end)
+					aObj:secureHook(obj.button, "Enable", function(this, _)
+						aObj:clrBtnBdr(this)
+					end)
 				end
 			elseif objType == "Slider" then
 				aObj:skinEditBox{obj=obj.editbox, noHeight=true}
@@ -141,7 +145,7 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 				end
 			elseif objType == "Button" then
 				if aObj.modBtns then
-					obj.frame.sb = nil -- allow button to be reskinned (Power Raid does this)
+					-- TODO: handle PowerRaid reskinning buttons, DON't just nil out .sb as gradient is overloaded
 					aObj:skinStdButton{obj=obj.frame, x1=5, x2=-5}
 				end
 			elseif objType == "Keybinding" then
@@ -173,8 +177,8 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 			-- handle HybridScrollFrame child (created by HonorSpy [Classic])
 			elseif objType == "SimpleGroup" then
 				if obj.frame:GetNumChildren() == 2
-				and self:getChild(obj.frame, 2):IsObjectType("ScrollFrame") then
-					self:skinSlider{obj=self:getChild(obj.frame, 2).scrollBar, rt="artwork", wdth=-4}
+				and aObj:getChild(obj.frame, 2):IsObjectType("ScrollFrame") then
+					aObj:skinSlider{obj=aObj:getChild(obj.frame, 2).scrollBar, rt="artwork", wdth=-4}
 				end
 
 			-- Snowflake objects (Producer AddOn)
@@ -200,7 +204,7 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 
 			-- ListBox object (AuctionLite)
 			elseif objType == "ListBox" then
-				for _, child in ipairs{obj.frame:GetChildren()} do
+				for _, child in _G.ipairs{obj.frame:GetChildren()} do
 					if child:IsObjectType("ScrollFrame") then
 						child:SetBackdrop(nil)
 						aObj:skinSlider{obj=_G[child:GetName() .. "ScrollBar"]}
@@ -320,11 +324,11 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
                 aObj:applySkin{obj=obj.treeframe}
                 obj.sknrTSM = true
             elseif objType == "TSMButton" then
+               obj.btn:SetBackdrop(nil)
 				if aObj.modBtns then
 					aObj:skinStdButton{obj=obj.btn, as=true} -- just skin it otherwise text is hidden
 				end
-                obj.btn:SetBackdrop(nil)
-                obj.sknrTSM = true
+                 obj.sknrTSM = true
             elseif objType == "TSMSelectionList" then
                 aObj:applySkin{obj=obj.leftFrame}
                 aObj:skinSlider{obj=obj.leftScrollFrame._scrollbar}
@@ -334,18 +338,18 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
             elseif objType == "TSMMacroButton"
             or objType == "TSMFastDestroyButton"
             then
+                obj.frame:SetBackdrop(nil)
 				if aObj.modBtns then
 					aObj:skinStdButton{obj=obj.frame}
 				end
-                obj.frame:SetBackdrop(nil)
                 obj.sknrTSM = true
             elseif objType == "TSMWindow" then
                 aObj:applySkin{obj=obj.frame, kfs=true}
+               obj.titletext:SetPoint("TOP", obj.frame, "TOP", 0, -6)
 				if aObj.modBtns then
 					aObj:skinCloseButton{obj=obj.closebutton}
 				end
-                obj.titletext:SetPoint("TOP", obj.frame, "TOP", 0, -6)
-                obj.sknrTSM = true
+                 obj.sknrTSM = true
             elseif objType == "TSMEditBox" then
 				if aObj.modBtns then
 					aObj:skinStdButton{obj=obj.button, as=true}
@@ -376,7 +380,6 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 				if aObj.modBtns then
 					aObj:skinStdButton{obj=obj.startbutton, as=true}
 				end
-				-- obj.startbutton
 
 			-- GarrisonMissionCommander/OrderHallCommander/ChampionCommander objects
 			elseif objType == "GMCLayer" then
@@ -398,10 +401,10 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 				aObj:removeRegions(obj.frame, {13, 14, 23, 24, 25, 26}) -- LocBG, RareOverlay, Highlight corners
 				if aObj.modBtnBs then
 					aObj:secureHook(obj, "SetMission", function(this)
-						for i = 1, #this.frame.Rewards do
-							aObj:removeRegions(this.frame.Rewards[i], {1}) -- rewards shadow
+						for _, reward in _G.pairs(this.frame.Rewards) do
+							aObj:removeRegions(reward, {1}) -- rewards shadow
 							if aObj.modBtns then
-								aObj:addButtonBorder{obj=this.frame.Rewards[i], relTo=this.frame.Rewards[i].Icon, reParent={this.frame.Rewards[i].Quantity}}
+								aObj:addButtonBorder{obj=reward, relTo=reward.Icon, reParent={reward.Quantity}}
 							end
 						end
 					end)
@@ -463,6 +466,7 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 			or objType == "WeakAurasTextureButton"
 			or objType == "WeakAurasToolbarButton"
 			or objType == "WeakAurasTreeGroup"
+			or objType == "WeakAurasTwoColumnDropdown"
 			-- ReagentRestocker object
 			or objType == "DragDropTarget"
 			-- TradeSkillMaster objects
@@ -503,7 +507,6 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 				aObj:Debug("AceGUI, unmatched type - %s", objType)
 			end
 		end
-
 	end
 
 	if self:IsHooked(AceGUI, "Create") then
@@ -521,23 +524,6 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 		skinAceGUI(obj, objectsToSkin[obj])
 	end
 	_G.wipe(objectsToSkin)
-
-	-- hook this to skin AGSMW dropdown frame(s)
-	local AGSMW = _G.LibStub:GetLibrary("AceGUISharedMediaWidgets-1.0", true)
-	if AGSMW then
-		self:RawHook(AGSMW, "GetDropDownFrame", function(this)
-			local frame = self.hooks[this].GetDropDownFrame(this)
-			local bdrop = frame:GetBackdrop()
-			if bdrop.edgeFile:find("UI-DialogBox-Border", 1, true) then -- if default backdrop
-				frame:SetBackdrop(nil)
-				if not frame.sf then
-					self:skinSlider{obj=frame.slider, size=4}
-					self:addSkinFrame{obj=frame, ft="a", nb=true, x1=6, y1=-5, x2=-6, y2=5}
-				end
-			end
-			return frame
-		end, true)
-	end
 
 end
 

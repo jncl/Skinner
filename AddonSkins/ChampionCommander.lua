@@ -3,7 +3,7 @@ if not aObj:isAddonEnabled("ChampionCommander") then return end
 local _G = _G
 
 -- loads with Blizzard_GarrisonUI
-aObj.lodAddons.ChampionCommander = function(self) -- v 1.2.4 80300
+aObj.lodAddons.ChampionCommander = function(self) -- v 1.3.2 90001
 
 	-- tooltip
 	_G.C_Timer.After(0.1, function()
@@ -104,49 +104,63 @@ aObj.lodAddons.ChampionCommander = function(self) -- v 1.2.4 80300
 	end
 	aC = nil
 
+	local cache = _G.BFA:GetCacheModule()
+	local tFrame
+	if cache then
+		self:SecureHook(cache, "GetTroopsFrame", function(this)
+			tFrame = self:getLastChild(_G.BFAMissionFrame)
+			self:addSkinFrame{obj=tFrame, ft="a", kfs=true, nb=true, ofs=0 ,x1=4, x2=-4}
+		end)
+	end
+	cache = nil
+
 	local tut = _G.BFA:GetTutorialsModule()
 	if tut then
+		local Clicker, Enhancer
 		-- N.B. Tutorial uses this function, but leaves the frame showing...
-		local cache = _G.BFA:GetCacheModule()
-		local tFrame
-		if cache then
-			self:RawHook(cache, "GetTroopsFrame", function(this)
-				tFrame = self.hooks[this].GetTroopsFrame(this)
-				self:Unhook(this, "GetTroopsFrame")
-				return tFrame
-			end, true)
-		end
-		cache = nil
-		local eFrame
 		self:SecureHook(tut, "Show", function(this, opening)
-			local Clicker = self:getLastChild(_G.HelpPlateTooltip)
-			if self.modBtns
-			or self.modBtnBs
-			then
-				if self.modBtns then
-					 self:skinCloseButton{obj=Clicker.Close, noSkin=true}
-				end
-				if self.modBtnBs then
-					self:addButtonBorder{obj=Clicker.Forward, ofs=-2, x2=-3, clr="gold"}
-					self:addButtonBorder{obj=Clicker.Backward, ofs=-2, x2=-3, clr="gold"}
+			if not Clicker then
+				for _, child in _G.pairs{_G.HelpPlateTooltip:GetChildren()} do
+					if child.Home
+					and child.Home.tooltip
+					then
+						Clicker = child
+						break
+					end
 				end
 			end
-			Clicker = nil
+			if Clicker then
+				if self.modBtns
+				or self.modBtnBs
+				then
+					if self.modBtns then
+						 self:skinCloseButton{obj=Clicker.Close, noSkin=true}
+					end
+					if self.modBtnBs then
+						self:addButtonBorder{obj=Clicker.Forward, ofs=-2, x2=-3, clr="gold"}
+						self:addButtonBorder{obj=Clicker.Backward, ofs=-2, x2=-3, clr="gold"}
+					end
+				end
+				Clicker = nil
+			end
+			-- skin Enhancer frame
+			local hptParent = _G.HelpPlateTooltip:GetParent()
+			if hptParent ~= _G.BFAMissionFrame
+			and not Enhancer
+			then
+				Enhancer = self:getLastChild(hptParent)
+				Enhancer:DisableDrawLayer("BACKGROUND")
+				self:addFrameBorder{obj=Enhancer, aso={bbclr="gold"}, ofs=4}
+			end
 			-- this shows/hides the Troop frame as required
 			if tFrame then
-				if not eFrame then
-					if tFrame:GetNumChildren() == 2 then
-						eFrame = self:getLastChild(tFrame)
-					end
-				end
-				if eFrame then
-					if eFrame:GetParent() == tFrame then
-						tFrame:Show()
-					else
-						tFrame:Hide()
-					end
+				if tFrame == hptParent then
+					tFrame:Show()
+				else
+					tFrame:Hide()
 				end
 			end
+			hptParent = nil
 		end)
 	end
 	tut = nil

@@ -8,7 +8,10 @@ aObj.addonsToSkin.Sorted = function(self) -- v 1.2.17
 		frame.foregroundFrame:DisableDrawLayer("OVERLAY") -- this disables the column seperator textures
 		frame:DisableDrawLayer("BACKGROUND")
 		frame:DisableDrawLayer("BORDER")
-		aObj:skinSlider{obj=_G[frame:GetName() .. "ScrollBar"], rt="artwork", wdth=-4}
+		aObj:skinSlider{obj=frame.scrollBar, rt="artwork", wdth=-4}
+		-- TODO: remove background texture ?
+		-- for _, btn in pairs(frame.itemButtons) do
+		-- end
 	end
 
 	self:addSkinFrame{obj=_G.SortedIconSelectionMenu, ft="a", kfs=true, nb=true}
@@ -18,9 +21,9 @@ aObj.addonsToSkin.Sorted = function(self) -- v 1.2.17
 		self:removeNineSlice(this.NineSlice)
 		_G.SortedFrameTitleBarMinimizeButtonDiv.texture:SetTexture(nil)
 		_G.SortedFrameTitleBarAltsButtonDiv.texture:SetTexture(nil)
-		-- TODO: SortedAltsDropdownButton, make it look like a dropdown
+		-- ?TODO: SortedAltsDropdownButton, make it look like a dropdown
 		self:addSkinFrame{obj=_G.SortedAltsDropdownButtonMenu, ft="a", kfs=true, nb=true}
-		-- TODO: SortedEquipmentSetsDropdownButton, make it look like a dropdown
+		-- ?TODO: SortedEquipmentSetsDropdownButton, make it look like a dropdown
 		self:addSkinFrame{obj=_G.SortedEquipmentSetsDropdownButtonMenu, ft="a", kfs=true, nb=true}
 		_G.SortedEquipmentSetsDropdownButtonEquipmentSetsButtonDiv.texture:SetTexture(nil)
 		_G.SortedFramePortraitButton:SetScale(0.8)
@@ -57,18 +60,26 @@ aObj.addonsToSkin.Sorted = function(self) -- v 1.2.17
 		_G.SortedFrameMoneyInnerFrame:DisableDrawLayer("BACKGROUND")
 		self:removeInset(_G.SortedFrameFootCenter)
 		self:removeInset(_G.SortedFrameFootRight)
-		-- TODO: SortedFrameResizeHandle texture
+		_G.SortedFrameResizeHandle:GetNormalTexture():SetTexCoord(0, 1, 0, 1)
+		_G.SortedFrameResizeHandle:SetNormalTexture([[Interface\ChatFrame\UI-ChatIM-SizeGrabber-Up]])
+		_G.SortedFrameResizeHandle:GetPushedTexture():SetTexCoord(0, 1, 0, 1)
+		_G.SortedFrameResizeHandle:SetPushedTexture([[Interface\ChatFrame\UI-ChatIM-SizeGrabber-Highlight]])
+		_G.SortedFrameResizeHandle:GetHighlightTexture():SetTexCoord(0, 1, 0, 1)
+		_G.SortedFrameResizeHandle:SetHighlightTexture([[Interface\ChatFrame\UI-ChatIM-SizeGrabber-Down]])
 		_G.SortedCurrencyFrame:DisableDrawLayer("BACKGROUND")
 		-- SortedFrameMain
 		self:removeInset(_G.SortedFrameMain)
 		-- SortedFrameRight
 		self:addFrameBorder{obj=_G.SortedFrameFilterButtons, ft="a", ri=true, x1=-1, x2=2}
 		local btn
-		for i = 1, #_G.Sorted_CategoryButtons do
-			btn =_G.Sorted_CategoryButtons[i]
-			self:addSkinFrame{obj=btn, ft="a", kfs=true, nb=true}
+		for _, btn in _G.pairs(_G.Sorted_CategoryButtons) do
+			self:skinStdButton{obj=btn}
+			btn.newItemsIndicator.borderR:SetTexture(nil)
+			btn.newItemsIndicator.borderL:SetTexture(nil)
+			self:changeTandC(btn.newItemsIndicator.borderC)
+			-- N.B. minibutton appears when Side panel is hidden
 			btn.miniButton.bg:SetTexture(nil)
-			-- TODO: .newItemsIndicator textures
+			self:changeTandC(btn.miniButton.newItemsIndicator.border)
 		end
 		btn = nil
 		self:skinSlider{obj=_G.SortedSubcategoryFrameScrollBar, rt="artwork"}
@@ -259,7 +270,7 @@ aObj.addonsToSkin.Sorted = function(self) -- v 1.2.17
 				_G[fName .. "Head"]:DisableDrawLayer("BACKGROUND")
 				self:removeNineSlice(this.NineSlice)
 				skinItemList(this.ItemList)
-				self:addSkinFrame{obj=this, ft="a", kfs=true}
+				self:addSkinFrame{obj=this, ft="a", kfs=true, nb=true}
 				fName = nil
 
 				self:Unhook(this, "OnShow")
