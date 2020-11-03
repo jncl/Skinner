@@ -405,9 +405,7 @@ aObj.blizzLoDFrames[ftype].BlackMarketUI = function(self)
 
 
 		local function skinSFButtons(scrollFrame)
-			local btn
-			for i = 1, #scrollFrame.buttons do
-				btn = scrollFrame.buttons[i]
+			for _, btn in _G.pairs(scrollFrame.buttons) do
 				aObj:removeRegions(btn, {1, 2, 3})
 				btn.Item:GetNormalTexture():SetTexture(nil)
 				btn.Item:GetPushedTexture():SetTexture(nil)
