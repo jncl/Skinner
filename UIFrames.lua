@@ -848,6 +848,12 @@ aObj.blizzLoDFrames[ftype].AnimaDiversionUI = function(self)
 		if self.modBtns then
 			self:skinCloseButton{obj=this.CloseButton , noSkin=true}
 			self:skinStdButton{obj=this.ReinforceInfoFrame.AnimaNodeReinforceButton}
+			self:SecureHook(this.ReinforceInfoFrame.AnimaNodeReinforceButton, "Disable", function(this, _)
+				self:clrBtnBdr(this)
+			end)
+			self:SecureHook(this.ReinforceInfoFrame.AnimaNodeReinforceButton, "Enable", function(this, _)
+				self:clrBtnBdr(this)
+			end)
 		end
 
 		self:Unhook(this, "OnShow")
@@ -2558,22 +2564,24 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 
 		if isShadowlands then
 			this.CovenantCallings:DisableDrawLayer("BACKGROUND")
-			local function skinSoulbind(panel)
+			local function skinPanelBtns(panel)
 				panel:DisableDrawLayer("BACKGROUND")
-				aObj:addSkinFrame{obj=panel.SoulbindButton, ft=ftype, kfs=true, nb=true, ofs=-4, y2=6}
-				skinSoulbind = nil
+				aObj:skinObject("frame", {obj=panel.RenownButton, fType=ftype, regions={3, 5, 6}, ofs=-4, y1=-5, y2=3})
+				panel.RenownButton.UpdateButtonTextures = _G.nop
+				aObj:skinObject("frame", {obj=panel.SoulbindButton, fType=ftype, regions={1, 2}, ofs=-4, y1=-5, y2=3})
+				panel.SoulbindButton.Portrait.SetAtlas = _G.nop
+				skinPanelBtns = nil
 			end
 			if not this.SoulbindPanel then
 				self:SecureHook(this, "SetupSoulbind", function(this)
 					if this.SoulbindPanel then
-						skinSoulbind(this.SoulbindPanel)
+						skinPanelBtns(this.SoulbindPanel)
 						self:Unhook(this, "SetupSoulbind")
 					end
 				end)
 			else
-				skinSoulbind(this.SoulbindPanel)
+				skinPanelBtns(this.SoulbindPanel)
 			end
-			-- TODO: Callings Quests ?
 		end
 
 		-- N.B. Garrison Landing Page Minimap Button skinned with other minimap buttons

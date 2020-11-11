@@ -554,20 +554,23 @@ aObj.blizzLoDFrames[ftype].CovenantSanctum = function(self)
 			end
 		end)
 		skinTalents(list)
+		list = nil
 		for _, frame in _G.pairs(this.UpgradesTab.Upgrades) do
-			if frame.Border then self:nilTexture(frame.Border, true) end
-			if frame.TierBorder then self:changeTandC(frame.TierBorder) end
+			if frame.Border then
+				self:nilTexture(frame.Border, true)
+			end
+			if frame.TierBorder then
+				self:changeTandC(frame.TierBorder)
+			end
 		end
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, ofs=-3, aso={bbclr="sepia"}}
 		if self.modBtns then
+			self:skinCloseButton{obj=this.CloseButton, noSkin=true}
 			self:skinStdButton{obj=this.UpgradesTab.TalentsList.UpgradeButton}
 			self:skinStdButton{obj=this.UpgradesTab.DepositButton}
 			self:SecureHook(this.UpgradesTab, "UpdateDepositButton", function(this)
 				self:clrBtnBdr(this.DepositButton)
 			end)
-		end
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, ofs=-3, aso={bbclr="sepia"}}
-		if self.modBtns then
-			self:skinCloseButton{obj=this.CloseButton, noSkin=true}
 		end
 
 		self:Unhook(this, "OnShow")
