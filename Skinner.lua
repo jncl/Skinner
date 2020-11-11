@@ -153,7 +153,7 @@ function aObj:OnInitialize()
 	self.LSM:Register("statusbar", "Blizzard2", [[Interface\TargetingFrame\UI-TargetingFrame-BarFill]])
 
 	-- EditBox regions to keep
-	self.ebRgns = {1, 2} -- 1 is text, 2 is a texture
+	self.ebRgns = {1, 2} -- 1 is text, 2 is the cursor texture
 
 	-- Gradient settings
 	self.gradientTab = {self.prdb.Gradient.rotate and "HORIZONTAL" or "VERTICAL", .5, .5, .5, 1, .25, .25, .25, 0}
@@ -170,12 +170,12 @@ function aObj:OnInitialize()
 	-- wide backdrop for ScrollBars & EditBoxes (16,16,4)
 	self.Backdrop[2] = _G.CopyTable(self.backdrop)
 	self.Backdrop[2].edgeFile = self.LSM:Fetch("border", aName .. " Border")
-	-- medium backdrop for ScrollBars (12,12,3)
+	-- medium backdrop for ScrollBars & EditBoxes (12,12,3)
 	self.Backdrop[3] = _G.CopyTable(self.Backdrop[2])
 	self.Backdrop[3].tileSize = 12
 	self.Backdrop[3].edgeSize = 12
 	self.Backdrop[3].insets = {left = 3, right = 3, top = 3, bottom = 3}
-	-- narrow backdrop for ScrollBars (8,8,2)
+	-- narrow backdrop for ScrollBars & EditBoxes (8,8,2)
 	self.Backdrop[4] = _G.CopyTable(self.Backdrop[2])
 	self.Backdrop[4].tileSize = 8
 	self.Backdrop[4].edgeSize = 8
@@ -391,9 +391,9 @@ function aObj:OnEnable()
 	self.skinExpandButton    = self.modBtns and self.modUIBtns.skinExpandButton or _G.nop
 	self.skinOtherButton     = self.modBtns and self.modUIBtns.skinOtherButton or _G.nop
 	self.skinStdButton       = self.modBtns and self.modUIBtns.skinStdButton or _G.nop
-	self.updown              = self.modBtns and self.modUIBtns.updown or _G.nop
 	self.leftdc              = self.modBtns and self.modUIBtns.leftdc or _G.nop
 	self.rightdc             = self.modBtns and self.modUIBtns.rightdc or _G.nop
+	self.updown              = self.modBtns and self.modUIBtns.updown or _G.nop
 
 	self.addButtonBorder     = self.modBtnBs and self.modUIBtns.addButtonBorder or _G.nop
 	self.clrBtnBdr           = self.modBtnBs and self.modUIBtns.clrBtnBdr or _G.nop
@@ -440,13 +440,16 @@ function aObj:OnEnable()
 			-- self:Debug("PanelTemplates_UpdateTabs: [%s, %s, %s, %s]", frame, frame.selectedTab, frame.numTabs, _G.rawget(self.tabFrames, frame))
 			if not self.tabFrames[frame] then return end -- ignore frame if not monitored
 			if frame.selectedTab then
+				local tab
 				for i = 1, frame.numTabs do
+					tab = frame.Tabs and frame.Tabs[i] or _G[frame:GetName() .. "Tab" .. i]
 					if i == frame.selectedTab then
-						self:setActiveTab(_G[frame:GetName() .. "Tab" .. i].sf)
+						self:setActiveTab(tab.sf)
 					else
-						self:setInactiveTab(_G[frame:GetName() .. "Tab" .. i].sf)
+						self:setInactiveTab(tab.sf)
 					end
 				end
+				tab = nil
 			end
 		end)
 	end

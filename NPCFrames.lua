@@ -507,12 +507,12 @@ aObj.blizzLoDFrames[ftype].CovenantRenown = function(self)
 		end
 	end
 	self:SecureHookScript(_G.CovenantRenownFrame, "OnShow", function(this)
-
 		self:removeNineSlice(this.NineSlice)
 		this.HeaderFrame.Background:SetTexture(nil)
 		self:moveObject{obj=this.HeaderFrame, y=-6}
 		-- .CelebrationModelScene
 		-- .TrackFrame
+			-- N.B. the level background is part of the border atlas and CANNOT be changed ;(
 		-- .FinalToast
 		-- .FinalToast.IconSwirlModelScene
 		-- .FinalToast.SlabTexture

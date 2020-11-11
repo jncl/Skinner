@@ -4,22 +4,17 @@ local _G = _G
 
 local tmpTab = {}
 local function makeString(obj)
-
 	if _G.type(obj) == "table" then
 		if _G.type(_G.rawget(obj, 0)) == "userdata" and _G.type(obj.GetObjectType) == "function" then
 			return ("<%s:%s:%s>"):format(_G.tostring(obj), obj:GetObjectType(), obj:GetName() or "(Anon)")
 		end
 	end
-
 	return _G.tostring(obj)
-
 end
 
 local function makeText(fStr, ...)
-
     _G.wipe(tmpTab)
 	local output = ""
-
 	if fStr
 	and fStr.find
 	and fStr:find("%%")
@@ -43,31 +38,22 @@ local function makeText(fStr, ...)
 		end
 		output = _G.table.concat(tmpTab, " ")
 	end
-
 	return output
-
 end
 
 local function getKeys(curTab)
 	if not curTab then return end
-
     local tmpTab = {}
-
 	for i = 1, #curTab do
 		tmpTab[curTab[i]] = true
 	end
-
 	return tmpTab
-
 end
 
 local debugprofilestop, errorhandler, xpcall = _G.debugprofilestop, _G.geterrorhandler(), _G.xpcall
 local function safecall(funcName, funcObj, LoD, quiet)
 --@alpha@
 	_G.assert(funcObj, "Unknown object safecall\n" .. _G.debugstack(2, 3, 2))
---@end-alpha@
-
---@alpha@
 	local beginTime = debugprofilestop()
 --@end-alpha@
  	-- handle errors from internal functions
@@ -87,7 +73,6 @@ local function safecall(funcName, funcObj, LoD, quiet)
 			aObj:CustomPrint(1, 0, 0, "Error running", funcName)
 		end
 	end
-
 end
 
 function aObj:addBackdrop(obj)
@@ -613,6 +598,7 @@ local clrTab = {
 	selected = _G.PAPER_FRAME_EXPANDED_COLOR,
 	sepia    = _G.SEPIA_COLOR,
 	silver   = _G.QUEST_OBJECTIVE_FONT_COLOR,
+	slider   = _G.CreateColor(0.2, 0.2, 0.2),
 	unused   = _G.DULL_RED_FONT_COLOR,
 	white    = _G.HIGHLIGHT_FONT_COLOR,
 	yellow   = _G.YELLOW_FONT_COLOR,
@@ -1010,17 +996,19 @@ function aObj:removeColourCodes(text)
 
 end
 
+local function ddlBBO(frame)
+	frame:DisableDrawLayer("BACKGROUND")
+	frame:DisableDrawLayer("BORDER")
+	frame:DisableDrawLayer("OVERLAY")
+end
 function aObj:removeInset(frame)
 --@alpha@
 	_G.assert(frame, "Unknown object removeInset\n" .. _G.debugstack(2, 3, 2))
 --@end-alpha@
 
-	frame:DisableDrawLayer("BACKGROUND")
-	frame:DisableDrawLayer("BORDER")
-	frame:DisableDrawLayer("OVERLAY")
-
+	ddlBBO(frame)
 	if frame.NineSlice then
-		self:removeNineSlice(frame.NineSlice)
+		ddlBBO(frame.NineSlice)
 	end
 
 end
@@ -1041,9 +1029,7 @@ function aObj:removeNineSlice(frame)
 	_G.assert(frame, "Unknown object removeNineSlice\n" .. _G.debugstack(2, 3, 2))
 --@end-alpha@
 
-	frame:DisableDrawLayer("BACKGROUND")
-	frame:DisableDrawLayer("BORDER")
-	frame:DisableDrawLayer("OVERLAY")
+	ddlBBO(frame)
 
 end
 

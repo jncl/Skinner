@@ -19,7 +19,7 @@ do
 	module.mult = "×" -- multiplication sign NOT lower case X
 	module.plus = "+"
 	module.minus = "-" -- using Hyphen-minus(-) instead of minus sign(−) for font compatiblity reasons
-	module.updown = "↕"
+	module.updown = "↨" -- has a base line below
 	-- using double chevrons
 	module.leftdc = "«"
 	module.rightdc = "»"
@@ -53,7 +53,7 @@ do
 	module.fontDP:SetTextColor(_G.DISABLED_FONT_COLOR:GetRGB())
 	-- create font to use for WorldMap SizeUp/Down buttons
 	module.fontS = _G.CreateFont("fontS")
-	module.fontS:SetFont([[Fonts\ARIALN.TTF]], 14)
+	module.fontS:SetFont([[Fonts\ARIALN.TTF]], 12)
 	module.fontS:SetTextColor(_G.NORMAL_FONT_COLOR:GetRGB())
 end
 local texNumbers = {
@@ -780,7 +780,6 @@ local function __skinCheckButton(opts)
 			yOfs = nil
 		end
 	end
-	-- aObj:Debug("__skinCheckButton GetWidth: [%s, %s]", opts.obj, opts.obj:GetWidth())
 	aObj:addSkinButton{obj=opts.obj, aso={bd=bd, ng=true, bbclr="grey"}, parent=opts.obj, noHooks=not opts.hf, ofs=ofs, y2=yOfs}
 
 end

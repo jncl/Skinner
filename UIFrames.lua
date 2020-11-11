@@ -330,7 +330,7 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 			and not aObj:IsHooked("GarrisonMissonListTab_SetSelected")
 			then
 				aObj:SecureHook("GarrisonMissonListTab_SetSelected", function(tab, isSelected)
-					aObj:Debug("GarrisonMissonListTab_SetSelected: [%s, %s]", tab, isSelected)
+					-- aObj:Debug("GarrisonMissonListTab_SetSelected: [%s, %s]", tab, isSelected)
 					if isSelected then
 						aObj:setActiveTab(tab.sf)
 					else
@@ -1516,7 +1516,7 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 			aObj:removeBackdrop(_G[cBox])
 			if aObj.modChkBtns then
 				local box
-				for _, suffix in pairs{"", "Check", "ColorClasses"} do
+				for _, suffix in _G.pairs{"", "Check", "ColorClasses"} do
 					box = _G[box .. suffix]
 					if box then
 						aObj:skinCheckButton{obj=box}
@@ -5069,7 +5069,7 @@ aObj.blizzLoDFrames[ftype].PlayerChoiceUI = function(self)
 	self:SecureHookScript(_G.PlayerChoiceFrame, "OnShow", function(this)
 
 		local pci = _G.C_PlayerChoice.GetPlayerChoiceInfo()
-		aObj:Debug("PlayerChoiceFrame: [%s, %s, %s]", this, this.uiTextureKit, pci.choiceID)
+		-- aObj:Debug("PlayerChoiceFrame: [%s, %s, %s]", this, this.uiTextureKit, pci.choiceID)
 		-- _G.Spew("", pci)
 
 		self:removeNineSlice(this.NineSlice)
@@ -5195,7 +5195,7 @@ aObj.blizzLoDFrames[ftype].PlayerChoiceUI = function(self)
 
 		-- hook these to handle setup & updates to frame
 		self:SecureHook(this, "TryShow", function(this)
-			aObj:Debug("PCUI - TryShow: [%s, %s]", this.uiTextureKit)
+			-- aObj:Debug("PCUI - TryShow: [%s, %s]", this.uiTextureKit)
 			this.sf:SetShown(this.uiTextureKit ~= "jailerstower")
 			local opt
 			for i = 1, #this.Options do
@@ -5208,7 +5208,7 @@ aObj.blizzLoDFrames[ftype].PlayerChoiceUI = function(self)
 			opt = nil
 		end)
 		self:SecureHook(this, "Update", function(this)
-			aObj:Debug("PCUI - Update: [%s, %s]", this.uiTextureKit)
+			-- aObj:Debug("PCUI - Update: [%s, %s]", this.uiTextureKit)
 			if this.uiTextureKit ~= "Oribos"
 			and this.uiTextureKit ~= "jailerstower"
 			then
@@ -6384,7 +6384,7 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 		    aObj:add2Table(aObj.oocTab, {skinWidget, {wFrame, wInfo}})
 		    return
 		end
-		aObj:Debug("skinWidget: [%s, %s, %s, %s, %s, %s]", wFrame, wFrame.widgetType, wFrame.widgetTag, wFrame.widgetSetID, wFrame.widgetID, wInfo)
+		-- aObj:Debug("skinWidget: [%s, %s, %s, %s, %s, %s]", wFrame, wFrame.widgetType, wFrame.widgetTag, wFrame.widgetSetID, wFrame.widgetID, wInfo)
 		if wFrame.widgetType == 0 then -- IconAndText (World State: ICONS at TOP)
 			-- N.B. DON'T add buttonborder to Icon(s)
 		elseif wFrame.widgetType == 1 then -- CaptureBar (World State: Capture bar on RHS)
