@@ -94,7 +94,6 @@ aObj.addonsToSkin.MoveAnything = function(self) -- v 18.0.3
 					 aObj:skinStdButton{obj=_G["MA_FE" .. i .. "ShowButton"]}
 					 aObj:skinStdButton{obj=_G["MA_FE" .. i .. "ImportButton"]}
 					 aObj:SecureHook(_G["MA_FE" .. i], "UpdateButtons", function(this)
-						 aObj:Debug("UpdateButtons: [%s, %s]", this)
 						 local fe = this:GetName()
 						 aObj:clrBtnBdr(_G[fe .. "ResetButton"])
 						 aObj:clrBtnBdr(_G[fe .. "SyncButton"])

@@ -36,6 +36,7 @@ aObj.libsToSkin["tekKonfig-Dropdown"] = function(self) -- v 3
 	if self.initialized["tekKonfig-Dropdown"] then return end
 	self.initialized["tekKonfig-Dropdown"] = true
 
+	-- TODO: use drop skin code
 	local tKDd = _G.LibStub:GetLibrary("tekKonfig-Dropdown", true)
 	if tKDd then
 		self:RawHook(tKDd, "new", function(...)
@@ -73,7 +74,7 @@ aObj.libsToSkin["tekKonfig-Group"] = function(self) -- v 2
 	if tKG then
 		self:RawHook(tKG, "new", function(...)
 			local box = self.hooks[tKG].new(...)
-			self:addSkinFrame{obj=box, ft="a", nb=true}
+			self:skinObject("frame", {obj=box, fb=true})
 			return box
 		end, true)
 	end
@@ -91,13 +92,13 @@ aObj.libsToSkin["tekKonfig-Slider"] = function(self) -- v 3
 	if tKS then
 		self:RawHook(tKS, "new", function(...)
 			local slider, text, container, low, high = self.hooks[tKS].new(...)
-			self:skinSlider{obj=slider, size=3}
+			self:skinObject("slider", {obj=slider})
 			return slider, text, container, low, high
 		end, true)
 		if tKS.newbare then
 			self:RawHook(tKS, "newbare", function(...)
 				local slider = self.hooks[tKS].newbare(...)
-				self:skinSlider{obj=slider, size=3}
+				self:skinObject("slider", {obj=slider})
 				return slider
 			end, true)
 		end

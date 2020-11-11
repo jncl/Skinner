@@ -2,13 +2,11 @@ local aName, aObj = ...
 if not aObj:isAddonEnabled("Prat-3.0") then return end
 local _G = _G
 
-aObj.addonsToSkin["Prat-3.0"] = function(self) -- v 3.7.47
+aObj.addonsToSkin["Prat-3.0"] = function(self) -- v 3.9.1
 
 	local eb = _G.LibStub("AceAddon-3.0"):GetAddon("Prat"):GetModule("Editbox", true)
-
 	if eb then
 		local prof = eb.db.profile
-
 		if self.prdb.ChatEditBox.skin then
 			local dflts = self.db.defaults.profile
 			if self.prdb.BdDefault then
@@ -50,7 +48,6 @@ aObj.addonsToSkin["Prat-3.0"] = function(self) -- v 3.7.47
 			eb:SetBackdrop()
 			prof, dflts, bkd, bc, bbc = nil, nil, nil, nil, nil
 		end
-
 		if not self.prdb.ChatEditBox.style == 2 then
 			-- apply the fade/gradient to the ChatEditBoxes
 			for _, cfeb in _G.pairs(eb.frames) do
@@ -71,5 +68,21 @@ aObj.addonsToSkin["Prat-3.0"] = function(self) -- v 3.7.47
 
 		self:Unhook(this, "OnShow")
 	end)
+
+	local search = _G.LibStub("AceAddon-3.0"):GetAddon("Prat"):GetModule("Search", true)
+	if search then
+		local function skinEboxes(module)
+			for name, eBox in _G.pairs(module.searchBoxes) do
+				aObj:skinObject("editbox", {obj=eBox, rmTex=true, si=true})
+			end
+		end
+		-- hook this to skin new EditBoxes
+		self:SecureHook(search, "Prat_FramesUpdated", function(this, info, name, chatFrame, ...)
+			skinEboxes(this)
+		end)
+		-- skin any existing EditBoxes
+		skinEboxes(search)
+		search = nil
+	end
 
 end

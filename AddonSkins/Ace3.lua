@@ -30,128 +30,20 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 		and not obj.sknd
 		and not (objType:find("TSM") and obj.sknrTSM) -- check objType as TSM overlays existing objects
 		then
-			-- aObj:Debug("Skinning: [%s, %s]", obj, objType)
-			if objType == "Dropdown" then
-				aObj:skinAceDropdown(obj, nil, 1)
-			elseif objType == "Dropdown-Pullout" then
-				aObj:skinSlider{obj=obj.slider}
-				aObj:adjWidth{obj=obj.slider, adj=6}
-			elseif objType == "DropdownGroup"
-			or objType == "InlineGroup"
-			or objType == "TabGroup"
-			then
-				if objVer < 20 then
-					aObj:applySkin{obj=obj.border, kfs=true}
-				else
-					aObj:applySkin{obj=obj.content:GetParent(), kfs=true}
-				end
-				-- skin TabGroup's tabs, if required
-				if objType == "TabGroup"
-				and aObj.modBtns
-				then
-					aObj:secureHook(obj, "BuildTabs", function(this)
-						this.frame.numTabs = #obj.tabs
-						aObj:skinObject(aObj.skinTPLs.new("tabs", {obj=this.frame, prefix="AceGUITabGroup" .. this.num, ignoreSize=true, lod=true, upwards=true, offsets={x1=8, y1=-2, x2=-8, y2=-6}, noCheck=true, track=false}))
-						aObj:Unhook(this, "BuildTabs")
-					end)
-					if aObj.isTT then
-						aObj:secureHook(obj, "SelectTab", function(this, value)
-							for i, v in ipairs(this.tabs) do
-								if v.value == value then
-									aObj:setActiveTab(_G["AceGUITabGroup" .. this.num .. "Tab" .. i].sf)
-								else
-									aObj:setInactiveTab(_G["AceGUITabGroup" .. this.num .. "Tab" .. i].sf)
-								end
-							end
-						end)
-					end
-				end
-			elseif objType == "EditBox"
-			or objType == "NumberEditBox"
-			then
-				aObj:skinEditBox{obj=obj.editbox, noHeight=true}
-				aObj:rawHook(obj.editbox, "SetTextInsets", function(this, left, right, top, bottom)
-					return left + 6, right, top, bottom
-				end, true)
-				if aObj.modBtns then
-					aObj:skinStdButton{obj=obj.button, as=true}
-					if objType == "NumberEditBox" then
-						aObj:skinStdButton{obj=obj.minus, as=true}
-						aObj:skinStdButton{obj=obj.plus, as=true}
-					end
-				end
-			elseif objType == "MultiLineEditBox" then
-				if objVer < 20 then
-					aObj:skinSlider{obj=obj.scrollframe.ScrollBar}
-					aObj:addFrameBorder{obj=obj.backdrop, ft="a", x2=-2}
-				else
-					aObj:skinSlider{obj=obj.scrollFrame.ScrollBar}
-					aObj:addFrameBorder{obj=aObj:getChild(obj.frame, 2), ft="a", x2=-2}
-				end
-				if aObj.modBtns then
-					aObj:skinStdButton{obj=obj.button, y1=-2, y2=-2}
-					aObj:secureHook(obj.button, "Disable", function(this, _)
-						aObj:clrBtnBdr(this)
-					end)
-					aObj:secureHook(obj.button, "Enable", function(this, _)
-						aObj:clrBtnBdr(this)
-					end)
-				end
-			elseif objType == "Slider" then
-				aObj:skinEditBox{obj=obj.editbox, noHeight=true}
-				obj.editbox:SetSize(60, 20)
-				aObj:skinSlider{obj=obj.slider}
-				obj.lowtext:SetPoint("TOPLEFT", obj.slider, "BOTTOMLEFT", 2, 0)
-				obj.hightext:SetPoint("TOPRIGHT", obj.slider, "BOTTOMRIGHT", -2, 0)
-			elseif objType == "Frame" then
-				aObj:applySkin{obj=obj.frame, kfs=true}
-				if objVer < 20 then
-					aObj:applySkin{obj=obj.statusbg}
-					if aObj.modBtns then
-						aObj:skinStdButton{obj=obj.closebutton, y1=1}
-					end
-				else
-					aObj:applySkin{obj=aObj:getChild(obj.frame, 2)} -- status frame
-					if aObj.modBtns then
-						aObj:skinStdButton{obj=aObj:getChild(obj.frame, 1), y1=1}
-					end
-				end
-				obj.titletext:SetPoint("TOP", obj.frame, "TOP", 0, -6)
-			elseif objType == "Window" then
-				obj.titletext:SetPoint("TOP", obj.frame, "TOP", 0, -6)
-				aObj:applySkin{obj=obj.frame, kfs=true}
-				if aObj.modBtns
-				and obj.closebutton
-				then
-					aObj:skinCloseButton{obj=obj.closebutton}
-				end
-			elseif objType == "ScrollFrame" then
-				aObj:skinSlider{obj=obj.scrollbar, wdth=-2}
-			elseif objType == "TreeGroup" then
-				aObj:skinSlider{obj=obj.scrollbar}
-				aObj:applySkin{obj=obj.border}
-				aObj:applySkin{obj=obj.treeframe}
-				if aObj.modBtns then
-					-- hook to manage changes to button textures
-					aObj:secureHook(obj, "RefreshTree", function(this)
-						for _, btn in _G.pairs(this.buttons) do
-							if not btn.toggle.sb then
-								aObj:skinExpandButton{obj=btn.toggle, onSB=true}
-							end
-							aObj:checkTex(btn.toggle)
-						end
-					end)
-				end
-			elseif objType == "Button" then
+			-- aObj:Debug("Ace3 Skinning: [%s, %s]", obj, objType)
+
+			if objType == "Button" then
 				if aObj.modBtns then
 					-- TODO: handle PowerRaid reskinning buttons, DON't just nil out .sb as gradient is overloaded
 					aObj:skinStdButton{obj=obj.frame, x1=5, x2=-5}
+					aObj:secureHook(obj.frame, "Disable", function(this, _)
+						aObj:clrBtnBdr(this)
+					end)
+					aObj:secureHook(obj.frame, "Enable", function(this, _)
+						aObj:clrBtnBdr(this)
+					end)
 				end
-			elseif objType == "Keybinding" then
-				aObj:applySkin{obj=obj.msgframe}
-				if aObj.modBtns then
-					aObj:skinStdButton{obj=obj.button, as=true}
-				end
+
 			elseif objType == "CheckBox" then
 				if aObj.modChkBtns then
 					-- force creation of button border so check texture can be reparented
@@ -170,17 +62,139 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 					end)
 					obj.checkbg:SetTexture(nil)
 				end
+
 			elseif objType == "ColorPicker" then
 				obj.alignoffset = 10 -- align to neighbouring DropDowns
+
+			elseif objType == "Dropdown" then
+				aObj:skinAceDropdown(obj, nil, 1)
+
+			elseif objType == "Dropdown-Pullout" then
+				-- aObj:skinSlider{obj=obj.slider}
+				-- aObj:adjWidth{obj=obj.slider, adj=6}
+				aObj:skinObject("slider", {obj=obj.slider})
+
+			elseif objType == "DropdownGroup"
+			or objType == "InlineGroup"
+			or objType == "TabGroup"
+			then
+				aObj:skinObject("frame", {obj=obj.border or obj.content:GetParent(), kfs=true, fb=true})
+				-- skin TabGroup's tabs, if required
+				if objType == "TabGroup"
+				and aObj.modBtns
+				then
+					aObj:secureHook(obj, "BuildTabs", function(this)
+						this.frame.numTabs = #obj.tabs
+						aObj:skinObject("tabs", {obj=this.frame, prefix="AceGUITabGroup" .. this.num, ignoreSize=true, lod=true, upwards=true, offsets={x1=8, y1=-2, x2=-8, y2=-6}, noCheck=true, track=false})
+						aObj:Unhook(this, "BuildTabs")
+					end)
+					if aObj.isTT then
+						aObj:secureHook(obj, "SelectTab", function(this, value)
+							for i, v in ipairs(this.tabs) do
+								if v.value == value then
+									aObj:setActiveTab(_G["AceGUITabGroup" .. this.num .. "Tab" .. i].sf)
+								else
+									aObj:setInactiveTab(_G["AceGUITabGroup" .. this.num .. "Tab" .. i].sf)
+								end
+							end
+						end)
+					end
+				end
+
+			elseif objType == "EditBox"
+			or objType == "NumberEditBox"
+			then
+				aObj:skinObject("editbox", {obj=obj.editbox, ofs=0, x1=-2})
+				-- hook this as insets are changed
+				aObj:rawHook(obj.editbox, "SetTextInsets", function(this, left, ...)
+					return left + 6, ...
+				end, true)
+				if aObj.modBtns then
+					aObj:skinStdButton{obj=obj.button, as=true}
+					if objType == "NumberEditBox" then
+						aObj:skinStdButton{obj=obj.minus, as=true}
+						aObj:skinStdButton{obj=obj.plus, as=true}
+					end
+				end
+
+			elseif objType == "Frame" then
+				-- status frame
+				-- aObj:applySkin{obj=aObj:getChild(obj.frame, 2)}
+				aObj:skinObject("frame", {obj=aObj:getChild(obj.frame, 2), fb=true})
+				obj.titletext:SetPoint("TOP", obj.frame, "TOP", 0, -6)
+				-- aObj:applySkin{obj=obj.frame, kfs=true}
+				aObj:skinObject("frame", {obj=obj.frame, kfs=true})
+				if aObj.modBtns then
+					aObj:skinStdButton{obj=aObj:getChild(obj.frame, 1), y1=1}
+				end
+
+			elseif objType == "MultiLineEditBox" then
+				aObj:skinObject("slider", {obj=obj.scrollBar})
+				-- aObj:skinObject("frame", {obj=obj.editBox, fb=true})
+				aObj:removeBackdrop(obj.scrollBG)
+				if aObj.modBtns then
+					aObj:skinStdButton{obj=obj.button, ofs=0}
+					aObj:secureHook(obj.button, "Disable", function(this, _)
+						aObj:clrBtnBdr(this)
+					end)
+					aObj:secureHook(obj.button, "Enable", function(this, _)
+						aObj:clrBtnBdr(this)
+					end)
+				end
+
+			elseif objType == "ScrollFrame" then
+				aObj:removeRegions(obj.scrollbar, {2}) -- background texture
+				aObj:skinObject("slider", {obj=obj.scrollbar})
+
+			elseif objType == "Slider" then -- horizontal slider with editbox
+				aObj:skinObject("editbox", {obj=obj.editbox})
+				aObj:skinObject("slider", {obj=obj.slider})
+
+			elseif objType == "TreeGroup" then
+				aObj:skinObject("slider", {obj=obj.scrollbar})
+				aObj:skinObject("frame", {obj=obj.border, fb=true})
+				aObj:skinObject("frame", {obj=obj.treeframe, fb=true})
+				if aObj.modBtns then
+					-- hook to manage changes to button textures
+					aObj:secureHook(obj, "RefreshTree", function(this)
+						for _, btn in _G.pairs(this.buttons) do
+							if not btn.toggle.sb then
+								aObj:skinExpandButton{obj=btn.toggle, onSB=true}
+							end
+							aObj:checkTex(btn.toggle)
+						end
+					end)
+				end
+
+			elseif objType == "Window" then
+				obj.titletext:SetPoint("TOP", obj.frame, "TOP", 0, -6)
+				-- aObj:applySkin{obj=obj.frame, kfs=true}
+				-- if aObj.modBtns
+				-- and obj.closebutton
+				-- then
+				-- 	aObj:skinCloseButton{obj=obj.closebutton}
+				-- end
+				aObj:skinObject("frame", {obj=obj.frame, kfs=true, cb=true})
+
+			elseif objType == "Keybinding" then
+				-- aObj:applySkin{obj=obj.msgframe}
+				aObj:skinObject("frame", {obj=obj.msgframe})
+				if aObj.modBtns then
+					aObj:skinStdButton{obj=obj.button, as=true}
+				end
 
 			-- handle HybridScrollFrame child (created by HonorSpy [Classic])
 			elseif objType == "SimpleGroup" then
 				if obj.frame:GetNumChildren() == 2
 				and aObj:getChild(obj.frame, 2):IsObjectType("ScrollFrame") then
-					aObj:skinSlider{obj=aObj:getChild(obj.frame, 2).scrollBar, rt="artwork", wdth=-4}
+					-- aObj:skinSlider{obj=aObj:getChild(obj.frame, 2).scrollBar, rt="artwork", wdth=-4}
+					aObj:skinObject("slider", {obj=aObj:getChild(obj.frame, 2).scrollBar, rpTex="artwork"})
 				end
 
 			-- Snowflake objects (Producer AddOn)
+			elseif objType == "SnowflakeEditBox" then
+				aObj:skinEditBox{obj=obj.box, regs={9}, noHeight=true}
+
 			elseif objType == "SnowflakeGroup" then
 				aObj:applySkin{obj=obj.frame}
 				aObj:skinSlider{obj=obj.slider, size=2}
@@ -190,8 +204,6 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 					this.frame:SetBackdropColor(aObj.bClr:GetRGBA())
 					this.frame:SetBackdropBorderColor(aObj.bbClr:GetRGBA())
 				end)
-			elseif objType == "SnowflakeEditBox" then
-				aObj:skinEditBox{obj=obj.box, regs={9}, noHeight=true}
 
 			-- Producer objects
 			elseif objType == "ProducerHead" then
@@ -237,24 +249,28 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 					elseif objType == "RS_Markers" then
 						xOfs1, yOfs1, xOfs2, yOfs2 = 0, -18, 1, 0
 					end
-					aObj:skinDropDown{obj=obj.frame, ft="a", regs={2, 3, 4}, rp=true, x1=xOfs1, y1=yOfs1, x2=xOfs2, y2=yOfs2}
+					aObj:skinObject("dropdown", {obj=obj.frame, regions={2, 3, 4}, rp=true, x1=xOfs1, y1=yOfs1, x2=xOfs2, y2=yOfs2})
 					aObj:secureHook(obj, "SetDisabled", function(this, disabled)
 						aObj:checkDisabledDD(this.frame, disabled)
 					end)
-    			end
-
-			-- WeakAuras objects
-			elseif objType == "WeakAurasLoadedHeaderButton" then
-				obj.frame.background:SetTexture(nil)
-				if aObj.modBtns then
-					aObj:skinExpandButton{obj=obj.expand, onSB=true}
-					aObj:secureHook(obj.expand, "SetNormalTexture", function(this, nTex)
-						aObj:checkTex{obj=this, nTex=nTex}
+					aObj:secureHookScript(obj.frame.dropButton, "OnClick", function(this)
+						if obj.dropdown then
+							if not obj.dropdown.sf then
+								aObj:skinObject("slider", {obj=obj.dropdown.slider})
+								aObj:skinObject("frame", {obj=obj.dropdown, ofs=0})
+								_G.RaiseFrameLevel(obj.dropdown)
+							else
+								aObj:removeBackdrop(obj.dropdown)
+							end
+						end
 					end)
 				end
+
+			-- WeakAuras objects
 			elseif objType == "WeakAurasDisplayButton" then
-				aObj:skinEditBox{obj=obj.renamebox, regs={9}, noHeight=true}
-				obj.renamebox:SetHeight(18)
+				-- aObj:skinEditBox{obj=obj.renamebox, regs={9}, noHeight=true}
+				-- obj.renamebox:SetHeight(18)
+				aObj:skinObject("editbox", {obj=obj.renamebox})
 				obj.background:SetTexture(nil)
 				if aObj.modBtns then
 					aObj:skinExpandButton{obj=obj.expand, onSB=true}
@@ -271,6 +287,16 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 					end)
 					aObj:addButtonBorder{obj=obj.group, es=10, ofs=0}
 				end
+
+			elseif objType == "WeakAurasLoadedHeaderButton" then
+				obj.frame.background:SetTexture(nil)
+				if aObj.modBtns then
+					aObj:skinExpandButton{obj=obj.expand, onSB=true}
+					aObj:secureHook(obj.expand, "SetNormalTexture", function(this, nTex)
+						aObj:checkTex{obj=this, nTex=nTex}
+					end)
+				end
+
 			elseif objType == "WeakAurasNewButton" then
 				obj.background:SetTexture(nil)
 				if aObj.modBtnBs then
@@ -280,6 +306,7 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 						_G.RaiseFrameLevel(this.frame.sbb)
 					end)
 				end
+
 			elseif objType == "WeakAurasNewHeaderButton" then
 				obj.frame.background:SetTexture(nil)
 
@@ -287,43 +314,38 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 				aObj:skinAceDropdown(obj, nil, 1)
 
             -- TradeSkillMaster (TSM) objects
-            elseif objType == "TSMMainFrame" then
-                aObj:applySkin{obj=obj.frame}
-                aObj:getChild(obj.frame, 1):SetBackdrop(nil)
-				if aObj.modBtns then
-					aObj:skinStdButton{obj=aObj:getChild(obj.frame, 1), nc=true, ofs=2} -- close button
-				end
-                obj.sknrTSM = true
-            elseif objType == "TSMInlineGroup"
-            then
-                obj.HideBorder = _G.nop
-                obj.SetBackdrop = _G.nop
-                obj.border:Hide()
-                obj.titletext:ClearAllPoints()
-                obj.titletext:SetPoint("TOPLEFT", 10, -6)
-                obj.titletext:SetPoint("TOPRIGHT", -14, -6)
-                aObj:applySkin{obj=obj.frame}
-                obj.sknrTSM = true
-            elseif objType == "TSMTabGroup"
-            then
-                aObj:applySkin{obj=obj.content:GetParent()}
-                obj.sknrTSM = true
-            elseif objType == "TSMTreeGroup" then
-                aObj:applySkin{obj=obj.border}
-                aObj:applySkin{obj=obj.treeframe}
-                obj.sknrTSM = true
-            elseif objType == "TSMButton" then
-               obj.btn:SetBackdrop(nil)
+	        elseif objType == "TSMButton" then
+	           obj.btn:SetBackdrop(nil)
 				if aObj.modBtns then
 					aObj:skinStdButton{obj=obj.btn, as=true} -- just skin it otherwise text is hidden
 				end
+	             obj.sknrTSM = true
+
+ 			elseif objType == "TSMDropdown" then
+ 				aObj:skinAceDropdown(obj, 0, 0)
                  obj.sknrTSM = true
-            elseif objType == "TSMSelectionList" then
-                aObj:applySkin{obj=obj.leftFrame}
-                aObj:skinSlider{obj=obj.leftScrollFrame._scrollbar}
-                aObj:applySkin{obj=obj.rightFrame}
-                aObj:skinSlider{obj=obj.rightScrollFrame._scrollbar}
-                obj.sknrTSM = true
+
+ 			elseif objType == "TSMDropdown-Pullout" then
+ 				aObj:applySkin{obj=obj.frame}
+                 obj.sknrTSM = true
+
+			elseif objType == "TSMEditBox" then
+				if aObj.modBtns then
+					aObj:skinStdButton{obj=obj.button, as=true}
+				end
+				 obj.sknrTSM = true
+
+	        elseif objType == "TSMInlineGroup"
+	        then
+	            obj.HideBorder = _G.nop
+	            obj.SetBackdrop = _G.nop
+	            obj.border:Hide()
+	            obj.titletext:ClearAllPoints()
+	            obj.titletext:SetPoint("TOPLEFT", 10, -6)
+	            obj.titletext:SetPoint("TOPRIGHT", -14, -6)
+	            aObj:applySkin{obj=obj.frame}
+	            obj.sknrTSM = true
+
             elseif objType == "TSMMacroButton"
             or objType == "TSMFastDestroyButton"
             then
@@ -332,6 +354,36 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 					aObj:skinStdButton{obj=obj.frame}
 				end
                 obj.sknrTSM = true
+
+            elseif objType == "TSMMainFrame" then
+                aObj:applySkin{obj=obj.frame}
+                aObj:getChild(obj.frame, 1):SetBackdrop(nil)
+				if aObj.modBtns then
+					aObj:skinStdButton{obj=aObj:getChild(obj.frame, 1), nc=true, ofs=2} -- close button
+				end
+                obj.sknrTSM = true
+
+            elseif objType == "TSMScrollingTable" then
+				aObj:addSkinFrame{obj=obj.frame, ft="a", nb=true, ofs=2}
+                obj.sknrTSM = true
+
+            elseif objType == "TSMSelectionList" then
+                aObj:applySkin{obj=obj.leftFrame}
+                aObj:skinSlider{obj=obj.leftScrollFrame._scrollbar}
+                aObj:applySkin{obj=obj.rightFrame}
+                aObj:skinSlider{obj=obj.rightScrollFrame._scrollbar}
+                obj.sknrTSM = true
+
+            elseif objType == "TSMTabGroup"
+            then
+                aObj:applySkin{obj=obj.content:GetParent()}
+                obj.sknrTSM = true
+
+            elseif objType == "TSMTreeGroup" then
+                aObj:applySkin{obj=obj.border}
+                aObj:applySkin{obj=obj.treeframe}
+                obj.sknrTSM = true
+
             elseif objType == "TSMWindow" then
                 aObj:applySkin{obj=obj.frame, kfs=true}
                obj.titletext:SetPoint("TOP", obj.frame, "TOP", 0, -6)
@@ -339,20 +391,6 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 					aObj:skinCloseButton{obj=obj.closebutton}
 				end
                  obj.sknrTSM = true
-            elseif objType == "TSMEditBox" then
-				if aObj.modBtns then
-					aObj:skinStdButton{obj=obj.button, as=true}
-				end
-                obj.sknrTSM = true
-            elseif objType == "TSMScrollingTable" then
-				aObj:addSkinFrame{obj=obj.frame, ft="a", nb=true, ofs=2}
-                obj.sknrTSM = true
-			elseif objType == "TSMDropdown" then
-				aObj:skinAceDropdown(obj, 0, 0)
-                obj.sknrTSM = true
-			elseif objType == "TSMDropdown-Pullout" then
-				aObj:applySkin{obj=obj.frame}
-                obj.sknrTSM = true
 
 			-- AuctionMaster objects
 			elseif objType == "ScrollableSimpleHTML" then
@@ -403,9 +441,9 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 			elseif objType == "GMCGUIContainer" then
 				obj.frame.GarrCorners:DisableDrawLayer("BACKGROUND")
 				aObj:addSkinFrame{obj=obj.frame, ft="a", kfs=true, ofs=2, x2=1}
-				if aObj.modBtns then
-					aObj:skinCloseButton{obj=obj.frame.CloseButton}
-				end
+				-- if aObj.modBtns then
+				-- 	aObj:skinCloseButton{obj=obj.frame.CloseButton}
+				-- end
 
 			-- OrderHallCommander/ChampionCommander objects
 			elseif objType == "OHCGUIContainer"

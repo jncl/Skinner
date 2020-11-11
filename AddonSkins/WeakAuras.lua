@@ -48,6 +48,39 @@ aObj.addonsToSkin.WeakAuras = function(self) -- v 2.16.1/3.0.2
 	_G.WeakAuras.regionTypes["aurabar"].default.barColor = {c.r, c.g, c.b, c.a}
 	c = nil
 
+	-- hook this as frame is shown before it is fully setup
+	self:SecureHook(_G.WeakAuras.RealTimeProfilingWindow, "UpdateButtons", function(this)
+		-- barsFrame
+		-- statsFrame
+		self:skinObject("frame", {obj=this})
+		if self.modBtns then
+			self:skinCloseButton{obj=self:getChild(this.titleFrame, 1)}
+			self:moveObject{obj=self:getChild(this.titleFrame, 1), x=4}
+			self:skinOtherButton{obj=self:getChild(this.titleFrame, 2), font=self.fontS, text=self.updown--[[, y1=-6]]}
+			self:getChild(this.titleFrame, 2):SetSize(28, 28)
+			self:skinStdButton{obj=this.toggleButton}
+			self:skinStdButton{obj=this.reportButton}
+			self:skinStdButton{obj=this.combatButton}
+			self:skinStdButton{obj=this.encounterButton}
+		end
+
+		self:Unhook(this, "UpdateButtons")
+	end)
+
+	self:SecureHook(_G.WeakAuras, "PrintProfile", function(this)
+		self:skinObject("slider", {obj=_G.WADebugEditBox.ScrollFrame.ScrollBar})
+		_G.WADebugEditBox.Background:DisableDrawLayer("OVERLAY") -- titlebg
+		local close = self:getChild(_G.WADebugEditBox.Background, 2)
+		close:DisableDrawLayer("BACKGROUND")
+		self:skinObject("frame", {obj=_G.WADebugEditBox.Background, y1=4})
+		if self.modBtns then
+			self:skinCloseButton{obj=self:getChild(close, 1)}
+		end
+		close = nil
+
+		self:Unhook(this, "PrintProfile")
+	end)
+
 end
 
 aObj.lodAddons.WeakAurasOptions = function(self) -- v 2.16.1/3.0.2
@@ -62,23 +95,22 @@ aObj.lodAddons.WeakAurasOptions = function(self) -- v 2.16.1/3.0.2
 
 	local optFrame = _G.WeakAurasOptions
 	if optFrame then
-		-- hide spurious Gradient texture
-		optFrame.container.content:GetParent().tfade:Hide()
-		self:skinDropDown{obj=_G.WeakAuras_DropDownMenu}
-		self:skinEditBox{obj=optFrame.filterInput, regs={6}, mi=true}
-		-- make filter input box higher
-	    optFrame.filterInput:SetPoint("TOPLEFT", optFrame.buttonsContainer.frame, "TOPLEFT", 6, 8)
+		-- self:skinDropDown{obj=_G.WeakAuras_DropDownMenu}
+		self:skinObject("dropdown", {obj=_G.WeakAuras_DropDownMenu})
+		self:skinObject("editbox", {obj=optFrame.filterInput, si=true, ca=true})
 		self:moveObject{obj=self:getRegion(self:getChild(optFrame, 2), 1), y=-10} -- title text
 		optFrame.moversizer:SetBackdropBorderColor(self.bbClr:GetRGB())
-		self:addSkinFrame{obj=optFrame, ft="a", kfs=true, nb=true, ofs=-1, y1=5}
+		self:skinObject("frame", {obj=optFrame, kfs=true, ofs=-1, y1=5})
 		if self.modBtns then
 			local function skinBtn(id)
 				local frame = aObj:getChild(optFrame, id)
 				aObj:keepFontStrings(frame)
 				aObj:moveObject{obj=frame, x=23, y=id ~= 2 and 1 or 0}
-				if id == 1 then aObj:skinCloseButton{obj=aObj:getChild(frame, 1)} end
+				if id == 1 then
+					aObj:skinCloseButton{obj=aObj:getChild(frame, 1)}
+				end
 				if id == 5 then -- up-down arrow
-					aObj:skinOtherButton{obj=aObj:getChild(frame, 1), font=aObj.fontS, text=aObj.modUIBtns.updown}
+					aObj:skinOtherButton{obj=aObj:getChild(frame, 1), font=aObj.fontS, text=aObj.updown}
 					aObj:getChild(frame, 1):SetSize(28, 28)
 				end
 				frame = nil
@@ -87,6 +119,8 @@ aObj.lodAddons.WeakAurasOptions = function(self) -- v 2.16.1/3.0.2
 			skinBtn(5) -- minimize button frame
 			self:skinStdButton{obj=self:getLastChild(optFrame.importexport.frame)} -- close/done button
 		end
+		-- hide the frame skin around the RHS InlineGroup
+		optFrame.container.content:GetParent().sf:Hide()
 
 		local _, _, _, enabled, loadable = _G.GetAddOnInfo("WeakAurasTutorials")
     	if enabled
@@ -113,8 +147,8 @@ aObj.lodAddons.WeakAurasOptions = function(self) -- v 2.16.1/3.0.2
 	if eb
 	and eb:GetObjectType() == "EditBox"
 	then
-		self:skinEditBox{obj=eb, regs={6}} -- 6 is text
-		self:addSkinFrame{obj=tipPopup, ft="a", kfs=true, nb=true, ofs=0}
+		self:skinObject("editbox", {obj=eb})
+		self:skinObject("frame", {obj=tipPopup, kfs=true, ofs=0})
 	end
 	tipPopup, eb = nil, nil
 
