@@ -1300,7 +1300,6 @@ aObj.blizzLoDFrames[ftype].CharacterCustomize = function(self)
 
 		-- Options
 		self:SecureHook(this, "UpdateOptionButtons", function(this, _)
-			aObj:Debug("CharCustomizeFrame UpdateOptionButtons")
 			for btn in this.pools:GetPool("CharCustomizeShapeshiftFormButtonTemplate"):EnumerateActive() do
 				btn.Ring:SetTexture(nil)
 			end
@@ -1333,18 +1332,6 @@ aObj.blizzLoDFrames[ftype].CharacterCustomize = function(self)
 					end)
 				end
 			end
-			-- for frame in this.sliderPool:EnumerateActive() do
-			--
-			-- 	if self.modBtnBs then
-			-- 		self:addButtonBorder{obj=frame.IncrementButton, ofs=-2, x1=1, clr="gold"}
-			-- 		self:addButtonBorder{obj=frame.DecrementButton, ofs=-2, x1=1, clr="gold"}
-			-- 	end
-			-- end
-			-- for frame in this.pools:GetPool("CharCustomizeOptionCheckButtonTemplate"):EnumerateActive() do
-			-- 	if self.modChkBtns then
-			-- 		self:skinCheckButton{obj=frame.Button}
-			-- 	end
-			-- end
 		end)
 
 		-- SmallButtons
