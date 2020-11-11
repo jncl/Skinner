@@ -840,15 +840,11 @@ function module:OnEnable()
 	and not _G.IsAddOnLoaded("oGlow")
 	and not _G.IsAddOnLoaded("XLoot")
 	then
-		-- remove options
-		aObj.optTables["Modules"].args["Skinner_UIButtons"].args["Quality"].disabled = true
-		_G.LibStub:GetLibrary("AceConfigRegistry-3.0", true):NotifyChange(aName .. " Modules")
 		return
 	end
 
-	if db.Quality.file and db.Quality.file ~= "None" then
-		aObj.LSM:Register("border", aName .. " Quality Border", db.Quality.file)
-	end
+	_G.LibStub:GetLibrary("AceConfigRegistry-3.0", true):NotifyChange(aName .. " Modules")
+
 	-- setup default backdrop values (AdiBags, Fizzle, oGlow, XLoot)
 	self.bDrop = {
 		edgeFile = aObj.Backdrop[1].edgeFile,
@@ -860,6 +856,7 @@ function module:OnEnable()
 	if db.Quality.file
 	and db.Quality.file ~= "None"
 	then
+		self.LSM:Register("border", aName .. " Quality Border", db.Quality.file)
 		self.iqbDrop.edgeFile = aObj.LSM:Fetch("border", aName .. " Quality Border")
 	else
 		self.iqbDrop.edgeFile = aObj.LSM:Fetch("border", db.Quality.texture)
@@ -897,35 +894,43 @@ function module:GetOptions()
 				name = aObj.L["Check Buttons"],
 				desc = aObj.L["Toggle the skinning of the Check Buttons, reload required"],
 			},
-			Quality = {
-				type = "group",
-				order = 4,
-				inline = true,
-				name = aObj.L["Item Quality Border"],
-				disabled = false,
-				get = function(info) return db.Quality[info[#info]] end,
-				set = function(info, value) db.Quality[info[#info]] = value end,
-				args = {
-					file = {
-						type = "input",
-						order = 1,
-						width = "full",
-						name = aObj.L["Border Texture File"],
-						desc = aObj.L["Set Border Texture Filename"],
-					},
-					texture = _G._G.AceGUIWidgetLSMlists and {
-						type = "select",
-						order = 2,
-						width = "double",
-						name = aObj.L["Border Texture"],
-						desc = aObj.L["Choose the Texture for the Border"],
-						dialogControl = 'LSM30_Border',
-						values = _G._G.AceGUIWidgetLSMlists.border,
-					} or nil,
-				},
-			},
 		},
 	}
+
+	if _G.IsAddOnLoaded("AdiBags")
+	or _G.IsAddOnLoaded("Fizzle")
+	or _G.IsAddOnLoaded("oGlow")
+	or _G.IsAddOnLoaded("XLoot")
+	then
+		-- add Item Quality Border options
+		options.args.Quality = {
+			type = "group",
+			order = 4,
+			inline = true,
+			name = aObj.L["Item Quality Border"],
+			get = function(info) return db.Quality[info[#info]] end,
+			set = function(info, value) db.Quality[info[#info]] = value end,
+			args = {
+				file = {
+					type = "input",
+					order = 1,
+					width = "full",
+					name = aObj.L["Border Texture File"],
+					desc = aObj.L["Set Border Texture Filename"],
+				},
+				texture = _G._G.AceGUIWidgetLSMlists and {
+					type = "select",
+					order = 2,
+					width = "double",
+					name = aObj.L["Border Texture"],
+					desc = aObj.L["Choose the Texture for the Border"],
+					dialogControl = 'LSM30_Border',
+					values = _G._G.AceGUIWidgetLSMlists.border,
+				} or nil,
+			},
+		}
+	end
+
 	return options
 
 end
