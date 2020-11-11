@@ -641,23 +641,32 @@ aObj.blizzFrames[ftype].CharacterFrames = function(self)
 	if not self.prdb.CharacterFrames or self.initialized.CharacterFrames then return end
 	self.initialized.CharacterFrames = true
 
-	_G.CharacterStatsPane.ClassBackground:SetTexture(nil) -- other adddons reparent this (e.g. DejaCharacterStats)
-	_G.CharacterStatsPane.ItemLevelFrame.Background:SetTexture(nil)
-	_G.CharacterStatsPane.ItemLevelCategory:DisableDrawLayer("BACKGROUND")
-	_G.CharacterStatsPane.AttributesCategory:DisableDrawLayer("BACKGROUND")
-	_G.CharacterStatsPane.EnhancementsCategory:DisableDrawLayer("BACKGROUND")
-	self:SecureHook("PaperDollFrame_UpdateStats", function()
-		for statLine in _G.CharacterStatsPane.statsFramePool:EnumerateActive() do
-			statLine:DisableDrawLayer("BACKGROUND")
-		end
-	end)
-	_G.PaperDollFrame_UpdateStats()
-
 	self:SecureHookScript(_G.CharacterFrame, "OnShow", function(this)
-		self:skinObject(self.skinTPLs.new("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=true}))
-		self:removeInset(_G.CharacterFrameInsetRight)
+		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=true})
+		self:removeInset(this.InsetRight)
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, x1=-5, y2=-5}
-		-- Sidebar Tabs
+
+		self:Unhook(this, "OnShow")
+	end)
+
+	-- other adddons reparent this (e.g. DejaCharacterStats)
+	self:SecureHookScript(_G.CharacterStatsPane, "OnShow", function(this)
+		this.ClassBackground:SetTexture(nil)
+		this.ItemLevelFrame.Background:SetTexture(nil)
+		this.ItemLevelCategory:DisableDrawLayer("BACKGROUND")
+		this.AttributesCategory:DisableDrawLayer("BACKGROUND")
+		this.EnhancementsCategory:DisableDrawLayer("BACKGROUND")
+		self:SecureHook("PaperDollFrame_UpdateStats", function()
+			for statLine in _G.CharacterStatsPane.statsFramePool:EnumerateActive() do
+				statLine:DisableDrawLayer("BACKGROUND")
+			end
+		end)
+		_G.PaperDollFrame_UpdateStats()
+
+		self:Unhook(this, "OnShow")
+	end)
+
+	self:SecureHookScript(_G.PaperDollFrame, "OnShow", function(this)
 		_G.PaperDollSidebarTabs.DecorLeft:SetAlpha(0)
 		_G.PaperDollSidebarTabs.DecorRight:SetAlpha(0)
 		for i = 1, #_G.PAPERDOLL_SIDEBARS do
@@ -762,24 +771,6 @@ aObj.blizzFrames[ftype].CharacterFrames = function(self)
 		self:Unhook(this, "OnShow")
 	end)
 
-	self:SecureHookScript(_G.TokenFrame, "OnShow", function(this) -- a.k.a Currency Tab
-		self:keepFontStrings(this)
-		self:skinSlider{obj=_G.TokenFrameContainerScrollBar, wdth=-4}
-		-- remove background & header textures
-		for i = 1, #_G.TokenFrameContainer.buttons do
-			self:removeRegions(_G.TokenFrameContainer.buttons[i], {1, 6, 7, 8})
-		end
-		-- TokenFramePopup
-		_G.TokenFramePopup.Border:DisableDrawLayer("BACKGROUND")
-		self:addSkinFrame{obj=_G.TokenFramePopup,ft=ftype, kfs=true, y1=-6, x2=-6, y2=6}
-		if self.modChkBtns then
-			self:skinCheckButton{obj=_G.TokenFramePopupInactiveCheckBox}
-			self:skinCheckButton{obj=_G.TokenFramePopupBackpackCheckBox}
-		end
-
-		self:Unhook(_G.TokenFrame, "OnShow")
-	end)
-
 	self:SecureHookScript(_G.ReputationFrame, "OnShow", function(this)
 		self:keepFontStrings(this)
 		for i = 1, _G.NUM_FACTIONS_DISPLAYED do
@@ -814,6 +805,25 @@ aObj.blizzFrames[ftype].CharacterFrames = function(self)
 		self:Unhook(this, "OnShow")
 	end)
 	self:checkShown(_G.ReputationFrame)
+
+	 -- Currency Tab
+	self:SecureHookScript(_G.TokenFrame, "OnShow", function(this)
+		self:keepFontStrings(this)
+		self:skinSlider{obj=_G.TokenFrameContainerScrollBar, wdth=-4}
+		-- remove background & header textures
+		for i = 1, #_G.TokenFrameContainer.buttons do
+			self:removeRegions(_G.TokenFrameContainer.buttons[i], {1, 6, 7, 8})
+		end
+		-- TokenFramePopup
+		_G.TokenFramePopup.Border:DisableDrawLayer("BACKGROUND")
+		self:addSkinFrame{obj=_G.TokenFramePopup,ft=ftype, kfs=true, y1=-6, x2=-6, y2=6}
+		if self.modChkBtns then
+			self:skinCheckButton{obj=_G.TokenFramePopupInactiveCheckBox}
+			self:skinCheckButton{obj=_G.TokenFramePopupBackpackCheckBox}
+		end
+
+		self:Unhook(_G.TokenFrame, "OnShow")
+	end)
 
 end
 
