@@ -947,9 +947,27 @@ aObj.blizzLoDFrames[ftype].BindingUI = function(self)
 		self:skinSlider{obj=this.scrollFrame.ScrollBar, rt={"background", "border"}}
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, hdr=true}
 		if self.modBtns then
-			for i = 1, #this.keyBindingRows do
-				self:skinStdButton{obj=this.keyBindingRows[i].key1Button}
-				self:skinStdButton{obj=this.keyBindingRows[i].key2Button}
+			for _, row in _G.pairs(this.keyBindingRows) do
+				self:skinStdButton{obj=row.key1Button}
+				self:skinStdButton{obj=row.key2Button}
+				row.key1Button.sb:SetAlpha(row.key1Button:GetAlpha())
+				row.key2Button.sb:SetAlpha(row.key2Button:GetAlpha())
+				if not aObj.isClsc then
+					self:SecureHook(row, "Update", function(this)
+						self:clrBtnBdr(this.key2Button)
+						this.key1Button.sb:SetAlpha(this.key1Button:GetAlpha())
+						this.key2Button.sb:SetAlpha(this.key2Button:GetAlpha())
+					end)
+				end
+			end
+			if self.isClsc then
+				self:SecureHook("KeyBindingFrame_Update", function()
+					for _, row in _G.pairs(_G.KeyBindingFrame.keyBindingRows) do
+						self:clrBtnBdr(row.key2Button)
+						row.key1Button.sb:SetAlpha(row.key1Button:GetAlpha())
+						row.key2Button.sb:SetAlpha(row.key2Button:GetAlpha())
+					end
+				end)
 			end
 			self:skinStdButton{obj=this.unbindButton}
 			self:skinStdButton{obj=this.okayButton}
