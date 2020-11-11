@@ -2139,14 +2139,18 @@ aObj.blizzFrames[ftype].ExtraAbilityContainer = function(self)
 		skinBtn(_G.ExtraActionBarFrame.button, true)
 	end
 	if self.prdb.ZoneAbility then
+		local function getAbilities(frame)
+			for btn in frame.SpellButtonContainer:EnumerateActive() do
+				skinBtn(btn)
+			end
+		end
 		self:SecureHook(_G.ZoneAbilityFrame, "UpdateDisplayedZoneAbilities", function(this)
 			this.Style:SetAlpha(0)
+			getAbilities(this)
 		end)
-		for btn in _G.ZoneAbilityFrame.SpellButtonContainer:EnumerateActive() do
-			skinBtn(btn)
-		end
 		if _G.ZoneAbilityFrame:IsShown() then
-			_G.ZoneAbilityFrame:UpdateDisplayedZoneAbilities()
+			_G.ZoneAbilityFrame.Style:SetAlpha(0)
+			getAbilities(_G.ZoneAbilityFrame)
 		end
 	end
 
