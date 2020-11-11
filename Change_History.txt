@@ -1,3 +1,38 @@
+beta9.36497.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Updated PTRFeedback options and Classic Support
+	Bugfix for backdrop removal code
+	Updated Azeroth Auto Pilot skin
+	Code Readability changes
+	Added missing object checks to UIButtons skinning code
+	Updated addSkinFrame skinning code
+	Updated ItemInteractionUI skin
+	Updated BlackMarketUI skin
+	Updated BankFrame skin
+	Updated AzeriteRespecUI skin
+	Updated Button colour code in CommunitiesUI skin
+	Updated Button colour code in Collections skin
+	Updated CharacterFrames skin
+	Updated AchievevmentUI skin
+	Updated MenuFrames skin
+	Updated ChatConfigFrame skin
+	Updated GarrisonMissionList skin
+	Beta changes
+	Updated FriendsFrame skin in Classic Support
+	Updated CharacterFrame skin in ClassicSupport
+	Reworked Tab skinning code
+	Updated changeTandC skinning code
+	Updated DropDown skinning code
+	Bugfix for teKKonfig libraries
+	Updated skinExpandButton skinning code
+	Updated removeRegions skininng code
+	Updated GlowBox skinning code
+	Updated Ace3, ChanpionCommander, MinimalArchaeology & Sorted skins
+	Skinned mOnArs_WardrobeHelper
+
 beta9.36401.4
 Jncl:
 	ToDo.txt
