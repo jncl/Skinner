@@ -5911,10 +5911,10 @@ aObj.blizzFrames[ftype].SystemOptions = function(self)
 	self:SecureHookScript(_G.VideoOptionsFrame, "OnShow", function(this)
 		self:removeNineSlice(this.Border)
 		-- Main panel
-		self:addSkinFrame{obj=_G.VideoOptionsFrameCategoryFrame, ft=ftype, kfs=true} -- LHS panel
-		self:skinSlider(_G.VideoOptionsFrameCategoryFrameListScrollBar)
-		self:addSkinFrame{obj=_G.VideoOptionsFramePanelContainer, ft=ftype} -- RHS Panel
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, hdr=true}
+		self:skinObject("frame", {obj=_G.VideoOptionsFrameCategoryFrame, fType=ftype, fb=true})
+		self:skinObject("slider", {obj=_G.VideoOptionsFrameCategoryFrameListScrollBar, fType=ftype, x1=4, x2=-5})
+		self:skinObject("frame", {obj=_G.VideoOptionsFramePanelContainer, fType=ftype, fb=true})
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true})
 		if self.modBtns then
 			self:skinStdButton{obj=_G.VideoOptionsFrameApply}
 			self:skinStdButton{obj=_G.VideoOptionsFrameCancel}
@@ -5932,8 +5932,8 @@ aObj.blizzFrames[ftype].SystemOptions = function(self)
 		end
 		-- Graphics
 		skinKids(_G.Display_)
-		self:addSkinFrame{obj=_G.Display_, ft=ftype} -- RHS Top Panel
-		self:skinObject(self.skinTPLs.new("tabs", {obj=_G.Display_, names={_G.GraphicsButton, _G.RaidButton}, fType=ftype, ignoreSize=true, upwards=true, offsets={x1=4, y1=0, x2=0, y2=-4}, track=false}))
+		self:skinObject("frame", {obj=_G.Display_, fType=ftype, fb=true})
+		self:skinObject("tabs", {obj=_G.Display_, tabs={_G.GraphicsButton, _G.RaidButton}, fType=ftype, ignoreSize=true, upwards=true, offsets={x1=4, y1=0, x2=0, y2=-4}, track=false})
 		if self.isTT then
 			self:SecureHook("GraphicsOptions_SelectBase", function()
 				self:setActiveTab(_G.GraphicsButton.sf)
@@ -5947,13 +5947,13 @@ aObj.blizzFrames[ftype].SystemOptions = function(self)
 			end)
 		end
 		skinKids(_G.Graphics_)
-		self:addSkinFrame{obj=_G.Graphics_, ft=ftype} -- RHS Bottom Panel (Base Settings)
+		self:skinObject("frame", {obj=_G.Graphics_, fType=ftype, fb=true})
 		skinKids(_G.RaidGraphics_)
-		self:addSkinFrame{obj=_G.RaidGraphics_, ft=ftype} -- RHS Bottom Panel (Raid and Battleground)
+		self:skinObject("frame", {obj=_G.RaidGraphics_, fType=ftype, fb=true})
 
 		self:Unhook(this, "OnShow")
 	end)
-	if aObj.isClsc then
+	if self.isClsc then
 		self:SecureHook("VideoOptionsDropDownMenu_DisableDropDown", function(dropDown)
 			self:checkDisabledDD(dropDown)
 		end)
@@ -5990,10 +5990,9 @@ aObj.blizzFrames[ftype].SystemOptions = function(self)
 	-- Sound
 	self:SecureHookScript(_G.AudioOptionsSoundPanel, "OnShow", function(this)
 		skinKids(this)
-		self:addSkinFrame{obj=_G.AudioOptionsSoundPanel, ft=ftype}
-		self:addSkinFrame{obj=_G.AudioOptionsSoundPanelPlayback, ft=ftype}
-		self:addSkinFrame{obj=_G.AudioOptionsSoundPanelHardware, ft=ftype}
-		self:addSkinFrame{obj=_G.AudioOptionsSoundPanelVolume, ft=ftype}
+		self:skinObject("frame", {obj=_G.AudioOptionsSoundPanelPlayback, fType=ftype, fb=true})
+		self:skinObject("frame", {obj=_G.AudioOptionsSoundPanelHardware, fType=ftype, fb=true})
+		self:skinObject("frame", {obj=_G.AudioOptionsSoundPanelVolume, fType=ftype, fb=true})
 
 		self:Unhook(this, "OnShow")
 	end)
@@ -6002,8 +6001,7 @@ aObj.blizzFrames[ftype].SystemOptions = function(self)
 		self.iofBtn[this.PushToTalkKeybindButton] = true
 		skinKids(this)
 		this.TestInputDevice.ToggleTest:DisableDrawLayer("BACKGROUND")
-		self:addFrameBorder{obj=this.TestInputDevice.VUMeter, ft=ftype}
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true}
+		self:skinObject("frame", {obj=this.TestInputDevice.VUMeter, fType=ftype, fb=true})
 		if self.modBtnBs then
 			self:addButtonBorder{obj=this.TestInputDevice.ToggleTest, ofs=0, y2=-2}
 			self:skinStdButton{obj=this.PushToTalkKeybindButton, ofs=0}
