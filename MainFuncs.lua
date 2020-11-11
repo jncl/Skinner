@@ -2,6 +2,49 @@ local _, aObj = ...
 
 local _G = _G
 
+local function applyTexture(obj)
+	obj.tbg = obj:CreateTexture(nil, "BORDER")
+	obj.tbg:SetTexture(aObj.LSM:Fetch("background", aObj.bgTexName), true) -- have to use true for tiling to work
+	obj.tbg:SetBlendMode("ADD") -- use existing frame alpha setting
+	-- allow for border inset
+	obj.tbg:SetPoint("TOPLEFT", obj, "TOPLEFT", aObj.prdb.BdInset, -aObj.prdb.BdInset)
+	obj.tbg:SetPoint("BOTTOMRIGHT", obj, "BOTTOMRIGHT", -aObj.prdb.BdInset, aObj.prdb.BdInset)
+	-- the texture will be stretched if the following tiling methods are set to false
+	obj.tbg:SetHorizTile(aObj.prdb.BgTile)
+	obj.tbg:SetVertTile(aObj.prdb.BgTile)
+end
+local hOfs = -7
+local function hideHeader(obj)
+	local hAdj, hObj = false
+	-- move the Header texture, if required
+	for _, suff in _G.pairs{"Header", "_Header", "_HeaderBox", "_FrameHeader", "FrameHeader", "HeaderTexture", "HeaderFrame"} do
+		hObj = _G[obj:GetName() .. suff]
+		if hObj then
+			hObj:SetPoint("TOP", obj, "TOP", 0, 7)
+			hAdj = true
+			if aObj:hasTextInTexture(hObj, "UI-DialogBox-Header") then
+				hObj:SetTexture(nil)
+			end
+			break
+		end
+	end
+	if obj.header then -- Classic
+		obj.header:DisableDrawLayer("BACKGROUND")
+		obj.header:DisableDrawLayer("BORDER")
+		if obj.header.text
+		then
+			aObj:moveObject{obj=obj.header.text, y=hAdj and 0 or hOfs}
+		else
+			aObj:moveObject{obj=aObj:getRegion(obj.header, obj.header:GetNumRegions()), y=hAdj and 0 or hOfs}
+		end
+	end
+	if obj.Header then
+		aObj:removeRegions(obj.Header, {1, 2, 3})
+		aObj:moveObject{obj=obj.Header.Text, y=hAdj and 0 or hOfs}
+	end
+	hAdj = nil
+end
+
 local function __addSkinButton(opts)
 --[[
 	Calling parameters:
@@ -147,40 +190,6 @@ function aObj:addSkinButton(...)
 	end
 	-- new style call
 	return __addSkinButton(opts)
-
-end
-
-local hOfs = -7
-local function hideHeader(obj)
-
-	local hAdj, hObj = false
-	-- move the Header texture, if required
-	for _, suff in _G.pairs{"Header", "_Header", "_HeaderBox", "_FrameHeader", "FrameHeader", "HeaderTexture", "HeaderFrame"} do
-		hObj = _G[obj:GetName() .. suff]
-		if hObj then
-			hObj:SetPoint("TOP", obj, "TOP", 0, 7)
-			hAdj = true
-			if aObj:hasTextInTexture(hObj, "UI-DialogBox-Header", 1) then
-				hObj:SetTexture(nil)
-			end
-			break
-		end
-	end
-	if obj.header then -- Classic
-		obj.header:DisableDrawLayer("BACKGROUND")
-		obj.header:DisableDrawLayer("BORDER")
-		if obj.header.text
-		then
-			aObj:moveObject{obj=obj.header.text, y=hAdj and 0 or hOfs}
-		else
-			aObj:moveObject{obj=aObj:getRegion(obj.header, obj.header:GetNumRegions()), y=hAdj and 0 or hOfs}
-		end
-	end
-	if obj.Header then
-		aObj:removeRegions(obj.Header, {1, 2, 3})
-		aObj:moveObject{obj=obj.Header.Text, y=hAdj and 0 or hOfs}
-	end
-	hAdj = nil
 
 end
 
@@ -426,20 +435,6 @@ function aObj:applyGradient(obj, fh, invert, rotate)
 			obj.tfade:SetPoint("BOTTOMRIGHT", obj, "BOTTOMRIGHT", -4, 4)
 		end
 	end
-
-end
-
-function aObj:applyTexture(obj)
-
-	obj.tbg = obj:CreateTexture(nil, "BORDER")
-	obj.tbg:SetTexture(self.LSM:Fetch("background", self.bgTexName), true) -- have to use true for tiling to work
-	obj.tbg:SetBlendMode("ADD") -- use existing frame alpha setting
-	-- allow for border inset
-	obj.tbg:SetPoint("TOPLEFT", obj, "TOPLEFT", self.prdb.BdInset, -self.prdb.BdInset)
-	obj.tbg:SetPoint("BOTTOMRIGHT", obj, "BOTTOMRIGHT", -self.prdb.BdInset, self.prdb.BdInset)
-	-- the texture will be stretched if the following tiling methods are set to false
-	obj.tbg:SetHorizTile(self.prdb.BgTile)
-	obj.tbg:SetVertTile(self.prdb.BgTile)
 
 end
 
@@ -768,7 +763,7 @@ local function __skinEditBox(opts)
 			aObj:moveObject{obj=_G[opts.obj:GetName() .. "SearchIcon"], x=xOfs} -- e.g. TradeSkillFrameSearchBox
 		else -- e.g. WeakAurasFilterInput
 			for _, reg in _G.ipairs{opts.obj:GetRegions()} do
-				if aObj:hasTextInTexture(reg, "UI-Searchbox-Icon", true) then
+				if aObj:hasTextInTexture(reg, "UI-Searchbox-Icon") then
 					aObj:moveObject{obj=reg, x=xOfs}
 				end
 			end
