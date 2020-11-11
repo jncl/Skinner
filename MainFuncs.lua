@@ -2,17 +2,6 @@ local _, aObj = ...
 
 local _G = _G
 
-local function applyTexture(obj)
-	obj.tbg = obj:CreateTexture(nil, "BORDER")
-	obj.tbg:SetTexture(aObj.LSM:Fetch("background", aObj.bgTexName), true) -- have to use true for tiling to work
-	obj.tbg:SetBlendMode("ADD") -- use existing frame alpha setting
-	-- allow for border inset
-	obj.tbg:SetPoint("TOPLEFT", obj, "TOPLEFT", aObj.prdb.BdInset, -aObj.prdb.BdInset)
-	obj.tbg:SetPoint("BOTTOMRIGHT", obj, "BOTTOMRIGHT", -aObj.prdb.BdInset, aObj.prdb.BdInset)
-	-- the texture will be stretched if the following tiling methods are set to false
-	obj.tbg:SetHorizTile(aObj.prdb.BgTile)
-	obj.tbg:SetVertTile(aObj.prdb.BgTile)
-end
 local hOfs = -7
 local function hideHeader(obj)
 	local hAdj, hObj = false
@@ -502,7 +491,17 @@ local function __applySkin(opts)
 	-- fix for backdrop textures not tiling vertically
 	-- using info from here: http://boss.wowinterface.com/forums/showthread.php?p=185868
 	if aObj.prdb.BgUseTex then
-		if not opts.obj.tbg then aObj:applyTexture(opts.obj) end
+		if not opts.obj.tbg then
+			opts.obj.tbg = opts.obj:CreateTexture(nil, "BORDER")
+			opts.obj.tbg:SetTexture(aObj.LSM:Fetch("background", aObj.bgTexName), true) -- have to use true for tiling to work
+			opts.obj.tbg:SetBlendMode("ADD") -- use existing frame alpha setting
+			-- allow for border inset
+			opts.obj.tbg:SetPoint("TOPLEFT", opts.obj, "TOPLEFT", aObj.prdb.BdInset, -aObj.prdb.BdInset)
+			opts.obj.tbg:SetPoint("BOTTOMRIGHT", opts.obj, "BOTTOMRIGHT", -aObj.prdb.BdInset, aObj.prdb.BdInset)
+			-- the texture will be stretched if the following tiling methods are set to false
+			opts.obj.tbg:SetHorizTile(aObj.prdb.BgTile)
+			opts.obj.tbg:SetVertTile(aObj.prdb.BgTile)
+		end
 	elseif opts.obj.tbg then
 		opts.obj.tbg = nil -- remove background texture if it exists
 	end
