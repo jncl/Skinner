@@ -48,8 +48,7 @@ local function makeText(fStr, ...)
 
 end
 
-local function revTable(curTab)
-
+local function getKeys(curTab)
 	if not curTab then return end
 
     local tmpTab = {}
@@ -824,13 +823,9 @@ function aObj:keepRegions(obj, regions)
 	_G.assert(obj, "Missing object kR\n" .. _G.debugstack(2, 3, 2))
 --@end-alpha@
 
-	local regions = revTable(regions)
-
+	local regKeys = getKeys(regions) or {}
 	for i, reg in _G.ipairs{obj:GetRegions()} do
-		-- if we have a list, hide the regions not in that list
-		if regions
-		and not regions[i]
-		then
+		if not regKeys[i] then
 			reg:SetAlpha(0)
 --@debug@
 			if reg:IsObjectType("FontString") then
@@ -840,6 +835,7 @@ function aObj:keepRegions(obj, regions)
 --@end-debug@
 		end
 	end
+	regKeys = nil
 
 end
 
@@ -1053,16 +1049,14 @@ end
 
 function aObj:removeRegions(obj, regions, rmTex)
 --@alpha@
-	_G.assert(obj, "Missing object rR\n" .. _G.debugstack(2, 3, 2))
+	_G.assert(obj, "Missing object (removeRegions)\n" .. _G.debugstack(2, 3, 2))
 --@end-alpha@
 
-	local regions = revTable(regions)
-
-	for i, reg in _G.ipairs{obj:GetRegions()} do
-		if not regions
-		or regions
-		and regions[i]
-		then
+	local regKeys = getKeys(regions) or {}
+	-- use an array of regions as the function may remove them as it goes and cause a stack overflow
+	local objRegs = {obj:GetRegions()}
+	for key, reg in _G.pairs(objRegs) do
+		if regKeys[key] then
 			if not rmTex then
 				reg:SetAlpha(0)
 			else
@@ -1072,12 +1066,13 @@ function aObj:removeRegions(obj, regions, rmTex)
 			end
 --@debug@
 			if reg:IsObjectType("FontString") then
-				aObj:Debug("rr FS: [%s, %s]", obj, i)
-				aObj:Print(_G.debugstack(1, 5, 2))
+				self:Debug("rr FS: [%s, %s]", obj, key)
+				self:Print(_G.debugstack(1, 5, 2))
 			end
 --@end-debug@
 		end
 	end
+	regKeys, objRegs = nil, nil
 
 end
 
@@ -1127,7 +1122,7 @@ end
 
 function aObj:rmRegionsTex(obj, regions)
 --@alpha@
-	aObj:CustomPrint(1, 0, 0, "Using deprecated function - rmRegionsTex, use removeRegions(obj, regions, true) instead", opts.obj)
+	aObj:CustomPrint(1, 0, 0, "Using deprecated function - rmRegionsTex, use removeRegions(obj, regions, true) instead", obj)
 --@end-alpha@
 
 	self:removeRegions(obj, regions, true)
