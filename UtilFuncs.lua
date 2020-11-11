@@ -711,13 +711,13 @@ function aObj:hasAnyTextInName(obj, tab)
 
 end
 
-function aObj:hasTextInTexture(obj, text, plain)
+function aObj:hasTextInTexture(obj, text)
 --@alpha@
 	-- _G.assert(obj, "Unknown object hasTextInTexture\n" .. _G.debugstack(2, 3, 2)) -- N.B. allow for missing texture object
 	_G.assert(text, "Missing value hasTextInTexture\n" .. _G.debugstack(2, 3, 2))
 --@end-alpha@
 
-	return obj and obj.GetTexture and obj:GetTexture() and _G.tostring(obj:GetTexture()):find(text, 1, plain) and true or false
+	return obj and obj.GetTexture and obj:GetTexture() and _G.tostring(obj:GetTexture()):find(text, 1) and true or false
 
 end
 

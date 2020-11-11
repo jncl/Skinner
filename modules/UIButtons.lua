@@ -193,7 +193,7 @@ function module:isButton(obj)
 		-- MasterPlan LootFrame is 28 high
 		elseif obj:GetParent().CloseButton == obj
 		or oH == oW and (nR >= 3 or nR <= 5) and (oH == 32 or oH == 24 or oH == 28)
-		and (aObj:hasTextInName(obj, "Close") or aObj:hasTextInTexture(obj:GetNormalTexture(), "UI-Panel-MinimizeButton-Up", true))
+		and (aObj:hasTextInName(obj, "Close") or aObj:hasTextInTexture(obj:GetNormalTexture(), "UI-Panel-MinimizeButton-Up"))
 		then
 			bType = "close"
 		elseif (obj.Left and obj.Right and obj.Middle and nR == 5) -- based upon UIPanelButtonTemplate
@@ -772,7 +772,7 @@ local function __skinCheckButton(opts)
 	end
 
 	-- check to see if a 'real' CheckButton
-	if not aObj:hasTextInTexture(opts.obj:GetNormalTexture(), "CheckBox", true) then return end
+	if not aObj:hasTextInTexture(opts.obj:GetNormalTexture(), "CheckBox") then return end
 
 	opts.obj:GetNormalTexture():SetTexture(nil)
 	opts.obj:GetPushedTexture():SetTexture(nil)
