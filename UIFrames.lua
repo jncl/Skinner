@@ -1497,11 +1497,11 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 				tab.sf:Show()
 			end
 		end
-		local tabSkin = self.skinTPLs.new("tabs", {obj=this.ChatTabManager, fType=ftype, names={}, ignoreSize=true, offsets={x1=0, y1=-6, x2=0, y2=-4}, regions={11}, noCheck=true, func=setTabState})
+		local tabSkin = self.skinTPLs.new("tabs", {obj=this.ChatTabManager, tabs={}, ignoreSize=true, offsets={x1=0, y1=-6, x2=0, y2=-4}, regions={11}, noCheck=true, func=setTabState})
 		local function skinTabs(ctm)
 			_G.wipe(tabSkin.names)
 			for tab in ctm.tabPool:EnumerateActive() do
-				aObj:add2Table(tabSkin.names, tab)
+				aObj:add2Table(tabSkin.tabs, tab)
 			end
 			aObj:skinObject(tabSkin)
 		end
@@ -1675,7 +1675,7 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 			self:skinCheckButton{obj=_G.CombatConfigSettingsParty}
 			self:skinCheckButton{obj=_G.CombatConfigSettingsRaid}
 		end
-		self:skinObject(self.skinTPLs.new("tabs", {obj=_G.ChatConfigCombatSettings, prefix="CombatConfig", numTabs=#_G.COMBAT_CONFIG_TABS, ignoreSize=true, lod=true, offsets={x1=0, y1=-8, x2=-2, y2=-4}, regions={4, 5}, track=false}))
+		self:skinObject("tabs", {obj=_G.ChatConfigCombatSettings, prefix="CombatConfig", numTabs=#_G.COMBAT_CONFIG_TABS, ignoreSize=true, lod=true, offsets={x1=0, y1=-8, x2=-2, y2=-4}, regions={4, 5}, track=false})
 		if self.isTT then
 			self:SecureHook("ChatConfig_UpdateCombatTabs", function(selectedTabID)
 				local tab
@@ -2452,7 +2452,7 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 		this.BorderFrame.GarrCorners:DisableDrawLayer("BACKGROUND")
 		self:skinCloseButton{obj=this.BorderFrame.CloseButton2}
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, x1=2, y1=2, x2=1, y2=-5}
-		self:skinObject(self.skinTPLs.new("tabs", {obj=this, prefix=this:GetName(), fType=ftype, ignoreSize=true, lod=true, offsets={x1=9, y1=2, x2=-9, y2=0}, regions={7, 8, 9, 10}}))
+		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, ignoreSize=true, lod=true, offsets={x1=9, y1=2, x2=-9, y2=0}, regions={7, 8, 9, 10}})
 
 		self:SecureHookScript(this.FollowerList, "OnShow", function(this)
 			skinFollowerList(this)
@@ -2507,7 +2507,7 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 	self:SecureHookScript(_G.GarrisonLandingPage, "OnShow", function(this)
 		this:DisableDrawLayer("BACKGROUND")
 		this.HeaderBar:SetTexture(nil)
-		self:skinObject(self.skinTPLs.new("tabs", {obj=this, prefix=this:GetName(), fType=ftype, ignoreSize=true, lod=true, offsets={x1=4, y1=-10, x2=-4, y2=-3}, regions={7, 8, 9, 10}}))
+		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, ignoreSize=true, lod=true, offsets={x1=4, y1=-10, x2=-4, y2=-3}, regions={7, 8, 9, 10}})
 		aObj:addSkinFrame{obj=this, ft=ftype, ofs=-6, y1=-13, x2=-13, y2=4}
 		-- ReportTab
 		self:SecureHookScript(this.Report, "OnShow", function(this)
@@ -2526,7 +2526,7 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 			end
 			btn = nil
 			self:addFrameBorder{obj=this.List, ft=ftype, ofs=5}
-			self:skinObject(self.skinTPLs.new("tabs", {obj=this, names={this.InProgress, this.Available}, fType=ftype, ignoreSize=true, lod=true, offsets={x1=4, y1=-2, x2=-4, y2=-4}, regions={3}, track=false, func=function(tab) tab:GetNormalTexture():SetAlpha(0) _G.RaiseFrameLevelByTwo(tab) end}))
+			self:skinObject("tabs", {obj=this, tabs={this.InProgress, this.Available}, fType=ftype, ignoreSize=true, lod=true, offsets={x1=4, y1=-2, x2=-4, y2=-4}, regions={3}, track=false, func=function(tab) tab:GetNormalTexture():SetAlpha(0) _G.RaiseFrameLevelByTwo(tab) end})
 			if self.isTT then
 				self:SecureHook("GarrisonLandingPageReport_SetTab", function(this)
 					self:setActiveTab(_G.GarrisonLandingPage.Report.selectedTab.sf)
@@ -3061,7 +3061,7 @@ aObj.blizzLoDFrames[ftype].GuildBankUI = function(self)
 		end
 		self:skinEditBox{obj=_G.GuildItemSearchBox, regs={6, 7}, mi=true, noHeight=true, noMove=true} -- 6 is text, 7 is icon
 		_G.GuildBankMoneyFrameBackground:DisableDrawLayer("BACKGROUND")
-		self:skinObject(self.skinTPLs.new("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=true}))
+		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=true})
 		-- Tabs (side)
 		for i = 1, _G.MAX_GUILDBANK_TABS do
 			_G["GuildBankTab" .. i]:DisableDrawLayer("BACKGROUND")
@@ -3251,13 +3251,15 @@ function checkChild(child)
 	cName = child:GetName()
 	if aObj:isDropDown(child) then
 		-- apply specific adjustment if required
-		aObj:skinDropDown{obj=child, x2=aObj.iofDD[cName] or nil}
+		aObj:skinObject("dropdown", {obj=child, fType=ftype, x2=aObj.iofDD[cName]})
+		child.Text:SetAlpha(1)
+		child.Icon:SetAlpha(1)
 	elseif child:IsObjectType("Slider") then
-		aObj:skinSlider{obj=child, hgt=_G.Round(child:GetHeight()) == 22 and -7 or -2}
+		aObj:skinObject("slider", {obj=child, fType=ftype})
 	elseif child:IsObjectType("CheckButton") then
 		aObj:skinCheckButton{obj=child, hf=true} -- handle hide/show
 	elseif child:IsObjectType("EditBox") then
-		aObj:skinEditBox{obj=child, regs={6}} -- 6 is text
+		aObj:skinObject("editbox", {obj=child, fType=ftype})
 	elseif child:IsObjectType("Button")
 	and not aObj.iofBtn[child]
 	then
@@ -3279,8 +3281,8 @@ aObj.blizzFrames[ftype].InterfaceOptions = function(self)
 	-- Interface
 	self:SecureHookScript(_G.InterfaceOptionsFrame, "OnShow", function(this)
 		self:removeNineSlice(this.Border)
-		self:skinObject(self.skinTPLs.new("tabs", {obj=this, prefix=this:GetName(), fType=ftype, ignoreSize=true, lod=true, upwards=true, offsets={x1=6, y1=2, x2=-6, y2=-3}}))
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, hdr=true}
+		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, ignoreSize=true, lod=true, upwards=true, offsets={x1=6, y1=2, x2=-6, y2=-3}})
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true})
 		if self.modBtns then
 			self:skinStdButton{obj=_G.InterfaceOptionsFrameCancel}
 			self:skinStdButton{obj=_G.InterfaceOptionsFrameOkay}
@@ -3288,20 +3290,20 @@ aObj.blizzFrames[ftype].InterfaceOptions = function(self)
 		end
 		-- LHS panel (Game Tab)
 		self:SecureHookScript(_G.InterfaceOptionsFrameCategories, "OnShow", function(this)
-			self:skinSlider{obj=_G.InterfaceOptionsFrameCategoriesListScrollBar}
-			self:addSkinFrame{obj=_G.InterfaceOptionsFrameCategories, ft=ftype, kfs=true}
+			self:skinObject("slider", {obj=_G.InterfaceOptionsFrameCategoriesListScrollBar, fType=ftype, x1=4, x2=-5})
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, fb=true})
 
 			self:Unhook(this, "OnShow")
 		end)
 		self:checkShown(_G.InterfaceOptionsFrameCategories)
 		-- LHS panel (AddOns tab)
 		self:SecureHookScript(_G.InterfaceOptionsFrameAddOns, "OnShow", function(this)
-			self:skinSlider{obj=_G.InterfaceOptionsFrameAddOnsListScrollBar}
-			self:addSkinFrame{obj=_G.InterfaceOptionsFrameAddOns, ft=ftype, kfs=true}
+			self:skinObject("slider", {obj=_G.InterfaceOptionsFrameAddOnsListScrollBar, fType=ftype, x1=4, x2=-5})
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, fb=true})
 			if self.modBtns then
 				-- skin toggle buttons
 				for _, btn in _G.pairs(_G.InterfaceOptionsFrameAddOns.buttons) do
-					self:skinExpandButton{obj=btn.toggle, onSB=true}
+					self:skinExpandButton{obj=btn.toggle, onSB=true, noHook=true}
 					self:checkTex{obj=btn.toggle}
 				end
 				self:SecureHook("InterfaceAddOnsList_Update", function()
@@ -3315,10 +3317,10 @@ aObj.blizzFrames[ftype].InterfaceOptions = function(self)
 		end)
 		self:checkShown(_G.InterfaceOptionsFrameAddOns)
 		-- RHS Panel
-		self:addSkinFrame{obj=_G.InterfaceOptionsFramePanelContainer, ft=ftype, kfs=true, nb=true}
+		self:skinObject("frame", {obj=_G.InterfaceOptionsFramePanelContainer, fType=ftype, kfs=true, fb=true})
 		-- Social Browser Frame (Twitter integration)
 		self:SecureHookScript(_G.SocialBrowserFrame, "OnShow", function(this)
-			self:addSkinFrame{obj=_G.SocialBrowserFrame, ft=ftype, kfs=true, ofs=2, x2=0}
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x2=1})
 
 			self:Unhook(this, "OnShow")
 		end)
@@ -3942,7 +3944,7 @@ aObj.blizzLoDFrames[ftype].MacroUI = function(self)
 	self.initialized.MacroUI = true
 
 	self:SecureHookScript(_G.MacroFrame, "OnShow", function(this)
-		self:skinObject(self.skinTPLs.new("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=true, upwards=true, offsets={x1=-3, y1=-3, x2=3, y2=-3}, ignoreHLTex=true}))
+		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=true, upwards=true, offsets={x1=-3, y1=-3, x2=3, y2=-3}, ignoreHLTex=true})
 		_G.RaiseFrameLevel(_G.MacroFrameTab1)
 		_G.RaiseFrameLevel(_G.MacroFrameTab2)
 		self:addFrameBorder{obj=_G.MacroButtonScrollFrame, ft=ftype, ofs=12, y1=10, x2=31}
@@ -4012,7 +4014,7 @@ aObj.blizzFrames[ftype].MailFrame = function(self)
 	self.initialized.MailFrame = true
 
 	self:SecureHookScript(_G.MailFrame, "OnShow", function(this)
-		self:skinObject(self.skinTPLs.new("tabs", {obj=this, prefix=this:GetName(), fType=ftype, ignoreSize=self.isClsc and true}))
+		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, ignoreSize=self.isClsc and true})
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, x2=self.isClsc and 1 or nil, y2=-5}
 		--	Inbox Frame
 		for i = 1, _G.INBOXITEMS_TO_DISPLAY do
@@ -5246,7 +5248,7 @@ aObj.blizzFrames[ftype].PVEFrame = function(self)
 	self:SecureHookScript(_G.PVEFrame, "OnShow", function(this)
 		self:removeInset(this.Inset)
 		self:keepFontStrings(this.shadows)
-		self:skinObject(self.skinTPLs.new("tabs", {obj=this, prefix=this:GetName(), fType=ftype, ignoreHLTex=true}))
+		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, ignoreHLTex=true})
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, y2=-5}
 		-- GroupFinder Frame
 		for i = 1,gbCnt do
@@ -5571,7 +5573,7 @@ aObj.blizzFrames[ftype].RaidFrame = function(self)
 	self.initialized.RaidFrame = true
 
 	self:SecureHookScript(_G.RaidParentFrame, "OnShow", function(this)
-		self:skinObject(self.skinTPLs.new("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=true}))
+		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=true})
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, y2=-5}
 
 		self:Unhook(this, "OnShow")

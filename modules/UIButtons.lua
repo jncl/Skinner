@@ -258,7 +258,7 @@ function module:skinCloseButton(opts) -- text on button
 			opts.x2 = opts.x2 or bW == 32 and -6 or -4
 			opts.y2 = opts.y2 or bW == 32 and 6 or 4
 			bW = nil
-			aObj:addSkinButton{obj=opts.obj, ft=opts.ftype or "a", parent=opts.obj, aso=aso, x1=opts.x1, y1=opts.y1, x2=opts.x2, y2=opts.y2}
+			aObj:skinObject("button", {obj=opts.obj, fType=opts.ftype, aso=aso, x1=opts.x1, y1=opts.y1, x2=opts.x2, y2=opts.y2})
 		end
 		module:clrBtnBdr(opts.obj, opts.clr, opts.ca)
 	end
@@ -325,10 +325,9 @@ function module:skinExpandButton(opts)
 
 	local aso = opts.aso or {}
 	aso.bd = 6
-	-- TODO: is this better grey or default ?
-	-- aso.bbclr = "grey"
 	if not opts.as then
-		aObj:addSkinButton{obj=opts.obj, ft=opts.ftype or "a", parent=opts.obj, sap=opts.sap, aso=aso}
+		-- aObj:addSkinButton{obj=opts.obj, ft=opts.ftype or "a", parent=opts.obj, sap=opts.sap, aso=aso}
+		aObj:skinObject("button", {obj=opts.obj, fType=opts.ftype, sap=opts.sap, aso=aso})
 		if not opts.noHook then
 			module:SecureHook(opts.obj, "SetNormalAtlas", function(this, nTex)
 				module:checkTex{obj=this, nTex=nTex}
@@ -398,7 +397,7 @@ function module:skinOtherButton(opts)
 	-- don't skin button if required
 	if not opts.noSkin then
 		if opts.sap then
-			aObj:addSkinButton{obj=opts.obj, ft=opts.ftype or "a", parent=opts.obj, sap=true, aso=aso}
+			aObj:skinObject("button", {obj=opts.obj, fType=opts.ftype, sap=true, aso=aso})
 		else
 			aso.bd = 5
 			local bW = _G.Round(opts.obj:GetWidth())
@@ -407,7 +406,7 @@ function module:skinOtherButton(opts)
 			opts.x2 = opts.x2 or bW == 32 and -6 or -4
 			opts.y2 = opts.y2 or bW == 32 and 6 or 4
 			bW = nil
-			aObj:addSkinButton{obj=opts.obj, ft=opts.ftype or "a", parent=opts.obj, aso=aso, x1=opts.x1, y1=opts.y1, x2=opts.x2, y2=opts.y2}
+			aObj:skinObject("button", {obj=opts.obj, fType=opts.ftype, aso=aso, x1=opts.x1, y1=opts.y1, x2=opts.x2, y2=opts.y2})
 		end
 	end
 	aso = nil
@@ -472,12 +471,7 @@ function module:skinStdButton(opts) -- standard panel button
 	local aso = opts.aso or {}
 	aso.bd = bH > 18 and 5 or 6 -- use narrower backdrop if required
 	if not opts.as then
-		opts.ofs = opts.ofs or 1
-		opts.x1 = opts.x1 or opts.ofs * -1
-		opts.y1 = opts.y1 or opts.ofs
-		opts.x2 = opts.x2 or opts.ofs
-		opts.y2 = opts.y2 or opts.ofs * -1
-		aObj:addSkinButton{obj=opts.obj, ft=opts.ft, parent=opts.obj, aso=aso, bg=opts.bg, x1=opts.x1, y1=opts.y1, x2=opts.x2, y2=opts.y2}
+		aObj:skinObject("button", {obj=opts.obj, fType=opts.ftype, aso=aso, ofs=0, x1=opts.x1, y1=opts.y1, x2=opts.x2, y2=opts.y2})
 	else
 		aso.obj = opts.obj
 		if bH < 16 then opts.obj:SetHeight(16) end -- set minimum button height (DBM option buttons)
