@@ -567,7 +567,7 @@ local function skinSlider(tbl)
 	end
 
 	local h, w, o = _G.Round(tbl.obj:GetHeight()), _G.Round(tbl.obj:GetWidth()), tbl.obj:GetOrientation()
-	-- aObj:Debug("skinSlider H/W: [%s, %s, %s]", o, h, w)
+	aObj:Debug("skinSlider H/W: [%s, %s, %s]", o, h, w)
 	-- setup offsets based on Orientation/Height/Width
 	if o == "HORIZONTAL" then
 		tbl.x1 = _G.rawget(tbl, "x1") or 0
@@ -588,15 +588,18 @@ local function skinSlider(tbl)
 	else
 		tbl.y1 = _G.rawget(tbl, "y1") or 0
 		tbl.y2 = _G.rawget(tbl, "y2") or 0
-		if w == 12 then
+		if w <= 8 then
+			tbl.x1 = _G.rawget(tbl, "x1") or -4
+			tbl.x2 = _G.rawget(tbl, "x2") or 1
+		elseif w <= 12 then
 			tbl.x1 = _G.rawget(tbl, "x1") or -2
 			tbl.x2 = _G.rawget(tbl, "x2") or -1
-		elseif w == 16 then
+		elseif w <= 16 then
 			tbl.x1 = _G.rawget(tbl, "x1") or 0
 			tbl.x2 = _G.rawget(tbl, "x2") or -1
 		end
 	end
-	-- aObj:Debug("skinSlider#2: [%s, %s, %s, %s]", tbl.x1, tbl.x2, tbl.y1, tbl.y2)
+	aObj:Debug("skinSlider#2: [%s, %s, %s, %s]", tbl.x1, tbl.x2, tbl.y1, tbl.y2)
 	-- skin the Slider
 	aObj:skinObject("frame", {obj=tbl.obj, fType=tbl.fType, bd=4, ng=true, x1=tbl.x1, y1=tbl.y1, x2=tbl.x2, y2=tbl.y2, clr="slider", bba=0.5})
 	-- make objects visible
