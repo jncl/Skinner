@@ -14,6 +14,8 @@ if AceGUI then
 	end, true)
 end
 
+-- TODO: change ALL object types to use New Skin Funcs
+
 aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 	if self.initialized.Ace3 then return end
 	self.initialized.Ace3 = true
@@ -30,7 +32,7 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 		and not obj.sknd
 		and not (objType:find("TSM") and obj.sknrTSM) -- check objType as TSM overlays existing objects
 		then
-			-- aObj:Debug("Ace3 Skinning: [%s, %s]", obj, objType)
+			aObj:Debug("Ace3 Skinning: [%s, %s]", obj, objType)
 
 			if objType == "Button" then
 				if aObj.modBtns then
@@ -70,9 +72,9 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 				aObj:skinAceDropdown(obj, nil, 1)
 
 			elseif objType == "Dropdown-Pullout" then
-				-- aObj:skinSlider{obj=obj.slider}
-				-- aObj:adjWidth{obj=obj.slider, adj=6}
 				aObj:skinObject("slider", {obj=obj.slider})
+				-- ensure skinframe is behind thumb texture
+				obj.slider.sf.SetFrameLevel = _G.nop
 
 			elseif objType == "DropdownGroup"
 			or objType == "InlineGroup"
@@ -119,10 +121,8 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 
 			elseif objType == "Frame" then
 				-- status frame
-				-- aObj:applySkin{obj=aObj:getChild(obj.frame, 2)}
 				aObj:skinObject("frame", {obj=aObj:getChild(obj.frame, 2), fb=true})
 				obj.titletext:SetPoint("TOP", obj.frame, "TOP", 0, -6)
-				-- aObj:applySkin{obj=obj.frame, kfs=true}
 				aObj:skinObject("frame", {obj=obj.frame, kfs=true})
 				if aObj.modBtns then
 					aObj:skinStdButton{obj=aObj:getChild(obj.frame, 1), y1=1}
@@ -130,7 +130,6 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 
 			elseif objType == "MultiLineEditBox" then
 				aObj:skinObject("slider", {obj=obj.scrollBar})
-				-- aObj:skinObject("frame", {obj=obj.editBox, fb=true})
 				aObj:removeBackdrop(obj.scrollBG)
 				if aObj.modBtns then
 					aObj:skinStdButton{obj=obj.button, ofs=0}
@@ -168,16 +167,9 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 
 			elseif objType == "Window" then
 				obj.titletext:SetPoint("TOP", obj.frame, "TOP", 0, -6)
-				-- aObj:applySkin{obj=obj.frame, kfs=true}
-				-- if aObj.modBtns
-				-- and obj.closebutton
-				-- then
-				-- 	aObj:skinCloseButton{obj=obj.closebutton}
-				-- end
 				aObj:skinObject("frame", {obj=obj.frame, kfs=true, cb=true})
 
 			elseif objType == "Keybinding" then
-				-- aObj:applySkin{obj=obj.msgframe}
 				aObj:skinObject("frame", {obj=obj.msgframe})
 				if aObj.modBtns then
 					aObj:skinStdButton{obj=obj.button, as=true}
@@ -187,7 +179,6 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 			elseif objType == "SimpleGroup" then
 				if obj.frame:GetNumChildren() == 2
 				and aObj:getChild(obj.frame, 2):IsObjectType("ScrollFrame") then
-					-- aObj:skinSlider{obj=aObj:getChild(obj.frame, 2).scrollBar, rt="artwork", wdth=-4}
 					aObj:skinObject("slider", {obj=aObj:getChild(obj.frame, 2).scrollBar, rpTex="artwork"})
 				end
 
