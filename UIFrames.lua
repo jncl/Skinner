@@ -6659,45 +6659,45 @@ then
 		if not self.prdb.PTRFeedback or self.initialized.PTRFeedback then return end
 		self.initialized.PTRFeedback = true
 
-		local PTR_IR = _G.PTR_IssueReporter
+		if not _G.PTR_IssueReporter then return end
 
 		local function skinFrame(frame, ofs, border)
 			if border then
-				aObj:addFrameBorder{obj=frame, ft=ftype, ofs=ofs or 4, aso={bbclr="blue"}}
+				aObj:skinObject("frame", {obj=frame, fType=ftype, ofs=ofs or 4, clr="blue"})
 			else
-				aObj:addSkinFrame{obj=frame, ft=ftype, kfs=true, nb=true, ofs=ofs or 4, aso={bbclr="blue"}}
+				aObj:skinObject("frame", {obj=frame, fType=ftype, kfs=true, ofs=ofs or 4, clr="blue"})
 			end
 			if frame.Border then
-				self:removeBackdrop(frame.Border)
+				aObj:removeBackdrop(frame.Border)
 			end
 		end
 
-		skinFrame(PTR_IR)
+		skinFrame(_G.PTR_IssueReporter)
 		for _, name in _G.pairs{"Confused", "ReportBug"} do
-			aObj:addSkinButton{obj=PTR_IR[name], aso={bbclr="blue"}}
-			PTR_IR[name]:SetPushedTexture(nil)
-			self:removeBackdrop(PTR_IR[name].Border)
+			self:addSkinButton{obj=_G.PTR_IssueReporter[name], aso={bbclr="blue"}}
+			_G.PTR_IssueReporter[name]:SetPushedTexture(nil)
+			self:removeBackdrop(_G.PTR_IssueReporter[name].Border)
 		end
 
-		aObj:SecureHook(PTR_IR, "GetStandaloneSurveyFrame", function(this)
-			skinFrame(PTR_IR.StandaloneSurvey, 3) -- header frame
-			skinFrame(PTR_IR.StandaloneSurvey.SurveyFrame)
-			if aObj.modBtns then
-				aObj:skinCloseButton{obj=aObj:getChild(PTR_IR.StandaloneSurvey.SurveyFrame, 2), noSkin=true}
-				aObj:skinStdButton{obj=aObj:getChild(PTR_IR.StandaloneSurvey.SurveyFrame, 3), ofs=0, clr="blue"}
+		self:SecureHook(_G.PTR_IssueReporter, "GetStandaloneSurveyFrame", function(this)
+			skinFrame(_G.PTR_IssueReporter.StandaloneSurvey, 3) -- header frame
+			skinFrame(_G.PTR_IssueReporter.StandaloneSurvey.SurveyFrame)
+			if self.modBtns then
+				self:skinCloseButton{obj=self:getChild(_G.PTR_IssueReporter.StandaloneSurvey.SurveyFrame, 2), noSkin=true}
+				self:skinStdButton{obj=self:getChild(_G.PTR_IssueReporter.StandaloneSurvey.SurveyFrame, 3), ofs=0, clr="blue"}
 			end
 
-			aObj:Unhook(this, "GetStandaloneSurveyFrame")
+			self:Unhook(this, "GetStandaloneSurveyFrame")
 		end)
 
-		aObj:SecureHook(PTR_IR, "BuildSurveyFrameFromSurveyData", function(surveyFrame, _)
+		self:SecureHook(_G.PTR_IssueReporter, "BuildSurveyFrameFromSurveyData", function(surveyFrame, _)
 			skinFrame(surveyFrame)
-			for _, frame in _G.ipairs(surveyFrame.FrameComponents) do
+			for _, frame in _G.pairs(surveyFrame.FrameComponents) do
 				skinFrame(frame, 2, true)
 				if frame.FrameType == "MultipleChoice"
-				and aObj.modChkBtns then
-					for _, checkBox in _G.ipairs(frame.Checkboxes) do
-						aObj:skinCheckButton{obj=checkBox}
+				and self.modChkBtns then
+					for _, checkBox in _G.pairs(frame.Checkboxes) do
+						self:skinCheckButton{obj=checkBox}
 					end
 				-- elseif frame.FrameType == "StandaloneQuestion" then
 				-- elseif frame.FrameType == "ModelViewer" then
