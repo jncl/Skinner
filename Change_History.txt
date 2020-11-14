@@ -1,3 +1,23 @@
+beta9.36577.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Code Tidyup
+	Updated lots of code to use the NewSkinFuncs
+	Updated utility function
+	Updated UIButtons options
+	More Beta changes
+	Updated MainFuncs skinning code
+	Updated CharacterFrames skin
+	Updated ExtraAbilities skin
+	Updated CharCustomize skin
+	Updated SystemOptions skin
+	Updated BindingsUI skin
+	Updated removeRegions skinning code
+	Updated Ace3, AllTheThings, Cork, MoveAnything, Prat3, Spew, tekKonfig & WeakAuras skins
+	Skinned BtWLoadouts
+
 beta9.36497.1
 Jncl:
 	ToDo.txt
