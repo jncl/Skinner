@@ -29,45 +29,21 @@ ToDos
 
 ≈	O	Refactor Tab skinning in AddOn skins
 
-	I	Prat
-√		- Search Editbox(es) aren't skinned
-
-	I	reported by the9thresident, 05.11.20
-≈		- Skinner\UtilFuncs.lua:1133: stack overflow
-		[string "@Skinner\UtilFuncs.lua"]:1133: in function `removeRegions'
-		[string "@Skinner\UtilFuncs.lua"]:1133: in function `removeRegions'
-		[string "@Skinner\UtilFuncs.lua"]:1133: in function `removeRegions'
-		[string "@Skinner\UtilFuncs.lua"]:1133: in function `removeRegions'
-		[string "@Skinner\UtilFuncs.lua"]:1133: in function `removeRegions'
-		[string "@Skinner\UtilFuncs.lua"]:1133: in function `removeRegions'
-		[string "@Skinner\UtilFuncs.lua"]:1133: in function `removeRegions'
-		[string "@Skinner\UtilFuncs.lua"]:1133: in function `removeRegions'
-		[string "@Skinner\UtilFuncs.lua"]:1133: in function `removeRegions'
-		[string "@Skinner\UtilFuncs.lua"]:1133: in function `removeRegions'
-		[string "@Skinner\UtilFuncs.lua"]:1133: in function `removeRegions'
-		[string "@Skinner\UtilFuncs.lua"]:1133: in function `removeRegions'
-		...
-		[string "@Skinner\UtilFuncs.lua"]:1133: in function `removeRegions'
-		[string "@Skinner\MainFuncs.lua"]:621: in function <Skinner\MainFuncs.lua:574>
-		[string "@Skinner\MainFuncs.lua"]:691: in function `skinDropDown'
-		[string "@Skinner\UIFrames.lua"]:5359: in function <Skinner\UIFrames.lua:5311>
+	I	applySkin, reported by MacallanTwoFive, 11.11.20
+≈		-  Skinner\MainFuncs.lua:505: attempt to call method 'applyTexture' (a nil value)
+		[string "@Skinner\MainFuncs.lua"]:540: in function `applySkin'
+		[string "@Skinner\MainFuncs.lua"]:285: in function <Skinner\MainFuncs.lua:196>
 		[string "=(tail call)"]: ?
-		[string "=[C]"]: ?
-		[string "@Skinner\UtilFuncs.lua"]:75: in function <Skinner\UtilFuncs.lua:66>
-		[string "=(tail call)"]: ?
-		[string "@Skinner\AddonFrames.lua"]:38: in function `BlizzardFrames'
-		[string "@Skinner\Skinner-beta9.36497.1.lua"]:489: in function <Skinner\Skinner.lua:489>
+		[string "@Skinner\MainFuncs.lua"]:1220: in function <Skinner\MainFuncs.lua:1163>
+		[string "@Skinner\MainFuncs.lua"]:1271: in function `skinTabs'
+		[string "@Skinner\AddonSkins\FishingBuddy-1.11.lua"]:147: in function <Skinner\AddonSkins\FishingBuddy.lua:14>
 
-≈	S	BtWLoadouts
+	I	reported by Fakelessgaming, 11.11.20
+≈		- ...faceSkinner\Libs\AceHook-3.0\AceHook-3.0-9.lua:180: Attempting to rehook already active hook Disable.
+	[string "=[C]"]: ?
+	[string "@Skinner\Libs\AceHook-3.0\AceHook-3.0-9.lua"]:180: in function <...faceSkinner\Libs\AceHook-3.0\AceHook-3.0.lua:118>
+	[string "@Skinner\Libs\AceHook-3.0\AceHook-3.0-9.lua"]:341: in function `SecureHook'
+	[string "@Skinner\AddonSkins\BugSack-v9.0.0.lua"]:19: in function <Skinner\AddonSkins\BugSack.lua:10>
 
-	I	ZoneAbility, reported by Fakelessgaming, 07.11.20
-?		-  [ADDON_ACTION_FORBIDDEN] Модификация 'Skinner' пыталась вызвать защищенную функцию 'CastSpellByID()'. [string "@!BugGrabber\BugGrabber.lua"]:519: in function <!BugGrabber\BugGrabber.lua:519> [string "=[C]"]: in function `CastSpellByID' [string "@FrameXML\ZoneAbility.lua"]:225: in function <FrameXML\ZoneAbility.lua:224>
-
-√	N	AllTheThings
-
-	I	reported by MacallanTwoFive, 09.11.20
-?		-  [ADDON_ACTION_FORBIDDEN] AddOn 'Skinner' tried to call the protected function 'DepositAnima()'.
-		[string "@!BugGrabber\BugGrabber.lua"]:519: in function <!BugGrabber\BugGrabber.lua:519>
-		[string "=[C]"]: in function `DepositAnima'
-		[string "@Blizzard_CovenantSanctum\Blizzard_CovenantSanctumUpgrades.lua"]:284: in function `DepositAnima'
-		[string "*:OnClick"]:1: in function <[string "*:OnClick"]:1>
+	I	reported by Fakelessgaming, 12.11.20
+√		- Ace3 Dropdowm-Pullout slider is too narrow, thumb texture is below skinframe
