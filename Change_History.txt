@@ -1,3 +1,14 @@
+beta9.36639.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Updated safecall function
+	Updated NewSkinFuncs
+	Updated PTR Feedback skinning code
+	Updated Ace3 & BugSack skins
+	Bugfix for applyTexture issue
+
 beta9.36577.1
 Jncl:
 	ToDo.txt
