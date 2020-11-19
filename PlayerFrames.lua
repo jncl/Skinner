@@ -2201,7 +2201,7 @@ aObj.blizzLoDFrames[ftype].EncounterJournal = function(self) -- a.k.a. Adenture 
 		btn:DisableDrawLayer("BACKGROUND")
 		btn:SetNormalTexture(nil)
 		btn:SetPushedTexture(nil)
-		aObj:skinStdButton{obj=btn, x1=-11, y1=-2, x2=11, y2=2, clr="gold"}
+		aObj.modUIBtns:skinStdButton{obj=btn, x1=-11, y1=-2, x2=11, y2=2, clr="gold"} -- use module function so button appears
 	end
 	self:SecureHookScript(_G.EncounterJournal, "OnShow", function(this)
 		self:skinEditBox{obj=this.searchBox, regs={6, 7}, mi=true} -- 6 is text, 7 is icon
@@ -2380,16 +2380,18 @@ aObj.blizzLoDFrames[ftype].EncounterJournal = function(self) -- a.k.a. Adenture 
 				skinCreatureBtn(_G.EncounterJournal.encounter.info.creatureButtons[index])
 			end)
 			-- Tabs (side)
-			self:moveObject{obj=this.info.overviewTab, x=10}
+			-- TODO: use NewSkinFunc
 			for _, type in _G.pairs{"overviewTab", "lootTab", "bossTab", "modelTab"} do
 				this.info[type]:SetNormalTexture(nil)
 				this.info[type]:SetPushedTexture(nil)
 				this.info[type]:GetDisabledTexture():SetAlpha(0) -- tab texture is modified
-				self:addSkinFrame{obj=this.info[type], ft=ftype, noBdr=true, ofs=-3, aso={rotate=true}} -- gradient is right to left
+				self:addSkinFrame{obj=this.info[type], ft=ftype, noBdr=true, aso={rotate=true}, ofs=-3} -- gradient is right to left
 			end
+			self:moveObject{obj=this.info.overviewTab, x=12}
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(this.encounter)
 		-- Suggest Frame
 		local ejsfs
 		for i = 1, _G.AJ_MAX_NUM_SUGGESTIONS do
