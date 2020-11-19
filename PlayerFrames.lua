@@ -3892,10 +3892,25 @@ aObj.blizzLoDFrames[ftype].PVPUI = function(self)
 				btn.NormalTexture:SetTexture(nil)
 				btn:SetPushedTexture(nil)
 				btn.Reward.Border:SetTexture(nil)
+				btn.Reward.EnlistmentBonus:DisableDrawLayer("ARTWORK") -- ring texture
 				if self.modBtnBs then
-					 self:addButtonBorder{obj=btn.Reward, relTo=btn.Reward.Icon, reParent={btn.Reward.EnlistmentBonus}, clr="gold"}
-					 btn.Reward.EnlistmentBonus:DisableDrawLayer("ARTWORK") -- ring texture
+					self:addButtonBorder{obj=btn.Reward, relTo=btn.Reward.Icon, reParent={btn.Reward.EnlistmentBonus}}
 				end
+			end
+			if self.modBtnBs then
+				self:SecureHook("HonorFrameBonusFrame_Update", function()
+					self:clrBtnBdr(_G.HonorFrame.BonusFrame.RandomBGButton.Reward, "gold")
+					self:clrBtnBdr(_G.HonorFrame.BonusFrame.Arena1Button.Reward, "gold")
+					self:clrBtnBdr(_G.HonorFrame.BonusFrame.RandomEpicBGButton.Reward, "gold")
+					self:clrBtnBdr(_G.HonorFrame.BonusFrame.BrawlButton.Reward, "gold")
+				end)
+				self:SecureHook(_G.HonorFrame.BonusFrame.SpecialEventButton.Reward, "Update", function(this)
+					if this.Icon:IsDesaturated() then
+						self:clrBtnBdr(this, "disabled")
+					else
+						self:clrBtnBdr(this, "gold")
+					end
+				end)
 			end
 			btn = nil
 			this.BonusFrame:DisableDrawLayer("BACKGROUND")
@@ -3969,7 +3984,11 @@ aObj.blizzLoDFrames[ftype].PVPUI = function(self)
 		_G.PVPQueueFrame.NewSeasonPopup.SeasonDescription:SetTextColor(self.BT:GetRGB())
 		_G.PVPQueueFrame.NewSeasonPopup.SeasonDescription2:SetTextColor(self.BT:GetRGB())
 		_G.PVPQueueFrame.NewSeasonPopup.SeasonRewardFrame.Ring:SetTexture(nil)
-		self:getRegion(_G.PVPQueueFrame.NewSeasonPopup.SeasonRewardFrame, 3):SetTextColor(self.BT:GetRGB())
+		if not self.isBeta then
+			self:getRegion(_G.PVPQueueFrame.NewSeasonPopup.SeasonRewardFrame, 3):SetTextColor(self.BT:GetRGB())
+		else
+			_G.PVPQueueFrame.NewSeasonPopup.SeasonRewardText:SetTextColor(self.BT:GetRGB())
+		end
 		self:addSkinFrame{obj=_G.PVPQueueFrame.NewSeasonPopup, ft=ftype, kfs=true, nb=true, ofs=-13}
 		if self.modBtns then
 			self:skinStdButton{obj=_G.PVPQueueFrame.NewSeasonPopup.Leave}
