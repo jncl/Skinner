@@ -1231,7 +1231,7 @@ aObj.blizzFrames[ftype].QuestInfo = function(self)
 		if self.modBtnBs then
 			 self:addButtonBorder{obj=_G.QuestInfoPlayerTitleFrame, relTo=_G.QuestInfoPlayerTitleFrame.Icon, clr="grey"}
 		end
-		self:removeRegions(_G.QuestInfoPlayerTitleFrame, {2, 3, 4,}) -- NameFrame textures
+		self:removeRegions(_G.QuestInfoPlayerTitleFrame, {2, 3, 4}) -- NameFrame textures
 
 		self:Unhook(this, "OnShow")
 	end)
