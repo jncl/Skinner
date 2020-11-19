@@ -160,7 +160,7 @@ function aObj:OnInitialize()
 	self.gradientCBar = {self.prdb.Gradient.rotate and "HORIZONTAL" or "VERTICAL", .25, .25, .55, 1, 0, 0, 0, 1}
 	self.gradientTex = self.LSM:Fetch("background", self.prdb.Gradient.texture)
 	-- these are used to disable the gradient
-	self.gradFrames = {p = {}, u = {}, n = {}, s = {}, a = {}}
+	self.gradFrames = {p = {}, u = {}, n = {}, s = {}, a = _G.setmetatable({}, {__mode = "k"})}
 
 	-- backdrop for Frames etc
 	self:setupBackdrop()
