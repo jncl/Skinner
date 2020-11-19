@@ -28,43 +28,25 @@ local function untrack (t)
 end
 --@end-alpha@
 
-function aObj:BlizzardFrames()
-	-- self:Debug("BlizzardFrames")
-
-	-- skin Blizzard frames
-	for type, fTab in _G.pairs(self.blizzFrames) do
-		if type ~= "opt" then -- ignore options functions
-			for func, _ in _G.pairs(fTab) do
-				self:checkAndRun(func, type)
-			end
-		end
-	end
-
-end
-
 local addonSkins = {
-	"Accountant", "Acheron", "ACP", "AdvancedInterfaceOptions", "AngryKeystones", "Archy", "Atlas", "Auctionsnatch", "AutoDecline",
-	"BaudManifest", "BetterInbox", "BGDefender", "BindPad", "BlackList", "BossInfo", "BossNotes", "BossNotes_PersonalNotes", "Bugger", "BulkMail2", "BulkMail2Inbox", "BuyEmAll",
-	"CensusPlus", "CFM", "Chatter", "Clique", "CollectMe", "CombustionHelper", "CompactMissions",
+	"ACP", "AdvancedInterfaceOptions", "AngryKeystones", "Atlas",
+	"BaudManifest", "BindPad", "BossNotes", "BossNotes_PersonalNotes", "Bugger", "BulkMail2", "BulkMail2Inbox", "BuyEmAll",
+	"CensusPlus", "Chatter", "Clique", "CollectMe",
 	"DeathNote", "DressUp",
-	"EnergyWatch", "EnhancedFlightMap", "epgp_lootmaster", "epgp_lootmaster_ml", "epgp", "Examiner", "ExtVendor",
-	"FarmIt2", "FeedMachine", "FlaresThatWork", "FlightMapEnhanced", "FramesResized", "FreierGeist_InstanceTime",
-	"G15Buttons", "Glamour", "GnomishVendorShrinker", "GroupCalendar5", "Growler", "GuildLaunchCT_RaidTracker",
-	"HaveWeMet", "HoloFriends",
-	"InboxMailBag", "InspectorGadgetzan", "Inventorian", "ItemDB",
-	"KeystoneCommander",
-	"LegacyQuest", "Livestock", "ls_Prospector", "ls_Toasts",
-	"MacroToolkit", "MarkingBar", "Megaphone", "MobileVault", "MogIt", "MyGarrisons",
+	"EnergyWatch", "EnhancedFlightMap", "Examiner", "ExtVendor",
+	"FarmIt2", "FlaresThatWork", "FlightMapEnhanced", "FramesResized", "FreierGeist_InstanceTime",
+	"GroupCalendar5", "GuildLaunchCT_RaidTracker",
+	"HaveWeMet",
+	"Inventorian",
+	"Livestock", "ls_Toasts",
+	"MacroToolkit", "MogIt",
 	"Notes",
 	"Omen", "OneBag3", "OneBank3",
-	"PetBattleMaster", "Possessions", "PowerAuras", "PowerAurasButtons", "PreformAVEnabler", "ProfessionsVault", "ProspectBar",
-	"Quartz", "QuestCompletist", "QuestGuru_Tracker", "QuestHelper2", "QuestHistory", "QuestMapWithDetails", "QuickMark",
-	"RaidRoll", "RaidRoll_LootTracker", "RAQ", "ReagentRestocker",
-	"ScrollMaster", "SilverDragon", "Skada", "Smoker", "SnapShot", "SorhaQuestLog", "Squeenix", "StaggerMeter",
+	"PetBattleMaster", "PowerAuras", "PowerAurasButtons",
+	"Quartz", "QuestCompletist", "QuickMark",
+	"SilverDragon", "Skada", "SorhaQuestLog",
 	"TargetCharms", "TooManyAddons",
-	"UrbanAchiever",
 	"Vendomatic", "VuhDo", "VuhDoOptions",
-	"Warden", "WTFLatencyMeter",
 	"XLoot", "xMerchant",
 }
 aObj.addonsToSkin = {}
@@ -93,11 +75,8 @@ aObj.otherAddons = {}
 aObj.otherAddons = track(aObj.otherAddons)
 --@end-alpha@
 local lodFrames = {
-	"DoTimer_Options",
 	"GarrisonMissionManager",
 	"GuildBankSearch",
-	"LilSparkysWorkshop",
-	"Ludwig_Window",
 	"PetJournalEnhanced",
 }
 aObj.lodAddons = {}
@@ -163,6 +142,17 @@ function aObj:AddonFrames()
 
 	-- skin library objects
 	skinLibs()
+
+end
+
+function aObj:BlizzardFrames()
+
+	-- skin Blizzard frames
+	for type, fTab in _G.pairs(self.blizzFrames) do
+		for func, _ in _G.pairs(fTab) do
+			self:checkAndRun(func, type)
+		end
+	end
 
 end
 
