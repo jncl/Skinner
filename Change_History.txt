@@ -1,3 +1,17 @@
+beta9.36639.2
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Code Tidyup
+	Bugfix for Beta UIWidgets error
+	Updated ChatConfigFrame skin
+	Updated EncounterJournal skin
+	Updated PVPUI skin
+	Bugfix for stack overflow error
+	Bugfix for ChatConfigFrame
+	Updated Ace3 & AppearanceTooltip skins
+	Obsoleted 50+ AddOn skins
+
 beta9.36639.1
 Jncl:
 	ToDo.txt
