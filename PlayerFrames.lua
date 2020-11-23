@@ -4461,7 +4461,7 @@ aObj.blizzLoDFrames[ftype].TalentUI = function(self)
 		self:moveObject{obj=this.MainHelpButton, y=-4}
 		-- Talent rows
 		for i = 1, _G.MAX_TALENT_TIERS do
-			self:removeRegions(this["tier" .. i], {1, 2 ,3, 4, 5, 6})
+			self:removeRegions(this["tier" .. i], {1, 2, 3, 4, 5, 6})
 			for j = 1, _G.NUM_TALENT_COLUMNS do
 				this["tier" .. i]["talent" .. j].Slot:SetTexture(nil)
 				if self.modBtnBs then
