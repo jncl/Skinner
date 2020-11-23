@@ -50,13 +50,14 @@ local function getKeys(curTab)
 	return tmpTab
 end
 
+local errorhandler = _G.geterrorhandler()
 local function safecall(funcName, funcObj, LoD, quiet)
 --@alpha@
 	_G.assert(funcObj, "Unknown object safecall\n" .. _G.debugstack(2, 3, 2))
 	local beginTime = _G.debugprofilestop()
 --@end-alpha@
  	-- handle errors from internal functions
-	local success, err = _G.xpcall(function() return funcObj(aObj, LoD) end, _G.errorhandler)
+	local success, err = _G.xpcall(function() return funcObj(aObj, LoD) end, errorhandler)
 --@alpha@
 	local timeUsed = _G.Round(_G.debugprofilestop() - beginTime)
 	if timeUsed > 5 then
