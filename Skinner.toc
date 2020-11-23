@@ -12,63 +12,10 @@
 ## SavedVariables: SkinnerDB
 ## Globe: check-classic
 #
-# LibStub & Callback Handler
-Libs\LibStub\LibStub.lua
-Libs\CallbackHandler-1.0\CallbackHandler-1.0.lua
-#
-# LDB Libraries
-Libs\LibDataBroker-1.1\LibDataBroker-1.1.lua
-Libs\LibDBIcon-1.0\LibDBIcon-1.0.lua
-#
-#@no-lib-strip@
-# Ace3 Libraries
-Libs\AceAddon-3.0\AceAddon-3.0.xml
-Libs\AceConsole-3.0\AceConsole-3.0.xml
-Libs\AceEvent-3.0\AceEvent-3.0.xml
-Libs\AceHook-3.0\AceHook-3.0.xml
-Libs\AceDB-3.0\AceDB-3.0.xml
-Libs\AceDBOptions-3.0\AceDBOptions-3.0.xml
-Libs\AceLocale-3.0\AceLocale-3.0.xml
-Libs\AceGUI-3.0\AceGUI-3.0.xml
-Libs\AceConfig-3.0\AceConfig-3.0.xml
-# Other Libraries
-# LSM must be loaded before SMW
-Libs\LibSharedMedia-3.0\lib.xml
-Libs\AceGUI-3.0-SharedMediaWidgets\widget.xml
-#@end-no-lib-strip@
-#
-# Locale files
-# enUS MUST be loaded first as default, this is due to changes in AceLocale, 26.01.2011
-Locales\Locale_enUS.lua
-Locales\Locale_deDE.lua
-Locales\Locale_frFR.lua
-Locales\Locale_koKR.lua
-Locales\Locale_zhCN.lua
-Locales\Locale_zhTW.lua
-# added additional files, 11.11.13
-Locales\Locale_esES.lua
-Locales\Locale_esMX.lua
-Locales\Locale_itIT.lua
-Locales\Locale_ptBR.lua
-Locales\Locale_ruRU.lua
-#
-# Main files
-UtilFuncs.lua
-Skinner.lua
-MainFuncs.lua
-NewSkinFuncs.lua
-Options.lua
-AddonFrames.lua
-NPCFrames.lua
-PlayerFrames.lua
-UIFrames.lua
-Modules\UnitFrames.lua
-Modules\UIButtons.lua
-Modules\ViewPort.lua
-Modules\TopFrame.lua
-Modules\MiddleFrames.lua
-Modules\BottomFrame.lua
-Skins.xml
-#
-# WoW Classic Support
-ClassicSupport.lua
+Libs\_RequiredLibs.xml
+Libs\_OptionalLibs.xml
+Locales\_Locales.xml
+Core\_Core.xml
+Modules\_Modules.xml
+AddonSkins\_AddonSkins.xml
+ClassicSupport\_ClassicSupport.xml
