@@ -29,45 +29,13 @@ ToDos
 
 ≈	O	Refactor Tab skinning in AddOn skins
 
-	I	ChatConfigFrame, reported by icedawg, 14.11.20
-√		- Skinner\UIFrames.lua:1502: bad argument #1 to 'wipe' (table expected, got nil)
-		[string "=[C]"]: in function `wipe'
-		[string "@Skinner\UIFrames.lua"]:1502: in function `skinTabs'
-		[string "@Skinner\UIFrames.lua"]:1508: in function <Skinner\UIFrames.lua:1471>
+	I	reported by FakeLessgaming, 19.11.20
+√		- ...nfig-3.0\AceConfigDialog-3.0\AceConfigDialog-3.0-79.lua:1863: AceConfigRegistry-3.0-20:ValidateOptionsTable(): Skinner UI Frames.args.PTRFeedback: expected a table, got a boolean
 
-	I	AppearanceTooltip, reported by Shiv_G3, 14.11.20
-√		- ...faceSkinner\AddonSkins\AppearanceTooltip-v23.lua:18: attempt to call method 'SetBackdrop' (a nil value)
-		[string "@Skinner\AddonSkins\AppearanceTooltip-v23.lua"]:18: in function <...faceSkinner\AddonSkins\AppearanceTooltip.lua:14>
+√	U	BasicChatMods, requested by EpidemeDaBear, 19.11.20
 
-	I	Ace3 Dropdown-pullout, reported by Fakelessgaming, 14.11.20
-x		- I only have an issue with UI scaling at 0.7. At 0.75 it looks perfect. I'v attached comparison.
-
-	I	Encounter Journal, reported by Fakelessgaming, 14.11.20
-√		- Dungeon Difficulty dropdown, if no button skinning then difficulty not visible, needs fixing
-√		- Yet another thing I noticed. If u enter the dungeon 1st time or after reaload UI, encounter jurnal won't skin properly till u reopen it. If u reload another time, the issue will appear again. This won't happen in raids or in the world.
-
-	I	Nameplates/UIWidgets, reported by Fakelessgaming, 16.11.20
-?		-  [ADDON_ACTION_BLOCKED] Модификация 'Skinner' пыталась вызвать защищенную функцию 'SetTargetClampingInsets()'.
-		[string "@!BugGrabber\BugGrabber.lua"]:519: in function <!BugGrabber\BugGrabber.lua:519>
-		[string "=[C]"]: in function `SetTargetClampingInsets'
-		[string "@Blizzard_NamePlates\Blizzard_NamePlates.lua"]:305: in function <...eBlizzard_NamePlates\Blizzard_NamePlates.lua:244>
-		[string "=[C]"]: in function `SetupClassNameplateBars'
-		[string "@Blizzard_NamePlates\Blizzard_NamePlates.lua"]:119: in function `OnNamePlateAdded'
-		[string "@Blizzard_NamePlates\Blizzard_NamePlates.lua"]:56: in function <...eBlizzard_NamePlates\Blizzard_NamePlates.lua:47>
-
-	I	PVPQueueFrame, reported by Fakelessgaming. 17.11.20
-√		-  ...faceSkinner\Libs\AceHook-3.0\AceHook-3.0-9.lua:180: Attempting to rehook already active hook PVPQueueFrame_SelectButton.
-		[string "=[C]"]: ?
-		[string "@Skinner\Libs\AceHook-3.0\AceHook-3.0-9.lua"]:180: in function <...faceSkinner\Libs\AceHook-3.0\AceHook-3.0.lua:118>
-		[string "@Skinner\Libs\AceHook-3.0\AceHook-3.0-9.lua"]:341: in function `SecureHook'
-		[string "@Skinner\PlayerFrames.lua"]:3851: in function <Skinner\PlayerFrames.lua:3833>
-
-	I	PVPQueueFrame, reported by Fakelessgaming. 17.11.20
-√		- Skinner\PlayerFrames.lua:3972: attempt to call method 'SetTextColor' (a nil value)
-		[string "@Skinner\PlayerFrames.lua"]:3972: in function <Skinner\PlayerFrames.lua:3833>
-
-	I	QuestInfoRewardsFrame, reported by Palizangetsu, 19.11.20
-√		- Skinner\UtilFuncs.lua:1113: stack overflow
+	I	reported by Palizangetsu, 19.11.20
+≈		- Skinner\UtilFuncs.lua:1113: stack overflow
 		[string "@Skinner\UtilFuncs.lua"]:1113: in function `removeRegions'
 		[string "@Skinner\UtilFuncs.lua"]:1113: in function `removeRegions'
 		[string "@Skinner\UtilFuncs.lua"]:1113: in function `removeRegions'
@@ -81,6 +49,18 @@ x		- I only have an issue with UI scaling at 0.7. At 0.75 it looks perfect. I'v 
 		[string "@Skinner\UtilFuncs.lua"]:1113: in function `removeRegions'
 		[string "@Skinner\UtilFuncs.lua"]:1113: in function `removeRegions'
 		...
-		[string "@Skinner\UtilFuncs.lua"]:1113: in function `removeRegions'
-		[string "@Skinner\NPCFrames.lua"]:1234: in function <Skinner\NPCFrames.lua:1198>
-		
+		[string "=(tail call)"]: ?
+		[string "=[C]"]: in function `Show'
+		[string "@FrameXML\UIParent.lua"]:2910: in function `SetUIPanel'
+		[string "@FrameXML\UIParent.lua"]:2755: in function `ShowUIPanel'
+		[string "@FrameXML\UIParent.lua"]:2623: in function <FrameXML\UIParent.lua:2619>
+		[string "=[C]"]: in function `SetAttribute'
+		[string "@FrameXML\UIParent.lua"]:3468: in function `ShowUIPanel'
+		[string "@Blizzard_TalentUI\Blizzard_TalentUI.lua"]:117: in function `PlayerTalentFrame_Toggle'
+		[string "@FrameXML\UIParent.lua"]:860: in function `ToggleTalentFrame'
+		[string "TOGGLETALENTS"]:1: in function <[string "TOGGLETALENTS"]:1>
+
+	I	WorldQuestTracker, reported by MacallanTwoFive, 22.11.20
+≈		- ..faceSkinner\AddonSkins\WorldQuestTracker.lua:9: attempt to index field 'Background' (a nil value)
+		[string "@Skinner\AddonSkins\WorldQuestTracker.lua"]:9: in function <...faceSkinner\AddonSkins\WorldQuestTracker.lua:7>
+		[string "@Skinner\AddonSkins\WorldQuestTracker.lua"]:29: in function <...faceSkinner\AddonSkins\WorldQuestTracker.lua:28>
