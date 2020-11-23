@@ -177,7 +177,7 @@ aObj.SetupDefaults = function(self)
 			PetBattleUI                = true,
 			PlayerChoiceUI             = true,
 			ProductChoiceFrame         = true,
-			PTRFeedback                = aObj.isPTR or aObj.isClscPTR or aObj.isBeta and true or nil,
+			PTRFeedback                = true,
 			PVEFrame                   = true, -- (inc, LFD, LFG, RaidFinder) [ScenarioFinder removed in Beta]
 			PVPMatch                   = true,
 			QuestMap                   = true,
@@ -1766,11 +1766,11 @@ aObj.SetupOptions = function(self)
 					name = self.L["Player Choice UI"],
 					desc = self.L["Toggle the skin of the "] .. self.L["Player Choice UI"],
 				},
-				PTRFeedback = aObj.isPTR or aObj.isClscPTR or aObj.isBeta and {
+				PTRFeedback = {
 					type = "toggle",
 					name = self.L["PTR Feedback Frames"],
 					desc = self.L["Toggle the skin of the "] .. self.L["PTR Feedback Frames"],
-				} or nil,
+				},
 				PVEFrame = {
 					-- inc. LFD, LFG, Scenario
 					type = "toggle",
@@ -1985,6 +1985,12 @@ aObj.SetupOptions = function(self)
 		},
 
 	}
+
+	-- remove PTR Feedback option
+	if not _G.PTR_IssueReporter then
+		self.prdb.PTRFeedback = nil
+		self.optTables["UI Frames"].args.PTRFeedback = nil
+	end
 
 	-- module options
 	for _, mod in self:IterateModules() do

@@ -6656,16 +6656,10 @@ aObj.blizzFrames[ftype].WorldMap = function(self)
 end
 
 -- PTR Feedback Tool
-if aObj.isPTR
-or aObj.isClscPTR
-or aObj.isBeta
-and not aObj.isPatch
-then
+if _G.PTR_IssueReporter then
 	aObj.blizzFrames[ftype].PTRFeedback = function(self)
 		if not self.prdb.PTRFeedback or self.initialized.PTRFeedback then return end
 		self.initialized.PTRFeedback = true
-
-		if not _G.PTR_IssueReporter then return end
 
 		local function skinFrame(frame, ofs, border)
 			if border then
