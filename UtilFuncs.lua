@@ -2,7 +2,7 @@ local aName, aObj = ...
 
 local _G = _G
 
-local tmpTab = {}
+local tmpTab, tmpTab2 = {}, {}
 local function makeString(obj)
 	if _G.type(obj) == "table" then
 		if _G.type(_G.rawget(obj, 0)) == "userdata" and _G.type(obj.GetObjectType) == "function" then
@@ -809,19 +809,19 @@ function aObj:keepRegions(obj, regions)
 	_G.assert(obj, "Missing object kR\n" .. _G.debugstack(2, 3, 2))
 --@end-alpha@
 
-	local regKeys = getKeys(regions) or {}
-	for i, reg in _G.ipairs{obj:GetRegions()} do
-		if not regKeys[i] then
+	_G.wipe(tmpTab)
+	tmpTab = getKeys(regions) or {}
+	for key, reg in _G.ipairs{obj:GetRegions()} do
+		if not tmpTab[key] then
 			reg:SetAlpha(0)
 --@debug@
 			if reg:IsObjectType("FontString") then
-				self:Debug("kr FS: [%s, %s]", obj, i)
+				self:Debug("kr FS: [%s, %s]", obj, key)
 				self:Print(_G.debugstack(1, 5, 2))
 			end
 --@end-debug@
 		end
 	end
-	regKeys = nil
 
 end
 
@@ -1038,27 +1038,27 @@ function aObj:removeRegions(obj, regions, rmTex)
 	_G.assert(obj, "Missing object (removeRegions)\n" .. _G.debugstack(2, 3, 2))
 --@end-alpha@
 
-	local regKeys = getKeys(regions) or {}
-	-- use an array of regions as the function may remove them as it goes and cause a stack overflow
-	local objRegs = {obj:GetRegions()}
-	for key, reg in _G.pairs(objRegs) do
-		if regKeys[key] then
-			if not rmTex then
-				reg:SetAlpha(0)
-			else
-				if reg:IsObjectType("Texture") then
-					reg:SetTexture(nil)
+	_G.wipe(tmpTab)
+	tmpTab = getKeys(regions) or {}
+	_G.wipe(tmpTab2)
+	tmpTab2 = {obj:GetRegions()}
+	-- loop through the objects regions backwards, as they may be removed
+	for i = #tmpTab2, 1, -1 do
+		if tmpTab[i] then
+			if tmpTab2[i]:IsObjectType("Texture") then
+				if not rmTex then
+					tmpTab2[i]:SetAlpha(0)
+				else
+					tmpTab2[i]:SetTexture(nil)
 				end
-			end
---@debug@
-			if reg:IsObjectType("FontString") then
-				self:Debug("rr FS: [%s, %s]", obj, key)
+			else
+	--@debug@
+				self:Debug("rr FS: [%s, %s]", obj, i)
 				self:Print(_G.debugstack(1, 5, 2))
+	--@end-debug@
 			end
---@end-debug@
 		end
 	end
-	regKeys, objRegs = nil, nil
 
 end
 
