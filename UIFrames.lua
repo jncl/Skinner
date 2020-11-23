@@ -255,8 +255,7 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 		aObj:addSkinFrame{obj=frame, ft=ftype, kfs=true, x1=_G.IsAddOnLoaded("GarrisonCommander") and 0 or -320, y1=y1Ofs, x2=x2Ofs, y2=y2Ofs}
 		if aObj.modBtns then
 			aObj:skinStdButton{obj=frame.StartMissionButton}
-			-- handle animation of StartMissionButton
-			frame.StartMissionButton.sb.tfade:SetParent(frame.sf)
+			aObj:moveObject{obj=frame.StartMissionButton.Flash, x=-0.5, y=1.5}
 			aObj:SecureHook(frame:GetParent():GetParent(), "UpdateStartButton", function(this, missionPage)
 				aObj:clrBtnBdr(missionPage.StartMissionButton)
 			end)
@@ -3326,6 +3325,11 @@ aObj.blizzFrames[ftype].InterfaceOptions = function(self)
 
 			self:Unhook(this, "OnShow")
 		end)
+		if self.modBtns then
+			self:SecureHook(_G.InterfaceOptionsSocialPanel.EnableTwitter, "setFunc", function(value)
+				self:clrBtnBdr(_G.InterfaceOptionsSocialPanel.TwitterLoginButton)
+			end)
+		end
 
 		self:Unhook(this, "OnShow")
 	end)
@@ -3775,12 +3779,12 @@ aObj.blizzFrames[ftype].LFGList = function(self)
 			for i = 1, #sp.ScrollFrame.buttons do
 				self:skinStdButton{obj=sp.ScrollFrame.buttons[i].CancelButton}
 			end
-			self:skinStdButton{obj=sp.ScrollFrame.StartGroupButton, as=true} -- use as otherwise button skin not visible
+			self:skinStdButton{obj=sp.ScrollFrame.StartGroupButton}
 			self:skinStdButton{obj=sp.BackButton}
 			self:skinStdButton{obj=sp.SignUpButton}
 			self:SecureHook("LFGListSearchPanel_UpdateButtonStatus", function(this)
-				self:clrBtnBdr(this.SignUpButton)
 				self:clrBtnBdr(this.ScrollFrame.StartGroupButton)
+				self:clrBtnBdr(this.SignUpButton)
 			end)
 		end
 		if self.modBtnBs then
@@ -3835,7 +3839,7 @@ aObj.blizzFrames[ftype].LFGList = function(self)
 		self:skinDropDown{obj=ec.CategoryDropDown}
 		self:skinDropDown{obj=ec.GroupDropDown}
 		self:skinDropDown{obj=ec.ActivityDropDown}
-		self:addSkinFrame{obj=ec.Description, ft=ftype, kfs=true, ofs=6}
+		self:addFrameBorder{obj=ec.Description, ft=ftype, kfs=true, ofs=6}
 		self:skinEditBox{obj=ec.ItemLevel.EditBox, regs={6}, mi=true} -- 6 is text
 		self:skinEditBox{obj=ec.VoiceChat.EditBox, regs={6}, mi=true} -- 6 is text
 		self:removeMagicBtnTex(ec.ListGroupButton)
@@ -3849,6 +3853,9 @@ aObj.blizzFrames[ftype].LFGList = function(self)
 		if self.modBtns then
 			self:skinStdButton{obj=ec.ListGroupButton}
 			self:skinStdButton{obj=ec.CancelButton}
+			self:SecureHook("LFGListEntryCreation_UpdateValidState", function(this)
+				self:clrBtnBdr(this.ListGroupButton)
+			end)
 		end
 		ec = nil
 
