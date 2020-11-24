@@ -756,7 +756,9 @@ aObj.blizzFrames[ftype].CharacterFrames = function(self)
 		self:adjHeight{obj=this, adj=20}
 		for i = 1, #this.buttons do
 			this.buttons[i]:DisableDrawLayer("BACKGROUND")
-			self:addButtonBorder{obj=this.buttons[i]}
+			if self.modBtnBs then
+				self:addButtonBorder{obj=this.buttons[i]}
+			end
 		end
 		self:skinEditBox{obj=_G.GearManagerDialogPopupEditBox, regs={6}}
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, x1=4, y1=-2, x2=-1, y2=3}
