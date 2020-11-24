@@ -3327,7 +3327,10 @@ aObj.blizzFrames[ftype].InterfaceOptions = function(self)
 		end)
 		if self.modBtns then
 			self:SecureHook(_G.InterfaceOptionsSocialPanel.EnableTwitter, "setFunc", function(value)
-				self:clrBtnBdr(_G.InterfaceOptionsSocialPanel.TwitterLoginButton)
+				-- N.B. gets called when panel not skinned
+				if _G.InterfaceOptionsSocialPanel.TwitterLoginButton.sb then
+					self:clrBtnBdr(_G.InterfaceOptionsSocialPanel.TwitterLoginButton)
+				end
 			end)
 		end
 
