@@ -3829,6 +3829,7 @@ aObj.blizzFrames[ftype].LFGList = function(self)
 		local ec = this.EntryCreation
 		self:removeInset(ec.Inset)
 		local ecafd = ec.ActivityFinder.Dialog
+		self:removeNineSlice(ecafd.Border)
 		self:skinEditBox{obj=ecafd.EntryBox, regs={6}, mi=true} -- 6 is text
 		self:skinSlider{obj=ecafd.ScrollFrame.scrollBar, size=4}
 		ecafd.BorderFrame:DisableDrawLayer("BACKGROUND")
