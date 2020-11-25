@@ -555,6 +555,8 @@ local function skinSlider(tbl)
 
 	-- don't skin it twice
 	if tbl.obj.sf then return end
+	-- remove textures
+	aObj:keepFontStrings(tbl.obj)
 	-- remove parent's textures
 	if tbl.rpTex then
 		if _G.type(tbl.rpTex) == "table" then
