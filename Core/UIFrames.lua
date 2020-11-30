@@ -6307,6 +6307,18 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 	if not self.prdb.UIWidgets or self.initialized.UIWidgets then return end
 	self.initialized.UIWidgets = true
 
+	-- N.B. In Shadowlands, get Clamping Errors when in certain areas and displaying StatusBar/SpellDisplay widgets
+	local disableTypeBySZ = {
+		[2] = {
+			["Bleak Redoubt"] = true,
+			["House of Plagues"] = true,
+			["The Desiccation"] = true,
+		},
+		[13] = {
+			["House of Plagues"] = true,
+		},
+	}
+
 	local function setTextColor(textObject)
 		self:rawHook(textObject, "SetTextColor", function(this, r, g, b, a)
 			-- aObj:Debug("textObject SetTextColor: [%s, %s, %s, %s, %s]", this, r, g, b, a)
@@ -6335,13 +6347,18 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 		    aObj:add2Table(aObj.oocTab, {skinWidget, {wFrame, wInfo}})
 		    return
 		end
-		-- aObj:Debug("skinWidget: [%s, %s, %s, %s, %s, %s]", wFrame, wFrame.widgetType, wFrame.widgetTag, wFrame.widgetSetID, wFrame.widgetID, wInfo)
+		-- Get SubZone
+		local SZ = _G.GetSubZoneText()
+
+		aObj:Debug("skinWidget#0: [%s, %s, %s]", _G.C_Map.GetBestMapForUnit("player"), _G.GetRealZoneText(), SZ)
+		aObj:Debug("skinWidget: [%s, %s, %s, %s, %s, %s]", wFrame, wFrame.widgetType, wFrame.widgetTag, wFrame.widgetSetID, wFrame.widgetID, wInfo)
+
 		if wFrame.widgetType == 0 then -- IconAndText (World State: ICONS at TOP)
 			-- N.B. DON'T add buttonborder to Icon(s)
 		elseif wFrame.widgetType == 1 then -- CaptureBar (World State: Capture bar on RHS)
 			-- DON'T change textures
 		elseif wFrame.widgetType == 2 then -- StatusBar
-			if not aObj.isBeta then
+			if not disableTypeBySZ[wFrame.widgetType][SZ] then
 				aObj:skinStatusBar{obj=wFrame.Bar, fi=0, nilFuncs=true}
 				aObj:removeRegions(wFrame.Bar, {1, 2, 3, 5, 6, 7}) -- background & border textures
 			else
@@ -6389,15 +6406,17 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 			-- .Foreground
 			setTextColor(wFrame.Text)
 		elseif wFrame.widgetType == 13 then -- SpellDisplay
-			wFrame.Spell.Border:SetTexture(nil)
-			local tcr = setTextColor(wFrame.Spell.Text)
-			if aObj.modBtnBs then
-				aObj:addButtonBorder{obj=wFrame.Spell, relTo=wFrame.Spell.Icon, reParent={wFrame.Spell.StackCount}}
-				if tcr == 0.5 then
-					aObj:clrBtnBdr(wFrame.Spell, "grey")
+			if not disableTypeBySZ[wFrame.widgetType][SZ] then
+				wFrame.Spell.Border:SetTexture(nil)
+				local tcr = setTextColor(wFrame.Spell.Text)
+				if aObj.modBtnBs then
+					aObj:addButtonBorder{obj=wFrame.Spell, relTo=wFrame.Spell.Icon, reParent={wFrame.Spell.StackCount}}
+					if tcr == 0.5 then
+						aObj:clrBtnBdr(wFrame.Spell, "grey")
+					end
 				end
+				tcr = nil
 			end
-			tcr = nil
 		elseif wFrame.widgetType == 14 then -- DoubleStateIconRow
 			-- TODO: add button borders if required
 		elseif wFrame.widgetType == 15 then -- TextureAndTextRow
