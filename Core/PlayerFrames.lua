@@ -3657,7 +3657,7 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 
 	_G.ScenarioBlocksFrame.MawBuffsBlock.Container.List:DisableDrawLayer("BACKGROUND")
 	if self.modBtns then
-		self:skinStdButton{obj=_G.ScenarioBlocksFrame.MawBuffsBlock.Container, ofs=-10, x1=12, x2=-2}
+		self:skinStdButton{obj=_G.ScenarioBlocksFrame.MawBuffsBlock.Container, x1=12, y1=-9, x2=-2, y2=9}
 		self:SecureHook(_G.ScenarioBlocksFrame.MawBuffsBlock.Container, "UpdateListState", function(this, _)
 			self:clrBtnBdr(this)
 		end)
