@@ -5015,16 +5015,16 @@ aObj.blizzLoDFrames[ftype].PlayerChoiceUI = function(self)
 	self.initialized.PlayerChoiceUI = true
 
 	self:SecureHookScript(_G.PlayerChoiceFrame, "OnShow", function(this)
-
-		local pci = _G.C_PlayerChoice.GetPlayerChoiceInfo()
-		-- aObj:Debug("PlayerChoiceFrame: [%s, %s, %s]", this, this.uiTextureKit, pci.choiceID)
-		-- _G.Spew("", pci)
-
 		self:removeNineSlice(this.NineSlice)
 		this.BlackBackground.BlackBackground:SetTexture(nil)
 		self:nilTexture(this.BorderFrame.Header, true)
 		this.Background.BackgroundTile:SetTexture(nil)
 		this.Title:DisableDrawLayer("BACKGROUND")
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, aso={bbclr="sepia"}, y2=-25}
+		if self.modBtns then
+			self:skinCloseButton{obj=this.CloseButton, noSkin=true}
+		end
+		this.sf:SetShown(this.uiTextureKit ~= "jailerstower")
 
 		local skinBtns
 		if self.modBtns then
@@ -5038,8 +5038,10 @@ aObj.blizzLoDFrames[ftype].PlayerChoiceUI = function(self)
 			end
 		end
 
+		local pci = _G.C_PlayerChoice.GetPlayerChoiceInfo()
+		aObj:Debug("PCUI - PCI: [%s, %s, %s]", this, this.uiTextureKit, pci.choiceID)
+		-- _G.Spew("", pci)
 		local opt, gOfs, y1Ofs, y2Ofs
-		-- if this.uiTextureKit == "jailerstower" then -- Torghast
 		if pci.choiceID == 588 then -- Torghast
 			gOfs = -40
 			y1Ofs = 0
@@ -5081,7 +5083,7 @@ aObj.blizzLoDFrames[ftype].PlayerChoiceUI = function(self)
 			-- WidgetContainer
 		for i = 1, #this.Options do
 			opt = this.Options[i]
-			if this.uiTextureKit ~= "jailerstower" then -- N.B. DON'T skin JailersTowers' Anima Powers
+			-- if this.uiTextureKit ~= "jailerstower" then -- N.B. DON'T skin JailersTowers' Anima Powers
 				opt.BackgroundShadowSmall:SetAlpha(0) -- texture changes
 				opt.BackgroundShadowLarge:SetAlpha(0) -- texture changes
 				self:nilTexture(opt.Header.Ribbon, true)
@@ -5091,8 +5093,8 @@ aObj.blizzLoDFrames[ftype].PlayerChoiceUI = function(self)
 				opt.SubHeader.Text:SetTextColor(self.HT:GetRGB())
 				opt.OptionText.String:SetTextColor(self.BT:GetRGB())
 				opt.OptionText.HTML:SetTextColor(self.BT:GetRGB())
-				self:addSkinFrame{obj=opt, ft=ftype, nb=true, aso={bbclr="grey"}, ofs=gOfs, y1=y1Ofs, y2=y2Ofs}
-			end
+				self:skinObject("frame", {obj=opt, fType=ftype, clr="grey", ofs=0, y1=y1Ofs, y2=y2Ofs})
+			-- end
 			if self.modBtns then
 				skinBtns(opt.OptionButtonsContainer)
 				self:SecureHook(opt.OptionButtonsContainer, "ConfigureButtons", function(this, ...)
@@ -5100,7 +5102,9 @@ aObj.blizzLoDFrames[ftype].PlayerChoiceUI = function(self)
 				end)
 				self:SecureHook(opt.OptionButtonsContainer, "DisableButtons", function(this)
 					for btn in this.buttonPool:EnumerateActive() do
-						self:clrBtnBdr(btn)
+						if btn:GetText() ~= "Preview Covenant" then
+							self:clrBtnBdr(btn)
+						end
 					end
 				end)
 			end
@@ -5109,7 +5113,7 @@ aObj.blizzLoDFrames[ftype].PlayerChoiceUI = function(self)
 				if this:GetOptionLayoutInfo().enlargeBackgroundOnMouseOver then
 					this.sf:ClearAllPoints()
 					this.sf:SetPoint("TOPLEFT",this, "TOPLEFT", -35, 40)
-					this.sf:SetPoint("BOTTOMRIGHT", this, "BOTTOMRIGHT", 34, -30)
+					this.sf:SetPoint("BOTTOMRIGHT", this, "BOTTOMRIGHT", 34, -32)
 				end
 			end)
 			self:SecureHook(opt, "OnLeaveOverride", function(this)
@@ -5122,28 +5126,11 @@ aObj.blizzLoDFrames[ftype].PlayerChoiceUI = function(self)
 		end
 		opt, gOfs, y1Ofs, y2Ofs = nil, nil, nil, nil
 
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, aso={bbclr="sepia"}, y2=-25}
-		if self.modBtns then
-			self:skinCloseButton{obj=this.CloseButton, noSkin=true}
-		end
-
-		-- TODO: update code to handle NEW jailerstower textures & effects
-
-		this.sf:SetShown(this.uiTextureKit ~= "jailerstower")
-
-		-- -- disable ModelScene effects in JailersTower
-		-- local function disableModelScene(frame)
-		-- 	if frame.uiTextureKit == "jailerstower" then
-		-- 		_G.C_Timer.After(0.05, function()
-		-- 			frame.HighStrataModelScene:ClearEffects()
-		-- 		end)
-		-- 	end
-		-- end
-		-- disableModelScene(this)
+		-- TODO: handle textures being visible in jailersTower but not elsewhere
 
 		-- hook these to handle setup & updates to frame
 		self:SecureHook(this, "TryShow", function(this)
-			-- aObj:Debug("PCUI - TryShow: [%s, %s]", this.uiTextureKit)
+			aObj:Debug("PCUI - TryShow: [%s, %s]", this.uiTextureKit)
 			this.sf:SetShown(this.uiTextureKit ~= "jailerstower")
 			local opt
 			for i = 1, #this.Options do
@@ -5156,7 +5143,7 @@ aObj.blizzLoDFrames[ftype].PlayerChoiceUI = function(self)
 			opt = nil
 		end)
 		self:SecureHook(this, "Update", function(this)
-			-- aObj:Debug("PCUI - Update: [%s, %s]", this.uiTextureKit)
+			aObj:Debug("PCUI - Update: [%s, %s]", this.uiTextureKit)
 			if this.uiTextureKit ~= "Oribos"
 			and this.uiTextureKit ~= "jailerstower"
 			then
@@ -5172,8 +5159,6 @@ aObj.blizzLoDFrames[ftype].PlayerChoiceUI = function(self)
 					end
 				end
 				opt = nil
-			-- elseif this.uiTextureKit == "jailerstower" then
-			-- 	disableModelScene(this)
 			end
 		end)
 
