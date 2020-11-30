@@ -5703,13 +5703,16 @@ aObj.blizzFrames[ftype].StaticPopups = function(self)
 	if self.modBtns then
 		-- hook this to handle close button texture changes
 		self:SecureHook("StaticPopup_Show", function(_)
+			local nTex
 			for i = 1, _G.STATICPOPUP_NUMDIALOGS do
-				if aObj:hasTextInTexture(_G["StaticPopup" .. i .. "CloseButton"]:GetNormalTexture(), "HideButton") then
+				nTex = _G["StaticPopup" .. i .. "CloseButton"]:GetNormalTexture()
+				if self:hasTextInTexture(nTex, "HideButton") then
 					_G["StaticPopup" .. i .. "CloseButton"]:SetText(self.modUIBtns.minus)
-				elseif aObj:hasTextInTexture(_G["StaticPopup" .. i .. "CloseButton"]:GetNormalTexture(), "MinimizeButton") then
+				elseif self:hasTextInTexture(nTex, "MinimizeButton") then
 					_G["StaticPopup" .. i .. "CloseButton"]:SetText(self.modUIBtns.mult)
 				end
 			end
+			nTex = nil
 		end)
 		self:SecureHook("StaticPopup_OnUpdate", function(dialog, _)
 			self:clrBtnBdr(dialog.button1 or _G[dialog:GetName() .. "Button1"])
@@ -5718,13 +5721,13 @@ aObj.blizzFrames[ftype].StaticPopups = function(self)
 
 	for i = 1, _G.STATICPOPUP_NUMDIALOGS do
 		self:SecureHookScript(_G["StaticPopup" .. i], "OnShow", function(this)
-			local objName = this:GetName()
 			self:removeNineSlice(this.Border)
 			this.Separator:SetTexture(nil)
-			self:skinEditBox{obj=_G[objName .. "EditBox"], regs={6}, mi=true}
+			local objName = this:GetName()
+			self:skinObject("editbox", {obj=_G[objName .. "EditBox"], fType=ftype})
 			self:skinMoneyFrame{obj=_G[objName .. "MoneyInputFrame"]}
 			_G[objName .. "ItemFrameNameFrame"]:SetTexture(nil)
-			self:addSkinFrame{obj=this, ft=ftype, x1=6, y1=-6, x2=-6, y2=6}
+			self:skinObject("frame", {obj=this, fType=ftype, ofs=-6})
 			if self.modBtns then
 				self:skinStdButton{obj=this.button1}
 				self:skinStdButton{obj=this.button2}
@@ -5748,7 +5751,7 @@ aObj.blizzFrames[ftype].StaticPopups = function(self)
 	if not self.isClsc then
 		self:SecureHookScript(_G.PetBattleQueueReadyFrame, "OnShow", function(this)
 			self:removeNineSlice(this.Border)
-			self:addSkinFrame{obj=this, ft=ftype, kfs=true}
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true})
 			if self.modBtns then
 				self:skinStdButton{obj=this.AcceptButton}
 				self:skinStdButton{obj=this.DeclineButton}
@@ -5762,8 +5765,8 @@ aObj.blizzFrames[ftype].StaticPopups = function(self)
 		if not aObj.isClsc then
 			aObj:removeNineSlice(frame.Border)
 		end
-		aObj:addFrameBorder{obj=frame.Comment, ft=ftype}
-		aObj:addSkinFrame{obj=frame, ft=ftype, kfs=true, nb=true}
+		aObj:skinObject("frame", {obj=frame.Comment, fType=ftype, kfs=true, fb=true})
+		aObj:skinObject("frame", {obj=frame, fType=ftype, kfs=true})
 		if aObj.modBtns then
 			aObj:skinStdButton{obj=frame.ReportButton}
 			aObj:skinStdButton{obj=frame.CancelButton}
