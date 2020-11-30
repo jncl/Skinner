@@ -67,7 +67,7 @@ aObj.skinTPLs = {
 		noBdr       = false, -- equivalent to bd=11 when true
 		ebc         = false, -- use edit box colours
 		ba          = 1, -- backdrop alpha
-		bbclr       = "default", -- backdrop border colour
+		clr         = "default", -- backdrop border colour
 		bba         = 1, -- backdrop border alpha
 		ng          = false, -- no Gradient texture
 		-- fh          =, -- fade height
@@ -359,8 +359,8 @@ local function skinDropDown(tbl)
 		tbl.obj.ddTex = tbl.obj:CreateTexture(nil, "ARTWORK", -5) -- appear behind text
 		tbl.obj.ddTex:SetTexture(aObj.prdb.TexturedDD and aObj.itTex or nil)
 		-- align it to the middle texture
-		local lTex = tbl.obj.Left or tbl.obj.DLeft or _G[tbl.obj:GetName() .. "Left"]
-		local rTex = tbl.obj.Right or tbl.obj.DRight or _G[tbl.obj:GetName() .. "Right"]
+		local lTex = tbl.obj.Left or tbl.obj.DLeft or tbl.obj.LeftTexture or _G[tbl.obj:GetName() .. "Left"]
+		local rTex = tbl.obj.Right or tbl.obj.DRight or tbl.obj.RightTexture or _G[tbl.obj:GetName() .. "Right"]
 		if tbl.lrgTpl then
 			tbl.obj.ddTex:SetPoint("LEFT", lTex, "RIGHT", -11, 2)
 			tbl.obj.ddTex:SetPoint("RIGHT", rTex, "LEFT", -15, 0)
@@ -494,7 +494,7 @@ local function skinFrame(tbl)
 	if tbl.fb then
 		tbl.bd  = 10
 		tbl.ng  = true
-		tbl.ofs = 0
+		tbl.ofs = tbl.ofs or 0
 	end
 	-- position around the original frame
 	tbl.x1  = tbl.x1 or tbl.ofs * -1
@@ -505,18 +505,19 @@ local function skinFrame(tbl)
 	tbl.obj.sf:SetPoint("TOPLEFT", tbl.obj, "TOPLEFT", tbl.x1, tbl.y1)
 	tbl.obj.sf:SetPoint("BOTTOMRIGHT", tbl.obj, "BOTTOMRIGHT", tbl.x2, tbl.y2)
 	-- setup applySkin options
-	local so = aObj.skinTPLs.new("skin", tbl.aso)
-	so.obj   = tbl.obj.sf
-	so.fType = tbl.fType
-	so.bd    = tbl.noBdr and 11 or tbl.bd
-	so.ebc   = tbl.ebc
-	so.ba    = tbl.ba
-	so.bbclr = tbl.clr
-	so.bba   = tbl.bba
-	so.ng    = tbl.ng
-	if _G.rawget(tbl, "fh") then
-		so.fh = tbl.fh
-	end
+	local so  = aObj.skinTPLs.new("skin", tbl.aso)
+	so.obj    = tbl.obj.sf
+	so.fType  = tbl.fType
+	so.bd     = tbl.noBdr and 11 or tbl.bd
+	so.ebc    = tbl.ebc
+	so.ba     = tbl.ba
+	so.bbclr  = tbl.clr
+	so.bba    = tbl.bba
+	so.ng     = tbl.ng
+	so.fh     = _G.rawget(tbl, "fh")
+	-- if _G.rawget(tbl, "fh") then
+	-- 	so.fh = tbl.fh
+	-- end
 	so.invert = tbl.invert
 	so.rotate = tbl.rotate
 	-- apply the 'Skinner effect' to the frame
@@ -567,13 +568,10 @@ local function skinSlider(tbl)
 			tbl.obj:GetParent():DisableDrawLayer(tbl.rpTex)
 		end
 	end
-
 	local h, w, o = _G.Round(tbl.obj:GetHeight()), _G.Round(tbl.obj:GetWidth()), tbl.obj:GetOrientation()
 	aObj:Debug("skinSlider H/W: [%s, %s, %s]", o, h, w)
 	-- setup offsets based on Orientation/Height/Width
 	if o == "HORIZONTAL" then
-		tbl.x1 = _G.rawget(tbl, "x1") or 0
-		tbl.x2 = _G.rawget(tbl, "x2") or 0
 		if h <= 16 then
 			tbl.y1 = _G.rawget(tbl, "y1") or -1
 			tbl.y2 = _G.rawget(tbl, "y2") or 2
@@ -587,9 +585,9 @@ local function skinSlider(tbl)
 			tbl.y1 = _G.rawget(tbl, "y1") or -4
 			tbl.y2 = _G.rawget(tbl, "y2") or 5
 		end
+		tbl.x1 = _G.rawget(tbl, "x1") or 0
+		tbl.x2 = _G.rawget(tbl, "x2") or 0
 	else
-		tbl.y1 = _G.rawget(tbl, "y1") or 0
-		tbl.y2 = _G.rawget(tbl, "y2") or 0
 		if w <= 8 then
 			tbl.x1 = _G.rawget(tbl, "x1") or -4
 			tbl.x2 = _G.rawget(tbl, "x2") or 1
@@ -599,7 +597,14 @@ local function skinSlider(tbl)
 		elseif w <= 16 then
 			tbl.x1 = _G.rawget(tbl, "x1") or 0
 			tbl.x2 = _G.rawget(tbl, "x2") or -1
+		elseif w == 22 then
+			tbl.x1 = _G.rawget(tbl, "x1") or 3
+			tbl.x2 = _G.rawget(tbl, "x2") or -3
+			tbl.y1 = _G.rawget(tbl, "y1") or -1
+			tbl.y2 = _G.rawget(tbl, "y2") or 1
 		end
+		tbl.y1 = _G.rawget(tbl, "y1") or 0
+		tbl.y2 = _G.rawget(tbl, "y2") or 0
 	end
 	aObj:Debug("skinSlider#2: [%s, %s, %s, %s]", tbl.x1, tbl.x2, tbl.y1, tbl.y2)
 	-- skin the Slider
