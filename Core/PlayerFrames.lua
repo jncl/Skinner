@@ -2206,75 +2206,122 @@ aObj.blizzLoDFrames[ftype].EncounterJournal = function(self) -- a.k.a. Adenture 
 		aObj.modUIBtns:skinStdButton{obj=btn, x1=-11, y1=-2, x2=11, y2=2, clr="gold"} -- use module function so button appears
 	end
 	self:SecureHookScript(_G.EncounterJournal, "OnShow", function(this)
-		self:skinEditBox{obj=this.searchBox, regs={6, 7}, mi=true} -- 6 is text, 7 is icon
-		self:addSkinFrame{obj=this.searchBox.searchPreviewContainer, ft=ftype, kfs=true}
-		-- adjust skinframe as parent frame is resized when populated
-		this.searchBox.searchPreviewContainer.sf:SetPoint("TOPLEFT", this.searchBox.searchPreviewContainer.topBorder, "TOPLEFT", 0, 1)
-		this.searchBox.searchPreviewContainer.sf:SetPoint("BOTTOMRIGHT", this.searchBox.searchPreviewContainer.botRightCorner, "BOTTOMRIGHT", 0, 4)
-		_G.LowerFrameLevel(this.searchBox.searchPreviewContainer.sf)
-		for i = 1, #this.searchBox.searchPreview do
-			this.searchBox.searchPreview[i]:SetNormalTexture(nil)
-			this.searchBox.searchPreview[i]:SetPushedTexture(nil)
-		end
-		this.searchBox.showAllResults:SetNormalTexture(nil)
-		this.searchBox.showAllResults:SetPushedTexture(nil)
-		self:addSkinFrame{obj=this.searchResults, ft=ftype, kfs=true, ofs=6, y1=-1, x2=4}
-		self:skinSlider{obj=this.searchResults.scrollFrame.scrollBar, wdth=-4}
-		local btn
-		for i = 1, #this.searchResults.scrollFrame.buttons do
-			btn = this.searchResults.scrollFrame.buttons[i]
-			self:removeRegions(btn, {1})
-			btn:GetNormalTexture():SetAlpha(0)
-			btn:GetPushedTexture():SetAlpha(0)
-			if self.modBtnBs then
-				 self:addButtonBorder{obj=btn, relTo=btn.icon}
-			end
-		end
-		btn = nil
-		-- NavBar
 		this.navBar:DisableDrawLayer("BACKGROUND")
 		this.navBar:DisableDrawLayer("BORDER")
 		this.navBar.overlay:DisableDrawLayer("OVERLAY")
 		self:skinNavBarButton(this.navBar.home)
 		this.navBar.home.text:SetPoint("RIGHT", -20, 0)
 		self:removeInset(this.inset)
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true}
-		-- InstanceSelect
-		this.instanceSelect.bg:SetAlpha(0)
-		self:skinDropDown{obj=this.instanceSelect.tierDropDown}
-		self:SecureHook("EncounterJournal_EnableTierDropDown", function()
-			self:checkDisabledDD(this.instanceSelect.tierDropDown)
+		self:skinObject("editbox", {obj=this.searchBox, fType=ftype, si=true})
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true})
+		self:SecureHookScript(this.searchBox.searchPreviewContainer, "OnShow", function(this)
+			local btn
+			for i = 1, 5 do
+				btn = this:GetParent()["sbutton" .. i]
+				btn:SetNormalTexture(nil)
+				btn:SetPushedTexture(nil)
+			end
+			btn = nil
+			this:GetParent().showAllResults:SetNormalTexture(nil)
+			this:GetParent().showAllResults:SetPushedTexture(nil)
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true})
+			-- adjust skinframe as parent frame is resized when populated
+			this.sf:SetPoint("TOPLEFT", this.topBorder, "TOPLEFT", 0, 2)
+			this.sf:SetPoint("BOTTOMRIGHT", this.botRightCorner, "BOTTOMRIGHT", 0, 4)
+
+			self:Unhook(this, "OnShow")
 		end)
-		self:SecureHook("EncounterJournal_DisableTierDropDown", function()
-			self:checkDisabledDD(this.instanceSelect.tierDropDown)
-		end)
-		self:skinSlider{obj=this.instanceSelect.scroll.ScrollBar, wdth=-6}
-		self:addFrameBorder{obj=this.instanceSelect.scroll, ft=ftype, x1=-9, y1=6, x2=6, y2=-7}
-		if self.modBtnBs then
-			self:SecureHook("EncounterJournal_ListInstances", function()
-				local btn
-				for i = 1, 30 do
-					btn = this.instanceSelect.scroll.child["instance" .. i]
-					if btn then
-						self:addButtonBorder{obj=btn, relTo=btn.bgImage, ofs=0}
-					end
+		self:SecureHookScript(this.searchResults, "OnShow", function(this)
+			self:skinObject("slider", {obj=this.scrollFrame.scrollBar, fType=ftype, y1=-2, y2=2})
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, ofs=6, y1=-1, x2=4})
+			for _, btn in pairs(this.scrollFrame.buttons) do
+				self:removeRegions(btn, {1})
+				btn:GetNormalTexture():SetAlpha(0)
+				btn:GetPushedTexture():SetAlpha(0)
+				if self.modBtnBs then
+					 self:addButtonBorder{obj=btn, relTo=btn.icon}
 				end
-				btn = nil
-			end)
-		end
-		self:skinObject("tabs", {obj=this.instanceSelect, tabs=this.instanceSelect.Tabs, fType=ftype, ignoreSize=true, lod=true, offsets={x1=-11, y1=-2, x2=11, y2=-4}, regions={11}, track=false})
-		if self.isTT then
-			self:SecureHook("EJ_ContentTab_Select", function(id)
-				for i, tab in _G.pairs(_G.EncounterJournal.instanceSelect.Tabs) do
-					if i == id then
-						self:setActiveTab(tab.sf)
+			end
+
+			self:Unhook(this, "OnShow")
+		end)
+		self:SecureHookScript(this.suggestFrame, "OnShow", function(this)
+			local ejsfs
+			for i = 1, _G.AJ_MAX_NUM_SUGGESTIONS do
+				ejsfs = this["Suggestion" .. i]
+				ejsfs.bg:SetTexture(nil)
+				ejsfs.iconRing:SetTexture(nil)
+				ejsfs.centerDisplay.title.text:SetTextColor(self.HT:GetRGB())
+				ejsfs.centerDisplay.description.text:SetTextColor(self.BT:GetRGB())
+				if i == 1 then
+					ejsfs.reward.text:SetTextColor(self.BT:GetRGB())
+				end
+				ejsfs.reward.iconRing:SetTexture(nil)
+				if self.modBtns then
+					if i ~= 1 then
+						self:skinStdButton{obj=ejsfs.centerDisplay.button}
 					else
-						self:setInactiveTab(tab.sf)
+						self:skinStdButton{obj=ejsfs.button}
 					end
 				end
+				if self.modBtnBs
+				and i == 1
+				then
+					self:addButtonBorder{obj=ejsfs.prevButton, ofs=-2, y1=-3, x2=-3, clr="gold"}
+					self:addButtonBorder{obj=ejsfs.nextButton, ofs=-2, y1=-3, x2=-3, clr="gold"}
+					self:SecureHook("EJSuggestFrame_RefreshDisplay", function()
+						local frame = _G.EncounterJournal.suggestFrame.Suggestion1
+						self:clrBtnBdr(frame.prevButton, "gold")
+						self:clrBtnBdr(frame.nextButton, "gold")
+						frame = nil
+					end)
+				end
+			end
+			ejsfs = nil
+			self:skinObject("frame", {obj=this, fType=ftype, fb=true, x1=-9, y1=6, x2=7, y2=-5})
+
+			self:Unhook(this, "OnShow")
+		end)
+		self:checkShown(this.suggestFrame)
+		self:SecureHookScript(this.instanceSelect, "OnShow", function(this)
+			this.bg:SetAlpha(0)
+			self:skinObject("dropdown", {obj=this.tierDropDown, fType=ftype})
+			self:SecureHook("EncounterJournal_EnableTierDropDown", function()
+				self:checkDisabledDD(this.tierDropDown)
 			end)
-		end
-		-- Encounter
+			self:SecureHook("EncounterJournal_DisableTierDropDown", function()
+				self:checkDisabledDD(this.tierDropDown)
+			end)
+			self:skinObject("slider", {obj=this.scroll.ScrollBar, fType=ftype})
+			self:skinObject("frame", {obj=this.scroll, fType=ftype, x1=-9, y1=6, x2=6, y2=-8})
+			if self.modBtnBs then
+				self:SecureHook("EncounterJournal_ListInstances", function()
+					local btn
+					for i = 1, 30 do
+						btn = this.scroll.child["instance" .. i]
+						if btn then
+							self:addButtonBorder{obj=btn, relTo=btn.bgImage, ofs=0}
+						end
+					end
+					btn = nil
+				end)
+			end
+			self:skinObject("tabs", {obj=this, tabs=this.Tabs, fType=ftype, ignoreSize=true, lod=true, offsets={x1=-11, y1=-2, x2=11, y2=-4}, regions={11}, track=false})
+			if self.isTT then
+				self:SecureHook("EJ_ContentTab_Select", function(id)
+					for i, tab in _G.pairs(_G.EncounterJournal.instanceSelect.Tabs) do
+						if i == id then
+							self:setActiveTab(tab.sf)
+						else
+							self:setInactiveTab(tab.sf)
+						end
+					end
+				end)
+			end
+
+			self:Unhook(this, "OnShow")
+		end)
+		self:checkShown(this.instanceSelect)
 		self:SecureHookScript(this.encounter, "OnShow", function(this)
 			-- Instance frame
 			this.instance.loreBG:SetTexCoord(0.06, 0.70, 0.08, 0.58)
@@ -2284,7 +2331,7 @@ aObj.blizzLoDFrames[ftype].EncounterJournal = function(self) -- a.k.a. Adenture 
 			if self.modBtnBs then
 				self:addButtonBorder{obj=this.instance.mapButton, relTo=this.instance.mapButton.texture, x1=2, y1=-1, x2=-2, y2=1}
 			end
-			self:skinSlider{obj=this.instance.loreScroll.ScrollBar, wdth=-4}
+			self:skinObject("slider", {obj=this.instance.loreScroll.ScrollBar, fType=ftype, x2=-4})
 			this.instance.loreScroll.child.lore:SetTextColor(self.BT:GetRGB())
 			-- Boss/Creature buttons
 			local function skinBossBtns()
@@ -2307,16 +2354,16 @@ aObj.blizzLoDFrames[ftype].EncounterJournal = function(self) -- a.k.a. Adenture 
 			this.info.instanceButton:SetPushedTexture(nil)
 			this.info.instanceButton:SetHighlightTexture([[Interface\EncounterJournal\UI-EncounterJournalTextures]])
 			this.info.instanceButton:GetHighlightTexture():SetTexCoord(0.68945313, 0.81054688, 0.33300781, 0.39257813)
-			self:skinSlider{obj=this.info.bossesScroll.ScrollBar, wdth=-4}
+			self:skinObject("slider", {obj=this.info.bossesScroll.ScrollBar, fType=ftype, x2=-4})
 			skinFilterBtn(this.info.difficulty)
 			this.info.reset:SetNormalTexture(nil)
 			this.info.reset:SetPushedTexture(nil)
 			if self.modBtns then
 				self:skinStdButton{obj=this.info.reset, y2=2, clr="gold"}
 			end
-			self:skinSlider{obj=this.info.detailsScroll.ScrollBar, wdth=-4}
+			self:skinObject("slider", {obj=this.info.detailsScroll.ScrollBar, x2=-4})
 			this.info.detailsScroll.child.description:SetTextColor(self.BT:GetRGB())
-			self:skinSlider{obj=this.info.overviewScroll.ScrollBar, wdth=-4}
+			self:skinObject("slider", {obj=this.info.overviewScroll.ScrollBar, fType=ftype, x2=-4})
 			this.info.overviewScroll.child.loreDescription:SetTextColor(self.BT:GetRGB())
 			this.info.overviewScroll.child.header:SetTexture(nil)
 			this.info.overviewScroll.child.overviewDescription.Text:SetTextColor(self.BT:GetRGB())
@@ -2342,18 +2389,18 @@ aObj.blizzLoDFrames[ftype].EncounterJournal = function(self) -- a.k.a. Adenture 
 				objName = nil
 			end)
 			-- Loot Frame
-			self:skinSlider{obj=this.info.lootScroll.scrollBar, wdth=-4}
+			self:skinObject("slider", {obj=this.info.lootScroll.scrollBar, fType=ftype, x2=-4})
 			skinFilterBtn(this.info.lootScroll.filter)
 			skinFilterBtn(this.info.lootScroll.slotFilter)
 			this.info.lootScroll.classClearFilter:DisableDrawLayer("BACKGROUND")
 			-- hook this to skin loot entries
 			self:SecureHook("EncounterJournal_LootUpdate", function()
-				for i = 1, #this.info.lootScroll.buttons do
-					this.info.lootScroll.buttons[i]:DisableDrawLayer("BORDER")
-					this.info.lootScroll.buttons[i].armorType:SetTextColor(self.BT:GetRGB())
-					this.info.lootScroll.buttons[i].slot:SetTextColor(self.BT:GetRGB())
-					this.info.lootScroll.buttons[i].boss:SetTextColor(self.BT:GetRGB())
-					self:addButtonBorder{obj=this.info.lootScroll.buttons[i], relTo=this.info.lootScroll.buttons[i].icon}
+				for _, btn in pairs(this.info.lootScroll.buttons) do
+					btn:DisableDrawLayer("BORDER")
+					btn.armorType:SetTextColor(self.BT:GetRGB())
+					btn.slot:SetTextColor(self.BT:GetRGB())
+					btn.boss:SetTextColor(self.BT:GetRGB())
+					self:addButtonBorder{obj=btn, relTo=btn.icon}
 				end
 			end)
 			-- Model Frame
@@ -2382,52 +2429,24 @@ aObj.blizzLoDFrames[ftype].EncounterJournal = function(self) -- a.k.a. Adenture 
 				skinCreatureBtn(_G.EncounterJournal.encounter.info.creatureButtons[index])
 			end)
 			-- Tabs (side)
-			-- TODO: use NewSkinFunc
-			for _, type in _G.pairs{"overviewTab", "lootTab", "bossTab", "modelTab"} do
-				this.info[type]:SetNormalTexture(nil)
-				this.info[type]:SetPushedTexture(nil)
-				this.info[type]:GetDisabledTexture():SetAlpha(0) -- tab texture is modified
-				self:addSkinFrame{obj=this.info[type], ft=ftype, noBdr=true, aso={rotate=true}, ofs=-3} -- gradient is right to left
-			end
+			self:skinObject("tabs", {obj=this.info, fType=ftype, tabs={this.info.overviewTab, this.info.lootTab, this.info.bossTab, this.info.modelTab}, aso={ng=true}, regions={4, 5, 6}, offsets={x1=3, y1=-2, x2=-3, y2=0}, track=false})
 			self:moveObject{obj=this.info.overviewTab, x=12}
 
 			self:Unhook(this, "OnShow")
 		end)
 		self:checkShown(this.encounter)
-		-- Suggest Frame
-		local ejsfs
-		for i = 1, _G.AJ_MAX_NUM_SUGGESTIONS do
-			ejsfs = this.suggestFrame["Suggestion" .. i]
-			ejsfs.bg:SetTexture(nil)
-			ejsfs.iconRing:SetTexture(nil)
-			ejsfs.centerDisplay.title.text:SetTextColor(self.HT:GetRGB())
-			ejsfs.centerDisplay.description.text:SetTextColor(self.BT:GetRGB())
-			if i == 1 then
-				ejsfs.reward.text:SetTextColor(self.BT:GetRGB())
+		self:SecureHookScript(this.LootJournal, "OnShow", function(this)
+			self:skinObject("slider", {obj=this.PowersFrame.ScrollBar, fType=ftype, x2=-4})
+			for _, btn in pairs(this.PowersFrame.elements) do
+				btn.Background:SetTexture(nil)
 			end
-			ejsfs.reward.iconRing:SetTexture(nil)
-			if self.modBtns then
-				if i ~= 1 then
-					self:skinStdButton{obj=ejsfs.centerDisplay.button}
-				else
-					self:skinStdButton{obj=ejsfs.button}
-				end
-			end
-			if self.modBtnBs
-			and i == 1
-			then
-				self:addButtonBorder{obj=ejsfs.prevButton, ofs=-2, y1=-3, x2=-3, clr="gold"}
-				self:addButtonBorder{obj=ejsfs.nextButton, ofs=-2, y1=-3, x2=-3, clr="gold"}
-				self:SecureHook("EJSuggestFrame_RefreshDisplay", function()
-					local frame = _G.EncounterJournal.suggestFrame.Suggestion1
-					self:clrBtnBdr(frame.prevButton, "gold")
-					self:clrBtnBdr(frame.nextButton, "gold")
-					frame = nil
-				end)
-			end
-		end
-		ejsfs = nil
-		self:addFrameBorder{obj=this.suggestFrame, ft=ftype, x1=-9, y1=6, x2=7, y2=-4}
+	 		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, fb=true, x1=-8, y1=6, x2=8, y2=-5})
+			skinFilterBtn(this.ClassDropDownButton)
+			skinFilterBtn(this.RuneforgePowerFilterDropDownButton)
+
+			self:Unhook(this, "OnShow")
+		end)
+		self:checkShown(this.LootJournal)
 
 		self:Unhook(this, "OnShow")
 	end)
