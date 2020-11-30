@@ -854,9 +854,7 @@ aObj.blizzLoDFrames[ftype].AnimaDiversionUI = function(self)
 		self:keepFontStrings(this.BorderFrame)
 		this.CloseButton.Border:SetTexture(nil)
 		this.AnimaDiversionCurrencyFrame:DisableDrawLayer("BACKGROUND")
-		self:moveObject{obj=this.AnimaDiversionCurrencyFrame, y=-1}
-		self:moveObject{obj=this.ReinforceProgressFrame, y=1}
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, aso={bbclr="sepia"}, x2=1, y2=-3}
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, clr="sepia", x1=-4, y1=3, x2=2, y2=-5})
 		if self.modBtns then
 			self:skinCloseButton{obj=this.CloseButton , noSkin=true}
 			self:skinStdButton{obj=this.ReinforceInfoFrame.AnimaNodeReinforceButton}

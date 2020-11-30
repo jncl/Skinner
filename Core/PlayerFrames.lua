@@ -3671,7 +3671,7 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 
 	-- tooltip
 	_G.C_Timer.After(0.1, function()
-		aObj:add2Table(aObj.ttList, _G.ScenarioStepRewardTooltip)
+		self:add2Table(self.ttList, _G.ScenarioStepRewardTooltip)
 	end)
 
 	_G.ScenarioBlocksFrame.MawBuffsBlock.Container.List:DisableDrawLayer("BACKGROUND")
