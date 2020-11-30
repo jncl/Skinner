@@ -5,8 +5,7 @@ local _G = _G
 local ftype = "u"
 
 -- The following functions are used by the GarrisonUI & OrderHallUI
-local stageRegs, navalStageRegs, cdStageRegs, skinMissionFrame, skinPortrait, skinCovenantFollowerPortrait, skinFollower, skinFollowerListButtons, skinFollowerAbilitiesAndCounters, skinFollowerList, skinFollowerPage, skinFollowerTraitsAndEquipment, skinCompleteDialog, skinMissionPage, skinMissionComplete, skinMissionList
-local isShadowlands = false
+local stageRegs, skinMissionFrame, skinPortrait, skinCovenantFollowerPortrait, skinFollower, skinFollowerListButtons, skinFollowerAbilitiesAndCounters, skinFollowerList, skinFollowerPage, skinFollowerTraitsAndEquipment, skinCompleteDialog, skinMissionPage, skinMissionComplete, skinMissionList
 
 -- [WoD] LE_FOLLOWER_TYPE_GARRISON_6_0
 -- [WoD] LE_FOLLOWER_TYPE_GARRISON_6_2 (Shipyards)
@@ -15,30 +14,39 @@ local isShadowlands = false
 -- [Shadowlands] Enum.GarrisonType.Type_9_0
 if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 	stageRegs = {1, 2, 3, 4, 5}
-	navalStageRegs = {1, 2, 3, 4}
-	cdStageRegs = {1, 2, 3, 4, 5, 6}
 	local mfTabSkin = aObj.skinTPLs.new("tabs", {fType=ftype, ignoreSize=true, lod=true, ignoreHLTex=true, regions={7, 8, 9, 10}})
 	function skinMissionFrame(frame)
-		local x1Ofs, y1Ofs, y2Ofs
-		if isShadowlands then
-			x1Ofs = frame == _G.CovenantMissionFrame and -2
-			y1Ofs = frame == _G.CovenantMissionFrame and 1
-			y2Ofs = frame == _G.CovenantMissionFrame and -4
+		local x1Ofs, y1Ofs, y2Ofs = 2, 2, -5
+		if frame == _G.CovenantMissionFrame then
+			x1Ofs = -2
+			y1Ofs = 1
+			y2Ofs = -4
+		elseif frame == _G.BFAMissionFrame then
+			y1Ofs = 1
+			y2Ofs = -6
+		elseif frame == _G.OrderHallMissionFrame then
+			y2Ofs = -4
 		end
-		y1Ofs = y1Ofs or frame == _G.BFAMissionFrame and 1
-		y2Ofs = y2Ofs or frame == _G.OrderHallMissionFrame and -4
 		frame.GarrCorners:DisableDrawLayer("BACKGROUND")
-		aObj:addSkinFrame{obj=frame, ft=ftype, kfs=true, x1=x1Ofs or 2, y1=y1Ofs or 2, x2=1, y2=y2Ofs or -5}
+		aObj:skinObject("frame", {obj=frame, fType=ftype, kfs=true, cb=true, x1=x1Ofs, y1=y1Ofs, x2=1, y2=y2Ofs})
+		x1Ofs, y1Ofs, y2Ofs = nil, nil, nil
 		-- tabs
 		mfTabSkin.obj = frame
 		mfTabSkin.prefix =  frame:GetName()
 		mfTabSkin.selectedTab = frame.selectedTab
 		mfTabSkin.offsets = {x1=9, y1=2, x2=-9, y2=frame==_G.GarrisonMissionFrame and 0 or -4}
 		aObj:skinObject(mfTabSkin)
-		x1Ofs, y1Ofs, y2Ofs = nil, nil, nil
 	end
 	function skinPortrait(frame)
-		if not isShadowlands then
+		if frame.PuckBorder then
+			-- FIXME: colour of PuckBorder changes for troops, is it important to show it?
+			aObj:nilTexture(frame.PuckBorder, true)
+			frame.PortraitRingQuality:SetTexture(nil)
+			frame.PortraitRingCover:SetTexture(nil)
+			aObj:changeTandC(frame.LevelCircle)
+			frame.HealthBar.Health:SetTexture(aObj.sbTexture)
+			frame.HealthBar.Border:SetTexture(nil)
+		else
 			frame.PortraitRing:SetTexture(nil)
 			frame.LevelBorder:SetAlpha(0) -- texture changed
 			if frame.PortraitRingCover then frame.PortraitRingCover:SetTexture(nil) end
@@ -51,20 +59,16 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 					fp.PortraitRing:SetAtlas("GarrMission_PortraitRing_Quality") -- reset after legion titled follower
 				end)
 			end
-		else
-			-- FIXME: colour of PuckBorder changes for troops, is it important to show it?
-			aObj:nilTexture(frame.PuckBorder, true)
-			frame.PortraitRingQuality:SetTexture(nil)
-			frame.PortraitRingCover:SetTexture(nil)
-			aObj:changeTandC(frame.LevelCircle)
-			frame.HealthBar.Health:SetTexture(aObj.sbTexture)
-			frame.HealthBar.Border:SetTexture(nil)
 		end
 	end
 	function skinFollower(frame)
 		frame.BG:SetTexture(nil)
-		if frame.AbilitiesBG then frame.AbilitiesBG:SetTexture(nil) end -- Mission Follower
-		if frame.PortraitFrame then skinPortrait(frame.PortraitFrame) end
+		if frame.AbilitiesBG then
+			frame.AbilitiesBG:SetTexture(nil)
+		end
+		if frame.PortraitFrame then
+			skinPortrait(frame.PortraitFrame)
+		end
 	end
 	function skinFollowerListButtons(frame)
 		for i = 1, #frame.listScroll.buttons do
@@ -75,6 +79,14 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 			else
 				skinFollower(frame.listScroll.buttons[i])
 			end
+		end
+	end
+	-- Equipment buttons (OrderHallUI & BfA [Beta])
+	local function skinEquipment(frame)
+		for equipment in frame.equipmentPool:EnumerateActive() do
+			equipment.BG:SetTexture(nil)
+			equipment.Border:SetTexture(nil)
+			aObj.modUIBtns:addButtonBorder{obj=equipment, ofs=1, relTo=equipment.Icon} -- use module function
 		end
 	end
 	function skinFollowerAbilitiesAndCounters(frame)
@@ -108,41 +120,31 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 			end)
 
 		end
-		-- Equipment buttons (OrderHallUI & BfA [Beta])
-		local function skinEquipment()
-			for equipment in frame.equipmentPool:EnumerateActive() do
-				equipment.BG:SetTexture(nil)
-				equipment.Border:SetTexture(nil)
-				aObj.modUIBtns:addButtonBorder{obj=equipment, ofs=1, relTo=equipment.Icon} -- use module function
-			end
-		end
 		-- skin existing entries
-		skinEquipment()
+		skinEquipment(frame)
 		-- hook this to handle additional entries
 		aObj:SecureHook(frame, "ShowEquipment", function(this, _)
-			skinEquipment()
+			skinEquipment(this)
 		end)
 	end
 	function skinFollowerList(frame)
-		if not isShadowlands then
-			frame:DisableDrawLayer("BORDER")
-			aObj:removeRegions(frame, {1, 2, frame:GetParent() ~= _G.GarrisonLandingPage and 3 or nil})
-			aObj:skinSlider{obj=frame.listScroll.scrollBar, wdth=-6}
-		else
-			if frame.FollowerScrollFrame then
-				frame.FollowerScrollFrame:SetTexture(nil)
-			end
+		if frame.ElevatedFrame then
+			frame.ElevatedFrame:DisableDrawLayer("OVERLAY")
 			aObj:removeRegions(frame, {1})
 			frame.listScroll.scrollBar:DisableDrawLayer("BACKGROUND")
-			if frame.ElevatedFrame then
-				frame.ElevatedFrame:DisableDrawLayer("OVERLAY")
-			end
+		else
+			frame:DisableDrawLayer("BORDER")
+			aObj:removeRegions(frame, {1, 2, frame:GetParent() ~= _G.GarrisonLandingPage and 3 or nil})
+			aObj:skinObject("slider", {obj=frame.listScroll.scrollBar, fType=ftype, y1=-2, y2=2})
+		end
+		if frame.FollowerScrollFrame then
+			frame.FollowerScrollFrame:SetTexture(nil)
 		end
 		if frame.MaterialFrame then
 			frame.MaterialFrame:DisableDrawLayer("BACKGROUND")
 		end
 		if frame.SearchBox then
-			aObj:skinEditBox{obj=frame.SearchBox, regs={6, 7, 8}, mi=true} -- 6 is text, 7 is icon, 8 is text
+			aObj:skinObject("editbox", {obj=frame.SearchBox, fType=ftype, si=true})
 			-- need to do this as background isn't visible on Shipyard Mission page
 			_G.RaiseFrameLevel(frame.SearchBox)
 		end
@@ -162,7 +164,7 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 		end
 	end
 	function skinFollowerPage(frame)
-		if not isShadowlands then
+		if frame.PortraitFrame then
 			skinPortrait(frame.PortraitFrame)
 			aObj:addButtonBorder{obj=frame.ItemWeapon, relTo=frame.ItemWeapon.Icon}
 			frame.ItemWeapon.Border:SetTexture(nil)
@@ -186,12 +188,16 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 		frame.XPBar:DisableDrawLayer("OVERLAY")
 		for i = 1, #frame.Traits do
 			frame.Traits[i].Border:SetTexture(nil)
-			aObj:addButtonBorder{obj=frame.Traits[i], relTo=frame.Traits[i].Portrait, ofs=1}
+			if aObj.modBtnBs then
+				aObj:addButtonBorder{obj=frame.Traits[i], relTo=frame.Traits[i].Portrait, ofs=1}
+			end
 		end
 		for i = 1, #frame.EquipmentFrame.Equipment do
 			frame.EquipmentFrame.Equipment[i].BG:SetTexture(nil)
 			frame.EquipmentFrame.Equipment[i].Border:SetTexture(nil)
-			aObj:addButtonBorder{obj=frame.EquipmentFrame.Equipment[i], relTo=frame.EquipmentFrame.Equipment[i].Icon, ofs=1}
+			if aObj.modBtnBs then
+				aObj:addButtonBorder{obj=frame.EquipmentFrame.Equipment[i], relTo=frame.EquipmentFrame.Equipment[i].Icon, ofs=1}
+			end
 		end
 	end
 	function skinCompleteDialog(frame, naval)
@@ -203,22 +209,30 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 			_G.RaiseFrameLevelByTwo(frame) -- raise above markers on mission frame
 		end
 		frame:SetSize(naval and 935 or 948, _G.IsAddOnLoaded("GarrisonCommander") and 640 or naval and 648 or 630)
-		frame.BorderFrame:DisableDrawLayer("BACKGROUND")
-		frame.BorderFrame:DisableDrawLayer("BORDER")
-		frame.BorderFrame:DisableDrawLayer("OVERLAY")
-		aObj:removeRegions(frame.BorderFrame.Stage, cdStageRegs)
-		aObj:skinStdButton{obj=frame.BorderFrame.ViewButton}
-	    aObj:addSkinFrame{obj=frame.BorderFrame, ft=ftype, y2=-2}
+		-- frame.BorderFrame:DisableDrawLayer("BACKGROUND")
+		-- frame.BorderFrame:DisableDrawLayer("BORDER")
+		-- frame.BorderFrame:DisableDrawLayer("OVERLAY")
+		aObj:removeRegions(frame.BorderFrame.Stage, {1, 2, 3, 4, 5, 6})
+	    -- aObj:addSkinFrame{obj=frame.BorderFrame, ft=ftype, y2=-2}
+		aObj:skinObject("frame", {obj=frame.BorderFrame, fType=ftype, kfs=true, y2=-2})
+		if aObj.modBtns then
+			aObj:skinStdButton{obj=frame.BorderFrame.ViewButton}
+		end
 	end
 	function skinMissionPage(frame)
-		frame:DisableDrawLayer("BACKGROUND")
-		frame:DisableDrawLayer("BORDER")
-		frame:DisableDrawLayer("OVERLAY")
-		if frame.ButtonFrame then frame.ButtonFrame:SetTexture(nil) end
-		if frame.StartMissionFrame then frame.StartMissionFrame.ButtonFrame:SetTexture(nil) end
+		frame.IconBG:SetTexture(nil)
 		aObj:removeRegions(frame.Stage, stageRegs)
+		frame.Stage.Header:SetAlpha(0)
 		frame.Stage.MissionEnvIcon.Texture:SetTexture(nil)
-		if frame.BuffsFrame then frame.BuffsFrame.BuffsBG:SetTexture(nil) end
+		if frame.ButtonFrame then
+			frame.ButtonFrame:SetTexture(nil)
+		end
+		if frame.StartMissionFrame then
+			frame.StartMissionFrame.ButtonFrame:SetTexture(nil)
+		end
+		if frame.BuffsFrame then
+			frame.BuffsFrame.BuffsBG:SetTexture(nil)
+		end
 		if frame.RewardsFrame then
 			frame.RewardsFrame:DisableDrawLayer("BACKGROUND")
 			frame.RewardsFrame:DisableDrawLayer("BORDER")
@@ -248,11 +262,11 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 			frame.CloseButton:SetSize(28, 28) -- make button smaller
 		end
 		local y1Ofs, x2Ofs, y2Ofs = 5, 3, -20
-		if isShadowlands then
+		if frame.CloseButton.CloseButtonBorder then
 			frame.CloseButton.CloseButtonBorder:SetTexture(nil)
 			y1Ofs, x2Ofs, y2Ofs = 2, 1, -30
 		end
-		aObj:addSkinFrame{obj=frame, ft=ftype, kfs=true, x1=_G.IsAddOnLoaded("GarrisonCommander") and 0 or -320, y1=y1Ofs, x2=x2Ofs, y2=y2Ofs}
+		aObj:skinObject("frame", {obj=frame, fType=ftype, kfs=true, cb=true, x1=_G.IsAddOnLoaded("GarrisonCommander") and 0 or -320, y1=y1Ofs, x2=x2Ofs, y2=y2Ofs})
 		if aObj.modBtns then
 			aObj:skinStdButton{obj=frame.StartMissionButton}
 			aObj:moveObject{obj=frame.StartMissionButton.Flash, x=-0.5, y=1.5}
@@ -269,7 +283,7 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 	    frame:DisableDrawLayer("BACKGROUND")
 		frame:DisableDrawLayer("BORDER")
 		frame:DisableDrawLayer("ARTWORK")
-		aObj:removeRegions(frame.Stage, naval and navalStageRegs or stageRegs) -- top half only
+		aObj:removeRegions(frame.Stage, naval and {1, 2, 3, 4} or stageRegs) -- top half only
 		local flwr
 		for i = 1, #frame.Stage.FollowersFrame.Followers do
 			flwr = frame.Stage.FollowersFrame.Followers[i]
@@ -315,11 +329,15 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 	end
 	local mlTabSkin = aObj.skinTPLs.new("tabs", {fType=ftype, numTabs=2, ignoreSize=true, lod=true, regions={7, 8, 9}, track=false})
 	function skinMissionList(ml, tabOfs)
-		ml:DisableDrawLayer("BORDER")
 		ml.MaterialFrame:DisableDrawLayer("BACKGROUND")
-		aObj:addFrameBorder{obj=ml, ft=ftype, x1=1, y1=1, x2=-2, y2=2}
-		if not isShadowlands then
-			aObj:skinSlider{obj=ml.listScroll.scrollBar, wdth=-4}
+		aObj:skinObject("frame", {obj=ml, fType=ftype, kfs=true, fb=true, ofs=1})
+		if ml.RaisedFrameEdges then
+			ml.MaterialFrame.LeftFiligree:SetTexture(nil)
+			ml.MaterialFrame.RightFiligree:SetTexture(nil)
+			ml.listScroll.scrollBar:DisableDrawLayer("BACKGROUND")
+			ml.RaisedFrameEdges:DisableDrawLayer("BORDER")
+		else
+			aObj:skinObject("slider", {obj=ml.listScroll.scrollBar, fType=ftype, y1=-2, y2=2})
 			-- tabs
 			mlTabSkin.obj = ml
 			mlTabSkin.prefix = ml:GetName()
@@ -337,11 +355,6 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 					end
 				end)
 			end
-		else
-			ml.MaterialFrame.LeftFiligree:SetTexture(nil)
-			ml.MaterialFrame.RightFiligree:SetTexture(nil)
-			ml.listScroll.scrollBar:DisableDrawLayer("BACKGROUND")
-			ml.RaisedFrameEdges:DisableDrawLayer("BORDER")
 		end
 		local btn
 		for i = 1, #ml.listScroll.buttons do
@@ -349,7 +362,7 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 			btn:DisableDrawLayer("BACKGROUND")
 			btn:DisableDrawLayer("BORDER")
 			aObj:nilTexture(btn.LocBG, true)
-			if not isShadowlands then
+			if btn.RareOverlay then
 				btn.RareOverlay:SetTexture(nil)
 				-- extend the top & bottom highlight texture
 				btn.HighlightT:ClearAllPoints()
@@ -2235,11 +2248,8 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 
 	self.initialized.GarrisonUI = true
 
-	local garrisonType = _G.C_Garrison.GetLandingPageGarrisonType()
-	isShadowlands = garrisonType == _G.Enum.GarrisonType.Type_9_0
-	stageRegs = isShadowlands and {1} or stageRegs
-	-- aObj:Debug("garrisonType: [%s, %s]", _G.C_Garrison.GetLandingPageGarrisonType(), isShadowlands)
-	garrisonType = nil
+	self.garrisonType = _G.C_Garrison.GetLandingPageGarrisonType()
+	-- aObj:Debug("garrisonType: [%s, %s]", _G.C_Garrison.GetLandingPageGarrisonType())
 
 	-- hook these to skin mission rewards & OvermaxItem
     self:SecureHook("GarrisonMissionPage_SetReward", function(frame, _)
@@ -2506,27 +2516,22 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 	end)
 
 	self:SecureHookScript(_G.GarrisonLandingPage, "OnShow", function(this)
-		this:DisableDrawLayer("BACKGROUND")
 		this.HeaderBar:SetTexture(nil)
 		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, ignoreSize=true, lod=true, offsets={x1=4, y1=-10, x2=-4, y2=-3}, regions={7, 8, 9, 10}})
-		aObj:addSkinFrame{obj=this, ft=ftype, ofs=-6, y1=-13, x2=-13, y2=4}
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, ofs=-13, y2=4})
 		-- ReportTab
 		self:SecureHookScript(this.Report, "OnShow", function(this)
 			this.List:DisableDrawLayer("BACKGROUND")
-			self:skinSlider{obj=this.List.listScroll.scrollBar, wdth=-4}
-			local btn
-			for i = 1, #this.List.listScroll.buttons do
-				btn = this.List.listScroll.buttons[i]
+			self:skinObject("slider", {obj=this.List.listScroll.scrollBar, fType=ftype, y1=-1, y2=1})
+			for _, btn in _G.pairs(this.List.listScroll.buttons) do
 				btn:DisableDrawLayer("BACKGROUND")
 				btn:DisableDrawLayer("BORDER")
-				for j = 1, #btn.Rewards do
-					btn:DisableDrawLayer("BACKGROUND")
-					self:addButtonBorder{obj=btn.Rewards[j], relTo=btn.Rewards[j].Icon, reParent={btn.Rewards[j].Quantity}}
-					self:clrButtonFromBorder(btn.Rewards[j])
+				for _, reward in _G.pairs(btn.Rewards) do
+					self:addButtonBorder{obj=reward, relTo=reward.Icon, reParent={reward.Quantity}}
+					self:clrButtonFromBorder(reward)
 				end
 			end
-			btn = nil
-			self:addFrameBorder{obj=this.List, ft=ftype, ofs=5}
+			self:skinObject("frame", {obj=this.List, fType=ftype, fb=true, y1=4})
 			self:skinObject("tabs", {obj=this, tabs={this.InProgress, this.Available}, fType=ftype, ignoreSize=true, lod=true, offsets={x1=4, y1=-2, x2=-4, y2=-4}, regions={3}, track=false, func=function(tab) tab:GetNormalTexture():SetAlpha(0) _G.RaiseFrameLevelByTwo(tab) end})
 			if self.isTT then
 				self:SecureHook("GarrisonLandingPageReport_SetTab", function(this)
@@ -2563,7 +2568,7 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 			self:Unhook(this, "OnShow")
 		end)
 
-		if isShadowlands then
+		if self.garrisonType == _G.Enum.GarrisonType.Type_9_0 then
 			this.CovenantCallings:DisableDrawLayer("BACKGROUND")
 			local function skinPanelBtns(panel)
 				panel:DisableDrawLayer("BACKGROUND")
@@ -2720,9 +2725,10 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 			this.ZoneSupportMissionPage.ButtonFrame:SetTexture(nil)
 			this.ZoneSupportMissionPage.Follower1:DisableDrawLayer("BACKGROUND")
 			skinPortrait(this.ZoneSupportMissionPage.Follower1.PortraitFrame)
-			self:addSkinFrame{obj=this.ZoneSupportMissionPage, ft=ftype, kfs=true, x1=-360, y1=434, x2=3, y2=-65}
+			self:skinObject("frame", {obj=this.ZoneSupportMissionPage, fType=ftype, kfs=true, cb=true, x1=-360, y1=434, x2=3, y2=-65})
 			this.ZoneSupportMissionPage.CloseButton:SetSize(28, 28)
 			if self.modBtns then
+				self:moveObject{obj=this.ZoneSupportMissionPage.StartMissionButton.Flash, x=-0.5, y=1.5}
 				self:skinStdButton{obj=this.ZoneSupportMissionPage.StartMissionButton}
 			end
 
@@ -4523,7 +4529,7 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 		local anchor
 		anchor = _G.AnchorUtil.CreateAnchor("TOPLEFT", "MinimapBackdrop", "TOPLEFT", 32, -140)
 		local function skinGLPM(btn)
-			if isShadowlands
+			if aObj.garrisonType == _G.Enum.GarrisonType.Type_9_0
 			and _G.C_Covenants.GetCovenantData(_G.C_Covenants.GetActiveCovenantID())
 			then
 				makeBtnSquare(btn, 0.2, 0.76, 0.2, 0.76)
