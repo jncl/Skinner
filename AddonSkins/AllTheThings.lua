@@ -42,9 +42,11 @@ aObj.addonsToSkin.AllTheThings = function(self) -- v 2.1.2
 	-- Settings Panels
 	self.RegisterCallback("AllTheThings", "IOFPanel_Before_Skinning", function(this, panel)
 		if panel.name ~= "AllTheThings" then return end
-		for _, btn in pairs(panel.Tabs) do
+
+		for _, btn in _G.pairs(panel.Tabs) do
 			self.iofBtn[btn] = true
 		end
+
 		self.UnregisterCallback("AllTheThings", "IOFPanel_Before_Skinning")
 	end)
 	self.RegisterCallback("AllTheThings", "IOFPanel_After_Skinning", function(this, panel)
@@ -54,7 +56,7 @@ aObj.addonsToSkin.AllTheThings = function(self) -- v 2.1.2
 		self:getRegion(panel, 4):SetTexture(nil) -- Separator line
 
 		self:skinObject("tabs", {obj=panel, tabs=panel.Tabs, ignoreSize=true, lod=true, offsets={x1=6, y1=0, x2=-6, y2=-4}})
-		
+
 		for i, tabPanel in _G.pairs(panel.Tabs) do
 			if i == 3 then -- Unobtainables Tab
 				for _, obj in _G.ipairs(tabPanel.objects) do

@@ -92,7 +92,7 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 					end)
 					if aObj.isTT then
 						aObj:secureHook(obj, "SelectTab", function(this, value)
-							for i, v in ipairs(this.tabs) do
+							for i, v in _G.ipairs(this.tabs) do
 								if v.value == value then
 									aObj:setActiveTab(_G["AceGUITabGroup" .. this.num .. "Tab" .. i].sf)
 								else

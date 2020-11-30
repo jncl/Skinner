@@ -6,7 +6,7 @@ aObj.addonsToSkin.WorldQuestTab = function(self) -- v 9.0.03
 
 	-- tabs added to QuestLogFrame
 	local tab
-	for _, tabName in pairs{"Normal", "World", "Details"} do
+	for _, tabName in _G.pairs{"Normal", "World", "Details"} do
 		tab = _G["WQT_Tab" .. tabName]
 		tab.TabBg:SetAlpha(0)
 		tab.Hider:SetAlpha(0)
@@ -19,7 +19,7 @@ aObj.addonsToSkin.WorldQuestTab = function(self) -- v 9.0.03
 	tab = nil
 	-- hook this to manage the active tab
 	self:SecureHook(_G.WQT_WorldQuestFrame, "SelectTab", function(this, tab)
-		for _, tabName in pairs{"Normal", "World", "Details"} do
+		for _, tabName in _G.pairs{"Normal", "World", "Details"} do
 			_G["WQT_Tab" .. tabName].sbb:SetShown(_G["WQT_Tab" .. tabName] == tab)
 		end
 	end)
