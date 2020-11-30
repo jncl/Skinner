@@ -4007,11 +4007,7 @@ aObj.blizzLoDFrames[ftype].PVPUI = function(self)
 		_G.PVPQueueFrame.NewSeasonPopup.SeasonDescription:SetTextColor(self.BT:GetRGB())
 		_G.PVPQueueFrame.NewSeasonPopup.SeasonDescription2:SetTextColor(self.BT:GetRGB())
 		_G.PVPQueueFrame.NewSeasonPopup.SeasonRewardFrame.Ring:SetTexture(nil)
-		if not self.isBeta then
-			self:getRegion(_G.PVPQueueFrame.NewSeasonPopup.SeasonRewardFrame, 3):SetTextColor(self.BT:GetRGB())
-		else
-			_G.PVPQueueFrame.NewSeasonPopup.SeasonRewardText:SetTextColor(self.BT:GetRGB())
-		end
+		_G.PVPQueueFrame.NewSeasonPopup.SeasonRewardText:SetTextColor(self.BT:GetRGB())
 		self:addSkinFrame{obj=_G.PVPQueueFrame.NewSeasonPopup, ft=ftype, kfs=true, nb=true, ofs=-13}
 		if self.modBtns then
 			self:skinStdButton{obj=_G.PVPQueueFrame.NewSeasonPopup.Leave}
