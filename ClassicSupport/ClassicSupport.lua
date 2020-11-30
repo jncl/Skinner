@@ -58,7 +58,7 @@ local funcs = {
 		DebugTools = {keep = true, keepOpts = true},
 		GMChatUI = {keep = true, keepOpts = true},
 		GMSurveyUI = {keep = true, keepOpts = true},
-		HelpFrame = {keep = true, keepOpts = true},
+		HelpFrame = {keep = false, keepOpts = true},
 		InterfaceOptions = {keep = true, keepOpts = true},
 		ItemText = {keep = true, keepOpts = true},
 		MacroUI = {keep = true, keepOpts = true},
@@ -1408,6 +1408,118 @@ aObj.ClassicSupport = function(self)
 	-- ChatEditBox
 	self.cebRgns1 = {1, 2, 6, 7} -- 1, 6, 7 are font strings, 2 is cursor texture
 	self.cebRgns2 = {6, 7}
+
+	self.blizzFrames[ftype].HelpFrame = function(self)
+		if not self.prdb.HelpFrame or self.initialized.HelpFrame then return end
+		self.initialized.HelpFrame = true
+
+		self:SecureHookScript(_G.HelpFrame, "OnShow", function(this)
+			self:removeInset(this.leftInset)
+			self:removeInset(this.mainInset)
+			self:addSkinFrame{obj=this, ft=ftype, kfs=true, hdr=true, ofs=0}
+			-- widen buttons so text fits better
+			for i = 1, 6 do
+				this["button" .. i]:SetWidth(180)
+				if self.modBtns then
+					self:skinStdButton{obj=this["button" .. i], x1=0, y1=2, x2=-3, y2=1}
+				end
+			end
+			this.button16:SetWidth(180) -- Submit Suggestion button
+			if self.modBtns then
+				self:skinStdButton{obj=this.button16, x1=0, y1=2, x2=-3, y2=1}
+			end
+
+			-- Account Security panel
+			this.asec.ticketButton:GetNormalTexture():SetTexture(nil)
+			this.asec.ticketButton:GetPushedTexture():SetTexture(nil)
+			if self.modBtns then
+				self:skinStdButton{obj=this.asec.ticketButton, x1=0, y1=2, x2=-3, y2=1}
+			end
+
+			-- Character Stuck! panel
+			if self.modBtnBs then
+				self:addButtonBorder{obj=_G.HelpFrameCharacterStuckHearthstone, es=20}
+			end
+			if self.modBtns then
+				self:skinStdButton{obj=_G.HelpFrameCharacterStuckStuck}
+			end
+
+			local skinSubmit
+			if self.modBtns then
+				function skinSubmit(frame)
+					aObj:skinStdButton{obj=frame.submitButton}
+					aObj:SecureHookScript(frame, "OnShow", function(this)
+						aObj:clrBtnBdr(this.submitButton)
+					end)
+					aObj:SecureHookScript(frame.editbox, "OnTextChanged", function(this)
+						aObj:clrBtnBdr(this.submitButton)
+					end)
+				end
+			end
+			-- Report Bug panel
+			self:skinSlider{obj=_G.HelpFrameReportBugScrollFrame.ScrollBar}
+			self:addFrameBorder{obj=self:getChild(this.bug, 3), ft=ftype}
+			if self.modBtns then
+				skinSubmit(this.bug)
+			end
+
+			-- Submit Suggestion panel
+			self:skinSlider{obj=_G.HelpFrameSubmitSuggestionScrollFrame.ScrollBar}
+			self:addFrameBorder{obj=self:getChild(this.suggestion, 3), ft=ftype}
+			if self.modBtns then
+				skinSubmit(this.suggestion)
+			end
+
+			-- Help Browser
+			self:removeInset(_G.HelpBrowser.BrowserInset)
+			if self.modBtns then
+				self:skinStdButton{obj=_G.BrowserSettingsTooltip.CookiesButton}
+			end
+			if self.modBtnBs then
+				self:addButtonBorder{obj=_G.HelpBrowser.settings, ofs=-2, x1=1, clr="gold"}
+				self:addButtonBorder{obj=_G.HelpBrowser.home, ofs=-2, x1=1, clr="gold"}
+				self:addButtonBorder{obj=_G.HelpBrowser.back, ofs=-2, x1=1, clr="gold"}
+				self:addButtonBorder{obj=_G.HelpBrowser.forward, ofs=-2, x1=1, clr="gold"}
+				self:SecureHookScript(_G.HelpBrowser, "OnButtonUpdate", function(this)
+					self:clrBtnBdr(this.back, "gold")
+					self:clrBtnBdr(this.forward, "gold")
+				end)
+				self:addButtonBorder{obj=_G.HelpBrowser.reload, ofs=-2, x1=1, clr="gold"}
+				self:addButtonBorder{obj=_G.HelpBrowser.stop, ofs=-2, x1=1, clr="gold"}
+			end
+
+			-- Knowledgebase (uses Browser frame)
+
+			-- GM_Response
+			self:skinSlider{obj=_G.HelpFrameGM_ResponseScrollFrame1.ScrollBar}
+			self:skinSlider{obj=_G.HelpFrameGM_ResponseScrollFrame2.ScrollBar}
+			self:addSkinFrame{obj=self:getChild(_G.HelpFrameGM_Response, 5), ft=ftype}
+			self:addSkinFrame{obj=self:getChild(_G.HelpFrameGM_Response, 6), ft=ftype}
+
+			-- BrowserSettings Tooltip
+			_G.BrowserSettingsTooltip:DisableDrawLayer("BACKGROUND")
+			self:addSkinFrame{obj=_G.BrowserSettingsTooltip, ft=ftype}
+
+			-- HelpOpenTicketButton
+			-- HelpOpenWebTicketButton
+
+			-- ReportCheating Dialog
+			self:removeNineSlice(_G.ReportCheatingDialog.Border)
+			self:addSkinFrame{obj=_G.ReportCheatingDialog.CommentFrame, ft=ftype, kfs=true, y2=-2}
+			_G.ReportCheatingDialog.CommentFrame.EditBox.InformationText:SetTextColor(self.BT:GetRGB())
+			self:addSkinFrame{obj=_G.ReportCheatingDialog, ft=ftype}
+
+			self:Unhook(this, "OnShow")
+		end)
+
+		self:SecureHookScript(_G.TicketStatusFrame, "OnShow", function(this)
+			self:skinObject("frame", {obj=_G.TicketStatusFrameButton, fType=ftype})
+
+			self:Unhook(this, "OnShow")
+		end)
+		self:checkShown(_G.TicketStatusFrame)
+
+	end
 
 	self.blizzFrames[ftype].MainMenuBar = function(self)
 		if self.initialized.MainMenuBar then return end
