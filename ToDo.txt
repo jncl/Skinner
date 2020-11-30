@@ -29,38 +29,62 @@ ToDos
 
 ≈	O	Refactor Tab skinning in AddOn skins
 
-	I	reported by FakeLessgaming, 19.11.20
-√		- ...nfig-3.0\AceConfigDialog-3.0\AceConfigDialog-3.0-79.lua:1863: AceConfigRegistry-3.0-20:ValidateOptionsTable(): Skinner UI Frames.args.PTRFeedback: expected a table, got a boolean
+	I	Unskinned AddOn frames, reported by Fakelessgaming, 22.11.20
+√		- ActionBarProfiles
+		- RaidUI, saved instances
 
-√	U	BasicChatMods, requested by EpidemeDaBear, 19.11.20
+	I	WorldQuestTab, reported by CarrierWave/icedawg, 25.11.20
+√		- Skinner\Core\MainFuncs.lua:220: attempt to index field 'obj' (a nil value)
+		[string "@Skinner\AddonSkins\WorldQuestTab-9.0.03.lua"]:37: in function <Skinner\AddonSkins\WorldQuestTab.lua:5>
 
-	I	reported by Palizangetsu, 19.11.20
-≈		- Skinner\UtilFuncs.lua:1113: stack overflow
-		[string "@Skinner\UtilFuncs.lua"]:1113: in function `removeRegions'
-		[string "@Skinner\UtilFuncs.lua"]:1113: in function `removeRegions'
-		[string "@Skinner\UtilFuncs.lua"]:1113: in function `removeRegions'
-		[string "@Skinner\UtilFuncs.lua"]:1113: in function `removeRegions'
-		[string "@Skinner\UtilFuncs.lua"]:1113: in function `removeRegions'
-		[string "@Skinner\UtilFuncs.lua"]:1113: in function `removeRegions'
-		[string "@Skinner\UtilFuncs.lua"]:1113: in function `removeRegions'
-		[string "@Skinner\UtilFuncs.lua"]:1113: in function `removeRegions'
-		[string "@Skinner\UtilFuncs.lua"]:1113: in function `removeRegions'
-		[string "@Skinner\UtilFuncs.lua"]:1113: in function `removeRegions'
-		[string "@Skinner\UtilFuncs.lua"]:1113: in function `removeRegions'
-		[string "@Skinner\UtilFuncs.lua"]:1113: in function `removeRegions'
-		...
+	I	BaudBag, reported by raineday, 26.11.20
+√		- Skinner\Core\MainFuncs.lua:986: attempt to index field 'obj' (a nil value)
+		[string "@Skinner\Core\MainFuncs.lua"]:1048: in function `skinSlider'
+		[string "@Skinner\AddonSkins\BaudBag-9.0.5.lua"]:64: in function <Skinner\AddonSkins\BaudBag.lua:5>
+
+	I	Outfitter, reported by raineday, 26.11.20
+√		- Skinner\AddonSkins\Outfitter-6.0.0.lua:190: attempt to call method 'SetBackdrop' (a nil value)
+		[string "@Skinner\AddonSkins\Outfitter-6.0.0.lua"]:190: in function <Skinner\AddonSkins\Outfitter.lua:5>
+		[string "@Skinner\AddonSkins\Outfitter-6.0.0.lua"]:236: in function <Skinner\AddonSkins\Outfitter.lua:235>
+
+	I	BasicChatMods, reported by Moxieface, 27.11.20
+√		- Skinner\AddonSkins\BasicChatMods-v9.0.2.lua:7: Usage: SecureHookScript(object, method, [handler]): You can only hook a script on a frame object
+		[string "@Ace3\AceHook-3.0\AceHook-3.0-9.lua"]:143: in function <Ace3\AceHook-3.0\AceHook-3.0.lua:118>
+		[string "@Ace3\AceHook-3.0\AceHook-3.0-9.lua"]:411: in function `SecureHookScript'
+		[string "@Skinner\AddonSkins\BasicChatMods-v9.0.2.lua"]:7: in function <Skinner\AddonSkins\BasicChatMods.lua:5>
+
+	I	CovenantSanctumUI, reported by Fakelessgaming, 27.11.20
+?		- [ADDON_ACTION_FORBIDDEN] Модификация 'Skinner' пыталась вызвать защищенную функцию 'DepositAnima()'.
+		[string "@!BugGrabber\BugGrabber.lua"]:519: in function <!BugGrabber\BugGrabber.lua:519>
+		[string "=[C]"]: in function `DepositAnima'
+		[string "@Blizzard_CovenantSanctum\Blizzard_CovenantSanctumUpgrades.lua"]:284: in function `DepositAnima'
+		[string "*:OnClick"]:1: in function <[string "*:OnClick"]:1>
+
+	I	PlayerChoiceUI, reported by icedawg, 28.11.20
+?		- Skinner\Core\UIFrames.lua:5178: attempt to index field 'sf' (a nil value)
+		[string "@Skinner\Core\UIFrames.lua"]:5178: in function <Skinner\Core\UIFrames.lua:5176>
 		[string "=(tail call)"]: ?
-		[string "=[C]"]: in function `Show'
-		[string "@FrameXML\UIParent.lua"]:2910: in function `SetUIPanel'
-		[string "@FrameXML\UIParent.lua"]:2755: in function `ShowUIPanel'
-		[string "@FrameXML\UIParent.lua"]:2623: in function <FrameXML\UIParent.lua:2619>
-		[string "=[C]"]: in function `SetAttribute'
-		[string "@FrameXML\UIParent.lua"]:3468: in function `ShowUIPanel'
-		[string "@Blizzard_TalentUI\Blizzard_TalentUI.lua"]:117: in function `PlayerTalentFrame_Toggle'
-		[string "@FrameXML\UIParent.lua"]:860: in function `ToggleTalentFrame'
-		[string "TOGGLETALENTS"]:1: in function <[string "TOGGLETALENTS"]:1>
+		[string "=[C]"]: in function `OnLeaveOverride'
+		[string "@Blizzard_PlayerChoiceUI\Blizzard_PlayerChoiceUI.lua"]:1176: in function <...\Blizzard_PlayerChoiceUI\Blizzard_PlayerChoiceUI.lua:1169>
 
-	I	WorldQuestTracker, reported by MacallanTwoFive, 22.11.20
-≈		- ..faceSkinner\AddonSkins\WorldQuestTracker.lua:9: attempt to index field 'Background' (a nil value)
-		[string "@Skinner\AddonSkins\WorldQuestTracker.lua"]:9: in function <...faceSkinner\AddonSkins\WorldQuestTracker.lua:7>
-		[string "@Skinner\AddonSkins\WorldQuestTracker.lua"]:29: in function <...faceSkinner\AddonSkins\WorldQuestTracker.lua:28>
+	I	HelpFrame, reported by EpidemeDaBear, 28.11.20
+√		- Skinner\Core\UtilFuncs.lua:1000: attempt to index local 'frame' (a nil value)
+		[string "@Skinner\Core\UtilFuncs.lua"]:1000: in function <Skinner\Core\UtilFuncs.lua:999>
+		[string "@Skinner\Core\UtilFuncs.lua"]:1009: in function `removeInset'
+		[string "@Skinner\Core\UIFrames.lua"]:3126: in function <Skinner\Core\UIFrames.lua:3119>
+
+	I	EncounterJournal - LootJournal reported by MrYoss, 29.11.20
+√		- Is there an option to disable the parchment on the legendarys page that i'm not seeing?
+
+	I	GarrisonMissionUI, reported by Shov_G3, 29.11.20
+√		- Skinner\Core\UIFrames.lua:353: attempt to index field 'RareOverlay' (a nil value)
+		[string "@Skinner\Core\UIFrames.lua"]:353: in function <Skinner\Core\UIFrames.lua:317>
+		[string "@Skinner\Core\UIFrames.lua"]:2848: in function <Skinner\Core\UIFrames.lua:2847>
+
+	I	CovenantMissionUI, reported by Shov_G3, 269.11.20
+√		- Skinner\Core\UIFrames.lua:42: attempt to index field 'PortraitRing' (a nil value)
+		[string "@Skinner\Core\UIFrames.lua"]:42: in function <Skinner\Core\UIFrames.lua:40>
+		[string "@Skinner\Core\UIFrames.lua"]:67: in function <Skinner\Core\UIFrames.lua:64>
+		[string "@Skinner\Core\UIFrames.lua"]:74: in function <Skinner\Core\UIFrames.lua:69>
+		[string "@Skinner\Core\UIFrames.lua"]:156: in function <Skinner\Core\UIFrames.lua:126>
+		[string "@Skinner\Core\UIFrames.lua"]:2837: in function <Skinner\Core\UIFrames.lua:2835>
