@@ -13,7 +13,9 @@
 ## Globe: check-classic
 #
 Libs\_RequiredLibs.xml
+#@no-lib-strip@
 Libs\_OptionalLibs.xml
+#@end-no-lib-strip@
 Locales\_Locales.xml
 Core\_Core.xml
 Modules\_Modules.xml
