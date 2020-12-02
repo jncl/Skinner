@@ -1,3 +1,27 @@
+beta9.36753.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version nmubers
+	Updated NewSkinFuncs code
+	Updated PlayerChoiceUI skin
+	Updated UIWidgetsUI skin
+	Updated AnimaDiversionUI skin
+	Removed remaining Beta checks
+	Updated EncounterJournal skin
+	Updated MawsBuffBlock skin
+	Updated StaticPopup skinning code
+	Updated GarrisonUI skinning code
+	Updated HelpFrame skinning code
+	Updated Ace3, AllTheThings, BasciChatMods, BaudBag, Outfitter & WorldQuestTab skins
+	Updated NSF slider skin
+	Updated LFGList skin
+	Updated LibAddondropDownTemplates & WorldQuestTab skins
+	Skinned ActionBarProfiles
+	Add button skinning check
+	Updated CheckButton code
+	Bugfix for IOF panels
+
 beta9.36710.1
 Jncl:
 	ToDo.txt
