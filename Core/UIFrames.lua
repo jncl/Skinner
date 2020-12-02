@@ -6152,8 +6152,6 @@ aObj.blizzLoDFrames[ftype].TorghastLevelPicker = function(self)
 	self.initialized.TorghastLevelPicker = true
 
 	self:SecureHookScript(_G.TorghastLevelPickerFrame, "OnShow", function(this)
-
-		-- .Pager
 		if self.modBtnBs then
 			self:addButtonBorder{obj=this.Pager.PreviousPage, clr="gold", ofs=-2, y1=-3, x2=-3}
 			self:addButtonBorder{obj=this.Pager.NextPage, clr="gold", ofs=-2, y1=-3, x2=-3}
@@ -6163,8 +6161,7 @@ aObj.blizzLoDFrames[ftype].TorghastLevelPicker = function(self)
 			end)
 		end
 		-- .ModelScene
-		-- TODO: skin frame, adjust visible part of background texture
-		self:addSkinFrame{obj=this, ft=ftype, nb=true, bg=true, ofs=-30}
+		this.CloseButton.CloseButtonBorder:SetTexture(nil)
 		if self.modBtns then
 			self:skinCloseButton{obj=this.CloseButton , noSkin=true}
 			self:skinStdButton{obj=this.OpenPortalButton}
