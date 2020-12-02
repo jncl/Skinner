@@ -325,7 +325,7 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 				frame.Stage.EncountersFrame.Encounters[i].PortraitRing:SetTexture(nil)
 			end
 		end
-	    aObj:removeRegions(frame.Stage.MissionInfo, naval and {1, 2, 3, 4, 5, 8, 9, 10} or {1, 2, 3, 4, 5, 11, 12, 13}, true)
+	    aObj:removeRegions(frame.Stage.MissionInfo, naval and {1, 2, 3, 4, 5, 8, 9, 10} or {1, 2, 3, 4, 5, 11, 12, 13})
 	end
 	local mlTabSkin = aObj.skinTPLs.new("tabs", {fType=ftype, numTabs=2, ignoreSize=true, lod=true, regions={7, 8, 9}, track=false})
 	function skinMissionList(ml, tabOfs)

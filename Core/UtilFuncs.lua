@@ -1033,7 +1033,7 @@ function aObj:removeNineSlice(frame)
 
 end
 
-function aObj:removeRegions(obj, regions, rmTex)
+function aObj:removeRegions(obj, regions)
 --@alpha@
 	_G.assert(obj, "Missing object (removeRegions)\n" .. _G.debugstack(2, 3, 2))
 --@end-alpha@
@@ -1046,11 +1046,7 @@ function aObj:removeRegions(obj, regions, rmTex)
 	for i = #tmpTab2, 1, -1 do
 		if tmpTab[i] then
 			if tmpTab2[i]:IsObjectType("Texture") then
-				if not rmTex then
-					tmpTab2[i]:SetAlpha(0)
-				else
-					tmpTab2[i]:SetTexture(nil)
-				end
+				tmpTab2[i]:SetAlpha(0)
 			else
 	--@debug@
 				self:Debug("rr FS: [%s, %s]", obj, i)
@@ -1108,10 +1104,10 @@ end
 
 function aObj:rmRegionsTex(obj, regions)
 --@alpha@
-	aObj:CustomPrint(1, 0, 0, "Using deprecated function - rmRegionsTex, use removeRegions(obj, regions, true) instead", obj)
+	aObj:CustomPrint(1, 0, 0, "Using deprecated function - rmRegionsTex, use removeRegions(obj, regions) instead", obj)
 --@end-alpha@
 
-	self:removeRegions(obj, regions, true)
+	self:removeRegions(obj, regions)
 
 end
 

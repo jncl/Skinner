@@ -2404,8 +2404,7 @@ aObj.blizzLoDFrames[ftype].EncounterJournal = function(self) -- a.k.a. Adenture 
 				end
 			end)
 			-- Model Frame
-			this.info.model:DisableDrawLayer("BACKGROUND") -- dungeonBG (updated with dungeon type change)
-			self:removeRegions(this.info.model, {2, 3}, true) -- Shadow, TitleBG
+			self:keepFontStrings(this.info.model)
 			local function skinCreatureBtn(cBtn)
 				local hTex
 				if cBtn
@@ -3722,10 +3721,11 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 							and not block.ScrollChild.sf
 							then
 								blockContents = block.ScrollChild
-								aObj:removeRegions(blockContents, {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 13, 17, 18}, true)
+								aObj:keepFontStrings(blockContents)
+								blockContents.Exclamation:SetAlpha(1)
+								blockContents.QuestionMark:SetAlpha(1)
 								blockContents.FlashFrame.IconFlash:SetTexture(nil)
-								aObj:addSkinFrame{obj=blockContents, ft=ftype, ofs=0}
-								-- TODO: prevent Background being changed, causes border art to appear broken ?
+								aObj:skinObject("frame", {obj=blockContents, fType=ftype, ofs=0})
 							end
 						end
 					end
@@ -4276,7 +4276,8 @@ aObj.blizzFrames[ftype].SpellBookFrame = function(self)
 					end
 				end
 				btn = nil
-				aObj:removeRegions(obj.statusBar, {2, 3, 4, 5, 6}, true)
+				aObj:removeRegions(obj.statusBar, {2, 3, 4, 5, 6})
+				-- aObj:removeRegions(obj.statusBar, {2, 3, 4, 5, 6}, true)
 				aObj:skinStatusBar{obj=obj.statusBar, fi=0}
 				obj.statusBar:SetStatusBarColor(0, 1, 0, 1)
 				obj.statusBar:SetHeight(12)

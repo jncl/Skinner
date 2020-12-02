@@ -39,7 +39,6 @@ aObj.skinTPLs = {
 		-- ca          = 0.5, -- backdrop border alpha
 		-- ng          = true, -- no Gradient texture
 		regions     = {3, 4, 5}, -- 1 is text, 2 is cursor, 6 is text, 7 is icon
-		rmTex       = false,
 		si			= false, -- search icon
 		ofs         = 2,
 		x2          = 0,
@@ -392,7 +391,7 @@ local function skinEditBox(tbl)
 
 	-- don't skin it twice
 	if tbl.obj.sf then return end
-	aObj:removeRegions(tbl.obj, tbl.regions, tbl.rmTex)
+	aObj:removeRegions(tbl.obj, tbl.regions)
 	aObj:skinObject("frame", {obj=tbl.obj, bd=3, ng=true, ofs=tbl.ofs, x2=tbl.x2, clr="slider", bba=0.5})
 	-- move the search icon
 	if tbl.si then
