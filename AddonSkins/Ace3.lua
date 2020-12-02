@@ -80,7 +80,7 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 			or objType == "InlineGroup"
 			or objType == "TabGroup"
 			then
-				aObj:skinObject("frame", {obj=obj.border or obj.content:GetParent(), kfs=true, fb=true})
+				aObj:skinObject("frame", {obj=obj.border or obj.content:GetParent(), kfs=true, fb=true, ofs=0})
 				-- skin TabGroup's tabs, if required
 				if objType == "TabGroup"
 				and aObj.modBtns

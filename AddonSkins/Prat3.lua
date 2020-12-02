@@ -58,13 +58,13 @@ aObj.addonsToSkin["Prat-3.0"] = function(self) -- v 3.9.1
 	end
 
 	self:SecureHookScript(_G.Prat_PopupFrame, "OnShow", function(this)
-		self:addSkinFrame{obj=this, ft="a", kfs=true, nb=true}
+		self:skinObject("frame", {obj=this, kfs=true})
 
 		self:Unhook(this, "OnShow")
 	end)
 	self:SecureHookScript(_G.PratCCFrame, "OnShow", function(this)
-		self:skinSlider{obj=_G.PratCCFrameScroll.ScrollBar}
-		self:addSkinFrame{obj=this, ft="a", kfs=true, nb=true}
+		self:skinObject("slider", {obj=_G.PratCCFrameScroll.ScrollBar})
+		self:skinObject("frame", {obj=this, kfs=true})
 
 		self:Unhook(this, "OnShow")
 	end)
@@ -73,14 +73,13 @@ aObj.addonsToSkin["Prat-3.0"] = function(self) -- v 3.9.1
 	if search then
 		local function skinEboxes(module)
 			for name, eBox in _G.pairs(module.searchBoxes) do
-				aObj:skinObject("editbox", {obj=eBox, rmTex=true, si=true})
+				eBox:DisableDrawLayer("BACKGROUND")
+				aObj:skinObject("editbox", {obj=eBox, si=true})
 			end
 		end
-		-- hook this to skin new EditBoxes
 		self:SecureHook(search, "Prat_FramesUpdated", function(this, info, name, chatFrame, ...)
 			skinEboxes(this)
 		end)
-		-- skin any existing EditBoxes
 		skinEboxes(search)
 		search = nil
 	end
