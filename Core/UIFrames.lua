@@ -5018,18 +5018,41 @@ aObj.blizzLoDFrames[ftype].PlayerChoiceUI = function(self)
 	if not self.prdb.PlayerChoiceUI or self.initialized.PlayerChoiceUI then return end
 	self.initialized.PlayerChoiceUI = true
 
+	local optionOffsets = {
+		[0]   = {x1 = -10, y1 = 70, x2 = 10, y2 = 0}, -- defaults
+		[89]  =	{y1 = 40}, -- WoD Strategic Assault Choice [Alliance]
+		[144] =	{y1 = 40}, -- WoD Strategic Assault Choice [Horde]
+		[240] =	{y1 = 60}, -- Legion Artifact Weapon Choice [Alliance?]
+		[281] =	{y1 = 60}, -- Legion Artifact Weapon Choice [Horde]
+		[342] =	{y2 = 10}, -- Warchief's Command Board [Horde]
+		[505] =	{y2 = 10}, -- Hero's Call Board [Alliance]
+		[667] = {y2 = 20}, -- Shadowlands Experience (Threads of Fate)
+		[998] = {x1 = -35, y1 = 40, x2 = 34, y2 = -32}, -- Covenant Selection (Oribos) [Enlarged]
+		[999] = {x1 = -13, y1 = 40, x2 = 13, y2 = -34}, -- Covenant Selection (Oribos) [Standard]
+	}
+	local defTab, ooTab, x1Ofs, y1Ofs, x2Ofs, y2Ofs = optionOffsets[0]
+	local function resizeSF(frame, idx)
+		ooTab = optionOffsets[idx]
+		x1Ofs, y1Ofs, x2Ofs, y2Ofs = ooTab.x1 or defTab.x1, ooTab.y1 or defTab.y1, ooTab.x2 or defTab.x2, ooTab.y2 or defTab.y2
+		aObj:Debug("PCUI offsets: [%s, %s, %s, %s]", x1Ofs, y1Ofs, x2Ofs, y2Ofs)
+		frame.sf:ClearAllPoints()
+		frame.sf:SetPoint("TOPLEFT",frame, "TOPLEFT", x1Ofs, y1Ofs)
+		frame.sf:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", x2Ofs, y2Ofs)
+	end
 	self:SecureHookScript(_G.PlayerChoiceFrame, "OnShow", function(this)
 		self:removeNineSlice(this.NineSlice)
 		this.BlackBackground.BlackBackground:SetTexture(nil)
 		self:nilTexture(this.BorderFrame.Header, true)
 		this.Background.BackgroundTile:SetTexture(nil)
 		this.Title:DisableDrawLayer("BACKGROUND")
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, aso={bbclr="sepia"}, y2=-25}
-		if self.modBtns then
-			self:skinCloseButton{obj=this.CloseButton, noSkin=true}
-		end
-		this.sf:SetShown(this.uiTextureKit ~= "jailerstower")
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cbns=true, clr="sepia"})
 
+		-- Option 1-4
+			-- RewardsFrame
+				-- .CurrencyRewardsPool
+				-- .ReputationRewardsPool
+				-- .ItemRewardsPool
+			-- WidgetContainer
 		local skinBtns
 		if self.modBtns then
 			function skinBtns(array)
@@ -5041,64 +5064,9 @@ aObj.blizzLoDFrames[ftype].PlayerChoiceUI = function(self)
 				end
 			end
 		end
-
-		local pci = _G.C_PlayerChoice.GetPlayerChoiceInfo()
-		aObj:Debug("PCUI - PCI: [%s, %s, %s]", this, this.uiTextureKit, pci.choiceID)
-		-- _G.Spew("", pci)
-		local opt, gOfs, y1Ofs, y2Ofs
-		if pci.choiceID == 588 then -- Torghast
-			gOfs = -40
-			y1Ofs = 0
-			y2Ofs = -80
-		elseif this.uiTextureKit == "Oribos" then -- Covenant selection
-			gOfs = 13
-			y1Ofs = 40
-			y2Ofs = -34
-		elseif pci.choiceID == 73 -- WoD Strategic Assault Choice
-		then
-			gOfs = 11
-			y1Ofs = 40
-			y2Ofs = 0
-		elseif pci.choiceID == 240 -- Legion Artifact Weapon
-		then
-			gOfs = 11
-			y1Ofs = 60
-			y2Ofs = -30
-		elseif pci.choiceID == 342 -- Warchief's Command Board
-		then
-			gOfs = 11
-			y1Ofs = 70
-			y2Ofs = -10
-		elseif pci.choiceID == 667 -- Shadowlands Experience
-		then
-			gOfs = 11
-			y1Ofs = 70
-			y2Ofs = 20
-		else
-			gOfs = 11
-			y1Ofs = 70
-			y2Ofs = 0
-		end
-		-- Option 1-4
-			-- RewardsFrame
-				-- .CurrencyRewardsPool
-				-- .ReputationRewardsPool
-				-- .ItemRewardsPool
-			-- WidgetContainer
-		for i = 1, #this.Options do
-			opt = this.Options[i]
-			-- if this.uiTextureKit ~= "jailerstower" then -- N.B. DON'T skin JailersTowers' Anima Powers
-				opt.BackgroundShadowSmall:SetAlpha(0) -- texture changes
-				opt.BackgroundShadowLarge:SetAlpha(0) -- texture changes
-				self:nilTexture(opt.Header.Ribbon, true)
-				-- FIXME: when do we NOT do this?
-				self:nilTexture(opt.ArtworkBorder, true)
-				opt.Header.Text:SetTextColor(self.HT:GetRGB())
-				opt.SubHeader.Text:SetTextColor(self.HT:GetRGB())
-				opt.OptionText.String:SetTextColor(self.BT:GetRGB())
-				opt.OptionText.HTML:SetTextColor(self.BT:GetRGB())
-				self:skinObject("frame", {obj=opt, fType=ftype, clr="grey", ofs=0, y1=y1Ofs, y2=y2Ofs})
-			-- end
+		for _, opt in _G.pairs(this.Options) do
+			self:nilTexture(opt.Header.Ribbon, true)
+			self:skinObject("frame", {obj=opt, fType=ftype, fb=true, clr="grey"})
 			if self.modBtns then
 				skinBtns(opt.OptionButtonsContainer)
 				self:SecureHook(opt.OptionButtonsContainer, "ConfigureButtons", function(this, ...)
@@ -5115,46 +5083,33 @@ aObj.blizzLoDFrames[ftype].PlayerChoiceUI = function(self)
 			-- hook these to handle size changes on mouseover (used in Oribos for covenant choice)
 			self:SecureHook(opt, "OnEnterOverride", function(this)
 				if this:GetOptionLayoutInfo().enlargeBackgroundOnMouseOver then
-					this.sf:ClearAllPoints()
-					this.sf:SetPoint("TOPLEFT",this, "TOPLEFT", -35, 40)
-					this.sf:SetPoint("BOTTOMRIGHT", this, "BOTTOMRIGHT", 34, -32)
+					resizeSF(opt, 998)
 				end
 			end)
 			self:SecureHook(opt, "OnLeaveOverride", function(this)
 				if this:GetOptionLayoutInfo().enlargeBackgroundOnMouseOver then
-					this.sf:ClearAllPoints()
-					this.sf:SetPoint("TOPLEFT", this, "TOPLEFT", -13, 40)
-					this.sf:SetPoint("BOTTOMRIGHT", this, "BOTTOMRIGHT", 13, -34)
+					resizeSF(opt, 999)
 				end
 			end)
 		end
-		opt, gOfs, y1Ofs, y2Ofs = nil, nil, nil, nil
 
-		-- TODO: handle textures being visible in jailersTower but not elsewhere
-
-		-- hook these to handle setup & updates to frame
-		self:SecureHook(this, "TryShow", function(this)
-			aObj:Debug("PCUI - TryShow: [%s, %s]", this.uiTextureKit)
-			this.sf:SetShown(this.uiTextureKit ~= "jailerstower")
-			local opt
-			for i = 1, #this.Options do
-				opt = this.Options[i]
+		self:SecureHook(this, "Update", function(this)
+			local pci = _G.C_PlayerChoice.GetPlayerChoiceInfo()
+			aObj:Debug("PCUI - Update: [%s, %s]", this.uiTextureKit, pci.choiceID)
+			for _, opt in _G.pairs(this.Options) do
 				opt.Header.Text:SetTextColor(self.HT:GetRGB())
 				opt.SubHeader.Text:SetTextColor(self.HT:GetRGB())
 				opt.OptionText.String:SetTextColor(self.BT:GetRGB())
 				opt.OptionText.HTML:SetTextColor(self.BT:GetRGB())
-			end
-			opt = nil
-		end)
-		self:SecureHook(this, "Update", function(this)
-			aObj:Debug("PCUI - Update: [%s, %s]", this.uiTextureKit)
-			if this.uiTextureKit ~= "Oribos"
-			and this.uiTextureKit ~= "jailerstower"
-			then
-				local opt
-				for i = 1, #this.Options do
-					opt = this.Options[i]
+				if not this.uiTextureKit ~= "jailerstower" then
+					resizeSF(opt, this.uiTextureKit == "Oribos" and 999 or pci.choiceID)
+					opt.sf:Show()
+				end
+				if this.uiTextureKit ~= "Oribos"
+				and this.uiTextureKit ~= "jailerstower"
+				then
 					opt.Background:SetTexture(nil)
+					opt.ArtworkBorder:SetTexture(nil)
 					for item in opt.RewardsFrame.Rewards.ItemRewardsPool:EnumerateActive() do
 						item.Name:SetTextColor(self.BT:GetRGB())
 						if self.modBtnBs then
@@ -5162,16 +5117,12 @@ aObj.blizzLoDFrames[ftype].PlayerChoiceUI = function(self)
 						end
 					end
 				end
-				opt = nil
 			end
+			pci = nil
 		end)
 
 		self:Unhook(this, "OnShow")
 	end)
-
-	-- if self.modBtns then
-	-- 	self:skinStdButton{obj=_G.PlayerChoiceToggleButton, ofs=-45}
-	-- end
 
 end
 
