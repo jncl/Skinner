@@ -4125,8 +4125,6 @@ aObj.blizzFrames[ftype].SpellBookFrame = function(self)
 	self:SecureHookScript(_G.SpellBookFrame, "OnShow", function(this)
 		this.MainHelpButton.Ring:SetTexture(nil)
 		self:moveObject{obj=this.MainHelpButton, y=-4}
-		this.numTabs = 5
-		self:skinObject("tabs", {obj=this, prefix=this:GetName(), suffix="Button", fType=ftype, offsets={x1=8, y1=1, x2=-8, y2=2}, track=false})
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, y2=-5}
 		if self.modBtnBs then
 			self:addButtonBorder{obj=_G.SpellBookPrevPageButton, ofs=-2, y1=-3, x2=-3}
@@ -4136,6 +4134,8 @@ aObj.blizzFrames[ftype].SpellBookFrame = function(self)
 				self:clrPNBtns("SpellBook")
 			end)
 		end
+		this.numTabs = 5
+		self:skinObject("tabs", {obj=this, prefix=this:GetName(), suffix="Button", fType=ftype, offsets={x1=8, y1=1, x2=-8, y2=2}, track=false})
 		if self.isTT then
 			local function setTab(bookType)
 				local tab
@@ -4223,7 +4223,7 @@ aObj.blizzFrames[ftype].SpellBookFrame = function(self)
 		local btn
 		for i = 1, _G.MAX_SKILLLINE_TABS do
 			btn = _G["SpellBookSkillLineTab" .. i]
-			self:removeRegions(btn, {1}) -- N.B. other regions are icon and highlight
+			btn:DisableDrawLayer("BACKGROUND")
 			if self.modBtnBs then
 				self:addButtonBorder{obj=btn, clr=btn.isOffSpec and "grey" or "default"}
 			end
