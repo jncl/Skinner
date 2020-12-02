@@ -5518,11 +5518,12 @@ aObj.blizzFrames[ftype].RaidFrame = function(self)
 
 	self:SecureHookScript(_G.RaidFrame, "OnShow", function(this)
 		-- RaidInfo Frame
-		self:addSkinFrame{obj=_G.RaidInfoInstanceLabel, ft=ftype, kfs=true}
-		self:addSkinFrame{obj=_G.RaidInfoIDLabel, ft=ftype, kfs=true}
-		self:skinSlider{obj=_G.RaidInfoScrollFrame.scrollBar}
+		self:skinObject("frame", {obj=_G.RaidInfoInstanceLabel, fType=ftype, kfs=true, ofs=0})
+		self:skinObject("frame", {obj=_G.RaidInfoIDLabel, fType=ftype, kfs=true, ofs=0})
+		self:skinObject("slider", {obj=_G.RaidInfoScrollFrame.scrollBar, fType=ftype})
 		self:removeNineSlice(_G.RaidInfoFrame.Border)
-		self:addSkinFrame{obj=_G.RaidInfoFrame, ft=ftype, kfs=true, nb=true, hdr=true}
+		self:moveObject{obj=_G.RaidInfoFrame.Header, y=-2}
+		self:skinObject("frame", {obj=_G.RaidInfoFrame, fType=ftype, kfs=true, hdr=true, ofs=-5, y1=-6})
 		if self.modBtns then
 			self:skinCloseButton{obj=_G.RaidInfoCloseButton}
 			self:skinStdButton{obj=_G.RaidFrameConvertToRaidButton}
