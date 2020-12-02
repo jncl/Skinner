@@ -389,38 +389,19 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 end
 
 -- The following functions are used by several Chat* functions
-aObj.cebRgns1 = {1, 2, 9, 10, 11} -- 1, 9, 10 are font strings, 2 is cursor texture
-aObj.cebRgns2 = {9, 10}
+aObj.cebRgns1 = {1, 2, 9, 10, 11} -- 1, 9, 10 & 11 are font strings, 2 is cursor texture
 local function skinChatEB(obj)
 	if aObj.prdb.ChatEditBox.style == 1 then -- Frame
 		aObj:keepRegions(obj, aObj.cebRgns1)
-		aObj:addSkinFrame{obj=obj, ft=ftype, x1=2, y1=-2, x2=-2}
+		aObj:skinObject("frame", {obj=obj, fType=ftype, ofs=-2})
 		obj.sf:SetAlpha(obj:GetAlpha())
 	elseif aObj.prdb.ChatEditBox.style == 2 then -- Editbox
-		aObj:skinEditBox{obj=obj, regs=aObj.cebRgns2, noHeight=true}
+		aObj:skinObject("editbox", {obj=obj, fType=ftype, regions={3, 4, 5, 6, 7, 8}, ofs=-4})
 	else -- Borderless
 		aObj:keepRegions(obj, aObj.cebRgns1)
-		aObj:addSkinFrame{obj=obj, ft=ftype, noBdr=true, x1=5, y1=-4, x2=-5, y2=2}
+		aObj:skinObject("frame", {obj=obj, fType=ftype, noBdr=true, ofs=-5, y=2})
 		obj.sf:SetAlpha(obj:GetAlpha())
 	end
-end
-local function skinChatTab(tab)
-	aObj:removeRegions(tab, {1, 2, 3, 4, 5, 6}, true)
-	aObj:addSkinFrame{obj=tab, ft=ftype, noBdr=aObj.isTT, x1=2, y1=-9, x2=-2, y2=-4}
-	tab.sf:SetAlpha(tab:GetAlpha())
-	-- hook this to fix tab gradient texture overlaying text & highlight
-	aObj:secureHook(tab, "SetParent", function(this, parent)
-		if parent == _G.GeneralDockManager.scrollFrame.child then
-			this.sf:SetParent(_G.GeneralDockManager)
-		else
-			this.sf:SetParent(this)
-			this.sf:SetFrameLevel(1) -- reset frame level so that the texture is behind text etc
-		end
-	end)
-	-- hook this to manage alpha changes when chat frame fades in and out
-	aObj:secureHook(tab, "SetAlpha", function(this, alpha)
-		this.sf:SetAlpha(alpha)
-	end)
 end
 local function skinPointerFrame(frame)
 	aObj:skinGlowBox(frame.Content)
@@ -1751,18 +1732,14 @@ aObj.blizzFrames[ftype].ChatFrames = function(self)
 	self.initialized.ChatFrames = true
 
 	for i = 1, _G.NUM_CHAT_WINDOWS do
-		if _G["ChatFrame" .. i] == _G.COMBATLOG	then
-			self:addSkinFrame{obj=_G["ChatFrame" .. i], ft=ftype, ofs=6, y1=30, x2=27, y2=-9}
-		else
-			self:addSkinFrame{obj=_G["ChatFrame" .. i], ft=ftype, ofs=6, y1=6, x2=27, y2=-9}
-		end
+		self:skinObject("frame", {obj=_G["ChatFrame" .. i], fType=ftype, ofs=6, y1=_G["ChatFrame" .. i] == _G.COMBATLOG and 30, x2=27, y2=-9})
 	end
 
 	-- CombatLog Quick Button Frame & Progress Bar
 	if self.prdb.CombatLogQBF then
 		if _G.CombatLogQuickButtonFrame_Custom then
-			self:keepFontStrings(_G.CombatLogQuickButtonFrame_Custom)
-			self:addSkinFrame{obj=_G.CombatLogQuickButtonFrame_Custom, ft=ftype, x1=-4, x2=4}
+			_G.CombatLogQuickButtonFrame_Custom:DisableDrawLayer("BACKGROUND")
+			self:skinObject("frame", {obj=_G.CombatLogQuickButtonFrame_Custom, fType=ftype, ofs=0, x1=-3, x2=3})
 			self:adjHeight{obj=_G.CombatLogQuickButtonFrame_Custom, adj=4}
 			self:skinStatusBar{obj=_G.CombatLogQuickButtonFrame_CustomProgressBar, fi=0, bgTex=_G.CombatLogQuickButtonFrame_CustomTexture}
 		else
@@ -1776,22 +1753,23 @@ aObj.blizzFrames[ftype].ChatMenus = function(self)
 	if not self.prdb.ChatMenus or self.initialized.ChatMenus then return end
 	self.initialized.ChatMenus = true
 
-	self:addSkinFrame{obj=_G.ChatMenu, ft=ftype}
-	self:addSkinFrame{obj=_G.EmoteMenu, ft=ftype}
-	self:addSkinFrame{obj=_G.LanguageMenu, ft=ftype}
-	self:addSkinFrame{obj=_G.VoiceMacroMenu, ft=ftype}
-	self:addSkinFrame{obj=_G.GeneralDockManagerOverflowButtonList, ft=ftype}
+	self:skinObject("frame", {obj=_G.ChatMenu, fType=ftype, ofs=0})
+	self:skinObject("frame", {obj=_G.EmoteMenu, fType=ftype, ofs=0})
+	self:skinObject("frame", {obj=_G.LanguageMenu, fType=ftype, ofs=0})
+	self:skinObject("frame", {obj=_G.VoiceMacroMenu, fType=ftype, ofs=0})
+	self:skinObject("frame", {obj=_G.GeneralDockManagerOverflowButtonList, fType=ftype, ofs=0})
 
 end
 
 aObj.blizzFrames[ftype].ChatMinimizedFrames = function(self)
-	if not self.prdb.ChatFrames then return end
 
 	-- minimized chat frames
 	self:SecureHook("FCF_CreateMinimizedFrame", function(chatFrame)
-		self:removeRegions(_G[chatFrame:GetName() .. "Minimized"], {1, 2, 3}, true)
-		self:addSkinFrame{obj=_G[chatFrame:GetName() .. "Minimized"], ft=ftype, x1=1, y1=-2, x2=-1, y2=2}
-		self:addButtonBorder{obj=_G[chatFrame:GetName() .. "MinimizedMaximizeButton"], ofs=-1}
+		_G[chatFrame:GetName() .. "Minimized"]:DisableDrawLayer("BACKGROUND")
+		self:skinObject("frame", {obj=_G[chatFrame:GetName() .. "Minimized"], fType=ftype, kfs=true, ofs=-2, x2=-1})
+		if self.modBtnBs then
+			self:addButtonBorder{obj=_G[chatFrame:GetName() .. "MinimizedMaximizeButton"], ofs=-1}
+		end
 	end)
 
 end
@@ -1800,13 +1778,36 @@ aObj.blizzFrames[ftype].ChatTabs = function(self)
 	if not self.prdb.ChatTabs or self.initialized.ChatTabs then return end
 	self.initialized.ChatTabs = true
 
+	local fcfTabs = {}
 	for i = 1, _G.NUM_CHAT_WINDOWS do
-		skinChatTab(_G["ChatFrame" .. i .. "Tab"])
+		self:add2Table(fcfTabs, _G["ChatFrame" .. i .. "Tab"])
+		self:SecureHook(_G["ChatFrame" .. i .. "Tab"], "SetParent", function(this, parent)
+			if parent == _G.GeneralDockManager.scrollFrame.child then
+				this.sf:SetParent(_G.GeneralDockManager)
+			else
+				this.sf:SetParent(this)
+				this.sf:SetFrameLevel(1) -- reset frame level so that the texture is behind text etc
+			end
+		end)
+		-- hook this to manage alpha changes when chat frame fades in and out
+		self:SecureHook(_G["ChatFrame" .. i .. "Tab"], "SetAlpha", function(this, alpha)
+			this.sf:SetAlpha(alpha)
+		end)
+	end
+	self:skinObject("tabs", {obj=_G.FloatingChatFrameManager, fType=ftype, tabs=fcfTabs, ignoreSize=true, lod=true, regions={7, 11}, offsets={x1=2, y1=-9, x2=-2, y2=-4}, track=false})
+	fcfTabs = nil
+	if self.isTT then
+		self:SecureHook("FCF_Tab_OnClick", function(this, button)
+			for i = 1, _G.NUM_CHAT_WINDOWS do
+				self:setInactiveTab(_G["ChatFrame" .. i .. "Tab"].sf)
+			end
+			self:setActiveTab(this.sf)
+		end)
 	end
 
 	if self.prdb.ChatTabsFade then
 		-- hook this to hide/show the skin frame
-		aObj:SecureHook("FCFTab_UpdateColors", function(this, selected)
+		self:SecureHook("FCFTab_UpdateColors", function(this, selected)
 			if this.sf then this.sf:SetShown(selected) end
 		end)
 	end
@@ -1817,32 +1818,25 @@ aObj.blizzFrames[ftype].ChatTemporaryWindow = function(self)
 	if not self.prdb.ChatTabs
 	and not self.prdb.ChatFrames
 	and not self.prdb.ChatEditBox.skin
-	then return end
+	then
+		return
+	end
 
 	local function skinTempWindow(obj)
-		if aObj.prdb.ChatTabs
-		and not _G[obj:GetName() .. "Tab"].sf
-		then
-			skinChatTab(_G[obj:GetName() .. "Tab"])
+		if aObj.prdb.ChatTabs then
+			aObj:skinObject("tabs", {obj=obj, fType=ftype, tabs={_G[obj:GetName() .. "Tab"]}, lod=true, regions={7, 11}, offsets={x1=2, y1=-9, x2=-2, y2=-4}, track=false})
 		end
-		if aObj.prdb.ChatFrames
-		and not obj.sf
-		then
-			aObj:addSkinFrame{obj=obj, ft=ftype, x1=-4, y1=4, x2=4, y2=-8}
+		if aObj.prdb.ChatFrames	then
+			aObj:skinObject("frame", {obj=obj, fType=ftype, ofs=6, x2=27, y2=-9})
 		end
-		if aObj.prdb.ChatEditBox.skin
-		and not obj.editBox.sknd
-		then
+		if aObj.prdb.ChatEditBox.skin then
 			skinChatEB(obj.editBox)
-			obj.editBox.sknd = true
 		end
-		if aObj.modBtnBs
-		and aObj.prdb.ChatButtons
-		and not obj.buttonFrame.sknd
+		if aObj.prdb.ChatButtons
+		and aObj.modBtnBs
 		then
 			aObj:addButtonBorder{obj=obj.buttonFrame.minimizeButton, ofs=-2, clr="grey"}
 			aObj:addButtonBorder{obj=obj.ScrollToBottomButton, ofs=-1, x1=0, reParent={obj.ScrollToBottomButton.Flash}, clr="grey"}
-			obj.buttonFrame.sknd = true
 		end
 	end
 	-- hook this to handle Temporary windows (BN Conversations, Pet Battles etc)
@@ -1853,7 +1847,9 @@ aObj.blizzFrames[ftype].ChatTemporaryWindow = function(self)
 	end, true)
 	-- skin any existing temporary windows
 	for i = 1, #_G.CHAT_FRAMES do
-		if _G[_G.CHAT_FRAMES[i]].isTemporary then skinTempWindow(_G[_G.CHAT_FRAMES[i]]) end
+		if _G[_G.CHAT_FRAMES[i]].isTemporary then
+			skinTempWindow(_G[_G.CHAT_FRAMES[i]])
+		end
 	end
 
 end
