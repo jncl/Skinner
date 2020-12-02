@@ -221,7 +221,11 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 	end
 	function skinMissionPage(frame)
 		frame.IconBG:SetTexture(nil)
-		aObj:removeRegions(frame.Stage, stageRegs)
+		if frame.Board then -- shadowlands
+			aObj:removeRegions(frame.Stage, {1})
+		else
+			aObj:removeRegions(frame.Stage, stageRegs)
+		end
 		frame.Stage.Header:SetAlpha(0)
 		frame.Stage.MissionEnvIcon.Texture:SetTexture(nil)
 		if frame.ButtonFrame then
