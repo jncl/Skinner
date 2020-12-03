@@ -18,8 +18,8 @@ aObj.skinTPLs = {
 		-- x2          = 4,
 		-- y2          = -4,
 		sap         = false, -- SetAllPoints to object
-		seca        = false, -- use SecureActionButtonTemplate
-		secu        = false, -- use SecureUnitButtonTemplate
+		sabt        = false, -- use SecureActionButtonTemplate
+		subt        = false, -- use SecureUnitButtonTemplate
 	},
 	dropdown= {
 		lrgTpl      = false,
@@ -253,7 +253,7 @@ local function skinButton(tbl)
 		return
 	end
 	-- add a frame to the object
-	tbl.obj.sb = _G.CreateFrame("Button", nil, tbl.obj, tbl.seca and "SecureActionButtonTemplate" or tbl.secu and "SecureUnitButtonTemplate")
+	tbl.obj.sb = _G.CreateFrame("Button", nil, tbl.obj, tbl.sabt and "SecureActionButtonTemplate" or tbl.subt and "SecureUnitButtonTemplate")
 	if tbl.sap then
 		tbl.obj.sb:SetAllPoints(tbl.obj)
 	else
@@ -326,12 +326,6 @@ local function skinDropDown(tbl)
 --@end-alpha@
 
 	aObj:Debug2("skinDropDown: [%s]", tbl)
-
-	-- if aObj:hasAnyTextInName(opts.obj, {"tekKonfigDropdown", "Left"}) -- ignore tekKonfigDropdown/Az DropDowns
-	-- and not opts.obj.LeftTexture -- handle MC2UIElementsLib ones (used by GroupCalendar5)
-	-- then
-	-- 	return
-	-- end
 
 	-- don't skin it twice
 	if tbl.obj.sf then return end
