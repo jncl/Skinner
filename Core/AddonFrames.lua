@@ -44,7 +44,7 @@ local addonSkins = {
 	"Omen", "OneBag3", "OneBank3",
 	"PetBattleMaster", "PowerAuras", "PowerAurasButtons",
 	"Quartz", "QuestCompletist", "QuickMark",
-	"SilverDragon", "Skada", "SorhaQuestLog",
+	"Skada", "SorhaQuestLog",
 	"TargetCharms", "TooManyAddons",
 	"Vendomatic", "VuhDo", "VuhDoOptions",
 	"XLoot", "xMerchant",
