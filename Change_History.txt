@@ -1,3 +1,18 @@
+beta9.36753.2
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated TOC file
+	Updated All Chat related skins
+	Updated PlayerChoiceUI skin
+	Updated RaidFrame skin
+	Updated TorghastLevelPicker skin
+	Updated GarrisonMissionPage skin
+	Updated EncounterJournal skin
+	Updated SpellBookFrame skin
+	Updated removeRegions skinning code
+	Updated Ace3 & Prat3 skins
+
 beta9.36753.1
 Jncl:
 	ToDo.txt
