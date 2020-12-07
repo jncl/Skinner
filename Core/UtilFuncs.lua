@@ -401,8 +401,10 @@ function aObj:checkDisabledDD(obj, disabled)
 		self:clrBBC(obj.sf,  disabled and "grey")
 		if self.modBtnBs then
 			local btn = obj.Button and obj.Button.sbb or obj.dropButton and obj.dropButton.sbb or _G[obj:GetName() .. "Button"].sbb
-			self:clrBtnBdr(btn, disabled and "grey")
-			btn = nil
+			if btn then
+				self:clrBtnBdr(btn, disabled and "grey")
+				btn = nil
+			end
 		end
 	end
 	disabled = nil
