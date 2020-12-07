@@ -1181,7 +1181,6 @@ aObj.blizzFrames[ftype].QuestInfo = function(self)
 	end)
 
 	self:SecureHookScript(_G.QuestInfoRequiredMoneyFrame, "OnShow", function(this)
-		-- QuestInfoRequiredMoneyFrame
 		self:SecureHook("QuestInfo_ShowRequiredMoney", function()
 			local br, bg, bb = self.BT:GetRGB()
 			local r, g ,b = _G.QuestInfoRequiredMoneyText:GetTextColor()
@@ -1195,57 +1194,34 @@ aObj.blizzFrames[ftype].QuestInfo = function(self)
 		self:Unhook(this, "OnShow")
 	end)
 
-	self:SecureHookScript(_G.QuestInfoRewardsFrame, "OnShow", function(this)
-		this.XPFrame.ReceiveText:SetTextColor(self.BT:GetRGB())
-		-- SkillPointFrame
-		local spf = this.SkillPointFrame
-		spf.NameFrame:SetTexture(nil)
-		if self.modBtnBs then
-			 self:addButtonBorder{obj=spf, relTo=spf.Icon, reParent={spf.CircleBackground, spf.CircleBackgroundGlow, spf.ValueText}, clr="grey"}
-		end
-		spf = nil
-		-- HonorFrame
-		local hf = this.HonorFrame
-		hf.NameFrame:SetTexture(nil)
-		if self.modBtnBs then
-			 self:addButtonBorder{obj=hf, relTo=hf.Icon, reParent={hf.Count}, clr="grey"}
-		end
-		hf = nil
-		-- ArtifactXPFrame
-		local axp = this.ArtifactXPFrame
-		axp.NameFrame:SetTexture(nil)
-		if self.modBtnBs then
-			 self:addButtonBorder{obj=axp, relTo=axp.Icon, reParent={axp.Count}, clr="grey"}
-		end
-		axp = nil
-		if not self.isClsc then
-			-- WarModeBonusFrame
-			local wmb = this.WarModeBonusFrame
-			wmb.NameFrame:SetTexture(nil)
-			if self.modBtnBs then
-				 self:addButtonBorder{obj=wmb, relTo=wmb.Icon, reParent={wmb.Count}, clr="grey"}
+	local function skinRewardBtns(frame, btnType)
+		for _, type in _G.pairs{"HonorFrame", "ArtifactXPFrame", "WarModeBonusFrame", "SkillPointFrame", "TitleFrame"} do
+			-- Classic DOESN'T have a WarModeBonusFrame
+			if frame[type] then
+				-- QIRF's TitleFrame DOESN'T have a NameFrame
+				if frame[type].NameFrame then
+					frame[type].NameFrame:SetTexture(nil)
+				end
+				if aObj.modBtnBs then
+					aObj:addButtonBorder{obj=frame[type], btnType=true, relTo=frame[type].Icon, reParent=type == "SkillPointFrame" and {frame[type].CircleBackground, frame[type].CircleBackgroundGlow, frame[type].ValueText}, clr="grey"}
+				end
 			end
-			wmb = nil
 		end
-		-- QuestInfoPlayerTitleFrame
-		if self.modBtnBs then
-			 self:addButtonBorder{obj=_G.QuestInfoPlayerTitleFrame, relTo=_G.QuestInfoPlayerTitleFrame.Icon, clr="grey"}
-		end
+	end
+	self:SecureHookScript(_G.QuestInfoRewardsFrame, "OnShow", function(this)
+		skinRewardBtns(this, "libt")
+		this.XPFrame.ReceiveText:SetTextColor(self.BT:GetRGB())
 		self:removeRegions(_G.QuestInfoPlayerTitleFrame, {2, 3, 4}) -- NameFrame textures
 
 		self:Unhook(this, "OnShow")
 	end)
 
 	self:SecureHookScript(_G.MapQuestInfoRewardsFrame, "OnShow", function(this)
-		-- other rewards
-		for _, type in _G.pairs{"XPFrame", "HonorFrame", "ArtifactXPFrame", "MoneyFrame", "SkillPointFrame", "TitleFrame"} do
+		skinRewardBtns(this, "sibt")
+		for _, type in _G.pairs{"XPFrame", "MoneyFrame"} do
 			this[type].NameFrame:SetTexture(nil)
 			if self.modBtnBs then
-				if type ~= "SkillPointFrame" then
-					self:addButtonBorder{obj=this[type], relTo=this[type].Icon, reParent={this[type].Count}, clr="grey"}
-				else
-					self:addButtonBorder{obj=this[type], relTo=this[type].Icon, reParent={this[type].CircleBackground, this[type].CircleBackgroundGlow, this[type].ValueText}, clr="grey"}
-				end
+				self:addButtonBorder{obj=this[type], sibt=true, relTo=this[type].Icon, clr="grey"}
 			end
 		end
 
