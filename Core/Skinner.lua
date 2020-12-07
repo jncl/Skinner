@@ -460,8 +460,11 @@ function aObj:OnEnable()
 			_G.ReloadUI()
 		end,
 		OnCancel = function(this, _, reason)
-			if reason == "timeout" or reason == "clicked" then
-				aObj:CustomPrint(1, 1, 0, "The profile '" .. aObj.db:GetCurrentProfile() .. "' will be activated next time you Login or Reload the UI")
+			if reason == "timeout"
+			or reason == "clicked"
+			then
+				aObj:CustomPrint(1, 1, 0, aObj.L["The profile"] .. " '" .. aObj.db:GetCurrentProfile() .. "' " .. aObj.L["will be activated next time you Login or Reload the UI"])
+				_G.UIErrorsFrame:AddMessage(aObj.L["The profile"] .. " '" .. aObj.db:GetCurrentProfile() .. "' " .. aObj.L["will be activated next time you Login or Reload the UI"], 1, 1, 0)
 			end
 		end,
 		timeout = 0,
