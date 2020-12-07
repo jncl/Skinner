@@ -2,46 +2,30 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("Sorted") then return end
 local _G = _G
 
-aObj.addonsToSkin.Sorted = function(self) -- v 1.2.17
+aObj.addonsToSkin.Sorted = function(self) -- v 1.2.20
 
 	local function skinItemList(frame)
 		frame.foregroundFrame:DisableDrawLayer("OVERLAY") -- this disables the column seperator textures
 		frame:DisableDrawLayer("BACKGROUND")
 		frame:DisableDrawLayer("BORDER")
-		aObj:skinSlider{obj=frame.scrollBar, rt="artwork", wdth=-4}
-		-- TODO: remove background texture ?
-		-- for _, btn in pairs(frame.itemButtons) do
-		-- end
+		aObj:skinObject("slider", {obj=frame.scrollBar, rpTex="artwork", y1=-2, y2=2})
 	end
 
-	self:addSkinFrame{obj=_G.SortedIconSelectionMenu, ft="a", kfs=true, nb=true}
+	self:skinObject("frame", {obj=_G.SortedIconSelectionMenu, kfs=true})
 
 	-- SortedFrame
 	self:SecureHookScript(_G.SortedFrame, "OnShow", function(this)
 		self:removeNineSlice(this.NineSlice)
 		_G.SortedFrameTitleBarMinimizeButtonDiv.texture:SetTexture(nil)
+		_G.SortedFrameTitleBarBlizzardButtonDiv.texture:SetTexture(nil)
 		_G.SortedFrameTitleBarAltsButtonDiv.texture:SetTexture(nil)
-		-- ?TODO: SortedAltsDropdownButton, make it look like a dropdown
-		self:addSkinFrame{obj=_G.SortedAltsDropdownButtonMenu, ft="a", kfs=true, nb=true}
-		-- ?TODO: SortedEquipmentSetsDropdownButton, make it look like a dropdown
-		self:addSkinFrame{obj=_G.SortedEquipmentSetsDropdownButtonMenu, ft="a", kfs=true, nb=true}
-		_G.SortedEquipmentSetsDropdownButtonEquipmentSetsButtonDiv.texture:SetTexture(nil)
+		self:skinObject("frame", {obj=_G.SortedAltsDropdownButtonMenu, kfs=true})
+		self:skinObject("frame", {obj=_G.SortedEquipmentSetsDropdownButtonMenu, fType=ftype, kfs=true})
+		_G.SortedEquipmentSetsDropdownButtonDiv.texture:SetTexture(nil)
 		_G.SortedFramePortraitButton:SetScale(0.8)
 		self:moveObject{obj=_G.SortedFramePortraitButton, x=6, y=-10}
 		-- SortedTabsFrame
-		local tab
-		for _, tab in _G.pairs(_G.SortedTabsFrame.tabs) do
-			tab:DisableDrawLayer("BACKGROUND")
-			tab:DisableDrawLayer("ARTWORK")
-			self:addSkinFrame{obj=tab, ft="a", noBdr=self.isTT, x1=3, y1=name=="Bank" and -5 or -7, x2=3, y2=name=="Bank" and 4 or 7}
-			if self.isTT then
-				if tab.selected then
-					self:setActiveTab(tab.sf)
-				else
-					self:setInactiveTab(tab.sf)
-				end
-			end
-		end
+		self:skinObject("tabs", {obj=_G.SortedTabsFrame, tabs=_G.SortedTabsFrame.tabs, ignoreSize=true, lod=true, regions={10}, offsets={x1=3, y1=-6, x2=3, y2=6}})
 		if self.isTT then
 			self:SecureHook(_G.SortedTabsFrame, "ToggleTab", function(this, _)
 				for _, tab in _G.pairs(this.tabs) do
@@ -70,8 +54,7 @@ aObj.addonsToSkin.Sorted = function(self) -- v 1.2.17
 		-- SortedFrameMain
 		self:removeInset(_G.SortedFrameMain)
 		-- SortedFrameRight
-		self:addFrameBorder{obj=_G.SortedFrameFilterButtons, ft="a", ri=true, x1=-1, x2=2}
-		local btn
+		self:skinObject("frame", {obj=_G.SortedFrameFilterButtons, kfs=true, ri=true, fb=true, x1=-1, x2=2})
 		for _, btn in _G.pairs(_G.Sorted_CategoryButtons) do
 			self:skinStdButton{obj=btn}
 			btn.newItemsIndicator.borderR:SetTexture(nil)
@@ -81,9 +64,8 @@ aObj.addonsToSkin.Sorted = function(self) -- v 1.2.17
 			btn.miniButton.bg:SetTexture(nil)
 			self:changeTandC(btn.miniButton.newItemsIndicator.border)
 		end
-		btn = nil
-		self:skinSlider{obj=_G.SortedSubcategoryFrameScrollBar, rt="artwork"}
-		self:addFrameBorder{obj=_G.SortedSubcategoryFrameParent, ft="a", ri=true, x1=-1, x2=2, y2=-3}
+		self:skinObject("slider", {obj=_G.SortedSubcategoryFrameScrollBar, rpTex="artwork", y1=-2, y2=2})
+		self:skinObject("frame", {obj=_G.SortedSubcategoryFrameParent, kfs=true, ri=true, fb=true, x1=-1, x2=2, y2=-3})
 		if self.modChkBtns then
 			local function skinSCcBtns()
 				for _, cb in _G.pairs(_G.SortedSubcategoryFrameScrollChild.checkButtons) do
@@ -97,13 +79,13 @@ aObj.addonsToSkin.Sorted = function(self) -- v 1.2.17
 		end
 		-- SortedFrameLeft
 		self:removeInset(_G.SortedFrameSearchBoxFrame)
-		self:skinEditBox{obj=_G.SortedFrameSearchBox, regs={6, 7}, mi=true} -- 6 is text, 7 is the icon
+		self:skinObject("editbox", {obj=_G.SortedFrameSearchBox, si=true})
 		self:removeInset(_G.SortedFrameSortButtons)
 		for _, frame in _G.pairs(_G.Sorted_sortButtons) do
 			frame.button:DisableDrawLayer("BACKGROUND")
-			self:addSkinFrame{obj=frame.button, ft="a", nb=true, ofs=2}
+			self:skinObject("frame", {obj=frame.button, ofs=2})
 		end
-		self:addSkinFrame{obj=_G.SortedFrameTabsMenu, ft="a", kfs=true, nb=true}
+		self:skinObject("frame", {obj=_G.SortedFrameTabsMenu, kfs=true, ofs=0})
 		if self.modChkBtns then
 			for i = 1, #_G.SortedFrameTabsMenu.checkButtons do
 				self:skinCheckButton{obj=_G.SortedFrameTabsMenu.checkButtons[i]}
@@ -112,11 +94,13 @@ aObj.addonsToSkin.Sorted = function(self) -- v 1.2.17
 		-- SortedFrameItemList
 		-- TODO: .itemDropButton, alter texture coords to remove border (found in main panel, side panel & bag frame(s))
 		skinItemList(_G.SortedFrameItemList)
-		self:addSkinFrame{obj=this, ft="a", kfs=true}
+		self:skinObject("frame", {obj=this, kfs=true, cb=true, x2=2.5})
 		if self.modBtns then
+			self:skinOtherButton{obj=_G.SortedBlizzardButton, text="B"}
+			self:skinStdButton{obj=_G.ContainerFrame1SortedButton}
 			self:skinStdButton{obj=_G.SortedFrameSellGreysButton}
-			self:skinOtherButton{obj=_G.SortedMinimizeButton, font=self.fontS, text=self.leftdc}
-			self:skinOtherButton{obj=_G.SortedMaximizeButton, font=self.fontS, text=self.rightdc}
+			self:skinOtherButton{obj=_G.SortedFrameMinimizeButton, font=self.fontS, text=self.leftdc}
+			self:skinOtherButton{obj=_G.SortedFrameMaximizeButton, font=self.fontS, text=self.rightdc}
 		end
 
 		self:Unhook(this, "OnShow")
@@ -128,7 +112,7 @@ aObj.addonsToSkin.Sorted = function(self) -- v 1.2.17
 		self:removeInset(_G.SortedBankSidePanelFootCenter)
 		self:removeInset(_G.SortedBankSidePanelLeftFrame)
 		skinItemList(_G.SortedBankItemList)
-		self:addSkinFrame{obj=this, ft="a", kfs=true, nb=true}
+		self:skinObject("frame", {obj=this, kfs=true})
 		if self.modBtnBs then
 			self:addButtonBorder{obj=_G.SortedBankSidePanelFootBagsPurchaseSlotButton, ofs=-2, x1=1, clr="gold"}
 		end
@@ -142,7 +126,7 @@ aObj.addonsToSkin.Sorted = function(self) -- v 1.2.17
 		self:removeInset(_G.SortedReagentSidePanelLeftFrame)
 		skinItemList(_G.SortedReagentItemList)
 		-- TODO: .CostMoneyFrame
-		self:addSkinFrame{obj=this, ft="a", kfs=true, nb=true}
+		self:skinObject("frame", {obj=this, kfs=true})
 		if self.modBtns then
 			self:skinStdButton{obj=_G.SortedReagentSidePanelFootCenterDepositButton}
 			self:SecureHook(_G.SortedReagentSidePanelFootCenterDepositButton, "Disable", function(this, _)
@@ -160,29 +144,21 @@ aObj.addonsToSkin.Sorted = function(self) -- v 1.2.17
 	local function skinOptions(frame)
 		for _, child in pairs{frame:GetChildren()} do
 			if child:IsObjectType("Slider") then
-				aObj:skinSlider{obj=child}--, rt="artwork", wdth=-4, size=3, hgt=-10}
+				aObj:skinObject("slider", {obj=child})
+			elseif aObj:isDropDown(child) then
+				aObj:skinObject("dropdown", {obj=child})
 			elseif child:IsObjectType("CheckButton")
 			and aObj.modChkBtns
 			then
 				aObj:skinCheckButton{obj=child}
 			end
 		end
-		aObj:addFrameBorder{obj=frame, ft="a"}
+		-- aObj:skinObject("frame", {obj=frame, kfs=true, fb=true})
+		aObj:skinObject("frame", {obj=frame, kfs=true, fb=true})
 	end
 	self:SecureHookScript(_G.SortedConfigFrame, "OnShow", function(this)
 		self:removeInset(_G.SortedConfigFrameTabs)
-		for _, tab in _G.pairs(_G.SortedConfigFrame.tabs) do
-			self:keepRegions(tab, {7, 8})
-			self:addSkinFrame{obj=tab, ft="a", noBdr=self.isTT, x1=2, y1=-6, x2=2, y2=-4}
-			tab.sf.up = true -- tabs grow upwards
-			if self.isTT then
-				if tab.selected then
-					self:setActiveTab(tab.sf)
-				else
-					self:setInactiveTab(tab.sf)
-				end
-			end
-		end
+		self:skinObject("tabs", {obj=_G.SortedConfigFrameTabs, tabs=_G.SortedConfigFrame.tabs, ignoreSize=true, lod=true, offsets={x1=2, y1=-6, x2=2, y2=-4}})
 		if self.isTT then
 			self:SecureHook("SortedConfigFrame_ToggleTab", function(tab)
 				for _, tabFrame in _G.pairs(_G.SortedConfigFrame.tabs) do
@@ -196,35 +172,37 @@ aObj.addonsToSkin.Sorted = function(self) -- v 1.2.17
 		end
 		_G.SortedConfigFrameContents:DisableDrawLayer("BACKGROUND")
 		_G.SortedConfigFrameContents:DisableDrawLayer("BORDER")
-		self:addFrameBorder{obj=_G.SortedConfigFrameContents, ft="a", ofs=3}
-		self:addSkinFrame{obj=this, ft="a", kfs=true, x2=1}
+		self:skinObject("frame", {obj=_G.SortedConfigFrameContents, kfs=true, fb=true, ofs=3, x1=-2})
+		self:skinObject("frame", {obj=this, kfs=true, cb=true, x2=1})
 		-- Appearance Tab
 		skinOptions(_G.SortedConfigFrameContentsAppearanceBox1)
 		skinOptions(_G.SortedConfigFrameContentsAppearanceBox2)
-		self:skinDropDown{obj=_G.SortedConfigFont}
 		skinOptions(_G.SortedConfigFrameContentsAppearanceBox3)
-		-- Behaviour
+		skinOptions(_G.SortedConfigFrameContentsAppearanceBox4)
+		-- Behaviour Tab
 		skinOptions(_G.SortedConfigFrameContentsBehaviorBox1)
 		skinOptions(_G.SortedConfigFrameContentsBehaviorBox2)
 		skinOptions(_G.SortedConfigFrameContentsBehaviorBox3)
 		skinOptions(_G.SortedConfigFrameContentsBehaviorBox4)
+		skinOptions(_G.SortedConfigFrameContentsBehaviorBox5)
+		skinOptions(_G.SortedConfigFrameContentsBehaviorBox5Sorting)
+		skinOptions(_G.SortedConfigFrameContentsBehaviorBox5Filtering)
 		-- Categories Tab
-		self:addFrameBorder{obj=_G.SortedConfigCategories, ft="a", ofs=1, x1=-3}
+		self:skinObject("frame", {obj=_G.SortedConfigCategories, kfs=true, fb=true, ofs=1, x1=-3})
 		for _, btn in _G.pairs(_G.SortedConfigCategories.buttons) do
-			self:addSkinFrame{obj=btn, ft="a", kfs=true, nb=true}
+			self:skinObject("frame", {obj=btn, kfs=true})
 			self:skinCloseButton{obj=btn.deleteButton }
 		end
 		if self.modBtnBs then
 			self:addButtonBorder{obj=_G.SortedConfigCategories.addButton, ofs=-2, x1=1, clr="gold"}
 		end
 		self:removeInset(_G.SortedConfigCategoryName)
-		self:skinEditBox{obj=_G.SortedConfigCategoryName.editBox, regs={6}} -- 6 is text
+		self:skinObject("editbox", {obj=_G.SortedConfigCategoryName.editBox, ofs=0})
 		_G.SortedConfigCategoryIcon:DisableDrawLayer("BACKGROUND")
-		self:skinDropDown{obj=_G.SortedConfigCategoryGroups}
 		self:removeInset(_G.SortedConfigCategoryFilters)
 		self:removeInset(_G._G.SortedConfigFrameContentsCategoriesLeftBottomRight)
-		self:addFrameBorder{obj=_G.SortedConfigCategorySubfiltersScrollFrame, ft="a", ofs=3}
-		self:skinSlider{obj=_G.SortedConfigCategorySubfiltersScrollFrameScrollBar, rt="artwork"}
+		self:skinObject("frame", {obj=_G.SortedConfigCategorySubfiltersScrollFrame, kfs=true, fb=true, ofs=3})
+		self:skinObject("slider", {obj=_G.SortedConfigCategorySubfiltersScrollFrameScrollBar, rpTex="artwork", x2=-4})
 		self:SecureHook(_G.SortedConfigCategorySubfilters, "Update", function(this)
 			if self.modChkBtns then
 				for _, cb in _G.pairs(this.checkButtons) do
@@ -232,19 +210,19 @@ aObj.addonsToSkin.Sorted = function(self) -- v 1.2.17
 				end
 			end
 			for _, nr in _G.pairs(this.numberRanges) do
-				self:skinEditBox{obj=nr.min, regs={6}} -- 6 is text
-				self:skinEditBox{obj=nr.max, regs={6}} -- 6 is text
+				self:skinObject("editbox", {obj=nr.min, ofs=0})
+				self:skinObject("editbox", {obj=nr.max, ofs=0})
 			end
 			for _, si in _G.pairs(this.specificItems) do
-				self:skinEditBox{obj=si.editBoxID, regs={6}} -- 6 is text
-				self:skinEditBox{obj=si.editBoxName, regs={6}} -- 6 is text
+				self:skinObject("editbox", {obj=si.editBoxID, ofs=0})
+				self:skinObject("editbox", {obj=si.editBoxName, ofs=0})
 			end
 			for _, eb in _G.pairs(this.editBoxes) do
-				self:skinEditBox{obj=eb, regs={6}} -- 6 is text
+				self:skinObject("editbox", {obj=eb, ofs=0})
 			end
 		end)
 		-- Profile Tab
-		self:skinDropDown{obj=_G.SortedConfigProfileDropdown}
+		self:skinObject("dropdown", {obj=_G.SortedConfigProfileDropdown})
 		if self.modBtns then
 			self:skinStdButton{obj=_G.SortedConfigProfileNew}
 			self:skinStdButton{obj=_G.SortedConfigProfileCopy}
@@ -254,7 +232,7 @@ aObj.addonsToSkin.Sorted = function(self) -- v 1.2.17
 			end)
 		end
 		self:removeInset(_G.SortedConfigProfileName)
-		self:skinEditBox{obj=_G.SortedConfigProfileName.editBox, regs={6}} -- 6 is text
+		self:skinObject("editbox", {obj=_G.SortedConfigProfileName.editBox, ofs=0})
 
 		self:Unhook(this, "OnShow")
 	end)
@@ -270,7 +248,7 @@ aObj.addonsToSkin.Sorted = function(self) -- v 1.2.17
 				_G[fName .. "Head"]:DisableDrawLayer("BACKGROUND")
 				self:removeNineSlice(this.NineSlice)
 				skinItemList(this.ItemList)
-				self:addSkinFrame{obj=this, ft="a", kfs=true, nb=true}
+				self:skinObject("frame", {obj=this, kfs=true, cb=true})
 				fName = nil
 
 				self:Unhook(this, "OnShow")

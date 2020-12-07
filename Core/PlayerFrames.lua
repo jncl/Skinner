@@ -2078,9 +2078,7 @@ aObj.blizzFrames[ftype].ContainerFrames = function(self)
 	if not self.prdb.ContainerFrames.skin or self.initialized.ContainerFrames then return end
 	self.initialized.ContainerFrames = true
 
-	if _G.IsAddOnLoaded("LiteBag")
-	or _G.IsAddOnLoaded("Sorted")
-	then
+	if _G.IsAddOnLoaded("LiteBag") then
 		self.blizzFrames[ftype].ContainerFrames = nil
 		return
 	end

@@ -2,7 +2,7 @@ local aName, aObj = ...
 if not aObj:isAddonEnabled("GarrisonCommander") then return end
 local _G = _G
 
-aObj.lodAddons.GarrisonCommander = function(self) -- v 2.18.5 70200
+aObj.lodAddons.GarrisonCommander = function(self) -- v 3.3.5 90002
 
 	-- hook these to skin the GarrisonCommander Button on LHS of frame
 	if self.modBtnBs then
@@ -35,7 +35,7 @@ aObj.lodAddons.GarrisonCommander = function(self) -- v 2.18.5 70200
 		frame.GarrCorners:DisableDrawLayer("BACKGROUND")
 		self:moveObject{obj=frame.CloseButton, x=-3, y=0}
 		self:addButtonBorder{obj=frame.Pin, ofs=-2}
-		self:addSkinFrame{obj=frame, ft="a", kfs=true, nb=true, x1=2, y1=5, x2=1}
+		self:skinObject("frame", {obj=frame, kfs=true, x1=2, y1=5, x2=1})
 		_G.RaiseFrameLevelByTwo(frame)
 		return frame
 	end, true)
@@ -55,6 +55,7 @@ aObj.lodAddons.GarrisonCommander = function(self) -- v 2.18.5 70200
 		if self.modBtns then
 			self:skinStdButton{obj=_G.GarrisonCommanderQuickMissionComplete} -- on GarrisonMissionFrame.Missions.CompleteDialog.BorderFrame.ViewButton
 		end
+
 		self:Unhook(this, "Setup")
 	end)
 
@@ -93,10 +94,11 @@ aObj.lodAddons.GarrisonCommander = function(self) -- v 2.18.5 70200
 	local fpM = _G.GAC:GetModule("FollowerPage", true)
 	if fpM then
 		self:SecureHook(fpM, "Setup", function()
-			self:skinDropDown{obj=_G.GarrisonTraitCountersFrame.choice, noBB=true}
+			self:skinObject("dropdown", {obj=_G.GarrisonTraitCountersFrame.choice, noBB=true})
 			if self.modBtnBs then
 				self:addButtonBorder{obj=_G.GarrisonTraitCountersFrame.choice.button, es=12, ofs=-2, x1=152}
 			end
+
 			self:Unhook(this, "Setup")
 		end)
 	end
@@ -119,6 +121,7 @@ aObj.lodAddons.GarrisonCommander = function(self) -- v 2.18.5 70200
 			if self.modBtns then
 				self:skinStdButton{obj=_G.GCQuickShipMissionCompletionButton}
 			end
+
 			self:Unhook(this, "Setup")
 		end)
 		-- TODO: skin mission GcAddendum frame(s)
@@ -155,16 +158,15 @@ aObj.lodAddons.GarrisonCommander = function(self) -- v 2.18.5 70200
 		elseif missionType == _G.LE_FOLLOWER_TYPE_SHIPYARD_6_2 then
 			frame = _G.GarrisonShipyardFrame
 			yOfs = -10
-		elseif missionType == _G.LE_FOLLOWER_TYPE_GARRISON_7_0 then
-			frame = _G.OrderHallMissionFrame
-			yOfs = -4
+		else
+			return
 		end
 		if frame.MissionTab.MissionPage.Stage
 		and frame.MissionTab.MissionPage.Stage.expires
 		then
 			self:moveObject{obj=frame.MissionTab.MissionPage.Stage.expires, y=yOfs}
 		end
-		missionType, frame = nil, nil
+		missionType, frame, yOfs = nil, nil, nil
 	end)
 
 end
