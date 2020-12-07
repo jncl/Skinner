@@ -5304,7 +5304,7 @@ aObj.blizzFrames[ftype].QuestMap = function(self)
 			end
 			for hdr in this.QuestsFrame.covenantCallingsHeaderFramePool:EnumerateActive() do
 				self:removeRegions(hdr, {2, 3, 4})
-				hdr.Background:SetTexture([[Interface\QuestFrame\UI-QuestLogTitleHighlight]])
+				hdr.HighlightBackground:SetTexture([[Interface\QuestFrame\UI-QuestLogTitleHighlight]])
 				if self.modBtns then
 					skinEB(hdr)
 				end
@@ -5314,7 +5314,6 @@ aObj.blizzFrames[ftype].QuestMap = function(self)
 					skinEB(hdr)
 				end
 			end
-			tex = nil
 		end)
 		this.QuestsFrame.DetailFrame:DisableDrawLayer("ARTWORK")
 		self:skinSlider{obj=this.QuestsFrame.ScrollBar}
