@@ -825,6 +825,12 @@ function aObj:keepRegions(obj, regions)
 
 end
 
+function aObj:loadClassicSupport()
+
+	return safecall("ClassicSupport", self.ClassicSupport, nil, quiet)
+
+end
+
 function aObj:makeMFRotatable(modelFrame)
 --@alpha@
 	_G.assert(modelFrame and modelFrame:IsObjectType("PlayerModel"), "Not a PlayerModel\n" .. _G.debugstack(2, 3, 2))

@@ -307,10 +307,7 @@ function aObj:OnInitialize()
 
 	-- Load Classic Support, if required (added here for ElvUI/TukUI)
 	if self.isClsc then
-		local success, _ = _G.xpcall(function() return aObj.ClassicSupport(aObj) end, _G.geterrorhandler())
-		if not success then
-			aObj:CustomPrint(1, 0, 0, "Error running ClassicSupport")
-		end
+		self:loadClassicSupport()
 	end
 
 end
