@@ -5028,6 +5028,7 @@ aObj.blizzLoDFrames[ftype].PlayerChoiceUI = function(self)
 	}
 	local defTab, ooTab, x1Ofs, y1Ofs, x2Ofs, y2Ofs = optionOffsets[0]
 	local function resizeSF(frame, idx)
+		-- aObj:Debug("resizeSF: [%s, %s]", frame, idx)
 		ooTab = optionOffsets[idx]
 		x1Ofs, y1Ofs, x2Ofs, y2Ofs = ooTab.x1 or defTab.x1, ooTab.y1 or defTab.y1, ooTab.x2 or defTab.x2, ooTab.y2 or defTab.y2
 		aObj:Debug("PCUI offsets: [%s, %s, %s, %s]", x1Ofs, y1Ofs, x2Ofs, y2Ofs)
@@ -5090,6 +5091,7 @@ aObj.blizzLoDFrames[ftype].PlayerChoiceUI = function(self)
 		end
 
 		self:SecureHook(this, "Update", function(this)
+			this.sf:SetShown(not _G.IsInJailersTower())
 			local pci = _G.C_PlayerChoice.GetPlayerChoiceInfo()
 			aObj:Debug("PCUI - Update: [%s, %s]", this.uiTextureKit, pci.choiceID)
 			for _, opt in _G.pairs(this.Options) do
@@ -5097,9 +5099,11 @@ aObj.blizzLoDFrames[ftype].PlayerChoiceUI = function(self)
 				opt.SubHeader.Text:SetTextColor(self.HT:GetRGB())
 				opt.OptionText.String:SetTextColor(self.BT:GetRGB())
 				opt.OptionText.HTML:SetTextColor(self.BT:GetRGB())
-				if not this.uiTextureKit ~= "jailerstower" then
+				if this.uiTextureKit ~= "jailerstower" then
 					resizeSF(opt, this.uiTextureKit == "Oribos" and 999 or pci.choiceID)
 					opt.sf:Show()
+				else
+					opt.sf:Hide()
 				end
 				if this.uiTextureKit ~= "Oribos"
 				and this.uiTextureKit ~= "jailerstower"
