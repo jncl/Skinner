@@ -614,6 +614,7 @@ local function __addButtonBorder(opts)
 		ibt = Item Button template
 		tibt = Talent Item Button template
 		libt = Large Item Button template
+		sibt = Small Item Button template
 		gibt = Giant Item Button template
 		sec = requires SecureFrameTemplate to inherit from otherwise tainting occurs
 		seca = requires SecureActionButtonTemplate to inherit from otherwise tainting occurs
@@ -717,7 +718,9 @@ local function __addButtonBorder(opts)
 		opts.obj.Name:SetParent(opts.obj.sbb)
 		opts.obj.Border:SetParent(opts.obj.sbb)
 		opts.obj.NewActionTexture:SetParent(opts.obj.sbb)
-	elseif opts.libt then -- Large Item Buttons
+	elseif opts.libt -- Large Item Buttons
+	or opts.sibt -- Small Item Buttons
+	then
 		opts.obj.Name:SetParent(opts.obj.sbb)
 		opts.obj.Count:SetParent(opts.obj.sbb)
 	elseif opts.gibt then -- Giant Item Buttons
@@ -849,7 +852,7 @@ function module:OnEnable()
 	if db.Quality.file
 	and db.Quality.file ~= "None"
 	then
-		self.LSM:Register("border", aName .. " Quality Border", db.Quality.file)
+		aObj.LSM:Register("border", aName .. " Quality Border", db.Quality.file)
 		self.iqbDrop.edgeFile = aObj.LSM:Fetch("border", aName .. " Quality Border")
 	else
 		self.iqbDrop.edgeFile = aObj.LSM:Fetch("border", db.Quality.texture)
