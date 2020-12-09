@@ -10,6 +10,7 @@ aObj.SetupDefaults = function(self)
 			Warnings                   = true,
 			Errors                     = true,
 			MinimapIcon                = {hide = false, minimapPos = 210, radius = 80},
+			FrameBorders               = true,
 			UIDropDownMenu             = true,
 			-- Tab and DropDown Texture settings
 			TexturedTab                = false,
@@ -270,6 +271,12 @@ aObj.SetupOptions = function(self)
 					end,
 					hidden = function() return not self.DBIcon end,
 				},
+				FrameBorders = {
+					type = "toggle",
+					order = 7,
+					name = self.L["Frame Borders"],
+					desc = self.L["Frame Borders"] .. " " .. self.L["have no Background or Gradient textures"],
+				},
 				TabDDTextures = {
 					type = "group",
 					order = 10,
@@ -312,7 +319,7 @@ aObj.SetupOptions = function(self)
 				},
 				Delay = {
 					type = "group",
-					order = 21,
+					order = 12,
 					inline = true,
 					name = self.L["Skinning Delays"],
 					get = function(info) return db.Delay[info[#info]] end,
@@ -336,7 +343,7 @@ aObj.SetupOptions = function(self)
 				},
 				FadeHeight = {
 					type = "group",
-					order = 22,
+					order = 14,
 					inline = true,
 					name = self.L["Fade Height"],
 					get = function(info) return db.FadeHeight[info[#info]] end,
@@ -365,7 +372,7 @@ aObj.SetupOptions = function(self)
 				},
 				StatusBar = {
 					type = "group",
-					order = 23,
+					order = 16,
 					inline = true,
 					name = self.L["Status Bar"],
 					args = {

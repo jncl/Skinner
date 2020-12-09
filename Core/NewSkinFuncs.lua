@@ -484,7 +484,9 @@ local function skinFrame(tbl)
 		aObj:SecureHook(tbl.obj, "Hide", function(this) this.sf:Hide() end)
 	end
 	-- setup Frame Border options
-	if tbl.fb then
+	if tbl.fb
+	and aObj.prdb.FrameBorders
+	then
 		tbl.bd  = 10
 		tbl.ng  = true
 		tbl.ofs = tbl.ofs or 0

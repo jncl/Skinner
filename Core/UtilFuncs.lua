@@ -182,8 +182,10 @@ end
 function aObj:addFrameBorder(opts)
 
 	local aso = opts.aso or {}
-	aso.bd = 10
-	aso.ng = true
+	if aObj.prdb.FrameBorders then
+		aso.bd = 10
+		aso.ng = true
+	end
 	-- setup some defaults
 	if opts.kfs == nil then opts.kfs = true end
 	if opts.nb == nil then opts.nb = true end
