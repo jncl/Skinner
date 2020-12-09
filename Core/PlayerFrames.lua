@@ -3538,11 +3538,44 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 	-- ObjectiveTrackerFrame BlocksFrame
 	if self.prdb.ObjectiveTracker.skin then
 		self:addSkinFrame{obj=_G.ObjectiveTrackerFrame.BlocksFrame, ft=ftype, kfs=true, x1=-30, x2=4}
-		--hook this to handle displaying of the ObjectiveTrackerFrame BlocksFrame skin frame
-		self:SecureHook("ObjectiveTracker_Update", function(_)
-			_G.ObjectiveTrackerFrame.BlocksFrame.sf:SetShown(_G.ObjectiveTrackerFrame.HeaderMenu:IsShown())
-		end)
 	end
+
+	-- remove Glow/Sheen textures from WorldQuest modules
+	local function updTrackerModules()
+		local module
+		for i = 1, #_G.ObjectiveTrackerFrame.MODULES do
+			module = _G.ObjectiveTrackerFrame.MODULES[i]
+			if module.ShowWorldQuests then
+				for _, blk in _G.pairs(module.usedBlocks) do
+					if blk.ScrollContents then
+						for _, child in _G.pairs{blk.ScrollContents:GetChildren()} do
+							if child.Glow then
+								child.Glow:SetTexture(nil)
+								child.Sheen:SetTexture(nil)
+							end
+						end
+					end
+				end
+			end
+			if aObj.modBtnBs then
+				if module.Header
+				and module.Header.MinimizeButton
+				then
+					aObj:addButtonBorder{obj=module.Header.MinimizeButton, es=12, ofs=1, x1=-1}
+				end
+			end
+		end
+		module = nil
+	end
+	updTrackerModules() -- update any existing modules
+	-- hook this to handle new modules & displaying the ObjectiveTrackerFrame BlocksFrame skin frame
+	self:SecureHook("ObjectiveTracker_Update", function(_)
+		-- aObj:Debug("ObjectiveTracker_Update: [%s, %s]", reason, id)
+		updTrackerModules()
+		if _G.ObjectiveTrackerFrame.BlocksFrame.sf then
+			_G.ObjectiveTrackerFrame.BlocksFrame.sf:SetShown(_G.ObjectiveTrackerFrame.HeaderMenu:IsShown())
+		end
+	end)
 
 	self:skinDropDown{obj=_G.ObjectiveTrackerFrame.BlockDropDown}
 
@@ -3616,7 +3649,6 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 	end
 
 	local function skinRewards(frame)
-
 		for i = 1, #frame.Rewards do
 			frame.Rewards[i].ItemBorder:SetTexture(nil)
 			if aObj.modBtnBs then
@@ -3625,7 +3657,6 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 				end
 			end
 		end
-
 	end
 	self:SecureHook("BonusObjectiveTracker_AnimateReward", function(block)
 		skinRewards(block.module.rewardsFrame)
@@ -3736,40 +3767,6 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 		end)
 		skinAutoPopUps(_G.QUEST_TRACKER_MODULE)
 	end
-
-	-- remove Glow/Sheen textures from WorldQuest modules
-	local function updTrackerModules()
-		local module
-		for i = 1, #_G.ObjectiveTrackerFrame.MODULES do
-			module = _G.ObjectiveTrackerFrame.MODULES[i]
-			if module.ShowWorldQuests then
-				for _, blk in _G.pairs(module.usedBlocks) do
-					if blk.ScrollContents then
-						for _, child in _G.pairs{blk.ScrollContents:GetChildren()} do
-							if child.Glow then
-								child.Glow:SetTexture(nil)
-								child.Sheen:SetTexture(nil)
-							end
-						end
-					end
-				end
-			end
-			if aObj.modBtnBs then
-				if module.Header
-				and module.Header.MinimizeButton
-				then
-					aObj:addButtonBorder{obj=module.Header.MinimizeButton, es=12, ofs=1, x1=-1}
-				end
-			end
-		end
-		module = nil
-	end
-	updTrackerModules() -- update any existing modules
-	-- hook this to handle new modules
-	self:SecureHook("ObjectiveTracker_Update", function(_)
-		-- aObj:Debug("ObjectiveTracker_Update: [%s, %s]", reason, id)
-		updTrackerModules()
-	end)
 
 end
 
