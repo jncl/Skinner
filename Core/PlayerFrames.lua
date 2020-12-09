@@ -2232,7 +2232,7 @@ aObj.blizzLoDFrames[ftype].EncounterJournal = function(self) -- a.k.a. Adenture 
 		self:SecureHookScript(this.searchResults, "OnShow", function(this)
 			self:skinObject("slider", {obj=this.scrollFrame.scrollBar, fType=ftype, y1=-2, y2=2})
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, ofs=6, y1=-1, x2=4})
-			for _, btn in pairs(this.scrollFrame.buttons) do
+			for _, btn in _G.pairs(this.scrollFrame.buttons) do
 				self:removeRegions(btn, {1})
 				btn:GetNormalTexture():SetAlpha(0)
 				btn:GetPushedTexture():SetAlpha(0)
@@ -2393,7 +2393,7 @@ aObj.blizzLoDFrames[ftype].EncounterJournal = function(self) -- a.k.a. Adenture 
 			this.info.lootScroll.classClearFilter:DisableDrawLayer("BACKGROUND")
 			-- hook this to skin loot entries
 			self:SecureHook("EncounterJournal_LootUpdate", function()
-				for _, btn in pairs(this.info.lootScroll.buttons) do
+				for _, btn in _G.pairs(this.info.lootScroll.buttons) do
 					btn:DisableDrawLayer("BORDER")
 					btn.armorType:SetTextColor(self.BT:GetRGB())
 					btn.slot:SetTextColor(self.BT:GetRGB())
@@ -2434,7 +2434,7 @@ aObj.blizzLoDFrames[ftype].EncounterJournal = function(self) -- a.k.a. Adenture 
 		self:checkShown(this.encounter)
 		self:SecureHookScript(this.LootJournal, "OnShow", function(this)
 			self:skinObject("slider", {obj=this.PowersFrame.ScrollBar, fType=ftype, x2=-4})
-			for _, btn in pairs(this.PowersFrame.elements) do
+			for _, btn in _G.pairs(this.PowersFrame.elements) do
 				btn.Background:SetTexture(nil)
 			end
 	 		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, fb=true, x1=-8, y1=6, x2=8, y2=-5})
