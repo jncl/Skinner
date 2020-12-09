@@ -831,7 +831,7 @@ end
 
 function aObj:loadClassicSupport()
 
-	return safecall("ClassicSupport", self.ClassicSupport, nil, quiet)
+	return safecall("ClassicSupport", self.ClassicSupport, nil, true)
 
 end
 
