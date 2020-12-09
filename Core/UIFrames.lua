@@ -5882,9 +5882,9 @@ aObj.blizzFrames[ftype].SystemOptions = function(self)
 	-- Sound
 	self:SecureHookScript(_G.AudioOptionsSoundPanel, "OnShow", function(this)
 		skinKids(this)
-		self:skinObject("frame", {obj=_G.AudioOptionsSoundPanelPlayback, fType=ftype, fb=true})
-		self:skinObject("frame", {obj=_G.AudioOptionsSoundPanelHardware, fType=ftype, fb=true})
-		self:skinObject("frame", {obj=_G.AudioOptionsSoundPanelVolume, fType=ftype, fb=true})
+		self:skinObject("frame", {obj=_G.AudioOptionsSoundPanelPlayback, fType=ftype, fb=true, ofs=0})
+		self:skinObject("frame", {obj=_G.AudioOptionsSoundPanelHardware, fType=ftype, fb=true, ofs=0})
+		self:skinObject("frame", {obj=_G.AudioOptionsSoundPanelVolume, fType=ftype, fb=true, ofs=0})
 
 		self:Unhook(this, "OnShow")
 	end)
