@@ -1,3 +1,18 @@
+beta9.36753.4
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Added CurseForge project ID to TOC file
+	Updated QuestInfoFrame skin
+	Bugfix for DropDown button issue
+	Updated PlayerChoiceUI skin
+	Updated QuestFrame skin
+	Localised Profile change message
+	Updated ClassicSupport loading code
+	Updated UIButtons skinning code inc. Bugfix
+	Updated GarrisonCommander & Sorted skins
+
 beta9.36753.3
 Jncl:
 	ToDo.txt
