@@ -29,14 +29,15 @@ ToDos
 
 ≈	O	Refactor Tab skinning in AddOn skins
 
-	I	reported by neoseph82, 05.12.20
-√		- Skinner\Modules\UIButtons.lua:852: attempt to index field 'LSM' (a nil value)
-		[string "@Skinner\Modules\UIButtons.lua"]:852: in function <Skinner\Modules\UIButtons.lua:828>
+	I	FrameBorders, repoorted by raineday, 08.12.20
+		- Doesn't like the change as it appears on config panels.
+√		- Add Option to not use Frame Borders.
 
-	I	Sorted, reported by Shiv_G3, 05.12.20
-√		- Skinner\AddonSkins\Sorted-1.2.20.lua:28: attempt to index field 'SortedEquipmentSetsDropdownButtonEquipmentSetsButtonDiv' (a nil value)
-		[string "@Skinner\AddonSkins\Sorted-1.2.20.lua"]:28: in function <Skinner\AddonSkins\Sorted.lua:20>
+	I	repoorted by EpidemeDaBear, 08.12.20
+√		- ..eBartender4\libs\AceHook-3.0\AceHook-3.0-9.lua:180: Attempting to rehook already active hook ObjectiveTracker_Update.
+		[string "@Bartender4\libs\AceHook-3.0\AceHook-3.0-9.lua"]:180: in function <...eBartender4\libs\AceHook-3.0\AceHook-3.0.lua:118>
+		[string "@Bartender4\libs\AceHook-3.0\AceHook-3.0-9.lua"]:341: in function `SecureHook'
+		[string "@Skinner\Core\PlayerFrames.lua"]:3771: in function <Skinner\Core\PlayerFrames.lua:3537>
 
-	I	GarrisonCommander, reported by raineday, 06.12.20
-√		- ...faceSkinner\AddonSkins\GarrisonCommander-3.3.5 90002.lua:162: attempt to index local 'frame' (a nil value)
-		[string "@Skinner\AddonSkins\GarrisonCommander-3.3.5 90002.lua"]:162: in function <...faceSkinner\AddonSkins\GarrisonCommander.lua:150>
+	I	RaiderIO, repoorted by EpidemeDaBear, 08.12.20
+?		- Skinner\AddonSkins\RaiderIO-9.0.2 (v202012080603).lua:40: attempt to index field 'content' (a nil value)
