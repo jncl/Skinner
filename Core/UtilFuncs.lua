@@ -1294,8 +1294,9 @@ function aObj:tableCount(table)
 
 end
 --@end-debug@
+
 --[===[@non-debug@
-function aObj:tableCount() end
+aObj.tableCount = _G.nop
 --@end-non-debug@]===]
 
 function aObj:toggleTabDisplay(tab, active)
