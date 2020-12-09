@@ -2,22 +2,30 @@ local aName, aObj = ...
 if not aObj:isAddonEnabled("RaiderIO") then return end
 local _G = _G
 
-aObj.addonsToSkin.RaiderIO = function(self) -- v 8.1.0 (v202009260600)
+aObj.addonsToSkin.RaiderIO = function(self) -- v 9.0.2 (v202012080600)
 
-	-- Config
-	local cPF -- configParentFrame
+	-- Config & SearchUI
+	local cPF, sUI -- configParentFrame, SearchUI
 	self.RegisterCallback("RaiderIO", "UIParent_GetChildren", function(this, child)
 		if child.scrollframe
 		and child.scrollbar
 		then
 			cPF = child
+		elseif child.header
+		and child:GetWidth() == _G.Round(310)
+		then
+			sUI = child
+		end
+		if cPF
+		and sUI
+		then
 			self.UnregisterCallback("RaiderIO", "UIParent_GetChildren")
 		end
 	end)
 	self:scanUIParentsChildren()
 	if cPF then
-		self:skinSlider{obj=cPF.scrollbar}
-		self:addSkinFrame{obj=cPF, ft="a", kfs=true, nb=true}
+		self:skinObject("slider", {obj=cPF.scrollbar})
+		self:skinObject("frame", {obj=cPF, kfs=true})
 		if self.modBtns then
 			-- buttons are children of configButtonFrame which is 3rd child of cPF
 			-- N.B. NOT really buttons
@@ -37,7 +45,7 @@ aObj.addonsToSkin.RaiderIO = function(self) -- v 8.1.0 (v202009260600)
 			end
 		end
 		if self.modChkBtns then
-			for _, opt in ipairs{cPF.scrollframe.content:GetChildren()} do
+			for _, opt in _G.ipairs{cPF.scrollframe.content:GetChildren()} do
 				if opt.text then
 					self:skinCheckButton{obj=opt.checkButton}
 					self:skinCheckButton{obj=opt.checkButton2}
@@ -45,39 +53,25 @@ aObj.addonsToSkin.RaiderIO = function(self) -- v 8.1.0 (v202009260600)
 			end
 		end
 	end
-    cPF = nil
-
-	-- SearchUI
-	-- hook original function to skin searchUI
-	local orig_sCLH = _G.SlashCmdList["RaiderIO"]
-	_G.SlashCmdList["RaiderIO"] = function(text)
-		orig_sCLH(text)
-		local sUI -- SearchUI
-		aObj.RegisterCallback("RaiderIO", "UIParent_GetChildren", function(this, child)
-			if child.header
-			and child.Search
-			then
-				sUI = child
-				aObj.UnregisterCallback("RaiderIO", "UIParent_GetChildren")
-			end
-		end)
-		aObj:scanUIParentsChildren()
-		if sUI then
-			local btn = aObj:getChild(sUI, 1)
-			btn:DisableDrawLayer("BORDER") -- remove border textures
-			aObj:skinEditBox{obj=btn, regs={6}} -- 6 is text
-			btn = aObj:getChild(sUI, 2)
-			btn:DisableDrawLayer("BORDER") -- remove border textures
-			aObj:skinEditBox{obj=btn, regs={6}} -- 6 is text
-			btn:ClearAllPoints()
-			btn:SetPoint("TOP", aObj:getChild(sUI, 1), "BOTTOM", 0, 0)
-			aObj:addSkinFrame{obj=sUI, ft="a", kfs=true, nb=true}
-			sUI, btn = nil, nil
-			aObj:add2Table(aObj.ttList, _G.RaiderIO_SearchTooltip)
-			_G.SlashCmdList["RaiderIO"] = orig_sCLH
-			orig_sCLH = nil
-		end
-		sUI = nil
+	if sUI then
+		local btn = aObj:getChild(sUI, 1)
+		btn:DisableDrawLayer("BORDER") -- remove border textures
+		btn:SetHeight(26)
+		aObj:skinObject("editbox", {obj=btn, ofs=0})
+		btn = aObj:getChild(sUI, 2)
+		btn:DisableDrawLayer("BORDER") -- remove border textures
+		btn:SetHeight(26)
+		aObj:skinObject("editbox", {obj=btn, ofs=0})
+		btn:ClearAllPoints()
+		btn:SetPoint("TOP", aObj:getChild(sUI, 1), "BOTTOM", 0, 0)
+		aObj:skinObject("frame", {obj=sUI, kfs=true, ofs=0})
+		btn = nil
 	end
+    cPF, sUI = nil, nil
+
+	-- tooltip
+	_G.C_Timer.After(0.1, function()
+		self:add2Table(self.ttList, _G.RaiderIO_SearchTooltip)
+	end)
 
 end
