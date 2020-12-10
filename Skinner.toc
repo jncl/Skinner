@@ -27,5 +27,5 @@ Core\_Core.xml
 Modules\_Modules.xml
 AddonSkins\_AddonSkins.xml
 #@non-retail@
-# ClassicSupport\_ClassicSupport.xml
+ClassicSupport\_ClassicSupport.xml
 #@end-non-retail@
