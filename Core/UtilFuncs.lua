@@ -1054,19 +1054,15 @@ function aObj:removeRegions(obj, regions)
 
 	_G.wipe(tmpTab)
 	tmpTab = getKeys(regions) or {}
-	_G.wipe(tmpTab2)
-	tmpTab2 = {obj:GetRegions()}
-	-- loop through the objects regions backwards, as they may be removed
-	for i = #tmpTab2, 1, -1 do
-		if tmpTab[i] then
-			if tmpTab2[i]:IsObjectType("Texture") then
-				tmpTab2[i]:SetAlpha(0)
-			else
-	--@debug@
+	for key, reg in _G.pairs{obj:GetRegions()} do
+		if tmpTab[key] then
+			reg:SetAlpha(0)
+--@debug@
+			if reg:IsObjectType("FontString") then
 				self:Debug("rr FS: [%s, %s]", obj, i)
 				self:Print(_G.debugstack(1, 5, 2))
-	--@end-debug@
 			end
+--@end-debug@
 		end
 	end
 
