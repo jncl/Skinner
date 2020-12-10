@@ -159,37 +159,38 @@ function aObj:skinObject(...)
 
 end
 
+local hOfs = -7
 local function hideHeader(obj)
-	local hAdj, hObj = false
 	-- remove Header textures and move text
-	if obj:GetName() then
-		for _, suffix in _G.pairs{"Header", "_Header", "_HeaderBox", "_FrameHeader", "FrameHeader", "HeaderTexture", "HeaderFrame"} do
-			hObj = _G[obj:GetName() .. suffix]
-			if hObj then
-				hObj:SetPoint("TOP", obj, "TOP", 0, 7)
-				hAdj = true
-				if aObj:hasTextInTexture(hObj, "UI-DialogBox-Header") then
-					hObj:SetAlpha(0)
-				end
-				break
-			end
-		end
-	end
 	if obj.header then -- Classic
 		obj.header:DisableDrawLayer("BACKGROUND")
 		obj.header:DisableDrawLayer("BORDER")
 		if obj.header.text
 		then
-			aObj:moveObject{obj=obj.header.text, y=hAdj and 0 or -7}
+			aObj:moveObject{obj=obj.header.text, y=hOfs}
 		else
-			aObj:moveObject{obj=aObj:getRegion(obj.header, obj.header:GetNumRegions()), y=hAdj and 0 or -7}
+			aObj:moveObject{obj=aObj:getRegion(obj.header, obj.header:GetNumRegions()), y=hOfs}
 		end
+		return
 	end
 	if obj.Header then
 		aObj:removeRegions(obj.Header, {1, 2, 3})
-		aObj:moveObject{obj=obj.Header.Text, y=hAdj and 0 or -7}
+		aObj:moveObject{obj=obj.Header.Text, y=hOfs}
+		return
 	end
-	hAdj, hObj = nil, nil
+	if obj:GetName() then
+		for _, suffix in _G.pairs{"Header", "_Header", "_HeaderBox", "_FrameHeader", "FrameHeader", "HeaderTexture", "HeaderFrame"} do
+			local hObj = _G[obj:GetName() .. suffix]
+			if hObj then
+				hObj:SetPoint("TOP", obj, "TOP", 0, hOfs * -1)
+				if aObj:hasTextInTexture(hObj, "UI-DialogBox-Header") then
+					hObj:SetAlpha(0)
+				end
+				break
+			end
+			hObj = nil
+		end
+	end
 end
 local function applySkin(tbl)
 --@alpha@
@@ -444,6 +445,8 @@ local function skinFrame(tbl)
 	end
 	-- add a frame to the object
 	tbl.obj.sf = _G.CreateFrame("Frame", nil, tbl.obj, tbl.sec and "SecureFrameTemplate")
+	-- Show/Hide as necessary
+	tbl.obj.sf:SetShown(tbl.obj:IsShown())
 	-- allow clickthrough
 	tbl.obj.sf:EnableMouse(false)
 	-- adjust frame level
