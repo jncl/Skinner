@@ -1,4 +1,4 @@
-local _, aObj = ...
+local aName, aObj = ...
 
 local _G = _G
 
@@ -3633,6 +3633,15 @@ aObj.blizzFrames[ftype].LFGFrame = function(self)
 		if self.modBtnBs then
 			self:addButtonBorder{obj=_G.LFGDungeonReadyDialogRewardsFrameReward1, relTo=_G.LFGDungeonReadyDialogRewardsFrameReward1.texture}
 			self:addButtonBorder{obj=_G.LFGDungeonReadyDialogRewardsFrameReward2, relTo=_G.LFGDungeonReadyDialogRewardsFrameReward2.texture}
+		end
+
+		-- skin BigWigs statusbar
+		if _G.BigWigsLoader then
+			_G.BigWigsLoader.RegisterMessage(aName, "BigWigs_FrameCreated", function(event, frame, name)
+				_G.print("BigWigsLoader frame created", name)
+				self:removeRegions(frame, {2, 4}) -- background & border textures
+				self:skinStatusBar{obj=frame, fi=0}
+			end)
 		end
 
 		self:Unhook(this, "OnShow")
