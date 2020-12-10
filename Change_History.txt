@@ -1,3 +1,14 @@
+beta9.36839.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated TOC, .gitignore & .pkgmeta & added .pkgmeta_classic to support BigWigs packager script
+	Updated debug code
+	Updated AudioOptions skin
+	Updated RaiderIO skin
+	Bugfix for ObjectiveTrackerFrame
+	Add Option for FrameBorders
+
 beta9.36753.4
 Jncl:
 	ToDo.txt
