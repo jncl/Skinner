@@ -19,25 +19,19 @@ ToDos
 		- self.bColour to self.bClr
 		- self.bbColour to self.bbClr
 
-	I	JoinArena frame isn't skinned
-
-?	O	Skin CommentatorTeamDisplay
-
 ≈	O	Make sure all buttons borders have the correct border colour, e.g. "gold"
 
 ≈	O	Add checks for Button state as required
 
 ≈	O	Refactor Tab skinning in AddOn skins
 
-	I	FrameBorders, repoorted by raineday, 08.12.20
-		- Doesn't like the change as it appears on config panels.
-√		- Add Option to not use Frame Borders.
+	I	HealBot, reported by Carica18, 09.12.20
+√		- Skinner\Core\MainFuncs.lua:986: attempt to index field 'obj' (a nil value)
+		[string "@Skinner\Core\MainFuncs.lua"]:1048: in function `skinSlider'
+		[string "@Skinner\AddonSkins\HealBot-9.0.2.0.lua"]:39: in function <Skinner\AddonSkins\HealBot.lua:6>
 
-	I	repoorted by EpidemeDaBear, 08.12.20
-√		- ..eBartender4\libs\AceHook-3.0\AceHook-3.0-9.lua:180: Attempting to rehook already active hook ObjectiveTracker_Update.
-		[string "@Bartender4\libs\AceHook-3.0\AceHook-3.0-9.lua"]:180: in function <...eBartender4\libs\AceHook-3.0\AceHook-3.0.lua:118>
-		[string "@Bartender4\libs\AceHook-3.0\AceHook-3.0-9.lua"]:341: in function `SecureHook'
-		[string "@Skinner\Core\PlayerFrames.lua"]:3771: in function <Skinner\Core\PlayerFrames.lua:3537>
+	I	SavedInstances, reported by Carica18, 09.12.20
+≈		-  Skinner\AddonSkins\SavedInstances-9.0.3.lua:15: Usage: SecureHook([object], method, [handler]): Attempting to hook a non existing target
 
-	I	RaiderIO, repoorted by EpidemeDaBear, 08.12.20
-?		- Skinner\AddonSkins\RaiderIO-9.0.2 (v202012080603).lua:40: attempt to index field 'content' (a nil value)
+	I	BigWigs, reported by Carica18, 09.12.20
+√		- dungeon timer bar is not being skinned
