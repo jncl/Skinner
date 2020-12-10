@@ -1911,8 +1911,8 @@ aObj.blizzFrames[ftype].ColorPicker = function(self)
 
 	self:SecureHookScript(_G.ColorPickerFrame, "OnShow", function(this)
 		self:removeNineSlice(this.Border)
-		self:skinSlider{obj=_G.OpacitySliderFrame, size=4}
-		self:addSkinFrame{obj=this, ft=ftype, nb=true, hdr=true, ofs=0}
+		self:skinObject("slider", {obj=_G.OpacitySliderFrame, fType=ftype})
+		self:skinObject("frame", {obj=this, fType=ftype, hdr=true, ofs=0})
 		if self.modBtns then
 			self:skinStdButton{obj=_G.ColorPickerOkayButton}
 			self:skinStdButton{obj=_G.ColorPickerCancelButton}
@@ -1924,8 +1924,8 @@ aObj.blizzFrames[ftype].ColorPicker = function(self)
 	self:SecureHookScript(_G.OpacityFrame, "OnShow", function(this)
 		-- used by BattlefieldMinimap amongst others
 		self:removeNineSlice(this.Border)
-		self:skinSlider{obj=_G.OpacityFrameSlider}
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, ofs=0, y1=-1} -- DON'T skin CloseButton as it is the frame
+		self:skinObject("slider", {obj=_G.OpacityFrameSlider, fType=ftype})
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ofs=0, y1=-1})
 
 		self:Unhook(this, "OnShow")
 	end)
