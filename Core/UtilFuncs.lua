@@ -677,7 +677,7 @@ function aObj:hasTextInName(obj, text)
 	_G.assert(text, "Missing value hasTextInName\n" .. _G.debugstack(2, 3, 2))
 --@end-alpha@
 
-	return obj and obj.GetName and obj:GetName() and obj:GetName():find(text) and true or false
+	return obj and obj.GetName and obj:GetName() and obj:GetName():find(text, 1, true) and true or false
 
 end
 
@@ -693,8 +693,12 @@ function aObj:hasAnyTextInName(obj, tab)
 	then
 		local oName = obj:GetName()
 		for i = 1, #tab do
-			if oName:find(tab[i]) then return true end
+			if oName:find(tab[i], 1, true) then
+				oName = nil
+				return true
+			end
 		end
+		oName = nil
 	end
 
 	return false
@@ -703,11 +707,11 @@ end
 
 function aObj:hasTextInTexture(obj, text)
 --@alpha@
-	-- _G.assert(obj, "Unknown object hasTextInTexture\n" .. _G.debugstack(2, 3, 2)) -- N.B. allow for missing texture object
+	_G.assert(obj, "Unknown object hasTextInTexture\n" .. _G.debugstack(2, 3, 2)) -- N.B. allow for missing texture object FIXME: Why was this commented out?
 	_G.assert(text, "Missing value hasTextInTexture\n" .. _G.debugstack(2, 3, 2))
 --@end-alpha@
 
-	return obj and obj.GetTexture and obj:GetTexture() and _G.tostring(obj:GetTexture()):find(text, 1) and true or false
+	return obj and obj.GetTexture and obj:GetTexture() and _G.tostring(obj:GetTexture()):find(text, 1, true) and true or false
 
 end
 
