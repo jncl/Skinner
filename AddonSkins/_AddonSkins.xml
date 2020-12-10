@@ -75,7 +75,6 @@
 <Script file="DressUp.lua"/>
 <Script file="ElvUI.lua"/>
 <Script file="EnergyWatch.lua"/>
-<Script file="EnhancedColourPicker.lua"/>
 <Script file="EnhancedFlightMap.lua"/>
 <Script file="EnhancedStackSplit.lua"/>
 <Script file="ERC.lua"/>
