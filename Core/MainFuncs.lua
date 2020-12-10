@@ -31,7 +31,7 @@ local function hideHeader(obj)
 		aObj:removeRegions(obj.Header, {1, 2, 3})
 		aObj:moveObject{obj=obj.Header.Text, y=hAdj and 0 or hOfs}
 	end
-	hAdj = nil
+	hAdj, hObj = nil, nil
 end
 
 local function __addSkinButton(opts)
@@ -135,7 +135,8 @@ local function __addSkinButton(opts)
 			if regOT == "Texture" or regOT == "FontString" then
 				-- change the DrawLayer to make the Icon show if required
 				if aObj:hasAnyTextInName(reg, {"[Ii]con", "[Cc]ount"})
-				or aObj:hasTextInTexture(reg, "[Ii]con") then
+				or aObj:hasTextInTexture(reg, "[Ii]con")
+				then
 					if reg:GetDrawLayer() == "BACKGROUND" then reg:SetDrawLayer("ARTWORK") end
 				end
 			end
