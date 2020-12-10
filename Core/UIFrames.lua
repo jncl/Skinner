@@ -2811,13 +2811,13 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 				skinPuck(btn)
 			end
 			for btn in frame.enemySocketFramePool:EnumerateActive() do
-				aObj:addFrameBorder{obj=btn, ft=ftype, ofs=2, aso={bbclr="grey"}}
+				aObj:skinObject("frame", {obj=btn, fType=ftype, kfs=true, fb=true, ofs=2, clr="grey"})
 			end
 			for btn in frame.followerFramePool:EnumerateActive() do
 				skinPuck(btn)
 			end
 			for btn in frame.followerSocketFramePool:EnumerateActive() do
-				aObj:addFrameBorder{obj=btn, ft=ftype, ofs=3, aso={bbclr="grey"}}
+				aObj:skinObject("frame", {obj=btn, fType=ftype, kfs=true, fb=true, ofs=2, clr="grey"})
 			end
 		end
 		frame.OverlayElements.CloseButtonBorder:SetTexture(nil)
