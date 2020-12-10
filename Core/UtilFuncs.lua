@@ -781,12 +781,13 @@ function aObj:isDropDown(obj)
 --@end-alpha@
 
 	if obj:IsObjectType("Frame") then
-		if obj:GetName()
-		and self:hasTextInTexture(_G[obj:GetName() .. "Left"], "CharacterCreate")
+		if obj.Left
+		and self:hasTextInTexture(obj.Left, "CharacterCreate")
 		then
 			return true
-		elseif obj.Left
-		and self:hasTextInTexture(obj.Left, "CharacterCreate")
+		elseif obj:GetName()
+		and _G[obj:GetName() .. "Left"]
+		and self:hasTextInTexture(_G[obj:GetName() .. "Left"], "CharacterCreate")
 		then
 			return true
 		end
