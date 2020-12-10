@@ -10,12 +10,14 @@ if SI then
 	end, true)
 end
 
-aObj.addonsToSkin.SavedInstances = function(self) -- v 9.0.1
+aObj.addonsToSkin.SavedInstances = function(self) -- v 9.0.3
 
-	self:SecureHook(SI, "ShowDetached", function(this)
-		self:addSkinFrame{obj=this.detachframe, ft="a", kfs=true}
+	if SI then
+		self:SecureHook(SI, "ShowDetached", function(this)
+			self:skinObject("frame", {obj=this.detachframe, kfs=true, cb=true})
 
-		self:Unhook(this, "ShowDetached")
-	end)
+			self:Unhook(this, "ShowDetached")
+		end)
+	end
 
 end
