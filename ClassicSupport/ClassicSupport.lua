@@ -1783,9 +1783,9 @@ aObj.ClassicSupport = function(self)
 		self.initialized.WorldStateScoreFrame = true
 
 		self:SecureHookScript(_G.WorldStateScoreFrame, "OnShow", function(this)
-			self:skinSlider{obj=_G.WorldStateScoreScrollFrame.ScrollBar, rt="artwork"}
+			self:skinObject("slider", {obj=_G.WorldStateScoreScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
 			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, ignoreSize=true, lod=true})
-			self:addSkinFrame{obj=this, ft=ftype, kfs=true, x1=12, y1=-15, x2=-114, y2=65}
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=12, y1=-15, x2=-114, y2=66})
 			if self.modBtns then
 				self:skinStdButton{obj=_G.WorldStateScoreFrameLeaveButton}
 			end
