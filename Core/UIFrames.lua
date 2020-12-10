@@ -884,20 +884,9 @@ aObj.blizzLoDFrames[ftype].BattlefieldMap = function(self)
 	if not self.prdb.BattlefieldMap or self.initialized.BattlefieldMap then return end
 	self.initialized.BattlefieldMap = true
 
-	self:SecureHookScript(_G.BattlefieldMapTab, "OnShow", function(this)
-		self:keepRegions(this, {4, 5}) -- N.B. region 4 is the Text, 5 is the highlight
-		self:moveObject{obj=this.Text, y=-1} -- move text down
-		self:addSkinFrame{obj=this, ft=ftype, noBdr=self.isTT, aso=self.isTT and {ba=1} or nil, y1=-7, y2=-7}
-
-		self:Unhook(this, "OnShow")
-	end)
-
 	self:SecureHookScript(_G.BattlefieldMapFrame, "OnShow", function(this)
-		-- use a backdrop with no Texture otherwise the map tiles are obscured
-		self:addFrameBorder{obj=this.BorderFrame, ft=ftype, ofs=4, y1=6, x2=2}
-		if self.modBtns then
-			self:skinCloseButton{obj=this.BorderFrame.CloseButton}
-		end
+		self:skinObject("frame", {obj=_G.BattlefieldMapTab, fType=ftype, kfs=true, noBdr=self.isTT, y1=-7, y2=-7})
+		self:skinObject("frame", {obj=this.BorderFrame, fType=ftype, kfs=true, cb=true, fb=true, ofs=4, y1=6, x2=2, y2=2})
 
 		-- change the skinFrame's opacity as required
 		self:SecureHook(this, "RefreshAlpha", function(this)
