@@ -1706,10 +1706,10 @@ aObj.blizzFrames[ftype].ChatEditBox = function(self)
 				eBox.sf:SetAlpha(eBox:GetAlpha())
 			end
 		end
-		self:secureHook("ChatEdit_ActivateChat", function(editBox)
+		self:SecureHook("ChatEdit_ActivateChat", function(editBox)
 			setAlpha(editBox)
 		end)
-		self:secureHook("ChatEdit_DeactivateChat", function(editBox)
+		self:SecureHook("ChatEdit_DeactivateChat", function(editBox)
 			setAlpha(editBox)
 		end)
 	end

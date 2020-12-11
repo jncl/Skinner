@@ -316,6 +316,8 @@ local function skinButton(tbl)
 	so.ba    = tbl.ba
 	so.bbclr = tbl.clr
 	so.bba   = tbl.bba
+	so.bd     = tbl.bd
+	so.ng     = tbl.ng
 	-- apply the 'Skinner effect' to the frame
 	aObj:skinObject(so)
 	return tbl.obj.sb
@@ -375,6 +377,8 @@ local function skinDropDown(tbl)
 	if tbl.obj.Icon then
 		tbl.obj.Icon:SetAlpha(1)
 	end
+	-- Show/Hide as necessary
+	tbl.obj.sf:SetShown(tbl.obj:IsShown())
 end
 skinFuncs.dropdown = function(table) skinDropDown(table) end
 local function skinEditBox(tbl)
@@ -445,8 +449,6 @@ local function skinFrame(tbl)
 	end
 	-- add a frame to the object
 	tbl.obj.sf = _G.CreateFrame("Frame", nil, tbl.obj, tbl.sec and "SecureFrameTemplate")
-	-- Show/Hide as necessary
-	tbl.obj.sf:SetShown(tbl.obj:IsShown())
 	-- allow clickthrough
 	tbl.obj.sf:EnableMouse(false)
 	-- adjust frame level
