@@ -59,10 +59,8 @@ function module:skinUnitButton(opts)
 	opts.y1 = opts.y1 or opts.ofs
 	opts.x2 = opts.x2 or opts.ofs
 	opts.y2 = opts.y2 or opts.ofs * -1
-
-	aObj:addSkinButton{obj=opts.obj, ft=ftype, bg=true, aso={bd=11, ng=true}, secu=true, noHooks=true, x1=opts.x1, y1=opts.y1, x2=opts.x2, y2=opts.y2}
+	aObj:skinObject("button", {obj=opts.obj, fType=ftype, subt=true, bg=true, bd=11, ng=true, x1=opts.x1, y1=opts.y1, x2=opts.x2, y2=opts.y2})
 	opts.obj.sb:SetBackdropColor(0.1, 0.1, 0.1, db.alpha) -- use dark background
-
 	if opts.ti
 	and opts.obj.threatIndicator
 	then
