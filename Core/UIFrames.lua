@@ -6235,12 +6235,13 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 
 	-- N.B. In Shadowlands, get Clamping Errors when in certain areas and displaying StatusBar/SpellDisplay widgets
 	local disableTypeBySZ = {
-		[2] = {
+		[2] = { -- StatusBar
 			["Bleak Redoubt"] = true,
 			["House of Plagues"] = true,
 			["The Desiccation"] = true,
+			["The Spearhead"] = true,
 		},
-		[13] = {
+		[13] = { -- SpellDisplay
 			["House of Plagues"] = true,
 		},
 	}
