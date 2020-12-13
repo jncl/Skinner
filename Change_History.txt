@@ -1,3 +1,24 @@
+beta9.36839.2
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated addSkinButton function
+	Updated NewSkinFuncs
+	Updated isDropDown function
+	Updated removeRegions function
+	Updated text finding functions
+	Skinned BigWigs QueueTimer StatusBar
+	Updated CovenantMissionFrame skin
+	Updated ColorPickerFrame skin
+	Updated BattlefieldMap skin
+	Updated ClassicSupport TOC entry & XML file
+	Updated WorldStateScoreFrame skin
+	Updated HealBot & SavedInstances skins
+	Obsoleted EnhancedColourPicker skin
+	Updated .gitignore & .pkgmeta* files
+	Updated code to use globals
+	Bugfix
+
 beta9.36839.1
 Jncl:
 	ToDo.txt
