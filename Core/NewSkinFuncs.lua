@@ -377,8 +377,6 @@ local function skinDropDown(tbl)
 	if tbl.obj.Icon then
 		tbl.obj.Icon:SetAlpha(1)
 	end
-	-- Show/Hide as necessary
-	tbl.obj.sf:SetShown(tbl.obj:IsShown())
 end
 skinFuncs.dropdown = function(table) skinDropDown(table) end
 local function skinEditBox(tbl)

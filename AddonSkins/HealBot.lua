@@ -53,6 +53,8 @@ aObj.addonsToSkin.HealBot = function(self) -- v 9.0.2.0
 
 		-- loop through all children skinning them & continue through child frames
 		skinKids(this)
+		-- hide the skinframe
+		_G.HealBot_Options_FramesSelFrame.sf:SetShown(_G.HealBot_Options_FramesSelFrame:IsShown())
 
 		if self.modBtns then
 			self:SecureHook("HealBot_Options_ObjectsEnableDisable", function(oName, oEnable)

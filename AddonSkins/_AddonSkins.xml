@@ -33,6 +33,7 @@
 <Script file="BattlePetCount.lua"/>
 <Script file="BaudBag.lua"/>
 <Script file="BaudManifest.lua"/>
+<Script file="BigWigs.lua"/>
 <Script file="BindPad.lua"/>
 <Script file="BonusRollPreview.lua"/>
 <Script file="BossNotes.lua"/>
