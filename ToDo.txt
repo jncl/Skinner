@@ -19,19 +19,30 @@ ToDos
 		- self.bColour to self.bClr
 		- self.bbColour to self.bbClr
 
-≈	O	Make sure all buttons borders have the correct border colour, e.g. "gold"
-
 ≈	O	Add checks for Button state as required
 
 ≈	O	Refactor Tab skinning in AddOn skins
 
-	I	HealBot, reported by Carica18, 09.12.20
-√		- Skinner\Core\MainFuncs.lua:986: attempt to index field 'obj' (a nil value)
-		[string "@Skinner\Core\MainFuncs.lua"]:1048: in function `skinSlider'
-		[string "@Skinner\AddonSkins\HealBot-9.0.2.0.lua"]:39: in function <Skinner\AddonSkins\HealBot.lua:6>
+	I	ChatEditBox, reported by raineday, 11.12.20
+√		- using style 1 it isn't skinned anymore
 
-	I	SavedInstances, reported by Carica18, 09.12.20
-≈		-  Skinner\AddonSkins\SavedInstances-9.0.3.lua:15: Usage: SecureHook([object], method, [handler]): Attempting to hook a non existing target
+	I	ChatSettings, reported by hastrox77, 11.12.20
+?		-  ..\AddOns\Skinner\UIFrames.lua line 1688: attempt to call method 'ClearBackdrop' (a nil value)
 
-	I	BigWigs, reported by Carica18, 09.12.20
-√		- dungeon timer bar is not being skinned
+	I	ChatFrame, reported by DarkLimpan, 12.12.20
+√		- Skinned Frame not visible
+
+	I	reported by reshiwan2, 07.12.20/12.12.20
+?		- When i hover over the button, the old one is visible. What am I doing wrong?
+		- The button is also missing in weak auras.
+
+	I	BigWigs, reported by Carica18, 13.12.20
+?		- Skinner\Core\MainFuncs.lua:1072: attempt to call method 'SetStatusBarTexture' (a nil value)
+		[string "@Skinner\Core\MainFuncs.lua"]:1072: in function <Skinner\Core\MainFuncs.lua:1056>
+		[string "@Skinner\Core\MainFuncs.lua"]:1149: in function `skinStatusBar'
+		[string "@Skinner\Core\UIFrames.lua"]:3643: in function `v'
+		[string "@BigWigs\Loader.lua"]:992: in function `SendMessage'
+		[string "@BigWigs_Plugins\AltPower.lua"]:424: in main chunk
+
+	i	AllTheThings, reported by MacallanTwoFive, 13.12.20
+√		- Not skinned & background is missing
