@@ -2426,7 +2426,7 @@ aObj.blizzLoDFrames[ftype].EncounterJournal = function(self) -- a.k.a. Adenture 
 				skinCreatureBtn(_G.EncounterJournal.encounter.info.creatureButtons[index])
 			end)
 			-- Tabs (side)
-			self:skinObject("tabs", {obj=this.info, fType=ftype, tabs={this.info.overviewTab, this.info.lootTab, this.info.bossTab, this.info.modelTab}, aso={ng=true}, regions={4, 5, 6}, offsets={x1=3, y1=-2, x2=-3, y2=2}, track=false})
+			self:skinObject("tabs", {obj=this.info, tabs={this.info.overviewTab, this.info.lootTab, this.info.bossTab, this.info.modelTab}, fType=ftype, aso={ng=true}, regions={4, 5, 6}, offsets={x1=3, y1=-2, x2=-3, y2=2}, track=false})
 			self:moveObject{obj=this.info.overviewTab, x=12}
 
 			self:Unhook(this, "OnShow")
