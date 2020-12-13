@@ -1783,7 +1783,7 @@ aObj.blizzFrames[ftype].ChatTabs = function(self)
 			this.sf:SetAlpha(alpha)
 		end)
 	end
-	self:skinObject("tabs", {obj=_G.FloatingChatFrameManager, fType=ftype, tabs=fcfTabs, ignoreSize=true, lod=true, regions={7, 11}, offsets={x1=2, y1=-9, x2=-2, y2=-4}, track=false})
+	self:skinObject("tabs", {obj=_G.FloatingChatFrameManager, tabs=fcfTabs, fType=ftype, ignoreSize=true, lod=true, regions={7, 11}, offsets={x1=2, y1=-9, x2=-2, y2=-4}, track=false})
 	fcfTabs = nil
 	if self.isTT then
 		self:SecureHook("FCF_Tab_OnClick", function(this, button)
