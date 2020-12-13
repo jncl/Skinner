@@ -1454,9 +1454,9 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 
 	self:SecureHookScript(_G.ChatConfigFrame, "OnShow", function(this)
 		self:removeNineSlice(this.Border)
-		self:addFrameBorder{obj=_G.ChatConfigCategoryFrame, ft=ftype, ofs=-2}
-		self:addFrameBorder{obj=_G.ChatConfigBackgroundFrame, ft=ftype, ofs=-2}
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, hdr=true, ofs=-4, y1=0}
+		self:skinObject("frame", {obj=_G.ChatConfigCategoryFrame, fType=ftype, kfs=true, fb=true})
+		self:skinObject("frame", {obj=_G.ChatConfigBackgroundFrame, fType=ftype, kfs=true, fb=true})
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true, ofs=-4, y1=0})
 		if self.modBtns then
 			self:skinStdButton{obj=this.DefaultButton}
 			self:skinStdButton{obj=this.RedockButton}
@@ -1465,7 +1465,7 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 			self:skinStdButton{obj=_G.ChatConfigFrameOkayButton}
 		end
 		-- ChatTabManager
-		self:addFrameBorder{obj=this.ChatTabManager, ft=ftype, x1=-5, y1=3, x2=725, y2=-512}
+		self:skinObject("frame", {obj=_G.ChatConfigBackgroundFrame, fType=ftype, kfs=true, fb=true, x1=-5, y1=3, x2=725, y2=-512})
 		local setTabState
 		if aObj.isTT then
 			function setTabState(tab)
@@ -1481,7 +1481,7 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 				tab.sf:Show()
 			end
 		end
-		local tabSkin = self.skinTPLs.new("tabs", {obj=this.ChatTabManager, tabs={}, ignoreSize=true, offsets={x1=0, y1=-6, x2=0, y2=-4}, regions={11}, noCheck=true, func=setTabState})
+		local tabSkin = self.skinTPLs.new("tabs", {obj=this.ChatTabManager, tabs={}, fType=ftype, ignoreSize=true, offsets={x1=0, y1=-6, x2=0, y2=-4}, regions={11}, noCheck=true, func=setTabState})
 		local function skinTabs(ctm)
 			_G.wipe(tabSkin.tabs)
 			for tab in ctm.tabPool:EnumerateActive() do
@@ -1515,9 +1515,9 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 		for i = 1, #_G.CHAT_CONFIG_CHAT_LEFT do
 			skinCB("ChatConfigChatSettingsLeftCheckBox" .. i)
 		end
-		self:addFrameBorder{obj=_G.ChatConfigChatSettingsLeft, ft=ftype}
+		self:skinObject("frame", {obj=_G.ChatConfigChatSettingsLeft, fType=ftype, kfs=true, fb=true})
 		--	Channel Settings
-		self:addFrameBorder{obj=_G.ChatConfigChannelSettingsLeft, ft=ftype}
+		self:skinObject("frame", {obj=_G.ChatConfigChannelSettingsLeft, fType=ftype, kfs=true, fb=true})
 		if not self.isClsc then
 			self:SecureHookScript(_G.ChatConfigChannelSettings, "OnShow", function(this)
 				for i = 1, #_G.CHAT_CONFIG_CHANNEL_LIST do
@@ -1527,7 +1527,7 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 				self:Unhook(this, "OnShow")
 			end)
 		else
-			self:addSkinFrame{obj=_G.ChatConfigChannelSettingsAvailable, ft=ftype, kfs=true, nb=true, ofs=0}
+			self:skinObject("frame", {obj==_G.ChatConfigChannelSettingsAvailable, fType=ftype, kfs=true})
 			self:SecureHook("ChatConfig_CreateCheckboxes", function(frame, _)
 				local box
 				for i = 1, #frame.checkBoxTable do
@@ -1555,23 +1555,23 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 		for i = 1, #_G.CHAT_CONFIG_OTHER_COMBAT do
 			skinCB("ChatConfigOtherSettingsCombatCheckBox" .. i)
 		end
-		self:addFrameBorder{obj=_G.ChatConfigOtherSettingsCombat, ft=ftype}
+		self:skinObject("frame", {obj=_G.ChatConfigOtherSettingsCombat, fType=ftype, kfs=true, fb=true})
 		for i = 1, #_G.CHAT_CONFIG_OTHER_PVP do
 			skinCB("ChatConfigOtherSettingsPVPCheckBox" .. i)
 		end
-		self:addFrameBorder{obj=_G.ChatConfigOtherSettingsPVP, ft=ftype}
+		self:skinObject("frame", {obj=_G.ChatConfigOtherSettingsPVP, fType=ftype, kfs=true, fb=true})
 		for i = 1, #_G.CHAT_CONFIG_OTHER_SYSTEM do
 			skinCB("ChatConfigOtherSettingsSystemCheckBox" .. i)
 		end
-		self:addFrameBorder{obj=_G.ChatConfigOtherSettingsSystem, ft=ftype}
+		self:skinObject("frame", {obj=_G.ChatConfigOtherSettingsSystem, fType=ftype, kfs=true, fb=true})
 		for i = 1, #_G.CHAT_CONFIG_CHAT_CREATURE_LEFT do
 			skinCB("ChatConfigOtherSettingsCreatureCheckBox" .. i)
 		end
-		self:addFrameBorder{obj=_G.ChatConfigOtherSettingsCreature, ft=ftype}
+		self:skinObject("frame", {obj=_G.ChatConfigOtherSettingsCreature, fType=ftype, kfs=true, fb=true})
 		--	Combat Settings
 		-- Filters
 		_G.ChatConfigCombatSettingsFiltersScrollFrameScrollBarBorder:Hide()
-		self:skinSlider{obj=_G.ChatConfigCombatSettingsFiltersScrollFrameScrollBar}
+		self:skinObject("slider", {obj=_G.ChatConfigCombatSettingsFiltersScrollFrameScrollBar, fType=ftype})
 		if self.modBtns then
 			self:skinStdButton{obj=_G.ChatConfigCombatSettingsFiltersDeleteButton}
 			self:skinStdButton{obj=_G.ChatConfigCombatSettingsFiltersAddFilterButton}
@@ -1581,17 +1581,17 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 			self:addButtonBorder{obj=_G.ChatConfigMoveFilterUpButton, es=12, ofs=-5, x2=-6, y2=7, clr="grey"}
 			self:addButtonBorder{obj=_G.ChatConfigMoveFilterDownButton, es=12, ofs=-5, x2=-6, y2=7, clr="grey"}
 		end
-		self:addFrameBorder{obj=_G.ChatConfigCombatSettingsFilters, ft=ftype}
+		self:skinObject("frame", {obj=_G.ChatConfigCombatSettingsFilters, fType=ftype, kfs=true, fb=true})
 		_G.LowerFrameLevel(_G.ChatConfigCombatSettingsFilters) -- make frame appear below tab texture
 		-- Message Sources
 		for i = 1, #_G.COMBAT_CONFIG_MESSAGESOURCES_BY do
 			skinCB("CombatConfigMessageSourcesDoneByCheckBox" .. i)
 		end
-		self:addFrameBorder{obj=_G.CombatConfigMessageSourcesDoneBy, ft=ftype}
+		self:skinObject("frame", {obj=_G.CombatConfigMessageSourcesDoneBy, fType=ftype, kfs=true, fb=true})
 		for i = 1, #_G.COMBAT_CONFIG_MESSAGESOURCES_TO do
 			skinCB("CombatConfigMessageSourcesDoneToCheckBox" .. i)
 		end
-		self:addFrameBorder{obj=_G.CombatConfigMessageSourcesDoneTo, ft=ftype}
+		self:skinObject("frame", {obj=_G.CombatConfigMessageSourcesDoneTo, fType=ftype, kfs=true, fb=true})
 		-- Message Type
 		for i, val in _G.ipairs(_G.COMBAT_CONFIG_MESSAGETYPES_LEFT) do
 			skinCB("CombatConfigMessageTypesLeftCheckBox" .. i)
@@ -1621,13 +1621,13 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 		for i = 1, #_G.COMBAT_CONFIG_UNIT_COLORS do
 			self:removeBackdrop(_G["CombatConfigColorsUnitColorsSwatch" .. i])
 		end
-		self:addFrameBorder{obj=_G.CombatConfigColorsUnitColors, ft=ftype}
-		self:addFrameBorder{obj=_G.CombatConfigColorsHighlighting, ft=ftype}
-		self:addFrameBorder{obj=_G.CombatConfigColorsColorizeUnitName, ft=ftype}
-		self:addFrameBorder{obj=_G.CombatConfigColorsColorizeSpellNames, ft=ftype}
-		self:addFrameBorder{obj=_G.CombatConfigColorsColorizeDamageNumber, ft=ftype}
-		self:addFrameBorder{obj=_G.CombatConfigColorsColorizeDamageSchool, ft=ftype}
-		self:addFrameBorder{obj=_G.CombatConfigColorsColorizeEntireLine, ft=ftype}
+		self:skinObject("frame", {obj=_G.CombatConfigColorsUnitColors, fType=ftype, kfs=true, fb=true})
+		self:skinObject("frame", {obj=_G.CombatConfigColorsHighlighting, fType=ftype, kfs=true, fb=true})
+		self:skinObject("frame", {obj=_G.CombatConfigColorsColorizeUnitName, fType=ftype, kfs=true, fb=true})
+		self:skinObject("frame", {obj=_G.CombatConfigColorsColorizeSpellNames, fType=ftype, kfs=true, fb=true})
+		self:skinObject("frame", {obj=_G.CombatConfigColorsColorizeDamageNumber, fType=ftype, kfs=true, fb=true})
+		self:skinObject("frame", {obj=_G.CombatConfigColorsColorizeDamageSchool, fType=ftype, kfs=true, fb=true})
+		self:skinObject("frame", {obj=_G.CombatConfigColorsColorizeEntireLine, fType=ftype, kfs=true, fb=true})
 		if self.modChkBtns then
 			self:skinCheckButton{obj=_G.CombatConfigColorsHighlightingLine}
 			self:skinCheckButton{obj=_G.CombatConfigColorsHighlightingAbility}
@@ -1651,7 +1651,7 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 			end
 		end
 		-- Settings
-		self:skinEditBox{obj=_G.CombatConfigSettingsNameEditBox , regs={6}} -- 6 is text
+		self:skinObject("editbox", {obj=_G.CombatConfigSettingsNameEditBox, fType=ftype})
 		if self.modBtns then
 			self:skinStdButton{obj=_G.CombatConfigSettingsSaveButton}
 		end
@@ -1661,7 +1661,7 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 			self:skinCheckButton{obj=_G.CombatConfigSettingsParty}
 			self:skinCheckButton{obj=_G.CombatConfigSettingsRaid}
 		end
-		self:skinObject("tabs", {obj=_G.ChatConfigCombatSettings, prefix="CombatConfig", numTabs=#_G.COMBAT_CONFIG_TABS, ignoreSize=true, lod=true, offsets={x1=0, y1=-8, x2=-2, y2=-4}, regions={4, 5}, track=false})
+		self:skinObject("tabs", {obj=_G.ChatConfigCombatSettings, prefix="CombatConfig", numTabs=#_G.COMBAT_CONFIG_TABS, fType=ftype, ignoreSize=true, lod=true, offsets={x1=0, y1=-8, x2=-2, y2=-4}, regions={4, 5}, track=false})
 		if self.isTT then
 			self:SecureHook("ChatConfig_UpdateCombatTabs", function(selectedTabID)
 				local tab
