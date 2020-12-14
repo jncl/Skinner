@@ -304,6 +304,23 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 			elseif objType == "WeakAurasSortedDropdown" then
 				aObj:skinAceDropdown(obj, nil, 1)
 
+			elseif objType == "WeakAurasMultiLineEditBox" then
+				aObj:skinObject("frame", {obj=obj.scrollBG, kfs=true, fb=true, ofs=0})
+				if aObj.modBtns then
+					-- wait for the extra buttons to be created
+					_G.C_Timer.After(0.05, function()
+						for _, btn in _G.pairs(obj.extraButtons) do
+							aObj:skinStdButton{obj=btn}
+						end
+					end)
+				end
+
+			elseif objType == "WeakAurasSnippetButton" then
+				aObj:skinObject("editbox", {obj=obj.renameEditBox, ofs=3})
+				if aObj.modBtnBs then
+					aObj:addButtonBorder{obj=obj.deleteButton, es=10, ofs=-1, x1=2.5, y2=3.5}
+				end
+
             -- TradeSkillMaster (TSM) objects
 	        elseif objType == "TSMButton" then
 	           obj.btn:SetBackdrop(nil)
