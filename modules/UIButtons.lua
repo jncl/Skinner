@@ -19,7 +19,8 @@ do
 	module.mult = "×" -- multiplication sign NOT lower case X
 	module.plus = "+"
 	module.minus = "-" -- using Hyphen-minus(-) instead of minus sign(−) for font compatiblity reasons
-	module.updown = "↨" -- has a base line below
+	module.updown = "↕" -- Up Down Arrow (U+2195)
+	-- module.updown = "↨" -- Up Down Arrow with base (U+21A8)
 	-- using double chevrons
 	module.leftdc = "«"
 	module.rightdc = "»"
@@ -47,11 +48,11 @@ do
 	module.fontP = _G.CreateFont("fontP")
 	module.fontP:SetFont([[Fonts\ARIALN.TTF]], 16)
 	module.fontP:SetTextColor(_G.NORMAL_FONT_COLOR:GetRGB())
-	-- create font for disabled text (used by WeakAuras)
+	-- create font for disabled text on Minus/Plus Buttons
 	module.fontDP = _G.CreateFont("fontDP")
 	module.fontDP:SetFont([[Fonts\ARIALN.TTF]], 16)
 	module.fontDP:SetTextColor(_G.DISABLED_FONT_COLOR:GetRGB())
-	-- create font to use for WorldMap SizeUp/Down buttons
+	-- create font to use for SizeUp/Down buttons
 	module.fontS = _G.CreateFont("fontS")
 	module.fontS:SetFont([[Fonts\ARIALN.TTF]], 12)
 	module.fontS:SetTextColor(_G.NORMAL_FONT_COLOR:GetRGB())
@@ -466,6 +467,20 @@ function module:skinStdButton(opts) -- standard panel button
 	if opts.obj:GetPushedTexture() then opts.obj:GetPushedTexture():SetAlpha(0) end
 	if opts.obj:GetDisabledTexture() then opts.obj:GetDisabledTexture():SetAlpha(0) end
 
+	local hTex = opts.obj:GetHighlightTexture():GetTexture()
+	if hTex then
+		aObj:Debug("skinStdButton: [%s, %s]", opts.obj, hTex)
+		if _G.tonumber(hTex) then
+		else
+			if hTex:find("UI-Panel-Button-Highlight", 1, true) then -- UIPanelButtonHighlightTexture
+				opts.obj:GetHighlightTexture():SetColorTexture(1, 0, 0, 0.25) -- red
+			elseif hTex:find("UI-Silver-Button-Highlight", 1, true) then -- UIMenuButtonStretchTemplate
+				opts.obj:GetHighlightTexture():SetColorTexture(0, 0, 1, 0.25) -- blue
+			end
+		end
+	end
+	hTex = nil
+
 	local bW, bH = _G.Round(opts.obj:GetWidth()), _G.Round(opts.obj:GetHeight())
 
 	local aso = opts.aso or {}
@@ -477,8 +492,6 @@ function module:skinStdButton(opts) -- standard panel button
 		if bH < 16 then opts.obj:SetHeight(16) end -- set minimum button height (DBM option buttons)
 		if bW < 16 then opts.obj:SetWidth(16) end -- set minimum button width (oQueue remove buttons)
 		aObj:applySkin(aso)
-		-- FIXME:?? What was this used for ??
-		-- opts.obj.sb = true
 	end
 	bW, bH, aso = nil, nil, nil
 
