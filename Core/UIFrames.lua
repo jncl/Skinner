@@ -5196,7 +5196,10 @@ aObj.blizzFrames[ftype].PVPHelper = function(self)
 
 		self:Unhook(this, "OnShow")
 	end)
-	self:checkShown(_G.PVPReadyDialog)
+	-- check to see if should be shown
+	if _G.PVPReadyDialog.activeIndex then
+		self:checkShown(_G.PVPReadyDialog)
+	end
 
 end
 
