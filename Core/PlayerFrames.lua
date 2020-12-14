@@ -3673,42 +3673,57 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 		skinBar(this.usedProgressBars[block] and this.usedProgressBars[block][line])
 	end)
 
-	-- ScenarioStageBlock
-	self:nilTexture(_G.ScenarioStageBlock.NormalBG, true)
-	self:addSkinFrame{obj=_G.ScenarioStageBlock, ft=ftype, kfs=true, nb=true, y1=-1, x2=41, y2=7}
+	self:SecureHookScript(_G.ScenarioStageBlock, "OnShow", function(this)
+		self:nilTexture(this.NormalBG, true)
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, y1=-1, x2=41, y2=7}
 
-	-- ScenarioChallengeModeBlock
-	self:skinStatusBar{obj=_G.ScenarioChallengeModeBlock.StatusBar, fi=0, bgTex=_G.ScenarioChallengeModeBlock.TimerBG, otherTex={_G.ScenarioChallengeModeBlock.TimerBGBack}}
-	self:removeRegions(_G.ScenarioChallengeModeBlock, {3}) -- challengemode-timer atlas
-	self:addSkinFrame{obj=_G.ScenarioChallengeModeBlock, ft=ftype, nb=true, y2=7}
-	self:SecureHook("Scenario_ChallengeMode_SetUpAffixes", function(block, _)
-		for i = 1, #block.Affixes do
-			block.Affixes[i].Border:SetTexture(nil)
-		end
+		self:Unhook(this, "OnShow")
 	end)
+	self:checkShown(_G.ScenarioStageBlock)
 
-	-- ScenarioProvingGroundsBlock
-	_G.ScenarioProvingGroundsBlock.BG:SetTexture(nil)
-	_G.ScenarioProvingGroundsBlock.GoldCurlies:SetTexture(nil)
-	self:skinStatusBar{obj=_G.ScenarioProvingGroundsBlock.StatusBar, fi=0}
-	self:removeRegions(_G.ScenarioProvingGroundsBlock.StatusBar, {1}) -- border
-	self:addSkinFrame{obj=_G.ScenarioProvingGroundsBlock, ft=ftype, nb=true, x2=41}
-	_G.ScenarioProvingGroundsBlockAnim.BorderAnim:SetTexture(nil)
+	self:SecureHookScript(_G.ScenarioChallengeModeBlock, "OnShow", function(this)
+		self:skinStatusBar{obj=this.StatusBar, fi=0, bgTex=this.TimerBG, otherTex={this.TimerBGBack}}
+		self:removeRegions(this, {3}) -- challengemode-timer atlas
+		self:addSkinFrame{obj=this, ft=ftype, nb=true, y2=7}
+		self:SecureHook("Scenario_ChallengeMode_SetUpAffixes", function(block, _)
+			for i = 1, #block.Affixes do
+				block.Affixes[i].Border:SetTexture(nil)
+			end
+		end)
 
-	-- ScenarioWidgetContainerBlock
+		self:Unhook(this, "OnShow")
+	end)
+	self:checkShown(_G.ScenarioChallengeModeBlock)
+
+	self:SecureHookScript(_G.ScenarioProvingGroundsBlock, "OnShow", function(this)
+		this.BG:SetTexture(nil)
+		this.GoldCurlies:SetTexture(nil)
+		self:skinStatusBar{obj=this.StatusBar, fi=0}
+		self:removeRegions(this.StatusBar, {1}) -- border
+		_G.ScenarioProvingGroundsBlockAnim.BorderAnim:SetTexture(nil)
+		self:addSkinFrame{obj=this, ft=ftype, nb=true, x2=41}
+
+		self:Unhook(this, "OnShow")
+	end)
+	self:checkShown(_G.ScenarioProvingGroundsBlock)
 
 	-- tooltip
 	_G.C_Timer.After(0.1, function()
 		self:add2Table(self.ttList, _G.ScenarioStepRewardTooltip)
 	end)
 
-	_G.ScenarioBlocksFrame.MawBuffsBlock.Container.List:DisableDrawLayer("BACKGROUND")
-	if self.modBtns then
-		self:skinStdButton{obj=_G.ScenarioBlocksFrame.MawBuffsBlock.Container, x1=12, y1=-9, x2=-2, y2=9}
-		self:SecureHook(_G.ScenarioBlocksFrame.MawBuffsBlock.Container, "UpdateListState", function(this, _)
-			self:clrBtnBdr(this)
-		end)
-	end
+	self:SecureHookScript(_G.ScenarioBlocksFrame.MawBuffsBlock, "OnShow", function(this)
+		this.Container.List:DisableDrawLayer("BACKGROUND")
+		if self.modBtns then
+			self:skinStdButton{obj=this.Container, x1=12, y1=-9, x2=-2, y2=9}
+			self:SecureHook(this.Container, "UpdateListState", function(this, _)
+				self:clrBtnBdr(this)
+			end)
+		end
+
+		self:Unhook(this, "OnShow")
+	end)
+	self:checkShown(_G.ScenarioBlocksFrame.MawBuffsBlock)
 
 	-- remove Shadow texture
 	_G.BONUS_OBJECTIVE_TRACKER_MODULE.Header:DisableDrawLayer("BACKGROUND")
