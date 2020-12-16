@@ -142,6 +142,38 @@ function module:checkTex(...)
 
 end
 
+function module:chgHLTex(obj, hTex)
+
+	if hTex then
+		local hTexFile = hTex:GetTexture()
+		aObj:Debug("chgHLTex: [%s, %s]", obj, hTexFile)
+		if hTexFile then
+			if _G.tonumber(hTexFile) then
+			else
+				if hTexFile:find("UI-Panel-Button-Highlight", 1, true) -- UIPanelButtonHighlightTexture
+				or hTexFile:find("UI-DialogBox-Button-Highlight", 1, true) -- StaticPopupButton/PetPopupButton/CinematicDialogButton
+				then
+					hTex:SetColorTexture(1, 0, 0, 0.25) -- red
+				elseif hTexFile:find("UI-Silver-Button-Highlight", 1, true) -- UIMenuButtonStretchTemplate
+				or hTexFile:find("UI-Minimap-ZoomButton-Highlight", 1, true)
+				or hTexFile:find("HelpButtons", 1, true) -- Classic Help Buttons
+				then
+					hTex:SetColorTexture(0.25, 0.57, 1, 0.25) -- highlight light blue
+				elseif hTexFile:find("UI-Silver-Button-Select", 1, true) then -- UIMenuButtonStretchTemplate
+					hTex:SetColorTexture(1, 1, 0, 0.25) -- yellow
+				end
+				if obj.sb then
+					hTex:ClearAllPoints()
+					hTex:SetPoint("TOPLEFT", obj.sb, "TOPLEFT", 5, -5)
+					hTex:SetPoint("BOTTOMRIGHT", obj.sb, "BOTTOMRIGHT", -5, 5)
+				end
+			end
+			hTexFile = nil
+		end
+	end
+
+end
+
 function module:clrButtonFromBorder(btn, texture)
 --@alpha@
 	 _G.assert(btn.sbb, "Missing object__cBB\n" .. _G.debugstack(2, 3, 2))
@@ -320,17 +352,17 @@ function module:skinExpandButton(opts)
 	if opts.obj:GetNormalTexture() then opts.obj:GetNormalTexture():SetAlpha(0) end
 	if opts.obj:GetPushedTexture() then opts.obj:GetPushedTexture():SetAlpha(0) end
 
-	local aso = opts.aso or {}
-	aso.bd = 6
 	if not opts.as then
 		-- aObj:addSkinButton{obj=opts.obj, ft=opts.ftype or "a", parent=opts.obj, sap=opts.sap, aso=aso}
-		aObj:skinObject("button", {obj=opts.obj, fType=opts.ftype, sap=opts.sap, aso=aso})
+		aObj:skinObject("button", {obj=opts.obj, fType=opts.ftype, sap=opts.sap, bd=6})
 		if not opts.noHook then
 			module:SecureHook(opts.obj, "SetNormalAtlas", function(this, nTex)
 				module:checkTex{obj=this, nTex=nTex}
 			end)
 		end
 	else -- Ace3, Archy, ReagentRestocker
+		local aso = opts.aso or {}
+		aso.bd = 6
 		aso.obj = opts.obj
 		aObj:applySkin(aso)
 		opts.obj.sb = true
@@ -408,6 +440,8 @@ function module:skinOtherButton(opts)
 	end
 	aso = nil
 
+	module:chgHLTex(opts.obj, opts.obj:GetHighlightTexture())
+
 end
 function module:skinOtherButton1(opts) -- text on button
 
@@ -463,26 +497,12 @@ function module:skinStdButton(opts) -- standard panel button
 	if opts.obj:GetPushedTexture() then opts.obj:GetPushedTexture():SetAlpha(0) end
 	if opts.obj:GetDisabledTexture() then opts.obj:GetDisabledTexture():SetAlpha(0) end
 
-	local hTex = opts.obj:GetHighlightTexture():GetTexture()
-	if hTex then
-		aObj:Debug("skinStdButton: [%s, %s]", opts.obj, hTex)
-		if _G.tonumber(hTex) then
-		else
-			if hTex:find("UI-Panel-Button-Highlight", 1, true) then -- UIPanelButtonHighlightTexture
-				opts.obj:GetHighlightTexture():SetColorTexture(1, 0, 0, 0.25) -- red
-			elseif hTex:find("UI-Silver-Button-Highlight", 1, true) then -- UIMenuButtonStretchTemplate
-				opts.obj:GetHighlightTexture():SetColorTexture(0, 0, 1, 0.25) -- blue
-			end
-		end
-	end
-	hTex = nil
-
 	local bW, bH = _G.Round(opts.obj:GetWidth()), _G.Round(opts.obj:GetHeight())
 
 	local aso = opts.aso or {}
 	aso.bd = bH > 18 and 5 or 6 -- use narrower backdrop if required
 	if not opts.as then
-		aObj:skinObject("button", {obj=opts.obj, fType=opts.ftype, aso=aso, ofs=0, x1=opts.x1, y1=opts.y1, x2=opts.x2, y2=opts.y2})
+		aObj:skinObject("button", {obj=opts.obj, fType=opts.ftype, aso=aso, ofs=opts.ofs or 0, x1=opts.x1, y1=opts.y1, x2=opts.x2, y2=opts.y2})
 	else
 		aso.obj = opts.obj
 		if bH < 16 then opts.obj:SetHeight(16) end -- set minimum button height (DBM option buttons)
@@ -492,6 +512,9 @@ function module:skinStdButton(opts) -- standard panel button
 	bW, bH, aso = nil, nil, nil
 
 	module:clrBtnBdr(opts.obj, opts.clr, opts.ca)
+
+	module:chgHLTex(opts.obj, opts.obj:GetHighlightTexture())
+	module:chgHLTex(opts.obj, opts.obj.selectedHighlight)
 
 end
 
