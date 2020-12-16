@@ -2113,14 +2113,13 @@ aObj.blizzLoDFrames[ftype].DebugTools = function(self)
 	self.initialized.DebugTools = true
 
 	self:SecureHookScript(_G.EventTraceFrame, "OnShow", function(this)
-		self:skinSlider{obj=_G.EventTraceFrameScroll}
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, x1=1, y1=-2, x2=-1, y2=4}
+		self:skinObject("slider", {obj=_G.EventTraceFrameScroll, fType=ftype})
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, ofs=-2, y1=-3})
 		if self.modBtns then
 			self:SecureHook("EventTraceFrame_Update", function()
 				for i = 1, #_G.EventTraceFrame.buttons do
 					self:skinCloseButton{obj=_G.EventTraceFrame.buttons[i].HideButton, noSkin=true}
 				end
-
 			end)
 		end
 
@@ -2129,15 +2128,17 @@ aObj.blizzLoDFrames[ftype].DebugTools = function(self)
 
 	self:SecureHookScript(_G.TableAttributeDisplay, "OnShow", function(this)
 		local function skinTAD(frame)
-			aObj:skinEditBox{obj=frame.FilterBox, regs={6, 7}, mi=true} -- 6 is text, 7 is icon
-			aObj:skinSlider{obj=frame.LinesScrollFrame.ScrollBar}
-			aObj:addFrameBorder{obj=frame.ScrollFrameArt, ft=ftype, ofs=0}
-			aObj:addSkinFrame{obj=frame, ft=ftype, kfs=true, ofs=-2, x1=3, x2=-1}
-			-- skin control buttons ?
-			-- OpenParentButton
-			-- NavigateBackwardsButton
-			-- NavigateForwardsButton
-			-- DuplicateButton
+			aObj:skinObject("editbox", {obj=frame.FilterBox, fType=ftype, si=true})
+			aObj:skinObject("slider", {obj=frame.LinesScrollFrame.ScrollBar, fType=ftype})
+			aObj:skinObject("frame", {obj=frame.ScrollFrameArt, fType=ftype, fb=true})
+			aObj:skinObject("frame", {obj=frame, fType=ftype, kfs=true, cb=true, ofs=-2, x1=3, x2=-1})
+			if aObj.modBtns then
+				-- TODO: skin control buttons ?
+				-- OpenParentButton --> try chat frame scroll to bottom button inverted??
+				-- NavigateBackwardsButton --> try noSkin CB to begin with then Left Arrow
+				-- NavigateForwardsButton --> try noSkin CB to begin with then Right Arrow
+				-- DuplicateButton --> try Arrow char
+			end
 			if aObj.modChkBtns then
 				aObj:skinCheckButton{obj=frame.VisibilityButton}
 				aObj:skinCheckButton{obj=frame.HighlightButton}
@@ -2145,9 +2146,8 @@ aObj.blizzLoDFrames[ftype].DebugTools = function(self)
 			end
 		end
 		skinTAD(this)
-		-- hook this to skin subsequent frames
-		self:RawHook("DisplayTableInspectorWindow", function(focusedTable, customTitle, tableFocusedCallback)
-			local frame = self.hooks.DisplayTableInspectorWindow(focusedTable, customTitle, tableFocusedCallback)
+		self:RawHook("DisplayTableInspectorWindow", function(...)
+			local frame = self.hooks.DisplayTableInspectorWindow(...)
 			skinTAD(frame)
 			return frame
 		end, true)
