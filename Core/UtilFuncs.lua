@@ -752,8 +752,12 @@ function aObj:hookSocialToastFuncs(frame)
 		end
 	end)
 	self:SecureHook(frame.waitAndAnimOut, "Play", function(this)
-		if this.sf then this.sf.tfade:SetParent(this.sf) end
-		if this.cb then this.cb.tfade:SetParent(this.cb) end
+		if this.sf then
+			this.sf.tfade:SetParent(this.sf)
+		end
+		if this.cb then
+			this.cb.tfade:SetParent(this.cb)
+		end
 	end)
 
 end
