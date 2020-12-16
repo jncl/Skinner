@@ -2186,7 +2186,9 @@ aObj.blizzFrames[ftype].DestinyFrame = function(self)
 			self:changeRecTex(this[type .. "Button"]:GetHighlightTexture())
 			self:adjWidth{obj=this[type .. "Button"], adj=-60}
 			self:adjHeight{obj=this[type .. "Button"], adj=-60}
-			self:skinStdButton{obj=this[type .. "Button"], x1=-2, y1=2, x2=-3, y2=-1}
+			if self.modBtns then
+				self:skinStdButton{obj=this[type .. "Button"], x1=-2, y1=2, x2=-3, y2=-1}
+			end
 		end
 
 		self:Unhook(this, "OnShow")
