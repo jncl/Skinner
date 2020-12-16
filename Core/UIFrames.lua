@@ -1450,6 +1450,71 @@ aObj.blizzFrames[ftype].ChatButtons = function(self)
 
 end
 
+aObj.blizzFrames[ftype].ChatChannelsUI = function(self)
+	if not self.prdb.ChatChannelsUI or self.initialized.ChatChannelsUI then return end
+	self.initialized.ChatChannelsUI = true
+
+	self:SecureHookScript(_G.ChannelFrame, "OnShow", function(this)
+		self:removeInset(this.LeftInset)
+		self:removeInset(this.RightInset)
+		if self.modBtns then
+			self:skinStdButton{obj=this.NewButton}
+			self:skinStdButton{obj=this.SettingsButton}
+		end
+		self:skinObject("slider", {obj=this.ChannelList.ScrollBar, fType=ftype})
+		self:skinObject("slider", {obj=this.ChannelRoster.ScrollFrame.scrollBar, fType=ftype, y1=-2, y2=2})
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, cb=true, x1=-5, y2=-1})
+		-- Create Channel Popup
+		self:removeNineSlice(_G.CreateChannelPopup.BG)
+		self:skinObject("editbox", {obj=_G.CreateChannelPopup.Name, fType=ftype, ofs=3})
+		self:skinObject("editbox", {obj=_G.CreateChannelPopup.Password, fType=ftype, ofs=3})
+		if self.modChkBtns then
+			self:skinCheckButton{obj=_G.CreateChannelPopup.UseVoiceChat}
+		end
+		if self.modBtns then
+			self:skinStdButton{obj=_G.CreateChannelPopup.OKButton}
+			self:skinStdButton{obj=_G.CreateChannelPopup.CancelButton}
+		end
+		self:skinObject("frame", {obj=_G.CreateChannelPopup, fType=ftype, kfs=true, cb=true, ofs=-6, y1=-7})
+
+		self:Unhook(this, "OnShow")
+	end)
+
+	self:SecureHook(_G.ChannelFrame.ChannelList, "Update", function(this)
+		for header in this.headerButtonPool:EnumerateActive() do
+			header:GetNormalTexture():SetTexture(nil)
+		end
+		-- for textChannel in this.textChannelButtonPool:EnumerateActive() do
+		-- end
+		-- for voiceChannel in this.voiceChannelButtonPool:EnumerateActive() do
+		-- end
+		-- for communityChannel in this.communityChannelButtonPool:EnumerateActive() do
+		-- end
+	end)
+
+	self:SecureHookScript(_G.VoiceChatPromptActivateChannel, "OnShow", function(this)
+		self:skinObject("frame", {obj=this, fType=ftype})
+		if self.modBtns then
+			self:skinCloseButton{obj=this.CloseButton, font=self.fontSBX, noSkin=true, storeOnParent=true}
+			self:skinStdButton{obj=this.AcceptButton}
+		end
+		self:hookSocialToastFuncs(this)
+
+		self:Unhook(this, "OnShow")
+	end)
+
+	self:SecureHookScript(_G.VoiceChatChannelActivatedNotification, "OnShow", function(this)
+		self:skinObject("frame", {obj=this, fType=ftype})
+		if self.modBtns then
+			self:skinCloseButton{obj=this.CloseButton, font=self.fontSBX, noSkin=true, storeOnParent=true}
+		end
+		self:hookSocialToastFuncs(this)
+
+		self:Unhook(this, "OnShow")
+	end)
+
+end
+
 aObj.blizzFrames[ftype].ChatConfig = function(self)
 	if not self.prdb.ChatConfig or self.initialized.ChatConfig then return end
 	self.initialized.ChatConfig = true

@@ -132,6 +132,7 @@ aObj.SetupDefaults = function(self)
 			CharacterCustomize         = true,
 			ChatBubbles                = {skin = true, alpha = 0.45},
 			ChatButtons                = true,
+			ChatChannelsUI             = true,
 			ChatConfig                 = true,
 			ChatEditBox                = {skin = true, style = 3},
 			ChatFrames                 = false, -- (inc ChatMinimizedFrames)
@@ -1451,6 +1452,11 @@ aObj.SetupOptions = function(self)
 							min = 0, max = 1, step = 0.05,
 						},
 					},
+				},
+				ChatChannelsUI = {
+					type = "toggle",
+					name = self.L["Chat Channels UI"],
+					desc = self.L["Toggle the skin of the "] .. self.L["Chat Channels UI"],
 				},
 				ChatEditBox = {
 					type = "group",

@@ -2741,65 +2741,6 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 		self:Unhook(this, "OnShow")
 	end)
 
-	self:SecureHookScript(_G.ChannelFrame, "OnShow", function(this)
-		self:removeInset(this.LeftInset)
-		self:removeInset(this.RightInset)
-		if self.modBtns then
-			self:skinStdButton{obj=this.NewButton}
-			self:skinStdButton{obj=this.SettingsButton}
-		end
-		self:skinSlider{obj=this.ChannelList.ScrollBar, wdth=-4}
-		self:skinSlider{obj=this.ChannelRoster.ScrollFrame.scrollBar, wdth=-4}
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, x1=-5, y2=-1}
-		-- Create Channel Popup
-		self:removeNineSlice(_G.CreateChannelPopup.BG)
-		self:skinEditBox{obj=_G.CreateChannelPopup.Name, regs={6}} -- 6 is text
-		self:skinEditBox{obj=_G.CreateChannelPopup.Password, regs={6}} -- 6 is text
-		if self.modChkBtns then
-			self:skinCheckButton{obj=_G.CreateChannelPopup.UseVoiceChat}
-		end
-		if self.modBtns then
-			self:skinStdButton{obj=_G.CreateChannelPopup.OKButton}
-			self:skinStdButton{obj=_G.CreateChannelPopup.CancelButton}
-		end
-		self:addSkinFrame{obj=_G.CreateChannelPopup, ft=ftype, kfs=true}
-
-		self:Unhook(this, "OnShow")
-	end)
-
-	self:SecureHook(_G.ChannelFrame.ChannelList, "Update", function(this)
-		for header in this.headerButtonPool:EnumerateActive() do
-			header:GetNormalTexture():SetTexture(nil)
-		end
-		-- for textChannel in this.textChannelButtonPool:EnumerateActive() do
-		-- end
-		-- for voiceChannel in this.voiceChannelButtonPool:EnumerateActive() do
-		-- end
-		-- for communityChannel in this.communityChannelButtonPool:EnumerateActive() do
-		-- end
-	end)
-
-	self:SecureHookScript(_G.VoiceChatPromptActivateChannel, "OnShow", function(this)
-		self:addSkinFrame{obj=this, ft=ftype, nb=true}
-		self:hookSocialToastFuncs(this)
-		if self.modBtns then
-			self:skinCloseButton{obj=this.CloseButton, font=self.fontSBX, aso={bd=5, bba=0}, onSB=true, storeOnParent=true}
-			self:skinStdButton{obj=this.AcceptButton}
-		end
-
-		self:Unhook(this, "OnShow")
-	end)
-
-	self:SecureHookScript(_G.VoiceChatChannelActivatedNotification, "OnShow", function(this)
-		self:addSkinFrame{obj=this, ft=ftype, nb=true}
-		self:hookSocialToastFuncs(this)
-		if self.modBtns then
-			self:skinCloseButton{obj=this.CloseButton, font=self.fontSBX, aso={bd=5, bba=0}, onSB=true, storeOnParent=true}
-		end
-
-		self:Unhook(this, "OnShow")
-	end)
-
 end
 
 aObj.blizzLoDFrames[ftype].GuildControlUI = function(self)
