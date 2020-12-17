@@ -1,53 +1,45 @@
-local aName, aObj = ...
+local _, aObj = ...
 if not aObj:isAddonEnabled("Details") then return end
 local _G = _G
 
 -- used by all contained functions
-local Details = _G.LibStub("AceAddon-3.0"):GetAddon("_detalhes", true)
+local Details = _G.LibStub:GetLibrary("AceAddon-3.0"):GetAddon("_detalhes", true)
 
-aObj.addonsToSkin.Details = function(self) -- v8.1.0.6891.135
-
-	-- CopyPaste Panel
-	local eb = _G.DetailsCopy.text.editbox
-	eb:SetBackdrop(nil)
-	self:skinEditBox{obj=eb, regs={3}, noHeight=true}
-	eb.SetBackdropColor = _G.nop
-	eb.SetBackdropBorderColor = _G.nop
-	eb = nil
-	self:addSkinFrame{obj=_G.DetailsCopy, ft="a", kfs=true, ri=true, ofs=2, x2=1}
+aObj.addonsToSkin.Details = function(self) -- v 9.0.1.8002 (core 144)
 
 	-- Player Details Window
-	self:addSkinFrame{obj=_G.DetailsPlayerDetailsWindow, ft="a", kfs=true, nb=true, ofs=4}
+	self:skinObject("frame", {obj=_G.DetailsPlayerDetailsWindow, kfs=true, ofs=4})
 
 	-- Report Window
-	if not _G.DetailsReportWindow then
+	if _G.DetailsReportWindow then
+		self:skinObject("frame", {obj=_G.DetailsReportWindow, kfs=true, ofs=4})
+	else
 		self:SecureHook(Details.gump, "CriaJanelaReport", function(this)
-			self:addSkinFrame{obj=_G.DetailsReportWindow, ft="a", kfs=true, nb=true, ofs=4}
+			self:skinObject("frame", {obj=_G.DetailsReportWindow, kfs=true, ofs=4})
+
 			self:Unhook(this, "CriaJanelaReport")
 		end)
-	else
-		self:addSkinFrame{obj=_G.DetailsReportWindow, ft="a", kfs=true, nb=true, ofs=4}
 	end
 
 	-- News Window
 	local function skinNews()
-		aObj:addSkinFrame{obj=_G.DetailsNewsWindow, ft="a", kfs=true, ri=true, ofs=2}
-		aObj:skinSlider{obj=_G.DetailsNewsWindowSlider, wdth=-2}
-		aObj:skinStdButton{obj=_G.DetailsNewsWindowForumButton}
+		_G.DetailsNewsWindow.DumpTableFrame.editbox.sf:Hide() -- not really an editbox
+		aObj:skinObject("slider", {obj=_G.DetailsNewsWindowSlider})
 	end
-	if not _G.DetailsNewsWindow then
+	if _G.DetailsNewsWindow then
+		skinNews()
+	else
 		self:SecureHook(Details, "CreateOrOpenNewsWindow", function(this)
 			skinNews()
+
 			self:Unhook(this, "CreateOrOpenNewsWindow")
 		end)
-	else
-		skinNews()
 	end
 
 	-- Base frame(s)
 	local function skinInstance(frame)
 		frame.cabecalho.top_bg:SetTexture(nil)
-		aObj:addSkinFrame{obj=frame, ft="a", kfs=true, nb=true, ofs=4, y1=22}
+		aObj:skinObject("frame", {obj=frame, kfs=true, ofs=4, y1=22})
 	end
 	self:SecureHook(Details.gump, "CriaJanelaPrincipal", function(this, ID, instancia, criando)
 		skinInstance(_G["DetailsBaseFrame" .. ID])
@@ -59,24 +51,38 @@ aObj.addonsToSkin.Details = function(self) -- v8.1.0.6891.135
 		end
 	end
 
+	if not Details:GetTutorialCVar("WINDOW_LOCK_UNLOCK1") then
+		-- hook this to skin LockPopUp
+		self:SecureHook(Details, "DelayOptionsRefresh", function(this)
+			self:skinObject("glowbox", {obj=_G.DetailsWindowLockPopUp1})
+
+			self:Unhook(this, "DelayOptionsRefresh")
+		end)
+	end
+
+	-- CopyPaste Panel
+	local function skinCopy()
+		local eb = _G.DetailsCopy.text.editbox
+		self:removeBackdrop(eb)
+		self:skinObject("editbox", {obj=eb, regions={3, 4, 5, 6, 7, 8, 9, 10, 11}})
+		eb.SetBackdropColor = _G.nop
+		eb.SetBackdropBorderColor = _G.nop
+		eb = nil
+		self:skinObject("frame", {obj=_G.DetailsCopy, kfs=true, ri=true, ofs=2, x2=1})
+	end
+	if _G.DetailsCopy then
+		skinCopy()
+	else
+		self:SecureHook(Details, "CreateCopyPasteWindow", function(this)
+			skinCopy()
+
+			self:Unhook(this, "CreateCopyPasteWindow")
+		end)
+	end
+
 	-- Plugins
 	for _, v in _G.pairs{"DmgRank", "DpsTuning", "TimeAttack", "Vanguard"} do
 		self:checkAndRunAddOn("Details_" .. v)
-	end
-
-	-- OptionsWindow
-	if self.modBtns
-	or self.modChkBtns
-	then
-		self:SecureHook(Details, "OpenOptionsWindow", function(this, ...)
-			if self.modBtns then
-				self:skinStdButton{obj=_G.DetailsDeleteInstanceButton}
-			end
-			if self.modChkBtns then
-				self:skinCheckButton{obj=_G.DetailsOptionsWindowGroupEditing}
-			end
-			self:Unhook(this, "OpenOptionsWindow")
-		end)
 	end
 
 end
@@ -90,14 +96,17 @@ function aObj:Details_DmgRank()
 		return
 	end
 
-	self:skinButton{obj=self:getChild(DmgRank.Frame, 1), cb=true} -- close button
 	DmgRank.BackgroundTex:SetTexture(nil)
 	_G.DetailsDmgRankBadgeBackground:SetBackdrop(nil)
 	_G.DetailsDmgRankLeftBackground:SetBackdrop(nil)
 	_G.DetailsDmgRankRightBackground:SetBackdrop(nil)
+	if self.modBtns then
+		self:skinCloseButton{obj=self:getChild(DmgRank.Frame, 1)}
+	end
 	DmgRank = nil
 
 end
+
 function aObj:Details_DpsTuning()
 
 	local DpsTuning = Details:GetPlugin("DETAILS_PLUGIN_DPS_TUNING")
@@ -107,10 +116,13 @@ function aObj:Details_DpsTuning()
 		return
 	end
 
-	self:skinButton{obj=self:getChild(DpsTuning.Frame, 1), cb=true} -- close button
+	if self.modBtns then
+		self:skinCloseButton{obj=self:getChild(DpsTuning.Frame, 1)}
+	end
 	DpsTuning = nil
 
 end
+
 function aObj:Details_TimeAttack()
 
 	local TimeAttack = Details:GetPlugin("DETAILS_PLUGIN_TIME_ATTACK")
@@ -120,12 +132,15 @@ function aObj:Details_TimeAttack()
 		return
 	end
 
-	self:skinButton{obj=self:getChild(TimeAttack.Frame, 1), cb=true} -- close button
 	TimeAttack.BackgroundTex:SetAlpha(0) -- texture is changed in code
 	self:getRegion(TimeAttack.Frame, 3):SetTexture(nil) -- title background texture
+	if self.modBtns then
+		self:skinCloseButton{obj=self:getChild(TimeAttack.Frame, 1)}
+	end
 	TimeAttack = nil
 
 end
+
 function aObj:Details_Vanguard()
 
 	local Vanguard = Details:GetPlugin("DETAILS_PLUGIN_VANGUARD")
@@ -140,8 +155,12 @@ function aObj:Details_Vanguard()
 			-- help frame displayed on 1st show
 			if event == "SHOW" then
 				local frame = self:findFrame2(_G.UIParent, "Frame", 175, 400)
-				if frame then self:addSkinFrame{obj=frame, ft="a", kfs=true, nb=true, ofs=4} end
+				if frame then
+					self:skinObject("frame", {obj=frame, kfs=true, ofs=4})
+					frame = nil
+				end
 			end
+
 			self:Unhook(this, "OnDetailsEvent")
 		end)
 	end

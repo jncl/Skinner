@@ -80,7 +80,7 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 			or objType == "InlineGroup"
 			or objType == "TabGroup"
 			then
-				aObj:skinObject("frame", {obj=obj.border or obj.content:GetParent(), kfs=true, fb=true, ofs=0})
+				aObj:skinObject("frame", {obj=obj.border or obj.content:GetParent(), kfs=true, fb=true})
 				-- skin TabGroup's tabs, if required
 				if objType == "TabGroup"
 				and aObj.modBtns
@@ -305,7 +305,7 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 				aObj:skinAceDropdown(obj, nil, 1)
 
 			elseif objType == "WeakAurasMultiLineEditBox" then
-				aObj:skinObject("frame", {obj=obj.scrollBG, kfs=true, fb=true, ofs=0})
+				aObj:skinObject("frame", {obj=obj.scrollBG, kfs=true, fb=true})
 				if aObj.modBtns then
 					-- wait for the extra buttons to be created
 					_G.C_Timer.After(0.05, function()
