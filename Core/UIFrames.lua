@@ -3271,15 +3271,30 @@ aObj.blizzFrames[ftype].InterfaceOptions = function(self)
 	self.RegisterCallback("CUFP", "IOFPanel_After_Skinning", function(this, panel)
 		if panel ~= _G.CompactUnitFrameProfiles then return end
 		self:removeNineSlice(_G.CompactUnitFrameProfiles.newProfileDialog.Border)
-		self:removeNineSlice(_G.CompactUnitFrameProfiles.deleteProfileDialog.Border)
-		self:removeNineSlice(_G.CompactUnitFrameProfiles.unsavedProfileDialog.Border)
 		skinKids(_G.CompactUnitFrameProfiles.newProfileDialog)
-		self:addSkinFrame{obj=_G.CompactUnitFrameProfiles.newProfileDialog, ft=ftype}
+		self:skinObject("frame", {obj=_G.CompactUnitFrameProfiles.newProfileDialog, fType=ftype, ofs=0})
+		if self.modBtns then
+			self:clrBtnBdr(_G.CompactUnitFrameProfiles.newProfileDialog.createButton)
+			self:SecureHook("CompactUnitFrameProfiles_UpdateNewProfileCreateButton", function()
+				self:clrBtnBdr(_G.CompactUnitFrameProfiles.newProfileDialog.createButton)
+				self:Unhook(this, "CompactUnitFrameProfiles_UpdateNewProfileCreateButton")
+			end)
+		end
+		self:removeNineSlice(_G.CompactUnitFrameProfiles.deleteProfileDialog.Border)
 		skinKids(_G.CompactUnitFrameProfiles.deleteProfileDialog)
-		self:addSkinFrame{obj=_G.CompactUnitFrameProfiles.deleteProfileDialog, ft=ftype}
+		self:skinObject("frame", {obj=_G.CompactUnitFrameProfiles.deleteProfileDialog, fType=ftype, ofs=0})
+		self:removeNineSlice(_G.CompactUnitFrameProfiles.unsavedProfileDialog.Border)
 		skinKids(_G.CompactUnitFrameProfiles.unsavedProfileDialog)
-		self:addSkinFrame{obj=_G.CompactUnitFrameProfiles.unsavedProfileDialog, ft=ftype}
+		self:skinObject("frame", {obj=_G.CompactUnitFrameProfiles.unsavedProfileDialog, fType=ftype, ofs=0})
 		skinKids(_G.CompactUnitFrameProfiles.optionsFrame)
+		if self.modBtns then
+			self:clrBtnBdr(_G.CompactUnitFrameProfilesDeleteButton)
+			self:SecureHook("CompactUnitFrameProfiles_UpdateManagementButtons", function()
+				self:clrBtnBdr(_G.CompactUnitFrameProfilesDeleteButton)
+				self:clrBtnBdr(_G.CompactUnitFrameProfilesSaveButton)
+				self:Unhook(this, "CompactUnitFrameProfiles_UpdateManagementButtons")
+			end)
+		end
 		_G.CompactUnitFrameProfiles.optionsFrame.autoActivateBG:SetTexture(nil)
 
 		self.UnregisterCallback("CUFP", "IOFPanel_After_Skinning")
@@ -4183,7 +4198,7 @@ aObj.blizzFrames[ftype].MenuFrames = function(self)
 		if self.modBtns then
 			for _, child in _G.ipairs{this:GetChildren()} do
 				if child:IsObjectType("Button") then
-					self:skinStdButton{obj=child}
+					self:skinStdButton{obj=child, ofs=1}
 				end
 			end
 		end
@@ -5788,9 +5803,9 @@ aObj.blizzFrames[ftype].SystemOptions = function(self)
 	self:SecureHookScript(_G.VideoOptionsFrame, "OnShow", function(this)
 		self:removeNineSlice(this.Border)
 		-- Main panel
-		self:skinObject("frame", {obj=_G.VideoOptionsFrameCategoryFrame, fType=ftype, fb=true})
+		self:skinObject("frame", {obj=_G.VideoOptionsFrameCategoryFrame, fType=ftype, kfs=true, fb=true})
 		self:skinObject("slider", {obj=_G.VideoOptionsFrameCategoryFrameListScrollBar, fType=ftype, x1=4, x2=-5})
-		self:skinObject("frame", {obj=_G.VideoOptionsFramePanelContainer, fType=ftype, fb=true})
+		self:skinObject("frame", {obj=_G.VideoOptionsFramePanelContainer, fType=ftype, kfs=true, fb=true})
 		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true})
 		if self.modBtns then
 			self:skinStdButton{obj=_G.VideoOptionsFrameApply}
@@ -5809,7 +5824,7 @@ aObj.blizzFrames[ftype].SystemOptions = function(self)
 		end
 		-- Graphics
 		skinKids(_G.Display_)
-		self:skinObject("frame", {obj=_G.Display_, fType=ftype, fb=true})
+		self:skinObject("frame", {obj=_G.Display_, fType=ftype, kfs=true, fb=true})
 		self:skinObject("tabs", {obj=_G.Display_, tabs={_G.GraphicsButton, _G.RaidButton}, fType=ftype, ignoreSize=true, upwards=true, offsets={x1=4, y1=0, x2=0, y2=-4}, track=false})
 		if self.isTT then
 			self:SecureHook("GraphicsOptions_SelectBase", function()
@@ -5824,9 +5839,9 @@ aObj.blizzFrames[ftype].SystemOptions = function(self)
 			end)
 		end
 		skinKids(_G.Graphics_)
-		self:skinObject("frame", {obj=_G.Graphics_, fType=ftype, fb=true})
+		self:skinObject("frame", {obj=_G.Graphics_, fType=ftype, kfs=true, fb=true})
 		skinKids(_G.RaidGraphics_)
-		self:skinObject("frame", {obj=_G.RaidGraphics_, fType=ftype, fb=true})
+		self:skinObject("frame", {obj=_G.RaidGraphics_, fType=ftype, kfs=true, fb=true})
 
 		self:Unhook(this, "OnShow")
 	end)
@@ -5878,7 +5893,7 @@ aObj.blizzFrames[ftype].SystemOptions = function(self)
 		self.iofBtn[this.PushToTalkKeybindButton] = true
 		skinKids(this)
 		this.TestInputDevice.ToggleTest:DisableDrawLayer("BACKGROUND")
-		self:skinObject("frame", {obj=this.TestInputDevice.VUMeter, fType=ftype, fb=true})
+		self:skinObject("frame", {obj=this.TestInputDevice.VUMeter, fType=ftype, kfs=true, fb=true})
 		if self.modBtnBs then
 			self:addButtonBorder{obj=this.TestInputDevice.ToggleTest, ofs=0, y2=-2}
 			self:skinStdButton{obj=this.PushToTalkKeybindButton}
