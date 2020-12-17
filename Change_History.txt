@@ -1,3 +1,16 @@
+beta9.36839.3
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated EncounterJournal skin
+	Updated UIWidgets skin
+	Updated FloatingChatFrame skin
+	Updated ChatConfig skin
+	Skinned BigWigs QueueTimer Status Bar
+	Updated HealBot skin
+	Updated UnitFrames skin
+	Bugfix for Hidden SkinFrames
+
 beta9.36839.2
 Jncl:
 	ToDo.txt
