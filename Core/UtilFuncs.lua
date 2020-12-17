@@ -416,9 +416,9 @@ end
 local buildInfo = {
 	beta        = {"9.0.2", 36734},
 	classic_ptr = {"1.13.6", 36714},
-	retail_ptr  = {"9.0.2", 36734},
+	retail_ptr  = {"9.0.2", 36949},
 	classic     = {"1.13.6", 36714},
-	retail      = {"9.0.2", 36839},
+	retail      = {"9.0.2", 36949},
 	curr        = {_G.GetBuildInfo()},
 }
 function aObj:checkVersion()
