@@ -1030,6 +1030,8 @@ aObj.blizzFrames[ftype].BNFrames = function(self)
 	if self.modBtns then
 		self:skinCloseButton{obj=_G.TimeAlertFrame.CloseButton, font=self.fontSBX, aso={bd=5, bba=0}, noSkin=true}
 	end
+			self:skinCloseButton{obj=this.CloseButton, font=self.fontSBX, noSkin=true, storeOnParent=true}
+			self:skinCloseButton{obj=this.CloseButton, font=self.fontSBX, noSkin=true, storeOnParent=true}
 
 end
 
@@ -2044,7 +2046,7 @@ aObj.blizzLoDFrames[ftype].DebugTools = function(self)
 		if self.modBtns then
 			self:SecureHook("EventTraceFrame_Update", function()
 				for i = 1, #_G.EventTraceFrame.buttons do
-					self:skinCloseButton{obj=_G.EventTraceFrame.buttons[i].HideButton, aso={bd=5, bba=0}}
+					self:skinCloseButton{obj=_G.EventTraceFrame.buttons[i].HideButton, noSkin=true}
 				end
 
 			end)

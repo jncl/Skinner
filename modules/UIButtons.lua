@@ -238,8 +238,6 @@ function module:skinCloseButton(opts) -- text on button
 		opts.obj:SetDisabledTexture(nil)
 	end
 
-	local aso = opts.aso or {}
-
 --@alpha@
 	-- skin GlowBox frame
 	if opts.obj:GetParent().GlowTop then
@@ -250,20 +248,18 @@ function module:skinCloseButton(opts) -- text on button
 	-- don't skin button if required
 	if not opts.noSkin then
 		if opts.sap then
-			aObj:addSkinButton{obj=opts.obj, ft=opts.ftype or "a", parent=opts.obj, sap=true, aso=aso}
+			aObj:addSkinButton{obj=opts.obj, ft=opts.ftype or "a", parent=opts.obj, sap=true}
 		else
-			aso.bd = 5
 			local bW = _G.Round(opts.obj:GetWidth())
 			opts.x1 = opts.x1 or bW == 32 and 6 or 4
 			opts.y1 = opts.y1 or bW == 32 and -6 or -4
 			opts.x2 = opts.x2 or bW == 32 and -6 or -4
 			opts.y2 = opts.y2 or bW == 32 and 6 or 4
 			bW = nil
-			aObj:skinObject("button", {obj=opts.obj, fType=opts.ftype, aso=aso, x1=opts.x1, y1=opts.y1, x2=opts.x2, y2=opts.y2})
+			aObj:skinObject("button", {obj=opts.obj, fType=opts.ftype, bd=5, x1=opts.x1, y1=opts.y1, x2=opts.x2, y2=opts.y2})
 		end
 		module:clrBtnBdr(opts.obj, opts.clr, opts.ca)
 	end
-	aso = nil
 	if not opts.onSB then
 		opts.obj:SetNormalFontObject(opts.font or module.fontX)
 		opts.obj:SetDisabledFontObject(opts.font or module.fontDX)
