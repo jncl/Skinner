@@ -3175,10 +3175,7 @@ local checkChild, skinKids, cName
 function checkChild(child)
 	cName = child:GetName()
 	if aObj:isDropDown(child) then
-		-- apply specific adjustment if required
 		aObj:skinObject("dropdown", {obj=child, fType=ftype, x2=aObj.iofDD[cName]})
-		child.Text:SetAlpha(1)
-		child.Icon:SetAlpha(1)
 	elseif child:IsObjectType("Slider") then
 		aObj:skinObject("slider", {obj=child, fType=ftype})
 	elseif child:IsObjectType("CheckButton") then
@@ -5870,9 +5867,9 @@ aObj.blizzFrames[ftype].SystemOptions = function(self)
 	-- Sound
 	self:SecureHookScript(_G.AudioOptionsSoundPanel, "OnShow", function(this)
 		skinKids(this)
-		self:skinObject("frame", {obj=_G.AudioOptionsSoundPanelPlayback, fType=ftype, fb=true, ofs=0})
-		self:skinObject("frame", {obj=_G.AudioOptionsSoundPanelHardware, fType=ftype, fb=true, ofs=0})
-		self:skinObject("frame", {obj=_G.AudioOptionsSoundPanelVolume, fType=ftype, fb=true, ofs=0})
+		self:skinObject("frame", {obj=_G.AudioOptionsSoundPanelPlayback, fType=ftype, kfs=true, fb=true})
+		self:skinObject("frame", {obj=_G.AudioOptionsSoundPanelHardware, fType=ftype, kfs=true, fb=true})
+		self:skinObject("frame", {obj=_G.AudioOptionsSoundPanelVolume, fType=ftype, kfs=true, fb=true})
 
 		self:Unhook(this, "OnShow")
 	end)
@@ -5884,7 +5881,8 @@ aObj.blizzFrames[ftype].SystemOptions = function(self)
 		self:skinObject("frame", {obj=this.TestInputDevice.VUMeter, fType=ftype, fb=true})
 		if self.modBtnBs then
 			self:addButtonBorder{obj=this.TestInputDevice.ToggleTest, ofs=0, y2=-2}
-			self:skinStdButton{obj=this.PushToTalkKeybindButton, ofs=0}
+			self:skinStdButton{obj=this.PushToTalkKeybindButton}
+			this.PushToTalkKeybindButton.KeyLabel:SetDrawLayer("ARTWORK")
 			self:skinStdButton{obj=this.MacMicrophoneAccessWarning.OpenAccessButton}
 		end
 
