@@ -314,10 +314,10 @@ local function skinButton(tbl)
 	so.obj   = tbl.obj.sb
 	so.fType = tbl.fType
 	so.ba    = tbl.ba
-	so.bbclr = tbl.clr
+	so.bbclr = so.bbclr or tbl.clr
 	so.bba   = tbl.bba
-	so.bd     = tbl.bd
-	so.ng     = tbl.ng
+	so.bd    = tbl.bd
+	so.ng    = tbl.ng
 	-- apply the 'Skinner effect' to the frame
 	aObj:skinObject(so)
 	return tbl.obj.sb

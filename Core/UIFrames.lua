@@ -4327,7 +4327,6 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 	local minBtn = self.prdb.MinimapButtons.style
 
 	local function mmKids(mmObj)
-
 		local objName, objType
 		for _, obj in _G.ipairs{mmObj:GetChildren()} do
 			objName, objType = obj:GetName(), obj:GetObjectType()
@@ -4362,18 +4361,16 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 				end
 				if not minBtn then
 					if objType == "Button" then
-						aObj:addSkinButton{obj=obj, ft=ftype, parent=obj, sap=true}
+						aObj:skinObject("button", {obj=obj, fType=ftype, sap=true})
 					else
-						aObj:addSkinFrame{obj=obj, ft=ftype}
+						aObj:skinObject("frame", {obj=obj, fType=ftype})
 					end
 				end
 			end
 		end
 		objName, objType = nil, nil
-
 	end
 	local function makeBtnSquare(obj, x1, y1, x2, y2)
-
 		obj:SetSize(26, 26)
 		obj:GetNormalTexture():SetTexCoord(x1, y1, x2, y2)
 		obj:GetPushedTexture():SetTexCoord(x1, y1, x2, y2)
@@ -4384,7 +4381,6 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 		_G.LowerFrameLevel(obj.sf)
 		-- alter the HitRectInsets to make it easier to activate
 		obj:SetHitRectInsets(-5, -5, -5, -5)
-
 	end
 
 	-- skin Minimap children, allow for delayed addons to be loaded (e.g. Baggins)
@@ -4398,7 +4394,7 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 		_G.MiniMapTrackingButtonBorder:SetTexture(nil)
 		if not minBtn then
 			_G.MiniMapTracking:SetScale(0.9)
-			self:addSkinFrame{obj=_G.MiniMapTracking, ft=ftype, nb=true}
+			self:skinObject("frame", {obj=_G.MiniMapTracking, fType=ftype})
 		end
 		_G.QueueStatusMinimapButtonBorder:SetTexture(nil)
 		self:addSkinButton{obj=_G.QueueStatusMinimapButton, ft=ftype, sap=true}
@@ -4406,9 +4402,13 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 		_G.RaiseFrameLevelByTwo(_G.QueueStatusMinimapButton)
 		_G.LowerFrameLevel(_G.QueueStatusMinimapButton.sb)
 		-- skin any moved Minimap buttons if required
-		if _G.IsAddOnLoaded("MinimapButtonFrame") then mmKids(_G.MinimapButtonFrame) end
+		if _G.IsAddOnLoaded("MinimapButtonFrame") then
+			mmKids(_G.MinimapButtonFrame)
+		end
 		-- show the Bongos minimap icon if required
-		if _G.IsAddOnLoaded("Bongos") then _G.Bongos3MinimapButton.icon:SetDrawLayer("ARTWORK") end
+		if _G.IsAddOnLoaded("Bongos") then
+			_G.Bongos3MinimapButton.icon:SetDrawLayer("ARTWORK")
+		end
 	else
 		-- remove ring from GameTimeFrame texture
 		self:RawHook(_G.GameTimeTexture, "SetTexCoord", function(this, minx, maxx, miny, maxy)
@@ -4423,12 +4423,15 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 			_G.GameTimeFrame_Update(_G.GameTimeFrame)
 		end)
 		_G.MiniMapTrackingBorder:SetTexture(nil)
-		self:addSkinFrame{obj=_G.MiniMapTrackingFrame, ft=ftype, nb=true, aso={bd=10}, x1=4, y1=-3}
+		-- self:addSkinFrame{obj=_G.MiniMapTrackingFrame, ft=ftype, nb=true, aso={bd=10}, x1=4, y1=-3}
+		self:skinObject("frame", {obj=_G.MiniMapTrackingFrame, fType=ftype, bd=10, x1=4, y1=-3})
 		self:moveObject{obj=_G.MiniMapTrackingFrame, x=-15}
 		self:moveObject{obj=_G.MiniMapMailFrame, y=-4}
 	end
 
 	_G.MiniMapMailIcon:SetTexture([[Interface\Minimap\Tracking\Mailbox.blp]])
+	_G.MiniMapMailIcon:ClearAllPoints()
+	_G.MiniMapMailIcon:SetPoint("CENTER", _G.MiniMapMailFrame)
 	_G.MiniMapMailFrame:SetSize(26, 26)
 
 	-- Zoom Buttons
@@ -4438,33 +4441,26 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 			btn = _G.MinimapZoomIn
 			txt = self.modUIBtns.plus
 			if not self.isClsc then
-				xOfs, yOfs = 14, -12 -- 72, -25
+				xOfs, yOfs = 14, -12
 			else
-				xOfs, yOfs = 9, -24 -- 77, -13
+				xOfs, yOfs = 9, -24
 			end
 		else
 			btn = _G.MinimapZoomOut
 			txt = self.modUIBtns.minus
 			if not self.isClsc then
-				xOfs, yOfs = 20, -10 -- 50, -43
+				xOfs, yOfs = 20, -10
 			else
-				xOfs, yOfs = 19, -12 -- 51, -41
+				xOfs, yOfs = 19, -12
 			end
 		end
-		self:skinOtherButton{obj=btn, text=txt, aso={bbclr=btn:IsEnabled() and "gold" or "disabled"}, noHooks=true}
+		self:skinOtherButton{obj=btn, text=txt, aso={bbclr=btn:IsEnabled() and "gold" or "disabled"}}
+		btn:SetDisabledFontObject(self.fontDP)
 		self:moveObject{obj=btn, x=xOfs, y=yOfs}
-		-- make button text appear in correct colour
-		btn:SetNormalFontObject(btn:IsEnabled() and self.modUIBtns.fontP or self.modUIBtns.fontDP) -- N.B. use module name instead of shortcut
-		if not btn:IsEnabled() then
-			btn:Enable()
-			btn:Disable()
-		end
 		local function clrZoomBtns()
 			for _, btnName in _G.pairs{"In", "Out"} do
 				btn = btnName == "In" and _G.MinimapZoomIn or _G.MinimapZoomOut
 				aObj:clrBBC(btn.sb, btn:IsEnabled() and "gold" or "disabled")
-				-- make button text appear in correct colour
-				btn:SetNormalFontObject(btn:IsEnabled() and aObj.modUIBtns.fontP or aObj.modUIBtns.fontDP) -- N.B. use module name instead of shortcut
 			end
 		end
 		self:SecureHookScript(btn, "OnClick", function(this)
