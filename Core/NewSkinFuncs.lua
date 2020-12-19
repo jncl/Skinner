@@ -241,16 +241,9 @@ local function skinButton(tbl)
 --@end-alpha@
 	aObj:Debug2("skinButton [%s]", tbl)
 
-	-- don't skin it twice
-	if tbl.obj.sb then return end
-	-- -- make all textures transparent
-	-- if tbl.kfs then
-	-- 	aObj:keepFontStrings(tbl.obj)
-	-- end
-	-- if tbl.rb then
-	-- 	aObj:removeBackdrop(tbl.obj)
-	-- end
-	if tbl.noSkin then
+	if tbl.obj.sb
+	or tbl.noSkin
+	then
 		return
 	end
 	-- add a frame to the object
@@ -280,11 +273,9 @@ local function skinButton(tbl)
 	if tbl.bg then
 		tbl.obj.sb:SetFrameStrata("BACKGROUND")
 	end
-	-- hide button skin
 	if tbl.hide then
 		tbl.obj.sb:Hide()
 	end
-	-- reverse parent child relationship
 	if tbl.rp
 	and not tbl.obj.SetParent_orig
 	then
@@ -308,7 +299,6 @@ local function skinButton(tbl)
 			end
 		end
 	end
-	-- TODO: Do we need to Hook the OnShow & OnHide functions of the object ??
 	-- setup applySkin options
 	local so = aObj.skinTPLs.new("skin", tbl.aso)
 	so.obj   = tbl.obj.sb
