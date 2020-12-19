@@ -1,3 +1,27 @@
+beta9.36949.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Updated SocialToast skinning code
+	Updated DestinyFrame skin
+	Updated DebugTools skin
+	Updated BNFrames skin
+	Moved ChatChannelUI from PlayerFrames to UIFrames
+	Added Option for ChatChannelsUI
+	Updated Button skinning code to change highlight texture(s)
+	Updated SkinCloseButton skinning code
+	Updated UIButtons skinning code
+	Updated InterfaceOptions & SystemOptions skins
+	Updated SystemOptions skin
+	Updated SystemOptions skin
+	Updated PVPHelper skin
+	Updated MinimapButtons skin
+	Updated ObjectivesTracker skin
+	Updated Ace3, Details, DetailsFramework, LibToast & NPCScan skins
+	Updated Ace3, NickTag & WeakAuras skins
+	Bugfix for BigWigs
+
 beta9.36839.3
 Jncl:
 	ToDo.txt
