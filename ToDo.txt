@@ -22,20 +22,3 @@ ToDos
 ≈	O	Add checks for Button state as required
 
 ≈	O	Refactor Tab skinning in AddOn skins
-
-√	O	DebugTools - TableAttributeDisplay, skin buttons in TLHS
-
-	I	Need to Localise Zone Areas in UIWidgets checks, reported by seleste_star, 17.12.20
-√		- Interface\SharedXML\FrameUtil.lua:57: Action[FrameMeasurement] failed because[Can't measure restricted regions]: attempted from: <unnamed>:GetScaledRect().
-
-	I	BNToasts, reported by MacallanTwoFive, 18.12.20
-√		- Skinner\Core\UIFrames.lua:822: attempt to index field 'tfade' (a nil value)
-		[string "@Skinner\Core\UIFrames.lua"]:822: in function <Skinner\Core\UIFrames.lua:821>
-		[string "=(tail call)"]: ?
-		[string "=[C]"]: in function `AlertFrame_PauseOutAnimation'
-		[string "@FrameXML\AlertFrames.lua"]:766: in function `AlertFrame_PlayOutroAnimation'
-		[string "@FrameXML\AlertFrames.lua"]:777: in function `AlertFrame_PlayAnimations'
-		[string "@FrameXML\AlertFrames.lua"]:783: in function `AlertFrame_ShowNewAlert'
-		[string "@FrameXML\BNet.lua"]:344: in function `ShowToast'
-		[string "@FrameXML\BNet.lua"]:356: in function `AddToast'
-		[string "@FrameXML\BNet.lua"]:95: in function <FrameXML\BNet.lua:82>
