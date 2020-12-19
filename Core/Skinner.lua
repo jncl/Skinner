@@ -388,9 +388,11 @@ function aObj:OnEnable()
 	self.skinExpandButton    = self.modBtns and self.modUIBtns.skinExpandButton or _G.nop
 	self.skinOtherButton     = self.modBtns and self.modUIBtns.skinOtherButton or _G.nop
 	self.skinStdButton       = self.modBtns and self.modUIBtns.skinStdButton or _G.nop
-	self.leftdc              = self.modBtns and self.modUIBtns.leftdc or _G.nop
-	self.rightdc             = self.modBtns and self.modUIBtns.rightdc or _G.nop
-	self.updown              = self.modBtns and self.modUIBtns.updown or _G.nop
+	self.nearrow             = self.modBtns and self.modUIBtns.nearrow or _G.nop
+	self.swarrow             = self.modBtns and self.modUIBtns.swarrow or _G.nop
+	self.larrow              = self.modBtns and self.modUIBtns.larrow or _G.nop
+	self.rarrow              = self.modBtns and self.modUIBtns.rarrow or _G.nop
+	self.uparrow             = self.modBtns and self.modUIBtns.uparrow or _G.nop
 
 	self.addButtonBorder     = self.modBtnBs and self.modUIBtns.addButtonBorder or _G.nop
 	self.clrBtnBdr           = self.modBtnBs and self.modUIBtns.clrBtnBdr or _G.nop

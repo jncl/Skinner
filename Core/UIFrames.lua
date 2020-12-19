@@ -2133,11 +2133,35 @@ aObj.blizzLoDFrames[ftype].DebugTools = function(self)
 			aObj:skinObject("frame", {obj=frame.ScrollFrameArt, fType=ftype, fb=true})
 			aObj:skinObject("frame", {obj=frame, fType=ftype, kfs=true, cb=true, ofs=-2, x1=3, x2=-1})
 			if aObj.modBtns then
-				-- TODO: skin control buttons ?
-				-- OpenParentButton --> try chat frame scroll to bottom button inverted??
-				-- NavigateBackwardsButton --> try noSkin CB to begin with then Left Arrow
-				-- NavigateForwardsButton --> try noSkin CB to begin with then Right Arrow
-				-- DuplicateButton --> try Arrow char
+				aObj:skinOtherButton{obj=frame.OpenParentButton, font=aObj.fontS, disfont=aObj.fontDS, text=aObj.uparrow}
+				aObj:skinOtherButton{obj=frame.NavigateBackwardButton, font=aObj.fontS, disfont=aObj.fontDS, text="x", size=32}
+				aObj:skinOtherButton{obj=frame.NavigateForwardButton, font=aObj.fontS, disfont=aObj.fontDS, text="x", size=32}
+				aObj:skinOtherButton{obj=frame.DuplicateButton, font=aObj.fontS, text=aObj.nearrow}
+				aObj:clrBtnBdr(frame.NavigateBackwardButton)
+				aObj:clrBtnBdr(frame.NavigateForwardButton)
+				aObj:SecureHook(frame, "InspectTable", function(this, _)
+					if frame.OpenParentButton:IsEnabled() then
+						frame.OpenParentButton:SetText(aObj.uparrow)
+					else
+						frame.OpenParentButton:SetText("x")
+					end
+					aObj:clrBtnBdr(frame.OpenParentButton)
+				end)
+				aObj:SecureHook(frame, "UpdateTableNavigation", function(this, _)
+					aObj:Debug("UpdateTableNavigation")
+					if frame.NavigateBackwardButton:IsEnabled() then
+						frame.NavigateBackwardButton:SetText(aObj.larrow)
+					else
+						frame.NavigateBackwardButton:SetText("x")
+					end
+					if frame.NavigateForwardButton:IsEnabled() then
+						frame.NavigateForwardButton:SetText(aObj.rarrow)
+					else
+						frame.NavigateForwardButton:SetText("x")
+					end
+					aObj:clrBtnBdr(frame.NavigateBackwardButton)
+					aObj:clrBtnBdr(frame.NavigateForwardButton)
+				end)
 			end
 			if aObj.modChkBtns then
 				aObj:skinCheckButton{obj=frame.VisibilityButton}
@@ -4543,7 +4567,6 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 			end
 		end
 		self:skinOtherButton{obj=btn, text=txt, aso={bbclr=btn:IsEnabled() and "gold" or "disabled"}}
-		btn:SetDisabledFontObject(self.fontDP)
 		self:moveObject{obj=btn, x=xOfs, y=yOfs}
 		local function clrZoomBtns()
 			for _, btnName in _G.pairs{"In", "Out"} do
@@ -6632,8 +6655,8 @@ aObj.blizzFrames[ftype].WorldMap = function(self)
 		this.NavBar.overlay:DisableDrawLayer("OVERLAY")
 
 		if self.modBtns then
-			self:skinOtherButton{obj=this.BorderFrame.MaxMinButtonFrame.MaximizeButton, font=self.fontS, text=self.updown}
-			self:skinOtherButton{obj=this.BorderFrame.MaxMinButtonFrame.MinimizeButton, font=self.fontS, text=self.updown}
+			self:skinOtherButton{obj=this.BorderFrame.MaxMinButtonFrame.MaximizeButton, font=self.fontS, text=self.nearrow}
+			self:skinOtherButton{obj=this.BorderFrame.MaxMinButtonFrame.MinimizeButton, font=self.fontS, text=self.swarrow}
 			self:skinCloseButton{obj=this.BorderFrame.CloseButton} -- child of MaxMinButtonFrame
 		end
 		if self.modBtnBs then

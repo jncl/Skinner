@@ -19,11 +19,11 @@ do
 	module.mult = "×" -- multiplication sign NOT lower case X
 	module.plus = "+"
 	module.minus = "-" -- using Hyphen-minus(-) instead of minus sign(−) for font compatiblity reasons
-	module.updown = "↕" -- Up Down Arrow (U+2195)
-	-- module.updown = "↨" -- Up Down Arrow with base (U+21A8)
-	-- using double chevrons
-	module.leftdc = "«"
-	module.rightdc = "»"
+	module.larrow = "←" -- Leftwards Arrow (U+2190)
+	module.uparrow = "↑" -- Upwards Arrow (U+2191)
+	module.rarrow = "→" -- Rightwards Arrow (U+2192)
+	module.nearrow = "↗" -- North East Arrow (U+2197)
+	module.swarrow = "↙" -- South West Arrow (U+2199)
 	-- create font to use for Close Buttons
 	module.fontX = _G.CreateFont("fontX")
 	module.fontX:SetFont([[Fonts\FRIZQT__.TTF]], 20)
@@ -34,7 +34,7 @@ do
 	module.fontBX:SetTextColor(_G.BLACK_FONT_COLOR:GetRGB())
 	-- create font for disabled text
 	module.fontDX = _G.CreateFont("fontDX")
-	module.fontDX:SetFont([[Fonts\FRIZQT__.TTF]], 20)
+	module.fontDX:SetFont(module.fontX:GetFont())
 	module.fontDX:SetTextColor(_G.DISABLED_FONT_COLOR:GetRGB())
 	-- create font to use for small blue Close Buttons (e.g. BNToastFrame)
 	module.fontSBX = _G.CreateFont("fontSBX")
@@ -50,12 +50,16 @@ do
 	module.fontP:SetTextColor(_G.NORMAL_FONT_COLOR:GetRGB())
 	-- create font for disabled text on Minus/Plus Buttons
 	module.fontDP = _G.CreateFont("fontDP")
-	module.fontDP:SetFont([[Fonts\ARIALN.TTF]], 16)
+	module.fontDP:SetFont(module.fontP:GetFont())
 	module.fontDP:SetTextColor(_G.DISABLED_FONT_COLOR:GetRGB())
-	-- create font to use for SizeUp/Down buttons
+	-- create font to use for Arrow buttons
 	module.fontS = _G.CreateFont("fontS")
-	module.fontS:SetFont([[Fonts\ARIALN.TTF]], 12)
+	module.fontS:SetFont([[Interface\AddOns\]] .. aName .. [[\Fonts\NotoSansSymbols-Medium.ttf]], 14)
 	module.fontS:SetTextColor(_G.NORMAL_FONT_COLOR:GetRGB())
+	-- create font for disabled text
+	module.fontDS = _G.CreateFont("fontDS")
+	module.fontDS:SetFont(module.fontS:GetFont())
+	module.fontDS:SetTextColor(_G.DISABLED_FONT_COLOR:GetRGB())
 end
 local texNumbers = {
 	[130838] = "plus",
@@ -144,6 +148,21 @@ end
 
 function module:chgHLTex(obj, hTex)
 
+	local function clrTex(clr)
+		if clr == "red" then
+			hTex:SetColorTexture(1, 0, 0, 0.25)
+		elseif clr == "blue" then
+			hTex:SetColorTexture(0.25, 0.57, 1, 0.25)
+		elseif clr == "yellow" then
+			hTex:SetColorTexture(1, 1, 0, 0.25)
+		end
+		-- inset colour
+		if obj.sb then
+			hTex:ClearAllPoints()
+			hTex:SetPoint("TOPLEFT", obj.sb, "TOPLEFT", 5, -5)
+			hTex:SetPoint("BOTTOMRIGHT", obj.sb, "BOTTOMRIGHT", -5, 5)
+		end
+	end
 	if hTex then
 		local hTexFile = hTex:GetTexture()
 		aObj:Debug("chgHLTex: [%s, %s]", obj, hTexFile)
@@ -153,19 +172,14 @@ function module:chgHLTex(obj, hTex)
 				if hTexFile:find("UI-Panel-Button-Highlight", 1, true) -- UIPanelButtonHighlightTexture
 				or hTexFile:find("UI-DialogBox-Button-Highlight", 1, true) -- StaticPopupButton/PetPopupButton/CinematicDialogButton
 				then
-					hTex:SetColorTexture(1, 0, 0, 0.25) -- red
+					clrTex("red")
 				elseif hTexFile:find("UI-Silver-Button-Highlight", 1, true) -- UIMenuButtonStretchTemplate
 				or hTexFile:find("UI-Minimap-ZoomButton-Highlight", 1, true)
 				or hTexFile:find("HelpButtons", 1, true) -- Classic Help Buttons
 				then
-					hTex:SetColorTexture(0.25, 0.57, 1, 0.25) -- highlight light blue
+					clrTex("blue")
 				elseif hTexFile:find("UI-Silver-Button-Select", 1, true) then -- UIMenuButtonStretchTemplate
-					hTex:SetColorTexture(1, 1, 0, 0.25) -- yellow
-				end
-				if obj.sb then
-					hTex:ClearAllPoints()
-					hTex:SetPoint("TOPLEFT", obj.sb, "TOPLEFT", 5, -5)
-					hTex:SetPoint("BOTTOMRIGHT", obj.sb, "BOTTOMRIGHT", -5, 5)
+					clrTex("yellow")
 				end
 			end
 			hTexFile = nil
@@ -254,8 +268,9 @@ function module:skinCloseButton(opts) -- text on button
 		aso = applySkin options
 		sap = set all points of skinButton to object
 		onSB = put text on skinButton
-		storeOnParent = store reference to close button on object's parent
 		noSkin = don't add skin frame
+		font = font to use
+		disfont = disabled font to use
 --]]
 --@alpha@
 	_G.assert(opts.obj, "Missing object skinCloseButton\n" .. _G.debugstack(2, 3, 2))
@@ -294,16 +309,13 @@ function module:skinCloseButton(opts) -- text on button
 	end
 	if not opts.onSB then
 		opts.obj:SetNormalFontObject(opts.font or module.fontX)
-		opts.obj:SetDisabledFontObject(opts.font or module.fontDX)
+		opts.obj:SetDisabledFontObject(opts.disfont or module.fontDX)
 		opts.obj:SetText(module.mult)
 		opts.obj:SetPushedTextOffset(-1, -1)
 	else -- Ace3, ArkInventory & BNToastFrame
 		opts.obj.sb:SetNormalFontObject(opts.font or module.fontX)
-		opts.obj.sb:SetDisabledFontObject(opts.font or module.fontDX)
+		opts.obj.sb:SetDisabledFontObject(opts.disfont or module.fontDX)
 		opts.obj.sb:SetText(module.mult)
-	end
-	if opts.storeOnParent then
-		opts.obj:GetParent().cb = opts.obj.sb
 	end
 
 end
@@ -325,7 +337,6 @@ function module:skinCloseButton3(opts) -- small text on skinButton (used by Deta
 	opts.font = self.fontSBX
 	opts.cb3 = nil
 	opts.onSB = true
-	opts.storeOnParent = true
 	module:skinCloseButton(opts)
 
 end
@@ -353,7 +364,6 @@ function module:skinExpandButton(opts)
 	if opts.obj:GetPushedTexture() then opts.obj:GetPushedTexture():SetAlpha(0) end
 
 	if not opts.as then
-		-- aObj:addSkinButton{obj=opts.obj, ft=opts.ftype or "a", parent=opts.obj, sap=opts.sap, aso=aso}
 		aObj:skinObject("button", {obj=opts.obj, fType=opts.ftype, sap=opts.sap, bd=6})
 		if not opts.noHook then
 			module:SecureHook(opts.obj, "SetNormalAtlas", function(this, nTex)
@@ -371,10 +381,12 @@ function module:skinExpandButton(opts)
 	opts.obj.onSB = opts.onSB -- store this for use in checkTex function
 	if not opts.onSB then
 		opts.obj:SetNormalFontObject(module.fontP)
+		opts.obj:SetDisabledFontObject(module.fontDP)
 		opts.obj:SetText(opts.plus and module.plus or module.minus)
 		opts.obj:SetPushedTextOffset(-1, -1)
 	else
 		opts.obj.sb:SetNormalFontObject(module.fontP)
+		opts.obj.sb:SetDisabledFontObject(module.fontDP)
 		opts.obj.sb:SetAllPoints(opts.obj:GetNormalTexture())
 		opts.obj.sb:SetText(opts.plus and module.plus or module.minus)
 	end
@@ -402,6 +414,7 @@ function module:skinOtherButton(opts)
 		size = use smaller edgesize, different highlight textue and resize the button
 		sap = set all points of skinButton to object
 		font = font to use
+		disfont = disabled font to use
 		text = text to use
 --]]
 --@alpha@
@@ -413,34 +426,27 @@ function module:skinOtherButton(opts)
 	if opts.obj:GetNormalTexture() then opts.obj:GetNormalTexture():SetAlpha(0) end
 	if opts.obj:GetPushedTexture() then opts.obj:GetPushedTexture():SetAlpha(0) end
 	if opts.obj:GetDisabledTexture() then opts.obj:GetDisabledTexture():SetAlpha(0) end
-
-	local aso = opts.aso or {}
+	if opts.size then
+		opts.obj:SetSize(opts.size, opts.size)
+		opts.obj:SetHighlightTexture([[Interface\Buttons\UI-Panel-MinimizeButton-Highlight]])
+	end
 	opts.obj:SetNormalFontObject(opts.font or module.fontP)
+	opts.obj:SetDisabledFontObject(opts.disfont or module.fontDP)
 	opts.obj:SetText(opts.text)
 	opts.obj:SetPushedTextOffset(-1, -1)
-	if opts.size then -- MinimalArchaeology & MyGarrison
-		aso.bd = 5
-		opts.obj:SetHighlightTexture([[Interface\Buttons\UI-Panel-MinimizeButton-Highlight]])
-		opts.obj:SetSize(opts.size, opts.size)
-	end
-	-- don't skin button if required
 	if not opts.noSkin then
 		if opts.sap then
-			aObj:skinObject("button", {obj=opts.obj, fType=opts.ftype, sap=true, aso=aso})
+			aObj:skinObject("button", {obj=opts.obj, fType=opts.ftype, sap=true, aso=opts.aso})
 		else
-			aso.bd = 5
 			local bW = _G.Round(opts.obj:GetWidth())
 			opts.x1 = opts.x1 or bW == 32 and 6 or 4
 			opts.y1 = opts.y1 or bW == 32 and -6 or -4
 			opts.x2 = opts.x2 or bW == 32 and -6 or -4
 			opts.y2 = opts.y2 or bW == 32 and 6 or 4
 			bW = nil
-			aObj:skinObject("button", {obj=opts.obj, fType=opts.ftype, aso=aso, x1=opts.x1, y1=opts.y1, x2=opts.x2, y2=opts.y2})
+			aObj:skinObject("button", {obj=opts.obj, fType=opts.ftype, bd=5, aso=opts.aso, x1=opts.x1, y1=opts.y1, x2=opts.x2, y2=opts.y2})
 		end
 	end
-	aso = nil
-
-	module:chgHLTex(opts.obj, opts.obj:GetHighlightTexture())
 
 end
 function module:skinOtherButton1(opts) -- text on button
