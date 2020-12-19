@@ -1080,7 +1080,7 @@ aObj.ClassicSupport = function(self)
 		self:SecureHookScript(_G.VoiceChatPromptActivateChannel, "OnShow", function(this)
 			self:addSkinFrame{obj=this, ft=ftype, nb=true}
 			if self.modBtns then
-				self:skinCloseButton{obj=this.CloseButton, font=self.fontSBX, noSkin=true, storeOnParent=true}
+				self:skinCloseButton{obj=this.CloseButton, font=self.fontSBX, noSkin=true}
 				self:skinStdButton{obj=this.AcceptButton}
 			end
 			self:hookSocialToastFuncs(this)
@@ -1091,7 +1091,7 @@ aObj.ClassicSupport = function(self)
 		self:SecureHookScript(_G.VoiceChatChannelActivatedNotification, "OnShow", function(this)
 			self:addSkinFrame{obj=this, ft=ftype, nb=true}
 			if self.modBtns then
-				self:skinCloseButton{obj=this.CloseButton, font=self.fontSBX, noSkin=true, storeOnParent=true}
+				self:skinCloseButton{obj=this.CloseButton, font=self.fontSBX, noSkin=true}
 			end
 			self:hookSocialToastFuncs(this)
 

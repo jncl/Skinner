@@ -819,12 +819,14 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 
 	-- hook these to reset Gradients
 	self:SecureHook("AlertFrame_PauseOutAnimation", function(frame)
-		if frame.sf then frame.sf.tfade:SetGradientAlpha(self:getGradientInfo()) end
-		if frame.cb then frame.cb.tfade:SetGradientAlpha(self:getGradientInfo()) end
+		if frame.sf then
+			frame.sf.tfade:SetGradientAlpha(self:getGradientInfo())
+		end
 	end)
 	self:SecureHook("AlertFrame_ResumeOutAnimation", function(frame)
-		if frame.sf then frame.sf.tfade:SetAlpha(0) end
-		if frame.cb then frame.cb.tfade:SetAlpha(0) end
+		if frame.sf then
+			frame.sf.tfade:SetAlpha(0)
+		end
 	end)
 
 end
@@ -1021,7 +1023,7 @@ aObj.blizzFrames[ftype].BNFrames = function(self)
 	self:SecureHookScript(_G.BNToastFrame, "OnShow", function(this)
 		self:skinObject("frame", {obj=this, fType=ftype})
 		if self.modBtns then
-			self:skinCloseButton{obj=this.CloseButton, font=self.fontSBX, noSkin=true, storeOnParent=true}
+			self:skinCloseButton{obj=this.CloseButton, font=self.fontSBX, noSkin=true}
 		end
 		self:hookSocialToastFuncs(this)
 		self:addSkinFrame{obj=this.TooltipFrame, ft=ftype, kfs=true, nb=true}
@@ -1033,7 +1035,7 @@ aObj.blizzFrames[ftype].BNFrames = function(self)
 	self:SecureHookScript(_G.TimeAlertFrame, "OnShow", function(this)
 		self:skinObject("frame", {obj=this, fType=ftype})
 		if self.modBtns then
-			self:skinCloseButton{obj=this.CloseButton, font=self.fontSBX, noSkin=true, storeOnParent=true}
+			self:skinCloseButton{obj=this.CloseButton, font=self.fontSBX, noSkin=true}
 		end
 		self:hookSocialToastFuncs(this)
 
@@ -1502,7 +1504,7 @@ aObj.blizzFrames[ftype].ChatChannelsUI = function(self)
 	self:SecureHookScript(_G.VoiceChatPromptActivateChannel, "OnShow", function(this)
 		self:skinObject("frame", {obj=this, fType=ftype})
 		if self.modBtns then
-			self:skinCloseButton{obj=this.CloseButton, font=self.fontSBX, noSkin=true, storeOnParent=true}
+			self:skinCloseButton{obj=this.CloseButton, font=self.fontSBX, noSkin=true}
 			self:skinStdButton{obj=this.AcceptButton}
 		end
 		self:hookSocialToastFuncs(this)
@@ -1513,7 +1515,7 @@ aObj.blizzFrames[ftype].ChatChannelsUI = function(self)
 	self:SecureHookScript(_G.VoiceChatChannelActivatedNotification, "OnShow", function(this)
 		self:skinObject("frame", {obj=this, fType=ftype})
 		if self.modBtns then
-			self:skinCloseButton{obj=this.CloseButton, font=self.fontSBX, noSkin=true, storeOnParent=true}
+			self:skinCloseButton{obj=this.CloseButton, font=self.fontSBX, noSkin=true}
 		end
 		self:hookSocialToastFuncs(this)
 
