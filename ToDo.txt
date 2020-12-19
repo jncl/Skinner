@@ -23,39 +23,19 @@ ToDos
 
 ≈	O	Refactor Tab skinning in AddOn skins
 
-	O	DebugTools - TableAttributeDisplay, skin buttons in TLHS
+√	O	DebugTools - TableAttributeDisplay, skin buttons in TLHS
 
-	I	Button skins, reported by reshiwan2, 07.12.20
-?		- When i hover over the button, the old one is visible. What am I doing wrong?
-√			- issue is the highlight texture needs to be changed to a plain colour with no texture file
+	I	Need to Localise Zone Areas in UIWidgets checks, reported by seleste_star, 17.12.20
+√		- Interface\SharedXML\FrameUtil.lua:57: Action[FrameMeasurement] failed because[Can't measure restricted regions]: attempted from: <unnamed>:GetScaledRect().
 
-	I	Min/Max button character, reported by reshiwan2/Shiv_G3, 07.12.20
-≈		- The max/min button appears as a box character. Probably due to a Font relacement.
-
-	I	BigWigs, reported by FakeLessgaming/EpidemeDaBear, 14.12.20
-√		- Skinner\Core\MainFuncs.lua:1072: attempt to call method 'SetStatusBarTexture' (a nil value)
-		[string "@Skinner\Core\MainFuncs.lua"]:1072: in function <Skinner\Core\MainFuncs.lua:1056>
-		[string "@Skinner\Core\MainFuncs.lua"]:1149: in function `skinStatusBar'
-		[string "@Skinner\AddonSkins\BigWigs-v192.1.lua"]:11: in function `v'
-		[string "@BigWigs\Loader.lua"]:992: in function `SendMessage'
-		[string "@BigWigs_Plugins\AltPower.lua"]:424: in main chunk
-		[string "=[C]"]: ?
-		[string "@BigWigs\Loader.lua"]:356: in function <BigWigs\Loader.lua:343>
-		[string "@BigWigs\Loader.lua"]:368: in function <BigWigs\Loader.lua:363>
-		[string "@BigWigs\Loader.lua"]:386: in function <BigWigs\Loader.lua:383>
-		[string "@BigWigs\Loader.lua"]:1372: in function `?'
-		[string "@BigWigs\Loader.lua"]:1067: in function <BigWigs\Loader.lua:1066>
-
-	I	Expand Button skin, reported by raineday/Shiv_G3, 15.12.20
-√		- the button is too small for the skin so it appears broken
-
-√	I	DetailsFramework skin needs updating
-
-√	I	Details skin needs updating
-
-√	I	Update NPCScan skin
-
-	I	Details, reported by EpidemeDaBear, 17.12.20
-√		- Skinner\Modules\UIButtons.lua:464: attempt to index field 'obj' (a nil value)
-		[string "@Skinner\Modules\UIButtons.lua"]:464: in function `skinStdButton'
-		[string "@Skinner\AddonSkins\Details-144.nil.lua"]:73: in function <Skinner\AddonSkins\Details.lua:71>
+	I	BNToasts, reported by MacallanTwoFive, 18.12.20
+√		- Skinner\Core\UIFrames.lua:822: attempt to index field 'tfade' (a nil value)
+		[string "@Skinner\Core\UIFrames.lua"]:822: in function <Skinner\Core\UIFrames.lua:821>
+		[string "=(tail call)"]: ?
+		[string "=[C]"]: in function `AlertFrame_PauseOutAnimation'
+		[string "@FrameXML\AlertFrames.lua"]:766: in function `AlertFrame_PlayOutroAnimation'
+		[string "@FrameXML\AlertFrames.lua"]:777: in function `AlertFrame_PlayAnimations'
+		[string "@FrameXML\AlertFrames.lua"]:783: in function `AlertFrame_ShowNewAlert'
+		[string "@FrameXML\BNet.lua"]:344: in function `ShowToast'
+		[string "@FrameXML\BNet.lua"]:356: in function `AddToast'
+		[string "@FrameXML\BNet.lua"]:95: in function <FrameXML\BNet.lua:82>
