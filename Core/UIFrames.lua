@@ -6322,15 +6322,16 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 	self.initialized.UIWidgets = true
 
 	-- N.B. In Shadowlands, get Clamping Errors when in certain areas and displaying StatusBar/SpellDisplay widgets
+	local SZL = _G.LibStub:GetLibrary("LibBabble-SubZone-3.0"):GetLookupTable()
 	local disableTypeBySZ = {
 		[2] = { -- StatusBar
-			["Bleak Redoubt"] = true,
-			["House of Plagues"] = true,
-			["The Desiccation"] = true,
-			["The Spearhead"] = true,
+			[SZL["Bleak Redoubt"]]    = true,
+			[SZL["House of Plagues"]] = true,
+			[SZL["The Desiccation"]]  = true,
+			[SZL["The Spearhead"]]    = true,
 		},
 		[13] = { -- SpellDisplay
-			["House of Plagues"] = true,
+			[SZL["House of Plagues"]] = true,
 		},
 	}
 
@@ -6362,11 +6363,12 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 		    aObj:add2Table(aObj.oocTab, {skinWidget, {wFrame, wInfo}})
 		    return
 		end
+
 		-- Get SubZone
 		local SZ = _G.GetSubZoneText()
 
-		aObj:Debug("skinWidget#0: [%s, %s, %s]", _G.C_Map.GetBestMapForUnit("player"), _G.GetRealZoneText(), SZ)
-		aObj:Debug("skinWidget: [%s, %s, %s, %s, %s, %s]", wFrame, wFrame.widgetType, wFrame.widgetTag, wFrame.widgetSetID, wFrame.widgetID, wInfo)
+		-- aObj:Debug("skinWidget#0: [%s, %s, %s, %s]", _G.C_Map.GetBestMapForUnit("player"), _G.GetRealZoneText(), SZ, disableTypeBySZ[wFrame.widgetType][SZ])
+		-- aObj:Debug("skinWidget: [%s, %s, %s, %s, %s, %s]", wFrame, wFrame.widgetType, wFrame.widgetTag, wFrame.widgetSetID, wFrame.widgetID, wInfo)
 
 		if wFrame.widgetType == 0 then -- IconAndText (World State: ICONS at TOP)
 			-- N.B. DON'T add buttonborder to Icon(s)
@@ -6450,47 +6452,53 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 	end
 
 	if not self.isClsc then
+		local count
 		local function getWidgets(widgetContainer)
-			local count = 0
+			count = 0
 			for widget in widgetContainer.widgetPools:EnumerateActive() do
 				count = count + 1
 				skinWidget(widget, _G.UIWidgetManager:GetWidgetTypeInfo(widget.widgetType))
 			end
+			-- aObj:Debug("getWidgets: [%s, %s]", widgetContainer, count)
 			return count
 		end
 		-- hook this to skin new widgets
 		self:SecureHook(_G.UIWidgetManager, "OnWidgetContainerRegistered", function(this, widgetContainer)
 			-- aObj:Debug("UIWM OnWidgetContainerRegistered: [%s, %s]", this, widgetContainer)
+			self:SecureHook(widgetContainer, "UpdateWidgetLayout", function(this)
+				-- aObj:Debug("UpdateWidgetLayout: [%s, %s]", this)
+				getWidgets(this)
+			end)
 			getWidgets(widgetContainer)
+		end)
+		self:SecureHook(_G.UIWidgetManager, "OnWidgetContainerUnregistered", function(this, widgetContainer)
+			-- aObj:Debug("UIWM OnWidgetContainerUnregistered: [%s, %s]", this, widgetContainer)
+			self:Unhook(widgetContainer, "UpdateWidgetLayout")
 		end)
 		-- handle existing WidgetContainers
 		for widgetContainer, _ in _G.pairs(_G.UIWidgetManager.registeredWidgetContainers) do
+			-- getWidgets(widgetContainer)
+			self:SecureHook(widgetContainer, "UpdateWidgetLayout", function(this)
+				-- aObj:Debug("UpdateWidgetLayout: [%s, %s]", this)
+				getWidgets(this)
+			end)
 			getWidgets(widgetContainer)
 		end
-		--handle widgets in Instances/Scenarios
-		self.RegisterCallback("UIWidgetsUI", "Player_Entering_World", function(this)
-			-- name, instanceType, difficultyID, difficultyName, maxPlayers, dynamicDifficulty, isDynamic, instanceMapID, instanceGroupSize[, lfgDungeonsID] = GetInstanceInfo
-			-- aObj:Debug("PEW - InstanceInfo: [%s, %s, %s, %s, %s, %s, %s, %s, %s, %s]", _G.GetInstanceInfo())
-
-			-- handle the DoubleStatusBar widget on Island Expeditions
-			local ieCnt = getWidgets(_G.UIWidgetTopCenterContainerFrame)
-			-- handle ScenarioHeaderCurrenciesAndBackground
-			local shCnt = getWidgets(_G.ScenarioStageBlock.WidgetContainer)
-			if ieCnt > 0
-			and shCnt > 0 then
-				self.UnregisterCallback("UIWidgetsUI", "Player_Entering_World")
-			end
-			ieCnt, shCnt = nil, nil
-		end)
-		if _G.UIWidgetPowerBarContainerFrame:IsShown() then
-			getWidgets(_G.UIWidgetPowerBarContainerFrame)
-		else
-			self:SecureHookScript(_G.UIWidgetPowerBarContainerFrame, "OnShow", function(this)
-				getWidgets(this)
-
-				self:Unhook(this, "OnShow")
-			end)
-		end
+		-- --handle widgets in Instances/Scenarios
+		-- self.RegisterCallback("UIWidgetsUI", "Player_Entering_World", function(this)
+		-- 	-- name, instanceType, difficultyID, difficultyName, maxPlayers, dynamicDifficulty, isDynamic, instanceMapID, instanceGroupSize[, lfgDungeonsID] = GetInstanceInfo
+		-- 	aObj:Debug("PEW - InstanceInfo: [%s, %s, %s, %s, %s, %s, %s, %s, %s, %s]", _G.GetInstanceInfo())
+		--
+		-- 	-- handle the DoubleStatusBar widget on Island Expeditions
+		-- 	local ieCnt = getWidgets(_G.UIWidgetTopCenterContainerFrame)
+		-- 	-- handle ScenarioHeaderCurrenciesAndBackground
+		-- 	local shCnt = getWidgets(_G.ScenarioStageBlock.WidgetContainer)
+		-- 	if ieCnt > 0
+		-- 	and shCnt > 0 then
+		-- 		self.UnregisterCallback("UIWidgetsUI", "Player_Entering_World")
+		-- 	end
+		-- 	ieCnt, shCnt = nil, nil
+		-- end)
 	else
 		self:SecureHook(_G.UIWidgetManager, "CreateWidget", function(this, widgetID, _, widgetType)
 			skinWidget(this.widgetIdToFrame[widgetID], this.widgetVisTypeInfo[widgetType].visInfoDataFunction(widgetID))
