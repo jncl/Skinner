@@ -2959,13 +2959,17 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 				end)
 			end
 			if aObj.modBtnBs then
-				aObj:SecureHook(this, "UpdateAutoSpellAbilities", function(this, _)
+				local function skinAutospell()
 					for btn in this.autoSpellPool:EnumerateActive() do
 						btn.Border:SetTexture(nil)
 						btn.SpellBorder:SetTexture(nil)
 						aObj:addButtonBorder{obj=btn, relTo=btn.Icon}
 					end
+				end
+				aObj:SecureHook(this, "UpdateAutoSpellAbilities", function(this, _)
+					skinAutospell()
 				end)
+				skinAutospell()
 			end
 
 			aObj:Unhook(this, "OnShow")
