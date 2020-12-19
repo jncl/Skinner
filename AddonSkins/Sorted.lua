@@ -99,8 +99,8 @@ aObj.addonsToSkin.Sorted = function(self) -- v 1.2.20
 			self:skinOtherButton{obj=_G.SortedBlizzardButton, text="B"}
 			self:skinStdButton{obj=_G.ContainerFrame1SortedButton}
 			self:skinStdButton{obj=_G.SortedFrameSellGreysButton}
-			self:skinOtherButton{obj=_G.SortedFrameMinimizeButton, font=self.fontS, text=self.leftdc}
-			self:skinOtherButton{obj=_G.SortedFrameMaximizeButton, font=self.fontS, text=self.rightdc}
+			self:skinOtherButton{obj=_G.SortedFrameMaximizeButton, font=self.fontS, text=self.nearrow}
+			self:skinOtherButton{obj=_G.SortedFrameMinimizeButton, font=self.fontS, text=self.swarrow}
 		end
 
 		self:Unhook(this, "OnShow")

@@ -1,4 +1,4 @@
-local aName, aObj = ...
+local _, aObj = ...
 if not aObj:isAddonEnabled("WeakAuras") then return end
 local _G = _G
 
@@ -56,8 +56,18 @@ aObj.addonsToSkin.WeakAuras = function(self) -- v 3.1.4
 		if self.modBtns then
 			self:skinCloseButton{obj=self:getChild(this.titleFrame, 1)}
 			self:moveObject{obj=self:getChild(this.titleFrame, 1), x=4}
-			self:skinOtherButton{obj=self:getChild(this.titleFrame, 2), font=self.fontS, text=self.updown--[[, y1=-6]]}
-			self:getChild(this.titleFrame, 2):SetSize(28, 28)
+			local minBtn = self:getChild(this.titleFrame, 2)
+			self:skinOtherButton{obj=minBtn, font=self.fontS, text=aObj.swarrow, size=28}
+			self:moveObject{obj=minBtn, y=-2}
+			self:SecureHookScript(minBtn, "OnClick", function(this)
+				if this:GetParent():GetParent().minimized then
+					this:SetText(aObj.nearrow)
+					self:adjHeight{obj=this:GetParent():GetParent(), adj=2}
+				else
+					this:SetText(aObj.swarrow)
+				end
+			end)
+			minBtn = nil
 			self:skinStdButton{obj=this.toggleButton}
 			self:skinStdButton{obj=this.reportButton}
 			self:skinStdButton{obj=this.combatButton}
@@ -93,24 +103,28 @@ aObj.lodAddons.WeakAurasOptions = function(self) -- v 3.1.4
 		return
 	end
 
-	local optFrame = _G.WeakAurasOptions
-	if optFrame then
-		-- self:skinObject("dropdown", {obj=_G.WeakAuras_DropDownMenu})
-		self:skinObject("editbox", {obj=optFrame.filterInput, si=true, ca=true})
-		self:moveObject{obj=self:getRegion(self:getChild(optFrame, 2), 1), y=-10} -- title text
-		optFrame.moversizer:SetBackdropBorderColor(self.bbClr:GetRGB())
-		self:skinObject("frame", {obj=optFrame, kfs=true, ofs=-1, y1=5})
+	self:SecureHookScript(_G.WeakAurasOptions, "OnShow", function(this)
+		self:skinObject("editbox", {obj=this.filterInput, si=true, ca=true})
+		self:moveObject{obj=self:getRegion(self:getChild(this, 2), 1), y=-10} -- title text
+		this.moversizer:SetBackdropBorderColor(self.bbClr:GetRGB())
+		self:skinObject("frame", {obj=this, kfs=true, ofs=-1, y1=5})
 		if self.modBtns then
 			local function skinBtn(id)
-				local frame = aObj:getChild(optFrame, id)
+				local frame = aObj:getChild(this, id)
 				aObj:keepFontStrings(frame)
 				aObj:moveObject{obj=frame, x=23, y=id ~= 2 and 1 or 0}
 				if id == 1 then
 					aObj:skinCloseButton{obj=aObj:getChild(frame, 1)}
 				end
 				if id == 5 then -- up-down arrow
-					aObj:skinOtherButton{obj=aObj:getChild(frame, 1), font=aObj.fontS, text=aObj.updown}
-					aObj:getChild(frame, 1):SetSize(28, 28)
+					aObj:skinOtherButton{obj=aObj:getChild(frame, 1), font=aObj.fontS, text=aObj.swarrow, size=28}
+					aObj:SecureHookScript(aObj:getChild(frame, 1), "OnClick", function(this)
+						if _G.WeakAurasOptions.minimized then
+							this:SetText(aObj.nearrow)
+						else
+							this:SetText(aObj.swarrow)
+						end
+					end)
 				end
 				frame = nil
 			end
@@ -118,35 +132,37 @@ aObj.lodAddons.WeakAurasOptions = function(self) -- v 3.1.4
 			skinBtn(5) -- minimize button frame
 		end
 		-- hide the frame skin around the RHS InlineGroup
-		optFrame.container.content:GetParent().sf:Hide()
+		this.container.content:GetParent().sf:Hide()
 		local _, _, _, enabled, loadable = _G.GetAddOnInfo("WeakAurasTutorials")
     	if enabled
 		and loadable
 		then
-			self:keepFontStrings(self:getChild(optFrame, 5)) -- tutorial button frame
+			self:keepFontStrings(self:getChild(this, 5)) -- tutorial button frame
 		end
 		enabled, loadable = nil, nil
 		-- additional frames
-		self:skinObject("editbox", {obj=self:getChild(optFrame.iconPicker.frame, 2), ofs=4})
+		self:skinObject("editbox", {obj=self:getChild(this.iconPicker.frame, 2), ofs=4})
 		self:skinObject("frame", {obj=_G.WeakAurasSnippets, kfs=true})
 		if self.modBtns then
-			self:skinStdButton{obj=self:getPenultimateChild(optFrame.texturePicker.frame)}
-			self:skinStdButton{obj=self:getLastChild(optFrame.texturePicker.frame)}
-			self:skinStdButton{obj=self:getPenultimateChild(optFrame.iconPicker.frame)}
-			self:skinStdButton{obj=self:getLastChild(optFrame.iconPicker.frame)}
-			self:skinStdButton{obj=self:getPenultimateChild(optFrame.modelPicker.frame)}
-			self:skinStdButton{obj=self:getLastChild(optFrame.modelPicker.frame)}
-			self:skinStdButton{obj=self:getLastChild(optFrame.importexport.frame)}
-			self:skinStdButton{obj=self:getLastChild(optFrame.codereview.frame)}
-			self:skinStdButton{obj=self:getChild(optFrame.texteditor.frame, 2)}
-			self:skinStdButton{obj=self:getChild(optFrame.texteditor.frame, 3)}
+			self:skinStdButton{obj=self:getPenultimateChild(this.texturePicker.frame)}
+			self:skinStdButton{obj=self:getLastChild(this.texturePicker.frame)}
+			self:skinStdButton{obj=self:getPenultimateChild(this.iconPicker.frame)}
+			self:skinStdButton{obj=self:getLastChild(this.iconPicker.frame)}
+			self:skinStdButton{obj=self:getPenultimateChild(this.modelPicker.frame)}
+			self:skinStdButton{obj=self:getLastChild(this.modelPicker.frame)}
+			self:skinStdButton{obj=self:getLastChild(this.importexport.frame)}
+			self:skinStdButton{obj=self:getLastChild(this.codereview.frame)}
+			self:skinStdButton{obj=self:getChild(this.texteditor.frame, 2)}
+			self:skinStdButton{obj=self:getChild(this.texteditor.frame, 3)}
 			self:skinStdButton{obj=_G.WASettingsButton}
-			self:skinStdButton{obj=self:getChild(optFrame.texteditor.frame, 4)}
+			self:skinStdButton{obj=self:getChild(this.texteditor.frame, 4)}
 			self:skinStdButton{obj=_G.WASnippetsButton}
 			self:skinStdButton{obj=self:getChild(_G.WeakAurasSnippets, 1)}
 		end
-	end
-	optFrame = nil
+
+		self:Unhook(this, "OnShow")
+	end)
+	self:checkShown(_G.WeakAurasOptions)
 
 	-- Templates
 	if self.modBtns then
