@@ -4947,10 +4947,10 @@ aObj.blizzFrames[ftype].PetBattleUI = function(self)
 		local pbf
 		for _, type in _G.pairs{"Ally", "Enemy"} do
 			pbf = this["Active" .. type]
-			self:addButtonBorder{obj=pbf, relTo=pbf.Icon, ofs=1, reParent={pbf.LevelUnderlay, pbf.Level, pbf.SpeedUnderlay, pbf.SpeedIcon}}
 			pbf.Border:SetTexture(nil)
 			pbf.Border2:SetTexture(nil)
 			if self.modBtnBs then
+				self:addButtonBorder{obj=pbf, relTo=pbf.Icon, ofs=1, reParent={pbf.LevelUnderlay, pbf.Level, pbf.SpeedUnderlay, pbf.SpeedIcon}}
 				pbf.sbb:SetBackdropBorderColor(pbf.Border:GetVertexColor())
 				self:SecureHook(pbf.Border, "SetVertexColor", function(this, ...)
 					this:GetParent().sbb:SetBackdropBorderColor(...)
@@ -4969,23 +4969,21 @@ aObj.blizzFrames[ftype].PetBattleUI = function(self)
 			-- add a background frame
 			if type == "Ally" then
 				this.sfl = _G.CreateFrame("Frame", nil, this)
-				this.sfl:SetFrameStrata("BACKGROUND")
-				self:applySkin{obj=this.sfl, bba=0, fh=tvh * 0.8}
+				self:skinObject("frame", {obj=this.sfl, fType=ftype, ng=true, bba=0, fh=tvh * 0.8})
 				this.sfl:SetPoint("TOPRIGHT", this, "TOP", -(tvw + 25), 4)
 				this.sfl:SetSize(this.TopArtLeft:GetWidth() * 0.59, this.TopArtLeft:GetHeight() * 0.8)
 			else
 				this.sfr = _G.CreateFrame("Frame", nil, this)
-				this.sfr:SetFrameStrata("BACKGROUND")
-				self:applySkin{obj=this.sfr, bba=0, fh=tvh * 0.8}
+				self:skinObject("frame", {obj=this.sfr, fType=ftype, ng=true, bba=0, fh=tvh * 0.8})
 				this.sfr:SetPoint("TOPLEFT", this, "TOP", (tvw + 25), 4)
 				this.sfr:SetSize(this.TopArtRight:GetWidth() * 0.59, this.TopArtRight:GetHeight() * 0.8)
 			end
 			-- Ally2/3, Enemy2/3
 			for j = 2, 3 do
-				self:addButtonBorder{obj=this[type .. j], relTo=this[type .. j].Icon, reParent={this[type .. j].ActualHealthBar}}
 				this[type .. j].BorderAlive:SetTexture(nil)
 				self:changeTandC(this[type .. j].BorderDead, [[Interface\PetBattles\DeadPetIcon]])
 				if self.modBtnBs then
+					self:addButtonBorder{obj=this[type .. j], relTo=this[type .. j].Icon, reParent={this[type .. j].ActualHealthBar}}
 					this[type .. j].sbb:SetBackdropBorderColor(this[type .. j].BorderAlive:GetVertexColor())
 					self:SecureHook(this[type .. j].BorderAlive, "SetVertexColor", function(this, ...)
 						this:GetParent().sbb:SetBackdropBorderColor(...)
@@ -5000,8 +4998,7 @@ aObj.blizzFrames[ftype].PetBattleUI = function(self)
 		pbf= nil
 		-- create a frame behind the VS text
 		this.sfm = _G.CreateFrame("Frame", nil, this)
-		this.sfm:SetFrameStrata("BACKGROUND")
-		self:applySkin{obj=this.sfm, bba=0}
+		self:skinObject("frame", {obj=this.sfm, fType=ftype, ng=true, bba=0})
 		this.sfm:SetPoint("TOPLEFT", this.sfl, "TOPRIGHT", -8, 0)
 		this.sfm:SetPoint("TOPRIGHT", this.sfr, "TOPLEFT", 8, 0)
 		this.sfm:SetHeight(tvh * 0.8)
@@ -5010,7 +5007,9 @@ aObj.blizzFrames[ftype].PetBattleUI = function(self)
 		this.BottomFrame.RightEndCap:SetTexture(nil)
 		this.BottomFrame.LeftEndCap:SetTexture(nil)
 		this.BottomFrame.Background:SetTexture(nil)
-		self:skinStdButton{obj=this.BottomFrame.TurnTimer.SkipButton}
+		if self.modBtns then
+			self:skinStdButton{obj=this.BottomFrame.TurnTimer.SkipButton}
+		end
 		-- Pet Selection
 		for i = 1, _G.NUM_BATTLE_PETS_IN_BATTLE do
 			this.BottomFrame.PetSelectionFrame["Pet" .. i].Framing:SetTexture(nil)
@@ -5028,7 +5027,7 @@ aObj.blizzFrames[ftype].PetBattleUI = function(self)
 		self:removeRegions(this.BottomFrame.FlowFrame, {1, 2, 3})
 		self:getRegion(this.BottomFrame.Delimiter, 1):SetTexture(nil)
 		self:removeRegions(this.BottomFrame.MicroButtonFrame, {1, 2, 3})
-		self:addSkinFrame{obj=this.BottomFrame, ft=ftype, y1=10}
+		self:skinObject("frame", {obj=this.BottomFrame, fType=ftype, y1=8})
 		if self.modBtnBs then
 			-- skin forfeit button
 			self:addButtonBorder{obj=this.BottomFrame.ForfeitButton, es=20, ofs=3, x1=-5, y1=5, clr="grey"}
