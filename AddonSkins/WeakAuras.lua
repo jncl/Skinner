@@ -132,7 +132,9 @@ aObj.lodAddons.WeakAurasOptions = function(self) -- v 3.1.4
 			skinBtn(5) -- minimize button frame
 		end
 		-- hide the frame skin around the RHS InlineGroup
-		this.container.content:GetParent().sf:Hide()
+		if this.container.content:GetParent().sf then
+			this.container.content:GetParent().sf:Hide()
+		end
 		local _, _, _, enabled, loadable = _G.GetAddOnInfo("WeakAurasTutorials")
     	if enabled
 		and loadable
