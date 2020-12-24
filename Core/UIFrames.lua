@@ -819,12 +819,16 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 
 	-- hook these to reset Gradients
 	self:SecureHook("AlertFrame_PauseOutAnimation", function(frame)
-		if frame.sf then
+		if frame.sf
+		and frame.sf.tfade
+		then
 			frame.sf.tfade:SetGradientAlpha(self:getGradientInfo())
 		end
 	end)
 	self:SecureHook("AlertFrame_ResumeOutAnimation", function(frame)
-		if frame.sf then
+		if frame.sf
+		and frame.sf.tfade
+		then
 			frame.sf.tfade:SetAlpha(0)
 		end
 	end)
