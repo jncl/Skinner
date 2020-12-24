@@ -1030,7 +1030,7 @@ aObj.blizzFrames[ftype].BNFrames = function(self)
 			self:skinCloseButton{obj=this.CloseButton, font=self.fontSBX, noSkin=true}
 		end
 		self:hookSocialToastFuncs(this)
-		self:addSkinFrame{obj=this.TooltipFrame, ft=ftype, kfs=true, nb=true}
+		self:skinObject("frame", {obj=this.TooltipFrame, fType=ftype, kfs=true})
 		this.TooltipFrame:SetScript("OnLoad", nil)
 
 		self:Unhook(this, "OnShow")
