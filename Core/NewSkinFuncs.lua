@@ -227,7 +227,7 @@ local function applySkin(tbl)
 	if not tbl.ebc then
 		local r, g, b, a = aObj.bClr:GetRGBA()
 		tbl.obj:SetBackdropColor(r, g, b, tbl.ba or a)
-		aObj:clrBBC(tbl.obj, tbl.bbclr, tbl.bbca)
+		aObj:clrBBC(tbl.obj, tbl.bbclr, tbl.bba)
 		r, g, b, a = nil, nil ,nil ,nil
 	else
 		tbl.obj:SetBackdropColor(.1, .1, .1, 1)
