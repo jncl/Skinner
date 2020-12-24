@@ -11,7 +11,12 @@
 ## Notes-zhTW: 更改預設用戶介面的視覺樣式。
 ## Author: Jncl
 ## Version: @project-version@
+#@retail@
+## OptionalDeps: Ace3, LibSharedMedia-3.0, AceGUI-3.0-SharedMediaWidgets, LibBabble-SubZone-3.0
+#@end-retail@
+#@non-retail@
 ## OptionalDeps: Ace3, LibSharedMedia-3.0, AceGUI-3.0-SharedMediaWidgets
+#@end-non-retail@
 ## DefaultState: Enabled
 ## LoadOnDemand: 0
 ## SavedVariables: SkinnerDB
@@ -19,12 +24,10 @@
 ## X-Curse-Project-ID: 14661
 #
 Libs\_RequiredLibs.xml
-#@no-lib-strip@
 Libs\_OptionalLibs.xml
 #@retail@
 Libs\_OptionalLibs-retailonly.xml
 #@end-retail@
-#@end-no-lib-strip@
 Locales\_Locales.xml
 Core\_Core.xml
 Modules\_Modules.xml
