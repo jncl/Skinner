@@ -476,7 +476,7 @@ aObj.blizzLoDFrames[ftype].CovenantPreviewUI = function(self)
 		for btn in this.AbilityButtonsPool:EnumerateActive() do
 			btn.IconBorder:SetTexture(nil)
 			if self.modBtnBs then
-				self:addButtonBorder{obj=btn, ofs=3.5}
+				self:addButtonBorder{obj=btn, ofs=3.5, clr="white"}
 			end
 		end
 		for btn in this.SoulbindButtonsPool:EnumerateActive() do
