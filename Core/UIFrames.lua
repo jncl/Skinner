@@ -5128,7 +5128,7 @@ aObj.blizzLoDFrames[ftype].PlayerChoiceUI = function(self)
 		[342] =	{y2 = 10}, -- Warchief's Command Board [Horde]
 		[505] =	{y2 = 10}, -- Hero's Call Board [Alliance]
 		[667] = {y2 = 20}, -- Shadowlands Experience (Threads of Fate)
-		[998] = {x1 = -35, y1 = 40, x2 = 34, y2 = -32}, -- Covenant Selection (Oribos) [Enlarged]
+		[998] = {x1 = -35, y1 = 40, x2 = 35, y2 = -32}, -- Covenant Selection (Oribos) [Enlarged]
 		[999] = {x1 = -13, y1 = 40, x2 = 13, y2 = -34}, -- Covenant Selection (Oribos) [Standard]
 	}
 	local defTab, ooTab, x1Ofs, y1Ofs, x2Ofs, y2Ofs = optionOffsets[0]
@@ -5147,7 +5147,7 @@ aObj.blizzLoDFrames[ftype].PlayerChoiceUI = function(self)
 		self:nilTexture(this.BorderFrame.Header, true)
 		this.Background.BackgroundTile:SetTexture(nil)
 		this.Title:DisableDrawLayer("BACKGROUND")
-		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cbns=true, clr="sepia"})
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cbns=true, clr="sepia", y2=10})
 
 		-- Option 1-4
 			-- RewardsFrame
@@ -5198,7 +5198,7 @@ aObj.blizzLoDFrames[ftype].PlayerChoiceUI = function(self)
 		self:SecureHook(this, "Update", function(this)
 			this.sf:SetShown(not _G.IsInJailersTower())
 			local pci = _G.C_PlayerChoice.GetPlayerChoiceInfo()
-			aObj:Debug("PCUI - Update: [%s, %s]", this.uiTextureKit, pci.choiceID)
+			-- aObj:Debug("PCUI - Update: [%s, %s]", this.uiTextureKit, pci.choiceID)
 			for _, opt in _G.pairs(this.Options) do
 				opt.Header.Text:SetTextColor(self.HT:GetRGB())
 				opt.SubHeader.Text:SetTextColor(self.HT:GetRGB())
@@ -5209,6 +5209,10 @@ aObj.blizzLoDFrames[ftype].PlayerChoiceUI = function(self)
 					opt.sf:Show()
 				else
 					opt.sf:Hide()
+				end
+				if this.uiTextureKit == "Oribos" then
+					opt.BackgroundShadowSmall:SetTexture(nil)
+					opt.BackgroundShadowLarge:SetTexture(nil)
 				end
 				if this.uiTextureKit ~= "Oribos"
 				and this.uiTextureKit ~= "jailerstower"
