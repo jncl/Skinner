@@ -4937,7 +4937,6 @@ aObj.blizzFrames[ftype].PetBattleUI = function(self)
 	self.initialized.PetBattleUI = true
 
 	self:SecureHookScript(_G.PetBattleFrame, "OnShow", function(this)
-		-- Top Frame
 		this.TopArtLeft:SetTexture(nil)
 		this.TopArtRight:SetTexture(nil)
 		this.TopVersus:SetTexture(nil)
@@ -4969,12 +4968,12 @@ aObj.blizzFrames[ftype].PetBattleUI = function(self)
 			-- add a background frame
 			if type == "Ally" then
 				this.sfl = _G.CreateFrame("Frame", nil, this)
-				self:skinObject("frame", {obj=this.sfl, fType=ftype, ng=true, bba=0, fh=tvh * 0.8})
+				self:skinObject("frame", {obj=this.sfl, fType=ftype, ng=true, bd=11--[[, fh=tvh * 0.8--]]})
 				this.sfl:SetPoint("TOPRIGHT", this, "TOP", -(tvw + 25), 4)
 				this.sfl:SetSize(this.TopArtLeft:GetWidth() * 0.59, this.TopArtLeft:GetHeight() * 0.8)
 			else
 				this.sfr = _G.CreateFrame("Frame", nil, this)
-				self:skinObject("frame", {obj=this.sfr, fType=ftype, ng=true, bba=0, fh=tvh * 0.8})
+				self:skinObject("frame", {obj=this.sfr, fType=ftype, ng=true, bd=11--[[, fh=tvh * 0.8--]]})
 				this.sfr:SetPoint("TOPLEFT", this, "TOP", (tvw + 25), 4)
 				this.sfr:SetSize(this.TopArtRight:GetWidth() * 0.59, this.TopArtRight:GetHeight() * 0.8)
 			end
@@ -4998,17 +4997,22 @@ aObj.blizzFrames[ftype].PetBattleUI = function(self)
 		pbf= nil
 		-- create a frame behind the VS text
 		this.sfm = _G.CreateFrame("Frame", nil, this)
-		self:skinObject("frame", {obj=this.sfm, fType=ftype, ng=true, bba=0})
+		self:skinObject("frame", {obj=this.sfm, fType=ftype, ng=true, bd=11})
 		this.sfm:SetPoint("TOPLEFT", this.sfl, "TOPRIGHT", -8, 0)
 		this.sfm:SetPoint("TOPRIGHT", this.sfr, "TOPLEFT", 8, 0)
 		this.sfm:SetHeight(tvh * 0.8)
 		tvw, tvh = nil, nil
-		-- Bottom Frame
 		this.BottomFrame.RightEndCap:SetTexture(nil)
 		this.BottomFrame.LeftEndCap:SetTexture(nil)
 		this.BottomFrame.Background:SetTexture(nil)
 		if self.modBtns then
 			self:skinStdButton{obj=this.BottomFrame.TurnTimer.SkipButton}
+			self:SecureHook(this.BottomFrame.TurnTimer.SkipButton, "Disable", function(this, _)
+				self:clrBtnBdr(this)
+			end)
+			self:SecureHook(this.BottomFrame.TurnTimer.SkipButton, "Enable", function(this, _)
+				self:clrBtnBdr(this)
+			end)
 		end
 		-- Pet Selection
 		for i = 1, _G.NUM_BATTLE_PETS_IN_BATTLE do
@@ -5029,13 +5033,16 @@ aObj.blizzFrames[ftype].PetBattleUI = function(self)
 		self:removeRegions(this.BottomFrame.MicroButtonFrame, {1, 2, 3})
 		self:skinObject("frame", {obj=this.BottomFrame, fType=ftype, y1=8})
 		if self.modBtnBs then
-			-- skin forfeit button
-			self:addButtonBorder{obj=this.BottomFrame.ForfeitButton, es=20, ofs=3, x1=-5, y1=5, clr="grey"}
+			self:addButtonBorder{obj=this.BottomFrame.SwitchPetButton, reParent={this.BetterIcon}, es=20, ofs=3, x1=-5, y1=5}
+			self:addButtonBorder{obj=this.BottomFrame.CatchButton, reParent={this.BetterIcon}, es=20, ofs=3, x1=-5, y1=5}
+			self:addButtonBorder{obj=this.BottomFrame.ForfeitButton, es=20, ofs=3, x1=-5, y1=5}
+			_G.C_Timer.After(0.1, function()
+				self:addButtonBorder{obj=this.BottomFrame.abilityButtons[1], reParent={this.BetterIcon}, es=20, ofs=3, x1=-5, y1=5}
+				self:addButtonBorder{obj=this.BottomFrame.abilityButtons[2], reParent={this.BetterIcon}, es=20, ofs=3, x1=-5, y1=5}
+				self:addButtonBorder{obj=this.BottomFrame.abilityButtons[3], reParent={this.BetterIcon}, es=20, ofs=3, x1=-5, y1=5}
+			end)
 			-- hook this for pet ability buttons
 			self:SecureHook("PetBattleActionButton_UpdateState", function(this)
-				if not this.sbb then
-					self:addButtonBorder{obj=this, reParent={this.BetterIcon}, es=20, ofs=3, x1=-5, y1=5}
-				end
 				if this.sbb then
 					if this.Icon
 					and this.Icon:IsDesaturated()
@@ -5071,13 +5078,6 @@ aObj.blizzFrames[ftype].PetBattleUI = function(self)
 			self:SecureHookScript(this.ActiveEnemy.SpeedFlash, "OnFinished", function(this)
 				reParent{reset=true}
 			end)
-			-- -- hook these to ensure gradient texture is reparented correctly
-			-- self:SecureHookScript(this, "OnShow", function(this)
-			-- 	reParent{parent=_G.MainMenuBar, reset=true}
-			-- end)
-			-- self:HookScript(this, "OnHide", function(this)
-			-- 	reParent{}
-			-- end)
 			-- hook this to reparent the gradient texture if pets have equal speed
 			self:SecureHook("PetBattleFrame_UpdateSpeedIndicators", function(this)
 				if not this.ActiveAlly.SpeedIcon:IsShown()
