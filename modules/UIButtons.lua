@@ -165,7 +165,7 @@ function module:chgHLTex(obj, hTex)
 	end
 	if hTex then
 		local hTexFile = hTex:GetTexture()
-		aObj:Debug("chgHLTex: [%s, %s]", obj, hTexFile)
+		-- aObj:Debug("chgHLTex: [%s, %s]", obj, hTexFile)
 		if hTexFile then
 			if _G.tonumber(hTexFile) then
 			else
