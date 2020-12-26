@@ -1,3 +1,17 @@
+beta9.36949.4
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Updated TOC & .pkgmeta_classic
+	Bugfix for NewSkinFuncs
+	Updated CovenantPreviewUI skin
+	Updated BNFrames skin
+	Updated PlayerChoiceUI skin
+	Updated PetBattleUI skin
+	Bugfix for ToastFrames
+	Updated Auctionator & WeakAuras skins
+
 beta9.36949.3
 Jncl:
 	ToDo.txt
