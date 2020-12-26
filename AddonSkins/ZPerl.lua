@@ -1,15 +1,15 @@
-local aName, aObj = ...
+local _, aObj = ...
 if not aObj:isAddonEnabled("ZPerl") then return end
 local _G = _G
 
 local function skinFrame(frame, ...)
-
-	-- frame is scaleable, backdrop is used rto position other objects by ZPerl
-	aObj:applySkin{obj=frame, kfs=true}
-
+	-- frame is scaleable, backdrop is used to position other objects by ZPerl
+	if frame then
+		aObj:skinObject("frame", {obj=frame, kfs=true})
+	end
 end
 
-aObj.addonsToSkin.ZPerl = function(self) -- v 5.7.0
+aObj.addonsToSkin.ZPerl = function(self) -- v 6.1.3
 
 	-- Frame and Border colours
 	_G.XPerlDB.colour.frame = _G.CopyTable(self.bClr)
@@ -25,17 +25,21 @@ aObj.addonsToSkin.ZPerl = function(self) -- v 5.7.0
 	-- minimap button
 	self.mmButs["ZPerl"] = _G.XPerl_MinimapButton_Frame
 
+	-- hook this to replace frame object
+	self:RawHook("XPerl_RegisterScalableFrame", function(frame, ...)
+		aObj:Debug("XPerl_RegisterScalableFrame: [%s, %s]", frame, frame.sf)
+		self.hooks.XPerl_RegisterScalableFrame(frame.sf, ...)
+	end, true)
+
 end
 
 local function skinClassIcon(frame)
-
 	aObj:adjWidth{obj=frame, adj=-1}
 	aObj:adjHeight{obj=frame, adj=-2}
 	aObj:moveObject{obj=frame, y=2}
 	if aObj.modBtns then
 		aObj:addSkinButton(frame, frame)
 	end
-
 end
 aObj.addonsToSkin.ZPerl_Player = function(self)
 
@@ -76,17 +80,15 @@ aObj.addonsToSkin.ZPerl_RaidAdmin = function(self)
 	-- hook this to skin frames
 	self:rawHook("XPerl_SetupFrameSimple", skinFrame)
 
-	self:skinEditBox(_G.XPerl_AdminFrame_Controls_Edit)
+	self:skinObject("editbox", {obj=_G.XPerl_AdminFrame_Controls_Edit})
 	self:moveObject{obj=_G.XPerl_AdminFrame_Controls_Edit, x=-5}
 	_G.XPerl_SetupFrameSimple(_G.XPerl_AdminFrame)
-	-- skinFrame(_G.XPerl_AdminFrame)
 
 	-- Item Checker Frame
-	self:skinDropDown(_G.XPerl_CheckButtonChannel)
 	_G.XPerl_SetupFrameSimple(_G.XPerl_Check)
 
 	-- Roster Text Frame
-	self:skinSlider{obj=_G.XPerl_RosterTexttextFramescroll.ScrollBar}
+	self:skinObject("slider", {obj=_G.XPerl_RosterTexttextFramescroll.ScrollBar})
 	skinFrame(_G.XPerl_RosterTexttextFrame)
 	skinFrame(_G.XPerl_RosterText)
 
@@ -97,11 +99,12 @@ aObj.addonsToSkin.ZPerl_RaidHelper = function(self)
 	-- hook this to skin frames
 	self:rawHook("XPerl_SetupFrameSimple", skinFrame)
 
-	_G.XPerl_SetupFrameSimple(_G.XPerl_Frame)
-
 	_G.XPerl_SetupFrameSimple(_G.XPerl_Assists_Frame)
 	if self.modBtns then
 		self:skinCloseButton{obj=_G.XPerlAssistsCloseButton, font=self.fontSB, noSkin=true}
+		self:skinOtherButton{obj=_G.XPerlAssistPin, text="•", noSkin=true} -- U+2022 Bullet
+		self:moveObject{obj=_G.XPerlAssistPin, x=8}
+		_G.XPerlAssistPin:SetSize(26, 26)
 	end
 
 	_G.XPerl_SetupFrameSimple(_G.XPerl_Target_AssistFrame)
@@ -114,22 +117,20 @@ aObj.addonsToSkin.ZPerl_RaidHelper = function(self)
 
 end
 
-local function skinSelectedObject(frame)
-
-	for _, child in ipairs{frame:GetChildren()} do
+local function skinKids(frame)
+	for _, child in _G.ipairs{frame:GetChildren()} do
 		if aObj:isDropDown(child) then
-			aObj:skinDropDown{obj=child}
+			aObj:skinObject("dropdown", {obj=child})
 		elseif child:IsObjectType("EditBox") then
-			aObj:skinEditBox{obj=child, regs={6}} -- 6 is text
+			aObj:skinObject("editbox", {obj=child})
 		elseif child:IsObjectType("Slider") then
-			aObj:skinSlider{obj=child}
+			aObj:skinObject("slider", {obj=child})
 		elseif child:IsObjectType("CheckButton")
 		and aObj.modChkBtns
 		then
 			aObj:skinCheckButton{obj=child}
 		end
 	end
-
 end
 aObj.lodAddons.ZPerl_Options = function(self)
 
@@ -139,108 +140,143 @@ aObj.lodAddons.ZPerl_Options = function(self)
 	end
 
 	-- Colour Picker Frame
-	self:addSkinFrame{obj=_G.XPerl_ColourPicker, ft="a", kfs=true, nb=true}
+	self:skinObject("frame", {obj=_G.XPerl_ColourPicker, kfs=true})
 	if self.modBtns then
 		self:skinStdButton{obj=_G.XPerl_ColourPicker_OK}
 		self:skinStdButton{obj=_G.XPerl_ColourPicker_Cancel}
 	end
 
 	--	Texture Select Frame
-	self:skinSlider{obj=_G.XPerl_Options_TextureSelectscrollBar.ScrollBar}
-	self:addSkinFrame{obj=_G.XPerl_Options_TextureSelect, ft="a", kfs=true, nb=true}
+	self:skinObject("slider", {obj=_G.XPerl_Options_TextureSelectscrollBar.ScrollBar})
+	self:skinObject("frame", {obj=_G.XPerl_Options_TextureSelect, kfs=true})
+	if self.modBtns then
+		self:skinStdButton{obj=_G.XPerl_Options_TextureSelect_OK}
+		self:skinStdButton{obj=_G.XPerl_Options_TextureSelect_Cancel}
+	end
 
 	-- Options Frame
-	skinFrame(_G.XPerl_Options)
-	self:addSkinFrame{obj=_G.XPerl_Options_Area_Align, ft="a", kfs=true, nb=true, x1=-2, y1=4, x2=2, y2=-2}
-	self:addSkinFrame{obj=_G.XPerl_Options_Area_Global, ft="a", kfs=true, nb=true, x1=-2, y1=2, x2=2, y2=-2}
-	self:addSkinFrame{obj=_G.XPerl_Options_Area_Tabs, ft="a", kfs=true, nb=true, x1=-2, y1=1, x2=2, y2=-2}
+	self:skinObject("frame", {obj=_G.XPerl_Options_Area_Align, kfs=true, fb=true, ofs=2, y1=4})
+	self:skinObject("frame", {obj=_G.XPerl_Options_Area_Global, kfs=true, fb=true, ofs=2, y1=4})
+	self:skinObject("frame", {obj=_G.XPerl_Options_Area_Tabs, kfs=true, fb=true, ofs=2, y1=1})
 
 	-- player alignment
 	self:adjWidth{obj=_G.XPerl_Options_Player_Gap, adj=-10}
 	self:moveObject{obj=_G.XPerl_Options_Player_Gap, x=-10}
 	self:moveObject{obj=_G.XPerl_Options_Player_BiggerGap, x=4}
-	skinSelectedObject(_G.XPerl_Options_Player)
+	skinKids(_G.XPerl_Options_Player)
 	-- party alignment
 	self:moveObject{obj=_G.XPerl_Options_Party_Gap, x=-6}
 	self:moveObject{obj=_G.XPerl_Options_Party_BiggerGap, x=6}
-	skinSelectedObject(_G.XPerl_Options_Party)
+	skinKids(_G.XPerl_Options_Party)
+	self:skinObject("dropdown", {obj=_G.XPerl_Options_Party_Anchor_DropDown, x1=16, x2=34, y2=-1})
 	-- raid alignment
 	self:adjWidth{obj=_G.XPerl_Options_Raid_Gap, adj=-10}
 	self:moveObject{obj=_G.XPerl_Options_Raid_Gap, x=-10}
 	self:moveObject{obj=_G.XPerl_Options_Raid_BiggerGap, x=4}
-	skinSelectedObject(_G.XPerl_Options_Raid)
+	skinKids(_G.XPerl_Options_Raid)
+	self:skinObject("dropdown", {obj=_G.XPerl_Options_Raid_Anchor_DropDown, x1=16, x2=34, y2=-1})
 	if self.modBtns then
 		self:skinCloseButton{obj=_G.XPerl_Options_CloseButton}
 		self:skinStdButton{obj=_G.XPerl_Options_Layout_Save}
+		self:SecureHook(_G.XPerl_Options_Layout_Save, "Disable", function(this, _)
+			self:clrBtnBdr(this)
+		end)
+		self:SecureHook(_G.XPerl_Options_Layout_Save, "Enable", function(this, _)
+			self:clrBtnBdr(this)
+		end)
 		self:skinStdButton{obj=_G.XPerl_Options_Layout_Load}
+		self:SecureHook(_G.XPerl_Options_Layout_Load, "Disable", function(this, _)
+			self:clrBtnBdr(this)
+		end)
+		self:SecureHook(_G.XPerl_Options_Layout_Load, "Enable", function(this, _)
+			self:clrBtnBdr(this)
+		end)
 	end
 	-- Layout
-	self:skinEditBox{obj=_G.XPerl_Options_Layout_Name, regs={6}}
-	self:addSkinFrame{obj=_G.XPerl_Options_Layout_List, ft="a", kfs=true, nb=true, x1=-2, y1=2, x2=2, y2=-2}
-	self:skinSlider{obj=_G.XPerl_Options_Layout_ListScrollBar.ScrollBar}
+	self:skinObject("editbox", {obj=_G.XPerl_Options_Layout_Name})
+	self:skinObject("slider", {obj=_G.XPerl_Options_Layout_ListScrollBar.ScrollBar})
+	self:skinObject("frame", {obj=_G.XPerl_Options_Layout_List, kfs=true, fb=true, ofs=2})
+
+	local numTabs = 12
+	self:skinObject("tabs", {obj=_G.XPerl_Options, prefix="XPerl_Options_", numTabs=numTabs, ignoreSize=true, lod=true, offsets={x1=0, y1=4, x2=0, y2=-4}, func=function(tab) tab:DisableDrawLayer("BACKGROUND") end, track=false})
+	if self.isTT then
+		self:SecureHook(_G._G.XPerl_Options_Tab, "SelectTab", function(this, id)
+			local tab
+			for i = 1, numTabs do
+				tab = _G["XPerl_Options_Tab" .. i]
+				if i == id then
+					self:setActiveTab(tab.sf)
+				else
+					self:setInactiveTab(tab.sf)
+				end
+			end
+			tab = nil
+		end)
+	end
+	self:skinObject("frame", {obj=_G.XPerl_Options, kfs=true, cb=true, ofs=0, y1=-1})
 
 	-- Global Options subpanel
-	skinSelectedObject(_G.XPerl_Options_Global_Options)
+	skinKids(_G.XPerl_Options_Global_Options)
 	if self.modBtns then
 		self:skinStdButton{obj=_G.XPerl_Options_Global_Options_Reset}
 	end
 	_G.XPerl_Options_Global_Options_RangeFinderSeparator:Hide()	-- separator line
-	skinSelectedObject(_G.XPerl_Options_Global_Options_RangeFinder)
+	skinKids(_G.XPerl_Options_Global_Options_RangeFinder)
 	if self.modBtnBs then
 		 self:addButtonBorder{obj=_G.XPerl_Options_Global_Options_RangeFinder_CustomSpell, relTo=_G.XPerl_Options_Global_Options_RangeFinder_CustomSpellIcon}
 	end
 
 	-- Player Options subpanel
-	skinSelectedObject(_G.XPerl_Options_Player_Options)
-	skinSelectedObject(_G.XPerl_Options_Player_Options_Healer)
-	skinSelectedObject(_G.XPerl_Options_Player_Options_Buffs)
-	self:addSkinFrame{obj=_G.XPerl_Options_Player_Options_Buffs, ft="a", kfs=true, nb=true, x1=-2, y1=2, x2=2}
-	skinSelectedObject(_G.XPerl_Options_Player_Options_Totems)
-	self:addSkinFrame{obj=_G.XPerl_Options_Player_Options_Totems, ft="a", kfs=true, nb=true, x1=-2, y1=2, x2=2}
+	skinKids(_G.XPerl_Options_Player_Options)
+	skinKids(_G.XPerl_Options_Player_Options_Healer)
+	skinKids(_G.XPerl_Options_Player_Options_Buffs)
+	self:skinObject("frame", {obj=_G.XPerl_Options_Player_Options_Buffs, kfs=true, fb=true, ofs=2})
+	skinKids(_G.XPerl_Options_Player_Options_Totems)
+	self:skinObject("frame", {obj=_G.XPerl_Options_Player_Options_Totems, kfs=true, fb=true, ofs=2})
 	if self.modBtns then
 		self:skinStdButton{obj=_G.XPerl_Options_Player_AlignTop}
 	end
 
 	-- Pet Options subpanel
-	skinSelectedObject(_G.XPerl_Options_Pet_Options)
-	skinSelectedObject(_G.XPerl_Options_Pet_Options_PetTarget)
-	skinSelectedObject(_G.XPerl_Options_Pet_Options_PetTarget_Healer)
-	self:addSkinFrame{obj=_G.XPerl_Options_Pet_Options_PetTarget, ft="a", kfs=true, nb=true, x1=-2, y1=2, x2=2}
+	skinKids(_G.XPerl_Options_Pet_Options)
+	skinKids(_G.XPerl_Options_Pet_Options_PetTarget)
+	skinKids(_G.XPerl_Options_Pet_Options_PetTarget_Healer)
+	self:skinObject("frame", {obj=_G.XPerl_Options_Pet_Options_PetTarget, kfs=true, fb=true, ofs=2})
 
 	-- Target Options subpanel
-	skinSelectedObject(_G.XPerl_Options_Target_Options)
-	skinSelectedObject(_G.XPerl_Options_Target_Options_Healer)
-	skinSelectedObject(_G.XPerl_Options_Target_Options_TargetTarget)
-	skinSelectedObject(_G.XPerl_Options_Target_Options_TargetTarget_Healer)
-	self:addSkinFrame{obj=_G.XPerl_Options_Target_Options_TargetTarget, ft="a", kfs=true, nb=true, x1=-2, y1=2, x2=2, y2=-6}
+	skinKids(_G.XPerl_Options_Target_Options)
+	skinKids(_G.XPerl_Options_Target_Options_Healer)
+	skinKids(_G.XPerl_Options_Target_Options_TargetTarget)
+	skinKids(_G.XPerl_Options_Target_Options_TargetTarget_Healer)
+	self:skinObject("frame", {obj=_G.XPerl_Options_Target_Options_TargetTarget, kfs=true, fb=true, ofs=2, y2=-6})
 
 	-- Focus Options subpanel
-	skinSelectedObject(_G.XPerl_Options_Focus_Options)
-	skinSelectedObject(_G.XPerl_Options_Focus_Options_Healer)
-	skinSelectedObject(_G.XPerl_Options_Focus_Options_FocusTarget)
-	skinSelectedObject(_G.XPerl_Options_Focus_Options_FocusTarget_Healer)
-	self:addSkinFrame{obj=_G.XPerl_Options_Focus_Options_FocusTarget, ft="a", kfs=true, nb=true, x1=-2, y1=2, x2=2}
+	skinKids(_G.XPerl_Options_Focus_Options)
+	skinKids(_G.XPerl_Options_Focus_Options_Healer)
+	skinKids(_G.XPerl_Options_Focus_Options_FocusTarget)
+	skinKids(_G.XPerl_Options_Focus_Options_FocusTarget_Healer)
+	self:skinObject("frame", {obj=_G.XPerl_Options_Focus_Options_FocusTarget, kfs=true, fb=true, ofs=2})
 
 	-- Party Options subpanel
-	skinSelectedObject(_G.XPerl_Options_Party_Options)
-	skinSelectedObject(_G.XPerl_Options_Party_Options_Healer)
-	skinSelectedObject(_G.XPerl_Options_Party_Options_PartyPets)
-	self:addSkinFrame{obj=_G.XPerl_Options_Party_Options_PartyPets, ft="a", kfs=true, nb=true, x1=-2, y1=2, x2=2}
+	skinKids(_G.XPerl_Options_Party_Options)
+	skinKids(_G.XPerl_Options_Party_Options_Healer)
+	skinKids(_G.XPerl_Options_Party_Options_PartyPets)
+	self:skinObject("frame", {obj=_G.XPerl_Options_Party_Options_PartyPets, kfs=true, fb=true, ofs=2})
 	if _G.XPerl_Party_AnchorVirtual then
-		self:addSkinFrame{obj=_G.XPerl_Party_AnchorVirtual, ft="a", kfs=true, nb=true, x1=-2, y1=2, x2=2}
+		self:skinObject("frame", {obj=_G.XPerl_Party_AnchorVirtual, kfs=true, ofs=2})
 	end
 
 	-- Raid Options subpanel
-	skinSelectedObject(_G.XPerl_Options_Raid_Options)
-	skinSelectedObject(_G.XPerl_Options_Raid_Options_Groups)
+	skinKids(_G.XPerl_Options_Raid_Options)
+	skinKids(_G.XPerl_Options_Raid_Options_Groups)
 	for i = 1, 12 do
-		skinSelectedObject(_G["XPerl_Options_Raid_Options_Groups_ClassSel" .. i])
+		skinKids(_G["XPerl_Options_Raid_Options_Groups_ClassSel" .. i])
 	end
-	self:addSkinFrame{obj=_G.XPerl_Options_Raid_Options_Groups, ft="a", kfs=true, nb=true, x1=-2, y1=2, x2=2}
-	skinSelectedObject(_G.XPerl_Options_Raid_Options_Pets)
-	self:addSkinFrame{obj=_G.XPerl_Options_Raid_Options_Pets, ft="a", kfs=true, nb=true, x1=-2, y1=2, x2=2}
-	skinSelectedObject(_G.XPerl_Options_Raid_Options_Custom)
-	self:addSkinFrame{obj=_G.XPerl_Options_Raid_Options_Custom, ft="a", kfs=true, nb=true, x1=-2, y1=2, x2=2}
+	self:skinObject("frame", {obj=_G.XPerl_Options_Raid_Options_Groups, kfs=true, fb=true, ofs=2})
+	skinKids(_G.XPerl_Options_Raid_Options_Pets)
+	self:skinObject("frame", {obj=_G.XPerl_Options_Raid_Options_Pets, kfs=true, fb=true, ofs=2})
+	skinKids(_G.XPerl_Options_Raid_Options_Custom)
+	self:skinObject("frame", {obj=_G.XPerl_Options_Raid_Options_Custom, kfs=true, fb=true, ofs=2})
 	if self.modBtns then
 		self:skinStdButton{obj=_G.XPerl_Options_Raid_AlignTop}
 		self:skinStdButton{obj=_G.XPerl_Options_Raid_AlignLeft}
@@ -251,28 +287,34 @@ aObj.lodAddons.ZPerl_Options = function(self)
 	-- Raid Group frames
 	if _G.XPerl_Raid_Title1 then
 		for i = 1, 12 do
-			self:addSkinFrame{obj=_G["XPerl_Raid_Title"..i.."Virtual"], ft="a", kfs=true, nb=true, ofs=0}
+			self:skinObject("frame", {obj=_G["XPerl_Raid_Title" .. i .. "Virtual"], kfs=true, ofs=0})
 		end
 	end
 
 	-- All Options subpanel
-	skinSelectedObject(_G.XPerl_Options_All_Options)
-	skinSelectedObject(_G.XPerl_Options_All_Options_Healer)
-	skinSelectedObject(_G.XPerl_Options_All_Options_AddOns)
-	self:addSkinFrame{obj=_G.XPerl_Options_All_Options_AddOns, ft="a", kfs=true, nb=true, x1=-2, y1=2, x2=2}
+	skinKids(_G.XPerl_Options_All_Options)
+	skinKids(_G.XPerl_Options_All_Options_Healer)
+	skinKids(_G.XPerl_Options_All_Options_AddOns)
+	self:skinObject("frame", {obj=_G.XPerl_Options_All_Options_AddOns, kfs=true, fb=true, ofs=2})
 	if self.modBtns then
 		self:skinStdButton{obj=_G.XPerl_Options_All_Options_AddOns_Reload}
+		self:SecureHook(_G.XPerl_Options_All_Options_AddOns_Reload, "Disable", function(this, _)
+			self:clrBtnBdr(this)
+		end)
+		self:SecureHook(_G.XPerl_Options_All_Options_AddOns_Reload, "Enable", function(this, _)
+			self:clrBtnBdr(this)
+		end)
 	end
 
 	-- Colours Options subpanel
-	skinSelectedObject(_G.XPerl_Options_Colour_Options_BarColours)
-	self:addSkinFrame{obj=_G.XPerl_Options_Colour_Options_BarColours, ft="a", kfs=true, nb=true, x1=-2, y1=2, x2=2}
-	skinSelectedObject(_G.XPerl_Options_Colour_Options_UnitReactions)
-	self:addSkinFrame{obj=_G.XPerl_Options_Colour_Options_UnitReactions, ft="a", kfs=true, nb=true, x1=-2, y1=2, x2=2}
-	skinSelectedObject(_G.XPerl_Options_Colour_Options_Appearance)
-	self:addSkinFrame{obj=_G.XPerl_Options_Colour_Options_Appearance, ft="a", kfs=true, nb=true, x1=-2, y1=2, x2=2}
-	skinSelectedObject(_G.XPerl_Options_Colour_Options_FrameColours)
-	self:addSkinFrame{obj=_G.XPerl_Options_Colour_Options_FrameColours, ft="a", kfs=true, nb=true, x1=-2, y1=2, x2=2}
+	skinKids(_G.XPerl_Options_Colour_Options_BarColours)
+	self:skinObject("frame", {obj=_G.XPerl_Options_Colour_Options_BarColours, kfs=true, fb=true, ofs=2})
+	skinKids(_G.XPerl_Options_Colour_Options_UnitReactions)
+	self:skinObject("frame", {obj=_G.XPerl_Options_Colour_Options_UnitReactions, kfs=true, fb=true, ofs=2})
+	skinKids(_G.XPerl_Options_Colour_Options_Appearance)
+	self:skinObject("frame", {obj=_G.XPerl_Options_Colour_Options_Appearance, kfs=true, fb=true, ofs=2})
+	skinKids(_G.XPerl_Options_Colour_Options_FrameColours)
+	self:skinObject("frame", {obj=_G.XPerl_Options_Colour_Options_FrameColours, kfs=true, fb=true, ofs=2})
 	if self.modBtns then
 		self:skinStdButton{obj=_G.XPerl_Options_Colour_Options_Appearance_Reset}
 		self:skinStdButton{obj=_G.XPerl_Options_Colour_Options_FrameColours_Reset}
@@ -281,25 +323,25 @@ aObj.lodAddons.ZPerl_Options = function(self)
 	end
 
 	-- Helper Options subpanel
-	skinSelectedObject(_G.XPerl_Options_Helper_Options)
-	skinSelectedObject(_G.XPerl_Options_Helper_Options_Healer)
-	skinSelectedObject(_G.XPerl_Options_Helper_Options_Assists)
-	self:addSkinFrame{obj=_G.XPerl_Options_Helper_Options_Assists, ft="a", kfs=true, nb=true, x1=-2, y1=2, x2=2}
+	skinKids(_G.XPerl_Options_Helper_Options)
+	skinKids(_G.XPerl_Options_Helper_Options_Healer)
+	skinKids(_G.XPerl_Options_Helper_Options_Assists)
+	self:skinObject("frame", {obj=_G.XPerl_Options_Helper_Options_Assists, kfs=true, fb=true, ofs=2})
 
 	-- Monitor Options subpanel
-	skinSelectedObject(_G.XPerl_Options_Monitor_Options)
+	skinKids(_G.XPerl_Options_Monitor_Options)
 
 	-- Admin Options subpanel
-	skinSelectedObject(_G.XPerl_Options_Admin_Options)
+	skinKids(_G.XPerl_Options_Admin_Options)
 
 	-- Custom Raid Highlights Config (appears when Configure button, on Raid Custon subpanel, is pressed)
-	skinSelectedObject(_G.XPerl_Custom_Config)
-	self:addSkinFrame{obj=_G.XPerl_Custom_Config, ft="a", kfs=true, nb=true, ofs=0}
-	self:skinSlider{obj=_G.XPerl_Custom_ConfigzoneListscrollBar.ScrollBar}
-	self:addSkinFrame{obj=_G.XPerl_Custom_ConfigzoneList, ft="a", kfs=true, nb=true, y1=2, y2=-3}
-	self:skinSlider{obj=_G.XPerl_Custom_ConfigdebuffsscrollBar.ScrollBar}
-	self:addSkinFrame{obj=_G.XPerl_Custom_Configdebuffs, ft="a", kfs=true, nb=true, y1=2, y2=-3}
-	skinSelectedObject(_G.XPerl_Custom_ConfigNew)
+	-- skinKids(_G.XPerl_Custom_Config)
+	self:skinObject("slider", {obj=_G.XPerl_Custom_ConfigzoneListscrollBar.ScrollBar})
+	self:skinObject("frame", {obj=_G.XPerl_Custom_ConfigzoneList, kfs=true, fb=true, ofs=2})
+	self:skinObject("slider", {obj=_G.XPerl_Custom_ConfigdebuffsscrollBar.ScrollBar})
+	self:skinObject("frame", {obj=_G.XPerl_Custom_Configdebuffs, kfs=true, fb=true, ofs=2})
+	skinKids(_G.XPerl_Custom_ConfigNew)
+	self:skinObject("frame", {obj=_G.XPerl_Custom_Config, kfs=true, cb=true, ofs=0, y1=-1})
 	if self.modBtns then
 		self:skinCloseButton{obj=_G.XPerl_Custom_Config_CloseButton}
 		self:skinStdButton{obj=_G.XPerl_Custom_ConfigEdit_Defaults}
@@ -309,13 +351,13 @@ aObj.lodAddons.ZPerl_Options = function(self)
 	end
 
 	--	Options Question Dialog
-	self:addSkinFrame{obj=_G.XPerl_OptionsQuestionDialog, ft="a", kfs=true, nb=true}
+	self:skinObject("frame", {obj=_G.XPerl_OptionsQuestionDialog, kfs=true, ofs=2})
 	if self.modBtns then
 		self:skinStdButton{obj=_G.XPerl_OptionsQuestionDialogYes}
 		self:skinStdButton{obj=_G.XPerl_OptionsQuestionDialogNo}
 	end
 
 	-- Tooltip Config
-	self:addSkinFrame{obj=_G.XPerl_Options_TooltipConfig, ft="a", kfs=true, nb=true}
+	self:skinObject("frame", {obj=_G.XPerl_Options_TooltipConfig, kfs=true, ofs=2})
 
 end
