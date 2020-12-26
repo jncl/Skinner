@@ -1003,11 +1003,6 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 			self:skinStdButton{obj=this.SummonButton}
 		end
 		self:removeRegions(this.AchievementStatus, {1, 2})
-		if self.modChkBtns then
-			-- .icon
-			self:skinCheckButton{obj=this.SpellSelect.Spell1}
-			self:skinCheckButton{obj=this.SpellSelect.Spell2}
-		end
 		self:skinDropDown{obj=this.petOptionsMenu}
 
 		self:Unhook(this, "OnShow")
