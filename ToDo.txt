@@ -23,44 +23,13 @@ ToDos
 
 ≈	O	Refactor NewSkinFuncs in Blizzard/AddOn skins
 
-	I	Toast frames, reported by MacallanTwoFive/reiyo_oki, 20.12.20
-√		- Skinner\Core\UIFrames.lua:823: attempt to index field 'tfade' (a nil value)
-		[string "@Skinner\Core\UIFrames.lua"]:823: in function <Skinner\Core\UIFrames.lua:821>
-		[string "=(tail call)"]: ?
-		[string "=[C]"]: in function `AlertFrame_PauseOutAnimation'
-		[string "@FrameXML\AlertFrames.lua"]:766: in function `AlertFrame_PlayOutroAnimation'
-		[string "@FrameXML\AlertFrames.lua"]:777: in function `AlertFrame_PlayAnimations'
-		[string "@FrameXML\AlertFrames.lua"]:783: in function `AlertFrame_ShowNewAlert'
-		[string "@FrameXML\BNet.lua"]:344: in function `ShowToast'
-		[string "@FrameXML\BNet.lua"]:356: in function `AddToast'
-		[string "@FrameXML\BNet.lua"]:90: in function <FrameXML\BNet.lua:82>
+√	S	Annene, requested by Shiv_G3, 25.12.20
 
-	I	WeakAuras, reported by reiyo_oki, 22.12.20
-√		- Interface\AddOns\Skinner\AddonSkins\WeakAuras.lua:135: attempt to index field 'sf' (a nil value)
-		[string "@Interface\AddOns\Skinner\AddonSkins\WeakAuras.lua"]:135: in function <Interface\AddOns\Skinner\AddonSkins\WeakAuras.lua:106>
-
-	I	reported by Fakelessgaming, 24.12.20
-?		-  [ADDON_ACTION_BLOCKED] Модификация 'Skinner' пыталась вызвать защищенную функцию 'MultiBarBottomLeftButton1:Show()'.
-		[string "@!BugGrabber\BugGrabber.lua"]:519: in function <!BugGrabber\BugGrabber.lua:519>
-		[string "=[C]"]: in function `Show'
-		[string "@FrameXML\ActionButton.lua"]:465: in function `ShowGrid'
-		[string "@FrameXML\MultiActionBars.lua"]:137: in function `MultiActionBar_UpdateGrid'
-		[string "@FrameXML\MultiActionBars.lua"]:120: in function `MultiActionBar_ShowAllGrids'
-		[string "@FrameXML\SpellBookFrame.lua"]:191: in function <FrameXML\SpellBookFrame.lua:181>
-		[string "=[C]"]: ?
-		[string "=[C]"]: in function `Show'
-		[string "@FrameXML\UIParent.lua"]:2910: in function `SetUIPanel'
-		[string "@FrameXML\UIParent.lua"]:2755: in function `ShowUIPanel'
-		[string "@FrameXML\UIParent.lua"]:2623: in function <FrameXML\UIParent.lua:2619>
-		[string "=[C]"]: in function `SetAttribute'
-		[string "@FrameXML\UIParent.lua"]:3468: in function `ShowUIPanel'
-		[string "@FrameXML\SpellBookFrame.lua"]:75: in function <FrameXML\SpellBookFrame.lua:59>
-		[string "=[C]"]: in function `ToggleSpellBook'
-		[string "TOGGLESPELLBOOK"]:1: in function <[string "TOGGLESPELLBOOK"]:1>
-
-	I	Auctionator, reported by Shiv_g3, 24.12.20
-√		- Skinner\Core\UtilFuncs.lua:1019: attempt to index local 'frame' (a nil value)
-		[string "@Skinner\Core\UtilFuncs.lua"]:1019: in function <Skinner\Core\UtilFuncs.lua:1018>
-		[string "@Skinner\Core\UtilFuncs.lua"]:1051: in function `removeNineSlice'
-		[string "@Skinner\AddonSkins\Auctionator-9.0.3.1.lua"]:235: in function <Skinner\AddonSkins\Auctionator.lua:197>
-		[string "@Skinner\AddonSkins\Auctionator-9.0.3.1.lua"]:407: in function <Skinner\AddonSkins\Auctionator.lua:406>
+	I	ZPerl, reported by repelsteel, 26.12.20
+√		- ..\AddOns\Skinner\Core\MainFuncs.lua line 461: attempt to index field 'obj' (a nil value)
+		Skinner\Core\MainFuncs.lua:540: applySkin()
+		Skinner\AddonSkins\ZPerl.lua:8:
+		Skinner\AddonSkins\ZPerl.lua:5
+		(tail call): ?
+		Skinner\AddonSkins\ZPerl.lua:100:
+		Skinner\AddonSkins\ZPerl.lua:95
