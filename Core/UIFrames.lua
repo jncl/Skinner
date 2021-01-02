@@ -2612,30 +2612,26 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 		this.HeaderBar:SetTexture(nil)
 		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, ignoreSize=true, lod=true, offsets={x1=4, y1=-10, x2=-4, y2=-3}, regions={7, 8, 9, 10}})
 		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, ofs=-13, y2=4})
-		-- ReportTab
-		self:SecureHookScript(this.Report, "OnShow", function(this)
-			this.List:DisableDrawLayer("BACKGROUND")
-			self:skinObject("slider", {obj=this.List.listScroll.scrollBar, fType=ftype, y1=-1, y2=1})
-			for _, btn in _G.pairs(this.List.listScroll.buttons) do
-				btn:DisableDrawLayer("BACKGROUND")
-				btn:DisableDrawLayer("BORDER")
-				for _, reward in _G.pairs(btn.Rewards) do
-					self:addButtonBorder{obj=reward, relTo=reward.Icon, reParent={reward.Quantity}}
-					self:clrButtonFromBorder(reward)
-				end
-			end
-			self:skinObject("frame", {obj=this.List, fType=ftype, fb=true, y1=4})
-			self:skinObject("tabs", {obj=this, tabs={this.InProgress, this.Available}, fType=ftype, ignoreSize=true, lod=true, offsets={x1=4, y1=-2, x2=-4, y2=-4}, regions={3}, track=false, func=function(tab) tab:GetNormalTexture():SetAlpha(0) _G.RaiseFrameLevelByTwo(tab) end})
-			if self.isTT then
-				self:SecureHook("GarrisonLandingPageReport_SetTab", function(this)
-					self:setActiveTab(_G.GarrisonLandingPage.Report.selectedTab.sf)
-					self:setInactiveTab(_G.GarrisonLandingPage.Report.unselectedTab.sf)
-				end)
-			end
 
-			self:Unhook(this, "OnShow")
-		end)
-		self:checkShown(this.Report)
+		-- ReportTab (ALWAYS shown first)
+		this.Report.List:DisableDrawLayer("BACKGROUND")
+		self:skinObject("slider", {obj=this.Report.List.listScroll.scrollBar, fType=ftype, y1=-1, y2=1})
+		for _, btn in _G.pairs(this.Report.List.listScroll.buttons) do
+			btn:DisableDrawLayer("BACKGROUND")
+			btn:DisableDrawLayer("BORDER")
+			for _, reward in _G.pairs(btn.Rewards) do
+				self:addButtonBorder{obj=reward, relTo=reward.Icon, reParent={reward.Quantity}}
+				self:clrButtonFromBorder(reward)
+			end
+		end
+		self:skinObject("frame", {obj=this.Report.List, fType=ftype, fb=true, y1=4})
+		self:skinObject("tabs", {obj=this.Report, tabs={this.Report.InProgress, this.Report.Available}, fType=ftype, ignoreSize=true, lod=true, offsets={x1=4, y1=-2, x2=-4, y2=-4}, regions={3}, track=false, func=function(tab) tab:GetNormalTexture():SetAlpha(0) _G.RaiseFrameLevelByTwo(tab) end})
+		if self.isTT then
+			self:SecureHook("GarrisonLandingPageReport_SetTab", function(tab)
+				self:setInactiveTab(tab:GetParent().unselectedTab.sf)
+				self:setActiveTab(tab.sf)
+			end)
+		end
 
 		self:SecureHookScript(this.FollowerList, "OnShow", function(this)
 			skinFollowerList(this)
