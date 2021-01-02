@@ -133,12 +133,15 @@
 <Script file="MasterPlan.lua"/>
 <Script file="MinimalArchaeology.lua"/>
 <Script file="MinimapButtonFrame.lua"/>
+<Script file="MissingTradeSkillsList.lua"/>
 <Script file="MogIt.lua"/>
 <Script file="mOnArs_WardrobeHelper.lua"/>
 <Script file="MoveAnything.lua"/>
 <Script file="MSA-DropDownMenu.lua"/>
 <Script file="NickTag.lua"/>
 <Script file="Notes.lua"/>
+<Script file="NovaInstanceTracker.lua"/>
+<Script file="NovaWorldBuffs.lua"/>
 <Script file="NPCScan.lua"/>
 <Script file="oGlow.lua"/>
 <Script file="Omen.lua"/>
