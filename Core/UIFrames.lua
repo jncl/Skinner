@@ -5306,11 +5306,13 @@ aObj.blizzFrames[ftype].PVPHelper = function(self)
 
 	self:SecureHookScript(_G.PVPReadyDialog, "OnShow", function(this)
 		self:removeNineSlice(this.Border)
-		self:nilTexture(this.background, true)
+		if not self.prdb.LFGTexture then
+			self:nilTexture(this.background, true)
+		end
 		self:nilTexture(this.filigree, true)
 		self:nilTexture(this.bottomArt, true)
 		this.instanceInfo.underline:SetTexture(nil)
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true}
+		self:skinObject("frame", {obj=this, fType=ftype, ofs=-1, y1=-5, x2=-4})
 		if self.modBtns then
 			self:skinOtherButton{obj=_G.PVPReadyDialogCloseButton, text=self.modUIBtns.minus}
 			self:skinStdButton{obj=this.enterButton}
@@ -5319,10 +5321,7 @@ aObj.blizzFrames[ftype].PVPHelper = function(self)
 
 		self:Unhook(this, "OnShow")
 	end)
-	-- check to see if should be shown
-	if _G.PVPReadyDialog.activeIndex then
-		self:checkShown(_G.PVPReadyDialog)
-	end
+	self:checkShown(_G.PVPReadyDialog)
 
 end
 
@@ -5383,6 +5382,7 @@ aObj.blizzFrames[ftype].PVPMatch = function(self)
 
 		self:Unhook(this, "OnShow")
 	end)
+
 	self:skinDropDown{obj=_G.PVPMatchResultsNameDropDown}
 
 end
