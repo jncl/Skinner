@@ -5328,42 +5328,51 @@ aObj.blizzFrames[ftype].PVPMatch = function(self)
 	self.initialized.PVPMatch = true
 
 	self:SecureHookScript(_G.PVPMatchScoreboard, "OnShow", function(this)
-
-		this.Content:DisableDrawLayer("OVERLAY") -- inset textures
-		-- ScrollCategories
-		self:skinSlider{obj=this.ScrollFrame.ScrollBar}
-		-- TabContainer
-			-- TabGroup
-				-- PVPScoreboardTab1/2/3
-
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true}
+		this.Content:DisableDrawLayer("BACKGROUND")
+		this.Content:DisableDrawLayer("OVERLAY")
+		self:skinObject("slider", {obj=this.ScrollFrame.ScrollBar, fType=ftype})
+		self:keepFontStrings(this.TabContainer)
+		self:skinObject("tabs", {obj=this.TabGroup, tabs=this.Tabs, fType=ftype, lod=true, track=false})
+		if self.isTT then
+			self:SecureHook(this, "OnTabGroupClicked", function(this, selectedTab)
+				for _, tab in _G.pairs(this.Tabs) do
+					if tab == selectedTab then
+						self:setActiveTab(tab.sf)
+					else
+						self:setInactiveTab(tab.sf)
+					end
+				end
+			end)
+		end
+		self:skinObject("frame", {obj=this.ScrollFrame, fType=ftype, kfs=true, fb=true, ofs=0, y1=58, x2=24, y2=-6})
+		this.CloseButton.Border:SetAtlas(nil)
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, ofs=0, x2=1})
 
 		self:Unhook(this, "OnShow")
 	end)
 
 	self:SecureHookScript(_G.PVPMatchResults, "OnShow", function(this)
-
-		-- overlay.decorator
-		-- Score (UIWidgetContainer)
-		-- content
-			-- scrollCategories
-		self:skinSlider{obj=this.content.scrollFrame.scrollBar}
-			-- tabContainer
-				-- tabGroup
-					-- PVPScoreFrameTab1/2/3
-				-- matchTimeContainer
-			-- earningsContainer
-				-- rewardsContainer
-					-- items
-				-- progressContainer
-					-- honor
-						-- button
-					-- conquest
-						-- button
-					-- rating
-						-- button
-			-- earningsArt
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true}
+		this.content:DisableDrawLayer("BACKGROUND")
+		this.content:DisableDrawLayer("OVERLAY")
+		this.scrollFrame.background:SetAlpha(0)
+		self:skinObject("slider", {obj=this.scrollFrame.scrollBar, fType=ftype, y1=-1, y2=1})
+		self:keepFontStrings(this.content.tabContainer)
+		self:skinObject("tabs", {obj=this.tabGroup, tabs=this.Tabs, fType=ftype, lod=true, track=false})
+		if self.isTT then
+			self:SecureHook(this, "OnTabGroupClicked", function(this, selectedTab)
+				for _, tab in _G.pairs(this.Tabs) do
+					if tab == selectedTab then
+						self:setActiveTab(tab.sf)
+					else
+						self:setInactiveTab(tab.sf)
+					end
+				end
+			end)
+		end
+		self:skinObject("frame", {obj=this.scrollFrame, fType=ftype, kfs=true, fb=true, ofs=0, y1=58, x2=24, y2=-6})
+		this.earningsArt:DisableDrawLayer("ARTWORK")
+		this.CloseButton.Border:SetAtlas(nil)
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, ofs=0, x2=1})
 		if self.modBtns then
 			self:skinStdButton{obj=this.buttonContainer.leaveButton}
 			self:skinStdButton{obj=this.buttonContainer.requeueButton}
