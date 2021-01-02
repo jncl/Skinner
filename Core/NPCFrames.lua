@@ -563,6 +563,7 @@ aObj.blizzLoDFrames[ftype].CovenantSanctum = function(self)
 				self:changeTandC(frame.TierBorder)
 			end
 		end
+		this.UpgradesTab.CurrencyBackground:SetTexture(nil)
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, ofs=-3, aso={bbclr="sepia"}}
 		if self.modBtns then
 			self:skinCloseButton{obj=this.CloseButton, noSkin=true}
