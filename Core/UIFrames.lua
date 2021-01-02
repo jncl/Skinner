@@ -6097,9 +6097,9 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 	if not self.prdb.Tooltips.skin or self.initialized.Tooltips then return end
 	self.initialized.Tooltips = true
 
+	local tt_Tips = {}
 	if _G.IsAddOnLoaded("TipTac") then
-		self.blizzFrames[ftype].Tooltips = nil
-		return
+		tt_Tips = self:getKeys(_G.TipTac.tipsToModify)
 	end
 
 	if _G.IsAddOnLoaded("TinyTooltip") then
@@ -6116,6 +6116,9 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 	_G.setmetatable(self.ttList, {__newindex = function(tab, _, tTip)
 		-- get object reference for tooltip, handle either strings or objects being passed
 		tTip = _G.type(tTip) == "string" and _G[tTip] or tTip
+		-- ignore if TipTac is managing it
+		if tt_Tips[tTip] then return end
+
 		-- store using tooltip object as the key
 		_G.rawset(tab, tTip, true)
 

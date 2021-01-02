@@ -41,15 +41,6 @@ local function makeText(fStr, ...)
 	return output
 end
 
-local function getKeys(curTab)
-	if not curTab then return end
-    local tmpTab = {}
-	for i = 1, #curTab do
-		tmpTab[curTab[i]] = true
-	end
-	return tmpTab
-end
-
 local errorhandler = _G.geterrorhandler()
 local function safecall(funcName, funcObj, LoD, quiet)
 --@alpha@
@@ -649,6 +640,15 @@ function aObj:getInt(num)
 
 end
 
+function aObj:getKeys(curTab)
+	if not curTab then return end
+    local tmpTab = {}
+	for i = 1, #curTab do
+		tmpTab[curTab[i]] = true
+	end
+	return tmpTab
+end
+
 function aObj:getLastChild(obj)
 
 	return self:getChild(obj, obj:GetNumChildren())
@@ -823,7 +823,7 @@ function aObj:keepRegions(obj, regions)
 --@end-alpha@
 
 	_G.wipe(tmpTab)
-	tmpTab = getKeys(regions) or {}
+	tmpTab = self:getKeys(regions) or {}
 	for key, reg in _G.ipairs{obj:GetRegions()} do
 		if not tmpTab[key] then
 			reg:SetAlpha(0)
@@ -1058,7 +1058,7 @@ function aObj:removeRegions(obj, regions)
 --@end-alpha@
 
 	_G.wipe(tmpTab)
-	tmpTab = getKeys(regions) or {}
+	tmpTab = self:getKeys(regions) or {}
 	for key, reg in _G.pairs{obj:GetRegions()} do
 		if tmpTab[key] then
 			reg:SetAlpha(0)

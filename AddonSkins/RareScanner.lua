@@ -1,23 +1,22 @@
-local aName, aObj = ...
+local _, aObj = ...
 if not aObj:isAddonEnabled("RareScanner") then return end
 local _G = _G
 
-aObj.addonsToSkin.RareScanner = function(self) -- v 5.6.2
+aObj.addonsToSkin.RareScanner = function(self) -- v 9.0.2.7
 
-	-- scanner_button
-	_G.scanner_button:DisableDrawLayer("BACKGROUND")
-	_G.scanner_button:DisableDrawLayer("BORDER")
-	self:addSkinFrame{obj=_G.scanner_button, ft="a", kfs=true, nb=true}
+	self:skinObject("frame", {obj=_G.scanner_button, kfs=true, cbns=true})
 	if self.modBtns then
-		self:skinCloseButton{obj=_G.scanner_button.CloseButton}
-		self:skinStdButton{obj=_G.scanner_button.FilterDisabledButton, as=true}
-		_G.scanner_button.FilterDisabledButton:GetNormalTexture():SetAlpha(1)
-		self:skinStdButton{obj=_G.scanner_button.FilterEnabledButton, as=true}
-		_G.scanner_button.FilterEnabledButton:GetNormalTexture():SetAlpha(1)
+		self:skinOtherButton{obj=_G.scanner_button.FilterDisabledButton, text=self.modUIBtns.minus, noSkin=true}
+		self:skinOtherButton{obj=_G.scanner_button.FilterEnabledButton, text=self.modUIBtns.plus, noSkin=true}
 	end
 
-	-- Registry Window
-		-- buttons
+	-- WorldMapOverlayFrame
+	for _, frame in _G.pairs(_G.WorldMapFrame.overlayFrames) do
+		if frame.EditBox then
+			self:skinObject("editbox", {obj=frame.EditBox, ofs=0})
+			self:adjHeight{obj=frame.EditBox, adj=-10}
+		end
+	end
 
 	-- tooltips
 	_G.C_Timer.After(0.1, function()

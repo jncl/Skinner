@@ -1,4 +1,4 @@
-local aName, aObj = ...
+local _, aObj = ...
 if not aObj:isAddonEnabled("RaiderIO") then return end
 local _G = _G
 
@@ -64,8 +64,8 @@ aObj.addonsToSkin.RaiderIO = function(self) -- v 9.0.2 (v202012080600)
 		aObj:skinObject("editbox", {obj=btn, ofs=0})
 		btn:ClearAllPoints()
 		btn:SetPoint("TOP", aObj:getChild(sUI, 1), "BOTTOM", 0, 0)
-		aObj:skinObject("frame", {obj=sUI, kfs=true, ofs=0})
 		btn = nil
+		aObj:skinObject("frame", {obj=sUI, kfs=true, ofs=0})
 	end
     cPF, sUI = nil, nil
 

@@ -1,4 +1,4 @@
-local aName, aObj = ...
+local _, aObj = ...
 if not aObj:isAddonEnabled("Cork") then return end
 local _G = _G
 
@@ -9,7 +9,6 @@ aObj.addonsToSkin.Cork = function(self) -- v 7.1.0.62-Beta
 		if child:IsObjectType("Button")
 		and _G.Round(child:GetHeight()) == 24
 		then
-			-- self:addSkinFrame{obj=child, ft="a", kfs=true, nb=true, x1=-2}
 			self:skinObject("frame", {obj=child, kfs=true})
 			self.UnregisterCallback("Cork", "UIParent_GetChildren")
 		end
@@ -33,7 +32,7 @@ aObj.addonsToSkin.Cork = function(self) -- v 7.1.0.62-Beta
 				aObj:add2Table(_G.CorkFrame.Tabs, child)
 			end
 		end
-		self:skinObject("tabs", {obj=_G.CorkFrame, tabs=_G.CorkFrame.Tabs, ignoreSize=true, lod=true, offsets={x1=6, y1=0, x2=-6, y2=-1}, regions={5}, func=aObj.isTT and function(tab) aObj:SecureHookScript(tab, "OnClick", function(this) for _, tab in _G.pairs(_G.CorkFrame.Tabs) do if tab == this then aObj:setActiveTab(tab. sf) else aObj:setInactiveTab(tab.sf) end end end) end})
+		self:skinObject("tabs", {obj=_G.CorkFrame, tabs=_G.CorkFrame.Tabs, ignoreSize=true, lod=true, offsets={x1=6, y1=0, x2=-6, y2=-1}, regions={5}, func=aObj.isTT and function(tab) aObj:SecureHookScript(tab, "OnClick", function(this) for _, tab in _G.pairs(_G.CorkFrame.Tabs) do if tab == this then aObj:setActiveTab(tab. sf) else aObj:setInactiveTab(tab.sf) end end end) end, track=false})
 
 		self.UnregisterCallback("Cork", "IOFPanel_Before_Skinning")
 	end)
