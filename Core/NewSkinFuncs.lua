@@ -400,7 +400,7 @@ local function skinEditBox(tbl)
 		tbl.obj:SetTextInsets(l + 5, r, t, b)
 		l, r, t, b = nil, nil, nil, nil
 	end
-	aObj:getRegion(tbl.obj, 2):SetAlpha(1)
+	aObj:getRegion(tbl.obj, 2):SetAlpha(1) -- cursor texture
 end
 skinFuncs.editbox = function(table) skinEditBox(table) end
 local function skinFrame(tbl)
