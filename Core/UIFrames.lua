@@ -3719,6 +3719,8 @@ aObj.blizzFrames[ftype].LFGFrame = function(self)
 		self:addSkinFrame{obj=_G.LFGDungeonReadyStatus, ft=ftype, kfs=true, ofs=-5}
 		self:addSkinFrame{obj=_G.LFGDungeonReadyDialog, ft=ftype, kfs=true, rp=true, ofs=-5, y2=10} -- use rp=true to make background visible
 		if self.modBtns then
+			self:skinOtherButton{obj=_G.LFGDungeonReadyStatusCloseButton, text=self.modUIBtns.minus}
+			self:skinOtherButton{obj=_G.LFGDungeonReadyDialogCloseButton, text=self.modUIBtns.minus}
 			self:skinStdButton{obj=_G.LFGDungeonReadyDialog.enterButton}
 			self:skinStdButton{obj=_G.LFGDungeonReadyDialog.leaveButton}
 		end
@@ -5310,6 +5312,7 @@ aObj.blizzFrames[ftype].PVPHelper = function(self)
 		this.instanceInfo.underline:SetTexture(nil)
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true}
 		if self.modBtns then
+			self:skinOtherButton{obj=_G.PVPReadyDialogCloseButton, text=self.modUIBtns.minus}
 			self:skinStdButton{obj=this.enterButton}
 			self:skinStdButton{obj=this.leaveButton}
 		end
@@ -5529,7 +5532,7 @@ aObj.blizzFrames[ftype].QuestSession = function(self)
 				self:skinStdButton{obj=this.ButtonContainer.Confirm}
 				self:skinStdButton{obj=this.ButtonContainer.Decline}
 				if this.MinimizeButton then
-					self:skinStdButton{obj=this.MinimizeButton}
+					self:skinOtherButton{obj=this.MinimizeButton, text=self.modUIBtns.minus}
 				end
 			end
 
