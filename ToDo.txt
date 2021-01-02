@@ -23,13 +23,37 @@ ToDos
 
 ≈	O	Refactor NewSkinFuncs in Blizzard/AddOn skins
 
-√	S	Annene, requested by Shiv_G3, 25.12.20
+	I	TipTac
+√		- not using background options
 
-	I	ZPerl, reported by repelsteel, 26.12.20
-√		- ..\AddOns\Skinner\Core\MainFuncs.lua line 461: attempt to index field 'obj' (a nil value)
-		Skinner\Core\MainFuncs.lua:540: applySkin()
-		Skinner\AddonSkins\ZPerl.lua:8:
-		Skinner\AddonSkins\ZPerl.lua:5
+	S	RareScanner
+√		- search box on WorldMap not skinned
+
+	I	PVPReadyDialog
+≈		- not being skinned
+
+	I	PVPMatchResults
+≈		- partially skinned
+
+	I	RaiderIOProfileTooltip
+≈		- not being skinned
+
+	I	ClassicQuestLog, reported by sunnyjang00, 31.12.20
+√		- Skinner\AddonSkins\ClassicQuestLog.lua:7: in function <Skinner\AddonSkins\ClassicQuestLog.lua:5>
+
+	I	reported by Siinba, 31.21.20
+√		- Skinner\Core\UIFrames.lua:6361: Cannot find a library instance of "LibBabble-SubZone-3.0".
+		BagBrother\LibStub.lua:23: in function `GetLibrary'
+		Skinner\Core\UIFrames.lua:6361: in function <Skinner\Core\UIFrames.lua:6356>
 		(tail call): ?
-		Skinner\AddonSkins\ZPerl.lua:100:
-		Skinner\AddonSkins\ZPerl.lua:95
+		[C]: in function `xpcall'
+		Skinner\Core\UtilFuncs.lua:60: in function <Skinner\Core\UtilFuncs.lua:54>
+		(tail call): ?
+		Skinner\Core\AddonFrames.lua:153: in function `BlizzardFrames'
+		Skinner\Core\Skinner-beta9.36949.5.lua:494: in function <Skinner\Core\Skinner.lua:494>
+
+√	S/C	Missing TradeSkills List, requested by sunnyjang00, 31.12.20
+
+√	S/C	Nova Instance Tracker, requested by sunnyjang00, 31.12.20
+
+√	S/C	Nova World Buffs, requested by sunnyjang00, 31.12.20
