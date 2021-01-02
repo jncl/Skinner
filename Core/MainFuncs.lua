@@ -61,16 +61,17 @@ local function __addSkinButton(opts)
 
 	aObj:Debug2("__addSkinButton: [%s, %s]", opts.obj, opts.obj:GetName())
 
-	-- don't skin it twice
-	if opts.obj.sb then return end
+	if opts.obj.sb then
+		return
+	end
 
 	aObj:removeBackdrop(opts.obj)
 
-	-- make all textures transparent, if required
-	if opts.kfs then aObj:keepFontStrings(opts.obj) end
+	if opts.kfs then
+		aObj:keepFontStrings(opts.obj)
+	end
 
 	opts.parent = opts.parent or opts.obj
-	-- opts.parent = opts.parent or opts.obj:GetParent()
 
 	-- store button object within original button
 	opts.obj.sb = _G.CreateFrame("Button", nil, opts.parent, opts.secu and "SecureUnitButtonTemplate" or opts.seca and "SecureActionButtonTemplate" or nil)
@@ -122,22 +123,30 @@ local function __addSkinButton(opts)
 	aObj:applySkin(opts.aso)
 
 	-- hide button skin, if required
-	if opts.hide then btn:Hide() end
+	if opts.hide then
+		btn:Hide()
+	end
 
 	 -- make sure it's lower than its parent's Frame Strata
-	if opts.bg then btn:SetFrameStrata("BACKGROUND") end
+	if opts.bg then
+		btn:SetFrameStrata("BACKGROUND")
+	end
 
 	-- change the draw layer of the Icon and Count, if necessary
 	if opts.obj.GetNumRegions then
 		local regOT
 		for _, reg in _G.ipairs{opts.obj:GetRegions()} do
 			regOT = reg:GetObjectType()
-			if regOT == "Texture" or regOT == "FontString" then
+			if regOT == "Texture"
+			or regOT == "FontString"
+			then
 				-- change the DrawLayer to make the Icon show if required
 				if aObj:hasAnyTextInName(reg, {"[Ii]con", "[Cc]ount"})
 				or aObj:hasTextInTexture(reg, "[Ii]con")
 				then
-					if reg:GetDrawLayer() == "BACKGROUND" then reg:SetDrawLayer("ARTWORK") end
+					if reg:GetDrawLayer() == "BACKGROUND" then
+						reg:SetDrawLayer("ARTWORK")
+					end
 				end
 			end
 		end
