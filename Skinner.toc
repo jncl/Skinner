@@ -25,9 +25,6 @@
 #
 Libs\_RequiredLibs.xml
 Libs\_OptionalLibs.xml
-#@retail@
-Libs\_OptionalLibs-retailonly.xml
-#@end-retail@
 Locales\_Locales.xml
 Core\_Core.xml
 Modules\_Modules.xml

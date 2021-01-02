@@ -11,6 +11,7 @@
 <Include file="AceLocale-3.0\AceLocale-3.0.xml"/>
 <Include file="AceGUI-3.0\AceGUI-3.0.xml"/>
 <Include file="AceConfig-3.0\AceConfig-3.0.xml"/>
+<Include file="LibBabble-SubZone-3.0\lib.xml"/>
 <!-- LSM must be loaded before SMW -->
 <Include file="LibSharedMedia-3.0\lib.xml"/>
 <Include file="AceGUI-3.0-SharedMediaWidgets\widget.xml"/>
