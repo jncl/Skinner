@@ -188,6 +188,7 @@
 <Script file="ServerHop.lua"/>
 <Script file="SilverDragon.lua"/>
 <Script file="Simulationcraft.lua"/>
+<Script file="SinStats.lua"/>
 <Script file="Skada.lua"/>
 <Script file="Skillet.lua"/>
 <Script file="SorhaQuestLog.lua"/>
