@@ -2615,7 +2615,7 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 
 		-- ReportTab (ALWAYS shown first)
 		this.Report.List:DisableDrawLayer("BACKGROUND")
-		self:skinObject("slider", {obj=this.Report.List.listScroll.scrollBar, fType=ftype, y1=-1, y2=1})
+		self:skinObject("slider", {obj=this.Report.List.listScroll.scrollBar, fType=ftype})
 		for _, btn in _G.pairs(this.Report.List.listScroll.buttons) do
 			btn:DisableDrawLayer("BACKGROUND")
 			btn:DisableDrawLayer("BORDER")
@@ -5345,7 +5345,7 @@ aObj.blizzFrames[ftype].PVPMatch = function(self)
 		this.content:DisableDrawLayer("BACKGROUND")
 		this.content:DisableDrawLayer("OVERLAY")
 		this.scrollFrame.background:SetAlpha(0)
-		self:skinObject("slider", {obj=this.scrollFrame.scrollBar, fType=ftype, y1=-1, y2=1})
+		self:skinObject("slider", {obj=this.scrollFrame.scrollBar, fType=ftype})
 		self:keepFontStrings(this.content.tabContainer)
 		self:skinObject("tabs", {obj=this.tabGroup, tabs=this.Tabs, fType=ftype, lod=true, track=false})
 		if self.isTT then

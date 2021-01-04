@@ -94,10 +94,10 @@ aObj.skinTPLs = {
 		-- ca          = 0.5, -- backdrop border alpha
 		-- ng          = true, -- no Gradient texture
 		rpTex       = false, -- remove parent's textures [single draw layer or array of draw layers]
-		x1          = 2,
-		y1          = -2,
-		x2          = -3,
-		y2          = 3,
+		-- x1          = 2,
+		-- y1          = -2,
+		-- x2          = -3,
+		-- y2          = 3,
 	},
 	tabs = {
 		-- prefix      = "",
@@ -455,7 +455,7 @@ local function skinFrame(tbl)
 	and tbl.cb
 	or tbl.cbns
 	then
-		local cBtn = tbl.obj.CloseButton or tbl.obj.closeButton or tbl.obj.closebutton or tbl.obj:GetName() and _G[tbl.obj:GetName() .. "CloseButton"]
+		local cBtn = tbl.obj.CloseButton or tbl.obj.closeButton or tbl.obj.closebutton or tbl.obj:GetName() and _G[tbl.obj:GetName() .. "CloseButton"] or tbl.obj.Close
 		if cBtn then
 			aObj:skinCloseButton{obj=cBtn, noSkin=tbl.cbns}
 		end
@@ -585,6 +585,11 @@ local function skinSlider(tbl)
 		elseif w <= 16 then
 			tbl.x1 = _G.rawget(tbl, "x1") or 0
 			tbl.x2 = _G.rawget(tbl, "x2") or -1
+		elseif w <= 20 then
+			tbl.x1 = _G.rawget(tbl, "x1") or 2
+			tbl.x2 = _G.rawget(tbl, "x2") or -3
+			tbl.y1 = _G.rawget(tbl, "y1") or -1
+			tbl.y2 = _G.rawget(tbl, "y2") or 1
 		elseif w == 22 then
 			tbl.x1 = _G.rawget(tbl, "x1") or 3
 			tbl.x2 = _G.rawget(tbl, "x2") or -3
