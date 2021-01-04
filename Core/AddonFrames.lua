@@ -128,7 +128,7 @@ function aObj:AddonFrames()
 
 	-- used for Addons that aren't LoadOnDemand
 	for addonName, skinFunc in _G.pairs(self.addonsToSkin) do
-		self:checkAndRunAddOn(addonName, nil, skinFunc)
+		self:checkAndRunAddOn(addonName, skinFunc)
 	end
 
 	-- skin any Blizzard LoD frames or LoD addons that have already been loaded by other addons, waiting to allow them to be loaded
@@ -136,7 +136,9 @@ function aObj:AddonFrames()
 	_G.C_Timer.After(0.2, function()
 		skinBLoD()
 		for name, skinFunc in _G.pairs(self.lodAddons) do
-			if _G.IsAddOnLoaded(name) then self:checkAndRunAddOn(name, true, skinFunc) end
+			if _G.IsAddOnLoaded(name) then
+				self:checkAndRunAddOn(name, skinFunc, true)
+			end
 		end
 	end)
 
@@ -163,19 +165,25 @@ function aObj:LoDFrames(addon)
 	skinBLoD(addon)
 
 	-- used for User LoadOnDemand Addons
-	if self.lodAddons[addon] then self:checkAndRunAddOn(addon, true, self.lodAddons[addon]) end
+	if self.lodAddons[addon] then
+		self:checkAndRunAddOn(addon, self.lodAddons[addon], true)
+	end
 
 	-- deal with Addons under the control of an LoadManager
 	-- use lowercase addonname (lazyafk issue)
 	if self.lmAddons[addon:lower()] then
-		self:checkAndRunAddOn(addon, true, self.lmAddons[addon:lower()])
+		self:checkAndRunAddOn(addon, self.lmAddons[addon:lower()], true)
 		self.lmAddons[addon:lower()] = nil
 	end
 
 	-- handle FramesResized changes
 	if _G.IsAddOnLoaded("FramesResized") then
-		if addon == "Blizzard_TradeSkillUI" and self.FR_TradeSkillUI then self:checkAndRun("FR_TradeSkillUI", "s") -- not an addon in its own right
-		elseif addon == "Blizzard_TrainerUI" and self.FR_TrainerUI then self:checkAndRun("FR_TrainerUI", "s") -- not an addon in its own right
+		if addon == "Blizzard_TradeSkillUI"
+		and self.FR_TradeSkillUI then
+			self:checkAndRun("FR_TradeSkillUI", "s") -- not an addon in its own right
+		elseif addon == "Blizzard_TrainerUI"
+		and self.FR_TrainerUI then
+			self:checkAndRun("FR_TrainerUI", "s") -- not an addon in its own right
 		end
 	end
 

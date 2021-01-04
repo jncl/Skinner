@@ -301,16 +301,16 @@ function aObj:checkAndRun(funcName, funcType, LoD, quiet)
 
 end
 
-function aObj:checkAndRunAddOn(addonName, LoD, addonFunc)
+function aObj:checkAndRunAddOn(addonName, addonFunc, LoD)
 --@alpha@
 	_G.assert(addonName, "Unknown object checkAndRunAddOn\n" .. _G.debugstack(2, 3, 2))
 --@end-alpha@
 
-	self:Debug2("checkAndRunAddOn#1: [%s, %s, %s, %s]", addonName, LoD, addonFunc, _G.type(addonFunc))
+	self:Debug2("checkAndRunAddOn#1: [%s, %s, %s, %s]", addonName, addonFunc, LoD, _G.type(addonFunc))
 
 	-- handle in combat
 	if _G.InCombatLockdown() then
-		self:add2Table(self.oocTab, {self.checkAndRunAddOn, {self, addonName, LoD, addonFunc}})
+		self:add2Table(self.oocTab, {self.checkAndRunAddOn, {self, addonName, addonFunc, LoD}})
 		return
 	end
 
@@ -641,12 +641,16 @@ function aObj:getInt(num)
 end
 
 function aObj:getKeys(curTab)
+
 	if not curTab then return end
+
     local tmpTab = {}
 	for i = 1, #curTab do
 		tmpTab[curTab[i]] = true
 	end
+
 	return tmpTab
+
 end
 
 function aObj:getLastChild(obj)
