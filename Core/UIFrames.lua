@@ -6208,6 +6208,13 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 	-- AceConfigDialog tooltip
 	addTooltip(self.ACD.tooltip)
 
+	-- SexyMapZoneTextTooltip
+	if not self.isClsc then
+		if _G.IsAddOnLoaded("SexyMap") then
+			self:add2Table(self.ttList, "SexyMapZoneTextTooltip")
+		end
+	end
+
 end
 
 aObj.blizzLoDFrames[ftype].TorghastLevelPicker = function(self)
