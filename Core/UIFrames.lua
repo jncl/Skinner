@@ -4337,7 +4337,9 @@ aObj.blizzFrames[ftype].Minimap = function(self)
 	end
 
 	-- fix for Titan Panel moving MinimapCluster
-	if _G.IsAddOnLoaded("Titan") then _G.TitanMovable_AddonAdjust("MinimapCluster", true) end
+	if _G.IsAddOnLoaded("Titan") then
+		_G.TitanMovable_AddonAdjust("MinimapCluster", true)
+	end
 
 	-- Cluster Frame
 	_G.MinimapBorderTop:Hide()
@@ -4357,7 +4359,8 @@ aObj.blizzFrames[ftype].Minimap = function(self)
 	-- Minimap
 	_G.Minimap:SetMaskTexture([[Interface\Buttons\WHITE8X8]]) -- needs to be a square texture
 	-- use a backdrop with no Texture otherwise the map tiles are obscured
-	self:addSkinFrame{obj=_G.Minimap, ft=ftype, aso={bd=8}, ofs=5}
+	-- self:addSkinFrame{obj=_G.Minimap, ft=ftype, aso={bd=8}, ofs=5}
+	self:skinObject("frame", {obj=_G.Minimap, fType=ftype, bd=8, ofs=5})
 	if self.prdb.Minimap.gloss then
 		_G.RaiseFrameLevel(_G.Minimap.sf)
 	else
@@ -4381,23 +4384,6 @@ aObj.blizzFrames[ftype].Minimap = function(self)
 
 	-- Minimap Backdrop Frame
 	self:keepFontStrings(_G.MinimapBackdrop)
-
-	-- Buttons
-	-- on LHS
-	local yOfs = -18 -- allow for GM Ticket button
-	local function skinMmBut(name)
-		if _G["MiniMap" .. name] then
-			_G["MiniMap" .. name]:ClearAllPoints()
-			_G["MiniMap" .. name]:SetPoint("TOPRIGHT", _G.Minimap, "TOPLEFT", 0, yOfs)
-			yOfs = yOfs - _G["MiniMap" .. name]:GetHeight() + 3
-		end
-	end
-	skinMmBut("Tracking")
-	skinMmBut("VoiceChatFrame")
-	yOfs = nil
-	-- on RHS
-	_G.MiniMapMailFrame:ClearAllPoints()
-	_G.MiniMapMailFrame:SetPoint("LEFT", _G.Minimap, "RIGHT", -10, 28)
 
 	if not self.isClsc then
 		-- Difficulty indicators
@@ -4459,6 +4445,7 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 			or (objType == "Frame" and objName == "MiniMapMailFrame")
 			and objName ~= "QueueStatusMinimapButton"
 			and objName ~= "OQ_MinimapButton"
+			and not aObj:hasTextInName(obj, "SexyMap")
 			then
 				for _, reg in _G.ipairs{obj:GetRegions()} do
 					if reg:GetObjectType() == "Texture" then
@@ -4466,7 +4453,9 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 						if aObj:hasTextInName(reg, "[Ii]con")
 						or aObj:hasTextInTexture(reg, "[Ii]con")
 						then
-							if reg:GetDrawLayer() == "BACKGROUND" then reg:SetDrawLayer("ARTWORK") end
+							if reg:GetDrawLayer() == "BACKGROUND" then
+								reg:SetDrawLayer("ARTWORK")
+							end
 							-- centre the icon
 							reg:ClearAllPoints()
 							reg:SetPoint("CENTER")
@@ -4543,7 +4532,6 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 			_G.GameTimeFrame_Update(_G.GameTimeFrame)
 		end)
 		_G.MiniMapTrackingBorder:SetTexture(nil)
-		-- self:addSkinFrame{obj=_G.MiniMapTrackingFrame, ft=ftype, nb=true, aso={bd=10}, x1=4, y1=-3}
 		self:skinObject("frame", {obj=_G.MiniMapTrackingFrame, fType=ftype, bd=10, x1=4, y1=-3})
 		self:moveObject{obj=_G.MiniMapTrackingFrame, x=-15}
 		self:moveObject{obj=_G.MiniMapMailFrame, y=-4}
