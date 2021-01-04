@@ -3319,7 +3319,7 @@ aObj.blizzFrames[ftype].InterfaceOptions = function(self)
 		-- LHS panel (Game Tab)
 		self:SecureHookScript(_G.InterfaceOptionsFrameCategories, "OnShow", function(this)
 			self:skinObject("slider", {obj=_G.InterfaceOptionsFrameCategoriesListScrollBar, fType=ftype, x1=4, x2=-5})
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, fb=true})
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, fb=true, ofs=1})
 
 			self:Unhook(this, "OnShow")
 		end)
@@ -3327,7 +3327,7 @@ aObj.blizzFrames[ftype].InterfaceOptions = function(self)
 		-- LHS panel (AddOns tab)
 		self:SecureHookScript(_G.InterfaceOptionsFrameAddOns, "OnShow", function(this)
 			self:skinObject("slider", {obj=_G.InterfaceOptionsFrameAddOnsListScrollBar, fType=ftype, x1=4, x2=-5})
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, fb=true})
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, fb=true, ofs=1})
 			if self.modBtns then
 				-- skin toggle buttons
 				for _, btn in _G.pairs(_G.InterfaceOptionsFrameAddOns.buttons) do
@@ -3345,7 +3345,7 @@ aObj.blizzFrames[ftype].InterfaceOptions = function(self)
 		end)
 		self:checkShown(_G.InterfaceOptionsFrameAddOns)
 		-- RHS Panel
-		self:skinObject("frame", {obj=_G.InterfaceOptionsFramePanelContainer, fType=ftype, kfs=true, fb=true})
+		self:skinObject("frame", {obj=_G.InterfaceOptionsFramePanelContainer, fType=ftype, kfs=true, fb=true, ofs=1, y2=-2})
 		-- Social Browser Frame (Twitter integration)
 		self:SecureHookScript(_G.SocialBrowserFrame, "OnShow", function(this)
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x2=1})
