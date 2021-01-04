@@ -80,23 +80,21 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 			or objType == "InlineGroup"
 			or objType == "TabGroup"
 			then
-				aObj:skinObject("frame", {obj=obj.border or obj.content:GetParent(), kfs=true, fb=true})
-				-- skin TabGroup's tabs, if required
+				aObj:skinObject("frame", {obj=obj.border or obj.content:GetParent(), kfs=true, fb=true, ofs=0})
 				if objType == "TabGroup"
 				and aObj.modBtns
 				then
 					aObj:secureHook(obj, "BuildTabs", function(this)
-						this.frame.numTabs = #obj.tabs
-						aObj:skinObject("tabs", {obj=this.frame, prefix="AceGUITabGroup" .. this.num, ignoreSize=true, lod=true, upwards=true, offsets={x1=8, y1=-2, x2=-8, y2=-6}, noCheck=true, track=false})
+						aObj:skinObject("tabs", {obj=this.frame, tabs=obj.tabs, ignoreSize=true, lod=true, upwards=true, offsets={x1=8, y1=-2, x2=-8, y2=-4}, noCheck=true, track=false})
 						aObj:Unhook(this, "BuildTabs")
 					end)
 					if aObj.isTT then
 						aObj:secureHook(obj, "SelectTab", function(this, value)
-							for i, v in _G.ipairs(this.tabs) do
-								if v.value == value then
-									aObj:setActiveTab(_G["AceGUITabGroup" .. this.num .. "Tab" .. i].sf)
+							for _, tab in _G.ipairs(this.tabs) do
+								if tab.value == value then
+									aObj:setActiveTab(tab.sf)
 								else
-									aObj:setInactiveTab(_G["AceGUITabGroup" .. this.num .. "Tab" .. i].sf)
+									aObj:setInactiveTab(tab.sf)
 								end
 							end
 						end)
@@ -121,9 +119,9 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 
 			elseif objType == "Frame" then
 				-- status frame
-				aObj:skinObject("frame", {obj=aObj:getChild(obj.frame, 2), fb=true})
+				aObj:skinObject("frame", {obj=aObj:getChild(obj.frame, 2), fb=true, ofs=0, x1=2})
 				obj.titletext:SetPoint("TOP", obj.frame, "TOP", 0, -6)
-				aObj:skinObject("frame", {obj=obj.frame, kfs=true})
+				aObj:skinObject("frame", {obj=obj.frame, kfs=true, ofs=0})
 				if aObj.modBtns then
 					aObj:skinStdButton{obj=aObj:getChild(obj.frame, 1), y1=1}
 				end
@@ -151,8 +149,8 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 
 			elseif objType == "TreeGroup" then
 				aObj:skinObject("slider", {obj=obj.scrollbar})
-				aObj:skinObject("frame", {obj=obj.border, fb=true})
-				aObj:skinObject("frame", {obj=obj.treeframe, fb=true})
+				aObj:skinObject("frame", {obj=obj.border, fb=true, ofs=0})
+				aObj:skinObject("frame", {obj=obj.treeframe, fb=true, ofs=0})
 				if aObj.modBtns then
 					-- hook to manage changes to button textures
 					aObj:secureHook(obj, "RefreshTree", function(this)
@@ -167,7 +165,7 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 
 			elseif objType == "Window" then
 				obj.titletext:SetPoint("TOP", obj.frame, "TOP", 0, -6)
-				aObj:skinObject("frame", {obj=obj.frame, kfs=true, cb=true})
+				aObj:skinObject("frame", {obj=obj.frame, kfs=true, cb=true, ofs=0})
 
 			elseif objType == "Keybinding" then
 				aObj:skinObject("frame", {obj=obj.msgframe})

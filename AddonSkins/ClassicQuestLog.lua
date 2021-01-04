@@ -15,7 +15,7 @@ if _G.GetAddOnMetadata("Classic Quest Log", "Version"):find("Classic", 1, true) 
 			self:removeInset(this.count)
 			this.scrollFrame.expandAll:DisableDrawLayer("BACKGROUND")
 			this.scrollFrame.BG:SetAlpha(0)
-			self:skinObject("slider", {obj=this.scrollFrame.scrollBar, rpTex="background", y1=-1, y2=1})
+			self:skinObject("slider", {obj=this.scrollFrame.scrollBar, rpTex="background"})
 			this.detail.DetailBG:SetAlpha(0)
 			self:skinObject("slider", {obj=this.detail.ScrollBar, rpTex="artwork"})
 			self:skinObject("frame", {obj=this, kfs=true, cb=true, x2=1})
@@ -44,7 +44,6 @@ if _G.GetAddOnMetadata("Classic Quest Log", "Version"):find("Classic", 1, true) 
 			if self.modBtnBs then
 				self:addButtonBorder{obj=this.mapButton, ofs=-2, y1=0, y2=0, clr="gold"}
 			end
-
 			self:SecureHookScript(this.optionsFrame, "OnShow", function(this)
 				self:skinObject("frame", {obj=this, kfs=true, cb=true, x2=1})
 				if self.modChkBtns then
@@ -111,7 +110,6 @@ else
 			if self.modBtnBs then
 				self:addButtonBorder{obj=this.chrome.mapButton, ofs=-2, y1=0, y2=0, clr="gold"}
 			end
-
 			this.options:DisableDrawLayer("BACKGROUND")
 			this.options:DisableDrawLayer("BORDER")
 			this.options.content.headerBack:SetTexture(nil)
@@ -123,7 +121,6 @@ else
 					self:skinCheckButton{obj=this.options.content[bName].check}
 				end
 			end
-
 			self:add2Table(self.ttList, this.campaignTooltip)
 
 			self:Unhook(this, "OnShow")
