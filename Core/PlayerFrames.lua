@@ -2485,28 +2485,39 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 	if not self.prdb.FriendsFrame or self.initialized.FriendsFrame then return end
 	self.initialized.FriendsFrame = true
 
+	local function addTabBorder(frame)
+		aObj:skinObject("frame", {obj=frame, fType=ftype, fb=true, x1=0, y1=-81, x2=1, y2=-3})
+	end
 	self:SecureHookScript(_G.FriendsFrame, "OnShow", function(this)
-
-		self:skinDropDown{obj=_G.FriendsDropDown}
-		self:skinDropDown{obj=_G.TravelPassDropDown}
-
+		self:skinObject("dropdown", {obj=_G.FriendsDropDown, fType=ftype})
+		self:skinObject("dropdown", {obj=_G.TravelPassDropDown, fType=ftype})
 		self:SecureHookScript(_G.FriendsTabHeader, "OnShow", function(this)
 			_G.FriendsFrameBattlenetFrame:DisableDrawLayer("BACKGROUND")
 			if self.modBtnBs then
-				self:addButtonBorder{obj=_G.FriendsFrameBattlenetFrame.BroadcastButton, ofs=-2}
+				self:addButtonBorder{obj=_G.FriendsFrameBattlenetFrame.BroadcastButton, ofs=-2, x1=1}
 			end
-			_G.FriendsFrameBattlenetFrame.BroadcastFrame.Border:DisableDrawLayer("BACKGROUND")
-			_G.FriendsFrameBattlenetFrame.BroadcastFrame.Border:DisableDrawLayer("BORDER")
-			_G.FriendsFrameBattlenetFrame.BroadcastFrame.EditBox:DisableDrawLayer("BACKGROUND")
-			self:skinEditBox{obj=_G.FriendsFrameBattlenetFrame.BroadcastFrame.EditBox, regs={12}, mi=true}
-			if self.modBtns then
-				self:skinStdButton{obj=_G.FriendsFrameBattlenetFrame.BroadcastFrame.UpdateButton}
-				self:skinStdButton{obj=_G.FriendsFrameBattlenetFrame.BroadcastFrame.CancelButton}
-			end
-			self:addSkinFrame{obj=_G.FriendsFrameBattlenetFrame.BroadcastFrame, ft=ftype, ofs=-10}
-			self:removeNineSlice(_G.FriendsFrameBattlenetFrame.UnavailableInfoFrame)
-			self:addSkinFrame{obj=_G.FriendsFrameBattlenetFrame.UnavailableInfoFrame, ft=ftype}
-			self:skinDropDown{obj=_G.FriendsFrameStatusDropDown}
+			-- .UnavailableInfoButton
+			self:SecureHookScript(_G.FriendsFrameBattlenetFrame.BroadcastFrame, "OnShow", function(this)
+				self:keepFontStrings(this.Border)
+				this.EditBox:DisableDrawLayer("BACKGROUND")
+				self:skinObject("editbox", {obj=this.EditBox, fType=ftype})
+				self:moveObject{obj=this.EditBox.PromptText, x=5}
+				self:adjHeight{obj=this.EditBox, adj=-6}
+				self:skinObject("frame", {obj=this, fType=ftype, ofs=-10})
+				if self.modBtns then
+					self:skinStdButton{obj=this.UpdateButton}
+					self:skinStdButton{obj=this.CancelButton}
+				end
+
+				self:Unhook(this, "OnShow")
+			end)
+			self:SecureHookScript(_G.FriendsFrameBattlenetFrame.UnavailableInfoFrame, "OnShow", function(this)
+				self:removeNineSlice(this)
+				self:skinObject("frame", {obj=this, fType=ftype})
+
+				self:Unhook(this, "OnShow")
+			end)
+			self:skinObject("dropdown", {obj=_G.FriendsFrameStatusDropDown, fType=ftype})
 			_G.FriendsFrameStatusDropDownStatus:SetAlpha(1) -- display status icon
 			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=true, upwards=true, offsets={x1=0, y1=-5, x2=0, y2=-5}})
 			_G.RaiseFrameLevel(this)
@@ -2514,26 +2525,10 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 			self:Unhook(this, "OnShow")
 		end)
 		self:checkShown(_G.FriendsTabHeader)
-
 		self:SecureHookScript(_G.FriendsListFrame, "OnShow", function(this)
 			_G.FriendsListFrameScrollFrame.PendingInvitesHeaderButton.BG:SetTexture(nil)
-			self:skinSlider{obj=_G.FriendsListFrameScrollFrame.Slider, wdth=-4}
-			self:addFrameBorder{obj=this, ft=ftype, y1=-81, y2=-2}
-			if self.modBtns then
-				self:skinStdButton{obj=_G.FriendsFrameAddFriendButton, x1=1}
-				self:skinStdButton{obj=_G.FriendsFrameSendMessageButton}
-				self:skinStdButton{obj=self:getChild(this.RIDWarning, 1)} -- unnamed parent frame
-				for invite in _G.FriendsListFrameScrollFrame.invitePool:EnumerateActive() do
-					self:skinStdButton{obj=invite.DeclineButton}
-					self:skinStdButton{obj=invite.AcceptButton}
-				end
-			end
-			if self.modBtnBs then
-				self:addButtonBorder{obj=_G.FriendsListFrameScrollFrame.PendingInvitesHeaderButton}
-			end
-			local btn
-			for i = 1, _G.FRIENDS_FRIENDS_TO_DISPLAY do
-				btn = _G["FriendsListFrameScrollFrameButton" .. i]
+			self:skinObject("slider", {obj=_G.FriendsListFrameScrollFrame.Slider, fType=ftype})
+			for _, btn in _G.pairs(_G.FriendsListFrameScrollFrame.buttons) do
 				btn.background:SetAlpha(0)
 				if self.modBtnBs then
 					self:addButtonBorder{obj=btn, relTo=btn.gameIcon, ofs=0, clr="grey"}
@@ -2559,16 +2554,26 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 					end
 				end
 			end
-			btn = nil
+			addTabBorder(this)
+			if self.modBtns then
+				self:skinStdButton{obj=_G.FriendsFrameAddFriendButton, x1=1}
+				self:skinStdButton{obj=_G.FriendsFrameSendMessageButton}
+				self:skinStdButton{obj=self:getChild(this.RIDWarning, 1)} -- unnamed parent frame
+				for invite in _G.FriendsListFrameScrollFrame.invitePool:EnumerateActive() do
+					self:skinStdButton{obj=invite.DeclineButton}
+					self:skinStdButton{obj=invite.AcceptButton}
+				end
+			end
+			if self.modBtnBs then
+				self:addButtonBorder{obj=_G.FriendsListFrameScrollFrame.PendingInvitesHeaderButton}
+			end
 
 			self:Unhook(this, "OnShow")
 		end)
 		self:checkShown(_G.FriendsListFrame)
-
 		self:SecureHookScript(_G.IgnoreListFrame, "OnShow", function(this)
-			this:DisableDrawLayer("BACKGROUND")
-			self:skinSlider{obj=_G.IgnoreListFrameScrollFrame.Slider, wdth=-4}
-			self:addFrameBorder{obj=this, ft=ftype, y1=-81, y2=-2}
+			self:skinObject("slider", {obj=_G.IgnoreListFrameScrollFrame.Slider, fType=ftype})
+			addTabBorder(this)
 			if self.modBtns then
 				self:skinStdButton{obj=_G.FriendsFrameIgnorePlayerButton, x1=1}
 				self:skinStdButton{obj=_G.FriendsFrameUnsquelchButton}
@@ -2579,54 +2584,51 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 
 			self:Unhook(this, "OnShow")
 		end)
-
 		self:SecureHookScript(_G.WhoFrame, "OnShow", function(this)
 			self:removeInset(_G.WhoFrameListInset)
 			self:skinColHeads("WhoFrameColumnHeader", nil, ftype)
-			self:skinDropDown{obj=_G.WhoFrameDropDown}
 			-- remove col head 2 as it is really a dropdown
 			_G.WhoFrameColumnHeader2.sf.tfade:SetTexture(nil)
 			_G.WhoFrameColumnHeader2.sf:SetBackdrop(nil)
 			_G.WhoFrameColumnHeader2.sf:Hide()
 			self:moveObject{obj=_G.WhoFrameColumnHeader4, x=4}
+			self:skinObject("dropdown", {obj=_G.WhoFrameDropDown, fType=ftype})
+			self:removeInset(_G.WhoFrameEditBoxInset)
+			self:skinObject("editbox", {obj=_G.WhoFrameEditBox, fType=ftype})
+			self:adjHeight{obj=_G.WhoFrameEditBox, adj=-8}
+			self:moveObject{obj=_G.WhoFrameEditBox, y=6}
+			self:skinObject("slider", {obj=_G.WhoListScrollFrame.Slider, fType=ftype})
 			if self.modBtns then
 				self:skinStdButton{obj=_G.WhoFrameGroupInviteButton}
 				self:skinStdButton{obj=_G.WhoFrameAddFriendButton}
+				self:skinStdButton{obj=_G.WhoFrameWhoButton}
 				self:SecureHook("WhoList_Update", function()
 					self:clrBtnBdr(_G.WhoFrameGroupInviteButton)
 					self:clrBtnBdr(_G.WhoFrameAddFriendButton)
 				end)
-				self:skinStdButton{obj=_G.WhoFrameWhoButton}
 			end
-			self:removeInset(_G.WhoFrameEditBoxInset)
-			self:skinEditBox{obj=_G.WhoFrameEditBox}--, move=true}
-			_G.WhoFrameEditBox:SetWidth(_G.WhoFrameEditBox:GetWidth() + 24)
-			self:moveObject{obj=_G.WhoFrameEditBox, x=11, y=6}
-			self:skinSlider{obj=_G.WhoListScrollFrame.Slider, wdth=-4}
 
 			self:Unhook(this, "OnShow")
 		end)
-
 		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=true})
-
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, y2=-5}
-
-		-- tooltip
-		_G.C_Timer.After(0.1, function()
-			self:add2Table(self.ttList, _G.FriendsTooltip)
-		end)
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, cb=true, x2=3, y2=-5})
+		self:add2Table(self.ttList, _G.FriendsTooltip)
 
 		self:Unhook(this, "OnShow")
 	end)
 
 	self:SecureHookScript(_G.AddFriendFrame, "OnShow", function(this)
 		self:removeNineSlice(this.Border)
-		self:skinEditBox{obj=_G.AddFriendNameEditBox, regs={6}} -- 6 is text
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true}
+		self:skinObject("editbox", {obj=_G.AddFriendNameEditBox, fType=ftype})
+		self:moveObject{obj=_G.AddFriendNameEditBoxFill, x=5}
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true})
 		if self.modBtns then
 			self:skinStdButton{obj=_G.AddFriendInfoFrameContinueButton}
 			self:skinStdButton{obj=_G.AddFriendEntryFrameAcceptButton}
 			self:skinStdButton{obj=_G.AddFriendEntryFrameCancelButton}
+			self:SecureHookScript(_G.AddFriendNameEditBox, "OnTextChanged", function(_)
+				self:clrBtnBdr(_G.AddFriendEntryFrameAcceptButton)
+			end)
 		end
 
 		self:Unhook(this, "OnShow")
@@ -2634,42 +2636,46 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 
 	self:SecureHookScript(_G.FriendsFriendsFrame, "OnShow", function(this)
 		self:removeNineSlice(this.Border)
-		self:skinDropDown{obj=_G.FriendsFriendsFrameDropDown}
-		self:addSkinFrame{obj=_G.FriendsFriendsList, ft=ftype}
-		self:skinSlider{obj=_G.FriendsFriendsScrollFrame.Slider}
+		self:skinObject("dropdown", {obj=_G.FriendsFriendsFrameDropDown, fType=ftype})
+		self:removeBackdrop(this.ScrollFrameBorder)
+		self:skinObject("slider", {obj=_G.FriendsFriendsScrollFrame.Slider, fType=ftype})
+		self:skinObject("frame", {obj=this, fType=ftype})
 		if self.modBtns then
-			self:skinStdButton{obj=_G.FriendsFriendsSendRequestButton}
-			self:skinStdButton{obj=_G.FriendsFriendsCloseButton}
+			self:skinStdButton{obj=this.SendRequestButton}
+			self:skinStdButton{obj=this.CloseButton}
+			self:SecureHook(this, "Update", function(this)
+				self:clrBtnBdr(this.SendRequestButton)
+			end)
+			self:SecureHook(this, "Reset", function(this)
+				self:clrBtnBdr(this.SendRequestButton)
+			end)
 		end
-		self:addSkinFrame{obj=this, ft=ftype}
 
 		self:Unhook(this, "OnShow")
 	end)
 
 	self:SecureHookScript(_G.BattleTagInviteFrame, "OnShow", function(this)
 		self:removeNineSlice(this.Border)
+		self:skinObject("frame", {obj=this, fType=ftype, cb=true})
 		if self.modBtns then
-			self:skinStdButton{obj=self:getChild(this, 1)} -- Send Request
-			self:skinStdButton{obj=self:getChild(this, 2)} -- Cancel
+			self:skinStdButton{obj=self:getChild(this, 2)} -- SEND_REQUEST
+			self:skinStdButton{obj=self:getChild(this, 3)} -- CANCEL
 		end
-		self:addSkinFrame{obj=this, ft=ftype}
 
 		self:Unhook(this, "OnShow")
 	end)
 
 	self:SecureHookScript(_G.RecruitAFriendFrame, "OnShow", function(this)
-		self:skinDropDown{obj=this.DropDown, noSkin=true, x1=0, y1=0, x2=0, y2=0}
+		self:skinObject("dropdown", {obj=this.DropDown, fType=ftype, noSkin=true, x1=0, y1=0, x2=0, y2=0})
 		this.RewardClaiming:DisableDrawLayer("BACKGROUND")
 		self:nilTexture(this.RewardClaiming.NextRewardButton.IconBorder, true)
 		self:removeInset(this.RewardClaiming.Inset)
 		this.RecruitList.Header:DisableDrawLayer("BACKGROUND")
 		self:removeInset(this.RecruitList.ScrollFrameInset)
-		self:skinSlider{obj=this.RecruitList.ScrollFrame.Slider, wdth=-4}
-		this.SplashFrame:DisableDrawLayer("BACKGROUND")
-		this.SplashFrame:DisableDrawLayer("OVERLAY")
+		self:skinObject("slider", {obj=this.RecruitList.ScrollFrame.Slider, fType=ftype})
 		this.SplashFrame.Description:SetTextColor(self.BT:GetRGB())
-		self:addSkinFrame{obj=this.SplashFrame, ft=ftype, nb=true, ofs=2, y1=4, y2=-5}
-		self:addFrameBorder{obj=this, ft=ftype, y1=-81, y2=-2}
+		self:skinObject("frame", {obj=this.SplashFrame, fType=ftype, ofs=2, y1=4, y2=-5})
+		addTabBorder(this)
 		if self.modBtns then
 			self:skinStdButton{obj=this.RewardClaiming.ClaimOrViewRewardButton}
 			self:skinStdButton{obj=this.RecruitmentButton}
@@ -2681,7 +2687,7 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 
 	self:SecureHookScript(_G.RecruitAFriendRewardsFrame, "OnShow", function(this)
 		this:DisableDrawLayer("BACKGROUND")
-		self:addSkinFrame{obj=this.Border, ft=ftype, kfs=true, nb=true, ofs=-8}
+		self:skinObject("frame", {obj=this.Border, fType=ftype, kfs=true, ofs=-8})
 		if self.modBtns then
 			self:skinCloseButton{obj=this.CloseButton}
 		end
@@ -2695,9 +2701,9 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 	end)
 
 	self:SecureHookScript(_G.RecruitAFriendRecruitmentFrame, "OnShow", function(this)
-
-		self:skinEditBox{obj=this.EditBox, regs={6}, mi=true} -- 6 is text
-		self:addSkinFrame{obj=this.Border, ft=ftype, kfs=true, nb=true, ofs=-8}
+		self:skinObject("editbox", {obj=this.EditBox, fType=ftype})
+		self:adjHeight{obj=this.EditBox, adj=-6}
+		self:skinObject("frame", {obj=this.Border, fType=ftype, kfs=true, ofs=-8})
 		if self.modBtns then
 			self:skinCloseButton{obj=this.CloseButton}
 			self:skinStdButton{obj=this.GenerateOrCopyLinkButton}
@@ -2707,34 +2713,35 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 	end)
 
 	self:SecureHookScript(_G.QuickJoinFrame, "OnShow", function(this)
-		self:skinDropDown{obj=_G.QuickJoinFrameDropDown}
-		self:skinSlider{obj=_G.QuickJoinFrame.ScrollFrame.scrollBar, rt="background"}
-		-- adjust width of QJSF so it looks right (too thin by default)
-		_G.QuickJoinFrame.ScrollFrame.scrollBar:ClearAllPoints()
-		_G.QuickJoinFrame.ScrollFrame.scrollBar:SetPoint("TOPRIGHT", "FriendsFrame", "TOPRIGHT", -8, -101)
-		_G.QuickJoinFrame.ScrollFrame.scrollBar:SetPoint("BOTTOMLEFT", "FriendsFrame", "BOTTOMRIGHT", -24, 40)
-		self:removeMagicBtnTex(_G.QuickJoinFrame.JoinQueueButton)
-		self:addFrameBorder{obj=_G.QuickJoinScrollFrame, ft=ftype, x1=-8, y1=7, x2=28, y2=-32}
+		self:skinObject("dropdown", {obj=_G.QuickJoinFrameDropDown, fType=ftype})
+		self:skinObject("slider", {obj=this.ScrollFrame.scrollBar, fType=ftype, rpTex="background"})
+		self:removeMagicBtnTex(this.JoinQueueButton)
 		if self.modBtns then
-			self:skinStdButton{obj=_G.QuickJoinFrame.JoinQueueButton, x2=0}
+			self:skinStdButton{obj=this.JoinQueueButton, x2=0}
 			self:SecureHook(this, "UpdateJoinButtonState", function(this)
 				self:clrBtnBdr(this.JoinQueueButton)
 			end)
 		end
 
-		-- QuickJoinRoleSelectionFrame
-		self:removeNineSlice(_G.QuickJoinRoleSelectionFrame.Border)
-		for i = 1, #_G.QuickJoinRoleSelectionFrame.Roles do
-			self:skinCheckButton{obj=_G.QuickJoinRoleSelectionFrame.Roles[i].CheckButton}
-		end
+		self:Unhook(this, "OnShow")
+	end)
+
+	self:SecureHookScript(_G.QuickJoinRoleSelectionFrame, "OnShow", function(this)
+		self:removeNineSlice(this.Border)
+		self:skinObject("frame", {obj=this, fType=ftype, cb=true, ofs=-5})
 		if self.modBtns then
-			self:skinStdButton{obj=_G.QuickJoinRoleSelectionFrame.AcceptButton}
-			self:skinStdButton{obj=_G.QuickJoinRoleSelectionFrame.CancelButton}
+			self:skinStdButton{obj=this.AcceptButton}
+			self:skinStdButton{obj=this.CancelButton}
 		end
-		self:addSkinFrame{obj=_G.QuickJoinRoleSelectionFrame, ft=ftype, ofs=-5}
+		if self.modChkBtns then
+			for _, btn in _G.pairs(_G.QuickJoinRoleSelectionFrame.Roles) do
+				self:skinCheckButton{obj=btn.CheckButton}
+			end
+		end
 
 		self:Unhook(this, "OnShow")
 	end)
+
 
 end
 
