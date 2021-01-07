@@ -3762,7 +3762,6 @@ aObj.blizzLoDFrames[ftype].PVPUI = function(self)
 	self.initialized.PVPUI = true
 
 	self:SecureHookScript(_G.PVPUIFrame, "OnShow", function(this)
-
 		-- N.B. Frame already skinned as it is now part of GroupFinder/PVE
 		for i = 1, 3 do
 			_G.PVPQueueFrame["CategoryButton" .. i].Background:SetTexture(nil)
@@ -3777,7 +3776,6 @@ aObj.blizzLoDFrames[ftype].PVPUI = function(self)
 				self:clrBtnBdr(btn)
 			end)
 		end
-
 		-- hook this to change selected texture
 		self:SecureHook("PVPQueueFrame_SelectButton", function(index)
 			for i = 1, 3 do
@@ -3789,7 +3787,6 @@ aObj.blizzLoDFrames[ftype].PVPUI = function(self)
 			end
 		end)
 		_G.PVPQueueFrame_SelectButton(1) -- select Honor button
-
 		-- skin common elements (Honor & Conquest frames)
 		local function skinCommon(frame)
 			aObj:removeInset(frame.Inset)
@@ -3807,12 +3804,11 @@ aObj.blizzLoDFrames[ftype].PVPUI = function(self)
 				aObj:skinCheckButton{obj=frame.DPSIcon.checkButton}
 			end
 		end
-
 		-- Casual
 		self:SecureHookScript(_G.HonorFrame, "OnShow", function(this)
 			skinCommon(this)
-			self:skinDropDown{obj=_G.HonorFrameTypeDropDown}
-			self:skinSlider{obj=this.SpecificFrame.scrollBar, wdth=-4}
+			self:skinObject("dropdown", {obj=_G.HonorFrameTypeDropDown, fType=ftype})
+			self:skinObject("slider", {obj=this.SpecificFrame.scrollBar, fType=ftype})
 			for i = 1, #_G.HonorFrame.SpecificFrame.buttons do
 				this.SpecificFrame.buttons[i].Bg:SetTexture(nil)
 				this.SpecificFrame.buttons[i].Border:SetTexture(nil)
@@ -3828,6 +3824,7 @@ aObj.blizzLoDFrames[ftype].PVPUI = function(self)
 					self:addButtonBorder{obj=btn.Reward, relTo=btn.Reward.Icon, reParent={btn.Reward.EnlistmentBonus}}
 				end
 			end
+			btn = nil
 			if self.modBtnBs then
 				self:SecureHook("HonorFrameBonusFrame_Update", function()
 					self:clrBtnBdr(_G.HonorFrame.BonusFrame.RandomBGButton.Reward, "gold")
@@ -3843,19 +3840,17 @@ aObj.blizzLoDFrames[ftype].PVPUI = function(self)
 					end
 				end)
 			end
-			btn = nil
 			this.BonusFrame:DisableDrawLayer("BACKGROUND")
 			this.BonusFrame:DisableDrawLayer("BORDER")
 			this.BonusFrame.ShadowOverlay:DisableDrawLayer("OVERLAY")
 			self:removeMagicBtnTex(this.QueueButton)
 			if self.modBtns then
-				self:skinStdButton{obj=this.QueueButton}
+				self:skinStdButton{obj=this.QueueButton, sft=true}
 			end
 
 			self:Unhook(this, "OnShow")
 		end)
 		self:checkShown(_G.HonorFrame)
-
 		-- Rated
 		self:SecureHookScript(_G.ConquestFrame, "OnShow", function(this)
 			skinCommon(this)
@@ -3868,21 +3863,19 @@ aObj.blizzLoDFrames[ftype].PVPUI = function(self)
 			this.RatedBG.Reward.Border:SetTexture(nil)
 			this.RatedBG.NormalTexture:SetTexture(nil)
 			this.ShadowOverlay:DisableDrawLayer("OVERLAY")
-			self:skinGlowBox(this.NoSeason, ftype)
-			self:skinGlowBox(this.Disabled, ftype)
-			self:skinDropDown{obj=this.ArenaInviteMenu}
+			self:skinObject("glowbox", {obj=this.NoSeason, fType=ftype})
+			self:skinObject("glowbox", {obj=this.Disabled, fType=ftype})
+			self:skinObject("dropdown", {obj=this.ArenaInviteMenu, fType=ftype})
 			self:removeMagicBtnTex(this.JoinButton)
 			if self.modBtns then
-				 self:skinStdButton{obj=this.JoinButton}
+				 self:skinStdButton{obj=this.JoinButton, sft=true}
 			end
 
 			self:Unhook(this, "OnShow")
 		end)
-
 		self:removeInset(_G.PVPQueueFrame.HonorInset)
 		_G.PVPQueueFrame.HonorInset:DisableDrawLayer("BACKGROUND")
-		local hld
-		hld = _G.PVPQueueFrame.HonorInset.CasualPanel.HonorLevelDisplay
+		local hld = _G.PVPQueueFrame.HonorInset.CasualPanel.HonorLevelDisplay
 		hld:DisableDrawLayer("BORDER")
 		self:removeRegions(hld.NextRewardLevel, {2, 4}) -- IconCover & RingBorder
 		if self.modBtnBs then
@@ -3910,13 +3903,12 @@ aObj.blizzLoDFrames[ftype].PVPUI = function(self)
 			end)
 		end
 		hld, srf = nil, nil
-
 		_G.PVPQueueFrame.NewSeasonPopup.NewSeason:SetTextColor(self.HT:GetRGB())
 		_G.PVPQueueFrame.NewSeasonPopup.SeasonDescription:SetTextColor(self.BT:GetRGB())
 		_G.PVPQueueFrame.NewSeasonPopup.SeasonDescription2:SetTextColor(self.BT:GetRGB())
 		_G.PVPQueueFrame.NewSeasonPopup.SeasonRewardFrame.Ring:SetTexture(nil)
 		_G.PVPQueueFrame.NewSeasonPopup.SeasonRewardText:SetTextColor(self.BT:GetRGB())
-		self:addSkinFrame{obj=_G.PVPQueueFrame.NewSeasonPopup, ft=ftype, kfs=true, nb=true, ofs=-13}
+		self:skinObject("frame", {obj=_G.PVPQueueFrame.NewSeasonPopup, fType=ftype, kfs=true, ofs=-13})
 		if self.modBtns then
 			self:skinStdButton{obj=_G.PVPQueueFrame.NewSeasonPopup.Leave}
 		end
