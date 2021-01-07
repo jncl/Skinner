@@ -51,12 +51,17 @@ local function __addSkinButton(opts)
 		x2 = X offset for BOTTOMRIGHT
 		y2 = Y offset for BOTTOMRIGHT
 		rp = re-parent, reverse the parent child relationship
-		secu = use the "SecureUnitButtonTemplate"
-		seca = use the "SecureActionButtonTemplate"
+		sft = use the "SecureFrameTemplate"
 		noHooks = don't hook methods
 --]]
 --@alpha@
 	_G.assert(opts.obj, "Missing object __aSB\n" .. _G.debugstack(2, 3, 2))
+	 if opts.seca
+	 or opts.secu
+	 then
+	 	-- handle AddOn skins using deprecated options
+	 	aObj:CustomPrint(1, 0, 0, "Using deprecated options - seca,secu, use sft instead", opts.obj)
+	end
 --@end-alpha@
 
 	aObj:Debug2("__addSkinButton: [%s, %s]", opts.obj, opts.obj:GetName())
@@ -74,7 +79,7 @@ local function __addSkinButton(opts)
 	opts.parent = opts.parent or opts.obj
 
 	-- store button object within original button
-	opts.obj.sb = _G.CreateFrame("Button", nil, opts.parent, opts.secu and "SecureUnitButtonTemplate" or opts.seca and "SecureActionButtonTemplate" or nil)
+	opts.obj.sb = _G.CreateFrame("Button", nil, opts.parent, (opts.sft or opts.secu or opts.seca) and "SecureFramenTemplate")
 	local btn = opts.obj.sb
 	_G.LowerFrameLevel(btn)
 	btn:EnableMouse(false) -- allow clickthrough

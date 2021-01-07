@@ -655,12 +655,7 @@ local function __addButtonBorder(opts)
 		libt = Large Item Button template
 		sibt = Small Item Button template
 		gibt = Giant Item Button template
-		sec = requires SecureFrameTemplate to inherit from otherwise tainting occurs
-		seca = requires SecureActionButtonTemplate to inherit from otherwise tainting occurs
-		secu = requires SecureUnitButtonTemplate to inherit from otherwise tainting occurs
 		sft = requires SecureFrameTemplate to inherit from otherwise tainting occurs
-		sabt = requires SecureActionButtonTemplate to inherit from otherwise tainting occurs
-		subt = requires SecureUnitButtonTemplate to inherit from otherwise tainting occurs
 		reParent = table of objects to reparent to the border frame
 		es = edgeSize, used for small icons
 		ofs = offset value to use
@@ -681,7 +676,7 @@ local function __addButtonBorder(opts)
 	 or opts.secu
 	 then
 	 	-- handle AddOn skins using deprecated options
-	 	aObj:CustomPrint(1, 0, 0, "Using deprecated options - sec,seca,secu, use sft,sabt,subt instead", opts.obj)
+	 	aObj:CustomPrint(1, 0, 0, "Using deprecated options - sec,seca,secu, use sft instead", opts.obj)
 	end
 --@end-alpha@
 	if not opts.obj then return end
@@ -706,7 +701,6 @@ local function __addButtonBorder(opts)
 	-- or opts.pabt
 	or opts.auit
 	or opts.bmit
-	or opts.seca
 	then
 		if opts.obj.GetNormalTexture
 		and opts.obj:GetNormalTexture()
@@ -724,7 +718,7 @@ local function __addButtonBorder(opts)
 	end
 
 	-- create the button border object
-	opts.obj.sbb = _G.CreateFrame(opts.obj:GetObjectType(), nil, opts.obj, (opts.sec or opts.sft) and "SecureFrameTemplate" or (opts.seca or opts.sabt) and "SecureActionButtonTemplate" or (opts.secu or opts.subt) and "SecureUnitButtonTemplate" or nil)
+	opts.obj.sbb = _G.CreateFrame(opts.obj:GetObjectType(), nil, opts.obj, (opts.sft or opts.sec or opts.seca or opts.sabt or opts.subt) and "SecureFrameTemplate")
 	opts.obj.sbb:EnableMouse(false) -- enable clickthrough
 
 	aObj:addBackdrop(opts.obj.sbb)

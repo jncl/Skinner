@@ -1560,7 +1560,7 @@ aObj.ClassicSupport = function(self)
 				for i = 1, _G.NUM_ACTIONBAR_BUTTONS do
 					_G["ActionButton" .. i].FlyoutBorder:SetTexture(nil)
 					_G["ActionButton" .. i].FlyoutBorderShadow:SetTexture(nil)
-					self:addButtonBorder{obj=_G["ActionButton" .. i], abt=true, sabt=true, ofs=2.5}
+					self:addButtonBorder{obj=_G["ActionButton" .. i], abt=true, sft=true, ofs=2.5}
 				end
 				-- ActionBar buttons
 				self:addButtonBorder{obj=_G.ActionBarUpButton, ofs=-4, clr="gold"}
@@ -1593,7 +1593,7 @@ aObj.ClassicSupport = function(self)
 						if not btn.noGrid then
 							_G[btn:GetName() .. "FloatingBG"]:SetAlpha(0)
 						end
-						self:addButtonBorder{obj=btn, abt=true, sabt=true, ofs=2.5}
+						self:addButtonBorder{obj=btn, abt=true, sft=true, ofs=2.5}
 					end
 					btn = nil
 				end

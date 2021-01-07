@@ -19,8 +19,6 @@ aObj.skinTPLs = {
 		-- y2          = -4,
 		sap         = false, -- SetAllPoints to object
 		sft         = false, -- use SecureFrameTemplate
-		sabt        = false, -- use SecureActionButtonTemplate
-		subt        = false, -- use SecureUnitButtonTemplate
 	},
 	dropdown= {
 		lrgTpl      = false,
@@ -249,7 +247,7 @@ local function skinButton(tbl)
 		return
 	end
 	-- add a frame to the object
-	tbl.obj.sb = _G.CreateFrame("Button", nil, tbl.obj, tbl.sft and "SecureFrameTemplate" or tbl.sabt and "SecureActionButtonTemplate" or tbl.subt and "SecureUnitButtonTemplate")
+	tbl.obj.sb = _G.CreateFrame("Button", nil, tbl.obj, tbl.sft and "SecureFrameTemplate")
 	if tbl.sap then
 		tbl.obj.sb:SetAllPoints(tbl.obj)
 	else

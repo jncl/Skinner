@@ -4217,7 +4217,7 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 			for i = 1, _G.NUM_ACTIONBAR_BUTTONS do
 				_G["ActionButton" .. i].FlyoutBorder:SetTexture(nil)
 				_G["ActionButton" .. i].FlyoutBorderShadow:SetTexture(nil)
-				self:addButtonBorder{obj=_G["ActionButton" .. i], abt=true, sabt=true, ofs=2.5}
+				self:addButtonBorder{obj=_G["ActionButton" .. i], abt=true, sft=true, ofs=2.5}
 			end
 			-- ActionBar buttons
 			self:addButtonBorder{obj=_G.ActionBarUpButton, clr="gold"}
@@ -4239,7 +4239,7 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 			self:addButtonBorder{obj=_G.MultiCastSummonSpellButton, abt=true, sft=true, ofs=5}
 			self:addButtonBorder{obj=_G.MultiCastRecallSpellButton, abt=true, sft=true, ofs=5}
 			for i = 1, _G.NUM_MULTI_CAST_PAGES * _G.NUM_MULTI_CAST_BUTTONS_PER_PAGE do
-				self:addButtonBorder{obj=_G["MultiCastActionButton" .. i], abt=true, sabt=true, ofs=5}
+				self:addButtonBorder{obj=_G["MultiCastActionButton" .. i], abt=true, sft=true, ofs=5}
 			end
 			-- MultiBar Buttons
 			for _, type in _G.pairs{"BottomLeft", "BottomRight", "Right", "Left"} do
@@ -4252,7 +4252,7 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 					if not btn.noGrid then
 						_G[btn:GetName() .. "FloatingBG"]:SetAlpha(0)
 					end
-					self:addButtonBorder{obj=btn, abt=true, sabt=true, ofs=2.5}
+					self:addButtonBorder{obj=btn, abt=true, sft=true, ofs=2.5}
 				end
 				btn = nil
 			end
