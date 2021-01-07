@@ -3435,14 +3435,12 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 
 	-- ObjectiveTrackerFrame BlocksFrame
 	if self.prdb.ObjectiveTracker.skin then
-		self:addSkinFrame{obj=_G.ObjectiveTrackerFrame.BlocksFrame, ft=ftype, kfs=true, x1=-30, x2=4}
+		self:skinObject("frame", {obj=_G.ObjectiveTrackerFrame.BlocksFrame, fType=ftype, kfs=true, x1=-30, x2=4})
 	end
 
 	-- remove Glow/Sheen textures from WorldQuest modules
 	local function updTrackerModules()
-		local module
-		for i = 1, #_G.ObjectiveTrackerFrame.MODULES do
-			module = _G.ObjectiveTrackerFrame.MODULES[i]
+		for _, module in _G.pairs(_G.ObjectiveTrackerFrame.MODULES) do
 			if module.ShowWorldQuests then
 				for _, blk in _G.pairs(module.usedBlocks) do
 					if blk.ScrollContents then
@@ -3463,7 +3461,6 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 				end
 			end
 		end
-		module = nil
 	end
 	updTrackerModules() -- update any existing modules
 	-- hook this to handle new modules & displaying the ObjectiveTrackerFrame BlocksFrame skin frame
@@ -3480,23 +3477,21 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 	if self.modBtnBs then
 		self:addButtonBorder{obj=_G.ObjectiveTrackerFrame.HeaderMenu.MinimizeButton, es=12, ofs=1, x1=-1}
 		-- hook this to skin QuestObjective Block Button(s)
+		local function aBB2rB(btn)
+		end
 		self:SecureHook("QuestObjectiveSetupBlockButton_AddRightButton", function(_, button, _)
-			-- aObj:Debug("QOSBB_ARB: [%s, %s]", block, button)
 			if not button.sbb then
-				aObj:addButtonBorder{obj=button, ofs=button.Icon and -2 or nil, x1=button.Icon and 0 or nil, reParent=button.Count and {button.Count} or nil, clr="gold"} -- adjust x offset for FindGroup button(s), reparent Item Count if required
+				aBB2rB(button)
 			end
 		end)
 		-- skin existing buttons
-		local btn
-		for _, mod in _G.ipairs(_G.ObjectiveTrackerFrame.MODULES) do
+		for _, mod in _G.pairs(_G.ObjectiveTrackerFrame.MODULES) do
 			for _, blk in _G.pairs(mod.usedBlocks) do
 				if blk.rightButton then
-					btn = blk.rightButton
-					self:addButtonBorder{obj=btn, ofs=btn.Icon and -2 or nil, x1=btn.Icon and 0 or nil, reParent=btn.Count and {btn.Count} or nil, clr="gold"} -- adjust x offset for FindGroup button(s), reparent Item Count if required
+					aBB2rB(blk.rightButton)
 				end
 			end
 		end
-		btn = nil
 	end
 
 	-- skin timerBar(s) & progressBar(s)
@@ -3521,7 +3516,7 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 	end
 	local function skinBars(table)
 		for _, block in _G.pairs(table) do
-				for _, line in _G.pairs(block) do
+			for _, line in _G.pairs(block) do
 				skinBar(line)
 			end
 		end
@@ -3573,7 +3568,7 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 
 	self:SecureHookScript(_G.ScenarioStageBlock, "OnShow", function(this)
 		self:nilTexture(this.NormalBG, true)
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, y1=-1, x2=41, y2=7}
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, y1=-1, x2=41, y2=7})
 
 		self:Unhook(this, "OnShow")
 	end)
@@ -3582,10 +3577,10 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 	self:SecureHookScript(_G.ScenarioChallengeModeBlock, "OnShow", function(this)
 		self:skinStatusBar{obj=this.StatusBar, fi=0, bgTex=this.TimerBG, otherTex={this.TimerBGBack}}
 		self:removeRegions(this, {3}) -- challengemode-timer atlas
-		self:addSkinFrame{obj=this, ft=ftype, nb=true, y2=7}
+		self:skinObject("frame", {obj=this, fType=ftype, y2=7})
 		self:SecureHook("Scenario_ChallengeMode_SetUpAffixes", function(block, _)
-			for i = 1, #block.Affixes do
-				block.Affixes[i].Border:SetTexture(nil)
+			for _, affix in _G.pairs(block.Affixes) do
+				affix.Border:SetTexture(nil)
 			end
 		end)
 
@@ -3599,7 +3594,7 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 		self:skinStatusBar{obj=this.StatusBar, fi=0}
 		self:removeRegions(this.StatusBar, {1}) -- border
 		_G.ScenarioProvingGroundsBlockAnim.BorderAnim:SetTexture(nil)
-		self:addSkinFrame{obj=this, ft=ftype, nb=true, x2=41}
+		self:skinObject("frame", {obj=this, fType=ftype, x2=41})
 
 		self:Unhook(this, "OnShow")
 	end)
@@ -3647,13 +3642,13 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 	if self.prdb.ObjectiveTracker.popups then
 		local function skinAutoPopUps(owningModule)
 			if _G.SplashFrame:IsShown() then return end
-			local questID, questTitle, block, blockContents
+			local questID, questTitle, block
 			for i = 1, _G.GetNumAutoQuestPopUps() do
-				questID, _ = _G.GetAutoQuestPopUp(i)
-				if not _G.C_QuestLog.IsQuestBounty(questID) and owningModule:ShouldDisplayQuest(_G.QuestCache:Get(questID))
+				questID = _G.GetAutoQuestPopUp(i)
+				if not _G.C_QuestLog.IsQuestBounty(questID)
+				and owningModule:ShouldDisplayQuest(_G.QuestCache:Get(questID))
 				then
-					-- BETA: API change
-					questTitle = _G.GetQuestLogTitle and _G.GetQuestLogTitle(_G.GetQuestLogIndexByID(questID)) or _G.C_QuestLog.GetTitleForQuestID and _G.C_QuestLog.GetTitleForQuestID(questID)
+					questTitle = _G.C_QuestLog.GetTitleForQuestID(questID)
 					if questTitle
 					and questTitle ~= ""
 					then
@@ -3662,18 +3657,17 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 							if block.init
 							and not block.ScrollChild.sf
 							then
-								blockContents = block.ScrollChild
-								aObj:keepFontStrings(blockContents)
-								blockContents.Exclamation:SetAlpha(1)
-								blockContents.QuestionMark:SetAlpha(1)
-								blockContents.FlashFrame.IconFlash:SetTexture(nil)
-								aObj:skinObject("frame", {obj=blockContents, fType=ftype, ofs=0})
+								aObj:keepFontStrings(block.ScrollChild)
+								block.ScrollChild.Exclamation:SetAlpha(1)
+								block.ScrollChild.QuestionMark:SetAlpha(1)
+								block.ScrollChild.FlashFrame.IconFlash:SetTexture(nil)
+								aObj:skinObject("frame", {obj=block.ScrollChild, fType=ftype, ofs=0})
 							end
 						end
 					end
 				end
 			end
-			questID, questTitle, block, blockContents = nil, nil, nil, nil
+			questID, questTitle, block = nil, nil, nil
 		end
 		self:SecureHook("AutoQuestPopupTracker_Update", function(owningModule)
 			skinAutoPopUps(owningModule)
