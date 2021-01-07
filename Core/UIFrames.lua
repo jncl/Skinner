@@ -5111,27 +5111,31 @@ aObj.blizzLoDFrames[ftype].PlayerChoiceUI = function(self)
 		[281] =	{y1 = 60}, -- Legion Artifact Weapon Choice [Horde]
 		[342] =	{y2 = 10}, -- Warchief's Command Board [Horde]
 		[505] =	{y2 = 10}, -- Hero's Call Board [Alliance]
+		[640] = {}, -- Ember Court Entertainments List [Venthyr]
+		[641] = {}, -- Ember Court Refreshments List [Venthyr]
+		[653] = {}, -- Ember Court Invitation list [Venthyr]
 		[667] = {y2 = 20}, -- Shadowlands Experience (Threads of Fate)
 		[998] = {x1 = -35, y1 = 40, x2 = 35, y2 = -32}, -- Covenant Selection (Oribos) [Enlarged]
 		[999] = {x1 = -13, y1 = 40, x2 = 13, y2 = -34}, -- Covenant Selection (Oribos) [Standard]
 	}
+
 	local defTab, ooTab, x1Ofs, y1Ofs, x2Ofs, y2Ofs = optionOffsets[0]
 	local function resizeSF(frame, idx)
 		-- aObj:Debug("resizeSF: [%s, %s]", frame, idx)
-		ooTab = optionOffsets[idx]
+		ooTab = optionOffsets[idx] or {}
 		x1Ofs, y1Ofs, x2Ofs, y2Ofs = ooTab.x1 or defTab.x1, ooTab.y1 or defTab.y1, ooTab.x2 or defTab.x2, ooTab.y2 or defTab.y2
-		aObj:Debug("PCUI offsets: [%s, %s, %s, %s]", x1Ofs, y1Ofs, x2Ofs, y2Ofs)
+		-- aObj:Debug("PCUI offsets: [%s, %s, %s, %s]", x1Ofs, y1Ofs, x2Ofs, y2Ofs)
 		frame.sf:ClearAllPoints()
 		frame.sf:SetPoint("TOPLEFT",frame, "TOPLEFT", x1Ofs, y1Ofs)
 		frame.sf:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", x2Ofs, y2Ofs)
 	end
 	self:SecureHookScript(_G.PlayerChoiceFrame, "OnShow", function(this)
 		self:removeNineSlice(this.NineSlice)
-		this.BlackBackground.BlackBackground:SetTexture(nil)
-		self:nilTexture(this.BorderFrame.Header, true)
-		this.Background.BackgroundTile:SetTexture(nil)
+		this.BlackBackground:DisableDrawLayer("BACKGROUND")
+		this.BorderFrame:DisableDrawLayer("BORDER")
+		this.Background:DisableDrawLayer("BACKGROUND")
 		this.Title:DisableDrawLayer("BACKGROUND")
-		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cbns=true, clr="sepia", y2=10})
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cbns=true, clr="sepia", ofs=0})
 
 		-- Option 1-4
 			-- RewardsFrame
@@ -5203,6 +5207,7 @@ aObj.blizzLoDFrames[ftype].PlayerChoiceUI = function(self)
 				then
 					opt.Background:SetTexture(nil)
 					opt.ArtworkBorder:SetTexture(nil)
+					opt.ArtworkBorderDisabled:SetTexture(nil)
 					for item in opt.RewardsFrame.Rewards.ItemRewardsPool:EnumerateActive() do
 						item.Name:SetTextColor(self.BT:GetRGB())
 						if self.modBtnBs then
