@@ -707,46 +707,38 @@ aObj.blizzLoDFrames[ftype].ItemUpgradeUI = function(self)
 		this.FeedbackMessage:SetTextColor(self.BT:GetRGB())
 		this.TitleTextLeft:SetTextColor(self.BT:GetRGB())
 		this.TitleTextRight:SetTextColor(self.BT:GetRGB())
-
 		this.ItemButton.IconTexture:SetAlpha(0)
 		this.ItemButton:DisableDrawLayer("BACKGROUND")
-		if self.modBtnBs then
-			self:addButtonBorder{obj=this.ItemButton, relTo=this.ItemButton.IconTexture, clr="grey", ca=0.85, ofs=1, y1=2}
-		end
 		this.ItemButton.Frame:SetTexture(nil)
 		this.ItemButton.ItemName:SetTextColor(self.BT:GetRGB())
+		-- use module to make it visible all the time
+		self.modUIBtns:addButtonBorder{obj=this.ItemButton, relTo=this.ItemButton.IconTexture, clr="grey", ofs=1, y1=2}
 		self:removeRegions(this.TextFrame, {1, 2, 3, 4, 5, 6})
 		this.TextFrame.MissingText:SetTextColor(self.BT:GetRGB())
-
 		this.ButtonFrame:DisableDrawLayer("BORDER", 2)
 		_G.ItemUpgradeFrameMoneyFrame:DisableDrawLayer("BACKGROUND")
 		self:removeMagicBtnTex(_G.ItemUpgradeFrameUpgradeButton)
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true}
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x2=3})
 		if self.modBtns then
 			self:skinStdButton{obj=_G.ItemUpgradeFrameUpgradeButton}
-			self:SecureHook(_G.ItemUpgradeFrameUpgradeButton, "Disable", function(this, _)
+			self:SecureHook(_G.ItemUpgradeFrameUpgradeButton, "Disable", function(this)
 				self:clrBtnBdr(this)
 			end)
-			self:SecureHook(_G.ItemUpgradeFrameUpgradeButton, "Enable", function(this, _)
+			self:SecureHook(_G.ItemUpgradeFrameUpgradeButton, "Enable", function(this)
 				self:clrBtnBdr(this)
 			end)
 		end
-
 		-- hook this to hide the ItemButton texture if empty
 		self:SecureHook("ItemUpgradeFrame_Update", function()
 			local icon, _, quality = _G.GetItemUpgradeItemInfo()
 			if icon then
 				_G.ItemUpgradeFrame.ItemButton.IconTexture:SetAlpha(1)
-				if self.modBtnBs then
-					_G.ItemUpgradeFrame.ItemButton.sbb:SetBackdropBorderColor(_G.BAG_ITEM_QUALITY_COLORS[quality].r, _G.BAG_ITEM_QUALITY_COLORS[quality].g, _G.BAG_ITEM_QUALITY_COLORS[quality].b, 1)
-				end
+				_G.ItemUpgradeFrame.ItemButton.sbb:SetBackdropBorderColor(_G.BAG_ITEM_QUALITY_COLORS[quality].r, _G.BAG_ITEM_QUALITY_COLORS[quality].g, _G.BAG_ITEM_QUALITY_COLORS[quality].b, 1)
 			else
 				_G.ItemUpgradeFrame.ItemButton.IconTexture:SetAlpha(0)
-				if self.modBtnBs then
-					self:clrBtnBdr(_G.ItemUpgradeFrame.ItemButton, "grey")
-				end
+				self:clrBtnBdr(_G.ItemUpgradeFrame.ItemButton, "grey")
 			end
-			icon = nil
+			icon, quality = nil, nil
 		end)
 		-- hook this to remove background texture from stat lines
 		self:SecureHook("ItemUpgradeFrame_GetStatRow", function(index, _)

@@ -395,8 +395,9 @@ function aObj:OnEnable()
 	self.uparrow             = self.modBtns and self.modUIBtns.uparrow or _G.nop
 
 	self.addButtonBorder     = self.modBtnBs and self.modUIBtns.addButtonBorder or _G.nop
-	self.clrBtnBdr           = self.modBtnBs and self.modUIBtns.clrBtnBdr or _G.nop
 	self.clrButtonFromBorder = self.modBtnBs and self.modUIBtns.clrButtonFromBorder or _G.nop
+
+	self.clrBtnBdr           = (self.modBtns or self.modBtnBs) and self.modUIBtns.clrBtnBdr or _G.nop
 
 	self.skinCheckButton     = self.modChkBtns and self.modUIBtns.skinCheckButton or _G.nop
 
