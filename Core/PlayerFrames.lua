@@ -3478,6 +3478,8 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 		self:addButtonBorder{obj=_G.ObjectiveTrackerFrame.HeaderMenu.MinimizeButton, es=12, ofs=1, x1=-1}
 		-- hook this to skin QuestObjective Block Button(s)
 		local function aBB2rB(btn)
+			-- TODO: causes ADDON_ACTION_FORBIDDEN so commented out for now 07.01.21
+			-- aObj:addButtonBorder{obj=btn, ofs=btn.Icon and -2 or nil, x1=btn.Icon and 0 or nil, reParent=btn.Count and {btn.Count} or nil, clr="gold"}
 		end
 		self:SecureHook("QuestObjectiveSetupBlockButton_AddRightButton", function(_, button, _)
 			if not button.sbb then
