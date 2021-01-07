@@ -1,3 +1,19 @@
+beta9.36949.6
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Added comment
+	Updarted GlowBox skin function
+	Updated addButtonSkin function
+	Updated CovenantSanctumUI skin
+	Updated PVPReadyDialog skin
+	Updated Button skinning
+	Updated PVPMatch skin
+	Updated GarrisonUI skin
+	Updated ClassicQuestLog, Cork, RaiderIO, RareScanner & TipTac skins
+	Added LibBabbleSubZone lirary to Classic build & removed unnecessary files
+	Skinned MissingTradeSkilsList, NovaInstanceTracker & NovaWorldBuffs
+
 beta9.36949.5
 Jncl:
 	ToDo.txt
