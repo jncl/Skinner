@@ -3079,16 +3079,16 @@ end
 
 -- copy of GEM_TYPE_INFO from Blizzard_ItemSocketingUI.xml
 aObj.GEM_TYPE_INFO = {
-	Yellow = {r=0.97 , g=0.82 , b=0.29},
-	Red = {r=1 , g=0.47 , b=0.47},
-	Blue = {r=0.47 , g=0.67 , b=1},
+	Yellow          = {r=0.97 , g=0.82 , b=0.29},
+	Red             = {r=1 , g=0.47 , b=0.47},
+	Blue            = {r=0.47 , g=0.67 , b=1},
 	PunchcardYellow = {r=0.97 , g=0.82 , b=0.29},
-	PunchcardRed = {r=1 , g=0.47 , b=0.47},
-	PunchcardBlue = {r=0.47 , g=0.67 , b=1},
-	Hydraulic = {r=1, g=1, b=1},
-	Cogwheel = {r=1, g=1, b=1},
-	Meta = {r=1, g=1, b=1},
-	Prismatic = {r=1, g=1, b=1},
+	PunchcardRed    = {r=1 , g=0.47 , b=0.47},
+	PunchcardBlue   = {r=0.47 , g=0.67 , b=1},
+	Hydraulic       = {r=1, g=1, b=1},
+	Cogwheel        = {r=1, g=1, b=1},
+	Meta            = {r=1, g=1, b=1},
+	Prismatic       = {r=1, g=1, b=1},
 }
 aObj.blizzLoDFrames[ftype].ItemSocketingUI = function(self)
 	if not self.prdb.ItemSocketingUI or self.initialized.ItemSocketingUI then return end
