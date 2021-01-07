@@ -543,10 +543,17 @@ aObj.blizzLoDFrames[ftype].CovenantSanctum = function(self)
 		local function skinTalents(list)
 			for talentFrame in list.talentPool:EnumerateActive() do
 				aObj:removeRegions(talentFrame, {1, 2})
-				if talentFrame.TierBorder then aObj:changeTandC(talentFrame.TierBorder) end
-				aObj:addSkinFrame{obj=talentFrame, ft=ftype, ofs=2.5, y2=-2, aso={bbclr="sepia"}}
+				if talentFrame.TierBorder then
+					aObj:changeTandC(talentFrame.TierBorder)
+				end
+				aObj:skinObject("frame", {obj=talentFrame, fType=ftype, ofs=2.5, y2=-2, clr="gold"})
+				if aObj.modBtnBs then
+					aObj:addButtonBorder{obj=talentFrame, relTo=talentFrame.Icon, reParent={talentFrame.TierBorder}}
+					aObj:clrBtnBdr(talentFrame, talentFrame.Icon:IsDesaturated() and "disabled" or "gold")
+				end
 			end
 		end
+		-- hook this as the talentPool is released and refilled
 		self:SecureHook(list, "Refresh", function(this)
 			skinTalents(this)
 			if self.modBtns then
@@ -564,11 +571,10 @@ aObj.blizzLoDFrames[ftype].CovenantSanctum = function(self)
 			end
 		end
 		this.UpgradesTab.CurrencyBackground:SetTexture(nil)
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, ofs=-3, aso={bbclr="sepia"}}
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cbns=true, ofs=-3, clr="sepia"})
 		if self.modBtns then
-			self:skinCloseButton{obj=this.CloseButton, noSkin=true}
 			self:skinStdButton{obj=this.UpgradesTab.TalentsList.UpgradeButton}
-			self:skinStdButton{obj=this.UpgradesTab.DepositButton}
+			self:skinStdButton{obj=this.UpgradesTab.DepositButton, sft=true}
 			self:SecureHook(this.UpgradesTab, "UpdateDepositButton", function(this)
 				self:clrBtnBdr(this.DepositButton)
 			end)
