@@ -6370,13 +6370,15 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 	local SZL = _G.LibStub:GetLibrary("LibBabble-SubZone-3.0"):GetLookupTable()
 	local disableTypeBySZ = {
 		[2] = { -- StatusBar
-			[SZL["Bleak Redoubt"]]    = true,
-			[SZL["House of Plagues"]] = true,
-			[SZL["The Desiccation"]]  = true,
-			[SZL["The Spearhead"]]    = true,
+			[SZL["The Eternal Forge"]] = true, -- Bastion
+			[SZL["Bleak Redoubt"]]     = true, -- Maldraxxus
+			[SZL["House of Plagues"]]  = true, -- Maldraxxus
+			[SZL["The Desiccation"]]   = true, -- Revendreth
+			[SZL["The Spearhead"]]     = true, -- Maldraxxus
 		},
 		[13] = { -- SpellDisplay
 			[SZL["House of Plagues"]] = true,
+			[SZL["The Ember Court"]]   = true, -- Revendreth (Scenario)
 		},
 	}
 
@@ -6413,12 +6415,12 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 		local SZ = _G.GetSubZoneText()
 
 		-- aObj:Debug("skinWidget#0: [%s, %s, %s, %s]", _G.C_Map.GetBestMapForUnit("player"), _G.GetRealZoneText(), SZ, disableTypeBySZ[wFrame.widgetType][SZ])
-		-- aObj:Debug("skinWidget: [%s, %s, %s, %s, %s, %s]", wFrame, wFrame.widgetType, wFrame.widgetTag, wFrame.widgetSetID, wFrame.widgetID, wInfo)
+		aObj:Debug("skinWidget: [%s, %s, %s, %s, %s, %s]", wFrame, wFrame.widgetType, wFrame.widgetTag, wFrame.widgetSetID, wFrame.widgetID, wInfo)
 
 		if wFrame.widgetType == 0 then -- IconAndText (World State: ICONS at TOP)
 			-- N.B. DON'T add buttonborder to Icon(s)
 		elseif wFrame.widgetType == 1 then -- CaptureBar (World State: Capture bar on RHS)
-			-- DON'T change textures
+			-- DON'T change textures as it doesn't really improve it
 		elseif wFrame.widgetType == 2 then -- StatusBar
 			if not disableTypeBySZ[wFrame.widgetType][SZ] then
 				aObj:skinStatusBar{obj=wFrame.Bar, fi=0, nilFuncs=true}
@@ -6492,6 +6494,7 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 		elseif wFrame.widgetType == 18 then -- TextureWithAnimation
 		elseif wFrame.widgetType == 19 then -- DiscreteProgressSteps
 		elseif wFrame.widgetType == 20 then -- ScenarioHeaderTimer
+			wFrame.Frame:SetTexture(nil)
 			aObj:skinStatusBar{obj=wFrame.TimerBar, fi=0, bgTex=wFrame.TimerBar.BG, nilFuncs=true}
 		end
 	end
