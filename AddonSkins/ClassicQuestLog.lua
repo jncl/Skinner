@@ -2,9 +2,9 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("Classic Quest Log") then return end
 local _G = _G
 
-if _G.GetAddOnMetadata("Classic Quest Log", "Version"):find("Classic", 1, true) then
-	aObj.addonsToSkin["Classic Quest Log"] = function(self) -- v 1.4.6.-Classic
+aObj.addonsToSkin["Classic Quest Log"] = function(self)
 
+	if aObj.isClsc then -- v 1.4.6.-Classic
 		self:SecureHookScript(_G.ClassicQuestLog, "OnShow", function(this)
 			self:removeMagicBtnTex(this.close)
 			self:removeMagicBtnTex(this.abandon)
@@ -61,11 +61,7 @@ if _G.GetAddOnMetadata("Classic Quest Log", "Version"):find("Classic", 1, true) 
 
 			self:Unhook(this, "OnShow")
 		end)
-
-	end
-else
-	aObj.addonsToSkin["Classic Quest Log"] = function(self) -- v 2.0.3
-
+	else -- v 2.0.3
 		self:SecureHookScript(_G.ClassicQuestLog, "OnShow", function(this)
 			this:DisableDrawLayer("BACKGROUND")
 			this.log:DisableDrawLayer("BACKGROUND")
@@ -114,7 +110,7 @@ else
 			this.options:DisableDrawLayer("BORDER")
 			this.options.content.headerBack:SetTexture(nil)
 			if self.modBtns then
-				self:skinCloseButton{obj=this.options.content.close, clr="gold"}
+				self:skinCloseButton{obj=this.options.content.close}
 			end
 			if self.modChkBtns then
 				for _, bName in _G.pairs{"LockWindow", "ShowResizeGrip", "ShowLevels", "ShowTooltips", "SolidBackground", "ShowFromObjectiveTracker"} do
@@ -129,6 +125,6 @@ else
 				self:checkShown(this)
 			end
 		end)
-
 	end
+
 end

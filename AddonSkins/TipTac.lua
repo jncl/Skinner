@@ -26,9 +26,11 @@ aObj.addonsToSkin.TipTac = function(self) -- v 20.11.04
 
 	-- hook this as the Tooltip Backdrop Style Default overwrites TipTac style on item mouseover
 	self:RawHook("SharedTooltip_SetBackdropStyle", function(tooltip, style)
-		if style.edgeFile ~= _G.TipTac_Config.tipBackdropEdge then
-			style.edgeFile = _G.TipTac_Config.tipBackdropEdge
-			style.bgFile = _G.TipTac_Config.tipBackdropBG
+		if tooltip ~= _G.EmbeddedItemTooltipTooltip then
+			if style.edgeFile ~= _G.TipTac_Config.tipBackdropEdge then
+				style.edgeFile = _G.TipTac_Config.tipBackdropEdge
+				style.bgFile = _G.TipTac_Config.tipBackdropBG
+			end
 		end
 		self.hooks.SharedTooltip_SetBackdropStyle(tooltip, style)
 	end, true)
