@@ -493,6 +493,7 @@ function module:skinStdButton(opts) -- standard panel button
 		as = use applySkin rather than addSkinButton, used when text appears behind the gradient
 		clr = set colour
 		ca = set colour alpha
+		sft = inherit from SecureFrameTemplate
 --]]
 --@alpha@
 	_G.assert(opts.obj, "Missing object skinStdButton\n" .. _G.debugstack(2, 3, 2))
@@ -508,7 +509,7 @@ function module:skinStdButton(opts) -- standard panel button
 	local aso = opts.aso or {}
 	aso.bd = bH > 18 and 5 or 6 -- use narrower backdrop if required
 	if not opts.as then
-		aObj:skinObject("button", {obj=opts.obj, fType=opts.ftype, aso=aso, ofs=opts.ofs or 0, x1=opts.x1, y1=opts.y1, x2=opts.x2, y2=opts.y2})
+		aObj:skinObject("button", {obj=opts.obj, fType=opts.ftype, sft=opts.sft, aso=aso, ofs=opts.ofs or 0, x1=opts.x1, y1=opts.y1, x2=opts.x2, y2=opts.y2})
 	else
 		aso.obj = opts.obj
 		if bH < 16 then opts.obj:SetHeight(16) end -- set minimum button height (DBM option buttons)
