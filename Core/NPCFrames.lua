@@ -681,7 +681,8 @@ aObj.blizzLoDFrames[ftype].ItemInteractionUI = function(self) -- a.k.a. Titanic 
 	self.initialized.ItemInteractionUI = true
 
 	self:SecureHookScript(_G.ItemInteractionFrame, "OnShow", function(this)
-		self.modUIBtns:addButtonBorder{obj=this.ItemSlot, relTo=this.ItemSlot.Icon, clr="grey"} -- use module
+		-- use module to make button slot visible
+		self.modUIBtns:addButtonBorder{obj=this.ItemSlot, relTo=this.ItemSlot.Icon, clr="grey"}
 		this.ButtonFrame:DisableDrawLayer("BORDER")
 		this.ButtonFrame.MoneyFrameEdge:DisableDrawLayer("BACKGROUND")
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true}
