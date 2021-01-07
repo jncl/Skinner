@@ -2615,9 +2615,11 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 		for _, btn in _G.pairs(this.Report.List.listScroll.buttons) do
 			btn:DisableDrawLayer("BACKGROUND")
 			btn:DisableDrawLayer("BORDER")
-			for _, reward in _G.pairs(btn.Rewards) do
-				self:addButtonBorder{obj=reward, relTo=reward.Icon, reParent={reward.Quantity}}
-				self:clrButtonFromBorder(reward)
+			if self.modBtnBs then
+				for _, reward in _G.pairs(btn.Rewards) do
+					self:addButtonBorder{obj=reward, relTo=reward.Icon, reParent={reward.Quantity}}
+					self:clrButtonFromBorder(reward)
+				end
 			end
 		end
 		self:skinObject("frame", {obj=this.Report.List, fType=ftype, fb=true, y1=4})
