@@ -5454,7 +5454,7 @@ aObj.blizzFrames[ftype].QuestMap = function(self)
 			self:skinStdButton{obj=this.DetailsFrame.CompleteQuestFrame.CompleteButton}
 			self:skinStdButton{obj=this.DetailsFrame.AbandonButton}
 			self:skinStdButton{obj=this.DetailsFrame.ShareButton}
-			self:skinStdButton{obj=this.DetailsFrame.TrackButton}
+			self:skinStdButton{obj=this.DetailsFrame.TrackButton, x2=-2}
 			self:SecureHook("QuestMapFrame_UpdateQuestDetailsButtons", function()
 				self:clrBtnBdr(_G.QuestMapFrame.DetailsFrame.AbandonButton)
 				self:clrBtnBdr(_G.QuestMapFrame.DetailsFrame.TrackButton)
