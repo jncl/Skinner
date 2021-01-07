@@ -3527,33 +3527,33 @@ aObj.blizzFrames[ftype].ItemText = function(self)
 	if not self.prdb.ItemText or self.initialized.ItemText then return end
 	self.initialized.ItemText = true
 
+	local function skinITFrame(frame)
+		aObj:skinObject("slider", {obj=_G.ItemTextScrollFrame.ScrollBar, fType=ftype, rpTex=aObj.isClsc and {"background", "artwork"} or nil})
+		aObj:skinStatusBar{obj=_G.ItemTextStatusBar, fi=0}
+		aObj:moveObject{obj=_G.ItemTextPrevPageButton, x=-55}
+		if not aObj.isClsc then
+			aObj:skinObject("frame", {obj=frame, fType=ftype, kfs=true, ri=true, cb=true, x2=3})
+		else
+			aObj:skinObject("frame", {obj=frame, fType=ftype, kfs=true, x1=10, y1=-12, x2=-31, y2=60})
+			if aObj.modBtns then
+				aObj:skinCloseButton{obj=_G.ItemTextCloseButton}
+			end
+		end
+		if aObj.modBtnBs then
+			-- N.B. page buttons are hidden or shown as required
+			aObj:addButtonBorder{obj=_G.ItemTextPrevPageButton, ofs=-2, x1=1, clr="gold"}
+			aObj:addButtonBorder{obj=_G.ItemTextNextPageButton, ofs=-2, x1=1, clr="gold"}
+		end
+		skinITFrame = nil
+	end
 	self:SecureHookScript(_G.ItemTextFrame, "OnShow", function(this)
 		_G.ItemTextPageText:SetTextColor(self.BT:GetRGB())
 		_G.ItemTextPageText:SetTextColor("P", self.BT:GetRGB())
 		_G.ItemTextPageText:SetTextColor("H1", self.HT:GetRGB())
 		_G.ItemTextPageText:SetTextColor("H2", self.HT:GetRGB())
 		_G.ItemTextPageText:SetTextColor("H3", self.HT:GetRGB())
-
-		if not this.sf then
-			self:skinSlider{obj=_G.ItemTextScrollFrame.ScrollBar, wdth=-4}
-			self:skinStatusBar{obj=_G.ItemTextStatusBar, fi=0}
-			self:moveObject{obj=_G.ItemTextPrevPageButton, x=-55} -- move prev button left
-			if not self.isClsc then
-				self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true}
-			else
-				_G.ItemTextScrollFrame:DisableDrawLayer("BACKGROUND")
-				_G.ItemTextScrollFrame:DisableDrawLayer("ARTWORK")
-				self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, x1=10, y1=-12, x2=-31, y2=60}
-				if self.modBtns then
-					self:skinCloseButton{obj=_G.ItemTextCloseButton}
-				end
-			end
-			if self.modBtnBs then
-				-- N.B. page buttons are hidden or shown as required
-				self:addButtonBorder{obj=_G.ItemTextPrevPageButton, ofs=-2, x1=1, clr="gold"}
-				self:addButtonBorder{obj=_G.ItemTextNextPageButton, ofs=-2, x1=1, clr="gold"}
-			end
-
+		if skinITFrame then
+			skinITFrame(this)
 		end
 	end)
 
