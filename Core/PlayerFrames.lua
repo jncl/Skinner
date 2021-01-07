@@ -4107,9 +4107,9 @@ aObj.blizzFrames[ftype].SpellBookFrame = function(self)
 			end
 			if self.modBtnBs then
 				if not self.isClsc then
-					self:addButtonBorder{obj=btn, sec=true, reParent={btn.FlyoutArrow, _G["SpellButton" .. i .. "AutoCastable"]}}
+					self:addButtonBorder{obj=btn, sft=true, reParent={btn.FlyoutArrow, _G["SpellButton" .. i .. "AutoCastable"]}}
 				else
-					self:addButtonBorder{obj=btn, sec=true, reParent={_G["SpellButton" .. i .. "AutoCastable"]}}
+					self:addButtonBorder{obj=btn, sft=true, reParent={_G["SpellButton" .. i .. "AutoCastable"]}}
 				end
 			end
 			updBtn(btn)
@@ -4172,7 +4172,7 @@ aObj.blizzFrames[ftype].SpellBookFrame = function(self)
 					btn:DisableDrawLayer("BACKGROUND")
 					btn.subSpellString:SetTextColor(aObj.BT:GetRGB())
 					if aObj.modBtnBs then
-						aObj:addButtonBorder{obj=btn, sec=true}
+						aObj:addButtonBorder{obj=btn, sft=true}
 					end
 				end
 				btn = nil
