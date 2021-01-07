@@ -209,11 +209,7 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 			_G.RaiseFrameLevelByTwo(frame) -- raise above markers on mission frame
 		end
 		frame:SetSize(naval and 935 or 948, _G.IsAddOnLoaded("GarrisonCommander") and 640 or naval and 648 or 630)
-		-- frame.BorderFrame:DisableDrawLayer("BACKGROUND")
-		-- frame.BorderFrame:DisableDrawLayer("BORDER")
-		-- frame.BorderFrame:DisableDrawLayer("OVERLAY")
 		aObj:removeRegions(frame.BorderFrame.Stage, {1, 2, 3, 4, 5, 6})
-	    -- aObj:addSkinFrame{obj=frame.BorderFrame, ft=ftype, y2=-2}
 		aObj:skinObject("frame", {obj=frame.BorderFrame, fType=ftype, kfs=true, y2=-2})
 		if aObj.modBtns then
 			aObj:skinStdButton{obj=frame.BorderFrame.ViewButton}
