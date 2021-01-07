@@ -6629,31 +6629,28 @@ aObj.blizzFrames[ftype].WorldMap = function(self)
 	self.initialized.WorldMap = true
 
 	self:SecureHookScript(_G.WorldMapFrame, "OnShow", function(this)
-
 		if not _G.IsAddOnLoaded("Mapster")
 		and not _G.IsAddOnLoaded("AlleyMap")
 		then
-			self:keepFontStrings(_G.WorldMapFrame)
-			self:addSkinFrame{obj=_G.WorldMapFrame.BorderFrame, ft=ftype, kfs=true, nb=true}
-			self:removeNineSlice(_G.WorldMapFrame.BorderFrame.NineSlice)
+			self:keepFontStrings(this)
+			self:removeNineSlice(this.BorderFrame.NineSlice)
+			self:moveObject{obj=this.BorderFrame.CloseButton, x=-2.5}
+			self:skinObject("frame", {obj=this.BorderFrame, fType=ftype, kfs=true, cb=true, ofs=2, x1=-3, x2=0})
 			-- make sure map textures are displayed
-			_G.WorldMapFrame.BorderFrame.sf:SetFrameStrata("LOW")
+			this.BorderFrame.sf:SetFrameStrata("LOW")
 		end
-
 		this.BorderFrame.Tutorial.Ring:SetTexture(nil)
-		local oFrame
-		for i = 1, #this.overlayFrames do
-			oFrame = this.overlayFrames[i]
+		for _, oFrame in _G.pairs(this.overlayFrames) do
 			-- Tracking Options Button
 			if oFrame.IconOverlay then
+				oFrame:DisableDrawLayer("BACKGROUND")
+				oFrame.Border:SetTexture(nil)
 				if self.modBtns then
 					self:skinStdButton{obj=oFrame, y2=3, clr="gold"}
 				end
-				oFrame:DisableDrawLayer("BACKGROUND")
-				oFrame.Border:SetTexture(nil)
 			-- Floor Navigation Dropdown
 			elseif oFrame.Button then
-				self:skinDropDown{obj=oFrame}
+				self:skinObject("dropdown", {obj=oFrame, fType=ftype})
 			-- BountyBoard overlay
 			elseif oFrame.bountyObjectivePool then
 				oFrame:DisableDrawLayer("BACKGROUND")
@@ -6672,17 +6669,14 @@ aObj.blizzFrames[ftype].WorldMap = function(self)
 				end
 			end
 		end
-		oFrame = nil
 		-- Nav Bar
 		self:skinNavBarButton(this.NavBar.home)
 		this.NavBar:DisableDrawLayer("BACKGROUND")
 		this.NavBar:DisableDrawLayer("BORDER")
 		this.NavBar.overlay:DisableDrawLayer("OVERLAY")
-
 		if self.modBtns then
 			self:skinOtherButton{obj=this.BorderFrame.MaxMinButtonFrame.MaximizeButton, font=self.fontS, text=self.nearrow}
 			self:skinOtherButton{obj=this.BorderFrame.MaxMinButtonFrame.MinimizeButton, font=self.fontS, text=self.swarrow}
-			self:skinCloseButton{obj=this.BorderFrame.CloseButton} -- child of MaxMinButtonFrame
 		end
 		if self.modBtnBs then
 			self:addButtonBorder{obj=this.SidePanelToggle.CloseButton, clr="gold"}
