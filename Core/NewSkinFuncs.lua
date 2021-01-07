@@ -18,6 +18,7 @@ aObj.skinTPLs = {
 		-- x2          = 4,
 		-- y2          = -4,
 		sap         = false, -- SetAllPoints to object
+		sft         = false, -- use SecureFrameTemplate
 		sabt        = false, -- use SecureActionButtonTemplate
 		subt        = false, -- use SecureUnitButtonTemplate
 	},
@@ -32,6 +33,7 @@ aObj.skinTPLs = {
 		y2          = 7,
 		adjBtnX		= false,
 		initState	= false, -- initial State is "Enabled" i.e. NOT "Disabled"
+		rp			= false,
 	},
 	editbox = {
 		-- bd          = 3, -- medium
@@ -54,7 +56,7 @@ aObj.skinTPLs = {
 		ri          = true, -- disable draw layers; [Background, Border & Overlay]
 		rns         = true, -- disable draw layers; [Background, Border & Overlay]
 		rp          = false, -- reverse parent child relationship
-		sec         = false, -- use SecureFrameTemplate
+		sft         = false, -- use SecureFrameTemplate
 		ofs         = 2, -- skin frame offset to object
 		-- x1          = ofs * -2,
 		-- y1          = ofs,
@@ -247,7 +249,7 @@ local function skinButton(tbl)
 		return
 	end
 	-- add a frame to the object
-	tbl.obj.sb = _G.CreateFrame("Button", nil, tbl.obj, tbl.sabt and "SecureActionButtonTemplate" or tbl.subt and "SecureUnitButtonTemplate")
+	tbl.obj.sb = _G.CreateFrame("Button", nil, tbl.obj, tbl.sft and "SecureFrameTemplate" or tbl.sabt and "SecureActionButtonTemplate" or tbl.subt and "SecureUnitButtonTemplate")
 	if tbl.sap then
 		tbl.obj.sb:SetAllPoints(tbl.obj)
 	else
@@ -327,7 +329,7 @@ local function skinDropDown(tbl)
 	-- return if not to be skinned
 	if tbl.noSkin then return end
 	-- skin the DropDown
-	aObj:skinObject("frame", {obj=tbl.obj, fType=tbl.fType, ng=true, bd=5, rp=true, x1=tbl.x1, y1=tbl.y1, x2=tbl.x2, y2=tbl.y2})
+	aObj:skinObject("frame", {obj=tbl.obj, fType=tbl.fType, ng=true, bd=5, rp=tbl.rp, x1=tbl.x1, y1=tbl.y1, x2=tbl.x2, y2=tbl.y2})
 	-- add a button border around the dd button
 	if not tbl.noBB then
 		local btn = tbl.obj.Button or tbl.obj.dropButton or _G[tbl.obj:GetName() .. "Button"]
@@ -436,7 +438,7 @@ local function skinFrame(tbl)
 		hideHeader(tbl.obj)
 	end
 	-- add a frame to the object
-	tbl.obj.sf = _G.CreateFrame("Frame", nil, tbl.obj, tbl.sec and "SecureFrameTemplate")
+	tbl.obj.sf = _G.CreateFrame("Frame", nil, tbl.obj, tbl.sft and "SecureFrameTemplate")
 	-- allow clickthrough
 	tbl.obj.sf:EnableMouse(false)
 	-- adjust frame level
