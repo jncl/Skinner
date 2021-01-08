@@ -3430,13 +3430,57 @@ aObj.blizzFrames[ftype].MirrorTimers = function(self)
 end
 
 aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
-	if not self.prdb.ObjectiveTracker.skin and not self.prdb.ObjectiveTracker.popups then return end
+	if not self.prdb.ObjectiveTracker.skin
+	and not self.prdb.ObjectiveTracker.popups
+	and not self.prdb.ObjectiveTracker.headers
+	then
+		return
+	end
 	self.initialized.ObjectiveTracker = true
 
 	-- ObjectiveTrackerFrame BlocksFrame
 	if self.prdb.ObjectiveTracker.skin then
 		self:skinObject("frame", {obj=_G.ObjectiveTrackerFrame.BlocksFrame, fType=ftype, kfs=true, x1=-30, x2=4})
 	end
+
+	-- AutoPopup frames
+	if self.prdb.ObjectiveTracker.popups then
+		local function skinAutoPopUps(owningModule)
+			if _G.SplashFrame:IsShown() then return end
+			local questID, questTitle, block
+			for i = 1, _G.GetNumAutoQuestPopUps() do
+				questID = _G.GetAutoQuestPopUp(i)
+				if not _G.C_QuestLog.IsQuestBounty(questID)
+				and owningModule:ShouldDisplayQuest(_G.QuestCache:Get(questID))
+				then
+					questTitle = _G.C_QuestLog.GetTitleForQuestID(questID)
+					if questTitle
+					and questTitle ~= ""
+					then
+						block = owningModule:GetBlock(questID, "ScrollFrame", "AutoQuestPopUpBlockTemplate")
+						if not block.module.hasSkippedBlocks then
+							if block.init
+							and not block.ScrollChild.sf
+							then
+								aObj:keepFontStrings(block.ScrollChild)
+								block.ScrollChild.Exclamation:SetAlpha(1)
+								block.ScrollChild.QuestionMark:SetAlpha(1)
+								block.ScrollChild.FlashFrame.IconFlash:SetTexture(nil)
+								aObj:skinObject("frame", {obj=block.ScrollChild, fType=ftype, ofs=0})
+							end
+						end
+					end
+				end
+			end
+			questID, questTitle, block = nil, nil, nil
+		end
+		self:SecureHook("AutoQuestPopupTracker_Update", function(owningModule)
+			skinAutoPopUps(owningModule)
+		end)
+		skinAutoPopUps(_G.QUEST_TRACKER_MODULE)
+	end
+
+	if not self.prdb.ObjectiveTracker.headers then return end
 
 	-- remove Glow/Sheen textures from WorldQuest modules
 	local function updTrackerModules()
@@ -3639,43 +3683,6 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 
 	_G.ObjectiveTrackerBonusBannerFrame.BG1:SetTexture(nil)
 	_G.ObjectiveTrackerBonusBannerFrame.BG2:SetTexture(nil)
-
-	-- AutoPopup frames
-	if self.prdb.ObjectiveTracker.popups then
-		local function skinAutoPopUps(owningModule)
-			if _G.SplashFrame:IsShown() then return end
-			local questID, questTitle, block
-			for i = 1, _G.GetNumAutoQuestPopUps() do
-				questID = _G.GetAutoQuestPopUp(i)
-				if not _G.C_QuestLog.IsQuestBounty(questID)
-				and owningModule:ShouldDisplayQuest(_G.QuestCache:Get(questID))
-				then
-					questTitle = _G.C_QuestLog.GetTitleForQuestID(questID)
-					if questTitle
-					and questTitle ~= ""
-					then
-						block = owningModule:GetBlock(questID, "ScrollFrame", "AutoQuestPopUpBlockTemplate")
-						if not block.module.hasSkippedBlocks then
-							if block.init
-							and not block.ScrollChild.sf
-							then
-								aObj:keepFontStrings(block.ScrollChild)
-								block.ScrollChild.Exclamation:SetAlpha(1)
-								block.ScrollChild.QuestionMark:SetAlpha(1)
-								block.ScrollChild.FlashFrame.IconFlash:SetTexture(nil)
-								aObj:skinObject("frame", {obj=block.ScrollChild, fType=ftype, ofs=0})
-							end
-						end
-					end
-				end
-			end
-			questID, questTitle, block = nil, nil, nil
-		end
-		self:SecureHook("AutoQuestPopupTracker_Update", function(owningModule)
-			skinAutoPopUps(owningModule)
-		end)
-		skinAutoPopUps(_G.QUEST_TRACKER_MODULE)
-	end
 
 end
 

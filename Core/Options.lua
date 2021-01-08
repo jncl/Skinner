@@ -105,7 +105,7 @@ aObj.SetupDefaults = function(self)
 			LootFrames                 = {skin = true, size = 1},
 			LootHistory                = true,
 			MirrorTimers               = {skin = true, glaze = true},
-			ObjectiveTracker           = {skin = false, popups = true},
+			ObjectiveTracker           = {skin = false, popups = true, headers=true},
 			OverrideActionBar          = true, -- a.k.a. VehicleUI
 			PVPUI                      = true,
 			RaidUI                     = true,
@@ -1216,19 +1216,27 @@ aObj.SetupOptions = function(self)
 					type = "group",
 					order = -1,
 					inline = true,
-					name = self.L["Tracker Frame"],
+					name = self.L["ObjectiveTracker Frame"],
 					get = function(info) return db.ObjectiveTracker[info[#info]] end,
 					set = function(info, value) db.ObjectiveTracker[info[#info]] = value end,
 					args = {
 						skin = {
 							type = "toggle",
+							order = 1,
 							name = self.L["Skin Frame"],
-							desc = self.L["Toggle the skin of the "] .. self.L["Tracker Frame"],
+							desc = self.L["Toggle the skin of the "] .. self.L["ObjectiveTracker Frame"],
 						},
 						popups = {
 							type = "toggle",
+							order = 3,
 							name = self.L["AutoPopUp Frames"],
 							desc = self.L["Toggle the skin of the "] .. self.L["AutoPopUp Frames"],
+						},
+						headers = {
+							type = "toggle",
+							order = 2,
+							name = self.L["Header Blocks"],
+							desc = self.L["Toggle the skin of the "] .. self.L["Header Blocks"],
 						},
 					},
 				},
