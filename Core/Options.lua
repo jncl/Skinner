@@ -1680,17 +1680,13 @@ aObj.SetupOptions = function(self)
 					get = function(info) return db.Minimap[info[#info]] end,
 					set = function(info, value)
 						db.Minimap[info[#info]] = value
-						if info[#info] == "skin" then self:checkAndRun("Minimap", "u")
+						if info[#info] == "skin" and value then self:checkAndRun("Minimap", "u")
 						elseif info[#info] == "gloss" and _G.Minimap.sf then
 							if value then
 								_G.RaiseFrameLevel(_G.Minimap.sf)
 							else
 								_G.LowerFrameLevel(_G.Minimap.sf)
 							end
-						elseif info[#info] == "btns" then self:checkAndRun("MinimapButtons", "u")
-						elseif info[#info] == "style" then
-							db.Minimap.btns = true
-							self:checkAndRun("MinimapButtons", "u")
 						end
 					end,
 					args = {
@@ -1716,7 +1712,7 @@ aObj.SetupOptions = function(self)
 					get = function(info) return db.MinimapButtons[info[#info]] end,
 					set = function(info, value)
 						db.MinimapButtons[info[#info]] = value
-						if info[#info] == "skin" then self:checkAndRun("MinimapButtons", "u")
+						if info[#info] == "skin" and value then self:checkAndRun("MinimapButtons", "u")
 						elseif info[#info] == "style" then
 							db.MinimapButtons.skin = true
 							self:checkAndRun("MinimapButtons", "u")

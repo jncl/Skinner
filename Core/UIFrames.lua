@@ -4444,7 +4444,7 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 			or (objType == "Frame" and objName == "MiniMapMailFrame")
 			and objName ~= "QueueStatusMinimapButton"
 			and objName ~= "OQ_MinimapButton"
-			and not aObj:hasTextInName(obj, "SexyMap")
+			and not aObj:hasTextInName(objName, "SexyMap")
 			then
 				for _, reg in _G.ipairs{obj:GetRegions()} do
 					if reg:GetObjectType() == "Texture" then
