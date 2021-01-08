@@ -1,3 +1,40 @@
+beta9.36949.7
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Bugfix for ButtonBorder taint
+	Updated ObjectiveTracker skin
+	Updated QuestMapFrame skin
+	Updated UIButton code relating to SecureFrameTemplate
+	Updated ClassicQuestLog & TipTac skins
+	Bugfix for GlowBox skin
+	Updated NewSkinFuncs
+	Updated ClassicSupport code
+	Updated CovenantSanctum skin
+	Updated ItemInteractionsUI skin
+	Updated WorldMap skin
+	Updated UIWidgets skin
+	Updated PlayerChoiceUI skin
+	Updated skinStdButton skin
+	Updated addButtonBorder skin
+	Updated MainMenuBar skin
+	Updated GarrisonLandingPage skin
+	Updated CompleteDialog skin
+	Updated ItemTextFrame skin
+	Code tidy
+	Updated SpellBookFrame skin
+	Updated PVPUI skin
+	Updated CollectionsUI skin
+	Updated ItemUpgradeUI skin
+	Skinned SexyMap zonetext tooltip
+	Updated Ace3, BugSack & ClassicQuestLog skins
+	Updated NewSkinFuncs for sliders
+	Skinned SinStats
+	Updated checkAndRunAddOn function parameters
+	Updated Minimap & Minimap Buttons skins
+	Updated InterfaceOptions skin
+	Updated FriendsFrame skin
+
 beta9.36949.6
 Jncl:
 	ToDo.txt
