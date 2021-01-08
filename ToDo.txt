@@ -23,59 +23,25 @@ ToDos
 
 ≈	O	Refactor NewSkinFuncs in Blizzard/AddOn skins
 
-	I	FriendsFriendsFrame, reported by Epide bameDaBear, 02.01.21
-√		- Skinner\Core\MainFuncs.lua:230: attempt to index field 'obj' (a nil value)
-		[string "@Skinner\Core\MainFuncs.lua"]:230: in function <Skinner\Core\MainFuncs.lua:195>
-		[string "=(tail call)"]: ?
-		[string "@Skinner\Core\PlayerFrames.lua"]:2638: in function <Skinner\Core\PlayerFrames.lua:2635>
-
 	I	ToolTip border, reported by EpidemeDaBear, 02.01.21
 ?		- texture used on mouseover of Quest reward
-
-√	S/C	SinStats HUD, requested by Siinba, 02.01.21
 
 	I 	reported by Fakelessgaming, 03.01.21
 ?		- that issue with Torghast anima can't be activated in combat is still there
 
-	I	ClassicQuestLog, reported by sunnyjang00, 03.01.21
-?√		- ...eBartender4\libs\AceHook-3.0\AceHook-3.0-9.lua:180: Attempting to rehook already active hook OnShow.
-		...eBartender4\libs\AceHook-3.0\AceHook-3.0-9.lua:180: in function <...eBartender4\libs\AceHook-3.0\AceHook-3.0.lua:118>
-		...eBartender4\libs\AceHook-3.0\AceHook-3.0-9.lua:411: in function `SecureHookScript'
-		Skinner\AddonSkins\ClassicQuestLog.lua:8: in function <Skinner\AddonSkins\ClassicQuestLog.lua:6>
+x	I	SexyMap & Minimap buttons, reported by Galthariel, 08.01.21
+√	I	ObjectiveTracker, reported by Galthariel, 08.01.21
 
-	I	ButtonBorders, requested by Eliixofpain/ Galthariel, 03.01.21
-		- NOT showing when option disabled, even though they should be visibile
-?			- Covenant Sanctum Adventurers
-√			- ItemUpgradesUI
+	I	reported by Carica18, 08.01.21
+√		- Ace3\AceHook-3.0\AceHook-3.0-9.lua:180: Attempting to rehook already active hook OnUpdate.
+		[string "=[C]"]: ?
+		[string "@Ace3\AceHook-3.0\AceHook-3.0-9.lua"]:180: in function <Ace3\AceHook-3.0\AceHook-3.0.lua:118>
+		[string "@Ace3\AceHook-3.0\AceHook-3.0-9.lua"]:367: in function `HookScript'
+		[string "@Skinner\Core\UIFrames.lua"]:6154: in function <Skinner\Core\UIFrames.lua:6124>
+		[string "@Skinner\Core\UtilFuncs.lua"]:169: in function `add2Table'
+		[string "@Skinner\AddonSkins\oRA3-v9.0.12.lua"]:85: in function <Skinner\AddonSkins\oRA3.lua:84>
 
-	I	SexyMap, reported by Galthariel, 03.01.21
-?√		- MinimapButtons aren't skinned when SexyMap is loaded/disabled
+√	S	ColorPickerPlus
 
-	I	TipTac
-√		- EmbeddedItemTooltipTooltip's edgefile shouldn't be altered
-
-	I	CovenantSanctumUI, reported by icedawg, 06.01.21
-≈		-  [ADDON_ACTION_FORBIDDEN] AddOn 'Skinner' tried to call the protected function 'DepositAnima()'.
-		[string "@!BugGrabber\BugGrabber.lua"]:519: in function <!BugGrabber\BugGrabber.lua:519>
-		[string "=[C]"]: in function `DepositAnima'
-		[string "@Blizzard_CovenantSanctum\Blizzard_CovenantSanctumUpgrades.lua"]:284: in function `DepositAnima'
-		[string "*:OnClick"]:1: in function <[string "*:OnClick"]:1>
-
-	I	Quest Objective rightButton Items
-√		- causing ADDON_ACTION_FORBIDDEN
-
-	I	ExtraAbilityContainer
-√		- 1x [ADDON_ACTION_BLOCKED] AddOn 'Skinner' tried to call the protected function 'ExtraAbilityContainer:SetPoint()'.
-		[string "@!BugGrabber\BugGrabber.lua"]:519: in function <!BugGrabber\BugGrabber.lua:519>
-		[string "=[C]"]: in function `SetPoint'
-		[string "@FrameXML\UIParent.lua"]:2614: in function <FrameXML\UIParent.lua:2527>
-		[string "=[C]"]: in function `securecall'
-		[string "@FrameXML\UIParent.lua"]:3226: in function `UIParentManageFramePositions'
-		[string "@FrameXML\UIParent.lua"]:2632: in function <FrameXML\UIParent.lua:2619>
-		[string "=[C]"]: in function `SetAttribute'
-		[string "@FrameXML\UIParent.lua"]:3422: in function <FrameXML\UIParent.lua:3420>
-		[string "=[C]"]: in function `UIParent_ManageFramePositions'
-		[string "@FrameXML\ExtraAbilityContainer.lua"]:76: in function `OnCleaned'
-		[string "@SharedXML\LayoutFrame.lua"]:107: in function `MarkClean'
-		[string "@SharedXML\LayoutFrame.lua"]:168: in function `Layout'
-		[string "@SharedXML\LayoutFrame.lua"]:86: in function <SharedXML\LayoutFrame.lua:84>
+	I	WIM, reported by Elixirofpain, 08.01.21
+√		- How to enable the chat borders on WIM addon
