@@ -58,6 +58,7 @@
 <Script file="Collectinator.lua"/>
 <Script file="CollectionShop.lua"/>
 <Script file="CollectMe.lua"/>
+<Script file="ColorPickerPlus.lua"/>
 <Script file="Combuctor.lua"/>
 <Script file="CommunityDKP.lua"/>
 <Script file="CompactVendor.lua"/>
