@@ -379,7 +379,7 @@ local function skinEditBox(tbl)
 	-- don't skin it twice
 	if tbl.obj.sf then return end
 	aObj:removeRegions(tbl.obj, tbl.regions)
-	aObj:skinObject("frame", {obj=tbl.obj, bd=3, ng=true, ofs=tbl.ofs, x2=tbl.x2, clr="slider", bba=0.5})
+	aObj:skinObject("frame", {obj=tbl.obj, bd=3, ng=true, ofs=tbl.ofs, x2=tbl.x2, clr="slider"})
 	-- move the search icon
 	if tbl.si then
 		local sIcon = tbl.obj.searchIcon or tbl.obj.icon or tbl.obj:GetName() and _G[tbl.obj:GetName() .. "SearchIcon"]
@@ -601,7 +601,7 @@ local function skinSlider(tbl)
 	end
 	aObj:Debug("skinSlider#2: [%s, %s, %s, %s]", tbl.x1, tbl.x2, tbl.y1, tbl.y2)
 	-- skin the Slider
-	aObj:skinObject("frame", {obj=tbl.obj, fType=tbl.fType, bd=4, ng=true, x1=tbl.x1, y1=tbl.y1, x2=tbl.x2, y2=tbl.y2, clr="slider", bba=0.5})
+	aObj:skinObject("frame", {obj=tbl.obj, fType=tbl.fType, bd=4, ng=true, x1=tbl.x1, y1=tbl.y1, x2=tbl.x2, y2=tbl.y2, clr="slider"})
 	-- make objects visible
 	tbl.obj:SetAlpha(1)
 	tbl.obj:GetThumbTexture():SetAlpha(1)
