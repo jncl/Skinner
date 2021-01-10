@@ -34,4 +34,4 @@ tools-used:
     - findglobals
   # https://www.townlong-yak.com/globe/
 
-enable-nolib-creation: yes
+enable-nolib-creation: no
