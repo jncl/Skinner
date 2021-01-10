@@ -1603,7 +1603,7 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 				self:Unhook(this, "OnShow")
 			end)
 		else
-			self:skinObject("frame", {obj==_G.ChatConfigChannelSettingsAvailable, fType=ftype, kfs=true})
+			self:skinObject("frame", {obj=_G.ChatConfigChannelSettingsAvailable, fType=ftype, kfs=true})
 			self:SecureHook("ChatConfig_CreateCheckboxes", function(frame, _)
 				local box
 				for i = 1, #frame.checkBoxTable do
