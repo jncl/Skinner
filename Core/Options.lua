@@ -105,7 +105,7 @@ aObj.SetupDefaults = function(self)
 			LootFrames                 = {skin = true, size = 1},
 			LootHistory                = true,
 			MirrorTimers               = {skin = true, glaze = true},
-			ObjectiveTracker           = {skin = false, popups = true, headers=true},
+			ObjectiveTracker           = {skin = false, popups = true, headers=true, animapowers=true},
 			OverrideActionBar          = true, -- a.k.a. VehicleUI
 			PVPUI                      = true,
 			RaidUI                     = true,
@@ -1237,6 +1237,12 @@ aObj.SetupOptions = function(self)
 							order = 2,
 							name = self.L["Header Blocks"],
 							desc = self.L["Toggle the skin of the "] .. self.L["Header Blocks"],
+						},
+						animapowers = {
+							type = "toggle",
+							order = 4,
+							name = self.L["Torghast Anima Powers Block"],
+							desc = self.L["Toggle the skin of the "] .. self.L["Torghast Anima Powers Block"],
 						},
 					},
 				},

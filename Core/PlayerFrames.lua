@@ -3480,6 +3480,22 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 		skinAutoPopUps(_G.QUEST_TRACKER_MODULE)
 	end
 
+	-- Toghast Anima Powers frame
+	if self.prdb.ObjectiveTracker.animapowers then
+		self:SecureHookScript(_G.ScenarioBlocksFrame.MawBuffsBlock, "OnShow", function(this)
+			this.Container.List:DisableDrawLayer("BACKGROUND")
+			if self.modBtns then
+				self:skinStdButton{obj=this.Container, x1=12, y1=-9, x2=-2, y2=9}
+				self:SecureHook(this.Container, "UpdateListState", function(this, _)
+					self:clrBtnBdr(this)
+				end)
+			end
+
+			self:Unhook(this, "OnShow")
+		end)
+		self:checkShown(_G.ScenarioBlocksFrame.MawBuffsBlock)
+	end
+	
 	if not self.prdb.ObjectiveTracker.headers then return end
 
 	-- remove Glow/Sheen textures from WorldQuest modules
@@ -3650,19 +3666,6 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 	_G.C_Timer.After(0.1, function()
 		self:add2Table(self.ttList, _G.ScenarioStepRewardTooltip)
 	end)
-
-	self:SecureHookScript(_G.ScenarioBlocksFrame.MawBuffsBlock, "OnShow", function(this)
-		this.Container.List:DisableDrawLayer("BACKGROUND")
-		if self.modBtns then
-			self:skinStdButton{obj=this.Container, x1=12, y1=-9, x2=-2, y2=9}
-			self:SecureHook(this.Container, "UpdateListState", function(this, _)
-				self:clrBtnBdr(this)
-			end)
-		end
-
-		self:Unhook(this, "OnShow")
-	end)
-	self:checkShown(_G.ScenarioBlocksFrame.MawBuffsBlock)
 
 	-- remove Shadow texture
 	_G.BONUS_OBJECTIVE_TRACKER_MODULE.Header:DisableDrawLayer("BACKGROUND")
