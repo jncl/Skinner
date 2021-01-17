@@ -18,7 +18,7 @@ aObj.skinTPLs = {
 		-- x2          = 4,
 		-- y2          = -4,
 		sap         = false, -- SetAllPoints to object
-		sft         = false, -- use SecureFrameTemplate
+		sec         = false, -- use SecureFrameTemplate
 	},
 	dropdown= {
 		lrgTpl      = false,
@@ -54,7 +54,7 @@ aObj.skinTPLs = {
 		ri          = true, -- disable draw layers; [Background, Border & Overlay]
 		rns         = true, -- disable draw layers; [Background, Border & Overlay]
 		rp          = false, -- reverse parent child relationship
-		sft         = false, -- use SecureFrameTemplate
+		sec         = false, -- use SecureFrameTemplate
 		ofs         = 2, -- skin frame offset to object
 		-- x1          = ofs * -2,
 		-- y1          = ofs,
@@ -251,7 +251,7 @@ local function skinButton(tbl)
 		tbl.name = tbl.obj:GetName() .. "~sb~"
 	end
 	-- add a frame to the object
-	tbl.obj.sb = _G.CreateFrame("Button", nil, tbl.obj, tbl.sft and "SecureFrameTemplate")
+	tbl.obj.sb = _G.CreateFrame("Button", tbl.name, tbl.obj, tbl.sec and "SecureFrameTemplate")
 	if tbl.sap then
 		tbl.obj.sb:SetAllPoints(tbl.obj)
 	else
@@ -443,7 +443,7 @@ local function skinFrame(tbl)
 		tbl.name = tbl.obj:GetName() .. "~sf~"
 	end
 	-- add a frame to the object
-	tbl.obj.sf = _G.CreateFrame("Frame", nil, tbl.obj, tbl.sft and "SecureFrameTemplate")
+	tbl.obj.sf = _G.CreateFrame("Frame", tbl.name, tbl.obj, tbl.sec and "SecureFrameTemplate")
 	-- allow clickthrough
 	tbl.obj.sf:EnableMouse(false)
 	-- adjust frame level

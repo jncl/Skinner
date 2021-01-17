@@ -574,7 +574,7 @@ aObj.blizzLoDFrames[ftype].CovenantSanctum = function(self)
 		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cbns=true, ofs=-3, clr="sepia"})
 		if self.modBtns then
 			self:skinStdButton{obj=this.UpgradesTab.TalentsList.UpgradeButton}
-			self:skinStdButton{obj=this.UpgradesTab.DepositButton, sft=true}
+			self:skinStdButton{obj=this.UpgradesTab.DepositButton, sec=true}
 			self:SecureHook(this.UpgradesTab, "UpdateDepositButton", function(this)
 				self:clrBtnBdr(this.DepositButton)
 			end)

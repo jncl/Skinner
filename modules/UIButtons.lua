@@ -493,7 +493,7 @@ function module:skinStdButton(opts) -- standard panel button
 		as = use applySkin rather than addSkinButton, used when text appears behind the gradient
 		clr = set colour
 		ca = set colour alpha
-		sft = inherit from SecureFrameTemplate
+		sec = inherit from SecureFrameTemplate
 --]]
 --@alpha@
 	_G.assert(opts.obj, "Missing object skinStdButton\n" .. _G.debugstack(2, 3, 2))
@@ -509,7 +509,7 @@ function module:skinStdButton(opts) -- standard panel button
 	local aso = opts.aso or {}
 	aso.bd = bH > 18 and 5 or 6 -- use narrower backdrop if required
 	if not opts.as then
-		aObj:skinObject("button", {obj=opts.obj, fType=opts.ftype, sft=opts.sft, aso=aso, ofs=opts.ofs or 0, x1=opts.x1, y1=opts.y1, x2=opts.x2, y2=opts.y2})
+		aObj:skinObject("button", {obj=opts.obj, fType=opts.ftype, name=opts.name, sec=opts.sec, aso=aso, ofs=opts.ofs or 0, x1=opts.x1, y1=opts.y1, x2=opts.x2, y2=opts.y2})
 	else
 		aso.obj = opts.obj
 		if bH < 16 then opts.obj:SetHeight(16) end -- set minimum button height (DBM option buttons)
@@ -655,7 +655,7 @@ local function __addButtonBorder(opts)
 		libt = Large Item Button template
 		sibt = Small Item Button template
 		gibt = Giant Item Button template
-		sft = requires SecureFrameTemplate to inherit from otherwise tainting occurs
+		sec = requires SecureFrameTemplate to inherit from otherwise tainting occurs
 		reParent = table of objects to reparent to the border frame
 		es = edgeSize, used for small icons
 		ofs = offset value to use
@@ -671,12 +671,11 @@ local function __addButtonBorder(opts)
 --]]
 --@alpha@
 	 _G.assert(opts.obj, "Missing object__aBB\n" .. _G.debugstack(2, 3, 2))
-	 if opts.sec
-	 or opts.seca
+	 if opts.seca
 	 or opts.secu
 	 then
 	 	-- handle AddOn skins using deprecated options
-	 	aObj:CustomPrint(1, 0, 0, "Using deprecated options - sec,seca,secu, use sft instead", opts.obj)
+	 	aObj:CustomPrint(1, 0, 0, "Using deprecated options - seca,secu, use sec instead", opts.obj)
 	end
 --@end-alpha@
 	if not opts.obj then return end
@@ -718,7 +717,7 @@ local function __addButtonBorder(opts)
 	end
 
 	-- create the button border object
-	opts.obj.sbb = _G.CreateFrame(opts.obj:GetObjectType(), nil, opts.obj, (opts.sft or opts.sec or opts.seca or opts.sabt or opts.subt) and "SecureFrameTemplate")
+	opts.obj.sbb = _G.CreateFrame(opts.obj:GetObjectType(), nil, opts.obj, (opts.sec or opts.sec or opts.seca or opts.sabt or opts.subt) and "SecureFrameTemplate")
 	opts.obj.sbb:EnableMouse(false) -- enable clickthrough
 
 	aObj:addBackdrop(opts.obj.sbb)

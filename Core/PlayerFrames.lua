@@ -894,7 +894,7 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 		self:moveObject{obj=this.MainHelpButton, y=-4}
 		_G.PetJournalHealPetButtonBorder:SetTexture(nil)
 		if self.modBtnBs then
-			self:addButtonBorder{obj=this.HealPetButton, sft=true, clr="grey", ca=1}
+			self:addButtonBorder{obj=this.HealPetButton, sec=true, clr="grey", ca=1}
 			self:addButtonBorder{obj=this.SummonRandomFavoritePetButton, ofs=3, clr="grey", ca=1}
 			self:SecureHook(this.listScroll, "update", function(this)
 				for i = 1, #this.buttons do
@@ -1033,7 +1033,7 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 			this.iconsFrame["spellButton" .. i].slotFrameCollected:SetTexture(nil)
 			this.iconsFrame["spellButton" .. i].slotFrameUncollected:SetTexture(nil)
 			if self.modBtnBs then
-				self:addButtonBorder{obj=this.iconsFrame["spellButton" .. i], sft=true, ofs=0}
+				self:addButtonBorder{obj=this.iconsFrame["spellButton" .. i], sec=true, ofs=0}
 			end
 		end
 		if self.modBtnBs then
@@ -1067,7 +1067,7 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 				frame.slotFrameUncollected:SetTexture(nil)
 				-- ignore btn.levelBackground as its textures is changed when upgraded
 				if self.modBtnBs then
-					self:addButtonBorder{obj=frame, sft=true, ofs=0, reParent={frame.new, frame.levelBackground, frame.level}}
+					self:addButtonBorder{obj=frame, sec=true, ofs=0, reParent={frame.new, frame.levelBackground, frame.level}}
 					skinCollectionBtn(frame)
 				end
 			end
@@ -4113,9 +4113,9 @@ aObj.blizzFrames[ftype].SpellBookFrame = function(self)
 			end
 			if self.modBtnBs then
 				if not self.isClsc then
-					self:addButtonBorder{obj=btn, sft=true, reParent={btn.FlyoutArrow, _G["SpellButton" .. i .. "AutoCastable"]}}
+					self:addButtonBorder{obj=btn, sec=true, reParent={btn.FlyoutArrow, _G["SpellButton" .. i .. "AutoCastable"]}}
 				else
-					self:addButtonBorder{obj=btn, sft=true, reParent={_G["SpellButton" .. i .. "AutoCastable"]}}
+					self:addButtonBorder{obj=btn, sec=true, reParent={_G["SpellButton" .. i .. "AutoCastable"]}}
 				end
 			end
 			updBtn(btn)
@@ -4178,7 +4178,7 @@ aObj.blizzFrames[ftype].SpellBookFrame = function(self)
 					btn:DisableDrawLayer("BACKGROUND")
 					btn.subSpellString:SetTextColor(aObj.BT:GetRGB())
 					if aObj.modBtnBs then
-						aObj:addButtonBorder{obj=btn, sft=true}
+						aObj:addButtonBorder{obj=btn, sec=true}
 					end
 				end
 				btn = nil

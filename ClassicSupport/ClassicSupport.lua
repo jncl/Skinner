@@ -1220,7 +1220,7 @@ aObj.ClassicSupport = function(self)
 				btn:DisableDrawLayer("BACKGROUND")
 				btn:GetNormalTexture():SetTexture(nil)
 				if self.modBtnBs then
-					self:addButtonBorder{obj=btn, sft=true, reParent={_G["SpellButton" .. i .. "AutoCastable"]}}
+					self:addButtonBorder{obj=btn, sec=true, reParent={_G["SpellButton" .. i .. "AutoCastable"]}}
 				end
 				updBtn(btn)
 			end
@@ -1550,17 +1550,17 @@ aObj.ClassicSupport = function(self)
 
 			if self.modBtnBs then
 				for i = 1, _G.NUM_STANCE_SLOTS do
-					self:addButtonBorder{obj=_G["StanceButton" .. i], abt=true, sft=true}
+					self:addButtonBorder{obj=_G["StanceButton" .. i], abt=true, sec=true}
 				end
 				for i = 1, _G.NUM_PET_ACTION_SLOTS do
-					self:addButtonBorder{obj=_G["PetActionButton" .. i], abt=true, sft=true, reParent={_G["PetActionButton" .. i .. "AutoCastable"], _G["PetActionButton" .. i .. "SpellHighlightTexture"]}, ofs=3}
+					self:addButtonBorder{obj=_G["PetActionButton" .. i], abt=true, sec=true, reParent={_G["PetActionButton" .. i .. "AutoCastable"], _G["PetActionButton" .. i .. "SpellHighlightTexture"]}, ofs=3}
 					_G["PetActionButton" .. i .. "Shine"]:SetParent(_G["PetActionButton" .. i].sbb)
 				end
 				-- Action Buttons
 				for i = 1, _G.NUM_ACTIONBAR_BUTTONS do
 					_G["ActionButton" .. i].FlyoutBorder:SetTexture(nil)
 					_G["ActionButton" .. i].FlyoutBorderShadow:SetTexture(nil)
-					self:addButtonBorder{obj=_G["ActionButton" .. i], abt=true, sft=true, ofs=2.5}
+					self:addButtonBorder{obj=_G["ActionButton" .. i], abt=true, sec=true, ofs=2.5}
 				end
 				-- ActionBar buttons
 				self:addButtonBorder{obj=_G.ActionBarUpButton, ofs=-4, clr="gold"}
@@ -1593,7 +1593,7 @@ aObj.ClassicSupport = function(self)
 						if not btn.noGrid then
 							_G[btn:GetName() .. "FloatingBG"]:SetAlpha(0)
 						end
-						self:addButtonBorder{obj=btn, abt=true, sft=true, ofs=2.5}
+						self:addButtonBorder{obj=btn, abt=true, sec=true, ofs=2.5}
 					end
 					btn = nil
 				end
