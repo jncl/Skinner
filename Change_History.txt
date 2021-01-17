@@ -1,3 +1,14 @@
+beta9.36949.8
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated NewSkinFuncs to make EditBoxes & Sliders more visible
+	Updated MinimapButtons skin
+	Bugfix for MinimapButtons selected option
+	Updated ObjectivesTracker skin & added option to skin Header blocks
+	Updated oRA3 & WIM skins
+	Skinned ColorPickerPlus
+
 beta9.36949.7
 Jncl:
 	ToDo.txt
