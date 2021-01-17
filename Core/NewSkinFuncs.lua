@@ -42,6 +42,7 @@ aObj.skinTPLs = {
 		si			= false, -- search icon
 		ofs         = 2,
 		x2          = 0,
+		chginset	= true,
 	},
 	frame = {
 		bg          = false, -- put into Background FrameStrata
@@ -398,7 +399,7 @@ local function skinEditBox(tbl)
 		aObj:moveObject{obj=sIcon, x=3}
 		sIcon:SetAlpha(1)
 		sIcon = nil
-	else
+	elseif tbl.chginset then
 		-- move left text insert
 		local l, r, t, b = tbl.obj:GetTextInsets()
 		tbl.obj:SetTextInsets(l + 5, r, t, b)
@@ -564,7 +565,7 @@ local function skinSlider(tbl)
 		end
 	end
 	local h, w, o = _G.Round(tbl.obj:GetHeight()), _G.Round(tbl.obj:GetWidth()), tbl.obj:GetOrientation()
-	aObj:Debug("skinSlider H/W: [%s, %s, %s]", o, h, w)
+	-- aObj:Debug("skinSlider H/W: [%s, %s, %s]", o, h, w)
 	-- setup offsets based on Orientation/Height/Width
 	if o == "HORIZONTAL" then
 		if h <= 16 then
@@ -606,7 +607,7 @@ local function skinSlider(tbl)
 		tbl.y1 = _G.rawget(tbl, "y1") or 0
 		tbl.y2 = _G.rawget(tbl, "y2") or 0
 	end
-	aObj:Debug("skinSlider#2: [%s, %s, %s, %s]", tbl.x1, tbl.x2, tbl.y1, tbl.y2)
+	-- aObj:Debug("skinSlider#2: [%s, %s, %s, %s]", tbl.x1, tbl.x2, tbl.y1, tbl.y2)
 	-- skin the Slider
 	aObj:skinObject("frame", {obj=tbl.obj, fType=tbl.fType, bd=4, ng=true, x1=tbl.x1, y1=tbl.y1, x2=tbl.x2, y2=tbl.y2, clr="slider"})
 	-- make objects visible
