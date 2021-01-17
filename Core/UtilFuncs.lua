@@ -1569,5 +1569,7 @@ function aObj:SetupCmds()
 		return
 	end)
 
+	self:RegisterChatCommand("tad", function(frame) _G.LoadAddOn("Blizzard_DebugTools"); _G.TableAttributeDisplay:InspectTable(_G[frame]); _G.TableAttributeDisplay:Show() end)
+
 end
 --@end-alpha@
