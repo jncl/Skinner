@@ -3041,7 +3041,7 @@ aObj.blizzLoDFrames[ftype].InspectUI = function(self)
 		self:keepFontStrings(this)
 		for _, slot in _G.ipairs(this.Slots) do
 			slot.Border:SetTexture(nil)
-			self:makeIconSquare(slot, "Texture", true)
+			self:makeIconSquare(slot, "Texture")
 		end
 		self:moveObject{obj=this.PortraitBackground, x=8, y=-10}
 		self:SecureHook(this, "Hide", function(this)
@@ -3054,7 +3054,7 @@ aObj.blizzLoDFrames[ftype].InspectUI = function(self)
 	self:SecureHookScript(_G.InspectTalentFrame, "OnShow", function(this)
 		self:keepFontStrings(this)
 		this.InspectSpec.ring:SetTexture(nil)
-		self:makeIconSquare(this.InspectSpec, "specIcon", true)
+		self:makeIconSquare(this.InspectSpec, "specIcon")
 		for i = 1, _G.MAX_TALENT_TIERS do
 			for j = 1, _G.NUM_TALENT_COLUMNS do
 				this.InspectTalents["tier" .. i]["talent" .. j].Slot:SetTexture(nil)
@@ -3495,7 +3495,7 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 		end)
 		self:checkShown(_G.ScenarioBlocksFrame.MawBuffsBlock)
 	end
-	
+
 	if not self.prdb.ObjectiveTracker.headers then return end
 
 	-- remove Glow/Sheen textures from WorldQuest modules
@@ -3774,7 +3774,7 @@ aObj.blizzLoDFrames[ftype].PVPUI = function(self)
 			_G.PVPQueueFrame["CategoryButton" .. i].Ring:SetTexture(nil)
 			self:changeRecTex(_G.PVPQueueFrame["CategoryButton" .. i]:GetHighlightTexture())
 			-- make Icon square
-			self:makeIconSquare(_G.PVPQueueFrame["CategoryButton" .. i], "Icon", true)
+			self:makeIconSquare(this["CategoryButton" .. i], "Icon")
 		end
 		if self.modBtnBs then
 			-- hook this to change button border colour
@@ -4308,7 +4308,7 @@ aObj.blizzLoDFrames[ftype].TalentUI = function(self)
 				btn.ring:SetTexture(nil)
 				btn.subText:SetTextColor(aObj.BT:GetRGB())
 				-- make icon square
-				aObj:makeIconSquare(btn, "icon", true)
+				aObj:makeIconSquare(btn, "icon")
 				aObj:clrBtnBdr(btn, btn.icon:IsDesaturated() and "disabled" or "gold")
 			end
 		end
@@ -4353,7 +4353,7 @@ aObj.blizzLoDFrames[ftype].TalentUI = function(self)
 				aObj:changeRecTex(frame["specButton" .. i]:GetHighlightTexture())
 			end
 			-- make specIcon square
-			aObj:makeIconSquare(frame["specButton" .. i], "specIcon", true)
+			aObj:makeIconSquare(frame["specButton" .. i], "specIcon")
 		end
 		-- shadow frame (LHS)
 		aObj:keepFontStrings(aObj:getChild(frame, 8))
@@ -4362,7 +4362,7 @@ aObj.blizzLoDFrames[ftype].TalentUI = function(self)
 		frame.spellsScroll.child.gradient:SetTexture(nil)
 		aObj:removeRegions(frame.spellsScroll.child, {2, 3, 4, 5, 6, 13})
 		-- make specIcon square
-		aObj:makeIconSquare(frame.spellsScroll.child, "specIcon", true)
+		aObj:makeIconSquare(frame.spellsScroll.child, "specIcon")
 		-- abilities
 		skinAbilities(frame)
 	end
@@ -4407,7 +4407,7 @@ aObj.blizzLoDFrames[ftype].TalentUI = function(self)
 		self:nilTexture(frame.Ring, true) -- warmode button ring texture
 		for i = 1, #frame.Slots do
 			self:nilTexture(frame.Slots[i].Border, true) -- PvP talent ring texture
-			self:makeIconSquare(frame.Slots[i], "Texture", true)
+			self:makeIconSquare(frame.Slots[i], "Texture")
 		end
 		frame.WarmodeIncentive.IconRing:SetTexture(nil)
 

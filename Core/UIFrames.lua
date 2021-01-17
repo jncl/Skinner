@@ -5243,7 +5243,7 @@ aObj.blizzFrames[ftype].PVEFrame = function(self)
 			_G.GroupFinderFrame["groupButton" .. i].ring:SetTexture(nil)
 			self:changeRecTex(_G.GroupFinderFrame["groupButton" .. i]:GetHighlightTexture())
 			-- make icon square
-			self:makeIconSquare(_G.GroupFinderFrame["groupButton" .. i], "icon", true)
+			self:makeIconSquare(_G.GroupFinderFrame["groupButton" .. i], "icon")
 		end
 		-- hook this to change selected texture
 		self:SecureHook("GroupFinderFrame_SelectGroupButton", function(index)

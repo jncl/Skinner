@@ -884,7 +884,7 @@ function aObj:makeMFRotatable(modelFrame)
 
 end
 
-function aObj:makeIconSquare(obj, iconObjName, chkDisabled)
+function aObj:makeIconSquare(obj, iconObjName)
 
 	obj[iconObjName]:SetTexCoord(.1, .9, .1, .9)
 
