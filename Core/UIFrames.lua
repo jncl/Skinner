@@ -5256,16 +5256,15 @@ aObj.blizzFrames[ftype].PVEFrame = function(self)
 	if not self.prdb.PVEFrame or self.initialized.PVEFrame then return end
 	self.initialized.PVEFrame = true
 
-	-- "LFDParentFrame", "ScenarioFinderFrame", "RaidFinderFrame", "LFGListPVEStub"
-	local gbCnt = 3
+	-- "LFDParentFrame", "RaidFinderFrame", "LFGListPVEStub"
 
 	self:SecureHookScript(_G.PVEFrame, "OnShow", function(this)
 		self:removeInset(this.Inset)
 		self:keepFontStrings(this.shadows)
 		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, ignoreHLTex=true})
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, y2=-5}
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, x1=-4, x2=3, y2=-4.5}
 		-- GroupFinder Frame
-		for i = 1,gbCnt do
+		for i = 1, 3 do
 			_G.GroupFinderFrame["groupButton" .. i].bg:SetTexture(nil)
 			_G.GroupFinderFrame["groupButton" .. i].ring:SetTexture(nil)
 			self:changeRecTex(_G.GroupFinderFrame["groupButton" .. i]:GetHighlightTexture())
@@ -5274,7 +5273,7 @@ aObj.blizzFrames[ftype].PVEFrame = function(self)
 		end
 		-- hook this to change selected texture
 		self:SecureHook("GroupFinderFrame_SelectGroupButton", function(index)
-			for i = 1, gbCnt do
+			for i = 1, 3 do
 				if i == index then
 					self:changeRecTex(_G.GroupFinderFrame["groupButton" .. i].bg, true)
 				else
@@ -5285,7 +5284,7 @@ aObj.blizzFrames[ftype].PVEFrame = function(self)
 		if self.modBtnBs then
 			-- hook this to change button border colour
 			self:SecureHook("GroupFinderFrame_EvaluateButtonVisibility", function(this, _)
-				for i = 1, gbCnt do
+				for i = 1, 3 do
 					self:clrBtnBdr(_G.GroupFinderFrame["groupButton" .. i])
 				end
 			end)
