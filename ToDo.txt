@@ -26,22 +26,38 @@ ToDos
 	I	ToolTip border, reported by EpidemeDaBear, 02.01.21
 ?		- texture used on mouseover of Quest reward
 
-	I 	reported by Fakelessgaming, 03.01.21
+	I 	reported by Fakelessgaming/iicoolpete, 03.01.21
 ?		- that issue with Torghast anima can't be activated in combat is still there
 
-x	I	SexyMap & Minimap buttons, reported by Galthariel, 08.01.21
-√	I	ObjectiveTracker, reported by Galthariel, 08.01.21
+	I	Minimap Buttons, reported by Galthariel,08.01.21
+?		- still not being skinned properly
 
-	I	reported by Carica18, 08.01.21
-√		- Ace3\AceHook-3.0\AceHook-3.0-9.lua:180: Attempting to rehook already active hook OnUpdate.
-		[string "=[C]"]: ?
-		[string "@Ace3\AceHook-3.0\AceHook-3.0-9.lua"]:180: in function <Ace3\AceHook-3.0\AceHook-3.0.lua:118>
-		[string "@Ace3\AceHook-3.0\AceHook-3.0-9.lua"]:367: in function `HookScript'
-		[string "@Skinner\Core\UIFrames.lua"]:6154: in function <Skinner\Core\UIFrames.lua:6124>
-		[string "@Skinner\Core\UtilFuncs.lua"]:169: in function `add2Table'
-		[string "@Skinner\AddonSkins\oRA3-v9.0.12.lua"]:85: in function <Skinner\AddonSkins\oRA3.lua:84>
+	I	WIM, reported by Galthariel,08.01.21
+?		- Floating Tabs after skin resized
+			- asked for a copy of SV file to check settings
 
-√	S	ColorPickerPlus
+	I	SpartanUI, reported by raineday, 09.01.21
+x		- Ace3GUI (lib) skin is disabled by it
 
-	I	WIM, reported by Elixirofpain, 08.01.21
-√		- How to enable the chat borders on WIM addon
+√	I	VuhDuOptionsUI, reported by Galthariel, 09.01.21
+
+	I	Rematch, reported by Galthariel, 09.01.21
+√		- Update skin for latest version
+
+	I	ChatSettings, reported by Siinba, 09.01.21
+√		- Skinner\Core\NewSkinFuncs.lua:413: attempt to index field 'obj' (a nil value)
+		Skinner\Core\NewSkinFuncs.lua:413: in function <Skinner\Core\NewSkinFuncs.lua:406>
+		Skinner\Core\NewSkinFuncs.lua:515: in function `?'
+		Skinner\Core\NewSkinFuncs.lua:154: in function `skinObject'
+		Skinner\Core\UIFrames.lua:1610: in function <Skinner\Core\UIFrames.lua:1535>
+
+	I	PVPFrame, reported by Galthariel,09.01.21
+?		- Rated Tab is greyed out and cannot be selected
+?		- When starting an Arena match, click on Eye to see team info, not working now
+			- QueueStatusFrame
+
+	I	PetBattleUI, reported by Galthariel, 10.01.21
+√		- When Pet battling the pet that has more speed always glows and stays glowing so you can know you will be using your ability before the opponent.
+
+	I	MawBuffBlock Header, reported by Fakelessgaming, 13.01.21
+√		- not being skinned separetely from Headers, add option to do so
