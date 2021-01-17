@@ -46,7 +46,7 @@ local addonSkins = {
 	"Quartz", "QuestCompletist", "QuickMark",
 	"Skada", "SorhaQuestLog",
 	"TargetCharms", "TooManyAddons",
-	"Vendomatic", "VuhDo", "VuhDoOptions",
+	"Vendomatic",
 	"XLoot", "xMerchant",
 }
 aObj.addonsToSkin = {}

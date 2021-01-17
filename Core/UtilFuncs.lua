@@ -685,6 +685,16 @@ function aObj:hasTextInName(obj, text)
 
 end
 
+function aObj:hasTextInNameRE(obj, text)
+--@alpha@
+	_G.assert(obj, "Unknown object hasTextInName\n" .. _G.debugstack(2, 3, 2))
+	_G.assert(text, "Missing value hasTextInName\n" .. _G.debugstack(2, 3, 2))
+--@end-alpha@
+
+	return obj and obj.GetName and obj:GetName() and obj:GetName():find(text) and true or false
+
+end
+
 function aObj:hasAnyTextInName(obj, tab)
 --@alpha@
 	_G.assert(obj, "Unknown object hasAnyTextInName\n" .. _G.debugstack(2, 3, 2))

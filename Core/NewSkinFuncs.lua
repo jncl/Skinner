@@ -73,6 +73,7 @@ aObj.skinTPLs = {
 		invert      = false, -- invert Gradient
 		rotate      = false, -- rotate Gradient
 		fb          = false, -- frame border [bd=10, ng=true, ofs=0]
+		name		= nil, -- use a name if required (VuhDo Options)
 	},
 	glowbox = {
 	},
@@ -245,6 +246,9 @@ local function skinButton(tbl)
 	or tbl.noSkin
 	then
 		return
+	end
+	if tbl.name then
+		tbl.name = tbl.obj:GetName() .. "~sb~"
 	end
 	-- add a frame to the object
 	tbl.obj.sb = _G.CreateFrame("Button", nil, tbl.obj, tbl.sft and "SecureFrameTemplate")
@@ -434,6 +438,9 @@ local function skinFrame(tbl)
 	end
 	if tbl.hdr then
 		hideHeader(tbl.obj)
+	end
+	if tbl.name then
+		tbl.name = tbl.obj:GetName() .. "~sf~"
 	end
 	-- add a frame to the object
 	tbl.obj.sf = _G.CreateFrame("Frame", nil, tbl.obj, tbl.sft and "SecureFrameTemplate")

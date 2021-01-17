@@ -2,379 +2,371 @@ local aName, aObj = ...
 if not aObj:isAddonEnabled("Rematch") then return end
 local _G = _G
 
-aObj.addonsToSkin.Rematch = function(self) -- v 4.11.5
+aObj.addonsToSkin.Rematch = function(self) -- v 4.11.10
 
-    local tab, btn, pet
-
-    -- Journal (used when integrated with PetJournal)
-    -- tabs
-    for i = 1, #_G.RematchJournal.PanelTabs.Tabs do
-        tab = _G.RematchJournal.PanelTabs.Tabs[i]
-        for j = 1, 3 do
-            tab.Inactive[j]:SetTexture(nil)
-            tab.Active[j]:SetTexture(nil)
-        end
-		self:addSkinFrame{obj=tab, ft="a", noBdr=self.isTT, x1=8, y1=0, x2=-8, y2=3}
-        if i == _G.RematchSettings.JournalPanel then
-            if self.isTT then self:setActiveTab(tab.sf) end
-        else
-            if self.isTT then self:setInactiveTab(tab.sf) end
-        end
-    end
-    self:SecureHook(_G.Rematch, "SelectPanelTab", function(this, parent, index)
-        local tab
-        for i = 1, #parent.Tabs do
-            tab = parent.Tabs[i]
-            if i == index then
-                if self.isTT then self:setActiveTab(tab.sf) end
-            else
-                if self.isTT then self:setInactiveTab(tab.sf) end
-            end
-        end
-		tab = nil
-    end)
-	if _G.RematchJournal.CollectMeButton then
-		self:removeMagicBtnTex(_G.RematchJournal.CollectMeButton)
-		if self.modBtns then
-			self:skinStdButton{obj=_G.RematchJournal.CollectMeButton}
+	local function skinScrollFrame(frame)
+	    aObj:removeInset(frame.List.Background)
+		aObj:skinObject("slider", {obj=frame.List.ScrollFrame.ScrollBar, x2=-2})
+		local function skinBtns(frame)
+			if frame.hasButtons then
+			    for _, btn in _G.pairs(frame.ScrollFrame.Buttons) do
+			        btn:DisableDrawLayer("BACKGROUND")
+			    end
+			end
 		end
-	end
-    self:addSkinFrame{obj=_G.RematchJournal, ft="a", kfs=true, aso={ba=1}, x1=-4, y1=2, x2=1, y2=-5}
-	if self.modChkBtns then
-		self:SecureHook(_G.RematchJournal, "SetupUseRematchButton", function(this)
-			self:skinCheckButton{obj=_G.UseRematchButton}
-			self:Unhook(this, "SetupUseRematchButton")
+		aObj:SecureHook(frame.List, "Update", function(this)
+			skinBtns(this)
 		end)
+		skinBtns(frame.List)
 	end
-
-    -- Frame (used when standalone)
-    _G.RematchFrame:DisableDrawLayer("BACKGROUND")
-    _G.RematchFrame:DisableDrawLayer("BORDER")
-    self:keepFontStrings(_G.RematchFrame.TitleBar)
-	if self.modBtns then
-		self:skinStdButton{obj=_G.RematchFrame.TitleBar.LockButton, ofs=-6}
-		self:skinStdButton{obj=_G.RematchFrame.TitleBar.SinglePanelButton, ofs=-6}
-	    self:skinOtherButton{obj=_G.RematchFrame.TitleBar.MinimizeButton, text=""} -- uses existing texture
-		self:skinCloseButton{obj=_G.RematchFrame.TitleBar.CloseButton}
-	end
-	-- remove these textures after buttons skinned, otherwise texture remains for some reason
-    self:removeRegions(_G.RematchFrame.TitleBar.LockButton, {5})
-    self:removeRegions(_G.RematchFrame.TitleBar.SinglePanelButton, {5})
-    self:removeRegions(_G.RematchFrame.TitleBar.MinimizeButton, {5})
-    self:removeRegions(_G.RematchFrame.TitleBar.CloseButton, {5})
-    -- tabs
-    for i = 1, #_G.RematchFrame.PanelTabs.Tabs do
-        tab = _G.RematchFrame.PanelTabs.Tabs[i]
-        for j = 1, 3 do
-            tab.Inactive[j]:SetTexture(nil)
-            tab.Active[j]:SetTexture(nil)
-        end
-		self:addSkinFrame{obj=tab, ft="a", noBdr=self.isTT, x1=8, y1=0, x2=-8, y2=3}
-        if i == _G.RematchSettings.ActivePanel then
-            if self.isTT then self:setActiveTab(tab.sf) end
-        else
-            if self.isTT then self:setInactiveTab(tab.sf) end
-        end
-    end
-    self:SecureHook(_G.RematchFrame, "SelectPanel", function(this, index, unselect)
-        local tab
-        for i = 1, #this.PanelTabs.Tabs do
-            tab = this.PanelTabs.Tabs[i]
-            if i == index then
-                if self.isTT then self:setActiveTab(tab.sf) end
-            else
-                if self.isTT then self:setInactiveTab(tab.sf) end
-            end
-        end
-    end)
-	local yOfs = 2
-	if _G.RematchFrame.TitleBar:IsShown() then
-		yOfs = -24
-	end
-	self:addSkinFrame{obj=_G.RematchFrame, ft="a", kfs=true, nb=true, x1=-4, y1=yOfs, x2=1, y2=-5}
-	yOfs = nil
-    -- hook these to handle resize of skinframe when TitleBar is hidden/shown
-    local function resizeFrame(showTitleBar)
-		local yOfs = 2
-        if showTitleBar then
-			yOfs = -24
+	local function skinComboBox(frame)
+		aObj:skinObject("frame", {obj=frame, fb=true, ofs=0})
+		if aObj.modBtnBs then
+			aObj:addButtonBorder{obj=aObj:getChild(frame, 1), ofs=-1}--, ofs=1, x1=-1, y1=1, x2=1, y2=-1, relTo=, reParent={}, clr=, ca=}
 		end
-		_G.RematchFrame.sf:ClearAllPoints()
-		_G.RematchFrame.sf:SetPoint("TOPLEFT", _G.RematchFrame, "TOPLEFT", -4, yOfs)
-		_G.RematchFrame.sf:SetPoint("BOTTOMRIGHT", _G.RematchFrame, "BOTTOMRIGHT", 1, -5)
-		yOfs = nil
-    end
-    self:SecureHook(_G.RematchFrame.TitleBar, "SetShown", function(this, value)
-        resizeFrame(value)
-    end)
-    self:SecureHook(_G.RematchFrame.TitleBar, "Show", function(this)
-        resizeFrame(true)
-    end)
-
-    -- Toolbar
-    self:removeInset(_G.RematchToolbar.PetCount)
-    self:removeRegions(_G.RematchToolbar.Achievement, {4, 5})
-	if self.modBtnBs then
-	    self:addButtonBorder{obj=_G.RematchHealButton}
-	    self:addButtonBorder{obj=_G.RematchBandageButton}
-	    self:addButtonBorder{obj=_G.RematchToolbar.PetTreat}
-	    self:addButtonBorder{obj=_G.RematchToolbar.LesserPetTreat}
-	    self:addButtonBorder{obj=_G.RematchToolbar.SafariHat}
-	    self:addButtonBorder{obj=_G.RematchToolbar.SummonRandom}
-		-- N.B. these buttons are only shown when the toolbar is at the bottom
-	    self:addButtonBorder{obj=_G.RematchToolbar.FindBattle}
-	    self:addButtonBorder{obj=_G.RematchToolbar.Save}
-	    self:addButtonBorder{obj=_G.RematchToolbar.SaveAs}
 	end
-    -- N.B. have to hook this as it changes the GameTooltip border colour
-    self:SecureHook(_G.RematchToolbar, "ButtonOnEnter", function(this, once)
-        if not this.tooltipTitle then
-            self:skinTooltip(_G.GameTooltip)
-        end
-    end)
-
-    -- MiniPanel
-    for i = 1, 3 do
-        pet = _G.RematchMiniPanel.Pets[i]
-        pet.HP:DisableDrawLayer("OVERLAY")
-		self:skinStatusBar{obj=pet.HP, fi=0, bgTex=self:getRegion(pet.HP, 6)}
-        pet.XP:DisableDrawLayer("OVERLAY")
-		self:skinStatusBar{obj=pet.XP, fi=0, bgTex=self:getRegion(pet.XP, 4)}
-    end
-    self:removeInset(_G.RematchMiniPanel.Background)
-    self:removeInset(_G.RematchMiniPanel.Target)
-    self:addSkinFrame{obj=_G.RematchMiniPanel.Flyout, ft="a", kfs=true, nb=true}
-	if self.modBtnBs then
-		self:addButtonBorder{obj=_G.RematchMiniPanel.Target.ModelBorder}
-	end
-
-    -- Menu (replaces dropdowns)
-    self:RawHook(_G.Rematch, "GetMenuFrame", function(this, level, parent)
-        local frame = self.hooks[this].GetMenuFrame(this, level, parent)
+    -- Menu (replaces dropdown menus)
+    self:RawHook(_G.Rematch, "GetMenuFrame", function(this, ...)
+        local frame = self.hooks[this].GetMenuFrame(this, ...)
         if not frame.sf then
             self:removeRegions(frame, {1, 2})
             self:removeRegions(frame.Title, {1, 2})
-            self:addSkinFrame{obj=frame, ft="a", nb=true, ofs=0}
+			self:skinObject("frame", {obj=frame, ofs=0})
         end
+		-- TODO: skin Buttons' Check texture ??
         return frame
     end, true)
 
-	local function skinSearchBox(frame)
-	    aObj:skinUsingBD{obj=frame.Top.SearchBox}
-	    frame.Top.SearchBox:SetWidth(frame.Top.SearchBox:GetWidth() - 5)
+	local function skinTabs(frame)
+		aObj:skinObject("tabs", {obj=frame, tabs=frame.PanelTabs.Tabs, ignoreSize=true, lod=true, selectedTab=frame == _G.RematchFrame and _G.RematchSettings.ActivePanel or _G.RematchSettings.JournalPanel, offsets={x1=8, y1=0, x2=-8, y2=1}, track=no, func=aObj.isTT and function(tab) aObj:SecureHookScript(tab, "OnClick", function(this)
+			for _, tab in _G.pairs(frame.PanelTabs.Tabs) do
+				aObj:setInactiveTab(tab.sf)
+			end
+			if this:GetID() == frame == _G.RematchFrame and _G.RematchSettings.ActivePanel or _G.RematchSettings.JournalPanel then
+				aObj:setActiveTab(this.sf)
+			end
+		end) end})
 	end
-	local function skinScrollFrame(frame)
-	    aObj:removeInset(frame.List.Background)
-	    aObj:skinSlider{obj=frame.List.ScrollFrame.ScrollBar, adj=-4, rt="artwork"}
-		aObj:SecureHook(frame.List, "Update", function(this)
-			if not this.ScrollFrame.Buttons then return end
-			local btn
-		    for i = 1, #this.ScrollFrame.Buttons do
-		        btn = this.ScrollFrame.Buttons[i]
-		        btn:DisableDrawLayer("BACKGROUND")
-		    end
-			btn = nil
-		end)
-	end
-    -- PetPanel (Tab1)
-    self:removeInset(_G.RematchPetPanel.Top)
-	if self.modBtnBs then
-	    self:addButtonBorder{obj=_G.RematchPetPanel.Top.Toggle, ofs=0}
-	    self:addButtonBorder{obj=_G.RematchPetPanel.Top.Filter, ofs=0}
-	end
-	skinSearchBox(_G.RematchPetPanel)
-    -- tabs (3)
-    for i = 1, 3 do
-        tab = _G.RematchPetPanel.Top.TypeBar.Tabs[i]
-		self:addSkinFrame{obj=tab, ft="a", noBdr=self.isTT, ofs=0, x1=4, y2=-2, x2=-4}
-        tab.sf.ignore = true
-        tab:DisableDrawLayer("BACKGROUND")
-        tab.Selected:DisableDrawLayer("ARTWORK")
-        if i == 1 then
-            if self.isTT then self:setActiveTab(tab.sf) end
-        else
-            if self.isTT then self:setInactiveTab(tab.sf) end
-        end
-    end
-    self:SecureHook(_G.RematchPetPanel, "TypeBarTabOnClick", function(this)
-        local tab
-        for i = 1, 3 do
-            tab = _G.RematchPetPanel.Top.TypeBar.Tabs[i]
-            if i == this:GetID() then
-                if self.isTT then self:setActiveTab(tab.sf) end
-            else
-                if self.isTT then self:setInactiveTab(tab.sf) end
-            end
-        end
-		tab = nil
-    end)
-    for i = 1, #_G.RematchPetPanel.Top.TypeBar.Buttons do
-        _G.RematchPetPanel.Top.TypeBar.Buttons[i].IconBorder:SetTexture(nil)
-    end
-    self:addSkinFrame{obj=_G.RematchPetPanel.Top.TypeBar, ft="a", kfs=true, nb=true, y1=1}
-    self:removeInset(_G.RematchPetPanel.Results)
-	skinScrollFrame(_G.RematchPetPanel)
-
-    -- BottomPanel
-	self:removeMagicBtnTex(_G.RematchBottomPanel.FindBattleButton)
-	self:removeMagicBtnTex(_G.RematchBottomPanel.SaveAsButton)
-	self:removeMagicBtnTex(_G.RematchBottomPanel.SaveButton)
-	self:removeMagicBtnTex(_G.RematchBottomPanel.SummonButton)
-	if self.modBtns then
-		self:skinStdButton{obj=_G.RematchBottomPanel.SummonButton}
-		self:skinStdButton{obj=_G.RematchBottomPanel.SaveButton}
-		self:skinStdButton{obj=_G.RematchBottomPanel.SaveAsButton}
-		self:skinStdButton{obj=_G.RematchBottomPanel.FindBattleButton}
-	end
-	if self.modChkBtns then
-		self:skinCheckButton{obj=_G.RematchBottomPanel.UseDefault}
-	end
-
-    -- LoadoutPanel
-    for i = 1, 3 do
-        pet = _G.RematchLoadoutPanel.Loadouts[i]
-        self:removeInset(pet)
-        pet.XP:DisableDrawLayer("OVERLAY")
-		self:skinStatusBar{obj=pet.XP, fi=0, bgTex=self:getRegion(pet.XP, 11)}
-        pet.HP:DisableDrawLayer("OVERLAY")
-		self:skinStatusBar{obj=pet.HP, fi=0, bgTex=self:getRegion(pet.HP, 6)}
-    end
-    self:removeInset(_G.RematchLoadoutPanel.Target)
-    self:removeRegions(_G.RematchLoadoutPanel.Target, {11}) -- line
-    self:addSkinFrame{obj=_G.RematchLoadoutPanel.Flyout, ft="a", kfs=true, nb=true}
-	if self.modBtns then
-		self:skinStdButton{obj=_G.RematchLoadoutPanel.Target.LoadSaveButton}
-	end
-	if self.modBtnBs then
-	    self:addButtonBorder{obj=_G.RematchLoadoutPanel.Target.TargetButton, ofs=0}
-	    self:addButtonBorder{obj=_G.RematchLoadoutPanel.Target.ModelBorder}
-	end
-	--> TargetPanel
-    self:removeInset(_G.RematchLoadoutPanel.TargetPanel.Top)
-	skinSearchBox(_G.RematchLoadoutPanel.TargetPanel)
-	skinScrollFrame(_G.RematchLoadoutPanel.TargetPanel)
-	if self.modBtns then
-		self:skinStdButton{obj=_G.RematchLoadoutPanel.TargetPanel.Top.BackButton}
-	end
-
-    -- TeamPanel (Tab2)
-    self:removeInset(_G.RematchTeamPanel.Top)
-	if self.modBtnBs then
-		self:addButtonBorder{obj=_G.RematchTeamPanel.Top.Teams, ofs=0}
-	end
-	skinSearchBox(_G.RematchTeamPanel)
-	skinScrollFrame(_G.RematchTeamPanel)
-
-    -- TeamTabs
-	self:SecureHook(_G.RematchTeamTabs, "GetTabButton", function(this, index)
-        local tab = _G.RematchTeamTabs.Tabs[index]
-        tab:DisableDrawLayer("BACKGROUND")
-		if self.modBtnBs then
-			self:addButtonBorder{obj=tab, ofs=4, relTo=tab.Icon}
+    -- Journal (used when integrated with PetJournal)
+	self:SecureHookScript(_G.RematchJournal, "OnShow", function(this)
+		if this.CollectMeButton then
+			self:removeMagicBtnTex(this.CollectMeButton)
+			if self.modBtns then
+				self:skinStdButton{obj=this.CollectMeButton}
+			end
 		end
-		tab = nil
+		skinTabs(this)
+		self:skinObject("frame", {obj=this, kfs=true, cb=true, x1=-4, y1=2, x2=2.5, y2=-5})
+		if self.modChkBtns then
+			self:SecureHook(this, "SetupUseRematchButton", function(this)
+				self:skinCheckButton{obj=_G.UseRematchButton}
+				self:Unhook(this, "SetupUseRematchButton")
+			end)
+		end
+
+		self:Unhook(this, "OnShow")
 	end)
 
-    -- QueuePanel (Tab3)
-    self:removeInset(_G.RematchQueuePanel.Top)
-	if self.modBtnBs then
-		self:addButtonBorder{obj=_G.RematchQueuePanel.Top.QueueButton, ofs=0}
-	end
-    self:removeInset(_G.RematchQueuePanel.Status)
-	skinScrollFrame(_G.RematchQueuePanel)
+    -- Frame (used when standalone)
+	self:SecureHookScript(_G.RematchFrame, "OnShow", function(this)
+	    this:DisableDrawLayer("BACKGROUND")
+	    this:DisableDrawLayer("BORDER")
+	    self:keepFontStrings(this.TitleBar)
+		skinTabs(this)
+		self:skinObject("frame", {obj=this, kfs=true, x1=-4, y1=2, x2=1, y2=-5})
+		if self.modBtns then
+			self:skinStdButton{obj=this.TitleBar.LockButton, ofs=-6}
+			self:skinStdButton{obj=this.TitleBar.SinglePanelButton, ofs=-6}
+		    self:skinOtherButton{obj=this.TitleBar.MinimizeButton, text=""} -- uses existing texture
+			self:skinCloseButton{obj=this.TitleBar.CloseButton}
+			self:removeRegions(this.TitleBar.CloseButton, {5})
+		end
+		-- remove these textures after buttons skinned, otherwise texture remains for some reason
+	    self:removeRegions(this.TitleBar.LockButton, {5})
+	    self:removeRegions(this.TitleBar.SinglePanelButton, {5})
+	    self:removeRegions(this.TitleBar.MinimizeButton, {5})
 
-    -- OptionPanel (Tab4)
-    self:removeInset(_G.RematchOptionPanel)
-    self:removeInset(_G.RematchOptionPanel.Top)
-	skinScrollFrame(_G.RematchOptionPanel)
-	skinSearchBox(_G.RematchOptionPanel)
+		self:Unhook(this, "OnShow")
+	end)
 
-    -- LoadedTeamPanel
-    _G.RematchLoadedTeamPanel:DisableDrawLayer("BACKGROUND")
-    self:removeInset(_G.RematchLoadedTeamPanel)
-    self:removeInset(_G.RematchLoadedTeamPanel.Footnotes)
+	self:SecureHookScript(_G.RematchToolbar, "OnShow", function(this)
+	    self:removeInset(this.PetCount)
+	    self:removeRegions(this.Achievement, {4, 5})
+		if self.modBtnBs then
+		    self:addButtonBorder{obj=_G.RematchHealButton}
+		    self:addButtonBorder{obj=_G.RematchBandageButton}
+		    self:addButtonBorder{obj=_G.RematchToolbar.PetTreat}
+		    self:addButtonBorder{obj=_G.RematchToolbar.LesserPetTreat}
+		    self:addButtonBorder{obj=_G.RematchToolbar.SafariHat}
+		    self:addButtonBorder{obj=_G.RematchToolbar.SummonRandom}
+			-- N.B. these buttons are only shown when the toolbar is at the bottom
+		    self:addButtonBorder{obj=_G.RematchToolbar.FindBattle}
+		    self:addButtonBorder{obj=_G.RematchToolbar.Save}
+		    self:addButtonBorder{obj=_G.RematchToolbar.SaveAs}
+		end
+	    -- N.B. have to hook this as it changes the GameTooltip border colour
+	    self:SecureHook(this, "ButtonOnEnter", function(this, _)
+	        if not this.tooltipTitle then
+	            self:skinTooltip(_G.GameTooltip)
+	        end
+	    end)
 
-    -- AbilityCard (Tooltip)
-    _G.RematchAbilityCard:DisableDrawLayer("BACKGROUND")
-    self:removeRegions(_G.RematchAbilityCard, {14}) -- line
-    _G.RematchAbilityCard.Hints:DisableDrawLayer("BACKGROUND")
-    self:removeRegions(_G.RematchAbilityCard.Hints, {2, 9}) -- line & doodad
-    self:addSkinFrame{obj=_G.RematchAbilityCard, ft="a", kfs=true, nb=true}
+		self:Unhook(this, "OnShow")
+	end)
 
-    -- PetCard (Tooltip)
-    -- hook this to manage the displaying of the PetCard and child panels (Front, Back) so that title is displayed
-    self:RawHook(_G.RematchPetCard, "SetAlpha", function(this, alpha)
-        if alpha == 0 then
-            self:addSkinFrame{obj=this, ft="a", kfs=true, nb=true, ofs=-2, y1=-20}
-        else
-            self:addSkinFrame{obj=this, ft="a", kfs=true, nb=true, x1=-3, y1=2, x2=1}
-        end
-        this.PinButton:SetAlpha(alpha)
-        this.PetCardTitle:SetAlpha(alpha)
-        this.CloseButton:SetAlpha(alpha)
-    end, true)
-    self:removeRegions(_G.RematchPetCard.PinButton, {1})
-    _G.RematchPetCard.Title:DisableDrawLayer("BACKGROUND")
-    _G.RematchPetCard.Front.Bottom:DisableDrawLayer("BACKGROUND")
-    self:removeRegions(_G.RematchPetCard.Front.Bottom, {2}) -- line
-    _G.RematchPetCard.Front.Middle:DisableDrawLayer("BACKGROUND")
-    self:removeRegions(_G.RematchPetCard.Front.Middle, {12}) -- line
-    _G.RematchPetCard.Front.Middle.XP:DisableDrawLayer("OVERLAY")
-	self:skinStatusBar{obj=_G.RematchPetCard.Front.Middle.XP, fi=0, bgTex=self:getRegion(_G.RematchPetCard.Front.Middle.XP, 11)}
-    _G.RematchPetCard.Back.Source:DisableDrawLayer("BACKGROUND")
-    self:removeRegions(_G.RematchPetCard.Back.Source, {3}) -- line
-    _G.RematchPetCard.Back.Bottom:DisableDrawLayer("BACKGROUND")
-    self:removeRegions(_G.RematchPetCard.Back.Bottom, {2, 15, 16}) -- line & doodads
-    _G.RematchPetCard.Back.Middle:DisableDrawLayer("BACKGROUND")
-    _G.RematchPetCard.Back.Middle:DisableDrawLayer("BORDER") -- doodads
-	self:removeRegions(_G.RematchPetCard.Back.Middle, {7}) -- line above middle area
-    _G.RematchPetCard.Back.Middle.Lore:SetTextColor(self.BTr, self.BTg, self.BTb)
+	self:SecureHookScript(_G.RematchMiniPanel, "OnShow", function(this)
+	    for _, pet in _G.pairs(this.Pets) do
+	        pet.HP:DisableDrawLayer("OVERLAY")
+			self:skinStatusBar{obj=pet.HP, fi=0, bgTex=self:getRegion(pet.HP, 6)}
+	        pet.XP:DisableDrawLayer("OVERLAY")
+			self:skinStatusBar{obj=pet.XP, fi=0, bgTex=self:getRegion(pet.XP, 4)}
+	    end
+	    self:removeInset(this.Background)
+	    self:removeInset(this.Target)
+		self:skinObject("frame", {obj=this.Flyout, kfs=true})
+		if self.modBtnBs then
+			self:addButtonBorder{obj=this.Target.ModelBorder}
+		end
+
+		self:Unhook(this, "OnShow")
+	end)
+
+	self:SecureHookScript(_G.RematchPetPanel, "OnShow", function(this)
+	    self:removeInset(this.Top)
+		self:skinObject("editbox", {obj=this.Top.SearchBox, chginset=false, regions={3}, ofs=0})
+		self:skinObject("tabs", {obj=this.Top.TypeBar, tabs=this.Top.TypeBar.Tabs, ignoreSize=true, lod=true, offsets={x1=4, y1=0, x2=-2, y2=-2}, track=no, func=self.isTT and function(tab) aObj:SecureHookScript(tab, "OnClick", function(this)
+			for _, tab in _G.pairs(_G.RematchPetPanel.Top.TypeBar.Tabs) do
+				aObj:setInactiveTab(tab.sf)
+			end
+			if tab.Selected:IsShown() then
+				aObj:setActiveTab(this.sf)
+			end
+		end) aObj:keepFontStrings(tab.Selected) end})
+	    for _, btn in _G.pairs(this.Top.TypeBar.Buttons) do
+	        btn.IconBorder:SetTexture(nil)
+	    end
+		self:skinObject("frame", {obj=this.Top.TypeBar, kfs=true, y1=1})
+	    self:removeInset(this.Results)
+		skinScrollFrame(this)
+		if self.modBtns then
+			self:skinStdButton{obj=this.Top.Filter}
+		end
+		if self.modBtnBs then
+		    self:addButtonBorder{obj=this.Top.Toggle, ofs=0}
+		end
+
+		self:Unhook(this, "OnShow")
+	end)
+
+	self:SecureHookScript(_G.RematchBottomPanel, "OnShow", function(this)
+		self:removeMagicBtnTex(this.FindBattleButton)
+		self:removeMagicBtnTex(this.SaveAsButton)
+		self:removeMagicBtnTex(this.SaveButton)
+		self:removeMagicBtnTex(this.SummonButton)
+		if self.modBtns then
+			self:skinStdButton{obj=this.SummonButton}
+			self:skinStdButton{obj=this.SaveButton}
+			self:skinStdButton{obj=this.SaveAsButton}
+			self:skinStdButton{obj=this.FindBattleButton}
+			self:SecureHook(this, "Update", function(this)
+				self:clrBtnBdr(this.SummonButton)
+				self:clrBtnBdr(this.SaveButton)
+				self:clrBtnBdr(this.FindBattleButton)
+			end)
+		end
+		if self.modChkBtns then
+			self:skinCheckButton{obj=this.UseDefault}
+		end
+
+		self:Unhook(this, "OnShow")
+	end)
+
+	self:SecureHookScript(_G.RematchLoadoutPanel, "OnShow", function(this)
+	    for _, frame in _G.pairs(this.Loadouts) do
+	        self:removeInset(frame)
+	        frame.XP:DisableDrawLayer("OVERLAY")
+			self:skinStatusBar{obj=frame.XP, fi=0, bgTex=self:getRegion(frame.XP, 11)}
+	        frame.HP:DisableDrawLayer("OVERLAY")
+			self:skinStatusBar{obj=frame.HP, fi=0, bgTex=self:getRegion(frame.HP, 6)}
+			self:skinObject("frame", {obj=frame, kfs=true, fb=true, ofs=0})
+	    end
+	    self:removeInset(this.Target)
+	    self:removeRegions(this.Target, {11}) -- line
+		self:skinObject("frame", {obj=this.Flyout, kfs=true})
+	    self:removeInset(this.TargetPanel.Top)
+		self:skinObject("editbox", {obj=this.TargetPanel.Top.SearchBox, chginset=false, regions={3}, ofs=0})
+		skinScrollFrame(this.TargetPanel)
+		if self.modBtns then
+			self:skinStdButton{obj=this.Target.LoadSaveButton}
+			self:skinStdButton{obj=this.Target.TargetButton}
+			self:skinStdButton{obj=this.TargetPanel.Top.BackButton}
+		end
+		if self.modBtnBs then
+		    self:addButtonBorder{obj=this.Target.ModelBorder}
+		end
+
+		self:Unhook(this, "OnShow")
+	end)
+
+	self:SecureHookScript(_G.RematchTeamPanel, "OnShow", function(this)
+	    self:removeInset(this.Top)
+		if self.modBtnBs then
+			self:addButtonBorder{obj=this.Top.Teams, ofs=0}
+		end
+		self:skinObject("editbox", {obj=this.Top.SearchBox, chginset=false, regions={3}, ofs=0})
+		skinScrollFrame(this)
+
+		self:Unhook(this, "OnShow")
+	end)
+
+	self:SecureHook(_G.RematchTeamTabs, "GetTabButton", function(this, index)
+        this.Tabs[index]:DisableDrawLayer("BACKGROUND")
+		if self.modBtnBs then
+			self:addButtonBorder{obj=this.Tabs[index], ofs=4, relTo=this.Tabs[index].Icon}
+		end
+	end)
+
+	self:SecureHookScript(_G.RematchQueuePanel, "OnShow", function(this)
+	    self:removeInset(this.Top)
+		if self.modBtnBs then
+			self:addButtonBorder{obj=this.Top.QueueButton, ofs=0}
+		end
+	    self:removeInset(this.Status)
+		skinScrollFrame(this)
+
+		self:Unhook(this, "OnShow")
+	end)
+
+	self:SecureHookScript(_G.RematchOptionPanel, "OnShow", function(this)
+	    self:removeInset(this)
+	    self:removeInset(this.Top)
+		self:skinObject("editbox", {obj=this.Top.SearchBox, chginset=false, regions={3}, ofs=0})
+		skinScrollFrame(this)
+		-- TODO: skin CheckButtons
+
+		self:Unhook(this, "OnShow")
+	end)
+
+	self:SecureHookScript(_G.RematchLoadedTeamPanel, "OnShow", function(this)
+	    this:DisableDrawLayer("BACKGROUND")
+	    self:removeInset(this)
+	    self:removeInset(this.Footnotes)
+
+		self:Unhook(this, "OnShow")
+	end)
+
+	self:SecureHookScript(_G.RematchAbilityCard, "OnShow", function(this)
+	    this:DisableDrawLayer("BACKGROUND")
+	    -- self:removeRegions(this, {14}) -- line
+	    this.Hints:DisableDrawLayer("BACKGROUND")
+	    self:removeRegions(this.Hints, {2, 9}) -- line & doodad
+		self:skinObject("frame", {obj=this, kfs=true})
+
+		self:Unhook(this, "OnShow")
+	end)
+
+	self:SecureHookScript(_G.RematchPetCard, "OnShow", function(this)
+	    this.Title:DisableDrawLayer("BACKGROUND")
+		this.Title:SetFrameStrata("FULLSCREEN_DIALOG")
+	    this.Front.Bottom:DisableDrawLayer("BACKGROUND")
+	    self:removeRegions(this.Front.Bottom, {2}) -- line
+	    this.Front.Middle:DisableDrawLayer("BACKGROUND")
+	    self:removeRegions(this.Front.Middle, {12}) -- line
+	    this.Front.Middle.XP:DisableDrawLayer("OVERLAY")
+		self:skinStatusBar{obj=this.Front.Middle.XP, fi=0, bgTex=self:getRegion(this.Front.Middle.XP, 11)}
+		self:skinObject("frame", {obj=this.Front, kfs=true})
+	    this.Back.Source:DisableDrawLayer("BACKGROUND")
+	    self:removeRegions(this.Back.Source, {3}) -- line
+	    this.Back.Bottom:DisableDrawLayer("BACKGROUND")
+	    self:removeRegions(this.Back.Bottom, {2, 15, 16}) -- line & doodads
+	    this.Back.Middle:DisableDrawLayer("BACKGROUND")
+	    this.Back.Middle:DisableDrawLayer("BORDER") -- doodads
+		self:removeRegions(this.Back.Middle, {7}) -- line above middle area
+	    this.Back.Middle.Lore:SetTextColor(self.BT:GetRGB())
+		self:skinObject("frame", {obj=this.Back, kfs=true})
+		self:skinObject("frame", {obj=this, kfs=true, cb=true, x2=0.5})
+		if self.modBtns then
+			self:skinStdButton{obj=this.PinButton, ofs=-6}
+			self:removeRegions(this.CloseButton, {5})
+		end
+	    self:removeRegions(this.PinButton, {5})
+
+		self:Unhook(this, "OnShow")
+	end)
+
+    self:SecureHookScript(_G.RematchDialog, "OnShow", function(this)
+		self:removeMagicBtnTex(this.Cancel)
+		self:removeMagicBtnTex(this.Accept)
+		self:removeMagicBtnTex(this.Other)
+	    this.Prompt:DisableDrawLayer("BACKGROUND")
+	    this.Prompt:DisableDrawLayer("BORDER")
+		-- .Pet
+		-- .Warning
+		self:skinObject("editbox", {obj=this.EditBox, ofs=0})
+		-- .Slot
+		--. CheckButton
+		-- .Team
+		-- .OldTeam
+		skinComboBox(this.TabPicker)
+		self:skinObject("slider", {obj=this.MultiLine.ScrollBar, x1=4, y1=-3, x2=-4, y2=3})
+		self:skinObject("frame", {obj=self:getChild(this.MultiLine, 2), kfs=true, fb=true, ofs=0})
+	    self:removeInset(this.TeamTabIconPicker)
+		self:skinObject("slider", {obj=this.TeamTabIconPicker.ScrollFrame.ScrollBar, x1=3})
+		-- .SaveAs.Team
+		self:skinObject("editbox", {obj=this.SaveAs.Name, regions={}})
+		skinComboBox(this.SaveAs.Target)
+		self:skinObject("frame", {obj=this, kfs=true, cb=true, y1=2, x2=1, y2=-2})
+		if self.modBtns then
+			self:skinStdButton{obj=this.Cancel}
+			self:skinStdButton{obj=this.Accept}
+			self:skinStdButton{obj=this.Other}
+			self:SecureHook(this.Accept, "Disable", function(this, _)
+				self:clrBtnBdr(this)
+			end)
+			self:SecureHook(this.Accept, "Enable", function(this, _)
+				self:clrBtnBdr(this)
+			end)
+			self:SecureHook(this.Other, "Disable", function(this, _)
+				self:clrBtnBdr(this)
+			end)
+			self:SecureHook(this.Other, "Enable", function(this, _)
+				self:clrBtnBdr(this)
+			end)
+			self:removeRegions(this.CloseButton, {5})
+		end
+		if self.modBtnBs then
+			self:addButtonBorder{obj=self:getChild(this.TabPicker, 1), ofs=-1}
+			self:addButtonBorder{obj=self:getChild(this.SaveAs.Target, 1), ofs=-1}
+		end
+		if self.modChkBtns then
+			self:skinCheckButton{obj=this.CheckButton}
+			self:skinCheckButton{obj=this.SaveAs.Themselves}
+			self:skinCheckButton{obj=this.ShareIncludes.IncludePreferences}
+			self:skinCheckButton{obj=this.ShareIncludes.IncludeNotes}
+		end
+
+    	self:Unhook(this, "OnShow")
+    end)
+
+    self:SecureHookScript(_G.RematchNotes, "OnShow", function(this)
+	    self:removeRegions(this.Content, {1, 2, 3})
+		self:skinObject("slider", {obj=this.Content.ScrollFrame.ScrollBar, x1=3, x2=-4})
+		self:skinObject("frame", {obj=this.Content, ng=true, ofs=0})
+		self:skinObject("frame", {obj=this, kfs=true, cb=true, x1=-3, y1=2, x2=1, y2=-2})
+		if self.modBtns then
+			self:skinStdButton{obj=this.LockButton, ofs=-6}
+			self:skinStdButton{obj=this.Controls.DeleteButton}
+			self:skinStdButton{obj=this.Controls.UndoButton}
+			self:skinStdButton{obj=this.Controls.SaveButton}
+			self:removeRegions(this.CloseButton, {5})
+		end
+	    self:removeRegions(this.LockButton, {5})
+
+    	self:Unhook(this, "OnShow")
+    end)
 
     -- Tooltip(s) N.B. skin these rather than treat them as tooltips as their background changes
-	self:addSkinFrame{obj=_G.RematchTooltip, ft="a", kfs=true, nb=true}
-	self:addSkinFrame{obj=_G.RematchTableTooltip, ft="a", kfs=true, nb=true}
-
-    -- Dialog
-    _G.RematchDialog.Prompt:DisableDrawLayer("BACKGROUND")
-    _G.RematchDialog.Prompt:DisableDrawLayer("BORDER")
-    self:skinUsingBD{obj=_G.RematchDialog.EditBox}
-    _G.RematchDialog.TabPicker:DisableDrawLayer("BORDER")
-	if self.modBtnBs then
-		self:addButtonBorder{obj=self:getChild(_G.RematchDialog.TabPicker, 1), ofs=-1}
-	end
-	self:removeMagicBtnTex(_G.RematchDialog.Cancel)
-	self:removeMagicBtnTex(_G.RematchDialog.Accept)
-	self:removeMagicBtnTex(_G.RematchDialog.Other)
-    self:addSkinFrame{obj=_G.RematchDialog, ft="a", kfs=true, y1=2, x2=1, y2=-2}
-	if self.modBtns then
-		self:skinStdButton{obj=_G.RematchDialog.Cancel}
-		self:skinStdButton{obj=_G.RematchDialog.Accept}
-		self:skinStdButton{obj=_G.RematchDialog.Other}
-	end
-    self:removeRegions(_G.RematchDialog.CloseButton, {5})
-
-    -- TeamTabIconPicker
-    self:removeInset(_G.RematchDialog.TeamTabIconPicker)
-    self:skinSlider{obj=_G.RematchTeamTabIconPickerScrollBar, adj=-4}
-
-    -- SaveAs
-    self:skinUsingBD{obj=_G.RematchDialog.SaveAs.Name}
-    self:addSkinFrame{obj=_G.RematchDialog.SaveAs.Target, ft="a", kfs=true, nb=true, ofs=0}
-	if self.modBtnBs then
-		self:addButtonBorder{obj=self:getChild(_G.RematchDialog.SaveAs.Target, 1), ofs=-1}
-	end
-
-    -- Notes
-    self:removeRegions(_G.RematchNotes.Content, {1, 2, 3, 4})
-    self:skinSlider{obj=_G.RematchNotes.Content.ScrollFrame.ScrollBar, adj=-4}
-    self:addSkinFrame{obj=_G.RematchNotes, ft="a", kfs=true, x1=-3, y1=2, x2=1, y2=-2}
-	if self.modBtns then
-		self:skinStdButton{obj=_G.RematchNotes.LockButton, ofs=-6}
-		self:skinStdButton{obj=_G.RematchNotes.Controls.DeleteButton}
-		self:skinStdButton{obj=_G.RematchNotes.Controls.UndoButton}
-		self:skinStdButton{obj=_G.RematchNotes.Controls.SaveButton}
-	end
-    self:removeRegions(_G.RematchNotes.LockButton, {5})
-    self:removeRegions(_G.RematchNotes.CloseButton, {5})
+	self:skinObject("frame", {obj=_G.RematchTooltip, kfs=true})
+	self:skinObject("frame", {obj=_G.RematchTableTooltip, kfs=true})
 
 end
