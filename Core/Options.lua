@@ -180,7 +180,7 @@ aObj.SetupDefaults = function(self)
 			PlayerChoiceUI             = true,
 			ProductChoiceFrame         = true,
 			PTRFeedback                = true,
-			PVEFrame                   = true, -- (inc, LFD, LFG, RaidFinder) [ScenarioFinder removed in Beta]
+			PVEFrame                   = true, -- (inc, LFD, LFG, RaidFinder) a.k.a. GroupFinder
 			PVPMatch                   = true,
 			QuestMap                   = true,
 			QuestSession               = true, -- a.k.a. Party Sync
@@ -1795,7 +1795,7 @@ aObj.SetupOptions = function(self)
 					desc = self.L["Toggle the skin of the "] .. self.L["PTR Feedback Frames"],
 				},
 				PVEFrame = {
-					-- inc. LFD, LFG, Scenario
+					-- inc. LFD, LFG, RaidFinder
 					type = "toggle",
 					name = self.L["Group Finder Frame"],
 					desc = self.L["Toggle the skin of the "] .. self.L["Group Finder Frame"],
