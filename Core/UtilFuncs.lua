@@ -1078,7 +1078,7 @@ function aObj:removeRegions(obj, regions)
 			reg:SetAlpha(0)
 --@debug@
 			if reg:IsObjectType("FontString") then
-				self:Debug("rr FS: [%s, %s]", obj, i)
+				self:Debug("rr FS: [%s, %s]", obj, key)
 				self:Print(_G.debugstack(1, 5, 2))
 			end
 --@end-debug@
