@@ -4921,6 +4921,21 @@ aObj.blizzFrames[ftype].PetBattleUI = function(self)
 	if not self.prdb.PetBattleUI or self.initialized.PetBattleUI then return end
 	self.initialized.PetBattleUI = true
 
+	local updBBClr
+	if self.modBtnBs then
+		function updBBClr()
+			if _G.PetBattleFrame.ActiveAlly.SpeedIcon:IsShown() then
+				aObj:clrBtnBdr(_G.PetBattleFrame.ActiveAlly, "gold")
+				_G.PetBattleFrame.ActiveEnemy.sbb:SetBackdropBorderColor(_G.PetBattleFrame.ActiveEnemy.Border:GetVertexColor())
+			elseif _G.PetBattleFrame.ActiveEnemy.SpeedIcon:IsShown() then
+				aObj:clrBtnBdr(_G.PetBattleFrame.ActiveEnemy, "gold")
+				_G.PetBattleFrame.ActiveAlly.sbb:SetBackdropBorderColor(_G.PetBattleFrame.ActiveAlly.Border:GetVertexColor())
+			else
+				_G.PetBattleFrame.ActiveAlly.sbb:SetBackdropBorderColor(_G.PetBattleFrame.ActiveAlly.Border:GetVertexColor())
+				_G.PetBattleFrame.ActiveEnemy.sbb:SetBackdropBorderColor(_G.PetBattleFrame.ActiveEnemy.Border:GetVertexColor())
+			end
+		end
+	end
 	self:SecureHookScript(_G.PetBattleFrame, "OnShow", function(this)
 		this.TopArtLeft:SetTexture(nil)
 		this.TopArtRight:SetTexture(nil)
@@ -4932,12 +4947,11 @@ aObj.blizzFrames[ftype].PetBattleUI = function(self)
 		for _, type in _G.pairs{"Ally", "Enemy"} do
 			pbf = this["Active" .. type]
 			pbf.Border:SetTexture(nil)
-			pbf.Border2:SetTexture(nil)
 			if self.modBtnBs then
+				pbf.Border2:SetTexture(nil) -- speed texture
 				self:addButtonBorder{obj=pbf, relTo=pbf.Icon, ofs=1, reParent={pbf.LevelUnderlay, pbf.Level, pbf.SpeedUnderlay, pbf.SpeedIcon}}
-				pbf.sbb:SetBackdropBorderColor(pbf.Border:GetVertexColor())
 				self:SecureHook(pbf.Border, "SetVertexColor", function(this, ...)
-					this:GetParent().sbb:SetBackdropBorderColor(...)
+					updBBClr()
 				end)
 			end
 			self:changeTandC(pbf.LevelUnderlay)
@@ -4964,8 +4978,13 @@ aObj.blizzFrames[ftype].PetBattleUI = function(self)
 			end
 			-- Ally2/3, Enemy2/3
 			for j = 2, 3 do
+				_G.RaiseFrameLevelByTwo(this[type .. j])
 				this[type .. j].BorderAlive:SetTexture(nil)
 				self:changeTandC(this[type .. j].BorderDead, [[Interface\PetBattles\DeadPetIcon]])
+				this[type .. j].healthBarWidth = 34
+				this[type .. j].ActualHealthBar:SetWidth(34)
+				this[type .. j].ActualHealthBar:SetTexture(self.sbTexture)
+				this[type .. j].HealthDivider:SetTexture(nil)
 				if self.modBtnBs then
 					self:addButtonBorder{obj=this[type .. j], relTo=this[type .. j].Icon, reParent={this[type .. j].ActualHealthBar}}
 					this[type .. j].sbb:SetBackdropBorderColor(this[type .. j].BorderAlive:GetVertexColor())
@@ -4973,13 +4992,21 @@ aObj.blizzFrames[ftype].PetBattleUI = function(self)
 						this:GetParent().sbb:SetBackdropBorderColor(...)
 					end)
 				end
-				this[type .. j].healthBarWidth = 34
-				this[type .. j].ActualHealthBar:SetWidth(34)
-				this[type .. j].ActualHealthBar:SetTexture(self.sbTexture)
-				this[type .. j].HealthDivider:SetTexture(nil)
 			end
 		end
 		pbf= nil
+		if self.modBtnBs then
+			updBBClr()
+			self:SecureHook("PetBattleFrame_InitSpeedIndicators", function(this)
+				aObj:Debug("PetBattleFrame_InitSpeedIndicators: [%s, %s]", this)
+				updBBClr()
+			end)
+			-- use hooksecurefunc as function hooked for tooltips lower down
+			_G.hooksecurefunc("PetBattleFrame_UpdateSpeedIndicators", function(this)
+				aObj:Debug("PetBattleFrame_UpdateSpeedIndicators: [%s, %s]", this)
+				updBBClr()
+			end)
+		end
 		-- create a frame behind the VS text
 		this.sfm = _G.CreateFrame("Frame", nil, this)
 		self:skinObject("frame", {obj=this.sfm, fType=ftype, ng=true, bd=11})
