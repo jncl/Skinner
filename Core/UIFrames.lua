@@ -4347,13 +4347,7 @@ aObj.blizzFrames[ftype].Minimap = function(self)
 	_G.MinimapZoneTextButton:SetPoint("BOTTOMRIGHT", _G.Minimap, "TOPRIGHT", 0, 5)
 	_G.MinimapZoneText:ClearAllPoints()
 	_G.MinimapZoneText:SetPoint("CENTER")
-	-- World Map Button
-	_G.MiniMapWorldMapButton:ClearAllPoints()
-	_G.MiniMapWorldMapButton:SetPoint("LEFT", _G.MinimapZoneTextButton, "RIGHT", -4, 0)
-	if self.modBtns then
-		self:addSkinButton{obj=_G.MinimapZoneTextButton, parent=_G.MinimapZoneTextButton, ft=ftype, x1=-5, x2=5}
-		self:skinOtherButton{obj=_G.MiniMapWorldMapButton, font=self.fontP, text="M"}
-	end
+	self:skinObject("button", {obj=_G.MinimapZoneTextButton, fType=ftype, x1=-5, x2=5})
 
 	-- Minimap
 	_G.Minimap:SetMaskTexture([[Interface\Buttons\WHITE8X8]]) -- needs to be a square texture
@@ -4373,18 +4367,6 @@ aObj.blizzFrames[ftype].Minimap = function(self)
 		_G.Minimap:SetArchBlobRingAlpha(0)
 		_G.Minimap:SetQuestBlobRingScalar(0)
 		_G.Minimap:SetQuestBlobRingAlpha(0)
-	else
-		if self.modBtns then
-			_G.RaiseFrameLevelByTwo(_G.MinimapToggleButton)
-			self:moveObject{obj=_G.MinimapToggleButton, x=-8, y=1}
-			self:skinCloseButton{obj=_G.MinimapToggleButton, noSkin=true}
-		end
-	end
-
-	-- Minimap Backdrop Frame
-	self:keepFontStrings(_G.MinimapBackdrop)
-
-	if not self.isClsc then
 		-- Difficulty indicators
 		-- hook this to mamage MiniMapInstanceDifficulty texture
 		self:SecureHook("MiniMapInstanceDifficulty_Update", function()
@@ -4410,8 +4392,15 @@ aObj.blizzFrames[ftype].Minimap = function(self)
 		self:moveObject{obj=_G.GuildInstanceDifficulty, x=7}
 		self:getRegion(_G.MiniMapChallengeMode, 1):SetTexCoord(0, 1, 0.27, 1.27) -- remove top hanger texture
 		self:moveObject{obj=_G.MiniMapChallengeMode, x=6, y=-12}
+	else
+		if self.modBtns then
+			_G.RaiseFrameLevelByTwo(_G.MinimapToggleButton)
+			self:moveObject{obj=_G.MinimapToggleButton, x=-8, y=1}
+			self:skinCloseButton{obj=_G.MinimapToggleButton, noSkin=true}
+		end
 	end
 
+	self:keepFontStrings(_G.MinimapBackdrop)
 	self:moveObject{obj=_G.BuffFrame, x=-40}
 
 	-- hook this to handle Jostle Library
@@ -4429,21 +4418,28 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 
 	if not self.modBtns then return end
 
+	local ignBtn = {
+		["GameTimeFrame"]                    = true,
+		["GarrisonLandingPageMinimapButton"] = true,
+		["MiniMapTracking"]                  = true,
+		["MiniMapWorldMapButton"]            = true,
+		["MinimapZoomIn"]                    = true,
+		["MinimapZoomOut"]                   = true,
+		["QueueStatusMinimapButton"]         = true,
+		["OQ_MinimapButton"]                 = true,
+	}
 	local minBtn = self.prdb.MinimapButtons.style
 
 	local function mmKids(mmObj)
 		local objName, objType
 		for _, obj in _G.ipairs{mmObj:GetChildren()} do
 			objName, objType = obj:GetName(), obj:GetObjectType()
-			-- aObj:Debug("mmKids: [%s, %s, %s]", objName, objType, obj:GetNumRegions())
-			if not obj.sb
-			and not obj.sf
+			-- aObj:Debug("mmKids: [%s, %s, %s, %s, %s]", objName, objType, obj:GetNumRegions(), obj:GetSize())
+			if not ignBtn[obj]
 			and not obj.point -- TomTom waypoint
 			and not obj.texture -- HandyNotes pin
 			and objType == "Button"
 			or (objType == "Frame" and objName == "MiniMapMailFrame")
-			and objName ~= "QueueStatusMinimapButton"
-			and objName ~= "OQ_MinimapButton"
 			and not aObj:hasTextInName(objName, "SexyMap")
 			then
 				for _, reg in _G.ipairs{obj:GetRegions()} do
@@ -4469,7 +4465,7 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 				end
 				if not minBtn then
 					if objType == "Button" then
-						aObj:skinObject("button", {obj=obj, fType=ftype, sap=true})
+						aObj:skinObject("button", {obj=obj, fType=ftype})
 					else
 						aObj:skinObject("frame", {obj=obj, fType=ftype})
 					end
@@ -4483,16 +4479,14 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 		obj:GetNormalTexture():SetTexCoord(x1, y1, x2, y2)
 		obj:GetPushedTexture():SetTexCoord(x1, y1, x2, y2)
 		obj:SetHighlightTexture([[Interface\Buttons\ButtonHilight-Square]])
-		aObj:addSkinFrame{obj=obj, ft=ftype, nb=true, aso={ba=minBtn and 0 or 1, bba=minBtn and 0 or 1, ng=minBtn and true or nil}, ofs=4}
-		-- make sure textures appear above skinFrame
-		_G.RaiseFrameLevelByTwo(obj)
-		_G.LowerFrameLevel(obj.sf)
-		-- alter the HitRectInsets to make it easier to activate
 		obj:SetHitRectInsets(-5, -5, -5, -5)
+		-- aObj:addSkinFrame{obj=obj, ft=ftype, nb=true, aso={ba=minBtn and 0 or 1, bba=minBtn and 0 or 1, ng=minBtn and true or nil}, ofs=4}
+		if not minBtn then
+			aObj:skinObject("frame", {obj=obj, fType=ftype, ofs=4})
+			_G.RaiseFrameLevelByTwo(obj)
+			_G.LowerFrameLevel(obj.sf)
+		end
 	end
-
-	-- skin Minimap children, allow for delayed addons to be loaded (e.g. Baggins)
-	_G.C_Timer.After(0.5, function() mmKids(_G.Minimap) end)
 
 	if not self.isClsc then
 		-- Calendar button
@@ -4505,10 +4499,12 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 			self:skinObject("frame", {obj=_G.MiniMapTracking, fType=ftype})
 		end
 		_G.QueueStatusMinimapButtonBorder:SetTexture(nil)
-		self:addSkinButton{obj=_G.QueueStatusMinimapButton, ft=ftype, sap=true}
-		-- make sure textures appear above skinFrame
-		_G.RaiseFrameLevelByTwo(_G.QueueStatusMinimapButton)
-		_G.LowerFrameLevel(_G.QueueStatusMinimapButton.sb)
+		if not minBtn then
+			-- self:addSkinButton{obj=_G.QueueStatusMinimapButton, ft=ftype, sap=true}
+			self:skinObject("button", {obj=_G.QueueStatusMinimapButton, fType=ftype})
+			_G.RaiseFrameLevelByTwo(_G.QueueStatusMinimapButton)
+			_G.LowerFrameLevel(_G.QueueStatusMinimapButton.sb)
+		end
 		-- skin any moved Minimap buttons if required
 		if _G.IsAddOnLoaded("MinimapButtonFrame") then
 			mmKids(_G.MinimapButtonFrame)
@@ -4525,21 +4521,31 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 		end, true)
 		_G.C_Timer.After(0.25, function()
 			_G.GameTimeFrame:SetSize(28, 28)
-			self:addSkinFrame{obj=_G.GameTimeFrame, ft=ftype, nb=true, ofs=4}
 			self:moveObject{obj=_G.GameTimeFrame, x=-6, y=-2}
 			_G.GameTimeFrame.timeOfDay = 0
+			if not minBtn then
+			-- self:addSkinFrame{obj=_G.GameTimeFrame, ft=ftype, nb=true, ofs=4}
+				self:skinObject("frame", {obj=_G.GameTimeFrame, fType=ftype, ofs=4})
+			end
 			_G.GameTimeFrame_Update(_G.GameTimeFrame)
 		end)
 		_G.MiniMapTrackingBorder:SetTexture(nil)
-		self:skinObject("frame", {obj=_G.MiniMapTrackingFrame, fType=ftype, bd=10, x1=4, y1=-3})
 		self:moveObject{obj=_G.MiniMapTrackingFrame, x=-15}
+		if not minBtn then
+			self:skinObject("frame", {obj=_G.MiniMapTrackingFrame, fType=ftype, bd=10, x1=4, y1=-3})
+		end
 		self:moveObject{obj=_G.MiniMapMailFrame, y=-4}
 	end
 
+	_G.MiniMapWorldMapButton:ClearAllPoints()
+	_G.MiniMapWorldMapButton:SetPoint("LEFT", _G.MinimapZoneTextButton, "RIGHT", -4, 0)
+	self:skinOtherButton{obj=_G.MiniMapWorldMapButton, font=self.fontP, text="M", noSkin=minBtn}
 	_G.MiniMapMailIcon:SetTexture([[Interface\Minimap\Tracking\Mailbox.blp]])
 	_G.MiniMapMailIcon:ClearAllPoints()
 	_G.MiniMapMailIcon:SetPoint("CENTER", _G.MiniMapMailFrame)
 	_G.MiniMapMailFrame:SetSize(26, 26)
+	_G.TimeManagerClockButton:SetSize(36, 14)
+	self:moveObject{obj=_G.TimeManagerClockTicker, x=-3, y=-1}
 
 	-- Zoom Buttons
 	local btn, txt, xOfs, yOfs
@@ -4561,60 +4567,67 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 				xOfs, yOfs = 19, -12
 			end
 		end
-		self:skinOtherButton{obj=btn, text=txt, aso={bbclr=btn:IsEnabled() and "gold" or "disabled"}}
 		self:moveObject{obj=btn, x=xOfs, y=yOfs}
-		local function clrZoomBtns()
-			for _, btnName in _G.pairs{"In", "Out"} do
-				btn = btnName == "In" and _G.MinimapZoomIn or _G.MinimapZoomOut
-				aObj:clrBBC(btn.sb, btn:IsEnabled() and "gold" or "disabled")
+		self:skinOtherButton{obj=btn, text=txt, aso={bbclr=btn:IsEnabled() and "gold" or "disabled"}, noSkin=minBtn}
+		if not minBtn then
+			local function clrZoomBtns()
+				for _, btnName in _G.pairs{"In", "Out"} do
+					btn = btnName == "In" and _G.MinimapZoomIn or _G.MinimapZoomOut
+					aObj:clrBBC(btn.sb, btn:IsEnabled() and "gold" or "disabled")
+				end
 			end
+			self:SecureHookScript(btn, "OnClick", function(this)
+				clrZoomBtns()
+			end)
+			self:RegisterEvent("MINIMAP_UPDATE_ZOOM", clrZoomBtns)
 		end
-		self:SecureHookScript(btn, "OnClick", function(this)
-			clrZoomBtns()
-		end)
-		self:RegisterEvent("MINIMAP_UPDATE_ZOOM", clrZoomBtns)
 	end
 	btn, txt, xOfs, yOfs = nil, nil, nil, nil
 
-	-- skin other minimap buttons as required
-	if not minBtn then
-		local function skinMMBtn(_, btn, _)
-			-- aObj:Debug("skinMMBtn#1: [%s, %s, %s]", cb, btn, name)
-			for _, reg in _G.ipairs{btn:GetRegions()} do
-				if reg:GetObjectType() == "Texture" then
-					-- aObj:Debug("skinMMBtn#2: [%s, %s, %s]", reg, reg:GetName(), reg:GetTexture())
-					if aObj:hasTextInName(reg, "Border")
-					or aObj:hasTextInTexture(reg, "TrackingBorder")
-					or aObj:hasTextInTexture(reg, "136430") -- file ID for Border texture
-					then
-						reg:SetTexture(nil)
-					end
+	-- skin Minimap children, allow for delayed addons to be loaded (e.g. Baggins)
+	_G.C_Timer.After(0.5, function() mmKids(_G.Minimap) end)
+
+	-- skin other minimap buttons
+	local function skinMMBtn(_, btn, _)
+		-- aObj:Debug("skinMMBtn#1: [%s, %s, %s]", cb, btn, name)
+		for _, reg in _G.ipairs{btn:GetRegions()} do
+			if reg:GetObjectType() == "Texture" then
+				-- aObj:Debug("skinMMBtn#2: [%s, %s, %s]", reg, reg:GetName(), reg:GetTexture())
+				if aObj:hasTextInName(reg, "Border")
+				or aObj:hasTextInTexture(reg, "TrackingBorder")
+				or aObj:hasTextInTexture(reg, "136430") -- file ID for Border texture
+				then
+					reg:SetTexture(nil)
 				end
 			end
-
-			aObj:addSkinButton{obj=btn, parent=btn, sap=true}
-
 		end
-		-- wait until all AddOn skins have been loaded
-		_G.C_Timer.After(0.5, function()
-			for addon, obj in _G.pairs(self.mmButs) do
-				if _G.IsAddOnLoaded(addon) then
-					skinMMBtn("Loaded Addons btns", obj)
-				end
-			end
-			self.mmButs = nil
-		end)
-
-		-- skin existing LibDBIcon buttons
-		for name, button in _G.pairs(self.DBIcon.objects) do
-			skinMMBtn("Existing LibDBIcon btns", button, name)
+		if not minBtn then
+			aObj:skinObject("button", {obj=btn})
 		end
-		-- skin LibDBIcon Minimap Buttons when created
-		self.DBIcon.RegisterCallback(self, "LibDBIcon_IconCreated", skinMMBtn)
 	end
+	-- wait until all AddOn skins have been loaded
+	_G.C_Timer.After(0.5, function()
+		for addon, obj in _G.pairs(self.mmButs) do
+			if _G.IsAddOnLoaded(addon) then
+				skinMMBtn("Loaded Addons btns", obj)
+			end
+		end
+		self.mmButs = nil
+	end)
 
+	local function skinDBI(_, btn, name)
+		aObj:Debug("skinDBI: [%s, %s]", btn, name)
+		btn:SetSize(24, 24)
+		aObj:moveObject{obj=btn.icon, x=-3, y=3}
+		skinMMBtn("LibDBIcon btn", btn, name)
+	end
+	for name, button in _G.pairs(self.DBIcon.objects) do
+		skinDBI(nil, button, name)
+	end
+	self.DBIcon.RegisterCallback(self, "LibDBIcon_IconCreated", skinDBI)
+
+	-- Garrison Landing Page Minimap button
 	if not self.isClsc then
-		-- Garrison Landing Page Minimap button
 		local anchor
 		anchor = _G.AnchorUtil.CreateAnchor("TOPLEFT", "MinimapBackdrop", "TOPLEFT", 32, -140)
 		local function skinGLPM(btn)
@@ -4635,8 +4648,6 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 		end)
 		_G.GarrisonLandingPageMinimapButton.AlertBG:SetTexture(nil)
 	end
-
-	minBtn = nil
 
 end
 
@@ -6107,13 +6118,6 @@ aObj.blizzFrames[ftype].TimeManager = function(self)
 
 		self:Unhook(this, "OnShow")
 	end)
-
-	-- TimeManagerClockButton on the Minimap
-	if not _G.IsAddOnLoaded("SexyMap") then
-		if not self.prdb.Minimap.style then
-			self:addSkinFrame{obj=_G.TimeManagerClockButton, ft=ftype, kfs=true, nb=true, x1=14, y1=-3, x2=-8, y2=5}
-		end
-	end
 
 end
 
