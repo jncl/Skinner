@@ -4967,12 +4967,12 @@ aObj.blizzFrames[ftype].PetBattleUI = function(self)
 			-- add a background frame
 			if type == "Ally" then
 				this.sfl = _G.CreateFrame("Frame", nil, this)
-				self:skinObject("frame", {obj=this.sfl, fType=ftype, ng=true, bd=11--[[, fh=tvh * 0.8--]]})
+				self:skinObject("frame", {obj=this.sfl, fType=ftype, ng=true, bd=11})
 				this.sfl:SetPoint("TOPRIGHT", this, "TOP", -(tvw + 25), 4)
 				this.sfl:SetSize(this.TopArtLeft:GetWidth() * 0.59, this.TopArtLeft:GetHeight() * 0.8)
 			else
 				this.sfr = _G.CreateFrame("Frame", nil, this)
-				self:skinObject("frame", {obj=this.sfr, fType=ftype, ng=true, bd=11--[[, fh=tvh * 0.8--]]})
+				self:skinObject("frame", {obj=this.sfr, fType=ftype, ng=true, bd=11})
 				this.sfr:SetPoint("TOPLEFT", this, "TOP", (tvw + 25), 4)
 				this.sfr:SetSize(this.TopArtRight:GetWidth() * 0.59, this.TopArtRight:GetHeight() * 0.8)
 			end
@@ -4994,39 +4994,17 @@ aObj.blizzFrames[ftype].PetBattleUI = function(self)
 				end
 			end
 		end
-		pbf= nil
-		if self.modBtnBs then
-			updBBClr()
-			self:SecureHook("PetBattleFrame_InitSpeedIndicators", function(this)
-				aObj:Debug("PetBattleFrame_InitSpeedIndicators: [%s, %s]", this)
-				updBBClr()
-			end)
-			-- use hooksecurefunc as function hooked for tooltips lower down
-			_G.hooksecurefunc("PetBattleFrame_UpdateSpeedIndicators", function(this)
-				aObj:Debug("PetBattleFrame_UpdateSpeedIndicators: [%s, %s]", this)
-				updBBClr()
-			end)
-		end
 		-- create a frame behind the VS text
 		this.sfm = _G.CreateFrame("Frame", nil, this)
 		self:skinObject("frame", {obj=this.sfm, fType=ftype, ng=true, bd=11})
 		this.sfm:SetPoint("TOPLEFT", this.sfl, "TOPRIGHT", -8, 0)
 		this.sfm:SetPoint("TOPRIGHT", this.sfr, "TOPLEFT", 8, 0)
 		this.sfm:SetHeight(tvh * 0.8)
-		tvw, tvh = nil, nil
+		this.TopVersusText:SetParent(this.sfm)
+		tvw, tvh, pbf = nil, nil, nil
 		this.BottomFrame.RightEndCap:SetTexture(nil)
 		this.BottomFrame.LeftEndCap:SetTexture(nil)
 		this.BottomFrame.Background:SetTexture(nil)
-		if self.modBtns then
-			self:skinStdButton{obj=this.BottomFrame.TurnTimer.SkipButton}
-			self:SecureHook(this.BottomFrame.TurnTimer.SkipButton, "Disable", function(this, _)
-				self:clrBtnBdr(this)
-			end)
-			self:SecureHook(this.BottomFrame.TurnTimer.SkipButton, "Enable", function(this, _)
-				self:clrBtnBdr(this)
-			end)
-		end
-		-- Pet Selection
 		for i = 1, _G.NUM_BATTLE_PETS_IN_BATTLE do
 			this.BottomFrame.PetSelectionFrame["Pet" .. i].Framing:SetTexture(nil)
 			this.BottomFrame.PetSelectionFrame["Pet" .. i].HealthBarBG:SetTexture(self.sbTexture)
@@ -5044,7 +5022,26 @@ aObj.blizzFrames[ftype].PetBattleUI = function(self)
 		self:getRegion(this.BottomFrame.Delimiter, 1):SetTexture(nil)
 		self:removeRegions(this.BottomFrame.MicroButtonFrame, {1, 2, 3})
 		self:skinObject("frame", {obj=this.BottomFrame, fType=ftype, y1=8})
+		if self.modBtns then
+			self:skinStdButton{obj=this.BottomFrame.TurnTimer.SkipButton}
+			self:SecureHook(this.BottomFrame.TurnTimer.SkipButton, "Disable", function(this, _)
+				self:clrBtnBdr(this)
+			end)
+			self:SecureHook(this.BottomFrame.TurnTimer.SkipButton, "Enable", function(this, _)
+				self:clrBtnBdr(this)
+			end)
+		end
 		if self.modBtnBs then
+			updBBClr()
+			self:SecureHook("PetBattleFrame_InitSpeedIndicators", function(this)
+				aObj:Debug("PetBattleFrame_InitSpeedIndicators: [%s, %s]", this)
+				updBBClr()
+			end)
+			-- use hooksecurefunc as function hooked for tooltips lower down
+			_G.hooksecurefunc("PetBattleFrame_UpdateSpeedIndicators", function(this)
+				aObj:Debug("PetBattleFrame_UpdateSpeedIndicators: [%s, %s]", this)
+				updBBClr()
+			end)
 			self:addButtonBorder{obj=this.BottomFrame.SwitchPetButton, reParent={this.BetterIcon}, es=20, ofs=3, x1=-5, y1=5}
 			self:addButtonBorder{obj=this.BottomFrame.CatchButton, reParent={this.BetterIcon}, es=20, ofs=3, x1=-5, y1=5}
 			self:addButtonBorder{obj=this.BottomFrame.ForfeitButton, es=20, ofs=3, x1=-5, y1=5}
