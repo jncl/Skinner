@@ -31,6 +31,7 @@
 <Script file="BankItems.lua"/>
 <Script file="Bartender4.lua"/>
 <Script file="BasicChatMods.lua"/>
+<Script file="BattlePetBattleUITweaks.lua"/>
 <Script file="BattlePetCount.lua"/>
 <Script file="BaudBag.lua"/>
 <Script file="BaudManifest.lua"/>

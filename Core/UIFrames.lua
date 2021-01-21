@@ -5101,6 +5101,7 @@ aObj.blizzFrames[ftype].PetBattleUI = function(self)
 		end
 
 		self:Unhook(this, "OnShow")
+		self.callbacks:Fire("PetBattleUI_OnShow")
 	end)
 	self:checkShown(_G.PetBattleFrame)
 
