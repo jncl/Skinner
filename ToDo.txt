@@ -30,34 +30,15 @@ ToDos
 ?		- that issue with Torghast anima can't be activated in combat is still there
 
 	I	Minimap Buttons, reported by Galthariel,08.01.21
-?		- still not being skinned properly
+√		- still not being skinned properly with SexyMap, WorldMap & Calendar
+√		- using minimal option
 
-	I	WIM, reported by Galthariel,08.01.21
-?		- Floating Tabs after skin resized
-			- asked for a copy of SV file to check settings
+	I	TalentUI, reported by EpidemeDaBear, 19.01.21
+√		- Skinner\Core\UtilFuncs.lua:460: attempt to call method 'SetBackdropBorderColor' (a nil value)
+		[string "@Skinner\Core\UtilFuncs.lua"]:460: in function `clrBBC'
+		[string "@Skinner\Modules\UIButtons.lua"]:215: in function `clrBtnBdr'
+		[string "@Skinner\Core\PlayerFrames.lua"]:4309: in function <Skinner\Core\PlayerFrames.lua:4296>
+		[string "@Skinner\Core\PlayerFrames.lua"]:4364: in function <Skinner\Core\PlayerFrames.lua:4334>
+		[string "@Skinner\Core\PlayerFrames.lua"]:4368: in function <Skinner\Core\PlayerFrames.lua:4367>
 
-	I	SpartanUI, reported by raineday, 09.01.21
-x		- Ace3GUI (lib) skin is disabled by it
-
-√	I	VuhDuOptionsUI, reported by Galthariel, 09.01.21
-
-	I	Rematch, reported by Galthariel, 09.01.21
-√		- Update skin for latest version
-
-	I	ChatSettings, reported by Siinba, 09.01.21
-√		- Skinner\Core\NewSkinFuncs.lua:413: attempt to index field 'obj' (a nil value)
-		Skinner\Core\NewSkinFuncs.lua:413: in function <Skinner\Core\NewSkinFuncs.lua:406>
-		Skinner\Core\NewSkinFuncs.lua:515: in function `?'
-		Skinner\Core\NewSkinFuncs.lua:154: in function `skinObject'
-		Skinner\Core\UIFrames.lua:1610: in function <Skinner\Core\UIFrames.lua:1535>
-
-	I	PVPFrame, reported by Galthariel,09.01.21
-?		- Rated Tab is greyed out and cannot be selected
-?		- When starting an Arena match, click on Eye to see team info, not working now
-			- QueueStatusFrame
-
-	I	PetBattleUI, reported by Galthariel, 10.01.21
-√		- When Pet battling the pet that has more speed always glows and stays glowing so you can know you will be using your ability before the opponent.
-
-	I	MawBuffBlock Header, reported by Fakelessgaming, 13.01.21
-√		- not being skinned separetely from Headers, add option to do so
+√	S	BattlePetBattleUITweaks, requested by Galthariel, 21.01.21
