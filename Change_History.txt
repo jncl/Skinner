@@ -1,3 +1,24 @@
+beta9.37176.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Added another test command
+	Updated NewSkinFuncs
+	Updated PVPUI skin
+	Bugfix for keepStrings function
+	Updated Tab skinning code
+	Updated GroupFinder skin
+	Updated PetBattleUI
+	Added Option for skinning AnimaPowers block
+	Updated comments
+	Updated makeIconSquare function
+	Updated code for SecureFrameTemplate use
+	Updated BugSack, Rematch & VuhDo skins
+	Don't create no-libs package for classic as it can't be uploaded
+	Added skin option for Torghast Anima Powers Block
+	Bugfix for Chat Config Settings
+
 beta9.36949.8
 Jncl:
 	ToDo.txt
