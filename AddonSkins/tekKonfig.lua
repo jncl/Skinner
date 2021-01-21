@@ -1,10 +1,12 @@
-local aName, aObj = ...
+local _, aObj = ...
 local _G = _G
 -- These are Libraries
 
 aObj.libsToSkin["tekKonfig-Button"] = function(self) -- v 5
 	if self.initialized["tekKonfig-Button"] then return end
 	self.initialized["tekKonfig-Button"] = true
+
+	if not self.modBtns then return end
 
 	local tKB = _G.LibStub:GetLibrary("tekKonfig-Button", true)
 	if tKB then
@@ -20,6 +22,8 @@ end
 aObj.libsToSkin["tekKonfig-Checkbox"] = function(self) -- v 3
 	if self.initialized["tekKonfig-Checkbox"] then return end
 	self.initialized["tekKonfig-Checkbox"] = true
+
+	if not self.modChkBtns then return end
 
 	local tKCb = _G.LibStub:GetLibrary("tekKonfig-Checkbox", true)
 	if tKCb then

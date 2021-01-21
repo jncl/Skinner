@@ -10,8 +10,8 @@ aObj.addonsToSkin.BugSack = function(self) -- v 9.0.0
 	self:SecureHook(_G.BugSack, "OpenSack", function(this)
 		self:skinObject("slider", {obj=_G.BugSackScroll.ScrollBar})
 		self:moveObject{obj=self:getRegion(_G.BugSackFrame, 11), y=-8} -- countLabel
-		this.Tabs = {_G.BugSackTabAll, _G.BugSackTabSession, _G.BugSackTabLast}
-		self:skinObject("tabs", {obj=this, tabs=this.Tabs, regions={7, 8}, lod=true, ignoreHLTex=true, track=false, func=aObj.isTT and function(tab)
+		_G.BugSackFrame.Tabs = {_G.BugSackTabAll, _G.BugSackTabSession, _G.BugSackTabLast}
+		self:skinObject("tabs", {obj=this, tabs=_G.BugSackFrame.Tabs, regions={7, 8}, lod=true, ignoreHLTex=true, track=false, func=aObj.isTT and function(tab)
 			aObj:SecureHookScript(tab, "OnClick", function(this)
 				for _, tab in _G.pairs(this:GetParent().Tabs) do
 					if tab == this then
