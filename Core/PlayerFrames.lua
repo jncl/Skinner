@@ -4306,7 +4306,9 @@ aObj.blizzLoDFrames[ftype].TalentUI = function(self)
 				btn.subText:SetTextColor(aObj.BT:GetRGB())
 				-- make icon square
 				aObj:makeIconSquare(btn, "icon")
-				aObj:clrBtnBdr(btn, btn.icon:IsDesaturated() and "disabled" or "gold")
+				if aObj.modBtnBs then
+					aObj:clrBtnBdr(btn, btn.icon:IsDesaturated() and "disabled" or "gold")
+				end
 			end
 		end
 		sc, btn = nil, nil
