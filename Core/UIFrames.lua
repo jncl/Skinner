@@ -4436,6 +4436,8 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 			objName, objType = obj:GetName(), obj:GetObjectType()
 			-- aObj:Debug("mmKids: [%s, %s, %s, %s, %s]", objName, objType, obj:GetNumRegions(), obj:GetSize())
 			if not ignBtn[obj]
+			and obj ~= obj:GetParent().sf -- skinFrame
+			and obj ~= obj:GetParent().sb -- skinButton
 			and not obj.point -- TomTom waypoint
 			and not obj.texture -- HandyNotes pin
 			and objType == "Button"
@@ -4480,11 +4482,8 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 		obj:GetPushedTexture():SetTexCoord(x1, y1, x2, y2)
 		obj:SetHighlightTexture([[Interface\Buttons\ButtonHilight-Square]])
 		obj:SetHitRectInsets(-5, -5, -5, -5)
-		-- aObj:addSkinFrame{obj=obj, ft=ftype, nb=true, aso={ba=minBtn and 0 or 1, bba=minBtn and 0 or 1, ng=minBtn and true or nil}, ofs=4}
 		if not minBtn then
-			aObj:skinObject("frame", {obj=obj, fType=ftype, ofs=4})
-			_G.RaiseFrameLevelByTwo(obj)
-			_G.LowerFrameLevel(obj.sf)
+			aObj:skinObject("button", {obj=obj, fType=ftype, ng=true, ofs=4})
 		end
 	end
 
@@ -4524,8 +4523,7 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 			self:moveObject{obj=_G.GameTimeFrame, x=-6, y=-2}
 			_G.GameTimeFrame.timeOfDay = 0
 			if not minBtn then
-			-- self:addSkinFrame{obj=_G.GameTimeFrame, ft=ftype, nb=true, ofs=4}
-				self:skinObject("frame", {obj=_G.GameTimeFrame, fType=ftype, ofs=4})
+				self:skinObject("frame", {obj=_G.GameTimeFrame, fType=ftype, ng=true, ofs=4})
 			end
 			_G.GameTimeFrame_Update(_G.GameTimeFrame)
 		end)
@@ -4540,12 +4538,17 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 	_G.MiniMapWorldMapButton:ClearAllPoints()
 	_G.MiniMapWorldMapButton:SetPoint("LEFT", _G.MinimapZoneTextButton, "RIGHT", -4, 0)
 	self:skinOtherButton{obj=_G.MiniMapWorldMapButton, font=self.fontP, text="M", noSkin=minBtn}
+	if _G.IsAddOnLoaded("SexyMap") then
+		_G.MiniMapWorldMapButton:DisableDrawLayer("OVERLAY") -- border texture
+	end
 	_G.MiniMapMailIcon:SetTexture([[Interface\Minimap\Tracking\Mailbox.blp]])
 	_G.MiniMapMailIcon:ClearAllPoints()
 	_G.MiniMapMailIcon:SetPoint("CENTER", _G.MiniMapMailFrame)
 	_G.MiniMapMailFrame:SetSize(26, 26)
 	_G.TimeManagerClockButton:SetSize(36, 14)
-	self:moveObject{obj=_G.TimeManagerClockTicker, x=-3, y=-1}
+	if not _G.IsAddOnLoaded("SexyMap") then
+		self:moveObject{obj=_G.TimeManagerClockTicker, x=-3, y=-1}
+	end
 
 	-- Zoom Buttons
 	local btn, txt, xOfs, yOfs
@@ -4606,13 +4609,12 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 		end
 	end
 	-- wait until all AddOn skins have been loaded
-	_G.C_Timer.After(0.5, function()
+	_G.C_Timer.After(1.0, function()
 		for addon, obj in _G.pairs(self.mmButs) do
 			if _G.IsAddOnLoaded(addon) then
 				skinMMBtn("Loaded Addons btns", obj)
 			end
 		end
-		self.mmButs = nil
 	end)
 
 	local function skinDBI(_, btn, name)
