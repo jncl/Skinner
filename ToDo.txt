@@ -29,16 +29,14 @@ ToDos
 	I 	reported by Fakelessgaming/iicoolpete, 03.01.21
 ?		- that issue with Torghast anima can't be activated in combat is still there
 
-	I	Minimap Buttons, reported by Galthariel,08.01.21
-√		- still not being skinned properly with SexyMap, WorldMap & Calendar
-√		- using minimal option
+	I	Minimap buttons, reported by Galthariel, 21.01.21
+√		- WorldMap button still has border with SexyMap
 
-	I	TalentUI, reported by EpidemeDaBear, 19.01.21
-√		- Skinner\Core\UtilFuncs.lua:460: attempt to call method 'SetBackdropBorderColor' (a nil value)
-		[string "@Skinner\Core\UtilFuncs.lua"]:460: in function `clrBBC'
-		[string "@Skinner\Modules\UIButtons.lua"]:215: in function `clrBtnBdr'
-		[string "@Skinner\Core\PlayerFrames.lua"]:4309: in function <Skinner\Core\PlayerFrames.lua:4296>
-		[string "@Skinner\Core\PlayerFrames.lua"]:4364: in function <Skinner\Core\PlayerFrames.lua:4334>
-		[string "@Skinner\Core\PlayerFrames.lua"]:4368: in function <Skinner\Core\PlayerFrames.lua:4367>
+	I	Outfitter, reported by Galthariel, 21.01.21
+√		- Skinner\AddonSkins\Outfitter-5.22.1.lua:266: attempt to index field 'mmButs' (a nil value)
+		[string "@Skinner\AddonSkins\Outfitter-5.22.1.lua"]:266: in function <Skinner\AddonSkins\Outfitter.lua:16>
+		[string "@Skinner\AddonSkins\Outfitter-5.22.1.lua"]:9: in function <Skinner\AddonSkins\Outfitter.lua:8>
 
-√	S	BattlePetBattleUITweaks, requested by Galthariel, 21.01.21
+	I	Altoholic, reported by Shiv_G3, 22.01.21
+√		- Skinner\Modules\UIButtons.lua:502: attempt to index field 'obj' (a nil value)
+		[string "@Skinner\AddonSkins\Altoholic-r193.lua"]:177: in function <Skinner\AddonSkins\Altoholic.lua:171>
