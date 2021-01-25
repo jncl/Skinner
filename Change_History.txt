@@ -1,3 +1,13 @@
+beta9.37176.2
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated Minimap Button skinning code
+	Updated PetBattleUI
+	Bugfix for TalentUI
+	Updated BugSack, Cork & tekKonfig skins
+	Skinned BattlePetBattleUITweaks
+
 beta9.37176.1
 Jncl:
 	ToDo.txt
