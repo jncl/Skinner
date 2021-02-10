@@ -51,6 +51,7 @@
 <Script file="CEPGP.lua"/>
 <Script file="ChampionCommander.lua"/>
 <Script file="Chatter.lua"/>
+<Script file="Chinchilla.lua"/>
 <Script file="ClassicCensusPlus.lua"/>
 <Script file="ClassicQuestLog.lua"/>
 <Script file="ClassOrderHallsComplete.lua"/>
@@ -68,6 +69,7 @@
 <Script file="CoolLine.lua"/>
 <Script file="Cork.lua"/>
 <Script file="Cosplay.lua"/>
+<Script file="CovenantMissionHelper.lua"/>
 <Script file="DBM.lua"/>
 <Script file="DeathNote.lua"/>
 <Script file="DejaCharacterStats.lua"/>
@@ -209,6 +211,7 @@
 <Script file="TradeSkillDW.lua"/>
 <Script file="Tukui.lua"/>
 <Script file="Vendomatic.lua"/>
+<Script file="VenturePlan.lua"/>
 <Script file="VuhDo.lua"/>
 <Script file="WarCampaignsComplete.lua"/>
 <Script file="WeakAuras.lua"/>
