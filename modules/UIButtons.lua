@@ -22,6 +22,7 @@ do
 	module.larrow = "←" -- Leftwards Arrow (U+2190)
 	module.uparrow = "↑" -- Upwards Arrow (U+2191)
 	module.rarrow = "→" -- Rightwards Arrow (U+2192)
+	module.downarrow = "↓" -- Downwards Arrow (U+2193)
 	module.nearrow = "↗" -- North East Arrow (U+2197)
 	module.swarrow = "↙" -- South West Arrow (U+2199)
 	-- create font to use for Close Buttons

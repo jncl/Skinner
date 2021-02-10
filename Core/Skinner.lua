@@ -393,6 +393,7 @@ function aObj:OnEnable()
 	self.larrow              = self.modBtns and self.modUIBtns.larrow or _G.nop
 	self.rarrow              = self.modBtns and self.modUIBtns.rarrow or _G.nop
 	self.uparrow             = self.modBtns and self.modUIBtns.uparrow or _G.nop
+	self.downarrow           = self.modBtns and self.modUIBtns.downarrow or _G.nop
 
 	self.addButtonBorder     = self.modBtnBs and self.modUIBtns.addButtonBorder or _G.nop
 	self.clrButtonFromBorder = self.modBtnBs and self.modUIBtns.clrButtonFromBorder or _G.nop

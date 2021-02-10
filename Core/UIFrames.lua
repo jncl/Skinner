@@ -261,12 +261,17 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 		if not _G.IsAddOnLoaded("MasterPlan") then
 			frame.CloseButton:SetSize(28, 28) -- make button smaller
 		end
-		local y1Ofs, x2Ofs, y2Ofs = 5, 3, -20
+		local x1Ofs, y1Ofs, x2Ofs, y2Ofs = -320, 5, 3, -20
+		if _G.IsAddOnLoaded("GarrisonCommander")
+		or _G.IsAddOnLoaded("VenturePlan")
+		then
+			x1Ofs = 0
+		end
 		if frame.CloseButton.CloseButtonBorder then
 			frame.CloseButton.CloseButtonBorder:SetTexture(nil)
 			y1Ofs, x2Ofs, y2Ofs = 2, 1, -30
 		end
-		aObj:skinObject("frame", {obj=frame, fType=ftype, kfs=true, cb=true, x1=_G.IsAddOnLoaded("GarrisonCommander") and 0 or -320, y1=y1Ofs, x2=x2Ofs, y2=y2Ofs})
+		aObj:skinObject("frame", {obj=frame, fType=ftype, kfs=true, cb=true, x1=x1Ofs, y1=y1Ofs, x2=x2Ofs, y2=y2Ofs})
 		if aObj.modBtns then
 			aObj:skinStdButton{obj=frame.StartMissionButton}
 			aObj:moveObject{obj=frame.StartMissionButton.Flash, x=-0.5, y=1.5}
@@ -3060,6 +3065,8 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 		if skinCovenantMissionFrame then
 			skinCovenantMissionFrame(this)
 			skinCovenantMissionFrame = nil
+			-- let other addons know when frame skinned (e.g. VenturePlan)
+			self.callbacks:Fire("CovenantMissionFrame_Skinned")
 		end
 
 	end)
