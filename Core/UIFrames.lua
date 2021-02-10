@@ -4337,7 +4337,9 @@ aObj.blizzFrames[ftype].Minimap = function(self)
 	if not self.prdb.Minimap.skin or self.initialized.Minimap then return end
 	self.initialized.Minimap = true
 
-	if _G.IsAddOnLoaded("SexyMap") then
+	if _G.IsAddOnLoaded("SexyMap")
+	or _G.IsAddOnLoaded("BasicMinimap")
+	then
 		self.blizzFrames[ftype].Minimap = nil
 		return
 	end
@@ -4606,6 +4608,7 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 				if aObj:hasTextInName(reg, "Border")
 				or aObj:hasTextInTexture(reg, "TrackingBorder")
 				or aObj:hasTextInTexture(reg, "136430") -- file ID for Border texture
+				or aObj:hasTextInTexture(reg, "136467") -- file ID for Background texture
 				then
 					reg:SetTexture(nil)
 				end
