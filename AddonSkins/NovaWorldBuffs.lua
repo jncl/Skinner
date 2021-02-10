@@ -2,7 +2,7 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("NovaWorldBuffs") then return end
 local _G = _G
 
-aObj.addonsToSkin.NovaWorldBuffs = function(self) -- v 1.85
+aObj.addonsToSkin.NovaWorldBuffs = function(self) -- v 1.88
 
 	local function skinBtn(btn, close)
 		if close then
@@ -53,11 +53,18 @@ aObj.addonsToSkin.NovaWorldBuffs = function(self) -- v 1.85
 		self:Unhook(this, "OnShow")
 	end)
 
+	-- NWBLayerMapFrame
+	self:skinObject("frame", {obj=_G.MinimapLayerFrame, kfs=true})
+	-- NWBVersionFrame
+
 	-- tooltips
 	_G.C_Timer.After(0.1, function()
-		self:add2Table(self.ttList, _G.NWBbuffListDragTooltip)
-		self:add2Table(self.ttList, _G.NWBbuffListResetButtonTooltip)
-		self:add2Table(self.ttList, _G.NWBlayerDragTooltip)
+		self:add2Table(self.ttList, _G.NWBbuffListDragFrame.tooltip)
+		self:add2Table(self.ttList, _G.NWBbuffListFrameWipeButton.tooltip)
+		self:add2Table(self.ttList, _G.NWBlayerDragFrame.tooltip)
+		self:add2Table(self.ttList, _G.NWBLayerMapDragFrame.tooltip)
+		self:add2Table(self.ttList, _G.MinimapLayerFrame.tooltip)
+		self:add2Table(self.ttList, _G.NWBVersionDragFrame.tooltip)
 	end)
 
 end

@@ -2,7 +2,7 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("Sorted") then return end
 local _G = _G
 
-aObj.addonsToSkin.Sorted = function(self) -- v 1.2.20
+aObj.addonsToSkin.Sorted = function(self) -- v 1.2.26
 
 	local function skinItemList(frame)
 		frame.foregroundFrame:DisableDrawLayer("OVERLAY") -- this disables the column seperator textures
@@ -10,17 +10,14 @@ aObj.addonsToSkin.Sorted = function(self) -- v 1.2.20
 		frame:DisableDrawLayer("BORDER")
 		aObj:skinObject("slider", {obj=frame.scrollBar, rpTex="artwork", y1=-2, y2=2})
 	end
-
-	self:skinObject("frame", {obj=_G.SortedIconSelectionMenu, kfs=true})
-
 	-- SortedFrame
 	self:SecureHookScript(_G.SortedFrame, "OnShow", function(this)
 		self:removeNineSlice(this.NineSlice)
 		_G.SortedFrameTitleBarMinimizeButtonDiv.texture:SetTexture(nil)
 		_G.SortedFrameTitleBarBlizzardButtonDiv.texture:SetTexture(nil)
 		_G.SortedFrameTitleBarAltsButtonDiv.texture:SetTexture(nil)
-		self:skinObject("frame", {obj=_G.SortedAltsDropdownButtonMenu, kfs=true})
-		self:skinObject("frame", {obj=_G.SortedEquipmentSetsDropdownButtonMenu, fType=ftype, kfs=true})
+		-- self:skinObject("frame", {obj=_G.SortedAltsDropdownButton, kfs=true})
+		-- self:skinObject("frame", {obj=_G.SortedEquipmentSetsDropdownButton, fType=ftype, kfs=true})
 		_G.SortedEquipmentSetsDropdownButtonDiv.texture:SetTexture(nil)
 		_G.SortedFramePortraitButton:SetScale(0.8)
 		self:moveObject{obj=_G.SortedFramePortraitButton, x=6, y=-10}
@@ -56,7 +53,8 @@ aObj.addonsToSkin.Sorted = function(self) -- v 1.2.20
 		-- SortedFrameRight
 		self:skinObject("frame", {obj=_G.SortedFrameFilterButtons, kfs=true, ri=true, fb=true, x1=-1, x2=2})
 		for _, btn in _G.pairs(_G.Sorted_CategoryButtons) do
-			self:skinStdButton{obj=btn}
+			btn.bgTex:SetTexture(nil)
+			self:skinStdButton{obj=btn, ofs=1, y1=2}
 			btn.newItemsIndicator.borderR:SetTexture(nil)
 			btn.newItemsIndicator.borderL:SetTexture(nil)
 			self:changeTandC(btn.newItemsIndicator.borderC)
@@ -85,12 +83,6 @@ aObj.addonsToSkin.Sorted = function(self) -- v 1.2.20
 			frame.button:DisableDrawLayer("BACKGROUND")
 			self:skinObject("frame", {obj=frame.button, ofs=2})
 		end
-		self:skinObject("frame", {obj=_G.SortedFrameTabsMenu, kfs=true, ofs=0})
-		if self.modChkBtns then
-			for i = 1, #_G.SortedFrameTabsMenu.checkButtons do
-				self:skinCheckButton{obj=_G.SortedFrameTabsMenu.checkButtons[i]}
-			end
-		end
 		-- SortedFrameItemList
 		-- TODO: .itemDropButton, alter texture coords to remove border (found in main panel, side panel & bag frame(s))
 		skinItemList(_G.SortedFrameItemList)
@@ -105,7 +97,6 @@ aObj.addonsToSkin.Sorted = function(self) -- v 1.2.20
 
 		self:Unhook(this, "OnShow")
 	end)
-
 	self:SecureHookScript(_G.SortedBankSidePanel, "OnShow", function(this)
 		self:removeInset(_G.SortedBankSidePanelFootSlots)
 		self:removeInset(_G.SortedBankSidePanelFootBags)
@@ -119,7 +110,6 @@ aObj.addonsToSkin.Sorted = function(self) -- v 1.2.20
 
 		self:Unhook(this, "OnShow")
 	end)
-
 	self:SecureHookScript(_G.SortedReagentSidePanel, "OnShow", function(this)
 		self:removeInset(_G.SortedReagentSidePanelFootSlots)
 		self:removeInset(_G.SortedReagentSidePanelFootCenter)
@@ -156,9 +146,24 @@ aObj.addonsToSkin.Sorted = function(self) -- v 1.2.20
 		-- aObj:skinObject("frame", {obj=frame, kfs=true, fb=true})
 		aObj:skinObject("frame", {obj=frame, kfs=true, fb=true})
 	end
+	self:SecureHookScript(_G.SortedProfileSelectFrame, "OnShow", function(this)
+		local fName = this:GetName()
+		self:keepFontStrings(_G[fName .. "DropShadowFrame"])
+		_G[fName .. "Header"].bg:SetTexture(nil)
+		_G[fName .. "Contents"].bg:SetTexture(nil)
+		self:skinObject("editbox", {obj=_G[fName .. "ContentsNewName"], regions={4, 5}})
+		this.backdrop:SetAlpha(0) -- changed in code
+		self:skinObject("frame", {obj=this, cb=true})
+		if self.modBtns then
+			self:skinStdButton{obj=_G[fName .. "ContentsNewButton"]}
+		end
+		fName = nil
+
+		self:Unhook(this, "OnShow")
+	end)
 	self:SecureHookScript(_G.SortedConfigFrame, "OnShow", function(this)
 		self:removeInset(_G.SortedConfigFrameTabs)
-		self:skinObject("tabs", {obj=_G.SortedConfigFrameTabs, tabs=_G.SortedConfigFrame.tabs, ignoreSize=true, lod=true, offsets={x1=2, y1=-6, x2=2, y2=-4}})
+		self:skinObject("tabs", {obj=_G.SortedConfigFrameTabs, tabs=_G.SortedConfigFrame.tabs, ignoreSize=true, lod=true, offsets={x1=2, y1=-6, x2=2, y2=-4}, track=false})
 		if self.isTT then
 			self:SecureHook("SortedConfigFrame_ToggleTab", function(tab)
 				for _, tabFrame in _G.pairs(_G.SortedConfigFrame.tabs) do
@@ -172,8 +177,8 @@ aObj.addonsToSkin.Sorted = function(self) -- v 1.2.20
 		end
 		_G.SortedConfigFrameContents:DisableDrawLayer("BACKGROUND")
 		_G.SortedConfigFrameContents:DisableDrawLayer("BORDER")
-		self:skinObject("frame", {obj=_G.SortedConfigFrameContents, kfs=true, fb=true, ofs=3, x1=-2})
-		self:skinObject("frame", {obj=this, kfs=true, cb=true, x2=1})
+		self:skinObject("frame", {obj=_G.SortedConfigFrameContents, kfs=true, fb=true, ofs=0, x2=3, y1=4})
+		self:skinObject("frame", {obj=this, kfs=true, cb=true, x2=5})
 		-- Appearance Tab
 		skinOptions(_G.SortedConfigFrameContentsAppearanceBox1)
 		skinOptions(_G.SortedConfigFrameContentsAppearanceBox2)
@@ -188,7 +193,7 @@ aObj.addonsToSkin.Sorted = function(self) -- v 1.2.20
 		skinOptions(_G.SortedConfigFrameContentsBehaviorBox5Sorting)
 		skinOptions(_G.SortedConfigFrameContentsBehaviorBox5Filtering)
 		-- Categories Tab
-		self:skinObject("frame", {obj=_G.SortedConfigCategories, kfs=true, fb=true, ofs=1, x1=-3})
+		self:skinObject("frame", {obj=_G.SortedConfigCategories, kfs=true, fb=true, ofs=1, y2=2})
 		for _, btn in _G.pairs(_G.SortedConfigCategories.buttons) do
 			self:skinObject("frame", {obj=btn, kfs=true})
 			self:skinCloseButton{obj=btn.deleteButton }
@@ -222,7 +227,7 @@ aObj.addonsToSkin.Sorted = function(self) -- v 1.2.20
 			end
 		end)
 		-- Profile Tab
-		self:skinObject("dropdown", {obj=_G.SortedConfigProfileDropdown})
+		-- self:skinObject("dropdown", {obj=_G.SortedConfigProfileDropdown})
 		if self.modBtns then
 			self:skinStdButton{obj=_G.SortedConfigProfileNew}
 			self:skinStdButton{obj=_G.SortedConfigProfileCopy}
@@ -259,6 +264,8 @@ aObj.addonsToSkin.Sorted = function(self) -- v 1.2.20
 		end
 	end
 	i, bFrame = nil, nil
+
+	self:skinObject("frame", {obj=_G.SortedIconSelectionMenu, kfs=true})
 
 	-- tooltip
 	_G.C_Timer.After(0.1, function()

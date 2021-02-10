@@ -2,15 +2,15 @@ local aName, aObj = ...
 if not aObj:isAddonEnabled("AdiBags") then return end
 local _G = _G
 
-aObj.addonsToSkin.AdiBags = function(self) -- v1.9.17/v1.9.17-classic
+aObj.addonsToSkin.AdiBags = function(self) -- v1.9.22/v1.9.22-classic
 
 	local aBag = _G.LibStub("AceAddon-3.0"):GetAddon("AdiBags", true)
 
 	-- hook this for bag creation
 	aBag:RegisterMessage("AdiBags_BagFrameCreated", function(msg, bag)
 		-- print("AdiBags_BagFrameCreated", bag)
-		aObj:skinEditBox{obj=_G[bag.frame:GetName() .. "SearchBox"], regs={6}, mi=true}
-		aObj:addSkinFrame{obj=bag.frame, ft="a", kfs=true, nb=true}
+		aObj:skinObject("editbox", {obj=_G[bag.frame:GetName() .. "SearchBox"]})
+		aObj:skinObject("frame", {obj=bag.frame, kfs=true})
 		if aObj.modBtns then
 			aObj:skinCloseButton{obj=bag.frame.CloseButton}
 			-- delay to allow all buttons to be created
@@ -30,7 +30,7 @@ aObj.addonsToSkin.AdiBags = function(self) -- v1.9.17/v1.9.17-classic
 	-- hook this for equipped bag panel creation
 	self:RawHook(aBag, "CreateBagSlotPanel", function(this, ...)
 		local bPanel = self.hooks[this].CreateBagSlotPanel(this, ...)
-		self:addSkinFrame{obj=bPanel, ft="a", kfs=true, nb=true}
+		self:skinObject("frame", {obj=bPanel, kfs=true})
 		if self.modBtnBs then
 			for _, btn in _G.pairs(bPanel.buttons) do
 				self:addButtonBorder{obj=btn, ibt=true}
