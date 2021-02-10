@@ -499,6 +499,21 @@ function aObj:OnEnable()
 	-- schedule scan of UIParent's Children after all AddOns have been loaded
 	_G.C_Timer.After(self.prdb.Delay.Init + self.prdb.Delay.Addons + 1, function() self:scanUIParentsChildren() end)
 
+--@alpha@
+	-- error handling
+	local eh = _G.geterrorhandler()
+	_G.seterrorhandler(function(msg)
+		local _, _, stacktrace = _G.string.find(_G.debugstack() or "", "[^\n]+\n(.*)")
+		aObj:Debug("seterrorhandler: [%s, %s, %s]", msg, stacktrace)
+	end)
+	-- register these events to see if they can be managed
+	local function handleEvent(event, isTainted, func)
+		aObj:Debug("handleEvent: [%s, %s, %s, %s]", event, isTainted, func)
+	end
+	self:RegisterEvent("ADDON_ACTION_FORBIDDEN", handleEvent)
+	self:RegisterEvent("ADDON_ACTION_BLOCKED", handleEvent)
+--@end-alpha@
+
 end
 
 function aObj:OnDisable()
