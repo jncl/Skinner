@@ -23,20 +23,69 @@ ToDos
 
 ≈	O	Refactor NewSkinFuncs in Blizzard/AddOn skins
 
+    O   Can these events be captured and acted upon?
+        - ADDON_ACTION_FORBIDDEN
+        - ADDON_ACTION_BLOCKED
+
+    O   QuestInfo frame
+        - AdventuresFollowerPortraitFrame has been added
+
 	I	ToolTip border, reported by EpidemeDaBear, 02.01.21
 ?		- texture used on mouseover of Quest reward
 
 	I 	reported by Fakelessgaming/iicoolpete, 03.01.21
 ?		- that issue with Torghast anima can't be activated in combat is still there
 
-	I	Minimap buttons, reported by Galthariel, 21.01.21
-√		- WorldMap button still has border with SexyMap
+	S/C	BasicMinimap, requested by sunnyjang00, 26.01.21
+√		- minimap button circular background
 
-	I	Outfitter, reported by Galthariel, 21.01.21
-√		- Skinner\AddonSkins\Outfitter-5.22.1.lua:266: attempt to index field 'mmButs' (a nil value)
-		[string "@Skinner\AddonSkins\Outfitter-5.22.1.lua"]:266: in function <Skinner\AddonSkins\Outfitter.lua:16>
-		[string "@Skinner\AddonSkins\Outfitter-5.22.1.lua"]:9: in function <Skinner\AddonSkins\Outfitter.lua:8>
+	I/C NovaWorldBuffs, reported by sunnyjang00, 26.01.21
+≈		- minimap buttons
 
-	I	Altoholic, reported by Shiv_G3, 22.01.21
-√		- Skinner\Modules\UIButtons.lua:502: attempt to index field 'obj' (a nil value)
-		[string "@Skinner\AddonSkins\Altoholic-r193.lua"]:177: in function <Skinner\AddonSkins\Altoholic.lua:171>
+	I	Adibags, reported by Fakelessgaming, 28.01.21
+?		- sometimes doesn't skin when game loaded
+
+	I	reported by Galthariel, 30.01.21
+?		- [ADDON_ACTION_BLOCKED] AddOn 'Skinner' tried to call the protected function 'SetTargetClampingInsets()'.
+		[string "@!BugGrabber\BugGrabber.lua"]:519: in function <!BugGrabber\BugGrabber.lua:519>
+		[string "=[C]"]: in function `SetTargetClampingInsets'
+		[string "@Blizzard_NamePlates\Blizzard_NamePlates.lua"]:305: in function `SetupClassNameplateBars'
+		[string "@Blizzard_NamePlates\Blizzard_NamePlates.lua"]:119: in function <...eBlizzard_NamePlates\Blizzard_NamePlates.lua:112>
+		[string "=[C]"]: in function `OnNamePlateAdded'
+		[string "@Blizzard_NamePlates\Blizzard_NamePlates.lua"]:56: in function <...eBlizzard_NamePlates\Blizzard_NamePlates.lua:47>
+
+	I	BossFrames
+!?		- causing ADDON_ACTION_BLOCKED errors
+
+√	S	Venture Plan, requested by Galthariel, 01.02.21
+
+√	S	CovenantMissionHelper, requested by Galthariel, 01.02.21
+
+	I	Chinchilla Minimap, reported by Sinnicle, 01.02.21
+√		- Clock is no longed skinned.
+
+    I   GearManager, reported by Fakelessgaming, 06.02.21
+√       - Equip button issue, not being skinned
+
+    I   reported by neoseph82, 07.02.21
+?       - Skinner\Modules\UIButtons.lua:852: attempt to index field 'LSM' (a nil value)
+        [string "@Skinner\Modules\UIButtons.lua"]:852: in function <Skinner\Modules\UIButtons.lua:828>
+        [string "=[C]"]: ?
+        [string "@Ace3\AceAddon-3.0\AceAddon-3.0-13.lua"]:70: in function <Ace3\AceAddon-3.0\AceAddon-3.0.lua:65>
+        [string "@Ace3\AceAddon-3.0\AceAddon-3.0-13.lua"]:527: in function `EnableAddon'
+        [string "@Ace3\AceAddon-3.0\AceAddon-3.0-13.lua"]:540: in function `EnableAddon'
+        [string "@Ace3\AceAddon-3.0\AceAddon-3.0-13.lua"]:630: in function <Ace3\AceAddon-3.0\AceAddon-3.0.lua:615>
+
+    I   CovenantSanctum, reported by neoseph82, 07.02.21
+!?      - [ADDON_ACTION_FORBIDDEN] AddOn 'Skinner' tried to call the protected function 'DepositAnima()'.
+        [string "@!BugGrabber\BugGrabber.lua"]:519: in function <!BugGrabber\BugGrabber.lua:519>
+        [string "=[C]"]: in function `DepositAnima'
+        [string "@Blizzard_CovenantSanctum\Blizzard_CovenantSanctumUpgrades.lua"]:284: in function `DepositAnima'
+        [string "*:OnClick"]:1: in function <[string "*:OnClick"]:1>
+
+    I   Sorted, reported by Shiv_G3, 09.02.21
+√       - Skinner\Core\NewSkinFuncs.lua:418: attempt to index field 'obj' (a nil value)
+        [string "@Skinner\Core\NewSkinFuncs.lua"]:418: in function <Skinner\Core\NewSkinFuncs.lua:411>
+        [string "@Skinner\Core\NewSkinFuncs.lua"]:523: in function `?'
+        [string "@Skinner\Core\NewSkinFuncs.lua"]:156: in function `skinObject'
+        [string "@Skinner\AddonSkins\Sorted-1.2.26.lua"]:22: in function <Skinner\AddonSkins\Sorted.lua:17>
