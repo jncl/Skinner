@@ -696,7 +696,6 @@ aObj.blizzFrames[ftype].CharacterFrames = function(self)
 		end)
 		self:SecureHookScript(_G.PaperDollEquipmentManagerPane, "OnShow", function(this)
 			self:skinSlider{obj=this.scrollBar, wdth=-4}
-			this.EquipSet:DisableDrawLayer("BACKGROUND")
 			for _, btn in _G.pairs(this.buttons) do
 				btn:DisableDrawLayer("BACKGROUND")
 				if self.modBtnBs then
