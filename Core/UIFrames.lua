@@ -6408,18 +6408,18 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 	self.initialized.UIWidgets = true
 
 	-- N.B. In Shadowlands, get Clamping Errors when in certain areas and displaying StatusBar/SpellDisplay widgets
-	local SZL = _G.LibStub:GetLibrary("LibBabble-SubZone-3.0"):GetLookupTable()
+	local LSZ = _G.LibStub:GetLibrary("LibBabble-SubZone-3.0"):GetLookupTable()
 	local disableTypeBySZ = {
 		[2] = { -- StatusBar
-			[SZL["The Eternal Forge"]] = true, -- Bastion
-			[SZL["Bleak Redoubt"]]     = true, -- Maldraxxus
-			[SZL["House of Plagues"]]  = true, -- Maldraxxus
-			[SZL["The Desiccation"]]   = true, -- Revendreth
-			[SZL["The Spearhead"]]     = true, -- Maldraxxus
+			[LSZ["The Eternal Forge"]] = true, -- Bastion
+			[LSZ["Bleak Redoubt"]]     = true, -- Maldraxxus
+			[LSZ["House of Plagues"]]  = true, -- Maldraxxus
+			[LSZ["The Spearhead"]]     = true, -- Maldraxxus
+			[LSZ["The Desiccation"]]   = true, -- Revendreth
 		},
 		[13] = { -- SpellDisplay
-			[SZL["House of Plagues"]] = true,
-			[SZL["The Ember Court"]]   = true, -- Revendreth (Scenario)
+			[LSZ["House of Plagues"]] = true, -- Maldraxxus
+			[LSZ["The Ember Court"]]  = true, -- Revendreth (Scenario)
 		},
 	}
 
