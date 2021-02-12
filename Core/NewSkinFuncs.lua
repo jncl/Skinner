@@ -587,6 +587,9 @@ local function skinSlider(tbl)
 		if w <= 8 then
 			tbl.x1 = _G.rawget(tbl, "x1") or -4
 			tbl.x2 = _G.rawget(tbl, "x2") or 1
+		elseif w <= 10 then -- OribosScrollTemplate
+			tbl.x1 = _G.rawget(tbl, "x1") or -1
+			tbl.x2 = _G.rawget(tbl, "x2") or 1
 		elseif w <= 12 then
 			tbl.x1 = _G.rawget(tbl, "x1") or -2
 			tbl.x2 = _G.rawget(tbl, "x2") or -1

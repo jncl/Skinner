@@ -1330,26 +1330,6 @@ end
 aObj.tableCount = _G.nop
 --@end-non-debug@]===]
 
-function aObj:toggleTabDisplay(tab, active)
-
-	if active then
-		if self.isTT then
-			self:setActiveTab(tab.sf)
-		else
-			-- HIGHLIGHT_FONT_COLOR is white
-			tab.Text:SetVertexColor(_G.HIGHLIGHT_FONT_COLOR:GetRGB())
-		end
-	else
-		if self.isTT then
-			self:setInactiveTab(tab.sf)
-		else
-			-- NORMAL_FONT_COLOR is yellow
-			tab.Text:SetVertexColor(_G.NORMAL_FONT_COLOR:GetRGB())
-		end
-	end
-
-end
-
 function aObj:updateSBTexture()
 
 	-- get updated colour/texture

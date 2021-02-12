@@ -5,7 +5,7 @@ local _G = _G
 local ftype = "u"
 
 -- The following functions are used by the GarrisonUI & OrderHallUI
-local stageRegs, skinMissionFrame, skinPortrait, skinCovenantFollowerPortrait, skinFollower, skinFollowerListButtons, skinFollowerAbilitiesAndCounters, skinFollowerList, skinFollowerPage, skinFollowerTraitsAndEquipment, skinCompleteDialog, skinMissionPage, skinMissionComplete, skinMissionList
+local skinPortrait, skinFollower, skinFollowerListButtons, skinEquipment, skinFollowerAbilitiesAndCounters, skinFollowerList, skinFollowerPage, skinFollowerTraitsAndEquipment, skinMissionFrame, skinCompleteDialog, skinMissionPage, skinMissionComplete, skinMissionList
 
 -- [WoD] LE_FOLLOWER_TYPE_GARRISON_6_0
 -- [WoD] LE_FOLLOWER_TYPE_GARRISON_6_2 (Shipyards)
@@ -13,30 +13,6 @@ local stageRegs, skinMissionFrame, skinPortrait, skinCovenantFollowerPortrait, s
 -- [BfA] LE_FOLLOWER_TYPE_GARRISON_8_0
 -- [Shadowlands] Enum.GarrisonType.Type_9_0
 if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
-	stageRegs = {1, 2, 3, 4, 5}
-	local mfTabSkin = aObj.skinTPLs.new("tabs", {fType=ftype, ignoreSize=true, lod=true, ignoreHLTex=true, regions={7, 8, 9, 10}})
-	function skinMissionFrame(frame)
-		local x1Ofs, y1Ofs, y2Ofs = 2, 2, -5
-		if frame == _G.CovenantMissionFrame then
-			x1Ofs = -2
-			y1Ofs = 1
-			y2Ofs = -4
-		elseif frame == _G.BFAMissionFrame then
-			y1Ofs = 1
-			y2Ofs = -6
-		elseif frame == _G.OrderHallMissionFrame then
-			y2Ofs = -4
-		end
-		frame.GarrCorners:DisableDrawLayer("BACKGROUND")
-		aObj:skinObject("frame", {obj=frame, fType=ftype, kfs=true, cb=true, x1=x1Ofs, y1=y1Ofs, x2=1, y2=y2Ofs})
-		x1Ofs, y1Ofs, y2Ofs = nil, nil, nil
-		-- tabs
-		mfTabSkin.obj = frame
-		mfTabSkin.prefix =  frame:GetName()
-		mfTabSkin.selectedTab = frame.selectedTab
-		mfTabSkin.offsets = {x1=9, y1=2, x2=-9, y2=frame==_G.GarrisonMissionFrame and 0 or -4}
-		aObj:skinObject(mfTabSkin)
-	end
 	function skinPortrait(frame)
 		if frame.PuckBorder then
 			-- FIXME: colour of PuckBorder changes for troops, is it important to show it?
@@ -49,7 +25,9 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 		else
 			frame.PortraitRing:SetTexture(nil)
 			frame.LevelBorder:SetAlpha(0) -- texture changed
-			if frame.PortraitRingCover then frame.PortraitRingCover:SetTexture(nil) end
+			if frame.PortraitRingCover then
+				frame.PortraitRingCover:SetTexture(nil)
+			end
 			if frame.Empty then
 				frame.Empty:SetTexture(nil)
 				aObj:SecureHook(frame.Empty, "Show", function(this)
@@ -57,6 +35,7 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 					fp.Portrait:SetTexture(nil)
 					fp.PortraitRingQuality:SetVertexColor(1, 1, 1)
 					fp.PortraitRing:SetAtlas("GarrMission_PortraitRing_Quality") -- reset after legion titled follower
+					fp = nil
 				end)
 			end
 		end
@@ -71,18 +50,17 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 		end
 	end
 	function skinFollowerListButtons(frame)
-		for i = 1, #frame.listScroll.buttons do
+		for _, btn in _G.pairs(frame.listScroll.buttons) do
 			if frame ~= _G.GarrisonShipyardFrameFollowers
 			and frame ~= _G.GarrisonLandingPageShipFollowerList
 			then
-				skinFollower(frame.listScroll.buttons[i].Follower)
+				skinFollower(btn.Follower)
 			else
-				skinFollower(frame.listScroll.buttons[i])
+				skinFollower(btn)
 			end
 		end
 	end
-	-- Equipment buttons (OrderHallUI & BfA [Beta])
-	local function skinEquipment(frame)
+	function skinEquipment(frame)
 		for equipment in frame.equipmentPool:EnumerateActive() do
 			equipment.BG:SetTexture(nil)
 			equipment.Border:SetTexture(nil)
@@ -92,9 +70,8 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 	function skinFollowerAbilitiesAndCounters(frame)
 		if aObj.modBtnBs then
 			if frame.AbilitiesFrame.CombatAllySpell then
-				-- CombatAllySpell buttons
-				for i = 1, #frame.AbilitiesFrame.CombatAllySpell do
-					aObj:addButtonBorder{obj=frame.AbilitiesFrame.CombatAllySpell[i], relTo=frame.AbilitiesFrame.CombatAllySpell[i].iconTexture}
+				for _, btn in _G.pairs(frame.AbilitiesFrame.CombatAllySpell) do
+					aObj:addButtonBorder{obj=btn, relTo=btn.iconTexture}
 				end
 			end
 			-- Ability buttons
@@ -118,7 +95,6 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 					end
 				end
 			end)
-
 		end
 		-- skin existing entries
 		skinEquipment(frame)
@@ -127,16 +103,24 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 			skinEquipment(this)
 		end)
 	end
-	function skinFollowerList(frame)
+	local gOfs, y1Ofs, y2Ofs
+	function skinFollowerList(frame, colour)
 		if frame.ElevatedFrame then
 			frame.ElevatedFrame:DisableDrawLayer("OVERLAY")
 			aObj:removeRegions(frame, {1})
-			frame.listScroll.scrollBar:DisableDrawLayer("BACKGROUND")
+			aObj:removeRegions(frame.listScroll, {1})
+			aObj:skinObject("slider", {obj=frame.listScroll.scrollBar, fType=ftype, y1=5, y2=-10})
+			gOfs, y1Ofs, y2Ofs = 2, 2, -2
 		else
 			frame:DisableDrawLayer("BORDER")
 			aObj:removeRegions(frame, {1, 2, frame:GetParent() ~= _G.GarrisonLandingPage and 3 or nil})
 			aObj:skinObject("slider", {obj=frame.listScroll.scrollBar, fType=ftype, y1=-2, y2=2})
+			gOfs, y1Ofs, y2Ofs = 4, 8, -8
 		end
+		if frame.isLandingPage then
+			gOfs, y1Ofs, y2Ofs = 6, 4, -8
+		end
+		aObj:skinObject("frame", {obj=frame.listScroll, fType=ftype, fb=true, ofs=gOfs, y1=y1Ofs, y2=y2Ofs, clr=colour})
 		if frame.FollowerScrollFrame then
 			frame.FollowerScrollFrame:SetTexture(nil)
 		end
@@ -158,7 +142,7 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 			skinFollowerListButtons(frame)
 		end
 		if frame.followerTab
-		and not frame:GetName():find("Ship") -- Shipyard & ShipFollowers
+		and not aObj:hasTextInName(frame, "Ship") -- Shipyard & ShipFollowers
 		then
 			skinFollowerAbilitiesAndCounters(frame.followerTab)
 		end
@@ -186,19 +170,42 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 	function skinFollowerTraitsAndEquipment(frame)
 		aObj:skinStatusBar{obj=frame.XPBar, fi=0}
 		frame.XPBar:DisableDrawLayer("OVERLAY")
-		for i = 1, #frame.Traits do
-			frame.Traits[i].Border:SetTexture(nil)
+		for _, btn in _G.pairs(frame.Traits) do
+			btn.Border:SetTexture(nil)
 			if aObj.modBtnBs then
-				aObj:addButtonBorder{obj=frame.Traits[i], relTo=frame.Traits[i].Portrait, ofs=1}
+				aObj:addButtonBorder{obj=btn, relTo=btn.Portrait, ofs=1}
 			end
 		end
-		for i = 1, #frame.EquipmentFrame.Equipment do
-			frame.EquipmentFrame.Equipment[i].BG:SetTexture(nil)
-			frame.EquipmentFrame.Equipment[i].Border:SetTexture(nil)
+		for _, btn in _G.pairs(frame.EquipmentFrame.Equipment) do
+			btn.BG:SetTexture(nil)
+			btn.Border:SetTexture(nil)
 			if aObj.modBtnBs then
-				aObj:addButtonBorder{obj=frame.EquipmentFrame.Equipment[i], relTo=frame.EquipmentFrame.Equipment[i].Icon, ofs=1}
+				aObj:addButtonBorder{obj=btn, relTo=btn.Icon, ofs=1}
 			end
 		end
+	end
+	local mfTabSkin = aObj.skinTPLs.new("tabs", {fType=ftype, ignoreSize=true, lod=true, ignoreHLTex=true, regions={7, 8, 9, 10}})
+	function skinMissionFrame(frame)
+		local x1Ofs, y1Ofs, y2Ofs = 2, 2, -5
+		if frame == _G.CovenantMissionFrame then
+			x1Ofs = -2
+			y1Ofs = 2
+			y2Ofs = -6
+		elseif frame == _G.BFAMissionFrame then
+			y1Ofs = 1
+			y2Ofs = -6
+		elseif frame == _G.OrderHallMissionFrame then
+			y2Ofs = -4
+		end
+		frame.GarrCorners:DisableDrawLayer("BACKGROUND")
+		aObj:skinObject("frame", {obj=frame, fType=ftype, kfs=true, cbns=true, x1=x1Ofs, y1=y1Ofs, x2=1, y2=y2Ofs})
+		x1Ofs, y1Ofs, y2Ofs = nil, nil, nil
+		-- tabs
+		mfTabSkin.obj = frame
+		mfTabSkin.prefix =  frame:GetName()
+		mfTabSkin.selectedTab = frame.selectedTab
+		mfTabSkin.offsets = {x1=9, y1=2, x2=-9, y2=frame==_G.GarrisonMissionFrame and 0 or -4}
+		aObj:skinObject(mfTabSkin)
 	end
 	function skinCompleteDialog(frame, naval)
 		if not naval then
@@ -215,7 +222,8 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 			aObj:skinStdButton{obj=frame.BorderFrame.ViewButton}
 		end
 	end
-	function skinMissionPage(frame)
+	local stageRegs = {1, 2, 3, 4, 5}
+	function skinMissionPage(frame, colour)
 		frame.IconBG:SetTexture(nil)
 		if frame.Board then -- shadowlands
 			aObj:removeRegions(frame.Stage, {1})
@@ -261,17 +269,12 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 		if not _G.IsAddOnLoaded("MasterPlan") then
 			frame.CloseButton:SetSize(28, 28) -- make button smaller
 		end
-		local x1Ofs, y1Ofs, x2Ofs, y2Ofs = -320, 5, 3, -20
-		if _G.IsAddOnLoaded("GarrisonCommander")
-		or _G.IsAddOnLoaded("VenturePlan")
-		then
-			x1Ofs = 0
-		end
+		local y1Ofs, x2Ofs, y2Ofs = 5, 3, -20
 		if frame.CloseButton.CloseButtonBorder then
 			frame.CloseButton.CloseButtonBorder:SetTexture(nil)
-			y1Ofs, x2Ofs, y2Ofs = 2, 1, -30
+			y1Ofs, x2Ofs, y2Ofs = 2, 1, 0
 		end
-		aObj:skinObject("frame", {obj=frame, fType=ftype, kfs=true, cb=true, x1=x1Ofs, y1=y1Ofs, x2=x2Ofs, y2=y2Ofs})
+		aObj:skinObject("frame", {obj=frame, fType=ftype, kfs=true, cbns=true, fb=true, clr=colour, x1=0, y1=y1Ofs, x2=x2Ofs, y2=y2Ofs})
 		if aObj.modBtns then
 			aObj:skinStdButton{obj=frame.StartMissionButton}
 			aObj:moveObject{obj=frame.StartMissionButton.Flash, x=-0.5, y=1.5}
@@ -331,16 +334,17 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 			end
 		end
 	    aObj:removeRegions(frame.Stage.MissionInfo, naval and {1, 2, 3, 4, 5, 8, 9, 10} or {1, 2, 3, 4, 5, 11, 12, 13})
+		aObj:nilTexture(frame.Stage.MissionInfo.IconBG, true)
 	end
 	local mlTabSkin = aObj.skinTPLs.new("tabs", {fType=ftype, numTabs=2, ignoreSize=true, lod=true, regions={7, 8, 9}, track=false})
 	function skinMissionList(ml, tabOfs)
 		ml.MaterialFrame:DisableDrawLayer("BACKGROUND")
 		aObj:skinObject("frame", {obj=ml, fType=ftype, kfs=true, fb=true, ofs=1})
 		if ml.RaisedFrameEdges then
+			ml.RaisedFrameEdges:DisableDrawLayer("BORDER")
 			ml.MaterialFrame.LeftFiligree:SetTexture(nil)
 			ml.MaterialFrame.RightFiligree:SetTexture(nil)
-			ml.listScroll.scrollBar:DisableDrawLayer("BACKGROUND")
-			ml.RaisedFrameEdges:DisableDrawLayer("BORDER")
+			aObj:skinObject("slider", {obj=ml.listScroll.scrollBar, fType=ftype, y1=5, y2=-10})
 		else
 			aObj:skinObject("slider", {obj=ml.listScroll.scrollBar, fType=ftype, y1=-2, y2=2})
 			-- tabs
@@ -2275,56 +2279,24 @@ end
 aObj.blizzFrames[ftype].GarrisonTooltips = function(self)
 	if not self.prdb.GarrisonUI then return end
 
-	self:SecureHookScript(_G.GarrisonFollowerTooltip, "OnShow", function(this)
-		this.PortraitFrame.PortraitRing:SetTexture(nil)
-		this.PortraitFrame.LevelBorder:SetAlpha(0)
-		_G.C_Timer.After(0.1, function() self:add2Table(self.ttList, this) end)
+	_G.GarrisonFollowerTooltip.PortraitFrame.PortraitRing:SetTexture(nil)
+	_G.GarrisonFollowerTooltip.PortraitFrame.LevelBorder:SetAlpha(0)
+	_G.GarrisonFollowerAbilityTooltip.CounterIconBorder:SetTexture(nil)
+	_G.FloatingGarrisonFollowerTooltip.PortraitFrame.PortraitRing:SetTexture(nil)
+	_G.FloatingGarrisonFollowerTooltip.PortraitFrame.LevelBorder:SetAlpha(0)
+	_G.FloatingGarrisonFollowerAbilityTooltip.CounterIconBorder:SetTexture(nil)
 
-		self:Unhook(this, "OnShow")
-	end)
-	self:SecureHookScript(_G.GarrisonFollowerAbilityTooltip, "OnShow", function(this)
-		this.CounterIconBorder:SetTexture(nil)
-		_G.C_Timer.After(0.1, function() self:add2Table(self.ttList, this) end)
-
-		self:Unhook(this, "OnShow")
-	end)
-	self:SecureHookScript(_G.GarrisonFollowerAbilityWithoutCountersTooltip, "OnShow", function(this)
-		_G.C_Timer.After(0.1, function() self:add2Table(self.ttList, this) end)
-
-		self:Unhook(this, "OnShow")
-	end)
-	self:SecureHookScript(_G.GarrisonFollowerMissionAbilityWithoutCountersTooltip, "OnShow", function(this)
-		_G.C_Timer.After(0.1, function() self:add2Table(self.ttList, this) end)
-
-		self:Unhook(this, "OnShow")
-	end)
-	self:SecureHookScript(_G.GarrisonShipyardFollowerTooltip, "OnShow", function(this)
-		_G.C_Timer.After(0.1, function() self:add2Table(self.ttList, this) end)
-
-		self:Unhook(this, "OnShow")
-	end)
-	self:SecureHookScript(_G.FloatingGarrisonFollowerTooltip, "OnShow", function(this)
-		this.PortraitFrame.PortraitRing:SetTexture(nil)
-		this.PortraitFrame.LevelBorder:SetAlpha(0)
-		_G.C_Timer.After(0.1, function() self:add2Table(self.ttList, this) end)
-
-		self:Unhook(this, "OnShow")
-	end)
-	self:SecureHookScript(_G.FloatingGarrisonShipyardFollowerTooltip, "OnShow", function(this)
-		_G.C_Timer.After(0.1, function() self:add2Table(self.ttList, this) end)
-
-		self:Unhook(this, "OnShow")
-	end)
-	self:SecureHookScript(_G.FloatingGarrisonFollowerAbilityTooltip, "OnShow", function(this)
-		this.CounterIconBorder:SetTexture(nil)
-		_G.C_Timer.After(0.1, function() self:add2Table(self.ttList, this) end)
-
-		self:Unhook(this, "OnShow")
-	end)
-	self:SecureHookScript(_G.FloatingGarrisonMissionTooltip, "OnShow", function(this)
-		_G.C_Timer.After(0.1, function() self:add2Table(self.ttList, this) end)
-
-		self:Unhook(this, "OnShow")
+	-- tooltip
+	_G.C_Timer.After(0.1, function()
+		self:add2Table(self.ttList, _G.GarrisonFollowerTooltip)
+		self:add2Table(self.ttList, _G.GarrisonFollowerAbilityTooltip)
+		self:add2Table(self.ttList, _G.GarrisonFollowerAbilityWithoutCountersTooltip)
+		self:add2Table(self.ttList, _G.GarrisonFollowerMissionAbilityWithoutCountersTooltip)
+		self:add2Table(self.ttList, _G.GarrisonShipyardFollowerTooltip)
+		self:add2Table(self.ttList, _G.FloatingGarrisonFollowerTooltip)
+		self:add2Table(self.ttList, _G.FloatingGarrisonShipyardFollowerTooltip)
+		self:add2Table(self.ttList, _G.FloatingGarrisonFollowerAbilityTooltip)
+		self:add2Table(self.ttList, _G.FloatingGarrisonMissionTooltip)
 	end)
 
 end
@@ -2343,8 +2315,199 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 
 	self.initialized.GarrisonUI = true
 
-	self.garrisonType = _G.C_Garrison.GetLandingPageGarrisonType()
-	-- aObj:Debug("garrisonType: [%s, %s]", _G.C_Garrison.GetLandingPageGarrisonType())
+	self:SecureHookScript(_G.GarrisonLandingPage, "OnShow", function(this)
+		-- ReportTab (ALWAYS shown first)
+		this.Report.List:DisableDrawLayer("BACKGROUND")
+		self:skinObject("slider", {obj=this.Report.List.listScroll.scrollBar, fType=ftype})
+		for _, btn in _G.pairs(this.Report.List.listScroll.buttons) do
+			btn:DisableDrawLayer("BACKGROUND")
+			btn:DisableDrawLayer("BORDER")
+			if self.modBtnBs then
+				for _, reward in _G.pairs(btn.Rewards) do
+					self:addButtonBorder{obj=reward, relTo=reward.Icon, reParent={reward.Quantity}}
+					self:clrButtonFromBorder(reward)
+				end
+			end
+		end
+		self:skinObject("frame", {obj=this.Report.List, fType=ftype, fb=true, y1=4})
+		self:skinObject("tabs", {obj=this.Report, tabs={this.Report.InProgress, this.Report.Available}, fType=ftype, ignoreSize=true, lod=true, offsets={x1=4, y1=-2, x2=-4, y2=-4}, regions={3}, track=false, func=function(tab) tab:GetNormalTexture():SetAlpha(0) _G.RaiseFrameLevelByTwo(tab) end})
+		if self.isTT then
+			self:SecureHook("GarrisonLandingPageReport_SetTab", function(tab)
+				self:setInactiveTab(tab:GetParent().unselectedTab.sf)
+				self:setActiveTab(tab.sf)
+			end)
+		end
+		skinFollowerList(this.FollowerList)
+		skinFollowerPage(this.FollowerTab)
+		skinFollowerList(this.ShipFollowerList)
+		skinFollowerTraitsAndEquipment(this.ShipFollowerTab)
+		-- shadowlands
+		if _G.C_Garrison.GetLandingPageGarrisonType() == _G.Enum.GarrisonType.Type_9_0 then
+			this.CovenantCallings:DisableDrawLayer("BACKGROUND")
+			local function skinPanelBtns(panel)
+				panel:DisableDrawLayer("BACKGROUND")
+				aObj:skinObject("frame", {obj=panel.RenownButton, fType=ftype, regions={3, 5, 6}, ofs=-4, y1=-5, y2=3})
+				panel.RenownButton.UpdateButtonTextures = _G.nop
+				aObj:skinObject("frame", {obj=panel.SoulbindButton, fType=ftype, regions={1, 2}, ofs=-4, y1=-5, y2=3})
+				panel.SoulbindButton.Portrait.SetAtlas = _G.nop
+				skinPanelBtns = nil
+			end
+			if not this.SoulbindPanel then
+				self:SecureHook(this, "SetupSoulbind", function(this)
+					if this.SoulbindPanel then
+						skinPanelBtns(this.SoulbindPanel)
+						self:Unhook(this, "SetupSoulbind")
+					end
+				end)
+			else
+				skinPanelBtns(this.SoulbindPanel)
+			end
+		end
+
+		this.HeaderBar:SetTexture(nil)
+		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, ignoreSize=true, lod=true, offsets={x1=4, y1=-10, x2=-4, y2=-3}, regions={7, 8, 9, 10}})
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, ofs=-13, y2=4})
+
+		-- N.B. Garrison Landing Page Minimap Button skinned with other minimap buttons
+		self:Unhook(this, "OnShow")
+	end)
+	self:checkShown(_G.GarrisonLandingPage)
+
+	if _G.GarrisonLandingPageTutorialBox then
+		self:skinGlowBox(_G.GarrisonLandingPageTutorialBox, ftype)
+	end
+
+	self:SecureHookScript(_G.GarrisonBuildingFrame, "OnShow", function(this)
+		this.MainHelpButton.Ring:SetTexture(nil)
+		self:moveObject{obj=this.MainHelpButton, y=-4}
+		this.GarrCorners:DisableDrawLayer("BACKGROUND")
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cbns=true, ofs=2})
+		local function skinBLbuttons(bl)
+			for i = 1, #bl.Buttons do
+				bl.Buttons[i].BG:SetTexture(nil)
+				if aObj.modBtnBs then
+					aObj:addButtonBorder{obj=bl.Buttons[i], relTo=bl.Buttons[i].Icon}
+				end
+			end
+		end
+		self:SecureHookScript(_G.GarrisonBuildingFrame.BuildingList, "OnShow", function(this)
+			skinBLbuttons(this)
+			self:SecureHook("GarrisonBuildingList_SelectTab", function(tab)
+				skinBLbuttons(tab:GetParent())
+			end)
+			this.MaterialFrame:DisableDrawLayer("BACKGROUND")
+			this.Tabs = {this.Tab1, this.Tab2, this.Tab3}
+			self:skinObject("tabs", {obj=this, tabs=this.Tabs, fType=ftype, ignoreSize=true, lod=true, regions={1}, track=false, func=aObj.isTT and function(tab)
+				aObj:SecureHookScript(tab, "OnClick", function(this)
+					for _, tab in _G.pairs(this:GetParent().Tabs) do
+						if tab == this then
+							aObj:setActiveTab(tab.sf)
+						else
+							aObj:setInactiveTab(tab.sf)
+						end
+					end
+				end)
+			end})
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, fb=true, y1=-5, clr="sepia"})
+
+			self:Unhook(this, "OnShow")
+		end)
+		self:checkShown(_G.GarrisonBuildingFrame.BuildingList)
+		self:SecureHookScript(_G.GarrisonBuildingFrame.FollowerList, "OnShow", function(this)
+			skinFollowerList(this, "sepia")
+
+			self:Unhook(this, "OnShow")
+		end)
+		this.TownHallBox:DisableDrawLayer("BORDER")
+		self:skinObject("frame", {obj=this.TownHallBox, fType=ftype, fb=true, clr="sepia"})
+		if self.modBtns then
+			self:skinStdButton{obj=this.TownHallBox.UpgradeButton}
+			self:SecureHook("GarrisonBuildingFrame_UpdateUpgradeButton", function()
+				self:clrBtnBdr(_G.GarrisonBuildingFrame.TownHallBox.UpgradeButton)
+			end)
+		end
+		self:SecureHookScript(_G.GarrisonBuildingFrame.InfoBox, "OnShow", function(this)
+			this:DisableDrawLayer("BORDER")
+			self:skinObject("frame", {obj=this, fType=ftype, fb=true, clr="sepia"})
+			if self.modBtns then
+				self:skinStdButton{obj=this.UpgradeButton}
+			end
+			-- N.B. The RankBadge changes with level and has level number within the texture, therefore MUST not be hidden
+			-- ib.RankBadge:SetAlpha(0)
+			this.InfoBar:SetTexture(nil)
+			skinPortrait(this.FollowerPortrait)
+			this.AddFollowerButton.EmptyPortrait:SetTexture(nil) -- InfoText background texture
+			self:getRegion(this.PlansNeeded, 1):SetTexture(nil) -- shadow texture
+			self:getRegion(this.PlansNeeded, 2):SetTexture(nil) -- cost bar texture
+			-- Follower Portrait Ring Quality changes colour so track this change
+			self:SecureHook("GarrisonBuildingInfoBox_ShowFollowerPortrait", function(_)
+				-- make sure ring quality is updated to level border colour
+				_G.GarrisonBuildingFrame.InfoBox.FollowerPortrait.PortraitRingQuality:SetVertexColor(_G.GarrisonBuildingFrame.InfoBox.FollowerPortrait.PortraitRing:GetVertexColor())
+			end)
+
+			self:Unhook(this, "OnShow")
+		end)
+		self:checkShown(_G.GarrisonBuildingFrame.InfoBox)
+		self:SecureHookScript(_G.GarrisonBuildingFrame.Confirmation, "OnShow", function(this)
+			this:DisableDrawLayer("BACKGROUND")
+			self:skinObject("frame", {obj=this, fType=ftype, cb=true, ofs=-12})
+			if self.modBtns then
+				self:skinStdButton{obj=this.UpgradeGarrisonButton}
+				self:skinStdButton{obj=this.UpgradeButton}
+				self:skinStdButton{obj=this.CancelButton}
+			end
+
+			self:Unhook(this, "OnShow")
+		end)
+
+		-- hook this to show/hide 'Plans Required' text (Bug in Blizzard's code, reported 03.03.18)
+		self:SecureHook("GarrisonBuildingInfoBox_ShowBuilding", function(ID, owned, showLock)
+			local buildingInfo
+			if owned then
+				buildingInfo = {_G.C_Garrison.GetOwnedBuildingInfo(ID)}
+			else
+				buildingInfo = {_G.C_Garrison.GetBuildingInfo(ID)}
+			end
+
+			if not showLock then
+				if buildingInfo[16] -- isMaxLevel
+				and buildingInfo[15] -- canUpgrade
+				then
+					_G.GarrisonBuildingFrame.InfoBox.PlansNeeded:Hide()
+					_G.GarrisonBuildingFrame.InfoBox.Building:SetDesaturated(false)
+				else
+					_G.GarrisonBuildingFrame.InfoBox.PlansNeeded:Show()
+					_G.GarrisonBuildingFrame.InfoBox.Building:SetDesaturated(true)
+				end
+			else
+				_G.GarrisonBuildingFrame.InfoBox.Building:SetDesaturated(true)
+			end
+			if self.modBtns
+			and _G.GarrisonBuildingFrame.InfoBox.UpgradeButton.sb
+			then
+				 self:clrBtnBdr(_G.GarrisonBuildingFrame.InfoBox.UpgradeButton)
+			end
+		end)
+
+		self:add2Table(self.ttList, _G.GarrisonBuildingFrame.BuildingLevelTooltip)
+
+		self:Unhook(this, "OnShow")
+	end)
+
+	-- tooltips
+	_G.C_Timer.After(0.1, function()
+		self:add2Table(self.ttList, _G.GarrisonMissionMechanicTooltip)
+		self:add2Table(self.ttList, _G.GarrisonMissionMechanicFollowerCounterTooltip)
+	end)
+
+	self:SecureHookScript(_G.GarrisonMissionTutorialFrame, "OnShow", function(this)
+		if self.modBtns then
+			self:skinStdButton{obj=this.GlowBox.Button}
+		end
+		-- N.B. NO CloseButton
+
+		self:Unhook(this, "OnShow")
+	end)
 
 	-- hook these to skin mission rewards & OvermaxItem
     self:SecureHook("GarrisonMissionPage_SetReward", function(frame, _)
@@ -2355,156 +2518,15 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 			self:clrButtonFromBorder(frame)
 		end
     end)
-	self:SecureHook("GarrisonMissionButton_SetRewards", function(btn, _t)
-		-- aObj:Debug("GMB_SRs: [%s, %s, %s]", btn, rewards, cnt)
-		for i = 1, #btn.Rewards do
-			self:removeRegions(btn.Rewards[i], {1}) -- background shadow
+	self:SecureHook("GarrisonMissionButton_SetRewards", function(obj, _)
+		-- aObj:Debug("GMB_SRs: [%s, %s, %s]", obj, rewards, cnt)
+		for _, btn in _G.pairs(obj.Rewards) do
+			self:removeRegions(btn, {1}) -- background shadow
 			if self.modBtnBs then
-				self:addButtonBorder{obj=btn.Rewards[i], relTo=btn.Rewards[i].Icon, reParent={btn.Rewards[i].Quantity}, ofs=2}
-				self:clrButtonFromBorder(btn.Rewards[i])
+				self:addButtonBorder{obj=btn, relTo=btn.Icon, reParent={btn.Quantity}, ofs=2}
+				self:clrButtonFromBorder(btn)
 			end
 		end
-	end)
-
-	self:SecureHookScript(_G.GarrisonMissionMechanicTooltip, "OnShow", function(this)
-		_G.C_Timer.After(0.1, function() self:add2Table(self.ttList, this) end)
-
-		self:Unhook(this, "OnShow")
-	end)
-	self:SecureHookScript(_G.GarrisonMissionMechanicFollowerCounterTooltip, "OnShow", function(this)
-		_G.C_Timer.After(0.1, function() self:add2Table(self.ttList, this) end)
-
-		self:Unhook(this, "OnShow")
-	end)
-
-	self:SecureHookScript(_G.GarrisonBuildingFrame, "OnShow", function(this)
-
-		this.MainHelpButton.Ring:SetTexture(nil)
-		self:moveObject{obj=this.MainHelpButton, y=-4}
-		this.GarrCorners:DisableDrawLayer("BACKGROUND")
-		this.TownHallBox:DisableDrawLayer("BORDER")
-		self:skinStdButton{obj=this.TownHallBox.UpgradeButton}
-		self:addSkinFrame{obj=_G.GarrisonBuildingFrame, ft=ftype, kfs=true, ofs=2}
-
-		-- BuildingLevelTooltip
-		self:SecureHookScript(_G.GarrisonBuildingFrame.BuildingLevelTooltip, "OnShow", function(this)
-			_G.C_Timer.After(0.1, function() self:add2Table(self.ttList, this) end)
-			self:Unhook(this, "OnShow")
-		end)
-
-		local function skinBLbuttons(bl)
-			for i = 1, #bl.Buttons do
-				bl.Buttons[i].BG:SetTexture(nil)
-				aObj:addButtonBorder{obj=bl.Buttons[i], relTo=bl.Buttons[i].Icon}
-			end
-		end
-		self:SecureHookScript(_G.GarrisonBuildingFrame.BuildingList, "OnShow", function(this)
-			this:DisableDrawLayer("BORDER")
-
-			-- tabs
-			for i = 1, _G.GARRISON_NUM_BUILDING_SIZES do
-				this["Tab" .. i]:GetNormalTexture():SetAlpha(0) -- texture is changed in code
-				self:addSkinFrame{obj=this["Tab" .. i], ft=ftype, noBdr=aObj.isTT, x1=3, y1=0, x2=-3, y2=2}
-				this["Tab" .. i].sf.ignore = true -- don't change tab size
-				if i == 1 then
-					self:toggleTabDisplay(this["Tab" .. i], true)
-				else
-					self:toggleTabDisplay(this["Tab" .. i], false)
-				end
-			end
-			self:SecureHook("GarrisonBuildingList_SelectTab", function(tab)
-				local gbl = tab:GetParent()
-				-- handle tab textures
-				for i = 1, _G.GARRISON_NUM_BUILDING_SIZES do
-					if i == tab:GetID() then
-						self:toggleTabDisplay(tab, true)
-					else
-						self:toggleTabDisplay(gbl["Tab" .. i], false)
-					end
-				end
-				-- handle buttons
-				skinBLbuttons(gbl)
-				gbl = nil
-			end)
-
-			skinBLbuttons(this)
-			this.MaterialFrame:DisableDrawLayer("BACKGROUND")
-
-			self:Unhook(this, "OnShow")
-		end)
-		self:checkShown(_G.GarrisonBuildingFrame.BuildingList)
-
-		self:SecureHookScript(_G.GarrisonBuildingFrame.FollowerList, "OnShow", function(this)
-			this:DisableDrawLayer("BACKGROUND")
-			skinFollowerList(this)
-			self:Unhook(this, "OnShow")
-		end)
-
-		self:SecureHookScript(_G.GarrisonBuildingFrame.InfoBox, "OnShow", function(this)
-			this:DisableDrawLayer("BORDER")
-			self:skinStdButton{obj=this.UpgradeButton}
-			-- N.B. The RankBadge changes with level and has level number within the texture, therefore MUST not be hidden
-			-- ib.RankBadge:SetAlpha(0)
-			this.InfoBar:SetTexture(nil)
-			skinPortrait(this.FollowerPortrait)
-			this.AddFollowerButton.EmptyPortrait:SetTexture(nil) -- InfoText background texture
-			self:getRegion(this.PlansNeeded, 1):SetTexture(nil) -- shadow texture
-			self:getRegion(this.PlansNeeded, 2):SetTexture(nil) -- cost bar texture
-			-- this.PlansNeeded:Hide()
-			-- Follower Portrait Ring Quality changes colour so track this change
-			self:SecureHook("GarrisonBuildingInfoBox_ShowFollowerPortrait", function(_)
-				-- make sure ring quality is updated to level border colour
-				_G.GarrisonBuildingFrame.InfoBox.FollowerPortrait.PortraitRingQuality:SetVertexColor(_G.GarrisonBuildingFrame.InfoBox.FollowerPortrait.PortraitRing:GetVertexColor())
-			end)
-			self:Unhook(this, "OnShow")
-		end)
-		self:checkShown(_G.GarrisonBuildingFrame.InfoBox)
-
-		-- MapFrame
-
-		self:SecureHookScript(_G.GarrisonBuildingFrame.Confirmation, "OnShow", function(this)
-			this:DisableDrawLayer("BACKGROUND")
-			self:skinStdButton{obj=this.UpgradeGarrisonButton}
-			self:skinStdButton{obj=this.UpgradeButton}
-			self:skinStdButton{obj=this.CancelButton}
-			self:addSkinFrame{obj=this, ft=ftype, ofs=-12}
-			self:Unhook(this, "OnShow")
-		end)
-
-		self:Unhook(this, "OnShow")
-	end)
-
-	-- hook this to show/hide 'Plans Required' text (Bug in Blizzard's code, reported 03.03.18)
-	self:SecureHook("GarrisonBuildingInfoBox_ShowBuilding", function(ID, owned, showLock)
-		local buildingInfo
-		if owned then
-			buildingInfo = {_G.C_Garrison.GetOwnedBuildingInfo(ID)}
-		else
-			buildingInfo = {_G.C_Garrison.GetBuildingInfo(ID)}
-		end
-
-		if not showLock then
-			if buildingInfo[16] -- isMaxLevel
-			and buildingInfo[15] -- canUpgrade
-			then
-				_G.GarrisonBuildingFrame.InfoBox.PlansNeeded:Hide()
-				_G.GarrisonBuildingFrame.InfoBox.Building:SetDesaturated(false)
-			else
-				_G.GarrisonBuildingFrame.InfoBox.PlansNeeded:Show()
-				_G.GarrisonBuildingFrame.InfoBox.Building:SetDesaturated(true)
-			end
-		else
-			_G.GarrisonBuildingFrame.InfoBox.Building:SetDesaturated(true)
-		end
-	end)
-
-	self:SecureHookScript(_G.GarrisonMissionTutorialFrame, "OnShow", function(this)
-		if self.modBtns then
-			self:skinStdButton{obj=this.GlowBox.Button}
-		end
-		-- N.B. NO CloseButton
-
-		self:Unhook(this, "OnShow")
 	end)
 
 	self:SecureHookScript(_G.GarrisonMissionFrame, "OnShow", function(this)
@@ -2530,13 +2552,12 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 		end)
 
 		self:SecureHookScript(this.FollowerTab, "OnShow", function(this)
-			this:DisableDrawLayer("BORDER")
 			skinFollowerPage(this)
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, fb=true})
 
 			self:Unhook(this, "OnShow")
 		end)
 
-		-- MissionComplete
 		self:SecureHookScript(this.MissionComplete, "OnShow", function(this)
 			skinMissionComplete(this)
 
@@ -2556,15 +2577,11 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 	self:SecureHookScript(_G.GarrisonShipyardFrame, "OnShow", function(this)
 		self:keepFontStrings(this.BorderFrame)
 		this.BorderFrame.GarrCorners:DisableDrawLayer("BACKGROUND")
-		self:skinCloseButton{obj=this.BorderFrame.CloseButton2}
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, x1=2, y1=2, x2=1, y2=-5}
+		if self.modBtns then
+			self:skinCloseButton{obj=this.BorderFrame.CloseButton2, noSkin=true}
+		end
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=2, y1=2, x2=1, y2=-5})
 		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, ignoreSize=true, lod=true, offsets={x1=9, y1=2, x2=-9, y2=0}, regions={7, 8, 9, 10}})
-
-		self:SecureHookScript(this.FollowerList, "OnShow", function(this)
-			skinFollowerList(this)
-
-			self:Unhook(this, "OnShow")
-		end)
 
 		self:SecureHookScript(this.MissionTab.MissionList, "OnShow", function(this)
 	        this:SetScale(1.019) -- make larger to fit frame
@@ -2577,14 +2594,15 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 		self:checkShown(this.MissionTab.MissionList)
 
 		self:SecureHookScript(this.MissionTab.MissionPage, "OnShow", function(this)
-			skinMissionPage(this)
+			skinMissionPage(this, "sepia")
 
 			self:Unhook(this, "OnShow")
 		end)
 
+		skinFollowerList(this.FollowerList, "sepia")
 		self:SecureHookScript(this.FollowerTab, "OnShow", function(this)
-			this:DisableDrawLayer("BORDER")
 			skinFollowerTraitsAndEquipment(this)
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, fb=true, clr="sepia"})
 
 			self:Unhook(this, "OnShow")
 		end)
@@ -2595,102 +2613,11 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 			self:Unhook(this, "OnShow")
 		end)
 
-		self:SecureHookScript(_G.GarrisonBonusAreaTooltip, "OnShow", function(this)
-			_G.C_Timer.After(0.1, function() self:add2Table(self.ttList, this) end)
-
-			self:Unhook(this, "OnShow")
-		end)
-
-		self:SecureHookScript(_G.GarrisonShipyardMapMissionTooltip, "OnShow", function(this)
-			_G.C_Timer.After(0.1, function() self:add2Table(self.ttList, this) end)
-
-			self:Unhook(this, "OnShow")
-		end)
+		self:add2Table(self.ttList, _G.GarrisonBonusAreaTooltip)
+		self:add2Table(self.ttList, _G.GarrisonShipyardMapMissionTooltip)
 
 		self:Unhook(this, "OnShow")
 	end)
-
-	self:SecureHookScript(_G.GarrisonLandingPage, "OnShow", function(this)
-		this.HeaderBar:SetTexture(nil)
-		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, ignoreSize=true, lod=true, offsets={x1=4, y1=-10, x2=-4, y2=-3}, regions={7, 8, 9, 10}})
-		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, ofs=-13, y2=4})
-
-		-- ReportTab (ALWAYS shown first)
-		this.Report.List:DisableDrawLayer("BACKGROUND")
-		self:skinObject("slider", {obj=this.Report.List.listScroll.scrollBar, fType=ftype})
-		for _, btn in _G.pairs(this.Report.List.listScroll.buttons) do
-			btn:DisableDrawLayer("BACKGROUND")
-			btn:DisableDrawLayer("BORDER")
-			if self.modBtnBs then
-				for _, reward in _G.pairs(btn.Rewards) do
-					self:addButtonBorder{obj=reward, relTo=reward.Icon, reParent={reward.Quantity}}
-					self:clrButtonFromBorder(reward)
-				end
-			end
-		end
-		self:skinObject("frame", {obj=this.Report.List, fType=ftype, fb=true, y1=4})
-		self:skinObject("tabs", {obj=this.Report, tabs={this.Report.InProgress, this.Report.Available}, fType=ftype, ignoreSize=true, lod=true, offsets={x1=4, y1=-2, x2=-4, y2=-4}, regions={3}, track=false, func=function(tab) tab:GetNormalTexture():SetAlpha(0) _G.RaiseFrameLevelByTwo(tab) end})
-		if self.isTT then
-			self:SecureHook("GarrisonLandingPageReport_SetTab", function(tab)
-				self:setInactiveTab(tab:GetParent().unselectedTab.sf)
-				self:setActiveTab(tab.sf)
-			end)
-		end
-
-		self:SecureHookScript(this.FollowerList, "OnShow", function(this)
-			skinFollowerList(this)
-
-			self:Unhook(this, "OnShow")
-		end)
-
-		self:SecureHookScript(this.FollowerTab, "OnShow", function(this)
-			skinFollowerPage(this)
-
-			self:Unhook(this, "OnShow")
-		end)
-
-		self:SecureHookScript(this.ShipFollowerList, "OnShow", function(this)
-			skinFollowerList(this)
-
-			self:Unhook(this, "OnShow")
-		end)
-
-		self:SecureHookScript(this.ShipFollowerTab, "OnShow", function(this)
-			skinFollowerTraitsAndEquipment(this)
-
-			self:Unhook(this, "OnShow")
-		end)
-
-		if self.garrisonType == _G.Enum.GarrisonType.Type_9_0 then
-			this.CovenantCallings:DisableDrawLayer("BACKGROUND")
-			local function skinPanelBtns(panel)
-				panel:DisableDrawLayer("BACKGROUND")
-				aObj:skinObject("frame", {obj=panel.RenownButton, fType=ftype, regions={3, 5, 6}, ofs=-4, y1=-5, y2=3})
-				panel.RenownButton.UpdateButtonTextures = _G.nop
-				aObj:skinObject("frame", {obj=panel.SoulbindButton, fType=ftype, regions={1, 2}, ofs=-4, y1=-5, y2=3})
-				panel.SoulbindButton.Portrait.SetAtlas = _G.nop
-				skinPanelBtns = nil
-			end
-			if not this.SoulbindPanel then
-				self:SecureHook(this, "SetupSoulbind", function(this)
-					if this.SoulbindPanel then
-						skinPanelBtns(this.SoulbindPanel)
-						self:Unhook(this, "SetupSoulbind")
-					end
-				end)
-			else
-				skinPanelBtns(this.SoulbindPanel)
-			end
-		end
-
-		-- N.B. Garrison Landing Page Minimap Button skinned with other minimap buttons
-		self:Unhook(this, "OnShow")
-	end)
-	self:checkShown(_G.GarrisonLandingPage)
-
-	if _G.GarrisonLandingPageTutorialBox then
-		self:skinGlowBox(_G.GarrisonLandingPageTutorialBox, ftype)
-	end
 
 	-- a.k.a. Work Order Frame
 	self:SecureHookScript(_G.GarrisonCapacitiveDisplayFrame, "OnShow", function(this)
@@ -2698,8 +2625,7 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 		self:removeMagicBtnTex(this.CreateAllWorkOrdersButton)
 		this.CapacitiveDisplay.IconBG:SetTexture(nil)
 		skinPortrait(this.CapacitiveDisplay.ShipmentIconFrame.Follower)
-		self:skinEditBox{obj=this.Count, regs={6}, noHeight=true}
-		self:moveObject{obj=this.Count, x=-6}
+		self:skinObject("editbox", {obj=this.Count, fType=ftype})
 		-- hook this to skin reagents
 		self:SecureHook("GarrisonCapacitiveDisplayFrame_Update", function(this, success, _)
 			if success ~= 0 then
@@ -2718,7 +2644,7 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 				self:clrBtnBdr(this.CreateAllWorkOrdersButton)
 			end
 		end)
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true}
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, cb=true})
 		if self.modBtns then
 			self:skinStdButton{obj=this.StartWorkOrderButton}
 			self:skinStdButton{obj=this.CreateAllWorkOrdersButton}
@@ -2744,9 +2670,11 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 
 	self:SecureHookScript(_G.GarrisonMonumentFrame, "OnShow", function(this)
 		this.Background:SetTexture(nil)
-		self:addButtonBorder{obj=this.LeftBtn}
-		self:addButtonBorder{obj=this.RightBtn}
-		self:addSkinFrame{obj=this, ft=ftype, ofs=-10, y2=6}
+		self:skinObject("frame", {obj=this, fType=ftype, cb=true, ofs=-10, y2=8})
+		if self.modBtnBs then
+			self:addButtonBorder{obj=this.LeftBtn, clr="gold"}
+			self:addButtonBorder{obj=this.RightBtn, clr="gold"}
+		end
 
 		self:Unhook(this, "OnShow")
 	end)
@@ -2754,38 +2682,39 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 	self:SecureHookScript(_G.GarrisonRecruiterFrame, "OnShow", function(this)
 		this.Pick.Line1:SetTexture(nil)
 		this.Pick.Line2:SetTexture(nil)
-		self:skinDropDown{obj=this.Pick.ThreatDropDown}
+		self:skinObject("dropdown", {obj=this.Pick.ThreatDropDown, fType=ftype})
 		self:removeMagicBtnTex(this.Pick.ChooseRecruits)
-		self:skinStdButton{obj=this.Pick.ChooseRecruits}
 		self:removeMagicBtnTex(this.Random.ChooseRecruits)
-		self:skinStdButton{obj=this.Random.ChooseRecruits}
 		self:removeMagicBtnTex(self:getChild(this.UnavailableFrame, 1))
-		self:skinStdButton{obj=self:getChild(this.UnavailableFrame, 1)}
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, ofs=1, y1=2}
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, cb=true, ofs=1, y1=2})
+		if self.modBtns then
+			self:skinStdButton{obj=this.Pick.ChooseRecruits}
+			self:skinStdButton{obj=this.Random.ChooseRecruits}
+			self:skinStdButton{obj=self:getChild(this.UnavailableFrame, 1)}
+		end
 
 		self:Unhook(this, "OnShow")
 	end)
 
 	self:SecureHookScript(_G.GarrisonRecruitSelectFrame, "OnShow", function(this)
-		skinFollowerList(this.FollowerList)
-
-		this.FollowerSelection:DisableDrawLayer("BORDER")
-		this.FollowerSelection.Line1:SetTexture(nil)
-		this.FollowerSelection.Line2:SetTexture(nil)
+		skinFollowerList(this.FollowerList, "grey")
 		for i = 1, 3 do
 			self:nilTexture(this.FollowerSelection["Recruit" .. i].PortraitFrame.PortraitRing, true)
 			self:nilTexture(this.FollowerSelection["Recruit" .. i].PortraitFrame.LevelBorder, true)
 			this.FollowerSelection["Recruit" .. i].PortraitFrame.PortraitRingQuality:SetVertexColor(this.FollowerSelection["Recruit" .. i].PortraitFrame.LevelBorder:GetVertexColor())
 			self:removeMagicBtnTex(this.FollowerSelection["Recruit" .. i].HireRecruits)
-			self:skinStdButton{obj=this.FollowerSelection["Recruit" .. i].HireRecruits}
+			if self.modBtns then
+				self:skinStdButton{obj=this.FollowerSelection["Recruit" .. i].HireRecruits}
+			end
 		end
-
+		self:skinObject("frame", {obj=this.FollowerSelection, fType=ftype, kfs=true, fb=true, y2=0})
 		this.GarrCorners:DisableDrawLayer("BACKGROUND")
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ofs=2}
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cbns=true, ofs=2})
 
 		self:Unhook(this, "OnShow")
 	end)
 
+	-- Legion
 	self:SecureHookScript(_G.OrderHallMissionFrame, "OnShow", function(this)
 		skinMissionFrame(this)
 		this.ClassHallIcon:DisableDrawLayer("OVERLAY") -- this hides the frame
@@ -2799,32 +2728,30 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 
 		self:SecureHookScript(this.MissionTab, "OnShow", function(this)
 			skinMissionList(this.MissionList)
-
-			this.MissionList.CombatAllyUI.Background:SetTexture(nil)
+			-- this.MissionList.CombatAllyUI.Background:SetTexture(nil)
 			this.MissionList.CombatAllyUI.Available.AddFollowerButton.EmptyPortrait:SetTexture(nil)
 			skinPortrait(this.MissionList.CombatAllyUI.InProgress.PortraitFrame)
+			self:skinObject("frame", {obj=this.MissionList.CombatAllyUI, fType=ftype, kfs=true, fb=true})
 			if self.modBtns then
 				self:skinStdButton{obj=this.MissionList.CombatAllyUI.InProgress.Unassign}
 			end
-
 			-- ZoneSupportMissionPage (a.k.a. Combat Ally selection page)
 			this.ZoneSupportMissionPageBackground:DisableDrawLayer("BACKGROUND")
 			this.ZoneSupportMissionPage:DisableDrawLayer("BACKGROUND")
 			this.ZoneSupportMissionPage:DisableDrawLayer("BORDER")
 			this.ZoneSupportMissionPage.CombatAllyLabel.TextBackground:SetTexture(nil)
-			if self.modBtnBs then
-				self:addButtonBorder{obj=this.ZoneSupportMissionPage.CombatAllySpell, clr="grey", ca=1}
-			end
 			this.ZoneSupportMissionPage.ButtonFrame:SetTexture(nil)
 			this.ZoneSupportMissionPage.Follower1:DisableDrawLayer("BACKGROUND")
 			skinPortrait(this.ZoneSupportMissionPage.Follower1.PortraitFrame)
-			self:skinObject("frame", {obj=this.ZoneSupportMissionPage, fType=ftype, kfs=true, cb=true, x1=-360, y1=434, x2=3, y2=-65})
+			self:skinObject("frame", {obj=this.ZoneSupportMissionPage, fType=ftype, cbns=true, fb=true})
 			this.ZoneSupportMissionPage.CloseButton:SetSize(28, 28)
 			if self.modBtns then
 				self:moveObject{obj=this.ZoneSupportMissionPage.StartMissionButton.Flash, x=-0.5, y=1.5}
 				self:skinStdButton{obj=this.ZoneSupportMissionPage.StartMissionButton}
 			end
-
+			if self.modBtnBs then
+				self:addButtonBorder{obj=this.ZoneSupportMissionPage.CombatAllySpell, clr="grey", ca=1}
+			end
 			skinMissionPage(this.MissionPage)
 
 			self:Unhook(this, "OnShow")
@@ -2832,8 +2759,8 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 		self:checkShown(this.MissionTab)
 
 		self:SecureHookScript(this.FollowerTab, "OnShow", function(this)
-			this:DisableDrawLayer("BORDER")
 			skinFollowerPage(this)
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, fb=true})
 
 			self:Unhook(this, "OnShow")
 		end)
@@ -2855,43 +2782,37 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 		end)
 	end
 
+	-- Battle for Azeroth
 	self:SecureHookScript(_G.BFAMissionFrame, "OnShow", function(this)
 		this.OverlayElements.Topper:SetTexture(nil)
 		this.OverlayElements.CloseButtonBorder:SetTexture(nil)
 		this.TitleScroll:DisableDrawLayer("ARTWORK")
 		this.TitleText:SetTextColor(self.HT:GetRGB())
-
 		skinMissionFrame(this)
 		this.sf:SetFrameStrata("LOW") -- allow map textures to be visible
-
 		self:SecureHookScript(this.FollowerList, "OnShow", function(this)
 			skinFollowerList(this)
 
 			self:Unhook(this, "OnShow")
 		end)
-
 		this.MapTab.ScrollContainer.Child.TiledBackground:SetTexture(nil)
-
 		self:SecureHookScript(this.MissionTab.MissionList, "OnShow", function(this)
 			skinMissionList(this, -2)
 
 			self:Unhook(this, "OnShow")
 		end)
 		self:checkShown(this.MissionTab.MissionList)
-
 		self:SecureHookScript(this.MissionTab.MissionPage, "OnShow", function(this)
 			skinMissionPage(this)
 
 			self:Unhook(this, "OnShow")
 		end)
-
 		self:SecureHookScript(this.FollowerTab, "OnShow", function(this)
-			this:DisableDrawLayer("BORDER")
 			skinFollowerPage(this)
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, fb=true})
 
 			self:Unhook(this, "OnShow")
 		end)
-
 		-- MissionComplete
 		self:SecureHookScript(this.MissionComplete, "OnShow", function(this)
 			skinMissionComplete(this)
@@ -2902,6 +2823,7 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 		self:Unhook(this, "OnShow")
 	end)
 
+	-- Shadowlandds
 	local function skinCovenantMissionFrame(frame)
 		local function skinPuck(btn)
 			aObj:nilTexture(btn.PuckShadow, true)
@@ -2928,12 +2850,11 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 		end
 		frame.OverlayElements.CloseButtonBorder:SetTexture(nil)
 		aObj:keepFontStrings(frame.RaisedBorder)
-		aObj:addSkinFrame{obj=frame, ft=ftype, kfs=true, x2=1, y2=-6}
-		frame.sf:SetFrameStrata("LOW") -- allow map textures to be visible
 		skinMissionFrame(frame)
+		aObj:clrBBC(frame.sf, "sepia")
+		frame.sf:SetFrameStrata("LOW") -- allow map textures to be visible
 		aObj:SecureHookScript(frame.FollowerList, "OnShow", function(this)
-			this:DisableDrawLayer("BORDER")
-			skinFollowerList(this)
+			skinFollowerList(this, "sepia")
 			if aObj.modBtns then
 				aObj:skinStdButton{obj=this.HealAllButton}
 				aObj:SecureHook(this, "CalculateHealAllFollowersCost", function(this)
@@ -2945,17 +2866,22 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 		end)
 		aObj:SecureHookScript(frame.MissionTab, "OnShow", function(this)
 			skinMissionList(this.MissionList)
+			aObj:skinObject("slider", {obj=this.MissionList.listScroll.scrollBar, fType=ftype, y1=5, y2=-10})
+			aObj:clrBBC(this.MissionList.sf, "grey")
 			-- ZoneSupportMissionPage
 			skinMissionPage(this.MissionPage)
+			aObj:skinObject("frame", {obj=this.MissionPage.StartMissionFrame, fType=ftype, kfs=true, ng=true, clr="grey", x1=40, y1=-8, x2=-30, y2=10})
+			aObj:clrBBC(this.MissionPage.sf, "grey")
 			skinBoard(this.MissionPage.Board)
 
 			aObj:Unhook(this, "OnShow")
 		end)
 		aObj:checkShown(frame.MissionTab)
 		aObj:SecureHookScript(frame.FollowerTab, "OnShow", function(this)
-			this:DisableDrawLayer("BORDER")
 			this.RaisedFrameEdges:DisableDrawLayer("BORDER")
 			this.HealFollowerFrame.ButtonFrame:SetTexture(nil)
+			aObj:skinObject("frame", {obj=this, fType=ftype, kfs=true, fb=true, clr="grey", y2=0})
+			aObj:skinObject("frame", {obj=this.HealFollowerFrame, fType=ftype, kfs=true, ng=true, clr="grey", x1=140, y1=-517, x2=-130, y2=-12})
 			if aObj.modBtns then
 				aObj:skinStdButton{obj=this.HealFollowerFrame.HealFollowerButton}
 				aObj:SecureHook(this, "UpdateHealCost", function(this)
@@ -2989,8 +2915,6 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 		aObj:SecureHookScript(frame.MissionComplete, "OnShow", function(this)
 			this:DisableDrawLayer("OVERLAY")
 			aObj:removeNineSlice(this.NineSlice)
-			-- .RewardsScreen
-				-- .CombatCompleteSuccessFrame
 			this.RewardsScreen.CombatCompleteSuccessFrame.CombatCompleteLineTop:SetTexture(nil)
 			this.RewardsScreen.CombatCompleteSuccessFrame.CombatCompleteLineBottom:SetTexture(nil)
 			aObj:keepFontStrings(this.RewardsScreen.FinalRewardsPanel)
@@ -3012,17 +2936,16 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 					end
 				end)
 			end
-
-			aObj:removeRegions(this.AdventuresCombatLog, {1})
+			-- CombatLog (LHS)
 			this.AdventuresCombatLog.ElevatedFrame:DisableDrawLayer("OVERLAY")
-			this.AdventuresCombatLog.CombatLogMessageFrame.ScrollBar:DisableDrawLayer("BACKGROUND")
-
-			-- .MissionInfo
+			aObj:skinObject("slider", {obj=this.AdventuresCombatLog.CombatLogMessageFrame.ScrollBar, fType=ftype, y1=8, y2=-10})
+			aObj:skinObject("frame", {obj=this.AdventuresCombatLog, fType=ftype, kfs=true, fb=true, clr="sepia", x2=10})
+			-- MissionInfo (RHS)
 			this.MissionInfo.Header:SetTexture(nil)
 			aObj:nilTexture(this.MissionInfo.IconBG, true)
-
+			aObj:skinObject("frame", {obj=this.MissionInfo, fType=ftype, kfs=true, fb=true, clr="grey", ofs=4, y2=-303})
 			skinBoard(this.Board)
-			this.CompleteFrame:DisableDrawLayer("BACKGROUND")
+			aObj:skinObject("frame", {obj=this.CompleteFrame, fType=ftype, kfs=true, ng=true, clr="grey", x1=40, y1=-8, x2=-40, y2=10})
 			if aObj.modBtns then
 				aObj:skinStdButton{obj=this.CompleteFrame.ContinueButton}
 				aObj:skinStdButton{obj=this.CompleteFrame.SpeedButton}
@@ -3052,7 +2975,6 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 		end)
 	end
 	self:SecureHookScript(_G.CovenantMissionFrame, "OnShow", function(this)
-
 		-- show or hide the MapTab as required
 		-- required as Map textures are visible when the Mission tab is displayed
 		-- TODO: handle condition when there is a MapTab visible
@@ -4643,7 +4565,7 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 		local anchor
 		anchor = _G.AnchorUtil.CreateAnchor("TOPLEFT", "MinimapBackdrop", "TOPLEFT", 32, -140)
 		local function skinGLPM(btn)
-			if aObj.garrisonType == _G.Enum.GarrisonType.Type_9_0
+			if _G.C_Garrison.GetLandingPageGarrisonType() == _G.Enum.GarrisonType.Type_9_0
 			and _G.C_Covenants.GetCovenantData(_G.C_Covenants.GetActiveCovenantID())
 			then
 				makeBtnSquare(btn, 0.2, 0.76, 0.2, 0.76)
