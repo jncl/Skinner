@@ -266,9 +266,9 @@ aObj.addonsToSkin.VuhDoOptions = function(self) -- v 3.119
 			cName = child:GetName()
 			if _G[cName .. "GenericPanel"] then
 				for _, kid in _G.ipairs{_G[cName .. "GenericPanel"]:GetChildren()} do
-					if self:hasTextInNameRE(kid, "ComboBox$") then
+					if self:hasTextInDebugNameRE(kid, "ComboBox$") then
 						skinObject(kid, "dropdown")
-					elseif self:hasTextInNameRE(kid, "EditBox$") then
+					elseif self:hasTextInDebugNameRE(kid, "EditBox$") then
 						skinObject(kid, "editbox")
 					end
 				end

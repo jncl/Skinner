@@ -34,7 +34,17 @@ aObj.addonsToSkin.Cork = function(self) -- v 7.1.0.62-Beta
 				end
 			end
 		end
-		self:skinObject("tabs", {obj=_G.CorkFrame, tabs=_G.CorkFrame.Tabs, ignoreSize=true, lod=true, offsets={x1=6, y1=0, x2=-6, y2=-1}, regions={5}, func=aObj.isTT and function(tab) aObj:SecureHookScript(tab, "OnClick", function(this) for _, tab in _G.pairs(_G.CorkFrame.Tabs) do if tab == this then aObj:setActiveTab(tab. sf) else aObj:setInactiveTab(tab.sf) end end end) end, track=false})
+		self:skinObject("tabs", {obj=_G.CorkFrame, tabs=_G.CorkFrame.Tabs, ignoreSize=true, lod=true, offsets={x1=6, y1=0, x2=-6, y2=-1}, regions={5}, track=false, func=aObj.isTT and function(tab)
+			aObj:SecureHookScript(tab, "OnClick", function(this)
+				for _, tab in _G.pairs(this:GetParent().Tabs) do
+					if tab == this then
+						aObj:setActiveTab(tab.sf)
+					else
+						aObj:setInactiveTab(tab.sf)
+					end
+				end
+			end)
+		end})
 
 		self.UnregisterCallback("Cork", "IOFPanel_Before_Skinning")
 	end)

@@ -38,14 +38,16 @@ aObj.addonsToSkin.Rematch = function(self) -- v 4.11.10
     end, true)
 
 	local function skinTabs(frame)
-		aObj:skinObject("tabs", {obj=frame, tabs=frame.PanelTabs.Tabs, ignoreSize=true, lod=true, selectedTab=frame == _G.RematchFrame and _G.RematchSettings.ActivePanel or _G.RematchSettings.JournalPanel, offsets={x1=8, y1=0, x2=-8, y2=1}, track=no, func=aObj.isTT and function(tab) aObj:SecureHookScript(tab, "OnClick", function(this)
-			for _, tab in _G.pairs(frame.PanelTabs.Tabs) do
-				aObj:setInactiveTab(tab.sf)
-			end
-			if this:GetID() == frame == _G.RematchFrame and _G.RematchSettings.ActivePanel or _G.RematchSettings.JournalPanel then
-				aObj:setActiveTab(this.sf)
-			end
-		end) end})
+		aObj:skinObject("tabs", {obj=frame, tabs=frame.PanelTabs.Tabs, ignoreSize=true, lod=true, selectedTab=frame == _G.RematchFrame and _G.RematchSettings.ActivePanel or _G.RematchSettings.JournalPanel, offsets={x1=8, y1=0, x2=-8, y2=1}, track=false, func=aObj.isTT and function(tab)
+			aObj:SecureHookScript(tab, "OnClick", function(this)
+				for _, tab in _G.pairs(this:GetParent().Tabs) do
+					aObj:setInactiveTab(tab.sf)
+				end
+				if this:GetID() == frame == _G.RematchFrame and _G.RematchSettings.ActivePanel or _G.RematchSettings.JournalPanel then
+					aObj:setActiveTab(this.sf)
+				end
+			end)
+		end})
 	end
     -- Journal (used when integrated with PetJournal)
 	self:SecureHookScript(_G.RematchJournal, "OnShow", function(this)
@@ -134,14 +136,17 @@ aObj.addonsToSkin.Rematch = function(self) -- v 4.11.10
 	self:SecureHookScript(_G.RematchPetPanel, "OnShow", function(this)
 	    self:removeInset(this.Top)
 		self:skinObject("editbox", {obj=this.Top.SearchBox, chginset=false, regions={3}, ofs=0})
-		self:skinObject("tabs", {obj=this.Top.TypeBar, tabs=this.Top.TypeBar.Tabs, ignoreSize=true, lod=true, offsets={x1=4, y1=0, x2=-2, y2=-2}, track=no, func=self.isTT and function(tab) aObj:SecureHookScript(tab, "OnClick", function(this)
-			for _, tab in _G.pairs(_G.RematchPetPanel.Top.TypeBar.Tabs) do
-				aObj:setInactiveTab(tab.sf)
-			end
-			if tab.Selected:IsShown() then
-				aObj:setActiveTab(this.sf)
-			end
-		end) aObj:keepFontStrings(tab.Selected) end})
+		self:skinObject("tabs", {obj=this.Top.TypeBar, tabs=this.Top.TypeBar.Tabs, ignoreSize=true, lod=true, offsets={x1=4, y1=0, x2=-2, y2=-2}, track=false, func=aObj.isTT and function(tab)
+			aObj:SecureHookScript(tab, "OnClick", function(this)
+				for _, tab in _G.pairs(this:GetParent().Tabs) do
+					aObj:setInactiveTab(tab.sf)
+				end
+				if tab.Selected:IsShown() then
+					aObj:setActiveTab(this.sf)
+				end
+			end)
+		 	aObj:keepFontStrings(tab.Selected)
+		end})
 	    for _, btn in _G.pairs(this.Top.TypeBar.Buttons) do
 	        btn.IconBorder:SetTexture(nil)
 	    end

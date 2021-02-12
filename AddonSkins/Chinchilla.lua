@@ -7,7 +7,9 @@ aObj.addonsToSkin.Chinchilla = function(self) -- v 2.10.2
 	local Chinchilla = _G.LibStub:GetLibrary("AceAddon-3.0"):GetAddon("Chinchilla", true)
 
 	local locn = Chinchilla:GetModule("Location", true)
-	if locn then
+	if locn
+	and locn.enabledState
+	then
 		self:skinObject("frame", {obj=_G.Chinchilla_Location_Frame, ofs=0})
 		if self.modBtns then
 			self:skinOtherButton{obj=_G.Chinchilla_Location_Frame.closeButton, font=self.fontS, text=self.uparrow, y1=-2, y2=6}
@@ -24,7 +26,9 @@ aObj.addonsToSkin.Chinchilla = function(self) -- v 2.10.2
 	end
 
 	local expd = Chinchilla:GetModule("Expander", true)
-	if expd then
+	if expd
+	and expd.enabledState
+	then
 		self:removeRegions(_G.TimeManagerClockButton, {1})
 		self:skinObject("button", {obj=_G.TimeManagerClockButton})
 		expd = nil

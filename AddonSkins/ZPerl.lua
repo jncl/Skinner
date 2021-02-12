@@ -198,7 +198,7 @@ aObj.lodAddons.ZPerl_Options = function(self)
 	self:skinObject("frame", {obj=_G.XPerl_Options_Layout_List, kfs=true, fb=true, ofs=2})
 
 	local numTabs = 12
-	self:skinObject("tabs", {obj=_G.XPerl_Options, prefix="XPerl_Options_", numTabs=numTabs, ignoreSize=true, lod=true, offsets={x1=0, y1=4, x2=0, y2=-4}, func=function(tab) tab:DisableDrawLayer("BACKGROUND") end, track=false})
+	self:skinObject("tabs", {obj=_G.XPerl_Options, prefix="XPerl_Options_", numTabs=numTabs, ignoreSize=true, lod=true, offsets={x1=0, y1=4, x2=0, y2=-4}, track=false, func=function(tab) tab:DisableDrawLayer("BACKGROUND") end})
 	if self.isTT then
 		self:SecureHook(_G._G.XPerl_Options_Tab, "SelectTab", function(this, id)
 			local tab

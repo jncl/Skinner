@@ -21,12 +21,13 @@ aObj.addonsToSkin.VenturePlan = function(self) -- v 4.08
 				btn.ExpireTime:GetFontString():SetTextColor(self.BT:GetRGB())
 				self:removeRegions(btn.ProgressBar, {1, 2, 3, 4, 5, 6, 7, 8, 9})
 				btn.ProgressBar.Fill:SetTexture(self.sbTexture)
+				btn.ProgressBar.Fill:SetVertexColor(aObj.sbClr:GetRGBA())
 				btn.ProgressBar.bg = btn.ProgressBar:CreateTexture(nil, "BACKGROUND", nil, -1)
 				btn.ProgressBar.bg:SetTexture(self.sbTexture)
 				btn.ProgressBar.bg:SetVertexColor(self.sbClr:GetRGBA())
 				btn.ProgressBar.bg:SetAllPoints()
 				self:removeRegions(btn, {1, 2, 4})
-				self:skinObject("frame", {obj=btn, fb=true, y1=-22})
+				self:skinObject("frame", {obj=btn, fb=true, y1=-22, clr="grey"})
 				if self.modBtns then
 					self:skinStdButton{obj=btn.ViewButton}
 				end
@@ -35,7 +36,7 @@ aObj.addonsToSkin.VenturePlan = function(self) -- v 4.08
 				end
 			end
 			self:keepFontStrings(self:getChild(frame.MissionList, 1)) -- RaisedBorder frame
-			self:skinObject("frame", {obj=frame.MissionList, kfs=true, fb=true, y1=10})
+			self:skinObject("frame", {obj=frame.MissionList, kfs=true, fb=true, ofs=0, y1=5, y2=-4, clr="grey"})
 			-- CopyBox
 			frame.CopyBox.Intro:SetTextColor(self.BT:GetRGB())
 			self:skinObject("editbox", {obj=frame.CopyBox.FirstInputBox})
@@ -68,7 +69,7 @@ aObj.addonsToSkin.VenturePlan = function(self) -- v 4.08
 				for _, btn in _G.pairs(fList.companions) do
 					skinFLB(btn)
 				end
-				self:skinObject("frame", {obj=fList, kfs=true, fb=true})
+				self:skinObject("frame", {obj=fList, kfs=true, fb=true, clr="sepia"})
 
 				fList = nil
 				self:Unhook(this, "OnShow")
