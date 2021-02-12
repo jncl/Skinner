@@ -500,6 +500,12 @@ aObj.blizzLoDFrames[ftype].CovenantRenown = function(self)
 	if not self.prdb.CovenantRenown or self.initialized.CovenantRenown then return end
 	self.initialized.CovenantRenown = true
 
+	self:SecureHook(_G.CovenantRenownFrame, "SetUpCovenantData", function(this)
+		if this.sf then
+			self:clrCovenantBdr(this.sf)
+		end
+	end)
+
 	local function skinRewards(frame)
 		for reward in frame.rewardsPool:EnumerateActive() do
 			aObj:addFrameBorder{obj=reward, ft="a", ofs=-14, aso={bbclr="sepia"}}
@@ -520,7 +526,8 @@ aObj.blizzLoDFrames[ftype].CovenantRenown = function(self)
 			skinRewards(this)
 		end)
 		skinRewards(this)
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, aso={bbclr="sepia"}}
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true}
+		self:clrCovenantBdr(this.sf)
 		if self.modBtns then
 			self:skinCloseButton{obj=this.CloseButton , noSkin=true}
 		end
@@ -533,6 +540,12 @@ end
 aObj.blizzLoDFrames[ftype].CovenantSanctum = function(self)
 	if not self.prdb.CovenantSanctum or self.initialized.CovenantSanctum then return end
 	self.initialized.CovenantSanctum = true
+
+	self:SecureHook(_G.CovenantSanctumFrame, "SetCovenantInfo", function(this)
+		if this.sf then
+			self:clrCovenantBdr(this.sf)
+		end
+	end)
 
 	self:SecureHookScript(_G.CovenantSanctumFrame, "OnShow", function(this)
 		this.LevelFrame.Background:SetTexture(nil)
@@ -571,7 +584,8 @@ aObj.blizzLoDFrames[ftype].CovenantSanctum = function(self)
 			end
 		end
 		this.UpgradesTab.CurrencyBackground:SetTexture(nil)
-		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cbns=true, ofs=-3, clr="sepia"})
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cbns=true, ofs=-3})
+		self:clrCovenantBdr(this.sf)
 		if self.modBtns then
 			self:skinStdButton{obj=this.UpgradesTab.TalentsList.UpgradeButton}
 			self:skinStdButton{obj=this.UpgradesTab.DepositButton, sec=true}

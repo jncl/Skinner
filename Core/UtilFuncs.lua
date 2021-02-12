@@ -462,6 +462,14 @@ function aObj:clrBBC(obj, clrName, alpha)
 
 end
 
+-- colour Frame border based upon Covenant
+local cName, r, g, b
+function aObj:clrCovenantBdr(frame)
+	cName = _G.C_Covenants.GetCovenantData(_G.C_Covenants.GetActiveCovenantID()).name
+	r, g, b = _G.COVENANT_COLORS[cName]:GetRGB()
+	frame:SetBackdropBorderColor(r, g, b, 0.75)
+end
+
 function aObj:clrPNBtns(framePrefix, notPrefix)
 
 	local ppb, npb
