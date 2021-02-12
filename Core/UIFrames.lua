@@ -5078,6 +5078,7 @@ aObj.blizzLoDFrames[ftype].PlayerChoiceUI = function(self)
 		[0]   = {x1 = -10, y1 = 70, x2 = 10, y2 = 0}, -- defaults
 		[89]  =	{y1 = 40}, -- WoD Strategic Assault Choice [Alliance]
 		[144] =	{y1 = 40}, -- WoD Strategic Assault Choice [Horde]
+		[145] =	{y1 = 40}, -- WoD Strategic Assault Choice [Horde]
 		[240] =	{y1 = 60}, -- Legion Artifact Weapon Choice [Alliance?]
 		[281] =	{y1 = 60}, -- Legion Artifact Weapon Choice [Horde]
 		[342] =	{y2 = 10}, -- Warchief's Command Board [Horde]
