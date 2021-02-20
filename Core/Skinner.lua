@@ -481,8 +481,12 @@ function aObj:OnEnable()
 		aObj:checkAndRun("SetupDefaults", "opt", false, true)
 		-- store shortcut
 		aObj.prdb = aObj.db.profile
-		-- prompt for reload
-		_G.StaticPopup_Show(aName .. "_Reload_UI")
+		if not aObj.isPTR then
+			-- prompt for reload
+			_G.StaticPopup_Show(aName .. "_Reload_UI")
+		else
+			_G.UIErrorsFrame:AddMessage(aObj.L["The profile"] .. " '" .. aObj.db:GetCurrentProfile() .. "' " .. aObj.L["will be activated next time you Login or Reload the UI"], 1, 1, 0)
+		end
 	end
 	self.db.RegisterCallback(self, "OnProfileChanged", reloadAddon)
 	self.db.RegisterCallback(self, "OnProfileCopied", reloadAddon)
@@ -508,7 +512,7 @@ function aObj:OnEnable()
 	end)
 	-- register these events to see if they can be managed
 	local function handleEvent(event, isTainted, func)
-		aObj:Debug("handleEvent: [%s, %s, %s, %s]", event, isTainted, func)
+		aObj:Debug("handleEvent: [%s, %s, %s, %s]", event, addonName, func)
 	end
 	self:RegisterEvent("ADDON_ACTION_FORBIDDEN", handleEvent)
 	self:RegisterEvent("ADDON_ACTION_BLOCKED", handleEvent)

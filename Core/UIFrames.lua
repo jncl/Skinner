@@ -15,6 +15,11 @@ local skinPortrait, skinFollower, skinFollowerListButtons, skinEquipment, skinFo
 if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 	function skinPortrait(frame)
 		if frame.PuckBorder then
+			-- FIXME: troops also have Stack Border(s), is it important to show them?
+			if aObj.isPTR then
+				frame.TroopStackBorder1:SetTexture(nil)
+				frame.TroopStackBorder2:SetTexture(nil)
+			end
 			-- FIXME: colour of PuckBorder changes for troops, is it important to show it?
 			aObj:nilTexture(frame.PuckBorder, true)
 			frame.PortraitRingQuality:SetTexture(nil)
@@ -3754,11 +3759,19 @@ aObj.blizzFrames[ftype].LFGList = function(self)
 			for i = 1, #sp.ScrollFrame.buttons do
 				self:skinStdButton{obj=sp.ScrollFrame.buttons[i].CancelButton}
 			end
-			self:skinStdButton{obj=sp.ScrollFrame.StartGroupButton}
+			if not aObj.isPTR then
+				self:skinStdButton{obj=sp.ScrollFrame.StartGroupButton}
+			else
+				self:skinStdButton{obj=sp.ScrollFrame.ScrollChild.StartGroupButton}
+			end
 			self:skinStdButton{obj=sp.BackButton}
 			self:skinStdButton{obj=sp.SignUpButton}
 			self:SecureHook("LFGListSearchPanel_UpdateButtonStatus", function(this)
-				self:clrBtnBdr(this.ScrollFrame.StartGroupButton)
+				if not aObj.isPTR then
+					self:clrBtnBdr(this.ScrollFrame.StartGroupButton)
+				else
+					self:clrBtnBdr(this.ScrollFrame.ScrollChild.StartGroupButton)
+				end
 				self:clrBtnBdr(this.SignUpButton)
 			end)
 		end
@@ -6381,7 +6394,7 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 		local SZ = _G.GetSubZoneText()
 
 		-- aObj:Debug("skinWidget#0: [%s, %s, %s, %s]", _G.C_Map.GetBestMapForUnit("player"), _G.GetRealZoneText(), SZ, disableTypeBySZ[wFrame.widgetType][SZ])
-		aObj:Debug("skinWidget: [%s, %s, %s, %s, %s, %s]", wFrame, wFrame.widgetType, wFrame.widgetTag, wFrame.widgetSetID, wFrame.widgetID, wInfo)
+		-- aObj:Debug("skinWidget: [%s, %s, %s, %s, %s, %s]", wFrame, wFrame.widgetType, wFrame.widgetTag, wFrame.widgetSetID, wFrame.widgetID, wInfo)
 
 		if wFrame.widgetType == 0 then -- IconAndText (World State: ICONS at TOP)
 			-- N.B. DON'T add buttonborder to Icon(s)

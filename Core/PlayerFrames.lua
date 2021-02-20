@@ -3661,10 +3661,12 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 	end)
 	self:checkShown(_G.ScenarioProvingGroundsBlock)
 
-	-- tooltip
-	_G.C_Timer.After(0.1, function()
-		self:add2Table(self.ttList, _G.ScenarioStepRewardTooltip)
-	end)
+	if not aObj.isPTR then
+		-- tooltip
+		_G.C_Timer.After(0.1, function()
+			self:add2Table(self.ttList, _G.ScenarioStepRewardTooltip)
+		end)
+	end
 
 	-- remove Shadow texture
 	_G.BONUS_OBJECTIVE_TRACKER_MODULE.Header:DisableDrawLayer("BACKGROUND")
