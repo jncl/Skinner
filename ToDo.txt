@@ -30,13 +30,28 @@ ToDos
 	O	QuestInfo frame
 		- AdventuresFollowerPortraitFrame has been added
 
+	N	PTR changes 9.0.5
+		- ChallengesUI
+x		- CovenantRenown
+x		- CovenantSanctum
+≈		- CovenantMission
+		- IslandsQueueUI
+		- ScenarioObjectiveTracker
+		- Runeforge
+			- error texture added
+		- TorghastLevelPicker
+		- WeeklyRewards
+≈			- NineSlice added to overlay
+√		- LFGList
+≈		- ReloadUI function is now blocked
+
 	I	ToolTip border, reported by EpidemeDaBear, 02.01.21
 ?		- texture used on mouseover of Quest reward
 
-	I	reported by Fakelessgaming/iicoolpete, 03.01.21
+	I	reported by Fakelessgaming/iicoolpete/DarkLimpan, 03.01.21
 ?		- that issue with Torghast anima can't be activated in combat is still there
 
-	I	reported by Galthariel, 30.01.21
+	I	UIWidgets, REPORTED by Galthariel, 30.01.21
 ?		- [ADDON_ACTION_BLOCKED] AddOn 'Skinner' tried to call the protected function 'SetTargetClampingInsets()'.
 		[string "@!BugGrabber\BugGrabber.lua"]:519: in function <!BugGrabber\BugGrabber.lua:519>
 		[string "=[C]"]: in function `SetTargetClampingInsets'
@@ -45,7 +60,7 @@ ToDos
 		[string "=[C]"]: in function `OnNamePlateAdded'
 		[string "@Blizzard_NamePlates\Blizzard_NamePlates.lua"]:56: in function <...eBlizzard_NamePlates\Blizzard_NamePlates.lua:47>
 
-	I	reported by neoseph82, 07.02.21
+	I	UIButtons, reported by neoseph82, 07.02.21
 ?		- Skinner\Modules\UIButtons.lua:852: attempt to index field 'LSM' (a nil value)
 		[string "@Skinner\Modules\UIButtons.lua"]:852: in function <Skinner\Modules\UIButtons.lua:828>
 		[string "=[C]"]: ?
@@ -61,19 +76,22 @@ ToDos
 		[string "@Blizzard_CovenantSanctum\Blizzard_CovenantSanctumUpgrades.lua"]:284: in function `DepositAnima'
 		[string "*:OnClick"]:1: in function <[string "*:OnClick"]:1>
 
-	I	VenturePlan, reported by Galthariel, 10.02.21
-√		- Use different colour for progressBar
+	I	CovenantSanctum, reported by Galthariel/Fakelessgaming/reiyo_oki, 13.02.21
+√		- Skinner\Core\UtilFuncs.lua:469: attempt to index field '?' (a nil value)
+		[string "@Skinner\Core\UtilFuncs.lua"]:469: in function `clrCovenantBdr'
+		[string "@Skinner\Core\NPCFrames.lua"]:588: in function <Skinner\Core\NPCFrames.lua:550>
 
-	N	CovenantMissionPlanner, reported by Galthariel, 10.02.21
-√		- Skinner\AddonSkins\CovenantMissionHelper-0.1.lua:9: attempt to index local 'mFrame' (a nil value)
-		[string "@Skinner\AddonSkins\CovenantMissionHelper-0.1.lua"]:9: in function <Skinner\AddonSkins\CovenantMissionHelper.lua:7>
+	I	StaticPopups, reported by Galthariel, 13.02.21
+≈		- Skinner\Core\UtilFuncs.lua:460: attempt to call method 'SetBackdropBorderColor' (a nil value)
+		[string "@Skinner\Core\UtilFuncs.lua"]:460: in function `clrBBC'
+		[string "@Skinner\Modules\UIButtons.lua"]:215: in function `clrBtnBdr'
+		[string "@Skinner\Core\UIFrames.lua"]:5805: in function <Skinner\Core\UIFrames.lua:5804>
 
-	I	Chinchilla, reported by DarkLimpan, 11.02.21
-√		-  Skinner\Core\NewSkinFuncs.lua:418: attempt to index field 'obj' (a nil value)
-		[string "@Skinner\Core\NewSkinFuncs.lua"]:523: in function `?'
-		[string "@Skinner\Core\NewSkinFuncs.lua"]:156: in function `skinObject'
-		[string "@Skinner\AddonSkins\Chinchilla-v2.10.2-22-ga0d5ee6.lua"]:11: in function <Skinner\AddonSkins\Chinchilla.lua:5>
+	I	Auctionator, reported by Galthariel, 13.02.21
+?		- Skinner\AddonSkins\Auctionator-501 (alpha).lua:224: Usage: SecureHookScript(object, method, [handler]): You can only hook a script on a frame object
 
-	I	Altoholic, reported by Shimiya, 11.02.21
-?		-  Skinner\Core\UtilFuncs.lua:990: attempt to index local 'obj' (a nil value)
-		[string "@Skinner\AddonSkins\Altoholic-9.0.2-015.lua"]:126: in function <Skinner\AddonSkins\Altoholic.lua:69>
+	I	Making a background texture transparent, not applied to all frames, reported by Fakelessgaming, 13.02.21
+√		- systems, collections, interface, dungeon journal etc
+
+	I	VenturePlan
+≈		- when new missions are added they aren't skinned
