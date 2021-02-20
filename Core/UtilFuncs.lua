@@ -1413,7 +1413,6 @@ end
 --@alpha@
 function aObj:SetupCmds()
 
-	local GetMouseFocus, Spew = _G.GetMouseFocus, _G.Spew
 	local function print_family_tree(fName)
 
 		if fName:IsForbidden() then
@@ -1453,7 +1452,7 @@ function aObj:SetupCmds()
 	local function getObj(input)
         --  _G.print("getObj", input, _G[input], GetMouseFocus())
 		if not input or input:trim() == "" then
-			return GetMouseFocus()
+			return _G.GetMouseFocus()
 		else
             return getObjFromString(input)
         end
@@ -1461,7 +1460,7 @@ function aObj:SetupCmds()
 	local function getObjP(input)
 		--  _G.print("getObjP", input, _G[input], GetMouseFocus():GetParent())
 		if not input or input:trim() == "" then
-			return GetMouseFocus():GetParent()
+			return _G.GetMouseFocus():GetParent()
 		else
             return getObjFromString(input)
         end
@@ -1469,7 +1468,7 @@ function aObj:SetupCmds()
 	local function getObjGP(input)
 		--  _G.print("getObjGP", input, _G[input], GetMouseFocus():GetParent():GetParent())
 		if not input or input:trim() == "" then
-			return GetMouseFocus():GetParent():GetParent()
+			return _G.GetMouseFocus():GetParent():GetParent()
 		else
             return getObjFromString(input)
         end
@@ -1529,10 +1528,10 @@ function aObj:SetupCmds()
 
 	end
 
-	self:RegisterChatCommand("ft", function() print_family_tree(GetMouseFocus()) end)
-	self:RegisterChatCommand("ftp", function() print_family_tree(GetMouseFocus():GetParent()) end)
-	self:RegisterChatCommand("gp", function()  _G.print(GetMouseFocus():GetPoint()) end)
-	self:RegisterChatCommand("gpp", function()  _G.print(GetMouseFocus():GetParent():GetPoint()) end)
+	self:RegisterChatCommand("ft", function() print_family_tree(_G.GetMouseFocus()) end)
+	self:RegisterChatCommand("ftp", function() print_family_tree(_G.GetMouseFocus():GetParent()) end)
+	self:RegisterChatCommand("gp", function()  _G.print(_G.GetMouseFocus():GetPoint()) end)
+	self:RegisterChatCommand("gpp", function()  _G.print(_G.GetMouseFocus():GetParent():GetPoint()) end)
 	self:RegisterChatCommand("lo", function() _G.UIErrorsFrame:AddMessage("Use /camp instead of /lo", 1.0, 0.1, 0.1, 1.0) end)
 	self:RegisterChatCommand("pii", function(msg)  _G.print(_G.GetItemInfo(msg)) end)
 	self:RegisterChatCommand("pil", function(msg)  _G.print(_G.gsub(msg, "\124", "\124\124")) end)
@@ -1547,9 +1546,9 @@ function aObj:SetupCmds()
 	self:RegisterChatCommand("sir", function(msg) showInfo(getObj(msg), false, false) end) -- regions only
 	self:RegisterChatCommand("sirgp", function(msg) showInfo(getObjGP(msg), false, false) end) -- regions only
 	self:RegisterChatCommand("sirp", function(msg) showInfo(getObjP(msg), false, false) end) -- regions only
-	self:RegisterChatCommand("sspew", function(msg) return Spew and Spew(msg, getObj(msg)) end)
-	self:RegisterChatCommand("sspewgp", function(msg) return Spew and Spew(msg, getObjGP(msg)) end)
-	self:RegisterChatCommand("sspewp", function(msg) return Spew and Spew(msg, getObjP(msg)) end)
+	self:RegisterChatCommand("sspew", function(msg) return _G.Spew and _G.Spew(msg, getObj(msg)) end)
+	self:RegisterChatCommand("sspewgp", function(msg) return _G.Spew and _G.Spew(msg, getObjGP(msg)) end)
+	self:RegisterChatCommand("sspewp", function(msg) return _G.Spew and _G.Spew(msg, getObjP(msg)) end)
 
 	self:RegisterChatCommand("shc", function(msg) self:Debug("Hooks table Count: [%s]", self:tableCount(self.hooks)) end)
 
@@ -1560,7 +1559,7 @@ function aObj:SetupCmds()
 		return
 	end)
 
-	self:RegisterChatCommand("tad", function(frame) _G.LoadAddOn("Blizzard_DebugTools"); _G.TableAttributeDisplay:InspectTable(_G[frame]); _G.TableAttributeDisplay:Show() end)
+	self:RegisterChatCommand("tad", function(frame) _G.LoadAddOn("Blizzard_DebugTools"); _G.TableAttributeDisplay:InspectTable(_G[frame] or _G.GetMouseFocus()); _G.TableAttributeDisplay:Show() end)
 
 end
 --@end-alpha@
