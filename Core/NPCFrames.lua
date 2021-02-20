@@ -457,12 +457,21 @@ aObj.blizzLoDFrames[ftype].CovenantPreviewUI = function(self)
 	if not self.prdb.CovenantPreviewUI or self.initialized.CovenantPreviewUI then return end
 	self.initialized.CovenantPreviewUI = true
 
+	self:SecureHook(_G.CovenantPreviewFrame, "SetupFramesWithTextureKit", function(this)
+		if this.sf then
+			self:clrCovenantBdr(this.ModelSceneContainer, this.uiTextureKit)
+			self:clrCovenantBdr(this, this.uiTextureKit)
+		end
+	end)
+
 	self:SecureHookScript(_G.CovenantPreviewFrame, "OnShow", function(this)
 		this.BorderFrame:DisableDrawLayer("BORDER")
 		this.Background.BackgroundTile:SetTexture(nil)
 		this.Title:DisableDrawLayer("BACKGROUND")
 		this.ModelSceneContainer.ModelSceneBorder:SetTexture(nil)
-		self:addFrameBorder{obj=this.ModelSceneContainer, ft=ftype, aso={bbclr="sepia"}}
+		self:skinObject("frame", {obj=this.ModelSceneContainer, fType=ftype, fb=true})
+		self:clrCovenantBdr(this.ModelSceneContainer, this.uiTextureKit)
+		_G.RaiseFrameLevelByTwo(this.ModelSceneContainer.sf) -- make sure it covers border of background
 		this.ModelSceneContainer.Background:SetAlpha(1) -- make it visible
 		this.InfoPanel:DisableDrawLayer("BACKGROUND")
 		this.InfoPanel.Name:SetTextColor(self.HT:GetRGB())
@@ -485,7 +494,8 @@ aObj.blizzLoDFrames[ftype].CovenantPreviewUI = function(self)
 				self:addButtonBorder{obj=btn, ofs=-8, clr="grey"}
 			end
 		end
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, aso={bbclr="sepia"}}
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true})
+		self:clrCovenantBdr(this, this.uiTextureKit)
 		if self.modBtns then
 			self:skinCloseButton{obj=this.CloseButton, noSkin=true}
 			self:skinStdButton{obj=this.SelectButton, clr="grey"}
@@ -502,7 +512,7 @@ aObj.blizzLoDFrames[ftype].CovenantRenown = function(self)
 
 	self:SecureHook(_G.CovenantRenownFrame, "SetUpCovenantData", function(this)
 		if this.sf then
-			self:clrCovenantBdr(this.sf)
+			self:clrCovenantBdr(this)
 		end
 	end)
 
@@ -527,7 +537,7 @@ aObj.blizzLoDFrames[ftype].CovenantRenown = function(self)
 		end)
 		skinRewards(this)
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true}
-		self:clrCovenantBdr(this.sf)
+		self:clrCovenantBdr(this)
 		if self.modBtns then
 			self:skinCloseButton{obj=this.CloseButton , noSkin=true}
 		end
@@ -543,7 +553,7 @@ aObj.blizzLoDFrames[ftype].CovenantSanctum = function(self)
 
 	self:SecureHook(_G.CovenantSanctumFrame, "SetCovenantInfo", function(this)
 		if this.sf then
-			self:clrCovenantBdr(this.sf)
+			self:clrCovenantBdr(this)
 		end
 	end)
 
@@ -585,7 +595,7 @@ aObj.blizzLoDFrames[ftype].CovenantSanctum = function(self)
 		end
 		this.UpgradesTab.CurrencyBackground:SetTexture(nil)
 		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cbns=true, ofs=-3})
-		self:clrCovenantBdr(this.sf)
+		self:clrCovenantBdr(this)
 		if self.modBtns then
 			self:skinStdButton{obj=this.UpgradesTab.TalentsList.UpgradeButton}
 			self:skinStdButton{obj=this.UpgradesTab.DepositButton, sec=true}

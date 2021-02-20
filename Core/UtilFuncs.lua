@@ -464,10 +464,12 @@ end
 
 -- colour Frame border based upon Covenant
 local cName, r, g, b
-function aObj:clrCovenantBdr(frame)
-	cName = _G.C_Covenants.GetCovenantData(_G.C_Covenants.GetActiveCovenantID()).name
+function aObj:clrCovenantBdr(frame, uiTextureKit)
+
+	cName = uiTextureKit or _G.C_Covenants.GetCovenantData(_G.C_Covenants.GetActiveCovenantID()).name
 	r, g, b = _G.COVENANT_COLORS[cName]:GetRGB()
-	frame:SetBackdropBorderColor(r, g, b, 0.75)
+	frame.sf:SetBackdropBorderColor(r, g, b, 0.75)
+
 end
 
 function aObj:clrPNBtns(framePrefix, notPrefix)
@@ -589,22 +591,23 @@ function aObj:getChild(obj, childNo)
 end
 
 local clrTab = {
-	blue     = _G.LIGHTBLUE_FONT_COLOR,
-	common   = _G.LIGHTGRAY_FONT_COLOR,
-	disabled = _G.DISABLED_FONT_COLOR,
-	green    = _G.GREEN_FONT_COLOR,
-	grey     = _G.GRAY_FONT_COLOR,
-	gold     = _G.PASSIVE_SPELL_FONT_COLOR,
-	normal   = _G.NORMAL_FONT_COLOR,
-	orange   = _G.ORANGE_FONT_COLOR,
-	red      = _G.DULL_RED_FONT_COLOR,
-	selected = _G.PAPER_FRAME_EXPANDED_COLOR,
-	sepia    = _G.SEPIA_COLOR,
-	silver   = _G.QUEST_OBJECTIVE_FONT_COLOR,
-	slider   = _G.CreateColor(0.2, 0.2, 0.2),
-	unused   = _G.DULL_RED_FONT_COLOR,
-	white    = _G.HIGHLIGHT_FONT_COLOR,
-	yellow   = _G.YELLOW_FONT_COLOR,
+	blue      = _G.LIGHTBLUE_FONT_COLOR,
+	common    = _G.LIGHTGRAY_FONT_COLOR,
+	disabled  = _G.DISABLED_FONT_COLOR,
+	green     = _G.GREEN_FONT_COLOR,
+	grey      = _G.GRAY_FONT_COLOR,
+	gold      = _G.PASSIVE_SPELL_FONT_COLOR,
+	normal    = _G.NORMAL_FONT_COLOR,
+	orange    = _G.ORANGE_FONT_COLOR,
+	red       = _G.DULL_RED_FONT_COLOR,
+	selected  = _G.PAPER_FRAME_EXPANDED_COLOR,
+	sepia     = _G.SEPIA_COLOR,
+	silver    = _G.QUEST_OBJECTIVE_FONT_COLOR,
+	slider    = _G.CreateColor(0.2, 0.2, 0.2),
+	topaz     = _G.CreateColor(0.6, 0.31, 0.24),
+	unused    = _G.DULL_RED_FONT_COLOR,
+	white     = _G.HIGHLIGHT_FONT_COLOR,
+	yellow    = _G.YELLOW_FONT_COLOR,
 }
 function aObj:getColourByName(clrName)
 

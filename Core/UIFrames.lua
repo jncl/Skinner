@@ -5837,7 +5837,7 @@ aObj.blizzLoDFrames[ftype].Soulbinds = function(self)
 		for _, list in _G.pairs(this.ConduitList.ScrollBox.ScrollTarget.Lists) do
 			self:removeRegions(list.CategoryButton.Container, {1})
 			if self.modBtns then
-				self:skinStdButton{obj=list.CategoryButton, clr="sepia"}
+				self:skinStdButton{obj=list.CategoryButton, clr="topaz"}
 			end
 		end
 
