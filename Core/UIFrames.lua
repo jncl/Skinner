@@ -5735,7 +5735,9 @@ aObj.blizzFrames[ftype].StaticPopups = function(self)
 			nTex = nil
 		end)
 		self:SecureHook("StaticPopup_OnUpdate", function(dialog, _)
-			self:clrBtnBdr(dialog.button1 or _G[dialog:GetName() .. "Button1"])
+			if not dialog.startDelay then
+				self:clrBtnBdr(_G[dialog:GetName() .. "Button1"])
+			end
 		end)
 	end
 
