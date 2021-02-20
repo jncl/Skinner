@@ -644,7 +644,7 @@ aObj.blizzFrames[ftype].CharacterFrames = function(self)
 	self:SecureHookScript(_G.CharacterFrame, "OnShow", function(this)
 		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=true})
 		self:removeInset(this.InsetRight)
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, x1=-5, y2=-5}
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=-5, x2=2.5, y2=-5})
 
 		self:Unhook(this, "OnShow")
 	end)
@@ -750,7 +750,7 @@ aObj.blizzFrames[ftype].CharacterFrames = function(self)
 
 	self:SecureHookScript(_G.GearManagerDialogPopup, "OnShow", function(this)
 		self:adjHeight{obj=_G.GearManagerDialogPopupScrollFrame, adj=20}
-		self:skinSlider{obj=_G.GearManagerDialogPopupScrollFrame.ScrollBar, size=3, rt="background"}
+		self:skinObject("slider", {obj=_G.GearManagerDialogPopupScrollFrame.ScrollBar, fType=ftype, rpTex="background"})
 		self:removeRegions(this.BorderBox, {1, 2, 3, 4, 5, 6, 7, 8})
 		self:adjHeight{obj=this, adj=20}
 		for i = 1, #this.buttons do
@@ -759,8 +759,8 @@ aObj.blizzFrames[ftype].CharacterFrames = function(self)
 				self:addButtonBorder{obj=this.buttons[i]}
 			end
 		end
-		self:skinEditBox{obj=_G.GearManagerDialogPopupEditBox, regs={6}}
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, x1=4, y1=-2, x2=-1, y2=3}
+		self:skinObject("editbox", {obj=_G.GearManagerDialogPopupEditBox, fType=ftype})
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=4, y1=-2, x2=-1, y2=3})
 		if self.modBtns then
 			self:skinStdButton{obj=_G.GearManagerDialogPopupCancel}
 			self:skinStdButton{obj=_G.GearManagerDialogPopupOkay}
@@ -784,10 +784,10 @@ aObj.blizzFrames[ftype].CharacterFrames = function(self)
 				self:checkTex(_G["ReputationBar" .. i .. "ExpandOrCollapseButton"])
 			end
 		end
-		self:skinSlider{obj=_G.ReputationListScrollFrame.ScrollBar, size=3, rt="background"}
+		self:skinObject("slider", {obj=_G.ReputationListScrollFrame.ScrollBar, fType=ftype, rpTex="background"})
 		-- ReputationDetailFrame
 		self:removeNineSlice(_G.ReputationDetailFrame.Border)
-		self:addSkinFrame{obj=_G.ReputationDetailFrame, ft=ftype, kfs=true, ofs=-6}
+		self:skinObject("frame", {obj=_G.ReputationDetailFrame, fType=ftype, kfs=true, ofs=-6})
 		if self.modBtns then
 			self:skinCloseButton{obj=_G.ReputationDetailCloseButton}
 			-- hook to manage changes to button textures
@@ -810,14 +810,14 @@ aObj.blizzFrames[ftype].CharacterFrames = function(self)
 	 -- Currency Tab
 	self:SecureHookScript(_G.TokenFrame, "OnShow", function(this)
 		self:keepFontStrings(this)
-		self:skinSlider{obj=_G.TokenFrameContainerScrollBar, wdth=-4}
+		self:skinObject("slider", {obj=_G.TokenFrameContainerScrollBar, fType=ftype})
 		-- remove background & header textures
 		for i = 1, #_G.TokenFrameContainer.buttons do
 			self:removeRegions(_G.TokenFrameContainer.buttons[i], {1, 6, 7, 8})
 		end
 		-- TokenFramePopup
 		_G.TokenFramePopup.Border:DisableDrawLayer("BACKGROUND")
-		self:addSkinFrame{obj=_G.TokenFramePopup,ft=ftype, kfs=true, y1=-6, x2=-6, y2=6}
+		self:skinObject("frame", {obj=_G.TokenFramePopup, fType=ftype, kfs=true, ofs=-6, x1=0})
 		if self.modChkBtns then
 			self:skinCheckButton{obj=_G.TokenFramePopupInactiveCheckBox}
 			self:skinCheckButton{obj=_G.TokenFramePopupBackpackCheckBox}
