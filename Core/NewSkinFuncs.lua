@@ -66,9 +66,9 @@ aObj.skinTPLs = {
 		hdr         = false, -- header texture(s)
 		noBdr       = false, -- equivalent to bd=11 when true
 		ebc         = false, -- use edit box colours
-		ba          = 1, -- backdrop alpha
+		-- ba          = 1, -- backdrop alpha
 		clr         = "default", -- backdrop border colour
-		bba         = 1, -- backdrop border alpha
+		-- bba         = 1, -- backdrop border alpha
 		ng          = false, -- no Gradient texture
 		-- fh          =, -- fade height
 		invert      = false, -- invert Gradient
@@ -80,11 +80,10 @@ aObj.skinTPLs = {
 	},
 	skin = {
 		bd          = 1,
-		hdr         = false,
 		ebc         = false,
-		ba          = 1, -- backdrop alpha
+		-- ba          = 1, -- backdrop alpha
 		bbclr       = "default", -- backdrop border colour
-		bba         = 1, -- backdrop border alpha
+		-- bba         = 1, -- backdrop border alpha
 		ng          = false,
 		-- fh          =,
 		-- invert      =,
@@ -194,6 +193,7 @@ local function hideHeader(obj)
 		end
 	end
 end
+local r, g, b, a
 local function applySkin(tbl)
 --@alpha@
 	_G.assert(tbl.obj, "Missing object (applySkin)\n" .. _G.debugstack(2, 3, 2))
@@ -218,19 +218,15 @@ local function applySkin(tbl)
 	elseif tbl.obj.tbg then
 		tbl.obj.tbg = nil -- remove background texture if it exists
 	end
-	if tbl.hdr then
-		hideHeader(tbl.obj)
-	end
 	aObj:addBackdrop(tbl.obj)
 	tbl.obj:SetBackdrop(aObj.Backdrop[tbl.bd])
 	if not tbl.ng then
 		aObj:applyGradient(tbl.obj, tbl.fh, tbl.invert, tbl.rotate)
 	end
 	if not tbl.ebc then
-		local r, g, b, a = aObj.bClr:GetRGBA()
+		r, g, b, a = aObj.bClr:GetRGBA()
 		tbl.obj:SetBackdropColor(r, g, b, tbl.ba or a)
 		aObj:clrBBC(tbl.obj, tbl.bbclr, tbl.bba)
-		r, g, b, a = nil, nil ,nil ,nil
 	else
 		tbl.obj:SetBackdropColor(.1, .1, .1, 1)
 		tbl.obj:SetBackdropBorderColor(.2, .2, .2, 1)
@@ -506,9 +502,9 @@ local function skinFrame(tbl)
 	so.fType  = tbl.fType
 	so.bd     = tbl.noBdr and 11 or tbl.bd
 	so.ebc    = tbl.ebc
-	so.ba     = tbl.ba
+	so.ba     = _G.rawget(tbl, ba)
 	so.bbclr  = tbl.clr
-	so.bba    = tbl.bba
+	so.bba    = _G.rawget(tbl, bba)
 	so.ng     = tbl.ng
 	so.fh     = _G.rawget(tbl, "fh")
 	-- if _G.rawget(tbl, "fh") then
