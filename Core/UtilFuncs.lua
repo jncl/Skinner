@@ -405,10 +405,10 @@ function aObj:checkDisabledDD(obj, disabled)
 end
 
 local buildInfo = {
-	beta        = {"9.0.2", 36734},
+	-- beta        = {"9.0.2", 36734},
 	classic_ptr = {"1.13.7", 37429},
-	retail_ptr  = {"9.0.2", 37474},
-	classic     = {"1.13.6", 36935},
+	retail_ptr  = {"9.0.5", 37623},
+	classic     = {"1.13.6", 37497},
 	retail      = {"9.0.2", 37474},
 	curr        = {_G.GetBuildInfo()},
 }
