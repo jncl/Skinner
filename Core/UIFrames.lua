@@ -6545,6 +6545,7 @@ aObj.blizzLoDFrames[ftype].WarfrontsPartyPoseUI = function(self)
 
 end
 
+-- accessed via the Great Vault in Oribos or the Great Vault button on the PVPUI
 aObj.blizzLoDFrames[ftype].WeeklyRewards = function(self)
 	if not self.prdb.WeeklyRewards or self.initialized.WeeklyRewards then return end
 	self.initialized.WeeklyRewards = true
@@ -6552,15 +6553,15 @@ aObj.blizzLoDFrames[ftype].WeeklyRewards = function(self)
 	self:SecureHookScript(_G.WeeklyRewardsFrame, "OnShow", function(this)
 
 		self:removeNineSlice(this.NineSlice)
-		this.HeaderFrame:DisableDrawLayer("BACKGROUND")
-		this.HeaderFrame:DisableDrawLayer("BORDER")
+		-- this.HeaderFrame:DisableDrawLayer("BACKGROUND")
+		-- this.HeaderFrame:DisableDrawLayer("BORDER")
+		self:skinObject("frame", {obj=this.HeaderFrame, fType=ftype, kfs=true, fb=true, clr="topaz"})
 		for _, frame in _G.pairs{"RaidFrame", "MythicFrame", "PVPFrame"} do
-			self:addFrameBorder{obj=this[frame], ft=ftype, ofs=3, aso={bbclr="sepia"}}
+			self:skinObject("frame", {obj=this[frame], fType=ftype, kfs=true, fb=true, ofs=3, clr="topaz"})
 			this[frame].Background:SetAlpha(1)
 		end
-		for i, frame in _G.ipairs(this.Activities) do
-			-- _G.Spew("", frame)
-			self:addFrameBorder{obj=frame, ft=ftype, ofs=3, x1=3, y1=-3, aso={bbclr="grey"}}
+		for _, frame in _G.pairs(this.Activities) do
+			self:skinObject("frame", {obj=frame, fType=ftype, kfs=true, fb=true, ofs=-3, x2=1, y2=-1, clr="grey"})
 			-- show required textures
 			if frame.Background then
 				frame.Background:SetAlpha(1)
@@ -6569,16 +6570,17 @@ aObj.blizzLoDFrames[ftype].WeeklyRewards = function(self)
 			end
 			-- .ItemFrame
 			-- .UnselectedFrame
-			self:SecureHook(frame, "Refresh", function(this)
-				if this.unlocked or this.hasRewards then
-				end
-			end)
+			-- FIXME: Why hook this?
+			-- self:SecureHook(frame, "Refresh", function(this)
+			-- 	if this.unlocked or this.hasRewards then
+			-- 	end
+			-- end)
 		end
 		-- .ConcessionFrame
 			-- .RewardsFrame
 			-- .UnselectedFrame
 
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ofs=-5}
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cbns=true, ofs=-5, clr="sepia"})
 		if self.modBtns then
 			self:skinStdButton{obj=this.SelectRewardButton}
 		end
