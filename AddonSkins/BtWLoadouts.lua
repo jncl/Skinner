@@ -40,7 +40,7 @@ aObj.addonsToSkin.BtWLoadouts = function(self) -- v 83
 		self:removeInset(this.BodyInset)
 		self:skinObject("glowbox", {obj=this.HelpTipBox})
 		self:skinObject("tabs", {obj=this, tabs=this.Tabs, lod=true, offsets={x1=6, y1=3, x2=-6, y2=2}})
-		self:skinObject("frame", {obj=this, kfs=true, rns=true, cb=true, x2=2})
+		self:skinObject("frame", {obj=this, kfs=true, cb=true, x2=2})
 		if self.modBtns then
 			self:skinStdButton{obj=this.Sidebar.FilterButton, ofs=0}
 			self:SecureHook(this.Sidebar, "Update", function(this)
@@ -174,7 +174,7 @@ aObj.addonsToSkin.BtWLoadouts = function(self) -- v 83
 		self:removeInset(this.BodyInset)
 		this.Scroll:DisableDrawLayer("BACKGROUND")
 		self:skinSlider{obj=this.Scroll.ScrollBar, wdth=-4}
-		self:skinObject("frame", {obj=this, kfs=true, rns=true, cb=true, x2=3})
+		self:skinObject("frame", {obj=this, kfs=true, cb=true, x2=3})
 
 		self:Unhook(this, "OnShow")
 	end)

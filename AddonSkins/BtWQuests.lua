@@ -5,8 +5,6 @@ local _G = _G
 aObj.addonsToSkin.BtWQuests = function(self) -- v 1.66
 
 	local function skinDDlist(frame)
-		-- print("skinDDlist", frame:GetDebugName(), frame.list)
-		-- _G.Spew(frame:GetDebugName(), frame.list)
 		frame.list.Backdrop:SetBackdrop(nil)
 		frame.list.MenuBackdrop:SetBackdrop(nil)
 		aObj:addSkinFrame{obj=frame.list, ft="a", kfs=true, nb=true}

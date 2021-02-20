@@ -66,7 +66,7 @@ local function skinDDMLists()
 	frame = nil
 end
 
-aObj.addonsToSkin.Altoholic = function(self) -- r193
+aObj.addonsToSkin.Altoholic = function(self) -- r196
 
 	-- Main Frame
 	self:skinObject("editbox", {obj=_G.AltoholicFrame_SearchEditBox})
