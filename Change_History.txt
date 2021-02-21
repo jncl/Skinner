@@ -1,3 +1,17 @@
+beta9.37474.3
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	PTR changes
+	Updated Altoholic, BtWLoadouts, BtWQuests & VenturePlan skins
+	More NewSkinFuncs changes
+	Updated StaticPopups skin
+	Removed localised globals
+	Updated WeeklyRewards skin
+	Bugfix for Covenant Frame(s) colours
+	Fix for skinFrame transparancy
+
 beta9.37474.2
 Jncl:
 	ToDo.txt
