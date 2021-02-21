@@ -23,7 +23,7 @@ ToDos
 
 ≈	O	Refactor NewSkinFuncs in Blizzard/AddOn skins
 
-	O	Can these events be captured and acted upon?
+	O	Can these events be captured [yes] and acted upon [in what way?]?
 		- ADDON_ACTION_FORBIDDEN
 		- ADDON_ACTION_BLOCKED
 
@@ -76,22 +76,33 @@ x		- CovenantSanctum
 		[string "@Blizzard_CovenantSanctum\Blizzard_CovenantSanctumUpgrades.lua"]:284: in function `DepositAnima'
 		[string "*:OnClick"]:1: in function <[string "*:OnClick"]:1>
 
-	I	CovenantSanctum, reported by Galthariel/Fakelessgaming/reiyo_oki, 13.02.21
-√		- Skinner\Core\UtilFuncs.lua:469: attempt to index field '?' (a nil value)
-		[string "@Skinner\Core\UtilFuncs.lua"]:469: in function `clrCovenantBdr'
-		[string "@Skinner\Core\NPCFrames.lua"]:588: in function <Skinner\Core\NPCFrames.lua:550>
-
-	I	StaticPopups, reported by Galthariel, 13.02.21
-≈		- Skinner\Core\UtilFuncs.lua:460: attempt to call method 'SetBackdropBorderColor' (a nil value)
-		[string "@Skinner\Core\UtilFuncs.lua"]:460: in function `clrBBC'
-		[string "@Skinner\Modules\UIButtons.lua"]:215: in function `clrBtnBdr'
-		[string "@Skinner\Core\UIFrames.lua"]:5805: in function <Skinner\Core\UIFrames.lua:5804>
-
 	I	Auctionator, reported by Galthariel, 13.02.21
 ?		- Skinner\AddonSkins\Auctionator-501 (alpha).lua:224: Usage: SecureHookScript(object, method, [handler]): You can only hook a script on a frame object
 
-	I	Making a background texture transparent, not applied to all frames, reported by Fakelessgaming, 13.02.21
-√		- systems, collections, interface, dungeon journal etc
+	I	CovenantSanctum, reported by reiyo_oki/Galthariel, 20.02.21
+√		- Interface\AddOns\Skinner\Core\UtilFuncs.lua:470: attempt to index field '?' (a nil value)
+		[string "@Interface\AddOns\Skinner\Core\UtilFuncs.lua"]:470: in function `clrCovenantBdr'
+		[string "@Interface\AddOns\Skinner\Core\NPCFrames.lua"]:556: in function <Interface\AddOns\Skinner\Core\NPCFrames.lua:554>
+		[string "=(tail call)"]: ?
 
-	I	VenturePlan
-≈		- when new missions are added they aren't skinned
+	I	CovenantRenown, reported by reiyo_oki/Galthariel/Fakelessgaming, 20.02.21
+√		- Interface\AddOns\Skinner\Core\UtilFuncs.lua:470: attempt to index field '?' (a nil value)
+		[string "@Interface\AddOns\Skinner\Core\UtilFuncs.lua"]:470: in function `clrCovenantBdr'
+		[string "@Interface\AddOns\Skinner\Core\NPCFrames.lua"]:515: in function <Interface\AddOns\Skinner\Core\NPCFrames.lua:513>
+		[string "=(tail call)"]: ?
+
+	I	CovenantSanctum, reported by Galthariel, 20.02.21
+x		- Ace3\AceHook-3.0\AceHook-3.0-9.lua:180: Attempting to rehook already active hook Refresh.
+		[string "=[C]"]: ?
+		[string "@Ace3\AceHook-3.0\AceHook-3.0-9.lua"]:180: in function <Ace3\AceHook-3.0\AceHook-3.0.lua:118>
+		[string "@Ace3\AceHook-3.0\AceHook-3.0-9.lua"]:341: in function `SecureHook'
+		[string "@Skinner\Core\NPCFrames.lua"]:580: in function <Skinner\Core\NPCFrames.lua:560>
+		[string "=(tail call)"]: ?
+
+	I	VenturePlan, reported by Galthariel, 20.02.21
+√		- Skinner\AddonSkins\VenturePlan-4.11a.lua:44: attempt to call global 'orig_funcx' (a nil value)
+		[string "@Skinner\AddonSkins\VenturePlan-4.11a.lua"]:44: in function <Skinner\AddonSkins\VenturePlan.lua:43>
+		[string "@VenturePlan\MissionList.lua"]:272: in function <VenturePlan\MissionList.lua:225>
+
+	I	Clique, reported by Fakelessgaming, 20.02.21
+√		- Button on SpellBook not skinned
