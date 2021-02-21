@@ -463,11 +463,11 @@ function aObj:clrBBC(obj, clrName, alpha)
 end
 
 -- colour Frame border based upon Covenant
-local cName, r, g, b
+local tKit, r, g, b
 function aObj:clrCovenantBdr(frame, uiTextureKit)
 
-	cName = uiTextureKit or _G.C_Covenants.GetCovenantData(_G.C_Covenants.GetActiveCovenantID()).name
-	r, g, b = _G.COVENANT_COLORS[cName]:GetRGB()
+	tKit = uiTextureKit or _G.C_Covenants.GetCovenantData(_G.C_Covenants.GetActiveCovenantID()).textureKit
+	r, g, b = _G.COVENANT_COLORS[tKit]:GetRGB()
 	frame.sf:SetBackdropBorderColor(r, g, b, 0.75)
 
 end
