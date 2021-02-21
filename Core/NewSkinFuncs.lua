@@ -459,7 +459,7 @@ local function skinFrame(tbl)
 	and tbl.cb
 	or tbl.cbns
 	then
-		local cBtn = tbl.obj.CloseButton or tbl.obj.closeButton or tbl.obj.closebutton or tbl.obj:GetName() and _G[tbl.obj:GetName() .. "CloseButton"] or tbl.obj.Close
+		local cBtn = tbl.obj.CloseButton or tbl.obj.closeButton or tbl.obj.closebutton or tbl.obj:GetName() and _G[tbl.obj:GetName() .. "CloseButton"] or tbl.obj.Close or tbl.obj.close
 		if cBtn then
 			aObj:skinCloseButton{obj=cBtn, noSkin=tbl.cbns}
 		end
