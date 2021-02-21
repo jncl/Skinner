@@ -31,7 +31,7 @@ end
 local addonSkins = {
 	"ACP", "AdvancedInterfaceOptions", "AngryKeystones", "Atlas",
 	"BaudManifest", "BindPad", "BossNotes", "BossNotes_PersonalNotes", "Bugger", "BulkMail2", "BulkMail2Inbox", "BuyEmAll",
-	"CensusPlus", "Chatter", "Clique", "CollectMe",
+	"CensusPlus", "Chatter", "CollectMe",
 	"DeathNote", "DressUp",
 	"EnergyWatch", "EnhancedFlightMap", "Examiner", "ExtVendor",
 	"FarmIt2", "FlaresThatWork", "FlightMapEnhanced", "FramesResized", "FreierGeist_InstanceTime",
