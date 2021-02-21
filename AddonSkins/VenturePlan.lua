@@ -41,7 +41,7 @@ aObj.addonsToSkin.VenturePlan = function(self) -- v 4.08
 			-- hook creation of new mission buttons by using a metatable
 			local orig_func = _G.getmetatable(frame.MissionList.Missions).__index
 			local mt = {__index=function(t, k)
-				orig_funcx(t, k)
+				orig_func(t, k)
 				skinMissionBtn(_G.rawget(t, k))
 			end}
 			_G.setmetatable(frame.MissionList.Missions, mt)
