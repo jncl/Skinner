@@ -817,7 +817,7 @@ aObj.blizzFrames[ftype].CharacterFrames = function(self)
 		end
 		-- TokenFramePopup
 		_G.TokenFramePopup.Border:DisableDrawLayer("BACKGROUND")
-		self:skinObject("frame", {obj=_G.TokenFramePopup, fType=ftype, kfs=true, ofs=-6, x1=0})
+		self:skinObject("frame", {obj=_G.TokenFramePopup, fType=ftype, kfs=true, cb=true, ofs=-6, x1=0})
 		if self.modChkBtns then
 			self:skinCheckButton{obj=_G.TokenFramePopupInactiveCheckBox}
 			self:skinCheckButton{obj=_G.TokenFramePopupBackpackCheckBox}
