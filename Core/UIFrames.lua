@@ -3430,10 +3430,14 @@ aObj.blizzLoDFrames[ftype].IslandsQueueUI = function(self)
 	WQ.OverlayFrame.FillBackground:SetTexture(nil)
 	self:skinStatusBar{obj=WQ.StatusBar, fi=0}
 	-- N.B. NOT a real tooltip
-	self:addSkinFrame{obj=WQ.QuestReward.Tooltip, ft=ftype, kfs=true, nb=true}
+	if not aObj.isPTR then
+		self:addSkinFrame{obj=WQ.QuestReward.Tooltip, ft=ftype, kfs=true, nb=true}
+	end
 	if self.modBtnBs then
 		self:addButtonBorder{obj=WQ.QuestReward, relTo=WQ.QuestReward.Icon}
-		self:addButtonBorder{obj=WQ.QuestReward.Tooltip.ItemTooltip, relTo=WQ.QuestReward.Tooltip.ItemTooltip.Icon, reParent={WQ.QuestReward.Tooltip.ItemTooltip.Count}}
+		if not aObj.isPTR then
+			self:addButtonBorder{obj=WQ.QuestReward.Tooltip.ItemTooltip, relTo=WQ.QuestReward.Tooltip.ItemTooltip.Icon, reParent={WQ.QuestReward.Tooltip.ItemTooltip.Count}}
+		end
 	end
 
 	IQF.TutorialFrame.TutorialText:SetTextColor(self.BT:GetRGB())
