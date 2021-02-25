@@ -3609,25 +3609,33 @@ aObj.blizzFrames[ftype].LFDFrame = function(self)
 			self:skinStdButton{obj=_G.LFDQueueFrameFindGroupButton}
 		end
 		if self.modBtnBs then
+			self:addButtonBorder{obj=_G.LFDQueueFrameRandomScrollFrameChildFrame.MoneyReward, libt=true}
+		end
+		if self.modBtns
+		or self.modBtnBs
+		then
 			self:SecureHook("LFDQueueFrameRandom_UpdateFrame", function()
-				for i = 1, 5 do
-					if _G["LFDQueueFrameRandomScrollFrameChildFrameItem" .. i] then
-						_G["LFDQueueFrameRandomScrollFrameChildFrameItem" .. i .. "NameFrame"]:SetTexture(nil)
-						self:addButtonBorder{obj=_G["LFDQueueFrameRandomScrollFrameChildFrameItem" .. i], libt=true}
+				if self.modBtns then
+					self:clrBtnBdr(_G.LFDQueueFrameFindGroupButton)
+				end
+				if self.modBtnBs then
+					for i = 1, 5 do
+						if _G["LFDQueueFrameRandomScrollFrameChildFrameItem" .. i] then
+							_G["LFDQueueFrameRandomScrollFrameChildFrameItem" .. i .. "NameFrame"]:SetTexture(nil)
+							self:addButtonBorder{obj=_G["LFDQueueFrameRandomScrollFrameChildFrameItem" .. i], libt=true}
+						end
 					end
 				end
-				self:clrBtnBdr(_G.LFDQueueFrameFindGroupButton)
 			end)
-			self:addButtonBorder{obj=_G.LFDQueueFrameRandomScrollFrameChildFrame.MoneyReward, libt=true}
 		end
 
 		-- Specific List subFrame
 		for i = 1, _G.NUM_LFD_CHOICE_BUTTONS do
-			if self.modChkBtns then
-				self:skinCheckButton{obj=_G["LFDQueueFrameSpecificListButton" .. i].enableButton}
-			end
 			if self.modBtns then
 				self:skinExpandButton{obj=_G["LFDQueueFrameSpecificListButton" .. i].expandOrCollapseButton, sap=true}
+			end
+			if self.modChkBtns then
+				self:skinCheckButton{obj=_G["LFDQueueFrameSpecificListButton" .. i].enableButton}
 			end
 		end
 		self:skinSlider{obj=_G.LFDQueueFrameSpecificListScrollFrame.ScrollBar, rt="background"}
