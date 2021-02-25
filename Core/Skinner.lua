@@ -402,6 +402,14 @@ function aObj:OnEnable()
 
 	self.skinCheckButton     = self.modChkBtns and self.modUIBtns.skinCheckButton or _G.nop
 
+	if not self.isClsc then
+		-- hoook this (used by Blizzard_OrderHallTalents, PVPMatchResults, PVPMatchScoreboard & Blizzard_WarboardUI)
+		-- N.B. use SecureHook as RawHook cause taint and INTERFACE_ACTION_BLOCKED message to be displayed
+		self:SecureHook("UIPanelCloseButton_SetBorderAtlas", function(this, atlas, xOffset, yOffset, textureKit)
+			self:Debug("UIPanelCloseButton_SetBorderAtlas: [%s, %s, %s, %s, %s]", this, atlas, xOffset, yOffset, textureKit)
+			this.Border:SetTexture(nil)
+		end)
+	end
 	-- register for event after a slight delay as registering ADDON_LOADED any earlier causes it not to be registered if LoD modules are loaded on startup (e.g. SimpleSelfRebuff/LightHeaded)
 	_G.C_Timer.After(0.5, function() self:RegisterEvent("ADDON_LOADED") end)
 	-- track when Auction House is opened

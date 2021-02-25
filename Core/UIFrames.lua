@@ -430,10 +430,6 @@ local function hookPointerFrame()
 	end
 	hookPointerFrame = nil
 end
-if not aObj.isClsc then
-	-- hoook this (used by Blizzard_OrderHallTalents, PVPMatchResults, PVPMatchScoreboard & Blizzard_WarboardUI)
-	aObj:RawHook("UIPanelCloseButton_SetBorderAtlas", function(...) end, true)
-end
 
 aObj.blizzFrames[ftype].AddonList = function(self)
 	if not self.prdb.AddonList or self.initialized.AddonList then return end
