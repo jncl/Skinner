@@ -877,13 +877,9 @@ aObj.ClassicSupport = function(self)
 			self:SecureHookScript(_G.WhoFrame, "OnShow", function(this)
 				self:removeInset(_G.WhoFrameListInset)
 				self:skinColHeads("WhoFrameColumnHeader", nil, ftype)
+				self:moveObject{obj=_G.WhoFrameColumnHeader4, x=4}
 				self:skinDropDown{obj=_G.WhoFrameDropDown}
 				self:moveObject{obj=_G.WhoFrameDropDown, y=1}
-				-- remove col head 2 as it is really a dropdown
-				_G.WhoFrameColumnHeader2.sf.tfade:SetTexture(nil)
-				_G.WhoFrameColumnHeader2.sf:SetBackdrop(nil)
-				_G.WhoFrameColumnHeader2.sf:Hide()
-				self:moveObject{obj=_G.WhoFrameColumnHeader4, x=4}
 				self:removeInset(_G.WhoFrameEditBoxInset)
 				self:skinEditBox{obj=_G.WhoFrameEditBox}--, move=true}
 				if not self.isElvUI then
