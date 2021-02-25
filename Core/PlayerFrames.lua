@@ -3478,7 +3478,7 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 	-- Toghast Anima Powers frame
 	if self.prdb.ObjectiveTracker.animapowers then
 		self:SecureHookScript(_G.ScenarioBlocksFrame.MawBuffsBlock, "OnShow", function(this)
-			this.Container.List:DisableDrawLayer("BACKGROUND")
+			self:skinObject("frame", {obj=this.Container.List, fType=ftype, kfs=true, ofs=-4, y1=-10, y2=10})
 			if self.modBtns then
 				self:skinStdButton{obj=this.Container, x1=12, y1=-9, x2=-2, y2=9}
 				self:SecureHook(this.Container, "UpdateListState", function(this, _)
