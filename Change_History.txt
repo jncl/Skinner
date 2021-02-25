@@ -1,3 +1,13 @@
+beta9.37474.4
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Bugfix for CovenantSanctum & CovenantRenown errors
+	Updated NewSkinFuncs
+	Updated skinColumnHeading fucntion
+	Bugfix for VenturePlan skin
+	Updated Clique skin
+
 beta9.37474.3
 Jncl:
 	ToDo.txt
