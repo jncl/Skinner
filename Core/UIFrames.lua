@@ -15,12 +15,8 @@ local skinPortrait, skinFollower, skinFollowerListButtons, skinEquipment, skinFo
 if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 	function skinPortrait(frame)
 		if frame.PuckBorder then
-			-- FIXME: troops also have Stack Border(s), is it important to show them?
-			if aObj.isPTR then
-				frame.TroopStackBorder1:SetTexture(nil)
-				frame.TroopStackBorder2:SetTexture(nil)
-			end
-			-- FIXME: colour of PuckBorder changes for troops, is it important to show it?
+			frame.TroopStackBorder1:SetTexture(nil)
+			frame.TroopStackBorder2:SetTexture(nil)
 			aObj:nilTexture(frame.PuckBorder, true)
 			frame.PortraitRingQuality:SetTexture(nil)
 			frame.PortraitRingCover:SetTexture(nil)
@@ -3430,14 +3426,8 @@ aObj.blizzLoDFrames[ftype].IslandsQueueUI = function(self)
 	WQ.OverlayFrame.FillBackground:SetTexture(nil)
 	self:skinStatusBar{obj=WQ.StatusBar, fi=0}
 	-- N.B. NOT a real tooltip
-	if not aObj.isPTR then
-		self:addSkinFrame{obj=WQ.QuestReward.Tooltip, ft=ftype, kfs=true, nb=true}
-	end
 	if self.modBtnBs then
 		self:addButtonBorder{obj=WQ.QuestReward, relTo=WQ.QuestReward.Icon}
-		if not aObj.isPTR then
-			self:addButtonBorder{obj=WQ.QuestReward.Tooltip.ItemTooltip, relTo=WQ.QuestReward.Tooltip.ItemTooltip.Icon, reParent={WQ.QuestReward.Tooltip.ItemTooltip.Count}}
-		end
 	end
 
 	IQF.TutorialFrame.TutorialText:SetTextColor(self.BT:GetRGB())
@@ -3767,19 +3757,11 @@ aObj.blizzFrames[ftype].LFGList = function(self)
 			for i = 1, #sp.ScrollFrame.buttons do
 				self:skinStdButton{obj=sp.ScrollFrame.buttons[i].CancelButton}
 			end
-			if not aObj.isPTR then
-				self:skinStdButton{obj=sp.ScrollFrame.StartGroupButton}
-			else
-				self:skinStdButton{obj=sp.ScrollFrame.ScrollChild.StartGroupButton}
-			end
+			self:skinStdButton{obj=sp.ScrollFrame.ScrollChild.StartGroupButton}
 			self:skinStdButton{obj=sp.BackButton}
 			self:skinStdButton{obj=sp.SignUpButton}
 			self:SecureHook("LFGListSearchPanel_UpdateButtonStatus", function(this)
-				if not aObj.isPTR then
-					self:clrBtnBdr(this.ScrollFrame.StartGroupButton)
-				else
-					self:clrBtnBdr(this.ScrollFrame.ScrollChild.StartGroupButton)
-				end
+				self:clrBtnBdr(this.ScrollFrame.ScrollChild.StartGroupButton)
 				self:clrBtnBdr(this.SignUpButton)
 			end)
 		end

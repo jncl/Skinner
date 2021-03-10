@@ -489,12 +489,7 @@ function aObj:OnEnable()
 		aObj:checkAndRun("SetupDefaults", "opt", false, true)
 		-- store shortcut
 		aObj.prdb = aObj.db.profile
-		if not aObj.isPTR then
-			-- prompt for reload
-			_G.StaticPopup_Show(aName .. "_Reload_UI")
-		else
-			_G.UIErrorsFrame:AddMessage(aObj.L["The profile"] .. " '" .. aObj.db:GetCurrentProfile() .. "' " .. aObj.L["will be activated next time you Login or Reload the UI"], 1, 1, 0)
-		end
+		_G.UIErrorsFrame:AddMessage(aObj.L["The profile"] .. " '" .. aObj.db:GetCurrentProfile() .. "' " .. aObj.L["will be activated next time you Login or Reload the UI"], 1, 1, 0)
 	end
 	self.db.RegisterCallback(self, "OnProfileChanged", reloadAddon)
 	self.db.RegisterCallback(self, "OnProfileCopied", reloadAddon)
