@@ -5749,7 +5749,7 @@ aObj.blizzFrames[ftype].StaticPopups = function(self)
 			self:removeNineSlice(this.Border)
 			this.Separator:SetTexture(nil)
 			local objName = this:GetName()
-			self:skinObject("editbox", {obj=_G[objName .. "EditBox"], fType=ftype})
+			self:skinObject("editbox", {obj=_G[objName .. "EditBox"], fType=ftype, ofs=0})
 			self:skinMoneyFrame{obj=_G[objName .. "MoneyInputFrame"]}
 			_G[objName .. "ItemFrameNameFrame"]:SetTexture(nil)
 			self:skinObject("frame", {obj=this, fType=ftype, ofs=-6})
