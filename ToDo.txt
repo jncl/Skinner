@@ -79,26 +79,42 @@ x		- CovenantSanctumUpgrades
 	I	Auctionator, reported by Galthariel, 13.02.21
 ?		- Skinner\AddonSkins\Auctionator-501 (alpha).lua:224: Usage: SecureHookScript(object, method, [handler]): You can only hook a script on a frame object
 
-	I	Torghast Anima Power picker, reported by Galthariel/DarkLimpan/llcoolpete/seleste_star et al, 22.02.21
-√		- powers can be seen and selected when Skinner isn't loaded, why if they can't when it is?
+	I	VenturePlan 4.12, reported by Galthariel, 25.02.21
+√		- Skinner\AddonSkins\VenturePlan-4.12.lua:34: attempt to index field 'ResourceCounter' (a nil value)
+		[string "@Skinner\AddonSkins\VenturePlan-4.12.lua"]:34: in function <Skinner\AddonSkins\VenturePlan.lua:31>
 
-	I/C	WhoFrame, reported by 아련별, 23.02.21
-√		- ...aceSkinner\ClassicSupport\ClassicSupport.lua:883: attempt to index field 'tfade' (a nil value)
-		...aceSkinner\ClassicSupport\ClassicSupport.lua:883: in function <...aceSkinner\ClassicSupport\ClassicSupport.lua:877>
-		(tail call): ?
-		[C]: ?
-		[C]: in function `Show'
-		FrameXML\FriendsFrame.lua:98: in function `FriendsFrame_ShowSubFrame'
-		FrameXML\FriendsFrame.lua:365: in function `FriendsFrame_Update'
-		FrameXML\FriendsFrame.lua:327: in function <FrameXML\FriendsFrame.lua:325>
+	I	Clique, reported by Fakelessgaming, 27.02.21
+x		- Spellbook tab not being skinned
 
-	I/C	ItemRefTooltip, reported by Siinba, 23.02.21
-		- Skinner\Modules\UIButtons.lua:280: attempt to index field 'obj' (a nil value)
-√		Skinner\Modules\UIButtons.lua:280: in function `skinCloseButton'
-		Skinner\Core\UIFrames.lua:6164: in function <Skinner\Core\UIFrames.lua:6162>
+√	S/C	Spy Classic, requested by 아련별, 04.03.21
 
-	I	reported by Metallan, 24.02.21
-√		- Skinner\Core\UtilFuncs.lua:460: attempt to call method 'SetBackdropBorderColor' (a nil value)
-		[string "@Skinner\Core\UtilFuncs.lua"]:460: in function `clrBBC'
-		[string "@Skinner\Modules\UIButtons.lua"]:215: in function `clrBtnBdr'
-		[string "@Skinner\Core\UIFrames.lua"]:3689: in function <Skinner\Core\UIFrames.lua:3682>
+	I	ElvUI, reported by the 9thresident, 04.03.21
+≈		- Skinner\Core\UtilFuncs.lua:1150: stack overflow
+		[string "@Skinner\Core\UtilFuncs.lua"]:1150: in function `removeRegions'
+		[string "@Skinner\Core\UtilFuncs.lua"]:1150: in function `removeRegions'
+		[string "@Skinner\Core\UtilFuncs.lua"]:1150: in function `removeRegions'
+		[string "@Skinner\Core\UtilFuncs.lua"]:1150: in function `removeRegions'
+		[string "@Skinner\Core\UtilFuncs.lua"]:1150: in function `removeRegions'
+		[string "@Skinner\Core\UtilFuncs.lua"]:1150: in function `removeRegions'
+		[string "@Skinner\Core\UtilFuncs.lua"]:1150: in function `removeRegions'
+		[string "@Skinner\Core\UtilFuncs.lua"]:1150: in function `removeRegions'
+		[string "@Skinner\Core\UtilFuncs.lua"]:1150: in function `removeRegions'
+		[string "@Skinner\Core\UtilFuncs.lua"]:1150: in function `removeRegions'
+		[string "@Skinner\Core\UtilFuncs.lua"]:1150: in function `removeRegions'
+		[string "@Skinner\Core\UtilFuncs.lua"]:1150: in function `removeRegions'
+		...
+		[string "@Skinner\Core\UtilFuncs.lua"]:1150: in function `removeRegions'
+		[string "@Skinner\Core\MainFuncs.lua"]:629: in function <Skinner\Core\MainFuncs.lua:582>
+		[string "@Skinner\Core\MainFuncs.lua"]:699: in function `skinDropDown'
+		[string "@Skinner\Core\UIFrames.lua"]:5361: in function <Skinner\Core\UIFrames.lua:5303>
+		[string "=(tail call)"]: ?
+		[string "=[C]"]: in function `xpcall'
+		[string "@Skinner\Core\UtilFuncs.lua"]:51: in function <Skinner\Core\UtilFuncs.lua:45>
+		[string "=(tail call)"]: ?
+		[string "@Skinner\Core\AddonFrames.lua"]:155: in function `BlizzardFrames'
+		[string "@Skinner\Core\Skinner-beta9.37474.4.lua"]:500: in function <Skinner\Core\Skinner.lua:500>
+
+		it also says
+		"error running world quest tab"
+		"error running examiner"
+		"error running over achiever tabs"
