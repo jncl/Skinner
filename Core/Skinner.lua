@@ -402,27 +402,20 @@ function aObj:OnEnable()
 
 	self.skinCheckButton     = self.modChkBtns and self.modUIBtns.skinCheckButton or _G.nop
 
-	if not self.isClsc then
-		-- hoook this (used by Blizzard_OrderHallTalents, PVPMatchResults, PVPMatchScoreboard & Blizzard_WarboardUI)
-		-- N.B. use SecureHook as RawHook cause taint and INTERFACE_ACTION_BLOCKED message to be displayed
-		self:SecureHook("UIPanelCloseButton_SetBorderAtlas", function(this, atlas, xOffset, yOffset, textureKit)
-			self:Debug("UIPanelCloseButton_SetBorderAtlas: [%s, %s, %s, %s, %s]", this, atlas, xOffset, yOffset, textureKit)
-			this.Border:SetTexture(nil)
-		end)
-	end
 	-- register for event after a slight delay as registering ADDON_LOADED any earlier causes it not to be registered if LoD modules are loaded on startup (e.g. SimpleSelfRebuff/LightHeaded)
-	_G.C_Timer.After(0.5, function() self:RegisterEvent("ADDON_LOADED") end)
+	_G.C_Timer.After(0.5, function()
+		self:RegisterEvent("ADDON_LOADED")
+	end)
 	-- track when Auction House is opened
 	self:RegisterEvent("AUCTION_HOUSE_SHOW")
 	-- track when Player enters World (used for texture updates and UIParent child processing)
 	self:RegisterEvent("PLAYER_ENTERING_WORLD")
 	-- track when Trade Skill is opened (used by MrTrader_SkillWindow)
 	self:RegisterEvent("TRADE_SKILL_SHOW")
-
+	-- track when player changes level, to manage MainMenuBars' WatchBars' placement
 	if _G.UnitLevel("player") >= _G.MAX_PLAYER_LEVEL - 5
 	and not _G.IsTrialAccount()
 	then
-		-- track when player changes level, to manage MainMenuBars' WatchBars' placement
 		self:RegisterEvent("PLAYER_LEVEL_CHANGED")
 	end
 
@@ -495,10 +488,6 @@ function aObj:OnEnable()
 	self.db.RegisterCallback(self, "OnProfileCopied", reloadAddon)
 	self.db.RegisterCallback(self, "OnProfileReset", reloadAddon)
 
---@alpha@
-	self:SetupCmds()
---@end-alpha@
-
 	-- skin the Blizzard frames
 	_G.C_Timer.After(self.prdb.Delay.Init, function() self:BlizzardFrames() end)
 	-- skin the loaded AddOns frames
@@ -506,19 +495,17 @@ function aObj:OnEnable()
 	-- schedule scan of UIParent's Children after all AddOns have been loaded
 	_G.C_Timer.After(self.prdb.Delay.Init + self.prdb.Delay.Addons + 1, function() self:scanUIParentsChildren() end)
 
---@alpha@
-	-- error handling
-	local eh = _G.geterrorhandler()
-	_G.seterrorhandler(function(msg)
-		local _, _, stacktrace = _G.string.find(_G.debugstack() or "", "[^\n]+\n(.*)")
-		aObj:Debug("seterrorhandler: [%s, %s, %s]", msg, stacktrace)
-	end)
-	-- register these events to see if they can be managed
-	local function handleEvent(event, isTainted, func)
-		aObj:Debug("handleEvent: [%s, %s, %s, %s]", event, addonName, func)
+	if not self.isClsc then
+		-- hook this (used by Blizzard_OrderHallTalents, PVPMatchResults, PVPMatchScoreboard & Blizzard_WarboardUI)
+		-- N.B. use SecureHook as RawHook cause taint and INTERFACE_ACTION_BLOCKED message to be displayed
+		self:SecureHook("UIPanelCloseButton_SetBorderAtlas", function(this, atlas, xOffset, yOffset, textureKit)
+			self:Debug("UIPanelCloseButton_SetBorderAtlas: [%s, %s, %s, %s, %s]", this, atlas, xOffset, yOffset, textureKit)
+			this.Border:SetTexture(nil)
+		end)
 	end
-	self:RegisterEvent("ADDON_ACTION_FORBIDDEN", handleEvent)
-	self:RegisterEvent("ADDON_ACTION_BLOCKED", handleEvent)
+
+--@alpha@
+	self:SetupCmds()
 --@end-alpha@
 
 end
