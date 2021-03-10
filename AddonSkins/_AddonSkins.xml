@@ -198,6 +198,7 @@
 <Script file="SorhaQuestLog.lua"/>
 <Script file="Sorted.lua"/>
 <Script file="Spew.lua"/>
+<Script file="Spy.lua"/>
 <Script file="TargetCharms.lua"/>
 <Script file="tekKonfig.lua"/>
 <Script file="tektip.lua"/>
