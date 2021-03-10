@@ -1,3 +1,17 @@
+beta9.37474.5
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	PTR changes
+	Updated CovenantMissionHelper skin
+	Update TokenFrame skin
+	Update Torghast Anima Powers skin
+	Bugfix for WhoFrame
+	Bugfix for ItemRefTooktip issue
+	Bugfix for LFD button colouring
+	Replace RawHook woith SecureHook to fix Torghast Anima Powers selection issue
+
 beta9.37474.4
 Jncl:
 	ToDo.txt
