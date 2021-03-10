@@ -3,7 +3,7 @@ if not aObj:isAddonEnabled("ElvUI") then return end
 local _G = _G
 
 -- The following code handles the Initial setup of Skinner when the ElvUI is loaded
-aObj.otherAddons.ElvUIInit = function(self) -- v 10.73
+aObj.otherAddons.ElvUIInit = function(self) -- v 12.21
 
 	local E, L, V, P, G
 	local borderr, borderg, borderb, backdropr, backdropg, backdropb
@@ -83,9 +83,6 @@ aObj.otherAddons.ElvUIInit = function(self) -- v 10.73
 
 		prdb, c = nil, nil
 
-		-- replace removeRegions function by rmRegionsTex function as several frames have had Textures removed/Fontstrings added
-		self.removeRegions = self.rmRegionsTex
-
 		-- run the function
 		self.hooks[this].OnInitialize(this)
 
@@ -135,7 +132,7 @@ aObj.otherAddons.ElvUIInit = function(self) -- v 10.73
 				self.hooks[this].skinButton(this, opts)
 			end)
 			self.checkTex = _G.nop
-			
+
 			self:Unhook(this, "OnEnable")
 		end)
 	end
