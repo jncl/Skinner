@@ -4417,7 +4417,7 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 		obj:SetHighlightTexture([[Interface\Buttons\ButtonHilight-Square]])
 		obj:SetHitRectInsets(-5, -5, -5, -5)
 		if not minBtn then
-			aObj:skinObject("button", {obj=obj, fType=ftype, ng=true, ofs=4})
+			aObj:skinObject("button", {obj=obj, fType=ftype, ng=true, bd=obj==_G.GameTimeFrame and 10 or 1, ofs=4})
 		end
 	end
 
