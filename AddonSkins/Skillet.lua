@@ -164,7 +164,7 @@ end
 
 if not aObj.isClsc then
 	if aObj:isAddonEnabled("Skillet") then
-		aObj.addonsToSkin.Skillet = function(self) -- v 4.20
+		aObj.addonsToSkin.Skillet = function(self) -- v 4.26
 			skinSkillet(aObj)
 		end
 	end

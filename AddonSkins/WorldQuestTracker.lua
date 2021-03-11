@@ -2,7 +2,7 @@ local aName, aObj = ...
 if not aObj:isAddonEnabled("WorldQuestTracker") then return end
 local _G = _G
 
-aObj.addonsToSkin.WorldQuestTracker = function(self) -- v 9.0.2.407
+aObj.addonsToSkin.WorldQuestTracker = function(self) -- v 9.0.2.414
 
 	_G.WorldQuestTrackerZoneSummaryFrame.Header.Background:SetTexture(nil)
 	_G.WorldQuestTrackerSummaryHeader.BlackBackground:SetTexture(nil)
@@ -11,73 +11,14 @@ aObj.addonsToSkin.WorldQuestTracker = function(self) -- v 9.0.2.407
 		self:addButtonBorder{obj=_G.WorldQuestTrackerQuestsHeader.MinimizeButton, es=12, ofs=1, x1=-1}
 	end
 
-	-- WorldQuestTrackerFinderFrame
-	-- self:SecureHookScript(_G.WorldQuestTrackerFinderFrame, "OnShow", function(this)
-	-- 	this.TitleBar:SetBackdrop(nil)
-	-- 	this.OpenGroupFinderButton:SetBackdrop(nil)
-	-- 	this.InvitePlayersButton:SetBackdrop(nil)
-	-- 	this.LeaveButton:SetBackdrop(nil)
-	-- 	this.IgnoreQuestButton:SetBackdrop(nil)
-	-- 	self:addSkinFrame{obj=this, ft="a", kfs=true, nb=true, ofs=4, y1=1}
-	-- 	if self.modBtns then
-	-- 		-- hook this to skin GroupFinder buttons
-	-- 		self:SecureHook(this, "UpdateButtonAnchorOnBBlock", function(block, button)
-	-- 			if not button.sbb then
-	-- 				self:addButtonBorder{obj=button, ofs=-2}
-	-- 			end
-	-- 		end)
-	-- 	end
-	--
-	-- 	self:Unhook(this, "OnShow")
-	-- end)
-	-- WorldQuestTrackerRareFrame (only holds data, not a displayed frame)
-
 	if self.modBtns then
-		self:SecureHookScript(_G.LFGListSearchPanelScrollFrame.StartGroupButton, "OnClick", function(this)
+		self:SecureHookScript(_G.LFGListSearchPanelScrollFrame.ScrollChild.StartGroupButton, "OnClick", function(this)
 			_G.C_Timer.After(0.1, function()
 				self:skinCloseButton{obj=_G.WorldQuestTrackerGroupFinderPopup.CloseButton, noSkin=true}
 			end)
 
 			self:Unhook(this, "OnClick")
 		end)
-		-- if _G.WorldQuestTrackerAddon.db.profile.TutorialPopupID
-		-- and _G.WorldQuestTrackerAddon.db.profile.is_BFA_version
-		-- then
-		-- 	self:SecureHook(_G.WorldQuestTrackerAddon, "ShowTutorialAlert", function(this)
-		-- 		if _G.WorldQuestTrackerAddon.db.profile.TutorialPopupID == 1 then
-		-- 			_G.C_Timer.After(4.25, function()
-		-- 				if _G.WorldQuestTrackerTutorialAlert1 then
-		-- 					self:skinCloseButton{obj=_G.WorldQuestTrackerTutorialAlert1.CloseButton, noSkin=true}
-		-- 				end
-		-- 			end)
-		-- 		end
-		-- 		if _G.WorldQuestTrackerAddon.db.profile.TutorialPopupID == 2 then
-		-- 			_G.C_Timer.After(.75, function()
-		-- 				if _G.WorldQuestTrackerTutorialAlert2 then
-		-- 					self:skinCloseButton{obj=_G.WorldQuestTrackerTutorialAlert2.CloseButton, noSkin=true}
-		-- 				end
-		-- 			end)
-		-- 		end
-		-- 		if _G.WorldQuestTrackerAddon.db.profile.TutorialPopupID == 3 then
-		-- 			_G.C_Timer.After(.75, function()
-		-- 				if _G.WorldQuestTrackerTutorialAlert3 then
-		-- 					self:skinCloseButton{obj=_G.WorldQuestTrackerTutorialAlert3.CloseButton, noSkin=true}
-		-- 				end
-		-- 			end)
-		-- 		end
-		-- 		-- if _G.WorldQuestTrackerAddon.db.profile.TutorialPopupID == 4 then
-		-- 		-- 	_G.C_Timer.After(.75, function()
-		-- 		-- 		if _G.WorldQuestTrackerTutorialAlert4 then
-		-- 		-- 			self:skinCloseButton{obj=_G.WorldQuestTrackerTutorialAlert4.CloseButton, noSkin=true}
-		-- 		-- 		end
-		-- 		-- 	end)
-		-- 		-- end
-		-- 		if _G.WorldQuestTrackerAddon.db.profile.TutorialPopupID >= 3 then
-		-- 		-- if _G.WorldQuestTrackerAddon.db.profile.TutorialPopupID >= 4 then
-		-- 			self:Unhook(this, "ShowTutorialAlert")
-		-- 		end
-		-- 	end)
-		-- end
 	end
 
 	if _G.WorldQuestTrackerAddon.db.profile.use_quest_summary then
@@ -103,13 +44,6 @@ aObj.addonsToSkin.WorldQuestTracker = function(self) -- v 9.0.2.407
 		if _G.WorldQuestTrackerScreenPanel_QuestHolder.sf then
 			_G.WorldQuestTrackerScreenPanel_QuestHolder.sf:SetShown(_G.WorldQuestTrackerQuestsHeader:IsShown())
 		end
-		-- if self.modBtns then
-		-- 	if _G.WorldQuestTrackerAddon.db.profile.TutorialTracker == 2
-		-- 	and _G.WorldQuestTrackerTrackerTutorialAlert1
-		-- 	then
-		-- 		self:skinCloseButton{obj=_G.WorldQuestTrackerTrackerTutorialAlert1.CloseButton, noSkin=true}
-		-- 	end
-		-- end
 	end)
 
 end
