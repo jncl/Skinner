@@ -23,98 +23,18 @@ ToDos
 
 ≈	O	Refactor NewSkinFuncs in Blizzard/AddOn skins
 
-	O	Can these events be captured [yes] and acted upon [in what way?]?
-		- ADDON_ACTION_FORBIDDEN
-		- ADDON_ACTION_BLOCKED
+?	O	Should 'SecureHandlerShowHideTemplate' be used
 
-	O	QuestInfo frame
-		- AdventuresFollowerPortraitFrame has been added
+	I	WorldQuestTracker, reported by Galthariel, 11.03.21
+√		- ...faceSkinner\AddonSkins\WorldQuestTracker.lua:36: Usage: SecureHookScript(object, method, [handler]): You can only hook a script on a frame object
+		[string "@Accountant_Classic\Libs\AceHook-3.0\AceHook-3.0-9.lua"]:143: in function <...\Accountant_Classic\Libs\AceHook-3.0\AceHook-3.0.lua:118>
+		[string "@Accountant_Classic\Libs\AceHook-3.0\AceHook-3.0-9.lua"]:411: in function `SecureHookScript'
+		[string "@Skinner\AddonSkins\WorldQuestTracker.lua"]:36: in function <...faceSkinner\AddonSkins\WorldQuestTracker.lua:5>
 
-	N	PTR changes 9.0.5
-?		- ChallengesUI
-x		- CovenantRenown
-x		- CovenantSanctumUpgrades
-≈		- CovenantMissionTemplates
-		- IslandsQueueUI
-√			- Toooltip removed
-		- ScenarioObjectiveTracker
-?			- reward button removed
-√			- ScenarioStepRewardTooltip removed
-		- Runeforge
-?			- error texture added to several frames
-?		- TorghastLevelPicker
-		- WeeklyRewards
-≈			- NineSlice added to overlay
-√		- LFGList
-≈		- ReloadUI function is now blocked
+	I	SilverDragon, reported by Galthariel, 11.03.21
+√		- Skinner\AddonSkins\SilverDragon-v90005.0.lua:14: attempt to index local 'frame' (a nil value)
+		[string "@Skinner\AddonSkins\SilverDragon-v90005.0.lua"]:14: in function <Skinner\AddonSkins\SilverDragon.lua:13>
+		[string "@Skinner\AddonSkins\SilverDragon-v90005.0.lua"]:26: in function <Skinner\AddonSkins\SilverDragon.lua:25>
 
-	I	ToolTip border, reported by EpidemeDaBear, 02.01.21
-?		- texture used on mouseover of Quest reward
-
-	I	UIWidgets, reported by Galthariel, 30.01.21
-?		- [ADDON_ACTION_BLOCKED] AddOn 'Skinner' tried to call the protected function 'SetTargetClampingInsets()'.
-		[string "@!BugGrabber\BugGrabber.lua"]:519: in function <!BugGrabber\BugGrabber.lua:519>
-		[string "=[C]"]: in function `SetTargetClampingInsets'
-		[string "@Blizzard_NamePlates\Blizzard_NamePlates.lua"]:305: in function `SetupClassNameplateBars'
-		[string "@Blizzard_NamePlates\Blizzard_NamePlates.lua"]:119: in function <...eBlizzard_NamePlates\Blizzard_NamePlates.lua:112>
-		[string "=[C]"]: in function `OnNamePlateAdded'
-		[string "@Blizzard_NamePlates\Blizzard_NamePlates.lua"]:56: in function <...eBlizzard_NamePlates\Blizzard_NamePlates.lua:47>
-
-	I	UIButtons, reported by neoseph82, 07.02.21
-?		- Skinner\Modules\UIButtons.lua:852: attempt to index field 'LSM' (a nil value)
-		[string "@Skinner\Modules\UIButtons.lua"]:852: in function <Skinner\Modules\UIButtons.lua:828>
-		[string "=[C]"]: ?
-		[string "@Ace3\AceAddon-3.0\AceAddon-3.0-13.lua"]:70: in function <Ace3\AceAddon-3.0\AceAddon-3.0.lua:65>
-		[string "@Ace3\AceAddon-3.0\AceAddon-3.0-13.lua"]:527: in function `EnableAddon'
-		[string "@Ace3\AceAddon-3.0\AceAddon-3.0-13.lua"]:540: in function `EnableAddon'
-		[string "@Ace3\AceAddon-3.0\AceAddon-3.0-13.lua"]:630: in function <Ace3\AceAddon-3.0\AceAddon-3.0.lua:615>
-
-	I	CovenantSanctum, reported by neoseph82, 07.02.21
-!?		- [ADDON_ACTION_FORBIDDEN] AddOn 'Skinner' tried to call the protected function 'DepositAnima()'.
-		[string "@!BugGrabber\BugGrabber.lua"]:519: in function <!BugGrabber\BugGrabber.lua:519>
-		[string "=[C]"]: in function `DepositAnima'
-		[string "@Blizzard_CovenantSanctum\Blizzard_CovenantSanctumUpgrades.lua"]:284: in function `DepositAnima'
-		[string "*:OnClick"]:1: in function <[string "*:OnClick"]:1>
-
-	I	Auctionator, reported by Galthariel, 13.02.21
-?		- Skinner\AddonSkins\Auctionator-501 (alpha).lua:224: Usage: SecureHookScript(object, method, [handler]): You can only hook a script on a frame object
-
-	I	VenturePlan 4.12, reported by Galthariel, 25.02.21
-√		- Skinner\AddonSkins\VenturePlan-4.12.lua:34: attempt to index field 'ResourceCounter' (a nil value)
-		[string "@Skinner\AddonSkins\VenturePlan-4.12.lua"]:34: in function <Skinner\AddonSkins\VenturePlan.lua:31>
-
-	I	Clique, reported by Fakelessgaming, 27.02.21
-x		- Spellbook tab not being skinned
-
-√	S/C	Spy Classic, requested by 아련별, 04.03.21
-
-	I	ElvUI, reported by the 9thresident, 04.03.21
-≈		- Skinner\Core\UtilFuncs.lua:1150: stack overflow
-		[string "@Skinner\Core\UtilFuncs.lua"]:1150: in function `removeRegions'
-		[string "@Skinner\Core\UtilFuncs.lua"]:1150: in function `removeRegions'
-		[string "@Skinner\Core\UtilFuncs.lua"]:1150: in function `removeRegions'
-		[string "@Skinner\Core\UtilFuncs.lua"]:1150: in function `removeRegions'
-		[string "@Skinner\Core\UtilFuncs.lua"]:1150: in function `removeRegions'
-		[string "@Skinner\Core\UtilFuncs.lua"]:1150: in function `removeRegions'
-		[string "@Skinner\Core\UtilFuncs.lua"]:1150: in function `removeRegions'
-		[string "@Skinner\Core\UtilFuncs.lua"]:1150: in function `removeRegions'
-		[string "@Skinner\Core\UtilFuncs.lua"]:1150: in function `removeRegions'
-		[string "@Skinner\Core\UtilFuncs.lua"]:1150: in function `removeRegions'
-		[string "@Skinner\Core\UtilFuncs.lua"]:1150: in function `removeRegions'
-		[string "@Skinner\Core\UtilFuncs.lua"]:1150: in function `removeRegions'
-		...
-		[string "@Skinner\Core\UtilFuncs.lua"]:1150: in function `removeRegions'
-		[string "@Skinner\Core\MainFuncs.lua"]:629: in function <Skinner\Core\MainFuncs.lua:582>
-		[string "@Skinner\Core\MainFuncs.lua"]:699: in function `skinDropDown'
-		[string "@Skinner\Core\UIFrames.lua"]:5361: in function <Skinner\Core\UIFrames.lua:5303>
-		[string "=(tail call)"]: ?
-		[string "=[C]"]: in function `xpcall'
-		[string "@Skinner\Core\UtilFuncs.lua"]:51: in function <Skinner\Core\UtilFuncs.lua:45>
-		[string "=(tail call)"]: ?
-		[string "@Skinner\Core\AddonFrames.lua"]:155: in function `BlizzardFrames'
-		[string "@Skinner\Core\Skinner-beta9.37474.4.lua"]:500: in function <Skinner\Core\Skinner.lua:500>
-
-		it also says
-		"error running world quest tab"
-		"error running examiner"
-		"error running over achiever tabs"
+	I	Skillet, reported by Galthariel, 11.03.21
+? 		- unable to use until reload
