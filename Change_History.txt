@@ -1,3 +1,14 @@
+beta9.37864.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Code rearranged
+	Updated StaticPopups skin
+	Applied PTR changes
+	Updated Clique, ElvUI & VenturePlan skins
+	Skinned Spy
+
 beta9.37474.5
 Jncl:
 	ToDo.txt
