@@ -121,7 +121,7 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 				-- status frame
 				aObj:skinObject("frame", {obj=aObj:getChild(obj.frame, 2), fb=true, ofs=0, x1=2})
 				obj.titletext:SetPoint("TOP", obj.frame, "TOP", 0, -6)
-				aObj:skinObject("frame", {obj=obj.frame, kfs=true, ofs=0})
+				aObj:skinObject("frame", {obj=obj.frame, kfs=true, rb=not aObj.isKC, ofs=0}) -- handle KongConfig backdrop issue
 				if aObj.modBtns then
 					aObj:skinStdButton{obj=aObj:getChild(obj.frame, 1), y1=1}
 				end
@@ -532,6 +532,9 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 			or objType == "QuantifyInlineGroup"
 			-- AdiBags
 			or objType == "ItemListElement"
+			-- KongConfig
+			or objType == "CollapsibleGroup"
+			or objType == "EasyMenuDropDown"
 			then
 				-- aObj:Debug("Ignoring: [%s]", objType)
 			-- any other types

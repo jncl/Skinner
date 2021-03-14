@@ -110,6 +110,7 @@
 <Script file="InstanceBoostTracker.lua"/>
 <Script file="InvenRaidFrames3.lua"/>
 <Script file="Inventorian.lua"/>
+<Script file="KongConfig.lua"/>
 <Script file="Leatrix_Plus.lua"/>
 <Script file="LibAboutPanel.lua"/>
 <Script file="LibAddonDropDownTemplates.lua"/>
