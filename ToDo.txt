@@ -14,6 +14,7 @@ ToDos
 		- use UI-LFG-ICON-ROLES.BLP as source for all, size them as required
 
 ?	O	Eliminate bugs from skinning the PartyFrames, BossFrames, TargetFrameToT
+≈		- Use 'SecureHandlerShowHideTemplate' to see if it makes a difference
 
 ≈	O	Rename variables and use function for colours
 		- self.bColour to self.bClr
@@ -23,18 +24,29 @@ ToDos
 
 ≈	O	Refactor NewSkinFuncs in Blizzard/AddOn skins
 
-?	O	Should 'SecureHandlerShowHideTemplate' be used
+	C	PTR
+		- Added
+			- FriendFrame
+				- GuildFrameImpeachButton
 
-	I	WorldQuestTracker, reported by Galthariel, 11.03.21
-√		- ...faceSkinner\AddonSkins\WorldQuestTracker.lua:36: Usage: SecureHookScript(object, method, [handler]): You can only hook a script on a frame object
-		[string "@Accountant_Classic\Libs\AceHook-3.0\AceHook-3.0-9.lua"]:143: in function <...\Accountant_Classic\Libs\AceHook-3.0\AceHook-3.0.lua:118>
-		[string "@Accountant_Classic\Libs\AceHook-3.0\AceHook-3.0-9.lua"]:411: in function `SecureHookScript'
-		[string "@Skinner\AddonSkins\WorldQuestTracker.lua"]:36: in function <...faceSkinner\AddonSkins\WorldQuestTracker.lua:5>
+	I/C	SilverDragon, reported by EpidemeDaBear, 12.03.21
+√		- Stack: Interface\AddOns\Skinner\Core\NewSkinFuncs.lua:414: attempt to index field 'obj' (a nil value)
+		  Interface\AddOns\Skinner\Core\NewSkinFuncs.lua:519: in function `?'
+		  Interface\AddOns\Skinner\Core\NewSkinFuncs.lua:155: in function `skinObject'
+		  Interface\AddOns\Skinner\AddonSkins\SilverDragon.lua:9: in function <Interface\AddOns\Skinner\AddonSkins\SilverDragon.lua:5>
 
-	I	SilverDragon, reported by Galthariel, 11.03.21
-√		- Skinner\AddonSkins\SilverDragon-v90005.0.lua:14: attempt to index local 'frame' (a nil value)
-		[string "@Skinner\AddonSkins\SilverDragon-v90005.0.lua"]:14: in function <Skinner\AddonSkins\SilverDragon.lua:13>
-		[string "@Skinner\AddonSkins\SilverDragon-v90005.0.lua"]:26: in function <Skinner\AddonSkins\SilverDragon.lua:25>
+	I	Tabs on AdventureGuide & System --> Graphics, reported by Fakelessgaming, 12.03.21
+√		- Changing size & position (when buttons?)
 
-	I	Skillet, reported by Galthariel, 11.03.21
-? 		- unable to use until reload
+	I	King Kong Frame Fader, reported by Shiv_G3, 13.03.21
+√		- KongConfig\KongConfig-28.nil.lua:270: attempt to index local 'kongback' (a nil value)
+		[string "@KongConfig\KongConfig-28.nil.lua"]:270: in function `KongConfig_CreateComponents'
+		[string "@KongConfig\KongConfig-28.nil.lua"]:101: in function `KongConfig_Show'
+		[string "@Kong\CommandLine.lua"]:137: in function `?'
+		[string "@FrameXML\ChatFrame.lua"]:5094: in function <FrameXML\ChatFrame.lua:5040>
+		[string "=[C]"]: in function `ChatEdit_ParseText'
+		[string "@FrameXML\ChatFrame.lua"]:4758: in function <FrameXML\ChatFrame.lua:4757>
+		[string "=[C]"]: in function `ChatEdit_SendText'
+		[string "@FrameXML\ChatFrame.lua"]:4794: in function `ChatEdit_OnEnterPressed'
+		[string "*:OnEnterPressed"]:1: in function <[string "*:OnEnterPressed"]:1>
+		- Error disappears if ACEGUI-3.0(lib) is disabled
