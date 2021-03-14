@@ -19,6 +19,7 @@ aObj.skinTPLs = {
 		-- y2          = -4,
 		sap         = false, -- SetAllPoints to object
 		sec         = false, -- use SecureFrameTemplate
+		shsh        = false, -- use SecureHandlerShowHideTemplate
 	},
 	dropdown= {
 		lrgTpl      = false,
@@ -248,7 +249,7 @@ local function skinButton(tbl)
 		tbl.name = tbl.obj:GetName() .. "~sb~"
 	end
 	-- add a frame to the object
-	tbl.obj.sb = _G.CreateFrame("Button", tbl.name, tbl.obj, tbl.sec and "SecureFrameTemplate")
+	tbl.obj.sb = _G.CreateFrame("Button", tbl.name, tbl.obj, tbl.sec and "SecureFrameTemplate" or tbl.shsh and "SecureHandlerShowHideTemplate")
 	if tbl.sap then
 		tbl.obj.sb:SetAllPoints(tbl.obj)
 	else

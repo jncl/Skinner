@@ -59,8 +59,9 @@ function module:skinUnitButton(opts)
 	opts.y1 = opts.y1 or opts.ofs
 	opts.x2 = opts.x2 or opts.ofs
 	opts.y2 = opts.y2 or opts.ofs * -1
-	aObj:skinObject("button", {obj=opts.obj, fType=ftype, sec=true, bg=true, bd=11, ng=true, x1=opts.x1, y1=opts.y1, x2=opts.x2, y2=opts.y2})
+	aObj:skinObject("button", {obj=opts.obj, fType=ftype, shsh=true, bg=true, bd=11, ng=true, x1=opts.x1, y1=opts.y1, x2=opts.x2, y2=opts.y2})
 	opts.obj.sb:SetBackdropColor(0.1, 0.1, 0.1, db.alpha) -- use dark background
+
 	if opts.ti
 	and opts.obj.threatIndicator
 	then
@@ -136,7 +137,6 @@ function module:skinPlayerF()
 		aObj:moveObject{obj=_G.PlayerFrameGroupIndicatorText, y=-1}
 
 		local function skinComboPoints()
-
 			if not aObj.isClsc then
 				_G.ComboPointPlayerFrame.Background:SetTexture(nil)
 				for i = 1, #_G.ComboPointPlayerFrame.ComboPoints do
@@ -147,7 +147,6 @@ function module:skinPlayerF()
 					_G.ComboFrame.ComboPoints[i]:DisableDrawLayer("BACKGROUND")
 				end
 			end
-
 		end
 
 		local y2Ofs = 2
