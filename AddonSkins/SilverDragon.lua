@@ -2,14 +2,20 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("SilverDragon") then return end
 local _G = _G
 
-aObj.addonsToSkin.SilverDragon = function(self) -- v 90005.0
+aObj.addonsToSkin.SilverDragon = function(self) -- v 90005.0/11302.0
 
+	local SD = _G.LibStub("AceAddon-3.0"):GetAddon("SilverDragon")
+	if SD then
+		self:RawHook(SD, "GetDebugWindow", function()
+			local frame = self.hooks[SD].GetDebugWindow()
+			self:skinTextDump(frame)
+			self:Unhook(this, "GetDebugWindow")
+			return frame
+		end, true)
+		-- N.B. DON'T nil SD as it is used in the preceeding function
+	end
 	local ct = _G.LibStub("AceAddon-3.0"):GetAddon("SilverDragon"):GetModule("ClickTarget")
 	if ct then
-		self:skinObject("frame", {obj=ct.anchor, kfs=true, ofs=0})
-		if self.modBtns then
-			self:skinCloseButton{obj=self:getChild(ct.anchor, 1), noSkin=true}
-		end
 		local function skinPopup(frame)
 			frame.title:SetTextColor(aObj.HT:GetRGB())
 			frame.source:SetTextColor(aObj.BT:GetRGB())
@@ -23,14 +29,20 @@ aObj.addonsToSkin.SilverDragon = function(self) -- v 90005.0
 		if _G.SilverDragonPopupButton then
 			skinPopup(_G.SilverDragonPopupButton)
 		end
-		local name, i = "SilverDragonPopupButton", 1
-		self:SecureHook(ct, "CreatePopup", function(_)
-			while _G[name] do
-				skinPopup(_G[name])
-				name = name .. i
-				i = i + 1
+		if not self.isClsc then
+			self:skinObject("frame", {obj=ct.anchor, kfs=true, ofs=0})
+			if self.modBtns then
+				self:skinCloseButton{obj=self:getChild(ct.anchor, 1), noSkin=true}
 			end
-		end)
+			local name, i = "SilverDragonPopupButton", 1
+			self:SecureHook(ct, "CreatePopup", function(_)
+				while _G[name] do
+					skinPopup(_G[name])
+					name = name .. i
+					i = i + 1
+				end
+			end)
+		end
 		ct = nil
 	end
 

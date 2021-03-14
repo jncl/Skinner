@@ -12,8 +12,8 @@ aObj.libsToSkin["LibTextDump-1.0"] = function(self) -- v LibTextDump-1.0 4
 		-- create function to be used in other skins
 		function self:skinTextDump(instance)
 			local frame = lTD.frames[instance]
-			self:skinSlider{obj=frame.scrollArea.ScrollBar}
-			self:addSkinFrame{obj=frame, ft="a", kfs=true, nb=true}
+			self:skinObject("slider", {obj=frame.scrollArea.ScrollBar})
+			self:skinObject("frame", {obj=frame, kfs=true})
 			if self.modBtns then
 				self:skinCloseButton{obj=_G[frame:GetName() .. "Close"]}
 			end
@@ -24,8 +24,6 @@ aObj.libsToSkin["LibTextDump-1.0"] = function(self) -- v LibTextDump-1.0 4
 			self:skinTextDump(instance)
 			return instance
 		end, true)
-	else
-		self.skinTextDump = _G.nop
 	end
 
 end
