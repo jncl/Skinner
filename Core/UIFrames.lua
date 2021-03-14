@@ -5912,7 +5912,7 @@ aObj.blizzFrames[ftype].SystemOptions = function(self)
 		-- Graphics
 		skinKids(_G.Display_)
 		self:skinObject("frame", {obj=_G.Display_, fType=ftype, kfs=true, fb=true})
-		self:skinObject("tabs", {obj=_G.Display_, tabs={_G.GraphicsButton, _G.RaidButton}, fType=ftype, ignoreSize=true, upwards=true, offsets={x1=4, y1=0, x2=0, y2=-4}, track=false})
+		self:skinObject("tabs", {obj=_G.Display_, tabs={_G.GraphicsButton, _G.RaidButton}, fType=ftype, ignoreSize=true, upwards=true, offsets={x1=4, y1=0, x2=0, y2=-3}, track=false})
 		if self.isTT then
 			self:SecureHook("GraphicsOptions_SelectBase", function()
 				self:setActiveTab(_G.GraphicsButton.sf)
