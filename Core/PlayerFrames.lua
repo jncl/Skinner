@@ -2240,7 +2240,7 @@ aObj.blizzLoDFrames[ftype].EncounterJournal = function(self) -- a.k.a. Adenture 
 				self:checkDisabledDD(this.tierDropDown)
 			end)
 			self:skinObject("slider", {obj=this.scroll.ScrollBar, fType=ftype})
-			self:skinObject("frame", {obj=this.scroll, fType=ftype, x1=-9, y1=6, x2=6, y2=-8})
+			self:skinObject("frame", {obj=this.scroll, fType=ftype, fb=true, x1=-9, y1=6, x2=6, y2=-8})
 			if self.modBtnBs then
 				self:SecureHook("EncounterJournal_ListInstances", function()
 					local btn
@@ -2253,7 +2253,7 @@ aObj.blizzLoDFrames[ftype].EncounterJournal = function(self) -- a.k.a. Adenture 
 					btn = nil
 				end)
 			end
-			self:skinObject("tabs", {obj=this, tabs=this.Tabs, fType=ftype, ignoreSize=true, lod=true, offsets={x1=-11, y1=-2, x2=11, y2=-4}, regions={11}, track=false})
+			self:skinObject("tabs", {obj=this, tabs=this.Tabs, fType=ftype, ignoreSize=true, lod=true, offsets={x1=-11, y1=-2, x2=11, y2=-4}, regions={11}, track=false, func=function(tab) tab:SetFrameLevel(20) end})
 			if self.isTT then
 				self:SecureHook("EJ_ContentTab_Select", function(id)
 					for i, tab in _G.pairs(_G.EncounterJournal.instanceSelect.Tabs) do
@@ -2375,7 +2375,7 @@ aObj.blizzLoDFrames[ftype].EncounterJournal = function(self) -- a.k.a. Adenture 
 				skinCreatureBtn(_G.EncounterJournal.encounter.info.creatureButtons[index])
 			end)
 			-- Tabs (side)
-			self:skinObject("tabs", {obj=this.info, tabs={this.info.overviewTab, this.info.lootTab, this.info.bossTab, this.info.modelTab}, fType=ftype, aso={ng=true}, regions={4, 5, 6}, offsets={x1=3, y1=-2, x2=-3, y2=2}, track=false})
+			self:skinObject("tabs", {obj=this.info, tabs={this.info.overviewTab, this.info.lootTab, this.info.bossTab, this.info.modelTab}, fType=ftype, aso={ng=true}, regions={4, 5, 6}, offsets={x1=4, y1=-2, x2=-3, y2=2}, track=false})
 			self:moveObject{obj=this.info.overviewTab, x=12}
 
 			self:Unhook(this, "OnShow")
