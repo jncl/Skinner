@@ -1356,7 +1356,7 @@ local function __skinUsingBD(opts)
 	aObj:addBackdrop(opts.obj)
 	opts.obj:SetBackdrop(aObj.Backdrop[opts.size])
 	opts.obj:SetBackdropColor(.1, .1, .1, 1)
-	opts.obj:SetBackdropBorderColor(.2, .2, .2, 1)
+	opts.obj:SetBackdropBorderColor(aObj.prdb.SliderBorder:GetRGBA())
 
 end
 function aObj:skinUsingBD(...)
