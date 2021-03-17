@@ -41,6 +41,7 @@ aObj.skinTPLs = {
 		-- ng          = true, -- no Gradient texture
 		regions     = {3, 4, 5}, -- 1 is text, 2 is cursor, 6 is text, 7 is icon
 		si			= false, -- search icon
+		six         = 3, -- search icon x offset
 		ofs         = 2,
 		x2          = 0,
 		chginset	= true,
@@ -386,7 +387,7 @@ local function skinEditBox(tbl)
 				end
 			end
 		end
-		aObj:moveObject{obj=sIcon, x=3}
+		aObj:moveObject{obj=sIcon, x=tbl.six}
 		sIcon:SetAlpha(1)
 		sIcon = nil
 	elseif tbl.chginset then
