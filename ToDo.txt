@@ -24,29 +24,50 @@ ToDos
 
 ≈	O	Refactor NewSkinFuncs in Blizzard/AddOn skins
 
-	C	PTR
-		- Added
-			- FriendFrame
-				- GuildFrameImpeachButton
+√	O	Slider & EditBox border colour, requested by Fakelessgaming, 14.03.21
 
-	I/C	SilverDragon, reported by EpidemeDaBear, 12.03.21
-√		- Stack: Interface\AddOns\Skinner\Core\NewSkinFuncs.lua:414: attempt to index field 'obj' (a nil value)
-		  Interface\AddOns\Skinner\Core\NewSkinFuncs.lua:519: in function `?'
-		  Interface\AddOns\Skinner\Core\NewSkinFuncs.lua:155: in function `skinObject'
-		  Interface\AddOns\Skinner\AddonSkins\SilverDragon.lua:9: in function <Interface\AddOns\Skinner\AddonSkins\SilverDragon.lua:5>
-
-	I	Tabs on AdventureGuide & System --> Graphics, reported by Fakelessgaming, 12.03.21
-√		- Changing size & position (when buttons?)
-
-	I	King Kong Frame Fader, reported by Shiv_G3, 13.03.21
-√		- KongConfig\KongConfig-28.nil.lua:270: attempt to index local 'kongback' (a nil value)
-		[string "@KongConfig\KongConfig-28.nil.lua"]:270: in function `KongConfig_CreateComponents'
-		[string "@KongConfig\KongConfig-28.nil.lua"]:101: in function `KongConfig_Show'
-		[string "@Kong\CommandLine.lua"]:137: in function `?'
-		[string "@FrameXML\ChatFrame.lua"]:5094: in function <FrameXML\ChatFrame.lua:5040>
-		[string "=[C]"]: in function `ChatEdit_ParseText'
-		[string "@FrameXML\ChatFrame.lua"]:4758: in function <FrameXML\ChatFrame.lua:4757>
-		[string "=[C]"]: in function `ChatEdit_SendText'
-		[string "@FrameXML\ChatFrame.lua"]:4794: in function `ChatEdit_OnEnterPressed'
-		[string "*:OnEnterPressed"]:1: in function <[string "*:OnEnterPressed"]:1>
-		- Error disappears if ACEGUI-3.0(lib) is disabled
+	I	Tabs, reported by Fakelessgaming, 14.03.21
+		- Stop untextured tabs from overlapping
+√			- AuctionHouseUI
+√			- BankFrame
+√			- MerchantFrame
+√			- CharacterFrame
+√			- FriendsFrame
+?			- GuildFrame
+?			- GuildInfoFrame
+√			- InspectUI
+?			- LookingForGuildFrame
+√			- SpellBookFrame
+√			- TalentUI
+√			- TradeSkillUI
+√			- AchievementFrame
+√			- GuildBankUI
+√			- PVEFrame
+√			- Collections
+√			- WardrobeCollections
+√			- EncounterJournal
+√			- InterfaceOptions
+√			- SystemOptions
+√			- ChatTabs
+√			- ChatConfigFrame
+√			- ChatConfigCombatSettings
+√			- MacroUI
+√			- ArtifactUI
+√			- GarrisonBuildingFrame
+√			- GarrisonLandingPage
+√			- GarrisonLandingPage.Report
+√			- GarrisonShipyardFrame
+√			- MissionList
+√			- MissionFrame
+			- ClassicSupport
+√				- AuctionUI
+√				- CharacterFrame
+√				- FriendsFrame
+√				- InspectFrame
+√				- MerchantFrame
+√				- SpellBookFrame
+√				- TalentFrame
+≈				- RaidParentFrame
+≈				- WorldStateScoreFrame
+√			- Ace3 -> TabGroup
+√			- BugSack
