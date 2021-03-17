@@ -376,11 +376,18 @@ function aObj:OnEnable()
 	end
 	btnModDB = nil
 
-	self.checkTex            = self.modBtns and self.modUIBtns.checkTex or _G.nop
 	self.fontDP              = self.modBtns and self.modUIBtns.fontDP or _G.nop
+	self.fontDS              = self.modBtns and self.modUIBtns.fontDS or _G.nop
 	self.fontP               = self.modBtns and self.modUIBtns.fontP or _G.nop
 	self.fontS               = self.modBtns and self.modUIBtns.fontS or _G.nop
 	self.fontSBX             = self.modBtns and self.modUIBtns.fontSBX or _G.nop
+	self.downarrow           = self.modBtns and self.modUIBtns.downarrow or _G.nop
+	self.larrow              = self.modBtns and self.modUIBtns.larrow or _G.nop
+	self.nearrow             = self.modBtns and self.modUIBtns.nearrow or _G.nop
+	self.rarrow              = self.modBtns and self.modUIBtns.rarrow or _G.nop
+	self.swarrow             = self.modBtns and self.modUIBtns.swarrow or _G.nop
+	self.uparrow             = self.modBtns and self.modUIBtns.uparrow or _G.nop
+	self.checkTex            = self.modBtns and self.modUIBtns.checkTex or _G.nop
 	self.isButton            = self.modBtns and self.modUIBtns.isButton or _G.nop
 	self.skinAllButtons      = self.modBtns and self.modUIBtns.skinAllButtons or _G.nop
 	self.skinButton          = self.modBtns and self.modUIBtns.skinButton or _G.nop
@@ -388,12 +395,6 @@ function aObj:OnEnable()
 	self.skinExpandButton    = self.modBtns and self.modUIBtns.skinExpandButton or _G.nop
 	self.skinOtherButton     = self.modBtns and self.modUIBtns.skinOtherButton or _G.nop
 	self.skinStdButton       = self.modBtns and self.modUIBtns.skinStdButton or _G.nop
-	self.nearrow             = self.modBtns and self.modUIBtns.nearrow or _G.nop
-	self.swarrow             = self.modBtns and self.modUIBtns.swarrow or _G.nop
-	self.larrow              = self.modBtns and self.modUIBtns.larrow or _G.nop
-	self.rarrow              = self.modBtns and self.modUIBtns.rarrow or _G.nop
-	self.uparrow             = self.modBtns and self.modUIBtns.uparrow or _G.nop
-	self.downarrow           = self.modBtns and self.modUIBtns.downarrow or _G.nop
 
 	self.addButtonBorder     = self.modBtnBs and self.modUIBtns.addButtonBorder or _G.nop
 	self.clrButtonFromBorder = self.modBtnBs and self.modUIBtns.clrButtonFromBorder or _G.nop
