@@ -575,7 +575,9 @@ local function skinSlider(tbl)
 	else
 		if w <= 8 then
 			tbl.x1 = _G.rawget(tbl, "x1") or -4
-			tbl.x2 = _G.rawget(tbl, "x2") or 1
+			tbl.x2 = _G.rawget(tbl, "x2") or 3
+			tbl.y1 = _G.rawget(tbl, "y1") or -1
+			tbl.y2 = _G.rawget(tbl, "y2") or 1
 		elseif w <= 10 then -- OribosScrollTemplate
 			tbl.x1 = _G.rawget(tbl, "x1") or -1
 			tbl.x2 = _G.rawget(tbl, "x2") or 1
@@ -600,7 +602,6 @@ local function skinSlider(tbl)
 		tbl.y2 = _G.rawget(tbl, "y2") or 0
 	end
 	-- aObj:Debug("skinSlider#2: [%s, %s, %s, %s]", tbl.x1, tbl.x2, tbl.y1, tbl.y2)
-	-- skin the Slider
 	aObj:skinObject("frame", {obj=tbl.obj, fType=tbl.fType, bd=4, ng=true, x1=tbl.x1, y1=tbl.y1, x2=tbl.x2, y2=tbl.y2, clr="slider"})
 	-- make objects visible
 	tbl.obj:SetAlpha(1)
