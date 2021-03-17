@@ -461,8 +461,8 @@ function aObj:OnEnable()
 		text = aObj.L["Confirm reload of UI to activate profile changes"],
 		button1 = _G.OKAY,
 		button2 = _G.CANCEL,
-		OnAccept = function()
-			_G.ReloadUI()
+		OnAccept = function(this)
+			_G.C_UI.Reload()
 		end,
 		OnCancel = function(this, _, reason)
 			if reason == "timeout"
@@ -482,7 +482,8 @@ function aObj:OnEnable()
 		aObj:checkAndRun("SetupDefaults", "opt", false, true)
 		-- store shortcut
 		aObj.prdb = aObj.db.profile
-		_G.UIErrorsFrame:AddMessage(aObj.L["The profile"] .. " '" .. aObj.db:GetCurrentProfile() .. "' " .. aObj.L["will be activated next time you Login or Reload the UI"], 1, 1, 0)
+		-- prompt for reload
+		_G.StaticPopup_Show(aName .. "_Reload_UI")
 	end
 	self.db.RegisterCallback(self, "OnProfileChanged", reloadAddon)
 	self.db.RegisterCallback(self, "OnProfileCopied", reloadAddon)
