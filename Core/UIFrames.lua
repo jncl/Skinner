@@ -185,7 +185,7 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 			end
 		end
 	end
-	local mfTabSkin = aObj.skinTPLs.new("tabs", {fType=ftype, ignoreSize=true, lod=true, ignoreHLTex=true, regions={7, 8, 9, 10}})
+	local mfTabSkin = aObj.skinTPLs.new("tabs", {fType=ftype, lod=true, regions={7, 8, 9, 10}})
 	function skinMissionFrame(frame)
 		local x1Ofs, y1Ofs, y2Ofs = 2, 2, -4
 		if frame == _G.CovenantMissionFrame then
@@ -337,7 +337,7 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 	    aObj:removeRegions(frame.Stage.MissionInfo, naval and {1, 2, 3, 4, 5, 8, 9, 10} or {1, 2, 3, 4, 5, 11, 12, 13})
 		aObj:nilTexture(frame.Stage.MissionInfo.IconBG, true)
 	end
-	local mlTabSkin = aObj.skinTPLs.new("tabs", {fType=ftype, numTabs=2, ignoreSize=true, lod=true, regions={7, 8, 9}, track=false})
+	local mlTabSkin = aObj.skinTPLs.new("tabs", {fType=ftype, numTabs=2, lod=true, regions={7, 8, 9}, track=false})
 	function skinMissionList(ml, tabOfs)
 		ml.MaterialFrame:DisableDrawLayer("BACKGROUND")
 		aObj:skinObject("frame", {obj=ml, fType=ftype, kfs=true, fb=true, ofs=1})
@@ -351,19 +351,29 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 			-- tabs
 			mlTabSkin.obj = ml
 			mlTabSkin.prefix = ml:GetName()
-			mlTabSkin.offsets =  {x1=tabOfs and tabOfs * -1 or 6, y1=tabOfs or 0, x2=tabOfs or -6, y2=2}
+			mlTabSkin.offsets =  {x1=tabOfs and tabOfs * -1 or 6, y1=tabOfs or 0, x2=tabOfs or -6, y2=3}
 			aObj:skinObject(mlTabSkin)
-			if aObj.isTT
-			and not aObj:IsHooked("GarrisonMissonListTab_SetSelected")
-			then
-				aObj:SecureHook("GarrisonMissonListTab_SetSelected", function(tab, isSelected)
-					-- aObj:Debug("GarrisonMissonListTab_SetSelected: [%s, %s]", tab, isSelected)
+			if aObj.isTT then
+				aObj:secureHook("GarrisonMissonListTab_SetSelected", function(tab, isSelected)
 					if isSelected then
 						aObj:setActiveTab(tab.sf)
 					else
 						aObj:setInactiveTab(tab.sf)
 					end
 				end)
+			else
+				if ml.UpdateMissions then
+					if not ml.Tab2:IsEnabled() then
+						aObj:clrBBC(ml.Tab2.sf, "disabled")
+					end
+					aObj:SecureHook(ml, "UpdateMissions", function(this)
+						if not this.Tab2:IsEnabled() then
+							aObj:clrBBC(this.Tab2.sf, "disabled")
+						else
+							aObj:clrBBC(this.Tab2.sf)
+						end
+					end)
+				end
 			end
 		end
 		local btn
@@ -1559,14 +1569,22 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 			end
 		else
 			function setTabState(tab)
+				tab:SetAlpha(1)
+				tab:SetFrameLevel(21)
+				tab.sf:SetFrameLevel(20)
 				tab.sf:Show()
 			end
 		end
-		local tabSkin = self.skinTPLs.new("tabs", {obj=this.ChatTabManager, tabs={}, fType=ftype, ignoreSize=true, offsets={x1=0, y1=-6, x2=0, y2=-4}, regions={11}, noCheck=true, func=setTabState})
+		local tabSkin = self.skinTPLs.new("tabs", {obj=this.ChatTabManager, tabs={}, fType=ftype, offsets={x1=0, y1=-6, x2=0, y2=-3}, regions={11}, noCheck=true, func=setTabState})
 		local function skinTabs(ctm)
 			_G.wipe(tabSkin.tabs)
 			for tab in ctm.tabPool:EnumerateActive() do
 				aObj:add2Table(tabSkin.tabs, tab)
+				if tab:GetID() == _G.CURRENT_CHAT_FRAME_ID then
+					tab:GetFontString():SetTextColor(1, 1, 1)
+				else
+					tab:GetFontString():SetTextColor(_G.NORMAL_FONT_COLOR.r, _G.NORMAL_FONT_COLOR.g, _G.NORMAL_FONT_COLOR.b)
+				end
 			end
 			aObj:skinObject(tabSkin)
 		end
@@ -1742,7 +1760,7 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 			self:skinCheckButton{obj=_G.CombatConfigSettingsParty}
 			self:skinCheckButton{obj=_G.CombatConfigSettingsRaid}
 		end
-		self:skinObject("tabs", {obj=_G.ChatConfigCombatSettings, prefix="CombatConfig", numTabs=#_G.COMBAT_CONFIG_TABS, fType=ftype, ignoreSize=true, lod=true, offsets={x1=0, y1=-8, x2=-2, y2=-4}, regions={4, 5}, track=false})
+		self:skinObject("tabs", {obj=_G.ChatConfigCombatSettings, prefix="CombatConfig", numTabs=#_G.COMBAT_CONFIG_TABS, fType=ftype, lod=true, offsets={x1=0, y1=-8, x2=-2, y2=-3}, offsetsHL={x1=4, y1=-6, x2=-4, y2=-6}, regions={4, 5}, track=false})
 		if self.isTT then
 			self:SecureHook("ChatConfig_UpdateCombatTabs", function(selectedTabID)
 				local tab
@@ -1864,7 +1882,7 @@ aObj.blizzFrames[ftype].ChatTabs = function(self)
 			this.sf:SetAlpha(alpha)
 		end)
 	end
-	self:skinObject("tabs", {obj=_G.FloatingChatFrameManager, tabs=fcfTabs, fType=ftype, ignoreSize=true, lod=true, regions={7, 11}, offsets={x1=2, y1=-9, x2=-2, y2=-4}, track=false})
+	self:skinObject("tabs", {obj=_G.FloatingChatFrameManager, tabs=fcfTabs, fType=ftype, lod=true, ignoreHLTex=false, regions={7, 11}, offsets={x1=2, y1=-9, x2=-2, y2=-2}, track=false, func=function(tab) tab.sf:SetAlpha(tab:GetAlpha()) tab.sf:Hide() end})
 	fcfTabs = nil
 	if self.isTT then
 		self:SecureHook("FCF_Tab_OnClick", function(this, button)
@@ -1876,10 +1894,13 @@ aObj.blizzFrames[ftype].ChatTabs = function(self)
 	end
 
 	if self.prdb.ChatTabsFade then
-		-- hook this to hide/show the skin frame
+		-- hook this to show/hide the skin frame
 		self:SecureHook("FCFTab_UpdateColors", function(this, selected)
-			if this.sf then this.sf:SetShown(selected) end
+			if this.sf then
+				this.sf:SetShown(selected)
+			end
 		end)
+		_G.ChatFrame1Tab.sf:Show()
 	end
 
 end
@@ -2326,7 +2347,7 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 			end
 		end
 		self:skinObject("frame", {obj=this.Report.List, fType=ftype, fb=true, y1=4})
-		self:skinObject("tabs", {obj=this.Report, tabs={this.Report.InProgress, this.Report.Available}, fType=ftype, ignoreSize=true, lod=true, offsets={x1=4, y1=-2, x2=-4, y2=-4}, regions={3}, track=false, func=function(tab) tab:GetNormalTexture():SetAlpha(0) _G.RaiseFrameLevelByTwo(tab) end})
+		self:skinObject("tabs", {obj=this.Report, tabs={this.Report.InProgress, this.Report.Available}, fType=ftype, lod=true, ignoreHLTex=false, offsets={x1=4, y1=-2, x2=-4, y2=-4}, regions={3}, track=false, func=function(tab) tab:GetNormalTexture():SetAlpha(0) tab:SetFrameLevel(20) end})
 		if self.isTT then
 			self:SecureHook("GarrisonLandingPageReport_SetTab", function(tab)
 				self:setInactiveTab(tab:GetParent().unselectedTab.sf)
@@ -2361,7 +2382,7 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 		end
 
 		this.HeaderBar:SetTexture(nil)
-		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, ignoreSize=true, lod=true, offsets={x1=4, y1=-10, x2=-4, y2=-3}, regions={7, 8, 9, 10}})
+		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=true, offsets={x1=4, y1=-10, x2=-4, y2=-3}, regions={7, 8, 9, 10}})
 		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, ofs=-13, y2=5})
 
 		-- N.B. Garrison Landing Page Minimap Button skinned with other minimap buttons
@@ -2378,6 +2399,18 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 		self:moveObject{obj=this.MainHelpButton, y=-4}
 		this.GarrCorners:DisableDrawLayer("BACKGROUND")
 		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cbns=true, ofs=2})
+		local function clrTabText()
+			local btn
+			for i = 1, _G.GARRISON_NUM_BUILDING_SIZES do
+				btn = _G.GarrisonBuildingFrame.BuildingList["Tab" .. i]
+				if btn == _G.GarrisonBuildingFrame.selectedTab then
+					btn.Text:SetTextColor(1, 1, 1)
+				else
+					btn.Text:SetTextColor(_G.NORMAL_FONT_COLOR.r, _G.NORMAL_FONT_COLOR.g, _G.NORMAL_FONT_COLOR.b)
+				end
+			end
+			btn = nil
+		end
 		local function skinBLbuttons(bl)
 			for i = 1, #bl.Buttons do
 				bl.Buttons[i].BG:SetTexture(nil)
@@ -2389,11 +2422,12 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 		self:SecureHookScript(_G.GarrisonBuildingFrame.BuildingList, "OnShow", function(this)
 			skinBLbuttons(this)
 			self:SecureHook("GarrisonBuildingList_SelectTab", function(tab)
+				clrTabText()
 				skinBLbuttons(tab:GetParent())
 			end)
 			this.MaterialFrame:DisableDrawLayer("BACKGROUND")
 			this.Tabs = {this.Tab1, this.Tab2, this.Tab3}
-			self:skinObject("tabs", {obj=this, tabs=this.Tabs, fType=ftype, ignoreSize=true, lod=true, regions={1}, track=false, func=aObj.isTT and function(tab)
+			self:skinObject("tabs", {obj=this, tabs=this.Tabs, fType=ftype, lod=true, regions={1, 3}, track=false, func=aObj.isTT and function(tab)
 				aObj:SecureHookScript(tab, "OnClick", function(this)
 					for _, tab in _G.pairs(this:GetParent().Tabs) do
 						if tab == this then
@@ -2404,6 +2438,7 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 					end
 				end)
 			end})
+			clrTabText()
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, fb=true, y1=-5, clr="sepia"})
 
 			self:Unhook(this, "OnShow")
@@ -2576,7 +2611,7 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 		if self.modBtns then
 			self:skinCloseButton{obj=this.BorderFrame.CloseButton2, noSkin=true}
 		end
-		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, ignoreSize=true, lod=true, offsets={x1=9, y1=2, x2=-9, y2=0}, regions={7, 8, 9, 10}})
+		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=true, offsets={x1=9, y1=2, x2=-9, y2=0}, regions={7, 8, 9, 10}})
 		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=2, y1=2, x2=1, y2=-4})
 
 		self:SecureHookScript(this.MissionTab.MissionList, "OnShow", function(this)
@@ -3233,7 +3268,7 @@ aObj.blizzFrames[ftype].InterfaceOptions = function(self)
 	-- Interface
 	self:SecureHookScript(_G.InterfaceOptionsFrame, "OnShow", function(this)
 		self:removeNineSlice(this.Border)
-		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, ignoreSize=true, lod=true, upwards=true, offsets={x1=6, y1=2, x2=-6, y2=-3}})
+		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=true, offsets={x1=7, y1=0, x2=-7, y2=self.isTT and -4 or -3}, offsetsHL={x1=10, y1=-3, x2=-10, y2=-3}})
 		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true})
 		if self.modBtns then
 			self:skinStdButton{obj=_G.InterfaceOptionsFrameCancel}
@@ -3931,7 +3966,7 @@ aObj.blizzLoDFrames[ftype].MacroUI = function(self)
 	self.initialized.MacroUI = true
 
 	self:SecureHookScript(_G.MacroFrame, "OnShow", function(this)
-		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=true, upwards=true, offsets={x1=-3, y1=-3, x2=3, y2=-3}, ignoreHLTex=true})
+		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=true, offsets={x1=0, y1=-4, x2=0, y2=-2}, offsetsHL={x1=0-2, y1=-6, x2=2, y2=-4}, func=function(tab) tab:SetFrameLevel(20) end})
 		self:skinObject("frame", {obj=_G.MacroButtonScrollFrame, fType=ftype, kfs=true, fb=true, ofs=12, y1=10, x2=32})
 		self:skinObject("slider", {obj=_G.MacroButtonScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
 		self:skinObject("slider", {obj=_G.MacroFrameScrollFrame.ScrollBar, fType=ftype})
@@ -5203,7 +5238,7 @@ aObj.blizzFrames[ftype].PVEFrame = function(self)
 
 	self:SecureHookScript(_G.PVEFrame, "OnShow", function(this)
 		self:keepFontStrings(this.shadows)
-		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, ignoreHLTex=true})
+		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype})
 		-- GroupFinder Frame
 		for i = 1, 3 do
 			_G.GroupFinderFrame["groupButton" .. i].bg:SetTexture(nil)
@@ -5898,7 +5933,7 @@ aObj.blizzFrames[ftype].SystemOptions = function(self)
 		end
 		-- Graphics
 		skinKids(_G.Display_)
-		self:skinObject("tabs", {obj=_G.Display_, tabs={_G.GraphicsButton, _G.RaidButton}, fType=ftype, ignoreSize=true, upwards=true, offsets={x1=4, y1=0, x2=0, y2=-3}, track=false})
+		self:skinObject("tabs", {obj=_G.Display_, tabs={_G.GraphicsButton, _G.RaidButton}, fType=ftype, offsets={x1=4, y1=0, x2=0, y2=-3}, offsetsHL={x1=2, y1=-2, x2=-2, y2=-2}, track=false, func=function(tab) tab:SetFrameLevel(20) tab.SetFrameLevel = _G.nop end})
 		if self.isTT then
 			self:SecureHook("GraphicsOptions_SelectBase", function()
 				self:setActiveTab(_G.GraphicsButton.sf)

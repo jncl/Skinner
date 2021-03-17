@@ -210,7 +210,7 @@ aObj.blizzLoDFrames[ftype].AuctionHouseUI = function(self)
 			end)
 		end
 		-- Auctions frames
-		self:skinObject("tabs", {obj=this.AuctionsFrame, tabs=this.AuctionsFrame.Tabs, fType=ftype, ignoreSize=true, lod=true, offsets={x1=6, y1=-4, x2=-6, y2=-4}, ignoreHLTex=true, offsetsHL={x1=8, y1=-8, x2=-8, y2=-4}, track=false})
+		self:skinObject("tabs", {obj=this.AuctionsFrame, tabs=this.AuctionsFrame.Tabs, fType=ftype, lod=true, offsets={x1=6, y1=-4, x2=-6, y2=-3}, offsetsHL={x1=8, y1=-8, x2=-8, y2=-4}, track=false, func=function(tab) tab:SetFrameLevel(20) end})
 		if self.isTT then
 			self:SecureHook(this.AuctionsFrame, "SetDisplayMode", function(this, displayMode)
 				-- aObj:Debug("AuctionsFrame SetDisplayMode: [%s, %s]", this, displayMode)

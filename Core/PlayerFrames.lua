@@ -288,7 +288,7 @@ aObj.blizzLoDFrames[ftype].AchievementUI = function(self)
 			skinComparisonStats()
 		end)
 		self:moveObject{obj=_G.AchievementFrameCloseButton, y=6}
-		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, ignoreSize=true, lod=true, offsets={x1=9, y1=2, x2=-9, y2=-10}, regions={7, 8, 9, 10}})
+		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=true, regions={10}, offsets={x1=8, y1=2, x2=-8, y2=-4}})
 		-- this is not a standard dropdown
 		self:moveObject{obj=_G.AchievementFrameFilterDropDown, y=-7}
 		-- skin the dropdown frame
@@ -432,7 +432,7 @@ aObj.blizzLoDFrames[ftype].ArtifactUI = function(self)
 		self:keepFontStrings(this.BorderFrame)
 		this.ForgeBadgeFrame:DisableDrawLayer("OVERLAY") -- this hides the frame
 		this.ForgeBadgeFrame.ForgeLevelLabel:SetDrawLayer("ARTWORK") -- this shows the artifact level
-		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, ignoreSize=true, lod=true, offsets={x1=6, y1=9, x2=-6, y2=-4}})
+		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=true})
 		self:skinObject("frame", {obj=this, fType=ftype, cb=true, ofs=5, y1=4, y2=-11})
 		-- Perks
 		this.PerksTab:DisableDrawLayer("BORDER")
@@ -1076,7 +1076,7 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 	end)
 
 	self:SecureHookScript(_G.WardrobeCollectionFrame, "OnShow", function(this)
-		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=true, upwards=true, ignoreHLTex=true, offsets={x1=2, y1=-4, x2=-2, y2=-4}})
+		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=true, upwards=true, offsets={x1=2, y1=-4, x2=-2, y2=-4}})
 		self:skinObject("editbox", {obj=this.searchBox, fType=ftype, si=true})
 		_G.RaiseFrameLevelByTwo(this.searchBox) -- raise above SetsCollectionFrame when displayed on it
 		self:skinStatusBar{obj=this.progressBar, fi=0}
@@ -1811,7 +1811,7 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 		self:removeMagicBtnTex(this.Applicants.InviteButton)
 		self:removeMagicBtnTex(this.Applicants.MessageButton)
 		self:removeMagicBtnTex(this.Applicants.DeclineButton)
-		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=true, upwards=true, offsets={x1=2, y1=-5, x2=2, y2=-5}})
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, cb=true})
 		-- self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true}
 		if self.modBtns then
 			self:skinStdButton{obj=this.Applicants.InviteButton}
@@ -2219,6 +2219,18 @@ aObj.blizzLoDFrames[ftype].EncounterJournal = function(self) -- a.k.a. Adenture 
 		end)
 		self:checkShown(this.suggestFrame)
 		self:SecureHookScript(this.instanceSelect, "OnShow", function(this)
+			self:skinObject("tabs", {obj=this, tabs=this.Tabs, fType=ftype, lod=true, offsets={x1=-11, y1=-2, x2=11, y2=-4}, regions={11}, track=false, func=function(tab) tab:SetFrameLevel(20) end})
+			if self.isTT then
+				self:SecureHook("EJ_ContentTab_Select", function(id)
+					for i, tab in _G.pairs(_G.EncounterJournal.instanceSelect.Tabs) do
+						if i == id then
+							self:setActiveTab(tab.sf)
+						else
+							self:setInactiveTab(tab.sf)
+						end
+					end
+				end)
+			end
 			this.bg:SetAlpha(0)
 			self:skinObject("dropdown", {obj=this.tierDropDown, fType=ftype})
 			self:SecureHook("EncounterJournal_EnableTierDropDown", function()
@@ -2239,18 +2251,6 @@ aObj.blizzLoDFrames[ftype].EncounterJournal = function(self) -- a.k.a. Adenture 
 						end
 					end
 					btn = nil
-				end)
-			end
-			self:skinObject("tabs", {obj=this, tabs=this.Tabs, fType=ftype, ignoreSize=true, lod=true, offsets={x1=-11, y1=-2, x2=11, y2=-4}, regions={11}, track=false, func=function(tab) tab:SetFrameLevel(20) end})
-			if self.isTT then
-				self:SecureHook("EJ_ContentTab_Select", function(id)
-					for i, tab in _G.pairs(_G.EncounterJournal.instanceSelect.Tabs) do
-						if i == id then
-							self:setActiveTab(tab.sf)
-						else
-							self:setInactiveTab(tab.sf)
-						end
-					end
 				end)
 			end
 
@@ -2461,7 +2461,7 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 			end)
 			self:skinObject("dropdown", {obj=_G.FriendsFrameStatusDropDown, fType=ftype})
 			_G.FriendsFrameStatusDropDownStatus:SetAlpha(1) -- display status icon
-			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=true, upwards=true, offsets={x1=0, y1=-5, x2=0, y2=-5}})
+			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=true, upwards=true, offsets={x1=0, y1=-5, x2=0, y2=-4}})
 			_G.RaiseFrameLevel(this)
 
 			self:Unhook(this, "OnShow")
@@ -2548,7 +2548,7 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 
 			self:Unhook(this, "OnShow")
 		end)
-		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=true})
+		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=true, offsets={x1=8, y1=1, x2=-8, y2=0}})
 		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, cb=true, x2=3, y2=-3})
 		self:add2Table(self.ttList, _G.FriendsTooltip)
 
@@ -4006,7 +4006,7 @@ aObj.blizzFrames[ftype].SpellBookFrame = function(self)
 		this.MainHelpButton.Ring:SetTexture(nil)
 		self:moveObject{obj=this.MainHelpButton, y=-4}
 		this.numTabs = 5
-		self:skinObject("tabs", {obj=this, prefix=this:GetName(), suffix="Button", fType=ftype, offsets={x1=8, y1=1, x2=-8, y2=2}, track=false})
+		self:skinObject("tabs", {obj=this, prefix=this:GetName(), suffix="Button", fType=ftype, track=false})
 		if self.isTT then
 			local function setTab(bookType)
 				local tab
@@ -4464,7 +4464,7 @@ aObj.blizzLoDFrames[ftype].TradeSkillUI = function(self)
 			 self:addButtonBorder{obj=this.LinkToButton, x1=1, y1=-5, x2=-2, y2=2, clr="grey"}
 		end
 		-- RecipeList
-		self:skinObject("tabs", {obj=this.RecipeList, tabs=this.RecipeList.Tabs, fType=ftype, lod=true, upwards=true, offsets={x1=2, y1=-4, x2=2, y2=-4}, track=false})
+		self:skinObject("tabs", {obj=this.RecipeList, tabs=this.RecipeList.Tabs, fType=ftype, lod=true, upwards=true, offsets={x1=2, y1=-4, x2=2, y2=-3}, track=false})
 		if self.isTT then
 			local function changeTabTex(frame)
 				for i, tab in _G.pairs(frame.Tabs) do
