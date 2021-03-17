@@ -40,15 +40,16 @@ aObj.SetupDefaults = function(self)
 			ClassClrBg                 = false,
 			ClassClrGr                 = false,
 			ClassClrTT                 = false,
-			TooltipBorder              = {r = 0.5, g = 0.5, b = 0.5, a = 1},
-			BackdropBorder             = {r = 0.5, g = 0.5, b = 0.5, a = 1},
-			Backdrop                   = {r = 0, g = 0, b = 0, a = 0.9},
-			HeadText                   = {r = 0.8, g = 0.8, b = 0.0},
-			BodyText                   = {r = 0.6, g = 0.6, b = 0.0},
-			IgnoredText                = {r = 0.5, g = 0.5, b = 0.0},
-			GradientMin                = {r = 0.1, g = 0.1, b = 0.1, a = 0},
-			GradientMax                = {r = 0.25, g = 0.25, b = 0.25, a = 1},
-			BagginsBBC                 = {r = 0.5, g = 0.5, b = 0.5, a = 1},
+			TooltipBorder              = _G.CreateColor(0.5, 0.5, 0.5, 1),
+			Backdrop                   = _G.CreateColor(0, 0, 0, 0.9),
+			BackdropBorder             = _G.CreateColor(0.5, 0.5, 0.5, 1),
+			SliderBorder               = _G.CreateColor(0.2, 0.2, 0.2, 1),
+			HeadText                   = _G.CreateColor(0.8, 0.8, 0, 1),
+			BodyText                   = _G.CreateColor(0.6, 0.6, 0, 1),
+			IgnoredText                = _G.CreateColor(0.5, 0.5, 0, 1),
+			GradientMin                = _G.CreateColor(0.1, 0.1, 0.1, 0),
+			GradientMax                = _G.CreateColor(0.25, 0.25, 0.25, 1),
+			BagginsBBC                 = _G.IsAddOnLoaded("Baggins") and self.Baggins and _G.CreateColor(0.5, 0.5, 0.5, 1),
 		-- Gradient
 			Gradient                   = {enable = true, invert = false, rotate = false, char = true, ui = true, npc = true, skinner = true, addon = true, texture = "Blizzard ChatFrame Background"},
 		-- Modules (populated below)
@@ -212,7 +213,9 @@ aObj.SetupDefaults = function(self)
 		},
 	}
 
-	self.db = _G.LibStub:GetLibrary("AceDB-3.0", true):New(aName .. "DB", defaults, "Default")
+	if not self.db then
+		self.db = _G.LibStub:GetLibrary("AceDB-3.0", true):New(aName .. "DB", defaults, "Default")
+	end
 
 end
 
@@ -547,58 +550,46 @@ aObj.SetupOptions = function(self)
 				then
 					return db[info[#info]]
 				else
-					local c = db[info[#info]]
-					return c.r, c.g, c.b, c.a or nil
+					return db[info[#info]]:GetRGBA()
 				end
 			end,
 			set = function(info, r, g, b, a)
 				if info[#info] == "ClassClrBd" then
 					db[info[#info]] = r
 					if r then
-						db.BackdropBorder.r = _G.RAID_CLASS_COLORS[self.uCls].r
-						db.BackdropBorder.g = _G.RAID_CLASS_COLORS[self.uCls].g
-						db.BackdropBorder.b = _G.RAID_CLASS_COLORS[self.uCls].b
+						db.BackdropBorder:SetRGBA(_G.C_ClassColor.GetClassColor(self.uCls):GetRGBA())
 						if bggns then
-							db.BagginsBBC.r = _G.RAID_CLASS_COLORS[self.uCls].r
-							db.BagginsBBC.g = _G.RAID_CLASS_COLORS[self.uCls].g
-							db.BagginsBBC.b = _G.RAID_CLASS_COLORS[self.uCls].b
+							db.BagginsBBC:SetRGBA(_G.C_ClassColor.GetClassColor(self.uCls):GetRGBA())
 						end
 					else
-						db.BackdropBorder = dflts.BackdropBorder
+						db.BackdropBorder:SetRGBA(dflts.BackdropBorder:GetRGBA())
 						if bggns then
-							db.BagginsBBC = dflts.BagginsBBC
+							db.BagginsBBC:SetRGBA(dflts.BagginsBBC:GetRGBA())
 						end
 					end
 				elseif info[#info] == "ClassClrBg" then
 					db[info[#info]] = r
 					if r then
-						db.Backdrop.r = _G.RAID_CLASS_COLORS[self.uCls].r
-						db.Backdrop.g = _G.RAID_CLASS_COLORS[self.uCls].g
-						db.Backdrop.b = _G.RAID_CLASS_COLORS[self.uCls].b
+						db.Backdrop:SetRGBA(_G.C_ClassColor.GetClassColor(self.uCls):GetRGBA())
 					else
-						db.Backdrop = dflts.Backdrop
+						db.Backdrop:SetRGBA(dflts.Backdrop:GetRGBA())
 					end
 				elseif info[#info] == "ClassClrGr" then
 					db[info[#info]] = r
 					if r then
-						db.GradientMax.r = _G.RAID_CLASS_COLORS[self.uCls].r
-						db.GradientMax.g = _G.RAID_CLASS_COLORS[self.uCls].g
-						db.GradientMax.b = _G.RAID_CLASS_COLORS[self.uCls].b
+						db.GradientMax:SetRGBA(_G.C_ClassColor.GetClassColor(self.uCls):GetRGBA())
 					else
-						db.GradientMax = dflts.GradientMax
+						db.GradientMax:SetRGBA(dflts.GradientMax:GetRGBA())
 					end
 				elseif info[#info] == "ClassClrTT" then
 					db[info[#info]] = r
 					if r then
-						db.TooltipBorder.r = _G.RAID_CLASS_COLORS[self.uCls].r
-						db.TooltipBorder.g = _G.RAID_CLASS_COLORS[self.uCls].g
-						db.TooltipBorder.b = _G.RAID_CLASS_COLORS[self.uCls].b
+						db.TooltipBorder:SetRGBA(_G.C_ClassColor.GetClassColor(self.uCls):GetRGBA())
 					else
-						db.TooltipBorder = dflts.TooltipBorder
+						db.TooltipBorder:SetRGBA(dflts.TooltipBorder:GetRGBA())
 					end
 				else
-					local c = db[info[#info]]
-					c.r, c.g, c.b, c.a = r, g, b, a
+					db[info[#info]]:SetRGBA(r, g, b, a)
 				end
 			end,
 			args = {
@@ -606,36 +597,36 @@ aObj.SetupOptions = function(self)
 					type = "toggle",
 					order = 1,
 					width = "double",
-					name = self.L["Class Coloured Border"],
-					desc = self.L["Use Class Colour for Border"],
+					name = self.L["Class Coloured "] .. self.L["Border"],
+					desc = self.L["Use Class Colour for "] .. self.L["Border"],
 				},
 				ClassClrBg = {
 					type = "toggle",
 					order = 2,
 					width = "double",
-					name = self.L["Class Coloured Background"],
-					desc = self.L["Use Class Colour for Background"],
+					name = self.L["Class Coloured "] .. self.L["Background"],
+					desc = self.L["Use Class Colour for "] .. self.L["Background"],
 				},
 				ClassClrGr = {
 					type = "toggle",
 					order = 3,
 					width = "double",
-					name = self.L["Class Coloured Gradient"],
-					desc = self.L["Use Class Colour for Gradient"],
+					name = self.L["Class Coloured "] .. self.L["Gradient"],
+					desc = self.L["Use Class Colour for "] .. self.L["Gradient"],
 				},
 				ClassClrTT = {
 					type = "toggle",
 					order = 4,
 					width = "double",
-					name = self.L["Class Coloured Tooltip"],
-					desc = self.L["Use Class Colour for Tooltip"],
+					name = self.L["Class Coloured "] .. self.L["Tooltip"],
+					desc = self.L["Use Class Colour for "] .. self.L["Tooltip"],
 				},
 				TooltipBorder = {
 					type = "color",
 					order = 6,
 					width = "double",
 					name = self.L["Tooltip Border Colour"],
-					desc = self.L["Set Tooltip Border Colour"],
+					desc = self.L["Set "] .. self.L["Tooltip Border Colour"],
 					hasAlpha = true,
 				},
 				Backdrop = {
@@ -643,52 +634,60 @@ aObj.SetupOptions = function(self)
 					order = 7,
 					width = "double",
 					name = self.L["Backdrop Colour"],
-					desc = self.L["Set Backdrop Colour"],
+					desc = self.L["Set "] .. self.L["Backdrop Colour"],
 					hasAlpha = true,
 				},
 				BackdropBorder = {
 					type = "color",
 					order = 8,
 					width = "double",
-					name = self.L["Border Colour"],
-					desc = self.L["Set Backdrop Border Colour"],
+					name = self.L["Backdrop Border Colour"],
+					desc = self.L["Set "] .. self.L["Backdrop Border Colour"],
+					hasAlpha = true,
+				},
+				SliderBorder = {
+					type = "color",
+					order = 9,
+					width = "double",
+					name = self.L["Slider & EditBox Border Colour"],
+					desc = self.L["Set "] .. self.L["Slider & EditBox Border Colour"],
 					hasAlpha = true,
 				},
 				HeadText = {
 					type = "color",
-					order = 9,
+					order = 10,
 					width = "double",
 					name = self.L["Text Heading Colour"],
-					desc = self.L["Set Text Heading Colour"],
+					desc = self.L["Set "] .. self.L["Text Heading Colour"],
 				},
 				BodyText = {
 					type = "color",
-					order = 10,
+					order = 11,
 					width = "double",
 					name = self.L["Text Body Colour"],
-					desc = self.L["Set Text Body Colour"],
+					desc = self.L["Set "] .. self.L["Text Body Colour"],
 				},
 				IgnoredText = {
 					type = "color",
-					order = 11,
+					order = 12,
 					width = "double",
 					name = self.L["Ignored Text Colour"],
-					desc = self.L["Set Ignored Text Colour"],
+					desc = self.L["Set "] .. self.L["Ignored Text Colour"],
 				},
 				GradientMin = {
 					type = "color",
-					order = 12,
+					order = 20,
 					width = "double",
 					name = self.L["Gradient Minimum Colour"],
-					desc = self.L["Set Gradient Minimum Colour"],
+					desc = self.L["Set "] .. self.L["Gradient Minimum Colour"],
 					hasAlpha = true,
 				},
 				GradientMax = {
 					type = "color",
-					order = 13,
+					order = 21,
 					width = "double",
 					name = self.L["Gradient Maximum Colour"],
-					desc = self.L["Set Gradient Maximum Colour"],
+					desc = self.L["Set "] .. self.L["Gradient Maximum Colour"],
 					hasAlpha = true,
 				},
 				BagginsBBC = _G.IsAddOnLoaded("Baggins") and self.Baggins and {
@@ -696,7 +695,7 @@ aObj.SetupOptions = function(self)
 					order = -1,
 					width = "double",
 					name = self.L["Baggins Bank Bags Colour"],
-					desc = self.L["Set Baggins Bank Bags Colour"],
+					desc = self.L["Set "] .. self.L["Baggins Bank Bags Colour"],
 					hasAlpha = true,
 				} or nil,
 			},

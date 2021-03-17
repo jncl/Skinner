@@ -593,6 +593,7 @@ end
 local clrTab = {
 	blue      = _G.LIGHTBLUE_FONT_COLOR,
 	common    = _G.LIGHTGRAY_FONT_COLOR,
+	-- default is bbClr
 	disabled  = _G.DISABLED_FONT_COLOR,
 	green     = _G.GREEN_FONT_COLOR,
 	grey      = _G.GRAY_FONT_COLOR,
@@ -603,22 +604,26 @@ local clrTab = {
 	selected  = _G.PAPER_FRAME_EXPANDED_COLOR,
 	sepia     = _G.SEPIA_COLOR,
 	silver    = _G.QUEST_OBJECTIVE_FONT_COLOR,
-	slider    = _G.CreateColor(0.2, 0.2, 0.2),
 	topaz     = _G.CreateColor(0.6, 0.31, 0.24),
 	unused    = _G.DULL_RED_FONT_COLOR,
 	white     = _G.HIGHLIGHT_FONT_COLOR,
 	yellow    = _G.YELLOW_FONT_COLOR,
 }
+local function setSliderClr()
+	clrTab.slider = _G.CopyTable(aObj.prdb.SliderBorder)
+	setSliderClr = nil
+end
 function aObj:getColourByName(clrName)
 
-	local r, g, b, a
-	if clrTab[clrName] then
-		r, g, b, a = clrTab[clrName]:GetRGBA()
-	else
-		r, g, b, a = self.bbClr:GetRGBA()
+	if setSliderClr then
+		setSliderClr()
 	end
-	-- aObj:Debug("getColourByName: [%s, %s, %s, %s, %s]", clrName, r, g ,b, a)
-	return r, g, b, a
+
+	if clrTab[clrName] then
+		return clrTab[clrName]:GetRGBA()
+	else
+		return self.bbClr:GetRGBA()
+	end
 
 end
 
