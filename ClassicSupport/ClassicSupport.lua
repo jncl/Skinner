@@ -215,28 +215,28 @@ aObj.ClassicSupport = function(self)
 				_G[button:GetName() .. "NormalTexture"]:SetAlpha(0)
 			end)
 			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, ignoreSize=true, lod=true})
-			self:addSkinFrame{obj=_G.AuctionFrame, ft=ftype, kfs=true, hdr=true, x1=10, y1=-11, y2=5}
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true, cb=true, x1=10, y1=-11, y2=8})
 			self:moveObject{obj=_G.AuctionFrameCloseButton, x=3}
 			-- AuctionFrame Browse
 			for i = 1, _G.NUM_FILTERS_TO_DISPLAY do
 				self:keepRegions(_G["AuctionFilterButton" .. i], {3, 4}) -- N.B. region 3 is the highlight, 4 is the text
-				self:addSkinFrame{obj=_G["AuctionFilterButton" .. i], ft=ftype, nb=true, aso={bd=5}, y2=-1}
+				self:skinObject("frame", {obj=_G["AuctionFilterButton" .. i], fType=ftype, bd=5, y2=-1})
 			end
-			self:skinSlider{obj=_G.BrowseFilterScrollFrame.ScrollBar, rt="artwork"}
-			self:skinSlider{obj=_G.BrowseScrollFrame.ScrollBar, rt="artwork"}
+			self:skinObject("slider", {obj=_G.BrowseFilterScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
+			self:skinObject("slider", {obj=_G.BrowseScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
 			for _, type in _G.pairs{"Quality", "Level", "Duration", "HighBidder", "CurrentBid"} do
 				self:keepRegions(_G["Browse" .. type .. "Sort"], {4, 5, 6}) -- N.B. region 4 is the text, 5 is the arrow, 6 is the highlight
-				self:addSkinFrame{obj=_G["Browse" .. type .. "Sort"], ft=ftype, nb=true, aso={bd=5}, x2=-2}
+				self:skinObject("frame", {obj=_G["Browse" .. type .. "Sort"], fType=ftype, bd=5, x2=-2})
 			end
 			for i = 1, _G.NUM_BROWSE_TO_DISPLAY do
 				if _G["BrowseButton" .. i].Orig then break end -- Auctioneer CompactUI loaded
 				skinBtn("BrowseButton", i)
 			end
 			for _, type in _G.pairs{"Name", "MinLevel", "MaxLevel"} do
-				self:skinEditBox{obj=_G["Browse" .. type], regs={6, type == "Name" and 7 or nil}, mi=true} -- 6 is text, 7 is icon
+				self:skinObject("editbox", {obj=_G["Browse" .. type], fType=ftype})
 				self:moveObject{obj=_G["Browse" .. type], x=type == "MaxLevel" and -6 or -4, y=type ~= "MaxLevel" and 3 or 0}
 			end
-			self:skinDropDown{obj=_G.BrowseDropDown, x2=109}
+			self:skinObject("dropdown", {obj=_G.BrowseDropDown, fType=ftype, x2=109})
 			self:skinMoneyFrame{obj=_G.BrowseBidPrice, moveSEB=true}
 			_G.BrowseBidButton:DisableDrawLayer("BORDER")
 			_G.BrowseBuyoutButton:DisableDrawLayer("BORDER")
@@ -283,19 +283,19 @@ aObj.ClassicSupport = function(self)
 				self.LeftDisplay.Tutorial1:SetTextColor(self.BT:GetRGB())
 				self.RightDisplay.Label:SetTextColor(self.HT:GetRGB())
 				self.RightDisplay.Tutorial1:SetTextColor(self.BT:GetRGB())
-				self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, ofs=1, y1=2, y2=220}
+				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, ofs=1, y1=2, y2=220})
 
 				self:Unhook(this, "OnShow")
 			end)
 			-- AuctionFrame Bid
 			for _, type in _G.pairs{"Quality", "Level", "Duration", "Buyout", "Status", "Bid"} do
 				self:keepRegions(_G["Bid" .. type .. "Sort"], {4, 5, 6}) -- N.B. region 4 is the text, 5 is the arrow, 6 is the highlight
-				self:addSkinFrame{obj=_G["Bid" .. type .. "Sort"], ft=ftype, aso={bd=5}, x2=-2}
+				self:skinObject("frame", {obj=_G["Bid" .. type .. "Sort"], fType=ftype, bd=5, x2=-2})
 			end
 			for i = 1, _G.NUM_BIDS_TO_DISPLAY do
 				skinBtn("BidButton", i)
 			end
-			self:skinSlider{obj=_G.BidScrollFrame.ScrollBar, rt="artwork"}
+			self:skinObject("slider", {obj=_G.BidScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
 			self:skinMoneyFrame{obj=_G.BidBidPrice, moveSEB=true}
 			_G.BidCloseButton:DisableDrawLayer("BORDER")
 			_G.BidBuyoutButton:DisableDrawLayer("BORDER")
@@ -312,15 +312,15 @@ aObj.ClassicSupport = function(self)
 			-- AuctionFrame Auctions
 			for _, type in _G.pairs{"Quality", "Duration", "HighBidder", "Bid"} do
 				self:keepRegions(_G["Auctions" .. type .. "Sort"], {4, 5, 6}) -- N.B. region 4 is the text, 5 is the arrow, 6 is the highlight
-				self:addSkinFrame{obj=_G["Auctions" .. type .. "Sort"], ft=ftype, aso={bd=5}, x2=-2}
+				self:skinObject("frame", {obj=_G["Auctions" .. type .. "Sort"], fType=ftype, bd=5, x2=-2})
 			end
-			self:skinSlider{obj=_G.AuctionsScrollFrame.ScrollBar, rt="artwork"}
+			self:skinObject("slider", {obj=_G.AuctionsScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
 			for i = 1, _G.NUM_AUCTIONS_TO_DISPLAY do
 				skinBtn("AuctionsButton", i)
 			end
-			self:skinEditBox{obj=_G.AuctionsStackSizeEntry, regs={6}, noWidth=true} -- 6 is text
-			self:skinEditBox{obj=_G.AuctionsNumStacksEntry, regs={6}, noWidth=true} -- 6 is text
-			self:skinDropDown{obj=_G.PriceDropDown}
+			self:skinObject("editbox", {obj=_G.AuctionsStackSizeEntry, fType=ftype, ofs=0})
+			self:skinObject("editbox", {obj=_G.AuctionsNumStacksEntry, fType=ftype, ofs=0})
+			self:skinObject("dropdown", {obj=_G.PriceDropDown})
 			self:skinMoneyFrame{obj=_G.StartPrice, moveSEB=true}
 			self:skinMoneyFrame{obj=_G.BuyoutPrice, moveSEB=true}
 			if self.modBtns then
@@ -506,7 +506,7 @@ aObj.ClassicSupport = function(self)
 
 		self:SecureHookScript(_G.CharacterFrame, "OnShow", function(this)
 			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, ignoreSize=true, lod=true})
-			self:addSkinFrame{obj=this, ft=ftype, kfs=true, x1=10, y1=-12, x2=-31, y2=71}
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=10, y1=-12, x2=-31, y2=75})
 			-- PaperDoll Frame
 			self:keepFontStrings(_G.PaperDollFrame)
 			self:makeMFRotatable(_G.CharacterModelFrame)
@@ -770,10 +770,10 @@ aObj.ClassicSupport = function(self)
 		self.initialized.FriendsFrame = true
 
 		self:SecureHookScript(_G.FriendsFrame, "OnShow", function(this)
-			self:skinDropDown{obj=_G.FriendsDropDown}
-			self:skinDropDown{obj=_G.TravelPassDropDown}
 			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, ignoreSize=true, lod=true})
-			self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, y2=-5}
+			self:skinObject("dropdown", {obj=_G.FriendsDropDown, fType=ftype})
+			self:skinObject("dropdown", {obj=_G.TravelPassDropDown, fType=ftype})
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, cb=true, y2=-1})
 			self:moveObject{obj=this.CloseButton, x=1}
 
 			self:SecureHookScript(_G.FriendsTabHeader, "OnShow", function(this)
@@ -781,18 +781,17 @@ aObj.ClassicSupport = function(self)
 				if self.modBtnBs then
 					self:addButtonBorder{obj=_G.FriendsFrameBattlenetFrame.BroadcastButton, ofs=-2, x1=1, y1=-1}
 				end
-				self:addFrameBorder{obj=_G.FriendsFrameBattlenetFrame.BroadcastFrame.ScrollFrame, ft=ftype, ofs=4}
+				self:skinObject("frame", {obj=_G.FriendsFrameBattlenetFrame.BroadcastFrame.ScrollFrame, fType=ftype, kfs=true, fb=true, ofs=4})
 				if self.modBtns then
 					self:skinStdButton{obj=_G.FriendsFrameBattlenetFrame.BroadcastFrame.ScrollFrame.UpdateButton}
 					self:skinStdButton{obj=_G.FriendsFrameBattlenetFrame.BroadcastFrame.ScrollFrame.CancelButton}
 				end
-				_G.FriendsFrameBattlenetFrame.BroadcastFrame.ScrollFrame.EditBox.PromptText:SetTextColor(self.BT:GetRGB())
 				_G.FriendsFrameBattlenetFrame.BroadcastFrame:DisableDrawLayer("BACKGROUND")
-				self:addSkinFrame{obj=_G.FriendsFrameBattlenetFrame.BroadcastFrame, ft=ftype, ofs=-10}
-				self:addSkinFrame{obj=_G.FriendsFrameBattlenetFrame.UnavailableInfoFrame, ft=ftype}
-				self:skinDropDown{obj=_G.FriendsFrameStatusDropDown}
+				self:skinObject("frame", {obj=_G.FriendsFrameBattlenetFrame.BroadcastFrame, fType=ftype, ofs=-10})
+				self:skinObject("frame", {obj=_G.FriendsFrameBattlenetFrame.UnavailableInfoFrame, fType=ftype})
+				self:skinObject("dropdown", {obj=_G.FriendsFrameStatusDropDown, fType=ftype})
 				_G.FriendsFrameStatusDropDownStatus:SetAlpha(1) -- display status icon
-				self:skinEditBox{obj=_G.FriendsFrameBroadcastInput, regs={6, 7}, mi=true, noWidth=true, noHeight=true, noMove=true} -- 6 is text, 7 is icon
+				self:skinObject("editbox", {obj=_G.FriendsFrameBroadcastInput, fType=ftype})
 				_G.FriendsFrameBroadcastInputFill:SetTextColor(self.BT:GetRGB())
 				self:skinObject("tabs", {obj=this, prefix=this:GetName(), numTabs=2, fType=ftype, lod=true, upwards=true, offsets={x1=0, y1=-5, x2=0, y2=-5}})
 				if self.modBtnBs then
@@ -807,11 +806,7 @@ aObj.ClassicSupport = function(self)
 
 			self:SecureHookScript(_G.FriendsListFrame, "OnShow", function(this)
 				_G.FriendsFrameFriendsScrollFrame.PendingInvitesHeaderButton.BG:SetTexture(nil)
-				self:skinSlider{obj=_G.FriendsFrameFriendsScrollFrame.scrollBar, rt="background"}
-				-- adjust width of FFFSF so it looks right (too thin by default)
-				_G.FriendsFrameFriendsScrollFrame.scrollBar:ClearAllPoints()
-				_G.FriendsFrameFriendsScrollFrame.scrollBar:SetPoint("TOPRIGHT", "FriendsFrame", "TOPRIGHT", -8, -101)
-				_G.FriendsFrameFriendsScrollFrame.scrollBar:SetPoint("BOTTOMLEFT", "FriendsFrame", "BOTTOMRIGHT", -24, 40)
+				self:skinObject("slider", {obj=_G.FriendsFrameFriendsScrollFrame.scrollBar, fType=ftype, rpTex="background"})
 				local btn
 				for i = 1, _G.FRIENDS_FRIENDS_TO_DISPLAY do
 					btn = _G["FriendsFrameFriendsScrollFrameButton" .. i]
@@ -841,7 +836,7 @@ aObj.ClassicSupport = function(self)
 					end
 				end
 				btn = nil
-				self:addFrameBorder{obj=this, ft=ftype, y1=-81, y2=-2}
+				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, fb=true, ofs=0, y1=-81, y2=1})
 				if self.modBtns then
 					self:skinStdButton{obj=_G.FriendsFrameAddFriendButton, x1=1}
 					self:skinStdButton{obj=_G.FriendsFrameSendMessageButton}
@@ -861,8 +856,8 @@ aObj.ClassicSupport = function(self)
 
 			self:SecureHookScript(_G.IgnoreListFrame, "OnShow", function(this)
 				this:DisableDrawLayer("BACKGROUND")
-				self:skinSlider{obj=_G.FriendsFrameIgnoreScrollFrame.ScrollBar}
-				self:addFrameBorder{obj=this, ft=ftype, y1=-81, y2=-2}
+				self:skinObject("slider", {obj=_G.FriendsFrameIgnoreScrollFrame.ScrollBar, fType=ftype})
+				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, fb=true, ofs=0, y1=-81})
 				if self.modBtns then
 					self:skinStdButton{obj=_G.FriendsFrameIgnorePlayerButton, x1=1}
 					self:skinStdButton{obj=_G.FriendsFrameUnsquelchButton}
@@ -878,15 +873,16 @@ aObj.ClassicSupport = function(self)
 				self:removeInset(_G.WhoFrameListInset)
 				self:skinColHeads("WhoFrameColumnHeader", nil, ftype)
 				self:moveObject{obj=_G.WhoFrameColumnHeader4, x=4}
-				self:skinDropDown{obj=_G.WhoFrameDropDown}
+				self:skinObject("dropdown", {obj=_G.WhoFrameDropDown, fType=ftype})
 				self:moveObject{obj=_G.WhoFrameDropDown, y=1}
 				self:removeInset(_G.WhoFrameEditBoxInset)
-				self:skinEditBox{obj=_G.WhoFrameEditBox}--, move=true}
+				self:skinObject("editbox", {obj=_G.WhoFrameEditBox, fType=ftype})
+				self:adjHeight{obj=_G.WhoFrameEditBox, adj=-10}
 				if not self.isElvUI then
 					_G.WhoFrameEditBox:SetWidth(_G.WhoFrameEditBox:GetWidth() + 24)
 					self:moveObject{obj=_G.WhoFrameEditBox, x=11, y=6}
 				end
-				self:skinSlider{obj=_G.WhoListScrollFrame.ScrollBar, rt="background"}
+				self:skinObject("slider", {obj=_G.WhoListScrollFrame.ScrollBar, fType=ftype, rpTex="background"})
 				if self.modBtns then
 					self:skinStdButton{obj=_G.WhoFrameGroupInviteButton}
 					self:skinStdButton{obj=_G.WhoFrameAddFriendButton}
@@ -983,14 +979,17 @@ aObj.ClassicSupport = function(self)
 		end)
 
 		self:SecureHookScript(_G.AddFriendFrame, "OnShow", function(this)
-			self:skinEditBox{obj=_G.AddFriendNameEditBox, regs={6}} -- 6 is text
-			self:skinSlider{obj=_G.AddFriendNoteFrameScrollFrame.ScrollBar}
-			self:addFrameBorder{obj=_G.AddFriendNoteFrame, ft=ftype}
-			self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true}
+			self:skinObject("editbox", {obj=_G.AddFriendNameEditBox, fType=ftype})
+			self:skinObject("slider", {obj=_G.AddFriendNoteFrameScrollFrame.ScrollBar, fType=ftype})
+			self:skinObject("frame", {obj=_G.AddFriendNoteFrame, fType=ftype, kfs=true, fb=true})
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true})
 			if self.modBtns then
 				self:skinStdButton{obj=_G.AddFriendInfoFrameContinueButton}
-				self:skinStdButton{obj=_G.AddFriendEntryFrameAcceptButton}
+				self:skinStdButton{obj=_G.AddFriendEntryFrameAcceptButton, clr="disabled"}
 				self:skinStdButton{obj=_G.AddFriendEntryFrameCancelButton}
+				self:SecureHookScript(_G.AddFriendNameEditBox, "OnTextChanged", function(this)
+					self:clrBtnBdr(_G.AddFriendEntryFrameAcceptButton)
+				end)
 			end
 
 			self:Unhook(this, "OnShow")
@@ -1102,7 +1101,7 @@ aObj.ClassicSupport = function(self)
 
 		self:SecureHookScript(_G.InspectFrame, "OnShow", function(this)
 			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, ignoreSize=true, lod=true})
-			self:addSkinFrame{obj=this, ft=ftype, kfs=true, x1=10, y1=-12, x2=-31, y2=71}
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=10, y1=-12, x2=-31, y2=75})
 
 			self:Unhook(this, "OnShow")
 		end)
@@ -1166,7 +1165,7 @@ aObj.ClassicSupport = function(self)
 				-- set correct tab
 				setTab(this.bookType)
 			end
-			self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, x1=10, y1=-12, x2=-31, y2=72}
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, x1=10, y1=-12, x2=-31, y2=73})
 			if self.modBtns then
 				self:skinCloseButton{obj=_G.SpellBookCloseButton}
 			end
@@ -1228,7 +1227,9 @@ aObj.ClassicSupport = function(self)
 			-- Tabs (side)
 			for i = 1, _G.MAX_SKILLLINE_TABS do
 				self:removeRegions(_G["SpellBookSkillLineTab" .. i], {1}) -- N.B. other regions are icon and highlight
-				self:addButtonBorder{obj=_G["SpellBookSkillLineTab" .. i]}
+				if self.modBtnBs then
+					self:addButtonBorder{obj=_G["SpellBookSkillLineTab" .. i]}
+				end
 			end
 
 			self:Unhook(this, "OnShow")
@@ -1267,10 +1268,10 @@ aObj.ClassicSupport = function(self)
 
 		self:SecureHookScript(_G.TalentFrame, "OnShow", function(this)
 			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, ignoreSize=true, lod=true})
-			self:skinSlider{obj=_G.TalentFrameScrollFrameScrollBar, rt="artwork"}
+			self:skinObject("slider", {obj=_G.TalentFrameScrollFrameScrollBar, fType=ftype, rpTex="artwork"})
 			-- keep background Texture
 			self:removeRegions(this, {1, 2, 3, 4, 5, 11, 12, 13}) -- remove portrait, border & points border
-			self:addSkinFrame{obj=this, ft=ftype, x1=10, y1=-12, x2=-31, y2=71}
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=10, y1=-12, x2=-31, y2=75})
 			if self.modBtns then
 				self:skinStdButton{obj=_G.TalentFrameCancelButton}
 			end
@@ -1686,7 +1687,7 @@ aObj.ClassicSupport = function(self)
 
 		self:SecureHookScript(_G.RaidParentFrame, "OnShow", function(this)
 			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=true})
-			self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, y2=-5}
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, cb=true})
 
 			self:Unhook(this, "OnShow")
 		end)
@@ -1781,7 +1782,7 @@ aObj.ClassicSupport = function(self)
 		self:SecureHookScript(_G.WorldStateScoreFrame, "OnShow", function(this)
 			self:skinObject("slider", {obj=_G.WorldStateScoreScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
 			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, ignoreSize=true, lod=true})
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=12, y1=-15, x2=-114, y2=66})
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=12, y1=-15, x2=-114, y2=70})
 			if self.modBtns then
 				self:skinStdButton{obj=_G.WorldStateScoreFrameLeaveButton}
 			end
