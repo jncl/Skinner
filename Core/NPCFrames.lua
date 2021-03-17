@@ -53,22 +53,22 @@ aObj.blizzLoDFrames[ftype].AuctionHouseUI = function(self)
 			end
 			aObj:removeNineSlice(frame.NineSlice)
 			frame.Background:SetTexture(nil)
-			aObj:skinSlider{obj=frame.ScrollFrame.scrollBar, rt="background", wdth=-5}
+			aObj:skinObject("slider", {obj=frame.ScrollFrame.scrollBar, fType=ftype, y1=-2, y2=2})
 			aObj:SecureHook(frame, "RefreshScrollFrame", function(this)
 				if this.tableBuilder then
 					for hdr in this.tableBuilder.headerPoolCollection:EnumerateActive() do
 						aObj:removeRegions(hdr, {1, 2, 3})
-						aObj:addSkinFrame{obj=hdr, ft=ftype, nb=true, ofs=1}
+						aObj:skinObject("frame", {obj=hdr, fType=ftype, ofs=1})
 					end
 				end
 			end)
 		end
 		local function skinBidAmt(frame)
-			aObj:skinEditBox{obj=frame.gold, regs={6, 7}, noHeight=true, noWidth=true} -- 6 is text, 7 is icon
-			aObj:skinEditBox{obj=frame.silver, regs={6, 7}, noHeight=true, noWidth=true} -- 6 is text, 7 is icon
+			aObj:skinObject("editbox", {obj=frame.gold, fType=ftype, ofs=0})
+			aObj:skinObject("editbox", {obj=frame.silver, fType=ftype, ofs=0})
+			aObj:skinObject("editbox", {obj=frame.copper, fType=ftype, ofs=0})
 			frame.silver:SetWidth(38)
 			aObj:moveObject{obj=frame.silver.texture, x=10}
-			aObj:skinEditBox{obj=frame.copper, regs={6, 7}, noHeight=true, noWidth=true} -- 6 is text, 7 is icon
 			frame.copper:SetWidth(38)
 			aObj:moveObject{obj=frame.copper.texture, x=10}
 		end
@@ -81,9 +81,9 @@ aObj.blizzLoDFrames[ftype].AuctionHouseUI = function(self)
 			self:addButtonBorder{obj=this.SearchBar.FavoritesSearchButton, ofs=-2, x1=1}
 		end
 		-- Browsing frames
-		self:skinEditBox{obj=this.SearchBar.SearchBox, regs={6, 7}, mi=true} -- 6 is text, 7 is icon
-		self:skinEditBox{obj=this.SearchBar.FilterButton.LevelRangeFrame.MinLevel, regs={6}} -- 6 is text
-		self:skinEditBox{obj=this.SearchBar.FilterButton.LevelRangeFrame.MaxLevel, regs={6}, x=-5} -- 6 is text
+		self:skinObject("editbox", {obj=this.SearchBar.SearchBox, fType=ftype, si=true})
+		self:skinObject("editbox", {obj=this.SearchBar.FilterButton.LevelRangeFrame.MinLevel, fType=ftype})
+		self:skinObject("editbox", {obj=this.SearchBar.FilterButton.LevelRangeFrame.MaxLevel, fType=ftype})
 		if self.modBtns then
 			self:skinStdButton{obj=this.SearchBar.FilterButton}
 			self:skinStdButton{obj=this.SearchBar.SearchButton}
@@ -97,7 +97,7 @@ aObj.blizzLoDFrames[ftype].AuctionHouseUI = function(self)
 		self:SecureHook("FilterButton_SetUp", function(button, _)
 			button.NormalTexture:SetAlpha(0)
 		end)
-		self:skinSlider{obj=this.CategoriesList.ScrollFrame.ScrollBar, rt="border"}
+		self:skinObject("slider", {obj=this.CategoriesList.ScrollFrame.ScrollBar, fType=ftype, rpTex="border"})
 		this.CategoriesList.ScrollFrame:DisableDrawLayer("BACKGROUND")
 		this.CategoriesList.Background:SetTexture(nil)
 		skinItemList(this.BrowseResultsFrame.ItemList)
@@ -136,7 +136,8 @@ aObj.blizzLoDFrames[ftype].AuctionHouseUI = function(self)
 		self:removeNineSlice(this.CommoditiesBuyFrame.BuyDisplay.NineSlice)
 		this.CommoditiesBuyFrame.BuyDisplay.Background:SetTexture(nil)
 		self:removeRegions(this.CommoditiesBuyFrame.BuyDisplay.ItemDisplay, {3})
-		self:skinEditBox{obj=this.CommoditiesBuyFrame.BuyDisplay.QuantityInput.InputBox, regs={6}} -- 6 is text
+		self:skinObject("editbox", {obj=this.CommoditiesBuyFrame.BuyDisplay.QuantityInput.InputBox, fType=ftype, ofs=-2})
+		self:adjHeight{obj=this.CommoditiesBuyFrame.BuyDisplay.QuantityInput.InputBox, adj=-3}
 		if self.modBtns then
 			self:skinStdButton{obj=this.CommoditiesBuyFrame.BackButton}
 			self:skinStdButton{obj=this.CommoditiesBuyFrame.BuyDisplay.QuantityInput.MaxButton}
@@ -163,9 +164,9 @@ aObj.blizzLoDFrames[ftype].AuctionHouseUI = function(self)
 		end
 		-- Sell frames
 		local function skinPriceInp(frame)
-			aObj:skinEditBox{obj=frame.CopperBox, regs={6}, noHeight=true, noWidth=true} -- 6 is text
-			aObj:skinEditBox{obj=frame.SilverBox, regs={6}, noHeight=true, noWidth=true} -- 6 is text
-			aObj:skinEditBox{obj=frame.GoldBox, regs={6}, noHeight=true, noWidth=true} -- 6 is text
+			aObj:skinObject("editbox", {obj=frame.CopperBox, fType=ftype, ofs=0})
+			aObj:skinObject("editbox", {obj=frame.SilverBox, fType=ftype, ofs=0})
+			aObj:skinObject("editbox", {obj=frame.GoldBox, fType=ftype, ofs=0})
 		end
 		local function skinSellFrame(frame)
 			aObj:removeNineSlice(frame.NineSlice)
@@ -173,9 +174,9 @@ aObj.blizzLoDFrames[ftype].AuctionHouseUI = function(self)
 			aObj:keepFontStrings(frame)
 			aObj:removeNineSlice(frame.ItemDisplay.NineSlice)
 			aObj:removeRegions(frame.ItemDisplay, {3})
-			aObj:skinEditBox{obj=frame.QuantityInput.InputBox, regs={6}, noHeight=true, noWidth=true} -- 6 is text
+			aObj:skinObject("editbox", {obj=frame.QuantityInput.InputBox, fType=ftype, ofs=0})
 			skinPriceInp(frame.PriceInput.MoneyInputFrame)
-			aObj:skinDropDown{obj=frame.DurationDropDown.DropDown, lrg=true, x1=0, y1=1, x2=-1, y2=3}
+			aObj:skinObject("dropdown", {obj=frame.DurationDropDown.DropDown, fType=ftype, lrgTpl=true, x1=0, y1=1, x2=-1, y2=3})
 			if aObj.modBtns then
 				aObj:skinStdButton{obj=frame.QuantityInput.MaxButton}
 				aObj:skinStdButton{obj=frame.PostButton}
@@ -226,7 +227,7 @@ aObj.blizzLoDFrames[ftype].AuctionHouseUI = function(self)
 		skinBidAmt(this.AuctionsFrame.BidFrame.BidAmount)
 		self:removeNineSlice(this.AuctionsFrame.SummaryList.NineSlice)
 		this.AuctionsFrame.SummaryList.Background:SetTexture(nil)
-		self:skinSlider{obj=this.AuctionsFrame.SummaryList.ScrollFrame.scrollBar, rt="background"}
+		self:skinObject("slider", {obj=this.AuctionsFrame.SummaryList.ScrollFrame.scrollBar, fType=ftype, rpTex="background"})
 		self:removeInset(this.AuctionsFrame.SummaryList)
 		self:removeNineSlice(this.AuctionsFrame.ItemDisplay.NineSlice)
 		self:removeRegions(this.AuctionsFrame.ItemDisplay, {3})
@@ -234,7 +235,7 @@ aObj.blizzLoDFrames[ftype].AuctionHouseUI = function(self)
 		skinItemList(this.AuctionsFrame.BidsList)
 		skinItemList(this.AuctionsFrame.ItemList)
 		skinItemList(this.AuctionsFrame.CommoditiesList)
-		self:addSkinFrame{obj=this.AuctionsFrame, ft=ftype, kfs=true, nb=true, x1=-5, y1=-30, x2=1, y2=-2} -- add frame for tabs
+		self:skinObject("frame", {obj=this.AuctionsFrame, fType=ftype, kfs=true, fb=true, x1=-5, y1=-30, x2=0, y2=-25})
 		if self.modBtns then
 			self:skinStdButton{obj=this.AuctionsFrame.CancelAuctionButton}
 			self:SecureHook(this.AuctionsFrame.CancelAuctionButton, "SetEnabled", function(this)
@@ -250,7 +251,7 @@ aObj.blizzLoDFrames[ftype].AuctionHouseUI = function(self)
 			end)
 		end
 		-- Dialogs
-		self:addSkinFrame{obj=this.BuyDialog.Border, ft=ftype, kfs=true, nb=true, ofs=-10}
+		self:skinObject("frame", {obj=this.BuyDialog.Border, fType=ftype, kfs=true, ofs=-10})
 		if self.modBtns then
 			self:skinStdButton{obj=this.BuyDialog.BuyNowButton}
 			self:SecureHook(this.BuyDialog.BuyNowButton, "SetEnabled", function(this)
@@ -274,7 +275,7 @@ aObj.blizzLoDFrames[ftype].AuctionHouseUI = function(self)
 				end
 			end)
 		end
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, x2=3, y2=-3}
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, y2=0})
 
 		self:Unhook(this, "OnShow")
 	end)
@@ -309,14 +310,14 @@ aObj.blizzFrames[ftype].BankFrame = function(self)
 	self.initialized.BankFrame = true
 
 	self:SecureHookScript(_G.BankFrame, "OnShow", function(this)
-		self:skinEditBox{obj=_G.BankItemSearchBox, regs={6, 7}, mi=true, noHeight=true, noMove=true} -- 6 is text, 7 is icon
+		self:skinObject("editbox", {obj=_G.BankItemSearchBox, fType=ftype})
 		if self.modBtns then
 			 self:skinStdButton{obj=_G.BankFramePurchaseButton}
 		end
 		self:removeInset(_G.BankFrameMoneyFrameInset)
 		_G.BankFrameMoneyFrameBorder:DisableDrawLayer("BACKGROUND")
 		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype})
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, y2=-4}
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true})
 		self:keepFontStrings(_G.BankSlotsFrame)
 		if self.modBtnBs then
 			self:SecureHook("BankFrameItemButton_Update", function(btn)
@@ -798,9 +799,9 @@ aObj.blizzFrames[ftype].MerchantFrame = function(self)
 			self:skinDropDown{obj=_G.MerchantFrameLootFilter}
 			self:removeInset(_G.MerchantExtraCurrencyInset)
 			_G.MerchantExtraCurrencyBg:DisableDrawLayer("BACKGROUND")
-			self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, y2=-6}
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, cb=true, y2=-3})
 		else
-			self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, x2=1, y2=-6}
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, cb=true, x2=1, y2=-3})
 		end
 		if self.modBtnBs then
 			self:removeRegions(_G.MerchantPrevPageButton, {2})
