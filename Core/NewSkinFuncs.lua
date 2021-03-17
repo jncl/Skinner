@@ -420,8 +420,9 @@ local function skinFrame(tbl)
 	end
 	if tbl.ri
 	and tbl.obj.Inset
+	or tbl.obj.inset
 	then
-		aObj:removeInset(tbl.obj.Inset)
+		aObj:removeInset(tbl.obj.Inset or tbl.obj.inset)
 	end
 	if tbl.rns
 	and tbl.obj.NineSlice
