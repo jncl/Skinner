@@ -187,16 +187,16 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 	end
 	local mfTabSkin = aObj.skinTPLs.new("tabs", {fType=ftype, ignoreSize=true, lod=true, ignoreHLTex=true, regions={7, 8, 9, 10}})
 	function skinMissionFrame(frame)
-		local x1Ofs, y1Ofs, y2Ofs = 2, 2, -5
+		local x1Ofs, y1Ofs, y2Ofs = 2, 2, -4
 		if frame == _G.CovenantMissionFrame then
 			x1Ofs = -2
 			y1Ofs = 2
-			y2Ofs = -6
+			y2Ofs = -5
 		elseif frame == _G.BFAMissionFrame then
 			y1Ofs = 1
-			y2Ofs = -6
+			y2Ofs = -5
 		elseif frame == _G.OrderHallMissionFrame then
-			y2Ofs = -4
+			y2Ofs = -3
 		end
 		frame.GarrCorners:DisableDrawLayer("BACKGROUND")
 		aObj:skinObject("frame", {obj=frame, fType=ftype, kfs=true, cbns=true, x1=x1Ofs, y1=y1Ofs, x2=1, y2=y2Ofs})
@@ -1547,7 +1547,6 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 			self:skinStdButton{obj=_G.ChatConfigFrameOkayButton}
 		end
 		-- ChatTabManager
-		self:skinObject("frame", {obj=_G.ChatConfigBackgroundFrame, fType=ftype, kfs=true, fb=true, x1=-5, y1=3, x2=725, y2=-512})
 		local setTabState
 		if aObj.isTT then
 			function setTabState(tab)
@@ -2363,7 +2362,7 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 
 		this.HeaderBar:SetTexture(nil)
 		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, ignoreSize=true, lod=true, offsets={x1=4, y1=-10, x2=-4, y2=-3}, regions={7, 8, 9, 10}})
-		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, ofs=-13, y2=4})
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, ofs=-13, y2=5})
 
 		-- N.B. Garrison Landing Page Minimap Button skinned with other minimap buttons
 		self:Unhook(this, "OnShow")
@@ -2577,8 +2576,8 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 		if self.modBtns then
 			self:skinCloseButton{obj=this.BorderFrame.CloseButton2, noSkin=true}
 		end
-		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=2, y1=2, x2=1, y2=-5})
 		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, ignoreSize=true, lod=true, offsets={x1=9, y1=2, x2=-9, y2=0}, regions={7, 8, 9, 10}})
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=2, y1=2, x2=1, y2=-4})
 
 		self:SecureHookScript(this.MissionTab.MissionList, "OnShow", function(this)
 	        this:SetScale(1.019) -- make larger to fit frame
@@ -3084,7 +3083,7 @@ aObj.blizzLoDFrames[ftype].GuildBankUI = function(self)
 				end
 			end
 		end
-		self:skinEditBox{obj=_G.GuildItemSearchBox, regs={6, 7}, mi=true, noHeight=true, noMove=true} -- 6 is text, 7 is icon
+		self:skinObject("editbox", {obj=_G.GuildItemSearchBox, fType=ftype})
 		_G.GuildBankMoneyFrameBackground:DisableDrawLayer("BACKGROUND")
 		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=true})
 		-- Tabs (side)
@@ -3094,9 +3093,9 @@ aObj.blizzLoDFrames[ftype].GuildBankUI = function(self)
 				 self:addButtonBorder{obj=_G["GuildBankTab" .. i .. "Button"], relTo=_G["GuildBankTab" .. i .. "ButtonIconTexture"], y2=-3}
 			end
 		end
-		self:skinSlider{obj=_G.GuildBankTransactionsScrollFrame.ScrollBar, rt="artwork"}
-		self:skinSlider{obj=_G.GuildBankInfoScrollFrame.ScrollBar, rt="artwork"}
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, hdr=true, x2=1, y2=-5}
+		self:skinObject("slider", {obj=_G.GuildBankTransactionsScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
+		self:skinObject("slider", {obj=_G.GuildBankInfoScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true, cb=true})
 		if self.modBtns then
 			self:skinStdButton{obj=_G.GuildBankFrameDepositButton, x1=0} -- don't overlap withdraw button
 			self:skinStdButton{obj=_G.GuildBankFrameWithdrawButton, x2=0} -- don't overlap deposit button
@@ -3933,13 +3932,18 @@ aObj.blizzLoDFrames[ftype].MacroUI = function(self)
 
 	self:SecureHookScript(_G.MacroFrame, "OnShow", function(this)
 		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=true, upwards=true, offsets={x1=-3, y1=-3, x2=3, y2=-3}, ignoreHLTex=true})
-		_G.RaiseFrameLevel(_G.MacroFrameTab1)
-		_G.RaiseFrameLevel(_G.MacroFrameTab2)
-		self:addFrameBorder{obj=_G.MacroButtonScrollFrame, ft=ftype, ofs=12, y1=10, x2=31}
-		self:skinSlider{obj=_G.MacroButtonScrollFrame.ScrollBar, rt="artwork"}
-		self:skinSlider{obj=_G.MacroFrameScrollFrame.ScrollBar}
-		self:skinEditBox{obj=_G.MacroFrameText, noSkin=true}
-		self:addFrameBorder{obj=_G.MacroFrameTextBackground, ft=ftype}
+		self:skinObject("frame", {obj=_G.MacroButtonScrollFrame, fType=ftype, kfs=true, fb=true, ofs=12, y1=10, x2=32})
+		self:skinObject("slider", {obj=_G.MacroButtonScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
+		self:skinObject("slider", {obj=_G.MacroFrameScrollFrame.ScrollBar, fType=ftype})
+		self:skinObject("frame", {obj=_G.MacroFrameTextBackground, fType=ftype, kfs=true, fb=true, ofs=0})
+		_G.MacroFrameSelectedMacroButton:DisableDrawLayer("BACKGROUND")
+		for i = 1, _G.MAX_ACCOUNT_MACROS do
+			_G["MacroButton" .. i]:DisableDrawLayer("BACKGROUND")
+			if self.modBtnBs then
+				self:addButtonBorder{obj=_G["MacroButton" .. i], relTo=_G["MacroButton" .. i .. "Icon"], reParent={_G["MacroButton" .. i .. "Name"]}, clr="grey", ca=0.85}
+			end
+		end
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true, ri=true, cb=true})
 		if self.modBtns then
 			self:skinStdButton{obj=_G.MacroEditButton}
 			self:skinStdButton{obj=_G.MacroCancelButton}
@@ -3956,17 +3960,9 @@ aObj.blizzLoDFrames[ftype].MacroUI = function(self)
 				end)
 			end
 		end
-		_G.MacroFrameSelectedMacroButton:DisableDrawLayer("BACKGROUND")
 		if self.modBtnBs then
 			self:addButtonBorder{obj=_G.MacroFrameSelectedMacroButton, relTo=_G.MacroFrameSelectedMacroButtonIcon, clr="grey", ca=0.85}
 		end
-		for i = 1, _G.MAX_ACCOUNT_MACROS do
-			_G["MacroButton" .. i]:DisableDrawLayer("BACKGROUND")
-			if self.modBtnBs then
-				self:addButtonBorder{obj=_G["MacroButton" .. i], relTo=_G["MacroButton" .. i .. "Icon"], reParent={_G["MacroButton" .. i .. "Name"]}, clr="grey", ca=0.85}
-			end
-		end
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, hdr=true, ri=true, x2=self.isClsc and 1 or nil}
 
 		self:Unhook(this, "OnShow")
 	end)
@@ -5206,10 +5202,8 @@ aObj.blizzFrames[ftype].PVEFrame = function(self)
 	-- "LFDParentFrame", "RaidFinderFrame", "LFGListPVEStub"
 
 	self:SecureHookScript(_G.PVEFrame, "OnShow", function(this)
-		self:removeInset(this.Inset)
 		self:keepFontStrings(this.shadows)
 		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, ignoreHLTex=true})
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, x1=-4, x2=3, y2=-4.5}
 		-- GroupFinder Frame
 		for i = 1, 3 do
 			_G.GroupFinderFrame["groupButton" .. i].bg:SetTexture(nil)
@@ -5228,6 +5222,7 @@ aObj.blizzFrames[ftype].PVEFrame = function(self)
 				end
 			end
 		end)
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, cb=true})
 		if self.modBtnBs then
 			-- hook this to change button border colour
 			self:SecureHook("GroupFinderFrame_EvaluateButtonVisibility", function(this, _)
@@ -5737,11 +5732,6 @@ aObj.blizzFrames[ftype].StaticPopups = function(self)
 			end
 			nTex = nil
 		end)
-		self:SecureHook("StaticPopup_OnUpdate", function(dialog, _)
-			if not dialog.startDelay then
-				self:clrBtnBdr(_G[dialog:GetName() .. "Button1"])
-			end
-		end)
 	end
 
 	for i = 1, _G.STATICPOPUP_NUMDIALOGS do
@@ -5759,6 +5749,9 @@ aObj.blizzFrames[ftype].StaticPopups = function(self)
 				self:skinStdButton{obj=this.button3}
 				self:skinStdButton{obj=this.button4}
 				self:skinStdButton{obj=this.extraButton}
+				self:SecureHook(this.button1, "Enable", function(this, _)
+					self:clrBtnBdr(this)
+				end)
 			end
 			if self.modBtnBs then
 				self:addButtonBorder{obj=_G[objName .. "ItemFrame"], ibt=true}
@@ -5773,6 +5766,14 @@ aObj.blizzFrames[ftype].StaticPopups = function(self)
 		self:checkShown(_G["StaticPopup" .. i])
 	end
 
+	local function skinReportFrame(frame)
+		aObj:skinObject("frame", {obj=frame.Comment, fType=ftype, kfs=true, fb=true})
+		aObj:skinObject("frame", {obj=frame, fType=ftype, kfs=true})
+		if aObj.modBtns then
+			aObj:skinStdButton{obj=frame.ReportButton}
+			aObj:skinStdButton{obj=frame.CancelButton}
+		end
+	end
 	if not self.isClsc then
 		self:SecureHookScript(_G.PetBattleQueueReadyFrame, "OnShow", function(this)
 			self:removeNineSlice(this.Border)
@@ -5784,27 +5785,14 @@ aObj.blizzFrames[ftype].StaticPopups = function(self)
 
 			self:Unhook(this, "OnShow")
 		end)
-	end
-
-	local function skinReportFrame(frame)
-		if not aObj.isClsc then
-			aObj:removeNineSlice(frame.Border)
-		end
-		aObj:skinObject("frame", {obj=frame.Comment, fType=ftype, kfs=true, fb=true})
-		aObj:skinObject("frame", {obj=frame, fType=ftype, kfs=true})
-		if aObj.modBtns then
-			aObj:skinStdButton{obj=frame.ReportButton}
-			aObj:skinStdButton{obj=frame.CancelButton}
-		end
-	end
-
-	if not self.isClsc then
 		self:SecureHook(_G.PlayerReportFrame, "ShowReportDialog", function(this, ...)
+			self:removeNineSlice(this.Border)
 			skinReportFrame(this)
 
 			self:Unhook(this, "ShowReportDialog")
 		end)
 		self:SecureHook(_G.ClubFinderReportFrame, "ShowReportDialog", function(this, ...)
+			self:removeNineSlice(this.Border)
 			skinReportFrame(this)
 
 			self:Unhook(this, "ShowReportDialog")
@@ -5886,7 +5874,6 @@ aObj.blizzFrames[ftype].SystemOptions = function(self)
 	if not self.prdb.SystemOptions or self.initialized.SystemOptions then return end
 	self.initialized.SystemOptions = true
 
-	-- Graphics
 	self:SecureHookScript(_G.VideoOptionsFrame, "OnShow", function(this)
 		self:removeNineSlice(this.Border)
 		-- Main panel
@@ -5911,7 +5898,6 @@ aObj.blizzFrames[ftype].SystemOptions = function(self)
 		end
 		-- Graphics
 		skinKids(_G.Display_)
-		self:skinObject("frame", {obj=_G.Display_, fType=ftype, kfs=true, fb=true})
 		self:skinObject("tabs", {obj=_G.Display_, tabs={_G.GraphicsButton, _G.RaidButton}, fType=ftype, ignoreSize=true, upwards=true, offsets={x1=4, y1=0, x2=0, y2=-3}, track=false})
 		if self.isTT then
 			self:SecureHook("GraphicsOptions_SelectBase", function()
@@ -5925,6 +5911,7 @@ aObj.blizzFrames[ftype].SystemOptions = function(self)
 				end
 			end)
 		end
+		self:skinObject("frame", {obj=_G.Display_, fType=ftype, kfs=true, fb=true})
 		skinKids(_G.Graphics_)
 		self:skinObject("frame", {obj=_G.Graphics_, fType=ftype, kfs=true, fb=true})
 		skinKids(_G.RaidGraphics_)
@@ -6312,7 +6299,7 @@ aObj.blizzFrames[ftype].UIDropDownMenu = function(self)
 			aObj:removeBackdrop(_G[frame:GetName() .. "Backdrop"])
 		end
 		aObj:removeBackdrop(_G[frame:GetName() .. "MenuBackdrop"])
-		aObj:addSkinFrame{obj=frame, ft=ftype, kfs=true, nb=true, ofs=-2}
+		aObj:skinObject("frame", {obj=frame, fType=ftype, kfs=true, ofs=-4})
 	end
 
 	for i = 1, _G.UIDROPDOWNMENU_MAXLEVELS do
