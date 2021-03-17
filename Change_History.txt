@@ -1,3 +1,15 @@
+beta9.37899.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Updated Interface number in TOC
+	Updated UnitFrames & NewSkinFuncs
+	Updated System Options skin
+	Updated EncounterJournal skin
+	Updated SilverDragon & LibTextDump skins
+	Skinned KongConfig
+
 beta9.37893.1
 Jncl:
 	ToDo.txt
