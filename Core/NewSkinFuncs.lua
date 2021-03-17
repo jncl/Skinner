@@ -66,9 +66,8 @@ aObj.skinTPLs = {
 		bd          = 1, -- backdrop to use
 		hdr         = false, -- header texture(s)
 		noBdr       = false, -- equivalent to bd=11 when true
-		ebc         = false, -- use edit box colours
 		-- ba          = 1, -- backdrop alpha
-		clr         = "default", -- backdrop border colour
+		-- clr         = "default", -- backdrop border colour
 		-- bba         = 1, -- backdrop border alpha
 		ng          = false, -- no Gradient texture
 		-- fh          =, -- fade height
@@ -81,9 +80,8 @@ aObj.skinTPLs = {
 	},
 	skin = {
 		bd          = 1,
-		ebc         = false,
 		-- ba          = 1, -- backdrop alpha
-		bbclr       = "default", -- backdrop border colour
+		-- bbclr       = "default", -- backdrop border colour
 		-- bba         = 1, -- backdrop border alpha
 		ng          = false,
 		-- fh          =,
@@ -221,16 +219,11 @@ local function applySkin(tbl)
 	end
 	aObj:addBackdrop(tbl.obj)
 	tbl.obj:SetBackdrop(aObj.Backdrop[tbl.bd])
+	r, g, b, a = aObj.bClr:GetRGBA()
+	tbl.obj:SetBackdropColor(r, g, b, tbl.ba or a)
+	aObj:clrBBC(tbl.obj, tbl.bbclr, tbl.bba)
 	if not tbl.ng then
 		aObj:applyGradient(tbl.obj, tbl.fh, tbl.invert, tbl.rotate)
-	end
-	if not tbl.ebc then
-		r, g, b, a = aObj.bClr:GetRGBA()
-		tbl.obj:SetBackdropColor(r, g, b, tbl.ba or a)
-		aObj:clrBBC(tbl.obj, tbl.bbclr, tbl.bba)
-	else
-		tbl.obj:SetBackdropColor(.1, .1, .1, 1)
-		tbl.obj:SetBackdropBorderColor(.2, .2, .2, 1)
 	end
 end
 skinFuncs.skin = function(table) applySkin(table) end
@@ -502,7 +495,6 @@ local function skinFrame(tbl)
 	so.obj    = tbl.obj.sf
 	so.fType  = tbl.fType
 	so.bd     = tbl.noBdr and 11 or tbl.bd
-	so.ebc    = tbl.ebc
 	so.ba     = _G.rawget(tbl, ba)
 	so.bbclr  = tbl.clr
 	so.bba    = _G.rawget(tbl, bba)
