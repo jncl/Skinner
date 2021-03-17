@@ -34,7 +34,7 @@ aObj.addonsToSkin.Cork = function(self) -- v 7.1.0.62-Beta
 				end
 			end
 		end
-		self:skinObject("tabs", {obj=_G.CorkFrame, tabs=_G.CorkFrame.Tabs, ignoreSize=true, lod=true, offsets={x1=6, y1=0, x2=-6, y2=-1}, regions={5}, track=false, func=aObj.isTT and function(tab)
+		self:skinObject("tabs", {obj=_G.CorkFrame, tabs=_G.CorkFrame.Tabs, lod=true, offsets={x1=6, y1=0, x2=-6, y2=0}, regions={5}, track=false, func=aObj.isTT and function(tab)
 			aObj:SecureHookScript(tab, "OnClick", function(this)
 				for _, tab in _G.pairs(this:GetParent().Tabs) do
 					if tab == this then

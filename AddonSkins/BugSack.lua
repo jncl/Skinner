@@ -11,8 +11,8 @@ aObj.addonsToSkin.BugSack = function(self) -- v 9.0.0
 		self:skinObject("slider", {obj=_G.BugSackScroll.ScrollBar})
 		self:moveObject{obj=self:getRegion(_G.BugSackFrame, 11), y=-8} -- countLabel
 		_G.BugSackFrame.Tabs = {_G.BugSackTabAll, _G.BugSackTabSession, _G.BugSackTabLast}
-		self:skinObject("tabs", {obj=this, tabs=_G.BugSackFrame.Tabs, regions={7, 8}, lod=true, ignoreHLTex=true, track=false, func=aObj.isTT and function(tab)
-			aObj:SecureHookScript(tab, "OnClick", function(this)
+		self:skinObject("tabs", {obj=this, tabs=_G.BugSackFrame.Tabs, regions={7, 8}, lod=true, track=false, func=aObj.isTT and function(tab)
+			self:SecureHookScript(tab, "OnClick", function(this)
 				for _, tab in _G.pairs(this:GetParent().Tabs) do
 					if tab == this then
 						aObj:setActiveTab(tab.sf)
@@ -22,11 +22,13 @@ aObj.addonsToSkin.BugSack = function(self) -- v 9.0.0
 				end
 			end)
 		end})
-		self:skinObject("frame", {obj=_G.BugSackFrame, kfs=true, ofs=-2, x2=-1})
+		self:skinObject("frame", {obj=_G.BugSackFrame, kfs=true, ofs=-2, x2=-1, y2=4})
 		_G.BugSackFrame:SetFrameStrata("FULLSCREEN_DIALOG")
 		if self.modBtns then
 			self:skinCloseButton{obj=self:getChild(_G.BugSackFrame, 1)}
-			for _, btn in _G.pairs{_G.BugSackPrevButton, _G.BugSackSendButton, _G.BugSackNextButton} do
+			local btn
+			for _, name in _G.pairs{"Prev", "Send", "Next"} do
+				btn = _G["BugSack" .. name .. "Button"]
 				self:skinStdButton{obj=btn}
 				self:SecureHook(btn, "Disable", function(this, _)
 					self:clrBtnBdr(this)
@@ -35,6 +37,7 @@ aObj.addonsToSkin.BugSack = function(self) -- v 9.0.0
 					self:clrBtnBdr(this)
 				end)
 			end
+			btn = nil
 		end
 
 		self:Unhook(this, "OpenSack")
