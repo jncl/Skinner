@@ -3268,7 +3268,7 @@ aObj.blizzFrames[ftype].InterfaceOptions = function(self)
 	-- Interface
 	self:SecureHookScript(_G.InterfaceOptionsFrame, "OnShow", function(this)
 		self:removeNineSlice(this.Border)
-		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=true, offsets={x1=7, y1=0, x2=-7, y2=self.isTT and -4 or -3}, offsetsHL={x1=10, y1=-3, x2=-10, y2=-3}})
+		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=true, offsets={x1=9, y1=0, x2=-9, y2=-3}, offsetsHL={x1=10, y1=-3, x2=-10, y2=-3}})
 		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true})
 		if self.modBtns then
 			self:skinStdButton{obj=_G.InterfaceOptionsFrameCancel}
@@ -3966,7 +3966,7 @@ aObj.blizzLoDFrames[ftype].MacroUI = function(self)
 	self.initialized.MacroUI = true
 
 	self:SecureHookScript(_G.MacroFrame, "OnShow", function(this)
-		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=true, offsets={x1=0, y1=-4, x2=0, y2=-2}, offsetsHL={x1=0-2, y1=-6, x2=2, y2=-4}, func=function(tab) tab:SetFrameLevel(20) end})
+		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=true, offsets={x1=1, y1=-4, x2=-1, y2=-2}, offsetsHL={x1=-2, y1=-6, x2=2, y2=-4}, func=function(tab) tab:SetFrameLevel(20) end})
 		self:skinObject("frame", {obj=_G.MacroButtonScrollFrame, fType=ftype, kfs=true, fb=true, ofs=12, y1=10, x2=32})
 		self:skinObject("slider", {obj=_G.MacroButtonScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
 		self:skinObject("slider", {obj=_G.MacroFrameScrollFrame.ScrollBar, fType=ftype})
@@ -5238,7 +5238,7 @@ aObj.blizzFrames[ftype].PVEFrame = function(self)
 
 	self:SecureHookScript(_G.PVEFrame, "OnShow", function(this)
 		self:keepFontStrings(this.shadows)
-		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype})
+		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, offsets={x1=9, y1=2, x2=-9, y2=2}})
 		-- GroupFinder Frame
 		for i = 1, 3 do
 			_G.GroupFinderFrame["groupButton" .. i].bg:SetTexture(nil)

@@ -824,7 +824,7 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 	self.initialized.Collections = true
 
 	self:SecureHookScript(_G.CollectionsJournal, "OnShow", function(this)
-		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=true, selectedTab=this.selectedTab})
+		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=true, selectedTab=this.selectedTab, offsets={x1=9, y1=2, x2=-9, y2=2}})
 		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x2=3, y2=-2})
 
 		self:Unhook(this, "OnShow")
@@ -2461,7 +2461,7 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 			end)
 			self:skinObject("dropdown", {obj=_G.FriendsFrameStatusDropDown, fType=ftype})
 			_G.FriendsFrameStatusDropDownStatus:SetAlpha(1) -- display status icon
-			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=true, upwards=true, offsets={x1=0, y1=-5, x2=0, y2=-4}})
+			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=true, upwards=true, offsets={x1=1, y1=-5, x2=-1, y2=-4}})
 			_G.RaiseFrameLevel(this)
 
 			self:Unhook(this, "OnShow")
