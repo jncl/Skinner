@@ -24,50 +24,20 @@ ToDos
 
 ≈	O	Refactor NewSkinFuncs in Blizzard/AddOn skins
 
-√	O	Slider & EditBox border colour, requested by Fakelessgaming, 14.03.21
+	I	Options, reported by Galthariel/MacallanTwoFive, 17.03.21
+√		- AceLocale-3.0-6: Skinner: Missing entry for 'Backdrop Border Colour'
+		[string "@Skinner\Core\Options-Options.lua"]:644: in function <Skinner\Core\Options.lua:222>
 
-	I	Tabs, reported by Fakelessgaming, 14.03.21
-		- Stop untextured tabs from overlapping
-√			- AuctionHouseUI
-√			- BankFrame
-√			- MerchantFrame
-√			- CharacterFrame
-√			- FriendsFrame
-?			- GuildFrame
-?			- GuildInfoFrame
-√			- InspectUI
-?			- LookingForGuildFrame
-√			- SpellBookFrame
-√			- TalentUI
-√			- TradeSkillUI
-√			- AchievementFrame
-√			- GuildBankUI
-√			- PVEFrame
-√			- Collections
-√			- WardrobeCollections
-√			- EncounterJournal
-√			- InterfaceOptions
-√			- SystemOptions
-√			- ChatTabs
-√			- ChatConfigFrame
-√			- ChatConfigCombatSettings
-√			- MacroUI
-√			- ArtifactUI
-√			- GarrisonBuildingFrame
-√			- GarrisonLandingPage
-√			- GarrisonLandingPage.Report
-√			- GarrisonShipyardFrame
-√			- MissionList
-√			- MissionFrame
-			- ClassicSupport
-√				- AuctionUI
-√				- CharacterFrame
-√				- FriendsFrame
-√				- InspectFrame
-√				- MerchantFrame
-√				- SpellBookFrame
-√				- TalentFrame
-≈				- RaidParentFrame
-≈				- WorldStateScoreFrame
-√			- Ace3 -> TabGroup
-√			- BugSack
+	I	Tabs, reported by Fakelessgaming, 17.03.21
+		- uses the settings:
+			Backdrop Texture - Blizzard Chatframe Background
+			Backdrop TileSize - 128
+			Border Texture - 1 Pixel [from !Details AddOn]
+			Border Width - 1
+			Border Inset - 0
+		- Tabs that still need width adjusting:
+√			- Interface Options (Top)
+√			- Collections (Bottom)
+√			- LFG (Bottom)
+√			- FriendsFrame (Top)
+√			- MacroUI (Top)
