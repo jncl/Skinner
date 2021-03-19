@@ -1,3 +1,22 @@
+beta9.37899.2
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Many changes to tabs skinning and layout
+	Updated Ace3, BugSack & Cork skins
+	Use Slider & EditBox colour as required
+	Update UIFrames to use NewSkinFuncs
+	Updated Frame code in NSF
+	Updated EditBox code in NSF
+	Updated Slider code in NSF
+	Updated Colour handling in NSF
+	Bugfix for Disabled Minimized arrow
+	Added Slider & EditBox colour option
+	Reinstated ReloadUI when profile changed
+	Updated PlayerFrames to use NewSkinFuncs
+	Updated NPCFrames to use NewSkinFuncs
+	Updated ClassicSupport to use NewSkinFuncs
+
 beta9.37899.1
 Jncl:
 	ToDo.txt
