@@ -43,22 +43,21 @@ aObj.blizzLoDFrames[ftype].AchievementUI = function(self)
 			end
 		end
 		local function skinCategories()
-			-- handle case where buttons don't exist
-			if _G.AchievementFrameCategoriesContainer.buttons then
-				for i = 1, #_G.AchievementFrameCategoriesContainer.buttons do
-					_G.AchievementFrameCategoriesContainer.buttons[i].background:SetAlpha(0)
-				end
+			for _, btn in _G.pairs(_G.AchievementFrameCategoriesContainer.buttons) do
+				btn.background:SetAlpha(0)
 			end
 		end
 		local function skinComparisonStats()
-			for i = 1, #_G.AchievementFrameComparisonStatsContainer.buttons do
-				if _G.AchievementFrameComparisonStatsContainer.buttons[i].isHeader then _G.AchievementFrameComparisonStatsContainer.buttons[i].background:SetAlpha(0) end
-				_G.AchievementFrameComparisonStatsContainer.buttons[i].left:SetAlpha(0)
-				_G.AchievementFrameComparisonStatsContainer.buttons[i].left2:SetAlpha(0)
-				_G.AchievementFrameComparisonStatsContainer.buttons[i].middle:SetAlpha(0)
-				_G.AchievementFrameComparisonStatsContainer.buttons[i].middle2:SetAlpha(0)
-				_G.AchievementFrameComparisonStatsContainer.buttons[i].right:SetAlpha(0)
-				_G.AchievementFrameComparisonStatsContainer.buttons[i].right2:SetAlpha(0)
+			for _, btn in _G.pairs(_G.AchievementFrameComparisonStatsContainer.button) do
+				if btn.isHeader then
+					btn.background:SetAlpha(0)
+				end
+				btn.left:SetAlpha(0)
+				btn.left2:SetAlpha(0)
+				btn.middle:SetAlpha(0)
+				btn.middle2:SetAlpha(0)
+				btn.right:SetAlpha(0)
+				btn.right2:SetAlpha(0)
 			end
 		end
 		local function skinBtn(btn)
@@ -103,7 +102,7 @@ aObj.blizzLoDFrames[ftype].AchievementUI = function(self)
 			if aObj.modChkBtns
 			and btn.tracked
 			then
-				aObj:skinCheckButton{obj=btn.tracked}
+				aObj:skinCheckButton{obj=btn.tracked, fType=ftype}
 			end
 		end
 		local function cleanButtons(frame, type)
