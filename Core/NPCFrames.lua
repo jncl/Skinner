@@ -58,7 +58,7 @@ aObj.blizzLoDFrames[ftype].AuctionHouseUI = function(self)
 				if this.tableBuilder then
 					for hdr in this.tableBuilder.headerPoolCollection:EnumerateActive() do
 						aObj:removeRegions(hdr, {1, 2, 3})
-						aObj:skinObject("frame", {obj=hdr, fType=ftype, ofs=1})
+						aObj:skinObject("frame", {obj=hdr, fType=ftype, ofs=0})
 					end
 				end
 			end)
@@ -90,9 +90,9 @@ aObj.blizzLoDFrames[ftype].AuctionHouseUI = function(self)
 		end
 		this.CategoriesList:DisableDrawLayer("BACKGROUND")
 		self:removeNineSlice(this.CategoriesList.NineSlice)
-		for i = 1, _G.NUM_FILTERS_TO_DISPLAY do
-			self:keepRegions(this.CategoriesList.FilterButtons[i], {3, 4, 5}) -- N.B. region 3 is highlight, 4 is selected, 5 is text
-			self:addSkinFrame{obj=this.CategoriesList.FilterButtons[i], ft=ftype, nb=true, aso={bd=5}, y2=-1}
+		for _, btn in _G.pairs(this.CategoriesList.FilterButtons) do
+			self:keepRegions(btn, {3, 4, 5}) -- N.B. region 3 is highlight, 4 is selected, 5 is text
+			self:addSkinFrame{obj=btn, ft=ftype, nb=true, ofs=-1}
 		end
 		self:SecureHook("FilterButton_SetUp", function(button, _)
 			button.NormalTexture:SetAlpha(0)
@@ -117,6 +117,12 @@ aObj.blizzLoDFrames[ftype].AuctionHouseUI = function(self)
 			self:Unhook(this, "OnShow")
 		end)
 		self:removeRegions(this.WoWTokenResults.TokenDisplay, {3}) -- background texture
+		if self.modBtns then
+			self:skinStdButton{obj=this.WoWTokenResults.Buyout}
+			self:SecureHook(this.WoWTokenResults.Buyout, "SetEnabled", function(this)
+				self:clrBtnBdr(this)
+			end)
+		end
 		local btn = this.WoWTokenResults.TokenDisplay.ItemButton
 		btn.IconBorder:SetTexture(nil)
 		if self.modBtnBs then
@@ -124,12 +130,6 @@ aObj.blizzLoDFrames[ftype].AuctionHouseUI = function(self)
 			self:clrButtonFromBorder(btn)
 		end
 		btn = nil
-		if self.modBtns then
-			self:skinStdButton{obj=this.WoWTokenResults.Buyout}
-			self:SecureHook(this.WoWTokenResults.Buyout, "SetEnabled", function(this)
-				self:clrBtnBdr(this)
-			end)
-		end
 		this.WoWTokenResults.DummyScrollBar:DisableDrawLayer("BACKGROUND")
 		this.WoWTokenResults.DummyScrollBar:DisableDrawLayer("ARTWORK")
 		-- Buy frames
