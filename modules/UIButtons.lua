@@ -296,7 +296,7 @@ function module:skinCloseButton(opts) -- text on button
 	-- don't skin button if required
 	if not opts.noSkin then
 		if opts.sap then
-			aObj:addSkinButton{obj=opts.obj, ft=opts.ftype or "a", parent=opts.obj, sap=true}
+			aObj:skinObject("button", {obj=opts.obj, fType=ftype, sap=true})
 		else
 			local bW = _G.Round(opts.obj:GetWidth())
 			opts.x1 = opts.x1 or bW == 32 and 6 or 4
@@ -826,7 +826,7 @@ local function __skinCheckButton(opts)
 			yOfs = nil
 		end
 	end
-	aObj:addSkinButton{obj=opts.obj, aso={bd=bd, ng=true, bbclr="grey"}, parent=opts.obj, noHooks=not opts.hf, ofs=ofs, y2=yOfs}
+	aObj:skinObject("button", {obj=opts.obj, fType=ftype, bd=bd, ng=true, ofs=ofs, y2=yOfs, clr="grey"})
 
 end
 function module:skinCheckButton(...)
