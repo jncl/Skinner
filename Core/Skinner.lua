@@ -185,10 +185,9 @@ function aObj:OnInitialize()
 	self.Backdrop[5].tileSize = 12
 	self.Backdrop[5].edgeSize = 12
 	self.Backdrop[5].insets = {left = 3, right = 3, top = 3, bottom = 3}
-	self.Backdrop[6] = _G.CopyTable(self.backdrop)
+	self.Backdrop[6] = _G.CopyTable(self.Backdrop[5])
 	self.Backdrop[6].tileSize = 10
 	self.Backdrop[6].edgeSize = 10
-	self.Backdrop[6].insets = {left = 3, right = 3, top = 3, bottom = 3}
 	self.Backdrop[7] = _G.CopyTable(self.backdrop)
 	self.Backdrop[7].edgeSize = 10
 	-- this backdrop is for the BattlefieldMinimap/Minimap/Pet LoadOut frames
