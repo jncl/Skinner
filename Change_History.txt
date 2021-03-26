@@ -1,3 +1,10 @@
+beta9.37899.3
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated missing localisations
+	Updated tabs for IOF, MacroUI, PVEFrame, Collections & FriendsFrame
+
 beta9.37899.2
 Jncl:
 	ToDo.txt
