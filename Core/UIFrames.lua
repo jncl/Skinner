@@ -3341,10 +3341,8 @@ aObj.blizzFrames[ftype].InterfaceOptions = function(self)
 		skinKids(_G.CompactUnitFrameProfiles.newProfileDialog, ftype)
 		self:skinObject("frame", {obj=_G.CompactUnitFrameProfiles.newProfileDialog, fType=ftype, ofs=0})
 		if self.modBtns then
-			self:clrBtnBdr(_G.CompactUnitFrameProfiles.newProfileDialog.createButton)
 			self:SecureHook("CompactUnitFrameProfiles_UpdateNewProfileCreateButton", function()
 				self:clrBtnBdr(_G.CompactUnitFrameProfiles.newProfileDialog.createButton)
-				self:Unhook(this, "CompactUnitFrameProfiles_UpdateNewProfileCreateButton")
 			end)
 		end
 		self:removeNineSlice(_G.CompactUnitFrameProfiles.deleteProfileDialog.Border)
@@ -3355,11 +3353,11 @@ aObj.blizzFrames[ftype].InterfaceOptions = function(self)
 		self:skinObject("frame", {obj=_G.CompactUnitFrameProfiles.unsavedProfileDialog, fType=ftype, ofs=0})
 		skinKids(_G.CompactUnitFrameProfiles.optionsFrame, ftype)
 		if self.modBtns then
-			self:clrBtnBdr(_G.CompactUnitFrameProfilesDeleteButton)
+			self:skinStdButton{obj=_G.CompactUnitFrameProfilesDeleteButton, fType=ftype}
+			self:skinStdButton{obj=_G.CompactUnitFrameProfilesSaveButton, fType=ftype}
 			self:SecureHook("CompactUnitFrameProfiles_UpdateManagementButtons", function()
 				self:clrBtnBdr(_G.CompactUnitFrameProfilesDeleteButton)
 				self:clrBtnBdr(_G.CompactUnitFrameProfilesSaveButton)
-				self:Unhook(this, "CompactUnitFrameProfiles_UpdateManagementButtons")
 			end)
 		end
 		_G.CompactUnitFrameProfiles.optionsFrame.autoActivateBG:SetTexture(nil)
