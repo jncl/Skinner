@@ -24,20 +24,71 @@ ToDos
 
 ≈	O	Refactor NewSkinFuncs in Blizzard/AddOn skins
 
-	I	Options, reported by Galthariel/MacallanTwoFive, 17.03.21
-√		- AceLocale-3.0-6: Skinner: Missing entry for 'Backdrop Border Colour'
-		[string "@Skinner\Core\Options-Options.lua"]:644: in function <Skinner\Core\Options.lua:222>
+	I	Tabs, Column Headers, buttons still overlapping, reported by Fakelessgaming, 19.03.21
+		- using different border settings
+√			- GameMenu
 
-	I	Tabs, reported by Fakelessgaming, 17.03.21
-		- uses the settings:
-			Backdrop Texture - Blizzard Chatframe Background
-			Backdrop TileSize - 128
-			Border Texture - 1 Pixel [from !Details AddOn]
-			Border Width - 1
-			Border Inset - 0
-		- Tabs that still need width adjusting:
-√			- Interface Options (Top)
-√			- Collections (Bottom)
-√			- LFG (Bottom)
-√			- FriendsFrame (Top)
-√			- MacroUI (Top)
+		- UIFrames
+√			- ChatConfig.ChatTabManager
+√			- ChatConfigCombatSettings
+√			- ChatTabs
+√			- ChatTemporaryWindow
+√			- GarrisonLandingPage
+√			- GarrisonLandingPage.Report
+√			- GarrisonBuildingFrame.Tabs
+√			- GarrisonShipyardFrame
+√			- MissionFrame
+√			- MissionList
+√			- GuildBankFrame
+√			- InterfaceOptionsFrame
+√			- MacroFrame
+√			- MailFrame
+√			- PVEFrame
+√			- PVPMatchScoreboard
+√			- PVPMatchResults
+?			- RaidParentFrame
+√			- VideoOptionsFrame
+
+		- NPCFrames
+√			- AuctionHouseUI.AuctionsFrame
+√			- AuctionHouseUI.Tabs
+√			- BankFrame
+√			- MerchantFrame
+
+		- PlayerFrames
+√			- AchievementFrame
+√			- ArtifactUI
+√			- CharacterFrame
+√			- CollectionsJournal
+√			- WardrobeCollectionFrame
+√			- EncounterJournal.instanceSelect
+√			- EncounterJournal.encounter.info
+√			- FriendsFrame
+√			- FriendsFrameTabHeader
+√			- GuildFrame
+√			- GuildInfoFrame
+√			- InspectUI
+?			- LookingForGuildUI
+√			- SpellBookFrame
+√			- TalentsUI
+√			- TradeSkillUI
+
+√		- Ace3
+√		- BugSack
+
+	- ClassicSupport
+		- AuctionFrame
+		- CharacterFrame
+		- FriendsFrame
+		- FriendsTabHeader
+		- InspectFrame
+		- SpellBookFrame
+		- TalentFrame
+		- RaidParentFrame
+		- WorldStateScoreFrame
+
+	- TradeskillUI, reported by Fakelessgaming, 21.03.21
+√		- Crafting amount border could be larger
+
+	- Raid Frames [CompactFrames], reported by Fakelessgaming, 21.03.21
+?		- overlapping entries
