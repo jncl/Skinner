@@ -210,7 +210,7 @@ aObj.blizzLoDFrames[ftype].AuctionHouseUI = function(self)
 			end)
 		end
 		-- Auctions frames
-		self:skinObject("tabs", {obj=this.AuctionsFrame, tabs=this.AuctionsFrame.Tabs, fType=ftype, lod=true, offsets={x1=6, y1=-4, x2=-6, y2=-3}, offsetsHL={x1=8, y1=-8, x2=-8, y2=-4}, track=false, func=function(tab) tab:SetFrameLevel(20) end})
+		self:skinObject("tabs", {obj=this.AuctionsFrame, tabs=this.AuctionsFrame.Tabs, fType=ftype, lod=self.isTT and true, upwards=true, offsets={x1=6, y1=-4, x2=-6, y2=self.isTT and -3 or 0}, track=false, func=function(tab) tab:SetFrameLevel(20) end})
 		if self.isTT then
 			self:SecureHook(this.AuctionsFrame, "SetDisplayMode", function(this, displayMode)
 				-- aObj:Debug("AuctionsFrame SetDisplayMode: [%s, %s]", this, displayMode)
@@ -262,7 +262,7 @@ aObj.blizzLoDFrames[ftype].AuctionHouseUI = function(self)
 				self:clrBtnBdr(this)
 			end)
 		end
-		self:skinObject("tabs", {obj=this, tabs=this.Tabs, fType=ftype, lod=true, track=false})
+		self:skinObject("tabs", {obj=this, tabs=this.Tabs, fType=ftype, lod=self.isTT and true, track=false, offsets={x1=8, y1=self.isTT and 2 or 0, x2=-8, y2=2}})
 		if self.isTT then
 			self:SecureHook(this, "SetDisplayMode", function(this, displayMode)
 				if not this.tabsForDisplayMode[displayMode] then return end
@@ -316,7 +316,7 @@ aObj.blizzFrames[ftype].BankFrame = function(self)
 		end
 		self:removeInset(_G.BankFrameMoneyFrameInset)
 		_G.BankFrameMoneyFrameBorder:DisableDrawLayer("BACKGROUND")
-		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype})
+		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, offsets={x1=8, y1=self.isTT and 2 or 0, x2=-8, y2=2}})
 		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true})
 		self:keepFontStrings(_G.BankSlotsFrame)
 		if self.modBtnBs then
@@ -792,16 +792,16 @@ aObj.blizzFrames[ftype].MerchantFrame = function(self)
 	self.initialized.MerchantFrame = true
 
 	self:SecureHookScript(_G.MerchantFrame, "OnShow", function(this)
-		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, ignoreSize=self.isClsc and true, lod=true})
+		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true, offsets={x1=9, y1=self.isTT and 2 or -2, x2=-9, y2=2}})
 		self:removeInset(_G.MerchantMoneyInset)
 		_G.MerchantMoneyBg:DisableDrawLayer("BACKGROUND")
 		if not self.isClsc then
-			self:skinDropDown{obj=_G.MerchantFrameLootFilter}
+			self:skinObject("dropdown", {obj=_G.MerchantFrameLootFilter, fType=ftype})
 			self:removeInset(_G.MerchantExtraCurrencyInset)
 			_G.MerchantExtraCurrencyBg:DisableDrawLayer("BACKGROUND")
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, cb=true, y2=-3})
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, cb=true})
 		else
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, cb=true, x2=1, y2=-3})
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, cb=true, x2=1})
 		end
 		if self.modBtnBs then
 			self:removeRegions(_G.MerchantPrevPageButton, {2})

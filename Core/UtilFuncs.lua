@@ -1217,21 +1217,6 @@ function aObj:setActiveTab(tabSF)
 	tabSF.tfade:SetTexture(self.gradientTex)
 	tabSF.tfade:SetGradientAlpha(self:getGradientInfo(self.prdb.Gradient.invert, self.prdb.Gradient.rotate))
 
-	if not tabSF.ignore
-	and not tabSF.grown
-	then
-		local relativeTo, xOfs, yOfs
-		if not tabSF.up then
-			_, relativeTo, _, xOfs, yOfs = tabSF:GetPoint(2)
-			tabSF:SetPoint("BOTTOMRIGHT", relativeTo, "BOTTOMRIGHT", xOfs, yOfs - 6)
-		else
-			_, relativeTo, _, xOfs, yOfs = tabSF:GetPoint(1)
-			tabSF:SetPoint("TOPLEFT", relativeTo, "TOPLEFT", xOfs, yOfs + 6)
-		end
-		tabSF.grown = true
-		relativeTo, xOfs, yOfs = nil, nil, nil, nil, nil
-	end
-
 end
 
 function aObj:setInactiveTab(tabSF)
@@ -1244,21 +1229,6 @@ function aObj:setInactiveTab(tabSF)
 
 	tabSF.tfade:SetTexture(self.itTex)
 	tabSF.tfade:SetAlpha(1)
-
-	if not tabSF.ignore
-	and tabSF.grown
-	then
-		local relativeTo, xOfs, yOfs
-		if not tabSF.up then
-			_, relativeTo, _, xOfs, yOfs = tabSF:GetPoint(2)
-			tabSF:SetPoint("BOTTOMRIGHT", relativeTo, "BOTTOMRIGHT", xOfs, yOfs + 6)
-		else
-			_, relativeTo, _, xOfs, yOfs = tabSF:GetPoint(1)
-			tabSF:SetPoint("TOPLEFT", relativeTo, "TOPLEFT", xOfs, yOfs - 6)
-		end
-		tabSF.grown = nil
-		relativeTo, xOfs, yOfs = nil, nil, nil
-	end
 
 end
 

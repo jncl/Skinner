@@ -185,9 +185,9 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 			end
 		end
 	end
-	local mfTabSkin = aObj.skinTPLs.new("tabs", {fType=ftype, lod=true, regions={7, 8, 9, 10}})
+	local mfTabSkin = aObj.skinTPLs.new("tabs", {fType=ftype, ignoreHLTex=false, regions={7, 8, 9, 10}})
 	function skinMissionFrame(frame)
-		local x1Ofs, y1Ofs, y2Ofs = 2, 2, -4
+		local x1Ofs, y1Ofs, x2Ofs, y2Ofs = 2, 2, 1, -4
 		if frame == _G.CovenantMissionFrame then
 			x1Ofs = -2
 			y1Ofs = 2
@@ -199,14 +199,22 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 			y2Ofs = -3
 		end
 		frame.GarrCorners:DisableDrawLayer("BACKGROUND")
-		aObj:skinObject("frame", {obj=frame, fType=ftype, kfs=true, cbns=true, x1=x1Ofs, y1=y1Ofs, x2=1, y2=y2Ofs})
+		aObj:skinObject("frame", {obj=frame, fType=ftype, kfs=true, cbns=true, x1=x1Ofs, y1=y1Ofs, x2=x2Ofs, y2=y2Ofs})
 		x1Ofs, y1Ofs, y2Ofs = nil, nil, nil
 		-- tabs
 		mfTabSkin.obj = frame
 		mfTabSkin.prefix =  frame:GetName()
 		mfTabSkin.selectedTab = frame.selectedTab
-		mfTabSkin.offsets = {x1=9, y1=2, x2=-9, y2=frame==_G.GarrisonMissionFrame and 0 or -4}
+		mfTabSkin.lod = aObj.isTT and true
+		if frame == _G.GarrisonMissionFrame then
+			x1Ofs, y1Ofs, x2Ofs, y2Ofs = 10, -2, -11, 2
+		else
+			x1Ofs, y1Ofs, x2Ofs, y2Ofs = 10, -2, -10, 7
+		end
+		aObj:Debug("skinMissionFrame: [%s, %s, %s, %s]", x1Ofs, y1Ofs, x2Ofs, y2Ofs)
+		mfTabSkin.offsets = {x1=x1Ofs, y1=aObj.isTT and 2 or y1Ofs, x2=x2Ofs, y2=aObj.isTT and 4 or y2Ofs}
 		aObj:skinObject(mfTabSkin)
+		x1Ofs, y1Ofs, x2Ofs, y2Ofs = nil, nil, nil, nil
 	end
 	function skinCompleteDialog(frame, naval)
 		if not naval then
@@ -337,7 +345,7 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 	    aObj:removeRegions(frame.Stage.MissionInfo, naval and {1, 2, 3, 4, 5, 8, 9, 10} or {1, 2, 3, 4, 5, 11, 12, 13})
 		aObj:nilTexture(frame.Stage.MissionInfo.IconBG, true)
 	end
-	local mlTabSkin = aObj.skinTPLs.new("tabs", {fType=ftype, numTabs=2, lod=true, regions={7, 8, 9}, track=false})
+	local mlTabSkin = aObj.skinTPLs.new("tabs", {fType=ftype, numTabs=2, ignoreHLTex=false, upwards=true, regions={7, 8, 9}, track=false})
 	function skinMissionList(ml, tabOfs)
 		ml.MaterialFrame:DisableDrawLayer("BACKGROUND")
 		aObj:skinObject("frame", {obj=ml, fType=ftype, kfs=true, fb=true, ofs=1})
@@ -351,7 +359,8 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 			-- tabs
 			mlTabSkin.obj = ml
 			mlTabSkin.prefix = ml:GetName()
-			mlTabSkin.offsets =  {x1=tabOfs and tabOfs * -1 or 6, y1=tabOfs or 0, x2=tabOfs or -6, y2=3}
+			mlTabSkin.lod = aObj.isTT and true
+			mlTabSkin.offsets =  {x1=tabOfs and tabOfs * -1 or 6, y1=tabOfs or -6, x2=tabOfs or -6, y2=aObj.isTT and 3 or 8}
 			aObj:skinObject(mlTabSkin)
 			if aObj.isTT then
 				aObj:secureHook("GarrisonMissonListTab_SetSelected", function(tab, isSelected)
@@ -1546,8 +1555,8 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 
 	self:SecureHookScript(_G.ChatConfigFrame, "OnShow", function(this)
 		self:removeNineSlice(this.Border)
-		self:skinObject("frame", {obj=_G.ChatConfigCategoryFrame, fType=ftype, kfs=true, fb=true})
-		self:skinObject("frame", {obj=_G.ChatConfigBackgroundFrame, fType=ftype, kfs=true, fb=true})
+		self:skinObject("frame", {obj=_G.ChatConfigCategoryFrame, fType=ftype, kfs=true, fb=true, ofs=0})
+		self:skinObject("frame", {obj=_G.ChatConfigBackgroundFrame, fType=ftype, kfs=true, fb=true, ofs=0})
 		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true, ofs=-4, y1=0})
 		if self.modBtns then
 			self:skinStdButton{obj=this.DefaultButton}
@@ -1558,7 +1567,7 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 		end
 		-- ChatTabManager
 		local setTabState
-		if aObj.isTT then
+		if self.isTT then
 			function setTabState(tab)
 				if tab:GetID() == _G.CURRENT_CHAT_FRAME_ID then
 					aObj:setActiveTab(tab.sf)
@@ -1575,7 +1584,7 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 				tab.sf:Show()
 			end
 		end
-		local tabSkin = self.skinTPLs.new("tabs", {obj=this.ChatTabManager, tabs={}, fType=ftype, offsets={x1=0, y1=-6, x2=0, y2=-3}, regions={11}, noCheck=true, func=setTabState})
+		local tabSkin = self.skinTPLs.new("tabs", {obj=this.ChatTabManager, tabs={}, fType=ftype, upwards=true, ignoreHLTex=false, offsets={x1=4, y1=self.isTT and -10 or -12, x2=-4, y2=self.isTT and -5 or 0}, regions={8, 9, 10, 11}, noCheck=true, func=setTabState})
 		local function skinTabs(ctm)
 			_G.wipe(tabSkin.tabs)
 			for tab in ctm.tabPool:EnumerateActive() do
@@ -1680,7 +1689,7 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 			self:addButtonBorder{obj=_G.ChatConfigMoveFilterUpButton, es=12, ofs=-5, x2=-6, y2=7, clr="grey"}
 			self:addButtonBorder{obj=_G.ChatConfigMoveFilterDownButton, es=12, ofs=-5, x2=-6, y2=7, clr="grey"}
 		end
-		self:skinObject("frame", {obj=_G.ChatConfigCombatSettingsFilters, fType=ftype, kfs=true, fb=true})
+		self:skinObject("frame", {obj=_G.ChatConfigCombatSettingsFilters, fType=ftype, kfs=true, fb=true, ofs=0})
 		_G.LowerFrameLevel(_G.ChatConfigCombatSettingsFilters) -- make frame appear below tab texture
 		-- Message Sources
 		for i = 1, #_G.COMBAT_CONFIG_MESSAGESOURCES_BY do
@@ -1760,7 +1769,7 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 			self:skinCheckButton{obj=_G.CombatConfigSettingsParty, fType=ftype}
 			self:skinCheckButton{obj=_G.CombatConfigSettingsRaid, fType=ftype}
 		end
-		self:skinObject("tabs", {obj=_G.ChatConfigCombatSettings, prefix="CombatConfig", numTabs=#_G.COMBAT_CONFIG_TABS, fType=ftype, lod=true, offsets={x1=0, y1=-8, x2=-2, y2=-3}, offsetsHL={x1=4, y1=-6, x2=-4, y2=-6}, regions={4, 5}, track=false})
+		self:skinObject("tabs", {obj=_G.ChatConfigCombatSettings, prefix="CombatConfig", numTabs=#_G.COMBAT_CONFIG_TABS, fType=ftype, lod=self.isTT and true, upwards=true, offsets={x1=2, y1=-8, x2=-2, y2=self.isTT and -5 or 0}, regions={4, 5}, track=false})
 		if self.isTT then
 			self:SecureHook("ChatConfig_UpdateCombatTabs", function(selectedTabID)
 				local tab
@@ -1882,7 +1891,7 @@ aObj.blizzFrames[ftype].ChatTabs = function(self)
 			this.sf:SetAlpha(alpha)
 		end)
 	end
-	self:skinObject("tabs", {obj=_G.FloatingChatFrameManager, tabs=fcfTabs, fType=ftype, lod=true, ignoreHLTex=false, regions={7, 11}, offsets={x1=2, y1=-9, x2=-2, y2=-2}, track=false, func=function(tab) tab.sf:SetAlpha(tab:GetAlpha()) tab.sf:Hide() end})
+	self:skinObject("tabs", {obj=_G.FloatingChatFrameManager, tabs=fcfTabs, fType=ftype, lod=self.isTT and true, upwards=true, ignoreHLTex=false, regions={7, 8, 9, 10, 11}, offsets={x1=4, y1=self.isTT and -10 or -12, x2=-4, y2=self.isTT and -3 or -1}, track=false, func=function(tab) tab.sf:SetAlpha(tab:GetAlpha()) tab.sf:Hide() end})
 	fcfTabs = nil
 	if self.isTT then
 		self:SecureHook("FCF_Tab_OnClick", function(this, button)
@@ -1915,7 +1924,7 @@ aObj.blizzFrames[ftype].ChatTemporaryWindow = function(self)
 
 	local function skinTempWindow(obj)
 		if aObj.prdb.ChatTabs then
-			aObj:skinObject("tabs", {obj=obj, fType=ftype, tabs={_G[obj:GetName() .. "Tab"]}, lod=true, regions={7, 11}, offsets={x1=2, y1=-9, x2=-2, y2=-4}, track=false})
+			aObj:skinObject("tabs", {obj=obj, fType=ftype, tabs={_G[obj:GetName() .. "Tab"]}, lod=self.isTT and true, upwards=true, ignoreHLTex=false, regions={7, 8, 9, 10, 11}, offsets={x1=4, y1=self.isTT and -10 or -12, x2=-4, y2=self.isTT and -3 or -1}, track=false})
 		end
 		if aObj.prdb.ChatFrames	then
 			aObj:skinObject("frame", {obj=obj, fType=ftype, ofs=6, x2=27, y2=-9})
@@ -2265,7 +2274,7 @@ aObj.blizzFrames[ftype].ExtraAbilityContainer = function(self)
 		btn:GetNormalTexture():SetTexture(nil)
 		if aObj.modBtnBs then
 			-- TODO: causes ADDON_ACTION_BLOCKED so commented out for now 07.01.21
-			-- aObj:addButtonBorder{obj=btn, sec=secure, ofs=2, reParent={btn.Count, btn.HotKey and btn.HotKey}}
+			aObj:addButtonBorder{obj=btn, sec=true, ofs=2, reParent={btn.Count, btn.HotKey and btn.HotKey}}
 		end
 	end
 	if self.prdb.MainMenuBar.extraab then
@@ -2347,7 +2356,8 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 			end
 		end
 		self:skinObject("frame", {obj=this.Report.List, fType=ftype, fb=true, y1=4})
-		self:skinObject("tabs", {obj=this.Report, tabs={this.Report.InProgress, this.Report.Available}, fType=ftype, lod=true, ignoreHLTex=false, offsets={x1=4, y1=-2, x2=-4, y2=-4}, regions={3}, track=false, func=function(tab) tab:GetNormalTexture():SetAlpha(0) tab:SetFrameLevel(20) end})
+		-- tabs (Top)
+		self:skinObject("tabs", {obj=this.Report, tabs={this.Report.InProgress, this.Report.Available}, fType=ftype, lod=self.isTT and true, ignoreHLTex=false, upwards=true, offsets={x1=7, y1=self.isTT and -2 or -5, x2=-7, y2=self.isTT and -4 or 1}, regions={2, 3}, track=false, func=function(tab) tab:GetNormalTexture():SetAlpha(0) tab:SetFrameLevel(20) end})
 		if self.isTT then
 			self:SecureHook("GarrisonLandingPageReport_SetTab", function(tab)
 				self:setInactiveTab(tab:GetParent().unselectedTab.sf)
@@ -2382,8 +2392,8 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 		end
 
 		this.HeaderBar:SetTexture(nil)
-		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=true, offsets={x1=4, y1=-10, x2=-4, y2=-3}, regions={7, 8, 9, 10}})
-		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, ofs=-13, y2=5})
+		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true, ignoreHLTex=false, offsets={x1=7, y1=self.isTT and -9 or -14, x2=-7, y2=0}, regions={7, 8, 9, 10}})
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, ofs=-13, y2=6})
 
 		-- N.B. Garrison Landing Page Minimap Button skinned with other minimap buttons
 		self:Unhook(this, "OnShow")
@@ -2427,7 +2437,7 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 			end)
 			this.MaterialFrame:DisableDrawLayer("BACKGROUND")
 			this.Tabs = {this.Tab1, this.Tab2, this.Tab3}
-			self:skinObject("tabs", {obj=this, tabs=this.Tabs, fType=ftype, lod=true, regions={1, 3}, track=false, func=aObj.isTT and function(tab)
+			self:skinObject("tabs", {obj=this, tabs=this.Tabs, fType=ftype, lod=self.isTT and true, upwards=true, regions={1, 3}, offsets={x1=7, y1=-7, x2=-7, y2=self.isTT and 2 or 7}, track=false, func=aObj.isTT and function(tab)
 				aObj:SecureHookScript(tab, "OnClick", function(this)
 					for _, tab in _G.pairs(this:GetParent().Tabs) do
 						if tab == this then
@@ -2611,7 +2621,7 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 		if self.modBtns then
 			self:skinCloseButton{obj=this.BorderFrame.CloseButton2, noSkin=true}
 		end
-		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=true, offsets={x1=9, y1=2, x2=-9, y2=0}, regions={7, 8, 9, 10}})
+		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true, ignoreHLTex=false, offsets={x1=10, y1=aObj.isTT and 2 or -1, x2=-11, y2=2}, regions={7, 8, 9, 10}})
 		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=2, y1=2, x2=1, y2=-4})
 
 		self:SecureHookScript(this.MissionTab.MissionList, "OnShow", function(this)
@@ -3120,7 +3130,7 @@ aObj.blizzLoDFrames[ftype].GuildBankUI = function(self)
 		end
 		self:skinObject("editbox", {obj=_G.GuildItemSearchBox, fType=ftype})
 		_G.GuildBankMoneyFrameBackground:DisableDrawLayer("BACKGROUND")
-		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=true})
+		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true, offsets={x1=9, y1=self.isTT and 2 or -3, x2=-9, y2=2}})
 		-- Tabs (side)
 		for i = 1, _G.MAX_GUILDBANK_TABS do
 			_G["GuildBankTab" .. i]:DisableDrawLayer("BACKGROUND")
@@ -3268,7 +3278,7 @@ aObj.blizzFrames[ftype].InterfaceOptions = function(self)
 	-- Interface
 	self:SecureHookScript(_G.InterfaceOptionsFrame, "OnShow", function(this)
 		self:removeNineSlice(this.Border)
-		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=true, offsets={x1=9, y1=0, x2=-9, y2=-3}, offsetsHL={x1=10, y1=-3, x2=-10, y2=-3}})
+		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true, upwards=true, offsets={x1=9, y1=self.isTT and 0 or -4, x2=-9, y2=self.isTT and -5 or 0}})
 		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true})
 		if self.modBtns then
 			self:skinStdButton{obj=_G.InterfaceOptionsFrameCancel, fType=ftype}
@@ -3278,7 +3288,7 @@ aObj.blizzFrames[ftype].InterfaceOptions = function(self)
 		-- LHS panel (Game Tab)
 		self:SecureHookScript(_G.InterfaceOptionsFrameCategories, "OnShow", function(this)
 			self:skinObject("slider", {obj=_G.InterfaceOptionsFrameCategoriesListScrollBar, fType=ftype, x1=4, x2=-5})
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, fb=true, ofs=1})
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, fb=true, ofs=-1})
 
 			self:Unhook(this, "OnShow")
 		end)
@@ -3286,7 +3296,7 @@ aObj.blizzFrames[ftype].InterfaceOptions = function(self)
 		-- LHS panel (AddOns tab)
 		self:SecureHookScript(_G.InterfaceOptionsFrameAddOns, "OnShow", function(this)
 			self:skinObject("slider", {obj=_G.InterfaceOptionsFrameAddOnsListScrollBar, fType=ftype, x1=4, x2=-5})
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, fb=true, ofs=1})
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, fb=true, ofs=-1})
 			if self.modBtns then
 				-- skin toggle buttons
 				for _, btn in _G.pairs(_G.InterfaceOptionsFrameAddOns.buttons) do
@@ -3304,7 +3314,7 @@ aObj.blizzFrames[ftype].InterfaceOptions = function(self)
 		end)
 		self:checkShown(_G.InterfaceOptionsFrameAddOns)
 		-- RHS Panel
-		self:skinObject("frame", {obj=_G.InterfaceOptionsFramePanelContainer, fType=ftype, kfs=true, fb=true, ofs=1, y2=-2})
+		self:skinObject("frame", {obj=_G.InterfaceOptionsFramePanelContainer, fType=ftype, kfs=true, fb=true, ofs=-1, y2=0})
 		-- Social Browser Frame (Twitter integration)
 		self:SecureHookScript(_G.SocialBrowserFrame, "OnShow", function(this)
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x2=1})
@@ -3968,7 +3978,7 @@ aObj.blizzLoDFrames[ftype].MacroUI = function(self)
 	self.initialized.MacroUI = true
 
 	self:SecureHookScript(_G.MacroFrame, "OnShow", function(this)
-		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=true, offsets={x1=1, y1=-4, x2=-1, y2=-2}, offsetsHL={x1=-2, y1=-6, x2=2, y2=-4}, func=function(tab) tab:SetFrameLevel(20) end})
+		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true, upwards=true, offsets={x1=1, y1=-6, x2=-1, y2=self.isTT and -2 or 3}, func=function(tab) tab:SetFrameLevel(20) end})
 		self:skinObject("frame", {obj=_G.MacroButtonScrollFrame, fType=ftype, kfs=true, fb=true, ofs=12, y1=10, x2=32})
 		self:skinObject("slider", {obj=_G.MacroButtonScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
 		self:skinObject("slider", {obj=_G.MacroFrameScrollFrame.ScrollBar, fType=ftype})
@@ -4035,8 +4045,8 @@ aObj.blizzFrames[ftype].MailFrame = function(self)
 	self.initialized.MailFrame = true
 
 	self:SecureHookScript(_G.MailFrame, "OnShow", function(this)
-		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, ignoreSize=self.isClsc and true})
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, x2=self.isClsc and 1 or nil, y2=-5}
+		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, offsets={x1=7, y1=self.isTT and 2 or -3, x2=-7, y2=2}})
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, x2=self.isClsc and 1}
 		--	Inbox Frame
 		for i = 1, _G.INBOXITEMS_TO_DISPLAY do
 			self:keepFontStrings(_G["MailItem" .. i])
@@ -5239,7 +5249,7 @@ aObj.blizzFrames[ftype].PVEFrame = function(self)
 
 	self:SecureHookScript(_G.PVEFrame, "OnShow", function(this)
 		self:keepFontStrings(this.shadows)
-		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, offsets={x1=9, y1=2, x2=-9, y2=2}})
+		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, offsets={x1=9, y1=self.isTT and 2 or -3, x2=-9, y2=2}})
 		-- GroupFinder Frame
 		for i = 1, 3 do
 			_G.GroupFinderFrame["groupButton" .. i].bg:SetTexture(nil)
@@ -5330,7 +5340,7 @@ aObj.blizzFrames[ftype].PVPMatch = function(self)
 		this.Content:DisableDrawLayer("OVERLAY")
 		self:skinObject("slider", {obj=this.ScrollFrame.ScrollBar, fType=ftype})
 		self:keepFontStrings(this.TabContainer)
-		self:skinObject("tabs", {obj=this.TabGroup, tabs=this.Tabs, fType=ftype, lod=true, track=false})
+		self:skinObject("tabs", {obj=this.TabGroup, tabs=this.Tabs, fType=ftype, lod=self.isTT and true, offsets={x1=8, y1=self.isTT and 2 or -3, x2=-8, y2=2}, track=false})
 		if self.isTT then
 			self:SecureHook(this, "OnTabGroupClicked", function(this, selectedTab)
 				for _, tab in _G.pairs(this.Tabs) do
@@ -5342,7 +5352,7 @@ aObj.blizzFrames[ftype].PVPMatch = function(self)
 				end
 			end)
 		end
-		self:skinObject("frame", {obj=this.ScrollFrame, fType=ftype, kfs=true, fb=true, ofs=0, y1=58, x2=24, y2=-6})
+		self:skinObject("frame", {obj=this.ScrollFrame, fType=ftype, kfs=true, fb=true, ofs=0, y1=55, x2=23, y2=-4})
 		this.CloseButton.Border:SetAtlas(nil)
 		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, ofs=0, x2=1})
 
@@ -5355,7 +5365,7 @@ aObj.blizzFrames[ftype].PVPMatch = function(self)
 		this.scrollFrame.background:SetAlpha(0)
 		self:skinObject("slider", {obj=this.scrollFrame.scrollBar, fType=ftype})
 		self:keepFontStrings(this.content.tabContainer)
-		self:skinObject("tabs", {obj=this.tabGroup, tabs=this.Tabs, fType=ftype, lod=true, track=false})
+		self:skinObject("tabs", {obj=this.tabGroup, tabs=this.Tabs, fType=ftype, lod=self.isTT and true, offsets={x1=8, y1=self.isTT and 2 or -3, x2=-8, y2=2}, track=false})
 		if self.isTT then
 			self:SecureHook(this, "OnTabGroupClicked", function(this, selectedTab)
 				for _, tab in _G.pairs(this.Tabs) do
@@ -5367,7 +5377,7 @@ aObj.blizzFrames[ftype].PVPMatch = function(self)
 				end
 			end)
 		end
-		self:skinObject("frame", {obj=this.scrollFrame, fType=ftype, kfs=true, fb=true, ofs=0, y1=58, x2=24, y2=-6})
+		self:skinObject("frame", {obj=this.scrollFrame, fType=ftype, kfs=true, fb=true, ofs=0, y1=55, x2=23, y2=-4})
 		this.earningsArt:DisableDrawLayer("ARTWORK")
 		this.CloseButton.Border:SetAtlas(nil)
 		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, ofs=0, x2=1})
@@ -5576,8 +5586,8 @@ aObj.blizzFrames[ftype].RaidFrame = function(self)
 	self.initialized.RaidFrame = true
 
 	self:SecureHookScript(_G.RaidParentFrame, "OnShow", function(this)
-		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=true})
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, y2=-5}
+		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true, offsets={x1=7, y1=self.isTT and 2 or -1, x2=-7, y2=0}})
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true}
 
 		self:Unhook(this, "OnShow")
 	end)
@@ -5933,8 +5943,8 @@ aObj.blizzFrames[ftype].SystemOptions = function(self)
 			end)
 		end
 		-- Graphics
-		self:skinObject("tabs", {obj=_G.Display_, tabs={_G.GraphicsButton, _G.RaidButton}, fType=ftype, offsets={x1=4, y1=0, x2=0, y2=-3}, offsetsHL={x1=2, y1=-2, x2=-2, y2=-2}, track=false, func=function(tab) tab:SetFrameLevel(20) tab.SetFrameLevel = _G.nop end})
 		skinKids(_G.Display_, ftype)
+		self:skinObject("tabs", {obj=_G.Display_, tabs={_G.GraphicsButton, _G.RaidButton}, fType=ftype, upwards=true, offsets={x1=4, y1=0, x2=0, y2=self.isTT and -3 or 2}, track=false, func=function(tab) tab:SetFrameLevel(20) tab.SetFrameLevel = _G.nop end})
 		if self.isTT then
 			self:SecureHook("GraphicsOptions_SelectBase", function()
 				self:setActiveTab(_G.GraphicsButton.sf)
