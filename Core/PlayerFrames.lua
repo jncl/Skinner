@@ -1873,8 +1873,6 @@ aObj.blizzFrames[ftype].CompactFrames = function(self)
 	end
 
 	local function skinUnit(unit)
-
-		-- handle Raid Profile changes and new unit(s)
 		if aObj:hasTextInTexture(unit.healthBar:GetStatusBarTexture(), "RaidFrame") then
 			unit:DisableDrawLayer("BACKGROUND")
 			unit.horizDivider:SetTexture(nil)
@@ -1885,24 +1883,20 @@ aObj.blizzFrames[ftype].CompactFrames = function(self)
 			aObj:skinStatusBar{obj=unit.healthBar, fi=0, bgTex=unit.healthBar.background}
 			aObj:skinStatusBar{obj=unit.powerBar, fi=0, bgTex=unit.powerBar.background}
 		end
-
 	end
 	local function skinGrp(grp)
-
 		local grpName = grp:GetName()
 		for i = 1, _G.MEMBERS_PER_RAID_GROUP do
 			skinUnit(_G[grpName .. "Member" .. i])
 		end
 		grpName = nil
-		if not grp.borderFrame.sf then
-			aObj:addSkinFrame{obj=grp.borderFrame, ft=ftype, kfs=true, y1=-1, x2=-3, y2=3}
-		end
-
+		aObj:skinObject("frame", {obj=grp.borderFrame, fType=ftype, kfs=true, ofs=-1, x2=-4, y2=3})
 	end
 
 	-- Compact Party Frame
 	self:SecureHook("CompactPartyFrame_OnLoad", function()
-		self:addSkinFrame{obj=_G.CompactPartyFrame.borderFrame, ft=ftype, kfs=true, y1=-1, x2=-3, y2=3}
+		self:skinObject("frame", {obj=_G.CompactPartyFrame.borderFrame, fType=ftype, kfs=true, ofs=-1, x2=-4, y2=3})
+
 		self:Unhook("CompactPartyFrame_OnLoad")
 	end)
 	-- hook this to skin any new CompactRaidGroup(s)
@@ -1912,7 +1906,9 @@ aObj.blizzFrames[ftype].CompactFrames = function(self)
 
 	-- Compact RaidFrame Container
 	-- handle AddOn being disabled
-	if not self:checkLoadable("Blizzard_CompactRaidFrames") then return end
+	if not self:checkLoadable("Blizzard_CompactRaidFrames") then
+		return
+	end
 
 	local function skinCRFCframes()
 		-- handle in combat as UnitFrame uses SecureUnitButtonTemplate
@@ -1921,9 +1917,7 @@ aObj.blizzFrames[ftype].CompactFrames = function(self)
 			return
 		end
 		for type, fTab in _G.pairs(_G.CompactRaidFrameContainer.frameUpdateList) do
-			local frame
-			for i = 1, #fTab do
-				frame = fTab[i]
+			for _, frame in _G.pairs(fTab) do
 				if type == "normal" then
 					if frame.borderFrame then -- group or party
 						skinGrp(frame)
@@ -1934,7 +1928,6 @@ aObj.blizzFrames[ftype].CompactFrames = function(self)
 					skinUnit(frame)
 				end
 			end
-			frame = nil
 		end
 	end
 	-- hook this to skin any new CompactRaidFrameContainer entries
@@ -1945,11 +1938,10 @@ aObj.blizzFrames[ftype].CompactFrames = function(self)
 	end)
 	-- skin any existing unit(s) [mini, normal]
 	skinCRFCframes()
-	self:addSkinFrame{obj=_G.CompactRaidFrameContainer.borderFrame, ft=ftype, kfs=true, y1=-1, x2=-5, y2=5}
+	self:skinObject("frame", {obj=_G.CompactRaidFrameContainer.borderFrame, fType=ftype, kfs=true, ofs=-1, x2=-5, y2=5})
 
 	-- Compact RaidFrame Manager
 	self:SecureHookScript(_G.CompactRaidFrameManager, "OnShow", function(this)
-		-- Toggle button
 		self:moveObject{obj=this.toggleButton, x=5}
 		this.toggleButton:SetSize(12, 32)
 		this.toggleButton.nt = this.toggleButton:GetNormalTexture()
@@ -1958,7 +1950,6 @@ aObj.blizzFrames[ftype].CompactFrames = function(self)
 		self:RawHook(this.toggleButton.nt, "SetTexCoord", function(this, x1, x2, _)
 			self.hooks[this].SetTexCoord(this, x1 == 0 and x1 + 0.22 or x1 + 0.26, x2, 0.33, 0.67)
 		end, true)
-
 		-- Display Frame
 		_G.CompactRaidFrameManagerDisplayFrameHeaderBackground:SetTexture(nil)
 		_G.CompactRaidFrameManagerDisplayFrameHeaderDelineator:SetTexture(nil)
@@ -1972,19 +1963,19 @@ aObj.blizzFrames[ftype].CompactFrames = function(self)
 			self:skinStdButton{obj=this.displayFrame.filterOptions["filterGroup" .. i]}
 		end
 		this.displayFrame.filterOptions:DisableDrawLayer("BACKGROUND")
-		self:skinDropDown{obj=this.displayFrame.profileSelector}
+		self:skinObject("dropdown", {obj=this.displayFrame.profileSelector, fType=ftype})
 		if self.modBtns then
-			self:skinStdButton{obj=this.displayFrame.lockedModeToggle}
-			self:skinStdButton{obj=this.displayFrame.hiddenModeToggle}
-			self:skinStdButton{obj=this.displayFrame.convertToRaid}
+			self:skinStdButton{obj=this.displayFrame.lockedModeToggle, fType=ftype}
+			self:skinStdButton{obj=this.displayFrame.hiddenModeToggle, fType=ftype}
+			self:skinStdButton{obj=this.displayFrame.convertToRaid, fType=ftype}
 			-- Leader Options
-			self:skinStdButton{obj=this.displayFrame.leaderOptions.readyCheckButton}
+			self:skinStdButton{obj=this.displayFrame.leaderOptions.readyCheckButton, fType=ftype}
 			if not self.isClsc then
-				self:skinStdButton{obj=this.displayFrame.leaderOptions.rolePollButton}
+				self:skinStdButton{obj=this.displayFrame.leaderOptions.rolePollButton, fType=ftype}
 				this.displayFrame.leaderOptions.countdownButton:DisableDrawLayer("ARTWORK") -- alpha values are changed in code
 				this.displayFrame.leaderOptions.countdownButton.Text:SetDrawLayer("OVERLAY") -- move draw layer so it is displayed
-				self:skinStdButton{obj=this.displayFrame.leaderOptions.countdownButton}
-				self:skinStdButton{obj=_G.CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton}
+				self:skinStdButton{obj=this.displayFrame.leaderOptions.countdownButton, fType=ftype}
+				self:skinStdButton{obj=_G.CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton, fType=ftype}
 				_G.CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton:GetNormalTexture():SetAlpha(1) -- icon
 			end
 			self:SecureHook("CompactRaidFrameManager_UpdateOptionsFlowContainer", function(this)
@@ -1999,10 +1990,9 @@ aObj.blizzFrames[ftype].CompactFrames = function(self)
 			self:skinCheckButton{obj=this.displayFrame.everyoneIsAssistButton}
 			_G.RaiseFrameLevel(this.displayFrame.everyoneIsAssistButton) -- so button border is visible
 		end
-		-- Resize Frame
-		self:addSkinFrame{obj=this.containerResizeFrame, ft=ftype, kfs=true, x1=-2, y1=-1, y2=4}
-		-- Raid Frame Manager Frame
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, ofs=0}
+		self:skinObject("frame", {obj=this.containerResizeFrame, fType=ftype, kfs=true})
+		-- self:addSkinFrame{obj=this.containerResizeFrame, ft=ftype, kfs=true, x1=-2, y1=-1, y2=4}
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ofs=0})
 
 		self:Unhook(this, "OnShow")
 	end)
