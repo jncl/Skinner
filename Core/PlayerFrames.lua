@@ -3947,60 +3947,30 @@ aObj.blizzLoDFrames[ftype].RaidUI = function(self)
 	if not self.prdb.RaidUI or self.initialized.RaidUI then return end
 	self.initialized.RaidUI = true
 
-	local function skinPulloutFrames()
+	-- N.B. accessed via Raid tab on Friends Frame
 
-		for i = 1, _G.NUM_RAID_PULLOUT_FRAMES do
-			if not _G["RaidPullout" .. i].sf then
-				aObj:skinDropDown{obj=_G["RaidPullout" .. i .. "DropDown"]}
-				aObj:removeBackdrop(_G["RaidPullout" .. i .. "MenuBackdrop"])
-				aObj:addSkinFrame{obj=_G["RaidPullout" .. i], ft=ftype, kfs=true, x1=3, y1=-1, x2=-1, y2=1}
-			end
-		end
+	-- N.B. Pullout functionality commented out, therefore code removed from this function
 
-	end
-	-- hook this to skin the pullout group frames
-	self:SecureHook("RaidPullout_GetFrame", function(_)
-		skinPulloutFrames()
-	end)
-	-- hook this to skin the pullout character frames
-	self:SecureHook("RaidPullout_Update", function(pullOutFrame)
-		local pfName = pullOutFrame:GetName()
-		for i = 1, pullOutFrame.numPulloutButtons do
-			if not _G[pfName .. "Button" .. i].sf then
-				for _, bName in _G.pairs{"HealthBar", "ManaBar", "Target", "TargetTarget"} do
-					self:removeRegions(_G[pfName .. "Button" .. i .. bName], {2})
-					self:skinStatusBar{obj=_G[pfName .. "Button" .. i .. bName], fi=0, bgTex=_G[pfName .. "Button" .. i .. bName .. "Background"]}
-				end
-				self:addSkinFrame{obj=_G[pfName .. "Button" .. i .. "TargetTargetFrame"], ft=ftype, x1=4, x2=-4, y2=2}
-				self:addSkinFrame{obj=_G[pfName .. "Button" .. i], ft=ftype, kfs=true, x1=-4, y1=-6, x2=4, y2=-6}
-			end
-		end
-		pfName = nil
-	end)
-
-	self:moveObject{obj=_G.RaidGroup1, x=2}
+	self:moveObject{obj=_G.RaidGroup1, x=3}
 
 	-- Raid Groups
 	for i = 1, _G.MAX_RAID_GROUPS do
 		_G["RaidGroup" .. i]:DisableDrawLayer("BACKGROUND")
-		self:addSkinFrame{obj=_G["RaidGroup" .. i], ft=ftype}
+		self:skinObject("frame", {obj=_G["RaidGroup" .. i], fType=ftype, fb=true})
 	end
 	-- Raid Group Buttons
 	for i = 1, _G.MAX_RAID_GROUPS * 5 do
 		_G["RaidGroupButton" .. i]:SetNormalTexture(nil)
-		self:addSkinFrame{obj=_G["RaidGroupButton" .. i], ft=ftype, aso={bd=5}}
+		self:skinObject("frame", {obj=_G["RaidGroupButton" .. i], fType=ftype, bd=7, ofs=1})
 	end
 	-- Raid Class Tabs (side)
 	for i = 1, _G.MAX_RAID_CLASS_BUTTONS do
 		self:removeRegions(_G["RaidClassButton" .. i], {1}) -- 2 is icon, 3 is text
 	end
 
-	-- skin existing frames
-	skinPulloutFrames()
-
 	if self.isClsc then
 		if self.modBtns then
-			self:skinStdButton{obj=_G.RaidFrameReadyCheckButton}
+			self:skinStdButton{obj=_G.RaidFrameReadyCheckButton, fType=ftype}
 		end
 	end
 
