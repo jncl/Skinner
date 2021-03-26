@@ -3878,19 +3878,21 @@ aObj.blizzFrames[ftype].LFGList = function(self)
 	-- LFGListApplication Dialog
 	self:SecureHookScript(_G.LFGListApplicationDialog, "OnShow", function(this)
 		self:removeNineSlice(this.Border)
-		if self.modChkBtns then
-			self:skinCheckButton{obj=this.HealerButton.CheckButton}
-			self:skinCheckButton{obj=this.TankButton.CheckButton}
-			self:skinCheckButton{obj=this.DamagerButton.CheckButton}
-		end
-		self:skinSlider{obj=this.Description.ScrollBar, wdth=-4}
-		self:addFrameBorder{obj=this.Description, ft=ftype, ofs=6}
-		this.Description.EditBox.Instructions:SetTextColor(self.BT:GetRGB())
+		self:skinObject("slider", {obj=this.Description.ScrollBar, fType=ftype})
+		self:skinObject("frame", {obj=this.Description, fType=ftype, kfs=true, fb=true, ofs=6})
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true})
 		if self.modBtns then
-			self:skinStdButton{obj=this.SignUpButton}
-			self:skinStdButton{obj=this.CancelButton}
+			self:skinStdButton{obj=this.SignUpButton, fType=ftype}
+			self:skinStdButton{obj=this.CancelButton, fType=ftype}
+			self:SecureHook("LFGListApplicationDialog_UpdateValidState", function(this)
+				self:clrBtnBdr(this.SignUpButton)
+			end)
 		end
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true}
+		if self.modChkBtns then
+			self:skinCheckButton{obj=this.HealerButton.CheckButton, fType=ftype}
+			self:skinCheckButton{obj=this.TankButton.CheckButton, fType=ftype}
+			self:skinCheckButton{obj=this.DamagerButton.CheckButton, fType=ftype}
+		end
 
 		self:Unhook(this, "OnShow")
 	end)
