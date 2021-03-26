@@ -565,7 +565,7 @@ function aObj:skinColHeads(buttonName, noCols, ftype)
 		if not btn.sb then -- only do if not already skinned as a button
 			self:removeRegions(btn, {1, 2, 3})
 			if btn ~= _G.WhoFrameColumnHeader2 then -- N.B. this is really a dropdown
-				self:skinObject("frame", {obj=btn, fType=ftype, ofs=1, y1=0.5, y2=-0.5})
+				self:skinObject("frame", {obj=btn, fType=ftype, ofs=0})
 			end
 		end
 	end
