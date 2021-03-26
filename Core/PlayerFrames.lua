@@ -4468,7 +4468,7 @@ aObj.blizzLoDFrames[ftype].TradeSkillUI = function(self)
 		self:skinObject("editbox", {obj=this.SearchBox, fType=ftype, si=true})
 		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true})
 		if self.modBtns then
-			 self:skinStdButton{obj=this.FilterButton, ofs=0}
+			 self:skinStdButton{obj=this.FilterButton, fType=ftype, ofs=0}
 		end
 		if self.modBtnBs then
 			 self:addButtonBorder{obj=this.LinkToButton, x1=1, y1=-5, x2=-2, y2=2, clr="grey"}
@@ -4496,7 +4496,7 @@ aObj.blizzLoDFrames[ftype].TradeSkillUI = function(self)
 		self:skinObject("frame", {obj=this.RecipeList, fType=ftype, kfs=true, fb=true, ofs=8, x1=-7, y1=6, x2=24})
 		for i = 1, #this.RecipeList.buttons do
 			if self.modBtns then
-				 self:skinExpandButton{obj=this.RecipeList.buttons[i], onSB=true, noHook=true}
+				 self:skinExpandButton{obj=this.RecipeList.buttons[i], fType=ftype, onSB=true, noHook=true}
 			end
 			this.RecipeList.buttons[i].SubSkillRankBar.BorderLeft:SetTexture(nil)
 			this.RecipeList.buttons[i].SubSkillRankBar.BorderRight:SetTexture(nil)
@@ -4534,9 +4534,8 @@ aObj.blizzLoDFrames[ftype].TradeSkillUI = function(self)
 		self:removeMagicBtnTex(this.DetailsFrame.ExitButton)
 		self:removeMagicBtnTex(this.DetailsFrame.CreateButton)
 		local cmib = this.DetailsFrame.CreateMultipleInputBox
-		self:skinObject("editbox", {obj=cmib, fType=ftype})
-		self:moveObject{obj=cmib, x=-8}
-		self:moveObject{obj=cmib.DecrementButton, x=6}
+		cmib:DisableDrawLayer("BACKGROUND")
+		self:skinObject("editbox", {obj=cmib, fType=ftype, chginset=false, ofs=0, x1=-6})
 		if self.modBtnBs then
 			self:addButtonBorder{obj=cmib.IncrementButton, ofs=0, x2=-1}
 			self:addButtonBorder{obj=cmib.DecrementButton, ofs=0, x2=-1}
@@ -4556,7 +4555,7 @@ aObj.blizzLoDFrames[ftype].TradeSkillUI = function(self)
 		cnts.RecipeLevel.BorderMid:SetTexture(nil)
 		self:skinStatusBar{obj=cnts.RecipeLevel, fi=0}
 		if self.modBtns then
-			self:skinStdButton{obj=cnts.RecipeLevelSelector, ofs=0}
+			self:skinStdButton{obj=cnts.RecipeLevelSelector, fType=ftype, ofs=0}
 		end
 		local btn
 		for i = 1, #cnts.Reagents do
@@ -4575,10 +4574,10 @@ aObj.blizzLoDFrames[ftype].TradeSkillUI = function(self)
 		end
 		btn, cnts = nil, nil
 		if self.modBtns then
-			self:skinStdButton{obj=this.DetailsFrame.ViewGuildCraftersButton}
-			self:skinStdButton{obj=this.DetailsFrame.ExitButton}
-			self:skinStdButton{obj=this.DetailsFrame.CreateAllButton}
-			self:skinStdButton{obj=this.DetailsFrame.CreateButton}
+			self:skinStdButton{obj=this.DetailsFrame.ViewGuildCraftersButton, fType=ftype}
+			self:skinStdButton{obj=this.DetailsFrame.ExitButton, fType=ftype}
+			self:skinStdButton{obj=this.DetailsFrame.CreateAllButton, fType=ftype}
+			self:skinStdButton{obj=this.DetailsFrame.CreateButton, fType=ftype}
 			self:SecureHook(this.DetailsFrame, "RefreshButtons", function(this)
 				self:clrBtnBdr(this.CreateAllButton)
 				self:clrBtnBdr(this.CreateButton)
@@ -4609,10 +4608,10 @@ aObj.blizzLoDFrames[ftype].TradeSkillUI = function(self)
 			this:RefreshScrollFrame()
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, ofs=0})
 			if self.modBtns then
-				self:skinStdButton{obj=this.CloseButton}
+				self:skinStdButton{obj=this.CloseButton, fType=ftype}
 			end
 			if self.modChkBtns then
-				self:skinCheckButton{obj=this.HideUnownedButton}
+				self:skinCheckButton{obj=this.HideUnownedButton, fType=ftype}
 			end
 
 			self:Unhook(this, "OnShow")
