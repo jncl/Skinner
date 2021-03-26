@@ -495,6 +495,7 @@ function module:skinStdButton(opts) -- standard panel button
 		clr = set colour
 		ca = set colour alpha
 		sec = inherit from SecureFrameTemplate
+		shsh = inherit from SecureHandlerShowHideTemplate
 --]]
 --@alpha@
 	_G.assert(opts.obj, "Missing object skinStdButton\n" .. _G.debugstack(2, 3, 2))
@@ -510,7 +511,7 @@ function module:skinStdButton(opts) -- standard panel button
 	local aso = opts.aso or {}
 	aso.bd = bH > 18 and 5 or 6 -- use narrower backdrop if required
 	if not opts.as then
-		aObj:skinObject("button", {obj=opts.obj, fType=opts.ftype, name=opts.name, sec=opts.sec, aso=aso, ofs=opts.ofs or 0, x1=opts.x1, y1=opts.y1, x2=opts.x2, y2=opts.y2})
+		aObj:skinObject("button", {obj=opts.obj, fType=opts.ftype, name=opts.name, sec=opts.sec, shsh=opts.shsh, aso=aso, ofs=opts.ofs or 0, x1=opts.x1, y1=opts.y1, x2=opts.x2, y2=opts.y2})
 	else
 		aso.obj = opts.obj
 		if bH < 16 then opts.obj:SetHeight(16) end -- set minimum button height (DBM option buttons)
@@ -656,7 +657,8 @@ local function __addButtonBorder(opts)
 		libt = Large Item Button template
 		sibt = Small Item Button template
 		gibt = Giant Item Button template
-		sec = requires SecureFrameTemplate to inherit from otherwise tainting occurs
+		sec = requires SecureHandlerShowHideTemplate to inherit from otherwise tainting occurs
+		-- sec = requires SecureFrameTemplate to inherit from otherwise tainting occurs
 		reParent = table of objects to reparent to the border frame
 		es = edgeSize, used for small icons
 		ofs = offset value to use
@@ -718,7 +720,7 @@ local function __addButtonBorder(opts)
 	end
 
 	-- create the button border object
-	opts.obj.sbb = _G.CreateFrame(opts.obj:GetObjectType(), nil, opts.obj, (opts.sec or opts.sec or opts.seca or opts.sabt or opts.subt) and "SecureFrameTemplate")
+	opts.obj.sbb = _G.CreateFrame(opts.obj:GetObjectType(), nil, opts.obj, (opts.sec or opts.sec or opts.seca or opts.sabt or opts.subt) and "SecureHandlerShowHideTemplate")
 	opts.obj.sbb:EnableMouse(false) -- enable clickthrough
 
 	aObj:addBackdrop(opts.obj.sbb)

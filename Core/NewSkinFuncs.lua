@@ -10,6 +10,7 @@ aObj.skinTPLs = {
 		-- type        =,
 	},
 	button = {
+		name		= nil, -- use a name if required (VuhDo Options)
 		aso         = {},-- applySkin options,
 		hide        = false, -- hide skin
 		ofs         = 4, -- skin frame offset to object
@@ -43,10 +44,12 @@ aObj.skinTPLs = {
 		si			= false, -- search icon
 		six         = 3, -- search icon x offset
 		ofs         = 2,
+		x1          = 0,
 		x2          = 0,
 		chginset	= true,
 	},
 	frame = {
+		name		= nil, -- use a name if required (VuhDo Options)
 		bg          = false, -- put into Background FrameStrata
 		cb          = false, -- skin close button
 		cbns        = false, -- use noSkin otion when skinning the close button
@@ -75,7 +78,6 @@ aObj.skinTPLs = {
 		invert      = false, -- invert Gradient
 		rotate      = false, -- rotate Gradient
 		fb          = false, -- frame border [bd=10, ng=true, ofs=0]
-		name		= nil, -- use a name if required (VuhDo Options)
 	},
 	glowbox = {
 	},
@@ -112,7 +114,6 @@ aObj.skinTPLs = {
 		upwards     = false,
 		offsets     = {x1=7, y1=2, x2=-7, y2=2},
 		ignoreHLTex = true,
-		offsetsHL   = {x1=8, y1=2, x2=-8, y2=2},
 		track       = true,
 		noCheck     = false,
 		func        = nil,
@@ -244,18 +245,6 @@ local function skinButton(tbl)
 	end
 	-- add a frame to the object
 	tbl.obj.sb = _G.CreateFrame("Button", tbl.name, tbl.obj, tbl.sec and "SecureFrameTemplate" or tbl.shsh and "SecureHandlerShowHideTemplate")
-	if tbl.sap then
-		tbl.obj.sb:SetAllPoints(tbl.obj)
-	else
-		-- position around the original frame
-		tbl.x1 = tbl.x1 or tbl.ofs * -1
-		tbl.y1 = tbl.y1 or tbl.ofs
-		tbl.x2 = tbl.x2 or tbl.ofs
-		tbl.y2 = tbl.y2 or tbl.ofs * -1
-		tbl.obj.sb:ClearAllPoints()
-		tbl.obj.sb:SetPoint("TOPLEFT", tbl.obj, "TOPLEFT", tbl.x1, tbl.y1)
-		tbl.obj.sb:SetPoint("BOTTOMRIGHT", tbl.obj, "BOTTOMRIGHT", tbl.x2, tbl.y2)
-	end
 	-- allow clickthrough
 	tbl.obj.sb:EnableMouse(false)
 	-- adjust frame level
@@ -295,6 +284,17 @@ local function skinButton(tbl)
 			end
 		end
 	end
+	if tbl.sap then
+		tbl.ofs = 0
+	end
+	-- position around the original frame
+	tbl.x1 = tbl.x1 or tbl.ofs * -1
+	tbl.y1 = tbl.y1 or tbl.ofs
+	tbl.x2 = tbl.x2 or tbl.ofs
+	tbl.y2 = tbl.y2 or tbl.ofs * -1
+	tbl.obj.sb:ClearAllPoints()
+	tbl.obj.sb:SetPoint("TOPLEFT", tbl.obj, "TOPLEFT", tbl.x1, tbl.y1)
+	tbl.obj.sb:SetPoint("BOTTOMRIGHT", tbl.obj, "BOTTOMRIGHT", tbl.x2, tbl.y2)
 	-- setup applySkin options
 	local so = aObj.skinTPLs.new("skin", tbl.aso)
 	so.obj   = tbl.obj.sb
@@ -373,9 +373,11 @@ local function skinEditBox(tbl)
 	aObj:Debug2("skinEditBox: [%s]", tbl)
 
 	-- don't skin it twice
-	if tbl.obj.sf then return end
+	if tbl.obj.sf then
+		return
+	end
 	aObj:removeRegions(tbl.obj, tbl.regions)
-	aObj:skinObject("frame", {obj=tbl.obj, bd=3, ng=true, ofs=tbl.ofs, x2=tbl.x2, clr="slider"})
+	aObj:skinObject("frame", {obj=tbl.obj, bd=3, ng=true, ofs=tbl.ofs, x1=tbl.x1, x2=tbl.x2, clr="slider"})
 	-- move the search icon
 	if tbl.si then
 		local sIcon = tbl.obj.searchIcon or tbl.obj.icon or tbl.obj:GetName() and _G[tbl.obj:GetName() .. "SearchIcon"]
@@ -457,7 +459,7 @@ local function skinFrame(tbl)
 	then
 		local cBtn = tbl.obj.CloseButton or tbl.obj.closeButton or tbl.obj.closebutton or tbl.obj:GetName() and _G[tbl.obj:GetName() .. "CloseButton"] or tbl.obj.Close or tbl.obj.close
 		if cBtn then
-			aObj:skinCloseButton{obj=cBtn, noSkin=tbl.cbns}
+			aObj:skinCloseButton{obj=cBtn, fType=ftype, noSkin=tbl.cbns}
 		end
 		cBtn = nil
 	end
@@ -636,11 +638,11 @@ local function skinTabs(tbl)
 	local oFs = tbl.offsets
 	for i, tab in _G.pairs(tbl.tabs) do
 		aObj:keepRegions(tab, tbl.regions)
-		aObj:skinObject("frame", {obj=tab, fType=tbl.fType, noBdr=aObj.isTT, x1=oFs.x1, y1=oFs.y1, x2=oFs.x2, y2=oFs.y2})
-		tab.sf.ignore = tbl.ignoreSize
-		tab.sf.up = tbl.upwards
-		if tbl.lod then
-			if aObj.isTT then
+		if not aObj.isTT then
+			aObj:skinObject("frame", {obj=tab, fType=tbl.fType, ng=tbl.ng, x1=oFs.x1, y1=oFs.y1, x2=oFs.x2, y2=oFs.y2})
+		else
+			aObj:skinObject("frame", {obj=tab, fType=tbl.fType, noBdr=true, x1=oFs.x1, y1=oFs.y1, x2=oFs.x2, y2=oFs.y2})
+			if tbl.lod then
 				if i == tbl.selectedTab then
 					aObj:setActiveTab(tab.sf)
 				else
@@ -648,21 +650,16 @@ local function skinTabs(tbl)
 				end
 			end
 		end
+		tab.sf.ignore = tbl.ignoreSize
+		tab.sf.up = tbl.upwards
 		-- change highlight texture
 		if tbl.ignoreHLTex then
 			local ht = tab:GetHighlightTexture()
 			if ht then
 				ht:SetTexture([[Interface\PaperDollInfoFrame\UI-Character-Tab-Highlight]])
 				ht:ClearAllPoints()
-				if tbl.upwards then -- (GuildInfoFrame, LookingForGuild, MacroFrame, FriendsTabHeader)
-					ht:SetPoint("TOPLEFT", 1, -5)
-					ht:SetPoint("BOTTOMRIGHT", -1, -5)
-				else
-					local hOFs = tbl.offsetsHL
-					ht:SetPoint("TOPLEFT", hOFs.x1, hOFs.y1)
-					ht:SetPoint("BOTTOMRIGHT", hOFs.x2, hOFs.y2)
-					hOFs = nil
-				end
+				ht:SetPoint("TOPLEFT", oFs.x1, oFs.y1)
+				ht:SetPoint("BOTTOMRIGHT", oFs.x2, oFs.y2)
 			end
 			ht = nil
 		end
