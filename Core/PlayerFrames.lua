@@ -2775,14 +2775,15 @@ aObj.blizzLoDFrames[ftype].GuildUI = function(self)
 	if not self.prdb.GuildUI or self.initialized.GuildUI then return end
 	self.initialized.GuildUI = true
 
+	-- N.B. use command /groster to show frames
+
 	self:SecureHookScript(_G.GuildFrame, "OnShow", function(this)
 		this.TopTileStreaks:SetTexture(nil)
-		self:removeNineSlice(this.NineSlice)
 		self:moveObject{obj=_G.GuildFrameTabardBackground, x=8, y=-11}
 		self:moveObject{obj=_G.GuildFrameTabardEmblem, x=9, y=-12}
 		self:moveObject{obj=_G.GuildFrameTabardBorder, x=7, y=-10}
 		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=true})
-		self:skinDropDown{obj=_G.GuildDropDown}
+		self:skinObject("dropdown", {obj=_G.GuildDropDown, fType=ftype})
 		_G.GuildPointFrame.LeftCap:SetTexture(nil)
 		_G.GuildPointFrame.RightCap:SetTexture(nil)
 		_G.GuildFactionBar:DisableDrawLayer("BORDER")
@@ -2790,8 +2791,8 @@ aObj.blizzLoDFrames[ftype].GuildUI = function(self)
 		_G.GuildFactionBarShadow:SetAlpha(0)
 		_G.GuildFactionBarCap:SetTexture(self.sbTexture)
 		_G.GuildFactionBarCapMarker:SetAlpha(0)
-		self:skinEditBox{obj=_G.GuildNameChangeFrame.editBox, regs={6}}
 		self:addSkinFrame{obj=this, ft=ftype, ri=true, y2=-5}
+		self:skinObject("editbox", {obj=_G.GuildNameChangeFrame.editBox, fType=ftype})
 		if self.modBtns then
 			-- N.B. NO CloseButton for GuildNameChangeAlertFrame
 			self:skinStdButton{obj=_G.GuildNameChangeFrame.button}
@@ -2802,43 +2803,59 @@ aObj.blizzLoDFrames[ftype].GuildUI = function(self)
 
 	self:SecureHookScript(_G.GuildPerksFrame, "OnShow", function(this)
 		_G.GuildAllPerksFrame:DisableDrawLayer("BACKGROUND")
-		for i = 1, #_G.GuildPerksContainer.buttons do
+		for _, btn in _G.pairs(_G.GuildPerksContainer.buttons) do
 			-- can't use DisableDrawLayer as the update code uses it
-			self:removeRegions(_G.GuildPerksContainer.buttons[i], {1, 2, 3, 4})
-			_G.GuildPerksContainer.buttons[i].normalBorder:DisableDrawLayer("BACKGROUND")
-			_G.GuildPerksContainer.buttons[i].disabledBorder:DisableDrawLayer("BACKGROUND")
-			self:addButtonBorder{obj=_G.GuildPerksContainer.buttons[i], relTo=_G.GuildPerksContainer.buttons[i].icon, reParent={_G.GuildPerksContainer.buttons[i].lock}}
+			self:removeRegions(btn, {1, 2, 3, 4})
+			btn.normalBorder:DisableDrawLayer("BACKGROUND")
+			btn.disabledBorder:DisableDrawLayer("BACKGROUND")
+			if self.modBtnBs then
+				self:addButtonBorder{obj=btn, relTo=btn.icon, reParent={btn.lock}}
+			end
 		end
 
 		self:Unhook(this, "OnShow")
 	end)
 
 	self:SecureHookScript(_G.GuildRosterFrame, "OnShow", function(this)
-		self:skinDropDown{obj=_G.GuildRosterViewDropdown}
+		self:skinObject("dropdown", {obj=_G.GuildRosterViewDropdown, fType=ftype})
 		self:skinColHeads("GuildRosterColumnButton", 5, ftype)
-		self:skinSlider{obj=_G.GuildRosterContainerScrollBar, wdth=-4}
-		for i = 1, #_G.GuildRosterContainer.buttons do
-			_G.GuildRosterContainer.buttons[i]:DisableDrawLayer("BACKGROUND")
-			_G.GuildRosterContainer.buttons[i].barTexture:SetTexture(self.sbTexture)
-			_G.GuildRosterContainer.buttons[i].header.leftEdge:SetAlpha(0)
-			_G.GuildRosterContainer.buttons[i].header.rightEdge:SetAlpha(0)
-			_G.GuildRosterContainer.buttons[i].header.middle:SetAlpha(0)
-			self:applySkin{obj=_G.GuildRosterContainer.buttons[i].header} -- hide underlaying text
+		self:skinObject("slider", {obj=_G.GuildRosterContainerScrollBar, fType=ftype})
+		for _, btn in _G.pairs(_G.GuildRosterContainer.buttons) do
+			btn:DisableDrawLayer("BACKGROUND")
+			btn.barTexture:SetTexture(self.sbTexture)
+			btn.header.leftEdge:SetAlpha(0)
+			btn.header.rightEdge:SetAlpha(0)
+			btn.header.middle:SetAlpha(0)
 		end
-		self:skinCheckButton{obj=_G.GuildRosterShowOfflineButton}
-
+		if self.modChkBtns then
+			self:skinCheckButton{obj=_G.GuildRosterShowOfflineButton, fType=ftype}
+		end
+		self:SecureHook("GuildRoster_UpdateTradeSkills", function()
+			for _, btn in _G.pairs(_G.GuildRosterContainer.buttons) do
+				if btn.header:IsShown() then
+					btn.string1:Hide()
+					btn.string2:Hide()
+					btn.string3:Hide()
+				else
+					btn.string1:Show()
+					btn.string2:Show()
+					btn.string3:Show()
+				end
+			end
+		end)
 		-- GuildMemberDetailFrame
-		self:skinDropDown{obj=_G.GuildMemberRankDropdown}
-		-- adjust text position & font so it overlays correctly
-		self:moveObject{obj=_G.GuildMemberRankDropdown, x=-6, y=2}
-		_G.GuildMemberRankDropdownText:SetFontObject(_G.GameFontHighlight)
-		self:addSkinFrame{obj=_G.GuildMemberNoteBackground, ft=ftype}
-		self:addSkinFrame{obj=_G.GuildMemberOfficerNoteBackground, ft=ftype}
-		self:addSkinFrame{obj=_G.GuildMemberDetailFrame, ft=ftype, kfs=true, ofs=-6}
+		self:skinObject("dropdown", {obj=_G.GuildMemberRankDropdown, fType=ftype})
+		self:skinObject("frame", {obj=_G.GuildMemberNoteBackground, fType=ftype, kfs=true, fb=true, ofs=0})
+		self:skinObject("frame", {obj=_G.GuildMemberOfficerNoteBackground, fType=ftype, kfs=true, fb=true, ofs=0})
+		self:skinObject("frame", {obj=_G.GuildMemberDetailFrame, fType=ftype, kfs=true, ofs=-6})
 		if self.modBtns then
-			self:skinStdButton{obj=_G.GuildMemberRemoveButton}
-			self:skinStdButton{obj=_G.GuildMemberGroupInviteButton}
-			self:skinCloseButton{obj=_G.GuildMemberDetailCloseButton}
+			self:skinStdButton{obj=_G.GuildMemberRemoveButton, fType=ftype}
+			self:skinStdButton{obj=_G.GuildMemberGroupInviteButton, fType=ftype}
+			self:skinCloseButton{obj=_G.GuildMemberDetailCloseButton, fType=ftype}
+			self:SecureHook("GuildRoster_Update", function()
+				self:clrBtnBdr(_G.GuildMemberRemoveButton)
+				self:clrBtnBdr(_G.GuildMemberGroupInviteButton)
+			end)
 		end
 
 		self:Unhook(this, "OnShow")
@@ -2846,41 +2863,54 @@ aObj.blizzLoDFrames[ftype].GuildUI = function(self)
 
 	self:SecureHookScript(_G.GuildNewsFrame, "OnShow", function(this)
 		this:DisableDrawLayer("BACKGROUND")
-		self:skinSlider{obj=_G.GuildNewsContainerScrollBar, wdth=-6}
-		for i = 1, #_G.GuildNewsContainer.buttons do
-			_G.GuildNewsContainer.buttons[i].header:SetAlpha(0)
+		self:skinObject("slider", {obj=_G.GuildNewsContainerScrollBar, fType=ftype})
+		for _, btn in _G.pairs(_G.GuildNewsContainer.buttons) do
+			btn.header:SetAlpha(0)
 		end
+		self:skinObject("dropdown", {obj=_G.GuildNewsDropDown, fType=ftype})
 		-- hook this to stop tooltip flickering
 		self:SecureHook("GuildNewsButton_OnEnter", function(btn)
-			if btn.UpdateTooltip then btn.UpdateTooltip = nil end
+			if btn.UpdateTooltip then
+				btn.UpdateTooltip = nil
+			end
 		end)
-		self:skinDropDown{obj=_G.GuildNewsDropDown}
 
 		self:Unhook(this, "OnShow")
 	end)
 
 	self:SecureHookScript(_G.GuildNewsFiltersFrame, "OnShow", function(this)
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ofs=-7}
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, ofs=-7})
+		if self.modChkBtns then
+			self:skinCheckButton{obj=this.GuildAchievement, fType=ftype}
+			self:skinCheckButton{obj=this.Achievement, fType=ftype}
+			self:skinCheckButton{obj=this.DungeonEncounter, fType=ftype}
+			self:skinCheckButton{obj=this.EpicItemLooted, fType=ftype}
+			self:skinCheckButton{obj=this.EpicItemPurchased, fType=ftype}
+			self:skinCheckButton{obj=this.EpicItemCrafted, fType=ftype}
+			self:skinCheckButton{obj=this.LegendaryItemLooted, fType=ftype}
+		end
 
 		self:Unhook(this, "OnShow")
 	end)
 
 	self:SecureHookScript(_G.GuildNewsBossModel, "OnShow", function(this)
 		self:keepFontStrings(_G.GuildNewsBossModelTextFrame)
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ofs=4, y2=-81} -- similar to QuestNPCModel
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ofs=4, y2=-81})
 
 		self:Unhook(this, "OnShow")
 	end)
 
 	self:SecureHookScript(_G.GuildRewardsFrame, "OnShow", function(this)
 		this:DisableDrawLayer("BACKGROUND")
-		self:skinSlider{obj=_G.GuildRewardsContainerScrollBar, wdth=-4}
+		self:skinObject("slider", {obj=_G.GuildRewardsContainerScrollBar, fType=ftype})
 		for i = 1, #_G.GuildRewardsContainer.buttons do
 			_G.GuildRewardsContainer.buttons[i]:GetNormalTexture():SetAlpha(0)
 			_G.GuildRewardsContainer.buttons[i].disabledBG:SetAlpha(0)
-			self:addButtonBorder{obj=_G.GuildRewardsContainer.buttons[i], relTo=_G.GuildRewardsContainer.buttons[i].icon, reParent={_G.GuildRewardsContainer.buttons[i].lock}}
+			if self.modBtnBs then
+				self:addButtonBorder{obj=_G.GuildRewardsContainer.buttons[i], relTo=_G.GuildRewardsContainer.buttons[i].icon, reParent={_G.GuildRewardsContainer.buttons[i].lock}}
+			end
 		end
-		self:skinDropDown{obj=_G.GuildRewardsDropDown}
+		self:skinObject("dropdown", {obj=_G.GuildRewardsDropDown, fType=ftype})
 
 		self:Unhook(this, "OnShow")
 	end)
@@ -2894,75 +2924,94 @@ aObj.blizzLoDFrames[ftype].GuildUI = function(self)
 
 	self:SecureHookScript(_G.GuildInfoFrameInfo, "OnShow", function(this)
 		self:keepFontStrings(this)
-		self:skinSlider{obj=_G.GuildInfoDetailsFrame.ScrollBar, wdth=-4}
+		self:skinObject("slider", {obj=_G.GuildInfoDetailsFrame.ScrollBar, fType=ftype})
 		self:removeMagicBtnTex(_G.GuildAddMemberButton)
-		self:skinStdButton{obj=_G.GuildAddMemberButton}
 		self:removeMagicBtnTex(_G.GuildControlButton)
-		self:skinStdButton{obj=_G.GuildControlButton}
 		self:removeMagicBtnTex(_G.GuildViewLogButton)
-		self:skinStdButton{obj=_G.GuildViewLogButton}
+		if self.modBtns then
+			self:skinStdButton{obj=_G.GuildAddMemberButton, fType=ftype}
+			self:skinStdButton{obj=_G.GuildControlButton, fType=ftype}
+			self:skinStdButton{obj=_G.GuildViewLogButton, fType=ftype}
+		end
 
 		self:Unhook(this, "OnShow")
 	end)
 
 	self:SecureHookScript(_G.GuildInfoFrameRecruitment, "OnShow", function(this)
 		_G.GuildRecruitmentInterestFrameBg:SetAlpha(0)
-		self:skinCheckButton{obj=_G.GuildRecruitmentQuestButton}
-		self:skinCheckButton{obj=_G.GuildRecruitmentRaidButton}
-		self:skinCheckButton{obj=_G.GuildRecruitmentDungeonButton}
-		self:skinCheckButton{obj=_G.GuildRecruitmentPvPButton}
-		self:skinCheckButton{obj=_G.GuildRecruitmentRPButton}
 		_G.GuildRecruitmentAvailabilityFrameBg:SetAlpha(0)
-		self:skinCheckButton{obj=_G.GuildRecruitmentWeekdaysButton}
-		self:skinCheckButton{obj=_G.GuildRecruitmentWeekendsButton}
 		_G.GuildRecruitmentRolesFrameBg:SetAlpha(0)
-		self:skinCheckButton{obj=_G.GuildRecruitmentTankButton.checkButton}
-		self:skinCheckButton{obj=_G.GuildRecruitmentHealerButton.checkButton}
-		self:skinCheckButton{obj=_G.GuildRecruitmentDamagerButton.checkButton}
 		_G.GuildRecruitmentLevelFrameBg:SetAlpha(0)
 		_G.GuildRecruitmentCommentFrameBg:SetAlpha(0)
-		self:skinSlider{obj=_G.GuildRecruitmentCommentInputFrameScrollFrame.ScrollBar}
-		_G.GuildRecruitmentCommentEditBoxFill:SetTextColor(self.BT:GetRGB())
-		self:addSkinFrame{obj=_G.GuildRecruitmentCommentInputFrame, ft=ftype, kfs=true}
+		self:skinObject("slider", {obj=_G.GuildRecruitmentCommentInputFrameScrollFrame.ScrollBar, fType=ftype})
+		self:skinObject("frame", {obj=_G.GuildRecruitmentCommentInputFrame, fType=ftype, kfs=true, fb=true, ofs=0})
 		self:removeMagicBtnTex(_G.GuildRecruitmentListGuildButton)
-		self:skinStdButton{obj=_G.GuildRecruitmentListGuildButton}
+		if self.modBtns then
+			self:skinStdButton{obj=_G.GuildRecruitmentListGuildButton, fType=ftype}
+			self:SecureHook("GuildRecruitmentListGuildButton_Update", function()
+				self:clrBtnBdr(_G.GuildRecruitmentListGuildButton)
+			end)
+		end
+		if self.modChkBtns then
+			self:skinCheckButton{obj=_G.GuildRecruitmentQuestButton, fType=ftype}
+			self:skinCheckButton{obj=_G.GuildRecruitmentRaidButton, fType=ftype}
+			self:skinCheckButton{obj=_G.GuildRecruitmentDungeonButton, fType=ftype}
+			self:skinCheckButton{obj=_G.GuildRecruitmentPvPButton, fType=ftype}
+			self:skinCheckButton{obj=_G.GuildRecruitmentRPButton, fType=ftype}
+			self:skinCheckButton{obj=_G.GuildRecruitmentWeekdaysButton, fType=ftype}
+			self:skinCheckButton{obj=_G.GuildRecruitmentWeekendsButton, fType=ftype}
+			self:skinCheckButton{obj=_G.GuildRecruitmentTankButton.checkButton, fType=ftype}
+			self:skinCheckButton{obj=_G.GuildRecruitmentHealerButton.checkButton, fType=ftype}
+			self:skinCheckButton{obj=_G.GuildRecruitmentDamagerButton.checkButton, fType=ftype}
+		end
 
 		self:Unhook(this, "OnShow")
 	end)
 
 	self:SecureHookScript(_G.GuildInfoFrameApplicants, "OnShow", function(this)
-		for i = 1, #_G.GuildInfoFrameApplicantsContainer.buttons do
-			self:applySkin{obj=_G.GuildInfoFrameApplicantsContainer.buttons[i]}
-			_G.GuildInfoFrameApplicantsContainer.buttons[i].ring:SetAlpha(0)
-			_G.GuildInfoFrameApplicantsContainer.buttons[i].PointsSpentBgGold:SetAlpha(0)
-			self:moveObject{obj=_G.GuildInfoFrameApplicantsContainer.buttons[i].PointsSpentBgGold, x=6, y=-6}
+		for _, btn in _G.pairs(_G.GuildInfoFrameApplicantsContainer.buttons) do
+			-- self:applySkin{obj=btn}
+			btn.ring:SetAlpha(0)
+			btn.PointsSpentBgGold:SetAlpha(0)
+			-- self:moveObject{obj=btn.PointsSpentBgGold, x=6, y=-6}
 		end
-		self:skinSlider{obj=_G.GuildInfoFrameApplicantsContainerScrollBar, wdth=-4}
+		self:skinObject("slider", {obj=_G.GuildInfoFrameApplicantsContainerScrollBar, fType=ftype})
 		self:removeMagicBtnTex(_G.GuildRecruitmentInviteButton)
-		self:skinStdButton{obj=_G.GuildRecruitmentInviteButton}
 		self:removeMagicBtnTex(_G.GuildRecruitmentMessageButton)
-		self:skinStdButton{obj=_G.GuildRecruitmentMessageButton}
 		self:removeMagicBtnTex(_G.GuildRecruitmentDeclineButton)
-		self:skinStdButton{obj=_G.GuildRecruitmentDeclineButton}
+		if self.modBtns then
+			self:skinStdButton{obj=_G.GuildRecruitmentInviteButton, fType=ftype}
+			self:skinStdButton{obj=_G.GuildRecruitmentMessageButton, fType=ftype}
+			self:skinStdButton{obj=_G.GuildRecruitmentDeclineButton, fType=ftype}
+			self:SecureHook("GuildInfoFrameApplicants_Update", function()
+				self:clrBtnBdr(_G.GuildRecruitmentInviteButton)
+				self:clrBtnBdr(_G.GuildRecruitmentMessageButton)
+				self:clrBtnBdr(_G.GuildRecruitmentDeclineButton)
+			end)
+		end
 
 		self:Unhook(this, "OnShow")
 	end)
 
 	self:SecureHookScript(_G.GuildTextEditFrame, "OnShow", function(this)
-		self:skinSlider{obj=_G.GuildTextEditScrollFrame.ScrollBar, wdth=-6}
-		self:addSkinFrame{obj=_G.GuildTextEditContainer, ft=ftype}
-		self:skinStdButton{obj=_G.GuildTextEditFrameAcceptButton}
-		self:skinStdButton{obj=self:getChild(_G.GuildTextEditFrame, 4)} -- bottom close button
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, ofs=-7}
+		self:skinObject("slider", {obj=_G.GuildTextEditScrollFrame.ScrollBar, fType=ftype})
+		self:skinObject("frame", {obj=_G.GuildTextEditContainer, fType=ftype, kfs=true, fb=true})
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, ofs=-7})
+		if self.modBtns then
+			self:skinStdButton{obj=_G.GuildTextEditFrameAcceptButton, fType=ftype}
+			self:skinStdButton{obj=self:getChild(_G.GuildTextEditFrame, 4), fType=ftype} -- bottom close button
+		end
 
 		self:Unhook(this, "OnShow")
 	end)
 
 	self:SecureHookScript(_G.GuildLogFrame, "OnShow", function(this)
-		self:skinSlider{obj=_G.GuildLogScrollFrame.ScrollBar, wdth=-6}
-		self:addSkinFrame{obj=_G.GuildLogContainer, ft=ftype}
-		self:skinStdButton{obj=self:getChild(this, 3)} -- bottom close button
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ofs=-7}
+		self:skinObject("slider", {obj=_G.GuildLogScrollFrame.ScrollBar, fType=ftype})
+		self:skinObject("frame", {obj=_G.GuildLogContainer, fType=ftype, kfs=true, fb=true})
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, ofs=-7})
+		if self.modBtns then
+			self:skinStdButton{obj=self:getChild(this, 3), fType=ftype} -- bottom close button
+		end
 
 		self:Unhook(this, "OnShow")
 	end)
