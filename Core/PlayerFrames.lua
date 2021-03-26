@@ -3516,7 +3516,9 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 		self:checkShown(_G.ScenarioBlocksFrame.MawBuffsBlock)
 	end
 
-	if not self.prdb.ObjectiveTracker.headers then return end
+	if not self.prdb.ObjectiveTracker.headers then
+		return
+	end
 
 	-- remove Glow/Sheen textures from WorldQuest modules
 	local function updTrackerModules()
@@ -3537,7 +3539,7 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 				if module.Header
 				and module.Header.MinimizeButton
 				then
-					aObj:addButtonBorder{obj=module.Header.MinimizeButton, es=12, ofs=1, x1=-1}
+					aObj:addButtonBorder{obj=module.Header.MinimizeButton, sec=true, es=12, ofs=1, x1=-1}
 				end
 			end
 		end
@@ -3559,7 +3561,7 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 		-- hook this to skin QuestObjective Block Button(s)
 		local function aBB2rB(btn)
 			-- TODO: causes ADDON_ACTION_FORBIDDEN so commented out for now 07.01.21
-			-- aObj:addButtonBorder{obj=btn, ofs=btn.Icon and -2 or nil, x1=btn.Icon and 0 or nil, reParent=btn.Count and {btn.Count} or nil, clr="gold"}
+			aObj:addButtonBorder{obj=btn, sec=true, ofs=btn.Icon and -2 or nil, x1=btn.Icon and 0 or nil, reParent=btn.Count and {btn.Count} or nil, clr="gold"}
 		end
 		self:SecureHook("QuestObjectiveSetupBlockButton_AddRightButton", function(_, button, _)
 			if not button.sbb then
