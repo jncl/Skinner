@@ -4465,9 +4465,9 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 			self:skinObject("frame", {obj=_G.MiniMapTracking, fType=ftype})
 		end
 		_G.QueueStatusMinimapButtonBorder:SetTexture(nil)
+		self:moveObject{obj=_G.QueueStatusMinimapButton, x=-16}
 		if not minBtn then
-			-- self:addSkinButton{obj=_G.QueueStatusMinimapButton, ft=ftype, sap=true}
-			self:skinObject("button", {obj=_G.QueueStatusMinimapButton, fType=ftype})
+			self:skinObject("button", {obj=_G.QueueStatusMinimapButton, fType=ftype, ofs=-1})
 			_G.RaiseFrameLevelByTwo(_G.QueueStatusMinimapButton)
 			_G.LowerFrameLevel(_G.QueueStatusMinimapButton.sb)
 		end
