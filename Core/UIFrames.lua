@@ -6062,25 +6062,25 @@ aObj.blizzFrames[ftype].TimeManager = function(self)
 	self:SecureHookScript(_G.TimeManagerFrame, "OnShow", function(this)
 		_G.TimeManagerFrameTicker:Hide()
 		self:keepFontStrings(_G.TimeManagerStopwatchFrame)
-		self:skinDropDown{obj=_G.TimeManagerAlarmHourDropDown, x2=-6}
-		self:skinDropDown{obj=_G.TimeManagerAlarmMinuteDropDown, x2=-6}
-		self:skinDropDown{obj=_G.TimeManagerAlarmAMPMDropDown, x2=-6}
-		self:skinEditBox{obj=_G.TimeManagerAlarmMessageEditBox, regs={6}}
+		self:skinObject("dropdown", {obj=_G.TimeManagerAlarmHourDropDown, fType=ftype, x2=-6})
+		self:skinObject("dropdown", {obj=_G.TimeManagerAlarmMinuteDropDown, fType=ftype, x2=-6})
+		self:skinObject("dropdown", {obj=_G.TimeManagerAlarmAMPMDropDown, fType=ftype, x2=-6})
+		self:skinObject("editbox", {obj=_G.TimeManagerAlarmMessageEditBox, fType=ftype})
 		self:removeRegions(_G.TimeManagerAlarmEnabledButton, {6, 7})
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, x2=self.isClsc and 1 or 3}
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, cb=true, x2=self.isClsc and 1 or 3})
 		if self.modBtnBs then
 			self:addButtonBorder{obj=_G.TimeManagerStopwatchCheck, y1=2, y2=-4}
 		end
 		if self.modChkBtns then
-			self:skinCheckButton{obj=_G.TimeManagerAlarmEnabledButton}
-			self:skinCheckButton{obj=_G.TimeManagerMilitaryTimeCheck}
-			self:skinCheckButton{obj=_G.TimeManagerLocalTimeCheck}
+			self:skinCheckButton{obj=_G.TimeManagerAlarmEnabledButton, fType=ftype}
+			self:skinCheckButton{obj=_G.TimeManagerMilitaryTimeCheck, fType=ftype}
+			self:skinCheckButton{obj=_G.TimeManagerLocalTimeCheck, fType=ftype}
 		end
 		-- Stopwatch Frame
 		self:keepFontStrings(_G.StopwatchTabFrame)
-		self:addSkinFrame{obj=_G.StopwatchFrame, ft=ftype, kfs=true, y1=-16, x2=-1, y2=2}
+		self:skinObject("frame", {obj=_G.StopwatchFrame, fType=ftype, kfs=true, y1=-16, x2=-1, y2=2})
 		if self.modBtns then
-			self:skinCloseButton{obj=_G.StopwatchCloseButton, sap=true}
+			self:skinCloseButton{obj=_G.StopwatchCloseButton, fType=ftype, noSkin=true}
 		end
 		if self.modBtnBs then
 			self:addButtonBorder{obj=_G.StopwatchPlayPauseButton, ofs=-1, x1=0, clr="gold"}
