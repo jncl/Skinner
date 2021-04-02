@@ -24,58 +24,6 @@ ToDos
 
 ≈	O	Refactor NewSkinFuncs in Blizzard/AddOn skins
 
-	I	Tabs, Column Headers, buttons still overlapping, reported by Fakelessgaming, 19.03.21
-		- using different border settings
-√			- GameMenu
-
-		- UIFrames
-√			- ChatConfig.ChatTabManager
-√			- ChatConfigCombatSettings
-√			- ChatTabs
-√			- ChatTemporaryWindow
-√			- GarrisonLandingPage
-√			- GarrisonLandingPage.Report
-√			- GarrisonBuildingFrame.Tabs
-√			- GarrisonShipyardFrame
-√			- MissionFrame
-√			- MissionList
-√			- GuildBankFrame
-√			- InterfaceOptionsFrame
-√			- MacroFrame
-√			- MailFrame
-√			- PVEFrame
-√			- PVPMatchScoreboard
-√			- PVPMatchResults
-?			- RaidParentFrame
-√			- VideoOptionsFrame
-
-		- NPCFrames
-√			- AuctionHouseUI.AuctionsFrame
-√			- AuctionHouseUI.Tabs
-√			- BankFrame
-√			- MerchantFrame
-
-		- PlayerFrames
-√			- AchievementFrame
-√			- ArtifactUI
-√			- CharacterFrame
-√			- CollectionsJournal
-√			- WardrobeCollectionFrame
-√			- EncounterJournal.instanceSelect
-√			- EncounterJournal.encounter.info
-√			- FriendsFrame
-√			- FriendsFrameTabHeader
-√			- GuildFrame
-√			- GuildInfoFrame
-√			- InspectUI
-?			- LookingForGuildUI
-√			- SpellBookFrame
-√			- TalentsUI
-√			- TradeSkillUI
-
-√		- Ace3
-√		- BugSack
-
 	- ClassicSupport
 		- AuctionFrame
 		- CharacterFrame
@@ -87,8 +35,24 @@ ToDos
 		- RaidParentFrame
 		- WorldStateScoreFrame
 
-	- TradeskillUI, reported by Fakelessgaming, 21.03.21
-√		- Crafting amount border could be larger
+	I/C	TipTac, reported by hastrox77, 26.03.21
+√		- ..\AddOns\Skinner\AddonSkins\TipTac.lua line 28:
+		Usage: RawHook([object], method, [handler], [hookSecure]): Attempting to hook a non existing target
 
-	- Raid Frames [CompactFrames], reported by Fakelessgaming, 21.03.21
-?		- overlapping entries
+	I	QuestLog, reported by hastrox77, 26.03.21
+?		- not being skinned
+
+	I/C	BankFrame, reported by EpidemeDaBear, 23.03.21
+√		-  Interface\AddOns\Skinner\Core\UtilFuncs.lua:838: attempt to index local 'obj' (a nil value)
+		Interface\AddOns\Skinner\Core\UtilFuncs.lua:838: in function `keepFontStrings'
+		Interface\AddOns\Skinner\AddonSkins\LibSushi.lua:32: in function <Interface\AddOns\Skinner\AddonSkins\LibSushi.lua:31>
+		Interface\AddOns\Skinner\AddonSkins\LibSushi.lua:55: in function <Interface\AddOns\Skinner\AddonSkins\LibSushi.lua:52>
+
+	I	Collections, reported by Fakelessgaming, 28.03.21
+√		- Toy & Heirloom frames, missing button borders
+
+	I	Soulbinds, reported by Fakelessgaming,30.03.21
+√		- add border to portrait
+
+	I	VuhDoOptions, reported by Galthariel, 30.03.21
+≈		- can't see choices on dropdown menu, they're behind the skinframe
