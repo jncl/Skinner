@@ -1,3 +1,29 @@
+beta9.37988.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Updated ClassicSupport to use NewSkinFuncs and updated button skinning functions
+	Updated Tab skinning code for various frames in Retail
+	Updated CovenantSanctum skin
+	Updated NewSkinFuncs & UIButtons code
+	Updated ColumnHeaders skin code
+	Updated TradeSkillUI skin
+	Updated RaidUI skin
+	Updated ObjectiveTracker skin
+	Updated GuildUI skin
+	Updated CompactFrames skin
+	Updated MinimapButtons skin
+	Updated LFGList skin
+	Bugfix for RaidProfiles skin
+	Updated WorldQuestTracker skin
+	Updated UIButtons code
+	Updated button skinning code for InterfaceOptions & SystemOptions
+	Updated AchievementsUI skin
+	Updated AuctionHouseUI
+	Updated Backdrop table entries
+	Updated Ace3 & BugSack skins
+
 beta9.37899.3
 Jncl:
 	ToDo.txt
