@@ -4,51 +4,54 @@ local _G = _G
 
 aObj.addonsToSkin.CovenantMissionHelper = function(self) -- v 0.1
 
-	self:SecureHook(_G.MissionHelper, "createMissionHelperFrame", function(this)
-		local mainFrame = _G.MissionHelperFrame
-		self:keepFontStrings(mainFrame.RaisedFrameEdges)
-		self:skinObject("frame", {obj=mainFrame.missionHeader, kfs=true, fb=true, clr="grey"})
-		mainFrame.resultHeader.BaseFrameBackground:SetTexture(nil)
-		self:keepFontStrings(mainFrame.resultInfo.RaisedFrameEdges)
-		self:skinObject("frame", {obj=mainFrame.resultInfo, kfs=true, fb=true, y2=-6, clr="grey"})
-		self:keepFontStrings(mainFrame.combatLogFrame.RaisedFrameEdges)
-		self:skinObject("frame", {obj=mainFrame.combatLogFrame, kfs=true, fb=true, y2=-6, clr="grey"})
-		self:skinObject("slider", {obj=mainFrame.combatLogFrame.CombatLogMessageFrame.ScrollBar, x1=-1, x2=0.5, y1=5, y2=-10})
-		mainFrame.buttonsFrame.bg:SetTexture(nil)
-		mainFrame.Tabs = {_G.MissionHelperTab1, _G.MissionHelperTab2}
-		self:skinObject("tabs", {obj=mainFrame, tabs=mainFrame.Tabs, lod=true, track=false})
-		if self.isTT then
-			self:SecureHook("MissionHelperFrame_SelectTab", function(tab)
+	local function skinMHF(frame)
+		aObj:keepFontStrings(frame.RaisedFrameEdges)
+		aObj:skinObject("frame", {obj=frame.missionHeader, kfs=true, fb=true, clr="grey"})
+		frame.resultHeader.BaseFrameBackground:SetTexture(nil)
+		aObj:keepFontStrings(frame.resultInfo.RaisedFrameEdges)
+		aObj:skinObject("frame", {obj=frame.resultInfo, kfs=true, fb=true, y2=-6, clr="grey"})
+		aObj:keepFontStrings(frame.combatLogFrame.RaisedFrameEdges)
+		aObj:skinObject("frame", {obj=frame.combatLogFrame, kfs=true, fb=true, y2=-6, clr="grey"})
+		aObj:skinObject("slider", {obj=frame.combatLogFrame.CombatLogMessageFrame.ScrollBar, x1=-1, x2=0.5, y1=5, y2=-10})
+		frame.buttonsFrame.bg:SetTexture(nil)
+		frame.Tabs = {frame.ResultTab, frame.CombatLogTab}
+		aObj:skinObject("tabs", {obj=frame, tabs=frame.Tabs, lod=self.isTT and true, noCheck=true, track=false})
+		if aObj.isTT then
+			aObj:secureHook("MissionHelperFrame_SelectTab", function(tab)
 				for _, btn in _G.pairs(tab:GetParent().Tabs) do
 					if btn == tab then
-						self:setActiveTab(btn.sf)
+						aObj:setActiveTab(btn.sf)
 					else
-						self:setInactiveTab(btn.sf)
+						aObj:setInactiveTab(btn.sf)
 					end
 				end
 			end)
 		end
-		self:skinObject("frame", {obj=mainFrame, kfs=true, y2=-6, clr="sepia"})
-		if self.modBtns then
-			self:skinStdButton{obj=mainFrame.buttonsFrame.BestDispositionButton}
-			self:skinStdButton{obj=mainFrame.buttonsFrame.predictButton}
-			self:SecureHook(mainFrame.buttonsFrame.BestDispositionButton, "Disable", function(this, _)
-				self:clrBtnBdr(this)
+		aObj:skinObject("frame", {obj=frame, kfs=true, y2=-5, clr="sepia"})
+		if aObj.modBtns then
+			aObj:skinStdButton{obj=frame.buttonsFrame.BestDispositionButton}
+			aObj:skinStdButton{obj=frame.buttonsFrame.predictButton}
+			aObj:SecureHook(frame.buttonsFrame.BestDispositionButton, "Disable", function(this, _)
+				aObj:clrBtnBdr(this)
 			end)
-			self:SecureHook(mainFrame.buttonsFrame.BestDispositionButton, "Enable", function(this, _)
-				self:clrBtnBdr(this)
+			aObj:SecureHook(frame.buttonsFrame.BestDispositionButton, "Enable", function(this, _)
+				aObj:clrBtnBdr(this)
 			end)
-			self:SecureHook(mainFrame.buttonsFrame.predictButton, "Disable", function(this, _)
-				self:clrBtnBdr(this)
+			aObj:SecureHook(frame.buttonsFrame.predictButton, "Disable", function(this, _)
+				aObj:clrBtnBdr(this)
 			end)
-			self:SecureHook(mainFrame.buttonsFrame.predictButton, "Enable", function(this, _)
-				self:clrBtnBdr(this)
+			aObj:SecureHook(frame.buttonsFrame.predictButton, "Enable", function(this, _)
+				aObj:clrBtnBdr(this)
 			end)
 		end
-		mainFrame = nil
+	end
 
-		self:Unhook(thmainFrameis, "OnShow")
-	end)
+	-- handle the fact the frame is created anew each time the mission frame is opened
+	self:RawHook(_G.MissionHelper, "createMissionHelperFrame", function(this)
+		local frame = self.hooks[this].createMissionHelperFrame(this)
+		skinMHF(frame)
+		return frame
+	end, true)
 
 	if self.modBtnBs then
 		self:SecureHook(_G.MissionHelperFrame, "updateMissionHeader", function(this, missionInfo)

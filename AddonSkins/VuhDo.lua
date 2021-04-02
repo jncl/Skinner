@@ -2,7 +2,7 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("VuhDo") then return end
 local _G = _G
 
-aObj.addonsToSkin.VuhDo = function(self) -- v 3.119
+aObj.addonsToSkin.VuhDo = function(self) -- v 3.121
 
 	-- N.B. NOT a real Tooltip
 	self:skinObject("frame", {obj=_G.VuhDoTooltip, ofs=0})
@@ -32,9 +32,10 @@ aObj.addonsToSkin.VuhDo = function(self) -- v 3.119
 
 end
 
-aObj.addonsToSkin.VuhDoOptions = function(self) -- v 3.119
+aObj.addonsToSkin.VuhDoOptions = function(self) -- v 3.121
 
 	local function skinObject(obj, type, x2Ofs)
+		-- aObj:Debug("skinObject: [%s, %s]", , )
 		local objName = obj:GetName()
 		if type == "dropdown"
 		or type == "dropdown2"
@@ -193,7 +194,7 @@ aObj.addonsToSkin.VuhDoOptions = function(self) -- v 3.119
 		cName, cW, noFB, ofs, x1Ofs, x2Ofs = nil, nil, nil, nil, nil, nil
 	end
 	-- hook this to skin ComboBox panels & items
-	self:SecureHook("VUHDO_lnfComboBoxInitFromModel", function(aComboBox)
+	self:SecureHook("VUHDO_lnfComboInitItems", function(aComboBox)
 		local ddBox, panel
 		if aComboBox.isScrollable then
 			ddBox = aComboBox:GetName() .. "ScrollPanel"
@@ -246,7 +247,7 @@ aObj.addonsToSkin.VuhDoOptions = function(self) -- v 3.119
 			self:skinObject("frame", {obj=child, kfs=true, fb=true, ofs=0, y1=1, y2=-1})
 		end
 	end)
-	-- hook this to skin keyboardMacros
+	-- hook this to skin keyboard Macros
 	self:SecureHook("VUHDO_keyboardlocalSpellsScrollPanelOnShow", function(aScrollPanel)
 		local cName
 		for _, child in _G.ipairs{aScrollPanel:GetChildren()} do
@@ -293,7 +294,7 @@ aObj.addonsToSkin.VuhDoOptions = function(self) -- v 3.119
 			_G[tpName .. name .. "RadioButton"]:SetSize(46, 46)
 			_G.VUHDO_lnfTabCheckButtonOnEnter(_G[tpName .. name .. "RadioButton"])
 		end
-		self:skinObject("tabs", {obj=_G[tpName], tabs=_G[tpName].Tabs, ignoreSize=true, lod=true, regions={1, 3}, offsets={x1=-3, y1=-19, x2=3, y2=5}, track=false, func=aObj.isTT and function(tab)
+		self:skinObject("tabs", {obj=_G[tpName], tabs=_G[tpName].Tabs, ignoreSize=true, lod=self.isTT and true, regions={1, 3}, offsets={x1=-2, y1=-19, x2=2, y2=5}, track=false, func=self.isTT and function(tab)
 			aObj:SecureHookScript(tab, "OnClick", function(this)
 				for _, tab in _G.pairs(this:GetParent().Tabs) do
 					if tab == this then

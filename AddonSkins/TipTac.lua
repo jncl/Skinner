@@ -2,7 +2,7 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("TipTac") then return end
 local _G = _G
 
-aObj.addonsToSkin.TipTac = function(self) -- v 20.11.04
+aObj.addonsToSkin.TipTac = function(self) -- v 20.11.04/20.11.11
 	if not self.db.profile.Tooltips.skin then return end
 
 	-- set the TipTac backdrop settings to ours
@@ -24,20 +24,22 @@ aObj.addonsToSkin.TipTac = function(self) -- v 20.11.04
 		self:Unhook(this, "OnShow")
 	end)
 
-	-- hook this as the Tooltip Backdrop Style Default overwrites TipTac style on item mouseover
-	self:RawHook("SharedTooltip_SetBackdropStyle", function(tooltip, style)
-		if tooltip ~= _G.EmbeddedItemTooltipTooltip then
-			if style.edgeFile ~= _G.TipTac_Config.tipBackdropEdge then
-				style.edgeFile = _G.TipTac_Config.tipBackdropEdge
-				style.bgFile = _G.TipTac_Config.tipBackdropBG
+	if not aObj.isClsc then
+		-- hook this as the Tooltip Backdrop Style Default overwrites TipTac style on item mouseover
+		self:RawHook("SharedTooltip_SetBackdropStyle", function(tooltip, style)
+			if tooltip ~= _G.EmbeddedItemTooltipTooltip then
+				if style.edgeFile ~= _G.TipTac_Config.tipBackdropEdge then
+					style.edgeFile = _G.TipTac_Config.tipBackdropEdge
+					style.bgFile = _G.TipTac_Config.tipBackdropBG
+				end
 			end
-		end
-		self.hooks.SharedTooltip_SetBackdropStyle(tooltip, style)
-	end, true)
+			self.hooks.SharedTooltip_SetBackdropStyle(tooltip, style)
+		end, true)
+	end
 
 end
 
-aObj.lodAddons.TipTacOptions = function(self) -- v 20.10.31
+aObj.lodAddons.TipTacOptions = function(self) -- v 20.10.31/20.03.12
 
 	-- hook this to skin the dropdown menu (also used by Examiner skin)
 	if not self:IsHooked(_G.AzDropDown, "ToggleMenu") then

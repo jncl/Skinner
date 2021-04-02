@@ -8,7 +8,7 @@ aObj.addonsToSkin.WorldQuestTracker = function(self) -- v 9.0.2.414
 	_G.WorldQuestTrackerSummaryHeader.BlackBackground:SetTexture(nil)
 	_G.WorldQuestTrackerQuestsHeader.Background:SetTexture(nil)
 	if self.modBtnBs then
-		self:addButtonBorder{obj=_G.WorldQuestTrackerScreenPanel.MinimizeButton, sec=true, es=12, ofs=0, x1=-1}
+		self:addButtonBorder{obj=_G.WorldQuestTrackerScreenPanel.MinimizeButton, shsh=true, es=12, ofs=0, x1=-1}
 	end
 
 	if self.modBtns then
@@ -34,16 +34,15 @@ aObj.addonsToSkin.WorldQuestTracker = function(self) -- v 9.0.2.414
 	end
 
 	if self.prdb.ObjectiveTracker.skin then
-		self:addSkinFrame{obj=_G.WorldQuestTrackerScreenPanel_QuestHolder, ft="a", kfs=true, nb=true, x1=-25, y1=4, x2=3}
+		self:skinObject("frame", {obj=_G.WorldQuestTrackerScreenPanel_QuestHolder, fType=ftype, kfs=true, x1=-25, y1=4, x2=3})
 		self:SecureHook(_G.WorldQuestTrackerAddon, "UpdateTrackerScale", function()
 			_G.WorldQuestTrackerScreenPanel_QuestHolder.sf:SetScale(_G.WorldQuestTrackerAddon.db.profile.tracker_scale)
 		end)
+		self:SecureHook(_G.WorldQuestTrackerAddon, "RefreshTrackerWidgets", function()
+			if _G.WorldQuestTrackerScreenPanel_QuestHolder.sf then
+				_G.WorldQuestTrackerScreenPanel_QuestHolder.sf:SetShown(_G.WorldQuestTrackerQuestsHeader:IsShown())
+			end
+		end)
 	end
-
-	self:SecureHook(_G.WorldQuestTrackerAddon, "RefreshTrackerWidgets", function()
-		if _G.WorldQuestTrackerScreenPanel_QuestHolder.sf then
-			_G.WorldQuestTrackerScreenPanel_QuestHolder.sf:SetShown(_G.WorldQuestTrackerQuestsHeader:IsShown())
-		end
-	end)
 
 end

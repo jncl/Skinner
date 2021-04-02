@@ -12,7 +12,7 @@ aObj.libsToSkin["Sushi-3.1"] = function(self) -- v Sushi-3.1, 4
 	self:RawHook(sushi.Dropdown, "Toggle", function(this, obj)
 		local drop = self.hooks[this].Toggle(this, obj)
 		if drop then
-			self:addSkinFrame{obj=drop.Bg, ft="a", kfs=true, nb=true}
+			self:skinObject("frame", {obj=drop.Bg, kfs=true})
 			drop.Bg.SetBackdrop = _G.nop
 			return drop
 		end
@@ -29,23 +29,27 @@ aObj.libsToSkin["Sushi-3.1"] = function(self) -- v Sushi-3.1, 4
 	end
 
 	local function skinPopup(pop)
-		self:keepFontStrings(pop.Border)
-		self:addSkinFrame{obj=pop, ft="a", kfs=true, nb=true}
-		if self.modBtns then
+		aObj:removeNineSlice(pop.Border)
+		pop.Separator:SetTexture(nil)
+		aObj:skinObject("frame", {obj=pop, kfs=true})
+		if aObj.modBtns then
 			local name = pop:GetName()
-			self:skinStdButton{obj=_G[name..'Button1']}
-			self:skinStdButton{obj=_G[name..'Button2']}
-			self:skinStdButton{obj=_G[name..'Button3']}
-			self:skinStdButton{obj=_G[name..'Button4']}
+			aObj:skinStdButton{obj=_G[name..'Button1']}
+			aObj:skinStdButton{obj=_G[name..'Button2']}
+			aObj:skinStdButton{obj=_G[name..'Button3']}
+			aObj:skinStdButton{obj=_G[name..'Button4']}
 		end
 		if pop.info.hasEditBox then
-			self:skinEditBox{obj=pop.editBox, regs={6}} -- 6 is text
+			aObj:skinObject("editbox", {obj=pop.editbox})
 		end
 		if pop.info.hasMoneyFrame then
 		end
 		if pop.info.hasItemFrame then
 		end
 		if pop.info.extraButton then
+			if aObj.modBtns then
+				aObj:skinStdButton{obj=pop.info.extraButton}
+			end
 		end
 	end
 	-- hook this to skin new Popups
