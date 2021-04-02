@@ -1014,7 +1014,7 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 		self:skinStatusBar{obj=this.progressBar, fi=0}
 		self:skinObject("editbox", {obj=this.searchBox, fType=ftype, si=true})
 		if self.modBtns then
-			self:skinStdButton{obj=_G.ToyBoxFilterButton}
+			self:skinStdButton{obj=_G.ToyBoxFilterButton, fType=ftype}
 		end
 		self:removeInset(this.iconsFrame)
 		self:keepFontStrings(this.iconsFrame)
@@ -1040,7 +1040,7 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 		self:removeRegions(this.progressBar, {2, 3})
 		self:skinObject("editbox", {obj=this.SearchBox, fType=ftype, si=true})
 		if self.modBtns then
-			self:skinStdButton{obj=_G.HeirloomsJournalFilterButton}
+			self:skinStdButton{obj=_G.HeirloomsJournalFilterButton, fType=ftype}
 		end
 		self:skinObject("dropdown", {obj=this.classDropDown, fType=ftype})
 		self:removeInset(this.iconsFrame)
