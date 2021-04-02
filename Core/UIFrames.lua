@@ -5858,12 +5858,11 @@ aObj.blizzLoDFrames[ftype].Soulbinds = function(self)
 	self.initialized.Soulbinds = true
 
 	self:SecureHookScript(_G.SoulbindViewer, "OnShow", function(this)
-
 		-- .Fx
 		self:keepFontStrings(this.Border)
 		-- .SelectGroup
 		for btn in this.SelectGroup.pool:EnumerateActive() do
-			self:removeRegions(btn.ModelScene, {1, 2, 3, 6, 7})
+			self:removeRegions(btn.ModelScene, {1, 2, 6, 7})
 		end
 		-- .Tree
 			-- .LinkContainer
@@ -5879,15 +5878,14 @@ aObj.blizzLoDFrames[ftype].Soulbinds = function(self)
 				self:skinStdButton{obj=list.CategoryButton, clr="topaz"}
 			end
 		end
-
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, ofs=-5, aso={bbclr="sepia"}}
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ofs=-5, clr="sepia"})
 		if self.modBtns then
-			self:skinCloseButton{obj=this.CloseButton, noSkin=true}
-			self:skinStdButton{obj=this.ActivateSoulbindButton}
+			self:skinCloseButton{obj=this.CloseButton, fType=ftype, noSkin=true}
+			self:skinStdButton{obj=this.ActivateSoulbindButton, fType=ftype}
+			self:skinStdButton{obj=this.CommitConduitsButton, fType=ftype}
 			self:SecureHook(this, "UpdateActivateSoulbindButton", function(this)
 				self:clrBtnBdr(this.ActivateSoulbindButton)
 			end)
-			self:skinStdButton{obj=this.CommitConduitsButton}
 		end
 
 		self:Unhook(this, "OnShow")
