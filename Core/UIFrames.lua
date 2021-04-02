@@ -2274,7 +2274,7 @@ aObj.blizzFrames[ftype].ExtraAbilityContainer = function(self)
 		btn:GetNormalTexture():SetTexture(nil)
 		if aObj.modBtnBs then
 			-- TODO: causes ADDON_ACTION_BLOCKED so commented out for now 07.01.21
-			aObj:addButtonBorder{obj=btn, sec=true, ofs=2, reParent={btn.Count, btn.HotKey and btn.HotKey}}
+			aObj:addButtonBorder{obj=btn, shsh=true, ofs=2, reParent={btn.Count, btn.HotKey and btn.HotKey}}
 		end
 	end
 	if self.prdb.MainMenuBar.extraab then

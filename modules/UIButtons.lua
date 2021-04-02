@@ -657,8 +657,8 @@ local function __addButtonBorder(opts)
 		libt = Large Item Button template
 		sibt = Small Item Button template
 		gibt = Giant Item Button template
-		sec = requires SecureHandlerShowHideTemplate to inherit from otherwise tainting occurs
-		-- sec = requires SecureFrameTemplate to inherit from otherwise tainting occurs
+		sec = requires SecureFrameTemplate to inherit from otherwise tainting occurs
+		shsh = requires SecureHandlerShowHideTemplate to inherit from otherwise tainting occurs
 		reParent = table of objects to reparent to the border frame
 		es = edgeSize, used for small icons
 		ofs = offset value to use
@@ -720,7 +720,8 @@ local function __addButtonBorder(opts)
 	end
 
 	-- create the button border object
-	opts.obj.sbb = _G.CreateFrame(opts.obj:GetObjectType(), nil, opts.obj, (opts.sec or opts.sec or opts.seca or opts.sabt or opts.subt) and "SecureHandlerShowHideTemplate")
+	opts.sec = opts.sec or opts.seca or opts.sabt or opts.subt
+	opts.obj.sbb = _G.CreateFrame(opts.obj:GetObjectType(), nil, opts.obj, opts.sec and "SecureFrameTemplate" or opts.shsh and "SecureHandlerShowHideTemplate")
 	opts.obj.sbb:EnableMouse(false) -- enable clickthrough
 
 	aObj:addBackdrop(opts.obj.sbb)
