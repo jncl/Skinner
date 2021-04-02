@@ -441,13 +441,9 @@ local function skinFrame(tbl)
 	tbl.obj.sf = _G.CreateFrame("Frame", tbl.name, tbl.obj, tbl.sec and "SecureFrameTemplate")
 	-- allow clickthrough
 	tbl.obj.sf:EnableMouse(false)
-	-- adjust frame level
-	local success, _ = _G.pcall(_G.LowerFrameLevel, tbl.obj.sf) -- catch any error, doesn't matter if already 0
-	-- raise parent's Frame Level if 0
-	if not success then
-		_G.RaiseFrameLevel(tbl.obj)
-	end
-	success = nil
+	-- adjust frame level & make it mirror its parent's
+	tbl.obj.sf:SetFrameLevel(tbl.obj:GetFrameLevel())
+	tbl.obj.sf.SetFrameLevel = tbl.obj.SetFrameLevel
 	 -- make sure it's lower than its parent's Frame Strata
 	if tbl.bg then
 		tbl.obj.sf:SetFrameStrata("BACKGROUND")
@@ -503,10 +499,7 @@ local function skinFrame(tbl)
 	so.bbclr  = tbl.clr
 	so.bba    = _G.rawget(tbl, bba)
 	so.ng     = tbl.ng
-	so.fh     = _G.rawget(tbl, "fh")
-	-- if _G.rawget(tbl, "fh") then
-	-- 	so.fh = tbl.fh
-	-- end
+	so.fh     = _G.rawget(tbl, fh)
 	so.invert = tbl.invert
 	so.rotate = tbl.rotate
 	-- apply the 'Skinner effect' to the frame
