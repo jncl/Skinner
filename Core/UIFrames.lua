@@ -111,7 +111,7 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 			aObj:removeRegions(frame, {1})
 			aObj:removeRegions(frame.listScroll, {1})
 			aObj:skinObject("slider", {obj=frame.listScroll.scrollBar, fType=ftype, y1=5, y2=-10})
-			gOfs, y1Ofs, y2Ofs = 2, 2, -2
+			gOfs, y1Ofs, y2Ofs = 2, 2, -4
 		else
 			frame:DisableDrawLayer("BORDER")
 			aObj:removeRegions(frame, {1, 2, frame:GetParent() ~= _G.GarrisonLandingPage and 3 or nil})
@@ -122,6 +122,9 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 			gOfs, y1Ofs, y2Ofs = 6, 4, -8
 		end
 		aObj:skinObject("frame", {obj=frame.listScroll, fType=ftype, fb=true, ofs=gOfs, y1=y1Ofs, y2=y2Ofs, clr=colour})
+		if frame.isLandingPage then
+			aObj:moveObject{obj=frame,listScroll, x=-10}
+		end
 		if frame.FollowerScrollFrame then
 			frame.FollowerScrollFrame:SetTexture(nil)
 		end
@@ -132,6 +135,9 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 			aObj:skinObject("editbox", {obj=frame.SearchBox, fType=ftype, si=true})
 			-- need to do this as background isn't visible on Shipyard Mission page
 			_G.RaiseFrameLevel(frame.SearchBox)
+			if frame.isLandingPage then
+				aObj:moveObject{obj=frame.SearchBox, x=-10}
+			end
 		end
 		-- if FollowerList not yet populated, hook the function
 		if not frame.listScroll.buttons then
@@ -155,7 +161,8 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 			frame.ItemWeapon.Border:SetTexture(nil)
 			aObj:addButtonBorder{obj=frame.ItemArmor, relTo=frame.ItemArmor.Icon}
 			frame.ItemArmor.Border:SetTexture(nil)
-		else
+		end
+		if frame.CovenantFollowerPortraitFrame then
 			skinPortrait(frame.CovenantFollowerPortraitFrame)
 			if aObj.modBtnBs then
 				for btn in frame.autoSpellPool:EnumerateActive() do
