@@ -1,7 +1,6 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
 ../../FrameXML/UI.xsd">
 
-<!-- @no-lib-strip@ -->
 <Include file="AceAddon-3.0\AceAddon-3.0.xml"/>
 <Include file="AceConsole-3.0\AceConsole-3.0.xml"/>
 <Include file="AceEvent-3.0\AceEvent-3.0.xml"/>
@@ -11,10 +10,11 @@
 <Include file="AceLocale-3.0\AceLocale-3.0.xml"/>
 <Include file="AceGUI-3.0\AceGUI-3.0.xml"/>
 <Include file="AceConfig-3.0\AceConfig-3.0.xml"/>
+<!-- @version-retail@ -->
 <Include file="LibBabble-SubZone-3.0\lib.xml"/>
+<!-- @end-version-retail@ -->
 <!-- LSM must be loaded before SMW -->
 <Include file="LibSharedMedia-3.0\lib.xml"/>
 <Include file="AceGUI-3.0-SharedMediaWidgets\widget.xml"/>
-<!-- @end-no-lib-strip@ -->
 
 </Ui>
