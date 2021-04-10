@@ -24,7 +24,7 @@ ToDos
 
 ≈	O	Refactor NewSkinFuncs in Blizzard/AddOn skins
 
-	- ClassicSupport
+	- ClassicSupport [Tabs]
 		- AuctionFrame
 		- CharacterFrame
 		- FriendsFrame
@@ -35,24 +35,10 @@ ToDos
 		- RaidParentFrame
 		- WorldStateScoreFrame
 
-	I/C	TipTac, reported by hastrox77, 26.03.21
-√		- ..\AddOns\Skinner\AddonSkins\TipTac.lua line 28:
-		Usage: RawHook([object], method, [handler], [hookSecure]): Attempting to hook a non existing target
+	I/C	GuildControlPopupFrame, reported by 아련별, 07.04.21
+√		- Skinner\Modules\UIButtons.lua:504: attempt to index field 'obj' (a nil value)
+		Skinner\Modules\UIButtons.lua:504: in function `skinStdButton'
+		...aceSkinner\ClassicSupport\ClassicSupport.lua:925: in function <...aceSkinner\ClassicSupport\ClassicSupport.lua:918>
 
-	I	QuestLog, reported by hastrox77, 26.03.21
-?		- not being skinned
-
-	I/C	BankFrame, reported by EpidemeDaBear, 23.03.21
-√		-  Interface\AddOns\Skinner\Core\UtilFuncs.lua:838: attempt to index local 'obj' (a nil value)
-		Interface\AddOns\Skinner\Core\UtilFuncs.lua:838: in function `keepFontStrings'
-		Interface\AddOns\Skinner\AddonSkins\LibSushi.lua:32: in function <Interface\AddOns\Skinner\AddonSkins\LibSushi.lua:31>
-		Interface\AddOns\Skinner\AddonSkins\LibSushi.lua:55: in function <Interface\AddOns\Skinner\AddonSkins\LibSushi.lua:52>
-
-	I	Collections, reported by Fakelessgaming, 28.03.21
-√		- Toy & Heirloom frames, missing button borders
-
-	I	Soulbinds, reported by Fakelessgaming,30.03.21
-√		- add border to portrait
-
-	I	VuhDoOptions, reported by Galthariel, 30.03.21
-≈		- can't see choices on dropdown menu, they're behind the skinframe
+	I	Tab, Header overlaps, reported by Fakelessgaming, 09.04.21
+√		- InspectFrame, AuctionHouse headers, and top tabs
