@@ -893,6 +893,16 @@ aObj.ClassicSupport = function(self)
 				self:Unhook(this, "OnShow")
 			end)
 
+			if self.modBtns then
+				self:SecureHook("GuildStatus_Update", function()
+					self:clrBtnBdr(_G.GuildFramePromoteButton)
+					self:clrBtnBdr(_G.GuildFrameDemoteButton)
+					self:clrBtnBdr(_G.GuildMemberRemoveButton)
+					self:clrBtnBdr(_G.GuildMemberGroupInviteButton)
+					self:clrBtnBdr(_G.GuildFrameControlButton)
+					self:clrBtnBdr(_G.GuildFrameAddMemberButton)
+				end)
+			end
 			self:SecureHookScript(_G.GuildFrame, "OnShow", function(this)
 				self:keepFontStrings(this)
 				_G.GuildFrameLFGFrame:DisableDrawLayer("BACKGROUND")
@@ -903,7 +913,6 @@ aObj.ClassicSupport = function(self)
 					self:skinStdButton{obj=_G.GuildFrameControlButton, fType=ftype}
 					self:skinStdButton{obj=_G.GuildFrameAddMemberButton, fType=ftype}
 					self:skinStdButton{obj=_G.GuildFrameGuildInformationButton, fType=ftype}
-					-- self:skinStdButton{obj=_G.GuildMOTDEditButton}
 				end
 				if self.modBtnBs then
 					self:addButtonBorder{obj=_G.GuildFrameGuildListToggleButton, ofs=-2, clr="gold"}
@@ -917,20 +926,29 @@ aObj.ClassicSupport = function(self)
 
 			self:SecureHookScript(_G.GuildControlPopupFrame, "OnShow", function(this)
 				-- N.B. dropdown button border needs adjusting
-				self:skinDropDown{obj=_G.GuildControlPopupFrameDropDown, noBB=true}
-				self:skinEditBox{obj=_G.GuildControlPopupFrameEditBox, regs={1, 5}}
-				self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, ofs=0}
+				self:skinObject("dropdown", {obj=_G.GuildControlPopupFrameDropDown, fType=ftype, noBB=true})
+				self:skinObject("editbox", {obj=_G.GuildControlPopupFrameEditBox, fType=ftype, regions={3, 4}})
+				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ofs=0})
 				if self.modBtns then
 					self:skinStdButton{obj=_G.GuildControlPopupFrameCancelButton, fType=ftype}
-					self:skinStdButton{obj=_G.GuildControlPopupAcceptButto, fType=ftypen}
+					self:skinStdButton{obj=_G.GuildControlPopupAcceptButton, fType=ftype}
 					self:skinExpandButton{obj=_G.GuildControlPopupFrameAddRankButton, fType=ftype, as=true, plus=true}
 					self:skinExpandButton{obj=_G.GuildControlPopupFrameRemoveRankButton, fType=ftype, as=true}
+					self:SecureHook(_G.GuildControlPopupAcceptButton, "Disable", function(this, _)
+						self:clrBtnBdr(this)
+					end)
+					self:SecureHook(_G.GuildControlPopupAcceptButton, "Enable", function(this, _)
+						self:clrBtnBdr(this)
+					end)
+					self:SecureHook("GuildControlPopupFrameRemoveRankButton_OnUpdate", function()
+						self:clrBtnBdr(_G.GuildControlPopupFrameRemoveRankButton)
+					end)
 				end
 				if self.modBtnBs then
 					self:addButtonBorder{obj=_G.GuildControlPopupFrameDropDown.Button, es=12, ofs=-2, x1=31}
 				end
 				if self.modChkBtns then
-					for i = 1, 13 do
+					for i = 1, _G.GUILD_NUM_RANK_FLAGS do
 						self:skinCheckButton{obj=_G["GuildControlPopupFrameCheckbox" .. i], fType=ftype}
 					end
 				end
