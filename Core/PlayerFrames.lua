@@ -1885,17 +1885,17 @@ aObj.blizzFrames[ftype].CompactFrames = function(self)
 		end
 	end
 	local function skinGrp(grp)
+		aObj:skinObject("frame", {obj=grp.borderFrame, fType=ftype, kfs=true, ofs=-1, x2=-4, y2=2})
 		local grpName = grp:GetName()
 		for i = 1, _G.MEMBERS_PER_RAID_GROUP do
 			skinUnit(_G[grpName .. "Member" .. i])
 		end
 		grpName = nil
-		aObj:skinObject("frame", {obj=grp.borderFrame, fType=ftype, kfs=true, ofs=-1, x2=-4, y2=3})
 	end
 
 	-- Compact Party Frame
 	self:SecureHook("CompactPartyFrame_OnLoad", function()
-		self:skinObject("frame", {obj=_G.CompactPartyFrame.borderFrame, fType=ftype, kfs=true, ofs=-1, x2=-4, y2=3})
+		self:skinObject("frame", {obj=_G.CompactPartyFrame.borderFrame, fType=ftype, kfs=true})
 
 		self:Unhook("CompactPartyFrame_OnLoad")
 	end)
@@ -1953,24 +1953,20 @@ aObj.blizzFrames[ftype].CompactFrames = function(self)
 		-- Display Frame
 		_G.CompactRaidFrameManagerDisplayFrameHeaderBackground:SetTexture(nil)
 		_G.CompactRaidFrameManagerDisplayFrameHeaderDelineator:SetTexture(nil)
-		-- Buttons
-		if not self.isClsc then
-			for _, type in _G.pairs{"Tank", "Healer", "Damager"} do
-				self:skinStdButton{obj=this.displayFrame.filterOptions["filterRole" .. type]}
-			end
-		end
-		for i = 1, 8 do
-			self:skinStdButton{obj=this.displayFrame.filterOptions["filterGroup" .. i]}
-		end
 		this.displayFrame.filterOptions:DisableDrawLayer("BACKGROUND")
 		self:skinObject("dropdown", {obj=this.displayFrame.profileSelector, fType=ftype})
 		if self.modBtns then
+			for i = 1, 8 do
+				self:skinStdButton{obj=this.displayFrame.filterOptions["filterGroup" .. i]}
+			end
 			self:skinStdButton{obj=this.displayFrame.lockedModeToggle, fType=ftype}
 			self:skinStdButton{obj=this.displayFrame.hiddenModeToggle, fType=ftype}
 			self:skinStdButton{obj=this.displayFrame.convertToRaid, fType=ftype}
-			-- Leader Options
 			self:skinStdButton{obj=this.displayFrame.leaderOptions.readyCheckButton, fType=ftype}
 			if not self.isClsc then
+				for _, type in _G.pairs{"Tank", "Healer", "Damager"} do
+					self:skinStdButton{obj=this.displayFrame.filterOptions["filterRole" .. type]}
+				end
 				self:skinStdButton{obj=this.displayFrame.leaderOptions.rolePollButton, fType=ftype}
 				this.displayFrame.leaderOptions.countdownButton:DisableDrawLayer("ARTWORK") -- alpha values are changed in code
 				this.displayFrame.leaderOptions.countdownButton.Text:SetDrawLayer("OVERLAY") -- move draw layer so it is displayed
