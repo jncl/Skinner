@@ -3023,8 +3023,8 @@ aObj.blizzLoDFrames[ftype].InspectUI = function(self)
 	self.initialized.InspectUI = true
 
 	self:SecureHookScript(_G.InspectFrame, "OnShow", function(this)
-		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true, offsets={x1=7, y1=self.isTT and 2 or -3, x2=-7, y2=2}})
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true}
+		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true, offsets={x1=9, y1=self.isTT and 2 or -3, x2=-9, y2=2}})
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, cb=true})
 		-- send message when UI is skinned (used by oGlow skin)
 		self:SendMessage("InspectUI_Skinned", self)
 
