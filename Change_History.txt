@@ -1,3 +1,16 @@
+beta9.38134.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Updated button skinning code
+	Updated NewSkinFuncs code
+	Updated UIButtons code
+	Re-added button borders with different template to see if it fixes issue
+	Updated TimeManager code to use NSF
+	Updated Soulbinds code to add border and use NSF
+	Updated CovenantMissionHelper, LibSushi, TipTac, VuhDo & WorldQuestTracker skins
+
 beta9.37988.1
 Jncl:
 	ToDo.txt
