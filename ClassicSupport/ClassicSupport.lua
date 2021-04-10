@@ -770,8 +770,7 @@ aObj.ClassicSupport = function(self)
 			self:skinObject("dropdown", {obj=_G.FriendsDropDown, fType=ftype})
 			self:skinObject("dropdown", {obj=_G.TravelPassDropDown, fType=ftype})
 			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true})
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, cb=true, y2=-1})
-			self:moveObject{obj=this.CloseButton, x=1}
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, cb=true, x2=1, y2=-1})
 
 			self:SecureHookScript(_G.FriendsTabHeader, "OnShow", function(this)
 				_G.FriendsFrameBattlenetFrame:DisableDrawLayer("BACKGROUND")
@@ -833,7 +832,7 @@ aObj.ClassicSupport = function(self)
 					end
 				end
 				btn = nil
-				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, fb=true, ofs=0, y1=-81, y2=1})
+				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, fb=true, ofs=0, y1=-81, x2=-1, y2=1})
 				if self.modBtns then
 					self:skinStdButton{obj=_G.FriendsFrameAddFriendButton, fType=ftype, x1=1}
 					self:skinStdButton{obj=_G.FriendsFrameSendMessageButton, fType=ftype}
@@ -854,7 +853,7 @@ aObj.ClassicSupport = function(self)
 			self:SecureHookScript(_G.IgnoreListFrame, "OnShow", function(this)
 				this:DisableDrawLayer("BACKGROUND")
 				self:skinObject("slider", {obj=_G.FriendsFrameIgnoreScrollFrame.ScrollBar, fType=ftype})
-				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, fb=true, ofs=0, y1=-81})
+				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, fb=true, ofs=0, y1=-81, x2=-1})
 				if self.modBtns then
 					self:skinStdButton{obj=_G.FriendsFrameIgnorePlayerButton, fType=ftype, x1=1}
 					self:skinStdButton{obj=_G.FriendsFrameUnsquelchButton, fType=ftype}
