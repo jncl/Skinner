@@ -2353,7 +2353,7 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 	self:SecureHookScript(_G.GarrisonLandingPage, "OnShow", function(this)
 		-- ReportTab (ALWAYS shown first)
 		this.Report.List:DisableDrawLayer("BACKGROUND")
-		self:skinObject("slider", {obj=this.Report.List.listScroll.scrollBar, fType=ftype})
+		self:skinObject("slider", {obj=this.Report.List.listScroll.scrollBar, fType=ftype, x2=-4})
 		for _, btn in _G.pairs(this.Report.List.listScroll.buttons) do
 			btn:DisableDrawLayer("BACKGROUND")
 			btn:DisableDrawLayer("BORDER")
@@ -2366,7 +2366,7 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 		end
 		self:skinObject("frame", {obj=this.Report.List, fType=ftype, fb=true, y1=4})
 		-- tabs (Top)
-		self:skinObject("tabs", {obj=this.Report, tabs={this.Report.InProgress, this.Report.Available}, fType=ftype, lod=self.isTT and true, ignoreHLTex=false, upwards=true, offsets={x1=7, y1=self.isTT and -2 or -5, x2=-7, y2=self.isTT and -4 or 1}, regions={2, 3}, track=false, func=function(tab) tab:GetNormalTexture():SetAlpha(0) tab:SetFrameLevel(20) end})
+		self:skinObject("tabs", {obj=this.Report, tabs={this.Report.InProgress, this.Report.Available}, fType=ftype, lod=self.isTT and true, ignoreHLTex=false, upwards=true, offsets={x1=4, y1=self.isTT and -2 or -5, x2=-4, y2=self.isTT and -4 or 1}, regions={2, 3}, track=false, func=function(tab) tab:GetNormalTexture():SetAlpha(0) tab:SetFrameLevel(20) end})
 		if self.isTT then
 			self:SecureHook("GarrisonLandingPageReport_SetTab", function(tab)
 				self:setInactiveTab(tab:GetParent().unselectedTab.sf)
@@ -2377,7 +2377,6 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 		skinFollowerPage(this.FollowerTab)
 		skinFollowerList(this.ShipFollowerList)
 		skinFollowerTraitsAndEquipment(this.ShipFollowerTab)
-		-- shadowlands
 		if _G.C_Garrison.GetLandingPageGarrisonType() == _G.Enum.GarrisonType.Type_9_0 then
 			this.CovenantCallings:DisableDrawLayer("BACKGROUND")
 			local function skinPanelBtns(panel)
@@ -2399,9 +2398,8 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 				skinPanelBtns(this.SoulbindPanel)
 			end
 		end
-
 		this.HeaderBar:SetTexture(nil)
-		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true, ignoreHLTex=false, offsets={x1=7, y1=self.isTT and -9 or -14, x2=-7, y2=0}, regions={7, 8, 9, 10}})
+		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true, ignoreHLTex=false, offsets={x1=5, y1=self.isTT and -9 or -14, x2=-5, y2=-2}, regions={7, 8, 9, 10}})
 		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, ofs=-13, y2=6})
 
 		-- N.B. Garrison Landing Page Minimap Button skinned with other minimap buttons
