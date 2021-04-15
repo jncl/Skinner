@@ -6375,22 +6375,25 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 	if not self.prdb.UIWidgets or self.initialized.UIWidgets then return end
 	self.initialized.UIWidgets = true
 
-	-- N.B. In Shadowlands, get Clamping Errors when in certain areas and displaying StatusBar/SpellDisplay widgets
-	local LSZ = _G.LibStub:GetLibrary("LibBabble-SubZone-3.0"):GetLookupTable()
-	local disableTypeBySZ = {
-		[2] = { -- StatusBar
-			[LSZ["The Eternal Forge"]] = true, -- Bastion
-			[LSZ["Bleak Redoubt"]]     = true, -- Maldraxxus
-			[LSZ["House of Plagues"]]  = true, -- Maldraxxus
-			[LSZ["The Spearhead"]]     = true, -- Maldraxxus
-			[LSZ["The Desiccation"]]   = true, -- Revendreth
-		},
-		[13] = { -- SpellDisplay
-			[LSZ["House of Plagues"]] = true, -- Maldraxxus
-			[LSZ["The Ember Court"]]  = true, -- Revendreth (Scenario)
-		},
-	}
-
+	local LSZ, disableTypeBySZ
+	if not self.isClsc then
+		-- N.B. In Shadowlands, get Clamping Errors when in certain areas and displaying StatusBar/SpellDisplay widgets
+		LSZ = _G.LibStub:GetLibrary("LibBabble-SubZone-3.0"):GetLookupTable()
+		disableTypeBySZ = {
+			[2] = { -- StatusBar
+				[LSZ["The Eternal Forge"]] = true, -- Bastion
+				[LSZ["Bleak Redoubt"]]     = true, -- Maldraxxus
+				[LSZ["Butchers Block"]]    = true, -- Maldraxxus
+				[LSZ["House of Plagues"]]  = true, -- Maldraxxus
+				[LSZ["The Spearhead"]]     = true, -- Maldraxxus
+				[LSZ["The Desiccation"]]   = true, -- Revendreth
+			},
+			[13] = { -- SpellDisplay
+				[LSZ["House of Plagues"]] = true, -- Maldraxxus
+				[LSZ["The Ember Court"]]  = true, -- Revendreth (Scenario)
+			},
+		}
+	end
 	local function setTextColor(textObject)
 		self:rawHook(textObject, "SetTextColor", function(this, r, g, b, a)
 			-- aObj:Debug("textObject SetTextColor: [%s, %s, %s, %s, %s]", this, r, g, b, a)
@@ -6409,8 +6412,8 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 		end, true)
 		return textObject:SetTextColor(textObject:GetTextColor())
 	end
-
 	-- Documentation in UIWidgetManagerSharedDocumentation.lua (UIWidgetVisualizationType)
+	local SZ
 	local function skinWidget(wFrame, wInfo)
 		-- handle in combat
 		if wFrame:IsProtected()
@@ -6419,19 +6422,21 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 		    aObj:add2Table(aObj.oocTab, {skinWidget, {wFrame, wInfo}})
 		    return
 		end
-
-		-- Get SubZone
-		local SZ = _G.GetSubZoneText()
-
-		-- aObj:Debug("skinWidget#0: [%s, %s, %s, %s]", _G.C_Map.GetBestMapForUnit("player"), _G.GetRealZoneText(), SZ, disableTypeBySZ[wFrame.widgetType][SZ])
-		-- aObj:Debug("skinWidget: [%s, %s, %s, %s, %s, %s]", wFrame, wFrame.widgetType, wFrame.widgetTag, wFrame.widgetSetID, wFrame.widgetID, wInfo)
+		if not aObj.isClsc then
+			-- Get SubZone
+			SZ = _G.GetSubZoneText()
+			-- aObj:Debug("skinWidget#0: [%s, %s, %s, %s]", _G.C_Map.GetBestMapForUnit("player"), _G.GetRealZoneText(), SZ, disableTypeBySZ[wFrame.widgetType][SZ])
+			-- aObj:Debug("skinWidget: [%s, %s, %s, %s, %s, %s]", wFrame, wFrame.widgetType, wFrame.widgetTag, wFrame.widgetSetID, wFrame.widgetID, wInfo)
+		end
 
 		if wFrame.widgetType == 0 then -- IconAndText (World State: ICONS at TOP)
 			-- N.B. DON'T add buttonborder to Icon(s)
 		elseif wFrame.widgetType == 1 then -- CaptureBar (World State: Capture bar on RHS)
 			-- DON'T change textures as it doesn't really improve it
 		elseif wFrame.widgetType == 2 then -- StatusBar
-			if not disableTypeBySZ[wFrame.widgetType][SZ] then
+			if not aObj.isClsc
+			and not disableTypeBySZ[wFrame.widgetType][SZ]
+			then
 				aObj:skinStatusBar{obj=wFrame.Bar, fi=0, nilFuncs=true}
 				aObj:removeRegions(wFrame.Bar, {1, 2, 3, 5, 6, 7}) -- background & border textures
 			else
@@ -6479,7 +6484,9 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 			-- .Foreground
 			setTextColor(wFrame.Text)
 		elseif wFrame.widgetType == 13 then -- SpellDisplay
-			if not disableTypeBySZ[wFrame.widgetType][SZ] then
+			if not aObj.isClsc
+			and not disableTypeBySZ[wFrame.widgetType][SZ]
+			then
 				wFrame.Spell.Border:SetTexture(nil)
 				local tcr = setTextColor(wFrame.Spell.Text)
 				if aObj.modBtnBs then
