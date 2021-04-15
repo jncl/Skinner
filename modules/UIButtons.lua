@@ -376,7 +376,7 @@ function module:skinExpandButton(opts)
 		aso.bd = 6
 		aso.obj = opts.obj
 		aObj:applySkin(aso)
-		opts.obj.sb = true
+		-- opts.obj.sb = true
 	end
 	aso = nil
 	opts.obj.onSB = opts.onSB -- store this for use in checkTex function
