@@ -6664,7 +6664,12 @@ aObj.blizzFrames[ftype].WorldMap = function(self)
 				oFrame:DisableDrawLayer("BACKGROUND")
 				oFrame.Border:SetTexture(nil)
 				if self.modBtns then
-					self:skinStdButton{obj=oFrame, y2=3, clr="gold"}
+					self:skinStdButton{obj=oFrame, ofs=-1, clr="gold"}
+					if oFrame.ActiveTexture then -- WorldMapTrackingPin
+						self:SecureHook(oFrame, "Refresh", function(this)
+							self:clrBtnBdr(this, "gold")
+						end)
+					end
 				end
 			-- Floor Navigation Dropdown
 			elseif oFrame.Button then
