@@ -147,41 +147,49 @@ function module:checkTex(...)
 
 end
 
+local function clrTex(clr, hTex)
+	local r, g, b
+	if clr == "grey" then
+		r, g, b = _G.GRAY_FONT_COLOR:GetRGB()
+	elseif clr == "red" then
+		r, g, b = _G.DULL_RED_FONT_COLOR:GetRGB()
+	elseif clr == "blue" then
+		r, g, b = _G.LIGHTBLUE_FONT_COLOR:GetRGB()
+	elseif clr == "yellow" then
+		r, g, b = _G.YELLOW_FONT_COLOR:GetRGB()
+	end
+	hTex:SetColorTexture(r, g, b, 0.25)
+	r, g, b = nil, nil, nil
+end
 function module:chgHLTex(obj, hTex)
 
-	local function clrTex(clr)
-		if clr == "red" then
-			hTex:SetColorTexture(1, 0, 0, 0.25)
-		elseif clr == "blue" then
-			hTex:SetColorTexture(0.25, 0.57, 1, 0.25)
-		elseif clr == "yellow" then
-			hTex:SetColorTexture(1, 1, 0, 0.25)
-		end
-		-- inset colour
-		if obj.sb then
-			hTex:ClearAllPoints()
-			hTex:SetPoint("TOPLEFT", obj.sb, "TOPLEFT", 5, -5)
-			hTex:SetPoint("BOTTOMRIGHT", obj.sb, "BOTTOMRIGHT", -5, 5)
-		end
-	end
 	if hTex then
 		local hTexFile = hTex:GetTexture()
 		-- aObj:Debug("chgHLTex: [%s, %s]", obj, hTexFile)
 		if hTexFile then
 			if _G.tonumber(hTexFile) then
+				if _G.tonumber(hTexFile) == 3046538 then -- auctionhouse-nav-button
+					clrTex("grey", hTex)
+				end
 			else
 				if hTexFile:find("UI-Panel-Button-Highlight", 1, true) -- UIPanelButtonHighlightTexture
 				or hTexFile:find("UI-DialogBox-Button-Highlight", 1, true) -- StaticPopupButton/PetPopupButton/CinematicDialogButton
 				then
-					clrTex("red")
+					clrTex("red", hTex)
 				elseif hTexFile:find("UI-Silver-Button-Highlight", 1, true) -- UIMenuButtonStretchTemplate
 				or hTexFile:find("UI-Minimap-ZoomButton-Highlight", 1, true)
 				or hTexFile:find("HelpButtons", 1, true) -- Classic Help Buttons
 				then
-					clrTex("blue")
+					clrTex("blue", hTex)
 				elseif hTexFile:find("UI-Silver-Button-Select", 1, true) then -- UIMenuButtonStretchTemplate
-					clrTex("yellow")
+					clrTex("yellow", hTex)
 				end
+			end
+			-- inset colour
+			if obj.sb then
+				hTex:ClearAllPoints()
+				hTex:SetPoint("TOPLEFT", obj.sb, "TOPLEFT", 5, -5)
+				hTex:SetPoint("BOTTOMRIGHT", obj.sb, "BOTTOMRIGHT", -5, 5)
 			end
 			hTexFile = nil
 		end
