@@ -3466,10 +3466,12 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 	-- AutoPopup frames
 	if self.prdb.ObjectiveTracker.popups then
 		local function skinAutoPopUps(owningModule)
-			if _G.SplashFrame:IsShown() then return end
-			local questID, questTitle, block
+			if _G.SplashFrame:IsShown() then
+				return
+			end
+			local questID, popUpType, questTitle, block
 			for i = 1, _G.GetNumAutoQuestPopUps() do
-				questID = _G.GetAutoQuestPopUp(i)
+				questID, popUpType = _G.GetAutoQuestPopUp(i)
 				if not _G.C_QuestLog.IsQuestBounty(questID)
 				and owningModule:ShouldDisplayQuest(_G.QuestCache:Get(questID))
 				then
@@ -3479,20 +3481,21 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 					then
 						block = owningModule:GetBlock(questID, "ScrollFrame", "AutoQuestPopUpBlockTemplate")
 						if not block.module.hasSkippedBlocks then
-							if block.init
-							and not block.ScrollChild.sf
-							then
-								aObj:keepFontStrings(block.ScrollChild)
+							if block.init then
+								aObj:skinObject("frame", {obj=block.ScrollChild, kfs=true, fType=ftype, ofs=0, x1=33})
 								block.ScrollChild.Exclamation:SetAlpha(1)
 								block.ScrollChild.QuestionMark:SetAlpha(1)
-								block.ScrollChild.FlashFrame.IconFlash:SetTexture(nil)
-								aObj:skinObject("frame", {obj=block.ScrollChild, fType=ftype, ofs=0})
 							end
+						end
+						if popUpType == "COMPLETE" then
+							block.ScrollChild.QuestionMark:Show()
+						else
+							block.ScrollChild.Exclamation:Show()
 						end
 					end
 				end
 			end
-			questID, questTitle, block = nil, nil, nil
+			questID, popUpType, questTitle, block = nil, nil, nil, nil
 		end
 		self:SecureHook("AutoQuestPopupTracker_Update", function(owningModule)
 			skinAutoPopUps(owningModule)
@@ -3539,7 +3542,7 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 				if module.Header
 				and module.Header.MinimizeButton
 				then
-					aObj:addButtonBorder{obj=module.Header.MinimizeButton, sec=true, es=12, ofs=1, x1=-1}
+					aObj:addButtonBorder{obj=module.Header.MinimizeButton, shsh=true, es=12, ofs=1, x1=-1}
 				end
 			end
 		end
@@ -3557,10 +3560,9 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 	self:skinDropDown{obj=_G.ObjectiveTrackerFrame.BlockDropDown}
 
 	if self.modBtnBs then
-		self:addButtonBorder{obj=_G.ObjectiveTrackerFrame.HeaderMenu.MinimizeButton, es=12, ofs=1, x1=-1}
+		self:addButtonBorder{obj=_G.ObjectiveTrackerFrame.HeaderMenu.MinimizeButton, shsh=true, es=12, ofs=1, x1=-1}
 		-- hook this to skin QuestObjective Block Button(s)
 		local function aBB2rB(btn)
-			-- TODO: causes ADDON_ACTION_FORBIDDEN so commented out for now 07.01.21
 			aObj:addButtonBorder{obj=btn, shsh=true, ofs=btn.Icon and -2 or nil, x1=btn.Icon and 0 or nil, reParent=btn.Count and {btn.Count} or nil, clr="gold"}
 		end
 		self:SecureHook("QuestObjectiveSetupBlockButton_AddRightButton", function(_, button, _)
