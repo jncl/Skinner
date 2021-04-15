@@ -1053,9 +1053,10 @@ aObj.blizzFrames[ftype].BNFrames = function(self)
 	self.initialized.BNFrames = true
 
 	self:SecureHookScript(_G.BNToastFrame, "OnShow", function(this)
-		self:skinObject("frame", {obj=this, fType=ftype})
+		self:skinObject("frame", {obj=this, fType=ftype, ofs=0})
 		if self.modBtns then
 			self:skinCloseButton{obj=this.CloseButton, font=self.fontSBX, noSkin=true}
+			this.CloseButton.cb = this.CloseButton.sb
 		end
 		self:hookSocialToastFuncs(this)
 		self:skinObject("frame", {obj=this.TooltipFrame, fType=ftype, kfs=true})
@@ -1065,9 +1066,10 @@ aObj.blizzFrames[ftype].BNFrames = function(self)
 	end)
 
 	self:SecureHookScript(_G.TimeAlertFrame, "OnShow", function(this)
-		self:skinObject("frame", {obj=this, fType=ftype})
+		self:skinObject("frame", {obj=this, fType=ftype, ofs=0})
 		if self.modBtns then
 			self:skinCloseButton{obj=this.CloseButton, font=self.fontSBX, noSkin=true}
+			this.CloseButton.cb = this.CloseButton.sb
 		end
 		self:hookSocialToastFuncs(this)
 
