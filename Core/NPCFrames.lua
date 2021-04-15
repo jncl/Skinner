@@ -58,7 +58,7 @@ aObj.blizzLoDFrames[ftype].AuctionHouseUI = function(self)
 				if this.tableBuilder then
 					for hdr in this.tableBuilder.headerPoolCollection:EnumerateActive() do
 						aObj:removeRegions(hdr, {1, 2, 3})
-						aObj:skinObject("frame", {obj=hdr, fType=ftype, ofs=-2})
+						aObj:skinObject("frame", {obj=hdr, fType=ftype, ofs=0, x1=1, x2=-1})
 					end
 				end
 			end)
@@ -210,7 +210,7 @@ aObj.blizzLoDFrames[ftype].AuctionHouseUI = function(self)
 			end)
 		end
 		-- Auctions frames
-		self:skinObject("tabs", {obj=this.AuctionsFrame, tabs=this.AuctionsFrame.Tabs, fType=ftype, lod=self.isTT and true, upwards=true, offsets={x1=6, y1=-4, x2=-6, y2=self.isTT and -3 or 0}, track=false})
+		self:skinObject("tabs", {obj=this.AuctionsFrame, tabs=this.AuctionsFrame.Tabs, fType=ftype, lod=self.isTT and true, upwards=true, offsets={x1=6, y1=-4, x2=-6, y2=self.isTT and -1 or 0}, track=false})
 		if self.isTT then
 			self:SecureHook(this.AuctionsFrame, "SetDisplayMode", function(this, displayMode)
 				for i, tab in _G.pairs(this.Tabs) do
@@ -233,7 +233,7 @@ aObj.blizzLoDFrames[ftype].AuctionHouseUI = function(self)
 		skinItemList(this.AuctionsFrame.BidsList)
 		skinItemList(this.AuctionsFrame.ItemList)
 		skinItemList(this.AuctionsFrame.CommoditiesList)
-		self:skinObject("frame", {obj=this.AuctionsFrame, fType=ftype, kfs=true, fb=true, x1=-5, y1=-30, x2=0, y2=-25})
+		self:skinObject("frame", {obj=this.AuctionsFrame, fType=ftype, kfs=true, fb=true, x1=-5, y1=-28, x2=0, y2=-25})
 		-- N.B. workaround for BidsTab having 'useParentLevel' attribute set to true
 		_G.RaiseFrameLevelByTwo(this.AuctionsFrame)
 		_G.LowerFrameLevel(this.AuctionsFrame.sf)
