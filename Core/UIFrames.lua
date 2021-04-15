@@ -2127,7 +2127,7 @@ aObj.blizzFrames[ftype].CovenantToasts = function(self)
 
 	self:SecureHookScript(_G.CovenantRenownToast, "OnShow", function(this)
 		this.ToastBG:SetTexture(nil)
-		this.GlowLineTopBottom:SetTexture(nil)
+		this.GlowLineTopBottom:SetAlpha(0) -- texture changed in code
 		this.RewardIconRing:SetTexture(nil)
 
 		self:Unhook(this, "OnShow")
