@@ -1088,7 +1088,7 @@ aObj.blizzFrames[ftype].QuestFrame = function(self)
 		end
 		if not frame.sf then
 			self:keepFontStrings(_G.QuestNPCModelTextFrame)
-			self:addSkinFrame{obj=frame, ft=ftype, kfs=true, nb=true, x2=5, y2=-81}
+			self:addSkinFrame{obj=frame, ft=ftype, kfs=true, nb=true, x1=-5, x2=5, y2=-81}
 		end
 		local parentFrame, _, _, _, _, x, y = ...
 		frame:SetPoint("TOPLEFT", parentFrame, "TOPRIGHT", x + 4, y)
