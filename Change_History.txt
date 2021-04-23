@@ -1,3 +1,17 @@
+beta9.38134.2
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated TOC for build process
+	Updated Classic build files
+	Updated GarrisonUI skin
+	Updated InspectFrame skin
+	Updated EncounterJournal skin
+	Updated CompactFrame skin
+	Updated AuctionHouseUI skin
+	Updated Classic FriendsFrame skin
+	Updated Classic GuildUI skin
+
 beta9.38134.1
 Jncl:
 	ToDo.txt
