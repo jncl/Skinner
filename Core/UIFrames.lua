@@ -538,104 +538,126 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 	self.initialized.AlertFrames = true
 
 	local function skinACAlertFrames(frame)
-
-		local fH = _G.Round(frame:GetHeight())
-
+		-- local fW, fH = _G.Round(frame:GetWidth()), _G.Round(frame:GetHeight())
+		aObj:Debug("skinACAlertFrames: [%s, %s, %s]", frame, frame:GetSize())
 		aObj:nilTexture(frame.Background, true)
 		frame.Unlocked:SetTextColor(aObj.BT:GetRGB())
-		if frame.OldAchievement then frame.OldAchievement:SetTexture(nil) end -- AchievementAlertFrame(s)
-
+		if frame.OldAchievement then
+			frame.OldAchievement:SetTexture(nil)
+		end
 		frame.Icon:DisableDrawLayer("BORDER")
 		frame.Icon:DisableDrawLayer("OVERLAY")
-
-		local x1, y1, x2, y2 = 6, -13, -4, 15
+		-- local x1, y1, x2, y2 = 6, -13, -4, 15
 		-- CriteriaAlertFrame is smaller than most (Achievement Progress etc)
-		if fH == 52 then
-			x1, y1, x2, y2 = 30, 0, 0, 5
-		end
+		-- if fH == 52 then
+		-- 	x1, y1, x2, y2 = 30, 0, 0, 5
+		-- end
 		-- GuildAchievementFrame is taller than most (Achievement Progress etc)
-		if fH == 104 then
-			y1, y2 = -8, 10
-		end
-		if not frame.sf then
-			aObj:addSkinFrame{obj=frame, ft=ftype, x1=x1, y1=y1, x2=x2, y2=y2}
+		-- if fH == 104 then
+		-- 	y1, y2 = -8, 10
+		-- end
+		-- if not frame.sf then
+			aObj:skinObject("frame", {obj=frame, fType=ftype, ofs=0})
+			-- aObj:addSkinFrame{obj=frame, ft=ftype, x1=x1, y1=y1, x2=x2, y2=y2}
 			if aObj.modBtnBs then
 				aObj:addButtonBorder{obj=frame.Icon, relTo=frame.Icon.Texture}
 			end
-		else
-			frame.sf:ClearAllPoints()
-			frame.sf:SetPoint("TOPLEFT", frame, "TOPLEFT", x1, y1)
-			frame.sf:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", x2, y2)
-		end
-		fH, x1, y1, x2, y2 = nil, nil, nil ,nil ,nil
-
+		-- else
+		-- 	frame.sf:ClearAllPoints()
+		-- 	frame.sf:SetPoint("TOPLEFT", frame, "TOPLEFT", x1, y1)
+		-- 	frame.sf:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", x2, y2)
+		-- end
+		-- fH, x1, y1, x2, y2 = nil, nil, nil ,nil ,nil
 	end
 	-- called params: frame, achievementID, alreadyEarned (10585, true)
 	self:SecureHook(_G.AchievementAlertSystem, "setUpFunction", function(frame, _)
-		-- aObj:Debug("AchievementAlertSystem: [%s, %s, %s]", frame, ...)
 		skinACAlertFrames(frame)
 	end)
+	for frame in _G.AchievementAlertSystem.alertFramePool:EnumerateActive() do
+		skinACAlertFrames(frame)
+	end
 	--called params: frame, achievementID, criteriaString (10607, "Test")
 	self:SecureHook(_G.CriteriaAlertSystem, "setUpFunction", function(frame, _)
-		-- aObj:Debug("CriteriaAlertSystem: [%s, %s, %s]", frame, ...)
 		skinACAlertFrames(frame)
 	end)
-
-	-- called params: self, itemLink, originalQuantity, rollType, roll, specID, isCurrency, showFactionBG, lootSource, lessAwesome, isUpgraded, wonRoll, showRatedBG, isSecondaryResult
-	self:SecureHook(_G.LootAlertSystem, "setUpFunction", function(frame, ...)
+	for frame in _G.CriteriaAlertSystem.alertFramePool:EnumerateActive() do
+		skinACAlertFrames(frame)
+	end
+	local function skinLootAlert(frame, ...)
 		-- aObj:Debug("LootAlertSystem: [%s, %s]", frame, ...)
 		frame:DisableDrawLayer("BACKGROUND")
 		frame.lootItem.SpecRing:SetTexture(nil)
-		self:addSkinFrame{obj=frame, ft=ftype, ofs=-10, y2=8}
+		aObj:skinObject("frame", {obj=frame, fType=ftype, ofs=-10, y2=8})
 		-- colour the Icon buttons' border
-		if self.modBtnBs then
+		if aObj.modBtnBs then
 			local itemRarity
 			local itemLink = ...
 			if frame.isCurrency then
-				-- BETA: API change
-				itemRarity = _G.C_CurrencyInfo and _G.C_CurrencyInfo.GetCurrencyInfoFromLink and _G.C_CurrencyInfo.GetCurrencyInfoFromLink(itemLink).quality or _G.select(8, _G.GetCurrencyInfo(itemLink))
+				itemRarity = _G.C_CurrencyInfo.GetCurrencyInfoFromLink(itemLink).quality
 			else
 				itemRarity = _G.select(3, _G.GetItemInfo(itemLink))
 			end
 			frame.lootItem.IconBorder:SetTexture(nil)
-			self:addButtonBorder{obj=frame.lootItem, relTo=frame.lootItem.Icon}
+			aObj:addButtonBorder{obj=frame.lootItem, relTo=frame.lootItem.Icon}
 			frame.lootItem.sbb:SetBackdropBorderColor(_G.ITEM_QUALITY_COLORS[itemRarity].r, _G.ITEM_QUALITY_COLORS[itemRarity].g, _G.ITEM_QUALITY_COLORS[itemRarity].b)
 			itemLink, itemRarity = nil, nil
 		end
+	end
+	-- called params: self, itemLink, originalQuantity, rollType, roll, specID, isCurrency, showFactionBG, lootSource, lessAwesome, isUpgraded, wonRoll, showRatedBG, isSecondaryResult
+	self:SecureHook(_G.LootAlertSystem, "setUpFunction", function(frame, ...)
+		skinLootAlert(frame, ...)
 	end)
-	-- called parms: self, itemLink, quantity, specID, baseQuality (147239, 1, 1234, 5)
-	self:SecureHook(_G.LootUpgradeAlertSystem, "setUpFunction", function(frame, _)
+	for frame in _G.LootAlertSystem.alertFramePool:EnumerateActive() do
+		skinLootFrames(frame)
+	end
+	local function skinLootUpgrade(frame)
 		-- aObj:Debug("LootUpgradeAlertSystem: [%s, %s, %s, %s, %s]", frame, ...)
 		frame:DisableDrawLayer("BACKGROUND")
-		self:addSkinFrame{obj=frame, ft=ftype, ofs=-10, y2=8}
+		aObj:addSkinFrame{obj=frame, ft=ftype, ofs=-10, y2=8}
+	end
+	-- called parms: self, itemLink, quantity, specID, baseQuality (147239, 1, 1234, 5)
+	self:SecureHook(_G.LootUpgradeAlertSystem, "setUpFunction", function(frame, _)
+		skinLootUpgrade(frame)
 	end)
+	for frame in _G.LootUpgradeAlertSystem.alertFramePool:EnumerateActive() do
+		skinLootUpgrade(frame)
+	end
+	local function skinMoneyorHonor(frame)
+		-- aObj:Debug("MoneyWon/HonorAwarded AlertSystem: [%s, %s]", frame, ...)
+		frame:DisableDrawLayer("BACKGROUND")
+		frame.IconBorder:SetTexture(nil)
+		aObj:addSkinFrame{obj=frame, ft=ftype, ofs=-8, y2=8}
+		if aObj.modBtnBs then
+			aObj:addButtonBorder{obj=frame, relTo=frame.Icon}
+		end
+	end
 	-- called params: self, amount (12345)
 	self:SecureHook(_G.MoneyWonAlertSystem, "setUpFunction", function(frame, _)
-		-- aObj:Debug("MoneyWonAlertSystem: [%s, %s]", frame, ...)
-		frame:DisableDrawLayer("BACKGROUND")
-		frame.IconBorder:SetTexture(nil)
-		self:addSkinFrame{obj=frame, ft=ftype, ofs=-8, y2=8}
-		if self.modBtnBs then
-			self:addButtonBorder{obj=frame, relTo=frame.Icon}
-		end
+		skinMoneyorHonor(frame)
 	end)
+	for frame in _G.MoneyWonAlertSystem.alertFramePool:EnumerateActive() do
+		skinMoneyorHonor(frame)
+	end
 	-- called params: self, amount (350)
 	self:SecureHook(_G.HonorAwardedAlertSystem, "setUpFunction", function(frame, _)
-		-- aObj:Debug("HonorAwardedAlertSystem: [%s, %s]", frame, ...)
-		frame:DisableDrawLayer("BACKGROUND")
-		frame.IconBorder:SetTexture(nil)
-		self:addSkinFrame{obj=frame, ft=ftype, ofs=-8, y2=8}
-		if self.modBtnBs then
-			self:addButtonBorder{obj=frame, relTo=frame.Icon}
-		end
+		skinMoneyorHonor(frame)
 	end)
-	-- called params: self, recipeID (209645)
-	self:SecureHook(_G.NewRecipeLearnedAlertSystem, "setUpFunction", function(frame, _)
+	for frame in _G.HonorAwardedAlertSystem.alertFramePool:EnumerateActive() do
+		skinMoneyorHonor(frame)
+	end
+	local function skinNewRecipe(frame)
 		-- aObj:Debug("NewRecipeLearnedAlertSystem: [%s, %s]", frame, ...)
 		frame:DisableDrawLayer("BACKGROUND")
 		frame.Icon:SetDrawLayer("BORDER")
-		self:addSkinFrame{obj=frame, ft=ftype, ofs=-8}
+		aObj:addSkinFrame{obj=frame, ft=ftype, ofs=-8}
+	end
+	-- called params: self, recipeID (209645)
+	self:SecureHook(_G.NewRecipeLearnedAlertSystem, "setUpFunction", function(frame, _)
+		skinNewRecipe(frame)
 	end)
+	for frame in _G.NewRecipeLearnedAlertSystem.alertFramePool:EnumerateActive() do
+		skinNewRecipe(frame)
+	end
 
 	local function skinDCSAlertFrames(opts)
 
@@ -783,32 +805,46 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 			frame.sbb:SetBackdropBorderColor(_G.ITEM_QUALITY_COLORS[5].r, _G.ITEM_QUALITY_COLORS[5].g, _G.ITEM_QUALITY_COLORS[5].b)
 		end
 	end)
+	local function skinQueuedAlert(frame)
+		frame:DisableDrawLayer("BACKGROUND")
+		aObj:addSkinFrame{obj=frame, ft=ftype, ofs=-8}
+	end
 	-- called params: frame, petID
 	self:SecureHook(_G.NewPetAlertSystem, "setUpFunction", function(frame, _)
 		-- aObj:Debug("NewPetAlertSystem: [%s, %s]", frame, ...)
-		frame:DisableDrawLayer("BACKGROUND")
-		self:addSkinFrame{obj=frame, ft=ftype, ofs=-8}
+		skinQueuedAlert(frame)
 	end)
+	for frame in _G.NewPetAlertSystem.alertFramePool:EnumerateActive() do
+		skinQueuedAlert(frame)
+	end
 	-- called params: frame, mountID
 	self:SecureHook(_G.NewMountAlertSystem, "setUpFunction", function(frame, _)
 		-- aObj:Debug("NewMountAlertSystem: [%s, %s]", frame, ...)
-		frame:DisableDrawLayer("BACKGROUND")
-		self:addSkinFrame{obj=frame, ft=ftype, ofs=-8}
+		skinQueuedAlert(frame)
 	end)
-	if _G.NewToyAlertSystem then
-		-- called params: frame, toyID
-		self:SecureHook(_G.NewToyAlertSystem, "setUpFunction", function(frame, _)
-			-- aObj:Debug("NewToyAlertSystem: [%s, %s]", frame, ...)
-			frame:DisableDrawLayer("BACKGROUND")
-			self:addSkinFrame{obj=frame, ft=ftype, ofs=-8}
-		end)
+	for frame in _G.NewMountAlertSystem.alertFramePool:EnumerateActive() do
+		skinQueuedAlert(frame)
+	end
+	-- called params: frame, toyID
+	self:SecureHook(_G.NewToyAlertSystem, "setUpFunction", function(frame, _)
+		-- aObj:Debug("NewToyAlertSystem: [%s, %s]", frame, ...)
+		skinQueuedAlert(frame)
+	end)
+	for frame in _G.NewToyAlertSystem.alertFramePool:EnumerateActive() do
+		skinQueuedAlert(frame)
+	end
+	-- called params: frame, powerID
+	self:SecureHook(_G.NewRuneforgePowerAlertSystem, "setUpFunction", function(frame, _)
+		-- aObj:Debug("NewRuneforgePowerAlertSystem: [%s, %s]", frame, ...)
+		skinQueuedAlert(frame)
+	end)
+	for frame in _G.NewRuneforgePowerAlertSystem.alertFramePool:EnumerateActive() do
+		skinQueuedAlert(frame)
 	end
 
 	-- hook this to stop gradient texture whiteout
 	self:RawHook(_G.AlertFrame, "AddAlertFrame", function(this, frame)
-
 		-- aObj:Debug("AlertFrame AddAlertFrame: [%s, %s]", this, frame)
-
 		if _G.IsAddOnLoaded("Overachiever") then
 			local ocScript = frame:GetScript("OnClick")
 			if ocScript
@@ -821,19 +857,18 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 			end
 			ocScript = nil
 		end
-
 		-- run the hooked function
 		self.hooks[this].AddAlertFrame(this, frame)
-
-		-- adjust size if guild achievement
-		if self:hasTextInName(frame, "AchievementAlertFrame") then
-			local y1, y2 = -10, 12
-	 		if frame.guildDisplay then y1, y2 = -8, 8 end
-			frame.sf:SetPoint("TOPLEFT", frame, "TOPLEFT", 5, y1)
-			frame.sf:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", 5, y2)
-			y1, y2 = nil, nil
-		end
-
+		-- -- adjust size if guild achievement
+		-- if self:hasTextInName(frame, "AchievementAlertFrame") then
+		-- 	local y1, y2 = -10, 12
+		-- 	 		if frame.guildDisplay then
+		-- 		y1, y2 = -8, 8
+		-- 	end
+		-- 	frame.sf:SetPoint("TOPLEFT", frame, "TOPLEFT", 5, y1)
+		-- 	frame.sf:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", 5, y2)
+		-- 	y1, y2 = nil, nil
+		-- end
 	end, true)
 
 	-- hook this to remove rewardFrame rings
