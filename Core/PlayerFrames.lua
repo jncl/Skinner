@@ -2382,26 +2382,28 @@ aObj.blizzFrames[ftype].EquipmentFlyout = function(self)
 	if not self.prdb.EquipmentFlyout or self.initialized.EquipmentFlyout then return end
 	self.initialized.EquipmentFlyout = true
 
-	self:SecureHookScript(_G.EquipmentFlyoutFrame, "OnShow", function(this)
-		self:addSkinFrame{obj=this.buttonFrame, ft=ftype, ofs=2, x2=5, aso={bbclr="white"}}
-		self:SecureHook("EquipmentFlyout_Show", function(_)
-			for i = 1, _G.EquipmentFlyoutFrame.buttonFrame.numBGs do
-				_G.EquipmentFlyoutFrame.buttonFrame["bg" .. i]:SetAlpha(0)
-			end
-			if self.modBtnBs then
-				local btn
-				for i = 1, #_G.EquipmentFlyoutFrame.buttons do
-					btn = _G.EquipmentFlyoutFrame.buttons[i]
-					self:addButtonBorder{obj=btn, ibt=true, reParent={btn.UpgradeIcon}}
-					-- change 'Place In Bags' button border alpha & stop it changing
-					if i == 1 then
-						self:clrBtnBdr(btn, "grey")
-						btn.sbb.SetBackdropBorderColor = _G.nop
-					end
+	-- Used by RuneForgeUI amongst others
+	self:SecureHook("EquipmentFlyout_Show", function(_)
+		for i = 1, _G.EquipmentFlyoutFrame.buttonFrame.numBGs do
+			_G.EquipmentFlyoutFrame.buttonFrame["bg" .. i]:SetAlpha(0)
+		end
+		if self.modBtnBs then
+			local btn
+			for i = 1, #_G.EquipmentFlyoutFrame.buttons do
+				btn = _G.EquipmentFlyoutFrame.buttons[i]
+				self:addButtonBorder{obj=btn, shsh=true, ibt=true, reParent={btn.UpgradeIcon}}
+				-- change 'Place In Bags' button border alpha & stop it changing
+				if i == 1 then
+					self:clrBtnBdr(btn, "grey")
+					btn.sbb.SetBackdropBorderColor = _G.nop
 				end
-				btn = nil
 			end
-		end)
+			btn = nil
+		end
+	end)
+
+	self:SecureHookScript(_G.EquipmentFlyoutFrame, "OnShow", function(this)
+		self:skinObject("frame", {obj=this.buttonFrame, fType=ftype, ofs=2, x2=5, clr="white"})
 
 		self:Unhook(this, "OnShow")
 	end)
