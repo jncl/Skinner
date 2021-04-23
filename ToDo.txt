@@ -24,21 +24,59 @@ ToDos
 
 ≈	O	Refactor NewSkinFuncs in Blizzard/AddOn skins
 
-	- ClassicSupport [Tabs]
-		- AuctionFrame
-		- CharacterFrame
-		- FriendsFrame
-		- FriendsTabHeader
-		- InspectFrame
-		- SpellBookFrame
-		- TalentFrame
-		- RaidParentFrame
-		- WorldStateScoreFrame
+	Retail_PTR
+		- Added
+¶√			- EventTrace
+x			- EventEditBox
+≈			- ScrollTemplates
+x			- VoiceChatDots
+x			- VoiceChatTranscriptionButton
+x			- VoiceChatTranscriptionFrame
+¶√			- TextToSpeechFrame
+x			- TextToSpeech
+x			- BossBannerToast
+¶≈			- EventToastManager
+		- Updated
+?			- Blizzard_AuctionHouseAuctionsFrame
+√			- Blizzard_BindingUI
+?			- Blizzard_CharacterCustomize
+√			- Blizzard_Wardrobe
+√			- Blizzard_DebugTools
+?			- Blizzard_LootJournal
+?			- Blizzard_AdventuresBoard
+?			- Blizzard_AdventuresPuck
+√			- Blizzard_ItemUpgradeUI
+?			- Blizzard_MawBuffs
+≈			- Blizzard_RuneforgeCreateFrame
+≈			- Blizzard_RuneforgePowerList
+≈			- Blizzard_SoulbindsConduitList
+?			- Blizzard_SoulbindsNode
+?			- Blizzard_SoulbindsViewer
+√			- ChatConfigFrame
+x			- ChatFrame
+x			- InterfaceOptionsPanels
+x			- VoiceChatHeadsetButton
+		- Deleted
+√			- EventTraceFrame
+√			- LevelUpDisplay
 
-	I/C	GuildControlPopupFrame, reported by 아련별, 07.04.21
-√		- Skinner\Modules\UIButtons.lua:504: attempt to index field 'obj' (a nil value)
-		Skinner\Modules\UIButtons.lua:504: in function `skinStdButton'
-		...aceSkinner\ClassicSupport\ClassicSupport.lua:925: in function <...aceSkinner\ClassicSupport\ClassicSupport.lua:918>
+	Classic_PTR
+		- Added
+√			- GuildFrameImpeachButton on FriendsFrame
 
-	I	Tab, Header overlaps, reported by Fakelessgaming, 09.04.21
-√		- InspectFrame, AuctionHouse headers, and top tabs
+	I/C	LibBabbleZone errors, reported by EpidemeDaBear, 12.04.21
+√		- issue was incorrect version comment lines in _OptionalLibs.xml
+
+	PTR, reported by MacallanTwoFive, 4.04.21
+√		- Skinner\Core\UIFrames.lua:3540: Usage: SecureHookScript(object, method, [handler]): You can only hook a script on a frame object
+		[string "@Postal\Libs\AceHook-3.0\AceHook-3.0-9.lua"]:143: in function <...rfacePostal\Libs\AceHook-3.0\AceHook-3.0.lua:118>
+		[string "@Postal\Libs\AceHook-3.0\AceHook-3.0-9.lua"]:411: in function `SecureHookScript'
+		[string "@Skinner\Core\UIFrames.lua"]:3540: in function <Skinner\Core\UIFrames.lua:3536>
+
+	I/C	GuildControlPopupFrame, reported by 아련별, 14.04.21
+√		-  Skinner\Core\UtilFuncs.lua:460: attempt to index local 'obj' (a boolean value)
+		Skinner\Core\UtilFuncs.lua:460: in function `clrBBC'
+		Skinner\Modules\UIButtons.lua:216: in function `clrBtnBdr'
+		...aceSkinner\ClassicSupport\ClassicSupport.lua:943: in function <...aceSkinner\ClassicSupport\ClassicSupport.lua:942>
+
+√	S	TankHelper, reported by Galthariel, 22.04.21
