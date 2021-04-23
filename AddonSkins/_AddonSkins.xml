@@ -70,6 +70,7 @@
 <Script file="Cork.lua"/>
 <Script file="Cosplay.lua"/>
 <Script file="CovenantMissionHelper.lua"/>
+<Script file="D4KiR Tank Helper.lua"/>
 <Script file="DBM.lua"/>
 <Script file="DeathNote.lua"/>
 <Script file="DejaCharacterStats.lua"/>
