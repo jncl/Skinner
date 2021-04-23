@@ -218,7 +218,7 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 		else
 			x1Ofs, y1Ofs, x2Ofs, y2Ofs = 10, -2, -10, 7
 		end
-		aObj:Debug("skinMissionFrame: [%s, %s, %s, %s]", x1Ofs, y1Ofs, x2Ofs, y2Ofs)
+		-- aObj:Debug("skinMissionFrame: [%s, %s, %s, %s]", x1Ofs, y1Ofs, x2Ofs, y2Ofs)
 		mfTabSkin.offsets = {x1=x1Ofs, y1=aObj.isTT and 2 or y1Ofs, x2=x2Ofs, y2=aObj.isTT and 4 or y2Ofs}
 		aObj:skinObject(mfTabSkin)
 		x1Ofs, y1Ofs, x2Ofs, y2Ofs = nil, nil, nil, nil
@@ -1373,11 +1373,7 @@ aObj.blizzLoDFrames[ftype].CharacterCustomize = function(self)
 			for btn in this.pools:GetPool("CharCustomizeShapeshiftFormButtonTemplate"):EnumerateActive() do
 				btn.Ring:SetTexture(nil)
 			end
-			-- FIXME: Category buttons still have Ring texture, is it because it's in the original texture?
 			for btn in this.pools:GetPool("CharCustomizeCategoryButtonTemplate"):EnumerateActive() do
-				-- aObj:Debug("Category btn: [%s, %s]", btn, btn.categoryData)
-				-- _G.Spew("", btn)
-				-- _G.Spew("", btn.categoryData)
 				btn.Ring:SetTexture(nil)
 			end
 			for frame in this.selectionPopoutPool:EnumerateActive() do
@@ -2229,7 +2225,7 @@ aObj.blizzLoDFrames[ftype].DebugTools = function(self)
 					aObj:clrBtnBdr(frame.OpenParentButton)
 				end)
 				aObj:SecureHook(frame, "UpdateTableNavigation", function(this, _)
-					aObj:Debug("UpdateTableNavigation")
+					-- aObj:Debug("UpdateTableNavigation")
 					if frame.NavigateBackwardButton:IsEnabled() then
 						frame.NavigateBackwardButton:SetText(aObj.larrow)
 					else
@@ -5066,12 +5062,12 @@ aObj.blizzFrames[ftype].PetBattleUI = function(self)
 		if self.modBtnBs then
 			updBBClr()
 			self:SecureHook("PetBattleFrame_InitSpeedIndicators", function(this)
-				aObj:Debug("PetBattleFrame_InitSpeedIndicators: [%s, %s]", this)
+				-- aObj:Debug("PetBattleFrame_InitSpeedIndicators: [%s, %s]", this)
 				updBBClr()
 			end)
 			-- use hooksecurefunc as function hooked for tooltips lower down
 			_G.hooksecurefunc("PetBattleFrame_UpdateSpeedIndicators", function(this)
-				aObj:Debug("PetBattleFrame_UpdateSpeedIndicators: [%s, %s]", this)
+				-- aObj:Debug("PetBattleFrame_UpdateSpeedIndicators: [%s, %s]", this)
 				updBBClr()
 			end)
 			self:addButtonBorder{obj=this.BottomFrame.SwitchPetButton, reParent={this.BetterIcon}, es=20, ofs=3, x1=-5, y1=5}

@@ -500,7 +500,7 @@ function aObj:OnEnable()
 		-- hook this (used by Blizzard_OrderHallTalents, PVPMatchResults, PVPMatchScoreboard & Blizzard_WarboardUI)
 		-- N.B. use SecureHook as RawHook cause taint and INTERFACE_ACTION_BLOCKED message to be displayed
 		self:SecureHook("UIPanelCloseButton_SetBorderAtlas", function(this, atlas, xOffset, yOffset, textureKit)
-			self:Debug("UIPanelCloseButton_SetBorderAtlas: [%s, %s, %s, %s, %s]", this, atlas, xOffset, yOffset, textureKit)
+			-- self:Debug("UIPanelCloseButton_SetBorderAtlas: [%s, %s, %s, %s, %s]", this, atlas, xOffset, yOffset, textureKit)
 			this.Border:SetTexture(nil)
 		end)
 	end
