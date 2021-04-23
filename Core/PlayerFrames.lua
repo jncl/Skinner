@@ -1084,15 +1084,17 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 			self:skinStdButton{obj=this.FilterButton}
 			_G.RaiseFrameLevelByTwo(this.FilterButton) -- raise above SetsCollectionFrame when displayed on it
 		end
-		self:SecureHookScript(this.searchProgressFrame, "OnShow", function(this)
-			this:DisableDrawLayer("BACKGROUND")
-			this:DisableDrawLayer("ARTWORK")
-			self:skinStatusBar{obj=this.searchProgressBar, 0, bgTex=this.searchProgressBar.barBackground}
-			this.searchProgressBar:DisableDrawLayer("ARTWORK")
-			self:skinObject("frame", {obj=this, fType=ftype})
+		if not aObj.isPTR then
+			self:SecureHookScript(this.searchProgressFrame, "OnShow", function(this)
+				this:DisableDrawLayer("BACKGROUND")
+				this:DisableDrawLayer("ARTWORK")
+				self:skinStatusBar{obj=this.searchProgressBar, 0, bgTex=this.searchProgressBar.barBackground}
+				this.searchProgressBar:DisableDrawLayer("ARTWORK")
+				self:skinObject("frame", {obj=this, fType=ftype})
 
-			self:Unhook(this, "OnShow")
-		end)
+				self:Unhook(this, "OnShow")
+			end)
+		end
 		local x1Ofs, y1Ofs, x2Ofs, y2Ofs = -4, 2, 7, -4
 
 		local function updBtnClr(btn)
@@ -1187,7 +1189,7 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 		this:DisableDrawLayer("ARTWORK")
 		self:removeInset(this.Inset)
 		self:skinObject("dropdown", {obj=this.OutfitDropDown, fType=ftype, y2=-3})
-		for _, btn in _G.pairs(this.ModelScene.SlotButtons) do
+		for _, btn in _G.pairs(aObj.isPTR and this.SlotButtons or this.ModelScene.SlotButtons) do
 			btn.Border:SetTexture(nil)
 			if self.modBtnBs then
 				 self:addButtonBorder{obj=btn, ofs=-2}
@@ -1200,9 +1202,15 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 			self:SecureHook(this.OutfitDropDown, "UpdateSaveButton", function(this)
 				self:clrBtnBdr(this.SaveButton)
 			end)
-			self:SecureHook("WardrobeTransmogFrame_UpdateApplyButton", function()
-				self:clrBtnBdr(_G.WardrobeTransmogFrame.ApplyButton)
-			end)
+			if not aObj.isPTR then
+				self:SecureHook("WardrobeTransmogFrame_UpdateApplyButton", function()
+					self:clrBtnBdr(_G.WardrobeTransmogFrame.ApplyButton)
+				end)
+			else
+				self:SecureHook(_G.WardrobeTransmogFrame, "UpdateApplyButton", function(this)
+					self:clrBtnBdr(this.ApplyButton)
+				end)
+			end
 		end
 		if self.modBtnBs then
 			self:addButtonBorder{obj=this.ModelScene.ClearAllPendingButton, ofs=1, x2=0, relTo=this.ModelScene.ClearAllPendingButton.Icon}
@@ -3525,6 +3533,13 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 		return
 	end
 
+	local skinMinBtn
+	if self.modBtnBs then
+		 function skinMinBtn(btn)
+			-- FIXME: adding a button border to the minimize button causes ADDON_ACTION_FORBIDDEN event [16.04.21]
+			-- aObj:addButtonBorder{obj=btn, es=12, ofs=1, x1=-1}
+		end
+	end
 	-- remove Glow/Sheen textures from WorldQuest modules
 	local function updTrackerModules()
 		for _, module in _G.pairs(_G.ObjectiveTrackerFrame.MODULES) do
@@ -3544,7 +3559,7 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 				if module.Header
 				and module.Header.MinimizeButton
 				then
-					aObj:addButtonBorder{obj=module.Header.MinimizeButton, shsh=true, es=12, ofs=1, x1=-1}
+					skinMinBtn(module.Header.MinimizeButton)
 				end
 			end
 		end
@@ -3562,15 +3577,13 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 	self:skinDropDown{obj=_G.ObjectiveTrackerFrame.BlockDropDown}
 
 	if self.modBtnBs then
-		self:addButtonBorder{obj=_G.ObjectiveTrackerFrame.HeaderMenu.MinimizeButton, shsh=true, es=12, ofs=1, x1=-1}
+		skinMinBtn(_G.ObjectiveTrackerFrame.HeaderMenu.MinimizeButton)
 		-- hook this to skin QuestObjective Block Button(s)
 		local function aBB2rB(btn)
 			aObj:addButtonBorder{obj=btn, shsh=true, ofs=btn.Icon and -2 or nil, x1=btn.Icon and 0 or nil, reParent=btn.Count and {btn.Count} or nil, clr="gold"}
 		end
 		self:SecureHook("QuestObjectiveSetupBlockButton_AddRightButton", function(_, button, _)
-			if not button.sbb then
-				aBB2rB(button)
-			end
+			aBB2rB(button)
 		end)
 		-- skin existing buttons
 		for _, mod in _G.pairs(_G.ObjectiveTrackerFrame.MODULES) do

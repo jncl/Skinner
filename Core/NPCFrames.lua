@@ -737,7 +737,9 @@ aObj.blizzLoDFrames[ftype].ItemUpgradeUI = function(self)
 		this.HorzBar:SetTexture(nil)
 		this.MissingDescription:SetTextColor(self.BT:GetRGB())
 		this.ItemUpgradedNotification:SetTextColor(self.BT:GetRGB())
-		this.FeedbackMessage:SetTextColor(self.BT:GetRGB())
+		if not aObj.isPTR then
+			this.FeedbackMessage:SetTextColor(self.BT:GetRGB())
+		end
 		this.TitleTextLeft:SetTextColor(self.BT:GetRGB())
 		this.TitleTextRight:SetTextColor(self.BT:GetRGB())
 		this.ItemButton.IconTexture:SetAlpha(0)

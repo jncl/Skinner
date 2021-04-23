@@ -151,6 +151,8 @@ aObj.SetupDefaults = function(self)
 			DeathRecap                 = true,
 			DebugTools                 = true,
 			DestinyFrame               = true,
+			EventTrace                 = aObj.isPTR and true or nil,
+			EventToastManager          = aObj.isPTR and true or nil,
 			GarrisonUI                 = true,
 			GhostFrame                 = true,
 			GMChatUI                   = true,
@@ -162,7 +164,7 @@ aObj.SetupDefaults = function(self)
 			IslandsPartyPoseUI         = true,
 			IslandsQueueUI             = true,
 			ItemText                   = true,
-			LevelUpDisplay             = true,
+			LevelUpDisplay             = aObj.isPTR and nil or true,
 			LossOfControl              = true,
 			MacroUI                    = true,
 			MailFrame                  = true,
@@ -195,6 +197,7 @@ aObj.SetupDefaults = function(self)
 			SubscriptionInterstitialUI = true,
 			SystemOptions              = true,
 			TalkingHeadUI              = true,
+			TextToSpeechFrame		   = aObj.isPTR and true or nil,
 			TimeManager                = true,
 			Tooltips                   = {skin = true, style = 1, glazesb = true, border = 1},
 			TorghastLevelPicker        = true,
@@ -1548,6 +1551,16 @@ aObj.SetupOptions = function(self)
 					name = self.L["Destiny Frame"],
 					desc = self.L["Toggle the skin of the "] .. self.L["Destiny Frame"],
 				},
+				EventToastManager = aObj.isPTR and {
+					type = "toggle",
+					name = self.L["Event Toast Manager Frame"],
+					desc = self.L["Toggle the skin of the "] .. self.L["Event Toast Manager Frame"],
+				} or nil,
+				EventTrace = aObj.isPTR and {
+					type = "toggle",
+					name = self.L["Event Trace Frame"],
+					desc = self.L["Toggle the skin of the "] .. self.L["Event Trace Frame"],
+				} or nil,
 				GarrisonUI = {
 					type = "toggle",
 					name = self.L["Garrison UI"],
@@ -1611,11 +1624,11 @@ aObj.SetupOptions = function(self)
 					name = self.L["Item Text Frame"],
 					desc = self.L["Toggle the skin of the "] .. self.L["Item Text Frame"],
 				},
-				LevelUpDisplay = {
+				LevelUpDisplay = not aObj.isPTR and {
 					type = "toggle",
 					name = self.L["Level Up Display"],
 					desc = self.L["Toggle the skin of the "] .. self.L["Level Up Display"],
-				},
+				} or nil,
 				LossOfControl = {
 					type = "toggle",
 					name = self.L["Loss Of Control Frame"],
@@ -1866,6 +1879,11 @@ aObj.SetupOptions = function(self)
 					name = self.L["TalkingHead UI"],
 					desc = self.L["Toggle the skin of the "] .. self.L["TalkingHead UI"],
 				},
+				TextToSpeechFrame = aObj.isPTR and {
+					type = "toggle",
+					name = self.L["Text To Speech Frame"],
+					desc = self.L["Toggle the skin of the "] .. self.L["Text To Speech Frame"],
+				} or nil,
 				TimeManager = {
 					type = "toggle",
 					name = self.L["Time Manager Frame"],
