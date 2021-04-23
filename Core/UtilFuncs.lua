@@ -416,39 +416,39 @@ function aObj:checkVersion()
 
 	local agentUID = _G.GetCVar("agentUID")
 	-- check to see which WoW version we are running on
-	self.isRetail  = agentUID == "wow" and true
+	-- self.isBeta    = agentUID == "wow_beta" and true
+	self.isClscPTR = agentUID == "wow_classic_ptr" and true
 	self.isPTR     = agentUID == "wow_ptr" and true
 	self.isClsc    = agentUID == "wow_classic" and true
-	self.isClscPTR = agentUID == "wow_classic_ptr" and true
-	self.isBeta    = agentUID == "wow_beta" and true
+	self.isRetail  = agentUID == "wow" and true
 
-	-- check current build number against Retail, if greater then it's a patch
-	self.isPatch = self.isPatch or self.isRetail and _G.tonumber(buildInfo.curr[2]) > buildInfo.retail[2]
+	-- check current build number against Beta, if greater then it's a patch
+	-- self.isPatch = self.isPatch or self.isBeta and _G.tonumber(buildInfo.curr[2]) > buildInfo.beta[2]
+	-- check current build number against Classic PTR, if greater then it's a patch
+	self.isPatch = self.isPatch or self.isClscPTR and _G.tonumber(buildInfo.curr[2]) > buildInfo.classic_ptr[2]
 	-- check current build number against Retail PTR, if greater then it's a patch
 	self.isPatch = self.isPatch or self.isPTR and _G.tonumber(buildInfo.curr[2]) > buildInfo.retail_ptr[2]
 	-- check current build number against Classic, if greater then it's a patch
 	self.isPatch = self.isPatch or self.isClsc and _G.tonumber(buildInfo.curr[2]) > buildInfo.classic[2]
-	-- check current build number against Classic PTR, if greater then it's a patch
-	self.isPatch = self.isPatch or self.isClscPTR and _G.tonumber(buildInfo.curr[2]) > buildInfo.classic_ptr[2]
-	-- check current build number against Classic PTR, if greater then it's a patch
-	self.isPatch = self.isPatch or self.isBeta and _G.tonumber(buildInfo.curr[2]) > buildInfo.beta[2]
+	-- check current build number against Retail, if greater then it's a patch
+	self.isPatch = self.isPatch or self.isRetail and _G.tonumber(buildInfo.curr[2]) > buildInfo.retail[2]
 
---@alpha@
-	local vType = self.isPTR and "Retail_PTR" or self.isClsc and "Classic" or self.isClscPTR and "Classic_PTR" or self.isBeta and "Beta" or "Retail"
+	--@alpha@
+	local vType = self.isBeta and "Beta" or self.isClscPTR and "Classic_PTR" or self.isPTR and "Retail_PTR" or self.isClsc and "Classic" or "Retail"
 	self:Printf("%s, %d, %s, %d, %s, %d, %s", buildInfo[vType:lower()][1], buildInfo[vType:lower()][2], buildInfo.curr[1], buildInfo.curr[2], buildInfo.curr[3], buildInfo.curr[4] , agentUID)
 	vType = self.isPatch and vType .. " (Patched)" or vType
 	_G.DEFAULT_CHAT_FRAME:AddMessage(aName .. ": Detected that we're running on a " .. vType .. " version", 0.75, 0.5, 0.25, nil, true)
 	vType = nil
---@end-alpha@
+	--@end-alpha@
 	agentUID = nil
 
+	-- handle Beta changes in PTR or Live
+	-- self.isBeta    = self.isBeta or self.isPTR and buildInfo.curr[4] > 90000
 	-- indicate we're on Classic if on Classic PTR
 	self.isClsc = self.isClsc or self.isClscPTR
 	-- handle PTR changes going Live
 	self.isClscPTR = self.isClscPTR or self.isPatch and self.isClsc and buildInfo.curr[1] > buildInfo.classic[1]
 	self.isPTR     = self.isPTR or self.isPatch and self.isRetail and buildInfo.curr[1] > buildInfo.retail[1]
-	-- handle Beta changes in PTR or Live
-	self.isBeta    = self.isBeta or self.isPTR and buildInfo.curr[4] > 90000
 
 	buildInfo = nil
 
