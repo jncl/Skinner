@@ -909,6 +909,9 @@ aObj.ClassicSupport = function(self)
 				self:skinColHeads("GuildFrameGuildStatusColumnHeader", nil, ftype)
 				self:skinSlider{obj=_G.GuildListScrollFrame.ScrollBar, rt="background"}
 				if self.modBtns then
+					if self.isClscPTR then
+						self:skinStdButton{obj=_G.GuildFrameImpeachButton, fType=ftype}
+					end
 					self:skinStdButton{obj=_G.GuildFrameControlButton, fType=ftype}
 					self:skinStdButton{obj=_G.GuildFrameAddMemberButton, fType=ftype}
 					self:skinStdButton{obj=_G.GuildFrameGuildInformationButton, fType=ftype}
