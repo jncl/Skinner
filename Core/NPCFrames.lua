@@ -968,21 +968,6 @@ aObj.blizzFrames[ftype].QuestFrame = function(self)
 	if not self.prdb.QuestFrame or self.initialized.QuestFrame then return end
 	self.initialized.QuestFrame = true
 
-	if not self.isClsc then
-		if aObj:isAddonEnabled("Quester")
-		and _G.QuesterDB.gossipColor
-		then
-			-- DON'T colour the gossip text
-		else
-			-- hook this to colour quest button text
-			self:RawHook(_G.QuestFrameGreetingPanel.titleButtonPool, "Acquire", function(this)
-				local btn = self.hooks[this].Acquire(this)
-				self:hookQuestText(btn)
-				return btn
-			end, true)
-		end
-	end
-
 	self:SecureHookScript(_G.QuestFrame, "OnShow", function(this)
 		self:RawHook("QuestFrame_SetTitleTextColor", function(fontString, _)
 			fontString:SetTextColor(self.HT:GetRGB())
@@ -1078,22 +1063,24 @@ aObj.blizzFrames[ftype].QuestFrame = function(self)
 		self:Unhook(this, "OnShow")
 	end)
 
-	-- parentFrame, portraitDisplayID, mountPortraitDisplayID, text, name, x, y
-	self:SecureHook("QuestFrame_ShowQuestPortrait", function(...)
-		local frame
-		if not self.isClsc then
-			frame = _G.QuestModelScene
+	if not self.isClsc then
+		if self:isAddonEnabled("Quester")
+		and _G.QuesterDB.gossipColor
+		then
+			-- DON'T colour the gossip text
 		else
-			frame = _G.QuestNPCModel
+			-- hook this to colour quest button text
+			self:RawHook(_G.QuestFrameGreetingPanel.titleButtonPool, "Acquire", function(this)
+				local btn = self.hooks[this].Acquire(this)
+				self:hookQuestText(btn)
+				return btn
+			end, true)
 		end
-		if not frame.sf then
-			self:keepFontStrings(_G.QuestNPCModelTextFrame)
-			self:addSkinFrame{obj=frame, ft=ftype, kfs=true, nb=true, x1=-5, x2=5, y2=-81}
-		end
-		local parentFrame, _, _, _, _, x, y = ...
-		frame:SetPoint("TOPLEFT", parentFrame, "TOPRIGHT", x + 4, y)
-		frame, parentFrame, x, y = nil, nil, nil, nil
-	end)
+		self:skinObject("frame", {obj=_G.QuestModelScene, fType=ftype, kfs=true, x1=-5, x2=5, y2=-81})
+	else
+		self:skinObject("frame", {obj=_G.QuestNPCModel, fType=ftype, kfs=true, x1=-5, x2=5, y2=-81})
+	end
+	self:keepFontStrings(_G.QuestNPCModelTextFrame)
 
 end
 
