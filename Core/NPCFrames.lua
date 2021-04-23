@@ -1248,29 +1248,22 @@ aObj.blizzLoDFrames[ftype].RuneForgeUI = function(self)
 	self.initialized.RuneForgeUI = true
 
 	self:SecureHookScript(_G.RuneforgeFrame, "OnShow", function(this)
-		-- .CraftingFrame
-			-- .BaseItemSlot
-			-- .UpgradeItemSlot
-			-- .ModifierFrame
-			-- .PowerSlot
-			-- .PowerFrame
-		-- .CreateFrame
+		self:skinObject("frame", {obj=this.CraftingFrame.ModifierFrame.Selector, fType=ftype, kfs=true, ofs=-5, y1=-15, y2=15})
+		self:skinObject("frame", {obj=this.CraftingFrame.PowerFrame, fType=ftype, kfs=true, ofs=0, y1=-10, y2=10})
 		if self.modBtns then
 			self:skinStdButton{obj=this.CreateFrame.CraftItemButton}
 			self:SecureHook(this.CreateFrame.CraftItemButton, "SetCraftState", function(this, ...)
 				self:clrBtnBdr(this)
 			end)
 		end
-		-- .CurrencyDisplay
-		this.CloseButton.CustomBorder:SetTexture(nil)
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, ofs=-20, y2=30}
-		if self.modBtns then
-			self:skinCloseButton{obj=this.CloseButton, noSkin=true}
-		end
-		-- tooltip
+		this.BackgroundModelScene:Hide()
 		_G.C_Timer.After(0.1, function()
 			self:add2Table(self.ttList, this.ResultTooltip)
+			this.ResultTooltip.TopOverlay:SetAlpha(1)
 		end)
+		self:removeBackdrop(this.ResultTooltip.PulseOverlay)
+		this.CloseButton.CustomBorder:SetTexture(nil)
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cbns=true, ofs=-40, y2=100})
 
 		self:Unhook(this, "OnShow")
 	end)
