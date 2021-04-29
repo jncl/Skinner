@@ -609,14 +609,10 @@ local clrTab = {
 	white     = _G.HIGHLIGHT_FONT_COLOR,
 	yellow    = _G.YELLOW_FONT_COLOR,
 }
-local function setSliderClr()
-	clrTab.slider = _G.CopyTable(aObj.prdb.SliderBorder)
-	setSliderClr = nil
-end
 function aObj:getColourByName(clrName)
 
-	if setSliderClr then
-		setSliderClr()
+	if not clrTab.slider then
+		clrTab.slider = _G.CopyTable(self.prdb.SliderBorder)
 	end
 
 	if clrTab[clrName] then
