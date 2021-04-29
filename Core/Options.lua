@@ -49,7 +49,7 @@ aObj.SetupDefaults = function(self)
 			IgnoredText                = _G.CreateColor(0.5, 0.5, 0, 1),
 			GradientMin                = _G.CreateColor(0.1, 0.1, 0.1, 0),
 			GradientMax                = _G.CreateColor(0.25, 0.25, 0.25, 1),
-			BagginsBBC                 = _G.IsAddOnLoaded("Baggins") and self.Baggins and _G.CreateColor(0.5, 0.5, 0.5, 1),
+			BagginsBBC                 = _G.IsAddOnLoaded("Baggins") and _G.CreateColor(0.5, 0.5, 0.5, 1),
 		-- Gradient
 			Gradient                   = {enable = true, invert = false, rotate = false, char = true, ui = true, npc = true, skinner = true, addon = true, texture = "Blizzard ChatFrame Background"},
 		-- Modules (populated below)
@@ -226,7 +226,6 @@ aObj.SetupOptions = function(self)
 
 	local db = self.db.profile
 	local dflts = self.db.defaults.profile
-	local bggns = _G.IsAddOnLoaded("Baggins") and self.Baggins and true or false
 
 	local function reskinIOFBackdrop()
 		-- show changes by reskinning the Interface Options Frame with the new settings
@@ -561,12 +560,12 @@ aObj.SetupOptions = function(self)
 					db[info[#info]] = r
 					if r then
 						db.BackdropBorder:SetRGBA(_G.C_ClassColor.GetClassColor(self.uCls):GetRGBA())
-						if bggns then
+						if _G.IsAddOnLoaded("Baggins") then
 							db.BagginsBBC:SetRGBA(_G.C_ClassColor.GetClassColor(self.uCls):GetRGBA())
 						end
 					else
 						db.BackdropBorder:SetRGBA(dflts.BackdropBorder:GetRGBA())
-						if bggns then
+						if _G.IsAddOnLoaded("Baggins") then
 							db.BagginsBBC:SetRGBA(dflts.BagginsBBC:GetRGBA())
 						end
 					end
@@ -693,7 +692,7 @@ aObj.SetupOptions = function(self)
 					desc = self.L["Set "] .. self.L["Gradient Maximum Colour"],
 					hasAlpha = true,
 				},
-				BagginsBBC = _G.IsAddOnLoaded("Baggins") and self.Baggins and {
+				BagginsBBC = _G.IsAddOnLoaded("Baggins") and {
 					type = "color",
 					order = -1,
 					width = "double",
