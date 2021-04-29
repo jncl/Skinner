@@ -6089,6 +6089,7 @@ aObj.blizzFrames[ftype].SystemOptions = function(self)
 		self:skinObject("slider", {obj=_G.VideoOptionsFrameCategoryFrameListScrollBar, fType=ftype, x1=4, x2=-5})
 		self:skinObject("frame", {obj=_G.VideoOptionsFramePanelContainer, fType=ftype, kfs=true, fb=true})
 		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true})
+		_G.VideoOptionsFrameApply:SetFrameLevel(2) -- make it appear above the PanelContainer
 		if self.modBtns then
 			self:skinStdButton{obj=_G.VideoOptionsFrameApply, fType=ftype}
 			self:skinStdButton{obj=_G.VideoOptionsFrameCancel, fType=ftype}
@@ -6105,7 +6106,6 @@ aObj.blizzFrames[ftype].SystemOptions = function(self)
 			end)
 		end
 		-- Graphics
-		skinKids(_G.Display_, ftype)
 		self:skinObject("tabs", {obj=_G.Display_, tabs={_G.GraphicsButton, _G.RaidButton}, fType=ftype, upwards=true, offsets={x1=4, y1=0, x2=0, y2=self.isTT and -3 or 2}, track=false, func=function(tab) tab:SetFrameLevel(20) tab.SetFrameLevel = _G.nop end})
 		if self.isTT then
 			self:SecureHook("GraphicsOptions_SelectBase", function()
@@ -6119,6 +6119,7 @@ aObj.blizzFrames[ftype].SystemOptions = function(self)
 				end
 			end)
 		end
+		skinKids(_G.Display_, ftype)
 		self:skinObject("frame", {obj=_G.Display_, fType=ftype, kfs=true, fb=true})
 		skinKids(_G.Graphics_, ftype)
 		self:skinObject("frame", {obj=_G.Graphics_, fType=ftype, kfs=true, fb=true})
