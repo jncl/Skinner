@@ -39,6 +39,7 @@
 <Script file="BtWLoadouts.lua"/>
 <Script file="BtWQuests.lua"/>
 <Script file="buffOmat.lua"/>
+<Script file="BuffomatClassic.lua"/>
 <Script file="Bugger.lua"/>
 <Script file="BugSack.lua"/>
 <Script file="BuyEmAll.lua"/>
@@ -201,6 +202,7 @@
 <Script file="WhatsTraining.lua"/>
 <Script file="Wholly.lua"/>
 <Script file="WIM.lua"/>
+<Script file="WO_ezfriendslist.lua"/>
 <Script file="WorldQuestTab.lua"/>
 <Script file="WorldQuestTracker.lua"/>
 <Script file="WoWPro.lua"/>
