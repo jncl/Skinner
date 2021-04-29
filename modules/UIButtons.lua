@@ -517,7 +517,7 @@ function module:skinStdButton(opts) -- standard panel button
 	local bW, bH = _G.Round(opts.obj:GetWidth()), _G.Round(opts.obj:GetHeight())
 
 	local aso = opts.aso or {}
-	aso.bd = bH > 18 and 5 or 6 -- use narrower backdrop if required
+	aso.bd = bH > 18 and 5 or 7 -- use narrower backdrop if required
 	if not opts.as then
 		aObj:skinObject("button", {obj=opts.obj, fType=opts.ftype, name=opts.name, sec=opts.sec, shsh=opts.shsh, aso=aso, ofs=opts.ofs or 0, x1=opts.x1, y1=opts.y1, x2=opts.x2, y2=opts.y2})
 	else
