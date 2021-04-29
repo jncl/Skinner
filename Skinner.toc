@@ -1,6 +1,6 @@
 ﻿## Interface: 90005
 ## Interface-Retail: 90005
-## Interface-Classic: 11306
+## Interface-Classic: 11307
 ## Interface-BC: 20501
 ## Title: Skinner
 ## Notes: Changes the look of the default UI (Retail & Classic)
