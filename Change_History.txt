@@ -1,3 +1,29 @@
+beta9.38134.3
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Added Classic PTR code changes
+	Added Retail PTR  code changes
+	Updated some Debug lines in code
+	Updated RuneForgeUI skin
+	Updated QuestFrame skin
+	Updated EquipmentFlyout skin
+	Updated AlertFrames skin
+	Updated Version checks code
+	Skinned D4KiR Tank Helper
+	Update UIButtons chgHLTex code
+	Update GarrisonUI skin
+	Updated WorldMapFrame skin
+	Updated UIWidgets skin
+	Updated CovenantRenownToast skin
+	Updated BNToast skin
+	Bugfix for UIButtons code
+	Updated ObjectiveTracker skin
+	Updated QuestNPCModelFrame skin
+	Updated AuctionHouseUI skin
+	Bugfix for Classic build
+
 beta9.38134.2
 Jncl:
 	ToDo.txt
