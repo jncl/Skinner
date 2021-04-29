@@ -26,16 +26,16 @@ ToDos
 
 	Retail_PTR
 		- Added
-¶√			- EventTrace
+√			- EventTrace
 x			- EventEditBox
 ≈			- ScrollTemplates
 x			- VoiceChatDots
 x			- VoiceChatTranscriptionButton
 x			- VoiceChatTranscriptionFrame
-¶√			- TextToSpeechFrame
+√			- TextToSpeechFrame
 x			- TextToSpeech
 x			- BossBannerToast
-¶≈			- EventToastManager
+≈			- EventToastManager
 		- Updated
 ?			- Blizzard_AuctionHouseAuctionsFrame
 √			- Blizzard_BindingUI
@@ -60,23 +60,15 @@ x			- VoiceChatHeadsetButton
 √			- EventTraceFrame
 √			- LevelUpDisplay
 
-	Classic_PTR
-		- Added
-√			- GuildFrameImpeachButton on FriendsFrame
+√	S/C	Buffomat, requested by amet0, 25.04.21
 
-	I/C	LibBabbleZone errors, reported by EpidemeDaBear, 12.04.21
-√		- issue was incorrect version comment lines in _OptionalLibs.xml
+	I	Settings frame, reported by Fakelessgaming, 26.04.21
+√		- Apply button textures not visible, below panel it appears on.
 
-	PTR, reported by MacallanTwoFive, 4.04.21
-√		- Skinner\Core\UIFrames.lua:3540: Usage: SecureHookScript(object, method, [handler]): You can only hook a script on a frame object
-		[string "@Postal\Libs\AceHook-3.0\AceHook-3.0-9.lua"]:143: in function <...rfacePostal\Libs\AceHook-3.0\AceHook-3.0.lua:118>
-		[string "@Postal\Libs\AceHook-3.0\AceHook-3.0-9.lua"]:411: in function `SecureHookScript'
-		[string "@Skinner\Core\UIFrames.lua"]:3540: in function <Skinner\Core\UIFrames.lua:3536>
+√	I	Missing localisations, reported by MacallanTwoFive, 26.04.21
 
-	I/C	GuildControlPopupFrame, reported by 아련별, 14.04.21
-√		-  Skinner\Core\UtilFuncs.lua:460: attempt to index local 'obj' (a boolean value)
-		Skinner\Core\UtilFuncs.lua:460: in function `clrBBC'
-		Skinner\Modules\UIButtons.lua:216: in function `clrBtnBdr'
-		...aceSkinner\ClassicSupport\ClassicSupport.lua:943: in function <...aceSkinner\ClassicSupport\ClassicSupport.lua:942>
+	I	Baggins, reported by Moxiface, 28.04.21
+√		- Skinner\AddonSkins\Baggins-v3.7.5.lua:14: attempt to index upvalue 'c' (a nil value)
+		[string "@Skinner\AddonSkins\Baggins-v3.7.5.lua"]:34: in function <Skinner\AddonSkins\Baggins.lua:5>
 
-√	S	TankHelper, reported by Galthariel, 22.04.21
+√	S	Easy friends list, requested by Galthariel, 28.04.21
