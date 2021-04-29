@@ -57,7 +57,6 @@ addonSkins = nil
 aObj.addonsToSkin = track(aObj.addonsToSkin)
 --@end-alpha@
 
--- libraries
 aObj.libsToSkin = {
 	["LibTradeLinks-1.0"] = "LibTradeSkillScan",
 	["LibTradeSkillScan"] = "LibTradeSkillScan",
