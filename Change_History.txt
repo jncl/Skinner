@@ -1,3 +1,18 @@
+beta9.38134.4
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Updated UIButtons code
+	Updated ColourCodeTable code
+	Updated SystemOptions skin
+	Removed comment line
+	Applied Classic PTR change
+	Updated Baggins & Bugger skins
+	Updated Baggins colour option
+	Skinned BuffomatClassic & WO_ezfriendslist
+	Obsoleted many skins
+
 beta9.38134.3
 Jncl:
 	ToDo.txt
