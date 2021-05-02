@@ -1893,7 +1893,7 @@ aObj.blizzFrames[ftype].CompactFrames = function(self)
 		end
 	end
 	local function skinGrp(grp)
-		aObj:skinObject("frame", {obj=grp.borderFrame, fType=ftype, kfs=true, ofs=-1, x2=-4, y2=2})
+		aObj:skinObject("frame", {obj=grp.borderFrame, fType=ftype, kfs=true, ofs=1, y1=-1, x2=-4, y2=4})
 		local grpName = grp:GetName()
 		for i = 1, _G.MEMBERS_PER_RAID_GROUP do
 			skinUnit(_G[grpName .. "Member" .. i])
@@ -1946,7 +1946,7 @@ aObj.blizzFrames[ftype].CompactFrames = function(self)
 	end)
 	-- skin any existing unit(s) [mini, normal]
 	skinCRFCframes()
-	self:skinObject("frame", {obj=_G.CompactRaidFrameContainer.borderFrame, fType=ftype, kfs=true, ofs=-1, x2=-5, y2=5})
+	self:skinObject("frame", {obj=_G.CompactRaidFrameContainer.borderFrame, fType=ftype, kfs=true, ofs=1, y1=-1, x2=-4, y2=4})
 
 	-- Compact RaidFrame Manager
 	self:SecureHookScript(_G.CompactRaidFrameManager, "OnShow", function(this)
@@ -1995,7 +1995,6 @@ aObj.blizzFrames[ftype].CompactFrames = function(self)
 			_G.RaiseFrameLevel(this.displayFrame.everyoneIsAssistButton) -- so button border is visible
 		end
 		self:skinObject("frame", {obj=this.containerResizeFrame, fType=ftype, kfs=true})
-		-- self:addSkinFrame{obj=this.containerResizeFrame, ft=ftype, kfs=true, x1=-2, y1=-1, y2=4}
 		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ofs=0})
 
 		self:Unhook(this, "OnShow")
