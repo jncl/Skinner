@@ -205,6 +205,7 @@
 <Script file="Wholly.lua"/>
 <Script file="WIM.lua"/>
 <Script file="WO_ezfriendslist.lua"/>
+<Script file="WorkOrdersComplete.lua"/>
 <Script file="WorldQuestTab.lua"/>
 <Script file="WorldQuestTracker.lua"/>
 <Script file="WoWPro.lua"/>
