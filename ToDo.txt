@@ -60,15 +60,16 @@ x			- VoiceChatHeadsetButton
 √			- EventTraceFrame
 √			- LevelUpDisplay
 
-√	S/C	Buffomat, requested by amet0, 25.04.21
+	N/C	LeatrixPlus, reported by 아련별, 30.04.21
+√		- Skinner\Modules\UIButtons.lua:820: attempt to index field 'obj' (a nil value)
+		Skinner\Modules\UIButtons.lua:860: in function `skinCheckButton'
+		Skinner\AddonSkins\Leatrix_Plus-1.13.103.lua:99: in function <Skinner\AddonSkins\Leatrix_Plus.lua:5>
 
-	I	Settings frame, reported by Fakelessgaming, 26.04.21
-√		- Apply button textures not visible, below panel it appears on.
+√	U	Lightheaded, requested by litheroy, 01.05.21
 
-√	I	Missing localisations, reported by MacallanTwoFive, 26.04.21
+√	U	ACP, requested by litheroy, 01.05.21
 
-	I	Baggins, reported by Moxiface, 28.04.21
-√		- Skinner\AddonSkins\Baggins-v3.7.5.lua:14: attempt to index upvalue 'c' (a nil value)
-		[string "@Skinner\AddonSkins\Baggins-v3.7.5.lua"]:34: in function <Skinner\AddonSkins\Baggins.lua:5>
+√	S	WorkOrdersComplete, requested by litheroy, 01.05.21
 
-√	S	Easy friends list, requested by Galthariel, 28.04.21
+	I	PetTracker, reported by litheroy, 01.05.21
+√		- Rivals Tab not skinned
