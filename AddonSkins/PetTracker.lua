@@ -1,16 +1,15 @@
 local aName, aObj = ...
 if not aObj:isAddonEnabled("PetTracker") then return end
 local _G = _G
-local pairs = _G.pairs
 
 local ptRJ
-aObj.addonsToSkin.PetTracker = function(self) -- v 9.0.1
+aObj.addonsToSkin.PetTracker = function(self) -- v 9.0.8
 
 	-- Custom Tutorials
 	local cTut = _G.LibStub:GetLibrary('CustomTutorials-2.1', true)
 	if cTut then
 		for _, frame in _G.pairs(cTut.frames) do
-			self:addSkinFrame{obj=frame, ft="a", kfs=true, ri=true, ofs=2, x2=1}
+			self:skinObject("frame", {obj=frame, kfs=true, ri=true, cb=true, ofs=2, x2=0})
 			if self.modBtns then
 				self:addButtonBorder{obj=frame.prev, ofs=-1, clr="gold"}
 				self:addButtonBorder{obj=frame.next, ofs=-1, clr="gold"}
@@ -30,7 +29,6 @@ aObj.addonsToSkin.PetTracker = function(self) -- v 9.0.1
 		end
 	end
 	cTut = nil
-
 
 	if _G.PetTracker.Objectives
 	and _G.PetTracker.Objectives.Header
@@ -55,7 +53,7 @@ aObj.addonsToSkin.PetTracker = function(self) -- v 9.0.1
 		return barObj
 	end, true)
 	-- skin existing bars
-	for obj, _ in pairs(_G.PetTracker.ProgressBar.__frames) do
+	for obj, _ in _G.pairs(_G.PetTracker.ProgressBar.__frames) do
 		skinBarObj(obj)
 	end
 
@@ -72,7 +70,7 @@ aObj.addonsToSkin.PetTracker = function(self) -- v 9.0.1
 		return tTip
 	end, true)
 	-- skin existing tooltips
-	for obj, _ in pairs(_G.PetTracker.MultiTip.__frames) do
+	for obj, _ in _G.pairs(_G.PetTracker.MultiTip.__frames) do
 		skinTT(obj)
 	end
 
@@ -81,7 +79,7 @@ aObj.addonsToSkin.PetTracker = function(self) -- v 9.0.1
 		slot.Bg:SetTexture(nil)
 		slot.IconBorder:SetTexture(nil)
 		slot.Quality:SetTexture(nil)
-		aObj:changeTandC(slot.LevelBG, aObj.lvlBG)
+		aObj:changeTandC(slot.LevelBG)
 		if aObj.modBtnBs then
 			aObj:addButtonBorder{obj=slot, relTo=slot.Icon, reParent={slot.LevelBG, slot.Level}}
 			aObj:SecureHook(slot.Quality, "SetVertexColor", function(this, r, g, b)
@@ -113,7 +111,7 @@ aObj.addonsToSkin.PetTracker = function(self) -- v 9.0.1
 		or (this.__template == "PetTrackerBattleSlot" and this.__count == 6)
 		then
 			_G.C_Timer.After(0.1, function()
-				for obj, _ in pairs(this.__frames) do
+				for obj, _ in _G.pairs(this.__frames) do
 					skinSlot(obj, this.__template == "PetTrackerBattleSlot" and true)
 				end
 			end)
@@ -153,7 +151,7 @@ aObj.addonsToSkin.PetTracker = function(self) -- v 9.0.1
 
 end
 
-aObj.lodAddons.PetTracker_Journal = function(self) -- v 9.0.1
+aObj.lodAddons.PetTracker_Journal = function(self) -- v 9.0.8
 
 	-- wait for RivalsJournal and its List entries to be created
 	if not ptRJ
@@ -165,15 +163,14 @@ aObj.lodAddons.PetTracker_Journal = function(self) -- v 9.0.1
 		return
 	end
 
-	self:removeNineSlice(ptRJ.NineSlice)
 	self:removeInset(ptRJ.Count)
 	self:removeInset(ptRJ.ListInset)
-	self:skinEditBox{obj=ptRJ.SearchBox, regs={6}}
-	self:skinSlider{obj=ptRJ.List.scrollBar, wdth=-4}
+	self:skinObject("editbox", {obj=ptRJ.SearchBox})
+	self:skinObject("slider", {obj=ptRJ.List.scrollBar})
 	for _, btn in _G.pairs(ptRJ.List.buttons) do
 		self:removeRegions(btn, {1}) -- background
 		btn.model.quality:SetTexture(nil)
-		self:changeTandC(btn.model.levelRing, aObj.lvlBG)
+		self:changeTandC(btn.model.levelRing)
 		if self.modBtnBs then
 			self:addButtonBorder{obj=btn, relTo=btn.icon, reParent={btn.model.levelRing, btn.model.level}}
 		end
@@ -189,7 +186,7 @@ aObj.lodAddons.PetTracker_Journal = function(self) -- v 9.0.1
 	end
 
 	self:removeInset(ptRJ.Card)
-	self:addSkinFrame{obj=ptRJ.Card, ft="a", kfs=true, nb=true, aso={bd=8, ng=true}}
+	self:skinObject("frame", {obj=ptRJ.Card, kfs=true, fb=true, ofs=1})
 	if self.modBtnBs then
 		-- skin rewards
 		for i = 1, 4 do
@@ -230,6 +227,6 @@ aObj.lodAddons.PetTracker_Journal = function(self) -- v 9.0.1
 		self:skinStdButton{obj=ptRJ.History.LoadButton}
 	end
 
-	self:addSkinFrame{obj=ptRJ, ft="a", kfs=true, noBdr=true}
+	self:skinObject("frame", {obj=ptRJ, kfs=true, rns=true, cb=true, noBdr=true})
 
 end

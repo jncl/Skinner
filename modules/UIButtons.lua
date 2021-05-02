@@ -373,7 +373,7 @@ function module:skinExpandButton(opts)
 	if opts.obj:GetPushedTexture() then opts.obj:GetPushedTexture():SetAlpha(0) end
 
 	if not opts.as then
-		aObj:skinObject("button", {obj=opts.obj, fType=opts.ftype, sap=opts.sap, bd=6})
+		aObj:skinObject("button", {obj=opts.obj, fType=opts.ftype, sap=opts.sap, bd=6, ofs=opts.ofs})
 		if not opts.noHook then
 			module:SecureHook(opts.obj, "SetNormalAtlas", function(this, nTex)
 				module:checkTex{obj=this, nTex=nTex}
@@ -504,6 +504,7 @@ function module:skinStdButton(opts) -- standard panel button
 		ca = set colour alpha
 		sec = inherit from SecureFrameTemplate
 		shsh = inherit from SecureHandlerShowHideTemplate
+		ignoreHLTex = ignore Highlight texture changes
 --]]
 --@alpha@
 	_G.assert(opts.obj, "Missing object skinStdButton\n" .. _G.debugstack(2, 3, 2))
@@ -530,8 +531,10 @@ function module:skinStdButton(opts) -- standard panel button
 
 	module:clrBtnBdr(opts.obj, opts.clr, opts.ca)
 
-	module:chgHLTex(opts.obj, opts.obj:GetHighlightTexture())
-	module:chgHLTex(opts.obj, opts.obj.selectedHighlight)
+	if not opts.ignoreHLTex then
+		module:chgHLTex(opts.obj, opts.obj:GetHighlightTexture())
+		module:chgHLTex(opts.obj, opts.obj.selectedHighlight)
+	end
 
 end
 

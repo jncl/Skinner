@@ -2,7 +2,7 @@ local aName, aObj = ...
 if not aObj:isAddonEnabled("Leatrix_Plus") then return end
 local _G = _G
 
-aObj.addonsToSkin.Leatrix_Plus = function(self) -- v 1.13.53
+aObj.addonsToSkin.Leatrix_Plus = function(self) -- v 9.0.26/1.13.103
 
 	self:SecureHookScript(_G.LeaPlusGlobalPanel, "OnShow", function(this)
 		local function skinKids(frame)
@@ -68,10 +68,15 @@ aObj.addonsToSkin.Leatrix_Plus = function(self) -- v 1.13.53
 	end)
 
 	-- Enhanced Dressup (changes in DressUp frames)
+	if _G.LeaPlusDB["EnhanceDressup"] == "On"
+	and self.modBtns
+	then
+		self:skinStdButton{obj=self:getChild(_G.DressUpFrame, 9)}
+		self:skinStdButton{obj=self:getChild(_G.DressUpFrame, 10)}
+	end
 	-- Enhanced QuestLog
 	if _G.LeaPlusDB["EnhanceQuestLog"] == "On"
 	and self.prdb.QuestLog
-	and self.modBtns
 	then
 		self:skinStdButton{obj=self:getPenultimateChild(_G.QuestLogFrame)} -- Map button
 	end
@@ -96,8 +101,8 @@ aObj.addonsToSkin.Leatrix_Plus = function(self) -- v 1.13.53
 	and self.prdb.CharacterFrames
 	and self.modChkBtns
 	then
-		self:skinCheckButton{obj=self:getChild(_G.CharacterModelFrame, 3)}
-		self:skinCheckButton{obj=self:getChild(_G.CharacterModelFrame, 4)}
+		self:skinCheckButton{obj=self:getChild(_G.CharacterFrame, 13)}
+		self:skinCheckButton{obj=self:getChild(_G.CharacterFrame, 14)}
 	end
 	-- Bag Search Box
 	if _G.LeaPlusDB["ShowBagSearchBox"] == "On" then
