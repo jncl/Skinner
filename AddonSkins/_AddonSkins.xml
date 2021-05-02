@@ -4,6 +4,7 @@
 <Script file="Accountant_Classic.lua"/>
 <Script file="Ace3.lua"/>
 <Script file="AckisRecipeList.lua"/>
+<Script file="ACP.lua"/>
 <Script file="ActionBarProfiles.lua"/>
 <Script file="AddonLoader.lua"/>
 <Script file="AdiBags.lua"/>
@@ -116,6 +117,7 @@
 <Script file="LibUIDropDownMenu.lua"/>
 <Script file="LibXUI.lua"/>
 <Script file="LiteBag.lua"/>
+<Script file="LightHeaded.lua"/>
 <Script file="Livestock.lua"/>
 <Script file="ls_Toasts.lua"/>
 <Script file="LUI.lua"/>
