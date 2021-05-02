@@ -3516,12 +3516,12 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 	if self.prdb.ObjectiveTracker.animapowers then
 		self:SecureHookScript(_G.ScenarioBlocksFrame.MawBuffsBlock, "OnShow", function(this)
 			self:skinObject("frame", {obj=this.Container.List, fType=ftype, kfs=true, ofs=-4, y1=-10, y2=10})
-			if self.modBtns then
-				self:skinStdButton{obj=this.Container, x1=12, y1=-9, x2=-2, y2=9}
-				self:SecureHook(this.Container, "UpdateListState", function(this, _)
-					self:clrBtnBdr(this)
-				end)
-			end
+			self.modUIBtns:skinStdButton{obj=this.Container, ignoreHLTex=true, ofs=-9, x1=12, x2=-2} -- use module, treat like a frame
+			this.Container.SetWidth = _G.nop
+			this.Container.SetHighlightAtlas = _G.nop
+			self:SecureHook(this.Container, "UpdateListState", function(this, _)
+				self:clrBtnBdr(this)
+			end)
 
 			self:Unhook(this, "OnShow")
 		end)
