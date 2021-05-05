@@ -43,19 +43,19 @@ end
 
 local errorhandler = _G.geterrorhandler()
 local function safecall(funcName, funcObj, LoD, quiet)
---@alpha@
+	--@alpha@
 	_G.assert(funcObj, "Unknown object safecall\n" .. _G.debugstack(2, 3, 2))
 	local beginTime = _G.debugprofilestop()
---@end-alpha@
+	--@end-alpha@
  	-- handle errors from internal functions
 	local success, err = _G.xpcall(function() return funcObj(aObj, LoD) end, errorhandler)
---@alpha@
+	--@alpha@
 	local timeUsed = _G.Round(_G.debugprofilestop() - beginTime)
 	if timeUsed > 5 then
 		 _G.print("Took " .. timeUsed .. " milliseconds to load " .. funcName)
 	end
 	beginTime, timeUsed = nil, nil
---@end-alpha@
+	--@end-alpha@
 	if quiet then
 		return success, err
 	end
@@ -82,9 +82,9 @@ local function __adjHeight(opts)
 		obj = object (Mandatory)
 		adj = value to adjust height by
 --]]
---@alpha@
+	--@alpha@
 	_G.assert(opts.obj, "Missing object aH\n" .. _G.debugstack(2, 3, 2))
---@end-alpha@
+	--@end-alpha@
 
 	if opts.adj == 0 then return end
 
@@ -100,9 +100,9 @@ function aObj:adjHeight(...)
 
 	local opts = _G.select(1, ...)
 
---@alpha@
+	--@alpha@
 	_G.assert(opts, "Missing object aH\n" .. _G.debugstack(2, 3, 2))
---@end-alpha@
+	--@end-alpha@
 
 	-- handle missing object (usually when addon changes)
 	if not opts then return end
@@ -124,9 +124,9 @@ local function __adjWidth(opts)
 		obj = object (Mandatory)
 		adj = value to adjust width by
 --]]
---@alpha@
+	--@alpha@
 	_G.assert(opts.obj, "Missing object aW\n" .. _G.debugstack(2, 3, 2))
---@end-alpha@
+	--@end-alpha@
 
 	if opts.adj == 0 then return end
 
@@ -142,9 +142,9 @@ function aObj:adjWidth(...)
 
 	local opts = _G.select(1, ...)
 
---@alpha@
+	--@alpha@
 	_G.assert(opts, "Missing object aW\n" .. _G.debugstack(2, 3, 2))
---@end-alpha@
+	--@end-alpha@
 
 	-- handle missing object (usually when addon changes)
 	if not opts then return end
@@ -161,10 +161,10 @@ function aObj:adjWidth(...)
 end
 
 function aObj:add2Table(table, value)
---@alpha@
+	--@alpha@
 	_G.assert(table, "Unknown table add2Table\n" .. _G.debugstack(2, 3, 2))
 	_G.assert(value, "Missing value add2Table\n" .. _G.debugstack(2, 3, 2))
---@end-alpha@
+	--@end-alpha@
 
 	table[#table + 1] = value
 
@@ -193,9 +193,9 @@ end
 
 aObj.mpTex = [[Interface\Common\UI-ModelControlPanel]]
 function aObj:changeMinusPlusTex(obj, minus)
---@alpha@
+	--@alpha@
 	_G.assert(obj, "Unknown object changeMinusPlusTex\n" .. _G.debugstack(2, 3, 2))
---@end-alpha@
+	--@end-alpha@
 
 	local nTex = obj:GetNormalTexture()
 	nTex:SetTexture(aObj.mpTex)
@@ -222,10 +222,10 @@ end
 
 aObj.shieldTex = [[Interface\CastingBar\UI-CastingBar-Arena-Shield]]
 function aObj:changeShield(shldReg, iconReg)
---@alpha@
+	--@alpha@
 	_G.assert(shldReg, "Unknown object changeShield\n" .. _G.debugstack(2, 3, 2))
 	_G.assert(iconReg, "Unknown object changeShield\n" .. _G.debugstack(2, 3, 2))
---@end-alpha@
+	--@end-alpha@
 
 	self:changeTandC(shldReg, self.shieldTex)
 	shldReg:SetSize(44, 44)
@@ -237,12 +237,12 @@ end
 
 aObj.lvlBG = [[Interface\PetBattles\BattleBar-AbilityBadge-Neutral]]
 function aObj:changeTandC(obj, tex)
---@alpha@
+	--@alpha@
 	_G.assert(obj, "Unknown object changeTandC\n" .. _G.debugstack(2, 3, 2))
 	if tex == self.lvlBG then
 		self:CustomPrint(1, 0, 0, "changeTandC - Using default texture")
 	end
---@end-alpha@
+	--@end-alpha@
 
 	obj:SetTexture(tex or self.lvlBG)
 	obj:SetTexCoord(0, 1, 0, 1)
@@ -251,10 +251,10 @@ end
 
 local hadWarning = {}
 function aObj:checkAndRun(funcName, funcType, LoD, quiet)
---@alpha@
+	--@alpha@
 	_G.assert(funcName, "Unknown functionName checkAndRun\n" .. _G.debugstack(2, 3, 2))
 	_G.assert(funcType, "Unknown functionType checkAndRun\n" .. _G.debugstack(2, 3, 2))
---@end-alpha@
+	--@end-alpha@
 
 	self:Debug2("checkAndRun: [%s, %s, %s, %s]", funcName, funcType, LoD, quiet)
 
@@ -302,9 +302,9 @@ function aObj:checkAndRun(funcName, funcType, LoD, quiet)
 end
 
 function aObj:checkAndRunAddOn(addonName, addonFunc, LoD)
---@alpha@
+	--@alpha@
 	_G.assert(addonName, "Unknown object checkAndRunAddOn\n" .. _G.debugstack(2, 3, 2))
---@end-alpha@
+	--@end-alpha@
 
 	self:Debug2("checkAndRunAddOn#1: [%s, %s, %s, %s]", addonName, addonFunc, LoD, _G.type(addonFunc))
 
@@ -530,9 +530,9 @@ function aObj:findFrame(height, width, children)
 end
 
 function aObj:findFrame2(parent, objType, ...)
---@alpha@
+	--@alpha@
 	_G.assert(parent, "Unknown object findFrame2\n" .. _G.debugstack(2, 3, 2))
---@end-alpha@
+	--@end-alpha@
 
 	if not parent then return end
 
@@ -582,9 +582,9 @@ function aObj:findFrame2(parent, objType, ...)
 end
 
 function aObj:getChild(obj, childNo)
---@alpha@
+	--@alpha@
 	_G.assert(obj, "Unknown object getChild\n" .. _G.debugstack(2, 3, 2))
---@end-alpha@
+	--@end-alpha@
 
 	if obj and childNo then return (_G.select(childNo, obj:GetChildren())) end
 
@@ -642,11 +642,11 @@ function aObj:getGradientInfo(invert, rotate)
 end
 
 function aObj:getInt(num)
---@alpha@
+	--@alpha@
 	_G.assert(num, "Missing number\n" .. _G.debugstack(2, 3, 2))
 	-- handle AddOn skins still using this code rather than _G.Round
 	aObj:CustomPrint(1, 0, 0, "Using deprecated function - getInt, use _G.Round instead", _G.debugstack(2, 3, 2))
---@end-alpha@
+		--@end-alpha@
 
 	return _G.math.floor(num + 0.5)
 
@@ -678,40 +678,40 @@ function aObj:getPenultimateChild(obj)
 end
 
 function aObj:getRegion(obj, regNo)
---@alpha@
+	--@alpha@
 	_G.assert(obj, "Unknown object getRegion\n" .. _G.debugstack(2, 3, 2))
 	_G.assert(regNo, "Missing value getRegion\n" .. _G.debugstack(2, 3, 2))
---@end-alpha@
+	--@end-alpha@
 
 	if obj and regNo then return (_G.select(regNo, obj:GetRegions())) end
 
 end
 
 function aObj:hasTextInName(obj, text)
---@alpha@
+	--@alpha@
 	_G.assert(obj, "Unknown object hasTextInName\n" .. _G.debugstack(2, 3, 2))
 	_G.assert(text, "Missing value hasTextInName\n" .. _G.debugstack(2, 3, 2))
---@end-alpha@
+	--@end-alpha@
 
 	return obj and obj.GetName and obj:GetName() and obj:GetName():find(text, 1, true) and true or false
 
 end
 
 function aObj:hasTextInDebugNameRE(obj, text)
---@alpha@
+	--@alpha@
 	_G.assert(obj, "Unknown object hasTextInName\n" .. _G.debugstack(2, 3, 2))
 	_G.assert(text, "Missing value hasTextInName\n" .. _G.debugstack(2, 3, 2))
---@end-alpha@
+	--@end-alpha@
 
 	return obj and obj.GetDebugName and obj:GetDebugName() and obj:GetDebugName():find(text) and true or false
 
 end
 
 function aObj:hasAnyTextInName(obj, tab)
---@alpha@
+	--@alpha@
 	_G.assert(obj, "Unknown object hasAnyTextInName\n" .. _G.debugstack(2, 3, 2))
 	_G.assert(tab, "Missing value hasAnyTextInName\n" .. _G.debugstack(2, 3, 2))
---@end-alpha@
+	--@end-alpha@
 
 	if obj
 	and obj.GetName
@@ -732,10 +732,10 @@ function aObj:hasAnyTextInName(obj, tab)
 end
 
 function aObj:hasTextInTexture(obj, text)
---@alpha@
+	--@alpha@
 	_G.assert(obj, "Unknown object hasTextInTexture\n" .. _G.debugstack(2, 3, 2)) -- N.B. allow for missing texture object FIXME: Why was this commented out?
 	_G.assert(text, "Missing value hasTextInTexture\n" .. _G.debugstack(2, 3, 2))
---@end-alpha@
+	--@end-alpha@
 
 	return obj and obj.GetTexture and obj:GetTexture() and _G.tostring(obj:GetTexture()):find(text, 1, true) and true or false
 
@@ -797,18 +797,18 @@ function aObj:hookScript(obj, method, func)
 end
 
 function aObj:isAddonEnabled(addonName)
---@alpha@
+	--@alpha@
 	_G.assert(addonName, "Unknown object isAddonEnabled\n" .. _G.debugstack(2, 3, 2))
---@end-alpha@
+	--@end-alpha@
 
 	return _G.GetAddOnEnableState(self.uName, addonName) == 2 and true or false
 
 end
 
 function aObj:isDropDown(obj)
---@alpha@
+	--@alpha@
 	_G.assert(obj, "Unknown object isDropDown\n" .. _G.debugstack(2, 3, 2))
---@end-alpha@
+	--@end-alpha@
 
 	if obj:IsObjectType("Frame") then
 		if obj.Left
@@ -827,9 +827,9 @@ function aObj:isDropDown(obj)
 end
 
 function aObj:keepFontStrings(obj, hide)
---@alpha@
+	--@alpha@
 	_G.assert(obj, "Missing object kFS\n" .. _G.debugstack(2, 3, 2))
---@end-alpha@
+	--@end-alpha@
 
 	for _, reg in _G.ipairs{obj:GetRegions()} do
 		if not reg:IsObjectType("FontString") then
@@ -844,21 +844,21 @@ function aObj:keepFontStrings(obj, hide)
 end
 
 function aObj:keepRegions(obj, regions)
---@alpha@
+	--@alpha@
 	_G.assert(obj, "Missing object kR\n" .. _G.debugstack(2, 3, 2))
---@end-alpha@
+	--@end-alpha@
 
 	_G.wipe(tmpTab)
 	tmpTab = self:getKeys(regions) or {}
 	for key, reg in _G.ipairs{obj:GetRegions()} do
 		if not tmpTab[key] then
 			reg:SetAlpha(0)
---@debug@
+			--@debug@
 			if reg:IsObjectType("FontString") then
 				self:Debug("kr FS: [%s, %s]", obj, key)
 				self:Print(_G.debugstack(1, 5, 2))
 			end
---@end-debug@
+			--@end-debug@
 		end
 	end
 
@@ -871,9 +871,9 @@ function aObj:loadClassicSupport()
 end
 
 function aObj:makeMFRotatable(modelFrame)
---@alpha@
+	--@alpha@
 	_G.assert(modelFrame and modelFrame:IsObjectType("PlayerModel"), "Not a PlayerModel\n" .. _G.debugstack(2, 3, 2))
---@end-alpha@
+	--@end-alpha@
 
 	-- Don't make Model Frames Rotatable if CloseUp is loaded
 	if _G.IsAddOnLoaded("CloseUp") then return end
@@ -915,12 +915,12 @@ local function __moveObject(opts)
 		relTo = object to move relative to
 --]]
 
---@debug@
+	--@debug@
 	if opts.obj:GetNumPoints() > 1 then
 		aObj:CustomPrint(1, 0, 0, "moveObject: %s, GetNumPoints = %d", opts.obj, opts.obj:GetNumPoints())
 		return
 	end
---@end-debug@
+	--@end-debug@
 
 	local point, relTo, relPoint, xOfs, yOfs = opts.obj:GetPoint()
 
@@ -928,9 +928,9 @@ local function __moveObject(opts)
 	if not point then return end
 
 	relTo = opts.relTo or relTo
---@alpha@
+	--@alpha@
 	_G.assert(relTo, "__moveObject relTo is nil\n" .. _G.debugstack(2, 3, 2))
---@end-alpha@
+	--@end-alpha@
 	-- Workaround for relativeTo crash
 	if not relTo then
 		if aObj.prdb.Warnings then
@@ -954,9 +954,9 @@ function aObj:moveObject(...)
 
 	local opts = _G.select(1, ...)
 
---@alpha@
+	--@alpha@
 	_G.assert(opts, "Missing object mO\n" .. _G.debugstack(2, 3, 2))
---@end-alpha@
+	--@end-alpha@
 
 	-- handle missing object (usually when addon changes)
 	if not opts then return end
@@ -1047,9 +1047,9 @@ local function ddlBBO(frame)
 	frame:DisableDrawLayer("OVERLAY")
 end
 function aObj:removeInset(frame)
---@alpha@
+	--@alpha@
 	_G.assert(frame, "Unknown object removeInset\n" .. _G.debugstack(2, 3, 2))
---@end-alpha@
+	--@end-alpha@
 
 	ddlBBO(frame)
 	if frame.NineSlice then
@@ -1059,9 +1059,9 @@ function aObj:removeInset(frame)
 end
 
 function aObj:removeMagicBtnTex(btn)
---@alpha@
+	--@alpha@
 	_G.assert(btn, "Unknown object removeMagicBtnTex\n" .. _G.debugstack(2, 3, 2))
---@end-alpha@
+	--@end-alpha@
 
 	-- Magic Button textures
 	if btn.LeftSeparator then btn.LeftSeparator:SetTexture(nil) end
@@ -1070,39 +1070,39 @@ function aObj:removeMagicBtnTex(btn)
 end
 
 function aObj:removeNineSlice(frame)
---@alpha@
+	--@alpha@
 	_G.assert(frame, "Unknown object removeNineSlice\n" .. _G.debugstack(2, 3, 2))
---@end-alpha@
+	--@end-alpha@
 
 	ddlBBO(frame)
 
 end
 
 function aObj:removeRegions(obj, regions)
---@alpha@
+	--@alpha@
 	_G.assert(obj, "Missing object (removeRegions)\n" .. _G.debugstack(2, 3, 2))
---@end-alpha@
+	--@end-alpha@
 
 	_G.wipe(tmpTab)
 	tmpTab = self:getKeys(regions) or {}
 	for key, reg in _G.pairs{obj:GetRegions()} do
 		if tmpTab[key] then
 			reg:SetAlpha(0)
---@debug@
+			--@debug@
 			if reg:IsObjectType("FontString") then
 				self:Debug("rr FS: [%s, %s]", obj, key)
 				self:Print(_G.debugstack(1, 5, 2))
 			end
---@end-debug@
+			--@end-debug@
 		end
 	end
 
 end
 
 function aObj:resizeTabs(frame)
---@alpha@
+	--@alpha@
 	_G.assert(frame, "Unknown object resizeTabs\n" .. _G.debugstack(2, 3, 2))
---@end-alpha@
+	--@end-alpha@
 
 	local tabName, nT, tTW, fW, tLW
 	tabName = frame:GetName() .. "Tab"
@@ -1131,9 +1131,9 @@ function aObj:resizeTabs(frame)
 end
 
 function aObj:resizeEmptyTexture(texture)
---@alpha@
+	--@alpha@
 	_G.assert(texture, "Unknown object resizeEmptyTexture\n" .. _G.debugstack(2, 3, 2))
---@end-alpha@
+	--@end-alpha@
 
 	texture:SetTexture(self.esTex)
 	texture:SetSize(64, 64)
@@ -1144,18 +1144,18 @@ function aObj:resizeEmptyTexture(texture)
 end
 
 function aObj:rmRegionsTex(obj, regions)
---@alpha@
+	--@alpha@
 	aObj:CustomPrint(1, 0, 0, "Using deprecated function - rmRegionsTex, use removeRegions(obj, regions) instead", obj)
---@end-alpha@
+		--@end-alpha@
 
 	self:removeRegions(obj, regions)
 
 end
 
 function aObj:round2(num, idp)
---@alpha@
+	--@alpha@
 	_G.assert(num, "Missing number\n" .. _G.debugstack(2, 3, 2))
---@end-alpha@
+	--@end-alpha@
 
   return _G.tonumber(_G.string.format("%." .. (idp or 0) .. "f", num))
 
@@ -1203,9 +1203,9 @@ function aObj:secureHookScript(obj, method, func)
 end
 
 function aObj:setActiveTab(tabSF)
---@alpha@
+	--@alpha@
 	-- _G.assert(tabSF, "Missing object sAT\n" .. _G.debugstack(2, 3, 2))
---@end-alpha@
+	--@end-alpha@
 
 	if not tabSF then return end
 	if not tabSF.tfade then return end
@@ -1216,9 +1216,9 @@ function aObj:setActiveTab(tabSF)
 end
 
 function aObj:setInactiveTab(tabSF)
---@alpha@
+	--@alpha@
 	_G.assert(tabSF, "Missing object sIT\n" .. _G.debugstack(2, 3, 2))
---@end-alpha@
+	--@end-alpha@
 
 	if not tabSF then return end
 	if not tabSF.tfade then return end

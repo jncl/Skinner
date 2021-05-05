@@ -3,8 +3,8 @@ local _, aObj = ...
 local _G = _G
 
 --@alpha@
-local index = {}	-- create private index
-local mt = {		-- create metatable
+local index = {}
+local mt = {
 	__index = function (t, k)
 		-- print("*access to element " .. tostring(k))
 		return t[index][k] -- access the original table
@@ -114,12 +114,12 @@ local function skinBLoD(addon)
 	end
 end
 function aObj:AddonFrames()
---@alpha@
+	--@alpha@
 	aObj.addonsToSkin = untrack(aObj.addonsToSkin)
 	aObj.libsToSkin = untrack(aObj.libsToSkin)
 	aObj.otherAddons = untrack(aObj.otherAddons)
 	aObj.lodAddons = untrack(aObj.lodAddons)
---@end-alpha@
+	--@end-alpha@
 	-- self:Debug("AddonFrames")
 
 	-- used for Addons that aren't LoadOnDemand

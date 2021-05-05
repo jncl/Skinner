@@ -31,19 +31,19 @@ do
 end
 
 function aObj:OnInitialize()
---@debug@
+	--@debug@
 	self:Print("Debugging is enabled")
 	self:Debug("Debugging is enabled")
---@end-debug@
+	--@end-debug@
 
---@alpha@
+	--@alpha@
 	if self.isBeta then self:Debug("Beta detected") end
 	if self.isClscPTR then self:Debug("Classic_PTR detected")
 	elseif self.isClsc then self:Debug("Classic detected") end
 	if self.isPTR then self:Debug("Retail_PTR detected") end
 	if self.isRetail then self:Debug("Retail detected") end
 	if self.isPatch then self:Debug("Patch detected") end
---@end-alpha@
+	--@end-alpha@
 
 	-- add callbacks
 	self.callbacks = _G.LibStub:GetLibrary("CallbackHandler-1.0", true):New(aObj)
@@ -262,12 +262,12 @@ function aObj:OnInitialize()
 	dflts, c = nil, nil
 
 	-- highlight outdated colour variables use when testing
---[===[@non-debug@
+	--[===[@non-debug@
 	self.HTr, self.HTg, self.HTb = self.HT:GetRGB()
 	self.BTr, self.BTg, self.BTb = self.BT:GetRGB()
 	self.bColour = {self.bClr:GetRGBA()}
 	self.bbColour = {self.bbClr:GetRGBA()}
---@end-non-debug@]===]
+	--@end-non-debug@]===]
 
 	-- Inactive Tab & DropDowns texture
 	if self.prdb.TabDDFile
@@ -505,9 +505,9 @@ function aObj:OnEnable()
 		end)
 	end
 
---@alpha@
+	--@alpha@
 	self:SetupCmds()
---@end-alpha@
+	--@end-alpha@
 
 end
 

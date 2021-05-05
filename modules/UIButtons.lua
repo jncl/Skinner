@@ -81,9 +81,9 @@ local function __checkTex(opts)
 		nTex = Texture
 		mp2 = minus/plus type 2
 --]]
---@alpha@
+	--@alpha@
 	 _G.assert(opts.obj, "Missing object __cT\n" .. _G.debugstack(2, 3, 2))
---@end-alpha@
+	 --@end-alpha@
 
 	-- hide existing textures if they exist (Armory/GupCharacter requires this)
 	if opts.obj:GetNormalTexture() then opts.obj:GetNormalTexture():SetAlpha(0) end
@@ -128,9 +128,9 @@ function module:checkTex(...)
 
 	local opts = _G.select(1, ...)
 
---@alpha@
+	--@alpha@
 	 _G.assert(opts, "Missing object cT\n" .. _G.debugstack(2, 3, 2))
---@end-alpha@
+	 --@end-alpha@
 
 	-- handle missing object (usually when addon changes)
 	if not opts then return end
@@ -198,9 +198,9 @@ function module:chgHLTex(obj, hTex)
 end
 
 function module:clrButtonFromBorder(btn, texture)
---@alpha@
+	--@alpha@
 	 _G.assert(btn.sbb, "Missing object__cBB\n" .. _G.debugstack(2, 3, 2))
---@end-alpha@
+	 --@end-alpha@
 
 	local iBdr = btn.IconBorder or btn.iconBorder or btn[texture]
 	-- aObj:Debug("UIB cBB: [%s, %s, %s, %s]", iBdr:IsShown(), iBdr:GetVertexColor())
@@ -281,9 +281,9 @@ function module:skinCloseButton(opts) -- text on button
 		font = font to use
 		disfont = disabled font to use
 --]]
---@alpha@
+	--@alpha@
 	_G.assert(opts.obj, "Missing object skinCloseButton\n" .. _G.debugstack(2, 3, 2))
---@end-alpha@
+	--@end-alpha@
 
 	opts.obj:DisableDrawLayer("BACKGROUND")
 	opts.obj:SetNormalTexture(nil)
@@ -294,12 +294,12 @@ function module:skinCloseButton(opts) -- text on button
 		opts.obj:SetDisabledTexture(nil)
 	end
 
---@alpha@
+	--@alpha@
 	-- skin GlowBox frame
 	if opts.obj:GetParent().GlowTop then
 		 _G.assert(opts.noSkin, "GlowBox should be skinned" .. _G.debugstack(2, 3, 2))
 	end
---@end-alpha@
+	--@end-alpha@
 
 	-- don't skin button if required
 	if not opts.noSkin then
@@ -361,9 +361,9 @@ function module:skinExpandButton(opts)
 		onSB = put text on skinButton
 		plus = use plus sign
 --]]
---@alpha@
+	--@alpha@
 	_G.assert(opts.obj, "Missing object skinExpandButton\n" .. _G.debugstack(2, 3, 2))
---@end-alpha@
+	--@end-alpha@
 
 	-- don't skin it twice (BUGFIX)
 	if opts.obj and opts.obj.sb then return end
@@ -426,10 +426,10 @@ function module:skinOtherButton(opts)
 		disfont = disabled font to use
 		text = text to use
 --]]
---@alpha@
+	--@alpha@
 	 _G.assert(opts.obj, "Missing object skinOtherButton\n" .. _G.debugstack(2, 3, 2))
 	 _G.assert(opts.text, "Missing text to use skinOtherButton\n" .. _G.debugstack(2, 3, 2))
---@end-alpha@
+	 --@end-alpha@
 
 	opts.obj:DisableDrawLayer("BACKGROUND")
 	if opts.obj:GetNormalTexture() then opts.obj:GetNormalTexture():SetAlpha(0) end
@@ -506,9 +506,9 @@ function module:skinStdButton(opts) -- standard panel button
 		shsh = inherit from SecureHandlerShowHideTemplate
 		ignoreHLTex = ignore Highlight texture changes
 --]]
---@alpha@
+	--@alpha@
 	_G.assert(opts.obj, "Missing object skinStdButton\n" .. _G.debugstack(2, 3, 2))
---@end-alpha@
+	--@end-alpha@
 
 	opts.obj:DisableDrawLayer("BACKGROUND")
 	if opts.obj:GetNormalTexture() then opts.obj:GetNormalTexture():SetAlpha(0) end
@@ -553,11 +553,11 @@ function module:skinButton(opts)
 		other options as per addSkinButton
 		nc = don't check to see if already skinned (Ace3)
 --]]
---@alpha@
+	--@alpha@
 	 _G.assert(opts.obj, "Missing object skinButton\n" .. _G.debugstack(2, 3, 2))
 	aObj:CustomPrint(1, 0, 0, "Not using a specific Button skinning function", opts.obj, opts.cb)
 	if not opts.obj:GetName() then _G.print("No Name supplied __sB\n", _G.debugstack(2, 5, 2)) end
---@end-alpha@
+	--@end-alpha@
 
 	if not opts.obj then return end
 
@@ -599,9 +599,9 @@ local function __skinAllButtons(opts, bgen)
 		bgen = generations of children to traverse
 		other options as per skinButton
 --]]
---@alpha@
+	--@alpha@
 	 _G.assert(opts.obj, "Missing object__sAB\n" .. _G.debugstack(2, 3, 2))
---@end-alpha@
+	 --@end-alpha@
 	if not opts.obj then return end
 
 	-- maximum number of button generations to traverse
@@ -636,11 +636,11 @@ function module:skinAllButtons(...)
 
 	local opts = _G.select(1, ...)
 
---@alpha@
+	--@alpha@
 	 _G.assert(opts, "Missing object sAB\n" .. _G.debugstack(2, 3, 2))
 	-- handle AddOn skins still using this code rather than skinning button individually
 	aObj:CustomPrint(1, 0, 0, "Using deprecated function - skinAllButtons, use skin???Button instead", opts.obj)
---@end-alpha@
+	--@end-alpha@
 
 	-- handle missing object (usually when addon changes)
 	if not opts then return end
@@ -683,7 +683,7 @@ local function __addButtonBorder(opts)
 		clr = set colour
 		ca = set colour alpha
 --]]
---@alpha@
+	--@alpha@
 	 _G.assert(opts.obj, "Missing object__aBB\n" .. _G.debugstack(2, 3, 2))
 	 if opts.seca
 	 or opts.secu
@@ -691,7 +691,7 @@ local function __addButtonBorder(opts)
 	 	-- handle AddOn skins using deprecated options
 	 	aObj:CustomPrint(1, 0, 0, "Using deprecated options - seca,secu, use sec instead", opts.obj)
 	end
---@end-alpha@
+	--@end-alpha@
 	if not opts.obj then return end
 
 	-- handle in combat
@@ -790,9 +790,9 @@ function module:addButtonBorder(...)
 
 	local opts = _G.select(1, ...)
 
---@alpha@
+	--@alpha@
 	 _G.assert(opts, "Missing object sAB\n" .. _G.debugstack(2, 3, 2))
---@end-alpha@
+	 --@end-alpha@
 
 	-- handle missing object (usually when addon changes)
 	if not opts then return end
@@ -814,9 +814,9 @@ local function __skinCheckButton(opts)
 		nc = don't check to see if already skinned
 		hf = hook show/hide functions
 --]]
---@alpha@
+	--@alpha@
 	 _G.assert(opts.obj, "Missing object __sCB\n" .. _G.debugstack(2, 3, 2))
---@end-alpha@
+	 --@end-alpha@
 
 	-- don't skin it twice unless required
 	if not opts.nc
@@ -847,9 +847,9 @@ function module:skinCheckButton(...)
 
 	local opts = _G.select(1, ...)
 
---@alpha@
+	--@alpha@
 	 _G.assert(opts, "Missing object sCB\n" .. _G.debugstack(2, 3, 2))
---@end-alpha@
+	 --@end-alpha@
 
 	-- handle missing object (usually when addon changes)
 	if not opts then return end

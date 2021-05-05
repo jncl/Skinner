@@ -153,15 +153,15 @@ function aObj:skinObject(...)
 	local type, table
 	if _G.select('#', ...) == 2 then
 		type, table = ...
---@alpha@
+		--@alpha@
 		_G.assert(self.skinTPLs[type], "Unknown type (skinObject)\n" .. _G.debugstack(2, 3, 2))
---@end-alpha@
+		--@end-alpha@
 	else
 		table = ...
 	end
---@alpha@
+	--@alpha@
 	_G.assert(table and _G.type(table), "Missing table (skinObject)\n" .. _G.debugstack(2, 3, 2))
---@end-alpha@
+	--@end-alpha@
 
 	if type then
 		skinFuncs[type](self.skinTPLs.new(type, table))
@@ -207,9 +207,9 @@ local function hideHeader(obj)
 end
 local r, g, b, a
 local function applySkin(tbl)
---@alpha@
+	--@alpha@
 	_G.assert(tbl.obj, "Missing object (applySkin)\n" .. _G.debugstack(2, 3, 2))
---@end-alpha@
+	--@end-alpha@
 	aObj:Debug2("applySkin: [%s]", tbl)
 
 	aObj.gradFrames[tbl.fType][tbl.obj] = true
@@ -241,9 +241,9 @@ local function applySkin(tbl)
 end
 skinFuncs.skin = function(table) applySkin(table) end
 local function skinButton(tbl)
---@alpha@
+	--@alpha@
 	_G.assert(tbl.obj, "Missing object (skinButton)\n" .. _G.debugstack(2, 3, 2))
---@end-alpha@
+	--@end-alpha@
 	aObj:Debug2("skinButton [%s]", tbl)
 
 	if tbl.obj.sb
@@ -321,9 +321,9 @@ local function skinButton(tbl)
 end
 skinFuncs.button = function(table) skinButton(table) end
 local function skinDropDown(tbl)
---@alpha@
+	--@alpha@
 	_G.assert(tbl.obj, "Missing object (skinDropDown)\n" .. _G.debugstack(2, 3, 2))
---@end-alpha@
+	--@end-alpha@
 
 	aObj:Debug2("skinDropDown: [%s]", tbl)
 
@@ -377,10 +377,10 @@ local function skinDropDown(tbl)
 end
 skinFuncs.dropdown = function(table) skinDropDown(table) end
 local function skinEditBox(tbl)
---@alpha@
+	--@alpha@
 	_G.assert(tbl.obj, "Missing object (skinEditBox)\n" .. _G.debugstack(2, 3, 2))
 	_G.assert(tbl.obj:IsObjectType("EditBox"), "Not an EditBox (skinEditBox)\n" .. _G.debugstack(2, 3, 2))
---@end-alpha@
+	--@end-alpha@
 	aObj:Debug2("skinEditBox: [%s]", tbl)
 
 	-- don't skin it twice
@@ -411,9 +411,9 @@ local function skinEditBox(tbl)
 end
 skinFuncs.editbox = function(table) skinEditBox(table) end
 local function skinFrame(tbl)
---@alpha@
+	--@alpha@
 	_G.assert(tbl.obj, "Missing object (skinFrame)\n" .. _G.debugstack(2, 3, 2))
---@end-alpha@
+	--@end-alpha@
 	aObj:Debug2("skinFrame [%s]", tbl)
 
 	-- don't skin it twice
@@ -517,9 +517,9 @@ local function skinFrame(tbl)
 end
 skinFuncs.frame = function(table) skinFrame(table) end
 local function skinGlowBox(tbl)
---@alpha@
+	--@alpha@
 	_G.assert(tbl.obj, "Missing object (skinGlowBox)\n" .. _G.debugstack(2, 3, 2))
---@end-alpha@
+	--@end-alpha@
 	aObj:Debug2("skinGlowBox: [%s]", tbl)
 
 	-- don't skin it twice
@@ -540,10 +540,10 @@ end
 skinFuncs.glowbox = function(table) skinGlowBox(table) end
 if aObj.isPTR then
 	local function skinScrollBar(tbl)
-	--@alpha@
+		--@alpha@
 		_G.assert(tbl.obj, "Missing object (skinScrollBar)\n" .. _G.debugstack(2, 3, 2))
 		_G.assert(tbl.obj.canInterpolateScroll, "Not a ScrollBarBase (skinScrollBar)\n" .. _G.debugstack(2, 3, 2))
-	--@end-alpha@
+		--@end-alpha@
 		aObj:Debug2("skinScrollBar: [%s, %s]", tbl)
 
 		-- don't skin it twice
@@ -556,10 +556,10 @@ if aObj.isPTR then
 	skinFuncs.scrollbar = function(table) skinScrollBar(table) end
 end
 local function skinSlider(tbl)
---@alpha@
+	--@alpha@
 	_G.assert(tbl.obj, "Missing object (skinSlider)\n" .. _G.debugstack(2, 3, 2))
 	_G.assert(tbl.obj:IsObjectType("Slider"), "Not a Slider (skinSlider)\n" .. _G.debugstack(2, 3, 2))
---@end-alpha@
+	--@end-alpha@
 	aObj:Debug2("skinSlider: [%s, %s]", tbl)
 
 	-- don't skin it twice
@@ -633,10 +633,10 @@ local function skinSlider(tbl)
 end
 skinFuncs.slider = function(table) skinSlider(table) end
 local function skinTabs(tbl)
---@alpha@
+	--@alpha@
 	_G.assert(tbl.obj, "Missing Tab Object (skinTabs)\n" .. _G.debugstack(2, 3, 2))
 	_G.assert(_G.type(tbl.tabs) == "table" or tbl.prefix, "Missing Tabs Table or Tab Prefix (skinTabs)\n" .. _G.debugstack(2, 3, 2))
---@end-alpha@
+	--@end-alpha@
 	aObj:Debug2("skinTabs: [%s]", tbl)
 
 	-- don't skin it twice unless required (Ace3)
