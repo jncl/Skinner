@@ -4347,7 +4347,9 @@ aObj.blizzLoDFrames[ftype].TalentUI = function(self)
 			frame["specButton" .. i].ring:SetTexture(nil)
 			aObj:changeRecTex(frame["specButton" .. i].selectedTex, true)
 			frame["specButton" .. i].learnedTex:SetTexture(nil)
-			if not aObj.isElvUI then
+			if not aObj.isElvUI
+			and frame["specButton" .. i]:GetHighlightTexture()
+			then
 				aObj:changeRecTex(frame["specButton" .. i]:GetHighlightTexture())
 			end
 			-- make specIcon square
