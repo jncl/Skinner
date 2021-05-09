@@ -57,7 +57,6 @@ local funcs = {
 		ColorPicker = {keep = true, keepOpts = true},
 		DebugTools = {keep = true, keepOpts = true},
 		GMChatUI = {keep = true, keepOpts = true},
-		GMSurveyUI = {keep = true, keepOpts = true},
 		HelpFrame = {keep = false, keepOpts = true},
 		InterfaceOptions = {keep = true, keepOpts = true},
 		ItemText = {keep = true, keepOpts = true},
@@ -165,6 +164,15 @@ aObj.ClassicSupport = function(self)
 		name = self.L["Battlefield Frame"],
 		desc = self.L["Toggle the skin of the "] .. self.L["Battlefield Frame"],
 	}
+		if self.db.profile.GMSurveyUI == nil then
+			self.db.profile.GMSurveyUI = true
+			self.db.defaults.profile.GMSurveyUI = true
+		end
+		self.optTables["UI Frames"].args.HelpFrame.args.GMSurveyUI = {
+			type = "toggle",
+			name = self.L["GM Survey UI"],
+			desc = self.L["Toggle the skin of the "] .. self.L["GM Survey UI"],
+		}
 	if self.db.profile.QuestLog == nil then
 		self.db.profile.QuestLog = true
 		self.db.defaults.profile.QuestLog = true
@@ -1432,6 +1440,25 @@ aObj.ClassicSupport = function(self)
 			-- widen buttons so text fits better
 			for i = 1, 6 do
 				this["button" .. i]:SetWidth(180)
+		self.blizzLoDFrames[ftype].GMSurveyUI = function(self)
+			if not self.prdb.GMSurveyUI or self.initialized.GMSurveyUI then return end
+			self.initialized.GMSurveyUI = true
+
+			self:SecureHookScript(_G.GMSurveyFrame, "OnShow", function(this)
+				self:skinSlider{obj=_G.GMSurveyScrollFrame.ScrollBar, rt="artwork"}
+				for i = 1, _G.MAX_SURVEY_QUESTIONS do
+					self:applySkin{obj=_G["GMSurveyQuestion" .. i], ft=ftype} -- must use applySkin otherwise text is behind gradient
+					_G["GMSurveyQuestion" .. i].SetBackdropColor = _G.nop
+					_G["GMSurveyQuestion" .. i].SetBackdropBorderColor = _G.nop
+				end
+				self:skinSlider{obj=_G.GMSurveyCommentScrollFrame.ScrollBar}
+				self:applySkin{obj=_G.GMSurveyCommentFrame, ft=ftype} -- must use applySkin otherwise text is behind gradient
+				self:addSkinFrame{obj=this, ft=ftype, kfs=true, hdr=true, y1=-6, x2=-45}
+
+				self:Unhook(this, "OnShow")
+			end)
+
+		end
 				if self.modBtns then
 					self:skinStdButton{obj=this["button" .. i], fType=ftype, x1=0, y1=2, x2=-3, y2=1}
 				end

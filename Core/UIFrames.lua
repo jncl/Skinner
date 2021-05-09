@@ -3254,26 +3254,6 @@ aObj.blizzLoDFrames[ftype].GMChatUI = function(self)
 
 end
 
-aObj.blizzLoDFrames[ftype].GMSurveyUI = function(self)
-	if not self.prdb.GMSurveyUI or self.initialized.GMSurveyUI then return end
-	self.initialized.GMSurveyUI = true
-
-	self:SecureHookScript(_G.GMSurveyFrame, "OnShow", function(this)
-		self:skinSlider{obj=_G.GMSurveyScrollFrame.ScrollBar, rt="artwork"}
-		for i = 1, _G.MAX_SURVEY_QUESTIONS do
-			self:applySkin{obj=_G["GMSurveyQuestion" .. i], ft=ftype} -- must use applySkin otherwise text is behind gradient
-			_G["GMSurveyQuestion" .. i].SetBackdropColor = _G.nop
-			_G["GMSurveyQuestion" .. i].SetBackdropBorderColor = _G.nop
-		end
-		self:skinSlider{obj=_G.GMSurveyCommentScrollFrame.ScrollBar}
-		self:applySkin{obj=_G.GMSurveyCommentFrame, ft=ftype} -- must use applySkin otherwise text is behind gradient
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, hdr=true, y1=-6, x2=-45}
-
-		self:Unhook(this, "OnShow")
-	end)
-
-end
-
 aObj.blizzLoDFrames[ftype].GuildBankUI = function(self)
 	if not self.prdb.GuildBankUI or self.initialized.GuildBankUI then return end
 	self.initialized.GuildBankUI = true
