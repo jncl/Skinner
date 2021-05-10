@@ -240,6 +240,9 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 	end
 	local stageRegs = {1, 2, 3, 4, 5}
 	function skinMissionPage(frame, colour)
+		if frame.NineSlice then
+			aObj:removeNineSlice(frame.NineSlice)
+		end
 		frame.IconBG:SetTexture(nil)
 		if frame.Board then -- shadowlands
 			aObj:removeRegions(frame.Stage, {1})
