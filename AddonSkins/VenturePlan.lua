@@ -2,15 +2,15 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("VenturePlan") then return end
 local _G = _G
 
-aObj.addonsToSkin.VenturePlan = function(self) -- v 4.12a
+aObj.addonsToSkin.VenturePlan = function(self) -- v 4.15a
 
 	local function skinMissionBtn(btn)
 		aObj:getRegion(btn, 5):SetTextColor(aObj.BT:GetRGB()) -- Description
-		for _, fs in _G.pairs{aObj:getChild(btn, 4):GetRegions()} do -- stats
+		aObj:getChild(btn, 1):GetFontString():SetTextColor(aObj.BT:GetRGB()) -- ExpireTime
+		for _, fs in _G.pairs{aObj:getChild(btn, 4):GetRegions()} do -- statLine
 			fs:SetTextColor(aObj.BT:GetRGB())
 		end
-		aObj:getChild(btn, 1):GetFontString():SetTextColor(aObj.BT:GetRGB()) -- expiretime
-		local pBar = aObj:getChild(btn, 5)
+		local pBar = aObj:getChild(btn, 5) -- ProgressBar
 		aObj:removeRegions(pBar, {1, 2, 3, 4, 5, 6, 7, 8, 9})
 		pBar.Fill:SetTexture(aObj.sbTexture)
 		pBar.Fill:SetVertexColor(aObj.sbClr:GetRGBA())
@@ -22,11 +22,13 @@ aObj.addonsToSkin.VenturePlan = function(self) -- v 4.12a
 		aObj:removeRegions(btn, {1, 2, 4})
 		aObj:skinObject("frame", {obj=btn, fb=true, y1=-22, clr="grey"})
 		if aObj.modBtns then
-			aObj:skinStdButton{obj=aObj:getChild(btn, 6)}
+			aObj:skinStdButton{obj=aObj:getChild(btn, 6)} -- ViewButton
+			aObj:skinCloseButton{obj=aObj:getChild(btn, 8), noSkin=true} -- TentativeClear
 		end
 		if aObj.modBtnBs then
-			aObj:addButtonBorder{obj=aObj:getChild(btn, 8), ofs=0, y2=-1} -- doom button
+			aObj:addButtonBorder{obj=aObj:getChild(btn, 7), ofs=0, y2=-1} -- DoomRunButton
 		end
+		-- _G.Spew("", btn)
 	end
 	self.RegisterCallback("VenturePlan", "CovenantMissionFrame_Skinned", function(this)
 		-- wait for frames to be created
