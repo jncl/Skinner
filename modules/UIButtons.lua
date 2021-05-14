@@ -167,31 +167,37 @@ function module:chgHLTex(obj, hTex)
 		local hTexFile = hTex:GetTexture()
 		-- aObj:Debug("chgHLTex: [%s, %s]", obj, hTexFile)
 		if hTexFile then
+			local clr
 			if _G.tonumber(hTexFile) then
 				if _G.tonumber(hTexFile) == 3046538 then -- auctionhouse-nav-button
-					clrTex("grey", hTex)
+					clr = "grey"
+				elseif _G.tonumber(hTexFile) == 1536801 then -- addonlist button highlight
+					clr = "red"
 				end
 			else
 				if hTexFile:find("UI-Panel-Button-Highlight", 1, true) -- UIPanelButtonHighlightTexture
 				or hTexFile:find("UI-DialogBox-Button-Highlight", 1, true) -- StaticPopupButton/PetPopupButton/CinematicDialogButton
 				then
-					clrTex("red", hTex)
+					clr = "red"
 				elseif hTexFile:find("UI-Silver-Button-Highlight", 1, true) -- UIMenuButtonStretchTemplate
 				or hTexFile:find("UI-Minimap-ZoomButton-Highlight", 1, true)
 				or hTexFile:find("HelpButtons", 1, true) -- Classic Help Buttons
 				then
-					clrTex("blue", hTex)
+					clr = "blue"
 				elseif hTexFile:find("UI-Silver-Button-Select", 1, true) then -- UIMenuButtonStretchTemplate
-					clrTex("yellow", hTex)
+					clr = "yellow"
 				end
 			end
-			-- inset colour
-			if obj.sb then
-				hTex:ClearAllPoints()
-				hTex:SetPoint("TOPLEFT", obj.sb, "TOPLEFT", 5, -5)
-				hTex:SetPoint("BOTTOMRIGHT", obj.sb, "BOTTOMRIGHT", -5, 5)
+			if clr then
+				clrTex(clr, hTex)
+				-- inset colour
+				if obj.sb then
+					hTex:ClearAllPoints()
+					hTex:SetPoint("TOPLEFT", obj.sb, "TOPLEFT", 5, -5)
+					hTex:SetPoint("BOTTOMRIGHT", obj.sb, "BOTTOMRIGHT", -5, 5)
+				end
 			end
-			hTexFile = nil
+			hTexFile, clr = nil, nil
 		end
 	end
 
