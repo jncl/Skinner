@@ -639,10 +639,9 @@ local function skinTabs(tbl)
 	aObj:Debug2("skinTabs: [%s]", tbl)
 
 	-- don't skin it twice unless required (Ace3)
-	if tbl.noCheck then
-		tbl.obj.sknd = false
-	end
-	if tbl.obj.sknd then
+	if tbl.obj.sknd
+	and not tbl.noCheck
+	then
 		return
 	end
 	tbl.obj.sknd = true
