@@ -553,12 +553,6 @@ aObj.blizzLoDFrames[ftype].CovenantSanctum = function(self)
 	if not self.prdb.CovenantSanctum or self.initialized.CovenantSanctum then return end
 	self.initialized.CovenantSanctum = true
 
-	self:SecureHook(_G.CovenantSanctumFrame, "SetCovenantInfo", function(this)
-		if this.sf then
-			self:clrCovenantBdr(this)
-		end
-	end)
-
 	self:SecureHookScript(_G.CovenantSanctumFrame, "OnShow", function(this)
 		this.LevelFrame.Background:SetTexture(nil)
 		local list = this.UpgradesTab.TalentsList
@@ -607,6 +601,12 @@ aObj.blizzLoDFrames[ftype].CovenantSanctum = function(self)
 		end
 
 		self:Unhook(this, "OnShow")
+	end)
+
+	self:SecureHook(_G.CovenantSanctumFrame, "SetCovenantInfo", function(this)
+		if this.sf then
+			self:clrCovenantBdr(this)
+		end
 	end)
 
 end
