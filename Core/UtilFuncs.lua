@@ -210,6 +210,9 @@ end
 
 aObj.RecTex = [[Interface\HelpFrame\HelpButtons]]
 function aObj:changeRecTex(obj, isYellow, isUnitFrame)
+	--@alpha@
+	_G.assert(obj, "Unknown object changeRecTex\n" .. _G.debugstack(2, 3, 2))
+	--@end-alpha@
 
 	obj:SetTexture(self.RecTex)
 	if isYellow then
