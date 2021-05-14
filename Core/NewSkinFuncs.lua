@@ -311,7 +311,7 @@ local function skinButton(tbl)
 	so.obj   = tbl.obj.sb
 	so.fType = tbl.fType
 	so.ba    = tbl.ba
-	so.bbclr = so.bbclr or tbl.clr
+	so.bbclr = tbl.clr
 	so.bba   = tbl.bba
 	so.bd    = tbl.bd
 	so.ng    = tbl.ng
