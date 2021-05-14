@@ -4637,8 +4637,7 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 	else
 		-- remove ring from GameTimeFrame texture
 		self:RawHook(_G.GameTimeTexture, "SetTexCoord", function(this, minx, maxx, miny, maxy)
-			minx, maxx, miny, maxy = minx + 0.075, maxx - 0.075, miny + 0.175, maxy - 0.2
-			self.hooks[this].SetTexCoord(this, minx, maxx, miny, maxy)
+			self.hooks[this].SetTexCoord(this, minx + 0.075, maxx - 0.075, miny + 0.175, maxy - 0.2)
 		end, true)
 		_G.C_Timer.After(0.25, function()
 			_G.GameTimeFrame:SetSize(28, 28)
