@@ -25,7 +25,7 @@ externals:
         url: svn://svn.wowace.com/wow/libsharedmedia-3-0/mainline/trunk/LibSharedMedia-3.0
 
 ignore:
-    - ToDo.txt
+    - ToDo*.txt
     - ObsoleteSkins
 
 tools-used:
