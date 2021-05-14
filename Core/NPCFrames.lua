@@ -311,7 +311,7 @@ aObj.blizzFrames[ftype].BankFrame = function(self)
 	self.initialized.BankFrame = true
 
 	self:SecureHookScript(_G.BankFrame, "OnShow", function(this)
-		self:skinObject("editbox", {obj=_G.BankItemSearchBox, fType=ftype})
+		self:skinObject("editbox", {obj=_G.BankItemSearchBox, fType=ftype, si=true})
 		if self.modBtns then
 			 self:skinStdButton{obj=_G.BankFramePurchaseButton}
 		end
