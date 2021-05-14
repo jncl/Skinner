@@ -1,0 +1,43 @@
+ToDo_retail_PTR
+±±±±±±±±±±±±±±±
+
+	√ is Alt+v		- indicates completed
+	≈ is Alt+x		- indicates partially completed or dry-coded
+	x				- indicates nothing to change
+	¶ is Alt+7		- indicates localisation changes required
+
+	Retail_PTR
+		- Added
+√			- EventTrace
+x			- EventEditBox
+≈			- ScrollTemplates
+x			- VoiceChatDots
+x			- VoiceChatTranscriptionButton
+x			- VoiceChatTranscriptionFrame
+√			- TextToSpeechFrame
+x			- TextToSpeech
+x			- BossBannerToast
+≈			- EventToastManager
+		- Updated
+?			- Blizzard_AuctionHouseAuctionsFrame
+√			- Blizzard_BindingUI
+?			- Blizzard_CharacterCustomize
+√			- Blizzard_Wardrobe
+√			- Blizzard_DebugTools
+?			- Blizzard_LootJournal
+?			- Blizzard_AdventuresBoard
+?			- Blizzard_AdventuresPuck
+√			- Blizzard_ItemUpgradeUI
+?			- Blizzard_MawBuffs
+≈			- Blizzard_RuneforgeCreateFrame
+≈			- Blizzard_RuneforgePowerList
+≈			- Blizzard_SoulbindsConduitList
+?			- Blizzard_SoulbindsNode
+?			- Blizzard_SoulbindsViewer
+√			- ChatConfigFrame
+x			- ChatFrame
+x			- InterfaceOptionsPanels
+x			- VoiceChatHeadsetButton
+		- Deleted
+√			- EventTraceFrame
+√			- LevelUpDisplay
