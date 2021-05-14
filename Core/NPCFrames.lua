@@ -1056,6 +1056,12 @@ aObj.blizzFrames[ftype].QuestFrame = function(self)
 			end)
 			self:skinStdButton{obj=_G.QuestFrameDeclineButton}
 			self:skinStdButton{obj=_G.QuestFrameAcceptButton}
+			self:SecureHook(_G.QuestFrameAcceptButton, "Disable", function(this, _)
+				self:clrBtnBdr(this)
+			end)
+			self:SecureHook(_G.QuestFrameAcceptButton, "Enable", function(this, _)
+				self:clrBtnBdr(this)
+			end)
 			self:skinStdButton{obj=_G.QuestFrameGreetingGoodbyeButton}
 			if self.isClsc then
 				self:skinStdButton{obj=_G.QuestFrameCancelButton}
