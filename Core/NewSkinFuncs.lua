@@ -661,7 +661,7 @@ local function skinTabs(tbl)
 		else
 			aObj:skinObject("frame", {obj=tab, fType=tbl.fType, noBdr=true, x1=oFs.x1, y1=oFs.y1, x2=oFs.x2, y2=oFs.y2})
 			if tbl.lod then
-				if i == tbl.selectedTab then
+				if i == (tbl.selectedTab or tbl.obj.selectedTab) then
 					aObj:setActiveTab(tab.sf)
 				else
 					aObj:setInactiveTab(tab.sf)
