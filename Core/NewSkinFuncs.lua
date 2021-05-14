@@ -430,8 +430,7 @@ local function skinFrame(tbl)
 		aObj:removeBackdrop(tbl.obj)
 	end
 	if tbl.ri
-	and tbl.obj.Inset
-	or tbl.obj.inset
+	and (tbl.obj.Inset or tbl.obj.inset)
 	then
 		aObj:removeInset(tbl.obj.Inset or tbl.obj.inset)
 	end
