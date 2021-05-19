@@ -91,7 +91,7 @@ aObj.skinTPLs = {
 		-- invert      =,
 		-- rotate      =,
 	},
-	scrollbar = aObj.isPTR and {
+	scrollbar = {
 		-- bd          = 4, -- narrow
 		-- clr         = "darkgrey", -- backdrop border colour
 		-- ca          = 0.5, -- backdrop border alpha
@@ -101,7 +101,7 @@ aObj.skinTPLs = {
 		-- y1          = -2,
 		-- x2          = -3,
 		-- y2          = 3,
-	} or nil,
+	},
 	slider = {
 		-- bd          = 4, -- narrow
 		-- clr         = "darkgrey", -- backdrop border colour
@@ -549,23 +549,21 @@ local function skinGlowBox(tbl)
 	aObj:skinObject("frame", {obj=tbl.obj, fType=tbl.fType, cbns=true, clr="gold"})
 end
 skinFuncs.glowbox = function(table) skinGlowBox(table) end
-if aObj.isPTR then
-	local function skinScrollBar(tbl)
-		--@alpha@
-		_G.assert(tbl.obj, "Missing object (skinScrollBar)\n" .. _G.debugstack(2, 3, 2))
-		_G.assert(tbl.obj.canInterpolateScroll, "Not a ScrollBarBase (skinScrollBar)\n" .. _G.debugstack(2, 3, 2))
-		--@end-alpha@
-		aObj:Debug2("skinScrollBar: [%s, %s]", tbl)
+local function skinScrollBar(tbl)
+	--@alpha@
+	_G.assert(tbl.obj, "Missing object (skinScrollBar)\n" .. _G.debugstack(2, 3, 2))
+	_G.assert(tbl.obj.canInterpolateScroll, "Not a ScrollBarBase (skinScrollBar)\n" .. _G.debugstack(2, 3, 2))
+	--@end-alpha@
+	aObj:Debug2("skinScrollBar: [%s, %s]", tbl)
 
-		-- don't skin it twice
-		if tbl.obj.sf then return end
-		-- remove textures
-		tbl.obj:DisableDrawLayer("BACKGROUND")
-		tbl.obj.Background:DisableDrawLayer("artwork")
-		aObj:skinObject("frame", {obj=tbl.obj.Track, fType=tbl.fType, bd=4, ng=true--[[, x2=3--]], clr="slider"})
-	end
-	skinFuncs.scrollbar = function(table) skinScrollBar(table) end
+	-- don't skin it twice
+	if tbl.obj.sf then return end
+	-- remove textures
+	tbl.obj:DisableDrawLayer("BACKGROUND")
+	tbl.obj.Background:DisableDrawLayer("artwork")
+	aObj:skinObject("frame", {obj=tbl.obj.Track, fType=tbl.fType, bd=4, ng=true--[[, x2=3--]], clr="slider"})
 end
+skinFuncs.scrollbar = function(table) skinScrollBar(table) end
 local function skinSlider(tbl)
 	--@alpha@
 	_G.assert(tbl.obj, "Missing object (skinSlider)\n" .. _G.debugstack(2, 3, 2))

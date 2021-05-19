@@ -1084,7 +1084,7 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 			self:skinStdButton{obj=this.FilterButton}
 			_G.RaiseFrameLevelByTwo(this.FilterButton) -- raise above SetsCollectionFrame when displayed on it
 		end
-		if not aObj.isPTR then
+		if not aObj.isRetPTR then
 			self:SecureHookScript(this.searchProgressFrame, "OnShow", function(this)
 				this:DisableDrawLayer("BACKGROUND")
 				this:DisableDrawLayer("ARTWORK")
@@ -1190,7 +1190,7 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 		this:DisableDrawLayer("ARTWORK")
 		self:removeInset(this.Inset)
 		self:skinObject("dropdown", {obj=this.OutfitDropDown, fType=ftype, y2=-3})
-		for _, btn in _G.pairs(aObj.isPTR and this.SlotButtons or this.ModelScene.SlotButtons) do
+		for _, btn in _G.pairs(aObj.isRetPTR and this.SlotButtons or this.ModelScene.SlotButtons) do
 			btn.Border:SetTexture(nil)
 			if self.modBtnBs then
 				 self:addButtonBorder{obj=btn, ofs=-2}
@@ -1203,7 +1203,7 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 			self:SecureHook(this.OutfitDropDown, "UpdateSaveButton", function(this)
 				self:clrBtnBdr(this.SaveButton)
 			end)
-			if not aObj.isPTR then
+			if not aObj.isRetPTR then
 				self:SecureHook("WardrobeTransmogFrame_UpdateApplyButton", function()
 					self:clrBtnBdr(_G.WardrobeTransmogFrame.ApplyButton)
 				end)

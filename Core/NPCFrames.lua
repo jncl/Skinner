@@ -737,11 +737,15 @@ aObj.blizzLoDFrames[ftype].ItemUpgradeUI = function(self)
 		this.HorzBar:SetTexture(nil)
 		this.MissingDescription:SetTextColor(self.BT:GetRGB())
 		this.ItemUpgradedNotification:SetTextColor(self.BT:GetRGB())
-		if not aObj.isPTR then
-			this.FeedbackMessage:SetTextColor(self.BT:GetRGB())
-		end
 		this.TitleTextLeft:SetTextColor(self.BT:GetRGB())
 		this.TitleTextRight:SetTextColor(self.BT:GetRGB())
+		if not aObj.isRetPTR then
+			this.FeedbackMessage:SetTextColor(self.BT:GetRGB())
+		else
+			self:skinObject("dropdown", {obj=this.UpgradeLevelDropDown.DropDownMenu, fType=ftype})
+			self:skinObject("scrollbar", {obj=this.StatsScrollBar, fType=ftype})
+			this.Feedback.Text:SetTextColor(self.BT:GetRGB())
+		end
 		this.ItemButton.IconTexture:SetAlpha(0)
 		this.ItemButton:DisableDrawLayer("BACKGROUND")
 		this.ItemButton.Frame:SetTexture(nil)
@@ -776,14 +780,25 @@ aObj.blizzLoDFrames[ftype].ItemUpgradeUI = function(self)
 			icon, quality = nil, nil
 		end)
 		-- hook this to remove background texture from stat lines
-		self:SecureHook("ItemUpgradeFrame_GetStatRow", function(index, _)
-			if _G.ItemUpgradeFrame.LeftStat[index] then
-				 _G.ItemUpgradeFrame.LeftStat[index].BG:SetTexture(nil)
-			 end
-			if _G.ItemUpgradeFrame.RightStat[index] then
-				_G.ItemUpgradeFrame.RightStat[index].BG:SetTexture(nil)
-			end
-		end)
+		if not aObj.isRetPTR then
+			self:SecureHook("ItemUpgradeFrame_GetStatRow", function(index, _)
+				if _G.ItemUpgradeFrame.LeftStat[index] then
+					 _G.ItemUpgradeFrame.LeftStat[index].BG:SetTexture(nil)
+				 end
+				if _G.ItemUpgradeFrame.RightStat[index] then
+					_G.ItemUpgradeFrame.RightStat[index].BG:SetTexture(nil)
+				end
+			end)
+		else
+			self:SecureHook("ItemUpgradeFrame_UpdateStats", function(_)
+				for _, stat	in _G.pairs(this.StatsScroll.Contents.LeftStat) do
+					stat.BG:SetTexture(nil)
+				end
+				for _, stat	in _G.pairs(this.StatsScroll.Contents.RightStat) do
+					stat.BG:SetTexture(nil)
+				end
+			end)
+		end
 
 		self:Unhook(this, "OnShow")
 	end)

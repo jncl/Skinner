@@ -24,41 +24,7 @@ ToDos
 
 ≈	O	Refactor NewSkinFuncs in Blizzard/AddOn skins
 
-	Retail_PTR
-		- Added
-√			- EventTrace
-x			- EventEditBox
-≈			- ScrollTemplates
-x			- VoiceChatDots
-x			- VoiceChatTranscriptionButton
-x			- VoiceChatTranscriptionFrame
-√			- TextToSpeechFrame
-x			- TextToSpeech
-x			- BossBannerToast
-≈			- EventToastManager
-		- Updated
-?			- Blizzard_AuctionHouseAuctionsFrame
-√			- Blizzard_BindingUI
-?			- Blizzard_CharacterCustomize
-√			- Blizzard_Wardrobe
-√			- Blizzard_DebugTools
-?			- Blizzard_LootJournal
-?			- Blizzard_AdventuresBoard
-?			- Blizzard_AdventuresPuck
-√			- Blizzard_ItemUpgradeUI
-?			- Blizzard_MawBuffs
-≈			- Blizzard_RuneforgeCreateFrame
-≈			- Blizzard_RuneforgePowerList
-≈			- Blizzard_SoulbindsConduitList
-?			- Blizzard_SoulbindsNode
-?			- Blizzard_SoulbindsViewer
-√			- ChatConfigFrame
-x			- ChatFrame
-x			- InterfaceOptionsPanels
-x			- VoiceChatHeadsetButton
-		- Deleted
-√			- EventTraceFrame
-√			- LevelUpDisplay
+?	O	Refactor Communities code
 
 	N/C	LeatrixPlus, reported by 아련별, 30.04.21
 √		- Skinner\Modules\UIButtons.lua:820: attempt to index field 'obj' (a nil value)

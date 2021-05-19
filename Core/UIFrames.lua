@@ -1072,7 +1072,7 @@ aObj.blizzLoDFrames[ftype].BindingUI = function(self)
 				self:skinStdButton{obj=this.cancelButton}
 				self:skinStdButton{obj=this.okayButton}
 			end
-			if not aObj.isPTR then
+			if not aObj.isRetPTR then
 				if self.modBtnBs then
 					self:addButtonBorder{obj=this.phantomExtraActionButton, x2=1, y2=-1}
 				end
@@ -1509,7 +1509,7 @@ aObj.blizzFrames[ftype].ChatButtons = function(self)
 		self:addButtonBorder{obj=_G.ChatFrameToggleVoiceDeafenButton, ofs=0, clr="grey"}
 		self:addButtonBorder{obj=_G.ChatFrameToggleVoiceMuteButton, ofs=0, clr="grey"}
 		self:addButtonBorder{obj=_G.ChatFrameMenuButton, ofs=-2, x1=1, clr="grey"}
-		if self.isPTR then
+		if self.isRetPTR then
 			self:addButtonBorder{obj=_G.TextToSpeechButton, x1=1, y1=2, x2=-2, y2=-2, clr="grey"}
 		end
 		-- QuickJoinToastButton(s)
@@ -1730,7 +1730,7 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 			skinCB("ChatConfigOtherSettingsCreatureCheckBox" .. i)
 		end
 		self:skinObject("frame", {obj=_G.ChatConfigOtherSettingsCreature, fType=ftype, kfs=true, fb=true})
-		if aObj.isPTR then
+		if aObj.isRetPTR then
 			-- Voice
 			for i = 1, #_G.CHAT_CONFIG_VOICE do
 				skinCB("ChatConfigVoiceSettingsVoiceCheckBox" .. i)
@@ -2278,7 +2278,7 @@ aObj.blizzLoDFrames[ftype].DebugTools = function(self)
 	if not self.prdb.DebugTools or self.initialized.DebugTools then return end
 	self.initialized.DebugTools = true
 
-	if not self.isPTR then
+	if self.isRet then
 		self:SecureHookScript(_G.EventTraceFrame, "OnShow", function(this)
 			self:skinObject("slider", {obj=_G.EventTraceFrameScroll, fType=ftype})
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, ofs=-2, y1=-3})
@@ -2399,7 +2399,7 @@ aObj.blizzFrames[ftype].DestinyFrame = function(self)
 
 end
 
-if aObj.isPTR then
+if aObj.isRetPTR then
 	aObj.blizzFrames[ftype].EventToastManager = function(self)
 		if not self.prdb.EventToastManager or self.initialized.EventToastManager then return end
 		self.initialized.EventToastManager = true
@@ -3705,7 +3705,7 @@ aObj.blizzFrames[ftype].ItemText = function(self)
 
 end
 
-if not aObj.isPTR then
+if not aObj.isRetPTR then
 	aObj.blizzFrames[ftype].LevelUpDisplay = function(self)
 		if not self.prdb.LevelUpDisplay or self.initialized.LevelUpDisplay then return end
 		self.initialized.LevelUpDisplay = true
@@ -6074,7 +6074,7 @@ aObj.blizzLoDFrames[ftype].Soulbinds = function(self)
 				-- .Lists / .Sections
 					-- CategoryButton
 						-- Container
-		if not aObj.isPTR then
+		if not aObj.isRetPTR then
 			for _, list in _G.pairs(this.ConduitList.ScrollBox.ScrollTarget.Lists) do
 				self:removeRegions(list.CategoryButton.Container, {1})
 				if self.modBtns then
@@ -6259,7 +6259,7 @@ aObj.blizzLoDFrames[ftype].TalkingHeadUI = function(self)
 
 end
 
-if aObj.isPTR then
+if aObj.isRetPTR then
 	aObj.blizzFrames[ftype].TextToSpeechFrame = function(self)
 		if not self.prdb.TextToSpeechFrame or self.initialized.TextToSpeechFrame then return end
 		self.initialized.TextToSpeechFrame = true
