@@ -26,16 +26,8 @@ ToDos
 
 ?	O	Refactor Communities code
 
-	N/C	LeatrixPlus, reported by 아련별, 30.04.21
-√		- Skinner\Modules\UIButtons.lua:820: attempt to index field 'obj' (a nil value)
-		Skinner\Modules\UIButtons.lua:860: in function `skinCheckButton'
-		Skinner\AddonSkins\Leatrix_Plus-1.13.103.lua:99: in function <Skinner\AddonSkins\Leatrix_Plus.lua:5>
-
-√	U	Lightheaded, requested by litheroy, 01.05.21
-
-√	U	ACP, requested by litheroy, 01.05.21
-
-√	S	WorkOrdersComplete, requested by litheroy, 01.05.21
-
-	I	PetTracker, reported by litheroy, 01.05.21
-√		- Rivals Tab not skinned
+	I	PlayerTalentFrame, reported by Moxieface, 05.05.21
+√		- Skinner\Core\UtilFuncs.lua:214: attempt to index local 'obj' (a nil value)
+		[string "@Skinner\Core\UtilFuncs.lua"]:214: in function `changeRecTex'
+		[string "@Skinner\Core\PlayerFrames.lua"]:4352: in function <Skinner\Core\PlayerFrames.lua:4336>
+		[string "@Skinner\Core\PlayerFrames.lua"]:4370: in function <Skinner\Core\PlayerFrames.lua:4369>
