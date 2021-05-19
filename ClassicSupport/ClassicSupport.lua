@@ -28,6 +28,7 @@ local funcs = {
 		DressUpFrame = {keep = false, keepOpts = true},
 		FriendsFrame = {keep = false, keepOpts = true},
 		InspectUI = {keep = false, keepOpts = true},
+		ItemSocketingUI = aObj.isClscBC and {keep = true, keepOpts = true},
 		LootFrames = {keep = true, keepOpts = true},
 		LootHistory = {keep = true, keepOpts = true},
 		MirrorTimers = {keep = true, keepOpts = true},
@@ -56,8 +57,10 @@ local funcs = {
 		CoinPickup = {keep = true, keepOpts = true},
 		ColorPicker = {keep = true, keepOpts = true},
 		DebugTools = {keep = true, keepOpts = true},
+		EventTrace = {keep = true, keepOpts = true},
 		GMChatUI = {keep = true, keepOpts = true},
-		HelpFrame = {keep = false, keepOpts = true},
+		GMSurveyUI = not aObj.isClscBC and {keep = false, keepOpts = true},
+		HelpFrame = {keep = aObj.isClscBC and true, keepOpts = true},
 		InterfaceOptions = {keep = true, keepOpts = true},
 		ItemText = {keep = true, keepOpts = true},
 		MacroUI = {keep = true, keepOpts = true},
@@ -70,7 +73,7 @@ local funcs = {
 		MovieFrame = {keep = true, keepOpts = true},
 		Nameplates = {keep = true, keepOpts = true},
 		ProductChoiceFrame = {keep = true, keepOpts = true},
-		PTRFeedback = (aObj.isPTR or aObj.isClscPTR or aObj.isBeta) and {keep = true, keepOpts = true} or nil,
+		PTRFeedback = (not aObj.isRet or aObj.isClsc) and {keep = true, keepOpts = true},
 		RaidFrame = {keep = false, keepOpts = true},
 		StaticPopups = {keep = true, keepOpts = true},
 		SystemOptions = {keep = true, keepOpts = true},
@@ -137,6 +140,26 @@ aObj.ClassicSupport = function(self)
 	self.skinGlowBox = _G.nop
 
 	-- Add options for new frames
+	if self.isClscBC then
+		if self.db.profile.ArenaFrame == nil then
+			self.db.profile.ArenaFrame = true
+			self.db.defaults.profile.ArenaFrame = true
+		end
+		self.optTables["NPC Frames"].args.ArenaFrame = {
+			type = "toggle",
+			name = self.L["Arena Frame"],
+			desc = self.L["Toggle the skin of the "] .. self.L["Arena Frame"],
+		}
+		if self.db.profile.ArenaRegistrarFrame == nil then
+			self.db.profile.ArenaRegistrarFrame = true
+			self.db.defaults.profile.ArenaRegistrarFrame = true
+		end
+		self.optTables["NPC Frames"].args.ArenaRegistrarFrame = {
+			type = "toggle",
+			name = self.L["Arena Registrar Frame"],
+			desc = self.L["Toggle the skin of the "] .. self.L["Arena Registrar Frame"],
+		}
+	end
 	if self.db.profile.AuctionUI == nil then
 		self.db.profile.AuctionUI = true
 		self.db.defaults.profile.AuctionUI = true
@@ -164,6 +187,7 @@ aObj.ClassicSupport = function(self)
 		name = self.L["Battlefield Frame"],
 		desc = self.L["Toggle the skin of the "] .. self.L["Battlefield Frame"],
 	}
+	if not self.isClscBC then
 		if self.db.profile.GMSurveyUI == nil then
 			self.db.profile.GMSurveyUI = true
 			self.db.defaults.profile.GMSurveyUI = true
@@ -173,6 +197,7 @@ aObj.ClassicSupport = function(self)
 			name = self.L["GM Survey UI"],
 			desc = self.L["Toggle the skin of the "] .. self.L["GM Survey UI"],
 		}
+	end
 	if self.db.profile.QuestLog == nil then
 		self.db.profile.QuestLog = true
 		self.db.defaults.profile.QuestLog = true
@@ -203,6 +228,69 @@ aObj.ClassicSupport = function(self)
 
 	-- add/replace code for frames that do exist
 	ftype = "n"
+	if self.isClscBC then
+		self.blizzFrames[ftype].ArenaFrame = function(self)
+			if not self.prdb.ArenaFrame or self.initialized.ArenaFrame then return end
+			self.initialized.ArenaFrame = true
+		
+			self:SecureHookScript(_G.ArenaFrame, "OnShow", function(this)
+				self:keepFontStrings(this)
+				_G.ArenaFrameZoneDescription:SetTextColor(self.BT:GetRGB())
+				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=10, y1=-11, x2=-32, y2=70})
+				if self.modBtns then
+					self:skinCloseButton{obj=_G.ArenaFrameCloseButton, fType=ftype}
+					self:skinStdButton{obj=_G.ArenaFrameCancelButton, fType=ftype}
+					self:skinStdButton{obj=_G.ArenaFrameJoinButton, fType=ftype}
+					self:skinStdButton{obj=_G.ArenaFrameGroupJoinButton, fType=ftype}
+					self:SecureHook(_G.ArenaFrameGroupJoinButton, "Disable", function(this, _)
+						self:clrBtnBdr(this)
+					end)
+					self:SecureHook(_G.ArenaFrameGroupJoinButton, "Enable", function(this, _)
+						self:clrBtnBdr(this)
+					end)
+				end
+				
+				self:Unhook(this, "OnShow")
+			end)
+		
+		end
+		
+		self.blizzFrames[ftype].ArenaRegistrarFrame = function(self)
+			if not self.prdb.ArenaRegistrarFrame or self.initialized.ArenaRegistrarFrame then return end
+			self.initialized.ArenaRegistrarFrame = true
+	
+			self:SecureHookScript(_G.ArenaRegistrarFrame, "OnShow", function(this)
+		
+				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true})
+			
+				self:Unhook(this, "OnShow")
+			end)
+		
+			self:SecureHookScript(_G.PVPBannerFrame, "OnShow", function(this)
+				self:keepRegions(this, {17, 18, 19, 20, 21, 22}) -- 17-20 are emblem textures, 21 & 22 are text
+				self:keepFontStrings(_G.PVPBannerFrameCustomizationFrame1)
+				self:keepFontStrings(_G.PVPBannerFrameCustomizationFrame2)
+				if self.modBtnBs then
+					self:addButtonBorder{obj=_G.PVPBannerFrameCustomization1LeftButton, fType=ftype, ofs=-2, x1=1, clr="gold"}
+					self:addButtonBorder{obj=_G.PVPBannerFrameCustomization1RightButton, fType=ftype, ofs=-2, x1=1, clr="gold"}
+					self:addButtonBorder{obj=_G.PVPBannerFrameCustomization2LeftButton, fType=ftype, ofs=-2, x1=1, clr="gold"}
+					self:addButtonBorder{obj=_G.PVPBannerFrameCustomization2RightButton, fType=ftype, ofs=-2, x1=1, clr="gold"}
+				end
+				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true})
+				if self.modBtns then
+					self:skinStdButton{obj=_G.PVPColorPickerButton1, fType=ftype}
+					self:skinStdButton{obj=_G.PVPColorPickerButton2, fType=ftype}
+					self:skinStdButton{obj=_G.PVPColorPickerButton3, fType=ftype}
+					self:skinStdButton{obj=_G.PVPBannerFrameSaveButton, fType=ftype}
+					self:skinStdButton{obj=_G.PVPBannerFrameAcceptButton, fType=ftype}
+					self:skinStdButton{obj=_G.PVPBannerFrameCancelButton, fType=ftype}
+				end
+			
+				self:Unhook(this, "OnShow")
+			end)
+		end
+	end
+	
 	self.blizzLoDFrames[ftype].AuctionUI = function(self)
 		if not self.prdb.AuctionUI or self.initialized.AuctionUI then return end
 		self.initialized.AuctionUI = true
@@ -385,7 +473,11 @@ aObj.ClassicSupport = function(self)
 
 		self:SecureHookScript(_G.BankFrame, "OnShow", function(this)
 			self:keepFontStrings(_G.BankSlotsFrame)
-			self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, x1=10, y1=-11, x2=-33, y2=90}
+			if not self.isClscBC then
+				self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, x1=10, y1=-11, x2=-33, y2=90}
+			else
+				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ofs=-12, x2=15, y2=90})
+			end
 			if self.modBtns then
 				self:skinCloseButton{obj=_G.BankCloseButton, fType=ftype}
    			 	self:skinStdButton{obj=_G.BankFramePurchaseButton, fType=ftype}
@@ -514,11 +606,18 @@ aObj.ClassicSupport = function(self)
 
 		self:SecureHookScript(_G.CharacterFrame, "OnShow", function(this)
 			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true})
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=10, y1=-12, x2=-31, y2=75})
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=10, y1=-12, x2=-31, y2=74})
 			-- PaperDoll Frame
 			self:keepFontStrings(_G.PaperDollFrame)
+			if self.isClscBC then
+				self:skinObject("dropdown", {obj=_G.PlayerTitleDropDown, fType=ftype, y1=5, y2=13})
+			end	
 			self:makeMFRotatable(_G.CharacterModelFrame)
 			_G.CharacterAttributesFrame:DisableDrawLayer("BACKGROUND")
+			if self.isClscBC then
+				self:skinObject("dropdown", {obj=_G.PlayerStatFrameLeftDropDown, fType=ftype})
+				self:skinObject("dropdown", {obj=_G.PlayerStatFrameRightDropDown, fType=ftype})
+			end
 			if self.modBtnBs then
 				for i = 1, 5 do
 					self:addButtonBorder{obj=_G["MagicResFrame" .. i], es=24, ofs=2, x1=-1, y2=-4, clr="grey"}
@@ -604,7 +703,11 @@ aObj.ClassicSupport = function(self)
 			if self.modBtnBs then
 				self:addButtonBorder{obj=_G.PetPaperDollPetInfo, ofs=1, x2=0, clr="gold"}
 				for i = 1, 5 do
-					self:addButtonBorder{obj=_G["PetMagicResFrame" .. i], es=24, ofs=2, x1=-1, y2=-49, clr="grey"}
+					if not self.isClscBC then
+						self:addButtonBorder{obj=_G["PetMagicResFrame" .. i], es=24, ofs=2, x1=-1, y2=-49, clr="grey"}
+					else
+						self:addButtonBorder{obj=_G["PetMagicResFrame" .. i], es=24, ofs=2, y1=3, y2=-4, clr="grey"}
+					end
 				end
 			end
 
@@ -633,12 +736,40 @@ aObj.ClassicSupport = function(self)
 			self:Unhook(this, "OnShow")
 		end)
 
-		self:SecureHookScript(_G.HonorFrame, "OnShow", function(this)
-			self:keepFontStrings(this)
-			self:skinStatusBar{obj=_G.HonorFrameProgressBar, fi=0}
+		if self.isClscBC then
+			self:SecureHookScript(_G.PVPFrame, "OnShow", function(this)
+				self:keepFontStrings(this)
+				-- TODO: skin PVPTeam buttons
+				if self.modBtnBs then
+					-- TODO: skin toggle button
+					-- self:addButtonBorder{obj=_G.PVPFrameToggleButton, fType=ftype, clr="gold"}
+				end
+				
+				self:Unhook(this, "OnShow")
+			end)
+			self:SecureHookScript(_G.PVPTeamDetails, "OnShow", function(this)
+				self:skinObject("dropdown", {obj=_G.PVPDropDown, fType=ftype})
+				-- PVPTeamDetailsFrameColumnHeader1-5
+				-- PVPTeamDetailsButton1-10
+				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true})
+				if self.modBtns then
+					self:skinStdButton{obj=_G.PVPTeamDetailsAddTeamMember, fType=ftype}
+				end
+				if self.modBtnBs then
+					-- TODO: skin toggle button
+					-- self:addButtonBorder{obj=_G.PVPTeamDetailsToggleButton, fType=ftype, clr="gold"}
+				end
+				
+				self:Unhook(this, "OnShow")
+			end)
+		else
+			self:SecureHookScript(_G.HonorFrame, "OnShow", function(this)
+				self:keepFontStrings(this)
+				self:skinStatusBar{obj=_G.HonorFrameProgressBar, fi=0}
 
-			self:Unhook(this, "OnShow")
-		end)
+				self:Unhook(this, "OnShow")
+			end)
+		end
 
 	end
 
@@ -799,8 +930,10 @@ aObj.ClassicSupport = function(self)
 				_G.FriendsFrameBroadcastInputFill:SetTextColor(self.BT:GetRGB())
 				self:skinObject("tabs", {obj=this, prefix=this:GetName(), numTabs=2, fType=ftype, lod=self.isTT and true, upwards=true, offsets={x1=0, y1=-5, x2=0, y2=-4}})
 				if self.modBtnBs then
-					self:addButtonBorder{obj=_G.FriendsTabHeaderRecruitAFriendButton}
-					self:addButtonBorder{obj=_G.FriendsTabHeaderSoRButton}
+					if not self.isClscBC then
+						self:addButtonBorder{obj=_G.FriendsTabHeaderRecruitAFriendButton}
+						self:addButtonBorder{obj=_G.FriendsTabHeaderSoRButton}
+					end
 				end
 				_G.RaiseFrameLevel(this)
 
@@ -1041,23 +1174,25 @@ aObj.ClassicSupport = function(self)
 			self:Unhook(this, "OnShow")
 		end)
 
-		self:SecureHookScript(_G.RecruitAFriendFrame, "OnShow", function(this)
-			self:skinEditBox{obj=_G.RecruitAFriendNameEditBox, regs={6}} -- 6 is text
-			_G.RecruitAFriendNameEditBox.Fill:SetTextColor(self.BT:GetRGB())
-			self:addFrameBorder{obj=this.NoteFrame, ft=ftype}
-			_G.RecruitAFriendNoteEditBox.Fill:SetTextColor(self.BT:GetRGB())
-			self:addSkinFrame{obj=this, ft=ftype, kfs=true, ofs=-6, y1=-7}
-			if self.modBtns then
-				self:skinStdButton{obj=_G.RecruitAFriendFrame.SendButton, fType=ftype}
-			end
-			-- RecruitAFriendSentFrame
-			self:addSkinFrame{obj=_G.RecruitAFriendSentFrame, ft=ftype, kfs=true, ofs=-7, y2=4}
-			if self.modBtns then
-				self:skinStdButton{obj=_G.RecruitAFriendSentFrame.OKButton, fType=ftype}
-			end
+		if not self.isClscBC then
+			self:SecureHookScript(_G.RecruitAFriendFrame, "OnShow", function(this)
+				self:skinEditBox{obj=_G.RecruitAFriendNameEditBox, regs={6}} -- 6 is text
+				_G.RecruitAFriendNameEditBox.Fill:SetTextColor(self.BT:GetRGB())
+				self:addFrameBorder{obj=this.NoteFrame, ft=ftype}
+				_G.RecruitAFriendNoteEditBox.Fill:SetTextColor(self.BT:GetRGB())
+				self:addSkinFrame{obj=this, ft=ftype, kfs=true, ofs=-6, y1=-7}
+				if self.modBtns then
+					self:skinStdButton{obj=_G.RecruitAFriendFrame.SendButton, fType=ftype}
+				end
+				-- RecruitAFriendSentFrame
+				self:addSkinFrame{obj=_G.RecruitAFriendSentFrame, ft=ftype, kfs=true, ofs=-7, y2=4}
+				if self.modBtns then
+					self:skinStdButton{obj=_G.RecruitAFriendSentFrame.OKButton, fType=ftype}
+				end
 
-			self:Unhook(this, "OnShow")
-		end)
+				self:Unhook(this, "OnShow")
+			end)
+		end
 
 		self:SecureHookScript(_G.ChannelFrame, "OnShow", function(this)
 			self:removeInset(this.LeftInset)
@@ -1153,11 +1288,35 @@ aObj.ClassicSupport = function(self)
 			self:Unhook(this, "OnShow")
 		end)
 
-		self:SecureHookScript(_G.InspectHonorFrame, "OnShow", function(this)
-			self:removeRegions(this, {1, 2, 3, 4, 5, 6, 7, 8})
+		if not self.isClscBC then
+			self:SecureHookScript(_G.InspectHonorFrame, "OnShow", function(this)
+				self:removeRegions(this, {1, 2, 3, 4, 5, 6, 7, 8})
 
-			self:Unhook(this, "OnShow")
-		end)
+				self:Unhook(this, "OnShow")
+			end)
+		end
+		
+		if self.isClscBC then
+			self:SecureHookScript(_G.InspectPVPFrame, "OnShow", function(this)
+				self:keepFontStrings(this)
+				-- TODO: skin PVPTeam buttons
+				
+				self:Unhook(this, "OnShow")
+			end)
+			self:SecureHookScript(_G.InspectTalentFrame, "OnShow", function(this)
+				self:keepFontStrings(this)
+				self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true, offsets={x1=4, y1=-4, x2=-4, y2=-1}})
+				self:skinObject("frame", {obj=_G.InspectTalentFrameScrollFrame, fType=ftype, kfs=true, fb=true, x1=-11, y1=10, x2=32, y2=-3})
+				self:skinObject("slider", {obj=_G.InspectTalentFrameScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
+				if self.modBtns then
+					self:skinCloseButton{obj=_G.InspectTalentFrameCloseButton, fType=ftype}
+					self:skinStdButton{obj=_G.InspectTalentFrameCancelButton, fType=ftype}
+				end
+				-- TODO: add button borders to talents
+				
+				self:Unhook(this, "OnShow")
+			end)
+		end
 
 	end
 
@@ -1289,37 +1448,72 @@ aObj.ClassicSupport = function(self)
 		if not self.prdb.TalentUI or self.initialized.TalentUI then return end
 		self.initialized.TalentUI = true
 
-		self:SecureHookScript(_G.TalentFrame, "OnShow", function(this)
-			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true})
-			self:skinObject("slider", {obj=_G.TalentFrameScrollFrameScrollBar, fType=ftype, rpTex="artwork"})
-			-- keep background Texture
-			self:removeRegions(this, {1, 2, 3, 4, 5, 11, 12, 13}) -- remove portrait, border & points border
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=10, y1=-12, x2=-31, y2=75})
-			if self.modBtns then
-				self:skinStdButton{obj=_G.TalentFrameCancelButton, fType=ftype}
-			end
-			if self.modBtnBs then
-				local function colourBtn(btn)
-					btn.sbb:SetBackdropBorderColor(_G[btn:GetName() .. "Slot"]:GetVertexColor())
+		if not self.isClscBC then
+			self:SecureHookScript(_G.TalentFrame, "OnShow", function(this)
+				self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true})
+				self:skinObject("slider", {obj=_G.TalentFrameScrollFrameScrollBar, fType=ftype, rpTex="artwork"})
+				-- keep background Texture
+				self:removeRegions(this, {1, 2, 3, 4, 5, 11, 12, 13}) -- remove portrait, border & points border
+				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=10, y1=-12, x2=-31, y2=75})
+				if self.modBtns then
+					self:skinStdButton{obj=_G.TalentFrameCancelButton, fType=ftype}
 				end
-				local btn
-				for i = 1, _G.MAX_NUM_TALENTS do
-					btn = _G["TalentFrameTalent" .. i]
-					btn:DisableDrawLayer("BACKGROUND")
-					_G["TalentFrameTalent" .. i .. "RankBorder"]:SetTexture(nil)
-					self:addButtonBorder{obj=btn, x1=-3, y2=-3, reParent={_G["TalentFrameTalent" .. i .. "Rank"]}}
-					colourBtn(btn)
-				end
-				btn = nil
-				self:SecureHook("TalentFrame_Update", function()
-					for i = 1, _G.MAX_NUM_TALENTS do
-						colourBtn(_G["TalentFrameTalent" .. i])
+				if self.modBtnBs then
+					local function colourBtn(btn)
+						btn.sbb:SetBackdropBorderColor(_G[btn:GetName() .. "Slot"]:GetVertexColor())
 					end
-				end)
-			end
+					local btn
+					for i = 1, _G.MAX_NUM_TALENTS do
+						btn = _G["TalentFrameTalent" .. i]
+						btn:DisableDrawLayer("BACKGROUND")
+						_G["TalentFrameTalent" .. i .. "RankBorder"]:SetTexture(nil)
+						self:addButtonBorder{obj=btn, x1=-3, y2=-3, reParent={_G["TalentFrameTalent" .. i .. "Rank"]}}
+						colourBtn(btn)
+					end
+					btn = nil
+					self:SecureHook("TalentFrame_Update", function()
+						for i = 1, _G.MAX_NUM_TALENTS do
+							colourBtn(_G["TalentFrameTalent" .. i])
+						end
+					end)
+				end
 
-			self:Unhook(this, "OnShow")
-		end)
+				self:Unhook(this, "OnShow")
+			end)
+		else
+			self:SecureHookScript(_G.PlayerTalentFrame, "OnShow", function(this)
+				self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true})
+				self:skinObject("slider", {obj=_G.PlayerTalentFrameScrollFrameScrollBar, fType=ftype, rpTex="artwork"})
+				-- keep background Texture
+				self:removeRegions(this, {1, 2, 3, 4, 5, 11, 12, 13}) -- remove portrait, border & points border
+				self:moveObject{obj=_G.PlayerTalentFrameTitleText, y=-2}
+				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=10, y1=-12, x2=-31, y2=74})
+				if self.modBtns then
+					self:skinStdButton{obj=_G.PlayerTalentFrameCancelButton, fType=ftype}
+				end
+				if self.modBtnBs then
+					local function colourBtn(btn)
+						btn.sbb:SetBackdropBorderColor(_G[btn:GetName() .. "Slot"]:GetVertexColor())
+					end
+					local btn
+					for i = 1, _G.MAX_NUM_TALENTS do
+						btn = _G["PlayerTalentFrameTalent" .. i]
+						btn:DisableDrawLayer("BACKGROUND")
+						_G["PlayerTalentFrameTalent" .. i .. "RankBorder"]:SetTexture(nil)
+						self:addButtonBorder{obj=btn, x1=-3, y2=-3, reParent={_G["PlayerTalentFrameTalent" .. i .. "Rank"]}}
+						colourBtn(btn)
+					end
+					btn = nil
+					self:SecureHook("PlayerTalentFrame_Update", function()
+						for i = 1, _G.MAX_NUM_TALENTS do
+							colourBtn(_G["PlayerTalentFrameTalent" .. i])
+						end
+					end)
+				end
+
+				self:Unhook(this, "OnShow")
+			end)
+		end
 
 	end
 
@@ -1426,20 +1620,9 @@ aObj.ClassicSupport = function(self)
 	end
 
 	-- ChatEditBox
-	self.cebRgns1 = {1, 2, 6, 7} -- 1, 6, 7 are font strings, 2 is cursor texture
-	self.cebRgns2 = {6, 7}
+	self.cebRgns = {1, 2, 6, 7} -- 1, 6, 7 are font strings, 2 is cursor texture
 
-	self.blizzFrames[ftype].HelpFrame = function(self)
-		if not self.prdb.HelpFrame or self.initialized.HelpFrame then return end
-		self.initialized.HelpFrame = true
-
-		self:SecureHookScript(_G.HelpFrame, "OnShow", function(this)
-			self:removeInset(this.leftInset)
-			self:removeInset(this.mainInset)
-			self:addSkinFrame{obj=this, ft=ftype, kfs=true, hdr=true, ofs=0}
-			-- widen buttons so text fits better
-			for i = 1, 6 do
-				this["button" .. i]:SetWidth(180)
+	if not self.isClscBC then
 		self.blizzLoDFrames[ftype].GMSurveyUI = function(self)
 			if not self.prdb.GMSurveyUI or self.initialized.GMSurveyUI then return end
 			self.initialized.GMSurveyUI = true
@@ -1459,105 +1642,118 @@ aObj.ClassicSupport = function(self)
 			end)
 
 		end
+
+		self.blizzFrames[ftype].HelpFrame = function(self)
+			if not self.prdb.HelpFrame or self.initialized.HelpFrame then return end
+			self.initialized.HelpFrame = true
+
+			self:SecureHookScript(_G.HelpFrame, "OnShow", function(this)
+				self:removeInset(this.leftInset)
+				self:removeInset(this.mainInset)
+				self:addSkinFrame{obj=this, ft=ftype, kfs=true, hdr=true, ofs=0}
+				-- widen buttons so text fits better
+				for i = 1, 6 do
+					this["button" .. i]:SetWidth(180)
+					if self.modBtns then
+						self:skinStdButton{obj=this["button" .. i], fType=ftype, x1=0, y1=2, x2=-3, y2=1}
+					end
+				end
+				this.button16:SetWidth(180) -- Submit Suggestion button
 				if self.modBtns then
-					self:skinStdButton{obj=this["button" .. i], fType=ftype, x1=0, y1=2, x2=-3, y2=1}
+					self:skinStdButton{obj=this.button16, fType=ftype, x1=0, y1=2, x2=-3, y2=1}
 				end
-			end
-			this.button16:SetWidth(180) -- Submit Suggestion button
-			if self.modBtns then
-				self:skinStdButton{obj=this.button16, fType=ftype, x1=0, y1=2, x2=-3, y2=1}
-			end
 
-			-- Account Security panel
-			this.asec.ticketButton:GetNormalTexture():SetTexture(nil)
-			this.asec.ticketButton:GetPushedTexture():SetTexture(nil)
-			if self.modBtns then
-				self:skinStdButton{obj=this.asec.ticketButton, fType=ftype, x1=0, y1=2, x2=-3, y2=1}
-			end
+				-- Account Security panel
+				this.asec.ticketButton:GetNormalTexture():SetTexture(nil)
+				this.asec.ticketButton:GetPushedTexture():SetTexture(nil)
+				if self.modBtns then
+					self:skinStdButton{obj=this.asec.ticketButton, fType=ftype, x1=0, y1=2, x2=-3, y2=1}
+				end
 
-			-- Character Stuck! panel
-			if self.modBtnBs then
-				self:addButtonBorder{obj=_G.HelpFrameCharacterStuckHearthstone, es=20}
-			end
-			if self.modBtns then
-				self:skinStdButton{obj=_G.HelpFrameCharacterStuckStuck, fType=ftype}
-			end
+				-- Character Stuck! panel
+				if self.modBtnBs then
+					self:addButtonBorder{obj=_G.HelpFrameCharacterStuckHearthstone, es=20}
+				end
+				if self.modBtns then
+					self:skinStdButton{obj=_G.HelpFrameCharacterStuckStuck, fType=ftype}
+				end
 
-			local skinSubmit
-			if self.modBtns then
-				function skinSubmit(frame)
-					aObj:skinStdButton{obj=frame.submitButton, fType=ftype}
-					aObj:SecureHookScript(frame, "OnShow", function(this)
-						aObj:clrBtnBdr(this.submitButton)
-					end)
-					aObj:SecureHookScript(frame.editbox, "OnTextChanged", function(this)
-						aObj:clrBtnBdr(this.submitButton)
+				local skinSubmit
+				if self.modBtns then
+					function skinSubmit(frame)
+						aObj:skinStdButton{obj=frame.submitButton, fType=ftype}
+						aObj:SecureHookScript(frame, "OnShow", function(this)
+							aObj:clrBtnBdr(this.submitButton)
+						end)
+						aObj:SecureHookScript(frame.editbox, "OnTextChanged", function(this)
+							aObj:clrBtnBdr(this.submitButton)
+						end)
+					end
+				end
+				-- Report Bug panel
+				self:skinSlider{obj=_G.HelpFrameReportBugScrollFrame.ScrollBar}
+				self:addFrameBorder{obj=self:getChild(this.bug, 3), ft=ftype}
+				if self.modBtns then
+					skinSubmit(this.bug)
+				end
+
+				-- Submit Suggestion panel
+				self:skinSlider{obj=_G.HelpFrameSubmitSuggestionScrollFrame.ScrollBar}
+				self:addFrameBorder{obj=self:getChild(this.suggestion, 3), ft=ftype}
+				if self.modBtns then
+					skinSubmit(this.suggestion)
+				end
+
+				-- Help Browser
+				self:removeInset(_G.HelpBrowser.BrowserInset)
+				if self.modBtns then
+					self:skinStdButton{obj=_G.BrowserSettingsTooltip.CookiesButton, fType=ftype}
+				end
+				if self.modBtnBs then
+					self:addButtonBorder{obj=_G.HelpBrowser.settings, ofs=-2, x1=1, clr="gold"}
+					self:addButtonBorder{obj=_G.HelpBrowser.home, ofs=-2, x1=1, clr="gold"}
+					self:addButtonBorder{obj=_G.HelpBrowser.back, ofs=-2, x1=1, clr="gold"}
+					self:addButtonBorder{obj=_G.HelpBrowser.forward, ofs=-2, x1=1, clr="gold"}
+					self:addButtonBorder{obj=_G.HelpBrowser.reload, ofs=-2, x1=1, clr="gold"}
+					self:addButtonBorder{obj=_G.HelpBrowser.stop, ofs=-2, x1=1, clr="gold"}
+					self:SecureHookScript(_G.HelpBrowser, "OnButtonUpdate", function(this)
+						self:clrBtnBdr(this.back, "gold")
+						self:clrBtnBdr(this.forward, "gold")
 					end)
 				end
-			end
-			-- Report Bug panel
-			self:skinSlider{obj=_G.HelpFrameReportBugScrollFrame.ScrollBar}
-			self:addFrameBorder{obj=self:getChild(this.bug, 3), ft=ftype}
-			if self.modBtns then
-				skinSubmit(this.bug)
-			end
 
-			-- Submit Suggestion panel
-			self:skinSlider{obj=_G.HelpFrameSubmitSuggestionScrollFrame.ScrollBar}
-			self:addFrameBorder{obj=self:getChild(this.suggestion, 3), ft=ftype}
-			if self.modBtns then
-				skinSubmit(this.suggestion)
-			end
+				-- Knowledgebase (uses Browser frame)
 
-			-- Help Browser
-			self:removeInset(_G.HelpBrowser.BrowserInset)
-			if self.modBtns then
-				self:skinStdButton{obj=_G.BrowserSettingsTooltip.CookiesButton, fType=ftype}
-			end
-			if self.modBtnBs then
-				self:addButtonBorder{obj=_G.HelpBrowser.settings, ofs=-2, x1=1, clr="gold"}
-				self:addButtonBorder{obj=_G.HelpBrowser.home, ofs=-2, x1=1, clr="gold"}
-				self:addButtonBorder{obj=_G.HelpBrowser.back, ofs=-2, x1=1, clr="gold"}
-				self:addButtonBorder{obj=_G.HelpBrowser.forward, ofs=-2, x1=1, clr="gold"}
-				self:addButtonBorder{obj=_G.HelpBrowser.reload, ofs=-2, x1=1, clr="gold"}
-				self:addButtonBorder{obj=_G.HelpBrowser.stop, ofs=-2, x1=1, clr="gold"}
-				self:SecureHookScript(_G.HelpBrowser, "OnButtonUpdate", function(this)
-					self:clrBtnBdr(this.back, "gold")
-					self:clrBtnBdr(this.forward, "gold")
-				end)
-			end
+				-- GM_Response
+				self:skinSlider{obj=_G.HelpFrameGM_ResponseScrollFrame1.ScrollBar}
+				self:skinSlider{obj=_G.HelpFrameGM_ResponseScrollFrame2.ScrollBar}
+				self:addSkinFrame{obj=self:getChild(_G.HelpFrameGM_Response, 5), ft=ftype}
+				self:addSkinFrame{obj=self:getChild(_G.HelpFrameGM_Response, 6), ft=ftype}
 
-			-- Knowledgebase (uses Browser frame)
+				-- BrowserSettings Tooltip
+				_G.BrowserSettingsTooltip:DisableDrawLayer("BACKGROUND")
+				self:addSkinFrame{obj=_G.BrowserSettingsTooltip, ft=ftype}
 
-			-- GM_Response
-			self:skinSlider{obj=_G.HelpFrameGM_ResponseScrollFrame1.ScrollBar}
-			self:skinSlider{obj=_G.HelpFrameGM_ResponseScrollFrame2.ScrollBar}
-			self:addSkinFrame{obj=self:getChild(_G.HelpFrameGM_Response, 5), ft=ftype}
-			self:addSkinFrame{obj=self:getChild(_G.HelpFrameGM_Response, 6), ft=ftype}
+				-- HelpOpenTicketButton
+				-- HelpOpenWebTicketButton
 
-			-- BrowserSettings Tooltip
-			_G.BrowserSettingsTooltip:DisableDrawLayer("BACKGROUND")
-			self:addSkinFrame{obj=_G.BrowserSettingsTooltip, ft=ftype}
+				-- ReportCheating Dialog
+				self:removeNineSlice(_G.ReportCheatingDialog.Border)
+				self:addSkinFrame{obj=_G.ReportCheatingDialog.CommentFrame, ft=ftype, kfs=true, y2=-2}
+				_G.ReportCheatingDialog.CommentFrame.EditBox.InformationText:SetTextColor(self.BT:GetRGB())
+				self:addSkinFrame{obj=_G.ReportCheatingDialog, ft=ftype}
 
-			-- HelpOpenTicketButton
-			-- HelpOpenWebTicketButton
+				self:Unhook(this, "OnShow")
+			end)
 
-			-- ReportCheating Dialog
-			self:removeNineSlice(_G.ReportCheatingDialog.Border)
-			self:addSkinFrame{obj=_G.ReportCheatingDialog.CommentFrame, ft=ftype, kfs=true, y2=-2}
-			_G.ReportCheatingDialog.CommentFrame.EditBox.InformationText:SetTextColor(self.BT:GetRGB())
-			self:addSkinFrame{obj=_G.ReportCheatingDialog, ft=ftype}
+			self:SecureHookScript(_G.TicketStatusFrame, "OnShow", function(this)
+				self:skinObject("frame", {obj=_G.TicketStatusFrameButton, fType=ftype})
 
-			self:Unhook(this, "OnShow")
-		end)
+				self:Unhook(this, "OnShow")
+			end)
+			self:checkShown(_G.TicketStatusFrame)
 
-		self:SecureHookScript(_G.TicketStatusFrame, "OnShow", function(this)
-			self:skinObject("frame", {obj=_G.TicketStatusFrameButton, fType=ftype})
-
-			self:Unhook(this, "OnShow")
-		end)
-		self:checkShown(_G.TicketStatusFrame)
-
+		end
 	end
 
 	self.blizzFrames[ftype].MainMenuBar = function(self)
@@ -1660,6 +1856,9 @@ aObj.ClassicSupport = function(self)
 		self:SecureHookScript(_G.QuestLogFrame, "OnShow", function(this)
 			_G.QuestLogCollapseAllButton:DisableDrawLayer("BACKGROUND")
 			self:keepFontStrings(_G.EmptyQuestLogFrame)
+			if self.isClscBC then
+				self:keepFontStrings(_G.QuestLogCount)
+			end
 			-- TODO: _G["QuestLogTitle" .. i .. "Check"] texture
 			self:skinSlider{obj=_G.QuestLogListScrollFrame.ScrollBar}
 			self:skinSlider{obj=_G.QuestLogDetailScrollFrame.ScrollBar}
@@ -1670,6 +1869,9 @@ aObj.ClassicSupport = function(self)
 				_G["QuestLogObjective" .. i]:SetTextColor(self.BT:GetRGB())
 			end
 			_G.QuestLogRequiredMoneyText:SetTextColor(self.BT:GetRGB())
+			if self.isClscBC then
+				_G.QuestLogSuggestedGroupNum:SetTextColor(self.BT:GetRGB())
+			end
 			_G.QuestLogDescriptionTitle:SetTextColor(self.HT:GetRGB())
 			_G.QuestLogQuestDescription:SetTextColor(self.BT:GetRGB())
 			_G.QuestLogRewardTitleText:SetTextColor(self.HT:GetRGB())
@@ -1805,8 +2007,11 @@ aObj.ClassicSupport = function(self)
 				_G.WorldMapFrame.BorderFrame.sf:SetFrameStrata("LOW")
 			end
 
-			self:skinDropDown{obj=_G.WorldMapContinentDropDown}
-			self:skinDropDown{obj=_G.WorldMapZoneDropDown}
+			self:skinObject("dropdown", {obj=_G.WorldMapContinentDropDown, fType=ftype})
+			self:skinObject("dropdown", {obj=_G.WorldMapZoneDropDown, fType=ftype})
+			if self.isClscBC then
+				self:skinObject("dropdown", {obj=_G.WorldMapZoneMinimapDropDown, fType=ftype})
+			end
 			if self.modBtns then
 				self:skinStdButton{obj=_G.WorldMapZoomOutButton, fType=ftype}
 				self:skinCloseButton{obj=_G.WorldMapFrameCloseButton, fType=ftype}

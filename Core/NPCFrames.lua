@@ -1169,7 +1169,9 @@ aObj.blizzFrames[ftype].QuestInfo = function(self)
 		-- QuestInfoSpecialObjectives Frame
 		_G.QuestInfoSpellObjectiveLearnLabel:SetTextColor(aObj.BT:GetRGB())
 		_G.QuestInfoSpellObjectiveFrameNameFrame:SetTexture(nil)
-		_G.QuestInfoSpellObjectiveFrameSpellBorder:SetTexture(nil)
+		if not aObj.isClscBC then
+			_G.QuestInfoSpellObjectiveFrameSpellBorder:SetTexture(nil)
+		end
 		if aObj.modBtnBs then
 			 aObj:addButtonBorder{obj=_G.QuestInfoSpellObjectiveFrame, relTo=_G.QuestInfoSpellObjectiveFrame.Icon, clr="grey"}
 		end

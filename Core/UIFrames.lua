@@ -421,20 +421,22 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 end
 
 -- The following functions are used by several Chat* functions
-if not aObj.isPTR then
-	aObj.cebRgns1 = {1, 2, 9, 10, 11} -- 1, 9, 10 & 11 are font strings, 2 is cursor texture
+if aObj.isClscBC then
+	aObj.cebRgns = {1, 2, 6, 7} -- 1, 6 & 7 are font strings, 2 is cursor texture
+elseif aObj.isRetPTR then
+	aObj.cebRgns = {1, 2, 9, 10, 11, 12} -- 1, 9, 10, 11 & 12 are font strings, 2 is cursor texture
 else
-	aObj.cebRgns1 = {1, 2, 9, 10, 11, 12} -- 1, 9, 10, 11 & 12 are font strings, 2 is cursor texture
+	aObj.cebRgns = {1, 2, 9, 10, 11} -- 1, 9, 10 & 11 are font strings, 2 is cursor texture
 end
 local function skinChatEB(obj)
 	if aObj.prdb.ChatEditBox.style == 1 then -- Frame
-		aObj:keepRegions(obj, aObj.cebRgns1)
+		aObj:keepRegions(obj, aObj.cebRgns)
 		aObj:skinObject("frame", {obj=obj, fType=ftype, ofs=-2})
 		obj.sf:SetAlpha(obj:GetAlpha())
 	elseif aObj.prdb.ChatEditBox.style == 2 then -- Editbox
 		aObj:skinObject("editbox", {obj=obj, fType=ftype, regions={3, 4, 5, 6, 7, 8}, ofs=-4})
 	else -- Borderless
-		aObj:keepRegions(obj, aObj.cebRgns1)
+		aObj:keepRegions(obj, aObj.cebRgns)
 		aObj:skinObject("frame", {obj=obj, fType=ftype, noBdr=true, ofs=-5, y=2})
 		obj.sf:SetAlpha(obj:GetAlpha())
 	end
@@ -1442,17 +1444,20 @@ aObj.blizzFrames[ftype].ChatBubbles = function(self)
 	if not self.prdb.ChatBubbles.skin or self.initialized.ChatBubbles then return end
 	self.initialized.ChatBubbles = true
 
-	-- N.B. ChatBubbles in Raids, Dungeons and Garrisons are fobidden and can't be skinned
+	-- N.B. ChatBubbles in Raids, Dungeons and Garrisons are forbidden and can't be skinned
 	local function skinChatBubbles()
 		_G.C_Timer.After(0.1, function()
-			for _, cBubble in _G.pairs(_G.C_ChatBubbles.GetAllChatBubbles(false)) do
-				if not aObj.isClsc then
+			-- get all ChatBubbles NOT including Forbidden ones
+			for _, cBubble in _G.pairs(_G.C_ChatBubbles.GetAllChatBubbles()) do
+				if aObj.isClscBC then
 					cBubble = aObj:getChild(cBubble, 1)
 				end
-				aObj:addSkinFrame{obj=cBubble, ft=ftype, kfs=true, nb=true, aso={ba=self.prdb.ChatBubbles.alpha, ng=true}, ofs=-8}
-				-- Region 1 is ChatBubbleTail texture, region 2 is the font string
-				if cBubble:GetNumRegions() == 2 then
-					aObj:getRegion(cBubble, 2):SetParent(cBubble.sf) -- make text visible
+				aObj:skinObject("frame", {obj=cBubble, fType=ftype, kfs=true, ba=aObj.prdb.ChatBubbles.alpha, ng=true, ofs=-8})
+				-- make text visible
+				if cBubble.String then
+					cBubble.String:SetParent(cBubble.sf)
+				elseif cBubble:GetNumRegions() == 2 then
+					aObj:getRegion(cBubble, 2):SetParent(cBubble.sf)
 				end
 			end
 		end)
@@ -1804,10 +1809,16 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 			self:skinCheckButton{obj=_G.CombatConfigColorsColorizeDamageNumberSchoolColoring}
 			self:skinCheckButton{obj=_G.CombatConfigColorsColorizeDamageSchoolCheck}
 			self:skinCheckButton{obj=_G.CombatConfigColorsColorizeEntireLineCheck}
-			-- Formatting
+		end
+		-- Formatting
+		if self.modChkBtns then
 			self:skinCheckButton{obj=_G.CombatConfigFormattingShowTimeStamp}
 			self:skinCheckButton{obj=_G.CombatConfigFormattingFullText}
-			if not self.isClsc then
+			if self.isClsc
+			and not self.isClscBC
+			then
+				return
+			else
 				self:skinCheckButton{obj=_G.CombatConfigFormattingShowBraces}
 				self:skinCheckButton{obj=_G.CombatConfigFormattingUnitNames}
 				self:skinCheckButton{obj=_G.CombatConfigFormattingSpellNames}
@@ -1947,8 +1958,12 @@ aObj.blizzFrames[ftype].ChatTabs = function(self)
 			this.sf:SetAlpha(alpha)
 		end)
 	end
-	self:skinObject("tabs", {obj=_G.FloatingChatFrameManager, tabs=fcfTabs, fType=ftype, lod=self.isTT and true, upwards=true, ignoreHLTex=false, regions={7, 8, 9, 10, 11}, offsets={x1=4, y1=self.isTT and -10 or -12, x2=-4, y2=self.isTT and -3 or -1}, track=false, func=function(tab) tab.sf:SetAlpha(tab:GetAlpha()) tab.sf:Hide() end})
-	fcfTabs = nil
+	local xOfs, y1Ofs = 4, -12
+	if aObj.isClscBC then
+		xOfs, y1Ofs = 1, -8
+	end
+	self:skinObject("tabs", {obj=_G.FloatingChatFrameManager, tabs=fcfTabs, fType=ftype, lod=self.isTT and true, upwards=true, ignoreHLTex=false, regions={7, 8, 9, 10, 11}, offsets={x1=xOfs, y1=self.isTT and -10 or -12, x2=xOfs * -1, y2=self.isTT and -3 or -1}, track=false, func=function(tab) tab.sf:SetAlpha(tab:GetAlpha()) tab.sf:Hide() end})
+	fcfTabs, xOfs, y1Ofs = nil, nil, nil
 	if self.isTT then
 		self:SecureHook("FCF_Tab_OnClick", function(this, button)
 			for i = 1, _G.NUM_CHAT_WINDOWS do
@@ -2016,7 +2031,11 @@ aObj.blizzFrames[ftype].CinematicFrame = function(self)
 
 	self:SecureHookScript(_G.CinematicFrame, "OnShow", function(this)
 		self:removeNineSlice(this.closeDialog.Border)
-		self:addSkinFrame{obj=this.closeDialog, ft=ftype, nb=true}
+		if aObj.isClscBC then
+			self:skinObject("frame", {obj=this.closeDialog, fType=ftype, kfs=true, rb=true})
+		else
+			self:skinObject("frame", {obj=this.closeDialog, fType=ftype})
+		end
 		if self.modBtns then
 			self:skinStdButton{obj=_G.CinematicFrameCloseDialogConfirmButton}
 			self:skinStdButton{obj=_G.CinematicFrameCloseDialogResumeButton}
@@ -2201,6 +2220,60 @@ aObj.blizzLoDFrames[ftype].DeathRecap = function(self)
 
 end
 
+local skinETFrame
+if not aObj.isRet then
+	function skinETFrame()
+
+		local function skinMenuBtn(btn)
+			aObj:skinStdButton{obj=btn, fType=ftype, y1=2, y2=-3}
+			aObj.modUIBtns:chgHLTex(btn, btn.MouseoverOverlay)
+		end
+		aObj:SecureHookScript(_G.EventTrace, "OnShow", function(this)
+			aObj:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, x2=1})
+			if aObj.modBtns then
+				skinMenuBtn(this.SubtitleBar.ViewLog)
+				skinMenuBtn(this.SubtitleBar.ViewFilter)
+				aObj:skinStdButton{obj=this.SubtitleBar.OptionsDropDown, fType=ftype, clr="grey"}
+			end
+			aObj:skinObject("editbox", {obj=this.Log.Bar.SearchBox, fType=ftype, si=true})
+			aObj:skinObject("scrollbar", {obj=this.Log.Events.ScrollBar, fType=ftype})
+			aObj:skinObject("scrollbar", {obj=this.Log.Search.ScrollBar, fType=ftype})
+			if aObj.modBtns then
+				skinMenuBtn(this.Log.Bar.MarkButton)
+				skinMenuBtn(this.Log.Bar.PlaybackButton)
+				skinMenuBtn(this.Log.Bar.DiscardAllButton)
+			end
+			aObj:skinObject("scrollbar", {obj=this.Filter.ScrollBar, fType=ftype})
+			if aObj.modBtns then
+				skinMenuBtn(this.Filter.Bar.CheckAllButton)
+				skinMenuBtn(this.Filter.Bar.UncheckAllButton)
+				skinMenuBtn(this.Filter.Bar.DiscardAllButton)
+			end
+
+			aObj:Unhook(this, "OnShow")
+		end)
+
+		if aObj.modBtns
+		or aObj.modChkBtns
+		then
+			aObj:SecureHook(_G.EventTraceLogEventButtonMixin, "Init", function(this, _)
+				if aObj.modBtns then
+					aObj:skinCloseButton{obj=this.HideButton, fType=ftype, noSkin=true}
+				end
+			end)
+			aObj:SecureHook(_G.EventTraceFilterButtonMixin, "Init", function(this, _)
+				if aObj.modBtns then
+					aObj:skinCloseButton{obj=this.HideButton, fType=ftype, noSkin=true}
+				end
+				if aObj.modChkBtns then
+					aObj:skinCheckButton{obj=this.CheckButton, fType=ftype, ofs=-1}
+				end
+			end)
+		end
+
+	end
+end
+
 aObj.blizzLoDFrames[ftype].DebugTools = function(self)
 	if not self.prdb.DebugTools or self.initialized.DebugTools then return end
 	self.initialized.DebugTools = true
@@ -2219,6 +2292,12 @@ aObj.blizzLoDFrames[ftype].DebugTools = function(self)
 
 			self:Unhook(this, "OnShow")
 		end)
+	end
+
+	if self.isClsc
+	and not self.isClscBC
+	then
+		skinETFrame()
 	end
 
 	self:SecureHookScript(_G.TableAttributeDisplay, "OnShow", function(this)
@@ -2278,7 +2357,9 @@ aObj.blizzLoDFrames[ftype].DebugTools = function(self)
 	_G.C_Timer.After(0.1, function()
 		self:add2Table(self.ttList, _G.FrameStackTooltip)
 		_G.FrameStackTooltip:SetFrameLevel(20)
-		if not aObj.isPTR then
+		if not self.isRetPTR
+		and not self.isClscBC
+		then
 			self:add2Table(self.ttList, _G.EventTraceTooltip)
 		end
 	end)
@@ -2358,58 +2439,16 @@ if aObj.isPTR then
 		self:checkShown(_G.EventToastManagerSideDisplay)
 
 	end
-
+end
+if aObj.isRetPTR
+or aObj.isClscBC
+then
 	aObj.blizzLoDFrames[ftype].EventTrace = function(self)
 		if not self.prdb.EventTrace or self.initialized.EventTrace then return end
 		self.initialized.EventTrace = true
 
-		local function skinMenuBtn(btn)
-			aObj:skinStdButton{obj=btn, fType=ftype, y1=2, y2=-3}
-			aObj.modUIBtns:chgHLTex(btn, btn.MouseoverOverlay)
-		end
-		self:SecureHookScript(_G.EventTrace, "OnShow", function(this)
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true})
-			if self.modBtns then
-				skinMenuBtn(this.SubtitleBar.ViewLog)
-				skinMenuBtn(this.SubtitleBar.ViewFilter)
-				self:skinStdButton{obj=this.SubtitleBar.OptionsDropDown, fType=ftype, clr="grey"}
-			end
-			self:skinObject("editbox", {obj=this.Log.Bar.SearchBox, fType=ftype, si=true})
-			self:skinObject("scrollbar", {obj=this.Log.Events.ScrollBar, fType=ftype})
-			self:skinObject("scrollbar", {obj=this.Log.Search.ScrollBar, fType=ftype})
-			if self.modBtns then
-				skinMenuBtn(this.Log.Bar.MarkButton)
-				skinMenuBtn(this.Log.Bar.PlaybackButton)
-				skinMenuBtn(this.Log.Bar.DiscardAllButton)
-			end
-			self:skinObject("scrollbar", {obj=this.Filter.ScrollBar, fType=ftype})
-			if self.modBtns then
-				skinMenuBtn(this.Filter.Bar.CheckAllButton)
-				skinMenuBtn(this.Filter.Bar.UncheckAllButton)
-				skinMenuBtn(this.Filter.Bar.DiscardAllButton)
-			end
-
-			self:Unhook(this, "OnShow")
-		end)
+		skinETFrame()
 		self:checkShown(_G.EventTrace)
-
-		if self.modBtns
-		or self.modChkBtns
-		then
-			self:SecureHook(_G.EventTraceLogEventButtonMixin, "Init", function(this, _)
-				if self.modBtns then
-					self:skinCloseButton{obj=this.HideButton, fType=ftype, noSkin=true}
-				end
-			end)
-			self:SecureHook(_G.EventTraceFilterButtonMixin, "Init", function(this, _)
-				if self.modBtns then
-					self:skinCloseButton{obj=this.HideButton, fType=ftype, noSkin=true}
-				end
-				if self.modChkBtns then
-					self:skinCheckButton{obj=this.CheckButton, fType=ftype, ofs=-1}
-				end
-			end)
-		end
 
 		-- tooltip
 		_G.C_Timer.After(0.1, function()
@@ -4163,6 +4202,11 @@ aObj.blizzLoDFrames[ftype].MacroUI = function(self)
 		self:adjHeight{obj=_G.MacroPopupScrollFrame, adj=20} -- stretch to bottom of scroll area
 		self:skinSlider{obj=_G.MacroPopupScrollFrame.ScrollBar, rt="background"}
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ofs=1, x2=-2, y2=4}
+		if self.isClscBC then
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, x2=-2, y2=4})
+		else
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ofs=2, y2=4})
+		end
 		if self.modBtns then
 			self:skinStdButton{obj=this.BorderBox.CancelButton}
 			self:skinStdButton{obj=this.BorderBox.OkayButton}
@@ -4646,9 +4690,17 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 			_G.GameTimeFrame_Update(_G.GameTimeFrame)
 		end)
 		_G.MiniMapTrackingBorder:SetTexture(nil)
-		self:moveObject{obj=_G.MiniMapTrackingFrame, x=-15}
-		if not minBtn then
-			self:skinObject("frame", {obj=_G.MiniMapTrackingFrame, fType=ftype, bd=10, x1=4, y1=-3})
+		if not self.isClscBC then
+			self:moveObject{obj=_G.MiniMapTrackingFrame, x=-15}
+			if not minBtn then
+				self:skinObject("frame", {obj=_G.MiniMapTrackingFrame, fType=ftype, bd=10, x1=4, y1=-3})
+			end
+		else
+			self:moveObject{obj=_G.MiniMapTracking, x=-10}
+			if not minBtn then
+				self:skinObject("frame", {obj=_G.MiniMapTracking, fType=ftype})
+			end
+			_G.MiniMapBattlefieldFrame:SetSize(28, 28)
 		end
 		self:moveObject{obj=_G.MiniMapMailFrame, y=-4}
 	end
@@ -4851,13 +4903,22 @@ aObj.blizzFrames[ftype].Nameplates = function(self)
 		-- aObj:Debug("skinNamePlate: [%s, %s, %s]", frame, frame.template)
 		local nP = frame.UnitFrame
 		if nP then
-			if not aObj.isClsc then
-				aObj:skinStatusBar{obj=nP.healthBar, fi=0, bgTex=nP.healthBar.background, otherTex={nP.healthBar.myHealPrediction, nP.healthBar.otherHealPrediction}}
-				aObj:skinStatusBar{obj=nP.castBar, fi=0, bgTex=nP.castBar.background}
-				-- N.B. WidgetContainer objects managed in UIWidgets code
-			else
+			nP.healthBar.border:DisableDrawLayer("ARTWORK")
+			if aObj.isClsc
+			and not self.isClscBC
+			then
 				aObj:skinStatusBar{obj=nP.healthBar, fi=0, bgTex=nP.healthBar.background}
-				nP.healthBar.border:DisableDrawLayer("ARTWORK")
+			else
+				if self.isClscBC then
+					aObj:skinStatusBar{obj=nP.healthBar, fi=0, bgTex=nP.healthBar.background}
+					aObj:skinStatusBar{obj=nP.CastBar, fi=0, bgTex=aObj:getRegion(nP.CastBar, 1)}
+					aObj:nilTexture(nP.CastBar.Border, true)
+					aObj:nilTexture(nP.CastBar.BorderShield, true)
+				else
+					aObj:skinStatusBar{obj=nP.healthBar, fi=0, bgTex=nP.healthBar.background, otherTex={nP.healthBar.myHealPrediction, nP.healthBar.otherHealPrediction}}
+					aObj:skinStatusBar{obj=nP.castBar, fi=0, bgTex=nP.castBar.background}
+				end
+				-- N.B. WidgetContainer objects managed in UIWidgets code
 			end
 		end
 		nP = nil

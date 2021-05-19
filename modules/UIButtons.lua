@@ -146,7 +146,9 @@ function module:checkTex(...)
 	opts = nil
 
 end
-
+if aObj.isClscBC then
+	_G.DULL_RED_FONT_COLOR = _G.CreateColor(0.75, 0.15, 0.15)
+end
 local function clrTex(clr, hTex)
 	local r, g, b
 	if clr == "grey" then

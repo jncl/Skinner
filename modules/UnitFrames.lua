@@ -206,6 +206,15 @@ function module:skinPlayerF()
 				_G.InsanityBarFrame.InsanityOn.TopShadowStay:SetTexture(nil)
 			end
 			--	skin the TotemFrame, if required
+			-- skin the WarlockPowerFrame, if required
+			if aObj.uCls == "WARLOCK" then
+				_G.WarlockPowerFrame:DisableDrawLayer("BACKGROUND") -- Shard(s) background texture
+			end
+		end
+		if aObj.isClsc
+		and not aObj.isClscBC
+		then
+		else
 			if aObj.uCls == "SHAMAN" then
 				for i = 1, _G.MAX_TOTEMS do
 					_G["TotemFrameTotem" .. i .. "Background"]:SetAlpha(0) -- texture is changed
@@ -213,10 +222,6 @@ function module:skinPlayerF()
 				end
 				aObj:moveObject{obj=_G.TotemFrameTotem1, y=lOfs} -- covers level text when active
 				y2Ofs = 9
-			end
-			-- skin the WarlockPowerFrame, if required
-			if aObj.uCls == "WARLOCK" then
-				_G.WarlockPowerFrame:DisableDrawLayer("BACKGROUND") -- Shard(s) background texture
 			end
 		end
 
