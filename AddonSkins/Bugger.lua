@@ -9,6 +9,7 @@ aObj.addonsToSkin.Bugger = function(self) -- v 8.0.0.0
 		self:skinObject("tabs", {obj=this.frame, tabs=this.tabs, selectedTab=3, lod=self.isTT and true, track=false})
 		if self.isTT then
 			self:SecureHook(this, "ShowSession", function(this, session)
+				session = session or "current"
 				for _, tab in _G.pairs(this.tabs) do
 					if tab.session == session then
 						self:setActiveTab(tab.sf)
