@@ -2,73 +2,13 @@ local aName, aObj = ...
 
 local _G = _G
 
-local tmpTab, tmpTab2 = {}, {}
-local function makeString(obj)
-	if _G.type(obj) == "table" then
-		if _G.type(_G.rawget(obj, 0)) == "userdata" and _G.type(obj.GetObjectType) == "function" then
-			return ("<%s:%s:%s>"):format(_G.tostring(obj), obj:GetObjectType(), obj:GetName() or "(Anon)")
-		end
-	end
-	return _G.tostring(obj)
-end
-
-local function makeText(fStr, ...)
-    _G.wipe(tmpTab)
-	local output = ""
-	if fStr
-	and fStr.find
-	and fStr:find("%%")
-	and _G.select('#', ...) >= 1
-	then
-		for i = 1, _G.select('#', ...) do
-			tmpTab[i] = makeString(_G.select(i, ...))
-		end
-		 -- handle missing variables
-		local varCnt = _G.select(2, fStr:gsub("%%", ""))
-		for i = #tmpTab, varCnt do
-			tmpTab[i + 1] = "nil"
-		end
-		output = _G.string.join(" ", fStr:format(_G.unpack(tmpTab)))
-		varCnt = nil
-	else
-		tmpTab[1] = output
-		tmpTab[2] = fStr and _G.type(fStr) == "table" and makeString(fStr) or fStr or ""
-		for i = 1, _G.select('#', ...) do
-			tmpTab[i + 2] = makeString(_G.select(i, ...))
-		end
-		output = _G.table.concat(tmpTab, " ")
-	end
-	return output
-end
-
-local errorhandler = _G.geterrorhandler()
-local function safecall(funcName, funcObj, LoD, quiet)
-	--@alpha@
-	_G.assert(funcObj, "Unknown object safecall\n" .. _G.debugstack(2, 3, 2))
-	local beginTime = _G.debugprofilestop()
-	--@end-alpha@
- 	-- handle errors from internal functions
-	local success, err = _G.xpcall(function() return funcObj(aObj, LoD) end, errorhandler)
-	--@alpha@
-	local timeUsed = _G.Round(_G.debugprofilestop() - beginTime)
-	if timeUsed > 5 then
-		 _G.print("Took " .. timeUsed .. " milliseconds to load " .. funcName)
-	end
-	beginTime, timeUsed = nil, nil
-	--@end-alpha@
-	if quiet then
-		return success, err
-	end
-	if not success then
-		if aObj.prdb.Errors then
-			aObj:CustomPrint(1, 0, 0, "Error running", funcName)
-		end
-	end
-end
-
 function aObj:addBackdrop(obj)
 
-	if not self.isClsc then
+	if self.isClsc
+	and not self.isClscBC
+	then
+		return
+	else
 		if not obj.ApplyBackdrop then
 			_G.Mixin(obj, _G.BackdropTemplateMixin)
 		end
@@ -160,16 +100,6 @@ function aObj:adjWidth(...)
 
 end
 
-function aObj:add2Table(table, value)
-	--@alpha@
-	_G.assert(table, "Unknown table add2Table\n" .. _G.debugstack(2, 3, 2))
-	_G.assert(value, "Missing value add2Table\n" .. _G.debugstack(2, 3, 2))
-	--@end-alpha@
-
-	table[#table + 1] = value
-
-end
-
 function aObj:addFrameBorder(opts)
 
 	local aso = opts.aso or {}
@@ -252,6 +182,31 @@ function aObj:changeTandC(obj, tex)
 
 end
 
+local errorhandler = _G.geterrorhandler()
+local function safecall(funcName, funcObj, LoD, quiet)
+	--@alpha@
+	_G.assert(funcObj, "Unknown object safecall\n" .. _G.debugstack(2, 3, 2))
+	local beginTime = _G.debugprofilestop()
+	--@end-alpha@
+	-- handle errors from internal functions
+	local success, err = _G.xpcall(function() return funcObj(aObj, LoD) end, errorhandler)
+	--@alpha@
+	local timeUsed = _G.Round(_G.debugprofilestop() - beginTime)
+	if timeUsed > 5 then
+		 _G.print("Took " .. timeUsed .. " milliseconds to load " .. funcName)
+	end
+	beginTime, timeUsed = nil, nil
+	--@end-alpha@
+	if quiet then
+		return success, err
+	end
+	if not success then
+		if aObj.prdb.Errors then
+			aObj:CustomPrint(1, 0, 0, "Error running", funcName)
+		end
+	end
+end
+
 local hadWarning = {}
 function aObj:checkAndRun(funcName, funcType, LoD, quiet)
 	--@alpha@
@@ -269,7 +224,7 @@ function aObj:checkAndRun(funcName, funcType, LoD, quiet)
 
 	-- setup function's table object to use
 	local tObj
-	if funcType     == "s" then tObj = self
+	if funcType		== "s" then tObj = self
 	elseif funcType == "l" then tObj = self.libsToSkin
 	elseif funcType == "o" then tObj = self.otherAddons
 	elseif funcType == "opt" then tObj = self
@@ -394,7 +349,7 @@ function aObj:checkDisabledDD(obj, disabled)
 
 	local disabled = disabled or obj.isDisabled
 	if obj.sf then
-		self:clrBBC(obj.sf,  disabled and "grey")
+		self:clrBBC(obj.sf,	 disabled and "grey")
 		if self.modBtnBs then
 			local btn = obj.Button and obj.Button.sbb or obj.dropButton and obj.dropButton.sbb or _G[obj:GetName() .. "Button"].sbb
 			if btn then
@@ -404,56 +359,6 @@ function aObj:checkDisabledDD(obj, disabled)
 		end
 	end
 	disabled = nil
-
-end
-
-local buildInfo = {
-	-- beta        = {"9.0.2", 36734},
-	classic_ptr = {"1.13.7", 38363},
-	retail_ptr  = {"9.1.0", 38394},
-	classic     = {"1.13.7", 38475},
-	retail      = {"9.0.5", 38134},
-	curr        = {_G.GetBuildInfo()},
-}
-function aObj:checkVersion()
-
-	local agentUID = _G.GetCVar("agentUID")
-	-- check to see which WoW version we are running on
-	-- self.isBeta    = agentUID == "wow_beta" and true
-	self.isClscPTR = agentUID == "wow_classic_ptr" and true
-	self.isPTR     = agentUID == "wow_ptr" and true
-	self.isClsc    = agentUID == "wow_classic" and true
-	self.isRetail  = agentUID == "wow" and true
-
-	-- check current build number against Beta, if greater then it's a patch
-	-- self.isPatch = self.isPatch or self.isBeta and _G.tonumber(buildInfo.curr[2]) > buildInfo.beta[2]
-	-- check current build number against Classic PTR, if greater then it's a patch
-	self.isPatch = self.isPatch or self.isClscPTR and _G.tonumber(buildInfo.curr[2]) > buildInfo.classic_ptr[2]
-	-- check current build number against Retail PTR, if greater then it's a patch
-	self.isPatch = self.isPatch or self.isPTR and _G.tonumber(buildInfo.curr[2]) > buildInfo.retail_ptr[2]
-	-- check current build number against Classic, if greater then it's a patch
-	self.isPatch = self.isPatch or self.isClsc and _G.tonumber(buildInfo.curr[2]) > buildInfo.classic[2]
-	-- check current build number against Retail, if greater then it's a patch
-	self.isPatch = self.isPatch or self.isRetail and _G.tonumber(buildInfo.curr[2]) > buildInfo.retail[2]
-
-	--@alpha@
-	local vType = self.isBeta and "Beta" or self.isClscPTR and "Classic_PTR" or self.isPTR and "Retail_PTR" or self.isClsc and "Classic" or "Retail"
-	self:Printf("%s, %d, %s, %d, %s, %d, %s", buildInfo[vType:lower()][1], buildInfo[vType:lower()][2], buildInfo.curr[1], buildInfo.curr[2], buildInfo.curr[3], buildInfo.curr[4] , agentUID)
-	vType = self.isPatch and vType .. " (Patched)" or vType
-	_G.DEFAULT_CHAT_FRAME:AddMessage(aName .. ": Detected that we're running on a " .. vType .. " version", 0.75, 0.5, 0.25, nil, true)
-	vType = nil
-	--@end-alpha@
-	agentUID = nil
-
-	-- handle Beta changes in PTR or Live
-	-- self.isBeta    = self.isBeta or self.isPTR and buildInfo.curr[4] > 90000
-	-- indicate we're on Classic if on Classic PTR
-	self.isClsc = self.isClsc or self.isClscPTR
-	-- handle PTR changes going Live
-	self.isClscPTR = self.isClscPTR or self.isPatch and self.isClsc and buildInfo.curr[1] > buildInfo.classic[1]
-	self.isPTR     = self.isPTR or self.isPatch and self.isRetail and buildInfo.curr[1] > buildInfo.retail[1]
-
-	buildInfo = nil
 
 end
 
@@ -659,7 +564,7 @@ function aObj:getKeys(curTab)
 
 	if not curTab then return end
 
-    local tmpTab = {}
+	local tmpTab = {}
 	for i = 1, #curTab do
 		tmpTab[curTab[i]] = true
 	end
@@ -846,6 +751,7 @@ function aObj:keepFontStrings(obj, hide)
 
 end
 
+local tmpTab = {}
 function aObj:keepRegions(obj, regions)
 	--@alpha@
 	_G.assert(obj, "Missing object kR\n" .. _G.debugstack(2, 3, 2))
@@ -1020,14 +926,14 @@ end
 
 --@debug@
 local function fromhex(str)
-    return (str:gsub('..', function (cc)
-        return _G.string.char(_G.tonumber(cc, 16))
-    end))
+	return (str:gsub('..', function (cc)
+		return _G.string.char(_G.tonumber(cc, 16))
+	end))
 end
 local function tohex(str)
-    return (str:gsub('.', function (c)
-        return _G.string.format('%02X', _G.string.byte(c))
-    end))
+	return (str:gsub('.', function (c)
+		return _G.string.format('%02X', _G.string.byte(c))
+	end))
 end
 --@end-debug@
 function aObj:removeColourCodes(text)
@@ -1149,7 +1055,7 @@ end
 function aObj:rmRegionsTex(obj, regions)
 	--@alpha@
 	aObj:CustomPrint(1, 0, 0, "Using deprecated function - rmRegionsTex, use removeRegions(obj, regions) instead", obj)
-		--@end-alpha@
+	--@end-alpha@
 
 	self:removeRegions(obj, regions)
 
@@ -1207,7 +1113,7 @@ end
 
 function aObj:setActiveTab(tabSF)
 	--@alpha@
-	-- _G.assert(tabSF, "Missing object sAT\n" .. _G.debugstack(2, 3, 2))
+	_G.assert(tabSF, "Missing object sAT\n" .. _G.debugstack(2, 3, 2))
 	--@end-alpha@
 
 	if not tabSF then return end
@@ -1302,7 +1208,6 @@ function aObj:tableCount(table)
 
 end
 --@end-debug@
-
 --[===[@non-debug@
 aObj.tableCount = _G.nop
 --@end-non-debug@]===]
@@ -1340,44 +1245,6 @@ function aObj:unwrapTextFromColourCode(text, sOfs, eOfs)
 
 end
 
-local function printIt(text, frame, r, g, b)
-
-	(frame or _G.DEFAULT_CHAT_FRAME):AddMessage(text, r, g, b)
-
-end
-
-function aObj:CustomPrint(r, g, b, fStr, ...)
-
-	printIt( _G.WrapTextInColorCode(aName, "ffffff78") .. " " .. makeText(fStr, ...), nil, r, g, b)
-
-end
-
---@debug@
--- specify where debug messages go & increase buffer size
-aObj.debugFrame = _G.ChatFrame10
-aObj.debugFrame:SetMaxLines(10000)
-function aObj:Debug(fStr, ...)
-
-	local output = ("(DBG) %s:[%s.%03d]"):format(aName, _G.date("%H:%M:%S"), (_G.GetTime() % 1) * 1000)
-	printIt( _G.WrapTextInColorCode(output, "ff7fff7f") .. " " .. makeText(fStr, ...), self.debugFrame)
-	output = nil
-
-end
-function aObj:Debug2(...)
-	-- self:Debug(...)
-end
-function aObj:Debug3(...)
-	-- self:Debug(...)
-end
---@end-debug@
-
---[===[@non-debug@
-aObj.debugFrame = nil
-aObj.Debug = _G.nop
-aObj.Debug2 = _G.nop
-aObj.Debug3 = _G.nop
---@end-non-debug@]===]
-
 function aObj:RaiseFrameLevelByFour(frame)
 
 	frame:SetFrameLevel(frame:GetFrameLevel() + 4)
@@ -1390,15 +1257,15 @@ function aObj:SetupCmds()
 	local function print_family_tree(fName)
 
 		if fName:IsForbidden() then
-			 _G.print("Frame access is forbidden", fName)
+			_G.print("Frame access is forbidden", fName)
 			return
 		end
 
 		local lvl = "Parent"
-		 _G.print(makeText("Frame is %s, %s, %s, %s, %s", fName, fName:GetFrameLevel(), fName:GetFrameStrata(), _G.Round(fName:GetWidth()) or "nil", _G.Round(fName:GetHeight()) or "nil"))
+		_G.print(makeText("Frame is %s, %s, %s, %s, %s", fName, fName:GetFrameLevel(), fName:GetFrameStrata(), _G.Round(fName:GetWidth()) or "nil", _G.Round(fName:GetHeight()) or "nil"))
 		while fName:GetParent() do
 			fName = fName:GetParent()
-			 _G.print(makeText("%s is %s, %s, %s, %s, %s", lvl, fName, (fName:GetFrameLevel() or "<Anon>"), (fName:GetFrameStrata() or "<Anon>"), _G.Round(fName:GetWidth()) or "nil", _G.Round(fName:GetHeight()) or "nil"))
+			_G.print(makeText("%s is %s, %s, %s, %s, %s", lvl, fName, (fName:GetFrameLevel() or "<Anon>"), (fName:GetFrameStrata() or "<Anon>"), _G.Round(fName:GetWidth()) or "nil", _G.Round(fName:GetHeight()) or "nil"))
 			lvl = (lvl:find("Grand") and "Great" or "Grand") .. lvl
 		end
 		lvl = nil
@@ -1408,74 +1275,67 @@ function aObj:SetupCmds()
 
 		_G.wipe(tmpTab)
 
-	    -- first split the string on "."
-	    for word in _G.string.gmatch(input, "%a+") do
-	        tmpTab[#tmpTab + 1] = word
-	    end
-	    -- then build string in the form _G["str1"]["str2"]...["strn"]
-	    local objString = "_G"
-	    for i = 1, #tmpTab do
-	        objString = objString .. '["' .. tmpTab[i] .. '"]'
-	    end
+		-- first split the string on "."
+		for word in _G.string.gmatch(input, "%a+") do
+			tmpTab[#tmpTab + 1] = word
+		end
+		-- then build string in the form _G["str1"]["str2"]...["strn"]
+		local objString = "_G"
+		for i = 1, #tmpTab do
+			objString = objString .. '["' .. tmpTab[i] .. '"]'
+		end
 
-	    -- finally use loadstring to get the object from the command
-	    --  _G.print("getObjFromString", input, objString)
-	    return _G.assert(_G.loadstring("return " .. objString)())
+		-- finally use loadstring to get the object from the command
+		-- _G.print("getObjFromString", input, objString)
+		return _G.assert(_G.loadstring("return " .. objString)())
 
 	end
 	local function getObj(input)
-        --  _G.print("getObj", input, _G[input], GetMouseFocus())
+		-- _G.print("getObj", input, _G[input], GetMouseFocus())
 		if not input or input:trim() == "" then
 			return _G.GetMouseFocus()
 		else
-            return getObjFromString(input)
-        end
+			return getObjFromString(input)
+		end
 	end
 	local function getObjP(input)
-		--  _G.print("getObjP", input, _G[input], GetMouseFocus():GetParent())
+		-- _G.print("getObjP", input, _G[input], GetMouseFocus():GetParent())
 		if not input or input:trim() == "" then
 			return _G.GetMouseFocus():GetParent()
 		else
-            return getObjFromString(input)
-        end
+			return getObjFromString(input)
+		end
 	end
 	local function getObjGP(input)
-		--  _G.print("getObjGP", input, _G[input], GetMouseFocus():GetParent():GetParent())
+		-- _G.print("getObjGP", input, _G[input], GetMouseFocus():GetParent():GetParent())
 		if not input or input:trim() == "" then
 			return _G.GetMouseFocus():GetParent():GetParent()
 		else
-            return getObjFromString(input)
-        end
+			return getObjFromString(input)
+		end
 	end
 	local function showInfo(obj, showKids, noDepth)
 
-	     _G.print("showInfo:", obj, showKids, noDepth, obj:IsForbidden())
+		_G.print("showInfo:", obj, showKids, noDepth, obj:IsForbidden())
 
 		_G.assert(obj, "Unknown object showInfo\n" .. _G.debugstack(2, 3, 2))
 
 		if obj:IsForbidden() then return end
 
-	     _G.print(makeText("showInfo: [%s, %s, %s]", obj, showKids, noDepth))
 		showKids = showKids or false
 
 		local function showIt(fmsg, ...)
-
-			self.debugFrame:AddMessage("dbg:" .. makeText(fmsg, ...))
-
+			aObj:Debug3(fmsg, ...)
 		end
 		local function getRegions(obj, lvl)
-
 			for k, reg in _G.ipairs{obj:GetRegions()} do
 				showIt("[lvl%sr%s : %s : %s : %s : %s : %s]", lvl, k, reg, reg:GetObjectType() or "nil", reg.GetWidth and _G.Round(reg:GetWidth()) or "nil", reg.GetHeight and _G.Round(reg:GetHeight()) or "nil", reg:GetObjectType() == "Texture" and ("%s : %s"):format(reg:GetTexture() or "nil", reg:GetDrawLayer() or "nil") or "nil")
 			end
-
 		end
 		local function getChildren(frame, lvl)
-
 			if not showKids then return end
 			if _G.type(lvl) == "string" and lvl:find("c") == 2 and noDepth then return end
-
-	        for k, child in _G.ipairs{frame:GetChildren()} do
+			for k, child in _G.ipairs{frame:GetChildren()} do
 				local objType = child:GetObjectType()
 				showIt("[lvl%sc%s : %s : %s : %s : %s : %s]", lvl, k, child, child.GetWidth and _G.Round(child:GetWidth()) or "nil", child.GetHeight and _G.Round(child:GetHeight()) or "nil", child:GetFrameLevel() or "nil", child:GetFrameStrata() or "nil")
 				if objType == "Frame"
@@ -1487,8 +1347,7 @@ function aObj:SetupCmds()
 					getRegions(child, lvl .. "c" .. k)
 					getChildren(child, lvl .. "c" .. k)
 				end
-	        end
-
+			end
 		end
 
 		showIt("%s : %s : %s : %s : %s : %s : %s", obj, _G.Round(obj:GetWidth()) or "nil", _G.Round(obj:GetHeight()) or "nil", obj:GetFrameLevel() or "nil", obj:GetFrameStrata() or "nil", obj:GetNumRegions(), obj:GetNumChildren())
@@ -1504,12 +1363,12 @@ function aObj:SetupCmds()
 
 	self:RegisterChatCommand("ft", function() print_family_tree(_G.GetMouseFocus()) end)
 	self:RegisterChatCommand("ftp", function() print_family_tree(_G.GetMouseFocus():GetParent()) end)
-	self:RegisterChatCommand("gp", function()  _G.print(_G.GetMouseFocus():GetPoint()) end)
-	self:RegisterChatCommand("gpp", function()  _G.print(_G.GetMouseFocus():GetParent():GetPoint()) end)
+	self:RegisterChatCommand("gp", function() _G.print(_G.GetMouseFocus():GetPoint()) end)
+	self:RegisterChatCommand("gpp", function() _G.print(_G.GetMouseFocus():GetParent():GetPoint()) end)
 	self:RegisterChatCommand("lo", function() _G.UIErrorsFrame:AddMessage("Use /camp instead of /lo", 1.0, 0.1, 0.1, 1.0) end)
-	self:RegisterChatCommand("pii", function(msg)  _G.print(_G.GetItemInfo(msg)) end)
-	self:RegisterChatCommand("pil", function(msg)  _G.print(_G.gsub(msg, "\124", "\124\124")) end)
-	self:RegisterChatCommand("pin", function(msg)  _G.print(msg, "is item:", (_G.GetItemInfoFromHyperlink(msg))) end)
+	self:RegisterChatCommand("pii", function(msg) _G.print(_G.GetItemInfo(msg)) end)
+	self:RegisterChatCommand("pil", function(msg) _G.print(_G.gsub(msg, "\124", "\124\124")) end)
+	self:RegisterChatCommand("pin", function(msg) _G.print(msg, "is item:", (_G.GetItemInfoFromHyperlink(msg))) end)
 	self:RegisterChatCommand("rl", function() _G.C_UI.Reload() end)
 	self:RegisterChatCommand("si1", function(msg) showInfo(getObj(msg), true, true) end) -- 1 level only
 	self:RegisterChatCommand("si1gp", function(msg) showInfo(getObjGP(msg), true, false) end) -- 1 level only
