@@ -59,7 +59,7 @@ function module:skinUnitButton(opts)
 	opts.y1 = opts.y1 or opts.ofs
 	opts.x2 = opts.x2 or opts.ofs
 	opts.y2 = opts.y2 or opts.ofs * -1
-	aObj:skinObject("button", {obj=opts.obj, fType=ftype, shsh=true, bg=true, bd=11, ng=true, x1=opts.x1, y1=opts.y1, x2=opts.x2, y2=opts.y2})
+	aObj:skinObject("button", {obj=opts.obj, fType=ftype, bg=true, bd=11, ng=true, x1=opts.x1, y1=opts.y1, x2=opts.x2, y2=opts.y2})
 	opts.obj.sb:SetBackdropColor(0.1, 0.1, 0.1, db.alpha) -- use dark background
 
 	if opts.ti
@@ -252,10 +252,11 @@ function module:skinPetF()
 		    return
 		end
 
-		self:SecureHookScript(_G.PetFrame, "OnShow", function(this)
+		-- self:SecureHookScript(_G.PetFrame, "OnShow", function(this)
 			_G.PetPortrait:SetDrawLayer("BORDER") -- move portrait to BORDER layer, so it is displayed
 			-- N.B. DON'T move the frame as it causes taint
-			self:skinUnitButton{obj=this, ti=true, x1=1}
+			self:skinUnitButton{obj=_G.PetFrame, ti=true, x1=1}
+			-- self:skinUnitButton{obj=this, ti=true, x1=1}
 
 			_G.PetFrameTexture:SetAlpha(0) -- texture file is changed dependant upon in vehicle or not
 			_G.PetAttackModeTexture:SetTexture(nil)
@@ -273,33 +274,29 @@ function module:skinPetF()
 				end
 			end
 
-			self:Unhook(this, "OnShow")
-		end)
+			-- self:Unhook(this, "OnShow")
+		-- end)
 
-		if db.petspec
-		and aObj.uCls == "HUNTER"
-		then
+		if db.petspec then
 			-- Add pet spec icon to pet frame, if required
 			_G.PetFrame.roleIcon = _G.PetFrame:CreateTexture(nil, "artwork")
 			_G.PetFrame.roleIcon:SetSize(24, 24)
 			_G.PetFrame.roleIcon:SetPoint("left", -10, 0)
 			_G.PetFrame.roleIcon:SetTexture([[Interface\LFGFrame\UI-LFG-ICON-ROLES]])
-		end
-
-		if db.petspec then
 			-- get Pet's Specialization Role to set roleIcon TexCoord
+			local petSpec
 			self:RegisterEvent("UNIT_PET", function(event, arg1)
 				if arg1 == "player"
 				and _G.UnitIsVisible("pet")
 				then
-					local petSpec = _G.GetSpecialization(nil, true)
+					petSpec = _G.GetSpecialization(nil, true)
 					if petSpec then
 						_G.PetFrame.roleIcon:SetTexCoord(_G.GetTexCoordsForRole(_G.GetSpecializationRole(petSpec, nil, true)))
 					end
-					petSpec = nil
 				end
 			end)
 		end
+
 	end
 
 

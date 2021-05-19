@@ -545,7 +545,7 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 
 	local function skinACAlertFrames(frame)
 		-- local fW, fH = _G.Round(frame:GetWidth()), _G.Round(frame:GetHeight())
-		aObj:Debug("skinACAlertFrames: [%s, %s, %s]", frame, frame:GetSize())
+		-- aObj:Debug("skinACAlertFrames: [%s, %s, %s]", frame, frame:GetSize())
 		aObj:nilTexture(frame.Background, true)
 		frame.Unlocked:SetTextColor(aObj.BT:GetRGB())
 		if frame.OldAchievement then
@@ -2281,7 +2281,7 @@ aObj.blizzLoDFrames[ftype].DebugTools = function(self)
 	if self.isRet then
 		self:SecureHookScript(_G.EventTraceFrame, "OnShow", function(this)
 			self:skinObject("slider", {obj=_G.EventTraceFrameScroll, fType=ftype})
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, ofs=-2, y1=-3})
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, ofs=-1, y1=-2})
 			if self.modBtns then
 				self:SecureHook("EventTraceFrame_Update", function()
 					for i = 1, #_G.EventTraceFrame.buttons do
@@ -4160,10 +4160,10 @@ aObj.blizzLoDFrames[ftype].MacroUI = function(self)
 
 	self:SecureHookScript(_G.MacroFrame, "OnShow", function(this)
 		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true, upwards=true, offsets={x1=1, y1=-6, x2=-1, y2=self.isTT and -2 or 3}, func=function(tab) tab:SetFrameLevel(20) end})
-		self:skinObject("frame", {obj=_G.MacroButtonScrollFrame, fType=ftype, kfs=true, fb=true, ofs=12, y1=10, x2=32})
+		self:skinObject("frame", {obj=_G.MacroButtonScrollFrame, fType=ftype, kfs=true, fb=true, ofs=12, y1=10, x2=31})
 		self:skinObject("slider", {obj=_G.MacroButtonScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
 		self:skinObject("slider", {obj=_G.MacroFrameScrollFrame.ScrollBar, fType=ftype})
-		self:skinObject("frame", {obj=_G.MacroFrameTextBackground, fType=ftype, kfs=true, fb=true, ofs=0})
+		self:skinObject("frame", {obj=_G.MacroFrameTextBackground, fType=ftype, kfs=true, fb=true, ofs=0, x2=1})
 		_G.MacroFrameSelectedMacroButton:DisableDrawLayer("BACKGROUND")
 		for i = 1, _G.MAX_ACCOUNT_MACROS do
 			_G["MacroButton" .. i]:DisableDrawLayer("BACKGROUND")
@@ -4196,12 +4196,11 @@ aObj.blizzLoDFrames[ftype].MacroUI = function(self)
 	end)
 
 	self:SecureHookScript(_G.MacroPopupFrame, "OnShow", function(this)
-		self:adjHeight{obj=this, adj=20}
+		self:adjHeight{obj=this, adj=20} -- so buttons don't overlay icons
 		self:removeRegions(this.BorderBox, {1, 2, 3, 4, 5, 6, 7, 8})
-		self:skinEditBox{obj=_G.MacroPopupEditBox}
+		self:skinObject("editbox", {obj=_G.MacroPopupEditBox, fType=ftype})
 		self:adjHeight{obj=_G.MacroPopupScrollFrame, adj=20} -- stretch to bottom of scroll area
-		self:skinSlider{obj=_G.MacroPopupScrollFrame.ScrollBar, rt="background"}
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ofs=1, x2=-2, y2=4}
+		self:skinObject("slider", {obj=_G.MacroPopupScrollFrame.ScrollBar, fType=ftype, rpTex="background"})
 		if self.isClscBC then
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, x2=-2, y2=4})
 		else
@@ -4841,7 +4840,6 @@ aObj.blizzLoDFrames[ftype].MovePad = function(self)
 			self:skinStdButton{obj=_G.MovePadStrafeLeft}
 			self:skinStdButton{obj=_G.MovePadStrafeRight}
 			-- Lock button, change texture
-			_G.MovePadLock:SetBackdrop(nil)
 			local tex = _G.MovePadLock:GetNormalTexture()
 			tex:SetTexture([[Interface/Glues/CharacterSelect/Glues-AddOn-Icons]])
 			tex:SetTexCoord(0, 0.25, 0, 1.0)
@@ -4849,7 +4847,7 @@ aObj.blizzLoDFrames[ftype].MovePad = function(self)
 			tex = _G.MovePadLock:GetPushedTexture()
 			tex:SetTexture([[Interface/Glues/CharacterSelect/Glues-AddOn-Icons]])
 			tex:SetTexCoord(0.25, 0.5, 0, 1.0)
-			tex:SetAlpha(1)
+			tex:SetAlpha(0.75)
 			tex = _G.MovePadLock:GetCheckedTexture()
 			tex:SetTexture([[Interface/Glues/CharacterSelect/Glues-AddOn-Icons]])
 			tex:SetTexCoord(0.25, 0.5, 0, 1.0)
@@ -6621,6 +6619,7 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 				[LSZ["House of Plagues"]]  = true, -- Maldraxxus
 				[LSZ["The Spearhead"]]     = true, -- Maldraxxus
 				[LSZ["The Desiccation"]]   = true, -- Revendreth
+				[LSZ["Face of Oblivion"]]  = true, -- Perdition Hold, The Maw
 			},
 			[13] = { -- SpellDisplay
 				[LSZ["House of Plagues"]] = true, -- Maldraxxus
@@ -6951,29 +6950,24 @@ if _G.PTR_IssueReporter then
 		self.initialized.PTRFeedback = true
 
 		local function skinFrame(frame, ofs, border)
-			if border then
-				aObj:skinObject("frame", {obj=frame, fType=ftype, ofs=ofs or 4, clr="blue"})
-			else
-				aObj:skinObject("frame", {obj=frame, fType=ftype, kfs=true, ofs=ofs or 4, clr="blue"})
-			end
 			if frame.Border then
 				aObj:removeBackdrop(frame.Border)
 			end
+			aObj:skinObject("frame", {obj=frame, fType=ftype, kfs=not border and true, ofs=ofs or 4, clr="blue"})
 		end
-
 		skinFrame(_G.PTR_IssueReporter)
 		for _, name in _G.pairs{"Confused", "ReportBug"} do
-			self:addSkinButton{obj=_G.PTR_IssueReporter[name], aso={bbclr="blue"}}
 			_G.PTR_IssueReporter[name]:SetPushedTexture(nil)
 			self:removeBackdrop(_G.PTR_IssueReporter[name].Border)
+			self:skinObject("button", {obj=_G.PTR_IssueReporter[name], fType=ftype, clr="blue"})
 		end
 
 		self:SecureHook(_G.PTR_IssueReporter, "GetStandaloneSurveyFrame", function(this)
-			skinFrame(_G.PTR_IssueReporter.StandaloneSurvey, 3) -- header frame
+			skinFrame(_G.PTR_IssueReporter.StandaloneSurvey, 2) -- header frame
 			skinFrame(_G.PTR_IssueReporter.StandaloneSurvey.SurveyFrame)
 			if self.modBtns then
 				self:skinCloseButton{obj=self:getChild(_G.PTR_IssueReporter.StandaloneSurvey.SurveyFrame, 2), noSkin=true}
-				self:skinStdButton{obj=self:getChild(_G.PTR_IssueReporter.StandaloneSurvey.SurveyFrame, 3), ofs=0, clr="blue"}
+				self:skinStdButton{obj=self:getChild(_G.PTR_IssueReporter.StandaloneSurvey.SurveyFrame, 3), ofs=-1, clr="blue"}
 			end
 
 			self:Unhook(this, "GetStandaloneSurveyFrame")

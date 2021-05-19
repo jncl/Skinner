@@ -4335,7 +4335,6 @@ aObj.blizzLoDFrames[ftype].TalentUI = function(self)
 	local function skinSpec(frame)
 		aObj:keepFontStrings(frame)
 		frame.MainHelpButton.Ring:SetTexture(nil)
-		aObj:moveObject{obj=frame.MainHelpButton, y=-4}
 		aObj:removeMagicBtnTex(frame.learnButton)
 		if aObj.modBtns then
 			aObj:skinStdButton{obj=frame.learnButton}
