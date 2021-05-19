@@ -57,8 +57,8 @@ aObj.skinTPLs = {
 		kfs         = false, -- remove all textures except font strings
 		regions     = {}, -- remove specified regions
 		rb          = true, -- remove Backdrop
-		ri          = true, -- disable draw layers; [Background, Border & Overlay]
-		rns         = true, -- disable draw layers; [Background, Border & Overlay]
+		-- ri          = true, -- disable draw layers; [Background, Border & Overlay]
+		-- rns         = true, -- disable draw layers; [Background, Border & Overlay]
 		rp          = false, -- reverse parent child relationship
 		sec         = false, -- use SecureFrameTemplate
 		ofs         = 2, -- skin frame offset to object
@@ -429,15 +429,27 @@ local function skinFrame(tbl)
 	if tbl.rb then
 		aObj:removeBackdrop(tbl.obj)
 	end
-	if tbl.ri
-	and (tbl.obj.Inset or tbl.obj.inset)
-	then
-		aObj:removeInset(tbl.obj.Inset or tbl.obj.inset)
+	local hasInset = (tbl.obj.Inset or tbl.obj.inset and _G.type(tbl.obj.inset) ~= "number")
+	if hasInset then
+		if tbl.ri then
+			aObj:removeInset(tbl.obj.Inset or tbl.obj.inset)
+		--@alpha@
+		else
+			aObj:CustomPrint(1, 0, 0, "Frame Inset detected, add ri=true", tbl.obj)
+			_G.assert(false, "Frame Inset" .. _G.debugstack(2, 3, 2))
+		--@end-alpha@
+		end
 	end
-	if tbl.rns
-	and tbl.obj.NineSlice
-	then
-		aObj:removeNineSlice(tbl.obj.NineSlice)
+	hasInset = nil
+	if tbl.obj.NineSlice then
+		if tbl.rns then
+			aObj:removeNineSlice(tbl.obj.NineSlice)
+		--@alpha@
+		else
+			aObj:CustomPrint(1, 0, 0, "Frame NineSlice detected, add rns=true", tbl.obj)
+			_G.assert(false, "Frame NineSlice" .. _G.debugstack(2, 3, 2))
+		--@end-alpha@
+		end
 	end
 	if tbl.hdr then
 		hideHeader(tbl.obj)

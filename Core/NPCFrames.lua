@@ -318,7 +318,7 @@ aObj.blizzFrames[ftype].BankFrame = function(self)
 		self:removeInset(_G.BankFrameMoneyFrameInset)
 		_G.BankFrameMoneyFrameBorder:DisableDrawLayer("BACKGROUND")
 		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, offsets={x1=8, y1=self.isTT and 2 or 0, x2=-8, y2=2}})
-		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true})
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true, cb=true})
 		self:keepFontStrings(_G.BankSlotsFrame)
 		if self.modBtnBs then
 			self:SecureHook("BankFrameItemButton_Update", function(btn)
@@ -590,7 +590,7 @@ aObj.blizzLoDFrames[ftype].CovenantSanctum = function(self)
 			end
 		end
 		this.UpgradesTab.CurrencyBackground:SetTexture(nil)
-		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cbns=true, ofs=-3})
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true, cbns=true, ofs=-3})
 		self:clrCovenantBdr(this)
 		if self.modBtns then
 			self:skinStdButton{obj=this.UpgradesTab.TalentsList.UpgradeButton, fType=ftype}
@@ -615,7 +615,7 @@ aObj.blizzLoDFrames[ftype].FlightMap = function(self)
 	if not self.prdb.FlightMap or self.initialized.FlightMap then return end
 	self.initialized.FlightMap = true
 
-	self:addSkinFrame{obj=_G.FlightMapFrame.BorderFrame, ft=ftype, kfs=true, y2=-3}
+	self:skinObject("frame", {obj=_G.FlightMapFrame.BorderFrame, fType=ftype, kfs=true, rns=true, cb=true, ofs=3, y1=2})
 	_G.FlightMapFrame.BorderFrame.sf:SetFrameStrata("LOW") -- allow map textures to be visible
 
 	-- remove ZoneLabel background texture
@@ -753,7 +753,7 @@ aObj.blizzLoDFrames[ftype].ItemUpgradeUI = function(self)
 		this.ButtonFrame:DisableDrawLayer("BORDER", 2)
 		_G.ItemUpgradeFrameMoneyFrame:DisableDrawLayer("BACKGROUND")
 		self:removeMagicBtnTex(_G.ItemUpgradeFrameUpgradeButton)
-		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x2=3})
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, x2=3})
 		if self.modBtns then
 			self:skinStdButton{obj=_G.ItemUpgradeFrameUpgradeButton}
 			self:SecureHook(_G.ItemUpgradeFrameUpgradeButton, "Disable", function(this)
@@ -802,9 +802,9 @@ aObj.blizzFrames[ftype].MerchantFrame = function(self)
 			self:skinObject("dropdown", {obj=_G.MerchantFrameLootFilter, fType=ftype})
 			self:removeInset(_G.MerchantExtraCurrencyInset)
 			_G.MerchantExtraCurrencyBg:DisableDrawLayer("BACKGROUND")
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, cb=true})
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true, ri=true, cb=true, y2=-3})
 		else
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, cb=true, x2=1})
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, cb=true, x2=1, y2=-3})
 		end
 		if self.modBtnBs then
 			self:removeRegions(_G.MerchantPrevPageButton, {2})

@@ -634,7 +634,7 @@ aObj.blizzFrames[ftype].CharacterFrames = function(self)
 	self:SecureHookScript(_G.CharacterFrame, "OnShow", function(this)
 		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true, offsets={x1=8, y1=self.isTT and 2 or -3, x2=-8, y2=2}})
 		self:removeInset(this.InsetRight)
-		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true})
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true})
 
 		self:Unhook(this, "OnShow")
 	end)
@@ -824,7 +824,7 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 
 	self:SecureHookScript(_G.CollectionsJournal, "OnShow", function(this)
 		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true, selectedTab=this.selectedTab, offsets={x1=9, y1=self.isTT and 3 or -2, x2=-9, y2=2}})
-		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x2=3, y2=-1})
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true, cb=true, x2=3, y2=-1})
 
 		self:Unhook(this, "OnShow")
 	end)
@@ -1107,9 +1107,10 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 				aObj:clrBtnBdr(btn, "gold", 0.75)
 			end
 		end
+
 		self:SecureHookScript(this.ItemsCollectionFrame, "OnShow", function(this)
 			self:skinObject("dropdown", {obj=this.WeaponDropDown, fType=ftype})
-			self:skinObject("frame", {obj=this, fType=ftype, fb=true, kfs=true, x1=x1Ofs, y1=y1Ofs, x2=x2Ofs, y2=y2Ofs})
+			self:skinObject("frame", {obj=this, fType=ftype, fb=true, kfs=true, rns=true, x1=x1Ofs, y1=y1Ofs, x2=x2Ofs, y2=y2Ofs})
 			if self.modBtnBs then
 				skinPageBtns(this)
 				for _, btn in _G.pairs(this.Models) do
@@ -1162,7 +1163,7 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 		end)
 
 		self:SecureHookScript(this.SetsTransmogFrame, "OnShow", function(this)
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, fb=true, x1=x1Ofs, y1=y1Ofs, x2=x2Ofs, y2=y2Ofs})
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true, fb=true, x1=x1Ofs, y1=y1Ofs, x2=x2Ofs, y2=y2Ofs})
 			if self.modBtnBs then
 				skinPageBtns(this)
 				for _, btn in _G.pairs(this.Models) do
@@ -1179,7 +1180,7 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 	end)
 
 	self:SecureHookScript(_G.WardrobeFrame, "OnShow", function(this)
-		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x2=3})
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true, cb=true, x2=3})
 
 		self:Unhook(this, "OnShow")
 	end)
@@ -1819,7 +1820,6 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 		self:removeMagicBtnTex(this.Applicants.MessageButton)
 		self:removeMagicBtnTex(this.Applicants.DeclineButton)
 		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, cb=true})
-		-- self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true}
 		if self.modBtns then
 			self:skinStdButton{obj=this.Applicants.InviteButton}
 			self:skinStdButton{obj=this.Applicants.MessageButton}
@@ -2140,7 +2140,7 @@ aObj.blizzLoDFrames[ftype].EncounterJournal = function(self) -- a.k.a. Adenture 
 		self:skinNavBarButton(this.navBar.home)
 		this.navBar.home.text:SetPoint("RIGHT", -20, 0)
 		self:skinObject("editbox", {obj=this.searchBox, fType=ftype, si=true})
-		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, cb=true})
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true})
 		self:SecureHookScript(this.searchBox.searchPreviewContainer, "OnShow", function(this)
 			local btn
 			for i = 1, 5 do
@@ -3033,7 +3033,7 @@ aObj.blizzLoDFrames[ftype].InspectUI = function(self)
 
 	self:SecureHookScript(_G.InspectFrame, "OnShow", function(this)
 		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true, offsets={x1=9, y1=self.isTT and 2 or -3, x2=-9, y2=2}})
-		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, cb=true})
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true})
 		-- send message when UI is skinned (used by oGlow skin)
 		self:SendMessage("InspectUI_Skinned", self)
 
@@ -4180,7 +4180,7 @@ aObj.blizzFrames[ftype].SpellBookFrame = function(self)
 		skinProf("Primary", 2)
 		-- Secondary professions
 		skinProf("Secondary", 3)
-		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, cb=true, x2=2.5, y2=-2.5})
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, x2=2.5, y2=-2.5})
 		if self.modBtnBs then
 			self:addButtonBorder{obj=_G.SpellBookPrevPageButton, ofs=-2, y1=-3, x2=-3}
 			self:addButtonBorder{obj=_G.SpellBookNextPageButton, ofs=-2, y1=-3, x2=-3}
@@ -4279,7 +4279,7 @@ aObj.blizzLoDFrames[ftype].TalentUI = function(self)
 				 self:addButtonBorder{obj=_G["PlayerSpecTab" .. i]}
 			end
 		end
-		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, cb=true})
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, x1=-4, x2=3})
 		if self.modBtns then
 			self:skinStdButton{obj=_G.PlayerTalentFrameActivateButton}
 			self:skinCloseButton{obj=_G.PlayerTalentFrameCloseButton}
@@ -4484,7 +4484,7 @@ aObj.blizzLoDFrames[ftype].TradeSkillUI = function(self)
 		self:skinStatusBar{obj=this.RankFrame, fi=0, bgTex=this.RankFrameBackground}
 		self:removeRegions(this.RankFrame, {1, 2, 3})
 		self:skinObject("editbox", {obj=this.SearchBox, fType=ftype, si=true})
-		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true})
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true, cb=true})
 		if self.modBtns then
 			 self:skinStdButton{obj=this.FilterButton, fType=ftype, ofs=0}
 		end

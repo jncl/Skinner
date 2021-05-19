@@ -240,9 +240,6 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 	end
 	local stageRegs = {1, 2, 3, 4, 5}
 	function skinMissionPage(frame, colour)
-		if frame.NineSlice then
-			aObj:removeNineSlice(frame.NineSlice)
-		end
 		frame.IconBG:SetTexture(nil)
 		if frame.Board then -- shadowlands
 			aObj:removeRegions(frame.Stage, {1})
@@ -293,7 +290,7 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 			frame.CloseButton.CloseButtonBorder:SetTexture(nil)
 			y1Ofs, x2Ofs, y2Ofs = 2, 1, 0
 		end
-		aObj:skinObject("frame", {obj=frame, fType=ftype, kfs=true, cbns=true, fb=true, clr=colour, x1=0, y1=y1Ofs, x2=x2Ofs, y2=y2Ofs})
+		aObj:skinObject("frame", {obj=frame, fType=ftype, kfs=true, rns=true, cbns=true, fb=true, clr=colour, x1=0, y1=y1Ofs, x2=x2Ofs, y2=y2Ofs})
 		if aObj.modBtns then
 			aObj:skinStdButton{obj=frame.StartMissionButton}
 			aObj:moveObject{obj=frame.StartMissionButton.Flash, x=-0.5, y=1.5}
@@ -2848,7 +2845,7 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 				self:clrBtnBdr(this.CreateAllWorkOrdersButton)
 			end
 		end)
-		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, cb=true})
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true})
 		if self.modBtns then
 			self:skinStdButton{obj=this.StartWorkOrderButton}
 			self:skinStdButton{obj=this.CreateAllWorkOrdersButton}
@@ -2890,7 +2887,7 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 		self:removeMagicBtnTex(this.Pick.ChooseRecruits)
 		self:removeMagicBtnTex(this.Random.ChooseRecruits)
 		self:removeMagicBtnTex(self:getChild(this.UnavailableFrame, 1))
-		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, cb=true, ofs=1, y1=2})
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, ofs=1, y1=2})
 		if self.modBtns then
 			self:skinStdButton{obj=this.Pick.ChooseRecruits}
 			self:skinStdButton{obj=this.Random.ChooseRecruits}
@@ -3329,7 +3326,7 @@ aObj.blizzFrames[ftype].HelpFrame = function(self)
 
 	self:SecureHookScript(_G.HelpFrame, "OnShow", function(this)
 		self:removeInset(this.Browser.BrowserInset)
-		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true, cb=true, x2=3})
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true, rns=true, cb=true, x2=3})
 
 		self:Unhook(this, "OnShow")
 	end)
@@ -4135,7 +4132,7 @@ aObj.blizzLoDFrames[ftype].MacroUI = function(self)
 				self:addButtonBorder{obj=_G["MacroButton" .. i], relTo=_G["MacroButton" .. i .. "Icon"], reParent={_G["MacroButton" .. i .. "Name"]}, clr="grey", ca=0.85}
 			end
 		end
-		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true, ri=true, cb=true})
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true, ri=true, rns=true, cb=true})
 		if self.modBtns then
 			self:skinStdButton{obj=_G.MacroEditButton}
 			self:skinStdButton{obj=_G.MacroCancelButton}
@@ -5412,7 +5409,7 @@ aObj.blizzFrames[ftype].PVEFrame = function(self)
 				end
 			end
 		end)
-		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, cb=true})
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true})
 		if self.modBtnBs then
 			-- hook this to change button border colour
 			self:SecureHook("GroupFinderFrame_EvaluateButtonVisibility", function(this, _)
@@ -6825,9 +6822,8 @@ aObj.blizzFrames[ftype].WorldMap = function(self)
 		and not _G.IsAddOnLoaded("AlleyMap")
 		then
 			self:keepFontStrings(this)
-			self:removeNineSlice(this.BorderFrame.NineSlice)
 			self:moveObject{obj=this.BorderFrame.CloseButton, x=-2.5}
-			self:skinObject("frame", {obj=this.BorderFrame, fType=ftype, kfs=true, cb=true, ofs=2, x1=-3, x2=0})
+			self:skinObject("frame", {obj=this.BorderFrame, fType=ftype, kfs=true, rns=true, cb=true, ofs=2, x1=-3, x2=0})
 			-- make sure map textures are displayed
 			this.BorderFrame.sf:SetFrameStrata("LOW")
 		end
