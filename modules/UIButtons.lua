@@ -388,13 +388,10 @@ function module:skinExpandButton(opts)
 			end)
 		end
 	else -- Ace3, Archy, ReagentRestocker
-		local aso = opts.aso or {}
-		aso.bd = 6
-		aso.obj = opts.obj
-		aObj:applySkin(aso)
-		-- opts.obj.sb = true
+		opts.aso.bd  = opts.aso.bd or 6
+		opts.aso.obj = opts.obj
+		aObj:applySkin(opts.aso)
 	end
-	aso = nil
 	opts.obj.onSB = opts.onSB -- store this for use in checkTex function
 	if not opts.onSB then
 		opts.obj:SetNormalFontObject(module.fontP)
