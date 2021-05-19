@@ -6221,7 +6221,9 @@ aObj.blizzFrames[ftype].SystemOptions = function(self)
 			self:addButtonBorder{obj=this.TestInputDevice.ToggleTest, fType=ftype, ofs=0, y2=-2}
 			self:skinStdButton{obj=this.PushToTalkKeybindButton, fType=ftype}
 			this.PushToTalkKeybindButton.KeyLabel:SetDrawLayer("ARTWORK")
-			self:skinStdButton{obj=this.MacMicrophoneAccessWarning.OpenAccessButton, fType=ftype}
+			if not self.isClsc then
+				self:skinStdButton{obj=this.MacMicrophoneAccessWarning.OpenAccessButton, fType=ftype}
+			end
 		end
 
 		self:Unhook(this, "OnShow")
@@ -6666,13 +6668,13 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 		elseif wFrame.widgetType == 1 then -- CaptureBar (World State: Capture bar on RHS)
 			-- DON'T change textures as it doesn't really improve it
 		elseif wFrame.widgetType == 2 then -- StatusBar
-			if not aObj.isClsc
-			and not disableTypeBySZ[wFrame.widgetType][SZ]
-			then
-				aObj:skinStatusBar{obj=wFrame.Bar, fi=0, nilFuncs=true}
-				aObj:removeRegions(wFrame.Bar, {1, 2, 3, 5, 6, 7}) -- background & border textures
-			else
+			if aObj.isClsc then
 				aObj:removeRegions(wFrame.Bar, {5, 6, 7}) -- border textures
+			else
+				if not disableTypeBySZ[wFrame.widgetType][SZ] then
+					aObj:skinStatusBar{obj=wFrame.Bar, fi=0, nilFuncs=true}
+					aObj:removeRegions(wFrame.Bar, {1, 2, 3, 4, 6, 7, 8}) -- background & border textures
+				end	
 			end
 		elseif wFrame.widgetType == 3 then -- DoubleStatusBar (Island Expeditions)
 			aObj:skinStatusBar{obj=wFrame.LeftBar, fi=0, bgTex=wFrame.LeftBar.BG, nilFuncs=true}

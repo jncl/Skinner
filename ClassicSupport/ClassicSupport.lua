@@ -316,7 +316,7 @@ aObj.ClassicSupport = function(self)
 			-- AuctionFrame Browse
 			for i = 1, _G.NUM_FILTERS_TO_DISPLAY do
 				self:keepRegions(_G["AuctionFilterButton" .. i], {3, 4}) -- N.B. region 3 is the highlight, 4 is the text
-				self:skinObject("frame", {obj=_G["AuctionFilterButton" .. i], fType=ftype, bd=5, y2=-1})
+				self:skinObject("frame", {obj=_G["AuctionFilterButton" .. i], fType=ftype, y1=1, y2=1, bd=5, y2=-1})
 			end
 			self:skinObject("slider", {obj=_G.BrowseFilterScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
 			self:skinObject("slider", {obj=_G.BrowseScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
@@ -573,18 +573,25 @@ aObj.ClassicSupport = function(self)
 			then
 				x1, y1, x2, y2 = 10, -11, -33, 49
 			else
-				x1, y1, x2, y2 = 10, -11, -31, 71
+				x1, y1, x2, y2 = 10, -11, -32, 71
 			end
 			self:addSkinFrame{obj=this, ft=ftype, kfs=true, x1=x1, y1=y1, x2=x2, y2=y2}
 			x1, y1, x2, y2 = nil, nil, nil, nil
 			if self.modBtns then
 				self:skinStdButton{obj=_G.ClassTrainerTrainButton, fType=ftype}
+				self:SecureHook(_G.ClassTrainerTrainButton, "Disable", function(this, _)
+					self:clrBtnBdr(this)
+				end)
+				self:SecureHook(_G.ClassTrainerTrainButton, "Enable", function(this, _)
+					self:clrBtnBdr(this)
+				end)
 				self:skinStdButton{obj=_G.ClassTrainerCancelButton, fType=ftype}
  				self:skinExpandButton{obj=_G.ClassTrainerCollapseAllButton, fType=ftype, onSB=true}
  				for i = 1, _G.CLASS_TRAINER_SKILLS_DISPLAYED do
  					self:skinExpandButton{obj=_G["ClassTrainerSkill" .. i], onSB=true}
  				end
  				self:SecureHook("ClassTrainerFrame_Update", function()
+					self:checkTex(_G.ClassTrainerCollapseAllButton)
  					for i = 1, _G.CLASS_TRAINER_SKILLS_DISPLAYED do
  						self:checkTex{obj=_G["ClassTrainerSkill" .. i]}
  					end
@@ -842,6 +849,12 @@ aObj.ClassicSupport = function(self)
 				self:skinExpandButton{obj=_G.CraftCollapseAllButton, fType=ftype, onSB=true}
 				self:skinCloseButton{obj=_G.CraftFrameCloseButton, fType=ftype}
 				self:skinStdButton{obj=_G.CraftCreateButton, fType=ftype}
+				self:SecureHook(_G.CraftCreateButton, "Disable", function(this, _)
+					self:clrBtnBdr(this)
+				end)
+				self:SecureHook(_G.CraftCreateButton, "Enable", function(this, _)
+					self:clrBtnBdr(this)
+				end)
 				self:skinStdButton{obj=_G.CraftCancelButton, fType=ftype}
 			end
 			if self.modBtnBs then
@@ -2002,7 +2015,7 @@ aObj.ClassicSupport = function(self)
 			and not _G.IsAddOnLoaded("AlleyMap")
 			then
 				self:keepFontStrings(_G.WorldMapFrame)
-				self:addSkinFrame{obj=_G.WorldMapFrame.BorderFrame, ft="u", kfs=true, nb=true, ofs=1}
+				self:skinObject("frame", {obj=_G.WorldMapFrame.BorderFrame, fType=ftype, kfs=true, ofs=1})
 				-- make sure map textures are displayed
 				_G.WorldMapFrame.BorderFrame.sf:SetFrameStrata("LOW")
 			end
@@ -2013,8 +2026,8 @@ aObj.ClassicSupport = function(self)
 				self:skinObject("dropdown", {obj=_G.WorldMapZoneMinimapDropDown, fType=ftype})
 			end
 			if self.modBtns then
-				self:skinStdButton{obj=_G.WorldMapZoomOutButton, fType=ftype}
 				self:skinCloseButton{obj=_G.WorldMapFrameCloseButton, fType=ftype}
+				self:skinStdButton{obj=_G.WorldMapZoomOutButton, fType=ftype}
 			end
 
 			self:Unhook(this, "OnShow")

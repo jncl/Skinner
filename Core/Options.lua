@@ -555,12 +555,20 @@ aObj.SetupOptions = function(self)
 				end
 			end,
 			set = function(info, r, g, b, a)
+				local c
+				if info[#info]:find("ClassClr") then
+					if self.isClsc then
+						c = {_G.GetClassColorObj(self.uCls):GetRGBA()}
+					else
+						c = {_G.C_ClassColor.GetClassColor(self.uCls):GetRGBA()}
+					end
+				end
 				if info[#info] == "ClassClrBd" then
 					db[info[#info]] = r
 					if r then
-						db.BackdropBorder:SetRGBA(_G.C_ClassColor.GetClassColor(self.uCls):GetRGBA())
+						db.BackdropBorder:SetRGBA(c[1], c[2], c[3], 1)
 						if _G.IsAddOnLoaded("Baggins") then
-							db.BagginsBBC:SetRGBA(_G.C_ClassColor.GetClassColor(self.uCls):GetRGBA())
+							db.BagginsBBC:SetRGBA(c[1], c[2], c[3], 1)
 						end
 					else
 						db.BackdropBorder:SetRGBA(dflts.BackdropBorder:GetRGBA())
@@ -571,27 +579,28 @@ aObj.SetupOptions = function(self)
 				elseif info[#info] == "ClassClrBg" then
 					db[info[#info]] = r
 					if r then
-						db.Backdrop:SetRGBA(_G.C_ClassColor.GetClassColor(self.uCls):GetRGBA())
+						db.Backdrop:SetRGBA(c[1], c[2], c[3], 1)
 					else
 						db.Backdrop:SetRGBA(dflts.Backdrop:GetRGBA())
 					end
 				elseif info[#info] == "ClassClrGr" then
 					db[info[#info]] = r
 					if r then
-						db.GradientMax:SetRGBA(_G.C_ClassColor.GetClassColor(self.uCls):GetRGBA())
+						db.GradientMax:SetRGBA(c[1], c[2], c[3], 1)
 					else
 						db.GradientMax:SetRGBA(dflts.GradientMax:GetRGBA())
 					end
 				elseif info[#info] == "ClassClrTT" then
 					db[info[#info]] = r
 					if r then
-						db.TooltipBorder:SetRGBA(_G.C_ClassColor.GetClassColor(self.uCls):GetRGBA())
+						db.TooltipBorder:SetRGBA(c[1], c[2], c[3], 1)
 					else
 						db.TooltipBorder:SetRGBA(dflts.TooltipBorder:GetRGBA())
 					end
 				else
 					db[info[#info]]:SetRGBA(r, g, b, a)
 				end
+				c = nil
 			end,
 			args = {
 				ClassClrBd = {
@@ -2140,7 +2149,6 @@ aObj.SetupOptions = function(self)
 				desc = aObj.L["Toggle the skinning of "] .. name,
 				width = name:len() > 22 and "double" or nil,
 			}
-			name2 = nil
 		end
 		for name, _ in _G.pairs(self.addonsToSkin) do
 			if self:isAddonEnabled(name) then
