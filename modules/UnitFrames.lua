@@ -252,11 +252,10 @@ function module:skinPetF()
 		    return
 		end
 
-		-- self:SecureHookScript(_G.PetFrame, "OnShow", function(this)
+		self:SecureHookScript(_G.PetFrame, "OnShow", function(this)
 			_G.PetPortrait:SetDrawLayer("BORDER") -- move portrait to BORDER layer, so it is displayed
 			-- N.B. DON'T move the frame as it causes taint
-			self:skinUnitButton{obj=_G.PetFrame, ti=true, x1=1}
-			-- self:skinUnitButton{obj=this, ti=true, x1=1}
+			self:skinUnitButton{obj=this, ti=true, x1=1}
 
 			_G.PetFrameTexture:SetAlpha(0) -- texture file is changed dependant upon in vehicle or not
 			_G.PetAttackModeTexture:SetTexture(nil)
@@ -274,8 +273,8 @@ function module:skinPetF()
 				end
 			end
 
-			-- self:Unhook(this, "OnShow")
-		-- end)
+			self:Unhook(this, "OnShow")
+		end)
 
 		if db.petspec then
 			-- Add pet spec icon to pet frame, if required
