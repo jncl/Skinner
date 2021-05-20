@@ -634,7 +634,7 @@ aObj.blizzFrames[ftype].CharacterFrames = function(self)
 	self:SecureHookScript(_G.CharacterFrame, "OnShow", function(this)
 		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true, offsets={x1=8, y1=self.isTT and 2 or -3, x2=-8, y2=2}})
 		self:removeInset(this.InsetRight)
-		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true})
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, x2=3})
 
 		self:Unhook(this, "OnShow")
 	end)
