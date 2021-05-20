@@ -14,7 +14,7 @@ end
 
 local buildInfo = {
 	classic_beta = {"2.5.1", 38707},
-	classic_ptr  = {"2.5.1", 38707},
+	classic_ptr  = {"2.5.1", 38739},
 	classic_bc   = {"2.5.1", 38707},
 	classic      = {"1.13.7", 38704},
 	retail_beta  = {"10.0.0", 99999},
@@ -64,9 +64,9 @@ function aObj:checkVersion()
 	-- indicate we're on ClassicPTR if on Classic Beta
 	self.isClscPTR = self.isClscPTR or self.isClscBeta
 	-- indicate we're on ClassicBC if on Classic Beta
-	self.isClscBC  = self.isClscBC or self.isClscBeta
-	-- indicate we're on Classic if on Classic BC/PTR/Beta
-	self.isClsc    = self.isClsc or self.isClscBC or self.isClscPTR or self.isClscBeta
+	self.isClscBC  = self.isClscBC or self.isClscPTR or self.isClscBeta
+	-- indicate we're on Classic if on Classic BC
+	self.isClsc    = self.isClsc or self.isClscBC
 	-- handle Beta changes in PTR or Live
 	self.isRetBeta = self.isRetBeta or self.isRetPTR and _G.tonumber(buildInfo.curr[4]) > 100000
 	-- handle PTR changes going Live
