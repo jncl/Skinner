@@ -1334,7 +1334,7 @@ function aObj:SetupCmds()
 		end
 		local function getChildren(frame, lvl)
 			if not showKids then return end
-			if _G.type(lvl) == "string" and lvl:find("c") == 2 and noDepth then return end
+			if lvl > 1 and noDepth then return end
 			for k, child in _G.ipairs{frame:GetChildren()} do
 				local objType = child:GetObjectType()
 				showIt("[lvl%sc%s : %s : %s : %s : %s : %s]", lvl, k, child, child.GetWidth and _G.Round(child:GetWidth()) or "nil", child.GetHeight and _G.Round(child:GetHeight()) or "nil", child:GetFrameLevel() or "nil", child:GetFrameStrata() or "nil")
@@ -1345,7 +1345,7 @@ function aObj:SetupCmds()
 				or objType == "ScrollFrame"
 				then
 					getRegions(child, lvl .. "c" .. k)
-					getChildren(child, lvl .. "c" .. k)
+					getChildren(child, lvl + k)
 				end
 			end
 		end
@@ -1371,17 +1371,17 @@ function aObj:SetupCmds()
 	self:RegisterChatCommand("pin", function(msg) _G.print(msg, "is item:", (_G.GetItemInfoFromHyperlink(msg))) end)
 	self:RegisterChatCommand("rl", function() _G.C_UI.Reload() end)
 	self:RegisterChatCommand("si1", function(msg) showInfo(getObj(msg), true, true) end) -- 1 level only
-	self:RegisterChatCommand("si1gp", function(msg) showInfo(getObjGP(msg), true, false) end) -- 1 level only
 	self:RegisterChatCommand("si1p", function(msg) showInfo(getObjP(msg), true, true) end) -- 1 level only
+	self:RegisterChatCommand("si1gp", function(msg) showInfo(getObjGP(msg), true, true) end) -- 1 level only
 	self:RegisterChatCommand("sid", function(msg) showInfo(getObj(msg), true, false) end) -- detailed
-	self:RegisterChatCommand("sidgp", function(msg) showInfo(getObjGP(msg), true, false) end) -- detailed
 	self:RegisterChatCommand("sidp", function(msg) showInfo(getObjP(msg), true, false) end) -- detailed
+	self:RegisterChatCommand("sidgp", function(msg) showInfo(getObjGP(msg), true, false) end) -- detailed
 	self:RegisterChatCommand("sir", function(msg) showInfo(getObj(msg), false, false) end) -- regions only
-	self:RegisterChatCommand("sirgp", function(msg) showInfo(getObjGP(msg), false, false) end) -- regions only
 	self:RegisterChatCommand("sirp", function(msg) showInfo(getObjP(msg), false, false) end) -- regions only
+	self:RegisterChatCommand("sirgp", function(msg) showInfo(getObjGP(msg), false, false) end) -- regions only
 	self:RegisterChatCommand("sspew", function(msg) return _G.Spew and _G.Spew(msg, getObj(msg)) end)
-	self:RegisterChatCommand("sspewgp", function(msg) return _G.Spew and _G.Spew(msg, getObjGP(msg)) end)
 	self:RegisterChatCommand("sspewp", function(msg) return _G.Spew and _G.Spew(msg, getObjP(msg)) end)
+	self:RegisterChatCommand("sspewgp", function(msg) return _G.Spew and _G.Spew(msg, getObjGP(msg)) end)
 
 	self:RegisterChatCommand("shc", function(msg) self:Debug("Hooks table Count: [%s]", self:tableCount(self.hooks)) end)
 
