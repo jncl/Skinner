@@ -68,10 +68,11 @@ function aObj:checkVersion()
 	-- indicate we're on Classic if on Classic BC
 	self.isClsc    = self.isClsc or self.isClscBC
 	-- handle Beta changes in PTR or Live
-	self.isRetBeta = self.isRetBeta or self.isRetPTR and _G.tonumber(buildInfo.curr[4]) > 100000
+	self.isClscBeta = self.isClscBeta or self.isClscPTR and buildInfo.curr[1] > buildInfo.classic_ptr[1]
+	self.isRetBeta = self.isRetBeta or self.isRetPTR and buildInfo.curr[1] > buildInfo.retail_ptr[1]
 	-- handle PTR changes going Live
-	self.isClscPTR = self.isClscPTR or self.isPatch and self.isClsc and _G.tonumber(buildInfo.curr[1]) > _G.tonumber(buildInfo.classic[1])
-	self.isRetPTR  = self.isRetPTR or self.isPatch and self.isRet and _G.tonumber(buildInfo.curr[1]) > _G.tonumber(buildInfo.retail[1])
+	self.isClscPTR = self.isClscPTR or self.isPatch and self.isClscBC and buildInfo.curr[1] > buildInfo.classic_bc[1]
+	self.isRetPTR  = self.isRetPTR or self.isPatch and self.isRet and buildInfo.curr[1] > buildInfo.retail[1]
 
 	buildInfo = nil
 
