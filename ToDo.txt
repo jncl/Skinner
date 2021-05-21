@@ -14,7 +14,6 @@ ToDos
 		- use UI-LFG-ICON-ROLES.BLP as source for all, size them as required
 
 ?	O	Eliminate bugs from skinning the PartyFrames, BossFrames, TargetFrameToT
-≈		- Use 'SecureHandlerShowHideTemplate' to see if it makes a difference
 
 ≈	O	Rename variables and use function for colours
 		- self.bColour to self.bClr
@@ -26,8 +25,16 @@ ToDos
 
 ?	O	Refactor Communities code
 
-	I	PlayerTalentFrame, reported by Moxieface, 05.05.21
-√		- Skinner\Core\UtilFuncs.lua:214: attempt to index local 'obj' (a nil value)
-		[string "@Skinner\Core\UtilFuncs.lua"]:214: in function `changeRecTex'
-		[string "@Skinner\Core\PlayerFrames.lua"]:4352: in function <Skinner\Core\PlayerFrames.lua:4336>
-		[string "@Skinner\Core\PlayerFrames.lua"]:4370: in function <Skinner\Core\PlayerFrames.lua:4369>
+	I/C	Missing localisation entry, reported by EpidemeDaBear/amey0, 20.05.21
+√		- AceLocale-3.0-6: Skinner: Missing entry for 'Arena Frame'
+		[string "@Skinner\ClassicSupport\ClassicSupport.lua"]:150:
+		in function <...aceSkinner\ClassicSupport\ClassicSupport.lua:90>
+		
+	I	Inventorian, reported by EpidemeDaBear, 20.05.21
+≈		- Skinner\AddonSkins\Inventorian-2.5.1.1.lua:16: attempt to index field 'Border' (a nil value)
+		[string "@Skinner\AddonSkins\Inventorian-2.5.1.1.lua"]:38:
+		in function <Skinner\AddonSkins\Inventorian.lua:5>
+		
+	I	Version check code, reported by amey0, 20.05.21
+		- causes errors when patched, buildinfo.*[1] is NOT a number but a string
+		
