@@ -1,3 +1,39 @@
+beta9.38739.1
+Jncl:
+	ToDo.txt
+	Update version numbers and version checks
+	Update PetFrame skin
+	Update CharacterFrame skin
+	Added LibBabbleZone to .gitignore
+	Various Frames skin code changes
+	Classic Support changes
+	Updated UIButtons code for expand buttons
+	Retail PTR changes
+	Burning Crusade Classic changes
+	Dont't remove Inset & NineSlice from frames by default
+	Updated Bugger, Cork & Leatrix_Plus skins
+	Split Utility functions into SharedFuncs & UtilFuncs files
+	Added support files for Classic BC
+	Added ToDo*PTR files to repo
+	Updated .pkgmeta files to ignore ToDo text files
+	Updated .gitignore
+	Updated UIButton highlight texture change function
+	Added testing check code
+	Refactored code
+	Updated QuestFrame skin
+	Updated CovenantSanctum skin
+	Update BankItemsSearchBox code
+	Update Tabs already skinned check
+	Bugfix for TexturedTabs selection
+	Update frame inset check
+	Don't default frame backdrop border colour
+	Updated MissionPage skinning code
+	Updated VenturePlan skin
+	Add PTR ToDo files to .gitignore
+	Bugfix for TalentUI
+	Move GMSurveyUI code into ClassicSupport
+	Indent build keywords for code folding
+	
 beta9.38134.4
 Jncl:
 	ToDo.txt
