@@ -34,7 +34,6 @@ local addonSkins = {
 	"CensusPlus", "Chatter",
 	"Examiner",
 	"FlaresThatWork", "FramesResized",
-	"Inventorian",
 	"Livestock", "ls_Toasts",
 	"MogIt",
 	"Notes",

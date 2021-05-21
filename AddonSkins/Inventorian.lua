@@ -1,53 +1,66 @@
-local aName, aObj = ...
+local _, aObj = ...
 if not aObj:isAddonEnabled("Inventorian") then return end
 local _G = _G
 
-function aObj:Inventorian()
+aObj.addonsToSkin.Inventorian = function(self) -- v 9.0.5.0
 
 	local Inventorian = _G.LibStub("AceAddon-3.0"):GetAddon("Inventorian", true)
 
 	local function skinFrame(frame)
-
-		aObj:skinEditBox{obj=frame.SearchBox, regs={1, 6, 7}, mi=true}
-		aObj:addButtonBorder{obj=frame.SortButton}
-		-- N.B. item is named incorrectly
-		_G[frame:GetName()].BagToggle = aObj:getChild(frame, 8)
-		aObj:addButtonBorder{obj=frame.BagToggle, relTo=frame.BagToggle.Icon}
-		frame.BagToggle.Border:SetTexture(nil)
-		aObj:addSkinFrame{obj=frame, kfs=true, ri=true, ofs=2, y1=3, y2=-3}
-		-- Bags
-		if #frame.bagButtons == 0 then
-			-- hook this when no buttons have been created yet
-			aObj:SecureHook(frame, "UpdateBags", function(this)
-				if #this.bagButtons > 0 then
-					for _, bag in pairs(this.bagButtons) do
-						aObj:addButtonBorder{obj=bag}
-					end
-					aObj:Unhook(this, "UpdateBags")
-				end
+		aObj:skinObject("editbox", {obj=frame.SearchBox, si=true})
+		-- N.B. item is named incorrectly [$pargenBagToggle]
+		local bt = aObj:getChild(frame, 9)
+		bt.Border:SetTexture(nil)
+		aObj:skinObject("frame", {obj=frame, kfs=true, ri=true, rns=true, cb=true, ofs=2, x2=3})
+		if aObj.modBtnBs then
+			aObj:addButtonBorder{obj=frame.SortButton}
+			aObj:SecureHook(frame.SortButton, "Disable", function(this, _)
+				aObj:clrBtnBdr(this)
 			end)
-		else
-			for _, bag in pairs(frame.bagButtons) do
-				aObj:addButtonBorder{obj=bag}
-			end
+			aObj:SecureHook(frame.SortButton, "Enable", function(this, _)
+				aObj:clrBtnBdr(this)
+			end)
+			aObj:addButtonBorder{obj=bt, relTo=bt.Icon}
 		end
-		frame = nil
+		bt = nil
 	end
 
-	-- BagFrame
 	skinFrame(Inventorian.bag)
+	if self.modBtnBs then
+		self:SecureHook(Inventorian.bag, "ShowFrame", function(this)
+			for _, btn in _G.pairs(this.itemContainer.items) do
+				self:addButtonBorder{obj=btn, ibt=true, reParent={_G[btn:GetName() .. "IconQuestTexture"]}, clr="grey"}
+			end
+		end)
+	end
 
-	-- BankFrame
 	skinFrame(Inventorian.bank)
-	self:skinTabs{obj=Inventorian.bank, lod=true}
-
-	-- hook this to handle item border changes
-	self:SecureHook("SetItemButtonTextureVertexColor", function(btn, r, g, b)
-		if btn:IsObjectType("Button")
-		and btn.sbb
-		then
-			btn.sbb:SetBackdropBorderColor(self.bbColour[1], self.bbColour[2], self.bbColour[3], self.bbColour[4])
+	self:skinObject("tabs", {obj=Inventorian.bank, tabs=Inventorian.bank.tabs, lod=self.isTT and true})
+	if self.modBtns then
+		self:skinStdButton{obj=Inventorian.bank.DepositButton}
+		self:SecureHook(Inventorian.bank.DepositButton, "Disable", function(this, _)
+			self:clrBtnBdr(this)
+		end)
+		self:SecureHook(Inventorian.bank.DepositButton, "Enable", function(this, _)
+			self:clrBtnBdr(this)
+		end)
+	end
+	if self.modBtnBs then
+		self:SecureHook(Inventorian.bank, "ShowFrame", function(this)
+			for _, btn in _G.pairs(this.itemContainer.items) do
+				self:addButtonBorder{obj=btn, ibt=true, reParent={_G[btn:GetName() .. "IconQuestTexture"]}, clr="grey"}
+			end
+		end)
+	end
+	if not _G.IsReagentBankUnlocked() then
+		_G.ReagentBankFrameUnlockInfo:DisableDrawLayer("BORDER")
+		if self.modBtns then
+			self:skinStdButton{obj=_G.ReagentBankFrameUnlockInfoPurchaseButton}
 		end
-	end)
+	end
+
+	-- TODO:
+		-- skin bag buttons
+		-- refresh items button borders after sort
 
 end
