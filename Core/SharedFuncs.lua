@@ -18,7 +18,7 @@ local buildInfo = {
 	classic_bc   = {"2.5.1", 38741},
 	classic      = {"1.13.7", 38704},
 	retail_beta  = {"10.0.0", 99999},
-	retail_ptr   = {"9.1.0", 38709}, 
+	retail_ptr   = {"9.1.0", 38802}, 
 	retail       = {"9.0.5", 38556},
 	curr         = {_G.GetBuildInfo()},
 }
