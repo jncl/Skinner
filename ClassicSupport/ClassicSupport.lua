@@ -1048,10 +1048,12 @@ aObj.ClassicSupport = function(self)
 
 			if self.modBtns then
 				self:SecureHook("GuildStatus_Update", function()
-					self:clrBtnBdr(_G.GuildFramePromoteButton)
-					self:clrBtnBdr(_G.GuildFrameDemoteButton)
-					self:clrBtnBdr(_G.GuildMemberRemoveButton)
-					self:clrBtnBdr(_G.GuildMemberGroupInviteButton)
+					if _G.GuildMemberDetailFrame.sf then
+						self:clrBtnBdr(_G.GuildFramePromoteButton)
+						self:clrBtnBdr(_G.GuildFrameDemoteButton)
+						self:clrBtnBdr(_G.GuildMemberRemoveButton)
+						self:clrBtnBdr(_G.GuildMemberGroupInviteButton)
+					end
 					self:clrBtnBdr(_G.GuildFrameControlButton)
 					self:clrBtnBdr(_G.GuildFrameAddMemberButton)
 				end)
