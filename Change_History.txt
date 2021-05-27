@@ -1,3 +1,13 @@
+beta9.38757.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Bugfix for version checks code
+	Updated Inventorian skin
+	Updated Debug code
+	Updated UIButtons code
+	
 beta9.38739.1
 Jncl:
 	ToDo.txt
