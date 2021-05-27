@@ -2,7 +2,7 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("Auctionator") then return end
 local _G = _G
 
-aObj.addonsToSkin.Auctionator = function(self) -- v 9.0.3.1/100.0.9
+aObj.addonsToSkin.Auctionator = function(self) -- v 9.0.3.1/100.0.11
 
 	local skinFrames, skinConfigFrames
 	local pCnt = 0
@@ -11,18 +11,25 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 9.0.3.1/100.0.9
 		function skinFrames()
 			-- Classic version
 			-- Buy Tab
-			aObj:skinDropDown{obj=_G.Atr_DropDownSL}
-			aObj:skinEditBox{obj=_G.Atr_Search_Box, regs={6}} -- 6 is text
-			-- Atr_Hlist_ScrollFrame
-			aObj:addSkinFrame{obj=_G.Atr_Hlist, ft="a", kfs=true, nb=true, x2=24}
+			aObj:skinObject("dropdown", {obj=_G.Atr_DropDownSL})
+			aObj:skinObject("editbox", {obj=_G.Atr_Search_Box})
+			aObj:skinObject("slider", {obj=_G.Atr_Hlist_ScrollFrame.ScrollBar})
+			aObj:skinObject("frame", {obj=_G.Atr_Hlist, kfs=true, fb=true, x1=-5, x2=9})
+			_G.Atr_Hlist.SetBackdrop = _G.nop
 			_G.Atr_HeadingsBarMiddle:SetTexture(nil)
-			aObj:applySkin{obj=_G.Atr_Col1_Heading_Button}
-			aObj:applySkin{obj=_G.Atr_Col3_Heading_Button}
+			aObj:skinObject("frame", {obj=_G.Atr_Col1_Heading_Button, ofs=0})
+			aObj:skinObject("frame", {obj=_G.Atr_Col3_Heading_Button, ofs=0})
+			aObj:skinObject("slider", {obj=_G.AuctionatorScrollFrame.ScrollBar})
 			if aObj.modBtns then
 				aObj:skinStdButton{obj=_G.Atr_Search_Button}
 				aObj:skinStdButton{obj=_G.Auctionator1Button, y2=0}
+				aObj:adjHeight{obj=_G.Auctionator1Button, adj=2}
 				aObj:skinStdButton{obj=_G.Atr_FullScanButton, y1=0}
+				aObj:adjHeight{obj=_G.Atr_FullScanButton, adj=2}
 				aObj:skinStdButton{obj=_G.Atr_Back_Button}
+				aObj:adjHeight{obj=_G.Atr_Back_Button, adj=2}
+				aObj:skinStdButton{obj=_G.Atr_SaveThisList_Button}
+				aObj:adjHeight{obj=_G.Atr_SaveThisList_Button, adj=2}
 				aObj:skinStdButton{obj=_G.Atr_AddToSListButton, x2=0}
 				aObj:skinStdButton{obj=_G.Atr_RemFromSListButton, x1=0, x2=0}
 				aObj:skinStdButton{obj=_G.Atr_SrchSListButton}
@@ -66,12 +73,12 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 9.0.3.1/100.0.9
 			aObj:skinMoneyFrame{obj=_G.Atr_StackPrice}
 			aObj:skinMoneyFrame{obj=_G.Atr_ItemPrice}
 			aObj:skinMoneyFrame{obj=_G.Atr_StartingPrice}
-			aObj:skinEditBox{obj=_G.Atr_Batch_NumAuctions, regs={6}} -- 6 is text
-			aObj:skinEditBox{obj=_G.Atr_Batch_Stacksize, regs={6}} -- 6 is text
-			aObj:skinDropDown{obj=_G.Atr_Duration}
+			aObj:skinObject("editbox", {obj=_G.Atr_Batch_NumAuctions})
+			aObj:skinObject("editbox", {obj=_G.Atr_Batch_Stacksize})
+			aObj:skinObject("dropdown", {obj=_G.Atr_Duration})
 			aObj:moveObject{obj=_G.Atr_Duration, x=40}
-			aObj:addSkinFrame{obj=_G.Atr_Hilite1, ft="a", kfs=true, nb=true, x1=10}
-			aObj:skinTabs{obj=_G.Atr_ListTabs, ignore=true, up=true, lod=true, x1=0, y1=-4, x2=0, y2=-2}
+			aObj:skinObject("frame", {obj=_G.Atr_Hilite1, kfs=true, fb=true})
+			aObj:skinObject("tabs", {obj=_G.Atr_ListTabs, prefix=_G.Atr_ListTabs:GetName(), ignoreSize=true, lod=self.isTT and true, upwards=true,  offsets={x1=4, y1=-4, x2=-4, y2=-4}})
 			if aObj.modBtns then
 				aObj:skinStdButton{obj=_G.Atr_CreateAuctionButton}
 				aObj:SecureHook("Atr_UpdateUI_SellPane", function()
@@ -91,7 +98,7 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 9.0.3.1/100.0.9
 				pCnt = pCnt + 1
 				panel:SetBackdrop(nil)
 				if panel.name == "Basic Options" then
-					aObj:skinDropDown{obj=_G.AuctionatorOption_Deftab, x1=17, x2=109}
+					aObj:skinObject("dropdown", {obj=_G.AuctionatorOption_Deftab, x1=17, x2=109})
 					if aObj.modChkBtns then
 						aObj:skinCheckButton{obj=_G.AuctionatorOption_Enable_Alt_CB}
 						aObj:skinCheckButton{obj=_G.AuctionatorOption_Enable_Autocomplete_CB}
@@ -99,8 +106,8 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 9.0.3.1/100.0.9
 						aObj:skinCheckButton{obj=_G.AuctionatorOption_Enable_Debug_CB}
 					end
 				elseif panel.name == "Tooltips" then
-					aObj:skinDropDown{obj=_G.Atr_tipsShiftDD, x1=17, x2=109}
-					aObj:skinDropDown{obj=_G.Atr_deDetailsDD, x2=29}
+					aObj:skinObject("dropdown", {obj=_G.Atr_tipsShiftDD, x1=17, x2=109})
+					aObj:skinObject("dropdown", {obj=_G.Atr_deDetailsDD, x2=29})
 					if aObj.modChkBtns then
 						aObj:skinCheckButton{obj=_G.ATR_tipsVendorOpt_CB}
 						aObj:skinCheckButton{obj=_G.ATR_tipsAuctionOpt_CB}
@@ -117,19 +124,22 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 9.0.3.1/100.0.9
 					aObj:skinMoneyFrame{obj=_G.UC_10000_MoneyInput}
 					aObj:skinMoneyFrame{obj=_G.UC_2000_MoneyInput}
 					aObj:skinMoneyFrame{obj=_G.UC_500_MoneyInput}
-					aObj:skinEditBox{obj=_G.Atr_Starting_Discount, regs={6}} -- 6 is text
+					aObj:skinObject("editbox", {obj=_G.Atr_Starting_Discount})
 					if aObj.modBtns then
 						aObj:skinStdButton{obj=_G.Atr_UCConfigFrame_Reset}
 					end
 				elseif panel.name == "Selling" then
-					aObj:addSkinFrame{obj=_G.Atr_Stacking_List, ft="a", kfs=true, nb=true}
-					aObj:skinEditBox{obj=_G.Atr_Mem_EB_itemName, regs={6}} -- 6 is text
-					aObj:skinDropDown{obj=_G.Atr_Mem_DD_numStacks}
-					aObj:skinEditBox{obj=_G.Atr_Mem_EB_stackSize, regs={6}} -- 6 is text
-					aObj:addSkinFrame{obj=_G.Atr_MemorizeFrame, ft="a", kfs=true, nb=true}
+					aObj:skinObject("frame", {obj=_G.Atr_Stacking_List, kfs=true,fb=true, ofs=0})
+					_G.Atr_Stacking_List.SetBackdrop = _G.nop
+					aObj:skinObject("editbox", {obj=_G.Atr_Mem_EB_itemName})
+					aObj:skinObject("dropdown", {obj=_G.Atr_Mem_DD_numStacks})
+					aObj:skinObject("editbox", {obj=_G.Atr_Mem_EB_stackSize})
+					aObj:skinObject("frame", {obj=_G.Atr_MemorizeFrame, kfs=true, ofs=0})
 					if aObj.modBtns then
 						aObj:skinStdButton{obj=_G.Atr_StackingOptionsFrame_Edit}
+						aObj:adjHeight{obj=_G.Atr_StackingOptionsFrame_Edit, adj=2}
 						aObj:skinStdButton{obj=_G.Atr_StackingOptionsFrame_New}
+						aObj:adjHeight{obj=_G.Atr_StackingOptionsFrame_New, adj=2}
 						aObj:skinStdButton{obj=_G.Atr_Mem_Forget}
 						aObj:skinStdButton{obj=_G.Atr_Mem_Cancel}
 						aObj:skinStdButton{obj=aObj:getPenultimateChild(_G.Atr_MemorizeFrame)} -- OKAY button
@@ -138,21 +148,22 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 9.0.3.1/100.0.9
 						end)
 					end
 				elseif panel.name == "Database" then
-					aObj:skinDropDown{obj=_G.Atr_scanLevelDD, x2=-71}
-					aObj:skinEditBox{obj=_G.Atr_ScanOpts_MaxHistAge, regs={6}} -- 6 is text
+					aObj:skinObject("dropdown", {obj=_G.Atr_scanLevelDD, x2=-71})
+					aObj:skinObject("editbox", {obj=_G.Atr_ScanOpts_MaxHistAge})
 				elseif panel.name == "Pulizia" then
 					if aObj.modBtns then
 						for _, btn in _G.pairs{panel:GetChildren()} do
 							aObj:skinStdButton{obj=btn}
 						end
 					end
-					aObj:addSkinFrame{obj=_G.Atr_ConfirmClear_Frame, ft="a", kfs=true, nb=true}
+					aObj:skinObject("frame", {obj=_G.Atr_ConfirmClear_Frame, kfs=true})
 					if aObj.modBtns then
 						aObj:skinStdButton{obj=_G.Atr_ClearConfirm_Cancel}
 						aObj:skinStdButton{obj=aObj:getPenultimateChild(_G.Atr_ConfirmClear_Frame)}
 					end
 				elseif panel.name == "Shopping Lists" then
-					aObj:addSkinFrame{obj=_G.Atr_ShpList_Frame, ft="a", kfs=true, nb=true}
+					aObj:skinObject("frame", {obj=_G.Atr_ShpList_Frame, kfs=true, fb=true})
+					_G.Atr_ShpList_Frame.SetBackdrop = _G.nop
 					if aObj.modBtns then
 						aObj:skinStdButton{obj=_G.Atr_ShpList_DeleteButton}
 						aObj:skinStdButton{obj=_G.Atr_ShpList_EditButton}
@@ -166,9 +177,9 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 9.0.3.1/100.0.9
 							aObj:clrBtnBdr(_G.Atr_ShpList_RenameButton)
 						end)
 					end
-					_G.Atr_ShpList_Edit_FrameScrollFrame:SetBackdrop(nil)
-					aObj:skinSlider{obj=_G.Atr_ShpList_Edit_FrameScrollFrame.ScrollBar, rt="artwork"}
-					aObj:addSkinFrame{obj=_G.Atr_ShpList_Edit_Frame, ft="a", kfs=true, nb=true}
+					-- _G.Atr_ShpList_Edit_FrameScrollFrame:SetBackdrop(nil)
+					aObj:skinObject("slider", {obj=_G.Atr_ShpList_Edit_FrameScrollFrame.ScrollBar, rpTex="artwork"})
+					aObj:skinObject("frame", {obj=_G.Atr_ShpList_Edit_Frame, kfs=true, ofs=0})
 					if aObj.modBtns then
 						aObj:skinStdButton{obj=aObj:getChild(_G.Atr_ShpList_Edit_Frame, _G.Atr_ShpList_Edit_Frame:GetNumChildren() - 4)} -- cancel button
 						aObj:skinStdButton{obj=_G.Atr_ShpList_ImportSaveBut}

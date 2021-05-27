@@ -61,7 +61,7 @@ aObj.addonsToSkin["Classic Quest Log"] = function(self)
 
 			self:Unhook(this, "OnShow")
 		end)
-	else -- v 2.0.3
+	else -- v 2.0.4
 		self:SecureHookScript(_G.ClassicQuestLog, "OnShow", function(this)
 			this:DisableDrawLayer("BACKGROUND")
 			this.log:DisableDrawLayer("BACKGROUND")
@@ -71,7 +71,7 @@ aObj.addonsToSkin["Classic Quest Log"] = function(self)
 			this.detail:DisableDrawLayer("ARTWORK")
 			self:skinObject("slider", {obj=this.detail.ScrollBar})
 			this.detail.DetailBG:SetTexture(nil)
-			self:skinObject("frame", {obj=this, kfs=true, ri=true, cb=true, y1=2, x2=3})
+			self:skinObject("frame", {obj=this, kfs=true, ri=true, rns=true, cb=true, y1=2, x2=3})
 		    if self.modBtns then
 		        local function qlUpd()
 		            if _G.InCombatLockdown() then
