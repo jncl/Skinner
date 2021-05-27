@@ -2543,7 +2543,7 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 			self:Unhook(this, "OnShow")
 		end)
 		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true, offsets={x1=8, y1=self.isTT and 1 or -4, x2=-8, y2=4}})
-		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, cb=true, x2=3, y2=-3})
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, x2=3, y2=-3})
 		self:add2Table(self.ttList, _G.FriendsTooltip)
 
 		self:Unhook(this, "OnShow")
