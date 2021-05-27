@@ -78,6 +78,7 @@
 <Script file="ElvUI.lua"/>
 <Script file="EnhancedStackSplit.lua"/>
 <Script file="ERC.lua"/>
+<Script file="EveryGoldToBanker.lua"/>
 <Script file="Examiner.lua"/>
 <Script file="ExtendedCharacterStats.lua"/>
 <Script file="FishingBuddy.lua"/>
