@@ -5,7 +5,7 @@ ToDos
 	≈ is Alt+x		- indicates partially completed or dry-coded
 	x				- indicates nothing to change
 	¶ is Alt+7		- indicates localisation changes required
-	S/N/I/U/O/C/B	- Skin request/New Version/Issue(Bug)/Unobsolete skin/Other changes/Classic/Beta
+	S/N/I/U/O/C/B	- Skin request/New Version/Issue(Bug)/Unobsolete skin/Other changes/Classic/Burning Crusade Classic
 
 ≈	O	Rework how AddOn skins are handled
 		- replace table in AddonFrames with individual entries in each skin file
@@ -25,16 +25,26 @@ ToDos
 
 ?	O	Refactor Communities code
 
-	I/C	Missing localisation entry, reported by EpidemeDaBear/amey0, 20.05.21
-√		- AceLocale-3.0-6: Skinner: Missing entry for 'Arena Frame'
-		[string "@Skinner\ClassicSupport\ClassicSupport.lua"]:150:
-		in function <...aceSkinner\ClassicSupport\ClassicSupport.lua:90>
+√	I	Friends Frame has NineSlice, reported by therealdeerez/Fakelessgaming, 21.05.21
+	
+√	I	Classic Quest Frame has NineSlice, reported by therealdeerez, 21.05.21
+
+	I	ProgressBar, reported by Fakelessgaming, 22.05.21
+?		- LHS texture visible
+
+	I/B LeatrixPlus, reported by SinbaTV/GnomeTW, 22.05.21
+√		- Interface\AddOns\Skinner\Modules\UIButtons.lua:518: attempt to index field 'obj' (a nil value)
+		Stack: Interface\AddOns\Skinner\Modules\UIButtons.lua:518: attempt to index field 'obj' (a nil value)
+		[string "@Interface\AddOns\Skinner\AddonSkins\Leatrix_Plus.lua"]:73: in function <Interface\AddOns\Skinner\AddonSkins\Leatrix_Plus.lua:5>
+	
+	I/B GuildTab, reported by SinbaTV, 22.05.21
+≈		- Interface\AddOns\Skinner\Core\UtilFuncs.lua:368: attempt to call method 'SetBackdropBorderColor' (a nil value)
+		Stack: Interface\AddOns\Skinner\Core\UtilFuncs.lua:368: attempt to call method 'SetBackdropBorderColor' (a nil value)
+		[string "@Interface\AddOns\Skinner\Core\UtilFuncs.lua"]:368: in function `clrBBC'
+		[string "@Interface\AddOns\Skinner\Modules\UIButtons.lua"]:232: in function `clrBtnBdr'
+		[string "@Interface\AddOns\Skinner\ClassicSupport\ClassicSupport.lua"]:1051: in function <...ace\AddOns\Skinner\ClassicSupport\ClassicSupport.lua:1050>
 		
-	I	Inventorian, reported by EpidemeDaBear, 20.05.21
-≈		- Skinner\AddonSkins\Inventorian-2.5.1.1.lua:16: attempt to index field 'Border' (a nil value)
-		[string "@Skinner\AddonSkins\Inventorian-2.5.1.1.lua"]:38:
-		in function <Skinner\AddonSkins\Inventorian.lua:5>
-		
-	I	Version check code, reported by amey0, 20.05.21
-		- causes errors when patched, buildinfo.*[1] is NOT a number but a string
-		
+√	S	EveryGoldToBanker, requested by amey0, 23.05.21
+	
+√	S/B	Auctionator ClassicFix, requested by amey0, 26.05.21
+	
