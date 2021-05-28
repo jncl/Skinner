@@ -311,7 +311,7 @@ aObj.ClassicSupport = function(self)
 				_G[button:GetName() .. "NormalTexture"]:SetAlpha(0)
 			end)
 			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true})
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true, cb=true, x1=10, y1=-11, y2=8})
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true, cb=true, x1=10, y1=-11, x2=3, y2=8})
 			self:moveObject{obj=_G.AuctionFrameCloseButton, x=3}
 			-- AuctionFrame Browse
 			for i = 1, _G.NUM_FILTERS_TO_DISPLAY do
