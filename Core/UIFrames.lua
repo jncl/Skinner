@@ -910,13 +910,11 @@ aObj.blizzLoDFrames[ftype].AnimaDiversionUI = function(self)
 
 	-- FIXME: ScrollContainer moves to the right when Anima flowing
 	self:SecureHookScript(_G.AnimaDiversionFrame, "OnShow", function(this)
-		self:removeNineSlice(this.NineSlice)
 		self:keepFontStrings(this.BorderFrame)
 		this.CloseButton.Border:SetTexture(nil)
 		this.AnimaDiversionCurrencyFrame:DisableDrawLayer("BACKGROUND")
-		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, clr="sepia", x1=-4, y1=3, x2=2, y2=-5})
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true, cbns=true, clr="sepia", x1=-4, y1=3, x2=2, y2=-5})
 		if self.modBtns then
-			self:skinCloseButton{obj=this.CloseButton , noSkin=true}
 			self:skinStdButton{obj=this.ReinforceInfoFrame.AnimaNodeReinforceButton}
 			self:SecureHook(this.ReinforceInfoFrame.AnimaNodeReinforceButton, "Disable", function(this, _)
 				self:clrBtnBdr(this)
@@ -3678,7 +3676,7 @@ aObj.blizzFrames[ftype].ItemText = function(self)
 		aObj:skinStatusBar{obj=_G.ItemTextStatusBar, fi=0}
 		aObj:moveObject{obj=_G.ItemTextPrevPageButton, x=-55}
 		if not aObj.isClsc then
-			aObj:skinObject("frame", {obj=frame, fType=ftype, kfs=true, ri=true, cb=true, x2=3})
+			aObj:skinObject("frame", {obj=frame, fType=ftype, kfs=true, ri=true, rns=true, cb=true, x2=3})
 		else
 			aObj:skinObject("frame", {obj=frame, fType=ftype, kfs=true, x1=10, y1=-12, x2=-31, y2=60})
 			if aObj.modBtns then
@@ -5347,12 +5345,11 @@ aObj.blizzLoDFrames[ftype].PlayerChoiceUI = function(self)
 		frame.sf:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", x2Ofs, y2Ofs)
 	end
 	self:SecureHookScript(_G.PlayerChoiceFrame, "OnShow", function(this)
-		self:removeNineSlice(this.NineSlice)
 		this.BlackBackground:DisableDrawLayer("BACKGROUND")
 		this.BorderFrame:DisableDrawLayer("BORDER")
 		this.Background:DisableDrawLayer("BACKGROUND")
 		this.Title:DisableDrawLayer("BACKGROUND")
-		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cbns=true, clr="sepia", ofs=0})
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true, cbns=true, clr="sepia", ofs=0})
 
 		-- Option 1-4
 			-- RewardsFrame
@@ -6100,13 +6097,11 @@ aObj.blizzLoDFrames[ftype].SubscriptionInterstitialUI = function(self)
 	self.initialized.SubscriptionInterstitialUI = true
 
 	self:SecureHookScript(_G.SubscriptionInterstitialFrame, "OnShow", function(this)
-
 		this:DisableDrawLayer("BACKGROUND")
-		self:removeNineSlice(this.NineSlice)
 		this.ShadowOverlay:DisableDrawLayer("OVERLAY")
 		-- .SubscribeButton
 		-- .UpgradeButton
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, ofs=1, x2=2}
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, rns=true, ofs=1, x2=2}
 		if self.modBtns then
 			self:skinStdButton{obj=this.ClosePanelButton}
 		end
@@ -6836,10 +6831,6 @@ aObj.blizzLoDFrames[ftype].WeeklyRewards = function(self)
 	self.initialized.WeeklyRewards = true
 
 	self:SecureHookScript(_G.WeeklyRewardsFrame, "OnShow", function(this)
-
-		self:removeNineSlice(this.NineSlice)
-		-- this.HeaderFrame:DisableDrawLayer("BACKGROUND")
-		-- this.HeaderFrame:DisableDrawLayer("BORDER")
 		self:skinObject("frame", {obj=this.HeaderFrame, fType=ftype, kfs=true, fb=true, clr="topaz"})
 		for _, frame in _G.pairs{"RaidFrame", "MythicFrame", "PVPFrame"} do
 			self:skinObject("frame", {obj=this[frame], fType=ftype, kfs=true, fb=true, ofs=3, clr="topaz"})
@@ -6865,7 +6856,7 @@ aObj.blizzLoDFrames[ftype].WeeklyRewards = function(self)
 			-- .RewardsFrame
 			-- .UnselectedFrame
 
-		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cbns=true, ofs=-5, clr="sepia"})
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true, cbns=true, ofs=-5, clr="sepia"})
 		if self.modBtns then
 			self:skinStdButton{obj=this.SelectRewardButton}
 		end

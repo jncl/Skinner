@@ -47,6 +47,27 @@ aObj.blizzLoDFrames[ftype].AuctionHouseUI = function(self)
 	self.initialized.AuctionHouseUI = true
 
 	self:SecureHookScript(_G.AuctionHouseFrame, "OnShow", function(this)
+		self:removeInset(self:getChild(this, 3)) -- MerchantMoneyInset
+		this.MoneyFrameBorder:DisableDrawLayer("BACKGROUND")
+		this.MoneyFrameBorder:DisableDrawLayer("BORDER")
+		if self.modBtnBs then
+			self:addButtonBorder{obj=this.SearchBar.FavoritesSearchButton, ofs=-2, x1=1}
+		end
+		self:skinObject("tabs", {obj=this, tabs=this.Tabs, fType=ftype, lod=self.isTT and true, track=false, offsets={x1=8, y1=self.isTT and 2 or 0, x2=-8, y2=2}})
+		if self.isTT then
+			self:SecureHook(this, "SetDisplayMode", function(this, displayMode)
+				if not this.tabsForDisplayMode[displayMode] then return end
+				for i, tab in _G.ipairs(this.Tabs) do
+					if i == this.tabsForDisplayMode[displayMode] then
+						self:setActiveTab(tab.sf)
+					else
+						self:setInactiveTab(tab.sf)
+					end
+				end
+			end)
+		end
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true, cb=true, y2=0})
+
 		local function skinItemList(frame)
 			if aObj.modBtnBs then
 				aObj:addButtonBorder{obj=frame.RefreshFrame.RefreshButton, ofs=-2, x1=1, clr="gold"}
@@ -71,14 +92,6 @@ aObj.blizzLoDFrames[ftype].AuctionHouseUI = function(self)
 			aObj:moveObject{obj=frame.silver.texture, x=10}
 			frame.copper:SetWidth(38)
 			aObj:moveObject{obj=frame.copper.texture, x=10}
-		end
-		self:removeNineSlice(this.NineSlice)
-		self:removeInset(self:getChild(this, 3)) -- MerchantMoneyInset
-		this.MoneyFrameBorder:DisableDrawLayer("BACKGROUND")
-		this.MoneyFrameBorder:DisableDrawLayer("BORDER")
-		-- .FavoriteDropDown ?
-		if self.modBtnBs then
-			self:addButtonBorder{obj=this.SearchBar.FavoritesSearchButton, ofs=-2, x1=1}
 		end
 		-- Browsing frames
 		self:skinObject("editbox", {obj=this.SearchBar.SearchBox, fType=ftype, si=true})
@@ -223,10 +236,10 @@ aObj.blizzLoDFrames[ftype].AuctionHouseUI = function(self)
 			end)
 		end
 		skinBidAmt(this.AuctionsFrame.BidFrame.BidAmount)
+		self:removeInset(this.AuctionsFrame.SummaryList)
 		self:removeNineSlice(this.AuctionsFrame.SummaryList.NineSlice)
 		this.AuctionsFrame.SummaryList.Background:SetTexture(nil)
 		self:skinObject("slider", {obj=this.AuctionsFrame.SummaryList.ScrollFrame.scrollBar, fType=ftype, rpTex="background"})
-		self:removeInset(this.AuctionsFrame.SummaryList)
 		self:removeNineSlice(this.AuctionsFrame.ItemDisplay.NineSlice)
 		self:removeRegions(this.AuctionsFrame.ItemDisplay, {3})
 		skinItemList(this.AuctionsFrame.AllAuctionsList)
@@ -263,20 +276,6 @@ aObj.blizzLoDFrames[ftype].AuctionHouseUI = function(self)
 				self:clrBtnBdr(this)
 			end)
 		end
-		self:skinObject("tabs", {obj=this, tabs=this.Tabs, fType=ftype, lod=self.isTT and true, track=false, offsets={x1=8, y1=self.isTT and 2 or 0, x2=-8, y2=2}})
-		if self.isTT then
-			self:SecureHook(this, "SetDisplayMode", function(this, displayMode)
-				if not this.tabsForDisplayMode[displayMode] then return end
-				for i, tab in _G.ipairs(this.Tabs) do
-					if i == this.tabsForDisplayMode[displayMode] then
-						self:setActiveTab(tab.sf)
-					else
-						self:setInactiveTab(tab.sf)
-					end
-				end
-			end)
-		end
-		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, y2=0})
 
 		self:Unhook(this, "OnShow")
 	end)
@@ -423,7 +422,6 @@ aObj.blizzLoDFrames[ftype].ChromieTimeUI = function(self)
 	self.initialized.ChromieTimeUI = true
 
 	self:SecureHookScript(_G.ChromieTimeFrame, "OnShow", function(this)
-		self:removeNineSlice(this.NineSlice)
 		this.Background:DisableDrawLayer("BACKGROUND")
 		self:keepFontStrings(this.Title)
 		this.CloseButton.Border:SetTexture(nil)
@@ -442,7 +440,7 @@ aObj.blizzLoDFrames[ftype].ChromieTimeUI = function(self)
 				self:addButtonBorder{obj=btn, ofs=-4, es=20, clr="gold", ca=0.4}
 			end
 		end
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ofs=0, y1=-1}
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true, cb=true, ofs=0, y1=-1})
 		if self.modBtns then
 			self:skinStdButton{obj=this.SelectButton}
 			self:SecureHook(this.SelectButton, "UpdateButtonState", function(this, _)
@@ -525,7 +523,6 @@ aObj.blizzLoDFrames[ftype].CovenantRenown = function(self)
 		end
 	end
 	self:SecureHookScript(_G.CovenantRenownFrame, "OnShow", function(this)
-		self:removeNineSlice(this.NineSlice)
 		this.HeaderFrame.Background:SetTexture(nil)
 		self:moveObject{obj=this.HeaderFrame, y=-6}
 		-- .CelebrationModelScene
@@ -538,7 +535,7 @@ aObj.blizzLoDFrames[ftype].CovenantRenown = function(self)
 			skinRewards(this)
 		end)
 		skinRewards(this)
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true}
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true, cbns=true, ofs=0})
 		self:clrCovenantBdr(this)
 		if self.modBtns then
 			self:skinCloseButton{obj=this.CloseButton , noSkin=true}
@@ -879,7 +876,6 @@ aObj.blizzLoDFrames[ftype].NewPlayerExperienceGuide = function(self)
 	self.initialized.NewPlayerExperienceGuide = true
 
 	self:SecureHookScript(_G.GuideFrame, "OnShow", function(this)
-		self:removeNineSlice(this.NineSlice)
 		this:DisableDrawLayer("BACKGROUND")
 		this.Title:SetTextColor(self.HT:GetRGB())
 		this.ScrollFrame.Child.Text:SetTextColor(self.BT:GetRGB())
@@ -889,7 +885,7 @@ aObj.blizzLoDFrames[ftype].NewPlayerExperienceGuide = function(self)
 		this.ScrollFrame.ScrollBar.ScrollDownBorder:SetBackdrop(nil)
 		this.ScrollFrame.ScrollBar.Border:SetBackdrop(nil)
 		self:skinSlider{obj=this.ScrollFrame.ScrollBar, wdth=-4}
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true}
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true, cb=true})
 		if self.modBtns then
 			self:skinStdButton{obj=this.ScrollFrame.ConfirmationButton}
 			self:SecureHook(this, "SetStateInternal", function(this)
@@ -1299,8 +1295,6 @@ aObj.blizzFrames[ftype].Tabard = function(self)
 	self.initialized.Tabard = true
 
 	self:SecureHookScript(_G.TabardFrame, "OnShow", function(this)
-		self:keepRegions(this, {4, 17, 18, 19, 20, 21, 22}) -- N.B. regions 4, 21 & 22 are text, 17-20 are icon textures
-		self:removeNineSlice(this.NineSlice)
 		self:removeBackdrop(_G.TabardFrameCostFrame)
 		self:keepFontStrings(_G.TabardFrameCustomizationFrame)
 		for i = 1, 5 do
@@ -1310,12 +1304,12 @@ aObj.blizzFrames[ftype].Tabard = function(self)
 				self:addButtonBorder{obj=_G["TabardFrameCustomization" .. i .. "RightButton"], ofs=-2, x1=1, clr="gold"}
 			end
 		end
-		if not self.isClsc then
+		if self.isClsc then
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=10, y1=-11, x2=-32, y2=71})
+		else
 			self:removeInset(_G.TabardFrameMoneyInset)
 			_G.TabardFrameMoneyBg:DisableDrawLayer("BACKGROUND")
-			self:addSkinFrame{obj=this, ft=ftype, ri=true}
-		else
-			self:addSkinFrame{obj=this, ft=ftype, kfs=true, x1=10, y1=-11, x2=-32, y2=71}
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true})
 		end
 		if self.modBtns then
 			self:skinStdButton{obj=_G.TabardFrameAcceptButton}
