@@ -25,26 +25,13 @@ ToDos
 
 ?	O	Refactor Communities code
 
-√	I	Friends Frame has NineSlice, reported by therealdeerez/Fakelessgaming, 21.05.21
+√	I	Friends Frame has NineSlice, reported by therealdeerez/Fakelessgaming/GnomeTW, 21.05.21
 	
-√	I	Classic Quest Frame has NineSlice, reported by therealdeerez, 21.05.21
-
 	I	ProgressBar, reported by Fakelessgaming, 22.05.21
-?		- LHS texture visible
+√		- LHS texture visible (UIWidget - Bar.Border??)
 
-	I/B LeatrixPlus, reported by SinbaTV/GnomeTW, 22.05.21
-√		- Interface\AddOns\Skinner\Modules\UIButtons.lua:518: attempt to index field 'obj' (a nil value)
-		Stack: Interface\AddOns\Skinner\Modules\UIButtons.lua:518: attempt to index field 'obj' (a nil value)
-		[string "@Interface\AddOns\Skinner\AddonSkins\Leatrix_Plus.lua"]:73: in function <Interface\AddOns\Skinner\AddonSkins\Leatrix_Plus.lua:5>
-	
-	I/B GuildTab, reported by SinbaTV, 22.05.21
-≈		- Interface\AddOns\Skinner\Core\UtilFuncs.lua:368: attempt to call method 'SetBackdropBorderColor' (a nil value)
-		Stack: Interface\AddOns\Skinner\Core\UtilFuncs.lua:368: attempt to call method 'SetBackdropBorderColor' (a nil value)
-		[string "@Interface\AddOns\Skinner\Core\UtilFuncs.lua"]:368: in function `clrBBC'
-		[string "@Interface\AddOns\Skinner\Modules\UIButtons.lua"]:232: in function `clrBtnBdr'
-		[string "@Interface\AddOns\Skinner\ClassicSupport\ClassicSupport.lua"]:1051: in function <...ace\AddOns\Skinner\ClassicSupport\ClassicSupport.lua:1050>
+	I	WeakAuras, reported by SinbaTV/Galthariel, 28.05.21
+√		- Skinner\AddonSkins\WeakAuras-3.4.2.lua:171: Usage: SecureHook([object], method, [handler]): Attempting to hook a non existing target
 		
-√	S	EveryGoldToBanker, requested by amey0, 23.05.21
-	
-√	S/B	Auctionator ClassicFix, requested by amey0, 26.05.21
-	
+	I	ChannelList/Rematch, reported by therealdeerez, 28.05.21
+√		- have NineSlice Textures
