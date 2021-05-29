@@ -342,7 +342,8 @@ aObj.ClassicSupport = function(self)
 				self:skinStdButton{obj=_G.BrowseCloseButton, fType=ftype}
 				self:skinStdButton{obj=_G.BrowseBuyoutButton, fType=ftype}
 				self:skinStdButton{obj=_G.BrowseBidButton, fType=ftype}
-				for _, btn in _G.pairs{_G.BrowseBuyoutButton, _G.BrowseBidButton} do
+				self:skinStdButton{obj=_G.BrowseResetButton, fType=ftype}
+				for _, btn in _G.pairs{_G.BrowseBuyoutButton, _G.BrowseBidButton, _G.BrowseResetButton} do
 					self:SecureHook(btn, "Disable", function(this, _)
 						self:clrBtnBdr(this)
 					end)
