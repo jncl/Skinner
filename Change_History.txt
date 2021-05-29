@@ -1,3 +1,14 @@
+beta9.38802.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Updated Classic AuctionUI skin
+	Updated FriendsFrame & HelpFrame skinning code
+	Bugfix for GuildFrame
+	Updated Auctionator , LeatrixPlus & ClassicQuestLog
+	Skinned EveryGoldToBanker
+	
 beta9.38757.1
 Jncl:
 	ToDo.txt
