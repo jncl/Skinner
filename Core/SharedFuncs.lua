@@ -13,9 +13,9 @@ function aObj:add2Table(table, value)
 end
 
 local buildInfo = {
-	classic_beta = {"2.5.1", 38757},
-	classic_ptr  = {"2.5.1", 38757},
-	classic_bc   = {"2.5.1", 38741},
+	classic_beta = {"2.5.1", 38835},
+	classic_ptr  = {"2.5.1", 38835},
+	classic_bc   = {"2.5.1", 38835},
 	classic      = {"1.13.7", 38704},
 	retail_beta  = {"10.0.0", 99999},
 	retail_ptr   = {"9.1.0", 38802}, 
