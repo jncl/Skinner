@@ -6672,7 +6672,7 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 			else
 				if not disableTypeBySZ[wFrame.widgetType][SZ] then
 					aObj:skinStatusBar{obj=wFrame.Bar, fi=0, nilFuncs=true}
-					aObj:removeRegions(wFrame.Bar, {1, 2, 3, 4, 6, 7, 8}) -- background & border textures
+					aObj:removeRegions(wFrame.Bar, {1, 2, 3, 5, 6, 7}) -- background & border textures
 				end	
 			end
 		elseif wFrame.widgetType == 3 then -- DoubleStatusBar (Island Expeditions)
