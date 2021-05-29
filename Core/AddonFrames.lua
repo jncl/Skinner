@@ -72,7 +72,6 @@ aObj.otherAddons = track(aObj.otherAddons)
 local lodFrames = {
 	"GarrisonMissionManager",
 	"GuildBankSearch",
-	"PetJournalEnhanced",
 }
 aObj.lodAddons = {}
 for i = 1, #lodFrames do
@@ -193,6 +192,8 @@ function aObj:ADDON_LOADED(event, addon)
 	-- self:Debug("ADDON_LOADED: [%s]", addon)
 
 	self:LoDFrames(addon)
+
+	self.callbacks:Fire("AddOn_Loaded")
 
 end
 
