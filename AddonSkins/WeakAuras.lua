@@ -2,7 +2,7 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("WeakAuras") then return end
 local _G = _G
 
-aObj.addonsToSkin.WeakAuras = function(self) -- v 3.1.4
+aObj.addonsToSkin.WeakAuras = function(self) -- v 3.4.2
 
 	if _G.WeakAuras.ShowDisplayTooltip then
 		-- hook this to skin the WeakAuras added elements
@@ -93,7 +93,7 @@ aObj.addonsToSkin.WeakAuras = function(self) -- v 3.1.4
 
 end
 
-aObj.lodAddons.WeakAurasOptions = function(self) -- v 3.1.4
+aObj.lodAddons.WeakAurasOptions = function(self) -- v 3.4.2
 
 	-- wait until frame is created
 	if not _G.WeakAurasOptions then
@@ -162,17 +162,23 @@ aObj.lodAddons.WeakAurasOptions = function(self) -- v 3.1.4
 			self:skinStdButton{obj=self:getChild(_G.WeakAurasSnippets, 1)}
 		end
 
+		aObj:Debug("WeakAurasOptions OnShow: [%s, %s]", this, this.newView)
+
+
 		self:Unhook(this, "OnShow")
 	end)
 	self:checkShown(_G.WeakAurasOptions)
 
 	-- Templates
 	if self.modBtns then
-		self:SecureHook(_G.WeakAuras, "OpenTriggerTemplate", function(data)
-			self:skinStdButton{obj=_G.WeakAurasOptions.newView.backButton}
-			self:skinStdButton{obj=self:getLastChild(_G.WeakAurasOptions.newView.frame)}
-
-			self:Unhook(this, "OpenTriggerTemplate")
+		self.RegisterCallback("WeakAurasTemplates", "AddOn_Loaded", function(this)
+			_G.C_Timer.After(0.1, function()
+				self:skinStdButton{obj=_G.WeakAurasOptions.newView.backButton}
+				self:skinStdButton{obj=_G.WeakAurasOptions.newView.makeBatchButton}
+				self:skinStdButton{obj=_G.WeakAurasOptions.newView.batchButton}
+				self:skinStdButton{obj=self:getLastChild(_G.WeakAurasOptions.newView.frame)} -- cancel button
+			end)
+			self.UnregisterCallback("WeakAurasTemplates", "Addon_Loaded")
 		end)
 	end
 

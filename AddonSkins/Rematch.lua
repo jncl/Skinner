@@ -2,7 +2,7 @@ local aName, aObj = ...
 if not aObj:isAddonEnabled("Rematch") then return end
 local _G = _G
 
-aObj.addonsToSkin.Rematch = function(self) -- v 4.11.10
+aObj.addonsToSkin.Rematch = function(self) -- v 4.11.12
 
 	local function skinScrollFrame(frame)
 	    aObj:removeInset(frame.List.Background)
@@ -58,16 +58,16 @@ aObj.addonsToSkin.Rematch = function(self) -- v 4.11.10
 			end
 		end
 		skinTabs(this)
-		self:skinObject("frame", {obj=this, kfs=true, cb=true, x1=-4, y1=2, x2=2.5, y2=-5})
-		if self.modChkBtns then
-			self:SecureHook(this, "SetupUseRematchButton", function(this)
-				self:skinCheckButton{obj=_G.UseRematchButton}
-				self:Unhook(this, "SetupUseRematchButton")
-			end)
-		end
+		self:skinObject("frame", {obj=this, kfs=true, rns=true, cb=true, x1=-4, y1=2, x2=2.5, y2=-5})
 
 		self:Unhook(this, "OnShow")
 	end)
+	if self.modChkBtns then
+		self:SecureHook(_G.RematchJournal, "SetupUseRematchButton", function(this)
+			self:skinCheckButton{obj=_G.UseRematchButton}
+			self:Unhook(this, "SetupUseRematchButton")
+		end)
+	end
 
     -- Frame (used when standalone)
 	self:SecureHookScript(_G.RematchFrame, "OnShow", function(this)
@@ -276,7 +276,7 @@ aObj.addonsToSkin.Rematch = function(self) -- v 4.11.10
 	    this.Front.Bottom:DisableDrawLayer("BACKGROUND")
 	    self:removeRegions(this.Front.Bottom, {2}) -- line
 	    this.Front.Middle:DisableDrawLayer("BACKGROUND")
-	    self:removeRegions(this.Front.Middle, {12}) -- line
+	    this.Front.Middle:DisableDrawLayer("ARTWORK") -- line
 	    this.Front.Middle.XP:DisableDrawLayer("OVERLAY")
 		self:skinStatusBar{obj=this.Front.Middle.XP, fi=0, bgTex=self:getRegion(this.Front.Middle.XP, 11)}
 		self:skinObject("frame", {obj=this.Front, kfs=true})
@@ -300,6 +300,15 @@ aObj.addonsToSkin.Rematch = function(self) -- v 4.11.10
 	end)
 
     self:SecureHookScript(_G.RematchDialog, "OnShow", function(this)
+		-- .Preferences
+		for _, eb in _G.pairs(this.Preferences.editBoxes) do
+			self:adjHeight{obj=this.Preferences[eb], adj=-4}
+			self:removeBackdrop(this.Preferences[eb])
+			self:skinObject("editbox", {obj=this.Preferences[eb], regions={3}})
+		end
+		if self.modChkBtns then
+			self:skinCheckButton{obj=this.Preferences.AllowMM}
+		end
 		self:removeMagicBtnTex(this.Cancel)
 		self:removeMagicBtnTex(this.Accept)
 		self:removeMagicBtnTex(this.Other)
@@ -325,16 +334,10 @@ aObj.addonsToSkin.Rematch = function(self) -- v 4.11.10
 			self:skinStdButton{obj=this.Cancel}
 			self:skinStdButton{obj=this.Accept}
 			self:skinStdButton{obj=this.Other}
-			self:SecureHook(this.Accept, "Disable", function(this, _)
+			self:SecureHook(this.Accept, "SetEnabled", function(this, _)
 				self:clrBtnBdr(this)
 			end)
-			self:SecureHook(this.Accept, "Enable", function(this, _)
-				self:clrBtnBdr(this)
-			end)
-			self:SecureHook(this.Other, "Disable", function(this, _)
-				self:clrBtnBdr(this)
-			end)
-			self:SecureHook(this.Other, "Enable", function(this, _)
+			self:SecureHook(this.Other, "SetEnabled", function(this, _)
 				self:clrBtnBdr(this)
 			end)
 			self:removeRegions(this.CloseButton, {5})
