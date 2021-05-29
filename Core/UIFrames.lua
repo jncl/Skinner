@@ -1551,7 +1551,7 @@ aObj.blizzFrames[ftype].ChatChannelsUI = function(self)
 		end
 		self:skinObject("slider", {obj=this.ChannelList.ScrollBar, fType=ftype})
 		self:skinObject("slider", {obj=this.ChannelRoster.ScrollFrame.scrollBar, fType=ftype, y1=-2, y2=2})
-		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, cb=true, x1=-5, y2=-1})
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, x1=-5, y2=-1})
 		-- Create Channel Popup
 		self:removeNineSlice(_G.CreateChannelPopup.BG)
 		self:skinObject("editbox", {obj=_G.CreateChannelPopup.Name, fType=ftype, ofs=3})
