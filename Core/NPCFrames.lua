@@ -1099,6 +1099,7 @@ aObj.blizzFrames[ftype].QuestFrame = function(self)
 		self:skinObject("frame", {obj=_G.QuestNPCModel, fType=ftype, kfs=true, x1=-5, x2=5, y2=-81})
 	end
 	self:keepFontStrings(_G.QuestNPCModelTextFrame)
+	self:skinObject("slider", {obj=_G.QuestNPCModelTextScrollFrame.ScrollBar, fType=ftype})
 
 end
 
