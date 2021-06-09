@@ -111,15 +111,16 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 			aObj:removeRegions(frame, {1})
 			aObj:removeRegions(frame.listScroll, {1})
 			aObj:skinObject("slider", {obj=frame.listScroll.scrollBar, fType=ftype, y1=5, y2=-10})
-			gOfs, y1Ofs, y2Ofs = 2, 2, -4
+			gOfs, y1Ofs, y2Ofs = 2, 5, -4
 		else
 			frame:DisableDrawLayer("BORDER")
-			aObj:removeRegions(frame, {1, 2, frame:GetParent() ~= _G.GarrisonLandingPage and 3 or nil})
+			aObj:removeRegions(frame, {1, 2, not frame.isLandingPage and 3})
+			-- aObj:removeRegions(frame, {1, 2, frame:GetParent() ~= _G.GarrisonLandingPage and 3 or nil})
 			aObj:skinObject("slider", {obj=frame.listScroll.scrollBar, fType=ftype, y1=-2, y2=2})
 			gOfs, y1Ofs, y2Ofs = 4, 8, -8
 		end
 		if frame.isLandingPage then
-			gOfs, y1Ofs, y2Ofs = 6, 4, -8
+			gOfs, y1Ofs, y2Ofs = 6, 5, -8
 		end
 		aObj:skinObject("frame", {obj=frame.listScroll, fType=ftype, fb=true, ofs=gOfs, y1=y1Ofs, y2=y2Ofs, clr=colour})
 		if frame.isLandingPage then
