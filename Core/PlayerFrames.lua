@@ -3829,10 +3829,17 @@ aObj.blizzLoDFrames[ftype].PVPUI = function(self)
 		hld, srf = nil, nil
 		self:SecureHookScript(this.NewSeasonPopup, "OnShow", function(this)
 			this.NewSeason:SetTextColor(self.HT:GetRGB())
-			this.SeasonDescription:SetTextColor(self.BT:GetRGB())
-			this.SeasonDescription2:SetTextColor(self.BT:GetRGB())
-			this.SeasonRewardFrame.Ring:SetTexture(nil)
 			this.SeasonRewardText:SetTextColor(self.BT:GetRGB())
+			if not aObj.isRetPTR then
+				this.SeasonDescription:SetTextColor(self.BT:GetRGB())
+				this.SeasonDescription2:SetTextColor(self.BT:GetRGB())
+			else
+				this.SeasonDescriptionHeader:SetTextColor(self.BT:GetRGB())
+				for _, line in _G.pairs(this.SeasonDescriptions) do
+					line:SetTextColor(self.BT:GetRGB())
+				end
+			end
+			this.SeasonRewardFrame.Ring:SetTexture(nil)
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ofs=-13})
 			if self.modBtns then
 				self:skinStdButton{obj=this.Leave}
@@ -3887,9 +3894,11 @@ aObj.blizzLoDFrames[ftype].PVPUI = function(self)
 				self:clrBtnBdr(_G.HonorFrame.BonusFrame.RandomEpicBGButton.Reward, "gold")
 				self:clrBtnBdr(_G.HonorFrame.BonusFrame.BrawlButton.Reward, "gold")
 			end)
-			self:SecureHook(_G.HonorFrame.BonusFrame.SpecialEventButton.Reward, "Update", function(this)
-				self:clrBtnBdr(this, this.Icon:IsDesaturated() and "disabled" or "gold")
-			end)
+			if not aObj.isRetPTR then
+				self:SecureHook(_G.HonorFrame.BonusFrame.SpecialEventButton.Reward, "Update", function(this)
+					self:clrBtnBdr(this, this.Icon:IsDesaturated() and "disabled" or "gold")
+				end)
+			end
 		end
 		this.BonusFrame:DisableDrawLayer("BACKGROUND")
 		this.BonusFrame:DisableDrawLayer("BORDER")

@@ -756,12 +756,18 @@ aObj.blizzLoDFrames[ftype].ItemUpgradeUI = function(self)
 		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, x2=3})
 		if self.modBtns then
 			self:skinStdButton{obj=_G.ItemUpgradeFrameUpgradeButton}
-			self:SecureHook(_G.ItemUpgradeFrameUpgradeButton, "Disable", function(this)
-				self:clrBtnBdr(this)
-			end)
-			self:SecureHook(_G.ItemUpgradeFrameUpgradeButton, "Enable", function(this)
-				self:clrBtnBdr(this)
-			end)
+			if not aObj.isRetPTR then
+				self:SecureHook(_G.ItemUpgradeFrameUpgradeButton, "Disable", function(this)
+					self:clrBtnBdr(this)
+				end)
+				self:SecureHook(_G.ItemUpgradeFrameUpgradeButton, "Enable", function(this)
+					self:clrBtnBdr(this)
+				end)
+			else
+				self:SecureHook(_G.ItemUpgradeFrameUpgradeButton, "SetDisabledState", function(this, state)
+					self:clrBtnBdr(this)
+				end)
+			end
 		end
 		-- hook this to hide the ItemButton texture if empty
 		self:SecureHook("ItemUpgradeFrame_Update", function()

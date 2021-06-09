@@ -1323,13 +1323,20 @@ aObj.blizzLoDFrames[ftype].ChallengesUI = function(self)
 			for _, dungeon in _G.ipairs(this.DungeonIcons) do
 				self:addButtonBorder{obj=dungeon, ofs=3, clr="disabled"}
 				self:SecureHook(dungeon, "SetUp", function(this, mapInfo, _)
-					-- BETA: Constant value changed
-					if mapInfo.quality >= (_G.Enum.ItemQuality.Common)
-					and _G.ITEM_QUALITY_COLORS[mapInfo.quality]
-					then
-						this.sbb:SetBackdropBorderColor(_G.ITEM_QUALITY_COLORS[mapInfo.quality].r, _G.ITEM_QUALITY_COLORS[mapInfo.quality].g, _G.ITEM_QUALITY_COLORS[mapInfo.quality].b, 1)
+					if not aObj.isRetPTR then
+						if mapInfo.quality >= (_G.Enum.ItemQuality.Common)
+						and _G.ITEM_QUALITY_COLORS[mapInfo.quality]
+						then
+							this.sbb:SetBackdropBorderColor(_G.ITEM_QUALITY_COLORS[mapInfo.quality].r, _G.ITEM_QUALITY_COLORS[mapInfo.quality].g, _G.ITEM_QUALITY_COLORS[mapInfo.quality].b, 1)
+						else
+							self:clrBtnBdr(this, "disabled")
+						end
 					else
-						self:clrBtnBdr(this, "disabled")
+						if mapInfo.level > 0 then
+							this.sbb:SetBackdropBorderColor(this.HighestLevel:GetTextColor())
+						else
+							self:clrBtnBdr(this, "disabled")
+						end
 					end
 				end)
 			end
