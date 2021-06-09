@@ -33,6 +33,7 @@
 <Script file="BattlePetBattleUITweaks.lua"/>
 <Script file="BattlePetCount.lua"/>
 <Script file="BaudBag.lua"/>
+<Script file="BetterWardrobe.lua"/>
 <Script file="BigWigs.lua"/>
 <Script file="BindPad.lua"/>
 <Script file="BonusRollPreview.lua"/>
@@ -171,6 +172,7 @@
 <Script file="REFlex.lua"/>
 <Script file="Rematch.lua"/>
 <Script file="RepHelper.lua"/>
+<Script file="Reputable.lua"/>
 <Script file="Restocker.lua"/>
 <Script file="RollTrackerClassic.lua"/>
 <Script file="SavedInstances.lua"/>

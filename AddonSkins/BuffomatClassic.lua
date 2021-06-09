@@ -1,47 +1,63 @@
 local _, aObj = ...
-if not aObj:isAddonEnabled("BuffomatClassic") then return end
+if not aObj:isAddonEnabled("BuffomatClassic")
+and not aObj:isAddonEnabled("BuffomatClassicTBC")
+then
+	return
+end
 local _G = _G
 
-aObj.addonsToSkin.BuffomatClassic = function(self) -- v 2021.4.1-ab922375
-
-	self:SecureHookScript(_G.BomC_MainWindow, "OnShow", function(this)
-		self:skinObject("slider", {obj=_G.BomC_SpellTab_Scroll.ScrollBar})
-		self:skinObject("tabs", {obj=this, tabs=this.Tabs, lod=self.isTT and true, ignoreHLTex=false, offsets={x1=7, y1=self.isTT and 2 or 0, x2=-6, y2=self.isTT and 4 or 2}})
-		self:skinObject("frame", {obj=this, kfs=true, ofs=0})
-		if self.modBtns then
+local function skinFrames(aName)
+	aObj:SecureHookScript(_G.BomC_MainWindow, "OnShow", function(this)
+		aObj:skinObject("slider", {obj=_G.BomC_SpellTab_Scroll.ScrollBar})
+		aObj:skinObject("tabs", {obj=this, tabs=this.Tabs, lod=aObj.isTT and true, ignoreHLTex=false, offsets={x1=7, y1=aObj.isTT and 2 or 0, x2=-6, y2=aObj.isTT and 4 or 2}})
+		aObj:skinObject("frame", {obj=this, kfs=true, ofs=0})
+		if aObj.modBtns then
 			_G.BomC_MainWindow_CloseButton:SetSize(27, 27)
-			self:skinCloseButton{obj=_G.BomC_MainWindow_CloseButton}
+			aObj:skinCloseButton{obj=_G.BomC_MainWindow_CloseButton}
 			_G.BomC_MainWindow_SettingsButton:SetSize(20, 20)
-			self:skinStdButton{obj=_G.BomC_MainWindow_SettingsButton}
+			aObj:skinStdButton{obj=_G.BomC_MainWindow_SettingsButton}
 			_G.BomC_MainWindow_MacroButton:SetSize(40, 20)
-			self:skinStdButton{obj=_G.BomC_MainWindow_MacroButton}
-			self:skinStdButton{obj=_G.BomC_ListTab_Button, sec=true}
+			aObj:skinStdButton{obj=_G.BomC_MainWindow_MacroButton}
+			aObj:skinStdButton{obj=_G.BomC_ListTab_Button, sec=true}
 		end
 
-		self:Unhook(this, "OnShow")
+		aObj:Unhook(this, "OnShow")
 	end)
-	self:checkShown(_G.BomC_MainWindow)
+	aObj:checkShown(_G.BomC_MainWindow)
 
-	-- Options panels
-	self.RegisterCallback("BuffomatClassic", "IOFPanel_Before_Skinning", function(this, panel)
-		if self:hasTextInDebugNameRE(panel, "O_OptionFrame") then
+	aObj.RegisterCallback(aName, "IOFPanel_Before_Skinning", function(this, panel)
+		if aObj:hasTextInDebugNameRE(panel, "O_OptionFrame") then
 			local sFrame = _G[panel:GetDebugName() .. "Scroll"]
-			self:skinObject("slider", {obj=sFrame.ScrollBar})
-			for _, child in _G.ipairs{sFrame:GetScrollChild():GetChildren()} do
+			aObj:skinObject("slider", {obj=sFrame.ScrollBar})
+			for _, child in _G.pairs{sFrame:GetScrollChild():GetChildren()} do
 				if child:IsObjectType("CheckButton") then
-					if self.modChkBtns then
-						self:skinCheckButton{obj=child}
+					if aObj.modChkBtns then
+						aObj:skinCheckButton{obj=child}
 					end
 				elseif child:IsObjectType("EditBox") then
-					self:skinObject("editbox", {obj=child})
+					aObj:skinObject("editbox", {obj=child})
 				elseif child:IsObjectType("Button") then
-					if self.modBtns then
-						self:skinStdButton{obj=child}
+					if aObj.modBtns then
+						aObj:skinStdButton{obj=child}
 					end
 				end
 			end
 			sFrame = nil
 		end
 	end)
+	
+end
 
+if aObj:isAddonEnabled("BuffomatClassic") then
+	aObj.addonsToSkin.BuffomatClassic = function(self) -- v 2021.6.1-68f13f34
+
+		skinFrames("BuffomatClassic")
+		
+	end
+elseif aObj:isAddonEnabled("BuffomatClassicTBC") then
+	aObj.addonsToSkin.BuffomatClassicTBC = function(self) -- v 2021.6.2-6baae3de
+	
+		skinFrames("BuffomatClassicTBC")
+		
+	end
 end
