@@ -749,7 +749,7 @@ aObj.blizzLoDFrames[ftype].ItemUpgradeUI = function(self)
 		this.ItemButton.Frame:SetTexture(nil)
 		this.ItemButton.ItemName:SetTextColor(self.BT:GetRGB())
 		-- use module to make it visible all the time
-		self.modUIBtns:addButtonBorder{obj=this.ItemButton, relTo=this.ItemButton.IconTexture, ofs=1, y1=2, clr="grey"}
+		self.modUIBtns:addButtonBorder{obj=this.ItemButton, relTo=this.ItemButton.IconTexture, ofs=2, clr="grey"}
 		this.ButtonFrame:DisableDrawLayer("BORDER", 2)
 		_G.ItemUpgradeFrameMoneyFrame:DisableDrawLayer("BACKGROUND")
 		self:removeMagicBtnTex(_G.ItemUpgradeFrameUpgradeButton)
