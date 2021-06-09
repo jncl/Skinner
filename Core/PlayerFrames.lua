@@ -3897,6 +3897,12 @@ aObj.blizzLoDFrames[ftype].PVPUI = function(self)
 		self:removeMagicBtnTex(this.QueueButton)
 		if self.modBtns then
 			self:skinStdButton{obj=this.QueueButton, sec=true}
+			self:SecureHook(this.QueueButton, "Disable", function(this, _)
+				self:clrBtnBdr(this)
+			end)
+			self:SecureHook(this.QueueButton, "Enable", function(this, _)
+				self:clrBtnBdr(this)
+			end)
 		end
 
 		self:Unhook(this, "OnShow")
