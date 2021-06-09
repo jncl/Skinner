@@ -770,7 +770,6 @@ local function __addButtonBorder(opts)
 	if opts.ibt then -- Item Buttons
 		opts.obj.Count:SetParent(opts.obj.sbb)
 		_G[opts.obj:GetName() .. "Stock"]:SetParent(opts.obj.sbb)
-		-- aObj:getRegion(opts.obj, aObj:hasTextInName(opts.obj, "MerchantItem") and 2 or 3):SetParent(opts.obj.sbb) -- Stock region
 		opts.obj.searchOverlay:SetParent(opts.obj.sbb)
 		module:clrButtonFromBorder(opts.obj)
 	elseif opts.abt then -- Action Buttons
