@@ -13,13 +13,17 @@ function aObj:add2Table(table, value)
 end
 
 local buildInfo = {
-	classic_beta = {"2.5.1", 38835},
-	classic_ptr  = {"2.5.1", 38835},
-	classic_bc   = {"2.5.1", 38835},
+	-- In Development
+	-- retail_beta  = {"10.0.0", 99999},
+	classic_beta = {"2.5.1", 38921},
+	classic_ptr  = {"2.5.1", 38921},
+	retail_ptr   = {"9.1.0", 38950}, 
+	-- Live - Classic
+	classic_bc   = {"2.5.1", 38921},
 	classic      = {"1.13.7", 38704},
-	retail_beta  = {"10.0.0", 99999},
-	retail_ptr   = {"9.1.0", 38802}, 
+	-- Live
 	retail       = {"9.0.5", 38556},
+	--
 	curr         = {_G.GetBuildInfo()},
 }
 function aObj:checkVersion()
