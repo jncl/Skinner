@@ -5465,7 +5465,7 @@ aObj.blizzFrames[ftype].PVEFrame = function(self)
 				end
 			end
 		end)
-		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true})
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, x1=-4, x2=3})
 		if self.modBtnBs then
 			-- hook this to change button border colour
 			self:SecureHook("GroupFinderFrame_EvaluateButtonVisibility", function(this, _)
