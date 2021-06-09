@@ -44,8 +44,10 @@ aObj.skinTPLs = {
 		si			= false, -- search icon
 		six         = 3, -- search icon x offset
 		ofs         = 2,
-		x1          = 0,
-		x2          = 0,
+		-- x1          = 0,
+		-- y1          = 0,
+		-- x2          = 0,
+		-- y2          = 0,
 		chginset	= true,
 	},
 	frame = {
@@ -386,7 +388,7 @@ local function skinEditBox(tbl)
 	-- don't skin it twice
 	if tbl.obj.sf then return end
 	aObj:removeRegions(tbl.obj, tbl.regions)
-	aObj:skinObject("frame", {obj=tbl.obj, bd=3, ng=true, ofs=tbl.ofs, x1=tbl.x1, x2=tbl.x2, clr="slider"})
+	aObj:skinObject("frame", {obj=tbl.obj, bd=3, ng=true, ofs=tbl.ofs, x1=tbl.x1, y1=tbl.y1, x2=tbl.x2, y2=tbl.y2, clr="slider"})
 	-- move the search icon
 	if tbl.si then
 		local sIcon = tbl.obj.searchIcon or tbl.obj.icon or tbl.obj:GetName() and _G[tbl.obj:GetName() .. "SearchIcon"]
