@@ -193,7 +193,7 @@ function aObj:ADDON_LOADED(event, addon)
 
 	self:LoDFrames(addon)
 
-	self.callbacks:Fire("AddOn_Loaded")
+	self.callbacks:Fire("AddOn_Loaded", addon)
 
 end
 

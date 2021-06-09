@@ -162,23 +162,23 @@ aObj.lodAddons.WeakAurasOptions = function(self) -- v 3.4.2
 			self:skinStdButton{obj=self:getChild(_G.WeakAurasSnippets, 1)}
 		end
 
-		aObj:Debug("WeakAurasOptions OnShow: [%s, %s]", this, this.newView)
-
-
 		self:Unhook(this, "OnShow")
 	end)
 	self:checkShown(_G.WeakAurasOptions)
 
 	-- Templates
 	if self.modBtns then
-		self.RegisterCallback("WeakAurasTemplates", "AddOn_Loaded", function(this)
-			_G.C_Timer.After(0.1, function()
-				self:skinStdButton{obj=_G.WeakAurasOptions.newView.backButton}
-				self:skinStdButton{obj=_G.WeakAurasOptions.newView.makeBatchButton}
-				self:skinStdButton{obj=_G.WeakAurasOptions.newView.batchButton}
-				self:skinStdButton{obj=self:getLastChild(_G.WeakAurasOptions.newView.frame)} -- cancel button
-			end)
-			self.UnregisterCallback("WeakAurasTemplates", "Addon_Loaded")
+		-- event, addon
+		self.RegisterCallback("WeakAurasOptions", "AddOn_Loaded", function(_, addon)
+			if addon == "WeakAurasTemplates" then
+				_G.C_Timer.After(0.1, function()
+					self:skinStdButton{obj=_G.WeakAurasOptions.newView.backButton}
+					self:skinStdButton{obj=_G.WeakAurasOptions.newView.makeBatchButton}
+					self:skinStdButton{obj=_G.WeakAurasOptions.newView.batchButton}
+					self:skinStdButton{obj=self:getLastChild(_G.WeakAurasOptions.newView.frame)} -- cancel button
+				end)
+				self.UnregisterCallback("WeakAurasOptions", "AddOn_Loaded")
+			end
 		end)
 	end
 

@@ -166,7 +166,10 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 
 			elseif objType == "Window" then
 				obj.titletext:SetPoint("TOP", obj.frame, "TOP", 0, -6)
-				aObj:skinObject("frame", {obj=obj.frame, kfs=true, cb=true, ofs=0})
+				aObj:skinObject("frame", {obj=obj.frame, kfs=true, ofs=-1, y1=-2})
+				if aObj.modBtns then
+					aObj:skinCloseButton{obj=obj.closebutton}
+				end
 
 			elseif objType == "Keybinding" then
 				aObj:skinObject("frame", {obj=obj.msgframe})

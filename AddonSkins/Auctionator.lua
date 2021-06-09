@@ -2,7 +2,7 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("Auctionator") then return end
 local _G = _G
 
-aObj.addonsToSkin.Auctionator = function(self) -- v 9.0.3.1/100.0.11
+aObj.addonsToSkin.Auctionator = function(self) -- v 9.0.10.1/100.0.9/100.0.11
 
 	local skinFrames, skinConfigFrames
 	local pCnt = 0
@@ -12,7 +12,7 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 9.0.3.1/100.0.11
 			-- Classic version
 			-- Buy Tab
 			aObj:skinObject("dropdown", {obj=_G.Atr_DropDownSL})
-			aObj:skinObject("editbox", {obj=_G.Atr_Search_Box})
+			aObj:skinObject("editbox", {obj=_G.Atr_Search_Box, x1=-5})
 			aObj:skinObject("slider", {obj=_G.Atr_Hlist_ScrollFrame.ScrollBar})
 			aObj:skinObject("frame", {obj=_G.Atr_Hlist, kfs=true, fb=true, x1=-5, x2=9})
 			_G.Atr_Hlist.SetBackdrop = _G.nop
@@ -210,9 +210,8 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 9.0.3.1/100.0.11
 			-- Retail version
 			if _G.Auctionator.State.SplashScreenRef then
 				_G.Auctionator.State.SplashScreenRef.Bg:SetTexture(nil)
-				aObj:removeNineSlice(_G.Auctionator.State.SplashScreenRef.NineSlice)
 				aObj:skinObject("slider", {obj=_G.Auctionator.State.SplashScreenRef.ScrollFrame.ScrollBar})
-				aObj:skinObject("frame", {obj=_G.Auctionator.State.SplashScreenRef, kfs=true, ri=true, ofs=0, y1=-2, x2=-1})
+				aObj:skinObject("frame", {obj=_G.Auctionator.State.SplashScreenRef, kfs=true, ri=true, rns=true, cb=true, ofs=0, y1=-2, x2=-1})
 				if aObj.modBtns then
 					aObj:skinCloseButton{obj=_G.Auctionator.State.SplashScreenRef.Close}
 				end
@@ -404,9 +403,7 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 9.0.3.1/100.0.11
 			end)
 
 			aObj:SecureHookScript(_G.AuctionatorCancellingFrame, "OnShow", function(this)
-				if aObj.modBtnBs then
-					aObj:addButtonBorder{obj=aObj:getChild(this, 1), ofs=-2, x1=1, clr="gold"} -- RefreshButton
-				end
+				aObj:skinObject("editbox", {obj=this.SearchFilter, si=true})
 				this.ResultsListing.ScrollFrame.scrollBar.Background:SetTexture(nil)
 				aObj:skinObject("slider", {obj=this.ResultsListing.ScrollFrame.scrollBar, rpTex="artwork"})
 				for _, child in _G.ipairs{this.ResultsListing.HeaderContainer:GetChildren()} do
@@ -424,6 +421,9 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 9.0.3.1/100.0.11
 					aObj:SecureHook(frame.CancelNextButton, "SetEnabled", function(this)
 						aObj:clrBtnBdr(this)
 					end)
+				end
+				if aObj.modBtnBs then
+					aObj:addButtonBorder{obj=aObj:getChild(this, 1), ofs=-2, x1=1, clr="gold"} -- RefreshButton
 				end
 				frame = nil
 
@@ -447,14 +447,18 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 9.0.3.1/100.0.11
 
 		local function skinKids(panel)
 			for _, child in _G.ipairs{panel:GetChildren()} do
-				if child:IsObjectType("CheckButton")
+				if child:IsObjectType("EditBox") then
+					aObj:skinObject("editbox", {obj=child, x1=8, y1=4, x2=-8, y2=0})
+				elseif aObj:isDropDown(child) then
+					aObj:skinObject("dropdown", {obj=child})
+				elseif child:IsObjectType("CheckButton")
 				and aObj.modChkBtns
 				then
 					aObj:skinCheckButton{obj=child}
-				elseif child:IsObjectType("EditBox") then
-					aObj:skinObject("editbox", {obj=child})
-				elseif aObj:isDropDown(child) then
-					aObj:skinObject("dropdown", {obj=child})
+				elseif child:IsObjectType("Button")
+				and aObj.modBtns
+				then
+					aObj:skinStdButton{obj=child}
 				elseif child:IsObjectType("Frame") then
 					skinKids(child)
 				end
@@ -468,7 +472,7 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 9.0.3.1/100.0.11
 				pCnt = pCnt + 1
 				skinKids(panel)
 			end
-			if pCnt == 10 then
+			if pCnt == 11 then
 				aObj.UnregisterCallback("Auctionator_Config", "IOFPanel_Before_Skinning")
 			end
 		end
