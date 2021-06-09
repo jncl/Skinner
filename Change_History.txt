@@ -1,3 +1,14 @@
+beta9.38835.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Updated ClassicBC AuctionUI
+	PetJournal
+	Removed textures from UIWidget StatusBar
+	Remove NineSlice textures from ChannelFrame
+	Updated Ace3, PetJournalEnhanced, Rematch & WeakAuras skins
+	
 beta9.38802.1
 Jncl:
 	ToDo.txt
