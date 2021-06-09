@@ -66,7 +66,7 @@ aObj.blizzLoDFrames[ftype].AuctionHouseUI = function(self)
 				end
 			end)
 		end
-		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true, cb=true, y2=0})
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true, cb=true, x2=2.5, y2=0})
 
 		local function skinItemList(frame)
 			if aObj.modBtnBs then
@@ -105,7 +105,7 @@ aObj.blizzLoDFrames[ftype].AuctionHouseUI = function(self)
 		self:removeNineSlice(this.CategoriesList.NineSlice)
 		for _, btn in _G.pairs(this.CategoriesList.FilterButtons) do
 			self:keepRegions(btn, {3, 4, 5}) -- N.B. region 3 is highlight, 4 is selected, 5 is text
-			self:addSkinFrame{obj=btn, ft=ftype, nb=true, ofs=-1}
+			self.modUIBtns:skinStdButton{obj=btn, fType=ftype, ignoreHLTex=true, x1=-1, y1=1, x2=1, y2=-1}
 		end
 		self:SecureHook("FilterButton_SetUp", function(button, _)
 			button.NormalTexture:SetAlpha(0)
