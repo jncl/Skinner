@@ -1,4 +1,4 @@
-local aName, aObj = ...
+local _, aObj = ...
 local _G = _G
 -- This is a Library
 
@@ -23,7 +23,7 @@ aObj.libsToSkin["LibInit"] = function(self) -- v 47
 		if self.modBtns then
 			self:RawHook(liF, "Button", function(this, ...)
 				local btn = self.hooks[this].Button(this, ...)
-				self:skinStdButton{obj=btn, aso={sec=true}}
+				self:skinStdButton{obj=btn, aso={sabt=true}}
 				return btn
 			end, true)
 		end

@@ -18,7 +18,7 @@ local function skinFrames(aName)
 			aObj:skinStdButton{obj=_G.BomC_MainWindow_SettingsButton}
 			_G.BomC_MainWindow_MacroButton:SetSize(40, 20)
 			aObj:skinStdButton{obj=_G.BomC_MainWindow_MacroButton}
-			aObj:skinStdButton{obj=_G.BomC_ListTab_Button, sec=true}
+			aObj:skinStdButton{obj=_G.BomC_ListTab_Button, sabt=true}
 		end
 
 		aObj:Unhook(this, "OnShow")
