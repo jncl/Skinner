@@ -507,8 +507,7 @@ function module:skinStdButton(opts) -- standard panel button
 		as = use applySkin rather than addSkinButton, used when text appears behind the gradient
 		clr = set colour
 		ca = set colour alpha
-		sec = inherit from SecureFrameTemplate
-		shsh = inherit from SecureHandlerShowHideTemplate
+		sabt = use SecureActionButtonTemplate
 		ignoreHLTex = ignore Highlight texture changes
 --]]
 	--@alpha@
@@ -525,7 +524,7 @@ function module:skinStdButton(opts) -- standard panel button
 	local aso = opts.aso or {}
 	aso.bd = bH > 18 and 5 or 7 -- use narrower backdrop if required
 	if not opts.as then
-		aObj:skinObject("button", {obj=opts.obj, fType=opts.ftype, name=opts.name, sec=opts.sec, shsh=opts.shsh, aso=aso, ofs=opts.ofs or 0, x1=opts.x1, y1=opts.y1, x2=opts.x2, y2=opts.y2})
+		aObj:skinObject("button", {obj=opts.obj, fType=opts.ftype, name=opts.name, sabt=opts.sabt, aso=aso, ofs=opts.ofs or 0, x1=opts.x1, y1=opts.y1, x2=opts.x2, y2=opts.y2})
 	else
 		aso.obj = opts.obj
 		if bH < 16 then opts.obj:SetHeight(16) end -- set minimum button height (DBM option buttons)
@@ -736,8 +735,9 @@ local function __addButtonBorder(opts)
 	end
 
 	-- create the button border object
-	opts.sec = opts.sec or opts.seca or opts.sabt or opts.subt
-	opts.obj.sbb = _G.CreateFrame(opts.obj:GetObjectType(), nil, opts.obj, opts.sec and "SecureFrameTemplate" or opts.shsh and "SecureHandlerShowHideTemplate")
+	local template = opts.sec and "SecureFrameTemplate" or opts.sabt and "SecureActionButtonTemplate" or opts.subt and "SecureUnitButtonTemplate"
+	opts.obj.sbb = _G.CreateFrame(opts.obj:GetObjectType(), nil, opts.obj, template)
+	template = nil
 	opts.obj.sbb:EnableMouse(false) -- enable clickthrough
 
 	aObj:addBackdrop(opts.obj.sbb)

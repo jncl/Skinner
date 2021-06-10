@@ -1813,7 +1813,7 @@ aObj.ClassicSupport = function(self)
 				for i = 1, _G.NUM_ACTIONBAR_BUTTONS do
 					_G["ActionButton" .. i].FlyoutBorder:SetTexture(nil)
 					_G["ActionButton" .. i].FlyoutBorderShadow:SetTexture(nil)
-					self:addButtonBorder{obj=_G["ActionButton" .. i], abt=true, sec=true, ofs=2.5}
+					self:addButtonBorder{obj=_G["ActionButton" .. i], abt=true, sabt=true, ofs=3}
 				end
 				-- ActionBar buttons
 				self:addButtonBorder{obj=_G.ActionBarUpButton, ofs=-4, clr="gold"}
@@ -1828,11 +1828,11 @@ aObj.ClassicSupport = function(self)
 				mBut = nil
 
 				-- skin bag buttons
-				self:addButtonBorder{obj=_G.MainMenuBarBackpackButton, ibt=true, ofs=2.5}
-				self:addButtonBorder{obj=_G.CharacterBag0Slot, ibt=true, ofs=2.5}
-				self:addButtonBorder{obj=_G.CharacterBag1Slot, ibt=true, ofs=2.5}
-				self:addButtonBorder{obj=_G.CharacterBag2Slot, ibt=true, ofs=2.5}
-				self:addButtonBorder{obj=_G.CharacterBag3Slot, ibt=true, ofs=2.5}
+				self:addButtonBorder{obj=_G.MainMenuBarBackpackButton, ibt=true, ofs=3}
+				self:addButtonBorder{obj=_G.CharacterBag0Slot, ibt=true, ofs=3}
+				self:addButtonBorder{obj=_G.CharacterBag1Slot, ibt=true, ofs=3}
+				self:addButtonBorder{obj=_G.CharacterBag2Slot, ibt=true, ofs=3}
+				self:addButtonBorder{obj=_G.CharacterBag3Slot, ibt=true, ofs=3}
 				self:addButtonBorder{obj=_G.KeyRingButton, ofs=2.5, clr="grey"} -- size is 18, 39
 
 				-- MultiBar Buttons
@@ -1846,7 +1846,7 @@ aObj.ClassicSupport = function(self)
 						if not btn.noGrid then
 							_G[btn:GetName() .. "FloatingBG"]:SetAlpha(0)
 						end
-						self:addButtonBorder{obj=btn, abt=true, sec=true, ofs=2.5}
+						self:addButtonBorder{obj=btn, abt=true, sabt=true, ofs=2.5}
 					end
 					btn = nil
 				end
@@ -1857,7 +1857,7 @@ aObj.ClassicSupport = function(self)
 
 		-- these are done here as other AddOns may require them to be skinned
 		if self.modBtnBs then
-			self:addButtonBorder{obj=_G.MainMenuBarVehicleLeaveButton, ofs=2.5, clr="grey"}
+			self:addButtonBorder{obj=_G.MainMenuBarVehicleLeaveButton, ofs=3, clr="grey"}
 		end
 
 	end

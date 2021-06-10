@@ -2371,7 +2371,7 @@ aObj.blizzFrames[ftype].EquipmentFlyout = function(self)
 			local btn
 			for i = 1, #_G.EquipmentFlyoutFrame.buttons do
 				btn = _G.EquipmentFlyoutFrame.buttons[i]
-				self:addButtonBorder{obj=btn, shsh=true, ibt=true, reParent={btn.UpgradeIcon}}
+				self:addButtonBorder{obj=btn, ibt=true, reParent={btn.UpgradeIcon}}
 				-- change 'Place In Bags' button border alpha & stop it changing
 				if i == 1 then
 					self:clrBtnBdr(btn, "grey")
@@ -3731,7 +3731,7 @@ aObj.blizzFrames[ftype].OverrideActionBar = function(self) -- a.k.a. Vehicle UI
 				self:addButtonBorder{obj=this.pitchFrame.PitchDownButton}
 				self:addButtonBorder{obj=this.leaveFrame.LeaveButton}
 				for i = 1, 6 do
-					self:addButtonBorder{obj=this["SpellButton" .. i], abt=true}
+					self:addButtonBorder{obj=this["SpellButton" .. i], abt=true, sabt=true}
 				end
 			end
 
@@ -3905,7 +3905,7 @@ aObj.blizzLoDFrames[ftype].PVPUI = function(self)
 		this.BonusFrame.ShadowOverlay:DisableDrawLayer("OVERLAY")
 		self:removeMagicBtnTex(this.QueueButton)
 		if self.modBtns then
-			self:skinStdButton{obj=this.QueueButton, sec=true}
+			self:skinStdButton{obj=this.QueueButton}
 			self:SecureHook(this.QueueButton, "Disable", function(this, _)
 				self:clrBtnBdr(this)
 			end)
@@ -3934,7 +3934,7 @@ aObj.blizzLoDFrames[ftype].PVPUI = function(self)
 		self:skinObject("dropdown", {obj=this.ArenaInviteMenu, fType=ftype})
 		self:removeMagicBtnTex(this.JoinButton)
 		if self.modBtns then
-			 self:skinStdButton{obj=this.JoinButton, sec=true}
+			 self:skinStdButton{obj=this.JoinButton}
 		end
 
 		self:Unhook(this, "OnShow")
@@ -3964,7 +3964,7 @@ aObj.blizzLoDFrames[ftype].RaidUI = function(self)
 	-- Raid Group Buttons
 	for i = 1, _G.MAX_RAID_GROUPS * 5 do
 		_G["RaidGroupButton" .. i]:SetNormalTexture(nil)
-		self:skinObject("frame", {obj=_G["RaidGroupButton" .. i], fType=ftype, bd=7, ofs=1})
+		self:skinObject("button", {obj=_G["RaidGroupButton" .. i], fType=ftype, subt=true--[[, bd=7]], ofs=1})
 	end
 	-- Raid Class Tabs (side)
 	for i = 1, _G.MAX_RAID_CLASS_BUTTONS do
