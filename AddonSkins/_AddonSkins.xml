@@ -40,7 +40,6 @@
 <Script file="BossNotes.lua"/>
 <Script file="BtWLoadouts.lua"/>
 <Script file="BtWQuests.lua"/>
-<Script file="buffOmat.lua"/>
 <Script file="BuffomatClassic.lua"/>
 <Script file="Bugger.lua"/>
 <Script file="BugSack.lua"/>
