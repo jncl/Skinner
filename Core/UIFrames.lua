@@ -4937,14 +4937,12 @@ aObj.blizzFrames[ftype].Nameplates = function(self)
 	end
 
 	-- Class Nameplate Frames
-	-- ManaFrame
-	local mF = _G.ClassNameplateManaBarFrame
-	if mF then
-		self:skinStatusBar{obj=mF, fi=0,  otherTex={mF.ManaCostPredictionBar, mF.FeedbackFrame.BarTexture}}
-		mF = nil
-	end
-
 	if not self.isClsc then
+		local mF = _G.ClassNameplateManaBarFrame
+		if mF then
+			self:skinStatusBar{obj=mF, fi=0,  otherTex={mF.ManaCostPredictionBar, mF.FeedbackFrame.BarTexture}}
+			mF = nil
+		end
 		-- DeathKnight (nothing to skin)
 		-- Mage (nothing to skin)
 		-- Monk
