@@ -768,8 +768,8 @@ local function __addButtonBorder(opts)
 	end
 	-- reparent these textures so they are displayed above the border
 	if opts.ibt then -- Item Buttons
+		aObj:getRegion(opts.obj, 3):SetParent(opts.obj.sbb) -- Stock region
 		opts.obj.Count:SetParent(opts.obj.sbb)
-		_G[opts.obj:GetName() .. "Stock"]:SetParent(opts.obj.sbb)
 		opts.obj.searchOverlay:SetParent(opts.obj.sbb)
 		module:clrButtonFromBorder(opts.obj)
 	elseif opts.abt then -- Action Buttons
