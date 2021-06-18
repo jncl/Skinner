@@ -1,3 +1,22 @@
+beta9.38950.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	RetailPTR changes
+	Updated FollowerList code
+	Updated addButtonBorder function code
+	Updated PVEFrame code
+	Updated HonorFrame code
+	Updated QuestFrame code
+	Updated ItemUpgradeUI code
+	Updated Retail AuctionUI code
+	Updated NSF EditBox code
+	Bugfix for Classic AuctionUI skin
+	Updated Ace3, Auctionator, Healium & WeakAuras skins
+	Skinned BetterWardrobe, BuffomatClassicTBC & Reputable
+	Updated Frame(s) skinning code to remove NineSlice textures
+	
 beta9.38835.1
 Jncl:
 	ToDo.txt
