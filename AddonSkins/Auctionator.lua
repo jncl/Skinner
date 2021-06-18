@@ -2,7 +2,7 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("Auctionator") then return end
 local _G = _G
 
-aObj.addonsToSkin.Auctionator = function(self) -- v 9.0.10.1/100.0.9/100.0.11
+aObj.addonsToSkin.Auctionator = function(self) -- v 9.0.10.1/2.5.1 (100.0.9/100.0.11)
 
 	local skinFrames, skinConfigFrames
 	local pCnt = 0
@@ -101,9 +101,11 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 9.0.10.1/100.0.9/100.0.11
 					aObj:skinObject("dropdown", {obj=_G.AuctionatorOption_Deftab, x1=17, x2=109})
 					if aObj.modChkBtns then
 						aObj:skinCheckButton{obj=_G.AuctionatorOption_Enable_Alt_CB}
-						aObj:skinCheckButton{obj=_G.AuctionatorOption_Enable_Autocomplete_CB}
 						aObj:skinCheckButton{obj=_G.AuctionatorOption_Show_StartingPrice_CB}
 						aObj:skinCheckButton{obj=_G.AuctionatorOption_Enable_Debug_CB}
+						if _G.AuctionatorOption_Enable_Autocomplete then -- ClassicFix version
+							aObj:skinCheckButton{obj=_G.AuctionatorOption_Enable_Autocomplete_CB}
+						end
 					end
 				elseif panel.name == "Tooltips" then
 					aObj:skinObject("dropdown", {obj=_G.Atr_tipsShiftDD, x1=17, x2=109})
@@ -111,10 +113,15 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 9.0.10.1/100.0.9/100.0.11
 					if aObj.modChkBtns then
 						aObj:skinCheckButton{obj=_G.ATR_tipsVendorOpt_CB}
 						aObj:skinCheckButton{obj=_G.ATR_tipsAuctionOpt_CB}
-						aObj:skinCheckButton{obj=_G.ATR_tipsAuctionWeekOpt_CB}
-						aObj:skinCheckButton{obj=_G.ATR_tipsAuctionMonthOpt_CB}
 						aObj:skinCheckButton{obj=_G.ATR_tipsDisenchantOpt_CB}
-						aObj:skinCheckButton{obj=_G.ATR_tipsReagentOpt_CB}
+						if _G.ATR_tipsMailboxOpt then -- original version
+							aObj:skinCheckButton{obj=_G.ATR_tipsMailboxOpt_CB}
+						end
+						if _G.ATR_tipsAuctionWeekOpt_CB then  -- ClassicFix version
+							aObj:skinCheckButton{obj=_G.ATR_tipsAuctionWeekOpt_CB}
+							aObj:skinCheckButton{obj=_G.ATR_tipsAuctionMonthOpt_CB}
+							aObj:skinCheckButton{obj=_G.ATR_tipsReagentOpt_CB}
+						end
 					end
 				elseif panel.name == "Undercutting" then
 					aObj:skinMoneyFrame{obj=_G.UC_5000000_MoneyInput}
