@@ -477,9 +477,9 @@ aObj.blizzFrames[ftype].AddonList = function(self)
 				self:skinCheckButton{obj=_G["AddonListEntry" .. i .. "Enabled"]}
 			end
 		end
-		self:skinSlider{obj=_G.AddonListScrollFrame.ScrollBar, rt="background"}
-		self:skinDropDown{obj=_G.AddonCharacterDropDown, x2=109} -- created in OnLoad
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true}
+		self:skinObject("slider", {obj=_G.AddonListScrollFrame.ScrollBar, fType=ftype, rpTex="background"})
+		self:skinObject("dropdown", {obj=_G.AddonCharacterDropDown, fType=ftype, x2=109})
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true})
 		if self.modBtns then
 			self:skinStdButton{obj=this.CancelButton}
 			self:skinStdButton{obj=this.OkayButton}
@@ -5043,7 +5043,7 @@ aObj.blizzLoDFrames[ftype].ObliterumUI = function(self)
 		this.ItemSlot:DisableDrawLayer("OVERLAY")
 		self.modUIBtns:addButtonBorder{obj=this.ItemSlot} -- use module function to force button border
 		self:removeMagicBtnTex(this.ObliterateButton)
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true}
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true})
 		if self.modBtns then
 			self:skinStdButton{obj=this.ObliterateButton}
 		end
@@ -5703,8 +5703,8 @@ aObj.blizzFrames[ftype].QuestMap = function(self)
 
 	-- Quest Log Popup Detail Frame
 	self:SecureHookScript(_G.QuestLogPopupDetailFrame, "OnShow", function(this)
-		self:skinSlider{obj=this.ScrollFrame.ScrollBar, rt="artwork"}
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, ofs=2}
+		self:skinObject("slider", {obj=this.ScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true})
 		if self.modBtns then
 			self:skinStdButton{obj=this.AbandonButton}
 			self:skinStdButton{obj=this.TrackButton}
@@ -5794,7 +5794,7 @@ aObj.blizzFrames[ftype].RaidFrame = function(self)
 
 	self:SecureHookScript(_G.RaidParentFrame, "OnShow", function(this)
 		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true, offsets={x1=7, y1=self.isTT and 2 or -1, x2=-7, y2=0}})
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true}
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true})
 
 		self:Unhook(this, "OnShow")
 	end)
@@ -6318,7 +6318,7 @@ aObj.blizzFrames[ftype].TimeManager = function(self)
 		self:skinObject("dropdown", {obj=_G.TimeManagerAlarmAMPMDropDown, fType=ftype, x2=-6})
 		self:skinObject("editbox", {obj=_G.TimeManagerAlarmMessageEditBox, fType=ftype})
 		self:removeRegions(_G.TimeManagerAlarmEnabledButton, {6, 7})
-		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, cb=true, x2=self.isClsc and 1 or 3})
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, x2=self.isClsc and 1 or 3})
 		if self.modBtnBs then
 			self:addButtonBorder{obj=_G.TimeManagerStopwatchCheck, y1=2, y2=-4}
 		end

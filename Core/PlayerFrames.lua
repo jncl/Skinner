@@ -1792,7 +1792,7 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 		self:removeMagicBtnTex(this.Applicants.InviteButton)
 		self:removeMagicBtnTex(this.Applicants.MessageButton)
 		self:removeMagicBtnTex(this.Applicants.DeclineButton)
-		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, cb=true})
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true})
 		if self.modBtns then
 			self:skinStdButton{obj=this.Applicants.InviteButton}
 			self:skinStdButton{obj=this.Applicants.MessageButton}
@@ -2068,9 +2068,9 @@ aObj.blizzFrames[ftype].DressUpFrame = function(self)
 	end)
 
 	self:SecureHookScript(_G.DressUpFrame, "OnShow", function(this)
-		self:skinDropDown{obj=this.OutfitDropDown, y2=-4}
+		self:skinObject("dropdown", {obj=this.OutfitDropDown, fType=ftype, y2=-4})
 		this.MaxMinButtonFrame:DisableDrawLayer("BACKGROUND") -- button texture
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, y2=-4}
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, y2=-4})
 		if self.modBtns then
 			self:skinStdButton{obj=this.OutfitDropDown.SaveButton}
 			self:skinOtherButton{obj=this.MaxMinButtonFrame.MaximizeButton, font=self.fontS, text=self.nearrow}
@@ -3097,8 +3097,8 @@ aObj.blizzLoDFrames[ftype].ItemSocketingUI = function(self)
 
 	self:SecureHookScript(_G.ItemSocketingFrame, "OnShow", function(this)
 		self:skinSlider{obj=_G.ItemSocketingScrollFrame.ScrollBar, size=3, rt="artwork"}
-		self:skinStdButton{obj=_G.ItemSocketingSocketButton}
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true}
+		self.modUIBtns:skinStdButton{obj=_G.ItemSocketingSocketButton}
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, rns=true, cb=true}
 
 		if self.modBtns then
 			for i = 1, _G.MAX_NUM_SOCKETS do
@@ -3143,8 +3143,13 @@ aObj.blizzLoDFrames[ftype].LookingForGuildUI = function(self)
 
 	self.initialized.LookingForGuildUI = true
 
-	self:skinObject("tabs", {obj=_G.LookingForGuildFrame, prefix="LookingForGuildFrame", fType=ftype, lod=self.isTT and true, upwards=true, offsets={x1=0, y1=-5, x2=3, y2=-5}, func=function(tab) _G.RaiseFrameLevelByTwo(tab) end})
-	self:addSkinFrame{obj=_G.LookingForGuildFrame, ft=ftype, kfs=true, ri=true}
+	self:SecureHookScript(_G.LookingForGuildFrame, "OnShow", function(this)
+		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true, upwards=true, offsets={x1=0, y1=-5, x2=3, y2=-5}, func=function(tab) _G.RaiseFrameLevelByTwo(tab) end})
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true})
+		
+		self:Unhook(this, "OnShow")
+	end)
+	self:checkShown(_G.LookingForGuildFrame)
 
 	self:SecureHookScript(_G.LookingForGuildStartFrame, "OnShow", function(this)
 		if self.modChkBtns then
@@ -3224,7 +3229,7 @@ aObj.blizzFrames[ftype].LootFrames = function(self)
 				self:addButtonBorder{obj=_G["LootButton" .. i]}
 			end
 		end
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true}
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true})
 		if self.modBtnBs then
 			self:SecureHook("LootFrame_Update", function()
 				for i = 1, _G.LOOTFRAME_NUMBUTTONS do
@@ -4440,7 +4445,7 @@ aObj.blizzFrames[ftype].TradeFrame = function(self)
 		self:removeInset(_G.TradeRecipientMoneyInset)
 		self:skinMoneyFrame{obj=_G.TradePlayerInputMoneyFrame, moveSEB=true}
 		_G.TradeRecipientMoneyBg:DisableDrawLayer("BACKGROUND")
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, x2=1}
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, x2=1})
 		if self.modBtns then
 			self:skinStdButton{obj=_G.TradeFrameTradeButton}
 			self:skinStdButton{obj=_G.TradeFrameCancelButton}

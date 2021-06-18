@@ -16,12 +16,12 @@ aObj.blizzLoDFrames[ftype].AlliedRacesUI = function(self)
 		this.RaceInfoFrame.ScrollFrame.Child.RacialTraitsLabel:SetTextColor(self.HT:GetRGB())
 		this.RaceInfoFrame.ScrollFrame.Child.ObjectivesFrame.HeaderBackground:SetTexture(nil)
 		this.RaceInfoFrame.ScrollFrame.Child.ObjectivesFrame:DisableDrawLayer("BACKGROUND")
-		self:skinSlider{obj=this.RaceInfoFrame.ScrollFrame.ScrollBar, rt="background", wdth=-5}
+		self:skinObject("slider", {obj=this.RaceInfoFrame.ScrollFrame.ScrollBar, fType=ftype, rpTex="background"})
 		this.RaceInfoFrame.ScrollFrame.ScrollBar.ScrollUpBorder:ClearBackdrop()
 		this.RaceInfoFrame.ScrollFrame.ScrollBar.ScrollDownBorder:ClearBackdrop()
 		this.RaceInfoFrame.ScrollFrame.ScrollBar.Border:ClearBackdrop()
 		this.RaceInfoFrame.AlliedRacesRaceName:SetTextColor(self.HT:GetRGB())
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true}
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true})
 		if self.modBtnBs then
 			self:addButtonBorder{obj=this.ModelFrame.AlliedRacesMaleButton, ofs=0}
 			self:addButtonBorder{obj=this.ModelFrame.AlliedRacesFemaleButton, ofs=0}
@@ -630,7 +630,7 @@ aObj.blizzFrames[ftype].GossipFrame = function(self)
 	if not self.prdb.GossipFrame or self.initialized.GossipFrame then return end
 	self.initialized.GossipFrame = true
 
-	if aObj:isAddonEnabled("Quester")
+	if self:isAddonEnabled("Quester")
 	and _G.QuesterDB.gossipColor
 	then
 		-- DON'T colour the gossip text
@@ -659,11 +659,11 @@ aObj.blizzFrames[ftype].GossipFrame = function(self)
 	self:SecureHookScript(_G.GossipFrame, "OnShow", function(this)
 		self:keepFontStrings(_G.GossipFrameGreetingPanel)
 		_G.GossipGreetingText:SetTextColor(self.HT:GetRGB())
-		self:skinSlider{obj=_G.GossipGreetingScrollFrame.ScrollBar, rt="artwork"}
+		self:skinObject("slider", {obj=_G.GossipGreetingScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
 		if not self.isClsc then
-			self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true}
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, x2=3})
 		else
-			self:addSkinFrame{obj=this, ft=ftype, kfs=true, x1=10, y1=-18, x2=-29, y2=60}
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=10, y1=-18, x2=-29, y2=60})
 		end
 		if self.modBtns then
 			self:skinStdButton{obj=_G.GossipFrameGreetingGoodbyeButton}
@@ -690,9 +690,9 @@ aObj.blizzFrames[ftype].GuildRegistrar = function(self)
 		_G.GuildRegistrarPurchaseText:SetTextColor(self.BT:GetRGB())
 		self:skinEditBox{obj=_G.GuildRegistrarFrameEditBox}
 		if not self.isClsc then
-			self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true}
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true})
 		else
-			self:addSkinFrame{obj=this, ft=ftype, kfs=true, x1=10, y1=-17, x2=-29, y2=62}
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=10, y1=-17, x2=-29, y2=62})
 		end
 		if self.modBtns then
 			self:skinStdButton{obj=_G.GuildRegistrarFrameGoodbyeButton}
@@ -819,7 +819,7 @@ aObj.blizzFrames[ftype].MerchantFrame = function(self)
 			self:skinObject("dropdown", {obj=_G.MerchantFrameLootFilter, fType=ftype})
 			self:removeInset(_G.MerchantExtraCurrencyInset)
 			_G.MerchantExtraCurrencyBg:DisableDrawLayer("BACKGROUND")
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true, ri=true, cb=true, y2=-3})
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, y2=-3})
 		else
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, cb=true, x2=1, y2=-3})
 		end
@@ -919,9 +919,9 @@ aObj.blizzFrames[ftype].Petition = function(self)
 		end
 		_G.PetitionFrameInstructions:SetTextColor(self.BT:GetRGB())
 		if not self.isClsc then
-			self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true}
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true})
 		else
-			self:addSkinFrame{obj=this, ft=ftype, kfs=true, x1=10, y1=-17, x2=-29, y2=62}
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=10, y1=-17, x2=-29, y2=62})
 		end
 		if self.modBtns then
 			self:skinStdButton{obj=_G.PetitionFrameCancelButton}
@@ -947,7 +947,7 @@ aObj.blizzFrames[ftype].PetStableFrame = function(self)
 		_G.PetStableFrameStableBg:Hide()
 		self:makeMFRotatable(_G.PetStableModel)
 		_G.PetStableModelShadow:Hide()
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true}
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true})
 		if self.modBtnBs then
 			self:addButtonBorder{obj=_G.PetStablePetInfo, relTo=_G.PetStableSelectedPetIcon, clr="grey", ca=0.85}
 			self:addButtonBorder{obj=_G.PetStableDiet, ofs=1, x2=0, clr="gold"}
@@ -995,14 +995,14 @@ aObj.blizzFrames[ftype].QuestFrame = function(self)
 		end, true)
 
 		if not self.isClsc then
-			self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true}
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true})
 		else
-			self:addSkinFrame{obj=this, ft=ftype, kfs=true, x1=10, y1=-18, x2=-29, y2=65}
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=10, y1=-18, x2=-29, y2=65})
 		end
 
 		--	Reward Panel
 		self:keepFontStrings(_G.QuestFrameRewardPanel)
-		self:skinSlider{obj=_G.QuestRewardScrollFrame.ScrollBar, rt="artwork"}
+		self:skinObject("slider", {obj=_G.QuestRewardScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
 
 		--	Progress Panel
 		self:keepFontStrings(_G.QuestFrameProgressPanel)
@@ -1010,7 +1010,7 @@ aObj.blizzFrames[ftype].QuestFrame = function(self)
 		_G.QuestProgressText:SetTextColor(self.BT:GetRGB())
 		_G.QuestProgressRequiredMoneyText:SetTextColor(self.BT:GetRGB())
 		_G.QuestProgressRequiredItemsText:SetTextColor(self.HT:GetRGB())
-		self:skinSlider{obj=_G.QuestProgressScrollFrame.ScrollBar, rt="artwork"}
+		self:skinObject("slider", {obj=_G.QuestProgressScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
 		local btnName
 		for i = 1, _G.MAX_REQUIRED_ITEMS do
 			btnName = "QuestProgressItem" .. i
@@ -1032,12 +1032,12 @@ aObj.blizzFrames[ftype].QuestFrame = function(self)
 
 		--	Detail Panel
 		self:keepFontStrings(_G.QuestFrameDetailPanel)
-		self:skinSlider{obj=_G.QuestDetailScrollFrame.ScrollBar, rt="artwork"}
+		self:skinObject("slider", {obj=_G.QuestDetailScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
 
 		--	Greeting Panel
 		self:keepFontStrings(_G.QuestFrameGreetingPanel)
 		self:keepFontStrings(_G.QuestGreetingScrollChildFrame) -- hide Horizontal Break texture
-		self:skinSlider{obj=_G.QuestGreetingScrollFrame.ScrollBar, rt="artwork"}
+		self:skinObject("slider", {obj=_G.QuestGreetingScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
 		if _G.QuestFrameGreetingPanel:IsShown() then
 			_G.GreetingText:SetTextColor(self.BT:GetRGB())
 			_G.CurrentQuestsText:SetTextColor(self.HT:GetRGB())
@@ -1307,16 +1307,16 @@ aObj.blizzFrames[ftype].Tabard = function(self)
 		for i = 1, 5 do
 			self:keepFontStrings(_G["TabardFrameCustomization" .. i])
 			if self.modBtnBs then
-				self:addButtonBorder{obj=_G["TabardFrameCustomization" .. i .. "LeftButton"], ofs=-2, x1=1, clr="gold"}
-				self:addButtonBorder{obj=_G["TabardFrameCustomization" .. i .. "RightButton"], ofs=-2, x1=1, clr="gold"}
+				self:addButtonBorder{obj=_G["TabardFrameCustomization" .. i .. "LeftButton"], ofs=-3, x1=1, clr="gold"}
+				self:addButtonBorder{obj=_G["TabardFrameCustomization" .. i .. "RightButton"], ofs=-3, x1=1, clr="gold"}
 			end
 		end
-		if self.isClsc then
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=10, y1=-11, x2=-32, y2=71})
-		else
+		if not self.isClsc then
 			self:removeInset(_G.TabardFrameMoneyInset)
 			_G.TabardFrameMoneyBg:DisableDrawLayer("BACKGROUND")
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true})
+		else
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=10, y1=-11, x2=-32, y2=71})
 		end
 		if self.modBtns then
 			self:skinStdButton{obj=_G.TabardFrameAcceptButton}
@@ -1359,8 +1359,18 @@ aObj.blizzLoDFrames[ftype].TrainerUI = function(self)
 		_G.ClassTrainerStatusBarMiddle:SetAlpha(0)
 		_G.ClassTrainerStatusBarSkillRank:SetPoint("CENTER", _G.ClassTrainerStatusBar) -- Blizzard bug
 		self:skinStatusBar{obj=_G.ClassTrainerStatusBar, fi=0, bgTex=_G.ClassTrainerStatusBarBackground}
-		self:skinDropDown{obj=_G.ClassTrainerFrameFilterDropDown}
+		self:skinObject("dropdown", {obj=_G.ClassTrainerFrameFilterDropDown, fType=ftype})
 		self:removeMagicBtnTex(_G.ClassTrainerTrainButton)
+		this.skillStepButton:GetNormalTexture():SetTexture(nil)
+		self:skinObject("slider", {obj=_G.ClassTrainerScrollFrameScrollBar, fType=ftype})
+		for _, btn in _G.pairs(this.scrollFrame.button) do
+			btn:GetNormalTexture():SetTexture(nil)
+			if self.modBtnBs then
+				self:addButtonBorder{obj=btn, relTo=btn.icon}
+			end
+		end
+		self:removeInset(this.bottomInset)
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true})
 		if self.modBtns then
 			self:skinStdButton{obj=_G.ClassTrainerTrainButton}
 			self:SecureHook(_G.ClassTrainerTrainButton, "Disable", function(this, _)
@@ -1370,19 +1380,9 @@ aObj.blizzLoDFrames[ftype].TrainerUI = function(self)
 				self:clrBtnBdr(this)
 			end)
 		end
-		_G.ClassTrainerFrame.skillStepButton:GetNormalTexture():SetTexture(nil)
 		if self.modBtnBs then
 			 self:addButtonBorder{obj=this.skillStepButton, relTo=this.skillStepButton.icon}
 		end
-		self:skinSlider{obj=_G.ClassTrainerScrollFrameScrollBar, wdth=-4}
-		for i = 1, #this.scrollFrame.buttons do
-			this.scrollFrame.buttons[i]:GetNormalTexture():SetTexture(nil)
-			if self.modBtnBs then
-				self:addButtonBorder{obj=this.scrollFrame.buttons[i], relTo=this.scrollFrame.buttons[i].icon}
-			end
-		end
-		self:removeInset(this.bottomInset)
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true}
 
 		self:Unhook(this, "OnShow")
 	end)
