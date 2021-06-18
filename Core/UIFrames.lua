@@ -5891,24 +5891,29 @@ aObj.blizzLoDFrames[ftype].ScrappingMachineUI = function(self)
 
 	self.initialized.ScrappingMachineUI = true
 
-	_G.ScrappingMachineFrame.Background:SetTexture(nil)
-	_G.ScrappingMachineFrame.ItemSlots:DisableDrawLayer("ARTWORK")
-	for slot in _G.ScrappingMachineFrame.ItemSlots.scrapButtons:EnumerateActive() do
-		self:nilTexture(slot.IconBorder, true)
-		self.modUIBtns:addButtonBorder{obj=slot, relTo=slot.Icon, clr="grey"} -- use module function to force button border
-		-- hook this to reset sbb colour
-		self:SecureHook(slot, "ClearSlot", function(this)
-			self:clrBtnBdr(this, "grey")
-		end)
-	end
-	self:removeMagicBtnTex(_G.ScrappingMachineFrame.ScrapButton)
-	self:addSkinFrame{obj=_G.ScrappingMachineFrame, ft=ftype, kfs=true, ri=true}
-	if self.modBtns then
-		 self:skinStdButton{obj=_G.ScrappingMachineFrame.ScrapButton}
-		 self:SecureHook(_G.ScrappingMachineFrame, "UpdateScrapButtonState", function(this)
-			 self:clrBtnBdr(this.ScrapButton)
-		 end)
-	end
+	self:SecureHookScript(_G.ScrappingMachineFrame, "OnShow", function(this)
+		this.Background:SetTexture(nil)
+		this.ItemSlots:DisableDrawLayer("ARTWORK")
+		for slot in this.ItemSlots.scrapButtons:EnumerateActive() do
+			self:nilTexture(slot.IconBorder, true)
+			self.modUIBtns:addButtonBorder{obj=slot, relTo=slot.Icon, clr="grey"} -- use module function to force button border
+			-- hook this to reset sbb colour
+			self:SecureHook(slot, "ClearSlot", function(this)
+				self:clrBtnBdr(this, "grey")
+			end)
+		end
+		self:removeMagicBtnTex(this.ScrapButton)
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true})
+		if self.modBtns then
+			 self:skinStdButton{obj=this.ScrapButton}
+			 self:SecureHook(this, "UpdateScrapButtonState", function(this)
+				 self:clrBtnBdr(this.ScrapButton)
+			 end)
+		end
+		
+		self:Unhook(this, "OnShow")
+	end)
+	self:checkShown(_G.ScrappingMachineFrame)
 
 end
 
