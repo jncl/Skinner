@@ -344,11 +344,11 @@ aObj.blizzLoDFrames[ftype].ArchaeologyUI = function(self)
 
 	self:SecureHookScript(_G.ArchaeologyFrame, "OnShow", function(this)
 		self:moveObject{obj=this.infoButton, x=-25}
-		self:skinDropDown{obj=this.raceFilterDropDown}
+		self:skinObject("dropdown", {obj=this.raceFilterDropDown, fType=ftype})
 		_G.ArchaeologyFrameRankBarBackground:SetAllPoints(this.rankBar)
 		_G.ArchaeologyFrameRankBarBorder:Hide()
 		self:skinStatusBar{obj=this.rankBar, fi=0, bgTex=_G.ArchaeologyFrameRankBarBackground}
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, x1=30, x2=2.5}
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, x1=30, x2=3})
 
 		self:keepFontStrings(this.summaryPage) -- remove title textures
 		_G.ArchaeologyFrameSummaryPageTitle:SetTextColor(self.HT:GetRGB())
@@ -399,7 +399,7 @@ aObj.blizzLoDFrames[ftype].ArchaeologyUI = function(self)
 		this.artifactPage.solveFrame.statusBar:SetStatusBarColor(0.75, 0.45, 0, 0.7)
 		this.artifactPage.historyTitle:SetTextColor(self.HT:GetRGB())
 		this.artifactPage.historyScroll.child.text:SetTextColor(self.BT:GetRGB())
-		self:skinSlider{obj=this.artifactPage.historyScroll.ScrollBar, wdth=-4}
+		self:skinObject("slider", {obj=this.artifactPage.historyScroll.ScrollBar, fType=ftype})
 
 		self:removeRegions(this.helpPage, {2, 3}) -- title textures
 		this.helpPage.titleText:SetTextColor(self.HT:GetRGB())
