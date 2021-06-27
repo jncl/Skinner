@@ -15,11 +15,11 @@ end
 local buildInfo = {
 	-- In Development
 	-- retail_beta  = {"10.0.0", 99999},
-	classic_beta = {"2.5.1", 38988},
-	classic_ptr  = {"2.5.1", 38988},
-	retail_ptr   = {"9.1.0", 39015},
+	classic_beta = {"2.5.1", 39170},
+	classic_ptr  = {"2.5.1", 39170},
+	retail_ptr   = {"9.1.0", 39172},
 	-- Live - Classic
-	classic_bc   = {"2.5.1", 38988},
+	classic_bc   = {"2.5.1", 39170},
 	classic      = {"1.13.7", 38704},
 	-- Live
 	retail       = {"9.0.5", 38556},
