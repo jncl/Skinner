@@ -1292,6 +1292,11 @@ aObj.blizzLoDFrames[ftype].RuneForgeUI = function(self)
 		this.CloseButton.CustomBorder:SetTexture(nil)
 		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cbns=true, ofs=-40, y2=100})
 
+		-- tooltip
+		_G.C_Timer.After(0.1, function()
+			self:add2Table(self.ttList, this.ResultTooltip)
+		end)
+
 		self:Unhook(this, "OnShow")
 	end)
 
