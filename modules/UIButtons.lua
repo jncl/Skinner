@@ -63,8 +63,8 @@ do
 	module.fontDS:SetTextColor(_G.DISABLED_FONT_COLOR:GetRGB())
 end
 local texNumbers = {
-	[130838] = "plus",
 	[130821] = "minus",
+	[130838] = "plus",
 }
 local texSuffixes = {
 	["PlusButton"]    = "plus",
@@ -376,7 +376,9 @@ function module:skinExpandButton(opts)
 	-- don't skin it twice (BUGFIX)
 	if opts.obj and opts.obj.sb then return end
 
-	opts.obj:DisableDrawLayer("BACKGROUND")
+	if not opts.noddl then
+		opts.obj:DisableDrawLayer("BACKGROUND")
+	end
 	if opts.obj:GetNormalTexture() then opts.obj:GetNormalTexture():SetAlpha(0) end
 	if opts.obj:GetPushedTexture() then opts.obj:GetPushedTexture():SetAlpha(0) end
 

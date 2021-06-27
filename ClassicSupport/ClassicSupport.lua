@@ -1877,7 +1877,6 @@ aObj.ClassicSupport = function(self)
 			if self.isClscBC then
 				self:keepFontStrings(_G.QuestLogCount)
 			end
-			-- TODO: _G["QuestLogTitle" .. i .. "Check"] texture
 			self:skinSlider{obj=_G.QuestLogListScrollFrame.ScrollBar}
 			self:skinSlider{obj=_G.QuestLogDetailScrollFrame.ScrollBar}
 			_G.QuestLogQuestTitle:SetTextColor(self.HT:GetRGB())
@@ -1906,7 +1905,7 @@ aObj.ClassicSupport = function(self)
 			if self.modBtns then
 				self:skinExpandButton{obj=_G.QuestLogCollapseAllButton, fType=ftype, onSB=true}
 				for i = 1, _G.QUESTS_DISPLAYED do
-					self:skinExpandButton{obj=_G["QuestLogTitle" .. i], fType=ftype, onSB=true}
+					self:skinExpandButton{obj=_G["QuestLogTitle" .. i], fType=ftype, noddl=true, onSB=true}
 					self:checkTex{obj=_G["QuestLogTitle" .. i]}
 				end
 				self:SecureHook("QuestLog_Update", function()
