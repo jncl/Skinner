@@ -1,3 +1,19 @@
+beta9.39015.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Removed NineSlice textures from several frames
+	Updated ArchaeologyUI
+	Updated ScappingMachineUI
+	Updated GameMenuFrame & RatingMenuFrame skins
+	Updated UIButtons skinning code
+	Updated Auctionator & DejaClassicStats skins
+	Bugfix for Nameplates TBC
+	Updated UIButton skinning code
+	Updated Bartender4, BuffomatClassic & LibInit skins
+	Obsoleted buffOmat skin
+	
 beta9.38950.1
 Jncl:
 	ToDo.txt
