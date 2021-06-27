@@ -2,7 +2,7 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("Auctionator") then return end
 local _G = _G
 
-aObj.addonsToSkin.Auctionator = function(self) -- v 9.0.10.1/2.5.1 (100.0.9/100.0.11)
+aObj.addonsToSkin.Auctionator = function(self) -- v 9.0.11/2.5.1 (100.0.9/100.0.11)
 
 	local skinFrames, skinConfigFrames
 	local pCnt = 0
@@ -486,7 +486,8 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 9.0.10.1/2.5.1 (100.0.9/100.
 	end
 
 	self.RegisterCallback("Auctionator", "Auction_House_Show", function(this)
-		_G.C_Timer.After(0.25, function()
+		-- wait for frames to be created
+		_G.C_Timer.After(0.5, function()
 			skinFrames()
 		end)
 

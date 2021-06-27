@@ -1,47 +1,24 @@
-local _, aObj = ...
+local aName, aObj = ...
 if not aObj:isAddonEnabled("BtWLoadouts") then return end
 local _G = _G
 
-aObj.addonsToSkin.BtWLoadouts = function(self) -- v 83
+aObj.addonsToSkin.BtWLoadouts = function(self) -- v 1.0.0
 
-	local function skinTabFrame(frame, dropdown)
-		aObj:removeInset(frame.Inset)
-		aObj:skinObject("editbox", {obj=frame.Name, ca=true})
-		if dropdown then
-			aObj:skinObject("dropdown", {obj=dropdown, initState=not dropdown.Button:IsEnabled()})
-		end
-	end
-	local function skinTalentRow(row)
-		for tex in row.BackgroundPool:EnumerateActive() do
-			tex:SetTexture(nil)
-		end
-		for tex in row.SeparatorPool:EnumerateActive() do
-			tex:SetTexture(nil)
-		end
-		for btn in row.ButtonPool:EnumerateActive() do
-			btn.Slot:SetTexture(nil)
-			btn.Cover:SetTexture(nil)
-			if aObj.modBtnBs then
-				btn.KnownSelection:SetAlpha(0)
-				aObj:addButtonBorder{obj=btn, relTo=btn.Icon, clr=btn.KnownSelection:IsShown() and "gold" or "disabled"}
-				aObj:secureHook(btn, "Update", function(this)
-					aObj:clrBtnBdr(btn, btn.KnownSelection:IsShown() and "gold" or "disabled")
-				end)
-			else
-				btn.KnownSelection:SetTexCoord(0.14, 0.86, 0, 1)
-				btn.KnownSelection:SetVertexColor(0, 1, 0, 1)
-			end
-		end
-	end
 	self:SecureHookScript(_G.BtWLoadoutsFrame, "OnShow", function(this)
 		self:removeInset(this.SidebarInset)
 		self:skinObject("editbox", {obj=this.Sidebar.SearchBox, si=true, ca=true})
 		self:skinObject("slider", {obj=this.Sidebar.Scroll.ScrollBar})
 		self:removeInset(this.BodyInset)
 		self:skinObject("glowbox", {obj=this.HelpTipBox})
+		self:skinObject("frame", {obj=this.NPE, ri=true})
 		self:skinObject("tabs", {obj=this, tabs=this.Tabs, lod=true, offsets={x1=6, y1=3, x2=-6, y2=2}})
-		self:skinObject("frame", {obj=this, kfs=true, cb=true, x2=2})
+		self:skinObject("frame", {obj=this, kfs=true, rns=true, cb=true, x2=2})
 		if self.modBtns then
+			this.OptionsButton:SetHitRectInsets(0, 0, 0, 0)
+			self:moveObject{obj=this.OptionsButton, x=-10}
+			this.OptionsButton:SetSize(14, 14)
+			this.OptionsButton:SetNormalTexture([[Interface\AddOns\]] .. aName .. [[\Textures\gear]])
+			this.OptionsButton:SetPushedTexture(nil)
 			self:skinStdButton{obj=this.Sidebar.FilterButton, ofs=0}
 			self:SecureHook(this.Sidebar, "Update", function(this)
 				self:clrBtnBdr(this.FilterButton)
@@ -59,10 +36,14 @@ aObj.addonsToSkin.BtWLoadouts = function(self) -- v 83
 			self:SecureHook(this.DeleteButton, "SetEnabled", function(this)
 				self:clrBtnBdr(this)
 			end)
+			self:skinStdButton{obj=this.NPE.AddButton}
 		end
 
-		self:SecureHookScript(this.Profiles, "OnShow", function(this)
-			skinTabFrame(this,this.SpecDropDown)
+		self:SecureHookScript(this.Loadouts, "OnShow", function(this)
+			self:removeInset(this.Inset)
+			self:skinObject("editbox", {obj=this.Name, ca=true})
+			self:skinObject("dropdown", {obj=this.SpecDropDown, initState=not this.SpecDropDown.Button:IsEnabled()})
+			self:skinObject("dropdown", {obj=this.CharacterDropDown, initState=not this.CharacterDropDown.Button:IsEnabled()})
 			self:SecureHook(this, "Update", function(this)
 				self:checkDisabledDD(this.SpecDropDown, not this.SpecDropDown.Button:IsEnabled())
 			end)
@@ -73,9 +54,33 @@ aObj.addonsToSkin.BtWLoadouts = function(self) -- v 83
 
 			self:Unhook(this, "OnShow")
 		end)
-		self:checkShown(this.Profiles)
+		self:checkShown(this.Loadouts)
+		local function skinTalentRow(row)
+			for tex in row.BackgroundPool:EnumerateActive() do
+				tex:SetTexture(nil)
+			end
+			for tex in row.SeparatorPool:EnumerateActive() do
+				tex:SetTexture(nil)
+			end
+			for btn in row.ButtonPool:EnumerateActive() do
+				btn.Slot:SetTexture(nil)
+				btn.Cover:SetTexture(nil)
+				if aObj.modBtnBs then
+					btn.KnownSelection:SetAlpha(0)
+					aObj:addButtonBorder{obj=btn, relTo=btn.Icon, clr=btn.KnownSelection:IsShown() and "gold" or "disabled"}
+					aObj:secureHook(btn, "Update", function(this)
+						aObj:clrBtnBdr(btn, btn.KnownSelection:IsShown() and "gold" or "disabled")
+					end)
+				else
+					btn.KnownSelection:SetTexCoord(0.14, 0.86, 0, 1)
+					btn.KnownSelection:SetVertexColor(0, 1, 0, 1)
+				end
+			end
+		end
 		self:SecureHookScript(this.Talents, "OnShow", function(this)
-			skinTabFrame(this, this.SpecDropDown)
+			self:removeInset(this.Inset)
+			self:skinObject("editbox", {obj=this.Name, ca=true})
+			self:skinObject("dropdown", {obj=this.SpecDropDown, initState=not this.SpecDropDown.Button:IsEnabled()})
 			self:SecureHook(this, "Update", function(this)
 				self:checkDisabledDD(this.SpecDropDown, not this.SpecDropDown.Button:IsEnabled())
 			end)
@@ -88,7 +93,9 @@ aObj.addonsToSkin.BtWLoadouts = function(self) -- v 83
 			self:Unhook(this, "OnShow")
 		end)
 		self:SecureHookScript(this.PvPTalents, "OnShow", function(this)
-			skinTabFrame(this, this.SpecDropDown)
+			self:removeInset(this.Inset)
+			self:skinObject("editbox", {obj=this.Name, ca=true})
+			self:skinObject("dropdown", {obj=this.SpecDropDown, initState=not this.SpecDropDown.Button:IsEnabled()})
 			self:SecureHook(this, "Update", function(this)
 				for grid in this.GridPool:EnumerateActive() do
 					skinTalentRow(grid)
@@ -98,7 +105,9 @@ aObj.addonsToSkin.BtWLoadouts = function(self) -- v 83
 			self:Unhook(this, "OnShow")
 		end)
 		self:SecureHookScript(this.Essences, "OnShow", function(this)
-			skinTabFrame(this, this.RoleDropDown)
+			self:removeInset(this.Inset)
+			self:skinObject("editbox", {obj=this.Name, ca=true})
+			self:skinObject("dropdown", {obj=this.RoleDropDown, initState=not this.RoleDropDown.Button:IsEnabled()})
 			for key, slot in _G.pairs(this.Slots) do
 				if key == 115 then -- Major slot
 					slot.Glow:SetAlpha(0)
@@ -115,8 +124,17 @@ aObj.addonsToSkin.BtWLoadouts = function(self) -- v 83
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:SecureHookScript(this.Soulbinds, "OnShow", function(this)
+			self:removeInset(this.Inset)
+			self:skinObject("editbox", {obj=this.Name, ca=true})
+			self:skinObject("dropdown", {obj=this.SoulbindDropDown, initState=not this.SoulbindDropDown.Button:IsEnabled()})
+			self:skinObject("dropdown", {obj=this.RestrictionsDropDown, initState=not this.RestrictionsDropDown.Button:IsEnabled()})
+			
+			self:Unhook(this, "OnShow")
+		end)
 		self:SecureHookScript(this.Equipment, "OnShow", function(this)
-			skinTabFrame(this)
+			self:removeInset(this.Inset)
+			self:skinObject("editbox", {obj=this.Name, ca=true})
 			for _, slot in pairs(this.Slots) do
 				slot:DisableDrawLayer("BACKGROUND")
 				if self.modBtnBs then
@@ -127,7 +145,8 @@ aObj.addonsToSkin.BtWLoadouts = function(self) -- v 83
 			self:Unhook(this, "OnShow")
 		end)
 		self:SecureHookScript(this.ActionBars, "OnShow", function(this)
-			skinTabFrame(this)
+			self:removeInset(this.Inset)
+			self:skinObject("editbox", {obj=this.Name, ca=true})
 			if self.modBtnBs then
 				for _, slot in pairs(this.Slots) do
 					slot:GetNormalTexture():SetTexture(nil)
@@ -142,24 +161,22 @@ aObj.addonsToSkin.BtWLoadouts = function(self) -- v 83
 			self:Unhook(this, "OnShow")
 		end)
 		self:SecureHookScript(this.Conditions, "OnShow", function(this)
-			skinTabFrame(this)
-			for _, name in _G.pairs{"Profile", "ConditionType", "Instance", "Difficulty", "Boss", "Affixes", "Scenario"} do
+			local ddNames = {"Loadout", "Character", "ConditionType", "Instance", "Difficulty", "Boss", "Affixes", "Scenario"}
+			self:removeInset(this.Inset)
+			self:skinObject("editbox", {obj=this.Name, ca=true})
+			for _, name in _G.pairs(ddNames) do
 				self:skinObject("dropdown", {obj=this[name .. "DropDown"], initState=not this[name .. "DropDown"].Button:IsEnabled()})
 				self:SecureHook(this[name .. "DropDown"], "SetShown", function(this)
 					this.sf:SetShown(this:IsShown())
 				end)
 			end
 			self:SecureHook(this, "Update", function(this)
-				self:checkDisabledDD(this.ProfileDropDown, not this.ProfileDropDown.Button:IsEnabled())
-				self:checkDisabledDD(this.ConditionTypeDropDown, not this.ConditionTypeDropDown.Button:IsEnabled())
-				self:checkDisabledDD(this.InstanceDropDown, not this.InstanceDropDown.Button:IsEnabled())
-				self:checkDisabledDD(this.DifficultyDropDown, not this.DifficultyDropDown.Button:IsEnabled())
-				self:checkDisabledDD(this.BossDropDown, not this.BossDropDown.Button:IsEnabled())
-				self:checkDisabledDD(this.AffixesDropDown, not this.AffixesDropDown.Button:IsEnabled())
-				self:checkDisabledDD(this.ScenarioDropDown, not this.ScenarioDropDown.Button:IsEnabled())
+				for _, name in _G.pairs(ddNames) do
+					self:checkDisabledDD(this[name .. "DropDown"], not this[name .. "DropDown"].Button:IsEnabled())
+				end
 			end)
-			-- TODO: BtWLoadoutsConditionsAffixesDropDownList
-				-- .Border
+			self:removeNineSlice(_G.BtWLoadoutsConditionsAffixesDropDownList.Border)
+			self:skinObject("frame", {obj=_G.BtWLoadoutsConditionsAffixesDropDownList, ofs=0})
 			if self.modChkBtns then
 				self:skinCheckButton{obj=this.Enabled}
 			end
@@ -172,9 +189,8 @@ aObj.addonsToSkin.BtWLoadouts = function(self) -- v 83
 
 	self:SecureHookScript(_G.BtWLoadoutsLogFrame, "OnShow", function(this)
 		self:removeInset(this.BodyInset)
-		this.Scroll:DisableDrawLayer("BACKGROUND")
-		self:skinSlider{obj=this.Scroll.ScrollBar, wdth=-4}
-		self:skinObject("frame", {obj=this, kfs=true, cb=true, x2=3})
+		self:skinObject("slider", {obj=this.Scroll.ScrollBar, rpTex="background"})
+		self:skinObject("frame", {obj=this, kfs=true, rns=true, cb=true, x2=3})
 
 		self:Unhook(this, "OnShow")
 	end)
