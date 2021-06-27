@@ -36,6 +36,7 @@
 <Script file="BetterWardrobe.lua"/>
 <Script file="BigWigs.lua"/>
 <Script file="BindPad.lua"/>
+<Script file="BiSTracker.lua"/>
 <Script file="BonusRollPreview.lua"/>
 <Script file="BossNotes.lua"/>
 <Script file="BtWLoadouts.lua"/>
@@ -191,6 +192,7 @@
 <Script file="tektip.lua"/>
 <Script file="TinyDPS.lua"/>
 <Script file="TinyInspect.lua"/>
+<Script file="TinyLootMonitor.lua"/>
 <Script file="TinyTooltip.lua"/>
 <Script file="TipTac.lua"/>
 <Script file="TitanSocial.lua"/>
