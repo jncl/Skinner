@@ -23,20 +23,55 @@ ToDos
 
 ≈	O	Refactor NewSkinFuncs in Blizzard/AddOn skins
 
-	I/B	Nameplates, reported by nikopark80, 10.06.21
-√		-  Interface\AddOns\Skinner\Core\UIFrames.lua:4943: attempt to index field 'FeedbackFrame' (a nil value)
-		
-	I	TimeManagerFrame, reported by Galthariel, 10.06.21
-√		- Frame has NineSlice texture visible
+	I	BtWLoadouts, reported by Shiv_G3/lunica, 18.06.21/19.06.21
+√		- Skinner\AddonSkins\BtWLoadouts-1.0.0.lua:64: Usage: SecureHookScript(object, method, [handler]): You can only hook a script on a frame object
 
-	I/B	Auctionator, reported by Galthariel, 12.06.21
-√		- Settings not visible in IOP
+	I	AuctionUI, reported by EpidemeDaBear/hastrox77, 18.06.21
+√		- ...aceSkinner\ClassicSupport\ClassicSupport.lua:380: attempt to index field 'WowToken' (a nil value)
+		[string "@Skinner\ClassicSupport\ClassicSupport.lua"]:380: in function <...aceSkinner\ClassicSupport\ClassicSupport.lua:308>
 		
-	I	GameMenuFrame, reported by SinbaTV, 17.06.21
-√		- Skinner\Core\UtilFuncs.lua:954: attempt to index local 'frame' (a nil value)
-		[string "@Skinner\Core\UtilFuncs.lua"]:954: in function <Skinner\Core\UtilFuncs.lua:953>
-		[string "@Skinner\Core\UtilFuncs.lua"]:986: in function `removeNineSlice'
-		[string "@Skinner\Core\UIFrames.lua"]:4469: in function <Skinner\Core\UIFrames.lua:4468>
+√	S	TinyLoopMonitor, requested by Hayato2846, 18.06.21
+
+	I	Auctionator, reported by Galthariel, 19.06.21
+√		- Skinner\AddonSkins\Auctionator-9.0.11.lua:241: Usage: SecureHookScript(object, method, [handler]): You can only hook a script on a frame object
 	
-	N/B	DejaClassicStats, reported by SinbaTV, 17.06.21
-√		- New ranged entry
+	N	VenturePlan, reported by Galthariel, 23.06.21
+√		- Skinner\AddonSkins\VenturePlan-4.16.lua:54: attempt to index field 'Intro' (a nil value)
+		[string "@Skinner\AddonSkins\VenturePlan-4.16.lua"]:54: in function <Skinner\AddonSkins\VenturePlan.lua:35>
+
+	I/B	QuestLog, reported by tissuehime, 26.06.21
+√		- not showing complete, raid, dungeon label
+?		- also some buttons & scroll bar not skinned
+		
+	I	RuneforgeFrame, reported by krainz, 26.06.21
+√		- Result tooltip not skinned
+		
+	I/B	AuctionUI, reported by 아련별, 27.06.21
+?		- ...\Accountant_Classic\Libs\AceHook-3.0\AceHook-3.0-9.lua:180: Attempting to rehook already active hook FilterButton_SetUp.
+		[string "=[C]"]: ?
+		[string "@Accountant_Classic\Libs\AceHook-3.0\AceHook-3.0-9.lua"]:180: in function <...\Accountant_Classic\Libs\AceHook-3.0\AceHook-3.0.lua:118>
+		[string "@Accountant_Classic\Libs\AceHook-3.0\AceHook-3.0-9.lua"]:341: in function `SecureHook'
+		[string "@Skinner\ClassicSupport\ClassicSupport.lua"]:310: in function <...aceSkinner\ClassicSupport\ClassicSupport.lua:308>
+	
+	I/B	DBM, reported by 아련별, 27.06.21
+√		- SharedXML\Backdrop.lua:295: TexCoord out of range
+		[string "=[C]"]: in function `SetTexCoord'
+		[string "@SharedXML\Backdrop.lua"]:295: in function <SharedXML\Backdrop.lua:294>
+		[string "@SharedXML\Backdrop.lua"]:327: in function `SetupTextureCoordinates'
+		[string "@SharedXML\Backdrop.lua"]:271: in function <SharedXML\Backdrop.lua:269>
+		[string "=[C]"]: in function `GetWidth'
+		[string "@SharedXML\Backdrop.lua"]:302: in function `SetupTextureCoordinates'
+		[string "@SharedXML\Backdrop.lua"]:412: in function `ApplyBackdrop'
+		[string "@SharedXML\Backdrop.lua"]:428: in function `SetBackdrop'
+		[string "@Skinner\Core\MainFuncs.lua"]:494: in function <Skinner\Core\MainFuncs.lua:445>
+		[string "@Skinner\Core\MainFuncs.lua"]:554: in function `applySkin'
+		[string "@Skinner\AddonSkins\DBM-2.5.7.20210614225835.lua"]:105: in function <Skinner\AddonSkins\DBM.lua:101>
+		[string "@Skinner\AddonSkins\DBM-2.5.7.20210614225835.lua"]:157: in function <Skinner\AddonSkins\DBM.lua:156>
+
+√	S/B	BiSTracker, requested by 아련별, 27.06.21
+	
+	I/B	Ace3, reported by 아련별, 27.06.21
+?		- Skinner\Modules\UIButtons.lua:296: attempt to index field 'obj' (a nil value)
+		[string "@Skinner\AddonSkins\Ace3.lua"]:171: in function `skinAceGUI'
+		[string "@Skinner\AddonSkins\Ace3.lua"]:563: in function <Skinner\AddonSkins\Ace3.lua:19>
+	
