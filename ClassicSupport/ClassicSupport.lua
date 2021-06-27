@@ -377,7 +377,7 @@ aObj.ClassicSupport = function(self)
 
 				self:Unhook(this, "OnShow")
 			end)
-			self:SecureHookScript(_G.WowToken.GameTimeTutorial, "OnShow", function(this)
+			self:SecureHookScript(_G.WowTokenGameTimeTutorial, "OnShow", function(this)
 				self.LeftDisplay.Label:SetTextColor(self.HT:GetRGB())
 				self.LeftDisplay.Tutorial1:SetTextColor(self.BT:GetRGB())
 				self.RightDisplay.Label:SetTextColor(self.HT:GetRGB())
