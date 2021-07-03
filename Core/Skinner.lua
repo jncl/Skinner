@@ -41,9 +41,9 @@ function aObj:OnInitialize()
 	elseif self.isClscPTR then self:Debug("Classic_PTR detected")
 	elseif self.isClscBC then self:Debug("Classic_BC detected")
 	elseif self.isClsc then self:Debug("Classic detected") end
-	if self.isRetBeta then self:Debug("Retail_Beta detected") end
-	if self.isRetPTR then self:Debug("Retail_PTR detected") end
-	if self.isRetail then self:Debug("Retail detected") end
+	if self.isRetBeta then self:Debug("Retail_Beta detected")
+	elseif self.isRetPTR then self:Debug("Retail_PTR detected")
+	elseif self.isRet then self:Debug("Retail detected") end
 	if self.isPatch then self:Debug("Patch detected") end
 	--@end-alpha@
 
