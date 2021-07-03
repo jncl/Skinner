@@ -2,7 +2,7 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("BetterWardrobe") then return end
 local _G = _G
 
-aObj.addonsToSkin.BetterWardrobe = function(self) -- v 2.9
+aObj.addonsToSkin.BetterWardrobe = function(self) -- v 3.0
 
 	local ddName, ddObj
 	self:SecureHook("BW_UIDropDownMenu_CreateFrames", function(level, index)
@@ -20,14 +20,26 @@ aObj.addonsToSkin.BetterWardrobe = function(self) -- v 2.9
 		ddName, ddObj = nil, nil
 	end)
 
-	-- local BetterWardrobe = _G.LibStub:GetLibrary("AceAddon-3.0"):GetAddon("BetterWardrobe", true)
+	local skinPageBtns
+	if self.modBtnBs then
+		function skinPageBtns(frame)
+			aObj:addButtonBorder{obj=frame.PagingFrame.PrevPageButton, ofs=-2, y1=-3, x2=-3}
+			aObj:addButtonBorder{obj=frame.PagingFrame.NextPageButton, ofs=-2, y1=-3, x2=-3}
+			aObj:clrPNBtns(frame.PagingFrame, true)
+			aObj:SecureHook(frame.PagingFrame, "Update", function(this)
+				aObj:clrPNBtns(this, true)
+			end)
+		end
+	end
 	
-	self:SecureHookScript(_G.BW_WardrobeCollectionFrame, "OnShow", function(this)
+	local x1Ofs, y1Ofs, x2Ofs, y2Ofs = -4, 2, 7, -4
+	self:SecureHookScript(_G.BetterWardrobeCollectionFrame, "OnShow", function(this)
 		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true, upwards=true, offsets={x1=2, y1=-4, x2=-2, y2=self.isTT and -4 or 0}})
 		self:skinObject("editbox", {obj=this.searchBox, fType=ftype, si=true})
+		self:skinStatusBar{obj=this.progressBar, fi=0}
+		self:removeRegions(this.progressBar, {2, 3})
 		self:skinObject("dropdown", {obj=_G.BW_SortDropDown})
 		self:skinObject("dropdown", {obj=_G.BW_CollectionList_Dropdown, x2=109})
-		self:skinObject("dropdown", {obj=_G.BW_DBSavedSetDropdown})
 		if self.modBtns then
 			self:skinStdButton{obj=this.FilterButton}
 			self:SecureHook(this.FilterButton, "SetEnabled", function(this, _)
@@ -40,8 +52,38 @@ aObj.addonsToSkin.BetterWardrobe = function(self) -- v 2.9
 			self:addButtonBorder{obj=_G.BW_CollectionListOptionsButton, ofs=-2, x1=1, clr="gold"}
 		end
 	
-		local x1Ofs, y1Ofs, x2Ofs, y2Ofs = -4, 2, 7, -4
-		self:SecureHookScript(_G.BW_SetsCollectionFrame, "OnShow", function(this)
+		local function updBtnClr(btn)
+			local atlas = btn.Border:GetAtlas()
+			if atlas:find("uncollected", 1, true) then
+				aObj:clrBtnBdr(btn, "grey")
+			elseif atlas:find("unusable", 1, true) then
+				aObj:clrBtnBdr(btn, "unused")
+			else
+				aObj:clrBtnBdr(btn, "gold", 0.75)
+			end
+		end
+		self:SecureHookScript(this.ItemsCollectionFrame, "OnShow", function(this)
+			self:skinObject("dropdown", {obj=this.WeaponDropDown})
+			self:skinObject("frame", {obj=this, fType=ftype, fb=true, kfs=true, rns=true, x1=x1Ofs, y1=y1Ofs, x2=x2Ofs, y2=y2Ofs})
+			if self.modBtnBs then
+				skinPageBtns(this)
+				for _, btn in _G.pairs(this.Models) do
+					self:removeRegions(btn, {2}) -- background & border
+					self:addButtonBorder{obj=btn, reParent={btn.NewString, btn.Favorite.Icon, btn.HideVisual.Icon}, ofs=6}
+					updBtnClr(btn)
+				end
+				self:SecureHook(this, "UpdateItems", function(this)
+					for _, btn in _G.pairs(this.Models) do
+						updBtnClr(btn)
+					end
+				end)
+			end
+			
+			self:Unhook(this, "OnShow")
+		end)
+		self:checkShown(this.ItemsCollectionFrame)
+		
+		self:SecureHookScript(this.SetsCollectionFrame, "OnShow", function(this)
 			self:removeInset(this.LeftInset)
 			self:keepFontStrings(this.RightInset)
 			self:removeNineSlice(this.RightInset.NineSlice)
@@ -71,7 +113,7 @@ aObj.addonsToSkin.BetterWardrobe = function(self) -- v 2.9
 			self:Unhook(this, "OnShow")
 		end)
 	
-		self:SecureHookScript(_G.BW_SetsTransmogFrame, "OnShow", function(this)
+		self:SecureHookScript(this.SetsTransmogFrame, "OnShow", function(this)
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true, fb=true, x1=x1Ofs, y1=y1Ofs, x2=x2Ofs, y2=y2Ofs})
 			if self.modBtnBs then
 				self:addButtonBorder{obj=this.PagingFrame.PrevPageButton, ofs=-2, y1=-3, x2=-3}
@@ -99,6 +141,5 @@ aObj.addonsToSkin.BetterWardrobe = function(self) -- v 2.9
 	
 		self:Unhook(this, "OnShow")
 	end)
-	
 
 end

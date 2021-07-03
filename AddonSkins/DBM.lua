@@ -38,10 +38,13 @@ aObj.addonsToSkin["DBM-Core"] = function(self) -- v 9.0.30/2.5.7
 
 	-- set default Timer bar texture
 	if _G.DBT_PersistentOptions then
-		_G.DBT_PersistentOptions.Texture = self.db.profile.StatusBar.texture
+		_G.DBT_PersistentOptions.Texture = self.sbTexture
 	end
+	_G.DBT.Options.Texture = self.sbTexture
 	-- apply the new texture
-	_G.DBM.Bars:SetOption("Texture", self.sbTexture)
+	for bar in _G.DBT:GetBarIterator() do
+		bar:SetStatusBarTexture(self.sbTexture)
+	end
 
 	-- minimap button
 	if _G.DBMMinimapButton -- from 17687 alpha uses lib DBIcon for minimap button
@@ -109,13 +112,14 @@ aObj.lodAddons["DBM-GUI"] = function(self) -- v 9.0.30/2.5.7
 		self:Unhook(this, "OnShow")
 	end)
 
-		-- skin dropdown menu
+	-- skin dropdown menu
 	local cW, cH
 	local function skinSubPanels(panel)
 		for _, subPanel in _G.pairs(panel.areas) do
 			if not subPanel.sknd then
-				aObj:skinObject("frame", {obj=subPanel.frame, kfs=true, fb=true, ofs=0})
-				-- check to see if any children are dropdowns or buttons
+				aObj:skinObject("skin", {obj=subPanel.frame, bd=10, ng=true})
+				subPanel.sknd = true
+				-- skin suitable children
 				for _, child in _G.ipairs{subPanel.frame:GetChildren()} do
 					if aObj:isDropDown(child) then
 						aObj:skinObject("dropdown", {obj=child, x2=34})
@@ -132,16 +136,17 @@ aObj.lodAddons["DBM-GUI"] = function(self) -- v 9.0.30/2.5.7
 					and aObj.modBtns
 					then
 						cW, cH = _G.Round(child:GetWidth()), _G.Round(child:GetHeight())
-						aObj:Debug("skinSubPanels Button: [%s, %s]", cW, cH)
+						-- aObj:Debug("skinSubPanels Button: [%s, %s]", cW, cH)
 						-- handle expand button (Spell/Skill Cooldowns)
 						if cW == 15
 						and cH == 15
 						then
 							child:SetSize(8, 8)
 							aObj:skinExpandButton{obj=child}
+							aObj:checkTex(child)
 						else
 							-- increase high of short, narrow buttons
-							if cH == 16 then
+							if cH <= 16 then
 								child:SetHeight(20)
 							end
 							if cW == 25 then -- handle Note buttons
@@ -156,28 +161,19 @@ aObj.lodAddons["DBM-GUI"] = function(self) -- v 9.0.30/2.5.7
 						aObj:skinObject("slider", {obj=child})
 					end
 				end
-				subPanel.sknd = true
 			end
 		end
 	end
-	-- skin existing config panels
-	for _, panel in pairs(_G.DBM_GUI.panels) do
-		skinSubPanels(panel)
-	end
-	-- hook this to skin sub panels
-	self:SecureHook(_G.DBM_GUI, "CreateNewPanel", function(this, ...)
-		if this.frame then
-			if not this.panels[#this.panels].areas then
-				self:SecureHook(this.panels[#this.panels], "CreateArea", function(this, ...)
-					_G.C_Timer.After(0.25, function() -- wait for it to be populated
-						skinSubPanels(this)
-					end)
-					self:Unhook(this, "CreateArea")
-				end)
+	
+	-- register here to skin option panels
+	_G.DBM:RegisterOnGuiLoadCallback(function()
+		for _, panel in _G.ipairs(_G.DBM_GUI.panels) do
+			if panel.areas then
+				skinSubPanels(panel)
 			end
 		end
 	end)
-
+	
 	-- hook this to skin BossMod sub panels button in TRHC
 	self:SecureHook(_G.DBM_GUI, "CreateBossModPanel", function(this, mod)
 		if self.modBtns then

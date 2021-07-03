@@ -66,12 +66,12 @@ local function skinDDMLists()
 	frame = nil
 end
 
-aObj.addonsToSkin.Altoholic = function(self) -- r196
+aObj.addonsToSkin.Altoholic = function(self) -- r200/r191
 
 	-- Main Frame
 	self:skinObject("editbox", {obj=_G.AltoholicFrame_SearchEditBox})
 	self:skinObject("tabs", {obj=_G.AltoholicFrame, prefix=_G.AltoholicFrame:GetName(), numTabs=7})
-	self:skinObject("frame", {obj=_G.AltoholicFrame, kfs=true, cb=true, y1=-11, x2=0, y2=4})
+	self:skinObject("frame", {obj=_G.AltoholicFrame, kfs=true, cb=true, y1=-11, x2=0, y2=self.isClsc and 6 or 2})
 	if self.modBtns then
 		self:skinStdButton{obj=_G.AltoholicFrame_ResetButton}
 		self:skinStdButton{obj=_G.AltoholicFrame_SearchButton}
@@ -270,24 +270,26 @@ aObj.lodAddons.Altoholic_Characters = function(self)
 	if self.modBtnBs then
 		self:addButtonBorder{obj=_G.AltoholicTabCharacters.Recipes.LinkButton, x2=-3}
 	end
-	-- Garrison
-	skinScrollBar(_G.AltoholicTabCharacters.GarrisonMissions.ScrollFrame)
-	if self.modBtnBs then
-		local frame
-		for i = 1, _G.AltoholicTabCharacters.GarrisonMissions.ScrollFrame.numRows do
-			frame = _G.AltoholicTabCharacters.GarrisonMissions.ScrollFrame:GetRow(i)
-			self:addButtonBorder{obj=frame.MissionType, relTo=frame.MissionType.Icon}
-			-- TODO if these are removed followers aren't visible
-			-- for j = 1, 3 do
-			-- 	frame["Follower" .. j]:DisableDrawLayer("BACKGROUND")
-			-- end
-			for j = 1, 2 do
-				self:addButtonBorder{obj=frame["Reward" .. j], relTo=frame["Reward" .. j].Icon}
+	if not self.isClsc then
+		-- Garrison
+		skinScrollBar(_G.AltoholicTabCharacters.GarrisonMissions.ScrollFrame)
+		if self.modBtnBs then
+			local frame
+			for i = 1, _G.AltoholicTabCharacters.GarrisonMissions.ScrollFrame.numRows do
+				frame = _G.AltoholicTabCharacters.GarrisonMissions.ScrollFrame:GetRow(i)
+				self:addButtonBorder{obj=frame.MissionType, relTo=frame.MissionType.Icon}
+				-- TODO if these are removed followers aren't visible
+				-- for j = 1, 3 do
+				-- 	frame["Follower" .. j]:DisableDrawLayer("BACKGROUND")
+				-- end
+				for j = 1, 2 do
+					self:addButtonBorder{obj=frame["Reward" .. j], relTo=frame["Reward" .. j].Icon}
+				end
 			end
+			frame = nil
+		-- Covenant
 		end
-		frame = nil
 	end
-	-- Covenant
 
 end
 
@@ -329,19 +331,21 @@ aObj.lodAddons.Altoholic_Guild = function(self)
 		end
 		btn = nil
 	end
-	-- Bank
-	if self.modBtnBs then
-		for _, btn in _G.pairs(_G.AltoholicTabGuild.Bank.TabButtons) do
-			self:addButtonBorder{obj=btn}
+	if not self.isClsc then
+		-- Bank
+		if self.modBtnBs then
+			for _, btn in _G.pairs(_G.AltoholicTabGuild.Bank.TabButtons) do
+				self:addButtonBorder{obj=btn}
+			end
+			self:addButtonBorder{obj=_G.AltoholicTabGuild.Bank.MenuIcons.GuildIcon}
+			self:addButtonBorder{obj=_G.AltoholicTabGuild.Bank.MenuIcons.TabsIcon}
+			self:addButtonBorder{obj=_G.AltoholicTabGuild.Bank.MenuIcons.UpdateIcon}
+			self:addButtonBorder{obj=_G.AltoholicTabGuild.Bank.MenuIcons.RarityIcon}
 		end
-		self:addButtonBorder{obj=_G.AltoholicTabGuild.Bank.MenuIcons.GuildIcon}
-		self:addButtonBorder{obj=_G.AltoholicTabGuild.Bank.MenuIcons.TabsIcon}
-		self:addButtonBorder{obj=_G.AltoholicTabGuild.Bank.MenuIcons.UpdateIcon}
-		self:addButtonBorder{obj=_G.AltoholicTabGuild.Bank.MenuIcons.RarityIcon}
+		self:SecureHook(_G.AltoholicTabGuild.Bank.ContextualMenu, "Toggle", function(_)
+			skinDDMLists()
+		end)
 	end
-	self:SecureHook(_G.AltoholicTabGuild.Bank.ContextualMenu, "Toggle", function(_)
-		skinDDMLists()
-	end)
 
 end
 
@@ -384,7 +388,9 @@ aObj.lodAddons.Altoholic_Grids = function(self)
 	self:skinObject("dropdown", {obj=_G.AltoholicTabGrids.SelectRealm})
 	UIDDM_SetButtonWidth(_G.AltoholicTabGrids.SelectRealm, 24)
 	skinDDMLists()
-	if self.modBtnBs then
+	if not self.isClsc
+	and self.modBtnBs
+	then
 		self:addButtonBorder{obj=_G.AltoholicTabGrids.PrevPage, ofs=-2, x1=1, clr="gold"}
 		self:addButtonBorder{obj=_G.AltoholicTabGrids.NextPage, ofs=-2, x1=1, clr="gold"}
 		self:SecureHook(_G.AltoholicTabGrids, "SetPage", function(this, _)
