@@ -27,11 +27,11 @@ aObj.blizzLoDFrames[ftype].AchievementUI = function(self)
 			aObj:skinStatusBar{obj=_G[statusBar], fi=0, bgTex=_G[statusBar .. "FillBar"]}
 		end
 		local function skinStats()
-			for i = 1, #_G.AchievementFrameStatsContainer.buttons do
-				_G.AchievementFrameStatsContainer.buttons[i].background:SetTexture(nil)
-				_G.AchievementFrameStatsContainer.buttons[i].left:SetAlpha(0)
-				_G.AchievementFrameStatsContainer.buttons[i].middle:SetAlpha(0)
-				_G.AchievementFrameStatsContainer.buttons[i].right:SetAlpha(0)
+			for _, btn in _G.pairs(_G.AchievementFrameStatsContainer.buttons) do
+				btn.background:SetTexture(nil)
+				btn.left:SetAlpha(0)
+				btn.middle:SetAlpha(0)
+				btn.right:SetAlpha(0)
 			end
 		end
 		local function glazeProgressBar(pBar)
@@ -322,12 +322,12 @@ aObj.blizzLoDFrames[ftype].AchievementUI = function(self)
 		self:skinStatusBar{obj=this.searchProgressBar, fi=0, bgTex=this.searchProgressBar.bg}
 		self:skinObject("slider", {obj=this.searchResults.scrollFrame.scrollBar, fType=ftype})
 		self:skinObject("frame", {obj=this.searchResults, fType=ftype, kfs=true, cb=true, x1=-8, y1=-1, x2=1})
-		for i = 1, #this.searchResults.scrollFrame.buttons do
-			this.searchResults.scrollFrame.buttons[i]:SetNormalTexture(nil)
-			this.searchResults.scrollFrame.buttons[i]:SetPushedTexture(nil)
-			this.searchResults.scrollFrame.buttons[i].iconFrame:SetTexture(nil)
+		for _, btn in _G.pairs(this.searchResults.scrollFrame.buttons) do
+			btn:SetNormalTexture(nil)
+			btn:SetPushedTexture(nil)
+			btn.iconFrame:SetTexture(nil)
 			if self.modBtnBs then
-				self:addButtonBorder{obj=this.searchResults.scrollFrame.buttons[i], relTo=this.searchResults.scrollFrame.buttons[i].icon}
+				self:addButtonBorder{obj=btn, relTo=btn.icon}
 			end
 		end
 		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true, ignoreHLTex=false, regions={7, 8, 9, 10}, offsets={x1=11, y1=self.isTT and 2 or -2, x2=-12, y2=-7}})
@@ -678,8 +678,8 @@ aObj.blizzFrames[ftype].CharacterFrames = function(self)
 		end)
 		self:SecureHookScript(_G.PaperDollTitlesPane, "OnShow", function(this)
 			self:skinSlider{obj=this.scrollBar, wdth=-4}
-			for i = 1, #this.buttons do
-				this.buttons[i]:DisableDrawLayer("BACKGROUND")
+			for _, btn in _G.pairs(this.buttons) do
+				btn:DisableDrawLayer("BACKGROUND")
 			end
 
 			self:Unhook(this, "OnShow")
@@ -743,10 +743,10 @@ aObj.blizzFrames[ftype].CharacterFrames = function(self)
 		self:skinObject("slider", {obj=_G.GearManagerDialogPopupScrollFrame.ScrollBar, fType=ftype, rpTex="background"})
 		self:removeRegions(this.BorderBox, {1, 2, 3, 4, 5, 6, 7, 8})
 		self:adjHeight{obj=this, adj=20}
-		for i = 1, #this.buttons do
-			this.buttons[i]:DisableDrawLayer("BACKGROUND")
+		for _, btn in _G.pairs(this.buttons) do
+			btn:DisableDrawLayer("BACKGROUND")
 			if self.modBtnBs then
-				self:addButtonBorder{obj=this.buttons[i]}
+				self:addButtonBorder{obj=btn}
 			end
 		end
 		self:skinObject("editbox", {obj=_G.GearManagerDialogPopupEditBox, fType=ftype})
@@ -802,8 +802,8 @@ aObj.blizzFrames[ftype].CharacterFrames = function(self)
 		self:keepFontStrings(this)
 		self:skinObject("slider", {obj=_G.TokenFrameContainerScrollBar, fType=ftype})
 		-- remove background & header textures
-		for i = 1, #_G.TokenFrameContainer.buttons do
-			self:removeRegions(_G.TokenFrameContainer.buttons[i], {1, 6, 7, 8})
+		for _, btn in _G.pairs(_G.TokenFrameContainer.buttons) do
+			self:removeRegions(btn, {1, 6, 7, 8})
 		end
 		-- TokenFramePopup
 		_G.TokenFramePopup.Border:DisableDrawLayer("BACKGROUND")
@@ -886,8 +886,8 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 			self:addButtonBorder{obj=this.HealPetButton, sec=true, clr="grey", ca=1}
 			self:addButtonBorder{obj=this.SummonRandomFavoritePetButton, ofs=3, clr="grey", ca=1}
 			self:SecureHook(this.listScroll, "update", function(this)
-				for i = 1, #this.buttons do
-					self:clrButtonFromBorder(this.buttons[i])
+				for _, btn in _G.pairs(this.buttons) do
+					self:clrButtonFromBorder(btn)
 				end
 			end)
 		end
@@ -1251,18 +1251,18 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 			this.FilligreeOverlay:DisableDrawLayer("OVERLAY")
 			this.FilligreeOverlay:DisableDrawLayer("BORDER")
 			self:removeInset(this.InsetFrame)
-			for i = 1, #this.ListScrollFrame.buttons do
-				this.ListScrollFrame.buttons[i].IconRing:SetAlpha(0) -- texture changed in code
-				self:changeRecTex(this.ListScrollFrame.buttons[i].Selection, true)
-				this.ListScrollFrame.buttons[i].Selection:SetHeight(60)
-				self:changeRecTex(this.ListScrollFrame.buttons[i]:GetHighlightTexture())
-				this.ListScrollFrame.buttons[i]:GetHighlightTexture():SetHeight(60)
+			for _, btn in _G.pairs(this.ListScrollFrame.buttons) do
+				btn.IconRing:SetAlpha(0) -- texture changed in code
+				self:changeRecTex(btn.Selection, true)
+				btn.Selection:SetHeight(60)
+				self:changeRecTex(btn:GetHighlightTexture())
+				btn:GetHighlightTexture():SetHeight(60)
 			end
 			self:SecureHook(this, "Update", function(cList)
-				for i = 1, #cList.ListScrollFrame.buttons do
-					self:removeRegions(cList.ListScrollFrame.buttons[i], {1})
-					self:changeRecTex(cList.ListScrollFrame.buttons[i].Selection, true)
-					cList.ListScrollFrame.buttons[i].Selection:SetHeight(60)
+				for _, btn in _G.pairs(cList.ListScrollFrame.buttons) do
+					self:removeRegions(btn, {1})
+					self:changeRecTex(btn.Selection, true)
+					btn.Selection:SetHeight(60)
 				end
 			end)
 
@@ -1294,9 +1294,7 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 		self:removeInset(this.MemberList.InsetFrame)
 		self:SecureHook(this.MemberList, "RefreshListDisplay", function(this)
 			if not this:IsDisplayingProfessions() then return end
-			local btn
-			for i = 1, #this.ListScrollFrame.buttons do
-				btn = this.ListScrollFrame.buttons[i]
+			for _, btn in _G.pairs(this.ListScrollFrame.buttons) do
 				self:removeRegions(btn.ProfessionHeader, {1, 2, 3}) -- header textures
 			end
 		end)
@@ -1355,9 +1353,7 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 				aObj:skinCheckButton{obj=frame.OptionsList.DpsRoleFrame.CheckBox}
 			end
 
-			local btn
-	 		for i = 1, #frame.GuildCards.Cards do
-				btn = frame.GuildCards.Cards[i]
+			for _, btn in _G.pairs(frame.GuildCards.Cards) do
 				btn:DisableDrawLayer("BACKGROUND")
 				aObj:addSkinFrame{obj=btn, ft=ftype, nb=true, y1=5}
 				if aObj.modBtns then
@@ -1377,8 +1373,7 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 			end
 
 			aObj:skinSlider{obj=frame.CommunityCards.ListScrollFrame.scrollBar, wdth=-4}
-			for i = 1, #frame.CommunityCards.ListScrollFrame.buttons do
-				btn = frame.CommunityCards.ListScrollFrame.buttons[i]
+			for _, btn in _G.pairs(frame.CommunityCards.ListScrollFrame.buttons) do
 				btn.LogoBorder:SetTexture(nil)
 				aObj:addSkinFrame{obj=btn, ft=ftype, nb=true, ofs=3}
 				aObj:SecureHook(btn, "SetDisabledState", function(this, shouldDisable)
@@ -1390,8 +1385,7 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 				end)
 			end
 
-	 		for i = 1, #frame.PendingGuildCards.Cards do
-				btn = frame.PendingGuildCards.Cards[i]
+			for _, btn in _G.pairs(frame.PendingGuildCards.Cards) do
 				btn:DisableDrawLayer("BACKGROUND")
 				aObj:addSkinFrame{obj=btn, ft=ftype, nb=true, y1=5}
 				if aObj.modBtns then
@@ -1411,8 +1405,7 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 			end
 
 			aObj:skinSlider{obj=frame.PendingCommunityCards.ListScrollFrame.scrollBar, wdth=-4}
-			for i = 1, #frame.PendingCommunityCards.ListScrollFrame.buttons do
-				btn = frame.PendingCommunityCards.ListScrollFrame.buttons[i]
+			for _, btn in _G.pairs(frame.PendingCommunityCards.ListScrollFrame.buttons) do
 				btn.LogoBorder:SetTexture(nil)
 				aObj:addSkinFrame{obj=btn, ft=ftype, nb=true}
 				aObj:SecureHook(btn, "SetDisabledState", function(this, shouldDisable)
@@ -1423,7 +1416,6 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 					end
 				end)
 			end
-			btn = nil
 
 			skinReqToJoin(frame.RequestToJoinFrame)
 
@@ -1499,9 +1491,7 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 			this:DisableDrawLayer("OVERLAY") -- inset textures
 			self:removeRegions(this.Perks, {1})
 			self:skinSlider{obj=self:getChild(this.Perks.Container, 2), wdth=-4}
-			local btn
-			for i = 1, #this.Perks.Container.buttons do
-				btn = this.Perks.Container.buttons[i]
+			for _, btn in _G.pairs(this.Perks.Container.buttons) do
 				self:removeRegions(btn, {1, 2, 3, 4})
 				btn.NormalBorder:DisableDrawLayer("BACKGROUND")
 				btn.DisabledBorder:DisableDrawLayer("BACKGROUND")
@@ -1509,12 +1499,9 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 					 self:addButtonBorder{obj=btn, relTo=btn.Icon, clr="grey"}
 				end
 			end
-			btn = nil
 			this.Rewards.Bg:SetTexture(nil)
 			self:skinSlider{obj=this.Rewards.RewardsContainer.scrollBar, rt="artwork", wdth=-4}
-			local btn
-			for i = 1, #this.Rewards.RewardsContainer.buttons do
-				btn = this.Rewards.RewardsContainer.buttons[i]
+			for _, btn in _G.pairs(this.Rewards.RewardsContainer.buttons) do
 				btn:GetNormalTexture():SetAlpha(0)
 				if self.modBtnBs then
 					 self:addButtonBorder{obj=btn, relTo=btn.Icon, reParent={btn.Lock}}
@@ -1522,15 +1509,11 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 			end
 			if self.modBtnBs then
 				self:SecureHook("CommunitiesGuildRewards_Update", function(this)
-					local btn
-					for i = 1, #this.RewardsContainer.buttons do
-						btn = this.RewardsContainer.buttons[i]
+					for _, btn in _G.pairs(this.RewardsContainer.buttons) do
 						btn.sbb:SetBackdropBorderColor(btn.Icon:GetVertexColor())
 					end
-					btn = nil
 				end)
 			end
-			btn = nil
 			self:skinDropDown{obj=this.Rewards.DropDown}
 			this.FactionFrame.Bar:DisableDrawLayer("BORDER")
 			this.FactionFrame.Bar.Progress:SetTexture(self.sbTexture)
@@ -1541,14 +1524,11 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 		self:SecureHookScript(this.GuildDetailsFrame, "OnShow", function(this)
 			self:removeRegions(this.Info, {2, 3, 4, 5, 6, 7, 8, 9, 10})
 			self:skinSlider{obj=this.Info.MOTDScrollFrame.ScrollBar, wdth=-4}
-			for i = 1, #this.Info.Challenges do
-				-- this.Info.Challenges[i]
-			end
 			self:skinSlider{obj=this.Info.DetailsFrame.ScrollBar, wdth=-6}
 			this.News:DisableDrawLayer("BACKGROUND")
 			self:skinSlider{obj=this.News.Container.ScrollBar, wdth=-4}
-			for i = 1, #this.News.Container.buttons do
-				this.News.Container.buttons[i].header:SetTexture(nil)
+			for _, btn in _G.pairs(this.News.Container.buttons) do
+				btn.header:SetTexture(nil)
 			end
 			self:skinDropDown{obj=this.News.DropDown}
 			self:keepFontStrings(this.News.BossModel)
@@ -1686,10 +1666,10 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 		self:skinSlider{obj=this.InviteManager.ListScrollFrame.scrollBar, wdth=-4}
 		skinColumnDisplay(this.InviteManager.ColumnDisplay)
 		if self.modBtns then
-			for i = 1, #this.InviteManager.ListScrollFrame.buttons do
-				self:skinStdButton{obj=this.InviteManager.ListScrollFrame.buttons[i].CopyLinkButton}
+			for _, btn in _G.pairs(this.InviteManager.ListScrollFrame.buttons) do
+				self:skinStdButton{obj=btn.CopyLinkButton}
 				if self.modBtnBs then
-					 self:addButtonBorder{obj=this.InviteManager.ListScrollFrame.buttons[i].RevokeButton, ofs=0, clr="grey"}
+					 self:addButtonBorder{obj=btn.RevokeButton, ofs=0, clr="grey"}
 				end
 			end
 		end
@@ -2351,9 +2331,7 @@ aObj.blizzFrames[ftype].EquipmentFlyout = function(self)
 			_G.EquipmentFlyoutFrame.buttonFrame["bg" .. i]:SetAlpha(0)
 		end
 		if self.modBtnBs then
-			local btn
-			for i = 1, #_G.EquipmentFlyoutFrame.buttons do
-				btn = _G.EquipmentFlyoutFrame.buttons[i]
+			for _, btn in _G.pairs(_G.EquipmentFlyoutFrame.buttons) do
 				self:addButtonBorder{obj=btn, ibt=true, reParent={btn.UpgradeIcon}}
 				-- change 'Place In Bags' button border alpha & stop it changing
 				if i == 1 then
@@ -2361,7 +2339,6 @@ aObj.blizzFrames[ftype].EquipmentFlyout = function(self)
 					btn.sbb.SetBackdropBorderColor = _G.nop
 				end
 			end
-			btn = nil
 		end
 	end)
 
@@ -2866,11 +2843,11 @@ aObj.blizzLoDFrames[ftype].GuildUI = function(self)
 	self:SecureHookScript(_G.GuildRewardsFrame, "OnShow", function(this)
 		this:DisableDrawLayer("BACKGROUND")
 		self:skinObject("slider", {obj=_G.GuildRewardsContainerScrollBar, fType=ftype})
-		for i = 1, #_G.GuildRewardsContainer.buttons do
-			_G.GuildRewardsContainer.buttons[i]:GetNormalTexture():SetAlpha(0)
-			_G.GuildRewardsContainer.buttons[i].disabledBG:SetAlpha(0)
+		for _, btn in _G.pairs(_G.GuildRewardsContainer.buttons) do
+			btn:GetNormalTexture():SetAlpha(0)
+			btn.disabledBG:SetAlpha(0)
 			if self.modBtnBs then
-				self:addButtonBorder{obj=_G.GuildRewardsContainer.buttons[i], relTo=_G.GuildRewardsContainer.buttons[i].icon, reParent={_G.GuildRewardsContainer.buttons[i].lock}}
+				self:addButtonBorder{obj=btn, relTo=btn.icon, reParent={btn.lock}}
 			end
 		end
 		self:skinObject("dropdown", {obj=_G.GuildRewardsDropDown, fType=ftype})
@@ -3166,9 +3143,9 @@ aObj.blizzLoDFrames[ftype].LookingForGuildUI = function(self)
 
 	self:SecureHookScript(_G.LookingForGuildBrowseFrame, "OnShow", function(this)
 		self:skinSlider{obj=_G.LookingForGuildBrowseFrameContainerScrollBar, wdth=-4}
-		for i = 1, #_G.LookingForGuildBrowseFrameContainer.buttons do
-			self:applySkin{obj=_G.LookingForGuildBrowseFrameContainer.buttons[i]}
-			_G[_G.LookingForGuildBrowseFrameContainer.buttons[i]:GetName() .. "Ring"]:SetAlpha(0)
+		for _, btn in _G.pairs(_G.LookingForGuildBrowseFrameContainer.buttons) do
+			self:applySkin{obj=btn}
+			_G[btn:GetName() .. "Ring"]:SetAlpha(0)
 		end
 		self:removeMagicBtnTex(_G.LookingForGuildRequestButton)
 		self:skinStdButton{obj=_G.LookingForGuildRequestButton}
@@ -3180,8 +3157,8 @@ aObj.blizzLoDFrames[ftype].LookingForGuildUI = function(self)
 	-- Requests
 	self:SecureHookScript(_G.LookingForGuildAppsFrame, "OnShow", function(this)
 		self:skinSlider{obj=_G.LookingForGuildAppsFrameContainerScrollBar}
-		for i = 1, #_G.LookingForGuildAppsFrameContainer.buttons do
-			self:applySkin{obj=_G.LookingForGuildAppsFrameContainer.buttons[i]}
+		for _, btn in _G.pairs(_G.LookingForGuildAppsFrameContainer.buttons) do
+			self:applySkin{obj=btn}
 		end
 		self:addFrameBorder{obj=this, ft=ftype, x1=-5, y1=2, x2=7, y2=-28}
 
@@ -4369,20 +4346,20 @@ aObj.blizzLoDFrames[ftype].TalentUI = function(self)
 		frame:DisableDrawLayer("BACKGROUND")
 		frame:DisableDrawLayer("OVERLAY")
 		self:nilTexture(frame.Ring, true) -- warmode button ring texture
-		for i = 1, #frame.Slots do
-			self:nilTexture(frame.Slots[i].Border, true) -- PvP talent ring texture
-			self:makeIconSquare(frame.Slots[i], "Texture")
+		for _, slot in _G.pairs(frame.Slots) do
+			self:nilTexture(slot.Border, true) -- PvP talent ring texture
+			self:makeIconSquare(slot, "Texture")
 		end
 		frame.WarmodeIncentive.IconRing:SetTexture(nil)
 
 		self:skinSlider{obj=frame.TalentList.ScrollFrame.ScrollBar, wdth=-4}
 		self:removeMagicBtnTex(self:getChild(frame.TalentList, 4))
 		self:addSkinFrame{obj=frame.TalentList, ft=ftype, kfs=true, ri=true, x2=-4}
-		for i = 1, #frame.TalentList.ScrollFrame.buttons do
-			frame.TalentList.ScrollFrame.buttons[i]:DisableDrawLayer("BACKGROUND")
+		for _, btn in _G.pairs(frame.TalentList.ScrollFrame.buttons) do
+			btn:DisableDrawLayer("BACKGROUND")
 			if self.modBtnBs then
-				 self:addButtonBorder{obj=frame.TalentList.ScrollFrame.buttons[i], relTo=frame.TalentList.ScrollFrame.buttons[i].Icon}
-				 self:SecureHook(frame.TalentList.ScrollFrame.buttons[i], "Update", function(this)
+				 self:addButtonBorder{obj=btn, relTo=btn.Icon}
+				 self:SecureHook(btn, "Update", function(this)
 					 self:clrBtnBdr(this, "white")
 				 end)
 			end
@@ -4476,14 +4453,14 @@ aObj.blizzLoDFrames[ftype].TradeSkillUI = function(self)
 		end
 		self:skinObject("slider", {obj=self:getChild(this.RecipeList, 4), fType=ftype})
 		self:skinObject("frame", {obj=this.RecipeList, fType=ftype, kfs=true, fb=true, ofs=8, x1=-7, y1=5, x2=24})
-		for i = 1, #this.RecipeList.buttons do
+		for _, btn in _G.pairs(this.RecipeList.buttons) do
+			btn.SubSkillRankBar.BorderLeft:SetTexture(nil)
+			btn.SubSkillRankBar.BorderRight:SetTexture(nil)
+			btn.SubSkillRankBar.BorderMid:SetTexture(nil)
+			self:skinStatusBar{obj=btn.SubSkillRankBar, fi=0}
 			if self.modBtns then
-				 self:skinExpandButton{obj=this.RecipeList.buttons[i], fType=ftype, onSB=true, noHook=true}
+				 self:skinExpandButton{obj=btn, fType=ftype, onSB=true, noHook=true}
 			end
-			this.RecipeList.buttons[i].SubSkillRankBar.BorderLeft:SetTexture(nil)
-			this.RecipeList.buttons[i].SubSkillRankBar.BorderRight:SetTexture(nil)
-			this.RecipeList.buttons[i].SubSkillRankBar.BorderMid:SetTexture(nil)
-			self:skinStatusBar{obj=this.RecipeList.buttons[i].SubSkillRankBar, fi=0}
 		end
 		if self.modBtns then
 			local function checkTex(btn)
@@ -4498,13 +4475,13 @@ aObj.blizzLoDFrames[ftype].TradeSkillUI = function(self)
 				end
 			end
 			self:SecureHook(this.RecipeList, "RefreshDisplay", function(this)
-				for i = 1, #this.buttons do
-					checkTex(this.buttons[i])
+				for _, btn in _G.pairs(this.buttons) do
+					checkTex(btn)
 				end
 			end)
 			self:SecureHook(this.RecipeList, "update", function(this)
-				for i = 1, #this.buttons do
-					checkTex(this.buttons[i])
+				for _, btn in _G.pairs(this.buttons) do
+					checkTex(btn)
 				end
 			end)
 		end

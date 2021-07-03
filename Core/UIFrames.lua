@@ -393,9 +393,7 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 				end
 			end
 		end
-		local btn
-		for i = 1, #ml.listScroll.buttons do
-			btn = ml.listScroll.buttons[i]
+		for _, btn in _G.pairs(ml.listScroll.buttons) do
 			btn:DisableDrawLayer("BACKGROUND")
 			btn:DisableDrawLayer("BORDER")
 			aObj:nilTexture(btn.LocBG, true)
@@ -415,7 +413,6 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 				btn.HighlightBR:SetTexture(nil)
 			end
 		end
-		btn = nil
 		-- CompleteDialog
 		skinCompleteDialog(ml.CompleteDialog)
 	end
@@ -3897,8 +3894,8 @@ aObj.blizzFrames[ftype].LFGList = function(self)
 		self:removeMagicBtnTex(sp.BackButton)
 		self:removeMagicBtnTex(sp.SignUpButton)
 		if self.modBtns then
-			for i = 1, #sp.ScrollFrame.buttons do
-				self:skinStdButton{obj=sp.ScrollFrame.buttons[i].CancelButton}
+			for _, btn in _G.pairs(sp.ScrollFrame.buttons) do
+				self:skinStdButton{obj=btn.CancelButton}
 			end
 			self:skinStdButton{obj=sp.ScrollFrame.ScrollChild.StartGroupButton}
 			self:skinStdButton{obj=sp.BackButton}
@@ -3934,9 +3931,9 @@ aObj.blizzFrames[ftype].LFGList = function(self)
 			 self:skinCheckButton{obj=av.AutoAcceptButton}
 		end
 		if self.modBtns then
-			for i = 1, #av.ScrollFrame.buttons do
-				self:skinStdButton{obj=av.ScrollFrame.buttons[i].DeclineButton}
-				self:skinStdButton{obj=av.ScrollFrame.buttons[i].InviteButton}
+			for _, btn in _G.pairs(av.ScrollFrame.buttons) do
+				self:skinStdButton{obj=btn.DeclineButton}
+				self:skinStdButton{obj=btn.InviteButton}
 			end
 			self:skinStdButton{obj=av.RemoveEntryButton}
 			self:skinStdButton{obj=av.EditButton}
