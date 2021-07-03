@@ -1,3 +1,14 @@
+beta9.39170.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Updated RuneforgeFrame skin
+	Bugfix for QuestLog
+	Bugfix for AuctionUI
+	Updated Auctionator, BtWLoadouts, DBM & VenturePlan skins
+	Skinned BiSTracker & TinyLootMonitor
+	
 beta9.39015.1
 Jncl:
 	ToDo.txt
