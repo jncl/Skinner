@@ -1344,7 +1344,7 @@ aObj.blizzLoDFrames[ftype].TrainerUI = function(self)
 		self:removeMagicBtnTex(_G.ClassTrainerTrainButton)
 		this.skillStepButton:GetNormalTexture():SetTexture(nil)
 		self:skinObject("slider", {obj=_G.ClassTrainerScrollFrameScrollBar, fType=ftype})
-		for _, btn in _G.pairs(this.scrollFrame.button) do
+		for _, btn in _G.pairs(this.scrollFrame.buttons) do
 			btn:GetNormalTexture():SetTexture(nil)
 			if self.modBtnBs then
 				self:addButtonBorder{obj=btn, relTo=btn.icon}
