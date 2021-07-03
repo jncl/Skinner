@@ -1061,7 +1061,7 @@ aObj.blizzLoDFrames[ftype].BindingUI = function(self)
 		self:Unhook(this, "OnShow")
 	end)
 
-	if not aObj.isClsc then
+	if not self.isClsc then
 		self:SecureHookScript(_G.QuickKeybindFrame, "OnShow", function(this)
 			self:removeNineSlice(this.BG)
 			this.BG.Bg:SetTexture(nil)
@@ -1820,11 +1820,7 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 		if self.modChkBtns then
 			self:skinCheckButton{obj=_G.CombatConfigFormattingShowTimeStamp}
 			self:skinCheckButton{obj=_G.CombatConfigFormattingFullText}
-			if self.isClsc
-			and not self.isClscBC
-			then
-				return
-			else
+			if not self.isClscERA then
 				self:skinCheckButton{obj=_G.CombatConfigFormattingShowBraces}
 				self:skinCheckButton{obj=_G.CombatConfigFormattingUnitNames}
 				self:skinCheckButton{obj=_G.CombatConfigFormattingSpellNames}
@@ -2363,9 +2359,7 @@ aObj.blizzLoDFrames[ftype].DebugTools = function(self)
 	_G.C_Timer.After(0.1, function()
 		self:add2Table(self.ttList, _G.FrameStackTooltip)
 		_G.FrameStackTooltip:SetFrameLevel(20)
-		if not self.isRetPTR
-		and not self.isClscBC
-		then
+		if self.isClscERA then
 			self:add2Table(self.ttList, _G.EventTraceTooltip)
 		end
 	end)
@@ -4912,12 +4906,10 @@ aObj.blizzFrames[ftype].Nameplates = function(self)
 		local nP = frame.UnitFrame
 		if nP then
 			nP.healthBar.border:DisableDrawLayer("ARTWORK")
-			if aObj.isClsc
-			and not self.isClscBC
-			then
+			if aObj.isClscERA then
 				aObj:skinStatusBar{obj=nP.healthBar, fi=0, bgTex=nP.healthBar.background}
 			else
-				if self.isClscBC then
+				if aObj.isClscBC then
 					aObj:skinStatusBar{obj=nP.healthBar, fi=0, bgTex=nP.healthBar.background}
 					aObj:skinStatusBar{obj=nP.CastBar, fi=0, bgTex=aObj:getRegion(nP.CastBar, 1)}
 					aObj:nilTexture(nP.CastBar.Border, true)

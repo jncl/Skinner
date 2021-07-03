@@ -152,7 +152,7 @@ aObj.SetupDefaults = function(self)
 			DebugTools                 = true,
 			DestinyFrame               = true,
 			EventToastManager          = aObj.isRetPTR and true,
-			EventTrace                 = not aObj.isRet and true,
+			EventTrace                 = not aObj.isClscERA and true,
 			GarrisonUI                 = true,
 			GhostFrame                 = true,
 			GMChatUI                   = true,
@@ -1565,6 +1565,7 @@ aObj.SetupOptions = function(self)
 					desc = self.L["Toggle the skin of the "] .. self.L["Event Toast Manager Frame"],
 				} or nil,
 				EventTrace = not aObj.isRet and {
+				EventTrace = not aObj.isClscERA and {
 					type = "toggle",
 					name = self.L["Event Trace Frame"],
 					desc = self.L["Toggle the skin of the "] .. self.L["Event Trace Frame"],

@@ -211,10 +211,7 @@ function module:skinPlayerF()
 				_G.WarlockPowerFrame:DisableDrawLayer("BACKGROUND") -- Shard(s) background texture
 			end
 		end
-		if aObj.isClsc
-		and not aObj.isClscBC
-		then
-		else
+		if not aObj.isClscERA then
 			if aObj.uCls == "SHAMAN" then
 				for i = 1, _G.MAX_TOTEMS do
 					_G["TotemFrameTotem" .. i .. "Background"]:SetAlpha(0) -- texture is changed

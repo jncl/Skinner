@@ -4,11 +4,7 @@ local _G = _G
 
 function aObj:addBackdrop(obj)
 
-	if self.isClsc
-	and not self.isClscBC
-	then
-		return
-	else
+	if not self.isClscERA then
 		if not obj.ApplyBackdrop then
 			_G.Mixin(obj, _G.BackdropTemplateMixin)
 		end

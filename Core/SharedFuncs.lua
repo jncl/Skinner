@@ -20,7 +20,7 @@ local buildInfo = {
 	retail_ptr   = {"9.1.0", 39172},
 	-- Live - Classic
 	classic_bc   = {"2.5.1", 39170},
-	classic      = {"1.13.7", 38704},
+	classic_era  = {"1.13.7", 38704},
 	-- Live
 	retail       = {"9.0.5", 38556},
 	--
@@ -34,7 +34,7 @@ function aObj:checkVersion()
 	self.isClscBeta = agentUID == "wow_classic_beta" and true
 	self.isClscPTR  = agentUID == "wow_classic_ptr" and true
 	self.isClscBC   = agentUID == "wow_classic" and true
-	self.isClsc     = agentUID == "wow_classic_era" and true
+	self.isClscERA  = agentUID == "wow_classic_era" and true
 	self.isRetBeta  = agentUID == "wow_beta" and true
 	self.isRetPTR   = agentUID == "wow_ptr" and true
 	self.isRet      = agentUID == "wow" and true
@@ -48,7 +48,7 @@ function aObj:checkVersion()
 	-- check current build number against Classic BC, if greater then it's a patch
 	self.isPatch = self.isPatch or self.isClscBC and _G.tonumber(buildInfo.curr[2]) > _G.tonumber(buildInfo.classic_bc[2])
 	-- check current build number against Classic, if greater then it's a patch
-	self.isPatch = self.isPatch or self.isClsc and _G.tonumber(buildInfo.curr[2]) > _G.tonumber(buildInfo.classic[2])
+	self.isPatch = self.isPatch or self.isClscERA and _G.tonumber(buildInfo.curr[2]) > _G.tonumber(buildInfo.classic_era[2])
 	-- check current build number against Retail Beta, if greater then it's a patch
 	self.isPatch = self.isPatch or self.isRetBeta and _G.tonumber(buildInfo.curr[2]) > _G.tonumber(buildInfo.retail_beta[2])
 	-- check current build number against Retail PTR, if greater then it's a patch
@@ -57,7 +57,7 @@ function aObj:checkVersion()
 	self.isPatch = self.isPatch or self.isRet and _G.tonumber(buildInfo.curr[2]) > _G.tonumber(buildInfo.retail[2])
 
 	--@alpha@
-	local vType = self.isClscBeta and "Classic_Beta" or self.isClscPTR and "Classic_PTR" or self.isClscBC and "Classic_BC" or self.isClsc and "Classic" or self.isRetBeta and "Retail_Beta" or self.isRetPTR and "Retail_PTR" or "Retail"
+	local vType = self.isClscBeta and "Classic_Beta" or self.isClscPTR and "Classic_PTR" or self.isClscBC and "Classic_BC" or self.isClscERA and "Classic_ERA" or self.isRetBeta and "Retail_Beta" or self.isRetPTR and "Retail_PTR" or "Retail"
 	self:Printf("%s, %d, %s, %d, %s, %d, %s", buildInfo[vType:lower()][1], buildInfo[vType:lower()][2], buildInfo.curr[1], buildInfo.curr[2], buildInfo.curr[3], buildInfo.curr[4] , agentUID)
 	vType = self.isPatch and vType .. " (Patched)" or vType
 	_G.DEFAULT_CHAT_FRAME:AddMessage(aName .. ": Detected that we're running on a " .. vType .. " version", 0.75, 0.5, 0.25, nil, true)
@@ -66,17 +66,17 @@ function aObj:checkVersion()
 	agentUID = nil
 
 	-- indicate we're on ClassicPTR if on Classic Beta
-	self.isClscPTR = self.isClscPTR or self.isClscBeta
+	self.isClscPTR  = self.isClscPTR or self.isClscBeta
 	-- indicate we're on ClassicBC if on Classic Beta
-	self.isClscBC  = self.isClscBC or self.isClscPTR or self.isClscBeta
-	-- indicate we're on Classic if on Classic BC
-	self.isClsc    = self.isClsc or self.isClscBC
+	self.isClscBC   = self.isClscBC or self.isClscPTR or self.isClscBeta
+	-- indicate we're on Classic if on Classic ERA or Classic BC
+	self.isClsc     = self.isClscERA or self.isClscBC
 	-- handle Beta changes in PTR or Live
 	self.isClscBeta = self.isClscBeta or self.isClscPTR and buildInfo.curr[1] > buildInfo.classic_ptr[1]
-	self.isRetBeta = self.isRetBeta or self.isRetPTR and buildInfo.curr[1] > buildInfo.retail_ptr[1]
+	self.isRetBeta  = self.isRetBeta or self.isRetPTR and buildInfo.curr[1] > buildInfo.retail_ptr[1]
 	-- handle PTR changes going Live
-	self.isClscPTR = self.isClscPTR or self.isPatch and self.isClscBC and buildInfo.curr[1] > buildInfo.classic_bc[1]
-	self.isRetPTR  = self.isRetPTR or self.isPatch and self.isRet and buildInfo.curr[1] > buildInfo.retail[1]
+	self.isClscPTR  = self.isClscPTR or self.isPatch and self.isClscBC and buildInfo.curr[1] > buildInfo.classic_bc[1]
+	self.isRetPTR   = self.isRetPTR or self.isPatch and self.isRet and buildInfo.curr[1] > buildInfo.retail[1]
 
 	buildInfo = nil
 
