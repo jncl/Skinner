@@ -216,7 +216,6 @@ local function applySkin(tbl)
 	--@end-alpha@
 	aObj:Debug2("applySkin: [%s]", tbl)
 
-	aObj.gradFrames[tbl.fType][tbl.obj] = true
 	-- fix for backdrop textures not tiling vertically
 	-- using info from here: http://boss.wowinterface.com/forums/showthread.php?p=185868
 	if aObj.prdb.BgUseTex then
@@ -241,6 +240,7 @@ local function applySkin(tbl)
 	aObj:clrBBC(tbl.obj, tbl.bbclr, tbl.bba)
 	if not tbl.ng then
 		aObj:applyGradient(tbl.obj, tbl.fh, tbl.invert, tbl.rotate)
+		aObj.gradFrames[tbl.fType][tbl.obj] = true
 	end
 end
 skinFuncs.skin = function(table) applySkin(table) end
@@ -567,7 +567,7 @@ local function skinScrollBar(tbl)
 	-- remove textures
 	tbl.obj:DisableDrawLayer("BACKGROUND")
 	tbl.obj.Background:DisableDrawLayer("artwork")
-	aObj:skinObject("frame", {obj=tbl.obj.Track, fType=tbl.fType, bd=4, ng=true--[[, x2=3--]], clr="slider"})
+	aObj:skinObject("frame", {obj=tbl.obj.Track, fType=tbl.fType, bd=4, ng=true, x1=tbl.x1, y1=tbl.y1, x2=tbl.x2, y2=tbl.y2, clr="slider"})
 end
 skinFuncs.scrollbar = function(table) skinScrollBar(table) end
 local function skinSlider(tbl)
