@@ -540,8 +540,7 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 	self.initialized.AlertFrames = true
 
 	local function skinACAlertFrames(frame)
-		-- local fW, fH = _G.Round(frame:GetWidth()), _G.Round(frame:GetHeight())
-		-- aObj:Debug("skinACAlertFrames: [%s, %s, %s]", frame, frame:GetSize())
+		-- aObj:Debug("skinACAlertFrames: [%s, %s, %s]", frame, _G.Round(frame:GetWidth()), _G.Round(frame:GetHeight())
 		aObj:nilTexture(frame.Background, true)
 		frame.Unlocked:SetTextColor(aObj.BT:GetRGB())
 		if frame.OldAchievement then
@@ -549,27 +548,10 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 		end
 		frame.Icon:DisableDrawLayer("BORDER")
 		frame.Icon:DisableDrawLayer("OVERLAY")
-		-- local x1, y1, x2, y2 = 6, -13, -4, 15
-		-- CriteriaAlertFrame is smaller than most (Achievement Progress etc)
-		-- if fH == 52 then
-		-- 	x1, y1, x2, y2 = 30, 0, 0, 5
-		-- end
-		-- GuildAchievementFrame is taller than most (Achievement Progress etc)
-		-- if fH == 104 then
-		-- 	y1, y2 = -8, 10
-		-- end
-		-- if not frame.sf then
-			aObj:skinObject("frame", {obj=frame, fType=ftype, ofs=0})
-			-- aObj:addSkinFrame{obj=frame, ft=ftype, x1=x1, y1=y1, x2=x2, y2=y2}
-			if aObj.modBtnBs then
-				aObj:addButtonBorder{obj=frame.Icon, relTo=frame.Icon.Texture}
-			end
-		-- else
-		-- 	frame.sf:ClearAllPoints()
-		-- 	frame.sf:SetPoint("TOPLEFT", frame, "TOPLEFT", x1, y1)
-		-- 	frame.sf:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", x2, y2)
-		-- end
-		-- fH, x1, y1, x2, y2 = nil, nil, nil ,nil ,nil
+		aObj:skinObject("frame", {obj=frame, fType=ftype, ofs=0})
+		if aObj.modBtnBs then
+			aObj:addButtonBorder{obj=frame.Icon, relTo=frame.Icon.Texture}
+		end
 	end
 	-- called params: frame, achievementID, alreadyEarned (10585, true)
 	self:SecureHook(_G.AchievementAlertSystem, "setUpFunction", function(frame, _)
