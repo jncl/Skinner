@@ -385,6 +385,9 @@ function module:skinExpandButton(opts)
 	if not opts.as then
 		aObj:skinObject("button", {obj=opts.obj, fType=opts.ftype, sap=opts.sap, bd=6, ofs=opts.ofs})
 		if not opts.noHook then
+			module:SecureHook(opts.obj, "SetNormalTexture", function(this, nTex)
+				module:checkTex{obj=this, nTex=nTex}
+			end)
 			module:SecureHook(opts.obj, "SetNormalAtlas", function(this, nTex)
 				module:checkTex{obj=this, nTex=nTex}
 			end)
