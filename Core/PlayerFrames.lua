@@ -1084,17 +1084,6 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 			self:skinStdButton{obj=this.FilterButton}
 			_G.RaiseFrameLevelByTwo(this.FilterButton) -- raise above SetsCollectionFrame when displayed on it
 		end
-		if not aObj.isRetPTR then
-			self:SecureHookScript(this.searchProgressFrame, "OnShow", function(this)
-				this:DisableDrawLayer("BACKGROUND")
-				this:DisableDrawLayer("ARTWORK")
-				self:skinStatusBar{obj=this.searchProgressBar, 0, bgTex=this.searchProgressBar.barBackground}
-				this.searchProgressBar:DisableDrawLayer("ARTWORK")
-				self:skinObject("frame", {obj=this, fType=ftype})
-
-				self:Unhook(this, "OnShow")
-			end)
-		end
 		local x1Ofs, y1Ofs, x2Ofs, y2Ofs = -4, 2, 7, -4
 
 		local function updBtnClr(btn)
@@ -1190,7 +1179,7 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 		this:DisableDrawLayer("ARTWORK")
 		self:removeInset(this.Inset)
 		self:skinObject("dropdown", {obj=this.OutfitDropDown, fType=ftype, y2=-3})
-		for _, btn in _G.pairs(aObj.isRetPTR and this.SlotButtons or this.ModelScene.SlotButtons) do
+		for _, btn in _G.pairs(this.SlotButtons) do
 			btn.Border:SetTexture(nil)
 			if self.modBtnBs then
 				 self:addButtonBorder{obj=btn, ofs=-2}
@@ -1203,15 +1192,9 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 			self:SecureHook(this.OutfitDropDown, "UpdateSaveButton", function(this)
 				self:clrBtnBdr(this.SaveButton)
 			end)
-			if not aObj.isRetPTR then
-				self:SecureHook("WardrobeTransmogFrame_UpdateApplyButton", function()
-					self:clrBtnBdr(_G.WardrobeTransmogFrame.ApplyButton)
-				end)
-			else
-				self:SecureHook(_G.WardrobeTransmogFrame, "UpdateApplyButton", function(this)
+			self:SecureHook(_G.WardrobeTransmogFrame, "UpdateApplyButton", function(this)
 					self:clrBtnBdr(this.ApplyButton)
 				end)
-			end
 		end
 		if self.modBtnBs then
 			self:addButtonBorder{obj=this.ModelScene.ClearAllPendingButton, ofs=1, x2=0, relTo=this.ModelScene.ClearAllPendingButton.Icon}
@@ -3835,14 +3818,9 @@ aObj.blizzLoDFrames[ftype].PVPUI = function(self)
 		self:SecureHookScript(this.NewSeasonPopup, "OnShow", function(this)
 			this.NewSeason:SetTextColor(self.HT:GetRGB())
 			this.SeasonRewardText:SetTextColor(self.BT:GetRGB())
-			if not aObj.isRetPTR then
-				this.SeasonDescription:SetTextColor(self.BT:GetRGB())
-				this.SeasonDescription2:SetTextColor(self.BT:GetRGB())
-			else
-				this.SeasonDescriptionHeader:SetTextColor(self.BT:GetRGB())
-				for _, line in _G.pairs(this.SeasonDescriptions) do
-					line:SetTextColor(self.BT:GetRGB())
-				end
+			this.SeasonDescriptionHeader:SetTextColor(self.BT:GetRGB())
+			for _, line in _G.pairs(this.SeasonDescriptions) do
+				line:SetTextColor(self.BT:GetRGB())
 			end
 			this.SeasonRewardFrame.Ring:SetTexture(nil)
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ofs=-13})
@@ -3899,11 +3877,6 @@ aObj.blizzLoDFrames[ftype].PVPUI = function(self)
 				self:clrBtnBdr(_G.HonorFrame.BonusFrame.RandomEpicBGButton.Reward, "gold")
 				self:clrBtnBdr(_G.HonorFrame.BonusFrame.BrawlButton.Reward, "gold")
 			end)
-			if not aObj.isRetPTR then
-				self:SecureHook(_G.HonorFrame.BonusFrame.SpecialEventButton.Reward, "Update", function(this)
-					self:clrBtnBdr(this, this.Icon:IsDesaturated() and "disabled" or "gold")
-				end)
-			end
 		end
 		this.BonusFrame:DisableDrawLayer("BACKGROUND")
 		this.BonusFrame:DisableDrawLayer("BORDER")

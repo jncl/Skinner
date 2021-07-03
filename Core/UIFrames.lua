@@ -424,10 +424,8 @@ end
 -- The following functions are used by several Chat* functions
 if aObj.isClscBC then
 	aObj.cebRgns = {1, 2, 6, 7} -- 1, 6 & 7 are font strings, 2 is cursor texture
-elseif aObj.isRetPTR then
-	aObj.cebRgns = {1, 2, 9, 10, 11, 12} -- 1, 9, 10, 11 & 12 are font strings, 2 is cursor texture
 else
-	aObj.cebRgns = {1, 2, 9, 10, 11} -- 1, 9, 10 & 11 are font strings, 2 is cursor texture
+	aObj.cebRgns = {1, 2, 9, 10, 11, 12} -- 1, 9, 10, 11 & 12 are font strings, 2 is cursor texture
 end
 local function skinChatEB(obj)
 	if aObj.prdb.ChatEditBox.style == 1 then -- Frame
@@ -954,6 +952,35 @@ aObj.blizzFrames[ftype].AutoComplete = function(self)
 
 end
 
+aObj.blizzFrames[ftype].AzeriteItemToasts = function(self)
+	if not self.prdb.AzeriteItemToasts or self.initialized.AzeriteItemToasts then return end
+	self.initialized.AzeriteItemToasts = true
+
+	self:SecureHookScript(_G.AzeriteLevelUpToast, "OnShow", function(this)
+		this:DisableDrawLayer("BACKGROUND")
+		this.GlowLineBottomBurst:SetTexture(nil)
+		this.CloudyLineRight:SetTexture(nil)
+		this.CloudyLineRMover:SetTexture(nil)
+		this.CloudyLineLeft:SetTexture(nil)
+		this.CloudyLineLMover:SetTexture(nil)
+		this.BottomLineLeft:SetTexture(nil)
+		this.BottomLineRight:SetTexture(nil)
+		this.Stars1:SetTexture(nil)
+		this.Stars2:SetTexture(nil)
+		this.IconGlowBurst:SetTexture(nil)
+		this.IconStarBurst:SetTexture(nil)
+		this.WhiteIconGlow:SetTexture(nil)
+		this.WhiteStarBurst:SetTexture(nil)
+
+		-- hook this to disable Animations
+		self:RawHook(this.ShowAnim, "Play", function(this)
+		end, true)
+
+		self:Unhook(this, "OnShow")
+	end)
+
+end
+
 aObj.blizzLoDFrames[ftype].BattlefieldMap = function(self)
 	if not self.prdb.BattlefieldMap or self.initialized.BattlefieldMap then return end
 	self.initialized.BattlefieldMap = true
@@ -1070,11 +1097,6 @@ aObj.blizzLoDFrames[ftype].BindingUI = function(self)
 				self:skinStdButton{obj=this.defaultsButton}
 				self:skinStdButton{obj=this.cancelButton}
 				self:skinStdButton{obj=this.okayButton}
-			end
-			if not aObj.isRetPTR then
-				if self.modBtnBs then
-					self:addButtonBorder{obj=this.phantomExtraActionButton, x2=1, y2=-1}
-				end
 			end
 			if self.modChkBtns then
 				self:skinCheckButton{obj=this.characterSpecificButton}
@@ -1323,20 +1345,10 @@ aObj.blizzLoDFrames[ftype].ChallengesUI = function(self)
 			for _, dungeon in _G.ipairs(this.DungeonIcons) do
 				self:addButtonBorder{obj=dungeon, ofs=3, clr="disabled"}
 				self:SecureHook(dungeon, "SetUp", function(this, mapInfo, _)
-					if not aObj.isRetPTR then
-						if mapInfo.quality >= (_G.Enum.ItemQuality.Common)
-						and _G.ITEM_QUALITY_COLORS[mapInfo.quality]
-						then
-							this.sbb:SetBackdropBorderColor(_G.ITEM_QUALITY_COLORS[mapInfo.quality].r, _G.ITEM_QUALITY_COLORS[mapInfo.quality].g, _G.ITEM_QUALITY_COLORS[mapInfo.quality].b, 1)
-						else
-							self:clrBtnBdr(this, "disabled")
-						end
+					if mapInfo.level > 0 then
+						this.sbb:SetBackdropBorderColor(this.HighestLevel:GetTextColor())
 					else
-						if mapInfo.level > 0 then
-							this.sbb:SetBackdropBorderColor(this.HighestLevel:GetTextColor())
-						else
-							self:clrBtnBdr(this, "disabled")
-						end
+						self:clrBtnBdr(this, "disabled")
 					end
 				end)
 			end
@@ -1515,9 +1527,7 @@ aObj.blizzFrames[ftype].ChatButtons = function(self)
 		self:addButtonBorder{obj=_G.ChatFrameToggleVoiceDeafenButton, ofs=0, clr="grey"}
 		self:addButtonBorder{obj=_G.ChatFrameToggleVoiceMuteButton, ofs=0, clr="grey"}
 		self:addButtonBorder{obj=_G.ChatFrameMenuButton, ofs=-2, x1=1, clr="grey"}
-		if self.isRetPTR then
-			self:addButtonBorder{obj=_G.TextToSpeechButton, x1=1, y1=2, x2=-2, y2=-2, clr="grey"}
-		end
+		self:addButtonBorder{obj=_G.TextToSpeechButton, x1=1, y1=2, x2=-2, y2=-2, clr="grey"}
 		-- QuickJoinToastButton(s)
 		self:addButtonBorder{obj=_G.QuickJoinToastButton, x1=1, y1=2, x2=-2, y2=-2, clr="grey"}
 		for _, type in _G.pairs{"Toast", "Toast2"} do
@@ -1736,13 +1746,11 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 			skinCB("ChatConfigOtherSettingsCreatureCheckBox" .. i)
 		end
 		self:skinObject("frame", {obj=_G.ChatConfigOtherSettingsCreature, fType=ftype, kfs=true, fb=true})
-		if aObj.isRetPTR then
-			-- Voice
-			for i = 1, #_G.CHAT_CONFIG_VOICE do
-				skinCB("ChatConfigVoiceSettingsVoiceCheckBox" .. i)
-			end
-			self:skinObject("frame", {obj=_G.ChatConfigVoiceSettingsVoice, fType=ftype, kfs=true, fb=true})
+		-- Voice
+		for i = 1, #_G.CHAT_CONFIG_VOICE do
+			skinCB("ChatConfigVoiceSettingsVoiceCheckBox" .. i)
 		end
+		self:skinObject("frame", {obj=_G.ChatConfigVoiceSettingsVoice, fType=ftype, kfs=true, fb=true})
 		--	Combat Settings
 		-- Filters
 		_G.ChatConfigCombatSettingsFiltersScrollFrameScrollBarBorder:Hide()
@@ -2222,129 +2230,103 @@ aObj.blizzLoDFrames[ftype].DeathRecap = function(self)
 
 end
 
-local skinETFrame
-if not aObj.isRet then
-	function skinETFrame()
+local function skinETFrame()
 
-		local function skinMenuBtn(btn)
-			aObj:skinStdButton{obj=btn, fType=ftype, y1=2, y2=-3}
-			aObj.modUIBtns:chgHLTex(btn, btn.MouseoverOverlay)
-		end
-		aObj:SecureHookScript(_G.EventTrace, "OnShow", function(this)
-			aObj:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, x2=1})
-			if aObj.modBtns then
-				skinMenuBtn(this.SubtitleBar.ViewLog)
-				skinMenuBtn(this.SubtitleBar.ViewFilter)
-				aObj:skinStdButton{obj=this.SubtitleBar.OptionsDropDown, fType=ftype, clr="grey"}
-			end
-			aObj:skinObject("editbox", {obj=this.Log.Bar.SearchBox, fType=ftype, si=true})
-			aObj:skinObject("scrollbar", {obj=this.Log.Events.ScrollBar, fType=ftype})
-			aObj:skinObject("scrollbar", {obj=this.Log.Search.ScrollBar, fType=ftype})
-			if aObj.modBtns then
-				skinMenuBtn(this.Log.Bar.MarkButton)
-				skinMenuBtn(this.Log.Bar.PlaybackButton)
-				skinMenuBtn(this.Log.Bar.DiscardAllButton)
-			end
-			aObj:skinObject("scrollbar", {obj=this.Filter.ScrollBar, fType=ftype})
-			if aObj.modBtns then
-				skinMenuBtn(this.Filter.Bar.CheckAllButton)
-				skinMenuBtn(this.Filter.Bar.UncheckAllButton)
-				skinMenuBtn(this.Filter.Bar.DiscardAllButton)
-			end
-
-			aObj:Unhook(this, "OnShow")
-		end)
-
-		if aObj.modBtns
-		or aObj.modChkBtns
-		then
-			aObj:SecureHook(_G.EventTraceLogEventButtonMixin, "Init", function(this, _)
-				if aObj.modBtns then
-					aObj:skinCloseButton{obj=this.HideButton, fType=ftype, noSkin=true}
-				end
-			end)
-			aObj:SecureHook(_G.EventTraceFilterButtonMixin, "Init", function(this, _)
-				if aObj.modBtns then
-					aObj:skinCloseButton{obj=this.HideButton, fType=ftype, noSkin=true}
-				end
-				if aObj.modChkBtns then
-					aObj:skinCheckButton{obj=this.CheckButton, fType=ftype, ofs=-1}
-				end
-			end)
-		end
-
+	local function skinMenuBtn(btn)
+		aObj:skinStdButton{obj=btn, fType=ftype, y1=2, y2=-3}
+		aObj.modUIBtns:chgHLTex(btn, btn.MouseoverOverlay)
 	end
-end
+	aObj:SecureHookScript(_G.EventTrace, "OnShow", function(this)
+		aObj:skinObject("editbox", {obj=this.Log.Bar.SearchBox, fType=ftype, si=true})
+		aObj:skinObject("scrollbar", {obj=this.Log.Events.ScrollBar, fType=ftype, x1=0, x2=0})
+		aObj:skinObject("scrollbar", {obj=this.Log.Search.ScrollBar, fType=ftype, x1=0, x2=0})
+		aObj:skinObject("scrollbar", {obj=this.Filter.ScrollBar, fType=ftype, x1=0, x2=0})
+		aObj:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, x2=aObj.isRet and 3 or 1})
+		if aObj.modBtns then
+			skinMenuBtn(this.SubtitleBar.ViewLog)
+			skinMenuBtn(this.SubtitleBar.ViewFilter)
+			aObj:skinStdButton{obj=this.SubtitleBar.OptionsDropDown, fType=ftype, clr="grey"}
+			skinMenuBtn(this.Log.Bar.MarkButton)
+			skinMenuBtn(this.Log.Bar.PlaybackButton)
+			skinMenuBtn(this.Log.Bar.DiscardAllButton)
+			skinMenuBtn(this.Filter.Bar.CheckAllButton)
+			skinMenuBtn(this.Filter.Bar.UncheckAllButton)
+			skinMenuBtn(this.Filter.Bar.DiscardAllButton)
+		end
 
+		aObj:Unhook(this, "OnShow")
+	end)
+
+	if aObj.modBtns
+	or aObj.modChkBtns
+	then
+		aObj:SecureHook(_G.EventTraceLogEventButtonMixin, "Init", function(this, _)
+			if aObj.modBtns then
+				aObj:skinCloseButton{obj=this.HideButton, fType=ftype, noSkin=true}
+			end
+		end)
+		aObj:SecureHook(_G.EventTraceFilterButtonMixin, "Init", function(this, _)
+			if aObj.modBtns then
+				aObj:skinCloseButton{obj=this.HideButton, fType=ftype, noSkin=true}
+			end
+			if aObj.modChkBtns then
+				aObj:skinCheckButton{obj=this.CheckButton, fType=ftype, ofs=-1}
+			end
+		end)
+	end
+
+end
 aObj.blizzLoDFrames[ftype].DebugTools = function(self)
 	if not self.prdb.DebugTools or self.initialized.DebugTools then return end
 	self.initialized.DebugTools = true
 
-	if self.isRet then
-		self:SecureHookScript(_G.EventTraceFrame, "OnShow", function(this)
-			self:skinObject("slider", {obj=_G.EventTraceFrameScroll, fType=ftype})
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, ofs=-1, y1=-2})
-			if self.modBtns then
-				self:SecureHook("EventTraceFrame_Update", function()
-					for i = 1, #_G.EventTraceFrame.buttons do
-						self:skinCloseButton{obj=_G.EventTraceFrame.buttons[i].HideButton, noSkin=true}
-					end
-				end)
-			end
-
-			self:Unhook(this, "OnShow")
-		end)
-	end
-
-	if self.isClsc
-	and not self.isClscBC
-	then
+	if self.isClscERA then
 		skinETFrame()
 	end
 
-	self:SecureHookScript(_G.TableAttributeDisplay, "OnShow", function(this)
-		local function skinTAD(frame)
-			aObj:skinObject("editbox", {obj=frame.FilterBox, fType=ftype, si=true})
-			aObj:skinObject("slider", {obj=frame.LinesScrollFrame.ScrollBar, fType=ftype})
-			aObj:skinObject("frame", {obj=frame.ScrollFrameArt, fType=ftype, fb=true})
-			aObj:skinObject("frame", {obj=frame, fType=ftype, kfs=true, cb=true, ofs=-2, x1=3, x2=-1})
-			if aObj.modBtns then
-				aObj:skinOtherButton{obj=frame.OpenParentButton, font=aObj.fontS, disfont=aObj.fontDS, text=aObj.uparrow}
-				aObj:skinOtherButton{obj=frame.NavigateBackwardButton, font=aObj.fontS, disfont=aObj.fontDS, text="x", size=32}
-				aObj:skinOtherButton{obj=frame.NavigateForwardButton, font=aObj.fontS, disfont=aObj.fontDS, text="x", size=32}
-				aObj:skinOtherButton{obj=frame.DuplicateButton, font=aObj.fontS, text=aObj.nearrow}
+	local function skinTAD(frame)
+		aObj:skinObject("editbox", {obj=frame.FilterBox, fType=ftype, si=true})
+		aObj:skinObject("slider", {obj=frame.LinesScrollFrame.ScrollBar, fType=ftype})
+		aObj:skinObject("frame", {obj=frame.ScrollFrameArt, fType=ftype, fb=true})
+		aObj:skinObject("frame", {obj=frame, fType=ftype, kfs=true, cb=true, ofs=-2, x1=5, x2=-1})
+		if aObj.modBtns then
+			aObj:skinOtherButton{obj=frame.OpenParentButton, font=aObj.fontS, disfont=aObj.fontDS, text=aObj.uparrow}
+			aObj:skinOtherButton{obj=frame.NavigateBackwardButton, font=aObj.fontS, disfont=aObj.fontDS, text="x", size=32}
+			aObj:skinOtherButton{obj=frame.NavigateForwardButton, font=aObj.fontS, disfont=aObj.fontDS, text="x", size=32}
+			aObj:skinOtherButton{obj=frame.DuplicateButton, font=aObj.fontS, text=aObj.nearrow}
+			aObj:clrBtnBdr(frame.NavigateBackwardButton)
+			aObj:clrBtnBdr(frame.NavigateForwardButton)
+			aObj:SecureHook(frame, "InspectTable", function(this, _)
+				if frame.OpenParentButton:IsEnabled() then
+					frame.OpenParentButton:SetText(aObj.uparrow)
+				else
+					frame.OpenParentButton:SetText("x")
+				end
+				aObj:clrBtnBdr(frame.OpenParentButton)
+			end)
+			aObj:SecureHook(frame, "UpdateTableNavigation", function(this, _)
+				-- aObj:Debug("UpdateTableNavigation")
+				if frame.NavigateBackwardButton:IsEnabled() then
+					frame.NavigateBackwardButton:SetText(aObj.larrow)
+				else
+					frame.NavigateBackwardButton:SetText("x")
+				end
+				if frame.NavigateForwardButton:IsEnabled() then
+					frame.NavigateForwardButton:SetText(aObj.rarrow)
+				else
+					frame.NavigateForwardButton:SetText("x")
+				end
 				aObj:clrBtnBdr(frame.NavigateBackwardButton)
 				aObj:clrBtnBdr(frame.NavigateForwardButton)
-				aObj:SecureHook(frame, "InspectTable", function(this, _)
-					if frame.OpenParentButton:IsEnabled() then
-						frame.OpenParentButton:SetText(aObj.uparrow)
-					else
-						frame.OpenParentButton:SetText("x")
-					end
-					aObj:clrBtnBdr(frame.OpenParentButton)
-				end)
-				aObj:SecureHook(frame, "UpdateTableNavigation", function(this, _)
-					-- aObj:Debug("UpdateTableNavigation")
-					if frame.NavigateBackwardButton:IsEnabled() then
-						frame.NavigateBackwardButton:SetText(aObj.larrow)
-					else
-						frame.NavigateBackwardButton:SetText("x")
-					end
-					if frame.NavigateForwardButton:IsEnabled() then
-						frame.NavigateForwardButton:SetText(aObj.rarrow)
-					else
-						frame.NavigateForwardButton:SetText("x")
-					end
-					aObj:clrBtnBdr(frame.NavigateBackwardButton)
-					aObj:clrBtnBdr(frame.NavigateForwardButton)
-				end)
-			end
-			if aObj.modChkBtns then
-				aObj:skinCheckButton{obj=frame.VisibilityButton}
-				aObj:skinCheckButton{obj=frame.HighlightButton}
-				aObj:skinCheckButton{obj=frame.DynamicUpdateButton}
-			end
+			end)
 		end
+		if aObj.modChkBtns then
+			aObj:skinCheckButton{obj=frame.VisibilityButton}
+			aObj:skinCheckButton{obj=frame.HighlightButton}
+			aObj:skinCheckButton{obj=frame.DynamicUpdateButton}
+		end
+	end
+	self:SecureHookScript(_G.TableAttributeDisplay, "OnShow", function(this)
 		skinTAD(this)
 		self:RawHook("DisplayTableInspectorWindow", function(...)
 			local frame = self.hooks.DisplayTableInspectorWindow(...)
@@ -2399,50 +2381,47 @@ aObj.blizzFrames[ftype].DestinyFrame = function(self)
 
 end
 
-if aObj.isRetPTR then
-	aObj.blizzFrames[ftype].EventToastManager = function(self)
-		if not self.prdb.EventToastManager or self.initialized.EventToastManager then return end
-		self.initialized.EventToastManager = true
+aObj.blizzFrames[ftype].EventToastManager = function(self)
+	if not self.prdb.EventToastManager or self.initialized.EventToastManager then return end
+	self.initialized.EventToastManager = true
 
-		local function skinToasts(frame)
-			for toast in frame.eventToastPools:EnumerateActive() do
-				-- aObj:Debug("DisplayToast Enum: [%s, %s]", toast)
-				toast:DisableDrawLayer("BORDER")
-				if toast.BannerFrame then
-					toast.BannerFrame:DisableDrawLayer("BACKGROUND")
-					toast.BannerFrame:DisableDrawLayer("BORDER")
-					toast.BannerFrame:DisableDrawLayer("OVERLAY")
-					if toast.BannerFrame.MedalIcon then -- ChallengeMode
-						toast.BannerFrame.MedalIcon:SetDrawLayer("ARTWORK", 2)
-					end
+	local function skinToasts(frame)
+		for toast in frame.eventToastPools:EnumerateActive() do
+			-- aObj:Debug("DisplayToast Enum: [%s, %s]", toast)
+			toast:DisableDrawLayer("BORDER")
+			if toast.BannerFrame then
+				toast.BannerFrame:DisableDrawLayer("BACKGROUND")
+				toast.BannerFrame:DisableDrawLayer("BORDER")
+				toast.BannerFrame:DisableDrawLayer("OVERLAY")
+				if toast.BannerFrame.MedalIcon then -- ChallengeMode
+					toast.BannerFrame.MedalIcon:SetDrawLayer("ARTWORK", 2)
 				end
 			end
 		end
-		self:SecureHook(_G.EventToastManagerFrame, "DisplayToast", function(this, firstToast)
-			-- aObj:Debug("DisplayToast: [%s, %s]", this, firstToast)
-			skinToasts(this)
-		end)
-		skinToasts(_G.EventToastManagerFrame)
-
-		self:SecureHookScript(_G.EventToastManagerFrame, "OnShow", function(this)
-			this:DisableDrawLayer("BACKGROUND")
-
-			self:Unhook(this, "OnShow")
-		end)
-		self:checkShown(_G.EventToastManagerFrame)
-
-		self:SecureHookScript(_G.EventToastManagerSideDisplay, "OnShow", function(this)
-			this:DisableDrawLayer("BACKGROUND")
-
-			self:Unhook(this, "OnShow")
-		end)
-		self:checkShown(_G.EventToastManagerSideDisplay)
-
 	end
+	self:SecureHook(_G.EventToastManagerFrame, "DisplayToast", function(this, firstToast)
+		-- aObj:Debug("DisplayToast: [%s, %s]", this, firstToast)
+		skinToasts(this)
+	end)
+	skinToasts(_G.EventToastManagerFrame)
+
+	self:SecureHookScript(_G.EventToastManagerFrame, "OnShow", function(this)
+		this:DisableDrawLayer("BACKGROUND")
+
+		self:Unhook(this, "OnShow")
+	end)
+	self:checkShown(_G.EventToastManagerFrame)
+
+	self:SecureHookScript(_G.EventToastManagerSideDisplay, "OnShow", function(this)
+		this:DisableDrawLayer("BACKGROUND")
+
+		self:Unhook(this, "OnShow")
+	end)
+	self:checkShown(_G.EventToastManagerSideDisplay)
+
 end
-if aObj.isRetPTR
-or aObj.isClscBC
-then
+
+if not aObj.isClscERA then
 	aObj.blizzLoDFrames[ftype].EventTrace = function(self)
 		if not self.prdb.EventTrace or self.initialized.EventTrace then return end
 		self.initialized.EventTrace = true
@@ -3703,67 +3682,6 @@ aObj.blizzFrames[ftype].ItemText = function(self)
 		end
 	end)
 
-end
-
-if not aObj.isRetPTR then
-	aObj.blizzFrames[ftype].LevelUpDisplay = function(self)
-		if not self.prdb.LevelUpDisplay or self.initialized.LevelUpDisplay then return end
-		self.initialized.LevelUpDisplay = true
-
-		self:SecureHookScript(_G.LevelUpDisplay, "OnShow", function(this)
-				this:DisableDrawLayer("BACKGROUND")
-				-- sub frames
-				this.scenarioFrame:DisableDrawLayer("BORDER")
-				this.scenarioBits:DisableDrawLayer("BACKGROUND")
-				this.scenarioBits:DisableDrawLayer("BORDER")
-				this.scenarioFiligree:DisableDrawLayer("OVERLAY")
-				this.challengeModeBits:DisableDrawLayer("BORDER")
-				this.challengeModeBits.BottomFiligree:SetTexture(nil)
-				-- SpellBucketFrame ?
-
-				self:Unhook(this, "OnShow")
-			end)
-		self:checkShown(_G.LevelUpDisplay)
-
-		self:SecureHookScript(_G.BossBanner, "OnShow", function(this)
-			this:DisableDrawLayer("BACKGROUND")
-			this:DisableDrawLayer("BORDER")
-			this.BottomFillagree:SetTexture(nil)
-			this.SkullSpikes:SetTexture(nil)
-			this.RightFillagree:SetTexture(nil)
-			this.LeftFillagree:SetTexture(nil)
-			for i = 1, #this.LootFrames do
-				this.LootFrames[1]:DisableDrawLayer("BACKGROUND")
-				self:addButtonBorder{obj=this.LootFrames[i], relTo=this.LootFrames[i].Icon, reParent={this.LootFrames[i].Count}}
-			end
-
-			self:Unhook(this, "OnShow")
-		end)
-
-		self:SecureHookScript(_G.AzeriteLevelUpToast, "OnShow", function(this)
-			this:DisableDrawLayer("BACKGROUND")
-			this.GlowLineBottomBurst:SetTexture(nil)
-			this.CloudyLineRight:SetTexture(nil)
-			this.CloudyLineRMover:SetTexture(nil)
-			this.CloudyLineLeft:SetTexture(nil)
-			this.CloudyLineLMover:SetTexture(nil)
-			this.BottomLineLeft:SetTexture(nil)
-			this.BottomLineRight:SetTexture(nil)
-			this.Stars1:SetTexture(nil)
-			this.Stars2:SetTexture(nil)
-			this.IconGlowBurst:SetTexture(nil)
-			this.IconStarBurst:SetTexture(nil)
-			this.WhiteIconGlow:SetTexture(nil)
-			this.WhiteStarBurst:SetTexture(nil)
-
-			-- hook this to disable Animations
-			self:RawHook(this.ShowAnim, "Play", function(this)
-			end, true)
-
-			self:Unhook(this, "OnShow")
-		end)
-
-	end
 end
 
 local skinCheckBtns
@@ -5315,25 +5233,26 @@ aObj.blizzFrames[ftype].PetBattleUI = function(self)
 
 end
 
-aObj.blizzLoDFrames[ftype].PlayerChoiceUI = function(self)
-	if not self.prdb.PlayerChoiceUI or self.initialized.PlayerChoiceUI then return end
-	self.initialized.PlayerChoiceUI = true
+aObj.blizzLoDFrames[ftype].PlayerChoice = function(self)
+	if not self.prdb.PlayerChoice or self.initialized.PlayerChoice then return end
+	self.initialized.PlayerChoice = true
 
 	local optionOffsets = {
-		[0]   = {x1 = -10, y1 = 70, x2 = 10, y2 = 0}, -- defaults
-		[89]  =	{y1 = 40}, -- WoD Strategic Assault Choice [Alliance]
-		[144] =	{y1 = 40}, -- WoD Strategic Assault Choice [Horde]
-		[145] =	{y1 = 40}, -- WoD Strategic Assault Choice [Horde]
-		[240] =	{y1 = 60}, -- Legion Artifact Weapon Choice [Alliance?]
-		[281] =	{y1 = 60}, -- Legion Artifact Weapon Choice [Horde]
-		[342] =	{y2 = 10}, -- Warchief's Command Board [Horde]
-		[505] =	{y2 = 10}, -- Hero's Call Board [Alliance]
-		[640] = {}, -- Ember Court Entertainments List [Venthyr]
-		[641] = {}, -- Ember Court Refreshments List [Venthyr]
-		[653] = {}, -- Ember Court Invitation list [Venthyr]
-		[667] = {y2 = 20}, -- Shadowlands Experience (Threads of Fate)
-		[998] = {x1 = -35, y1 = 40, x2 = 35, y2 = -32}, -- Covenant Selection (Oribos) [Enlarged]
-		[999] = {x1 = -13, y1 = 40, x2 = 13, y2 = -34}, -- Covenant Selection (Oribos) [Standard]
+		[0]   = {x1 = -5, y1 = 0, x2 = 5, y2 = -30}, -- defaults
+		-- [89]  = {}, -- WoD Strategic Assault Choice [Alliance] (Lunarfall) √
+		-- [138] = {}, -- WoD Strategic Assault Choice [Horde] (Frostwall) √
+		-- [203] = {}, -- Tanaan Battle Plan [Alliance] (Lion's Watch) √
+		-- [240] = {}, -- Legion Artifact Weapon Choice (1st Artifact Weapon) √
+		-- [281] = {}, -- Legion Artifact Weapon Choice (2nd Artifact Weapon) √
+		-- [285] = {}, -- Legion Artifact Weapon Choice (Last Aritfact Weapon) √
+		-- [342] = {}, -- Warchief's Command Board [Horde] √
+		-- [505] = {}, -- Hero's Call Board [Alliance] √
+		-- [640] = {}, -- Ember Court Entertainments List [Venthyr] (Hips) √
+		-- [641] = {}, -- Ember Court Refreshments List [Venthyr] (Picky Stefan) √
+		-- [653] = {}, -- Ember Court Invitation list [Venthyr] (Lord Garridan) √
+		-- [667] = {}, -- Shadowlands Experience (Threads of Fate) √
+		[998] = {x1 = -28, y1 = 48, x2 = 28, y2 = -48}, -- Covenant Selection (Oribos) [Enlarged] √
+		[999] = {x1 = -4, y1 = 4, x2 = 4, y2 = -4}, -- Covenant Selection (Oribos) [Standard] √
 	}
 
 	local defTab, ooTab, x1Ofs, y1Ofs, x2Ofs, y2Ofs = optionOffsets[0]
@@ -5346,97 +5265,98 @@ aObj.blizzLoDFrames[ftype].PlayerChoiceUI = function(self)
 		frame.sf:SetPoint("TOPLEFT",frame, "TOPLEFT", x1Ofs, y1Ofs)
 		frame.sf:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", x2Ofs, y2Ofs)
 	end
+	local skinBtns
+	if self.modBtns then
+		function skinBtns(array)
+			for btn in array.buttonPool:EnumerateActive() do
+				-- DON'T skin magnifying glass button
+				if btn:GetText() ~= "Preview Covenant" then
+					aObj:skinStdButton{obj=btn}
+				end
+			end
+		end
+	end
 	self:SecureHookScript(_G.PlayerChoiceFrame, "OnShow", function(this)
 		this.BlackBackground:DisableDrawLayer("BACKGROUND")
-		this.BorderFrame:DisableDrawLayer("BORDER")
+		this.Header:DisableDrawLayer("BORDER")
 		this.Background:DisableDrawLayer("BACKGROUND")
 		this.Title:DisableDrawLayer("BACKGROUND")
 		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true, cbns=true, clr="sepia", ofs=0})
 
-		-- Option 1-4
-			-- RewardsFrame
-				-- .CurrencyRewardsPool
-				-- .ReputationRewardsPool
-				-- .ItemRewardsPool
-			-- WidgetContainer
-		local skinBtns
-		if self.modBtns then
-			function skinBtns(array)
-				for btn in array.buttonPool:EnumerateActive() do
-					-- DON'T skin magnifying glass button
-					if btn:GetText() ~= "Preview Covenant" then
-						aObj:skinStdButton{obj=btn}
-					end
-				end
-			end
-		end
-		for _, opt in _G.pairs(this.Options) do
-			self:nilTexture(opt.Header.Ribbon, true)
-			self:skinObject("frame", {obj=opt, fType=ftype, fb=true, clr="grey"})
-			if self.modBtns then
-				skinBtns(opt.OptionButtonsContainer)
-				self:SecureHook(opt.OptionButtonsContainer, "ConfigureButtons", function(this, ...)
-					skinBtns(this)
-				end)
-				self:SecureHook(opt.OptionButtonsContainer, "DisableButtons", function(this)
-					for btn in this.buttonPool:EnumerateActive() do
-						if btn:GetText() ~= "Preview Covenant" then
-							self:clrBtnBdr(btn)
-						end
-					end
-				end)
-			end
-			-- hook these to handle size changes on mouseover (used in Oribos for covenant choice)
-			self:SecureHook(opt, "OnEnterOverride", function(this)
-				if this:GetOptionLayoutInfo().enlargeBackgroundOnMouseOver then
-					resizeSF(opt, 998)
-				end
-			end)
-			self:SecureHook(opt, "OnLeaveOverride", function(this)
-				if this:GetOptionLayoutInfo().enlargeBackgroundOnMouseOver then
-					resizeSF(opt, 999)
-				end
-			end)
-		end
-
-		self:SecureHook(this, "Update", function(this)
+		local function skinOptions(source)
 			this.sf:SetShown(not _G.IsInJailersTower())
 			local pci = _G.C_PlayerChoice.GetPlayerChoiceInfo()
-			-- aObj:Debug("PCUI - Update: [%s, %s]", this.uiTextureKit, pci.choiceID)
-			for _, opt in _G.pairs(this.Options) do
-				opt.Header.Text:SetTextColor(self.HT:GetRGB())
-				opt.SubHeader.Text:SetTextColor(self.HT:GetRGB())
+			-- aObj:Debug("skinOptions PCUI: [%s, %s, %s, %s]", source, this.uiTextureKit, pci.choiceID, this.optionFrameTemplate)
+			for opt in this.optionPools:EnumerateActiveByTemplate(this.optionFrameTemplate) do
 				opt.OptionText.String:SetTextColor(self.BT:GetRGB())
 				opt.OptionText.HTML:SetTextColor(self.BT:GetRGB())
-				if this.uiTextureKit ~= "jailerstower" then
-					resizeSF(opt, this.uiTextureKit == "Oribos" and 999 or pci.choiceID)
-					opt.sf:Show()
-				else
-					opt.sf:Hide()
+				if aObj.modBtns then
+					skinBtns(opt.OptionButtonsContainer)
 				end
-				if this.uiTextureKit == "Oribos" then
-					opt.BackgroundShadowSmall:SetTexture(nil)
-					opt.BackgroundShadowLarge:SetTexture(nil)
-				end
-				if this.uiTextureKit ~= "Oribos"
-				and this.uiTextureKit ~= "jailerstower"
-				then
+				if this.optionFrameTemplate == "PlayerChoiceNormalOptionTemplate" then
 					opt.Background:SetTexture(nil)
 					opt.ArtworkBorder:SetTexture(nil)
-					opt.ArtworkBorderDisabled:SetTexture(nil)
-					for item in opt.RewardsFrame.Rewards.ItemRewardsPool:EnumerateActive() do
-						item.Name:SetTextColor(self.BT:GetRGB())
-						if self.modBtnBs then
-							self:addButtonBorder{obj=item, relTo=item.Icon, reParent={item.Count}}
+					opt.Header.Ribbon:SetTexture(nil)
+					opt.Header.Contents.Text:SetTextColor(self.HT:GetRGB())
+					opt.SubHeader.BG:SetTexture(nil)
+					opt.SubHeader.Text:SetTextColor(self.HT:GetRGB())
+					for reward in opt.Rewards.rewardsPool:EnumerateActive() do
+						if reward.Name then
+							reward.Name:SetTextColor(self.BT:GetRGB())
+						elseif reward.Text then
+							reward.Text:SetTextColor(self.BT:GetRGB())
+						end
+						if aObj.modBtnBs then
+							if reward.Icon then
+								aObj:addButtonBorder{obj=reward, fType=ftype, relTo=reward.Icon, reParent={reward.Count}}
+							elseif reward.itemButton then
+								aObj:addButtonBorder{obj=reward.itemButton, fType=ftype, ibt=true}
+							end
 						end
 					end
+					aObj:skinObject("frame", {obj=opt, fType=ftype, fb=true, clr="grey"})
+					resizeSF(opt, 0)
+				elseif this.optionFrameTemplate == "PlayerChoiceCovenantChoiceOptionTemplate" then
+					opt.BackgroundShadowSmall:SetTexture(nil)
+					opt.BackgroundShadowLarge:SetTexture(nil)
+					aObj:skinObject("frame", {obj=opt, fType=ftype, fb=true, clr="grey"})
+					resizeSF(opt, 999)
+					-- hook these to handle size changes on mouseover (used in Oribos for covenant choice)
+					self:SecureHook(opt, "OnUpdate", function(this, _) -- used for first time enlargement
+						if _G.RegionUtil.IsDescendantOfOrSame(GetMouseFocus(), this) then
+							resizeSF(opt, 998)
+						end
+						self:Unhook(opt, "OnUpdate")
+					end)
+					self:secureHook(opt, "OnEnter", function(this)
+						resizeSF(opt, 998)
+					end)
+					self:secureHook(opt, "OnLeave", function(this)
+						resizeSF(opt, 999)
+					end)
+				elseif this.optionFrameTemplate == "PlayerChoiceTorghastOptionTemplate" then
+					opt.Header.Text:SetTextColor(self.HT:GetRGB())
 				end
 			end
 			pci = nil
+		end
+			
+		skinOptions("Initial")
+		
+		self:SecureHook(this, "SetupOptions", function(this)
+			skinOptions("SetupOptions")
 		end)
 
 		self:Unhook(this, "OnShow")
 	end)
+
+	if _G.C_PlayerChoice.IsWaitingForPlayerChoiceResponse() then
+		-- if frame not yet skinned then force it to be skinned
+		if self:IsHooked(_G.PlayerChoiceFrame, "OnShow") then
+			_G.PlayerChoiceFrame:Show()
+			_G.PlayerChoiceFrame:Hide()
+		end
+	end
 
 end
 
@@ -6076,14 +5996,6 @@ aObj.blizzLoDFrames[ftype].Soulbinds = function(self)
 				-- .Lists / .Sections
 					-- CategoryButton
 						-- Container
-		if not aObj.isRetPTR then
-			for _, list in _G.pairs(this.ConduitList.ScrollBox.ScrollTarget.Lists) do
-				self:removeRegions(list.CategoryButton.Container, {1})
-				if self.modBtns then
-					self:skinStdButton{obj=list.CategoryButton, clr="topaz"}
-				end
-			end
-		end
 		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ofs=-5, clr="sepia"})
 		if self.modBtns then
 			self:skinCloseButton{obj=this.CloseButton, fType=ftype, noSkin=true}
@@ -6261,39 +6173,36 @@ aObj.blizzLoDFrames[ftype].TalkingHeadUI = function(self)
 
 end
 
-if aObj.isRetPTR then
-	aObj.blizzFrames[ftype].TextToSpeechFrame = function(self)
-		if not self.prdb.TextToSpeechFrame or self.initialized.TextToSpeechFrame then return end
-		self.initialized.TextToSpeechFrame = true
+aObj.blizzFrames[ftype].TextToSpeechFrame = function(self)
+	if not self.prdb.TextToSpeechFrame or self.initialized.TextToSpeechFrame then return end
+	self.initialized.TextToSpeechFrame = true
 
-		self:SecureHookScript(_G.TextToSpeechFrame, "OnShow", function(this)
-			self:removeNineSlice(this.Border)
-			self:skinObject("frame", {obj=_G.TextToSpeechFramePanelContainer, fType=ftype, kfs=true, fb=true})
-			self:skinObject("frame", {obj=_G.TextToSpeechFramePanelContainerChatTypeContainer, fType=ftype, kfs=true, fb=true})
-			self:skinObject("dropdown", {obj=_G.TextToSpeechFrameTtsVoiceDropdown, fType=ftype})
-			self:skinObject("slider", {obj=_G.TextToSpeechFrameAdjustRateSlider, fType=ftype})
-			self:skinObject("slider", {obj=_G.TextToSpeechFrameAdjustVolumeSlider, fType=ftype})
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true, ofs=-2})
-			if self.modBtns then
-				self:skinStdButton{obj=_G.TextToSpeechFramePlaySampleButton, fType=ftype}
-				self:skinStdButton{obj=_G.TextToSpeechFrameOkay, fType=ftype}
-				self:skinStdButton{obj=_G.TextToSpeechFrameDefaults, fType=ftype}
+	self:SecureHookScript(_G.TextToSpeechFrame, "OnShow", function(this)
+		self:removeNineSlice(this.Border)
+		self:skinObject("frame", {obj=_G.TextToSpeechFramePanelContainer, fType=ftype, kfs=true, fb=true})
+		self:skinObject("frame", {obj=_G.TextToSpeechFramePanelContainerChatTypeContainer, fType=ftype, kfs=true, fb=true})
+		self:skinObject("dropdown", {obj=_G.TextToSpeechFrameTtsVoiceDropdown, fType=ftype})
+		self:skinObject("slider", {obj=_G.TextToSpeechFrameAdjustRateSlider, fType=ftype})
+		self:skinObject("slider", {obj=_G.TextToSpeechFrameAdjustVolumeSlider, fType=ftype})
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true, ofs=-2})
+		if self.modBtns then
+			self:skinStdButton{obj=_G.TextToSpeechFramePlaySampleButton, fType=ftype}
+			self:skinStdButton{obj=_G.TextToSpeechFrameOkay, fType=ftype}
+			self:skinStdButton{obj=_G.TextToSpeechFrameDefaults, fType=ftype}
+		end
+		if self.modChkBtns then
+			self:skinCheckButton{obj=_G.TextToSpeechFramePanelContainer.PlaySoundWhenEnteringChatWindowCheckButton, fType=ftype}
+			self:skinCheckButton{obj=_G.TextToSpeechFramePanelContainer.PlaySoundSeparatingChatLinesCheckButton, fType=ftype}
+			self:skinCheckButton{obj=_G.TextToSpeechFramePanelContainer.AddCharacterNameToSpeechCheckButton, fType=ftype}
+			self:skinCheckButton{obj=_G.TextToSpeechFramePanelContainer.PlayActivitySoundWhenNotFocusedCheckButton, fType=ftype}
+			self:skinCheckButton{obj=_G.TextToSpeechFramePanelContainer.UseAlternateVoiceForSystemMessagesCheckButton, fType=ftype}
+			for i = 1, #_G.TextToSpeechFramePanelContainerChatTypeContainer.checkBoxTable do
+				self:skinCheckButton{obj=_G["TextToSpeechFramePanelContainerChatTypeContainerCheckBox" .. i], fType=ftype}
 			end
-			if self.modChkBtns then
-				self:skinCheckButton{obj=_G.TextToSpeechFramePanelContainer.PlaySoundWhenEnteringChatWindowCheckButton, fType=ftype}
-				self:skinCheckButton{obj=_G.TextToSpeechFramePanelContainer.PlaySoundSeparatingChatLinesCheckButton, fType=ftype}
-				self:skinCheckButton{obj=_G.TextToSpeechFramePanelContainer.AddCharacterNameToSpeechCheckButton, fType=ftype}
-				self:skinCheckButton{obj=_G.TextToSpeechFramePanelContainer.PlayActivitySoundWhenNotFocusedCheckButton, fType=ftype}
-				self:skinCheckButton{obj=_G.TextToSpeechFramePanelContainer.UseAlternateVoiceForSystemMessagesCheckButton, fType=ftype}
-				for i = 1, #_G.TextToSpeechFramePanelContainerChatTypeContainer.checkBoxTable do
-					self:skinCheckButton{obj=_G["TextToSpeechFramePanelContainerChatTypeContainerCheckBox" .. i], fType=ftype}
-				end
-			end
+		end
 
-			self:Unhook(this, "OnShow")
-		end)
-
-	end
+		self:Unhook(this, "OnShow")
+	end)
 
 end
 

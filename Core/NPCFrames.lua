@@ -735,13 +735,9 @@ aObj.blizzLoDFrames[ftype].ItemUpgradeUI = function(self)
 		this.ItemUpgradedNotification:SetTextColor(self.BT:GetRGB())
 		this.TitleTextLeft:SetTextColor(self.BT:GetRGB())
 		this.TitleTextRight:SetTextColor(self.BT:GetRGB())
-		if not aObj.isRetPTR then
-			this.FeedbackMessage:SetTextColor(self.BT:GetRGB())
-		else
-			self:skinObject("dropdown", {obj=this.UpgradeLevelDropDown.DropDownMenu, fType=ftype})
-			self:skinObject("scrollbar", {obj=this.StatsScrollBar, fType=ftype})
-			this.Feedback.Text:SetTextColor(self.BT:GetRGB())
-		end
+		self:skinObject("dropdown", {obj=this.UpgradeLevelDropDown.DropDownMenu, fType=ftype})
+		self:skinObject("scrollbar", {obj=this.StatsScrollBar, fType=ftype})
+		this.Feedback.Text:SetTextColor(self.BT:GetRGB())
 		self:removeRegions(this.TextFrame, {1, 2, 3, 4, 5, 6})
 		this.TextFrame.MissingText:SetTextColor(self.BT:GetRGB())
 		this.ItemButton.IconTexture:SetAlpha(0)
@@ -756,18 +752,9 @@ aObj.blizzLoDFrames[ftype].ItemUpgradeUI = function(self)
 		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, x2=3})
 		if self.modBtns then
 			self:skinStdButton{obj=_G.ItemUpgradeFrameUpgradeButton}
-			if not aObj.isRetPTR then
-				self:SecureHook(_G.ItemUpgradeFrameUpgradeButton, "Disable", function(this)
-					self:clrBtnBdr(this)
-				end)
-				self:SecureHook(_G.ItemUpgradeFrameUpgradeButton, "Enable", function(this)
-					self:clrBtnBdr(this)
-				end)
-			else
-				self:SecureHook(_G.ItemUpgradeFrameUpgradeButton, "SetDisabledState", function(this, state)
-					self:clrBtnBdr(this)
-				end)
-			end
+			self:SecureHook(_G.ItemUpgradeFrameUpgradeButton, "SetDisabledState", function(this, state)
+				self:clrBtnBdr(this)
+			end)
 		end
 		-- hook this to hide the ItemButton texture if empty
 		self:SecureHook("ItemUpgradeFrame_Update", function()
@@ -782,25 +769,14 @@ aObj.blizzLoDFrames[ftype].ItemUpgradeUI = function(self)
 			icon, quality = nil, nil
 		end)
 		-- hook this to remove background texture from stat lines
-		if not aObj.isRetPTR then
-			self:SecureHook("ItemUpgradeFrame_GetStatRow", function(index, _)
-				if _G.ItemUpgradeFrame.LeftStat[index] then
-					 _G.ItemUpgradeFrame.LeftStat[index].BG:SetTexture(nil)
-				 end
-				if _G.ItemUpgradeFrame.RightStat[index] then
-					_G.ItemUpgradeFrame.RightStat[index].BG:SetTexture(nil)
-				end
-			end)
-		else
-			self:SecureHook("ItemUpgradeFrame_UpdateStats", function(_)
-				for _, stat	in _G.pairs(this.StatsScroll.Contents.LeftStat) do
-					stat.BG:SetTexture(nil)
-				end
-				for _, stat	in _G.pairs(this.StatsScroll.Contents.RightStat) do
-					stat.BG:SetTexture(nil)
-				end
-			end)
-		end
+		self:SecureHook("ItemUpgradeFrame_UpdateStats", function(_)
+			for _, stat	in _G.pairs(this.StatsScroll.Contents.LeftStat) do
+				stat.BG:SetTexture(nil)
+			end
+			for _, stat	in _G.pairs(this.StatsScroll.Contents.RightStat) do
+				stat.BG:SetTexture(nil)
+			end
+		end)
 
 		self:Unhook(this, "OnShow")
 	end)

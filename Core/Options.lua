@@ -125,6 +125,7 @@ aObj.SetupDefaults = function(self)
 			AlertFrames                = true,
 			AnimaDiversionUI           = true,
 			AutoComplete               = true,
+			AzeriteItemToasts		   = true,
 			BattlefieldMap             = true,
 			BindingUI                  = true,
 			BNFrames                   = true,
@@ -151,7 +152,7 @@ aObj.SetupDefaults = function(self)
 			DeathRecap                 = true,
 			DebugTools                 = true,
 			DestinyFrame               = true,
-			EventToastManager          = aObj.isRetPTR and true,
+			EventToastManager          = true,
 			EventTrace                 = not aObj.isClscERA and true,
 			GarrisonUI                 = true,
 			GhostFrame                 = true,
@@ -163,7 +164,7 @@ aObj.SetupDefaults = function(self)
 			IslandsPartyPoseUI         = true,
 			IslandsQueueUI             = true,
 			ItemText                   = true,
-			LevelUpDisplay             = not aObj.isRetPTR and true,
+			LevelUpDisplay             = true,
 			LossOfControl              = true,
 			MacroUI                    = true,
 			MailFrame                  = true,
@@ -179,7 +180,7 @@ aObj.SetupDefaults = function(self)
 			ObliterumUI                = true,
 			OrderHallUI                = true,
 			PetBattleUI                = true,
-			PlayerChoiceUI             = true,
+			PlayerChoice               = true,
 			ProductChoiceFrame         = true,
 			PTRFeedback                = true,
 			PVEFrame                   = true, -- (inc, LFD, LFG, RaidFinder) a.k.a. GroupFinder
@@ -196,7 +197,7 @@ aObj.SetupDefaults = function(self)
 			SubscriptionInterstitialUI = true,
 			SystemOptions              = true,
 			TalkingHeadUI              = true,
-			TextToSpeechFrame		   = aObj.isRetPTR and true or nil,
+			TextToSpeechFrame		   = true,
 			TimeManager                = true,
 			Tooltips                   = {skin = true, style = 1, glazesb = true, border = 1},
 			TorghastLevelPicker        = true,
@@ -1368,6 +1369,11 @@ aObj.SetupOptions = function(self)
 					name = self.L["Auto Complete Frame"],
 					desc = self.L["Toggle the skin of the "] .. self.L["Auto Complete Frame"],
 				},
+				AzeriteItemToasts = {
+					type = "toggle",
+					name = self.L["Azerite Item Toasts"],
+					desc = self.L["Toggle the skin of the "] .. self.L["Azerite Item Toasts"],
+				},
 				BattlefieldMap = {
 					type = "toggle",
 					name = self.L["Battlefield Map Frame"],
@@ -1558,17 +1564,16 @@ aObj.SetupOptions = function(self)
 					name = self.L["Destiny Frame"],
 					desc = self.L["Toggle the skin of the "] .. self.L["Destiny Frame"],
 				},
-				EventToastManager = aObj.isRetPTR and {
+				EventToastManager ={
 					type = "toggle",
 					width = "double",
 					name = self.L["Event Toast Manager Frame"],
 					desc = self.L["Toggle the skin of the "] .. self.L["Event Toast Manager Frame"],
-				} or nil,
-				EventTrace = not aObj.isRet and {
+				},
 				EventTrace = not aObj.isClscERA and {
 					type = "toggle",
-					name = self.L["Event Trace Frame"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Event Trace Frame"],
+					name = self.L["Event Trace"],
+					desc = self.L["Toggle the skin of the "] .. self.L["Event Trace"],
 				} or nil,
 				GarrisonUI = {
 					type = "toggle",
@@ -1628,11 +1633,11 @@ aObj.SetupOptions = function(self)
 					name = self.L["Item Text Frame"],
 					desc = self.L["Toggle the skin of the "] .. self.L["Item Text Frame"],
 				},
-				LevelUpDisplay = not aObj.isRetPTR and {
+				LevelUpDisplay = {
 					type = "toggle",
 					name = self.L["Level Up Display"],
 					desc = self.L["Toggle the skin of the "] .. self.L["Level Up Display"],
-				} or nil,
+				},
 				LossOfControl = {
 					type = "toggle",
 					name = self.L["Loss Of Control Frame"],
@@ -1800,7 +1805,7 @@ aObj.SetupOptions = function(self)
 					name = self.L["Product Choice Frame"],
 					desc = self.L["Toggle the skin of the "] .. self.L["Product Choice Frame"],
 				},
-				PlayerChoiceUI = {
+				PlayerChoice = {
 					type = "toggle",
 					name = self.L["Player Choice UI"],
 					desc = self.L["Toggle the skin of the "] .. self.L["Player Choice UI"],
@@ -1883,11 +1888,11 @@ aObj.SetupOptions = function(self)
 					name = self.L["TalkingHead UI"],
 					desc = self.L["Toggle the skin of the "] .. self.L["TalkingHead UI"],
 				},
-				TextToSpeechFrame = aObj.isRetPTR and {
+				TextToSpeechFrame = {
 					type = "toggle",
 					name = self.L["Text To Speech Frame"],
 					desc = self.L["Toggle the skin of the "] .. self.L["Text To Speech Frame"],
-				} or nil,
+				},
 				TimeManager = {
 					type = "toggle",
 					name = self.L["Time Manager Frame"],

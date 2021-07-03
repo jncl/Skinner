@@ -64,6 +64,7 @@ x			- BossBannerToast
 ≈			- Blizzard_SoulbindsConduitList
 ?			- Blizzard_SoulbindsNode
 ?			- Blizzard_SoulbindsViewer
+¶			- AzeriteItemToasts
 √			- ChatConfigFrame
 x			- ChatFrame
 x			- InterfaceOptionsPanels
