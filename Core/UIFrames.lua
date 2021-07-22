@@ -1725,11 +1725,11 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 			skinCB("ChatConfigOtherSettingsCreatureCheckBox" .. i)
 		end
 		self:skinObject("frame", {obj=_G.ChatConfigOtherSettingsCreature, fType=ftype, kfs=true, fb=true})
-		-- Voice
-		for i = 1, #_G.CHAT_CONFIG_VOICE do
-			skinCB("ChatConfigVoiceSettingsVoiceCheckBox" .. i)
-		end
-		self:skinObject("frame", {obj=_G.ChatConfigVoiceSettingsVoice, fType=ftype, kfs=true, fb=true})
+		-- -- Voice
+		-- for i = 1, #_G.CHAT_CONFIG_VOICE do
+		-- 	skinCB("ChatConfigVoiceSettingsVoiceCheckBox" .. i)
+		-- end
+		-- self:skinObject("frame", {obj=_G.ChatConfigVoiceSettingsVoice, fType=ftype, kfs=true, fb=true})
 		--	Combat Settings
 		-- Filters
 		_G.ChatConfigCombatSettingsFiltersScrollFrameScrollBarBorder:Hide()

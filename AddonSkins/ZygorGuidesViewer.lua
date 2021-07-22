@@ -2,7 +2,7 @@ local aName, aObj = ...
 if not aObj:isAddonEnabled("ZygorGuidesViewer") then return end
 local _G = _G
 
-aObj.addonsToSkin.ZygorGuidesViewer = function(self) -- v 6.1.18339
+aObj.addonsToSkin.ZygorGuidesViewer = function(self) -- v 8.0
 
 	local ZGV = _G.ZygorGuidesViewer
 
@@ -30,11 +30,11 @@ aObj.addonsToSkin.ZygorGuidesViewer = function(self) -- v 6.1.18339
 		return object
 	end, true)
 
-	-- Notification_Center
-	self:SecureHook(ZGV.NotificationCenter, "CreateNotificationFrame", function(this)
-		self:addSkinFrame{obj=_G.Zygor_Notification_Center, ft="a", kfs=true, nb=true, ofs=4}
-		self:Unhook(this, "CreateNotificationFrame")
-	end)
+	-- -- Notification_Center
+	-- self:SecureHook(ZGV.NotificationCenter, "CreateNotificationFrame", function(this)
+	-- 	self:addSkinFrame{obj=_G.Zygor_Notification_Center, ft="a", kfs=true, nb=true, ofs=4}
+	-- 	self:Unhook(this, "CreateNotificationFrame")
+	-- end)
 
 	-- Viewer frame
 	-- _G.ZygorGuidesViewerFrame:SetBackdrop(nil)

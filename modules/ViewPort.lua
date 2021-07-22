@@ -113,6 +113,9 @@ function module:OnEnable()
 	aObj:RegisterEvent("CINEMATIC_STOP", function(event, ...)
 		module:adjustViewPort("shown")
 	end)
+	aObj:SecureHook("GameMovieFinished", function()
+		module:adjustViewPort("shown")
+	end)
 
 end
 

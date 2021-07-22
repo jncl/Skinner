@@ -23,35 +23,58 @@ ToDos
 
 ≈	O	Refactor NewSkinFuncs in Blizzard/AddOn skins
 
-	I/B	FishingBuddy, reported by amey0, 27.06.21
-√		- Skinner\AddonSkins\FishingBuddy-0.7.5.1.lua:65: Usage: SecureHookScript(object, method, [handler]): You can only hook a script on a frame object
+	N	ZygorGuidesViewer, reported by merthalde, 04.07.21
+		- ...face\AddOns\Skinner\AddonSkins\ZygorGuidesViewer-8.0.lua:34: Usage: SecureHook([object], method, [handler]): Attempting to hook a non existing target
 
-	I	TrainerUI, reported by DarkLimpan, 28.06.21
-√		- Skinner\Core\NPCFrames.lua:1371: bad argument #1 to 'pairs' (table expected, got nil)
+	I	Ace3, reported byEpidemeDaBear,04.07.21
+≈		- Skinner\Modules\UIButtons.lua:296: attempt to index field 'obj' (a nil value)
+		[string "@Skinner\AddonSkins\Ace3-Release-r1252.lua"]:171: in function `skinAceGUI'
+		[string "@Skinner\AddonSkins\Ace3-Release-r1252.lua"]:563: in function <Skinner\AddonSkins\Ace3.lua:19>
+
+	I	TalentUI, requested by mAwArm, 04.07.21
+		- Is there any way to skin frames but still retain their default background? I don't want this for all frames but I'd like it for the talent frame for example
+
+	I	TipTac, reported by Smekolini, 06.07.21
+		- Item tooltip not being skinned.
+
+	I	DBM, reported by 아련별, 08.07.21
+		- Skinner\Core\UtilFuncs.lua:993: attempt to call method 'GetRegions' (a nil value)
+		[string "@Skinner\Core\UtilFuncs.lua"]:993: in function `removeRegions'
+		[string "@Skinner\Core\NewSkinFuncs.lua"]:433: in function <Skinner\Core\NewSkinFuncs.lua:419>
+		[string "@Skinner\Core\NewSkinFuncs.lua"]:535: in function `?'
+		[string "@Skinner\Core\NewSkinFuncs.lua"]:171: in function `skinObject'
+		[string "@Skinner\AddonSkins\DBM-2.5.8.20210629150342.lua"]:10: in function <Skinner\AddonSkins\DBM.lua:8>
+
+	I/B	WoWPro, reported by amey0, 10.07.21
+		- Skinner\AddonSkins\WoWPro-2.5.1-B0.lua:71: attempt to call method 'SetBackdrop' (a nil value)
+		[string "@Skinner\AddonSkins\WoWPro-2.5.1-B0.lua"]:71: in function <Skinner\AddonSkins\WoWPro.lua:63>
+
+	I	DressingRoom, requested by krainz, 10.07.21
+≈		- retain texture behind character
+
+	I	QuestFrame ,reported by krainz, 10.07.21
+		- DON'T colour quest text if questframe not skinned
+
+	I	Clique, reported by Fakelessgaming,11.07.21
+		- now has a NineSlice texture
+
+	I	Collections, reported by merthalde, 11.07.21
+		- ...\Accountant_Classic\Libs\AceHook-3.0\AceHook-3.0-9.lua:180: Attempting to rehook already active hook OnShow.
+		[string "@Interface\AddOns\Accountant_Classic\Libs\AceHook-3.0\AceHook-3.0-9.lua"]:180: in function <...\Accountant_Classic\Libs\AceHook-3.0\AceHook-3.0.lua:118>
+		[string "@Interface\AddOns\Accountant_Classic\Libs\AceHook-3.0\AceHook-3.0-9.lua"]:411: in function `SecureHookScript'
+		[string "@Interface\AddOns\Skinner\Core\PlayerFrames.lua"]:1077: in function <Interface\AddOns\Skinner\Core\PlayerFrames.lua:821>
+
+	I	Viewport, reported by Darkenedlife, 11.07.21
+≈		- after cut scene the viewport is completely gone.
+
+?	S	Blizzard_ArdenwealdGardening
+
+	I	AchievementUI, reported by merthalde, 13.07.21
+≈		- Interface\AddOns\Skinner\Core\PlayerFrames.lua:51: bad argument #1 to 'pairs' (table expected, got nil)
 		[string "=[C]"]: in function `pairs'
-		[string "@Skinner\Core\NPCFrames.lua"]:1371: in function <Skinner\Core\NPCFrames.lua:1361>
-?		- Skinner\Core\NPCFrames.lua:1366: bad argument #1 to 'pairs' (table expected, got nil)
-		[string "=[C]"]: in function `pairs'
-		[string "@Skinner\Core\NPCFrames.lua"]:1366: in function <Skinner\Core\NPCFrames.lua:1356>
+		[string "@Interface\AddOns\Skinner\Core\PlayerFrames.lua"]:51: in function <Interface\AddOns\Skinner\Core\PlayerFrames.lua:50>
+		[string "@Interface\AddOns\Skinner\Core\PlayerFrames.lua"]:287: in function <Interface\AddOns\Skinner\Core\PlayerFrames.lua:286>
 
-	I	LevelUpDisplay, reported by Moxieface, 30.06.21
-P		- Skinner\Core\UIFrames.lua:3719: Usage: SecureHookScript(object, method, [handler]): You can only hook a script on a frame object
-
-	I/B	Altoholic, reported by 아련별, 30.06.21
-√		- Skinner\AddonSkins\Altoholic-r191.lua:390: Usage: SecureHook([object], method, [handler]): Attempting to hook a non existing target
-		
-	I	DebugTools, reported by Fakelessgaming, 30.06.21
-P		- Skinner\Core\UIFrames.lua:2288: Usage: SecureHookScript(object, method, [handler]): You can only hook a script on a frame object
-		
-	I	ChallengesFrame
-P		- Skinner\Core\UIFrames.lua:1327: attempt to compare number with nil
-		[string "@Skinner\Core\UIFrames.lua"]:1327: in function <Skinner\Core\UIFrames.lua:1325>
-		
-	I	DBM, reported by MacallanTwoFive, 02.07.21
-√		- Skinner\AddonSkins\DBM-9.1.2 alpha.20210630000000.lua:44: attempt to index field 'Bars' (a nil value)
-
-	I	TableAttributeDisplay, reported by Galthariel, 02.07.21
-?		- Skinner\Core\UIFrames.lua:2288: Usage: SecureHookScript(object, method, [handler]): You can only hook a script on a frame object
-	
-	I	BetterWardrobe, reported by Galthariel, 02.07.21
-√			- Skinner\AddonSkins\BetterWardrobe-V3.0.lua:25: Usage: SecureHookScript(object, method, [handler]): You can only hook a script on a frame object
+	I/B	ChatConfig, reported by 아련별, 15.07.21
+≈		- Skinner\Core\UIFrames.lua:1729: attempt to get length of field 'CHAT_CONFIG_VOICE' (a nil value)
+		[string "@Skinner\Core\UIFrames.lua"]:1729: in function <Skinner\Core\UIFrames.lua:1605>

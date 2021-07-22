@@ -48,7 +48,7 @@ aObj.blizzLoDFrames[ftype].AchievementUI = function(self)
 			end
 		end
 		local function skinComparisonStats()
-			for _, btn in _G.pairs(_G.AchievementFrameComparisonStatsContainer.button) do
+			for _, btn in _G.pairs(_G.AchievementFrameComparisonStatsContainer.buttons) do
 				if btn.isHeader then
 					btn.background:SetAlpha(0)
 				end
@@ -2019,7 +2019,7 @@ aObj.blizzFrames[ftype].DressUpFrame = function(self)
 	end
 
 	self:SecureHookScript(_G.SideDressUpFrame, "OnShow", function(this)
-		self:removeRegions(this, {1, 2, 3, 4})
+		-- self:removeRegions(this, {1, 2, 3, 4})
 		self:removeRegions(_G.SideDressUpFrameCloseButton, {5}) -- corner texture
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, x1=-2, y1=-3, x2=-2}
 		if self.modBtns then
@@ -2034,6 +2034,7 @@ aObj.blizzFrames[ftype].DressUpFrame = function(self)
 		self:skinObject("dropdown", {obj=this.OutfitDropDown, fType=ftype, y2=-4})
 		this.MaxMinButtonFrame:DisableDrawLayer("BACKGROUND") -- button texture
 		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, y2=-4})
+		this.ModelBackground:SetAlpha(1) -- show model background
 		if self.modBtns then
 			self:skinStdButton{obj=this.OutfitDropDown.SaveButton}
 			self:skinOtherButton{obj=this.MaxMinButtonFrame.MaximizeButton, font=self.fontS, text=self.nearrow}

@@ -1,5 +1,5 @@
 -- This is a Framework
-local aName, aObj = ...
+local _, aObj = ...
 local _G = _G
 
 aObj.ItemPimper = true -- to stop IP skinning its frame
@@ -126,12 +126,18 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 					aObj:skinStdButton{obj=aObj:getChild(obj.frame, 1), y1=1}
 				end
 
+			elseif objType == "Keybinding" then
+				aObj:skinObject("frame", {obj=obj.msgframe})
+				if aObj.modBtns then
+					aObj:skinStdButton{obj=obj.button, as=true}
+				end
+
 			elseif objType == "MultiLineEditBox" then
 				aObj:skinObject("slider", {obj=obj.scrollBar})
 				aObj:removeBackdrop(obj.scrollBG)
 				if aObj.modBtns then
 					aObj:skinStdButton{obj=obj.button, ofs=0, y1=-2, y2=-2}
-					
+
 					aObj:secureHook(obj.button, "Disable", function(this, _)
 						aObj:clrBtnBdr(this)
 					end)
@@ -167,14 +173,10 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 			elseif objType == "Window" then
 				obj.titletext:SetPoint("TOP", obj.frame, "TOP", 0, -6)
 				aObj:skinObject("frame", {obj=obj.frame, kfs=true, ofs=-1, y1=-2})
-				if aObj.modBtns then
+				if aObj.modBtns
+				and obj.closebutton
+				then
 					aObj:skinCloseButton{obj=obj.closebutton}
-				end
-
-			elseif objType == "Keybinding" then
-				aObj:skinObject("frame", {obj=obj.msgframe})
-				if aObj.modBtns then
-					aObj:skinStdButton{obj=obj.button, as=true}
 				end
 
 			-- handle HybridScrollFrame child (created by HonorSpy [Classic])
@@ -478,10 +480,10 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 			or objType == "Dropdown-Item-Menu"
 			or objType == "Dropdown-Item-Separator"
 			or objType == "Dropdown-Item-Toggle"
-			or objType == "Label"
 			or objType == "Heading"
 			or objType == "Icon"
 			or objType == "InteractiveLabel"
+			or objType == "Label"
 			-- Snowflake objects
 			or objType == "SnowflakeButton"
 			or objType == "SnowflakeEscape"
