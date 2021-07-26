@@ -5898,6 +5898,12 @@ aObj.blizzFrames[ftype].StaticPopups = function(self)
 				self:skinStdButton{obj=this.button3}
 				self:skinStdButton{obj=this.button4}
 				self:skinStdButton{obj=this.extraButton}
+				self:SecureHook(this.button1, "Disable", function(this, _)
+					self:clrBtnBdr(this)
+				end)
+				self:SecureHook(this.button1, "Enable", function(this, _)
+					self:clrBtnBdr(this)
+				end)
 				self:SecureHook(this.button1, "SetEnabled", function(this, _)
 					self:clrBtnBdr(this)
 				end)
