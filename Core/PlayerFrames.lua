@@ -1169,7 +1169,7 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 	end)
 
 	self:SecureHookScript(_G.WardrobeFrame, "OnShow", function(this)
-		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true, cb=true, x2=3})
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true, cb=true, x2=3, y2=-1})
 
 		self:Unhook(this, "OnShow")
 	end)
@@ -1199,6 +1199,9 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 		if self.modBtnBs then
 			self:addButtonBorder{obj=this.ModelScene.ClearAllPendingButton, ofs=1, x2=0, relTo=this.ModelScene.ClearAllPendingButton.Icon}
 			self:addButtonBorder{obj=this.SpecButton, ofs=0}
+		end
+		if self.modChkBtns then
+			self:skinCheckButton{obj=this.ToggleSecondaryAppearanceCheckbox}
 		end
 
 		self:Unhook(this, "OnShow")
