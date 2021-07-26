@@ -124,6 +124,7 @@ aObj.skinTPLs = {
 		selectedTab = 1,
 		suffix      = "",
 		regions     = {7, 8},
+		-- ng			= nil,
 		ignoreSize  = true,
 		lod         = false,
 		upwards     = false,
