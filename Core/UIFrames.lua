@@ -6163,27 +6163,25 @@ aObj.blizzFrames[ftype].TextToSpeechFrame = function(self)
 	self.initialized.TextToSpeechFrame = true
 
 	self:SecureHookScript(_G.TextToSpeechFrame, "OnShow", function(this)
-		self:removeNineSlice(this.Border)
-		self:skinObject("frame", {obj=_G.TextToSpeechFramePanelContainer, fType=ftype, kfs=true, fb=true})
-		self:skinObject("frame", {obj=_G.TextToSpeechFramePanelContainerChatTypeContainer, fType=ftype, kfs=true, fb=true})
 		self:skinObject("dropdown", {obj=_G.TextToSpeechFrameTtsVoiceDropdown, fType=ftype})
+		self:getChild(_G.TextToSpeechFrameTtsVoicePicker, 1):DisableDrawLayer("BACKGROUND")
+		self:skinObject("scrollbar", {obj=_G.TextToSpeechFrameTtsVoicePicker.ScrollBar, fType=ftype, rpTex="background"})
+		self:skinObject("dropdown", {obj=_G.TextToSpeechFrameTtsVoiceAlternateDropdown, fType=ftype})
+		self:getChild(_G.TextToSpeechFrameTtsVoiceAlternatePicker, 1):DisableDrawLayer("BACKGROUND")
+		self:skinObject("scrollbar", {obj=_G.TextToSpeechFrameTtsVoiceAlternatePicker.ScrollBar, fType=ftype, rpTex="background"})
 		self:skinObject("slider", {obj=_G.TextToSpeechFrameAdjustRateSlider, fType=ftype})
 		self:skinObject("slider", {obj=_G.TextToSpeechFrameAdjustVolumeSlider, fType=ftype})
-		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true, ofs=-2})
 		if self.modBtns then
 			self:skinStdButton{obj=_G.TextToSpeechFramePlaySampleButton, fType=ftype}
-			self:skinStdButton{obj=_G.TextToSpeechFrameOkay, fType=ftype}
-			self:skinStdButton{obj=_G.TextToSpeechFrameDefaults, fType=ftype}
+			self:skinStdButton{obj=_G.TextToSpeechFramePlaySampleAlternateButton, fType=ftype}
+			self:skinStdButton{obj=_G.TextToSpeechDefaultButton, fType=ftype}
 		end
 		if self.modChkBtns then
-			self:skinCheckButton{obj=_G.TextToSpeechFramePanelContainer.PlaySoundWhenEnteringChatWindowCheckButton, fType=ftype}
 			self:skinCheckButton{obj=_G.TextToSpeechFramePanelContainer.PlaySoundSeparatingChatLinesCheckButton, fType=ftype}
 			self:skinCheckButton{obj=_G.TextToSpeechFramePanelContainer.AddCharacterNameToSpeechCheckButton, fType=ftype}
+			self:skinCheckButton{obj=_G.TextToSpeechFramePanelContainer.NarrateMyMessagesCheckButton, fType=ftype}
 			self:skinCheckButton{obj=_G.TextToSpeechFramePanelContainer.PlayActivitySoundWhenNotFocusedCheckButton, fType=ftype}
 			self:skinCheckButton{obj=_G.TextToSpeechFramePanelContainer.UseAlternateVoiceForSystemMessagesCheckButton, fType=ftype}
-			for i = 1, #_G.TextToSpeechFramePanelContainerChatTypeContainer.checkBoxTable do
-				self:skinCheckButton{obj=_G["TextToSpeechFramePanelContainerChatTypeContainerCheckBox" .. i], fType=ftype}
-			end
 		end
 
 		self:Unhook(this, "OnShow")
