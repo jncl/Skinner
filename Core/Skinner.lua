@@ -74,15 +74,6 @@ function aObj:OnInitialize()
 		self.prdb.ClassColour = nil
 		self.prdb.ClassColours = nil
 	end
-	-- treat GossipFrame & QuestFrame as one
-	-- as they both change the quest text colours
-	if not self.prdb.GossipFrame == self.prdb.QuestFrame then
-		if not self.prdb.QuestFrame then
-			self.prdb.GossipFrame = false
-		else
-			self.prdb.QuestFrame = false
-		end
-	end
 	-- BattlefieldMm has been renamed BattlefieldMap
 	if self.prdb.BattlefieldMm then
 		self.prdb.BattlefieldMap = self.prdb.BattlefieldMm
@@ -140,6 +131,16 @@ function aObj:OnInitialize()
 		if self.prdb[option] then
 			self.prdb[option] = nil
 		end
+	end
+
+	-- treat GossipFrame, QuestFrame, QuestInfo & QuestLog/QuestMap as one
+	-- as they all change the quest text colours
+	self.prdb.GossipFrame = self.prdb.QuestFrame
+	self.prdb.QuestInfo = self.prdb.QuestFrame
+	if self.isClsc then
+		self.prdb.QuestLog = self.prdb.QuestFrame
+	else
+		self.prdb.QuestMap = self.prdb.QuestFrame
 	end
 
 	-- setup the Addon's options

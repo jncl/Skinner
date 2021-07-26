@@ -1086,7 +1086,7 @@ aObj.blizzFrames[ftype].QuestFrame = function(self)
 end
 
 aObj.blizzFrames[ftype].QuestInfo = function(self)
-	if self.initialized.QuestInfo then return end
+	if not self.prdb.QuestInfo or self.initialized.QuestInfo then return end
 	self.initialized.QuestInfo = true
 
 	local function skinRewards(frame)

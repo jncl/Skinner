@@ -74,6 +74,7 @@ aObj.SetupDefaults = function(self)
 			Petition                   = true,
 			PetStableFrame             = true,
 			QuestFrame                 = true,
+			QuestInfo                  = true,
 			RuneForgeUI                = true,
 			Tabard                     = true,
 			TaxiFrame                  = true,
@@ -810,15 +811,38 @@ aObj.SetupOptions = function(self)
 						self:checkAndRun(info[#info], "n", true)
 					end
 				else self:checkAndRun(info[#info], "n") end
-				-- treat GossipFrame, QuestFrame & QuestInfo as one
+				-- treat GossipFrame, QuestFrame, QuestInfo & QuestLog/QuestMap as one
 				-- as they all change the quest text colours
 				if info[#info] == "GossipFrame" then
 					db.QuestFrame = value
-					_G._G.InterfaceOptionsFrame_OpenToCategory(self.optionsFrame[self.L["NPC Frames"]])
-				end
-				if info[#info] == "QuestFrame" then
+					db.QuestInfo = value
+					if self.isClsc then
+						db.QuestLog = value
+					else
+						db.QuestMap = value
+					end
+					_G.InterfaceOptionsFrame_OpenToCategory(self.optionsFrame[self.L["UI Frames"]])
+					_G.InterfaceOptionsFrame_OpenToCategory(self.optionsFrame[self.L["NPC Frames"]])
+				elseif info[#info] == "QuestFrame" then
 					db.GossipFrame = value
-					_G._G.InterfaceOptionsFrame_OpenToCategory(self.optionsFrame[self.L["NPC Frames"]])
+					db.QuestInfo = value
+					if self.isClsc then
+						db.QuestLog = value
+					else
+						db.QuestMap = value
+					end
+					_G.InterfaceOptionsFrame_OpenToCategory(self.optionsFrame[self.L["UI Frames"]])
+					_G.InterfaceOptionsFrame_OpenToCategory(self.optionsFrame[self.L["NPC Frames"]])
+				elseif info[#info] == "QuestInfo" then
+					db.GossipFrame = value
+					db.QuestFrame = value
+					if self.isClsc then
+						db.QuestLog = value
+					else
+						db.QuestMap = value
+					end
+					_G.InterfaceOptionsFrame_OpenToCategory(self.optionsFrame[self.L["UI Frames"]])
+					_G.InterfaceOptionsFrame_OpenToCategory(self.optionsFrame[self.L["NPC Frames"]])
 				end
 			end,
 			args = {
@@ -934,6 +958,11 @@ aObj.SetupOptions = function(self)
 					type = "toggle",
 					name = self.L["Quest Frame"],
 					desc = self.L["Toggle the skin of the "] .. self.L["Quest Frame"],
+				},
+				QuestInfo = {
+					type = "toggle",
+					name = self.L["Quest Info Frame"],
+					desc = self.L["Toggle the skin of the "] .. self.L["Quest Info Frame"],
 				},
 				RuneForgeUI = {
 					type = "toggle",
@@ -1323,6 +1352,14 @@ aObj.SetupOptions = function(self)
 					if _G.IsAddOnLoaded("Blizzard_" .. info[#info]) then
 						self:checkAndRun(info[#info], "u", true)
 					end
+				-- treat GossipFrame, QuestFrame, QuestInfo & QuestLog/QuestMap as one
+				-- as they all change the quest text colours
+				elseif info[#info] == self.isCls and "QuestLog" or "QuestMap" then
+					db.GossipFrame = value
+					db.QuestFrame = value
+					db.QuestInfo = value
+					_G.InterfaceOptionsFrame_OpenToCategory(self.optionsFrame[self.L["NPC Frames"]])
+					_G.InterfaceOptionsFrame_OpenToCategory(self.optionsFrame[self.L["UI Frames"]])
 				else self:checkAndRun(info[#info], "u") end
 			end,
 			args = {
