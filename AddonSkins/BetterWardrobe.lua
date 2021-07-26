@@ -2,7 +2,7 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("BetterWardrobe") then return end
 local _G = _G
 
-aObj.addonsToSkin.BetterWardrobe = function(self) -- v 3.0
+aObj.addonsToSkin.BetterWardrobe = function(self) -- v 3.6.3
 
 	local ddName, ddObj
 	self:SecureHook("BW_UIDropDownMenu_CreateFrames", function(level, index)
@@ -33,18 +33,38 @@ aObj.addonsToSkin.BetterWardrobe = function(self) -- v 3.0
 	end
 	
 	local x1Ofs, y1Ofs, x2Ofs, y2Ofs = -4, 2, 7, -4
-	self:SecureHookScript(_G.BetterWardrobeCollectionFrame, "OnShow", function(this)
-		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true, upwards=true, offsets={x1=2, y1=-4, x2=-2, y2=self.isTT and -4 or 0}})
+	self.RegisterCallback("BetterWardrobe", "WardrobeCollectionFrame_OnShow", function(this)
+		-- WardrobeTransmogFrame
+		self:skinObject("dropdown", {obj=_G.BetterWardrobeOutfitDropDown, y2=-3})
+		if self.modBtns then
+			self:skinStdButton{obj=_G.BetterWardrobeOutfitDropDown.SaveButton}
+			self:SecureHook(_G.BetterWardrobeOutfitDropDown.SaveButton, "SetEnabled", function(this)
+				self:clrBtnBdr(this)
+			end)
+		end
+		if self.modBtnBs then
+			self:addButtonBorder{obj=_G.BW_LoadQueueButton, ofs=0, x1=-1, clr="gold"}
+			self:addButtonBorder{obj=_G.BW_RandomizeButton, ofs=0, x1=-1, clr="gold"}
+			self:addButtonBorder{obj=_G.BW_SlotHideButton, ofs=0, x1=-1, clr="gold"}
+		end
+		if self.modChkBtns then
+			self:skinCheckButton{obj=_G.WardrobeTransmogFrame.ToggleSecondaryAppearanceCheckbox}
+		end
+		
+		this = _G.BetterWardrobeCollectionFrame
+		self:skinObject("tabs", {obj=this, tabs=this.Tabs, fType=ftype, lod=self.isTT and true, upwards=true, offsets={x1=2, y1=-4, x2=-2, y2=self.isTT and -4 or 0}})
 		self:skinObject("editbox", {obj=this.searchBox, fType=ftype, si=true})
 		self:skinStatusBar{obj=this.progressBar, fi=0}
 		self:removeRegions(this.progressBar, {2, 3})
 		self:skinObject("dropdown", {obj=_G.BW_SortDropDown})
 		self:skinObject("dropdown", {obj=_G.BW_CollectionList_Dropdown, x2=109})
+		self:skinObject("dropdown", {obj=_G.BW_DBSavedSetDropdown})
 		if self.modBtns then
 			self:skinStdButton{obj=this.FilterButton}
 			self:SecureHook(this.FilterButton, "SetEnabled", function(this, _)
 				self:clrBtnBdr(this)
 			end)
+			self:skinStdButton{obj=this.TransmogOptionsButton}
 		end
 		if self.modBtnBs then
 			self:addButtonBorder{obj=this.BW_SetsHideSlotButton, ofs=-2, x1=1, clr="gold"}
@@ -139,6 +159,15 @@ aObj.addonsToSkin.BetterWardrobe = function(self) -- v 3.0
 			self:Unhook(this, "OnShow")
 		end)
 	
+		self.UnregisterCallback("BetterWardrobe", "WardrobeCollectionFrame_OnShow")
+	end)
+	
+	-- SavedOutfits
+	self:SecureHookScript(_G.BetterWardrobeOutfitFrame, "OnShow", function(this)
+		self:keepFontStrings(this.Border)
+		self:skinObject("slider", {obj=this.scrollbar})
+		self:skinObject("frame", {obj=this, ofs=0})
+		
 		self:Unhook(this, "OnShow")
 	end)
 
