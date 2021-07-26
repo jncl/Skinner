@@ -1,3 +1,21 @@
+beta9.39289.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Update NSF
+	Update Debug statement
+	Bugfix for TrainerUI
+	Update UIWidget skin
+	Update StaticPopup skin
+	Update AlertFrame skin
+	Update ScrollFrame button processing
+	Updated TOC for PTR
+	Removed PTR checks and updated code
+	Update UIButton skinExpandButton code
+	Identify ClassicERA version and use it for checks in code
+	Updated Altoholic, BetterWardrobe, DBM & FishingBuddy skins
+	
 beta9.39170.1
 Jncl:
 	ToDo.txt
