@@ -140,21 +140,21 @@ aObj.blizzLoDFrames[ftype].AchievementUI = function(self)
 		self:moveObject{obj=_G.AchievementFrameHeaderTitle, x=-60, y=-25}
 		self:moveObject{obj=_G.AchievementFrameHeaderPoints, x=40, y=-5}
 		_G.AchievementFrameHeaderShield:SetAlpha(1)
-
+		self:skinObject("slider", {obj=_G.AchievementFrameCategoriesContainerScrollBar, fType=ftype, rpTex="background"})
 		self:skinObject("frame", {obj=_G.AchievementFrameCategories, fType=ftype, kfs=true, fb=true, y1=0})
 		-- hook these to stop Categories skinFrame from changing
 		self:SecureHook(_G.AchievementFrameCategoriesContainerScrollBar, "Show", function(this)
-			_G.AchievementFrameCategories.sf:SetPoint("BOTTOMRIGHT", _G.AchievementFrameCategories, "BOTTOMRIGHT", 22, -2)
+			_G.AchievementFrameCategories.sf:SetPoint("BOTTOMRIGHT", _G.AchievementFrameCategories, "BOTTOMRIGHT", 24, -2)
 		end)
 		self:SecureHook(_G.AchievementFrameCategoriesContainerScrollBar, "Hide", function(this)
-			_G.AchievementFrameCategories.sf:SetPoint("BOTTOMRIGHT", _G.AchievementFrameCategories, "BOTTOMRIGHT", 0, -2)
+			_G.AchievementFrameCategories.sf:SetPoint("BOTTOMRIGHT", _G.AchievementFrameCategories, "BOTTOMRIGHT", 2, -2)
 		end)
 		self:SecureHook("AchievementFrameCategories_Update", function()
 			skinCategories()
 		end)
 		skinCategories()
 		self:getChild(_G.AchievementFrameAchievements, 2):ClearBackdrop()
-		self:skinObject("frame", {obj=_G.AchievementFrameAchievements, fType=ftype, kfs=true, fb=true, y2=-2})
+		self:skinObject("frame", {obj=_G.AchievementFrameAchievements, fType=ftype, kfs=true, fb=true, y1=0, y2=-2})
 		self:skinObject("slider", {obj=_G.AchievementFrameAchievementsContainerScrollBar, fType=ftype})
 		if self.prdb.AchievementUI.style == 2 then
 			-- remove textures etc from buttons
