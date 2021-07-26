@@ -698,7 +698,7 @@ local function __addButtonBorder(opts)
 	 or opts.secu
 	 then
 	 	-- handle AddOn skins using deprecated options
-	 	aObj:CustomPrint(1, 0, 0, "Using deprecated options - seca,secu, use sec instead", opts.obj)
+	 	aObj:CustomPrint(1, 0, 0, "Using deprecated options - seca,secu, use sabt or subt instead", opts.obj)
 	end
 	--@end-alpha@
 	if not opts.obj then return end
