@@ -2019,12 +2019,11 @@ aObj.blizzFrames[ftype].DressUpFrame = function(self)
 	end
 
 	self:SecureHookScript(_G.SideDressUpFrame, "OnShow", function(this)
-		-- self:removeRegions(this, {1, 2, 3, 4})
 		self:removeRegions(_G.SideDressUpFrameCloseButton, {5}) -- corner texture
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, x1=-2, y1=-3, x2=-2}
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=-3, y1=-3, x2=-2})
+		_G.LowerFrameLevel(this) -- make it appear behind parent frame
 		if self.modBtns then
 			self:skinStdButton{obj=_G.SideDressUpFrame.ResetButton}
-			self:skinCloseButton{obj=_G.SideDressUpFrameCloseButton}
 		end
 
 		self:Unhook(this, "OnShow")
