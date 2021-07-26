@@ -1466,71 +1466,44 @@ aObj.ClassicSupport = function(self)
 		if not self.prdb.TalentUI or self.initialized.TalentUI then return end
 		self.initialized.TalentUI = true
 
+		local function skinTalentFrame(fName)
+			aObj:SecureHookScript(_G[fName], "OnShow", function(this)
+				aObj:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true})
+				aObj:skinObject("slider", {obj=_G[fName .. 'ScrollFrameScrollBar'], fType=ftype, rpTex="artwork"})
+				-- keep background Texture
+				aObj:removeRegions(this, {1, 2, 3, 4, 5, 11, 12, 13}) -- remove portrait, border & points border
+				aObj:skinObject("frame", {obj=this, fType=ftype, cb=true, x1=10, y1=-12, x2=-31, y2=75})
+				if aObj.modBtns then
+					aObj:skinStdButton{obj=_G[fName .. "CancelButton"], fType=ftype}
+				end
+				if aObj.modBtnBs then
+					local function colourBtn(btn)
+						btn.sbb:SetBackdropBorderColor(_G[btn:GetName() .. "Slot"]:GetVertexColor())
+					end
+					local btn
+					for i = 1, _G.MAX_NUM_TALENTS do
+						btn = _G[fName .. "Talent" .. i]
+						btn:DisableDrawLayer("BACKGROUND")
+						_G[fName .. "Talent" .. i .. "RankBorder"]:SetTexture(nil)
+						aObj:addButtonBorder{obj=btn, x1=-3, y2=-3, reParent={_G[fName .. "Talent" .. i .. "Rank"]}}
+						colourBtn(btn)
+					end
+					btn = nil
+					aObj:SecureHook(fName .. "_Update", function()
+						for i = 1, _G.MAX_NUM_TALENTS do
+							colourBtn(_G[fName .. "Talent" .. i])
+						end
+					end)
+				end
+
+				aObj:Unhook(this, "OnShow")
+			end)
+		end
 		if not self.isClscBC then
-			self:SecureHookScript(_G.TalentFrame, "OnShow", function(this)
-				self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true})
-				self:skinObject("slider", {obj=_G.TalentFrameScrollFrameScrollBar, fType=ftype, rpTex="artwork"})
-				-- keep background Texture
-				self:removeRegions(this, {1, 2, 3, 4, 5, 11, 12, 13}) -- remove portrait, border & points border
-				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=10, y1=-12, x2=-31, y2=75})
-				if self.modBtns then
-					self:skinStdButton{obj=_G.TalentFrameCancelButton, fType=ftype}
-				end
-				if self.modBtnBs then
-					local function colourBtn(btn)
-						btn.sbb:SetBackdropBorderColor(_G[btn:GetName() .. "Slot"]:GetVertexColor())
-					end
-					local btn
-					for i = 1, _G.MAX_NUM_TALENTS do
-						btn = _G["TalentFrameTalent" .. i]
-						btn:DisableDrawLayer("BACKGROUND")
-						_G["TalentFrameTalent" .. i .. "RankBorder"]:SetTexture(nil)
-						self:addButtonBorder{obj=btn, x1=-3, y2=-3, reParent={_G["TalentFrameTalent" .. i .. "Rank"]}}
-						colourBtn(btn)
-					end
-					btn = nil
-					self:SecureHook("TalentFrame_Update", function()
-						for i = 1, _G.MAX_NUM_TALENTS do
-							colourBtn(_G["TalentFrameTalent" .. i])
-						end
-					end)
-				end
-
-				self:Unhook(this, "OnShow")
-			end)
+			skinTalentFrame("TalentFrame")
 		else
-			self:SecureHookScript(_G.PlayerTalentFrame, "OnShow", function(this)
-				self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true})
-				self:skinObject("slider", {obj=_G.PlayerTalentFrameScrollFrameScrollBar, fType=ftype, rpTex="artwork"})
-				-- keep background Texture
-				self:removeRegions(this, {1, 2, 3, 4, 5, 11, 12, 13}) -- remove portrait, border & points border
-				self:moveObject{obj=_G.PlayerTalentFrameTitleText, y=-2}
-				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=10, y1=-12, x2=-31, y2=74})
-				if self.modBtns then
-					self:skinStdButton{obj=_G.PlayerTalentFrameCancelButton, fType=ftype}
-				end
-				if self.modBtnBs then
-					local function colourBtn(btn)
-						btn.sbb:SetBackdropBorderColor(_G[btn:GetName() .. "Slot"]:GetVertexColor())
-					end
-					local btn
-					for i = 1, _G.MAX_NUM_TALENTS do
-						btn = _G["PlayerTalentFrameTalent" .. i]
-						btn:DisableDrawLayer("BACKGROUND")
-						_G["PlayerTalentFrameTalent" .. i .. "RankBorder"]:SetTexture(nil)
-						self:addButtonBorder{obj=btn, x1=-3, y2=-3, reParent={_G["PlayerTalentFrameTalent" .. i .. "Rank"]}}
-						colourBtn(btn)
-					end
-					btn = nil
-					self:SecureHook("PlayerTalentFrame_Update", function()
-						for i = 1, _G.MAX_NUM_TALENTS do
-							colourBtn(_G["PlayerTalentFrameTalent" .. i])
-						end
-					end)
-				end
-
-				self:Unhook(this, "OnShow")
-			end)
+			skinTalentFrame("PlayerTalentFrame")
+			self:moveObject{obj=_G.PlayerTalentFrameTitleText, y=-2}
 		end
 
 	end
