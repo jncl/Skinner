@@ -119,6 +119,7 @@ function aObj:OnInitialize()
 	if self.prdb.LootFrames.extra then
 		self.prdb.LootFrames.extra = nil
 	end
+	-- ChatBubbles options changed
 	if _G.type(self.prdb.ChatBubbles) ~= "table"
 	and self.prdb.ChatBubbles ~= nil
 	then
