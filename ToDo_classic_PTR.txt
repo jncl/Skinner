@@ -5,3 +5,8 @@ ToDo_classic_PTR
 	≈ is Alt+x		- indicates partially completed or dry-coded
 	x				- indicates nothing to change
 	¶ is Alt+7		- indicates localisation changes required
+
+	Classic_PTR
+		- Added
+		- Updated
+		- Deleted
