@@ -137,7 +137,6 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 				aObj:removeBackdrop(obj.scrollBG)
 				if aObj.modBtns then
 					aObj:skinStdButton{obj=obj.button, ofs=0, y1=-2, y2=-2}
-
 					aObj:secureHook(obj.button, "Disable", function(this, _)
 						aObj:clrBtnBdr(this)
 					end)

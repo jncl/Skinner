@@ -2,7 +2,7 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("DBM-Core") then return end
 local _G = _G
 
-aObj.addonsToSkin["DBM-Core"] = function(self) -- v 9.0.30/2.5.7
+aObj.addonsToSkin["DBM-Core"] = function(self) -- v 9.0.30/2.5.8
 
 	-- hook this to skin the InfoFrame frame (actually a tooltip)
 	self:SecureHook(_G.DBM.InfoFrame, "Show", function(this, _, event, ...)
@@ -58,7 +58,7 @@ aObj.addonsToSkin["DBM-Core"] = function(self) -- v 9.0.30/2.5.7
 
 end
 
-aObj.lodAddons["DBM-GUI"] = function(self) -- v 9.0.30/2.5.7
+aObj.lodAddons["DBM-GUI"] = function(self) -- v 9.0.30/2.5.8
 
 	self:SecureHook(_G.DBM_GUI_OptionsFrame, "UpdateMenuFrame", function(this)
 		for _, btn in _G.pairs(_G.DBM_GUI_OptionsFrameList.buttons) do
@@ -114,66 +114,63 @@ aObj.lodAddons["DBM-GUI"] = function(self) -- v 9.0.30/2.5.7
 
 	-- skin dropdown menu
 	local cW, cH
-	local function skinSubPanels(panel)
-		for _, subPanel in _G.pairs(panel.areas) do
-			if not subPanel.sknd then
-				aObj:skinObject("skin", {obj=subPanel.frame, bd=10, ng=true})
-				subPanel.sknd = true
-				-- skin suitable children
-				for _, child in _G.ipairs{subPanel.frame:GetChildren()} do
-					if aObj:isDropDown(child) then
-						aObj:skinObject("dropdown", {obj=child, x2=34})
-	                elseif child:IsObjectType("CheckButton")
+	local function skinSubPanels(frame)
+		for _, child in _G.ipairs{frame:GetChildren()} do
+			if child.mytype == "area"
+			and	not child.sknd
+			then
+				child.sknd = true
+ 				aObj:skinObject("skin", {obj=child, bd=10, ng=true}) -- frame border
+				for _, gChild in _G.ipairs{child:GetChildren()} do
+					if aObj:isDropDown(gChild) then
+						aObj:skinObject("dropdown", {obj=gChild, x2=34})
+	                elseif gChild:IsObjectType("CheckButton")
 					and aObj.modChkBtns
 					then -- NewSpecialWarning object
-						aObj:skinCheckButton{obj=child}
-	                    for _, child2 in _G.ipairs{child:GetChildren()} do
-	                        if aObj:isDropDown(child2) then
-								aObj:skinObject("dropdown", {obj=child2, x1=16, x2=34, y2=-1})
+						aObj:skinCheckButton{obj=gChild}
+	                    for _, ggChild in _G.ipairs{gChild:GetChildren()} do
+	                        if aObj:isDropDown(ggChild) then
+								aObj:skinObject("dropdown", {obj=ggChild, x1=16, x2=34, y2=-1})
 	                        end
 	                    end
-					elseif child:IsObjectType("Button")
+					elseif gChild:IsObjectType("Button")
 					and aObj.modBtns
 					then
-						cW, cH = _G.Round(child:GetWidth()), _G.Round(child:GetHeight())
+						cW, cH = _G.Round(gChild:GetWidth()), _G.Round(gChild:GetHeight())
 						-- aObj:Debug("skinSubPanels Button: [%s, %s]", cW, cH)
 						-- handle expand button (Spell/Skill Cooldowns)
 						if cW == 15
 						and cH == 15
 						then
-							child:SetSize(8, 8)
-							aObj:skinExpandButton{obj=child}
-							aObj:checkTex(child)
+							gChild:SetSize(8, 8)
+							aObj:skinExpandButton{obj=gChild}
+							aObj:checkTex(gChild)
 						else
 							-- increase high of short, narrow buttons
 							if cH <= 16 then
-								child:SetHeight(20)
+								gChild:SetHeight(20)
 							end
 							if cW == 25 then -- handle Note buttons
-								child:SetWidth(28)
+								gChild:SetWidth(28)
 							end
-							aObj:skinStdButton{obj=child, ofs=0, x1=4, x2=-4}
+							aObj:skinStdButton{obj=gChild, ofs=0, x1=4, x2=-4}
 						end
-	                elseif child:IsObjectType("EditBox") then
-						aObj:skinObject("editbox", {obj=child})
-					elseif child:IsObjectType("Slider") then
-						aObj:removeBackdrop(child)
-						aObj:skinObject("slider", {obj=child})
+	                elseif gChild:IsObjectType("EditBox") then
+						aObj:skinObject("editbox", {obj=gChild})
+					elseif gChild:IsObjectType("Slider") then
+						aObj:removeBackdrop(gChild)
+						aObj:skinObject("slider", {obj=gChild})
 					end
 				end
 			end
 		end
 	end
 	
-	-- register here to skin option panels
-	_G.DBM:RegisterOnGuiLoadCallback(function()
-		for _, panel in _G.ipairs(_G.DBM_GUI.panels) do
-			if panel.areas then
-				skinSubPanels(panel)
-			end
-		end
+	-- hook this to skin AddOn sub panels
+	self:SecureHook(_G.DBM_GUI_OptionsFrame, "DisplayFrame", function(this, frame)
+		skinSubPanels(frame)
 	end)
-	
+
 	-- hook this to skin BossMod sub panels button in TRHC
 	self:SecureHook(_G.DBM_GUI, "CreateBossModPanel", function(this, mod)
 		if self.modBtns then

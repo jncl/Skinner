@@ -2,14 +2,14 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("WoWPro") then return end
 local _G = _G
 
-aObj.addonsToSkin.WoWPro = function(self) -- v 9.0.1-A1/1.13.5.C1
+aObj.addonsToSkin.WoWPro = function(self) -- v 9.0.5-A1/2.5.1.-B1/1.13.7.B1
 
 	self:SecureHookScript(_G.WoWPro.MainFrame, "OnShow", function(this)
 		_G.WoWPro.BackgroundSet = _G.nop
 		_G.WoWPro.Titlebar:SetBackdrop(nil)
-		self:addSkinFrame{obj=this, ft="a", kfs=true, nb=true, y2=-2}
+		self:skinObject("frame", {obj=this, kfs=true, y2=-2})
 
-		self:skinSlider{obj=_G.WoWPro.Scrollbar}
+		self:skinObject("slider", {obj=_G.WoWPro.Scrollbar})
 		self:getChild(_G.WoWPro.Scrollbar, 3):SetBackdrop(nil)
 
 		for _, row in _G.ipairs(_G.WoWPro.rows) do
@@ -19,13 +19,13 @@ aObj.addonsToSkin.WoWPro = function(self) -- v 9.0.1-A1/1.13.5.C1
 				self:add2Table(self.ttList, row.action.tooltip)
 			end)
 			if self.modBtnBs then
-				self:addButtonBorder{obj=row.itembutton, seca=true, ofs=3, clr="grey"}
-				self:addButtonBorder{obj=row.targetbutton, seca=true, ofs=3, clr="grey"}
+				self:addButtonBorder{obj=row.itembutton, sabt=true, ofs=3, clr="grey"}
+				self:addButtonBorder{obj=row.targetbutton, sabt=true, ofs=3, clr="grey"}
 				self:addButtonBorder{obj=row.lootsbutton, ofs=3, clr="grey"}
 			end
 		end
 		for _, row in _G.ipairs(_G.WoWPro.mousenotes) do
-			self:addSkinFrame{obj=row, ft="a", kfs=true, nb=true, ofs=0}
+			self:skinObject("frame", {obj=row, kfs=true, fb=true})
 		end
 
 		self:Unhook(this, "OnShow")
@@ -33,7 +33,7 @@ aObj.addonsToSkin.WoWPro = function(self) -- v 9.0.1-A1/1.13.5.C1
 	self:checkShown(_G.WoWPro.MainFrame)
 
 	self:SecureHookScript(_G.WoWPro_SkipSteps, "OnShow", function(this)
-		self:addSkinFrame{obj=this, ft="a", kfs=true, nb=true}
+		self:skinObject("frame", {obj=this, kfs=true})
 		if self.modBtns then
 			self:skinStdButton{obj=_G.WoWPro_SkipOkay}
 			self:skinStdButton{obj=_G.WoWPro_SkipCancel}
@@ -42,7 +42,7 @@ aObj.addonsToSkin.WoWPro = function(self) -- v 9.0.1-A1/1.13.5.C1
 		self:Unhook(this, "OnShow")
 	end)
 	self:SecureHookScript(_G.WoWPro_GuideCompleted, "OnShow", function(this)
-		self:addSkinFrame{obj=this, ft="a", kfs=true, nb=true}
+		self:skinObject("frame", {obj=this, kfs=true})
 		if self.modBtns then
 			self:skinStdButton{obj=_G.WoWPro_LoadNextGuide}
 			self:skinStdButton{obj=_G.WoWPro_OpenLevelingGuidelist}
@@ -52,68 +52,56 @@ aObj.addonsToSkin.WoWPro = function(self) -- v 9.0.1-A1/1.13.5.C1
 		self:Unhook(this, "OnShow")
 	end)
 	self:SecureHook(_G.WoWPro, "CreateErrorLog", function(this, title)
-		self:skinSlider{obj=_G.WoWProErrorLog.Scroll.ScrollBar}
-		self:addSkinFrame{obj=_G.WoWProErrorLog, ft="a", kfs=true, nb=true}
+		self:skinObject("slider", {obj=_G.WoWProErrorLog.Scroll.ScrollBar})
+		self:skinObject("frame", {obj=_G.WoWProErrorLog, kfs=true})
 
 		self:Unhook(this, "CreateErrorLog")
 	end)
 
 	-- Options panels
-	local cnt = 0
+	local pCnt = 0
 	self.RegisterCallback("WoWPro", "IOFPanel_Before_Skinning", function(this, panel)
 		if panel.parent ~= "WoW-Pro" then return end
-
 		if panel.name == "Guide List"
 		and not self.iofSkinnedPanels[panel]
 		then
-			-- TODO: tab(s)
-			for _, child in _G.pairs{panel.scrollBox.titleRow:GetChildren()} do
-				child:SetBackdrop(nil)
-			end
-			self:addSkinFrame{obj=panel.scrollBox.titleRow, ft="a", nb=true, y1=2}
-			self:skinSlider{obj=panel.scrollBox.scrollBar}
-			self:addSkinFrame{obj=panel.scrollBox, ft="a", nb=true}
-			cnt = cnt + 1
-		end
-
-		if panel.name == "Current Guide"
-		and not self.iofSkinnedPanels[panel]
-		then
-			_G.C_Timer.After(0.1, function()
-				-- skin box
-				local cgframe = self:getChild(panel, 1)
-				self:addSkinFrame{obj=cgframe, ft="a", kfs=true, nb=true}
-				-- skin scrollbar
-				local slider = self:getChild(cgframe, 1)
-				self:skinSlider{obj=slider}
-				self:getChild(slider, 3):SetBackdrop(nil)
-				slider = nil
-				-- skin lines
-				if self.modChkBtns then
-					local cBtn
-					for i = 1, cgframe:GetNumChildren() do
-						cBtn = self:getChild(cgframe, i).check
-						if cBtn then
-							cBtn:SetSize(20, 20)
-							self:skinCheckButton{obj=cBtn}
+			self.iofSkinnedPanels[panel] = true
+			pCnt = pCnt + 1
+			self:skinObject("frame", {obj  = panel.scrollBox.titleRow, fb=true, y1=2})
+			self:skinObject("slider", {obj = panel.scrollBox.scrollBar})
+			self:skinObject("frame", {obj  = panel.scrollBox, fb=true})
+			self:skinObject("tabs", {obj=panel.scrollBox, tabs=panel.scrollBox.Tabs, offsets={x1=6, y1=-4, x2=-6, y2=-2}})
+		elseif panel.name == "Current Guide" then
+			if panel:GetNumChildren() > 0
+			and pCnt < 2
+			then
+				self.iofSkinnedPanels[panel] = true
+				pCnt = pCnt + 1
+				_G.C_Timer.After(0.1, function()
+					local cgframe = self:getChild(panel, 1)
+					self:skinObject("frame", {obj=cgframe, fb=true})
+					local slider = self:getChild(cgframe, 1)
+					self:skinObject("slider", {obj=slider})
+					self:getChild(slider, 3):SetBackdrop(nil)
+					slider = nil
+					-- skin lines
+					if self.modChkBtns then
+						for _, child in _G.ipairs{cgframe:GetChildren()} do
+							if child.check then
+								child.check:SetSize(20, 20)
+								self:skinCheckButton{obj=child.check}
+							end
 						end
 					end
-					cBtn = nil
-				end
-				cgframe = nil
-			end)
-			-- tooltip
-			_G.C_Timer.After(0.1, function()
+					cgframe = nil
+				end)
 				self:add2Table(self.ttList, panel.tooltip)
-			end)
-			cnt = cnt + 1
+			end
 		end
-
-		self.iofSkinnedPanels[panel] = true
-
-		if cnt == 2 then
+		
+		if pCnt == 2 then
 			self.UnregisterCallback("WoWPro", "IOFPanel_Before_Skinning")
-			cnd = nil
+			pCnt = nil
 		end
 	end)
 

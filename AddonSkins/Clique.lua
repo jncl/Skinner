@@ -2,7 +2,7 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("Clique") then return end
 local _G = _G
 
-aObj.addonsToSkin.Clique = function(self) -- v 90002-1.0.0
+aObj.addonsToSkin.Clique = function(self) -- v 3.1.1
 	if not self.db.profile.SpellBookFrame then return end
 
 	-- Tab on SpellBook (side)
@@ -10,41 +10,47 @@ aObj.addonsToSkin.Clique = function(self) -- v 90002-1.0.0
 	if self.modBtnBs then
 		self:addButtonBorder{obj=_G.CliqueSpellTab}
 	end
+	
+	self:SecureHookScript(_G.CliqueDialog, "OnShow", function(this)
+		self:skinObject("frame", {obj=this, kfs=true, cb=true, x2=1})
+		if self.modBtns then
+			self:skinStdButton{obj=this.button_binding}
+			self:skinStdButton{obj=this.button_accept}
+		end
+		
+		self:Unhook(this, "OnShow")
+	end)
 
-	self:skinObject("frame", {obj=_G.CliqueDialog, kfs=true, cb=true, ofs=2, x2=1	})
-	if self.modBtns then
-		self:skinStdButton{obj=_G.CliqueDialog.button_binding}
-		self:skinStdButton{obj=_G.CliqueDialog.button_accept}
-	end
-
-	self:skinObject("dropdown", {obj=_G.CliqueConfig.dropdown})
-	self:skinColHeads("CliqueConfigPage1Column", 2)
-	self:skinObject("slider", {obj=_G.CliqueConfig.page1.slider})
-	self:removeMagicBtnTex(_G.CliqueConfig.page1.button_spell)
-	self:removeMagicBtnTex(_G.CliqueConfig.page1.button_other)
-	self:removeMagicBtnTex(_G.CliqueConfig.page1.button_options)
-	if self.modBtns then
-		self:skinStdButton{obj=_G.CliqueConfig.page1.button_spell}
-		self:skinStdButton{obj=_G.CliqueConfig.page1.button_other}
-		self:skinStdButton{obj=_G.CliqueConfig.page1.button_options}
-	end
-	self:skinObject("slider", {obj=_G.CliqueConfig.page2.clickGrabber.scrollFrame.ScrollBar})
-	self:removeMagicBtnTex(_G.CliqueConfig.page2.button_save)
-	self:removeMagicBtnTex(_G.CliqueConfig.page2.button_cancel)
-	self:skinObject("frame", {obj=_G.CliqueConfig.page2.clickGrabber, fb=true})
-	if self.modBtns then
-		self:skinStdButton{obj=_G.CliqueConfig.page2.button_binding}
-		self:skinStdButton{obj=_G.CliqueConfig.page2.button_save}
-		self:skinStdButton{obj=_G.CliqueConfig.page2.button_cancel}
-		self:SecureHook(_G.CliqueConfig.page2.button_save, "Disable", function(this, _)
-			self:clrBtnBdr(this)
-		end)
-		self:SecureHook(_G.CliqueConfig.page2.button_save, "Enable", function(this, _)
-			self:clrBtnBdr(this)
-		end)
-	end
-	self:skinObject("glowbox", {obj=_G.CliqueConfig.bindAlert})
-	self:skinObject("frame", {obj=_G.CliqueConfig, kfs=true, cb=true, ofs=2, x1=-5, x2=2.5})
+	self:SecureHookScript(_G.CliqueConfig, "OnShow", function(this)
+		self:skinObject("dropdown", {obj=this.dropdown})
+		self:skinColHeads("CliqueConfigPage1Column", 2)
+		self:skinObject("slider", {obj=this.page1.slider})
+		self:removeMagicBtnTex(this.page1.button_spell)
+		self:removeMagicBtnTex(this.page1.button_other)
+		self:removeMagicBtnTex(this.page1.button_options)
+		self:skinObject("slider", {obj=this.page2.clickGrabber.scrollFrame.ScrollBar})
+		self:removeMagicBtnTex(this.page2.button_save)
+		self:removeMagicBtnTex(this.page2.button_cancel)
+		self:skinObject("frame", {obj=this.page2.clickGrabber, fb=true})
+		self:skinObject("glowbox", {obj=this.bindAlert})
+		self:skinObject("frame", {obj=this, kfs=true, ri=true, rns=true, cb=true, x1=-5, x2=3})
+		if self.modBtns then
+			self:skinStdButton{obj=this.page1.button_spell}
+			self:skinStdButton{obj=this.page1.button_other}
+			self:skinStdButton{obj=this.page1.button_options}
+			self:skinStdButton{obj=this.page2.button_binding}
+			self:skinStdButton{obj=this.page2.button_save}
+			self:skinStdButton{obj=this.page2.button_cancel}
+			self:SecureHook(this.page2.button_save, "Disable", function(this, _)
+				self:clrBtnBdr(this)
+			end)
+			self:SecureHook(this.page2.button_save, "Enable", function(this, _)
+				self:clrBtnBdr(this)
+			end)
+		end
+		
+		self:Unhook(this, "OnShow")
+	end)
 
 	self:skinObject("glowbox", {obj=_G.CliqueTabAlert})
 
@@ -54,7 +60,6 @@ aObj.addonsToSkin.Clique = function(self) -- v 90002-1.0.0
 	end
 	local pCnt = 0
 	self.RegisterCallback("Clique", "IOFPanel_Before_Skinning", function(this, panel)
-		aObj:Debug("IOFPanel_Before_Skinning: [%s, %s, %s]", panel, panel.name, panel.parent)
 		if panel.name ~= "Clique"
 		and panel.parent ~= "Clique"
 		then
@@ -103,6 +108,7 @@ aObj.addonsToSkin.Clique = function(self) -- v 90002-1.0.0
 
 		if pCnt == 4 then
 			self.UnregisterCallback("Clique", "IOFPanel_Before_Skinning")
+			pCnt = nil
 		end
 	end)
 

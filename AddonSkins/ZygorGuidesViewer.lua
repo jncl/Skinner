@@ -11,74 +11,94 @@ aObj.addonsToSkin.ZygorGuidesViewer = function(self) -- v 8.0
 		-- aObj:Debug("ZGV.UI Create: [%s, %s, %s, %s, %s]", this, uiType, parent, name, ...)
 		local obj = self.hooks[this].Create(this, uiType, parent, name, ...)
 		if uiType == "Frame" then
-			self:addSkinFrame{obj=obj, ft="a", kfs=true, nb=true, ofs=4}
-		elseif (uiType == "Button" and obj:GetParent().acceptbutton) then -- this is a popup
-			self:skinStdButton{obj=obj}
-			self:skinStdButton{obj=obj:GetParent().acceptbutton}
+			self:removeBackdrop(obj, true)
+			self:skinObject("frame", {obj=obj, kfs=true})
 		end
 		return obj
 	end, true)
-	self:RawHook(ZGV, "ChainCall", function(obj)
-		-- aObj:Debug("ZGV ChainCall: [%s, %s]", obj, obj:GetObjectType())
-		local object = self.hooks[ZGV].ChainCall(obj)
-		if obj:GetObjectType() == "Frame"
-		and (obj:GetName() and not obj:GetName():find("PointerOverlay"))
-		then
-			self:addSkinFrame{obj=obj, ft="a", kfs=true, nb=true, ofs=4}
-			obj.SetBackdrop = _G.nop
+
+	self:skinObject("frame", {obj=_G.ZygorGuidesViewerFrame, kfs=true, ofs=4})
+
+	self:SecureHookScript(_G.ZygorGuidesViewerMaintenanceFrame, "OnShow", function(this)
+		self:skinObject("frame", {obj=this, kfs=true, ofs=4, x2=7})
+		if self.modBtns then
+			self:skinCloseButton{obj=_G.ZygorGuidesViewerMaintenanceFrame_CloseButton}
+			self:skinStdButton{obj=_G.ZygorGuidesViewerMaintenanceFrame_Bug}
 		end
-		return object
-	end, true)
-
-	-- -- Notification_Center
-	-- self:SecureHook(ZGV.NotificationCenter, "CreateNotificationFrame", function(this)
-	-- 	self:addSkinFrame{obj=_G.Zygor_Notification_Center, ft="a", kfs=true, nb=true, ofs=4}
-	-- 	self:Unhook(this, "CreateNotificationFrame")
-	-- end)
-
-	-- Viewer frame
-	-- _G.ZygorGuidesViewerFrame:SetBackdrop(nil)
-	-- _G.ZygorGuidesViewerFrame_Border:SetBackdrop(nil)
-	self:addSkinFrame{obj=_G.ZygorGuidesViewerFrame, ft="a", kfs=true, nb=true, ofs=4}
-
-	-- Gear Finder
-	_G.CharacterFrame:HookScript("OnShow", function() -- N.B. CharacterFrame OnShow script already hooked elsewhere
-		if _G.ZygorGearFinderFrame
-		and not _G["PaperDollSidebarTab" .. 4]
-		then
-			_G["PaperDollSidebarTab" .. 4] = _G.ZGVCharacterGearFinderButton -- set here so .sbb is shown
-			local tab = _G["PaperDollSidebarTab" .. 4]
-			-- use a button border to indicate the active tab
-			self.modUIBtns:addButtonBorder{obj=tab, relTo=tab.Icon, x1=-6, y1=9, x2=7, y2=-4} -- use module function here to force creation
-			self:keepFontStrings(_G.ZygorGearFinderFrame)
-			self:skinSlider{obj=_G.ZygorGearFinderFrameScrollBar}
-			for i = 1, #_G.ZygorGearFinderFrame.Items do
-				local btn = _G.ZygorGearFinderFrame.Items[i]
-				btn.BgTop:SetTexture(nil)
-				btn.BgBottom:SetTexture(nil)
-				btn.BgMiddle:SetTexture(nil)
-			end
-			_G.PAPERDOLL_SIDEBARS[4].IsActive = function() return true end
-			tab = nil
+		if self.modChkBtns then
+			self:skinCheckButton{obj=_G.ZygorGuidesViewerMaintenanceFrame_But01}
+			self:skinCheckButton{obj=_G.ZygorGuidesViewerMaintenanceFrame_But02}
+			self:skinCheckButton{obj=_G.ZygorGuidesViewerMaintenanceFrame_But03}
+			self:skinCheckButton{obj=_G.ZygorGuidesViewerMaintenanceFrame_But04}
+			self:skinCheckButton{obj=_G.ZygorGuidesViewerMaintenanceFrame_But05}
+			self:skinCheckButton{obj=_G.ZygorGuidesViewerMaintenanceFrame_But06}
+			self:skinCheckButton{obj=_G.ZygorGuidesViewerMaintenanceFrame_But07}
+			self:skinCheckButton{obj=_G.ZygorGuidesViewerMaintenanceFrame_But08}
+			self:skinCheckButton{obj=_G.ZygorGuidesViewerMaintenanceFrame_But09}
+			self:skinCheckButton{obj=_G.ZygorGuidesViewerMaintenanceFrame_But10}
+			self:skinCheckButton{obj=_G.ZygorGuidesViewerMaintenanceFrame_But11}
+			self:skinCheckButton{obj=_G.ZygorGuidesViewerMaintenanceFrame_But12}
 		end
+		
+		self:Unhook(this, "OnShow")
 	end)
+	self:checkShown(_G.ZygorGuidesViewerMaintenanceFrame)
 
-	-- Maintenance Frame
-	self:addSkinFrame{obj=_G.ZygorGuidesViewerMaintenanceFrame, ft="a", kfs=true, nb=true}
+	if ZGV.ItemScore.GearFinder then
+		self:SecureHook(ZGV.ItemScore.GearFinder, "CreateSystemTab", function(this)
+			self:skinObject("tabs", {obj=this, tabs={this.BlizzardTab}, lod=self.isTT and true, offsets={x1=8, y1=self.isTT and 2 or -3, x2=-8, y2=2}, track=false})
+			self:setInactiveTab(this.BlizzardTab.sf)
+			_G.CharacterFrame.numTabs = 4
+			
+			self:Unhook(ZGV.ItemScore.GearFinder, "CreateSystemTab")
+		end)
+		self:SecureHook(ZGV.ItemScore.GearFinder, "CreateMainFrame", function(this)
+			self:removeBackdrop(this.MainFrame.CenterColumn)
+			self:skinObject("frame", {obj=this.MainFrame, kfs=true, cbns=true})
+			if self.modBtnBs then
+				for _, btn in _G.pairs(this.MainFrame.Buttons) do
+					self:addButtonBorder{obj=btn.tooltiphandler}
+				end
+			end
+			
+			self:Unhook(ZGV.ItemScore.GearFinder, "CreateMainFrame")
+		end)
+	end
 
-	-- DropDownForkLists
-	-- _G.DropDownForkList1MenuBackdrop:SetBackdrop(nil)
-	self:addSkinFrame{obj=_G.DropDownForkList1, ft="a", kfs=true, nb=true}
-	-- _G.DropDownForkList2MenuBackdrop:SetBackdrop(nil)
-	self:addSkinFrame{obj=_G.DropDownForkList2, ft="a", kfs=true, nb=true}
+	self:removeBackdrop(_G.DropDownForkList1MenuBackdrop, true)
+	self:skinObject("frame", {obj=_G.DropDownForkList1, kfs=true})
+	self:removeBackdrop(_G.DropDownForkList2MenuBackdrop, true)
+	self:skinObject("frame", {obj=_G.DropDownForkList2, kfs=true})
 
-	-- minimap button
 	_G.ZygorGuidesViewerMapIcon:SetSize(32, 32)
 	self.mmButs["ZygorGuidesViewer"] = _G.ZygorGuidesViewerMapIcon
+	
+	-- skin frame buttons here as required
+	if self.modBtns then
+		self:SecureHook(ZGV.BugReport.StepFeedback, "CreateFrame", function(this)
+			self:skinStdButton{obj=this.Frame.buttonsubmit}
+			
+			self:Unhook(ZGV.BugReport.StepFeedback, "CreateFrame")
+		end)
+	end
+	
+	-- remove dropdown skin
+	self:SecureHook(ZGV.GuideMenu, "CreateFrames", function(this)
+		local dd = this.MainFrame.FullColumnFeatured.Dropdown.dropdown
+		dd.sf:Hide()
+		dd.ddTex:Hide()
+		dd.Button.sbb:Hide()
+		dd.sf = nil
+		dd.ddTex = nil
+		dd.Button.sbb = nil
+		dd = nil
+		
+		self:Unhook(ZGV.GuideMenu, "CreateFrames")
+	end)
 
 end
 
-aObj.otherAddons.Ace3Z = function(self)
+aObj.otherAddons.Ace3Z = function(self) -- v 34
 	if self.initialized.Ace3Z then return end
 	self.initialized.Ace3Z = true
 
@@ -91,34 +111,58 @@ aObj.otherAddons.Ace3Z = function(self)
 		if obj
 		and not obj.sknd
 		then
-			if objType == "Dropdown-Z" then
-				aObj:skinDropDown{obj=obj.dropdown, rp=true, y2=0}
-				aObj:applySkin{obj=obj.pullout.frame}
-			elseif objType == "Dropdown-Pullout-Z" then
-				aObj:applySkin{obj=obj.frame}
-			elseif objType == "EditBox-Z" then
-				aObj:skinEditBox{obj=obj.editbox, regs={9}, noHeight=true}
-				if not aObj:IsHooked(obj.editbox, "SetTextInsets") then
-					aObj:RawHook(obj.editbox, "SetTextInsets", function(this, left, right, top, bottom)
-						return left + 6, right, top, bottom
-					end, true)
+			if objType == "Button-Z" then
+				if aObj.modBtns then
+					aObj:removeBackdrop(obj.frame)
+					aObj:skinStdButton{obj=obj.frame}
+					aObj:secureHook(obj.frame, "Disable", function(this, _)
+						aObj:clrBtnBdr(this)
+					end)
+					aObj:secureHook(obj.frame, "Enable", function(this, _)
+						aObj:clrBtnBdr(this)
+					end)
 				end
-				aObj:skinButton{obj=obj.button, as=true}
+			elseif objType == "Dropdown-Z" then
+				aObj:skinAceDropdown(obj, nil, 1)
+			elseif objType == "Dropdown-Pullout-Z" then
+				-- aObj:applySkin{obj=obj.frame}
+				aObj:skinObject("slider", {obj=obj.slider})
+				-- ensure skinframe is behind thumb texture
+				obj.slider.sf.SetFrameLevel = _G.nop
+			elseif objType == "EditBox-Z" then
+				aObj:skinObject("editbox", {obj=obj.editbox, ofs=0, x1=-2})
+				-- hook this as insets are changed
+				aObj:rawHook(obj.editbox, "SetTextInsets", function(this, left, ...)
+					return left + 6, ...
+				end, true)
+				if aObj.modBtns then
+					aObj:removeBackdrop(obj.button)
+					aObj:skinStdButton{obj=obj.button}--, as=true}
+				end
 			elseif objType == "MultiLineEditBox-Z" then
-				aObj:skinStdButton{obj=obj.button, as=true}
-				aObj:skinSlider{obj=obj.scrollFrame.ScrollBar, adj=-4, size=3}
-				aObj:applySkin{obj=aObj:getChild(obj.frame, 2)} -- backdrop frame
-			elseif objType == "Button-Z" then
-				aObj:skinStdButton{obj=obj.frame, as=true} -- just skin it otherwise text is hidden
+				aObj:skinObject("slider", {obj=obj.scrollBar})
+				aObj:removeBackdrop(obj.scrollBG, true)
+				aObj:skinObject("frame", {obj=obj.scrollBG})
+				if aObj.modBtns then
+					aObj:removeBackdrop(obj.button)
+					aObj:skinStdButton{obj=obj.button, ofs=0, y1=-2, y2=-2}
+					aObj:secureHook(obj.button, "Disable", function(this, _)
+						aObj:clrBtnBdr(this)
+					end)
+					aObj:secureHook(obj.button, "Enable", function(this, _)
+						aObj:clrBtnBdr(this)
+					end)
+				end
+			elseif objType == "ScrollFrame-Z" then
+				aObj:skinObject("slider", {obj=obj.scrollbar})
 			elseif objType == "SliderLabeled-Z" then
-				aObj:skinSlider{obj=obj.slider}
-			elseif objType == "CheckBox-Z" then
-				aObj:addButtonBorder{obj=obj.frame, ofs=-2, y2=3, relTo=obj.checkbg, reParent={obj.check}}
-				obj.checkbg:SetTexture(nil)
+				aObj:removeBackdrop(obj.slider)
+				aObj:skinObject("slider", {obj=obj.slider})
 			-- ignore these types for now
-			elseif objType == "Dropdown-Item-Toggle-Z"
+			elseif objType == "CheckBox-Z"
+			or objType == "Dropdown-Item-Execute-Z"
+			or objType == "Dropdown-Item-Toggle-Z"
 			or objType == "Label-Z"
-			or objType == "ScrollFrame-Z"
 			or objType == "SimpleGroup-Z"
 			then
 				-- aObj:Debug("Ignoring: [%s]", objType)
