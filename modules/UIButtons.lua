@@ -835,9 +835,12 @@ local function __skinCheckButton(opts)
 		return
 	end
 
-	-- check to see if a 'real' CheckButton
-	if not aObj:hasTextInTexture(opts.obj:GetNormalTexture(), "CheckBox") then return end
+	-- check to see if it's a 'real' CheckButton
+	if not aObj:hasTextInTexture(opts.obj:GetNormalTexture(), "CheckBox")
 	and not aObj:hasTextInTexture(opts.obj:GetNormalTexture(), aObj.cbUP)
+	then
+		return
+	end
 
 	opts.obj:GetNormalTexture():SetTexture(nil)
 	opts.obj:GetPushedTexture():SetTexture(nil)
