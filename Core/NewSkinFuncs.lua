@@ -47,9 +47,9 @@ aObj.skinTPLs = {
 		six         = 3, -- search icon x offset
 		ofs         = 2,
 		-- x1          = 0,
-		-- y1          = 0,
+		-- y1          = -4,
 		-- x2          = 0,
-		-- y2          = 0,
+		-- y2          = 4,
 		chginset	= true,
 	},
 	frame = {
