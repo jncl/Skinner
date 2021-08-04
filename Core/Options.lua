@@ -49,7 +49,7 @@ aObj.SetupDefaults = function(self)
 			IgnoredText                = _G.CreateColor(0.5, 0.5, 0, 1),
 			GradientMin                = _G.CreateColor(0.1, 0.1, 0.1, 0),
 			GradientMax                = _G.CreateColor(0.25, 0.25, 0.25, 1),
-			BagginsBBC                 = _G.IsAddOnLoaded("Baggins") and _G.CreateColor(0.5, 0.5, 0.5, 1),
+			BagginsBBC                 = _G.CreateColor(0.5, 0.5, 0.5, 1),
 		-- Gradient
 			Gradient                   = {enable = true, invert = false, rotate = false, char = true, ui = true, npc = true, skinner = true, addon = true, texture = "Blizzard ChatFrame Background"},
 		-- Modules (populated below)
@@ -702,14 +702,15 @@ aObj.SetupOptions = function(self)
 					desc = self.L["Set "] .. self.L["Gradient Maximum Colour"],
 					hasAlpha = true,
 				},
-				BagginsBBC = _G.IsAddOnLoaded("Baggins") and {
+				BagginsBBC = {
 					type = "color",
 					order = -1,
 					width = "double",
 					name = self.L["Baggins Bank Bags Colour"],
 					desc = self.L["Set "] .. self.L["Baggins Bank Bags Colour"],
 					hasAlpha = true,
-				} or nil,
+					hidden = function() return _G.IsAddOnLoaded("Baggins") and true or false end,
+				},
 			},
 		},
 
