@@ -96,9 +96,11 @@
 <Script file="HealBot.lua"/>
 <Script file="Healium.lua"/>
 <Script file="honorspy.lua"/>
+<Script file="Immersion.lua"/>
 <Script file="InstanceBoostTracker.lua"/>
 <Script file="InvenRaidFrames3.lua"/>
 <Script file="Inventorian.lua"/>
+<Script file="Journalator.lua"/>
 <Script file="KongConfig.lua"/>
 <Script file="Leatrix_Plus.lua"/>
 <Script file="LibAboutPanel.lua"/>
