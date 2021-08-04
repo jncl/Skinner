@@ -3390,11 +3390,14 @@ function checkChild(child, ftype)
 		aObj:skinObject("dropdown", {obj=child, fType=ftype, x2=aObj.iofDD[cName]})
 	elseif child:IsObjectType("Slider") then
 		aObj:skinObject("slider", {obj=child, fType=ftype})
-	elseif child:IsObjectType("CheckButton") then
+	elseif child:IsObjectType("CheckButton")
+	and aObj.modChkBtns
+	then
 		aObj:skinCheckButton{obj=child, fType=ftype, hf=true} -- handle hide/show
 	elseif child:IsObjectType("EditBox") then
 		aObj:skinObject("editbox", {obj=child, fType=ftype})
 	elseif child:IsObjectType("Button")
+	and aObj.modBtns
 	and not aObj.iofBtn[child]
 	then
 		aObj:skinStdButton{obj=child, fType=ftype}
