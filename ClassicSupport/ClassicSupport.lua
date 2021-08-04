@@ -1806,7 +1806,7 @@ aObj.ClassicSupport = function(self)
 				self:addButtonBorder{obj=_G.CharacterBag1Slot, ibt=true, ofs=3}
 				self:addButtonBorder{obj=_G.CharacterBag2Slot, ibt=true, ofs=3}
 				self:addButtonBorder{obj=_G.CharacterBag3Slot, ibt=true, ofs=3}
-				self:addButtonBorder{obj=_G.KeyRingButton, ofs=2.5, clr="grey"} -- size is 18, 39
+				self:addButtonBorder{obj=_G.KeyRingButton, ofs=2, clr="grey"} -- size is 18, 39
 
 				-- MultiBar Buttons
 				for _, type in _G.pairs{"BottomLeft", "BottomRight", "Right", "Left"} do
