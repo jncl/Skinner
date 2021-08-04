@@ -16,13 +16,13 @@ local buildInfo = {
 	-- In Development
 	-- retail_beta  = {"10.0.0", 99999},
 	classic_beta = {"2.5.1", 39170},
-	classic_ptr  = {"2.5.1", 39399},
-	retail_ptr   = {"9.1.0", 39497},
+	classic_ptr  = {"2.5.2", 39658},
+	retail_ptr   = {"9.1.0", 39653},
 	-- Live - Classic
-	classic_bc   = {"2.5.1", 39475},
-	classic_era  = {"1.13.7", 38704},
+	classic_bc   = {"2.5.1", 39603},
+	classic_era  = {"1.13.7", 39605},
 	-- Live
-	retail       = {"9.1.0", 39497},
+	retail       = {"9.1.0", 39653},
 	--
 	curr         = {_G.GetBuildInfo()},
 }
