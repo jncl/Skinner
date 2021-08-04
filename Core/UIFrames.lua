@@ -4417,7 +4417,6 @@ aObj.blizzFrames[ftype].Minimap = function(self)
 	-- Minimap
 	_G.Minimap:SetMaskTexture([[Interface\Buttons\WHITE8X8]]) -- N.B. use name NOT FileDataID, otherwise it appears as a green overlay
 	-- use a backdrop with no Texture otherwise the map tiles are obscured
-	-- self:addSkinFrame{obj=_G.Minimap, ft=ftype, aso={bd=8}, ofs=5}
 	self:skinObject("frame", {obj=_G.Minimap, fType=ftype, bd=8, ofs=5})
 	if self.prdb.Minimap.gloss then
 		_G.RaiseFrameLevel(_G.Minimap.sf)
