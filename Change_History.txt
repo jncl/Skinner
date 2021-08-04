@@ -1,3 +1,22 @@
+beta9.39497.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Added comment
+	Updated Options
+	Updated NSF
+	Updated Ace3, Clique, DBM, WoWPro & ZygorGuidesViewer skins
+	Updated BetterWardrobe skin & Collections skin
+	Update WardrobeFrame skin
+	Updated SideDressUpFrame skin
+	Updated AchievementUI skin
+	Updated ClassicSupport TalentFrame skin
+	Updated Options and associated checks for QuestInfo/QuestLog/QuestMap & GossipFrame text colours
+	Updated ChatConfig skin
+	Updated StaticPopups skin
+	Updated UIButtons skin
+	
 beta9.39289.1
 Jncl:
 	ToDo.txt
