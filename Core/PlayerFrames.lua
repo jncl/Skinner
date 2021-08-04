@@ -2619,31 +2619,33 @@ aObj.blizzLoDFrames[ftype].GuildControlUI = function(self)
 	self:SecureHookScript(_G.GuildControlUI, "OnShow", function(this)
 		this:DisableDrawLayer("BACKGROUND")
 		_G.GuildControlUIHbar:SetAlpha(0)
-		self:skinDropDown{obj=this.dropdown}
+		self:skinObject("dropdown", {obj=this.dropdown, fType=ftype})
 		_G.UIDropDownMenu_SetButtonWidth(this.dropdown, 24)
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, x1=10, y1=-10, x2=-10, y2=3}
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, ofs=-10, y2=3})
 		self:moveObject{obj=this, x=-25, y=12}
 
 		-- Guild Ranks
-		self:skinStdButton{obj=this.orderFrame.newButton}
-		self:moveObject{obj=this.orderFrame.newButton, y=-7}
-		self:skinStdButton{obj=this.orderFrame.dupButton}
-		self:moveObject{obj=this.orderFrame.dupButton, y=-7}
+		if self.modBtns then
+			self:skinStdButton{obj=this.orderFrame.newButton}
+			self:moveObject{obj=this.orderFrame.newButton, y=-7}
+			self:skinStdButton{obj=this.orderFrame.dupButton}
+			self:moveObject{obj=this.orderFrame.dupButton, y=-7}
+		end
 
 		local function skinROFrames()
-
 			for i = 1, _G.MAX_GUILDRANKS do
 				if _G["GuildControlUIRankOrderFrameRank" .. i]
 				and not _G["GuildControlUIRankOrderFrameRank" .. i].sknd
 				then
 					_G["GuildControlUIRankOrderFrameRank" .. i].sknd = true
-					aObj:skinEditBox{obj=_G["GuildControlUIRankOrderFrameRank" .. i].nameBox, regs={6}, x=-5}
-					aObj:addButtonBorder{obj=_G["GuildControlUIRankOrderFrameRank" .. i].downButton, ofs=0}
-					aObj:addButtonBorder{obj=_G["GuildControlUIRankOrderFrameRank" .. i].upButton, ofs=0}
-					aObj:addButtonBorder{obj=_G["GuildControlUIRankOrderFrameRank" .. i].deleteButton, ofs=0}
+					aObj:skinObject("editbox", {obj=_G["GuildControlUIRankOrderFrameRank" .. i].nameBox, fType=ftype, y1=-4, y2=4})
+					if aObj.modBtnBs then
+						aObj:addButtonBorder{obj=_G["GuildControlUIRankOrderFrameRank" .. i].downButton, ofs=0}
+						aObj:addButtonBorder{obj=_G["GuildControlUIRankOrderFrameRank" .. i].upButton, ofs=0}
+						aObj:addButtonBorder{obj=_G["GuildControlUIRankOrderFrameRank" .. i].deleteButton, ofs=0}
+					end
 				end
 			end
-
 		end
 		self:SecureHook("GuildControlUI_RankOrder_Update", function(_)
 			skinROFrames()
@@ -2652,9 +2654,9 @@ aObj.blizzLoDFrames[ftype].GuildControlUI = function(self)
 
 		self:SecureHookScript(this.rankPermFrame, "OnShow", function(this)
 			this:DisableDrawLayer("BACKGROUND")
-			self:skinDropDown{obj=this.dropdown}
+			self:skinObject("dropdown", {obj=this.dropdown, fType=ftype})
 			_G.UIDropDownMenu_SetButtonWidth(this.dropdown, 24)
-			self:skinEditBox{obj=this.goldBox, regs={6}}
+			self:skinObject("editbox", {obj=this.goldBox, fType=ftype, y1=-4, y2=4})
 			if self.modChkBtns then
 				for _, child in _G.ipairs{this:GetChildren()} do
 					if child:IsObjectType("CheckButton") then
@@ -2662,15 +2664,17 @@ aObj.blizzLoDFrames[ftype].GuildControlUI = function(self)
 					end
 				end
 			end
+
 			self:Unhook(this, "OnShow")
 		end)
 
 		self:SecureHookScript(this.bankTabFrame, "OnShow", function(this)
-			self:skinSlider{obj=this.inset.scrollFrame.ScrollBar, rt="artwork"}
-			self:skinDropDown{obj=this.dropdown}
+			self:skinObject("slider", {obj=this.inset.scrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
+			self:skinObject("dropdown", {obj=this.dropdown, fType=ftype})
 			_G.UIDropDownMenu_SetButtonWidth(this.dropdown, 24)
 			this.inset:DisableDrawLayer("BACKGROUND")
 			this.inset:DisableDrawLayer("BORDER")
+
 			self:Unhook(this, "OnShow")
 		end)
 		-- hook this as buttons are created as required, done here as inside the HookScript function is too late
@@ -2681,13 +2685,16 @@ aObj.blizzLoDFrames[ftype].GuildControlUI = function(self)
 				then
 					_G["GuildControlBankTab" .. i].sknd = true
 					_G["GuildControlBankTab" .. i]:DisableDrawLayer("BACKGROUND")
-					self:skinEditBox{obj=_G["GuildControlBankTab" .. i].owned.editBox, regs={6}}
-					self:skinStdButton{obj=_G["GuildControlBankTab" .. i].buy.button, as=true}
-					self:addButtonBorder{obj=_G["GuildControlBankTab" .. i].owned, relTo=_G["GuildControlBankTab" .. i].owned.tabIcon, es=10}
+					self:skinEditBox{obj=_G["GuildControlBankTab" .. i].owned.editBox, fType=ftype, regs={6}}
+					if self.modBtns then
+						self:skinStdButton{obj=_G["GuildControlBankTab" .. i].buy.button, as=true}
+					end
+					if self.modBtnBs then
+						self:addButtonBorder{obj=_G["GuildControlBankTab" .. i].owned, relTo=_G["GuildControlBankTab" .. i].owned.tabIcon, es=10}
+					end
 					if self.modChkBtns then
 						self:skinCheckButton{obj=_G["GuildControlBankTab" .. i].owned.viewCB}
 						self:skinCheckButton{obj=_G["GuildControlBankTab" .. i].owned.depositCB}
-						self:skinCheckButton{obj=_G["GuildControlBankTab" .. i].owned.infoCB}
 					end
 				end
 			end
