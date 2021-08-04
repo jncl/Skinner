@@ -3044,49 +3044,48 @@ end
 
 -- copy of GEM_TYPE_INFO from Blizzard_ItemSocketingUI.xml
 aObj.GEM_TYPE_INFO = {
-	Yellow          = {r=0.97 , g=0.82 , b=0.29},
-	Red             = {r=1 , g=0.47 , b=0.47},
-	Blue            = {r=0.47 , g=0.67 , b=1},
-	PunchcardYellow = {r=0.97 , g=0.82 , b=0.29},
-	PunchcardRed    = {r=1 , g=0.47 , b=0.47},
-	PunchcardBlue   = {r=0.47 , g=0.67 , b=1},
-	Hydraulic       = {r=1, g=1, b=1},
-	Cogwheel        = {r=1, g=1, b=1},
-	Meta            = {r=1, g=1, b=1},
-	Prismatic       = {r=1, g=1, b=1},
+	Yellow          = {textureKit="yellow", r=0.97, g=0.82, b=0.29},
+	Red             = {textureKit="red", r=1, g=0.47, b=0.47},
+	Blue            = {textureKit="blue", r=0.47, g=0.67, b=1},
+	Hydraulic       = {textureKit="hydraulic", r=1, g=1, b=1},
+	Cogwheel        = {textureKit="cogwheel", r=1, g=1, b=1},
+	Meta            = {textureKit="meta", r=1, g=1, b=1},
+	Prismatic       = {textureKit="prismatic", r=1, g=1, b=1},
+	PunchcardRed    = {textureKit="punchcard-red", r=1, g=0.47, b=0.47},
+	PunchcardYellow = {textureKit="punchcard-yellow", r=0.97, g=0.82, b=0.29},
+	PunchcardBlue   = {textureKit="punchcard-blue", r=0.47, g=0.67, b=1},
+	Domination      = {textureKit="domination", r=1, g=1, b=1},
 }
+
 aObj.blizzLoDFrames[ftype].ItemSocketingUI = function(self)
 	if not self.prdb.ItemSocketingUI or self.initialized.ItemSocketingUI then return end
 	self.initialized.ItemSocketingUI = true
 
 	self:SecureHookScript(_G.ItemSocketingFrame, "OnShow", function(this)
-		self:skinSlider{obj=_G.ItemSocketingScrollFrame.ScrollBar, size=3, rt="artwork"}
-		self.modUIBtns:skinStdButton{obj=_G.ItemSocketingSocketButton}
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, rns=true, cb=true}
+		self:skinObject("slider", {obj=_G.ItemSocketingScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
+		self.modUIBtns:skinStdButton{obj=_G.ItemSocketingSocketButton} -- use module to create button
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, x2=3})
 
 		if self.modBtns then
-			for i = 1, _G.MAX_NUM_SOCKETS do
-				_G["ItemSocketingSocket" .. i]:DisableDrawLayer("BACKGROUND")
-				_G["ItemSocketingSocket" .. i]:DisableDrawLayer("BORDER")
-				self:addSkinButton{obj=_G["ItemSocketingSocket" .. i], ft=ftype}
+			for _, socket in _G.ipairs(this.Sockets) do
+				socket:DisableDrawLayer("BACKGROUND")
+				socket:DisableDrawLayer("BORDER")
+				self:addSkinButton{obj=socket, ft=ftype}
 			end
-
 			local function colourSockets()
-
-				local clr
-				for i = 1, _G.GetNumSockets() do
-					clr = self.GEM_TYPE_INFO[_G.GetSocketTypes(i)]
-					_G["ItemSocketingSocket" .. i].sb:SetBackdropBorderColor(clr.r, clr.g, clr.b)
+				local numSockets, clr = _G.GetNumSockets()
+				for i, socket in _G.ipairs(_G.ItemSocketingFrame.Sockets) do
+					if i <= numSockets then
+						clr = aObj.GEM_TYPE_INFO[_G.GetSocketTypes(i)]
+						socket.sb:SetBackdropBorderColor(clr.r, clr.g, clr.b)
+					end
 				end
-				clr = nil
-
+				numSockets, clr = nil, nil
 			end
 			-- hook this to colour the button border
 			self:SecureHook("ItemSocketingFrame_Update", function()
 				colourSockets()
 			end)
-
-			-- now colour the sockets
 			colourSockets()
 		end
 
