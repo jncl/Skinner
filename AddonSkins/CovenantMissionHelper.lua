@@ -29,14 +29,17 @@ aObj.addonsToSkin.CovenantMissionHelper = function(self) -- v 0.1
 		end
 		aObj:skinObject("frame", {obj=frame, kfs=true, y2=-5, clr="sepia"})
 		if aObj.modBtns then
-			aObj:skinStdButton{obj=frame.buttonsFrame.BestDispositionButton}
+			aObj:skinStdButton{obj=frame.buttonsFrame.BestDispositionByPercentButton}
+			aObj:skinStdButton{obj=frame.buttonsFrame.BestDispositionByMinPercentButton}
+			aObj:SecureHook(frame, "disableBestDispositionButton", function(this)
+				aObj:clrBtnBdr(this.buttonsFrame.BestDispositionByPercentButton)
+				aObj:clrBtnBdr(this.buttonsFrame.BestDispositionByMinPercentButton)
+			end)
+			aObj:SecureHook(frame, "enableBestDispositionButton", function(this)
+				aObj:clrBtnBdr(this.buttonsFrame.BestDispositionByPercentButton)
+				aObj:clrBtnBdr(this.buttonsFrame.BestDispositionByMinPercentButton)
+			end)
 			aObj:skinStdButton{obj=frame.buttonsFrame.predictButton}
-			aObj:SecureHook(frame.buttonsFrame.BestDispositionButton, "Disable", function(this, _)
-				aObj:clrBtnBdr(this)
-			end)
-			aObj:SecureHook(frame.buttonsFrame.BestDispositionButton, "Enable", function(this, _)
-				aObj:clrBtnBdr(this)
-			end)
 			aObj:SecureHook(frame.buttonsFrame.predictButton, "Disable", function(this, _)
 				aObj:clrBtnBdr(this)
 			end)

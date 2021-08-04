@@ -84,15 +84,18 @@ aObj.addonsToSkin.ZygorGuidesViewer = function(self) -- v 8.0
 	
 	-- remove dropdown skin
 	self:SecureHook(ZGV.GuideMenu, "CreateFrames", function(this)
-		local dd = this.MainFrame.FullColumnFeatured.Dropdown.dropdown
-		dd.sf:Hide()
-		dd.ddTex:Hide()
-		dd.Button.sbb:Hide()
-		dd.sf = nil
-		dd.ddTex = nil
-		dd.Button.sbb = nil
-		dd = nil
-		
+		-- wait for dropdown skinframe to be created
+		_G.C_Timer.After(0.25, function()
+			local dd = this.MainFrame.FullColumnFeatured.Dropdown.dropdown
+			dd.sf:Hide()
+			dd.ddTex:Hide()
+			dd.Button.sbb:Hide()
+			dd.sf = nil
+			dd.ddTex = nil
+			dd.Button.sbb = nil
+			dd = nil
+		end)
+
 		self:Unhook(ZGV.GuideMenu, "CreateFrames")
 	end)
 

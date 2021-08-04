@@ -1,9 +1,9 @@
-local aName, aObj = ...
+local _, aObj = ...
 if not aObj:isAddonEnabled("PetTracker") then return end
 local _G = _G
 
 local ptRJ
-aObj.addonsToSkin.PetTracker = function(self) -- v 9.0.8
+aObj.addonsToSkin.PetTracker = function(self) -- v 9.1.0
 
 	-- Custom Tutorials
 	local cTut = _G.LibStub:GetLibrary('CustomTutorials-2.1', true)
@@ -151,7 +151,7 @@ aObj.addonsToSkin.PetTracker = function(self) -- v 9.0.8
 
 end
 
-aObj.lodAddons.PetTracker_Journal = function(self) -- v 9.0.8
+aObj.lodAddons.PetTracker_Journal = function(self) -- v 9.1.0
 
 	-- wait for RivalsJournal and its List entries to be created
 	if not ptRJ
@@ -185,8 +185,7 @@ aObj.lodAddons.PetTracker_Journal = function(self) -- v 9.0.8
 		end)
 	end
 
-	self:removeInset(ptRJ.Card)
-	self:skinObject("frame", {obj=ptRJ.Card, kfs=true, fb=true, ofs=1})
+	self:skinObject("frame", {obj=ptRJ.Card, kfs=true, ri=true, rns=true, fb=true, ofs=1})
 	if self.modBtnBs then
 		-- skin rewards
 		for i = 1, 4 do
@@ -227,6 +226,6 @@ aObj.lodAddons.PetTracker_Journal = function(self) -- v 9.0.8
 		self:skinStdButton{obj=ptRJ.History.LoadButton}
 	end
 
-	self:skinObject("frame", {obj=ptRJ, kfs=true, rns=true, cb=true, noBdr=true})
+	self:skinObject("frame", {obj=ptRJ, kfs=true, ri=true, rns=true, cb=true, noBdr=true})
 
 end
