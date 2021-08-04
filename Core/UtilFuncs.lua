@@ -618,8 +618,8 @@ function aObj:hasAnyTextInName(obj, tab)
 	and obj:GetName()
 	then
 		local oName = obj:GetName()
-		for i = 1, #tab do
-			if oName:find(tab[i], 1, true) then
+		for _, text in _G.ipairs(tab) do
+			if oName:find(text, 1, true) then
 				oName = nil
 				return true
 			end
@@ -633,10 +633,11 @@ end
 
 function aObj:hasTextInTexture(obj, text)
 	--@alpha@
-	_G.assert(obj, "Unknown object hasTextInTexture\n" .. _G.debugstack(2, 3, 2)) -- N.B. allow for missing texture object FIXME: Why was this commented out?
+	_G.assert(obj, "Unknown object hasTextInTexture\n" .. _G.debugstack(2, 3, 2))
 	_G.assert(text, "Missing value hasTextInTexture\n" .. _G.debugstack(2, 3, 2))
 	--@end-alpha@
 
+	-- aObj:Debug("hasTextInTexture: [%s, %s]", obj.GetTexture and obj:GetTexture() )
 	return obj and obj.GetTexture and obj:GetTexture() and _G.tostring(obj:GetTexture()):find(text, 1, true) and true or false
 
 end
@@ -711,16 +712,15 @@ function aObj:isDropDown(obj)
 	--@end-alpha@
 
 	if obj:IsObjectType("Frame") then
-		if obj.Left
-		and self:hasTextInTexture(obj.Left, "CharacterCreate")
-		then
-			return true
-		elseif obj:GetName()
-		and _G[obj:GetName() .. "Left"]
-		and self:hasTextInTexture(_G[obj:GetName() .. "Left"], "CharacterCreate")
-		then
-			return true
+		local chkObj = obj.Left or obj:GetName() and _G[obj:GetName() .. "Left"]
+		if chkObj then
+			if self:hasTextInTexture(chkObj, "CharacterCreate")
 			or self:hasTextInTexture(chkObj, self.ccLF)
+			then
+				chkObj = nil
+				return true
+			end
+			chkObj = nil
 		end
 	end
 	return false
