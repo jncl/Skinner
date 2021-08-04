@@ -189,7 +189,6 @@
 <Script file="Spew.lua"/>
 <Script file="Spy.lua"/>
 <Script file="tekKonfig.lua"/>
-<Script file="tektip.lua"/>
 <Script file="TinyDPS.lua"/>
 <Script file="TinyInspect.lua"/>
 <Script file="TinyLootMonitor.lua"/>
