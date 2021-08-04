@@ -682,7 +682,7 @@ aObj.ClassicSupport = function(self)
 				self:removeRegions(_G["ReputationBar" .. i], {1, 2})
 				self:skinStatusBar{obj=_G["ReputationBar" .. i], fi=0}
 				awc = self:getRegion(_G["ReputationBar" .. i .. "AtWarCheck"], 1)
-				awc:SetTexture([[Interface\Buttons\UI-Checkbox-SwordCheck]])
+				awc:SetTexture(self.cbSC)
 				awc:SetTexCoord(0, 1, 0, 1)
 				awc:SetSize(32, 32)
 			end

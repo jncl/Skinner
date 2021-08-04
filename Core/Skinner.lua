@@ -144,17 +144,20 @@ function aObj:OnInitialize()
 		self.prdb.QuestMap = self.prdb.QuestFrame
 	end
 
+	-- get FileDataIDs for Textures
+	self:setupTextures()
+
 	-- setup the Addon's options
 	self:checkAndRun("SetupOptions", "opt")
 
 	-- register the default background texture
-	self.LSM:Register("background", dflts.BdTexture, [[Interface\ChatFrame\ChatFrameBackground]])
+	self.LSM:Register("background", dflts.BdTexture, self.cfBg)
 	-- register the inactive tab texture
 	self.LSM:Register("background", aName .. " Inactive Tab", [[Interface\AddOns\]] .. aName .. [[\Textures\inactive]])
 	-- register the texture used for EditBoxes & ScrollBars
 	self.LSM:Register("border", aName .. " Border", [[Interface\AddOns\]] .. aName .. [[\Textures\krsnik]])
 	-- register the statubar texture used by Nameplates
-	self.LSM:Register("statusbar", "Blizzard2", [[Interface\TargetingFrame\UI-TargetingFrame-BarFill]])
+	self.LSM:Register("statusbar", "Blizzard2", self.tfBF)
 
 	-- EditBox regions to keep
 	self.ebRgns = {1, 2} -- 1 is text, 2 is the cursor texture
@@ -282,9 +285,6 @@ function aObj:OnInitialize()
 	else
 		self.itTex = self.LSM:Fetch("background", self.prdb.TabDDTexture)
 	end
-
-	-- Empty Slot texture
-	self.esTex = [[Interface\Buttons\UI-Quickslot2]]
 
 	-- store Addons managed by LoadManagers
 	self.lmAddons = {}

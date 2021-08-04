@@ -117,7 +117,6 @@ function aObj:capitStr(str)
 
 end
 
-aObj.mpTex = [[Interface\Common\UI-ModelControlPanel]]
 function aObj:changeMinusPlusTex(obj, minus)
 	--@alpha@
 	_G.assert(obj, "Unknown object changeMinusPlusTex\n" .. _G.debugstack(2, 3, 2))
@@ -134,7 +133,6 @@ function aObj:changeMinusPlusTex(obj, minus)
 
 end
 
-aObj.RecTex = [[Interface\HelpFrame\HelpButtons]]
 function aObj:changeRecTex(obj, isYellow, isUnitFrame)
 	--@alpha@
 	_G.assert(obj, "Unknown object changeRecTex\n" .. _G.debugstack(2, 3, 2))
@@ -149,7 +147,6 @@ function aObj:changeRecTex(obj, isYellow, isUnitFrame)
 
 end
 
-aObj.shieldTex = [[Interface\CastingBar\UI-CastingBar-Arena-Shield]]
 function aObj:changeShield(shldReg, iconReg)
 	--@alpha@
 	_G.assert(shldReg, "Unknown object changeShield\n" .. _G.debugstack(2, 3, 2))
@@ -164,7 +161,6 @@ function aObj:changeShield(shldReg, iconReg)
 
 end
 
-aObj.lvlBG = [[Interface\PetBattles\BattleBar-AbilityBadge-Neutral]]
 function aObj:changeTandC(obj, tex)
 	--@alpha@
 	_G.assert(obj, "Unknown object changeTandC\n" .. _G.debugstack(2, 3, 2))
@@ -724,6 +720,7 @@ function aObj:isDropDown(obj)
 		and self:hasTextInTexture(_G[obj:GetName() .. "Left"], "CharacterCreate")
 		then
 			return true
+			or self:hasTextInTexture(chkObj, self.ccLF)
 		end
 	end
 	return false
@@ -1173,6 +1170,38 @@ function aObj:setupBackdrop()
 		}
 	end
 
+end
+
+function aObj:setupTextures()
+--[[
+	N.B. Texture paths replaced by FileDataIDs
+	These can be found here: https://wow.tools/files/#search=&page=1&sort=0&desc=asc
+--]]
+	self.bHLS      = _G.GetFileIDFromPath([[Interface\Buttons\ButtonHilight-Square]])
+	self.btnTex    = _G.GetFileIDFromPath([[Interface\HelpFrame\HelpButtons]])
+	self.cbSC      = _G.GetFileIDFromPath([[Interface\Buttons\UI-Checkbox-SwordCheck]])
+	self.cbUP      = _G.GetFileIDFromPath([[interface\Buttons\UI-CheckBox-Up]])
+	self.ccLF      = _G.GetFileIDFromPath([[Interface\Glues\CharacterCreate\CharacterCreate-LabelFrame]])
+	self.cfBg      = _G.GetFileIDFromPath([[Interface\ChatFrame\ChatFrameBackground]])
+	self.ctabHL    = _G.GetFileIDFromPath([[Interface\PaperDollInfoFrame\UI-Character-Tab-Highlight]])
+	self.dpI       = _G.GetFileIDFromPath([[Interface\PetBattles\DeadPetIcon]])
+	self.ejt       = _G.GetFileIDFromPath([[Interface\EncounterJournal\UI-EncounterJournalTextures]])
+	self.enI       = _G.GetFileIDFromPath([[Interface\Tooltips\EliteNameplateIcon]])
+	self.esTex     = _G.GetFileIDFromPath([[Interface\Buttons\UI-Quickslot2]])
+	self.lfgIR     = _G.GetFileIDFromPath([[Interface\LFGFrame\UI-LFG-ICON-ROLES]])
+	self.lvlBG     = _G.GetFileIDFromPath([[Interface\PetBattles\BattleBar-AbilityBadge-Neutral]])
+	self.mHG       = _G.GetFileIDFromPath([[Interface\Common\mini-hourglass]])
+	self.mpTex     = _G.GetFileIDFromPath([[Interface\Common\UI-ModelControlPanel]])
+	self.mpw01     = _G.GetFileIDFromPath([[Interface\Icons\INV_Misc_Pelt_Wolf_01]])
+	self.pMBHL     = _G.GetFileIDFromPath([[Interface\Buttons\UI-Panel-MinimizeButton-Highlight]])
+	self.qltHL     = _G.GetFileIDFromPath([[Interface\QuestFrame\UI-QuestLogTitleHighlight]])
+	self.renI      = _G.GetFileIDFromPath([[Interface\Tooltips\RareEliteNameplateIcon]])
+	self.shieldTex = _G.GetFileIDFromPath([[Interface\CastingBar\UI-CastingBar-Arena-Shield]])
+	self.tfBF      = _G.GetFileIDFromPath([[Interface\TargetingFrame\UI-TargetingFrame-BarFill]])
+	self.tMB       = _G.GetFileIDFromPath([[Interface\Minimap\Tracking\Mailbox]])
+	self.w8x8      = _G.GetFileIDFromPath([[Interface\Buttons\WHITE8X8]])
+	-- aObj:Debug("setupTextures: [%s, %s]", self.w8x8)
+			
 end
 
 function aObj:skinAceDropdown(obj, x2, y2)

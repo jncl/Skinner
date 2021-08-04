@@ -2161,7 +2161,7 @@ aObj.SetupOptions = function(self)
 	-- setup the DB object
 	self.DBObj = _G.LibStub:GetLibrary("LibDataBroker-1.1", true):NewDataObject(aName, {
 		type = "launcher",
-		icon = [[Interface\Icons\INV_Misc_Pelt_Wolf_01]],
+		icon = self.mpw01,
 		OnClick = function()
 			-- do twice to overcome Blizzard bug
 			_G.InterfaceOptionsFrame_OpenToCategory(aObj.optionsFrame)

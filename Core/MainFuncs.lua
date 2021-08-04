@@ -1247,7 +1247,7 @@ local function __skinTabs(opts)
 			-- change highlight texture
 			local ht = tab:GetHighlightTexture()
 			if ht then -- handle other AddOns using tabs without a highlight texture
-				ht:SetTexture([[Interface\PaperDollInfoFrame\UI-Character-Tab-Highlight]])
+				ht:SetTexture(aObj.ctabHL)
 				ht:ClearAllPoints()
 				if opts.up then -- (GuildInfoFrame, LookingForGuild, MacroFrame, FriendsTabHeader)
 					ht:SetPoint("TOPLEFT", 1, -5)

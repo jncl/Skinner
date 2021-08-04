@@ -2057,7 +2057,7 @@ aObj.blizzLoDFrames[ftype].ClassTrial = function(self)
 	self:SecureHookScript(_G.ClassTrialTimerDisplay, "OnShow", function(this)
 		-- create a Hourglass texture as per original Artwork
 		this.Hourglass = this:CreateTexture(nil, "ARTWORK", nil)
-		this.Hourglass:SetTexture([[Interface\Common\mini-hourglass]])
+		this.Hourglass:SetTexture(self.mHG)
 		this.Hourglass:SetPoint("LEFT", 20, 0)
 		this.Hourglass:SetSize(30, 30)
 		this:DisableDrawLayer("BACKGROUND")
@@ -4413,7 +4413,7 @@ aObj.blizzFrames[ftype].Minimap = function(self)
 	self:skinObject("button", {obj=_G.MinimapZoneTextButton, fType=ftype, x1=-5, x2=5})
 
 	-- Minimap
-	_G.Minimap:SetMaskTexture([[Interface\Buttons\WHITE8X8]]) -- needs to be a square texture
+	_G.Minimap:SetMaskTexture([[Interface\Buttons\WHITE8X8]]) -- N.B. use name NOT FileDataID, otherwise it appears as a green overlay
 	-- use a backdrop with no Texture otherwise the map tiles are obscured
 	-- self:addSkinFrame{obj=_G.Minimap, ft=ftype, aso={bd=8}, ofs=5}
 	self:skinObject("frame", {obj=_G.Minimap, fType=ftype, bd=8, ofs=5})
@@ -4543,7 +4543,7 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 		obj:SetSize(26, 26)
 		obj:GetNormalTexture():SetTexCoord(x1, y1, x2, y2)
 		obj:GetPushedTexture():SetTexCoord(x1, y1, x2, y2)
-		obj:SetHighlightTexture([[Interface\Buttons\ButtonHilight-Square]])
+		obj:SetHighlightTexture(aObj.bHLS)
 		obj:SetHitRectInsets(-5, -5, -5, -5)
 		if not minBtn then
 			aObj:skinObject("button", {obj=obj, fType=ftype, ng=true, bd=obj==_G.GameTimeFrame and 10 or 1, ofs=4})
@@ -4611,7 +4611,7 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 	if _G.IsAddOnLoaded("SexyMap") then
 		_G.MiniMapWorldMapButton:DisableDrawLayer("OVERLAY") -- border texture
 	end
-	_G.MiniMapMailIcon:SetTexture([[Interface\Minimap\Tracking\Mailbox.blp]])
+	_G.MiniMapMailIcon:SetTexture(self.tMB)
 	_G.MiniMapMailIcon:ClearAllPoints()
 	_G.MiniMapMailIcon:SetPoint("CENTER", _G.MiniMapMailFrame)
 	_G.MiniMapMailFrame:SetSize(26, 26)
@@ -5067,7 +5067,7 @@ aObj.blizzFrames[ftype].PetBattleUI = function(self)
 			for j = 2, 3 do
 				_G.RaiseFrameLevelByTwo(this[type .. j])
 				this[type .. j].BorderAlive:SetTexture(nil)
-				self:changeTandC(this[type .. j].BorderDead, [[Interface\PetBattles\DeadPetIcon]])
+				self:changeTandC(this[type .. j].BorderDead, self.dpI)
 				this[type .. j].healthBarWidth = 34
 				this[type .. j].ActualHealthBar:SetWidth(34)
 				this[type .. j].ActualHealthBar:SetTexture(self.sbTexture)
@@ -5532,7 +5532,7 @@ aObj.blizzFrames[ftype].QuestMap = function(self)
 			end
 			for hdr in this.QuestsFrame.covenantCallingsHeaderFramePool:EnumerateActive() do
 				self:removeRegions(hdr, {2, 3, 4})
-				hdr.HighlightBackground:SetTexture([[Interface\QuestFrame\UI-QuestLogTitleHighlight]])
+				hdr.HighlightBackground:SetTexture(self.qltHL)
 				if self.modBtns then
 					skinEB(hdr)
 				end
