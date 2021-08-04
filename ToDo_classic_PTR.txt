@@ -8,5 +8,15 @@ ToDo_classic_PTR
 
 	Classic_PTR
 		- Added
+≈			- GuildBank
+¶≈			- LookingForGroup/LookingForMore
 		- Updated
+			- MiniMapWorldMapButoon
+√				- Border texture
+			- FriendsFrame
+√				- height changed
+			- HelpFrame
+√				- width changed
+			- IOF/SF
+√				- checkboxes & dropdowns NOT being skinned as textures are now FileDataIDs
 		- Deleted

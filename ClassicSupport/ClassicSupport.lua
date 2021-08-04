@@ -60,6 +60,7 @@ local funcs = {
 		EventTrace = {keep = true, keepOpts = true},
 		GMChatUI = {keep = true, keepOpts = true},
 		GMSurveyUI = not aObj.isClscBC and {keep = false, keepOpts = true},
+		GuildBankUI = {keep = true, keepOpts = true},
 		HelpFrame = {keep = aObj.isClscBC and true, keepOpts = true},
 		InterfaceOptions = {keep = true, keepOpts = true},
 		ItemText = {keep = true, keepOpts = true},
@@ -925,7 +926,7 @@ aObj.ClassicSupport = function(self)
 			self:skinObject("dropdown", {obj=_G.FriendsDropDown, fType=ftype})
 			self:skinObject("dropdown", {obj=_G.TravelPassDropDown, fType=ftype})
 			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true})
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, cb=true, x2=1, y2=-1})
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, cb=true, x2=1, y2=self.isClscPTR and -2 or -1})
 
 			self:SecureHookScript(_G.FriendsTabHeader, "OnShow", function(this)
 				_G.FriendsFrameBattlenetFrame:DisableDrawLayer("BACKGROUND")
@@ -989,7 +990,7 @@ aObj.ClassicSupport = function(self)
 					end
 				end
 				btn = nil
-				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, fb=true, ofs=0, y1=-81, x2=-1, y2=1})
+				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, fb=true, ofs=0, y1=-81, x2=-1, y2=self.isClscPTR and 0 or 1})
 				if self.modBtns then
 					self:skinStdButton{obj=_G.FriendsFrameAddFriendButton, fType=ftype, x1=1}
 					self:skinStdButton{obj=_G.FriendsFrameSendMessageButton, fType=ftype}
@@ -1084,15 +1085,34 @@ aObj.ClassicSupport = function(self)
 			end)
 
 			self:SecureHookScript(_G.GuildControlPopupFrame, "OnShow", function(this)
-				-- N.B. dropdown button border needs adjusting
-				self:skinObject("dropdown", {obj=_G.GuildControlPopupFrameDropDown, fType=ftype, noBB=true})
-				self:skinObject("editbox", {obj=_G.GuildControlPopupFrameEditBox, fType=ftype, regions={3, 4}})
-				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ofs=0})
+				self:skinObject("dropdown", {obj=_G.GuildControlPopupFrameDropDown, fType=ftype})
+				_G.UIDropDownMenu_SetButtonWidth(_G.GuildControlPopupFrameDropDown, 24)
+				self:skinObject("editbox", {obj=_G.GuildControlPopupFrameEditBox, fType=ftype, regions={3, 4}, y1=-4, y2=4})
+				if aObj.isClscPTR then
+					self:skinObject("editbox", {obj=_G.GuildControlWithdrawGoldEditBox, fType=ftype, y1=-4, y2=4})
+					self:skinObject("editbox", {obj=_G.GuildControlWithdrawItemsEditBox, fType=ftype, y1=-4, y2=4})
+					for i = 1, 6 do
+						self:keepFontStrings(_G["GuildBankTabPermissionsTab" .. i])
+					end
+					self:skinObject("frame", {obj=_G.GuildControlPopupFrameTabPermissions, fType=ftype, fb=true})
+					if self.modBtns then
+						self:skinCheckButton{obj=_G.GuildControlTabPermissionsViewTab, fType=ftype}
+						self:skinCheckButton{obj=_G.GuildControlTabPermissionsDepositItems, fType=ftype}
+						self:skinCheckButton{obj=_G.GuildControlTabPermissionsUpdateText, fType=ftype}
+					end
+					if self.modChkBtns then
+						self:skinCheckButton{obj=_G.GuildControlPopupFrameCheckbox15, fType=ftype} -- Repair
+						self:skinCheckButton{obj=_G.GuildControlPopupFrameCheckbox16, fType=ftype} -- Withdraw Gold
+					end
+					self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ofs=-4, y2=25})
+				else
+					self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ofs=-4})
+				end
 				if self.modBtns then
 					self:skinStdButton{obj=_G.GuildControlPopupFrameCancelButton, fType=ftype}
 					self:skinStdButton{obj=_G.GuildControlPopupAcceptButton, fType=ftype}
-					self:skinExpandButton{obj=_G.GuildControlPopupFrameAddRankButton, fType=ftype, as=true, plus=true}
-					self:skinExpandButton{obj=_G.GuildControlPopupFrameRemoveRankButton, fType=ftype, as=true}
+					self:skinExpandButton{obj=_G.GuildControlPopupFrameAddRankButton, fType=ftype, plus=true, ofs=0}
+					self:skinExpandButton{obj=_G.GuildControlPopupFrameRemoveRankButton, fType=ftype, ofs=0}
 					self:SecureHook(_G.GuildControlPopupAcceptButton, "Disable", function(this, _)
 						self:clrBtnBdr(this)
 					end)
@@ -1102,9 +1122,6 @@ aObj.ClassicSupport = function(self)
 					self:SecureHook("GuildControlPopupFrameRemoveRankButton_OnUpdate", function()
 						self:clrBtnBdr(_G.GuildControlPopupFrameRemoveRankButton)
 					end)
-				end
-				if self.modBtnBs then
-					self:addButtonBorder{obj=_G.GuildControlPopupFrameDropDown.Button, es=12, ofs=-2, x1=31}
 				end
 				if self.modChkBtns then
 					for i = 1, _G.GUILD_NUM_RANK_FLAGS do
@@ -1116,9 +1133,9 @@ aObj.ClassicSupport = function(self)
 			end)
 
 			self:SecureHookScript(_G.GuildInfoFrame, "OnShow", function(this)
-				self:skinSlider{obj=_G.GuildInfoFrameScrollFrame.ScrollBar, rt="artwork"}
-				self:addFrameBorder{obj=_G.GuildInfoTextBackground, ft=ftype}
-				self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, ofs=0}
+				self:skinObject("slider", {obj=_G.GuildInfoFrameScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
+				self:skinObject("frame", {obj=_G.GuildInfoTextBackground, fb=true})
+				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ofs=-2})
 				if self.modBtns then
 					self:skinCloseButton{obj=_G.GuildInfoCloseButton, fType=ftype}
 					self:skinStdButton{obj=_G.GuildInfoSaveButton, fType=ftype}
@@ -1130,9 +1147,9 @@ aObj.ClassicSupport = function(self)
 
 			self:SecureHookScript(_G.GuildMemberDetailFrame, "OnShow", function(this)
 				this:DisableDrawLayer("OVERLAY")
-				self:addFrameBorder{obj=_G.GuildMemberNoteBackground, ft=ftype}
-				self:addFrameBorder{obj=_G.GuildMemberOfficerNoteBackground, ft=ftype}
-				self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, ofs=0}
+				self:skinObject("frame", {obj=_G.GuildMemberNoteBackground, fType=ftype, fb=true})
+				self:skinObject("frame", {obj=_G.GuildMemberOfficerNoteBackground, fType=ftype, fb=true})
+				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ofs=0})
 				if self.modBtns then
 					self:skinCloseButton{obj=_G.GuildMemberDetailCloseButton, fType=ftype}
 					self:skinStdButton{obj=_G.GuildMemberRemoveButton, fType=ftype}
@@ -1747,6 +1764,166 @@ aObj.ClassicSupport = function(self)
 		end
 	end
 
+	if aObj.isClscPTR
+	and not aObj.isClscBeta
+	then
+		self.blizzLoDFrames[ftype].GuildBankUI = function(self)
+			if not self.prdb.GuildBankUI or self.initialized.GuildBankUI then return end
+			self.initialized.GuildBankUI = true
+
+			self:SecureHookScript(_G.GuildBankFrame, "OnShow", function(this)
+				this.Emblem:Hide()
+				for _, frame in _G.ipairs(this.Columns) do
+					frame:DisableDrawLayer("BACKGROUND")
+					if self.modBtnBs then
+						for _, btn in _G.ipairs(frame.Buttons) do
+							self:addButtonBorder{obj=btn, ibt=true, clr="grey", ca=0.85}
+						end
+					end
+				end
+				self:skinObject("tabs", {obj=this, tabs=this.FrameTabs, fType=ftype, lod=self.isTT and true, offsets={x1=9, y1=self.isTT and 2 or -3, x2=-9, y2=2}})
+				-- Tabs (side)
+				for _, tab in _G.ipairs(this.BankTabs) do
+					tab:DisableDrawLayer("BACKGROUND")
+					if self.modBtnBs then
+						 self:addButtonBorder{obj=tab.Button, ofs=3}
+						 self:SecureHook(tab.Button, "Disable", function(this, _)
+						 	self:clrBtnBdr(this)
+						 end)
+						 self:SecureHook(tab.Button, "Enable", function(this, _)
+						 	self:clrBtnBdr(this)
+						 end)
+					end
+				end
+				self:skinObject("slider", {obj=_G.GuildBankInfoScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
+				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true, y1=-11, x2=0, y2=4})
+				if self.modBtns then
+					self:skinCloseButton{obj=self:getChild(this, 11), fType=ftype}
+					self:skinStdButton{obj=this.DepositButton, fType=ftype, x1=0} -- don't overlap withdraw button
+					self:skinStdButton{obj=this.WithdrawButton, fType=ftype, x2=0} -- don't overlap deposit button
+					self:SecureHook(this.WithdrawButton, "Disable", function(this, _)
+						self:clrBtnBdr(this)
+					end)
+					self:SecureHook(this.WithdrawButton, "Enable", function(this, _)
+						self:clrBtnBdr(this)
+					end)
+					self:skinStdButton{obj=this.BuyInfo.PurchaseButton, fType=ftype}
+					self:SecureHook(this.BuyInfo.PurchaseButton, "Disable", function(this, _)
+						self:clrBtnBdr(this)
+					end)
+					self:SecureHook(this.BuyInfo.PurchaseButton, "Enable", function(this, _)
+						self:clrBtnBdr(this)
+					end)
+					self:skinStdButton{obj=_G.GuildBankInfoSaveButton, fType=ftype}
+				end
+				-- send message when UI is skinned (used by oGlow skin)
+				self:SendMessage("GuildBankUI_Skinned", self)
+
+				self:Unhook(this, "OnShow")
+			end)
+
+			--	GuildBank Popup Frame
+			self:SecureHookScript(_G.GuildBankPopupFrame, "OnShow", function(this)
+				self:adjHeight{obj=this, adj=20}
+				self:removeRegions(this.BorderBox, {1, 2, 3, 4, 5, 6, 7, 8})
+				self:skinObject("editbox", {obj=_G.GuildBankPopupEditBox, fType=ftype})
+				self:adjHeight{obj=_G.GuildBankPopupScrollFrame, adj=20} -- stretch to bottom of scroll area
+				self:skinObject("slider", {obj=_G.GuildBankPopupScrollFrame.ScrollBar, fType=ftype, rpTex="background"})
+				for i = 1, _G.NUM_GUILDBANK_ICONS_SHOWN do
+					_G["GuildBankPopupButton" .. i]:DisableDrawLayer("BACKGROUND")
+					if self.modBtnBs then
+						self:addButtonBorder{obj=_G["GuildBankPopupButton" .. i], relTo=_G["GuildBankPopupButton" .. i .. "Icon"], reParent={_G["GuildBankPopupButton" .. i .. "Name"]}}
+					end
+				end
+				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, ofs=-6})
+				if self.modBtns then
+					self:skinStdButton{obj=_G.GuildBankPopupCancelButton}
+					self:skinStdButton{obj=_G.GuildBankPopupOkayButton}
+				end
+
+				self:Unhook(this, "OnShow")
+			end)
+
+		end
+		
+		if self.db.profile.LFGLFM == nil then
+			self.db.profile.LFGLFM = true
+			self.db.defaults.profile.LFGLFM = true
+		end
+		self.optTables["UI Frames"].args.LFGLFM = {
+			type = "toggle",
+			width = "double",
+			name = self.L["Looking for Group/More Frame"],
+			desc = self.L["Toggle the skin of the "] .. self.L["Looking for Group/More Frame"],
+		}
+		
+		self.blizzFrames[ftype].LFGFrame = function(self)
+			if not self.prdb.LFGLFM or self.initialized.LFGFrame then return end
+			self.initialized.LFGFrame = true
+
+			self:SecureHookScript(_G.LFGParentFrame, "OnShow", function(this)
+		
+				self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, ignoreSize=true, lod=self.isTT and true, upwards=true, offsets={x1=6, y1=0, x2=-6, y2=2}})
+				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, x1=10, y1=-11, x2=-29, y2=71})
+				if self.modBtns then
+					self:skinCloseButton{obj=self:getChild(this, 3), fType=ftype}
+				end
+			
+				self:SecureHookScript(_G.LFMFrame, "OnShow", function(this)
+					self:skinObject("dropdown", {obj=_G.LFMFrameEntryDropDown, fType=ftype})
+					self:removeInset(_G.LFMFrameInset)
+					self:skinObject("dropdown", {obj=_G.LFMFrameTypeDropDown, fType=ftype})
+					self:skinObject("dropdown", {obj=_G.LFMFrameActivityDropDown, fType=ftype})
+					self:skinColHeads("LFMFrameColumnHeader", nil, ftype)
+					self:skinObject("slider", {obj=_G.LFMListScrollFrame.ScrollBar, fType=ftype})
+					self:moveObject{obj=_G.LFMFrameGroupInviteButton, x=-4}
+					if self.modBtns then
+						self:skinStdButton{obj=_G.LFMFrameGroupInviteButton, fType=ftype}
+						self:skinStdButton{obj=_G.LFMFrameSendMessageButton, fType=ftype}
+						self:skinStdButton{obj=_G.LFMFrameSearchButton, fType=ftype}
+						self:SecureHook(_G.LFMFrameGroupInviteButton, "SetEnabled", function(this)
+							self:clrBtnBdr(this)
+						end)
+						self:SecureHook(_G.LFMFrameSendMessageButton, "SetEnabled", function(this)
+							self:clrBtnBdr(this)
+						end)
+					end
+				
+					self:Unhook(this, "OnShow")
+				end)
+				self:SecureHookScript(_G.LFGFrame, "OnShow", function(this)
+					for _, dd in _G.pairs(this.ActivityDropDown) do
+						self:skinObject("dropdown", {obj=dd, fType=ftype})
+					end
+					-- for _, tex in _G.pairs(this.ActivityIcon) do
+					-- end
+					for _, dd in _G.pairs(this.TypeDropDown) do
+						self:skinObject("dropdown", {obj=dd, fType=ftype})
+					end
+					self:skinObject("editbox", {obj=this.Comment, fType=ftype, chginset=false, x1=-5})
+					self:moveObject{obj=_G.LFGFramePostButton, x=-10}
+					if self.modBtns then
+						self:skinStdButton{obj=_G.LFGFrameClearAllButton, fType=ftype}
+						self:skinStdButton{obj=_G.LFGFramePostButton, fType=ftype}
+						self:SecureHook(_G.LFGFramePostButton, "SetEnabled", function(this, _)
+							self:clrBtnBdr(this)
+						end)
+					end
+				
+					self:Unhook(this, "OnShow")
+				end)
+				self:checkShown(_G.LFGFrame)
+			
+				self:Unhook(this, "OnShow")
+			end)
+			
+			if self.prdb.MinimapButtons.skin then
+				self:skinObject("button", {obj=_G.MiniMapLFGFrameIcon, fType=ftype, ofs=2})
+			end
+			
+		end
+	end
+	
 	self.blizzFrames[ftype].MainMenuBar = function(self)
 		if self.initialized.MainMenuBar then return end
 		self.initialized.MainMenuBar = true
