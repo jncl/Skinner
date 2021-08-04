@@ -684,7 +684,11 @@ aObj.blizzFrames[ftype].GuildRegistrar = function(self)
 
 	self:SecureHookScript(_G.GuildRegistrarFrame, "OnShow", function(this)
 		self:keepFontStrings(_G.GuildRegistrarGreetingFrame)
-		_G.AvailableServicesText:SetTextColor(self.HT:GetRGB())
+		if not self.isClsc then
+			_G.AvailableServicesText:SetTextColor(self.HT:GetRGB())
+		else
+			_G.GuildAvailableServicesText:SetTextColor(self.HT:GetRGB())
+		end
 		self:getRegion(_G.GuildRegistrarButton1, 3):SetTextColor(self.BT:GetRGB())
 		self:getRegion(_G.GuildRegistrarButton2, 3):SetTextColor(self.BT:GetRGB())
 		_G.GuildRegistrarPurchaseText:SetTextColor(self.BT:GetRGB())
