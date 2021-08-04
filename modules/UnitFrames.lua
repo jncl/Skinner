@@ -67,7 +67,7 @@ function module:skinUnitButton(opts)
 	then
 		opts.obj.threatIndicator:ClearAllPoints()
 		opts.obj.threatIndicator:SetAllPoints(opts.obj.sb)
-		aObj:changeRecTex(opts.obj.threatIndicator, true, true)
+		aObj:changeTex(opts.obj.threatIndicator, true, true)
 		-- stop changes to texture
 		opts.obj.threatIndicator.SetTexture = _G.nop
 		opts.obj.threatIndicator.SetTexCoord = _G.nop

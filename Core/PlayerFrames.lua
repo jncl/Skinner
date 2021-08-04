@@ -1257,15 +1257,15 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 			self:removeInset(this.InsetFrame)
 			for _, btn in _G.pairs(this.ListScrollFrame.buttons) do
 				btn.IconRing:SetAlpha(0) -- texture changed in code
-				self:changeRecTex(btn.Selection, true)
+				self:changeTex(btn.Selection, true)
 				btn.Selection:SetHeight(60)
-				self:changeRecTex(btn:GetHighlightTexture())
+				self:changeTex(btn:GetHighlightTexture())
 				btn:GetHighlightTexture():SetHeight(60)
 			end
 			self:SecureHook(this, "Update", function(cList)
 				for _, btn in _G.pairs(cList.ListScrollFrame.buttons) do
 					self:removeRegions(btn, {1})
-					self:changeRecTex(btn.Selection, true)
+					self:changeTex(btn.Selection, true)
 					btn.Selection:SetHeight(60)
 				end
 			end)
@@ -3745,7 +3745,7 @@ aObj.blizzLoDFrames[ftype].PVPUI = function(self)
 		for i = 1, 3 do
 			this["CategoryButton" .. i].Background:SetTexture(nil)
 			this["CategoryButton" .. i].Ring:SetTexture(nil)
-			self:changeRecTex(this["CategoryButton" .. i]:GetHighlightTexture())
+			self:changeTex(this["CategoryButton" .. i]:GetHighlightTexture())
 			-- make Icon square
 			self:makeIconSquare(this["CategoryButton" .. i], "Icon")
 		end
@@ -3759,7 +3759,7 @@ aObj.blizzLoDFrames[ftype].PVPUI = function(self)
 		self:SecureHook("PVPQueueFrame_SelectButton", function(index)
 			for i = 1, 3 do
 				if i == index then
-					self:changeRecTex(this["CategoryButton" .. i].Background, true)
+					self:changeTex(this["CategoryButton" .. i].Background, true)
 				else
 					this["CategoryButton" .. i].Background:SetTexture(nil)
 				end
@@ -4290,12 +4290,12 @@ aObj.blizzLoDFrames[ftype].TalentUI = function(self)
 		for i = 1, _G.MAX_TALENT_TABS do
 			frame["specButton" .. i].bg:SetTexture(nil)
 			frame["specButton" .. i].ring:SetTexture(nil)
-			aObj:changeRecTex(frame["specButton" .. i].selectedTex, true)
+			aObj:changeTex(frame["specButton" .. i].selectedTex, true)
 			frame["specButton" .. i].learnedTex:SetTexture(nil)
 			if not aObj.isElvUI
 			and frame["specButton" .. i]:GetHighlightTexture()
 			then
-				aObj:changeRecTex(frame["specButton" .. i]:GetHighlightTexture())
+				aObj:changeTex(frame["specButton" .. i]:GetHighlightTexture())
 			end
 			-- make specIcon square
 			aObj:makeIconSquare(frame["specButton" .. i], "specIcon")

@@ -133,12 +133,12 @@ function aObj:changeMinusPlusTex(obj, minus)
 
 end
 
-function aObj:changeRecTex(obj, isYellow, isUnitFrame)
+function aObj:changeTex(obj, isYellow, isUnitFrame)
 	--@alpha@
-	_G.assert(obj, "Unknown object changeRecTex\n" .. _G.debugstack(2, 3, 2))
+	_G.assert(obj, "Unknown object changeTex\n" .. _G.debugstack(2, 3, 2))
 	--@end-alpha@
 
-	obj:SetTexture(self.RecTex)
+	obj:SetTexture(self.btnTex)
 	if isYellow then
 		obj:SetTexCoord(isUnitFrame and 0.015 or 0.0038, isUnitFrame and 0.66 or 0.7, 0.67, 0.855) -- yellow
 	else

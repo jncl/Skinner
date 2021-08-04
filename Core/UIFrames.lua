@@ -2347,7 +2347,7 @@ aObj.blizzFrames[ftype].DestinyFrame = function(self)
 		-- buttons
 		for _, type in _G.pairs{"alliance", "horde"} do
 			self:removeRegions(this[type .. "Button"], {1})
-			self:changeRecTex(this[type .. "Button"]:GetHighlightTexture())
+			self:changeTex(this[type .. "Button"]:GetHighlightTexture())
 			self:adjWidth{obj=this[type .. "Button"], adj=-60}
 			self:adjHeight{obj=this[type .. "Button"], adj=-60}
 			if self.modBtns then
@@ -5352,7 +5352,7 @@ aObj.blizzFrames[ftype].PVEFrame = function(self)
 		for i = 1, 3 do
 			_G.GroupFinderFrame["groupButton" .. i].bg:SetTexture(nil)
 			_G.GroupFinderFrame["groupButton" .. i].ring:SetTexture(nil)
-			self:changeRecTex(_G.GroupFinderFrame["groupButton" .. i]:GetHighlightTexture())
+			self:changeTex(_G.GroupFinderFrame["groupButton" .. i]:GetHighlightTexture())
 			-- make icon square
 			self:makeIconSquare(_G.GroupFinderFrame["groupButton" .. i], "icon")
 		end
@@ -5360,7 +5360,7 @@ aObj.blizzFrames[ftype].PVEFrame = function(self)
 		self:SecureHook("GroupFinderFrame_SelectGroupButton", function(index)
 			for i = 1, 3 do
 				if i == index then
-					self:changeRecTex(_G.GroupFinderFrame["groupButton" .. i].bg, true)
+					self:changeTex(_G.GroupFinderFrame["groupButton" .. i].bg, true)
 				else
 					_G.GroupFinderFrame["groupButton" .. i].bg:SetTexture(nil)
 				end
