@@ -3517,14 +3517,13 @@ aObj.blizzFrames[ftype].InterfaceOptions = function(self)
 
 	-- hook this to skin Interface Option panels
 	self:SecureHook("InterfaceOptionsList_DisplayPanel", function(panel)
-		-- aObj:Debug("IOL_DP: [%s, %s, %s, %s, %s, %s]", panel, panel.name, panel.parent, panel.GetNumChildren and panel:GetNumChildren(), self.iofSkinnedPanels[panel], panel.GetName and panel:GetName() or "n/a")
 
 		-- let AddOn skins know when IOF panel is going to be skinned
 		self.callbacks:Fire("IOFPanel_Before_Skinning", panel)
 
 		-- don't skin a panel twice
 		if not self.iofSkinnedPanels[panel] then
-			skinKids(panel)
+			skinKids(panel, panel.GetName and panel:GetName() and panel:GetName():find("InterfaceOptions") and ftype)
 			self.iofSkinnedPanels[panel] = true
 		end
 
