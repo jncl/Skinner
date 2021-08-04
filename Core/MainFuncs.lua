@@ -1321,7 +1321,7 @@ function aObj:skinTooltip(tooltip)
 			ttSB = tooltip.SetBackdrop
 			tooltip.SetBackdrop = _G.nop
 		end
-		self:addSkinFrame{obj=tooltip, ft=tooltip.ftype or "a", kfs=true, nb=true, aso={ng=true}, ofs=tooltip.ofs or 0}
+		self:skinObject("frame", {obj=tooltip, fType=tooltip.ftype, kfs=true, ng=true, ofs=tooltip.ofs or 0})
 		if _G.IsAddOnLoaded("ElvUI") then
 			tooltip.SetBackdrop = ttSB
 		end
