@@ -4609,13 +4609,16 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 	_G.MiniMapWorldMapButton:ClearAllPoints()
 	_G.MiniMapWorldMapButton:SetPoint("LEFT", _G.MinimapZoneTextButton, "RIGHT", -4, 0)
 	self:skinOtherButton{obj=_G.MiniMapWorldMapButton, font=self.fontP, text="M", noSkin=minBtn}
-	if _G.IsAddOnLoaded("SexyMap") then
+	if _G.IsAddOnLoaded("SexyMap")
+	or aObj.isClscPTR
+	then
 		_G.MiniMapWorldMapButton:DisableDrawLayer("OVERLAY") -- border texture
 	end
 	_G.MiniMapMailIcon:SetTexture(self.tMB)
 	_G.MiniMapMailIcon:ClearAllPoints()
 	_G.MiniMapMailIcon:SetPoint("CENTER", _G.MiniMapMailFrame)
 	_G.MiniMapMailFrame:SetSize(26, 26)
+	_G.TimeManagerClockButton:DisableDrawLayer("BORDER")
 	_G.TimeManagerClockButton:SetSize(36, 14)
 	if not _G.IsAddOnLoaded("SexyMap") then
 		self:moveObject{obj=_G.TimeManagerClockTicker, x=-3, y=-1}
