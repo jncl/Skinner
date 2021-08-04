@@ -59,7 +59,6 @@ aObj.addonsToSkin = track(aObj.addonsToSkin)
 aObj.libsToSkin = {
 	["LibTradeLinks-1.0"] = "LibTradeSkillScan",
 	["LibTradeSkillScan"] = "LibTradeSkillScan",
-	["tektip-1.0"] = "tektip",
 	["X-UI"] = "LibXUI",
 }
 --@alpha@
