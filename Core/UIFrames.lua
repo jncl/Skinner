@@ -6572,8 +6572,16 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 				aObj:removeRegions(wFrame.Bar, {5, 6, 7}) -- border textures
 			else
 				if not disableTypeBySZ[wFrame.widgetType][SZ] then
-					aObj:skinStatusBar{obj=wFrame.Bar, fi=0, nilFuncs=true}
-					aObj:removeRegions(wFrame.Bar, {2, 3, 4, 9, 10, 11}) -- background & border textures
+					-- aObj:Debug("skinWidget#1: [%s, %s]", wFrame.Bar:GetNumRegions(), aObj.sbGlazed[wFrame.Bar])
+					if not aObj.sbGlazed[wFrame.Bar] then -- if not already skinned
+						aObj:keepFontStrings(wFrame.Bar)
+						if wFrame.isJailersTowerBar then
+							aObj:getRegion(wFrame.Bar, 13):SetAlpha(1) -- Progress texture
+							aObj:getRegion(wFrame.Bar, 14):SetAlpha(1) -- Pointer texture
+							aObj:skinStatusBar{obj=wFrame.Bar, fi=0, nilFuncs=true}
+							-- aObj:Debug("skinWidget#2: [%s, %s]", wFrame.Bar:GetNumRegions(), aObj.sbGlazed[wFrame.Bar])
+						end
+					end
 				end	
 			end
 		elseif wFrame.widgetType == 3 then -- DoubleStatusBar (Island Expeditions)
