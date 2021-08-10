@@ -5096,9 +5096,6 @@ aObj.blizzFrames[ftype].PetBattleUI = function(self)
 		this.sfm:SetHeight(tvh * 0.8)
 		this.TopVersusText:SetParent(this.sfm)
 		tvw, tvh, pbf = nil, nil, nil
-		this.BottomFrame.RightEndCap:SetTexture(nil)
-		this.BottomFrame.LeftEndCap:SetTexture(nil)
-		this.BottomFrame.Background:SetTexture(nil)
 		for i = 1, _G.NUM_BATTLE_PETS_IN_BATTLE do
 			this.BottomFrame.PetSelectionFrame["Pet" .. i].Framing:SetTexture(nil)
 			this.BottomFrame.PetSelectionFrame["Pet" .. i].HealthBarBG:SetTexture(self.sbTexture)
@@ -5115,7 +5112,7 @@ aObj.blizzFrames[ftype].PetBattleUI = function(self)
 		self:removeRegions(this.BottomFrame.FlowFrame, {1, 2, 3})
 		self:getRegion(this.BottomFrame.Delimiter, 1):SetTexture(nil)
 		self:removeRegions(this.BottomFrame.MicroButtonFrame, {1, 2, 3})
-		self:skinObject("frame", {obj=this.BottomFrame, fType=ftype, y1=8})
+		self:skinObject("frame", {obj=this.BottomFrame, fType=ftype, kfs=true, y1=8})
 		if self.modBtns then
 			self:skinStdButton{obj=this.BottomFrame.TurnTimer.SkipButton}
 			self:SecureHook(this.BottomFrame.TurnTimer.SkipButton, "Disable", function(this, _)
@@ -5128,21 +5125,19 @@ aObj.blizzFrames[ftype].PetBattleUI = function(self)
 		if self.modBtnBs then
 			updBBClr()
 			self:SecureHook("PetBattleFrame_InitSpeedIndicators", function(this)
-				-- aObj:Debug("PetBattleFrame_InitSpeedIndicators: [%s, %s]", this)
 				updBBClr()
 			end)
 			-- use hooksecurefunc as function hooked for tooltips lower down
 			_G.hooksecurefunc("PetBattleFrame_UpdateSpeedIndicators", function(this)
-				-- aObj:Debug("PetBattleFrame_UpdateSpeedIndicators: [%s, %s]", this)
 				updBBClr()
 			end)
-			self:addButtonBorder{obj=this.BottomFrame.SwitchPetButton, reParent={this.BetterIcon}, es=20, ofs=3, x1=-5, y1=5}
-			self:addButtonBorder{obj=this.BottomFrame.CatchButton, reParent={this.BetterIcon}, es=20, ofs=3, x1=-5, y1=5}
-			self:addButtonBorder{obj=this.BottomFrame.ForfeitButton, es=20, ofs=3, x1=-5, y1=5}
+			self:addButtonBorder{obj=this.BottomFrame.SwitchPetButton, reParent={this.BetterIcon}, ofs=3, x2=2, y2=-2}
+			self:addButtonBorder{obj=this.BottomFrame.CatchButton, reParent={this.BetterIcon}, ofs=3, x2=2, y2=-2}
+			self:addButtonBorder{obj=this.BottomFrame.ForfeitButton, ofs=3, x2=2, y2=-2}
 			_G.C_Timer.After(0.1, function()
-				self:addButtonBorder{obj=this.BottomFrame.abilityButtons[1], reParent={this.BetterIcon}, es=20, ofs=3, x1=-5, y1=5}
-				self:addButtonBorder{obj=this.BottomFrame.abilityButtons[2], reParent={this.BetterIcon}, es=20, ofs=3, x1=-5, y1=5}
-				self:addButtonBorder{obj=this.BottomFrame.abilityButtons[3], reParent={this.BetterIcon}, es=20, ofs=3, x1=-5, y1=5}
+				self:addButtonBorder{obj=this.BottomFrame.abilityButtons[1], reParent={this.BetterIcon}, ofs=3, x2=2, y2=-2}
+				self:addButtonBorder{obj=this.BottomFrame.abilityButtons[2], reParent={this.BetterIcon}, ofs=3, x2=2, y2=-2}
+				self:addButtonBorder{obj=this.BottomFrame.abilityButtons[3], reParent={this.BetterIcon}, ofs=3, x2=2, y2=-2}
 			end)
 			-- hook this for pet ability buttons
 			self:SecureHook("PetBattleActionButton_UpdateState", function(this)
