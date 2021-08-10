@@ -1,4 +1,4 @@
-local aName, aObj = ...
+local _, aObj = ...
 if not aObj:isAddonEnabled("ZygorGuidesViewer") then return end
 local _G = _G
 
@@ -88,11 +88,13 @@ aObj.addonsToSkin.ZygorGuidesViewer = function(self) -- v 8.0
 		_G.C_Timer.After(0.25, function()
 			local dd = this.MainFrame.FullColumnFeatured.Dropdown.dropdown
 			dd.sf:Hide()
-			dd.ddTex:Hide()
 			dd.Button.sbb:Hide()
 			dd.sf = nil
-			dd.ddTex = nil
 			dd.Button.sbb = nil
+			if dd.ddTex then
+				dd.ddTex:Hide()
+				dd.ddTex = nil
+			end
 			dd = nil
 		end)
 

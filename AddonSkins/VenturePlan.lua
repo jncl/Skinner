@@ -2,7 +2,7 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("VenturePlan") then return end
 local _G = _G
 
-aObj.addonsToSkin.VenturePlan = function(self) -- v 4.16
+aObj.addonsToSkin.VenturePlan = function(self) -- v 4.16a
 
 	self.RegisterCallback("VenturePlan", "CovenantMissionFrame_Skinned", function(this)
 		-- wait for frames to be created
@@ -36,6 +36,7 @@ aObj.addonsToSkin.VenturePlan = function(self) -- v 4.16
 				pBar.bg:SetVertexColor(self.sbClr:GetRGBA())
 				pBar.bg:SetAllPoints()
 				pBar = nil
+				self:removeRegions(self:getChild(btn, 9), {2, 4, 6, 8, 10}) -- Board Group Ring textures
 				self:removeRegions(btn, {1, 2, 4})
 				self:skinObject("frame", {obj=btn, fb=true, y1=-22, clr="grey"})
 				if self.modBtns then
