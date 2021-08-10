@@ -4230,78 +4230,75 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 	end
 
 	if self.prdb.MainMenuBar.skin then
-
-		_G.MicroButtonAndBagsBar:DisableDrawLayer("BACKGROUND")
-		_G.MainMenuBarArtFrameBackground:DisableDrawLayer("BACKGROUND")
-		_G.MainMenuBarArtFrame.LeftEndCap:SetTexture(nil)
-		_G.MainMenuBarArtFrame.RightEndCap:SetTexture(nil)
-		_G.StatusTrackingBarManager:DisableDrawLayer("OVERLAY") -- status bar textures
-		local bar
-		for i = 1, #_G.StatusTrackingBarManager.bars do
-			bar = _G.StatusTrackingBarManager.bars[i]
-			self:skinStatusBar{obj=bar.StatusBar, bgTex=bar.StatusBar.Background, otherTex={bar.ExhaustionLevelFillBar or nil}}
-			if bar.ExhaustionTick then -- HonorStatusBar & ExpStatusBar
-				bar.ExhaustionTick:GetNormalTexture():SetTexture(nil)
-				bar.ExhaustionTick:GetHighlightTexture():SetTexture(nil)
-			elseif bar.Tick then -- ArtifactStatusBar
-				bar.Tick:GetNormalTexture():SetTexture(nil)
-				bar.Tick:GetHighlightTexture():SetTexture(nil)
+		if not self.isClsc then
+			_G.MainMenuBarArtFrame.LeftEndCap:SetTexture(nil)
+			_G.MainMenuBarArtFrame.RightEndCap:SetTexture(nil)
+			_G.MicroButtonAndBagsBar:DisableDrawLayer("BACKGROUND")
+			_G.MainMenuBarArtFrameBackground:DisableDrawLayer("BACKGROUND")
+			_G.StatusTrackingBarManager:DisableDrawLayer("OVERLAY") -- status bar textures
+			for _, bar in _G.pairs(_G.StatusTrackingBarManager.bars) do
+				self:skinStatusBar{obj=bar.StatusBar, bgTex=bar.StatusBar.Background, otherTex={bar.ExhaustionLevelFillBar}}
+				if bar.ExhaustionTick then -- HonorStatusBar & ExpStatusBar
+					bar.ExhaustionTick:GetNormalTexture():SetTexture(nil)
+					bar.ExhaustionTick:GetHighlightTexture():SetTexture(nil)
+				elseif bar.Tick then -- ArtifactStatusBar
+					bar.Tick:GetNormalTexture():SetTexture(nil)
+					bar.Tick:GetHighlightTexture():SetTexture(nil)
+				end
 			end
+			self:keepFontStrings(_G.PossessBarFrame)
+			self:keepFontStrings(_G.MultiCastFlyoutFrame) -- Shaman's Totem Frame
+		else
+			_G.MainMenuBarArtFrame:DisableDrawLayer("BACKGROUND")
+			_G.MainMenuBarLeftEndCap:SetTexture(nil)
+			_G.MainMenuBarRightEndCap:SetTexture(nil)
+			_G.MainMenuExpBar:DisableDrawLayer("OVERLAY")
+			_G.MainMenuExpBar:SetSize(1011, 13)
+			self:moveObject{obj=_G.MainMenuExpBar, x=1, y=2}
+			self:skinStatusBar{obj=_G.MainMenuExpBar, fi=0, bgTex=self:getRegion(_G.MainMenuExpBar, 6), otherTex={_G.ExhaustionLevelFillBar}}
+			_G.MainMenuBarMaxLevelBar:DisableDrawLayer("BACKGROUND")
+			_G.ExhaustionTick:GetNormalTexture():SetTexture(nil)
+			_G.ExhaustionTick:GetHighlightTexture():SetTexture(nil)
+			_G.ReputationWatchBar.StatusBar:DisableDrawLayer("ARTWORK")
+			self:skinStatusBar{obj=_G.ReputationWatchBar.StatusBar, fi=0, bgTex=_G.ReputationWatchBar.StatusBar.Background}
 		end
-		bar = nil
-
-		-- StanceBar Frame
 		self:keepFontStrings(_G.StanceBarFrame)
-		-- Possess Bar Frame
-		self:keepFontStrings(_G.PossessBarFrame)
-		-- Pet Action Bar Frame
 		self:keepFontStrings(_G.PetActionBarFrame)
-		-- Shaman's Totem Frame
-		self:keepFontStrings(_G.MultiCastFlyoutFrame)
-
 		if self.modBtnBs then
-			for i = 1, _G.NUM_STANCE_SLOTS do
-				self:addButtonBorder{obj=_G["StanceButton" .. i], abt=true, sec=true} -- N.B. uses SecureFrameTemplate
+			for _, btn in _G.pairs(_G.StanceBarFrame.StanceButtons) do
+				self:addButtonBorder{obj=btn, abt=true, sec=true} -- N.B. uses SecureFrameTemplate
 			end
-			for i = 1, _G.NUM_POSSESS_SLOTS do
-				self:addButtonBorder{obj=_G["PossessButton" .. i], abt=true, sec=true} -- N.B. uses SecureFrameTemplate
-			end
-			local bName
 			for i = 1, _G.NUM_PET_ACTION_SLOTS do
-				bName = "PetActionButton" .. i
-				self:addButtonBorder{obj=_G[bName], abt=true, sec=true, ofs=3, reParent={_G[bName .. "AutoCastable"], _G[bName .. "SpellHighlightTexture"]}} -- N.B. uses SecureFrameTemplate
-				_G[bName .. "Shine"]:SetParent(_G[bName].sbb)
+				self:addButtonBorder{obj=_G["PetActionButton" .. i], abt=true, sec=true, reParent={_G["PetActionButton" .. i .. "AutoCastable"], _G["PetActionButton" .. i .. "SpellHighlightTexture"]}, ofs=3}
+				_G["PetActionButton" .. i .. "Shine"]:SetParent(_G["PetActionButton" .. i].sbb)
 			end
-			bName = nil
-			-- Action Buttons
 			for i = 1, _G.NUM_ACTIONBAR_BUTTONS do
 				_G["ActionButton" .. i].FlyoutBorder:SetTexture(nil)
 				_G["ActionButton" .. i].FlyoutBorderShadow:SetTexture(nil)
 				self:addButtonBorder{obj=_G["ActionButton" .. i], abt=true, sabt=true, ofs=3}
 			end
-			-- ActionBar buttons
-			self:addButtonBorder{obj=_G.ActionBarUpButton, clr="gold"}
-			self:addButtonBorder{obj=_G.ActionBarDownButton, clr="gold"}
-			-- Micro buttons
-			local mBut
-			for i = 1, #_G.MICRO_BUTTONS do
-				mBut = _G[_G.MICRO_BUTTONS[i]]
-				self:addButtonBorder{obj=mBut, es=24, ofs=2, reParent=mBut == "MainMenuMicroButton" and {mBut.Flash, _G.MainMenuBarPerformanceBar, _G.MainMenuBarDownload} or {mBut.Flash}, clr="grey"}
+			self:addButtonBorder{obj=_G.ActionBarUpButton, ofs=self.isClsc and -4, clr="gold"}
+			self:addButtonBorder{obj=_G.ActionBarDownButton, ofs=self.isClsc and -4, clr="gold"}
+			for _, bName in _G.ipairs(_G.MICRO_BUTTONS) do
+				self:addButtonBorder{obj=_G[bName], es=24, ofs=2, y1=self.isClsc and -18, reParent=_G[bName] == "MainMenuMicroButton" and {_G[bName].Flash, _G.MainMenuBarDownload, not self.isClsc and _G.MainMenuBarPerformanceBar} or {_G[bName].Flash}, clr="grey"}
 			end
-			mBut = nil
-			-- skin bag buttons
 			self:addButtonBorder{obj=_G.MainMenuBarBackpackButton, ibt=true, ofs=3}
 			self:addButtonBorder{obj=_G.CharacterBag0Slot, ibt=true, ofs=3}
 			self:addButtonBorder{obj=_G.CharacterBag1Slot, ibt=true, ofs=3}
 			self:addButtonBorder{obj=_G.CharacterBag2Slot, ibt=true, ofs=3}
 			self:addButtonBorder{obj=_G.CharacterBag3Slot, ibt=true, ofs=3}
-			-- MultiCastActionBarFrame
-			self:addButtonBorder{obj=_G.MultiCastSummonSpellButton, abt=true, sabt=true, ofs=5}
-			self:addButtonBorder{obj=_G.MultiCastRecallSpellButton, abt=true, sabt=true, ofs=5}
-			for i = 1, _G.NUM_MULTI_CAST_PAGES * _G.NUM_MULTI_CAST_BUTTONS_PER_PAGE do
-				self:addButtonBorder{obj=_G["MultiCastActionButton" .. i], abt=true, sabt=true, ofs=5}
+			if not self.isClsc then
+				for i = 1, _G.NUM_POSSESS_SLOTS do
+					self:addButtonBorder{obj=_G["PossessButton" .. i], abt=true, sec=true} -- N.B. uses SecureFrameTemplate
+				end
+				self:addButtonBorder{obj=_G.MultiCastSummonSpellButton, abt=true, sabt=true, ofs=5}
+				self:addButtonBorder{obj=_G.MultiCastRecallSpellButton, abt=true, sabt=true, ofs=5}
+				for i = 1, _G.NUM_MULTI_CAST_PAGES * _G.NUM_MULTI_CAST_BUTTONS_PER_PAGE do
+					self:addButtonBorder{obj=_G["MultiCastActionButton" .. i], abt=true, sabt=true, ofs=5}
+				end
+			else
+				self:addButtonBorder{obj=_G.KeyRingButton, ofs=2, clr="grey"}
 			end
-			-- MultiBar Buttons
 			for _, type in _G.pairs{"BottomLeft", "BottomRight", "Right", "Left"} do
 				local btn
 				for i = 1, _G.NUM_MULTIBAR_BUTTONS do
@@ -4317,7 +4314,6 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 				btn = nil
 			end
 		end
-
 	end
 
 	-- these are done here as other AddOns may require them to be skinned
@@ -4325,29 +4321,31 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 		self:addButtonBorder{obj=_G.MainMenuBarVehicleLeaveButton, clr="grey"}
 	end
 
-	-- UnitPowerBarAlt (inc. PlayerPowerBarAlt)
-	if self.prdb.MainMenuBar.altpowerbar then
-		local function skinUnitPowerBarAlt(upba)
-			-- Don't change the status bar texture as it changes dependant upon type of power type required
-			upba.frame:SetAlpha(0)
-			-- adjust height and TextCoord so background appears, this enables the numbers to become easier to see
-			upba.counterBar:SetHeight(26)
-			upba.counterBar.BG:SetTexCoord(0.0, 1.0, 0.35, 0.40)
-			upba.counterBar.BGL:SetAlpha(0)
-			upba.counterBar.BGR:SetAlpha(0)
-			upba.counterBar:DisableDrawLayer("ARTWORK")
-		end
-		self:SecureHook("UnitPowerBarAlt_SetUp", function(this, _)
-			skinUnitPowerBarAlt(this)
-		end)
-		-- skin PlayerPowerBarAlt if already shown
-		if _G.PlayerPowerBarAlt:IsVisible() then
-			skinUnitPowerBarAlt(_G.PlayerPowerBarAlt)
-		end
-		-- skin BuffTimers
-		for i = 1, 10 do
-			if _G["BuffTimer" .. i] then
-				skinUnitPowerBarAlt(_G["BuffTimer" .. i])
+	if not self.isClsc then
+		-- UnitPowerBarAlt (inc. PlayerPowerBarAlt)
+		if self.prdb.MainMenuBar.altpowerbar then
+			local function skinUnitPowerBarAlt(upba)
+				-- Don't change the status bar texture as it changes dependant upon type of power type required
+				upba.frame:SetAlpha(0)
+				-- adjust height and TextCoord so background appears, this enables the numbers to become easier to see
+				upba.counterBar:SetHeight(26)
+				upba.counterBar.BG:SetTexCoord(0.0, 1.0, 0.35, 0.40)
+				upba.counterBar.BGL:SetAlpha(0)
+				upba.counterBar.BGR:SetAlpha(0)
+				upba.counterBar:DisableDrawLayer("ARTWORK")
+			end
+			self:SecureHook("UnitPowerBarAlt_SetUp", function(this, _)
+				skinUnitPowerBarAlt(this)
+			end)
+			-- skin PlayerPowerBarAlt if already shown
+			if _G.PlayerPowerBarAlt:IsVisible() then
+				skinUnitPowerBarAlt(_G.PlayerPowerBarAlt)
+			end
+			-- skin BuffTimers
+			for i = 1, 10 do
+				if _G["BuffTimer" .. i] then
+					skinUnitPowerBarAlt(_G["BuffTimer" .. i])
+				end
 			end
 		end
 	end

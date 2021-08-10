@@ -66,7 +66,7 @@ local funcs = {
 		ItemText = {keep = true, keepOpts = true},
 		MacroUI = {keep = true, keepOpts = true},
 		MailFrame = {keep = true, keepOpts = true},
-		MainMenuBar = {keep = false, keepOpts = true},
+		MainMenuBar = {keep = true, keepOpts = true},
 		MenuFrames = {keep = true, keepOpts = true},
 		Minimap = {keep = true, keepOpts = true},
 		MinimapButtons = {keep = true, keepOpts = true},
@@ -1924,94 +1924,6 @@ aObj.ClassicSupport = function(self)
 		end
 	end
 	
-	self.blizzFrames[ftype].MainMenuBar = function(self)
-		if self.initialized.MainMenuBar then return end
-		self.initialized.MainMenuBar = true
-
-		if _G.IsAddOnLoaded("Dominos") then
-			self.blizzFrames[ftype].MainMenuBar = nil
-			return
-		end
-
-		if self.prdb.MainMenuBar.skin then
-			_G.MainMenuExpBar:SetSize(1011, 13)
-			_G.MainMenuExpBar:DisableDrawLayer("OVERLAY")
-			self:moveObject{obj=_G.MainMenuExpBar, x=1, y=2}
-			self:skinStatusBar{obj=_G.MainMenuExpBar, fi=0, bgTex=self:getRegion(_G.MainMenuExpBar, 6), otherTex={_G.ExhaustionLevelFillBar}}
-			_G.MainMenuBarMaxLevelBar:DisableDrawLayer("BACKGROUND")
-			_G.MainMenuBarArtFrame:DisableDrawLayer("BACKGROUND")
-			_G.MainMenuBarLeftEndCap:SetTexture(nil)
-			_G.MainMenuBarRightEndCap:SetTexture(nil)
-
-			_G.ExhaustionTick:GetNormalTexture():SetTexture(nil)
-			_G.ExhaustionTick:GetHighlightTexture():SetTexture(nil)
-			_G.ReputationWatchBar.StatusBar:DisableDrawLayer("ARTWORK")
-			self:skinStatusBar{obj=_G.ReputationWatchBar.StatusBar, fi=0, bgTex=_G.ReputationWatchBar.StatusBar.Background}
-
-			self:keepFontStrings(_G.StanceBarFrame)
-			self:keepFontStrings(_G.PetActionBarFrame)
-
-			if self.modBtnBs then
-				for i = 1, _G.NUM_STANCE_SLOTS do
-					self:addButtonBorder{obj=_G["StanceButton" .. i], abt=true, sec=true}
-				end
-				for i = 1, _G.NUM_PET_ACTION_SLOTS do
-					self:addButtonBorder{obj=_G["PetActionButton" .. i], abt=true, sec=true, reParent={_G["PetActionButton" .. i .. "AutoCastable"], _G["PetActionButton" .. i .. "SpellHighlightTexture"]}, ofs=3}
-					_G["PetActionButton" .. i .. "Shine"]:SetParent(_G["PetActionButton" .. i].sbb)
-				end
-				-- Action Buttons
-				for i = 1, _G.NUM_ACTIONBAR_BUTTONS do
-					_G["ActionButton" .. i].FlyoutBorder:SetTexture(nil)
-					_G["ActionButton" .. i].FlyoutBorderShadow:SetTexture(nil)
-					self:addButtonBorder{obj=_G["ActionButton" .. i], abt=true, sabt=true, ofs=3}
-				end
-				-- ActionBar buttons
-				self:addButtonBorder{obj=_G.ActionBarUpButton, ofs=-4, clr="gold"}
-				self:addButtonBorder{obj=_G.ActionBarDownButton, ofs=-4, clr="gold"}
-
-				-- Micro buttons
-				local mBut
-				for i = 1, #_G.MICRO_BUTTONS do
-					mBut = _G[_G.MICRO_BUTTONS[i]]
-					self:addButtonBorder{obj=mBut, es=24, ofs=2, y1=-18, reParent=mBut == "MainMenuMicroButton" and {mBut.Flash, _G.MainMenuBarDownload} or {mBut.Flash}, clr="grey"}
-				end
-				mBut = nil
-
-				-- skin bag buttons
-				self:addButtonBorder{obj=_G.MainMenuBarBackpackButton, ibt=true, ofs=3}
-				self:addButtonBorder{obj=_G.CharacterBag0Slot, ibt=true, ofs=3}
-				self:addButtonBorder{obj=_G.CharacterBag1Slot, ibt=true, ofs=3}
-				self:addButtonBorder{obj=_G.CharacterBag2Slot, ibt=true, ofs=3}
-				self:addButtonBorder{obj=_G.CharacterBag3Slot, ibt=true, ofs=3}
-				self:addButtonBorder{obj=_G.KeyRingButton, ofs=2, clr="grey"} -- size is 18, 39
-
-				-- MultiBar Buttons
-				for _, type in _G.pairs{"BottomLeft", "BottomRight", "Right", "Left"} do
-					local btn
-					for i = 1, _G.NUM_MULTIBAR_BUTTONS do
-						btn = _G["MultiBar" .. type .. "Button" .. i]
-						btn.FlyoutBorder:SetTexture(nil)
-						btn.FlyoutBorderShadow:SetTexture(nil)
-						btn.Border:SetAlpha(0) -- texture changed in blizzard code
-						if not btn.noGrid then
-							_G[btn:GetName() .. "FloatingBG"]:SetAlpha(0)
-						end
-						self:addButtonBorder{obj=btn, abt=true, sabt=true, ofs=2.5}
-					end
-					btn = nil
-				end
-
-			end
-
-		end
-
-		-- these are done here as other AddOns may require them to be skinned
-		if self.modBtnBs then
-			self:addButtonBorder{obj=_G.MainMenuBarVehicleLeaveButton, ofs=3, clr="grey"}
-		end
-
-	end
-
 	self.blizzFrames[ftype].QuestLog = function(self)
 		if not self.prdb.QuestLog or self.initialized.QuestLog then return end
 		self.initialized.QuestLog = true
