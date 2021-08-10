@@ -3071,9 +3071,19 @@ aObj.blizzLoDFrames[ftype].ItemSocketingUI = function(self)
 	self:SecureHookScript(_G.ItemSocketingFrame, "OnShow", function(this)
 		self:skinObject("slider", {obj=_G.ItemSocketingScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
 		self.modUIBtns:skinStdButton{obj=_G.ItemSocketingSocketButton} -- use module to create button
-		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, x2=3})
+		if not self.isClscBC then
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, x2=3})
+		else
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, x1=10, y1=-12, x2=-4, y2=30})
+			if self.modBtns then
+				self:skinCloseButton{obj=_G.ItemSocketingCloseButton, fType=ftype}
+			end
+		end
 
 		if self.modBtns then
+			if self.isClscBC then
+				this.Sockets = {_G.ItemSocketingSocket1, _G.ItemSocketingSocket2, _G.ItemSocketingSocket3}
+			end
 			for _, socket in _G.ipairs(this.Sockets) do
 				socket:DisableDrawLayer("BACKGROUND")
 				socket:DisableDrawLayer("BORDER")
