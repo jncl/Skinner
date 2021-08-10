@@ -2528,7 +2528,6 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 		skinFollowerList(this.ShipFollowerList)
 		skinFollowerTraitsAndEquipment(this.ShipFollowerTab)
 		if _G.C_Garrison.GetLandingPageGarrisonType() == _G.Enum.GarrisonType.Type_9_0 then
-			this.CovenantCallings:DisableDrawLayer("BACKGROUND")
 			local function skinPanelBtns(panel)
 				panel:DisableDrawLayer("BACKGROUND")
 				aObj:skinObject("frame", {obj=panel.RenownButton, fType=ftype, regions={3, 5, 6}, ofs=-4, y1=-5, y2=3})
@@ -2546,6 +2545,12 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 				end)
 			else
 				skinPanelBtns(this.SoulbindPanel)
+			end
+			self:nilTexture(this.CovenantCallings.Background, true)
+			self:nilTexture(this.CovenantCallings.Decor, true)
+			if _G.C_ArdenwealdGardening.IsGardenAccessible() then
+				self:nilTexture(self:getRegion(this.ArdenwealdGardeningPanel, 1), true)
+				self:nilTexture(self:getChild(this.ArdenwealdGardeningPanel, 1).Border, true)
 			end
 		end
 		this.HeaderBar:SetTexture(nil)
