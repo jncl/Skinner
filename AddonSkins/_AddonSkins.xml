@@ -112,6 +112,7 @@
 <Script file="LibExtraTip.lua"/>
 <Script file="LibInit.lua"/>
 <Script file="LibKeyBound.lua"/>
+<Script file="LibMSATutorials.lua"/>
 <Script file="LibQTip.lua"/>
 <Script file="LibScrollingTable.lua"/>
 <Script file="LibSushi.lua"/>
