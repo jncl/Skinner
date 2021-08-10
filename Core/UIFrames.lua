@@ -5223,8 +5223,8 @@ aObj.blizzLoDFrames[ftype].PlayerChoice = function(self)
 	if not self.prdb.PlayerChoice or self.initialized.PlayerChoice then return end
 	self.initialized.PlayerChoice = true
 
-	local optionOffsets = {
-		[0]   = {x1 = -5, y1 = 0, x2 = 5, y2 = -30}, -- defaults
+	local optOfs = {
+		[0]   = {-5, 0, 5, -30}, -- defaults
 		-- [89]  = {}, -- WoD Strategic Assault Choice [Alliance] (Lunarfall) √
 		-- [138] = {}, -- WoD Strategic Assault Choice [Horde] (Frostwall) √
 		-- [203] = {}, -- Tanaan Battle Plan [Alliance] (Lion's Watch) √
@@ -5233,23 +5233,24 @@ aObj.blizzLoDFrames[ftype].PlayerChoice = function(self)
 		-- [285] = {}, -- Legion Artifact Weapon Choice (Last Aritfact Weapon) √
 		-- [342] = {}, -- Warchief's Command Board [Horde] √
 		-- [505] = {}, -- Hero's Call Board [Alliance] √
+		-- [611] = {}, -- Torghast
 		-- [640] = {}, -- Ember Court Entertainments List [Venthyr] (Hips) √
 		-- [641] = {}, -- Ember Court Refreshments List [Venthyr] (Picky Stefan) √
 		-- [653] = {}, -- Ember Court Invitation list [Venthyr] (Lord Garridan) √
 		-- [667] = {}, -- Shadowlands Experience (Threads of Fate) √
-		[998] = {x1 = -28, y1 = 48, x2 = 28, y2 = -48}, -- Covenant Selection (Oribos) [Enlarged] √
-		[999] = {x1 = -4, y1 = 4, x2 = 4, y2 = -4}, -- Covenant Selection (Oribos) [Standard] √
+		[998] = {-28, 48, 28, -48}, -- Covenant Selection (Oribos) [Enlarged] √
+		[999] = {-4, 4, 4, -4}, -- Covenant Selection (Oribos) [Standard] √
 	}
 
-	local defTab, ooTab, x1Ofs, y1Ofs, x2Ofs, y2Ofs = optionOffsets[0]
+	local x1Ofs, y1Ofs, x2Ofs, y2Ofs
 	local function resizeSF(frame, idx)
 		-- aObj:Debug("resizeSF: [%s, %s]", frame, idx)
-		ooTab = optionOffsets[idx] or {}
-		x1Ofs, y1Ofs, x2Ofs, y2Ofs = ooTab.x1 or defTab.x1, ooTab.y1 or defTab.y1, ooTab.x2 or defTab.x2, ooTab.y2 or defTab.y2
+		x1Ofs, y1Ofs, x2Ofs, y2Ofs = _G.unpack(optOfs[idx])
 		-- aObj:Debug("PCUI offsets: [%s, %s, %s, %s]", x1Ofs, y1Ofs, x2Ofs, y2Ofs)
 		frame.sf:ClearAllPoints()
 		frame.sf:SetPoint("TOPLEFT",frame, "TOPLEFT", x1Ofs, y1Ofs)
 		frame.sf:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", x2Ofs, y2Ofs)
+		x1Ofs, y1Ofs, x2Ofs, y2Ofs = nil, nil, nil, nil
 	end
 	local skinBtns
 	if self.modBtns then
@@ -5308,16 +5309,16 @@ aObj.blizzLoDFrames[ftype].PlayerChoice = function(self)
 					aObj:skinObject("frame", {obj=opt, fType=ftype, fb=true, clr="grey"})
 					resizeSF(opt, 999)
 					-- hook these to handle size changes on mouseover (used in Oribos for covenant choice)
-					self:SecureHook(opt, "OnUpdate", function(this, _) -- used for first time enlargement
+					aObj:SecureHook(opt, "OnUpdate", function(this, _) -- used for first time enlargement
 						if _G.RegionUtil.IsDescendantOfOrSame(GetMouseFocus(), this) then
 							resizeSF(opt, 998)
 						end
-						self:Unhook(opt, "OnUpdate")
+						aObj:Unhook(opt, "OnUpdate")
 					end)
-					self:secureHook(opt, "OnEnter", function(this)
+					aObj:secureHook(opt, "OnEnter", function(this)
 						resizeSF(opt, 998)
 					end)
-					self:secureHook(opt, "OnLeave", function(this)
+					aObj:secureHook(opt, "OnLeave", function(this)
 						resizeSF(opt, 999)
 					end)
 				elseif this.optionFrameTemplate == "PlayerChoiceTorghastOptionTemplate" then
