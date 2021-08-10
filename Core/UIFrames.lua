@@ -5988,6 +5988,12 @@ aObj.blizzLoDFrames[ftype].Soulbinds = function(self)
 				-- .Lists / .Sections
 					-- CategoryButton
 						-- Container
+		if self.modBtns then
+			for _, frame in _G.ipairs(this.ConduitList.ScrollBox:GetFrames()) do
+				self:getRegion(frame.CategoryButton.Container, 1):SetTexture(nil)
+				self:skinStdButton{obj=frame.CategoryButton, fType=ftype, ofs=1, clr="sepia"}
+			end
+		end
 		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ofs=-5, clr="sepia"})
 		if self.modBtns then
 			self:skinCloseButton{obj=this.CloseButton, fType=ftype, noSkin=true}
