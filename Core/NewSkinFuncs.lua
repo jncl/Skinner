@@ -51,6 +51,7 @@ aObj.skinTPLs = {
 		-- x2          = 0,
 		-- y2          = 4,
 		chginset	= true,
+		inset		= 5,
 	},
 	frame = {
 		name		= nil, -- use a name if required (VuhDo Options)
@@ -411,7 +412,7 @@ local function skinEditBox(tbl)
 	elseif tbl.chginset then
 		-- move left text insert
 		local l, r, t, b = tbl.obj:GetTextInsets()
-		tbl.obj:SetTextInsets(l + 5, r, t, b)
+		tbl.obj:SetTextInsets(l + tbl.inset, r, t, b)
 		l, r, t, b = nil, nil, nil, nil
 	end
 	aObj:getRegion(tbl.obj, 2):SetAlpha(1) -- cursor texture
