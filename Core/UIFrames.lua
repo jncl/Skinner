@@ -4235,6 +4235,8 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 	end
 
 	if self.prdb.MainMenuBar.skin then
+		self:keepFontStrings(_G.StanceBarFrame)
+		self:keepFontStrings(_G.PetActionBarFrame)
 		if not self.isClsc then
 			_G.MainMenuBarArtFrame.LeftEndCap:SetTexture(nil)
 			_G.MainMenuBarArtFrame.RightEndCap:SetTexture(nil)
@@ -4267,8 +4269,6 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 			_G.ReputationWatchBar.StatusBar:DisableDrawLayer("ARTWORK")
 			self:skinStatusBar{obj=_G.ReputationWatchBar.StatusBar, fi=0, bgTex=_G.ReputationWatchBar.StatusBar.Background}
 		end
-		self:keepFontStrings(_G.StanceBarFrame)
-		self:keepFontStrings(_G.PetActionBarFrame)
 		if self.modBtnBs then
 			for _, btn in _G.pairs(_G.StanceBarFrame.StanceButtons) do
 				self:addButtonBorder{obj=btn, abt=true, sec=true} -- N.B. uses SecureFrameTemplate
@@ -4292,18 +4292,6 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 			self:addButtonBorder{obj=_G.CharacterBag1Slot, ibt=true, ofs=3}
 			self:addButtonBorder{obj=_G.CharacterBag2Slot, ibt=true, ofs=3}
 			self:addButtonBorder{obj=_G.CharacterBag3Slot, ibt=true, ofs=3}
-			if not self.isClsc then
-				for i = 1, _G.NUM_POSSESS_SLOTS do
-					self:addButtonBorder{obj=_G["PossessButton" .. i], abt=true, sec=true} -- N.B. uses SecureFrameTemplate
-				end
-				self:addButtonBorder{obj=_G.MultiCastSummonSpellButton, abt=true, sabt=true, ofs=5}
-				self:addButtonBorder{obj=_G.MultiCastRecallSpellButton, abt=true, sabt=true, ofs=5}
-				for i = 1, _G.NUM_MULTI_CAST_PAGES * _G.NUM_MULTI_CAST_BUTTONS_PER_PAGE do
-					self:addButtonBorder{obj=_G["MultiCastActionButton" .. i], abt=true, sabt=true, ofs=5}
-				end
-			else
-				self:addButtonBorder{obj=_G.KeyRingButton, ofs=2, clr="grey"}
-			end
 			for _, type in _G.pairs{"BottomLeft", "BottomRight", "Right", "Left"} do
 				local btn
 				for i = 1, _G.NUM_MULTIBAR_BUTTONS do
@@ -4317,6 +4305,18 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 					self:addButtonBorder{obj=btn, abt=true, sabt=true, ofs=3}
 				end
 				btn = nil
+			end
+			if not self.isClsc then
+				for i = 1, _G.NUM_POSSESS_SLOTS do
+					self:addButtonBorder{obj=_G["PossessButton" .. i], abt=true, sec=true} -- N.B. uses SecureFrameTemplate
+				end
+				self:addButtonBorder{obj=_G.MultiCastSummonSpellButton, abt=true, sabt=true, ofs=5}
+				self:addButtonBorder{obj=_G.MultiCastRecallSpellButton, abt=true, sabt=true, ofs=5}
+				for i = 1, _G.NUM_MULTI_CAST_PAGES * _G.NUM_MULTI_CAST_BUTTONS_PER_PAGE do
+					self:addButtonBorder{obj=_G["MultiCastActionButton" .. i], abt=true, sabt=true, ofs=5}
+				end
+			else
+				self:addButtonBorder{obj=_G.KeyRingButton, ofs=2, clr="grey"}
 			end
 		end
 	end
