@@ -1,3 +1,29 @@
+beta9.39658.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Updated GuildControlUI skin
+	Classic PTR changes
+	Updated KeyRing button code in ClassicSupport
+	Updated skinTooltip code
+	Updated NSF
+	Bugfix for GuildRegistrar skin
+	Updated BagginsBBC Options code
+	Updated ItemSocketingUI skin
+	Updated MinimapButtons skin
+	Updated Minimap skin
+	Updated IOF skin
+	Added button skinning checks
+	Updated Utility functions to check texture names
+	Renamed function from changeRecTex to changeTex
+	Updated CheckBox skin
+	Use FileDataIDs instead of texture paths
+	tektip
+	Updated CovenantMissionHelper, PetTracker & ZygorGuidesViewer skins
+	Skinned Immersion & Journalator
+	Obsoleted tektip
+	
 beta9.39497.1
 Jncl:
 	ToDo.txt
