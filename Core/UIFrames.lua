@@ -548,7 +548,7 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 		end
 		frame.Icon:DisableDrawLayer("BORDER")
 		frame.Icon:DisableDrawLayer("OVERLAY")
-		aObj:skinObject("frame", {obj=frame, fType=ftype, ofs=0})
+		aObj:skinObject("frame", {obj=frame, fType=ftype, ofs=0, y1=frame.Shield and -15 or -8, y2=frame.Shield and 10 or 5}) -- adjust if Achievement Alert
 		if aObj.modBtnBs then
 			aObj:addButtonBorder{obj=frame.Icon, relTo=frame.Icon.Texture}
 		end
