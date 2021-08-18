@@ -3913,12 +3913,6 @@ aObj.blizzFrames[ftype].LFGList = function(self)
 		self:skinSlider{obj=av.ScrollFrame.scrollBar, wdth=-4}
 		self:removeMagicBtnTex(av.RemoveEntryButton)
 		self:removeMagicBtnTex(av.EditButton)
-		if self.modBtnBs then
-			 self:addButtonBorder{obj=av.RefreshButton, ofs=-2}
-		end
-		if self.modChkBtns then
-			 self:skinCheckButton{obj=av.AutoAcceptButton}
-		end
 		if self.modBtns then
 			for _, btn in _G.pairs(av.ScrollFrame.buttons) do
 				self:skinStdButton{obj=btn.DeclineButton}
@@ -3926,6 +3920,12 @@ aObj.blizzFrames[ftype].LFGList = function(self)
 			end
 			self:skinStdButton{obj=av.RemoveEntryButton}
 			self:skinStdButton{obj=av.EditButton}
+		end
+		if self.modBtnBs then
+			 self:addButtonBorder{obj=av.RefreshButton, ofs=-2}
+		end
+		if self.modChkBtns then
+			 self:skinCheckButton{obj=av.AutoAcceptButton}
 		end
 		av = nil
 
@@ -3952,18 +3952,18 @@ aObj.blizzFrames[ftype].LFGList = function(self)
 		self:skinEditBox{obj=ec.VoiceChat.EditBox, regs={6}, mi=true} -- 6 is text
 		self:removeMagicBtnTex(ec.ListGroupButton)
 		self:removeMagicBtnTex(ec.CancelButton)
-		if self.modChkBtns then
-			self:skinCheckButton{obj=ec.ItemLevel.CheckButton}
-			self:skinCheckButton{obj=ec.HonorLevel.CheckButton}
-			self:skinCheckButton{obj=ec.VoiceChat.CheckButton}
-			self:skinCheckButton{obj=ec.PrivateGroup.CheckButton}
-		end
 		if self.modBtns then
 			self:skinStdButton{obj=ec.ListGroupButton}
 			self:skinStdButton{obj=ec.CancelButton}
 			self:SecureHook("LFGListEntryCreation_UpdateValidState", function(this)
 				self:clrBtnBdr(this.ListGroupButton)
 			end)
+		end
+		if self.modChkBtns then
+			self:skinCheckButton{obj=ec.ItemLevel.CheckButton}
+			self:skinCheckButton{obj=ec.HonorLevel.CheckButton}
+			self:skinCheckButton{obj=ec.VoiceChat.CheckButton}
+			self:skinCheckButton{obj=ec.PrivateGroup.CheckButton}
 		end
 		ec = nil
 
