@@ -18,12 +18,12 @@ local buildInfo = {
 	classic_beta = {"2.5.1", 39170},
 	classic_ptr  = {"2.5.2", 39658},
 	retail_ptr   = {"9.1.0", 39653},
-	-- Live - Classic
+	-- Live - Classic versions
 	classic_bc   = {"2.5.1", 39603},
 	classic_era  = {"1.13.7", 39605},
-	-- Live
+	-- Live - Retail version
 	retail       = {"9.1.0", 39653},
-	--
+	-- Currently playing version
 	curr         = {_G.GetBuildInfo()},
 }
 function aObj:checkVersion()
