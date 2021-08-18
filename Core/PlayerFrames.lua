@@ -3070,7 +3070,6 @@ aObj.blizzLoDFrames[ftype].ItemSocketingUI = function(self)
 
 	self:SecureHookScript(_G.ItemSocketingFrame, "OnShow", function(this)
 		self:skinObject("slider", {obj=_G.ItemSocketingScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
-		self.modUIBtns:skinStdButton{obj=_G.ItemSocketingSocketButton} -- use module to create button
 		if not self.isClscBC then
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, x2=3})
 		else
@@ -3079,15 +3078,13 @@ aObj.blizzLoDFrames[ftype].ItemSocketingUI = function(self)
 				self:skinCloseButton{obj=_G.ItemSocketingCloseButton, fType=ftype}
 			end
 		end
-
 		if self.modBtns then
-			if self.isClscBC then
-				this.Sockets = {_G.ItemSocketingSocket1, _G.ItemSocketingSocket2, _G.ItemSocketingSocket3}
-			end
+			self:skinStdButton{obj=_G.ItemSocketingSocketButton, fType=ftype}
+			this.Sockets = this.Sockets or {_G.ItemSocketingSocket1, _G.ItemSocketingSocket2, _G.ItemSocketingSocket3}
 			for _, socket in _G.ipairs(this.Sockets) do
 				socket:DisableDrawLayer("BACKGROUND")
 				socket:DisableDrawLayer("BORDER")
-				self:addSkinButton{obj=socket, ft=ftype}
+				self:skinObject("button", {obj=socket, fType=ftype, bd=10, ng=true}) -- ≈ fb option for frame
 			end
 			local function colourSockets()
 				local numSockets, clr = _G.GetNumSockets()
