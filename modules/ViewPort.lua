@@ -19,7 +19,7 @@ local defaults = {
 	}
 }
 
-local vpoF, texAreas = nil, {"top", "btm", "left", "right"}
+local texAreas, vpoF = {"top", "btm", "left", "right"}
 local function checkOverlay(scale)
 
 	if db.shown then
@@ -56,16 +56,15 @@ local function checkOverlay(scale)
 				local tex = aObj.LSM:Fetch("background", db.texfile ~= "None" and db.texfile or db.texture ~= "None" and db.texture)
 				for _, area in _G.pairs(texAreas) do
 					-- the texture will be stretched if the following tiling methods are set to false
-					vpoF[area]:SetHorizTile(db.tile and true or nil)
-					vpoF[area]:SetVertTile(db.tile and true or nil)
+					vpoF[area]:SetHorizTile(db.tile and true)
+					vpoF[area]:SetVertTile(db.tile and true)
 					vpoF[area]:SetTexture(tex, db.tile, db.tile)
 				end
 				tex = nil
 			else
-				vpoF.top:SetColorTexture(db.colour.r, db.colour.g, db.colour.b, db.colour.a)
-				vpoF.btm:SetColorTexture(db.colour.r, db.colour.g, db.colour.b, db.colour.a)
-				vpoF.left:SetColorTexture(db.colour.r, db.colour.g, db.colour.b, db.colour.a)
-				vpoF.right:SetColorTexture(db.colour.r, db.colour.g, db.colour.b, db.colour.a)
+				for _, area in _G.pairs(texAreas) do
+					vpoF[area]:SetColorTexture(db.colour.r, db.colour.g, db.colour.b, db.colour.a)
+				end
 			end
 			-- show the overlay frame
 			vpoF:Show()
@@ -120,12 +119,6 @@ function module:OnEnable()
 end
 
 function module:adjustViewPort(opt)
-
-	-- handle in combat
-	if _G.InCombatLockdown() then
-	    aObj:add2Table(aObj.oocTab, {self.adjustViewPort, {self, opt}})
-	    return
-	end
 
 	local scale = _G.UIParent:GetEffectiveScale()
 
