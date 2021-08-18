@@ -5228,11 +5228,12 @@ aObj.blizzLoDFrames[ftype].PlayerChoice = function(self)
 		-- [285] = {}, -- Legion Artifact Weapon Choice (Last Aritfact Weapon) √
 		-- [342] = {}, -- Warchief's Command Board [Horde] √
 		-- [505] = {}, -- Hero's Call Board [Alliance] √
-		-- [611] = {}, -- Torghast
+		-- [611] = {}, -- Torghast Option (inside Toghast) √
 		-- [640] = {}, -- Ember Court Entertainments List [Venthyr] (Hips) √
 		-- [641] = {}, -- Ember Court Refreshments List [Venthyr] (Picky Stefan) √
 		-- [653] = {}, -- Ember Court Invitation list [Venthyr] (Lord Garridan) √
 		-- [667] = {}, -- Shadowlands Experience (Threads of Fate) √
+		-- [671] = {}, -- Torghast Option (outside Toghast) √
 		[998] = {-28, 48, 28, -48}, -- Covenant Selection (Oribos) [Enlarged] √
 		[999] = {-4, 4, 4, -4}, -- Covenant Selection (Oribos) [Standard] √
 	}
@@ -5247,14 +5248,64 @@ aObj.blizzLoDFrames[ftype].PlayerChoice = function(self)
 		frame.sf:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", x2Ofs, y2Ofs)
 		x1Ofs, y1Ofs, x2Ofs, y2Ofs = nil, nil, nil, nil
 	end
-	local skinBtns
-	if self.modBtns then
-		function skinBtns(array)
-			for btn in array.buttonPool:EnumerateActive() do
-				-- DON'T skin magnifying glass button
-				if btn:GetText() ~= "Preview Covenant" then
-					aObj:skinStdButton{obj=btn}
+	local function skinOptions(source)
+		aObj:Debug("skinOptions PCUI: [%s, %s, %s, %s]", source, this.uiTextureKit, this.optionFrameTemplate)
+		if not this.optionFrameTemplate then return end
+		this.sf:SetShown(not this.optionFrameTemplate:find("Torghast"))
+		for opt in this.optionPools:EnumerateActiveByTemplate(this.optionFrameTemplate) do
+			opt.OptionText.String:SetTextColor(self.BT:GetRGB())
+			opt.OptionText.HTML:SetTextColor(self.BT:GetRGB())
+			if aObj.modBtns then
+				for btn in opt.OptionButtonsContainer.buttonPool:EnumerateActive() do
+					-- DON'T skin magnifying glass button
+					if btn:GetText() ~= "Preview Covenant" then
+						aObj:skinStdButton{obj=btn}
+					end
 				end
+			end
+			if this.optionFrameTemplate == "PlayerChoiceNormalOptionTemplate" then
+				opt.Background:SetTexture(nil)
+				opt.ArtworkBorder:SetTexture(nil)
+				opt.Header.Ribbon:SetTexture(nil)
+				opt.Header.Contents.Text:SetTextColor(self.HT:GetRGB())
+				opt.SubHeader.BG:SetTexture(nil)
+				opt.SubHeader.Text:SetTextColor(self.HT:GetRGB())
+				for reward in opt.Rewards.rewardsPool:EnumerateActive() do
+					if reward.Name then
+						reward.Name:SetTextColor(self.BT:GetRGB())
+					elseif reward.Text then
+						reward.Text:SetTextColor(self.BT:GetRGB())
+					end
+					if aObj.modBtnBs then
+						if reward.Icon then
+							aObj:addButtonBorder{obj=reward, fType=ftype, relTo=reward.Icon, reParent={reward.Count}}
+						elseif reward.itemButton then
+							aObj:addButtonBorder{obj=reward.itemButton, fType=ftype, ibt=true}
+						end
+					end
+				end
+				aObj:skinObject("frame", {obj=opt, fType=ftype, fb=true, clr="grey"})
+				resizeSF(opt, 0)
+			elseif this.optionFrameTemplate == "PlayerChoiceCovenantChoiceOptionTemplate" then
+				opt.BackgroundShadowSmall:SetTexture(nil)
+				opt.BackgroundShadowLarge:SetTexture(nil)
+				aObj:skinObject("frame", {obj=opt, fType=ftype, fb=true, clr="grey"})
+				resizeSF(opt, 999)
+				-- hook these to handle size changes on mouseover (used in Oribos for covenant choice)
+				aObj:SecureHook(opt, "OnUpdate", function(this, _) -- used for first time enlargement
+					if _G.RegionUtil.IsDescendantOfOrSame(GetMouseFocus(), this) then
+						resizeSF(opt, 998)
+					end
+					aObj:Unhook(opt, "OnUpdate")
+				end)
+				aObj:secureHook(opt, "OnEnter", function(this)
+					resizeSF(opt, 998)
+				end)
+				aObj:secureHook(opt, "OnLeave", function(this)
+					resizeSF(opt, 999)
+				end)
+			elseif this.optionFrameTemplate == "PlayerChoiceTorghastOptionTemplate" then
+				opt.Header.Text:SetTextColor(self.HT:GetRGB())
 			end
 		end
 	end
@@ -5264,67 +5315,7 @@ aObj.blizzLoDFrames[ftype].PlayerChoice = function(self)
 		this.Background:DisableDrawLayer("BACKGROUND")
 		this.Title:DisableDrawLayer("BACKGROUND")
 		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true, cbns=true, clr="sepia", ofs=0})
-
-		local function skinOptions(source)
-			this.sf:SetShown(not _G.IsInJailersTower())
-			local pci = _G.C_PlayerChoice.GetPlayerChoiceInfo()
-			-- aObj:Debug("skinOptions PCUI: [%s, %s, %s, %s]", source, this.uiTextureKit, pci.choiceID, this.optionFrameTemplate)
-			for opt in this.optionPools:EnumerateActiveByTemplate(this.optionFrameTemplate) do
-				opt.OptionText.String:SetTextColor(self.BT:GetRGB())
-				opt.OptionText.HTML:SetTextColor(self.BT:GetRGB())
-				if aObj.modBtns then
-					skinBtns(opt.OptionButtonsContainer)
-				end
-				if this.optionFrameTemplate == "PlayerChoiceNormalOptionTemplate" then
-					opt.Background:SetTexture(nil)
-					opt.ArtworkBorder:SetTexture(nil)
-					opt.Header.Ribbon:SetTexture(nil)
-					opt.Header.Contents.Text:SetTextColor(self.HT:GetRGB())
-					opt.SubHeader.BG:SetTexture(nil)
-					opt.SubHeader.Text:SetTextColor(self.HT:GetRGB())
-					for reward in opt.Rewards.rewardsPool:EnumerateActive() do
-						if reward.Name then
-							reward.Name:SetTextColor(self.BT:GetRGB())
-						elseif reward.Text then
-							reward.Text:SetTextColor(self.BT:GetRGB())
-						end
-						if aObj.modBtnBs then
-							if reward.Icon then
-								aObj:addButtonBorder{obj=reward, fType=ftype, relTo=reward.Icon, reParent={reward.Count}}
-							elseif reward.itemButton then
-								aObj:addButtonBorder{obj=reward.itemButton, fType=ftype, ibt=true}
-							end
-						end
-					end
-					aObj:skinObject("frame", {obj=opt, fType=ftype, fb=true, clr="grey"})
-					resizeSF(opt, 0)
-				elseif this.optionFrameTemplate == "PlayerChoiceCovenantChoiceOptionTemplate" then
-					opt.BackgroundShadowSmall:SetTexture(nil)
-					opt.BackgroundShadowLarge:SetTexture(nil)
-					aObj:skinObject("frame", {obj=opt, fType=ftype, fb=true, clr="grey"})
-					resizeSF(opt, 999)
-					-- hook these to handle size changes on mouseover (used in Oribos for covenant choice)
-					aObj:SecureHook(opt, "OnUpdate", function(this, _) -- used for first time enlargement
-						if _G.RegionUtil.IsDescendantOfOrSame(GetMouseFocus(), this) then
-							resizeSF(opt, 998)
-						end
-						aObj:Unhook(opt, "OnUpdate")
-					end)
-					aObj:secureHook(opt, "OnEnter", function(this)
-						resizeSF(opt, 998)
-					end)
-					aObj:secureHook(opt, "OnLeave", function(this)
-						resizeSF(opt, 999)
-					end)
-				elseif this.optionFrameTemplate == "PlayerChoiceTorghastOptionTemplate" then
-					opt.Header.Text:SetTextColor(self.HT:GetRGB())
-				end
-			end
-			pci = nil
-		end
-			
 		skinOptions("Initial")
-		
 		self:SecureHook(this, "SetupOptions", function(this)
 			skinOptions("SetupOptions")
 		end)
