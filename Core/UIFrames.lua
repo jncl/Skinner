@@ -6010,13 +6010,9 @@ aObj.blizzLoDFrames[ftype].SubscriptionInterstitialUI = function(self)
 	self.initialized.SubscriptionInterstitialUI = true
 
 	self:SecureHookScript(_G.SubscriptionInterstitialFrame, "OnShow", function(this)
-		this:DisableDrawLayer("BACKGROUND")
-		this.ShadowOverlay:DisableDrawLayer("OVERLAY")
-		-- .SubscribeButton
-		-- .UpgradeButton
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, rns=true, ofs=1, x2=2}
+		self:skinObject("frame", {obj=this, fType=ftype, ri=true, rns=true, cb=true, ofs=1, x2=2})
 		if self.modBtns then
-			self:skinStdButton{obj=this.ClosePanelButton}
+			self:skinStdButton{obj=this.ClosePanelButton, fType=ftype}
 		end
 
 		self:Unhook(this, "OnShow")
