@@ -23,40 +23,18 @@ ToDos
 
 ≈	O	Refactor NewSkinFuncs in Blizzard/AddOn skins
 
-	I	PetTracker, reported by Galthariel, 05.08.21
-x?		- Rivals Tab is not skinned.
+	I	PlayerChoice, reported by Fakelessgaming, 18.08.21
+√		- Skinner\Core\UIFrames.lua:5252: attempt to index global 'this' (a nil value)
+		[string "@Skinner\Core\UIFrames.lua"]:5252: in function <Skinner\Core\UIFrames.lua:5251>
+		[string "@Skinner\Core\UIFrames.lua"]:5318: in function <Skinner\Core\UIFrames.lua:5312>
 		
-	I/B	reported by 아련별, 05.08.21
-√		- Skinner\Core\PlayerFrames.lua:3077: bad argument #1 to 'ipairs' (table expected, got nil)
-		[string "=[C]"]: in function `ipairs'
-		[string "@Skinner\Core\PlayerFrames.lua"]:3077: in function <Skinner\Core\PlayerFrames.lua:3071>
+	I/B	MSATutorials, reported by 아련별
+√		- Skinner\Core\NewSkinFuncs.lua:395: attempt to index field 'obj' (a nil value)
+		[string "@Skinner\Core\NewSkinFuncs.lua"]:420: in function `?'
+		[string "@Skinner\Core\NewSkinFuncs.lua"]:173: in function `skinObject'
+		[string "@Skinner\AddonSkins\LibMSATutorials.lua"]:15: in function `skinFrame'
+		[string "@Skinner\AddonSkins\LibMSATutorials.lua"]:39: in function <Skinner\AddonSkins\LibMSATutorials.lua:5>
 		
-	I	PlayerChoice, reported by Galthariel, 05.08.21
-x		- AnimaPowers unable to be selected in combat.
-
-	I	ZGV, reported by merthalde, 06.08.21
-√		- ...face\AddOns\Skinner\AddonSkins\ZygorGuidesViewer-8.0.lua:91: attempt to index field 'ddTex' (a nil value)
-		[string "@Interface\AddOns\ner\AddonSkins\ZygorGuidesViewer-8.0.lua"]:91: in function <...face\AddOns\Skinner\AddonSkins\ZygorGuidesViewer.lua:88>
-
-	I	TipTac, reported by Smekolini, 06.07.21
-x?		- Item Tooltips not skinned, differences between Retail & Classic, possibly caused by using TSM or ElvUI?
-?		- Issue is with BC version (TipTac AddOn has the issue)
-
-	I	BattlePetBattleUITweaks, reported by Acivien, 09.08.21
-√		- ...ddOns\Skinner\AddonSkins\BattlePetBattleUITweaks-2.0.4.lua:11: <unnamed>:SetParent(): Cannot set a 'nil' parent for fonts or textures
-		[string "@Skinner\AddonSkins\BattlePetBattleUITweaks-2.0.4.lua"]:11: in function `skinElements'
-		[string "@Skinner\AddonSkins\BattlePetBattleUITweaks-2.0.4.lua"]:32: in function <...ddOns\Skinner\AddonSkins\BattlePetBattleUITweaks.lua:5>
-
-	I	Kaliel's Tracker, reported by Galthariel, 09.08.21
-x		- possibly causing PetTracker Rivals Tab/Frame to not be skinned
-
-	I	Viewport, reported by panzartankk, 13.08.21
-x		- The viewport disappears on Sylvanas transition from P1 into (with the cinematic) P2, but then fixes itself when the fight ends. This doesn't seem to throw any errors and have googled endlessly trying to fix this before posting this bug. 
-
-	I	ItemSocketingUI, reported by 아련별, 14.08.21
-√		- Skinner\Core\PlayerFrames.lua:3077: bad argument #1 to 'ipairs' (table expected, got nil)
-		[string "=[C]"]: in function `ipairs'
-		[string "@Skinner\Core\PlayerFrames.lua"]:3077: in function <Skinner\Core\PlayerFrames.lua:3071>
+	I/B	Altoholic, reported by 아련별
+√		- Errors as reported before, Retail has new version only
 		
-√	N	Altoholic, reported by Shimiya, 15.08.21
-	
