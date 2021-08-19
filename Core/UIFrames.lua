@@ -5200,13 +5200,13 @@ aObj.blizzLoDFrames[ftype].PlayerChoice = function(self)
 		frame.sf:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", x2Ofs, y2Ofs)
 		x1Ofs, y1Ofs, x2Ofs, y2Ofs = nil, nil, nil, nil
 	end
-	local function skinOptions(source)
-		aObj:Debug("skinOptions PCUI: [%s, %s, %s, %s]", source, this.uiTextureKit, this.optionFrameTemplate)
-		if not this.optionFrameTemplate then return end
-		this.sf:SetShown(not this.optionFrameTemplate:find("Torghast"))
-		for opt in this.optionPools:EnumerateActiveByTemplate(this.optionFrameTemplate) do
-			opt.OptionText.String:SetTextColor(self.BT:GetRGB())
-			opt.OptionText.HTML:SetTextColor(self.BT:GetRGB())
+	local function skinOptions(frame, source)
+		-- aObj:Debug("skinOptions PCUI: [%s, %s, %s, %s]", source, frame.uiTextureKit, frame.optionFrameTemplate)
+		if not frame.optionFrameTemplate then return end
+		frame.sf:SetShown(not frame.optionFrameTemplate:find("Torghast"))
+		for opt in frame.optionPools:EnumerateActiveByTemplate(frame.optionFrameTemplate) do
+			opt.OptionText.String:SetTextColor(aObj.BT:GetRGB())
+			opt.OptionText.HTML:SetTextColor(aObj.BT:GetRGB())
 			if aObj.modBtns then
 				for btn in opt.OptionButtonsContainer.buttonPool:EnumerateActive() do
 					-- DON'T skin magnifying glass button
@@ -5215,18 +5215,18 @@ aObj.blizzLoDFrames[ftype].PlayerChoice = function(self)
 					end
 				end
 			end
-			if this.optionFrameTemplate == "PlayerChoiceNormalOptionTemplate" then
+			if frame.optionFrameTemplate == "PlayerChoiceNormalOptionTemplate" then
 				opt.Background:SetTexture(nil)
 				opt.ArtworkBorder:SetTexture(nil)
 				opt.Header.Ribbon:SetTexture(nil)
-				opt.Header.Contents.Text:SetTextColor(self.HT:GetRGB())
+				opt.Header.Contents.Text:SetTextColor(aObj.HT:GetRGB())
 				opt.SubHeader.BG:SetTexture(nil)
-				opt.SubHeader.Text:SetTextColor(self.HT:GetRGB())
+				opt.SubHeader.Text:SetTextColor(aObj.HT:GetRGB())
 				for reward in opt.Rewards.rewardsPool:EnumerateActive() do
 					if reward.Name then
-						reward.Name:SetTextColor(self.BT:GetRGB())
+						reward.Name:SetTextColor(aObj.BT:GetRGB())
 					elseif reward.Text then
-						reward.Text:SetTextColor(self.BT:GetRGB())
+						reward.Text:SetTextColor(aObj.BT:GetRGB())
 					end
 					if aObj.modBtnBs then
 						if reward.Icon then
@@ -5238,7 +5238,7 @@ aObj.blizzLoDFrames[ftype].PlayerChoice = function(self)
 				end
 				aObj:skinObject("frame", {obj=opt, fType=ftype, fb=true, clr="grey"})
 				resizeSF(opt, 0)
-			elseif this.optionFrameTemplate == "PlayerChoiceCovenantChoiceOptionTemplate" then
+			elseif frame.optionFrameTemplate == "PlayerChoiceCovenantChoiceOptionTemplate" then
 				opt.BackgroundShadowSmall:SetTexture(nil)
 				opt.BackgroundShadowLarge:SetTexture(nil)
 				aObj:skinObject("frame", {obj=opt, fType=ftype, fb=true, clr="grey"})
@@ -5256,8 +5256,8 @@ aObj.blizzLoDFrames[ftype].PlayerChoice = function(self)
 				aObj:secureHook(opt, "OnLeave", function(this)
 					resizeSF(opt, 999)
 				end)
-			elseif this.optionFrameTemplate == "PlayerChoiceTorghastOptionTemplate" then
-				opt.Header.Text:SetTextColor(self.HT:GetRGB())
+			elseif frame.optionFrameTemplate == "PlayerChoiceTorghastOptionTemplate" then
+				opt.Header.Text:SetTextColor(aObj.HT:GetRGB())
 			end
 		end
 	end
@@ -5267,9 +5267,9 @@ aObj.blizzLoDFrames[ftype].PlayerChoice = function(self)
 		this.Background:DisableDrawLayer("BACKGROUND")
 		this.Title:DisableDrawLayer("BACKGROUND")
 		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true, cbns=true, clr="sepia", ofs=0})
-		skinOptions("Initial")
+		skinOptions(this, "Initial")
 		self:SecureHook(this, "SetupOptions", function(this)
-			skinOptions("SetupOptions")
+			skinOptions(this, "SetupOptions")
 		end)
 
 		self:Unhook(this, "OnShow")
