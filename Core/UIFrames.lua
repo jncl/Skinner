@@ -639,18 +639,16 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 	end
 
 	local function skinDCSAlertFrames(opts)
-
 		opts.obj:DisableDrawLayer("BORDER")
 		opts.obj:DisableDrawLayer("OVERLAY")
 		opts.obj.dungeonTexture:SetDrawLayer("ARTWORK") -- move Dungeon texture above skinFrame
 		aObj:addSkinFrame{obj=opts.obj, ft=ftype, ofs=opts.ofs or -8, y1=opts.y1 or nil}
-		if self.modBtnBs then
+		if aObj.modBtnBs then
 			-- wait for animation to finish
 			_G.C_Timer.After(0.2, function()
 				aObj:addButtonBorder{obj=opts.obj, relTo=opts.obj.dungeonTexture}
 			end)
 		end
-
 	end
 	-- called params: frame, challengeType, count, max ("Raid", 2, 5)
 	self:SecureHook(_G.GuildChallengeAlertSystem, "setUpFunction", function(frame, _)
@@ -816,16 +814,6 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 		end
 		-- run the hooked function
 		self.hooks[this].AddAlertFrame(this, frame)
-		-- -- adjust size if guild achievement
-		-- if self:hasTextInName(frame, "AchievementAlertFrame") then
-		-- 	local y1, y2 = -10, 12
-		-- 	 		if frame.guildDisplay then
-		-- 		y1, y2 = -8, 8
-		-- 	end
-		-- 	frame.sf:SetPoint("TOPLEFT", frame, "TOPLEFT", 5, y1)
-		-- 	frame.sf:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", 5, y2)
-		-- 	y1, y2 = nil, nil
-		-- end
 	end, true)
 
 	-- hook this to remove rewardFrame rings
