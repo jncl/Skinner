@@ -2,24 +2,31 @@ local _, aObj = ...
 local _G = _G
 -- This is a Library
 
-aObj.libsToSkin["MSA-Tutorials-1.0"] = function(self) -- v 4
+aObj.libsToSkin["MSA-Tutorials-1.0"] = function(self) -- v 4/8
 	if self.initialized["MSA-Tutorials-1.0"] then return end
 	self.initialized["MSA-Tutorials-1.0"] = true
 
-	local tut = _G.LibStub:GetLibrary("MSA-Tutorials-1.0", true)
+	local tut, ver = _G.LibStub:GetLibrary("MSA-Tutorials-1.0", true)
 	if tut then
 		local function skinFrame(frame)
-			frame:DisableDrawLayer("BACKGROUND")
-			frame:DisableDrawLayer("BORDER")
-			frame.portrait:SetTexture(nil)
-			aObj:skinObject("editbox", {obj=frame.editbox})
-			aObj:skinObject("frame", {obj=frame, ri=true, rns=true, cb=true, x1=-3, x2=3})
+			if ver == 8 then
+				for _, eb in _G.pairs(frame.editboxes) do
+					aObj:skinObject("editbox", {obj=eb})
+				end
+			else
+				aObj:skinObject("editbox", {obj=frame.editbox})
+			end
+			aObj:skinObject("frame", {obj=frame, kfs=true, ri=true, rns=true, cb=true, x1=-3, x2=3})
+			-- show tutorial image(s)
+			for _, img in _G.pairs(frame.images) do
+				img:SetAlpha(1)
+			end
 			if aObj.modBtns then
 				aObj:skinStdButton{obj=frame.button}
 			end
 			if aObj.modBtnBs then
-				aObj:addButtonBorder{obj=frame.prev, clr="gold",ofs=-2, x1=1}
-				aObj:addButtonBorder{obj=frame.next, clr="gold",ofs=-2, x1=1}
+				aObj:addButtonBorder{obj=frame.prev, ofs=-2, x1=1, clr="gold"}
+				aObj:addButtonBorder{obj=frame.next, ofs=-2, x1=1, clr="gold"}
 				aObj:SecureHook(frame.prev, "Disable", function(this, _)
 					aObj:clrBtnBdr(this, "gold")
 				end)
@@ -34,11 +41,9 @@ aObj.libsToSkin["MSA-Tutorials-1.0"] = function(self) -- v 4
 				end)
 			end
 		end
-		-- skin existing frames
 		for _, frame in _G.pairs(tut.frames) do
 			skinFrame(frame)
 		end
-		-- add mt to skin new ones ?
 	end
 
 end
