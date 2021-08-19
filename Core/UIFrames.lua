@@ -6621,21 +6621,6 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 			end)
 			getWidgets(widgetContainer)
 		end
-		-- --handle widgets in Instances/Scenarios
-		-- self.RegisterCallback("UIWidgetsUI", "Player_Entering_World", function(this)
-		-- 	-- name, instanceType, difficultyID, difficultyName, maxPlayers, dynamicDifficulty, isDynamic, instanceMapID, instanceGroupSize[, lfgDungeonsID] = GetInstanceInfo
-		-- 	aObj:Debug("PEW - InstanceInfo: [%s, %s, %s, %s, %s, %s, %s, %s, %s, %s]", _G.GetInstanceInfo())
-		--
-		-- 	-- handle the DoubleStatusBar widget on Island Expeditions
-		-- 	local ieCnt = getWidgets(_G.UIWidgetTopCenterContainerFrame)
-		-- 	-- handle ScenarioHeaderCurrenciesAndBackground
-		-- 	local shCnt = getWidgets(_G.ScenarioStageBlock.WidgetContainer)
-		-- 	if ieCnt > 0
-		-- 	and shCnt > 0 then
-		-- 		self.UnregisterCallback("UIWidgetsUI", "Player_Entering_World")
-		-- 	end
-		-- 	ieCnt, shCnt = nil, nil
-		-- end)
 	else
 		self:SecureHook(_G.UIWidgetManager, "CreateWidget", function(this, widgetID, _, widgetType)
 			skinWidget(this.widgetIdToFrame[widgetID], this.widgetVisTypeInfo[widgetType].visInfoDataFunction(widgetID))
