@@ -316,7 +316,6 @@ function aObj:checkLoadable(addonName)
 
 	local _, _, _, loadable, reason = _G.GetAddOnInfo(addonName)
 	-- local name, title, notes, loadable, reason, security, newVersion = _G.GetAddOnInfo(addonName)
-	-- aObj:Debug("checkLoadable: [%s, %s, %s, %s, %s, %s, %s]", name, title, notes, loadable, reason, security, newVersion)
 	if not loadable then
 		if self.prdb.Warnings then
 			self:CustomPrint(1, 0, 0, addonName, "not skinned, flagged as:", reason, "(cL)")
@@ -637,7 +636,6 @@ function aObj:hasTextInTexture(obj, text)
 	_G.assert(text, "Missing value hasTextInTexture\n" .. _G.debugstack(2, 3, 2))
 	--@end-alpha@
 
-	-- aObj:Debug("hasTextInTexture: [%s, %s]", obj.GetTexture and obj:GetTexture() )
 	return obj and obj.GetTexture and obj:GetTexture() and _G.tostring(obj:GetTexture()):find(text, 1, true) and true or false
 
 end
@@ -653,7 +651,6 @@ end
 function aObj:hookQuestText(btn)
 
 	self:rawHook(btn, "SetFormattedText", function(this, fmtString, text)
-		-- aObj:Debug("SetFormattedText: [%s, %s, %s]", this, fmtString, text)
 		if fmtString == _G.NORMAL_QUEST_DISPLAY then
 			fmtString = aObj.NORMAL_QUEST_DISPLAY
 		elseif fmtString == _G.TRIVIAL_QUEST_DISPLAY then
@@ -935,7 +932,6 @@ function aObj:removeColourCodes(text)
 	and text:find("\124") then
 		local newText = text:gsub("\124\99%x%x%x%x%x%x%x%x", "") -- remove colour code string prefix [7C 63 x x x x x x x x]
 		newText = newText:gsub("\124\108", "") -- remove colour code string suffix [7C 72]
-		-- aObj:Debug("removeColourCodes: [%s], [%s], [%s]", text, tohex(text), newText)
 		return newText, true
 	else
 		return text, false
@@ -1200,7 +1196,6 @@ function aObj:setupTextures()
 	self.tfBF      = _G.GetFileIDFromPath([[Interface\TargetingFrame\UI-TargetingFrame-BarFill]])
 	self.tMB       = _G.GetFileIDFromPath([[Interface\Minimap\Tracking\Mailbox]])
 	self.w8x8      = _G.GetFileIDFromPath([[Interface\Buttons\WHITE8X8]])
-	-- aObj:Debug("setupTextures: [%s, %s]", self.w8x8)
 			
 end
 
@@ -1258,7 +1253,6 @@ end
 function aObj:unwrapTextFromColourCode(text, sOfs, eOfs)
 
 	local newText = _G.gsub(text, "\124", "\124\124") -- turn Hex string into text
-	-- aObj:Debug("unwrapTextFromColourCode: [%s, %s, %s, %s]", text, newText, sOfs, eOfs)
 
 	if _G.strlen(newText) == _G.strlen(text) then return text end
 

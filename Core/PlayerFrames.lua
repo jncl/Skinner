@@ -575,7 +575,6 @@ aObj.blizzFrames[ftype].Buffs = function(self)
 		if not _G.BuffButton32 then
 			-- hook this to skin new Buffs
 			self:SecureHook("AuraButton_Update", function(buttonName, index, _)
-				-- aObj:Debug("AuraButton_Update: [%s, %s, %s]", buttonName, index, filter)
 				if buttonName == "BuffButton" then
 					skinBuffBtn(_G[buttonName .. index])
 				end
@@ -831,7 +830,6 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 
 	self:SecureHookScript(_G.MountJournal, "OnShow", function(this)
 		local function updBtnClr(btn)
-			-- aObj:Debug("updBtnClr: [%s, %s, %s, %s, %s]", btn.name:GetText(), btn.icon:GetAlpha(), btn.icon:GetVertexColor())
 			local r, g, b = btn.icon:GetVertexColor()
 			btn.sbb:SetBackdropBorderColor(r, g, b, btn.icon:GetAlpha())
 			r, g, b = nil, nil, nil
@@ -3520,7 +3518,6 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 	updTrackerModules() -- update any existing modules
 	-- hook this to handle new modules & displaying the ObjectiveTrackerFrame BlocksFrame skin frame
 	self:SecureHook("ObjectiveTracker_Update", function(_)
-		-- aObj:Debug("ObjectiveTracker_Update: [%s, %s]", reason, id)
 		updTrackerModules()
 		if _G.ObjectiveTrackerFrame.BlocksFrame.sf then
 			_G.ObjectiveTrackerFrame.BlocksFrame.sf:SetShown(_G.ObjectiveTrackerFrame.HeaderMenu:IsShown())

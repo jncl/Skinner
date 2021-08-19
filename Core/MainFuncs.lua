@@ -831,7 +831,6 @@ function aObj:skinGlowBox(gBox, ftype)
 	self:Debug2("skinGlowBox: [%s, %s]", gBox, ftype)
 
 	local function removeArrowGlowTex(gBox)
-		-- aObj:Debug("removeArrowGlowTex: [%s, %s]", gBox:GetNumChildren(), gBox:GetNumRegions())
 		if gBox.Glow then
 			gBox.Glow:SetTexture(nil)
 		elseif gBox.Arrow

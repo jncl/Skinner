@@ -91,11 +91,9 @@ local funcs = {
 aObj.ClassicSupport = function(self)
 
 	local function nilFunc(tabName, ltr, fName)
-		-- aObj:Debug("nilFunc: [%s, %s, %s]", tabName, ltr, fName)
 		aObj[tabName][ltr][fName] = nil
 	end
 	local function nilOpts(fType, fName)
-		-- aObj:Debug("nilOpts: [%s, %s]", fType, fName)
 		aObj.db.profile[fName] = nil
 		aObj.db.defaults.profile[fName] = nil
 		aObj.optTables[fType .. " Frames"].args[fName] = nil
@@ -104,9 +102,7 @@ aObj.ClassicSupport = function(self)
 		local ltr = fType:sub(1, 1):lower()
 		for _, tabName in _G.pairs{"blizzFrames", "blizzLoDFrames"} do
 			for fName, _ in _G.pairs(self[tabName][ltr]) do
-				-- aObj:Debug("type: [%s, %s]", fName, _G.type(funcs[fType][fName]))
 				if funcs[fType][fName] then
-					-- aObj:Debug("keep: [%s]", funcs[fType][fName].keep)
 					if not funcs[fType][fName].keep then
 						nilFunc(tabName, ltr, fName)
 					end

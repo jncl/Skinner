@@ -1133,7 +1133,6 @@ aObj.blizzFrames[ftype].QuestInfo = function(self)
 		end
 	end
 	local function updateQIDisplay(_)
-		-- aObj:Debug("updateQIDisplay")
 		local br, bg, bb = aObj.BT:GetRGB()
 		-- headers
 		_G.QuestInfoTitleHeader:SetTextColor(aObj.HT:GetRGB())

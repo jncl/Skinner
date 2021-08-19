@@ -219,7 +219,6 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 		else
 			x1Ofs, y1Ofs, x2Ofs, y2Ofs = 10, -2, -10, 7
 		end
-		-- aObj:Debug("skinMissionFrame: [%s, %s, %s, %s]", x1Ofs, y1Ofs, x2Ofs, y2Ofs)
 		mfTabSkin.offsets = {x1=x1Ofs, y1=aObj.isTT and 2 or y1Ofs, x2=x2Ofs, y2=aObj.isTT and 4 or y2Ofs}
 		aObj:skinObject(mfTabSkin)
 		x1Ofs, y1Ofs, x2Ofs, y2Ofs = nil, nil, nil, nil
@@ -568,7 +567,6 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 		skinACAlertFrames(frame)
 	end
 	local function skinLootAlert(frame, ...)
-		-- aObj:Debug("LootAlertSystem: [%s, %s]", frame, ...)
 		frame:DisableDrawLayer("BACKGROUND")
 		frame.lootItem.SpecRing:SetTexture(nil)
 		aObj:skinObject("frame", {obj=frame, fType=ftype, ofs=-10, y2=8})
@@ -595,7 +593,6 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 		skinLootFrames(frame)
 	end
 	local function skinLootUpgrade(frame)
-		-- aObj:Debug("LootUpgradeAlertSystem: [%s, %s, %s, %s, %s]", frame, ...)
 		frame:DisableDrawLayer("BACKGROUND")
 		aObj:addSkinFrame{obj=frame, ft=ftype, ofs=-10, y2=8}
 	end
@@ -607,7 +604,6 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 		skinLootUpgrade(frame)
 	end
 	local function skinMoneyorHonor(frame)
-		-- aObj:Debug("MoneyWon/HonorAwarded AlertSystem: [%s, %s]", frame, ...)
 		frame:DisableDrawLayer("BACKGROUND")
 		frame.IconBorder:SetTexture(nil)
 		aObj:addSkinFrame{obj=frame, ft=ftype, ofs=-8, y2=8}
@@ -630,7 +626,6 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 		skinMoneyorHonor(frame)
 	end
 	local function skinNewRecipe(frame)
-		-- aObj:Debug("NewRecipeLearnedAlertSystem: [%s, %s]", frame, ...)
 		frame:DisableDrawLayer("BACKGROUND")
 		frame.Icon:SetDrawLayer("BORDER")
 		aObj:addSkinFrame{obj=frame, ft=ftype, ofs=-8}
@@ -659,7 +654,6 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 	end
 	-- called params: frame, challengeType, count, max ("Raid", 2, 5)
 	self:SecureHook(_G.GuildChallengeAlertSystem, "setUpFunction", function(frame, _)
-		-- aObj:Debug("GuildChallengeAlertSystem: [%s, %s, %s, %s]", frame, ...)
 		frame:DisableDrawLayer("BACKGROUND")
 		frame:DisableDrawLayer("BORDER")
 		frame:DisableDrawLayer("OVERLAY")
@@ -667,18 +661,15 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 	end)
 	-- called params: frame, rewardData={name="Deceiver's Fall", iconTextureFile=1616157, subtypeID=3, moneyAmount=1940000, moneyBase=1940000, monetVar=0, experienceBase=0, experienceGained=0, experienceVar=0, numRewards=1, numStrangers=0, rewards={} }
 	self:SecureHook(_G.DungeonCompletionAlertSystem, "setUpFunction", function(frame, _)
-		-- aObj:Debug("DungeonCompletionAlertSystem: [%s, %s]", frame, rewardData)
 		skinDCSAlertFrames{obj=frame}
 	end)
 	-- called params: frame, rewardData={}
 	self:SecureHook(_G.ScenarioAlertSystem, "setUpFunction", function(frame, _)
-		-- aObj:Debug("ScenarioAlertSystem: [%s, %s]", frame, rewardData)
 		self:getRegion(frame, 1):SetTexture(nil) -- Toast-IconBG
 		skinDCSAlertFrames{obj=frame, ofs=-12}
 	end)
 	-- called params: frame, rewardQuestID, name, showBonusCompletion, xp, money (123456, "Test", true, 2500, 1234)
 	self:SecureHook(_G.InvasionAlertSystem, "setUpFunction", function(frame, _)
-		-- aObj:Debug("InvasionAlertSystem: [%s, %s, %s, %s, %s, %s]", frame, ...)
 		self:getRegion(frame, 1):SetTexture(nil) -- Background toast texture
 		self:getRegion(frame, 2):SetDrawLayer("ARTWORK") -- move icon to ARTWORK layer so it is displayed
 		aObj:addSkinFrame{obj=frame, ft=ftype, ofs=-8}
@@ -688,13 +679,11 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 	end)
 	-- called params: frame, raceName, raceTexture ("Demonic", "")
 	self:SecureHook(_G.DigsiteCompleteAlertSystem, "setUpFunction", function(frame, _)
-		-- aObj:Debug("DigsiteCompleteAlertSystem: [%s, %s, %s]", frame, ...)
 		frame:DisableDrawLayer("BACKGROUND")
 		self:addSkinFrame{obj=frame, ft=ftype, ofs=-10}
 	end)
 	-- called params: frame, type, icon, name, payloadID, showFancyToast
 	self:SecureHook(_G.EntitlementDeliveredAlertSystem, "setUpFunction", function(frame, _)
-		-- aObj:Debug("EntitlementDeliveredAlertSystem: [%s, %s, %s, %s, %s, %s]", frame, ...)
 		frame:DisableDrawLayer("BACKGROUND")
 		self:addSkinFrame{obj=frame, ft=ftype, ofs=-10}
 		if self.modBtnBs then
@@ -703,7 +692,6 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 	end)
 	-- called params: frame, type, icon, name, payloadID, showFancyToast
 	self:SecureHook(_G.RafRewardDeliveredAlertSystem, "setUpFunction", function(frame, _)
-		-- aObj:Debug("RafRewardDeliveredAlertSystem: [%s, %s, %s, %s, %s, %s]", frame, ...)
 		frame:DisableDrawLayer("BACKGROUND")
 		self:addSkinFrame{obj=frame, ft=ftype, ofs=-10}
 		if self.modBtnBs then
@@ -712,7 +700,6 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 	end)
 	-- called params: frame, name, garrisonType ("Menagerie", "")
 	self:SecureHook(_G.GarrisonBuildingAlertSystem, "setUpFunction", function(frame, _)
-		-- aObj:Debug("GarrisonBuildingAlertSystem: [%s, %s, %s]", frame, ...)
 		frame:DisableDrawLayer("BACKGROUND")
 		frame.Icon:SetDrawLayer("BORDER")
 		self:addSkinFrame{obj=frame, ft=ftype, ofs=-10}
@@ -722,27 +709,23 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 	end)
 	-- called params: frame, missionInfo=({name="Test", typeAtlas="", followerTypeID=LE_FOLLOWER_TYPE_GARRISON_7_0})
 	self:SecureHook(_G.GarrisonMissionAlertSystem, "setUpFunction", function(frame, _)
-		-- aObj:Debug("GarrisonMissionAlertSystem: [%s, %s]", frame, ...)
 		frame:DisableDrawLayer("BACKGROUND")
 		frame:DisableDrawLayer("BORDER")
 		self:addSkinFrame{obj=frame, ft=ftype, ofs=-10, y1=-8}
 	end)
 	-- called params: frame, missionInfo=({name="Test", typeAtlas="", followerTypeID=LE_FOLLOWER_TYPE_GARRISON_7_0})
 	self:SecureHook(_G.GarrisonShipMissionAlertSystem, "setUpFunction", function(frame, _)
-		-- aObj:Debug("GarrisonShipMissionAlertSystem: [%s, %s]", frame, ...)
 		frame:DisableDrawLayer("BACKGROUND")
 		self:addSkinFrame{obj=frame, ft=ftype, ofs=-10}
 	end)
 	-- called params: frame, missionInfo=({level=105, iLevel=875, isRare=true, followerTypeID=LE_FOLLOWER_TYPE_GARRISON_6_0})
 	self:SecureHook(_G.GarrisonRandomMissionAlertSystem, "setUpFunction", function(frame, _)
-		-- aObj:Debug("GarrisonRandomMissionAlertSystem: [%s, %s]", frame, ...)
 		frame:DisableDrawLayer("BACKGROUND")
 		frame.MissionType:SetDrawLayer("BORDER")
 		self:addSkinFrame{obj=frame, ft=ftype, ofs=-10}
 	end)
 	-- called params: frame, followerID, name, level, quality, isUpgraded, followerInfo={isTroop=, followerTypeID=, portraitIconID=, quality=, level=, iLevel=}
 	self:SecureHook(_G.GarrisonFollowerAlertSystem, "setUpFunction", function(frame, _)
-		-- aObj:Debug("GarrisonFollowerAlertSystem: [%s, %s, %s, %s, %s, %s, %s]", frame, ...)
 		frame:DisableDrawLayer("BACKGROUND")
 		frame.PortraitFrame.PortraitRing:SetTexture(nil)
 		self:nilTexture(frame.PortraitFrame.LevelBorder, true)
@@ -751,14 +734,12 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 	end)
 	-- called params: frame, followerID, name, class, texPrefix, level, quality, isUpgraded, followerInfo={}
 	self:SecureHook(_G.GarrisonShipFollowerAlertSystem, "setUpFunction", function(frame, _)
-		-- aObj:Debug("GarrisonShipFollowerAlertSystem: [%s, %s, %s, %s, %s, %s, %s, %s, %s]", frame, ...)
 		frame:DisableDrawLayer("BACKGROUND")
 		self:nilTexture(frame.FollowerBG, true)
 		self:addSkinFrame{obj=frame, ft=ftype, ofs=-8}
 	end)
 	-- called params: frame, garrisonType, talent={icon=""}
 	self:SecureHook(_G.GarrisonTalentAlertSystem, "setUpFunction", function(frame, _)
-		-- aObj:Debug("GarrisonTalentAlertSystem: [%s, %s, %s]", frame, ...)
 		frame:DisableDrawLayer("BACKGROUND")
 		frame.Icon:SetDrawLayer("BORDER")
 		self:addSkinFrame{obj=frame, ft=ftype, ofs=-10}
@@ -768,7 +749,6 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 	end)
 	-- called params: frame, questData (1234)
 	self:SecureHook(_G.WorldQuestCompleteAlertSystem, "setUpFunction", function(frame, _)
-		-- aObj:Debug("WorldQuestCompleteAlertSystem: [%s, %s]", frame, ...)
 		frame.QuestTexture:SetDrawLayer("ARTWORK")
 		frame:DisableDrawLayer("BORDER") -- toast texture
 		self:addSkinFrame{obj=frame, ft=ftype, ofs=-6, y1=-10}
@@ -778,7 +758,6 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 	end)
 	-- called params: frame, itemLink (137080)
 	self:SecureHook(_G.LegendaryItemAlertSystem, "setUpFunction", function(frame, _)
-		-- aObj:Debug("LegendaryItemAlertSystem: [%s, %s]", frame, ...)
 		frame.Background:SetTexture(nil)
 		frame.Background2:SetTexture(nil)
 		frame.Background3:SetTexture(nil)
@@ -795,7 +774,6 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 	end
 	-- called params: frame, petID
 	self:SecureHook(_G.NewPetAlertSystem, "setUpFunction", function(frame, _)
-		-- aObj:Debug("NewPetAlertSystem: [%s, %s]", frame, ...)
 		skinQueuedAlert(frame)
 	end)
 	for frame in _G.NewPetAlertSystem.alertFramePool:EnumerateActive() do
@@ -803,7 +781,6 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 	end
 	-- called params: frame, mountID
 	self:SecureHook(_G.NewMountAlertSystem, "setUpFunction", function(frame, _)
-		-- aObj:Debug("NewMountAlertSystem: [%s, %s]", frame, ...)
 		skinQueuedAlert(frame)
 	end)
 	for frame in _G.NewMountAlertSystem.alertFramePool:EnumerateActive() do
@@ -811,7 +788,6 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 	end
 	-- called params: frame, toyID
 	self:SecureHook(_G.NewToyAlertSystem, "setUpFunction", function(frame, _)
-		-- aObj:Debug("NewToyAlertSystem: [%s, %s]", frame, ...)
 		skinQueuedAlert(frame)
 	end)
 	for frame in _G.NewToyAlertSystem.alertFramePool:EnumerateActive() do
@@ -819,7 +795,6 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 	end
 	-- called params: frame, powerID
 	self:SecureHook(_G.NewRuneforgePowerAlertSystem, "setUpFunction", function(frame, _)
-		-- aObj:Debug("NewRuneforgePowerAlertSystem: [%s, %s]", frame, ...)
 		skinQueuedAlert(frame)
 	end)
 	for frame in _G.NewRuneforgePowerAlertSystem.alertFramePool:EnumerateActive() do
@@ -828,13 +803,11 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 
 	-- hook this to stop gradient texture whiteout
 	self:RawHook(_G.AlertFrame, "AddAlertFrame", function(this, frame)
-		-- aObj:Debug("AlertFrame AddAlertFrame: [%s, %s]", this, frame)
 		if _G.IsAddOnLoaded("Overachiever") then
 			local ocScript = frame:GetScript("OnClick")
 			if ocScript
 			and ocScript == _G.OverachieverAlertFrame_OnClick
 			then
-				-- aObj:Debug("AF Overachiever Alert detected")
 				-- stretch icon texture
 				frame.Icon.Texture:SetTexCoord(-0.04, 0.75, 0.0, 0.555)
 				skinACAlertFrames(frame)
@@ -2284,7 +2257,6 @@ aObj.blizzLoDFrames[ftype].DebugTools = function(self)
 				aObj:clrBtnBdr(frame.OpenParentButton)
 			end)
 			aObj:SecureHook(frame, "UpdateTableNavigation", function(this, _)
-				-- aObj:Debug("UpdateTableNavigation")
 				if frame.NavigateBackwardButton:IsEnabled() then
 					frame.NavigateBackwardButton:SetText(aObj.larrow)
 				else
@@ -2366,7 +2338,6 @@ aObj.blizzFrames[ftype].EventToastManager = function(self)
 
 	local function skinToasts(frame)
 		for toast in frame.eventToastPools:EnumerateActive() do
-			-- aObj:Debug("DisplayToast Enum: [%s, %s]", toast)
 			toast:DisableDrawLayer("BORDER")
 			if toast.BannerFrame then
 				toast.BannerFrame:DisableDrawLayer("BACKGROUND")
@@ -2379,7 +2350,6 @@ aObj.blizzFrames[ftype].EventToastManager = function(self)
 		end
 	end
 	self:SecureHook(_G.EventToastManagerFrame, "DisplayToast", function(this, firstToast)
-		-- aObj:Debug("DisplayToast: [%s, %s]", this, firstToast)
 		skinToasts(this)
 	end)
 	skinToasts(_G.EventToastManagerFrame)
@@ -2714,7 +2684,6 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 
 	-- hook these to skin mission rewards & OvermaxItem
     self:SecureHook("GarrisonMissionPage_SetReward", function(frame, _)
-		-- aObj:Debug("GMP_SR: [%s, %s, %s]", frame, reward, missionComplete)
         frame.BG:SetTexture(nil)
 		if self.modBtnBs then
 			self:addButtonBorder{obj=frame, relTo=frame.Icon, reParent={frame.Quantity}, ofs=_G.Round(frame:GetWidth()) ~= 24 and 2 or nil}
@@ -2722,7 +2691,6 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 		end
     end)
 	self:SecureHook("GarrisonMissionButton_SetRewards", function(obj, _)
-		-- aObj:Debug("GMB_SRs: [%s, %s, %s]", obj, rewards, cnt)
 		for _, btn in _G.pairs(obj.Rewards) do
 			self:removeRegions(btn, {1}) -- background shadow
 			if self.modBtnBs then
@@ -4501,7 +4469,6 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 		local objName, objType
 		for _, obj in _G.ipairs{mmObj:GetChildren()} do
 			objName, objType = obj:GetName(), obj:GetObjectType()
-			-- aObj:Debug("mmKids: [%s, %s, %s, %s, %s]", objName, objType, obj:GetNumRegions(), obj:GetSize())
 			if not ignBtn[obj]
 			and obj ~= obj:GetParent().sf -- skinFrame
 			and obj ~= obj:GetParent().sb -- skinButton
@@ -4669,10 +4636,8 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 
 	-- skin other minimap buttons
 	local function skinMMBtn(_, btn, _)
-		-- aObj:Debug("skinMMBtn#1: [%s, %s, %s]", cb, btn, name)
 		for _, reg in _G.ipairs{btn:GetRegions()} do
 			if reg:GetObjectType() == "Texture" then
-				-- aObj:Debug("skinMMBtn#2: [%s, %s, %s]", reg, reg:GetName(), reg:GetTexture())
 				if aObj:hasTextInName(reg, "Border")
 				or aObj:hasTextInTexture(reg, "TrackingBorder")
 				or aObj:hasTextInTexture(reg, "136430") -- file ID for Border texture
@@ -4806,7 +4771,6 @@ aObj.blizzFrames[ftype].Nameplates = function(self)
 		    aObj:add2Table(aObj.oocTab, {skinNamePlate, {frame}})
 		    return
 		end
-		-- aObj:Debug("skinNamePlate: [%s, %s, %s]", frame, frame.template)
 		local nP = frame.UnitFrame
 		if nP then
 			nP.healthBar.border:DisableDrawLayer("ARTWORK")
@@ -6274,7 +6238,6 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 
 		-- hook this to prevent Gradient overlay when tooltip reshown
 		self:HookScript(tTip, "OnUpdate", function(this)
-			-- aObj:Debug("tTip OnUpdate: [%s, %s]", this, this.ItemTooltip)
 			self:skinTooltip(this)
 		end)
 
@@ -6519,9 +6482,7 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 	end
 	local function setTextColor(textObject)
 		self:rawHook(textObject, "SetTextColor", function(this, r, g, b, a)
-			-- aObj:Debug("textObject SetTextColor: [%s, %s, %s, %s, %s]", this, r, g, b, a)
 			local tcr, tcg, tcb = aObj:round2(r, 2), aObj:round2(g, 2), aObj:round2(b, 2)
-			-- aObj:Debug("SetTextColor: [%s, %s, %s, %s, %s]", this:GetText(), tcr, tcg, tcb)
 			if (tcr == 0.41 or tcr == 0.28 and tcg == 0.02 and tcb == 0.02) -- Red
 			or (tcr == 0.08 and tcg == 0.17 or tcg == 0.16 and tcb == 0.37) -- Blue
 			-- or (tcr == 0.19 and tcg == 0.05 and tcb == 0.01) -- WarboardUI
@@ -6561,14 +6522,12 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 				aObj:removeRegions(wFrame.Bar, {5, 6, 7}) -- border textures
 			else
 				if not disableTypeBySZ[wFrame.widgetType][SZ] then
-					-- aObj:Debug("skinWidget#1: [%s, %s]", wFrame.Bar:GetNumRegions(), aObj.sbGlazed[wFrame.Bar])
 					if not aObj.sbGlazed[wFrame.Bar] then -- if not already skinned
 						aObj:keepFontStrings(wFrame.Bar)
 						if wFrame.isJailersTowerBar then
 							aObj:getRegion(wFrame.Bar, 13):SetAlpha(1) -- Progress texture
 							aObj:getRegion(wFrame.Bar, 14):SetAlpha(1) -- Pointer texture
 							aObj:skinStatusBar{obj=wFrame.Bar, fi=0, nilFuncs=true}
-							-- aObj:Debug("skinWidget#2: [%s, %s]", wFrame.Bar:GetNumRegions(), aObj.sbGlazed[wFrame.Bar])
 						end
 					end
 				end	
@@ -6654,27 +6613,22 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 				count = count + 1
 				skinWidget(widget, _G.UIWidgetManager:GetWidgetTypeInfo(widget.widgetType))
 			end
-			-- aObj:Debug("getWidgets: [%s, %s]", widgetContainer, count)
 			return count
 		end
 		-- hook this to skin new widgets
 		self:SecureHook(_G.UIWidgetManager, "OnWidgetContainerRegistered", function(this, widgetContainer)
-			-- aObj:Debug("UIWM OnWidgetContainerRegistered: [%s, %s]", this, widgetContainer)
 			self:SecureHook(widgetContainer, "UpdateWidgetLayout", function(this)
-				-- aObj:Debug("UpdateWidgetLayout: [%s, %s]", this)
 				getWidgets(this)
 			end)
 			getWidgets(widgetContainer)
 		end)
 		self:SecureHook(_G.UIWidgetManager, "OnWidgetContainerUnregistered", function(this, widgetContainer)
-			-- aObj:Debug("UIWM OnWidgetContainerUnregistered: [%s, %s]", this, widgetContainer)
 			self:Unhook(widgetContainer, "UpdateWidgetLayout")
 		end)
 		-- handle existing WidgetContainers
 		for widgetContainer, _ in _G.pairs(_G.UIWidgetManager.registeredWidgetContainers) do
 			-- getWidgets(widgetContainer)
 			self:SecureHook(widgetContainer, "UpdateWidgetLayout", function(this)
-				-- aObj:Debug("UpdateWidgetLayout: [%s, %s]", this)
 				getWidgets(this)
 			end)
 			getWidgets(widgetContainer)

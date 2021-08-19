@@ -94,7 +94,6 @@ local function __checkTex(opts)
 	if not btn then return end -- allow for unskinned buttons
 	local nTex = opts.nTex or opts.obj:GetNormalTexture() and opts.obj:GetNormalTexture():GetTexture() or nil
 
-	-- aObj:Debug("__checkTex: [%s, %s, %s]", nTex, opts.obj.onSB, btn)
 	local header = false
 	if nTex	then
 		if _G.tonumber(nTex) then
@@ -167,7 +166,6 @@ function module:chgHLTex(obj, hTex)
 
 	if hTex then
 		local hTexFile = hTex:GetTexture()
-		-- aObj:Debug("chgHLTex: [%s, %s]", obj, hTexFile)
 		if hTexFile then
 			local clr
 			if _G.tonumber(hTexFile) then
@@ -211,7 +209,6 @@ function module:clrButtonFromBorder(btn, texture)
 	 --@end-alpha@
 
 	local iBdr = btn.IconBorder or btn.iconBorder or btn[texture]
-	-- aObj:Debug("UIB cBB: [%s, %s, %s, %s]", iBdr:IsShown(), iBdr:GetVertexColor())
 
 	iBdr:SetAlpha(1) -- ensure alpha is 1 otherwise btn.sbb isn't displayed
 	-- use the colour of the quality border as the BackdropBorderColor if shown
@@ -247,7 +244,6 @@ function module:isButton(obj)
 	and not obj.SetSlot -- and not a lootbutton
 	then
 		local oW, oH, nR = _G.Round(obj:GetWidth()), _G.Round(obj:GetHeight()), obj:GetNumRegions()
-		-- aObj:Debug("isButton: [%s, %s, %s, %s]", obj, oW, oH, nR)
 		if oH == 18 and oW == 18 and nR == 3 -- BNToast close button
 		then
 			bType = "toast"
@@ -617,7 +613,6 @@ local function __skinAllButtons(opts, bgen)
 	local bgen = bgen or opts.bgen or 5
 
 	for _, child in _G.ipairs{opts.obj:GetChildren()} do
-		-- aObj:Debug("__skinAllButtons: [%s, %s, %s, %s]", child, bgen, child:GetObjectType(), child:GetNumChildren())
 		if child:GetNumChildren() > 0
 		and bgen > 0
 		then

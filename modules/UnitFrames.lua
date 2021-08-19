@@ -380,7 +380,6 @@ function module:skinTargetF()
 
 			-- move level text down, so it is more visible
 			self:SecureHook("TargetFrame_UpdateLevelTextAnchor", function(this, targetLevel)
-				-- aObj:Debug("TF_ULTA: [%s, %s]", this, targetLevel)
 				this.levelText:SetPoint("CENTER", targetLevel == 100 and 61 or 62, -20 + lOfs)
 			end)
 
@@ -400,7 +399,6 @@ function module:skinTargetF()
 
 		-- hook this to show/hide the elite texture
 		self:SecureHook("TargetFrame_CheckClassification", function(frame, _)
-			-- aObj:Debug("TF_CC: [%s, %s]", frame, ...)
 			if frame == _G.TargetFrame
 			or (frame == _G.FocusFrame and db.focus)
 			and frame.ucTex
