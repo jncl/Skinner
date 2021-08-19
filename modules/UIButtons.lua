@@ -74,6 +74,8 @@ local texSuffixes = {
 	["ZoomOutButton"] = "minus",
 	["_Open"]         = "minus",
 }
+
+local btn, nTex
 local function __checkTex(opts)
 --[[
 	Calling parameters:
@@ -90,9 +92,9 @@ local function __checkTex(opts)
 	if opts.obj:GetPushedTexture() then opts.obj:GetPushedTexture():SetAlpha(0) end
 	if opts.obj:GetDisabledTexture() then opts.obj:GetDisabledTexture():SetAlpha(0) end
 
-	local btn = opts.obj.onSB and opts.obj.sb or opts.obj
-	if not btn then return end -- allow for unskinned buttons
-	local nTex = opts.nTex or opts.obj:GetNormalTexture() and opts.obj:GetNormalTexture():GetTexture() or nil
+	btn = opts.obj.onSB and opts.obj.sb or opts.obj
+	if not btn then return end -- handle unskinned buttons
+	nTex = opts.nTex or opts.obj:GetNormalTexture() and opts.obj:GetNormalTexture():GetTexture() or nil
 
 	local header = false
 	if nTex	then
@@ -605,7 +607,9 @@ local function __skinAllButtons(opts, bgen)
 		other options as per skinButton
 --]]
 	--@alpha@
-	 _G.assert(opts.obj, "Missing object__sAB\n" .. _G.debugstack(2, 3, 2))
+	_G.assert(opts.obj, "Missing object__sAB\n" .. _G.debugstack(2, 3, 2))
+	-- handle AddOn skins still using this code 
+	aObj:CustomPrint(1, 0, 0, "Using deprecated function - skinAllButtons", opts.obj)
 	 --@end-alpha@
 	if not opts.obj then return end
 
