@@ -2,7 +2,7 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("Altoholic") then return end
 local _G = _G
 
-if aObj.isRetail then
+if aObj.isRtl then
 	aObj.addonsToSkin.Altoholic = function(self) -- v 9.1.002
 
 		self:SecureHookScript(_G.AltoholicFrame, "OnShow", function(this)

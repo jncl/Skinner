@@ -35,11 +35,11 @@ function aObj:checkVersion()
 	self.isClscPTR  = agentUID == "wow_classic_ptr" and true
 	self.isClscBC   = agentUID == "wow_classic" and true
 	self.isClscERA  = agentUID == "wow_classic_era" and true
-	self.isRetBeta  = agentUID == "wow_beta" and true
-	self.isRetPTR   = agentUID == "wow_ptr" and true
-	self.isRet      = agentUID == "wow" and true
+	self.isRtlBeta  = agentUID == "wow_beta" and true
+	self.isRtlPTR   = agentUID == "wow_ptr" and true
+	self.isRtl      = agentUID == "wow" and true
 
-	-- aObj:Debug("checkVersion: [%s, %s, %s, %s, %s, %s, %s]", self.isClscBeta, self.isClscPTR, self.isClscBC, self.isClsc, self.isRetBeta, self.isRetPTR, self.isRet)
+	-- aObj:Debug("checkVersion: [%s, %s, %s, %s, %s, %s, %s]", self.isClscBeta, self.isClscPTR, self.isClscBC, self.isClsc, self.isRtlBeta, self.isRtlPTR, self.isRtl)
 
 	-- check current build number against Classic Beta, if greater then it's a patch
 	self.isPatch = self.isPatch or self.isClscBeta and _G.tonumber(buildInfo.curr[2]) > _G.tonumber(buildInfo.classic_beta[2])
@@ -50,14 +50,14 @@ function aObj:checkVersion()
 	-- check current build number against Classic, if greater then it's a patch
 	self.isPatch = self.isPatch or self.isClscERA and _G.tonumber(buildInfo.curr[2]) > _G.tonumber(buildInfo.classic_era[2])
 	-- check current build number against Retail Beta, if greater then it's a patch
-	self.isPatch = self.isPatch or self.isRetBeta and _G.tonumber(buildInfo.curr[2]) > _G.tonumber(buildInfo.retail_beta[2])
+	self.isPatch = self.isPatch or self.isRtlBeta and _G.tonumber(buildInfo.curr[2]) > _G.tonumber(buildInfo.retail_beta[2])
 	-- check current build number against Retail PTR, if greater then it's a patch
-	self.isPatch = self.isPatch or self.isRetPTR and _G.tonumber(buildInfo.curr[2]) > _G.tonumber(buildInfo.retail_ptr[2])
+	self.isPatch = self.isPatch or self.isRtlPTR and _G.tonumber(buildInfo.curr[2]) > _G.tonumber(buildInfo.retail_ptr[2])
 	-- check current build number against Retail, if greater then it's a patch
-	self.isPatch = self.isPatch or self.isRet and _G.tonumber(buildInfo.curr[2]) > _G.tonumber(buildInfo.retail[2])
+	self.isPatch = self.isPatch or self.isRtl and _G.tonumber(buildInfo.curr[2]) > _G.tonumber(buildInfo.retail[2])
 
 	--@alpha@
-	local vType = self.isClscBeta and "Classic_Beta" or self.isClscPTR and "Classic_PTR" or self.isClscBC and "Classic_BC" or self.isClscERA and "Classic_ERA" or self.isRetBeta and "Retail_Beta" or self.isRetPTR and "Retail_PTR" or "Retail"
+	local vType = self.isClscBeta and "Classic_Beta" or self.isClscPTR and "Classic_PTR" or self.isClscBC and "Classic_BC" or self.isClscERA and "Classic_ERA" or self.isRtlBeta and "Retail_Beta" or self.isRtlPTR and "Retail_PTR" or "Retail"
 	self:Printf("%s, %d, %s, %d, %s, %d, %s", buildInfo[vType:lower()][1], buildInfo[vType:lower()][2], buildInfo.curr[1], buildInfo.curr[2], buildInfo.curr[3], buildInfo.curr[4] , agentUID)
 	vType = self.isPatch and vType .. " (Patched)" or vType
 	_G.DEFAULT_CHAT_FRAME:AddMessage(aName .. ": Detected that we're running on a " .. vType .. " version", 0.75, 0.5, 0.25, nil, true)
@@ -73,10 +73,10 @@ function aObj:checkVersion()
 	self.isClsc     = self.isClscERA or self.isClscBC
 	-- handle Beta changes in PTR or Live
 	self.isClscBeta = self.isClscBeta or self.isClscPTR and buildInfo.curr[1] > buildInfo.classic_ptr[1]
-	self.isRetBeta  = self.isRetBeta or self.isRetPTR and buildInfo.curr[1] > buildInfo.retail_ptr[1]
+	self.isRtlBeta  = self.isRtlBeta or self.isRtlPTR and buildInfo.curr[1] > buildInfo.retail_ptr[1]
 	-- handle PTR changes going Live
 	self.isClscPTR  = self.isClscPTR or self.isPatch and self.isClscBC and buildInfo.curr[1] > buildInfo.classic_bc[1]
-	self.isRetPTR   = self.isRetPTR or self.isPatch and self.isRet and buildInfo.curr[1] > buildInfo.retail[1]
+	self.isRtlPTR   = self.isRtlPTR or self.isPatch and self.isRtl and buildInfo.curr[1] > buildInfo.retail[1]
 
 	buildInfo = nil
 

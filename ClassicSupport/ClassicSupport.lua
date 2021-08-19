@@ -74,7 +74,7 @@ local funcs = {
 		MovieFrame = {keep = true, keepOpts = true},
 		Nameplates = {keep = true, keepOpts = true},
 		ProductChoiceFrame = {keep = true, keepOpts = true},
-		PTRFeedback = (not aObj.isRet or aObj.isClsc) and {keep = true, keepOpts = true},
+		PTRFeedback = (not aObj.isRtl or aObj.isClsc) and {keep = true, keepOpts = true},
 		RaidFrame = {keep = false, keepOpts = true},
 		StaticPopups = {keep = true, keepOpts = true},
 		SystemOptions = {keep = true, keepOpts = true},

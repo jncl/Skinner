@@ -2181,7 +2181,7 @@ local function skinETFrame()
 		aObj:skinObject("scrollbar", {obj=this.Log.Events.ScrollBar, fType=ftype, x1=0, x2=0})
 		aObj:skinObject("scrollbar", {obj=this.Log.Search.ScrollBar, fType=ftype, x1=0, x2=0})
 		aObj:skinObject("scrollbar", {obj=this.Filter.ScrollBar, fType=ftype, x1=0, x2=0})
-		aObj:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, x2=aObj.isRet and 3 or 1})
+		aObj:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, x2=aObj.isRtl and 3 or 1})
 		if aObj.modBtns then
 			skinMenuBtn(this.SubtitleBar.ViewLog)
 			skinMenuBtn(this.SubtitleBar.ViewFilter)
