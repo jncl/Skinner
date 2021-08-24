@@ -547,7 +547,7 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 		end
 		frame.Icon:DisableDrawLayer("BORDER")
 		frame.Icon:DisableDrawLayer("OVERLAY")
-		aObj:skinObject("frame", {obj=frame, fType=ftype, ofs=0, y1=frame.Shield and -15 or -8, y2=frame.Shield and 10 or 5}) -- adjust if Achievement Alert
+		aObj:skinObject("frame", {obj=frame, fType=ftype, ofs=0, y1=frame.Shield and -15 or -8, y2=frame.Shield and 10 or 8}) -- adjust if Achievement Alert
 		if aObj.modBtnBs then
 			aObj:addButtonBorder{obj=frame.Icon, relTo=frame.Icon.Texture}
 		end
@@ -637,7 +637,6 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 	for frame in _G.NewRecipeLearnedAlertSystem.alertFramePool:EnumerateActive() do
 		skinNewRecipe(frame)
 	end
-
 	local function skinDCSAlertFrames(opts)
 		opts.obj:DisableDrawLayer("BORDER")
 		opts.obj:DisableDrawLayer("OVERLAY")
@@ -749,7 +748,7 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 	self:SecureHook(_G.WorldQuestCompleteAlertSystem, "setUpFunction", function(frame, _)
 		frame.QuestTexture:SetDrawLayer("ARTWORK")
 		frame:DisableDrawLayer("BORDER") -- toast texture
-		self:addSkinFrame{obj=frame, ft=ftype, ofs=-6, y1=-10}
+		self:skinObject("frame", {obj=frame, ofs=-6})
 		if self.modBtnBs then
 			self:addButtonBorder{obj=frame, relTo=frame.QuestTexture}
 		end
