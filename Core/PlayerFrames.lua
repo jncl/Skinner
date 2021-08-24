@@ -4530,22 +4530,20 @@ aObj.blizzLoDFrames[ftype].TradeSkillUI = function(self)
 		if self.modBtns then
 			self:skinStdButton{obj=cnts.RecipeLevelSelector, fType=ftype, ofs=0}
 		end
-		local btn
-		for i = 1, #cnts.Reagents do
-			btn = cnts.Reagents[i]
+		for _, btn in _G.pairs(cnts.Reagents) do
 			btn.NameFrame:SetTexture(nil)
 			if self.modBtnBs then
-				 self:addButtonBorder{obj=btn, relTo=btn.Icon, reParent={btn.Count}, clr="common"}
+				 self:addButtonBorder{obj=btn, libt=true, relTo=btn.Icon, reParent={btn.Count}, clr="common"}
 			end
 		end
-		for i = 1, #cnts.OptionalReagents do
-			btn = cnts.OptionalReagents[i]
+		-- TODO: Find out why border colour changes when optional reagent chosen and revert when remmoved
+		for _, btn in _G.pairs(cnts.OptionalReagents) do
 			btn.NameFrame:SetTexture(nil)
 			if self.modBtnBs then
-				 self:addButtonBorder{obj=btn, relTo=btn.Icon, reParent={btn.Count}, clr="green"}
+				 self:addButtonBorder{obj=btn, libt=true, relTo=btn.Icon, reParent={btn.Count}, clr="green"}
 			end
 		end
-		btn, cnts = nil, nil
+		cnts = nil
 		if self.modBtns then
 			self:skinStdButton{obj=this.DetailsFrame.ViewGuildCraftersButton, fType=ftype}
 			self:skinStdButton{obj=this.DetailsFrame.ExitButton, fType=ftype}
@@ -4579,7 +4577,7 @@ aObj.blizzLoDFrames[ftype].TradeSkillUI = function(self)
 			btn = nil
 			-- apply button changes
 			this:RefreshScrollFrame()
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, ofs=0})
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, ofs=0})
 			if self.modBtns then
 				self:skinStdButton{obj=this.CloseButton, fType=ftype}
 			end
