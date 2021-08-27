@@ -1,4 +1,4 @@
-local aName, aObj = ...
+local _, aObj = ...
 if not aObj:isAddonEnabled("WorldQuestTracker") then return end
 local _G = _G
 
@@ -8,7 +8,7 @@ aObj.addonsToSkin.WorldQuestTracker = function(self) -- v 9.0.2.414
 	_G.WorldQuestTrackerSummaryHeader.BlackBackground:SetTexture(nil)
 	_G.WorldQuestTrackerQuestsHeader.Background:SetTexture(nil)
 	if self.modBtnBs then
-		self:addButtonBorder{obj=_G.WorldQuestTrackerScreenPanel.MinimizeButton, shsh=true, es=12, ofs=0, x1=-1}
+		self:addButtonBorder{obj=_G.WorldQuestTrackerScreenPanel.MinimizeButton, es=12, ofs=0, x1=-1}
 	end
 
 	if self.modBtns then
