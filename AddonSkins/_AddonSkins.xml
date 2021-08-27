@@ -122,8 +122,8 @@
 <Script file="LibTradeSkillScan.lua"/>
 <Script file="LibUIDropDownMenu.lua"/>
 <Script file="LibXUI.lua"/>
-<Script file="LiteBag.lua"/>
 <Script file="LightHeaded.lua"/>
+<Script file="LiteBag.lua"/>
 <Script file="Livestock.lua"/>
 <Script file="ls_Toasts.lua"/>
 <Script file="LUI.lua"/>
@@ -173,6 +173,7 @@
 <Script file="RCLootCouncil.lua"/>
 <Script file="RecipeRadarClassic.lua"/>
 <Script file="Recount.lua"/>
+<Script file="ReEnhancedStackSplit.lua"/>
 <Script file="REFlex.lua"/>
 <Script file="Rematch.lua"/>
 <Script file="RepHelper.lua"/>
@@ -211,11 +212,11 @@
 <Script file="WhatsTraining.lua"/>
 <Script file="Wholly.lua"/>
 <Script file="WIM.lua"/>
-<Script file="WO_ezfriendslist.lua"/>
 <Script file="WorkOrdersComplete.lua"/>
 <Script file="WorldQuestTab.lua"/>
 <Script file="WorldQuestTracker.lua"/>
 <Script file="WoWPro.lua"/>
+<Script file="WO_ezfriendslist.lua"/>
 <Script file="XLoot.lua"/>
 <Script file="xMerchant.lua"/>
 <Script file="ZPerl.lua"/>
