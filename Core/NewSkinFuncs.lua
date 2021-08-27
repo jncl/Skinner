@@ -22,7 +22,6 @@ aObj.skinTPLs = {
 		sec         = false, -- use SecureFrameTemplate
 		sabt		= false, -- use SecureActionButtonTemplate
 		subt		= false, -- use SecureUnitButtonTemplate
-		-- shsh        = false, -- use SecureHandlerShowHideTemplate
 	},
 	dropdown= {
 		lrgTpl      = false,
