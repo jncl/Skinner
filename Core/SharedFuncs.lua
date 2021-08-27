@@ -13,70 +13,78 @@ function aObj:add2Table(table, value)
 end
 
 local buildInfo = {
-	-- In Development
-	-- retail_beta  = {"10.0.0", 99999},
-	classic_beta = {"2.5.1", 39170},
-	classic_ptr  = {"2.5.2", 39658},
-	retail_ptr   = {"9.1.0", 39653},
-	-- Live - Classic versions
-	classic_bc   = {"2.5.1", 39603},
-	classic_era  = {"1.13.7", 39605},
-	-- Live - Retail version
-	retail       = {"9.1.0", 39653},
-	-- Currently playing version
-	curr         = {_G.GetBuildInfo()},
+	-- Development
+	wow_classic_beta    = {"2.5.1", 39170, "Classic BC Beta"},
+	wow_classic_ptr     = {"2.5.2", 39926, "Classic BC PTR"},
+	wow_classic_era_ptr = {"1.13.7", 39605, "Classic Era PTR"},
+	wow_beta            = {"10.0.0", 99999, "Retail Beta"},
+	wow_ptr             = {"9.1.0", 39804, "Retail PTR"},
+	-- Live
+	wow_classic         = {"2.5.1", 39640, "Classic BC"},
+	wow_classic_era     = {"1.13.7", 39692, "Classic Era"},
+	wow                 = {"9.1.0", 39804, "Retail"},
+	-- Currently playing
+	curr                = {_G.GetBuildInfo()},
 }
 function aObj:checkVersion()
 
 	local agentUID = _G.GetCVar("agentUID")
 	-- aObj:Debug("agentUID: [%s, %s, %s, %s, %s]", agentUID, _G.GetBuildInfo())
 	-- check to see which WoW version we are running on
-	self.isClscBeta = agentUID == "wow_classic_beta" and true
-	self.isClscPTR  = agentUID == "wow_classic_ptr" and true
-	self.isClscBC   = agentUID == "wow_classic" and true
-	self.isClscERA  = agentUID == "wow_classic_era" and true
-	self.isRtlBeta  = agentUID == "wow_beta" and true
-	self.isRtlPTR   = agentUID == "wow_ptr" and true
-	self.isRtl      = agentUID == "wow" and true
+	self.isClscBeta   = agentUID == "wow_classic_beta" and true
+	self.isClscPTR    = agentUID == "wow_classic_ptr" and true
+	self.isClscBC     = agentUID == "wow_classic" and true
+	self.isClscERAPTR = agentUID == "wow_classic_era_ptr" and true
+	self.isClscERA    = agentUID == "wow_classic_era" and true
+	self.isRtlBeta    = agentUID == "wow_beta" and true
+	self.isRtlPTR     = agentUID == "wow_ptr" and true
+	self.isRtl        = agentUID == "wow" and true
 
-	-- aObj:Debug("checkVersion: [%s, %s, %s, %s, %s, %s, %s]", self.isClscBeta, self.isClscPTR, self.isClscBC, self.isClsc, self.isRtlBeta, self.isRtlPTR, self.isRtl)
+	-- aObj:Debug("checkVersion#1: [%s, %s, %s, %s, %s, %s, %s, %s]", self.isClscBeta, self.isClscPTR, self.isClsc, self.isClscERAPTR, self.isClscERA, self.isRtlBeta, self.isRtlPTR, self.isRtl)
 
 	-- check current build number against Classic Beta, if greater then it's a patch
-	self.isPatch = self.isPatch or self.isClscBeta and _G.tonumber(buildInfo.curr[2]) > _G.tonumber(buildInfo.classic_beta[2])
-	-- check current build number against Classic PTR, if greater then it's a patch
-	self.isPatch = self.isPatch or self.isClscPTR and _G.tonumber(buildInfo.curr[2]) > _G.tonumber(buildInfo.classic_ptr[2])
+	self.isPatch = self.isPatch or self.isClscBCBeta and _G.tonumber(buildInfo.curr[2]) > _G.tonumber(buildInfo.wow_classic_beta[2])
+	-- check current build number against Classic BC PTR, if greater then it's a patch
+	self.isPatch = self.isPatch or self.isClscPTR and _G.tonumber(buildInfo.curr[2]) > _G.tonumber(buildInfo.wow_classic_ptr[2])
 	-- check current build number against Classic BC, if greater then it's a patch
-	self.isPatch = self.isPatch or self.isClscBC and _G.tonumber(buildInfo.curr[2]) > _G.tonumber(buildInfo.classic_bc[2])
+	self.isPatch = self.isPatch or self.isClscBC and _G.tonumber(buildInfo.curr[2]) > _G.tonumber(buildInfo.wow_classic[2])
+	-- check current build number against Classic BC PTR, if greater then it's a patch
+	self.isPatch = self.isPatch or self.isClscERAPTR and _G.tonumber(buildInfo.curr[2]) > _G.tonumber(buildInfo.wow_classic_era_ptr[2])
 	-- check current build number against Classic, if greater then it's a patch
-	self.isPatch = self.isPatch or self.isClscERA and _G.tonumber(buildInfo.curr[2]) > _G.tonumber(buildInfo.classic_era[2])
+	self.isPatch = self.isPatch or self.isClscERA and _G.tonumber(buildInfo.curr[2]) > _G.tonumber(buildInfo.wow_classic_era[2])
 	-- check current build number against Retail Beta, if greater then it's a patch
-	self.isPatch = self.isPatch or self.isRtlBeta and _G.tonumber(buildInfo.curr[2]) > _G.tonumber(buildInfo.retail_beta[2])
+	self.isPatch = self.isPatch or self.isRtlBeta and _G.tonumber(buildInfo.curr[2]) > _G.tonumber(buildInfo.wow_beta[2])
 	-- check current build number against Retail PTR, if greater then it's a patch
-	self.isPatch = self.isPatch or self.isRtlPTR and _G.tonumber(buildInfo.curr[2]) > _G.tonumber(buildInfo.retail_ptr[2])
+	self.isPatch = self.isPatch or self.isRtlPTR and _G.tonumber(buildInfo.curr[2]) > _G.tonumber(buildInfo.wow_ptr[2])
 	-- check current build number against Retail, if greater then it's a patch
-	self.isPatch = self.isPatch or self.isRtl and _G.tonumber(buildInfo.curr[2]) > _G.tonumber(buildInfo.retail[2])
+	self.isPatch = self.isPatch or self.isRtl and _G.tonumber(buildInfo.curr[2]) > _G.tonumber(buildInfo.wow[2])
 
 	--@alpha@
-	local vType = self.isClscBeta and "Classic_Beta" or self.isClscPTR and "Classic_PTR" or self.isClscBC and "Classic_BC" or self.isClscERA and "Classic_ERA" or self.isRtlBeta and "Retail_Beta" or self.isRtlPTR and "Retail_PTR" or "Retail"
-	self:Printf("%s, %d, %s, %d, %s, %d, %s", buildInfo[vType:lower()][1], buildInfo[vType:lower()][2], buildInfo.curr[1], buildInfo.curr[2], buildInfo.curr[3], buildInfo.curr[4] , agentUID)
-	vType = self.isPatch and vType .. " (Patched)" or vType
+	self:Printf("%s, %d, %s, %d, %s, %d, %s", buildInfo[agentUID][1], buildInfo[agentUID][2], buildInfo.curr[1], buildInfo.curr[2], buildInfo.curr[3], buildInfo.curr[4] , agentUID)
+	local vType = self.isPatch and buildInfo[agentUID][3] .. " (Patched)" or buildInfo[agentUID][3]
 	_G.DEFAULT_CHAT_FRAME:AddMessage(aName .. ": Detected that we're running on a " .. vType .. " version", 0.75, 0.5, 0.25, nil, true)
+	self:Debug(vType .. " detected")
 	vType = nil
 	--@end-alpha@
 	agentUID = nil
 
 	-- indicate we're on ClassicPTR if on Classic Beta
-	self.isClscPTR  = self.isClscPTR or self.isClscBeta
-	-- indicate we're on ClassicBC if on Classic Beta
-	self.isClscBC   = self.isClscBC or self.isClscPTR or self.isClscBeta
-	-- indicate we're on Classic if on Classic ERA or Classic BC
-	self.isClsc     = self.isClscERA or self.isClscBC
+	self.isClscPTR    = self.isClscPTR or self.isClscBeta
+	-- indicate we're on Classic BC (required for skin checks)
+	self.isClscBC     = self.isClscBC or self.isClscPTR
+	-- indicate we're on ClassicERA if on Classic ERA PTR
+	self.isClscERA    = self.isClscERA  or self.isClscERAPTR
+	-- indicate we're on Classic if on Classic BC or Classic ERA
+	self.isClsc       = self.isClscBC or self.isClscERA
 	-- handle Beta changes in PTR or Live
-	self.isClscBeta = self.isClscBeta or self.isClscPTR and buildInfo.curr[1] > buildInfo.classic_ptr[1]
-	self.isRtlBeta  = self.isRtlBeta or self.isRtlPTR and buildInfo.curr[1] > buildInfo.retail_ptr[1]
+	self.isClscBeta   = self.isClscBeta or self.isClscPTR and buildInfo.curr[1] > buildInfo.wow_classic_ptr[1]
+	self.isRtlBeta    = self.isRtlBeta or self.isRtlPTR and buildInfo.curr[1] > buildInfo.wow_ptr[1]
 	-- handle PTR changes going Live
-	self.isClscPTR  = self.isClscPTR or self.isPatch and self.isClscBC and buildInfo.curr[1] > buildInfo.classic_bc[1]
-	self.isRtlPTR   = self.isRtlPTR or self.isPatch and self.isRtl and buildInfo.curr[1] > buildInfo.retail[1]
+	self.isClscPTR    = self.isClscPTR or self.isPatch and self.isClscBC and buildInfo.curr[1] > buildInfo.wow_classic[1]
+	self.isClscERAPTR = self.isClscERAPTR or self.isPatch and self.isClscERA and buildInfo.curr[1] > buildInfo.wow_classic_era[1]
+	self.isRtlPTR     = self.isRtlPTR or self.isPatch and self.isRtl and buildInfo.curr[1] > buildInfo.wow[1]
+
+	-- aObj:Debug("checkVersion#2: [%s, %s, %s, %s, %s, %s, %s, %s, %s]", self.isClscBeta, self.isClscPTR, self.isClscBC, self.isClscERAPTR, self.isClscERA, self.isClsc, self.isRtlBeta, self.isRtlPTR, self.isRtl)
 
 	buildInfo = nil
 
@@ -121,7 +129,6 @@ local function makeText(fStr, ...)
 	end
 	return output
 end
-
 local function printIt(text, frame, r, g, b)
 	(frame or _G.DEFAULT_CHAT_FRAME):AddMessage(text, r, g, b)
 end
@@ -141,9 +148,11 @@ function aObj:Debug(fStr, ...)
 	output = nil
 
 end
+
 function aObj:Debug2(fStr, ...)
 	-- self:Debug(fStr, ...)
 end
+
 function aObj:Debug3(fStr, ...)
 	
 	printIt("dbg: " .. makeText(fStr, ...), self.debugFrame)

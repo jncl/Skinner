@@ -36,17 +36,6 @@ function aObj:OnInitialize()
 	self:Debug("Debugging is enabled")
 	--@end-debug@
 
-	--@alpha@
-	if self.isClscBeta then self:Debug("Classic_Beta detected")
-	elseif self.isClscPTR then self:Debug("Classic_PTR detected")
-	elseif self.isClscBC then self:Debug("Classic_BC detected")
-	elseif self.isClsc then self:Debug("Classic detected") end
-	if self.isRtlBeta then self:Debug("Retail_Beta detected")
-	elseif self.isRtlPTR then self:Debug("Retail_PTR detected")
-	elseif self.isRtl then self:Debug("Retail detected") end
-	if self.isPatch then self:Debug("Patch detected") end
-	--@end-alpha@
-
 	-- add callbacks
 	self.callbacks = _G.LibStub:GetLibrary("CallbackHandler-1.0", true):New(aObj)
 	-- get Locale
