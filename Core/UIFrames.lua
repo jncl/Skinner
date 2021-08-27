@@ -2378,26 +2378,23 @@ aObj.blizzFrames[ftype].ExtraAbilityContainer = function(self)
 	if self.initialized.ExtraAbilityContainer then return end
 	self.initialized.ExtraAbilityContainer = true
 
-	local function skinBtn(btn, secure)
+	local function skinBtn(btn)
 		if btn:IsForbidden() then return end
 		-- handle in combat
-		if btn:IsProtected()
-		and _G.InCombatLockdown()
-		then
-		    aObj:add2Table(aObj.oocTab, {skinBtn, {btn, secure}})
+		if _G.InCombatLockdown() then
+		    aObj:add2Table(aObj.oocTab, {skinBtn, {btn}})
 		    return
 		end
 		btn:GetNormalTexture():SetTexture(nil)
 		if aObj.modBtnBs then
-			-- TODO: causes ADDON_ACTION_BLOCKED so commented out for now 07.01.21
-			aObj:addButtonBorder{obj=btn, shsh=true, ofs=2, reParent={btn.Count, btn.HotKey and btn.HotKey}}
+			aObj:addButtonBorder{obj=btn, sabt=true, ofs=2, reParent={btn.Count, btn.HotKey and btn.HotKey}}
 		end
 	end
 	if self.prdb.MainMenuBar.extraab then
 		self:SecureHookScript(_G.ExtraActionBarFrame.intro, "OnFinished", function(this)
 			_G.ExtraActionBarFrame.button.style:SetAlpha(0)
 		end)
-		skinBtn(_G.ExtraActionBarFrame.button, true)
+		skinBtn(_G.ExtraActionBarFrame.button)
 	end
 	if self.prdb.ZoneAbility then
 		local function getAbilities(frame)
