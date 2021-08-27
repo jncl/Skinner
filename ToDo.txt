@@ -23,18 +23,7 @@ ToDos
 
 ≈	O	Refactor NewSkinFuncs in Blizzard/AddOn skins
 
-	I	PlayerChoice, reported by Fakelessgaming, 18.08.21
-√		- Skinner\Core\UIFrames.lua:5252: attempt to index global 'this' (a nil value)
-		[string "@Skinner\Core\UIFrames.lua"]:5252: in function <Skinner\Core\UIFrames.lua:5251>
-		[string "@Skinner\Core\UIFrames.lua"]:5318: in function <Skinner\Core\UIFrames.lua:5312>
-		
-	I/B	MSATutorials, reported by 아련별
-√		- Skinner\Core\NewSkinFuncs.lua:395: attempt to index field 'obj' (a nil value)
-		[string "@Skinner\Core\NewSkinFuncs.lua"]:420: in function `?'
-		[string "@Skinner\Core\NewSkinFuncs.lua"]:173: in function `skinObject'
-		[string "@Skinner\AddonSkins\LibMSATutorials.lua"]:15: in function `skinFrame'
-		[string "@Skinner\AddonSkins\LibMSATutorials.lua"]:39: in function <Skinner\AddonSkins\LibMSATutorials.lua:5>
-		
-	I/B	Altoholic, reported by 아련별
-√		- Errors as reported before, Retail has new version only
-		
+	I	Viewport, reported by panzartankk, 19.08.21
+≈		- Still not reappearing after Cinematic, suggests a fix:
+			- CinematicFrame:SetScript("OnShow", nil)
+			  CinematicFrame:SetScript("OnHide", nil)
