@@ -78,7 +78,6 @@
 <Script file="DockingStation.lua"/>
 <Script file="Dominos.lua"/>
 <Script file="ElvUI.lua"/>
-<Script file="EnhancedStackSplit.lua"/>
 <Script file="ERC.lua"/>
 <Script file="EveryGoldToBanker.lua"/>
 <Script file="Examiner.lua"/>
