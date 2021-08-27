@@ -19,9 +19,65 @@ local defaults = {
 	}
 }
 
+
+function module:OnInitialize()
+
+	-- check to see if any other Viewport Addons are enabled
+	if aObj:isAddonEnabled("Aperture")
+	or aObj:isAddonEnabled("Btex")
+	or aObj:isAddonEnabled("CT_Viewport")
+	or aObj:isAddonEnabled("SunnArt")
+	then
+		self:Disable() -- disable ourself
+		return
+	end
+
+	self.db = aObj.db:RegisterNamespace("ViewPort", defaults)
+	db = self.db.profile
+
+	-- convert any old settings
+	if aObj.db.profile.ViewPort then
+		for k, v in _G.pairs(aObj.db.profile.ViewPort) do
+			db[k] = v
+		end
+		aObj.db.profile.ViewPort = nil
+	end
+
+	if not db.shown then self:Disable() end -- disable ourself
+
+end
+
+function module:OnDisable()
+	
+	_G.CinematicFrame_OnShow = module.CinematicFrame_OnShow and module.CinematicFrame_OnShow
+	_G.CinematicFrame_OnHide = module.CinematicFrame_OnHide and module.CinematicFrame_OnHide
+	_G.WorldFrame:SetUserPlaced(false)
+	
+end
+
+function module:OnEnable()
+
+	if db.shown then
+		module.CinematicFrame_OnShow = _G.CinematicFrame_OnShow
+		module.CinematicFrame_OnHide = _G.CinematicFrame_OnHide
+		_G.CinematicFrame_OnShow = _G.nop
+		_G.CinematicFrame_OnHide = _G.nop
+		self:adjustViewPort("init")
+		_G.WorldFrame:SetUserPlaced(true)
+	end
+
+	-- handle Viewport being reset when certain cutscenes are shown
+	aObj:RegisterEvent("CINEMATIC_STOP", function(event, ...)
+		module:adjustViewPort("shown")
+	end)
+	aObj:SecureHook("GameMovieFinished", function()
+		module:adjustViewPort("shown")
+	end)
+
+end
+
 local texAreas, vpoF = {"top", "btm", "left", "right"}
 local function checkOverlay(scale)
-
 	if db.shown then
 		if db.overlay then
 			if not vpoF then
@@ -74,51 +130,14 @@ local function checkOverlay(scale)
 	elseif vpoF then
 		vpoF:Hide()
 	end
-
 end
-
-function module:OnInitialize()
-
-	-- check to see if any other Viewport Addons are enabled
-	if aObj:isAddonEnabled("Aperture")
-	or aObj:isAddonEnabled("Btex")
-	or aObj:isAddonEnabled("CT_Viewport")
-	or aObj:isAddonEnabled("SunnArt")
-	then
-		self:Disable() -- disable ourself
-		return
-	end
-
-	self.db = aObj.db:RegisterNamespace("ViewPort", defaults)
-	db = self.db.profile
-
-	-- convert any old settings
-	if aObj.db.profile.ViewPort then
-		for k, v in _G.pairs(aObj.db.profile.ViewPort) do
-			db[k] = v
-		end
-		aObj.db.profile.ViewPort = nil
-	end
-
-	if not db.shown then self:Disable() end -- disable ourself
-
-end
-
-function module:OnEnable()
-
-	if db.shown then self:adjustViewPort("init") end
-
-	-- handle Viewport being reset when certain cutscenes are shown
-	aObj:RegisterEvent("CINEMATIC_STOP", function(event, ...)
-		module:adjustViewPort("shown")
-	end)
-	aObj:SecureHook("GameMovieFinished", function()
-		module:adjustViewPort("shown")
-	end)
-
-end
-
 function module:adjustViewPort(opt)
+
+	-- handle in combat
+	if _G.InCombatLockdown() then
+	    aObj:add2Table(aObj.oocTab, {adjustViewPort, {opt}})
+	    return
+	end
 
 	local scale = _G.UIParent:GetEffectiveScale()
 
@@ -155,7 +174,6 @@ function module:GetOptions()
 			end
 		end,
 		set = function(info, r, g, b, a)
-			if not module:IsEnabled() then module:Enable() end
 			if info[#info] ~= "shown" then
 				module.db.profile.shown = true -- always enable if any option other than show is changed
 			end
@@ -177,7 +195,11 @@ function module:GetOptions()
 			then
 				aObj.LSM:Register("background", aName .. " Viewport Background", module.db.profile.texfile)
 			end
-			module:adjustViewPort(info[#info])
+			if not module:IsEnabled() then
+				module:Enable()
+			else
+				module:adjustViewPort(info[#info])
+			end
 		end,
 		args = {
 			shown = {
