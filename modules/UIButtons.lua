@@ -677,7 +677,8 @@ local function __addButtonBorder(opts)
 		sibt = Small Item Button template
 		gibt = Giant Item Button template
 		sec = requires SecureFrameTemplate to inherit from otherwise tainting occurs
-		shsh = requires SecureHandlerShowHideTemplate to inherit from otherwise tainting occurs
+		sabt = requires SecureActionButtonTemplate
+		subt = requires SecureUnitButtonTemplate
 		reParent = table of objects to reparent to the border frame
 		es = edgeSize, used for small icons
 		ofs = offset value to use
