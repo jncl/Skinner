@@ -3530,7 +3530,7 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 		skinMinBtn(_G.ObjectiveTrackerFrame.HeaderMenu.MinimizeButton)
 		-- hook this to skin QuestObjective Block Button(s)
 		local function aBB2rB(btn)
-			aObj:addButtonBorder{obj=btn, shsh=true, ofs=btn.Icon and -2 or nil, x1=btn.Icon and 0 or nil, reParent=btn.Count and {btn.Count} or nil, clr="gold"}
+			aObj:addButtonBorder{obj=btn, ofs=btn.Icon and -2 or nil, x1=btn.Icon and 0 or nil, reParent=btn.Count and {btn.Count} or nil, clr="gold"}
 		end
 		self:SecureHook("QuestObjectiveSetupBlockButton_AddRightButton", function(_, button, _)
 			aBB2rB(button)
