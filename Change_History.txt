@@ -1,3 +1,15 @@
+beta9.39658.3
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Renamed Retail check from isRet to isRtl
+	Updated Altoholic & LibMSA-Tutorials skins
+	Bugfix for PlayerChoice skin
+	Updated UIWidgets skinning code
+	Updated AlertFrames skinning code
+	Updated UIButtons skinning code
+	Removed redundant Debug lines
+	
 beta9.39658.2
 Jncl:
 	ToDo.txt
