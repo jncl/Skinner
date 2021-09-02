@@ -879,7 +879,7 @@ local function __skinMoneyFrame(opts)
 	local obj
 	for key, type in _G.pairs{"Gold", "Silver", "Copper"} do
 		obj = _G[opts.obj:GetName() .. type]
-		aObj:skinEditBox{obj=obj, regs={6, 7}, noHeight=true, noWidth=true, ign=true} -- N.B. region 6 is the icon, 7 is text
+		aObj:skinObject("editbox", {obj=obj})
 		-- move label to the right for colourblind mode
 		if key ~= 1 or opts.moveGIcon then
 			aObj:moveObject{obj=obj.texture, x=10}
