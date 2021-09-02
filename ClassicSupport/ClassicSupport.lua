@@ -60,7 +60,7 @@ local funcs = {
 		EventTrace = {keep = true, keepOpts = true},
 		GMChatUI = {keep = true, keepOpts = true},
 		GMSurveyUI = not aObj.isClscBC and {keep = false, keepOpts = true},
-		GuildBankUI = {keep = true, keepOpts = true},
+		GuildBankUI = aObj.isClscBC and {keep = false, keepOpts = true},
 		HelpFrame = {keep = aObj.isClscBC and true, keepOpts = true},
 		InterfaceOptions = {keep = true, keepOpts = true},
 		ItemText = {keep = true, keepOpts = true},
@@ -76,6 +76,7 @@ local funcs = {
 		ProductChoiceFrame = {keep = true, keepOpts = true},
 		PTRFeedback = (not aObj.isRtl or aObj.isClsc) and {keep = true, keepOpts = true},
 		RaidFrame = {keep = false, keepOpts = true},
+		SharedBasicControls = {keep = true, keepOpts = true},
 		StaticPopups = {keep = true, keepOpts = true},
 		SystemOptions = {keep = true, keepOpts = true},
 		TimeManager = {keep = true, keepOpts = true},
@@ -193,6 +194,17 @@ aObj.ClassicSupport = function(self)
 			type = "toggle",
 			name = self.L["GM Survey UI"],
 			desc = self.L["Toggle the skin of the "] .. self.L["GM Survey UI"],
+		}
+	else
+		if self.db.profile.LFGLFM == nil then
+			self.db.profile.LFGLFM = true
+			self.db.defaults.profile.LFGLFM = true
+		end
+		self.optTables["UI Frames"].args.LFGLFM = {
+			type = "toggle",
+			width = "double",
+			name = self.L["Looking for Group/More Frame"],
+			desc = self.L["Toggle the skin of the "] .. self.L["Looking for Group/More Frame"],
 		}
 	end
 	if self.db.profile.QuestLog == nil then
@@ -922,7 +934,7 @@ aObj.ClassicSupport = function(self)
 			self:skinObject("dropdown", {obj=_G.FriendsDropDown, fType=ftype})
 			self:skinObject("dropdown", {obj=_G.TravelPassDropDown, fType=ftype})
 			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true})
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, cb=true, x2=1, y2=self.isClscPTR and -2 or -1})
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, cb=true, x2=1, y2=self.isClscBC and -2 or -1})
 
 			self:SecureHookScript(_G.FriendsTabHeader, "OnShow", function(this)
 				_G.FriendsFrameBattlenetFrame:DisableDrawLayer("BACKGROUND")
@@ -986,7 +998,7 @@ aObj.ClassicSupport = function(self)
 					end
 				end
 				btn = nil
-				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, fb=true, ofs=0, y1=-81, x2=-1, y2=self.isClscPTR and 0 or 1})
+				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, fb=true, ofs=0, y1=-81, x2=-1, y2=self.isClscBC and 0 or 1})
 				if self.modBtns then
 					self:skinStdButton{obj=_G.FriendsFrameAddFriendButton, fType=ftype, x1=1}
 					self:skinStdButton{obj=_G.FriendsFrameSendMessageButton, fType=ftype}
@@ -1084,7 +1096,7 @@ aObj.ClassicSupport = function(self)
 				self:skinObject("dropdown", {obj=_G.GuildControlPopupFrameDropDown, fType=ftype})
 				_G.UIDropDownMenu_SetButtonWidth(_G.GuildControlPopupFrameDropDown, 24)
 				self:skinObject("editbox", {obj=_G.GuildControlPopupFrameEditBox, fType=ftype, regions={3, 4}, y1=-4, y2=4})
-				if aObj.isClscPTR then
+				if self.isClscBC then
 					self:skinObject("editbox", {obj=_G.GuildControlWithdrawGoldEditBox, fType=ftype, y1=-4, y2=4})
 					self:skinObject("editbox", {obj=_G.GuildControlWithdrawItemsEditBox, fType=ftype, y1=-4, y2=4})
 					for i = 1, 6 do
@@ -1758,11 +1770,8 @@ aObj.ClassicSupport = function(self)
 			self:checkShown(_G.TicketStatusFrame)
 
 		end
-	end
-
-	if aObj.isClscPTR
-	and not aObj.isClscBeta
-	then
+		
+	else
 		self.blizzLoDFrames[ftype].GuildBankUI = function(self)
 			if not self.prdb.GuildBankUI or self.initialized.GuildBankUI then return end
 			self.initialized.GuildBankUI = true
@@ -1782,7 +1791,7 @@ aObj.ClassicSupport = function(self)
 				for _, tab in _G.ipairs(this.BankTabs) do
 					tab:DisableDrawLayer("BACKGROUND")
 					if self.modBtnBs then
-						 self:addButtonBorder{obj=tab.Button, ofs=3}
+						 self:addButtonBorder{obj=tab.Button, reParent={tab.Button.Count, tab.Button.SearchOverlay}, ofs=3}
 						 self:SecureHook(tab.Button, "Disable", function(this, _)
 						 	self:clrBtnBdr(this)
 						 end)
@@ -1821,50 +1830,39 @@ aObj.ClassicSupport = function(self)
 			--	GuildBank Popup Frame
 			self:SecureHookScript(_G.GuildBankPopupFrame, "OnShow", function(this)
 				self:adjHeight{obj=this, adj=20}
-				self:removeRegions(this.BorderBox, {1, 2, 3, 4, 5, 6, 7, 8})
-				self:skinObject("editbox", {obj=_G.GuildBankPopupEditBox, fType=ftype})
-				self:adjHeight{obj=_G.GuildBankPopupScrollFrame, adj=20} -- stretch to bottom of scroll area
-				self:skinObject("slider", {obj=_G.GuildBankPopupScrollFrame.ScrollBar, fType=ftype, rpTex="background"})
-				for i = 1, _G.NUM_GUILDBANK_ICONS_SHOWN do
-					_G["GuildBankPopupButton" .. i]:DisableDrawLayer("BACKGROUND")
+				-- FIXME: BorderBox SHOULD be a child of the frame
+				self:keepFontStrings(_G.BorderBox)
+				self:skinObject("editbox", {obj=this.EditBox, fType=ftype})
+				self:adjHeight{obj=this.ScrollFrame, adj=20} -- stretch to bottom of scroll area
+				self:skinObject("slider", {obj=this.ScrollFrame.ScrollBar, fType=ftype, rpTex="background"})
+				for _, btn in _G.pairs(this.Buttons) do
+					btn:DisableDrawLayer("BACKGROUND")
 					if self.modBtnBs then
-						self:addButtonBorder{obj=_G["GuildBankPopupButton" .. i], relTo=_G["GuildBankPopupButton" .. i .. "Icon"], reParent={_G["GuildBankPopupButton" .. i .. "Name"]}}
+						self:addButtonBorder{obj=btn, relTo=btn.Icon, reParent={_G[btn:GetName() .. "Name"]}}
 					end
 				end
 				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, ofs=-6})
 				if self.modBtns then
-					self:skinStdButton{obj=_G.GuildBankPopupCancelButton}
-					self:skinStdButton{obj=_G.GuildBankPopupOkayButton}
+					self:skinStdButton{obj=this.CancelButton}
+					self:skinStdButton{obj=this.OkayButton}
 				end
 
 				self:Unhook(this, "OnShow")
 			end)
 
 		end
-		
-		if self.db.profile.LFGLFM == nil then
-			self.db.profile.LFGLFM = true
-			self.db.defaults.profile.LFGLFM = true
-		end
-		self.optTables["UI Frames"].args.LFGLFM = {
-			type = "toggle",
-			width = "double",
-			name = self.L["Looking for Group/More Frame"],
-			desc = self.L["Toggle the skin of the "] .. self.L["Looking for Group/More Frame"],
-		}
-		
+	
 		self.blizzFrames[ftype].LFGFrame = function(self)
 			if not self.prdb.LFGLFM or self.initialized.LFGFrame then return end
 			self.initialized.LFGFrame = true
 
 			self:SecureHookScript(_G.LFGParentFrame, "OnShow", function(this)
-		
 				self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, ignoreSize=true, lod=self.isTT and true, upwards=true, offsets={x1=6, y1=0, x2=-6, y2=2}})
-				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, x1=10, y1=-11, x2=-29, y2=71})
+				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, x1=17, y1=-11, x2=-29, y2=70})
 				if self.modBtns then
 					self:skinCloseButton{obj=self:getChild(this, 3), fType=ftype}
 				end
-			
+		
 				self:SecureHookScript(_G.LFMFrame, "OnShow", function(this)
 					self:skinObject("dropdown", {obj=_G.LFMFrameEntryDropDown, fType=ftype})
 					self:removeInset(_G.LFMFrameInset)
@@ -1884,18 +1882,20 @@ aObj.ClassicSupport = function(self)
 							self:clrBtnBdr(this)
 						end)
 					end
-				
+			
 					self:Unhook(this, "OnShow")
 				end)
+				self:checkShown(_G.LFMFrame)
+
 				self:SecureHookScript(_G.LFGFrame, "OnShow", function(this)
+					for _, dd in _G.pairs(this.TypeDropDown) do
+						self:skinObject("dropdown", {obj=dd, fType=ftype})
+					end
 					for _, dd in _G.pairs(this.ActivityDropDown) do
 						self:skinObject("dropdown", {obj=dd, fType=ftype})
 					end
 					-- for _, tex in _G.pairs(this.ActivityIcon) do
 					-- end
-					for _, dd in _G.pairs(this.TypeDropDown) do
-						self:skinObject("dropdown", {obj=dd, fType=ftype})
-					end
 					self:skinObject("editbox", {obj=this.Comment, fType=ftype, chginset=false, x1=-5})
 					self:moveObject{obj=_G.LFGFramePostButton, x=-10}
 					if self.modBtns then
@@ -1905,21 +1905,53 @@ aObj.ClassicSupport = function(self)
 							self:clrBtnBdr(this)
 						end)
 					end
-				
+			
 					self:Unhook(this, "OnShow")
 				end)
 				self:checkShown(_G.LFGFrame)
-			
+		
 				self:Unhook(this, "OnShow")
 			end)
-			
+		
 			if self.prdb.MinimapButtons.skin then
 				self:skinObject("button", {obj=_G.MiniMapLFGFrameIcon, fType=ftype, ofs=2})
 			end
-			
+		
 		end
+		
 	end
-	
+
+	self.blizzFrames[ftype].PVPHelper = function(self)
+
+		self:SecureHookScript(_G.PVPFramePopup, "OnShow", function(this)
+			this:DisableDrawLayer("BORDER")
+			_G.PVPFramePopupRing:SetTexture(nil)
+			self:skinObject("frame", {obj=this, fType=ftype, ofs=0})
+			if self.modBtns then
+				self:skinOtherButton{obj=this.closeButton, text=self.modUIBtns.minus}
+				self:skinStdButton{obj=_G.PVPFramePopupAcceptButton}
+				self:skinStdButton{obj=_G.PVPFramePopupDeclineButton}
+			end
+
+			self:Unhook(this, "OnShow")
+		end)
+
+		if self.isClscBC then
+			self:SecureHookScript(_G.PVPReadyDialog, "OnShow", function(this)
+				this.Separator:SetTexture(nil)
+				self:skinObject("frame", {obj=this, fType=ftype, ofs=0})
+				if self.modBtns then
+					self:skinStdButton{obj=this.enterButton}
+					self:skinStdButton{obj=this.hideButton}
+				end
+
+				self:Unhook(this, "OnShow")
+			end)
+			self:checkShown(_G.PVPReadyDialog)
+		end
+
+	end
+
 	self.blizzFrames[ftype].QuestLog = function(self)
 		if not self.prdb.QuestLog or self.initialized.QuestLog then return end
 		self.initialized.QuestLog = true

@@ -6,15 +6,17 @@ ToDo_classic_PTR
 	x				- indicates nothing to change
 	¶ is Alt+7		- indicates localisation changes required
 
-	Classic_PTR
+	Classic_PTR 2.5.2
 		- Added
-≈			- GuildBank
-¶≈			- LookingForGroup/LookingForMore
+√			- GuildBank
+¶√			- LookingForGroup/LookingForMore
+√			- PVPReadyDialog
 		- Updated
 			- MiniMapWorldMapButoon
 √				- Border texture
 			- FriendsFrame
 √				- height changed
+√			- GuildControlPopupFrame
 			- HelpFrame
 √				- width changed
 			- IOF/SF

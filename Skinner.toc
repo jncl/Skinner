@@ -1,7 +1,7 @@
 ﻿## Interface: 90100
 ## Interface-Retail: 90100
 ## Interface-Classic: 11307
-## Interface-BC: 20501
+## Interface-BCC: 20502
 ## Title: Skinner
 ## Notes: Changes the look of the default UI (Retail & Classic)
 ## Notes-esES: Cambia el aspecto del UI predeterminado
