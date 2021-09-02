@@ -5759,14 +5759,17 @@ aObj.blizzFrames[ftype].SharedBasicControls = function(self)
 
 	self:SecureHookScript(_G.BasicMessageDialog, "OnShow", function(this)
 		self:removeNineSlice(this.Border)
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true}
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ofs=0})
+		if self.modBtns then
+			self:skinStdButton{obj=_G.BasicMessageDialogButton, fType=ftype}
+		end
 
 		self:Unhook(this, "OnShow")
 	end)
 
 	self:SecureHookScript(_G.ScriptErrorsFrame, "OnShow", function(this)
-		self:skinSlider{obj=this.ScrollFrame.ScrollBar}
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, x1=1, y1=-2, x2=-1, y2=4}
+		self:skinObject("slider", {obj=this.ScrollFrame.ScrollBar, fType=ftype})
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ofs=0})
 		if self.modBtns then
 			self:skinCloseButton{obj=_G.ScriptErrorsFrameClose}
 			self:skinStdButton{obj=this.Reload}
