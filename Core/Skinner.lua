@@ -330,8 +330,8 @@ function aObj:OnEnable()
 	-- handle InCombat issues
 	self.oocTab = {}
 	self:RegisterEvent("PLAYER_REGEN_ENABLED", function()
- 		for i = 1, #self.oocTab do
-			self.oocTab[i][1](_G.unpack(self.oocTab[i][2]))
+		for _, tab in _G.pairs(self.oocTab) do
+			tab[1](_G.unpack(tab[2]))
 		end
 		_G.wipe(self.oocTab)
 	end)
