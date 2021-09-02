@@ -199,7 +199,7 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 		if frame == _G.CovenantMissionFrame then
 			x1Ofs = -2
 			y1Ofs = 2
-			y2Ofs = -5
+			y2Ofs = -6
 		elseif frame == _G.BFAMissionFrame then
 			y1Ofs = 1
 			y2Ofs = -5
