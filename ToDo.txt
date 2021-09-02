@@ -23,7 +23,19 @@ ToDos
 
 ≈	O	Refactor NewSkinFuncs in Blizzard/AddOn skins
 
-	I	Viewport, reported by panzartankk, 19.08.21
-≈		- Still not reappearing after Cinematic, suggests a fix:
-			- CinematicFrame:SetScript("OnShow", nil)
-			  CinematicFrame:SetScript("OnHide", nil)
+	O	Replace RegisterCallback/Fire by RegisterMessage/SendMessage
+	
+	O	Replace texture pathnames by texture FileDataIDs, found in setupTextures function
+
+√	S	RollTracker Classic Z, requested by 아련별
+	
+	I	reported by Fakelessgaming, 29.08.21
+≈		- Skinner\Core\Skinner-beta9.39804.1.lua:313: attempt to call field '?' (a nil value)
+		[string "@Skinner\Core\Skinner-beta9.39804.1.lua"]:313: in function <Skinner\Core\Skinner.lua:311>
+		[string "=[C]"]: ?
+		[string "@ActionBarProfiles\libs\CallbackHandler-1.0\CallbackHandler-1.0-7.lua"]:29: in function <...les\libs\CallbackHandler-1.0\CallbackHandler-1.0.lua:25>
+		[string "@ActionBarProfiles\libs\CallbackHandler-1.0\CallbackHandler-1.0-7.lua"]:64: in function `Fire'
+		[string "@ActionBarProfiles\libs\AceEvent-3.0\AceEvent-3.0-4.lua"]:120: in function <...ActionBarProfiles\libs\AceEvent-3.0\AceEvent-3.0.lua:119>
+		
+	I	VenturePlan, reported by Galthariel, 29.08.21
+√		- need to change loop counter for Adventurers to #C_Garrison.GetFollowers(123)
