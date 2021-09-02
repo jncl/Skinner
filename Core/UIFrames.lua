@@ -21,7 +21,7 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 			frame.PortraitRingQuality:SetTexture(nil)
 			frame.PortraitRingCover:SetTexture(nil)
 			aObj:changeTandC(frame.LevelCircle)
-			frame.HealthBar.Health:SetTexture(aObj.sbTexture)
+			aObj:changeTex2SB(frame.HealthBar.Health)
 			frame.HealthBar.Border:SetTexture(nil)
 		else
 			frame.PortraitRing:SetTexture(nil)
@@ -2017,7 +2017,7 @@ aObj.blizzLoDFrames[ftype].ClassTrial = function(self)
 	self:SecureHookScript(_G.ClassTrialTimerDisplay, "OnShow", function(this)
 		-- create a Hourglass texture as per original Artwork
 		this.Hourglass = this:CreateTexture(nil, "ARTWORK", nil)
-		this.Hourglass:SetTexture(self.mHG)
+		this.Hourglass:SetTexture(self.tFDIDs.mHG)
 		this.Hourglass:SetPoint("LEFT", 20, 0)
 		this.Hourglass:SetSize(30, 30)
 		this:DisableDrawLayer("BACKGROUND")
@@ -2983,10 +2983,10 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 		local function skinPuck(btn)
 			aObj:nilTexture(btn.PuckShadow, true)
 			aObj:nilTexture(btn.PuckBorder, true)
-			for i = 1, #btn.AbilityButtons do
-				btn.AbilityButtons[i].Border:SetTexture(nil)
+			for _, aBtn in _G.pairs(btn.AbilityButtons) do
+				aBtn.Border:SetTexture(nil)
 			end
-			btn.HealthBar.Health:SetTexture(aObj.sbTexture)
+			aObj:changeTex2SB(btn.HealthBar.Health)
 			btn.HealthBar.Border:SetTexture(nil)
 		end
 		local function skinBoard(frame)
@@ -3120,10 +3120,10 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 		aObj:SecureHook(frame, "GetPlacerFrame", function(this)
 			aObj:nilTexture(_G.CovenantFollowerPlacer.PuckShadow, true)
 			aObj:nilTexture(_G.CovenantFollowerPlacer.PuckBorder, true)
-			for i = 1, #_G.CovenantFollowerPlacer.AbilityButtons do
-				_G.CovenantFollowerPlacer.AbilityButtons[i].Border:SetTexture(nil)
+			for _, btn in _G.pairs(_G.CovenantFollowerPlacer.AbilityButtons) do
+				btn.Border:SetTexture(nil)
 			end
-			_G.CovenantFollowerPlacer.HealthBar.Health:SetTexture(aObj.sbTexture)
+			self:changeTex2SB(_G.CovenantFollowerPlacer.HealthBar.Health)
 			_G.CovenantFollowerPlacer.HealthBar.Border:SetTexture(nil)
 
 			aObj:Unhook(this, "GetPlacerFrame")
@@ -4498,7 +4498,7 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 		obj:SetSize(26, 26)
 		obj:GetNormalTexture():SetTexCoord(x1, y1, x2, y2)
 		obj:GetPushedTexture():SetTexCoord(x1, y1, x2, y2)
-		obj:SetHighlightTexture(aObj.bHLS)
+		obj:SetHighlightTexture(aObj.tFDIDs.bHLS)
 		obj:SetHitRectInsets(-5, -5, -5, -5)
 		if not minBtn then
 			aObj:skinObject("button", {obj=obj, fType=ftype, ng=true, bd=obj==_G.GameTimeFrame and 10 or 1, ofs=4})
@@ -4564,11 +4564,11 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 	_G.MiniMapWorldMapButton:SetPoint("LEFT", _G.MinimapZoneTextButton, "RIGHT", -4, 0)
 	self:skinOtherButton{obj=_G.MiniMapWorldMapButton, font=self.fontP, text="M", noSkin=minBtn}
 	if _G.IsAddOnLoaded("SexyMap")
-	or aObj.isClscPTR
+	or self.isClscBC
 	then
 		_G.MiniMapWorldMapButton:DisableDrawLayer("OVERLAY") -- border texture
 	end
-	_G.MiniMapMailIcon:SetTexture(self.tMB)
+	_G.MiniMapMailIcon:SetTexture(self.tFDIDs.tMB)
 	_G.MiniMapMailIcon:ClearAllPoints()
 	_G.MiniMapMailIcon:SetPoint("CENTER", _G.MiniMapMailFrame)
 	_G.MiniMapMailFrame:SetSize(26, 26)
@@ -5022,10 +5022,10 @@ aObj.blizzFrames[ftype].PetBattleUI = function(self)
 			for j = 2, 3 do
 				_G.RaiseFrameLevelByTwo(this[type .. j])
 				this[type .. j].BorderAlive:SetTexture(nil)
-				self:changeTandC(this[type .. j].BorderDead, self.dpI)
+				self:changeTandC(this[type .. j].BorderDead, self.tFDIDs.dpI)
 				this[type .. j].healthBarWidth = 34
 				this[type .. j].ActualHealthBar:SetWidth(34)
-				this[type .. j].ActualHealthBar:SetTexture(self.sbTexture)
+				self:changeTex2SB(this[type .. j].ActualHealthBar)
 				this[type .. j].HealthDivider:SetTexture(nil)
 				if self.modBtnBs then
 					self:addButtonBorder{obj=this[type .. j], relTo=this[type .. j].Icon, reParent={this[type .. j].ActualHealthBar}}
@@ -5046,15 +5046,15 @@ aObj.blizzFrames[ftype].PetBattleUI = function(self)
 		tvw, tvh, pbf = nil, nil, nil
 		for i = 1, _G.NUM_BATTLE_PETS_IN_BATTLE do
 			this.BottomFrame.PetSelectionFrame["Pet" .. i].Framing:SetTexture(nil)
-			this.BottomFrame.PetSelectionFrame["Pet" .. i].HealthBarBG:SetTexture(self.sbTexture)
+			self:changeTex2SB(this.BottomFrame.PetSelectionFrame["Pet" .. i].HealthBarBG)
 			this.BottomFrame.PetSelectionFrame["Pet" .. i].HealthBarBG:SetVertexColor(0.2, 0.2, 0.2, 0.8) -- dark grey
-			this.BottomFrame.PetSelectionFrame["Pet" .. i].ActualHealthBar:SetTexture(self.sbTexture)
+			self:changeTex2SB(this.BottomFrame.PetSelectionFrame["Pet" .. i].ActualHealthBar)
 			this.BottomFrame.PetSelectionFrame["Pet" .. i].HealthDivider:SetTexture(nil)
 		end
 		self:keepRegions(this.BottomFrame.xpBar, {1, 5, 6, 13}) -- text and statusbar textures
 		self:skinStatusBar{obj=this.BottomFrame.xpBar, fi=0}
 		this.BottomFrame.TurnTimer.TimerBG:SetTexture(nil)
-		this.BottomFrame.TurnTimer.Bar:SetTexture(self.sbTexture)
+		self:changeTex2SB(this.BottomFrame.TurnTimer.Bar)
 		this.BottomFrame.TurnTimer.ArtFrame:SetTexture(nil)
 		this.BottomFrame.TurnTimer.ArtFrame2:SetTexture(nil)
 		self:removeRegions(this.BottomFrame.FlowFrame, {1, 2, 3})
@@ -5148,8 +5148,8 @@ aObj.blizzFrames[ftype].PetBattleUI = function(self)
 			if _G[prefix .. "Tooltip"].Delimiter2 then _G[prefix .. "Tooltip"].Delimiter2:SetTexture(nil) end
 			self:addSkinFrame{obj=_G[prefix .. "Tooltip"], ft=ftype}
 		end
-		_G.PetBattlePrimaryUnitTooltip.ActualHealthBar:SetTexture(self.sbTexture)
-		_G.PetBattlePrimaryUnitTooltip.XPBar:SetTexture(self.sbTexture)
+		self:changeTex2SB(_G.PetBattlePrimaryUnitTooltip.ActualHealthBar)
+		self:changeTex2SB(_G.PetBattlePrimaryUnitTooltip.XPBar)
 		self:add2Table(self.pbtt, _G.PetBattlePrimaryUnitTooltip.sf)
 		-- hook this to reset tooltip gradients
 		self:SecureHookScript(_G.PetBattleFrame, "OnHide", function(this)
@@ -5474,7 +5474,7 @@ aObj.blizzFrames[ftype].QuestMap = function(self)
 			end
 			for hdr in this.QuestsFrame.covenantCallingsHeaderFramePool:EnumerateActive() do
 				self:removeRegions(hdr, {2, 3, 4})
-				hdr.HighlightBackground:SetTexture(self.qltHL)
+				hdr.HighlightBackground:SetTexture(self.tFDIDs.qltHL)
 				if self.modBtns then
 					skinEB(hdr)
 				end

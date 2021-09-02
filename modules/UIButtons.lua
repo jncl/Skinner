@@ -445,7 +445,7 @@ function module:skinOtherButton(opts)
 	if opts.obj:GetDisabledTexture() then opts.obj:GetDisabledTexture():SetAlpha(0) end
 	if opts.size then
 		opts.obj:SetSize(opts.size, opts.size)
-		opts.obj:SetHighlightTexture(self.pMBHL)
+		opts.obj:SetHighlightTexture(self.tFDIDs.pMBHL)
 	end
 	opts.obj:SetNormalFontObject(opts.font or module.fontP)
 	opts.obj:SetDisabledFontObject(opts.disfont or module.fontDP)
@@ -837,7 +837,7 @@ local function __skinCheckButton(opts)
 
 	-- check to see if it's a 'real' CheckButton
 	if not aObj:hasTextInTexture(opts.obj:GetNormalTexture(), "CheckBox")
-	and not aObj:hasTextInTexture(opts.obj:GetNormalTexture(), aObj.cbUP)
+	and not aObj:hasTextInTexture(opts.obj:GetNormalTexture(), aObj.tFDIDs.cbUP)
 	then
 		return
 	end

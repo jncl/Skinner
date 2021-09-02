@@ -140,13 +140,13 @@ function aObj:OnInitialize()
 	self:checkAndRun("SetupOptions", "opt")
 
 	-- register the default background texture
-	self.LSM:Register("background", dflts.BdTexture, self.cfBg)
+	self.LSM:Register("background", dflts.BdTexture, self.tFDIDs.cfBg)
 	-- register the inactive tab texture
 	self.LSM:Register("background", aName .. " Inactive Tab", [[Interface\AddOns\]] .. aName .. [[\Textures\inactive]])
 	-- register the texture used for EditBoxes & ScrollBars
 	self.LSM:Register("border", aName .. " Border", [[Interface\AddOns\]] .. aName .. [[\Textures\krsnik]])
 	-- register the statubar texture used by Nameplates
-	self.LSM:Register("statusbar", "Blizzard2", self.tfBF)
+	self.LSM:Register("statusbar", "Blizzard2", self.tFDIDs.tfBF)
 
 	-- EditBox regions to keep
 	self.ebRgns = {1, 2} -- 1 is text, 2 is the cursor texture

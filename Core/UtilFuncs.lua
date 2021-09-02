@@ -123,7 +123,7 @@ function aObj:changeMinusPlusTex(obj, minus)
 	--@end-alpha@
 
 	local nTex = obj:GetNormalTexture()
-	nTex:SetTexture(aObj.mpTex)
+	nTex:SetTexture(aObj.tFDIDs.mpTex)
 	if minus then
 		nTex:SetTexCoord(0.29687500, 0.54687500, 0.00781250, 0.13281250)
 	else
@@ -133,27 +133,13 @@ function aObj:changeMinusPlusTex(obj, minus)
 
 end
 
-function aObj:changeTex(obj, isYellow, isUnitFrame)
-	--@alpha@
-	_G.assert(obj, "Unknown object changeTex\n" .. _G.debugstack(2, 3, 2))
-	--@end-alpha@
-
-	obj:SetTexture(self.btnTex)
-	if isYellow then
-		obj:SetTexCoord(isUnitFrame and 0.015 or 0.0038, isUnitFrame and 0.66 or 0.7, 0.67, 0.855) -- yellow
-	else
-		obj:SetTexCoord(0.0038, 0.7, 0.004, 0.205) -- blue
-	end
-
-end
-
 function aObj:changeShield(shldReg, iconReg)
 	--@alpha@
 	_G.assert(shldReg, "Unknown object changeShield\n" .. _G.debugstack(2, 3, 2))
 	_G.assert(iconReg, "Unknown object changeShield\n" .. _G.debugstack(2, 3, 2))
 	--@end-alpha@
 
-	self:changeTandC(shldReg, self.shieldTex)
+	self:changeTandC(shldReg, self.tFDIDs.shieldTex)
 	shldReg:SetSize(44, 44)
 	-- move it behind the icon
 	shldReg:ClearAllPoints()
@@ -164,13 +150,40 @@ end
 function aObj:changeTandC(obj, tex)
 	--@alpha@
 	_G.assert(obj, "Unknown object changeTandC\n" .. _G.debugstack(2, 3, 2))
-	if tex == self.lvlBG then
+	if tex == self.tFDIDs.lvlBG then
 		self:CustomPrint(1, 0, 0, "changeTandC - Using default texture")
 	end
 	--@end-alpha@
 
-	obj:SetTexture(tex or self.lvlBG)
+	obj:SetTexture(tex or self.tFDIDs.lvlBG)
 	obj:SetTexCoord(0, 1, 0, 1)
+	if tex == self.sbTexture then
+		self.sbGlazed[obj] = {}
+	end
+
+end
+
+function aObj:changeTex(obj, isYellow, isUnitFrame)
+	--@alpha@
+	_G.assert(obj, "Unknown object changeTex\n" .. _G.debugstack(2, 3, 2))
+	--@end-alpha@
+
+	obj:SetTexture(self.tFDIDs.btnTex)
+	if isYellow then
+		obj:SetTexCoord(isUnitFrame and 0.015 or 0.0038, isUnitFrame and 0.66 or 0.7, 0.67, 0.855) -- yellow
+	else
+		obj:SetTexCoord(0.0038, 0.7, 0.004, 0.205) -- blue
+	end
+
+end
+
+function aObj:changeTex2SB(obj)
+	--@alpha@
+	_G.assert(obj, "Unknown object changeTex2SB\n" .. _G.debugstack(2, 3, 2))
+	--@end-alpha@
+
+	obj:SetTexture(self.sbTexture)
+	self.sbGlazed[obj] = {}
 
 end
 
@@ -712,7 +725,7 @@ function aObj:isDropDown(obj)
 		local chkObj = obj.Left or obj:GetName() and _G[obj:GetName() .. "Left"]
 		if chkObj then
 			if self:hasTextInTexture(chkObj, "CharacterCreate")
-			or self:hasTextInTexture(chkObj, self.ccLF)
+			or self:hasTextInTexture(chkObj, self.tFDIDs.ccLF)
 			then
 				chkObj = nil
 				return true
@@ -1033,7 +1046,7 @@ function aObj:resizeEmptyTexture(texture)
 	_G.assert(texture, "Unknown object resizeEmptyTexture\n" .. _G.debugstack(2, 3, 2))
 	--@end-alpha@
 
-	texture:SetTexture(self.esTex)
+	texture:SetTexture(self.tFDIDs.esTex)
 	texture:SetSize(64, 64)
 	texture:SetTexCoord(0, 1, 0, 1)
 	texture:ClearAllPoints()
@@ -1173,29 +1186,32 @@ function aObj:setupTextures()
 	N.B. Texture paths replaced by FileDataIDs
 	These can be found here: https://wow.tools/files/#search=&page=1&sort=0&desc=asc
 --]]
-	self.bHLS      = _G.GetFileIDFromPath([[Interface\Buttons\ButtonHilight-Square]])
-	self.btnTex    = _G.GetFileIDFromPath([[Interface\HelpFrame\HelpButtons]])
-	self.cbSC      = _G.GetFileIDFromPath([[Interface\Buttons\UI-Checkbox-SwordCheck]])
-	self.cbUP      = _G.GetFileIDFromPath([[interface\Buttons\UI-CheckBox-Up]])
-	self.ccLF      = _G.GetFileIDFromPath([[Interface\Glues\CharacterCreate\CharacterCreate-LabelFrame]])
-	self.cfBg      = _G.GetFileIDFromPath([[Interface\ChatFrame\ChatFrameBackground]])
-	self.ctabHL    = _G.GetFileIDFromPath([[Interface\PaperDollInfoFrame\UI-Character-Tab-Highlight]])
-	self.dpI       = _G.GetFileIDFromPath([[Interface\PetBattles\DeadPetIcon]])
-	self.ejt       = _G.GetFileIDFromPath([[Interface\EncounterJournal\UI-EncounterJournalTextures]])
-	self.enI       = _G.GetFileIDFromPath([[Interface\Tooltips\EliteNameplateIcon]])
-	self.esTex     = _G.GetFileIDFromPath([[Interface\Buttons\UI-Quickslot2]])
-	self.lfgIR     = _G.GetFileIDFromPath([[Interface\LFGFrame\UI-LFG-ICON-ROLES]])
-	self.lvlBG     = _G.GetFileIDFromPath([[Interface\PetBattles\BattleBar-AbilityBadge-Neutral]])
-	self.mHG       = _G.GetFileIDFromPath([[Interface\Common\mini-hourglass]])
-	self.mpTex     = _G.GetFileIDFromPath([[Interface\Common\UI-ModelControlPanel]])
-	self.mpw01     = _G.GetFileIDFromPath([[Interface\Icons\INV_Misc_Pelt_Wolf_01]])
-	self.pMBHL     = _G.GetFileIDFromPath([[Interface\Buttons\UI-Panel-MinimizeButton-Highlight]])
-	self.qltHL     = _G.GetFileIDFromPath([[Interface\QuestFrame\UI-QuestLogTitleHighlight]])
-	self.renI      = _G.GetFileIDFromPath([[Interface\Tooltips\RareEliteNameplateIcon]])
-	self.shieldTex = _G.GetFileIDFromPath([[Interface\CastingBar\UI-CastingBar-Arena-Shield]])
-	self.tfBF      = _G.GetFileIDFromPath([[Interface\TargetingFrame\UI-TargetingFrame-BarFill]])
-	self.tMB       = _G.GetFileIDFromPath([[Interface\Minimap\Tracking\Mailbox]])
-	self.w8x8      = _G.GetFileIDFromPath([[Interface\Buttons\WHITE8X8]])
+	self.tFDIDs = {
+		["bHLS"]      = _G.GetFileIDFromPath([[Interface\Buttons\ButtonHilight-Square]]),
+		["btnTex"]    = _G.GetFileIDFromPath([[Interface\HelpFrame\HelpButtons]]),
+		["cbSC"]      = _G.GetFileIDFromPath([[Interface\Buttons\UI-Checkbox-SwordCheck]]),
+		["cbUP"]      = _G.GetFileIDFromPath([[interface\Buttons\UI-CheckBox-Up]]),
+		["ccLF"]      = _G.GetFileIDFromPath([[Interface\Glues\CharacterCreate\CharacterCreate-LabelFrame]]),
+		["cfBg"]      = _G.GetFileIDFromPath([[Interface\ChatFrame\ChatFrameBackground]]),
+		["ctabHL"]    = _G.GetFileIDFromPath([[Interface\PaperDollInfoFrame\UI-Character-Tab-Highlight]]),
+		["dpI"]       = _G.GetFileIDFromPath([[Interface\PetBattles\DeadPetIcon]]),
+		["ejt"]       = _G.GetFileIDFromPath([[Interface\EncounterJournal\UI-EncounterJournalTextures]]),
+		["enI"]       = _G.GetFileIDFromPath([[Interface\Tooltips\EliteNameplateIcon]]),
+		["esTex"]     = _G.GetFileIDFromPath([[Interface\Buttons\UI-Quickslot2]]),
+		["lfgIR"]     = _G.GetFileIDFromPath([[Interface\LFGFrame\UI-LFG-ICON-ROLES]]),
+		["lvlBG"]     = _G.GetFileIDFromPath([[Interface\PetBattles\BattleBar-AbilityBadge-Neutral]]),
+		["mHG"]       = _G.GetFileIDFromPath([[Interface\Common\mini-hourglass]]),
+		["mpTex"]     = _G.GetFileIDFromPath([[Interface\Common\UI-ModelControlPanel]]),
+		["mpw01"]     = _G.GetFileIDFromPath([[Interface\Icons\INV_Misc_Pelt_Wolf_01]]),
+		["pMBHL"]     = _G.GetFileIDFromPath([[Interface\Buttons\UI-Panel-MinimizeButton-Highlight]]),
+		["qltHL"]     = _G.GetFileIDFromPath([[Interface\QuestFrame\UI-QuestLogTitleHighlight]]),
+		["renI"]      = _G.GetFileIDFromPath([[Interface\Tooltips\RareEliteNameplateIcon]]),
+		["shieldTex"] = _G.GetFileIDFromPath([[Interface\CastingBar\UI-CastingBar-Arena-Shield]]),
+		["tfBF"]      = _G.GetFileIDFromPath([[Interface\TargetingFrame\UI-TargetingFrame-BarFill]]),
+		["tMB"]       = _G.GetFileIDFromPath([[Interface\Minimap\Tracking\Mailbox]]),
+		["w8x8"]      = _G.GetFileIDFromPath([[Interface\Buttons\WHITE8X8]]),
+	}
+	
 			
 end
 
@@ -1239,8 +1255,12 @@ function aObj:updateSBTexture()
 	self.sbTexture = self.LSM:Fetch("statusbar", sBar.texture)
 	self.sbClr = _G.CreateColor(sBar.r, sBar.g, sBar.b, sBar.a)
 
-	for statusBar, tab in _G.pairs(self.sbGlazed) do
-		statusBar:SetStatusBarTexture(self.sbTexture)
+	for obj, tab in _G.pairs(self.sbGlazed) do
+		if obj:IsObjectType("StatusBar") then
+			obj:SetStatusBarTexture(self.sbTexture)
+		else
+			obj:SetTexture(self.sbTexture)
+		end
 		for k, tex in _G.pairs(tab) do
 			tex:SetTexture(self.sbTexture)
 			if k == "bg" then tex:SetVertexColor(self.sbClr:GetRGBA()) end

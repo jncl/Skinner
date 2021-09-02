@@ -816,7 +816,7 @@ aObj.blizzFrames[ftype].MerchantFrame = function(self)
 		for i = 1, _G.math.max(_G.MERCHANT_ITEMS_PER_PAGE, _G.BUYBACK_ITEMS_PER_PAGE) do
 			_G["MerchantItem" .. i .. "NameFrame"]:SetTexture(nil)
 			if not self.modBtnBs then
-				_G["MerchantItem" .. i .. "SlotTexture"]:SetTexture(self.esTex)
+				_G["MerchantItem" .. i .. "SlotTexture"]:SetTexture(self.tFDIDs.esTex)
 			else
 				_G["MerchantItem" .. i .. "SlotTexture"]:SetTexture(nil)
 				self:addButtonBorder{obj=_G["MerchantItem" .. i].ItemButton, ibt=true}
@@ -849,7 +849,7 @@ aObj.blizzFrames[ftype].MerchantFrame = function(self)
 				end)
 			end
 		else
-			_G.MerchantBuyBackItemSlotTexture:SetTexture(self.esTex)
+			_G.MerchantBuyBackItemSlotTexture:SetTexture(self.tFDIDs.esTex)
 		end
 
 		self:Unhook(this, "OnShow")

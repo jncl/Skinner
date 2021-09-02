@@ -690,7 +690,7 @@ local function skinTabs(tbl)
 		if tbl.ignoreHLTex then
 			local ht = tab:GetHighlightTexture()
 			if ht then
-				ht:SetTexture(aObj.ctabHL)
+				ht:SetTexture(aObj.tFDIDs.ctabHL)
 				ht:ClearAllPoints()
 				ht:SetPoint("TOPLEFT", oFs.x1, oFs.y1)
 				ht:SetPoint("BOTTOMRIGHT", oFs.x2, oFs.y2)

@@ -602,7 +602,7 @@ aObj.blizzFrames[ftype].CastingBar = function(self)
 		_G[type .. "CastingBarFrame"].Border:SetAlpha(0)
 		self:changeShield(_G[type .. "CastingBarFrame"].BorderShield, _G[type .. "CastingBarFrame"].Icon)
 		_G[type .. "CastingBarFrame"].Flash:SetAllPoints()
-		_G[type .. "CastingBarFrame"].Flash:SetTexture(self.w8x8)
+		_G[type .. "CastingBarFrame"].Flash:SetTexture(self.tFDIDs.w8x8)
 		if self.prdb.CastingBar.glaze then
 			self:skinStatusBar{obj=_G[type .. "CastingBarFrame"], fi=0, bgTex=self:getRegion(_G[type .. "CastingBarFrame"], 1)}
 		end
@@ -617,7 +617,7 @@ aObj.blizzFrames[ftype].CastingBar = function(self)
 	self:SecureHook("CastingBarFrame_SetLook", function(castBar, look)
 		castBar.Border:SetAlpha(0)
 		castBar.Flash:SetAllPoints()
-		castBar.Flash:SetTexture(self.w8x8)
+		castBar.Flash:SetTexture(self.tFDIDs.w8x8)
 		if look == "CLASSIC" then
 			castBar.Text:SetPoint("TOP", 0, 2)
 			castBar.Spark.offsetY = -1
@@ -1518,7 +1518,7 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 			end
 			self:skinDropDown{obj=this.Rewards.DropDown}
 			this.FactionFrame.Bar:DisableDrawLayer("BORDER")
-			this.FactionFrame.Bar.Progress:SetTexture(self.sbTexture)
+			self:changeTex2SB(this.FactionFrame.Bar.Progress)
 			this.FactionFrame.Bar.Shadow:SetTexture(nil)
 
 			self:Unhook(this, "OnShow")
@@ -2217,7 +2217,7 @@ aObj.blizzLoDFrames[ftype].EncounterJournal = function(self) -- a.k.a. Adenture 
 			this.info.encounterTitle:SetTextColor(self.HT:GetRGB())
 			this.info.instanceButton:SetNormalTexture(nil)
 			this.info.instanceButton:SetPushedTexture(nil)
-			this.info.instanceButton:SetHighlightTexture(self.ejt)
+			this.info.instanceButton:SetHighlightTexture(self.tFDIDs.ejt)
 			this.info.instanceButton:GetHighlightTexture():SetTexCoord(0.68945313, 0.81054688, 0.33300781, 0.39257813)
 			self:skinObject("slider", {obj=this.info.bossesScroll.ScrollBar, fType=ftype, x2=-4})
 			skinFilterBtn(this.info.difficulty)
@@ -2278,7 +2278,7 @@ aObj.blizzLoDFrames[ftype].EncounterJournal = function(self) -- a.k.a. Adenture 
 					cBtn.sknd = true
 					cBtn:SetNormalTexture(nil)
 					hTex = cBtn:GetHighlightTexture()
-					hTex:SetTexture(aObj.ejt)
+					hTex:SetTexture(aObj.tFDIDs.ejt)
 					hTex:SetTexCoord(0.68945313, 0.81054688, 0.33300781, 0.39257813)
 				end
 				hTex = nil
@@ -2732,9 +2732,9 @@ aObj.blizzLoDFrames[ftype].GuildUI = function(self)
 		_G.GuildPointFrame.LeftCap:SetTexture(nil)
 		_G.GuildPointFrame.RightCap:SetTexture(nil)
 		_G.GuildFactionBar:DisableDrawLayer("BORDER")
-		_G.GuildFactionBarProgress:SetTexture(self.sbTexture)
+		self:changeTex2SB(_G.GuildFactionBarProgress)
 		_G.GuildFactionBarShadow:SetAlpha(0)
-		_G.GuildFactionBarCap:SetTexture(self.sbTexture)
+		self:changeTex2SB(_G.GuildFactionBarCap)
 		_G.GuildFactionBarCapMarker:SetAlpha(0)
 		self:skinObject("editbox", {obj=_G.GuildNameChangeFrame.editBox, fType=ftype})
 		if self.modBtns then
@@ -2771,7 +2771,7 @@ aObj.blizzLoDFrames[ftype].GuildUI = function(self)
 		self:skinObject("slider", {obj=_G.GuildRosterContainerScrollBar, fType=ftype})
 		for _, btn in _G.pairs(_G.GuildRosterContainer.buttons) do
 			btn:DisableDrawLayer("BACKGROUND")
-			btn.barTexture:SetTexture(self.sbTexture)
+			self:changeTex2SB(btn.barTexture)
 			btn.header.leftEdge:SetAlpha(0)
 			btn.header.rightEdge:SetAlpha(0)
 			btn.header.middle:SetAlpha(0)

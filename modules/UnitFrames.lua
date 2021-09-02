@@ -278,7 +278,7 @@ function module:skinPetF()
 			_G.PetFrame.roleIcon = _G.PetFrame:CreateTexture(nil, "artwork")
 			_G.PetFrame.roleIcon:SetSize(24, 24)
 			_G.PetFrame.roleIcon:SetPoint("left", -10, 0)
-			_G.PetFrame.roleIcon:SetTexture(aObj.lfgIR)
+			_G.PetFrame.roleIcon:SetTexture(aObj.tFDIDs.lfgIR)
 			-- get Pet's Specialization Role to set roleIcon TexCoord
 			local petSpec
 			self:RegisterEvent("UNIT_PET", function(event, arg1)
@@ -391,7 +391,7 @@ function module:skinTargetF()
 			self:SecureHookScript(_G["Boss" .. i .. "TargetFrame"], "OnShow", function(this)
 				self:skinButton(this:GetName(), false)
 				-- always an Elite mob
-				this.ucTex:SetTexture(aObj.enI)
+				this.ucTex:SetTexture(aObj.tFDIDs.enI)
 
 				self:Unhook(this, "OnShow")
 			end)
@@ -407,9 +407,9 @@ function module:skinTargetF()
 				if classification == "worldboss"
 				or classification == "elite"
 				then
-					frame.ucTex:SetTexture(aObj.enI)
+					frame.ucTex:SetTexture(aObj.tFDIDs.enI)
 				elseif classification == "rareelite" then
-					frame.ucTex:SetTexture(aObj.renI)
+					frame.ucTex:SetTexture(aObj.tFDIDs.renI)
 				elseif classification == "rare" then
 					frame.ucTex:SetTexture([[Interface\AddOns\]] .. aName .. [[\Textures\RareNameplateIcon]])
 				else
@@ -524,7 +524,7 @@ local function changeUFOpacity()
 
 	-- handle in combat
 	if _G.InCombatLockdown() then
-	    aObj:add2Table(aObj.oocTab, {changeUFOpacity, {}})
+	    aObj:add2Table(aObj.oocTab, {changeUFOpacity, {nil}})
 	    return
 	end
 
