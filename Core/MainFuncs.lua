@@ -1101,7 +1101,7 @@ local function __skinStatusBar(opts)
 			-- create background texture on a lower sublevel
 			sbG.bg = opts.bgTex or opts.obj:CreateTexture(nil, "BACKGROUND", nil, -1)
 			sbG.bg:SetTexture(aObj.sbTexture)
-			sbG.bg:SetVertexColor(aObj.sbClr.r, aObj.sbClr.g, aObj.sbClr.b, 0.25)
+			sbG.bg:SetVertexColor(aObj.sbClr:GetRGBA())
 			if not opts.bgTex then
 				sbG.bg:SetAllPoints()
 			else
@@ -1121,7 +1121,7 @@ local function __skinStatusBar(opts)
 		for i = 1, #opts.otherTex do
 			tex = opts.otherTex[i]
 			tex:SetTexture(aObj.sbTexture)
-			tex:SetVertexColor(aObj.sbClr.r, aObj.sbClr.g, aObj.sbClr.b, 0.25)
+			tex:SetVertexColor(aObj.sbClr:GetRGBA())
 			sbG[#sbG + 1] = tex
 			if opts.nilFuncs then
 				tex.SetTexture = _G.nop
