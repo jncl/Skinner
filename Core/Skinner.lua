@@ -36,8 +36,29 @@ function aObj:OnInitialize()
 	self:Debug("Debugging is enabled")
 	--@end-debug@
 
+	-- TODO: remove this in favour of RegisterMessage/SendMessage
 	-- add callbacks
 	self.callbacks = _G.LibStub:GetLibrary("CallbackHandler-1.0", true):New(aObj)
+	--@alpha@
+	self:SecureHook(self, "RegisterCallback", function(this, ...)
+		_G.print("RegisterCallback", ...)
+		_G.assert(false, "RegisterCallback" .. _G.debugstack(2, 3, 2))
+	end)
+	self:SecureHook(self.callbacks, "Fire", function(this, event)
+		if not event:find("_GetChildren")
+		and not event:find("IOFPanel")
+		and not event:find("AddOn_Loaded")
+		and not event:find("Auction_House_Show")
+		and not event:find("PetBattleUI_OnShow")
+		-- and not event:find("Tooltip_Setup")
+		and not event:find("WardrobeCollectionFrame_OnShow")
+		then
+			_G.print("callbacks Fire", event)
+			_G.assert(false, "callbacks Fire" .. _G.debugstack(2, 3, 2))
+		end
+	end)
+	--@end-alpha@
+	
 	-- get Locale
 	self.L = _G.LibStub:GetLibrary("AceLocale-3.0", true):GetLocale(aName)
 	-- pointer to LibDBIcon-1.0 library
@@ -413,7 +434,7 @@ function aObj:OnEnable()
 	end
 
 	-- handle statusbar changes
-	self.LSM.RegisterCallback(self, "LibSharedMedia_SetGlobal", function(mtype, override)
+	self.LSM:RegisterCallback("LibSharedMedia_SetGlobal", function(mtype, override)
 		if mtype == "statusbar" then
 			self.prdb.StatusBar.texture = override
 			self:updateSBTexture()
@@ -423,9 +444,10 @@ function aObj:OnEnable()
 			self.prdb.BdBorderTexture = override
 		end
 	end)
-	self.RegisterCallback("OnEnable", "Player_Entering_World", function(this)
+	self:RegisterMessage("Player_Entering_World", function(_)
 		self:updateSBTexture()
-		self.UnregisterCallback("OnEnable", "Player_Entering_World")
+
+		self:UnregisterMessage("Player_Entering_World")
 	end)
 
 	-- hook to handle textured tabs on Blizzard & other Frames
@@ -478,9 +500,9 @@ function aObj:OnEnable()
 		-- prompt for reload
 		_G.StaticPopup_Show(aName .. "_Reload_UI")
 	end
-	self.db.RegisterCallback(self, "OnProfileChanged", reloadAddon)
-	self.db.RegisterCallback(self, "OnProfileCopied", reloadAddon)
-	self.db.RegisterCallback(self, "OnProfileReset", reloadAddon)
+	self.db:RegisterCallback("OnProfileChanged", reloadAddon)
+	self.db:RegisterCallback("OnProfileCopied", reloadAddon)
+	self.db:RegisterCallback("OnProfileReset", reloadAddon)
 
 	-- skin the Blizzard frames
 	_G.C_Timer.After(self.prdb.Delay.Init, function() self:BlizzardFrames() end)

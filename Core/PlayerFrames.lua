@@ -1085,6 +1085,7 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 		local x1Ofs, y1Ofs, x2Ofs, y2Ofs = -4, 2, 7, -4
 
 		if _G.IsAddOnLoaded("BetterWardrobe") then
+			self:SendMessage("WardrobeCollectionFrame_OnShow")
 			self.callbacks:Fire("WardrobeCollectionFrame_OnShow")
 		else
 			local function updBtnClr(btn)

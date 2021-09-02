@@ -191,6 +191,7 @@ function aObj:ADDON_LOADED(event, addon)
 
 	self:LoDFrames(addon)
 
+	self:SendMessage("AddOn_Loaded", addon)
 	self.callbacks:Fire("AddOn_Loaded", addon)
 
 end
@@ -198,6 +199,7 @@ end
 function aObj:AUCTION_HOUSE_SHOW()
 	-- self:Debug("AUCTION_HOUSE_SHOW")
 
+	self:SendMessage("Auction_House_Show")
 	self.callbacks:Fire("Auction_House_Show")
 
 	self:UnregisterEvent("AUCTION_HOUSE_SHOW")
@@ -209,7 +211,7 @@ function aObj:PLAYER_ENTERING_WORLD()
 
 	-- delay issuing callback to allow for code to be loaded
 	_G.C_Timer.After(0.5, function()
-		self.callbacks:Fire("Player_Entering_World")
+		self:SendMessage("Player_Entering_World")
 	end)
 
 end

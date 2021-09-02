@@ -2178,7 +2178,7 @@ aObj.SetupOptions = function(self)
 	self.DBIcon:Register(aName, self.DBObj, db.MinimapIcon)
 
 	-- defer populating Disabled Skins panel until required
-	self.RegisterCallback("Skinner_SO", "IOFPanel_Before_Skinning", function(_, panel)
+	self.RegisterMessage("Skinner_SO", "IOFPanel_Before_Skinning", function(_, panel)
 		if panel.parent ~= self.L[aName] -- N.B. use localised name
 		or panel.name ~= self.L["Disabled Skins"] -- N.B. use localised name
 		then
@@ -2220,7 +2220,8 @@ aObj.SetupOptions = function(self)
 		end
 		addDSOpt = nil
 
-		self.UnregisterCallback("Skinner_SO", "IOFPanel_Before_Skinning")
+		-- self.UnregisterCallback("Skinner_SO", "IOFPanel_Before_Skinning")
+		self.UnregisterMessage("Skinner_SO", "IOFPanel_Before_Skinning")
 
 		-- ensure new entries are displayed
 		-- N.B. AFTER callback is unregistered otherwise a stack overflow occurs

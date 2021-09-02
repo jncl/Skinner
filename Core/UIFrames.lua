@@ -3143,7 +3143,7 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 			skinCovenantMissionFrame(this)
 			skinCovenantMissionFrame = nil
 			-- let other addons know when frame skinned (e.g. VenturePlan)
-			self.callbacks:Fire("CovenantMissionFrame_Skinned")
+			self:SendMessage("CovenantMissionFrame_Skinned")
 		end
 
 	end)
@@ -3431,16 +3431,16 @@ aObj.blizzFrames[ftype].InterfaceOptions = function(self)
 	end)
 
 	-- skin extra elements
-	self.RegisterCallback("IONP", "IOFPanel_After_Skinning", function(this, panel)
+	self.RegisterMessage("IONP", "IOFPanel_After_Skinning", function(_, panel)
 		if panel ~= _G.InterfaceOptionsNamesPanel then return end
 		skinKids(_G.InterfaceOptionsNamesPanelFriendly, ftype)
 		skinKids(_G.InterfaceOptionsNamesPanelEnemy, ftype)
 		skinKids(_G.InterfaceOptionsNamesPanelUnitNameplates, ftype)
 
-		self.UnregisterCallback("IONP", "IOFPanel_After_Skinning")
+		self.UnregisterMessage("IONP", "IOFPanel_After_Skinning")
 	end)
 
-	self.RegisterCallback("CUFP", "IOFPanel_After_Skinning", function(this, panel)
+	self.RegisterMessage("CUFP", "IOFPanel_After_Skinning", function(_, panel)
 		if panel ~= _G.CompactUnitFrameProfiles then
 			return
 		end
@@ -3469,13 +3469,14 @@ aObj.blizzFrames[ftype].InterfaceOptions = function(self)
 		end
 		_G.CompactUnitFrameProfiles.optionsFrame.autoActivateBG:SetTexture(nil)
 
-		self.UnregisterCallback("CUFP", "IOFPanel_After_Skinning")
+		self.UnregisterMessage("CUFP", "IOFPanel_After_Skinning")
 	end)
 
 	-- hook this to skin Interface Option panels
 	self:SecureHook("InterfaceOptionsList_DisplayPanel", function(panel)
 
 		-- let AddOn skins know when IOF panel is going to be skinned
+		self:SendMessage("IOFPanel_Before_Skinning", panel)
 		self.callbacks:Fire("IOFPanel_Before_Skinning", panel)
 
 		-- don't skin a panel twice
@@ -3485,6 +3486,7 @@ aObj.blizzFrames[ftype].InterfaceOptions = function(self)
 		end
 
 		-- let AddOn skins know when IOF panel has been skinned
+		self:SendMessage("IOFPanel_After_Skinning", panel)
 		self.callbacks:Fire("IOFPanel_After_Skinning", panel)
 
 	end)
@@ -4652,7 +4654,7 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 	for name, button in _G.pairs(self.DBIcon.objects) do
 		skinDBI(nil, button, name)
 	end
-	self.DBIcon.RegisterCallback(self, "LibDBIcon_IconCreated", skinDBI)
+	self.DBIcon:RegisterCallback("LibDBIcon_IconCreated", skinDBI)
 
 	-- Garrison Landing Page Minimap button
 	if not self.isClsc then
@@ -5135,6 +5137,7 @@ aObj.blizzFrames[ftype].PetBattleUI = function(self)
 		end
 
 		self:Unhook(this, "OnShow")
+		self:SendMessage("PetBattleUI_OnShow")
 		self.callbacks:Fire("PetBattleUI_OnShow")
 	end)
 	self:checkShown(_G.PetBattleFrame)
@@ -6185,6 +6188,7 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 		_G.setmetatable(self.ttList, {__newindex = function(tab, _, tTip)
 			tTip = _G.type(tTip) == "string" and _G[tTip] or tTip
 			LibEvent:trigger("tooltip.style.init", tTip)
+			self:SendMessage("Tooltip_Setup", tTip)
 			self.callbacks:Fire("Tooltip_Setup", tTip)
 		end})
 		return
