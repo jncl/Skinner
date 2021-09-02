@@ -5,12 +5,12 @@ local _G = _G
 aObj.addonsToSkin.Cork = function(self) -- v 7.1.0.62-Beta
 
 	-- anchor
-	self.RegisterCallback("Cork", "UIParent_GetChildren", function(this, child)
+	self.RegisterMessage("Cork", "UIParent_GetChildren", function(this, child)
 		if child:IsObjectType("Button")
 		and _G.Round(child:GetHeight()) == 24
 		then
 			self:skinObject("frame", {obj=child, kfs=true})
-			self.UnregisterCallback("Cork", "UIParent_GetChildren")
+			self.UnregisterMessage("Cork", "UIParent_GetChildren")
 		end
 	end)
 
@@ -19,7 +19,7 @@ aObj.addonsToSkin.Cork = function(self) -- v 7.1.0.62-Beta
 		self:add2Table(self.ttList, _G.Corkboard)
 	end)
 
-	self.RegisterCallback("Cork", "IOFPanel_Before_Skinning", function(this, panel)
+	self.RegisterMessage("Cork", "IOFPanel_Before_Skinning", function(this, panel)
 		if panel.name ~= "Cork" then return end
 		self.iofSkinnedPanels[panel] = true
 
@@ -46,7 +46,7 @@ aObj.addonsToSkin.Cork = function(self) -- v 7.1.0.62-Beta
 			end)
 		end})
 
-		self.UnregisterCallback("Cork", "IOFPanel_Before_Skinning")
+		self.UnregisterMessage("Cork", "IOFPanel_Before_Skinning")
 	end)
 
 end

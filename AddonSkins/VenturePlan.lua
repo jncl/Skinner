@@ -4,7 +4,7 @@ local _G = _G
 
 aObj.addonsToSkin.VenturePlan = function(self) -- v 4.16a
 
-	self.RegisterCallback("VenturePlan", "CovenantMissionFrame_Skinned", function(this)
+	self.RegisterMessage("VenturePlan", "CovenantMissionFrame_Skinned", function(_)
 		-- wait for frames to be created
 		_G.C_Timer.After(0.1, function()
 			-- MissionList
@@ -29,10 +29,10 @@ aObj.addonsToSkin.VenturePlan = function(self) -- v 4.16a
 				end
 				local pBar = self:getChild(btn, 5) -- ProgressBar
 				self:removeRegions(pBar, {1, 2, 3, 4, 5, 6, 7, 8, 9})
-				pBar.Fill:SetTexture(self.sbTexture)
+				self:changeTex2SB(pBar.Fill)
 				pBar.Fill:SetVertexColor(self.sbClr:GetRGBA())
 				pBar.bg = pBar:CreateTexture(nil, "BACKGROUND", nil, -1)
-				pBar.bg:SetTexture(self.sbTexture)
+				self:changeTex2SB(pBar.bg)
 				pBar.bg:SetVertexColor(self.sbClr:GetRGBA())
 				pBar.bg:SetAllPoints()
 				pBar = nil
@@ -62,12 +62,14 @@ aObj.addonsToSkin.VenturePlan = function(self) -- v 4.16a
 					aObj:getRegion(f2, 7):SetTexture(nil) -- RoleB
 					aObj:getRegion(f2, 9):SetTexture(nil) -- AbilitiesB[1]
 					aObj:getRegion(f2, 11):SetTexture(nil) -- AbilitiesB[2]
+					f2 = nil
 				end
 				-- troops
 				skinFLB(self:getChild(fList, 1))
 				skinFLB(self:getChild(fList, 2))
+				-- child 3 is InfoButton
 				-- companions
-				for i = 4, 20 do
+				for i = 4, _G.C_Garrison.GetNumFollowers(_G.Enum.GarrisonFollowerType.FollowerType_9_0) + 3 do
 					skinFLB(self:getChild(fList, i))
 				end
 				self:skinObject("frame", {obj=fList, kfs=true, fb=true, clr="sepia"})
@@ -79,7 +81,7 @@ aObj.addonsToSkin.VenturePlan = function(self) -- v 4.16a
 			frame = nil
 		end)
 
-		self.UnregisterCallback("VenturePlan", "CovenantMissionFrame_Skinned")
+		self.UnregisterMessage("VenturePlan", "CovenantMissionFrame_Skinned")
 	end)
 
 end

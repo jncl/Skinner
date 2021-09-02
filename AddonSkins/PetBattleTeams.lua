@@ -1,4 +1,4 @@
-local aName, aObj = ...
+local _, aObj = ...
 if not aObj:isAddonEnabled("PetBattleTeams") then return end
 local _G = _G
 
@@ -9,45 +9,40 @@ aObj.addonsToSkin.PetBattleTeams = function(self) -- v 3.3.11
 	if not pbtui then return end
 
 	local function skinTeamFrame(frame)
-		for i = 1, 3 do
-			local btn = frame.unitFrames[i]
-			if self.modBtnBs then
-				aObj:addButtonBorder{obj=btn, relTo=btn.Icon, reParent={btn.ActualHealthBar, frame.selectedTexture, frame.lockedTexture}}
-			end
+		for _, btn in _G.pairs(frame.unitFrames) do
 			btn.healthBarWidth = 34
 			btn.ActualHealthBar:SetWidth(34)
-			btn.ActualHealthBar:SetTexture(aObj.sbTexture)
+			aObj:changeTex2SB(btn.ActualHealthBar)
 			btn.BorderAlive:SetTexture(nil)
-			aObj:changeTandC(btn.BorderDead, [[Interface\PetBattles\DeadPetIcon]])
+			aObj:changeTandC(btn.BorderDead, aObj.tFDIDs.dpI)
 			btn.HealthDivider:SetTexture(nil)
+			if aObj.modBtnBs then
+				aObj:addButtonBorder{obj=btn, relTo=btn.Icon, reParent={btn.ActualHealthBar, frame.selectedTexture, frame.lockedTexture}}
+			end
 		end
 	end
 	local function skinTeams()
-		aObj:Debug("skinTeams: [%s]", #_G["PetBattleTeamsRosterFrame"].scrollChild.teamFrames)
-		for i = 1, #_G["PetBattleTeamsRosterFrame"].scrollChild.teamFrames do
-			skinTeamFrame(_G["PetBattleTeamsRosterFrame"].scrollChild.teamFrames[i])
+		for _, frame in _G.pairs(_G["PetBattleTeamsRosterFrame"].scrollChild.teamFrames) do
+			skinTeamFrame(frame)
 		end
-
 	end
 	self:SecureHook(pbtui, "InitializeGUI", function(this)
-		-- skin frame
-		self:skinSlider{obj=this.mainFrame.rosterFrame.scrollFrame.ScrollBar}
+		self:skinObject("slider", {obj=this.mainFrame.rosterFrame.scrollFrame.ScrollBar})
 		this.menuButton.overlay:SetTexture(nil)
-		self:addSkinFrame{obj=this.mainFrame, ft="a", kfs=true, nb=true, y1=2, y2=-5}
-		if self.modBtns then
-			self:addSkinButton{obj=this.menuButton, parent=this.menuButton, sap=true}
-		end
+		this.menuButton:SetHighlightTexture(self.tFDIDs.bHLS)
+		self:skinObject("frame", {obj=this.mainFrame, kfs=true, x1=2, y1=2, y2=-1})
 		if self.modBtnBs then
-			self:addButtonBorder{obj=this.mainFrame.addTeamButton}
-			self:addButtonBorder{obj=this.mainFrame.reviveButton}
-			self:addButtonBorder{obj=this.mainFrame.bandageButton}
+			self:addButtonBorder{obj=this.menuButton, ofs=-1, x1=3, y1=-2}
+			self:addButtonBorder{obj=this.mainFrame.addTeamButton, ofs=3}
+			self:addButtonBorder{obj=this.mainFrame.reviveButton, ofs=3}
+			self:addButtonBorder{obj=this.mainFrame.bandageButton, ofs=3}
 		end
-		-- Selected Team
 		skinTeamFrame(this.mainFrame.selectedTeam)
 		-- Team Roster, wait for them to be created
 		_G.C_Timer.After(0.2, function()
 			skinTeams()
 		end)
+
 		self:Unhook(this, "InitializeGUI")
 	end)
 	-- hook this to handle roster changes
@@ -56,6 +51,7 @@ aObj.addonsToSkin.PetBattleTeams = function(self) -- v 3.3.11
 	    tm.RegisterCallback(self, "TEAM_CREATED", skinTeams)
 	    tm.RegisterCallback(self, "TEAM_UPDATED", skinTeams)
 		tm = nil
+
 		self:Unhook(this, "CreateScrollBar")
 	end)
 	pbtui = nil
@@ -65,13 +61,13 @@ aObj.addonsToSkin.PetBattleTeams = function(self) -- v 3.3.11
 		local tt = PBT:GetModule("Tooltip").tooltip
 		if tt then
 			tt:DisableDrawLayer("BACKGROUND")
-			tt.ActualHealthBar:SetTexture(self.sbTexture)
-			tt.XPBar:SetTexture(self.sbTexture)
+			self:changeTex2SB(tt.ActualHealthBar)
+			self:changeTex2SB(tt.XPBar)
 			tt.Delimiter:SetTexture(nil)
+			self:skinObject("frame", {obj=tt})
 			if self.modBtnBs then
 				self:addButtonBorder{obj=tt, relTo=tt.Icon, ofs=2, reParent={tt.Level}}
 			end
-			self:addSkinFrame{obj=tt, ft="a", kfs=true, nb=true}
 		end
 		tt = nil
 	end

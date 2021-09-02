@@ -27,7 +27,7 @@ aObj.addonsToSkin.CovenantMissionHelper = function(self) -- v 0.1
 				end
 			end)
 		end
-		aObj:skinObject("frame", {obj=frame, kfs=true, y2=-5, clr="sepia"})
+		aObj:skinObject("frame", {obj=frame, kfs=true, ofs=0, y2=-4, clr="sepia"})
 		if aObj.modBtns then
 			aObj:skinStdButton{obj=frame.buttonsFrame.BestDispositionByPercentButton}
 			aObj:skinStdButton{obj=frame.buttonsFrame.BestDispositionByMinPercentButton}

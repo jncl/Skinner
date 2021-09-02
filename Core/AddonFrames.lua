@@ -38,7 +38,6 @@ local addonSkins = {
 	"MogIt",
 	"Notes",
 	"Omen", "OneBag3", "OneBank3",
-	"PetBattleMaster",
 	"Quartz", "QuickMark",
 	"Skada", "SorhaQuestLog",
 	"TooManyAddons",
