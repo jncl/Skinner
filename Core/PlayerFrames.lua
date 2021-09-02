@@ -1618,6 +1618,12 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 			if self.modBtns then
 				self:skinStdButton{obj=this.RemoveButton}
 				self:skinStdButton{obj=this.GroupInviteButton}
+				self:SecureHook(this.RemoveButton, "SetEnabled", function(this)
+					self:clrBtnBdr(this)
+				end)
+				self:SecureHook(this.GroupInviteButton, "SetEnabled", function(this)
+					self:clrBtnBdr(this)
+				end)
 			end
 
 			self:Unhook(this, "DisplayMember")
