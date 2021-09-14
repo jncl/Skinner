@@ -1064,8 +1064,6 @@ function aObj:skinSlider(...)
 
 end
 
--- table to hold StatusBars that have been glazed, with weak keys
-aObj.sbGlazed = _G.setmetatable({}, {__mode = "k"})
 local function __skinStatusBar(opts)
 --[[
 	Calling parameters:

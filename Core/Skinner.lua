@@ -318,7 +318,10 @@ function aObj:OnInitialize()
 	-- table to hold Tooltips to hook Show function
 	self.ttHook = {}
 
-	-- Load Classic Support, if required (added here for ElvUI/TukUI)
+	-- table to hold StatusBars that have been glazed, with weak keys
+	self.sbGlazed = _G.setmetatable({}, {__mode = "k"})
+
+	-- Load Classic Support, if required (done here for ElvUI/TukUI)
 	if self.isClsc then
 		self:loadClassicSupport()
 	end

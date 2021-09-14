@@ -117,6 +117,13 @@ aObj.skinTPLs = {
 		-- x2          = -3,
 		-- y2          = 3,
 	},
+	statusbar = {
+		fi          = 0, -- frame inset
+		regions     = {}, -- remove specified regions
+		-- bg       = nil, -- existing background texture
+		-- otherTex = {}, -- other texture objects
+		-- nilFuncs = false, -- nop Atlas functions
+	},
 	tabs = {
 		-- prefix      = "",
 		-- tabs        = {},
@@ -648,6 +655,60 @@ local function skinSlider(tbl)
 	h, w, o = nil, nil, nil
 end
 skinFuncs.slider = function(table) skinSlider(table) end
+local function skinStatusBar(tbl)
+	--@alpha@
+	_G.assert(tbl.obj, "Missing object __sSB\n" .. _G.debugstack(2, 3, 2))
+	_G.assert(tbl.obj:IsObjectType("StatusBar"), "Not a StatusBar (skinStatusBar)\n" .. _G.debugstack(2, 3, 2))
+	--@end-alpha@
+	aObj:Debug2("skinStatusBar: [%s, %s]", tbl)
+
+	-- apply StatusBar texture
+	tbl.obj:SetStatusBarTexture(aObj.sbTexture)
+	-- don't skin it twice
+	if not aObj.sbGlazed[tbl.obj] then
+		aObj.sbGlazed[tbl.obj] = {}
+	else
+		return
+	end
+	-- create local object
+	local sbG = aObj.sbGlazed[tbl.obj]
+	-- remove texture regions
+	aObj:removeRegions(tbl.obj, tbl.regions)
+	-- create background texture if required
+	if tbl.fi then
+		if not sbG.bg then
+			sbG.bg = tbl.bg or tbl.obj:CreateTexture(nil, "BACKGROUND", nil, -1)
+			sbG.bg:SetTexture(aObj.sbTexture)
+			sbG.bg:SetVertexColor(aObj.sbClr:GetRGBA())
+			if not tbl.bg then
+				sbG.bg:SetAllPoints()
+			else
+			end
+		end
+	end
+	-- apply texture to and store other texture objects
+	if tbl.otherTex
+	and _G.type(tbl.otherTex) == "table"
+	then
+		for _, tex in _G.pairs(tbl.otherTex) do
+			tex:SetTexture(aObj.sbTexture)
+			tex:SetVertexColor(aObj.sbClr:GetRGBA())
+			sbG[#sbG + 1] = tex
+		end
+	end
+	-- nop Atlas functions
+	if tbl.nilFuncs then
+		tbl.obj.SetStatusBarTexture = _G.nop
+		tbl.obj.SetStatusBarAtlas = _G.nop
+		for _, tex in _G.pairs(sbG) do
+			tex.SetTexture = _G.nop
+			tex.SetAtlas = _G.nop
+		end
+	end
+	-- remove local pointer
+	sbG = nil
+end
+skinFuncs.statusbar = function(table) skinStatusBar(table) end
 local function skinTabs(tbl)
 	--@alpha@
 	_G.assert(tbl.obj, "Missing Tab Object (skinTabs)\n" .. _G.debugstack(2, 3, 2))
