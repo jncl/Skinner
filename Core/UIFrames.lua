@@ -6550,10 +6550,8 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 				aObj:skinObject("statusbar", {obj=wFrame.Bar, regions={2, 3, 4, 9, 10, 11}, fi=0, nilFuncs=true})
 			end
 		elseif wFrame.widgetType == 3 then -- DoubleStatusBar (Island Expeditions)
-			aObj:skinStatusBar{obj=wFrame.LeftBar, fi=0, bgTex=wFrame.LeftBar.BG, nilFuncs=true}
-			aObj:removeRegions(wFrame.LeftBar, {2, 3, 4}) -- border textures
-			aObj:skinStatusBar{obj=wFrame.RightBar, fi=0, bgTex=wFrame.RightBar.BG, nilFuncs=true}
-			aObj:removeRegions(wFrame.RightBar, {2, 3, 4}) -- border textures
+			aObj:skinObject("statusbar", {obj=wFrame.LeftBar, regions={2, 3, 4}, fi=0, bg=wFrame.LeftBar.BG, nilFuncs=true})
+			aObj:skinObject("statusbar", {obj=wFrame.RightBar, regions={2, 3, 4}, fi=0, bg=wFrame.RightBar.BG, nilFuncs=true})
 		elseif wFrame.widgetType == 4 then -- IconTextAndBackground (Island Expedition Totals)
 		elseif wFrame.widgetType == 5 then -- DoubleIconAndText
 			if aObj.modBtnBs then
@@ -6586,10 +6584,11 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 			end
 		elseif wFrame.widgetType == 11 then -- ScenarioHeaderCurrenciesAndBackground
 			aObj:nilTexture(wFrame.Frame, true)
-		elseif wFrame.widgetType == 12 then -- TextureWithState (PTR - TextureAndText)
+		elseif wFrame.widgetType == 12 then -- TextureAndText
 			-- .Background
 			-- .Foreground
 			setTextColor(wFrame.Text)
+		-- N.B. Classic ONLY has 12 UIWidgets
 		elseif wFrame.widgetType == 13 then -- SpellDisplay
 			wFrame.Spell.Border:SetTexture(nil)
 			local tcr = setTextColor(wFrame.Spell.Text)
@@ -6613,38 +6612,38 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 		elseif wFrame.widgetType == 18 then -- TextureWithAnimation
 		elseif wFrame.widgetType == 19 then -- DiscreteProgressSteps
 		elseif wFrame.widgetType == 20 then -- ScenarioHeaderTimer
-			wFrame.Frame:SetTexture(nil)
-			aObj:skinStatusBar{obj=wFrame.TimerBar, fi=0, bgTex=wFrame.TimerBar.BG, nilFuncs=true}
+			aObj:nilTexture(wFrame.Frame, true)
+			aObj:skinObject("statusbar", {obj=wFrame.TimerBar, fi=0, bg=wFrame.TimerBar.BG})
+			-- FIXME: uses partitionPool ??
+		elseif wFrame.widgetType == 21 then -- TextColumnRow
+		elseif wFrame.widgetType == 22 then -- Spacer
 		end
 	end
 
 	if not self.isClsc then
-		local count
-		local function getWidgets(widgetContainer)
-			count = 0
+		local function hookAndSkinWidgets(widgetContainer)
+			-- DON'T skin NamePlate[n].UnitFrame.WidgetContainer widgets as they cause Clamping Errors
+			if widgetContainer:GetDebugName():find("^NamePlate%d+\.UnitFrame\.WidgetContainer") then return end
+			aObj:SecureHook(widgetContainer, "UpdateWidgetLayout", function(this)
+				for widget in this.widgetPools:EnumerateActive() do
+					skinWidget(widget, _G.UIWidgetManager:GetWidgetTypeInfo(widget.widgetType))
+				end
+			end)
+			-- skin existing widgets
 			for widget in widgetContainer.widgetPools:EnumerateActive() do
-				count = count + 1
 				skinWidget(widget, _G.UIWidgetManager:GetWidgetTypeInfo(widget.widgetType))
 			end
-			return count
 		end
 		-- hook this to skin new widgets
 		self:SecureHook(_G.UIWidgetManager, "OnWidgetContainerRegistered", function(this, widgetContainer)
-			self:SecureHook(widgetContainer, "UpdateWidgetLayout", function(this)
-				getWidgets(this)
-			end)
-			getWidgets(widgetContainer)
+			hookAndSkinWidgets(widgetContainer)
 		end)
 		self:SecureHook(_G.UIWidgetManager, "OnWidgetContainerUnregistered", function(this, widgetContainer)
 			self:Unhook(widgetContainer, "UpdateWidgetLayout")
 		end)
 		-- handle existing WidgetContainers
 		for widgetContainer, _ in _G.pairs(_G.UIWidgetManager.registeredWidgetContainers) do
-			-- getWidgets(widgetContainer)
-			self:SecureHook(widgetContainer, "UpdateWidgetLayout", function(this)
-				getWidgets(this)
-			end)
-			getWidgets(widgetContainer)
+			hookAndSkinWidgets(widgetContainer)
 		end
 	else
 		self:SecureHook(_G.UIWidgetManager, "CreateWidget", function(this, widgetID, _, widgetType)
