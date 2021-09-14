@@ -836,6 +836,17 @@ aObj.ClassicSupport = function(self)
 
 	end
 
+	local function skinaTS(parent)
+		if _G.IsAddOnLoaded("alaTradeSkill") then
+			aObj:keepFontStrings(parent.frame.TextureBackground)
+			parent.frame.TabFrame:ClearAllPoints()
+			parent.frame.TabFrame:SetPoint("BOTTOM", parent, "TOP", 0, -13)
+			aObj:skinObject("frame", {obj=parent.frame.TabFrame, fb=true})
+			aObj:skinObject("frame", {obj=parent.frame.ProfitFrame, kfs=true, ofs=0})
+			aObj:skinObject("frame", {obj=parent.frame.SetFrame, kfs=true, ofs=0, y1=2})
+			aObj:skinObject("slider", {obj=parent.frame.SetFrame.PhaseSlider})
+		end
+	end
 	self.blizzLoDFrames[ftype].CraftUI = function(self)
 		if not self.prdb.CraftUI or self.initialized.CraftUI then return end
 		self.initialized.CraftUI = true
@@ -844,8 +855,6 @@ aObj.ClassicSupport = function(self)
 			self:skinStatusBar{obj=_G.CraftRankFrame, fi=0, bgTex=_G.CraftRankFrameBackground}
 			_G.CraftRankFrameBorder:GetNormalTexture():SetTexture(nil)
 			self:keepFontStrings(_G.CraftExpandButtonFrame)
-			self:skinSlider{obj=_G.CraftListScrollFrameScrollBar, rt="background"}
-			self:skinSlider{obj=_G.CraftDetailScrollFrameScrollBar, rt="background"}
 			self:keepFontStrings(_G.CraftDetailScrollChildFrame)
 			local x1, y1, x2, y2
 			if _G.IsAddOnLoaded("Leatrix_Plus")
@@ -857,20 +866,26 @@ aObj.ClassicSupport = function(self)
 			end
 			self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, x1=x1, y1=y1, x2=x2, y2=y2}
 			x1, y1, x2, y2 = nil, nil, nil, nil
-			if self.modBtns then
-				self:skinExpandButton{obj=_G.CraftCollapseAllButton, fType=ftype, onSB=true}
-				self:skinCloseButton{obj=_G.CraftFrameCloseButton, fType=ftype}
-				self:skinStdButton{obj=_G.CraftCreateButton, fType=ftype}
-				self:SecureHook(_G.CraftCreateButton, "Disable", function(this, _)
-					self:clrBtnBdr(this)
-				end)
-				self:SecureHook(_G.CraftCreateButton, "Enable", function(this, _)
-					self:clrBtnBdr(this)
-				end)
-				self:skinStdButton{obj=_G.CraftCancelButton, fType=ftype}
-			end
 			if self.modBtnBs then
-				self:addButtonBorder{obj=_G.CraftIcon}
+				self:addButtonBorder{obj=_G.CraftIcon, clr="gold"}
+			end
+			if not _G.IsAddOnLoaded("alaTradeSkill") then
+				self:skinSlider{obj=_G.CraftListScrollFrameScrollBar, rt="background"}
+				self:skinSlider{obj=_G.CraftDetailScrollFrameScrollBar, rt="background"}
+				if self.modBtns then
+					self:skinCloseButton{obj=_G.CraftFrameCloseButton, fType=ftype}
+					self:skinExpandButton{obj=_G.CraftCollapseAllButton, fType=ftype, onSB=true}
+					self:skinStdButton{obj=_G.CraftCreateButton, fType=ftype}
+					self:skinStdButton{obj=_G.CraftCancelButton, fType=ftype}
+					self:SecureHook(_G.CraftCreateButton, "Disable", function(this, _)
+						self:clrBtnBdr(this)
+					end)
+					self:SecureHook(_G.CraftCreateButton, "Enable", function(this, _)
+						self:clrBtnBdr(this)
+					end)
+				end
+			else
+				skinaTS(this)
 			end
 
 			self:Unhook(this, "OnShow")
@@ -1545,10 +1560,6 @@ aObj.ClassicSupport = function(self)
 			self:skinStatusBar{obj=_G.TradeSkillRankFrame, fi=0, bgTex=_G.TradeSkillRankFrameBackground}
 			_G.TradeSkillRankFrameBorder:GetNormalTexture():SetTexture(nil)
 			self:keepFontStrings(_G.TradeSkillExpandButtonFrame)
-			self:skinDropDown{obj=_G.TradeSkillInvSlotDropDown}
-			self:skinDropDown{obj=_G.TradeSkillSubClassDropDown}
-			self:skinSlider{obj=_G.TradeSkillListScrollFrame.ScrollBar, rt="background"}
-			self:skinSlider{obj=_G.TradeSkillDetailScrollFrame.ScrollBar, rt="background"}
 			self:keepFontStrings(_G.TradeSkillDetailScrollChildFrame)
 			local btnName
 			for i = 1, _G.MAX_TRADE_SKILL_REAGENTS do
@@ -1560,6 +1571,9 @@ aObj.ClassicSupport = function(self)
 			end
 			btnName = nil
 			self:skinEditBox{obj=_G.TradeSkillInputBox, regs={6}, noHeight=true, x=-6} -- 6 is text
+			if self.modBtnBs then
+				self:addButtonBorder{obj=_G.TradeSkillSkillIcon, clr="gold"}
+			end
 			local x1, y1, x2, y2
 			if _G.IsAddOnLoaded("Leatrix_Plus")
 			and _G.LeaPlusDB["EnhanceProfessions"] == "On"
@@ -1568,33 +1582,41 @@ aObj.ClassicSupport = function(self)
 			else
 				x1, y1, x2, y2 = 10, -11, -32, 70
 			end
-			self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, x1=x1, y1=y1, x2=x2, y2=y2}
-			x1, y1, x2, y2 = nil, nil, nil, nil
-			if self.modBtns then
-				self:skinCloseButton{obj=_G.TradeSkillFrameCloseButton, fType=ftype}
-				self:skinExpandButton{obj=_G.TradeSkillCollapseAllButton, fType=ftype, onSB=true}
-				for i = 1, _G.TRADE_SKILLS_DISPLAYED do
-					self:skinExpandButton{obj=_G["TradeSkillSkill" .. i], onSB=true}
-					self:checkTex{obj=_G["TradeSkillSkill" .. i]}
-				end
-				self:SecureHook("TradeSkillFrame_Update", function()
+			if not _G.IsAddOnLoaded("alaTradeSkill") then
+				self:skinDropDown{obj=_G.TradeSkillInvSlotDropDown}
+				self:skinDropDown{obj=_G.TradeSkillSubClassDropDown}
+				self:skinSlider{obj=_G.TradeSkillListScrollFrame.ScrollBar, rt="background"}
+				self:skinSlider{obj=_G.TradeSkillDetailScrollFrame.ScrollBar, rt="background"}
+				self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, x1=x1, y1=y1, x2=x2, y2=y2}
+				if self.modBtns then
+					self:skinCloseButton{obj=_G.TradeSkillFrameCloseButton, fType=ftype}
+					self:skinExpandButton{obj=_G.TradeSkillCollapseAllButton, fType=ftype, onSB=true}
 					for i = 1, _G.TRADE_SKILLS_DISPLAYED do
+						self:skinExpandButton{obj=_G["TradeSkillSkill" .. i], onSB=true}
 						self:checkTex{obj=_G["TradeSkillSkill" .. i]}
 					end
-				end)
-				self:skinStdButton{obj=_G.TradeSkillCreateAllButton, fType=ftype, ofs=0}
-				self:skinStdButton{obj=_G.TradeSkillCreateButton, fType=ftype, ofs=0}
-				self:skinStdButton{obj=_G.TradeSkillCancelButton, fType=ftype, ofs=0}
-				self:SecureHook("TradeSkillFrame_SetSelection", function(id)
-					self:clrBtnBdr(_G.TradeSkillCreateButton)
-					self:clrBtnBdr(_G.TradeSkillCreateAllButton)
-				end)
+					self:SecureHook("TradeSkillFrame_Update", function()
+						for i = 1, _G.TRADE_SKILLS_DISPLAYED do
+							self:checkTex{obj=_G["TradeSkillSkill" .. i]}
+						end
+					end)
+					self:skinStdButton{obj=_G.TradeSkillCreateAllButton, fType=ftype, ofs=0}
+					self:skinStdButton{obj=_G.TradeSkillCreateButton, fType=ftype, ofs=0}
+					self:skinStdButton{obj=_G.TradeSkillCancelButton, fType=ftype, ofs=0}
+					self:SecureHook("TradeSkillFrame_SetSelection", function(id)
+						self:clrBtnBdr(_G.TradeSkillCreateButton)
+						self:clrBtnBdr(_G.TradeSkillCreateAllButton)
+					end)
+				end
+				if self.modBtnBs then
+					self:addButtonBorder{obj=_G.TradeSkillDecrementButton, ofs=0, clr="gold"}
+					self:addButtonBorder{obj=_G.TradeSkillIncrementButton, ofs=0, clr="gold"}
+				end
+			else
+				self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, x1=4, y1=y1, x2=x2, y2=y2}
+				skinaTS(this)
 			end
-			if self.modBtnBs then
-				self:addButtonBorder{obj=_G.TradeSkillSkillIcon, clr="gold"}
-				self:addButtonBorder{obj=_G.TradeSkillDecrementButton, ofs=0, clr="gold"}
-				self:addButtonBorder{obj=_G.TradeSkillIncrementButton, ofs=0, clr="gold"}
-			end
+			x1, y1, x2, y2 = nil, nil, nil, nil
 
 			self:Unhook(this, "OnShow")
 		end)

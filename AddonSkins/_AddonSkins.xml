@@ -10,9 +10,11 @@
 <Script file="AddonLoader.lua"/>
 <Script file="AdiBags.lua"/>
 <Script file="AdvancedInterfaceOptions.lua"/>
+<Script file="alaTradeSkill.lua"/>
 <Script file="AllTheThings.lua"/>
 <Script file="Altoholic.lua"/>
 <Script file="Annene.lua"/>
+<Script file="AnnounceTargetPH.lua"/>
 <Script file="AppearanceTooltip.lua"/>
 <Script file="ArkDewdrop.lua"/>
 <Script file="ArkInventory.lua"/>
@@ -140,7 +142,7 @@
 <Script file="NovaInstanceTracker.lua"/>
 <Script file="NovaWorldBuffs.lua"/>
 <Script file="NPCScan.lua"/>
-<Script file="oGlow.lua"/>
+<Script file="oGlowClassic.lua"/>
 <Script file="Omen.lua"/>
 <Script file="OneBag3.lua"/>
 <Script file="oRA3.lua"/>
@@ -169,6 +171,7 @@
 <Script file="RaidAchievement.lua"/>
 <Script file="RaiderIO.lua"/>
 <Script file="RareScanner.lua"/>
+<Script file="Rarity.lua"/>
 <Script file="RCLootCouncil.lua"/>
 <Script file="RecipeRadarClassic.lua"/>
 <Script file="Recount.lua"/>
