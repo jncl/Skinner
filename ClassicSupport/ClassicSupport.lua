@@ -61,7 +61,7 @@ local funcs = {
 		GMChatUI = {keep = true, keepOpts = true},
 		GMSurveyUI = not aObj.isClscBC and {keep = false, keepOpts = true},
 		GuildBankUI = aObj.isClscBC and {keep = false, keepOpts = true},
-		HelpFrame = {keep = aObj.isClscBC and true, keepOpts = true},
+		HelpFrame = {keep = aObj.isClscBC or aObj.isClscERAPTR and true, keepOpts = true},
 		InterfaceOptions = {keep = true, keepOpts = true},
 		ItemText = {keep = true, keepOpts = true},
 		MacroUI = {keep = true, keepOpts = true},
@@ -955,7 +955,9 @@ aObj.ClassicSupport = function(self)
 				_G.FriendsFrameBroadcastInputFill:SetTextColor(self.BT:GetRGB())
 				self:skinObject("tabs", {obj=this, prefix=this:GetName(), numTabs=2, fType=ftype, lod=self.isTT and true, upwards=true, offsets={x1=0, y1=-5, x2=0, y2=-4}})
 				if self.modBtnBs then
-					if not self.isClscBC then
+					if not self.isClscBC
+					and not aObj.isClscERAPTR
+					then
 						self:addButtonBorder{obj=_G.FriendsTabHeaderRecruitAFriendButton}
 						self:addButtonBorder{obj=_G.FriendsTabHeaderSoRButton}
 					end
@@ -1217,7 +1219,9 @@ aObj.ClassicSupport = function(self)
 			self:Unhook(this, "OnShow")
 		end)
 
-		if not self.isClscBC then
+		if not self.isClscBC
+		and not aObj.isClscERAPTR
+		then
 			self:SecureHookScript(_G.RecruitAFriendFrame, "OnShow", function(this)
 				self:skinEditBox{obj=_G.RecruitAFriendNameEditBox, regs={6}} -- 6 is text
 				_G.RecruitAFriendNameEditBox.Fill:SetTextColor(self.BT:GetRGB())
@@ -1659,7 +1663,8 @@ aObj.ClassicSupport = function(self)
 
 		end
 
-		self.blizzFrames[ftype].HelpFrame = function(self)
+		if not aObj.isClscERAPTR then
+			self.blizzFrames[ftype].HelpFrame = function(self)
 			if not self.prdb.HelpFrame or self.initialized.HelpFrame then return end
 			self.initialized.HelpFrame = true
 
@@ -1769,6 +1774,7 @@ aObj.ClassicSupport = function(self)
 			end)
 			self:checkShown(_G.TicketStatusFrame)
 
+			end
 		end
 		
 	else
@@ -1936,7 +1942,9 @@ aObj.ClassicSupport = function(self)
 			self:Unhook(this, "OnShow")
 		end)
 
-		if self.isClscBC then
+		if self.isClscBC
+		or aObj.isClscERAPTR
+		then
 			self:SecureHookScript(_G.PVPReadyDialog, "OnShow", function(this)
 				this.Separator:SetTexture(nil)
 				self:skinObject("frame", {obj=this, fType=ftype, ofs=0})

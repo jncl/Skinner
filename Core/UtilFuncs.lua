@@ -4,7 +4,9 @@ local _G = _G
 
 function aObj:addBackdrop(obj)
 
-	if not self.isClscERA then
+	if not self.isClscERA
+	or aObj.isClscERAPTR
+	then
 		if not obj.ApplyBackdrop then
 			_G.Mixin(obj, _G.BackdropTemplateMixin)
 		end

@@ -2219,7 +2219,9 @@ aObj.blizzLoDFrames[ftype].DebugTools = function(self)
 	if not self.prdb.DebugTools or self.initialized.DebugTools then return end
 	self.initialized.DebugTools = true
 
-	if self.isClscERA then
+	if self.isClscERA
+	and not aObj.isClscERAPTR
+	then
 		skinETFrame()
 	end
 
@@ -2279,7 +2281,9 @@ aObj.blizzLoDFrames[ftype].DebugTools = function(self)
 	_G.C_Timer.After(0.1, function()
 		self:add2Table(self.ttList, _G.FrameStackTooltip)
 		_G.FrameStackTooltip:SetFrameLevel(20)
-		if self.isClscERA then
+		if self.isClscERA
+		and not aObj.isClscERAPTR
+		then
 			self:add2Table(self.ttList, _G.EventTraceTooltip)
 		end
 	end)
@@ -2357,7 +2361,9 @@ aObj.blizzFrames[ftype].EventToastManager = function(self)
 
 end
 
-if not aObj.isClscERA then
+if not aObj.isClscERA
+or aObj.isClscERAPTR
+then
 	aObj.blizzLoDFrames[ftype].EventTrace = function(self)
 		if not self.prdb.EventTrace or self.initialized.EventTrace then return end
 		self.initialized.EventTrace = true
@@ -3280,7 +3286,7 @@ aObj.blizzFrames[ftype].HelpFrame = function(self)
 
 	self:SecureHookScript(_G.HelpFrame, "OnShow", function(this)
 		self:removeInset(this.Browser.BrowserInset)
-		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true, ri=true, rns=true, cb=true, x1=self.isClscBC and 0, x2=self.isClscBC and 1 or 3})
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true, ri=true, rns=true, cb=true, x1=self.isClscBC or aObj.isClscERAPTR and 0, x2=self.isClscBC or aObj.isClscERAPTR and 1 or 3})
 
 		self:Unhook(this, "OnShow")
 	end)
