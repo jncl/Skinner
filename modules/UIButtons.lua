@@ -904,7 +904,7 @@ function module:OnEnable()
 	-- bypass the Item Quality Border Texture changes if the specified addons aren't loaded
 	if not _G.IsAddOnLoaded("AdiBags")
 	and not _G.IsAddOnLoaded("Fizzle")
-	and not _G.IsAddOnLoaded("oGlow")
+	and not _G.IsAddOnLoaded("oGlowClassic")
 	and not _G.IsAddOnLoaded("XLoot")
 	then
 		return
@@ -961,42 +961,45 @@ function module:GetOptions()
 				name = aObj.L["Check Buttons"],
 				desc = aObj.L["Toggle the skinning of the Check Buttons, reload required"],
 			},
+			Quality = {
+				type = "group",
+				order = 4,
+				inline = true,
+				name = aObj.L["Item Quality Border"],
+				hidden = function()
+					if not _G.IsAddOnLoaded("AdiBags")
+					and not _G.IsAddOnLoaded("Fizzle")
+					and not _G.IsAddOnLoaded("oGlowClassic")
+					and not _G.IsAddOnLoaded("XLoot")
+					then
+						return true
+					else
+						return false
+					end
+				end,
+				get = function(info) return db.Quality[info[#info]] end,
+				set = function(info, value) db.Quality[info[#info]] = value end,
+				args = {
+					file = {
+						type = "input",
+						order = 1,
+						width = "full",
+						name = aObj.L["Border Texture File"],
+						desc = aObj.L["Set Border Texture Filename"],
+					},
+					texture = _G._G.AceGUIWidgetLSMlists and {
+						type = "select",
+						order = 2,
+						width = "double",
+						name = aObj.L["Border Texture"],
+						desc = aObj.L["Choose the Texture for the Border"],
+						dialogControl = 'LSM30_Border',
+						values = _G._G.AceGUIWidgetLSMlists.border,
+					} or nil,
+				},
+			},
 		},
 	}
-
-	if _G.IsAddOnLoaded("AdiBags")
-	or _G.IsAddOnLoaded("Fizzle")
-	or _G.IsAddOnLoaded("oGlow")
-	or _G.IsAddOnLoaded("XLoot")
-	then
-		-- add Item Quality Border options
-		options.args.Quality = {
-			type = "group",
-			order = 4,
-			inline = true,
-			name = aObj.L["Item Quality Border"],
-			get = function(info) return db.Quality[info[#info]] end,
-			set = function(info, value) db.Quality[info[#info]] = value end,
-			args = {
-				file = {
-					type = "input",
-					order = 1,
-					width = "full",
-					name = aObj.L["Border Texture File"],
-					desc = aObj.L["Set Border Texture Filename"],
-				},
-				texture = _G._G.AceGUIWidgetLSMlists and {
-					type = "select",
-					order = 2,
-					width = "double",
-					name = aObj.L["Border Texture"],
-					desc = aObj.L["Choose the Texture for the Border"],
-					dialogControl = 'LSM30_Border',
-					values = _G._G.AceGUIWidgetLSMlists.border,
-				} or nil,
-			},
-		}
-	end
 
 	return options
 
