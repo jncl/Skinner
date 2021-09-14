@@ -8,5 +8,67 @@ ToDo_retail_PTR
 
 	Retail_PTR
 		- Added
+			- NewCosmeticAlertFrameSystem
+			- ChatConfigFrame
+√				- TextToSpeech panels
+			- InterfaceOptionsPanels
+x				- .CursorSizeDropdown
+¶≈			- BehavioralMessaging
 		- Updated
+			- NineSlice added to several frame
+√				- GameTooltip
+√				- ChatMenu
+√				- EmoteMenu
+				- GMChatStatusFrame
+√				- LanguageMenu
+√				- VoiceMacroMenu
+√				- GeneralDockManagerOverflowButtonList
+√				- AutoCompleteBox
+√				- GarrisonFollowerTooltip
+√				- Corkboard
+√				- ? Anon Tooltip
+√				- NamePlateTooltip
+√				- LibDBIconTooltip
+?				- HelpFrame
+√				- TableAttributeDisplay.ScrollFrameArt
+√				- DropDownList[n]MenuBackdrop
+√				- ChatConfigCategoryFrame
+√				- ChatConfigBackgroundFrame
+√				- ChatConfigChatSettingsLeft
+√				- ChatConfigChannelSettingsLeft
+√				- ChatConfigOtherSettingsCombat
+√				- ChatConfigOtherSettingsPVP
+√				- ChatConfigOtherSettingsSystem
+√				- ChatConfigOtherSettingsCreature
+√				- ChatConfigCombatSettingsFilters
+√				- CombatConfigMessageSourcesDoneBy
+√				- CombatConfigMessageSourcesDoneTo
+√				- CombatConfigColorsUnitColors
+√				- CombatConfigColorsHighlighting
+√				- CombatConfigColorsColorizeUnitName
+√				- CombatConfigColorsColorizeSpellNames
+√				- CombatConfigColorsColorizeDamageNumber
+√				- CombatConfigColorsColorizeDamageSchool
+√				- CombatConfigColorsColorizeEntireLine
+√				- InterfaceOptionsFrameCategories
+√				- InterfaceOptionsFrameAddOns
+√				- InterfaceOptionsFramePanelContainer
+√				- VideoOptionsFrameCategoryFrame
+√				- VideoOptionsFramePanelContainer
+√				- Display_
+√				- Graphics_
+√				- RaidGraphics_
+√				- AudioOptionsSoundPanelPlayback
+√				- AudioOptionsSoundPanelHardware
+√				- AudioOptionsSoundPanelVolume
+√				- AudioOptionsVoicePanel.TestInputDevice.VUMeter
+√				- MacroFrameTextBackground
+√				- AchievementFrameCategories
+			- GuildBankUI
+			- ItemUpgradeUI
+			- GossipFrame
+			- LFGList
+				- LFGListEditBoxTemplate
+			- MoneyInputFrame
 		- Deleted
+√			- CommunitiesGuildRecruitmentFrame

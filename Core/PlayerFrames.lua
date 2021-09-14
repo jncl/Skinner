@@ -141,7 +141,7 @@ aObj.blizzLoDFrames[ftype].AchievementUI = function(self)
 		self:moveObject{obj=_G.AchievementFrameHeaderPoints, x=40, y=-5}
 		_G.AchievementFrameHeaderShield:SetAlpha(1)
 		self:skinObject("slider", {obj=_G.AchievementFrameCategoriesContainerScrollBar, fType=ftype, rpTex="background"})
-		self:skinObject("frame", {obj=_G.AchievementFrameCategories, fType=ftype, kfs=true, fb=true, y1=0})
+		self:skinObject("frame", {obj=_G.AchievementFrameCategories, fType=ftype, kfs=true, rns=aObj.isRtlPTR and true, fb=true, y1=0})
 		-- hook these to stop Categories skinFrame from changing
 		self:SecureHook(_G.AchievementFrameCategoriesContainerScrollBar, "Show", function(this)
 			_G.AchievementFrameCategories.sf:SetPoint("BOTTOMRIGHT", _G.AchievementFrameCategories, "BOTTOMRIGHT", 24, -2)
@@ -1727,52 +1727,54 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 		self:Unhook(this, "OnShow")
 	end)
 
-	self:SecureHookScript(_G.CommunitiesGuildRecruitmentFrame, "OnShow", function(this)
-		-- Recruitment
-		this.Recruitment.InterestFrame:DisableDrawLayer("BACKGROUND")
-		this.Recruitment.AvailabilityFrame:DisableDrawLayer("BACKGROUND")
-		this.Recruitment.RolesFrame:DisableDrawLayer("BACKGROUND")
-		this.Recruitment.LevelFrame:DisableDrawLayer("BACKGROUND")
-		this.Recruitment.CommentFrame:DisableDrawLayer("BACKGROUND")
-		self:skinSlider{obj=this.Recruitment.CommentFrame.CommentInputFrame.ScrollFrame.ScrollBar}
-		this.Recruitment.CommentFrame.CommentInputFrame.ScrollFrame.CommentEditBox.Fill:SetTextColor(self.BT:GetRGB())
-		self:removeMagicBtnTex(this.Recruitment.ListGuildButton)
-		self:addFrameBorder{obj=this.Recruitment.CommentFrame.CommentInputFrame, ft=ftype}
-		if self.modBtns then
-			 self:skinStdButton{obj=this.Recruitment.ListGuildButton}
-		end
-		if self.modChkBtns then
-			self:skinCheckButton{obj=this.Recruitment.InterestFrame.QuestButton}
-			self:skinCheckButton{obj=this.Recruitment.InterestFrame.RaidButton}
-			self:skinCheckButton{obj=this.Recruitment.InterestFrame.DungeonButton}
-			self:skinCheckButton{obj=this.Recruitment.InterestFrame.PvPButton}
-			self:skinCheckButton{obj=this.Recruitment.InterestFrame.RPButton}
-			self:skinCheckButton{obj=this.Recruitment.AvailabilityFrame.WeekdaysButton}
-			self:skinCheckButton{obj=this.Recruitment.AvailabilityFrame.WeekendsButton}
-			self:skinCheckButton{obj=this.Recruitment.RolesFrame.TankButton.checkButton}
-			self:skinCheckButton{obj=this.Recruitment.RolesFrame.HealerButton.checkButton}
-			self:skinCheckButton{obj=this.Recruitment.RolesFrame.DamagerButton.checkButton}
-		end
-		-- Applicants
-		for _, btn in _G.pairs(this.Applicants.Container.buttons) do
-			btn.ring:SetAlpha(0)
-			btn.PointsSpentBgGold:SetAlpha(0)
-			self:moveObject{obj=btn.PointsSpentBgGold, x=6, y=-6}
-			-- self:applySkin{obj=btn}
-		end
-		self:skinObject("slider", {obj=this.Applicants.Container.scrollBar, fType=ftype})
-		self:removeMagicBtnTex(this.Applicants.InviteButton)
-		self:removeMagicBtnTex(this.Applicants.MessageButton)
-		self:removeMagicBtnTex(this.Applicants.DeclineButton)
-		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true})
-		if self.modBtns then
-			self:skinStdButton{obj=this.Applicants.InviteButton}
-			self:skinStdButton{obj=this.Applicants.MessageButton}
-			self:skinStdButton{obj=this.Applicants.DeclineButton}
-		end
+	if not aObj.isRtlPTR then
+		self:SecureHookScript(_G.CommunitiesGuildRecruitmentFrame, "OnShow", function(this)
+			-- Recruitment
+			this.Recruitment.InterestFrame:DisableDrawLayer("BACKGROUND")
+			this.Recruitment.AvailabilityFrame:DisableDrawLayer("BACKGROUND")
+			this.Recruitment.RolesFrame:DisableDrawLayer("BACKGROUND")
+			this.Recruitment.LevelFrame:DisableDrawLayer("BACKGROUND")
+			this.Recruitment.CommentFrame:DisableDrawLayer("BACKGROUND")
+			self:skinSlider{obj=this.Recruitment.CommentFrame.CommentInputFrame.ScrollFrame.ScrollBar}
+			this.Recruitment.CommentFrame.CommentInputFrame.ScrollFrame.CommentEditBox.Fill:SetTextColor(self.BT:GetRGB())
+			self:removeMagicBtnTex(this.Recruitment.ListGuildButton)
+			self:addFrameBorder{obj=this.Recruitment.CommentFrame.CommentInputFrame, ft=ftype}
+			if self.modBtns then
+				 self:skinStdButton{obj=this.Recruitment.ListGuildButton}
+			end
+			if self.modChkBtns then
+				self:skinCheckButton{obj=this.Recruitment.InterestFrame.QuestButton}
+				self:skinCheckButton{obj=this.Recruitment.InterestFrame.RaidButton}
+				self:skinCheckButton{obj=this.Recruitment.InterestFrame.DungeonButton}
+				self:skinCheckButton{obj=this.Recruitment.InterestFrame.PvPButton}
+				self:skinCheckButton{obj=this.Recruitment.InterestFrame.RPButton}
+				self:skinCheckButton{obj=this.Recruitment.AvailabilityFrame.WeekdaysButton}
+				self:skinCheckButton{obj=this.Recruitment.AvailabilityFrame.WeekendsButton}
+				self:skinCheckButton{obj=this.Recruitment.RolesFrame.TankButton.checkButton}
+				self:skinCheckButton{obj=this.Recruitment.RolesFrame.HealerButton.checkButton}
+				self:skinCheckButton{obj=this.Recruitment.RolesFrame.DamagerButton.checkButton}
+			end
+			-- Applicants
+			for _, btn in _G.pairs(this.Applicants.Container.buttons) do
+				btn.ring:SetAlpha(0)
+				btn.PointsSpentBgGold:SetAlpha(0)
+				self:moveObject{obj=btn.PointsSpentBgGold, x=6, y=-6}
+				-- self:applySkin{obj=btn}
+			end
+			self:skinObject("slider", {obj=this.Applicants.Container.scrollBar, fType=ftype})
+			self:removeMagicBtnTex(this.Applicants.InviteButton)
+			self:removeMagicBtnTex(this.Applicants.MessageButton)
+			self:removeMagicBtnTex(this.Applicants.DeclineButton)
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true})
+			if self.modBtns then
+				self:skinStdButton{obj=this.Applicants.InviteButton}
+				self:skinStdButton{obj=this.Applicants.MessageButton}
+				self:skinStdButton{obj=this.Applicants.DeclineButton}
+			end
 
-		self:Unhook(this, "OnShow")
-	end)
+			self:Unhook(this, "OnShow")
+		end)
+	end
 
 	self:SecureHookScript(_G.CommunitiesGuildTextEditFrame, "OnShow", function(this)
 		self:skinSlider{obj=_G.CommunitiesGuildTextEditFrame.Container.ScrollFrame.ScrollBar, wdth=-6}

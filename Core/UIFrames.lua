@@ -965,6 +965,30 @@ aObj.blizzLoDFrames[ftype].BattlefieldMap = function(self)
 
 end
 
+if aObj.isRtlPTR then
+	aObj.blizzLoDFrames[ftype].BehavioralMessaging = function(self)
+		if not self.prdb.BehavioralMessaging or self.initialized.BehavioralMessaging then return end
+		self.initialized.BehavioralMessaging = true
+	
+		self:SecureHookScript(_G.BehavioralMessagingTray, "OnShow", function(this)
+		
+			-- TODO: skin notification pool entries
+			
+			self:Unhook(this, "OnShow")
+		end)
+	
+		self:SecureHookScript(_G.BehavioralMessagingDetails, "OnShow", function(this)
+			self:skinObject("frame", {obj=this, fType=ftype, rns=true})
+			if self.modBtns then
+				self:skinStdButton{obj=this.CloseButton, fType=ftype}
+			end
+			
+			self:Unhook(this, "OnShow")
+		end)
+	
+	end
+	
+end
 aObj.blizzLoDFrames[ftype].BindingUI = function(self)
 	if not self.prdb.BindingUI or self.initialized.BindingUI then return end
 	self.initialized.BindingUI = true
@@ -1564,15 +1588,23 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 
 	self:SecureHookScript(_G.ChatConfigFrame, "OnShow", function(this)
 		self:removeNineSlice(this.Border)
-		self:skinObject("frame", {obj=_G.ChatConfigCategoryFrame, fType=ftype, kfs=true, fb=true, ofs=0})
-		self:skinObject("frame", {obj=_G.ChatConfigBackgroundFrame, fType=ftype, kfs=true, fb=true, ofs=0})
+		self:skinObject("frame", {obj=_G.ChatConfigCategoryFrame, fType=ftype, kfs=true, rns=aObj.isRtlPTR and true, fb=true, ofs=0})
+		self:skinObject("frame", {obj=_G.ChatConfigBackgroundFrame, fType=ftype, kfs=true, rns=aObj.isRtlPTR and true, fb=true, ofs=0})
 		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true, ofs=-4, y1=0})
 		if self.modBtns then
 			self:skinStdButton{obj=this.DefaultButton}
 			self:skinStdButton{obj=this.RedockButton}
 			self:skinStdButton{obj=_G.CombatLogDefaultButton}
+			if aObj.isRtlPTR then
+				self:skinStdButton{obj=_G.TextToSpeechDefaultButton, fType=ftype}
+			end
 			self:skinStdButton{obj=_G.ChatConfigFrameCancelButton}
 			self:skinStdButton{obj=_G.ChatConfigFrameOkayButton}
+		end
+		if self.modChkBtns then
+			if aObj.isRtlPTR then
+				self:skinCheckButton{obj=_G.TextToSpeechCharacterSpecificButton, fType=ftype}
+			end
 		end
 		-- ChatTabManager
 		local setTabState
@@ -1629,67 +1661,83 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 			end
 		end
 		--	Chat Settings
-		for i = 1, #_G.CHAT_CONFIG_CHAT_LEFT do
-			skinCB("ChatConfigChatSettingsLeftCheckBox" .. i)
+		if self.modChkBtns then
+			for i = 1, #_G.CHAT_CONFIG_CHAT_LEFT do
+				skinCB("ChatConfigChatSettingsLeftCheckBox" .. i)
+			end
 		end
-		self:skinObject("frame", {obj=_G.ChatConfigChatSettingsLeft, fType=ftype, kfs=true, fb=true})
+		self:skinObject("frame", {obj=_G.ChatConfigChatSettingsLeft, fType=ftype, kfs=true, rns=aObj.isRtlPTR and true, fb=true})
 		--	Channel Settings
-		self:skinObject("frame", {obj=_G.ChatConfigChannelSettingsLeft, fType=ftype, kfs=true, fb=true})
+		self:skinObject("frame", {obj=_G.ChatConfigChannelSettingsLeft, fType=ftype, kfs=true, rns=aObj.isRtlPTR and true, fb=true})
 		if not self.isClsc then
-			self:SecureHookScript(_G.ChatConfigChannelSettings, "OnShow", function(this)
-				for i = 1, #_G.CHAT_CONFIG_CHANNEL_LIST do
-					skinCB("ChatConfigChannelSettingsLeftCheckBox" .. i)
-				end
+			if self.modChkBtns then
+				self:SecureHookScript(_G.ChatConfigChannelSettings, "OnShow", function(this)
+					for i = 1, #_G.CHAT_CONFIG_CHANNEL_LIST do
+						skinCB("ChatConfigChannelSettingsLeftCheckBox" .. i)
+					end
 
-				self:Unhook(this, "OnShow")
-			end)
+					self:Unhook(this, "OnShow")
+				end)
+			end
 		else
 			self:skinObject("frame", {obj=_G.ChatConfigChannelSettingsAvailable, fType=ftype, kfs=true})
 			self:SecureHook("ChatConfig_CreateCheckboxes", function(frame, _)
-				local box
-				for i = 1, #frame.checkBoxTable do
+				for _, btn in _G.pairs(frame.checkBoxTable) do
 					box = _G[frame:GetName() .. "CheckBox" .. i]
 					self:removeBackdrop(box)
 					if self.modChkBtns then
 						 self:skinCheckButton{obj=box.CheckButton}
 					end
 				end
-				box = nil
 			end)
 			self:SecureHook("ChatConfig_CreateBoxes", function(frame, _)
-				local box
-				for i = 1, #frame.boxTable do
+				for _, btn in _G.pairs(frame.boxTable) do
 					box = _G[frame:GetName() .. "Box" .. i]
 					self:removeBackdrop(box)
 					if self.modBtns then
 						self:skinStdButton{obj=box.Button, ofs=0}
 					end
 				end
-				box = nil
 			end)
 		end
 		--	Other Settings
 		for i = 1, #_G.CHAT_CONFIG_OTHER_COMBAT do
 			skinCB("ChatConfigOtherSettingsCombatCheckBox" .. i)
 		end
-		self:skinObject("frame", {obj=_G.ChatConfigOtherSettingsCombat, fType=ftype, kfs=true, fb=true})
+		self:skinObject("frame", {obj=_G.ChatConfigOtherSettingsCombat, fType=ftype, kfs=true, rns=aObj.isRtlPTR and true, fb=true})
 		for i = 1, #_G.CHAT_CONFIG_OTHER_PVP do
 			skinCB("ChatConfigOtherSettingsPVPCheckBox" .. i)
 		end
-		self:skinObject("frame", {obj=_G.ChatConfigOtherSettingsPVP, fType=ftype, kfs=true, fb=true})
+		self:skinObject("frame", {obj=_G.ChatConfigOtherSettingsPVP, fType=ftype, kfs=true, rns=aObj.isRtlPTR and true, fb=true})
 		for i = 1, #_G.CHAT_CONFIG_OTHER_SYSTEM do
 			skinCB("ChatConfigOtherSettingsSystemCheckBox" .. i)
 		end
-		self:skinObject("frame", {obj=_G.ChatConfigOtherSettingsSystem, fType=ftype, kfs=true, fb=true})
+		self:skinObject("frame", {obj=_G.ChatConfigOtherSettingsSystem, fType=ftype, kfs=true, rns=aObj.isRtlPTR and true, fb=true})
 		for i = 1, #_G.CHAT_CONFIG_CHAT_CREATURE_LEFT do
 			skinCB("ChatConfigOtherSettingsCreatureCheckBox" .. i)
 		end
-		self:skinObject("frame", {obj=_G.ChatConfigOtherSettingsCreature, fType=ftype, kfs=true, fb=true})
-		-- -- Voice
-		-- for i = 1, #_G.CHAT_CONFIG_VOICE do
-		-- 	skinCB("ChatConfigVoiceSettingsVoiceCheckBox" .. i)
-		-- end
-		-- self:skinObject("frame", {obj=_G.ChatConfigVoiceSettingsVoice, fType=ftype, kfs=true, fb=true})
+		self:skinObject("frame", {obj=_G.ChatConfigOtherSettingsCreature, fType=ftype, kfs=true, rns=aObj.isRtlPTR and true, fb=true})
+		-- TextToSpeechSettings
+		if aObj.isRtlPTR then
+			-- N.B. TextToSpeechFrame is skinned separately
+			if self.modChkBtns then
+				self:SecureHook("TextToSpeechFrame_UpdateMessageCheckboxes", function(frame)
+					for i = 1, #frame.checkBoxTable do
+						self:skinCheckButton{obj=_G[frame:GetName() .. "CheckBox" .. i], fType=ftype}
+					end
+				
+					self:Unhook("TextToSpeechFrame_UpdateMessageCheckboxes")
+				end)
+			end
+			self:SecureHookScript(_G.ChatConfigTextToSpeechChannelSettings, "OnShow", function(this)
+				self:skinObject("frame", {obj=_G.ChatConfigTextToSpeechChannelSettingsLeft, fType=ftype, kfs=true, rns=true, fb=true})
+				for i = 1, #_G.CHAT_CONFIG_TEXT_TO_SPEECH_CHANNEL_LIST do
+					skinCB("ChatConfigTextToSpeechChannelSettingsLeftCheckBox" .. i)
+				end
+
+				self:Unhook(this, "OnShow")
+			end)
+		end
 		--	Combat Settings
 		-- Filters
 		_G.ChatConfigCombatSettingsFiltersScrollFrameScrollBarBorder:Hide()
@@ -1703,17 +1751,17 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 			self:addButtonBorder{obj=_G.ChatConfigMoveFilterUpButton, es=12, ofs=-5, x2=-6, y2=7, clr="grey"}
 			self:addButtonBorder{obj=_G.ChatConfigMoveFilterDownButton, es=12, ofs=-5, x2=-6, y2=7, clr="grey"}
 		end
-		self:skinObject("frame", {obj=_G.ChatConfigCombatSettingsFilters, fType=ftype, kfs=true, fb=true, ofs=0})
+		self:skinObject("frame", {obj=_G.ChatConfigCombatSettingsFilters, fType=ftype, kfs=true, rns=aObj.isRtlPTR and true, fb=true, ofs=0})
 		_G.LowerFrameLevel(_G.ChatConfigCombatSettingsFilters) -- make frame appear below tab texture
 		-- Message Sources
 		for i = 1, #_G.COMBAT_CONFIG_MESSAGESOURCES_BY do
 			skinCB("CombatConfigMessageSourcesDoneByCheckBox" .. i)
 		end
-		self:skinObject("frame", {obj=_G.CombatConfigMessageSourcesDoneBy, fType=ftype, kfs=true, fb=true})
+		self:skinObject("frame", {obj=_G.CombatConfigMessageSourcesDoneBy, fType=ftype, kfs=true, rns=aObj.isRtlPTR and true, fb=true})
 		for i = 1, #_G.COMBAT_CONFIG_MESSAGESOURCES_TO do
 			skinCB("CombatConfigMessageSourcesDoneToCheckBox" .. i)
 		end
-		self:skinObject("frame", {obj=_G.CombatConfigMessageSourcesDoneTo, fType=ftype, kfs=true, fb=true})
+		self:skinObject("frame", {obj=_G.CombatConfigMessageSourcesDoneTo, fType=ftype, kfs=true, rns=aObj.isRtlPTR and true, fb=true})
 		-- Message Type
 		for i, val in _G.ipairs(_G.COMBAT_CONFIG_MESSAGETYPES_LEFT) do
 			skinCB("CombatConfigMessageTypesLeftCheckBox" .. i)
@@ -1743,13 +1791,13 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 		for i = 1, #_G.COMBAT_CONFIG_UNIT_COLORS do
 			self:removeBackdrop(_G["CombatConfigColorsUnitColorsSwatch" .. i])
 		end
-		self:skinObject("frame", {obj=_G.CombatConfigColorsUnitColors, fType=ftype, kfs=true, fb=true})
-		self:skinObject("frame", {obj=_G.CombatConfigColorsHighlighting, fType=ftype, kfs=true, fb=true})
-		self:skinObject("frame", {obj=_G.CombatConfigColorsColorizeUnitName, fType=ftype, kfs=true, fb=true})
-		self:skinObject("frame", {obj=_G.CombatConfigColorsColorizeSpellNames, fType=ftype, kfs=true, fb=true})
-		self:skinObject("frame", {obj=_G.CombatConfigColorsColorizeDamageNumber, fType=ftype, kfs=true, fb=true})
-		self:skinObject("frame", {obj=_G.CombatConfigColorsColorizeDamageSchool, fType=ftype, kfs=true, fb=true})
-		self:skinObject("frame", {obj=_G.CombatConfigColorsColorizeEntireLine, fType=ftype, kfs=true, fb=true})
+		self:skinObject("frame", {obj=_G.CombatConfigColorsUnitColors, fType=ftype, kfs=true, rns=aObj.isRtlPTR and true, fb=true})
+		self:skinObject("frame", {obj=_G.CombatConfigColorsHighlighting, fType=ftype, kfs=true, rns=aObj.isRtlPTR and true, fb=true})
+		self:skinObject("frame", {obj=_G.CombatConfigColorsColorizeUnitName, fType=ftype, kfs=true, rns=aObj.isRtlPTR and true, fb=true})
+		self:skinObject("frame", {obj=_G.CombatConfigColorsColorizeSpellNames, fType=ftype, kfs=true, rns=aObj.isRtlPTR and true, fb=true})
+		self:skinObject("frame", {obj=_G.CombatConfigColorsColorizeDamageNumber, fType=ftype, kfs=true, rns=aObj.isRtlPTR and true, fb=true})
+		self:skinObject("frame", {obj=_G.CombatConfigColorsColorizeDamageSchool, fType=ftype, kfs=true, rns=aObj.isRtlPTR and true, fb=true})
+		self:skinObject("frame", {obj=_G.CombatConfigColorsColorizeEntireLine, fType=ftype, kfs=true, rns=aObj.isRtlPTR and true, fb=true})
 		if self.modChkBtns then
 			self:skinCheckButton{obj=_G.CombatConfigColorsHighlightingLine}
 			self:skinCheckButton{obj=_G.CombatConfigColorsHighlightingAbility}
@@ -1866,11 +1914,11 @@ aObj.blizzFrames[ftype].ChatMenus = function(self)
 	if not self.prdb.ChatMenus or self.initialized.ChatMenus then return end
 	self.initialized.ChatMenus = true
 
-	self:skinObject("frame", {obj=_G.ChatMenu, fType=ftype, ofs=0})
-	self:skinObject("frame", {obj=_G.EmoteMenu, fType=ftype, ofs=0})
-	self:skinObject("frame", {obj=_G.LanguageMenu, fType=ftype, ofs=0})
-	self:skinObject("frame", {obj=_G.VoiceMacroMenu, fType=ftype, ofs=0})
-	self:skinObject("frame", {obj=_G.GeneralDockManagerOverflowButtonList, fType=ftype, ofs=0})
+	self:skinObject("frame", {obj=_G.ChatMenu, fType=ftype, rns=aObj.isRtlPTR and true, ofs=0})
+	self:skinObject("frame", {obj=_G.EmoteMenu, fType=ftype, rns=aObj.isRtlPTR and true, ofs=0})
+	self:skinObject("frame", {obj=_G.LanguageMenu, fType=ftype, rns=aObj.isRtlPTR and true, ofs=0})
+	self:skinObject("frame", {obj=_G.VoiceMacroMenu, fType=ftype, rns=aObj.isRtlPTR and true, ofs=0})
+	self:skinObject("frame", {obj=_G.GeneralDockManagerOverflowButtonList, fType=ftype, rns=aObj.isRtlPTR and true, ofs=0})
 
 end
 
@@ -3391,7 +3439,7 @@ aObj.blizzFrames[ftype].InterfaceOptions = function(self)
 		-- LHS panel (Game Tab)
 		self:SecureHookScript(_G.InterfaceOptionsFrameCategories, "OnShow", function(this)
 			self:skinObject("slider", {obj=_G.InterfaceOptionsFrameCategoriesListScrollBar, fType=ftype, x1=4, x2=-5})
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, fb=true, ofs=-1})
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=aObj.isRtlPTR and true, fb=true, ofs=-1})
 
 			self:Unhook(this, "OnShow")
 		end)
@@ -3399,7 +3447,7 @@ aObj.blizzFrames[ftype].InterfaceOptions = function(self)
 		-- LHS panel (AddOns tab)
 		self:SecureHookScript(_G.InterfaceOptionsFrameAddOns, "OnShow", function(this)
 			self:skinObject("slider", {obj=_G.InterfaceOptionsFrameAddOnsListScrollBar, fType=ftype, x1=4, x2=-5})
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, fb=true, ofs=-1})
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=aObj.isRtlPTR and true, fb=true, ofs=-1})
 			if self.modBtns then
 				-- skin toggle buttons
 				for _, btn in _G.pairs(_G.InterfaceOptionsFrameAddOns.buttons) do
@@ -3417,7 +3465,7 @@ aObj.blizzFrames[ftype].InterfaceOptions = function(self)
 		end)
 		self:checkShown(_G.InterfaceOptionsFrameAddOns)
 		-- RHS Panel
-		self:skinObject("frame", {obj=_G.InterfaceOptionsFramePanelContainer, fType=ftype, kfs=true, fb=true, ofs=-1, y2=0})
+		self:skinObject("frame", {obj=_G.InterfaceOptionsFramePanelContainer, fType=ftype, kfs=true, rns=aObj.isRtlPTR and true, fb=true, ofs=-1, y2=0})
 		-- Social Browser Frame (Twitter integration)
 		self:SecureHookScript(_G.SocialBrowserFrame, "OnShow", function(this)
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x2=1})
@@ -4027,7 +4075,7 @@ aObj.blizzLoDFrames[ftype].MacroUI = function(self)
 		self:skinObject("frame", {obj=_G.MacroButtonScrollFrame, fType=ftype, kfs=true, fb=true, ofs=12, y1=10, x2=31})
 		self:skinObject("slider", {obj=_G.MacroButtonScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
 		self:skinObject("slider", {obj=_G.MacroFrameScrollFrame.ScrollBar, fType=ftype})
-		self:skinObject("frame", {obj=_G.MacroFrameTextBackground, fType=ftype, kfs=true, fb=true, ofs=0, x2=1})
+		self:skinObject("frame", {obj=_G.MacroFrameTextBackground, fType=ftype, kfs=true, rns=aObj.isRtlPTR and true, fb=true, ofs=0, x2=1})
 		_G.MacroFrameSelectedMacroButton:DisableDrawLayer("BACKGROUND")
 		for i = 1, _G.MAX_ACCOUNT_MACROS do
 			_G["MacroButton" .. i]:DisableDrawLayer("BACKGROUND")
@@ -5978,9 +6026,9 @@ aObj.blizzFrames[ftype].SystemOptions = function(self)
 	self:SecureHookScript(_G.VideoOptionsFrame, "OnShow", function(this)
 		self:removeNineSlice(this.Border)
 		-- Main panel
-		self:skinObject("frame", {obj=_G.VideoOptionsFrameCategoryFrame, fType=ftype, kfs=true, fb=true})
+		self:skinObject("frame", {obj=_G.VideoOptionsFrameCategoryFrame, fType=ftype, kfs=true, rns=aObj.isRtlPTR and true, fb=true})
 		self:skinObject("slider", {obj=_G.VideoOptionsFrameCategoryFrameListScrollBar, fType=ftype, x1=4, x2=-5})
-		self:skinObject("frame", {obj=_G.VideoOptionsFramePanelContainer, fType=ftype, kfs=true, fb=true})
+		self:skinObject("frame", {obj=_G.VideoOptionsFramePanelContainer, fType=ftype, kfs=true, rns=aObj.isRtlPTR and true, fb=true})
 		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true})
 		_G.VideoOptionsFrameApply:SetFrameLevel(2) -- make it appear above the PanelContainer
 		if self.modBtns then
@@ -6013,11 +6061,11 @@ aObj.blizzFrames[ftype].SystemOptions = function(self)
 			end)
 		end
 		skinKids(_G.Display_, ftype)
-		self:skinObject("frame", {obj=_G.Display_, fType=ftype, kfs=true, fb=true})
+		self:skinObject("frame", {obj=_G.Display_, fType=ftype, kfs=true, rns=aObj.isRtlPTR and true, fb=true})
 		skinKids(_G.Graphics_, ftype)
-		self:skinObject("frame", {obj=_G.Graphics_, fType=ftype, kfs=true, fb=true})
+		self:skinObject("frame", {obj=_G.Graphics_, fType=ftype, kfs=true, rns=aObj.isRtlPTR and true, fb=true})
 		skinKids(_G.RaidGraphics_, ftype)
-		self:skinObject("frame", {obj=_G.RaidGraphics_, fType=ftype, kfs=true, fb=true})
+		self:skinObject("frame", {obj=_G.RaidGraphics_, fType=ftype, kfs=true, rns=aObj.isRtlPTR and true, fb=true})
 
 		self:Unhook(this, "OnShow")
 	end)
@@ -6058,9 +6106,9 @@ aObj.blizzFrames[ftype].SystemOptions = function(self)
 	-- Sound
 	self:SecureHookScript(_G.AudioOptionsSoundPanel, "OnShow", function(this)
 		skinKids(this, ftype)
-		self:skinObject("frame", {obj=_G.AudioOptionsSoundPanelPlayback, fType=ftype, kfs=true, fb=true})
-		self:skinObject("frame", {obj=_G.AudioOptionsSoundPanelHardware, fType=ftype, kfs=true, fb=true})
-		self:skinObject("frame", {obj=_G.AudioOptionsSoundPanelVolume, fType=ftype, kfs=true, fb=true})
+		self:skinObject("frame", {obj=_G.AudioOptionsSoundPanelPlayback, fType=ftype, kfs=true, rns=aObj.isRtlPTR and true, fb=true})
+		self:skinObject("frame", {obj=_G.AudioOptionsSoundPanelHardware, fType=ftype, kfs=true, rns=aObj.isRtlPTR and true, fb=true})
+		self:skinObject("frame", {obj=_G.AudioOptionsSoundPanelVolume, fType=ftype, kfs=true, rns=aObj.isRtlPTR and true, fb=true})
 
 		self:Unhook(this, "OnShow")
 	end)
@@ -6069,7 +6117,7 @@ aObj.blizzFrames[ftype].SystemOptions = function(self)
 		self.iofBtn[this.PushToTalkKeybindButton] = true
 		skinKids(this, ftype)
 		this.TestInputDevice.ToggleTest:DisableDrawLayer("BACKGROUND")
-		self:skinObject("frame", {obj=this.TestInputDevice.VUMeter, fType=ftype, kfs=true, fb=true})
+		self:skinObject("frame", {obj=this.TestInputDevice.VUMeter, fType=ftype, kfs=true, rns=aObj.isRtlPTR and true, fb=true})
 		if self.modBtnBs then
 			self:addButtonBorder{obj=this.TestInputDevice.ToggleTest, fType=ftype, ofs=0, y2=-2}
 			self:skinStdButton{obj=this.PushToTalkKeybindButton, fType=ftype}
@@ -6130,7 +6178,9 @@ aObj.blizzFrames[ftype].TextToSpeechFrame = function(self)
 		if self.modBtns then
 			self:skinStdButton{obj=_G.TextToSpeechFramePlaySampleButton, fType=ftype}
 			self:skinStdButton{obj=_G.TextToSpeechFramePlaySampleAlternateButton, fType=ftype}
-			self:skinStdButton{obj=_G.TextToSpeechDefaultButton, fType=ftype}
+			if not aObj.isRtlPTR then
+				self:skinStdButton{obj=_G.TextToSpeechDefaultButton, fType=ftype}
+			end
 		end
 		if self.modChkBtns then
 			self:skinCheckButton{obj=_G.TextToSpeechFramePanelContainer.PlaySoundSeparatingChatLinesCheckButton, fType=ftype}
@@ -6288,16 +6338,18 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 		end
 	end)
 
-	-- Hook these to handle AddOns that use GameTooltip Backdrop functions (e.g. SavedInstances)
-	self:RawHook(_G.GameTooltip, "GetBackdrop", function(this)
-		return aObj.Backdrop[1]
-	end, true)
-	self:RawHook(_G.GameTooltip, "GetBackdropColor", function(this)
-		return aObj.bClr:GetRGBA()
-	end, true)
-	self:RawHook(_G.GameTooltip, "GetBackdropBorderColor", function(this)
-		return aObj.bbClr:GetRGBA()
-	end, true)
+	if not aObj.isRtlPTR then
+		-- Hook these to handle AddOns that use GameTooltip Backdrop functions (e.g. SavedInstances)
+		self:RawHook(_G.GameTooltip, "GetBackdrop", function(this)
+			return aObj.Backdrop[1]
+		end, true)
+		self:RawHook(_G.GameTooltip, "GetBackdropColor", function(this)
+			return aObj.bClr:GetRGBA()
+		end, true)
+		self:RawHook(_G.GameTooltip, "GetBackdropBorderColor", function(this)
+			return aObj.bbClr:GetRGBA()
+		end, true)
+	end
 
 	-- AceConfigDialog tooltip
 	addTooltip(self.ACD.tooltip)
@@ -6434,6 +6486,9 @@ aObj.blizzFrames[ftype].UIDropDownMenu = function(self)
 			aObj:removeBackdrop(_G[frame:GetName() .. "Backdrop"])
 		end
 		aObj:removeBackdrop(_G[frame:GetName() .. "MenuBackdrop"])
+		if aObj.isRtlPTR then
+			aObj:removeNineSlice(_G[frame:GetName() .. "MenuBackdrop"].NineSlice)
+		end
 		aObj:skinObject("frame", {obj=frame, fType=ftype, kfs=true, ofs=-4})
 	end
 
