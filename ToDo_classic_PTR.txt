@@ -8,17 +8,5 @@ ToDo_classic_PTR
 
 	Classic_PTR 2.5.2
 		- Added
-√			- GuildBank
-¶√			- LookingForGroup/LookingForMore
-√			- PVPReadyDialog
 		- Updated
-			- MiniMapWorldMapButoon
-√				- Border texture
-			- FriendsFrame
-√				- height changed
-√			- GuildControlPopupFrame
-			- HelpFrame
-√				- width changed
-			- IOF/SF
-√				- checkboxes & dropdowns NOT being skinned as textures are now FileDataIDs
 		- Deleted
