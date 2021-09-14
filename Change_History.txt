@@ -1,3 +1,20 @@
+beta9.40011.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Updated GarrisonUI code
+	Applied Classic BS PTR changes
+	Updated StatusBar skinning code
+	Updated MoneyFrame skinning code
+	Updated Communities skin
+	Updated SharedBasicControls skin
+	Updated OutOfCombat code
+	Replacing callback code with message code
+	Updated Texture handling code
+	Updated AucAdvanced, Configator, Cork, CovenantMissionHelper, PetBattleMaster, PetBattleTeams & VenturePlan skins
+	Updated RollTrackerClassic skin
+	
 beta9.39804.1
 Jncl:
 	ToDo.txt
