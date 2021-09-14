@@ -6451,26 +6451,6 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 	if not self.prdb.UIWidgets or self.initialized.UIWidgets then return end
 	self.initialized.UIWidgets = true
 
-	local LSZ, disableTypeBySZ
-	if not self.isClsc then
-		-- N.B. In Shadowlands, get Clamping Errors when in certain areas and displaying StatusBar/SpellDisplay widgets
-		LSZ = _G.LibStub:GetLibrary("LibBabble-SubZone-3.0"):GetLookupTable()
-		disableTypeBySZ = {
-			[2] = { -- StatusBar
-				[LSZ["The Eternal Forge"]] = true, -- Bastion
-				[LSZ["Bleak Redoubt"]]     = true, -- Maldraxxus
-				[LSZ["Butchers Block"]]    = true, -- Maldraxxus
-				[LSZ["House of Plagues"]]  = true, -- Maldraxxus
-				[LSZ["The Spearhead"]]     = true, -- Maldraxxus
-				[LSZ["The Desiccation"]]   = true, -- Revendreth
-				[LSZ["Face of Oblivion"]]  = true, -- Perdition Hold, The Maw
-			},
-			[13] = { -- SpellDisplay
-				[LSZ["House of Plagues"]] = true, -- Maldraxxus
-				[LSZ["The Ember Court"]]  = true, -- Revendreth (Scenario)
-			},
-		}
-	end
 	local function setTextColor(textObject)
 		self:rawHook(textObject, "SetTextColor", function(this, r, g, b, a)
 			local tcr, tcg, tcb = aObj:round2(r, 2), aObj:round2(g, 2), aObj:round2(b, 2)
@@ -6488,7 +6468,6 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 		return textObject:SetTextColor(textObject:GetTextColor())
 	end
 	-- Documentation in UIWidgetManagerSharedDocumentation.lua (UIWidgetVisualizationType)
-	local SZ
 	local function skinWidget(wFrame, wInfo)
 		-- handle in combat
 		if wFrame:IsProtected()
@@ -6497,12 +6476,7 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 		    aObj:add2Table(aObj.oocTab, {skinWidget, {wFrame, wInfo}})
 		    return
 		end
-		if not aObj.isClsc then
-			-- Get SubZone
-			SZ = _G.GetSubZoneText()
-			-- aObj:Debug("skinWidget#0: [%s, %s, %s, %s]", _G.C_Map.GetBestMapForUnit("player"), _G.GetRealZoneText(), SZ, disableTypeBySZ[wFrame.widgetType][SZ])
-			-- aObj:Debug("skinWidget: [%s, %s, %s, %s, %s, %s]", wFrame, wFrame.widgetType, wFrame.widgetTag, wFrame.widgetSetID, wFrame.widgetID, wInfo)
-		end
+		-- aObj:Debug("skinWidget: [%s, %s, %s, %s, %s, %s, %s]", wFrame, wFrame:GetDebugName(), wFrame.widgetType, wFrame.widgetTag, wFrame.widgetSetID, wFrame.widgetID, wInfo)
 
 		if wFrame.widgetType == 0 then -- IconAndText (World State: ICONS at TOP)
 			-- N.B. DON'T add buttonborder to Icon(s)
@@ -6512,16 +6486,7 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 			if aObj.isClsc then
 				aObj:removeRegions(wFrame.Bar, {5, 6, 7}) -- border textures
 			else
-				if not disableTypeBySZ[wFrame.widgetType][SZ] then
-					if not aObj.sbGlazed[wFrame.Bar] then -- if not already skinned
-						aObj:keepFontStrings(wFrame.Bar)
-						if wFrame.isJailersTowerBar then
-							aObj:getRegion(wFrame.Bar, 13):SetAlpha(1) -- Progress texture
-							aObj:getRegion(wFrame.Bar, 14):SetAlpha(1) -- Pointer texture
-							aObj:skinStatusBar{obj=wFrame.Bar, fi=0, nilFuncs=true}
-						end
-					end
-				end	
+				aObj:skinObject("statusbar", {obj=wFrame.Bar, regions={2, 3, 4, 9, 10, 11}, fi=0, nilFuncs=true})
 			end
 		elseif wFrame.widgetType == 3 then -- DoubleStatusBar (Island Expeditions)
 			aObj:skinStatusBar{obj=wFrame.LeftBar, fi=0, bgTex=wFrame.LeftBar.BG, nilFuncs=true}
@@ -6565,19 +6530,15 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 			-- .Foreground
 			setTextColor(wFrame.Text)
 		elseif wFrame.widgetType == 13 then -- SpellDisplay
-			if not aObj.isClsc
-			and not disableTypeBySZ[wFrame.widgetType][SZ]
-			then
-				wFrame.Spell.Border:SetTexture(nil)
-				local tcr = setTextColor(wFrame.Spell.Text)
-				if aObj.modBtnBs then
-					aObj:addButtonBorder{obj=wFrame.Spell, relTo=wFrame.Spell.Icon, reParent={wFrame.Spell.StackCount}}
-					if tcr == 0.5 then
-						aObj:clrBtnBdr(wFrame.Spell, "grey")
-					end
+			wFrame.Spell.Border:SetTexture(nil)
+			local tcr = setTextColor(wFrame.Spell.Text)
+			if aObj.modBtnBs then
+				aObj:addButtonBorder{obj=wFrame.Spell, relTo=wFrame.Spell.Icon, reParent={wFrame.Spell.StackCount}}
+				if tcr == 0.5 then
+					aObj:clrBtnBdr(wFrame.Spell, "grey")
 				end
-				tcr = nil
 			end
+			tcr = nil
 		elseif wFrame.widgetType == 14 then -- DoubleStateIconRow
 			-- TODO: add button borders if required
 		elseif wFrame.widgetType == 15 then -- TextureAndTextRow

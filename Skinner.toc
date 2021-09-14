@@ -14,12 +14,7 @@
 ## SavedVariables: SkinnerDB
 ## Globe: check-classic
 ## X-Curse-Project-ID: 14661
-#@version-retail@
-## OptionalDeps: Ace3, LibSharedMedia-3.0, AceGUI-3.0-SharedMediaWidgets, LibBabble-SubZone-3.0
-#@end-version-retail@
-#@non-version-retail@
 ## OptionalDeps: Ace3, LibSharedMedia-3.0, AceGUI-3.0-SharedMediaWidgets
-#@end-non-version-retail@
 Libs\_RequiredLibs.xml
 Libs\_OptionalLibs.xml
 Locales\_Locales.xml
