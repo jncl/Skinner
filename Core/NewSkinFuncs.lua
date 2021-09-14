@@ -208,7 +208,9 @@ local function hideHeader(obj)
 			local hObj = _G[obj:GetName() .. suffix]
 			if hObj then
 				hObj:SetPoint("TOP", obj, "TOP", 0, hOfs * -1)
-				if aObj:hasTextInTexture(hObj, "UI-DialogBox-Header") then
+				if aObj:hasTextInTexture(hObj, 131080) -- FileDataID
+				or aObj:hasTextInTexture(hObj, "UI-DialogBox-Header")
+				then
 					hObj:SetAlpha(0)
 				end
 				break
@@ -460,7 +462,7 @@ local function skinFrame(tbl)
 			aObj:removeNineSlice(tbl.obj.NineSlice)
 		--@alpha@
 		else
-			aObj:CustomPrint(1, 0, 0, "Frame NineSlice detected, add rns=true", tbl.obj)
+			aObj:CustomPrint(1, 0, 0, "Frame NineSlice detected, add rns=true", tbl.obj, tbl.obj:GetDebugName())
 			_G.assert(false, "Frame NineSlice" .. _G.debugstack(2, 3, 2))
 		--@end-alpha@
 		end
