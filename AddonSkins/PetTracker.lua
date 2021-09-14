@@ -2,7 +2,42 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("PetTracker") then return end
 local _G = _G
 
-local ptRJ
+aObj:SecureHook(_G.PetTracker, "NewModule", function(this, name, object)
+	if name == "TrackToggle"
+	and aObj.modChkBtns
+	then
+		aObj:skinCheckButton{obj=object}
+		aObj:Unhook(this, "NewModule")
+	end
+end, true)
+-- Journal/Switcher slots
+local function skinSlot(slot, isBattle)
+	if not slot.sf then
+		slot.Bg:SetTexture(nil)
+		slot.IconBorder:SetTexture(nil)
+		slot.Quality:SetTexture(nil)
+		aObj:changeTandC(slot.LevelBG)
+		if aObj.modBtnBs then
+			aObj:addButtonBorder{obj=slot, relTo=slot.Icon, reParent={slot.LevelBG, slot.Level}}
+			aObj:SecureHook(slot.Quality, "SetVertexColor", function(this, r, g, b)
+				slot.sbb:SetBackdropBorderColor(r, g, b, 1)
+			end)
+		end
+		for _, btn in _G.pairs(slot.Abilities) do
+			aObj:getRegion(btn, 1):SetTexture(nil)
+			if aObj.modBtnBs then
+				aObj:addButtonBorder{obj=btn, relTo=btn.icon, reParent={btn.Type}}
+			end
+		end
+		if isBattle then
+			aObj:skinObject("statusbar", {obj=slot.Health, regions={2, 3, 4, 5}, fi=0})
+			aObj:skinObject("statusbar", {obj=slot.Xp, regions={2, 3, 4, 5}, fi=0})
+		end
+		aObj:skinObject("frame", {obj=slot, fb=true, ofs=4, x1=-7, x2=6})
+	end
+	-- IsEmpty frame, covers slot, don't skin it
+	-- IsDead frame
+end
 aObj.addonsToSkin.PetTracker = function(self) -- v 9.1.0
 
 	-- Custom Tutorials
@@ -42,17 +77,15 @@ aObj.addonsToSkin.PetTracker = function(self) -- v 9.1.0
 	-- ProgressBars
 	local function skinBarObj(obj)
 		aObj:keepFontStrings(obj.Overlay)
-		for j = 1, _G.PetTracker.MaxQuality do
-			aObj:skinStatusBar{obj=obj.Bars[j], fi=0}
+		for _, bar in _G.pairs(obj.Bars) do
+			bar:SetStatusBarTexture(aObj.sbTexture)
 		end
 	end
-	-- hook this to skin new Bars
-	self:RawHook(_G.PetTracker.ProgressBar, "New", function(this, ...)
-		local barObj = self.hooks[this].New(this, ...)
+	self:RawHook(_G.PetTracker.ProgressBar, "New", function(...)
+		local barObj = self.hooks[this].New(...)
 		skinBarObj(barObj)
 		return barObj
 	end, true)
-	-- skin existing bars
 	for obj, _ in _G.pairs(_G.PetTracker.ProgressBar.__frames) do
 		skinBarObj(obj)
 	end
@@ -63,54 +96,21 @@ aObj.addonsToSkin.PetTracker = function(self) -- v 9.1.0
 			aObj:add2Table(aObj.ttList, obj)
 		end)
 	end
-	-- hook this to skin new tooltips
-	self:RawHook(_G.PetTracker.MultiTip, "Construct", function(this, ...)
-		local tTip = self.hooks[this].Construct(this, ...)
+	self:RawHook(_G.PetTracker.MultiTip, "Construct", function(...)
+		local tTip = self.hooks[this].Construct(...)
 		skinTT(tTip)
 		return tTip
 	end, true)
-	-- skin existing tooltips
 	for obj, _ in _G.pairs(_G.PetTracker.MultiTip.__frames) do
 		skinTT(obj)
 	end
 
-	-- Journal/Switcher slots
-	local function skinSlot(slot, isBattle)
-		slot.Bg:SetTexture(nil)
-		slot.IconBorder:SetTexture(nil)
-		slot.Quality:SetTexture(nil)
-		aObj:changeTandC(slot.LevelBG)
-		if aObj.modBtnBs then
-			aObj:addButtonBorder{obj=slot, relTo=slot.Icon, reParent={slot.LevelBG, slot.Level}}
-			aObj:SecureHook(slot.Quality, "SetVertexColor", function(this, r, g, b)
-				slot.sbb:SetBackdropBorderColor(r, g, b, 1)
-			end)
-		end
-		-- ability buttons
-		for i = 1, _G.NUM_BATTLE_PET_ABILITIES do
-			local btn = slot.Abilities[i]
-			aObj:getRegion(btn, 1):SetTexture(nil)
-			aObj:addButtonBorder{obj=btn, relTo=btn.icon, reParent={btn.Type}}
-		end
-		if isBattle then
-			aObj:removeRegions(slot.Health, {2, 3, 4, 5})
-			aObj:skinStatusBar{obj=slot.Health, fi=0}
-			aObj:removeRegions(slot.Xp, {2, 3, 4, 5})
-			aObj:skinStatusBar{obj=slot.Xp, fi=0}
-		end
-		aObj:addSkinFrame{obj=slot, ft="a", aso={bd=8, ng=true}, x1=-4, x2=1, y2=-2} -- use asf here as button already has a border
-
-		-- IsEmpty frame, covers slot, don't skin it
-		-- IsDead frame
-
-	end
-	-- hook this to skin slots
 	self:SecureHook(_G.PetTracker.PetSlot, "Construct", function(this)
-		-- wait for all the slots to be created (Journal has 3, switcher has 6P)
+		-- wait for all the slots to be created (Journal has 3, switcher has 6)
 		if (this.__template == "PetTrackerJournalSlot" and this.__count == 3)
 		or (this.__template == "PetTrackerBattleSlot" and this.__count == 6)
 		then
-			_G.C_Timer.After(0.1, function()
+			_G.C_Timer.After(0.25, function()
 				for obj, _ in _G.pairs(this.__frames) do
 					skinSlot(obj, this.__template == "PetTrackerBattleSlot" and true)
 				end
@@ -118,114 +118,132 @@ aObj.addonsToSkin.PetTracker = function(self) -- v 9.1.0
 		end
 	end, true)
 
-	local cnt = 0
-	self:SecureHook(_G.PetTracker, "NewModule", function(this, name, object)
-		if name == "TrackToggle"
-		and self.modChkBtns
-		then
-			cnt = cnt + 1
-			self:skinCheckButton{obj=object}
-		elseif name == "RivalsJournal" then
-			cnt = cnt + 1
-			ptRJ = object
-		elseif name == "Switcher" then
-			cnt = cnt + 1
-			-- wait for module to be setup
-			_G.C_Timer.After(0.1, function()
-				self.callbacks:Fire("Switcher_Created", object)
-			end)
-		end
-		if cnt == 3 then
-			self:Unhook(this, "NewModule")
-		end
-	end, true)
-
-	-- skin Pet Switcher frame
-	self.RegisterCallback("PetTracker", "Switcher_Created", function(_, object)
-		self:keepFontStrings(self:getChild(object, 4))
-		self:keepFontStrings(self:getChild(object, 5))
-		self:addSkinFrame{obj=object, ft="a", kfs=true, ri=true}
-
-		self.UnregisterCallback("PetTracker", "Switcher_Created")
-	end)
-
 end
 
-aObj.lodAddons.PetTracker_Journal = function(self) -- v 9.1.0
+aObj.lodAddons.PetTracker_Battle = function(self) -- v 9.1.0
+	if self.initialized.PetTracker_Battle then return end
+	self.initialized.PetTracker_Battle = true
 
-	-- wait for RivalsJournal and its List entries to be created
-	if not ptRJ
-	or not ptRJ.List.buttons
-	then
-		_G.C_Timer.After(0.1, function()
-		    self.lodAddons.PetTracker_Journal(self)
-		end)
-		return
-	end
-
-	self:removeInset(ptRJ.Count)
-	self:removeInset(ptRJ.ListInset)
-	self:skinObject("editbox", {obj=ptRJ.SearchBox})
-	self:skinObject("slider", {obj=ptRJ.List.scrollBar})
-	for _, btn in _G.pairs(ptRJ.List.buttons) do
-		self:removeRegions(btn, {1}) -- background
-		btn.model.quality:SetTexture(nil)
-		self:changeTandC(btn.model.levelRing)
-		if self.modBtnBs then
-			self:addButtonBorder{obj=btn, relTo=btn.icon, reParent={btn.model.levelRing, btn.model.level}}
+	self:SecureHookScript(_G.PetTrackerSwitcher, "OnShow", function(this)
+		self:keepFontStrings(self:getChild(this, 4)) -- slot borders
+		self:keepFontStrings(self:getChild(this, 5)) -- slot borders
+		self:skinObject("frame", {obj=this, kfs=true, ri=true, rns=true, cb=true, x2=3})
+		
+		self:Unhook(this, "OnShow")
+	end)
+	
+	self:SecureHook(_G.PetTrackerSwitcher, "Update", function(this)
+		for i = 1, _G.NUM_BATTLE_PETS_IN_BATTLE do
+			skinSlot(this[_G.LE_BATTLE_PET_ENEMY .. i], true)
+			-- if this[_G.LE_BATTLE_PET_ENEMY .. i].pet:Exists() then
+			-- 	this[_G.LE_BATTLE_PET_ENEMY .. i].sf:Show()
+			-- else
+			-- 	this[_G.LE_BATTLE_PET_ENEMY .. i].sf:Hide()
+			-- end
+			skinSlot(this[_G.LE_BATTLE_PET_ALLY .. i], true)
+			-- if this[_G.LE_BATTLE_PET_ALLY .. i].pet:Exists() then
+			-- 	this[_G.LE_BATTLE_PET_ALLY .. i].sf:Show()
+			-- else
+			-- 	this[_G.LE_BATTLE_PET_ALLY .. i].sf:Hide()
+			-- end
 		end
-		-- TODO: make model appear below frame
-	end
+	end)
+
 	if self.modBtnBs then
-		-- hook this to update button border quality
-		self:SecureHook(ptRJ.List, "update", function(this)
-			for i = 1, #this.buttons do
-				this.buttons[i].sbb:SetBackdropBorderColor(this.buttons[i].model.quality:GetVertexColor())
+		_G.C_Timer.After(0.25, function()
+			for _, btn in _G.pairs(self:getLastChild(_G.PetBattleFrame.BottomFrame).Buttons) do
+				self:addButtonBorder{obj=btn}
 			end
 		end)
 	end
 
-	self:skinObject("frame", {obj=ptRJ.Card, kfs=true, ri=true, rns=true, fb=true, ofs=1})
-	if self.modBtnBs then
-		-- skin rewards
-		for i = 1, 4 do
-			self:addButtonBorder{obj=ptRJ.Card[i], ibt=true}
-		end
-	end
-	-- N.B. Slots skinned above
+end
 
-	-- Tabs in TRHC
-	for i = 1, 3 do
-		ptRJ["Tab" .. i].TabBg:SetAlpha(0)
-		ptRJ["Tab" .. i].Hider:SetAlpha(0)
-		-- use a button border to indicate the active tab
-		self.modUIBtns:addButtonBorder{obj=ptRJ["Tab" .. i], relTo=ptRJ["Tab" .. i].Icon, ofs=i == 1 and 3 or 6} -- use module function here to force creation
-		ptRJ["Tab" .. i].sbb:SetBackdropBorderColor(1, 0.6, 0, 1)
-		ptRJ["Tab" .. i].sbb:SetShown(not ptRJ["Tab" .. i].Hider:IsShown())
-	end
-	self:SecureHook(ptRJ, "SetTab", function(this, tab)
-		for i = 1, 3 do
-			this["Tab" .. i].sbb:SetShown(not this["Tab" .. i].Hider:IsShown())
-		end
+aObj.lodAddons.PetTracker_Journal = function(self) -- v 9.1.0
+	if self.initialized.PetTracker_Journal then return end
+	self.initialized.PetTracker_Journal = true
+
+	self:SecureHookScript(_G.PetTrackerRivalsJournal, "OnShow", function(this)
+		-- wait for frame objects to be created
+		_G.C_Timer.After(0.5, function()
+			self:removeInset(this.Count)
+			self:removeInset(this.ListInset)
+			self:skinObject("editbox", {obj=this.SearchBox, si=true})
+			self:skinObject("slider", {obj=this.List.scrollBar})
+			for _, btn in _G.pairs(this.List.buttons) do
+				self:removeRegions(btn, {1}) -- background
+				btn.model.quality:SetTexture(nil)
+				self:changeTandC(btn.model.levelRing)
+				if self.modBtnBs then
+					self:addButtonBorder{obj=btn, relTo=btn.icon, reParent={btn.model.levelRing, btn.model.level}}
+				end
+				-- TODO: make model appear below frame
+			end
+			if self.modBtnBs then
+				-- hook this to update button border quality
+				self:SecureHook(this.List, "update", function(this)
+					for _, btn in _G.pairs(this.buttons) do
+						btn.sbb:SetBackdropBorderColor(btn.model.quality:GetVertexColor())
+					end
+				end)
+			end
+			self:skinObject("frame", {obj=this.Card, kfs=true, ri=true, rns=true, fb=true, ofs=1})
+			if self.modBtnBs then
+				-- skin rewards
+				for i = 1, 4 do
+					self:addButtonBorder{obj=this.Card[i], ibt=true}
+				end
+			end
+			-- N.B. Slots skinned above
+
+			-- Tabs in TRHC
+			for i = 1, 3 do
+				this["Tab" .. i].TabBg:SetAlpha(0)
+				this["Tab" .. i].Hider:SetAlpha(0)
+				-- use a button border to indicate the active tab
+				self.modUIBtns:addButtonBorder{obj=this["Tab" .. i], relTo=this["Tab" .. i].Icon, ofs=i == 1 and 3 or 6} -- use module function here to force creation
+				this["Tab" .. i].sbb:SetBackdropBorderColor(1, 0.6, 0, 1)
+				this["Tab" .. i].sbb:SetShown(not this["Tab" .. i].Hider:IsShown())
+			end
+			self:SecureHook(this, "SetTab", function(this, tab)
+				for i = 1, 3 do
+					this["Tab" .. i].sbb:SetShown(not this["Tab" .. i].Hider:IsShown())
+				end
+			end)
+			self:removeInset(this.Team)
+		    self:keepRegions(this.Team.Border, {11})
+		    self:moveObject{obj=self:getRegion(this.Team.Border, 11), y=8}
+		    self:removeInset(this.Map.BorderFrame)
+			self:removeNineSlice(this.History.NineSlice)
+			this.History:DisableDrawLayer("BACKGROUND")
+			self:getChild(this.History, 2):DisableDrawLayer("OVERLAY") -- ShadowOverlay frame
+			self:removeMagicBtnTex(this.History.LoadButton)
+			if self.modBtns then
+				self:skinStdButton{obj=this.History.LoadButton}
+			end
+			self:skinObject("frame", {obj=this, kfs=true, ri=true, rns=true, cb=true, x2=3})
+		end)
+
+		self:Unhook(this, "OnShow")
 	end)
 
-	-- Team panel
-	self:removeInset(ptRJ.Team)
-    self:keepRegions(ptRJ.Team.Border, {11})
-    self:moveObject{obj=self:getRegion(ptRJ.Team.Border, 11), y=8}
+	self:SecureHook(_G.PetTrackerRivalsJournal, "SetShown", function(this, show)
+		if show then
+			_G.MountJournal:SetShown(false)
+			_G.PetJournal:SetShown(false)
+			_G.ToyBox:SetShown(false)
+			_G.HeirloomsJournal:SetShown(false)
+			_G.WardrobeCollectionFrame:SetShown(false)
+		end
+		for i = 1, _G.CollectionsJournal.numTabs do
+			_G.PanelTemplates_DeselectTab(_G["CollectionsJournalTab" .. i])
+		end
+			
+	end)
 
-	-- Location panel
-    self:removeInset(ptRJ.Map.BorderFrame)
+	self:SecureHookScript(_G.PetTrackerRivalsJournal, "OnHide", function(this)
+		_G.CollectionsJournal_UpdateSelectedTab(_G.CollectionsJournal)
 
-	-- History panel
-	self:removeNineSlice(ptRJ.History.NineSlice)
-	ptRJ.History:DisableDrawLayer("BACKGROUND")
-	self:getChild(ptRJ.History, 2):DisableDrawLayer("OVERLAY") -- ShadowOverlay frame
-	self:removeMagicBtnTex(ptRJ.History.LoadButton)
-	if self.modBtns then
-		self:skinStdButton{obj=ptRJ.History.LoadButton}
-	end
-
-	self:skinObject("frame", {obj=ptRJ, kfs=true, ri=true, rns=true, cb=true, noBdr=true})
+	end)
 
 end
