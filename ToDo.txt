@@ -23,19 +23,29 @@ ToDos
 
 ≈	O	Refactor NewSkinFuncs in Blizzard/AddOn skins
 
-	O	Replace RegisterCallback/Fire by RegisterMessage/SendMessage
+≈	O	Replace RegisterCallback/Fire by RegisterMessage/SendMessage
 	
-	O	Replace texture pathnames by texture FileDataIDs, found in setupTextures function
+≈	O	Replace texture pathnames by texture FileDataIDs, found in setupTextures function
 
-√	S	RollTracker Classic Z, requested by 아련별
-	
-	I	reported by Fakelessgaming, 29.08.21
-≈		- Skinner\Core\Skinner-beta9.39804.1.lua:313: attempt to call field '?' (a nil value)
-		[string "@Skinner\Core\Skinner-beta9.39804.1.lua"]:313: in function <Skinner\Core\Skinner.lua:311>
-		[string "=[C]"]: ?
-		[string "@ActionBarProfiles\libs\CallbackHandler-1.0\CallbackHandler-1.0-7.lua"]:29: in function <...les\libs\CallbackHandler-1.0\CallbackHandler-1.0.lua:25>
-		[string "@ActionBarProfiles\libs\CallbackHandler-1.0\CallbackHandler-1.0-7.lua"]:64: in function `Fire'
-		[string "@ActionBarProfiles\libs\AceEvent-3.0\AceEvent-3.0-4.lua"]:120: in function <...ActionBarProfiles\libs\AceEvent-3.0\AceEvent-3.0.lua:119>
+	I	LUI, reported by straata_, 03.09.21
+√		- Don't reset profile settings if LUI profile already exists, to handle new characters or existing characters
 		
-	I	VenturePlan, reported by Galthariel, 29.08.21
-√		- need to change loop counter for Adventurers to #C_Garrison.GetFollowers(123)
+√	S/B	alaTradeSkill, requested by 아련별, 03.09.21
+	
+	I	CollectionsFrame, reported by Galthariel, 05.09.21
+√		- Rivals Tab not skinned, PetTracker skin needs updating
+		
+√	S	AnnounceTarget PH, requested by Galthariel, 05.09.21
+
+	I/B	oGlow, reported by 아련별, 05.09.21
+√		- not working on Bag/Bank items
+		
+	I	UIWidget, reported by Fakelessgaming, 07.09.21
+√		- TopCenterContainerFrame progressbar not skinned in HoA
+		
+	I	oocTab, reported by Fakelessgaming, 07.09.21
+≈		-  Skinner\Core\Skinner-beta9.40011.1.lua:334: attempt to call field '?' (a nil value)
+		[string "@Skinner\Core\Skinner-beta9.40011.1.lua"]:334: in function <Skinner\Core\Skinner.lua:332>
+		
+√	S	Rarity, requested by Moxieface, 11.09.21
+	
