@@ -607,6 +607,7 @@ aObj.ClassicSupport = function(self)
  					for i = 1, _G.CLASS_TRAINER_SKILLS_DISPLAYED do
  						self:checkTex{obj=_G["ClassTrainerSkill" .. i]}
  					end
+					self:clrBtnBdr(_G.ClassTrainerCollapseAllButton)
  				end)
 			end
 			if self.modBtnBs then
