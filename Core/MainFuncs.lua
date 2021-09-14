@@ -1304,7 +1304,7 @@ end
 function aObj:skinTooltip(tooltip)
 	if not self.prdb.Tooltips.skin then return end
 	--@alpha@
-	_G.assert(tooltip, "Missing object sT\n" .. _G.debugstack(2, 3, 2))
+	_G.assert(tooltip, "Missing object skinTooltip\n" .. _G.debugstack(2, 3, 2))
 	--@end-alpha@
 
 	aObj:Debug2("skinTooltip: [%s, %s, %s]", tooltip, tooltip.GetName and tooltip:GetName() or "<ANON>", tooltip.sf)

@@ -1652,7 +1652,7 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 				for _, suffix in _G.pairs{"", "Check", "ColorSwatch"} do
 					box = _G[cBox .. suffix]
 					if box
-					and box:IsObjectType("CHECKBUTTON")
+					and box:IsObjectType("CheckButton")
 					then
 						aObj:skinCheckButton{obj=box}
 					end
@@ -2218,7 +2218,6 @@ aObj.blizzLoDFrames[ftype].DeathRecap = function(self)
 end
 
 local function skinETFrame()
-
 	local function skinMenuBtn(btn)
 		aObj:skinStdButton{obj=btn, fType=ftype, y1=2, y2=-3}
 		aObj.modUIBtns:chgHLTex(btn, btn.MouseoverOverlay)
@@ -2243,7 +2242,6 @@ local function skinETFrame()
 
 		aObj:Unhook(this, "OnShow")
 	end)
-
 	if aObj.modBtns
 	or aObj.modChkBtns
 	then
@@ -2261,7 +2259,6 @@ local function skinETFrame()
 			end
 		end)
 	end
-
 end
 aObj.blizzLoDFrames[ftype].DebugTools = function(self)
 	if not self.prdb.DebugTools or self.initialized.DebugTools then return end
