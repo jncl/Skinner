@@ -5896,10 +5896,6 @@ aObj.blizzFrames[ftype].StaticPopups = function(self)
 			self:skinObject("frame", {obj=this, fType=ftype, ofs=-6})
 			if self.modBtns then
 				self:skinStdButton{obj=this.button1}
-				self:skinStdButton{obj=this.button2}
-				self:skinStdButton{obj=this.button3}
-				self:skinStdButton{obj=this.button4}
-				self:skinStdButton{obj=this.extraButton}
 				self:SecureHook(this.button1, "Disable", function(this, _)
 					self:clrBtnBdr(this)
 				end)
@@ -5907,6 +5903,37 @@ aObj.blizzFrames[ftype].StaticPopups = function(self)
 					self:clrBtnBdr(this)
 				end)
 				self:SecureHook(this.button1, "SetEnabled", function(this, _)
+					self:clrBtnBdr(this)
+				end)
+				self:skinStdButton{obj=this.button2}
+				self:SecureHook(this.button2, "Disable", function(this, _)
+					self:clrBtnBdr(this)
+				end)
+				self:SecureHook(this.button2, "Enable", function(this, _)
+					self:clrBtnBdr(this)
+				end)
+				self:SecureHook(this.button2, "SetEnabled", function(this)
+					self:clrBtnBdr(this)
+				end)
+				self:skinStdButton{obj=this.button3}
+				self:SecureHook(this.button3, "Disable", function(this, _)
+					self:clrBtnBdr(this)
+				end)
+				self:SecureHook(this.button3, "SetEnabled", function(this)
+					self:clrBtnBdr(this)
+				end)
+				self:skinStdButton{obj=this.button4}
+				self:SecureHook(this.button4, "Disable", function(this, _)
+					self:clrBtnBdr(this)
+				end)
+				self:SecureHook(this.button4, "Enable", function(this, _)
+					self:clrBtnBdr(this)
+				end)
+				self:skinStdButton{obj=this.extraButton}
+				self:SecureHook(this.extraButton, "Disable", function(this, _)
+					self:clrBtnBdr(this)
+				end)
+				self:SecureHook(this.extraButton, "Enable", function(this, _)
 					self:clrBtnBdr(this)
 				end)
 			end
