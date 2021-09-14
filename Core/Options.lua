@@ -145,7 +145,7 @@ aObj.SetupDefaults = function(self)
 			CinematicFrame             = true,
 			ClassTrial                 = true,
 			CoinPickup                 = true,
-			Colours                    = true,
+			ColorPicker                = true,
 			Console                    = true,
 			Contribution               = true,
 			CombatLogQBF               = false,
@@ -1345,8 +1345,7 @@ aObj.SetupOptions = function(self)
 			get = function(info) return db[info[#info]] end,
 			set = function(info, value)
 				db[info[#info]] = value
-				if info[#info] == "Colours" then self:checkAndRun("ColorPicker", "p")
-				elseif info[#info] == "CombatLogQBF" then return
+				if info[#info] == "CombatLogQBF" then return
 				elseif info[#info] == "ChatTabsFade" then return
 				-- handle Blizzard LoD Addons
 				elseif self.blizzLoDFrames.u[info[#info]] then
@@ -1566,7 +1565,7 @@ aObj.SetupOptions = function(self)
 					name = self.L["Coin Pickup Frame"],
 					desc = self.L["Toggle the skin of the "] .. self.L["Coin Pickup Frame"],
 				},
-				Colours = {
+				ColorPicker = {
 					type = "toggle",
 					name = self.L["Colour Picker Frame"],
 					desc = self.L["Toggle the skin of the "] .. self.L["Colour Picker Frame"],

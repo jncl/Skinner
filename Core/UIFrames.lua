@@ -2041,8 +2041,8 @@ aObj.blizzFrames[ftype].CoinPickup = function(self)
 end
 
 aObj.blizzFrames[ftype].ColorPicker = function(self)
-	if not self.prdb.Colours or self.initialized.Colours then return end
-	self.initialized.Colours = true
+	if not self.prdb.ColorPicker or self.initialized.ColorPicker then return end
+	self.initialized.ColorPicker = true
 
 	self:SecureHookScript(_G.ColorPickerFrame, "OnShow", function(this)
 		self:removeNineSlice(this.Border)
