@@ -3626,7 +3626,7 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 
 	self:SecureHookScript(_G.ScenarioStageBlock, "OnShow", function(this)
 		self:nilTexture(this.NormalBG, true)
-		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, y1=-1, x2=41, y2=7})
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ofs=0, y1=-1, x2=41, y2=5})
 
 		self:Unhook(this, "OnShow")
 	end)
