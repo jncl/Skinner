@@ -1,3 +1,26 @@
+beta9.40120.1
+Jncl:
+    ToDo.txt
+    Updated Change_History.txt
+    Updated version numbers
+    Updated ToDo_classic_PTR.txt
+    Code tidyup
+    Bugfix for OOC table processing
+    Updated TAD skin
+    Updated StaticPopups skin
+    Updated UIWidgets skin
+    Added code to handle  Retail PTR changes
+    Updated ObjectiveTracker skin
+    Updated ClassicSupport ClassTrainer skin
+    Updated AucAdvanced, LUI & PetTracker skins
+    Skinned alaTradeSkill, AnnounceTargetPH, oGlowClassic & Rarity
+    Updated NSF
+    Added support for Classic Era PTR version
+    Updated NSF to skin StatusBar
+    Renamed function & Option Colours to ColorPicker
+    Updated UIButtons code
+    Changed way UIWidgets code chooses no to skin objects, therefore removed LibBabble-SubZone assets and code
+
 beta9.40011.1
 Jncl:
 	ToDo.txt
