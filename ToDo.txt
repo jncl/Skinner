@@ -26,26 +26,30 @@ ToDos
 ≈	O	Replace RegisterCallback/Fire by RegisterMessage/SendMessage
 	
 ≈	O	Replace texture pathnames by texture FileDataIDs, found in setupTextures function
+ 
+≈ 	O	Use luacheck on all lua files including AddOn Skins
 
-	I	LUI, reported by straata_, 03.09.21
-√		- Don't reset profile settings if LUI profile already exists, to handle new characters or existing characters
+	I	Rarity, reported by Galthariel, 14.09.21
+?		- Skinner\AddonSkins\Rarity-1.0 (r710-release-6).lua:19: Usage: SecureHook([object], method, [handler]): Attempting to hook a non existing target
+		- What I did was to momentarily disable Rarity under "Disabled Skins" 
 		
-√	S/B	alaTradeSkill, requested by 아련별, 03.09.21
-	
-	I	CollectionsFrame, reported by Galthariel, 05.09.21
-√		- Rivals Tab not skinned, PetTracker skin needs updating
+	I/B	oGlowClassic?, reported by 아련별, 15.09.21
+?		- missing button borders on items
+			- character frame works fine but inventory & bank & mail frame isn't.
 		
-√	S	AnnounceTarget PH, requested by Galthariel, 05.09.21
-
-	I/B	oGlow, reported by 아련별, 05.09.21
-√		- not working on Bag/Bank items
+	I	MainMenuBar, reported by Fakelessgaming, 15.09.21
+		-  [ADDON_ACTION_BLOCKED] AddOn 'Skinner' tried to call the protected function 'MainMenuBar:SetScale()'.
+		[string "@!BugGrabber\BugGrabber.lua"]:519: in function <!BugGrabber\BugGrabber.lua:519>
+		[string "=[C]"]: in function `SetScale'
+		[string "@FrameXML\UIParent.lua"]:3266: in function `UIParentManageFramePositions'
+		[string "@FrameXML\UIParent.lua"]:2653: in function <FrameXML\UIParent.lua:2640>
+		[string "=[C]"]: in function `SetAttribute'
+		[string "@FrameXML\UIParent.lua"]:3449: in function `UIParent_ManageFramePositions'
+		[string "@FrameXML\VehicleSeatIndicator.lua"]:62: in function `VehicleSeatIndicator_UnloadTextures'
+		[string "@FrameXML\VehicleSeatIndicator.lua"]:108: in function <FrameXML\VehicleSeatIndicator.lua:93>
 		
-	I	UIWidget, reported by Fakelessgaming, 07.09.21
-√		- TopCenterContainerFrame progressbar not skinned in HoA
-		
-	I	oocTab, reported by Fakelessgaming, 07.09.21
-≈		-  Skinner\Core\Skinner-beta9.40011.1.lua:334: attempt to call field '?' (a nil value)
-		[string "@Skinner\Core\Skinner-beta9.40011.1.lua"]:334: in function <Skinner\Core\Skinner.lua:332>
-		
-√	S	Rarity, requested by Moxieface, 11.09.21
-	
+	I/B	TinyTooltip, reported by 아련별, 15.09.21
+√		- SharedXML\Mixin.lua:29: attempt to index local 'object' (a string value)
+		[string "@TinyTooltip\Core.lua"]:734: in function `v'
+		[string "@TinyTooltip\libs\LibEvent.lua"]:121: in function `trigger'
+		[string "@Skinner\AddonSkins\TinyTooltip-8.2.1.lua"]:51: in function <Skinner\AddonSkins\TinyTooltip.lua:5>
