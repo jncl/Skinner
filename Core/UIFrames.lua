@@ -586,7 +586,7 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 		skinLootAlert(frame, ...)
 	end)
 	for frame in _G.LootAlertSystem.alertFramePool:EnumerateActive() do
-		skinLootFrames(frame)
+		skinLootAlert(frame)
 	end
 	local function skinLootUpgrade(frame)
 		frame:DisableDrawLayer("BACKGROUND")
