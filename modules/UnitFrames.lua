@@ -48,10 +48,9 @@ function module:adjustStatusBarPosn(sBar, yAdj)
 		oPnt = {sBar:GetPoint()}
 		sBar:SetPoint(oPnt[1], oPnt[2], oPnt[3], oPnt[4], oPnt[5] + yAdj)
 	end
-	oPnt = nil
 
 end
-function module:skinUnitButton(opts)
+function module:skinUnitButton(opts) -- luacheck: ignore self
 
 	-- setup offset values
 	opts.ofs = opts.ofs or 0
@@ -225,8 +224,6 @@ function module:skinPlayerF()
 		-- skin the PlayerFrame, here as preceeding code changes yOfs value
 		self:skinUnitButton{obj=pF, ti=true, x1=35, y1=-5, x2=2, y2=y2Ofs}
 
-		pF, y2Ofs = nil, nil
-
 	end
 
 end
@@ -281,7 +278,7 @@ function module:skinPetF()
 			_G.PetFrame.roleIcon:SetTexture(aObj.tFDIDs.lfgIR)
 			-- get Pet's Specialization Role to set roleIcon TexCoord
 			local petSpec
-			self:RegisterEvent("UNIT_PET", function(event, arg1)
+			self:RegisterEvent("UNIT_PET", function(_, arg1)
 				if arg1 == "player"
 				and _G.UnitIsVisible("pet")
 				then
@@ -309,7 +306,6 @@ function module:skinCommon(frame, adjSB)
 		self:adjustStatusBarPosn(fo.healthbar)
 	end
 	aObj:skinStatusBar{obj=fo.manabar, fi=0, nilFuncs=true}
-	fo = nil
 
 end
 function module:skinButton(frame, ti)
@@ -358,7 +354,6 @@ function module:skinButton(frame, ti)
 		aObj:moveObject{obj=_G[frame .. "ToTHealthBar"], y=-2} -- move HealthBar d1own to match other frames
 	end
 
-	fo, isBoss, xOfs1, yOfs1, xOfs2, yOfs2 = nil, nil, nil, nil, nil, nil
 
 end
 function module:skinTargetF()
@@ -379,8 +374,8 @@ function module:skinTargetF()
 			self:skinButton(this:GetName())
 
 			-- move level text down, so it is more visible
-			self:SecureHook("TargetFrame_UpdateLevelTextAnchor", function(this, targetLevel)
-				this.levelText:SetPoint("CENTER", targetLevel == 100 and 61 or 62, -20 + lOfs)
+			self:SecureHook("TargetFrame_UpdateLevelTextAnchor", function(fObj, targetLevel)
+				fObj.levelText:SetPoint("CENTER", targetLevel == 100 and 61 or 62, -20 + lOfs)
 			end)
 
 			self:Unhook(this, "OnShow")
@@ -476,7 +471,6 @@ function module:skinPartyF()
 				_G[pPF .. "Texture"]:SetAlpha(0) -- texture file is changed dependant upon in vehicle or not
 				-- status bar
 				aObj:skinStatusBar{obj=_G[pPF .. "HealthBar"], fi=0}
-				pMF, pPF = nil, nil
 
 				self:Unhook(this, "OnShow")
 			end)
@@ -702,7 +696,7 @@ function module:GetOptions()
 
 end
 
-aObj.blizzLoDFrames[ftype].ArenaUI = function(self)
+aObj.blizzLoDFrames[ftype].ArenaUI = function(self) -- luacheck: ignore self
 
 	if db.arena then
 		local function skinArenaFrame(fName)
@@ -727,7 +721,6 @@ aObj.blizzLoDFrames[ftype].ArenaUI = function(self)
 			aObj:moveObject{obj=_G[cBar].Text, y=-1}
 			_G[cBar].Flash:SetAllPoints()
 			aObj:skinStatusBar{obj=_G[cBar], fi=0, bgTex=aObj:getRegion(_G[cBar], 1), otherTex={_G[cBar].Flash}}
-			cBar = nil
 		end
 		local function skinArenaPetFrame(fName)
 			-- handle in combat
@@ -746,14 +739,12 @@ aObj.blizzLoDFrames[ftype].ArenaUI = function(self)
 			-- move pet frame
 			aObj:moveObject{obj=_G[fName], x=-17} -- align under ArenaEnemy Health/Mana bars
 		end
-		local aPF
 		for i = 1, _G.MAX_ARENA_ENEMIES do
 			skinArenaFrame("ArenaPrepFrame" .. i)
 			skinArenaFrame("ArenaEnemyFrame" .. i)
 			-- pet frame
 			skinArenaPetFrame("ArenaEnemyFrame" .. i .. "PetFrame")
 		end
-		aPF = nil
 		-- ArenaPrepBackground
 		aObj:addSkinFrame{obj=_G.ArenaPrepBackground, ft=ftype, nb=true}
 		-- ArenaEnemyBackground

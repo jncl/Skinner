@@ -122,10 +122,9 @@ local function __checkTex(opts)
 		btn:SetText("")
 		btn:Hide()
 	end
-	header = nil
 
 end
-function module:checkTex(...)
+function module:checkTex(...) -- luacheck: ignore self
 
 	local opts = _G.select(1, ...)
 
@@ -144,7 +143,6 @@ function module:checkTex(...)
 		opts.mp2 = _G.select(3, ...) and _G.select(3, ...) or nil
 	end
 	__checkTex(opts)
-	opts = nil
 
 end
 if aObj.isClscBC then
@@ -162,9 +160,8 @@ local function clrTex(clr, hTex)
 		r, g, b = _G.YELLOW_FONT_COLOR:GetRGB()
 	end
 	hTex:SetColorTexture(r, g, b, 0.25)
-	r, g, b = nil, nil, nil
 end
-function module:chgHLTex(obj, hTex)
+function module:chgHLTex(obj, hTex) -- luacheck: ignore self
 
 	if hTex then
 		local hTexFile = hTex:GetTexture()
@@ -199,40 +196,38 @@ function module:chgHLTex(obj, hTex)
 					hTex:SetPoint("BOTTOMRIGHT", obj.sb, "BOTTOMRIGHT", -5, 5)
 				end
 			end
-			hTexFile, clr = nil, nil
 		end
 	end
 
 end
 
-function module:clrButtonFromBorder(btn, texture)
+function module:clrButtonFromBorder(bObj, texture) -- luacheck: ignore self
+
 	--@alpha@
-	 _G.assert(btn.sbb, "Missing object__cBB\n" .. _G.debugstack(2, 3, 2))
-	 --@end-alpha@
+	 _G.assert(bObj.sbb, "Missing object__cBB\n" .. _G.debugstack(2, 3, 2))
+	--@end-alpha@
 
-	local iBdr = btn.IconBorder or btn.iconBorder or btn[texture]
-
+	local iBdr = bObj.IconBorder or bObj.iconBorder or bObj[texture]
 	iBdr:SetAlpha(1) -- ensure alpha is 1 otherwise btn.sbb isn't displayed
 	-- use the colour of the quality border as the BackdropBorderColor if shown
 	if iBdr:IsShown() then
-		btn.sbb:SetBackdropBorderColor(iBdr:GetVertexColor())
+		bObj.sbb:SetBackdropBorderColor(iBdr:GetVertexColor())
 	else
-		module:clrBtnBdr(btn, "common")
+		module:clrBtnBdr(bObj, "common")
 	end
 	iBdr:SetAlpha(0)
-	iBdr = nil
 
 end
 
-function module:clrBtnBdr(btn, clrName, alpha)
+function module:clrBtnBdr(bObj, clrName, alpha) -- luacheck: ignore self
 
 	-- check button state and alter colour accordingly
-	clrName = btn.IsEnabled and not btn:IsEnabled() and "disabled" or clrName
-	aObj:clrBBC(btn.sbb or btn.sb or btn, clrName, alpha)
+	clrName = bObj.IsEnabled and not bObj:IsEnabled() and "disabled" or clrName
+	aObj:clrBBC(bObj.sbb or bObj.sb or bObj, clrName, alpha)
 
 end
 
-function module:isButton(obj)
+function module:isButton(obj) -- luacheck: ignore self
 
 	-- ignore named/AceConfig/XConfig/AceGUI objects
 	if aObj:hasAnyTextInName(obj, {"AceConfig", "XConfig", "AceGUI"}) then return end
@@ -268,14 +263,14 @@ function module:isButton(obj)
 		elseif oH == 54 then
 			bType = "help"
 		end
-		oW, oH, nR = nil, nil, nil
 	end
 
 	return bType
 
 end
 
-function module:skinCloseButton(opts) -- text on button
+function module:skinCloseButton(opts) -- luacheck: ignore self
+-- text on button
 --[[
 	Calling parameters:
 		obj = object (Mandatory)
@@ -310,14 +305,13 @@ function module:skinCloseButton(opts) -- text on button
 	-- don't skin button if required
 	if not opts.noSkin then
 		if opts.sap then
-			aObj:skinObject("button", {obj=opts.obj, fType=ftype, sap=true})
+			aObj:skinObject("button", {obj=opts.obj, fType=opts.ftype, sap=true})
 		else
 			local bW = _G.Round(opts.obj:GetWidth())
 			opts.x1 = opts.x1 or bW == 32 and 6 or 4
 			opts.y1 = opts.y1 or bW == 32 and -6 or -4
 			opts.x2 = opts.x2 or bW == 32 and -6 or -4
 			opts.y2 = opts.y2 or bW == 32 and 6 or 4
-			bW = nil
 			aObj:skinObject("button", {obj=opts.obj, fType=opts.ftype, bd=5, x1=opts.x1, y1=opts.y1, x2=opts.x2, y2=opts.y2})
 		end
 		module:clrBtnBdr(opts.obj, opts.clr, opts.ca)
@@ -334,29 +328,30 @@ function module:skinCloseButton(opts) -- text on button
 	end
 
 end
-function module:skinCloseButton1(opts) -- text on button
 
+function module:skinCloseButton1(opts) -- luacheck: ignore self
+-- text on button
 	opts.cb = nil
 	module:skinCloseButton(opts)
 
 end
-function module:skinCloseButton2(opts) -- text on skinButton
-
+function module:skinCloseButton2(opts) -- luacheck: ignore self
+-- text on skinButton
 	opts.cb2 = nil
 	opts.onSB = true
 	module:skinCloseButton(opts)
 
 end
-function module:skinCloseButton3(opts) -- small text on skinButton (used by Details)
-
-	opts.font = self.fontSBX
+function module:skinCloseButton3(opts) -- luacheck: ignore self
+-- small text on skinButton (used by Details)
+	opts.font = module.fontSBX
 	opts.cb3 = nil
 	opts.onSB = true
 	module:skinCloseButton(opts)
 
 end
 
-function module:skinExpandButton(opts)
+function module:skinExpandButton(opts) -- luacheck: ignore self
 --[[
 	Calling parameters:
 		obj = object (Mandatory)
@@ -383,11 +378,11 @@ function module:skinExpandButton(opts)
 	if not opts.as then
 		aObj:skinObject("button", {obj=opts.obj, fType=opts.ftype, sap=opts.sap, bd=6, ofs=opts.ofs})
 		if not opts.noHook then
-			module:SecureHook(opts.obj, "SetNormalTexture", function(this, nTex)
-				module:checkTex{obj=this, nTex=nTex}
+			module:SecureHook(opts.obj, "SetNormalTexture", function(this, tObj)
+				module:checkTex{obj=this, nTex=tObj}
 			end)
-			module:SecureHook(opts.obj, "SetNormalAtlas", function(this, nTex)
-				module:checkTex{obj=this, nTex=nTex}
+			module:SecureHook(opts.obj, "SetNormalAtlas", function(this, tObj)
+				module:checkTex{obj=this, nTex=tObj}
 			end)
 		end
 	else -- Ace3, Archy, ReagentRestocker
@@ -409,20 +404,20 @@ function module:skinExpandButton(opts)
 	end
 
 end
-function module:skinExpandButton1(opts) -- text on skinButton
-
+function module:skinExpandButton1(opts) -- luacheck: ignore self
+-- text on skinButton
 	opts.onSB = true
 	module:skinExpandButton(opts)
 
 end
-function module:skinExpandButton2(opts) -- text on button
-
+function module:skinExpandButton2(opts) -- luacheck: ignore self
+-- text on button
 	opts.sap = true
 	module:skinExpandButton(opts)
 
 end
 
-function module:skinOtherButton(opts)
+function module:skinOtherButton(opts) -- luacheck: ignore self
 --[[
 	Calling parameters:
 		obj = object (Mandatory)
@@ -445,7 +440,7 @@ function module:skinOtherButton(opts)
 	if opts.obj:GetDisabledTexture() then opts.obj:GetDisabledTexture():SetAlpha(0) end
 	if opts.size then
 		opts.obj:SetSize(opts.size, opts.size)
-		opts.obj:SetHighlightTexture(self.tFDIDs.pMBHL)
+		opts.obj:SetHighlightTexture(aObj.tFDIDs.pMBHL)
 	end
 	opts.obj:SetNormalFontObject(opts.font or module.fontP)
 	opts.obj:SetDisabledFontObject(opts.disfont or module.fontDP)
@@ -460,22 +455,21 @@ function module:skinOtherButton(opts)
 			opts.y1 = opts.y1 or bW == 32 and -6 or -4
 			opts.x2 = opts.x2 or bW == 32 and -6 or -4
 			opts.y2 = opts.y2 or bW == 32 and 6 or 4
-			bW = nil
 			aObj:skinObject("button", {obj=opts.obj, fType=opts.ftype, bd=5, aso=opts.aso, x1=opts.x1, y1=opts.y1, x2=opts.x2, y2=opts.y2})
 		end
 	end
 
 end
-function module:skinOtherButton1(opts) -- text on button
-
+function module:skinOtherButton1(opts) -- luacheck: ignore self
+-- text on button
 	opts.font = module.fontP
 	opts.text = opts.ob
 	opts.ob = nil
 	module:skinOtherButton(opts)
 
 end
-function module:skinOtherButton2(opts) -- small text on button
-
+function module:skinOtherButton2(opts) -- luacheck: ignore self
+-- small text on button
 	opts.size = 18
 	opts.sap = true
 	opts.font = module.fontSB
@@ -484,7 +478,8 @@ function module:skinOtherButton2(opts) -- small text on button
 	module:skinOtherButton(opts)
 
 end
-function module:skinOtherButton3(opts) -- sizeUp/Down text on button
+function module:skinOtherButton3(opts) -- luacheck: ignore self
+-- sizeUp/Down text on button
 
 	opts.font = module.fontS
 	opts.text = opts.ob3
@@ -492,7 +487,8 @@ function module:skinOtherButton3(opts) -- sizeUp/Down text on button
 	module:skinOtherButton(opts)
 
 end
-function module:skinOtherButton4(opts) -- Normal text on button
+function module:skinOtherButton4(opts) -- luacheck: ignore self
+-- Normal text on button
 
 	opts.font = "GameFontNormal"
 	opts.text = opts.ob4
@@ -501,7 +497,8 @@ function module:skinOtherButton4(opts) -- Normal text on button
 
 end
 
-function module:skinStdButton(opts) -- standard panel button
+function module:skinStdButton(opts) -- luacheck: ignore self
+-- standard panel button
 --[[
 	Calling parameters:
 		obj = object (Mandatory)
@@ -534,7 +531,6 @@ function module:skinStdButton(opts) -- standard panel button
 		if bW < 16 then opts.obj:SetWidth(16) end -- set minimum button width (oQueue remove buttons)
 		aObj:applySkin(aso)
 	end
-	bW, bH, aso = nil, nil, nil
 
 	module:clrBtnBdr(opts.obj, opts.clr, opts.ca)
 
@@ -545,7 +541,7 @@ function module:skinStdButton(opts) -- standard panel button
 
 end
 
-function module:skinButton(opts)
+function module:skinButton(opts) -- luacheck: ignore self
 --[[
 	Calling parameters:
 		as = use applySkin rather than addSkinButton, used when text appears behind the gradient
@@ -608,13 +604,13 @@ local function __skinAllButtons(opts, bgen)
 --]]
 	--@alpha@
 	_G.assert(opts.obj, "Missing object__sAB\n" .. _G.debugstack(2, 3, 2))
-	-- handle AddOn skins still using this code 
+	-- handle AddOn skins still using this code
 	aObj:CustomPrint(1, 0, 0, "Using deprecated function - skinAllButtons", opts.obj)
-	 --@end-alpha@
+	--@end-alpha@
 	if not opts.obj then return end
 
 	-- maximum number of button generations to traverse
-	local bgen = bgen or opts.bgen or 5
+	bgen = bgen or opts.bgen or 5
 
 	for _, child in _G.ipairs{opts.obj:GetChildren()} do
 		if child:GetNumChildren() > 0
@@ -635,12 +631,11 @@ local function __skinAllButtons(opts, bgen)
 			elseif bType == "help" then
 				module:skinButton{obj=child, ft=opts.ft, x1=0, y1=0, x2=-3, y2=3}
 			end
-			bType = nil
 		end
 	end
 
 end
-function module:skinAllButtons(...)
+function module:skinAllButtons(...) -- luacheck: ignore self
 
 	local opts = _G.select(1, ...)
 
@@ -659,7 +654,6 @@ function module:skinAllButtons(...)
 		opts.obj = _G.select(1, ...) and _G.select(1, ...) or nil
 	end
 	__skinAllButtons(opts)
-	opts = nil
 
 end
 
@@ -697,8 +691,8 @@ local function __addButtonBorder(opts)
 	 if opts.seca
 	 or opts.secu
 	 then
-	 	-- handle AddOn skins using deprecated options
-	 	aObj:CustomPrint(1, 0, 0, "Using deprecated options - seca,secu, use sabt or subt instead", opts.obj)
+		-- handle AddOn skins using deprecated options
+		aObj:CustomPrint(1, 0, 0, "Using deprecated options - seca,secu, use sabt or subt instead", opts.obj)
 	end
 	--@end-alpha@
 	if not opts.obj then return end
@@ -742,7 +736,6 @@ local function __addButtonBorder(opts)
 	-- create the button border object
 	local template = opts.sec and "SecureFrameTemplate" or opts.sabt and "SecureActionButtonTemplate" or opts.subt and "SecureUnitButtonTemplate"
 	opts.obj.sbb = _G.CreateFrame(opts.obj:GetObjectType(), nil, opts.obj, template)
-	template = nil
 	opts.obj.sbb:EnableMouse(false) -- enable clickthrough
 
 	aObj:addBackdrop(opts.obj.sbb)
@@ -763,7 +756,6 @@ local function __addButtonBorder(opts)
 	local relTo = opts.relTo or opts.libt and opts.obj.Icon or nil
 	opts.obj.sbb:SetPoint("TOPLEFT", relTo or opts.obj, "TOPLEFT", opts.x1, opts.y1)
 	opts.obj.sbb:SetPoint("BOTTOMRIGHT", relTo or opts.obj, "BOTTOMRIGHT", opts.x2, opts.y2)
-	relTo = nil
 
 	-- reparent objects if required
 	if opts.reParent then
@@ -796,7 +788,7 @@ local function __addButtonBorder(opts)
 	end
 
 end
-function module:addButtonBorder(...)
+function module:addButtonBorder(...) -- luacheck: ignore self
 
 	local opts = _G.select(1, ...)
 
@@ -813,7 +805,6 @@ function module:addButtonBorder(...)
 		opts.obj = _G.select(1, ...) and _G.select(1, ...) or nil
 	end
 	__addButtonBorder(opts)
-	opts = nil
 
 end
 
@@ -854,10 +845,10 @@ local function __skinCheckButton(opts)
 			yOfs = nil
 		end
 	end
-	aObj:skinObject("button", {obj=opts.obj, fType=ftype, bd=bd, ng=true, ofs=ofs, y2=yOfs, clr="grey"})
+	aObj:skinObject("button", {obj=opts.obj, fType=opts.ftype, bd=bd, ng=true, ofs=ofs, y2=yOfs, clr="grey"})
 
 end
-function module:skinCheckButton(...)
+function module:skinCheckButton(...) -- luacheck: ignore self
 
 	local opts = _G.select(1, ...)
 
@@ -875,7 +866,6 @@ function module:skinCheckButton(...)
 	end
 
 	__skinCheckButton(opts)
-	opts = nil
 
 end
 
@@ -931,7 +921,7 @@ function module:OnEnable()
 
 end
 
-function module:GetOptions()
+function module:GetOptions() -- luacheck: ignore self
 
 	local options = {
 		type = "group",

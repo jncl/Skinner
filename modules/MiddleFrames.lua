@@ -71,7 +71,7 @@ local function OnEnter(self)
 	_G.GameTooltip:Show()
 
 end
-local function OnLeave(self)
+local function OnLeave(_)
 
 	_G.GameTooltip:Hide()
 
@@ -158,20 +158,20 @@ function module:OnEnable()
 
 end
 
-function module:adjustMiddleFrames(_, key)
+function module:adjustMiddleFrames(_, value) -- luacheck: ignore self
 
-	if not key then
+	if not value then
 		for i = 1, MAX_MIDDLEFRAMES do
 			local key = "mf" .. i
 			adjustFrame(key)
 		end
 	else
-		adjustFrame(key)
+		adjustFrame(value)
 	end
 
 end
 
-function module:GetOptions()
+function module:GetOptions() -- luacheck: ignore self
 
 	local options = {
 		type = "group",

@@ -55,10 +55,10 @@ aObj.blizzLoDFrames[ftype].AuctionHouseUI = function(self)
 		end
 		self:skinObject("tabs", {obj=this, tabs=this.Tabs, fType=ftype, lod=self.isTT and true, track=false, offsets={x1=8, y1=self.isTT and 2 or 0, x2=-8, y2=2}})
 		if self.isTT then
-			self:SecureHook(this, "SetDisplayMode", function(this, displayMode)
-				if not this.tabsForDisplayMode[displayMode] then return end
-				for i, tab in _G.ipairs(this.Tabs) do
-					if i == this.tabsForDisplayMode[displayMode] then
+			self:SecureHook(this, "SetDisplayMode", function(fObj, displayMode)
+				if not fObj.tabsForDisplayMode[displayMode] then return end
+				for i, tab in _G.ipairs(fObj.Tabs) do
+					if i == fObj.tabsForDisplayMode[displayMode] then
 						self:setActiveTab(tab.sf)
 					else
 						self:setInactiveTab(tab.sf)
@@ -75,9 +75,9 @@ aObj.blizzLoDFrames[ftype].AuctionHouseUI = function(self)
 			aObj:removeNineSlice(frame.NineSlice)
 			frame.Background:SetTexture(nil)
 			aObj:skinObject("slider", {obj=frame.ScrollFrame.scrollBar, fType=ftype, y1=-2, y2=2})
-			aObj:SecureHook(frame, "RefreshScrollFrame", function(this)
-				if this.tableBuilder then
-					for hdr in this.tableBuilder.headerPoolCollection:EnumerateActive() do
+			aObj:SecureHook(frame, "RefreshScrollFrame", function(fObj)
+				if fObj.tableBuilder then
+					for hdr in fObj.tableBuilder.headerPoolCollection:EnumerateActive() do
 						aObj:removeRegions(hdr, {1, 2, 3})
 						aObj:skinObject("frame", {obj=hdr, fType=ftype, ofs=0, x1=1, x2=-1})
 					end
@@ -116,24 +116,24 @@ aObj.blizzLoDFrames[ftype].AuctionHouseUI = function(self)
 		skinItemList(this.BrowseResultsFrame.ItemList)
 		this.WoWTokenResults.Background:SetTexture(nil)
 		self:removeNineSlice(this.WoWTokenResults.NineSlice)
-		self:SecureHookScript(this.WoWTokenResults.GameTimeTutorial, "OnShow", function(this)
-			self:removeInset(this.Inset)
-			this.LeftDisplay.Label:SetTextColor(self.HT:GetRGB())
-			this.LeftDisplay.Tutorial1:SetTextColor(self.BT:GetRGB())
-			this.RightDisplay.Label:SetTextColor(self.HT:GetRGB())
-			this.RightDisplay.Tutorial1:SetTextColor(self.BT:GetRGB())
-			self:addSkinFrame{obj=this, ft=ftype, kfs=true, y2=220}
+		self:SecureHookScript(this.WoWTokenResults.GameTimeTutorial, "OnShow", function(fObj)
+			self:removeInset(fObj.Inset)
+			fObj.LeftDisplay.Label:SetTextColor(self.HT:GetRGB())
+			fObj.LeftDisplay.Tutorial1:SetTextColor(self.BT:GetRGB())
+			fObj.RightDisplay.Label:SetTextColor(self.HT:GetRGB())
+			fObj.RightDisplay.Tutorial1:SetTextColor(self.BT:GetRGB())
+			self:addSkinFrame{obj=fObj, ft=ftype, kfs=true, y2=220}
 			if self.modBtns then
-				self:skinStdButton{obj=this.RightDisplay.StoreButton, x1=14, y1=2, x2=-14, y2=2, clr="gold"}
+				self:skinStdButton{obj=fObj.RightDisplay.StoreButton, x1=14, y1=2, x2=-14, y2=2, clr="gold"}
 			end
 
-			self:Unhook(this, "OnShow")
+			self:Unhook(fObj, "OnShow")
 		end)
 		self:removeRegions(this.WoWTokenResults.TokenDisplay, {3}) -- background texture
 		if self.modBtns then
 			self:skinStdButton{obj=this.WoWTokenResults.Buyout}
-			self:SecureHook(this.WoWTokenResults.Buyout, "SetEnabled", function(this)
-				self:clrBtnBdr(this)
+			self:SecureHook(this.WoWTokenResults.Buyout, "SetEnabled", function(bObj)
+				self:clrBtnBdr(bObj)
 			end)
 		end
 		local btn = this.WoWTokenResults.TokenDisplay.ItemButton
@@ -142,7 +142,6 @@ aObj.blizzLoDFrames[ftype].AuctionHouseUI = function(self)
 			self:addButtonBorder{obj=btn, relTo=btn.Icon, reParent={btn.Count}}
 			self:clrButtonFromBorder(btn)
 		end
-		btn = nil
 		this.WoWTokenResults.DummyScrollBar:DisableDrawLayer("BACKGROUND")
 		this.WoWTokenResults.DummyScrollBar:DisableDrawLayer("ARTWORK")
 		-- Buy frames
@@ -155,8 +154,8 @@ aObj.blizzLoDFrames[ftype].AuctionHouseUI = function(self)
 			self:skinStdButton{obj=this.CommoditiesBuyFrame.BackButton}
 			self:skinStdButton{obj=this.CommoditiesBuyFrame.BuyDisplay.QuantityInput.MaxButton}
 			self:skinStdButton{obj=this.CommoditiesBuyFrame.BuyDisplay.BuyButton}
-			self:SecureHook(this.CommoditiesBuyFrame.BuyDisplay.BuyButton, "SetEnabled", function(this)
-				self:clrBtnBdr(this)
+			self:SecureHook(this.CommoditiesBuyFrame.BuyDisplay.BuyButton, "SetEnabled", function(bObj)
+				self:clrBtnBdr(bObj)
 			end)
 		end
 		skinItemList(this.CommoditiesBuyFrame.ItemList)
@@ -167,12 +166,12 @@ aObj.blizzLoDFrames[ftype].AuctionHouseUI = function(self)
 		if self.modBtns then
 			self:skinStdButton{obj=this.ItemBuyFrame.BackButton}
 			self:skinStdButton{obj=this.ItemBuyFrame.BuyoutFrame.BuyoutButton}
-			self:SecureHook(this.ItemBuyFrame.BuyoutFrame.BuyoutButton, "SetEnabled", function(this)
-				self:clrBtnBdr(this)
+			self:SecureHook(this.ItemBuyFrame.BuyoutFrame.BuyoutButton, "SetEnabled", function(bObj)
+				self:clrBtnBdr(bObj)
 			end)
 			self:skinStdButton{obj=this.ItemBuyFrame.BidFrame.BidButton}
-			self:SecureHook(this.ItemBuyFrame.BidFrame.BidButton, "SetEnabled", function(this)
-				self:clrBtnBdr(this)
+			self:SecureHook(this.ItemBuyFrame.BidFrame.BidButton, "SetEnabled", function(bObj)
+				self:clrBtnBdr(bObj)
 			end)
 		end
 		-- Sell frames
@@ -193,8 +192,8 @@ aObj.blizzLoDFrames[ftype].AuctionHouseUI = function(self)
 			if aObj.modBtns then
 				aObj:skinStdButton{obj=frame.QuantityInput.MaxButton}
 				aObj:skinStdButton{obj=frame.PostButton}
-				self:SecureHook(frame.PostButton, "SetEnabled", function(this)
-					self:clrBtnBdr(this)
+				self:SecureHook(frame.PostButton, "SetEnabled", function(bObj)
+					self:clrBtnBdr(bObj)
 				end)
 			end
 			if aObj.modBtnBs then
@@ -218,15 +217,15 @@ aObj.blizzLoDFrames[ftype].AuctionHouseUI = function(self)
 		this.WoWTokenSellFrame.DummyItemList.DummyScrollBar:DisableDrawLayer("ARTWORK")
 		if self.modBtns then
 			self:skinStdButton{obj=this.WoWTokenSellFrame.PostButton}
-			self:SecureHook(this.WoWTokenSellFrame.PostButton, "SetEnabled", function(this)
-				self:clrBtnBdr(this)
+			self:SecureHook(this.WoWTokenSellFrame.PostButton, "SetEnabled", function(bObj)
+				self:clrBtnBdr(bObj)
 			end)
 		end
 		-- Auctions frames
 		self:skinObject("tabs", {obj=this.AuctionsFrame, tabs=this.AuctionsFrame.Tabs, fType=ftype, lod=self.isTT and true, upwards=true, offsets={x1=6, y1=-4, x2=-6, y2=self.isTT and -1 or 0}, track=false})
 		if self.isTT then
-			self:SecureHook(this.AuctionsFrame, "SetDisplayMode", function(this, displayMode)
-				for i, tab in _G.pairs(this.Tabs) do
+			self:SecureHook(this.AuctionsFrame, "SetDisplayMode", function(fObj, displayMode)
+				for i, tab in _G.pairs(fObj.Tabs) do
 					if i == displayMode then
 						self:setActiveTab(tab.sf)
 					else
@@ -252,28 +251,28 @@ aObj.blizzLoDFrames[ftype].AuctionHouseUI = function(self)
 		_G.LowerFrameLevel(this.AuctionsFrame.sf)
 		if self.modBtns then
 			self:skinStdButton{obj=this.AuctionsFrame.CancelAuctionButton}
-			self:SecureHook(this.AuctionsFrame.CancelAuctionButton, "SetEnabled", function(this)
-				self:clrBtnBdr(this)
+			self:SecureHook(this.AuctionsFrame.CancelAuctionButton, "SetEnabled", function(bObj)
+				self:clrBtnBdr(bObj)
 			end)
 			self:skinStdButton{obj=this.AuctionsFrame.BuyoutFrame.BuyoutButton}
-			self:SecureHook(this.AuctionsFrame.BuyoutFrame.BuyoutButton, "SetEnabled", function(this)
-				self:clrBtnBdr(this)
+			self:SecureHook(this.AuctionsFrame.BuyoutFrame.BuyoutButton, "SetEnabled", function(bObj)
+				self:clrBtnBdr(bObj)
 			end)
 			self:skinStdButton{obj=this.AuctionsFrame.BidFrame.BidButton}
-			self:SecureHook(this.AuctionsFrame.BidFrame.BidButton, "SetEnabled", function(this)
-				self:clrBtnBdr(this)
+			self:SecureHook(this.AuctionsFrame.BidFrame.BidButton, "SetEnabled", function(bObj)
+				self:clrBtnBdr(bObj)
 			end)
 		end
 		-- Dialogs
 		self:skinObject("frame", {obj=this.BuyDialog.Border, fType=ftype, kfs=true, ofs=-10})
 		if self.modBtns then
 			self:skinStdButton{obj=this.BuyDialog.BuyNowButton}
-			self:SecureHook(this.BuyDialog.BuyNowButton, "SetEnabled", function(this)
-				self:clrBtnBdr(this)
+			self:SecureHook(this.BuyDialog.BuyNowButton, "SetEnabled", function(bObj)
+				self:clrBtnBdr(bObj)
 			end)
 			self:skinStdButton{obj=this.BuyDialog.CancelButton}
-			self:SecureHook(this.BuyDialog.CancelButton, "SetEnabled", function(this)
-				self:clrBtnBdr(this)
+			self:SecureHook(this.BuyDialog.CancelButton, "SetEnabled", function(bObj)
+				self:clrBtnBdr(bObj)
 			end)
 		end
 
@@ -295,8 +294,8 @@ aObj.blizzLoDFrames[ftype].AzeriteRespecUI = function(self)
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true}
 		if self.modBtns then
 			self:skinStdButton{obj=this.ButtonFrame.AzeriteRespecButton}
-			self:SecureHook(this, "UpdateAzeriteRespecButtonState", function(this)
-				self:clrBtnBdr(this.ButtonFrame.AzeriteRespecButton)
+			self:SecureHook(this, "UpdateAzeriteRespecButtonState", function(fObj)
+				self:clrBtnBdr(fObj.ButtonFrame.AzeriteRespecButton)
 			end)
 		end
 
@@ -348,23 +347,23 @@ aObj.blizzFrames[ftype].BankFrame = function(self)
 		if self.modBtns then
 			self:skinStdButton{obj=_G.ReagentBankFrameUnlockInfoPurchaseButton}
 			self:skinStdButton{obj=_G.ReagentBankFrame.DespositButton}
-			self:SecureHook(_G.ReagentBankFrame.DespositButton, "Disable", function(this, _)
-				self:clrBtnBdr(this)
+			self:SecureHook(_G.ReagentBankFrame.DespositButton, "Disable", function(bObj, _)
+				self:clrBtnBdr(bObj)
 			end)
-			self:SecureHook(_G.ReagentBankFrame.DespositButton, "Enable", function(this, _)
-				self:clrBtnBdr(this)
+			self:SecureHook(_G.ReagentBankFrame.DespositButton, "Enable", function(bObj, _)
+				self:clrBtnBdr(bObj)
 			end)
 		end
 		if self.modBtnBs then
 			-- add button borders to reagent bank items
-			self:SecureHookScript(_G.ReagentBankFrame, "OnShow", function(this)
-				for i = 1, this.size do
-					self:addButtonBorder{obj=this["Item" .. i], ibt=true, reParent={this["Item" .. i].IconQuestTexture}}
+			self:SecureHookScript(_G.ReagentBankFrame, "OnShow", function(fObj)
+				for i = 1, fObj.size do
+					self:addButtonBorder{obj=fObj["Item" .. i], ibt=true, reParent={fObj["Item" .. i].IconQuestTexture}}
 					-- force quality border update
-					_G.BankFrameItemButton_Update(this["Item" .. i])
+					_G.BankFrameItemButton_Update(fObj["Item" .. i])
 				end
 
-				self:Unhook(this, "OnShow")
+				self:Unhook(fObj, "OnShow")
 			end)
 		end
 
@@ -408,7 +407,7 @@ aObj.blizzLoDFrames[ftype].BlackMarketUI = function(self)
 				end
 			end
 		end
-		self:SecureHook("BlackMarketScrollFrame_Update", function(this)
+		self:SecureHook("BlackMarketScrollFrame_Update", function()
 			skinSFButtons(_G.BlackMarketScrollFrame)
 		end)
 
@@ -431,9 +430,9 @@ aObj.blizzLoDFrames[ftype].ChromieTimeUI = function(self)
 		this.CurrentlySelectedExpansionInfoFrame.Description:SetTextColor(self.BT:GetRGB())
 		for btn in this.ExpansionOptionsPool:EnumerateActive() do
 			btn:GetNormalTexture():SetTexture(nil) -- remove border texture
-			self:SecureHook(btn, "SetNormalAtlas", function(this, name, _)
+			self:SecureHook(btn, "SetNormalAtlas", function(bObj, name, _)
 				if name == "ChromieTime-Button-Frame" then
-					this:GetNormalTexture():SetTexture(nil) -- remove border texture
+					bObj:GetNormalTexture():SetTexture(nil) -- remove border texture
 				end
 			end)
 			if self.modBtnBs then
@@ -443,8 +442,8 @@ aObj.blizzLoDFrames[ftype].ChromieTimeUI = function(self)
 		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true, cb=true, ofs=0, y1=-1})
 		if self.modBtns then
 			self:skinStdButton{obj=this.SelectButton}
-			self:SecureHook(this.SelectButton, "UpdateButtonState", function(this, _)
-				self:clrBtnBdr(this)
+			self:SecureHook(this.SelectButton, "UpdateButtonState", function(bObj, _)
+				self:clrBtnBdr(bObj)
 			end)
 		end
 
@@ -531,8 +530,8 @@ aObj.blizzLoDFrames[ftype].CovenantRenown = function(self)
 		-- .FinalToast
 		-- .FinalToast.IconSwirlModelScene
 		-- .FinalToast.SlabTexture
-		self:SecureHook(this, "SetRewards", function(this, level)
-			skinRewards(this)
+		self:SecureHook(this, "SetRewards", function(fObj, _)
+			skinRewards(fObj)
 		end)
 		skinRewards(this)
 		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true, cbns=true, ofs=0})
@@ -556,8 +555,8 @@ aObj.blizzLoDFrames[ftype].CovenantSanctum = function(self)
 		list:DisableDrawLayer("BACKGROUND")
 		list:DisableDrawLayer("BORDER")
 		list.IntroBox:DisableDrawLayer("BORDER")
-		local function skinTalents(list)
-			for talentFrame in list.talentPool:EnumerateActive() do
+		local function skinTalents(tList)
+			for talentFrame in tList.talentPool:EnumerateActive() do
 				aObj:removeRegions(talentFrame, {1, 2})
 				if talentFrame.TierBorder then
 					aObj:changeTandC(talentFrame.TierBorder)
@@ -570,14 +569,13 @@ aObj.blizzLoDFrames[ftype].CovenantSanctum = function(self)
 			end
 		end
 		-- hook this as the talentPool is released and refilled
-		self:SecureHook(list, "Refresh", function(this)
-			skinTalents(this)
+		self:SecureHook(list, "Refresh", function(fObj)
+			skinTalents(fObj)
 			if self.modBtns then
-				self:clrBtnBdr(this.UpgradeButton, "sepia")
+				self:clrBtnBdr(fObj.UpgradeButton, "sepia")
 			end
 		end)
 		skinTalents(list)
-		list = nil
 		for _, frame in _G.pairs(this.UpgradesTab.Upgrades) do
 			if frame.Border then
 				self:nilTexture(frame.Border, true)
@@ -592,8 +590,8 @@ aObj.blizzLoDFrames[ftype].CovenantSanctum = function(self)
 		if self.modBtns then
 			self:skinStdButton{obj=this.UpgradesTab.TalentsList.UpgradeButton, fType=ftype}
 			self:skinStdButton{obj=this.UpgradesTab.DepositButton, fType=ftype}
-			self:SecureHook(this.UpgradesTab, "UpdateDepositButton", function(this)
-				self:clrBtnBdr(this.DepositButton)
+			self:SecureHook(this.UpgradesTab, "UpdateDepositButton", function(fObj)
+				self:clrBtnBdr(fObj.DepositButton)
 			end)
 		end
 
@@ -630,11 +628,9 @@ aObj.blizzFrames[ftype].GossipFrame = function(self)
 	if not self.prdb.GossipFrame or self.initialized.GossipFrame then return end
 	self.initialized.GossipFrame = true
 
-	if self:isAddonEnabled("Quester")
-	and _G.QuesterDB.gossipColor
+	if not (self:isAddonEnabled("Quester")
+	and _G.QuesterDB.gossipColor)
 	then
-		-- DON'T colour the gossip text
-	else
 		self:SecureHook("GossipFrameUpdate", function()
 			if not self.isClsc then
 				for i = 1, _G.GossipFrame_GetTitleButtonCount() do
@@ -756,8 +752,8 @@ aObj.blizzLoDFrames[ftype].ItemUpgradeUI = function(self)
 		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, x2=3})
 		if self.modBtns then
 			self:skinStdButton{obj=_G.ItemUpgradeFrameUpgradeButton}
-			self:SecureHook(_G.ItemUpgradeFrameUpgradeButton, "SetDisabledState", function(this, state)
-				self:clrBtnBdr(this)
+			self:SecureHook(_G.ItemUpgradeFrameUpgradeButton, "SetDisabledState", function(bObj, _)
+				self:clrBtnBdr(bObj)
 			end)
 		end
 		-- hook this to hide the ItemButton texture if empty
@@ -770,7 +766,6 @@ aObj.blizzLoDFrames[ftype].ItemUpgradeUI = function(self)
 				_G.ItemUpgradeFrame.ItemButton.IconTexture:SetAlpha(0)
 				self:clrBtnBdr(_G.ItemUpgradeFrame.ItemButton, "grey")
 			end
-			icon, quality = nil, nil
 		end)
 		-- hook this to remove background texture from stat lines
 		self:SecureHook("ItemUpgradeFrame_UpdateStats", function(_)
@@ -841,11 +836,11 @@ aObj.blizzFrames[ftype].MerchantFrame = function(self)
 					self:clrBtnBdr(_G.MerchantGuildBankRepairButton, "gold", 0.5)
 				end)
 			else
-				self:SecureHook(_G.MerchantGuildBankRepairButton, "Disable", function(this, _)
-					self:clrBtnBdr(this)
+				self:SecureHook(_G.MerchantGuildBankRepairButton, "Disable", function(bObj, _)
+					self:clrBtnBdr(bObj)
 				end)
-				self:SecureHook(_G.MerchantGuildBankRepairButton, "Enable", function(this, _)
-					self:clrBtnBdr(this)
+				self:SecureHook(_G.MerchantGuildBankRepairButton, "Enable", function(bObj, _)
+					self:clrBtnBdr(bObj)
 				end)
 			end
 		else
@@ -874,8 +869,8 @@ aObj.blizzLoDFrames[ftype].NewPlayerExperienceGuide = function(self)
 		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true, cb=true})
 		if self.modBtns then
 			self:skinStdButton{obj=this.ScrollFrame.ConfirmationButton}
-			self:SecureHook(this, "SetStateInternal", function(this)
-				self:clrBtnBdr(this.ScrollFrame.ConfirmationButton)
+			self:SecureHook(this, "SetStateInternal", function(fObj)
+				self:clrBtnBdr(fObj.ScrollFrame.ConfirmationButton)
 			end)
 		end
 
@@ -999,7 +994,6 @@ aObj.blizzFrames[ftype].QuestFrame = function(self)
 				 self:addButtonBorder{obj=_G[btnName], libt=true, clr="grey"}
 			end
 		end
-		btnName = nil
 		self:SecureHook("QuestFrameProgressItems_Update", function()
 			local br, bg, bb = self.BT:GetRGB()
 			local r, g ,b = _G.QuestProgressRequiredMoneyText:GetTextColor()
@@ -1007,7 +1001,6 @@ aObj.blizzFrames[ftype].QuestFrame = function(self)
 			if r < 0.2 then
 				_G.QuestProgressRequiredMoneyText:SetTextColor(br - r, bg - g, bb - b)
 			end
-			br, bg, bb, r, g, b = nil, nil, nil, nil, nil, nil
 		end)
 
 		--	Detail Panel
@@ -1032,31 +1025,31 @@ aObj.blizzFrames[ftype].QuestFrame = function(self)
 		end
 
 		if self.modBtns then
-			self:SecureHook(_G.QuestFrameCloseButton, "Disable", function(this, _)
-				self:clrBtnBdr(this)
+			self:SecureHook(_G.QuestFrameCloseButton, "Disable", function(bObj, _)
+				self:clrBtnBdr(bObj)
 			end)
-			self:SecureHook(_G.QuestFrameCloseButton, "Enable", function(this, _)
-				self:clrBtnBdr(this)
+			self:SecureHook(_G.QuestFrameCloseButton, "Enable", function(bObj, _)
+				self:clrBtnBdr(bObj)
 			end)
 			self:skinStdButton{obj=_G.QuestFrameCompleteQuestButton}
-			self:SecureHook(_G.QuestFrameCompleteQuestButton, "Disable", function(this, _)
-				self:clrBtnBdr(this)
+			self:SecureHook(_G.QuestFrameCompleteQuestButton, "Disable", function(bObj, _)
+				self:clrBtnBdr(bObj)
 			end)
-			self:SecureHook(_G.QuestFrameCompleteQuestButton, "Enable", function(this, _)
-				self:clrBtnBdr(this)
+			self:SecureHook(_G.QuestFrameCompleteQuestButton, "Enable", function(bObj, _)
+				self:clrBtnBdr(bObj)
 			end)
 			self:skinStdButton{obj=_G.QuestFrameGoodbyeButton}
 			self:skinStdButton{obj=_G.QuestFrameCompleteButton}
-			self:SecureHookScript(_G.QuestFrameProgressPanel, "OnShow", function(this)
+			self:SecureHookScript(_G.QuestFrameProgressPanel, "OnShow", function(_)
 				self:clrBtnBdr(_G.QuestFrameCompleteButton)
 			end)
 			self:skinStdButton{obj=_G.QuestFrameDeclineButton}
 			self:skinStdButton{obj=_G.QuestFrameAcceptButton}
-			self:SecureHook(_G.QuestFrameAcceptButton, "Disable", function(this, _)
-				self:clrBtnBdr(this)
+			self:SecureHook(_G.QuestFrameAcceptButton, "Disable", function(bObj, _)
+				self:clrBtnBdr(bObj)
 			end)
-			self:SecureHook(_G.QuestFrameAcceptButton, "Enable", function(this, _)
-				self:clrBtnBdr(this)
+			self:SecureHook(_G.QuestFrameAcceptButton, "Enable", function(bObj, _)
+				self:clrBtnBdr(bObj)
 			end)
 			self:skinStdButton{obj=_G.QuestFrameGreetingGoodbyeButton}
 			if self.isClsc then
@@ -1068,11 +1061,9 @@ aObj.blizzFrames[ftype].QuestFrame = function(self)
 	end)
 
 	if not self.isClsc then
-		if self:isAddonEnabled("Quester")
-		and _G.QuesterDB.gossipColor
+		if not (self:isAddonEnabled("Quester")
+		and _G.QuesterDB.gossipColor)
 		then
-			-- DON'T colour the gossip text
-		else
 			-- hook this to colour quest button text
 			self:RawHook(_G.QuestFrameGreetingPanel.titleButtonPool, "Acquire", function(this)
 				local btn = self.hooks[this].Acquire(this)
@@ -1161,7 +1152,6 @@ aObj.blizzFrames[ftype].QuestInfo = function(self)
 				obj:SetTextColor(br - r, bg - g, bb - b)
 			end
 		end
-		obj, r, g, b, br, bg, bb = nil, nil, nil, nil, nil, nil ,nil
 		-- QuestInfoSpecialObjectives Frame
 		_G.QuestInfoSpellObjectiveLearnLabel:SetTextColor(aObj.BT:GetRGB())
 		_G.QuestInfoSpellObjectiveFrameNameFrame:SetTexture(nil)
@@ -1178,7 +1168,6 @@ aObj.blizzFrames[ftype].QuestInfo = function(self)
 		then
 			local sealText = aObj:unwrapTextFromColourCode(_G.QuestInfoSealFrame.theme.signature)
 			_G.QuestInfoSealFrame.Text:SetText(aObj.HT:WrapTextInColorCode(sealText)) -- re-colour text
-			sealText = nil
 		end
 	end
 
@@ -1207,13 +1196,12 @@ aObj.blizzFrames[ftype].QuestInfo = function(self)
 			if r < 0.2 then
 				_G.QuestInfoRequiredMoneyText:SetTextColor(br - r, bg - g, bb - b)
 			end
-			br, bg, bb, r, g, b = nil, nil, nil, nil, nil, nil
 		end)
 
 		self:Unhook(this, "OnShow")
 	end)
 
-	local function skinRewardBtns(frame, btnType)
+	local function skinRewardBtns(frame, _)
 		for _, type in _G.pairs{"HonorFrame", "ArtifactXPFrame", "WarModeBonusFrame", "SkillPointFrame", "TitleFrame"} do
 			-- Classic DOESN'T have a WarModeBonusFrame
 			if frame[type] then
@@ -1258,8 +1246,8 @@ aObj.blizzLoDFrames[ftype].RuneForgeUI = function(self)
 		self:skinObject("frame", {obj=this.CraftingFrame.PowerFrame, fType=ftype, kfs=true, ofs=0, y1=-10, y2=10})
 		if self.modBtns then
 			self:skinStdButton{obj=this.CreateFrame.CraftItemButton}
-			self:SecureHook(this.CreateFrame.CraftItemButton, "SetCraftState", function(this, ...)
-				self:clrBtnBdr(this)
+			self:SecureHook(this.CreateFrame.CraftItemButton, "SetCraftState", function(bObj, _)
+				self:clrBtnBdr(bObj)
 			end)
 		end
 		this.BackgroundModelScene:Hide()
@@ -1357,11 +1345,11 @@ aObj.blizzLoDFrames[ftype].TrainerUI = function(self)
 		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true})
 		if self.modBtns then
 			self:skinStdButton{obj=_G.ClassTrainerTrainButton}
-			self:SecureHook(_G.ClassTrainerTrainButton, "Disable", function(this, _)
-				self:clrBtnBdr(this)
+			self:SecureHook(_G.ClassTrainerTrainButton, "Disable", function(bObj, _)
+				self:clrBtnBdr(bObj)
 			end)
-			self:SecureHook(_G.ClassTrainerTrainButton, "Enable", function(this, _)
-				self:clrBtnBdr(this)
+			self:SecureHook(_G.ClassTrainerTrainButton, "Enable", function(bObj, _)
+				self:clrBtnBdr(bObj)
 			end)
 		end
 		if self.modBtnBs then
@@ -1386,11 +1374,11 @@ aObj.blizzLoDFrames[ftype].VoidStorageUI = function(self)
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, x2=1}
 		if self.modBtns then
 			self:skinStdButton{obj=_G.VoidStorageTransferButton}
-			self:SecureHook(_G.VoidStorageTransferButton, "Disable", function(this, _)
-				self:clrBtnBdr(this)
+			self:SecureHook(_G.VoidStorageTransferButton, "Disable", function(bObj, _)
+				self:clrBtnBdr(bObj)
 			end)
-			self:SecureHook(_G.VoidStorageTransferButton, "Enable", function(this, _)
-				self:clrBtnBdr(this)
+			self:SecureHook(_G.VoidStorageTransferButton, "Enable", function(bObj, _)
+				self:clrBtnBdr(bObj)
 			end)
 			self:skinCloseButton{obj=_G.VoidStorageBorderFrame.CloseButton}
 			self:skinStdButton{obj=_G.VoidStoragePurchaseButton}

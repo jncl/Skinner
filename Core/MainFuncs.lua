@@ -31,7 +31,6 @@ local function hideHeader(obj)
 		aObj:removeRegions(obj.Header, {1, 2, 3})
 		aObj:moveObject{obj=obj.Header.Text, y=hAdj and 0 or hOfs}
 	end
-	hAdj, hObj = nil, nil
 end
 
 local function __addSkinButton(opts)
@@ -59,8 +58,8 @@ local function __addSkinButton(opts)
 	 if opts.seca
 	 or opts.secu
 	 then
-	 	-- handle AddOn skins using deprecated options
-	 	aObj:CustomPrint(1, 0, 0, "Using deprecated options - seca,secu, use sec instead", opts.obj)
+		-- handle AddOn skins using deprecated options
+		aObj:CustomPrint(1, 0, 0, "Using deprecated options - seca,secu, use sec instead", opts.obj)
 	end
 	--@end-alpha@
 
@@ -155,7 +154,6 @@ local function __addSkinButton(opts)
 				end
 			end
 		end
-		regOT = nil
 	end
 
 	-- reverse parent child relationship
@@ -169,11 +167,10 @@ local function __addSkinButton(opts)
 		end
 	end
 
-	btn = nil
 	return opts.obj.sb
 
 end
-function aObj:addSkinButton(...)
+function aObj:addSkinButton(...) -- luacheck: ignore self
 
 	local opts = _G.select(1, ...)
 
@@ -291,7 +288,6 @@ local function __addSkinFrame(opts)
 	-- adjust frame level
 	local success, _ = _G.pcall(_G.LowerFrameLevel, skinFrame) -- catch any error, doesn't matter if already 0
 	if not success then _G.RaiseFrameLevel(opts.obj) end -- raise parent's Frame Level if 0
-	success = nil
 
 	 -- make sure it's lower than its parent's Frame Strata
 	if opts.bg then skinFrame:SetFrameStrata("BACKGROUND") end
@@ -307,7 +303,6 @@ local function __addSkinFrame(opts)
 				if cBtn then
 					aObj:skinCloseButton{obj=cBtn}
 				end
-				cBtn = nil
 			end
 		end
 	end
@@ -333,11 +328,10 @@ local function __addSkinFrame(opts)
 		aObj:SecureHook(opts.obj, "Hide", function(this) this.sf:Hide() end)
 	end
 
-	skinFrame = nil
 	return opts.obj.sf
 
 end
-function aObj:addSkinFrame(...)
+function aObj:addSkinFrame(...) -- luacheck: ignore self
 
 	local opts = _G.select(1, ...)
 
@@ -469,7 +463,6 @@ local function __applySkin(opts)
 			return
 		end
 	end
-	hasIOT = nil
 	--@end-alpha@
 
 	aObj:Debug2("__applySkin: [%s, %s]", opts.obj, opts.obj:GetName())
@@ -497,7 +490,6 @@ local function __applySkin(opts)
 		local r, g, b, a = aObj.bClr:GetRGBA()
 		opts.obj:SetBackdropColor(r, g, b, opts.ba or a)
 		aObj:clrBBC(opts.obj, opts.bbclr, opts.bbca)
-		r, g, b, a = nil, nil ,nil ,nil
 	else
 		opts.obj:SetBackdropColor(.1, .1, .1, 1)
 		opts.obj:SetBackdropBorderColor(.2, .2, .2, 1)
@@ -530,7 +522,7 @@ local function __applySkin(opts)
 	end
 
 end
-function aObj:applySkin(...)
+function aObj:applySkin(...) -- luacheck: ignore self
 
 	local opts = _G.select(1, ...)
 
@@ -552,7 +544,6 @@ function aObj:applySkin(...)
 		opts.bd = _G.select(6, ...) and _G.select(6, ...) or nil
 	end
 	__applySkin(opts)
-	opts = nil
 
 end
 
@@ -569,7 +560,6 @@ function aObj:skinColHeads(buttonName, noCols, ftype)
 			end
 		end
 	end
-	btn = nil
 
 end
 
@@ -653,7 +643,6 @@ local function __skinDropDown(opts)
 		opts.obj.ddTex:SetPoint("RIGHT", rTex, "LEFT", 5, 2)
 		opts.obj.ddTex:SetHeight(17)
 	end
-	lTex, rTex = nil, nil
 
 	opts.x1 = opts.x1 or 16
 	opts.y1 = opts.y1 or -1
@@ -669,16 +658,14 @@ local function __skinDropDown(opts)
 		else
 			local xOfs1 = opts.bx1 and opts.obj:GetWidth() + 10 or 1
 			aObj:addButtonBorder{obj=btn, es=12, ofs=-2, x1=xOfs1}
-			xOfs1 = nil
 		end
-		btn = nil
 	end
 
 	-- handle already disabled
 	aObj:checkDisabledDD(opts.obj)
 
 end
-function aObj:skinDropDown(...)
+function aObj:skinDropDown(...) -- luacheck: ignore self
 
 	local opts = _G.select(1, ...)
 
@@ -699,7 +686,6 @@ function aObj:skinDropDown(...)
 	end
 
 	__skinDropDown(opts)
-	opts = nil
 
 end
 
@@ -742,13 +728,11 @@ local function __skinEditBox(opts)
 		end
 	end
 	aObj:keepRegions(opts.obj, kRegions)
-	kRegions = nil
 
 	if not opts.noInsert then
 		-- adjust the left & right text inserts
 		local l, r, t, b = opts.obj:GetTextInsets()
 		opts.obj:SetTextInsets(l + 5, r + 5, t, b)
-		l, r, t, b = nil, nil, nil, nil
 	end
 
 	-- change height, if required
@@ -792,11 +776,10 @@ local function __skinEditBox(opts)
 			opts.obj.PromptText:ClearAllPoints()
 			opts.obj.PromptText:SetPoint("LEFT", opts.obj, "LEFT", xOfs, 0)
 		end
-		xOfs = nil
 	end
 
 end
-function aObj:skinEditBox(...)
+function aObj:skinEditBox(...) -- luacheck: ignore self
 
 	local opts = _G.select(1, ...)
 
@@ -819,7 +802,6 @@ function aObj:skinEditBox(...)
 	end
 
 	__skinEditBox(opts)
-	opts = nil
 
 end
 
@@ -830,14 +812,14 @@ function aObj:skinGlowBox(gBox, ftype)
 
 	self:Debug2("skinGlowBox: [%s, %s]", gBox, ftype)
 
-	local function removeArrowGlowTex(gBox)
-		if gBox.Glow then
-			gBox.Glow:SetTexture(nil)
-		elseif gBox.Arrow
-		and gBox.Arrow.Glow then
-			gBox.Arrow.Glow:SetTexture(nil)
-		elseif gBox.ArrowGlow then
-			gBox.ArrowGlow:SetTexture(nil)
+	local function removeArrowGlowTex(glowBox)
+		if glowBox.Glow then
+			glowBox.Glow:SetTexture(nil)
+		elseif glowBox.Arrow
+		and glowBox.Arrow.Glow then
+			glowBox.Arrow.Glow:SetTexture(nil)
+		elseif glowBox.ArrowGlow then
+			glowBox.ArrowGlow:SetTexture(nil)
 		end
 	end
 	removeArrowGlowTex(gBox)
@@ -848,7 +830,6 @@ function aObj:skinGlowBox(gBox, ftype)
 	and self.modBtns
 	then
 		self:skinCloseButton{obj=gBox.CloseButton or gBox:GetName() and _G[gBox:GetName() .. "CloseButton"], noSkin=true}
-		btn = nil
 	end
 
 end
@@ -895,10 +876,9 @@ local function __skinMoneyFrame(opts)
 			aObj:moveObject{obj=obj, x=-10}
 		end
 	end
-	obj = nil
 
 end
-function aObj:skinMoneyFrame(...)
+function aObj:skinMoneyFrame(...) -- luacheck: ignore self
 
 	local opts = _G.select(1, ...)
 
@@ -920,7 +900,6 @@ function aObj:skinMoneyFrame(...)
 	end
 
 	__skinMoneyFrame(opts)
-	opts = nil
 
 end
 
@@ -957,7 +936,7 @@ local function __skinScrollBar(opts)
 	aObj:skinUsingBD{obj=_G[opts.obj:GetName() .. "ScrollBar"], size=opts.size}
 
 end
-function aObj:skinScrollBar(...)
+function aObj:skinScrollBar(...) -- luacheck: ignore self
 
 	local opts = _G.select(1, ...)
 
@@ -978,7 +957,6 @@ function aObj:skinScrollBar(...)
 	end
 
 	__skinScrollBar(opts)
-	opts = nil
 
 end
 
@@ -1035,7 +1013,7 @@ local function __skinSlider(opts)
 	end
 
 end
-function aObj:skinSlider(...)
+function aObj:skinSlider(...) -- luacheck: ignore self
 
 	local opts = _G.select(1, ...)
 
@@ -1060,7 +1038,6 @@ function aObj:skinSlider(...)
 	end
 
 	__skinSlider(opts)
-	opts = nil
 
 end
 
@@ -1126,13 +1103,10 @@ local function __skinStatusBar(opts)
 				tex.SetAtlas = _G.nop
 			end
 		end
-		tex = nil
 	end
 
-	sbG = nil
-
 end
-function aObj:skinStatusBar(...)
+function aObj:skinStatusBar(...) -- luacheck: ignore self
 
 	local opts = _G.select(1, ...)
 
@@ -1158,7 +1132,6 @@ function aObj:skinStatusBar(...)
 	end
 
 	__skinStatusBar(opts)
-	opts = nil
 
 end
 -- previous name for the above function (statusBar, fi, bgTex, otherTex, hookFunc)
@@ -1254,15 +1227,12 @@ local function __skinTabs(opts)
 					ht:SetPoint("BOTTOMRIGHT", -8, 0)
 				end
 			end
-			ht = nil
 		end
 	end
 	aObj.tabFrames[opts.obj] = true
 
-	tabName, kRegions, xOfs1, yOfs1, xOfs2, yOfs2, tabID, tab = nil, nil, nil, nil, nil, nil, nil, nil
-
 end
-function aObj:skinTabs(...)
+function aObj:skinTabs(...) -- luacheck: ignore self
 
 	local opts = _G.select(1, ...)
 
@@ -1280,7 +1250,6 @@ function aObj:skinTabs(...)
 	end
 
 	__skinTabs(opts)
-	opts = nil
 
 end
 
@@ -1297,7 +1266,6 @@ function aObj:skinToggleTabs(tabName, tabCnt, noHeight)
 			self:addSkinFrame{obj=togTab, ft="a", y1=-2, x2=2, y2=-2}
 		end
 	end
-	togTab = nil
 
 end
 
@@ -1322,7 +1290,6 @@ function aObj:skinTooltip(tooltip)
 		if _G.IsAddOnLoaded("ElvUI") then
 			tooltip.SetBackdrop = ttSB
 		end
-		ttSB = nil
 	end
 
 	-- colour the Border
@@ -1356,7 +1323,7 @@ local function __skinUsingBD(opts)
 	opts.obj:SetBackdropBorderColor(aObj.prdb.SliderBorder:GetRGBA())
 
 end
-function aObj:skinUsingBD(...)
+function aObj:skinUsingBD(...) -- luacheck: ignore self
 
 	local opts = _G.select(1, ...)
 
@@ -1375,7 +1342,6 @@ function aObj:skinUsingBD(...)
 	end
 
 	__skinUsingBD(opts)
-	opts = nil
 
 end
 

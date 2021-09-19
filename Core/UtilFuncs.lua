@@ -1,6 +1,7 @@
 local aName, aObj = ...
 
 local _G = _G
+local tmpTab = {}
 
 function aObj:addBackdrop(obj)
 
@@ -34,7 +35,7 @@ local function __adjHeight(opts)
 	end
 
 end
-function aObj:adjHeight(...)
+function aObj:adjHeight(...) -- luacheck: ignore self
 
 	local opts = _G.select(1, ...)
 
@@ -52,7 +53,6 @@ function aObj:adjHeight(...)
 		opts.adj = _G.select(2, ...) and _G.select(2, ...) or 0
 	end
 	__adjHeight(opts)
-	opts = nil
 
 end
 
@@ -76,7 +76,7 @@ local function __adjWidth(opts)
 	end
 
 end
-function aObj:adjWidth(...)
+function aObj:adjWidth(...) -- luacheck: ignore self
 
 	local opts = _G.select(1, ...)
 
@@ -94,7 +94,6 @@ function aObj:adjWidth(...)
 		opts.adj = _G.select(2, ...) and _G.select(2, ...) or 0
 	end
 	__adjWidth(opts)
-	opts = nil
 
 end
 
@@ -109,17 +108,16 @@ function aObj:addFrameBorder(opts)
 	if opts.kfs == nil then opts.kfs = true end
 	if opts.nb == nil then opts.nb = true end
 	self:addSkinFrame{obj=opts.obj, ft=opts.ft or "a", kfs=opts.kfs, nb=opts.nb, aso=aso, ofs=opts.ofs or 0, x1=opts.x1, y1=opts.y1, x2=opts.x2, y2=opts.y2}
-	aso = nil
 
 end
 
-function aObj:capitStr(str)
+function aObj:capitStr(str) -- luacheck: ignore self
 
 	return str:sub(1,1):upper() .. str:sub(2):lower()
 
 end
 
-function aObj:changeMinusPlusTex(obj, minus)
+function aObj:changeMinusPlusTex(obj, minus) -- luacheck: ignore self
 	--@alpha@
 	_G.assert(obj, "Unknown object changeMinusPlusTex\n" .. _G.debugstack(2, 3, 2))
 	--@end-alpha@
@@ -131,7 +129,6 @@ function aObj:changeMinusPlusTex(obj, minus)
 	else
 		nTex:SetTexCoord(0.57812500, 0.82812500, 0.14843750, 0.27343750)
 	end
-	nTex = nil
 
 end
 
@@ -202,7 +199,6 @@ local function safecall(funcName, funcObj, LoD, quiet)
 	if timeUsed > 5 then
 		 _G.print("Took " .. timeUsed .. " milliseconds to load " .. funcName)
 	end
-	beginTime, timeUsed = nil, nil
 	--@end-alpha@
 	if quiet then
 		return success, err
@@ -279,10 +275,8 @@ function aObj:checkAndRunAddOn(addonName, addonFunc, LoD)
 		return
 	end
 
-	if not addonFunc then addonFunc = addonName end
-
 	-- handle old & new function definitions
-	local aFunc = self[addonFunc] or addonFunc
+	addonFunc = addonFunc or self[addonFunc] or addonName
 
 	-- don't skin any Addons whose skins are flagged as disabled
 	if self.prdb.DisabledSkins[addonName]
@@ -295,29 +289,27 @@ function aObj:checkAndRunAddOn(addonName, addonFunc, LoD)
 			self:CustomPrint(1, 0, 0, addonName, "not skinned, flagged as disabled (c&RA)")
 			hadWarning[addonName] = true
 		end
-		aFunc = nil
 		return
 	end
 
-	self:Debug2("checkAndRunAddOn #2: [%s, %s, %s, %s]", _G.IsAddOnLoaded(addonName), _G.IsAddOnLoadOnDemand(addonName), aFunc, _G.type(aFunc))
+	self:Debug2("checkAndRunAddOn #2: [%s, %s, %s, %s]", _G.IsAddOnLoaded(addonName), _G.IsAddOnLoadOnDemand(addonName), addonFunc, _G.type(addonFunc))
 
 	if not _G.IsAddOnLoaded(addonName) then
 		-- deal with Addons under the control of an LoadManager
 		if _G.IsAddOnLoadOnDemand(addonName) and not LoD then
-			self.lmAddons[addonName:lower()] = aFunc -- store with lowercase addonname (AddonLoader fix)
+			self.lmAddons[addonName:lower()] = addonFunc -- store with lowercase addonname (AddonLoader fix)
 		-- Nil out loaded Skins for Addons that aren't loaded
-		elseif aFunc then
-			aFunc = nil
+		elseif addonFunc then
+			addonFunc = nil -- luacheck: ignore addonFunc
 		end
 	else
 		-- check to see if AddonSkin is loaded when Addon is loaded
-		if not LoD and not aFunc then
+		if not LoD and not addonFunc then
 			if self.prdb.Warnings then
 				self:CustomPrint(1, 0, 0, addonName, "loaded but skin not found in the AddonSkins directory (c&RA)")
 			end
-		elseif _G.type(aFunc) == "function" then
-			return safecall(addonName, aFunc, LoD)
-			-- return safecall(addonFunc, LoD)
+		elseif _G.type(addonFunc) == "function" then
+			return safecall(addonName, addonFunc, LoD)
 		else
 			if self.prdb.Warnings then
 				self:CustomPrint(1, 0, 0, "function [" .. addonName .. "] not found in " .. aName .. " (c&RA)")
@@ -336,13 +328,12 @@ function aObj:checkLoadable(addonName)
 			self:CustomPrint(1, 0, 0, addonName, "not skinned, flagged as:", reason, "(cL)")
 		end
 	end
-	reason = nil
 
 	return loadable
 
 end
 
-function aObj:checkShown(frame)
+function aObj:checkShown(frame) -- luacheck: ignore self
 
 	if frame:IsShown() then
 		frame:Hide()
@@ -353,18 +344,16 @@ end
 
 function aObj:checkDisabledDD(obj, disabled)
 
-	local disabled = disabled or obj.isDisabled
+	disabled = disabled or obj.isDisabled
 	if obj.sf then
 		self:clrBBC(obj.sf,	 disabled and "grey")
 		if self.modBtnBs then
 			local btn = obj.Button and obj.Button.sbb or obj.dropButton and obj.dropButton.sbb or _G[obj:GetName() .. "Button"].sbb
 			if btn then
 				self:clrBtnBdr(btn, disabled and "grey")
-				btn = nil
 			end
 		end
 	end
-	disabled = nil
 
 end
 
@@ -372,13 +361,12 @@ function aObj:clrBBC(obj, clrName, alpha)
 
 	local r, g, b, a = self:getColourByName(clrName)
 	obj:SetBackdropBorderColor(r, g, b, alpha or a)
-	r, g, b, a = nil, nil ,nil
 
 end
 
 -- colour Frame border based upon Covenant
 local tKit, r, g, b
-function aObj:clrCovenantBdr(frame, uiTextureKit)
+function aObj:clrCovenantBdr(frame, uiTextureKit) -- luacheck: ignore self
 
 	tKit = uiTextureKit or _G.C_Covenants.GetCovenantData(_G.C_Covenants.GetActiveCovenantID()).textureKit
 	r, g, b = _G.COVENANT_COLORS[tKit]:GetRGB()
@@ -396,11 +384,10 @@ function aObj:clrPNBtns(framePrefix, notPrefix)
 	end
 	self:clrBtnBdr(ppb, "gold")
 	self:clrBtnBdr(npb, "gold")
-	ppb, npb = nil, nil
 
 end
 
-function aObj:findFrame(height, width, children)
+function aObj:findFrame(height, width, children) -- luacheck: ignore self
 	-- find frame by matching children's object types
 
 	local matched, frame
@@ -437,13 +424,12 @@ function aObj:findFrame(height, width, children)
 
 		obj = _G.EnumerateFrames(obj)
 	end
-	matched = nil
 
 	return frame
 
 end
 
-function aObj:findFrame2(parent, objType, ...)
+function aObj:findFrame2(parent, objType, ...) -- luacheck: ignore self
 	--@alpha@
 	_G.assert(parent, "Unknown object findFrame2\n" .. _G.debugstack(2, 3, 2))
 	--@end-alpha@
@@ -488,14 +474,11 @@ function aObj:findFrame2(parent, objType, ...)
 		end
 	end
 
-	point, relativeTo, relativePoint, xOfs, yOfs = nil, nil, nil, nil, nil
-	height, width = nil, nil
-
 	return frame, cKey
 
 end
 
-function aObj:getChild(obj, childNo)
+function aObj:getChild(obj, childNo) -- luacheck: ignore self
 	--@alpha@
 	_G.assert(obj, "Unknown object getChild\n" .. _G.debugstack(2, 3, 2))
 	--@end-alpha@
@@ -551,11 +534,10 @@ function aObj:getGradientInfo(invert, rotate)
 	else
 		return rotate and "HORIZONTAL" or "VERTICAL", 0, 0, 0, 1, 0, 0, 0, 1
 	end
-	MinR, MinG, MinB, MinA, MaxR, MaxG, MaxB, MaxA = nil, nil, nil, nil, nil, nil, nil, nil
 
 end
 
-function aObj:getInt(num)
+function aObj:getInt(num) -- luacheck: ignore self
 	--@alpha@
 	_G.assert(num, "Missing number\n" .. _G.debugstack(2, 3, 2))
 	-- handle AddOn skins still using this code rather than _G.Round
@@ -566,11 +548,11 @@ function aObj:getInt(num)
 
 end
 
-function aObj:getKeys(curTab)
+function aObj:getKeys(curTab) -- luacheck: ignore self
 
 	if not curTab then return end
 
-	local tmpTab = {}
+	_G.wipe(tmpTab)
 	for i = 1, #curTab do
 		tmpTab[curTab[i]] = true
 	end
@@ -591,7 +573,7 @@ function aObj:getPenultimateChild(obj)
 
 end
 
-function aObj:getRegion(obj, regNo)
+function aObj:getRegion(obj, regNo) -- luacheck: ignore self
 	--@alpha@
 	_G.assert(obj, "Unknown object getRegion\n" .. _G.debugstack(2, 3, 2))
 	_G.assert(regNo, "Missing value getRegion\n" .. _G.debugstack(2, 3, 2))
@@ -601,7 +583,7 @@ function aObj:getRegion(obj, regNo)
 
 end
 
-function aObj:hasTextInName(obj, text)
+function aObj:hasTextInName(obj, text) -- luacheck: ignore self
 	--@alpha@
 	_G.assert(obj, "Unknown object hasTextInName\n" .. _G.debugstack(2, 3, 2))
 	_G.assert(text, "Missing value hasTextInName\n" .. _G.debugstack(2, 3, 2))
@@ -611,7 +593,7 @@ function aObj:hasTextInName(obj, text)
 
 end
 
-function aObj:hasTextInDebugNameRE(obj, text)
+function aObj:hasTextInDebugNameRE(obj, text) -- luacheck: ignore self
 	--@alpha@
 	_G.assert(obj, "Unknown object hasTextInName\n" .. _G.debugstack(2, 3, 2))
 	_G.assert(text, "Missing value hasTextInName\n" .. _G.debugstack(2, 3, 2))
@@ -621,7 +603,7 @@ function aObj:hasTextInDebugNameRE(obj, text)
 
 end
 
-function aObj:hasAnyTextInName(obj, tab)
+function aObj:hasAnyTextInName(obj, tab) -- luacheck: ignore self
 	--@alpha@
 	_G.assert(obj, "Unknown object hasAnyTextInName\n" .. _G.debugstack(2, 3, 2))
 	_G.assert(tab, "Missing value hasAnyTextInName\n" .. _G.debugstack(2, 3, 2))
@@ -634,18 +616,16 @@ function aObj:hasAnyTextInName(obj, tab)
 		local oName = obj:GetName()
 		for _, text in _G.ipairs(tab) do
 			if oName:find(text, 1, true) then
-				oName = nil
 				return true
 			end
 		end
-		oName = nil
 	end
 
 	return false
 
 end
 
-function aObj:hasTextInTexture(obj, text)
+function aObj:hasTextInTexture(obj, text) -- luacheck: ignore self
 	--@alpha@
 	_G.assert(obj, "Unknown object hasTextInTexture\n" .. _G.debugstack(2, 3, 2))
 	_G.assert(text, "Missing value hasTextInTexture\n" .. _G.debugstack(2, 3, 2))
@@ -729,17 +709,15 @@ function aObj:isDropDown(obj)
 			if self:hasTextInTexture(chkObj, "CharacterCreate")
 			or self:hasTextInTexture(chkObj, self.tFDIDs.ccLF)
 			then
-				chkObj = nil
 				return true
 			end
-			chkObj = nil
 		end
 	end
 	return false
 
 end
 
-function aObj:keepFontStrings(obj, hide)
+function aObj:keepFontStrings(obj, hide) -- luacheck: ignore self
 	--@alpha@
 	_G.assert(obj, "Missing object kFS\n" .. _G.debugstack(2, 3, 2))
 	--@end-alpha@
@@ -756,7 +734,6 @@ function aObj:keepFontStrings(obj, hide)
 
 end
 
-local tmpTab = {}
 function aObj:keepRegions(obj, regions)
 	--@alpha@
 	_G.assert(obj, "Missing object kR\n" .. _G.debugstack(2, 3, 2))
@@ -775,12 +752,6 @@ function aObj:keepRegions(obj, regions)
 			--@end-debug@
 		end
 	end
-
-end
-
-function aObj:loadClassicSupport()
-
-	return safecall("ClassicSupport", self.ClassicSupport, nil, true)
 
 end
 
@@ -861,10 +832,8 @@ local function __moveObject(opts)
 	opts.obj:ClearAllPoints()
 	opts.obj:SetPoint(point, relTo, relPoint, xOfs, yOfs)
 
-	point, relTo, relPoint, xOfs, yOfs = nil, nil, nil, nil, nil
-
 end
-function aObj:moveObject(...)
+function aObj:moveObject(...) -- luacheck: ignore self
 
 	local opts = _G.select(1, ...)
 
@@ -887,11 +856,10 @@ function aObj:moveObject(...)
 	end
 
 	__moveObject(opts)
-	opts = nil
 
 end
 
-function aObj:nilTexture(obj, nop)
+function aObj:nilTexture(obj, nop) -- luacheck: ignore self
 
 	obj:SetTexture(nil)
 	obj:SetAtlas(nil)
@@ -911,7 +879,7 @@ function aObj:rawHook(obj, method, func, sec)
 
 end
 
-function aObj:removeBackdrop(obj, nop)
+function aObj:removeBackdrop(obj, nop) -- luacheck: ignore self
 
 	if obj.ClearBackdrop then
 		obj:ClearBackdrop()
@@ -923,13 +891,12 @@ function aObj:removeBackdrop(obj, nop)
 		if nop then
 			obj.SetBackdrop = _G.nop
 		end
-	else
-		-- NO backdrop to remove
 	end
 
 end
 
 --@debug@
+--luacheck: ignore fromhex tohex
 local function fromhex(str)
 	return (str:gsub('..', function (cc)
 		return _G.string.char(_G.tonumber(cc, 16))
@@ -941,7 +908,7 @@ local function tohex(str)
 	end))
 end
 --@end-debug@
-function aObj:removeColourCodes(text)
+function aObj:removeColourCodes(text) -- luacheck: ignore self
 
 	if text
 	and text:find("\124") then
@@ -959,7 +926,7 @@ local function ddlBBO(frame)
 	frame:DisableDrawLayer("BORDER")
 	frame:DisableDrawLayer("OVERLAY")
 end
-function aObj:removeInset(frame)
+function aObj:removeInset(frame) -- luacheck: ignore self
 	--@alpha@
 	_G.assert(frame, "Unknown object removeInset\n" .. _G.debugstack(2, 3, 2))
 	--@end-alpha@
@@ -971,7 +938,7 @@ function aObj:removeInset(frame)
 
 end
 
-function aObj:removeMagicBtnTex(btn)
+function aObj:removeMagicBtnTex(btn) -- luacheck: ignore self
 	--@alpha@
 	_G.assert(btn, "Unknown object removeMagicBtnTex\n" .. _G.debugstack(2, 3, 2))
 	--@end-alpha@
@@ -982,7 +949,7 @@ function aObj:removeMagicBtnTex(btn)
 
 end
 
-function aObj:removeNineSlice(frame)
+function aObj:removeNineSlice(frame) -- luacheck: ignore self
 	--@alpha@
 	_G.assert(frame, "Unknown object removeNineSlice\n" .. _G.debugstack(2, 3, 2))
 	--@end-alpha@
@@ -1012,7 +979,7 @@ function aObj:removeRegions(obj, regions)
 
 end
 
-function aObj:resizeTabs(frame)
+function aObj:resizeTabs(frame) -- luacheck: ignore self
 	--@alpha@
 	_G.assert(frame, "Unknown object resizeTabs\n" .. _G.debugstack(2, 3, 2))
 	--@end-alpha@
@@ -1039,7 +1006,6 @@ function aObj:resizeTabs(frame)
 		_G[tabName .. i .. "Left"]:SetWidth(tLW)
 		_G.PanelTemplates_TabResize(_G[tabName .. i], 0)
 	end
-	tabName, nT, tTW, fW, tLW = nil, nil, nil, nil, nil
 
 end
 
@@ -1065,7 +1031,7 @@ function aObj:rmRegionsTex(obj, regions)
 
 end
 
-function aObj:round2(num, idp)
+function aObj:round2(num, idp) -- luacheck: ignore self
 	--@alpha@
 	_G.assert(num, "Missing number\n" .. _G.debugstack(2, 3, 2))
 	--@end-alpha@
@@ -1089,13 +1055,13 @@ local function scanChildren(obj)
 	_G.LibStub:GetLibrary("AceEvent-3.0", true).messages.events[obj .. "_GetChildren"] = nil
 
 end
-function aObj:scanUIParentsChildren()
+function aObj:scanUIParentsChildren() -- luacheck: ignore self
 
 	scanChildren("UIParent")
 
 end
 
-function aObj:scanWorldFrameChildren()
+function aObj:scanWorldFrameChildren() -- luacheck: ignore self
 
 	scanChildren("WorldFrame")
 
@@ -1215,7 +1181,7 @@ function aObj:setupTextures()
 		["tMB"]       = _G.GetFileIDFromPath([[Interface\Minimap\Tracking\Mailbox]]),
 		["w8x8"]      = _G.GetFileIDFromPath([[Interface\Buttons\WHITE8X8]]),
 	}
-			
+
 end
 
 function aObj:skinAceDropdown(obj, x2, y2)
@@ -1228,7 +1194,7 @@ function aObj:skinAceDropdown(obj, x2, y2)
 
 end
 
-function aObj:skinNavBarButton(btn)
+function aObj:skinNavBarButton(btn) -- luacheck: ignore self
 
 	btn:DisableDrawLayer("OVERLAY")
 	btn:GetNormalTexture():SetAlpha(0)
@@ -1237,7 +1203,7 @@ function aObj:skinNavBarButton(btn)
 end
 
 --@debug@
-function aObj:tableCount(table)
+function aObj:tableCount(table) -- luacheck: ignore self
 
 	local count = 0
 
@@ -1269,16 +1235,14 @@ function aObj:updateSBTexture()
 			if k == "bg" then tex:SetVertexColor(self.sbClr:GetRGBA()) end
 		end
 	end
-	sBar = nil
 
 end
 
-function aObj:unwrapTextFromColourCode(text, sOfs, eOfs)
+function aObj:unwrapTextFromColourCode(text, sOfs, eOfs) -- luacheck: ignore self
 
 	local newText = _G.gsub(text, "\124", "\124\124") -- turn Hex string into text
 
 	if _G.strlen(newText) == _G.strlen(text) then return text end
-
 
 	local clrCode = _G.strsub(newText, 6, 11)
 	newText = _G.strsub(newText, sOfs or 12, eOfs or -4) -- remove colour prefix and suffix
@@ -1287,7 +1251,7 @@ function aObj:unwrapTextFromColourCode(text, sOfs, eOfs)
 
 end
 
-function aObj:RaiseFrameLevelByFour(frame)
+function aObj:RaiseFrameLevelByFour(frame) -- luacheck: ignore self
 
 	frame:SetFrameLevel(frame:GetFrameLevel() + 4)
 
@@ -1296,13 +1260,48 @@ end
 --@alpha@
 function aObj:SetupCmds()
 
+	local function makeString(obj)
+		if _G.type(obj) == "table" then
+			if _G.type(_G.rawget(obj, 0)) == "userdata"
+			and _G.type(obj.GetObjectType) == "function"
+			then
+				return ("<%s:%s:%s>"):format(_G.tostring(obj), obj:GetObjectType(), obj:GetName() or "(Anon)")
+			end
+		end
+		return _G.tostring(obj)
+	end
+	local function makeText(fStr, ...)
+	    _G.wipe(tmpTab)
+		local output = ""
+		if fStr
+		and fStr.find
+		and fStr:find("%%")
+		and _G.select('#', ...) >= 1
+		then
+			for i = 1, _G.select('#', ...) do
+				tmpTab[i] = makeString(_G.select(i, ...))
+			end
+			 -- handle missing variables
+			local varCnt = _G.select(2, fStr:gsub("%%", ""))
+			for i = #tmpTab, varCnt do
+				tmpTab[i + 1] = "nil"
+			end
+			output = _G.string.join(" ", fStr:format(_G.unpack(tmpTab)))
+		else
+			tmpTab[1] = output
+			tmpTab[2] = fStr and _G.type(fStr) == "table" and makeString(fStr) or fStr or ""
+			for i = 1, _G.select('#', ...) do
+				tmpTab[i + 2] = makeString(_G.select(i, ...))
+			end
+			output = _G.table.concat(tmpTab, " ")
+		end
+		return output
+	end
 	local function print_family_tree(fName)
-
 		if fName:IsForbidden() then
 			_G.print("Frame access is forbidden", fName)
 			return
 		end
-
 		local lvl = "Parent"
 		_G.print(makeText("Frame is %s, %s, %s, %s, %s", fName, fName:GetFrameLevel(), fName:GetFrameStrata(), _G.Round(fName:GetWidth()) or "nil", _G.Round(fName:GetHeight()) or "nil"))
 		while fName:GetParent() do
@@ -1310,13 +1309,9 @@ function aObj:SetupCmds()
 			_G.print(makeText("%s is %s, %s, %s, %s, %s", lvl, fName, (fName:GetFrameLevel() or "<Anon>"), (fName:GetFrameStrata() or "<Anon>"), _G.Round(fName:GetWidth()) or "nil", _G.Round(fName:GetHeight()) or "nil"))
 			lvl = (lvl:find("Grand") and "Great" or "Grand") .. lvl
 		end
-		lvl = nil
-
 	end
 	local function getObjFromString(input)
-
 		_G.wipe(tmpTab)
-
 		-- first split the string on "."
 		for word in _G.string.gmatch(input, "%a+") do
 			tmpTab[#tmpTab + 1] = word
@@ -1326,11 +1321,9 @@ function aObj:SetupCmds()
 		for i = 1, #tmpTab do
 			objString = objString .. '["' .. tmpTab[i] .. '"]'
 		end
-
 		-- finally use loadstring to get the object from the command
 		-- _G.print("getObjFromString", input, objString)
 		return _G.assert(_G.loadstring("return " .. objString)())
-
 	end
 	local function getObj(input)
 		-- _G.print("getObj", input, _G[input], GetMouseFocus())
@@ -1357,20 +1350,15 @@ function aObj:SetupCmds()
 		end
 	end
 	local function showInfo(obj, showKids, noDepth)
-
 		_G.print("showInfo:", obj, showKids, noDepth, obj:IsForbidden())
-
 		_G.assert(obj, "Unknown object showInfo\n" .. _G.debugstack(2, 3, 2))
-
 		if obj:IsForbidden() then return end
-
 		showKids = showKids or false
-
 		local function showIt(fmsg, ...)
 			aObj:Debug3(fmsg, ...)
 		end
-		local function getRegions(obj, lvl)
-			for k, reg in _G.ipairs{obj:GetRegions()} do
+		local function getRegions(cObj, lvl)
+			for k, reg in _G.ipairs{cObj:GetRegions()} do
 				showIt("[lvl%sr%s : %s : %s : %s : %s : %s]", lvl, k, reg, reg:GetObjectType() or "nil", reg.GetWidth and _G.Round(reg:GetWidth()) or "nil", reg.GetHeight and _G.Round(reg:GetHeight()) or "nil", reg:GetObjectType() == "Texture" and ("%s : %s"):format(reg:GetTexture() or "nil", reg:GetDrawLayer() or "nil") or "nil")
 			end
 		end
@@ -1391,16 +1379,13 @@ function aObj:SetupCmds()
 				end
 			end
 		end
-
 		showIt("%s : %s : %s : %s : %s : %s : %s", obj, _G.Round(obj:GetWidth()) or "nil", _G.Round(obj:GetHeight()) or "nil", obj:GetFrameLevel() or "nil", obj:GetFrameStrata() or "nil", obj:GetNumRegions(), obj:GetNumChildren())
-
 		showIt("Started Regions")
 		getRegions(obj, 0)
 		showIt("Finished Regions")
 		showIt("Started Children")
 		getChildren(obj, 0)
 		showIt("Finished Children")
-
 	end
 
 	self:RegisterChatCommand("ft", function() print_family_tree(_G.GetMouseFocus()) end)
@@ -1425,12 +1410,11 @@ function aObj:SetupCmds()
 	self:RegisterChatCommand("sspewp", function(msg) return _G.Spew and _G.Spew(msg, getObjP(msg)) end)
 	self:RegisterChatCommand("sspewgp", function(msg) return _G.Spew and _G.Spew(msg, getObjGP(msg)) end)
 
-	self:RegisterChatCommand("shc", function(msg) self:Debug("Hooks table Count: [%s]", self:tableCount(self.hooks)) end)
+	self:RegisterChatCommand("shc", function(_) self:Debug("Hooks table Count: [%s]", self:tableCount(self.hooks)) end)
 
 	self:RegisterChatCommand("wai", function() -- where am I ?
 		local posTab = _G.C_Map.GetPlayerMapPosition(_G.C_Map.GetBestMapForUnit("player"), "player")
 		_G.DEFAULT_CHAT_FRAME:AddMessage(_G.format("%s, %s: %.1f, %.1f", _G.GetZoneText(), _G.GetSubZoneText(), posTab.x * 100, posTab.y * 100))
-		posTab = nil
 		return
 	end)
 

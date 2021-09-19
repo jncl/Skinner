@@ -142,7 +142,7 @@ aObj.skinTPLs = {
 		func        = nil,
 	},
 	new = function(type, table)
-		_G.setmetatable(table, {__index = function(table, key) return aObj.skinTPLs[type][key] end})
+		_G.setmetatable(table, {__index = function(_, key) return aObj.skinTPLs[type][key] end})
 		return table
 	end,
 }
@@ -152,7 +152,7 @@ do
 		and name ~= "defaults"
 		then
 			table.type = name
-			_G.setmetatable(table, {__index = function(table, key) return aObj.skinTPLs.defaults[key] end})
+			_G.setmetatable(table, {__index = function(_, key) return aObj.skinTPLs.defaults[key] end})
 		end
 	end
 end
@@ -180,7 +180,6 @@ function aObj:skinObject(...)
 	else
 		skinFuncs[table.type](table)
 	end
-	type, table = nil, nil
 
 end
 
@@ -215,7 +214,6 @@ local function hideHeader(obj)
 				end
 				break
 			end
-			hObj = nil
 		end
 	end
 end
@@ -271,7 +269,6 @@ local function skinButton(tbl)
 	-- add a frame to the object
 	local template = tbl.sec and "SecureFrameTemplate" or tbl.sabt and "SecureActionButtonTemplate" or tbl.subt and "SecureUnitButtonTemplate"
 	tbl.obj.sb = _G.CreateFrame("Button", tbl.name, tbl.obj, template)
-	template = nil
 	-- allow clickthrough
 	tbl.obj.sb:EnableMouse(false)
 	-- adjust frame level
@@ -280,7 +277,6 @@ local function skinButton(tbl)
 	if not success then
 		_G.RaiseFrameLevel(tbl.obj)
 	end
-	success = nil
 	 -- make sure it's lower than its parent's Frame Strata
 	if tbl.bg then
 		tbl.obj.sb:SetFrameStrata("BACKGROUND")
@@ -359,9 +355,7 @@ local function skinDropDown(tbl)
 		else
 			local xOfs1 = tbl.adjBtnX and tbl.obj:GetWidth() + 10 or 1
 			aObj:addButtonBorder{obj=btn, es=12, ofs=-2, x1=xOfs1}
-			xOfs1 = nil
 		end
-		btn = nil
 	end
 	-- add texture
 	if aObj.prdb.TexturedDD then
@@ -379,7 +373,6 @@ local function skinDropDown(tbl)
 			tbl.obj.ddTex:SetPoint("RIGHT", rTex, "LEFT", 5, 2)
 			tbl.obj.ddTex:SetHeight(17)
 		end
-		lTex, rTex = nil, nil
 	end
 	-- colour on Initial State
 	aObj:checkDisabledDD(tbl.obj, tbl.initState)
@@ -416,12 +409,10 @@ local function skinEditBox(tbl)
 		end
 		aObj:moveObject{obj=sIcon, x=tbl.six}
 		sIcon:SetAlpha(1)
-		sIcon = nil
 	elseif tbl.chginset then
 		-- move left text insert
-		local l, r, t, b = tbl.obj:GetTextInsets()
-		tbl.obj:SetTextInsets(l + tbl.inset, r, t, b)
-		l, r, t, b = nil, nil, nil, nil
+		local left, right, top, bottom = tbl.obj:GetTextInsets()
+		tbl.obj:SetTextInsets(left + tbl.inset, right, top, bottom)
 	end
 	aObj:getRegion(tbl.obj, 2):SetAlpha(1) -- cursor texture
 end
@@ -456,7 +447,6 @@ local function skinFrame(tbl)
 		--@end-alpha@
 		end
 	end
-	hasInset = nil
 	if tbl.obj.NineSlice then
 		if tbl.rns then
 			aObj:removeNineSlice(tbl.obj.NineSlice)
@@ -491,9 +481,8 @@ local function skinFrame(tbl)
 	then
 		local cBtn = tbl.obj.CloseButton or tbl.obj.closeButton or tbl.obj.closebutton or tbl.obj:GetName() and _G[tbl.obj:GetName() .. "CloseButton"] or tbl.obj.Close or tbl.obj.close
 		if cBtn then
-			aObj:skinCloseButton{obj=cBtn, fType=ftype, noSkin=tbl.cbns}
+			aObj:skinCloseButton{obj=cBtn, fType=tbl.ftype, noSkin=tbl.cbns}
 		end
-		cBtn = nil
 	end
 	-- reverse parent child relationship
 	if tbl.rp
@@ -531,11 +520,11 @@ local function skinFrame(tbl)
 	so.obj    = tbl.obj.sf
 	so.fType  = tbl.fType
 	so.bd     = tbl.noBdr and 11 or tbl.bd
-	so.ba     = _G.rawget(tbl, ba)
+	so.ba     = tbl.ba
 	so.bbclr  = tbl.clr
-	so.bba    = _G.rawget(tbl, bba)
+	so.bba    = tbl.bba
 	so.ng     = tbl.ng
-	so.fh     = _G.rawget(tbl, fh)
+	so.fh     = tbl.fh
 	so.invert = tbl.invert
 	so.rotate = tbl.rotate
 	-- apply the 'Skinner effect' to the frame
@@ -654,7 +643,6 @@ local function skinSlider(tbl)
 	-- make objects visible
 	tbl.obj:SetAlpha(1)
 	tbl.obj:GetThumbTexture():SetAlpha(1)
-	h, w, o = nil, nil, nil
 end
 skinFuncs.slider = function(table) skinSlider(table) end
 local function skinStatusBar(tbl)
@@ -684,7 +672,6 @@ local function skinStatusBar(tbl)
 			sbG.bg:SetVertexColor(aObj.sbClr:GetRGBA())
 			if not tbl.bg then
 				sbG.bg:SetAllPoints()
-			else
 			end
 		end
 	end
@@ -707,8 +694,6 @@ local function skinStatusBar(tbl)
 			tex.SetAtlas = _G.nop
 		end
 	end
-	-- remove local pointer
-	sbG = nil
 end
 skinFuncs.statusbar = function(table) skinStatusBar(table) end
 local function skinTabs(tbl)
@@ -758,13 +743,11 @@ local function skinTabs(tbl)
 				ht:SetPoint("TOPLEFT", oFs.x1, oFs.y1)
 				ht:SetPoint("BOTTOMRIGHT", oFs.x2, oFs.y2)
 			end
-			ht = nil
 		end
 		if tbl.func then
 			tbl.func(tab)
 		end
 	end
-	oFs = nil
 	-- track tab updates
 	aObj.tabFrames[tbl.obj] = tbl.track
 end

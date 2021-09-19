@@ -50,7 +50,6 @@ for i = 1, #addonSkins do
 		aObj.addonsToSkin[addonSkins[i]] = addonSkins[i]
 	end
 end
-addonSkins = nil
 --@alpha@
 aObj.addonsToSkin = track(aObj.addonsToSkin)
 --@end-alpha@
@@ -80,7 +79,6 @@ end
 --@alpha@
 aObj.lodAddons = track(aObj.lodAddons)
 --@end-alpha@
-lodFrames = nil
 
 local function skinLibs()
 	for libName, skinFunc in _G.pairs(aObj.libsToSkin) do
@@ -186,7 +184,7 @@ function aObj:LoDFrames(addon)
 end
 
 -- Event processing here
-function aObj:ADDON_LOADED(event, addon)
+function aObj:ADDON_LOADED(_, addon)
 	-- self:Debug("ADDON_LOADED: [%s]", addon)
 
 	self:LoDFrames(addon)
@@ -227,7 +225,7 @@ function aObj:TRADE_SKILL_SHOW()
 
 end
 
-function aObj:PLAYER_LEVEL_CHANGED(...)
+function aObj:PLAYER_LEVEL_CHANGED(...) -- luacheck: ignore self
 --[[
 	arg1 - event name
 	arg2 - old player level
@@ -246,7 +244,6 @@ function aObj:PLAYER_LEVEL_CHANGED(...)
 		8 : Shadowlands (60), start @ 50
 --]]
 
-	local oldPLevel = _G.select(2, ...)
 	local newPLevel = _G.select(3, ...)
 
 	-- if new level < old level then just started shadowlands expansion

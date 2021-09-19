@@ -47,12 +47,12 @@ function module:OnInitialize()
 
 end
 
-function module:OnDisable()
-	
+function module:OnDisable() -- luacheck: ignore self
+
 	_G.CinematicFrame_OnShow = module.CinematicFrame_OnShow and module.CinematicFrame_OnShow
 	_G.CinematicFrame_OnHide = module.CinematicFrame_OnHide and module.CinematicFrame_OnHide
 	_G.WorldFrame:SetUserPlaced(false)
-	
+
 end
 
 function module:OnEnable()
@@ -67,7 +67,7 @@ function module:OnEnable()
 	end
 
 	-- handle Viewport being reset when certain cutscenes are shown
-	aObj:RegisterEvent("CINEMATIC_STOP", function(event, ...)
+	aObj:RegisterEvent("CINEMATIC_STOP", function(_, _)
 		module:adjustViewPort("shown")
 	end)
 	aObj:SecureHook("GameMovieFinished", function()
@@ -116,7 +116,6 @@ local function checkOverlay(scale)
 					vpoF[area]:SetVertTile(db.tile and true)
 					vpoF[area]:SetTexture(tex, db.tile, db.tile)
 				end
-				tex = nil
 			else
 				for _, area in _G.pairs(texAreas) do
 					vpoF[area]:SetColorTexture(db.colour.r, db.colour.g, db.colour.b, db.colour.a)
@@ -135,7 +134,7 @@ function module:adjustViewPort(opt)
 
 	-- handle in combat
 	if _G.InCombatLockdown() then
-	    aObj:add2Table(aObj.oocTab, {adjustViewPort, {opt}})
+	    aObj:add2Table(aObj.oocTab, {self.adjustViewPort, {opt}})
 	    return
 	end
 
@@ -153,11 +152,9 @@ function module:adjustViewPort(opt)
 		checkOverlay(scale)
 	end
 
-	scale = nil
-
 end
 
-function module:GetOptions()
+function module:GetOptions() -- luacheck: ignore self
 
 	local c
 	local options = {

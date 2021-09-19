@@ -2,7 +2,7 @@ local aName, aObj = ...
 
 local _G = _G
 
-function aObj:add2Table(table, value)
+function aObj:add2Table(table, value) -- luacheck: ignore self
 	--@alpha@
 	_G.assert(table, "Unknown table add2Table\n" .. _G.debugstack(2, 3, 2))
 	_G.assert(value, "Missing value add2Table\n" .. _G.debugstack(2, 3, 2))
@@ -64,9 +64,7 @@ function aObj:checkVersion()
 	local vType = self.isPatch and buildInfo[agentUID][3] .. " (Patched)" or buildInfo[agentUID][3]
 	_G.DEFAULT_CHAT_FRAME:AddMessage(aName .. ": Detected that we're running on a " .. vType .. " version", 0.75, 0.5, 0.25, nil, true)
 	self:Debug(vType .. " detected")
-	vType = nil
 	--@end-alpha@
-	agentUID = nil
 
 	-- indicate we're on ClassicPTR if on Classic Beta
 	self.isClscPTR    = self.isClscPTR or self.isClscBeta
@@ -90,7 +88,7 @@ function aObj:checkVersion()
 
 end
 
-local tmpTab, tmpTab2 = {}, {}
+local tmpTab = {}
 local function makeString(obj)
 	if _G.type(obj) == "table" then
 		if _G.type(_G.rawget(obj, 0)) == "userdata"
@@ -118,7 +116,6 @@ local function makeText(fStr, ...)
 			tmpTab[i + 1] = "nil"
 		end
 		output = _G.string.join(" ", fStr:format(_G.unpack(tmpTab)))
-		varCnt = nil
 	else
 		tmpTab[1] = output
 		tmpTab[2] = fStr and _G.type(fStr) == "table" and makeString(fStr) or fStr or ""
@@ -132,7 +129,7 @@ end
 local function printIt(text, frame, r, g, b)
 	(frame or _G.DEFAULT_CHAT_FRAME):AddMessage(text, r, g, b)
 end
-function aObj:CustomPrint(r, g, b, fStr, ...)
+function aObj:CustomPrint(r, g, b, fStr, ...) -- luacheck: ignore self
 
 	printIt( _G.WrapTextInColorCode(aName, "ffffff78") .. " " .. makeText(fStr, ...), nil, r, g, b)
 
@@ -145,18 +142,17 @@ function aObj:Debug(fStr, ...)
 
 	local output = ("(DBG) %s:[%s.%03d]"):format(aName, _G.date("%H:%M:%S"), (_G.GetTime() % 1) * 1000)
 	printIt(_G.WrapTextInColorCode(output, "ff7fff7f") .. " " .. makeText(fStr, ...), self.debugFrame)
-	output = nil
 
 end
 
-function aObj:Debug2(fStr, ...)
+function aObj:Debug2(fStr, ...) -- luacheck: ignore self fStr ...
 	-- self:Debug(fStr, ...)
 end
 
 function aObj:Debug3(fStr, ...)
-	
+
 	printIt("dbg: " .. makeText(fStr, ...), self.debugFrame)
-	
+
 end
 --@end-debug@
 --[===[@non-debug@

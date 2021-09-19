@@ -272,8 +272,8 @@ aObj.SetupOptions = function(self)
 					order = 5,
 					name = self.L["Minimap icon"],
 					desc = self.L["Toggle the minimap icon"],
-					get = function(info) return not db.MinimapIcon.hide end,
-					set = function(info, value)
+					get = function(_) return not db.MinimapIcon.hide end,
+					set = function(_, value)
 						db.MinimapIcon.hide = not value
 						if value then self.DBIcon:Show(aName) else self.DBIcon:Hide(aName) end
 					end,
@@ -391,8 +391,8 @@ aObj.SetupOptions = function(self)
 							desc = self.L["Choose the Texture for the Status Bars"],
 							dialogControl = "LSM30_Statusbar",
 							values = _G.AceGUIWidgetLSMlists.statusbar,
-							get = function(info) return db.StatusBar.texture end,
-							set = function(info, value)
+							get = function(_) return db.StatusBar.texture end,
+							set = function(_, value)
 								db.StatusBar.texture = value
 								self:checkAndRun("updateSBTexture", "s") -- not an addon in its own right
 							end,
@@ -403,11 +403,11 @@ aObj.SetupOptions = function(self)
 							name = self.L["Background Colour"],
 							desc = self.L["Change the Colour of the Status Bar Background"],
 							hasAlpha = true,
-							get = function(info)
+							get = function(_)
 								local c = db.StatusBar
 								return c.r, c.g, c.b, c.a
 							end,
-							set = function(info, r, g, b, a)
+							set = function(_, r, g, b, a)
 								local c = db.StatusBar
 								c.r, c.g, c.b, c.a = r, g, b, a
 								self:checkAndRun("updateSBTexture", "s") -- not an addon in its own right
@@ -603,7 +603,6 @@ aObj.SetupOptions = function(self)
 				else
 					db[info[#info]]:SetRGBA(r, g, b, a)
 				end
-				c = nil
 			end,
 			args = {
 				ClassClrBd = {
@@ -2107,7 +2106,6 @@ aObj.SetupOptions = function(self)
 		self.optionsFrame[self.L[oName]] = self.ACD:AddToBlizOptions(optTitle, self.L[oName], self.L[aName]) -- N.B. use localised name
 		optCheck[oName:lower()] = oName -- store option name in table
 	end
-	optTitle = nil
 
 	-- runs when the player clicks "Defaults"
 	self.optionsFrame[self.L["Backdrop"]].default = function()
@@ -2191,7 +2189,7 @@ aObj.SetupOptions = function(self)
 		end
 
 		-- add Disabled Skins entries
-		local function addDSOpt(name)--, lib, lod)
+		local function addDSOpt(name)
 			aObj.optTables["Disabled Skins"].args[name] = {
 				type = "toggle",
 				name = name,
@@ -2216,20 +2214,14 @@ aObj.SetupOptions = function(self)
 		end
 		for name, _ in _G.pairs(self.otherAddons) do
 			if self:isAddonEnabled(name) then
-				if name == "tekKonfig" then
-					addDSOpt(name .. " (Lib)")
-				else
-					addDSOpt(name)
-				end
+				addDSOpt(name)
 			end
 		end
-		addDSOpt = nil
 
-		-- self.UnregisterCallback("Skinner_SO", "IOFPanel_Before_Skinning")
 		self.UnregisterMessage("Skinner_SO", "IOFPanel_Before_Skinning")
 
 		-- ensure new entries are displayed
-		-- N.B. AFTER callback is unregistered otherwise a stack overflow occurs
+		-- N.B. AFTER message is unregistered otherwise a stack overflow occurs
 		_G.InterfaceOptionsList_DisplayPanel(panel)
 
 	end)

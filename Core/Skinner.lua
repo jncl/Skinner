@@ -10,7 +10,6 @@ do
 	for _, lib in _G.pairs(lTab) do
 		hasError = not _G.assert(_G.LibStub:GetLibrary(lib, true), aName .. " requires " .. lib)
 	end
-	lTab = nil
 	if hasError then return end
 
 	-- create the addon
@@ -40,11 +39,11 @@ function aObj:OnInitialize()
 	-- add callbacks
 	self.callbacks = _G.LibStub:GetLibrary("CallbackHandler-1.0", true):New(aObj)
 	--@alpha@
-	self:SecureHook(self, "RegisterCallback", function(this, ...)
+	self:SecureHook(self, "RegisterCallback", function(_, ...)
 		_G.print("RegisterCallback", ...)
 		_G.assert(false, "RegisterCallback" .. _G.debugstack(2, 3, 2))
 	end)
-	self:SecureHook(self.callbacks, "Fire", function(this, event)
+	self:SecureHook(self.callbacks, "Fire", function(_, event)
 		if not event:find("_GetChildren")
 		and not event:find("IOFPanel")
 		and not event:find("AddOn_Loaded")
@@ -58,7 +57,7 @@ function aObj:OnInitialize()
 		end
 	end)
 	--@end-alpha@
-	
+
 	-- get Locale
 	self.L = _G.LibStub:GetLibrary("AceLocale-3.0", true):GetLocale(aName)
 	-- pointer to LibDBIcon-1.0 library
@@ -135,7 +134,6 @@ function aObj:OnInitialize()
 	then
 		local val = self.prdb.ChatBubbles
 		self.prdb.ChatBubbles.skin = val
-		val = nil
 	end
 	-- Shadowlands changes
 	for _, option in _G.pairs{"BarbershopUI", "QuestChoice", "WarboardUI"} do
@@ -276,8 +274,6 @@ function aObj:OnInitialize()
 	c = self.prdb.ClassClrTT and _G.RAID_CLASS_COLORS[self.uCls] or self.prdb.TooltipBorder
 	self.tbClr = _G.CreateColor(c.r, c.g, c.b, c.a or self.prdb.TooltipBorder.a)
 
-	dflts, c = nil, nil
-
 	-- highlight outdated colour variables use when testing
 	--[===[@non-debug@
 	self.HTr, self.HTg, self.HTb = self.HT:GetRGB()
@@ -394,7 +390,6 @@ function aObj:OnEnable()
 		self.modBtnBs = false
 		self.modChkBtns = false
 	end
-	btnModDB = nil
 
 	self.fontDP              = self.modBtns and self.modUIBtns.fontDP or _G.nop
 	self.fontDS              = self.modBtns and self.modUIBtns.fontDS or _G.nop
@@ -473,7 +468,6 @@ function aObj:OnEnable()
 						self:setInactiveTab(tab.sf)
 					end
 				end
-				tab = nil
 			end
 		end)
 	end
@@ -483,10 +477,10 @@ function aObj:OnEnable()
 		text = aObj.L["Confirm reload of UI to activate profile changes"],
 		button1 = _G.OKAY,
 		button2 = _G.CANCEL,
-		OnAccept = function(this)
+		OnAccept = function(_)
 			_G.C_UI.Reload()
 		end,
-		OnCancel = function(this, _, reason)
+		OnCancel = function(_, _, reason)
 			if reason == "timeout"
 			or reason == "clicked"
 			then
@@ -521,7 +515,7 @@ function aObj:OnEnable()
 	if not self.isClsc then
 		-- hook this (used by Blizzard_OrderHallTalents, PVPMatchResults, PVPMatchScoreboard & Blizzard_WarboardUI)
 		-- N.B. use SecureHook as RawHook cause taint and INTERFACE_ACTION_BLOCKED message to be displayed
-		self:SecureHook("UIPanelCloseButton_SetBorderAtlas", function(this, atlas, xOffset, yOffset, textureKit)
+		self:SecureHook("UIPanelCloseButton_SetBorderAtlas", function(this, _, _, _, _)
 			this.Border:SetTexture(nil)
 		end)
 	end

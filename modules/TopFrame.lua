@@ -22,11 +22,11 @@ local defaults = {
 	}
 }
 
-local function adjustTFOffset(db, reset)
+local function adjustTFOffset(dB, reset)
 
 	--	Adjust the UIParent TOP-OFFSET attribute if required
-	if db.shown then
-		local topOfs = -db.height
+	if dB.shown then
+		local topOfs = -dB.height
 		local UIPtopOfs = -104
 		if topOfs < UIPtopOfs and not reset then
 			_G.UIParent:SetAttribute("TOP_OFFSET", topOfs)
@@ -61,7 +61,7 @@ function module:OnEnable()
 end
 
 local topframe
-function module:adjustTopFrame()
+function module:adjustTopFrame() -- luacheck: ignore self
 
 	if db.shown then
 		topframe = topframe or _G.CreateFrame("Frame", nil, _G.UIParent)
@@ -94,7 +94,7 @@ function module:adjustTopFrame()
 
 end
 
-function module:GetOptions()
+function module:GetOptions() -- luacheck: ignore self
 
 	local options = {
 		type = "group",
