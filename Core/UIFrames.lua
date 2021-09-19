@@ -122,8 +122,10 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 			gOfs, y1Ofs, y2Ofs = 6, 5, -8
 		end
 		aObj:skinObject("frame", {obj=frame.listScroll, fType=ftype, fb=true, ofs=gOfs, y1=y1Ofs, y2=y2Ofs, clr=colour})
-		if frame.isLandingPage then
-			aObj:moveObject{obj=frame,listScroll, x=-10}
+		if not aObj.isRtlPTR then
+			if frame.isLandingPage then
+				aObj:moveObject{obj=frame.listScroll, x=-10}
+			end
 		end
 		if frame.FollowerScrollFrame then
 			frame.FollowerScrollFrame:SetTexture(nil)
