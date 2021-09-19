@@ -2,5 +2,8 @@
 ../../FrameXML/UI.xsd">
 
 <script file="ClassicSupport.lua"/>
+<script file="NPCFrames_Classic.lua"/>
+<script file="PlayerFrames_Classic.lua"/>
+<script file="UIFrames_Classic.lua"/>
 
 </Ui>

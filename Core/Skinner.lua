@@ -323,7 +323,7 @@ function aObj:OnInitialize()
 
 	-- Load Classic Support, if required (done here for ElvUI/TukUI)
 	if self.isClsc then
-		self:loadClassicSupport()
+		self:checkAndRun("SetupClassic", "opt", nil, true)
 	end
 
 end

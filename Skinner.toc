@@ -15,12 +15,18 @@
 ## Globe: check-classic
 ## X-Curse-Project-ID: 14661
 ## OptionalDeps: Ace3, LibSharedMedia-3.0, AceGUI-3.0-SharedMediaWidgets
+
 Libs\_RequiredLibs.xml
 Libs\_OptionalLibs.xml
+
 Locales\_Locales.xml
+
 Core\_Core.xml
+
 Modules\_Modules.xml
-AddonSkins\_AddonSkins.xml
+
 #@non-version-retail@
 ClassicSupport\_ClassicSupport.xml
 #@end-non-version-retail@
+
+AddonSkins\_AddonSkins.xml
