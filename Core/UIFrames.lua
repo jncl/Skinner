@@ -4224,7 +4224,7 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 			_G.MainMenuBarArtFrameBackground:DisableDrawLayer("BACKGROUND")
 			_G.StatusTrackingBarManager:DisableDrawLayer("OVERLAY") -- status bar textures
 			for _, bar in _G.pairs(_G.StatusTrackingBarManager.bars) do
-				self:skinStatusBar{obj=bar.StatusBar, bgTex=bar.StatusBar.Background, otherTex={bar.ExhaustionLevelFillBar}}
+				self:skinObject("statusbar", {obj=bar.StatusBar, bg=bar.StatusBar.Background, other={bar.ExhaustionLevelFillBar}})
 				if bar.ExhaustionTick then -- HonorStatusBar & ExpStatusBar
 					bar.ExhaustionTick:GetNormalTexture():SetTexture(nil)
 					bar.ExhaustionTick:GetHighlightTexture():SetTexture(nil)
@@ -4242,12 +4242,12 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 			_G.MainMenuExpBar:DisableDrawLayer("OVERLAY")
 			_G.MainMenuExpBar:SetSize(1011, 13)
 			self:moveObject{obj=_G.MainMenuExpBar, x=1, y=2}
-			self:skinStatusBar{obj=_G.MainMenuExpBar, fi=0, bgTex=self:getRegion(_G.MainMenuExpBar, 6), otherTex={_G.ExhaustionLevelFillBar}}
+			self:skinObject("statusbar", {obj=_G.MainMenuExpBar, bg=self:getRegion(_G.MainMenuExpBar, 6), other={_G.ExhaustionLevelFillBar}})
 			_G.MainMenuBarMaxLevelBar:DisableDrawLayer("BACKGROUND")
 			_G.ExhaustionTick:GetNormalTexture():SetTexture(nil)
 			_G.ExhaustionTick:GetHighlightTexture():SetTexture(nil)
 			_G.ReputationWatchBar.StatusBar:DisableDrawLayer("ARTWORK")
-			self:skinStatusBar{obj=_G.ReputationWatchBar.StatusBar, fi=0, bgTex=_G.ReputationWatchBar.StatusBar.Background}
+			self:skinObject("statusbar", {obj=_G.ReputationWatchBar.StatusBar, bg=_G.ReputationWatchBar.StatusBar.Background})
 		end
 		if self.modBtnBs then
 			for _, btn in _G.pairs(_G.StanceBarFrame.StanceButtons) do

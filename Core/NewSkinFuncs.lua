@@ -121,7 +121,7 @@ aObj.skinTPLs = {
 		fi          = 0, -- frame inset
 		regions     = {}, -- remove specified regions
 		-- bg       = nil, -- existing background texture
-		-- otherTex = {}, -- other texture objects
+		-- other.   = {}, -- other texture objects
 		-- nilFuncs = false, -- nop Atlas functions
 	},
 	tabs = {
@@ -676,10 +676,10 @@ local function skinStatusBar(tbl)
 		end
 	end
 	-- apply texture to and store other texture objects
-	if tbl.otherTex
-	and _G.type(tbl.otherTex) == "table"
+	if tbl.other
+	and _G.type(tbl.other) == "table"
 	then
-		for _, tex in _G.pairs(tbl.otherTex) do
+		for _, tex in _G.pairs(tbl.other) do
 			tex:SetTexture(aObj.sbTexture)
 			tex:SetVertexColor(aObj.sbClr:GetRGBA())
 			sbG[#sbG + 1] = tex
