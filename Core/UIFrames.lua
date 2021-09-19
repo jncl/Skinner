@@ -6610,7 +6610,7 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 	if not self.isClsc then
 		local function hookAndSkinWidgets(widgetContainer)
 			-- DON'T skin NamePlate[n].UnitFrame.WidgetContainer widgets as they cause Clamping Errors
-			if widgetContainer:GetDebugName():find("^NamePlate%d+\.UnitFrame\.WidgetContainer") then return end
+			if widgetContainer:GetDebugName():find("^NamePlate%d+%.UnitFrame%.WidgetContainer") then return end
 			aObj:SecureHook(widgetContainer, "UpdateWidgetLayout", function(this)
 				for widget in this.widgetPools:EnumerateActive() do
 					skinWidget(widget, _G.UIWidgetManager:GetWidgetTypeInfo(widget.widgetType))
