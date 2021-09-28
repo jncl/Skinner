@@ -360,26 +360,7 @@ function aObj:OnEnable()
 				else
 					button.IconBorder:SetAlpha(0)
 				end
-				if button.sbb then
-					if quality then
-						-- BETA: Constant value changed
-						if quality >= (self.isClsc and _G.LE_ITEM_QUALITY_COMMON or _G.Enum.ItemQuality.Common)
-						and _G.BAG_ITEM_QUALITY_COLORS[quality]
-						then
-							button.sbb:SetBackdropBorderColor(_G.BAG_ITEM_QUALITY_COLORS[quality].r, _G.BAG_ITEM_QUALITY_COLORS[quality].g, _G.BAG_ITEM_QUALITY_COLORS[quality].b, 1)
-						else
-							self:clrBtnBdr(button, "grey")
-						end
-					else
-						self:clrBtnBdr(button, "grey", 0.5)
-						if _G.TradeSkillFrame
-						and _G.TradeSkillFrame.DetailsFrame
-						and button == _G.TradeSkillFrame.DetailsFrame.Contents.ResultIcon
-						then
-							self:clrBtnBdr(button, "normal")
-						end
-					end
-				end
+				self:setBtnClr(button, quality)
 			end)
 		end
 		if btnModDB.profile.CheckButtons then
@@ -415,6 +396,7 @@ function aObj:OnEnable()
 	self.clrButtonFromBorder = self.modBtnBs and self.modUIBtns.clrButtonFromBorder or _G.nop
 
 	self.clrBtnBdr           = (self.modBtns or self.modBtnBs) and self.modUIBtns.clrBtnBdr or _G.nop
+	self.setBtnClr           = (self.modBtns or self.modBtnBs) and self.modUIBtns.setBtnClr or _G.nop
 
 	self.skinCheckButton     = self.modChkBtns and self.modUIBtns.skinCheckButton or _G.nop
 

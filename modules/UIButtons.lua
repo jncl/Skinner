@@ -329,6 +329,30 @@ function module:skinCloseButton(opts) -- luacheck: ignore self
 
 end
 
+function module:setBtnClr(button, quality)
+
+	if button.sbb then
+		if quality then
+			if quality >= (self.isClsc and _G.LE_ITEM_QUALITY_COMMON or _G.Enum.ItemQuality.Common)
+			and _G.BAG_ITEM_QUALITY_COLORS[quality]
+			then
+				button.sbb:SetBackdropBorderColor(_G.BAG_ITEM_QUALITY_COLORS[quality].r, _G.BAG_ITEM_QUALITY_COLORS[quality].g, _G.BAG_ITEM_QUALITY_COLORS[quality].b, 1)
+			else
+				self:clrBtnBdr(button, "grey")
+			end
+		else
+			self:clrBtnBdr(button, "grey")
+			if _G.TradeSkillFrame
+			and _G.TradeSkillFrame.DetailsFrame
+			and button == _G.TradeSkillFrame.DetailsFrame.Contents.ResultIcon
+			then
+				self:clrBtnBdr(button, "normal")
+			end
+		end
+	end
+
+end
+
 function module:skinCloseButton1(opts) -- luacheck: ignore self
 -- text on button
 	opts.cb = nil
