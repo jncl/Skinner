@@ -2347,6 +2347,13 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 	self:SecureHookScript(_G.FriendsFrame, "OnShow", function(this)
 		self:skinObject("dropdown", {obj=_G.FriendsDropDown, fType=ftype})
 		self:skinObject("dropdown", {obj=_G.TravelPassDropDown, fType=ftype})
+		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true, offsets={x1=8, y1=self.isTT and 1 or -4, x2=-8, y2=4}})
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, x2=3, y2=-3})
+		-- tooltip
+		_G.C_Timer.After(0.1, function()
+			self:add2Table(self.ttList, _G.FriendsTooltip)
+		end)
+
 		self:SecureHookScript(_G.FriendsTabHeader, "OnShow", function(fTH)
 			_G.FriendsFrameBattlenetFrame:DisableDrawLayer("BACKGROUND")
 			if self.modBtnBs then
@@ -2374,12 +2381,13 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 			end)
 			self:skinObject("dropdown", {obj=_G.FriendsFrameStatusDropDown, fType=ftype})
 			_G.FriendsFrameStatusDropDownStatus:SetAlpha(1) -- display status icon
-			self:skinObject("tabs", {obj=fTH, prefix=this:GetName(), fType=ftype, lod=self.isTT and true, upwards=true, offsets={x1=1, y1=self.isTT and -4 or -8, x2=-1, y2=self.isTT and -4 or 1}})
+			self:skinObject("tabs", {obj=fTH, prefix=fTH:GetName(), fType=ftype, lod=self.isTT and true, upwards=true, offsets={x1=1, y1=self.isTT and -4 or -8, x2=-1, y2=self.isTT and -4 or 1}})
 			_G.RaiseFrameLevel(fTH)
 
 			self:Unhook(fTH, "OnShow")
 		end)
 		self:checkShown(_G.FriendsTabHeader)
+
 		self:SecureHookScript(_G.FriendsListFrame, "OnShow", function(fObj)
 			_G.FriendsListFrameScrollFrame.PendingInvitesHeaderButton.BG:SetTexture(nil)
 			self:skinObject("slider", {obj=_G.FriendsListFrameScrollFrame.Slider, fType=ftype})
@@ -2413,7 +2421,7 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 			if self.modBtns then
 				self:skinStdButton{obj=_G.FriendsFrameAddFriendButton, x1=1}
 				self:skinStdButton{obj=_G.FriendsFrameSendMessageButton}
-				self:skinStdButton{obj=self:getChild(this.RIDWarning, 1)} -- unnamed parent frame
+				self:skinStdButton{obj=self:getChild(fObj.RIDWarning, 1)}
 				for invite in _G.FriendsListFrameScrollFrame.invitePool:EnumerateActive() do
 					self:skinStdButton{obj=invite.DeclineButton}
 					self:skinStdButton{obj=invite.AcceptButton}
@@ -2426,6 +2434,7 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 			self:Unhook(fObj, "OnShow")
 		end)
 		self:checkShown(_G.FriendsListFrame)
+
 		self:SecureHookScript(_G.IgnoreListFrame, "OnShow", function(fObj)
 			self:skinObject("slider", {obj=_G.IgnoreListFrameScrollFrame.Slider, fType=ftype})
 			addTabBorder(fObj)
@@ -2439,6 +2448,7 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 
 			self:Unhook(fObj, "OnShow")
 		end)
+
 		self:SecureHookScript(_G.WhoFrame, "OnShow", function(fObj)
 			self:removeInset(_G.WhoFrameListInset)
 			self:skinColHeads("WhoFrameColumnHeader", nil, ftype)
@@ -2461,9 +2471,6 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 
 			self:Unhook(fObj, "OnShow")
 		end)
-		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true, offsets={x1=8, y1=self.isTT and 1 or -4, x2=-8, y2=4}})
-		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, x2=3, y2=-3})
-		self:add2Table(self.ttList, _G.FriendsTooltip)
 
 		self:Unhook(this, "OnShow")
 	end)
