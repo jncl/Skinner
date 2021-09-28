@@ -1,8 +1,12 @@
-local aName, aObj = ...
-if not aObj:isAddonEnabled("AtlasLoot") then return end
+local _, aObj = ...
+if not aObj:isAddonEnabled("AtlasLoot")
+and not aObj:isAddonEnabled("AtlasLootClassic")
+then
+	return
+end
 local _G = _G
 
-aObj.addonsToSkin.AtlasLoot = function(self) -- v 8.10.00
+local function skinAtlasLoot()
 
 	local function skinDropDown(obj)
 		obj.frame:SetBackdrop(nil)
@@ -10,106 +14,205 @@ aObj.addonsToSkin.AtlasLoot = function(self) -- v 8.10.00
 			-- add texture
 			obj.frame.ddTex = obj.frame:CreateTexture(nil, "ARTWORK")
 			obj.frame.ddTex:SetTexture(aObj.db.profile.TexturedDD and aObj.itTex or nil)
-			obj.frame.ddTex:SetPoint("LEFT", obj.frame, "RIGHT", -5, 2)
-			obj.frame.ddTex:SetPoint("RIGHT", obj.frame, "LEFT", 5, 2)
-			obj.frame.ddTex:SetHeight(18)
+			obj.frame.ddTex:SetPoint("LEFT", obj.frame, "LEFT", 2, 0)
+			obj.frame.ddTex:SetPoint("RIGHT", obj.frame, "RIGHT", -1, 0)
+			obj.frame.ddTex:SetHeight(20)
 		end
-		if aObj.db.profile.DropDownButtons then
-			aObj:addSkinFrame{obj=obj.frame, ft="a", kfs=true, nb=true, aso={ng=true}}
-		end
-		if self.modBtnBs then
+		aObj:skinObject("frame", {obj=obj.frame, kfs=true, ng=true})
+		if aObj.modBtnBs then
 			aObj:addButtonBorder{obj=obj.frame.button, es=12, ofs=-2}
 		end
 		-- hook this to skin dropdown frame(s)
 		aObj:SecureHookScript(obj.frame.button, "OnClick", function(this)
-			local kids = {this.par.frame:GetChildren()}
-			for _, child in _G.ipairs(kids) do
+			for _, child in _G.ipairs{this.par.frame:GetChildren()} do
 				if child.label
 				and child.buttons
 				and child.type == "frame"
 				then
-					aObj:addSkinFrame{obj=child, ft="a", kfs=true, nb=true}
+					aObj:skinObject("frame", {obj=child, kfs=true})
 				end
 			end
-			kids = nil
+
 			aObj:Unhook(obj.frame.button, "OnClick")
 		end)
 	end
 	local function skinSelect(obj)
-		aObj:skinSlider{obj=obj.frame.scrollbar}
-		aObj:addSkinFrame{obj=obj.frame, ft="a", kfs=true, nb=true}
+		aObj:skinObject("slider", {obj=obj.frame.scrollbar})
+		aObj:skinObject("frame", {obj=obj.frame, kfs=true, fb=true})
 	end
 
-	-- GUI
-	local GUI = _G.AtlasLoot.GUI
-	local frame = GUI.frame
+	local frame = _G.AtlasLoot.GUI.frame
 	frame.titleFrame:SetBackdrop(nil)
 	skinDropDown(frame.moduleSelect)
 	skinDropDown(frame.subCatSelect)
 	skinSelect(frame.difficulty)
 	skinSelect(frame.boss)
 	skinSelect(frame.extra)
-	self:addSkinFrame{obj=frame, ft="a", kfs=true}
-
-	-- ItemFrame
-	local iF = frame.contentFrame
-	iF:DisableDrawLayer("BACKGROUND")
-	if self.modBtns then
-		self:skinStdButton{obj=iF.itemsButton}
-		self:skinStdButton{obj=iF.modelButton}
+	aObj:skinObject("frame", {obj=frame, kfs=true, cb=true, ofs=0, y1=-3, x2=-3})
+	if aObj.isClsc then
+		frame.gameVersionLogo:SetAlpha(1)
 	end
-	if self.modBtnBs then
-		self:addButtonBorder{obj=iF.nextPageButton, ofs=-2, x1=1, y2=1, clr="gold"}
-		self:addButtonBorder{obj=iF.prevPageButton, ofs=-2, x1=1, y2=1, clr="gold"}
-		self:addButtonBorder{obj=iF.mapButton, ofs=-1, x1=2, x2=-2}
-		self:addButtonBorder{obj=iF.clasFilterButton}
-		self:addButtonBorder{obj=iF.transmogButton}
+
+	frame.contentFrame:DisableDrawLayer("BACKGROUND")
+	if aObj.isClsc then
+		aObj:skinObject("editbox", {obj=frame.contentFrame.searchBox, si=true, y1=-4, y2=4})
+	end
+	aObj:SecureHookScript(frame.contentFrame.clasFilterButton, "OnClick", function(this)
+		aObj:skinObject("frame", {obj=frame.contentFrame.clasFilterButton.selectionFrame, kfs=true, fb=true, ofs=0})
+
+		aObj:Unhook(this, "OnClick")
+	end)
+	if aObj.modBtns then
+		aObj:skinStdButton{obj=frame.contentFrame.itemsButton}
+		aObj:skinStdButton{obj=frame.contentFrame.modelButton}
+	end
+	if aObj.modBtnBs then
+		aObj:addButtonBorder{obj=frame.contentFrame.nextPageButton, ofs=-2, x1=1, y2=1, clr="gold"}
+		aObj:addButtonBorder{obj=frame.contentFrame.prevPageButton, ofs=-2, x1=1, y2=1, clr="gold"}
+		aObj:addButtonBorder{obj=frame.contentFrame.mapButton, ofs=-1, x1=2, x2=-2}
+		aObj:addButtonBorder{obj=frame.contentFrame.clasFilterButton}
+		if aObj.isRtl then
+			aObj:addButtonBorder{obj=frame.contentFrame.transmogButton}
+		end
 	end
 
 	-- Tooltip(s)
-	if self.db.profile.Tooltips.skin then
+	if aObj.db.profile.Tooltips.skin then
 		-- tooltip
 		_G.C_Timer.After(0.1, function()
-			self:add2Table(self.ttList, _G.AtlasLootTooltip)
+			aObj:add2Table(aObj.ttList, _G.AtlasLootTooltip)
 		end)
-		-- skin Mount tooltip
-		local mTT = _G.AtlasLoot.Button:GetType("Mount")
-		if mTT then
-			self:SecureHook(mTT, "ShowToolTipFrame", function(button)
-				self:addSkinFrame{obj=mTT.tooltipFrame, ft="a", kfs=true, nb=true}
-				self:Unhook(mTT, "ShowToolTipFrame")
-			end)
+		if aObj.isRtl then
+			-- skin Mount tooltip
+			local mTT = _G.AtlasLoot.Button:GetType("Mount")
+			if mTT then
+				aObj:SecureHook(mTT, "ShowToolTipFrame", function(_)
+					aObj:addSkinFrame{obj=mTT.tooltipFrame, ft="a", kfs=true, nb=true}
+					aObj:Unhook(mTT, "ShowToolTipFrame")
+				end)
+			end
+			-- skin Pet tooltip
+			local pTT = _G.AtlasLoot.Button:GetType("Pet")
+			if pTT then
+				aObj:SecureHook(pTT, "ShowToolTipFrame", function(_)
+					aObj:addSkinFrame{obj=pTT.tooltipFrame, ft="a", kfs=true, nb=true}
+					aObj:Unhook(pTT, "ShowToolTipFrame")
+				end)
+			end
 		end
-		-- skin Pet tooltip
-		local pTT = _G.AtlasLoot.Button:GetType("Pet")
-		if pTT then
-			self:SecureHook(pTT, "ShowToolTipFrame", function(button)
-				self:addSkinFrame{obj=pTT.tooltipFrame, ft="a", kfs=true, nb=true}
-				self:Unhook(pTT, "ShowToolTipFrame")
-			end)
-		end
-		-- skin Faction tooltip
 		local fTT = _G.AtlasLoot.Button:GetType("Faction")
 		if fTT then
-			self:SecureHook(fTT, "ShowToolTipFrame", function(button)
-				fTT.tooltipFrame.standing:SetBackdrop(nil)
-				self:glazeStatusBar(fTT.tooltipFrame.standing.bar, 0,  nil)
-				self:addSkinFrame{obj=fTT.tooltipFrame, ft="a", kfs=true, nb=true}
-				self:Unhook(fTT, "ShowToolTipFrame")
+			aObj:SecureHook(fTT, "ShowToolTipFrame", function(_)
+				aObj:removeBackdrop(fTT.tooltipFrame.standing)
+				aObj:skinObject("statusbar", {obj=fTT.tooltipFrame.standing.bar, fi=0})
+				aObj:skinObject("frame", {obj=fTT.tooltipFrame, kfs=true})
+
+				aObj:Unhook(fTT, "ShowToolTipFrame")
+			end)
+		end
+		local sTT = _G.AtlasLoot.Button:GetType("Set")
+		if sTT then
+			aObj:SecureHook(sTT, "ShowToolTipFrame", function(_)
+				aObj:removeBackdrop(sTT.tooltipFrame.modelFrame)
+				if sTT.tooltipFrame.bonusDataFrame then
+					aObj:skinObject("frame", {obj=sTT.tooltipFrame.bonusDataFrame, kfs=true})
+				end
+				aObj:skinObject("frame", {obj=sTT.tooltipFrame, kfs=true})
+
+				aObj:Unhook(sTT, "ShowToolTipFrame")
+			end)
+		end
+		local iTT = _G.AtlasLoot.Button:GetType("Item")
+		if iTT then
+			aObj:SecureHook(iTT, "ShowQuickDressUp", function(_)
+				aObj:skinObject("frame", {obj=iTT.previewTooltipFrame, kfs=true})
+
+				aObj:Unhook(iTT, "ShowQuickDressUp")
 			end)
 		end
 	end
 
 	-- Minimap Button
 	if _G.AtlasLoot.MiniMapButton.frame then
-		self:removeRegions(_G.AtlasLoot.MiniMapButton.frame, {2, 3}) -- Border & Background
-		self:addSkinButton{obj=_G.AtlasLoot.MiniMapButton.frame, parent=_G.AtlasLoot.MiniMapButton.frame, sap=true}
+		aObj:removeRegions(_G.AtlasLoot.MiniMapButton.frame, {2, 3}) -- Border & Background
+		aObj:addSkinButton{obj=_G.AtlasLoot.MiniMapButton.frame, parent=_G.AtlasLoot.MiniMapButton.frame, sap=true}
 	end
 
-	if self.modBtnBs then
+	if aObj.isRtl
+	and aObj.modBtnBs
+	then
 		_G.AtlasLootToggleFromWorldMap2:GetNormalTexture():SetTexture([[Interface\Icons\INV_Box_01]])
 		_G.AtlasLootToggleFromWorldMap2:SetScale(0.5)
-		self:addButtonBorder{obj=_G.AtlasLootToggleFromWorldMap2}
+		aObj:addButtonBorder{obj=_G.AtlasLootToggleFromWorldMap2}
 	end
+
+	if aObj.isClsc then
+		aObj:RawHook(_G.AtlasLoot.Button, "ExtraItemFrame_GetFrame", function(this, ...)
+			local eiFrame = aObj.hooks[this].ExtraItemFrame_GetFrame(this, ...)
+			aObj:skinObject("frame", {obj=eiFrame, ofs=0})
+			aObj:Unhook(this, "ExtraItemFrame_GetFrame")
+			return eiFrame
+		end, true)
+		local Fav = _G.AtlasLoot.Addons:GetAddon("Favourites")
+		if Fav then
+			aObj:SecureHook(Fav.GUI, "Create", function(this)
+				aObj:removeBackdrop(this.frame.titleFrame)
+				aObj:removeBackdrop(this.frame.content.slotBg)
+				aObj:removeBackdrop(this.frame.content.headerBg)
+				aObj:removeBackdrop(this.frame.content.bottomBg)
+				aObj:removeBackdrop(this.frame.content.itemListBg)
+				skinDropDown(this.frame.content.listSelect)
+				aObj:skinObject("editbox", {obj=this.frame.content.editBox, y1=-4, y2=4})
+				aObj:skinObject("slider", {obj=this.frame.content.scrollFrame.scrollbar})
+				aObj:skinObject("frame", {obj=this.frame, kfs=true, cb=true, ofs=0, y1=-1})
+				if aObj.modBtns then
+					aObj:skinStdButton{obj=this.frame.content.optionsButton}
+					aObj:skinStdButton{obj=this.frame.content.showAllItems}
+				end
+				if aObj.modBtnBs then
+					local function setBtnClr(tex, quality)
+						aObj:Debug("AL setBtnClr: [%s, %s]", tex, quality)
+						aObj:setBtnClr(tex:GetParent(), quality)
+					end
+					for _, btn in _G.pairs(this.frame.content.slotFrame.slots) do
+						btn.overlay:SetAlpha(0)
+						btn.overlay.SetQualityBorder = setBtnClr
+						aObj:addButtonBorder{obj=btn, reParent={btn.count, btn.ownedItem}}
+						aObj:setBtnClr(btn)
+					end
+					aObj:SecureHook(this.frame.content.slotFrame, "ResetSlots", function(slObj)
+						for _, btn in _G.pairs(slObj.slots) do
+							aObj:setBtnClr(btn)
+						end
+					end)
+					aObj:SecureHook(this.frame.content.scrollFrame, "SetItems", function(sfObj)
+						for _, btn in _G.pairs(sfObj.itemButtons) do
+							btn.overlay:SetAlpha(0)
+							btn.overlay.SetQualityBorder = setBtnClr
+							aObj:addButtonBorder{obj=btn, reParent={btn.count, btn.ownedItem}}
+							aObj:setBtnClr(btn, _G.C_Item.GetItemQualityByID(btn.ItemID))
+						end
+					end)
+				end
+				if aObj.modChkBtns then
+					aObj:skinCheckButton{obj=this.frame.content.isGlobal.frame}
+				end
+
+				aObj:Unhook(Fav.GUI, "Create")
+			end)
+		end
+	end
+
+
+end
+
+aObj.addonsToSkin.AtlasLoot = function(_) -- v 8.10.00
+
+	skinAtlasLoot()
+
+end
+aObj.addonsToSkin.AtlasLootClassic = function(_) -- v2.3.3-bcc/v2.1.0
+
+	skinAtlasLoot()
 
 end

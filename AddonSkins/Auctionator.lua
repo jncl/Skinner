@@ -198,7 +198,7 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 9.0.11/2.5.1 (100.0.9/100.0.
 			end
 
 			if pCnt == 8 then
-				aObj.UnregisterCallback("Auctionator", "IOFPanel_Before_Skinning")
+				aObj.UnregisterMessage("Auctionator", "IOFPanel_Before_Skinning")
 			end
 		end
 	else
@@ -268,9 +268,16 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 9.0.11/2.5.1 (100.0.9/100.0.
 						aObj:clrBtnBdr(this.Import)
 						aObj:clrBtnBdr(this.AddItem)
 						aObj:clrBtnBdr(this.ManualSearch)
+						aObj:clrBtnBdr(this.ExportCSV)
 					end)
 				end
 
+				aObj:skinObject("slider", {obj=this.exportCSVDialog.ScrollFrame.ScrollBar})
+				aObj:skinObject("frame", {obj=this.exportCSVDialog, kfs=true, ri=true, rns=true})
+				if aObj.modBtns then
+					aObj:skinStdButton{obj=this.exportCSVDialog.Close}
+				end
+				
 				aObj:Unhook(this, "OnShow")
 			end)
 
@@ -281,7 +288,7 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 9.0.11/2.5.1 (100.0.9/100.0.
 					aObj:skinObject("editbox", {obj=this[level].MinBox})
 					aObj:skinObject("editbox", {obj=this[level].MaxBox})
 				end
-				aObj:skinObject("frame", {obj=this, kfs=true, ri=true})
+				aObj:skinObject("frame", {obj=this, kfs=true, ri=true, rns=true})
 				if aObj.modBtns then
 					aObj:skinStdButton{obj=this.Finished}
 					aObj:skinStdButton{obj=this.Cancel}
@@ -301,7 +308,7 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 9.0.11/2.5.1 (100.0.9/100.0.
 					aObj:skinObject("editbox", {obj=this[level].MinBox})
 					aObj:skinObject("editbox", {obj=this[level].MaxBox})
 				end
-				aObj:skinObject("frame", {obj=this, kfs=true, ri=true})
+				aObj:skinObject("frame", {obj=this, kfs=true, ri=true, rns=true})
 				if aObj.modBtns then
 					aObj:skinStdButton{obj=this.Finished}
 					aObj:skinStdButton{obj=this.Cancel}
@@ -316,7 +323,7 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 9.0.11/2.5.1 (100.0.9/100.0.
 
 			aObj:SecureHookScript(_G.AuctionatorExportListFrame, "OnShow", function(this)
 				aObj:skinObject("slider", {obj=this.ScrollFrame.ScrollBar, rpTex="artwork"})
-				aObj:skinObject("frame", {obj=this, kfs=true, ri=true})
+				aObj:skinObject("frame", {obj=this, kfs=true, ri=true, rns=true})
 				if aObj.modBtns then
 					 aObj:skinCloseButton{obj=this.CloseDialog}
 					 aObj:skinStdButton{obj=this.SelectAll}
@@ -340,7 +347,7 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 9.0.11/2.5.1 (100.0.9/100.0.
 
 			aObj:SecureHookScript(_G.AuctionatorImportListFrame, "OnShow", function(this)
 				aObj:skinObject("slider", {obj=this.ScrollFrame.ScrollBar, rpTex="artwork"})
-				aObj:skinObject("frame", {obj=this, kfs=true, ri=true})
+				aObj:skinObject("frame", {obj=this, kfs=true, ri=true, rns=true})
 				if aObj.modBtns then
 					 aObj:skinCloseButton{obj=this.CloseDialog}
 					 aObj:skinStdButton{obj=this.Import}
@@ -351,7 +358,7 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 9.0.11/2.5.1 (100.0.9/100.0.
 
 			aObj:SecureHookScript(_G.AuctionatorCopyTextFrame, "OnShow", function(this)
 				aObj:skinObject("slider", {obj=this.ScrollFrame.ScrollBar})
-				aObj:skinObject("frame", {obj=this, kfs=true, ri=true})
+				aObj:skinObject("frame", {obj=this, kfs=true, ri=true, rns=true})
 				if aObj.modBtns then
 					aObj:skinStdButton{obj=this.Close}
 				end
@@ -386,7 +393,7 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 9.0.11/2.5.1 (100.0.9/100.0.
 					aObj:addButtonBorder{obj=aObj:getPenultimateChild(asi), ofs=-2, x1=1, clr="gold"} -- RefreshButton
 				end
 				asi = nil
-				aObj:skinObject("slider", {obj=this.BagListing.ScrollFrame.ScrollBar, rpTex="artwork"})
+				aObj:skinObject("slider", {obj=this.BagListing.ScrollFrame.ScrollBar, rpTex={"background", "artwork"}})
 				for _, child in _G.pairs{this.BagListing.ScrollFrame.ItemListingFrame:GetChildren()} do
 					aObj:keepRegions(child.SectionTitle, {3, 4, 5}) -- N.B. region 3 is highlight, 4 is selected, 5 is text
 					aObj:skinObject("frame", {obj=child.SectionTitle, kfs=true, bd=5, ofs=0, x1=-2, x2=2})
@@ -400,12 +407,13 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 9.0.11/2.5.1 (100.0.9/100.0.
 				aObj:skinObject("slider", {obj=this.PostingHistoryListing.ScrollFrame.scrollBar, rpTex="artwork"})
 				skinHdrs(this.PostingHistoryListing)
 				aObj:removeInset(this.HistoricalPriceInset)
-				-- CurrentItemProvider
-				-- HistoricalPriceProvider
-				-- PostingHistoryProvider
 				-- ConfirmDropDown
 				aObj:skinObject("tabs", {obj=this.HistoryTabsContainer, tabs=this.HistoryTabsContainer.Tabs, ignoreSize=true, lod=true, upwards=true})
-
+				aObj:skinObject("frame", {obj=this.BagListing, fb=true, ofs=5, x2=6})
+				aObj:skinObject("frame", {obj=this.CurrentItemListing, fb=true, ofs=-2, x1=-10, y2=-6})
+				aObj:skinObject("frame", {obj=this.HistoricalPriceListing, fb=true, ofs=-2, x1=-10, y2=-6})
+				aObj:skinObject("frame", {obj=this.PostingHistoryListing, fb=true, ofs=-2, x1=-10, y2=-6})
+				
 				aObj:Unhook(this, "OnShow")
 			end)
 
@@ -480,21 +488,21 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 9.0.11/2.5.1 (100.0.9/100.0.
 				skinKids(panel)
 			end
 			if pCnt == 11 then
-				aObj.UnregisterCallback("Auctionator_Config", "IOFPanel_Before_Skinning")
+				aObj.UnregisterMessage("Auctionator_Config", "IOFPanel_Before_Skinning")
 			end
 		end
 	end
 
-	self.RegisterCallback("Auctionator", "Auction_House_Show", function(this)
+	self.RegisterMessage("Auctionator", "Auction_House_Show", function(_)
 		-- wait for frames to be created
-		_G.C_Timer.After(0.5, function()
+		_G.C_Timer.After(0.75, function()
 			skinFrames()
 		end)
 
-		self.UnregisterCallback("Auctionator", "Auction_House_Show")
+		self.UnregisterMessage("Auctionator", "Auction_House_Show")
 	end)
 
-	self.RegisterCallback("Auctionator_Config", "IOFPanel_Before_Skinning", function(this, panel)
+	self.RegisterMessage("Auctionator_Config", "IOFPanel_Before_Skinning", function(_, panel)
 		skinConfigFrames(panel)
 	end)
 

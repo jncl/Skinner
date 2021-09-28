@@ -2294,6 +2294,8 @@ aObj.blizzLoDFrames[ftype].EncounterJournal = function(self) -- a.k.a. Adenture 
 			self:Unhook(fObj, "OnShow")
 		end)
 		self:checkShown(this.LootJournal)
+		-- send message when UI is skinned (used by Atlas skin)
+		self:SendMessage("EncounterJournal_Skinned", self)
 
 		self:Unhook(this, "OnShow")
 	end)

@@ -29,7 +29,7 @@ end
 --@end-alpha@
 
 local addonSkins = {
-	"AdvancedInterfaceOptions", "Atlas",
+	"AdvancedInterfaceOptions",
 	"BindPad", "BossNotes", "BossNotes_PersonalNotes", "BuyEmAll",
 	"CensusPlus", "Chatter",
 	"Examiner",
