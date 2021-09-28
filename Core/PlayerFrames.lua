@@ -2161,7 +2161,7 @@ aObj.blizzLoDFrames[ftype].EncounterJournal = function(self) -- a.k.a. Adenture 
 				self:SecureHook("EncounterJournal_ListInstances", function()
 					local btn
 					for i = 1, 30 do
-						btn = this.scroll.child["instance" .. i]
+						btn = _G.EncounterJournal.instanceSelect.scroll.child["instance" .. i]
 						if btn then
 							self:addButtonBorder{obj=btn, relTo=btn.bgImage, ofs=0}
 						end
@@ -2244,7 +2244,7 @@ aObj.blizzLoDFrames[ftype].EncounterJournal = function(self) -- a.k.a. Adenture 
 			fObj.info.lootScroll.classClearFilter:DisableDrawLayer("BACKGROUND")
 			-- hook this to skin loot entries
 			self:SecureHook("EncounterJournal_LootUpdate", function()
-				for _, btn in _G.pairs(this.info.lootScroll.buttons) do
+				for _, btn in _G.pairs(_G.EncounterJournal.encounter.info.lootScroll.buttons) do
 					btn:DisableDrawLayer("BORDER")
 					btn.armorType:SetTextColor(self.BT:GetRGB())
 					btn.slot:SetTextColor(self.BT:GetRGB())
