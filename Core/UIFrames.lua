@@ -4709,8 +4709,8 @@ aObj.blizzLoDFrames[ftype].MovePad = function(self)
 	self.initialized.MovePad = true
 
 	self:SecureHookScript(_G.MovePadFrame, "OnShow", function(this)
-		_G.MovePadRotateLeft.icon:SetTexture([[Interface/Glues/CharacterSelect/RestoreButton]])
-		_G.MovePadRotateRight.icon:SetTexture([[Interface/Glues/CharacterSelect/RestoreButton]])
+		_G.MovePadRotateLeft.icon:SetTexture(self.tFDIDs.rB)
+		_G.MovePadRotateRight.icon:SetTexture(self.tFDIDs.rB)
 		_G.MovePadRotateRight.icon:SetTexCoord(1, 0, 0, 1) -- flip texture horizontally
 		self:addSkinFrame{obj=this, ft=ftype}
 		if self.modBtns then
@@ -4723,15 +4723,15 @@ aObj.blizzLoDFrames[ftype].MovePad = function(self)
 			self:skinStdButton{obj=_G.MovePadStrafeRight}
 			-- Lock button, change texture
 			local tex = _G.MovePadLock:GetNormalTexture()
-			tex:SetTexture([[Interface/Glues/CharacterSelect/Glues-AddOn-Icons]])
+			tex:SetTexture(self.tFDIDs.gAOI)
 			tex:SetTexCoord(0, 0.25, 0, 1.0)
 			tex:SetAlpha(1)
 			tex = _G.MovePadLock:GetPushedTexture()
-			tex:SetTexture([[Interface/Glues/CharacterSelect/Glues-AddOn-Icons]])
+			tex:SetTexture(self.tFDIDs.gAOI)
 			tex:SetTexCoord(0.25, 0.5, 0, 1.0)
 			tex:SetAlpha(0.75)
 			tex = _G.MovePadLock:GetCheckedTexture()
-			tex:SetTexture([[Interface/Glues/CharacterSelect/Glues-AddOn-Icons]])
+			tex:SetTexture(self.tFDIDs.gAOI)
 			tex:SetTexCoord(0.25, 0.5, 0, 1.0)
 			tex:SetAlpha(1)
 			self:moveObject{obj=_G.MovePadLock, x=-6, y=7} -- move it up and left
