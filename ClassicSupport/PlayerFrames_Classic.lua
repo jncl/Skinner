@@ -238,7 +238,13 @@ aObj.SetupClassic_PlayerFrames = function()
 		self.initialized.CraftUI = true
 
 		self:SecureHookScript(_G.CraftFrame, "OnShow", function(this)
-			self:skinStatusBar{obj=_G.CraftRankFrame, fi=0, bgTex=_G.CraftRankFrameBackground}
+			if self.isClscBC then
+				self:skinObject("dropdown", {obj=_G.CraftFrameFilterDropDown, fType=ftype})
+				if self.modChkBtns then
+					self:skinCheckButton{obj=_G.CraftFrameAvailableFilterCheckButton, fType=ftype}
+				end
+			end
+			self:skinObject("statusbar", {obj=_G.CraftRankFrame, fi=0, bg=_G.CraftRankFrameBackground})
 			_G.CraftRankFrameBorder:GetNormalTexture():SetTexture(nil)
 			self:keepFontStrings(_G.CraftExpandButtonFrame)
 			self:keepFontStrings(_G.CraftDetailScrollChildFrame)
@@ -250,13 +256,19 @@ aObj.SetupClassic_PlayerFrames = function()
 			else
 				x1, y1, x2, y2 = 10, -11, -31, 71
 			end
-			self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, x1=x1, y1=y1, x2=x2, y2=y2}
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, x1=x1, y1=y1, x2=x2, y2=y2})
 			if self.modBtnBs then
 				self:addButtonBorder{obj=_G.CraftIcon, clr="gold"}
 			end
 			if not _G.IsAddOnLoaded("alaTradeSkill") then
-				self:skinSlider{obj=_G.CraftListScrollFrameScrollBar, rt="background"}
-				self:skinSlider{obj=_G.CraftDetailScrollFrameScrollBar, rt="background"}
+				self:skinObject("slider", {obj=_G.CraftListScrollFrameScrollBar, fType=ftype, rpTex="background"})
+				self:skinObject("slider", {obj=_G.CraftDetailScrollFrameScrollBar, fType=ftype, rpTex="background"})
+				for i = 1, _G.MAX_CRAFT_REAGENTS do
+					_G["CraftReagent" .. i].NameFrame:SetTexture(nil)
+					if self.modBtnBs then
+						self:addButtonBorder{obj=_G["CraftReagent" .. i], fType=ftype, libt=true, reParent={_G["CraftReagent" .. i].Count}}
+					end
+				end
 				if self.modBtns then
 					self:skinCloseButton{obj=_G.CraftFrameCloseButton, fType=ftype}
 					self:skinExpandButton{obj=_G.CraftCollapseAllButton, fType=ftype, onSB=true}
