@@ -31,7 +31,7 @@ ignore:
 
 tools-used:
     - findglobals
-	# https://www.townlong-yak.com/globe/
-	- luacheck
+    # https://www.townlong-yak.com/globe/
+    # luacheck
 
 enable-nolib-creation: no
