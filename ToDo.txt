@@ -29,27 +29,36 @@ ToDos
  
 ≈ 	O	Use luacheck on all lua files including AddOn Skins
 
-	I	Rarity, reported by Galthariel, 14.09.21
-?		- Skinner\AddonSkins\Rarity-1.0 (r710-release-6).lua:19: Usage: SecureHook([object], method, [handler]): Attempting to hook a non existing target
-		- What I did was to momentarily disable Rarity under "Disabled Skins" 
-		
 	I/B	oGlowClassic?, reported by 아련별, 15.09.21
 ?		- missing button borders on items
 			- character frame works fine but inventory & bank & mail frame isn't.
+		- using AdiBags BCC & EasyMail
 		
-	I	MainMenuBar, reported by Fakelessgaming, 15.09.21
-		-  [ADDON_ACTION_BLOCKED] AddOn 'Skinner' tried to call the protected function 'MainMenuBar:SetScale()'.
+	I	MainMenuBar, reported by Fakelessgaming, 15.09.21/21.09.21
+?		-  [ADDON_ACTION_BLOCKED] AddOn 'Skinner' tried to call the protected function 'MainMenuBar:SetScale()'.
 		[string "@!BugGrabber\BugGrabber.lua"]:519: in function <!BugGrabber\BugGrabber.lua:519>
 		[string "=[C]"]: in function `SetScale'
 		[string "@FrameXML\UIParent.lua"]:3266: in function `UIParentManageFramePositions'
 		[string "@FrameXML\UIParent.lua"]:2653: in function <FrameXML\UIParent.lua:2640>
 		[string "=[C]"]: in function `SetAttribute'
-		[string "@FrameXML\UIParent.lua"]:3449: in function `UIParent_ManageFramePositions'
-		[string "@FrameXML\VehicleSeatIndicator.lua"]:62: in function `VehicleSeatIndicator_UnloadTextures'
-		[string "@FrameXML\VehicleSeatIndicator.lua"]:108: in function <FrameXML\VehicleSeatIndicator.lua:93>
+
+	I	EncounterJournal, reported by Fakelessgaming, 20.09.21
+√		-  Skinner\Core\PlayerFrames.lua:2247: attempt to index field 'info' (a nil value)
+		[string "@Skinner\Core\PlayerFrames.lua"]:2247: in function <Skinner\Core\PlayerFrames.lua:2246>
 		
-	I/B	TinyTooltip, reported by 아련별, 15.09.21
-√		- SharedXML\Mixin.lua:29: attempt to index local 'object' (a string value)
-		[string "@TinyTooltip\Core.lua"]:734: in function `v'
-		[string "@TinyTooltip\libs\LibEvent.lua"]:121: in function `trigger'
-		[string "@Skinner\AddonSkins\TinyTooltip-8.2.1.lua"]:51: in function <Skinner\AddonSkins\TinyTooltip.lua:5>
+	I	FriendsFrame, reported by Galthariel, 21.09.21
+√		- Skinner\Modules\UIButtons.lua:517: attempt to index field 'obj' (a nil value)
+		[string "@Skinner\Modules\UIButtons.lua"]:517: in function `skinStdButton'
+		[string "@Skinner\Core\PlayerFrames.lua"]:2414: in function <Skinner\Core\PlayerFrames.lua:2381>
+		
+	I/B	reported by HealingBassist1030, 21.09.21
+√		- enchant profession UI partially skinned
+	
+	I	FriendsFrame, reportedby Fakelessgaming, 22.09.21
+√		- Tabs NOT skinned
+		
+≈	S/B	Atlas, requested by 아련별, 23.09.21
+
+	I	Auctionator, reportedby by Galthariel, 26.09.21
+√		- Skinner\AddonSkins\Auctionator-9.1.5.1-27-gba38645.lua:277: Usage: SecureHookScript(object, method, [handler]): You can only hook a script on a frame object
+		
