@@ -470,7 +470,7 @@ aObj.blizzFrames[ftype].AddonList = function(self)
 		end
 		self:skinObject("slider", {obj=_G.AddonListScrollFrame.ScrollBar, fType=ftype, rpTex="background"})
 		self:skinObject("dropdown", {obj=_G.AddonCharacterDropDown, fType=ftype, x2=109})
-		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true})
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, x2=self.isClscBC and 1})
 		if self.modBtns then
 			self:skinStdButton{obj=this.CancelButton}
 			self:skinStdButton{obj=this.OkayButton}
