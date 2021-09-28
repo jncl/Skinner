@@ -1,3 +1,16 @@
+beta9.40203.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Updated AlertFrame skin
+	Updated TinyTooltip skin
+	PTR change
+	Updated NSF statusBar skin
+	Correct regex in Nameplate widget check
+	Updated code after checking with luacheck & globe
+	Rework ClassicSupport Files
+	
 beta9.40120.1
 Jncl:
     ToDo.txt
