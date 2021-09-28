@@ -79,6 +79,7 @@
 <Script file="DetailsFramework.lua"/>
 <Script file="DockingStation.lua"/>
 <Script file="Dominos.lua"/>
+<Script file="EasyMail.lua"/>
 <Script file="ElvUI.lua"/>
 <Script file="ERC.lua"/>
 <Script file="EveryGoldToBanker.lua"/>
