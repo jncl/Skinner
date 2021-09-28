@@ -136,7 +136,10 @@ aObj.SetupClassic_PlayerFrames = function()
 				self:skinExpandButton{obj=_G.SkillFrameCollapseAllButton, fType=ftype, onSB=true, minus=true}
 				self:skinStdButton{obj=_G.SkillFrameCancelButton, fType=ftype}
 			end
-
+			if self.modBtnBs then
+				self:addButtonBorder{obj=_G.SkillDetailStatusBarUnlearnButton, fType=ftype, ofs=-4, x1=6, y2=7, clr="grey"}
+			end
+			
 			self:Unhook(this, "OnShow")
 		end)
 
