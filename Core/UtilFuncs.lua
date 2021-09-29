@@ -5,12 +5,8 @@ local tmpTab = {}
 
 function aObj:addBackdrop(obj)
 
-	if not self.isClscERA
-	or aObj.isClscERAPTR
-	then
-		if not obj.ApplyBackdrop then
-			_G.Mixin(obj, _G.BackdropTemplateMixin)
-		end
+	if not obj.ApplyBackdrop then
+		_G.Mixin(obj, _G.BackdropTemplateMixin)
 	end
 
 end

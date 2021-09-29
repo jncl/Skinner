@@ -364,14 +364,6 @@ aObj.SetupClassic_PlayerFrames = function()
 				self:skinObject("editbox", {obj=_G.FriendsFrameBroadcastInput, fType=ftype})
 				_G.FriendsFrameBroadcastInputFill:SetTextColor(self.BT:GetRGB())
 				self:skinObject("tabs", {obj=fObj, prefix=fObj:GetName(), numTabs=2, fType=ftype, lod=self.isTT and true, upwards=true, offsets={x1=0, y1=-5, x2=0, y2=-4}})
-				if self.modBtnBs then
-					if not self.isClscBC
-					and not aObj.isClscERAPTR
-					then
-						self:addButtonBorder{obj=_G.FriendsTabHeaderRecruitAFriendButton}
-						self:addButtonBorder{obj=_G.FriendsTabHeaderSoRButton}
-					end
-				end
 				_G.RaiseFrameLevel(fObj)
 
 				self:Unhook(fObj, "OnShow")
@@ -627,28 +619,6 @@ aObj.SetupClassic_PlayerFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
-
-		if not self.isClscBC
-		and not aObj.isClscERAPTR
-		then
-			self:SecureHookScript(_G.RecruitAFriendFrame, "OnShow", function(this)
-				self:skinEditBox{obj=_G.RecruitAFriendNameEditBox, regs={6}} -- 6 is text
-				_G.RecruitAFriendNameEditBox.Fill:SetTextColor(self.BT:GetRGB())
-				self:addFrameBorder{obj=this.NoteFrame, ft=ftype}
-				_G.RecruitAFriendNoteEditBox.Fill:SetTextColor(self.BT:GetRGB())
-				self:addSkinFrame{obj=this, ft=ftype, kfs=true, ofs=-6, y1=-7}
-				if self.modBtns then
-					self:skinStdButton{obj=_G.RecruitAFriendFrame.SendButton, fType=ftype}
-				end
-				-- RecruitAFriendSentFrame
-				self:addSkinFrame{obj=_G.RecruitAFriendSentFrame, ft=ftype, kfs=true, ofs=-7, y2=4}
-				if self.modBtns then
-					self:skinStdButton{obj=_G.RecruitAFriendSentFrame.OKButton, fType=ftype}
-				end
-
-				self:Unhook(this, "OnShow")
-			end)
-		end
 
 		self:SecureHookScript(_G.ChannelFrame, "OnShow", function(this)
 			self:removeInset(this.LeftInset)

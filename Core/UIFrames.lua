@@ -2207,58 +2207,9 @@ aObj.blizzLoDFrames[ftype].DeathRecap = function(self)
 
 end
 
-local function skinETFrame()
-	local function skinMenuBtn(btn)
-		aObj:skinStdButton{obj=btn, fType=ftype, y1=2, y2=-3}
-		aObj.modUIBtns:chgHLTex(btn, btn.MouseoverOverlay)
-	end
-	aObj:SecureHookScript(_G.EventTrace, "OnShow", function(this)
-		aObj:skinObject("editbox", {obj=this.Log.Bar.SearchBox, fType=ftype, si=true})
-		aObj:skinObject("scrollbar", {obj=this.Log.Events.ScrollBar, fType=ftype, x1=0, x2=0})
-		aObj:skinObject("scrollbar", {obj=this.Log.Search.ScrollBar, fType=ftype, x1=0, x2=0})
-		aObj:skinObject("scrollbar", {obj=this.Filter.ScrollBar, fType=ftype, x1=0, x2=0})
-		aObj:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, x2=aObj.isRtl and 3 or 1})
-		if aObj.modBtns then
-			skinMenuBtn(this.SubtitleBar.ViewLog)
-			skinMenuBtn(this.SubtitleBar.ViewFilter)
-			aObj:skinStdButton{obj=this.SubtitleBar.OptionsDropDown, fType=ftype, clr="grey"}
-			skinMenuBtn(this.Log.Bar.MarkButton)
-			skinMenuBtn(this.Log.Bar.PlaybackButton)
-			skinMenuBtn(this.Log.Bar.DiscardAllButton)
-			skinMenuBtn(this.Filter.Bar.CheckAllButton)
-			skinMenuBtn(this.Filter.Bar.UncheckAllButton)
-			skinMenuBtn(this.Filter.Bar.DiscardAllButton)
-		end
-
-		aObj:Unhook(this, "OnShow")
-	end)
-	if aObj.modBtns
-	or aObj.modChkBtns
-	then
-		aObj:SecureHook(_G.EventTraceLogEventButtonMixin, "Init", function(this, _)
-			if aObj.modBtns then
-				aObj:skinCloseButton{obj=this.HideButton, fType=ftype, noSkin=true}
-			end
-		end)
-		aObj:SecureHook(_G.EventTraceFilterButtonMixin, "Init", function(this, _)
-			if aObj.modBtns then
-				aObj:skinCloseButton{obj=this.HideButton, fType=ftype, noSkin=true}
-			end
-			if aObj.modChkBtns then
-				aObj:skinCheckButton{obj=this.CheckButton, fType=ftype, ofs=-1}
-			end
-		end)
-	end
-end
 aObj.blizzLoDFrames[ftype].DebugTools = function(self)
 	if not self.prdb.DebugTools or self.initialized.DebugTools then return end
 	self.initialized.DebugTools = true
-
-	if self.isClscERA
-	and not aObj.isClscERAPTR
-	then
-		skinETFrame()
-	end
 
 	local function skinTAD(frame)
 		aObj:skinObject("editbox", {obj=frame.FilterBox, fType=ftype, si=true})
@@ -2316,11 +2267,6 @@ aObj.blizzLoDFrames[ftype].DebugTools = function(self)
 	_G.C_Timer.After(0.1, function()
 		self:add2Table(self.ttList, _G.FrameStackTooltip)
 		_G.FrameStackTooltip:SetFrameLevel(20)
-		if self.isClscERA
-		and not aObj.isClscERAPTR
-		then
-			self:add2Table(self.ttList, _G.EventTraceTooltip)
-		end
 	end)
 
 end
@@ -2396,22 +2342,58 @@ aObj.blizzFrames[ftype].EventToastManager = function(self)
 
 end
 
-if not aObj.isClscERA
-or aObj.isClscERAPTR
-then
-	aObj.blizzLoDFrames[ftype].EventTrace = function(self)
-		if not self.prdb.EventTrace or self.initialized.EventTrace then return end
-		self.initialized.EventTrace = true
+aObj.blizzLoDFrames[ftype].EventTrace = function(self)
+	if not self.prdb.EventTrace or self.initialized.EventTrace then return end
+	self.initialized.EventTrace = true
 
-		skinETFrame()
-		self:checkShown(_G.EventTrace)
-
-		-- tooltip
-		_G.C_Timer.After(0.1, function()
-			self:add2Table(self.ttList, _G.EventTraceTooltip)
-		end)
-
+	local function skinMenuBtn(btn)
+		aObj:skinStdButton{obj=btn, fType=ftype, y1=2, y2=-3}
+		aObj.modUIBtns:chgHLTex(btn, btn.MouseoverOverlay)
 	end
+	aObj:SecureHookScript(_G.EventTrace, "OnShow", function(this)
+		aObj:skinObject("editbox", {obj=this.Log.Bar.SearchBox, fType=ftype, si=true})
+		aObj:skinObject("scrollbar", {obj=this.Log.Events.ScrollBar, fType=ftype, x1=0, x2=0})
+		aObj:skinObject("scrollbar", {obj=this.Log.Search.ScrollBar, fType=ftype, x1=0, x2=0})
+		aObj:skinObject("scrollbar", {obj=this.Filter.ScrollBar, fType=ftype, x1=0, x2=0})
+		aObj:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, x2=aObj.isRtl and 3 or 1})
+		if aObj.modBtns then
+			skinMenuBtn(this.SubtitleBar.ViewLog)
+			skinMenuBtn(this.SubtitleBar.ViewFilter)
+			aObj:skinStdButton{obj=this.SubtitleBar.OptionsDropDown, fType=ftype, clr="grey"}
+			skinMenuBtn(this.Log.Bar.MarkButton)
+			skinMenuBtn(this.Log.Bar.PlaybackButton)
+			skinMenuBtn(this.Log.Bar.DiscardAllButton)
+			skinMenuBtn(this.Filter.Bar.CheckAllButton)
+			skinMenuBtn(this.Filter.Bar.UncheckAllButton)
+			skinMenuBtn(this.Filter.Bar.DiscardAllButton)
+		end
+
+		aObj:Unhook(this, "OnShow")
+	end)
+	if aObj.modBtns
+	or aObj.modChkBtns
+	then
+		aObj:SecureHook(_G.EventTraceLogEventButtonMixin, "Init", function(this, _)
+			if aObj.modBtns then
+				aObj:skinCloseButton{obj=this.HideButton, fType=ftype, noSkin=true}
+			end
+		end)
+		aObj:SecureHook(_G.EventTraceFilterButtonMixin, "Init", function(this, _)
+			if aObj.modBtns then
+				aObj:skinCloseButton{obj=this.HideButton, fType=ftype, noSkin=true}
+			end
+			if aObj.modChkBtns then
+				aObj:skinCheckButton{obj=this.CheckButton, fType=ftype, ofs=-1}
+			end
+		end)
+	end
+	self:checkShown(_G.EventTrace)
+
+	-- tooltip
+	_G.C_Timer.After(0.1, function()
+		self:add2Table(self.ttList, _G.EventTraceTooltip)
+	end)
+
 end
 
 -- this code handles the ExtraActionBarFrame and ZoneAbilityFrame buttons
@@ -3316,7 +3298,7 @@ aObj.blizzFrames[ftype].HelpFrame = function(self)
 
 	self:SecureHookScript(_G.HelpFrame, "OnShow", function(this)
 		self:removeInset(this.Browser.BrowserInset)
-		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true, ri=true, rns=true, cb=true, x1=self.isClscBC or aObj.isClscERAPTR and 0, x2=self.isClscBC or aObj.isClscERAPTR and 1 or 3})
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true, ri=true, rns=true, cb=true, x1=self.isClsc and 0, x2=self.isClsc and 1 or 3})
 
 		self:Unhook(this, "OnShow")
 	end)

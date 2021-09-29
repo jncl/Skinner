@@ -58,7 +58,7 @@ local funcs = {
 		GMChatUI = {keep = true, keepOpts = true},
 		GMSurveyUI = not aObj.isClscBC and {keep = false, keepOpts = true},
 		GuildBankUI = aObj.isClscBC and {keep = false, keepOpts = true},
-		HelpFrame = {keep = aObj.isClscBC or aObj.isClscERAPTR and true, keepOpts = true},
+		HelpFrame = {keep = true, keepOpts = true},
 		InterfaceOptions = {keep = true, keepOpts = true},
 		ItemText = {keep = true, keepOpts = true},
 		MacroUI = {keep = true, keepOpts = true},
