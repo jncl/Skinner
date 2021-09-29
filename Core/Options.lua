@@ -219,7 +219,7 @@ aObj.SetupDefaults = function(self)
 	}
 
 	if not self.db then
-		self.db = _G.LibStub:GetLibrary("AceDB-3.0", true):New(aName .. "DB", defaults, "Default")
+		self.db = _G.LibStub:GetLibrary("AceDB-3.0", true):New(aName .. "DB", defaults, true)
 	end
 
 end
