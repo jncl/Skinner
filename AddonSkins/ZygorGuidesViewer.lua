@@ -2,7 +2,7 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("ZygorGuidesViewer") then return end
 local _G = _G
 
-aObj.addonsToSkin.ZygorGuidesViewer = function(self) -- v 8.0
+aObj.addonsToSkin.ZygorGuidesViewer = function(self) -- v 8.1
 
 	local ZGV = _G.ZygorGuidesViewer
 
@@ -45,14 +45,10 @@ aObj.addonsToSkin.ZygorGuidesViewer = function(self) -- v 8.0
 	self:checkShown(_G.ZygorGuidesViewerMaintenanceFrame)
 
 	if ZGV.ItemScore.GearFinder then
-		self:SecureHook(ZGV.ItemScore.GearFinder, "CreateSystemTab", function(this)
+		self:SecureHook(ZGV.ItemScore.GearFinder, "CreateMainFrame", function(this)
 			self:skinObject("tabs", {obj=this, tabs={this.BlizzardTab}, lod=self.isTT and true, offsets={x1=8, y1=self.isTT and 2 or -3, x2=-8, y2=2}, track=false})
 			self:setInactiveTab(this.BlizzardTab.sf)
 			_G.CharacterFrame.numTabs = 4
-			
-			self:Unhook(ZGV.ItemScore.GearFinder, "CreateSystemTab")
-		end)
-		self:SecureHook(ZGV.ItemScore.GearFinder, "CreateMainFrame", function(this)
 			self:removeBackdrop(this.MainFrame.CenterColumn)
 			self:skinObject("frame", {obj=this.MainFrame, kfs=true, cbns=true})
 			if self.modBtnBs then
