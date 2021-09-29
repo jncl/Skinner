@@ -42,23 +42,17 @@ ToDos
 		[string "@FrameXML\UIParent.lua"]:2653: in function <FrameXML\UIParent.lua:2640>
 		[string "=[C]"]: in function `SetAttribute'
 
-	I	EncounterJournal, reported by Fakelessgaming, 20.09.21
-√		-  Skinner\Core\PlayerFrames.lua:2247: attempt to index field 'info' (a nil value)
-		[string "@Skinner\Core\PlayerFrames.lua"]:2247: in function <Skinner\Core\PlayerFrames.lua:2246>
-		
-	I	FriendsFrame, reported by Galthariel, 21.09.21
-√		- Skinner\Modules\UIButtons.lua:517: attempt to index field 'obj' (a nil value)
-		[string "@Skinner\Modules\UIButtons.lua"]:517: in function `skinStdButton'
-		[string "@Skinner\Core\PlayerFrames.lua"]:2414: in function <Skinner\Core\PlayerFrames.lua:2381>
-		
-	I/B	reported by HealingBassist1030, 21.09.21
-√		- enchant profession UI partially skinned
-	
-	I	FriendsFrame, reportedby Fakelessgaming, 22.09.21
-√		- Tabs NOT skinned
-		
-≈	S/B	Atlas, requested by 아련별, 23.09.21
+	I	ZygorGuidesViewer, reported by merthalde, 28.09.21
+√		- ...face\AddOns\Skinner\AddonSkins\ZygorGuidesViewer-8.1.lua:48: Usage: SecureHook([object], method, [handler]): Attempting to hook a non existing target
 
-	I	Auctionator, reportedby by Galthariel, 26.09.21
-√		- Skinner\AddonSkins\Auctionator-9.1.5.1-27-gba38645.lua:277: Usage: SecureHookScript(object, method, [handler]): You can only hook a script on a frame object
-		
+	I/B	DBM, reported by 아련별, 28.09.21
+√		- Skinner\Core\UtilFuncs.lua:968: attempt to call method 'GetRegions' (a nil value)
+		[string "@Skinner\Core\UtilFuncs.lua"]:968: in function `removeRegions'
+		[string "@Skinner\Core\NewSkinFuncs.lua"]:434: in function <Skinner\Core\NewSkinFuncs.lua:420>
+		[string "@Skinner\Core\NewSkinFuncs.lua"]:534: in function `?'
+		[string "@Skinner\Core\NewSkinFuncs.lua"]:179: in function `skinObject'
+		[string "@Skinner\AddonSkins\DBM-2.5.15.20210927000000.lua"]:10: in function <Skinner\AddonSkins\DBM.lua:8>
+
+	I	LUI, reported by therealdeerez, 28.08.21
+√		- Completely broken when using LUI. Absolutely zero changes will save and it always loads the default setting on a UI reload. Last good working version with LUI is beta9.40011.1.
+ 
