@@ -1,3 +1,19 @@
+beta9.40260.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Updated AddonList skin for Classic
+	Updated Classic CraftFrame skin
+	Updated Classic SkillFrame skin
+	Use FileIDs for texture names
+	Moved Button quality colour code into UIButtons module
+	Bugfix for FriendsFrame
+	Bugfix for EncounterJournal
+	Updated Atlas, AtlasLoot, Auctionator, LIBUIDropDownMenu skins
+	Skinned EasyMail
+	Updated .pkgmeta files with comments for tools used
+	
 beta9.40203.1
 Jncl:
 	ToDo.txt
