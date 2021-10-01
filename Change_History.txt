@@ -1,3 +1,12 @@
+beta9.40347.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Updated DBM, LUI and ZygorGuidesViewer skins
+	Update SetupDefaults code
+	Apply Classic Era PTR changes
+	
 beta9.40260.1
 Jncl:
 	ToDo.txt
