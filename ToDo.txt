@@ -24,16 +24,16 @@ ToDos
 ≈	O	Refactor NewSkinFuncs in Blizzard/AddOn skins
 
 ≈	O	Replace RegisterCallback/Fire by RegisterMessage/SendMessage
-	
+
 ≈	O	Replace texture pathnames by texture FileDataIDs, found in setupTextures function
- 
+
 ≈ 	O	Use luacheck on all lua files including AddOn Skins
 
 	I/B	oGlowClassic?, reported by 아련별, 15.09.21
 ?		- missing button borders on items
 			- character frame works fine but inventory & bank & mail frame isn't.
 		- using AdiBags BCC & EasyMail
-		
+
 	I	MainMenuBar, reported by Fakelessgaming, 15.09.21/21.09.21
 ?		-  [ADDON_ACTION_BLOCKED] AddOn 'Skinner' tried to call the protected function 'MainMenuBar:SetScale()'.
 		[string "@!BugGrabber\BugGrabber.lua"]:519: in function <!BugGrabber\BugGrabber.lua:519>
@@ -42,17 +42,19 @@ ToDos
 		[string "@FrameXML\UIParent.lua"]:2653: in function <FrameXML\UIParent.lua:2640>
 		[string "=[C]"]: in function `SetAttribute'
 
-	I	ZygorGuidesViewer, reported by merthalde, 28.09.21
-√		- ...face\AddOns\Skinner\AddonSkins\ZygorGuidesViewer-8.1.lua:48: Usage: SecureHook([object], method, [handler]): Attempting to hook a non existing target
+	I	Auctionator, reported by Galthariel, 29.09.21
+≈		- Skinner\AddonSkins\Auctionator-9.1.5.1-31-gc0eeca8.lua:284: Usage: SecureHookScript(object, method, [handler]): You can only hook a script on a frame object
 
-	I/B	DBM, reported by 아련별, 28.09.21
-√		- Skinner\Core\UtilFuncs.lua:968: attempt to call method 'GetRegions' (a nil value)
-		[string "@Skinner\Core\UtilFuncs.lua"]:968: in function `removeRegions'
-		[string "@Skinner\Core\NewSkinFuncs.lua"]:434: in function <Skinner\Core\NewSkinFuncs.lua:420>
-		[string "@Skinner\Core\NewSkinFuncs.lua"]:534: in function `?'
+	I	Rarity, reported by Galthariel, 29.09.21
+≈		- Skinner\AddonSkins\Rarity-1.0 (r711-release-2).lua:19: Usage: SecureHook([object], method, [handler]): Attempting to hook a non existing target
+
+?	N/B	Adibags, reported by 아련별, 29.09.21
+
+	I	Skada, reported by DarkLimpan, 29.09.21
+√		- not being skinned anymore
+
+	I	Altoholic, reported by therealdeerez, 30.09.21
+√		- Skinner\Core\NewSkinFuncs.lua:396: attempt to index field 'obj' (a nil value)
+		[string "@Skinner\Core\NewSkinFuncs.lua"]:419: in function `?'
 		[string "@Skinner\Core\NewSkinFuncs.lua"]:179: in function `skinObject'
-		[string "@Skinner\AddonSkins\DBM-2.5.15.20210927000000.lua"]:10: in function <Skinner\AddonSkins\DBM.lua:8>
-
-	I	LUI, reported by therealdeerez, 28.08.21
-√		- Completely broken when using LUI. Absolutely zero changes will save and it always loads the default setting on a UI reload. Last good working version with LUI is beta9.40011.1.
- 
+		[string "@Skinner\AddonSkins\Altoholic-9.1.006.lua"]:444: in function <Skinner\AddonSkins\Altoholic.lua:441>
