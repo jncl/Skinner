@@ -15,12 +15,12 @@ end
 local buildInfo = {
 	-- Development
 	wow_classic_beta    = {"3.0.0",  99999, "Classic BC Beta"},
-	wow_classic_ptr     = {"2.5.2",  40260, "Classic BC PTR"},
+	wow_classic_ptr     = {"2.5.2",  40422, "Classic BC PTR"},
 	wow_classic_era_ptr = {"1.14.0", 40347, "Classic Era PTR"},
 	wow_beta            = {"10.0.0", 99999, "Retail Beta"},
-	wow_ptr             = {"9.1.5",  40290, "Retail PTR"},
+	wow_ptr             = {"9.1.5",  40383, "Retail PTR"},
 	-- Live
-	wow_classic         = {"2.5.2",  40260, "Classic BC"},
+	wow_classic         = {"2.5.2",  40422, "Classic BC"},
 	wow_classic_era     = {"1.14.0", 40347, "Classic Era"},
 	wow                 = {"9.1.0",  40120, "Retail"},
 	-- Currently playing
