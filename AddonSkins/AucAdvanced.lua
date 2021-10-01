@@ -2,12 +2,15 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("Auc-Advanced") then return end
 local _G = _G
 
-aObj.addonsToSkin["Auc-Advanced"] = function(self) -- v 1.13.6717
+-- ONLY supported in Classic
+if not aObj.isClscBC then return end
+
+aObj.addonsToSkin["Auc-Advanced"] = function(self) -- v 1.13.6718
 	if not self.db.profile.AuctionUI then return end
 
 	-- progress bars
 	local api = _G.AucAdvanced.API
-	self:SecureHook(api , "ProgressBars", function(sbObj, ...)
+	self:SecureHook(api , "ProgressBars", function(_, _)
 		self.RegisterMessage("AucAdvanced", "UIParent_GetChildren", function(_, child, _)
 			if child:IsObjectType("StatusBar")
 			and child:GetName() == nil
@@ -15,8 +18,8 @@ aObj.addonsToSkin["Auc-Advanced"] = function(self) -- v 1.13.6717
 			and _G.Round(child:GetHeight()) == 18
 			and not self.sbGlazed[child]
 			then
-      			child:SetBackdrop(nil)
-       			self:skinStatusBar{obj=child, fi=0}
+				child:SetBackdrop(nil)
+				self:skinObject("statusbar", {obj=child})
 			end
 		end)
 		self:scanUIParentsChildren()
@@ -24,7 +27,7 @@ aObj.addonsToSkin["Auc-Advanced"] = function(self) -- v 1.13.6717
 	end)
 
 	-- Appraiser
-	apr = _G.AucAdvanced.Modules.Util.Appraiser
+	local apr = _G.AucAdvanced.Modules.Util.Appraiser
 	if apr then
 		local function skinFrame()
 			local frame = _G.AucAdvAppraiserFrame
@@ -75,23 +78,20 @@ aObj.addonsToSkin["Auc-Advanced"] = function(self) -- v 1.13.6717
 				aObj:skinCheckButton{obj=frame.salebox.ignore}
 				aObj:skinCheckButton{obj=frame.salebox.bulk}
 			end
-			frame = nil
 		end
 		if not _G.AucAdvAppraiserFrame then
 			self:SecureHook(apr.Processors, "auctionui", function()
 				skinFrame()
-				
+
 				self:Unhook(apr.Processors,"auctionui")
-				apr = nil
 			end)
 		else
 			skinFrame()
-			apr = nil
 		end
 	end
 
 	-- SearchUI
-	sUI = _G.AucAdvanced.Modules.Util.SearchUI
+	local sUI = _G.AucAdvanced.Modules.Util.SearchUI
 	if sUI then
 		self:SecureHook(sUI.Private, "CreateAuctionFrames", function()
 			local gui = sUI.Private.gui
@@ -103,7 +103,7 @@ aObj.addonsToSkin["Auc-Advanced"] = function(self) -- v 1.13.6717
 		self:SecureHook(sUI.Private, "MakeGuiConfig", function()
 			local gui = sUI.Private.gui
 			gui.frame.progressbar:SetBackdrop(nil)
-			self:skinStatusBar{obj=gui.frame.progressbar, fi=0}
+			self:skinObject("statusbar", {obj=gui.frame.progressbar})
 			self:skinObject("editbox", {obj=gui.saves.name})
 			self:skinMoneyFrame{obj=gui.frame.bidbox, noWidth=true, moveSEB=true}
 			if self.modBtns then
@@ -129,13 +129,12 @@ aObj.addonsToSkin["Auc-Advanced"] = function(self) -- v 1.13.6717
 			if self.modBtnBs then
 				self:addButtonBorder{obj=gui.saves.select.button, ofs=0}
 			end
-			gui = nil
-			
+
 			self:Unhook(sUI.Private, "MakeGuiConfig")
 		end)
 		if self.modBtns then
 			-- control button for the RealTimeSearch
-			rt = sUI.Searchers["RealTime"]
+			local rt = sUI.Searchers["RealTime"]
 			if rt then
 				self:RawHook(rt, "CreateRTSButton", function(...)
 					local btn = self.hooks[rt].CreateRTSButton(...)
@@ -143,14 +142,13 @@ aObj.addonsToSkin["Auc-Advanced"] = function(self) -- v 1.13.6717
 					self:skinStdButton{obj=btn, y1=1}
 					if not btn.hasRight then
 						self:Unhook(rt, "CreateRTSButton") -- both are now skinnned
-						rt = nil
 					end
 					return btn
 				end, true)
 			end
 		end
 		-- controls for the SnatchSearcher
-		ls = sUI.Searchers["Snatch"]
+		local ls = sUI.Searchers["Snatch"]
 		if ls then
 			local function skinSnatch()
 				ls.Private.frame.slot:SetTexture(aObj.tFDIDs.esTex)
@@ -163,37 +161,33 @@ aObj.addonsToSkin["Auc-Advanced"] = function(self) -- v 1.13.6717
 				end
 			end
 			if ls.MakeGuiConfig then
-				self:SecureHook(ls, "MakeGuiConfig", function(this, _)
+				self:SecureHook(ls, "MakeGuiConfig", function(_, _)
 					skinSnatch()
 
 					self:Unhook(ls, "MakeGuiConfig")
-					ls =nil
 				end)
- 			elseif ls.Private.frame then
+			elseif ls.Private.frame then
 				skinSnatch()
-				ls = nil
 			end
 		end
 		if self.modBtns then
 			-- skin the remove button for the ItemPriceFilter
-			ip = sUI.Filters["ItemPrice"]
+			local ip = sUI.Filters["ItemPrice"]
 			if ip then
-				self:SecureHook(ip, "MakeGuiConfig", function(this, gui)
+				self:SecureHook(ip, "MakeGuiConfig", function(_, gui)
 					local exists, id = gui:GetTabByName(ip.tabname, "Filters")
 					if exists then
 						self:skinStdButton{obj=self:getPenultimateChild(gui.tabs[id][3])}
 						self:skinStdButton{obj=self:getLastChild(gui.tabs[id][3])}
-						self:SecureHook(self:getPenultimateChild(gui.tabs[id][3]), "Disable", function(this, _)
-							self:clrBtnBdr(this)
+						self:SecureHook(self:getPenultimateChild(gui.tabs[id][3]), "Disable", function(bObj, _)
+							self:clrBtnBdr(bObj)
 						end)
-						self:SecureHook(self:getPenultimateChild(gui.tabs[id][3]), "Enable", function(this, _)
-							self:clrBtnBdr(this)
+						self:SecureHook(self:getPenultimateChild(gui.tabs[id][3]), "Enable", function(bObj, _)
+							self:clrBtnBdr(bObj)
 						end)
 					end
-					exists, id = nil, nil
-					
+
 					self:Unhook(ip, "MakeGuiConfig")
-					ip = nil
 				end)
 			end
 		end
@@ -235,42 +229,37 @@ aObj.addonsToSkin["Auc-Advanced"] = function(self) -- v 1.13.6717
 				self:skinCheckButton{obj=frame.options.undercut}
 				self:skinCheckButton{obj=frame.options.remember}
 			end
-			frame = nil
-			
+
 			self:Unhook(sa.Private, "CreateFrames")
-			sa = nil
 		end)
 	end
 
 	-- skin the buttons for the Basic Filter
-	bas = _G.AucAdvanced.Modules.Filter.Basic
+	local bas = _G.AucAdvanced.Modules.Filter.Basic
 	if bas then
 		self:skinObject("slider", {obj=_G.AucFilterBasicScrollFrame.ScrollBar})
 		self:skinObject("frame", {obj=bas.Private.IgnorePrompt, ofs=0})
 		if self.modBtns then
 			self:skinStdButton{obj=bas.Private.IgnorePrompt.yes}
 			self:skinStdButton{obj=bas.Private.IgnorePrompt.no}
-			self:SecureHook(bas.Processors, "config", function(callbackType, gui)
+			self:SecureHook(bas.Processors, "config", function(_, _)
 				local lf = bas.Private.ListButtons[1]:GetParent()
 				self:skinStdButton{obj=self:getChild(lf, lf:GetNumChildren() - 2)}
 				self:skinStdButton{obj=self:getPenultimateChild(lf)}
-				lf = nil
 
 				self:Unhook(bas.Processors, "config")
-				bas = nil
 			end)
 		end
 	end
 
 	local sh = _G.AucAdvanced.Modules.Stat.Histogram
 	if sh then
-		self:SecureHook(sh.Private, "SetupConfigGui", function(gui)
+		self:SecureHook(sh.Private, "SetupConfigGui", function(_)
 			local frame = sh.Private.frame
 			frame.slot:SetTexture(self.tFDIDs.esTex)
 			self:skinObject("frame", {obj=frame.bargraph, fb=true, ofs=0})
-			
+
 			self:Unhook(sh.Private, "SetupConfigGui")
-			sh = nil
 		end)
 	end
 
@@ -279,7 +268,7 @@ aObj.addonsToSkin["Auc-Advanced"] = function(self) -- v 1.13.6717
 		self:SecureHookScript(am.ammailgui, "OnShow", function(this)
 			self:skinObject("frame", {obj=this, cb=true})
 			-- TODO:b skin other buttons
-			
+
 			self:Unhook(this, "OnShow")
 		end)
 		self:SecureHookScript(am.CustomMailerFrame, "OnShow", function(this)
@@ -309,14 +298,13 @@ aObj.addonsToSkin["Auc-Advanced"] = function(self) -- v 1.13.6717
 					self:clrBtnBdr(_G.AucAdvanced.Modules.Util.AutoMagic.CustomMailerFrame.removeButton)
 				end)
 			end
-		
+
 			self:Unhook(this, "OnShow")
-			am = nil
 		end)
 	end
 
 	-- ScanButtons
-	sb = _G.AucAdvanced.Modules.Util.ScanButton
+	local sb = _G.AucAdvanced.Modules.Util.ScanButton
 	if sb then
 		self:SecureHook(sb.Private, "HookAH", function()
 			self:skinObject("frame", {obj=sb.Private.message, kfs=true, ofs=0})
@@ -327,27 +315,25 @@ aObj.addonsToSkin["Auc-Advanced"] = function(self) -- v 1.13.6717
 				self:skinStdButton{obj=sb.Private.buttons.getall, x1=-2, y1=1, x2=2}
 				self:skinStdButton{obj=sb.Private.message.Done}
 			end
-			
+
 			self:Unhook(sb.Private, "HookAH")
-			sb = nil
 		end)
 	end
 
 	if self.modBtns then
 	    -- Glypher
-	    gl = _G.AucAdvanced.Modules.Util.Glypher
+	    local gl = _G.AucAdvanced.Modules.Util.Glypher
 	    if gl then
 	        self:SecureHook(gl.Private, "SetupConfigGui", function()
 	            self:skinStdButton{obj=gl.Private.frame.refreshButton, as=true} -- just skin it otherwise text is hidden
 	            self:skinStdButton{obj=gl.Private.frame.searchButton, as=true} -- just skin it otherwise text is hidden
 	            self:skinStdButton{obj=gl.Private.frame.skilletButton, as=true} -- just skin it otherwise text is hidden
 
-	            self:Unhook(gl.Private, "SetupConfigGui")
 				gl = nil
 	        end)
 	    end
 	    -- GlypherPost
-	    gp = _G.AucAdvanced.Modules.Util.GlypherPost
+	    local gp = _G.AucAdvanced.Modules.Util.GlypherPost
 	    if gp then
 	        self:SecureHook(gp.Private, "SetupConfigGui", function()
 	            self:skinStdButton{obj=gp.Private.frame.refreshButton, as=true} -- just skin it otherwise text is hidden
@@ -357,11 +343,10 @@ aObj.addonsToSkin["Auc-Advanced"] = function(self) -- v 1.13.6717
 	    end
 		--	CompactUI module
 		--	configure button on AH frame
-		cUI = _G.AucAdvanced.Modules.Util.CompactUI
+		local cUI = _G.AucAdvanced.Modules.Util.CompactUI
 		if cUI then
 			self:skinStdButton{obj=cUI.Private.switchUI, y1=2, y2=-3}
 		end
-		cUI = nil
 	end
 
 	--	AutoSell
@@ -381,11 +366,11 @@ aObj.addonsToSkin["Auc-Advanced"] = function(self) -- v 1.13.6717
 				self:skinStdButton{obj=this.removeitem}
 				self:skinStdButton{obj=this.bagList}
 			end
-		
+
 			self:Unhook(this, "OnShow")
 		end)
 	end
-	
+
 	-- Buy prompt
 	if _G.AucAdvanced.Buy then
 		self:skinObject("editbox", {obj=_G.AucAdvanced.Buy.Private.Prompt.Reason})
@@ -449,20 +434,20 @@ aObj.addonsToSkin.BeanCounter = function(self) -- v 1.13.6682
 			self:skinCheckButton{obj=this.auctionFailedCheck}
 			self:skinCheckButton{obj=this.useDateCheck}
 		end
-		
+
 		self:Unhook(this, "OnShow")
 	end)
-	
+
 	self:SecureHookScript(_G.BeanCounter.Private.deletePromptFrame, "OnShow", function(this)
 		self:skinObject("frame", {obj=this, ofs=0})
 		if self.modBtns then
 			self:skinStdButton{obj=this.yes}
 			self:skinStdButton{obj=this.no}
 		end
-		
+
 		self:Unhook(this, "OnShow")
 	end)
-	
+
 	if _G.BeanCounter.Private.scriptframe.loadError then
 		self:skinObject("frame", {obj=_G.BeanCounter.Private.scriptframe.loadError, ofs=0})
 		if self.modBtns then

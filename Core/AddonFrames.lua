@@ -39,7 +39,7 @@ local addonSkins = {
 	"Notes",
 	"Omen", "OneBag3", "OneBank3",
 	"Quartz", "QuickMark",
-	"Skada", "SorhaQuestLog",
+	"SorhaQuestLog",
 	"TooManyAddons",
 	"Vendomatic",
 	"XLoot", "xMerchant",

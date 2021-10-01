@@ -9,14 +9,12 @@ if aObj.isRtl then
 			self:skinObject("editbox", {obj=this.SearchBox, si=true})
 			self:skinObject("tabs", {obj=this, tabs=this.Tabs, lod=self.isTT and true})
 			self:skinObject("frame", {obj=this, kfs=true, ri=true, rns=true, cb=true, x2=3, y2=-1})
-		
+
 			self:Unhook(this, "OnShow")
 		end)
 
-		self:add2Table(self.ttList, _G.AltoTooltip)
-	
 		self.mmButs["Altoholic"] = _G.AltoholicMinimapButton
-	
+
 		self:SecureHookScript(_G.AltoMessageBox, "OnShow", function(this)
 			self:skinObject("editbox", {obj=this.UserInput})
 			self:skinObject("frame", {obj=this, kfs=true, rb=true})
@@ -24,7 +22,7 @@ if aObj.isRtl then
 				self:skinStdButton{obj=this.Button1}
 				self:skinStdButton{obj=this.Button2}
 			end
-		
+
 			self:Unhook(this, "OnShow")
 		end)
 
@@ -57,7 +55,7 @@ if aObj.isRtl then
 	local function skinNextPrev(frame)
 		aObj:addButtonBorder{obj=frame.NextPage, ofs=-2, x1=1, clr="gold"}
 		aObj:addButtonBorder{obj=frame.PrevPage, ofs=-2, x1=1, clr="gold"}
-		aObj:SecureHook(frame, "SetPage", function(this, _)
+		aObj:SecureHook(frame, "SetPage", function(_, _)
 			aObj:clrBtnBdr(frame.NextPage, "gold")
 			aObj:clrBtnBdr(frame.PrevPage, "gold")
 		end)
@@ -77,8 +75,8 @@ if aObj.isRtl then
 			if self.modBtns then
 				skinMenuList(this.CategoriesList)
 				self:skinExpandButton{obj=this.ToggleView, sap=true}
-				self:SecureHookScript(this.ToggleView, "OnClick", function(this)
-					self:checkTex{obj=this}
+				self:SecureHookScript(this.ToggleView, "OnClick", function(bObj)
+					self:checkTex{obj=bObj}
 				end)
 			end
 			if self.modBtnBs then
@@ -136,7 +134,6 @@ if aObj.isRtl then
 			end
 			this.Background:DisableDrawLayer("BACKGROUND")
 			-- ContextualMenu (DropDown?)
-			-- TODO: try to skin dropdown list(s) when displayed
 
 			self:Unhook(this, "OnShow")
 		end)
@@ -368,13 +365,13 @@ if aObj.isRtl then
 							self:skinCheckButton{obj=panel.ContentContainer.ScrollFrame:GetRow(i).Check}
 						end
 					end
-				end				
+				end
 			end
-		
+
 			self:Unhook(this, "OnShow")
 		end)
 		self:checkShown(_G.AltoholicFrame.TabOptions)
-	
+
 	end
 else
 	local function skinMenuItems(frameName, cnt, text)
@@ -386,7 +383,6 @@ else
 				aObj:skinObject("frame", {obj=itm})
 			end
 		end
-		itm = nil
 	end
 	local function skinSortBtns(btnArray)
 		local btn
@@ -398,7 +394,6 @@ else
 			aObj:keepRegions(btn, {4, 5, 6}) -- N.B. region 6 is the highlight, 4 is the text & 5 is the arrow
 			aObj:skinObject("frame", {obj=btn, y1=-1, x2=-1, y2=-3})
 		end
-		btn = nil
 	end
 	local function skinScrollBar(scrollFrame)
 		scrollFrame:DisableDrawLayer("ARTWORK")
@@ -427,7 +422,7 @@ else
 
 					-- hook the list toggle function
 					if not aObj:IsHooked(frame, "Toggle") then
-						aObj:SecureHook(frame, "Toggle", function(this, frame, val1, val2)
+						aObj:SecureHook(frame, "Toggle", function(_, _, _, _)
 							skinDDMLists()
 						end)
 					end
@@ -435,7 +430,6 @@ else
 			end
 			frame = _G.EnumerateFrames(frame)
 		end
-		frame = nil
 	end
 
 	aObj.addonsToSkin.Altoholic = function(self) -- r200/r191
@@ -478,10 +472,10 @@ else
 			for i = 1, 14 do
 				self:skinExpandButton{obj=_G["AltoholicFrameSharedContentEntry" .. i .. "Collapse"], sap=true}
 			end
-			self:SecureHookScript(_G.AltoholicSharedContent_ToggleAll, "OnClick", function(this, button)
+			self:SecureHookScript(_G.AltoholicSharedContent_ToggleAll, "OnClick", function(this, _)
 				self:checkTex{obj=this}
 			end)
-			self:SecureHook(_G.Altoholic.Sharing.Content, "Update", function(this)
+			self:SecureHook(_G.Altoholic.Sharing.Content, "Update", function(_)
 				local btn
 				for i = 1, 14 do
 					btn = _G["AltoholicFrameSharedContentEntry" .. i .. "Collapse"]
@@ -489,7 +483,6 @@ else
 						self:checkTex{obj=btn}
 					end
 				end
-				btn = nil
 			end)
 		end
 		if self.modChkBtns then
@@ -509,10 +502,10 @@ else
 			for i = 1, 10 do
 				self:skinExpandButton{obj=_G["AltoholicFrameAvailableContentEntry" .. i .. "Collapse"], sap=true, plus=true}
 			end
-			self:SecureHookScript(_G.AltoAccountSharing_ToggleAll, "OnClick", function(this, button)
+			self:SecureHookScript(_G.AltoAccountSharing_ToggleAll, "OnClick", function(this, _)
 				self:checkTex{obj=this}
 			end)
-			self:SecureHook(_G.Altoholic.Sharing.AvailableContent, "Update", function(this)
+			self:SecureHook(_G.Altoholic.Sharing.AvailableContent, "Update", function(_)
 				local btn
 				for i = 1, 10 do
 					btn = _G["AltoholicFrameAvailableContentEntry" .. i .. "Collapse"]
@@ -520,7 +513,6 @@ else
 						self:checkTex{obj=btn}
 					end
 				end
-				btn = nil
 			end)
 			self:skinStdButton{obj=_G.AltoAccountSharing_InfoButton}
 			self:skinStdButton{obj=_G.AltoAccountSharing_SendButton}
@@ -581,8 +573,8 @@ else
 
 	aObj.lodAddons.Altoholic_Characters = function(self)
 
-	 	-- Icons on LHS
-	 	-- Characters
+		-- Icons on LHS
+		-- Characters
 		skinSortBtns(_G.AltoholicTabCharacters.SortButtons)
 		-- Icons at the Top in Character View
 		if self.modBtnBs then
@@ -615,7 +607,6 @@ else
 					self:addButtonBorder{obj=btn, relTo=btn.Icon}
 				end
 			end
-			btn = nil
 		end)
 		if self.modBtnBs then
 			self:addButtonBorder{obj=_G.AltoholicTabCharacters.Spellbook.PrevPage, ofs=-2}
@@ -626,15 +617,15 @@ else
 			end)
 			self:addButtonBorder{obj=_G.AltoholicFramePetsNormalPrevPage, ofs=-2}
 			self:addButtonBorder{obj=_G.AltoholicFramePetsNormalNextPage, ofs=-2}
-			self:SecureHook(_G.Altoholic.Pets, "GoToPreviousPage", function(this)
+			self:SecureHook(_G.Altoholic.Pets, "GoToPreviousPage", function(_)
 				self:clrBtnBdr(_G.AltoholicFramePetsNormalPrevPage, "gold")
 				self:clrBtnBdr(_G.AltoholicFramePetsNormalNextPage, "gold")
 			end)
-			self:SecureHook(_G.Altoholic.Pets, "GoToNextPage", function(this)
+			self:SecureHook(_G.Altoholic.Pets, "GoToNextPage", function(_)
 				self:clrBtnBdr(_G.AltoholicFramePetsNormalPrevPage, "gold")
 				self:clrBtnBdr(_G.AltoholicFramePetsNormalNextPage, "gold")
 			end)
-			self:SecureHook(_G.Altoholic.Pets, "SetSinglePetView", function(this)
+			self:SecureHook(_G.Altoholic.Pets, "SetSinglePetView", function(_)
 				self:clrBtnBdr(_G.AltoholicFramePetsNormalPrevPage, "gold")
 				self:clrBtnBdr(_G.AltoholicFramePetsNormalNextPage, "gold")
 			end)
@@ -663,7 +654,6 @@ else
 						self:addButtonBorder{obj=frame["Reward" .. j], relTo=frame["Reward" .. j].Icon}
 					end
 				end
-				frame = nil
 			-- Covenant
 			end
 		end
@@ -706,7 +696,6 @@ else
 					end
 				end)
 			end
-			btn = nil
 		end
 		if not self.isClsc then
 			-- Bank

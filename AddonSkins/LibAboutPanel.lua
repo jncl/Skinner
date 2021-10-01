@@ -1,4 +1,4 @@
-local aName, aObj = ...
+local _, aObj = ...
 local _G = _G
 -- This is a Library
 
@@ -21,11 +21,12 @@ aObj.libsToSkin["LibAboutPanel"] = function(self) -- v 1.52
 	end
 
 	-- this is to stop the Email & Website buttons being skinned
-	self.RegisterCallback("LibAboutPanel", "IOFPanel_Before_Skinning", function(this, panel)
+	self.RegisterMessage("LibAboutPanel", "IOFPanel_Before_Skinning", function(_, panel)
 		if self.aboutPanels[panel.name]
 		and panel.about_title
 		then
 			self.iofSkinnedPanels[panel] = true
+			self.UnregisterMessage("LibAboutPanel", "IOFPanel_Before_Skinning")
 		end
 	end)
 
