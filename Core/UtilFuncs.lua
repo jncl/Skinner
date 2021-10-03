@@ -272,7 +272,7 @@ function aObj:checkAndRunAddOn(addonName, addonFunc, LoD)
 	end
 
 	-- handle old & new function definitions
-	addonFunc = addonFunc or self[addonFunc] or addonName
+	addonFunc = _G.type(addonFunc) == "function" and addonFunc or self[addonFunc]
 
 	-- don't skin any Addons whose skins are flagged as disabled
 	if self.prdb.DisabledSkins[addonName]
