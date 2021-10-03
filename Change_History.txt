@@ -1,3 +1,11 @@
+beta9.40422.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Added debug command
+	Updated AddonLoader, Altoholic, AucAdvanced, Auctionator, LibAboutPanel, Rarity & Skada skins
+
 beta9.40347.1
 Jncl:
 	ToDo.txt
@@ -6,7 +14,7 @@ Jncl:
 	Updated DBM, LUI and ZygorGuidesViewer skins
 	Update SetupDefaults code
 	Apply Classic Era PTR changes
-	
+
 beta9.40260.1
 Jncl:
 	ToDo.txt
@@ -22,7 +30,7 @@ Jncl:
 	Updated Atlas, AtlasLoot, Auctionator, LIBUIDropDownMenu skins
 	Skinned EasyMail
 	Updated .pkgmeta files with comments for tools used
-	
+
 beta9.40203.1
 Jncl:
 	ToDo.txt
@@ -35,7 +43,7 @@ Jncl:
 	Correct regex in Nameplate widget check
 	Updated code after checking with luacheck & globe
 	Rework ClassicSupport Files
-	
+
 beta9.40120.1
 Jncl:
     ToDo.txt
@@ -75,7 +83,7 @@ Jncl:
 	Updated Texture handling code
 	Updated AucAdvanced, Configator, Cork, CovenantMissionHelper, PetBattleMaster, PetBattleTeams & VenturePlan skins
 	Updated RollTrackerClassic skin
-	
+
 beta9.39804.1
 Jncl:
 	ToDo.txt
@@ -91,7 +99,7 @@ Jncl:
 	Skinned ReEnhancedStackSplit
 	Updated TradeSkillUI skin
 	Updated AlertFrame skin
-	
+
 beta9.39658.3
 Jncl:
 	ToDo.txt
@@ -103,7 +111,7 @@ Jncl:
 	Updated AlertFrames skinning code
 	Updated UIButtons skinning code
 	Removed redundant Debug lines
-	
+
 beta9.39658.2
 Jncl:
 	ToDo.txt
@@ -129,7 +137,7 @@ Jncl:
 	Updated GarrisonLandingPage skin
 	Updated MainMenuBar skin to handle ALL versions
 	Skinned MSA-Tutorials library
-	
+
 beta9.39658.1
 Jncl:
 	ToDo.txt
@@ -155,7 +163,7 @@ Jncl:
 	Updated CovenantMissionHelper, PetTracker & ZygorGuidesViewer skins
 	Skinned Immersion & Journalator
 	Obsoleted tektip
-	
+
 beta9.39497.1
 Jncl:
 	ToDo.txt
@@ -174,7 +182,7 @@ Jncl:
 	Updated ChatConfig skin
 	Updated StaticPopups skin
 	Updated UIButtons skin
-	
+
 beta9.39289.1
 Jncl:
 	ToDo.txt
@@ -192,7 +200,7 @@ Jncl:
 	Update UIButton skinExpandButton code
 	Identify ClassicERA version and use it for checks in code
 	Updated Altoholic, BetterWardrobe, DBM & FishingBuddy skins
-	
+
 beta9.39170.1
 Jncl:
 	ToDo.txt
@@ -203,7 +211,7 @@ Jncl:
 	Bugfix for AuctionUI
 	Updated Auctionator, BtWLoadouts, DBM & VenturePlan skins
 	Skinned BiSTracker & TinyLootMonitor
-	
+
 beta9.39015.1
 Jncl:
 	ToDo.txt
@@ -219,7 +227,7 @@ Jncl:
 	Updated UIButton skinning code
 	Updated Bartender4, BuffomatClassic & LibInit skins
 	Obsoleted buffOmat skin
-	
+
 beta9.38950.1
 Jncl:
 	ToDo.txt
@@ -238,7 +246,7 @@ Jncl:
 	Updated Ace3, Auctionator, Healium & WeakAuras skins
 	Skinned BetterWardrobe, BuffomatClassicTBC & Reputable
 	Updated Frame(s) skinning code to remove NineSlice textures
-	
+
 beta9.38835.1
 Jncl:
 	ToDo.txt
@@ -249,7 +257,7 @@ Jncl:
 	Removed textures from UIWidget StatusBar
 	Remove NineSlice textures from ChannelFrame
 	Updated Ace3, PetJournalEnhanced, Rematch & WeakAuras skins
-	
+
 beta9.38802.1
 Jncl:
 	ToDo.txt
@@ -260,7 +268,7 @@ Jncl:
 	Bugfix for GuildFrame
 	Updated Auctionator , LeatrixPlus & ClassicQuestLog
 	Skinned EveryGoldToBanker
-	
+
 beta9.38757.1
 Jncl:
 	ToDo.txt
@@ -270,7 +278,7 @@ Jncl:
 	Updated Inventorian skin
 	Updated Debug code
 	Updated UIButtons code
-	
+
 beta9.38739.1
 Jncl:
 	ToDo.txt
@@ -306,7 +314,7 @@ Jncl:
 	Bugfix for TalentUI
 	Move GMSurveyUI code into ClassicSupport
 	Indent build keywords for code folding
-	
+
 beta9.38134.4
 Jncl:
 	ToDo.txt
