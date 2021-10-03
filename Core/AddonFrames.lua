@@ -29,7 +29,6 @@ end
 --@end-alpha@
 
 local addonSkins = {
-	"AdvancedInterfaceOptions",
 	"BindPad", "BossNotes", "BossNotes_PersonalNotes", "BuyEmAll",
 	"CensusPlus", "Chatter",
 	"Examiner",
@@ -37,7 +36,7 @@ local addonSkins = {
 	"Livestock", "ls_Toasts",
 	"MogIt",
 	"Notes",
-	"Omen", "OneBag3", "OneBank3",
+	"OneBag3", "OneBank3",
 	"Quartz", "QuickMark",
 	"SorhaQuestLog",
 	"TooManyAddons",

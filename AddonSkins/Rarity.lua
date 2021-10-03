@@ -10,12 +10,15 @@ aObj.addonsToSkin.Rarity = function(self) -- v 1.0 (r711-release-2)
 	-- change AnchoredTrackingBar title height
 	_G.Rarity.db.profile.bar.height = 18
 	_G.Rarity.barGroup:SetHeight(_G.Rarity.db.profile.bar.height)
-	
+
 	-- skin AnchoredTrackingBar title button
 	self:skinObject("frame", {obj=_G.Rarity.barGroup.button, y1=0})
-	
+
 	-- FauxAchievementPopup
-	if _G.Rarity.db.profile.showAchievementToast then
+	if _G.Rarity.db.profile.showAchievementToast
+	and _G.AlertFrame
+	and _G.AlertFrame.alertFrameSubSystems
+	then
 		local function hookFunc()
 			aObj:SecureHook(_G.AlertFrame.alertFrameSubSystems[#_G.AlertFrame.alertFrameSubSystems], "setUpFunction", function(frame, _)
 				aObj:nilTexture(frame.Background, true)

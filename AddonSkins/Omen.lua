@@ -1,18 +1,13 @@
-local aName, aObj = ...
+local _, aObj = ...
 if not aObj:isAddonEnabled("Omen") then return end
 local _G = _G
 
-function aObj:Omen()
+aObj.addonsToSkin.Omen = function(self) -- v 3.2.4
 
-	local function skinOmen()
+	_G.Omen.db.profile.Bar.Texture = self.db.profile.StatusBar.texture
+	_G.Omen.UpdateBackdrop = _G.nop
 
-		_G.OmenTitle:SetHeight(20)
-		aObj:applySkin(_G.OmenTitle)
-		aObj:applySkin(_G.OmenBarList)
-
-	end
-
-	skinOmen()
-	self:SecureHook(_G.Omen, "UpdateBackdrop", function() skinOmen() end)
+	self:skinObject("frame", {obj=_G.Omen.Title, kfs=true})
+	self:skinObject("frame", {obj=_G.Omen.BarList, kfs=true})
 
 end
