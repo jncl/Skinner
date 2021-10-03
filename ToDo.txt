@@ -30,7 +30,7 @@ ToDos
 ≈ 	O	Use luacheck on all lua files including AddOn Skins
 
 	I/B	oGlowClassic?, reported by 아련별, 15.09.21
-?		- missing button borders on items
+≈		- missing button borders on items
 			- character frame works fine but inventory & bank & mail frame isn't.
 		- using AdiBags BCC & EasyMail
 
@@ -42,19 +42,8 @@ ToDos
 		[string "@FrameXML\UIParent.lua"]:2653: in function <FrameXML\UIParent.lua:2640>
 		[string "=[C]"]: in function `SetAttribute'
 
-	I	Auctionator, reported by Galthariel, 29.09.21
-≈		- Skinner\AddonSkins\Auctionator-9.1.5.1-31-gc0eeca8.lua:284: Usage: SecureHookScript(object, method, [handler]): You can only hook a script on a frame object
+√	I	Many AddOns not being skinned, reported by krzysiek_7_5, 01.10.21
 
-	I	Rarity, reported by Galthariel, 29.09.21
-≈		- Skinner\AddonSkins\Rarity-1.0 (r711-release-2).lua:19: Usage: SecureHook([object], method, [handler]): Attempting to hook a non existing target
+≈	I	Auctionator & Rarity still have hook errors, reported by Galthariel, 01.10.21
 
-?	N/B	Adibags, reported by 아련별, 29.09.21
-
-	I	Skada, reported by DarkLimpan, 29.09.21
-√		- not being skinned anymore
-
-	I	Altoholic, reported by therealdeerez, 30.09.21
-√		- Skinner\Core\NewSkinFuncs.lua:396: attempt to index field 'obj' (a nil value)
-		[string "@Skinner\Core\NewSkinFuncs.lua"]:419: in function `?'
-		[string "@Skinner\Core\NewSkinFuncs.lua"]:179: in function `skinObject'
-		[string "@Skinner\AddonSkins\Altoholic-9.1.006.lua"]:444: in function <Skinner\AddonSkins\Altoholic.lua:441>
+√	I	Omen not skinned anymore, reported by DarkLimpan, 01.10.21
