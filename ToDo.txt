@@ -29,11 +29,6 @@ ToDos
 
 ≈ 	O	Use luacheck on all lua files including AddOn Skins
 
-	I/B	oGlowClassic?, reported by 아련별, 15.09.21
-≈		- missing button borders on items
-			- character frame works fine but inventory & bank & mail frame isn't.
-		- using AdiBags BCC & EasyMail
-
 	I	MainMenuBar, reported by Fakelessgaming, 15.09.21/21.09.21
 ?		-  [ADDON_ACTION_BLOCKED] AddOn 'Skinner' tried to call the protected function 'MainMenuBar:SetScale()'.
 		[string "@!BugGrabber\BugGrabber.lua"]:519: in function <!BugGrabber\BugGrabber.lua:519>
@@ -42,8 +37,35 @@ ToDos
 		[string "@FrameXML\UIParent.lua"]:2653: in function <FrameXML\UIParent.lua:2640>
 		[string "=[C]"]: in function `SetAttribute'
 
-√	I	Many AddOns not being skinned, reported by krzysiek_7_5, 01.10.21
+√	I	Auctionator & Rarity still have hook errors, reported by Galthariel, 01.10.21/03.10.21
 
-≈	I	Auctionator & Rarity still have hook errors, reported by Galthariel, 01.10.21
+	I	oGlow, reported by 아련별, 03.10.21
+√		- wrong oGlow sometimes
 
-√	I	Omen not skinned anymore, reported by DarkLimpan, 01.10.21
+	I	TinyTooltip, reported by 아련별, 03.10.21
+√		- SharedXML\Mixin.lua:29: attempt to index local 'object' (a string value)
+		[string "@TinyTooltip\Core.lua"]:734: in function `v'
+		[string "@TinyTooltip\libs\LibEvent.lua"]:121: in function `trigger'
+		[string "@Skinner\AddonSkins\TinyTooltip-8.2.1.lua"]:50: in function <Skinner\AddonSkins\TinyTooltip.lua:5>
+
+	I	Altoholic, reported by therealdeerez, 03.10.21
+?		- Skinner\Core\NewSkinFuncs.lua:396: attempt to index field 'obj' (a nil value)
+		[string "@Skinner\Core\NewSkinFuncs.lua"]:419: in function `?'
+		[string "@Skinner\Core\NewSkinFuncs.lua"]:179: in function `skinObject'
+		[string "@Skinner\AddonSkins\Altoholic-9.1.006.lua"]:438: in function <Skinner\AddonSkins\Altoholic.lua:435>
+?		- Skinner\AddonSkins\Altoholic-9.1.006.lua:380: attempt to index local 'frameName' (a nil value)
+		[string "@Skinner\AddonSkins\Altoholic-9.1.006.lua"]:540: in function <Skinner\AddonSkins\Altoholic.lua:538>
+
+	I	reported by Galthariel, 04.10.21
+√		- Skinner\Core\UtilFuncs.lua:359: attempt to call method 'SetBackdropBorderColor' (a nil value)
+		[string "@Skinner\Core\UtilFuncs.lua"]:359: in function `clrBBC'
+		[string "@Skinner\Modules\UIButtons.lua"]:226: in function `clrBtnBdr'
+		[string "@Skinner\Core\UtilFuncs.lua"]:381: in function `clrPNBtns'
+		[string "@Skinner\Core\PlayerFrames.lua"]:354: in function <Skinner\Core\PlayerFrames.lua:353>
+
+	I	AtlasLoot, reported by 아련별, 04.10.21
+√		- Skinner\Core\NewSkinFuncs.lua:427: attempt to index field 'obj' (a nil value)
+		[string "@Skinner\Core\NewSkinFuncs.lua"]:427: in function <Skinner\Core\NewSkinFuncs.lua:420>
+		[string "@Skinner\Core\NewSkinFuncs.lua"]:534: in function `?'
+		[string "@Skinner\Core\NewSkinFuncs.lua"]:179: in function `skinObject'
+		[string "@Skinner\AddonSkins\AtlasLoot-1.2030004.lua"]:61: in function <Skinner\AddonSkins\AtlasLoot.lua:60>
