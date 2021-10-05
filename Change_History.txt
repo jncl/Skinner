@@ -1,3 +1,12 @@
+beta9.40441.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Bugfix for old versions of AddOns skinning code not being run
+	Updated AdvancedInterfaceOptions, Auctionator, oGlowClassic, Omen & Rarity skins
+	Add Workflow for Curse Build using Github Actions
+
 beta9.40422.1
 Jncl:
 	ToDo.txt
