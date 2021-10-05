@@ -3,7 +3,7 @@ if not aObj:isAddonEnabled("Altoholic") then return end
 local _G = _G
 
 if aObj.isRtl then
-	aObj.addonsToSkin.Altoholic = function(self) -- v 9.1.002
+	aObj.addonsToSkin.Altoholic = function(self) -- v 9.1.007
 
 		self:SecureHookScript(_G.AltoholicFrame, "OnShow", function(this)
 			self:skinObject("editbox", {obj=this.SearchBox, si=true})
@@ -67,7 +67,7 @@ if aObj.isRtl then
 			end
 		end
 	end
-	aObj.lodAddons.Altoholic_Summary = function(self) -- v 9.1.002
+	aObj.lodAddons.Altoholic_Summary = function(self)
 
 		self:SecureHookScript(_G.AltoholicFrame.TabSummary, "OnShow", function(this)
 			this.CategoriesList.Background:SetTexture(nil)
@@ -109,7 +109,7 @@ if aObj.isRtl then
 
 	end
 
-	aObj.lodAddons.Altoholic_Characters = function(self) -- v 9.1.002
+	aObj.lodAddons.Altoholic_Characters = function(self)
 
 		self:SecureHookScript(_G.AltoholicFrame.TabCharacters, "OnShow", function(this)
 			this.CategoriesList.Background:SetTexture(nil)
@@ -141,7 +141,7 @@ if aObj.isRtl then
 
 	end
 
-	aObj.lodAddons.Altoholic_Search = function(self) -- v 9.1.002
+	aObj.lodAddons.Altoholic_Search = function(self)
 
 		self:SecureHookScript(_G.AltoholicFrame.TabSearch, "OnShow", function(this)
 			this.CategoriesList.Background:SetTexture(nil)
@@ -179,7 +179,7 @@ if aObj.isRtl then
 
 	end
 
-	aObj.lodAddons.Altoholic_Guild = function(self) -- v 9.1.002
+	aObj.lodAddons.Altoholic_Guild = function(self)
 
 		self:SecureHookScript(_G.AltoholicFrame.TabGuild, "OnShow", function(this)
 			this.CategoriesList.Background:SetTexture(nil)
@@ -224,7 +224,7 @@ if aObj.isRtl then
 
 	end
 
-	aObj.lodAddons.Altoholic_Achievements = function(self) -- v 9.1.002
+	aObj.lodAddons.Altoholic_Achievements = function(self)
 
 		self:SecureHookScript(_G.AltoholicFrame.TabAchievements, "OnShow", function(this)
 			this.CategoriesList.Background:SetTexture(nil)
@@ -253,7 +253,7 @@ if aObj.isRtl then
 
 	end
 
-	aObj.lodAddons.Altoholic_Agenda = function(self) -- v 9.1.002
+	aObj.lodAddons.Altoholic_Agenda = function(self)
 
 		self:SecureHookScript(_G.AltoholicFrame.TabAgenda, "OnShow", function(this)
 			this.CategoriesList.Background:SetTexture(nil)
@@ -274,7 +274,7 @@ if aObj.isRtl then
 
 	end
 
-	aObj.lodAddons.Altoholic_Grids = function(self) -- v 9.1.002
+	aObj.lodAddons.Altoholic_Grids = function(self)
 
 		self:SecureHookScript(_G.AltoholicFrame.TabGrids, "OnShow", function(this)
 			this.CategoriesList.Background:SetTexture(nil)
@@ -333,7 +333,7 @@ if aObj.isRtl then
 		skinSlider(frame.ScrollFrame)
 		aObj:skinObject("frame", {obj=frame, ofs=3, x2=1, fb=true})
 	end
-	aObj.lodAddons.Altoholic_Options = function(self) -- v 9.1.002
+	aObj.lodAddons.Altoholic_Options = function(self)
 
 		self:SecureHookScript(_G.AltoholicFrame.TabOptions, "OnShow", function(this)
 			this.CategoriesList.Background:SetTexture(nil)
@@ -432,7 +432,7 @@ else
 		end
 	end
 
-	aObj.addonsToSkin.Altoholic = function(self) -- r200/r191
+	aObj.addonsToSkin.Altoholic = function(self) -- v 2.5.007/r191
 
 		-- Main Frame
 		self:skinObject("editbox", {obj=_G.AltoholicFrame_SearchEditBox})

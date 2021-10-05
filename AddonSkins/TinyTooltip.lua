@@ -44,11 +44,6 @@ aObj.addonsToSkin.TinyTooltip = function(self) -- v 8.2.1
 		LibEvent:trigger("tooltip.statusbar.texture", _G.TinyTooltip.db.general.statusbarTexture)
 		addGradient(tTip)
 	end)
-
-	-- add addon skins' tooltips to tooltips table
-	for _, tTip in _G.ipairs(self.ttList) do
-		LibEvent:trigger("tooltip.style.init", tTip)
-	end
 	-- update existing tooltips
 	for _, tTip in _G.pairs(_G.TinyTooltip.tooltips) do
 		self:SendMessage("Tooltip_Setup", tTip)
@@ -64,7 +59,7 @@ aObj.addonsToSkin.TinyTooltip = function(self) -- v 8.2.1
 			self:skinObject("slider", {obj=child.ScrollFrame.ScrollBar})
 			child:DisableDrawLayer("BORDER")
 			self:skinObject("frame", {obj=child, x2=2})
-			self.UnregisterCallback("TinyTooltip", "UIParent_GetChildren")
+			self.UnregisterMessage("TinyTooltip", "UIParent_GetChildren")
 		end
 	end)
 

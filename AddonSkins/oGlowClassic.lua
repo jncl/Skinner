@@ -9,25 +9,21 @@ aObj.addonsToSkin.oGlowClassic = function(self) -- v 0.1.1-beta
 		return
 	end
 
-	local function btnUpd(obj, oGCB)
-		oGCB = oGCB or obj.oGlowClassicBorder
-		if obj.sbb then
-			if oGCB
-			and oGCB:IsVisible()
-			then
-				obj.sbb:SetBackdrop(aObj.modUIBtns.iqbDrop)
-				obj.sbb:SetBackdropBorderColor(oGCB:GetVertexColor())
-				oGCB:SetTexture()
-			else
-				obj.sbb:SetBackdrop(aObj.modUIBtns.bDrop)
-				aObj:clrBtnBdr(obj.sbb, "grey")
-			end
-		end
-	end
-
-	self:SecureHook(_G.oGlowClassic, "CallFilters", function(_, _, frame, _)
+	self:SecureHook(_G.oGlowClassic, "CallFilters", function(_, filter, frame, _)
+		-- wait for Border to be coloured
 		_G.C_Timer.After(0.1, function()
-			btnUpd(frame, frame.oGlowClassicBorder)
+			if frame.sbb then
+				if frame.oGlowClassicBorder
+				and frame.oGlowClassicBorder:IsVisible()
+				then
+					frame.sbb:SetBackdrop(self.modUIBtns.iqbDrop)
+					frame.sbb:SetBackdropBorderColor(frame.oGlowClassicBorder:GetVertexColor())
+					frame.oGlowClassicBorder:SetTexture()
+				else
+					frame.sbb:SetBackdrop(self.modUIBtns.bDrop)
+					self:clrBtnBdr(frame.sbb, "grey")
+				end
+			end
 		end)
 	end)
 

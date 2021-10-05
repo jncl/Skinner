@@ -279,109 +279,121 @@ aObj.addonsToSkin.Auctionator = function(self) -- v  9.1.5.1/2.5.1 (100.0.9/100.
 
 				aObj:Unhook(this, "OnShow")
 			end)
-			aObj:SecureHookScript(aslFrame.addItemDialog, "OnShow", function(this)
-				aObj:skinObject("editbox", {obj=this.SearchContainer.SearchString})
-				aObj:skinObject("dropdown", {obj=this.FilterKeySelector})
-				for _, level in _G.pairs{"LevelRange", "ItemLevelRange", "PriceRange", "CraftedLevelRange"} do
-					aObj:skinObject("editbox", {obj=this[level].MinBox})
-					aObj:skinObject("editbox", {obj=this[level].MaxBox})
-				end
-				aObj:skinObject("frame", {obj=this, kfs=true, ri=true, rns=true})
-				if aObj.modBtns then
-					aObj:skinStdButton{obj=this.Finished}
-					aObj:skinStdButton{obj=this.Cancel}
-					aObj:skinStdButton{obj=this.ResetAllButton}
-				end
-				if aObj.modChkBtns then
-					aObj:skinCheckButton{obj=this.SearchContainer.IsExact}
-				end
-
-				aObj:Unhook(this, "OnShow")
-			end)
-			aObj:SecureHookScript(aslFrame.editItemDialog, "OnShow", function(this)
-				aObj:skinObject("editbox", {obj=this.SearchContainer.SearchString})
-				aObj:skinObject("dropdown", {obj=this.FilterKeySelector})
-				for _, level in _G.pairs{"LevelRange", "ItemLevelRange", "PriceRange", "CraftedLevelRange"} do
-					aObj:skinObject("editbox", {obj=this[level].MinBox})
-					aObj:skinObject("editbox", {obj=this[level].MaxBox})
-				end
-				aObj:skinObject("frame", {obj=this, kfs=true, ri=true, rns=true})
-				if aObj.modBtns then
-					aObj:skinStdButton{obj=this.Finished}
-					aObj:skinStdButton{obj=this.Cancel}
-					aObj:skinStdButton{obj=this.ResetAllButton}
-				end
-				if aObj.modChkBtns then
-					aObj:skinCheckButton{obj=this.SearchContainer.IsExact}
-				end
-
-				aObj:Unhook(this, "OnShow")
-			end)
-			aObj:SecureHookScript(aslFrame.exportDialog, "OnShow", function(this)
-				aObj:skinObject("slider", {obj=this.ScrollFrame.ScrollBar, rpTex="artwork"})
-				aObj:skinObject("frame", {obj=this, kfs=true, ri=true, rns=true})
-				if aObj.modBtns then
-					 aObj:skinCloseButton{obj=this.CloseDialog}
-					 aObj:skinStdButton{obj=this.SelectAll}
-					 aObj:skinStdButton{obj=this.UnselectAll}
-					 aObj:skinStdButton{obj=this.Export}
-				end
-				if aObj.modChkBtns then
-					local function skinCBs()
-						for _, frame in _G.ipairs(this.checkBoxPool) do
-							aObj:skinCheckButton{obj=frame.CheckBox}
-						end
+			if aslFrame.addItemDialog then
+				aObj:SecureHookScript(aslFrame.addItemDialog, "OnShow", function(this)
+					aObj:skinObject("editbox", {obj=this.SearchContainer.SearchString})
+					aObj:skinObject("dropdown", {obj=this.FilterKeySelector})
+					for _, level in _G.pairs{"LevelRange", "ItemLevelRange", "PriceRange", "CraftedLevelRange"} do
+						aObj:skinObject("editbox", {obj=this[level].MinBox})
+						aObj:skinObject("editbox", {obj=this[level].MaxBox})
 					end
-					aObj:SecureHook(this, "RefreshLists", function(_)
+					aObj:skinObject("frame", {obj=this, kfs=true, ri=true, rns=true})
+					if aObj.modBtns then
+						aObj:skinStdButton{obj=this.Finished}
+						aObj:skinStdButton{obj=this.Cancel}
+						aObj:skinStdButton{obj=this.ResetAllButton}
+					end
+					if aObj.modChkBtns then
+						aObj:skinCheckButton{obj=this.SearchContainer.IsExact}
+					end
+
+					aObj:Unhook(this, "OnShow")
+				end)
+			end
+			if aslFrame.editItemDialog then
+				aObj:SecureHookScript(aslFrame.editItemDialog, "OnShow", function(this)
+					aObj:skinObject("editbox", {obj=this.SearchContainer.SearchString})
+					aObj:skinObject("dropdown", {obj=this.FilterKeySelector})
+					for _, level in _G.pairs{"LevelRange", "ItemLevelRange", "PriceRange", "CraftedLevelRange"} do
+						aObj:skinObject("editbox", {obj=this[level].MinBox})
+						aObj:skinObject("editbox", {obj=this[level].MaxBox})
+					end
+					aObj:skinObject("frame", {obj=this, kfs=true, ri=true, rns=true})
+					if aObj.modBtns then
+						aObj:skinStdButton{obj=this.Finished}
+						aObj:skinStdButton{obj=this.Cancel}
+						aObj:skinStdButton{obj=this.ResetAllButton}
+					end
+					if aObj.modChkBtns then
+						aObj:skinCheckButton{obj=this.SearchContainer.IsExact}
+					end
+
+					aObj:Unhook(this, "OnShow")
+				end)
+			end
+			if aslFrame.exportDialog then
+				aObj:SecureHookScript(aslFrame.exportDialog, "OnShow", function(this)
+					aObj:skinObject("slider", {obj=this.ScrollFrame.ScrollBar, rpTex="artwork"})
+					aObj:skinObject("frame", {obj=this, kfs=true, ri=true, rns=true})
+					if aObj.modBtns then
+						 aObj:skinCloseButton{obj=this.CloseDialog}
+						 aObj:skinStdButton{obj=this.SelectAll}
+						 aObj:skinStdButton{obj=this.UnselectAll}
+						 aObj:skinStdButton{obj=this.Export}
+					end
+					if aObj.modChkBtns then
+						local function skinCBs()
+							for _, frame in _G.ipairs(this.checkBoxPool) do
+								aObj:skinCheckButton{obj=frame.CheckBox}
+							end
+						end
+						aObj:SecureHook(this, "RefreshLists", function(_)
+							skinCBs()
+						end)
 						skinCBs()
-					end)
-					skinCBs()
-				end
+					end
 
-				aObj:Unhook(this, "OnShow")
-			end)
-			aObj:SecureHookScript(aslFrame.exportDialog.copyTextDialog, "OnShow", function(this)
-				aObj:skinObject("slider", {obj=this.ScrollFrame.ScrollBar})
-				aObj:skinObject("frame", {obj=this, kfs=true, ri=true, rns=true})
-				if aObj.modBtns then
-					aObj:skinStdButton{obj=this.Close}
-				end
+					aObj:Unhook(this, "OnShow")
+				end)
+				aObj:SecureHookScript(aslFrame.exportDialog.copyTextDialog, "OnShow", function(this)
+					aObj:skinObject("slider", {obj=this.ScrollFrame.ScrollBar})
+					aObj:skinObject("frame", {obj=this, kfs=true, ri=true, rns=true})
+					if aObj.modBtns then
+						aObj:skinStdButton{obj=this.Close}
+					end
 
-				aObj:Unhook(this, "OnShow")
-			end)
-			aObj:SecureHookScript(aslFrame.importDialog, "OnShow", function(this)
-				aObj:skinObject("slider", {obj=this.ScrollFrame.ScrollBar, rpTex="artwork"})
-				aObj:skinObject("frame", {obj=this, kfs=true, ri=true, rns=true})
-				if aObj.modBtns then
-					 aObj:skinCloseButton{obj=this.CloseDialog}
-					 aObj:skinStdButton{obj=this.Import}
-				end
+					aObj:Unhook(this, "OnShow")
+				end)
+			end
+			if aslFrame.importDialog then
+				aObj:SecureHookScript(aslFrame.importDialog, "OnShow", function(this)
+					aObj:skinObject("slider", {obj=this.ScrollFrame.ScrollBar, rpTex="artwork"})
+					aObj:skinObject("frame", {obj=this, kfs=true, ri=true, rns=true})
+					if aObj.modBtns then
+						 aObj:skinCloseButton{obj=this.CloseDialog}
+						 aObj:skinStdButton{obj=this.Import}
+					end
 
-				aObj:Unhook(this, "OnShow")
-			end)
-			aObj:SecureHookScript(aslFrame.exportCSVDialog, "OnShow", function(this)
-				aObj:skinObject("slider", {obj=this.ScrollFrame.ScrollBar})
-				aObj:skinObject("frame", {obj=this, kfs=true, ri=true, rns=true})
-				if aObj.modBtns then
-					aObj:skinStdButton{obj=this.Close}
-				end
+					aObj:Unhook(this, "OnShow")
+				end)
+			end
+			if aslFrame.exportCSVDialog then
+				aObj:SecureHookScript(aslFrame.exportCSVDialog, "OnShow", function(this)
+					aObj:skinObject("slider", {obj=this.ScrollFrame.ScrollBar})
+					aObj:skinObject("frame", {obj=this, kfs=true, ri=true, rns=true})
+					if aObj.modBtns then
+						aObj:skinStdButton{obj=this.Close}
+					end
 
-				aObj:Unhook(this, "OnShow")
-			end)
-			aObj:SecureHookScript(aslFrame.itemHistoryDialog, "OnShow", function(this)
-				for _, child in _G.ipairs{this.ResultsListing.HeaderContainer:GetChildren()} do
-					aObj:keepRegions(child, {4, 5, 6}) -- N.B. regions 4 is text, 5 is highlight, 6 is arrow
-					aObj:skinObject("frame", {obj=child, kfs=true, ofs=1, x1=-2, x2=2})
-				end
-				aObj:skinObject("slider", {obj=this.ResultsListing.ScrollFrame.scrollBar, rpTex="background"})
-				aObj:skinObject("frame", {obj=this, ri=true, rns=true})
-				if aObj.modBtns then
-					aObj:skinStdButton{obj=this.Dock}
-					aObj:skinStdButton{obj=this.Close}
-				end
+					aObj:Unhook(this, "OnShow")
+				end)
+			end
+			if aslFrame.itemHistoryDialog then
+				aObj:SecureHookScript(aslFrame.itemHistoryDialog, "OnShow", function(this)
+					for _, child in _G.ipairs{this.ResultsListing.HeaderContainer:GetChildren()} do
+						aObj:keepRegions(child, {4, 5, 6}) -- N.B. regions 4 is text, 5 is highlight, 6 is arrow
+						aObj:skinObject("frame", {obj=child, kfs=true, ofs=1, x1=-2, x2=2})
+					end
+					aObj:skinObject("slider", {obj=this.ResultsListing.ScrollFrame.scrollBar, rpTex="background"})
+					aObj:skinObject("frame", {obj=this, ri=true, rns=true})
+					if aObj.modBtns then
+						aObj:skinStdButton{obj=this.Dock}
+						aObj:skinStdButton{obj=this.Close}
+					end
 
-				aObj:Unhook(this, "OnShow")
-			end)
+					aObj:Unhook(this, "OnShow")
+				end)
+			end
 			aObj:SecureHookScript(_G.AuctionatorSellingFrame, "OnShow", function(this)
 				local asi = this.AuctionatorSaleItem
 				asi.Icon.EmptySlot:SetTexture(nil)

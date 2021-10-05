@@ -486,8 +486,8 @@ function module:skinPartyF()
 end
 function module:skinPartyTooltip()
 
-	if not aObj.ttList[_G.PartyMemberBuffTooltip]
-	and( db.pet or db.party)
+	if not _G.rawget(aObj.ttList, _G.PartyMemberBuffTooltip)
+	and (db.pet or db.party)
 	then
 		-- handle in combat
 		if _G.PartyMemberBuffTooltip:IsProtected()

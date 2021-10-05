@@ -1,14 +1,13 @@
-local aName, aObj = ...
+local _, aObj = ...
 if not aObj:isAddonEnabled("AdiBags") then return end
 local _G = _G
 
-aObj.addonsToSkin.AdiBags = function(self) -- v1.9.22/v1.9.22-classic
+aObj.addonsToSkin.AdiBags = function(self) -- v1.9.25/v1.9.26-bcc/v1.9.20-classic
 
 	local aBag = _G.LibStub("AceAddon-3.0"):GetAddon("AdiBags", true)
 
 	-- hook this for bag creation
-	aBag:RegisterMessage("AdiBags_BagFrameCreated", function(msg, bag)
-		-- print("AdiBags_BagFrameCreated", bag)
+	aBag:RegisterMessage("AdiBags_BagFrameCreated", function(_, bag)
 		aObj:skinObject("editbox", {obj=_G[bag.frame:GetName() .. "SearchBox"]})
 		aObj:skinObject("frame", {obj=bag.frame, kfs=true})
 		if aObj.modBtns then
@@ -42,20 +41,29 @@ aObj.addonsToSkin.AdiBags = function(self) -- v1.9.22/v1.9.22-classic
 
 	if self.modBtnBs then
 		-- enable qualityHighlight
-		 aBag.db.profile.qualityHighlight = true
+		aBag.db.profile.qualityHighlight = true
 		-- colour the button border
-		aBag:RegisterMessage("AdiBags_UpdateButton", function(evt, btn)
+		local function clrBB(btn)
 			if not btn.sbb then
 				aObj:addButtonBorder{obj=btn, ibt=true}
 			end
-			if btn.IconQuestTexture:GetBlendMode() == "ADD" then
+			btn.sbb:SetBackdrop(aObj.modUIBtns.bDrop)
+			aObj:clrBtnBdr(btn.sbb, "grey")
+			if btn.IconQuestTexture:IsVisible()
+			and btn.IconQuestTexture:GetBlendMode() == "ADD"
+			then
 				btn.sbb:SetBackdrop(aObj.modUIBtns.iqbDrop)
-				btn.IconQuestTexture:Hide()
-			else
-				btn.sbb:SetBackdrop(aObj.modUIBtns.bDrop)
-				btn.IconQuestTexture:Show()
+				btn.sbb:SetBackdropBorderColor(btn.IconQuestTexture:GetVertexColor())
 			end
-			btn.sbb:SetBackdropBorderColor(btn.IconQuestTexture:GetVertexColor())
+			btn.IconQuestTexture:SetTexture()
+		end
+		aBag:RegisterMessage("AdiBags_UpdateButton", function(_, btn)
+			aObj:Debug("AdiBags_UpdateButton: [%s, %s]", btn)
+			clrBB(btn)
+		end)
+		aBag:RegisterMessage("AdiBags_UpdateBorder", function(_, btn)
+			aObj:Debug("AdiBags_UpdateBorder: [%s, %s]", btn)
+			clrBB(btn)
 		end)
 	end
 

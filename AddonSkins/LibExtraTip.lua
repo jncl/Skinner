@@ -1,4 +1,4 @@
-local aName, aObj = ...
+local _, aObj = ...
 -- This is a Library
 local _G = _G
 
@@ -9,7 +9,7 @@ aObj.libsToSkin["LibExtraTip-1"] = function(self) -- v 7.5.5724
 	-- hook this to skin extra tooltips
 	self:RawHook(_G.LibStub("LibExtraTip-1"), "GetFreeExtraTipObject", function(this)
 		local ttip = self.hooks[this].GetFreeExtraTipObject(this)
-		if not self.ttList[ttip] then -- don't skin tooltip again
+		if not _G.rawget(self.ttList, ttip) then
 			self:add2Table(self.ttList, ttip)
 		end
 		return ttip

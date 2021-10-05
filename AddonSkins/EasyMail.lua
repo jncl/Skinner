@@ -9,6 +9,14 @@ aObj.addonsToSkin.EasyMail = function(self) -- v 4.4.6.b
 	self:skinObject("frame", {obj=_G.EASYMAIL_L_Sowframe_HistoryFrame, kfs=true, ofs=-8})
 	if self.modBtns then
 		self:skinCloseButton{obj=self:getChild(_G.EASYMAIL_L_Sowframe_HistoryFrame, 1)}
+		self:skinStdButton{obj=_G.EasyMail_ForwardButton}
+		self:skinStdButton{obj=_G.EasyMail_AttButton}
+		self:SecureHook(_G.EasyMail_AttButton, "Disable", function(bObj, _)
+			self:clrBtnBdr(bObj)
+		end)
+		self:SecureHook(_G.EasyMail_AttButton, "Enable", function(bObj, _)
+			self:clrBtnBdr(bObj)
+		end)
 	end
 	if self.modBtnBs then
 		self:addButtonBorder{obj=_G.EasyMail_CheckAllButton}
@@ -22,8 +30,8 @@ aObj.addonsToSkin.EasyMail = function(self) -- v 4.4.6.b
 			self:clrBtnBdr(_G.EasyMail_CheckPageButton)
 			self:clrBtnBdr(_G.EasyMail_ClearPageButton)
 		end)
-		-- hook this to colour buttons on update
-		hooksecurefunc("InboxFrame_Update", function()
+		-- hook this to colour buttons on update, already hooked so use hooksecurefunc
+		_G.hooksecurefunc("InboxFrame_Update", function()
 			_G.EasyMail.InboxUpdate()
 		end)
 		self:SecureHook(_G.EasyMail, "EnableGetButton", function(_)

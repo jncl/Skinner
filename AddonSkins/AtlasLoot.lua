@@ -58,9 +58,10 @@ local function skinAtlasLoot()
 		aObj:skinObject("editbox", {obj=frame.contentFrame.searchBox, si=true, y1=-4, y2=4})
 	end
 	aObj:SecureHookScript(frame.contentFrame.clasFilterButton, "OnClick", function(this)
-		aObj:skinObject("frame", {obj=frame.contentFrame.clasFilterButton.selectionFrame, kfs=true, fb=true, ofs=0})
-
-		aObj:Unhook(this, "OnClick")
+		if this.selectionFrame then
+			aObj:skinObject("frame", {obj=this.selectionFrame, kfs=true, fb=true, ofs=0})
+			aObj:Unhook(this, "OnClick")
+		end
 	end)
 	if aObj.modBtns then
 		aObj:skinStdButton{obj=frame.contentFrame.itemsButton}
