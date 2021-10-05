@@ -370,10 +370,10 @@ function aObj:clrCovenantBdr(frame, uiTextureKit) -- luacheck: ignore self
 
 end
 
-function aObj:clrPNBtns(framePrefix, notPrefix)
+function aObj:clrPNBtns(framePrefix, isObj)
 
 	local ppb, npb
-	if notPrefix then
+	if isObj then
 		ppb, npb = framePrefix.PrevPageButton, framePrefix.NextPageButton
 	else
 		ppb, npb = _G[framePrefix .. "PrevPageButton"], _G[framePrefix .. "NextPageButton"]

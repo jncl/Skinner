@@ -349,10 +349,10 @@ aObj.blizzLoDFrames[ftype].ArchaeologyUI = function(self)
 		if self.modBtnBs then
 			self:addButtonBorder{obj=this.summaryPage.prevPageButton, ofs=0, clr="disabled"}
 			self:addButtonBorder{obj=this.summaryPage.nextPageButton, ofs=0, clr="disabled"}
+			self:SecureHook(this.summaryPage, "UpdateFrame", function(fObj)
+				self:clrPNBtns(fObj:GetName())
+			end)
 		end
-		self:SecureHook(this.summaryPage, "UpdateFrame", function(fObj)
-			self:clrPNBtns(fObj:GetName())
-		end)
 
 		self:keepFontStrings(this.completedPage) -- remove title textures
 		this.completedPage.infoText:SetTextColor(self.BT:GetRGB())
@@ -372,10 +372,10 @@ aObj.blizzLoDFrames[ftype].ArchaeologyUI = function(self)
 		if self.modBtnBs then
 			self:addButtonBorder{obj=this.completedPage.prevPageButton, ofs=0, clr="disabled"}
 			self:addButtonBorder{obj=this.completedPage.nextPageButton, ofs=0, clr="disabled"}
+			self:SecureHook(this.completedPage, "UpdateFrame", function(fObj)
+				self:clrPNBtns(fObj:GetName())
+			end)
 		end
-		self:SecureHook(this.completedPage, "UpdateFrame", function(fObj)
-			self:clrPNBtns(fObj:GetName())
-		end)
 
 		self:removeRegions(this.artifactPage, {2, 3, 7, 9}) -- title textures, backgrounds
 		if self.modBtns then
