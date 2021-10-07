@@ -19,6 +19,7 @@ aObj.addonsToSkin.Rarity = function(self) -- v 1.0 (r711-release-2)
 	and _G.AlertFrame
 	and _G.AlertFrame.alertFrameSubSystems
 	and #_G.AlertFrame.alertFrameSubSystems > 0
+	and _G.AlertFrame.alertFrameSubSystems[#_G.AlertFrame.alertFrameSubSystems].setUpFunction
 	then
 		local function hookFunc()
 			aObj:SecureHook(_G.AlertFrame.alertFrameSubSystems[#_G.AlertFrame.alertFrameSubSystems], "setUpFunction", function(frame, _)
