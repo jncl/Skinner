@@ -147,8 +147,6 @@ aObj.SetupClassic = function(self)
 	self.removeNineSlice = _G.nop
 	self.skinGlowBox = _G.nop
 
-	_G.collectgarbage("collect")
-
 	-- Add options for new frames
 	if self.isClscBC then
 		if self.db.profile.ArenaFrame == nil then
@@ -249,10 +247,5 @@ aObj.SetupClassic = function(self)
 
 	-- ChatEditBox
 	self.cebRgns = {1, 2, 6, 7} -- 1, 6, 7 are font strings, 2 is cursor texture
-
-	-- load replacement Frame skinning functions
-	self:checkAndRun("SetupClassic_NPCFrames", "opt", nil, true)
-	self:checkAndRun("SetupClassic_PlayerFrames", "opt", nil, true)
-	self:checkAndRun("SetupClassic_UIFrames", "opt", nil, true)
 
 end

@@ -320,6 +320,9 @@ function aObj:OnInitialize()
 	-- Load Classic Support, if required (done here for ElvUI/TukUI)
 	if self.isClsc then
 		self:checkAndRun("SetupClassic", "opt", nil, true)
+		self:checkAndRun("SetupClassic_NPCFrames", "opt", nil, true)
+		self:checkAndRun("SetupClassic_PlayerFrames", "opt", nil, true)
+		self:checkAndRun("SetupClassic_UIFrames", "opt", nil, true)
 	end
 
 end
