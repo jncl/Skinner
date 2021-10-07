@@ -1423,10 +1423,12 @@ aObj.blizzFrames[ftype].ChatBubbles = function(self)
 		_G.C_Timer.After(0.1, function()
 			-- get all ChatBubbles NOT including Forbidden ones
 			for _, cBubble in _G.pairs(_G.C_ChatBubbles.GetAllChatBubbles()) do
-				if aObj.isClscBC then
+				if aObj.isClscBC
+				or aObj.isClscERAPTR
+				then
 					cBubble = aObj:getChild(cBubble, 1)
 				end
-				aObj:skinObject("frame", {obj=cBubble, fType=ftype, kfs=true, ba=aObj.prdb.ChatBubbles.alpha, ng=true, ofs=-8})
+				aObj:skinObject("frame", {obj=cBubble, fType=ftype, kfs=true, ba=aObj.prdb.ChatBubbles.alpha, ng=true, ofs=-8, clr="grey"})
 				-- make text visible
 				if cBubble.String then
 					cBubble.String:SetParent(cBubble.sf)
