@@ -1260,8 +1260,6 @@ aObj.blizzLoDFrames[ftype].Calendar = function(self)
 		self:Unhook(this, "OnShow")
 	end)
 
--->>-- ContextMenus
-
 end
 
 aObj.blizzLoDFrames[ftype].ChallengesUI = function(self)
@@ -1591,6 +1589,7 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 			self:skinStdButton{obj=this.RedockButton}
 			self:skinStdButton{obj=_G.CombatLogDefaultButton}
 			if aObj.isRtlPTR then
+				self:skinStdButton{obj=this.ToggleChatButton}
 				self:skinStdButton{obj=_G.TextToSpeechDefaultButton, fType=ftype}
 			end
 			self:skinStdButton{obj=_G.ChatConfigFrameCancelButton}
