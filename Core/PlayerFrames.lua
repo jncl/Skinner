@@ -136,7 +136,7 @@ aObj.blizzLoDFrames[ftype].AchievementUI = function(self)
 		self:moveObject{obj=_G.AchievementFrameHeaderPoints, x=40, y=-5}
 		_G.AchievementFrameHeaderShield:SetAlpha(1)
 		self:skinObject("slider", {obj=_G.AchievementFrameCategoriesContainerScrollBar, fType=ftype, rpTex="background"})
-		self:skinObject("frame", {obj=_G.AchievementFrameCategories, fType=ftype, kfs=true, rns=aObj.isRtlPTR and true, fb=true, y1=0})
+		self:skinObject("frame", {obj=_G.AchievementFrameCategories, fType=ftype, kfs=true, rns=true, fb=true, y1=0})
 		-- hook these to stop Categories skinFrame from changing
 		self:SecureHook(_G.AchievementFrameCategoriesContainerScrollBar, "Show", function(_)
 			_G.AchievementFrameCategories.sf:SetPoint("BOTTOMRIGHT", _G.AchievementFrameCategories, "BOTTOMRIGHT", 24, -2)

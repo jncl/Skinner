@@ -54,17 +54,17 @@ aObj.skinTPLs = {
 	},
 	frame = {
 		name		= nil, -- use a name if required (VuhDo Options)
-		bg          = false, -- put into Background FrameStrata
-		cb          = false, -- skin close button
-		cbns        = false, -- use noSkin otion when skinning the close button
-		hat         = false, -- hide all textures except font strings
-		kfs         = false, -- remove all textures except font strings
+		-- bg          = true, -- put into Background FrameStrata
+		-- cb          = true, -- skin close button
+		-- cbns        = true, -- use noSkin otion when skinning the close button
+		-- hat         = true, -- hide all textures except font strings
+		-- kfs         = true, -- remove all textures except font strings
 		regions     = {}, -- remove specified regions
 		rb          = true, -- remove Backdrop
-		-- ri          = true, -- disable draw layers; [Background, Border & Overlay]
-		-- rns         = true, -- disable draw layers; [Background, Border & Overlay]
+		ri          = true, -- disable draw layers; [Background, Border & Overlay]
+		rns         = true, -- disable draw layers; [Background, Border & Overlay]
 		rp          = false, -- reverse parent child relationship
-		sec         = false, -- use SecureFrameTemplate
+		-- sec         = true, -- use SecureFrameTemplate
 		ofs         = 2, -- skin frame offset to object
 		-- x1          = ofs * -2,
 		-- y1          = ofs,
@@ -72,16 +72,16 @@ aObj.skinTPLs = {
 		-- y2          = ofs * -1,
 		aso         = {}, -- applySkin options
 		bd          = 1, -- backdrop to use
-		hdr         = false, -- header texture(s)
-		noBdr       = false, -- equivalent to bd=11 when true
+		-- hdr         = true, -- header texture(s)
+		-- noBdr       = true, -- equivalent to bd=11 when true
 		-- ba          = 1, -- backdrop alpha
 		-- clr         = "default", -- backdrop border colour
 		-- bba         = 1, -- backdrop border alpha
-		ng          = false, -- no Gradient texture
+		-- ng          = true, -- no Gradient texture
 		-- fh          =, -- fade height
-		invert      = false, -- invert Gradient
-		rotate      = false, -- rotate Gradient
-		fb          = false, -- frame border [bd=10, ng=true, ofs=0]
+		-- invert      = true, -- invert Gradient
+		-- rotate      = true, -- rotate Gradient
+		-- fb          = true, -- frame border [bd=10, ng=true, ofs=0]
 	},
 	glowbox = {
 	},
@@ -436,26 +436,15 @@ local function skinFrame(tbl)
 	if tbl.rb then
 		aObj:removeBackdrop(tbl.obj)
 	end
-	local hasInset = (tbl.obj.Inset or tbl.obj.inset and _G.type(tbl.obj.inset) ~= "number")
-	if hasInset then
-		if tbl.ri then
-			aObj:removeInset(tbl.obj.Inset or tbl.obj.inset)
-		--@alpha@
-		else
-			aObj:CustomPrint(1, 0, 0, "Frame Inset detected, add ri=true", tbl.obj)
-			_G.assert(false, "Frame Inset" .. _G.debugstack(2, 3, 2))
-		--@end-alpha@
-		end
+	if tbl.ri
+	and tbl.obj.Inset or (tbl.obj.inset and _G.type(tbl.obj.inset) ~= "number")
+	then
+		aObj:removeInset(tbl.obj.Inset or tbl.obj.inset)
 	end
-	if tbl.obj.NineSlice then
-		if tbl.rns then
-			aObj:removeNineSlice(tbl.obj.NineSlice)
-		--@alpha@
-		else
-			aObj:CustomPrint(1, 0, 0, "Frame NineSlice detected, add rns=true", tbl.obj, tbl.obj:GetDebugName())
-			_G.assert(false, "Frame NineSlice" .. _G.debugstack(2, 3, 2))
-		--@end-alpha@
-		end
+	if tbl.rns
+	and tbl.obj.NineSlice
+	then
+		aObj:removeNineSlice(tbl.obj.NineSlice)
 	end
 	if tbl.hdr then
 		hideHeader(tbl.obj)
