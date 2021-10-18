@@ -5,7 +5,7 @@ local _G = _G
 aObj.addonsToSkin.Cork = function(self) -- v 7.1.0.62-Beta
 
 	-- anchor
-	self.RegisterMessage("Cork", "UIParent_GetChildren", function(this, child)
+	self.RegisterMessage("Cork", "UIParent_GetChildren", function(_, child)
 		if child:IsObjectType("Button")
 		and _G.Round(child:GetHeight()) == 24
 		then
@@ -14,12 +14,9 @@ aObj.addonsToSkin.Cork = function(self) -- v 7.1.0.62-Beta
 		end
 	end)
 
-	-- tooltip
-	_G.C_Timer.After(0.1, function()
-		self:add2Table(self.ttList, _G.Corkboard)
-	end)
+	self:add2Table(self.ttList, _G.Corkboard)
 
-	self.RegisterMessage("Cork", "IOFPanel_Before_Skinning", function(this, panel)
+	self.RegisterMessage("Cork", "IOFPanel_Before_Skinning", function(_, panel)
 		if panel.name ~= "Cork" then return end
 		self.iofSkinnedPanels[panel] = true
 
@@ -34,8 +31,8 @@ aObj.addonsToSkin.Cork = function(self) -- v 7.1.0.62-Beta
 				end
 			end
 		end
-		self:skinObject("tabs", {obj=_G.CorkFrame, tabs=_G.CorkFrame.Tabs, lod=true, offsets={x1=6, y1=0, x2=-6, y2=0}, regions={5}, track=false, func=aObj.isTT and function(tab)
-			aObj:SecureHookScript(tab, "OnClick", function(this)
+		self:skinObject("tabs", {obj=_G.CorkFrame, tabs=_G.CorkFrame.Tabs, lod=true, offsets={x1=6, y1=0, x2=-6, y2=0}, regions={5}, track=false, func=aObj.isTT and function(tObj)
+			aObj:SecureHookScript(tObj, "OnClick", function(this)
 				for _, tab in _G.pairs(_G.CorkFrame.Tabs) do
 					if tab == this then
 						aObj:setActiveTab(tab.sf)

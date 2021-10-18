@@ -21,7 +21,7 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 	self.initialized.Ace3 = true
 
 	local function skinAceGUI(obj, objType)
-		local objVer = AceGUI.GetWidgetVersion and AceGUI:GetWidgetVersion(objType) or 0
+		-- local objVer = AceGUI.GetWidgetVersion and AceGUI:GetWidgetVersion(objType) or 0
 		-- if not objType:find("CollectMe") then
 			-- aObj:Debug("skinAceGUI: [%s, %s, %s]", obj, objType, objVer)
 		-- end
@@ -106,7 +106,7 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 			then
 				aObj:skinObject("editbox", {obj=obj.editbox, ofs=0, x1=-2})
 				-- hook this as insets are changed
-				aObj:rawHook(obj.editbox, "SetTextInsets", function(this, left, ...)
+				aObj:rawHook(obj.editbox, "SetTextInsets", function(_, left, ...)
 					return left + 6, ...
 				end, true)
 				if aObj.modBtns then
@@ -226,9 +226,9 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 			or objType == "LSM30_Statusbar"
 			or objType == "RS_Markers" -- RareScanner
 			then
-			    if not aObj.db.profile.TexturedDD then
-			        aObj:keepFontStrings(obj.frame)
-			    else
+				if not aObj.db.profile.TexturedDD then
+					aObj:keepFontStrings(obj.frame)
+				else
 					obj.alignoffset = 29 -- align to neighbouring DropDowns
 					local xOfs1, yOfs1, xOfs2, yOfs2
 					if objType == "LSM30_Background"
@@ -247,7 +247,7 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 					aObj:secureHook(obj, "SetDisabled", function(this, disabled)
 						aObj:checkDisabledDD(this.frame, disabled)
 					end)
-					aObj:secureHookScript(obj.frame.dropButton, "OnClick", function(this)
+					aObj:secureHookScript(obj.frame.dropButton, "OnClick", function(_)
 						if obj.dropdown then
 							if not obj.dropdown.sf then
 								aObj:skinObject("slider", {obj=obj.dropdown.slider})
@@ -275,7 +275,7 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 				if aObj.modBtnBs then
 					aObj:addButtonBorder{obj=obj.frame, relTo=obj.frame.icon}
 					-- make sure button border frame is visible
-					aObj:secureHook(obj, "SetIcon", function(this, icon)
+					aObj:secureHook(obj, "SetIcon", function(this, _)
 						_G.RaiseFrameLevel(this.frame.sbb)
 					end)
 					aObj:addButtonBorder{obj=obj.group, es=10, ofs=0}
@@ -295,7 +295,7 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 				if aObj.modBtnBs then
 					aObj:addButtonBorder{obj=obj.frame, relTo=obj.frame.icon}
 					-- make sure button border frame is visible
-					aObj:secureHook(obj, "SetIcon", function(this, icon)
+					aObj:secureHook(obj, "SetIcon", function(this, _)
 						_G.RaiseFrameLevel(this.frame.sbb)
 					end)
 				end
@@ -323,21 +323,21 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 					aObj:addButtonBorder{obj=obj.deleteButton, es=10, ofs=-1, x1=2.5, y2=3.5}
 				end
 
-            -- TradeSkillMaster (TSM) objects
-	        elseif objType == "TSMButton" then
-	           obj.btn:SetBackdrop(nil)
+			-- TradeSkillMaster (TSM) objects
+			elseif objType == "TSMButton" then
+			   obj.btn:SetBackdrop(nil)
 				if aObj.modBtns then
 					aObj:skinStdButton{obj=obj.btn, as=true} -- just skin it otherwise text is hidden
 				end
-	             obj.sknrTSM = true
+				 obj.sknrTSM = true
 
- 			elseif objType == "TSMDropdown" then
- 				aObj:skinAceDropdown(obj, 0, 0)
-                 obj.sknrTSM = true
+			elseif objType == "TSMDropdown" then
+				aObj:skinAceDropdown(obj, 0, 0)
+				 obj.sknrTSM = true
 
- 			elseif objType == "TSMDropdown-Pullout" then
- 				aObj:applySkin{obj=obj.frame}
-                 obj.sknrTSM = true
+			elseif objType == "TSMDropdown-Pullout" then
+				aObj:applySkin{obj=obj.frame}
+				 obj.sknrTSM = true
 
 			elseif objType == "TSMEditBox" then
 				if aObj.modBtns then
@@ -345,62 +345,62 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 				end
 				 obj.sknrTSM = true
 
-	        elseif objType == "TSMInlineGroup"
-	        then
-	            obj.HideBorder = _G.nop
-	            obj.SetBackdrop = _G.nop
-	            obj.border:Hide()
-	            obj.titletext:ClearAllPoints()
-	            obj.titletext:SetPoint("TOPLEFT", 10, -6)
-	            obj.titletext:SetPoint("TOPRIGHT", -14, -6)
-	            aObj:applySkin{obj=obj.frame}
-	            obj.sknrTSM = true
+			elseif objType == "TSMInlineGroup"
+			then
+				obj.HideBorder = _G.nop
+				obj.SetBackdrop = _G.nop
+				obj.border:Hide()
+				obj.titletext:ClearAllPoints()
+				obj.titletext:SetPoint("TOPLEFT", 10, -6)
+				obj.titletext:SetPoint("TOPRIGHT", -14, -6)
+				aObj:applySkin{obj=obj.frame}
+				obj.sknrTSM = true
 
-            elseif objType == "TSMMacroButton"
-            or objType == "TSMFastDestroyButton"
-            then
-                obj.frame:SetBackdrop(nil)
+			elseif objType == "TSMMacroButton"
+			or objType == "TSMFastDestroyButton"
+			then
+				obj.frame:SetBackdrop(nil)
 				if aObj.modBtns then
 					aObj:skinStdButton{obj=obj.frame}
 				end
-                obj.sknrTSM = true
+				obj.sknrTSM = true
 
-            elseif objType == "TSMMainFrame" then
-                aObj:applySkin{obj=obj.frame}
-                aObj:getChild(obj.frame, 1):SetBackdrop(nil)
+			elseif objType == "TSMMainFrame" then
+				aObj:applySkin{obj=obj.frame}
+				aObj:getChild(obj.frame, 1):SetBackdrop(nil)
 				if aObj.modBtns then
 					aObj:skinStdButton{obj=aObj:getChild(obj.frame, 1), nc=true, ofs=2} -- close button
 				end
-                obj.sknrTSM = true
+				obj.sknrTSM = true
 
-            elseif objType == "TSMScrollingTable" then
+			elseif objType == "TSMScrollingTable" then
 				aObj:addSkinFrame{obj=obj.frame, ft="a", nb=true, ofs=2}
-                obj.sknrTSM = true
+				obj.sknrTSM = true
 
-            elseif objType == "TSMSelectionList" then
-                aObj:applySkin{obj=obj.leftFrame}
-                aObj:skinSlider{obj=obj.leftScrollFrame._scrollbar}
-                aObj:applySkin{obj=obj.rightFrame}
-                aObj:skinSlider{obj=obj.rightScrollFrame._scrollbar}
-                obj.sknrTSM = true
+			elseif objType == "TSMSelectionList" then
+				aObj:applySkin{obj=obj.leftFrame}
+				aObj:skinSlider{obj=obj.leftScrollFrame._scrollbar}
+				aObj:applySkin{obj=obj.rightFrame}
+				aObj:skinSlider{obj=obj.rightScrollFrame._scrollbar}
+				obj.sknrTSM = true
 
-            elseif objType == "TSMTabGroup"
-            then
-                aObj:applySkin{obj=obj.content:GetParent()}
-                obj.sknrTSM = true
+			elseif objType == "TSMTabGroup"
+			then
+				aObj:applySkin{obj=obj.content:GetParent()}
+				obj.sknrTSM = true
 
-            elseif objType == "TSMTreeGroup" then
-                aObj:applySkin{obj=obj.border}
-                aObj:applySkin{obj=obj.treeframe}
-                obj.sknrTSM = true
+			elseif objType == "TSMTreeGroup" then
+				aObj:applySkin{obj=obj.border}
+				aObj:applySkin{obj=obj.treeframe}
+				obj.sknrTSM = true
 
-            elseif objType == "TSMWindow" then
-                aObj:applySkin{obj=obj.frame, kfs=true}
-               obj.titletext:SetPoint("TOP", obj.frame, "TOP", 0, -6)
+			elseif objType == "TSMWindow" then
+				aObj:applySkin{obj=obj.frame, kfs=true}
+			   obj.titletext:SetPoint("TOP", obj.frame, "TOP", 0, -6)
 				if aObj.modBtns then
 					aObj:skinCloseButton{obj=obj.closebutton}
 				end
-                 obj.sknrTSM = true
+				 obj.sknrTSM = true
 
 			-- AuctionMaster objects
 			elseif objType == "ScrollableSimpleHTML" then
@@ -411,7 +411,6 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 				end
 
 			-- CompactMissions objects
-			elseif objType == "Follower" then
 			elseif objType == "Mission" then
 				aObj:applySkin{obj=obj.frame, kfs=true}
 				if aObj.modBtns then
@@ -432,9 +431,9 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 				obj.frame.HighlightT:ClearAllPoints()
 				obj.frame.HighlightT:SetPoint("TOPLEFT", 0, 4)
 				obj.frame.HighlightT:SetPoint("TOPRIGHT", 0, 4)
-		        obj.frame.HighlightB:ClearAllPoints()
-		        obj.frame.HighlightB:SetPoint("BOTTOMLEFT", 0, -4)
-		        obj.frame.HighlightB:SetPoint("BOTTOMRIGHT", 0, -4)
+				obj.frame.HighlightB:ClearAllPoints()
+				obj.frame.HighlightB:SetPoint("BOTTOMLEFT", 0, -4)
+				obj.frame.HighlightB:SetPoint("BOTTOMRIGHT", 0, -4)
 				aObj:removeRegions(obj.frame, {13, 14, 23, 24, 25, 26}) -- LocBG, RareOverlay, Highlight corners
 				if aObj.modBtnBs then
 					aObj:secureHook(obj, "SetMission", function(this)
@@ -452,7 +451,7 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 				obj.frame.GarrCorners:DisableDrawLayer("BACKGROUND")
 				aObj:addSkinFrame{obj=obj.frame, ft="a", kfs=true, ofs=2, x2=1}
 				-- if aObj.modBtns then
-				-- 	aObj:skinCloseButton{obj=obj.frame.CloseButton}
+				--	aObj:skinCloseButton{obj=obj.frame.CloseButton}
 				-- end
 
 			-- OrderHallCommander/ChampionCommander objects
@@ -521,6 +520,8 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 			or objType == "TSMInteractiveLabel"
 			-- CollectMe objects
 			or objType == "CollectMeLabel"
+			-- CompactMissions objects
+			or objType == "Follower"
 			-- GarrisonMissionCommander objects
 			or objType == "GCMCList"
 			-- OrderHallCommander objects
@@ -540,7 +541,7 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 			-- KongConfig
 			or objType == "CollapsibleGroup"
 			or objType == "EasyMenuDropDown"
-			then
+			then -- luacheck: ignore 542 (empty if branch)
 				-- aObj:Debug("Ignoring: [%s]", objType)
 			-- any other types
 			else
@@ -555,7 +556,10 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 
 	self:RawHook(AceGUI, "Create", function(this, objType)
 		local obj = self.hooks[this].Create(this, objType)
-		if not objectsToSkin[obj] then skinAceGUI(obj, objType) end -- Bugfix: ignore objects awaiting skinning
+		-- Bugfix: ignore objects awaiting skinning
+		if not objectsToSkin[obj] then
+			skinAceGUI(obj, objType)
+		end
 		return obj
 	end, true)
 
@@ -563,7 +567,7 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 	for obj in _G.pairs(objectsToSkin) do
 		skinAceGUI(obj, objectsToSkin[obj])
 	end
-	_G.wipe(objectsToSkin)
+	objectsToSkin = {}
 
 end
 

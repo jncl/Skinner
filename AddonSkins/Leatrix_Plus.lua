@@ -2,7 +2,7 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("Leatrix_Plus") then return end
 local _G = _G
 
-aObj.addonsToSkin.Leatrix_Plus = function(self) -- v 9.0.29/1.13.106/2.5.34
+aObj.addonsToSkin.Leatrix_Plus = function(self) -- v 9.1.13/1.13.106/2.5.34
 
 	self:SecureHookScript(_G.LeaPlusGlobalPanel, "OnShow", function(this)
 		local function skinKids(frame)
@@ -33,7 +33,6 @@ aObj.addonsToSkin.Leatrix_Plus = function(self) -- v 9.0.29/1.13.106/2.5.34
 					dd.Button = aObj:getChild(dd, 1)
 					aObj:skinObject("dropdown", {obj=dd})
 					aObj:skinObject("frame", {obj=aObj:getChild(child, 2), kfs=true, ofs=0}) -- dropdown list
-					dd = nil
 				end
 			end
 		end
@@ -61,7 +60,6 @@ aObj.addonsToSkin.Leatrix_Plus = function(self) -- v 9.0.29/1.13.106/2.5.34
 				end
 			end
 		end
-		sideF = nil
 
 		self:Unhook(this, "OnShow")
 	end)
@@ -70,13 +68,8 @@ aObj.addonsToSkin.Leatrix_Plus = function(self) -- v 9.0.29/1.13.106/2.5.34
 	if _G.LeaPlusDB["EnhanceDressup"] == "On"
 	and self.modBtns
 	then
-		if not _G.DressUpFrame.sf then
-			self:skinStdButton{obj=self:getPenultimateChild(_G.DressUpFrame)}
-			self:skinStdButton{obj=self:getLastChild(_G.DressUpFrame)}
-		else
-			self:skinStdButton{obj=self:getChild(_G.DressUpFrame, _G.DressUpFrame:GetNumChildren() - 2)}
-			self:skinStdButton{obj=self:getPenultimateChild(_G.DressUpFrame)}
-		end
+		self:skinStdButton{obj=self:getChild(_G.DressUpFrame.ResetButton, 1)}
+		self:skinStdButton{obj=self:getChild(_G.DressUpFrame.ResetButton, 2)}
 	end
 
 	-- Enhanced QuestLog

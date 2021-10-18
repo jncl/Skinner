@@ -373,7 +373,9 @@ if aObj.isRtl then
 		self:checkShown(_G.AltoholicFrame.TabOptions)
 
 	end
-else
+end
+
+if aObj.isClsc then
 	local function skinMenuItems(frameName, cnt, text)
 		local itm
 		for i = 1, cnt do
@@ -638,25 +640,6 @@ else
 		if self.modBtnBs then
 			self:addButtonBorder{obj=_G.AltoholicTabCharacters.Recipes.LinkButton, x2=-3}
 		end
-		if not self.isClsc then
-			-- Garrison
-			skinScrollBar(_G.AltoholicTabCharacters.GarrisonMissions.ScrollFrame)
-			if self.modBtnBs then
-				local frame
-				for i = 1, _G.AltoholicTabCharacters.GarrisonMissions.ScrollFrame.numRows do
-					frame = _G.AltoholicTabCharacters.GarrisonMissions.ScrollFrame:GetRow(i)
-					self:addButtonBorder{obj=frame.MissionType, relTo=frame.MissionType.Icon}
-					-- TODO if these are removed followers aren't visible
-					-- for j = 1, 3 do
-					-- 	frame["Follower" .. j]:DisableDrawLayer("BACKGROUND")
-					-- end
-					for j = 1, 2 do
-						self:addButtonBorder{obj=frame["Reward" .. j], relTo=frame["Reward" .. j].Icon}
-					end
-				end
-			-- Covenant
-			end
-		end
 
 	end
 
@@ -696,21 +679,6 @@ else
 					end
 				end)
 			end
-		end
-		if not self.isClsc then
-			-- Bank
-			if self.modBtnBs then
-				for _, btn in _G.pairs(_G.AltoholicTabGuild.Bank.TabButtons) do
-					self:addButtonBorder{obj=btn}
-				end
-				self:addButtonBorder{obj=_G.AltoholicTabGuild.Bank.MenuIcons.GuildIcon}
-				self:addButtonBorder{obj=_G.AltoholicTabGuild.Bank.MenuIcons.TabsIcon}
-				self:addButtonBorder{obj=_G.AltoholicTabGuild.Bank.MenuIcons.UpdateIcon}
-				self:addButtonBorder{obj=_G.AltoholicTabGuild.Bank.MenuIcons.RarityIcon}
-			end
-			self:SecureHook(_G.AltoholicTabGuild.Bank.ContextualMenu, "Toggle", function(_)
-				skinDDMLists()
-			end)
 		end
 
 	end
@@ -754,17 +722,6 @@ else
 		self:skinObject("dropdown", {obj=_G.AltoholicTabGrids.SelectRealm})
 		UIDDM_SetButtonWidth(_G.AltoholicTabGrids.SelectRealm, 24)
 		skinDDMLists()
-		if not self.isClsc
-		and self.modBtnBs
-		then
-			self:addButtonBorder{obj=_G.AltoholicTabGrids.PrevPage, ofs=-2, x1=1, clr="gold"}
-			self:addButtonBorder{obj=_G.AltoholicTabGrids.NextPage, ofs=-2, x1=1, clr="gold"}
-			self:SecureHook(_G.AltoholicTabGrids, "SetPage", function(this, _)
-				self:clrBtnBdr(this.PrevPage, "gold")
-				self:clrBtnBdr(this.NextPage, "gold")
-			end)
-			_G.AltoholicTabGrids:SetPage(1)
-		end
 
 	end
 end
