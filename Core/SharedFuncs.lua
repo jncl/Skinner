@@ -15,14 +15,14 @@ end
 local buildInfo = {
 	-- Development
 	wow_classic_beta    = {"3.0.0",  99999, "Classic BC Beta"},
-	wow_classic_ptr     = {"2.5.2",  40422, "Classic BC PTR"},
-	wow_classic_era_ptr = {"1.14.0", 40441, "Classic Era PTR"},
+	wow_classic_ptr     = {"2.5.2",  40617, "Classic BC PTR"},
+	wow_classic_era_ptr = {"1.14.1", 40594, "Classic Era PTR"}, -- a.k.a. Classic Season of Mastery Beta
 	wow_beta            = {"10.0.0", 99999, "Retail Beta"},
-	wow_ptr             = {"9.1.5",  40383, "Retail PTR"},
+	wow_ptr             = {"9.1.5",  40622, "Retail PTR"},
 	-- Live
-	wow_classic         = {"2.5.2",  40422, "Classic BC"},
-	wow_classic_era     = {"1.14.0", 40441, "Classic Era"},
-	wow                 = {"9.1.0",  40120, "Retail"},
+	wow_classic         = {"2.5.2",  40617, "Classic BC"},
+	wow_classic_era     = {"1.14.0", 40618, "Classic Era"},
+	wow                 = {"9.1.0",  40593, "Retail"},
 	-- Currently playing
 	curr                = {_G.GetBuildInfo()},
 }
@@ -42,22 +42,8 @@ function aObj:checkVersion()
 
 	-- aObj:Debug("checkVersion#1: [%s, %s, %s, %s, %s, %s, %s, %s]", self.isClscBeta, self.isClscPTR, self.isClsc, self.isClscERAPTR, self.isClscERA, self.isRtlBeta, self.isRtlPTR, self.isRtl)
 
-	-- check current build number against Classic Beta, if greater then it's a patch
-	self.isPatch = self.isPatch or self.isClscBCBeta and _G.tonumber(buildInfo.curr[2]) > _G.tonumber(buildInfo.wow_classic_beta[2])
-	-- check current build number against Classic BC PTR, if greater then it's a patch
-	self.isPatch = self.isPatch or self.isClscPTR and _G.tonumber(buildInfo.curr[2]) > _G.tonumber(buildInfo.wow_classic_ptr[2])
-	-- check current build number against Classic BC, if greater then it's a patch
-	self.isPatch = self.isPatch or self.isClscBC and _G.tonumber(buildInfo.curr[2]) > _G.tonumber(buildInfo.wow_classic[2])
-	-- check current build number against Classic BC PTR, if greater then it's a patch
-	self.isPatch = self.isPatch or self.isClscERAPTR and _G.tonumber(buildInfo.curr[2]) > _G.tonumber(buildInfo.wow_classic_era_ptr[2])
-	-- check current build number against Classic, if greater then it's a patch
-	self.isPatch = self.isPatch or self.isClscERA and _G.tonumber(buildInfo.curr[2]) > _G.tonumber(buildInfo.wow_classic_era[2])
-	-- check current build number against Retail Beta, if greater then it's a patch
-	self.isPatch = self.isPatch or self.isRtlBeta and _G.tonumber(buildInfo.curr[2]) > _G.tonumber(buildInfo.wow_beta[2])
-	-- check current build number against Retail PTR, if greater then it's a patch
-	self.isPatch = self.isPatch or self.isRtlPTR and _G.tonumber(buildInfo.curr[2]) > _G.tonumber(buildInfo.wow_ptr[2])
-	-- check current build number against Retail, if greater then it's a patch
-	self.isPatch = self.isPatch or self.isRtl and _G.tonumber(buildInfo.curr[2]) > _G.tonumber(buildInfo.wow[2])
+	-- check current build number against wow version build number, if greater then it's a patch
+	self.isPatch = _G.tonumber(buildInfo.curr[2]) > _G.tonumber(buildInfo[agentUID][2])
 
 	--@alpha@
 	self:Printf("%s, %d, %s, %d, %s, %d, %s", buildInfo[agentUID][1], buildInfo[agentUID][2], buildInfo.curr[1], buildInfo.curr[2], buildInfo.curr[3], buildInfo.curr[4] , agentUID)
@@ -82,7 +68,7 @@ function aObj:checkVersion()
 	self.isClscERAPTR = self.isClscERAPTR or self.isPatch and self.isClscERA and buildInfo.curr[1] > buildInfo.wow_classic_era[1]
 	self.isRtlPTR     = self.isRtlPTR or self.isPatch and self.isRtl and buildInfo.curr[1] > buildInfo.wow[1]
 
-	-- aObj:Debug("checkVersion#2: [%s, %s, %s, %s, %s, %s, %s, %s, %s]", self.isClscBeta, self.isClscPTR, self.isClscBC, self.isClscERAPTR, self.isClscERA, self.isClsc, self.isRtlBeta, self.isRtlPTR, self.isRtl)
+	-- aObj:Debug("checkVersion#2: [%s, %s, %s, %s, %s, %s, %s, %s, %s, %s]", self.isClscBeta, self.isClscPTR, self.isClscBC, self.isClscERAPTR, self.isClscERA, self.isClsc, self.isRtlBeta, self.isRtlPTR, self.isRtl, self.isPatch)
 
 	buildInfo = nil
 
