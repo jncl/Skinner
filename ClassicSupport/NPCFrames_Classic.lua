@@ -278,8 +278,14 @@ aObj.SetupClassic_NPCFrames = function()
 				-- add button borders to bag slots
 				for i = 1, _G.NUM_BANKBAGSLOTS do
 					self:addButtonBorder{obj=_G.BankSlotsFrame["Bag" .. i], ibt=true}
-					_G.BankSlotsFrame["Bag" .. i].sbb:SetBackdropBorderColor(_G.BankSlotsFrame["Bag" .. i].icon:GetVertexColor())
 				end
+				self:SecureHook("UpdateBagSlotStatus", function()
+					for i = 1, _G.NUM_BANKBAGSLOTS do
+						_G.BankSlotsFrame["Bag" .. i].sbb:SetBackdropBorderColor(_G.BankSlotsFrame["Bag" .. i].icon:GetVertexColor())
+					end
+				end)
+				-- colour button borders
+				_G.UpdateBagSlotStatus()
 			end
 
 			self:Unhook(this, "OnShow")

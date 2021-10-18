@@ -332,11 +332,17 @@ aObj.blizzFrames[ftype].BankFrame = function(self)
 				-- force quality border update
 				_G.BankFrameItemButton_Update(_G.BankSlotsFrame["Item" .. i])
 			end
+			self:SecureHook("UpdateBagSlotStatus", function()
+				for i = 1, _G.NUM_BANKBAGSLOTS do
+					_G.BankSlotsFrame["Bag" .. i].sbb:SetBackdropBorderColor(_G.BankSlotsFrame["Bag" .. i].icon:GetVertexColor())
+				end
+			end)
 			-- add button borders to bags
 			for i = 1, _G.NUM_BANKBAGSLOTS do
 				self:addButtonBorder{obj=_G.BankSlotsFrame["Bag" .. i], ibt=true}
-				_G.BankSlotsFrame["Bag" .. i].sbb:SetBackdropBorderColor(_G.BankSlotsFrame["Bag" .. i].icon:GetVertexColor())
 			end
+			-- colour button borders
+			_G.UpdateBagSlotStatus()
 		end
 		-- ReagentBankFrame
 		_G.ReagentBankFrame:DisableDrawLayer("ARTWORK") -- bank slots texture
