@@ -2139,7 +2139,7 @@ aObj.SetupOptions = function(self)
 	end
 	self.optionsFrame[self.L["Disabled Skins"]].default = function()
 		db.DisableAllAS = false
-		_G.wipe(db.DisabledSkins)
+		db.DisabledSkins = {}
 		-- refresh panel
 		_G.InterfaceOptionsFrame_OpenToCategory(self.optionsFrame[self.L["Disabled Skins"]])
 	end

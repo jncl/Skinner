@@ -1621,7 +1621,7 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 		end
 		local tabSkin = self.skinTPLs.new("tabs", {obj=this.ChatTabManager, tabs={}, fType=ftype, upwards=true, ignoreHLTex=false, offsets={x1=4, y1=self.isTT and -10 or -12, x2=-4, y2=self.isTT and -5 or 0}, regions={8, 9, 10, 11}, noCheck=true, func=setTabState})
 		local function skinTabs(ctm)
-			_G.wipe(tabSkin.tabs)
+			tabSkin.tabs = {}
 			for tab in ctm.tabPool:EnumerateActive() do
 				aObj:add2Table(tabSkin.tabs, tab)
 				if tab:GetID() == _G.CURRENT_CHAT_FRAME_ID then

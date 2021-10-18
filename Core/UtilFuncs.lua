@@ -1,7 +1,6 @@
 local aName, aObj = ...
 
 local _G = _G
-local tmpTab = {}
 
 function aObj:addBackdrop(obj) -- luacheck: ignore self
 
@@ -399,7 +398,7 @@ function aObj:findFrame(height, width, children) -- luacheck: ignore self
 					if _G.Round(obj:GetHeight()) == height
 					and _G.Round(obj:GetWidth()) == width
 					then
-						_G.wipe(tmpTab)
+						local tmpTab = {}
 						for _, child in _G.ipairs{obj:GetChildren()} do
 							tmpTab[#tmpTab + 1] = child:GetObjectType()
 						end
@@ -548,7 +547,7 @@ function aObj:getKeys(curTab) -- luacheck: ignore self
 
 	if not curTab then return end
 
-	_G.wipe(tmpTab)
+	local tmpTab = {}
 	for i = 1, #curTab do
 		tmpTab[curTab[i]] = true
 	end
@@ -735,8 +734,7 @@ function aObj:keepRegions(obj, regions)
 	_G.assert(obj, "Missing object kR\n" .. _G.debugstack(2, 3, 2))
 	--@end-alpha@
 
-	_G.wipe(tmpTab)
-	tmpTab = self:getKeys(regions) or {}
+	local tmpTab = self:getKeys(regions) or {}
 	for key, reg in _G.ipairs{obj:GetRegions()} do
 		if not tmpTab[key] then
 			reg:SetAlpha(0)
@@ -959,8 +957,7 @@ function aObj:removeRegions(obj, regions)
 	_G.assert(obj, "Missing object (removeRegions)\n" .. _G.debugstack(2, 3, 2))
 	--@end-alpha@
 
-	_G.wipe(tmpTab)
-	tmpTab = self:getKeys(regions) or {}
+	local tmpTab = self:getKeys(regions) or {}
 	for key, reg in _G.pairs{obj:GetRegions()} do
 		if tmpTab[key] then
 			reg:SetAlpha(0)
@@ -1273,7 +1270,7 @@ function aObj:SetupCmds()
 		return _G.tostring(obj)
 	end
 	local function makeText(fStr, ...)
-	    _G.wipe(tmpTab)
+		local tmpTab = {}
 		local output = ""
 		if fStr
 		and fStr.find
@@ -1313,7 +1310,7 @@ function aObj:SetupCmds()
 		end
 	end
 	local function getObjFromString(input)
-		_G.wipe(tmpTab)
+		local tmpTab = {}
 		-- first split the string on "."
 		for word in _G.string.gmatch(input, "%a+") do
 			tmpTab[#tmpTab + 1] = word

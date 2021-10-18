@@ -88,7 +88,6 @@ function aObj:checkVersion()
 
 end
 
-local tmpTab = {}
 local function makeString(obj)
 	if _G.type(obj) == "table" then
 		if _G.type(_G.rawget(obj, 0)) == "userdata"
@@ -100,7 +99,7 @@ local function makeString(obj)
 	return _G.tostring(obj)
 end
 local function makeText(fStr, ...)
-    _G.wipe(tmpTab)
+	local tmpTab = {}
 	local output = ""
 	if fStr
 	and fStr.find

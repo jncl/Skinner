@@ -339,7 +339,7 @@ function aObj:OnEnable()
 				entry[1](_G.unpack(entry[2]))
 			end
 		end
-		_G.wipe(self.oocTab)
+		self.oocTab = {}
 	end)
 
 	-- add support for UIButton skinning
