@@ -9,10 +9,11 @@ aObj.SetupClassic_PlayerFrames = function()
 		if not self.prdb.CharacterFrames or self.initialized.CharacterFrames then return end
 		self.initialized.CharacterFrames = true
 
+		-- skin tabs here, so they show correct textures when selected
+		self:skinObject("tabs", {obj=_G.CharacterFrame, prefix=_G.CharacterFrame:GetName(), fType=ftype, lod=self.isTT and true})
+
 		self:SecureHookScript(_G.CharacterFrame, "OnShow", function(this)
-			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true})
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=10, y1=-12, x2=-31, y2=74})
-			-- PaperDoll Frame
 			self:keepFontStrings(_G.PaperDollFrame)
 			if self.isClscBC then
 				self:skinObject("dropdown", {obj=_G.PlayerTitleDropDown, fType=ftype, y1=5, y2=13})
@@ -97,8 +98,7 @@ aObj.SetupClassic_PlayerFrames = function()
 
 		self:SecureHookScript(_G.PetPaperDollFrame, "OnShow", function(this)
 			self:keepFontStrings(this)
-			self:removeRegions(_G.PetPaperDollFrameExpBar, {1, 2})
-			self:skinStatusBar{obj=_G.PetPaperDollFrameExpBar, fi=0}
+			self:skinObject("statusbar", {obj=_G.PetPaperDollFrameExpBar, regions={1, 2}, fi=0})
 			self:makeMFRotatable(_G.PetModelFrame)
 			_G.PetAttributesFrame:DisableDrawLayer("BACKGROUND")
 			if self.modBtns then
@@ -141,7 +141,7 @@ aObj.SetupClassic_PlayerFrames = function()
 			if self.modBtnBs then
 				self:addButtonBorder{obj=_G.SkillDetailStatusBarUnlearnButton, fType=ftype, ofs=-4, x1=6, y2=7, clr="grey"}
 			end
-			
+
 			self:Unhook(this, "OnShow")
 		end)
 
