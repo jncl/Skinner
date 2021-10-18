@@ -306,6 +306,9 @@ aObj.SetupClassic_NPCFrames = function()
 			if self.modBtns then
 				self:skinCloseButton{obj=_G.PetStableFrameCloseButton, fType=ftype}
 				self:skinStdButton{obj=_G.PetStablePurchaseButton, fType=ftype}
+				self:SecureHook("PetStable_Update", function()
+					self:clrBtnBdr(_G.PetStablePurchaseButton)
+				end)
 			end
 			if self.modBtnBs then
 				self:addButtonBorder{obj=_G.PetStablePetInfo, ofs=1, x2=0, clr="gold"}
