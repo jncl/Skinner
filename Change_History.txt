@@ -1,3 +1,10 @@
+beta9.40441.3
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Bugfix for ArchaeologyUI
+	Updated AdiBags, Altoholic, AtlasLoot, Auctionator, EasyMail, LibExtraTip, oGlowClassic, Rarity & TinyTooltip skins
+
 beta9.40441.1
 Jncl:
 	ToDo.txt
