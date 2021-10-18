@@ -1502,9 +1502,9 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 					end
 				end)
 			end
-			self:skinDropDown{obj=this.Rewards.DropDown}
+			self:skinDropDown{obj=fObj.Rewards.DropDown}
 			fObj.FactionFrame.Bar:DisableDrawLayer("BORDER")
-			self:changeTex2SB(this.FactionFrame.Bar.Progress)
+			self:changeTex2SB(fObj.FactionFrame.Bar.Progress)
 			fObj.FactionFrame.Bar.Shadow:SetTexture(nil)
 
 			self:Unhook(fObj, "OnShow")
@@ -1578,7 +1578,7 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 			self:addFrameBorder{obj=fObj.RecruitmentMessageFrame.RecruitmentMessageInput, ft=ftype, ofs=6}
 			self:skinEditBox{obj=fObj.MinIlvlOnly.EditBox, regs={6}} -- 6 is text
 			fObj.MinIlvlOnly.EditBox.Text:ClearAllPoints()
-			fObj.MinIlvlOnly.EditBox.Text:SetPoint("Left", this.MinIlvlOnly.EditBox, "Left", 6, 0)
+			fObj.MinIlvlOnly.EditBox.Text:SetPoint("Left", fObj.MinIlvlOnly.EditBox, "Left", 6, 0)
 			self:addSkinFrame{obj=fObj.BG, ft=ftype, kfs=true, nb=true}
 			if self.modBtns then
 				self:skinStdButton{obj=fObj.Accept}
@@ -1603,10 +1603,10 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 			if self.modBtns then
 				self:skinStdButton{obj=fObj.RemoveButton}
 				self:skinStdButton{obj=fObj.GroupInviteButton}
-				self:SecureHook(this.RemoveButton, "SetEnabled", function(bObj)
+				self:SecureHook(fObj.RemoveButton, "SetEnabled", function(bObj)
 					self:clrBtnBdr(bObj)
 				end)
-				self:SecureHook(this.GroupInviteButton, "SetEnabled", function(bObj)
+				self:SecureHook(fObj.GroupInviteButton, "SetEnabled", function(bObj)
 					self:clrBtnBdr(bObj)
 				end)
 			end
