@@ -188,6 +188,7 @@ aObj.blizzLoDFrames[ftype].AchievementUI = function(self)
 		end, true)
 		-- hook this to colour the metaCriteria & Criteria text
 		self:SecureHook("AchievementObjectives_DisplayCriteria", function(objectivesFrame, _)
+			if not objectivesFrame.completed then return end
 			for _, child in _G.ipairs{objectivesFrame:GetChildren()} do
 				if child.label then -- metaCriteria
 					if _G.select(2, child.label:GetTextColor()) == 0 then -- completed criteria
