@@ -37,35 +37,19 @@ ToDos
 		[string "@FrameXML\UIParent.lua"]:2653: in function <FrameXML\UIParent.lua:2640>
 		[string "=[C]"]: in function `SetAttribute'
 
-√	I	Auctionator & Rarity still have hook errors, reported by Galthariel, 01.10.21/03.10.21
+	I	CommunitiesFrame, reported by Galthariel, 10.10.21
+√		- Skinner\Core\PlayerFrames.lua:1605: Usage: SecureHook([object], method, [handler]): Attempting to hook a non existing target
+		[string "@Ace3\AceHook-3.0\AceHook-3.0-9.lua"]:211: in function <Ace3\AceHook-3.0\AceHook-3.0.lua:118>
+		[string "@Ace3\AceHook-3.0\AceHook-3.0-9.lua"]:341: in function `SecureHook'
+		[string "@Skinner\Core\PlayerFrames.lua"]:1605: in function <Skinner\Core\PlayerFrames.lua:1596>
 
-	I	oGlow, reported by 아련별, 03.10.21
-√		- wrong oGlow sometimes
+	I	Garrison  Follower List, reported by Fakelessgaming, 15.10.21
+√		- Follower List not appearing
 
-	I	TinyTooltip, reported by 아련별, 03.10.21
-√		- SharedXML\Mixin.lua:29: attempt to index local 'object' (a string value)
-		[string "@TinyTooltip\Core.lua"]:734: in function `v'
-		[string "@TinyTooltip\libs\LibEvent.lua"]:121: in function `trigger'
-		[string "@Skinner\AddonSkins\TinyTooltip-8.2.1.lua"]:50: in function <Skinner\AddonSkins\TinyTooltip.lua:5>
+	I	AchievementUI, reported by Fakelessgaming, 17.10.21
+√		- Skinner\Core\PlayerFrames.lua:197: attempt to call method 'GetTextColor' (a nil value)
+		[string "@Skinner\Core\PlayerFrames.lua"]:197: in function <Skinner\Core\PlayerFrames.lua:190>
 
-	I	Altoholic, reported by therealdeerez, 03.10.21
-?		- Skinner\Core\NewSkinFuncs.lua:396: attempt to index field 'obj' (a nil value)
-		[string "@Skinner\Core\NewSkinFuncs.lua"]:419: in function `?'
-		[string "@Skinner\Core\NewSkinFuncs.lua"]:179: in function `skinObject'
-		[string "@Skinner\AddonSkins\Altoholic-9.1.006.lua"]:438: in function <Skinner\AddonSkins\Altoholic.lua:435>
-?		- Skinner\AddonSkins\Altoholic-9.1.006.lua:380: attempt to index local 'frameName' (a nil value)
-		[string "@Skinner\AddonSkins\Altoholic-9.1.006.lua"]:540: in function <Skinner\AddonSkins\Altoholic.lua:538>
-
-	I	reported by Galthariel, 04.10.21
-√		- Skinner\Core\UtilFuncs.lua:359: attempt to call method 'SetBackdropBorderColor' (a nil value)
-		[string "@Skinner\Core\UtilFuncs.lua"]:359: in function `clrBBC'
-		[string "@Skinner\Modules\UIButtons.lua"]:226: in function `clrBtnBdr'
-		[string "@Skinner\Core\UtilFuncs.lua"]:381: in function `clrPNBtns'
-		[string "@Skinner\Core\PlayerFrames.lua"]:354: in function <Skinner\Core\PlayerFrames.lua:353>
-
-	I	AtlasLoot, reported by 아련별, 04.10.21
-√		- Skinner\Core\NewSkinFuncs.lua:427: attempt to index field 'obj' (a nil value)
-		[string "@Skinner\Core\NewSkinFuncs.lua"]:427: in function <Skinner\Core\NewSkinFuncs.lua:420>
-		[string "@Skinner\Core\NewSkinFuncs.lua"]:534: in function `?'
-		[string "@Skinner\Core\NewSkinFuncs.lua"]:179: in function `skinObject'
-		[string "@Skinner\AddonSkins\AtlasLoot-1.2030004.lua"]:61: in function <Skinner\AddonSkins\AtlasLoot.lua:60>
+	I	Auctionator, reported by Galthariel, 17.10.21
+√		- Skinner\AddonSkins\Auctionator-9.1.6-4-gf058e82.lua:243: attempt to index field 'ScrollList' (a nil value)
+		[string "@Skinner\AddonSkins\Auctionator-9.1.6-4-gf058e82.lua"]:243: in function <Skinner\AddonSkins\Auctionator.lua:240>

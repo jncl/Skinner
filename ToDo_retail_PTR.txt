@@ -8,14 +8,14 @@ ToDo_retail_PTR
 
 	Retail_PTR
 		- Added
-			- NewCosmeticAlertFrameSystem
+√			- NewCosmeticAlertFrameSystem
 			- ChatConfigFrame
 √				- TextToSpeech panels
 			- InterfaceOptionsPanels
 x				- .CursorSizeDropdown
 ¶≈			- BehavioralMessaging
 		- Updated
-			- NineSlice added to several frame
+			- NineSlice added to several frames
 √				- GameTooltip
 √				- ChatMenu
 √				- EmoteMenu
