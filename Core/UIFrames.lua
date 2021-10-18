@@ -6309,7 +6309,9 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 		end
 	end)
 
-	if not aObj.isRtlPTR then
+	if not aObj.isRtlPTR
+	and not aObj.isClscERAPTR
+	then
 		-- Hook these to handle AddOns that use GameTooltip Backdrop functions (e.g. SavedInstances)
 		self:RawHook(_G.GameTooltip, "GetBackdrop", function(_)
 			return aObj.Backdrop[1]
@@ -6459,6 +6461,10 @@ aObj.blizzFrames[ftype].UIDropDownMenu = function(self)
 		aObj:removeBackdrop(_G[frame:GetName() .. "MenuBackdrop"])
 		if aObj.isRtlPTR then
 			aObj:removeNineSlice(_G[frame:GetName() .. "MenuBackdrop"].NineSlice)
+		end
+		if aObj.isClscERAPTR then
+			-- SharedTooltip_SetBackdropStyle recreates the NineSlice layout, so hide it
+			_G[frame:GetName() .. "MenuBackdrop"].NineSlice:Hide()
 		end
 		aObj:skinObject("frame", {obj=frame, fType=ftype, kfs=true, ofs=-4})
 	end

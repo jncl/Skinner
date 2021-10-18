@@ -107,7 +107,9 @@ aObj.SetupClassic_PlayerFrames = function()
 			if self.modBtnBs then
 				self:addButtonBorder{obj=_G.PetPaperDollPetInfo, ofs=1, x2=0, clr="gold"}
 				for i = 1, 5 do
-					if not self.isClscBC then
+					if not self.isClscBC
+					and not aObj.isClscERAPTR
+					then
 						self:addButtonBorder{obj=_G["PetMagicResFrame" .. i], es=24, ofs=2, x1=-1, y2=-49, clr="grey"}
 					else
 						self:addButtonBorder{obj=_G["PetMagicResFrame" .. i], es=24, ofs=2, y1=3, y2=-4, clr="grey"}
@@ -903,7 +905,9 @@ aObj.SetupClassic_PlayerFrames = function()
 				aObj:Unhook(this, "OnShow")
 			end)
 		end
-		if not self.isClscBC then
+		if not self.isClscBC
+		and not self.isClscERAPTR
+		then
 			skinTalentFrame("TalentFrame")
 		else
 			skinTalentFrame("PlayerTalentFrame")

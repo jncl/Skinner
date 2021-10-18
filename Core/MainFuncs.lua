@@ -1303,6 +1303,13 @@ function aObj:skinTooltip(tooltip)
 		self:applyGradient(tooltip.sf, self.prdb.FadeHeight.value <= _G.Round(tooltip:GetHeight()) and self.prdb.FadeHeight.value or _G.Round(tooltip:GetHeight()))
 	end
 
+	if aObj.isClscERAPTR then
+		-- SharedTooltip_SetBackdropStyle recreates the NineSlice layout, so hide it
+		if tooltip.NineSlice then
+			tooltip.NineSlice:Hide()
+		end
+	end
+
 end
 
 local function __skinUsingBD(opts)
