@@ -295,6 +295,12 @@ aObj.SetupClassic_UIFrames = function()
 				self:skinStdButton{obj=_G.QuestLogFrameAbandonButton, fType=ftype, x1=2, x2=-2}
 				self:skinStdButton{obj=_G.QuestFrameExitButton, fType=ftype}
 				self:skinStdButton{obj=_G.QuestFramePushQuestButton, fType=ftype, x1=2, x2=-2}
+				self:SecureHook(_G.QuestFramePushQuestButton, "Disable", function(bObj, _)
+					self:clrBtnBdr(bObj)
+				end)
+				self:SecureHook(_G.QuestFramePushQuestButton, "Enable", function(bObj, _)
+					self:clrBtnBdr(bObj)
+				end)
 			end
 
 			self:SecureHook("QuestLog_UpdateQuestDetails", function(_)
