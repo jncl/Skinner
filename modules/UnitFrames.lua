@@ -428,7 +428,7 @@ function module:skinTargetF()
 				elseif classification == "rareelite" then
 					frame.ucTex:SetTexture(aObj.tFDIDs.renI)
 				elseif classification == "rare" then
-					frame.ucTex:SetTexture([[Interface\AddOns\]] .. aName .. [[\Textures\RareNameplateIcon]])
+					frame.ucTex:SetTexture(aObj.tFDIDs.rareNP)
 				else
 					frame.ucTex:SetTexture(nil)
 				end

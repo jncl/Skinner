@@ -1933,7 +1933,6 @@ aObj.blizzFrames[ftype].CompactFrames = function(self)
 
 end
 
-local gearTex = [[Interface\AddOns\]] .. aName .. [[\Textures\gear]]
 aObj.blizzFrames[ftype].ContainerFrames = function(self)
 	if not self.prdb.ContainerFrames.skin or self.initialized.ContainerFrames then return end
 	self.initialized.ContainerFrames = true
@@ -1953,7 +1952,7 @@ aObj.blizzFrames[ftype].ContainerFrames = function(self)
 		local cfpb = frame.PortraitButton
 		cfpb.gear = cfpb:CreateTexture(nil, "artwork")
 		cfpb.gear:SetAllPoints()
-		cfpb.gear:SetTexture(gearTex)
+		cfpb.gear:SetTexture(self.tFDIDs.gearWhl)
 		cfpb:SetSize(18, 18)
 		cfpb.Highlight:ClearAllPoints()
 		cfpb.Highlight:SetPoint("center")
