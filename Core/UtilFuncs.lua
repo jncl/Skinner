@@ -483,23 +483,23 @@ function aObj:getChild(obj, childNo) -- luacheck: ignore self
 end
 
 local clrTab = {
-	blue      = _G.LIGHTBLUE_FONT_COLOR,
-	common    = _G.LIGHTGRAY_FONT_COLOR,
+	blue     = _G.LIGHTBLUE_FONT_COLOR,
+	common   = _G.LIGHTGRAY_FONT_COLOR,
 	-- default is bbClr
-	disabled  = _G.DISABLED_FONT_COLOR,
-	green     = _G.GREEN_FONT_COLOR,
-	grey      = _G.GRAY_FONT_COLOR,
-	gold      = _G.PASSIVE_SPELL_FONT_COLOR,
-	normal    = _G.NORMAL_FONT_COLOR,
-	orange    = _G.ORANGE_FONT_COLOR,
-	red       = _G.DULL_RED_FONT_COLOR,
-	selected  = _G.PAPER_FRAME_EXPANDED_COLOR,
-	sepia     = _G.SEPIA_COLOR,
-	silver    = _G.QUEST_OBJECTIVE_FONT_COLOR,
-	topaz     = _G.CreateColor(0.6, 0.31, 0.24),
-	unused    = _G.DULL_RED_FONT_COLOR,
-	white     = _G.HIGHLIGHT_FONT_COLOR,
-	yellow    = _G.YELLOW_FONT_COLOR,
+	disabled = _G.DISABLED_FONT_COLOR,
+	green    = _G.GREEN_FONT_COLOR,
+	grey     = _G.GRAY_FONT_COLOR,
+	gold     = _G.PASSIVE_SPELL_FONT_COLOR,
+	normal   = _G.NORMAL_FONT_COLOR,
+	orange   = _G.ORANGE_FONT_COLOR,
+	red      = _G.DULL_RED_FONT_COLOR,
+	selected = _G.PAPER_FRAME_EXPANDED_COLOR,
+	sepia    = _G.SEPIA_COLOR,
+	silver   = _G.QUEST_OBJECTIVE_FONT_COLOR,
+	topaz    = _G.CreateColor(0.6, 0.31, 0.24),
+	unused   = _G.DULL_RED_FONT_COLOR,
+	white    = _G.HIGHLIGHT_FONT_COLOR,
+	yellow   = _G.YELLOW_FONT_COLOR,
 }
 function aObj:getColourByName(clrName)
 
@@ -926,6 +926,7 @@ function aObj:removeInset(frame) -- luacheck: ignore self
 	--@end-alpha@
 
 	ddlBBO(frame)
+	-- InsetFrameTemplate has a NineSlice child
 	if frame.NineSlice then
 		ddlBBO(frame.NineSlice)
 	end
@@ -1405,7 +1406,7 @@ function aObj:SetupCmds()
 	self:RegisterChatCommand("sir", function(msg) showInfo(getObj(msg), false, false) end) -- regions only
 	self:RegisterChatCommand("sirp", function(msg) showInfo(getObjP(msg), false, false) end) -- regions only
 	self:RegisterChatCommand("sirgp", function(msg) showInfo(getObjGP(msg), false, false) end) -- regions only
-	self:RegisterChatCommand("mspew", function(msg) return _G.Spew and _G.Spew("", _G.GetMouseFocus()) end)
+	self:RegisterChatCommand("mspew", function(_) return _G.Spew and _G.Spew("", _G.GetMouseFocus()) end)
 	self:RegisterChatCommand("sspew", function(msg) return _G.Spew and _G.Spew(msg, getObj(msg)) end)
 	self:RegisterChatCommand("sspewp", function(msg) return _G.Spew and _G.Spew(msg, getObjP(msg)) end)
 	self:RegisterChatCommand("sspewgp", function(msg) return _G.Spew and _G.Spew(msg, getObjGP(msg)) end)
