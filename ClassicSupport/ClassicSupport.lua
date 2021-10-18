@@ -130,18 +130,14 @@ aObj.SetupClassic = function(self)
 	-- remove UnitFrames module options
 	local ufDB = self.db:GetNamespace("UnitFrames", true)
 	if ufDB then
-		ufDB.profile.petspec = nil
 		ufDB.profile.focus = nil
 		ufDB.profile.arena = nil
-		ufDB.defaults.profile.petspec = nil
 		ufDB.defaults.profile.focus = nil
 		ufDB.defaults.profile.arena = nil
 	end
-	self.optTables["Modules"].args[aName .. "_UnitFrames"].args.petspec = nil
 	self.optTables["Modules"].args[aName .. "_UnitFrames"].args.focus = nil
 	self.optTables["Modules"].args[aName .. "_UnitFrames"].args.arena = nil
 	self:GetModule("UnitFrames", true).skinFocusF = _G.nop
-	self:UnregisterEvent("UNIT_PET")
 
 	-- NOP functions that are not required and cause errors
 	self.removeNineSlice = _G.nop

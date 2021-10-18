@@ -270,23 +270,45 @@ function module:skinPetF()
 			self:Unhook(this, "OnShow")
 		end)
 
-		if db.petspec then
+		if not aObj.isClsc
+		and db.petspec
+		then
 			-- Add pet spec icon to pet frame, if required
 			_G.PetFrame.roleIcon = _G.PetFrame:CreateTexture(nil, "artwork")
 			_G.PetFrame.roleIcon:SetSize(24, 24)
 			_G.PetFrame.roleIcon:SetPoint("left", -10, 0)
 			_G.PetFrame.roleIcon:SetTexture(aObj.tFDIDs.lfgIR)
 			-- get Pet's Specialization Role to set roleIcon TexCoord
-			local petSpec
 			self:RegisterEvent("UNIT_PET", function(_, arg1)
 				if arg1 == "player"
 				and _G.UnitIsVisible("pet")
 				then
-					petSpec = _G.GetSpecialization(nil, true)
+					local petSpec = _G.GetSpecialization(nil, true)
 					if petSpec then
 						_G.PetFrame.roleIcon:SetTexCoord(_G.GetTexCoordsForRole(_G.GetSpecializationRole(petSpec, nil, true)))
 					end
 				end
+			end)
+		end
+		if aObj.isClsc
+		and db.petlvl
+		then
+			-- Add pet level to pet frame, if required
+			_G.PetFrame.level = _G.PetFrame:CreateFontString(nil, "artwork", "GameNormalNumberFont")
+			_G.PetFrame.level:SetPoint("bottomleft", 5, 5)
+			_G.PetFrame.level:SetText(_G.UnitLevel("pet"))
+			-- get Pet's Level when changed
+			local function setLvl(...)
+				if _G.UnitIsVisible("pet") then
+					_G.PetFrame.level:SetText(_G.UnitLevel("pet"))
+				end
+			end
+			-- get level when pet changes
+			self:RegisterEvent("UNIT_PET", function(...)
+				setLvl(...)
+			end)
+			self:RegisterEvent("UNIT_LEVEL", function(...)
+				setLvl(...)
 			end)
 		end
 
@@ -652,11 +674,17 @@ function module:GetOptions()
 				name = aObj.L["Pet"],
 				desc = aObj.L["Toggle the skin of the "] .. aObj.L["Pet"] .. " " .. aObj.L["Unit Frame"],
 			} or nil,
-			petspec = aObj.uCls == "HUNTER" and {
+			petspec = not aObj.isClsc and aObj.uCls == "HUNTER" and {
 				type = "toggle",
 				order = 3,
 				name = aObj.L["Pet Spec"],
 				desc = aObj.L["Toggle the Pet Spec on the Pet Frame"],
+			} or nil,
+			petlvl = aObj.isClsc and aObj.uCls == "HUNTER" and {
+				type = "toggle",
+				order = 4,
+				name = aObj.L["Pet Level"],
+				desc = aObj.L["Toggle the Pet Level on the Pet Frame"],
 			} or nil,
 			target = {
 				type = "toggle",
