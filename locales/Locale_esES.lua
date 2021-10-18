@@ -1,5 +1,5 @@
-local aName, aObj = ...
-local L = LibStub:GetLibrary("AceLocale-3.0",true):NewLocale(aName, "esES", false)
+local aName, _ = ...
+local L = _G.LibStub:GetLibrary("AceLocale-3.0",true):NewLocale(aName, "esES", false)
 
 if not L then return end
 

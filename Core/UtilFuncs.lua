@@ -3,7 +3,7 @@ local aName, aObj = ...
 local _G = _G
 local tmpTab = {}
 
-function aObj:addBackdrop(obj)
+function aObj:addBackdrop(obj) -- luacheck: ignore self
 
 	if not obj.ApplyBackdrop then
 		_G.Mixin(obj, _G.BackdropTemplateMixin)
