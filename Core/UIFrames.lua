@@ -3397,7 +3397,9 @@ aObj.blizzFrames[ftype].InterfaceOptions = function(self)
 
 	-- Interface
 	self:SecureHookScript(_G.InterfaceOptionsFrame, "OnShow", function(this)
-		self:removeNineSlice(this.Border)
+		if self.isRtl then
+			self:removeNineSlice(this.Border)
+		end
 		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true, upwards=true, offsets={x1=9, y1=self.isTT and 0 or -4, x2=-9, y2=self.isTT and -5 or 0}})
 		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true})
 		if self.modBtns then
@@ -5838,10 +5840,12 @@ aObj.blizzFrames[ftype].StaticPopups = function(self)
 
 	for i = 1, _G.STATICPOPUP_NUMDIALOGS do
 		self:SecureHookScript(_G["StaticPopup" .. i], "OnShow", function(this)
-			self:removeNineSlice(this.Border)
+			if self.isRtl then
+				self:removeNineSlice(this.Border)
+			end
 			this.Separator:SetTexture(nil)
 			local objName = this:GetName()
-			self:skinObject("editbox", {obj=_G[objName .. "EditBox"], fType=ftype, ofs=0})
+			self:skinObject("editbox", {obj=_G[objName .. "EditBox"], fType=ftype, ofs=0, y1=-4, y2=4})
 			self:skinMoneyFrame{obj=_G[objName .. "MoneyInputFrame"]}
 			_G[objName .. "ItemFrameNameFrame"]:SetTexture(nil)
 			self:skinObject("frame", {obj=this, fType=ftype, ofs=-6})
