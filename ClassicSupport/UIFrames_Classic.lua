@@ -208,7 +208,6 @@ aObj.SetupClassic_UIFrames = function()
 			end
 
 		end
-
 	end
 
 	aObj.blizzFrames[ftype].PVPHelper = function(self)
