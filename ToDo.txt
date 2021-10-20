@@ -37,19 +37,5 @@ ToDos
 		[string "@FrameXML\UIParent.lua"]:2653: in function <FrameXML\UIParent.lua:2640>
 		[string "=[C]"]: in function `SetAttribute'
 
-	I	CommunitiesFrame, reported by Galthariel, 10.10.21
-√		- Skinner\Core\PlayerFrames.lua:1605: Usage: SecureHook([object], method, [handler]): Attempting to hook a non existing target
-		[string "@Ace3\AceHook-3.0\AceHook-3.0-9.lua"]:211: in function <Ace3\AceHook-3.0\AceHook-3.0.lua:118>
-		[string "@Ace3\AceHook-3.0\AceHook-3.0-9.lua"]:341: in function `SecureHook'
-		[string "@Skinner\Core\PlayerFrames.lua"]:1605: in function <Skinner\Core\PlayerFrames.lua:1596>
-
-	I	Garrison  Follower List, reported by Fakelessgaming, 15.10.21
-√		- Follower List not appearing
-
-	I	AchievementUI, reported by Fakelessgaming, 17.10.21
-√		- Skinner\Core\PlayerFrames.lua:197: attempt to call method 'GetTextColor' (a nil value)
-		[string "@Skinner\Core\PlayerFrames.lua"]:197: in function <Skinner\Core\PlayerFrames.lua:190>
-
-	I	Auctionator, reported by Galthariel, 17.10.21
-√		- Skinner\AddonSkins\Auctionator-9.1.6-4-gf058e82.lua:243: attempt to index field 'ScrollList' (a nil value)
-		[string "@Skinner\AddonSkins\Auctionator-9.1.6-4-gf058e82.lua"]:243: in function <Skinner\AddonSkins\Auctionator.lua:240>
+	I	checkVersion, reported by DarkLimpan, 18.10.21
+√		- agentUID string not found in buildInfo array ??
