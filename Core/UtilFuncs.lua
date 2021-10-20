@@ -928,7 +928,7 @@ function aObj:removeInset(frame) -- luacheck: ignore self
 	ddlBBO(frame)
 	-- InsetFrameTemplate has a NineSlice child
 	if frame.NineSlice then
-		ddlBBO(frame.NineSlice)
+		self:removeNineSlice(frame.NineSlice)
 	end
 
 end
