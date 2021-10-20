@@ -1,3 +1,32 @@
+beta9.40622.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Refactored Patch version checks
+	Updated Classic Interface number in TOC
+	Updated Ace3, Altoholic, Auctionator, Azeroth Auto Pilot, Cork, Leatrix_Plus, TomTom & WoWPro skins
+	Updated Classic PetStable Frame
+	Updated Classic CharacterFrames
+	Updated Classic QuestFrame
+	NSF changes
+	Colour BankSlot buttons
+	Bugfixes for CommunitiesUI
+	Bugfix for AchievementsUI
+	Changed frame skinning defaults to remove Inset & NineSlice textures
+	RtlPTR changes
+	Updated UtilFuncs
+	Change how tables are cleared/reused
+	luacheck changes
+	Move textures into texture table and use the new entries
+	Added Pet Level to Unit Frame in Classic
+	Classic Season of Mastery PTR changes
+	Classic Era PTR changes
+	Retail PTR changes
+	Updated Rarity skin
+	Updated loading of Classic Support files
+	Updated ChatBubbles skin for Classic SoM
+
 beta9.40441.3
 Jncl:
 	ToDo.txt
