@@ -6462,12 +6462,10 @@ aObj.blizzFrames[ftype].UIDropDownMenu = function(self)
 			aObj:removeBackdrop(_G[frame:GetName() .. "Backdrop"])
 		end
 		aObj:removeBackdrop(_G[frame:GetName() .. "MenuBackdrop"])
-		if aObj.isRtlPTR then
+		if aObj.isRtlPTR
+		or aObj.isClscERAPTR
+		then
 			aObj:removeNineSlice(_G[frame:GetName() .. "MenuBackdrop"].NineSlice)
-		end
-		if aObj.isClscERAPTR then
-			-- SharedTooltip_SetBackdropStyle recreates the NineSlice layout, so hide it
-			_G[frame:GetName() .. "MenuBackdrop"].NineSlice:Hide()
 		end
 		aObj:skinObject("frame", {obj=frame, fType=ftype, kfs=true, ofs=-4})
 	end
