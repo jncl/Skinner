@@ -1453,8 +1453,8 @@ aObj.blizzFrames[ftype].ChatBubbles = function(self)
 		end
 	end
 	-- if any chat bubbles options turned on
-	if _G.GetCVarBool("chatBubbles")
-	or _G.GetCVarBool("chatBubblesParty")
+	if _G.C_CVar.GetCVarBool("chatBubbles")
+	or _G.C_CVar.GetCVarBool("chatBubblesParty")
 	then
 		-- skin any existing ones
 		registerEvents()

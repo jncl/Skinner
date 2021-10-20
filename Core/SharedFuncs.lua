@@ -28,8 +28,8 @@ local buildInfo = {
 }
 function aObj:checkVersion()
 
-	local agentUID = _G.GetCVar("agentUID")
 	-- aObj:Debug("agentUID: [%s, %s, %s, %s, %s]", agentUID, _G.GetBuildInfo())
+	local agentUID = _G.C_CVar.GetCVar("agentUID")
 	-- check to see which WoW version we are running on
 	self.isClscBeta   = agentUID == "wow_classic_beta" and true
 	self.isClscPTR    = agentUID == "wow_classic_ptr" and true
