@@ -2,7 +2,7 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("Leatrix_Plus") then return end
 local _G = _G
 
-aObj.addonsToSkin.Leatrix_Plus = function(self) -- v 9.1.13/1.13.106/2.5.34
+aObj.addonsToSkin.Leatrix_Plus = function(self) -- v 9.1.13/1.13.106/2.5.61
 
 	self:SecureHookScript(_G.LeaPlusGlobalPanel, "OnShow", function(this)
 		local function skinKids(frame)
@@ -68,8 +68,15 @@ aObj.addonsToSkin.Leatrix_Plus = function(self) -- v 9.1.13/1.13.106/2.5.34
 	if _G.LeaPlusDB["EnhanceDressup"] == "On"
 	and self.modBtns
 	then
-		self:skinStdButton{obj=self:getChild(_G.DressUpFrame.ResetButton, 1)}
-		self:skinStdButton{obj=self:getChild(_G.DressUpFrame.ResetButton, 2)}
+		if self.isRtl then
+			self:skinStdButton{obj=self:getChild(_G.DressUpFrame.ResetButton, 1)}
+			self:skinStdButton{obj=self:getChild(_G.DressUpFrame.ResetButton, 2)}
+		else
+			if not _G.DressUpFrame.sf then
+				self:skinStdButton{obj=self:getPenultimateChild(_G.DressUpFrame)}
+				self:skinStdButton{obj=self:getLastChild(_G.DressUpFrame)}
+			end
+		end
 	end
 
 	-- Enhanced QuestLog
