@@ -1,4 +1,4 @@
-local aName, aObj = ...
+local _, aObj = ...
 
 local _G = _G
 
@@ -298,17 +298,17 @@ function module:skinPetF()
 			_G.PetFrame.level:SetPoint("bottomleft", 5, 5)
 			_G.PetFrame.level:SetText(_G.UnitLevel("pet"))
 			-- get Pet's Level when changed
-			local function setLvl(...)
+			local function setLvl()
 				if _G.UnitIsVisible("pet") then
 					_G.PetFrame.level:SetText(_G.UnitLevel("pet"))
 				end
 			end
 			-- get level when pet changes
-			self:RegisterEvent("UNIT_PET", function(...)
-				setLvl(...)
+			self:RegisterEvent("UNIT_PET", function(_)
+				setLvl()
 			end)
-			self:RegisterEvent("UNIT_LEVEL", function(...)
-				setLvl(...)
+			self:RegisterEvent("UNIT_LEVEL", function(_)
+				setLvl()
 			end)
 		end
 
