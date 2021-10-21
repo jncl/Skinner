@@ -1313,7 +1313,7 @@ function aObj:SetupCmds()
 	local function getObjFromString(input)
 		local tmpTab = {}
 		-- first split the string on "."
-		for word in _G.string.gmatch(input, "%a+") do
+		for word in _G.string.gmatch(input, "%w+") do
 			tmpTab[#tmpTab + 1] = word
 		end
 		-- then build string in the form _G["str1"]["str2"]...["strn"]
