@@ -1425,11 +1425,7 @@ aObj.blizzFrames[ftype].ChatBubbles = function(self)
 		_G.C_Timer.After(0.1, function()
 			-- get all ChatBubbles NOT including Forbidden ones
 			for _, cBubble in _G.pairs(_G.C_ChatBubbles.GetAllChatBubbles()) do
-				if aObj.isClscBC
-				or aObj.isClscERAPTR
-				then
-					cBubble = aObj:getChild(cBubble, 1)
-				end
+				cBubble = aObj:getChild(cBubble, 1)
 				aObj:skinObject("frame", {obj=cBubble, fType=ftype, kfs=true, ba=aObj.prdb.ChatBubbles.alpha, ng=true, ofs=-8, clr="grey"})
 				-- make text visible
 				if cBubble.String then
@@ -1584,7 +1580,9 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 	self.initialized.ChatConfig = true
 
 	self:SecureHookScript(_G.ChatConfigFrame, "OnShow", function(this)
-		self:removeNineSlice(this.Border)
+		if self.isRtl then
+			self:removeNineSlice(this.Border)
+		end
 		self:skinObject("frame", {obj=_G.ChatConfigCategoryFrame, fType=ftype, kfs=true, rns=true, fb=true, ofs=0})
 		self:skinObject("frame", {obj=_G.ChatConfigBackgroundFrame, fType=ftype, kfs=true, rns=true, fb=true, ofs=0})
 		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true, ofs=-4, y1=0})
@@ -1592,9 +1590,13 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 			self:skinStdButton{obj=this.DefaultButton}
 			self:skinStdButton{obj=this.RedockButton}
 			self:skinStdButton{obj=_G.CombatLogDefaultButton}
-			if aObj.isRtlPTR then
+			if aObj.isRtlPTR
+			or aObj.isClscERAPTR
+			then
 				self:skinStdButton{obj=this.ToggleChatButton}
-				self:skinStdButton{obj=_G.TextToSpeechDefaultButton, fType=ftype}
+				if aObj.isRtlPTR then
+					self:skinStdButton{obj=_G.TextToSpeechDefaultButton, fType=ftype}
+				end
 			end
 			self:skinStdButton{obj=_G.ChatConfigFrameCancelButton}
 			self:skinStdButton{obj=_G.ChatConfigFrameOkayButton}
@@ -1644,7 +1646,13 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 			skinTabs(fObj)
 		end)
 		local function skinCB(cBox)
-			aObj:removeBackdrop(_G[cBox])
+			if aObj.isClscERAPTR
+			and _G[cBox].NineSlice
+			then
+				aObj:removeNineSlice(_G[cBox].NineSlice)
+			else
+				aObj:removeBackdrop(_G[cBox])
+			end
 			if aObj.modChkBtns then
 				local box
 				for _, suffix in _G.pairs{"", "Check", "ColorSwatch"} do
@@ -1682,7 +1690,13 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 				local box
 				for i = 1, #frame.checkBoxTable do
 					box = _G[frame:GetName() .. "CheckBox" .. i]
-					self:removeBackdrop(box)
+					if aObj.isClscERAPTR
+					and box.NineSlice
+					then
+						aObj:removeNineSlice(box.NineSlice)
+					else
+						aObj:removeBackdrop(box)
+					end
 					if self.modChkBtns then
 						 self:skinCheckButton{obj=box.CheckButton}
 					end
@@ -1692,7 +1706,13 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 				local box
 				for i = 1, #frame.boxTable do
 					box = _G[frame:GetName() .. "Box" .. i]
-					self:removeBackdrop(box)
+					if aObj.isClscERAPTR
+					and box.NineSlice
+					then
+						aObj:removeNineSlice(box.NineSlice)
+					else
+						aObj:removeBackdrop(box)
+					end
 					if self.modBtns then
 						self:skinStdButton{obj=box.Button, ofs=0}
 					end
@@ -1788,7 +1808,13 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 		end
 		-- Colors
 		for i = 1, #_G.COMBAT_CONFIG_UNIT_COLORS do
-			self:removeBackdrop(_G["CombatConfigColorsUnitColorsSwatch" .. i])
+			if aObj.isClscERAPTR
+			and _G["CombatConfigColorsUnitColorsSwatch" .. i].NineSlice
+			then
+				aObj:removeNineSlice(_G["CombatConfigColorsUnitColorsSwatch" .. i].NineSlice)
+			else
+				self:removeBackdrop(_G["CombatConfigColorsUnitColorsSwatch" .. i])
+			end
 		end
 		self:skinObject("frame", {obj=_G.CombatConfigColorsUnitColors, fType=ftype, kfs=true, rns=true, fb=true})
 		self:skinObject("frame", {obj=_G.CombatConfigColorsHighlighting, fType=ftype, kfs=true, rns=true, fb=true})
@@ -4759,8 +4785,11 @@ aObj.blizzFrames[ftype].Nameplates = function(self)
 	end
 
 	local function skinNamePlate(frame)
-		if not frame then return end -- happens when called again after combat and frame doesn't exist any more
-		if frame:IsForbidden() then return end
+		if not frame -- happens when called again after combat and frame doesn't exist any more
+		or frame:IsForbidden()
+		then
+			return
+		end
 		-- handle in combat
 		if frame:IsProtected()
 		and _G.InCombatLockdown()
@@ -4768,23 +4797,24 @@ aObj.blizzFrames[ftype].Nameplates = function(self)
 		    aObj:add2Table(aObj.oocTab, {skinNamePlate, {frame}})
 		    return
 		end
-		local nP = frame.UnitFrame
+		local nP = frame.UnitFrame or self:getChild(frame, 1)
 		if nP then
-			nP.healthBar.border:DisableDrawLayer("ARTWORK")
-			if aObj.isClscERA then
-				aObj:skinStatusBar{obj=nP.healthBar, fi=0, bgTex=nP.healthBar.background}
-			else
+			local nHb, nCb = nP.healthBar, nP.CastBar
+			nHb.border:DisableDrawLayer("ARTWORK")
+			if aObj.isClsc then
+				aObj:skinObject("statusbar", {obj=nHb, fi=0, bg=nHb.background})
 				if aObj.isClscBC then
-					aObj:skinStatusBar{obj=nP.healthBar, fi=0, bgTex=nP.healthBar.background}
-					aObj:skinStatusBar{obj=nP.CastBar, fi=0, bgTex=aObj:getRegion(nP.CastBar, 1)}
-					aObj:nilTexture(nP.CastBar.Border, true)
-					aObj:nilTexture(nP.CastBar.BorderShield, true)
-				else
-					aObj:skinStatusBar{obj=nP.healthBar, fi=0, bgTex=nP.healthBar.background, otherTex={nP.healthBar.myHealPrediction, nP.healthBar.otherHealPrediction}}
-					aObj:skinStatusBar{obj=nP.castBar, fi=0, bgTex=nP.castBar.background}
+					aObj:skinObject("statusbar", {obj=nCb, fi=0, bg=aObj:getRegion(nCb, 1)})
+					aObj:nilTexture(nCb.Border, true)
+					aObj:nilTexture(nCb.BorderShield, true)
 				end
-				-- N.B. WidgetContainer objects managed in UIWidgets code
+			else
+				aObj:skinObject("statusbar", {obj=nHb, fi=0, bg=nHb.background, otherTex={nHb.myHealPrediction, nHb.otherHealPrediction}})
+				if nCb then
+					aObj:skinObject("statusbar", {obj=nCb, fi=0, bg=nCb.background})
+				end
 			end
+			-- N.B. WidgetContainer objects managed in UIWidgets code
 		end
 	end
 	-- hook this to skin created Nameplates
@@ -4800,7 +4830,7 @@ aObj.blizzFrames[ftype].Nameplates = function(self)
 	if not self.isClsc then
 		local mF = _G.ClassNameplateManaBarFrame
 		if mF then
-			self:skinStatusBar{obj=mF, fi=0,  otherTex={mF.ManaCostPredictionBar, mF.FeedbackFrame.BarTexture}}
+			self:skinObject("statusbar", {obj=mF, fi=0, otherTex={mF.ManaCostPredictionBar, mF.FeedbackFrame.BarTexture}})
 		end
 		-- DeathKnight (nothing to skin)
 		-- Mage (nothing to skin)
@@ -4808,7 +4838,7 @@ aObj.blizzFrames[ftype].Nameplates = function(self)
 		for i = 1, #_G.ClassNameplateBarWindwalkerMonkFrame.Chi do
 			_G.ClassNameplateBarWindwalkerMonkFrame.Chi[i]:DisableDrawLayer("BACKGROUND")
 		end
-		self:skinStatusBar{obj=_G.ClassNameplateBrewmasterBarFrame, fi=0}
+		self:skinObject("statusbar", {obj=_G.ClassNameplateBrewmasterBarFrame, fi=0})
 		-- Paladin
 		for i = 1, #_G.ClassNameplateBarPaladinFrame.Runes do
 			_G.ClassNameplateBarPaladinFrame.Runes[i].OffTexture:SetTexture(nil)
@@ -5850,7 +5880,7 @@ aObj.blizzFrames[ftype].StaticPopups = function(self)
 			_G[objName .. "ItemFrameNameFrame"]:SetTexture(nil)
 			self:skinObject("frame", {obj=this, fType=ftype, ofs=-6})
 			if self.modBtns then
-				self:skinStdButton{obj=this.button1}
+				self:skinStdButton{obj=this.button1, y1=2}
 				self:SecureHook(this.button1, "Disable", function(bObj, _)
 					self:clrBtnBdr(bObj)
 				end)
@@ -5860,7 +5890,7 @@ aObj.blizzFrames[ftype].StaticPopups = function(self)
 				self:SecureHook(this.button1, "SetEnabled", function(bObj)
 					self:clrBtnBdr(bObj)
 				end)
-				self:skinStdButton{obj=this.button2}
+				self:skinStdButton{obj=this.button2, y1=2}
 				self:SecureHook(this.button2, "Disable", function(bObj, _)
 					self:clrBtnBdr(bObj)
 				end)
@@ -5870,21 +5900,21 @@ aObj.blizzFrames[ftype].StaticPopups = function(self)
 				self:SecureHook(this.button2, "SetEnabled", function(bObj)
 					self:clrBtnBdr(bObj)
 				end)
-				self:skinStdButton{obj=this.button3}
+				self:skinStdButton{obj=this.button3, y1=2}
 				self:SecureHook(this.button3, "Disable", function(bObj, _)
 					self:clrBtnBdr(bObj)
 				end)
 				self:SecureHook(this.button3, "SetEnabled", function(bObj)
 					self:clrBtnBdr(bObj)
 				end)
-				self:skinStdButton{obj=this.button4}
+				self:skinStdButton{obj=this.button4, y1=2}
 				self:SecureHook(this.button4, "Disable", function(bObj, _)
 					self:clrBtnBdr(bObj)
 				end)
 				self:SecureHook(this.button4, "Enable", function(bObj, _)
 					self:clrBtnBdr(bObj)
 				end)
-				self:skinStdButton{obj=this.extraButton}
+				self:skinStdButton{obj=this.extraButton, y1=2}
 				self:SecureHook(this.extraButton, "Disable", function(bObj, _)
 					self:clrBtnBdr(bObj)
 				end)
@@ -6316,9 +6346,7 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 		end
 	end)
 
-	if not aObj.isRtlPTR
-	and not aObj.isClscERAPTR
-	then
+	if aObj.isClscBC then
 		-- Hook these to handle AddOns that use GameTooltip Backdrop functions (e.g. SavedInstances)
 		self:RawHook(_G.GameTooltip, "GetBackdrop", function(_)
 			return aObj.Backdrop[1]

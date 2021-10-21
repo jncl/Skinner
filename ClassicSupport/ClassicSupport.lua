@@ -140,9 +140,6 @@ aObj.SetupClassic = function(self)
 	self:GetModule("UnitFrames", true).skinFocusF = _G.nop
 
 	-- NOP functions that are not required and cause errors
-	if not aObj.isClscERAPTR then
-		self.removeNineSlice = _G.nop
-	end
 	self.skinGlowBox = _G.nop
 
 	-- Add options for new frames

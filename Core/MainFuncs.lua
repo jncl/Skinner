@@ -1303,6 +1303,17 @@ function aObj:skinTooltip(tooltip)
 		self:applyGradient(tooltip.sf, self.prdb.FadeHeight.value <= _G.Round(tooltip:GetHeight()) and self.prdb.FadeHeight.value or _G.Round(tooltip:GetHeight()))
 	end
 
+	if aObj.isClscERAPTR then
+		local kid1 = self:getChild(tooltip, 1)
+		if kid1:GetNumRegions() == 9 then
+			self:removeNineSlice(kid1)
+		end
+	else
+		if tooltip.TopLeftCorner then
+			self:removeNineSlice(tooltip)
+		end
+	end
+
 end
 
 local function __skinUsingBD(opts)
