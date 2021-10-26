@@ -4146,6 +4146,12 @@ aObj.blizzFrames[ftype].MailFrame = function(self)
 		self:removeRegions(_G.InboxFrame, {1}) -- background texture
 		if self.modBtns then
 			self:skinStdButton{obj=_G.OpenAllMail}
+			self:SecureHook(_G.OpenAllMail, "Disable", function(bObj, _)
+				self:clrBtnBdr(bObj)
+			end)
+			self:SecureHook(_G.OpenAllMail, "Enable", function(bObj, _)
+				self:clrBtnBdr(bObj)
+			end)
 		end
 		if self.modBtnBs then
 			self:addButtonBorder{obj=_G.InboxPrevPageButton, ofs=-2, y1=-3, x2=-3}
