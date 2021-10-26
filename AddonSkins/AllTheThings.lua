@@ -1,16 +1,19 @@
-local aName, aObj = ...
-if not aObj:isAddonEnabled("AllTheThings") then return end
+local _, aObj = ...
+if not aObj:isAddonEnabled("AllTheThings")
+and not aObj:isAddonEnabled("ATT-Classic")
+then
+	return
+end
 local _G = _G
 
-aObj.addonsToSkin.AllTheThings = function(self) -- v 2.1.2
-
+local function skinThings(app, oName)
 	local function skinFrame(frame)
 		aObj:skinObject("slider", {obj=frame.ScrollBar, x1=0, x2=-1})
 		aObj:skinObject("frame", {obj=frame, kfs=true, cb=true, y1=0, x2=1})
 	end
 	-- hook this to skin new frames
-	self:RawHook(_G.AllTheThings, "GetWindow", function(this, suffix, ...)
-		local frame = self.hooks[this].GetWindow(this, suffix, ...)
+	aObj:RawHook(app, "GetWindow", function(this, suffix, ...)
+		local frame = aObj.hooks[this].GetWindow(this, suffix, ...)
 		if not frame.sf then
 			skinFrame(frame)
 		end
@@ -18,7 +21,7 @@ aObj.addonsToSkin.AllTheThings = function(self) -- v 2.1.2
 	end, true)
 
 	-- skin existing frames
-	self.RegisterCallback("AllTheThings", "UIParent_GetChildren", function(this, child)
+	aObj.RegisterMessage(oName, "UIParent_GetChildren", function(_, child)
 		if child.Suffix
 		and child.Refresh
 		and child.BaseUpdate
@@ -26,36 +29,40 @@ aObj.addonsToSkin.AllTheThings = function(self) -- v 2.1.2
 			skinFrame(child)
 		end
 	end)
-	self:scanUIParentsChildren()
+	aObj:scanUIParentsChildren()
 
-	-- TODO: add button border to Tooltip Icon
+	-- N.B. GameTooltipIcon object is not available ?, therefore cannot be skinned
 
 	-- Tooltip Model frame
-	self:skinObject("frame", {obj=_G.ATTGameTooltipModel, kfs=true})
+	aObj:skinObject("frame", {obj=_G.ATTGameTooltipModel, kfs=true})
+	-- hook to align to GameTooltip
+	aObj:RawHook(_G.ATTGameTooltipModel, "SetPoint", function(this, point, relTo, relPoint, xOfs, yOfs)
+		aObj.hooks[this].SetPoint(this, point, relTo, relPoint, xOfs, -2)
+	end, true)
 
 	-- minimap button
-	if _G["AllTheThings-Minimap"] then
-		self.mmButs["AllTheThings"] = _G["AllTheThings-Minimap"]
-		self:getRegion(_G["AllTheThings-Minimap"], 2):SetDrawLayer("OVERLAY") -- make logo appear
+	if _G[oName .. "-Minimap"] then
+		aObj.mmButs[oName] = _G[oName .. "-Minimap"]
+		aObj:getRegion(_G[oName .. "-Minimap"], 2):SetDrawLayer("OVERLAY") -- make logo appear
 	end
 
 	-- Settings Panels
-	self.RegisterCallback("AllTheThings", "IOFPanel_Before_Skinning", function(this, panel)
-		if panel.name ~= "AllTheThings" then return end
+	aObj.RegisterMessage(oName, "IOFPanel_Before_Skinning", function(_, panel)
+		if panel.name ~= oName then return end
 
 		for _, btn in _G.pairs(panel.Tabs) do
-			self.iofBtn[btn] = true
+			aObj.iofBtn[btn] = true
 		end
 
-		self.UnregisterCallback("AllTheThings", "IOFPanel_Before_Skinning")
+		aObj.UnregisterMessage(oName, "IOFPanel_Before_Skinning")
 	end)
-	self.RegisterCallback("AllTheThings", "IOFPanel_After_Skinning", function(this, panel)
-		if panel.name ~= "AllTheThings" then return end
+	aObj.RegisterMessage(oName, "IOFPanel_After_Skinning", function(_, panel)
+		if panel.name ~= oName then return end
 
-		self:removeBackdrop(panel)
-		self:getRegion(panel, 4):SetTexture(nil) -- Separator line
+		aObj:removeBackdrop(panel)
+		aObj:getRegion(panel, 4):SetTexture(nil) -- Separator line
 
-		self:skinObject("tabs", {obj=panel, tabs=panel.Tabs, ignoreSize=true, lod=true, offsets={x1=6, y1=0, x2=-6, y2=-4}})
+		aObj:skinObject("tabs", {obj=panel, tabs=panel.Tabs, ignoreSize=true, lod=true, offsets={x1=6, y1=0, x2=-6, y2=-4}})
 
 		for i, tabPanel in _G.pairs(panel.Tabs) do
 			if i == 3 then -- Unobtainables Tab
@@ -66,19 +73,30 @@ aObj.addonsToSkin.AllTheThings = function(self) -- v 2.1.2
 					then -- child frame
 						for _, child in _G.ipairs{obj:GetChildren()} do
 							if child:GetObjectType() == "Frame" then
-								self:skinObject("frame", {obj=child, kfs=true, fb=true})
+								aObj:skinObject("frame", {obj=child, kfs=true, fb=true})
 							end
 						end
 					elseif obj:IsObjectType("CheckButton")
-					and self.modChkBtns
+					and aObj.modChkBtns
 					then
-						self:skinCheckButton{obj=obj, hf=true}
+						aObj:skinCheckButton{obj=obj, hf=true}
 					end
 				end
 			end
 		end
 
-		self.UnregisterCallback("AllTheThings", "IOFPanel_After_Skinning")
+		aObj.UnregisterMessage(oName, "IOFPanel_After_Skinning")
 	end)
+end
+
+aObj.addonsToSkin.AllTheThings = function(_) -- v 2.1.2
+
+	skinThings(_G.AllTheThings, "AllTheThings")
+
+end
+
+aObj.addonsToSkin["ATT-Classic"] = function(_) -- v 0.7.5
+
+	skinThings(_G.ATTC, "ATT-Classic")
 
 end

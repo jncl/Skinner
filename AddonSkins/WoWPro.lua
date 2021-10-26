@@ -74,7 +74,7 @@ aObj.addonsToSkin.WoWPro = function(self) -- v 9.0.5-A1/2.5.1.-B1/1.14.0.A0
 			self:skinObject("tabs", {obj=panel.scrollBox, tabs=panel.scrollBox.Tabs, offsets={x1=6, y1=-4, x2=-6, y2=-2}})
 		elseif panel.name == "Current Guide" then
 			if panel:GetNumChildren() > 0
-			and pCnt < 2
+			and not self.iofSkinnedPanels[panel]
 			then
 				self.iofSkinnedPanels[panel] = true
 				pCnt = pCnt + 1
