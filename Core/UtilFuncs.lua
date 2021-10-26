@@ -1354,8 +1354,8 @@ function aObj:SetupCmds()
 		_G.assert(obj, "Unknown object showInfo\n" .. _G.debugstack(2, 3, 2))
 		if obj:IsForbidden() then return end
 		showKids = showKids or false
-		local function showIt(fmsg, ...)
-			aObj:Debug3(fmsg, ...)
+		local function showIt(...)
+			aObj:Debug3(...)
 		end
 		local function getRegions(cObj, lvl)
 			for k, reg in _G.ipairs{cObj:GetRegions()} do

@@ -125,29 +125,34 @@ end
 local function printIt(text, frame, r, g, b)
 	(frame or _G.DEFAULT_CHAT_FRAME):AddMessage(text, r, g, b)
 end
-function aObj:CustomPrint(r, g, b, fStr, ...) -- luacheck: ignore self
+function aObj:CustomPrint(r, g, b, ...) -- luacheck: ignore self
 
-	printIt( _G.WrapTextInColorCode(aName, "ffffff78") .. " " .. makeText(fStr, ...), nil, r, g, b)
+	printIt(_G.WrapTextInColorCode(aName, "ffffff78") .. " " .. makeText(...), nil, r, g, b)
 
 end
 
 --@debug@
--- specify where debug messages go & increase buffer size
 aObj.debugFrame = _G.ChatFrame10
-function aObj:Debug(fStr, ...)
+function aObj:Debug(...)
 
 	local output = ("(DBG) %s:[%s.%03d]"):format(aName, _G.date("%H:%M:%S"), (_G.GetTime() % 1) * 1000)
-	printIt(_G.WrapTextInColorCode(output, "ff7fff7f") .. " " .. makeText(fStr, ...), self.debugFrame)
+	printIt(_G.WrapTextInColorCode(output, "ff7fff7f") .. " " .. makeText(...), self.debugFrame)
 
 end
+local dbg2Flag = false
+function aObj:Debug2(...)
 
-function aObj:Debug2(fStr, ...) -- luacheck: ignore self fStr ...
-	-- self:Debug(fStr, ...)
+	if dbg2Flag then
+		printIt("dbg2: " .. makeText(...), self.debugFrame)
+	end
+
 end
+local dbg3Flag = true
+function aObj:Debug3(...)
 
-function aObj:Debug3(fStr, ...)
-
-	printIt("dbg: " .. makeText(fStr, ...), self.debugFrame)
+	if dbg3Flag then
+		printIt("dbg3: " .. makeText(...), self.debugFrame)
+	end
 
 end
 --@end-debug@
