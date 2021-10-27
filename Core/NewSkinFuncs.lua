@@ -42,7 +42,7 @@ aObj.skinTPLs = {
 		-- ca          = 0.5, -- backdrop border alpha
 		-- ng          = true, -- no Gradient texture
 		regions     = {3, 4, 5}, -- 1 is text, 2 is cursor, 6 is text, 7 is icon
-		si			= false, -- search icon
+		si			= false, -- move search icon
 		six         = 3, -- search icon x offset
 		ofs         = 2,
 		-- x1          = 0,
@@ -51,6 +51,8 @@ aObj.skinTPLs = {
 		-- y2          = 4,
 		chginset	= true,
 		inset		= 5,
+		mi			= true, -- move Instructions
+		mix			= 6, -- Instructions x offset
 	},
 	frame = {
 		name		= nil, -- use a name if required (VuhDo Options)
@@ -409,10 +411,17 @@ local function skinEditBox(tbl)
 		end
 		aObj:moveObject{obj=sIcon, x=tbl.six}
 		sIcon:SetAlpha(1)
+		tbl.mix = 16 -- adjust Instructions offset
 	elseif tbl.chginset then
 		-- move left text insert
 		local left, right, top, bottom = tbl.obj:GetTextInsets()
 		tbl.obj:SetTextInsets(left + tbl.inset, right, top, bottom)
+	end
+	if tbl.mi
+	and tbl.obj.Instructions
+	then
+		tbl.obj.Instructions:ClearAllPoints()
+		tbl.obj.Instructions:SetPoint("LEFT", tbl.obj, "LEFT", tbl.mix, 0)
 	end
 	aObj:getRegion(tbl.obj, 2):SetAlpha(1) -- cursor texture
 end
