@@ -546,6 +546,7 @@ aObj.SetupClassic_PlayerFrames = function()
 			end)
 
 			self:SecureHookScript(_G.GuildInfoFrame, "OnShow", function(fObj)
+				self:moveObject{obj=fObj, y=-2}
 				self:skinObject("slider", {obj=_G.GuildInfoFrameScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
 				self:skinObject("frame", {obj=_G.GuildInfoTextBackground, fb=true})
 				self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, ofs=-2})
