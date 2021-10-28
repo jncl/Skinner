@@ -150,12 +150,12 @@ aObj.SetupClassic_UIFrames = function()
 
 			self:SecureHookScript(_G.LFGParentFrame, "OnShow", function(this)
 				self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, ignoreSize=true, lod=self.isTT and true, upwards=true, offsets={x1=6, y1=0, x2=-6, y2=2}})
-				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, x1=17, y1=-11, x2=-29, y2=70})
+				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, x1=10, y1=-11, x2=-29, y2=70})
 				if self.modBtns then
 					self:skinCloseButton{obj=self:getChild(this, 3), fType=ftype}
 				end
 
-				self:SecureHookScript(_G.LFMFrame, "OnShow", function(_)
+				self:SecureHookScript(_G.LFMFrame, "OnShow", function(fObj)
 					self:skinObject("dropdown", {obj=_G.LFMFrameEntryDropDown, fType=ftype})
 					self:removeInset(_G.LFMFrameInset)
 					self:skinObject("dropdown", {obj=_G.LFMFrameTypeDropDown, fType=ftype})
@@ -175,18 +175,18 @@ aObj.SetupClassic_UIFrames = function()
 						end)
 					end
 
-					self:Unhook(this, "OnShow")
+					self:Unhook(fObj, "OnShow")
 				end)
 				self:checkShown(_G.LFMFrame)
 
-				self:SecureHookScript(_G.LFGFrame, "OnShow", function(frame)
-					for _, dd in _G.pairs(frame.TypeDropDown) do
+				self:SecureHookScript(_G.LFGFrame, "OnShow", function(fObj)
+					for _, dd in _G.pairs(fObj.TypeDropDown) do
 						self:skinObject("dropdown", {obj=dd, fType=ftype})
 					end
-					for _, dd in _G.pairs(frame.ActivityDropDown) do
+					for _, dd in _G.pairs(fObj.ActivityDropDown) do
 						self:skinObject("dropdown", {obj=dd, fType=ftype})
 					end
-					self:skinObject("editbox", {obj=frame.Comment, fType=ftype, chginset=false, x1=-5})
+					self:skinObject("editbox", {obj=fObj.Comment, fType=ftype, chginset=false, x1=-5})
 					self:moveObject{obj=_G.LFGFramePostButton, x=-10}
 					if self.modBtns then
 						self:skinStdButton{obj=_G.LFGFrameClearAllButton, fType=ftype}
@@ -196,7 +196,7 @@ aObj.SetupClassic_UIFrames = function()
 						end)
 					end
 
-					self:Unhook(frame, "OnShow")
+					self:Unhook(fObj, "OnShow")
 				end)
 				self:checkShown(_G.LFGFrame)
 
