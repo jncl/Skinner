@@ -711,7 +711,7 @@ aObj.blizzFrames[ftype].GuildRegistrar = function(self)
 
 end
 
-aObj.blizzLoDFrames[ftype].ItemInteractionUI = function(self) -- a.k.a. Titanic Purification
+aObj.blizzLoDFrames[ftype].ItemInteractionUI = function(self) -- a.k.a. Titanic Purification/Runecarver reclaim soulessence
 	if not self.prdb.ItemInteractionUI or self.initialized.ItemInteractionUI then return end
 	self.initialized.ItemInteractionUI = true
 
@@ -720,9 +720,12 @@ aObj.blizzLoDFrames[ftype].ItemInteractionUI = function(self) -- a.k.a. Titanic 
 		self.modUIBtns:addButtonBorder{obj=this.ItemSlot, relTo=this.ItemSlot.Icon, clr="grey"}
 		this.ButtonFrame:DisableDrawLayer("BORDER")
 		this.ButtonFrame.MoneyFrameEdge:DisableDrawLayer("BACKGROUND")
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true}
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, x2=3}
 		if self.modBtns then
 			self:skinStdButton{obj=this.ButtonFrame.ActionButton}
+			self:SecureHook(this, "UpdateActionButtonState", function(fObj)
+				self:clrBtnBdr(fObj.ButtonFrame.ActionButton)
+			end)
 		end
 
 		self:Unhook(this, "OnShow")
