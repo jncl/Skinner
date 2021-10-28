@@ -9,7 +9,7 @@ aObj.addonsToSkin.WoWPro = function(self) -- v 9.0.5-A1/2.5.1.-B1/1.14.0.A0
 		_G.WoWPro.Titlebar:SetBackdrop(nil)
 		self:skinObject("slider", {obj=_G.WoWPro.Scrollbar})
 		self:getChild(_G.WoWPro.Scrollbar, 3):SetBackdrop(nil)
-		self:skinObject("frame", {obj=this, kfs=true, ng=true, ofs=0, ba=0.235})
+		self:skinObject("frame", {obj=this, kfs=true, ng=true, ofs=0, ba=0.35})
 
 		self:Unhook(this, "OnShow")
 	end)
@@ -29,7 +29,7 @@ aObj.addonsToSkin.WoWPro = function(self) -- v 9.0.5-A1/2.5.1.-B1/1.14.0.A0
 			end
 		end
 		for _, row in _G.ipairs(_G.WoWPro.mousenotes) do
-			self:skinObject("frame", {obj=row, kfs=true, fb=true})
+			self:skinObject("frame", {obj=row, kfs=true})
 		end
 	end)
 
