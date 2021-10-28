@@ -37,5 +37,10 @@ ToDos
 		[string "@FrameXML\UIParent.lua"]:2653: in function <FrameXML\UIParent.lua:2640>
 		[string "=[C]"]: in function `SetAttribute'
 
-	I	checkVersion, reported by DarkLimpan, 18.10.21
-√		- agentUID string not found in buildInfo array ??
+	I	Leatrix_Plus, reported by 아련별, 20.10.21
+√		-  Skinner\Modules\UIButtons.lua:543: attempt to index field 'obj' (a nil value)
+		[string "@Skinner\AddonSkins\Leatrix_Plus-2.5.61.lua"]:71: in function <Skinner\AddonSkins\Leatrix_Plus.lua:5>
+
+√	S/B	ItemRack Classic, requested by 아련별, 22.10.21
+
+√	S/B	All The Things, requested by 아련별, 22.10.21

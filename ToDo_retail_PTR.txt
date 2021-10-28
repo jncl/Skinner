@@ -19,7 +19,7 @@ x				- .CursorSizeDropdown
 √				- GameTooltip
 √				- ChatMenu
 √				- EmoteMenu
-				- GMChatStatusFrame
+√				- GMChatStatusFrame
 √				- LanguageMenu
 √				- VoiceMacroMenu
 √				- GeneralDockManagerOverflowButtonList
@@ -64,11 +64,10 @@ x				- .CursorSizeDropdown
 √				- AudioOptionsVoicePanel.TestInputDevice.VUMeter
 √				- MacroFrameTextBackground
 √				- AchievementFrameCategories
-			- GuildBankUI
-			- ItemUpgradeUI
-			- GossipFrame
-			- LFGList
-				- LFGListEditBoxTemplate
-			- MoneyInputFrame
+≈			- GuildBankUI
+√			- ItemUpgradeUI
+x			- GossipFrame
+√			- LFGList
+?			- MoneyInputFrame
 		- Deleted
 √			- CommunitiesGuildRecruitmentFrame
