@@ -1251,26 +1251,30 @@ aObj.blizzLoDFrames[ftype].RuneForgeUI = function(self)
 	self.initialized.RuneForgeUI = true
 
 	self:SecureHookScript(_G.RuneforgeFrame, "OnShow", function(this)
-		self:skinObject("frame", {obj=this.CraftingFrame.ModifierFrame.Selector, fType=ftype, kfs=true, ofs=-5, y1=-15, y2=15})
+		self:skinObject("frame", {obj=this.CraftingFrame.ModifierFrame.Selector, fType=ftype, kfs=true, ofs=-10, y1=-20, y2=20})
 		self:skinObject("frame", {obj=this.CraftingFrame.PowerFrame, fType=ftype, kfs=true, ofs=0, y1=-10, y2=10})
+		this.BackgroundModelScene:Hide()
+		self:removeBackdrop(this.ResultTooltip.PulseOverlay)
+		this.CloseButton.CustomBorder:SetTexture(nil)
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cbns=true, ofs=-40, y1=-75, y2=100})
 		if self.modBtns then
 			self:skinStdButton{obj=this.CreateFrame.CraftItemButton}
 			self:SecureHook(this.CreateFrame.CraftItemButton, "SetCraftState", function(bObj, _)
 				self:clrBtnBdr(bObj)
 			end)
 		end
-		this.BackgroundModelScene:Hide()
+		if self.modBtnBs then
+ 			self:addButtonBorder{obj=this.CraftingFrame.PowerFrame.PageControl.BackwardButton, clr="gold", ofs=-2, y1=-3, x2=-3}
+ 			self:addButtonBorder{obj=this.CraftingFrame.PowerFrame.PageControl.ForwardButton, clr="gold", ofs=-2, y1=-3, x2=-3}
+			self:SecureHook(this.CraftingFrame.PowerFrame.PageControl, "RefreshPaging", function(this)
+				self:clrBtnBdr(this.BackwardButton, "gold")
+				self:clrBtnBdr(this.ForwardButton, "gold")
+			end)
+		end
+
 		_G.C_Timer.After(0.1, function()
 			self:add2Table(self.ttList, this.ResultTooltip)
 			this.ResultTooltip.TopOverlay:SetAlpha(1)
-		end)
-		self:removeBackdrop(this.ResultTooltip.PulseOverlay)
-		this.CloseButton.CustomBorder:SetTexture(nil)
-		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cbns=true, ofs=-40, y2=100})
-
-		-- tooltip
-		_G.C_Timer.After(0.1, function()
-			self:add2Table(self.ttList, this.ResultTooltip)
 		end)
 
 		self:Unhook(this, "OnShow")
