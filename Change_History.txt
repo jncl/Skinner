@@ -1,3 +1,16 @@
+beta9.40696.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Bugfix for version checks
+	Remove blank line
+	Update Tooltip skinning code
+	Use C_CVar functions
+	Add checks for Retail version
+	Update removeInset code
+	SoM PTR changes
+
 beta9.40622.1
 Jncl:
 	ToDo.txt
