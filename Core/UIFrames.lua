@@ -3510,18 +3510,15 @@ aObj.blizzFrames[ftype].InterfaceOptions = function(self)
 		if panel ~= _G.CompactUnitFrameProfiles then
 			return
 		end
-		self:removeNineSlice(_G.CompactUnitFrameProfiles.newProfileDialog.Border)
+		if not aObj.isClsc then
+			self:removeNineSlice(_G.CompactUnitFrameProfiles.newProfileDialog.Border)
+			self:removeNineSlice(_G.CompactUnitFrameProfiles.deleteProfileDialog.Border)
+			self:removeNineSlice(_G.CompactUnitFrameProfiles.unsavedProfileDialog.Border)
+		end
 		skinKids(_G.CompactUnitFrameProfiles.newProfileDialog, ftype)
 		self:skinObject("frame", {obj=_G.CompactUnitFrameProfiles.newProfileDialog, fType=ftype, ofs=0})
-		if self.modBtns then
-			self:SecureHook("CompactUnitFrameProfiles_UpdateNewProfileCreateButton", function()
-				self:clrBtnBdr(_G.CompactUnitFrameProfiles.newProfileDialog.createButton)
-			end)
-		end
-		self:removeNineSlice(_G.CompactUnitFrameProfiles.deleteProfileDialog.Border)
 		skinKids(_G.CompactUnitFrameProfiles.deleteProfileDialog, ftype)
 		self:skinObject("frame", {obj=_G.CompactUnitFrameProfiles.deleteProfileDialog, fType=ftype, ofs=0})
-		self:removeNineSlice(_G.CompactUnitFrameProfiles.unsavedProfileDialog.Border)
 		skinKids(_G.CompactUnitFrameProfiles.unsavedProfileDialog, ftype)
 		self:skinObject("frame", {obj=_G.CompactUnitFrameProfiles.unsavedProfileDialog, fType=ftype, ofs=0})
 		skinKids(_G.CompactUnitFrameProfiles.optionsFrame, ftype)
@@ -3531,6 +3528,9 @@ aObj.blizzFrames[ftype].InterfaceOptions = function(self)
 			self:SecureHook("CompactUnitFrameProfiles_UpdateManagementButtons", function()
 				self:clrBtnBdr(_G.CompactUnitFrameProfilesDeleteButton)
 				self:clrBtnBdr(_G.CompactUnitFrameProfilesSaveButton)
+			end)
+			self:SecureHook("CompactUnitFrameProfiles_UpdateNewProfileCreateButton", function()
+				self:clrBtnBdr(_G.CompactUnitFrameProfiles.newProfileDialog.createButton)
 			end)
 		end
 		_G.CompactUnitFrameProfiles.optionsFrame.autoActivateBG:SetTexture(nil)
