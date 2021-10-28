@@ -3248,9 +3248,13 @@ aObj.blizzLoDFrames[ftype].GMChatUI = function(self)
 	end)
 
 	self:SecureHookScript(_G.GMChatStatusFrame, "OnShow", function(this)
-		this:DisableDrawLayer("BORDER")
-		this:DisableDrawLayer("OVERLAY")
-		self:addSkinFrame{obj=this, ft=ftype, anim=true, x1=30, y1=-12, x2=-30, y2=12}
+		if not aObj.isRtlPTR then
+			this:DisableDrawLayer("BORDER")
+			this:DisableDrawLayer("OVERLAY")
+			self:addSkinFrame{obj=this, ft=ftype, anim=true, x1=30, y1=-12, x2=-30, y2=12}
+		else
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true})
+		end
 
 		self:Unhook(this, "OnShow")
 	end)
@@ -3272,7 +3276,11 @@ aObj.blizzLoDFrames[ftype].GuildBankUI = function(self)
 			end
 		end
 		self:skinObject("editbox", {obj=_G.GuildItemSearchBox, fType=ftype})
-		_G.GuildBankMoneyFrameBackground:DisableDrawLayer("BACKGROUND")
+		if aObj.isRtlPTR then
+			this.MoneyFrameBG:DisableDrawLayer("BACKGROUND")
+		else
+			_G.GuildBankMoneyFrameBackground:DisableDrawLayer("BACKGROUND")
+		end
 		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true, offsets={x1=9, y1=self.isTT and 2 or -3, x2=-9, y2=2}})
 		-- Tabs (side)
 		for i = 1, _G.MAX_GUILDBANK_TABS do
@@ -3287,10 +3295,17 @@ aObj.blizzLoDFrames[ftype].GuildBankUI = function(self)
 		if self.modBtns then
 			self:skinStdButton{obj=_G.GuildBankFrameDepositButton, x1=0} -- don't overlap withdraw button
 			self:skinStdButton{obj=_G.GuildBankFrameWithdrawButton, x2=0} -- don't overlap deposit button
-			self:skinStdButton{obj=_G.GuildBankFramePurchaseButton}
-			self:SecureHook("GuildBankFrame_UpdateTabBuyingInfo", function()
-				self:clrBtnBdr(_G.GuildBankFramePurchaseButton)
-			end)
+			if not aObj.isRtlPTR then
+				self:skinStdButton{obj=_G.GuildBankFramePurchaseButton}
+				self:SecureHook("GuildBankFrame_UpdateTabBuyingInfo", function()
+					self:clrBtnBdr(_G.GuildBankFramePurchaseButton)
+				end)
+			else
+				self:skinStdButton{obj=this.BuyInfo.PurchaseButton}
+				self:SecureHook(this, "UpdateTabBuyingInfo", function(this)
+					self:clrBtnBdr(this.BuyInfo.PurchaseButton)
+				end)
+			end
 			self:skinStdButton{obj=_G.GuildBankInfoSaveButton}
 		end
 		-- send message when UI is skinned (used by oGlow skin)
@@ -3878,10 +3893,10 @@ aObj.blizzFrames[ftype].LFGList = function(self)
 
 		-- SearchPanel
 		local sp = this.SearchPanel
-		self:skinEditBox{obj=sp.SearchBox, regs={6, 7, 8}, mi=true} -- 6 is text, 7 is icon, 8 maybe added fontstring
-		self:addSkinFrame{obj=sp.AutoCompleteFrame, ft=ftype, kfs=true, x1=4, y1=4, y2=4}
+		self:skinObject("editbox", {obj=sp.SearchBox, fType=ftype, si=true})
+		self:skinObject("frame", {obj=sp.AutoCompleteFrame, fType=ftype, kfs=true, ofs=4})
 		self:removeInset(sp.ResultsInset)
-		self:skinSlider{obj=sp.ScrollFrame.scrollBar, wdth=-4}
+		self:skinObject("slider", {obj=sp.ScrollFrame.scrollBar, fType=ftype})
 		self:removeMagicBtnTex(sp.BackButton)
 		self:removeMagicBtnTex(sp.SignUpButton)
 		if self.modBtns then
@@ -3911,7 +3926,7 @@ aObj.blizzFrames[ftype].LFGList = function(self)
 				 self:skinStdButton{obj=av[type .. "ColumnHeader"]}
 			end
 		end
-		self:skinSlider{obj=av.ScrollFrame.scrollBar, wdth=-4}
+		self:skinObject("slider", {obj=av.ScrollFrame.scrollBar, fType=ftype})
 		self:removeMagicBtnTex(av.RemoveEntryButton)
 		self:removeMagicBtnTex(av.EditButton)
 		if self.modBtns then
@@ -3934,21 +3949,28 @@ aObj.blizzFrames[ftype].LFGList = function(self)
 		self:removeInset(ec.Inset)
 		local ecafd = ec.ActivityFinder.Dialog
 		self:removeNineSlice(ecafd.Border)
-		self:skinEditBox{obj=ecafd.EntryBox, regs={6}, mi=true} -- 6 is text
-		self:skinSlider{obj=ecafd.ScrollFrame.scrollBar, size=4}
+		self:skinObject("editbox", {obj=ecafd.EntryBox, fType=ftype})
+		self:skinObject("slider", {obj=ecafd.ScrollFrame.scrollBar, fType=ftype})
 		ecafd.BorderFrame:DisableDrawLayer("BACKGROUND")
-		self:addSkinFrame{obj=ecafd, ft=ftype, kfs=true}
+		self:skinObject("frame", {obj=ecafd, fType=ftype, kfs=true})
 		if self.modBtns then
 			self:skinStdButton{obj=ecafd.SelectButton}
 			self:skinStdButton{obj=ecafd.CancelButton}
 		end
-		self:skinEditBox{obj=ec.Name, regs={6}, mi=true} -- 6 is text
-		self:skinDropDown{obj=ec.CategoryDropDown}
-		self:skinDropDown{obj=ec.GroupDropDown}
-		self:skinDropDown{obj=ec.ActivityDropDown}
-		self:addFrameBorder{obj=ec.Description, ft=ftype, kfs=true, ofs=6}
-		self:skinEditBox{obj=ec.ItemLevel.EditBox, regs={6}, mi=true} -- 6 is text
-		self:skinEditBox{obj=ec.VoiceChat.EditBox, regs={6}, mi=true} -- 6 is text
+		self:skinObject("editbox", {obj=ec.Name, fType=ftype})
+		if not aObj.isRtlPTR then
+			self:skinDropDown{obj=ec.CategoryDropDown}
+		else
+			self:skinObject("dropdown", {obj=ec.PlayStyleDropdown, fType=ftype})
+			self:skinObject("editbox", {obj=ec.PvpItemLevel.EditBox, fType=ftype})
+			self:skinObject("editbox", {obj=ec.PVPRating.EditBox, fType=ftype})
+			self:skinObject("editbox", {obj=ec.MythicPlusRating.EditBox, fType=ftype})
+		end
+		self:skinObject("dropdown", {obj=ec.GroupDropDown, fType=ftype})
+		self:skinObject("dropdown", {obj=ec.ActivityDropDown, fType=ftype})
+		self:skinObject("frame", {obj=ec.Description, fType=ftype, kfs=true, fb=true, ofs=6, clr="grey"})
+		self:skinObject("editbox", {obj=ec.ItemLevel.EditBox, fType=ftype})
+		self:skinObject("editbox", {obj=ec.VoiceChat.EditBox, fType=ftype})
 		self:removeMagicBtnTex(ec.ListGroupButton)
 		self:removeMagicBtnTex(ec.CancelButton)
 		if self.modBtns then
@@ -3960,7 +3982,13 @@ aObj.blizzFrames[ftype].LFGList = function(self)
 		end
 		if self.modChkBtns then
 			self:skinCheckButton{obj=ec.ItemLevel.CheckButton}
-			self:skinCheckButton{obj=ec.HonorLevel.CheckButton}
+			if not aObj.isRtlPTR then
+				self:skinCheckButton{obj=ec.HonorLevel.CheckButton}
+			else
+				self:skinCheckButton{obj=ec.PvpItemLevel.CheckButton}
+				self:skinCheckButton{obj=ec.PVPRating.CheckButton}
+				self:skinCheckButton{obj=ec.MythicPlusRating.CheckButton}
+			end
 			self:skinCheckButton{obj=ec.VoiceChat.CheckButton}
 			self:skinCheckButton{obj=ec.PrivateGroup.CheckButton}
 		end
@@ -3993,7 +4021,7 @@ aObj.blizzFrames[ftype].LFGList = function(self)
 	-- LFGListInvite Dialog
 	self:SecureHookScript(_G.LFGListInviteDialog, "OnShow", function(this)
 		self:removeNineSlice(this.Border)
-		self:addSkinFrame{obj=this, ft=ftype}
+		self:skinObject("frame", {obj=this, fType=ftype})
 		if self.modBtns then
 			self:skinStdButton{obj=this.AcceptButton}
 			self:skinStdButton{obj=this.DeclineButton}
