@@ -145,8 +145,8 @@ local function __addSkinButton(opts)
 			or regOT == "FontString"
 			then
 				-- change the DrawLayer to make the Icon show if required
-				if aObj:hasAnyTextInName(reg, {"[Ii]con", "[Cc]ount"})
-				or aObj:hasTextInTexture(reg, "[Ii]con")
+				if aObj:hasAnyTextInName(reg, {"Icon", "icon", "Count", "count"})
+				or aObj:hasAnyTextInTexture(reg, {"Icon", "icon"})
 				then
 					if reg:GetDrawLayer() == "BACKGROUND" then
 						reg:SetDrawLayer("ARTWORK")

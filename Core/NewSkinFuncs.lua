@@ -301,8 +301,9 @@ local function skinButton(tbl)
 	if tbl.chgDL then
 		for _, reg in _G.pairs{tbl.obj:GetRegions()} do
 			-- change the DrawLayer to make the Icon show if required
-			if aObj:hasAnyTextInName(reg, {"[Ii]con", "[Cc]ount"})
-			or aObj:hasTextInTexture(reg, "[Ii]con") then
+			if aObj:hasAnyTextInName(reg, {"Icon", "icon", "Count", "count"})
+			or aObj:hasTextInTexture(reg, "Icon")
+			then
 				if reg:GetDrawLayer() == "BACKGROUND" then
 					reg:SetDrawLayer("ARTWORK")
 				end
