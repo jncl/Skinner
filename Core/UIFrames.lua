@@ -4514,8 +4514,8 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 				for _, reg in _G.ipairs{obj:GetRegions()} do
 					if reg:GetObjectType() == "Texture" then
 						-- change the DrawLayer to make the Icon show if required
-						if aObj:hasTextInName(reg, "[Ii]con")
-						or aObj:hasTextInTexture(reg, "[Ii]con")
+						if aObj:hasAnyTextInName(reg, {"Icon", "icon"})
+						or aObj:hasTextInTexture(reg, "Icon")
 						then
 							if reg:GetDrawLayer() == "BACKGROUND" then
 								reg:SetDrawLayer("ARTWORK")
@@ -4663,7 +4663,9 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 	end
 
 	-- skin Minimap children, allow for delayed addons to be loaded (e.g. Baggins)
-	_G.C_Timer.After(0.5, function() mmKids(_G.Minimap) end)
+	_G.C_Timer.After(0.5, function()
+		mmKids(_G.Minimap)
+	end)
 
 	-- skin other minimap buttons
 	local function skinMMBtn(_, mmBtn, _)
