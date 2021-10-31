@@ -71,11 +71,19 @@ aObj.addonsToSkin.Leatrix_Plus = function(self) -- v 9.1.13/1.13.106/2.5.61
 		if self.isRtl then
 			self:skinStdButton{obj=self:getChild(_G.DressUpFrame.ResetButton, 1)}
 			self:skinStdButton{obj=self:getChild(_G.DressUpFrame.ResetButton, 2)}
+		elseif self.isClscBC then
+			self:skinStdButton{obj=self:getChild(_G.DressUpFrame.ResetButton, 1)}
+			self:skinStdButton{obj=self:getChild(_G.DressUpFrame.ResetButton, 2)}
+			self:skinStdButton{obj=self:getChild(_G.DressUpFrame.ResetButton, 3)}
+			self:skinStdButton{obj=self:getChild(_G.SideDressUpFrame.ResetButton, 1)}
+			self:skinStdButton{obj=self:getChild(_G.SideDressUpFrame.ResetButton, 2)}
 		else
-			if not _G.DressUpFrame.sf then
-				self:skinStdButton{obj=self:getPenultimateChild(_G.DressUpFrame)}
-				self:skinStdButton{obj=self:getLastChild(_G.DressUpFrame)}
+			local cCnt, offset = _G.DressUpFrame:GetNumChildren(), 0
+			if _G.DressUpFrame.sf then
+				offset = 1
 			end
+			self:skinStdButton{obj=self:getChild(_G.DressUpFrame, cCnt - offset)}
+			self:skinStdButton{obj=self:getChild(_G.DressUpFrame, (cCnt - 1) - offset)}
 		end
 	end
 

@@ -302,19 +302,12 @@ aObj.SetupClassic_PlayerFrames = function()
 		end
 
 		self:SecureHookScript(_G.SideDressUpFrame, "OnShow", function(this)
-			self:removeRegions(this, {1, 2, 3, 4})
 			_G.SideDressUpModel.controlFrame:DisableDrawLayer("BACKGROUND") -- model controls background
 			self:removeRegions(_G.SideDressUpModelCloseButton, {5}) -- corner texture
-			self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, x1=1, y1=-3, x2=-2}
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, x1=1, y1=-3, x2=-2})
 			if self.modBtns then
 				self:skinStdButton{obj=_G.SideDressUpModelResetButton, fType=ftype}
 				self:skinCloseButton{obj=_G.SideDressUpModelCloseButton, fType=ftype}
-				if _G.IsAddOnLoaded("Leatrix_Plus")
-				and _G.LeaPlusDB["EnhanceDressup"] == "On"
-				then
-					self:skinStdButton{obj=self:getPenultimateChild(this), fType=ftype}
-					self:skinStdButton{obj=self:getChild(this, this:GetNumChildren() - 2), fType=ftype}
-				end
 			end
 
 			self:Unhook(this, "OnShow")
@@ -322,17 +315,10 @@ aObj.SetupClassic_PlayerFrames = function()
 
 		self:SecureHookScript(_G.DressUpFrame, "OnShow", function(this)
 			self:makeMFRotatable(_G.DressUpModelFrame)
-			self:addSkinFrame{obj=this, ft=ftype, kfs=true, x1=10, y1=-11, x2=-33, y2=71}
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=10, y1=-11, x2=-33, y2=71})
 			if self.modBtns then
-				self:skinStdButton{obj=_G.DressUpFrameCloseButton, fType=ftype}
 				self:skinStdButton{obj=_G.DressUpFrameCancelButton, fType=ftype}
 				self:skinStdButton{obj=this.ResetButton, fType=ftype}
-				if _G.IsAddOnLoaded("Leatrix_Plus")
-				and _G.LeaPlusDB["EnhanceDressup"] == "On"
-				then
-					self:skinStdButton{obj=self:getPenultimateChild(this), fType=ftype}
-					self:skinStdButton{obj=self:getChild(this, this:GetNumChildren() - 2), fType=ftype}
-				end
 			end
 
 			self:Unhook(this, "OnShow")
