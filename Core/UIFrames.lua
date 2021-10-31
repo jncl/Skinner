@@ -4636,6 +4636,9 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 		self:moveObject{obj=_G.MiniMapMailFrame, y=-4}
 	end
 
+	if self.isClscBC then
+		_G.MiniMapWorldBorder:SetTexture(nil)
+	end
 	_G.MiniMapWorldMapButton:ClearAllPoints()
 	_G.MiniMapWorldMapButton:SetPoint("LEFT", _G.MinimapZoneTextButton, "RIGHT", -4, 0)
 	self:skinOtherButton{obj=_G.MiniMapWorldMapButton, font=self.fontP, text="M", noSkin=minBtn}
