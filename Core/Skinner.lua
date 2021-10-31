@@ -447,10 +447,12 @@ function aObj:OnEnable()
 				local tab
 				for i = 1, frame.numTabs do
 					tab = frame.Tabs and frame.Tabs[i] or _G[frame:GetName() .. "Tab" .. i]
-					if i == frame.selectedTab then
-						self:setActiveTab(tab.sf)
-					else
-						self:setInactiveTab(tab.sf)
+					if tab.sf then
+						if i == frame.selectedTab then
+							self:setActiveTab(tab.sf)
+						else
+							self:setInactiveTab(tab.sf)
+						end
 					end
 				end
 			end
