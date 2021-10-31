@@ -126,6 +126,7 @@ local function skinAtlasLoot()
 		local iTT = _G.AtlasLoot.Button:GetType("Item")
 		if iTT then
 			aObj:SecureHook(iTT, "ShowQuickDressUp", function(_)
+				if not iTT.previewTooltipFrame then return end
 				aObj:skinObject("frame", {obj=iTT.previewTooltipFrame, kfs=true})
 
 				aObj:Unhook(iTT, "ShowQuickDressUp")

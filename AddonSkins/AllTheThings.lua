@@ -9,7 +9,7 @@ local _G = _G
 local function skinThings(app, oName)
 	local function skinFrame(frame)
 		aObj:skinObject("slider", {obj=frame.ScrollBar, x1=0, x2=-1})
-		aObj:skinObject("frame", {obj=frame, kfs=true, cb=true, y1=0, x2=1})
+		aObj:skinObject("frame", {obj=frame, kfs=true, cb=true, ofs=0, x2=1, y2=-2})
 	end
 	-- hook this to skin new frames
 	aObj:RawHook(app, "GetWindow", function(this, suffix, ...)
@@ -19,33 +19,29 @@ local function skinThings(app, oName)
 		end
 		return frame
 	end, true)
-
 	-- skin existing frames
 	aObj.RegisterMessage(oName, "UIParent_GetChildren", function(_, child)
 		if child.Suffix
-		and child.Refresh
-		and child.BaseUpdate
+		and child.Toggle
+		and child.Update
+		and child.SetVisible
 		then
 			skinFrame(child)
 		end
 	end)
 	aObj:scanUIParentsChildren()
-
 	-- N.B. GameTooltipIcon object is not available ?, therefore cannot be skinned
-
 	-- Tooltip Model frame
 	aObj:skinObject("frame", {obj=_G.ATTGameTooltipModel, kfs=true})
 	-- hook to align to GameTooltip
 	aObj:RawHook(_G.ATTGameTooltipModel, "SetPoint", function(this, point, relTo, relPoint, xOfs, yOfs)
 		aObj.hooks[this].SetPoint(this, point, relTo, relPoint, xOfs, -2)
 	end, true)
-
 	-- minimap button
 	if _G[oName .. "-Minimap"] then
 		aObj.mmButs[oName] = _G[oName .. "-Minimap"]
 		aObj:getRegion(_G[oName .. "-Minimap"], 2):SetDrawLayer("OVERLAY") -- make logo appear
 	end
-
 	-- Settings Panels
 	aObj.RegisterMessage(oName, "IOFPanel_Before_Skinning", function(_, panel)
 		if panel.name ~= oName then return end

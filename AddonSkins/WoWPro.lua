@@ -2,11 +2,12 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("WoWPro") then return end
 local _G = _G
 
-aObj.addonsToSkin.WoWPro = function(self) -- v 9.0.5-A1/2.5.1.-B1/1.14.0.A0
+aObj.addonsToSkin.WoWPro = function(self) -- v 9.0.5-A5/2.5.2.-A0/1.14.0.A0
 
 	self:SecureHookScript(_G.WoWPro.MainFrame, "OnShow", function(this)
 		_G.WoWPro.BackgroundSet = _G.nop
 		_G.WoWPro.Titlebar:SetBackdrop(nil)
+		_G.WoWPro.Titlebar.SetBackdrop = _G.nop
 		self:skinObject("slider", {obj=_G.WoWPro.Scrollbar})
 		self:getChild(_G.WoWPro.Scrollbar, 3):SetBackdrop(nil)
 		self:skinObject("frame", {obj=this, kfs=true, ng=true, ofs=0, ba=0.35})
