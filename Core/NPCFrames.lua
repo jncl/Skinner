@@ -1279,11 +1279,11 @@ aObj.blizzLoDFrames[ftype].RuneForgeUI = function(self)
 			end)
 		end
 		if self.modBtnBs then
- 			self:addButtonBorder{obj=this.CraftingFrame.PowerFrame.PageControl.BackwardButton, clr="gold", ofs=-2, y1=-3, x2=-3}
- 			self:addButtonBorder{obj=this.CraftingFrame.PowerFrame.PageControl.ForwardButton, clr="gold", ofs=-2, y1=-3, x2=-3}
-			self:SecureHook(this.CraftingFrame.PowerFrame.PageControl, "RefreshPaging", function(this)
-				self:clrBtnBdr(this.BackwardButton, "gold")
-				self:clrBtnBdr(this.ForwardButton, "gold")
+			self:addButtonBorder{obj=this.CraftingFrame.PowerFrame.PageControl.BackwardButton, clr="gold", ofs=-2, y1=-3, x2=-3}
+			self:addButtonBorder{obj=this.CraftingFrame.PowerFrame.PageControl.ForwardButton, clr="gold", ofs=-2, y1=-3, x2=-3}
+			self:SecureHook(this.CraftingFrame.PowerFrame.PageControl, "RefreshPaging", function(fObj)
+				self:clrBtnBdr(fObj.BackwardButton, "gold")
+				self:clrBtnBdr(fObj.ForwardButton, "gold")
 			end)
 		end
 
