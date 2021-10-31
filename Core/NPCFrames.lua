@@ -639,12 +639,12 @@ aObj.blizzFrames[ftype].GossipFrame = function(self)
 	then
 		self:SecureHook("GossipFrameUpdate", function()
 			if not self.isClsc then
-				for i = 1, _G.GossipFrame_GetTitleButtonCount() do
-					local newText, upd = self:removeColourCodes(_G.GossipFrame.buttons[i]:GetText())
+				for _, btn in _G.pairs(_G.GossipFrame.buttons) do
+					local newText, upd = self:removeColourCodes(btn:GetText())
 					if upd then
-						_G.GossipFrame.buttons[i]:SetText(newText)
+						btn:SetText(newText)
 					end
-					_G.GossipFrame.buttons[i]:GetFontString():SetTextColor(self.BT:GetRGB())
+					btn:GetFontString():SetTextColor(self.BT:GetRGB())
 				end
 			else
 				for i = 1, _G.NUMGOSSIPBUTTONS do
@@ -672,8 +672,13 @@ aObj.blizzFrames[ftype].GossipFrame = function(self)
 		end
 
 		-- NPCFriendshipStatusBar
-		self:removeRegions(_G.NPCFriendshipStatusBar, {1, 3, 4, 5 ,6})
-		self:skinStatusBar{obj=_G.NPCFriendshipStatusBar, fi=0, bgTex=self:getRegion(_G.NPCFriendshipStatusBar, 7)}
+		if aObj.isRtlPTR then
+			self:removeRegions(_G.NPCFriendshipStatusBar, {1, 2, 5, 6, 7, 8 ,9})
+			self:skinStatusBar{obj=_G.NPCFriendshipStatusBar, fi=0, bgTex=self:getRegion(_G.NPCFriendshipStatusBar, 10)}
+		else
+			self:removeRegions(_G.NPCFriendshipStatusBar, {1, 3, 4, 5 ,6})
+			self:skinStatusBar{obj=_G.NPCFriendshipStatusBar, fi=0, bgTex=self:getRegion(_G.NPCFriendshipStatusBar, 7)}
+		end
 
 		self:Unhook(this, "OnShow")
 	end)
