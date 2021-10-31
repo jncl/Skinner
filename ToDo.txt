@@ -37,10 +37,38 @@ ToDos
 		[string "@FrameXML\UIParent.lua"]:2653: in function <FrameXML\UIParent.lua:2640>
 		[string "=[C]"]: in function `SetAttribute'
 
-	I	Leatrix_Plus, reported by 아련별, 20.10.21
-√		-  Skinner\Modules\UIButtons.lua:543: attempt to index field 'obj' (a nil value)
-		[string "@Skinner\AddonSkins\Leatrix_Plus-2.5.61.lua"]:71: in function <Skinner\AddonSkins\Leatrix_Plus.lua:5>
+	I	RaiderIO, reported by Galthariel, 28.10.21
+√		- Skinner\Core\MainFuncs.lua:149: attempt to call method 'hasAnyTextInTexture' (a nil value)
+		[string "=(tail call)"]: ?
+		[string "@Skinner\AddonSkins\RaiderIO-9.1.5 (v202110281910).lua"]:35: in function `skinBtn'
+		[string "@Skinner\AddonSkins\RaiderIO-9.1.5 (v202110281910).lua"]:43: in function <Skinner\AddonSkins\RaiderIO.lua:5>
 
-√	S/B	ItemRack Classic, requested by 아련별, 22.10.21
+	I	Journalator, reported by Galthariel, 28.10.21
+√		- Skinner\Core\NewSkinFuncs.lua:399: attempt to index field 'obj' (a nil value)
+		[string "@Skinner\Core\NewSkinFuncs.lua"]:399: in function <Skinner\Core\NewSkinFuncs.lua:391>
+		[string "@Skinner\Core\NewSkinFuncs.lua"]:429: in function `?'
+		[string "@Skinner\Core\NewSkinFuncs.lua"]:181: in function `skinObject'
+		[string "@Skinner\AddonSkins\Journalator-0.54-5-ge98e337.lua"]:10: in function <Skinner\AddonSkins\Journalator.lua:7>
 
-√	S/B	All The Things, requested by 아련별, 22.10.21
+	I/B	Leatrix_Plus, reported by 아련별, 28.10.21
+√		- Skinner\Modules\UIButtons.lua:544: attempt to call method 'GetNormalTexture' (a nil value)
+		[string "@Skinner\AddonSkins\Leatrix_Plus-2.5.62.lua"]:77: in function <Skinner\AddonSkins\Leatrix_Plus.lua:5>
+
+	I/B	System Options, reported by 아련별, 29.10.21
+√		-  Skinner\Core\UtilFuncs.lua:919: attempt to index local 'frame' (a nil value)
+		[string "@Skinner\Core\UtilFuncs.lua"]:919: in function <Skinner\Core\UtilFuncs.lua:918>
+		[string "@Skinner\Core\UtilFuncs.lua"]:952: in function `removeNineSlice'
+		[string "@Skinner\Core\UIFrames.lua"]:6074: in function <Skinner\Core\UIFrames.lua:6073>
+
+	I/B	ATT, reported by 아련별, 29.10.21
+√		- Tradeskill frame needs skinning
+
+	I/B	AtlsLoot, reported by 아련별, 30.10.21
+√		- Skinner\Core\NewSkinFuncs.lua:437: attempt to index field 'obj' (a nil value)
+		[string "@Skinner\Core\NewSkinFuncs.lua"]:437: in function <Skinner\Core\NewSkinFuncs.lua:430>
+		[string "@Skinner\Core\NewSkinFuncs.lua"]:533: in function `?'
+		[string "@Skinner\Core\NewSkinFuncs.lua"]:181: in function `skinObject'
+		[string "@Skinner\AddonSkins\AtlasLoot-1.2030004.lua"]:129: in function <Skinner\AddonSkins\AtlasLoot.lua:128>
+
+	I	reported by Fakelessgaming, 30.10.21
+√		- Text colour on Adventure Guide sub entries isn't being changed to BT colour
