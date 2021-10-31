@@ -6074,8 +6074,9 @@ aObj.blizzFrames[ftype].SystemOptions = function(self)
 	self.initialized.SystemOptions = true
 
 	self:SecureHookScript(_G.VideoOptionsFrame, "OnShow", function(this)
-		self:removeNineSlice(this.Border)
-		-- Main panel
+		if self.isRtl then
+			self:removeNineSlice(this.Border)
+		end
 		self:skinObject("frame", {obj=_G.VideoOptionsFrameCategoryFrame, fType=ftype, kfs=true, rns=true, fb=true})
 		self:skinObject("slider", {obj=_G.VideoOptionsFrameCategoryFrameListScrollBar, fType=ftype, x1=4, x2=-5})
 		self:skinObject("frame", {obj=_G.VideoOptionsFramePanelContainer, fType=ftype, kfs=true, rns=true, fb=true})
@@ -6096,7 +6097,6 @@ aObj.blizzFrames[ftype].SystemOptions = function(self)
 				self:clrBtnBdr(bObj)
 			end)
 		end
-		-- Graphics
 		self:skinObject("tabs", {obj=_G.Display_, tabs={_G.GraphicsButton, _G.RaidButton}, fType=ftype, upwards=true, offsets={x1=4, y1=0, x2=0, y2=self.isTT and -3 or 2}, track=false, func=function(tab) tab:SetFrameLevel(20) tab.SetFrameLevel = _G.nop end})
 		if self.isTT then
 			self:SecureHook("GraphicsOptions_SelectBase", function()
@@ -6136,7 +6136,7 @@ aObj.blizzFrames[ftype].SystemOptions = function(self)
 	end)
 	-- Network
 	self:SecureHookScript(_G.NetworkOptionsPanel, "OnShow", function(this)
-		skinKids(_G.NetworkOptionsPanel, ftype)
+		skinKids(this, ftype)
 
 		self:Unhook(this, "OnShow")
 	end)
