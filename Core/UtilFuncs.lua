@@ -904,13 +904,20 @@ end
 --@end-debug@
 function aObj:removeColourCodes(text) -- luacheck: ignore self
 
-	if text
-	and text:find("\124") then
-		local newText = text:gsub("\124\99%x%x%x%x%x%x%x%x", "") -- remove colour code string prefix [7C 63 x x x x x x x x]
-		newText = newText:gsub("\124\108", "") -- remove colour code string suffix [7C 72]
-		return newText, true
-	else
-		return text, false
+	-- N.B. codes checked for are ASCII
+	if text then
+		local newText
+		for _, aCode in _G.pairs{"\124\99", "\124\67"} do
+			if text:find(aCode) then
+				newText = text:gsub(aCode .. "%x%x%x%x%x%x%x%x", "") -- remove colour code string prefix [7C 63/43] |c & |C
+			end
+		end
+		if newText then
+			newText = newText:gsub("\124\114", "") -- remove colour code string suffix [7C 72] |r
+			return newText, true
+		else
+			return text, false
+		end
 	end
 
 end
