@@ -2218,22 +2218,31 @@ aObj.blizzLoDFrames[ftype].EncounterJournal = function(self) -- a.k.a. Adenture 
 			fObj.info.overviewScroll.child.header:SetTexture(nil)
 			fObj.info.overviewScroll.child.overviewDescription.Text:SetTextColor(self.BT:GetRGB())
 			-- Hook this to skin headers
-			self:SecureHook("EncounterJournal_ToggleHeaders", function(ejH, _)
-				local objName = "EncounterJournalInfoHeader"
-				if ejH.isOverview then
-					objName = "EncounterJournalOverviewInfoHeader"
+			local function skinHeader(header)
+				header.button:DisableDrawLayer("BACKGROUND")
+				header.overviewDescription.Text:SetTextColor(aObj.BT:GetRGB())
+				if header.description:GetText() then
+					local newText, upd = aObj:removeColourCodes(header.description:GetText()) -- handle embedded colour code
+					if upd then
+						header.description:SetText(newText)
+					end
+					header.description:SetTextColor(aObj.BT:GetRGB())
 				end
-				for i = 1, 25 do
-					if _G[objName .. i] then
-						_G[objName .. i].button:DisableDrawLayer("BACKGROUND")
-						_G[objName .. i].overviewDescription.Text:SetTextColor(self.BT:GetRGB())
-						for j = 1, #_G[objName .. i].Bullets do
-							_G[objName .. i].Bullets[j].Text:SetTextColor(self.BT:GetRGB())
-						end
-						_G[objName .. i].description:SetTextColor(self.BT:GetRGB())
-						_G[objName .. i].descriptionBG:SetAlpha(0)
-						_G[objName .. i].descriptionBGBottom:SetAlpha(0)
-						_G[objName .. i .. "HeaderButtonPortraitFrame"]:SetAlpha(0)
+				header.descriptionBG:SetTexture(nil)
+				header.descriptionBGBottom:SetTexture(nil)
+				aObj:getRegion(header.button.portrait, 2):SetTexture(nil)
+				for _, bObj in _G.pairs(header.Bullets) do
+					bObj.Text:SetTextColor(aObj.BT:GetRGB())
+				end
+			end
+			self:SecureHook("EncounterJournal_ToggleHeaders", function(ejH, _)
+				if ejH.isOverview then
+					for _, header in _G.ipairs(fObj.overviewFrame.overviews) do
+						skinHeader(header)
+					end
+				else
+					for _, header in _G.ipairs(fObj.usedHeaders) do
+						skinHeader(header)
 					end
 				end
 			end)
