@@ -1167,7 +1167,10 @@ aObj.blizzFrames[ftype].QuestInfo = function(self)
 		_G.QuestInfoGroupSize:SetTextColor(aObj.BT:GetRGB())
 		_G.QuestInfoAnchor:SetTextColor(aObj.BT:GetRGB())
 		-- remove any embedded colour codes
-		_G.QuestInfoDescriptionText:SetText(aObj:removeColourCodes(_G.QuestInfoDescriptionText:GetText()))
+		local newText, upd = aObj:removeColourCodes(_G.QuestInfoDescriptionText:GetText())
+		if upd then
+			_G.QuestInfoDescriptionText:SetText(newText)
+		end
 		_G.QuestInfoDescriptionText:SetTextColor(aObj.BT:GetRGB())
 		-- skin rewards
 		skinRewards(_G.QuestInfoFrame.rewardsFrame)
