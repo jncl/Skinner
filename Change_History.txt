@@ -1,3 +1,28 @@
+beta9.40772.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Updated UnitFrame skinning code
+	Bugfix for Classic CompactRaidFrames skin
+	Updated WoWPro skin
+	PTR changes
+	Updated Classic LFG skin
+	Updated Button skinning code
+	Updated RuneforgeUI skin
+	Updated ItemInteractionUI skin
+	Updated Minimap button skin
+	Updated NSF for EditBoxes
+	Updated Classic GuildInfoFrame skin
+	Updated AllTheThings & WoWPro skins
+	Skinned ItemRack
+	Update MailFrame skin
+	Update Debugging output
+	Classic ERA PTR changes
+	Updated Leatrix_Plus skin
+	Bugfix for debugging commands
+	luacheck changes
+
 beta9.40696.1
 Jncl:
 	ToDo.txt
