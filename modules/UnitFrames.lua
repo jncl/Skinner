@@ -257,17 +257,21 @@ function module:skinPetF()
 				frame.roleIcon:SetSize(24, 24)
 				frame.roleIcon:SetPoint("left", -10, 0)
 				frame.roleIcon:SetTexture(aObj.tFDIDs.lfgIR)
+				local function setSpec()
+					local petSpec = _G.GetSpecialization(nil, true)
+					if petSpec then
+						_G.PetFrame.roleIcon:SetTexCoord(_G.GetTexCoordsForRole(_G.GetSpecializationRole(petSpec, nil, true)))
+					end
+				end
 				-- get Pet's Specialization Role to set roleIcon TexCoord
 				module:RegisterEvent("UNIT_PET", function(_, arg1)
 					if arg1 == "player"
 					and _G.UnitIsVisible("pet")
 					then
-						local petSpec = _G.GetSpecialization(nil, true)
-						if petSpec then
-							_G.PetFrame.roleIcon:SetTexCoord(_G.GetTexCoordsForRole(_G.GetSpecializationRole(petSpec, nil, true)))
-						end
+						setSpec()
 					end
 				end)
+				setSpec()
 			end
 			if aObj.isClsc
 			and db.petlvl
