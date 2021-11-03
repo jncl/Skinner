@@ -2,7 +2,7 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("Leatrix_Plus") then return end
 local _G = _G
 
-aObj.addonsToSkin.Leatrix_Plus = function(self) -- v 9.1.13/1.13.106/2.5.61
+aObj.addonsToSkin.Leatrix_Plus = function(self) -- v 9.1.20/1.14.05/2.5.64
 
 	self:SecureHookScript(_G.LeaPlusGlobalPanel, "OnShow", function(this)
 		local function skinKids(frame)
@@ -68,22 +68,15 @@ aObj.addonsToSkin.Leatrix_Plus = function(self) -- v 9.1.13/1.13.106/2.5.61
 	if _G.LeaPlusDB["EnhanceDressup"] == "On"
 	and self.modBtns
 	then
+		self:skinStdButton{obj=self:getChild(_G.DressUpFrame.ResetButton, 1)}
+		self:skinStdButton{obj=self:getChild(_G.DressUpFrame.ResetButton, 2)}
+		self:skinStdButton{obj=self:getChild(_G.DressUpFrame.ResetButton, 3)}
 		if self.isRtl then
-			self:skinStdButton{obj=self:getChild(_G.DressUpFrame.ResetButton, 1)}
-			self:skinStdButton{obj=self:getChild(_G.DressUpFrame.ResetButton, 2)}
-		elseif self.isClscBC then
-			self:skinStdButton{obj=self:getChild(_G.DressUpFrame.ResetButton, 1)}
-			self:skinStdButton{obj=self:getChild(_G.DressUpFrame.ResetButton, 2)}
-			self:skinStdButton{obj=self:getChild(_G.DressUpFrame.ResetButton, 3)}
+			self:skinStdButton{obj=self:getChild(_G.DressUpFrame.ResetButton, 4)}
+			self:skinStdButton{obj=self:getChild(_G.DressUpFrame.ResetButton, 5)}
+		elseif self.isClsc then
 			self:skinStdButton{obj=self:getChild(_G.SideDressUpFrame.ResetButton, 1)}
 			self:skinStdButton{obj=self:getChild(_G.SideDressUpFrame.ResetButton, 2)}
-		else
-			local cCnt, offset = _G.DressUpFrame:GetNumChildren(), 0
-			if _G.DressUpFrame.sf then
-				offset = 1
-			end
-			self:skinStdButton{obj=self:getChild(_G.DressUpFrame, cCnt - offset)}
-			self:skinStdButton{obj=self:getChild(_G.DressUpFrame, (cCnt - 1) - offset)}
 		end
 	end
 
