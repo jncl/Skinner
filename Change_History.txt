@@ -1,3 +1,20 @@
+beta9.40843.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Updated removeColourCodes code
+	Updated QuestInfoFrame skin
+	Update GossipFrame skin
+	Updated RuneforgeUI skin
+	Updated AllTheThings, AtlasLoot, Auctionator, Journalator & WoWPro skins
+	Updated Leatrix_Plus & DressUpFrames code
+	Bugfix for Button skinning
+	Updated EncounterJournal skin
+	Bugfix for Tabbed frames
+	Updated SystemOptions skin
+	Updated MinimapButtons skin for Classic BCC
+
 beta9.40772.1
 Jncl:
 	ToDo.txt
