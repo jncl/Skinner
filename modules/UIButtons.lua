@@ -387,6 +387,7 @@ function module:skinExpandButton(opts) -- luacheck: ignore self
 		noHook = don't hook SetNormalTexture function to manage texture changes
 		onSB = put text on skinButton
 		plus = use plus sign
+		clr = border colour
 --]]
 	--@alpha@
 	_G.assert(opts.obj, "Missing object skinExpandButton\n" .. _G.debugstack(2, 3, 2))
@@ -402,7 +403,7 @@ function module:skinExpandButton(opts) -- luacheck: ignore self
 	if opts.obj:GetPushedTexture() then opts.obj:GetPushedTexture():SetAlpha(0) end
 
 	if not opts.as then
-		aObj:skinObject("button", {obj=opts.obj, fType=opts.ftype, sap=opts.sap, bd=6, ofs=opts.ofs})
+		aObj:skinObject("button", {obj=opts.obj, fType=opts.ftype, sap=opts.sap, bd=6, ofs=opts.ofs, clr=opts.clr})
 		if not opts.noHook then
 			module:SecureHook(opts.obj, "SetNormalTexture", function(this, tObj)
 				module:checkTex{obj=this, nTex=tObj}
