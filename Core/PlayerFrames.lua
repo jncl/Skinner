@@ -1993,10 +1993,12 @@ aObj.blizzFrames[ftype].ContainerFrames = function(self)
 
 	end)
 
-	-- hook this to move the Search Box to the left, away from the AutoSort button
-	self:RawHook(_G.BagItemSearchBox, "SetPoint", function(this, point, relTo, relPoint, _)
-		self.hooks[this].SetPoint(this, point, relTo, relPoint, 50, -35)
-	end, true)
+	if not _G.IsAddOnLoaded("xBag") then
+		-- hook this to move the Search Box to the left, away from the AutoSort button
+		self:RawHook(_G.BagItemSearchBox, "SetPoint", function(this, point, relTo, relPoint, _)
+			self.hooks[this].SetPoint(this, point, relTo, relPoint, 50, -35)
+		end, true)
+	end
 
 end
 

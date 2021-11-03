@@ -221,6 +221,7 @@
 <Script file="WorldQuestTracker.lua"/>
 <Script file="WoWPro.lua"/>
 <Script file="WO_ezfriendslist.lua"/>
+<Script file="xBag.lua"/>
 <Script file="XLoot.lua"/>
 <Script file="xMerchant.lua"/>
 <Script file="ZPerl.lua"/>
