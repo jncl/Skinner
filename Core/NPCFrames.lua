@@ -671,14 +671,8 @@ aObj.blizzFrames[ftype].GossipFrame = function(self)
 			self:skinStdButton{obj=_G.GossipFrameGreetingGoodbyeButton}
 		end
 
-		-- NPCFriendshipStatusBar
-		if aObj.isRtlPTR then
-			self:removeRegions(_G.NPCFriendshipStatusBar, {1, 2, 5, 6, 7, 8 ,9})
-			self:skinStatusBar{obj=_G.NPCFriendshipStatusBar, fi=0, bgTex=self:getRegion(_G.NPCFriendshipStatusBar, 10)}
-		else
-			self:removeRegions(_G.NPCFriendshipStatusBar, {1, 3, 4, 5 ,6})
-			self:skinStatusBar{obj=_G.NPCFriendshipStatusBar, fi=0, bgTex=self:getRegion(_G.NPCFriendshipStatusBar, 7)}
-		end
+		self:removeRegions(_G.NPCFriendshipStatusBar, {1, 2, 5, 6, 7, 8 ,9})
+		self:skinStatusBar{obj=_G.NPCFriendshipStatusBar, fi=0, bgTex=self:getRegion(_G.NPCFriendshipStatusBar, 10)}
 
 		self:Unhook(this, "OnShow")
 	end)
@@ -743,67 +737,17 @@ aObj.blizzLoDFrames[ftype].ItemUpgradeUI = function(self)
 	self.initialized.ItemUpgradeUI = true
 
 	self:SecureHookScript(_G.ItemUpgradeFrame, "OnShow", function(this)
-		if not aObj.isRtlPTR then
-			this.Inset.Bg:SetTexture(nil)
-			self:removeNineSlice(this.Inset.NineSlice)
-			this.MissingDescription:SetTextColor(self.BT:GetRGB())
-			this.ItemUpgradedNotification:SetTextColor(self.BT:GetRGB())
-			this.TitleTextLeft:SetTextColor(self.BT:GetRGB())
-			this.TitleTextRight:SetTextColor(self.BT:GetRGB())
-			self:skinObject("dropdown", {obj=this.UpgradeLevelDropDown.DropDownMenu, fType=ftype})
-			self:skinObject("scrollbar", {obj=this.StatsScrollBar, fType=ftype})
-			this.Feedback.Text:SetTextColor(self.BT:GetRGB())
-			self:removeRegions(this.TextFrame, {1, 2, 3, 4, 5, 6})
-			this.TextFrame.MissingText:SetTextColor(self.BT:GetRGB())
-			this.ItemButton.IconTexture:SetAlpha(0)
-			this.ItemButton:DisableDrawLayer("BACKGROUND")
-			this.ItemButton.Frame:SetTexture(nil)
-			this.ItemButton.ItemName:SetTextColor(self.BT:GetRGB())
-			-- use module to make it visible all the time
-			self.modUIBtns:addButtonBorder{obj=this.ItemButton, relTo=this.ItemButton.IconTexture, ofs=2, clr="grey"}
-			this.ButtonFrame:DisableDrawLayer("BORDER", 2)
-			_G.ItemUpgradeFrameMoneyFrame:DisableDrawLayer("BACKGROUND")
-			self:removeMagicBtnTex(_G.ItemUpgradeFrameUpgradeButton)
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, x2=3})
-			if self.modBtns then
-				self:skinStdButton{obj=_G.ItemUpgradeFrameUpgradeButton}
-				self:SecureHook(_G.ItemUpgradeFrameUpgradeButton, "SetDisabledState", function(bObj, _)
-					self:clrBtnBdr(bObj)
-				end)
-			end
-			-- hook this to hide the ItemButton texture if empty
-			self:SecureHook("ItemUpgradeFrame_Update", function()
-				local icon, _, quality = _G.GetItemUpgradeItemInfo()
-				if icon then
-					_G.ItemUpgradeFrame.ItemButton.IconTexture:SetAlpha(1)
-					_G.ItemUpgradeFrame.ItemButton.sbb:SetBackdropBorderColor(_G.BAG_ITEM_QUALITY_COLORS[quality].r, _G.BAG_ITEM_QUALITY_COLORS[quality].g, _G.BAG_ITEM_QUALITY_COLORS[quality].b, 1)
-				else
-					_G.ItemUpgradeFrame.ItemButton.IconTexture:SetAlpha(0)
-					self:clrBtnBdr(_G.ItemUpgradeFrame.ItemButton, "grey")
-				end
-			end)
-			-- hook this to remove background texture from stat lines
-			self:SecureHook("ItemUpgradeFrame_UpdateStats", function(_)
-				for _, stat	in _G.pairs(this.StatsScroll.Contents.LeftStat) do
-					stat.BG:SetTexture(nil)
-				end
-				for _, stat	in _G.pairs(this.StatsScroll.Contents.RightStat) do
-					stat.BG:SetTexture(nil)
-				end
-			end)
-		else
-			this.UpgradeItemButton.ButtonFrame:SetTexture(nil)
-			self:skinObject("dropdown", {obj=this.ItemInfo.Dropdown, fType=ftype})
-			self:skinObject("frame", {obj=this.LeftItemPreviewFrame, fType=ftype, fb=true, clr="grey"})
-			self:skinObject("frame", {obj=this.RightItemPreviewFrame, fType=ftype, fb=true, clr="grey"})
-			this.PlayerCurrenciesBorder:DisableDrawLayer("background")
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, x2=3})
-			if self.modBtns then
-				self:skinStdButton{obj=this.UpgradeButton, fType=ftype}
-			end
-			if self.modBtnBs then
-				self:addButtonBorder{obj=this.UpgradeItemButton, fType=ftype}
-			end
+		this.UpgradeItemButton.ButtonFrame:SetTexture(nil)
+		self:skinObject("dropdown", {obj=this.ItemInfo.Dropdown, fType=ftype})
+		self:skinObject("frame", {obj=this.LeftItemPreviewFrame, fType=ftype, fb=true, clr="grey"})
+		self:skinObject("frame", {obj=this.RightItemPreviewFrame, fType=ftype, fb=true, clr="grey"})
+		this.PlayerCurrenciesBorder:DisableDrawLayer("background")
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, x2=3})
+		if self.modBtns then
+			self:skinStdButton{obj=this.UpgradeButton, fType=ftype}
+		end
+		if self.modBtnBs then
+			self:addButtonBorder{obj=this.UpgradeItemButton, fType=ftype}
 		end
 
 		self:Unhook(this, "OnShow")

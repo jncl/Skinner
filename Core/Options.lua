@@ -128,7 +128,7 @@ aObj.SetupDefaults = function(self)
 			AutoComplete               = true,
 			AzeriteItemToasts          = true,
 			BattlefieldMap             = true,
-			BehavioralMessaging        = aObj.isRtlPTR and true,
+			BehavioralMessaging        = true,
 			BindingUI                  = true,
 			BNFrames                   = true,
 			Calendar                   = true,
@@ -1416,11 +1416,11 @@ aObj.SetupOptions = function(self)
 					name = self.L["Battlefield Map Frame"],
 					desc = self.L["Toggle the skin of the "] .. self.L["Battlefield Map Frame"],
 				},
-				BehavioralMessaging = aObj.isRltPTR and {
+				BehavioralMessaging = {
 					type = "toggle",
 					name = self.L["Behavioral Messaging Frames"],
 					desc = self.L["Toggle the skin of the "] .. self.L["Behavioral Messaging Frames"],
-				} or nil,
+				},
 				BindingUI = {
 					type = "toggle",
 					name = self.L["Key Bindings UI"],
