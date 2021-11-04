@@ -4813,16 +4813,15 @@ aObj.blizzFrames[ftype].Nameplates = function(self)
 		then
 			return
 		end
-		-- handle in combat
-		if frame:IsProtected()
-		and _G.InCombatLockdown()
-		then
+		if _G.InCombatLockdown() then
 		    aObj:add2Table(aObj.oocTab, {skinNamePlate, {frame}})
 		    return
 		end
-		local nP = frame.UnitFrame or self:getChild(frame, 1)
-		if nP then
-			local nHb, nCb = nP.healthBar, nP.CastBar
+		local nP = frame.UnitFrame or aObj:getChild(frame, 1)
+		if nP
+		and nP.healthBar
+		then
+			local nHb, nCb = nP.healthBar, nP.castBar or nP.CastBar
 			nHb.border:DisableDrawLayer("ARTWORK")
 			if aObj.isClsc then
 				aObj:skinObject("statusbar", {obj=nHb, fi=0, bg=nHb.background})
@@ -4840,12 +4839,10 @@ aObj.blizzFrames[ftype].Nameplates = function(self)
 			-- N.B. WidgetContainer objects managed in UIWidgets code
 		end
 	end
-	-- hook this to skin created Nameplates
 	self:SecureHook(_G.NamePlateDriverFrame, "OnNamePlateAdded", function(_, namePlateUnitToken)
 		skinNamePlate(_G.C_NamePlate.GetNamePlateForUnit(namePlateUnitToken, _G.issecure()))
 	end)
-	-- skin any existing NamePlates
-	for _, frame in _G.pairs(_G.C_NamePlate.GetNamePlates(_G.issecure())) do
+	for _, frame in _G.ipairs(_G.C_NamePlate.GetNamePlates(_G.issecure())) do
 		skinNamePlate(frame)
 	end
 
