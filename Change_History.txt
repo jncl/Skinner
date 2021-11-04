@@ -1,3 +1,15 @@
+beta9.40906.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Updated TOC
+	Applied Retail PTR changes
+	Updated skinOtherButton skin
+	Updated PetFrame skin
+	Updated Leatrix_Plus
+	Skinned xBag
+
 beta9.40843.1
 Jncl:
 	ToDo.txt
