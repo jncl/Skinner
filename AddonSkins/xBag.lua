@@ -2,7 +2,7 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("xBag") then return end
 local _G = _G
 
-aObj.addonsToSkin.xBag = function(self) -- v 1.6
+aObj.addonsToSkin.xBag = function(self) -- v 1.7
 
 	-- if xBag is loaded but not being used then leave
 	if not _G.xBagPerDB.xBagLoaded then
@@ -35,6 +35,8 @@ aObj.addonsToSkin.xBag = function(self) -- v 1.6
 			aObj:addButtonBorder{obj=fObj.SequenceUp, ofs=-1, clr="gold"}
 			aObj:addButtonBorder{obj=fObj.SequenceDown, ofs=-1, clr="gold"}
 			aObj:addButtonBorder{obj=fObj.Sort, clr="grey"}
+			aObj:addButtonBorder{obj=fObj.OpenChest, clr="grey"}
+			aObj:addButtonBorder{obj=fObj.EmptyBags, clr="grey"}
 		end
 		fObj.Money:DisableDrawLayer("BACKGROUND")
 	end
@@ -55,6 +57,10 @@ aObj.addonsToSkin.xBag = function(self) -- v 1.6
 
 	self:SecureHookScript(_G.xBagMain, "OnShow", function(this)
 		skinMainBag(this)
+		self:skinObject("editbox", {obj=_G.BagItemSearchBox, fType=ftype, si=true, ca=true})
+		-- FIXME: workaround for UnSkin function
+		_G._G.BagItemSearchBox.seb = _G.CopyTable(_G._G.BagItemSearchBox.sf)
+		_G._G.BagItemSearchBox.sf = nil
 
 		self:Unhook(this, "OnShow")
 	end)
@@ -69,6 +75,10 @@ aObj.addonsToSkin.xBag = function(self) -- v 1.6
 
 	self:SecureHookScript(_G.xBagBank, "OnShow", function(this)
 		skinMainBag(this)
+		self:skinObject("editbox", {obj=_G.BankItemSearchBox, fType=ftype, si=true, ca=true})
+		-- FIXME: workaround for UnSkin function
+		_G._G.BankItemSearchBox.seb = _G.CopyTable(_G._G.BankItemSearchBox.sf)
+		_G._G.BankItemSearchBox.sf = nil
 		if self.modBtns then
 			self:skinStdButton{obj=this.ToggleReagentBank}
 		end
