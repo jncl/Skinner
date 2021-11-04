@@ -3252,36 +3252,50 @@ aObj.blizzLoDFrames[ftype].GuildBankUI = function(self)
 	self.initialized.GuildBankUI = true
 
 	self:SecureHookScript(_G.GuildBankFrame, "OnShow", function(this)
-		_G.GuildBankEmblemFrame:Hide()
-		for i = 1, _G.NUM_GUILDBANK_COLUMNS do
-			_G["GuildBankColumn" .. i]:DisableDrawLayer("BACKGROUND")
+		this.Emblem:Hide()
+		for _, col in _G.pairs(this.Columns) do
+			col:DisableDrawLayer("BACKGROUND")
 			if self.modBtnBs then
-				for j = 1, _G.NUM_SLOTS_PER_GUILDBANK_GROUP do
-					self:addButtonBorder{obj=_G["GuildBankColumn" .. i .. "Button" .. j], ibt=true, clr="grey", ca=0.85}
+				for _, btn in _G.pairs(col.Buttons) do
+					self:addButtonBorder{obj=btn, ibt=true, clr="grey", ca=0.85}
 				end
 			end
 		end
-		self:skinObject("editbox", {obj=_G.GuildItemSearchBox, fType=ftype})
-		this.MoneyFrameBG:DisableDrawLayer("BACKGROUND")
+		if self.isRtl then
+			self:skinObject("editbox", {obj=_G.GuildItemSearchBox, fType=ftype, si=true})
+			this.MoneyFrameBG:DisableDrawLayer("BACKGROUND")
+		end
 		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true, offsets={x1=9, y1=self.isTT and 2 or -3, x2=-9, y2=2}})
 		-- Tabs (side)
-		for i = 1, _G.MAX_GUILDBANK_TABS do
-			_G["GuildBankTab" .. i]:DisableDrawLayer("BACKGROUND")
+		for _, tab in _G.pairs(this.BankTabs) do
+			tab:DisableDrawLayer("BACKGROUND")
 			if self.modBtnBs then
-				 self:addButtonBorder{obj=_G["GuildBankTab" .. i .. "Button"], relTo=_G["GuildBankTab" .. i .. "ButtonIconTexture"], y2=-3}
+				 self:addButtonBorder{obj=tab.Button, relTo=tab.Button.IconTexture, ofs=3, x2=2}
 			end
 		end
-		self:skinObject("slider", {obj=_G.GuildBankTransactionsScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
-		self:skinObject("slider", {obj=_G.GuildBankInfoScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
-		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true, cb=true})
+		self:skinObject("slider", {obj=this.Log.TransactionsScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
+		self:skinObject("slider", {obj=this.Info.ScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true, cb=true, y1=self.isClscBC and -11, x2=self.isClscBC and 1, y2=self.isClscBC and 3 or -3})
 		if self.modBtns then
-			self:skinStdButton{obj=_G.GuildBankFrameDepositButton, x1=0} -- don't overlap withdraw button
-			self:skinStdButton{obj=_G.GuildBankFrameWithdrawButton, x2=0} -- don't overlap deposit button
+			if self.isClscBC then
+				self:skinCloseButton{obj=self:getChild(this, 11), fType=ftype}
+			end
+			self:skinStdButton{obj=this.DepositButton, x1=0} -- don't overlap withdraw button
+			self:skinStdButton{obj=this.WithdrawButton, x2=0} -- don't overlap deposit button
+			self:SecureHook(this.WithdrawButton, "Disable", function(bObj, _)
+				self:clrBtnBdr(bObj)
+			end)
+			self:SecureHook(this.WithdrawButton, "Enable", function(bObj, _)
+				self:clrBtnBdr(bObj)
+			end)
 			self:skinStdButton{obj=this.BuyInfo.PurchaseButton}
-			self:SecureHook(this, "UpdateTabBuyingInfo", function(this)
-					self:clrBtnBdr(this.BuyInfo.PurchaseButton)
-				end)
-			self:skinStdButton{obj=_G.GuildBankInfoSaveButton}
+			self:SecureHook(this.BuyInfo.PurchaseButton, "Disable", function(bObj, _)
+				self:clrBtnBdr(bObj)
+			end)
+			self:SecureHook(this.BuyInfo.PurchaseButton, "Enable", function(bObj, _)
+				self:clrBtnBdr(bObj)
+			end)
+			self:skinStdButton{obj=this.Info.SaveButton}
 		end
 		-- send message when UI is skinned (used by oGlow skin)
 		self:SendMessage("GuildBankUI_Skinned", self)
@@ -3289,23 +3303,26 @@ aObj.blizzLoDFrames[ftype].GuildBankUI = function(self)
 		self:Unhook(this, "OnShow")
 	end)
 
-	--	GuildBank Popup Frame
 	self:SecureHookScript(_G.GuildBankPopupFrame, "OnShow", function(this)
 		self:adjHeight{obj=this, adj=20}
-		self:removeRegions(this.BorderBox, {1, 2, 3, 4, 5, 6, 7, 8})
-		self:skinEditBox{obj=_G.GuildBankPopupEditBox, regs={6}}
-		self:adjHeight{obj=_G.GuildBankPopupScrollFrame, adj=20} -- stretch to bottom of scroll area
-		self:skinSlider{obj=_G.GuildBankPopupScrollFrame.ScrollBar, rt="background"}
-		for i = 1, _G.NUM_GUILDBANK_ICONS_SHOWN do
-			_G["GuildBankPopupButton" .. i]:DisableDrawLayer("BACKGROUND")
+		if self.isClsc then
+			self:removeRegions(_G.BorderBox, {1, 2, 3, 4, 5, 6, 7, 8})
+		else
+			self:removeRegions(this.BorderBox, {1, 2, 3, 4, 5, 6, 7, 8})
+		end
+		self:skinObject("editbox", {obj=this.EditBox, fType=ftype})
+		self:adjHeight{obj=this.ScrollFrame, adj=20} -- stretch to bottom of scroll area
+		self:skinSlider{obj=this.ScrollFrame.ScrollBar, rt="background"}
+		for _, btn in _G.pairs(this.Buttons) do
+			btn:DisableDrawLayer("BACKGROUND")
 			if self.modBtnBs then
-				self:addButtonBorder{obj=_G["GuildBankPopupButton" .. i], relTo=_G["GuildBankPopupButton" .. i .. "Icon"], reParent={_G["GuildBankPopupButton" .. i .. "Name"]}}
+				self:addButtonBorder{obj=btn, relTo=btn.Icon, clr="grey"}
 			end
 		end
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, hdr=true, ofs=-6}
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true, ofs=-6})
 		if self.modBtns then
-			self:skinStdButton{obj=_G.GuildBankPopupCancelButton}
-			self:skinStdButton{obj=_G.GuildBankPopupOkayButton}
+			self:skinStdButton{obj=this.CancelButton}
+			self:skinStdButton{obj=this.OkayButton}
 		end
 
 		self:Unhook(this, "OnShow")
