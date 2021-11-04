@@ -29,10 +29,19 @@ ToDos
 
 ≈ 	O	Use luacheck on all lua files including AddOn Skins
 
-√	S	xBag, requested by icedawg, 31.10.21
+	I	reported by Fakelessgaming, 03.11.21
+√		- Skinner\Core\UIFrames.lua:3269: attempt to index field 'GuildBankEmblemFrame' (a nil value)
+		[string "@Skinner\Core\UIFrames.lua"]:3269: in function <Skinner\Core\UIFrames.lua:3268>
 
-	I/B	Hotkey Settings, reported by 아련별, 01.11.21
-√		- Skinner\Core\UtilFuncs.lua:926: attempt to index local 'frame' (a nil value)
-		[string "@Skinner\Core\UtilFuncs.lua"]:926: in function <Skinner\Core\UtilFuncs.lua:925>
-		[string "@Skinner\Core\UtilFuncs.lua"]:959: in function `removeNineSlice'
-		[string "@Skinner\Core\UIFrames.lua"]:994: in function <Skinner\Core\UIFrames.lua:993>
+	I	reported by Fakelessgaming, 03.11.21
+√		- Skinner\Core\PlayerFrames.lua:2258: attempt to index field 'armorType' (a nil value)
+		[string "@Skinner\Core\PlayerFrames.lua"]:2258: in function <Skinner\Core\PlayerFrames.lua:2255>
+
+	I	TipTac, reported by DarkLimpan, 03.11.21
+?		- Skinner\AddonSkins\TipTac-20.11.04.lua:31: attempt to index local 'style' (a nil value)
+		[string "@Skinner\AddonSkins\TipTac-20.11.04.lua"]:31: in function <Skinner\AddonSkins\TipTac.lua:29>
+
+	I	reported by EpidemeDaBear, 03.11.21
+√		- Skinner\Core\UIFrames.lua:4842: attempt to index local 'nHb' (a nil value)
+		[string "@Skinner\Core\UIFrames.lua"]:4842: in function `?'
+		[string "@Skinner\Core\Skinner-beta9.40843.1.lua"]:339: in function <Skinner\Core\Skinner.lua:334>
