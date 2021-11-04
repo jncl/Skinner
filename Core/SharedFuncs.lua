@@ -20,7 +20,7 @@ local buildInfo = {
 	wow_beta            = {"10.0.0", 99999, "Retail Beta"},
 	wow_ptr             = {"9.1.5",  40906, "Retail PTR"},
 	-- Live
-	wow_classic         = {"2.5.2",  40617, "Classic BC"},
+	wow_classic         = {"2.5.2",  40892, "Classic BC"},
 	wow_classic_era     = {"1.14.0", 40618, "Classic Era"},
 	wow                 = {"9.1.5",  40906, "Retail"},
 	-- Currently playing
