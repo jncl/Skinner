@@ -2207,11 +2207,11 @@ aObj.blizzLoDFrames[ftype].EncounterJournal = function(self) -- a.k.a. Adenture 
 			-- hook this to skin loot entries
 			self:SecureHook("EncounterJournal_LootUpdate", function()
 				for _, btn in _G.pairs(_G.EncounterJournal.encounter.info.lootScroll.buttons) do
-					btn:DisableDrawLayer("BORDER")
-					btn.armorType:SetTextColor(self.BT:GetRGB())
-					btn.slot:SetTextColor(self.BT:GetRGB())
-					btn.boss:SetTextColor(self.BT:GetRGB())
-					self:addButtonBorder{obj=btn, relTo=btn.icon}
+					btn.lootFrame:DisableDrawLayer("BORDER")
+					btn.lootFrame.armorType:SetTextColor(self.BT:GetRGB())
+					btn.lootFrame.slot:SetTextColor(self.BT:GetRGB())
+					btn.lootFrame.boss:SetTextColor(self.BT:GetRGB())
+					self:addButtonBorder{obj=btn.lootFrame, relTo=btn.lootFrame.icon}
 				end
 			end)
 			-- Model Frame
