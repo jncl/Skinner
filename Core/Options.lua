@@ -2108,6 +2108,13 @@ aObj.SetupOptions = function(self)
 	end
 
 	-- runs when the player clicks "Defaults"
+	self.optionsFrame.default = function()
+		for name, _ in _G.pairs(self.optTables.General.args) do
+			db[name] = dflts[name]
+		end
+		-- refresh panel
+		_G.InterfaceOptionsFrame_OpenToCategory(self.optionsFrame)
+	end
 	self.optionsFrame[self.L["Backdrop"]].default = function()
 		for name, _ in _G.pairs(self.optTables.Backdrop.args) do
 			db[name] = dflts[name]
@@ -2136,6 +2143,27 @@ aObj.SetupOptions = function(self)
 		end
 		-- refresh panel
 		_G.InterfaceOptionsFrame_OpenToCategory(self.optionsFrame[self.L["Gradient"]])
+	end
+	self.optionsFrame[self.L["NPC Frames"]].default = function()
+		for name, _ in _G.pairs(self.optTables["NPC Frames"].args) do
+			db[name] = dflts[name]
+		end
+		-- refresh panel
+		_G.InterfaceOptionsFrame_OpenToCategory(self.optionsFrame[self.L["NPC Frames"]])
+	end
+	self.optionsFrame[self.L["Player Frames"]].default = function()
+		for name, _ in _G.pairs(self.optTables["Player Frames"].args) do
+			db[name] = dflts[name]
+		end
+		-- refresh panel
+		_G.InterfaceOptionsFrame_OpenToCategory(self.optionsFrame[self.L["Player Frames"]])
+	end
+	self.optionsFrame[self.L["UI Frames"]].default = function()
+		for name, _ in _G.pairs(self.optTables["UI Frames"].args) do
+			db[name] = dflts[name]
+		end
+		-- refresh panel
+		_G.InterfaceOptionsFrame_OpenToCategory(self.optionsFrame[self.L["UI Frames"]])
 	end
 	self.optionsFrame[self.L["Disabled Skins"]].default = function()
 		db.DisableAllAS = false
