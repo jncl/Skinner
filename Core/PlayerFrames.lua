@@ -1992,9 +1992,6 @@ aObj.blizzFrames[ftype].DressUpFrame = function(self)
 	end)
 
 	self:SecureHookScript(_G.TransmogAndMountDressupFrame, "OnShow", function(this)
-		if self.modBtns then
-			self:skinStdButton{obj=this.ResetButton}
-		end
 		if self.modChkBtns then
 			self:skinCheckButton{obj=this.ShowMountCheckButton}
 		end
