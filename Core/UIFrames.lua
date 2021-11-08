@@ -6342,12 +6342,18 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 		self:Unhook(this, "OnShow")
 	end)
 
-	self:SecureHook("GameTooltip_AddProgressBar", function(this, _)
-		for progressBar in this.progressBarPool:EnumerateActive() do
-			self:removeRegions(progressBar.Bar, {1, 2, 3, 4, 5}) -- 6 is text
-		    self:skinStatusBar{obj=progressBar.Bar, fi=0, bgTex=self:getRegion(progressBar.Bar, 7)}
-		end
-	end)
+	if self.prdb.Tooltips.glazesb then
+		self:SecureHook("GameTooltip_AddStatusBar", function(this, _)
+			for statusBar in this.statusBarPool:EnumerateActive() do
+				self:skinObject("statusbar", {obj=statusBar, regions={2}, fi=0})
+			end
+		end)
+		self:SecureHook("GameTooltip_AddProgressBar", function(this, _)
+			for progressBar in this.progressBarPool:EnumerateActive() do
+				self:skinObject("statusbar", {obj=progressBar.Bar, regions={1, 2, 3, 4, 5}, fi=0, bg=self:getRegion(progressBar.Bar, 7)})
+			end
+		end)
+	end
 
 	if aObj.isClscBC then
 		-- Hook these to handle AddOns that use GameTooltip Backdrop functions (e.g. SavedInstances)
@@ -6634,8 +6640,11 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 
 	if not self.isClsc then
 		local function hookAndSkinWidgets(widgetContainer)
-			-- DON'T skin NamePlate[n].UnitFrame.WidgetContainer widgets as they cause Clamping Errors
-			if widgetContainer:GetDebugName():find("^NamePlate%d+%.UnitFrame%.WidgetContainer") then return end
+			-- aObj:Debug("hookAndSkinWidgets: [%s, %s]", widgetContainer:GetDebugName())
+			-- DON'T skin NamePlate[n].* widgets as they cause Clamping Errors
+			if widgetContainer:GetDebugName():find("^NamePlate%d+%.") then
+				return
+			end
 			aObj:SecureHook(widgetContainer, "UpdateWidgetLayout", function(this)
 				for widget in this.widgetPools:EnumerateActive() do
 					skinWidget(widget, _G.UIWidgetManager:GetWidgetTypeInfo(widget.widgetType))
