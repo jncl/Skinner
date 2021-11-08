@@ -87,6 +87,12 @@ aObj.skinTPLs = {
 	},
 	glowbox = {
 	},
+	moneyframe = {
+		-- moveIcon  = false, -- move Icon to the right
+		-- adjWdth   = 0, -- amount to change the width of the editbox
+		-- moveGEB   = false, -- move the Gold edit box left
+		-- moveSEB   = false, -- move the Silver edit box left
+	},
 	skin = {
 		bd          = 1,
 		-- ba          = 1, -- backdrop alpha
@@ -556,6 +562,45 @@ local function skinGlowBox(tbl)
 	aObj:skinObject("frame", {obj=tbl.obj, fType=tbl.fType, cbns=true, clr="gold"})
 end
 skinFuncs.glowbox = function(table) skinGlowBox(table) end
+local function skinMoneyFrame(tbl)
+	--@alpha@
+	_G.assert(tbl.obj, "Missing object (skinMoneyFrame)\n" .. _G.debugstack(2, 3, 2))
+	--@end-alpha@
+	aObj:Debug2("skinMoneyFrame: [%s]", tbl)
+
+	-- don't skin it twice
+	if tbl.obj.sknd then
+		return
+	else
+		tbl.obj.sknd = true
+	end
+
+	local mfObj
+	for key, type in _G.ipairs{"Gold", "Silver", "Copper"} do
+		mfObj = _G[tbl.obj:GetName() .. type]
+		aObj:skinObject("editbox", {obj=mfObj, ofs=0})
+		if key ~= 1 then
+			if tbl.moveIcon then
+				aObj:moveObject{obj=mfObj.texture, x=10}
+				aObj:moveObject{obj=mfObj.label, x=10}
+			end
+			if tbl.adjWdth then
+				aObj:adjWidth{obj=mfObj, adj=tbl.adjWdth}
+			end
+		end
+		if type == "Gold"
+		and tbl.moveGEB
+		then
+			aObj:moveObject{obj=mfObj, x=-8}
+		end
+		if type == "Silver"
+		and tbl.moveSEB
+		then
+			aObj:moveObject{obj=mfObj, x=-8}
+		end
+	end
+end
+skinFuncs.moneyframe = function(table) skinMoneyFrame(table) end
 local function skinScrollBar(tbl)
 	--@alpha@
 	_G.assert(tbl.obj, "Missing object (skinScrollBar)\n" .. _G.debugstack(2, 3, 2))

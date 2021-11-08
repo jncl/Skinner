@@ -391,7 +391,7 @@ aObj.blizzLoDFrames[ftype].BlackMarketUI = function(self)
 		end
 		self:skinSlider{obj=_G.BlackMarketScrollFrameScrollBar, wdth=-4}
 		this.MoneyFrameBorder:DisableDrawLayer("BACKGROUND")
-		self:skinMoneyFrame{obj=_G.BlackMarketBidPrice}
+		self:skinObject("moneyframe", {obj=_G.BlackMarketBidPrice})
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, x2=1}
 		if self.modBtns then
 			self:skinStdButton{obj=this.BidButton}

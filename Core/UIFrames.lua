@@ -4190,7 +4190,7 @@ aObj.blizzFrames[ftype].MailFrame = function(self)
 		self:skinEditBox{obj=_G.SendMailSubjectEditBox, regs={3}, noWidth=true} -- N.B. region 3 is text
 		self:skinEditBox{obj=_G.SendMailBodyEditBox, noSkin=true}
 		_G.SendMailBodyEditBox:SetTextColor(self.prdb.BodyText.r, self.prdb.BodyText.g, self.prdb.BodyText.b)
-		self:skinMoneyFrame{obj=_G.SendMailMoney, moveSEB=true, moveGEB=true, noWidth=true}
+		self:skinObject("moneyframe", {obj=_G.SendMailMoney, moveIcon=true, moveGEB=true, moveSEB=true})
 		self:removeInset(_G.SendMailMoneyInset)
 		_G.SendMailMoneyBg:DisableDrawLayer("BACKGROUND")
 		if self.modBtns then
@@ -5896,7 +5896,7 @@ aObj.blizzFrames[ftype].StaticPopups = function(self)
 			this.Separator:SetTexture(nil)
 			local objName = this:GetName()
 			self:skinObject("editbox", {obj=_G[objName .. "EditBox"], fType=ftype, ofs=0, y1=-4, y2=4})
-			self:skinMoneyFrame{obj=_G[objName .. "MoneyInputFrame"]}
+			self:skinObject("moneyframe", {obj=_G[objName .. "MoneyInputFrame"]})
 			_G[objName .. "ItemFrameNameFrame"]:SetTexture(nil)
 			self:skinObject("frame", {obj=this, fType=ftype, ofs=-6})
 			if self.modBtns then
