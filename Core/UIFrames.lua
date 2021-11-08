@@ -4618,7 +4618,9 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 		self:moveObject{obj=_G.MiniMapMailFrame, y=-4}
 	end
 
-	if self.isClscBC then
+	if self.isClscBC
+	or self.isClscERAPTR
+	then
 		_G.MiniMapWorldBorder:SetTexture(nil)
 	end
 	_G.MiniMapWorldMapButton:ClearAllPoints()
