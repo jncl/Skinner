@@ -6274,20 +6274,10 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 		return
 	end
 
-	local tt_Tips
-	if _G.IsAddOnLoaded("TipTac") then
-		tt_Tips = self:getKeys(_G.TipTac.tipsToModify)
-	else
-		tt_Tips = {}
-	end
-
 	-- using a metatable to manage tooltips when they are added in different functions
 	_G.setmetatable(self.ttList, {__newindex = function(tab, _, tTip)
 		-- get object reference for tooltip, handle either strings or objects being passed
 		tTip = _G.type(tTip) == "string" and _G[tTip] or tTip
-		-- ignore if TipTac is managing it
-		if tt_Tips[tTip] then return end
-
 		-- store using tooltip object as the key
 		_G.rawset(tab, tTip, true)
 		-- skin here so tooltip initially skinned
