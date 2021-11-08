@@ -3297,8 +3297,6 @@ aObj.blizzLoDFrames[ftype].GuildBankUI = function(self)
 			end)
 			self:skinStdButton{obj=this.Info.SaveButton}
 		end
-		-- send message when UI is skinned (used by oGlow skin)
-		self:SendMessage("GuildBankUI_Skinned", self)
 
 		self:Unhook(this, "OnShow")
 	end)
