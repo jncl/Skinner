@@ -358,84 +358,6 @@ function aObj:addSkinFrame(...) -- luacheck: ignore self
 
 end
 
-function aObj:applyGradient(obj, fh, invert, rotate)
-
-	-- don't apply a gradient if required
-	if not self.prdb.Gradient.char then
-		if self.gradFrames.p[obj] then return end
-	end
-	if not self.prdb.Gradient.ui then
-		if self.gradFrames.u[obj] then return end
-	end
-	if not self.prdb.Gradient.npc then
-		if self.gradFrames.n[obj] then return end
-	end
-	if not self.prdb.Gradient.skinner then
-		if self.gradFrames.s[obj] then return end
-	end
-	if not self.prdb.Gradient.addon then
-		if self.gradFrames.a[obj] then return end
-	end
-
-	invert = invert or self.prdb.Gradient.invert
-	rotate = rotate or self.prdb.Gradient.rotate
-
-	obj.tfade = obj.tfade or obj:CreateTexture(nil, "BORDER", nil, -1)
-	obj.tfade:SetTexture(self.gradientTex)
-	obj.tfade:SetBlendMode("ADD")
-	obj.tfade:SetGradientAlpha(self:getGradientInfo(invert, rotate))
-
-	if self.prdb.FadeHeight.enable
-	and (self.prdb.FadeHeight.force or not fh)
-	and _G.Round(obj:GetHeight()) ~= obj.hgt
-	then
-		-- set the Fade Height if not already passed to this function or 'forced'
-		-- making sure that it isn't greater than the frame height
-		obj.hgt = _G.Round(obj:GetHeight())
-		fh = self.prdb.FadeHeight.value <= obj.hgt and self.prdb.FadeHeight.value or obj.hgt
-	end
-
-	obj.tfade:ClearAllPoints()
-	if not invert -- fade from top
-	and not rotate
-	then
-		obj.tfade:SetPoint("TOPLEFT", obj, "TOPLEFT", 4, -4)
-		if fh then
-			obj.tfade:SetPoint("BOTTOMRIGHT", obj, "TOPRIGHT", -4, -(fh - 4))
-		else
-			obj.tfade:SetPoint("BOTTOMRIGHT", obj, "BOTTOMRIGHT", -4, 4)
-		end
-	elseif invert -- fade from bottom
-	and not rotate
-	then
-		obj.tfade:SetPoint("BOTTOMLEFT", obj, "BOTTOMLEFT", 4, 4)
-		if fh then
-			obj.tfade:SetPoint("TOPRIGHT", obj, "BOTTOMRIGHT", -4, (fh - 4))
-		else
-			obj.tfade:SetPoint("TOPRIGHT", obj, "TOPRIGHT", -4, -4)
-		end
-	elseif not invert -- fade from right
-	and rotate
-	then
-		obj.tfade:SetPoint("TOPRIGHT", obj, "TOPRIGHT", -4, -4)
-		if fh then
-			obj.tfade:SetPoint("BOTTOMLEFT", obj, "BOTTOMRIGHT", -(fh - 4), 4)
-		else
-			obj.tfade:SetPoint("BOTTOMLEFT", obj, "BOTTOMLEFT", 4, 4)
-		end
-	elseif invert -- fade from left
-	and rotate
-	then
-		obj.tfade:SetPoint("TOPLEFT", obj, "TOPLEFT", 4, -4)
-		if fh then
-			obj.tfade:SetPoint("BOTTOMRIGHT", obj, "BOTTOMLEFT", fh - 4, 4)
-		else
-			obj.tfade:SetPoint("BOTTOMRIGHT", obj, "BOTTOMRIGHT", -4, 4)
-		end
-	end
-
-end
-
 local function __applySkin(opts)
 --[[
 	Calling parameters:
@@ -1295,14 +1217,6 @@ function aObj:skinTooltip(tooltip)
 	-- colour the Border
 	tooltip.sf:SetBackdropBorderColor(aObj.tbClr:GetRGBA())
 
-	if self.prdb.Tooltips.style == 1 then -- Rounded
-		self:applyGradient(tooltip.sf, 32)
-	elseif self.prdb.Tooltips.style == 2 then -- Flat
-		self:applyGradient(tooltip.sf)
-	elseif self.prdb.Tooltips.style == 3 then -- Custom
-		self:applyGradient(tooltip.sf, self.prdb.FadeHeight.value <= _G.Round(tooltip:GetHeight()) and self.prdb.FadeHeight.value or _G.Round(tooltip:GetHeight()))
-	end
-
 	if aObj.isClscERAPTR then
 		local kid1 = self:getChild(tooltip, 1)
 		if kid1:GetNumRegions() == 9 then
@@ -1313,6 +1227,8 @@ function aObj:skinTooltip(tooltip)
 			self:removeNineSlice(tooltip)
 		end
 	end
+
+	self:applyTooltipGradient(tooltip.sf)
 
 end
 

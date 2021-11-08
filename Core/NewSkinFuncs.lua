@@ -143,6 +143,9 @@ aObj.skinTPLs = {
 		noCheck     = false,
 		func        = nil,
 	},
+	tooltip = {
+		-- ofs         = 2, -- skin frame offset to object
+	},
 	new = function(type, table)
 		_G.setmetatable(table, {__index = function(_, key) return aObj.skinTPLs[type][key] end})
 		return table
@@ -751,3 +754,37 @@ local function skinTabs(tbl)
 	aObj.tabFrames[tbl.obj] = tbl.track
 end
 skinFuncs.tabs = function(table) skinTabs(table) end
+local function skinTooltip(tbl)
+	if not aObj.prdb.Tooltips.skin then return end
+	--@alpha@
+	_G.assert(tbl.obj, "Missing object (skinTooltip)\n" .. _G.debugstack(2, 3, 2))
+	--@end-alpha@
+	aObj:Debug2("skinTooltip: [%s]", tbl.obj)
+
+	if not tbl.obj then return end
+	if not tbl.obj.sf then
+		-- Bugfix for ElvUI
+		local ttSB
+		if _G.IsAddOnLoaded("ElvUI") then
+			ttSB = tbl.obj.SetBackdrop
+			tbl.obj.SetBackdrop = _G.nop
+		end
+		aObj:skinObject("frame", {obj=tbl.obj, fType=tbl.ftype, kfs=true, rns=true, ng=true, ofs=tbl.ofs or 0})
+		if _G.IsAddOnLoaded("ElvUI") then
+			tbl.obj.SetBackdrop = ttSB
+		end
+	end
+	tbl.obj.sf:SetBackdropBorderColor(aObj.tbClr:GetRGBA())
+	if aObj.isClscERAPTR then
+		local kid1 = aObj:getChild(tbl.obj, 1)
+		if kid1:GetNumRegions() == 9 then
+			aObj:removeNineSlice(kid1)
+		end
+	else
+		if tbl.obj.TopLeftCorner then
+			aObj:removeNineSlice(tbl.obj)
+		end
+	end
+	aObj:applyTooltipGradient(tbl.obj.sf)
+end
+skinFuncs.tooltip = function(table) skinTooltip(table) end

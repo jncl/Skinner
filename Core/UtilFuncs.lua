@@ -106,6 +106,99 @@ function aObj:addFrameBorder(opts)
 
 end
 
+function aObj:applyGradient(obj, fh, invert, rotate)
+
+	-- don't apply a gradient if required
+	if not self.prdb.Gradient.char then
+		if self.gradFrames.p[obj] then return end
+	end
+	if not self.prdb.Gradient.ui then
+		if self.gradFrames.u[obj] then return end
+	end
+	if not self.prdb.Gradient.npc then
+		if self.gradFrames.n[obj] then return end
+	end
+	if not self.prdb.Gradient.skinner then
+		if self.gradFrames.s[obj] then return end
+	end
+	if not self.prdb.Gradient.addon then
+		if self.gradFrames.a[obj] then return end
+	end
+
+	invert = invert or self.prdb.Gradient.invert
+	rotate = rotate or self.prdb.Gradient.rotate
+
+	if not obj.tfade then
+		obj.tfade = obj:CreateTexture(nil, "BORDER", nil, -1)
+		obj.tfade:SetTexture(self.gradientTex)
+		obj.tfade:SetBlendMode("ADD")
+		obj.tfade:SetGradientAlpha(self:getGradientInfo(invert, rotate))
+	end
+
+	if self.prdb.FadeHeight.enable
+	and (self.prdb.FadeHeight.force or not fh)
+	and _G.Round(obj:GetHeight()) ~= obj.hgt
+	then
+		-- set the Fade Height if not already passed to this function or 'forced'
+		-- making sure that it isn't greater than the frame height
+		obj.hgt = _G.Round(obj:GetHeight())
+		fh = self.prdb.FadeHeight.value <= obj.hgt and self.prdb.FadeHeight.value or obj.hgt
+	end
+
+	local oFs = self.prdb.BdInset
+	obj.tfade:ClearAllPoints()
+	if not invert -- fade from top
+	and not rotate
+	then
+		obj.tfade:SetPoint("TOPLEFT", obj, "TOPLEFT", oFs, oFs * -1)
+		if fh then
+			obj.tfade:SetPoint("BOTTOMRIGHT", obj, "TOPRIGHT", oFs * -1, -(fh - oFs))
+		else
+			obj.tfade:SetPoint("BOTTOMRIGHT", obj, "BOTTOMRIGHT", oFs * -1, oFs)
+		end
+	elseif invert -- fade from bottom
+	and not rotate
+	then
+		obj.tfade:SetPoint("BOTTOMLEFT", obj, "BOTTOMLEFT", oFs, oFs)
+		if fh then
+			obj.tfade:SetPoint("TOPRIGHT", obj, "BOTTOMRIGHT", oFs * -1, (fh - oFs))
+		else
+			obj.tfade:SetPoint("TOPRIGHT", obj, "TOPRIGHT", oFs * -1, oFs * -1)
+		end
+	elseif not invert -- fade from right
+	and rotate
+	then
+		obj.tfade:SetPoint("TOPRIGHT", obj, "TOPRIGHT", oFs * -1, oFs * -1)
+		if fh then
+			obj.tfade:SetPoint("BOTTOMLEFT", obj, "BOTTOMRIGHT", -(fh - oFs), oFs)
+		else
+			obj.tfade:SetPoint("BOTTOMLEFT", obj, "BOTTOMLEFT", oFs, oFs)
+		end
+	elseif invert -- fade from left
+	and rotate
+	then
+		obj.tfade:SetPoint("TOPLEFT", obj, "TOPLEFT", oFs, oFs * -1)
+		if fh then
+			obj.tfade:SetPoint("BOTTOMRIGHT", obj, "BOTTOMLEFT", fh - oFs, oFs)
+		else
+			obj.tfade:SetPoint("BOTTOMRIGHT", obj, "BOTTOMRIGHT", oFs * -1, oFs)
+		end
+	end
+
+end
+
+function aObj:applyTooltipGradient(obj)
+
+	if self.prdb.Tooltips.style == 1 then -- Rounded
+		self:applyGradient(obj, 32)
+	elseif self.prdb.Tooltips.style == 2 then -- Flat
+		self:applyGradient(obj)
+	elseif self.prdb.Tooltips.style == 3 then -- Custom
+		self:applyGradient(obj, self.prdb.FadeHeight.value <= _G.Round(obj:GetHeight()) and self.prdb.FadeHeight.value or _G.Round(obj:GetHeight()))
+	end
+
+end
+
 function aObj:capitStr(str) -- luacheck: ignore self
 
 	return str:sub(1,1):upper() .. str:sub(2):lower()

@@ -6290,43 +6290,39 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 
 		-- store using tooltip object as the key
 		_G.rawset(tab, tTip, true)
-
+		-- skin here so tooltip initially skinned
+		self:skinObject("tooltip", {obj=tTip, ftype=tTip.ftype})
+		-- hook this to prevent Gradient overlay when tooltip reshown
+		self:HookScript(tTip, "OnUpdate", function(this)
+			self:applyTooltipGradient(this.sf)
+		end)
+		-- hook Show function for tooltips which don't get Updated
+		if self.ttHook[tTip] then
+			self:SecureHookScript(tTip, "OnShow", function(this)
+				self:applyTooltipGradient(this.sf)
+			end)
+		end
+		-- if it has an ItemTooltip then add a button border
+		if tTip.ItemTooltip
+		and self.modBtnBs
+		then
+			self:addButtonBorder{obj=tTip.ItemTooltip, relTo=tTip.ItemTooltip.Icon, reParent={tTip.ItemTooltip.Count}}
+		end
 		-- glaze the Status bar(s) if required
 		if self.prdb.Tooltips.glazesb then
 			if tTip.GetName -- named tooltips only
 			and tTip:GetName()
-			and _G[tTip:GetName() .. "StatusBar"]
-			and not _G[tTip:GetName() .. "StatusBar"].Bar -- ignore ReputationParagonTooltip
 			then
-				self:skinStatusBar{obj=_G[tTip:GetName() .. "StatusBar"], fi=0}
+				local ttSB = _G[tTip:GetName() .. "StatusBar"]
+				if ttSB
+				and not ttSB.Bar then -- ignore ReputationParagonTooltip
+					self:skinObject("statusbar", {obj=ttSB, fi=0})
+				end
 			end
 			if tTip.statusBar2 then
-				self:skinStatusBar{obj=_G[tTip:GetName() .. "StatusBar2"], fi=0}
+				self:skinObject("statusbar", {obj=tTip.statusBar2, fi=0})
 			end
 		end
-
-		-- skin here so tooltip initially skinned
-		self:skinTooltip(tTip)
-
-		-- hook this to prevent Gradient overlay when tooltip reshown
-		self:HookScript(tTip, "OnUpdate", function(this)
-			self:skinTooltip(this)
-		end)
-
-		-- hook Show function for tooltips which don't get Updated
-		if self.ttHook[tTip] then
-			self:SecureHookScript(tTip, "OnShow", function(this)
-				self:skinTooltip(this)
-			end)
-		end
-
-		if self.modBtnBs then
-			-- if it has an ItemTooltip then add a button border
-			if tTip.ItemTooltip	then
-				self:addButtonBorder{obj=tTip.ItemTooltip, relTo=tTip.ItemTooltip.Icon, reParent={tTip.ItemTooltip.Count}}
-			end
-		end
-
 	end})
 
 	-- add tooltips to table
