@@ -13,6 +13,7 @@ aObj.blizzLoDFrames[ftype].AchievementUI = function(self)
 		self:SecureHook("AchievementFrame_OnShow", function(this)
 			_G.AchievementFrame:Hide()
 			_G.AchievementFrame:Show()
+
 			self:Unhook(this, "AchievementFrame_OnShow")
 		end)
 	end
@@ -24,7 +25,7 @@ aObj.blizzLoDFrames[ftype].AchievementUI = function(self)
 			_G[statusBar .. "Left"]:SetAlpha(0)
 			_G[statusBar .. "Right"]:SetAlpha(0)
 			_G[statusBar .. "Middle"]:SetAlpha(0)
-			aObj:skinStatusBar{obj=_G[statusBar], fi=0, bgTex=_G[statusBar .. "FillBar"]}
+			aObj:skinObject("statusbar", {obj=_G[statusBar], fi=0, bg=_G[statusBar .. "FillBar"]})
 		end
 		local function skinStats()
 			for _, btn in _G.pairs(_G.AchievementFrameStatsContainer.buttons) do
@@ -295,7 +296,7 @@ aObj.blizzLoDFrames[ftype].AchievementUI = function(self)
 			end
 		end
 		-- Search function
-		self:skinObject("editbox", {obj=this.searchBox, fType=ftype, ofs=-2, si=true, six=5})
+		self:skinObject("editbox", {obj=this.searchBox, fType=ftype, si=true, six=5, ofs=-2, y1=-4, y2=4})
 		self:moveObject{obj=this.searchBox, y=-8}
 		local spc = this.searchPreviewContainer
 		self:adjHeight{obj=spc, adj=((4 * 27) + 30)}
