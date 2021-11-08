@@ -3,6 +3,7 @@
 
 <Script file="Accountant_Classic.lua"/>
 <Script file="Ace3.lua"/>
+<Script file="AchieveIt.lua"/>
 <Script file="AckisRecipeList.lua"/>
 <Script file="ACP.lua"/>
 <Script file="ActionBarProfiles.lua"/>

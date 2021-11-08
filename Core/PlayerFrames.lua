@@ -324,6 +324,8 @@ aObj.blizzLoDFrames[ftype].AchievementUI = function(self)
 		end
 		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true, ignoreHLTex=false, regions={7, 8, 9, 10}, offsets={x1=11, y1=self.isTT and 2 or -2, x2=-12, y2=-7}})
 		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, y1=7, x2=0, y2=-2})
+		-- send message when UI is skinned (used by AchieveIt skin)
+		self:SendMessage("AchievementUI_Skinned", self)
 
 		self:Unhook(this, "OnShow")
 	end)
