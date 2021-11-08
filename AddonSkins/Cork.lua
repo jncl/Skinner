@@ -15,6 +15,7 @@ aObj.addonsToSkin.Cork = function(self) -- v 7.1.0.62-Beta
 	end)
 
 	self:add2Table(self.ttList, _G.Corkboard)
+	self.ttHook[_G.Corkboard] = true
 
 	self.RegisterMessage("Cork", "IOFPanel_Before_Skinning", function(_, panel)
 		if panel.name ~= "Cork" then return end

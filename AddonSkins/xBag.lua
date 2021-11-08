@@ -35,8 +35,10 @@ aObj.addonsToSkin.xBag = function(self) -- v 1.7
 			aObj:addButtonBorder{obj=fObj.SequenceUp, ofs=-1, clr="gold"}
 			aObj:addButtonBorder{obj=fObj.SequenceDown, ofs=-1, clr="gold"}
 			aObj:addButtonBorder{obj=fObj.Sort, clr="grey"}
-			aObj:addButtonBorder{obj=fObj.OpenChest, clr="grey"}
-			aObj:addButtonBorder{obj=fObj.EmptyBags, clr="grey"}
+			if fObj.OpenChest then
+				aObj:addButtonBorder{obj=fObj.OpenChest, clr="grey"}
+				aObj:addButtonBorder{obj=fObj.EmptyBags, clr="grey"}
+			end
 		end
 		fObj.Money:DisableDrawLayer("BACKGROUND")
 	end

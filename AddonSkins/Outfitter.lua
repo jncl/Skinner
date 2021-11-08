@@ -1,9 +1,9 @@
-local aName, aObj = ...
+local _, aObj = ...
 if not aObj:isAddonEnabled("Outfitter") then return end
 local _G = _G
 
 local skinOutfitter
-aObj.addonsToSkin.Outfitter = function(self) -- v 6.0.0
+aObj.addonsToSkin.Outfitter = function(self) -- v 6.0.1
 
 	self:SecureHook(_G.Outfitter, "PlayerEnteringWorld", function(this)
 		skinOutfitter(aObj)
@@ -39,7 +39,7 @@ function skinOutfitter(self)
 	self:SecureHook(_G.Outfitter.OutfitBar, "UpdateBar", function(this, _)
 		skinOutfitBars(this)
 	end)
-	self:SecureHook(_G.Outfitter.OutfitBar, "DragBar_OnClick", function(this)
+	self:SecureHook(_G.Outfitter.OutfitBar, "DragBar_OnClick", function(_)
 		local obsd = _G.OutfitBarSettingsDialog
 		if obsd then
 			self:skinObject("slider", {obj=obsd.SizeSlider})
@@ -53,7 +53,6 @@ function skinOutfitter(self)
 			end
 
 			self:Unhook(_G.Outfitter.OutfitBar, "DragBar_OnClick")
-			obsd = nil
 		end
 	end)
 
@@ -73,24 +72,17 @@ function skinOutfitter(self)
 		_G.OutfitterMainFrameScrollbarTrench:DisableDrawLayer("OVERLAY")
 		self:skinObject("slider", {obj=_G.OutfitterMainFrameScrollFrame.ScrollBar})
 		self:skinObject("tabs", {obj=this, prefix=this:GetName(), numTabs=3, lod=true})
-		self:skinObject("frame", {obj=this, kfs=true, y2=-6})
+		self:skinObject("frame", {obj=this, kfs=true, x1=-1, y2=-6})
 		if self.modBtns then
 			self:skinCloseButton{obj=_G.OutfitterCloseButton}
 			self:skinStdButton{obj=_G.OutfitterNewButton}
-			-- m/p buttons
 			local btn
 			for i = 0, _G.Outfitter.cMaxDisplayedItems - 1 do
 				btn = _G["OutfitterItem" .. i .. "CategoryExpand"]
 				self:skinExpandButton{obj=btn, onSB=true}
-				self:SecureHook(btn, "SetNormalTexture", function(this, nTex)
-					self:checkTex{obj=this, nTex=nTex}
+				self:SecureHook(btn, "SetNormalTexture", function(bObj, nTex)
+					self:checkTex{obj=bObj, nTex=nTex}
 				end)
-			end
-			btn = nil
-		end
-		if self.modBtnBs then
-			for i = 0, _G.Outfitter.cMaxDisplayedItems - 1 do
-				-- self:addButtonBorder{obj=_G["OutfitterItem" .. i .. "OutfitMenu.Button"]}
 			end
 		end
 		if self.modChkBtns then
@@ -110,7 +102,9 @@ function skinOutfitter(self)
 
 	-- skin objects added to the PaperDollFrame
 	if self.modBtns then
+		self:adjHeight{obj=_G.OutfitterEnableAll, adj=2}
 		self:skinStdButton{obj=_G.OutfitterEnableAll}
+		self:adjHeight{obj=_G.OutfitterEnableNone, adj=2}
 		self:skinStdButton{obj=_G.OutfitterEnableNone}
 	end
 	if self.modBtnBs then
@@ -147,7 +141,6 @@ function skinOutfitter(self)
 
 	self:SecureHook(_G.Outfitter, "CreateNewOutfit", function(this)
 		local frame = this.NameOutfitDialog
-		-- Info
 		self:skinObject("editbox", {obj=frame.Name})
 		self:skinObject("dropdown", {obj=frame.ScriptMenu, regions={2, 3, 4}, x1=-7, y1=0, x2=1, y2=0})
 		self:skinObject("frame", {obj=frame.InfoSection, fb=true})
@@ -158,28 +151,24 @@ function skinOutfitter(self)
 			self:skinCheckButton{obj=frame.ExistingOutfitCheckButton, ofs=-1, yOfs=1}
 			self:skinCheckButton{obj=frame.GenerateOutfitCheckButton, ofs=-1, yOfs=1}
 		end
-		-- Stats
 		self:skinObject("frame", {obj=frame.StatsSection, fb=true})
 		skinMultiStatsFrame(frame.MultiStatConfig)
-
 		self:moveObject{obj=frame.Title, y=-6}
 		frame.TitleBackground:SetTexture(nil)
 		self:skinObject("frame", {obj=frame, ofs=0})
 		if self.modBtns then
 			self:skinStdButton{obj=frame.CancelButton}
 			self:skinStdButton{obj=frame.DoneButton}
-			self:SecureHook(frame, "Update", function(this, _)
-				self:clrBtnBdr(this.DoneButton)
+			self:SecureHook(frame, "Update", function(fObj, _)
+				self:clrBtnBdr(fObj.DoneButton)
 			end)
 		end
-		frame = nil
 
 		self:Unhook(_G.Outfitter, "CreateNewOutfit")
 	end)
 
-	self:SecureHook(_G.Outfitter, "OpenRebuildOutfitDialog", function(this, ...)
+	self:SecureHook(_G.Outfitter, "OpenRebuildOutfitDialog", function(this, _)
 		local frame = this.RebuildOutfitDialog
-		-- Stats
 		self:skinObject("frame", {obj=frame.StatsSection, fb=true})
 		skinMultiStatsFrame(frame.MultiStatConfig)
 
@@ -189,11 +178,10 @@ function skinOutfitter(self)
 		if self.modBtns then
 			self:skinStdButton{obj=frame.CancelButton}
 			self:skinStdButton{obj=frame.DoneButton}
-			self:SecureHook(frame, "Update", function(this, _)
-				self:clrBtnBdr(this.DoneButton)
+			self:SecureHook(frame, "Update", function(fObj, _)
+				self:clrBtnBdr(fObj.DoneButton)
 			end)
 		end
-		frame = nil
 
 		self:Unhook(_G.Outfitter, "OpenRebuildOutfitDialog")
 	end)
@@ -212,6 +200,7 @@ function skinOutfitter(self)
 
 		self:Unhook(this, "OnShow")
 	end)
+
 	self:SecureHook(_G.OutfitterEditScriptDialog, "ConstructSettingsFields", function(this, _)
 		for type, elem in _G.pairs(this.FrameCache) do
 			for _, obj in _G.pairs(elem) do
@@ -242,7 +231,6 @@ function skinOutfitter(self)
 		if self.modBtns then
 			self:skinStdButton{obj=cpd.CancelButton}
 		end
-		cpd = nil
 
 		self:Unhook(_G.Outfitter, "BeginCombiProgress")
 	end)
@@ -255,9 +243,6 @@ function skinOutfitter(self)
 		if self.modBtns then
 			self:skinStdButton{obj=_G.OutfitterChooseIconDialogCancelButton}
 			self:skinStdButton{obj=_G.OutfitterChooseIconDialogOKButton}
-		end
-		if self.modBtnBs then
-			-- TODO: Icon buttons
 		end
 
 		self:Unhook(this, "OnShow")

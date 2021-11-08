@@ -2,30 +2,31 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("RaiderIO") then return end
 local _G = _G
 
-aObj.addonsToSkin.RaiderIO = function(self) -- v 9.0.2 (v202012080600)
+aObj.addonsToSkin.RaiderIO = function(self) -- v 9.1.5 (v202111070600)
 
 	-- Config & SearchUI
 	local cPF, sUI -- configParentFrame, SearchUI
-	self.RegisterCallback("RaiderIO", "UIParent_GetChildren", function(this, child)
+	self.RegisterMessage("RaiderIO", "UIParent_GetChildren", function(_, child)
 		if child.scrollframe
 		and child.scrollbar
 		then
 			cPF = child
 		elseif child.header
-		and child:GetWidth() == _G.Round(310)
+		and child.copyUrl
 		then
 			sUI = child
 		end
 		if cPF
 		and sUI
 		then
-			self.UnregisterCallback("RaiderIO", "UIParent_GetChildren")
+			self.UnregisterMessage("RaiderIO", "UIParent_GetChildren")
 		end
 	end)
 	self:scanUIParentsChildren()
+
 	if cPF then
 		self:skinObject("slider", {obj=cPF.scrollbar})
-		self:skinObject("frame", {obj=cPF, kfs=true})
+		self:skinObject("frame", {obj=cPF, kfs=true, ofs=0})
 		if self.modBtns then
 			-- buttons are children of configButtonFrame which is 3rd child of cPF
 			-- N.B. NOT really buttons
@@ -36,7 +37,6 @@ aObj.addonsToSkin.RaiderIO = function(self) -- v 9.0.2 (v202012080600)
 					btn.sb:SetBackdropBorderColor(0.5, 0.5, 0.5, 1)
 					btn:SetScript("OnEnter", function(this) this.sb:SetBackdropBorderColor(aObj.bbClr:GetRGBA()) end)
 					btn:SetScript("OnLeave",  function(this) this.sb:SetBackdropBorderColor(0.5, 0.5, 0.5, 1) end)
-					btn = nil
 				end
 			end
 			if self:getChild(cPF, 3) then
@@ -53,21 +53,12 @@ aObj.addonsToSkin.RaiderIO = function(self) -- v 9.0.2 (v202012080600)
 			end
 		end
 	end
+
 	if sUI then
-		local btn = aObj:getChild(sUI, 1)
-		btn:DisableDrawLayer("BORDER") -- remove border textures
-		btn:SetHeight(26)
-		aObj:skinObject("editbox", {obj=btn, ofs=0})
-		btn = aObj:getChild(sUI, 2)
-		btn:DisableDrawLayer("BORDER") -- remove border textures
-		btn:SetHeight(26)
-		aObj:skinObject("editbox", {obj=btn, ofs=0})
-		btn:ClearAllPoints()
-		btn:SetPoint("TOP", aObj:getChild(sUI, 1), "BOTTOM", 0, 0)
-		btn = nil
-		aObj:skinObject("frame", {obj=sUI, kfs=true, ofs=0})
+		aObj:skinObject("editbox", {obj=aObj:getChild(sUI, 3), regions={3, 4, 5, 6, 7, 8}, ofs=-5, x1=-5, x2=5, chginset=false})
+		aObj:skinObject("editbox", {obj=aObj:getChild(sUI, 4), regions={3, 4, 5, 6, 7, 8}, ofs=-5, x1=-5, x2=5, chginset=false})
+		aObj:skinObject("frame", {obj=sUI, kfs=true, cb=true, ofs=0})
 	end
-    cPF, sUI = nil, nil
 
 	-- tooltip
 	_G.C_Timer.After(0.1, function()

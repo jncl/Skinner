@@ -106,7 +106,7 @@ aObj.addonsToSkin.Leatrix_Plus = function(self) -- v 9.1.20/1.14.05/2.5.64
 		elseif self.isClsc then
 			self:addButtonBorder{obj=self:getChild(_G.PaperDollFrame, 5), ofs=-2, clr="gold"}
 		else
-			self:addButtonBorder{obj=self:getLastChild(_G.PaperDollFrame), ofs=-2, clr="gold"}
+			self:addButtonBorder{obj=self:getChild(_G.PaperDollFrame, 7), ofs=-2, clr="gold"}
 		end
 	end
 

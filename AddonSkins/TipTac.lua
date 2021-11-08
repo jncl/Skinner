@@ -2,17 +2,8 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("TipTac") then return end
 local _G = _G
 
-aObj.addonsToSkin.TipTac = function(self) -- v 20.11.04/20.11.11
+aObj.addonsToSkin.TipTac = function(self) -- v 21.11.06
 	if not self.db.profile.Tooltips.skin then return end
-
-	-- set the TipTac backdrop settings to ours
-	_G.TipTac_Config.tipBackdropBG    = self.backdrop.bgFile
-	_G.TipTac_Config.tipBackdropEdge  = self.backdrop.edgeFile
-	_G.TipTac_Config.backdropEdgeSize = self.backdrop.edgeSize
-	_G.TipTac_Config.backdropInsets   = self.backdrop.insets.left
-	_G.TipTac_Config.tipColor         = {self.bClr:GetRGB()}
-	_G.TipTac_Config.tipBorderColor   = {self.tbClr:GetRGB()}
-	_G.TipTac_Config.barTexture       = self.sbTexture
 
 	-- Anchor frame
 	self:SecureHookScript(_G.TipTac, "OnShow", function(this)
@@ -24,26 +15,13 @@ aObj.addonsToSkin.TipTac = function(self) -- v 20.11.04/20.11.11
 		self:Unhook(this, "OnShow")
 	end)
 
-	if not aObj.isClsc then
-		-- hook this as the Tooltip Backdrop Style Default overwrites TipTac style on item mouseover
-		self:RawHook("SharedTooltip_SetBackdropStyle", function(tooltip, style)
-			if tooltip ~= _G.EmbeddedItemTooltipTooltip then
-				if style.edgeFile ~= _G.TipTac_Config.tipBackdropEdge then
-					style.edgeFile = _G.TipTac_Config.tipBackdropEdge
-					style.bgFile = _G.TipTac_Config.tipBackdropBG
-				end
-			end
-			self.hooks.SharedTooltip_SetBackdropStyle(tooltip, style)
-		end, true)
-	end
-
 end
 
-aObj.lodAddons.TipTacOptions = function(self) -- v 20.10.31/20.03.12
+aObj.lodAddons.TipTacOptions = function(self) -- v 21.11.06
 
 	-- hook this to skin the dropdown menu (also used by Examiner skin)
 	if not self:IsHooked(_G.AzDropDown, "ToggleMenu") then
-		self:SecureHook(_G.AzDropDown, "ToggleMenu", function(this, ...)
+		self:SecureHook(_G.AzDropDown, "ToggleMenu", function(this, _)
 			self:skinObject("slider", {obj=_G["AzDropDownScroll" .. this.vers].ScrollBar})
 			self:skinObject("frame", {obj=_G["AzDropDownScroll" .. this.vers]:GetParent()})
 			self:Unhook(this, "ToggleMenu")
