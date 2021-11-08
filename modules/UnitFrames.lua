@@ -489,11 +489,13 @@ function module:skinPartyTooltip()
 				end
 			end
 		end
-		self:SecureHookScript(_G.PartyMemberBuffTooltip, "OnShow", function(this)
-			skinPartyMemberBuffTooltip(this)
+		if not self:IsHooked(_G.PartyMemberBuffTooltip, "OnShow") then
+			self:SecureHookScript(_G.PartyMemberBuffTooltip, "OnShow", function(this)
+				skinPartyMemberBuffTooltip(this)
 
-			self:Unhook(this, "OnShow")
-		end)
+				self:Unhook(this, "OnShow")
+			end)
+		end
 	end
 
 end
