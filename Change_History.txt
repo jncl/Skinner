@@ -1,3 +1,22 @@
+beta9.40944.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Updated DropDown skinning code
+	Updated AchievementUI skin
+	Updated GameTooltip progressBar skinning code
+	Updated MinimapButtons skin for ClscERAPTR
+	Removed deprecated message
+	Bugfix for TransmogAndMountDressupFrame
+	Added ability to reset more option defaults as required
+	Updated NSF to skin MoneyFrames & updated blizzard skins as required
+	TipTac
+	Updated Tooltip skinning code
+	Bugfix for PartyMemberBuffTooltip
+	Skinned AchieveIt
+	Updated Cork, Leatrix_Plus, LibDropdown, Outfitter, RaiderIO, TipTac & xBag skins
+
 beta9.40906.2
 Jncl:
 	ToDo.txt
