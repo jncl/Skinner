@@ -573,7 +573,7 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 			end
 			frame.lootItem.IconBorder:SetTexture(nil)
 			aObj:addButtonBorder{obj=frame.lootItem, relTo=frame.lootItem.Icon}
-			frame.lootItem.sbb:SetBackdropBorderColor(_G.ITEM_QUALITY_COLORS[itemRarity].r, _G.ITEM_QUALITY_COLORS[itemRarity].g, _G.ITEM_QUALITY_COLORS[itemRarity].b)
+			aObj:setBtnClr(frame.lootItem, itemRarity)
 		end
 	end
 	-- called params: self, itemLink, originalQuantity, rollType, roll, specID, isCurrency, showFactionBG, lootSource, lessAwesome, isUpgraded, wonRoll, showRatedBG, isSecondaryResult
@@ -753,7 +753,7 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 		if self.modBtnBs then
 			self:addButtonBorder{obj=frame, relTo=frame.Icon}
 			-- set button border to Legendary colour
-			frame.sbb:SetBackdropBorderColor(_G.ITEM_QUALITY_COLORS[5].r, _G.ITEM_QUALITY_COLORS[5].g, _G.ITEM_QUALITY_COLORS[5].b)
+			self:setBtnClr(frame, _G.Enum.ItemQuality.Legendary)
 		end
 	end)
 	local function skinQueuedAlert(frame)
