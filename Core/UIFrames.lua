@@ -1588,16 +1588,18 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 			self:skinStdButton{obj=this.DefaultButton}
 			self:skinStdButton{obj=this.RedockButton}
 			self:skinStdButton{obj=_G.CombatLogDefaultButton}
-			if aObj.isClscERAPTR
-			or not aObj.isClsc
-			then
+			if not self.isClscBC then
 				self:skinStdButton{obj=this.ToggleChatButton}
+			end
+			if not self.isClsc then
 				self:skinStdButton{obj=_G.TextToSpeechDefaultButton, fType=ftype}
 			end
 			self:skinStdButton{obj=_G.ChatConfigFrameCancelButton}
 			self:skinStdButton{obj=_G.ChatConfigFrameOkayButton}
 		end
-		if self.modChkBtns then
+		if self.modChkBtns
+		and not self.isClsc
+		then
 			self:skinCheckButton{obj=_G.TextToSpeechCharacterSpecificButton, fType=ftype}
 		end
 		-- ChatTabManager
@@ -1640,7 +1642,7 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 			skinTabs(fObj)
 		end)
 		local function skinCB(cBox)
-			if aObj.isClscERAPTR
+			if aObj.isClscERA
 			and _G[cBox].NineSlice
 			then
 				aObj:removeNineSlice(_G[cBox].NineSlice)
@@ -1668,23 +1670,23 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 		self:skinObject("frame", {obj=_G.ChatConfigChatSettingsLeft, fType=ftype, kfs=true, rns=true, fb=true})
 		--	Channel Settings
 		self:skinObject("frame", {obj=_G.ChatConfigChannelSettingsLeft, fType=ftype, kfs=true, rns=true, fb=true})
-		if not self.isClsc then
-			if self.modChkBtns then
-				self:SecureHookScript(_G.ChatConfigChannelSettings, "OnShow", function(fObj)
+		if self.modChkBtns
+		and not self.isClscBC
+		then
+			self:SecureHookScript(_G.ChatConfigChannelSettings, "OnShow", function(fObj)
 					for i = 1, #_G.CHAT_CONFIG_CHANNEL_LIST do
 						skinCB("ChatConfigChannelSettingsLeftCheckBox" .. i)
 					end
 
 					self:Unhook(fObj, "OnShow")
 				end)
-			end
 		else
 			self:skinObject("frame", {obj=_G.ChatConfigChannelSettingsAvailable, fType=ftype, kfs=true})
 			self:SecureHook("ChatConfig_CreateCheckboxes", function(frame, _)
 				local box
 				for i = 1, #frame.checkBoxTable do
 					box = _G[frame:GetName() .. "CheckBox" .. i]
-					if aObj.isClscERAPTR
+					if aObj.isClscERA
 					and box.NineSlice
 					then
 						aObj:removeNineSlice(box.NineSlice)
@@ -1700,7 +1702,7 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 				local box
 				for i = 1, #frame.boxTable do
 					box = _G[frame:GetName() .. "Box" .. i]
-					if aObj.isClscERAPTR
+					if aObj.isClscERA
 					and box.NineSlice
 					then
 						aObj:removeNineSlice(box.NineSlice)
@@ -1732,7 +1734,9 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 		self:skinObject("frame", {obj=_G.ChatConfigOtherSettingsCreature, fType=ftype, kfs=true, rns=true, fb=true})
 		-- TextToSpeechSettings
 		-- N.B. TextToSpeechFrame is skinned separately
-		if self.modChkBtns then
+		if self.modChkBtns
+		and not self.isClsc
+		then
 			self:SecureHook("TextToSpeechFrame_UpdateMessageCheckboxes", function(frame)
 				for i = 1, #frame.checkBoxTable do
 					self:skinCheckButton{obj=_G[frame:GetName() .. "CheckBox" .. i], fType=ftype}
@@ -1741,14 +1745,16 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 				self:Unhook("TextToSpeechFrame_UpdateMessageCheckboxes")
 			end)
 		end
-		self:SecureHookScript(_G.ChatConfigTextToSpeechChannelSettings, "OnShow", function(fObj)
-			self:skinObject("frame", {obj=_G.ChatConfigTextToSpeechChannelSettingsLeft, fType=ftype, kfs=true, rns=true, fb=true})
-			for i = 1, #_G.CHAT_CONFIG_TEXT_TO_SPEECH_CHANNEL_LIST do
-				skinCB("ChatConfigTextToSpeechChannelSettingsLeftCheckBox" .. i)
-			end
+		if not self.isClsc then
+			self:SecureHookScript(_G.ChatConfigTextToSpeechChannelSettings, "OnShow", function(fObj)
+				self:skinObject("frame", {obj=_G.ChatConfigTextToSpeechChannelSettingsLeft, fType=ftype, kfs=true, rns=true, fb=true})
+				for i = 1, #_G.CHAT_CONFIG_TEXT_TO_SPEECH_CHANNEL_LIST do
+					skinCB("ChatConfigTextToSpeechChannelSettingsLeftCheckBox" .. i)
+				end
 
-			self:Unhook(fObj, "OnShow")
-		end)
+				self:Unhook(fObj, "OnShow")
+			end)
+		end
 		--	Combat Settings
 		-- Filters
 		_G.ChatConfigCombatSettingsFiltersScrollFrameScrollBarBorder:Hide()
@@ -1800,7 +1806,7 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 		end
 		-- Colors
 		for i = 1, #_G.COMBAT_CONFIG_UNIT_COLORS do
-			if aObj.isClscERAPTR
+			if aObj.isClscERA
 			and _G["CombatConfigColorsUnitColorsSwatch" .. i].NineSlice
 			then
 				aObj:removeNineSlice(_G["CombatConfigColorsUnitColorsSwatch" .. i].NineSlice)
@@ -4620,9 +4626,7 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 		self:moveObject{obj=_G.MiniMapMailFrame, y=-4}
 	end
 
-	if self.isClscBC
-	or self.isClscERAPTR
-	then
+	if self.isClsc then
 		_G.MiniMapWorldBorder:SetTexture(nil)
 	end
 	_G.MiniMapWorldMapButton:ClearAllPoints()
@@ -6507,8 +6511,7 @@ aObj.blizzFrames[ftype].UIDropDownMenu = function(self)
 			aObj:removeBackdrop(_G[frame:GetName() .. "Backdrop"])
 		end
 		aObj:removeBackdrop(_G[frame:GetName() .. "MenuBackdrop"])
-		if aObj.isClscERAPTR
-		or not aObj.isClsc
+		if not aObj.isClscBC
 		then
 			aObj:removeNineSlice(_G[frame:GetName() .. "MenuBackdrop"].NineSlice)
 		end

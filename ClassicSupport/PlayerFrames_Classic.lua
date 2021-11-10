@@ -107,13 +107,7 @@ aObj.SetupClassic_PlayerFrames = function()
 			if self.modBtnBs then
 				self:addButtonBorder{obj=_G.PetPaperDollPetInfo, ofs=1, x2=0, clr="gold"}
 				for i = 1, 5 do
-					if not self.isClscBC
-					and not aObj.isClscERAPTR
-					then
-						self:addButtonBorder{obj=_G["PetMagicResFrame" .. i], es=24, ofs=2, x1=-1, y2=-49, clr="grey"}
-					else
-						self:addButtonBorder{obj=_G["PetMagicResFrame" .. i], es=24, ofs=2, y1=3, y2=-4, clr="grey"}
-					end
+					self:addButtonBorder{obj=_G["PetMagicResFrame" .. i], es=24, ofs=2, y1=3, y2=-4, clr="grey"}
 				end
 			end
 
@@ -860,46 +854,38 @@ aObj.SetupClassic_PlayerFrames = function()
 		if not self.prdb.TalentUI or self.initialized.TalentUI then return end
 		self.initialized.TalentUI = true
 
-		local function skinTalentFrame(fName)
-			aObj:SecureHookScript(_G[fName], "OnShow", function(this)
-				aObj:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true})
-				aObj:skinObject("slider", {obj=_G[fName .. 'ScrollFrameScrollBar'], fType=ftype, rpTex="artwork"})
-				-- keep background Texture
-				aObj:removeRegions(this, {1, 2, 3, 4, 5, 11, 12, 13}) -- remove portrait, border & points border
-				aObj:skinObject("frame", {obj=this, fType=ftype, cb=true, x1=10, y1=-12, x2=-31, y2=75})
-				if aObj.modBtns then
-					aObj:skinStdButton{obj=_G[fName .. "CancelButton"], fType=ftype}
-				end
-				if aObj.modBtnBs then
-					local function colourBtn(btn)
-						btn.sbb:SetBackdropBorderColor(_G[btn:GetName() .. "Slot"]:GetVertexColor())
-					end
-					local btn
-					for i = 1, _G.MAX_NUM_TALENTS do
-						btn = _G[fName .. "Talent" .. i]
-						btn:DisableDrawLayer("BACKGROUND")
-						_G[fName .. "Talent" .. i .. "RankBorder"]:SetTexture(nil)
-						aObj:addButtonBorder{obj=btn, x1=-3, y2=-3, reParent={_G[fName .. "Talent" .. i .. "Rank"]}}
-						colourBtn(btn)
-					end
-					aObj:SecureHook(fName .. "_Update", function()
-						for i = 1, _G.MAX_NUM_TALENTS do
-							colourBtn(_G[fName .. "Talent" .. i])
-						end
-					end)
-				end
-
-				aObj:Unhook(this, "OnShow")
-			end)
-		end
-		if not self.isClscBC
-		and not self.isClscERAPTR
-		then
-			skinTalentFrame("TalentFrame")
-		else
-			skinTalentFrame("PlayerTalentFrame")
+		self:SecureHookScript(_G.PlayerTalentFrame, "OnShow", function(this)
+			local fName = this:GetName()
 			self:moveObject{obj=_G.PlayerTalentFrameTitleText, y=-2}
-		end
+			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true})
+			self:skinObject("slider", {obj=_G[fName .. 'ScrollFrameScrollBar'], fType=ftype, rpTex="artwork"})
+			-- keep background Texture
+			self:removeRegions(this, {1, 2, 3, 4, 5, 11, 12, 13}) -- remove portrait, border & points border
+			self:skinObject("frame", {obj=this, fType=ftype, cb=true, x1=10, y1=-12, x2=-31, y2=75})
+			if self.modBtns then
+				self:skinStdButton{obj=_G[fName .. "CancelButton"], fType=ftype}
+			end
+			if self.modBtnBs then
+				local function colourBtn(btn)
+					btn.sbb:SetBackdropBorderColor(_G[btn:GetName() .. "Slot"]:GetVertexColor())
+				end
+				local btn
+				for i = 1, _G.MAX_NUM_TALENTS do
+					btn = _G[fName .. "Talent" .. i]
+					btn:DisableDrawLayer("BACKGROUND")
+					_G[fName .. "Talent" .. i .. "RankBorder"]:SetTexture(nil)
+					self:addButtonBorder{obj=btn, x1=-3, y2=-3, reParent={_G[fName .. "Talent" .. i .. "Rank"]}}
+					colourBtn(btn)
+				end
+				self:SecureHook(fName .. "_Update", function()
+					for i = 1, _G.MAX_NUM_TALENTS do
+						colourBtn(_G[fName .. "Talent" .. i])
+					end
+				end)
+			end
+
+			self:Unhook(this, "OnShow")
+		end)
 
 	end
 

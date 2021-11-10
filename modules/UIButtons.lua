@@ -153,9 +153,7 @@ function module:checkTex(...) -- luacheck: ignore self
 	__checkTex(opts)
 
 end
-if aObj.isClscBC
-or aObj.isClscERAPTR
-then
+if aObj.isClsc then
 	_G.DULL_RED_FONT_COLOR = _G.CreateColor(0.75, 0.15, 0.15)
 end
 local function clrTex(clr, hTex)

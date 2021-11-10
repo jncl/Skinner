@@ -1215,7 +1215,7 @@ function aObj:skinTooltip(tooltip)
 	-- colour the Border
 	tooltip.sf:SetBackdropBorderColor(aObj.tbClr:GetRGBA())
 
-	if aObj.isClscERAPTR then
+	if aObj.isClscERA then
 		local kid1 = self:getChild(tooltip, 1)
 		if kid1:GetNumRegions() == 9 then
 			self:removeNineSlice(kid1)

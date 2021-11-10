@@ -820,7 +820,7 @@ local function skinTooltip(tbl)
 		end
 	end
 	tbl.obj.sf:SetBackdropBorderColor(aObj.tbClr:GetRGBA())
-	if aObj.isClscERAPTR then
+	if aObj.isClscERA then
 		local kid1 = aObj:getChild(tbl.obj, 1)
 		if kid1:GetNumRegions() == 9 then
 			aObj:removeNineSlice(kid1)
