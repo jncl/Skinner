@@ -19,7 +19,8 @@ aObj.addonsToSkin.AchieveIt = function(self) -- v 9.1.5.00
 		if self.modBtns then
 			self:skinStdButton{obj=_G.AchieveIt_Locate_Button, ofs=-4, y1=-2, y2=-1}
 		end
-		self.UnregisterMessage("Atlas", "EncounterJournal_Skinned")
+
+		self.UnregisterMessage("AchieveIt", "AchievementUI_Skinned")
 	end)
 
 end

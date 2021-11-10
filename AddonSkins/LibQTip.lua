@@ -1,37 +1,29 @@
-local aName, aObj = ...
+local _, aObj = ...
 -- This is a Library
 local _G = _G
 
 aObj.ignoreLQTT = {}
-local function skinTT(key, tt)
+local function skinTT(key, tTip)
 	-- ignore tooltips if required
 	if not aObj.ignoreLQTT[key] then
-		aObj:addSkinFrame{obj=tt, ft="a", kfs=true, nb=true}
-		tt.SetBackdrop = _G.nop
-		aObj:hook(tt, "UpdateScrolling", function(this)
-			if tt.slider then
-				aObj:skinSlider{obj=tt.slider, wdth=2}
+		if not _G.rawget(aObj.ttList, tTip) then
+			aObj:add2Table(aObj.ttList, tTip)
+		end
+		aObj:hook(tTip, "UpdateScrolling", function(ttObj)
+			if ttObj.slider then
+				aObj:skinObject("slider", {obj=ttObj.slider})
 			end
 		end)
 	end
 end
 local function hookFuncs(lib)
-	-- hook this to handle new tooltips
 	aObj:RawHook(lib, "Acquire", function(this, key, ...)
-		local tt = aObj.hooks[this].Acquire(this, key, ...)
-		skinTT(key, tt)
-		return tt
+		local tTip = aObj.hooks[this].Acquire(this, key, ...)
+		skinTT(key, tTip)
+		return tTip
 	end, true)
-	-- hook this to handle tooltips being released
-	aObj:SecureHook(lib, "Release", function(this, tt)
-		-- handle already skinned
-		if tt and tt.sknd then
-			tt.sknd = nil
-		end
-	end)
-	-- skin existing tooltips
-	for key, tt in lib:IterateTooltips() do
-		skinTT(key, tt)
+	for key, tTip in lib:IterateTooltips() do
+		skinTT(key, tTip)
 	end
 end
 
@@ -39,7 +31,7 @@ aObj.libsToSkin["LibQTip-1.0"] = function(self) -- v LibQTip-1.0, 44
 	if not self.db.profile.Tooltips.skin or self.initialized.LibQTip then return end
 	self.initialized.LibQTip = true
 
-	local lqt = _G.LibStub("LibQTip-1.0", true)
+	local lqt = _G.LibStub:GetLibrary("LibQTip-1.0", true)
 	if lqt then
 		hookFuncs(lqt)
 	end
@@ -50,7 +42,7 @@ aObj.libsToSkin["LibQTip-1.0RS"] = function(self) -- v LibQTip-1.0RS, 44
 	if not self.db.profile.Tooltips.skin or self.initialized.LibQTipRS then return end
 	self.initialized.LibQTipRS = true
 
-	local lqt = _G.LibStub("LibQTip-1.0RS", true)
+	local lqt = _G.LibStub:GetLibrary("LibQTip-1.0RS", true)
 	if lqt then
 		hookFuncs(lqt)
 	end

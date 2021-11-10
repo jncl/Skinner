@@ -4,6 +4,12 @@ local _G = _G
 
 aObj.addonsToSkin.Cork = function(self) -- v 7.1.0.62-Beta
 
+	-- tooltip
+	_G.C_Timer.After(0.1, function()
+		self.ttHook[_G.Corkboard] = true
+		self:add2Table(self.ttList, _G.Corkboard)
+	end)
+
 	-- anchor
 	self.RegisterMessage("Cork", "UIParent_GetChildren", function(_, child)
 		if child:IsObjectType("Button")
@@ -14,9 +20,7 @@ aObj.addonsToSkin.Cork = function(self) -- v 7.1.0.62-Beta
 		end
 	end)
 
-	self:add2Table(self.ttList, _G.Corkboard)
-	self.ttHook[_G.Corkboard] = true
-
+	-- config
 	self.RegisterMessage("Cork", "IOFPanel_Before_Skinning", function(_, panel)
 		if panel.name ~= "Cork" then return end
 		self.iofSkinnedPanels[panel] = true
