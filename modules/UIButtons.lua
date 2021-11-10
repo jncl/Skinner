@@ -87,6 +87,14 @@ local function __checkTex(opts)
 	 _G.assert(opts.obj, "Missing object __cT\n" .. _G.debugstack(2, 3, 2))
 	 --@end-alpha@
 
+	 -- handle in combat
+	 if _G.InCombatLockdown()
+	 and opts.obj:IsProtected()
+	 then
+		 aObj:add2Table(aObj.oocTab, {__checkTex, {opts}})
+		 return
+	 end
+
 	-- hide existing textures if they exist (Armory/GupCharacter requires this)
 	if opts.obj:GetNormalTexture() then opts.obj:GetNormalTexture():SetAlpha(0) end
 	if opts.obj:GetPushedTexture() then opts.obj:GetPushedTexture():SetAlpha(0) end
@@ -97,7 +105,7 @@ local function __checkTex(opts)
 	nTex = opts.nTex or opts.obj:GetNormalTexture() and opts.obj:GetNormalTexture():GetTexture() or nil
 
 	local header = false
-	if nTex	then
+	if nTex then
 		if _G.tonumber(nTex) then
 			for num, type in _G.pairs(texNumbers) do
 				if nTex == num then
@@ -163,7 +171,15 @@ local function clrTex(clr, hTex)
 	end
 	hTex:SetColorTexture(r, g, b, 0.25)
 end
-function module:chgHLTex(obj, hTex) -- luacheck: ignore self
+function module:chgHLTex(obj, hTex)
+
+	-- handle in combat
+	if _G.InCombatLockdown()
+	and obj:IsProtected()
+	then
+		aObj:add2Table(aObj.oocTab, {self.chgHLTex, {self, obj, hTex}})
+		return
+	end
 
 	if hTex then
 		local hTexFile = hTex:GetTexture()
@@ -203,11 +219,18 @@ function module:chgHLTex(obj, hTex) -- luacheck: ignore self
 
 end
 
-function module:clrButtonFromBorder(bObj, texture) -- luacheck: ignore self
-
+function module:clrButtonFromBorder(bObj, texture)
 	--@alpha@
 	 _G.assert(bObj.sbb, "Missing object__cBB\n" .. _G.debugstack(2, 3, 2))
 	--@end-alpha@
+
+	-- handle in combat
+	if _G.InCombatLockdown()
+	and bObj:IsProtected()
+	then
+		aObj:add2Table(aObj.oocTab, {self.clrButtonFromBorder, {self, bObj, texture}})
+		return
+	end
 
 	local iBdr = bObj.IconBorder or bObj.iconBorder or bObj[texture]
 	iBdr:SetAlpha(1) -- ensure alpha is 1 otherwise btn.sbb isn't displayed
@@ -221,7 +244,15 @@ function module:clrButtonFromBorder(bObj, texture) -- luacheck: ignore self
 
 end
 
-function module:clrBtnBdr(bObj, clrName, alpha) -- luacheck: ignore self
+function module:clrBtnBdr(bObj, clrName, alpha)
+
+	-- handle in combat
+	if _G.InCombatLockdown()
+	and bObj:IsProtected()
+	then
+		aObj:add2Table(aObj.oocTab, {self.clrBtnBdr, {self, bObj, clrName, alpha}})
+		return
+	end
 
 	-- check button state and alter colour accordingly
 	clrName = bObj.IsEnabled and not bObj:IsEnabled() and "disabled" or clrName
@@ -271,7 +302,7 @@ function module:isButton(obj) -- luacheck: ignore self
 
 end
 
-function module:skinCloseButton(opts) -- luacheck: ignore self
+function module:skinCloseButton(opts)
 -- text on button
 --[[
 	Calling parameters:
@@ -288,10 +319,18 @@ function module:skinCloseButton(opts) -- luacheck: ignore self
 	_G.assert(opts.obj, "Missing object skinCloseButton\n" .. _G.debugstack(2, 3, 2))
 	--@end-alpha@
 
+	-- handle in combat
+	if _G.InCombatLockdown()
+	and opts.obj:IsProtected()
+	then
+	    aObj:add2Table(aObj.oocTab, {self.skinCloseButton, {self, opts}})
+	    return
+	end
+
 	opts.obj:DisableDrawLayer("BACKGROUND")
 	opts.obj:SetNormalTexture(nil)
 	opts.obj:SetPushedTexture(nil)
-	if opts.obj.GetDisabledTexture  -- PVPReadyDialog missing this
+	if opts.obj.GetDisabledTexture	-- PVPReadyDialog missing this
 	and opts.obj:GetDisabledTexture()
 	then
 		opts.obj:SetDisabledTexture(nil)
@@ -331,24 +370,32 @@ function module:skinCloseButton(opts) -- luacheck: ignore self
 
 end
 
-function module:setBtnClr(button, quality)
+function module:setBtnClr(bObj, quality)
 
-	if button.sbb then
+	-- handle in combat
+	if _G.InCombatLockdown()
+	and bObj:IsProtected()
+	then
+		aObj:add2Table(aObj.oocTab, {self.setBtnClr, {self, bObj, quality}})
+		return
+	end
+
+	if bObj.sbb then
 		if quality then
 			if quality >= (self.isClsc and _G.LE_ITEM_QUALITY_COMMON or _G.Enum.ItemQuality.Common)
 			and _G.BAG_ITEM_QUALITY_COLORS[quality]
 			then
-				button.sbb:SetBackdropBorderColor(_G.BAG_ITEM_QUALITY_COLORS[quality].r, _G.BAG_ITEM_QUALITY_COLORS[quality].g, _G.BAG_ITEM_QUALITY_COLORS[quality].b, 1)
+				bObj.sbb:SetBackdropBorderColor(_G.BAG_ITEM_QUALITY_COLORS[quality].r, _G.BAG_ITEM_QUALITY_COLORS[quality].g, _G.BAG_ITEM_QUALITY_COLORS[quality].b, 1)
 			else
-				self:clrBtnBdr(button, "grey")
+				self:clrBtnBdr(bObj, "grey")
 			end
 		else
-			self:clrBtnBdr(button, "grey")
+			self:clrBtnBdr(bObj, "grey")
 			if _G.TradeSkillFrame
 			and _G.TradeSkillFrame.DetailsFrame
-			and button == _G.TradeSkillFrame.DetailsFrame.Contents.ResultIcon
+			and bObj == _G.TradeSkillFrame.DetailsFrame.Contents.ResultIcon
 			then
-				self:clrBtnBdr(button, "normal")
+				self:clrBtnBdr(bObj, "normal")
 			end
 		end
 	end
@@ -377,7 +424,7 @@ function module:skinCloseButton3(opts) -- luacheck: ignore self
 
 end
 
-function module:skinExpandButton(opts) -- luacheck: ignore self
+function module:skinExpandButton(opts)
 --[[
 	Calling parameters:
 		obj = object (Mandatory)
@@ -392,6 +439,14 @@ function module:skinExpandButton(opts) -- luacheck: ignore self
 	--@alpha@
 	_G.assert(opts.obj, "Missing object skinExpandButton\n" .. _G.debugstack(2, 3, 2))
 	--@end-alpha@
+
+	-- handle in combat
+	if _G.InCombatLockdown()
+	and opts.obj:IsProtected()
+	then
+	    aObj:add2Table(aObj.oocTab, {self.skinExpandButton, {self, opts}})
+	    return
+	end
 
 	-- don't skin it twice (BUGFIX)
 	if opts.obj and opts.obj.sb then return end
@@ -444,7 +499,7 @@ function module:skinExpandButton2(opts) -- luacheck: ignore self
 
 end
 
-function module:skinOtherButton(opts) -- luacheck: ignore self
+function module:skinOtherButton(opts)
 --[[
 	Calling parameters:
 		obj = object (Mandatory)
@@ -457,9 +512,17 @@ function module:skinOtherButton(opts) -- luacheck: ignore self
 		text = text to use
 --]]
 	--@alpha@
-	 _G.assert(opts.obj, "Missing object skinOtherButton\n" .. _G.debugstack(2, 3, 2))
-	 _G.assert(opts.text, "Missing text to use skinOtherButton\n" .. _G.debugstack(2, 3, 2))
-	 --@end-alpha@
+	_G.assert(opts.obj, "Missing object skinOtherButton\n" .. _G.debugstack(2, 3, 2))
+	_G.assert(opts.text, "Missing text to use skinOtherButton\n" .. _G.debugstack(2, 3, 2))
+	--@end-alpha@
+
+	-- handle in combat
+	if _G.InCombatLockdown()
+	and opts.obj:IsProtected()
+	then
+	    aObj:add2Table(aObj.oocTab, {self.skinOtherButton, {self, opts}})
+	    return
+	end
 
 	opts.obj:DisableDrawLayer("BACKGROUND")
 	if opts.obj:GetNormalTexture() then opts.obj:GetNormalTexture():SetAlpha(0) end
@@ -524,7 +587,7 @@ function module:skinOtherButton4(opts) -- luacheck: ignore self
 
 end
 
-function module:skinStdButton(opts) -- luacheck: ignore self
+function module:skinStdButton(opts)
 -- standard panel button
 --[[
 	Calling parameters:
@@ -540,6 +603,14 @@ function module:skinStdButton(opts) -- luacheck: ignore self
 	--@alpha@
 	_G.assert(opts.obj, "Missing object skinStdButton\n" .. _G.debugstack(2, 3, 2))
 	--@end-alpha@
+
+	-- handle in combat
+	if _G.InCombatLockdown()
+	and opts.obj:IsProtected()
+	then
+		aObj:add2Table(aObj.oocTab, {self.skinStdButton, {self, opts}})
+		return
+	end
 
 	opts.obj:DisableDrawLayer("BACKGROUND")
 	if opts.obj:GetNormalTexture() then opts.obj:GetNormalTexture():SetAlpha(0) end
@@ -584,7 +655,7 @@ function module:skinButton(opts) -- luacheck: ignore self
 		nc = don't check to see if already skinned (Ace3)
 --]]
 	--@alpha@
-	 _G.assert(opts.obj, "Missing object skinButton\n" .. _G.debugstack(2, 3, 2))
+	_G.assert(opts.obj, "Missing object skinButton\n" .. _G.debugstack(2, 3, 2))
 	aObj:CustomPrint(1, 0, 0, "Not using a specific Button skinning function", opts.obj, opts.cb)
 	if not opts.obj:GetName() then _G.print("No Name supplied __sB\n", _G.debugstack(2, 5, 2)) end
 	--@end-alpha@
@@ -725,11 +796,11 @@ local function __addButtonBorder(opts)
 	if not opts.obj then return end
 
 	-- handle in combat
-	if opts.obj:IsProtected()
-	and _G.InCombatLockdown()
+	if _G.InCombatLockdown()
+	and opts.obj:IsProtected()
 	then
-	    aObj:add2Table(aObj.oocTab, {__addButtonBorder, {opts}})
-	    return
+		aObj:add2Table(aObj.oocTab, {__addButtonBorder, {opts}})
+		return
 	end
 	-- don't skin it twice unless required
 	if not opts.nc
@@ -845,6 +916,14 @@ local function __skinCheckButton(opts)
 	--@alpha@
 	 _G.assert(opts.obj, "Missing object __sCB\n" .. _G.debugstack(2, 3, 2))
 	 --@end-alpha@
+
+	 -- handle in combat
+	 if _G.InCombatLockdown()
+	 and opts.obj:IsProtected()
+	 then
+	     aObj:add2Table(aObj.oocTab, {__skinCheckButton, {opts}})
+	     return
+	 end
 
 	-- don't skin it twice unless required
 	if not opts.nc

@@ -87,21 +87,21 @@ local function __addSkinButton(opts)
 		opts.hook = opts.hook or opts.obj
 		-- hook Show/Hide methods
         -- changed to hook scripts as functions don't always work
-		aObj:hookScript(opts.hook, "OnShow", function(this)
+		aObj:hookScript(opts.hook, "OnShow", function(bObj)
 			-- handle in combat
-			if this:IsProtected()
-			and _G.InCombatLockdown()
+			if _G.InCombatLockdown()
+			and bObj:IsProtected()
 			then
-			    aObj:add2Table(aObj.oocTab, {this.sb.Show, {this}})
+			    aObj:add2Table(aObj.oocTab, {bObj.sb.Show, {bObj}})
 			    return
 			end
 			opts.obj.sb:Show()
 		end)
-		aObj:hookScript(opts.hook, "OnHide", function(this)
-			if this:IsProtected()
-			and _G.InCombatLockdown()
+		aObj:hookScript(opts.hook, "OnHide", function(bObj)
+			if _G.InCombatLockdown()
+			and bObj:IsProtected()
 			then
-			    aObj:add2Table(aObj.oocTab, {this.sb.Hide, {this}})
+			    aObj:add2Table(aObj.oocTab, {bObj.sb.Hide, {bObj}})
 			    return
 			end
 			opts.obj.sb:Hide()
