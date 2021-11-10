@@ -29,25 +29,9 @@ ToDos
 
 ≈ 	O	Use luacheck on all lua files including AddOn Skins
 
-√	S	AchieveIt, requested by Moxieface, 5.11.21
+	I	AchieveIt, requested by Moxieface, 09.11.21
+?		- Still not skinned
+		- uses TukUI, AddonSkins & ProjectAzilroka
 
-	I	UIWidgets, reported by EpidemeDaBear, 05.11.21
-√		- SharedXML\FrameUtil.lua:57: Action[FrameMeasurement] failed because[Can't measure restricted regions]: attempted from: <unnamed>:GetScaledRect().
-
-	I	TipTac, reported by DarkLimpan, 03.11.21
-√		- Skinner\AddonSkins\TipTac-20.11.04.lua:31: attempt to index local 'style' (a nil value)
-		[string "@Skinner\AddonSkins\TipTac-20.11.04.lua"]:31: in function <Skinner\AddonSkins\TipTac.lua:29>
-
-	I	CovenantPreviewUI, reported by EpidemeDaBear, 06.11.21
-√		-  Skinner\Modules\UIButtons.lua:544: attempt to index field 'obj' (a nil value)
-		[string "@Skinner\Modules\UIButtons.lua"]:544: in function `skinStdButton'
-		[string "@Skinner\Core\PlayerFrames.lua"]:1994: in function <Skinner\Core\PlayerFrames.lua:1992>
-
-	I	Outfitter, reported by Galthariel, 07.11.21
-?		- not being skinned
-
-	I	RaiderIO, reported by Galthariel, 07.11.21
-√		-Skinner\Core\NewSkinFuncs.lua:418: attempt to call method 'GetTextInsets' (a nil value)
-		[string "@Skinner\Core\NewSkinFuncs.lua"]:429: in function `?'
-		[string "@Skinner\Core\NewSkinFuncs.lua"]:181: in function `skinObject'
-		[string "@Skinner\AddonSkins\RaiderIO-9.1.5 (v202111070706).lua"]:60: in function <Skinner\AddonSkins\RaiderIO.lua:5>
+	S	BulkMail2Inbox, requested by DarkLimpan, 10.11.21
+√		- issue with QTip skinning?
