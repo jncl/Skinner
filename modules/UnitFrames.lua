@@ -308,11 +308,11 @@ function module:skinPetF()
 	end
 
 end
-function module:skinCommon(frame, adjSB)
+function module:skinCommon(fName, adjSB)
 
-	_G[frame .. "Background"]:SetTexture(nil)
-	_G[frame .. "TextureFrameTexture"]:SetAlpha(0)
-	local fo = _G[frame]
+	_G[fName .. "Background"]:SetTexture(nil)
+	_G[fName .. "TextureFrameTexture"]:SetAlpha(0)
+	local fo = _G[fName]
 
 	aObj:skinObject("statusbar", {obj=fo.healthbar, fi=0})
 	if adjSB then
@@ -321,9 +321,9 @@ function module:skinCommon(frame, adjSB)
 	aObj:skinObject("statusbar", {obj=fo.manabar, fi=0, nilFuncs=true})
 
 end
-function module:skinButton(frame, ti)
+function module:skinButton(fName, ti)
 
-	local fo = _G[frame]
+	local fo = _G[fName]
 	local isBoss = aObj:hasTextInName(fo, "Boss")
 	local xOfs1, yOfs1, xOfs2, yOfs2
 	if isBoss then
@@ -333,13 +333,13 @@ function module:skinButton(frame, ti)
 	end
 
 	self:skinUnitButton{obj=fo, ti=ti or true, x1=xOfs1, y1=yOfs1, x2=xOfs2, y2=yOfs2}
-	self:skinCommon(frame, true)
-	if _G[frame .. "NumericalThreat"] then
-		aObj:removeRegions(_G[frame .. "NumericalThreat"], {3}) -- threat border
+	self:skinCommon(fName, true)
+	if _G[fName .. "NumericalThreat"] then
+		aObj:removeRegions(_G[fName .. "NumericalThreat"], {3}) -- threat border
 	end
 
 	-- move level & highlevel down, so they are more visible
-	aObj:moveObject{obj=_G[frame .. "TextureFrameLevelText"], x=2, y=lOfs}
+	aObj:moveObject{obj=_G[fName .. "TextureFrameLevelText"], x=2, y=lOfs}
 
 	-- create a texture to show UnitClassification
 	fo.ucTex = fo:CreateTexture(nil, "ARTWORK")
