@@ -16,13 +16,13 @@ local buildInfo = {
 	-- Testing
 	wow_classic_beta    = {"3.0.0",  99999, "Classic BC Beta"},
 	wow_classic_ptr     = {"2.5.2",  40892, "Classic BC PTR"},
-	wow_classic_era_ptr = {"1.14.1", 40926, "Classic Era PTR"}, -- a.k.a. Season of Mastery Beta
+	wow_classic_era_ptr = {"1.14.1", 41030, "Classic Era PTR"}, -- a.k.a. Season of Mastery Beta
 	wow_beta            = {"10.0.0", 99999, "Retail Beta"},
-	wow_ptr             = {"9.1.5",  40944, "Retail PTR"},
+	wow_ptr             = {"9.1.5",  41031, "Retail PTR"},
 	-- Live
 	wow_classic         = {"2.5.2",  40892, "Classic BC"},
-	wow_classic_era     = {"1.14.0", 40618, "Classic Era"},
-	wow                 = {"9.1.5",  40944, "Retail"},
+	wow_classic_era     = {"1.14.1", 41030, "Classic Era"},
+	wow                 = {"9.1.5",  41031, "Retail"},
 	-- Currently playing
 	curr                = {_G.GetBuildInfo()},
 }
@@ -147,7 +147,7 @@ function aObj:Debug2(...)
 	end
 
 end
-local dbg3Flag = true
+local dbg3Flag = false
 function aObj:Debug3(...)
 
 	if dbg3Flag then
@@ -157,7 +157,6 @@ function aObj:Debug3(...)
 end
 --@end-debug@
 --[===[@non-debug@
-aObj.debugFrame = nil
 aObj.Debug = _G.nop
 aObj.Debug2 = _G.nop
 aObj.Debug3 = _G.nop
