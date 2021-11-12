@@ -48,6 +48,7 @@
 <Script file="BuffomatClassic.lua"/>
 <Script file="Bugger.lua"/>
 <Script file="BugSack.lua"/>
+<Script file="BulkMail2Inbox.lua"/>
 <Script file="BuyEmAll.lua"/>
 <Script file="Carbonite.lua"/>
 <Script file="CensusPlus.lua"/>
