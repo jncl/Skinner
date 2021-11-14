@@ -2264,7 +2264,9 @@ aObj.blizzLoDFrames[ftype].EncounterJournal = function(self) -- a.k.a. Adenture 
 
 	-- this is a frame NOT a GameTooltip
 	self:SecureHookScript(_G.EncounterJournalTooltip, "OnShow", function(this)
-		self:addSkinFrame{obj=this, ft=ftype}
+		self:skinObject("frame", {obj=this, fType=ftype})
+		-- TODO: .Item1.tooltip
+
 		self:Unhook(this, "OnShow")
 	end)
 

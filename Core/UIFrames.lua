@@ -1403,7 +1403,7 @@ aObj.blizzLoDFrames[ftype].CharacterCustomize = function(self)
 			self:skinStdButton{obj=_G.BarberShopFrame.AcceptButton, ofs=0}
 		end
 
-		-- tooltip
+		-- tooltips
 		_G.C_Timer.After(0.1, function()
 			self:add2Table(self.ttList, _G.CharCustomizeTooltip)
 			self:add2Table(self.ttList, _G.CharCustomizeNoHeaderTooltip)
@@ -2823,6 +2823,7 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 
 		self:add2Table(self.ttList, _G.GarrisonBonusAreaTooltip)
 		self:add2Table(self.ttList, _G.GarrisonShipyardMapMissionTooltip)
+		-- TODO: .ItemTooltip ?
 
 		self:Unhook(this, "OnShow")
 	end)
@@ -6328,7 +6329,7 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 		tTip.ftype = ftype
 		aObj:add2Table(aObj.ttList, tTip)
 	end
-	for _, tTip in _G.pairs{_G.GameTooltip, _G.SmallTextTooltip, _G.EmbeddedItemTooltip, _G.ItemRefTooltip} do
+	for _, tTip in _G.pairs{_G.GameTooltip, _G.EmbeddedItemTooltip, _G.GameNoHeaderTooltip, _G.GameSmallHeaderTooltip,  _G.ItemRefTooltip, _G.SmallTextTooltip} do
 		addTooltip(tTip)
 		if tTip.shoppingTooltips then
 			for _, tip in _G.pairs(tTip.shoppingTooltips) do
