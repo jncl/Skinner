@@ -29,9 +29,11 @@ ToDos
 
 ≈ 	O	Use luacheck on all lua files including AddOn Skins
 
-	I	AchieveIt, requested by Moxieface, 09.11.21
-?		- Still not skinned
-		- uses TukUI, AddonSkins & ProjectAzilroka
-
-	S	BulkMail2Inbox, requested by DarkLimpan, 10.11.21
-√		- issue with QTip skinning?
+	I	LibQTip, reported by 아련별, 13.11.21
+√		- 2x :HookScript is not allowed on LibQTip tooltips
+		[string "@TinyTooltip\Core.lua"]:762: in function `v'
+		[string "@TinyTooltip\libs\LibEvent.lua"]:121: in function `trigger'
+		[string "@Skinner\Core\UIFrames.lua"]:6279: in function <Skinner\Core\UIFrames.lua:6277>
+		[string "@Skinner\Core\SharedFuncs.lua"]:11: in function `add2Table'
+		[string "@Skinner\AddonSkins\LibQTip.lua"]:10: in function <Skinner\AddonSkins\LibQTip.lua:6>
+		[string "@Skinner\AddonSkins\LibQTip.lua"]:22: in function <Skinner\AddonSkins\LibQTip.lua:20>
