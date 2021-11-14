@@ -6,9 +6,10 @@ aObj.ignoreLQTT = {}
 local function skinTT(key, tTip)
 	-- ignore tooltips if required
 	if not aObj.ignoreLQTT[key] then
-		if not _G.rawget(aObj.ttList, tTip) then
-			aObj:add2Table(aObj.ttList, tTip)
-		end
+		aObj:skinObject("tooltip", {obj=tTip})
+		tTip:SetScript("OnUpdate", function(ttObj)
+			aObj:applyTooltipGradient(ttObj.sf)
+		end)
 		aObj:hook(tTip, "UpdateScrolling", function(ttObj)
 			if ttObj.slider then
 				aObj:skinObject("slider", {obj=ttObj.slider})

@@ -6276,8 +6276,7 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 	if _G.IsAddOnLoaded("TinyTooltip") then
 		_G.setmetatable(self.ttList, {__newindex = function(_, _, tTip)
 			tTip = _G.type(tTip) == "string" and _G[tTip] or tTip
-			_G.LibStub:GetLibrary("LibEvent.7000", true):trigger("tooltip.style.init", tTip)
-			self:SendMessage("Tooltip_Setup", tTip)
+			self:SendMessage("Tooltip_Setup", tTip, "init")
 		end})
 		return
 	end

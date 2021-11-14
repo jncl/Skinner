@@ -4,47 +4,40 @@ local _G = _G
 
 aObj.addonsToSkin.TinyTooltip = function(self) -- v 8.2.1
 
-	-- prevent GameTooltip from changing Backdrop settings
-	_G.GameTooltip.SetBackdrop            = _G.nop
-	_G.GameTooltip.SetBackdropColor       = _G.nop
-	_G.GameTooltip.SetBackdropBorderColor = _G.nop
-
 	-- setup textures and colours
 	_G.TinyTooltip.db.general.bgfile           = self.bdTexName
 	_G.TinyTooltip.db.general.borderCorner     = self.bdbTexName
 	_G.TinyTooltip.db.general.borderSize       = self.prdb.BdEdgeSize
-	_G.TinyTooltip.db.general.background       = _G.CopyTable(self.bClr)
-	_G.TinyTooltip.db.general.borderColor      = _G.CopyTable(self.tbClr)
+	_G.TinyTooltip.db.general.borderColor      = {self.tbClr:GetRGBA()}
+	_G.TinyTooltip.db.general.background       = {self.bClr:GetRGBA()}
 	_G.TinyTooltip.db.general.statusbarTexture = self.sbTexture
-	_G.TinyTooltip.db.spell.borderColor        = _G.CopyTable(self.tbClr)
-	_G.TinyTooltip.db.spell.background         = _G.CopyTable(self.bClr)
+	_G.TinyTooltip.db.spell.borderColor        = {self.tbClr:GetRGBA()}
+	_G.TinyTooltip.db.spell.background         = {self.bClr:GetRGBA()}
 
 	local LibEvent = _G.LibStub:GetLibrary("LibEvent.7000", true)
+	LibEvent:trigger("tooltip.statusbar.texture", _G.TinyTooltip.db.general.statusbarTexture)
+
 	local function addGradient(tTip)
 	    tTip.style.mask:SetShown(false)
-		-- apply a gradient texture
-		if aObj.prdb.Tooltips.style == 1 then -- Rounded
-			aObj:applyGradient(tTip.style, 32)
-		elseif aObj.prdb.Tooltips.style == 2 then -- Flat
-			aObj:applyGradient(tTip.style)
-		elseif aObj.prdb.Tooltips.style == 3 then -- Custom
-			aObj:applyGradient(tTip.style, aObj.prdb.FadeHeight.value <= _G.Round(tTip.style:GetHeight()) and aObj.prdb.FadeHeight.value or _G.Round(tTip.style:GetHeight()))
-		end
+		aObj:applyTooltipGradient(tTip.style)
 	end
 	-- hook this to handle gradient effect
 	LibEvent:attachTrigger("tooltip:show", function(_, tTip)
 		addGradient(tTip)
 	end)
-	self.RegisterMessage("TinyTooltip", "Tooltip_Setup", function(_, tTip, _)
+	self.RegisterMessage("TinyTooltip", "Tooltip_Setup", function(_, tTip, type)
+		if type == "init" then
+			LibEvent:trigger("tooltip.style.init", tTip)
+		end
+		LibEvent:trigger("tooltip.scale", tTip, _G.TinyTooltip.db.general.scale)
+		LibEvent:trigger("tooltip.style.mask", tTip, _G.TinyTooltip.db.general.mask)
 		LibEvent:trigger("tooltip.style.bgfile", tTip, _G.TinyTooltip.db.general.bgfile)
 		LibEvent:trigger("tooltip.style.border.corner", tTip, _G.TinyTooltip.db.general.borderCorner)
 		LibEvent:trigger("tooltip.style.border.size", tTip, _G.TinyTooltip.db.general.borderSize)
-		LibEvent:trigger("tooltip.style.border.color", tTip, _G.TinyTooltip.db.general.borderColor:GetRGBA())
-		LibEvent:trigger("tooltip.style.background", tTip, _G.TinyTooltip.db.general.background:GetRGBA())
-		LibEvent:trigger("tooltip.statusbar.texture", _G.TinyTooltip.db.general.statusbarTexture)
+		LibEvent:trigger("tooltip.style.border.color", tTip, _G.unpack(_G.TinyTooltip.db.general.borderColor))
+		LibEvent:trigger("tooltip.style.background", tTip, _G.unpack(_G.TinyTooltip.db.general.background))
 		addGradient(tTip)
 	end)
-	-- update existing tooltips
 	for _, tTip in _G.pairs(_G.TinyTooltip.tooltips) do
 		self:SendMessage("Tooltip_Setup", tTip)
 	end
