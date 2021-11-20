@@ -29,11 +29,18 @@ ToDos
 
 ≈ 	O	Use luacheck on all lua files including AddOn Skins
 
-	I	LibQTip, reported by 아련별, 13.11.21
-√		- 2x :HookScript is not allowed on LibQTip tooltips
-		[string "@TinyTooltip\Core.lua"]:762: in function `v'
-		[string "@TinyTooltip\libs\LibEvent.lua"]:121: in function `trigger'
-		[string "@Skinner\Core\UIFrames.lua"]:6279: in function <Skinner\Core\UIFrames.lua:6277>
-		[string "@Skinner\Core\SharedFuncs.lua"]:11: in function `add2Table'
-		[string "@Skinner\AddonSkins\LibQTip.lua"]:10: in function <Skinner\AddonSkins\LibQTip.lua:6>
-		[string "@Skinner\AddonSkins\LibQTip.lua"]:22: in function <Skinner\AddonSkins\LibQTip.lua:20>
+	I	Outfitter, reported by Galthariel
+√?		- Outfitter issue only happens on the context menus in the Character Screen and LDB right click and started after last Blizz patch (9.1.5). Was perfect until then.
+
+	I	LFG, reported by Galthariel, 14.11.21
+?		- Text not visible when typing
+
+	I	GarrisonCapacitiveDisplayFrame, reportedby EpidemeDaBear, 14.11.21
+√		- Skinner\Core\UIFrames.lua:2842: attempt to index local 'btn' (a userdata value)
+		[string "@Skinner\Core\UIFrames.lua"]:2842: in function <Skinner\Core\UIFrames.lua:2839>
+
+	I/B	ColorPickerFrame, reported by 아련별, 19.11.21
+√		- Skinner\Core\UtilFuncs.lua:1019: attempt to index local 'frame' (a nil value)
+		[string "@Skinner\Core\UtilFuncs.lua"]:1019: in function <Skinner\Core\UtilFuncs.lua:1018>
+		[string "@Skinner\Core\UtilFuncs.lua"]:1052: in function `removeNineSlice'
+		[string "@Skinner\Core\UIFrames.lua"]:2117: in function <Skinner\Core\UIFrames.lua:2116>
