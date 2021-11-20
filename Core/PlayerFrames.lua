@@ -1979,6 +1979,7 @@ aObj.blizzFrames[ftype].DressUpFrame = function(self)
 	self:SecureHookScript(_G.DressUpFrame, "OnShow", function(this)
 		self:skinObject("dropdown", {obj=this.OutfitDropDown, fType=ftype, y2=-4})
 		this.MaxMinButtonFrame:DisableDrawLayer("BACKGROUND") -- button texture
+		self:skinObject("frame", {obj=this.OutfitDetailsPanel, fType=ftype, kfs=true, x1=2, y1=3})
 		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, y2=-4})
 		this.ModelBackground:SetAlpha(1) -- show model background
 		if self.modBtns then
@@ -1987,6 +1988,10 @@ aObj.blizzFrames[ftype].DressUpFrame = function(self)
 			self:skinOtherButton{obj=this.MaxMinButtonFrame.MinimizeButton, font=self.fontS, text=self.swarrow}
 			self:skinStdButton{obj=_G.DressUpFrameCancelButton}
 			self:skinStdButton{obj=this.ResetButton}
+			self:skinStdButton{obj=this.LinkButton, x1=4}
+		end
+		if self.modBtnBs then
+			self:addButtonBorder{obj=this.ToggleOutfitDetailsButton, fType=ftype, clr="grey"}
 		end
 
 		self:Unhook(this, "OnShow")
