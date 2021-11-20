@@ -2114,7 +2114,9 @@ aObj.blizzFrames[ftype].ColorPicker = function(self)
 	self.initialized.ColorPicker = true
 
 	self:SecureHookScript(_G.ColorPickerFrame, "OnShow", function(this)
-		self:removeNineSlice(this.Border)
+		if self.isRtl then
+			self:removeNineSlice(this.Border)
+		end
 		self:skinObject("slider", {obj=_G.OpacitySliderFrame, fType=ftype})
 		self:skinObject("frame", {obj=this, fType=ftype, hdr=true, ofs=0})
 		if self.modBtns then
