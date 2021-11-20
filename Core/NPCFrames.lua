@@ -98,6 +98,7 @@ aObj.blizzLoDFrames[ftype].AuctionHouseUI = function(self)
 		self:skinObject("editbox", {obj=this.SearchBar.FilterButton.LevelRangeFrame.MinLevel, fType=ftype})
 		self:skinObject("editbox", {obj=this.SearchBar.FilterButton.LevelRangeFrame.MaxLevel, fType=ftype})
 		if self.modBtns then
+			self:skinCloseButton{obj=this.SearchBar.FilterButton.ClearFiltersButton, fType=ftype, noSkin=true}
 			self:skinStdButton{obj=this.SearchBar.FilterButton}
 			self:skinStdButton{obj=this.SearchBar.SearchButton}
 		end
