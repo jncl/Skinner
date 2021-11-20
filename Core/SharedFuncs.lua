@@ -16,13 +16,13 @@ local buildInfo = {
 	-- Testing
 	wow_classic_beta    = {"3.0.0",  99999, "Classic BC Beta"},
 	wow_classic_ptr     = {"2.5.2",  40892, "Classic BC PTR"},
-	wow_classic_era_ptr = {"1.14.1", 41030, "Classic Era PTR"}, -- a.k.a. Season of Mastery Beta
+	wow_classic_era_ptr = {"1.14.1", 41077, "Classic Era PTR"}, -- a.k.a. Season of Mastery Beta
 	wow_beta            = {"10.0.0", 99999, "Retail Beta"},
 	wow_ptr             = {"9.1.5",  41031, "Retail PTR"},
 	-- Live
 	wow_classic         = {"2.5.2",  40892, "Classic BC"},
-	wow_classic_era     = {"1.14.1", 41030, "Classic Era"},
-	wow                 = {"9.1.5",  41031, "Retail"},
+	wow_classic_era     = {"1.14.1", 41077, "Classic Era"},
+	wow                 = {"9.1.5",  41079, "Retail"},
 	-- Currently playing
 	curr                = {_G.GetBuildInfo()},
 }
@@ -147,12 +147,9 @@ function aObj:Debug2(...)
 	end
 
 end
-local dbg3Flag = false
 function aObj:Debug3(...)
-
-	if dbg3Flag then
-		printIt("dbg3: " .. makeText(...), self.debugFrame)
-	end
+	-- used by showCmds function
+	printIt("dbg3: " .. makeText(...), self.debugFrame)
 
 end
 --@end-debug@
