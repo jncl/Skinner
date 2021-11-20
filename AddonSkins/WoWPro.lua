@@ -79,9 +79,9 @@ aObj.addonsToSkin.WoWPro = function(self) -- v 9.0.5-A5/2.5.2.-A0/1.14.0.A0
 			then
 				self.iofSkinnedPanels[panel] = true
 				pCnt = pCnt + 1
-				_G.C_Timer.After(0.1, function()
+				_G.C_Timer.After(0.2, function()
 					local cgframe = self:getChild(panel, 1)
-					self:skinObject("frame", {obj=cgframe, fb=true})
+					self:skinObject("frame", {obj=cgframe, fb=true, ofs=0})
 					local slider = self:getChild(cgframe, 1)
 					self:skinObject("slider", {obj=slider})
 					self:getChild(slider, 3):SetBackdrop(nil)

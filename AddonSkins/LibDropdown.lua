@@ -7,12 +7,13 @@ local function hookFuncs(lib)
 		if parent == nil and t.args then
 			-- creation pass of the function
 			local frame = aObj.hooks[this].OpenAce3Menu(this, t, parent)
-			aObj:skinObject("frame", {obj=frame, kfs=true})
+			aObj:skinObject("frame", {obj=frame, kfs=true, ofs=0})
 			return frame
 		else
 			-- setup pass of the function, second and subsequent calls
 			aObj.hooks[this].OpenAce3Menu(this, t, parent)
-			aObj:skinObject("frame", {obj=parent, kfs=true})
+			aObj:removeBackdrop(parent)
+			aObj:skinObject("frame", {obj=parent, kfs=true, ofs=0})
 		end
 	end, true)
 	aObj:SecureHook(lib, "Ace3MenuSelect", function(this, t, parent)

@@ -2,7 +2,7 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("xBag") then return end
 local _G = _G
 
-aObj.addonsToSkin.xBag = function(self) -- v 1.7
+aObj.addonsToSkin.xBag = function(self) -- v 1.8
 
 	-- if xBag is loaded but not being used then leave
 	if not _G.xBagPerDB.xBagLoaded then
@@ -49,7 +49,7 @@ aObj.addonsToSkin.xBag = function(self) -- v 1.7
 		end
 	end
 
-	self:SecureHookScript(_G.xBagGuideDisplay, "OnShow", function(this)
+	self:SecureHookScript(_G.xBagHelp, "OnShow", function(this)
 		self:skinObject("slider", {obj=this.ScrollBar})
 		this.Close:SetSize(28, 28)
 		self:skinObject("frame", {obj=this, kfs=true, cb=true, ofs=6, x2=8})
