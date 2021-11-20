@@ -2840,7 +2840,9 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 		-- hook this to skin reagents
 		self:SecureHook("GarrisonCapacitiveDisplayFrame_Update", function(fObj, success, _)
 			if success ~= 0 then
-				for _, btn in _G.pairs(fObj.CapacitiveDisplay.Reagents) do
+				local btn
+				for i = 1, #fObj.CapacitiveDisplay.Reagents do
+					btn = fObj.CapacitiveDisplay.Reagents[i]
 					btn.NameFrame:SetTexture(nil)
 					if self.modBtnBs then
 						self:addButtonBorder{obj=btn, relTo=btn.Icon, reParent={btn.Count}}
