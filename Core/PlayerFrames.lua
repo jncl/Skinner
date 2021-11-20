@@ -1794,6 +1794,11 @@ aObj.blizzFrames[ftype].CompactFrames = function(self)
 	end)
 	-- hook this to skin any new CompactRaidGroup(s)
 	self:SecureHook("CompactRaidGroup_UpdateLayout", function(frame)
+		-- handle in combat
+		if _G.InCombatLockdown() then
+		    self:add2Table(self.oocTab, {skinGrp, {frame}})
+		    return
+		end
 		skinGrp(frame)
 	end)
 
@@ -3967,9 +3972,7 @@ aObj.blizzFrames[ftype].SpellBookFrame = function(self)
 		-- Spellbook Panel
 		local function updBtn(btn)
 			-- handle in combat
-			if _G.InCombatLockdown()
-			and btn:IsProtected()
-			then
+			if _G.InCombatLockdown() then
 			    aObj:add2Table(aObj.oocTab, {updBtn, {btn}})
 			    return
 			end

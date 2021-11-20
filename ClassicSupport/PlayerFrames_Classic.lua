@@ -770,9 +770,7 @@ aObj.SetupClassic_PlayerFrames = function()
 			-- Spellbook Panel
 			local function updBtn(btn)
 				-- handle in combat
-				if _G.InCombatLockdown()
-				and btn:IsProtected()
-				then
+				if _G.InCombatLockdown() then
 				    aObj:add2Table(aObj.oocTab, {updBtn, {btn}})
 				    return
 				end

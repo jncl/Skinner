@@ -2435,9 +2435,7 @@ aObj.blizzFrames[ftype].ExtraAbilityContainer = function(self)
 	local function skinBtn(btn)
 		if btn:IsForbidden() then return end
 		-- handle in combat
-		if _G.InCombatLockdown()
-		and btn:IsProtected()
-		then
+		if _G.InCombatLockdown() then
 		    aObj:add2Table(aObj.oocTab, {skinBtn, {btn}})
 		    return
 		end
@@ -4824,9 +4822,7 @@ aObj.blizzFrames[ftype].Nameplates = function(self)
 		then
 			return
 		end
-		if _G.InCombatLockdown()
-		and frame:IsProtected()
-		then
+		if _G.InCombatLockdown() then
 		    aObj:add2Table(aObj.oocTab, {skinNamePlate, {frame}})
 		    return
 		end
@@ -6560,9 +6556,7 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 	-- Documentation in UIWidgetManagerSharedDocumentation.lua (UIWidgetVisualizationType)
 	local function skinWidget(wFrame, wInfo)
 		-- handle in combat
-		if _G.InCombatLockdown()
-		and wFrame:IsProtected()
-		then
+		if _G.InCombatLockdown() then
 		    aObj:add2Table(aObj.oocTab, {skinWidget, {wFrame, wInfo}})
 		    return
 		end

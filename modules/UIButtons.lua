@@ -88,9 +88,7 @@ local function __checkTex(opts)
 	 --@end-alpha@
 
 	 -- handle in combat
-	 if _G.InCombatLockdown()
-	 and opts.obj:IsProtected()
-	 then
+	 if _G.InCombatLockdown() then
 		 aObj:add2Table(aObj.oocTab, {__checkTex, {opts}})
 		 return
 	 end
@@ -172,9 +170,7 @@ end
 function module:chgHLTex(obj, hTex)
 
 	-- handle in combat
-	if _G.InCombatLockdown()
-	and obj:IsProtected()
-	then
+	if _G.InCombatLockdown() then
 		aObj:add2Table(aObj.oocTab, {self.chgHLTex, {self, obj, hTex}})
 		return
 	end
@@ -223,9 +219,7 @@ function module:clrButtonFromBorder(bObj, texture)
 	--@end-alpha@
 
 	-- handle in combat
-	if _G.InCombatLockdown()
-	and bObj:IsProtected()
-	then
+	if _G.InCombatLockdown() then
 		aObj:add2Table(aObj.oocTab, {self.clrButtonFromBorder, {self, bObj, texture}})
 		return
 	end
@@ -245,9 +239,7 @@ end
 function module:clrBtnBdr(bObj, clrName, alpha)
 
 	-- handle in combat
-	if _G.InCombatLockdown()
-	and bObj:IsProtected()
-	then
+	if _G.InCombatLockdown() then
 		aObj:add2Table(aObj.oocTab, {self.clrBtnBdr, {self, bObj, clrName, alpha}})
 		return
 	end
@@ -318,9 +310,7 @@ function module:skinCloseButton(opts)
 	--@end-alpha@
 
 	-- handle in combat
-	if _G.InCombatLockdown()
-	and opts.obj:IsProtected()
-	then
+	if _G.InCombatLockdown() then
 	    aObj:add2Table(aObj.oocTab, {self.skinCloseButton, {self, opts}})
 	    return
 	end
@@ -371,9 +361,7 @@ end
 function module:setBtnClr(bObj, quality)
 
 	-- handle in combat
-	if _G.InCombatLockdown()
-	and bObj:IsProtected()
-	then
+	if _G.InCombatLockdown() then
 		aObj:add2Table(aObj.oocTab, {self.setBtnClr, {self, bObj, quality}})
 		return
 	end
@@ -439,9 +427,7 @@ function module:skinExpandButton(opts)
 	--@end-alpha@
 
 	-- handle in combat
-	if _G.InCombatLockdown()
-	and opts.obj:IsProtected()
-	then
+	if _G.InCombatLockdown() then
 	    aObj:add2Table(aObj.oocTab, {self.skinExpandButton, {self, opts}})
 	    return
 	end
@@ -515,9 +501,7 @@ function module:skinOtherButton(opts)
 	--@end-alpha@
 
 	-- handle in combat
-	if _G.InCombatLockdown()
-	and opts.obj:IsProtected()
-	then
+	if _G.InCombatLockdown() then
 	    aObj:add2Table(aObj.oocTab, {self.skinOtherButton, {self, opts}})
 	    return
 	end
@@ -603,9 +587,7 @@ function module:skinStdButton(opts)
 	--@end-alpha@
 
 	-- handle in combat
-	if _G.InCombatLockdown()
-	and opts.obj:IsProtected()
-	then
+	if _G.InCombatLockdown() then
 		aObj:add2Table(aObj.oocTab, {self.skinStdButton, {self, opts}})
 		return
 	end
@@ -794,9 +776,7 @@ local function __addButtonBorder(opts)
 	if not opts.obj then return end
 
 	-- handle in combat
-	if _G.InCombatLockdown()
-	and opts.obj:IsProtected()
-	then
+	if _G.InCombatLockdown() then
 		aObj:add2Table(aObj.oocTab, {__addButtonBorder, {opts}})
 		return
 	end
@@ -916,9 +896,7 @@ local function __skinCheckButton(opts)
 	 --@end-alpha@
 
 	 -- handle in combat
-	 if _G.InCombatLockdown()
-	 and opts.obj:IsProtected()
-	 then
+	 if _G.InCombatLockdown() then
 	     aObj:add2Table(aObj.oocTab, {__skinCheckButton, {opts}})
 	     return
 	 end

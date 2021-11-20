@@ -82,9 +82,7 @@ function module:skinPlayerF()
 	and not self.isSkinned["Player"]
 	then
 		local function skinPlayerFrame(frame)
-			if _G.InCombatLockdown()
-			and frame:IsProtected()
-			then
+			if _G.InCombatLockdown() then
 			    aObj:add2Table(aObj.oocTab, {skinPlayerFrame, {frame}})
 			    return
 			end
@@ -230,9 +228,7 @@ function module:skinPetF()
 	and not self.isSkinned["Pet"]
 	then
 		local function skinPetFrame(frame)
-			if _G.InCombatLockdown()
-			and frame:IsProtected()
-			then
+			if _G.InCombatLockdown() then
 			    aObj:add2Table(aObj.oocTab, {skinPetFrame, {frame}})
 			    return
 			end
@@ -366,9 +362,7 @@ function module:skinTargetF()
 	and not self.isSkinned["Target"]
 	then
 		local function skinTargetFrame(frame)
-			if _G.InCombatLockdown()
-			and frame:IsProtected()
-			then
+			if _G.InCombatLockdown() then
 			    aObj:add2Table(aObj.oocTab, {skinTargetFrame, {frame}})
 			    return
 			end
@@ -389,9 +383,7 @@ function module:skinTargetF()
 		aObj:checkShown(_G.TargetFrame)
 
 		local function skinBossTargetFrame(frame)
-			if _G.InCombatLockdown()
-			and frame:IsProtected()
-			then
+			if _G.InCombatLockdown() then
 			    aObj:add2Table(aObj.oocTab, {skinBossTargetFrame, {frame}})
 			    return
 			end
@@ -416,9 +408,7 @@ function module:skinFocusF()
 	and not self.isSkinned["Focus"]
 	then
 		local function skinFocusFrame(frame)
-			if _G.InCombatLockdown()
-			and frame:IsProtected()
-			then
+			if _G.InCombatLockdown() then
 			    aObj:add2Table(aObj.oocTab, {skinFocusFrame, {frame}})
 			    return
 			end
@@ -442,9 +432,7 @@ function module:skinPartyF()
 	and not self.isSkinned["Party"]
 	then
 		local function skinPartyFrame(frame)
-			if _G.InCombatLockdown()
-			and frame:IsProtected()
-			then
+			if _G.InCombatLockdown() then
 			    aObj:add2Table(aObj.oocTab, {skinPartyFrame, {frame}})
 			    return
 			end
@@ -484,9 +472,7 @@ function module:skinPartyTooltip()
 	or db.party
 	then
 		local function skinPartyMemberBuffTooltip(frame)
-			if _G.InCombatLockdown()
-			and frame:IsProtected()
-			then
+			if _G.InCombatLockdown() then
 			    aObj:add2Table(aObj.oocTab, {skinPartyMemberBuffTooltip, {frame}})
 			    return
 			end
@@ -736,9 +722,7 @@ aObj.blizzLoDFrames[ftype].ArenaUI = function(_)
 
 	if db.arena then
 		local function skinArenaFrame(fName)
-			if _G.InCombatLockdown()
-			and _G[fName]:IsProtected()
-			then
+			if _G.InCombatLockdown() then
 			    aObj:add2Table(aObj.oocTab, {skinArenaFrame, {fName}})
 			    return
 			end
@@ -757,9 +741,7 @@ aObj.blizzLoDFrames[ftype].ArenaUI = function(_)
 		end
 		local function skinArenaPetFrame(fName)
 			-- handle in combat
-			if _G.InCombatLockdown()
-			and _G[fName]:IsProtected()
-			then
+			if _G.InCombatLockdown() then
 			    aObj:add2Table(aObj.oocTab, {skinArenaPetFrame, {fName}})
 			    return
 			end
