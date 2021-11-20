@@ -4707,7 +4707,7 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 			end
 		end
 		if not minBtn then
-			aObj:skinObject("button", {obj=btn})
+			aObj:skinObject("button", {obj=mmBtn})
 		end
 	end
 	-- wait until all AddOn skins have been loaded
