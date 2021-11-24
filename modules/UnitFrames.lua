@@ -336,8 +336,10 @@ function module:skinButton(fName, ti)
 		aObj:removeRegions(_G[fName .. "NumericalThreat"], {3}) -- threat border
 	end
 
-	-- move level & highlevel down, so they are more visible
-	aObj:moveObject{obj=_G[fName .. "TextureFrameLevelText"], x=2, y=lOfs}
+	if not isBoss then
+		-- move level & highlevel down, so they are more visible
+		aObj:moveObject{obj=_G[fName .. "TextureFrameLevelText"], x=2, y=lOfs}
+	end
 
 	-- create a texture to show UnitClassification
 	fo.ucTex = fo:CreateTexture(nil, "ARTWORK")
