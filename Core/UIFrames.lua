@@ -5870,6 +5870,28 @@ aObj.blizzFrames[ftype].SplashFrame = function(self)
 
 end
 
+aObj.blizzFrames[ftype].StackSplit = function(self)
+	if not self.prdb.StackSplit or self.initialized.StackSplit then return end
+	self.initialized.StackSplit = true
+
+	self:SecureHookScript(_G.StackSplitFrame, "OnShow", function(this)
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ofs=-12, x1=3, y1=0})
+		if self.modBtns then
+			if self.isRtl then
+				self:skinStdButton{obj=_G.StackSplitFrame.OkayButton, fType=ftype}
+				self:skinStdButton{obj=_G.StackSplitFrame.CancelButton, fType=ftype}
+			else
+				self:skinStdButton{obj=_G.StackSplitOkayButton, fType=ftype}
+				self:skinStdButton{obj=_G.StackSplitCancelButton, fType=ftype}
+			end
+		end
+		self:SendMessage("StackSplit_skinned")
+
+		self:Unhook(this, "OnShow")
+	end)
+
+end
+
 aObj.blizzFrames[ftype].StaticPopups = function(self)
 	if not self.prdb.StaticPopups or self.initialized.StaticPopups then return end
 	self.initialized.StaticPopups = true

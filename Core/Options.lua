@@ -114,7 +114,6 @@ aObj.SetupDefaults = function(self)
 			ReadyCheck                 = true,
 			RolePollPopup              = true,
 			SpellBookFrame             = true,
-			StackSplit                 = true,
 			TalentUI                   = true,
 			TradeFrame                 = true,
 			TradeSkillUI               = true,
@@ -194,6 +193,7 @@ aObj.SetupDefaults = function(self)
 			SharedBasicControls        = true,
 			ScrappingMachineUI         = true,
 			SplashFrame                = true,
+			StackSplit                 = true,
 			StaticPopups               = true,
 			Soulbinds                  = true,
 			SubscriptionInterstitialUI = true,
@@ -1316,11 +1316,6 @@ aObj.SetupOptions = function(self)
 					name = self.L["SpellBook Frame"],
 					desc = self.L["Toggle the skin of the "] .. self.L["SpellBook Frame"],
 				},
-				StackSplit = {
-					type = "toggle",
-					name = self.L["Stack Split Frame"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Stack Split Frame"],
-				},
 				TalentUI = {
 					type = "toggle",
 					name = self.L["Talent UI"],
@@ -1903,6 +1898,11 @@ aObj.SetupOptions = function(self)
 					type = "toggle",
 					name = self.L["What's New Frame"],
 					desc = self.L["Toggle the skin of the "] .. self.L["What's New Frame"],
+				},
+				StackSplit = {
+					type = "toggle",
+					name = self.L["Stack Split Frame"],
+					desc = self.L["Toggle the skin of the "] .. self.L["Stack Split Frame"],
 				},
 				StaticPopups = {
 					type = "toggle",

@@ -823,31 +823,6 @@ aObj.SetupClassic_PlayerFrames = function()
 
 	end
 
-	aObj.blizzFrames[ftype].StackSplit = function(self)
-		if not self.prdb.StackSplit or self.initialized.StackSplit then return end
-		self.initialized.StackSplit = true
-
-		self:SecureHookScript(_G.StackSplitFrame, "OnShow", function(this)
-			-- handle different addons being loaded
-			if _G.IsAddOnLoaded("EnhancedStackSplit") then
-				if _G.Round(_G.EnhancedStackSplitBottomTextureFrame:GetHeight()) == 30 then
-					self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, y2=-45}
-				else
-					self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, y2=-24}
-				end
-			else
-				self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, x1=9, y1=-12, x2=-6, y2=12}
-			end
-			if self.modBtns then
-				self:skinStdButton{obj=_G.StackSplitOkayButton, fType=ftype}
-				self:skinStdButton{obj=_G.StackSplitCancelButton, fType=ftype}
-			end
-
-			self:Unhook(this, "OnShow")
-		end)
-
-	end
-
 	aObj.blizzLoDFrames[ftype].TalentUI = function(self)
 		if not self.prdb.TalentUI or self.initialized.TalentUI then return end
 		self.initialized.TalentUI = true
