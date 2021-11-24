@@ -5479,7 +5479,7 @@ aObj.blizzFrames[ftype].PVPMatch = function(self)
 				end
 			end)
 		end
-		self:skinObject("frame", {obj=this.scrollFrame, fType=ftype, kfs=true, fb=true, ofs=0, y1=55, x2=23, y2=-4})
+		self:skinObject("frame", {obj=this.scrollFrame, fType=ftype, kfs=true, fb=true, ofs=4, y1=55, x2=23})
 		this.earningsArt:DisableDrawLayer("ARTWORK")
 		this.CloseButton.Border:SetAtlas(nil)
 		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, ofs=0, x2=1})
