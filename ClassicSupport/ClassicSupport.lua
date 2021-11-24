@@ -200,7 +200,8 @@ aObj.SetupClassic = function(self)
 			name = self.L["GM Survey UI"],
 			desc = self.L["Toggle the skin of the "] .. self.L["GM Survey UI"],
 		}
-	else
+	end
+	if _G.C_LFGList.IsLookingForGroupEnabled() then
 		if self.db.profile.LFGLFM == nil then
 			self.db.profile.LFGLFM = true
 			self.db.defaults.profile.LFGLFM = true
