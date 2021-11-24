@@ -2982,14 +2982,6 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 		self:Unhook(this, "OnShow")
 	end)
 
-	if _G.OrderHallMissionTutorialFrame then
-		self:SecureHookScript(_G.OrderHallMissionTutorialFrame, "OnShow", function(this)
-			self:skinGlowBox(this.GlowBox, ftype)
-
-			self:Unhook(this, "OnShow")
-		end)
-	end
-
 	-- Battle for Azeroth
 	self:SecureHookScript(_G.BFAMissionFrame, "OnShow", function(this)
 		this.OverlayElements.Topper:SetTexture(nil)
