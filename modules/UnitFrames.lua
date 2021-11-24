@@ -251,6 +251,7 @@ function module:skinPetF()
 			end
 			if not aObj.isClsc
 			and db.petspec
+			and aObj.uCls == "HUNTER"
 			then
 				-- Add pet spec icon to pet frame, if required
 				frame.roleIcon = _G.PetFrame:CreateTexture(nil, "artwork")
@@ -275,6 +276,7 @@ function module:skinPetF()
 			end
 			if aObj.isClsc
 			and db.petlvl
+			and aObj.uCls == "HUNTER"
 			then
 				-- Add pet level to pet frame, if required
 				frame.level = frame:CreateFontString(nil, "artwork", "GameNormalNumberFont")
