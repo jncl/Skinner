@@ -1767,15 +1767,22 @@ aObj.blizzFrames[ftype].CompactFrames = function(self)
 	end
 
 	local function skinUnit(unit)
-		if aObj:hasTextInTexture(unit.healthBar:GetStatusBarTexture(), "RaidFrame") then
+		-- handle in combat
+		if _G.InCombatLockdown() then
+		    aObj:add2Table(aObj.oocTab, {skinUnit, {unit}})
+		    return
+		end
+		if aObj:hasTextInTexture(unit.healthBar:GetStatusBarTexture(), "RaidFrame")
+		or unit.healthBar:GetStatusBarTexture():GetTexture() == 423819 -- interface/raidframe/raid-bar-hp-fill.blp
+		then
 			unit:DisableDrawLayer("BACKGROUND")
 			unit.horizDivider:SetTexture(nil)
 			unit.horizTopBorder:SetTexture(nil)
 			unit.horizBottomBorder:SetTexture(nil)
 			unit.vertLeftBorder:SetTexture(nil)
 			unit.vertRightBorder:SetTexture(nil)
-			aObj:skinStatusBar{obj=unit.healthBar, fi=0, bgTex=unit.healthBar.background}
-			aObj:skinStatusBar{obj=unit.powerBar, fi=0, bgTex=unit.powerBar.background}
+			aObj:skinObject("statusbar", {obj=unit.healthBar, fi=0, bg=unit.healthBar.background})
+			aObj:skinObject("statusbar", {obj=unit.powerBar, fi=0, bg=unit.powerBar.background})
 		end
 	end
 	local function skinGrp(grp)
@@ -1794,11 +1801,6 @@ aObj.blizzFrames[ftype].CompactFrames = function(self)
 	end)
 	-- hook this to skin any new CompactRaidGroup(s)
 	self:SecureHook("CompactRaidGroup_UpdateLayout", function(frame)
-		-- handle in combat
-		if _G.InCombatLockdown() then
-		    self:add2Table(self.oocTab, {skinGrp, {frame}})
-		    return
-		end
 		skinGrp(frame)
 	end)
 
@@ -1809,12 +1811,8 @@ aObj.blizzFrames[ftype].CompactFrames = function(self)
 	end
 
 	local function skinCRFCframes()
-		-- handle in combat as UnitFrame uses SecureUnitButtonTemplate
-		if _G.InCombatLockdown() then
-			aObj:add2Table(aObj.oocTab, {skinCRFCframes, {nil}})
-			return
-		end
 		for type, fTab in _G.pairs(_G.CompactRaidFrameContainer.frameUpdateList) do
+			-- aObj:Debug("skinCRFCframes: [%s, %s]", type)
 			for _, frame in _G.pairs(fTab) do
 				if type == "normal" then
 					if frame.borderFrame then -- group or party
@@ -1853,6 +1851,8 @@ aObj.blizzFrames[ftype].CompactFrames = function(self)
 		_G.CompactRaidFrameManagerDisplayFrameHeaderDelineator:SetTexture(nil)
 		this.displayFrame.filterOptions:DisableDrawLayer("BACKGROUND")
 		self:skinObject("dropdown", {obj=this.displayFrame.profileSelector, fType=ftype})
+		self:skinObject("frame", {obj=this.containerResizeFrame, fType=ftype, kfs=true})
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ofs=0})
 		if self.modBtns then
 			for i = 1, 8 do
 				self:skinStdButton{obj=this.displayFrame.filterOptions["filterGroup" .. i]}
@@ -1884,8 +1884,6 @@ aObj.blizzFrames[ftype].CompactFrames = function(self)
 			self:skinCheckButton{obj=this.displayFrame.everyoneIsAssistButton}
 			_G.RaiseFrameLevel(this.displayFrame.everyoneIsAssistButton) -- so button border is visible
 		end
-		self:skinObject("frame", {obj=this.containerResizeFrame, fType=ftype, kfs=true})
-		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ofs=0})
 
 		self:Unhook(this, "OnShow")
 	end)
