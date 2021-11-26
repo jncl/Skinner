@@ -1,3 +1,17 @@
+beta9.41079.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Updated LibDropdown, Outfitter, WoWPro & xBag skins
+	Updated and Added InCombatLockdown checks
+	Updated TabardFrame skin
+	Updated AuctionUI skin
+	Updated DressUpFrame skin
+	Bugfix for MinimapButtons
+	Bugfix for CapacitiveDisplayFrame
+	Bugfix for ColorPickerFrame
+
 beta9.41031.2
 Jncl:
 	ToDo.txt
