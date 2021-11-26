@@ -32,7 +32,7 @@ aObj.addonsToSkin.WeakAuras = function(self) -- v 3.4.2
 			if _G.ItemRefTooltip.WeakAuras_Desc_Box
 			and not s4
 			then
-				self:addSkinFrame{obj=_G.ItemRefTooltip.WeakAuras_Desc_Box, ft="a", nb=true}
+				self:skinObject("frame", {obj=_G.ItemRefTooltip.WeakAuras_Desc_Box, fb=true})
 				_G.ItemRefTooltip.WeakAuras_Desc_Box.SetBackdrop = _G.nop
 				s4 = true
 			end
@@ -169,7 +169,7 @@ aObj.lodAddons.WeakAurasOptions = function(self) -- v 3.4.2
 	-- Templates
 	if self.modBtns then
 		-- event, addon
-		self.RegisterCallback("WeakAurasOptions", "AddOn_Loaded", function(_, addon)
+		self.RegisterMessage("WeakAurasOptions", "AddOn_Loaded", function(_, addon)
 			if addon == "WeakAurasTemplates" then
 				_G.C_Timer.After(0.1, function()
 					self:skinStdButton{obj=_G.WeakAurasOptions.newView.backButton}
@@ -177,7 +177,7 @@ aObj.lodAddons.WeakAurasOptions = function(self) -- v 3.4.2
 					self:skinStdButton{obj=_G.WeakAurasOptions.newView.batchButton}
 					self:skinStdButton{obj=self:getLastChild(_G.WeakAurasOptions.newView.frame)} -- cancel button
 				end)
-				self.UnregisterCallback("WeakAurasOptions", "AddOn_Loaded")
+				self.UnregisterMessage("WeakAurasOptions", "AddOn_Loaded")
 			end
 		end)
 	end
