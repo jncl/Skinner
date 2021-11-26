@@ -29,18 +29,24 @@ ToDos
 
 ≈ 	O	Use luacheck on all lua files including AddOn Skins
 
-	I	Outfitter, reported by Galthariel
-√?		- Outfitter issue only happens on the context menus in the Character Screen and LDB right click and started after last Blizz patch (9.1.5). Was perfect until then.
-
 	I	LFG, reported by Galthariel, 14.11.21
 ?		- Text not visible when typing
+		- Dungeons & Raids, Premade Groups, Custom, Title editbox has not got information string displayed
 
-	I	GarrisonCapacitiveDisplayFrame, reportedby EpidemeDaBear, 14.11.21
-√		- Skinner\Core\UIFrames.lua:2842: attempt to index local 'btn' (a userdata value)
-		[string "@Skinner\Core\UIFrames.lua"]:2842: in function <Skinner\Core\UIFrames.lua:2839>
+	I	Legion Mission Table ,reported by EpidemeDaBear, 22.11.21
+√		-  Skinner\Core\MainFuncs.lua:732: attempt to index local 'glowBox' (a nil value)
+		[string "@Skinner\Core\MainFuncs.lua"]:732: in function `removeArrowGlowTex'
+		[string "@Skinner\Core\MainFuncs.lua"]:741: in function `skinGlowBox'
+		[string "@Skinner\Core\UIFrames.lua"]:2987: in function <Skinner\Core\UIFrames.lua:2986>
 
-	I/B	ColorPickerFrame, reported by 아련별, 19.11.21
-√		- Skinner\Core\UtilFuncs.lua:1019: attempt to index local 'frame' (a nil value)
-		[string "@Skinner\Core\UtilFuncs.lua"]:1019: in function <Skinner\Core\UtilFuncs.lua:1018>
-		[string "@Skinner\Core\UtilFuncs.lua"]:1052: in function `removeNineSlice'
-		[string "@Skinner\Core\UIFrames.lua"]:2117: in function <Skinner\Core\UIFrames.lua:2116>
+	I/B	AdiBags, reported by 아련별, 23.11.21
+?√		- Skinner\AddonSkins\AdiBags-v1.9.26-bcc.lua:50: attempt to index field 'sbb' (a nil value)
+		[string "@Skinner\AddonSkins\AdiBags-v1.9.26-bcc.lua"]:50: in function <Skinner\AddonSkins\AdiBags.lua:46>
+		[string "@Skinner\AddonSkins\AdiBags-v1.9.26-bcc.lua"]:62: in function <Skinner\AddonSkins\AdiBags.lua:60>
+
+	I/B	LootHistoryFrame, reported by 아련별, 25.11.21
+√		- ...\Accountant_Classic\Libs\AceHook-3.0\AceHook-3.0-9.lua:180: Attempting to rehook already active hook SetNormalTexture.
+		[string "@Accountant_Classic\Libs\AceHook-3.0\AceHook-3.0-9.lua"]:180: in function <...\Accountant_Classic\Libs\AceHook-3.0\AceHook-3.0.lua:118>
+		[string "@Accountant_Classic\Libs\AceHook-3.0\AceHook-3.0-9.lua"]:341: in function `SecureHook'
+		[string "@Skinner\Core\PlayerFrames.lua"]:3307: in function <Skinner\Core\PlayerFrames.lua:3296>
+		[string "@Skinner\Core\PlayerFrames.lua"]:3322: in function <Skinner\Core\PlayerFrames.lua:3321>
