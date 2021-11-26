@@ -1,11 +1,11 @@
--- This is a Framework
 local _, aObj = ...
+-- This is a Framework
 local _G = _G
 
 aObj.ItemPimper = true -- to stop IP skinning its frame
 
 local AceGUI = _G.LibStub:GetLibrary("AceGUI-3.0", true)
-local objectsToSkin = {}
+local objectsToSkin = _G.setmetatable({}, {__mode = "k"})
 if AceGUI then
 	aObj:RawHook(AceGUI, "Create", function(this, objType)
 		local obj = aObj.hooks[this].Create(this, objType)
@@ -262,8 +262,6 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 
 			-- WeakAuras objects
 			elseif objType == "WeakAurasDisplayButton" then
-				-- aObj:skinEditBox{obj=obj.renamebox, regs={9}, noHeight=true}
-				-- obj.renamebox:SetHeight(18)
 				aObj:skinObject("editbox", {obj=obj.renamebox})
 				obj.background:SetTexture(nil)
 				if aObj.modBtns then
@@ -558,10 +556,10 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 	end, true)
 
 	-- skin any objects created earlier
-	for obj in _G.pairs(objectsToSkin) do
+	for obj in _G.ipairs(_G.CopyTable(objectsToSkin)) do
 		skinAceGUI(obj, objectsToSkin[obj])
+		objectsToSkin[obj] = nil
 	end
-	objectsToSkin = {}
 
 end
 
@@ -579,7 +577,7 @@ if aObj.ACD then
 		if not aObj.isClsc then
 			aObj:keepFontStrings(aObj:getChild(this, 1))
 		end
-		aObj:addSkinFrame{obj=this, ft="a", kfs=true, nb=true, ofs=-4}
+		aObj:skinObject("frame", {obj=this, kfs=true, ofs=-4})
 		if aObj.modBtnBs then
 			aObj:skinStdButton{obj=this.accept}
 			aObj:skinStdButton{obj=this.cancel}

@@ -8,7 +8,7 @@ aObj.addonsToSkin.AdiBags = function(self) -- v1.9.25/v1.9.26-bcc/v1.9.20-classi
 
 	-- hook this for bag creation
 	aBag:RegisterMessage("AdiBags_BagFrameCreated", function(_, bag)
-		aObj:skinObject("editbox", {obj=_G[bag.frame:GetName() .. "SearchBox"]})
+		aObj:skinObject("editbox", {obj=_G[bag.frame:GetName() .. "SearchBox"], si=true})
 		aObj:skinObject("frame", {obj=bag.frame, kfs=true})
 		if aObj.modBtns then
 			aObj:skinCloseButton{obj=bag.frame.CloseButton}
@@ -44,6 +44,11 @@ aObj.addonsToSkin.AdiBags = function(self) -- v1.9.25/v1.9.26-bcc/v1.9.20-classi
 		aBag.db.profile.qualityHighlight = true
 		-- colour the button border
 		local function clrBB(btn)
+			-- handle in combat
+			if _G.InCombatLockdown() then
+			    aObj:add2Table(aObj.oocTab, {clrBB, {btn}})
+			    return
+			end
 			if not btn.sbb then
 				aObj:addButtonBorder{obj=btn, ibt=true}
 			end
