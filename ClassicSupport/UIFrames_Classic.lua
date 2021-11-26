@@ -65,7 +65,9 @@ aObj.SetupClassic_UIFrames = function()
 		end
 	end
 
-	if _G.C_LFGList.IsLookingForGroupEnabled() then
+	if _G.C_LFGList.IsLookingForGroupEnabled
+	and _G.C_LFGList.IsLookingForGroupEnabled()
+	then
 		aObj.blizzFrames[ftype].LFGFrame = function(self)
 			if not self.prdb.LFGLFM or self.initialized.LFGFrame then return end
 			self.initialized.LFGFrame = true
