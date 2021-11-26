@@ -6288,7 +6288,9 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 	if not self.prdb.Tooltips.skin or self.initialized.Tooltips then return end
 	self.initialized.Tooltips = true
 
-	if _G.IsAddOnLoaded("TinyTooltip") then
+	if _G.IsAddOnLoaded("TinyTooltip")
+	and not self.prdb.DisabledSkins["TinyTooltip"]
+	then
 		_G.setmetatable(self.ttList, {__newindex = function(_, _, tTip)
 			tTip = _G.type(tTip) == "string" and _G[tTip] or tTip
 			self:SendMessage("Tooltip_Setup", tTip, "init")
