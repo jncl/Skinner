@@ -70,9 +70,6 @@ aObj.addonsToSkin.Outfitter = function(self) -- v 6.0.1
 				for i = 0, _G.Outfitter.cMaxDisplayedItems - 1 do
 					btn = _G["OutfitterItem" .. i .. "CategoryExpand"]
 					self:skinExpandButton{obj=btn, onSB=true}
-					self:SecureHook(btn, "SetNormalTexture", function(bObj, nTex)
-						self:checkTex{obj=bObj, nTex=nTex}
-					end)
 				end
 			end
 			if self.modChkBtns then

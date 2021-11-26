@@ -268,9 +268,6 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 				obj.background:SetTexture(nil)
 				if aObj.modBtns then
 					aObj:skinExpandButton{obj=obj.expand, onSB=true}
-					aObj:secureHook(obj.expand, "SetNormalTexture", function(this, nTex)
-						aObj:checkTex{obj=this, nTex=nTex}
-					end)
 				end
 				if aObj.modBtnBs then
 					aObj:addButtonBorder{obj=obj.frame, relTo=obj.frame.icon}
@@ -285,9 +282,6 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 				obj.frame.background:SetTexture(nil)
 				if aObj.modBtns then
 					aObj:skinExpandButton{obj=obj.expand, onSB=true}
-					aObj:secureHook(obj.expand, "SetNormalTexture", function(this, nTex)
-						aObj:checkTex{obj=this, nTex=nTex}
-					end)
 				end
 
 			elseif objType == "WeakAurasNewButton" then

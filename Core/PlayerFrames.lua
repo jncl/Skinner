@@ -3302,9 +3302,6 @@ aObj.blizzFrames[ftype].LootHistory = function(self)
 				if aObj.modBtns then
 					if not obj.itemFrames[i].ToggleButton.sb then
 						aObj:skinExpandButton{obj=obj.itemFrames[i].ToggleButton, plus=true}
-						aObj:SecureHook(obj.itemFrames[i].ToggleButton, "SetNormalTexture", function(bObj, tObj)
-							aObj:checkTex{obj=bObj, nTex=tObj}
-						end)
 					end
 				end
 			end
