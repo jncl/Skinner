@@ -3291,36 +3291,32 @@ aObj.blizzFrames[ftype].LootHistory = function(self)
 	self.initialized.LootHistory = true
 
 	self:SecureHookScript(_G.LootHistoryFrame, "OnShow", function(this)
+		this:DisableDrawLayer("BACKGROUND")
+		this.Divider:SetTexture(nil)
+		self:skinObject("slider", {obj=this.ScrollFrame.ScrollBar, fType=ftype, rpTex="background"})
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, ofs=-1})
 		local function skinItemFrames(obj)
-
-			for i = 1, #obj.itemFrames do
-				obj.itemFrames[i].Divider:SetTexture(nil)
-				obj.itemFrames[i].NameBorderLeft:SetTexture(nil)
-				obj.itemFrames[i].NameBorderRight:SetTexture(nil)
-				obj.itemFrames[i].NameBorderMid:SetTexture(nil)
-				obj.itemFrames[i].ActiveHighlight:SetTexture(nil)
+			for _, frame in _G.pairs(obj.itemFrames) do
+				frame.Divider:SetTexture(nil)
+				frame.NameBorderLeft:SetTexture(nil)
+				frame.NameBorderRight:SetTexture(nil)
+				frame.NameBorderMid:SetTexture(nil)
+				frame.ActiveHighlight:SetTexture(nil)
 				if aObj.modBtns then
-					if not obj.itemFrames[i].ToggleButton.sb then
-						aObj:skinExpandButton{obj=obj.itemFrames[i].ToggleButton, plus=true}
+					if not frame.ToggleButton.sb then
+						aObj:skinExpandButton{obj=frame.ToggleButton, plus=true}
 					end
 				end
 			end
-
 		end
-		self:skinSlider{obj=_G.LootHistoryFrame.ScrollFrame.ScrollBar, size=3}
-		_G.LootHistoryFrame.ScrollFrame.ScrollBarBackground:SetTexture(nil)
-		_G.LootHistoryFrame.Divider:SetTexture(nil)
-		_G.LootHistoryFrame:DisableDrawLayer("BACKGROUND")
-		self:addSkinFrame{obj=_G.LootHistoryFrame, ft=ftype, kfs=true, ofs=-1}
 		-- hook this to skin loot history items
 		self:SecureHook("LootHistoryFrame_FullUpdate", function(fObj)
 			skinItemFrames(fObj)
 		end)
 		-- skin existing itemFrames
-		skinItemFrames(_G.LootHistoryFrame)
+		skinItemFrames(this)
 
-		-- LootHistoryDropDown
-		self:skinDropDown{obj=_G.LootHistoryDropDown}
+		self:skinObject("dropdown", {obj=_G.LootHistoryDropDown, fType=ftype})
 
 		self:Unhook(this, "OnShow")
 	end)
@@ -4394,26 +4390,25 @@ aObj.blizzLoDFrames[ftype].TradeSkillUI = function(self)
 			end
 		end
 		if self.modBtns then
-			local function checkTex(btn)
-				if not btn.isHeader then btn.sb:Hide()
-				else
-					if btn.tradeSkillInfo.collapsed then
-						btn.sb:SetText("+")
+			local function checkTex(fObj)
+				for _, btn in _G.pairs(fObj.buttons) do
+					if not btn.isHeader then
+						btn.sb:Hide()
 					else
-						btn.sb:SetText("-")
+						if btn.tradeSkillInfo.collapsed then
+							btn.sb:SetText("+")
+						else
+							btn.sb:SetText("-")
+						end
+						btn.sb:Show()
 					end
-					btn.sb:Show()
 				end
 			end
 			self:SecureHook(this.RecipeList, "RefreshDisplay", function(fObj)
-				for _, btn in _G.pairs(fObj.buttons) do
-					checkTex(btn)
-				end
+				checkTex(fObj)
 			end)
 			self:SecureHook(this.RecipeList, "update", function(fObj)
-				for _, btn in _G.pairs(fObj.buttons) do
-					checkTex(btn)
-				end
+				checkTex(fObj)
 			end)
 		end
 		-- DetailsFrame
