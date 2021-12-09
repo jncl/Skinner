@@ -119,6 +119,19 @@ aObj.SetupClassic_UIFrames = function()
 							self:clrBtnBdr(btn)
 						end)
 					end
+					if self.modBtnBs then
+						for i = 1, 3 do
+							self:addButtonBorder{obj=_G["LFGSearchIcon" .. i .. "Shine"], fType=ftype, x1=-6, y1=3, x2=6, y2=-4, clr="grey"}
+						end
+						self:SecureHook(fObj, "UpdateActivityIcon", function(frame, i)
+							local activityID = _G.UIDropDownMenu_GetSelectedValue(frame.ActivityDropDown[i])
+							if activityID then
+								self:clrBtnBdr(_G["LFGSearchIcon" .. i .. "Shine"])
+							else
+								self:clrBtnBdr(_G["LFGSearchIcon" .. i .. "Shine"], "grey")
+							end
+						end)
+					end
 
 					self:Unhook(fObj, "OnShow")
 				end)
