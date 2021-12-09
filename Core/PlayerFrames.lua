@@ -3809,7 +3809,13 @@ aObj.blizzLoDFrames[ftype].PVPUI = function(self)
 		end
 		local btn
 		for _, bName in _G.pairs{"RandomBG", "RandomEpicBG", "Arena1", "Brawl", "SpecialEvent"} do
-			btn = this.BonusFrame[bName .. "Button"]
+			if aObj.isRtlPTR
+			and bName == "SpecialEvent"
+			then
+				btn = this.BonusFrame["BrawlButton2"]
+			else
+				btn = this.BonusFrame[bName .. "Button"]
+			end
 			btn.NormalTexture:SetTexture(nil)
 			btn:SetPushedTexture(nil)
 			btn.Reward.Border:SetTexture(nil)
