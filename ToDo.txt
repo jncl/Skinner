@@ -33,20 +33,14 @@ ToDos
 ?		- Text not visible when typing
 		- Dungeons & Raids, Premade Groups, Custom, Title editbox has not got information string displayed
 
-	I	Legion Mission Table ,reported by EpidemeDaBear, 22.11.21
-√		-  Skinner\Core\MainFuncs.lua:732: attempt to index local 'glowBox' (a nil value)
-		[string "@Skinner\Core\MainFuncs.lua"]:732: in function `removeArrowGlowTex'
-		[string "@Skinner\Core\MainFuncs.lua"]:741: in function `skinGlowBox'
-		[string "@Skinner\Core\UIFrames.lua"]:2987: in function <Skinner\Core\UIFrames.lua:2986>
+	I	CharacterFrame, reported by Fakelessgaming, 30.11.21
+√		- Skinner\Core\PlayerFrames.lua:657: attempt to index field 'sbb' (a nil value)
+		[string "@Skinner\Core\PlayerFrames.lua"]:657: in function <Skinner\Core\PlayerFrames.lua:649>
 
-	I/B	AdiBags, reported by 아련별, 23.11.21
-?√		- Skinner\AddonSkins\AdiBags-v1.9.26-bcc.lua:50: attempt to index field 'sbb' (a nil value)
-		[string "@Skinner\AddonSkins\AdiBags-v1.9.26-bcc.lua"]:50: in function <Skinner\AddonSkins\AdiBags.lua:46>
-		[string "@Skinner\AddonSkins\AdiBags-v1.9.26-bcc.lua"]:62: in function <Skinner\AddonSkins\AdiBags.lua:60>
+	I/B	LFG/LFM Frame, reported by 아련별, 01.12.21
+√		- not skinned
 
-	I/B	LootHistoryFrame, reported by 아련별, 25.11.21
-√		- ...\Accountant_Classic\Libs\AceHook-3.0\AceHook-3.0-9.lua:180: Attempting to rehook already active hook SetNormalTexture.
-		[string "@Accountant_Classic\Libs\AceHook-3.0\AceHook-3.0-9.lua"]:180: in function <...\Accountant_Classic\Libs\AceHook-3.0\AceHook-3.0.lua:118>
-		[string "@Accountant_Classic\Libs\AceHook-3.0\AceHook-3.0-9.lua"]:341: in function `SecureHook'
-		[string "@Skinner\Core\PlayerFrames.lua"]:3307: in function <Skinner\Core\PlayerFrames.lua:3296>
-		[string "@Skinner\Core\PlayerFrames.lua"]:3322: in function <Skinner\Core\PlayerFrames.lua:3321>
+	I	BFA Mission List, reported by EpidemeDaBear, 01.12.21
+√		- Skinner\Core\UtilFuncs.lua:451: attempt to index local 'obj' (a nil value)
+		[string "@Skinner\Core\UtilFuncs.lua"]:451: in function `clrBBC'
+		[string "@Skinner\Core\UIFrames.lua"]:381: in function <Skinner\Core\UIFrames.lua:377>

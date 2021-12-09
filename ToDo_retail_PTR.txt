@@ -8,5 +8,27 @@ ToDo_retail_PTR
 
 	Retail_PTR
 		- Added
+			- BindingUI
+√				- .clickCastingButton
+?				- .defaultsButton
+√			- Blizzard_ClickBindingUI
+			- Blizzard_PVPUI
+√				- .BrawlButton2
+			- Blizzard_PlayerChoice
+				- Blizzard_PlayerChoicePowerChoiceTemplate
+				- Blizzard_PlayerChoiceCypherOptionTemplate
+				- Blizzard_PlayerChoiceTimer
+			- Blizzard_PlayerChoiceToggleButton
+				- TorghastPlayerChoiceToggleButton
+				- CypherPlayerChoiceToggleButton
+			- InterfaceOptionsPanels
+√				- .EnableMouseoverCastCheckbox
+√				- .MouseoverCastKeyDropDown
+√				- .clickCastingButton
+			- Blizzard_UIWidgetTemplateUnitPowerBar
 		- Updated
 		- Deleted
+			- Blizzard_PVPUI
+√				- .SpecialEventButton
+			- HelpFrame
+?				- .Background
