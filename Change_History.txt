@@ -1,3 +1,23 @@
+beta9.41137.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Updated Ace3 & AdiBags skins
+	Code Refactoring
+	Updated Ace3, Outfitter & LootHistoryFrame skins to remove hook functions
+	Updated WeakAuras skin
+	Bugfix for SoM LFG checks
+	Updated Tooltips skinning code
+	Updated PVPMatch skin
+	Updated CompactFrames skin
+	Enable LFGFrame skin in SoM
+	Updated ReEnhancedStackSplit & EnhancedStackSplit skin
+	Updated & moved StackSplit skin code
+	Bugfix for OrderHallMissionTutorialFrame
+	Update TargetFrame skin
+	Update PetFrame skin
+
 beta9.41079.1
 Jncl:
 	ToDo.txt
