@@ -6850,7 +6850,7 @@ if _G.PTR_IssueReporter then
 			self:skinObject("button", {obj=_G.PTR_IssueReporter[name], fType=ftype, clr="blue"})
 		end
 
-		self:SecureHook(_G.PTR_IssueReporter, "GetStandaloneSurveyFrame", function(this)
+		self:SecureHook(_G.PTR_IssueReporter, "GetStandaloneSurveyFrame", function(_)
 			skinFrame(_G.PTR_IssueReporter.StandaloneSurvey, 2) -- header frame
 			skinFrame(_G.PTR_IssueReporter.StandaloneSurvey.SurveyFrame)
 			if self.modBtns then
