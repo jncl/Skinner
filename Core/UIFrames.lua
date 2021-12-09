@@ -4825,17 +4825,17 @@ aObj.blizzFrames[ftype].Nameplates = function(self)
 		then
 			local nHb, nCb = nP.healthBar, nP.castBar or nP.CastBar
 			nHb.border:DisableDrawLayer("ARTWORK")
-			if aObj.isClsc then
+			if aObj.isRtl then
+				aObj:skinObject("statusbar", {obj=nHb, fi=0, bg=nHb.background, otherTex={nHb.myHealPrediction, nHb.otherHealPrediction}})
+				if nCb then
+					aObj:skinObject("statusbar", {obj=nCb, fi=0, bg=nCb.background})
+				end
+			else
 				aObj:skinObject("statusbar", {obj=nHb, fi=0, bg=nHb.background})
 				if aObj.isClscBC then
 					aObj:skinObject("statusbar", {obj=nCb, fi=0, bg=aObj:getRegion(nCb, 1)})
 					aObj:nilTexture(nCb.Border, true)
 					aObj:nilTexture(nCb.BorderShield, true)
-				end
-			else
-				aObj:skinObject("statusbar", {obj=nHb, fi=0, bg=nHb.background, otherTex={nHb.myHealPrediction, nHb.otherHealPrediction}})
-				if nCb then
-					aObj:skinObject("statusbar", {obj=nCb, fi=0, bg=nCb.background})
 				end
 			end
 			-- N.B. WidgetContainer objects managed in UIWidgets code
