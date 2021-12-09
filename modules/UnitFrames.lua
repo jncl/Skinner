@@ -97,7 +97,7 @@ function module:skinPlayerF()
 				frame.threatIndicator = _G.PlayerAttackBackground
 			end
 			-- status bars
-			if not aObj.isClsc then
+			if aObj.isRtl then
 				aObj:skinObject("statusbar", {obj=frame.PlayerFrameHealthBarAnimatedLoss, fi=0})
 				aObj:skinObject("statusbar", {obj=frame.healthbar, fi=0, otherTex={frame.myHealPredictionBar, frame.otherHealPredictionBar}})
 				aObj:skinObject("statusbar", {obj=frame.manabar, fi=0, otherTex={frame.manabar.FeedbackFrame.BarTexture, frame.myManaCostPredictionBar}, nilFuncs=true})
@@ -243,13 +243,13 @@ function module:skinPetF()
 			module:adjustStatusBarPosn(_G.PetFrameHealthBar, 0)
 			module:adjustStatusBarPosn(_G.PetFrameManaBar, -1)
 			-- casting bar handled in CastingBar function
-			if not aObj.isClsc then
+			if aObj.isRtl then
 				-- remove debuff border
 				for i = 1, 4 do
 					_G["PetFrameDebuff" .. i .. "Border"]:SetTexture(nil)
 				end
 			end
-			if not aObj.isClsc
+			if aObj.isRtl
 			and db.petspec
 			and aObj.uCls == "HUNTER"
 			then

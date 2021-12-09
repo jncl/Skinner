@@ -639,7 +639,7 @@ aObj.blizzFrames[ftype].GossipFrame = function(self)
 	and _G.QuesterDB.gossipColor)
 	then
 		self:SecureHook("GossipFrameUpdate", function()
-			if not self.isClsc then
+			if self.isRtl then
 				for _, btn in _G.pairs(_G.GossipFrame.buttons) do
 					local newText, upd = self:removeColourCodes(btn:GetText())
 					if upd then
@@ -1034,7 +1034,7 @@ aObj.blizzFrames[ftype].QuestFrame = function(self)
 		self:Unhook(this, "OnShow")
 	end)
 
-	if not self.isClsc then
+	if self.isRtl then
 		if not (self:isAddonEnabled("Quester")
 		and _G.QuesterDB.gossipColor)
 		then

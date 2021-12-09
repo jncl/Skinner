@@ -3503,7 +3503,7 @@ aObj.blizzFrames[ftype].InterfaceOptions = function(self)
 		if panel ~= _G.CompactUnitFrameProfiles then
 			return
 		end
-		if not aObj.isClsc then
+		if self.isRtl then
 			self:removeNineSlice(_G.CompactUnitFrameProfiles.newProfileDialog.Border)
 			self:removeNineSlice(_G.CompactUnitFrameProfiles.deleteProfileDialog.Border)
 			self:removeNineSlice(_G.CompactUnitFrameProfiles.unsavedProfileDialog.Border)
@@ -4253,7 +4253,7 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 	if self.prdb.MainMenuBar.skin then
 		self:keepFontStrings(_G.StanceBarFrame)
 		self:keepFontStrings(_G.PetActionBarFrame)
-		if not self.isClsc then
+		if self.isRtl then
 			_G.MainMenuBarArtFrame.LeftEndCap:SetTexture(nil)
 			_G.MainMenuBarArtFrame.RightEndCap:SetTexture(nil)
 			_G.MicroButtonAndBagsBar:DisableDrawLayer("BACKGROUND")
@@ -4321,7 +4321,7 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 					self:addButtonBorder{obj=btn, abt=true, sabt=true, ofs=3}
 				end
 			end
-			if not self.isClsc then
+			if self.isRtl then
 				for i = 1, _G.NUM_POSSESS_SLOTS do
 					self:addButtonBorder{obj=_G["PossessButton" .. i], abt=true, sft=true} -- N.B. uses SecureFrameTemplate
 				end
@@ -4341,7 +4341,7 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 		self:addButtonBorder{obj=_G.MainMenuBarVehicleLeaveButton, clr="grey"}
 	end
 
-	if not self.isClsc then
+	if self.isRtl then
 		-- UnitPowerBarAlt (inc. PlayerPowerBarAlt)
 		if self.prdb.MainMenuBar.altpowerbar then
 			local function skinUnitPowerBarAlt(upba)
@@ -4442,7 +4442,7 @@ aObj.blizzFrames[ftype].Minimap = function(self)
 		_G.LowerFrameLevel(_G.Minimap.sf)
 	end
 
-	if not self.isClsc then
+	if self.isRtl then
 		-- N.B. copied from SexyMap
 		-- Removes the circular "waffle-like" texture that shows when using a non-circular minimap in the blue quest objective area.
 		_G.Minimap:SetArchBlobRingScalar(0)
@@ -4848,7 +4848,7 @@ aObj.blizzFrames[ftype].Nameplates = function(self)
 	end
 
 	-- Class Nameplate Frames
-	if not self.isClsc then
+	if self.isRtl then
 		local mF = _G.ClassNameplateManaBarFrame
 		if mF then
 			self:skinObject("statusbar", {obj=mF, fi=0, otherTex={mF.ManaCostPredictionBar, mF.FeedbackFrame.BarTexture}})
@@ -6659,7 +6659,7 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 		end
 	end
 
-	if not self.isClsc then
+	if self.isRtl then
 		local function hookAndSkinWidgets(widgetContainer)
 			-- aObj:Debug("hookAndSkinWidgets: [%s, %s]", widgetContainer:GetDebugName())
 			-- DON'T skin NamePlate[n].* widgets as they cause Clamping Errors
