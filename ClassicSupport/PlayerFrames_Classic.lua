@@ -802,7 +802,7 @@ aObj.SetupClassic_PlayerFrames = function()
 				btn:DisableDrawLayer("BACKGROUND")
 				btn:GetNormalTexture():SetTexture(nil)
 				if self.modBtnBs then
-					self:addButtonBorder{obj=btn, sec=true, reParent={_G["SpellButton" .. i .. "AutoCastable"]}}
+					self:addButtonBorder{obj=btn, sft=true, reParent={_G["SpellButton" .. i .. "AutoCastable"]}}
 				end
 				updBtn(btn)
 			end

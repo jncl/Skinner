@@ -4287,10 +4287,10 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 		end
 		if self.modBtnBs then
 			for _, btn in _G.pairs(_G.StanceBarFrame.StanceButtons) do
-				self:addButtonBorder{obj=btn, abt=true, sec=true} -- N.B. uses SecureFrameTemplate
+				self:addButtonBorder{obj=btn, abt=true, sft=true} -- N.B. uses SecureFrameTemplate
 			end
 			for i = 1, _G.NUM_PET_ACTION_SLOTS do
-				self:addButtonBorder{obj=_G["PetActionButton" .. i], abt=true, sec=true, reParent={_G["PetActionButton" .. i .. "AutoCastable"], _G["PetActionButton" .. i .. "SpellHighlightTexture"]}, ofs=3}
+				self:addButtonBorder{obj=_G["PetActionButton" .. i], abt=true, sft=true, reParent={_G["PetActionButton" .. i .. "AutoCastable"], _G["PetActionButton" .. i .. "SpellHighlightTexture"]}, ofs=3}
 				_G["PetActionButton" .. i .. "Shine"]:SetParent(_G["PetActionButton" .. i].sbb)
 			end
 			for i = 1, _G.NUM_ACTIONBAR_BUTTONS do
@@ -4323,7 +4323,7 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 			end
 			if not self.isClsc then
 				for i = 1, _G.NUM_POSSESS_SLOTS do
-					self:addButtonBorder{obj=_G["PossessButton" .. i], abt=true, sec=true} -- N.B. uses SecureFrameTemplate
+					self:addButtonBorder{obj=_G["PossessButton" .. i], abt=true, sft=true} -- N.B. uses SecureFrameTemplate
 				end
 				self:addButtonBorder{obj=_G.MultiCastSummonSpellButton, abt=true, sabt=true, ofs=5}
 				self:addButtonBorder{obj=_G.MultiCastRecallSpellButton, abt=true, sabt=true, ofs=5}

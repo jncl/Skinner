@@ -19,7 +19,7 @@ aObj.skinTPLs = {
 		-- x2          = 4,
 		-- y2          = -4,
 		sap         = false, -- SetAllPoints to object
-		sec         = false, -- use SecureFrameTemplate
+		sft         = false, -- use SecureFrameTemplate
 		sabt		= false, -- use SecureActionButtonTemplate
 		subt		= false, -- use SecureUnitButtonTemplate
 	},
@@ -66,7 +66,7 @@ aObj.skinTPLs = {
 		ri          = true, -- disable draw layers; [Background, Border & Overlay]
 		rns         = true, -- disable draw layers; [Background, Border & Overlay]
 		rp          = false, -- reverse parent child relationship
-		-- sec         = true, -- use SecureFrameTemplate
+		-- sft         = true, -- use SecureFrameTemplate
 		ofs         = 2, -- skin frame offset to object
 		-- x1          = ofs * -2,
 		-- y1          = ofs,
@@ -266,6 +266,10 @@ skinFuncs.skin = function(table) applySkin(table) end
 local function skinButton(tbl)
 	--@alpha@
 	_G.assert(tbl.obj, "Missing object (skinButton)\n" .. _G.debugstack(2, 3, 2))
+	 if tbl.sec then
+		-- handle AddOn skins using deprecated options
+		aObj:CustomPrint(1, 0, 0, "Using deprecated options - sec, use sft instead", tbl.obj)
+	end
 	--@end-alpha@
 	aObj:Debug2("skinButton [%s]", tbl)
 
@@ -278,7 +282,8 @@ local function skinButton(tbl)
 		tbl.name = tbl.obj:GetName() .. "~sb~"
 	end
 	-- add a frame to the object
-	local template = tbl.sec and "SecureFrameTemplate" or tbl.sabt and "SecureActionButtonTemplate" or tbl.subt and "SecureUnitButtonTemplate"
+	tbl.sft = tbl.sft or tbl.sec or nil
+	local template = tbl.sft and "SecureFrameTemplate" or tbl.sabt and "SecureActionButtonTemplate" or tbl.subt and "SecureUnitButtonTemplate"
 	tbl.obj.sb = _G.CreateFrame("Button", tbl.name, tbl.obj, template)
 	-- allow clickthrough
 	tbl.obj.sb:EnableMouse(false)
@@ -439,6 +444,10 @@ skinFuncs.editbox = function(table) skinEditBox(table) end
 local function skinFrame(tbl)
 	--@alpha@
 	_G.assert(tbl.obj, "Missing object (skinFrame)\n" .. _G.debugstack(2, 3, 2))
+	if tbl.sec then
+		-- handle AddOn skins using deprecated options
+		aObj:CustomPrint(1, 0, 0, "Using deprecated options - sec, use sft instead", tbl.obj)
+	end
 	--@end-alpha@
 	aObj:Debug2("skinFrame [%s]", tbl)
 
@@ -472,7 +481,8 @@ local function skinFrame(tbl)
 		tbl.name = tbl.obj:GetName() .. "~sf~"
 	end
 	-- add a frame to the object
-	tbl.obj.sf = _G.CreateFrame("Frame", tbl.name, tbl.obj, tbl.sec and "SecureFrameTemplate")
+	tbl.sft = tbl.sft or tbl.sec or nil
+	tbl.obj.sf = _G.CreateFrame("Frame", tbl.name, tbl.obj, tbl.sft and "SecureFrameTemplate")
 	-- allow clickthrough
 	tbl.obj.sf:EnableMouse(false)
 	-- adjust frame level & make it mirror its parent's

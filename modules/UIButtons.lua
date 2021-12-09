@@ -214,15 +214,15 @@ function module:chgHLTex(obj, hTex)
 end
 
 function module:clrButtonFromBorder(bObj, texture)
-	--@alpha@
-	 _G.assert(bObj.sbb, "Missing object__cBB\n" .. _G.debugstack(2, 3, 2))
-	--@end-alpha@
-
 	-- handle in combat
 	if _G.InCombatLockdown() then
 		aObj:add2Table(aObj.oocTab, {self.clrButtonFromBorder, {self, bObj, texture}})
 		return
 	end
+
+	--@alpha@
+	 _G.assert(bObj.sbb, "Missing object__cBB\n" .. _G.debugstack(2, 3, 2))
+	--@end-alpha@
 
 	local iBdr = bObj.IconBorder or bObj.iconBorder or bObj[texture]
 	iBdr:SetAlpha(1) -- ensure alpha is 1 otherwise btn.sbb isn't displayed
@@ -748,7 +748,7 @@ local function __addButtonBorder(opts)
 		libt = Large Item Button template
 		sibt = Small Item Button template
 		gibt = Giant Item Button template
-		sec = requires SecureFrameTemplate to inherit from otherwise tainting occurs
+		sft = requires SecureFrameTemplate
 		sabt = requires SecureActionButtonTemplate
 		subt = requires SecureUnitButtonTemplate
 		reParent = table of objects to reparent to the border frame
@@ -771,6 +771,10 @@ local function __addButtonBorder(opts)
 	 then
 		-- handle AddOn skins using deprecated options
 		aObj:CustomPrint(1, 0, 0, "Using deprecated options - seca,secu, use sabt or subt instead", opts.obj)
+	end
+	 if opts.sec then
+		-- handle AddOn skins using deprecated options
+		aObj:CustomPrint(1, 0, 0, "Using deprecated options - sec, use sft instead", opts.obj)
 	end
 	--@end-alpha@
 	if not opts.obj then return end
@@ -810,7 +814,8 @@ local function __addButtonBorder(opts)
 	end
 
 	-- create the button border object
-	local template = opts.sec and "SecureFrameTemplate" or opts.sabt and "SecureActionButtonTemplate" or opts.subt and "SecureUnitButtonTemplate"
+	opts.sft = opts.sft or opts.sec or nil
+	local template = opts.sft and "SecureFrameTemplate" or opts.sabt and "SecureActionButtonTemplate" or opts.subt and "SecureUnitButtonTemplate"
 	opts.obj.sbb = _G.CreateFrame(opts.obj:GetObjectType(), nil, opts.obj, template)
 	opts.obj.sbb:EnableMouse(false) -- enable clickthrough
 
