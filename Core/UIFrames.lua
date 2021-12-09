@@ -189,7 +189,6 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 			end
 		end
 	end
-	local mfTabSkin = aObj.skinTPLs.new("tabs", {fType=ftype, ignoreHLTex=false, regions={7, 8, 9, 10}})
 	function skinMissionFrame(frame)
 		local x1Ofs, y1Ofs, x2Ofs, y2Ofs = 2, 2, 1, -4
 		if frame == _G.CovenantMissionFrame then
@@ -204,18 +203,12 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 		end
 		frame.GarrCorners:DisableDrawLayer("BACKGROUND")
 		aObj:skinObject("frame", {obj=frame, fType=ftype, kfs=true, cbns=true, x1=x1Ofs, y1=y1Ofs, x2=x2Ofs, y2=y2Ofs})
-		-- tabs
-		mfTabSkin.obj = frame
-		mfTabSkin.prefix =  frame:GetName()
-		mfTabSkin.selectedTab = frame.selectedTab
-		mfTabSkin.lod = aObj.isTT and true
 		if frame == _G.GarrisonMissionFrame then
-			x1Ofs, y1Ofs, x2Ofs, y2Ofs = 10, -2, -11, 2
+			x2Ofs, y2Ofs = -11, 2
 		else
-			x1Ofs, y1Ofs, x2Ofs, y2Ofs = 10, -2, -10, 7
+			x2Ofs, y2Ofs = -10, 7
 		end
-		mfTabSkin.offsets = {x1=x1Ofs, y1=aObj.isTT and 2 or y1Ofs, x2=x2Ofs, y2=aObj.isTT and 4 or y2Ofs}
-		aObj:skinObject(mfTabSkin)
+		aObj:skinObject("tabs", {obj=frame, prefix=frame:GetName(), fType=ftype, selectedTab=frame.selectedTab, lod=aObj.isTT and true, ignoreHLTex=false, regions={7, 8, 9, 10}, offsets={x1=10, y1=aObj.isTT and 2 or -2, x2=x2Ofs, y2=aObj.isTT and 4 or y2Ofs}})
 	end
 	function skinCompleteDialog(frame, naval)
 		if not naval then
@@ -344,23 +337,17 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 	    aObj:removeRegions(frame.Stage.MissionInfo, naval and {1, 2, 3, 4, 5, 8, 9, 10} or {1, 2, 3, 4, 5, 11, 12, 13})
 		aObj:nilTexture(frame.Stage.MissionInfo.IconBG, true)
 	end
-	local mlTabSkin = aObj.skinTPLs.new("tabs", {fType=ftype, numTabs=2, ignoreHLTex=false, upwards=true, regions={7, 8, 9}, track=false})
 	function skinMissionList(ml, tabOfs)
 		ml.MaterialFrame:DisableDrawLayer("BACKGROUND")
 		aObj:skinObject("frame", {obj=ml, fType=ftype, kfs=true, fb=true, ofs=1})
-		if ml.RaisedFrameEdges then
+		if ml.RaisedFrameEdges then -- CovenantMissions
 			ml.RaisedFrameEdges:DisableDrawLayer("BORDER")
 			ml.MaterialFrame.LeftFiligree:SetTexture(nil)
 			ml.MaterialFrame.RightFiligree:SetTexture(nil)
 			aObj:skinObject("slider", {obj=ml.listScroll.scrollBar, fType=ftype, y1=5, y2=-10})
 		else
 			aObj:skinObject("slider", {obj=ml.listScroll.scrollBar, fType=ftype, y1=-2, y2=2})
-			-- tabs
-			mlTabSkin.obj = ml
-			mlTabSkin.prefix = ml:GetName()
-			mlTabSkin.lod = aObj.isTT and true
-			mlTabSkin.offsets =  {x1=tabOfs and tabOfs * -1 or 6, y1=tabOfs or -6, x2=tabOfs or -6, y2=aObj.isTT and 3 or 8}
-			aObj:skinObject(mlTabSkin)
+			aObj:skinObject("tabs", {obj=ml, prefix=ml:GetName(), fType=ftype, numTabs=2, ignoreHLTex=false, upwards=true, lod=aObj.isTT and true, regions={7, 8, 9}, offsets={x1=tabOfs and tabOfs * -1 or 6, y1=tabOfs or -6, x2=tabOfs or -6, y2=aObj.isTT and 3 or 8}, track=false})
 			if aObj.isTT then
 				aObj:secureHook("GarrisonMissonListTab_SetSelected", function(tab, isSelected)
 					if isSelected then
@@ -371,15 +358,9 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 				end)
 			else
 				if ml.UpdateMissions then
-					if not ml.Tab2:IsEnabled() then
-						aObj:clrBBC(ml.Tab2.sf, "disabled")
-					end
-					aObj:SecureHook(ml, "UpdateMissions", function(this)
-						if not this.Tab2:IsEnabled() then
-							aObj:clrBBC(this.Tab2.sf, "disabled")
-						else
-							aObj:clrBBC(this.Tab2.sf)
-						end
+					aObj:clrBBC(ml.Tab2.sf, not ml.Tab2:IsEnabled() and "disabled")
+					aObj:SecureHook(ml.Tab2, "SetEnabled", function(bObj, state)
+						aObj:clrBBC(bObj.sf, not state and "disabled")
 					end)
 				end
 			end
