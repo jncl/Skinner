@@ -1465,7 +1465,7 @@ aObj.blizzFrames[ftype].ChatButtons = function(self)
 		self:addButtonBorder{obj=_G.ChatFrameToggleVoiceDeafenButton, ofs=0, clr="grey"}
 		self:addButtonBorder{obj=_G.ChatFrameToggleVoiceMuteButton, ofs=0, clr="grey"}
 		self:addButtonBorder{obj=_G.ChatFrameMenuButton, ofs=-2, x1=1, clr="grey"}
-		self:addButtonBorder{obj=_G.TextToSpeechButton, x1=1, y1=2, x2=-2, y2=-2, clr="grey"}
+		self:addButtonBorder{obj=_G.TextToSpeechButton, ofs=1, clr="grey"}
 		-- QuickJoinToastButton(s)
 		self:addButtonBorder{obj=_G.QuickJoinToastButton, x1=1, y1=2, x2=-2, y2=-2, clr="grey"}
 		for _, type in _G.pairs{"Toast", "Toast2"} do
@@ -6262,6 +6262,9 @@ aObj.blizzFrames[ftype].TextToSpeechFrame = function(self)
 		self:getChild(_G.TextToSpeechFrameTtsVoicePicker, 1):DisableDrawLayer("BACKGROUND")
 		self:skinObject("scrollbar", {obj=_G.TextToSpeechFrameTtsVoicePicker.ScrollBar, fType=ftype, rpTex="background"})
 		self:skinObject("dropdown", {obj=_G.TextToSpeechFrameTtsVoiceAlternateDropdown, fType=ftype})
+		self:SecureHook("TextToSpeechFrame_UpdateAlternate", function()
+			self:checkDisabledDD(_G.TextToSpeechFrameTtsVoiceAlternateDropdown)
+		end)
 		self:getChild(_G.TextToSpeechFrameTtsVoiceAlternatePicker, 1):DisableDrawLayer("BACKGROUND")
 		self:skinObject("scrollbar", {obj=_G.TextToSpeechFrameTtsVoiceAlternatePicker.ScrollBar, fType=ftype, rpTex="background"})
 		self:skinObject("slider", {obj=_G.TextToSpeechFrameAdjustRateSlider, fType=ftype})
@@ -6269,6 +6272,9 @@ aObj.blizzFrames[ftype].TextToSpeechFrame = function(self)
 		if self.modBtns then
 			self:skinStdButton{obj=_G.TextToSpeechFramePlaySampleButton, fType=ftype}
 			self:skinStdButton{obj=_G.TextToSpeechFramePlaySampleAlternateButton, fType=ftype}
+			self:SecureHook(_G.TextToSpeechFramePlaySampleAlternateButton, "SetEnabled", function(bObj)
+				self:clrBtnBdr(bObj)
+			end)
 		end
 		if self.modChkBtns then
 			self:skinCheckButton{obj=_G.TextToSpeechFramePanelContainer.PlaySoundSeparatingChatLinesCheckButton, fType=ftype}
