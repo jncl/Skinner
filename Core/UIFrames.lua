@@ -5829,7 +5829,7 @@ aObj.blizzFrames[ftype].SharedBasicControls = function(self)
 
 	self:SecureHookScript(_G.ScriptErrorsFrame, "OnShow", function(this)
 		self:skinObject("slider", {obj=this.ScrollFrame.ScrollBar, fType=ftype})
-		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ofs=0})
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ofs=-1, y1=-2})
 		if self.modBtns then
 			self:skinCloseButton{obj=_G.ScriptErrorsFrameClose}
 			self:skinStdButton{obj=this.Reload}
