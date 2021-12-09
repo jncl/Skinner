@@ -5,7 +5,7 @@ local _G = _G
 aObj.ItemPimper = true -- to stop IP skinning its frame
 
 local AceGUI = _G.LibStub:GetLibrary("AceGUI-3.0", true)
-local objectsToSkin = _G.setmetatable({}, {__mode = "k"})
+local objectsToSkin = {}
 if AceGUI then
 	aObj:RawHook(AceGUI, "Create", function(this, objType)
 		local obj = aObj.hooks[this].Create(this, objType)
@@ -556,10 +556,10 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 	end, true)
 
 	-- skin any objects created earlier
-	for obj in _G.ipairs(_G.CopyTable(objectsToSkin)) do
+	for obj in _G.ipairs(objectsToSkin) do
 		skinAceGUI(obj, objectsToSkin[obj])
-		objectsToSkin[obj] = nil
 	end
+	objectsToSkin = {}
 
 end
 
