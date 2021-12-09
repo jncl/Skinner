@@ -4423,6 +4423,13 @@ aObj.blizzFrames[ftype].Minimap = function(self)
 		_G.TitanMovable_AddonAdjust("MinimapCluster", true)
 	end
 
+	-- hook this to handle Jostle Library
+	if _G.LibStub:GetLibrary("LibJostle-3.0", true) then
+		self:RawHook(_G.MinimapCluster, "SetPoint", function(this, point, relTo, relPoint, _)
+			self.hooks[this].SetPoint(this, point, relTo, relPoint, -6, -18)
+		end, true)
+	end
+
 	-- Cluster Frame
 	_G.MinimapBorderTop:Hide()
 	_G.MinimapZoneTextButton:ClearAllPoints()
@@ -4433,7 +4440,8 @@ aObj.blizzFrames[ftype].Minimap = function(self)
 	self:skinObject("button", {obj=_G.MinimapZoneTextButton, fType=ftype, x1=-5, x2=5})
 
 	-- Minimap
-	_G.Minimap:SetMaskTexture([[Interface\Buttons\WHITE8X8]]) -- N.B. use name NOT FileDataID, otherwise it appears as a green overlay
+	-- use file path for non Retail versions otherwise the minimap has a green overlay
+	_G.Minimap:SetMaskTexture(self.isRtl and self.tFDIDs.w8x8 or [[Interface\Buttons\WHITE8X8]])
 	-- use a backdrop with no Texture otherwise the map tiles are obscured
 	self:skinObject("frame", {obj=_G.Minimap, fType=ftype, bd=8, ofs=5})
 	if self.prdb.Minimap.gloss then
@@ -4483,13 +4491,6 @@ aObj.blizzFrames[ftype].Minimap = function(self)
 
 	self:keepFontStrings(_G.MinimapBackdrop)
 	self:moveObject{obj=_G.BuffFrame, x=-40}
-
-	-- hook this to handle Jostle Library
-	if _G.LibStub:GetLibrary("LibJostle-3.0", true) then
-		self:RawHook(_G.MinimapCluster, "SetPoint", function(this, point, relTo, relPoint, _)
-			self.hooks[this].SetPoint(this, point, relTo, relPoint, -6, -18)
-		end, true)
-	end
 
 end
 
