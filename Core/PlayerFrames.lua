@@ -649,13 +649,6 @@ aObj.blizzFrames[ftype].CharacterFrames = function(self)
 	self:SecureHookScript(_G.PaperDollFrame, "OnShow", function(this)
 		_G.PaperDollSidebarTabs.DecorLeft:SetAlpha(0)
 		_G.PaperDollSidebarTabs.DecorRight:SetAlpha(0)
-		for i = 1, #_G.PAPERDOLL_SIDEBARS do
-			_G["PaperDollSidebarTab" .. i].TabBg:SetAlpha(0)
-			_G["PaperDollSidebarTab" .. i].Hider:SetAlpha(0)
-			-- use a button border to indicate the active tab
-			self.modUIBtns:addButtonBorder{obj=_G["PaperDollSidebarTab" .. i], relTo=_G["PaperDollSidebarTab" .. i].Icon, ofs=i==1 and 3 or 1, clr="selected"} -- use module function here to force creation
-			_G["PaperDollSidebarTab" .. i].sbb:SetShown(_G[_G.PAPERDOLL_SIDEBARS[i].frame]:IsShown())
-		end
 		-- hook this to manage the active tab
 		self:SecureHook("PaperDollFrame_UpdateSidebarTabs", function()
 			for i = 1, #_G.PAPERDOLL_SIDEBARS do
@@ -666,6 +659,18 @@ aObj.blizzFrames[ftype].CharacterFrames = function(self)
 				end
 			end
 		end)
+		for i = 1, #_G.PAPERDOLL_SIDEBARS do
+			_G["PaperDollSidebarTab" .. i].TabBg:SetAlpha(0)
+			_G["PaperDollSidebarTab" .. i].Hider:SetAlpha(0)
+			-- use a button border to indicate the active tab
+			self.modUIBtns:addButtonBorder{obj=_G["PaperDollSidebarTab" .. i], relTo=_G["PaperDollSidebarTab" .. i].Icon, ofs=i==1 and 3 or 1, clr="selected"} -- use module function here to force creation
+		end
+		-- handle in combat
+		if _G.InCombatLockdown() then
+		    self:add2Table(self.oocTab, {_G.PaperDollFrame_UpdateSidebarTabs, {nil}})
+		else
+			_G.PaperDollFrame_UpdateSidebarTabs()
+		end
 		self:SecureHookScript(_G.PaperDollTitlesPane, "OnShow", function(fObj)
 			self:skinSlider{obj=fObj.scrollBar, wdth=-4}
 			for _, btn in _G.pairs(fObj.buttons) do
