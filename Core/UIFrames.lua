@@ -511,6 +511,21 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 	if not self.prdb.AlertFrames or self.initialized.AlertFrames then return end
 	self.initialized.AlertFrames = true
 
+	local function skinAlertFrame(frame, ofs)
+		if frame.Icon then
+			frame.Icon:SetDrawLayer("BORDER")
+		end
+		if frame.IconBorder then
+			frame.IconBorder:SetTexture(nil)
+		end
+		frame:DisableDrawLayer("BACKGROUND")
+		aObj:skinObject("frame", {obj=frame, fType=ftype, ofs=ofs})
+		if aObj.modBtnBs
+		and frame.Icon
+		then
+			aObj:addButtonBorder{obj=frame, relTo=frame.Icon}
+		end
+	end
 	local function skinACAlertFrames(frame)
 		-- aObj:Debug("skinACAlertFrames: [%s, %s, %s]", frame, _G.Round(frame:GetWidth()), _G.Round(frame:GetHeight())
 		aObj:nilTexture(frame.Background, true)
@@ -540,10 +555,9 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 		skinACAlertFrames(frame)
 	end
 	local function skinLootAlert(frame, ...)
-		frame:DisableDrawLayer("BACKGROUND")
 		frame.lootItem.SpecRing:SetTexture(nil)
-		aObj:skinObject("frame", {obj=frame, fType=ftype, ofs=-10, y2=8})
-		-- colour the Icon buttons' border
+		skinAlertFrame(frame, -8)
+		-- colour the Icon button's border
 		if aObj.modBtnBs then
 			local itemRarity
 			local itemLink = ...
@@ -564,56 +578,45 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 	for frame in _G.LootAlertSystem.alertFramePool:EnumerateActive() do
 		skinLootAlert(frame)
 	end
-	local function skinLootUpgrade(frame)
-		frame:DisableDrawLayer("BACKGROUND")
-		aObj:addSkinFrame{obj=frame, ft=ftype, ofs=-10, y2=8}
-	end
 	-- called parms: self, itemLink, quantity, specID, baseQuality (147239, 1, 1234, 5)
 	self:SecureHook(_G.LootUpgradeAlertSystem, "setUpFunction", function(frame, _)
-		skinLootUpgrade(frame)
+		skinAlertFrame(frame, -8)
 	end)
 	for frame in _G.LootUpgradeAlertSystem.alertFramePool:EnumerateActive() do
-		skinLootUpgrade(frame)
-	end
-	local function skinMoneyorHonor(frame)
-		frame:DisableDrawLayer("BACKGROUND")
-		frame.IconBorder:SetTexture(nil)
-		aObj:addSkinFrame{obj=frame, ft=ftype, ofs=-8, y2=8}
-		if aObj.modBtnBs then
-			aObj:addButtonBorder{obj=frame, relTo=frame.Icon}
-		end
+		skinAlertFrame(frame, -8)
 	end
 	-- called params: self, amount (12345)
 	self:SecureHook(_G.MoneyWonAlertSystem, "setUpFunction", function(frame, _)
-		skinMoneyorHonor(frame)
+		skinAlertFrame(frame, -8)
 	end)
 	for frame in _G.MoneyWonAlertSystem.alertFramePool:EnumerateActive() do
-		skinMoneyorHonor(frame)
+		skinAlertFrame(frame, -8)
 	end
 	-- called params: self, amount (350)
 	self:SecureHook(_G.HonorAwardedAlertSystem, "setUpFunction", function(frame, _)
-		skinMoneyorHonor(frame)
+		skinAlertFrame(frame, -8)
 	end)
 	for frame in _G.HonorAwardedAlertSystem.alertFramePool:EnumerateActive() do
-		skinMoneyorHonor(frame)
-	end
-	local function skinNewRecipe(frame)
-		frame:DisableDrawLayer("BACKGROUND")
-		frame.Icon:SetDrawLayer("BORDER")
-		aObj:addSkinFrame{obj=frame, ft=ftype, ofs=-8}
+		skinAlertFrame(frame, -8)
 	end
 	-- called params: self, recipeID (209645)
 	self:SecureHook(_G.NewRecipeLearnedAlertSystem, "setUpFunction", function(frame, _)
-		skinNewRecipe(frame)
+		skinAlertFrame(frame, -8)
 	end)
 	for frame in _G.NewRecipeLearnedAlertSystem.alertFramePool:EnumerateActive() do
-		skinNewRecipe(frame)
+		skinAlertFrame(frame, -8)
 	end
+	-- called params: frame, challengeType, count, max ("Raid", 2, 5)
+	self:SecureHook(_G.GuildChallengeAlertSystem, "setUpFunction", function(frame, _)
+		frame:DisableDrawLayer("BORDER")
+		frame:DisableDrawLayer("OVERLAY")
+		skinAlertFrame(frame, -10)
+	end)
 	local function skinDCSAlertFrames(opts)
 		opts.obj:DisableDrawLayer("BORDER")
 		opts.obj:DisableDrawLayer("OVERLAY")
 		opts.obj.dungeonTexture:SetDrawLayer("ARTWORK") -- move Dungeon texture above skinFrame
-		aObj:addSkinFrame{obj=opts.obj, ft=ftype, ofs=opts.ofs or -8, y1=opts.y1 or nil}
+		aObj:skinObject("frame", {obj=opts.obj, fType=ftype, ofs=opts.ofs or -8, y1=opts.y1})
 		if aObj.modBtnBs then
 			-- wait for animation to finish
 			_G.C_Timer.After(0.2, function()
@@ -621,13 +624,6 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 			end)
 		end
 	end
-	-- called params: frame, challengeType, count, max ("Raid", 2, 5)
-	self:SecureHook(_G.GuildChallengeAlertSystem, "setUpFunction", function(frame, _)
-		frame:DisableDrawLayer("BACKGROUND")
-		frame:DisableDrawLayer("BORDER")
-		frame:DisableDrawLayer("OVERLAY")
-		aObj:addSkinFrame{obj=frame, ft=ftype, ofs=-10}
-	end)
 	-- called params: frame, rewardData={name="Deceiver's Fall", iconTextureFile=1616157, subtypeID=3, moneyAmount=1940000, moneyBase=1940000, monetVar=0, experienceBase=0, experienceGained=0, experienceVar=0, numRewards=1, numStrangers=0, rewards={} }
 	self:SecureHook(_G.DungeonCompletionAlertSystem, "setUpFunction", function(frame, _)
 		skinDCSAlertFrames{obj=frame}
@@ -641,81 +637,80 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 	self:SecureHook(_G.InvasionAlertSystem, "setUpFunction", function(frame, _)
 		self:getRegion(frame, 1):SetTexture(nil) -- Background toast texture
 		self:getRegion(frame, 2):SetDrawLayer("ARTWORK") -- move icon to ARTWORK layer so it is displayed
-		aObj:addSkinFrame{obj=frame, ft=ftype, ofs=-8}
+		self:skinObject("frame", {obj=frame, fType=ftype, ofs=-8})
 		if self.modBtnBs then
 			self:addButtonBorder{obj=frame, relTo=self:getRegion(frame, 2)}
 		end
 	end)
 	-- called params: frame, raceName, raceTexture ("Demonic", "")
 	self:SecureHook(_G.DigsiteCompleteAlertSystem, "setUpFunction", function(frame, _)
-		frame:DisableDrawLayer("BACKGROUND")
-		self:addSkinFrame{obj=frame, ft=ftype, ofs=-10}
+		skinAlertFrame(frame, -10)
 	end)
 	-- called params: frame, type, icon, name, payloadID, showFancyToast
 	self:SecureHook(_G.EntitlementDeliveredAlertSystem, "setUpFunction", function(frame, _)
-		frame:DisableDrawLayer("BACKGROUND")
-		self:addSkinFrame{obj=frame, ft=ftype, ofs=-10}
-		if self.modBtnBs then
-			self:addButtonBorder{obj=frame, relTo=frame.Icon}
-		end
+		skinAlertFrame(frame, -10)
 	end)
+	for frame in _G.EntitlementDeliveredAlertSystem.alertFramePool:EnumerateActive() do
+		skinAlertFrame(frame, -10)
+	end
 	-- called params: frame, type, icon, name, payloadID, showFancyToast
 	self:SecureHook(_G.RafRewardDeliveredAlertSystem, "setUpFunction", function(frame, _)
-		frame:DisableDrawLayer("BACKGROUND")
-		self:addSkinFrame{obj=frame, ft=ftype, ofs=-10}
-		if self.modBtnBs then
-			self:addButtonBorder{obj=frame, relTo=frame.Icon}
-		end
+		skinAlertFrame(frame, -10)
 	end)
+	for frame in _G.RafRewardDeliveredAlertSystem.alertFramePool:EnumerateActive() do
+		skinAlertFrame(frame, -10)
+	end
 	-- called params: frame, name, garrisonType ("Menagerie", "")
 	self:SecureHook(_G.GarrisonBuildingAlertSystem, "setUpFunction", function(frame, _)
-		frame:DisableDrawLayer("BACKGROUND")
-		frame.Icon:SetDrawLayer("BORDER")
-		self:addSkinFrame{obj=frame, ft=ftype, ofs=-10}
-		if self.modBtnBs then
-			self:addButtonBorder{obj=frame, relTo=frame.Icon}
-		end
+		skinAlertFrame(frame, -10)
 	end)
+	for frame in _G.GarrisonBuildingAlertSystem.alertFramePool:EnumerateActive() do
+		skinAlertFrame(frame, -10)
+	end
 	-- called params: frame, missionInfo=({name="Test", typeAtlas="", followerTypeID=LE_FOLLOWER_TYPE_GARRISON_7_0})
 	self:SecureHook(_G.GarrisonMissionAlertSystem, "setUpFunction", function(frame, _)
-		frame:DisableDrawLayer("BACKGROUND")
 		frame:DisableDrawLayer("BORDER")
-		self:addSkinFrame{obj=frame, ft=ftype, ofs=-10, y1=-8}
+		skinAlertFrame(frame, -10)
 	end)
+	for frame in _G.GarrisonMissionAlertSystem.alertFramePool:EnumerateActive() do
+		frame:DisableDrawLayer("BORDER")
+		skinAlertFrame(frame, -10)
+	end
 	-- called params: frame, missionInfo=({name="Test", typeAtlas="", followerTypeID=LE_FOLLOWER_TYPE_GARRISON_7_0})
 	self:SecureHook(_G.GarrisonShipMissionAlertSystem, "setUpFunction", function(frame, _)
-		frame:DisableDrawLayer("BACKGROUND")
-		self:addSkinFrame{obj=frame, ft=ftype, ofs=-10}
+		skinAlertFrame(frame, -10)
 	end)
+	for frame in _G.GarrisonShipMissionAlertSystem.alertFramePool:EnumerateActive() do
+		skinAlertFrame(frame, -10)
+	end
 	-- called params: frame, missionInfo=({level=105, iLevel=875, isRare=true, followerTypeID=LE_FOLLOWER_TYPE_GARRISON_6_0})
 	self:SecureHook(_G.GarrisonRandomMissionAlertSystem, "setUpFunction", function(frame, _)
-		frame:DisableDrawLayer("BACKGROUND")
 		frame.MissionType:SetDrawLayer("BORDER")
-		self:addSkinFrame{obj=frame, ft=ftype, ofs=-10}
+		skinAlertFrame(frame, -10)
 	end)
+	for frame in _G.GarrisonRandomMissionAlertSystem.alertFramePool:EnumerateActive() do
+		frame.MissionType:SetDrawLayer("BORDER")
+		skinAlertFrame(frame, -10)
+	end
 	-- called params: frame, followerID, name, level, quality, isUpgraded, followerInfo={isTroop=, followerTypeID=, portraitIconID=, quality=, level=, iLevel=}
 	self:SecureHook(_G.GarrisonFollowerAlertSystem, "setUpFunction", function(frame, _)
-		frame:DisableDrawLayer("BACKGROUND")
 		frame.PortraitFrame.PortraitRing:SetTexture(nil)
 		self:nilTexture(frame.PortraitFrame.LevelBorder, true)
 		self:nilTexture(frame.FollowerBG, true)
-		self:addSkinFrame{obj=frame, ft=ftype, ofs=-8}
+		skinAlertFrame(frame, -8)
 	end)
 	-- called params: frame, followerID, name, class, texPrefix, level, quality, isUpgraded, followerInfo={}
 	self:SecureHook(_G.GarrisonShipFollowerAlertSystem, "setUpFunction", function(frame, _)
-		frame:DisableDrawLayer("BACKGROUND")
 		self:nilTexture(frame.FollowerBG, true)
-		self:addSkinFrame{obj=frame, ft=ftype, ofs=-8}
+		skinAlertFrame(frame, -8)
 	end)
 	-- called params: frame, garrisonType, talent={icon=""}
 	self:SecureHook(_G.GarrisonTalentAlertSystem, "setUpFunction", function(frame, _)
-		frame:DisableDrawLayer("BACKGROUND")
-		frame.Icon:SetDrawLayer("BORDER")
-		self:addSkinFrame{obj=frame, ft=ftype, ofs=-10}
-		if self.modBtnBs then
-			self:addButtonBorder{obj=frame, relTo=frame.Icon}
-		end
+		skinAlertFrame(frame, -10)
 	end)
+	for frame in _G.GarrisonTalentAlertSystem.alertFramePool:EnumerateActive() do
+		skinAlertFrame(frame, -10)
+	end
 	-- called params: frame, questData (1234)
 	self:SecureHook(_G.WorldQuestCompleteAlertSystem, "setUpFunction", function(frame, _)
 		frame.QuestTexture:SetDrawLayer("ARTWORK")
@@ -730,51 +725,47 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 		frame.Background:SetTexture(nil)
 		frame.Background2:SetTexture(nil)
 		frame.Background3:SetTexture(nil)
-		self:addSkinFrame{obj=frame, ft=ftype, ofs=-20, x1=24, x2=-4}
+		self:skinObject("frame", {obj=frame, fType=ftype, ofs=-20, x1=24, x2=-4})
 		if self.modBtnBs then
 			self:addButtonBorder{obj=frame, relTo=frame.Icon}
 			-- set button border to Legendary colour
 			self:setBtnClr(frame, _G.Enum.ItemQuality.Legendary)
 		end
 	end)
-	local function skinQueuedAlert(frame)
-		frame:DisableDrawLayer("BACKGROUND")
-		aObj:addSkinFrame{obj=frame, ft=ftype, ofs=-8}
-	end
 	-- called params: frame, petID
 	self:SecureHook(_G.NewPetAlertSystem, "setUpFunction", function(frame, _)
-		skinQueuedAlert(frame)
+		skinAlertFrame(frame, -8)
 	end)
 	for frame in _G.NewPetAlertSystem.alertFramePool:EnumerateActive() do
-		skinQueuedAlert(frame)
+		skinAlertFrame(frame, -8)
 	end
 	-- called params: frame, mountID
 	self:SecureHook(_G.NewMountAlertSystem, "setUpFunction", function(frame, _)
-		skinQueuedAlert(frame)
+		skinAlertFrame(frame, -8)
 	end)
 	for frame in _G.NewMountAlertSystem.alertFramePool:EnumerateActive() do
-		skinQueuedAlert(frame)
+		skinAlertFrame(frame, -8)
 	end
 	-- called params: frame, toyID
 	self:SecureHook(_G.NewToyAlertSystem, "setUpFunction", function(frame, _)
-		skinQueuedAlert(frame)
+		skinAlertFrame(frame, -8)
 	end)
 	for frame in _G.NewToyAlertSystem.alertFramePool:EnumerateActive() do
-		skinQueuedAlert(frame)
+		skinAlertFrame(frame, -8)
 	end
 	-- called params: frame, powerID
 	self:SecureHook(_G.NewRuneforgePowerAlertSystem, "setUpFunction", function(frame, _)
-		skinQueuedAlert(frame)
+		skinAlertFrame(frame, -8)
 	end)
 	for frame in _G.NewRuneforgePowerAlertSystem.alertFramePool:EnumerateActive() do
-		skinQueuedAlert(frame)
+		skinAlertFrame(frame, -8)
 	end
 	-- called params: frame, itemModifiedAppearanceID
 	self:SecureHook(_G.NewCosmeticAlertFrameSystem, "setUpFunction", function(frame, _)
-		skinQueuedAlert(frame)
+		skinAlertFrame(frame, -8)
 	end)
 	for frame in _G.NewCosmeticAlertFrameSystem.alertFramePool:EnumerateActive() do
-		skinQueuedAlert(frame)
+		skinAlertFrame(frame, -8)
 	end
 
 	-- hook this to stop gradient texture whiteout
