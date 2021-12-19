@@ -6892,7 +6892,7 @@ if _G.PTR_IssueReporter then
 				self:skinStdButton{obj=self:getChild(_G.PTR_IssueReporter.StandaloneSurvey.SurveyFrame, 3), ofs=-1, clr="blue"}
 			end
 
-			self:Unhook(this, "GetStandaloneSurveyFrame")
+			self:Unhook(_G.PTR_IssueReporter, "GetStandaloneSurveyFrame")
 		end)
 
 		self:SecureHook(_G.PTR_IssueReporter, "BuildSurveyFrameFromSurveyData", function(surveyFrame, _)
