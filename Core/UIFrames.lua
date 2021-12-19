@@ -1637,26 +1637,26 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 			end
 		end
 		--	Chat Settings
+		self:skinObject("frame", {obj=_G.ChatConfigChatSettingsLeft, fType=ftype, kfs=true, rns=true, fb=true})
 		if self.modChkBtns then
 			for i = 1, #_G.CHAT_CONFIG_CHAT_LEFT do
 				skinCB("ChatConfigChatSettingsLeftCheckBox" .. i)
 			end
 		end
-		self:skinObject("frame", {obj=_G.ChatConfigChatSettingsLeft, fType=ftype, kfs=true, rns=true, fb=true})
 		--	Channel Settings
-		self:skinObject("frame", {obj=_G.ChatConfigChannelSettingsLeft, fType=ftype, kfs=true, rns=true, fb=true})
 		if self.modChkBtns
-		and not self.isClscBC
+		and self.isRtl
 		then
+			self:skinObject("frame", {obj=_G.ChatConfigChannelSettingsLeft, fType=ftype, kfs=true, rns=true, fb=true})
 			self:SecureHookScript(_G.ChatConfigChannelSettings, "OnShow", function(fObj)
-					for i = 1, #_G.CHAT_CONFIG_CHANNEL_LIST do
-						skinCB("ChatConfigChannelSettingsLeftCheckBox" .. i)
-					end
+				for i = 1, #_G.CHAT_CONFIG_CHANNEL_LIST do
+					skinCB("ChatConfigChannelSettingsLeftCheckBox" .. i)
+				end
 
-					self:Unhook(fObj, "OnShow")
-				end)
+				self:Unhook(fObj, "OnShow")
+			end)
 		else
-			self:skinObject("frame", {obj=_G.ChatConfigChannelSettingsAvailable, fType=ftype, kfs=true})
+			self:skinObject("frame", {obj=_G.ChatConfigChannelSettingsAvailable, fType=ftype, kfs=true, rns=true, fb=true})
 			self:SecureHook("ChatConfig_CreateCheckboxes", function(frame, _)
 				local box
 				for i = 1, #frame.checkBoxTable do
@@ -1720,7 +1720,7 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 				self:Unhook("TextToSpeechFrame_UpdateMessageCheckboxes")
 			end)
 		end
-		if not self.isClsc then
+		if self.isRtl then
 			self:SecureHookScript(_G.ChatConfigTextToSpeechChannelSettings, "OnShow", function(fObj)
 				self:skinObject("frame", {obj=_G.ChatConfigTextToSpeechChannelSettingsLeft, fType=ftype, kfs=true, rns=true, fb=true})
 				for i = 1, #_G.CHAT_CONFIG_TEXT_TO_SPEECH_CHANNEL_LIST do
