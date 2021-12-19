@@ -6555,17 +6555,16 @@ aObj.blizzFrames[ftype].UIDropDownMenu = function(self)
 	self.initialized.UIDropDownMenu = true
 
 	local function skinDDMenu(frame)
-		if not aObj.isClsc then
+		if aObj.isRtl then
 			aObj:removeNineSlice(frame.Border)
 		else
 			aObj:removeBackdrop(_G[frame:GetName() .. "Backdrop"])
 		end
 		aObj:removeBackdrop(_G[frame:GetName() .. "MenuBackdrop"])
-		if not aObj.isClscBC
-		then
+		if not aObj.isClscBC then
 			aObj:removeNineSlice(_G[frame:GetName() .. "MenuBackdrop"].NineSlice)
 		end
-		aObj:skinObject("frame", {obj=frame, fType=ftype, kfs=true, ofs=-4})
+		aObj:skinObject("frame", {obj=frame, fType=ftype, kfs=true, x1=6, y1=-4, x2=3, y2=4})
 	end
 
 	for i = 1, _G.UIDROPDOWNMENU_MAXLEVELS do
