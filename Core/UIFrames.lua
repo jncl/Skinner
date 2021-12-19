@@ -5289,7 +5289,13 @@ aObj.blizzLoDFrames[ftype].PlayerChoice = function(self)
 	local function skinOptions(frame, source) -- luacheck: ignore source
 		-- aObj:Debug("skinOptions PCUI: [%s, %s, %s, %s]", source, frame.uiTextureKit, frame.optionFrameTemplate)
 		if not frame.optionFrameTemplate then return end
-		frame.sf:SetShown(not frame.optionFrameTemplate:find("Torghast"))
+		if frame.uiTextureKit == "jailerstower"
+		or frame.uiTextureKit == "cypherchoice"
+		then
+			frame.sf:Hide()
+		else
+			frame.sf:Show()
+		end
 		for opt in frame.optionPools:EnumerateActiveByTemplate(frame.optionFrameTemplate) do
 			opt.OptionText.String:SetTextColor(aObj.BT:GetRGB())
 			opt.OptionText.HTML:SetTextColor(aObj.BT:GetRGB())
@@ -5298,6 +5304,12 @@ aObj.blizzLoDFrames[ftype].PlayerChoice = function(self)
 					-- DON'T skin magnifying glass button
 					if btn:GetText() ~= "Preview Covenant" then
 						aObj:skinStdButton{obj=btn}
+						aObj:secureHook(btn, "Disable", function(bObj, _)
+							aObj:clrBtnBdr(bObj)
+						end)
+						aObj:secureHook(btn, "Enable", function(bObj, _)
+							aObj:clrBtnBdr(bObj)
+						end)
 					end
 				end
 			end
@@ -5360,14 +5372,7 @@ aObj.blizzLoDFrames[ftype].PlayerChoice = function(self)
 
 		self:Unhook(this, "OnShow")
 	end)
-
-	if _G.C_PlayerChoice.IsWaitingForPlayerChoiceResponse() then
-		-- if frame not yet skinned then force it to be skinned
-		if self:IsHooked(_G.PlayerChoiceFrame, "OnShow") then
-			_G.PlayerChoiceFrame:Show()
-			_G.PlayerChoiceFrame:Hide()
-		end
-	end
+	self:checkShown(_G.PlayerChoiceFrame)
 
 end
 
