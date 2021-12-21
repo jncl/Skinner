@@ -1,5 +1,4 @@
 local _, aObj = ...
-
 local _G = _G
 
 local ftype = "u"
@@ -6622,10 +6621,18 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 		elseif wFrame.widgetType == 1 then -- CaptureBar (World State: Capture bar on RHS)
 			-- DON'T change textures as it doesn't really improve it
 		elseif wFrame.widgetType == 2 then -- StatusBar
-			if aObj.isClsc then
-				aObj:removeRegions(wFrame.Bar, {5, 6, 7}) -- border textures
+			local regs
+			-- background & border textures
+			if aObj.isRtlPTR then
+				regs = {2, 3, 4, 8, 9, 10}
+			elseif aObj.isRtl then
+				regs= {2, 3, 4, 9, 10, 11}
 			else
-				aObj:skinObject("statusbar", {obj=wFrame.Bar, regions={2, 3, 4, 9, 10, 11}, fi=0, nilFuncs=true})
+				regs = {1, 2, 3, 5, 6 ,7}
+			end
+			aObj:skinObject("statusbar", {obj=wFrame.Bar, regions=regs, fi=0, nilFuncs=true})
+			if aObj:getChild(wFrame.Bar, 1) then
+				aObj:removeRegions(aObj:getChild(wFrame.Bar, 1), {1})
 			end
 		elseif wFrame.widgetType == 3 then -- DoubleStatusBar (Island Expeditions)
 			aObj:skinObject("statusbar", {obj=wFrame.LeftBar, regions={2, 3, 4}, fi=0, bg=wFrame.LeftBar.BG, nilFuncs=true})
