@@ -10,25 +10,49 @@ ToDo_retail_PTR
 		- Added
 			- BindingUI
 √				- .clickCastingButton
-?				- .defaultsButton
 √			- Blizzard_ClickBindingUI
+			- Blizzard_CharacterCustomize
+				- CharCustomizeSelectionPopoutDetailsTemplate
+				- CharCustomizeSelectionPopoutEntryTemplate
+				- CharCustomizeSelectionPopoutWithButtonsAndLabelTemplate
+				- CharCustomizeOptionSelectionPopoutTemplate
+			- Blizzard_OrderHallTalents
+				- .HighlightFlash
+				- GarrisonTalentTrackTemplate
+				- .CypherEquipmentLevel
+			- Blizzard_PVPMatch/PVPMatchTable
+				- PVPSoloShuffleCellNameTemplate
 			- Blizzard_PVPUI
 √				- .BrawlButton2
 			- Blizzard_PlayerChoice
-				- Blizzard_PlayerChoicePowerChoiceTemplate
-				- Blizzard_PlayerChoiceCypherOptionTemplate
+≈				- Blizzard_PlayerChoicePowerChoiceTemplate
+≈				- Blizzard_PlayerChoiceCypherOptionTemplate
 				- Blizzard_PlayerChoiceTimer
 			- Blizzard_PlayerChoiceToggleButton
 				- TorghastPlayerChoiceToggleButton
 				- CypherPlayerChoiceToggleButton
+			- Blizzard_UIWidgetTemplateBase
+?				- UIWidgetBaseStatusBarPartitionTemplate
+			- Blizzard_UIWidgets
+?				- Blizzard_UIWidgetTemplateUnitPowerBar
 			- InterfaceOptionsPanels
 √				- .EnableMouseoverCastCheckbox
 √				- .MouseoverCastKeyDropDown
 √				- .clickCastingButton
-			- Blizzard_UIWidgetTemplateUnitPowerBar
+			- SpellBookFrame
+?				- .ClickBindingIconCover
+?				- .ClickBindingHighlight
 		- Updated
+			- BindingUI
+x				- .defaultsButton
+			- Blizzard_CharacterCustomize
+				- CharCustomizeOptionSelectionPopoutTemplate
+			- Blizzard_PlayerChoiceTorghastOptionTemplate
+				- PlayerChoiceTorghastOptionTemplate
 		- Deleted
 			- Blizzard_PVPUI
 √				- .SpecialEventButton
+			- Blizzard_PlayerChoiceToggleButton
+?				- PlayerChoiceToggleButton
 			- HelpFrame
 ?				- .Background
