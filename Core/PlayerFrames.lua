@@ -3444,13 +3444,13 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 
 	local skinMinBtn = _G.nop
 	-- FIXME: adding a button border to the minimize button causes ADDON_ACTION_FORBIDDEN event [16.04.21]
-	--[[
+	--@debug@
 	if self.modBtnBs then
 		 function skinMinBtn(btn)
 			aObj:addButtonBorder{obj=btn, es=12, ofs=1, x1=-1}
 		end
 	end
-	--]]
+	--@end-debug@
 	-- remove Glow/Sheen textures from WorldQuest modules
 	local function updTrackerModules()
 		for _, module in _G.pairs(_G.ObjectiveTrackerFrame.MODULES) do
