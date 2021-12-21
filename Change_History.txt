@@ -1,3 +1,22 @@
+beta9.41359.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Bugfix for Ace3 skin
+	Updated TextToSpeech settings skinning code
+	Retail PTR changes
+	Bugfix for PaperDollFrame
+	Updated GarrisonUI skin
+	Updated PTR Feedback skin
+	Updated ScriptErrorsFrame skin
+	Updated Nameplates skin
+	Updated Minimap skin
+	Replaced version checks as required
+	Updated ButtonBorder skinning code for SecureFrameTemplate checks
+	Updated Check for LFG/LFM skin
+	Updated Classic LFGFrame skin
+
 beta9.41137.1
 Jncl:
 	ToDo.txt
