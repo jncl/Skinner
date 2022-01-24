@@ -5,7 +5,7 @@ ToDos
 	≈ is Alt+x		- indicates partially completed or dry-coded
 	x				- indicates nothing to change
 	¶ is Alt+7		- indicates localisation changes required
-	S/N/I/U/O/C/B	- Skin request/New Version/Issue(Bug)/Unobsolete skin/Other changes/Classic/Burning Crusade Classic
+	S/N/I/U/O/E/C	- Skin request/New Version/Issue(Bug)/Unobsolete skin/Other changes/Classic Era/Classic TBC
 
 ≈	O	Rework how AddOn skins are handled
 		- replace table in AddonFrames with individual entries in each skin file
@@ -33,16 +33,25 @@ ToDos
 ?		- Text not visible when typing
 		- Dungeons & Raids, Premade Groups, Custom, Title editbox has not got information string displayed
 
-	I	ChatConfig, reported by Galthariel, 12.12.21
-√		- Skinner\Core\NewSkinFuncs.lua:455: attempt to index field 'obj' (a nil value)
-		[string "@Skinner\Core\NewSkinFuncs.lua"]:455: in function <Skinner\Core\NewSkinFuncs.lua:444>
-		[string "@Skinner\Core\NewSkinFuncs.lua"]:552: in function `?'
-		[string "@Skinner\Core\NewSkinFuncs.lua"]:190: in function `skinObject'
-		[string "@Skinner\Core\UIFrames.lua"]:1668: in function <Skinner\Core\UIFrames.lua:1564>
+	I	FriendFrame, reported by Galthariel, 27.12.21
+?		-  [ADDON_ACTION_FORBIDDEN] AddOn 'Skinner' tried to call the protected function 'CopyToClipboard()'.
+		[string "@!BugGrabber\BugGrabber.lua"]:519: in function <!BugGrabber\BugGrabber.lua:519>
+		[string "=[C]"]: in function `CopyToClipboard'
+		[string "@FrameXML\RecruitAFriendFrame.lua"]:1137: in function <FrameXML\RecruitAFriendFrame.lua:1135>
 
-	I	ChatConfig, reported by Galthariel, 12.12.21
-√		- Ace3\AceHook-3.0\AceHook-3.0-9.lua:180: Attempting to rehook already active hook OnShow.
-		[string "=[C]"]: ?
-		[string "@Ace3\AceHook-3.0\AceHook-3.0-9.lua"]:180: in function <Ace3\AceHook-3.0\AceHook-3.0.lua:118>
-		[string "@Ace3\AceHook-3.0\AceHook-3.0-9.lua"]:341: in function `SecureHook'
-		[string "@Skinner\Core\UIFrames.lua"]:1622: in function <Skinner\Core\UIFrames.lua:1564>
+	I	CommunityInvite, reported by Galthariel, 27.12.21
+		- same error as above
+
+	I/E	reported by mAwArm, 29.12.2021
+√		- Skinner\Core\UtilFuncs.lua:1019: attempt to index local 'frame' (a nil value)
+		[string "@Skinner\Core\UtilFuncs.lua"]:1019: in function <Skinner\Core\UtilFuncs.lua:1018>
+		[string "@Skinner\Core\UtilFuncs.lua"]:1052: in function `removeNineSlice'
+		[string "@Skinner\Core\UIFrames.lua"]:2025: in function <Skinner\Core\UIFrames.lua:2024>
+
+√	S	SoulshapeJournal, requested by Galthariel, 29.12.2021
+
+√	S	MountsJournal, requested by Acivien, 08.01.2022
+
+√	S	LibSFDropDown-1.3, used by MountsJournal
+
+√	S	BaudManifest, requested by AmtoftEU, 20.01.22

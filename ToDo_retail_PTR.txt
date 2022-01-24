@@ -17,9 +17,9 @@ ToDo_retail_PTR
 				- CharCustomizeSelectionPopoutWithButtonsAndLabelTemplate
 				- CharCustomizeOptionSelectionPopoutTemplate
 			- Blizzard_OrderHallTalents
-				- .HighlightFlash
-				- GarrisonTalentTrackTemplate
-				- .CypherEquipmentLevel
+x				- .HighlightFlash
+x				- GarrisonTalentTrackTemplate
+x				- .CypherEquipmentLevel
 			- Blizzard_PVPMatch/PVPMatchTable
 				- PVPSoloShuffleCellNameTemplate
 			- Blizzard_PVPUI
@@ -48,7 +48,7 @@ x				- .defaultsButton
 			- Blizzard_CharacterCustomize
 				- CharCustomizeOptionSelectionPopoutTemplate
 			- Blizzard_PlayerChoiceTorghastOptionTemplate
-				- PlayerChoiceTorghastOptionTemplate
+x				- PlayerChoiceTorghastOptionTemplate
 		- Deleted
 			- Blizzard_PVPUI
 √				- .SpecialEventButton
