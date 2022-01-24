@@ -1163,8 +1163,8 @@ aObj.SetupOptions = function(self)
 				},
 				FriendsFrame = {
 					type = "toggle",
-					name = self.L["Friends List Frame"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Friends List Frame"],
+					name = self.L["Social Frame"],
+					desc = self.L["Toggle the skin of the "] .. self.L["Social Frame"],
 				},
 				GuildControlUI = {
 					type = "toggle",
