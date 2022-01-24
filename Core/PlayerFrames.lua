@@ -2545,6 +2545,12 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 		if self.modBtns then
 			self:skinCloseButton{obj=this.CloseButton}
 			self:skinStdButton{obj=this.GenerateOrCopyLinkButton}
+			self:SecureHook(this.GenerateOrCopyLinkButton, "Disable", function(bObj, _)
+				self:clrBtnBdr(bObj)
+			end)
+			self:SecureHook(this.GenerateOrCopyLinkButton, "SetEnabled", function(bObj)
+				self:clrBtnBdr(bObj)
+			end)
 		end
 
 		self:Unhook(this, "OnShow")
