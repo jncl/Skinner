@@ -51,11 +51,11 @@ aObj.libsToSkin["SecureTabs-2.0"] = function(self) -- v 2
 		return tab
 	end, true)
 
-	-- hook this to update tabs
-	self:SecureHook(lST, "Update", function(this, panel, selection)
-		-- aObj:Debug("SecureTabs Update: [%s, %s, %s, %s]", this.tabs[panel], panel, selection, panel.selectedTab)
-		if not this.tabs[panel] then return end
-		if self.isTT then
+	-- hook this to update textured tabs
+	if self.isTT then
+		self:SecureHook(lST, "Update", function(this, panel, selection)
+			-- aObj:Debug("SecureTabs Update: [%s, %s, %s, %s]", this.tabs[panel], panel, selection, panel.selectedTab)
+			if not this.tabs[panel] then return end
 			for _, tab in _G.ipairs(this.tabs[panel]) do
 				-- print("update - panel", i, tab)
 				if tab == selection then
@@ -64,12 +64,15 @@ aObj.libsToSkin["SecureTabs-2.0"] = function(self) -- v 2
 					self:setInactiveTab(tab.sf)
 				end
 			end
+			-- change textures for other tabs
 			if selection then
 				self:setInactiveTab(_G[panel:GetName() .. "Tab" .. panel.selectedTab].sf)
+				_G.PanelTemplates_DeselectTab(_G[panel:GetName() .. "Tab" .. panel.selectedTab])
 			else
 				self:setActiveTab(_G[panel:GetName() .. "Tab" .. panel.selectedTab].sf)
+				_G.PanelTemplates_SelectTab(_G[panel:GetName() .. "Tab" .. panel.selectedTab])
 			end
-		end
-	end)
+		end)
+	end
 
 end
