@@ -662,6 +662,36 @@ aObj.SetupClassic_PlayerFrames = function()
 
 	end
 
+	local function colourBtn(btn)
+		if btn.sbb then
+			btn.sbb:SetBackdropBorderColor(_G[btn:GetName() .. "Slot"]:GetVertexColor())
+		end
+	end
+	local function skinTalentBtns(frame)
+		local fName = frame:GetName()
+		local btn
+		for i = 1, _G.MAX_NUM_TALENTS do
+			btn = _G[fName .. "Talent" .. i]
+			btn:DisableDrawLayer("BACKGROUND")
+			_G[fName .. "Talent" .. i .. "RankBorder"]:SetTexture(nil)
+			aObj:addButtonBorder{obj=btn, x1=-3, y2=-3, reParent={_G[fName .. "Talent" .. i .. "Rank"]}}
+			colourBtn(btn)
+		end
+		local funcName
+		if aObj.isClscBC then
+			funcName = "TalentFrame_Update"
+		else
+			funcName = "PlayerTalentFrame_Update"
+		end
+		if not aObj:IsHooked(funcName) then
+			aObj:SecureHook(funcName, function(fObj)
+				local fObjName = fObj and fObj:GetName() or "PlayerTalentFrame"
+				for i = 1, _G.MAX_NUM_TALENTS do
+					colourBtn(_G[fObjName .. "Talent" .. i])
+				end
+			end)
+		end
+	end
 	aObj.blizzLoDFrames[ftype].InspectUI = function(self)
 		if not self.prdb.InspectUI or self.initialized.InspectUI then return end
 		self.initialized.InspectUI = true
@@ -713,7 +743,8 @@ aObj.SetupClassic_PlayerFrames = function()
 				self:Unhook(this, "OnShow")
 			end)
 			self:SecureHookScript(_G.InspectTalentFrame, "OnShow", function(this)
-				self:keepFontStrings(this)
+				this:DisableDrawLayer("BACKGROUND")
+				this:DisableDrawLayer("BORDER")
 				self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true, offsets={x1=4, y1=-4, x2=-4, y2=-1}})
 				self:skinObject("frame", {obj=_G.InspectTalentFrameScrollFrame, fType=ftype, kfs=true, fb=true, x1=-11, y1=10, x2=32, y2=-3})
 				self:skinObject("slider", {obj=_G.InspectTalentFrameScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
@@ -721,7 +752,9 @@ aObj.SetupClassic_PlayerFrames = function()
 					self:skinCloseButton{obj=_G.InspectTalentFrameCloseButton, fType=ftype}
 					self:skinStdButton{obj=_G.InspectTalentFrameCancelButton, fType=ftype}
 				end
-				-- TODO: add button borders to talents
+				if self.modBtnBs then
+					skinTalentBtns(this)
+				end
 
 				self:Unhook(this, "OnShow")
 			end)
@@ -839,22 +872,7 @@ aObj.SetupClassic_PlayerFrames = function()
 				self:skinStdButton{obj=_G[fName .. "CancelButton"], fType=ftype}
 			end
 			if self.modBtnBs then
-				local function colourBtn(btn)
-					btn.sbb:SetBackdropBorderColor(_G[btn:GetName() .. "Slot"]:GetVertexColor())
-				end
-				local btn
-				for i = 1, _G.MAX_NUM_TALENTS do
-					btn = _G[fName .. "Talent" .. i]
-					btn:DisableDrawLayer("BACKGROUND")
-					_G[fName .. "Talent" .. i .. "RankBorder"]:SetTexture(nil)
-					self:addButtonBorder{obj=btn, x1=-3, y2=-3, reParent={_G[fName .. "Talent" .. i .. "Rank"]}}
-					colourBtn(btn)
-				end
-				self:SecureHook(fName .. "_Update", function()
-					for i = 1, _G.MAX_NUM_TALENTS do
-						colourBtn(_G[fName .. "Talent" .. i])
-					end
-				end)
+				skinTalentBtns(this)
 			end
 
 			self:Unhook(this, "OnShow")
