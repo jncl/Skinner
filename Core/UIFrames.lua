@@ -6417,19 +6417,6 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 		end)
 	end
 
-	if aObj.isClscBC then
-		-- Hook these to handle AddOns that use GameTooltip Backdrop functions (e.g. SavedInstances)
-		self:RawHook(_G.GameTooltip, "GetBackdrop", function(_)
-			return aObj.Backdrop[1]
-		end, true)
-		self:RawHook(_G.GameTooltip, "GetBackdropColor", function(_)
-			return aObj.bClr:GetRGBA()
-		end, true)
-		self:RawHook(_G.GameTooltip, "GetBackdropBorderColor", function(_)
-			return aObj.bbClr:GetRGBA()
-		end, true)
-	end
-
 	-- AceConfigDialog tooltip
 	addTooltip(self.ACD.tooltip)
 
@@ -6565,9 +6552,7 @@ aObj.blizzFrames[ftype].UIDropDownMenu = function(self)
 			aObj:removeBackdrop(_G[frame:GetName() .. "Backdrop"])
 		end
 		aObj:removeBackdrop(_G[frame:GetName() .. "MenuBackdrop"])
-		if not aObj.isClscBC then
-			aObj:removeNineSlice(_G[frame:GetName() .. "MenuBackdrop"].NineSlice)
-		end
+		aObj:removeNineSlice(_G[frame:GetName() .. "MenuBackdrop"].NineSlice)
 		aObj:skinObject("frame", {obj=frame, fType=ftype, kfs=true, x1=6, y1=-4, x2=3, y2=4})
 	end
 
