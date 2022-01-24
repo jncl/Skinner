@@ -1,3 +1,17 @@
+beta9.41462.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Updated debug code
+	Updated UIWidgets StatusBar skin
+	Updated PlayerChoice skin
+	Updated TextToSpeech skin
+	Updated ChatConfig skin
+	Updated DropDownMenu skin
+	Bugfix for PTRFeedback skin
+	Updated AlertFrame skin
+
 beta9.41359.1
 Jncl:
 	ToDo.txt
