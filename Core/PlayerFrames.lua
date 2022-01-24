@@ -2994,7 +2994,7 @@ aObj.blizzLoDFrames[ftype].InspectUI = function(self)
 	end)
 
 	self:SecureHookScript(_G.InspectTalentFrame, "OnShow", function(this)
-		self:keepFontStrings(this)
+		-- self:keepFontStrings(this)
 		this.InspectSpec.ring:SetTexture(nil)
 		self:makeIconSquare(this.InspectSpec, "specIcon")
 		for i = 1, _G.MAX_TALENT_TIERS do
@@ -4263,7 +4263,7 @@ aObj.blizzLoDFrames[ftype].TalentUI = function(self)
 	end)
 
 	self:SecureHookScript(_G.PlayerTalentFrameTalents, "OnShow", function(this)
-		self:removeRegions(this, {1, 2, 3, 4, 5, 6, 7})
+		self:keepFontStrings(this)
 		this.MainHelpButton.Ring:SetTexture(nil)
 		self:moveObject{obj=this.MainHelpButton, y=-4}
 		-- Talent rows
