@@ -37,6 +37,7 @@
 <Script file="BattlePetBattleUITweaks.lua"/>
 <Script file="BattlePetCount.lua"/>
 <Script file="BaudBag.lua"/>
+<Script file="BaudManifest.lua"/>
 <Script file="BetterWardrobe.lua"/>
 <Script file="BigWigs.lua"/>
 <Script file="BindPad.lua"/>
@@ -121,6 +122,7 @@
 <Script file="LibMSATutorials.lua"/>
 <Script file="LibQTip.lua"/>
 <Script file="LibScrollingTable.lua"/>
+<Script file="LibSFDropDown.lua"/>
 <Script file="LibSushi.lua"/>
 <Script file="LibTextDump.lua"/>
 <Script file="LibToast.lua"/>
@@ -139,6 +141,7 @@
 <Script file="MissingTradeSkillsList.lua"/>
 <Script file="MogIt.lua"/>
 <Script file="mOnArs_WardrobeHelper.lua"/>
+<Script file="MountsJournal.lua"/>
 <Script file="MoveAnything.lua"/>
 <Script file="MSA-DropDownMenu.lua"/>
 <Script file="NickTag.lua"/>
@@ -197,6 +200,7 @@
 <Script file="Skillet.lua"/>
 <Script file="SorhaQuestLog.lua"/>
 <Script file="Sorted.lua"/>
+<Script file="SoulshapeJournal.lua"/>
 <Script file="Spew.lua"/>
 <Script file="Spy.lua"/>
 <Script file="tekKonfig.lua"/>

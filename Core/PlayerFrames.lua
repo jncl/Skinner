@@ -821,6 +821,9 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true, selectedTab=this.selectedTab, offsets={x1=9, y1=self.isTT and 3 or -2, x2=-9, y2=2}})
 		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true, cb=true, x2=3, y2=-1})
 
+		-- send message when UI is skinned (used by MountsJournal skin)
+		self:SendMessage("CollectionsJournal_Skinned", self)
+
 		self:Unhook(this, "OnShow")
 	end)
 
