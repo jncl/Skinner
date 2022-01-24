@@ -1,4 +1,5 @@
 local _, aObj = ...
+
 local _G = _G
 
 local ftype = "u"
@@ -2022,8 +2023,10 @@ aObj.blizzFrames[ftype].CinematicFrame = function(self)
 	self.initialized.CinematicFrame = true
 
 	self:SecureHookScript(_G.CinematicFrame, "OnShow", function(this)
-		self:removeNineSlice(this.closeDialog.Border)
-		if aObj.isClscBC then
+		if self.isRtl then
+			self:removeNineSlice(this.closeDialog.Border)
+		end
+		if self.isClscBC then
 			self:skinObject("frame", {obj=this.closeDialog, fType=ftype, kfs=true, rb=true})
 		else
 			self:skinObject("frame", {obj=this.closeDialog, fType=ftype})
