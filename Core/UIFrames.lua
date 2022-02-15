@@ -3676,7 +3676,9 @@ aObj.blizzFrames[ftype].ItemText = function(self)
 	local function skinITFrame(frame)
 		aObj:skinObject("slider", {obj=_G.ItemTextScrollFrame.ScrollBar, fType=ftype, rpTex=aObj.isClsc and {"background", "artwork"} or nil})
 		aObj:skinStatusBar{obj=_G.ItemTextStatusBar, fi=0}
-		aObj:moveObject{obj=_G.ItemTextPrevPageButton, x=-55}
+		if not aObj.isPTR then
+			aObj:moveObject{obj=_G.ItemTextPrevPageButton, x=-55}
+		end
 		if not aObj.isClsc then
 			aObj:skinObject("frame", {obj=frame, fType=ftype, kfs=true, ri=true, rns=true, cb=true, x2=3})
 		else
@@ -3690,6 +3692,7 @@ aObj.blizzFrames[ftype].ItemText = function(self)
 			aObj:addButtonBorder{obj=_G.ItemTextPrevPageButton, ofs=-2, x1=1, clr="gold"}
 			aObj:addButtonBorder{obj=_G.ItemTextNextPageButton, ofs=-2, x1=1, clr="gold"}
 		end
+		skinITFrame = nil
 	end
 	self:SecureHookScript(_G.ItemTextFrame, "OnShow", function(this)
 		_G.ItemTextPageText:SetTextColor(self.BT:GetRGB())
