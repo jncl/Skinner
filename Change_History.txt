@@ -1,3 +1,19 @@
+beta9.42010.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Updated Classic Talent Frame(s) skins
+	Added button skin checks
+	Updated Talent Frame(s) skins
+	Bugfix for Cinematic frame skin
+	ClassicBC changes
+	Renamed FriendsList option to Social
+	Updated SecureTabs skin
+	Updated .gitignore to remove old build directory entry
+	Reinstated BaudManifest
+	Skinned LibSFDropDown, MountsJournal & SoulshapeJournal
+
 beta9.41462.1
 Jncl:
 	ToDo.txt
