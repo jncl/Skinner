@@ -32,6 +32,7 @@ ToDos
 	I	LFG, reported by Galthariel, 14.11.21
 ?		- Text not visible when typing
 		- Dungeons & Raids, Premade Groups, Custom, Title editbox has not got information string displayed
+		- possible conflict with LFG+ AddOn ?
 
 	I	FriendFrame, reported by Galthariel, 27.12.21
 ?		-  [ADDON_ACTION_FORBIDDEN] AddOn 'Skinner' tried to call the protected function 'CopyToClipboard()'.
@@ -40,18 +41,17 @@ ToDos
 		[string "@FrameXML\RecruitAFriendFrame.lua"]:1137: in function <FrameXML\RecruitAFriendFrame.lua:1135>
 
 	I	CommunityInvite, reported by Galthariel, 27.12.21
-		- same error as above
+?		- same error as above
 
-	I/E	reported by mAwArm, 29.12.2021
-√		- Skinner\Core\UtilFuncs.lua:1019: attempt to index local 'frame' (a nil value)
-		[string "@Skinner\Core\UtilFuncs.lua"]:1019: in function <Skinner\Core\UtilFuncs.lua:1018>
-		[string "@Skinner\Core\UtilFuncs.lua"]:1052: in function `removeNineSlice'
-		[string "@Skinner\Core\UIFrames.lua"]:2025: in function <Skinner\Core\UIFrames.lua:2024>
+	I	Texture issues, reported by kertyion, 05.02.22
+?		 - There are gaps on the sides of the Game Menu
+?		 - Tab buttons stack on top of each other. Not all checkboxes have a skinner texture, on the Modules panel
+		 --> Asked for SV file, will check with user's settings
 
-√	S	SoulshapeJournal, requested by Galthariel, 29.12.2021
-
-√	S	MountsJournal, requested by Acivien, 08.01.2022
-
-√	S	LibSFDropDown-1.3, used by MountsJournal
-
-√	S	BaudManifest, requested by AmtoftEU, 20.01.22
+	I	MountsJournal, reported by Acivien, 11.02.22
+√		- Skinner\AddonSkins\MountsJournal-v9.1.16.lua:9: attempt to index local 'frame' (a nil value)
+		[string "@Skinner\AddonSkins\MountsJournal-v9.1.16.lua"]:9: in function <Skinner\AddonSkins\MountsJournal.lua:7>
+		[string "=[C]"]: ?
+		[string "@Ace3\CallbackHandler-1.0\CallbackHandler-1.0-7.lua"]:29: in function <...Ons\Ace3\CallbackHandler-1.0\CallbackHandler-1.0.lua:25>
+		[string "@Ace3\CallbackHandler-1.0\CallbackHandler-1.0-7.lua"]:64: in function `SendMessage'
+		[string "@Skinner\Core\PlayerFrames.lua"]:825: in function <Skinner\Core\PlayerFrames.lua:820>
