@@ -821,9 +821,6 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true, selectedTab=this.selectedTab, offsets={x1=9, y1=self.isTT and 3 or -2, x2=-9, y2=2}})
 		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true, cb=true, x2=3, y2=-1})
 
-		-- send message when UI is skinned (used by MountsJournal skin)
-		self:SendMessage("CollectionsJournal_Skinned", self)
-
 		self:Unhook(this, "OnShow")
 	end)
 
@@ -860,8 +857,15 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 			self:addButtonBorder{obj=this.MountDisplay.InfoButton, relTo=this.MountDisplay.InfoButton.Icon, clr="white"}
 			self:addButtonBorder{obj=this.MountDisplay.ModelScene.RotateLeftButton, ofs=-3, clr="grey"}
 			self:addButtonBorder{obj=this.MountDisplay.ModelScene.RotateRightButton, ofs=-3, clr="grey"}
+			-- hook this for scrolling changes
 			self:SecureHook(this.ListScrollFrame, "update", function(fObj)
 				for _, btn in _G.pairs(fObj.buttons) do
+					updBtnClr(btn)
+				end
+			end)
+			-- hook this for searchbox changes
+			self:SecureHook("MountJournal_UpdateMountList", function()
+				for _, btn in _G.pairs(_G.MountJournal.ListScrollFrame.buttons) do
 					updBtnClr(btn)
 				end
 			end)
