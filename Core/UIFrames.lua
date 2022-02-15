@@ -391,23 +391,17 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 end
 
 -- The following functions are used by several Chat* functions
-if aObj.isClscBC then
-	aObj.cebRgns = {1, 2, 6, 7} -- 1, 6 & 7 are font strings, 2 is cursor texture
-else
-	aObj.cebRgns = {1, 2, 9, 10, 11, 12} -- 1, 9, 10, 11 & 12 are font strings, 2 is cursor texture
-end
 local function skinChatEB(obj)
+	aObj:keepFontStrings(obj)
+	aObj:getRegion(obj, 2):SetAlpha(1) -- cursor texture
 	if aObj.prdb.ChatEditBox.style == 1 then -- Frame
-		aObj:keepRegions(obj, aObj.cebRgns)
 		aObj:skinObject("frame", {obj=obj, fType=ftype, ofs=-2})
-		obj.sf:SetAlpha(obj:GetAlpha())
 	elseif aObj.prdb.ChatEditBox.style == 2 then -- Editbox
-		aObj:skinObject("editbox", {obj=obj, fType=ftype, regions={3, 4, 5, 6, 7, 8}, ofs=-4})
+		aObj:skinObject("editbox", {obj=obj, fType=ftype, regions={}, ofs=-4})
 	else -- Borderless
-		aObj:keepRegions(obj, aObj.cebRgns)
 		aObj:skinObject("frame", {obj=obj, fType=ftype, noBdr=true, ofs=-5, y=2})
-		obj.sf:SetAlpha(obj:GetAlpha())
 	end
+	obj.sf:SetAlpha(obj:GetAlpha())
 end
 local function skinPointerFrame(frame)
 	aObj:skinGlowBox(frame.Content)

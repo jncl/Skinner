@@ -244,7 +244,4 @@ aObj.SetupClassic = function(self)
 		desc = self.L["Toggle the skin of the "] .. self.L["Battle Score Frame"],
 	}
 
-	-- ChatEditBox
-	self.cebRgns = {1, 2, 6, 7} -- 1, 6, 7 are font strings, 2 is cursor texture
-
 end
