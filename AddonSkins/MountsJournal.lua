@@ -2,9 +2,9 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("MountsJournal") then return end
 local _G = _G
 
-aObj.addonsToSkin.MountsJournal = function(self) -- v 9.1.15
+aObj.addonsToSkin.MountsJournal = function(self) -- v 9.1.16
 
-	self.RegisterMessage("MountsJournal", "CollectionsJournal_Skinned", function(_, _)
+	self:SecureHook(_G.MountsJournalFrame, "init", function(this)
 		local frame = _G.MountsJournalFrame.bgFrame
 		self:removeInset(frame.mountCount)
 		frame.achiev:DisableDrawLayer("BACKGROUND")
@@ -106,10 +106,10 @@ aObj.addonsToSkin.MountsJournal = function(self) -- v 9.1.15
 			self:skinCheckButton{obj=frame.mapSettings.HerbGathering}
 		end
 
-		self.UnregisterMessage("MountsJournal", "CollectionsJournal_Skinned")
+		self:Unhook(this, "init")
 	end)
 
-	local iofCnt = 0
+	local pCnt = 0
 	self.RegisterMessage("MountsJournal", "IOFPanel_Before_Skinning", function(_, panel)
 		if panel.name ~= "MountsJournal"
 		and panel.parent ~= "MountsJournal"
@@ -119,7 +119,7 @@ aObj.addonsToSkin.MountsJournal = function(self) -- v 9.1.15
 		if not self.iofSkinnedPanels[panel] then
 			if panel.name == "MountsJournal" then
 				self.iofSkinnedPanels[panel] = true
-				iofCnt = iofCnt + 1
+				pCnt = pCnt + 1
 				local leftFrame = self:getChild(panel, 1)
 				local rightFrame = self:getChild(panel, 2)
 				self:skinObject("dropdown", {obj=panel.modifierCombobox, x1=1, y1=2, x2=-1, y2=0})
@@ -157,7 +157,7 @@ aObj.addonsToSkin.MountsJournal = function(self) -- v 9.1.15
 				end
 			elseif panel.name == "Class settings" then
 				self.iofSkinnedPanels[panel] = true
-				iofCnt = iofCnt + 1
+				pCnt = pCnt + 1
 				local leftFrame = self:getChild(panel, 1)
 				self:skinObject("frame", {obj=leftFrame, kfs=true, fb=true})
 				local rightPanelScroll = self:getChild(panel.rightPanel, 1)
@@ -182,7 +182,7 @@ aObj.addonsToSkin.MountsJournal = function(self) -- v 9.1.15
 			end
 		end
 
-		if iofCnt == 2 then
+		if pCnt == 2 then
 			self.UnregisterMessage("MountsJournal", "IOFPanel_Before_Skinning")
 		end
 	end)
