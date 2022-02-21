@@ -27,6 +27,7 @@ externals:
 ignore:
     - ToDo*.txt
     - ObsoleteSkins
+    - RetailSupport
 
 tools-used:
     - findglobals
