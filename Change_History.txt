@@ -1,3 +1,11 @@
+beta9.42423.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	ArenaUI in UnitfFrames is Retail only
+	Completely separated Retail and Classic skinning code & options into their own sets of files
+
 beta9.42277.1
 Jncl:
 	ToDo.txt
