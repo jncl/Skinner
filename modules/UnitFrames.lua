@@ -722,48 +722,50 @@ function module:GetOptions()
 
 end
 
-aObj.blizzLoDFrames[ftype].ArenaUI = function(_)
+if aObj.isRtl then
+	aObj.blizzLoDFrames[ftype].ArenaUI = function(_)
 
-	if db.arena then
-		local function skinArenaFrame(fName)
-			if _G.InCombatLockdown() then
-			    aObj:add2Table(aObj.oocTab, {skinArenaFrame, {fName}})
-			    return
+		if db.arena then
+			local function skinArenaFrame(fName)
+				if _G.InCombatLockdown() then
+				    aObj:add2Table(aObj.oocTab, {skinArenaFrame, {fName}})
+				    return
+				end
+				module:skinUnitButton{obj=_G[fName], x1=-3, x2=3, y2=-6}
+				_G[fName .. "Background"]:SetTexture(nil)
+				_G[fName .. "Texture"]:SetTexture(nil)
+				_G[fName .. "Status"]:SetTexture(nil)
+				_G[fName .. "SpecBorder"]:SetTexture(nil)
+				aObj:skinObject("statusbar", {obj=_G[fName .. "HealthBar"], fi=0})
+				aObj:skinObject("statusbar", {obj=_G[fName .. "ManaBar"], fi=0, nilFuncs=true})
+				local cBar = fName .. "CastingBar"
+				aObj:adjHeight{obj=_G[cBar], adj=2}
+				aObj:moveObject{obj=_G[cBar].Text, y=-1}
+				_G[cBar].Flash:SetAllPoints()
+				aObj:skinObject("statusbar", {obj=_G[cBar], fi=0, bg=aObj:getRegion(_G[cBar], 1), otherTex={_G[cBar].Flash}})
 			end
-			module:skinUnitButton{obj=_G[fName], x1=-3, x2=3, y2=-6}
-			_G[fName .. "Background"]:SetTexture(nil)
-			_G[fName .. "Texture"]:SetTexture(nil)
-			_G[fName .. "Status"]:SetTexture(nil)
-			_G[fName .. "SpecBorder"]:SetTexture(nil)
-			aObj:skinObject("statusbar", {obj=_G[fName .. "HealthBar"], fi=0})
-			aObj:skinObject("statusbar", {obj=_G[fName .. "ManaBar"], fi=0, nilFuncs=true})
-			local cBar = fName .. "CastingBar"
-			aObj:adjHeight{obj=_G[cBar], adj=2}
-			aObj:moveObject{obj=_G[cBar].Text, y=-1}
-			_G[cBar].Flash:SetAllPoints()
-			aObj:skinObject("statusbar", {obj=_G[cBar], fi=0, bg=aObj:getRegion(_G[cBar], 1), otherTex={_G[cBar].Flash}})
-		end
-		local function skinArenaPetFrame(fName)
-			-- handle in combat
-			if _G.InCombatLockdown() then
-			    aObj:add2Table(aObj.oocTab, {skinArenaPetFrame, {fName}})
-			    return
+			local function skinArenaPetFrame(fName)
+				-- handle in combat
+				if _G.InCombatLockdown() then
+				    aObj:add2Table(aObj.oocTab, {skinArenaPetFrame, {fName}})
+				    return
+				end
+				module:skinUnitButton{obj=_G[fName], y1=1, x2=1, y2=2}
+				_G[fName .. "Flash"]:SetTexture(nil)
+				_G[fName .. "Texture"]:SetTexture(nil)
+				aObj:skinObject("statusbar", {obj=_G[fName .. "HealthBar"], fi=0})
+				aObj:skinObject("statusbar", {obj=_G[fName .. "ManaBar"], fi=0, nilFuncs=true})
+				aObj:moveObject{obj=_G[fName], x=-17} -- align under ArenaEnemy Health/Mana bars
 			end
-			module:skinUnitButton{obj=_G[fName], y1=1, x2=1, y2=2}
-			_G[fName .. "Flash"]:SetTexture(nil)
-			_G[fName .. "Texture"]:SetTexture(nil)
-			aObj:skinObject("statusbar", {obj=_G[fName .. "HealthBar"], fi=0})
-			aObj:skinObject("statusbar", {obj=_G[fName .. "ManaBar"], fi=0, nilFuncs=true})
-			aObj:moveObject{obj=_G[fName], x=-17} -- align under ArenaEnemy Health/Mana bars
+			for i = 1, _G.MAX_ARENA_ENEMIES do
+				skinArenaFrame("ArenaPrepFrame" .. i)
+				skinArenaFrame("ArenaEnemyFrame" .. i)
+				-- pet frame
+				skinArenaPetFrame("ArenaEnemyFrame" .. i .. "PetFrame")
+			end
+			aObj:skinObject("frame", {obj=_G.ArenaPrepBackground, fType=ftype})
+			aObj:skinObject("frame", {obj=_G.ArenaEnemyBackground, fType=ftype})
 		end
-		for i = 1, _G.MAX_ARENA_ENEMIES do
-			skinArenaFrame("ArenaPrepFrame" .. i)
-			skinArenaFrame("ArenaEnemyFrame" .. i)
-			-- pet frame
-			skinArenaPetFrame("ArenaEnemyFrame" .. i .. "PetFrame")
-		end
-		aObj:skinObject("frame", {obj=_G.ArenaPrepBackground, fType=ftype})
-		aObj:skinObject("frame", {obj=_G.ArenaEnemyBackground, fType=ftype})
+
 	end
-
 end
