@@ -950,3 +950,14 @@ aObj.SetupClassic_PlayerFrames = function()
 	end
 
 end
+
+aObj.SetupClassic_PlayerFramesOptions = function(self)
+
+	local optTab = {
+		["Craft UI"] = true,
+	}
+
+	self:setupFramesOptions(optTab, "Player")
+	_G.wipe(optTab)
+
+end

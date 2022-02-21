@@ -3,7 +3,6 @@ local _, aObj = ...
 local _G = _G
 
 aObj.SetupClassic_UIFrames = function()
-
 	local ftype = "u"
 
 	aObj.blizzFrames[ftype].BattlefieldFrame = function(self)
@@ -146,6 +145,35 @@ aObj.SetupClassic_UIFrames = function()
 			end
 
 		end
+	end
+
+	aObj.blizzFrames[ftype].ProductChoice = function(self)
+		if not self.prdb.ProductChoice or self.initialized.ProductChoice then return end
+		self.initialized.ProductChoice = true
+
+		self:SecureHookScript(_G.ProductChoiceFrame, "OnShow", function(this)
+			for _, btn in _G.pairs(this.Inset.Buttons) do
+				btn.IconBorder:SetTexture(nil)
+				self:skinObject("frame", {obj=btn, fType=ftype, kfs=true, fb=true})
+				btn.Icon:SetAlpha(1)
+			end
+			self:skinObject("frame", {obj=this.Inset.NoTakeBacksies.Dialog, fType=ftype, kfs=true})
+			if self.modBtns then
+				self:skinStdButton{obj=this.Inset.NoTakeBacksies.Dialog.AcceptButton, fType=ftype}
+				self:skinStdButton{obj=this.Inset.NoTakeBacksies.Dialog.DeclineButton, fType=ftype}
+			end
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, x2=1})
+			if self.modBtns then
+				self:skinStdButton{obj=this.Inset.ClaimButton, fType=ftype}
+			end
+			if self.modBtnBs then
+				self:addButtonBorder{obj=this.Inset.PrevPageButton, fType=ftype, ofs=-2, y1=-3, x2=-3, clr="gold"}
+				self:addButtonBorder{obj=this.Inset.NextPageButton, fType=ftype, ofs=-2, y1=-3, x2=-3, clr="gold"}
+			end
+
+			self:Unhook(this, "OnShow")
+		end)
+
 	end
 
 	aObj.blizzFrames[ftype].PVPHelper = function(self)
@@ -387,3 +415,21 @@ aObj.SetupClassic_UIFrames = function()
 	end
 
 end
+
+aObj.SetupClassic_UIFramesOptions = function(self)
+
+	local optTab = {
+		["Battlefield Frame"]       = true,
+		["GM Survey UI"]            = not self.isClscBC and true or nil,
+		["LFGLFM"]                  = (self.isClscBC or _G.C_LFGList.IsLookingForGroupEnabled and _G.C_LFGList.IsLookingForGroupEnabled()) and {desc = "Looking for Group/More Frame", width = "double"} or nil,
+		["Product Choice"]          = {desc = "Product Choice Frame"},
+		["Quest Log"]               = true,
+		["Quest Timer"]             = true,
+		["World State Score Frame"] = {desc = "Battle Score Frame"},
+	}
+
+	self:setupFramesOptions(optTab, "UI")
+	_G.wipe(optTab)
+
+end
+

@@ -11,7 +11,6 @@ aObj.SetupDefaults = function(self)
 			Errors                     = true,
 			MinimapIcon                = {hide = false, minimapPos = 210, radius = 80},
 			FrameBorders               = true,
-			UIDropDownMenu             = true,
 			-- Tab and DropDown Texture settings
 			TexturedTab                = false,
 			TexturedDD                 = false,
@@ -55,161 +54,27 @@ aObj.SetupDefaults = function(self)
 		-- Modules (populated below)
 		-- NPC Frames
 			DisableAllNPC              = false,
-			AlliedRacesUI              = true,
-			AuctionHouseUI             = true,
-			AzeriteRespecUI            = true,
-			BankFrame                  = true,
-			BlackMarketUI              = true,
-			ChromieTimeUI              = true,
-			CovenantRenown             = true,
-			CovenantSanctum            = true,
-			CovenantPreviewUI          = true,
-			FlightMap                  = true,
-			GossipFrame                = true,
-			GuildRegistrar             = true,
-			ItemInteractionUI          = true,
-			ItemUpgradeUI              = true,
-			MerchantFrame              = true,
-			NewPlayerExperienceGuide   = true,
-			Petition                   = true,
-			PetStableFrame             = true,
-			QuestFrame                 = true,
-			QuestInfo                  = true,
-			RuneForgeUI                = true,
-			Tabard                     = true,
-			TaxiFrame                  = true,
-			TrainerUI                  = true,
-			VoidStorageUI              = true,
 		-- Player Frames
 			DisableAllP                = false,
-			AchievementUI              = {skin = true, style = 2},
-			ArchaeologyUI              = true,
-			ArtifactUI                 = true,
-			AzeriteEssenceUI           = true,
-			AzeriteUI                  = true,
-			Buffs                      = true,
 			CastingBar                 = {skin = true, glaze = true},
-			CharacterFrames            = true,
-			Collections                = true, -- (Mounts, Pets, Toys, Heirlooms & Appearances)
-			Communities                = true,
-			CompactFrames              = true,
 			ContainerFrames            = {skin = true, fheight = 100},
-			DressUpFrame               = true,
-			EncounterJournal           = true,
-			EquipmentFlyout            = true,
-			FriendsFrame               = true,
-			GuildControlUI             = true,
-			GuildUI                    = true,
-			GuildInvite                = true,
-			InspectUI                  = true,
-			ItemSocketingUI            = true,
-			LookingForGuildUI          = true,
 			LootFrames                 = {skin = true, size = 1},
-			LootHistory                = true,
 			MirrorTimers               = {skin = true, glaze = true},
-			ObjectiveTracker           = {skin = false, popups = true, headers=true, animapowers=true},
-			OverrideActionBar          = true, -- a.k.a. VehicleUI
-			PVPUI                      = true,
-			RaidUI                     = true,
-			ReadyCheck                 = true,
-			RolePollPopup              = true,
-			SpellBookFrame             = true,
-			TalentUI                   = true,
-			TradeFrame                 = true,
-			TradeSkillUI               = true,
-			VehicleMenuBar             = true,
 		-- UI Frames
 			DisableAllUI               = false,
-			AddonList                  = true,
-			AdventureMap               = true,
-			AlertFrames                = true,
-			AnimaDiversionUI           = true,
-			AutoComplete               = true,
-			AzeriteItemToasts          = true,
-			BattlefieldMap             = true,
-			BehavioralMessaging        = true,
-			BindingUI                  = true,
-			BNFrames                   = true,
-			Calendar                   = true,
-			ChallengesUI               = true,
-			CharacterCustomize         = true,
 			ChatBubbles                = {skin = true, alpha = 0.45},
 			ChatButtons                = true,
-			ChatChannelsUI             = true,
 			ChatConfig                 = true,
 			ChatEditBox                = {skin = true, style = 3},
 			ChatFrames                 = false, -- (inc ChatMinimizedFrames)
 			ChatMenus                  = true,
 			ChatTabs                   = false, -- (inc. ChatTemporaryWindow)
-			ChatTabsFade               = true,
-			CinematicFrame             = true,
-			ClassTrial                 = true,
-			CoinPickup                 = true,
-			ColorPicker                = true,
-			Console                    = true,
-			Contribution               = true,
-			CombatLogQBF               = false,
-			CovenantToasts             = true,
-			DeathRecap                 = true,
-			DebugTools                 = true,
-			DestinyFrame               = true,
-			EventToastManager          = true,
-			EventTrace                 = true,
-			GarrisonUI                 = true,
-			GhostFrame                 = true,
-			GMChatUI                   = true,
-			GuildBankUI                = true,
-			HelpFrame                  = true,
-			HelpTip                    = true,
-			InterfaceOptions           = true,
-			IslandsPartyPoseUI         = true,
-			IslandsQueueUI             = true,
-			ItemText                   = true,
-			LevelUpDisplay             = true,
-			LossOfControl              = true,
-			MacroUI                    = true,
-			MailFrame                  = true,
-			MainMenuBar                = {skin = true, glazesb = true, extraab=true, altpowerbar=true},
-			MenuFrames                 = true, -- (inc. MacroUI & BindingUI)
+			CombatLogQBF               = not aObj.isClscERA and false or nil,
+			MainMenuBar                = {skin = true, glazesb = true},
 			Minimap                    = {skin = false, gloss = false},
 			MinimapButtons             = {skin = false, style = false},
-			MovePad                    = true,
-			MovieFrame                 = true,
-			Nameplates                 = true,
-			NavigationBar              = true,
-			NewPlayerExperience        = true,
-			ObliterumUI                = true,
-			OrderHallUI                = true,
-			PetBattleUI                = true,
-			PlayerChoice               = true,
-			ProductChoiceFrame         = true,
-			PTRFeedback                = true,
-			PVEFrame                   = true, -- (inc, LFD, LFG, RaidFinder) a.k.a. GroupFinder
-			PVPMatch                   = true,
-			QuestMap                   = true,
-			QuestSession               = true, -- a.k.a. Party Sync
-			QueueStatusFrame           = true,
-			RaidFrame                  = true, -- (inc. LFR)
-			SharedBasicControls        = true,
-			ScrappingMachineUI         = true,
-			SplashFrame                = true,
-			StackSplit                 = true,
-			StaticPopups               = true,
-			Soulbinds                  = true,
-			SubscriptionInterstitialUI = true,
-			SystemOptions              = true,
-			TalkingHeadUI              = true,
-			TextToSpeechFrame          = true,
-			TimeManager                = true,
 			Tooltips                   = {skin = true, style = 1, glazesb = true, border = 1},
-			TorghastLevelPicker        = true,
-			Tutorial                   = true,
-			UIWidgets                  = true,
-			UnitPopup                  = true,
-			WarfrontsPartyPoseUI       = true,
-			WeeklyRewards              = true,
 			WorldMap                   = {skin = true, size = 1},
-			ZoneAbility                = true,
 		-- Disabled Skins
 			DisableAllAS               = false,
 			DisabledSkins              = {},
@@ -865,131 +730,6 @@ aObj.SetupOptions = function(self)
 					type = "header",
 					name = self.L["or choose which frames to skin"],
 				},
-				AlliedRacesUI = {
-					type = "toggle",
-					name = self.L["Allied Races UI"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Allied Races UI"],
-				},
-				AuctionHouseUI = {
-					type = "toggle",
-					name = self.L["AuctionHouse UI"],
-					desc = self.L["Toggle the skin of the "] .. self.L["AuctionHouse UI"],
-				},
-				AzeriteRespecUI ={
-					type = "toggle",
-					name = self.L["Azerite Respec UI"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Azerite Respec UI"],
-				},
-				BankFrame = {
-					type = "toggle",
-					name = self.L["Bank Frame"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Bank Frame"],
-				},
-				BlackMarketUI = {
-					type = "toggle",
-					name = self.L["Black Market UI"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Black Market UI"],
-				},
-				ChromieTimeUI = {
-					type = "toggle",
-					name = self.L["Chromie Time UI"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Chromie Time UI"],
-				},
-				CovenantRenown = {
-					type = "toggle",
-					name = self.L["Covenant Renown"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Covenant Renown"],
-				},
-				CovenantSanctum = {
-					type = "toggle",
-					name = self.L["Covenant Sanctum"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Covenant Sanctum"],
-				},
-				CovenantPreviewUI = {
-					type = "toggle",
-					name = self.L["Covenant Preview UI"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Covenant Preview UI"],
-				},
-				FlightMap = {
-					type = "toggle",
-					name = self.L["Flight Map"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Flight Map"],
-				},
-				GossipFrame = {
-					type = "toggle",
-					name = self.L["Gossip Frame"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Gossip Frame"],
-				},
-				GuildRegistrar = {
-					type = "toggle",
-					name = self.L["Guild Registrar Frame"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Guild Registrar Frame"],
-				},
-				ItemInteractionUI = {
-					type = "toggle",
-					name = self.L["Item Interaction UI"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Item Interaction UI"],
-				},
-				ItemUpgradeUI = {
-					type = "toggle",
-					name = self.L["Item Upgrade UI"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Item Upgrade UI"],
-				},
-				MerchantFrame = {
-					type = "toggle",
-					name = self.L["Merchant Frame"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Merchant Frame"],
-				},
-				NewPlayerExperienceGuide = {
-					type = "toggle",
-					name = self.L["New Player Experience Guide Frame"],
-					desc = self.L["Toggle the skin of the "] .. self.L["New Player Experience Guide Frame"],
-				},
-				Petition = {
-					type = "toggle",
-					name = self.L["Petition Frame"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Petition Frame"],
-				},
-				PetStableFrame = {
-					type = "toggle",
-					name = self.L["Stable Frame"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Stable Frame"],
-				},
-				QuestFrame = {
-					type = "toggle",
-					name = self.L["Quest Frame"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Quest Frame"],
-				},
-				QuestInfo = {
-					type = "toggle",
-					name = self.L["Quest Info Frame"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Quest Info Frame"],
-				},
-				RuneForgeUI = {
-					type = "toggle",
-					name = self.L["RuneForge UI"],
-					desc = self.L["Toggle the skin of the "] .. self.L["RuneForge UI"],
-				},
-				Tabard = {
-					type = "toggle",
-					name = self.L["Tabard Frame"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Tabard Frame"],
-				},
-				TaxiFrame = {
-					type = "toggle",
-					name = self.L["Taxi Frame"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Taxi Frame"],
-				},
-				TrainerUI = {
-					name = self.L["Trainer UI"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Trainer UI"],
-					type = "toggle",
-				},
-				VoidStorageUI = {
-					type = "toggle",
-					name = self.L["Void Storage UI"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Void Storage UI"],
-				},
 			},
 		},
 
@@ -1025,55 +765,6 @@ aObj.SetupOptions = function(self)
 					type = "header",
 					name = self.L["or choose which frames to skin"],
 				},
-				AchievementUI = {
-					type = "group",
-					order = -1,
-					inline = true,
-					name = self.L["Achievement UI"],
-					get = function(info) return db.AchievementUI[info[#info]] end,
-					set = function(info, value)
-						db.AchievementUI[info[#info]] = value
-						if _G.IsAddOnLoaded("Blizzard_AchievementUI") then	self:checkAndRun("AchievementUI", "p", true) end
-					end,
-					args = {
-						skin = {
-							type = "toggle",
-							name = self.L["Skin Frame"],
-							desc = self.L["Toggle the skin of the "] .. self.L["Achievement UI"],
-						},
-						style = {
-							type = "range",
-							name = self.L["Achievement Style"],
-							desc = self.L["Set the Achievement style (Textured, Untextured)"],
-							min = 1, max = 2, step = 1,
-						},
-					},
-				},
-				ArchaeologyUI = {
-					type = "toggle",
-					name = self.L["Archaeology UI"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Archaeology UI"],
-				},
-				ArtifactUI = {
-					type = "toggle",
-					name = self.L["Artifact UI"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Artifact UI"],
-				},
-				AzeriteEssenceUI = {
-					type = "toggle",
-					name = self.L["Azerite Essence UI"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Azerite Essence UI"],
-				},
-				AzeriteUI = {
-					type = "toggle",
-					name = self.L["Azerite UI"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Azerite UI"],
-				},
-				Buffs = {
-					type = "toggle",
-					name = self.L["Buffs Buttons"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Buffs Buttons"],
-				},
 				CastingBar = {
 					type = "group",
 					inline = true,
@@ -1098,27 +789,6 @@ aObj.SetupOptions = function(self)
 							desc = self.L["Toggle the glazing of the "] .. self.L["Casting Bar Frames"],
 						},
 					},
-				},
-				CharacterFrames = {
-					type = "toggle",
-					name = self.L["Character Frames"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Character Frames"],
-				},
-				Collections = {
-					-- (Mounts, Pets, Toys, Heirlooms & Appearances)
-					type = "toggle",
-					name = self.L["Collections Journal"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Collections Journal"],
-				},
-				Communities ={
-					type = "toggle",
-					name = self.L["Communities UI"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Communities UI"],
-				},
-				CompactFrames = {
-					type = "toggle",
-					name = self.L["Compact Frames"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Compact Frames"],
 				},
 				ContainerFrames = {
 					type = "group",
@@ -1146,56 +816,6 @@ aObj.SetupOptions = function(self)
 						},
 					},
 				},
-				DressUpFrame = {
-					type = "toggle",
-					name = self.L["Dress Up Frame"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Dress Up Frame"],
-				},
-				EncounterJournal = {
-					type = "toggle",
-					name = self.L["Adventure Guide"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Adventure Guide"],
-				},
-				EquipmentFlyout = {
-					type = "toggle",
-					name = self.L["Equipment Flyout"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Equipment Flyout"],
-				},
-				FriendsFrame = {
-					type = "toggle",
-					name = self.L["Social Frame"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Social Frame"],
-				},
-				GuildControlUI = {
-					type = "toggle",
-					name = self.L["Guild Control UI"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Guild Control UI"],
-				},
-				GuildUI = {
-					type = "toggle",
-					name = self.L["Guild UI"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Guild UI"],
-				},
-				GuildInvite = {
-					type = "toggle",
-					name = self.L["Guild Invite Frame"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Guild Invite Frame"],
-				},
-				InspectUI = {
-					type = "toggle",
-					name = self.L["Inspect UI"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Inspect UI"],
-				},
-				ItemSocketingUI = {
-					type = "toggle",
-					name = self.L["Item Socketing UI"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Item Socketing UI"],
-				},
-				LookingForGuildUI = {
-					type = "toggle",
-					name = self.L["Looking for Guild UI"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Looking for Guild UI"],
-				},
 				LootFrames = {
 					type = "group",
 					inline = true,
@@ -1222,11 +842,6 @@ aObj.SetupOptions = function(self)
 						},
 					},
 				},
-				LootHistory = {
-					type = "toggle",
-					name = self.L["Loot History Frame"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Loot History Frame"],
-				},
 				MirrorTimers = {
 					type = "group",
 					inline = true,
@@ -1251,85 +866,6 @@ aObj.SetupOptions = function(self)
 							desc = self.L["Toggle the glazing of the "] .. self.L["Timer Frames"],
 						},
 					},
-				},
-				ObjectiveTracker = {
-					type = "group",
-					order = -1,
-					inline = true,
-					name = self.L["ObjectiveTracker Frame"],
-					get = function(info) return db.ObjectiveTracker[info[#info]] end,
-					set = function(info, value) db.ObjectiveTracker[info[#info]] = value end,
-					args = {
-						skin = {
-							type = "toggle",
-							order = 1,
-							name = self.L["Skin Frame"],
-							desc = self.L["Toggle the skin of the "] .. self.L["ObjectiveTracker Frame"],
-						},
-						popups = {
-							type = "toggle",
-							order = 2,
-							name = self.L["AutoPopUp Frames"],
-							desc = self.L["Toggle the skin of the "] .. self.L["AutoPopUp Frames"],
-						},
-						headers = {
-							type = "toggle",
-							order = 3,
-							name = self.L["Header Blocks"],
-							desc = self.L["Toggle the skin of the "] .. self.L["Header Blocks"],
-						},
-						animapowers = {
-							type = "toggle",
-							order = 4,
-							name = self.L["Anima Powers"],
-							desc = self.L["Toggle the skin of the "] .. self.L["Anima Powers"],
-						},
-					},
-				},
-				OverrideActionBar = {
-					type = "toggle",
-					name = self.L["Vehicle UI"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Vehicle UI"],
-				},
-				PVPUI = {
-					type = "toggle",
-					name = self.L["PVP Frame"],
-					desc = self.L["Toggle the skin of the "] .. self.L["PVP Frame"],
-				},
-				RaidUI = {
-					type = "toggle",
-					name = self.L["Raid UI"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Raid UI"],
-				},
-				ReadyCheck = {
-					type = "toggle",
-					name = self.L["Ready Check Frame"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Ready Check Frame"],
-				},
-				RolePollPopup = {
-					type = "toggle",
-					name = self.L["Role Poll Popup"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Role Poll Popup"],
-				},
-				SpellBookFrame = {
-					type = "toggle",
-					name = self.L["SpellBook Frame"],
-					desc = self.L["Toggle the skin of the "] .. self.L["SpellBook Frame"],
-				},
-				TalentUI = {
-					type = "toggle",
-					name = self.L["Talent UI"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Talent UI"],
-				},
-				TradeFrame = {
-					type = "toggle",
-					name = self.L["Trade Frame"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Trade Frame"],
-				},
-				TradeSkillUI = {
-					type = "toggle",
-					name = self.L["Trade Skill UI"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Trade Skill UI"],
 				},
 			},
 		},
@@ -1376,72 +912,6 @@ aObj.SetupOptions = function(self)
 					type = "header",
 					name = self.L["or choose which frames to skin"],
 				},
-				AddonList = {
-					type = "toggle",
-					name = self.L["Addon List Frame"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Addon List Frame"],
-				},
-				AdventureMap = {
-					type = "toggle",
-					name = self.L["Adventure Map"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Adventure Map"],
-				},
-				AlertFrames = {
-					type = "toggle",
-					name = self.L["Alert Frames"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Alert Frames"],
-				},
-				AnimaDiversionUI = {
-					type = "toggle",
-					name = self.L["Anima Diversion UI"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Anima Diversion UI"],
-				},
-				AutoComplete = {
-					type = "toggle",
-					name = self.L["Auto Complete Frame"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Auto Complete Frame"],
-				},
-				AzeriteItemToasts = {
-					type = "toggle",
-					name = self.L["Azerite Item Toasts"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Azerite Item Toasts"],
-				},
-				BattlefieldMap = {
-					type = "toggle",
-					name = self.L["Battlefield Map Frame"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Battlefield Map Frame"],
-				},
-				BehavioralMessaging = {
-					type = "toggle",
-					name = self.L["Behavioral Messaging Frames"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Behavioral Messaging Frames"],
-				},
-				BindingUI = {
-					type = "toggle",
-					name = self.L["Key Bindings UI"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Key Bindings UI"],
-				},
-				BNFrames = {
-					type = "toggle",
-					name = self.L["BattleNet Frames"],
-					desc = self.L["Toggle the skin of the "] .. self.L["BattleNet Frames"],
-				},
-				Calendar = {
-					type = "toggle",
-					name = self.L["Calendar"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Calendar"],
-				},
-				ChallengesUI = {
-					type = "toggle",
-					name = self.L["Challenges UI"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Challenges UI"],
-				},
-				CharacterCustomize = {
-					type = "toggle",
-					width = "double",
-					name = self.L["Character Customize Frame"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Character Customize Frame"],
-				},
 				chatopts = {
 					type = "group",
 					inline = true,
@@ -1466,12 +936,6 @@ aObj.SetupOptions = function(self)
 							name = self.L["Chat Tabs"],
 							desc = self.L["Toggle the skin of the "] .. self.L["Chat Tabs"],
 						},
-						ChatTabsFade = {
-							type = "toggle",
-							order = 4,
-							name = self.L["Chat Tabs Fade"],
-							desc = self.L["Toggle the fading of the Chat Tabs"],
-						},
 						ChatFrames = {
 							type = "toggle",
 							order = 5,
@@ -1484,13 +948,13 @@ aObj.SetupOptions = function(self)
 							name = self.L["Chat Buttons"],
 							desc = self.L["Toggle the skin of the "] .. self.L["Chat Buttons"],
 						},
-						CombatLogQBF = {
+						CombatLogQBF = not aObj.isClscERA and {
 							type = "toggle",
 							width = "double",
 							order = 7,
 							name = self.L["CombatLog Quick Button Frame"],
 							desc = self.L["Toggle the skin of the "] .. self.L["CombatLog Quick Button Frame"],
-						},
+						} or nil,
 					},
 				},
 				ChatBubbles = {
@@ -1519,11 +983,6 @@ aObj.SetupOptions = function(self)
 						},
 					},
 				},
-				ChatChannelsUI = {
-					type = "toggle",
-					name = self.L["Chat Channels UI"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Chat Channels UI"],
-				},
 				ChatEditBox = {
 					type = "group",
 					inline = true,
@@ -1550,146 +1009,6 @@ aObj.SetupOptions = function(self)
 						},
 					},
 				},
-				CinematicFrame = {
-					type = "toggle",
-					name = self.L["Cinematic Frame"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Cinematic Frame"],
-				},
-				ClassTrial = {
-					type = "toggle",
-					name = self.L["Class Trial Frames"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Class Trial Frames"],
-				},
-				CoinPickup = {
-					type = "toggle",
-					name = self.L["Coin Pickup Frame"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Coin Pickup Frame"],
-				},
-				ColorPicker = {
-					type = "toggle",
-					name = self.L["Colour Picker Frame"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Colour Picker Frame"],
-				},
-				Console = {
-					type = "toggle",
-					width = "double",
-					name = self.L["Developer Console Frame"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Developer Console Frame"],
-				},
-				Contribution = {
-					type = "toggle",
-					name = self.L["Contribution Frame"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Contribution Frame"],
-				},
-				CovenantToasts = {
-					type = "toggle",
-					name = self.L["Covenant Toasts"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Covenant Toasts"],
-				},
-				DeathRecap = {
-					type = "toggle",
-					name = self.L["Death Recap Frame"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Death Recap Frame"],
-				},
-				DebugTools = {
-					type = "toggle",
-					name = self.L["Debug Tools Frames"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Debug Tools Frames"],
-				},
-				DestinyFrame = {
-					type = "toggle",
-					name = self.L["Destiny Frame"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Destiny Frame"],
-				},
-				EventToastManager ={
-					type = "toggle",
-					width = "double",
-					name = self.L["Event Toast Manager Frame"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Event Toast Manager Frame"],
-				},
-				EventTrace = {
-					type = "toggle",
-					name = self.L["Event Trace"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Event Trace"],
-				},
-				GarrisonUI = {
-					type = "toggle",
-					name = self.L["Garrison UI"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Garrison UI"],
-				},
-				GhostFrame = {
-					type = "toggle",
-					name = self.L["Ghost Frame"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Ghost Frame"],
-				},
-				GMChatUI = {
-					type = "toggle",
-					name = self.L["GM Chat UI"],
-					desc = self.L["Toggle the skin of the "] .. self.L["GM Chat UI"],
-				},
-				GuildBankUI = {
-					type = "toggle",
-					name = self.L["Guild Bank UI"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Guild Bank UI"],
-				},
-				HelpFrame = {
-					type = "group",
-					inline = true,
-					order = -1,
-					name = self.L["Help Frames"],
-					args = {
-						HelpFrame = {
-							type = "toggle",
-							name = self.L["Customer Support Frame"],
-							desc = self.L["Toggle the skin of the "] .. self.L["Customer Support Frame"],
-						},
-					},
-				},
-				HelpTip = {
-					type = "toggle",
-					name = self.L["Help Tips"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Help Tips"],
-				},
-				InterfaceOptions = {
-					type = "toggle",
-					name = self.L["Interface Options"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Interface Options"],
-				},
-				IslandsPartyPoseUI ={
-					type = "toggle",
-					name = self.L["Islands Party Pose UI"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Islands Party Pose UI"],
-				},
-				IslandsQueueUI ={
-					type = "toggle",
-					name = self.L["Islands Queue UI"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Islands Queue UI"],
-				},
-				ItemText = {
-					type = "toggle",
-					name = self.L["Item Text Frame"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Item Text Frame"],
-				},
-				LevelUpDisplay = {
-					type = "toggle",
-					name = self.L["Level Up Display"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Level Up Display"],
-				},
-				LossOfControl = {
-					type = "toggle",
-					name = self.L["Loss Of Control Frame"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Loss Of Control Frame"],
-				},
-				MacroUI = {
-					type = "toggle",
-					name = self.L["Macros UI"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Macros UI"],
-				},
-				MailFrame = {
-					type = "toggle",
-					name = self.L["Mail Frame"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Mail Frame"],
-				},
 				MainMenuBar = {
 					type = "group",
 					inline = true,
@@ -1714,27 +1033,7 @@ aObj.SetupOptions = function(self)
 							name = self.L["Glaze Status Bar"],
 							desc = self.L["Toggle the glazing of the "] .. self.L["Status Bar"],
 						},
-						extraab = {
-							type = "toggle",
-							order = 3,
-							width = "double",
-							name = self.L["Extra Action Button"],
-							desc = self.L["Toggle the skin of the "] .. self.L["Extra Action Button"],
-						},
-						altpowerbar = {
-							type = "toggle",
-							order = 3,
-							width = "double",
-							name = self.L["Alternate Power Bars"],
-							desc = self.L["Toggle the skin of the "] .. self.L["Alternate Power Bars"],
-						},
 					},
-				},
-				MenuFrames = {
-					-- inc. BindingUI & MacroUI
-					type = "toggle",
-					name = self.L["Menu Frames"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Menu Frames"],
 				},
 				Minimap = {
 					type = "group",
@@ -1791,154 +1090,10 @@ aObj.SetupOptions = function(self)
 						},
 						style = {
 							type = "toggle",
-							name = self.L["Minimal Minimap Buttons"],
+							name = self.L["Minimal Style"],
 							desc = self.L["Toggle the style of the Minimap Buttons"],
-							width = "double",
 						},
 					},
-				},
-				MovePad = {
-					type = "toggle",
-					name = self.L["Move Pad"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Move Pad"],
-				},
-				MovieFrame = {
-					type = "toggle",
-					name = self.L["Movie Frame"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Movie Frame"],
-				},
-				Nameplates = {
-					type = "toggle",
-					name = self.L["Nameplates"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Nameplates"],
-				},
-				NavigationBar = {
-					type = "toggle",
-					name = self.L["Navigation Bar"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Navigation Bar"],
-				},
-				NewPlayerExperience = {
-					type = "toggle",
-					name = self.L["New Player Experience"],
-					desc = self.L["Toggle the skin of the "] .. self.L["New Player Experience"],
-				},
-				ObliterumUI = {
-					type = "toggle",
-					name = self.L["Obliterum UI"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Obliterum UI"],
-				},
-				OrderHallUI = {
-					type = "toggle",
-					name = self.L["OrderHall UI"],
-					desc = self.L["Toggle the skin of the "] .. self.L["OrderHall UI"],
-				},
-				PetBattleUI = {
-					type = "toggle",
-					name = self.L["Pet Battle UI"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Pet Battle UI"],
-				},
-				ProductChoiceFrame = {
-					type = "toggle",
-					name = self.L["Product Choice Frame"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Product Choice Frame"],
-				},
-				PlayerChoice = {
-					type = "toggle",
-					name = self.L["Player Choice UI"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Player Choice UI"],
-				},
-				PTRFeedback = {
-					type = "toggle",
-					name = self.L["PTR Feedback Frames"],
-					desc = self.L["Toggle the skin of the "] .. self.L["PTR Feedback Frames"],
-				},
-				PVEFrame = {
-					-- inc. LFD, LFG, RaidFinder
-					type = "toggle",
-					name = self.L["Group Finder Frame"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Group Finder Frame"],
-				},
-				PVPMatch = {
-					type = "toggle",
-					name = self.L["PVP Match Frame"],
-					desc = self.L["Toggle the skin of the "] .. self.L["PVP Match Frame"],
-				},
-				QuestMap = {
-					type = "toggle",
-					name = self.L["Quest Map"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Quest Map"],
-				},
-				QuestSession = {
-					type = "toggle",
-					name = self.L["Quest Session Frames"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Quest Session Frames"],
-				},
-				QueueStatusFrame = {
-					type = "toggle",
-					name = self.L["Queue Status Frame"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Queue Status Frame"],
-				},
-				RaidFrame = {
-					-- inc. LFR
-					type = "toggle",
-					name = self.L["Raid Frame"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Raid Frame"],
-				},
-				ScrappingMachineUI ={
-					type = "toggle",
-					name = self.L["Scrapping Machine UI"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Scrapping Machine UI"],
-				},
-				SharedBasicControls = {
-					type = "toggle",
-					name = self.L["Script Errors Frame"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Script Errors Frame"],
-				},
-				SplashFrame = {
-					type = "toggle",
-					name = self.L["What's New Frame"],
-					desc = self.L["Toggle the skin of the "] .. self.L["What's New Frame"],
-				},
-				StackSplit = {
-					type = "toggle",
-					name = self.L["Stack Split Frame"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Stack Split Frame"],
-				},
-				StaticPopups = {
-					type = "toggle",
-					name = self.L["Static Popups"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Static Popups"],
-				},
-				Soulbinds = {
-					type = "toggle",
-					name = self.L["Soulbinds Frame"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Soulbinds Frame"],
-				},
-				SubscriptionInterstitialUI = {
-					type = "toggle",
-					width = "double",
-					name = self.L["Subscription Interstitial UI"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Subscription Interstitial UI"],
-				},
-				SystemOptions = {
-					type = "toggle",
-					name = self.L["System Options"],
-					desc = self.L["Toggle the skin of the "] .. self.L["System Options"],
-				},
-				TalkingHeadUI = {
-					type = "toggle",
-					name = self.L["TalkingHead UI"],
-					desc = self.L["Toggle the skin of the "] .. self.L["TalkingHead UI"],
-				},
-				TextToSpeechFrame = {
-					type = "toggle",
-					name = self.L["Text To Speech Frame"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Text To Speech Frame"],
-				},
-				TimeManager = {
-					type = "toggle",
-					name = self.L["Time Manager Frame"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Time Manager Frame"],
 				},
 				Tooltips = {
 					type = "group",
@@ -1977,42 +1132,6 @@ aObj.SetupOptions = function(self)
 						},
 					},
 				},
-				TorghastLevelPicker = {
-					type = "toggle",
-					width = "double",
-					name = self.L["Torghast Level Picker Frame"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Torghast Level Picker Frame"],
-				},
-				Tutorial = {
-					type = "toggle",
-					name = self.L["Tutorial Frame"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Tutorial Frame"],
-				},
-				UIDropDownMenu = {
-					type = "toggle",
-					name = self.L["DropDown Panels"],
-					desc = self.L["Toggle the skin of the "] .. self.L["DropDown Panels"],
-				},
-				UIWidgets = {
-					type = "toggle",
-					name = self.L["UI Widgets"],
-					desc = self.L["Toggle the skin of the "] .. self.L["UI Widgets"],
-				},
-				UnitPopup ={
-					type = "toggle",
-					name = self.L["Unit Popups"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Unit Popups"],
-				},
-				WarfrontsPartyPoseUI = {
-					type = "toggle",
-					name = self.L["Warfronts Party Pose UI"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Warfronts Party Pose UI"],
-				},
-				WeeklyRewards = {
-					type = "toggle",
-					name = self.L["Weekly Rewards Frame"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Weekly Rewards Frame"],
-				},
 				WorldMap = {
 					type = "group",
 					inline = true,
@@ -2038,11 +1157,6 @@ aObj.SetupOptions = function(self)
 							min = 1, max = 2, step = 1,
 						},
 					},
-				},
-				ZoneAbility = {
-					type = "toggle",
-					name = self.L["Zone Ability"],
-					desc = self.L["Toggle the skin of the "] .. self.L["Zone Ability"],
 				},
 			},
 		},
@@ -2077,11 +1191,77 @@ aObj.SetupOptions = function(self)
 
 	}
 
-	-- remove PTR Feedback option
-	if not _G.PTR_IssueReporter then
-		self.prdb.PTRFeedback = nil
-		self.optTables["UI Frames"].args.PTRFeedback = nil
-	end
+	local npcOptTab = {
+		["Bank Frame"]       = true,
+		["Gossip Frame"]     = true,
+		["Guild Registrar"]  = {desc = "Guild Registrar Frame"},
+		["Merchant Frame"]   = true,
+		["Petition"]         = {desc = "Petition Frame"},
+		["Pet Stable Frame"] = {desc = "Stable Frame"},
+		["Quest Frame"]      = true,
+		["Quest Info"]       = {desc = "Quest Info Frame"},
+		["Tabard"]           = {desc = "Tabard Frame"},
+		["Taxi Frame"]       = true,
+		["Trainer UI"]       = true,
+	}
+	self:setupFramesOptions(npcOptTab, "NPC")
+	_G.wipe(npcOptTab)
+
+	local pfOptTab = {
+		["Buffs"]             = {desc = "Buffs Buttons"},
+		["Character Frames"]  = true,
+		["Compact Frames"]    = true,
+		["Dress Up Frame"]    = true,
+		["Friends Frame"]     = {desc = "Social Frame"},
+		["Inspect UI"]        = true,
+		["Item Socketing UI"] = true,
+		["Loot History"]      = {desc = "Loot History Frame"},
+		["Raid UI"]           = true,
+		["Ready Check"]       = {desc = "Ready Check Frame"},
+		["SpellBook Frame"]   = true,
+		["Talent UI"]         = true,
+		["Trade Frame"]       = true,
+		["Trade Skill UI"]    = true,
+	}
+	self:setupFramesOptions(pfOptTab, "Player")
+	_G.wipe(pfOptTab)
+
+	local uiOptTab = {
+		["Addon List"]            = {desc = "Addon List Frame"},
+		["Auto Complete"]         = {desc = "Auto Complete Frame"},
+		["Battlefield Map"]       = {desc = "Battlefield Map Frame"},
+		["Binding UI"]            = {desc = "Key Bindings UI"},
+		["BN Frames"]             = {desc = "BattleNet Frames"},
+		["Cinematic Frame"]       = true,
+		["Coin Pickup"]           = {desc = "Coin Pickup Frame"},
+		["Color Picker"]          = {desc = "Color Picker Frame"},
+		["Debug Tools"]           = {desc = "Debug Tools Frames"},
+		["Event Trace"]           = true,
+		["GM Chat UI"]            = true,
+		["Guild Bank UI"]         = true,
+		["Help Frame"]            = {desc = "Customer Support Frame", width = "double"},
+		["Interface Options"]     = true,
+		["Item Text"]             = {desc = "Item Text Frame"},
+		["Macro UI"]              = true,
+		["Mail Frame"]            = true,
+		["Menu Frames"]           = true,
+		["Move Pad"]              = true,
+		["Movie Frame"]           = true,
+		["Nameplates"]            = true,
+		["PTR Feedback"]          = _G.PTR_IssueReporter and {desc = "PTR Feedback Frames"} or nil,
+		["Raid Frame"]            = true,
+		["Shared Basic Controls"] = {desc = "Script Errors Frame"},
+		["Stack Split"]           = {desc = "Stack Split Frame"},
+		["Static Popups"]         = true,
+		["System Options"]        = true,
+		["Time Manager"]          = {desc = "Time Manager Frame"},
+		["Tutorial"]              = {desc = "Tutorial Frame"},
+		["UI DropDown Menu"]      = {desc = "DropDown Panels"},
+		["UI Widgets"]            = true,
+		["Unit Popup"]            = {desc = "Unit Popups"},
+	}
+	self:setupFramesOptions(uiOptTab, "UI")
+	_G.wipe(uiOptTab)
 
 	-- module options
 	for _, mod in self:IterateModules() do

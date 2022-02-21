@@ -1245,6 +1245,32 @@ function aObj:setupBackdrop()
 
 end
 
+function aObj:setupFramesOptions(optTab, framesType)
+
+	local opt, oDesc, oWidth
+	for optName, optVals in _G.pairs(optTab) do
+		opt = optName:gsub("%s+", "")
+		oDesc = optName
+		oWidth = nil
+		if _G.type(optVals) == "table" then
+			oDesc = optVals.desc or optName
+			oWidth = optVals.width or nil
+		end
+		-- aObj:Debug("setupFramesOptions: [%s, %s, %s, %s, %s, %s]", optName, optVals, opt, oDesc, oWidth)
+		if self.db.profile[opt] == nil then
+			self.db.profile[opt] = true
+			self.db.defaults.profile[opt] = true
+		end
+		self.optTables[framesType .. " Frames"].args[opt] = {
+			type = "toggle",
+			name = self.L[oDesc],
+			desc = self.L["Toggle the skin of the "] .. self.L[oDesc],
+			width = oWidth
+		}
+	end
+
+end
+
 function aObj:setupTextures()
 --[[
 	N.B. Texture paths replaced by FileDataIDs

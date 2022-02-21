@@ -65,98 +65,29 @@ function aObj:OnInitialize()
 	-- store player class as English Spelling
 	self.uCls = _G.select(2, _G.UnitClass("player"))
 
+	-- get FileDataIDs for Textures
+	self:setupTextures()
+
 	-- setup the default DB values and register them
 	self:checkAndRun("SetupDefaults", "opt", false, true)
+
 	-- store shortcut
 	self.prdb = self.db.profile
 	local dflts = self.db.defaults.profile
 
-	-- convert any old settings
-	if _G.type(self.prdb.MinimapButtons) == "boolean" then
-		self.prdb.MinimapButtons = {skin = true, style = false}
-	end
-	-- change options name
-	if self.prdb.ClassColour
-	or self.prdb.ClassColours
-	then
-		self.prdb.ClassClrBd = self.prdb.ClassColour or self.prdb.ClassColours
-		self.prdb.ClassColour = nil
-		self.prdb.ClassColours = nil
-	end
-	-- BattlefieldMm has been renamed BattlefieldMap
-	if self.prdb.BattlefieldMm then
-		self.prdb.BattlefieldMap = self.prdb.BattlefieldMm
-		self.prdb.BattlefieldMm = nil
-	end
-	-- CommunitiesUI has been renamed to Communities
-	if self.prdb.CommunitiesUI then
-		self.prdb.Communities = self.prdb.CommunitiesUI
-		self.prdb.CommunitiesUI = nil
-	end
-	-- PVPFrame has been renamed to PVPUI
-	if self.prdb.PVPFrame then
-		self.prdb.PVPUI = self.prdb.PVPFrame
-		self.prdb.PVPFrame = nil
-	end
-	-- SideDressUpFrame is part of DressUpFrames
-	if self.prdb.SideDressUpFrame then
-		self.prdb.SideDressUpFrame = nil
-	end
-	-- ScriptErrors has been renamed to SharedBasicControls
-	if self.prdb.ScriptErrors then
-		self.prdb.SharedBasicControls = self.prdb.ScriptErrors
-		self.prdb.ScriptErrors = nil
-	end
-	-- DropDownPanels renamed to UIDropDownMenu
-	if self.prdb.DropDownPanels then
-		self.prdb.UIDropDownMenu = self.prdb.DropDownPanels
-		self.prdb.DropDownPanels = nil
-	end
-	-- DropDownButtons option has been removed
-	if self.prdb.DropDownButttons then
-		self.prdb.DropDownButtons = nil
-	end
-	-- BattlefieldMap options changed from table to entry
-	if _G.type(self.prdb.BattlefieldMap) == "table" then
-		if self.prdb.BattlefieldMap.skin then
-			self.prdb.BattlefieldMap = true
-		else
-			self.prdb.BattlefieldMap = false
-		end
-	end
-	-- Removed LootFrames extra button option
-	if self.prdb.LootFrames.extra then
-		self.prdb.LootFrames.extra = nil
-	end
-	-- ChatBubbles options changed
-	if _G.type(self.prdb.ChatBubbles) ~= "table"
-	and self.prdb.ChatBubbles ~= nil
-	then
-		local val = self.prdb.ChatBubbles
-		self.prdb.ChatBubbles.skin = val
-	end
-	-- Shadowlands changes
-	for _, option in _G.pairs{"BarbershopUI", "QuestChoice", "WarboardUI"} do
-		if self.prdb[option] then
-			self.prdb[option] = nil
-		end
-	end
-
-	-- treat GossipFrame, QuestFrame, QuestInfo & QuestLog/QuestMap as one
-	-- as they all change the quest text colours
-	self.prdb.GossipFrame = self.prdb.QuestFrame
-	self.prdb.QuestInfo = self.prdb.QuestFrame
-	if self.isClsc then
-		self.prdb.QuestLog = self.prdb.QuestFrame
-	else
-		self.prdb.QuestMap = self.prdb.QuestFrame
-	end
-
-	-- get FileDataIDs for Textures
-	self:setupTextures()
-
-	-- setup the Addon's options
+	-- setup the Addon's core options
 	self:checkAndRun("SetupOptions", "opt")
+
+	-- setup Retail/Classic Options as required
+	if self.isRtl then
+		self:SetupRetail_NPCFramesOptions()
+		self:SetupRetail_PlayerFramesOptions()
+		self:SetupRetail_UIFramesOptions()
+	elseif self.isClsc then
+		self:SetupClassic_NPCFramesOptions()
+		self:SetupClassic_PlayerFramesOptions()
+		self:SetupClassic_UIFramesOptions()
+	end
 
 	-- register the default background texture
 	self.LSM:Register("background", dflts.BdTexture, self.tFDIDs.cfBg)
@@ -316,6 +247,13 @@ function aObj:OnInitialize()
 
 	-- table to hold StatusBars that have been glazed, with weak keys
 	self.sbGlazed = _G.setmetatable({}, {__mode = "k"})
+
+	-- Load Retail Support, if required (done here for ElvUI/TukUI)
+	if self.isRtl then
+		self:checkAndRun("SetupRetail_NPCFrames", "opt", nil, true)
+		self:checkAndRun("SetupRetail_PlayerFrames", "opt", nil, true)
+		self:checkAndRun("SetupRetail_UIFrames", "opt", nil, true)
+	end
 
 	-- Load Classic Support, if required (done here for ElvUI/TukUI)
 	if self.isClsc then

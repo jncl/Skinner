@@ -3,7 +3,6 @@ local _, aObj = ...
 local _G = _G
 
 aObj.SetupClassic_NPCFrames = function()
-
 	local ftype = "n"
 
 	if aObj.isClscBC then
@@ -394,5 +393,18 @@ aObj.SetupClassic_NPCFrames = function()
 		end)
 
 	end
+
+end
+
+aObj.SetupClassic_NPCFramesOptions = function(self)
+
+	local optTab = {
+		["Arena Frame"]           = self.isClscBC and true or nil,
+		["Arena Registrar Frame"] = self.isClscBC and true or nil,
+		["Auction UI"]            = true,
+	}
+
+	self:setupFramesOptions(optTab, "NPC")
+	_G.wipe(optTab)
 
 end
