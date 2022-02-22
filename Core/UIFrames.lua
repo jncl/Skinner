@@ -1889,10 +1889,10 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 		aObj:moveObject{obj=dbiBtn.icon, x=-3, y=3}
 		skinMMBtn("LibDBIcon btn", dbiBtn, name)
 	end
+	self.DBIcon:RegisterCallback("LibDBIcon_IconCreated", skinDBI)
 	for name, button in _G.pairs(self.DBIcon.objects) do
 		skinDBI(nil, button, name)
 	end
-	self.DBIcon:RegisterCallback("LibDBIcon_IconCreated", skinDBI)
 
 	-- Garrison Landing Page Minimap button
 	if not self.isClsc then
