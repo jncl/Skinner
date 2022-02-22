@@ -1406,7 +1406,7 @@ aObj.SetupRetail_UIFrames = function()
 					end
 				end)
 			end
-			_G.	EventRegistry:RegisterCallback("ClickBindingFrame.UpdateFrames", skinCCBindings, self)
+			_G.EventRegistry:RegisterCallback("ClickBindingFrame.UpdateFrames", skinCCBindings, self)
 
 		end
 	end
