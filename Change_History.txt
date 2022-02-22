@@ -1,3 +1,8 @@
+beta9.42423.2
+Jncl:
+	Updated Change_History.txt
+	Exclude Retail content from Classic versions
+
 beta9.42423.1
 Jncl:
 	ToDo.txt
