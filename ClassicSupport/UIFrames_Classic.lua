@@ -421,13 +421,12 @@ aObj.SetupClassic_UIFramesOptions = function(self)
 	local optTab = {
 		["Battlefield Frame"]       = true,
 		["GM Survey UI"]            = not self.isClscBC and true or nil,
-		["LFGLFM"]                  = (self.isClscBC or _G.C_LFGList.IsLookingForGroupEnabled and _G.C_LFGList.IsLookingForGroupEnabled()) and {desc = "Looking for Group/More Frame", width = "double"} or nil,
-		["Product Choice"]          = {desc = "Product Choice Frame"},
+		["LFGLFM"]                  = (self.isClscBC or _G.C_LFGList.IsLookingForGroupEnabled and _G.C_LFGList.IsLookingForGroupEnabled()) and {desc = "Looking for Group/More Frame"} or nil,
+		["Product Choice"]          = {suff = "Frame"},
 		["Quest Log"]               = true,
 		["Quest Timer"]             = true,
 		["World State Score Frame"] = {desc = "Battle Score Frame"},
 	}
-
 	self:setupFramesOptions(optTab, "UI")
 	_G.wipe(optTab)
 

@@ -899,11 +899,10 @@ aObj.SetupRetail_NPCFramesOptions = function(self)
 		["Flight Map"]                  = true,
 		["Item Interaction UI"]         = true,
 		["Item Upgrade UI"]             = true,
-		["New Player Experience Guide"] = {desc = "New Player Experience Guide Frame", width = "double"},
-		["RuneForge UI"]                = true,
+		["New Player Experience Guide"] = {suff = "Frame"},
+		["Rune Forge UI"]               = true,
 		["Void Storage UI"]             = true,
 	}
-
 	self:setupFramesOptions(optTab, "NPC")
 	_G.wipe(optTab)
 

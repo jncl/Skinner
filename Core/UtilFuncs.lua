@@ -1247,16 +1247,20 @@ end
 
 function aObj:setupFramesOptions(optTab, framesType)
 
-	local opt, oDesc, oWidth
+	local opt, oDesc
 	for optName, optVals in _G.pairs(optTab) do
 		opt = optName:gsub("%s+", "")
 		oDesc = optName
-		oWidth = nil
 		if _G.type(optVals) == "table" then
-			oDesc = optVals.desc or optName
-			oWidth = optVals.width or nil
+			if optVals.desc then
+				oDesc = optVals.desc
+			elseif optVals.suff then
+				oDesc = _G.string.format("%s %s", optName, optVals.suff)
+			else
+				oDesc = optName
+			end
 		end
-		-- aObj:Debug("setupFramesOptions: [%s, %s, %s, %s, %s, %s]", optName, optVals, opt, oDesc, oWidth)
+		-- aObj:Debug("setupFramesOptions: [%s, %s, %s, %s, %s]", optName, optVals, opt, oDesc)
 		if self.db.profile[opt] == nil then
 			self.db.profile[opt] = true
 			self.db.defaults.profile[opt] = true
@@ -1265,7 +1269,7 @@ function aObj:setupFramesOptions(optTab, framesType)
 			type = "toggle",
 			name = self.L[oDesc],
 			desc = self.L["Toggle the skin of the "] .. self.L[oDesc],
-			width = oWidth
+			width = oDesc:len() > 21 and "double" or nil,
 		}
 	end
 

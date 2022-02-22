@@ -4002,19 +4002,18 @@ aObj.SetupRetail_PlayerFramesOptions = function(self)
 		["Artifact UI"]          = true,
 		["Azerite Essence UI"]   = true,
 		["Azerite UI"]           = true,
-		["Collections"]          = {desc = "Collections Journal"},
-		["Communities"]			 = {desc = "Communities UI"},
+		["Collections"]          = {suff = "Journal"},
+		["Communities"]			 = {suff = "UI"},
 		["Encounter Journal"]    = {desc = "Adventure Guide"},
 		["Equipment Flyout"]     = true,
 		["Guild Control UI"]     = true,
-		["Guild Invite"]         = {desc = "Guild Invite Frame"},
+		["Guild Invite"]         = {suff = "Frame"},
 		["Guild UI"]             = true,
-		["Looking For Guild UI"] = true,
+		["Looking For Guild UI"] = {desc = "Looking for Guild UI"},
 		["Override Action Bar"]  = {desc = "Vehicle UI"},
-		["PVP UI"]               = true,
+		["PVP UI"]               = {desc = "PVP Frame"},
 		["Role Poll Popup"]      = true,
 	}
-
 	self:setupFramesOptions(optTab, "Player")
 	_G.wipe(optTab)
 

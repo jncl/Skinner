@@ -403,7 +403,6 @@ aObj.SetupClassic_NPCFramesOptions = function(self)
 		["Arena Registrar Frame"] = self.isClscBC and true or nil,
 		["Auction UI"]            = true,
 	}
-
 	self:setupFramesOptions(optTab, "NPC")
 	_G.wipe(optTab)
 
