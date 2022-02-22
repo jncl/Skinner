@@ -23,13 +23,9 @@ ToDos
 
 ≈	O	Refactor NewSkinFuncs in Blizzard/AddOn skins
 
-≈	O	Replace RegisterCallback/Fire by RegisterMessage/SendMessage
-
-≈	O	Replace texture pathnames by texture FileDataIDs, found in setupTextures function
+≈	O	Replace RegisterCallback/Fire by RegisterMessage/SendMessage where appropriate
 
 ≈ 	O	Use luacheck on all lua files including AddOn Skins
-
-√	O	Remove Retail only code from Core Files & put in Retail only files inc. options
 
 	I	LFG, reported by Galthariel, 14.11.21
 ?		- Text not visible when typing
@@ -49,3 +45,14 @@ ToDos
 ?		 - There are gaps on the sides of the Game Menu
 ?		 - Tab buttons stack on top of each other. Not all checkboxes have a skinner texture, on the Modules panel
 		 --> Asked for SV file, will check with user's settings
+
+	I	Various Lacalization Errors, reported by Galthariel, 22.02.22
+√		- Product Choice should be Product Choice Frame
+√¶		- Order Hall UI
+√¶		- Talking Head UI
+√		- Torghast Level Picker should be Torghast Level Picker Frame
+√		- Soulbinds Frames should be Soulbinds Frame
+√		- Looking For Guild UI should be Looking for Guild UI
+√		- PVP UI should be PVP Frame
+√¶		- Auction House UI
+√		- Macro UI should be Macros UI
