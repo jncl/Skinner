@@ -948,7 +948,7 @@ aObj.SetupOptions = function(self)
 							name = self.L["Chat Buttons"],
 							desc = self.L["Toggle the skin of the "] .. self.L["Chat Buttons"],
 						},
-						CombatLogQBF = not aObj.isClscERA and {
+						CombatLogQBF = not self.isClscERA and {
 							type = "toggle",
 							width = "double",
 							order = 7,
