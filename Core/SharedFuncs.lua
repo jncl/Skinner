@@ -22,7 +22,7 @@ local buildInfo = {
 	-- Live
 	wow_classic         = {"2.5.3",  42328, "Classic TBC"},
 	wow_classic_era     = {"1.14.2", 42214, "Classic Era"},
-	wow                 = {"9.1.5",  42010, "Retail"},
+	wow                 = {"9.2.0",  42423, "Retail"},
 	-- Currently playing
 	curr                = {_G.GetBuildInfo()},
 }
