@@ -1367,48 +1367,46 @@ aObj.SetupRetail_UIFrames = function()
 
 	end
 
-	if aObj.isRtlPTR then
-		aObj.blizzLoDFrames[ftype].ClickBindingUI = function(self)
-			if not self.prdb.BindingUI or self.initialized.ClickBindingUI then return end
-			self.initialized.ClickBindingUI = true
+	aObj.blizzLoDFrames[ftype].ClickBindingUI = function(self)
+		if not self.prdb.BindingUI or self.initialized.ClickBindingUI then return end
+		self.initialized.ClickBindingUI = true
 
-			self:SecureHookScript(_G.ClickBindingFrame, "OnShow", function(this)
-				this.TutorialButton.Ring:SetTexture(nil)
-				self:moveObject{obj=this.TutorialButton, y=-4}
-				self:removeBackdrop(this.ScrollBoxBackground)
-				self:skinObject("scrollbar", {obj=this.ScrollBar, fType=ftype, x1=0, y1=2, x2=0, y2=-2})
-				this.TutorialFrame.Tutorial:SetDrawLayer("ARTWORK") -- make background visible
-				self:skinObject("frame", {obj=this.TutorialFrame, fType=ftype, rns=true, cb=true, ofs=4}) -- DON'T remove artwork
-				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true, cb=true})
-				if self.modBtns then
-					self:skinStdButton{obj=this.SaveButton, fType=ftype}
-					self:skinStdButton{obj=this.AddBindingButton, fType=ftype}
-					self:SecureHook(this.AddBindingButton, "SetEnabled", function(bObj)
-						self:clrBtnBdr(bObj)
-					end)
-					self:skinStdButton{obj=this.ResetButton, fType=ftype}
-				end
-
-				self:Unhook(this, "OnShow")
-			end)
-
-			local function skinCCBindings()
-				_G.ClickBindingFrame.ScrollBox:ForEachFrame(function(bObj)
-					-- N.B. Ignore headings
-					if bObj.DeleteButton then
-						aObj:removeRegions(bObj, {1}) -- background
-						if aObj.modBtns	then
-							aObj:skinStdButton{obj=bObj.DeleteButton, fType=ftype, clr="grey"}
-						end
-						if aObj.modBtnBs then
-							aObj:addButtonBorder{obj=bObj, fType=ftype, relTo=bObj.Icon, clr="grey"}
-						end
-					end
+		self:SecureHookScript(_G.ClickBindingFrame, "OnShow", function(this)
+			this.TutorialButton.Ring:SetTexture(nil)
+			self:moveObject{obj=this.TutorialButton, y=-4}
+			self:removeBackdrop(this.ScrollBoxBackground)
+			self:skinObject("scrollbar", {obj=this.ScrollBar, fType=ftype, x1=0, y1=2, x2=0, y2=-2})
+			this.TutorialFrame.Tutorial:SetDrawLayer("ARTWORK") -- make background visible
+			self:skinObject("frame", {obj=this.TutorialFrame, fType=ftype, rns=true, cb=true, ofs=4}) -- DON'T remove artwork
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true, cb=true})
+			if self.modBtns then
+				self:skinStdButton{obj=this.SaveButton, fType=ftype}
+				self:skinStdButton{obj=this.AddBindingButton, fType=ftype}
+				self:SecureHook(this.AddBindingButton, "SetEnabled", function(bObj)
+					self:clrBtnBdr(bObj)
 				end)
+				self:skinStdButton{obj=this.ResetButton, fType=ftype}
 			end
-			_G.EventRegistry:RegisterCallback("ClickBindingFrame.UpdateFrames", skinCCBindings, self)
 
+			self:Unhook(this, "OnShow")
+		end)
+
+		local function skinCCBindings()
+			_G.ClickBindingFrame.ScrollBox:ForEachFrame(function(bObj)
+				-- N.B. Ignore headings
+				if bObj.DeleteButton then
+					aObj:removeRegions(bObj, {1}) -- background
+					if aObj.modBtns	then
+						aObj:skinStdButton{obj=bObj.DeleteButton, fType=ftype, clr="grey"}
+					end
+					if aObj.modBtnBs then
+						aObj:addButtonBorder{obj=bObj, fType=ftype, relTo=bObj.Icon, clr="grey"}
+					end
+				end
+			end)
 		end
+		_G.EventRegistry:RegisterCallback("ClickBindingFrame.UpdateFrames", skinCCBindings, self)
+
 	end
 
 	aObj.blizzFrames[ftype].Console = function(self)

@@ -139,7 +139,7 @@ aObj.blizzLoDFrames[ftype].BindingUI = function(self)
 					self:skinStdButton{obj=button}
 				end
 			end)
-			if not aObj.isClsc then
+			if not self.isClsc then
 				self:skinStdButton{obj=this.quickKeybindButton}
 				self:SecureHook(this, "UpdateUnbindKey", function(fObj)
 					self:clrBtnBdr(fObj.unbindButton)
@@ -149,9 +149,7 @@ aObj.blizzLoDFrames[ftype].BindingUI = function(self)
 					self:clrBtnBdr(this.unbindButton)
 				end)
 			end
-			if self.isRtlPTR then
-				self:skinStdButton{obj=this.clickCastingButton, fType=ftype}
-			end
+			self:skinStdButton{obj=this.clickCastingButton, fType=ftype}
 		end
 		if self.modChkBtns then
 			self:skinCheckButton{obj=this.characterSpecificButton}
@@ -2615,10 +2613,8 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 		elseif wFrame.widgetType == 2 then -- StatusBar
 			local regs
 			-- background & border textures
-			if aObj.isRtlPTR then
+			if aObj.isRtl then
 				regs = {2, 3, 4, 8, 9, 10}
-			elseif aObj.isRtl then
-				regs= {2, 3, 4, 9, 10, 11}
 			else
 				regs = {1, 2, 3, 5, 6 ,7}
 			end

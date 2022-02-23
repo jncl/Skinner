@@ -3352,9 +3352,7 @@ aObj.SetupRetail_PlayerFrames = function()
 			end
 			local btn
 			for _, bName in _G.pairs{"RandomBG", "RandomEpicBG", "Arena1", "Brawl", "SpecialEvent"} do
-				if aObj.isRtlPTR
-				and bName == "SpecialEvent"
-				then
+				if bName == "SpecialEvent" then
 					btn = this.BonusFrame["BrawlButton2"]
 				else
 					btn = this.BonusFrame[bName .. "Button"]
