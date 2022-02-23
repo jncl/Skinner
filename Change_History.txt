@@ -1,3 +1,12 @@
+beta9.42423.3
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated Localisations used in Options display
+	Check self. rather than aObj.
+	Register callback before processing existing DBIcons
+	Removed erroneous tab character
+
 beta9.42423.2
 Jncl:
 	Updated Change_History.txt
