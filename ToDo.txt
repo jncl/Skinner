@@ -45,14 +45,8 @@ ToDos
 ?		 - There are gaps on the sides of the Game Menu
 ?		 - Tab buttons stack on top of each other. Not all checkboxes have a skinner texture, on the Modules panel
 		 --> Asked for SV file, will check with user's settings
+		 	- checked, no issues found
 
-	I	Various Lacalization Errors, reported by Galthariel, 22.02.22
-√		- Product Choice should be Product Choice Frame
-√¶		- Order Hall UI
-√¶		- Talking Head UI
-√		- Torghast Level Picker should be Torghast Level Picker Frame
-√		- Soulbinds Frames should be Soulbinds Frame
-√		- Looking For Guild UI should be Looking for Guild UI
-√		- PVP UI should be PVP Frame
-√¶		- Auction House UI
-√		- Macro UI should be Macros UI
+	I	Several Localizations issues, reported by Galthariel/icedawg, 22.02.22
+√		- Color Picker Frame
+√		- Player Choice Frame
