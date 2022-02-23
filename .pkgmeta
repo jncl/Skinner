@@ -27,11 +27,10 @@ externals:
 ignore:
     - ToDo*.txt
     - ObsoleteSkins
-    - ClassicSupport
+
+enable-toc-creation: yes
 
 tools-used:
     - findglobals
     # https://www.townlong-yak.com/globe/
     # luacheck
-
-enable-nolib-creation: no
