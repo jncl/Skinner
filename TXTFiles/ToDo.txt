@@ -10,22 +10,20 @@ ToDos
 ≈	O	Rework how AddOn skins are handled
 		- replace table in AddonFrames with individual entries in each skin file
 
-?	O	Make role icons square with a button border
-		- use UI-LFG-ICON-ROLES.BLP as source for all, size them as required
-
-?	O	Eliminate bugs from skinning the PartyFrames, BossFrames, TargetFrameToT
-
 ≈	O	Rename variables and use function for colours
 		- self.bColour to self.bClr
 		- self.bbColour to self.bbClr
 
 ≈	O	Add checks for Button state as required
-
-≈	O	Refactor NewSkinFuncs in Blizzard/AddOn skins
+§
+≈	O	Refactor NewSkinFuncs in Blizzard/AddOn skinsaj
 
 ≈	O	Replace RegisterCallback/Fire by RegisterMessage/SendMessage where appropriate
 
-≈ 	O	Use luacheck on all lua files including AddOn Skins
+?	O	Make role icons square with a button border
+		- use UI-LFG-ICON-ROLES.BLP as source for all, size them as required
+
+?	O	Replace ObjectiveTracker Header Minimize button textures with suitable characters
 
 	I	LFG, reported by Galthariel, 14.11.21
 ?		- Text not visible when typing
@@ -47,6 +45,11 @@ ToDos
 		 --> Asked for SV file, will check with user's settings
 		 	- checked, no issues found
 
-	I	Several Localizations issues, reported by Galthariel/icedawg, 22.02.22
-√		- Color Picker Frame
-√		- Player Choice Frame
+	O	Use BigWigsPackager v2
+√		- change releated files
+<<<<<<< HEAD
+
+	I	ObjectivesTracker, reported by DarkLimpan, 02.03.22
+√		- not skinned after last patch
+=======
+>>>>>>> 12c97db1 (ToDo.txt)
