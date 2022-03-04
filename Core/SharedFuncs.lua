@@ -15,14 +15,14 @@ end
 local buildInfo = {
 	-- Testing
 	wow_classic_beta    = {"3.0.0",  99999, "Classic TBC Beta"},
-	wow_classic_ptr     = {"2.5.3",  42328, "Classic TBC PTR"},
+	wow_classic_ptr     = {"2.5.4",  42581, "Classic TBC PTR"},
 	wow_classic_era_ptr = {"1.14.2", 42214, "Classic Era PTR"}, -- a.k.a. Season of Mastery Beta
 	wow_beta            = {"10.0.0", 99999, "Retail Beta"},
-	wow_ptr             = {"9.2.0",  42423, "Retail PTR"},
+	wow_ptr             = {"9.2.0",  42560, "Retail PTR"},
 	-- Live
 	wow_classic         = {"2.5.3",  42328, "Classic TBC"},
 	wow_classic_era     = {"1.14.2", 42214, "Classic Era"},
-	wow                 = {"9.2.0",  42423, "Retail"},
+	wow                 = {"9.2.0",  42560, "Retail"},
 	-- Currently playing
 	curr                = {_G.GetBuildInfo()},
 }
