@@ -3025,7 +3025,7 @@ aObj.SetupRetail_PlayerFrames = function()
 			end
 		end)
 
-		self:skinDropDown{obj=_G.ObjectiveTrackerFrame.BlockDropDown}
+		self:skinObject("dropdown", {obj=_G.ObjectiveTrackerFrame.BlockDropDown, fType=ftype})
 
 		if self.modBtnBs then
 			skinMinBtn(_G.ObjectiveTrackerFrame.HeaderMenu.MinimizeButton)
