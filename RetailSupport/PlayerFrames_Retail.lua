@@ -4006,9 +4006,13 @@ aObj.SetupRetail_PlayerFramesOptions = function(self)
 	local db = self.db.profile
 	local dflts = self.db.defaults.profile
 
+	dflts.AchievementUI = {skin = true, style = 2}
 	if db.AchievementUI == nil then
 		db.AchievementUI = {skin = true, style = 2}
-		dflts.AchievementUI = {skin = true, style = 2}
+	else
+		if db.AchievementUI.style == nil then
+			db.AchievementUI.style = 2
+		end
 	end
 	self.optTables["Player Frames"].args.AchievementUI = {
 		type = "group",
@@ -4034,9 +4038,19 @@ aObj.SetupRetail_PlayerFramesOptions = function(self)
 			},
 		},
 	}
+	dflts.ObjectiveTracker = {skin = false, popups = true, headers=true, animapowers=true}
 	if db.ObjectiveTracker == nil then
 		db.ObjectiveTracker = {skin = false, popups = true, headers=true, animapowers=true}
-		dflts.ObjectiveTracker = {skin = false, popups = true, headers=true, animapowers=true}
+	else
+		if db.ObjectiveTracker.popups == nil then
+			db.ObjectiveTracker.popups = true
+		end
+		if db.ObjectiveTracker.headers == nil then
+			db.ObjectiveTracker.headers = true
+		end
+		if db.ObjectiveTracker.animapowers == nil then
+			db.ObjectiveTracker.animapowers = true
+		end
 	end
 	self.optTables["Player Frames"].args.ObjectiveTracker = {
 		type = "group",
