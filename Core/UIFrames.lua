@@ -1462,7 +1462,7 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 				self:addButtonBorder{obj=btn, abt=true, sft=true} -- N.B. uses SecureFrameTemplate
 			end
 			for i = 1, _G.NUM_PET_ACTION_SLOTS do
-				self:addButtonBorder{obj=_G["PetActionButton" .. i], abt=true, sft=true, reParent={_G["PetActionButton" .. i .. "AutoCastable"], _G["PetActionButton" .. i .. "SpellHighlightTexture"]}, ofs=3}
+				self:addButtonBorder{obj=_G["PetActionButton" .. i], abt=true, sft=true, reParent={_G["PetActionButton" .. i .. "AutoCastable"], _G["PetActionButton" .. i .. "SpellHighlightTexture"]}, ofs=3, x2=2}
 				_G["PetActionButton" .. i .. "Shine"]:SetParent(_G["PetActionButton" .. i].sbb)
 			end
 			for i = 1, _G.NUM_ACTIONBAR_BUTTONS do
