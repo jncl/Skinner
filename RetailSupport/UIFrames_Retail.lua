@@ -4244,11 +4244,9 @@ aObj.SetupRetail_UIFramesOptions = function(self)
 		name = self.L["Chat Tabs Fade"],
 		desc = self.L["Toggle the fading of the Chat Tabs"],
 	}
+	self.db.defaults.profile.MainMenuBar.extraab = true
 	if self.db.profile.MainMenuBar.extraab == nil then
 		self.db.profile.MainMenuBar.extraab = true
-		self.db.defaults.profile.MainMenuBar.extraab = true
-		self.db.profile.MainMenuBar.altpowerbar = true
-		self.db.defaults.profile.MainMenuBar.altpowerbar = true
 	end
 	self.optTables["UI Frames"].args.MainMenuBar.args.altpowerbar = {
 		type = "toggle",
@@ -4256,6 +4254,10 @@ aObj.SetupRetail_UIFramesOptions = function(self)
 		name = self.L["Alternate Power Bars"],
 		desc = self.L["Toggle the skin of the "] .. self.L["Alternate Power Bars"],
 	}
+	self.db.defaults.profile.MainMenuBar.altpowerbar = true
+	if self.db.profile.MainMenuBar.altpowerbar == nil then
+		self.db.profile.MainMenuBar.altpowerbar = true
+	end
 	self.optTables["UI Frames"].args.MainMenuBar.args.extraab = {
 		type = "toggle",
 		order = 4,
