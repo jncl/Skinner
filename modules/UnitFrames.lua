@@ -93,10 +93,6 @@ function module:skinPlayerF()
 			_G.PlayerRestGlow:SetTexture(nil)
 			_G.PlayerAttackGlow:SetTexture(nil)
 			_G.PlayerAttackBackground:SetTexture(nil)
-			if aObj.isClsc then
-				frame.threatIndicator = _G.PlayerAttackBackground
-			end
-			-- status bars
 			if aObj.isRtl then
 				aObj:skinObject("statusbar", {obj=frame.PlayerFrameHealthBarAnimatedLoss, fi=0})
 				aObj:skinObject("statusbar", {obj=frame.healthbar, fi=0, other={frame.myHealPredictionBar, frame.otherHealPredictionBar}})
@@ -105,17 +101,16 @@ function module:skinPlayerF()
 				_G.PlayerFrameAlternateManaBar.DefaultBackground:SetAlpha(1)
 				aObj:skinObject("statusbar", {obj=_G.PlayerFrameAlternateManaBar, regions={2, 3, 4, 5, 6}, fi=0, bg=_G.PlayerFrameAlternateManaBar.DefaultBackground})
 				aObj:moveObject{obj=_G.PlayerFrameAlternateManaBar, y=1}
+				-- move PvP Timer text down
+				aObj:moveObject{obj=_G.PlayerPVPTimerText, y=-10}
 			else
+				frame.threatIndicator = _G.PlayerAttackBackground
 				aObj:skinObject("statusbar", {obj=frame.healthbar, fi=0})
 				aObj:skinObject("statusbar", {obj=frame.manabar, fi=0, nilFuncs=true})
 			end
 			module:adjustStatusBarPosn(frame.healthbar)
 			-- PowerBarAlt handled in MainMenuBar function (UIF)
 			-- casting bar handled in CastingBar function (PF)
-			if not aObj.isClsc then
-				-- move PvP Timer text down
-				aObj:moveObject{obj=_G.PlayerPVPTimerText, y=-10}
-			end
 			-- move level & rest icon down, so they are more visible
 			module:SecureHook("PlayerFrame_UpdateLevelTextAnchor", function(level)
 				_G.PlayerLevelText:SetPoint("CENTER", _G.PlayerFrameTexture, "CENTER", level == 100 and -62 or -61, -20 + lOfs)
@@ -140,7 +135,7 @@ function module:skinPlayerF()
 					end
 				end
 			end
-			if not aObj.isClsc then
+			if aObj.isRtl then
 				-- skin the ArcaneChargesFrame, if required
 				if aObj.uCls == "MAGE" then
 					_G.MageArcaneChargesFrame:DisableDrawLayer("BACKGROUND")
