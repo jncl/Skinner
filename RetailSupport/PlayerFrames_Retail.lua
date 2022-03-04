@@ -2921,7 +2921,7 @@ aObj.SetupRetail_PlayerFrames = function()
 
 		-- ObjectiveTrackerFrame BlocksFrame
 		if self.prdb.ObjectiveTracker.skin then
-			self:skinObject("frame", {obj=_G.ObjectiveTrackerFrame.BlocksFrame, fType=ftype, kfs=true, x1=-30, x2=4})
+			self:skinObject("frame", {obj=_G.ObjectiveTrackerFrame.BlocksFrame, fType=ftype, kfs=true, ofs=-1, x1=-30, x2=10})
 		end
 
 		-- AutoPopup frames
