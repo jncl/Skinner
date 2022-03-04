@@ -2881,11 +2881,14 @@ aObj.SetupRetail_UIFrames = function()
 				and not this.navList[i].MenuArrowButton.sbb
 				then
 					self:addButtonBorder{obj=this.navList[i].MenuArrowButton, ofs=-2, x1=-1, x2=0, clr="gold", ca=0.75}
-					this.navList[i].MenuArrowButton.sbb:SetAlpha(0) -- hide button border
-					self:HookScript(this.navList[i].MenuArrowButton, "OnEnter", function(bObj)
+					if this.navList[i].MenuArrowButton.sbb then
+						this.navList[i].MenuArrowButton.sbb:SetAlpha(0) -- hide button border
+					end
+					-- handle in combat hooking
+					self:hookScript(this.navList[i].MenuArrowButton, "OnEnter", function(bObj)
 						bObj.sbb:SetAlpha(1)
 					end)
-					self:HookScript(this.navList[i].MenuArrowButton, "OnLeave", function(bObj)
+					self:hookScript(this.navList[i].MenuArrowButton, "OnLeave", function(bObj)
 						bObj.sbb:SetAlpha(0)
 					end)
 				end
