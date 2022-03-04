@@ -1263,9 +1263,9 @@ function aObj:setupFramesOptions(optTab, framesType)
 			end
 		end
 		-- aObj:Debug("setupFramesOptions: [%s, %s, %s, %s, %s]", optName, optVals, opt, oDesc)
+		self.db.defaults.profile[opt] = true
 		if self.db.profile[opt] == nil then
 			self.db.profile[opt] = true
-			self.db.defaults.profile[opt] = true
 		end
 		self.optTables[framesType .. " Frames"].args[opt] = {
 			type = "toggle",
