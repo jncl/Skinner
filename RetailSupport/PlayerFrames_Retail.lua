@@ -3127,7 +3127,7 @@ aObj.SetupRetail_PlayerFrames = function()
 		self:checkShown(_G.ScenarioStageBlock)
 
 		self:SecureHookScript(_G.ScenarioChallengeModeBlock, "OnShow", function(this)
-			self:skinStatusBar{obj=this.StatusBar, fi=0, bgTex=this.TimerBG, otherTex={this.TimerBGBack}}
+			self:skinObject("statusbar", {obj=this.StatusBar, fi=0, bg=this.TimerBG, other={this.TimerBGBack}})
 			self:removeRegions(this, {3}) -- challengemode-timer atlas
 			self:skinObject("frame", {obj=this, fType=ftype, y2=7})
 			self:SecureHook("Scenario_ChallengeMode_SetUpAffixes", function(block, _)

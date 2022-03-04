@@ -99,8 +99,8 @@ function module:skinPlayerF()
 			-- status bars
 			if aObj.isRtl then
 				aObj:skinObject("statusbar", {obj=frame.PlayerFrameHealthBarAnimatedLoss, fi=0})
-				aObj:skinObject("statusbar", {obj=frame.healthbar, fi=0, otherTex={frame.myHealPredictionBar, frame.otherHealPredictionBar}})
-				aObj:skinObject("statusbar", {obj=frame.manabar, fi=0, otherTex={frame.manabar.FeedbackFrame.BarTexture, frame.myManaCostPredictionBar}, nilFuncs=true})
+				aObj:skinObject("statusbar", {obj=frame.healthbar, fi=0, other={frame.myHealPredictionBar, frame.otherHealPredictionBar}})
+				aObj:skinObject("statusbar", {obj=frame.manabar, fi=0, other={frame.myManaCostPredictionBar, frame.manabar.FeedbackFrame.BarTexture}, nilFuncs=true})
 				-- AlternateManaBar
 				_G.PlayerFrameAlternateManaBar.DefaultBackground:SetAlpha(1)
 				aObj:skinObject("statusbar", {obj=_G.PlayerFrameAlternateManaBar, regions={2, 3, 4, 5, 6}, fi=0, bg=_G.PlayerFrameAlternateManaBar.DefaultBackground})
@@ -354,7 +354,8 @@ function module:skinButton(fName, ti)
 		fo.spellbar.Flash:SetAllPoints()
 		fo.spellbar.Border:SetAlpha(0) -- texture file is changed dependant upon spell type
 		aObj:changeShield(fo.spellbar.BorderShield, fo.spellbar.Icon)
-		aObj:skinObject("statusbar", {obj=fo.spellbar, fi=0, bg=aObj:getRegion(fo.spellbar, 1), otherTex={fo.spellbar.Flash}})
+		aObj:skinObject("statusbar", {obj=fo.spellbar, fi=0, bg=aObj:getRegion(fo.spellbar, 1), other={fo.spellbar.Flash}})
+		-- fo.spellbar.Flash:SetTexture(nil)
 	end
 
 	-- PowerBarAlt handled in MainMenuBar function (UIF)
@@ -742,7 +743,7 @@ if aObj.isRtl then
 				aObj:adjHeight{obj=_G[cBar], adj=2}
 				aObj:moveObject{obj=_G[cBar].Text, y=-1}
 				_G[cBar].Flash:SetAllPoints()
-				aObj:skinObject("statusbar", {obj=_G[cBar], fi=0, bg=aObj:getRegion(_G[cBar], 1), otherTex={_G[cBar].Flash}})
+				aObj:skinObject("statusbar", {obj=_G[cBar], fi=0, bg=aObj:getRegion(_G[cBar], 1), other={_G[cBar].Flash}})
 			end
 			local function skinArenaPetFrame(fName)
 				-- handle in combat

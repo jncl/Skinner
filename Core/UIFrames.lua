@@ -1998,7 +1998,7 @@ aObj.blizzFrames[ftype].Nameplates = function(self)
 			local nHb, nCb = nP.healthBar, nP.castBar or nP.CastBar
 			nHb.border:DisableDrawLayer("ARTWORK")
 			if aObj.isRtl then
-				aObj:skinObject("statusbar", {obj=nHb, fi=0, bg=nHb.background, otherTex={nHb.myHealPrediction, nHb.otherHealPrediction}})
+				aObj:skinObject("statusbar", {obj=nHb, fi=0, bg=nHb.background, other={nHb.myHealPrediction, nHb.otherHealPrediction}})
 				if nCb then
 					aObj:skinObject("statusbar", {obj=nCb, fi=0, bg=nCb.background})
 				end
@@ -2024,7 +2024,7 @@ aObj.blizzFrames[ftype].Nameplates = function(self)
 	if self.isRtl then
 		local mF = _G.ClassNameplateManaBarFrame
 		if mF then
-			self:skinObject("statusbar", {obj=mF, fi=0, otherTex={mF.ManaCostPredictionBar, mF.FeedbackFrame.BarTexture}})
+			self:skinObject("statusbar", {obj=mF, fi=0, other={mF.ManaCostPredictionBar, mF.FeedbackFrame.BarTexture}})
 		end
 		-- DeathKnight (nothing to skin)
 		-- Mage (nothing to skin)

@@ -122,12 +122,12 @@ aObj.SetupClassic_PlayerFrames = function()
 					 self:skinExpandButton{obj=_G["SkillTypeLabel"  .. i], fType=ftype, onSB=true, minus=true}
 				end
 				_G["SkillRankFrame"  .. i .. "BorderNormal"]:SetTexture(nil)
-				self:skinStatusBar{obj=_G["SkillRankFrame"  .. i], fi=0, otherTex={_G["SkillRankFrame"  .. i .. "FillBar"]}}
+				self:skinObject("statusbar", {obj=_G["SkillRankFrame"  .. i], fi=0, other={_G["SkillRankFrame"  .. i .. "FillBar"]}})
 			end
 			self:skinSlider{obj=_G.SkillListScrollFrame.ScrollBar, rt="artwork"}
 			self:skinSlider{obj=_G.SkillDetailScrollFrame.ScrollBar, rt="artwork"}
 			self:removeRegions(_G.SkillDetailStatusBar, {1})
-			self:skinStatusBar{obj=_G.SkillDetailStatusBar, fi=0, otherTex={_G.SkillDetailStatusBarFillBar}}
+			self:skinObject("statusbar", {obj=_G.SkillDetailStatusBar, fi=0, other={_G.SkillDetailStatusBarFillBar}})
 			if self.modBtns then
 				self:skinExpandButton{obj=_G.SkillFrameCollapseAllButton, fType=ftype, onSB=true, minus=true}
 				self:skinStdButton{obj=_G.SkillFrameCancelButton, fType=ftype}
