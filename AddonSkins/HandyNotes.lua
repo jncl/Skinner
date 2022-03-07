@@ -25,10 +25,16 @@ aObj.addonsToSkin.HandyNotes_Shadowlands = function(self) -- v 44
 	self:skinObject("slider", {obj=_G.HandyNotes_ShadowlandsAlphaMenuSliderOption.Slider})
 	self:skinObject("slider", {obj=_G.HandyNotes_ShadowlandsScaleMenuSliderOption.Slider})
 
-	local wmBtn = self:getLastChild(_G.WorldMapFrame)
-	wmBtn.Border:SetTexture(nil)
-	if self.modBtns then
-		self:skinStdButton{obj=wmBtn, ofs=-1, clr="gold"}
+	for _, child in _G.ipairs{_G.WorldMapFrame:GetChildren()} do
+		if child:IsObjectType("button")
+		and child.Border
+		and	child.relativeFrame
+		then
+			child.Border:SetTexture(nil)
+			if self.modBtns then
+				self:skinStdButton{obj=child, ofs=-1, clr="gold"}
+			end
+		end
 	end
 
 end

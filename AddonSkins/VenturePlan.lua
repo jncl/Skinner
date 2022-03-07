@@ -35,7 +35,6 @@ aObj.addonsToSkin.VenturePlan = function(self) -- v 4.16a
 				self:changeTex2SB(pBar.bg)
 				pBar.bg:SetVertexColor(self.sbClr:GetRGBA())
 				pBar.bg:SetAllPoints()
-				pBar = nil
 				self:removeRegions(self:getChild(btn, 9), {2, 4, 6, 8, 10}) -- Board Group Ring textures
 				self:removeRegions(btn, {1, 2, 4})
 				self:skinObject("frame", {obj=btn, fb=true, y1=-22, clr="grey"})
@@ -56,13 +55,13 @@ aObj.addonsToSkin.VenturePlan = function(self) -- v 4.16a
 			self:SecureHookScript(frame, "OnShow", function(this)
 				local fList = self:getLastChild(_G.CovenantMissionFrame)
 				local function skinFLB(btn)
+					if not btn then return end
 					local f2 = aObj:getLastChild(btn)
 					aObj:getRegion(btn, 1):SetTexture(nil) -- PortraitR
 					aObj:getRegion(f2, 5):SetTexture(nil) -- HealthFrameR
 					aObj:getRegion(f2, 7):SetTexture(nil) -- RoleB
 					aObj:getRegion(f2, 9):SetTexture(nil) -- AbilitiesB[1]
 					aObj:getRegion(f2, 11):SetTexture(nil) -- AbilitiesB[2]
-					f2 = nil
 				end
 				-- troops
 				skinFLB(self:getChild(fList, 1))
@@ -74,11 +73,9 @@ aObj.addonsToSkin.VenturePlan = function(self) -- v 4.16a
 				end
 				self:skinObject("frame", {obj=fList, kfs=true, fb=true, clr="sepia"})
 
-				fList = nil
 				self:Unhook(this, "OnShow")
 			end)
 
-			frame = nil
 		end)
 
 		self.UnregisterMessage("VenturePlan", "CovenantMissionFrame_Skinned")
