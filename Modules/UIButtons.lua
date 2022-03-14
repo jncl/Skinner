@@ -766,19 +766,16 @@ local function __addButtonBorder(opts)
 --]]
 	--@alpha@
 	 _G.assert(opts.obj, "Missing object__aBB\n" .. _G.debugstack(2, 3, 2))
+	-- handle AddOn skins using deprecated options
 	 if opts.seca
 	 or opts.secu
 	 then
-		-- handle AddOn skins using deprecated options
 		aObj:CustomPrint(1, 0, 0, "Using deprecated options - seca,secu, use sabt or subt instead", opts.obj)
-	end
-	 if opts.sec then
-		-- handle AddOn skins using deprecated options
+	 elseif opts.sec then
 		aObj:CustomPrint(1, 0, 0, "Using deprecated options - sec, use sft instead", opts.obj)
 	end
 	--@end-alpha@
 	if not opts.obj then return end
-
 	-- handle in combat
 	if _G.InCombatLockdown() then
 		aObj:add2Table(aObj.oocTab, {__addButtonBorder, {opts}})
@@ -790,7 +787,6 @@ local function __addButtonBorder(opts)
 	then
 		return
 	end
-
 	-- remove Normal/Pushed textures if required (vertex colour changed in blizzard code)
 	if opts.ibt
 	or opts.abt
@@ -812,36 +808,30 @@ local function __addButtonBorder(opts)
 	if opts.gibt then
 		opts.obj.EmptyBackground:SetTexture(nil)
 	end
-
 	-- create the button border object
 	opts.sft = opts.sft or opts.sec or nil
 	local template = opts.sft and "SecureFrameTemplate" or opts.sabt and "SecureActionButtonTemplate" or opts.subt and "SecureUnitButtonTemplate"
 	opts.obj.sbb = _G.CreateFrame(opts.obj:GetObjectType(), nil, opts.obj, template)
 	opts.obj.sbb:EnableMouse(false) -- enable clickthrough
-
 	aObj:addBackdrop(opts.obj.sbb)
 	-- DON'T lower the frame level otherwise the border appears below the frame
 	-- setup and apply the backdrop
 	opts.obj.sbb:SetBackdrop({edgeFile = aObj.Backdrop[1].edgeFile, edgeSize = opts.es or aObj.Backdrop[1].edgeSize})
-
 	module:clrBtnBdr(opts.obj, opts.clr, opts.ca)
-
 	-- position the frame
 	opts.ofs = opts.ofs or 2
 	opts.x1 = opts.x1 or opts.ofs * -1
 	opts.y1 = opts.y1 or opts.ofs
 	opts.x2 = opts.x2 or opts.ofs
 	opts.y2 = opts.y2 or opts.ofs * -1
-
 	-- Large Item Button templates have an IconTexture to position to
 	local relTo = opts.relTo or opts.libt and opts.obj.Icon or nil
 	opts.obj.sbb:SetPoint("TOPLEFT", relTo or opts.obj, "TOPLEFT", opts.x1, opts.y1)
 	opts.obj.sbb:SetPoint("BOTTOMRIGHT", relTo or opts.obj, "BOTTOMRIGHT", opts.x2, opts.y2)
-
-	-- reparent objects if required
+	-- reparent objects
 	if opts.reParent then
-		for i = 1, #opts.reParent do
-			opts.reParent[i]:SetParent(opts.obj.sbb)
+		for _, obj in _G.pairs(opts.reParent) do
+			obj:SetParent(opts.obj.sbb)
 		end
 	end
 	-- reparent these textures so they are displayed above the border
