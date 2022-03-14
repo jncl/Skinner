@@ -743,6 +743,91 @@ aObj.SetupRetail_PlayerFrames = function()
 
 	end
 
+	aObj.blizzLoDFrames[ftype].CharacterCustomize = function(self)
+		if not self.prdb.CharacterCustomize or self.initialized.CharacterCustomize then return end
+		self.initialized.CharacterCustomize = true
+
+		self:SecureHookScript(_G.CharCustomizeFrame, "OnShow", function(this)
+			self:SecureHook(_G.BarberShopFrame, "UpdateSex", function(fObj)
+				for btn in fObj.sexButtonPool:EnumerateActive() do
+					btn.Ring:SetTexture(nil)
+					btn.BlackBG:SetTexture(nil)
+				end
+			end)
+			self:SecureHook(this, "UpdateAlteredFormButtons", function(fObj)
+				for btn in fObj.alteredFormsPools:EnumerateActive() do
+					btn.Ring:SetTexture(nil)
+				end
+			end)
+			-- Categories
+			-- Options
+			self:SecureHook(this, "UpdateOptionButtons", function(fObj, _)
+				for btn in fObj.pools:GetPool("CharCustomizeCategoryButtonTemplate"):EnumerateActive() do
+					btn.Ring:SetTexture(nil)
+				end
+				for frame in fObj.pools:GetPool("CharCustomizeOptionCheckButtonTemplate"):EnumerateActive() do
+					if self.modChkBtns then
+						self:skinCheckButton{obj=frame.Button, fType=ftype}
+					end
+					_G.Spew("", frame)
+				end
+				for btn in fObj.pools:GetPool("CharCustomizeShapeshiftFormButtonTemplate"):EnumerateActive() do
+					btn.Ring:SetTexture(nil)
+				end
+				for frame in fObj.selectionPopoutPool:EnumerateActive() do
+					self:removeNineSlice(frame.Button.Popout.Border)
+					self:skinObject("frame", {obj=frame.Button.Popout, fType=ftype, kfs=true, ofs=-6, y2=10})
+					_G.RaiseFrameLevelByTwo(frame.Button.Popout) -- appear above other buttons
+					-- resize frame
+					frame.Button.Popout:Show()
+					frame.Button.Popout:Hide()
+					if self.modBtns then
+						self:skinStdButton{obj=frame.Button, ofs=-5}
+						-- ensure button skin is displayed first time
+						frame.Button:Hide()
+						frame.Button:Show()
+					end
+					if self.modBtnBs then
+						self:addButtonBorder{obj=frame.IncrementButton, ofs=-2, x1=3, y1=-3, clr="gold"}
+						self:addButtonBorder{obj=frame.DecrementButton, ofs=-2, x1=3, y1=-3, clr="gold"}
+						self:secureHook(frame, "UpdateButtons", function(_)
+							self:clrBtnBdr(frame.IncrementButton, "gold")
+							self:clrBtnBdr(frame.DecrementButton, "gold")
+						end)
+					end
+				end
+			end)
+			if self.modBtns then
+				self:skinStdButton{obj=_G.BarberShopFrame.CancelButton, ofs=0}
+				self:skinStdButton{obj=_G.BarberShopFrame.ResetButton, ofs=0, clr="grey"}
+				self:skinStdButton{obj=_G.BarberShopFrame.AcceptButton, ofs=0, clr="grey"}
+				self:SecureHook(_G.BarberShopFrame, "UpdatePrice", function(fObj)
+					self:clrBtnBdr(fObj.AcceptButton)
+					self:clrBtnBdr(fObj.ResetButton)
+				end)
+			end
+			if self.modBtnBs then
+				self:addButtonBorder{obj=this.RandomizeAppearanceButton, ofs=-4, x1=5, y2=5, clr="gold"}
+				self:addButtonBorder{obj=this.SmallButtons.ResetCameraButton, ofs=-4, x1=5, y2=5, clr="gold"}
+				self:addButtonBorder{obj=this.SmallButtons.ZoomOutButton, ofs=-4, x1=5, y2=5, clr="gold"}
+				self:addButtonBorder{obj=this.SmallButtons.ZoomInButton, ofs=-4, x1=5, y2=5, clr="gold"}
+				self:addButtonBorder{obj=this.SmallButtons.RotateLeftButton, ofs=-4, x1=5, y2=5, clr="gold"}
+				self:addButtonBorder{obj=this.SmallButtons.RotateRightButton, ofs=-4, x1=5, y2=5, clr="gold"}
+				self:SecureHook(this, "UpdateZoomButtonStates", function(fObj)
+					self:clrBtnBdr(fObj.SmallButtons.ZoomOutButton, "gold")
+					self:clrBtnBdr(fObj.SmallButtons.ZoomInButton, "gold")
+				end)
+			end
+			_G.C_Timer.After(0.1, function()
+				self:add2Table(self.ttList, _G.CharCustomizeTooltip)
+				self:add2Table(self.ttList, _G.CharCustomizeNoHeaderTooltip)
+			end)
+
+			self:Unhook(this, "OnShow")
+		end)
+
+	end
+
 	aObj.blizzLoDFrames[ftype].Collections = function(self)
 		if not self.prdb.Collections or self.initialized.Collections then return end
 		self.initialized.Collections = true
@@ -3988,6 +4073,7 @@ aObj.SetupRetail_PlayerFramesOptions = function(self)
 		["Artifact UI"]          = true,
 		["Azerite Essence UI"]   = true,
 		["Azerite UI"]           = true,
+		["Character Customize"]  = {suff = "Frame"},
 		["Collections"]          = {suff = "Journal"},
 		["Communities"]			 = {suff = "UI"},
 		["Encounter Journal"]    = {desc = "Adventure Guide"},
