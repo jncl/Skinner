@@ -1,3 +1,23 @@
+beta9.42560.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Updated HandyNotes skin
+	Updated default options setup code
+	Bugfix for ButtonBorder check
+	Updated PlayerFrame skin
+	Update PetActionBar button skin
+	Updated NSF statusBar code to correct parameter name
+	Updated PlayerFrames_Retail options
+	Use NSF functions
+	Updated VehicleUI skin
+	Updated ObjectivesTracker skin
+	Updated UIFrames_Retail options
+	Bugfix for NavBar code
+	Moved *.txt files into TXTFiles directory
+	Updated files to use BigWigs Packager v2 Github Action
+
 beta9.42423.4
 Jncl:
 	ToDo.txt
