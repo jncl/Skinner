@@ -2302,28 +2302,22 @@ aObj.SetupRetail_UIFrames = function()
 	local skinPartyPoseFrame
 	if _G.IsAddOnLoadOnDemand("Blizzard_IslandsPartyPoseUI") then
 		function skinPartyPoseFrame(frame)
-
 			frame.Border:DisableDrawLayer("BORDER") -- PartyPose NineSliceLayout
-			aObj:addSkinFrame{obj=frame, ft=ftype, kfs=true, nb=true}
-
-			-- RewardFrame
 			frame.RewardAnimations.RewardFrame.NameFrame:SetTexture(nil)
 			aObj:nilTexture(frame.RewardAnimations.RewardFrame.IconBorder, true)
-			aObj:addButtonBorder{obj=frame.RewardAnimations.RewardFrame, relTo=frame.RewardAnimations.RewardFrame.Icon, reParent={frame.RewardAnimations.RewardFrame.Count}}
-
 			aObj:nilTexture(frame.OverlayElements.Topper, true)
-
-			-- ModelScene
 			frame.ModelScene.Bg:SetTexture(nil)
 			frame.ModelScene:DisableDrawLayer("BORDER")
 			frame.ModelScene:DisableDrawLayer("OVERLAY")
-
+			aObj:skinObject("frame", {obj=frame, fType=ftype, kfs=true})
 			if aObj.modBtns then
 				if frame.LeaveButton then
 					aObj:skinStdButton{obj=frame.LeaveButton}
 				end
 			end
-
+			if aObj.modBtnBs then
+				aObj:addButtonBorder{obj=frame.RewardAnimations.RewardFrame, relTo=frame.RewardAnimations.RewardFrame.Icon, reParent={frame.RewardAnimations.RewardFrame.Count}}
+			end
 		end
 	end
 	aObj.blizzLoDFrames[ftype].IslandsPartyPoseUI = function(self)
