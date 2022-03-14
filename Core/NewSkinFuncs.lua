@@ -84,6 +84,7 @@ aObj.skinTPLs = {
 		-- invert      = true, -- invert Gradient
 		-- rotate      = true, -- rotate Gradient
 		-- fb          = true, -- frame border [bd=10, ng=true, ofs=0]
+		sft         = false, -- use SecureFrameTemplate
 	},
 	glowbox = {
 	},
