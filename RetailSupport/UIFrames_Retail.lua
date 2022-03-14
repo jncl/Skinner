@@ -2780,6 +2780,146 @@ aObj.SetupRetail_UIFrames = function()
 
 	end
 
+	aObj.blizzFrames[ftype].MainMenuBar = function(self)
+		if self.initialized.MainMenuBar then return end
+		self.initialized.MainMenuBar = true
+
+		if _G.IsAddOnLoaded("Dominos") then
+			self.blizzFrames[ftype].MainMenuBar = nil
+			return
+		end
+
+		if self.prdb.MainMenuBar.skin then
+			local function skinMultiBarBtns(type)
+				local btn
+				for i = 1, _G.NUM_MULTIBAR_BUTTONS do
+					btn = _G["MultiBar" .. type .. "Button" .. i]
+					btn.FlyoutBorder:SetTexture(nil)
+					btn.FlyoutBorderShadow:SetTexture(nil)
+					btn.Border:SetAlpha(0) -- texture changed in blizzard code
+					if not btn.noGrid then
+						_G[btn:GetName() .. "FloatingBG"]:SetAlpha(0)
+					end
+					aObj:addButtonBorder{obj=btn, abt=true, sabt=true, ofs=3}
+				end
+			end
+			self:SecureHookScript(_G.MainMenuBar, "OnShow", function(this)
+				this.MicroButtonAndBagsBar.MicroBagBar:SetTexture(nil)
+				this.ArtFrame.Background.BackgroundLarge:SetTexture(nil)
+				this.ArtFrame.Background.BackgroundSmall:SetTexture(nil)
+				this.ArtFrame.LeftEndCap:SetTexture(nil)
+				this.ArtFrame.RightEndCap:SetTexture(nil)
+				if self.modBtnBs then
+					for i = 1, _G.NUM_ACTIONBAR_BUTTONS do
+						_G["ActionButton" .. i].FlyoutBorder:SetTexture(nil)
+						_G["ActionButton" .. i].FlyoutBorderShadow:SetTexture(nil)
+						self:addButtonBorder{obj=_G["ActionButton" .. i], abt=true, sabt=true, ofs=3}
+					end
+					self:addButtonBorder{obj=_G.ActionBarUpButton, clr="gold"}
+					self:addButtonBorder{obj=_G.ActionBarDownButton, clr="gold"}
+					skinMultiBarBtns("BottomLeft")
+					skinMultiBarBtns("BottomRight")
+				end
+
+				self:Unhook(this, "OnShow")
+			end)
+			self:checkShown(_G.MainMenuBar)
+
+			self:SecureHookScript(_G.StatusTrackingBarManager, "OnShow", function(this)
+				this:DisableDrawLayer("OVERLAY") -- status bar textures
+				for _, bar in _G.pairs(this.bars) do
+					self:skinObject("statusbar", {obj=bar.StatusBar, bg=bar.StatusBar.Background, other={bar.ExhaustionLevelFillBar}})
+					if bar.ExhaustionTick then -- HonorStatusBar & ExpStatusBar
+						bar.ExhaustionTick:GetNormalTexture():SetTexture(nil)
+						bar.ExhaustionTick:GetHighlightTexture():SetTexture(nil)
+					elseif bar.Tick then -- ArtifactStatusBar
+						bar.Tick:GetNormalTexture():SetTexture(nil)
+						bar.Tick:GetHighlightTexture():SetTexture(nil)
+					end
+				end
+
+				self:Unhook(this, "OnShow")
+			end)
+			self:checkShown(_G.StatusTrackingBarManager)
+
+			self:SecureHookScript(_G.PossessBarFrame, "OnShow", function(this)
+				self:keepFontStrings(this)
+				if self.modBtnBs then
+					for i = 1, _G.NUM_POSSESS_SLOTS do
+						self:addButtonBorder{obj=_G["PossessButton" .. i], abt=true, sft=true}
+					end
+				end
+
+				self:Unhook(this, "OnShow")
+			end)
+			self:checkShown(_G.PossessBarFrame)
+
+			self:SecureHookScript(_G.MultiCastActionBarFrame, "OnShow", function(this)
+				self:keepFontStrings(_G.MultiCastFlyoutFrame) -- Shaman's Totem Frame
+				if self.modBtnBs then
+					self:addButtonBorder{obj=_G.MultiCastSummonSpellButton, abt=true, sabt=true, ofs=5}
+					for i = 1, _G.NUM_MULTI_CAST_PAGES * _G.NUM_MULTI_CAST_BUTTONS_PER_PAGE do
+						self:addButtonBorder{obj=_G["MultiCastActionButton" .. i], abt=true, sabt=true, ofs=5}
+					end
+					self:addButtonBorder{obj=_G.MultiCastRecallSpellButton, abt=true, sabt=true, ofs=5}
+				end
+
+				self:Unhook(this, "OnShow")
+			end)
+			self:checkShown(_G.MultiCastActionBarFrame)
+
+			if self.modBtnBs then
+				-- VerticalMultiBarsContainer
+				skinMultiBarBtns("Right")
+				skinMultiBarBtns("Left")
+				-- MicroButtons
+				for _, bName in _G.pairs(_G.MICRO_BUTTONS) do
+					self:addButtonBorder{obj=_G[bName], es=24, ofs=2, y1=self.isClsc and -18, reParent=_G[bName] == "MainMenuMicroButton" and {_G[bName].Flash, _G.MainMenuBarDownload, not self.isClsc and _G.MainMenuBarPerformanceBar} or {_G[bName].Flash}, clr="grey"}
+				end
+				-- BagButtons
+				self:addButtonBorder{obj=_G.MainMenuBarBackpackButton, ibt=true, ofs=3}
+				self:addButtonBorder{obj=_G.CharacterBag0Slot, ibt=true, ofs=3}
+				self:addButtonBorder{obj=_G.CharacterBag1Slot, ibt=true, ofs=3}
+				self:addButtonBorder{obj=_G.CharacterBag2Slot, ibt=true, ofs=3}
+				self:addButtonBorder{obj=_G.CharacterBag3Slot, ibt=true, ofs=3}
+			end
+
+		end
+
+		-- UnitPowerBarAlt (inc. PlayerPowerBarAlt)
+		if self.prdb.MainMenuBar.altpowerbar then
+			local function skinUnitPowerBarAlt(upba)
+				-- Don't change the status bar texture as it changes dependant upon type of power type required
+				upba.frame:SetAlpha(0)
+				-- adjust height and TextCoord so background appears, this enables the numbers to become easier to see
+				upba.counterBar:SetHeight(26)
+				upba.counterBar.BG:SetTexCoord(0.0, 1.0, 0.35, 0.40)
+				upba.counterBar.BGL:SetAlpha(0)
+				upba.counterBar.BGR:SetAlpha(0)
+				upba.counterBar:DisableDrawLayer("ARTWORK")
+			end
+			self:SecureHook("UnitPowerBarAlt_SetUp", function(this, _)
+				skinUnitPowerBarAlt(this)
+			end)
+			-- skin PlayerPowerBarAlt if already shown
+			if _G.PlayerPowerBarAlt:IsVisible() then
+				skinUnitPowerBarAlt(_G.PlayerPowerBarAlt)
+			end
+			-- skin BuffTimers
+			for i = 1, 10 do
+				if _G["BuffTimer" .. i] then
+					skinUnitPowerBarAlt(_G["BuffTimer" .. i])
+				end
+			end
+		end
+
+		-- this is done here as other AddOns may require it to be skinned
+		if self.modBtnBs then
+			self:addButtonBorder{obj=_G.MainMenuBarVehicleLeaveButton, clr="grey"}
+		end
+
+	end
+
 	aObj.blizzFrames[ftype].NavigationBar = function(self)
 		if not self.prdb.NavigationBar or self.initialized.NavigationBar then return end
 		self.initialized.NavigationBar = true

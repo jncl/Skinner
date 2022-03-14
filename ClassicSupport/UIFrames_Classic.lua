@@ -147,6 +147,84 @@ aObj.SetupClassic_UIFrames = function()
 		end
 	end
 
+	aObj.blizzFrames[ftype].MainMenuBar = function(self)
+		if self.initialized.MainMenuBar then return end
+		self.initialized.MainMenuBar = true
+
+		if _G.IsAddOnLoaded("Dominos") then
+			self.blizzFrames[ftype].MainMenuBar = nil
+			return
+		end
+
+		if self.prdb.MainMenuBar.skin then
+			local function skinMultiBarBtns(type)
+				local btn
+				for i = 1, _G.NUM_MULTIBAR_BUTTONS do
+					btn = _G["MultiBar" .. type .. "Button" .. i]
+					btn.FlyoutBorder:SetTexture(nil)
+					btn.FlyoutBorderShadow:SetTexture(nil)
+					btn.Border:SetAlpha(0) -- texture changed in blizzard code
+					if not btn.noGrid then
+						_G[btn:GetName() .. "FloatingBG"]:SetAlpha(0)
+					end
+					aObj:addButtonBorder{obj=btn, abt=true, sabt=true, ofs=3}
+				end
+			end
+			self:SecureHookScript(_G.MainMenuBar, "OnShow", function(this)
+				_G.ExhaustionTick:GetNormalTexture():SetTexture(nil)
+				_G.ExhaustionTick:GetHighlightTexture():SetTexture(nil)
+				_G.MainMenuExpBar:DisableDrawLayer("OVERLAY")
+				_G.MainMenuExpBar:SetSize(1011, 13)
+				self:moveObject{obj=_G.MainMenuExpBar, x=1, y=2}
+				self:skinObject("statusbar", {obj=_G.MainMenuExpBar, bg=self:getRegion(_G.MainMenuExpBar, 6), other={_G.ExhaustionLevelFillBar}})
+				_G.MainMenuBarMaxLevelBar:DisableDrawLayer("BACKGROUND")
+				_G.MainMenuBarArtFrame:DisableDrawLayer("BACKGROUND")
+				_G.MainMenuBarLeftEndCap:SetTexture(nil)
+				_G.MainMenuBarRightEndCap:SetTexture(nil)
+				local rwbSB = _G.ReputationWatchBar.StatusBar
+				self:removeRegions(rwbSB, {1, 2, 3, 4, 5, 6, 7, 8, 9})
+				self:skinObject("statusbar", {obj=rwbSB, bg=rwbSB.Background, other={rwbSB.Underlay, rwbSB.Overlay}})
+				if self.modBtnBs then
+					for i = 1, _G.NUM_ACTIONBAR_BUTTONS do
+						_G["ActionButton" .. i].FlyoutBorder:SetTexture(nil)
+						_G["ActionButton" .. i].FlyoutBorderShadow:SetTexture(nil)
+						self:addButtonBorder{obj=_G["ActionButton" .. i], abt=true, sabt=true, ofs=3}
+					end
+					self:addButtonBorder{obj=_G.ActionBarUpButton, ofs=-4, clr="gold"}
+					self:addButtonBorder{obj=_G.ActionBarDownButton, ofs=-4, clr="gold"}
+					skinMultiBarBtns("BottomLeft")
+					skinMultiBarBtns("BottomRight")
+				end
+
+				self:Unhook(this, "OnShow")
+			end)
+			self:checkShown(_G.MainMenuBar)
+
+			if self.modBtnBs then
+				-- VerticalMultiBarsContainer
+				skinMultiBarBtns("Right")
+				skinMultiBarBtns("Left")
+				-- MicroButtons
+				for _, bName in _G.pairs(_G.MICRO_BUTTONS) do
+					self:addButtonBorder{obj=_G[bName], es=24, ofs=2, y1=self.isClsc and -18, reParent=_G[bName] == "MainMenuMicroButton" and {_G[bName].Flash, _G.MainMenuBarDownload, not self.isClsc and _G.MainMenuBarPerformanceBar} or {_G[bName].Flash}, clr="grey"}
+				end
+				-- BagButtons
+				self:addButtonBorder{obj=_G.MainMenuBarBackpackButton, ibt=true, ofs=3}
+				self:addButtonBorder{obj=_G.CharacterBag0Slot, ibt=true, ofs=3}
+				self:addButtonBorder{obj=_G.CharacterBag1Slot, ibt=true, ofs=3}
+				self:addButtonBorder{obj=_G.CharacterBag2Slot, ibt=true, ofs=3}
+				self:addButtonBorder{obj=_G.CharacterBag3Slot, ibt=true, ofs=3}
+				self:addButtonBorder{obj=_G.KeyRingButton, ofs=2, clr="grey"}
+			end
+		end
+
+		-- this is done here as other AddOns may require it to be skinned
+		if self.modBtnBs then
+			self:addButtonBorder{obj=_G.MainMenuBarVehicleLeaveButton, clr="grey"}
+		end
+
+	end
+
 	aObj.blizzFrames[ftype].ProductChoice = function(self)
 		if not self.prdb.ProductChoice or self.initialized.ProductChoice then return end
 		self.initialized.ProductChoice = true
