@@ -1793,7 +1793,7 @@ aObj.SetupRetail_PlayerFrames = function()
 
 		local function skinBag(frame, id)
 			local objName = frame:GetName()
-			aObj:addSkinFrame{obj=frame, ft=ftype, kfs=true, x1=8, y1=-4, x2=-3}
+			aObj:skinObject("frame", {obj=frame, fType=ftype, kfs=true, cb=true, x1=8, y1=-4, x2=-3})
 			-- resize and move the bag name to make it more readable
 			_G[objName .. "Name"]:SetWidth(137)
 			aObj:moveObject{obj=_G[objName .. "Name"], x=-17}
@@ -1807,6 +1807,10 @@ aObj.SetupRetail_PlayerFrames = function()
 			cfpb.Highlight:SetPoint("center")
 			cfpb.Highlight:SetSize(22, 22)
 			aObj:moveObject{obj=cfpb, x=7, y=-5}
+			if aObj.modBtns then
+				_G[objName .. "AddSlotsButton"]:DisableDrawLayer("OVERLAY")
+				aObj:skinStdButton{obj=_G[objName .. "AddSlotsButton"]}
+			end
 			if aObj.modBtnBs then
 				-- skin the item buttons
 				local bo
@@ -1825,10 +1829,6 @@ aObj.SetupRetail_PlayerFrames = function()
 				end
 				-- TokenFrame
 				_G.BackpackTokenFrame:DisableDrawLayer("BACKGROUND")
-			end
-			if aObj.modBtns then
-				_G[objName .. "AddSlotsButton"]:DisableDrawLayer("OVERLAY")
-				aObj:skinStdButton{obj=_G[objName .. "AddSlotsButton"]}
 			end
 		end
 
