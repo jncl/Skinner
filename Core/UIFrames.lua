@@ -2594,9 +2594,11 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 
 	if self.isRtl then
 		local function hookAndSkinWidgets(widgetContainer)
-			-- aObj:Debug("hookAndSkinWidgets: [%s, %s]", widgetContainer:GetDebugName())
+			-- aObj:Debug("hookAndSkinWidgets: [%s, %s, %s]", widgetContainer:IsForbidden(), widgetContainer:IsForbidden() or widgetContainer:GetDebugName())
 			-- DON'T skin NamePlate[n].* widgets as they cause Clamping Errors
-			if widgetContainer:GetDebugName():find("^NamePlate%d+%.") then
+			if widgetContainer:IsForbidden()
+			or widgetContainer:GetDebugName():find("^NamePlate%d+%.")
+			then
 				return
 			end
 			aObj:SecureHook(widgetContainer, "UpdateWidgetLayout", function(this)
