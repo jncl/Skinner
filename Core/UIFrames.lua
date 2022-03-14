@@ -101,11 +101,10 @@ aObj.blizzLoDFrames[ftype].BindingUI = function(self)
 		if self.isRtl then
 			self:removeNineSlice(this.BG)
 		end
-		self:keepRegions(this.categoryList, {})
-		self:addFrameBorder{obj=this.categoryList, ft=ftype}
-		self:addFrameBorder{obj=this.bindingsContainer, ft=ftype}
-		self:skinSlider{obj=this.scrollFrame.ScrollBar, rt={"background", "border"}}
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, hdr=true}
+		self:skinObject("frame", {obj=this.categoryList, fType=ftype, kfs=true, fb=true})
+		self:skinObject("frame", {obj=this.bindingsContainer, fType=ftype, kfs=true, fb=true})
+		self:skinObject("slider", {obj=this.scrollFrame.ScrollBar, rpTex={"background", "border"}})
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true})
 		if self.modBtns then
 			for _, row in _G.pairs(this.keyBindingRows) do
 				self:skinStdButton{obj=row.key1Button}
@@ -120,15 +119,6 @@ aObj.blizzLoDFrames[ftype].BindingUI = function(self)
 					end)
 				end
 			end
-			if self.isClsc then
-				self:SecureHook("KeyBindingFrame_Update", function()
-					for _, row in _G.pairs(_G.KeyBindingFrame.keyBindingRows) do
-						self:clrBtnBdr(row.key2Button)
-						row.key1Button.sb:SetAlpha(row.key1Button:GetAlpha())
-						row.key2Button.sb:SetAlpha(row.key2Button:GetAlpha())
-					end
-				end)
-			end
 			self:skinStdButton{obj=this.unbindButton}
 			self:skinStdButton{obj=this.okayButton}
 			self:skinStdButton{obj=this.cancelButton}
@@ -139,17 +129,24 @@ aObj.blizzLoDFrames[ftype].BindingUI = function(self)
 					self:skinStdButton{obj=button}
 				end
 			end)
-			if not self.isClsc then
+			if self.isClsc then
+				self:SecureHook("KeyBindingFrame_Update", function()
+					for _, row in _G.pairs(_G.KeyBindingFrame.keyBindingRows) do
+						self:clrBtnBdr(row.key2Button)
+						row.key1Button.sb:SetAlpha(row.key1Button:GetAlpha())
+						row.key2Button.sb:SetAlpha(row.key2Button:GetAlpha())
+					end
+				end)
+				self:SecureHook("KeyBindingFrame_UpdateUnbindKey", function()
+					self:clrBtnBdr(_G.KeyBindingFrame.unbindButton)
+				end)
+			else
 				self:skinStdButton{obj=this.quickKeybindButton}
 				self:SecureHook(this, "UpdateUnbindKey", function(fObj)
 					self:clrBtnBdr(fObj.unbindButton)
 				end)
-			else
-				self:SecureHook("KeyBindingFrame_UpdateUnbindKey", function()
-					self:clrBtnBdr(this.unbindButton)
-				end)
+				self:skinStdButton{obj=this.clickCastingButton, fType=ftype}
 			end
-			self:skinStdButton{obj=this.clickCastingButton, fType=ftype}
 		end
 		if self.modChkBtns then
 			self:skinCheckButton{obj=this.characterSpecificButton}
@@ -162,7 +159,7 @@ aObj.blizzLoDFrames[ftype].BindingUI = function(self)
 		self:SecureHookScript(_G.QuickKeybindFrame, "OnShow", function(this)
 			self:removeNineSlice(this.BG)
 			this.BG.Bg:SetTexture(nil)
-			self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, hdr=true, ofs=0}
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true, ofs=0})
 			if self.modBtns then
 				self:skinStdButton{obj=this.defaultsButton}
 				self:skinStdButton{obj=this.cancelButton}
