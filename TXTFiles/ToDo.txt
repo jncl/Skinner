@@ -25,6 +25,9 @@ ToDos
 
 ?	O	Replace ObjectiveTracker Header Minimize button textures with suitable characters
 
+?	I	Fix ActionButtons missing Text when redisplayed after accessing Puzzle Caches in Zereth Mortis.
+		- happens when OverrideBar is used
+
 	I	LFG, reported by Galthariel, 14.11.21
 ?		- Text not visible when typing
 		- Dungeons & Raids, Premade Groups, Custom, Title editbox has not got information string displayed
@@ -45,11 +48,22 @@ ToDos
 		 --> Asked for SV file, will check with user's settings
 		 	- checked, no issues found
 
-	O	Use BigWigsPackager v2
-√		- change releated files
-<<<<<<< HEAD
+	I	HandyNotes, reported by DarkLimpan/Galthariel/LoneWolfFarmer, 04.03.22/13.03.22
+√		- Skinner\AddonSkins\HandyNotes-v1.6.5-3-g5c59bd4.lua:29: attempt to index field 'Border' (a nil value)
 
-	I	ObjectivesTracker, reported by DarkLimpan, 02.03.22
-√		- not skinned after last patch
-=======
->>>>>>> 12c97db1 (ToDo.txt)
+	I	OrderHallTalents, reported by Galthariel, 04.03.22
+x		- ..s\Blizzard_OrderHallUI\Blizzard_OrderHallTalents.lua:976: Usage: local garrTalentTreeType = C_Garrison.GetGarrisonTalentTreeType(garrTalentTreeID)
+		[string "=[C]"]: in function `GetGarrisonTalentTreeType'
+		[string "@Blizzard_OrderHallUI\Blizzard_OrderHallTalents.lua"]:976: in function <...s\Blizzard_OrderHallUI\Blizzard_OrderHallTalents.lua:969>
+
+	I	reported by icedawg, 05.03.22
+√		- Skinner\Core\UIFrames.lua:2700: Attempt to access forbidden object from code tainted by an AddOn
+		[string "=[C]"]: in function `GetDebugName'
+		[string "@Skinner\Core\UIFrames.lua"]:2700: in function <Skinner\Core\UIFrames.lua:2697>
+		[string "@Skinner\Core\UIFrames.lua"]:2715: in function <Skinner\Core\UIFrames.lua:2714>
+
+	I	WeakAuras v3.7.13
+≈		- Updated skin for latest version
+
+	I	RareScanner v9.2.0.3
+≈		- Updated skin for latest version

@@ -6,7 +6,7 @@ ToDo_classic_PTR
 	x				- indicates nothing to change
 	¶ is Alt+7		- indicates localisation changes required
 
-	Classic_PTR 2.5.2
+	Classic_PTR
 		- Added
 		- Updated
 		- Deleted

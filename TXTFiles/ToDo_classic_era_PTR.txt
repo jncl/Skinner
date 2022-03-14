@@ -6,14 +6,7 @@ ToDo_classic_era_PTR
 	x				- indicates nothing to change
 	¶ is Alt+7		- indicates localisation changes required
 
-	Classic_Era_PTR 1.14.1 a.k.a. Season of Mastery Beta
+	Classic_Era_PTR
 		- Added
 		- Updated
-			- NineSlice added to several frame
-				- TicketStatusFrameButton
-			- TooltipBorderBackdropTemplate
-				- Blizzard_BindingUI.bindingsContainer
-				- Blizzard_TableInspector.ScrollFrameArt
-				- MovePadFrame
-				- OptionsBoxTemplate
 		- Deleted
