@@ -1290,7 +1290,7 @@ aObj.SetupRetail_UIFrames = function()
 			self:removeBackdrop(this.ScrollBoxBackground)
 			self:skinObject("scrollbar", {obj=this.ScrollBar, fType=ftype, x1=0, y1=2, x2=0, y2=-2})
 			this.TutorialFrame.Tutorial:SetDrawLayer("ARTWORK") -- make background visible
-			self:skinObject("frame", {obj=this.TutorialFrame, fType=ftype, rns=true, cb=true, ofs=4}) -- DON'T remove artwork
+			self:skinObject("frame", {obj=this.TutorialFrame, fType=ftype, rns=true, cb=true, ofs=3, y1=2}) -- DON'T remove artwork
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true, cb=true})
 			if self.modBtns then
 				self:skinStdButton{obj=this.SaveButton, fType=ftype}
