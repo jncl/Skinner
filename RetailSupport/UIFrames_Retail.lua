@@ -2921,6 +2921,48 @@ aObj.SetupRetail_UIFrames = function()
 
 	end
 
+	aObj.blizzFrames[ftype].OverrideActionBar = function(self) -- a.k.a. Vehicle UI
+		if not self.prdb.OverrideActionBar  or self.initialized.OverrideActionBar then return end
+		self.initialized.OverrideActionBar = true
+
+		local function removeOABSkin()
+			local frame = _G.OverrideActionBar
+			frame.Divider1:SetTexture(nil)
+			frame.Divider2:SetTexture(nil)
+			frame.Divider3:SetTexture(nil)
+			frame.ExitBG:SetTexture(nil)
+			frame.PitchOverlay:SetTexture(nil)
+			frame.PitchButtonBG:SetTexture(nil)
+			frame.xpBar.XpL:SetTexture(nil)
+			frame.xpBar.XpMid:SetTexture(nil)
+			frame.xpBar.XpR:SetTexture(nil)
+			for i = 1, 19 do
+				frame.xpBar["XpDiv" .. i]:SetTexture(nil)
+			end
+		end
+		self:SecureHook("OverrideActionBar_SetSkin", function(_)
+			removeOABSkin()
+		end)
+		self:SecureHookScript(_G.OverrideActionBar, "OnShow", function(this)
+			this:DisableDrawLayer("OVERLAY")
+			this:DisableDrawLayer("BACKGROUND")
+			this:DisableDrawLayer("BORDER")
+			self:skinObject("statusbar", {obj=this.xpBar, fi=0, bg=aObj:getRegion(this.xpBar, 1)})
+			self:skinObject("frame", {obj=this, fType=ftype, x1=144, y1=6, x2=-142, y2=-2})
+			if self.modBtnBs then
+				self:addButtonBorder{obj=this.PitchUpButton}
+				self:addButtonBorder{obj=this.PitchDownButton}
+				self:addButtonBorder{obj=this.LeaveButton}
+				for i = 1, 6 do
+					self:addButtonBorder{obj=this["SpellButton" .. i], abt=true, sabt=true}
+				end
+			end
+
+			self:Unhook(this, "OnShow")
+		end)
+
+	end
+
 	-- table to hold PetBattle tooltips
 	aObj.pbtt = {}
 	aObj.blizzFrames[ftype].PetBattleUI = function(self)
@@ -4129,6 +4171,7 @@ aObj.SetupRetail_UIFramesOptions = function(self)
 		["New Player Experience"]        = true,
 		["Obliterum UI"]                 = true,
 		["Order Hall UI"]                = true,
+		["Override Action Bar"]          = {desc = "Vehicle UI"},
 		["Pet Battle UI"]                = true,
 		["Player Choice"]                = {suff = "Frame"},
 		["PVE Frame"]                    = {desc = "Group Finder Frame"},

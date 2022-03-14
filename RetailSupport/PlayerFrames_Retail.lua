@@ -3259,53 +3259,6 @@ aObj.SetupRetail_PlayerFrames = function()
 
 	end
 
-	aObj.blizzFrames[ftype].OverrideActionBar = function(self) -- a.k.a. Vehicle UI
-		if not self.prdb.OverrideActionBar  or self.initialized.OverrideActionBar then return end
-		self.initialized.OverrideActionBar = true
-
-		self:SecureHookScript(_G.OverrideActionBar, "OnShow", function(this)
-			local function skinOverrideActionBar(reason)
-				-- aObj:Debug("skinOverrideActionBar: [%s, %s]", reason)
-				local frame = _G.OverrideActionBar
-				-- remove all textures
-				frame:DisableDrawLayer("OVERLAY")
-				frame:DisableDrawLayer("BACKGROUND")
-				frame:DisableDrawLayer("BORDER")
-				-- PitchFrame
-				frame.pitchFrame.Divider1:SetTexture(nil)
-				frame.pitchFrame.PitchOverlay:SetTexture(nil)
-				frame.pitchFrame.PitchButtonBG:SetTexture(nil)
-				-- LeaveFrame
-				frame.leaveFrame.Divider3:SetTexture(nil)
-				frame.leaveFrame.ExitBG:SetTexture(nil)
-				-- ExpBar
-				frame.xpBar.XpMid:SetTexture(nil)
-				frame.xpBar.XpL:SetTexture(nil)
-				frame.xpBar.XpR:SetTexture(nil)
-				for i = 1, 19 do
-					frame.xpBar["XpDiv" .. i]:SetTexture(nil)
-				end
-				aObj:skinStatusBar{obj=frame.xpBar, fi=0, bgTex=aObj:getRegion(frame.xpBar, 1)}
-				aObj:addSkinFrame{obj=frame, ft=ftype, x1=144, y1=6, x2=-142, y2=-2}
-				if self.modBtnBs then
-					self:addButtonBorder{obj=this.pitchFrame.PitchUpButton}
-					self:addButtonBorder{obj=this.pitchFrame.PitchDownButton}
-					self:addButtonBorder{obj=this.leaveFrame.LeaveButton}
-					for i = 1, 6 do
-						self:addButtonBorder{obj=this["SpellButton" .. i], abt=true, sabt=true}
-					end
-				end
-			end
-			self:SecureHook("OverrideActionBar_SetSkin", function(_)
-				skinOverrideActionBar("setSkin")
-			end)
-			skinOverrideActionBar("initial")
-
-			self:Unhook(this, "OnShow")
-		end)
-
-	end
-
 	aObj.blizzFrames[ftype].PVPHonorSystem = function(self)
 		if not self.prdb.PVPUI or self.initialized.PVPHonorSystem then return end
 		self.initialized.PVPHonorSystem = true
@@ -4082,7 +4035,6 @@ aObj.SetupRetail_PlayerFramesOptions = function(self)
 		["Guild Invite"]         = {suff = "Frame"},
 		["Guild UI"]             = true,
 		["Looking For Guild UI"] = {desc = "Looking for Guild UI"},
-		["Override Action Bar"]  = {desc = "Vehicle UI"},
 		["PVP UI"]               = {desc = "PVP Frame"},
 		["Role Poll Popup"]      = true,
 	}
