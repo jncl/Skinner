@@ -698,7 +698,7 @@ aObj.SetupClassic_PlayerFrames = function()
 
 		self:SecureHookScript(_G.InspectFrame, "OnShow", function(this)
 			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true})
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=10, y1=-12, x2=-31, y2=75})
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=10, y1=-12, x2=-31, y2=74})
 
 			self:Unhook(this, "OnShow")
 		end)
