@@ -2884,6 +2884,7 @@ aObj.SetupRetail_PlayerFrames = function()
 
 		self:SecureHookScript(_G.InspectTalentFrame, "OnShow", function(this)
 			-- self:keepFontStrings(this)
+			this:DisableDrawLayer("border")
 			this.InspectSpec.ring:SetTexture(nil)
 			self:makeIconSquare(this.InspectSpec, "specIcon")
 			for i = 1, _G.MAX_TALENT_TIERS do
