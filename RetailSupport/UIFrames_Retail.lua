@@ -4042,6 +4042,9 @@ aObj.SetupRetail_UIFrames = function()
 		self.initialized.TorghastLevelPicker = true
 
 		self:SecureHookScript(_G.TorghastLevelPickerFrame, "OnShow", function(this)
+			for cBtn in this.gossipOptionsPool:EnumerateActive() do
+				cBtn.RewardBanner.Reward.RewardBorder:SetTexture(nil)
+			end
 			if self.modBtnBs then
 				self:addButtonBorder{obj=this.Pager.PreviousPage, clr="gold", ofs=-2, y1=-3, x2=-3}
 				self:addButtonBorder{obj=this.Pager.NextPage, clr="gold", ofs=-2, y1=-3, x2=-3}
