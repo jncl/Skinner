@@ -201,14 +201,12 @@ aObj.SetupClassic_UIFrames = function()
 			self:checkShown(_G.MainMenuBar)
 
 			if self.modBtnBs then
-				-- VerticalMultiBarsContainer
 				skinMultiBarBtns("Right")
 				skinMultiBarBtns("Left")
-				-- MicroButtons
 				for _, bName in _G.pairs(_G.MICRO_BUTTONS) do
-					self:addButtonBorder{obj=_G[bName], es=24, ofs=2, y1=self.isClsc and -18, reParent=_G[bName] == "MainMenuMicroButton" and {_G[bName].Flash, _G.MainMenuBarDownload, not self.isClsc and _G.MainMenuBarPerformanceBar} or {_G[bName].Flash}, clr="grey"}
+					self:addButtonBorder{obj=_G[bName], es=24, ofs=2, y1=-18, reParent={_G[bName].QuickKeybindHighlightTexture, _G[bName].Flash}, clr="grey"}
 				end
-				-- BagButtons
+
 				self:addButtonBorder{obj=_G.MainMenuBarBackpackButton, ibt=true, ofs=3}
 				self:addButtonBorder{obj=_G.CharacterBag0Slot, ibt=true, ofs=3}
 				self:addButtonBorder{obj=_G.CharacterBag1Slot, ibt=true, ofs=3}
