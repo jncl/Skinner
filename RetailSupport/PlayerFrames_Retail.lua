@@ -865,6 +865,9 @@ aObj.SetupRetail_PlayerFrames = function()
 				self:skinStdButton{obj=this.BottomLeftInset.SuppressedMountEquipmentButton}
 				self:skinStdButton{obj=_G.MountJournalFilterButton}
 				self:skinStdButton{obj=this.MountButton}
+				self:SecureHook(this.MountButton, "SetEnabled", function(bObj)
+					self:clrBtnBdr(bObj)
+				end)
 			end
 			if self.modBtnBs then
 				self:addButtonBorder{obj=this.SlotButton, relTo=this.SlotButton.ItemIcon, reParent={this.SlotButton.SlotBorder, this.SlotButton.SlotBorderOpen}, clr="grey", ca=0.85}
