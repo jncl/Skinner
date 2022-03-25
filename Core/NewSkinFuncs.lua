@@ -615,7 +615,7 @@ skinFuncs.moneyframe = function(table) skinMoneyFrame(table) end
 local function skinScrollBar(tbl)
 	--@alpha@
 	_G.assert(tbl.obj, "Missing object (skinScrollBar)\n" .. _G.debugstack(2, 3, 2))
-	_G.assert(tbl.obj.canInterpolateScroll, "Not a ScrollBarBase (skinScrollBar)\n" .. _G.debugstack(2, 3, 2))
+	_G.assert(tbl.obj.Track, "Not a ScrollBarBase (skinScrollBar)\n" .. _G.debugstack(2, 3, 2))
 	--@end-alpha@
 	aObj:Debug2("skinScrollBar: [%s, %s]", tbl)
 
