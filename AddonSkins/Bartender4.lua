@@ -2,7 +2,7 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("Bartender4") then return end
 local _G = _G
 
-aObj.addonsToSkin.Bartender4 = function(self) -- v 4.10.9
+aObj.addonsToSkin.Bartender4 = function(self) -- v 4.11.1/
 
 	self:SecureHook(_G.Bartender4, "ShowUnlockDialog", function(this)
 		self:skinObject("frame", {obj=this.unlock_dialog, kfs=true, y1=6})
@@ -16,14 +16,14 @@ aObj.addonsToSkin.Bartender4 = function(self) -- v 4.10.9
 		self:Unhook(_G.Bartender4, "ShowUnlockDialog")
 	end)
 
+	local mod
 	if self.modBtns then
-		local mod = _G.Bartender4:GetModule("ActionBars", true)
+		mod = _G.Bartender4:GetModule("ActionBars", true)
 		if mod then
 			local function skinActionButtons(mod)
-				-- skin ActionBar buttons
 				for _, bar in mod:GetAll() do
-					for _, btn in _G.ipairs(bar.buttons) do
-						self:addButtonBorder{obj=btn, abt=true, sabt=true}
+					for _, btn in bar:GetAll() do
+						self:addButtonBorder{obj=btn, sabt=true}
 					end
 				end
 			end
@@ -37,9 +37,26 @@ aObj.addonsToSkin.Bartender4 = function(self) -- v 4.10.9
 				end)
 			end
 		end
+		mod = _G.Bartender4:GetModule("PetBar", true)
+		if mod then
+			local function skinPetButtons(mod)
+				for _, btn in mod.bar:GetAll() do
+					self:addButtonBorder{obj=btn, sft=true}
+				end
+			end
+			if mod.enabledState then
+				skinPetButtons(mod)
+			else
+				self:SecureHook(mod, "OnEnable", function(this)
+					skinPetButtons(this)
+
+					self:Unhook(this, "OnEnable")
+				end)
+			end
+		end
 	end
 
-	local mod = _G.Bartender4:GetModule("StatusTrackingBar", true)
+	mod = _G.Bartender4:GetModule("StatusTrackingBar", true)
 	if mod then
 		local function skinStatusBars(mod)
 			-- skin Status bars
@@ -66,7 +83,7 @@ aObj.addonsToSkin.Bartender4 = function(self) -- v 4.10.9
 		end
 	end
 
-	local mod = _G.Bartender4:GetModule("BlizzardArt", true)
+	mod = _G.Bartender4:GetModule("BlizzardArt", true)
 	if mod then
 		if mod.enabledState then
 			-- disable Art
@@ -80,7 +97,5 @@ aObj.addonsToSkin.Bartender4 = function(self) -- v 4.10.9
 			end)
 		end
 	end
-
-	mod = nil
 
 end

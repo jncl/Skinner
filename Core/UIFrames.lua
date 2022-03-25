@@ -2506,9 +2506,8 @@ aObj.blizzFrames[ftype].UIDropDownMenu = function(self)
 	local function skinDDMenu(frame)
 		if aObj.isRtl then
 			aObj:removeNineSlice(frame.Border)
-		else
-			aObj:removeBackdrop(_G[frame:GetName() .. "Backdrop"])
 		end
+		aObj:removeBackdrop(_G[frame:GetName() .. "Backdrop"]) -- N.B. Added by TipTac
 		aObj:removeBackdrop(_G[frame:GetName() .. "MenuBackdrop"])
 		aObj:removeNineSlice(_G[frame:GetName() .. "MenuBackdrop"].NineSlice)
 		aObj:skinObject("frame", {obj=frame, fType=ftype, kfs=true, x1=6, y1=-4, x2=3, y2=4})

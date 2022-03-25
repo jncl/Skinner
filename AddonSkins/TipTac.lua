@@ -2,8 +2,7 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("TipTac") then return end
 local _G = _G
 
-aObj.addonsToSkin.TipTac = function(self) -- v 21.11.06
-	if not self.db.profile.Tooltips.skin then return end
+aObj.addonsToSkin.TipTac = function(self) -- v 22.02.23
 
 	-- Anchor frame
 	self:SecureHookScript(_G.TipTac, "OnShow", function(this)
@@ -15,21 +14,31 @@ aObj.addonsToSkin.TipTac = function(self) -- v 21.11.06
 		self:Unhook(this, "OnShow")
 	end)
 
+	-- change Backdrop options
+	_G.TipTac_Config.tipBackdropBG = "nil"
+	_G.TipTac_Config.tipBackdropEdge = "nil"
+	_G.TipTac_Config.backdropEdgeSize = self.prdb.BdEdgeSize
+	_G.TipTac_Config.backdropInsets = self.prdb.BdInset
+	_G.TipTac_Config.gradientTip = false
+	_G.TipTac_Config.pixelPerfectBackdrop = false
+	_G.TipTac:ApplySettings()
+
 end
 
-aObj.lodAddons.TipTacOptions = function(self) -- v 21.11.06
+aObj.lodAddons.TipTacOptions = function(self)
 
 	-- hook this to skin the dropdown menu (also used by Examiner skin)
 	if not self:IsHooked(_G.AzDropDown, "ToggleMenu") then
 		self:SecureHook(_G.AzDropDown, "ToggleMenu", function(this, _)
 			self:skinObject("slider", {obj=_G["AzDropDownScroll" .. this.vers].ScrollBar})
 			self:skinObject("frame", {obj=_G["AzDropDownScroll" .. this.vers]:GetParent()})
+
 			self:Unhook(this, "ToggleMenu")
 		end)
 	end
 
 	local function skinCatPg()
-		for _, child in _G.ipairs{_G.TipTacOptions:GetChildren()} do
+		for _, child in _G.ipairs{_G.TipTacOptions.content:GetChildren()} do
 			if child.option then
 				if child.option.type == "DropDown" then
 					aObj:skinObject("frame", {obj=child, kfs=true, ng=true, bd=5, ofs=0})
