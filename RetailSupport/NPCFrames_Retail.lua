@@ -52,7 +52,7 @@ aObj.SetupRetail_NPCFrames = function()
 			this.MoneyFrameBorder:DisableDrawLayer("BACKGROUND")
 			this.MoneyFrameBorder:DisableDrawLayer("BORDER")
 			if self.modBtnBs then
-				self:addButtonBorder{obj=this.SearchBar.FavoritesSearchButton, ofs=-2, x1=1}
+				self:addButtonBorder{obj=this.SearchBar.FavoritesSearchButton, ofs=-2, x1=1, clr="grey"}
 			end
 			self:skinObject("tabs", {obj=this, tabs=this.Tabs, fType=ftype, lod=self.isTT and true, track=false, offsets={x1=8, y1=self.isTT and 2 or 0, x2=-8, y2=2}})
 			if self.isTT then
