@@ -741,18 +741,22 @@ aObj.SetupRetail_UIFrames = function()
 	end
 
 	aObj.blizzLoDFrames[ftype].BehavioralMessaging = function(self)
-		if not self.prdb.BehavioralMessaging or self.initialized.BehavioralMessaging then return end
+		if not self.prdb.GMChatUI or self.initialized.BehavioralMessaging then return end
+
+		if not _G.BehavioralMessagingDetails then
+			_G.C_Timer.After(0.1, function()
+				self.blizzLoDFrames[ftype].BehavioralMessaging(self)
+			end)
+			return
+		end
+
 		self.initialized.BehavioralMessaging = true
 
-		self:SecureHookScript(_G.BehavioralMessagingTray, "OnShow", function(this)
-
-			-- TODO: skin notification pool entries
-
-			self:Unhook(this, "OnShow")
-		end)
+		-- TODO: skin notification pool entries for BehavioralMessagingTray ?
 
 		self:SecureHookScript(_G.BehavioralMessagingDetails, "OnShow", function(this)
-			self:skinObject("frame", {obj=this, fType=ftype, rns=true})
+			self:removeNineSlice(this.Border)
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true})
 			if self.modBtns then
 				self:skinStdButton{obj=this.CloseButton, fType=ftype}
 			end
@@ -4197,7 +4201,6 @@ aObj.SetupRetail_UIFramesOptions = function(self)
 		["Alert Frames"]                 = true,
 		["Anima Diversion UI"]           = true,
 		["Azerite Item Toasts"]          = true,
-		["Behavioral Messaging"]         = {suff = "Frames"},
 		["Calendar"]                     = true,
 		["Challenges UI"]                = true,
 		["Chat Channels UI"]             = true,
