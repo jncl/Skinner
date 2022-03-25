@@ -766,6 +766,23 @@ aObj.SetupRetail_UIFrames = function()
 
 	end
 
+	aObj.blizzFrames[ftype].BossBannerToast = function(self)
+		if not self.prdb.BossBannerToast or self.initialized.BossBannerToast then return end
+		self.initialized.BossBannerToast = true
+
+		self:SecureHookScript(_G.BossBanner, "OnShow", function(this)
+			this:DisableDrawLayer("BORDER")
+			this:DisableDrawLayer("BACKGROUND")
+			this.BottomFillagree:SetTexture(nil)
+			this.SkullSpikes:SetTexture(nil)
+			this.RightFillagree:SetTexture(nil)
+			this.LeftFillagree:SetTexture(nil)
+
+			self:Unhook(this, "OnShow")
+		end)
+
+	end
+
 	aObj.blizzLoDFrames[ftype].Calendar = function(self)
 		if not self.prdb.Calendar or self.initialized.Calendar then return end
 		self.initialized.Calendar = true
@@ -4207,6 +4224,7 @@ aObj.SetupRetail_UIFramesOptions = function(self)
 		["Alert Frames"]                 = true,
 		["Anima Diversion UI"]           = true,
 		["Azerite Item Toasts"]          = true,
+		["Boss Banner Toast"]            = true,
 		["Calendar"]                     = true,
 		["Challenges UI"]                = true,
 		["Chat Channels UI"]             = true,
