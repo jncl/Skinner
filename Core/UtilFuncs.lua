@@ -189,6 +189,8 @@ end
 
 function aObj:applyTooltipGradient(obj)
 
+	if obj:IsForbidden() then return end
+
 	if self.prdb.Tooltips.style == 1 then -- Rounded
 		self:applyGradient(obj, 32)
 	elseif self.prdb.Tooltips.style == 2 then -- Flat
