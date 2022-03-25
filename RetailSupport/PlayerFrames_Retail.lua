@@ -864,6 +864,9 @@ aObj.SetupRetail_PlayerFrames = function()
 			if self.modBtns then
 				self:skinStdButton{obj=this.BottomLeftInset.SuppressedMountEquipmentButton}
 				self:skinStdButton{obj=_G.MountJournalFilterButton}
+				if aObj.isRtlPTR then
+					self:skinCloseButton{obj=_G.MountJournalFilterButton.ResetButton, fType=ftype, noSkin=true}
+				end
 				self:skinStdButton{obj=this.MountButton}
 				self:SecureHook(this.MountButton, "SetEnabled", function(bObj)
 					self:clrBtnBdr(bObj)
@@ -1056,7 +1059,12 @@ aObj.SetupRetail_PlayerFrames = function()
 			self:removeRegions(this.progressBar, {2, 3})
 			self:skinObject("editbox", {obj=this.SearchBox, fType=ftype, si=true})
 			if self.modBtns then
-				self:skinStdButton{obj=_G.HeirloomsJournalFilterButton, fType=ftype}
+				if not aObj.isRtlPTR then
+					self:skinStdButton{obj=_G.HeirloomsJournalFilterButton, fType=ftype}
+				else
+					self:skinCloseButton{obj=this.FilterButton.ResetButton, fType=ftype, noSkin=true}
+					self:skinStdButton{obj=this.FilterButton, ftype=ftype}
+				end
 			end
 			self:skinObject("dropdown", {obj=this.classDropDown, fType=ftype})
 			self:removeInset(this.iconsFrame)
@@ -1736,10 +1744,13 @@ aObj.SetupRetail_PlayerFrames = function()
 				self:skinStdButton{obj=this.Cancel}
 			end
 			if self.modChkBtns then
-				self:skinCheckButton{obj=this.ShouldListClub.Button}
-				self:skinCheckButton{obj=this.AutoAcceptApplications.Button}
-				self:skinCheckButton{obj=this.MaxLevelOnly.Button}
-				self:skinCheckButton{obj=this.MinIlvlOnly.Button}
+				if aObj.isRtlPTR then
+					self:skinCheckButton{obj=this.CrossFactionToggle.CheckButton, fType=ftype}
+				end
+				self:skinCheckButton{obj=this.ShouldListClub.Button, fType=ftype}
+				self:skinCheckButton{obj=this.AutoAcceptApplications.Button, fType=ftype}
+				self:skinCheckButton{obj=this.MaxLevelOnly.Button, fType=ftype}
+				self:skinCheckButton{obj=this.MinIlvlOnly.Button, fType=ftype}
 			end
 
 			self:Unhook(this, "OnShow")

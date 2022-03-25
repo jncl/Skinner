@@ -2615,6 +2615,9 @@ aObj.SetupRetail_UIFrames = function()
 				self:skinCheckButton{obj=ec.PVPRating.CheckButton}
 				self:skinCheckButton{obj=ec.MythicPlusRating.CheckButton}
 				self:skinCheckButton{obj=ec.VoiceChat.CheckButton}
+				if aObj.isRtlPTR then
+					self:skinCheckButton{obj=ec.CrossFactionGroup.CheckButton}
+				end
 				self:skinCheckButton{obj=ec.PrivateGroup.CheckButton}
 			end
 
