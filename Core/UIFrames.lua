@@ -2053,6 +2053,9 @@ aObj.blizzFrames[ftype].SharedBasicControls = function(self)
 
 end
 
+--> N.B. The following frame can't be skinned, as the XML has a ScopedModifier element saying forbidden="true"
+	-- SocialUI
+
 aObj.blizzFrames[ftype].StackSplit = function(self)
 	if not self.prdb.StackSplit or self.initialized.StackSplit then return end
 	self.initialized.StackSplit = true
