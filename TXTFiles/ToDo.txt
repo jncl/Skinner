@@ -16,7 +16,7 @@ ToDos
 
 ≈	O	Add checks for Button state as required
 §
-≈	O	Refactor NewSkinFuncs in Blizzard/AddOn skinsaj
+≈	O	Refactor NewSkinFuncs in Blizzard/AddOn skins
 
 ≈	O	Replace RegisterCallback/Fire by RegisterMessage/SendMessage where appropriate
 
@@ -25,45 +25,36 @@ ToDos
 
 ?	O	Replace ObjectiveTracker Header Minimize button textures with suitable characters
 
-?	I	Fix ActionButtons missing Text when redisplayed after accessing Puzzle Caches in Zereth Mortis.
+?	I	Fix ActionButtons/MultiBarButtons missing Text & PetActionButtons not being displayed, when redisplayed after accessing Puzzle Caches in Zereth Mortis.
 		- happens when OverrideBar is used
 
-	I	LFG, reported by Galthariel, 14.11.21
-?		- Text not visible when typing
-		- Dungeons & Raids, Premade Groups, Custom, Title editbox has not got information string displayed
-		- possible conflict with LFG+ AddOn ?
+	I	Tooltip , reported by icedawg, 15.03.22
+≈		- Skinner\Core\UtilFuncs.lua:149: Attempt to access forbidden object from code tainted by an AddOn
+		[string "=[C]"]: in function `ClearAllPoints'
+		[string "@Skinner\Core\UtilFuncs.lua"]:149: in function `applyGradient'
+		[string "@Skinner\Core\UtilFuncs.lua"]:193: in function `applyTooltipGradient'
+		[string "@Skinner\Core\UIFrames.lua"]:2466: in function <Skinner\Core\UIFrames.lua:2465>
+		[string "@Ace3\AceHook-3.0\AceHook-3.0-9.lua"]:92: in function <Ace3\AceHook-3.0\AceHook-3.0.lua:87> Locals: (*temporary) = { 0 = }
 
-	I	FriendFrame, reported by Galthariel, 27.12.21
-?		-  [ADDON_ACTION_FORBIDDEN] AddOn 'Skinner' tried to call the protected function 'CopyToClipboard()'.
+	I	BehavioralMessaging, reported by reiyo_oki, 19.03.22
+√		- ...ace\AddOns\Skinner\RetailSupport\UIFrames_Retail.lua line 833:
+		Usage: SecureHookScript(object, method, [handler]): You can only hook a script on a frame object
+
+	N	TipTac
+√		- causing issues with dropdown panels
+√		- change Background settings to prevent border/background issues
+
+	N	MainMenuBar, reported by MetalHeadTwo, 22.03.22
+?		-  [ADDON_ACTION_BLOCKED] AddOn 'Skinner' tried to call the protected function 'MainMenuBar:SetScale()'.
 		[string "@!BugGrabber\BugGrabber.lua"]:519: in function <!BugGrabber\BugGrabber.lua:519>
-		[string "=[C]"]: in function `CopyToClipboard'
-		[string "@FrameXML\RecruitAFriendFrame.lua"]:1137: in function <FrameXML\RecruitAFriendFrame.lua:1135>
-
-	I	CommunityInvite, reported by Galthariel, 27.12.21
-?		- same error as above
-
-	I	Texture issues, reported by kertyion, 05.02.22
-?		 - There are gaps on the sides of the Game Menu
-?		 - Tab buttons stack on top of each other. Not all checkboxes have a skinner texture, on the Modules panel
-		 --> Asked for SV file, will check with user's settings
-		 	- checked, no issues found
-
-	I	HandyNotes, reported by DarkLimpan/Galthariel/LoneWolfFarmer, 04.03.22/13.03.22
-√		- Skinner\AddonSkins\HandyNotes-v1.6.5-3-g5c59bd4.lua:29: attempt to index field 'Border' (a nil value)
-
-	I	OrderHallTalents, reported by Galthariel, 04.03.22
-x		- ..s\Blizzard_OrderHallUI\Blizzard_OrderHallTalents.lua:976: Usage: local garrTalentTreeType = C_Garrison.GetGarrisonTalentTreeType(garrTalentTreeID)
-		[string "=[C]"]: in function `GetGarrisonTalentTreeType'
-		[string "@Blizzard_OrderHallUI\Blizzard_OrderHallTalents.lua"]:976: in function <...s\Blizzard_OrderHallUI\Blizzard_OrderHallTalents.lua:969>
-
-	I	reported by icedawg, 05.03.22
-√		- Skinner\Core\UIFrames.lua:2700: Attempt to access forbidden object from code tainted by an AddOn
-		[string "=[C]"]: in function `GetDebugName'
-		[string "@Skinner\Core\UIFrames.lua"]:2700: in function <Skinner\Core\UIFrames.lua:2697>
-		[string "@Skinner\Core\UIFrames.lua"]:2715: in function <Skinner\Core\UIFrames.lua:2714>
-
-	I	WeakAuras v3.7.13
-≈		- Updated skin for latest version
-
-	I	RareScanner v9.2.0.3
-≈		- Updated skin for latest version
+		[string "=[C]"]: in function `SetScale'
+		[string "@FrameXML\UIParent.lua"]:3353: in function `UIParentManageFramePositions'
+		[string "@FrameXML\UIParent.lua"]:2739: in function <FrameXML\UIParent.lua:2726>
+		[string "=[C]"]: in function `SetAttribute'
+		[string "@FrameXML\UIParent.lua"]:3536: in function <FrameXML\UIParent.lua:3534>
+		[string "=[C]"]: in function `UIParent_ManageFramePositions'
+		[string "@Blizzard_UIWidgets\Blizzard_UIWidgetBelowMinimapFrame.lua"]:5: in function `layoutFunc'
+		[string "@Blizzard_UIWidgets\Blizzard_UIWidgetManager.lua"]:530: in function <...dOns\Blizzard_UIWidgets\Blizzard_UIWidgetManager.lua:521>
+		[string "=[C]"]: in function `UpdateWidgetLayout'
+		[string "@Blizzard_UIWidgets\Blizzard_UIWidgetManager.lua"]:502: in function `ProcessAllWidgets'
+		[string "@Blizzard_UIWidgets\Blizzard_UIWidgetManager.lua"]:48: in function <...dOns\Blizzard_UIWidgets\Blizzard_UIWidgetManager.lua:46>

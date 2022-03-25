@@ -8,5 +8,17 @@ ToDo_retail_PTR
 
 	Retail_PTR
 		- Added
+			- CommunitiesMemberList
+?				- .FactionButton
+			- CommunitiesSettings
+				- .CrossFactionToggle
+√					- .CheckButton (CheckButton)
+			- LFGList
+√				- .CrossFactionGroup (CheckButton)
 		- Updated
+			- DropDownToggleButton(s) now use UIResettableDropdownButtonTemplate
+			- Blizzard_HeirloomCollection
+√				- $parentFilterButton now a parentKey called FilterButton
+			- Blizzard_MountJournal
+√				- FilterButton now has a .ResetButton
 		- Deleted

@@ -8,5 +8,22 @@ ToDo_classic_PTR
 
 	Classic_PTR
 		- Added
+			- Blizzard_TexelSnappingVisualizer (GM builds only)
+x				- closebutton
+			- Blizzard_SocialUI (forbidden)
+x				- OffScreenFrame.ItemTooltip
+			- ChatConfigFrame
+√				- $parentButton5/6/7
+√				- ChatConfigTextToSpeechSettings
+√				- ChatConfigTextToSpeechMessageSettings
+√				- ChatConfigTextToSpeechChannelSettings
+√				- TextToSpeechDefaultButton
+√				- TextToSpeechCharacterSpecificButton
+			- MailFrame
+√				- MailEditBox
+			- VoiceChatHeadsetButton
+?				- VoiceChatHeadsetTemplate.Button
 		- Updated
 		- Deleted
+			- MailFrame
+√				- SendMailScrollFrame
