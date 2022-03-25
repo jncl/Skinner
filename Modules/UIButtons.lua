@@ -742,12 +742,13 @@ local function __addButtonBorder(opts)
 		relTo = object to position relative to
 		ofs = global offset
 		abt = Action Button template
-		pabt = Pet Action Button template
 		ibt = Item Button template
 		tibt = Talent Item Button template
 		libt = Large Item Button template
 		sibt = Small Item Button template
 		gibt = Giant Item Button template
+		auit = auction item template(s)
+		bmit = blackmarket item template
 		sft = requires SecureFrameTemplate
 		sabt = requires SecureActionButtonTemplate
 		subt = requires SecureUnitButtonTemplate
@@ -758,8 +759,6 @@ local function __addButtonBorder(opts)
 		y1 = Y offset for TOPLEFT
 		x2 = X offset for BOTTOMRIGHT
 		y2 = Y offset for BOTTOMRIGHT
-		auit = auction item template(s)
-		bmit = blackmarket item template
 		nc = don't check to see if already skinned
 		clr = set colour
 		ca = set colour alpha
@@ -790,7 +789,6 @@ local function __addButtonBorder(opts)
 	-- remove Normal/Pushed textures if required (vertex colour changed in blizzard code)
 	if opts.ibt
 	or opts.abt
-	-- or opts.pabt
 	or opts.auit
 	or opts.bmit
 	then
@@ -835,16 +833,20 @@ local function __addButtonBorder(opts)
 		end
 	end
 	-- reparent these textures so they are displayed above the border
+	if opts.obj.Count then
+		opts.obj.Count:SetParent(opts.obj.sbb)
+	end
 	if opts.ibt then -- Item Buttons
 		aObj:getRegion(opts.obj, 3):SetParent(opts.obj.sbb) -- Stock region
-		opts.obj.Count:SetParent(opts.obj.sbb)
 		opts.obj.searchOverlay:SetParent(opts.obj.sbb)
 		module:clrButtonFromBorder(opts.obj)
-	elseif opts.abt then -- Action Buttons
+	elseif opts.abt -- Action Buttons
+	or opts.sabt
+	and opts.obj.FlyoutArrow
+	then
 		opts.obj.Flash:SetParent(opts.obj.sbb)
 		opts.obj.FlyoutArrow:SetParent(opts.obj.sbb)
 		opts.obj.HotKey:SetParent(opts.obj.sbb)
-		opts.obj.Count:SetParent(opts.obj.sbb)
 		opts.obj.Name:SetParent(opts.obj.sbb)
 		opts.obj.Border:SetParent(opts.obj.sbb)
 		opts.obj.NewActionTexture:SetParent(opts.obj.sbb)
@@ -852,9 +854,7 @@ local function __addButtonBorder(opts)
 	or opts.sibt -- Small Item Buttons
 	then
 		opts.obj.Name:SetParent(opts.obj.sbb)
-		opts.obj.Count:SetParent(opts.obj.sbb)
 	elseif opts.gibt then -- Giant Item Buttons
-		opts.obj.Count:SetParent(opts.obj.sbb)
 		module:clrButtonFromBorder(opts.obj)
 	end
 

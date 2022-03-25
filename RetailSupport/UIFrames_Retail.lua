@@ -1425,7 +1425,7 @@ aObj.SetupRetail_UIFrames = function()
 			end
 			btn:GetNormalTexture():SetTexture(nil)
 			if aObj.modBtnBs then
-				aObj:addButtonBorder{obj=btn, sabt=true, ofs=2, reParent={btn.Count, btn.HotKey and btn.HotKey}}
+				aObj:addButtonBorder{obj=btn, sabt=true, ofs=2, reParent={btn.HotKey and btn.HotKey}}
 			end
 		end
 		if self.prdb.MainMenuBar.extraab then
@@ -2701,18 +2701,23 @@ aObj.SetupRetail_UIFrames = function()
 			return
 		end
 
+		local skinABBtn, skinMultiBarBtns
 		if self.prdb.MainMenuBar.skin then
-			local function skinMultiBarBtns(type)
-				local btn
-				for i = 1, _G.NUM_MULTIBAR_BUTTONS do
-					btn = _G["MultiBar" .. type .. "Button" .. i]
+			if self.modBtnBs then
+				function skinABBtn(btn)
+					btn.Border:SetAlpha(0) -- texture changed in blizzard code
 					btn.FlyoutBorder:SetTexture(nil)
 					btn.FlyoutBorderShadow:SetTexture(nil)
-					btn.Border:SetAlpha(0) -- texture changed in blizzard code
-					if not btn.noGrid then
-						_G[btn:GetName() .. "FloatingBG"]:SetAlpha(0)
+					aObj:addButtonBorder{obj=btn, sabt=true, ofs=3}
+					_G[btn:GetName() .. "NormalTexture"]:SetTexture(nil)
+				end
+				function skinMultiBarBtns(type)
+					for i = 1, _G.NUM_MULTIBAR_BUTTONS do
+						if not _G["MultiBar" .. type .. "Button" .. i].noGrid then
+							_G["MultiBar" .. type .. "Button" .. i .. "FloatingBG"]:SetAlpha(0)
+						end
+						skinABBtn(_G["MultiBar" .. type .. "Button" .. i])
 					end
-					aObj:addButtonBorder{obj=btn, abt=true, sabt=true, ofs=3}
 				end
 			end
 			self:SecureHookScript(_G.MainMenuBar, "OnShow", function(this)
@@ -2723,9 +2728,7 @@ aObj.SetupRetail_UIFrames = function()
 				this.ArtFrame.RightEndCap:SetTexture(nil)
 				if self.modBtnBs then
 					for i = 1, _G.NUM_ACTIONBAR_BUTTONS do
-						_G["ActionButton" .. i].FlyoutBorder:SetTexture(nil)
-						_G["ActionButton" .. i].FlyoutBorderShadow:SetTexture(nil)
-						self:addButtonBorder{obj=_G["ActionButton" .. i], abt=true, sabt=true, ofs=3}
+						skinABBtn(_G["ActionButton" .. i])
 					end
 					self:addButtonBorder{obj=_G.ActionBarUpButton, clr="gold"}
 					self:addButtonBorder{obj=_G.ActionBarDownButton, clr="gold"}
@@ -2758,7 +2761,7 @@ aObj.SetupRetail_UIFrames = function()
 				self:keepFontStrings(this)
 				if self.modBtnBs then
 					for i = 1, _G.NUM_POSSESS_SLOTS do
-						self:addButtonBorder{obj=_G["PossessButton" .. i], abt=true, sft=true}
+						self:addButtonBorder{obj=_G["PossessButton" .. i], sft=true}
 					end
 				end
 
@@ -2769,11 +2772,13 @@ aObj.SetupRetail_UIFrames = function()
 			self:SecureHookScript(_G.MultiCastActionBarFrame, "OnShow", function(this)
 				self:keepFontStrings(_G.MultiCastFlyoutFrame) -- Shaman's Totem Frame
 				if self.modBtnBs then
-					self:addButtonBorder{obj=_G.MultiCastSummonSpellButton, abt=true, sabt=true, ofs=5}
-					for i = 1, _G.NUM_MULTI_CAST_PAGES * _G.NUM_MULTI_CAST_BUTTONS_PER_PAGE do
-						self:addButtonBorder{obj=_G["MultiCastActionButton" .. i], abt=true, sabt=true, ofs=5}
+					self:addButtonBorder{obj=_G.MultiCastSummonSpellButton, sabt=true, ofs=5}
+					self:addButtonBorder{obj=_G.MultiCastRecallSpellButton, sabt=true, ofs=5}
+					if not _G.IsAddOnLoaded("Bartender4") then
+						for i = 1, _G.NUM_MULTI_CAST_PAGES * _G.NUM_MULTI_CAST_BUTTONS_PER_PAGE do
+							skinABBtn(_G["MultiCastActionButton" .. i])
+						end
 					end
-					self:addButtonBorder{obj=_G.MultiCastRecallSpellButton, abt=true, sabt=true, ofs=5}
 				end
 
 				self:Unhook(this, "OnShow")
@@ -2781,16 +2786,17 @@ aObj.SetupRetail_UIFrames = function()
 			self:checkShown(_G.MultiCastActionBarFrame)
 
 			if self.modBtnBs then
-				skinMultiBarBtns("Right")
-				skinMultiBarBtns("Left")
+				if not _G.IsAddOnLoaded("Bartender4") then
+					skinMultiBarBtns("Right")
+					skinMultiBarBtns("Left")
+				end
 				for _, bName in _G.pairs(_G.MICRO_BUTTONS) do
 					self:addButtonBorder{obj=_G[bName], es=24, ofs=2, reParent={_G[bName].QuickKeybindHighlightTexture, _G[bName].Flash}, clr="grey"}
 				end
 				self:addButtonBorder{obj=_G.MainMenuBarBackpackButton, ibt=true, ofs=3}
-				self:addButtonBorder{obj=_G.CharacterBag0Slot, ibt=true, ofs=3}
-				self:addButtonBorder{obj=_G.CharacterBag1Slot, ibt=true, ofs=3}
-				self:addButtonBorder{obj=_G.CharacterBag2Slot, ibt=true, ofs=3}
-				self:addButtonBorder{obj=_G.CharacterBag3Slot, ibt=true, ofs=3}
+				for i = 1, _G.NUM_BAG_FRAMES do
+					self:addButtonBorder{obj=_G["CharacterBag" .. i - 1 .. "Slot"], ibt=true, ofs=3}
+				end
 			end
 
 		end
@@ -3003,7 +3009,7 @@ aObj.SetupRetail_UIFrames = function()
 				self:addButtonBorder{obj=this.PitchDownButton}
 				self:addButtonBorder{obj=this.LeaveButton}
 				for i = 1, 6 do
-					self:addButtonBorder{obj=this["SpellButton" .. i], abt=true, sabt=true}
+					self:addButtonBorder{obj=this["SpellButton" .. i], sabt=true}
 				end
 			end
 

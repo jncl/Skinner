@@ -1414,6 +1414,10 @@ aObj.blizzFrames[ftype].MainMenuBarCommon = function(self)
 	if self.initialized.MainMenuBarCommon then return end
 	self.initialized.MainMenuBarCommon = true
 
+	if _G.IsAddOnLoaded("Bartender4") then
+		return
+	end
+
 	if self.prdb.MainMenuBar.skin then
 		self:SecureHookScript(_G.StanceBarFrame, "OnShow", function(this)
 			self:keepFontStrings(_G.StanceBarFrame)
@@ -1431,8 +1435,11 @@ aObj.blizzFrames[ftype].MainMenuBarCommon = function(self)
 		self:SecureHookScript(_G.PetActionBarFrame, "OnShow", function(this)
 			self:keepFontStrings(_G.PetActionBarFrame)
 			if self.modBtnBs then
+				local bName
 				for i = 1, _G.NUM_PET_ACTION_SLOTS do
-					self:addButtonBorder{obj=_G["PetActionButton" .. i], abt=true, sft=true, reParent={_G["PetActionButton" .. i .. "AutoCastable"], _G["PetActionButton" .. i .. "SpellHighlightTexture"], _G["PetActionButton" .. i .. "Shine"]}, ofs=3, x2=2}
+					bName = "PetActionButton" .. i
+					self:addButtonBorder{obj=_G[bName], sft=true, reParent={_G[bName .. "AutoCastable"], _G[bName .. "SpellHighlightTexture"], _G[bName .. "Shine"]}, ofs=3, x2=2}
+					_G[bName .. "NormalTexture"]:SetTexture(nil) -- $parentNormalTexture2 is the NormalTexture
 				end
 			end
 

@@ -167,7 +167,7 @@ aObj.SetupClassic_UIFrames = function()
 					if not btn.noGrid then
 						_G[btn:GetName() .. "FloatingBG"]:SetAlpha(0)
 					end
-					aObj:addButtonBorder{obj=btn, abt=true, sabt=true, ofs=3}
+					aObj:addButtonBorder{obj=btn, sabt=true, ofs=3}
 				end
 			end
 			self:SecureHookScript(_G.MainMenuBar, "OnShow", function(this)
@@ -188,7 +188,7 @@ aObj.SetupClassic_UIFrames = function()
 					for i = 1, _G.NUM_ACTIONBAR_BUTTONS do
 						_G["ActionButton" .. i].FlyoutBorder:SetTexture(nil)
 						_G["ActionButton" .. i].FlyoutBorderShadow:SetTexture(nil)
-						self:addButtonBorder{obj=_G["ActionButton" .. i], abt=true, sabt=true, ofs=3}
+						self:addButtonBorder{obj=_G["ActionButton" .. i], sabt=true, ofs=3}
 					end
 					self:addButtonBorder{obj=_G.ActionBarUpButton, ofs=-4, clr="gold"}
 					self:addButtonBorder{obj=_G.ActionBarDownButton, ofs=-4, clr="gold"}
