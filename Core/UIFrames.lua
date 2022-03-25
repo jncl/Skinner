@@ -276,10 +276,8 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 			self:skinStdButton{obj=this.DefaultButton}
 			self:skinStdButton{obj=this.RedockButton}
 			self:skinStdButton{obj=_G.CombatLogDefaultButton}
-			if not self.isClscBC then
-				self:skinStdButton{obj=this.ToggleChatButton}
-			end
 			if not self.isClsc then
+			self:skinStdButton{obj=this.ToggleChatButton}
 				self:skinStdButton{obj=_G.TextToSpeechDefaultButton, fType=ftype}
 			end
 			self:skinStdButton{obj=_G.ChatConfigFrameCancelButton}
@@ -330,7 +328,7 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 			skinTabs(fObj)
 		end)
 		local function skinCB(cBox)
-			if aObj.isClscERA
+			if aObj.isClsc
 			and _G[cBox].NineSlice
 			then
 				aObj:removeNineSlice(_G[cBox].NineSlice)
@@ -357,10 +355,10 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 			end
 		end
 		--	Channel Settings
+		self:skinObject("frame", {obj=_G.ChatConfigChannelSettingsLeft, fType=ftype, kfs=true, rns=true, fb=true})
 		if self.modChkBtns
 		and self.isRtl
 		then
-			self:skinObject("frame", {obj=_G.ChatConfigChannelSettingsLeft, fType=ftype, kfs=true, rns=true, fb=true})
 			self:SecureHookScript(_G.ChatConfigChannelSettings, "OnShow", function(fObj)
 				for i = 1, #_G.CHAT_CONFIG_CHANNEL_LIST do
 					skinCB("ChatConfigChannelSettingsLeftCheckBox" .. i)
@@ -374,7 +372,7 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 				local box
 				for i = 1, #frame.checkBoxTable do
 					box = _G[frame:GetName() .. "CheckBox" .. i]
-					if aObj.isClscERA
+					if aObj.isClsc
 					and box.NineSlice
 					then
 						aObj:removeNineSlice(box.NineSlice)
@@ -390,7 +388,7 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 				local box
 				for i = 1, #frame.boxTable do
 					box = _G[frame:GetName() .. "Box" .. i]
-					if aObj.isClscERA
+					if aObj.isClsc
 					and box.NineSlice
 					then
 						aObj:removeNineSlice(box.NineSlice)
@@ -494,10 +492,10 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 		end
 		-- Colors
 		for i = 1, #_G.COMBAT_CONFIG_UNIT_COLORS do
-			if aObj.isClscERA
+			if self.isClsc
 			and _G["CombatConfigColorsUnitColorsSwatch" .. i].NineSlice
 			then
-				aObj:removeNineSlice(_G["CombatConfigColorsUnitColorsSwatch" .. i].NineSlice)
+				self:removeNineSlice(_G["CombatConfigColorsUnitColorsSwatch" .. i].NineSlice)
 			else
 				self:removeBackdrop(_G["CombatConfigColorsUnitColorsSwatch" .. i])
 			end
@@ -698,11 +696,8 @@ aObj.blizzFrames[ftype].CinematicFrame = function(self)
 		if self.isRtl then
 			self:removeNineSlice(this.closeDialog.Border)
 		end
-		if self.isClscBC then
-			self:skinObject("frame", {obj=this.closeDialog, fType=ftype, kfs=true, rb=true})
-		else
-			self:skinObject("frame", {obj=this.closeDialog, fType=ftype})
-		end
+		-- raidBossEmoteFrame ?
+		self:skinObject("frame", {obj=this.closeDialog, fType=ftype})
 		if self.modBtns then
 			self:skinStdButton{obj=_G.CinematicFrameCloseDialogConfirmButton}
 			self:skinStdButton{obj=_G.CinematicFrameCloseDialogResumeButton}
