@@ -49,6 +49,11 @@ aObj.SetupRetail_UIFrames = function()
 			if frame.PortraitFrame then
 				skinPortrait(frame.PortraitFrame)
 			end
+			if aObj.modBtnBs then
+				for _, frame in _G.pairs(frame.Counters) do
+					aObj:addButtonBorder{obj=frame, fType=ftype, relTo=frame.Icon, clr="white"}
+				end
+			end
 		end
 		function skinFollowerListButtons(frame)
 			for _, btn in _G.pairs(frame.listScroll.buttons) do
@@ -75,25 +80,19 @@ aObj.SetupRetail_UIFrames = function()
 						aObj:addButtonBorder{obj=btn, relTo=btn.iconTexture}
 					end
 				end
-				-- Ability buttons
-				for ability in frame.abilitiesPool:EnumerateActive() do
-					aObj:addButtonBorder{obj=ability.IconButton, reParent={ability.IconButton.Border}}
-				end
-				-- Counter buttons (Garrison Followers)
-				for counters in frame.countersPool:EnumerateActive() do
-					aObj:addButtonBorder{obj=counters, relTo=counters.Icon, reParent={counters.Border}}
-				end
-				-- hook to to handle new Abilities & Counters
-				aObj:SecureHook(frame, "ShowAbilities", function(_, _)
+				-- hook to skin Abilities, Counters & Spells
+				aObj:SecureHook(frame, "ShowFollower", function(_, _)
+					-- Ability buttons
 					for ability in frame.abilitiesPool:EnumerateActive() do
-						if not ability.IconButton.sbb then
-							aObj:addButtonBorder{obj=ability.IconButton, reParent={ability.IconButton.Border}}
-						end
+						aObj:addButtonBorder{obj=ability.IconButton, reParent={ability.IconButton.Border}}
 					end
+					-- Counter buttons (Garrison Followers)
 					for counters in frame.countersPool:EnumerateActive() do
-						if not counters.sbb then
-							aObj:addButtonBorder{obj=counters, relTo=counters.Icon, reParent={counters.Border}}
-						end
+						aObj:addButtonBorder{obj=counters, relTo=counters.Icon, reParent={counters.Border}}
+					end
+					-- Spell buttons (Covenant Adventurers)
+					for spell in frame.autoSpellPool:EnumerateActive() do
+						aObj:addButtonBorder{obj=spell, ftype=ftype, relTo=spell.Icon, ofs=1, clr="white"}
 					end
 				end)
 			end
@@ -194,7 +193,7 @@ aObj.SetupRetail_UIFrames = function()
 			local x1Ofs, y1Ofs, x2Ofs, y2Ofs = 2, 2, 1, -4
 			if frame == _G.CovenantMissionFrame then
 				x1Ofs = -2
-				y1Ofs = 2
+				y1Ofs = 6
 				y2Ofs = -6
 			elseif frame == _G.BFAMissionFrame then
 				y1Ofs = 1
@@ -1601,7 +1600,7 @@ aObj.SetupRetail_UIFrames = function()
 			skinFollowerPage(this.FollowerTab)
 			skinFollowerList(this.ShipFollowerList)
 			skinFollowerTraitsAndEquipment(this.ShipFollowerTab)
-			if _G.C_Garrison.GetLandingPageGarrisonType() == _G.Enum.GarrisonType.Type_9_0 then
+			if _G.C_Garrison.GetLandingPageGarrisonType() == _G.Enum.GarrisonType.Type_9_0 then -- Covenant
 				local function skinPanelBtns(panel)
 					panel:DisableDrawLayer("BACKGROUND")
 					aObj:skinObject("frame", {obj=panel.RenownButton, fType=ftype, regions={3, 5, 6}, ofs=-4, y1=-5, y2=3})
