@@ -1254,6 +1254,7 @@ aObj.SetupOptions = function(self)
 		["Stack Split"]           = {suff = "Frame"},
 		["Static Popups"]         = true,
 		["System Options"]        = true,
+		["Text To Speech Frame"]  = self.isRtl or self.isClscBC and true,
 		["Time Manager"]          = {suff = "Frame"},
 		["Tutorial"]              = {suff = "Frame"},
 		["UI DropDown Menu"]      = {desc = "DropDown Panels"},

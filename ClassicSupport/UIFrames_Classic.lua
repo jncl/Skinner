@@ -38,6 +38,9 @@ aObj.SetupClassic_UIFrames = function()
 			end
 			self:addButtonBorder{obj=_G.ChatFrameChannelButton, ofs=1, clr="grey"}
 			self:addButtonBorder{obj=_G.ChatFrameMenuButton, ofs=-2, x1=1, clr="grey"}
+			if self.isClscBC then
+				self:addButtonBorder{obj=_G.TextToSpeechButton, ofs=1, clr="grey"}
+			end
 		end
 
 	end

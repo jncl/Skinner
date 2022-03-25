@@ -276,15 +276,18 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 			self:skinStdButton{obj=this.DefaultButton}
 			self:skinStdButton{obj=this.RedockButton}
 			self:skinStdButton{obj=_G.CombatLogDefaultButton}
-			if not self.isClsc then
 			self:skinStdButton{obj=this.ToggleChatButton}
+			if self.isRtl
+			or self.isClscBC
+			then
 				self:skinStdButton{obj=_G.TextToSpeechDefaultButton, fType=ftype}
 			end
 			self:skinStdButton{obj=_G.ChatConfigFrameCancelButton}
 			self:skinStdButton{obj=_G.ChatConfigFrameOkayButton}
 		end
 		if self.modChkBtns
-		and not self.isClsc
+		and self.isRtl
+		or self.isClscBC
 		then
 			self:skinCheckButton{obj=_G.TextToSpeechCharacterSpecificButton, fType=ftype}
 		end
@@ -421,7 +424,8 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 		-- TextToSpeechSettings
 		-- N.B. TextToSpeechFrame is skinned separately
 		if self.modChkBtns
-		and not self.isClsc
+		and self.isRtl
+		or self.isClscBC
 		then
 			self:SecureHook("TextToSpeechFrame_UpdateMessageCheckboxes", function(frame)
 				for i = 1, #frame.checkBoxTable do
@@ -431,7 +435,9 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 				self:Unhook("TextToSpeechFrame_UpdateMessageCheckboxes")
 			end)
 		end
-		if self.isRtl then
+		if self.isRtl
+		or self.isClscBC
+		then
 			self:SecureHookScript(_G.ChatConfigTextToSpeechChannelSettings, "OnShow", function(fObj)
 				self:skinObject("frame", {obj=_G.ChatConfigTextToSpeechChannelSettingsLeft, fType=ftype, kfs=true, rns=true, fb=true})
 				for i = 1, #_G.CHAT_CONFIG_TEXT_TO_SPEECH_CHANNEL_LIST do
@@ -1119,7 +1125,7 @@ aObj.blizzFrames[ftype].InterfaceOptions = function(self)
 					self:clrBtnBdr(_G.InterfaceOptionsSocialPanel.TwitterLoginButton)
 				end
 			end)
-			if self.isRtl then
+			if not self.isClscERA then
 				self:SecureHook(_G.InterfaceOptionsAccessibilityPanelConfigureTextToSpeech, "SetEnabled", function(bObj)
 					self:clrBtnBdr(bObj)
 				end)
@@ -1342,7 +1348,15 @@ aObj.blizzFrames[ftype].MailFrame = function(self)
 		end
 		--	Send Mail Frame
 		self:keepFontStrings(_G.SendMailFrame)
-		self:skinSlider{obj=_G.SendMailScrollFrame.ScrollBar, rt={"background", "artwork"}}
+		if not self.isClscBC then
+			self:skinSlider{obj=_G.SendMailScrollFrame.ScrollBar, rt={"background", "artwork"}}
+			self:skinEditBox{obj=_G.SendMailBodyEditBox, noSkin=true}
+			_G.SendMailBodyEditBox:SetTextColor(self.prdb.BodyText.r, self.prdb.BodyText.g, self.prdb.BodyText.b)
+		else
+			_G.MailEditBox.ScrollBox.EditBox:SetTextColor(self.BT:GetRGB())
+			_G.MailEditBox:DisableDrawLayer("BACKGROUND")
+			self:skinObject("scrollbar", {obj=_G.MailEditBoxScrollBar, fType=ftype, rpTex="background", x1=1, y1=-1, x2=5, y2=1})
+		end
 		for i = 1, _G.ATTACHMENTS_MAX_SEND do
 			if not self.modBtnBs then
 				self:resizeEmptyTexture(self:getRegion(_G["SendMailAttachment" .. i], 1))
@@ -1353,8 +1367,6 @@ aObj.blizzFrames[ftype].MailFrame = function(self)
 		end
 		self:skinEditBox{obj=_G.SendMailNameEditBox, regs={3}, noWidth=true} -- N.B. region 3 is text
 		self:skinEditBox{obj=_G.SendMailSubjectEditBox, regs={3}, noWidth=true} -- N.B. region 3 is text
-		self:skinEditBox{obj=_G.SendMailBodyEditBox, noSkin=true}
-		_G.SendMailBodyEditBox:SetTextColor(self.prdb.BodyText.r, self.prdb.BodyText.g, self.prdb.BodyText.b)
 		self:skinObject("moneyframe", {obj=_G.SendMailMoney, moveIcon=true, moveGEB=true, moveSEB=true})
 		self:removeInset(_G.SendMailMoneyInset)
 		_G.SendMailMoneyBg:DisableDrawLayer("BACKGROUND")
@@ -2300,6 +2312,46 @@ aObj.blizzFrames[ftype].SystemOptions = function(self)
 		self:Unhook(this, "OnShow")
 	end)
 
+end
+
+if aObj.isRtl
+or aObj.isClscBC
+then
+	aObj.blizzFrames[ftype].TextToSpeechFrame = function(self)
+		if not self.prdb.TextToSpeechFrame or self.initialized.TextToSpeechFrame then return end
+		self.initialized.TextToSpeechFrame = true
+
+		self:SecureHookScript(_G.TextToSpeechFrame, "OnShow", function(this)
+			self:skinObject("dropdown", {obj=_G.TextToSpeechFrameTtsVoiceDropdown, fType=ftype})
+			self:removeNineSlice(self:getChild(_G.TextToSpeechFrameTtsVoicePicker, 1).NineSlice)
+			self:skinObject("scrollbar", {obj=_G.TextToSpeechFrameTtsVoicePicker.ScrollBar, fType=ftype, rpTex="background"})
+			self:skinObject("dropdown", {obj=_G.TextToSpeechFrameTtsVoiceAlternateDropdown, fType=ftype})
+			self:SecureHook("TextToSpeechFrame_UpdateAlternate", function()
+				self:checkDisabledDD(_G.TextToSpeechFrameTtsVoiceAlternateDropdown)
+			end)
+			self:removeNineSlice(self:getChild(_G.TextToSpeechFrameTtsVoiceAlternatePicker, 1).NineSlice)
+			self:skinObject("scrollbar", {obj=_G.TextToSpeechFrameTtsVoiceAlternatePicker.ScrollBar, fType=ftype, rpTex="background"})
+			self:skinObject("slider", {obj=_G.TextToSpeechFrameAdjustRateSlider, fType=ftype})
+			self:skinObject("slider", {obj=_G.TextToSpeechFrameAdjustVolumeSlider, fType=ftype})
+			if self.modBtns then
+				self:skinStdButton{obj=_G.TextToSpeechFramePlaySampleButton, fType=ftype}
+				self:skinStdButton{obj=_G.TextToSpeechFramePlaySampleAlternateButton, fType=ftype}
+				self:SecureHook(_G.TextToSpeechFramePlaySampleAlternateButton, "SetEnabled", function(bObj)
+					self:clrBtnBdr(bObj)
+				end)
+			end
+			if self.modChkBtns then
+				self:skinCheckButton{obj=_G.TextToSpeechFramePanelContainer.PlaySoundSeparatingChatLinesCheckButton, fType=ftype}
+				self:skinCheckButton{obj=_G.TextToSpeechFramePanelContainer.AddCharacterNameToSpeechCheckButton, fType=ftype}
+				self:skinCheckButton{obj=_G.TextToSpeechFramePanelContainer.NarrateMyMessagesCheckButton, fType=ftype}
+				self:skinCheckButton{obj=_G.TextToSpeechFramePanelContainer.PlayActivitySoundWhenNotFocusedCheckButton, fType=ftype}
+				self:skinCheckButton{obj=_G.TextToSpeechFramePanelContainer.UseAlternateVoiceForSystemMessagesCheckButton, fType=ftype}
+			end
+
+			self:Unhook(this, "OnShow")
+		end)
+
+	end
 end
 
 aObj.blizzFrames[ftype].TimeManager = function(self)

@@ -3939,42 +3939,6 @@ aObj.SetupRetail_UIFrames = function()
 
 	end
 
-	aObj.blizzFrames[ftype].TextToSpeechFrame = function(self)
-		if not self.prdb.TextToSpeechFrame or self.initialized.TextToSpeechFrame then return end
-		self.initialized.TextToSpeechFrame = true
-
-		self:SecureHookScript(_G.TextToSpeechFrame, "OnShow", function(this)
-			self:skinObject("dropdown", {obj=_G.TextToSpeechFrameTtsVoiceDropdown, fType=ftype})
-			self:removeNineSlice(self:getChild(_G.TextToSpeechFrameTtsVoicePicker, 1).NineSlice)
-			self:skinObject("scrollbar", {obj=_G.TextToSpeechFrameTtsVoicePicker.ScrollBar, fType=ftype, rpTex="background"})
-			self:skinObject("dropdown", {obj=_G.TextToSpeechFrameTtsVoiceAlternateDropdown, fType=ftype})
-			self:SecureHook("TextToSpeechFrame_UpdateAlternate", function()
-				self:checkDisabledDD(_G.TextToSpeechFrameTtsVoiceAlternateDropdown)
-			end)
-			self:removeNineSlice(self:getChild(_G.TextToSpeechFrameTtsVoiceAlternatePicker, 1).NineSlice)
-			self:skinObject("scrollbar", {obj=_G.TextToSpeechFrameTtsVoiceAlternatePicker.ScrollBar, fType=ftype, rpTex="background"})
-			self:skinObject("slider", {obj=_G.TextToSpeechFrameAdjustRateSlider, fType=ftype})
-			self:skinObject("slider", {obj=_G.TextToSpeechFrameAdjustVolumeSlider, fType=ftype})
-			if self.modBtns then
-				self:skinStdButton{obj=_G.TextToSpeechFramePlaySampleButton, fType=ftype}
-				self:skinStdButton{obj=_G.TextToSpeechFramePlaySampleAlternateButton, fType=ftype}
-				self:SecureHook(_G.TextToSpeechFramePlaySampleAlternateButton, "SetEnabled", function(bObj)
-					self:clrBtnBdr(bObj)
-				end)
-			end
-			if self.modChkBtns then
-				self:skinCheckButton{obj=_G.TextToSpeechFramePanelContainer.PlaySoundSeparatingChatLinesCheckButton, fType=ftype}
-				self:skinCheckButton{obj=_G.TextToSpeechFramePanelContainer.AddCharacterNameToSpeechCheckButton, fType=ftype}
-				self:skinCheckButton{obj=_G.TextToSpeechFramePanelContainer.NarrateMyMessagesCheckButton, fType=ftype}
-				self:skinCheckButton{obj=_G.TextToSpeechFramePanelContainer.PlayActivitySoundWhenNotFocusedCheckButton, fType=ftype}
-				self:skinCheckButton{obj=_G.TextToSpeechFramePanelContainer.UseAlternateVoiceForSystemMessagesCheckButton, fType=ftype}
-			end
-
-			self:Unhook(this, "OnShow")
-		end)
-
-	end
-
 	aObj.blizzLoDFrames[ftype].TorghastLevelPicker = function(self)
 		if not self.prdb.TorghastLevelPicker or self.initialized.TorghastLevelPicker then return end
 		self.initialized.TorghastLevelPicker = true
@@ -4259,7 +4223,6 @@ aObj.SetupRetail_UIFramesOptions = function(self)
 		["Soulbinds"]                    = {suff = "Frame"},
 		["Subscription Interstitial UI"] = {width = "double"},
 		["Talking Head UI"]              = true,
-		["Text To Speech Frame"]         = true,
 		["Torghast Level Picker"]        = {suff = "Frame"},
 		["Warfronts Party Pose UI"]      = true,
 		["Weekly Rewards"]               = {suff = "Frame"},
