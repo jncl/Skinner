@@ -1827,10 +1827,12 @@ aObj.SetupRetail_PlayerFrames = function()
 			end
 			if aObj.modBtnBs then
 				-- skin the item buttons
-				local bo
+				local bName, bo
 				for i = 1, 36 do
+					bName = objName .. "Item" .. i
 					bo = _G[objName .. "Item" .. i]
-					aObj:addButtonBorder{obj=bo, ibt=true, reParent={_G[objName .. "Item" .. i .. "IconQuestTexture"], bo.JunkIcon, bo.UpgradeIcon, bo.flash, bo.NewItemTexture, bo.BattlepayItemTexture}}
+					aObj:addButtonBorder{obj=bo, ibt=true, reParent={_G[bName .. "IconQuestTexture"], bo.UpgradeIcon, bo.flash, bo.NewItemTexture, bo.BattlepayItemTexture, bo.JunkIcon}}
+					-- bo.ExtendedSlot:SetTexture(nil)
 				end
 				-- update Button quality borders
 				_G.ContainerFrame_Update(frame)
