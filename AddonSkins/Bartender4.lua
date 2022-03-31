@@ -41,7 +41,7 @@ aObj.addonsToSkin.Bartender4 = function(self) -- v 4.11.1/
 		if mod then
 			local function skinPetButtons(mod)
 				for _, btn in mod.bar:GetAll() do
-					self:addButtonBorder{obj=btn, sft=true}
+					self:addButtonBorder{obj=btn, sft=true, reParent={btn.autocastable, btn.SpellHighlightTexture, btn.autocast}, ofs=3, x2=2}
 				end
 			end
 			if mod.enabledState then
@@ -54,6 +54,24 @@ aObj.addonsToSkin.Bartender4 = function(self) -- v 4.11.1/
 				end)
 			end
 		end
+		mod = _G.Bartender4:GetModule("StanceBar", true)
+		if mod then
+			local function skinStanceButtons(mod)
+				for _, btn in mod.bar:GetAll() do
+					self:addButtonBorder{obj=btn, sft=true}
+				end
+			end
+			if mod.enabledState then
+				skinStanceButtons(mod)
+			else
+				self:SecureHook(mod, "OnEnable", function(this)
+					skinStanceButtons(this)
+
+					self:Unhook(this, "OnEnable")
+				end)
+			end
+		end
+		-- ExtraActionBar ?
 	end
 
 	mod = _G.Bartender4:GetModule("StatusTrackingBar", true)
