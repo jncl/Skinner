@@ -15,7 +15,7 @@ ToDos
 		- self.bbColour to self.bbClr
 
 ≈	O	Add checks for Button state as required
-§
+
 ≈	O	Refactor NewSkinFuncs in Blizzard/AddOn skins
 
 ≈	O	Replace RegisterCallback/Fire by RegisterMessage/SendMessage where appropriate
@@ -28,33 +28,14 @@ ToDos
 ?	I	Fix ActionButtons/MultiBarButtons missing Text & PetActionButtons not being displayed, when redisplayed after accessing Puzzle Caches in Zereth Mortis.
 		- happens when OverrideBar is used
 
-	I	Tooltip , reported by icedawg, 15.03.22
-≈		- Skinner\Core\UtilFuncs.lua:149: Attempt to access forbidden object from code tainted by an AddOn
-		[string "=[C]"]: in function `ClearAllPoints'
-		[string "@Skinner\Core\UtilFuncs.lua"]:149: in function `applyGradient'
-		[string "@Skinner\Core\UtilFuncs.lua"]:193: in function `applyTooltipGradient'
-		[string "@Skinner\Core\UIFrames.lua"]:2466: in function <Skinner\Core\UIFrames.lua:2465>
-		[string "@Ace3\AceHook-3.0\AceHook-3.0-9.lua"]:92: in function <Ace3\AceHook-3.0\AceHook-3.0.lua:87> Locals: (*temporary) = { 0 = }
+	I	AlertFrames, reported by Galthariel, 25.03.22
+√		- ...aceSkinner\RetailSupport\UIFrames_Retail.lua:612: attempt to index local 'frame' (a nil value)
+		[string "@Skinner\RetailSupport\UIFrames_Retail.lua"]:612: in function <...aceSkinner\RetailSupport\UIFrames_Retail.lua:610>
+		[string "@Skinner\RetailSupport\UIFrames_Retail.lua"]:642: in function <...aceSkinner\RetailSupport\UIFrames_Retail.lua:634>
 
-	I	BehavioralMessaging, reported by reiyo_oki, 19.03.22
-√		- ...ace\AddOns\Skinner\RetailSupport\UIFrames_Retail.lua line 833:
-		Usage: SecureHookScript(object, method, [handler]): You can only hook a script on a frame object
+	I/C	TradeskillUI, reported by HEALINGBASSIST1030, 26.03.22
+√		- check button not skinned
+√		- search box not skinned
 
-	N	TipTac
-√		- causing issues with dropdown panels
-√		- change Background settings to prevent border/background issues
-
-	N	MainMenuBar, reported by MetalHeadTwo, 22.03.22
-?		-  [ADDON_ACTION_BLOCKED] AddOn 'Skinner' tried to call the protected function 'MainMenuBar:SetScale()'.
-		[string "@!BugGrabber\BugGrabber.lua"]:519: in function <!BugGrabber\BugGrabber.lua:519>
-		[string "=[C]"]: in function `SetScale'
-		[string "@FrameXML\UIParent.lua"]:3353: in function `UIParentManageFramePositions'
-		[string "@FrameXML\UIParent.lua"]:2739: in function <FrameXML\UIParent.lua:2726>
-		[string "=[C]"]: in function `SetAttribute'
-		[string "@FrameXML\UIParent.lua"]:3536: in function <FrameXML\UIParent.lua:3534>
-		[string "=[C]"]: in function `UIParent_ManageFramePositions'
-		[string "@Blizzard_UIWidgets\Blizzard_UIWidgetBelowMinimapFrame.lua"]:5: in function `layoutFunc'
-		[string "@Blizzard_UIWidgets\Blizzard_UIWidgetManager.lua"]:530: in function <...dOns\Blizzard_UIWidgets\Blizzard_UIWidgetManager.lua:521>
-		[string "=[C]"]: in function `UpdateWidgetLayout'
-		[string "@Blizzard_UIWidgets\Blizzard_UIWidgetManager.lua"]:502: in function `ProcessAllWidgets'
-		[string "@Blizzard_UIWidgets\Blizzard_UIWidgetManager.lua"]:48: in function <...dOns\Blizzard_UIWidgets\Blizzard_UIWidgetManager.lua:46>
+	I/C	TalentUI, reported by HEALINGBASSIST1030, 26.03.22
+√		- icon border not skinned ?

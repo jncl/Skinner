@@ -9,7 +9,7 @@ ToDo_retail_PTR
 	Retail_PTR
 		- Added
 			- CommunitiesMemberList
-?				- .FactionButton
+x				- .FactionButton
 			- CommunitiesSettings
 				- .CrossFactionToggle
 √					- .CheckButton (CheckButton)
