@@ -485,29 +485,47 @@ aObj.SetupRetail_UIFrames = function()
 			frame:DisableDrawLayer("BACKGROUND")
 			aObj:skinObject("frame", {obj=frame, fType=ftype, ofs=ofs})
 			if aObj.modBtnBs then
+				local itemQuality
 				if frame.Icon then
 					if not frame.sbb then
 						aObj:addButtonBorder{obj=frame, relTo=frame.Icon}
+					end
+					if type == "NewPet" then
+						itemQuality = _G.select(5, _G.C_PetJournal.GetPetStats(frame.petID)) - 1 -- rarity value - 1
+					end
+					if type == "NewMount" then
+						itemQuality = _G.Enum.ItemQuality.Epic  -- Mounts don't have an inherent concept of quality so we always use epic (for now).
+					end
+					if type == "NewToy" then
+						itemQuality = _G.select(6, _G.C_ToyBox.GetToyInfo(frame.toyID))
+					end
+					if type == "NewRuneforgePower" then
+						itemQuality = _G.Enum.ItemQuality.Legendary
+					end
+					if type == "NewCosmetic" then
+						itemQuality = _G.Enum.ItemQuality.Epic -- most cosmetics are epic
+					end
+					if type == "LootUpgrade" then
+						itemQuality = _G.select(3, _G.GetItemInfo(frame.hyperlink))
+						frame.BaseQualityBorder:SetTexture(nil)
+						frame.UpgradeQualityBorder:SetTexture(nil)
+					end
+					if itemQuality then
+						aObj:setBtnClr(frame, itemQuality)
 					else
 						aObj:clrBtnBdr(frame.sbb)
 					end
 				end
-				if type:find("Loot") then
-					local itemRarity = _G.select(3, _G.GetItemInfo(frame.hyperlink))
-					if type == "Loot" then
-						if frame.isCurrency then
-							itemRarity = _G.C_CurrencyInfo.GetCurrencyInfoFromLink(frame.hyperlink).quality
-						end
-						frame.lootItem.IconBorder:SetTexture(nil)
-						aObj:addButtonBorder{obj=frame.lootItem, fType=ftype, relTo=frame.lootItem.Icon}
-						aObj:setBtnClr(frame.lootItem, itemRarity)
-					else
-						frame.BaseQualityBorder:SetTexture(nil)
-						frame.UpgradeQualityBorder:SetTexture(nil)
-						aObj:setBtnClr(frame, itemRarity)
+				if type == "Loot" then
+					itemQuality = _G.select(3, _G.GetItemInfo(frame.hyperlink))
+					if frame.isCurrency then
+						itemQuality = _G.C_CurrencyInfo.GetCurrencyInfoFromLink(frame.hyperlink).quality
 					end
-					aObj:Debug("skinAlertFrame#2: [%s, %s]", itemRarity)
+					frame.lootItem.IconBorder:SetTexture(nil)
+					aObj:addButtonBorder{obj=frame.lootItem, fType=ftype, relTo=frame.lootItem.Icon}
+					aObj:setBtnClr(frame.lootItem, itemQuality)
 				end
+				aObj:Debug("skinAlertFrame #2 itemQuality: [%s, %s, %s]", type, itemQuality)
 			end
 		end
 		local alertType = {
