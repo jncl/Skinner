@@ -279,6 +279,7 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 			self:skinStdButton{obj=this.ToggleChatButton}
 			if self.isRtl
 			or self.isClscBC
+			or self.isClscERAPTR
 			then
 				self:skinStdButton{obj=_G.TextToSpeechDefaultButton, fType=ftype}
 			end
@@ -288,6 +289,7 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 		if self.modChkBtns
 		and self.isRtl
 		or self.isClscBC
+		or self.isClscERAPTR
 		then
 			self:skinCheckButton{obj=_G.TextToSpeechCharacterSpecificButton, fType=ftype}
 		end
@@ -426,6 +428,7 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 		if self.modChkBtns
 		and self.isRtl
 		or self.isClscBC
+		or self.isClscERAPTR
 		then
 			self:SecureHook("TextToSpeechFrame_UpdateMessageCheckboxes", function(frame)
 				for i = 1, #frame.checkBoxTable do
@@ -437,6 +440,7 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 		end
 		if self.isRtl
 		or self.isClscBC
+		or self.isClscERAPTR
 		then
 			self:SecureHookScript(_G.ChatConfigTextToSpeechChannelSettings, "OnShow", function(fObj)
 				self:skinObject("frame", {obj=_G.ChatConfigTextToSpeechChannelSettingsLeft, fType=ftype, kfs=true, rns=true, fb=true})
@@ -1125,7 +1129,10 @@ aObj.blizzFrames[ftype].InterfaceOptions = function(self)
 					self:clrBtnBdr(_G.InterfaceOptionsSocialPanel.TwitterLoginButton)
 				end
 			end)
-			if not self.isClscERA then
+			if self.isRtl
+			or self.isClscBC
+			or self.isClscERAPTR
+			then
 				self:SecureHook(_G.InterfaceOptionsAccessibilityPanelConfigureTextToSpeech, "SetEnabled", function(bObj)
 					self:clrBtnBdr(bObj)
 				end)
@@ -1348,14 +1355,16 @@ aObj.blizzFrames[ftype].MailFrame = function(self)
 		end
 		--	Send Mail Frame
 		self:keepFontStrings(_G.SendMailFrame)
-		if not self.isClscBC then
-			self:skinSlider{obj=_G.SendMailScrollFrame.ScrollBar, rt={"background", "artwork"}}
-			self:skinEditBox{obj=_G.SendMailBodyEditBox, noSkin=true}
-			_G.SendMailBodyEditBox:SetTextColor(self.prdb.BodyText.r, self.prdb.BodyText.g, self.prdb.BodyText.b)
-		else
+		if self.isClscBC
+		or self.isClscERAPTR
+		then
 			_G.MailEditBox.ScrollBox.EditBox:SetTextColor(self.BT:GetRGB())
 			_G.MailEditBox:DisableDrawLayer("BACKGROUND")
 			self:skinObject("scrollbar", {obj=_G.MailEditBoxScrollBar, fType=ftype, rpTex="background", x1=1, y1=-1, x2=5, y2=1})
+		else
+			self:skinSlider{obj=_G.SendMailScrollFrame.ScrollBar, rt={"background", "artwork"}}
+			self:skinEditBox{obj=_G.SendMailBodyEditBox, noSkin=true}
+			_G.SendMailBodyEditBox:SetTextColor(self.prdb.BodyText.r, self.prdb.BodyText.g, self.prdb.BodyText.b)
 		end
 		for i = 1, _G.ATTACHMENTS_MAX_SEND do
 			if not self.modBtnBs then
@@ -2319,6 +2328,7 @@ end
 
 if aObj.isRtl
 or aObj.isClscBC
+or aObj.isClscERAPTR
 then
 	aObj.blizzFrames[ftype].TextToSpeechFrame = function(self)
 		if not self.prdb.TextToSpeechFrame or self.initialized.TextToSpeechFrame then return end
