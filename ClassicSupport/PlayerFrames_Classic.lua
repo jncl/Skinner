@@ -672,9 +672,9 @@ aObj.SetupClassic_PlayerFrames = function()
 		local btn
 		for i = 1, _G.MAX_NUM_TALENTS do
 			btn = _G[fName .. "Talent" .. i]
-			btn:DisableDrawLayer("BACKGROUND")
+			_G[fName .. "Talent" .. i .. "Slot"]:SetTexture(nil)
 			_G[fName .. "Talent" .. i .. "RankBorder"]:SetTexture(nil)
-			aObj:addButtonBorder{obj=btn, x1=-3, y2=-3, reParent={_G[fName .. "Talent" .. i .. "Rank"]}}
+			aObj:addButtonBorder{obj=btn, ibt=true, reParent={_G[fName .. "Talent" .. i .. "Rank"]}}
 			colourBtn(btn)
 		end
 		local funcName
