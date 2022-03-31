@@ -3699,14 +3699,11 @@ aObj.SetupRetail_UIFrames = function()
 		self.initialized.QueueStatusFrame = true
 
 		self:SecureHookScript(_G.QueueStatusFrame, "OnShow", function(this)
-			this:DisableDrawLayer("BACKGROUND")
-			self:addSkinFrame{obj=this, ft=ftype, anim=_G.IsAddOnLoaded("SexyMap") and true or nil}
-
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true})
 			-- change the colour of the Entry Separator texture
 			for sEntry in this.statusEntriesPool:EnumerateActive() do
 				sEntry.EntrySeparator:SetColorTexture(self.bbClr:GetRGBA())
 			end
-
 			-- handle SexyMap's use of AnimationGroups to show and hide frames
 			if _G.IsAddOnLoaded("SexyMap") then
 				local rtEvt
