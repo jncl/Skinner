@@ -2741,19 +2741,26 @@ aObj.SetupRetail_UIFrames = function()
 		local skinABBtn, skinMultiBarBtns
 		if self.prdb.MainMenuBar.skin then
 			if self.modBtnBs then
-				function skinABBtn(btn)
-					btn.Border:SetAlpha(0) -- texture changed in blizzard code
-					btn.FlyoutBorder:SetTexture(nil)
-					btn.FlyoutBorderShadow:SetTexture(nil)
-					aObj:addButtonBorder{obj=btn, sabt=true, ofs=3}
-					_G[btn:GetName() .. "NormalTexture"]:SetTexture(nil)
-				end
-				function skinMultiBarBtns(type)
-					for i = 1, _G.NUM_MULTIBAR_BUTTONS do
-						if not _G["MultiBar" .. type .. "Button" .. i].noGrid then
-							_G["MultiBar" .. type .. "Button" .. i .. "FloatingBG"]:SetAlpha(0)
+				if _G.IsAddOnLoaded("Bartender4") then
+					skinABBtn = _G.nop
+					skinMultiBarBtns = _G.nop
+				else
+					function skinABBtn(btn)
+						btn.Border:SetAlpha(0) -- texture changed in blizzard code
+						btn.FlyoutBorder:SetTexture(nil)
+						btn.FlyoutBorderShadow:SetTexture(nil)
+						aObj:addButtonBorder{obj=btn, sabt=true, ofs=3}
+						_G[btn:GetName() .. "NormalTexture"]:SetTexture(nil)
+					end
+					function skinMultiBarBtns(type)
+						local bName
+						for i = 1, _G.NUM_MULTIBAR_BUTTONS do
+							bName = "MultiBar" .. type .. "Button" .. i
+							if not _G[bName].noGrid then
+								_G[bName .. "FloatingBG"]:SetAlpha(0)
+							end
+							skinABBtn(_G[bName])
 						end
-						skinABBtn(_G["MultiBar" .. type .. "Button" .. i])
 					end
 				end
 			end
@@ -2811,10 +2818,8 @@ aObj.SetupRetail_UIFrames = function()
 				if self.modBtnBs then
 					self:addButtonBorder{obj=_G.MultiCastSummonSpellButton, sabt=true, ofs=5}
 					self:addButtonBorder{obj=_G.MultiCastRecallSpellButton, sabt=true, ofs=5}
-					if not _G.IsAddOnLoaded("Bartender4") then
-						for i = 1, _G.NUM_MULTI_CAST_PAGES * _G.NUM_MULTI_CAST_BUTTONS_PER_PAGE do
-							skinABBtn(_G["MultiCastActionButton" .. i])
-						end
+					for i = 1, _G.NUM_MULTI_CAST_PAGES * _G.NUM_MULTI_CAST_BUTTONS_PER_PAGE do
+						skinABBtn(_G["MultiCastActionButton" .. i])
 					end
 				end
 
@@ -2823,10 +2828,8 @@ aObj.SetupRetail_UIFrames = function()
 			self:checkShown(_G.MultiCastActionBarFrame)
 
 			if self.modBtnBs then
-				if not _G.IsAddOnLoaded("Bartender4") then
-					skinMultiBarBtns("Right")
-					skinMultiBarBtns("Left")
-				end
+				skinMultiBarBtns("Right")
+				skinMultiBarBtns("Left")
 				for _, bName in _G.pairs(_G.MICRO_BUTTONS) do
 					self:addButtonBorder{obj=_G[bName], es=24, ofs=2, reParent={_G[bName].QuickKeybindHighlightTexture, _G[bName].Flash}, clr="grey"}
 				end
