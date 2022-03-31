@@ -2538,10 +2538,8 @@ aObj.SetupRetail_UIFrames = function()
 					btn.Cover:SetTexture(nil)
 				end
 			end)
-
 			-- NothingAvailable
 			self:removeInset(this.NothingAvailable.Inset)
-
 			-- SearchPanel
 			local sp = this.SearchPanel
 			self:skinObject("editbox", {obj=sp.SearchBox, fType=ftype, si=true})
@@ -2556,6 +2554,7 @@ aObj.SetupRetail_UIFrames = function()
 				end
 				self:skinStdButton{obj=sp.ScrollFrame.ScrollChild.StartGroupButton}
 				self:skinStdButton{obj=sp.BackButton}
+				self:skinStdButton{obj=sp.BackToGroupButton}
 				self:skinStdButton{obj=sp.SignUpButton}
 				self:SecureHook("LFGListSearchPanel_UpdateButtonStatus", function(fObj)
 					self:clrBtnBdr(fObj.ScrollFrame.ScrollChild.StartGroupButton)
@@ -2566,7 +2565,6 @@ aObj.SetupRetail_UIFrames = function()
 			    self:addButtonBorder{obj=sp.FilterButton, ofs=0}
 				self:addButtonBorder{obj=sp.RefreshButton, ofs=-2}
 			end
-
 			-- ApplicationViewer
 			local av = this.ApplicationViewer
 			av:DisableDrawLayer("BACKGROUND")
@@ -2587,14 +2585,14 @@ aObj.SetupRetail_UIFrames = function()
 				end
 				self:skinStdButton{obj=av.RemoveEntryButton}
 				self:skinStdButton{obj=av.EditButton}
+				self:skinStdButton{obj=av.BrowseGroupsButton}
 			end
 			if self.modBtnBs then
-				 self:addButtonBorder{obj=av.RefreshButton, ofs=-2}
+				 self:addButtonBorder{obj=av.RefreshButton, ofs=-2, clr="gold"}
 			end
 			if self.modChkBtns then
 				 self:skinCheckButton{obj=av.AutoAcceptButton}
 			end
-
 			-- EntryCreation
 			local ec = this.EntryCreation
 			self:removeInset(ec.Inset)
@@ -2602,7 +2600,8 @@ aObj.SetupRetail_UIFrames = function()
 			self:removeNineSlice(ecafd.Border)
 			self:skinObject("editbox", {obj=ecafd.EntryBox, fType=ftype})
 			self:skinObject("slider", {obj=ecafd.ScrollFrame.scrollBar, fType=ftype})
-			ecafd.BorderFrame:DisableDrawLayer("BACKGROUND")
+			self:skinObject("frame", {obj=ecafd.ScrollFrame, fType=ftype, kfs=true, fb=true, ofs=4, clr="grey"})
+			self:removeNineSlice(ecafd.BorderFrame.NineSlice)
 			self:skinObject("frame", {obj=ecafd, fType=ftype, kfs=true})
 			if self.modBtns then
 				self:skinStdButton{obj=ecafd.SelectButton}
