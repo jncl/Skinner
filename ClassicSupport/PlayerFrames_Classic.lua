@@ -885,6 +885,12 @@ aObj.SetupClassic_PlayerFrames = function()
 		self.initialized.TradeSkillUI = true
 
 		self:SecureHookScript(_G.TradeSkillFrame, "OnShow", function(this)
+			if self.isClscBC then
+				if self.modChkBtns then
+					self:skinCheckButton{obj=_G.TradeSkillFrameAvailableFilterCheckButton, fType=ftype}
+				end
+				self:skinObject("editbox", {obj=_G.TradeSearchInputBox, fType=ftype})
+			end
 			self:skinStatusBar{obj=_G.TradeSkillRankFrame, fi=0, bgTex=_G.TradeSkillRankFrameBackground}
 			_G.TradeSkillRankFrameBorder:GetNormalTexture():SetTexture(nil)
 			self:keepFontStrings(_G.TradeSkillExpandButtonFrame)
@@ -897,7 +903,7 @@ aObj.SetupClassic_PlayerFrames = function()
 					 self:addButtonBorder{obj=_G[btnName], libt=true, clr="grey"}
 				end
 			end
-			self:skinEditBox{obj=_G.TradeSkillInputBox, regs={6}, noHeight=true, x=-6} -- 6 is text
+			self:skinObject("editbox", {obj=_G.TradeSkillInputBox, fType=ftype})
 			if self.modBtnBs then
 				self:addButtonBorder{obj=_G.TradeSkillSkillIcon, clr="gold"}
 			end
@@ -914,9 +920,8 @@ aObj.SetupClassic_PlayerFrames = function()
 				self:skinDropDown{obj=_G.TradeSkillSubClassDropDown}
 				self:skinSlider{obj=_G.TradeSkillListScrollFrame.ScrollBar, rt="background"}
 				self:skinSlider{obj=_G.TradeSkillDetailScrollFrame.ScrollBar, rt="background"}
-				self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, x1=x1, y1=y1, x2=x2, y2=y2}
+				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=x1, y1=y1, x2=x2, y2=y2})
 				if self.modBtns then
-					self:skinCloseButton{obj=_G.TradeSkillFrameCloseButton, fType=ftype}
 					self:skinExpandButton{obj=_G.TradeSkillCollapseAllButton, fType=ftype, onSB=true}
 					for i = 1, _G.TRADE_SKILLS_DISPLAYED do
 						self:skinExpandButton{obj=_G["TradeSkillSkill" .. i], onSB=true}
@@ -940,7 +945,7 @@ aObj.SetupClassic_PlayerFrames = function()
 					self:addButtonBorder{obj=_G.TradeSkillIncrementButton, ofs=0, clr="gold"}
 				end
 			else
-				self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, x1=4, y1=y1, x2=x2, y2=y2}
+				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, x1=4, y1=y1, x2=x2, y2=y2})
 				skinaTS(this)
 			end
 
