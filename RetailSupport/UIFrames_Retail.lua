@@ -639,7 +639,7 @@ aObj.SetupRetail_UIFrames = function()
 				then
 					-- stretch icon texture
 					frame.Icon.Texture:SetTexCoord(-0.04, 0.75, 0.0, 0.555)
-					skinACAlertFrames(frame)
+					skinACAlertFrames("Achievement", frame)
 				end
 			end
 			-- run the hooked function
