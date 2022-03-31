@@ -872,12 +872,12 @@ function aObj:makeMFRotatable(modelFrame)
 
 end
 
-function aObj:makeIconSquare(obj, iconObjName)
+function aObj:makeIconSquare(obj, iconObjName, clr)
 
 	obj[iconObjName]:SetTexCoord(.1, .9, .1, .9)
 
 	if self.modBtnBs then
-		self:addButtonBorder{obj=obj, relTo=obj[iconObjName], ofs=3}
+		self:addButtonBorder{obj=obj, relTo=obj[iconObjName], ofs=3, clr=clr}
 	end
 
 end
