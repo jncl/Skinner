@@ -1,3 +1,24 @@
+beta9.42917.1
+Jncl:
+	ToDo.txt files
+	Updated Change_History.txt
+	Updated version numbers
+	Added comment to SocialUI skin
+	Updated Bartender4 & TipTac skins
+	Retail PTR changes
+	Applied BCC PTR changes
+	Updated NSF
+	UPdated Classic version checks in several skins
+	Bugfix for TooltipGradient issue
+	Updated AuctionUI skin (Retail)
+	Skinned BossBanner frame
+	Updated MainMenuBar button skinning
+	Bugfix for BehaviouralMessaging skin
+	Updated AlertFrames skin
+	Updated GarrisonUI skin
+	Updated MicroButtons skin code
+	Updated MountJournal skin
+
 beta9.42698.1
 Jncl:
 	ToDo.txt
