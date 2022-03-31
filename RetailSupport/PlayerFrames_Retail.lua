@@ -3749,8 +3749,6 @@ aObj.SetupRetail_PlayerFrames = function()
 			aObj:removeMagicBtnTex(frame.learnButton)
 			if aObj.modBtns then
 				aObj:skinStdButton{obj=frame.learnButton}
-				-- FIXME: Why was this done?
-				-- frame.learnButton.sb:SetParent(frame)
 			end
 			for i = 1, _G.MAX_TALENT_TABS do
 				frame["specButton" .. i].bg:SetTexture(nil)
@@ -3768,7 +3766,7 @@ aObj.SetupRetail_PlayerFrames = function()
 			-- shadow frame (LHS)
 			aObj:keepFontStrings(aObj:getChild(frame, 8))
 			-- spellsScroll (RHS)
-			aObj:skinSlider{obj=frame.spellsScroll.ScrollBar}
+			aObj:skinObject("slider", {obj=frame.spellsScroll.ScrollBar, fType=ftype})
 			frame.spellsScroll.child.gradient:SetTexture(nil)
 			aObj:removeRegions(frame.spellsScroll.child, {2, 3, 4, 5, 6, 13})
 			-- make specIcon square
@@ -3807,9 +3805,8 @@ aObj.SetupRetail_PlayerFrames = function()
 					end
 				end
 			end
-
 			if self.modBtnBs then
-				self:addButtonBorder{obj=_G.PlayerTalentFrameTalentsPvpTalentButton, ofs=1}
+				self:addButtonBorder{obj=_G.PlayerTalentFrameTalentsPvpTalentButton, ofs=1, clr="grey"}
 			end
 			local frame = this.PvpTalentFrame
 			frame:DisableDrawLayer("BACKGROUND")
@@ -3817,13 +3814,12 @@ aObj.SetupRetail_PlayerFrames = function()
 			self:nilTexture(frame.Ring, true) -- warmode button ring texture
 			for _, slot in _G.pairs(frame.Slots) do
 				self:nilTexture(slot.Border, true) -- PvP talent ring texture
-				self:makeIconSquare(slot, "Texture")
+				self:makeIconSquare(slot, "Texture", "gold")
 			end
 			frame.WarmodeIncentive.IconRing:SetTexture(nil)
-
-			self:skinSlider{obj=frame.TalentList.ScrollFrame.ScrollBar, wdth=-4}
+			self:skinObject("slider", {obj=frame.TalentList.ScrollFrame.ScrollBar, fType=ftype})
 			self:removeMagicBtnTex(self:getChild(frame.TalentList, 4))
-			self:addSkinFrame{obj=frame.TalentList, ft=ftype, kfs=true, ri=true, x2=-4}
+			self:skinObject("frame", {obj=frame.TalentList, fType=ftype, kfs=true, ri=true, x2=-4})
 			for _, btn in _G.pairs(frame.TalentList.ScrollFrame.buttons) do
 				btn:DisableDrawLayer("BACKGROUND")
 				if self.modBtnBs then
