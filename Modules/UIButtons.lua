@@ -238,12 +238,6 @@ end
 
 function module:clrBtnBdr(bObj, clrName, alpha)
 
-	-- handle in combat
-	if _G.InCombatLockdown() then
-		aObj:add2Table(aObj.oocTab, {self.clrBtnBdr, {self, bObj, clrName, alpha}})
-		return
-	end
-
 	-- check button state and alter colour accordingly
 	clrName = bObj.IsEnabled and not bObj:IsEnabled() and "disabled" or clrName
 	aObj:clrBBC(bObj.sbb or bObj.sb or bObj, clrName, alpha)
@@ -359,12 +353,6 @@ function module:skinCloseButton(opts)
 end
 
 function module:setBtnClr(bObj, quality)
-
-	-- handle in combat
-	if _G.InCombatLockdown() then
-		aObj:add2Table(aObj.oocTab, {self.setBtnClr, {self, bObj, quality}})
-		return
-	end
 
 	if bObj.sbb then
 		if quality then
@@ -602,7 +590,12 @@ function module:skinStdButton(opts)
 	local aso = opts.aso or {}
 	aso.bd = bH > 18 and 5 or 7 -- use narrower backdrop if required
 	if not opts.as then
-		aObj:skinObject("button", {obj=opts.obj, fType=opts.ftype, name=opts.name, sabt=opts.sabt, aso=aso, ofs=opts.ofs or 0, x1=opts.x1, y1=opts.y1, x2=opts.x2, y2=opts.y2})
+		opts.ofs = opts.ofs or 0
+		opts.x1  = opts.x1 or opts.ofs * -1
+		opts.y1  = opts.y1 or opts.ofs
+		opts.x2  = opts.x2 or opts.ofs
+		opts.y2  = opts.y2 or opts.ofs * -1
+		aObj:skinObject("button", {obj=opts.obj, fType=opts.ftype, name=opts.name, sabt=opts.sabt, aso=aso, x1=opts.x1, y1=opts.y1, x2=opts.x2, y2=opts.y2})
 	else
 		aso.obj = opts.obj
 		if bH < 16 then opts.obj:SetHeight(16) end -- set minimum button height (DBM option buttons)
@@ -775,11 +768,6 @@ local function __addButtonBorder(opts)
 	end
 	--@end-alpha@
 	if not opts.obj then return end
-	-- handle in combat
-	if _G.InCombatLockdown() then
-		aObj:add2Table(aObj.oocTab, {__addButtonBorder, {opts}})
-		return
-	end
 	-- don't skin it twice unless required
 	if not opts.nc
 	and opts.obj.sbb
