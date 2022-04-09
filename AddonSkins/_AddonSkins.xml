@@ -203,6 +203,7 @@
 <Script file="SoulshapeJournal.lua"/>
 <Script file="Spew.lua"/>
 <Script file="Spy.lua"/>
+<Script file="Stash.lua"/>
 <Script file="tekKonfig.lua"/>
 <Script file="TinyDPS.lua"/>
 <Script file="TinyInspect.lua"/>
