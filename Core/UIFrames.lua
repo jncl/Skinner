@@ -2070,7 +2070,7 @@ aObj.blizzFrames[ftype].StackSplit = function(self)
 	self.initialized.StackSplit = true
 
 	self:SecureHookScript(_G.StackSplitFrame, "OnShow", function(this)
-		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ofs=-12, x1=3, y1=0})
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ofs=-10, x2=-8})
 		if self.modBtns then
 			if self.isRtl then
 				self:skinStdButton{obj=_G.StackSplitFrame.OkayButton, fType=ftype}
