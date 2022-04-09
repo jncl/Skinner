@@ -13,8 +13,10 @@ aObj.addonsToSkin.TipTac = function(self) -- v 22.02.23
 
 		self:Unhook(this, "OnShow")
 	end)
+	self:checkShown(_G.TipTac)
 
 	-- change Backdrop options
+	_G.TipTac_Config.enableBackdrop = false
 	_G.TipTac_Config.tipBackdropBG = "nil"
 	_G.TipTac_Config.tipBackdropEdge = "nil"
 	_G.TipTac_Config.backdropEdgeSize = self.prdb.BdEdgeSize
