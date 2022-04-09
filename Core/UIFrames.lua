@@ -2516,19 +2516,24 @@ aObj.blizzFrames[ftype].UIDropDownMenu = function(self)
 	if not self.prdb.UIDropDownMenu or self.initialized.UIDropDownMenu then return end
 	self.initialized.UIDropDownMenu = true
 
-	local function skinDDMenu(frame)
-		if aObj.isRtl then
-			aObj:removeNineSlice(frame.Border)
+	local function skinDDList(frame)
+		local fName = frame:GetName()
+		if self.isRtl then
+			self:keepFontStrings(frame.Border)
 		end
-		aObj:removeBackdrop(_G[frame:GetName() .. "Backdrop"]) -- N.B. Added by TipTac
-		aObj:removeBackdrop(_G[frame:GetName() .. "MenuBackdrop"])
-		aObj:removeNineSlice(_G[frame:GetName() .. "MenuBackdrop"].NineSlice)
-		aObj:skinObject("frame", {obj=frame, fType=ftype, kfs=true, x1=6, y1=-4, x2=3, y2=4})
+		if self.isClsc
+		or _G.IsAddOnLoaded("TipTac")
+		then
+			aObj:removeBackdrop(_G[fName .. "Backdrop"])
+		end
+		aObj:removeBackdrop(_G[fName .. "MenuBackdrop"])
+		aObj:removeNineSlice(_G[fName .. "MenuBackdrop"].NineSlice)
+		aObj:skinObject("frame", {obj=frame, fType=ftype, kfs=true, ofs=-4})
 	end
 
 	for i = 1, _G.UIDROPDOWNMENU_MAXLEVELS do
 		self:SecureHookScript(_G["DropDownList" .. i], "OnShow", function(this)
-			skinDDMenu(this)
+			skinDDList(this)
 
 			self:Unhook(this, "OnShow")
 		end)
@@ -2536,7 +2541,7 @@ aObj.blizzFrames[ftype].UIDropDownMenu = function(self)
 
 	self:SecureHook("UIDropDownMenu_CreateFrames", function(_)
 		if not _G["DropDownList" .. _G.UIDROPDOWNMENU_MAXLEVELS].sf then
-			skinDDMenu(_G["DropDownList" .. _G.UIDROPDOWNMENU_MAXLEVELS])
+			skinDDList(_G["DropDownList" .. _G.UIDROPDOWNMENU_MAXLEVELS])
 		end
 	end)
 
