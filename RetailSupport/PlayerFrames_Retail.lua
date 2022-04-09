@@ -918,6 +918,9 @@ aObj.SetupRetail_PlayerFrames = function()
 			self:skinObject("editbox", {obj=this.searchBox, fType=ftype, si=true})
 			if self.modBtns then
 				self:skinStdButton{obj=_G.PetJournalFilterButton, fType=ftype}
+ 				if aObj.isRtlPTR then
+ 					self:skinCloseButton{obj=_G.PetJournalFilterButton.ResetButton, fType=ftype, noSkin=true}
+ 				end
 			end
 			-- PetList
 			self:skinObject("slider", {obj=this.listScroll.scrollBar, fType=ftype, y1=-2, y2=2})
@@ -1034,6 +1037,9 @@ aObj.SetupRetail_PlayerFrames = function()
 			self:skinObject("editbox", {obj=this.searchBox, fType=ftype, si=true})
 			if self.modBtns then
 				self:skinStdButton{obj=_G.ToyBoxFilterButton, fType=ftype}
+				if aObj.isRtlPTR then
+					self:skinCloseButton{obj=_G.ToyBoxFilterButton.ResetButton, fType=ftype, noSkin=true}
+				end
 			end
 			self:removeInset(this.iconsFrame)
 			self:keepFontStrings(this.iconsFrame)
@@ -1107,6 +1113,9 @@ aObj.SetupRetail_PlayerFrames = function()
 			if self.modBtns then
 				self:skinStdButton{obj=this.FilterButton}
 				_G.RaiseFrameLevelByTwo(this.FilterButton) -- raise above SetsCollectionFrame when displayed on it
+				if aObj.isRtlPTR then
+					self:skinCloseButton{obj=this.FilterButton.ResetButton, fType=ftype, noSkin=true}
+				end
 			end
 			local x1Ofs, y1Ofs, x2Ofs, y2Ofs = -4, 2, 7, -4
 

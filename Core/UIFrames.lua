@@ -2191,18 +2191,20 @@ aObj.blizzFrames[ftype].StaticPopups = function(self)
 
 			self:Unhook(this, "OnShow")
 		end)
-		self:SecureHook(_G.PlayerReportFrame, "ShowReportDialog", function(this, _)
-			self:removeNineSlice(this.Border)
-			skinReportFrame(this)
+		if not aObj.isRtlPTR then
+			self:SecureHook(_G.PlayerReportFrame, "ShowReportDialog", function(this, _)
+				self:removeNineSlice(this.Border)
+				skinReportFrame(this)
 
-			self:Unhook(this, "ShowReportDialog")
-		end)
-		self:SecureHook(_G.ClubFinderReportFrame, "ShowReportDialog", function(this, _)
-			self:removeNineSlice(this.Border)
-			skinReportFrame(this)
+				self:Unhook(this, "ShowReportDialog")
+			end)
+			self:SecureHook(_G.ClubFinderReportFrame, "ShowReportDialog", function(this, _)
+				self:removeNineSlice(this.Border)
+				skinReportFrame(this)
 
-			self:Unhook(this, "ShowReportDialog")
-		end)
+				self:Unhook(this, "ShowReportDialog")
+			end)
+		end
 	else
 		self:SecureHook(_G.PlayerReportFrame, "InitiateReport", function(this, _)
 			skinReportFrame(this)
