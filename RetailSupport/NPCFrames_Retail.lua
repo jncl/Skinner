@@ -67,7 +67,7 @@ aObj.SetupRetail_NPCFrames = function()
 					end
 				end)
 			end
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true, cb=true, x2=2.5, y2=0})
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true, cb=true, x2=3, y2=0})
 
 			local function skinItemList(frame)
 				if aObj.modBtnBs then
@@ -98,16 +98,11 @@ aObj.SetupRetail_NPCFrames = function()
 			self:skinObject("editbox", {obj=this.SearchBar.SearchBox, fType=ftype, si=true})
 			self:skinObject("editbox", {obj=this.SearchBar.FilterButton.LevelRangeFrame.MinLevel, fType=ftype})
 			self:skinObject("editbox", {obj=this.SearchBar.FilterButton.LevelRangeFrame.MaxLevel, fType=ftype})
-			if self.modBtns then
-				self:skinCloseButton{obj=this.SearchBar.FilterButton.ClearFiltersButton, fType=ftype, noSkin=true}
-				self:skinStdButton{obj=this.SearchBar.FilterButton}
-				self:skinStdButton{obj=this.SearchBar.SearchButton}
-			end
 			this.CategoriesList:DisableDrawLayer("BACKGROUND")
 			self:removeNineSlice(this.CategoriesList.NineSlice)
 			for _, btn in _G.pairs(this.CategoriesList.FilterButtons) do
 				self:keepRegions(btn, {3, 4, 5}) -- N.B. region 3 is highlight, 4 is selected, 5 is text
-				self.modUIBtns:skinStdButton{obj=btn, fType=ftype, ignoreHLTex=true, x1=-1, y1=1, x2=1, y2=-1}
+				self.modUIBtns:skinStdButton{obj=btn, fType=ftype, ignoreHLTex=true, ofs=1}
 			end
 			self:SecureHook("FilterButton_SetUp", function(button, _)
 				button.NormalTexture:SetAlpha(0)
@@ -133,6 +128,9 @@ aObj.SetupRetail_NPCFrames = function()
 			end)
 			self:removeRegions(this.WoWTokenResults.TokenDisplay, {3}) -- background texture
 			if self.modBtns then
+				self:skinCloseButton{obj=this.SearchBar.FilterButton.ClearFiltersButton, fType=ftype, noSkin=true}
+				self:skinStdButton{obj=this.SearchBar.FilterButton}
+				self:skinStdButton{obj=this.SearchBar.SearchButton}
 				self:skinStdButton{obj=this.WoWTokenResults.Buyout}
 				self:SecureHook(this.WoWTokenResults.Buyout, "SetEnabled", function(bObj)
 					self:clrBtnBdr(bObj)
@@ -152,6 +150,11 @@ aObj.SetupRetail_NPCFrames = function()
 			self:removeRegions(this.CommoditiesBuyFrame.BuyDisplay.ItemDisplay, {3})
 			self:skinObject("editbox", {obj=this.CommoditiesBuyFrame.BuyDisplay.QuantityInput.InputBox, fType=ftype, ofs=-2})
 			self:adjHeight{obj=this.CommoditiesBuyFrame.BuyDisplay.QuantityInput.InputBox, adj=-3}
+			skinItemList(this.CommoditiesBuyFrame.ItemList)
+			self:removeNineSlice(this.ItemBuyFrame.ItemDisplay.NineSlice)
+			self:removeRegions(this.ItemBuyFrame.ItemDisplay, {1})
+			skinBidAmt(this.ItemBuyFrame.BidFrame.BidAmount)
+			skinItemList(this.ItemBuyFrame.ItemList)
 			if self.modBtns then
 				self:skinStdButton{obj=this.CommoditiesBuyFrame.BackButton}
 				self:skinStdButton{obj=this.CommoditiesBuyFrame.BuyDisplay.QuantityInput.MaxButton}
@@ -159,13 +162,6 @@ aObj.SetupRetail_NPCFrames = function()
 				self:SecureHook(this.CommoditiesBuyFrame.BuyDisplay.BuyButton, "SetEnabled", function(bObj)
 					self:clrBtnBdr(bObj)
 				end)
-			end
-			skinItemList(this.CommoditiesBuyFrame.ItemList)
-			self:removeNineSlice(this.ItemBuyFrame.ItemDisplay.NineSlice)
-			self:removeRegions(this.ItemBuyFrame.ItemDisplay, {1})
-			skinBidAmt(this.ItemBuyFrame.BidFrame.BidAmount)
-			skinItemList(this.ItemBuyFrame.ItemList)
-			if self.modBtns then
 				self:skinStdButton{obj=this.ItemBuyFrame.BackButton}
 				self:skinStdButton{obj=this.ItemBuyFrame.BuyoutFrame.BuyoutButton}
 				self:SecureHook(this.ItemBuyFrame.BuyoutFrame.BuyoutButton, "SetEnabled", function(bObj)
@@ -193,13 +189,16 @@ aObj.SetupRetail_NPCFrames = function()
 				aObj:skinObject("dropdown", {obj=frame.DurationDropDown.DropDown, fType=ftype, lrgTpl=true, x1=0, y1=1, x2=-1, y2=3})
 				if aObj.modBtns then
 					aObj:skinStdButton{obj=frame.QuantityInput.MaxButton}
+					aObj:SecureHook(frame.QuantityInput.MaxButton, "SetEnabled", function(bObj)
+						aObj:clrBtnBdr(bObj)
+					end)
 					aObj:skinStdButton{obj=frame.PostButton}
-					self:SecureHook(frame.PostButton, "SetEnabled", function(bObj)
-						self:clrBtnBdr(bObj)
+					aObj:SecureHook(frame.PostButton, "SetEnabled", function(bObj)
+						aObj:clrBtnBdr(bObj)
 					end)
 				end
 				if aObj.modBtnBs then
-					aObj:addButtonBorder{obj=frame.ItemDisplay.ItemButton, gibt=true}
+					aObj:addButtonBorder{obj=frame.ItemDisplay.ItemButton, ftype=ftype, gibt=true, ofs=0}
 				end
 			end
 			skinSellFrame(this.ItemSellFrame)
