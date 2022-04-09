@@ -862,12 +862,12 @@ aObj.SetupRetail_PlayerFrames = function()
 			end
 			self:removeMagicBtnTex(this.MountButton)
 			if self.modBtns then
-				self:skinStdButton{obj=this.BottomLeftInset.SuppressedMountEquipmentButton}
-				self:skinStdButton{obj=_G.MountJournalFilterButton}
+				self:skinStdButton{obj=this.BottomLeftInset.SuppressedMountEquipmentButton, fType=ftype}
+				self:skinStdButton{obj=_G.MountJournalFilterButton, fType=ftype}
 				if aObj.isRtlPTR then
 					self:skinCloseButton{obj=_G.MountJournalFilterButton.ResetButton, fType=ftype, noSkin=true}
 				end
-				self:skinStdButton{obj=this.MountButton}
+				self:skinStdButton{obj=this.MountButton, fType=ftype}
 				self:SecureHook(this.MountButton, "SetEnabled", function(bObj)
 					self:clrBtnBdr(bObj)
 				end)
@@ -917,7 +917,7 @@ aObj.SetupRetail_PlayerFrames = function()
 			self:removeInset(this.RightInset)
 			self:skinObject("editbox", {obj=this.searchBox, fType=ftype, si=true})
 			if self.modBtns then
-				 self:skinStdButton{obj=_G.PetJournalFilterButton}
+				self:skinStdButton{obj=_G.PetJournalFilterButton, fType=ftype}
 			end
 			-- PetList
 			self:skinObject("slider", {obj=this.listScroll.scrollBar, fType=ftype, y1=-2, y2=2})
@@ -1062,8 +1062,8 @@ aObj.SetupRetail_PlayerFrames = function()
 				if not aObj.isRtlPTR then
 					self:skinStdButton{obj=_G.HeirloomsJournalFilterButton, fType=ftype}
 				else
-					self:skinCloseButton{obj=this.FilterButton.ResetButton, fType=ftype, noSkin=true}
 					self:skinStdButton{obj=this.FilterButton, ftype=ftype}
+					self:skinCloseButton{obj=this.FilterButton.ResetButton, fType=ftype, noSkin=true}
 				end
 			end
 			self:skinObject("dropdown", {obj=this.classDropDown, fType=ftype})
@@ -1935,6 +1935,8 @@ aObj.SetupRetail_PlayerFrames = function()
 			self:skinNavBarButton(this.navBar.home)
 			this.navBar.home.text:SetPoint("RIGHT", -20, 0)
 			self:skinObject("editbox", {obj=this.searchBox, fType=ftype, si=true})
+			self:skinObject("dropdown", {obj=this.LootJournalViewDropDown, fType=ftype, x2=-7})
+			self:skinObject("slider", {obj=_G.EncounterJournalScrollBar, fType=ftype})
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true})
 			self:SecureHookScript(this.searchBox.searchPreviewContainer, "OnShow", function(fObj)
 				local btn
@@ -2161,9 +2163,15 @@ aObj.SetupRetail_PlayerFrames = function()
 			self:checkShown(this.encounter)
 			self:SecureHookScript(this.LootJournal, "OnShow", function(fObj)
 				self:skinObject("slider", {obj=fObj.PowersFrame.ScrollBar, fType=ftype, x2=-4})
-				for _, btn in _G.pairs(fObj.PowersFrame.elements) do
-					btn.Background:SetTexture(nil)
+				local function skinElements()
+					for eFrame in fObj.PowersFrame:EnumerateElementFrames() do
+						eFrame.Background:SetTexture(nil)
+					end
 				end
+				self:SecureHook(fObj.PowersFrame, "RefreshListDisplay", function(_)
+					skinElements()
+				end)
+				skinElements()
 				self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, fb=true, x1=-8, y1=6, x2=8, y2=-5})
 				skinFilterBtn(fObj.ClassDropDownButton)
 				skinFilterBtn(fObj.RuneforgePowerFilterDropDownButton)
@@ -2171,6 +2179,22 @@ aObj.SetupRetail_PlayerFrames = function()
 				self:Unhook(fObj, "OnShow")
 			end)
 			self:checkShown(this.LootJournal)
+			self:SecureHookScript(this.LootJournalItems, "OnShow", function(fObj)
+				local function skinItemSets()
+					for _, set in _G.pairs(fObj.ItemSetsFrame.buttons) do
+						set.Background:SetTexture(nil)
+					end
+				end
+				self:SecureHook(fObj.ItemSetsFrame, "UpdateList", function(_)
+					skinItemSets()
+				end)
+				skinItemSets()
+				fObj:DisableDrawLayer("BACKGROUND")
+				self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, fb=true, x1=-8, y1=6, x2=8, y2=-5})
+				skinFilterBtn(fObj.ItemSetsFrame.ClassButton)
+
+				self:Unhook(fObj, "OnShow")
+			end)
 			-- send message when UI is skinned (used by Atlas skin)
 			self:SendMessage("EncounterJournal_Skinned", self)
 
