@@ -12,8 +12,8 @@ do
 	end
 	if hasError then return end
 
-	-- create the addon
-	_G.LibStub:GetLibrary("AceAddon-3.0", true):NewAddon(aObj, aName, "AceConsole-3.0", "AceEvent-3.0", "AceHook-3.0")
+	-- create the addon and make it available in the Global namespace (Ara-Broker-... addons use its by name if available)
+	_G.Skinner = _G.LibStub:GetLibrary("AceAddon-3.0", true):NewAddon(aObj, aName, "AceConsole-3.0", "AceEvent-3.0", "AceHook-3.0")
 
 	aObj:checkVersion()
 
