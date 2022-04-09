@@ -416,7 +416,7 @@ local function skinEditBox(tbl)
 	aObj:skinObject("frame", {obj=tbl.obj, fType=tbl.fType, bd=3, ng=true, ofs=tbl.ofs, x1=tbl.x1, y1=tbl.y1, x2=tbl.x2, y2=tbl.y2, clr="slider"})
 	-- move the search icon
 	if tbl.si then
-		local sIcon = tbl.obj.searchIcon or tbl.obj.icon or tbl.obj:GetName() and _G[tbl.obj:GetName() .. "SearchIcon"]
+		local sIcon = tbl.obj.SearchIcon or tbl.obj.searchIcon or tbl.obj.icon or tbl.obj:GetName() and _G[tbl.obj:GetName() .. "SearchIcon"]
 		if not sIcon then  -- e.g. WeakAurasFilterInput
 			for _, reg in _G.pairs{tbl.obj:GetRegions()} do
 				if aObj:hasTextInTexture(reg, "UI-Searchbox-Icon") then
