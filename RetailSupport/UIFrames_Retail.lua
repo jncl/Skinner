@@ -982,22 +982,26 @@ aObj.SetupRetail_UIFrames = function()
 			this.RunesSmall:SetTexture(nil)
 			this.SlotBG:SetTexture(nil)
 			this.KeystoneFrame:SetTexture(nil)
-			if self.modBtnBs then
-				self:addButtonBorder{obj=this.KeystoneSlot}
-			end
+			self:skinObject("frame", {obj=this, fType=ftype, cb=true, ofs=-7})
 			if self.modBtns then
 				self:skinStdButton{obj=this.StartButton}
 			end
-			self:addSkinFrame{obj=this, ft=ftype, ofs=-7}
+			if self.modBtnBs then
+				self:addButtonBorder{obj=this.KeystoneSlot}
+			end
+
 			self:Unhook(this, "OnShow")
 		end)
 
 		self:SecureHookScript(_G.ChallengesFrame, "OnShow", function(this)
 			this:DisableDrawLayer("BACKGROUND")
-			self:removeInset(_G.ChallengesFrameInset)
+			if aObj.isRtlPTR then
+				_G.ChallengesFrameInset.Bg:SetTexture(nil)
+				self:removeNineSlice(_G.ChallengesFrameInset.NineSlice)
+			else
+				self:removeInset(_G.ChallengesFrameInset)
+			end
 			this.WeeklyInfo.Child:DisableDrawLayer("BACKGROUND")
-
-			-- DungeonIcons
 			if self.modBtnBs then
 				for _, dungeon in _G.ipairs(this.DungeonIcons) do
 					self:addButtonBorder{obj=dungeon, ofs=3, clr="disabled"}
@@ -1010,17 +1014,16 @@ aObj.SetupRetail_UIFrames = function()
 					end)
 				end
 			end
-
-			-- SeasonChangeNoticeFrame
-			this.SeasonChangeNoticeFrame.NewSeason:SetTextColor(self.HT:GetRGB())
-			this.SeasonChangeNoticeFrame.SeasonDescription:SetTextColor(self.BT:GetRGB())
-			this.SeasonChangeNoticeFrame.SeasonDescription2:SetTextColor(self.BT:GetRGB())
-			this.SeasonChangeNoticeFrame.SeasonDescription3:SetTextColor(self.BT:GetRGB())
-			this.SeasonChangeNoticeFrame.Affix.AffixBorder:SetTexture(nil)
-			self:addSkinFrame{obj=this.SeasonChangeNoticeFrame, ft=ftype, kfs=true, nb=true, ofs=-15, y2=20}
-			self:RaiseFrameLevelByFour(this.SeasonChangeNoticeFrame)
+			local scnf = this.SeasonChangeNoticeFrame
+			scnf.NewSeason:SetTextColor(self.HT:GetRGB())
+			scnf.SeasonDescription:SetTextColor(self.BT:GetRGB())
+			scnf.SeasonDescription2:SetTextColor(self.BT:GetRGB())
+			scnf.SeasonDescription3:SetTextColor(self.BT:GetRGB())
+			scnf.Affix.AffixBorder:SetTexture(nil)
+			self:skinObject("frame", {obj=scnf, fType=ftype, kfs=true, ofs=-15, y2=20})
+			self:RaiseFrameLevelByFour(scnf)
 			if self.modBtns then
-				self:skinStdButton{obj=this.SeasonChangeNoticeFrame.Leave}
+				self:skinStdButton{obj=scnf.Leave}
 			end
 
 			self:Unhook(this, "OnShow")
