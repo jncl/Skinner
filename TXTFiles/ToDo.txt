@@ -28,14 +28,31 @@ ToDos
 ?	I	Fix ActionButtons/MultiBarButtons missing Text & PetActionButtons not being displayed, when redisplayed after accessing Puzzle Caches in Zereth Mortis.
 		- happens when OverrideBar is used
 
-	I	AlertFrames, reported by Galthariel, 25.03.22
-√		- ...aceSkinner\RetailSupport\UIFrames_Retail.lua:612: attempt to index local 'frame' (a nil value)
-		[string "@Skinner\RetailSupport\UIFrames_Retail.lua"]:612: in function <...aceSkinner\RetailSupport\UIFrames_Retail.lua:610>
-		[string "@Skinner\RetailSupport\UIFrames_Retail.lua"]:642: in function <...aceSkinner\RetailSupport\UIFrames_Retail.lua:634>
+≈	I	Dialog boxes have double borders, reported by Fakelesssgaming, 29.03.22
 
-	I/C	TradeskillUI, reported by HEALINGBASSIST1030, 26.03.22
-√		- check button not skinned
-√		- search box not skinned
+	I	reported by EpidemeDaBear, 07.04.22
+x		-  [ADDON_ACTION_BLOCKED] AddOn 'Skinner' tried to call the protected function 'MultiBarBottomLeft:SetPoint()'.
+		[string "@!BugGrabber\BugGrabber.lua"]:519: in function <!BugGrabber\BugGrabber.lua:519>
+		[string "=[C]"]: in function `SetPoint'
+		[string "@FrameXML\UIParent.lua"]:2721: in function <FrameXML\UIParent.lua:2634>
+		[string "=[C]"]: in function `securecall'
+		[string "@FrameXML\UIParent.lua"]:3334: in function `UIParentManageFramePositions'
+		[string "@FrameXML\UIParent.lua"]:2739: in function <FrameXML\UIParent.lua:2726>
+		[string "=[C]"]: in function `SetAttribute'
+		[string "@FrameXML\UIParent.lua"]:3536: in function <FrameXML\UIParent.lua:3534>
+		[string "=[C]"]: in function `UIParent_ManageFramePositions'
+		[string "@Blizzard_UIWidgets\Blizzard_UIWidgetPowerBarFrame.lua"]:5: in function `layoutFunc'
+		[string "@Blizzard_UIWidgets\Blizzard_UIWidgetManager.lua"]:530: in function <...dOns\Blizzard_UIWidgets\Blizzard_UIWidgetManager.lua:521>
+		[string "=[C]"]: in function `UpdateWidgetLayout'
+		[string "@Blizzard_UIWidgets\Blizzard_UIWidgetManager.lua"]:502: in function `ProcessAllWidgets'
+		[string "@Blizzard_UIWidgets\Blizzard_UIWidgetManager.lua"]:48: in function <...dOns\Blizzard_UIWidgets\Blizzard_UIWidgetManager.lua:46>
 
-	I/C	TalentUI, reported by HEALINGBASSIST1030, 26.03.22
-√		- icon border not skinned ?
+	I	reported by DarkLimpan, 08.04.22
+√		- Border is broken of the mouse-over tooltips from these chocolatebar-addons:
+			- Ara broker reputations r46
+			- Ara broker guild & friends r93
+
+			The border appear as a big green border. If I right-click them and uncheck "Use TipTac skin", the green border goes away but so does the rest of the skinning.
+			I'm not sure if this is caused by Skinner or Chocolatebar, or with the individual plugins themselves. These 3 tooltips (Ara's "guild & friends" are one addon but two seperate tooltips) seems to be the only ones affected, others are fine.
+
+√	S	Stash, requested by Galthariel, 08.04.22

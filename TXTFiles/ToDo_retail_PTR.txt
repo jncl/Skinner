@@ -15,10 +15,30 @@ x				- .FactionButton
 √					- .CheckButton (CheckButton)
 			- LFGList
 √				- .CrossFactionGroup (CheckButton)
+			- UnitPopup
+?				- ...Buttons
+?				- ...Menus
+?				- ...Shared
+?				- ...SharedButtonMixins
+?				- ...SharedMenus
+?				- ...SharedUtils
+?				- ...Utils
 		- Updated
-			- DropDownToggleButton(s) now use UIResettableDropdownButtonTemplate
+x			- DropDownToggleButton(s) now use UIResettableDropdownButtonTemplate
 			- Blizzard_HeirloomCollection
 √				- $parentFilterButton now a parentKey called FilterButton
 			- Blizzard_MountJournal
 √				- FilterButton now has a .ResetButton
+			- Blizzard_PetJournal
+√				- FilterButton now has a .ResetButton
+			- Blizzard_ToyBox
+√				- FilterButton now has a .ResetButton
+			- Blizzard_Wardrobe
+√				- FilterButton now has a .ResetButton
+			- EncounterJournal
+√				- LootJournal Powers
+			- The Report Player pane has been redesigned
 		- Deleted
+			- StaticPopupSpecial
+√				- ClubFinderReportFrame
+√				- PlayerReportFrame
