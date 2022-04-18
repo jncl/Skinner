@@ -169,6 +169,7 @@
 <Script file="Prat3.lua"/>
 <Script file="PremadeGroupsFilter.lua"/>
 <Script file="ProfessionsComplete.lua"/>
+<Script file="ProtoformSynthesisFieldJournal.lua"/>
 <Script file="Puggle.lua"/>
 <Script file="quantify.lua"/>
 <Script file="Quartz.lua"/>
