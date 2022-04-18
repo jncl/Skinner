@@ -228,6 +228,7 @@ aObj.blizzLoDFrames[ftype].ItemSocketingUI = function(self)
 		PunchcardYellow = {textureKit="punchcard-yellow", r=0.97, g=0.82, b=0.29},
 		PunchcardBlue   = {textureKit="punchcard-blue", r=0.47, g=0.67, b=1},
 		Domination      = {textureKit="domination", r=1, g=1, b=1},
+		Cypher          = {textureKit="meta", r=1, g=1, b=1},
 	}
 	self:SecureHookScript(_G.ItemSocketingFrame, "OnShow", function(this)
 		self:skinObject("slider", {obj=_G.ItemSocketingScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
@@ -241,6 +242,12 @@ aObj.blizzLoDFrames[ftype].ItemSocketingUI = function(self)
 		end
 		if self.modBtns then
 			self:skinStdButton{obj=_G.ItemSocketingSocketButton, fType=ftype}
+			self:SecureHook(_G.ItemSocketingSocketButton, "Disable", function(bObj, _)
+				self:clrBtnBdr(bObj)
+			end)
+			self:SecureHook(_G.ItemSocketingSocketButton, "Enable", function(bObj, _)
+				self:clrBtnBdr(bObj)
+			end)
 			this.Sockets = this.Sockets or {_G.ItemSocketingSocket1, _G.ItemSocketingSocket2, _G.ItemSocketingSocket3}
 			for _, socket in _G.ipairs(this.Sockets) do
 				socket:DisableDrawLayer("BACKGROUND")
