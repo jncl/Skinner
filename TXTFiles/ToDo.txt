@@ -28,31 +28,18 @@ ToDos
 ?	I	Fix ActionButtons/MultiBarButtons missing Text & PetActionButtons not being displayed, when redisplayed after accessing Puzzle Caches in Zereth Mortis.
 		- happens when OverrideBar is used
 
-≈	I	Dialog boxes have double borders, reported by Fakelesssgaming, 29.03.22
+	I	Stash, reported by Galthariel, 10.04.22
+√		- Skinner\AddonSkins\Stash-1.0.3.lua:29: attempt to index field 'ddTex' (a nil value)
+		[string "@Skinner\AddonSkins\Stash-1.0.3.lua"]:29: in function <Skinner\AddonSkins\Stash.lua:25>
+		[string "@Skinner\AddonSkins\Stash-1.0.3.lua"]:65: in function <Skinner\AddonSkins\Stash.lua:41>
 
-	I	reported by EpidemeDaBear, 07.04.22
-x		-  [ADDON_ACTION_BLOCKED] AddOn 'Skinner' tried to call the protected function 'MultiBarBottomLeft:SetPoint()'.
-		[string "@!BugGrabber\BugGrabber.lua"]:519: in function <!BugGrabber\BugGrabber.lua:519>
-		[string "=[C]"]: in function `SetPoint'
-		[string "@FrameXML\UIParent.lua"]:2721: in function <FrameXML\UIParent.lua:2634>
-		[string "=[C]"]: in function `securecall'
-		[string "@FrameXML\UIParent.lua"]:3334: in function `UIParentManageFramePositions'
-		[string "@FrameXML\UIParent.lua"]:2739: in function <FrameXML\UIParent.lua:2726>
-		[string "=[C]"]: in function `SetAttribute'
-		[string "@FrameXML\UIParent.lua"]:3536: in function <FrameXML\UIParent.lua:3534>
-		[string "=[C]"]: in function `UIParent_ManageFramePositions'
-		[string "@Blizzard_UIWidgets\Blizzard_UIWidgetPowerBarFrame.lua"]:5: in function `layoutFunc'
-		[string "@Blizzard_UIWidgets\Blizzard_UIWidgetManager.lua"]:530: in function <...dOns\Blizzard_UIWidgets\Blizzard_UIWidgetManager.lua:521>
-		[string "=[C]"]: in function `UpdateWidgetLayout'
-		[string "@Blizzard_UIWidgets\Blizzard_UIWidgetManager.lua"]:502: in function `ProcessAllWidgets'
-		[string "@Blizzard_UIWidgets\Blizzard_UIWidgetManager.lua"]:48: in function <...dOns\Blizzard_UIWidgets\Blizzard_UIWidgetManager.lua:46>
+	I	Auctionator, reported by Galthariel, 10.04.22
+√		- Skinner\AddonSkins\Auctionator-9.2.12-1-g7534746.lua:446: attempt to index a nil value
+		[string "@Skinner\AddonSkins\Auctionator-9.2.12-1-g7534746.lua"]:446: in function <Skinner\AddonSkins\Auctionator.lua:430>
+		[string "@Skinner\AddonSkins\Auctionator-9.2.12-1-g7534746.lua"]:450: in function <Skinner\AddonSkins\Auctionator.lua:430>
+		[string "@Skinner\AddonSkins\Auctionator-9.2.12-1-g7534746.lua"]:461: in function <Skinner\AddonSkins\Auctionator.lua:455>
 
-	I	reported by DarkLimpan, 08.04.22
-√		- Border is broken of the mouse-over tooltips from these chocolatebar-addons:
-			- Ara broker reputations r46
-			- Ara broker guild & friends r93
+√	S	Protoform Synthesis Field Journal, requested by therealdeerez, 10.04.22
 
-			The border appear as a big green border. If I right-click them and uncheck "Use TipTac skin", the green border goes away but so does the rest of the skinning.
-			I'm not sure if this is caused by Skinner or Chocolatebar, or with the individual plugins themselves. These 3 tooltips (Ara's "guild & friends" are one addon but two seperate tooltips) seems to be the only ones affected, others are fine.
-
-√	S	Stash, requested by Galthariel, 08.04.22
+	I	Auctionator, reported by DarkLimpan, 15.04.22
+?		- Skinner\AddonSkins\Auctionator-9.2.12-1-g7534746.lua:99: Usage: SecureHookScript(object, method, [handler]): You can only hook a script on a frame object
