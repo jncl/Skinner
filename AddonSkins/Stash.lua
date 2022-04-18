@@ -23,11 +23,15 @@ aObj.addonsToSkin.Stash = function(self) -- v 1.0.3
 		end
 	end
 	local function skinDD(ddObj)
-		ddObj.LeftTexture = aObj:getRegion(ddObj, 1)
-		ddObj.RightTexture = aObj:getRegion(ddObj, 2)
+		if aObj.prdb.TexturedDD then
+			ddObj.LeftTexture = aObj:getRegion(ddObj, 1)
+			ddObj.RightTexture = aObj:getRegion(ddObj, 2)
+		end
 		aObj:skinObject("dropdown", {obj=ddObj, noBB=true, x1=0, y1=0, x2=0, y2=0})
-		ddObj.ddTex:SetPoint("LEFT", ddObj.LeftTexture, "RIGHT", -20, 0)
-		ddObj.ddTex:SetPoint("RIGHT", ddObj.RightTexture, "LEFT", 3, 0)
+		if aObj.prdb.TexturedDD then
+			ddObj.ddTex:SetPoint("LEFT", ddObj.LeftTexture, "RIGHT", -20, 0)
+			ddObj.ddTex:SetPoint("RIGHT", ddObj.RightTexture, "LEFT", 3, 0)
+		end
 		if aObj.modBtnBs then
 			aObj:addButtonBorder{obj=ddObj, relTo=ddObj.DownButton, clr="grey"}
 		end
