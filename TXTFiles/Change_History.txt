@@ -1,3 +1,21 @@
+beta9.43114.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	PTR changes
+	Updated AuctionUI skin
+	Updated UIDropDownMenus skin
+	Updated StackSplit skin
+	Updated Collections skin
+	Updated ChallengesUI skin
+	Updated OverrideActionBar skin
+	Updated UIButtons skinning code
+	Added AddOn object to Global pool
+	Updated NSF
+	Updated RareScanner & TipTac skins
+	Skinned Stash
+
 beta9.42979.1
 Jncl:
 	ToDo.txt
