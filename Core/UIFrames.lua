@@ -1455,7 +1455,7 @@ aObj.blizzFrames[ftype].MainMenuBarCommon = function(self)
 				for i = 1, _G.NUM_PET_ACTION_SLOTS do
 					bName = "PetActionButton" .. i
 					self:addButtonBorder{obj=_G[bName], sft=true, reParent={_G[bName .. "AutoCastable"], _G[bName .. "SpellHighlightTexture"], _G[bName .. "Shine"]}, ofs=3, x2=2}
-					_G[bName .. "NormalTexture"]:SetTexture(nil) -- $parentNormalTexture2 is the NormalTexture
+					_G[bName .. "NormalTexture2"]:SetTexture(nil)
 				end
 			end
 
