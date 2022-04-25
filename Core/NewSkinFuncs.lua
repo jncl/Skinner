@@ -775,13 +775,16 @@ local function skinTabs(tbl)
 			aObj:add2Table(tbl.tabs, _G[tbl.prefix .. "Tab"  ..  tbl.suffix .. i])
 		end
 	end
-	local oFs = tbl.offsets
+	tbl.offsets.x1 = tbl.offsets.x1 or 7
+	tbl.offsets.y1 = tbl.offsets.y1 or 2
+	tbl.offsets.x2 = tbl.offsets.x2 or -7
+	tbl.offsets.y2 = tbl.offsets.y2 or 2
 	for i, tab in _G.pairs(tbl.tabs) do
 		aObj:keepRegions(tab, tbl.regions)
 		if not aObj.isTT then
-			aObj:skinObject("frame", {obj=tab, fType=tbl.fType, ng=tbl.ng, x1=oFs.x1, y1=oFs.y1, x2=oFs.x2, y2=oFs.y2})
+			aObj:skinObject("frame", {obj=tab, fType=tbl.fType, ng=tbl.ng, x1=tbl.offsets.x1, y1=tbl.offsets.y1, x2=tbl.offsets.x2, y2=tbl.offsets.y2})
 		else
-			aObj:skinObject("frame", {obj=tab, fType=tbl.fType, noBdr=true, x1=oFs.x1, y1=oFs.y1, x2=oFs.x2, y2=oFs.y2})
+			aObj:skinObject("frame", {obj=tab, fType=tbl.fType, noBdr=true, x1=tbl.offsets.x1, y1=tbl.offsets.y1, x2=tbl.offsets.x2, y2=tbl.offsets.y2})
 			if tbl.lod then
 				if i == (tbl.selectedTab or tbl.obj.selectedTab) then
 					aObj:setActiveTab(tab.sf)
@@ -798,8 +801,8 @@ local function skinTabs(tbl)
 			if ht then
 				ht:SetTexture(aObj.tFDIDs.ctabHL)
 				ht:ClearAllPoints()
-				ht:SetPoint("TOPLEFT", oFs.x1, oFs.y1)
-				ht:SetPoint("BOTTOMRIGHT", oFs.x2, oFs.y2)
+				ht:SetPoint("TOPLEFT", tbl.offsets.x1, tbl.offsets.y1)
+				ht:SetPoint("BOTTOMRIGHT", tbl.offsets.x2, tbl.offsets.y2)
 			end
 		end
 		if tbl.func then
