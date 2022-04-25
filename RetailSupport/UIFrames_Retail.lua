@@ -1560,9 +1560,9 @@ aObj.SetupRetail_UIFrames = function()
 			if _G.C_Garrison.GetLandingPageGarrisonType() == _G.Enum.GarrisonType.Type_9_0 then -- Covenant
 				local function skinPanelBtns(panel)
 					panel:DisableDrawLayer("BACKGROUND")
-					aObj:skinObject("frame", {obj=panel.RenownButton, fType=ftype, regions={3, 5, 6}, ofs=-4, y1=-5, y2=3})
+					aObj:skinObject("frame", {obj=panel.RenownButton, fType=ftype, regions={3, 5, 6}, ofs=-4, y1=-5, y2=3, clr="turq"})
 					panel.RenownButton.UpdateButtonTextures = _G.nop
-					aObj:skinObject("frame", {obj=panel.SoulbindButton, fType=ftype, regions={1, 2}, ofs=-4, y1=-5, y2=3})
+					aObj:skinObject("frame", {obj=panel.SoulbindButton, fType=ftype, regions={1, 2}, ofs=-4, y1=-5, y2=3, clr="turq"})
 					panel.SoulbindButton.Portrait.SetAtlas = _G.nop
 					skinPanelBtns = nil
 				end
