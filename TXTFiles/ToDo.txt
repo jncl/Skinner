@@ -28,18 +28,9 @@ ToDos
 ?	I	Fix ActionButtons/MultiBarButtons missing Text & PetActionButtons not being displayed, when redisplayed after accessing Puzzle Caches in Zereth Mortis.
 		- happens when OverrideBar is used
 
-	I	Stash, reported by Galthariel, 10.04.22
-√		- Skinner\AddonSkins\Stash-1.0.3.lua:29: attempt to index field 'ddTex' (a nil value)
-		[string "@Skinner\AddonSkins\Stash-1.0.3.lua"]:29: in function <Skinner\AddonSkins\Stash.lua:25>
-		[string "@Skinner\AddonSkins\Stash-1.0.3.lua"]:65: in function <Skinner\AddonSkins\Stash.lua:41>
+	I	Auctionator, reported by DarkLimpan, 19.04.22
+√		- Skinner\AddonSkins\Auctionator-9.2.13-2-gf164f84.lua:225: Usage: SecureHookScript(object, method, [handler]): You can only hook a script on a frame object
 
-	I	Auctionator, reported by Galthariel, 10.04.22
-√		- Skinner\AddonSkins\Auctionator-9.2.12-1-g7534746.lua:446: attempt to index a nil value
-		[string "@Skinner\AddonSkins\Auctionator-9.2.12-1-g7534746.lua"]:446: in function <Skinner\AddonSkins\Auctionator.lua:430>
-		[string "@Skinner\AddonSkins\Auctionator-9.2.12-1-g7534746.lua"]:450: in function <Skinner\AddonSkins\Auctionator.lua:430>
-		[string "@Skinner\AddonSkins\Auctionator-9.2.12-1-g7534746.lua"]:461: in function <Skinner\AddonSkins\Auctionator.lua:455>
-
-√	S	Protoform Synthesis Field Journal, requested by therealdeerez, 10.04.22
-
-	I	Auctionator, reported by DarkLimpan, 15.04.22
-?		- Skinner\AddonSkins\Auctionator-9.2.12-1-g7534746.lua:99: Usage: SecureHookScript(object, method, [handler]): You can only hook a script on a frame object
+	I	Popup panel, reported by Fakelesgaming, 19.04.22
+?		- had double border/background
+		- caused by TipTac when AddOn skinning option is enabled.
