@@ -631,16 +631,17 @@ aObj.SetupRetail_NPCFrames = function()
 
 	end
 
-	aObj.blizzLoDFrames[ftype].ItemInteractionUI = function(self) -- a.k.a. Titanic Purification/Runecarver reclaim soulessence
+	aObj.blizzLoDFrames[ftype].ItemInteractionUI = function(self) -- a.k.a. Titanic Purification/Runecarver reclaim soulessence/Creation Catalyst
 		if not self.prdb.ItemInteractionUI or self.initialized.ItemInteractionUI then return end
 		self.initialized.ItemInteractionUI = true
 
 		self:SecureHookScript(_G.ItemInteractionFrame, "OnShow", function(this)
 			-- use module to make button slot visible
 			self.modUIBtns:addButtonBorder{obj=this.ItemSlot, relTo=this.ItemSlot.Icon, clr="grey"}
+			this.ItemConversionFrame.ItemConversionInputSlot.ButtonFrame:SetAlpha(0) -- N.B. Texture changed in code
 			this.ButtonFrame:DisableDrawLayer("BORDER")
 			this.ButtonFrame.MoneyFrameEdge:DisableDrawLayer("BACKGROUND")
-			self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, x2=3}
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, cb=true, x2=3})
 			if self.modBtns then
 				self:skinStdButton{obj=this.ButtonFrame.ActionButton}
 				self:SecureHook(this, "UpdateActionButtonState", function(fObj)
