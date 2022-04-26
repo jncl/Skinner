@@ -5,7 +5,7 @@ local _G = _G
 -- used by all contained functions
 local Details = _G.LibStub:GetLibrary("AceAddon-3.0"):GetAddon("_detalhes", true)
 
-aObj.addonsToSkin.Details = function(self) -- v 9.0.1.8002 (core 144)
+aObj.addonsToSkin.Details = function(self) -- v 9.2.0.9735.146
 
 	-- Player Details Window
 	self:skinObject("frame", {obj=_G.DetailsPlayerDetailsWindow, kfs=true, ofs=4})
@@ -33,6 +33,37 @@ aObj.addonsToSkin.Details = function(self) -- v 9.0.1.8002 (core 144)
 			skinNews()
 
 			self:Unhook(this, "CreateOrOpenNewsWindow")
+		end)
+	end
+
+	-- Welcome Window
+	local function skinWelcome()
+		aObj:skinObject("frame", {obj=_G.DetailsWelcomeWindow})
+		if aObj.modBtnBs then
+			local pBtn, nBtn = aObj:getChild(_G.DetailsWelcomeWindow, 2),aObj:getChild(_G.DetailsWelcomeWindow, 3)
+			aObj:addButtonBorder{obj=pBtn, ofs=-2, x1=1, clr="gold"}
+			aObj:addButtonBorder{obj=nBtn, ofs=-2, x1=1, clr="gold"}
+			aObj:SecureHook(pBtn, "Disable", function(bObj, _)
+				aObj:clrBtnBdr(bObj)
+			end)
+			aObj:SecureHook(pBtn, "Enable", function(bObj, _)
+				aObj:clrBtnBdr(bObj, "gold")
+			end)
+			aObj:SecureHook(nBtn, "Disable", function(bObj, _)
+				aObj:clrBtnBdr(bObj)
+			end)
+			aObj:SecureHook(nBtn, "Enable", function(bObj, _)
+				aObj:clrBtnBdr(bObj, "gold")
+			end)
+		end
+	end
+	if _G.DetailsWelcomeWindow then
+		skinWelcome()
+	else
+		self:SecureHook(Details, "OpenWelcomeWindow", function(this)
+			skinWelcome()
+
+			self:Unhook(Details, "OpenWelcomeWindow")
 		end)
 	end
 
@@ -67,7 +98,6 @@ aObj.addonsToSkin.Details = function(self) -- v 9.0.1.8002 (core 144)
 		self:skinObject("editbox", {obj=eb, regions={3, 4, 5, 6, 7, 8, 9, 10, 11}})
 		eb.SetBackdropColor = _G.nop
 		eb.SetBackdropBorderColor = _G.nop
-		eb = nil
 		self:skinObject("frame", {obj=_G.DetailsCopy, kfs=true, ri=true, ofs=2, x2=1})
 	end
 	if _G.DetailsCopy then
@@ -82,7 +112,7 @@ aObj.addonsToSkin.Details = function(self) -- v 9.0.1.8002 (core 144)
 
 	-- Plugins
 	for _, v in _G.pairs{"DmgRank", "DpsTuning", "TimeAttack", "Vanguard"} do
-		self:checkAndRunAddOn("Details_" .. v)
+		self:checkAndRunAddOn("Details_" .. v, "Details_" .. v)
 	end
 
 end
@@ -103,7 +133,6 @@ function aObj:Details_DmgRank()
 	if self.modBtns then
 		self:skinCloseButton{obj=self:getChild(DmgRank.Frame, 1)}
 	end
-	DmgRank = nil
 
 end
 
@@ -119,7 +148,6 @@ function aObj:Details_DpsTuning()
 	if self.modBtns then
 		self:skinCloseButton{obj=self:getChild(DpsTuning.Frame, 1)}
 	end
-	DpsTuning = nil
 
 end
 
@@ -137,7 +165,6 @@ function aObj:Details_TimeAttack()
 	if self.modBtns then
 		self:skinCloseButton{obj=self:getChild(TimeAttack.Frame, 1)}
 	end
-	TimeAttack = nil
 
 end
 
@@ -164,6 +191,5 @@ function aObj:Details_Vanguard()
 			self:Unhook(this, "OnDetailsEvent")
 		end)
 	end
-	Vanguard = nil
 
 end
