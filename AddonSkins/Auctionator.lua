@@ -8,8 +8,8 @@ aObj.addonsToSkin.Auctionator = function(self) -- v  9.2.13
 		if not _G.AuctionatorShoppingListFrame then
 			_G.C_Timer.After(0.5, function()
 				skinAuctionatorFrames(self)
-				return
 			end)
+			return
 		end
 
 		self:SecureHookScript(_G.AuctionatorShoppingListFrame, "OnShow", function(this)
