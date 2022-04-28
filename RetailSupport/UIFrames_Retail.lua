@@ -459,7 +459,6 @@ aObj.SetupRetail_UIFrames = function()
 		self.initialized.AlertFrames = true
 
 		local function skinAlertFrame(type, frame, ofs)
-			aObj:Debug("skinAlertFrame: [%s, %s, %s, %s]", type, frame, ofs)
 			if type == "GuildChallenge" then
 				frame:DisableDrawLayer("BORDER")
 				frame:DisableDrawLayer("OVERLAY")
@@ -525,7 +524,6 @@ aObj.SetupRetail_UIFrames = function()
 					aObj:addButtonBorder{obj=frame.lootItem, fType=ftype, relTo=frame.lootItem.Icon}
 					aObj:setBtnClr(frame.lootItem, itemQuality)
 				end
-				aObj:Debug("skinAlertFrame #2 itemQuality: [%s, %s, %s]", type, itemQuality)
 			end
 		end
 		local alertType = {
@@ -573,7 +571,6 @@ aObj.SetupRetail_UIFrames = function()
 		end
 
 		local function skinDCSAlertFrames(type, frame)
-			aObj:Debug("skinDCSAlertFrames: [%s, %s, %s]", type, frame)
 			if type == "Scenario" then
 				aObj:getRegion(frame, 1):SetTexture(nil) -- Toast-IconBG
 			end
@@ -626,7 +623,6 @@ aObj.SetupRetail_UIFrames = function()
 		end)
 
 		local function skinACAlertFrames(type, frame)
-			aObj:Debug("skinACAlertFrames: [%s, %s, %s]", type, frame)
 			aObj:nilTexture(frame.Background, true)
 			frame.Unlocked:SetTextColor(aObj.BT:GetRGB())
 			if frame.OldAchievement then
