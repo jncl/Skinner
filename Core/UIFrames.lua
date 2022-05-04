@@ -303,7 +303,7 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 				tab.sf:Show()
 			end
 		end
-		local tabSkin = self.skinTPLs.new("tabs", {obj=this.ChatTabManager, tabs={}, fType=ftype, upwards=true, ignoreHLTex=false, offsets={x1=4, y1=self.isTT and -10 or -12, x2=-4, y2=self.isTT and -5 or 0}, regions={8, 9, 10, 11}, noCheck=true, func=setTabState})
+		local tabSkin = self.skinTPLs.new("tabs", {obj=this.ChatTabManager, fType=ftype, upwards=true, ignoreHLTex=false, offsets={x1=4, y1=self.isTT and -10 or -12, x2=-4, y2=self.isTT and -5 or 0}, regions={8, 9, 10, 11}, noCheck=true, func=setTabState})
 		local function skinTabs(ctm)
 			tabSkin.tabs = {}
 			for tab in ctm.tabPool:EnumerateActive() do
@@ -352,50 +352,42 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 		end
 		--	Channel Settings
 		self:skinObject("frame", {obj=_G.ChatConfigChannelSettingsLeft, fType=ftype, kfs=true, rns=true, fb=true})
-		if self.modChkBtns
-		and self.isRtl
-		then
-			self:SecureHookScript(_G.ChatConfigChannelSettings, "OnShow", function(fObj)
-				for i = 1, #_G.CHAT_CONFIG_CHANNEL_LIST do
-					skinCB("ChatConfigChannelSettingsLeftCheckBox" .. i)
-				end
-
-				self:Unhook(fObj, "OnShow")
-			end)
-		else
+		if self.isClsc then
 			self:skinObject("frame", {obj=_G.ChatConfigChannelSettingsAvailable, fType=ftype, kfs=true, rns=true, fb=true})
-			self:SecureHook("ChatConfig_CreateCheckboxes", function(frame, _)
-				local box
-				for i = 1, #frame.checkBoxTable do
-					box = _G[frame:GetName() .. "CheckBox" .. i]
-					if aObj.isClsc
-					and box.NineSlice
-					then
-						aObj:removeNineSlice(box.NineSlice)
-					else
-						aObj:removeBackdrop(box)
+			if self.modBtns then
+				self:SecureHook("ChatConfig_CreateBoxes", function(frame, _)
+					local box
+					for i = 1, #frame.boxTable do
+						box = _G[frame:GetName() .. "Box" .. i]
+						self:removeNineSlice(box.NineSlice)
+						if self.modBtns then
+							self:skinStdButton{obj=box.Button, ofs=0}
+						end
 					end
-					if self.modChkBtns then
-						 self:skinCheckButton{obj=box.CheckButton}
+				end)
+			end
+		end
+		if self.modChkBtns then
+			if self.isRtl then
+				self:SecureHookScript(_G.ChatConfigChannelSettings, "OnShow", function(fObj)
+					for i = 1, #_G.CHAT_CONFIG_CHANNEL_LIST do
+						skinCB("ChatConfigChannelSettingsLeftCheckBox" .. i)
 					end
-				end
-			end)
-			self:SecureHook("ChatConfig_CreateBoxes", function(frame, _)
-				local box
-				for i = 1, #frame.boxTable do
-					box = _G[frame:GetName() .. "Box" .. i]
-					if aObj.isClsc
-					and box.NineSlice
-					then
-						aObj:removeNineSlice(box.NineSlice)
-					else
-						aObj:removeBackdrop(box)
+
+					self:Unhook(fObj, "OnShow")
+				end)
+			else
+				self:SecureHook("ChatConfig_CreateCheckboxes", function(frame, _)
+					local box
+					for i = 1, #frame.checkBoxTable do
+						box = _G[frame:GetName() .. "CheckBox" .. i]
+						self:removeNineSlice(box.NineSlice)
+						if self.modChkBtns then
+							 self:skinCheckButton{obj=box.CheckButton}
+						end
 					end
-					if self.modBtns then
-						self:skinStdButton{obj=box.Button, ofs=0}
-					end
-				end
-			end)
+				end)
+			end
 		end
 		--	Other Settings
 		for i = 1, #_G.CHAT_CONFIG_OTHER_COMBAT do
