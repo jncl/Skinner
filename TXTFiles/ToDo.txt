@@ -26,11 +26,17 @@ ToDos
 ?	O	Replace ObjectiveTracker Header Minimize button textures with suitable characters
 
 ?	I	Fix ActionButtons/MultiBarButtons missing Text & PetActionButtons not being displayed, when redisplayed after accessing Puzzle Caches in Zereth Mortis.
-		- happens when OverrideBar is used
+		- happens when OverrideBar is used, but not always...
 
-	I	Auctionator, reported by DarkLimpan, 19.04.22
-√		- Skinner\AddonSkins\Auctionator-9.2.13-2-gf164f84.lua:225: Usage: SecureHookScript(object, method, [handler]): You can only hook a script on a frame object
+	I	Details_Vanguard, reported by NeurosisTV, 25.04.22
+√		 - loaded but skin not found in AddonsSkins directory (c&RA)
 
-	I	Popup panel, reported by Fakelesgaming, 19.04.22
-?		- had double border/background
-		- caused by TipTac when AddOn skinning option is enabled.
+	I	Auctionator, reported by DarkLimpan, 25.04.22
+√		- Skinner\AddonSkins\Auctionator-9.2.13-9-ge718c42.lua:15: Usage: SecureHookScript(object, method, [handler]): You can only hook a script on a frame object
+
+	I	Chat Settings, reported by Fakelessgaming, 02.05.22
+√		- Skinner\Core\NewSkinFuncs.lua:456: attempt to index field 'obj' (a nil value)
+		[string "@Skinner\Core\NewSkinFuncs.lua"]:456: in function <Skinner\Core\NewSkinFuncs.lua:445>
+		[string "@Skinner\Core\NewSkinFuncs.lua"]:553: in function `?'
+		[string "@Skinner\Core\NewSkinFuncs.lua"]:191: in function `skinObject'
+		[string "@Skinner\Core\UIFrames.lua"]:366: in function <Skinner\Core\UIFrames.lua:268>

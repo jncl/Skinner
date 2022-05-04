@@ -13,6 +13,8 @@ x				- .FactionButton
 			- CommunitiesSettings
 				- .CrossFactionToggle
 √					- .CheckButton (CheckButton)
+			- EncounterJournal
+				- ModifiedInstanceIcon
 			- LFGList
 √				- .CrossFactionGroup (CheckButton)
 			- UnitPopup
