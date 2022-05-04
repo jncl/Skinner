@@ -1,3 +1,15 @@
+beta9.43340.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Updated TOC
+	Applied ClassicERAPTR changes
+	Updated Auctionator skin
+	Updated NSF
+	Updated Colours used by frames
+	Updated GarrisonLandingPage skin
+
 beta9.43206.1
 Jncl:
 	ToDo.txt
