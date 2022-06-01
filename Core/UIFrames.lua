@@ -56,13 +56,18 @@ aObj.blizzLoDFrames[ftype].BattlefieldMap = function(self)
 
 	self:SecureHookScript(_G.BattlefieldMapFrame, "OnShow", function(this)
 		self:skinObject("frame", {obj=_G.BattlefieldMapTab, fType=ftype, kfs=true, noBdr=self.isTT, y1=-7, y2=-7})
-		self:skinObject("frame", {obj=this.BorderFrame, fType=ftype, kfs=true, cb=true, fb=true, ofs=4, y1=6, x2=2, y2=2})
+		this.BorderFrame:DisableDrawLayer("BORDER")
+		this.BorderFrame:DisableDrawLayer("ARTWORK")
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, fb=true, ofs=2, x1=-5, y1=6})
+		if self.modBtns then
+			self:skinCloseButton{obj=this.BorderFrame.CloseButton, fType=ftype, noSkin=true}
+		end
 
 		-- change the skinFrame's opacity as required
 		self:SecureHook(this, "RefreshAlpha", function(fObj)
 			local alpha = 1.0 - _G.BattlefieldMapOptions.opacity
 			alpha = (alpha >= 0.15) and alpha - 0.15 or alpha
-			fObj.BorderFrame.sf:SetAlpha(alpha)
+			fObj.sf:SetAlpha(alpha)
 		end)
 
 		if _G.IsAddOnLoaded("Capping") then
@@ -74,9 +79,9 @@ aObj.blizzLoDFrames[ftype].BattlefieldMap = function(self)
 			if mBM then
 				local function updBMVisibility(db)
 					if db.hideTextures then
-						this.BorderFrame.sf:Hide()
+						this.sf:Hide()
 					else
-						this.BorderFrame.sf:Show()
+						this.sf:Show()
 					end
 				end
 				-- change visibility as required
