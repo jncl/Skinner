@@ -324,7 +324,7 @@ aObj.SetupRetail_PlayerFrames = function()
 					self:addButtonBorder{obj=btn, relTo=btn.icon}
 				end
 			end
-			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true, ignoreHLTex=false, regions={7, 8, 9, 10}, offsets={x1=11, y1=self.isTT and 2 or -2, x2=-12, y2=-7}})
+			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true, ignoreHLTex=false, regions={7, 8, 9, 10}, offsets={x1=11, y1=self.isTT and 2 or -3, x2=-12, y2=-7}})
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, y1=7, x2=0, y2=-2})
 			-- send message when UI is skinned (used by AchieveIt skin)
 			self:SendMessage("AchievementUI_Skinned", self)
@@ -3522,7 +3522,7 @@ aObj.SetupRetail_PlayerFrames = function()
 			this.MainHelpButton.Ring:SetTexture(nil)
 			self:moveObject{obj=this.MainHelpButton, y=-4}
 			this.numTabs = 5
-			self:skinObject("tabs", {obj=this, prefix=this:GetName(), suffix="Button", fType=ftype, track=false, offsets={x1=8, y1=self.isTT and 3 or 0, x2=-8, y2=2}})
+			self:skinObject("tabs", {obj=this, prefix=this:GetName(), suffix="Button", fType=ftype, track=false, offsets={x1=8, y1=self.isTT and 3 or -2, x2=-8, y2=2}})
 			if self.isTT then
 				local function setTab(bookType)
 					local tab

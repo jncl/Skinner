@@ -54,7 +54,7 @@ aObj.SetupRetail_NPCFrames = function()
 			if self.modBtnBs then
 				self:addButtonBorder{obj=this.SearchBar.FavoritesSearchButton, ofs=-2, x1=1, clr="grey"}
 			end
-			self:skinObject("tabs", {obj=this, tabs=this.Tabs, fType=ftype, lod=self.isTT and true, track=false, offsets={x1=8, y1=self.isTT and 2 or 0, x2=-8, y2=2}})
+			self:skinObject("tabs", {obj=this, tabs=this.Tabs, fType=ftype, lod=self.isTT and true, track=false, offsets={x1=8, y1=self.isTT and 2 or -3, x2=-8, y2=2}})
 			if self.isTT then
 				self:SecureHook(this, "SetDisplayMode", function(fObj, displayMode)
 					if not fObj.tabsForDisplayMode[displayMode] then return end
