@@ -28,15 +28,17 @@ ToDos
 ?	I	Fix ActionButtons/MultiBarButtons missing Text & PetActionButtons not being displayed, when redisplayed after accessing Puzzle Caches in Zereth Mortis.
 		- happens when OverrideBar is used, but not always...
 
-	I	Details_Vanguard, reported by NeurosisTV, 25.04.22
-√		 - loaded but skin not found in AddonsSkins directory (c&RA)
+	I	RaiderIO, reported by d3ltaray, 05.05.22
+√		- skin Profile Tooltip, code provided in report
 
-	I	Auctionator, reported by DarkLimpan, 25.04.22
-√		- Skinner\AddonSkins\Auctionator-9.2.13-9-ge718c42.lua:15: Usage: SecureHookScript(object, method, [handler]): You can only hook a script on a frame object
+	I	reported by Fakelessgaming, 15.05.22
+√		- text colour on What's New panel in TLHC is not visible when using OUTLINE
+√		- text on Calendar minimap button is almost black as well when using OUTLINE
+√		- text colour on traits for allies on Product Choice frame is black (Nazjatar?? quest)
+√		- window tabs on SpellBook frame, AchievementsUI & AuctionHouseUI overlap.
 
-	I	Chat Settings, reported by Fakelessgaming, 02.05.22
-√		- Skinner\Core\NewSkinFuncs.lua:456: attempt to index field 'obj' (a nil value)
-		[string "@Skinner\Core\NewSkinFuncs.lua"]:456: in function <Skinner\Core\NewSkinFuncs.lua:445>
-		[string "@Skinner\Core\NewSkinFuncs.lua"]:553: in function `?'
-		[string "@Skinner\Core\NewSkinFuncs.lua"]:191: in function `skinObject'
-		[string "@Skinner\Core\UIFrames.lua"]:366: in function <Skinner\Core\UIFrames.lua:268>
+	I	reported by therealdeerez, 21.05.22
+√		- I am having an issue with the skinning the Zone map (Shift+M) where the texture I use is being placed in front of the map making it unusable.
+
+	I	ChatBubbles, requested by WladooTV, 24.05.22
+√?		- option to change colour & width of border ??
