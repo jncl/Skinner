@@ -3253,6 +3253,7 @@ aObj.SetupRetail_UIFrames = function()
 		if not self.prdb.PlayerChoice or self.initialized.PlayerChoice then return end
 		self.initialized.PlayerChoice = true
 
+		-- choiceID
 		local optOfs = {
 			[0]   = {-5, 0, 5, -30}, -- defaults
 			-- [89]  = {}, -- WoD Strategic Assault Choice [Alliance] (Lunarfall) √
@@ -3263,6 +3264,7 @@ aObj.SetupRetail_UIFrames = function()
 			-- [285] = {}, -- Legion Artifact Weapon Choice (Last Aritfact Weapon) √
 			-- [342] = {}, -- Warchief's Command Board [Horde] √
 			-- [505] = {}, -- Hero's Call Board [Alliance] √
+			-- [575] = {}, -- Ally Choice in Newhome, Nazjatar from Calling Conch (Horde only) √
 			-- [611] = {}, -- Torghast Option (inside Toghast) √
 			-- [640] = {}, -- Ember Court Entertainments List [Venthyr] (Hips) √
 			-- [641] = {}, -- Ember Court Refreshments List [Venthyr] (Picky Stefan) √
