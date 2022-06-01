@@ -2521,15 +2521,16 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 	self.initialized.UIWidgets = true
 
 	local function setTextColor(textObject)
-		self:rawHook(textObject, "SetTextColor", function(this, r, g, b, a)
+		aObj:rawHook(textObject, "SetTextColor", function(this, r, g, b, a)
 			local tcr, tcg, tcb = aObj:round2(r, 2), aObj:round2(g, 2), aObj:round2(b, 2)
+			-- aObj:Debug("SetTextColor: [%s, %s, %s, %s, %s]", this, tcr, tcg, tcb)
 			if (tcr == 0.41 or tcr == 0.28 and tcg == 0.02 and tcb == 0.02) -- Red
 			or (tcr == 0.08 and tcg == 0.17 or tcg == 0.16 and tcb == 0.37) -- Blue
-			-- or (tcr == 0.19 and tcg == 0.05 and tcb == 0.01) -- WarboardUI
+			or (tcr == 0.19 and tcg == 0.05 and tcb == 0.01) -- WarboardUI/Ally choicee in Nazjatar (Horde)
 			then
-				self.hooks[this].SetTextColor(this, aObj.BT:GetRGBA())
+				aObj.hooks[this].SetTextColor(this, aObj.BT:GetRGBA())
 			else
-				self.hooks[this].SetTextColor(this, r, g, b, a)
+				aObj.hooks[this].SetTextColor(this, r, g, b, a)
 			end
 			return tcr
 		end, true)
