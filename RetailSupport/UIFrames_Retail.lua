@@ -991,12 +991,8 @@ aObj.SetupRetail_UIFrames = function()
 
 		self:SecureHookScript(_G.ChallengesFrame, "OnShow", function(this)
 			this:DisableDrawLayer("BACKGROUND")
-			if aObj.isRtlPTR then
-				_G.ChallengesFrameInset.Bg:SetTexture(nil)
-				self:removeNineSlice(_G.ChallengesFrameInset.NineSlice)
-			else
-				self:removeInset(_G.ChallengesFrameInset)
-			end
+			_G.ChallengesFrameInset.Bg:SetTexture(nil)
+			self:removeNineSlice(_G.ChallengesFrameInset.NineSlice)
 			this.WeeklyInfo.Child:DisableDrawLayer("BACKGROUND")
 			if self.modBtnBs then
 				for _, dungeon in _G.ipairs(this.DungeonIcons) do
@@ -2631,9 +2627,7 @@ aObj.SetupRetail_UIFrames = function()
 				self:skinCheckButton{obj=ec.PVPRating.CheckButton}
 				self:skinCheckButton{obj=ec.MythicPlusRating.CheckButton}
 				self:skinCheckButton{obj=ec.VoiceChat.CheckButton}
-				if aObj.isRtlPTR then
-					self:skinCheckButton{obj=ec.CrossFactionGroup.CheckButton}
-				end
+				self:skinCheckButton{obj=ec.CrossFactionGroup.CheckButton}
 				self:skinCheckButton{obj=ec.PrivateGroup.CheckButton}
 			end
 
