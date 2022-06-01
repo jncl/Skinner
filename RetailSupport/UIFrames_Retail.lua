@@ -3844,6 +3844,7 @@ aObj.SetupRetail_UIFrames = function()
 		self.initialized.SplashFrame = true
 
 		self:SecureHookScript(_G.SplashFrame, "OnShow", function(this)
+			this.Label:SetTextColor(_G.HIGHLIGHT_FONT_COLOR:GetRGB()) -- allow for font OUTLINE to be seen
 			this.RightFeature.StartQuestButton:DisableDrawLayer("BACKGROUND")
 			if self.modBtns then
 				self:skinCloseButton{obj=this.TopCloseButton, noSkin=true}
