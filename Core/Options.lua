@@ -574,7 +574,7 @@ aObj.SetupOptions = function(self)
 					name = self.L["Baggins Bank Bags Colour"],
 					desc = self.L["Set "] .. self.L["Baggins Bank Bags Colour"],
 					hasAlpha = true,
-					hidden = function() return _G.IsAddOnLoaded("Baggins") and true or false end,
+					hidden = function() return _G.IsAddOnLoaded("Baggins") and false or true end,
 				},
 			},
 		},
