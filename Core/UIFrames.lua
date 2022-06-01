@@ -1636,6 +1636,7 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 	if not self.isClsc then
 		-- Calendar button
 		makeBtnSquare(_G.GameTimeFrame, 0.1, 0.31, 0.16, 0.6)
+		_G.GameTimeFrame:SetNormalFontObject(_G.GameFontWhite) -- allow for font OUTLINE to be seen
 		-- MinimapBackdrop
 		_G.MiniMapTrackingBackground:SetTexture(nil)
 		_G.MiniMapTrackingButtonBorder:SetTexture(nil)
