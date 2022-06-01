@@ -2,7 +2,7 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("RaiderIO") then return end
 local _G = _G
 
-aObj.addonsToSkin.RaiderIO = function(self) -- v 9.1.5 (v202111070600)
+aObj.addonsToSkin.RaiderIO = function(self) -- v 9.2.0 (v202205060600)
 
 	-- Config & SearchUI
 	local cPF, sUI -- configParentFrame, SearchUI
@@ -63,6 +63,7 @@ aObj.addonsToSkin.RaiderIO = function(self) -- v 9.1.5 (v202111070600)
 	-- tooltip
 	_G.C_Timer.After(0.1, function()
 		self:add2Table(self.ttList, _G.RaiderIO_SearchTooltip)
+		self:add2Table(self.ttList, _G.RaiderIO_ProfileTooltip)
 	end)
 
 end
