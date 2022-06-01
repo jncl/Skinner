@@ -388,7 +388,7 @@ aObj.addonsToSkin.Auctionator = function(self) -- v  9.2.13
 
 		if _G.Auctionator.State.TabFrameRef then
 			self:SecureHookScript(_G.Auctionator.State.TabFrameRef, "OnShow", function(this)
-				self:skinObject("tabs", {obj=this, tabs=this.Tabs, track=self.isClsc and false})
+				self:skinObject("tabs", {obj=this, tabs=this.Tabs, offsets={x1=8, y1=self.isTT and 2 or -3, x2=-8}, track=self.isClsc and false})
 				if self.isTT then
 					for key, tab in _G.ipairs(this.Tabs) do
 						self:setInactiveTab(tab.sf)
