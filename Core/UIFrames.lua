@@ -58,7 +58,7 @@ aObj.blizzLoDFrames[ftype].BattlefieldMap = function(self)
 		self:skinObject("frame", {obj=_G.BattlefieldMapTab, fType=ftype, kfs=true, noBdr=self.isTT, y1=-7, y2=-7})
 		this.BorderFrame:DisableDrawLayer("BORDER")
 		this.BorderFrame:DisableDrawLayer("ARTWORK")
-		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, fb=true, ofs=2, x1=-5, y1=6})
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, fb=true, ofs=2, x1=-5, y1=6, bba=(1.0 - _G.BattlefieldMapOptions.opacity)})
 		if self.modBtns then
 			self:skinCloseButton{obj=this.BorderFrame.CloseButton, fType=ftype, noSkin=true}
 		end

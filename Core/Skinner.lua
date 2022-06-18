@@ -123,9 +123,9 @@ function aObj:OnInitialize()
 	self.Backdrop[3].insets = {left = 3, right = 3, top = 3, bottom = 3}
 	-- narrow backdrop for ScrollBars & EditBoxes (8,8,2)
 	self.Backdrop[4] = _G.CopyTable(self.Backdrop[2])
-	self.Backdrop[4].tileSize = 8
-	self.Backdrop[4].edgeSize = 8
-	self.Backdrop[4].insets = {left = 2, right = 2, top = 2, bottom = 2}
+	self.Backdrop[4].tileSize = 4
+	self.Backdrop[4].edgeSize = 4
+	self.Backdrop[4].insets = {left = 1, right = 1, top = 1, bottom = 1}
 	-- these backdrops are for small UI buttons, e.g. minus/plus in QuestLog/IOP/Skills etc
 	self.Backdrop[5] =_G. CopyTable(self.backdrop)
 	self.Backdrop[5].tileSize = 12

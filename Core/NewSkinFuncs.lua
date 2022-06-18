@@ -44,7 +44,7 @@ aObj.skinTPLs = {
 		regions     = {3, 4, 5}, -- 1 is text, 2 is cursor, 6 is text, 7 is icon
 		si			= false, -- move search icon
 		six         = 3, -- search icon x offset
-		ofs         = 2,
+		ofs         = 0,
 		-- x1          = 0,
 		-- y1          = -4,
 		-- x2          = 0,
@@ -413,7 +413,7 @@ local function skinEditBox(tbl)
 	-- don't skin it twice
 	if tbl.obj.sf then return end
 	aObj:removeRegions(tbl.obj, tbl.regions)
-	aObj:skinObject("frame", {obj=tbl.obj, fType=tbl.fType, bd=3, ng=true, ofs=tbl.ofs, x1=tbl.x1, y1=tbl.y1, x2=tbl.x2, y2=tbl.y2, clr="slider"})
+	aObj:skinObject("frame", {obj=tbl.obj, fType=tbl.fType, bd=4, ng=true, ofs=tbl.ofs, x1=tbl.x1, y1=tbl.y1, x2=tbl.x2, y2=tbl.y2, clr="slider"})
 	-- move the search icon
 	if tbl.si then
 		local sIcon = tbl.obj.SearchIcon or tbl.obj.searchIcon or tbl.obj.icon or tbl.obj:GetName() and _G[tbl.obj:GetName() .. "SearchIcon"]
@@ -683,10 +683,10 @@ local function skinSlider(tbl)
 			tbl.x1 = _G.rawget(tbl, "x1") or 0
 			tbl.x2 = _G.rawget(tbl, "x2") or -1
 		elseif w <= 20 then
-			tbl.x1 = _G.rawget(tbl, "x1") or 2
-			tbl.x2 = _G.rawget(tbl, "x2") or -3
-			tbl.y1 = _G.rawget(tbl, "y1") or -1
-			tbl.y2 = _G.rawget(tbl, "y2") or 1
+			tbl.x1 = _G.rawget(tbl, "x1") or 3
+			tbl.x2 = _G.rawget(tbl, "x2") or -4
+			tbl.y1 = _G.rawget(tbl, "y1") or -2
+			tbl.y2 = _G.rawget(tbl, "y2") or 2
 		elseif w == 22 then
 			tbl.x1 = _G.rawget(tbl, "x1") or 3
 			tbl.x2 = _G.rawget(tbl, "x2") or -3
