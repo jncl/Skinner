@@ -769,7 +769,6 @@ aObj.SetupRetail_PlayerFrames = function()
 					if self.modChkBtns then
 						self:skinCheckButton{obj=frame.Button, fType=ftype}
 					end
-					_G.Spew("", frame)
 				end
 				for btn in fObj.pools:GetPool("CharCustomizeShapeshiftFormButtonTemplate"):EnumerateActive() do
 					btn.Ring:SetTexture(nil)
