@@ -2513,6 +2513,8 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 			or (tcr == 0.19 and tcg == 0.05 and tcb == 0.01) -- WarboardUI/Ally choicee in Nazjatar (Horde)
 			then
 				aObj.hooks[this].SetTextColor(this, aObj.BT:GetRGBA())
+			elseif (tcr == 0 and tcg == 0 and tcb == 0) then -- Black
+				aObj.hooks[this].SetTextColor(this, _G.HIGHLIGHT_FONT_COLOR:GetRGB())
 			else
 				aObj.hooks[this].SetTextColor(this, r, g, b, a)
 			end
@@ -2546,6 +2548,7 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 			if aObj:getChild(wFrame.Bar, 1) then
 				aObj:removeRegions(aObj:getChild(wFrame.Bar, 1), {1})
 			end
+			setTextColor(wFrame.Bar.Label)
 		elseif wFrame.widgetType == 3 then -- DoubleStatusBar (Island Expeditions)
 			aObj:skinObject("statusbar", {obj=wFrame.LeftBar, regions={2, 3, 4}, fi=0, bg=wFrame.LeftBar.BG, nilFuncs=true})
 			aObj:skinObject("statusbar", {obj=wFrame.RightBar, regions={2, 3, 4}, fi=0, bg=wFrame.RightBar.BG, nilFuncs=true})
