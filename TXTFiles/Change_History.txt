@@ -1,3 +1,20 @@
+beta9.43971.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Bugfix for Options code
+	Applied Retail PTR changes
+	Added comment to PlayerChoiceFrame skin
+	Updated Auctionator skin
+	Updated SplashFrame skin
+	Updated AchievementUI, AuctionUI & SpellBook Tab skinning code
+	Updated GameTimeFrame skin
+	Updated UIWidgets skin
+	Updated ChatBubbles skin
+	Updated BattleFieldMap skin
+	Updated RaiderIO skin
+
 beta9.43412.1
 Jncl:
 	ToDo.txt
