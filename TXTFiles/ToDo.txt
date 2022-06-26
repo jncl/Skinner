@@ -28,17 +28,10 @@ ToDos
 ?	I	Fix ActionButtons/MultiBarButtons missing Text & PetActionButtons not being displayed, when redisplayed after accessing Puzzle Caches in Zereth Mortis.
 		- happens when OverrideBar is used, but not always...
 
-	I	RaiderIO, reported by d3ltaray, 05.05.22
-√		- skin Profile Tooltip, code provided in report
+	I	reported by Fakelesssgaming, 10.06.22
+≈		- make Slider/EditBox border width 1 pixel (trying 4)
+√		- UIWidgetPowerBarContainerFrame.??.Bar.Label text needs changing from black to white
 
-	I	reported by Fakelessgaming, 15.05.22
-√		- text colour on What's New panel in TLHC is not visible when using OUTLINE
-√		- text on Calendar minimap button is almost black as well when using OUTLINE
-√		- text colour on traits for allies on Product Choice frame is black (Nazjatar?? quest)
-√		- window tabs on SpellBook frame, AchievementsUI & AuctionHouseUI overlap.
-
-	I	reported by therealdeerez, 21.05.22
-√		- I am having an issue with the skinning the Zone map (Shift+M) where the texture I use is being placed in front of the map making it unusable.
-
-	I	ChatBubbles, requested by WladooTV, 24.05.22
-√?		- option to change colour & width of border ??
+	I	CharacterCustomize, reported by Fakelesssgaming, 17.06.22
+√		- Skinner\RetailSupport\PlayerFrames_Retail.lua:772: attempt to call field 'Spew' (a nil value)
+		[string "@Skinner\RetailSupport\PlayerFrames_Retail.lua"]:772: in function <Skinner\RetailSupport\PlayerFrames_Retail.lua:764>
