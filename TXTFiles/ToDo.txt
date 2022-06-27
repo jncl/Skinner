@@ -28,10 +28,6 @@ ToDos
 ?	I	Fix ActionButtons/MultiBarButtons missing Text & PetActionButtons not being displayed, when redisplayed after accessing Puzzle Caches in Zereth Mortis.
 		- happens when OverrideBar is used, but not always...
 
-	I	reported by Fakelesssgaming, 10.06.22
-≈		- make Slider/EditBox border width 1 pixel (trying 4)
-√		- UIWidgetPowerBarContainerFrame.??.Bar.Label text needs changing from black to white
-
-	I	CharacterCustomize, reported by Fakelesssgaming, 17.06.22
-√		- Skinner\RetailSupport\PlayerFrames_Retail.lua:772: attempt to call field 'Spew' (a nil value)
-		[string "@Skinner\RetailSupport\PlayerFrames_Retail.lua"]:772: in function <Skinner\RetailSupport\PlayerFrames_Retail.lua:764>
+	I	reported by Fakelessgaming, 26.06.22
+		- Sorry to say but changes to slider bar borders made them barely visible. =(  Is there any other options?
+√		And it seems like changes didn't affect guild tab.
