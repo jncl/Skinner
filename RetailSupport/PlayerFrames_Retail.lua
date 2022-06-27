@@ -63,6 +63,9 @@ aObj.SetupRetail_PlayerFrames = function()
 				end
 			end
 			local function skinBtn(btn)
+				if btn.NineSlice then
+					aObj:removeNineSlice(btn.NineSlice)
+				end
 				btn:DisableDrawLayer("BACKGROUND")
 				btn:DisableDrawLayer("BORDER")
 				btn:DisableDrawLayer("ARTWORK")
