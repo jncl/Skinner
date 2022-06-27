@@ -605,7 +605,7 @@ aObj.SetupRetail_PlayerFrames = function()
 				_G.PaperDollFrame_UpdateSidebarTabs()
 			end
 			self:SecureHookScript(_G.PaperDollTitlesPane, "OnShow", function(fObj)
-				self:skinSlider{obj=fObj.scrollBar, wdth=-4}
+				self:skinObject("slider", {obj=fObj.scrollBar, fType=ftype})
 				for _, btn in _G.pairs(fObj.buttons) do
 					btn:DisableDrawLayer("BACKGROUND")
 				end
@@ -613,7 +613,7 @@ aObj.SetupRetail_PlayerFrames = function()
 				self:Unhook(fObj, "OnShow")
 			end)
 			self:SecureHookScript(_G.PaperDollEquipmentManagerPane, "OnShow", function(fObj)
-				self:skinSlider{obj=fObj.scrollBar, wdth=-4}
+				self:skinObject("slider", {obj=fObj.scrollBar, fType=ftype})
 				for _, btn in _G.pairs(fObj.buttons) do
 					btn:DisableDrawLayer("BACKGROUND")
 					if self.modBtnBs then
