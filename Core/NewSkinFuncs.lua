@@ -236,6 +236,9 @@ local function applySkin(tbl)
 	--@end-alpha@
 	aObj:Debug2("applySkin: [%s]", tbl)
 
+	if tbl.kfs then
+		aObj:keepFontStrings(tbl.obj)
+	end
 	-- fix for backdrop textures not tiling vertically
 	-- using info from here: http://boss.wowinterface.com/forums/showthread.php?p=185868
 	if aObj.prdb.BgUseTex then
@@ -260,7 +263,7 @@ local function applySkin(tbl)
 	aObj:clrBBC(tbl.obj, tbl.bbclr, tbl.bba)
 	if not tbl.ng then
 		aObj:applyGradient(tbl.obj, tbl.fh, tbl.invert, tbl.rotate)
-		aObj.gradFrames[tbl.fType][tbl.obj] = true
+		aObj.gradFrames[tbl.fType or "a"][tbl.obj] = true
 	end
 end
 skinFuncs.skin = function(table) applySkin(table) end
