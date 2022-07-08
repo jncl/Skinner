@@ -15,14 +15,14 @@ end
 local buildInfo = {
 	-- Testing
 	wow_classic_beta    = {"3.0.0",  99999, "Classic TBC Beta"},
-	wow_classic_ptr     = {"2.5.4",  44171, "Classic TBC PTR"},
-	wow_classic_era_ptr = {"1.14.3", 44170, "Classic Era PTR"}, -- a.k.a. Season of Mastery Beta
+	wow_classic_ptr     = {"2.5.4",  44400, "Classic TBC PTR"},
+	wow_classic_era_ptr = {"1.14.3", 44403, "Classic Era PTR"}, -- a.k.a. Season of Mastery Beta
 	wow_beta            = {"10.0.0", 99999, "Retail Beta"},
-	wow_ptr             = {"9.2.5",  44232, "Retail PTR"},
+	wow_ptr             = {"9.2.7",  44444, "Retail PTR"},
 	-- Live
-	wow_classic         = {"2.5.4",  44171, "Classic TBC"},
-	wow_classic_era     = {"1.14.3", 44170, "Classic Era"},
-	wow                 = {"9.2.5",  44232, "Retail"},
+	wow_classic         = {"2.5.4",  44400, "Classic TBC"},
+	wow_classic_era     = {"1.14.3", 44403, "Classic Era"},
+	wow                 = {"9.2.5",  44325, "Retail"},
 	-- Currently playing
 	curr                = {_G.GetBuildInfo()},
 }
@@ -53,8 +53,8 @@ function aObj:checkVersion()
 		end
 	end
 
-	-- check current build number against wow version build number, if greater then it's a patch
-	self.isPatch = _G.tonumber(buildInfo.curr[2]) > _G.tonumber(buildInfo[agentUID][2])
+	-- check current version or build number against current wow version info, if greater then it's a patch
+	self.isPatch = (buildInfo.curr[1] ~= buildInfo[agentUID][1]) or (_G.tonumber(buildInfo.curr[2]) > _G.tonumber(buildInfo[agentUID][2]))
 
 	--@alpha@
 	self:Printf("%s, %d, %s, %d, %s, %d, %s", buildInfo[agentUID][1], buildInfo[agentUID][2], buildInfo.curr[1], buildInfo.curr[2], buildInfo.curr[3], buildInfo.curr[4] , agentUID)
