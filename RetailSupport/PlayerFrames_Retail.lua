@@ -1730,11 +1730,11 @@ aObj.SetupRetail_PlayerFrames = function()
 			self:SecureHook(this.GuildMemberDetailFrame, "DisplayMember", function(fObj, _)
 				self:removeNineSlice(fObj.Border)
 				self:skinObject("dropdown", {obj=fObj.RankDropdown, fType=ftype})
-				self:skinObject("frame", {obj=fOBj, fType=ftype, kfs=true, ofs=0, x2=6})
 				self:skinObject("frame", {obj=fObj.NoteBackground, fType=ftype, fb=true, ofs=0})
 				self:skinObject("frame", {obj=fObj.OfficerNoteBackground, fType=ftype, fb=true, ofs=0})
 				self:adjWidth{obj=fObj.RemoveButton, adj=-4}
 				self:adjWidth{obj=fObj.GroupInviteButton, adj=-4}
+				self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, cb=true, ofs=-7, x2=0})
 				if self.modBtns then
 					self:skinStdButton{obj=fObj.RemoveButton}
 					self:skinStdButton{obj=fObj.GroupInviteButton}
