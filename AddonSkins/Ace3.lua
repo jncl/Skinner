@@ -29,8 +29,8 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 			-- aObj:Debug("skinAceGUI: [%s, %s, %s, %s, %s, %s]", obj, objType, objVer, obj.sknd, objType:find("TSM"), obj.sknrTSM)
 		-- end
 		if obj
-		and not obj.sknd
-		and not (objType:find("TSM") and obj.sknrTSM) -- check objType as TSM overlays existing objects
+		-- and not obj.sknd
+		-- and not (objType:find("TSM") and obj.sknrTSM) -- check objType as TSM overlays existing objects
 		then
 			-- aObj:Debug("Ace3 Skinning: [%s, %s]", obj, objType)
 
@@ -185,38 +185,39 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 					aObj:skinObject("slider", {obj=aObj:getChild(obj.frame, 2).scrollBar, rpTex="artwork"})
 				end
 
-			-- Snowflake objects (Producer AddOn)
-			elseif objType == "SnowflakeEditBox" then
-				aObj:skinEditBox{obj=obj.box, regs={9}, noHeight=true}
-
-			elseif objType == "SnowflakeGroup" then
-				aObj:applySkin{obj=obj.frame}
-				aObj:skinSlider{obj=obj.slider, size=2}
-				-- hook this for frame refresh
-				aObj:secureHook(obj, "Refresh", function(this)
-					this.frame:SetBackdrop(aObj.Backdrop[1])
-					this.frame:SetBackdropColor(aObj.bClr:GetRGBA())
-					this.frame:SetBackdropBorderColor(aObj.bbClr:GetRGBA())
-				end)
-
-			-- Producer objects
-			elseif objType == "ProducerHead" then
-				aObj:applySkin{obj=obj.frame}
-				obj.SetBorder = _G.nop
-				if aObj.modBtns then
-					aObj:skinCloseButton{obj=obj.close, onSB=true}
-				end
-
+			-- -- Snowflake objects (Producer AddOn)
+			-- elseif objType == "SnowflakeEditBox" then
+			-- 	aObj:skinObject("editbox", {obj=obj.box})
+			--
+			-- elseif objType == "SnowflakeGroup" then
+			-- 	aObj:skinObject("slider", {obj=obj.slider})
+			-- 	aObj:applySkin{obj=obj.frame}
+			-- 	-- hook this for frame refresh
+			-- 	aObj:secureHook(obj, "Refresh", function(this)
+			-- 		this.frame:SetBackdrop(aObj.Backdrop[1])
+			-- 		this.frame:SetBackdropColor(aObj.bClr:GetRGBA())
+			-- 		this.frame:SetBackdropBorderColor(aObj.bbClr:GetRGBA())
+			-- 	end)
+			--
+			-- -- Producer objects
+			-- elseif objType == "ProducerHead" then
+			-- 	aObj:applySkin{obj=obj.frame}
+			-- 	obj.SetBorder = _G.nop
+			-- 	if aObj.modBtns then
+			-- 		aObj:skinCloseButton{obj=obj.close, onSB=true}
+			-- 	end
+			--
 			-- ListBox object (AuctionLite)
 			elseif objType == "ListBox" then
 				for _, child in _G.ipairs{obj.frame:GetChildren()} do
 					if child:IsObjectType("ScrollFrame") then
 						child:SetBackdrop(nil)
-						aObj:skinSlider{obj=_G[child:GetName() .. "ScrollBar"]}
+						aObj:skinObject("slider", {obj=_G[child:GetName() .. "ScrollBar"]})
 						break
 					end
 				end
-				aObj:applySkin{obj=obj.box, kfs=true}
+				-- aObj:applySkin{obj=obj.box, kfs=true}
+				aObj:skinObject("skin", {obj=obj.box, kfs=true})
 
 			-- LibSharedMedia objects
 			elseif objType == "LSM30_Background"
@@ -315,88 +316,88 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 					aObj:addButtonBorder{obj=obj.deleteButton, es=10, ofs=-1, x1=2.5, y2=3.5}
 				end
 
-			-- TradeSkillMaster (TSM) objects
-			elseif objType == "TSMButton" then
-			   obj.btn:SetBackdrop(nil)
-				if aObj.modBtns then
-					aObj:skinStdButton{obj=obj.btn, as=true} -- just skin it otherwise text is hidden
-				end
-				 obj.sknrTSM = true
-
-			elseif objType == "TSMDropdown" then
-				aObj:skinAceDropdown(obj, 0, 0)
-				 obj.sknrTSM = true
-
-			elseif objType == "TSMDropdown-Pullout" then
-				aObj:applySkin{obj=obj.frame}
-				 obj.sknrTSM = true
-
-			elseif objType == "TSMEditBox" then
-				if aObj.modBtns then
-					aObj:skinStdButton{obj=obj.button, as=true}
-				end
-				 obj.sknrTSM = true
-
-			elseif objType == "TSMInlineGroup"
-			then
-				obj.HideBorder = _G.nop
-				obj.SetBackdrop = _G.nop
-				obj.border:Hide()
-				obj.titletext:ClearAllPoints()
-				obj.titletext:SetPoint("TOPLEFT", 10, -6)
-				obj.titletext:SetPoint("TOPRIGHT", -14, -6)
-				aObj:applySkin{obj=obj.frame}
-				obj.sknrTSM = true
-
-			elseif objType == "TSMMacroButton"
-			or objType == "TSMFastDestroyButton"
-			then
-				obj.frame:SetBackdrop(nil)
-				if aObj.modBtns then
-					aObj:skinStdButton{obj=obj.frame}
-				end
-				obj.sknrTSM = true
-
-			elseif objType == "TSMMainFrame" then
-				aObj:applySkin{obj=obj.frame}
-				aObj:getChild(obj.frame, 1):SetBackdrop(nil)
-				if aObj.modBtns then
-					aObj:skinStdButton{obj=aObj:getChild(obj.frame, 1), nc=true, ofs=2} -- close button
-				end
-				obj.sknrTSM = true
-
-			elseif objType == "TSMScrollingTable" then
-				aObj:addSkinFrame{obj=obj.frame, ft="a", nb=true, ofs=2}
-				obj.sknrTSM = true
-
-			elseif objType == "TSMSelectionList" then
-				aObj:applySkin{obj=obj.leftFrame}
-				aObj:skinSlider{obj=obj.leftScrollFrame._scrollbar}
-				aObj:applySkin{obj=obj.rightFrame}
-				aObj:skinSlider{obj=obj.rightScrollFrame._scrollbar}
-				obj.sknrTSM = true
-
-			elseif objType == "TSMTabGroup"
-			then
-				aObj:applySkin{obj=obj.content:GetParent()}
-				obj.sknrTSM = true
-
-			elseif objType == "TSMTreeGroup" then
-				aObj:applySkin{obj=obj.border}
-				aObj:applySkin{obj=obj.treeframe}
-				obj.sknrTSM = true
-
-			elseif objType == "TSMWindow" then
-				aObj:applySkin{obj=obj.frame, kfs=true}
-			   obj.titletext:SetPoint("TOP", obj.frame, "TOP", 0, -6)
-				if aObj.modBtns then
-					aObj:skinCloseButton{obj=obj.closebutton}
-				end
-				 obj.sknrTSM = true
-
+			-- -- TradeSkillMaster (TSM) objects
+			-- elseif objType == "TSMButton" then
+			--    obj.btn:SetBackdrop(nil)
+			-- 	if aObj.modBtns then
+			-- 		aObj:skinStdButton{obj=obj.btn, as=true} -- just skin it otherwise text is hidden
+			-- 	end
+			-- 	 obj.sknrTSM = true
+			--
+			-- elseif objType == "TSMDropdown" then
+			-- 	aObj:skinAceDropdown(obj, 0, 0)
+			-- 	 obj.sknrTSM = true
+			--
+			-- elseif objType == "TSMDropdown-Pullout" then
+			-- 	aObj:applySkin{obj=obj.frame}
+			-- 	 obj.sknrTSM = true
+			--
+			-- elseif objType == "TSMEditBox" then
+			-- 	if aObj.modBtns then
+			-- 		aObj:skinStdButton{obj=obj.button, as=true}
+			-- 	end
+			-- 	 obj.sknrTSM = true
+			--
+			-- elseif objType == "TSMInlineGroup"
+			-- then
+			-- 	obj.HideBorder = _G.nop
+			-- 	obj.SetBackdrop = _G.nop
+			-- 	obj.border:Hide()
+			-- 	obj.titletext:ClearAllPoints()
+			-- 	obj.titletext:SetPoint("TOPLEFT", 10, -6)
+			-- 	obj.titletext:SetPoint("TOPRIGHT", -14, -6)
+			-- 	aObj:applySkin{obj=obj.frame}
+			-- 	obj.sknrTSM = true
+			--
+			-- elseif objType == "TSMMacroButton"
+			-- or objType == "TSMFastDestroyButton"
+			-- then
+			-- 	obj.frame:SetBackdrop(nil)
+			-- 	if aObj.modBtns then
+			-- 		aObj:skinStdButton{obj=obj.frame}
+			-- 	end
+			-- 	obj.sknrTSM = true
+			--
+			-- elseif objType == "TSMMainFrame" then
+			-- 	aObj:applySkin{obj=obj.frame}
+			-- 	aObj:getChild(obj.frame, 1):SetBackdrop(nil)
+			-- 	if aObj.modBtns then
+			-- 		aObj:skinStdButton{obj=aObj:getChild(obj.frame, 1), nc=true, ofs=2} -- close button
+			-- 	end
+			-- 	obj.sknrTSM = true
+			--
+			-- elseif objType == "TSMScrollingTable" then
+			-- 	aObj:skinObject("frame", {obj=obj.frame, ofs-2})
+			-- 	obj.sknrTSM = true
+			--
+			-- elseif objType == "TSMSelectionList" then
+			-- 	aObj:skinObject("slider", {obj=obj.leftScrollFrame._scrollbar})
+			-- 	aObj:applySkin{obj=obj.leftFrame}
+			-- 	aObj:skinObject("slider", {obj=obj.rightScrollFrame._scrollbar})
+			-- 	aObj:applySkin{obj=obj.rightFrame}
+			-- 	obj.sknrTSM = true
+			--
+			-- elseif objType == "TSMTabGroup"
+			-- then
+			-- 	aObj:applySkin{obj=obj.content:GetParent()}
+			-- 	obj.sknrTSM = true
+			--
+			-- elseif objType == "TSMTreeGroup" then
+			-- 	aObj:applySkin{obj=obj.border}
+			-- 	aObj:applySkin{obj=obj.treeframe}
+			-- 	obj.sknrTSM = true
+			--
+			-- elseif objType == "TSMWindow" then
+			-- 	aObj:applySkin{obj=obj.frame, kfs=true}
+			--    obj.titletext:SetPoint("TOP", obj.frame, "TOP", 0, -6)
+			-- 	if aObj.modBtns then
+			-- 		aObj:skinCloseButton{obj=obj.closebutton}
+			-- 	end
+			-- 	 obj.sknrTSM = true
+			--
 			-- AuctionMaster objects
 			elseif objType == "ScrollableSimpleHTML" then
-				aObj:skinSlider{obj=obj.scrollFrame.ScrollBar}
+				aObj:skinObject("slider", {obj=obj.scrollFrame.ScrollBar})
 			elseif objType == "EditDropdown" then
 				if aObj.modBtnBs then
 					aObj:addButtonBorder{obj=obj.button, es=12, ofs=-2}
@@ -404,14 +405,15 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 
 			-- CompactMissions objects
 			elseif objType == "Mission" then
-				aObj:applySkin{obj=obj.frame, kfs=true}
+				-- aObj:applySkin{obj=obj.frame, kfs=true}
+				aObj:skinObject("skin", {obj=obj.frame, kfs=true})
 				if aObj.modBtns then
 					aObj:skinStdButton{obj=obj.startbutton, as=true}
 				end
 
 			-- GarrisonMissionCommander/OrderHallCommander/ChampionCommander objects
 			elseif objType == "GMCLayer" then
-				aObj:addSkinFrame{obj=obj.frame, ft="a", nb=true, x1=-4, x2=4, y2=-4}
+				aObj:skinObject("frame", {obj=obj.frame, ofs=-4})
 			elseif objType == "GMCMissionButton"
 			or objType == "GMCSlimMissionButton"
 			or objType == "OHCMissionButton"
@@ -441,27 +443,22 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 			-- GarrisonCommander objects
 			elseif objType == "GMCGUIContainer" then
 				obj.frame.GarrCorners:DisableDrawLayer("BACKGROUND")
-				aObj:addSkinFrame{obj=obj.frame, ft="a", kfs=true, ofs=2, x2=1}
-				-- if aObj.modBtns then
-				--	aObj:skinCloseButton{obj=obj.frame.CloseButton}
-				-- end
+				aObj:skinObject("frame", {obj=obj.frame, kfs=true, cb=true, ofs=2, x2=1})
 
 			-- OrderHallCommander/ChampionCommander objects
 			elseif objType == "OHCGUIContainer"
 			or objType == "BFAGUIContainer"
 			then
-				aObj:addSkinFrame{obj=obj.frame, ft="a", kfs=true, nb=true}
-				if aObj.modBtns then
-					aObj:skinCloseButton{obj=obj.frame.Close}
-				end
+				aObj:skinObject("frame", {obj=obj.frame, kfs=true, cb=true})
 
 			-- quantify
 			elseif objType == "QuantifyInlineGroup" then
-				aObj:applySkin{obj=obj.border, kfs=true}
+				-- aObj:applySkin{obj=obj.border, kfs=true}
+				aObj:skinObject("skin", {obj=obj.border, kfs=true})
 
 			-- AdiBags
 			elseif objType == "ItemList" then
-				aObj:addSkinFrame{obj=obj.content:GetParent(), kfs=true, nb=true}
+				aObj:skinObject("frame", {obj=obj.content:GetParent(), kfs=true})
 
 			-- ignore these types for now
 			elseif objType == "BlizOptionsGroup"
@@ -474,11 +471,11 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 			or objType == "Icon"
 			or objType == "InteractiveLabel"
 			or objType == "Label"
-			-- Snowflake objects
-			or objType == "SnowflakeButton"
-			or objType == "SnowflakeEscape"
-			or objType == "SnowflakePlain"
-			or objType == "SnowflakeTitle"
+			-- -- Snowflake objects
+			-- or objType == "SnowflakeButton"
+			-- or objType == "SnowflakeEscape"
+			-- or objType == "SnowflakePlain"
+			-- or objType == "SnowflakeTitle"
 			-- LSM30 objects
 			or objType == "LSM30_Statusbar_Overlay"
 			or objType == "LSM30_Statusbar_Overlay-Item-Toggle"
@@ -497,19 +494,19 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 			or objType == "WeakAurasTwoColumnDropdown"
 			-- ReagentRestocker object
 			or objType == "DragDropTarget"
-			-- TradeSkillMaster objects
-			or objType == "TSMCheckBox"
-			or objType == "TSMColorPicker"
-			or objType == "TSMDropdown-Item-Execute"
-			or objType == "TSMDropdown-Item-Toggle"
-			or objType == "TSMImage"
-			or objType == "TSMLabel"
-			or objType == "TSMMultiLabel"
-			or objType == "TSMScrollFrame"
-			or objType == "TSMSimpleGroup"
-			or objType == "TSMSlider"
-			or objType == "TSMGroupBox"
-			or objType == "TSMInteractiveLabel"
+			-- -- TradeSkillMaster objects
+			-- or objType == "TSMCheckBox"
+			-- or objType == "TSMColorPicker"
+			-- or objType == "TSMDropdown-Item-Execute"
+			-- or objType == "TSMDropdown-Item-Toggle"
+			-- or objType == "TSMImage"
+			-- or objType == "TSMLabel"
+			-- or objType == "TSMMultiLabel"
+			-- or objType == "TSMScrollFrame"
+			-- or objType == "TSMSimpleGroup"
+			-- or objType == "TSMSlider"
+			-- or objType == "TSMGroupBox"
+			-- or objType == "TSMInteractiveLabel"
 			-- CollectMe objects
 			or objType == "CollectMeLabel"
 			-- CompactMissions objects

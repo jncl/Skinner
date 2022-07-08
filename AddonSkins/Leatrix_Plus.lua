@@ -4,6 +4,48 @@ local _G = _G
 
 aObj.addonsToSkin.Leatrix_Plus = function(self) -- v 9.1.20/1.14.05/2.5.64
 
+	local lpPanels = {
+		-- All versions
+		"SoundPanel",
+		"WowheadPanel",
+		"QuestPanel",
+		"SellJunkFrame",
+		"RepairPanel",
+		"ChainPanel",
+		"ClassFrame",
+		"QuestTextPanel",
+		"MailTextPanel",
+		"SideMinimap",
+		"ExcludedButtonsPanel",
+		"ChatFilterPanel",
+		"AcceptResPanel",
+		"DressupPanel",
+		"ReleasePanel",
+		"weatherPanel",
+		"BuffPanel",
+		"SideFrames",
+		"CooldownPanel",
+		"SideTip",
+		"InvPanel",
+		-- Classic/ClassicBCC
+		"BookTextPanel",
+		"EnhanceQuestPanel",
+		"DismountFrame",
+		"WidgetPanel",
+		"SideViewport",
+		-- ClassicBCC/Retail
+		"FocusPanel",
+		-- Retail
+		"MovieSkipPanel",
+		"transPanel",
+		"WidgetPowerPanel",
+		"WidgetTopPanel",
+		"ControlPanel",
+		"PowerPanel",
+		"HideChatButtonsPanel",
+		"bordersPanel",
+	}
+
 	self:SecureHookScript(_G.LeaPlusGlobalPanel, "OnShow", function(this)
 		local function skinKids(frame)
 			for _, child in ipairs{frame:GetChildren()} do
@@ -12,7 +54,7 @@ aObj.addonsToSkin.Leatrix_Plus = function(self) -- v 9.1.20/1.14.05/2.5.64
 				elseif child:IsObjectType("ScrollFrame") then
 					aObj:skinObject("slider", {obj=child.ScrollBar})
 				elseif child:IsObjectType("EditBox") then
-					aObj:skinEditBox{obj=child, regs={6}} -- 6 is text
+					aObj:skinObject("editbox", {obj=child})
 					child.f:SetBackdrop(nil)
 				elseif child:IsObjectType("CheckButton")
 				and aObj.modChkBtns
@@ -49,7 +91,7 @@ aObj.addonsToSkin.Leatrix_Plus = function(self) -- v 9.1.20/1.14.05/2.5.64
 			end
 		end
 		local sideF
-		for _, frameRef in _G.pairs{"SoundPanel", "QuestPanel", "ChainPanel", "ClassFrame", "SideMinimap", "QuestTextPanel", "MailTextPanel", "BookTextPanel", "weatherPanel", "BuffPanel", "SideFrames", "WidgetPanel", "FocusPanel", "CooldownPanel", "SideTip", "SideViewport", "InvPanel"} do
+		for _, frameRef in _G.pairs(lpPanels) do
 			sideF = _G["LeaPlusGlobalPanel_" .. frameRef]
 			if sideF then
 				skinKids(sideF)
@@ -123,12 +165,10 @@ aObj.addonsToSkin.Leatrix_Plus = function(self) -- v 9.1.20/1.14.05/2.5.64
 	if _G.LeaPlusDB["ShowBagSearchBox"] == "On" then
 		if self.prdb.ContainerFrames.skin then
 			self:skinObject("editbox", {obj=_G.BagItemSearchBox, si=true})
-			-- self:skinEditBox{obj=_G.BagItemSearchBox, regs={6, 7}, mi=true} -- 6 is text, 7 is icon
 			self:moveObject{obj=_G.BagItemSearchBox, x=7, y=3}
 		end
 		if self.prdb.BankFrame then
 			self:skinObject("editbox", {obj=_G.BankItemSearchBox, si=true})
-			-- self:skinEditBox{obj=_G.BankItemSearchBox, regs={6, 7}, mi=true} -- 6 is text, 7 is icon
 			self:moveObject{obj=_G.BankItemSearchBox, x=10, y=6}
 		end
 	end
