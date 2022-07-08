@@ -3,6 +3,16 @@ Jncl:
 	ToDo.txt
 	Updated Change_History.txt
 	Updated version numbers
+	Updated CommunitiesUI skin to use NSF functions
+	Changed ScrollBar/EditBox Border Texture and edgesize
+	Updated PaperDollFrame skin
+	Updated AchievementsUI skin
+
+beta9.44232.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
 	Changed width of EditBox and Slider borders
 	Update UIWidgets StatusBar Text colour
 	Bugfix for CharacterCustomize skin
