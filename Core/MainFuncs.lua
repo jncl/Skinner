@@ -2,6 +2,8 @@ local _, aObj = ...
 
 local _G = _G
 
+--[===[@non-debug@
+
 local hOfs = -7
 local function hideHeader(obj)
 	local hAdj, hObj = false
@@ -1271,3 +1273,5 @@ function aObj:skinUsingBD2(obj)
 	self:skinUsingBD{obj=obj, size=2}
 
 end
+
+--@end-non-debug@]===]
