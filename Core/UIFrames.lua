@@ -65,9 +65,7 @@ aObj.blizzLoDFrames[ftype].BattlefieldMap = function(self)
 
 		-- change the skinFrame's opacity as required
 		self:SecureHook(this, "RefreshAlpha", function(fObj)
-			local alpha = 1.0 - _G.BattlefieldMapOptions.opacity
-			alpha = (alpha >= 0.15) and alpha - 0.15 or alpha
-			fObj.sf:SetAlpha(alpha)
+			fObj.sf:SetAlpha(1.0 - _G.BattlefieldMapOptions.opacity)
 		end)
 
 		if _G.IsAddOnLoaded("Capping") then
@@ -611,9 +609,9 @@ aObj.blizzFrames[ftype].ChatFrames = function(self)
 			_G.CombatLogQuickButtonFrame_Custom:DisableDrawLayer("BACKGROUND")
 			self:skinObject("frame", {obj=_G.CombatLogQuickButtonFrame_Custom, fType=ftype, ofs=0, x1=-3, x2=3})
 			self:adjHeight{obj=_G.CombatLogQuickButtonFrame_Custom, adj=4}
-			self:skinStatusBar{obj=_G.CombatLogQuickButtonFrame_CustomProgressBar, fi=0, bgTex=_G.CombatLogQuickButtonFrame_CustomTexture}
+			self:skinObject("statusbar", {obj=_G.CombatLogQuickButtonFrame_CustomProgressBar, fi=0, bg=_G.CombatLogQuickButtonFrame_CustomTexture})
 		else
-			self:skinStatusBar{obj=_G.CombatLogQuickButtonFrameProgressBar, fi=0, bgTex=_G.CombatLogQuickButtonFrameTexture}
+			self:skinObject("statusbar", {obj=_G.CombatLogQuickButtonFrameProgressBar, fi=0, bg=_G.CombatLogQuickButtonFrameTexture})
 		end
 	end
 
@@ -702,7 +700,7 @@ aObj.blizzFrames[ftype].CoinPickup = function(self)
 	self.initialized.CoinPickup = true
 
 	self:SecureHookScript(_G.CoinPickupFrame, "OnShow", function(this)
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, x1=9, y1=-12, x2=-6, y2=12}
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, x1=9, y1=-12, x2=-6, y2=12})
 
 		self:Unhook(this, "OnShow")
 	end)
@@ -729,9 +727,11 @@ aObj.blizzFrames[ftype].ColorPicker = function(self)
 
 	self:SecureHookScript(_G.OpacityFrame, "OnShow", function(this)
 		-- used by BattlefieldMinimap amongst others
-		self:removeNineSlice(this.Border)
+		if self.isRtl then
+			self:removeNineSlice(this.Border)
+		end
 		self:skinObject("slider", {obj=_G.OpacityFrameSlider, fType=ftype})
-		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ofs=0, y1=-1})
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ofs=-2})
 
 		self:Unhook(this, "OnShow")
 	end)
@@ -861,25 +861,22 @@ aObj.blizzLoDFrames[ftype].GMChatUI = function(self)
 	self.initialized.GMChatUI = true
 
 	self:SecureHookScript(_G.GMChatFrame, "OnShow", function(this)
-		self:addSkinFrame{obj=_G.GMChatTab, ft=ftype, kfs=true, noBdr=self.isTT, y2=-4}
+		self:skinObject("frame", {obj=_G.GMChatTab, fType=ftype, kfs=true, noBdr=self.isTT, y2=-4})
 		if self.prdb.ChatFrames then
-			self:addSkinFrame{obj=this, ft=ftype, x1=-4, y1=4, x2=4, y2=-8}
-		end
-		if self.modBtns then
-			self:skinCloseButton{obj=_G.GMChatFrameCloseButton}
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, ofs=-4, y2=-8})
 		end
 		this:DisableDrawLayer("BORDER")
 		if self.prdb.ChatEditBox.skin then
 			if self.prdb.ChatEditBox.style == 1 then -- Frame
 				local kRegions = _G.CopyTable(self.ebRgns)
-				aObj:add2Table(kRegions, 12)
+				self:add2Table(kRegions, 12)
 				self:keepRegions(this.editBox, kRegions)
-				self:addSkinFrame{obj=this.editBox, ft=ftype, x1=2, y1=-2, x2=-2}
+				self:skinObject("frame", {obj=this.editBox, fType=ftype, ofs=2, y2=0})
 			elseif self.prdb.ChatEditBox.style == 2 then -- Editbox
-				self:skinEditBox{obj=this.editBox, regs={12}, noHeight=true}
+				self:skinObject("editbox", {obj=this.editbox, fType=ftype})
 			else -- Borderless
 				self:removeRegions(this.editBox, {6, 7, 8})
-				self:addSkinFrame{obj=this.editBox, ft=ftype, noBdr=true, x1=5, y1=-4, x2=-5, y2=2}
+				self:skinObject("frame", {obj=this.editBox, fType=ftype, noBdr=true, x1=5, y1=-4, x2=-5, y2=2})
 			end
 		end
 
@@ -957,7 +954,7 @@ aObj.blizzLoDFrames[ftype].GuildBankUI = function(self)
 		end
 		self:skinObject("editbox", {obj=this.EditBox, fType=ftype})
 		self:adjHeight{obj=this.ScrollFrame, adj=20} -- stretch to bottom of scroll area
-		self:skinSlider{obj=this.ScrollFrame.ScrollBar, rt="background"}
+		self:skinObject("slider", {obj=this.ScrollFrame.ScrollBar, fType=ftype, rpTex="background"})
 		for _, btn in _G.pairs(this.Buttons) do
 			btn:DisableDrawLayer("BACKGROUND")
 			if self.modBtnBs then
@@ -1188,7 +1185,7 @@ aObj.blizzFrames[ftype].ItemText = function(self)
 
 	local function skinITFrame(frame)
 		aObj:skinObject("slider", {obj=_G.ItemTextScrollFrame.ScrollBar, fType=ftype, rpTex=aObj.isClsc and {"background", "artwork"} or nil})
-		aObj:skinStatusBar{obj=_G.ItemTextStatusBar, fi=0}
+		aObj:skinObject("statusbar", {obj=_G.ItemTextStatusBar, fi=0})
 		if not aObj.isClsc then
 			aObj:skinObject("frame", {obj=frame, fType=ftype, kfs=true, ri=true, rns=true, cb=true, x2=3})
 		else
@@ -1294,7 +1291,7 @@ aObj.blizzFrames[ftype].MailFrame = function(self)
 
 	self:SecureHookScript(_G.MailFrame, "OnShow", function(this)
 		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, offsets={x1=7, y1=self.isTT and 2 or -3, x2=-7, y2=2}})
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, x2=self.isClsc and 1 or 3}
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, cb=true, x2=self.isClsc and 1 or 3})
 		--	Inbox Frame
 		for i = 1, _G.INBOXITEMS_TO_DISPLAY do
 			self:keepFontStrings(_G["MailItem" .. i])
@@ -1331,8 +1328,7 @@ aObj.blizzFrames[ftype].MailFrame = function(self)
 			_G.MailEditBox:DisableDrawLayer("BACKGROUND")
 			self:skinObject("scrollbar", {obj=_G.MailEditBoxScrollBar, fType=ftype, rpTex="background", x1=1, y1=-1, x2=5, y2=1})
 		else
-			self:skinSlider{obj=_G.SendMailScrollFrame.ScrollBar, rt={"background", "artwork"}}
-			self:skinEditBox{obj=_G.SendMailBodyEditBox, noSkin=true}
+			self:skinObject("slider", {obj=_G.SendMailScrollFrame.ScrollBar, fType=ftype, rpTex={"background", "artwork"}})
 			_G.SendMailBodyEditBox:SetTextColor(self.prdb.BodyText.r, self.prdb.BodyText.g, self.prdb.BodyText.b)
 		end
 		for i = 1, _G.ATTACHMENTS_MAX_SEND do
@@ -1343,8 +1339,8 @@ aObj.blizzFrames[ftype].MailFrame = function(self)
 				self:addButtonBorder{obj=_G["SendMailAttachment" .. i], reParent={_G["SendMailAttachment" .. i].Count}}
 			end
 		end
-		self:skinEditBox{obj=_G.SendMailNameEditBox, regs={3}, noWidth=true} -- N.B. region 3 is text
-		self:skinEditBox{obj=_G.SendMailSubjectEditBox, regs={3}, noWidth=true} -- N.B. region 3 is text
+		self:skinObject("editbox", {obj=_G.SendMailNameEditBox, fType=ftype, regions={4, 5, 6}})
+		self:skinObject("editbox", {obj=_G.SendMailSubjectEditBox, fType=ftype, regions={4, 5, 6}})
 		self:skinObject("moneyframe", {obj=_G.SendMailMoney, moveIcon=true, moveGEB=true, moveSEB=true})
 		self:removeInset(_G.SendMailMoneyInset)
 		_G.SendMailMoneyBg:DisableDrawLayer("BACKGROUND")
@@ -1360,9 +1356,9 @@ aObj.blizzFrames[ftype].MailFrame = function(self)
 		end
 		--	Open Mail Frame
 		_G.OpenMailScrollFrame:DisableDrawLayer("BACKGROUND")
-		self:skinSlider{obj=_G.OpenMailScrollFrame.ScrollBar, rt="overlay"}
+		self:skinObject("slider", {obj=_G.OpenMailScrollFrame.ScrollBar, fType=ftype, rpTex="overlay"})
 		_G.OpenMailBodyText:SetTextColor(self.BT:GetRGB())
-		self:addSkinFrame{obj=_G.OpenMailFrame, ft=ftype, kfs=true, ri=true}
+		self:skinObject("frame", {obj=_G.OpenMailFrame, fType=ftype, kfs=true, ri=true, cb=true})
 		if self.modBtns then
 			self:skinStdButton{obj=_G.OpenMailReportSpamButton}
 			self:skinStdButton{obj=_G.OpenMailCancelButton}
@@ -1816,7 +1812,7 @@ aObj.blizzLoDFrames[ftype].MovePad = function(self)
 		_G.MovePadRotateLeft.icon:SetTexture(self.tFDIDs.rB)
 		_G.MovePadRotateRight.icon:SetTexture(self.tFDIDs.rB)
 		_G.MovePadRotateRight.icon:SetTexCoord(1, 0, 0, 1) -- flip texture horizontally
-		self:addSkinFrame{obj=this, ft=ftype}
+		self:skinObject("frame", {obj=this, fType=ftype})
 		if self.modBtns then
 			self:skinStdButton{obj=_G.MovePadForward}
 			self:skinStdButton{obj=_G.MovePadJump}
@@ -1853,7 +1849,7 @@ aObj.blizzFrames[ftype].MovieFrame = function(self)
 
 	self:SecureHookScript(_G.MovieFrame, "OnShow", function(this)
 		self:removeNineSlice(this.CloseDialog.Border)
-		self:addSkinFrame{obj=this.CloseDialog, ft=ftype, nb=true}
+		self:skinObject("frame", {obj=this.CloseDialog, fType=ftype})
 		if self.modBtns then
 			self:skinStdButton{obj=this.CloseDialog.ConfirmButton}
 			self:skinStdButton{obj=this.CloseDialog.ResumeButton}
@@ -2084,7 +2080,7 @@ aObj.blizzFrames[ftype].StaticPopups = function(self)
 			this.Separator:SetTexture(nil)
 			local objName = this:GetName()
 			self:skinObject("editbox", {obj=_G[objName .. "EditBox"], fType=ftype, ofs=0, y1=-4, y2=4})
-			self:skinObject("moneyframe", {obj=_G[objName .. "MoneyInputFrame"]})
+			self:skinObject("moneyframe", {obj=_G[objName .. "MoneyInputFrame"], moveIcon=true})
 			_G[objName .. "ItemFrameNameFrame"]:SetTexture(nil)
 			self:skinObject("frame", {obj=this, fType=ftype, ofs=-6})
 			if self.modBtns then
@@ -2662,8 +2658,8 @@ aObj.blizzFrames[ftype].UnitPopup = function(self)
 	if not self.prdb.UnitPopup or self.initialized.UnitPopup then return end
 	self.initialized.UnitPopup = true
 
-	self:skinSlider{obj=_G.UnitPopupVoiceSpeakerVolume.Slider}
-	self:skinSlider{obj=_G.UnitPopupVoiceMicrophoneVolume.Slider}
-	self:skinSlider{obj=_G.UnitPopupVoiceUserVolume.Slider}
+	self:skinObject("slider", {obj=_G.UnitPopupVoiceSpeakerVolume.Slider, fType=ftype})
+	self:skinObject("slider", {obj=_G.UnitPopupVoiceMicrophoneVolume.Slider, fType=ftype})
+	self:skinObject("slider", {obj=_G.UnitPopupVoiceUserVolume.Slider, fType=ftype})
 
 end

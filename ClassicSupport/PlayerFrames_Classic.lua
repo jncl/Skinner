@@ -75,15 +75,14 @@ aObj.SetupClassic_PlayerFrames = function()
 					self:skinExpandButton{obj=_G["ReputationHeader" .. i], fType=ftype, onSB=true}
 					self.modUIBtns:checkTex{obj=_G["ReputationHeader" .. i]}
 				end
-				self:removeRegions(_G["ReputationBar" .. i], {1, 2})
-				self:skinStatusBar{obj=_G["ReputationBar" .. i], fi=0}
+				self:skinObject("statusbar", {obj=_G["ReputationBar" .. i], regions={1, 2}, fi=0})
 				awc = self:getRegion(_G["ReputationBar" .. i .. "AtWarCheck"], 1)
 				awc:SetTexture(self.tFDIDs.cbSC)
 				awc:SetTexCoord(0, 1, 0, 1)
 				awc:SetSize(32, 32)
 			end
-			self:skinSlider{obj=_G.ReputationListScrollFrame.ScrollBar, rt="background"}
-			self:addSkinFrame{obj=_G.ReputationDetailFrame, ft=ftype, kfs=true, x1=6, y1=-6, x2=-6, y2=6}
+			self:skinObject("slider", {obj=_G.ReputationListScrollFrame.ScrollBar, fType=ftype, rpTex="background"})
+			self:skinObject("frame", {obj=_G.ReputationDetailFrame, fType=ftype, kfs=true, x1=6, y1=-6, x2=-6, y2=6})
 			if self.modBtns then
 				self:skinCloseButton{obj=_G.ReputationDetailCloseButton, fType=ftype}
 			end
@@ -124,8 +123,8 @@ aObj.SetupClassic_PlayerFrames = function()
 				_G["SkillRankFrame"  .. i .. "BorderNormal"]:SetTexture(nil)
 				self:skinObject("statusbar", {obj=_G["SkillRankFrame"  .. i], fi=0, other={_G["SkillRankFrame"  .. i .. "FillBar"]}})
 			end
-			self:skinSlider{obj=_G.SkillListScrollFrame.ScrollBar, rt="artwork"}
-			self:skinSlider{obj=_G.SkillDetailScrollFrame.ScrollBar, rt="artwork"}
+			self:skinObject("slider", {obj=_G.SkillListScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
+			self:skinObject("slider", {obj=_G.SkillDetailScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
 			self:removeRegions(_G.SkillDetailStatusBar, {1})
 			self:skinObject("statusbar", {obj=_G.SkillDetailStatusBar, fi=0, other={_G.SkillDetailStatusBarFillBar}})
 			if self.modBtns then
@@ -168,7 +167,7 @@ aObj.SetupClassic_PlayerFrames = function()
 		else
 			self:SecureHookScript(_G.HonorFrame, "OnShow", function(this)
 				self:keepFontStrings(this)
-				self:skinStatusBar{obj=_G.HonorFrameProgressBar, fi=0}
+				self:skinObject("statusbar", {obj=_G.HonorFrameProgressBar, fi=0})
 
 				self:Unhook(this, "OnShow")
 			end)
@@ -181,7 +180,7 @@ aObj.SetupClassic_PlayerFrames = function()
 		self.initialized.ContainerFrames = true
 
 		local function skinBag(frame, _)
-			aObj:addSkinFrame{obj=frame, ft=ftype, kfs=true, x1=8, y1=-4, x2=-3}
+			aObj:skinObject("frame", {obj=frame, fType=ftype, kfs=true, cb=true, x1=8, y1=-4, x2=-3})
 			-- resize and move the bag name to make it more readable
 			local objName = frame:GetName()
 			_G[objName .. "Name"]:SetWidth(137)
@@ -418,7 +417,12 @@ aObj.SetupClassic_PlayerFrames = function()
 
 			self:SecureHookScript(_G.WhoFrame, "OnShow", function(fObj)
 				self:removeInset(_G.WhoFrameListInset)
-				self:skinColHeads("WhoFrameColumnHeader", nil, ftype)
+				for i = 1, 4 do
+					_G["WhoFrameColumnHeader" .. i]:DisableDrawLayer("BACKGROUND")
+					if i ~= 2 then -- column 2 is really a dropdown
+						self:skinObject("frame", {obj=_G["WhoFrameColumnHeader" .. i], fType=ftype, ofs=0})
+					end
+				end
 				self:moveObject{obj=_G.WhoFrameColumnHeader4, x=4}
 				self:skinObject("dropdown", {obj=_G.WhoFrameDropDown, fType=ftype})
 				self:moveObject{obj=_G.WhoFrameDropDown, y=1}
@@ -458,9 +462,13 @@ aObj.SetupClassic_PlayerFrames = function()
 			self:SecureHookScript(_G.GuildFrame, "OnShow", function(fObj)
 				self:keepFontStrings(fObj)
 				_G.GuildFrameLFGFrame:DisableDrawLayer("BACKGROUND")
-				self:skinColHeads("GuildFrameColumnHeader", nil, ftype)
-				self:skinColHeads("GuildFrameGuildStatusColumnHeader", nil, ftype)
-				self:skinSlider{obj=_G.GuildListScrollFrame.ScrollBar, rt="background"}
+				for i = 1, 4 do
+					_G["GuildFrameColumnHeader" .. i]:DisableDrawLayer("BACKGROUND")
+					_G["GuildFrameGuildStatusColumnHeader" .. i]:DisableDrawLayer("BACKGROUND")
+					self:skinObject("frame", {obj=_G["GuildFrameColumnHeader" .. i], fType=ftype, ofs=0})
+					self:skinObject("frame", {obj=_G["GuildFrameGuildStatusColumnHeader" .. i], fType=ftype, ofs=0})
+				end
+				self:skinObject("slider", {obj=_G.GuildListScrollFrame.ScrollBar, fType=ftype, rpTex="background"})
 				if self.modBtns then
 					self:skinStdButton{obj=_G.GuildFrameImpeachButton, fType=ftype}
 					self:skinStdButton{obj=_G.GuildFrameControlButton, fType=ftype}
@@ -581,10 +589,10 @@ aObj.SetupClassic_PlayerFrames = function()
 		end)
 
 		self:SecureHookScript(_G.FriendsFriendsFrame, "OnShow", function(this)
-			self:skinDropDown{obj=_G.FriendsFriendsFrameDropDown}
-			self:addFrameBorder{obj=_G.FriendsFriendsList, ft=ftype}
-			self:skinSlider{obj=_G.FriendsFriendsScrollFrame.ScrollBar}
-			self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true}
+			self:skinObject("dropdown", {obj=_G.FriendsFriendsFrameDropDown, fType=ftype})
+			self:skinObject("frame", {obj=_G.FriendsFriendsList, fType=ftype, fb=true})
+			self:skinObject("slider", {obj=_G.FriendsFriendsScrollFrame.ScrollBar, fType=ftype})
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true})
 			if self.modBtns then
 				self:skinStdButton{obj=_G.FriendsFriendsSendRequestButton, fType=ftype}
 				self:skinStdButton{obj=_G.FriendsFriendsCloseButton, fType=ftype}
@@ -594,7 +602,7 @@ aObj.SetupClassic_PlayerFrames = function()
 		end)
 
 		self:SecureHookScript(_G.BattleTagInviteFrame, "OnShow", function(this)
-			self:addSkinFrame{obj=this, ft=ftype}
+			self:skinObject("frame", {obj=this, fType=ftype})
 			if self.modBtns then
 				self:skinStdButton{obj=self:getChild(this, 1), fType=ftype} -- Send Request
 				self:skinStdButton{obj=self:getChild(this, 2), fType=ftype} -- Cancel
@@ -606,13 +614,13 @@ aObj.SetupClassic_PlayerFrames = function()
 		self:SecureHookScript(_G.ChannelFrame, "OnShow", function(this)
 			self:removeInset(this.LeftInset)
 			self:removeInset(this.RightInset)
-			self:skinSlider{obj=this.ChannelList.ScrollBar, wdth=-4}
-			self:skinSlider{obj=this.ChannelRoster.ScrollFrame.scrollBar, wdth=-4}
-			self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, x1=-5, x2=1, y2=-1}
+			self:skinObject("slider", {obj=this.ChannelList.ScrollBar, fType=ftype})
+			self:skinObject("slider", {obj=this.ChannelRoster.ScrollFrame.scrollBar, fType=ftype})
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, cb=true, x1=-5, x2=1, y2=-1})
 			-- Create Channel Popup
-			self:skinEditBox{obj=_G.CreateChannelPopup.Name, regs={6}} -- 6 is text
-			self:skinEditBox{obj=_G.CreateChannelPopup.Password, regs={6}} -- 6 is text
-			self:addSkinFrame{obj=_G.CreateChannelPopup, ft=ftype, kfs=true}
+			self:skinObject("editbox", {obj=_G.CreateChannelPopup.Name, fType=ftype, y1=4, y2=-4})
+			self:skinObject("editbox", {obj=_G.CreateChannelPopup.Password, fType=ftype, y1=4, y2=-4})
+			self:skinObject("frame", {obj=_G.CreateChannelPopup, fType=ftype, kfs=true, cb=true})
 			if self.modBtns then
 				self:skinStdButton{obj=_G.CreateChannelPopup.OKButton, fType=ftype}
 				self:skinStdButton{obj=_G.CreateChannelPopup.CancelButton, fType=ftype}
@@ -640,9 +648,8 @@ aObj.SetupClassic_PlayerFrames = function()
 		end)
 
 		self:SecureHookScript(_G.VoiceChatPromptActivateChannel, "OnShow", function(this)
-			self:addSkinFrame{obj=this, ft=ftype, nb=true}
+			self:skinObject("frame", {obj=this, fType=ftype, cbns=true})
 			if self.modBtns then
-				self:skinCloseButton{obj=this.CloseButton, fType=ftype, font=self.fontSBX, noSkin=true}
 				self:skinStdButton{obj=this.AcceptButton, fType=ftype}
 			end
 			self:hookSocialToastFuncs(this)
@@ -651,10 +658,7 @@ aObj.SetupClassic_PlayerFrames = function()
 		end)
 
 		self:SecureHookScript(_G.VoiceChatChannelActivatedNotification, "OnShow", function(this)
-			self:addSkinFrame{obj=this, ft=ftype, nb=true}
-			if self.modBtns then
-				self:skinCloseButton{obj=this.CloseButton, font=self.fontSBX, noSkin=true}
-			end
+			self:skinObject("frame", {obj=this, fType=ftype, cbns=true})
 			self:hookSocialToastFuncs(this)
 
 			self:Unhook(this, "OnShow")
@@ -891,7 +895,7 @@ aObj.SetupClassic_PlayerFrames = function()
 				end
 				self:skinObject("editbox", {obj=_G.TradeSearchInputBox, fType=ftype})
 			end
-			self:skinStatusBar{obj=_G.TradeSkillRankFrame, fi=0, bgTex=_G.TradeSkillRankFrameBackground}
+			self:skinObject("statusbar", {obj=_G.TradeSkillRankFrame, fi=0, bg=_G.TradeSkillRankFrameBackground})
 			_G.TradeSkillRankFrameBorder:GetNormalTexture():SetTexture(nil)
 			self:keepFontStrings(_G.TradeSkillExpandButtonFrame)
 			self:keepFontStrings(_G.TradeSkillDetailScrollChildFrame)
@@ -916,10 +920,10 @@ aObj.SetupClassic_PlayerFrames = function()
 				x1, y1, x2, y2 = 10, -11, -32, 70
 			end
 			if not _G.IsAddOnLoaded("alaTradeSkill") then
-				self:skinDropDown{obj=_G.TradeSkillInvSlotDropDown}
-				self:skinDropDown{obj=_G.TradeSkillSubClassDropDown}
-				self:skinSlider{obj=_G.TradeSkillListScrollFrame.ScrollBar, rt="background"}
-				self:skinSlider{obj=_G.TradeSkillDetailScrollFrame.ScrollBar, rt="background"}
+				self:skinObject("dropdown", {obj=_G.TradeSkillInvSlotDropDown, fType=ftype})
+				self:skinObject("dropdown", {obj=_G.TradeSkillSubClassDropDown, fType=ftype})
+				self:skinObject("slider", {obj=_G.TradeSkillListScrollFrame.ScrollBar, fType=ftype, rpTex="background"})
+				self:skinObject("slider", {obj=_G.TradeSkillDetailScrollFrame.ScrollBar, fType=ftype, rpTex="background"})
 				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=x1, y1=y1, x2=x2, y2=y2})
 				if self.modBtns then
 					self:skinExpandButton{obj=_G.TradeSkillCollapseAllButton, fType=ftype, onSB=true}

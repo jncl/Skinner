@@ -47,18 +47,20 @@ aObj.blizzFrames[ftype].CastingBar = function(self)
 		return
 	end
 
+	local cbFrame
 	for _, type in _G.pairs{"", "Pet"} do
-		_G[type .. "CastingBarFrame"].Border:SetAlpha(0)
-		self:changeShield(_G[type .. "CastingBarFrame"].BorderShield, _G[type .. "CastingBarFrame"].Icon)
-		_G[type .. "CastingBarFrame"].Flash:SetAllPoints()
-		_G[type .. "CastingBarFrame"].Flash:SetTexture(self.tFDIDs.w8x8)
+		cbFrame = _G[type .. "CastingBarFrame"]
+		cbFrame.Border:SetAlpha(0)
+		self:changeShield(cbFrame.BorderShield, cbFrame.Icon)
+		cbFrame.Flash:SetAllPoints()
+		cbFrame.Flash:SetTexture(self.tFDIDs.w8x8)
 		if self.prdb.CastingBar.glaze then
-			self:skinStatusBar{obj=_G[type .. "CastingBarFrame"], fi=0, bgTex=self:getRegion(_G[type .. "CastingBarFrame"], 1)}
+			self:skinObject("statusbar", {obj=cbFrame, fi=0, bg=self:getRegion(cbFrame, 1)})
 		end
 		-- adjust text and spark in Classic mode
-		if not _G[type .. "CastingBarFrame"].ignoreFramePositionManager then
-			_G[type .. "CastingBarFrame"].Text:SetPoint("TOP", 0, 2)
-			_G[type .. "CastingBarFrame"].Spark.offsetY = -1
+		if not cbFrame.ignoreFramePositionManager then
+			cbFrame.Text:SetPoint("TOP", 0, 2)
+			cbFrame.Spark.offsetY = -1
 		end
 	end
 
@@ -132,7 +134,6 @@ aObj.blizzFrames[ftype].CompactFrames = function(self)
 
 	local function skinCRFCframes()
 		for type, fTab in _G.pairs(_G.CompactRaidFrameContainer.frameUpdateList) do
-			-- aObj:Debug("skinCRFCframes: [%s, %s]", type)
 			for _, frame in _G.pairs(fTab) do
 				if type == "normal" then
 					if frame.borderFrame then -- group or party
@@ -316,7 +317,7 @@ aObj.blizzFrames[ftype].LootFrames = function(self)
 				aObj:addButtonBorder{obj=frame, relTo=frame.Icon, reParent={frame.Count}}
 			end
 		end
-		aObj:skinStatusBar{obj=frame.Timer, fi=0, bgTex=frame.Timer.Background}
+		aObj:skinObject("statusbar", {obj=frame.Timer, fi=0, bg=frame.Timer.Background})
 		-- hook this to show the Timer
 		aObj:secureHook(frame, "Show", function(this)
 			this.Timer:SetFrameLevel(this:GetFrameLevel() + 1)
@@ -330,7 +331,7 @@ aObj.blizzFrames[ftype].LootFrames = function(self)
 			aObj:skinCloseButton{obj=frame.PassButton}
 		end
 		if aObj.prdb.LootFrames.size ~= 3 then -- Normal or small
-			aObj:addSkinFrame{obj=frame, ft=ftype, x1=-3, y2=-3} -- adjust for Timer
+			aObj:skinObject("frame", {obj=frame, fType=ftype, kfs=true, cb=true, x1=-3, y2=-3})
 		else -- Micro
 			aObj:moveObject{obj=frame.IconFrame, x=95, y=5}
 			frame.Name:SetAlpha(0)
@@ -347,7 +348,7 @@ aObj.blizzFrames[ftype].LootFrames = function(self)
 			aObj:adjWidth{obj=frame.Timer, adj=-30}
 			frame.Timer:ClearAllPoints()
 			frame.Timer:SetPoint("BOTTOMRIGHT", "$parent", "BOTTOMRIGHT", -10, 13)
-			aObj:addSkinFrame{obj=frame, ft=ftype, x1=97, y2=8}
+			aObj:skinObject("frame", {obj=frame, fType=ftype, kfs=true, cb=true, x1=97, y2=8})
 		end
 
 	end
@@ -365,7 +366,7 @@ aObj.blizzFrames[ftype].LootFrames = function(self)
 		this.Item.NameBorderRight:SetTexture(nil)
 		this.Item.NameBorderMid:SetTexture(nil)
 		this.Item.IconBorder:SetTexture(nil)
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true}
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true})
 		if self.modBtns then
 			 self:skinCloseButton{obj=self:getChild(this, 3)} -- unamed close button
 		end
@@ -379,8 +380,8 @@ aObj.blizzFrames[ftype].LootFrames = function(self)
 	if not self.isClsc then
 		self:SecureHookScript(_G.BonusRollFrame, "OnShow", function(this)
 			self:removeRegions(this, {1, 2, 3, 5})
-			self:skinStatusBar{obj=this.PromptFrame.Timer, fi=0}
-			self:addSkinFrame{obj=this, ft=ftype, bg=true}
+			self:skinObject("statusbar", {obj=this.PromptFrame.Timer, fi=0})
+			self:skinObject("frame", {obj=this, fType=ftype, bg=true})
 			if self.modBtnBs then
 				 self:addButtonBorder{obj=this.PromptFrame, relTo=this.PromptFrame.Icon, reParent={this.SpecIcon}}
 			end
@@ -390,14 +391,14 @@ aObj.blizzFrames[ftype].LootFrames = function(self)
 		self:SecureHookScript(_G.BonusRollLootWonFrame, "OnShow", function(this)
 			this:DisableDrawLayer("BACKGROUND")
 			if this.SpecRing then this.SpecRing:SetTexture(nil) end
-			self:addSkinFrame{obj=this, ft=ftype, ofs=-10, y2=8}
+			self:skinObject("frame", {obj=this, fType=ftype, ofs=-10, y2=8})
 
 			self:Unhook(this, "OnShow")
 		end)
 		self:SecureHookScript(_G.BonusRollMoneyWonFrame, "OnShow", function(this)
 			this:DisableDrawLayer("BACKGROUND")
 			if this.SpecRing then this.SpecRing:SetTexture(nil) end
-			self:addSkinFrame{obj=this, ft=ftype, ofs=-8, y2=8}
+			self:skinObject("frame", {obj=this, fType=ftype, ofs=-8, y2=8})
 
 			self:Unhook(this, "OnShow")
 		end)
@@ -458,7 +459,7 @@ aObj.blizzFrames[ftype].MirrorTimers = function(self)
 		objBG:SetWidth(objBG:GetWidth() * 0.75)
 		objSB:SetWidth(objSB:GetWidth() * 0.75)
 		if self.prdb.MirrorTimers.glaze then
-			self:skinStatusBar{obj=objSB, fi=0, bgTex=objBG}
+			self:skinObject("statusbar", {obj=objSB, fi=0, bg=objBG})
 		end
 	end
 
@@ -468,7 +469,7 @@ aObj.blizzFrames[ftype].MirrorTimers = function(self)
 
 			if not aObj.sbGlazed[timer.bar] then
 				_G[timer.bar:GetName() .. "Border"]:SetTexture(nil) -- animations
-				aObj:skinStatusBar{obj=timer.bar, fi=0}
+				aObj:skinObject("statusbar", {obj=timer.bar, fi=0})
 			end
 
 		end
@@ -521,9 +522,12 @@ aObj.blizzFrames[ftype].ReadyCheck = function(self)
 	self.initialized.ReadyCheck = true
 
 	self:SecureHookScript(_G.ReadyCheckFrame, "OnShow", function(this)
-		self:skinStdButton{obj=_G.ReadyCheckFrameYesButton}
-		self:skinStdButton{obj=_G.ReadyCheckFrameNoButton}
-		self:addSkinFrame{obj=_G.ReadyCheckListenerFrame, ft=ftype, kfs=true, nb=true, x1=32}
+		self:skinObject("frame", {obj=_G.ReadyCheckListenerFrame, fType=ftype, kfs=true, x1=32})
+		if self.modBtns then
+			self:skinStdButton{obj=_G.ReadyCheckFrameYesButton}
+			self:skinStdButton{obj=_G.ReadyCheckFrameNoButton}
+		end
+
 		self:Unhook(this, "OnShow")
 	end)
 

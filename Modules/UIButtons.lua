@@ -236,7 +236,7 @@ function module:clrButtonFromBorder(bObj, texture)
 
 end
 
-function module:clrBtnBdr(bObj, clrName, alpha)
+function module:clrBtnBdr(bObj, clrName, alpha) -- luacheck: ignore self
 
 	-- check button state and alter colour accordingly
 	clrName = bObj.IsEnabled and not bObj:IsEnabled() and "disabled" or clrName
@@ -292,7 +292,6 @@ function module:skinCloseButton(opts)
 	Calling parameters:
 		obj = object (Mandatory)
 		ft = Frame Type (Skinner classification)
-		aso = applySkin options
 		sap = set all points of skinButton to object
 		onSB = put text on skinButton
 		noSkin = don't add skin frame
@@ -440,9 +439,10 @@ function module:skinExpandButton(opts)
 			end)
 		end
 	else -- Ace3, Archy, ReagentRestocker
-		opts.aso.bd  = opts.aso.bd or 6
-		opts.aso.obj = opts.obj
-		aObj:applySkin(opts.aso)
+		-- opts.aso.bd  = opts.aso.bd or 6
+		-- opts.aso.obj = opts.obj
+		-- aObj:applySkin(opts.aso)
+		aObj:skinObject("skin", {obj=opts.obj, fType=opts.ftype, bd=opts.aso.bd or 6})
 	end
 	opts.obj.onSB = opts.onSB -- store this for use in checkTex function
 	if not opts.onSB then
@@ -476,7 +476,6 @@ function module:skinOtherButton(opts)
 	Calling parameters:
 		obj = object (Mandatory)
 		ft = Frame Type (Skinner classification)
-		aso = applySkin options
 		size = use smaller edgesize, different highlight textue and resize the button
 		sap = set all points of skinButton to object
 		font = font to use
@@ -581,9 +580,15 @@ function module:skinStdButton(opts)
 	end
 
 	opts.obj:DisableDrawLayer("BACKGROUND")
-	if opts.obj:GetNormalTexture() then opts.obj:GetNormalTexture():SetAlpha(0) end
-	if opts.obj:GetPushedTexture() then opts.obj:GetPushedTexture():SetAlpha(0) end
-	if opts.obj:GetDisabledTexture() then opts.obj:GetDisabledTexture():SetAlpha(0) end
+	if opts.obj:GetNormalTexture() then
+		opts.obj:GetNormalTexture():SetAlpha(0)
+	end
+	if opts.obj:GetPushedTexture() then
+		opts.obj:GetPushedTexture():SetAlpha(0)
+	end
+	if opts.obj:GetDisabledTexture() then
+		opts.obj:GetDisabledTexture():SetAlpha(0)
+	end
 
 	local bW, bH = _G.Round(opts.obj:GetWidth()), _G.Round(opts.obj:GetHeight())
 
@@ -600,7 +605,8 @@ function module:skinStdButton(opts)
 		aso.obj = opts.obj
 		if bH < 16 then opts.obj:SetHeight(16) end -- set minimum button height (DBM option buttons)
 		if bW < 16 then opts.obj:SetWidth(16) end -- set minimum button width (oQueue remove buttons)
-		aObj:applySkin(aso)
+		-- aObj:applySkin(aso)
+		aObj:skinObject("skin", {obj=opts.obj, fType=opts.ftype, bd=aso.bd, ng=aso.ng})
 	end
 
 	module:clrBtnBdr(opts.obj, opts.clr, opts.ca)

@@ -83,8 +83,7 @@ function module:adjustTopFrame() -- luacheck: ignore self
 		then
 			fh = db.fheight <= aObj:getInt(topframe:GetHeight()) and db.fheight or aObj:getInt(topframe:GetHeight())
 		end
-		topframe.sknd = false
-		aObj:applySkin{obj=topframe, ft=ftype, bba=db.borderOff and 0 or 1, ba=db.alpha, fh=fh, invert=db.invert or nil, rotate=db.rotate or nil}
+		aObj:skinObject("skin", {obj=topframe, fType=ftype, bba=db.borderOff and 0 or 1, ba=db.alpha, fh=fh, invert=db.invert or nil, rotate=db.rotate or nil})
 		-- adjust the TopFrame offset
 		adjustTFOffset(db)
 		topframe:Show()

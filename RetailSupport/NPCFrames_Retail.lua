@@ -119,7 +119,7 @@ aObj.SetupRetail_NPCFrames = function()
 				fObj.LeftDisplay.Tutorial1:SetTextColor(self.BT:GetRGB())
 				fObj.RightDisplay.Label:SetTextColor(self.HT:GetRGB())
 				fObj.RightDisplay.Tutorial1:SetTextColor(self.BT:GetRGB())
-				self:addSkinFrame{obj=fObj, ft=ftype, kfs=true, y2=220}
+				self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, y2=220})
 				if self.modBtns then
 					self:skinStdButton{obj=fObj.RightDisplay.StoreButton, x1=14, y1=2, x2=-14, y2=2, clr="gold"}
 				end
@@ -292,7 +292,7 @@ aObj.SetupRetail_NPCFrames = function()
 			self:removeMagicBtnTex(this.ButtonFrame.AzeriteRespecButton)
 			this.ButtonFrame.MoneyFrameEdge:DisableDrawLayer("BACKGROUND")
 			this.ButtonFrame.AzeriteRespecButton:SetPoint("BOTTOMRIGHT", -6, 5)
-			self:addSkinFrame{obj=this, ft=ftype, kfs=true}
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true})
 			if self.modBtns then
 				self:skinStdButton{obj=this.ButtonFrame.AzeriteRespecButton}
 				self:SecureHook(this, "UpdateAzeriteRespecButtonState", function(fObj)
@@ -388,12 +388,12 @@ aObj.SetupRetail_NPCFrames = function()
 			self:moveObject{obj=self:getRegion(this, 22), y=-4}
 			-- column headings
 			for _, type in _G.pairs{"Name", "Level", "Type", "Duration", "HighBidder", "CurrentBid"} do
-				self:addSkinFrame{obj=this["Column" .. type], ft=ftype, kfs=true, aso={bd=5}, ofs=0}
+				self:skinObject("frame", {obj=this["Column" .. type], fType=ftype, kfs=true, bd=5, ofs=0})
 			end
-			self:skinSlider{obj=_G.BlackMarketScrollFrameScrollBar, wdth=-4}
+			self:skinObject("slider", {obj=_G.BlackMarketScrollFrameScrollBar, fType=ftype})
 			this.MoneyFrameBorder:DisableDrawLayer("BACKGROUND")
 			self:skinObject("moneyframe", {obj=_G.BlackMarketBidPrice})
-			self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, x2=1}
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, cb=true, x2=1})
 			if self.modBtns then
 				self:skinStdButton{obj=this.BidButton}
 			end
@@ -504,7 +504,8 @@ aObj.SetupRetail_NPCFrames = function()
 			self:clrCovenantBdr(this, this.uiTextureKit)
 			if self.modBtns then
 				self:skinCloseButton{obj=this.CloseButton, noSkin=true}
-				self:skinStdButton{obj=this.SelectButton, clr="grey"}
+				self:skinStdButton{obj=this.SelectButton}
+
 			end
 
 			self:Unhook(this, "OnShow")
@@ -524,7 +525,8 @@ aObj.SetupRetail_NPCFrames = function()
 
 		local function skinRewards(frame)
 			for reward in frame.rewardsPool:EnumerateActive() do
-				aObj:addFrameBorder{obj=reward, ft="a", ofs=-14, aso={bbclr="sepia"}}
+				aObj:skinObject("frame", {obj=reward, fType=ftype, kfs=true, fb=true, ofs=-14, clr="sepia"})
+				reward.Check:SetAlpha(1) -- make Checkmark visible
 				reward.Icon:SetAlpha(1) -- make Icon visible
 			end
 		end
@@ -543,9 +545,6 @@ aObj.SetupRetail_NPCFrames = function()
 			skinRewards(this)
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true, cbns=true, ofs=0})
 			self:clrCovenantBdr(this)
-			if self.modBtns then
-				self:skinCloseButton{obj=this.CloseButton , noSkin=true}
-			end
 
 			self:Unhook(this, "OnShow")
 		end)
@@ -687,10 +686,10 @@ aObj.SetupRetail_NPCFrames = function()
 			this.ScrollFrame.Child.Text:SetTextColor(self.BT:GetRGB())
 			this.ScrollFrame.Child.ObjectivesFrame:DisableDrawLayer("BORDER")
 			this.ScrollFrame.Child.ObjectivesFrame:DisableDrawLayer("BACKGROUND")
-			this.ScrollFrame.ScrollBar.ScrollUpBorder:SetBackdrop(nil)
-			this.ScrollFrame.ScrollBar.ScrollDownBorder:SetBackdrop(nil)
-			this.ScrollFrame.ScrollBar.Border:SetBackdrop(nil)
-			self:skinSlider{obj=this.ScrollFrame.ScrollBar, wdth=-4}
+			self:removeNineSlice(this.ScrollFrame.ScrollBar.ScrollUpBorder.NineSlice)
+			self:removeNineSlice(this.ScrollFrame.ScrollBar.ScrollDownBorder.NineSlice)
+			self:removeNineSlice(this.ScrollFrame.ScrollBar.Border.NineSlice)
+			self:skinObject("slider", {obj=this.ScrollFrame.ScrollBar, fType=ftype})
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true, cb=true})
 			if self.modBtns then
 				self:skinStdButton{obj=this.ScrollFrame.ConfirmationButton}
@@ -797,7 +796,7 @@ aObj.SetupRetail_NPCFrames = function()
 			-- resize map to fit skin frame
 			this.InsetBg:SetPoint("TOPLEFT", 0, -24)
 			this.InsetBg:SetPoint("BOTTOMRIGHT", 0 ,0)
-			self:addSkinFrame{obj=this, ft=ftype}
+			self:skinObject("frame", {obj=this, fType=ftype, cb=true})
 
 			self:Unhook(this, "OnShow")
 		end)
@@ -813,7 +812,7 @@ aObj.SetupRetail_NPCFrames = function()
 			_G.ClassTrainerStatusBarRight:SetAlpha(0)
 			_G.ClassTrainerStatusBarMiddle:SetAlpha(0)
 			_G.ClassTrainerStatusBarSkillRank:SetPoint("CENTER", _G.ClassTrainerStatusBar) -- Blizzard bug
-			self:skinStatusBar{obj=_G.ClassTrainerStatusBar, fi=0, bgTex=_G.ClassTrainerStatusBarBackground}
+			self:skinObject("statusbar", {obj=_G.ClassTrainerStatusBar, fi=0, bg=_G.ClassTrainerStatusBarBackground})
 			self:skinObject("dropdown", {obj=_G.ClassTrainerFrameFilterDropDown, fType=ftype})
 			self:removeMagicBtnTex(_G.ClassTrainerTrainButton)
 			this.skillStepButton:GetNormalTexture():SetTexture(nil)
@@ -853,8 +852,8 @@ aObj.SetupRetail_NPCFrames = function()
 				self:removeNineSlice(_G["VoidStorage" .. type .. "Frame"].NineSlice)
 			end
 			self:keepFontStrings(_G.VoidStorageBorderFrame)
-			self:skinEditBox{obj=_G.VoidItemSearchBox, regs={6, 7}, mi=true, noHeight=true, noMove=true} -- 6 is text, 7 is icon
-			self:addSkinFrame{obj=this, ft=ftype, kfs=true, x2=1}
+			self:skinObject("editbox", {obj=_G.VoidItemSearchBox, fType=ftype, si=true})
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x2=1})
 			if self.modBtns then
 				self:skinStdButton{obj=_G.VoidStorageTransferButton}
 				self:SecureHook(_G.VoidStorageTransferButton, "Disable", function(bObj, _)
@@ -869,7 +868,7 @@ aObj.SetupRetail_NPCFrames = function()
 					self:clrBtnBdr(_G.VoidStoragePurchaseButton)
 				end)
 			end
-			self:addSkinFrame{obj=_G.VoidStoragePurchaseFrame, ft=ftype, kfs=true}
+			self:skinObject("frame", {obj=_G.VoidStoragePurchaseFrame, fType=ftype, kfs=true, ofs=0})
 			-- Tabs
 			for i = 1, 2 do
 				_G.VoidStorageFrame["Page" .. i]:DisableDrawLayer("BACKGROUND")

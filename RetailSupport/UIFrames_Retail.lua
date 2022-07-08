@@ -50,8 +50,8 @@ aObj.SetupRetail_UIFrames = function()
 				skinPortrait(frame.PortraitFrame)
 			end
 			if aObj.modBtnBs then
-				for _, frame in _G.pairs(frame.Counters) do
-					aObj:addButtonBorder{obj=frame, fType=ftype, relTo=frame.Icon, clr="white"}
+				for _, fObj in _G.pairs(frame.Counters) do
+					aObj:addButtonBorder{obj=fObj, fType=ftype, relTo=frame.Icon, clr="white"}
 				end
 			end
 		end
@@ -169,11 +169,11 @@ aObj.SetupRetail_UIFrames = function()
 					end
 				end
 			end
-			aObj:skinStatusBar{obj=frame.XPBar, fi=0}
+			aObj:skinObject("statusbar", {obj=frame.XPBar, fi=0})
 			frame.XPBar:DisableDrawLayer("OVERLAY")
 		end
 		function skinFollowerTraitsAndEquipment(frame)
-			aObj:skinStatusBar{obj=frame.XPBar, fi=0}
+			aObj:skinObject("statusbar", {obj=frame.XPBar, fi=0})
 			frame.XPBar:DisableDrawLayer("OVERLAY")
 			for _, btn in _G.pairs(frame.Traits) do
 				btn.Border:SetTexture(nil)
@@ -306,7 +306,7 @@ aObj.SetupRetail_UIFrames = function()
 				if flwr.PortraitFrame then
 					skinPortrait(flwr.PortraitFrame)
 				end
-				aObj:skinStatusBar{obj=flwr.XP, fi=0}
+				aObj:skinObject("statusbar", {obj=flwr.XP, fi=0})
 				flwr.XP:DisableDrawLayer("OVERLAY")
 			end
 		    frame.BonusRewards:DisableDrawLayer("BACKGROUND")
@@ -317,7 +317,7 @@ aObj.SetupRetail_UIFrames = function()
 			for i = 1, #frame.BonusRewards.Rewards do
 				aObj:addButtonBorder{obj=frame.BonusRewards.Rewards[i], relTo=frame.BonusRewards.Rewards[i].Icon, reParent={frame.BonusRewards.Rewards[i].Quantity}}
 			end
-		    aObj:addSkinFrame{obj=frame, ft=ftype, x1=3, y1=6, y2=-16}
+			aObj:skinObject("frame", {obj=frame, fType=ftype, x1=3, y1=6, y2=-16})
 			if aObj.modBtns then
 				aObj:skinStdButton{obj=frame.NextMissionButton}
 				aObj:SecureHook(frame.NextMissionButton, "Disable", function(this, _)
@@ -392,7 +392,7 @@ aObj.SetupRetail_UIFrames = function()
 
 	-- The following functions are used by several Chat* functions
 	local function skinPointerFrame(frame)
-		aObj:skinGlowBox(frame.Content)
+		aObj:skinObject("glowbox", {obj=frame.Content, fType=ftype})
 		frame.Glow:SetBackdrop(nil)
 	end
 	local function hookPointerFrame()
@@ -426,7 +426,7 @@ aObj.SetupRetail_UIFrames = function()
 		self:SecureHookScript(_G.AdventureMapQuestChoiceDialog, "OnShow", function(this)
 			this:DisableDrawLayer("BACKGROUND") -- remove textures
 			this.Details.ScrollBar:DisableDrawLayer("ARTWORK")
-			self:skinSlider{obj=this.Details.ScrollBar}
+			self:skinObject("slider", {obj=this.Details.ScrollBar, fType=ftype})
 			this.Details.Child.TitleHeader:SetTextColor(self.HT:GetRGB())
 			this.Details.Child.DescriptionText:SetTextColor(self.BT:GetRGB())
 			this.Details.Child.ObjectivesHeader:SetTextColor(self.HT:GetRGB())
@@ -434,7 +434,7 @@ aObj.SetupRetail_UIFrames = function()
 			if this.CloseButton:GetNormalTexture() then
 				this.CloseButton:GetNormalTexture():SetTexture(nil) -- frame is animated in
 			end
-			self:addSkinFrame{obj=this, ft=ftype, kfs=true, y1=-12, x2=0, y2=-4}
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, y1=-12, x2=0, y2=-4})
 			if self.modBtns then
 				self:skinStdButton{obj=this.DeclineButton}
 				self:skinStdButton{obj=this.AcceptButton}
@@ -574,14 +574,14 @@ aObj.SetupRetail_UIFrames = function()
 			if type == "Scenario" then
 				aObj:getRegion(frame, 1):SetTexture(nil) -- Toast-IconBG
 			end
-			opts.obj:DisableDrawLayer("BORDER")
-			opts.obj:DisableDrawLayer("OVERLAY")
-			opts.obj.dungeonTexture:SetDrawLayer("ARTWORK") -- move Dungeon texture above skinFrame
+			frame:DisableDrawLayer("BORDER")
+			frame:DisableDrawLayer("OVERLAY")
+			frame.dungeonTexture:SetDrawLayer("ARTWORK") -- move Dungeon texture above skinFrame
 			aObj:skinObject("frame", {obj=frame, fType=ftype, ofs=type=="Scenario" and -12 or -8})
 			if aObj.modBtnBs then
 				-- wait for animation to finish
 				_G.C_Timer.After(0.2, function()
-					aObj:addButtonBorder{obj=opts.obj, relTo=opts.obj.dungeonTexture}
+					aObj:addButtonBorder{obj=frame, relTo=frame.dungeonTexture}
 				end)
 			end
 		end
@@ -622,7 +622,7 @@ aObj.SetupRetail_UIFrames = function()
 			end
 		end)
 
-		local function skinACAlertFrames(type, frame)
+		local function skinACAlertFrames(_, frame)
 			aObj:nilTexture(frame.Background, true)
 			frame.Unlocked:SetTextColor(aObj.BT:GetRGB())
 			if frame.OldAchievement then
@@ -802,16 +802,17 @@ aObj.SetupRetail_UIFrames = function()
 		self.initialized.Calendar = true
 
 		self:SecureHookScript(_G.CalendarFrame, "OnShow", function(this)
+			_G.CalendarTodayFrame:DisableDrawLayer("BORDER")
 			self:keepFontStrings(_G.CalendarFilterFrame)
 			self:moveObject{obj=_G.CalendarCloseButton, y=14}
 			self:adjHeight{obj=_G.CalendarCloseButton, adj=-2}
-			self:addSkinFrame{obj=_G.CalendarContextMenu, ft=ftype}
-			self:addSkinFrame{obj=_G.CalendarInviteStatusContextMenu, ft=ftype}
+			self:skinObject("frame", {obj=_G.CalendarContextMenu, fType=ftype}) -- pseudo tooltip
+			self:skinObject("frame", {obj=_G.CalendarInviteStatusContextMenu, fType=ftype}) -- pseudo tooltip
 			-- remove texture from day buttons
 			for i = 1, 7 * 6 do
 				_G["CalendarDayButton" .. i]:GetNormalTexture():SetTexture(nil)
 			end
-			self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, x1=1, y1=-2, x2=2, y2=-7}
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ofs=-2, x2=2, y2=-4})
 			if self.modBtns then
 				self:skinCloseButton{obj=_G.CalendarCloseButton}
 			end
@@ -822,7 +823,7 @@ aObj.SetupRetail_UIFrames = function()
 					self:clrBtnBdr(_G.CalendarPrevMonthButton, "gold")
 					self:clrBtnBdr(_G.CalendarNextMonthButton, "gold")
 				end)
-				self:addButtonBorder{obj=_G.CalendarFilterButton, es=14, x1=3, y1=0, x2=3, y2=0}
+				self:addButtonBorder{obj=_G.CalendarFilterButton, es=14, x1=3, y1=0, x2=3, y2=0, clr="grey"}
 			end
 
 			self:Unhook(this, "OnShow")
@@ -830,9 +831,9 @@ aObj.SetupRetail_UIFrames = function()
 
 		self:SecureHookScript(_G.CalendarViewHolidayFrame, "OnShow", function(this)
 			self:removeNineSlice(this.Border)
-			self:skinSlider{obj=_G.CalendarViewHolidayScrollFrame.ScrollBar}
+			self:skinObject("slider", {obj=_G.CalendarViewHolidayScrollFrame.ScrollBar, fType=ftype})
 			self:removeRegions(_G.CalendarViewHolidayCloseButton, {5})
-			self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, hdr=true, x1=2, y1=-3, x2=-3, y2=-2}
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true, ofs=-3})
 			if self.modBtns then
 				self:skinCloseButton{obj=_G.CalendarViewHolidayCloseButton}
 			end
@@ -842,9 +843,9 @@ aObj.SetupRetail_UIFrames = function()
 
 		self:SecureHookScript(_G.CalendarViewRaidFrame, "OnShow", function(this)
 			self:removeNineSlice(this.Border)
-			self:skinSlider{obj=_G.CalendarViewRaidScrollFrame.ScrollBar}
+			self:skinObject("slider", {obj=_G.CalendarViewRaidScrollFrame.ScrollBar, fType=ftype})
 			self:removeRegions(_G.CalendarViewRaidCloseButton, {5})
-			self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, hdr=true, x1=2, y1=-3, x2=-3, y2=2}
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true, ofs=-3})
 			if self.modBtns then
 				self:skinCloseButton{obj=_G.CalendarViewRaidCloseButton}
 			end
@@ -854,15 +855,43 @@ aObj.SetupRetail_UIFrames = function()
 
 		self:SecureHookScript(_G.CalendarViewEventFrame, "OnShow", function(this)
 			self:removeNineSlice(this.Border)
-			self:addSkinFrame{obj=_G.CalendarViewEventDescriptionContainer, ft=ftype}
-			self:skinSlider{obj=_G.CalendarViewEventDescriptionScrollFrame.ScrollBar}
+			self:skinObject("frame", {obj=_G.CalendarViewEventDescriptionContainer, fType=ftype, fb=true})
+			self:skinObject("slider", {obj=_G.CalendarViewEventDescriptionScrollFrame.ScrollBar, fType=ftype})
 			self:keepFontStrings(_G.CalendarViewEventInviteListSection)
-			self:skinSlider{obj=_G.CalendarViewEventInviteListScrollFrameScrollBar}
-			self:addSkinFrame{obj=_G.CalendarViewEventInviteList, ft=ftype}
+			self:skinObject("slider", {obj=_G.CalendarViewEventInviteListScrollFrameScrollBar, fType=ftype})
+			self:skinObject("frame", {obj=_G.CalendarViewEventInviteList, fType=ftype, fb=true})
 			self:removeRegions(_G.CalendarViewEventCloseButton, {5})
-			self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, hdr=true, x1=2, y1=-3, x2=-3, y2=2}
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true, ofs=-3})
 			if self.modBtns then
-				self:skinCloseButton{obj=_G.CalendarViewEventCloseButton}
+				self:skinCloseButton{obj=_G.CalendarViewEventCloseButton, fType=ftype}
+				self:skinStdButton{obj=_G.CalendarViewEventAcceptButton, fType=ftype}
+				self:SecureHook(_G.CalendarViewEventAcceptButton, "Disable", function(bObj, _)
+					self:clrBtnBdr(bObj)
+				end)
+				self:SecureHook(_G.CalendarViewEventAcceptButton, "Enable", function(bObj, _)
+					self:clrBtnBdr(bObj)
+				end)
+				self:skinStdButton{obj=_G.CalendarViewEventTentativeButton, fType=ftype}
+				self:SecureHook(_G.CalendarViewEventTentativeButton, "Disable", function(bObj, _)
+					self:clrBtnBdr(bObj)
+				end)
+				self:SecureHook(_G.CalendarViewEventTentativeButton, "Enable", function(bObj, _)
+					self:clrBtnBdr(bObj)
+				end)
+				self:skinStdButton{obj=_G.CalendarViewEventDeclineButton, fType=ftype}
+				self:SecureHook(_G.CalendarViewEventDeclineButton, "Disable", function(bObj, _)
+					self:clrBtnBdr(bObj)
+				end)
+				self:SecureHook(_G.CalendarViewEventDeclineButton, "Enable", function(bObj, _)
+					self:clrBtnBdr(bObj)
+				end)
+				self:skinStdButton{obj=_G.CalendarViewEventRemoveButton, fType=ftype}
+				self:SecureHook(_G.CalendarViewEventRemoveButton, "Disable", function(bObj, _)
+					self:clrBtnBdr(bObj)
+				end)
+				self:SecureHook(_G.CalendarViewEventRemoveButton, "Enable", function(bObj, _)
+					self:clrBtnBdr(bObj)
+				end)
 			end
 
 			self:Unhook(this, "OnShow")
@@ -871,29 +900,54 @@ aObj.SetupRetail_UIFrames = function()
 		self:SecureHookScript(_G.CalendarCreateEventFrame, "OnShow", function(this)
 			self:removeNineSlice(this.Border)
 			_G.CalendarCreateEventIcon:SetAlpha(1) -- show event icon
-			self:skinEditBox{obj=_G.CalendarCreateEventTitleEdit, regs={6}}
-			self:skinDropDown{obj=_G.CalendarCreateEventTypeDropDown}
-			self:skinDropDown{obj=_G.CalendarCreateEventHourDropDown, x2=-6}
-			self:skinDropDown{obj=_G.CalendarCreateEventMinuteDropDown, x2=-6}
-			self:skinDropDown{obj=_G.CalendarCreateEventAMPMDropDown, x2=-6}
-			self:skinDropDown{obj=_G.CalendarCreateEventDifficultyOptionDropDown, x2=-16}
-			self:addSkinFrame{obj=_G.CalendarCreateEventDescriptionContainer, ft=ftype}
-			self:skinSlider{obj=_G.CalendarCreateEventDescriptionScrollFrame.ScrollBar}
+			self:skinObject("editbox", {obj=_G.CalendarCreateEventTitleEdit, fType=ftype})
+			self:skinObject("dropdown", {obj=_G.CalendarCreateEventCommunityDropDown, fType=ftype})
+			self:skinObject("dropdown", {obj=_G.CalendarCreateEventTypeDropDown, fType=ftype})
+			self:skinObject("dropdown", {obj=_G.CalendarCreateEventHourDropDown, fType=ftype, x2=-6})
+			self:skinObject("dropdown", {obj=_G.CalendarCreateEventMinuteDropDown, fType=ftype, x2=-6})
+			self:skinObject("dropdown", {obj=_G.CalendarCreateEventAMPMDropDown, fType=ftype})
+			self:skinObject("dropdown", {obj=_G.CalendarCreateEventDifficultyOptionDropDown, fType=ftype})
+			self:skinObject("frame", {obj=_G.CalendarCreateEventDescriptionContainer, fType=ftype, fb=true})
+			self:skinObject("slider", {obj=_G.CalendarCreateEventDescriptionScrollFrame.ScrollBar, fType=ftype})
 			self:keepFontStrings(_G.CalendarCreateEventInviteListSection)
-			self:skinSlider{obj=_G.CalendarCreateEventInviteListScrollFrameScrollBar}
-			self:addSkinFrame{obj=_G.CalendarCreateEventInviteList, ft=ftype}
-			self:skinEditBox{obj=_G.CalendarCreateEventInviteEdit, regs={6}}
+			self:skinObject("slider", {obj=_G.CalendarCreateEventInviteListScrollFrameScrollBar, fType=ftype})
+			self:skinObject("frame", {obj=_G.CalendarCreateEventInviteList, fType=ftype, fb=true})
+			self:skinObject("editbox", {obj=_G.CalendarCreateEventInviteEdit, fType=ftype})
 			_G.CalendarCreateEventMassInviteButtonBorder:SetAlpha(0)
 			_G.CalendarCreateEventRaidInviteButtonBorder:SetAlpha(0)
 			_G.CalendarCreateEventCreateButtonBorder:SetAlpha(0)
 			self:removeRegions(_G.CalendarCreateEventCloseButton, {5})
-			self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, hdr=true, x1=2, y1=-3, x2=-3, y2=2}
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true, cb=true, ofs=-2})
 			if self.modBtns then
-				self:skinStdButton{obj=_G.CalendarCreateEventInviteButton}
-				self:skinStdButton{obj=_G.CalendarCreateEventMassInviteButton}
-				self:skinStdButton{obj=_G.CalendarCreateEventRaidInviteButton}
-				self:skinStdButton{obj=_G.CalendarCreateEventCreateButton}
 				self:skinCloseButton{obj=_G.CalendarCreateEventCloseButton}
+				self:skinStdButton{obj=_G.CalendarCreateEventInviteButton}
+				self:SecureHook(_G.CalendarCreateEventInviteButton, "Disable", function(bObj, _)
+					self:clrBtnBdr(bObj)
+				end)
+				self:SecureHook(_G.CalendarCreateEventInviteButton, "Enable", function(bObj, _)
+					self:clrBtnBdr(bObj)
+				end)
+				self:skinStdButton{obj=_G.CalendarCreateEventMassInviteButton}
+				self:SecureHook(_G.CalendarCreateEventMassInviteButton, "Disable", function(bObj, _)
+					self:clrBtnBdr(bObj)
+				end)
+				self:SecureHook(_G.CalendarCreateEventMassInviteButton, "Enable", function(bObj, _)
+					self:clrBtnBdr(bObj)
+				end)
+				self:skinStdButton{obj=_G.CalendarCreateEventRaidInviteButton}
+				self:SecureHook(_G.CalendarCreateEventRaidInviteButton, "Disable", function(bObj, _)
+					self:clrBtnBdr(bObj)
+				end)
+				self:SecureHook(_G.CalendarCreateEventRaidInviteButton, "Enable", function(bObj, _)
+					self:clrBtnBdr(bObj)
+				end)
+				self:skinStdButton{obj=_G.CalendarCreateEventCreateButton}
+				self:SecureHook(_G.CalendarCreateEventCreateButton, "Disable", function(bObj, _)
+					self:clrBtnBdr(bObj)
+				end)
+				self:SecureHook(_G.CalendarCreateEventCreateButton, "Enable", function(bObj, _)
+					self:clrBtnBdr(bObj)
+				end)
 			end
 			if self.modChkBtns then
 				self:skinCheckButton{obj=_G.CalendarCreateEventAutoApproveCheck}
@@ -905,15 +959,21 @@ aObj.SetupRetail_UIFrames = function()
 
 		self:SecureHookScript(_G.CalendarMassInviteFrame, "OnShow", function(this)
 			self:removeNineSlice(this.Border)
-			self:skinDropDown{obj=_G.CalendarMassInviteCommunityDropDown}
-			self:skinEditBox{obj=_G.CalendarMassInviteMinLevelEdit, regs={6}}
-			self:skinEditBox{obj=_G.CalendarMassInviteMaxLevelEdit, regs={6}}
-			self:skinDropDown{obj=_G.CalendarMassInviteRankMenu}
+			self:skinObject("dropdown", {obj=_G.CalendarMassInviteCommunityDropDown, fType=ftype})
+			self:skinObject("editbox", {obj=_G.CalendarMassInviteMinLevelEdit, fType=ftype})
+			self:skinObject("editbox", {obj=_G.CalendarMassInviteMaxLevelEdit, fType=ftype})
+			self:skinObject("dropdown", {obj=_G.CalendarMassInviteRankMenu, fType=ftype})
 			self:removeRegions(_G.CalendarMassInviteCloseButton, {5})
-			self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, hdr=true, x1=4, y1=-3, x2=-3, y2=20}
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true, cb=true, ofs=-3, y2=20})
 			if self.modBtns then
-				self:skinStdButton{obj=_G.CalendarMassInviteAcceptButton}
 				self:skinCloseButton{obj=_G.CalendarMassInviteCloseButton}
+				self:skinStdButton{obj=_G.CalendarMassInviteAcceptButton}
+				self:SecureHook(_G.CalendarMassInviteAcceptButton, "Disable", function(bObj, _)
+					self:clrBtnBdr(bObj)
+				end)
+				self:SecureHook(_G.CalendarMassInviteAcceptButton, "Enable", function(bObj, _)
+					self:clrBtnBdr(bObj)
+				end)
 			end
 
 			self:Unhook(this, "OnShow")
@@ -921,10 +981,9 @@ aObj.SetupRetail_UIFrames = function()
 
 		self:SecureHookScript(_G.CalendarEventPickerFrame, "OnShow", function(this)
 			self:removeNineSlice(this.Border)
-			self:keepFontStrings(_G.CalendarEventPickerFrame)
-			self:skinSlider(_G.CalendarEventPickerScrollBar)
+			self:skinObject("slider", {obj=_G.CalendarEventPickerScrollBar, fType=ftype})
 			self:removeRegions(_G.CalendarEventPickerCloseButton, {7})
-			self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, hdr=true, x1=2, y1=-3, x2=-3, y2=2}
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true, ofs=-3})
 			if self.modBtns then
 				self:skinCloseButton{obj=_G.CalendarEventPickerCloseButton}
 			end
@@ -934,10 +993,10 @@ aObj.SetupRetail_UIFrames = function()
 
 		self:SecureHookScript(_G.CalendarTexturePickerFrame, "OnShow", function(this)
 			self:removeNineSlice(this.Border)
-			self:skinSlider(_G.CalendarTexturePickerScrollBar)
+			self:skinObject("slider", {obj=_G.CalendarTexturePickerScrollBar, fType=ftype})
 			_G.CalendarTexturePickerCancelButtonBorder:SetAlpha(0)
 			_G.CalendarTexturePickerAcceptButtonBorder:SetAlpha(0)
-			self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, hdr=true, x1=5, y1=-3, x2=-3, y2=2}
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true, ofs=-3})
 			if self.modBtns then
 				self:skinStdButton{obj=_G.CalendarTexturePickerCancelButton}
 				self:skinStdButton{obj=_G.CalendarTexturePickerAcceptButton}
@@ -948,13 +1007,11 @@ aObj.SetupRetail_UIFrames = function()
 
 		self:SecureHookScript(_G.CalendarClassButtonContainer, "OnShow", function(this)
 			for i = 1, _G.MAX_CLASSES do -- allow for the total button
-				self:removeRegions(_G["CalendarClassButton" .. i], {1})
+				self:removeRegions(_G["CalendarClassButton" .. i], {1}) -- background
 				self:addButtonBorder{obj=_G["CalendarClassButton" .. i]}
 			end
-			-- Class Totals button, texture & size changes
-			self:moveObject{obj=_G.CalendarClassTotalsButton, x=-2}
-			_G.CalendarClassTotalsButton:SetSize(25, 25)
-			self:applySkin{obj=_G.CalendarClassTotalsButton, ft=ftype, kfs=true, bba=self.modBtnBs and 1 or 0}
+			_G.CalendarClassTotalsButton:SetSize(20, 20)
+			self:skinObject("frame", {obj=_G.CalendarClassTotalsButton, fType=ftype, kfs=true})
 
 			self:Unhook(this, "OnShow")
 		end)
@@ -1045,7 +1102,7 @@ aObj.SetupRetail_UIFrames = function()
 				_G.QuickJoinToastButton[type]:DisableDrawLayer("BACKGROUND")
 				self:moveObject{obj=_G.QuickJoinToastButton[type], x=7}
 				_G.QuickJoinToastButton[type]:Hide()
-				self:addSkinFrame{obj=_G.QuickJoinToastButton[type], ft=ftype}
+				self:skinObject("frame", {obj=_G.QuickJoinToastButton[type], fType=ftype})
 			end
 			-- hook the animations to show or hide the QuickJoinToastButton frame(s)
 			_G.QuickJoinToastButton.FriendToToastAnim:SetScript("OnPlay", function()
@@ -1205,7 +1262,7 @@ aObj.SetupRetail_UIFrames = function()
 			this.ThanksText:SetTextColor(self.HT:GetRGB())
 			this.ClassNameText:SetTextColor(self.HT:GetRGB())
 			this.DialogFrame:SetTexture(nil)
-			self:addSkinFrame{obj=this, ft=ftype, nb=true, x1=600, y1=-100, x2=-600, y2=500}
+			self:skinObject("frame", {obj=this, fType=ftype, x1=600, y1=-100, x2=-600, y2=500})
 			if self.modBtns then
 				self:skinStdButton{obj=this.BuyCharacterBoostButton}
 				self:skinStdButton{obj=this.DecideLaterButton}
@@ -1221,7 +1278,7 @@ aObj.SetupRetail_UIFrames = function()
 			this.Hourglass:SetPoint("LEFT", 20, 0)
 			this.Hourglass:SetSize(30, 30)
 			this:DisableDrawLayer("BACKGROUND")
-			self:addSkinFrame{obj=this, ft=ftype}
+			self:skinObject("frame", {obj=this, fType=ftype})
 
 			self:Unhook(this, "OnShow")
 		end)
@@ -1308,7 +1365,7 @@ aObj.SetupRetail_UIFrames = function()
 				contribution.Header.Text:SetTextColor(self.HT:GetRGB())
 				contribution.State.Border:SetAlpha(0) -- texture is changed
 				contribution.State.TextBG:SetTexture(nil)
-				self:skinStatusBar{obj=contribution.Status, fi=0}
+				self:skinObject("statusbar", {obj=contribution.State, fi=0})
 				contribution.Status.Border:SetTexture(nil)
 				contribution.Status.BG:SetTexture(nil)
 				contribution.Description:SetTextColor(self.BT:GetRGB())
@@ -1318,7 +1375,7 @@ aObj.SetupRetail_UIFrames = function()
 				reward.RewardName:SetTextColor(self.BT:GetRGB())
 			end
 			this.CloseButton.CloseButtonBackground:SetTexture(nil)
-			self:addSkinFrame{obj=this, ft=ftype, kfs=true, ofs=-21, x2=-18}
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, ofs=-21, x2=-18})
 
 			self:Unhook(this, "OnShow")
 		end)
@@ -1358,7 +1415,7 @@ aObj.SetupRetail_UIFrames = function()
 		self:SecureHookScript(_G.DeathRecapFrame, "OnShow", function(this)
 			this:DisableDrawLayer("BORDER")
 			this.Background:SetTexture(nil)
-			self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, ofs=-1, y1=-2}
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ofs=-1, y1=-2})
 			if self.modBtns then
 				self:skinCloseButton{obj=this.CloseXButton}
 				self:skinStdButton{obj=this.CloseButton}
@@ -1585,7 +1642,7 @@ aObj.SetupRetail_UIFrames = function()
 		self:checkShown(_G.GarrisonLandingPage)
 
 		if _G.GarrisonLandingPageTutorialBox then
-			self:skinGlowBox(_G.GarrisonLandingPageTutorialBox, ftype)
+			self:skinObject("glowbox", {obj=_G.GarrisonLandingPageTutorialBox, fType=ftype})
 		end
 
 		self:SecureHookScript(_G.GarrisonBuildingFrame, "OnShow", function(this)
@@ -1604,19 +1661,26 @@ aObj.SetupRetail_UIFrames = function()
 					end
 				end
 			end
-			local function skinBLbuttons(bl)
-				for i = 1, #bl.Buttons do
-					bl.Buttons[i].BG:SetTexture(nil)
+			local function skinBLbuttons()
+				aObj:Debug("skinBLbuttons")
+				for i = 1, #_G.GarrisonBuildingFrame.BuildingList.Buttons do
+					local btn = _G.GarrisonBuildingFrame.BuildingList.Buttons[i]
+					btn.BG:SetTexture(nil)
 					if aObj.modBtnBs then
-						aObj:addButtonBorder{obj=bl.Buttons[i], relTo=bl.Buttons[i].Icon}
+						aObj:addButtonBorder{obj=btn, relTo=btn.Icon}
+						if btn.info.needsPlan then
+							aObj:clrBtnBdr(btn, "grey")
+						else
+							aObj:clrBtnBdr(btn)
+						end
 					end
 				end
 			end
 			self:SecureHookScript(_G.GarrisonBuildingFrame.BuildingList, "OnShow", function(fObj)
-				skinBLbuttons(fObj)
-				self:SecureHook("GarrisonBuildingList_SelectTab", function(tab)
+				skinBLbuttons()
+				self:SecureHook("GarrisonBuildingList_SelectTab", function(_)
 					clrTabText()
-					skinBLbuttons(tab:GetParent())
+					skinBLbuttons()
 				end)
 				fObj.MaterialFrame:DisableDrawLayer("BACKGROUND")
 				fObj.Tabs = {fObj.Tab1, fObj.Tab2, fObj.Tab3}
@@ -1686,17 +1750,9 @@ aObj.SetupRetail_UIFrames = function()
 
 			-- hook this to show/hide 'Plans Required' text (Bug in Blizzard's code, reported 03.03.18)
 			self:SecureHook("GarrisonBuildingInfoBox_ShowBuilding", function(ID, owned, showLock)
-				local buildingInfo
-				if owned then
-					buildingInfo = {_G.C_Garrison.GetOwnedBuildingInfo(ID)}
-				else
-					buildingInfo = {_G.C_Garrison.GetBuildingInfo(ID)}
-				end
-
+				local buildingInfo = {_G.C_Garrison.GetOwnedBuildingInfoAbbrev(ID)}
 				if not showLock then
-					if buildingInfo[16] -- isMaxLevel
-					and buildingInfo[15] -- canUpgrade
-					then
+					if buildingInfo[5] then -- buildingRank [1-3] if known
 						_G.GarrisonBuildingFrame.InfoBox.PlansNeeded:Hide()
 						_G.GarrisonBuildingFrame.InfoBox.Building:SetDesaturated(false)
 					else
@@ -1722,15 +1778,6 @@ aObj.SetupRetail_UIFrames = function()
 		_G.C_Timer.After(0.1, function()
 			self:add2Table(self.ttList, _G.GarrisonMissionMechanicTooltip)
 			self:add2Table(self.ttList, _G.GarrisonMissionMechanicFollowerCounterTooltip)
-		end)
-
-		self:SecureHookScript(_G.GarrisonMissionTutorialFrame, "OnShow", function(this)
-			if self.modBtns then
-				self:skinStdButton{obj=this.GlowBox.Button}
-			end
-			-- N.B. NO CloseButton
-
-			self:Unhook(this, "OnShow")
 		end)
 
 		-- hook these to skin mission rewards & OvermaxItem
@@ -2214,7 +2261,7 @@ aObj.SetupRetail_UIFrames = function()
 		self.initialized.GhostFrame = true
 
 		self:SecureHookScript(_G.GhostFrame, "OnShow", function(this)
-			self:addSkinFrame{obj=this, ft=ftype, kfs=true}
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true})
 			_G.RaiseFrameLevelByTwo(this) -- make it appear above other frames
 			if self.modBtnBs then
 				self:addButtonBorder{obj=_G.GhostFrameContentsFrame, relTo=_G.GhostFrameContentsFrameIcon}
@@ -2232,10 +2279,10 @@ aObj.SetupRetail_UIFrames = function()
 
 		local function skinHelpTips()
 			for hTip in _G.HelpTip.framePool:EnumerateActive() do
-				self:skinGlowBox(hTip, ftype)
+				self:skinObject("glowbox", {obj=hTip, fType=ftype})
 				if self.modBtns then
 					-- N.B. .CloseButton already skinned in skinGlowBox function
-					self:skinStdButton{obj=hTip.OkayButton}
+					self:skinStdButton{obj=hTip.OkayButton, clr="gold"}
 				end
 			end
 		end
@@ -2297,40 +2344,37 @@ aObj.SetupRetail_UIFrames = function()
 
 		self.initialized.IslandsQueueUI = true
 
-		local IQF = _G.IslandsQueueFrame
+		self:SecureHookScript(_G.IslandsQueueFrame, "OnShow", function(this)
+			this.TitleBanner.Banner:SetTexture(nil)
+			for i = 1, #this.IslandCardsFrame.IslandCards do
+				-- IQF.IslandCardsFrame.IslandCards[i].Background:SetTexture(nil)
+				this.IslandCardsFrame.IslandCards[i].TitleScroll.Parchment:SetTexture(nil)
+			end
+			this.DifficultySelectorFrame.Background:SetTexture(nil)
+			if self.modBtns then
+				self:skinStdButton{obj=this.DifficultySelectorFrame.QueueButton}
+			end
+			local WQ = this.WeeklyQuest
+			WQ.OverlayFrame.Bar:SetTexture(nil)
+			WQ.OverlayFrame.FillBackground:SetTexture(nil)
+			self:skinObject("statusbar", {obj=WQ.StatusBar, fi=0})
+			-- N.B. NOT a real tooltip
+			if self.modBtnBs then
+				self:addButtonBorder{obj=WQ.QuestReward, relTo=WQ.QuestReward.Icon}
+			end
+			this.TutorialFrame.TutorialText:SetTextColor(self.BT:GetRGB())
+			this.TutorialFrame:SetSize(317, 336)
+			self:skinObject("frame", {obj=this.TutorialFrame, fType=ftype, kfs=true, y1=-1, x2=-1, y2=20})
+			if self.modBtns then
+				self:skinStdButton{obj=this.TutorialFrame.Leave}
+			end
+			self:keepFontStrings(this.ArtOverlayFrame)
+			this.HelpButton.Ring:SetTexture(nil)
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true})
 
-		IQF.TitleBanner.Banner:SetTexture(nil)
-		for i = 1, #IQF.IslandCardsFrame.IslandCards do
-			-- IQF.IslandCardsFrame.IslandCards[i].Background:SetTexture(nil)
-			IQF.IslandCardsFrame.IslandCards[i].TitleScroll.Parchment:SetTexture(nil)
-		end
-
-		IQF.DifficultySelectorFrame.Background:SetTexture(nil)
-		if self.modBtns then
-			self:skinStdButton{obj=IQF.DifficultySelectorFrame.QueueButton}
-		end
-
-		local WQ = IQF.WeeklyQuest
-		WQ.OverlayFrame.Bar:SetTexture(nil)
-		WQ.OverlayFrame.FillBackground:SetTexture(nil)
-		self:skinStatusBar{obj=WQ.StatusBar, fi=0}
-		-- N.B. NOT a real tooltip
-		if self.modBtnBs then
-			self:addButtonBorder{obj=WQ.QuestReward, relTo=WQ.QuestReward.Icon}
-		end
-
-		IQF.TutorialFrame.TutorialText:SetTextColor(self.BT:GetRGB())
-		IQF.TutorialFrame:SetSize(317, 336)
-		self:addSkinFrame{obj=IQF.TutorialFrame, ft=ftype, kfs=true, y1=-1, x2=-1, y2=20}
-		if self.modBtns then
-			self:skinStdButton{obj=IQF.TutorialFrame.Leave}
-		end
-
-		self:keepFontStrings(IQF.ArtOverlayFrame)
-
-		IQF.HelpButton.Ring:SetTexture(nil)
-
-		self:addSkinFrame{obj=IQF, ft=ftype, kfs=true}
+			self:Unhook(this, "OnShow")
+		end)
+		self:checkShown(_G.IslandsQueueFrame)
 
 	end
 
@@ -2363,7 +2407,7 @@ aObj.SetupRetail_UIFrames = function()
 				self:skinStdButton{obj=_G.LFDRoleCheckPopupAcceptButton}
 				self:skinStdButton{obj=_G.LFDRoleCheckPopupDeclineButton}
 			end
-			self:addSkinFrame{obj=this, ft=ftype, kfs=true}
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true})
 
 			self:Unhook(this, "OnShow")
 		end)
@@ -2374,7 +2418,7 @@ aObj.SetupRetail_UIFrames = function()
 				self:skinStdButton{obj=this.YesButton}
 				self:skinStdButton{obj=this.NoButton}
 			end
-			self:addSkinFrame{obj=this, ft=ftype, kfs=true}
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true})
 
 			self:Unhook(this, "OnShow")
 		end)
@@ -2388,8 +2432,8 @@ aObj.SetupRetail_UIFrames = function()
 			-- LFD Queue Frame
 			skinCheckBtns("LFD")
 			_G.LFDQueueFrameBackground:SetAlpha(0)
-			self:skinDropDown{obj=_G.LFDQueueFrameTypeDropDown}
-			self:skinSlider{obj=_G.LFDQueueFrameRandomScrollFrame.ScrollBar}
+			self:skinObject("dropdown", {obj=_G.LFDQueueFrameTypeDropDown, fType=ftype})
+			self:skinObject("slider", {obj=_G.LFDQueueFrameRandomScrollFrame.ScrollBar, fType=ftype})
 			_G.LFDQueueFrameRandomScrollFrameChildFrame.MoneyReward.NameFrame:SetTexture(nil)
 			self:removeMagicBtnTex(_G.LFDQueueFrameFindGroupButton)
 			if self.modBtns then
@@ -2425,7 +2469,7 @@ aObj.SetupRetail_UIFrames = function()
 					self:skinCheckButton{obj=_G["LFDQueueFrameSpecificListButton" .. i].enableButton}
 				end
 			end
-			self:skinSlider{obj=_G.LFDQueueFrameSpecificListScrollFrame.ScrollBar, rt="background"}
+			self:skinObject("slider", {obj=_G.LFDQueueFrameSpecificListScrollFrame.ScrollBar, fType=ftype, rpTex="background"})
 
 			self:Unhook(this, "OnShow")
 		end)
@@ -2439,9 +2483,8 @@ aObj.SetupRetail_UIFrames = function()
 		self:SecureHookScript(_G.LFGDungeonReadyPopup, "OnShow", function(this) -- a.k.a. ReadyCheck, also used for Island Expeditions
 			self:removeNineSlice(_G.LFGDungeonReadyStatus.Border)
 			self:removeNineSlice(_G.LFGDungeonReadyDialog.Border)
-
-			self:addSkinFrame{obj=_G.LFGDungeonReadyStatus, ft=ftype, kfs=true, ofs=-5}
-			self:addSkinFrame{obj=_G.LFGDungeonReadyDialog, ft=ftype, kfs=true, rp=true, ofs=-5, y2=10} -- use rp=true to make background visible
+			self:skinObject("frame", {obj=_G.LFGDungeonReadyStatus, fType=ftype, kfs=true, ofs=-5})
+			self:skinObject("frame", {obj=_G.LFGDungeonReadyDialog, fType=ftype, kfs=true, rp=true, ofs=-5, y2=10}) -- use rp=true to make background visible
 			if self.modBtns then
 				self:skinOtherButton{obj=_G.LFGDungeonReadyStatusCloseButton, text=self.modUIBtns.minus}
 				self:skinOtherButton{obj=_G.LFGDungeonReadyDialogCloseButton, text=self.modUIBtns.minus}
@@ -2494,7 +2537,7 @@ aObj.SetupRetail_UIFrames = function()
 
 		self:SecureHookScript(_G.LFGInvitePopup, "OnShow", function(this)
 			self:removeNineSlice(this.Border)
-			self:addSkinFrame{obj=this, ft=ftype}
+			self:skinObject("frame", {obj=this, fType=ftype})
 			if self.modBtns then
 				self:skinStdButton{obj=_G.LFGInvitePopupAcceptButton}
 				self:skinStdButton{obj=_G.LFGInvitePopupDeclineButton}
@@ -2676,7 +2719,7 @@ aObj.SetupRetail_UIFrames = function()
 		self.initialized.LFRFrame = true
 
 		self:SecureHookScript(_G.RaidBrowserFrame, "OnShow", function(this)
-			self:addSkinFrame{obj=this, ft=ftype, kfs=true}
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true})
 			-- LFR Parent Frame
 			-- LFR Queue Frame
 			self:removeInset(_G.LFRQueueFrameRoleInset)
@@ -2686,15 +2729,19 @@ aObj.SetupRetail_UIFrames = function()
 
 			-- Specific List subFrame
 			for i = 1, _G.NUM_LFR_CHOICE_BUTTONS do
-				self:skinCheckButton{obj=_G["LFRQueueFrameSpecificListButton" .. i].enableButton}
-				self:skinExpandButton{obj=_G["LFRQueueFrameSpecificListButton" .. i].expandOrCollapseButton, sap=true}
+				if self.modBtns then
+					self:skinExpandButton{obj=_G["LFRQueueFrameSpecificListButton" .. i].expandOrCollapseButton, sap=true}
+				end
+				if self.modChkBtns then
+					self:skinCheckButton{obj=_G["LFRQueueFrameSpecificListButton" .. i].enableButton}
+				end
 			end
-			self:skinSlider{obj=_G.LFRQueueFrameSpecificListScrollFrame.ScrollBar}
+			self:skinObject("slider", {obj=_G.LFRQueueFrameSpecificListScrollFrame.ScrollBar, fType=ftype})
 
 			-- LFR Browse Frame
 			self:removeInset(_G.LFRBrowseFrameRoleInset)
-			self:skinDropDown{obj=_G.LFRBrowseFrameRaidDropDown}
-			self:skinSlider{obj=_G.LFRBrowseFrameListScrollFrame.ScrollBar, rt="background"}
+			self:skinObject("dropdown", {obj=_G.LFRBrowseFrameRaidDropDown, fType=ftype})
+			self:skinObject("slider", {obj=_G.LFRBrowseFrameListScrollFrame.ScrollBar, fType=ftype, rpTex="background"})
 			self:keepFontStrings(_G.LFRBrowseFrame)
 
 			-- Tabs (side)
@@ -2915,14 +2962,13 @@ aObj.SetupRetail_UIFrames = function()
 
 		local function skinFrame(frame)
 			frame:DisableDrawLayer("BORDER") -- hide NineSlice UniqueCornersLayout
-			aObj:addSkinFrame{obj=frame, ft=ftype, nb=true, ofs=-30}
+			aObj:skinObject("frame", {obj=frame, fType=ftype, ofs=-30})
 		end
-
 		skinFrame(_G.NPE_TutorialMainFrame_Frame)
 		skinFrame(_G.NPE_TutorialSingleKey_Frame)
 		skinFrame(_G.NPE_TutorialWalk_Frame)
-
 		skinFrame(_G.NPE_TutorialKeyboardMouseFrame_Frame)
+
 		if self.modBtns then
 			self:skinStdButton{obj=_G.KeyboardMouseConfirmButton}
 		end
@@ -2954,28 +3000,6 @@ aObj.SetupRetail_UIFrames = function()
 		if not self.prdb.OrderHallUI or self.initialized.OrderHallUI then return end
 		self.initialized.OrderHallUI = true
 
-		local function skinBtns(frame)
-			for btn in frame.buttonPool:EnumerateActive() do
-				if aObj.modBtnBs then
-					aObj:addButtonBorder{obj=btn, relTo=btn.Icon, ofs=2}
-					if btn.Border:GetAtlas() == "orderhalltalents-spellborder-yellow"
-					and btn.Border:IsShown()
-					or btn.talent.researched then
-						aObj:clrBtnBdr(btn, "yellow")
-					elseif btn.Border:GetAtlas() == "orderhalltalents-spellborder-green"
-					and btn.Border:IsShown()
-					then
-						aObj:clrBtnBdr(btn, "green")
-					else
-						aObj:clrBtnBdr(btn, "grey")
-					end
-				end
-				btn.Border:SetTexture(nil)
-			end
-			for talentRank in frame.talentRankPool:EnumerateActive() do
-				aObj:changeTandC(talentRank.Background)
-			end
-		end
 		self:SecureHookScript(_G.OrderHallTalentFrame, "OnShow", function(this)
 			for i = 1, #this.FrameTick do
 				this.FrameTick[i]:SetTextColor(self.BT:GetRGB())
@@ -2985,7 +3009,30 @@ aObj.SetupRetail_UIFrames = function()
 			if self.modBtnBs then
 				self:addButtonBorder{obj=this.Currency, relTo=this.Currency.Icon, clr="grey"}
 			end
-			self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, ofs=2, x2=3}
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, cb=true, ofs=2, x2=3})
+
+			local function skinBtns(frame)
+				for btn in frame.buttonPool:EnumerateActive() do
+					if aObj.modBtnBs then
+						aObj:addButtonBorder{obj=btn, relTo=btn.Icon, ofs=2}
+						if btn.Border:GetAtlas() == "orderhalltalents-spellborder-yellow"
+						and btn.Border:IsShown()
+						or btn.talent.researched then
+							aObj:clrBtnBdr(btn, "yellow")
+						elseif btn.Border:GetAtlas() == "orderhalltalents-spellborder-green"
+						and btn.Border:IsShown()
+						then
+							aObj:clrBtnBdr(btn, "green")
+						else
+							aObj:clrBtnBdr(btn, "grey")
+						end
+					end
+					btn.Border:SetTexture(nil)
+				end
+				for talentRank in frame.talentRankPool:EnumerateActive() do
+					aObj:changeTandC(talentRank.Background)
+				end
+			end
 			skinBtns(this)
 			self:SecureHook(this, "RefreshAllData", function(fObj)
 				for choiceTex in fObj.choiceTexturePool:EnumerateActive() do
@@ -3000,7 +3047,7 @@ aObj.SetupRetail_UIFrames = function()
 		-- CommandBar at top of screen
 		self:SecureHookScript(_G.OrderHallCommandBar, "OnShow", function(this)
 			this:DisableDrawLayer("BACKGROUND")
-			self:addSkinFrame{obj=this, ft=ftype, nb=true, ofs=4, y2=-2} -- N.B. Icons on command bar need to be visible
+			self:skinObject("frame", {obj=this, fType=ftype, ofs=4, y2=-2}) -- N.B. Icons on command bar need to be visible
 
 			self:Unhook(this, "OnShow")
 
@@ -3132,7 +3179,7 @@ aObj.SetupRetail_UIFrames = function()
 				this.BottomFrame.PetSelectionFrame["Pet" .. i].HealthDivider:SetTexture(nil)
 			end
 			self:keepRegions(this.BottomFrame.xpBar, {1, 5, 6, 13}) -- text and statusbar textures
-			self:skinStatusBar{obj=this.BottomFrame.xpBar, fi=0}
+			self:skinObject("statusbar", {obj=this.BottomFrame.xpBar, fi=0})
 			this.BottomFrame.TurnTimer.TimerBG:SetTexture(nil)
 			self:changeTex2SB(this.BottomFrame.TurnTimer.Bar)
 			this.BottomFrame.TurnTimer.ArtFrame:SetTexture(nil)
@@ -3224,10 +3271,16 @@ aObj.SetupRetail_UIFrames = function()
 			-- skin the tooltips
 			for _, prefix in _G.pairs{"PetBattlePrimaryUnit", "PetBattlePrimaryAbility", "FloatingBattlePet", "FloatingPetBattleAbility", "BattlePet"} do
 				_G[prefix .. "Tooltip"]:DisableDrawLayer("BACKGROUND")
-				if _G[prefix .. "Tooltip"].Delimiter then _G[prefix .. "Tooltip"].Delimiter:SetTexture(nil) end
-				if _G[prefix .. "Tooltip"].Delimiter1 then _G[prefix .. "Tooltip"].Delimiter1:SetTexture(nil) end
-				if _G[prefix .. "Tooltip"].Delimiter2 then _G[prefix .. "Tooltip"].Delimiter2:SetTexture(nil) end
-				self:addSkinFrame{obj=_G[prefix .. "Tooltip"], ft=ftype}
+				if _G[prefix .. "Tooltip"].Delimiter then
+					_G[prefix .. "Tooltip"].Delimiter:SetTexture(nil)
+				end
+				if _G[prefix .. "Tooltip"].Delimiter1 then
+					_G[prefix .. "Tooltip"].Delimiter1:SetTexture(nil)
+				end
+				if _G[prefix .. "Tooltip"].Delimiter2 then
+					_G[prefix .. "Tooltip"].Delimiter2:SetTexture(nil)
+				end
+				self:skinObject("frame", {obj=_G[prefix .. "Tooltip"], fType=ftype})
 			end
 			self:changeTex2SB(_G.PetBattlePrimaryUnitTooltip.ActualHealthBar)
 			self:changeTex2SB(_G.PetBattlePrimaryUnitTooltip.XPBar)
@@ -3280,7 +3333,7 @@ aObj.SetupRetail_UIFrames = function()
 			x1Ofs, y1Ofs, x2Ofs, y2Ofs = nil, nil, nil, nil
 		end
 		local function skinOptions(frame, source) -- luacheck: ignore source
-			-- aObj:Debug("skinOptions PCUI: [%s, %s, %s, %s]", source, frame.uiTextureKit, frame.optionFrameTemplate)
+			aObj:Debug("skinOptions PCUI: [%s, %s, %s, %s]", source, frame.uiTextureKit, frame.optionFrameTemplate)
 			if not frame.optionFrameTemplate then return end
 			if frame.uiTextureKit == "jailerstower"
 			or frame.uiTextureKit == "cypherchoice"
@@ -3297,12 +3350,15 @@ aObj.SetupRetail_UIFrames = function()
 						-- DON'T skin magnifying glass button
 						if btn:GetText() ~= "Preview Covenant" then
 							aObj:skinStdButton{obj=btn}
-							aObj:secureHook(btn, "Disable", function(bObj, _)
+							aObj:secureHook(btn, "SetEnabled", function(bObj)
 								aObj:clrBtnBdr(bObj)
 							end)
-							aObj:secureHook(btn, "Enable", function(bObj, _)
-								aObj:clrBtnBdr(bObj)
-							end)
+							-- aObj:secureHook(btn, "Disable", function(bObj, _)
+							-- 	aObj:clrBtnBdr(bObj)
+							-- end)
+							-- aObj:secureHook(btn, "Enable", function(bObj, _)
+							-- 	aObj:clrBtnBdr(bObj)
+							-- end)
 						end
 					end
 				end
@@ -3417,7 +3473,7 @@ aObj.SetupRetail_UIFrames = function()
 			self:removeNineSlice(this.Border)
 			this:DisableDrawLayer("BORDER")
 			_G.PVPFramePopupRing:SetTexture(nil)
-			self:addSkinFrame{obj=this, ft=ftype, nb=true}
+			self:skinObject("frame", {obj=this, fType=ftype})
 			if self.modBtns then
 				self:skinCloseButton{obj=this.minimizeButton}
 				self:skinStdButton{obj=_G.PVPFramePopupAcceptButton}
@@ -3429,7 +3485,7 @@ aObj.SetupRetail_UIFrames = function()
 
 		self:SecureHookScript(_G.PVPRoleCheckPopup, "OnShow", function(this)
 			self:removeNineSlice(this.Border)
-			self:addSkinFrame{obj=this, ft=ftype}
+			self:skinObject("frame", {obj=this, fType=ftype})
 			if self.modBtns then
 				self:skinStdButton{obj=_G.PVPRoleCheckPopupAcceptButton}
 				self:skinStdButton{obj=_G.PVPRoleCheckPopupDeclineButton}
@@ -3517,7 +3573,7 @@ aObj.SetupRetail_UIFrames = function()
 			self:Unhook(this, "OnShow")
 		end)
 
-		self:skinDropDown{obj=_G.PVPMatchResultsNameDropDown}
+		self:skinObject("dropdown", {obj=_G.PVPMatchResultsNameDropDown, fType=ftype})
 
 	end
 
@@ -3533,7 +3589,7 @@ aObj.SetupRetail_UIFrames = function()
 		self:SecureHookScript(_G.QuestMapFrame, "OnShow", function(this)
 			this.Background:SetAlpha(0) -- N.B. Texture changed in code
 			this.VerticalSeparator:SetTexture(nil)
-			self:skinDropDown{obj=_G.QuestMapQuestOptionsDropDown}
+			self:skinObject("dropdown", {obj=_G.QuestMapQuestOptionsDropDown, fType=ftype})
 			-- QuestsFrame
 			this.QuestsFrame:DisableDrawLayer("BACKGROUND")
 			this.QuestsFrame.Contents.Separator:DisableDrawLayer("OVERLAY")
@@ -3574,8 +3630,8 @@ aObj.SetupRetail_UIFrames = function()
 				end
 			end)
 			this.QuestsFrame.DetailFrame:DisableDrawLayer("ARTWORK")
-			self:skinSlider{obj=this.QuestsFrame.ScrollBar}
-			self:addSkinFrame{obj=this.QuestsFrame.StoryTooltip, ft=ftype}
+			self:skinObject("slider", {obj=this.QuestsFrame.ScrollBar, fType=ftype})
+			self:skinObject("frame", {obj=this.QuestsFrame.StoryTooltip, fType=ftype})
 			-- QuestSessionManagement
 			this.QuestSessionManagement.BG:SetTexture(nil)
 			if self.modBtnBs then
@@ -3585,7 +3641,7 @@ aObj.SetupRetail_UIFrames = function()
 			self:keepFontStrings(this.DetailsFrame)
 			self:keepFontStrings(this.DetailsFrame.RewardsFrame)
 			self:getRegion(this.DetailsFrame.RewardsFrame, 3):SetTextColor(self.HT:GetRGB())
-			self:skinSlider{obj=this.DetailsFrame.ScrollFrame.ScrollBar, wdth=-4}
+			self:skinObject("slider", {obj=this.DetailsFrame.ScrollFrame.ScrollBar, fType=ftype})
 			this.DetailsFrame.CompleteQuestFrame:DisableDrawLayer("BACKGROUND")
 			this.DetailsFrame.CompleteQuestFrame:DisableDrawLayer("ARTWORK")
 			this.DetailsFrame.CompleteQuestFrame.CompleteButton:DisableDrawLayer("BORDER")
@@ -3612,7 +3668,7 @@ aObj.SetupRetail_UIFrames = function()
 			-- CampaignOverview
 			this.CampaignOverview.BG:SetTexture(nil)
 			self:keepFontStrings(this.CampaignOverview.Header)
-			self:skinSlider{obj=this.CampaignOverview.ScrollFrame.ScrollBar, rt={"artwork", "overlay"}}
+			self:skinObject("slider", {obj=this.CampaignOverview.ScrollFrame.ScrollBar, fType=ftype, rpTex={"artwork", "overlay}"}})
 			self:SecureHook(this.CampaignOverview, "UpdateCampaignLoreText", function(fObj, _, _)
 				for tex in fObj.texturePool:EnumerateActive() do
 					tex:SetTexture(nil)
@@ -3646,7 +3702,6 @@ aObj.SetupRetail_UIFrames = function()
 		_G.C_Timer.After(0.1, function()
 			wct.ofs = -2
 			self:add2Table(self.ttList, wct)
-			wct = nil
 		end)
 
 	end
@@ -3661,7 +3716,7 @@ aObj.SetupRetail_UIFrames = function()
 				this.Border:DisableDrawLayer("BORDER")
 				this.Border.Bg:SetTexture(nil)
 				this.Divider:SetTexture(nil)
-				self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, ofs=-4}
+				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ofs=-4})
 				if self.modBtns then
 					self:skinStdButton{obj=this.ButtonContainer.Confirm}
 					self:skinStdButton{obj=this.ButtonContainer.Decline}
@@ -3683,9 +3738,17 @@ aObj.SetupRetail_UIFrames = function()
 		self:SecureHookScript(_G.QueueStatusFrame, "OnShow", function(this)
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true})
 			-- change the colour of the Entry Separator texture
-			for sEntry in this.statusEntriesPool:EnumerateActive() do
-				sEntry.EntrySeparator:SetColorTexture(self.bbClr:GetRGBA())
+			local function clrEntry(frame)
+				local r, g, b, _ = self.bbClr:GetRGBA()
+				for sEntry in frame.statusEntriesPool:EnumerateActive() do
+					sEntry.EntrySeparator:SetColorTexture(r, g, b, 0.75)
+				end
 			end
+			self:SecureHook("QueueStatusFrame_Update", function(fObj)
+				clrEntry(fObj)
+			end)
+			clrEntry(this)
+
 			-- handle SexyMap's use of AnimationGroups to show and hide frames
 			if _G.IsAddOnLoaded("SexyMap") then
 				local rtEvt
@@ -3742,8 +3805,8 @@ aObj.SetupRetail_UIFrames = function()
 			-- RaidFinderQueueFrame
 			self:nilTexture(_G.RaidFinderQueueFrameBackground, true)
 			skinCheckBtns("RaidFinder")
-			self:skinDropDown{obj=_G.RaidFinderQueueFrameSelectionDropDown}
-			self:skinSlider{obj=_G.RaidFinderQueueFrameScrollFrame.ScrollBar, rt={"background", "artwork"}}
+			self:skinObject("dropdown", {obj=_G.RaidFinderQueueFrameSelectionDropDown, fType=ftype})
+			self:skinObject("slider", {obj=_G.RaidFinderQueueFrameScrollFrame.ScrollBar, fType=ftype, rpTex={"background", "artwork"}})
 
 			self:Unhook(this, "OnShow")
 		end)
@@ -3916,28 +3979,34 @@ aObj.SetupRetail_UIFrames = function()
 		if not self.prdb.TalkingHeadUI or self.initialized.TalkingHeadUI then return end
 		self.initialized.TalkingHeadUI = true
 
-		-- remove CloseButton animation
-		_G.TalkingHeadFrame.MainFrame.TalkingHeadsInAnim.CloseButton = nil
-		_G.TalkingHeadFrame.MainFrame.Close.CloseButton = nil
-
-		self:nilTexture(_G.TalkingHeadFrame.BackgroundFrame.TextBackground, true)
-		self:nilTexture(_G.TalkingHeadFrame.PortraitFrame.Portrait, true)
-		self:nilTexture(_G.TalkingHeadFrame.MainFrame.Model.PortraitBg, true)
-		self:addSkinFrame{obj=_G.TalkingHeadFrame, ft=ftype, kfs=true, nb=true, aso={bd=11, ng=true}, ofs=-15, y2=14}
-		_G.TalkingHeadFrame.sf:SetBackdropColor(.1, .1, .1, .75) -- use dark background
-		if self.modBtns then
-			self:skinCloseButton{obj=_G.TalkingHeadFrame.MainFrame.CloseButton, noSkin=true}
-		end
-
-		-- hook this to manage skin frame background when text colour changes
-		self:SecureHook(_G.TalkingHeadFrame.TextFrame.Text, "SetTextColor", function(_, r, _)
-			if r == 0 then -- use light background (Island Expeditions, Voldun Quest, Dark Iron intro)
-				_G.TalkingHeadFrame.sf:SetBackdropColor(.75, .75, .75, .75)
-				_G.TalkingHeadFrame.MainFrame.CloseButton:SetNormalFontObject(self.modUIBtns.fontBX)
-			else
-				_G.TalkingHeadFrame.sf:SetBackdropColor(.1, .1, .1, .75) -- use dark background
-				_G.TalkingHeadFrame.MainFrame.CloseButton:SetNormalFontObject(self.modUIBtns.fontX)
+		self:SecureHookScript(_G.TalkingHeadFrame, "OnShow", function(this)
+			-- remove CloseButton animation
+			this.MainFrame.TalkingHeadsInAnim.CloseButton = nil
+			this.MainFrame.Close.CloseButton = nil
+			self:nilTexture(this.BackgroundFrame.TextBackground, true)
+			self:nilTexture(this.PortraitFrame.Portrait, true)
+			self:nilTexture(this.MainFrame.Model.PortraitBg, true)
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, bd=11, ng=true, ofs=-15, y2=14})
+			if self.modBtns then
+				self:skinCloseButton{obj=this.MainFrame.CloseButton, noSkin=true}
 			end
+
+			local function clrFrame(...)
+				local r, _,_,_ = ...
+				if r == 0 then -- use light background (Island Expeditions, Voldun Quest, Dark Iron intro)
+					_G.TalkingHeadFrame.sf:SetBackdropColor(.75, .75, .75, .75)
+					_G.TalkingHeadFrame.MainFrame.CloseButton:SetNormalFontObject(self.modUIBtns.fontBX)
+				else
+					_G.TalkingHeadFrame.sf:SetBackdropColor(.1, .1, .1, .75)
+					_G.TalkingHeadFrame.MainFrame.CloseButton:SetNormalFontObject(self.modUIBtns.fontX)
+				end
+			end
+			clrFrame(this.TextFrame.Text:GetTextColor())
+			self:SecureHook(this.TextFrame.Text, "SetTextColor", function(_, ...)
+				clrFrame(...)
+			end)
+
+			self:Unhook(this, "OnShow")
 		end)
 
 	end
@@ -3978,13 +4047,6 @@ aObj.SetupRetail_UIFrames = function()
 		self.initialized.Tutorial = true
 
 		self:SecureHookScript(_G.TutorialFrame, "OnShow", function(this)
-			local function resetSF()
-
-				-- use the same frame level & strata as TutorialFrame so it appears above other frames
-				_G.TutorialFrame.sf:SetFrameLevel(_G.TutorialFrame:GetFrameLevel())
-				_G.TutorialFrame.sf:SetFrameStrata(_G.TutorialFrame:GetFrameStrata())
-
-			end
 			this:DisableDrawLayer("BACKGROUND")
 			_G.TutorialFrameTop:SetTexture(nil)
 			_G.TutorialFrameBottom:SetTexture(nil)
@@ -3993,22 +4055,11 @@ aObj.SetupRetail_UIFrames = function()
 				_G["TutorialFrameRight" .. i]:SetTexture(nil)
 			end
 			_G.TutorialTextBorder:SetAlpha(0)
-			self:skinSlider{obj=_G.TutorialFrameTextScrollFrame.ScrollBar}
+			self:skinObject("slider", {obj=_G.TutorialFrameTextScrollFrame.ScrollBar, fType=ftype})
 			-- stop animation before skinning, otherwise textures reappear
 			_G.AnimateMouse:Stop()
 			_G.AnimateCallout:Stop()
-			self:addSkinFrame{obj=this, ft=ftype, anim=true, y1=-11, x2=1}
-			resetSF()
-			-- hook this as the TutorialFrame frame level keeps changing
-			self:SecureHookScript(this.sf, "OnShow", function(_)
-				resetSF()
-			end)
-			-- hook this to hide the skin frame if required (e.g. arrow keys tutorial)
-			self:SecureHook("TutorialFrame_Update", function(_)
-				resetSF()
-				_G.TutorialFrame.sf:SetShown(_G.TutorialFrameTop:IsShown())
-			end)
-
+			self:skinObject("frame", {obj=this, fType=ftype, y1=-11, x2=1})
 			if self.modBtns then
 				self:skinStdButton{obj=_G.TutorialFrameOkayButton}
 			end
@@ -4020,6 +4071,22 @@ aObj.SetupRetail_UIFrames = function()
 					self:clrBtnBdr(_G.TutorialFrameNextButton, "gold")
 				end)
 			end
+
+			local function resetSF()
+				-- use the same frame level & strata as TutorialFrame so it appears above other frames
+				_G.TutorialFrame.sf:SetFrameLevel(_G.TutorialFrame:GetFrameLevel())
+				_G.TutorialFrame.sf:SetFrameStrata(_G.TutorialFrame:GetFrameStrata())
+			end
+			resetSF()
+			-- hook this as the TutorialFrame frame level keeps changing
+			self:SecureHookScript(this.sf, "OnShow", function(_)
+				resetSF()
+			end)
+			-- hook this to hide the skin frame if required (e.g. arrow keys tutorial)
+			self:SecureHook("TutorialFrame_Update", function(_)
+				resetSF()
+				_G.TutorialFrame.sf:SetShown(_G.TutorialFrameTop:IsShown())
+			end)
 
 			self:Unhook(this, "OnShow")
 		end)
@@ -4034,7 +4101,7 @@ aObj.SetupRetail_UIFrames = function()
 
 		self:SecureHookScript(_G.HelpPlateTooltip, "OnShow", function(this)
 			this:DisableDrawLayer("BORDER") -- hide Arrow glow textures
-			self:skinGlowBox(this, ftype)
+			self:skinObject("glowbox", {obj=this, fType=ftype})
 			-- move Arrow textures to align with frame border
 			self:moveObject{obj=this.ArrowUP, y=-2}
 			self:moveObject{obj=this.ArrowDOWN, y=2}

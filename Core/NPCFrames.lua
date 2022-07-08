@@ -46,7 +46,7 @@ aObj.blizzFrames[ftype].GossipFrame = function(self)
 		end
 
 		self:removeRegions(_G.NPCFriendshipStatusBar, {1, 2, 5, 6, 7, 8 ,9})
-		self:skinStatusBar{obj=_G.NPCFriendshipStatusBar, fi=0, bgTex=self:getRegion(_G.NPCFriendshipStatusBar, 10)}
+		self:skinObject("statusbar", {obj=_G.NPCFriendshipStatusBar, fi=0, bg=self:getRegion(_G.NPCFriendshipStatusBar, 10)})
 
 		self:Unhook(this, "OnShow")
 	end)
@@ -67,7 +67,7 @@ aObj.blizzFrames[ftype].GuildRegistrar = function(self)
 		self:getRegion(_G.GuildRegistrarButton1, 3):SetTextColor(self.BT:GetRGB())
 		self:getRegion(_G.GuildRegistrarButton2, 3):SetTextColor(self.BT:GetRGB())
 		_G.GuildRegistrarPurchaseText:SetTextColor(self.BT:GetRGB())
-		self:skinEditBox{obj=_G.GuildRegistrarFrameEditBox}
+		self:skinObject("editbox", {obj=_G.GuildRegistrarFrameEditBox, fType=ftype})
 		if not self.isClsc then
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true})
 		else

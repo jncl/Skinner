@@ -15,7 +15,6 @@ aObj.SetupClassic_NPCFrames = function()
 				_G.ArenaFrameZoneDescription:SetTextColor(self.BT:GetRGB())
 				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=10, y1=-11, x2=-32, y2=70})
 				if self.modBtns then
-					self:skinCloseButton{obj=_G.ArenaFrameCloseButton, fType=ftype}
 					self:skinStdButton{obj=_G.ArenaFrameCancelButton, fType=ftype}
 					self:skinStdButton{obj=_G.ArenaFrameJoinButton, fType=ftype}
 					self:skinStdButton{obj=_G.ArenaFrameGroupJoinButton, fType=ftype}
@@ -37,7 +36,6 @@ aObj.SetupClassic_NPCFrames = function()
 			self.initialized.ArenaRegistrarFrame = true
 
 			self:SecureHookScript(_G.ArenaRegistrarFrame, "OnShow", function(this)
-
 				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true})
 
 				self:Unhook(this, "OnShow")
@@ -110,7 +108,7 @@ aObj.SetupClassic_NPCFrames = function()
 				self:moveObject{obj=_G["Browse" .. type], x=type == "MaxLevel" and -6 or -4, y=type ~= "MaxLevel" and 3 or 0}
 			end
 			self:skinObject("dropdown", {obj=_G.BrowseDropDown, fType=ftype, x2=109})
-			self:skinMoneyFrame{obj=_G.BrowseBidPrice, moveSEB=true}
+			self:skinObject("moneyframe", {obj=_G.BrowseBidPrice, moveSEB=true})
 			_G.BrowseBidButton:DisableDrawLayer("BORDER")
 			_G.BrowseBuyoutButton:DisableDrawLayer("BORDER")
 			_G.BrowseCloseButton:DisableDrawLayer("BORDER")
@@ -172,7 +170,7 @@ aObj.SetupClassic_NPCFrames = function()
 				skinBtn("BidButton", i)
 			end
 			self:skinObject("slider", {obj=_G.BidScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
-			self:skinMoneyFrame{obj=_G.BidBidPrice, moveSEB=true}
+			self:skinObject("moneyframe", {obj=_G.BidBidPrice, moveSEB=true})
 			_G.BidCloseButton:DisableDrawLayer("BORDER")
 			_G.BidBuyoutButton:DisableDrawLayer("BORDER")
 			_G.BidBidButton:DisableDrawLayer("BORDER")
@@ -197,8 +195,8 @@ aObj.SetupClassic_NPCFrames = function()
 			self:skinObject("editbox", {obj=_G.AuctionsStackSizeEntry, fType=ftype, ofs=0})
 			self:skinObject("editbox", {obj=_G.AuctionsNumStacksEntry, fType=ftype, ofs=0})
 			self:skinObject("dropdown", {obj=_G.PriceDropDown})
-			self:skinMoneyFrame{obj=_G.StartPrice, moveSEB=true}
-			self:skinMoneyFrame{obj=_G.BuyoutPrice, moveSEB=true}
+			self:skinObject("moneyframe", {obj=_G.StartPrice, moveSEB=true})
+			self:skinObject("moneyframe", {obj=_G.BuyoutPrice, moveSEB=true})
 			if self.modBtns then
 				self:skinStdButton{obj=_G.AuctionsStackSizeMaxButton, fType=ftype}
 				self:skinStdButton{obj=_G.AuctionsNumStacksMaxButton, fType=ftype}
@@ -237,7 +235,7 @@ aObj.SetupClassic_NPCFrames = function()
 				frame:DisableDrawLayer("ARTWORK")
 				self:keepFontStrings(_G.AuctionProgressBar)
 				self:moveObject{obj=_G.AuctionProgressBar.Text, y=-2}
-				self:skinStatusBar{obj=_G.AuctionProgressBar, fi=0, bgTex=_G.AuctionProgressBarFill}
+				self:skinObject("statusbar", {obj=_G.AuctionProgressBar, fi=0, bg=_G.AuctionProgressBarFill})
 
 				self:Unhook(frame, "OnShow")
 			end)
@@ -254,7 +252,7 @@ aObj.SetupClassic_NPCFrames = function()
 		self:SecureHookScript(_G.BankFrame, "OnShow", function(this)
 			self:keepFontStrings(_G.BankSlotsFrame)
 			if not self.isClscBC then
-				self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, x1=10, y1=-11, x2=-33, y2=90}
+				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, x1=10, y1=-11, x2=-33, y2=90})
 			else
 				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ofs=-12, x2=15, y2=90})
 			end
@@ -301,7 +299,7 @@ aObj.SetupClassic_NPCFrames = function()
 			_G.PetStableCurrentPetBackground:SetTexture(nil)
 			_G.PetStableStabledPet1Background:SetTexture(nil)
 			_G.PetStableStabledPet2Background:SetTexture(nil)
-			self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, x1=10, y1=-11, x2=-31, y2=71}
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, x1=10, y1=-11, x2=-31, y2=71})
 			if self.modBtns then
 				self:skinCloseButton{obj=_G.PetStableFrameCloseButton, fType=ftype}
 				self:skinStdButton{obj=_G.PetStablePurchaseButton, fType=ftype}
@@ -334,7 +332,7 @@ aObj.SetupClassic_NPCFrames = function()
 
 		self:SecureHookScript(_G.TaxiFrame, "OnShow", function(this)
 			self:removeRegions(this, {1, 2 ,3 ,4 ,5})
-			self:addSkinFrame{obj=this, ft=ftype, nb=true, x1=10, y1=-11, x2=-32, y2=62}
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, x1=10, y1=-11, x2=-32, y2=62})
 			if self.modBtns then
 				self:skinCloseButton{obj=_G.TaxiCloseButton, fType=ftype}
 			end
@@ -349,12 +347,12 @@ aObj.SetupClassic_NPCFrames = function()
 		self.initialized.TrainerUI = true
 
 		self:SecureHookScript(_G.ClassTrainerFrame, "OnShow", function(this)
-			self:skinDropDown{obj=_G.ClassTrainerFrameFilterDropDown}
+			self:skinObject("dropdown", {obj=_G.ClassTrainerFrameFilterDropDown, fType=ftype})
 			self:removeMagicBtnTex(_G.ClassTrainerTrainButton)
 			self:keepFontStrings(_G.ClassTrainerExpandButtonFrame)
 			_G.ClassTrainerSkillIcon:DisableDrawLayer("BACKGROUND")
-			self:skinSlider{obj=_G.ClassTrainerListScrollFrame.ScrollBar, rt="background"}
-			self:skinSlider{obj=_G.ClassTrainerDetailScrollFrame.ScrollBar, rt="background"}
+			self:skinObject("slider", {obj=_G.ClassTrainerListScrollFrame.ScrollBar, fType=ftype, rpTex="background"})
+			self:skinObject("slider", {obj=_G.ClassTrainerDetailScrollFrame.ScrollBar, fType=ftype, rpTex="background"})
 			local x1, y1, x2, y2
 			if _G.IsAddOnLoaded("Leatrix_Plus")
 			and _G.LeaPlusDB["EnhanceTrainers"] == "On"
@@ -363,7 +361,7 @@ aObj.SetupClassic_NPCFrames = function()
 			else
 				x1, y1, x2, y2 = 10, -11, -32, 71
 			end
-			self:addSkinFrame{obj=this, ft=ftype, kfs=true, x1=x1, y1=y1, x2=x2, y2=y2}
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, x1=x1, y1=y1, x2=x2, y2=y2})
 			if self.modBtns then
 				self:skinStdButton{obj=_G.ClassTrainerTrainButton, fType=ftype}
 				self:SecureHook(_G.ClassTrainerTrainButton, "Disable", function(btn, _)

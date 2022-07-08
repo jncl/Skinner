@@ -68,8 +68,7 @@ function module:adjustBottomFrame() -- luacheck: ignore self
 		then
 			fh = db.fheight <= _G.Round(btmframe:GetHeight()) and db.fheight or _G.Round(btmframe:GetHeight())
 		end
-		btmframe.sknd = false
-		aObj:applySkin{obj=btmframe, ft=ftype, bba=db.borderOff and 0 or 1, ba=db.alpha, fh=fh, invert=db.invert or nil, rotate=db.rotate or nil}
+		aObj:skinObject("skin", {obj=btmframe, fType=ftype, bba=db.borderOff and 0 or 1, ba=db.alpha, fh=fh, invert=db.invert or nil, rotate=db.rotate or nil})
 		btmframe:Show()
 	elseif btmframe then
 		btmframe:Hide()

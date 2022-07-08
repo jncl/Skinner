@@ -461,7 +461,7 @@ function module:skinPartyF()
 		end
 
 		-- PartyMemberBackground
-		aObj:addSkinFrame{obj=_G.PartyMemberBackground, ft=ftype, nb=true, x1=4, y2=2}
+		aObj:skinObject("frame", {obj=_G.PartyMemberBackground, fType=ftype, x1=4, y2=2})
 
 	end
 
@@ -476,7 +476,7 @@ function module:skinPartyTooltip()
 			    aObj:add2Table(aObj.oocTab, {skinPartyMemberBuffTooltip, {frame}})
 			    return
 			end
-			aObj:addSkinFrame{obj=frame, ft=ftype, kfs=true, nb=true, ofs=-1, x1=2, y1=-2}
+			aObj:skinObject("frame", {obj=frame, fType=ftype, kfs=true, ofs=-1, x1=2, y1=-2})
 			for i = 1, _G.MAX_PARTY_TOOLTIP_DEBUFFS do
 				_G["PartyMemberBuffTooltipDebuff" .. i]:DisableDrawLayer("OVERLAY")
 				if aObj.modBtnBs then

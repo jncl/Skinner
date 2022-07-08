@@ -10,10 +10,9 @@ aObj.SetupClassic_UIFrames = function()
 		self.initialized.BattlefieldFrame = true
 
 		self:SecureHookScript(_G.BattlefieldFrame, "OnShow", function(this)
-			self:skinSlider{obj=_G.BattlefieldListScrollFrame.ScrollBar, rt="artwork"}
-			self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, x1=10, y1=-11, x2=-32, y2=71}
+			self:skinObject("slider", {obj=_G.BattlefieldListScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=10, y1=-11, x2=-32, y2=71})
 			if self.modBtns then
-				self:skinCloseButton{obj=_G.BattlefieldFrameCloseButton, fType=ftype}
 				self:skinStdButton{obj=_G.BattlefieldFrameCancelButton, fType=ftype}
 				self:skinStdButton{obj=_G.BattlefieldFrameJoinButton, fType=ftype}
 				self:skinStdButton{obj=_G.BattlefieldFrameGroupJoinButton, fType=ftype}
@@ -51,15 +50,15 @@ aObj.SetupClassic_UIFrames = function()
 			self.initialized.GMSurveyUI = true
 
 			self:SecureHookScript(_G.GMSurveyFrame, "OnShow", function(this)
-				self:skinSlider{obj=_G.GMSurveyScrollFrame.ScrollBar, rt="artwork"}
+				self:skinObject("slider", {obj=_G.GMSurveyScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
 				for i = 1, _G.MAX_SURVEY_QUESTIONS do
-					self:applySkin{obj=_G["GMSurveyQuestion" .. i], ft=ftype} -- must use applySkin otherwise text is behind gradient
+					self:skinObject("frame", {obj=_G["GMSurveyQuestion" .. i], fType=ftype, kfs=true, fb=true})
 					_G["GMSurveyQuestion" .. i].SetBackdropColor = _G.nop
 					_G["GMSurveyQuestion" .. i].SetBackdropBorderColor = _G.nop
 				end
-				self:skinSlider{obj=_G.GMSurveyCommentScrollFrame.ScrollBar}
-				self:applySkin{obj=_G.GMSurveyCommentFrame, ft=ftype} -- must use applySkin otherwise text is behind gradient
-				self:addSkinFrame{obj=this, ft=ftype, kfs=true, hdr=true, y1=-6, x2=-45}
+				self:skinObject("slider", {obj=_G.GMSurveyCommentScrollFrame.ScrollBar, fType=ftype})
+				self:skinObject("frame", {obj=_G.GMSurveyCommentFrame, fType=ftype, kfs=true, fb=true})
+				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true, cb=true, y1=-6, x2=-45})
 
 				self:Unhook(this, "OnShow")
 			end)
@@ -87,7 +86,10 @@ aObj.SetupClassic_UIFrames = function()
 					self:removeInset(_G.LFMFrameInset)
 					self:skinObject("dropdown", {obj=_G.LFMFrameTypeDropDown, fType=ftype})
 					self:skinObject("dropdown", {obj=_G.LFMFrameActivityDropDown, fType=ftype})
-					self:skinColHeads("LFMFrameColumnHeader", nil, ftype)
+					for i = 1, 4 do
+						_G["LFMFrameColumnHeader" .. i]:DisableDrawLayer("BACKGROUND")
+						self:skinObject("frame", {obj=_G["LFMFrameColumnHeader" .. i], fType=ftype, ofs=0})
+					end
 					self:skinObject("slider", {obj=_G.LFMListScrollFrame.ScrollBar, fType=ftype})
 					self:moveObject{obj=_G.LFMFrameGroupInviteButton, x=-4}
 					if self.modBtns then
@@ -299,8 +301,8 @@ aObj.SetupClassic_UIFrames = function()
 			if self.isClscBC then
 				self:keepFontStrings(_G.QuestLogCount)
 			end
-			self:skinSlider{obj=_G.QuestLogListScrollFrame.ScrollBar}
-			self:skinSlider{obj=_G.QuestLogDetailScrollFrame.ScrollBar}
+			self:skinObject("slider", {obj=_G.QuestLogListScrollFrame.ScrollBar, fType=ftype})
+			self:skinObject("slider", {obj=_G.QuestLogDetailScrollFrame.ScrollBar, fType=ftype})
 			_G.QuestLogQuestTitle:SetTextColor(self.HT:GetRGB())
 			_G.QuestLogObjectivesText:SetTextColor(self.BT:GetRGB())
 			_G.QuestLogTimerText:SetTextColor(self.BT:GetRGB())
@@ -323,7 +325,7 @@ aObj.SetupClassic_UIFrames = function()
 					 self:addButtonBorder{obj=_G["QuestLogItem" .. i], libt=true, clr="grey"}
 				end
 			end
-			self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, x1=10, y1=-11, x2=-33, y2=48}
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=10, y1=-11, x2=-33, y2=48})
 			if self.modBtns then
 				self:skinExpandButton{obj=_G.QuestLogCollapseAllButton, fType=ftype, onSB=true}
 				for i = 1, _G.QUESTS_DISPLAYED do
@@ -335,7 +337,6 @@ aObj.SetupClassic_UIFrames = function()
 						self:checkTex{obj=_G["QuestLogTitle" .. i]}
 					end
 				end)
-				self:skinCloseButton{obj=_G.QuestLogFrameCloseButton, fType=ftype}
 				self:skinStdButton{obj=_G.QuestLogFrameAbandonButton, fType=ftype, x1=2, x2=-2}
 				self:skinStdButton{obj=_G.QuestFrameExitButton, fType=ftype}
 				self:skinStdButton{obj=_G.QuestFramePushQuestButton, fType=ftype, x1=2, x2=-2}
@@ -366,7 +367,11 @@ aObj.SetupClassic_UIFrames = function()
 		if not self.prdb.QuestTimer or self.initialized.QuestTimer then return end
 		self.initialized.QuestTimer = true
 
-		self:addSkinFrame{obj=_G.QuestTimerFrame, ft=ftype, kfs=true, nb=true, x1=20, y1=4, x2=-20, y2=10}
+		self:SecureHookScript(_G.QuestTimerFrame, "OnShow", function(this)
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, x1=20, y1=4, x2=-20, y2=10})
+
+			self:Unhook(this, "OnShow")
+		end)
 
 	end
 
@@ -382,8 +387,8 @@ aObj.SetupClassic_UIFrames = function()
 		end)
 
 		self:SecureHookScript(_G.RaidFrame, "OnShow", function(this)
-			self:skinSlider{obj=_G.RaidInfoScrollFrame.ScrollBar}
-			self:addSkinFrame{obj=_G.RaidInfoFrame, ft=ftype, kfs=true, nb=true, hdr=true}
+			self:skinObject("slider", {obj=_G.RaidInfoScrollFrame.ScrollBar, fType=ftype})
+			self:skinObject("frame", {obj=_G.RaidInfoFrame, fType=ftype, kfs=true, hdr=true})
 			if self.modBtns then
 				self:skinCloseButton{obj=_G.RaidInfoCloseButton, fType=ftype}
 				self:skinStdButton{obj=_G.RaidFrameConvertToRaidButton, fType=ftype}
@@ -413,7 +418,7 @@ aObj.SetupClassic_UIFrames = function()
 
 		self:SecureHookScript(_G.TutorialFrame, "OnShow", function(this)
 			this:DisableDrawLayer("BACKGROUND")
-			self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true}
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true})
 			if self.modBtns then
 				self:skinStdButton{obj=_G.TutorialFrameOkayButton, fType=ftype}
 			end
@@ -453,9 +458,7 @@ aObj.SetupClassic_UIFrames = function()
 
 			self:skinObject("dropdown", {obj=_G.WorldMapContinentDropDown, fType=ftype})
 			self:skinObject("dropdown", {obj=_G.WorldMapZoneDropDown, fType=ftype})
-			if self.isClscBC then
-				self:skinObject("dropdown", {obj=_G.WorldMapZoneMinimapDropDown, fType=ftype})
-			end
+			self:skinObject("dropdown", {obj=_G.WorldMapZoneMinimapDropDown, fType=ftype})
 			if self.modBtns then
 				self:skinCloseButton{obj=_G.WorldMapFrameCloseButton, fType=ftype}
 				self:skinStdButton{obj=_G.WorldMapZoomOutButton, fType=ftype}
