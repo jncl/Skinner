@@ -331,8 +331,8 @@ aObj.SetupClassic_NPCFrames = function()
 		self.initialized.TaxiFrame = true
 
 		self:SecureHookScript(_G.TaxiFrame, "OnShow", function(this)
-			self:removeRegions(this, {1, 2 ,3 ,4 ,5})
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, x1=10, y1=-11, x2=-32, y2=62})
+			self:removeRegions(this, {1, 2 ,3 ,4 ,5}) -- keep the map texture(s)
+			self:skinObject("frame", {obj=this, fType=ftype, x1=10, y1=-11, x2=-32, y2=62})
 			if self.modBtns then
 				self:skinCloseButton{obj=_G.TaxiCloseButton, fType=ftype}
 			end
