@@ -28,9 +28,11 @@ ToDos
 ?	I	Fix ActionButtons/MultiBarButtons missing Text & PetActionButtons not being displayed, when redisplayed after accessing Puzzle Caches in Zereth Mortis.
 		- happens when OverrideBar is used, but not always...
 
-	I	GuildMemberDetailFrame, reported by Fakelessgaming, 28.06.22
-√		- Skinner\Core\NewSkinFuncs.lua:456: attempt to index field 'obj' (a nil value)
-		[string "@Skinner\Core\NewSkinFuncs.lua"]:456: in function <Skinner\Core\NewSkinFuncs.lua:445>
-		[string "@Skinner\Core\NewSkinFuncs.lua"]:553: in function `?'
-		[string "@Skinner\Core\NewSkinFuncs.lua"]:191: in function `skinObject'
-		[string "@Skinner\RetailSupport\PlayerFrames_Retail.lua"]:1725: in function <Skinner\RetailSupport\PlayerFrames_Retail.lua:1720>
+	I	MiddleFrames, reported by Fakeessgaming, 08.07.22
+√		- Skinner\Modules\MiddleFrames.lua:113: attempt to perform arithmetic on a table value
+		[string "@Skinner\Modules\MiddleFrames.lua"]:113: in function <Skinner\Modules\MiddleFrames.lua:80>
+		[string "@Skinner\Modules\MiddleFrames.lua"]:166: in function `adjustMiddleFrames'
+		[string "@Skinner\Modules\MiddleFrames.lua"]:157: in function <Skinner\Modules\MiddleFrames.lua:155>
+
+	I/C	TaxiFrame, reported by EpidmeDaBear, 09.07.22
+√		- missing map textures
