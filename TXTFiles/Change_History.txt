@@ -1,3 +1,14 @@
+beta9.44444.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Updated MainFuncs to help check for NSF changes
+	Updated NSF
+	Bugfix for GuildMemberDetailFrame
+	Updated Ace3, HandyNotes & LeatrixPlus skins
+	Updated numerous skin to apply NSF changes
+
 beta9.44232.1
 Jncl:
 	ToDo.txt
