@@ -1372,6 +1372,7 @@ aObj.SetupRetail_PlayerFrames = function()
 				self:SecureHookScript(fObj.ColumnDisplay, "OnShow", function(frame)
 					skinColumnDisplay(frame)
 				end)
+				self:checkShown(fObj.ColumnDisplay)
 				self:skinObject("slider", {obj=fObj.ListScrollFrame.scrollBar, fType=ftype, rpTex="background"})
 				self:skinObject("dropdown", {obj=fObj.DropDown, fType=ftype})
 				self:removeNineSlice(fObj.InsetFrame.NineSlice)
@@ -1551,12 +1552,13 @@ aObj.SetupRetail_PlayerFrames = function()
 
 				self:Unhook(fObj, "OnShow")
 			end)
+			self:checkShown(this.InvitationFrame)
 
 			self:SecureHookScript(this.ClubFinderInvitationFrame, "OnShow", function(fObj)
 				fObj:DisableDrawLayer("BACKGROUND")
 				self:removeInset(fObj.InsetFrame)
 				self:removeNineSlice(fObj.InsetFrame.NineSlice)
-				self:skinObject("frame", {obj=fObj.WarningDialog.BG, fType=ftype, kfs=true, fb=true})
+				self:skinObject("frame", {obj=fObj.WarningDialog.BG, fType=ftype, kfs=true})
 				if self.modBtns then
 					self:skinStdButton{obj=fObj.WarningDialog.Accept}
 					self:skinStdButton{obj=fObj.WarningDialog.Cancel}
@@ -1574,6 +1576,7 @@ aObj.SetupRetail_PlayerFrames = function()
 
 				self:Unhook(fObj, "OnShow")
 			end)
+			self:checkShown(this.ClubFinderInvitationFrame)
 
 			self:SecureHookScript(this.TicketFrame, "OnShow", function(fObj)
 				self:removeNineSlice(fObj.InsetFrame.NineSlice)
@@ -1584,6 +1587,7 @@ aObj.SetupRetail_PlayerFrames = function()
 
 				self:Unhook(fObj, "OnShow")
 			end)
+			self:checkShown(this.TicketFrame)
 
 			self:SecureHookScript(this.GuildBenefitsFrame, "OnShow", function(fObj)
 				fObj:DisableDrawLayer("OVERLAY") -- inset textures
@@ -1619,6 +1623,7 @@ aObj.SetupRetail_PlayerFrames = function()
 
 				self:Unhook(fObj, "OnShow")
 			end)
+			self:checkShown(this.GuildDetailsFrame)
 
 			self:SecureHookScript(this.GuildDetailsFrame, "OnShow", function(fObj)
 				self:removeRegions(fObj.Info, {2, 3, 4, 5, 6, 7, 8, 9, 10})
@@ -1636,6 +1641,7 @@ aObj.SetupRetail_PlayerFrames = function()
 
 				self:Unhook(fObj, "OnShow")
 			end)
+			self:checkShown(this.GuildDetailsFrame)
 
 			self:SecureHookScript(this.GuildNameChangeFrame, "OnShow", function(fObj)
 				fObj:DisableDrawLayer("BACKGROUND")
@@ -1649,6 +1655,7 @@ aObj.SetupRetail_PlayerFrames = function()
 
 				self:Unhook(fObj, "OnShow")
 			end)
+			self:checkShown(this.GuildNameChangeFrame)
 
 			self:SecureHookScript(this.EditStreamDialog, "OnShow", function(fObj)
 				self:removeNineSlice(fObj.BG)
@@ -1670,6 +1677,7 @@ aObj.SetupRetail_PlayerFrames = function()
 
 				self:Unhook(fObj, "OnShow")
 			end)
+			self:checkShown(this.EditStreamDialog)
 
 			self:SecureHookScript(this.NotificationSettingsDialog, "OnShow", function(fObj)
 				self:skinObject("dropdown", {obj=fObj.CommunitiesListDropDownMenu, fType=ftype})
@@ -1687,6 +1695,7 @@ aObj.SetupRetail_PlayerFrames = function()
 
 				self:Unhook(fObj, "OnShow")
 			end)
+			self:checkShown(this.NotificationSettingsDialog)
 
 			self:SecureHookScript(this.RecruitmentDialog, "OnShow", function(fObj)
 				self:skinObject("dropdown", {obj=fObj.ClubFocusDropdown, fType=ftype})
@@ -1711,6 +1720,7 @@ aObj.SetupRetail_PlayerFrames = function()
 
 				self:Unhook(fObj, "OnShow")
 			end)
+			self:checkShown(this.RecruitmentDialog)
 
 			self:SecureHookScript(this.CommunitiesControlFrame, "OnShow", function(fObj)
 				if self.modBtns then
@@ -1748,9 +1758,11 @@ aObj.SetupRetail_PlayerFrames = function()
 
 				self:Unhook(fObj, "DisplayMember")
 			end)
+			self:checkShown(this.GuildMemberDetailFrame)
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.CommunitiesFrame)
 
 		self:SecureHookScript(_G.CommunitiesAvatarPickerDialog, "OnShow", function(this)
 			self:skinObject("slider", {obj=this.ScrollFrame.ScrollBar, fType=ftype, rpTex="background"})
