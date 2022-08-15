@@ -3113,7 +3113,7 @@ aObj.SetupRetail_UIFrames = function()
 			x1Ofs, y1Ofs, x2Ofs, y2Ofs = nil, nil, nil, nil
 		end
 		local function skinOptions(frame, source) -- luacheck: ignore source
-			aObj:Debug("skinOptions PCUI: [%s, %s, %s, %s]", source, frame.uiTextureKit, frame.optionFrameTemplate)
+			-- aObj:Debug("skinOptions PCUI: [%s, %s, %s, %s]", source, frame.uiTextureKit, frame.optionFrameTemplate)
 			if not frame.optionFrameTemplate then return end
 			if frame.uiTextureKit == "jailerstower"
 			or frame.uiTextureKit == "cypherchoice"
@@ -3133,12 +3133,9 @@ aObj.SetupRetail_UIFrames = function()
 							aObj:secureHook(btn, "SetEnabled", function(bObj)
 								aObj:clrBtnBdr(bObj)
 							end)
-							-- aObj:secureHook(btn, "Disable", function(bObj, _)
-							-- 	aObj:clrBtnBdr(bObj)
-							-- end)
-							-- aObj:secureHook(btn, "Enable", function(bObj, _)
-							-- 	aObj:clrBtnBdr(bObj)
-							-- end)
+							aObj:secureHook(btn, "Disable", function(bObj, _)
+								aObj:clrBtnBdr(bObj)
+							end)
 						end
 					end
 				end
@@ -3175,6 +3172,7 @@ aObj.SetupRetail_UIFrames = function()
 						if _G.RegionUtil.IsDescendantOfOrSame(_G.GetMouseFocus(), this) then
 							resizeSF(opt, 998)
 						end
+
 						aObj:Unhook(opt, "OnUpdate")
 					end)
 					aObj:secureHook(opt, "OnEnter", function(_)
