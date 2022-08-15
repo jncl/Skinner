@@ -30,9 +30,10 @@ ToDos
 		- happens when OverrideBar is used, but not always...
 		- happens after VehicleUI has been used
 
-	I/C	- LibSushi, reported by EpiDemeDaBear, 09.08.22
-√		- Skinner\Core\UtilFuncs.lua:1024: attempt to index local 'frame' (a nil value)[string
-		 "@Skinner\Core\UtilFuncs.lua"]:1024: in function <Skinner\Core\UtilFuncs.lua:1023>[string
-		 "@Skinner\Core\UtilFuncs.lua"]:1057: in function `removeNineSlice'[string
-		 "@Skinner\AddonSkins\LibSushi.lua"]:32: in function <Skinner\AddonSkins\LibSushi.lua:31>[string
-		 "@Skinner\AddonSkins\LibSushi.lua"]:59: in function <Skinner\AddonSkins\LibSushi.lua:56>[string
+	I	Auctionator, reported by Galthariel, 15.08.22
+√		- Ace3\AceHook-3.0\AceHook-3.0-9.lua:180: Attempting to rehook already active hook SetItemInfo.
+		[string "@Ace3\AceHook-3.0\AceHook-3.0-9.lua"]:180: in function <Ace3\AceHook-3.0\AceHook-3.0.lua:118>
+		[string "@Ace3\AceHook-3.0\AceHook-3.0-9.lua"]:341: in function `SecureHook'
+		[string "@Skinner\AddonSkins\Auctionator-9.2.27.lua"]:235: in function <Skinner\AddonSkins\Auctionator.lua:231>
+√		- Skinner\AddonSkins\Auctionator-9.2.27.lua:254: attempt to index field 'CurrentItemListing' (a nil value)
+		[string "@Skinner\AddonSkins\Auctionator-9.2.27.lua"]:254: in function <Skinner\AddonSkins\Auctionator.lua:231>
