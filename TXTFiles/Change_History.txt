@@ -1,3 +1,10 @@
+beta9.44444.2
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Bugfix for TaxiFrame
+	Bugfix for MiddleFrames
+
 beta9.44444.1
 Jncl:
 	ToDo.txt
