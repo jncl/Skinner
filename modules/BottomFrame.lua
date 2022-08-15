@@ -41,7 +41,7 @@ end
 
 function module:OnEnable()
 
-	if db.shown then self:adjustBottomFrame("init") end
+	if db.shown then self:adjustBottomFrame() end
 
 end
 

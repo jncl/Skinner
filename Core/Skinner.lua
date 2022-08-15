@@ -13,7 +13,7 @@ do
 	if hasError then return end
 
 	-- create the addon and make it available in the Global namespace (Ara-Broker-... addons use its by name if available)
-	_G.Skinner = _G.LibStub:GetLibrary("AceAddon-3.0", true):NewAddon(aObj, aName, "AceConsole-3.0", "AceEvent-3.0", "AceHook-3.0")
+	_G.Skinner = _G.LibStub:GetLibrary("AceAddon-3.0"):NewAddon(aObj, aName, "AceConsole-3.0", "AceEvent-3.0", "AceHook-3.0")
 
 	aObj:checkVersion()
 
@@ -22,7 +22,7 @@ do
 	aObj.blizzLoDFrames = {p = {}, n = {}, u = {}}
 
 	-- pointer to LibSharedMedia-3.0 library (done here for TukUI & ElvUI)
-	aObj.LSM = _G.LibStub:GetLibrary("LibSharedMedia-3.0", true)
+	aObj.LSM = _G.LibStub:GetLibrary("LibSharedMedia-3.0")
 
 	-- store player name (done here to fix enabled addon check)
 	aObj.uName = _G.UnitName("player")
@@ -37,7 +37,7 @@ function aObj:OnInitialize()
 
 	-- TODO: remove this in favour of RegisterMessage/SendMessage
 	-- add callbacks
-	self.callbacks = _G.LibStub:GetLibrary("CallbackHandler-1.0", true):New(aObj)
+	self.callbacks = _G.LibStub:GetLibrary("CallbackHandler-1.0"):New(aObj)
 	--@alpha@
 	self:SecureHook(self, "RegisterCallback", function(_, ...)
 		_G.print("RegisterCallback", ...)
@@ -59,9 +59,9 @@ function aObj:OnInitialize()
 	--@end-alpha@
 
 	-- get Locale
-	self.L = _G.LibStub:GetLibrary("AceLocale-3.0", true):GetLocale(aName)
+	self.L = _G.LibStub:GetLibrary("AceLocale-3.0"):GetLocale(aName)
 	-- pointer to LibDBIcon-1.0 library
-	self.DBIcon = _G.LibStub:GetLibrary("LibDBIcon-1.0", true)
+	self.DBIcon = _G.LibStub:GetLibrary("LibDBIcon-1.0")
 	-- store player class as English Spelling
 	self.uCls = _G.select(2, _G.UnitClass("player"))
 

@@ -1282,7 +1282,7 @@ aObj.SetupOptions = function(self)
 	-- register the options, add them to the Blizzard Options in the order specified
 	local optCheck, optTitle = {}
 	for _, oName in _G.pairs{"Backdrop", "Background", "Colours", "Gradient", "Modules", "NPC Frames", "Player Frames", "UI Frames", "Disabled Skins", "Profiles"} do
-		optTitle = (" "):join(aName, oName)
+		optTitle = _G.strjoin(" ", aName, oName)
 		self.ACR:RegisterOptionsTable(optTitle, self.optTables[oName])
 		self.optionsFrame[self.L[oName]] = self.ACD:AddToBlizOptions(optTitle, self.L[oName], self.L[aName]) -- N.B. use localised name
 		optCheck[oName:lower()] = oName -- store option name in table

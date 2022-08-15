@@ -111,7 +111,7 @@ local function makeText(fStr, ...)
 		for i = #tmpTab, varCnt do
 			tmpTab[i + 1] = "nil"
 		end
-		output = _G.string.join(" ", fStr:format(_G.unpack(tmpTab)))
+		output = _G.strjoin(" ", fStr:format(_G.unpack(tmpTab)))
 	else
 		tmpTab[1] = output
 		tmpTab[2] = fStr and _G.type(fStr) == "table" and makeString(fStr) or fStr or ""

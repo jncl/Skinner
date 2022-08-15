@@ -56,7 +56,7 @@ end
 
 function module:OnEnable()
 
-	if db.shown then self:adjustTopFrame("init") end
+	if db.shown then self:adjustTopFrame() end
 
 end
 
