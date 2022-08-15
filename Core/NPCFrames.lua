@@ -318,7 +318,9 @@ aObj.blizzFrames[ftype].QuestInfo = function(self)
 		end
 		frame.ItemChooseText:SetTextColor(aObj.BT:GetRGB())
 		frame.ItemReceiveText:SetTextColor(aObj.BT:GetRGB())
-		frame.PlayerTitleText:SetTextColor(aObj.BT:GetRGB())
+		if not self.isClscPTR then
+			frame.PlayerTitleText:SetTextColor(aObj.BT:GetRGB())
+		end
 		if frame.XPFrame.ReceiveText then -- QuestInfoRewardsFrame
 			frame.XPFrame.ReceiveText:SetTextColor(aObj.BT:GetRGB())
 		end

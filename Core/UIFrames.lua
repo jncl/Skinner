@@ -212,6 +212,252 @@ aObj.blizzFrames[ftype].BNFrames = function(self)
 
 end
 
+if aObj.isRtl
+or aObj.isClscPTR
+then
+	aObj.blizzLoDFrames[ftype].Calendar = function(self)
+		if not self.prdb.Calendar or self.initialized.Calendar then return end
+		self.initialized.Calendar = true
+
+		self:SecureHookScript(_G.CalendarFrame, "OnShow", function(this)
+			_G.CalendarTodayFrame:DisableDrawLayer("BORDER")
+			self:keepFontStrings(_G.CalendarFilterFrame)
+			self:moveObject{obj=_G.CalendarCloseButton, y=14}
+			self:adjHeight{obj=_G.CalendarCloseButton, adj=-2}
+			self:skinObject("frame", {obj=_G.CalendarContextMenu, fType=ftype}) -- pseudo tooltip
+			self:skinObject("frame", {obj=_G.CalendarInviteStatusContextMenu, fType=ftype}) -- pseudo tooltip
+			-- remove texture from day buttons
+			for i = 1, 7 * 6 do
+				_G["CalendarDayButton" .. i]:GetNormalTexture():SetTexture(nil)
+			end
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ofs=-2, x2=2, y2=-4})
+			if self.modBtns then
+				self:skinCloseButton{obj=_G.CalendarCloseButton}
+			end
+			if self.modBtnBs then
+				self:addButtonBorder{obj=_G.CalendarPrevMonthButton, ofs=-1, y1=-2, x2=-2, clr="gold"}
+				self:addButtonBorder{obj=_G.CalendarNextMonthButton, ofs=-1, y1=-2, x2=-2, clr="gold"}
+				self:SecureHook("CalendarFrame_UpdateMonthOffsetButtons", function()
+					self:clrBtnBdr(_G.CalendarPrevMonthButton, "gold")
+					self:clrBtnBdr(_G.CalendarNextMonthButton, "gold")
+				end)
+				self:addButtonBorder{obj=_G.CalendarFilterButton, es=14, x1=3, y1=0, x2=3, y2=0, clr="grey"}
+			end
+
+			self:Unhook(this, "OnShow")
+		end)
+
+		self:SecureHookScript(_G.CalendarViewHolidayFrame, "OnShow", function(this)
+			self:removeNineSlice(this.Border)
+			if not self.isClscBC then
+				self:skinObject("slider", {obj=_G.CalendarViewHolidayScrollFrame.ScrollBar, fType=ftype})
+			end
+			self:removeRegions(_G.CalendarViewHolidayCloseButton, {5})
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true, ofs=-3})
+			if self.modBtns then
+				self:skinCloseButton{obj=_G.CalendarViewHolidayCloseButton}
+			end
+
+			self:Unhook(this, "OnShow")
+		end)
+
+		self:SecureHookScript(_G.CalendarViewRaidFrame, "OnShow", function(this)
+			self:removeNineSlice(this.Border)
+			if not self.isClscBC then
+				self:skinObject("slider", {obj=_G.CalendarViewRaidScrollFrame.ScrollBar, fType=ftype})
+			end
+			self:removeRegions(_G.CalendarViewRaidCloseButton, {5})
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true, ofs=-3})
+			if self.modBtns then
+				self:skinCloseButton{obj=_G.CalendarViewRaidCloseButton}
+			end
+
+			self:Unhook(this, "OnShow")
+		end)
+
+		self:SecureHookScript(_G.CalendarViewEventFrame, "OnShow", function(this)
+			self:removeNineSlice(this.Border)
+			self:skinObject("frame", {obj=_G.CalendarViewEventDescriptionContainer, fType=ftype, fb=true})
+			if not self.isClscBC then
+				self:skinObject("slider", {obj=_G.CalendarViewEventDescriptionScrollFrame.ScrollBar, fType=ftype})
+				self:skinObject("slider", {obj=_G.CalendarViewEventInviteListScrollFrameScrollBar, fType=ftype})
+			else
+				self:skinObject("scrollbar", {obj=_G.CalendarViewEventDescriptionContainer.ScrollBar, fType=ftype})
+				self:skinObject("scrollbar", {obj=_G.CalendarViewEventInviteList.ScrollBar, fType=ftype})
+			end
+			self:keepFontStrings(_G.CalendarViewEventInviteListSection)
+			self:skinObject("frame", {obj=_G.CalendarViewEventInviteList, fType=ftype, fb=true})
+			self:removeRegions(_G.CalendarViewEventCloseButton, {5})
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true, ofs=-3})
+			if self.modBtns then
+				self:skinCloseButton{obj=_G.CalendarViewEventCloseButton, fType=ftype}
+				self:skinStdButton{obj=_G.CalendarViewEventAcceptButton, fType=ftype}
+				self:SecureHook(_G.CalendarViewEventAcceptButton, "Disable", function(bObj, _)
+					self:clrBtnBdr(bObj)
+				end)
+				self:SecureHook(_G.CalendarViewEventAcceptButton, "Enable", function(bObj, _)
+					self:clrBtnBdr(bObj)
+				end)
+				self:skinStdButton{obj=_G.CalendarViewEventTentativeButton, fType=ftype}
+				self:SecureHook(_G.CalendarViewEventTentativeButton, "Disable", function(bObj, _)
+					self:clrBtnBdr(bObj)
+				end)
+				self:SecureHook(_G.CalendarViewEventTentativeButton, "Enable", function(bObj, _)
+					self:clrBtnBdr(bObj)
+				end)
+				self:skinStdButton{obj=_G.CalendarViewEventDeclineButton, fType=ftype}
+				self:SecureHook(_G.CalendarViewEventDeclineButton, "Disable", function(bObj, _)
+					self:clrBtnBdr(bObj)
+				end)
+				self:SecureHook(_G.CalendarViewEventDeclineButton, "Enable", function(bObj, _)
+					self:clrBtnBdr(bObj)
+				end)
+				self:skinStdButton{obj=_G.CalendarViewEventRemoveButton, fType=ftype}
+				self:SecureHook(_G.CalendarViewEventRemoveButton, "Disable", function(bObj, _)
+					self:clrBtnBdr(bObj)
+				end)
+				self:SecureHook(_G.CalendarViewEventRemoveButton, "Enable", function(bObj, _)
+					self:clrBtnBdr(bObj)
+				end)
+			end
+
+			self:Unhook(this, "OnShow")
+		end)
+
+		self:SecureHookScript(_G.CalendarCreateEventFrame, "OnShow", function(this)
+			self:removeNineSlice(this.Border)
+			_G.CalendarCreateEventIcon:SetAlpha(1) -- show event icon
+			self:skinObject("editbox", {obj=_G.CalendarCreateEventTitleEdit, fType=ftype})
+			self:skinObject("dropdown", {obj=_G.CalendarCreateEventCommunityDropDown, fType=ftype})
+			self:skinObject("dropdown", {obj=_G.CalendarCreateEventTypeDropDown, fType=ftype})
+			self:skinObject("dropdown", {obj=_G.CalendarCreateEventHourDropDown, fType=ftype, x2=-6})
+			self:skinObject("dropdown", {obj=_G.CalendarCreateEventMinuteDropDown, fType=ftype, x2=-6})
+			self:skinObject("dropdown", {obj=_G.CalendarCreateEventAMPMDropDown, fType=ftype})
+			self:skinObject("dropdown", {obj=_G.CalendarCreateEventDifficultyOptionDropDown, fType=ftype})
+			self:skinObject("frame", {obj=_G.CalendarCreateEventDescriptionContainer, fType=ftype, fb=true})
+			if not self.isClscBC then
+				self:skinObject("slider", {obj=_G.CalendarCreateEventDescriptionScrollFrame.ScrollBar, fType=ftype})
+				self:skinObject("slider", {obj=_G.CalendarCreateEventInviteListScrollFrameScrollBar, fType=ftype})
+			else
+				self:skinObject("scrollbar", {obj=_G.CalendarCreateEventDescriptionContainer.ScrollBar, fType=ftype})
+			end
+			self:keepFontStrings(_G.CalendarCreateEventInviteListSection)
+			self:skinObject("frame", {obj=_G.CalendarCreateEventInviteList, fType=ftype, fb=true})
+			self:skinObject("editbox", {obj=_G.CalendarCreateEventInviteEdit, fType=ftype})
+			_G.CalendarCreateEventMassInviteButtonBorder:SetAlpha(0)
+			_G.CalendarCreateEventRaidInviteButtonBorder:SetAlpha(0)
+			_G.CalendarCreateEventCreateButtonBorder:SetAlpha(0)
+			self:removeRegions(_G.CalendarCreateEventCloseButton, {5})
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true, cb=true, ofs=-2})
+			if self.modBtns then
+				self:skinCloseButton{obj=_G.CalendarCreateEventCloseButton}
+				self:skinStdButton{obj=_G.CalendarCreateEventInviteButton}
+				self:SecureHook(_G.CalendarCreateEventInviteButton, "Disable", function(bObj, _)
+					self:clrBtnBdr(bObj)
+				end)
+				self:SecureHook(_G.CalendarCreateEventInviteButton, "Enable", function(bObj, _)
+					self:clrBtnBdr(bObj)
+				end)
+				self:skinStdButton{obj=_G.CalendarCreateEventMassInviteButton}
+				self:SecureHook(_G.CalendarCreateEventMassInviteButton, "Disable", function(bObj, _)
+					self:clrBtnBdr(bObj)
+				end)
+				self:SecureHook(_G.CalendarCreateEventMassInviteButton, "Enable", function(bObj, _)
+					self:clrBtnBdr(bObj)
+				end)
+				self:skinStdButton{obj=_G.CalendarCreateEventRaidInviteButton}
+				self:SecureHook(_G.CalendarCreateEventRaidInviteButton, "Disable", function(bObj, _)
+					self:clrBtnBdr(bObj)
+				end)
+				self:SecureHook(_G.CalendarCreateEventRaidInviteButton, "Enable", function(bObj, _)
+					self:clrBtnBdr(bObj)
+				end)
+				self:skinStdButton{obj=_G.CalendarCreateEventCreateButton}
+				self:SecureHook(_G.CalendarCreateEventCreateButton, "Disable", function(bObj, _)
+					self:clrBtnBdr(bObj)
+				end)
+				self:SecureHook(_G.CalendarCreateEventCreateButton, "Enable", function(bObj, _)
+					self:clrBtnBdr(bObj)
+				end)
+			end
+			if self.modChkBtns then
+				self:skinCheckButton{obj=_G.CalendarCreateEventAutoApproveCheck}
+				self:skinCheckButton{obj=_G.CalendarCreateEventLockEventCheck}
+			end
+
+			self:Unhook(this, "OnShow")
+		end)
+
+		self:SecureHookScript(_G.CalendarMassInviteFrame, "OnShow", function(this)
+			self:removeNineSlice(this.Border)
+			self:skinObject("dropdown", {obj=_G.CalendarMassInviteCommunityDropDown, fType=ftype})
+			self:skinObject("editbox", {obj=_G.CalendarMassInviteMinLevelEdit, fType=ftype})
+			self:skinObject("editbox", {obj=_G.CalendarMassInviteMaxLevelEdit, fType=ftype})
+			self:skinObject("dropdown", {obj=_G.CalendarMassInviteRankMenu, fType=ftype})
+			self:removeRegions(_G.CalendarMassInviteCloseButton, {5})
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true, cb=true, ofs=-3, y2=20})
+			if self.modBtns then
+				self:skinCloseButton{obj=_G.CalendarMassInviteCloseButton}
+				self:skinStdButton{obj=_G.CalendarMassInviteAcceptButton}
+				self:SecureHook(_G.CalendarMassInviteAcceptButton, "Disable", function(bObj, _)
+					self:clrBtnBdr(bObj)
+				end)
+				self:SecureHook(_G.CalendarMassInviteAcceptButton, "Enable", function(bObj, _)
+					self:clrBtnBdr(bObj)
+				end)
+			end
+
+			self:Unhook(this, "OnShow")
+		end)
+
+		self:SecureHookScript(_G.CalendarEventPickerFrame, "OnShow", function(this)
+			self:removeNineSlice(this.Border)
+			if not self.isClscBC then
+				self:skinObject("slider", {obj=_G.CalendarEventPickerScrollBar, fType=ftype})
+			else
+				self:skinObject("scrollbar", {obj=_G.CalendarEventPickerFrame.ScrollBar, fType=ftype})
+			end
+			self:removeRegions(_G.CalendarEventPickerCloseButton, {7})
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true, ofs=-3})
+			if self.modBtns then
+				self:skinCloseButton{obj=_G.CalendarEventPickerCloseButton}
+			end
+
+			self:Unhook(this, "OnShow")
+		end)
+
+		self:SecureHookScript(_G.CalendarTexturePickerFrame, "OnShow", function(this)
+			self:removeNineSlice(this.Border)
+			if not self.isClscBC then
+				self:skinObject("slider", {obj=_G.CalendarTexturePickerScrollBar, fType=ftype})
+			else
+				self:skinObject("scrollbar", {obj=_G.CalendarTexturePickerFrame.ScrollBar, fType=ftype, x1=2, y1=-1, x2=5, y2=1})
+			end
+			_G.CalendarTexturePickerCancelButtonBorder:SetAlpha(0)
+			_G.CalendarTexturePickerAcceptButtonBorder:SetAlpha(0)
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true, ofs=-3})
+			if self.modBtns then
+				self:skinStdButton{obj=_G.CalendarTexturePickerCancelButton}
+				self:skinStdButton{obj=_G.CalendarTexturePickerAcceptButton}
+			end
+
+			self:Unhook(this, "OnShow")
+		end)
+
+		self:SecureHookScript(_G.CalendarClassButtonContainer, "OnShow", function(this)
+			for i = 1, _G.MAX_CLASSES do -- allow for the total button
+				self:removeRegions(_G["CalendarClassButton" .. i], {1}) -- background
+				self:addButtonBorder{obj=_G["CalendarClassButton" .. i]}
+			end
+			_G.CalendarClassTotalsButton:SetSize(20, 20)
+			self:skinObject("frame", {obj=_G.CalendarClassTotalsButton, fType=ftype, kfs=true})
+
+			self:Unhook(this, "OnShow")
+		end)
+
+	end
+
+end
 aObj.blizzFrames[ftype].ChatBubbles = function(self)
 	if not self.prdb.ChatBubbles.skin or self.initialized.ChatBubbles then return end
 	self.initialized.ChatBubbles = true
@@ -1541,10 +1787,12 @@ aObj.blizzFrames[ftype].Minimap = function(self)
 		self:getRegion(_G.MiniMapChallengeMode, 1):SetTexCoord(0, 1, 0.27, 1.27) -- remove top hanger texture
 		self:moveObject{obj=_G.MiniMapChallengeMode, x=6, y=-12}
 	else
-		if self.modBtns then
-			_G.RaiseFrameLevelByTwo(_G.MinimapToggleButton)
-			self:moveObject{obj=_G.MinimapToggleButton, x=-8, y=1}
-			self:skinCloseButton{obj=_G.MinimapToggleButton, noSkin=true}
+		if not self.isClscPTR then
+			if self.modBtns then
+				_G.RaiseFrameLevelByTwo(_G.MinimapToggleButton)
+				self:moveObject{obj=_G.MinimapToggleButton, x=-8, y=1}
+				self:skinCloseButton{obj=_G.MinimapToggleButton, noSkin=true}
+			end
 		end
 	end
 
@@ -1626,7 +1874,9 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 		end
 	end
 
-	if not self.isClsc then
+	if self.isRtl
+	or self.isClscPTR
+	then
 		-- Calendar button
 		makeBtnSquare(_G.GameTimeFrame, 0.1, 0.31, 0.16, 0.6)
 		_G.GameTimeFrame:SetNormalFontObject(_G.GameFontWhite) -- allow for font OUTLINE to be seen
@@ -1637,12 +1887,16 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 			_G.MiniMapTracking:SetScale(0.9)
 			self:skinObject("frame", {obj=_G.MiniMapTracking, fType=ftype})
 		end
-		_G.QueueStatusMinimapButtonBorder:SetTexture(nil)
-		self:moveObject{obj=_G.QueueStatusMinimapButton, x=-16}
-		if not minBtn then
-			self:skinObject("button", {obj=_G.QueueStatusMinimapButton, fType=ftype, ofs=-1})
-			_G.RaiseFrameLevelByTwo(_G.QueueStatusMinimapButton)
-			_G.LowerFrameLevel(_G.QueueStatusMinimapButton.sb)
+		if not self.isClscPTR then
+			_G.QueueStatusMinimapButtonBorder:SetTexture(nil)
+			self:moveObject{obj=_G.QueueStatusMinimapButton, x=-16}
+			if not minBtn then
+				self:skinObject("button", {obj=_G.QueueStatusMinimapButton, fType=ftype, ofs=-1})
+				_G.RaiseFrameLevelByTwo(_G.QueueStatusMinimapButton)
+				_G.LowerFrameLevel(_G.QueueStatusMinimapButton.sb)
+			end
+		else
+			_G.MiniMapBattlefieldFrame:SetSize(28, 28)
 		end
 		-- skin any moved Minimap buttons if required
 		if _G.IsAddOnLoaded("MinimapButtonFrame") then
@@ -1664,22 +1918,15 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 			if not minBtn then
 				self:skinObject("frame", {obj=_G.GameTimeFrame, fType=ftype, ng=true, ofs=4})
 			end
-			_G.GameTimeFrame_Update(_G.GameTimeFrame)
+			if not self.isClscBC then
+				_G.GameTimeFrame_Update(_G.GameTimeFrame)
+			end
 		end)
 		_G.MiniMapTrackingBorder:SetTexture(nil)
-		if not self.isClscBC then
-			self:moveObject{obj=_G.MiniMapTrackingFrame, x=-15}
-			if not minBtn then
-				self:skinObject("frame", {obj=_G.MiniMapTrackingFrame, fType=ftype, bd=10, x1=4, y1=-3})
-			end
-		else
-			self:moveObject{obj=_G.MiniMapTracking, x=-10}
-			if not minBtn then
-				self:skinObject("frame", {obj=_G.MiniMapTracking, fType=ftype})
-			end
-			_G.MiniMapBattlefieldFrame:SetSize(28, 28)
+		self:moveObject{obj=_G.MiniMapTracking, x=-15}
+		if not minBtn then
+			self:skinObject("frame", {obj=_G.MiniMapTracking, fType=ftype, bd=10, x1=4, y1=-3})
 		end
-		self:moveObject{obj=_G.MiniMapMailFrame, y=-4}
 	end
 
 	if self.isClsc then

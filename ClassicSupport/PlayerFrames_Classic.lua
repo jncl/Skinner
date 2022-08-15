@@ -28,23 +28,12 @@ aObj.SetupClassic_PlayerFrames = function()
 				for i = 1, 5 do
 					self:addButtonBorder{obj=_G["MagicResFrame" .. i], es=24, ofs=2, x1=-1, y2=-4, clr="grey"}
 				end
-				self:SecureHook("PaperDollItemSlotButton_Update", function(btn)
-					-- ignore buttons with no border
-					if btn.sbb then
-						if not btn.hasItem then
-							self:clrBtnBdr(btn, "grey")
-							btn.icon:SetTexture(nil)
-						else
-							btn.sbb:SetBackdropBorderColor(btn.icon:GetVertexColor())
-						end
-					end
-				end)
 			end
 			for _, btn in _G.pairs{_G.PaperDollItemsFrame:GetChildren()} do
 				-- handle non button children [ECS_StatsFrame]
 				if btn:IsObjectType("Button") then
 					btn:DisableDrawLayer("BACKGROUND")
-					if btn ~= _G.CharacterAmmoSlot then
+					if btn.ignoreTexture then
 						if self.modBtnBs then
 							self:addButtonBorder{obj=btn, ibt=true, reParent={btn.ignoreTexture}, clr="grey"}
 						end
@@ -54,15 +43,34 @@ aObj.SetupClassic_PlayerFrames = function()
 						btn:GetPushedTexture():SetTexture(nil)
 						if self.modBtnBs then
 							self:addButtonBorder{obj=btn, reParent={btn.Count, self:getRegion(btn, 4)}, clr="grey"}
-							btn.icon = _G.CharacterAmmoSlotIconTexture
 						end
 					end
+					if btn == _G.CharacterAmmoSlot then
+						btn.icon = _G.CharacterAmmoSlotIconTexture
+					end
 					if self.modBtnBs then
-						-- force quality border update
-						_G.PaperDollItemSlotButton_Update(btn)
+						if aObj.isClscPTR
+						and btn == _G.GearManagerToggleButton
+						then
+							_G.nop()
+						else
+							-- force quality border update
+							_G.PaperDollItemSlotButton_Update(btn)
+						end
 					end
 				end
 			end
+			self:SecureHook("PaperDollItemSlotButton_Update", function(btn)
+				-- ignore buttons with no border
+				if btn.sbb then
+					if not btn.hasItem then
+						self:clrBtnBdr(btn, "grey")
+						btn.icon:SetTexture(nil)
+					else
+						btn.sbb:SetBackdropBorderColor(btn.icon:GetVertexColor())
+					end
+				end
+			end)
 
 			self:Unhook(this, "OnShow")
 		end)
@@ -72,14 +80,21 @@ aObj.SetupClassic_PlayerFrames = function()
 			local awc
 			for i = 1, _G.NUM_FACTIONS_DISPLAYED do
 				if self.modBtns then
-					self:skinExpandButton{obj=_G["ReputationHeader" .. i], fType=ftype, onSB=true}
-					self.modUIBtns:checkTex{obj=_G["ReputationHeader" .. i]}
+					if not self.isClscPTR then
+						self:skinExpandButton{obj=_G["ReputationHeader" .. i], fType=ftype, onSB=true}
+						self.modUIBtns:checkTex{obj=_G["ReputationHeader" .. i]}
+						self:skinObject("statusbar", {obj=_G["ReputationBar" .. i], regions={1, 2}, fi=0})
+						awc = self:getRegion(_G["ReputationBar" .. i .. "AtWarCheck"], 1)
+						awc:SetTexture(self.tFDIDs.cbSC)
+						awc:SetTexCoord(0, 1, 0, 1)
+						awc:SetSize(32, 32)
+					else
+						self:skinExpandButton{obj=_G["ReputationBar" .. i .. "ExpandOrCollapseButton"], fType=ftype, onSB=true}
+						self.modUIBtns:checkTex{obj=_G["ReputationBar" .. i .. "ExpandOrCollapseButton"]}
+						self:skinObject("statusbar", {obj=_G["ReputationBar" .. i .. "ReputationBar"], regions={3, 4}, fi=0})
+						self:removeRegions(_G["ReputationBar" .. i], {1, 2, 3})
+					end
 				end
-				self:skinObject("statusbar", {obj=_G["ReputationBar" .. i], regions={1, 2}, fi=0})
-				awc = self:getRegion(_G["ReputationBar" .. i .. "AtWarCheck"], 1)
-				awc:SetTexture(self.tFDIDs.cbSC)
-				awc:SetTexCoord(0, 1, 0, 1)
-				awc:SetSize(32, 32)
 			end
 			self:skinObject("slider", {obj=_G.ReputationListScrollFrame.ScrollBar, fType=ftype, rpTex="background"})
 			self:skinObject("frame", {obj=_G.ReputationDetailFrame, fType=ftype, kfs=true, x1=6, y1=-6, x2=-6, y2=6})
@@ -96,17 +111,38 @@ aObj.SetupClassic_PlayerFrames = function()
 		end)
 
 		self:SecureHookScript(_G.PetPaperDollFrame, "OnShow", function(this)
-			self:keepFontStrings(this)
-			self:skinObject("statusbar", {obj=_G.PetPaperDollFrameExpBar, regions={1, 2}, fi=0})
-			self:makeMFRotatable(_G.PetModelFrame)
-			_G.PetAttributesFrame:DisableDrawLayer("BACKGROUND")
-			if self.modBtns then
-				self:skinStdButton{obj=_G.PetPaperDollCloseButton, fType=ftype}
-			end
-			if self.modBtnBs then
-				self:addButtonBorder{obj=_G.PetPaperDollPetInfo, ofs=1, x2=0, clr="gold"}
-				for i = 1, 5 do
-					self:addButtonBorder{obj=_G["PetMagicResFrame" .. i], es=24, ofs=2, y1=3, y2=-4, clr="grey"}
+			if not self.isClscPTR then
+				self:keepFontStrings(this)
+				self:skinObject("statusbar", {obj=_G.PetPaperDollFrameExpBar, regions={1, 2}, fi=0})
+				self:makeMFRotatable(_G.PetModelFrame)
+				_G.PetAttributesFrame:DisableDrawLayer("BACKGROUND")
+				if self.modBtns then
+					self:skinStdButton{obj=_G.PetPaperDollCloseButton, fType=ftype}
+				end
+				if self.modBtnBs then
+					self:addButtonBorder{obj=_G.PetPaperDollPetInfo, ofs=1, x2=0, clr="gold"}
+					for i = 1, 5 do
+						self:addButtonBorder{obj=_G["PetMagicResFrame" .. i], es=24, ofs=2, y1=3, y2=-4, clr="grey"}
+					end
+				end
+			else
+				self:keepFontStrings(this)
+				self:removeRegions(_G.PetPaperDollFrameCompanionFrame, {1, 2})
+				self:makeMFRotatable(_G.CompanionModelFrame)
+				if self.modBtns then
+					self:skinStdButton{obj=_G.CompanionSummonButton, fType=ftype}
+				end
+				if self.modBtnBs then
+					for i = 1, 10 do
+						self:addButtonBorder{obj=_G["CompanionButton" .. i], fType=ftype, sft=true}
+					end
+					self:addButtonBorder{obj=_G.CompanionPrevPageButton, ofs=-2, y1=-3, x2=-3}
+					self:addButtonBorder{obj=_G.CompanionNextPageButton, ofs=-2, y1=-3, x2=-3}
+					self:clrPNBtns("Companion")
+					self:SecureHook("PetPaperDollFrame_SetCompanionPage", function(_)
+						self:clrPNBtns("Companion")
+					end)
+
 				end
 			end
 
@@ -141,26 +177,25 @@ aObj.SetupClassic_PlayerFrames = function()
 		if self.isClscBC then
 			self:SecureHookScript(_G.PVPFrame, "OnShow", function(this)
 				self:keepFontStrings(this)
-				-- TODO: skin PVPTeam buttons
-				-- if self.modBtnBs then
-					-- TODO: skin toggle button
-					-- self:addButtonBorder{obj=_G.PVPFrameToggleButton, fType=ftype, clr="gold"}
-				-- end
+				if self.modBtnBs then
+					self:addButtonBorder{obj=_G.PVPFrameToggleButton, fType=ftype, clr="gold", x2=1}
+				end
 
 				self:Unhook(this, "OnShow")
 			end)
 			self:SecureHookScript(_G.PVPTeamDetails, "OnShow", function(this)
 				self:skinObject("dropdown", {obj=_G.PVPDropDown, fType=ftype})
-				-- PVPTeamDetailsFrameColumnHeader1-5
-				-- PVPTeamDetailsButton1-10
+				for i = 1, 5 do
+					_G["PVPTeamDetailsFrameColumnHeader" .. i]:DisableDrawLayer("BACKGROUND")
+					self:skinObject("frame", {obj=_G["PVPTeamDetailsFrameColumnHeader" .. i], fType=ftype, ofs=-1})
+				end
 				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true})
 				if self.modBtns then
 					self:skinStdButton{obj=_G.PVPTeamDetailsAddTeamMember, fType=ftype}
 				end
-				-- TODO: skin toggle button
-				-- if self.modBtnBs then
-					-- self:addButtonBorder{obj=_G.PVPTeamDetailsToggleButton, fType=ftype, clr="gold"}
-				-- end
+				if self.modBtnBs then
+					self:addButtonBorder{obj=_G.PVPTeamDetailsToggleButton, fType=ftype, clr="gold", ofs=-1, y1=-2, x2=-2}
+				end
 
 				self:Unhook(this, "OnShow")
 			end)
@@ -168,6 +203,13 @@ aObj.SetupClassic_PlayerFrames = function()
 			self:SecureHookScript(_G.HonorFrame, "OnShow", function(this)
 				self:keepFontStrings(this)
 				self:skinObject("statusbar", {obj=_G.HonorFrameProgressBar, fi=0})
+
+				self:Unhook(this, "OnShow")
+			end)
+		end
+		if self.isClscPTR then
+			self:SecureHookScript(_G.PVPParentFrame, "OnShow", function(this)
+				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=12, y1=-12, x2=-32, y2=46})
 
 				self:Unhook(this, "OnShow")
 			end)
@@ -731,15 +773,13 @@ aObj.SetupClassic_PlayerFrames = function()
 			self:Unhook(this, "OnShow")
 		end)
 
-		if not self.isClscBC then
+		if self.isClscERA then
 			self:SecureHookScript(_G.InspectHonorFrame, "OnShow", function(this)
 				self:removeRegions(this, {1, 2, 3, 4, 5, 6, 7, 8})
 
 				self:Unhook(this, "OnShow")
 			end)
-		end
-
-		if self.isClscBC then
+		else
 			self:SecureHookScript(_G.InspectPVPFrame, "OnShow", function(this)
 				self:keepFontStrings(this)
 				-- TODO: skin PVPTeam buttons
@@ -750,11 +790,12 @@ aObj.SetupClassic_PlayerFrames = function()
 				this:DisableDrawLayer("BACKGROUND")
 				this:DisableDrawLayer("BORDER")
 				self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true, offsets={x1=4, y1=-4, x2=-4, y2=-1}})
-				self:skinObject("frame", {obj=_G.InspectTalentFrameScrollFrame, fType=ftype, kfs=true, fb=true, x1=-11, y1=10, x2=32, y2=-3})
+				_G.InspectTalentFramePointsBar:DisableDrawLayer("BACKGROUND")
+				_G.InspectTalentFramePointsBar:DisableDrawLayer("BORDER")
+				self:skinObject("frame", {obj=_G.InspectTalentFrameScrollFrame, fType=ftype, kfs=true, fb=true, x1=-11, y1=10, x2=32, y2=-5})
 				self:skinObject("slider", {obj=_G.InspectTalentFrameScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
 				if self.modBtns then
 					self:skinCloseButton{obj=_G.InspectTalentFrameCloseButton, fType=ftype}
-					self:skinStdButton{obj=_G.InspectTalentFrameCancelButton, fType=ftype}
 				end
 				if self.modBtnBs then
 					skinTalentBtns(this)
@@ -803,6 +844,11 @@ aObj.SetupClassic_PlayerFrames = function()
 				self:SecureHook("SpellBookFrame_UpdatePages", function()
 					self:clrPNBtns("SpellBook")
 				end)
+			end
+			if self.isClscPTR then
+				if self.modChkBtns then
+					self:skinCheckButton{obj=_G.ShowAllSpellRanksCheckBox, fType=ftype}
+				end
 			end
 			-- Spellbook Panel
 			local function updBtn(btn)

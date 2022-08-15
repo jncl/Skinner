@@ -162,17 +162,24 @@ aObj.SetupClassic_UIFrames = function()
 		end
 
 		if self.prdb.MainMenuBar.skin then
-			local function skinMultiBarBtns(type)
-				local btn
-				for i = 1, _G.NUM_MULTIBAR_BUTTONS do
-					btn = _G["MultiBar" .. type .. "Button" .. i]
+			local skinABBtn, skinMultiBarBtns
+			if self.modBtnBs then
+				function skinABBtn(btn)
+					btn.Border:SetAlpha(0) -- texture changed in blizzard code
 					btn.FlyoutBorder:SetTexture(nil)
 					btn.FlyoutBorderShadow:SetTexture(nil)
-					btn.Border:SetAlpha(0) -- texture changed in blizzard code
-					if not btn.noGrid then
-						_G[btn:GetName() .. "FloatingBG"]:SetAlpha(0)
-					end
 					aObj:addButtonBorder{obj=btn, sabt=true, ofs=3}
+					_G[btn:GetName() .. "NormalTexture"]:SetTexture(nil)
+				end
+				function skinMultiBarBtns(type)
+					local bName
+					for i = 1, _G.NUM_MULTIBAR_BUTTONS do
+						bName = "MultiBar" .. type .. "Button" .. i
+						if not _G[bName].noGrid then
+							_G[bName .. "FloatingBG"]:SetAlpha(0)
+						end
+						skinABBtn(_G[bName])
+					end
 				end
 			end
 			self:SecureHookScript(_G.MainMenuBar, "OnShow", function(this)
@@ -191,9 +198,7 @@ aObj.SetupClassic_UIFrames = function()
 				self:skinObject("statusbar", {obj=rwbSB, bg=rwbSB.Background, other={rwbSB.Underlay, rwbSB.Overlay}})
 				if self.modBtnBs then
 					for i = 1, _G.NUM_ACTIONBAR_BUTTONS do
-						_G["ActionButton" .. i].FlyoutBorder:SetTexture(nil)
-						_G["ActionButton" .. i].FlyoutBorderShadow:SetTexture(nil)
-						self:addButtonBorder{obj=_G["ActionButton" .. i], sabt=true, ofs=3}
+						skinABBtn(_G["ActionButton" .. i])
 					end
 					self:addButtonBorder{obj=_G.ActionBarUpButton, ofs=-4, clr="gold"}
 					self:addButtonBorder{obj=_G.ActionBarDownButton, ofs=-4, clr="gold"}
@@ -295,84 +300,114 @@ aObj.SetupClassic_UIFrames = function()
 			return
 		end
 
-		self:SecureHookScript(_G.QuestLogFrame, "OnShow", function(this)
-			_G.QuestLogCollapseAllButton:DisableDrawLayer("BACKGROUND")
-			self:keepFontStrings(_G.EmptyQuestLogFrame)
-			if self.isClscBC then
+		if not self.isClscPTR then
+			self:SecureHookScript(_G.QuestLogFrame, "OnShow", function(this)
+				_G.QuestLogCollapseAllButton:DisableDrawLayer("BACKGROUND")
+				self:keepFontStrings(_G.EmptyQuestLogFrame)
 				self:keepFontStrings(_G.QuestLogCount)
-			end
-			self:skinObject("slider", {obj=_G.QuestLogListScrollFrame.ScrollBar, fType=ftype})
-			self:skinObject("slider", {obj=_G.QuestLogDetailScrollFrame.ScrollBar, fType=ftype})
-			_G.QuestLogQuestTitle:SetTextColor(self.HT:GetRGB())
-			_G.QuestLogObjectivesText:SetTextColor(self.BT:GetRGB())
-			_G.QuestLogTimerText:SetTextColor(self.BT:GetRGB())
-			for i = 1, _G.MAX_OBJECTIVES do
-				_G["QuestLogObjective" .. i]:SetTextColor(self.BT:GetRGB())
-			end
-			_G.QuestLogRequiredMoneyText:SetTextColor(self.BT:GetRGB())
-			if self.isClscBC then
-				_G.QuestLogSuggestedGroupNum:SetTextColor(self.BT:GetRGB())
-			end
-			_G.QuestLogDescriptionTitle:SetTextColor(self.HT:GetRGB())
-			_G.QuestLogQuestDescription:SetTextColor(self.BT:GetRGB())
-			_G.QuestLogRewardTitleText:SetTextColor(self.HT:GetRGB())
-			_G.QuestLogItemChooseText:SetTextColor(self.BT:GetRGB())
-			_G.QuestLogItemReceiveText:SetTextColor(self.BT:GetRGB())
-			_G.QuestLogSpellLearnText:SetTextColor(self.BT:GetRGB())
-			for i = 1, _G.MAX_NUM_ITEMS do
-				_G["QuestLogItem" .. i .. "NameFrame"]:SetTexture(nil)
-				if self.modBtns then
-					 self:addButtonBorder{obj=_G["QuestLogItem" .. i], libt=true, clr="grey"}
-				end
-			end
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=10, y1=-11, x2=-33, y2=48})
-			if self.modBtns then
-				self:skinExpandButton{obj=_G.QuestLogCollapseAllButton, fType=ftype, onSB=true}
-				for i = 1, _G.QUESTS_DISPLAYED do
-					self:skinExpandButton{obj=_G["QuestLogTitle" .. i], fType=ftype, noddl=true, onSB=true}
-					self:checkTex{obj=_G["QuestLogTitle" .. i]}
-				end
-				self:SecureHook("QuestLog_Update", function()
-					for i = 1, _G.QUESTS_DISPLAYED do
-						self:checkTex{obj=_G["QuestLogTitle" .. i]}
-					end
-				end)
-				self:skinStdButton{obj=_G.QuestLogFrameAbandonButton, fType=ftype, x1=2, x2=-2}
-				self:skinStdButton{obj=_G.QuestFrameExitButton, fType=ftype}
-				self:skinStdButton{obj=_G.QuestFramePushQuestButton, fType=ftype, x1=2, x2=-2}
-				self:SecureHook(_G.QuestFramePushQuestButton, "Disable", function(bObj, _)
-					self:clrBtnBdr(bObj)
-				end)
-				self:SecureHook(_G.QuestFramePushQuestButton, "Enable", function(bObj, _)
-					self:clrBtnBdr(bObj)
-				end)
-			end
-
-			self:SecureHook("QuestLog_UpdateQuestDetails", function(_)
+				self:skinObject("slider", {obj=_G.QuestLogListScrollFrame.ScrollBar, fType=ftype})
+				self:skinObject("slider", {obj=_G.QuestLogDetailScrollFrame.ScrollBar, fType=ftype})
+				_G.QuestLogQuestTitle:SetTextColor(self.HT:GetRGB())
+				_G.QuestLogObjectivesText:SetTextColor(self.BT:GetRGB())
+				_G.QuestLogTimerText:SetTextColor(self.BT:GetRGB())
 				for i = 1, _G.MAX_OBJECTIVES do
 					_G["QuestLogObjective" .. i]:SetTextColor(self.BT:GetRGB())
 				end
 				_G.QuestLogRequiredMoneyText:SetTextColor(self.BT:GetRGB())
+				_G.QuestLogDescriptionTitle:SetTextColor(self.HT:GetRGB())
+				_G.QuestLogQuestDescription:SetTextColor(self.BT:GetRGB())
 				_G.QuestLogRewardTitleText:SetTextColor(self.HT:GetRGB())
 				_G.QuestLogItemChooseText:SetTextColor(self.BT:GetRGB())
 				_G.QuestLogItemReceiveText:SetTextColor(self.BT:GetRGB())
-			end)
+				_G.QuestLogSpellLearnText:SetTextColor(self.BT:GetRGB())
+				for i = 1, _G.MAX_NUM_ITEMS do
+					_G["QuestLogItem" .. i .. "NameFrame"]:SetTexture(nil)
+					if self.modBtns then
+						 self:addButtonBorder{obj=_G["QuestLogItem" .. i], libt=true, clr="grey"}
+					end
+				end
+				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=10, y1=-11, x2=-33, y2=48})
+				if self.modBtns then
+					self:skinExpandButton{obj=_G.QuestLogCollapseAllButton, fType=ftype, onSB=true}
+					for i = 1, _G.QUESTS_DISPLAYED do
+						self:skinExpandButton{obj=_G["QuestLogTitle" .. i], fType=ftype, noddl=true, onSB=true}
+						self:checkTex{obj=_G["QuestLogTitle" .. i]}
+					end
+					self:SecureHook("QuestLog_Update", function()
+						for i = 1, _G.QUESTS_DISPLAYED do
+							self:checkTex{obj=_G["QuestLogTitle" .. i]}
+						end
+					end)
+					self:skinStdButton{obj=_G.QuestLogFrameAbandonButton, fType=ftype, x1=2, x2=-2}
+					self:skinStdButton{obj=_G.QuestFrameExitButton, fType=ftype}
+					self:skinStdButton{obj=_G.QuestFramePushQuestButton, fType=ftype, x1=2, x2=-2}
+					self:SecureHook(_G.QuestFramePushQuestButton, "Disable", function(bObj, _)
+						self:clrBtnBdr(bObj)
+					end)
+					self:SecureHook(_G.QuestFramePushQuestButton, "Enable", function(bObj, _)
+						self:clrBtnBdr(bObj)
+					end)
+				end
 
-			self:Unhook(this, "OnShow")
-		end)
+				self:SecureHook("QuestLog_UpdateQuestDetails", function(_)
+					for i = 1, _G.MAX_OBJECTIVES do
+						_G["QuestLogObjective" .. i]:SetTextColor(self.BT:GetRGB())
+					end
+					_G.QuestLogRequiredMoneyText:SetTextColor(self.BT:GetRGB())
+					_G.QuestLogRewardTitleText:SetTextColor(self.HT:GetRGB())
+					_G.QuestLogItemChooseText:SetTextColor(self.BT:GetRGB())
+					_G.QuestLogItemReceiveText:SetTextColor(self.BT:GetRGB())
+				end)
+
+				self:Unhook(this, "OnShow")
+			end)
+		else
+			self:SecureHookScript(_G.QuestLogFrame, "OnShow", function(this)
+				self:keepFontStrings(_G.EmptyQuestLogFrame)
+				self:keepFontStrings(_G.QuestLogCount)
+				self:skinObject("slider", {obj=_G.QuestLogListScrollFrame.scrollBar, fType=ftype})
+				self:skinObject("slider", {obj=_G.QuestLogDetailScrollFrame.ScrollBar, fType=ftype})
+				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=10, y1=-11, x2=0, y2=4})
+				if self.modBtns then
+					for _, btn in _G.pairs(_G.QuestLogListScrollFrame.buttons) do
+						self:skinExpandButton{obj=btn, fType=ftype, noddl=true, onSB=true}
+						self:checkTex{obj=btn}
+					end
+					self:SecureHook(_G.QuestLogListScrollFrame, "update", function()
+						for _, btn in _G.pairs(_G.QuestLogListScrollFrame.buttons) do
+							self:checkTex{obj=btn}
+						end
+					end)
+					self:skinStdButton{obj=_G.QuestLogFrameCancelButton, fType=ftype, x1=2, x2=-2}
+					self:skinStdButton{obj=_G.QuestLogFrameAbandonButton, fType=ftype, x1=2, x2=-2}
+					self:skinStdButton{obj=_G.QuestLogFrameTrackButton, fType=ftype}
+					self:skinStdButton{obj=_G.QuestFramePushQuestButton, fType=ftype, x1=2, x2=-2}
+					self:SecureHook(_G.QuestFramePushQuestButton, "Disable", function(bObj, _)
+						self:clrBtnBdr(bObj)
+					end)
+					self:SecureHook(_G.QuestFramePushQuestButton, "Enable", function(bObj, _)
+						self:clrBtnBdr(bObj)
+					end)
+				end
+
+				self:Unhook(this, "OnShow")
+			end)
+		end
 
 	end
 
-	aObj.blizzFrames[ftype].QuestTimer = function(self)
-		if not self.prdb.QuestTimer or self.initialized.QuestTimer then return end
-		self.initialized.QuestTimer = true
+	if not aObj.isClscPTR then
+		aObj.blizzFrames[ftype].QuestTimer = function(self)
+			if not self.prdb.QuestTimer or self.initialized.QuestTimer then return end
+			self.initialized.QuestTimer = true
 
-		self:SecureHookScript(_G.QuestTimerFrame, "OnShow", function(this)
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, x1=20, y1=4, x2=-20, y2=10})
+			self:SecureHookScript(_G.QuestTimerFrame, "OnShow", function(this)
+				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, x1=20, y1=4, x2=-20, y2=10})
 
-			self:Unhook(this, "OnShow")
-		end)
+				self:Unhook(this, "OnShow")
+			end)
 
+		end
 	end
 
 	aObj.blizzFrames[ftype].RaidFrame = function(self)

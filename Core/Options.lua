@@ -1232,6 +1232,7 @@ aObj.SetupOptions = function(self)
 		["Battlefield Map"]       = {suff = "Frame"},
 		["Binding UI"]            = {desc = "Key Bindings UI"},
 		["BN Frames"]             = {desc = "BattleNet Frames"},
+		["Calendar"]              = true,
 		["Cinematic Frame"]       = true,
 		["Coin Pickup"]           = {suff = "Frame"},
 		["Color Picker"]          = {suff = "Frame"},
