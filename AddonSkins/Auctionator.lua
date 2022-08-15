@@ -2,10 +2,10 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("Auctionator") then return end
 local _G = _G
 
-aObj.addonsToSkin.Auctionator = function(self) -- v  9.2.13
+aObj.addonsToSkin.Auctionator = function(self) -- v  9.2.27
 
 	local function skinAuctionatorFrames(self)
-		if not _G.AuctionatorShoppingListFrame then
+		if not _G.AuctionatorSellingFrame then
 			_G.C_Timer.After(0.5, function()
 				skinAuctionatorFrames(self)
 			end)
@@ -251,19 +251,14 @@ aObj.addonsToSkin.Auctionator = function(self) -- v  9.2.13
 				self:skinObject("editbox", {obj=asi.Quantity.InputBox, y2=4})
 				self:skinObject("editbox", {obj=asi.Price.MoneyInput.GoldBox, ofs=-4, y2=8})
 				self:skinObject("editbox", {obj=asi.Price.MoneyInput.SilverBox, ofs=-4, y2=8})
-				self:skinObject("slider", {obj=this.CurrentItemListing.ScrollFrame.scrollBar, rpTex="artwork"})
-				skinHdrs(this.CurrentItemListing)
-				self:removeInset(this.CurrentItemInset)
-				self:skinObject("slider", {obj=this.HistoricalPriceListing.ScrollFrame.scrollBar, rpTex="artwork"})
-				skinHdrs(this.HistoricalPriceListing)
-				self:skinObject("slider", {obj=this.PostingHistoryListing.ScrollFrame.scrollBar, rpTex="artwork"})
-				skinHdrs(this.PostingHistoryListing)
+				self:skinObject("frame", {obj=this.BagListing, fb=true, ofs=5, x2=6, y2=-4})
+				for _, list in _G.pairs{"CurrentPricesListing", "HistoricalPriceListing", "PostingHistoryListing"} do
+					self:skinObject("slider", {obj=this[list].ScrollFrame.scrollBar, rpTex="artwork"})
+					skinHdrs(this[list])
+					self:skinObject("frame", {obj=this[list], fb=true, ofs=-2, x1=-10, x2=0, y2=-6})
+				end
 				self:removeInset(this.HistoricalPriceInset)
-				self:skinObject("tabs", {obj=this.HistoryTabsContainer, tabs=this.HistoryTabsContainer.Tabs, ignoreSize=true, lod=true, upwards=true, offsets={y1=0}})
-				self:skinObject("frame", {obj=this.BagListing, fb=true, ofs=5, x2=6})
-				self:skinObject("frame", {obj=this.CurrentItemListing, fb=true, ofs=-2, x1=-10, y2=-6})
-				self:skinObject("frame", {obj=this.HistoricalPriceListing, fb=true, ofs=-2, x1=-10, y2=-6})
-				self:skinObject("frame", {obj=this.PostingHistoryListing, fb=true, ofs=-2, x1=-10, y2=-6})
+				self:skinObject("tabs", {obj=this.PricesTabsContainer, tabs=this.PricesTabsContainer.Tabs, ignoreSize=true, lod=true, upwards=true, offsets={y1=-1}})
 				if self.modBtns then
 					self:skinStdButton{obj=asi.MaxButton}
 					self:SecureHookScript(asi, "OnUpdate", function(bObj)
@@ -358,7 +353,7 @@ aObj.addonsToSkin.Auctionator = function(self) -- v  9.2.13
 			this:DisableDrawLayer("BACKGROUND")
 			self:skinObject("editbox", {obj=this.DiscordLink.InputBox})
 			self:skinObject("editbox", {obj=this.BugReportLink.InputBox})
-			self:skinObject("editbox", {obj=this.TechnicalRoadmap.InputBox})
+			-- self:skinObject("editbox", {obj=this.TechnicalRoadmap.InputBox})
 			if self.modBtns then
 				self:skinStdButton{obj=this.ScanButton}
 				self:skinStdButton{obj=this.OptionsButton}
