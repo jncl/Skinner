@@ -11,5 +11,8 @@ ToDo_retail_PTR
 			- PVPMatchTable
 				- PVPCellNameTemplate
 					- DropDown
+			- AuctionHouseUI
+x				- .FavoriteButton
+x				- AuctionHouseBuyDialog
 		- Updated
 		- Deleted

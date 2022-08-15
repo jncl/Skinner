@@ -25,14 +25,14 @@ ToDos
 
 ?	O	Replace ObjectiveTracker Header Minimize button textures with suitable characters
 
-?	I	Fix ActionButtons/MultiBarButtons missing Text & PetActionButtons not being displayed, when redisplayed after accessing Puzzle Caches in Zereth Mortis.
+?	I	Fix ActionButtons/MultiBarButtons missing Text & PetActionButtons not being displayed
+		- when redisplayed after accessing Puzzle Caches in Zereth Mortis.
 		- happens when OverrideBar is used, but not always...
+		- happens after VehicleUI has been used
 
-	I	MiddleFrames, reported by Fakeessgaming, 08.07.22
-√		- Skinner\Modules\MiddleFrames.lua:113: attempt to perform arithmetic on a table value
-		[string "@Skinner\Modules\MiddleFrames.lua"]:113: in function <Skinner\Modules\MiddleFrames.lua:80>
-		[string "@Skinner\Modules\MiddleFrames.lua"]:166: in function `adjustMiddleFrames'
-		[string "@Skinner\Modules\MiddleFrames.lua"]:157: in function <Skinner\Modules\MiddleFrames.lua:155>
-
-	I/C	TaxiFrame, reported by EpidmeDaBear, 09.07.22
-√		- missing map textures
+	I/C	- LibSushi, reported by EpiDemeDaBear, 09.08.22
+√		- Skinner\Core\UtilFuncs.lua:1024: attempt to index local 'frame' (a nil value)[string
+		 "@Skinner\Core\UtilFuncs.lua"]:1024: in function <Skinner\Core\UtilFuncs.lua:1023>[string
+		 "@Skinner\Core\UtilFuncs.lua"]:1057: in function `removeNineSlice'[string
+		 "@Skinner\AddonSkins\LibSushi.lua"]:32: in function <Skinner\AddonSkins\LibSushi.lua:31>[string
+		 "@Skinner\AddonSkins\LibSushi.lua"]:59: in function <Skinner\AddonSkins\LibSushi.lua:56>[string
