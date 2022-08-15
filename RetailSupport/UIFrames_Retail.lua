@@ -2058,6 +2058,7 @@ aObj.SetupRetail_UIFrames = function()
 
 		local function skinHelpTips()
 			for hTip in _G.HelpTip.framePool:EnumerateActive() do
+				_G.RaiseFrameLevelByTwo(hTip)
 				self:skinObject("glowbox", {obj=hTip, fType=ftype})
 				if self.modBtns then
 					-- N.B. .CloseButton already skinned in skinGlowBox function
