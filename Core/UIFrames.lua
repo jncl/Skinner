@@ -1944,6 +1944,7 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 	_G.MiniMapMailIcon:ClearAllPoints()
 	_G.MiniMapMailIcon:SetPoint("CENTER", _G.MiniMapMailFrame)
 	_G.MiniMapMailFrame:SetSize(26, 26)
+	self:moveObject{obj=_G.MiniMapMailFrame, y=-4}
 	_G.TimeManagerClockButton:DisableDrawLayer("BORDER")
 	_G.TimeManagerClockButton:SetSize(36, 14)
 	if not _G.IsAddOnLoaded("SexyMap") then
@@ -1952,37 +1953,44 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 
 	-- Zoom Buttons
 	local btn, txt, xOfs, yOfs
-	for _, btnName in _G.pairs{"In", "Out"} do
-		if btnName == "In" then
-			btn = _G.MinimapZoomIn
+	for _, suff in _G.pairs{"In", "Out"} do
+		btn = _G["MinimapZoom" .. suff]
+		if suff == "In" then
 			txt = self.modUIBtns.plus
-			if not self.isClsc then
+			if not self.isClsc
+			or self.isClscPTR
+			then
 				xOfs, yOfs = 14, -12
 			else
 				xOfs, yOfs = 9, -24
 			end
 		else
-			btn = _G.MinimapZoomOut
 			txt = self.modUIBtns.minus
-			if not self.isClsc then
+			if not self.isClsc
+			or self.isClscPTR
+			then
 				xOfs, yOfs = 20, -10
 			else
 				xOfs, yOfs = 19, -12
 			end
 		end
 		self:moveObject{obj=btn, x=xOfs, y=yOfs}
-		self:skinOtherButton{obj=btn, text=txt, aso={bbclr=btn:IsEnabled() and "gold" or "disabled"}, noSkin=minBtn}
+		self:skinOtherButton{obj=btn, text=txt, noSkin=minBtn}
 		if not minBtn then
 			local function clrZoomBtns()
-				for _, bName in _G.pairs{"In", "Out"} do
-					btn = bName == "In" and _G.MinimapZoomIn or _G.MinimapZoomOut
+				for _, suffix in _G.pairs{"In", "Out"} do
+					btn = _G["MinimapZoom" .. suffix]
 					aObj:clrBBC(btn.sb, btn:IsEnabled() and "gold" or "disabled")
 				end
 			end
 			self:SecureHookScript(btn, "OnClick", function(_)
 				clrZoomBtns()
 			end)
+			_G.C_Timer.After(0.5, function()
+				clrZoomBtns()
+			end)
 			self:RegisterEvent("MINIMAP_UPDATE_ZOOM", clrZoomBtns)
+
 		end
 	end
 
