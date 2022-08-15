@@ -29,7 +29,9 @@ aObj.libsToSkin["Sushi-3.1"] = function(self) -- v Sushi-3.1, 4
 	end
 
 	local function skinPopup(pop)
-		aObj:removeNineSlice(pop.Border)
+		if pop.Border then
+			aObj:removeNineSlice(pop.Border)
+		end
 		pop.Separator:SetTexture(nil)
 		aObj:skinObject("frame", {obj=pop, kfs=true})
 		if aObj.modBtns then
