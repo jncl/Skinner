@@ -2125,6 +2125,7 @@ aObj.blizzFrames[ftype].Nameplates = function(self)
 	end
 
 	local function skinNamePlate(frame)
+		-- aObj:Debug("skinNamePlate: [%s, %s]", frame)
 		if not frame -- happens when called again after combat and frame doesn't exist any more
 		or frame:IsForbidden()
 		then
@@ -2140,14 +2141,14 @@ aObj.blizzFrames[ftype].Nameplates = function(self)
 		then
 			local nHb, nCb = nP.healthBar, nP.castBar or nP.CastBar
 			nHb.border:DisableDrawLayer("ARTWORK")
-			if aObj.isRtl then
+			if self.isRtl then
 				aObj:skinObject("statusbar", {obj=nHb, fi=0, bg=nHb.background, other={nHb.myHealPrediction, nHb.otherHealPrediction}})
 				if nCb then
 					aObj:skinObject("statusbar", {obj=nCb, fi=0, bg=nCb.background})
 				end
 			else
 				aObj:skinObject("statusbar", {obj=nHb, fi=0, bg=nHb.background})
-				if aObj.isClscBC then
+				if self.isClscBC then
 					aObj:skinObject("statusbar", {obj=nCb, fi=0, bg=aObj:getRegion(nCb, 1)})
 					aObj:nilTexture(nCb.Border, true)
 					aObj:nilTexture(nCb.BorderShield, true)
