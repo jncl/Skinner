@@ -1528,7 +1528,7 @@ aObj.SetupRetail_UIFrames = function()
 			end)
 
 			-- hook this to show/hide 'Plans Required' text (Bug in Blizzard's code, reported 03.03.18)
-			self:SecureHook("GarrisonBuildingInfoBox_ShowBuilding", function(ID, owned, showLock)
+			self:SecureHook("GarrisonBuildingInfoBox_ShowBuilding", function(ID, _, showLock)
 				local buildingInfo = {_G.C_Garrison.GetOwnedBuildingInfoAbbrev(ID)}
 				if not showLock then
 					if buildingInfo[5] then -- buildingRank [1-3] if known
