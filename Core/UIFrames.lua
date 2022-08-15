@@ -2791,7 +2791,7 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 		elseif wFrame.widgetType == 2 then -- StatusBar
 			local regs
 			-- background & border textures
-			if aObj.isRtl then
+			if self.isRtl then
 				regs = {2, 3, 4, 8, 9, 10}
 			else
 				regs = {1, 2, 3, 5, 6 ,7}
@@ -2838,7 +2838,7 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 			aObj:nilTexture(wFrame.Frame, true)
 		elseif wFrame.widgetType == 12 then -- TextureAndText
 			-- .Background
-			-- .Foreground
+			wFrame.Foreground:SetTexture(nil)
 			setTextColor(wFrame.Text)
 		-- N.B. Classic ONLY has 12 UIWidgets
 		elseif wFrame.widgetType == 13 then -- SpellDisplay
@@ -2875,7 +2875,7 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 	if self.isRtl then
 		local function hookAndSkinWidgets(widgetContainer)
 			-- aObj:Debug("hookAndSkinWidgets: [%s, %s, %s]", widgetContainer:IsForbidden(), widgetContainer:IsForbidden() or widgetContainer:GetDebugName())
-			-- DON'T skin NamePlate[n].* widgets as they cause Clamping Errors
+			-- DON'T skin NamePlate[n].* widgets as they cause Clamping Errors if they are initially skinned
 			if widgetContainer:IsForbidden()
 			or widgetContainer:GetDebugName():find("^NamePlate%d+%.")
 			then
