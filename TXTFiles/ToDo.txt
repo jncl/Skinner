@@ -30,10 +30,10 @@ ToDos
 		- happens when OverrideBar is used, but not always...
 		- happens after VehicleUI has been used
 
-	I	Auctionator, reported by Galthariel, 15.08.22
-√		- Ace3\AceHook-3.0\AceHook-3.0-9.lua:180: Attempting to rehook already active hook SetItemInfo.
-		[string "@Ace3\AceHook-3.0\AceHook-3.0-9.lua"]:180: in function <Ace3\AceHook-3.0\AceHook-3.0.lua:118>
-		[string "@Ace3\AceHook-3.0\AceHook-3.0-9.lua"]:341: in function `SecureHook'
-		[string "@Skinner\AddonSkins\Auctionator-9.2.27.lua"]:235: in function <Skinner\AddonSkins\Auctionator.lua:231>
-√		- Skinner\AddonSkins\Auctionator-9.2.27.lua:254: attempt to index field 'CurrentItemListing' (a nil value)
-		[string "@Skinner\AddonSkins\Auctionator-9.2.27.lua"]:254: in function <Skinner\AddonSkins\Auctionator.lua:231>
+	I	Auctionator, reported by Galthariel, 18.08.22
+x		- Options have no text on panel(s)
+
+	I	Journalator, reported by Galthariel, 20.08.22
+√		- Skinner\Modules\UIButtons.lua:311: attempt to index field 'obj' (a nil value)
+		[string "@Skinner\Modules\UIButtons.lua"]:311: in function `skinCloseButton'
+		[string "@Skinner\AddonSkins\Journalator-1.2-1-g9d284f1.lua"]:51: in function <Skinner\AddonSkins\Journalator.lua:8>
