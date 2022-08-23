@@ -2,7 +2,7 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("Journalator") then return end
 local _G = _G
 
-aObj.addonsToSkin.Journalator = function(self) -- v 0.54
+aObj.addonsToSkin.Journalator = function(self) -- v 1.3
 
 	-- N.B. 0.54-5 alpha introduced Filters, so handle both versions for now
 	self:SecureHookScript(_G.JNRView, "OnShow", function(this)
@@ -32,9 +32,6 @@ aObj.addonsToSkin.Journalator = function(self) -- v 0.54
 				self:skinObject("slider", {obj=frame.ResultsListing.ScrollFrame.scrollBar})
 				frame.ResultsListingInset.Bg:SetTexture(nil)
 				self:removeNineSlice(frame.ResultsListingInset.NineSlice)
-				if self.modBtnBs then
-					self:addButtonBorder{obj=self:getChild(frame, 1), ofs=-2, x1=1, clr="gold"} -- RefreshButton
-				end
 			else
 				frame.Inset.Bg:SetTexture(nil)
 				self:removeNineSlice(frame.Inset.NineSlice)
@@ -46,9 +43,9 @@ aObj.addonsToSkin.Journalator = function(self) -- v 0.54
 			end
 		end
 		self:skinObject("tabs", {obj=this, tabs=this.Tabs, ignoreSize=true, lod=self.isTT and true, upwards=true})
-		self:skinObject("frame", {obj=this, kfs=true, ri=true, rns=true, y2=-1})
+		self:skinObject("frame", {obj=this, kfs=true, ri=true, rns=true, y2=-2})
 		if self.modBtns then
-			self:skinCloseButton{obj=this.CloseDialog}
+			self:skinCloseButton{obj=this.CloseButton}
 			self:skinStdButton{obj=this.ExportCSV}
 		end
 
@@ -66,18 +63,25 @@ aObj.addonsToSkin.Journalator = function(self) -- v 0.54
 		self:Unhook(this, "OnShow")
 	end)
 
-	if self.modChkBtns then
-		self.RegisterMessage("Journalator", "IOFPanel_Before_Skinning", function(_, panel)
-			if panel.name ~= "Journalator" then return end
-			aObj.iofSkinnedPanels[panel] = true
+	self.RegisterMessage("Journalator", "IOFPanel_Before_Skinning", function(_, panel)
+		if panel.name ~= "Journalator" then return end
+		aObj.iofSkinnedPanels[panel] = true
+
+		if self.modBtns then
+			self:skinStdButton{obj=panel.ComputeFullStatistics}
+		end
+		if self.modChkBtns then
 			self:skinCheckButton{obj=panel.TooltipSaleRate.CheckBox}
 			self:skinCheckButton{obj=panel.TooltipFailures.CheckBox}
 			self:skinCheckButton{obj=panel.TooltipLastSold.CheckBox}
 			self:skinCheckButton{obj=panel.TooltipLastBought.CheckBox}
 			self:skinCheckButton{obj=panel.GroupJunk.CheckBox}
+			self:skinCheckButton{obj=panel.ShowDetailedStatus.CheckBox}
+			self:skinCheckButton{obj=panel.ShowMinimapIcon.CheckBox}
+			self:skinCheckButton{obj=panel.DebugMode.CheckBox}
+		end
 
-			self.UnregisterMessage("Journalator", "IOFPanel_Before_Skinning")
-		end)
-	end
+		self.UnregisterMessage("Journalator", "IOFPanel_Before_Skinning")
+	end)
 
 end
