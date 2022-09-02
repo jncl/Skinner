@@ -4,7 +4,7 @@ local _G = _G
 
 aObj.addonsToSkin.Auctionator = function(self) -- v  9.2.27
 
-	local function skinAuctionatorFrames(self)
+	local function skinAuctionatorFrames()
 		if not _G.AuctionatorSellingFrame then
 			_G.C_Timer.After(0.5, function()
 				skinAuctionatorFrames(self)
@@ -12,7 +12,7 @@ aObj.addonsToSkin.Auctionator = function(self) -- v  9.2.27
 			return
 		end
 
-		self:SecureHookScript(_G.AuctionatorShoppingListFrame, "OnShow", function(this)
+		aObj:SecureHookScript(_G.AuctionatorShoppingListFrame, "OnShow", function(this)
 			this:DisableDrawLayer("BACKGROUND")
 			self:skinObject("editbox", {obj=this.OneItemSearchBox})
 			self:skinObject("dropdown", {obj=this.ListDropdown})
@@ -57,7 +57,7 @@ aObj.addonsToSkin.Auctionator = function(self) -- v  9.2.27
 
 		local aslFrame = _G.AuctionatorShoppingListFrame
 		if aslFrame.itemDialog then
-			self:SecureHookScript(aslFrame.itemDialog, "OnShow", function(this)
+			aObj:SecureHookScript(aslFrame.itemDialog, "OnShow", function(this)
 				self:removeNineSlice(this.Border)
 				if self.isClsc then
 					self:removeInset(self:getChild(this.Inset, 1))
@@ -83,7 +83,7 @@ aObj.addonsToSkin.Auctionator = function(self) -- v  9.2.27
 			end)
 		end
 		if aslFrame.exportDialog then
-			self:SecureHookScript(aslFrame.exportDialog, "OnShow", function(this)
+			aObj:SecureHookScript(aslFrame.exportDialog, "OnShow", function(this)
 				self:removeNineSlice(this.Border)
 				if self.isClsc then
 					self:removeInset(self:getChild(this.Inset, 1))
@@ -110,7 +110,7 @@ aObj.addonsToSkin.Auctionator = function(self) -- v  9.2.27
 
 				self:Unhook(this, "OnShow")
 			end)
-			self:SecureHookScript(aslFrame.exportDialog.copyTextDialog, "OnShow", function(this)
+			aObj:SecureHookScript(aslFrame.exportDialog.copyTextDialog, "OnShow", function(this)
 				self:removeNineSlice(this.Border)
 				if self.isClsc then
 					self:removeInset(self:getChild(this.Inset, 1))
@@ -125,7 +125,7 @@ aObj.addonsToSkin.Auctionator = function(self) -- v  9.2.27
 			end)
 		end
 		if aslFrame.importDialog then
-			self:SecureHookScript(aslFrame.importDialog, "OnShow", function(this)
+			aObj:SecureHookScript(aslFrame.importDialog, "OnShow", function(this)
 				self:removeNineSlice(this.Border)
 				if self.isClsc then
 					self:removeInset(self:getChild(this.Inset, 1))
@@ -141,7 +141,7 @@ aObj.addonsToSkin.Auctionator = function(self) -- v  9.2.27
 			end)
 		end
 		if aslFrame.exportCSVDialog then
-			self:SecureHookScript(aslFrame.exportCSVDialog, "OnShow", function(this)
+			aObj:SecureHookScript(aslFrame.exportCSVDialog, "OnShow", function(this)
 				self:removeNineSlice(this.Border)
 				if self.isClsc then
 					self:removeInset(self:getChild(this.Inset, 1))
@@ -156,7 +156,7 @@ aObj.addonsToSkin.Auctionator = function(self) -- v  9.2.27
 			end)
 		end
 		if aslFrame.itemHistoryDialog then
-			self:SecureHookScript(aslFrame.itemHistoryDialog, "OnShow", function(this)
+			aObj:SecureHookScript(aslFrame.itemHistoryDialog, "OnShow", function(this)
 				self:removeNineSlice(this.Border)
 				if self.isClsc then
 					self:removeInset(self:getChild(this.Inset, 1))
@@ -228,7 +228,7 @@ aObj.addonsToSkin.Auctionator = function(self) -- v  9.2.27
 				end
 			end)
 		end
-		self:SecureHookScript(_G.AuctionatorSellingFrame, "OnShow", function(this)
+		aObj:SecureHookScript(_G.AuctionatorSellingFrame, "OnShow", function(this)
 			local asi = this.AuctionatorSaleItem
 			asi.Icon.EmptySlot:SetTexture(nil)
 			self.modUIBtns:addButtonBorder{obj=asi.Icon, relTo=asi.Icon.Icon, clr="white"}
@@ -294,7 +294,7 @@ aObj.addonsToSkin.Auctionator = function(self) -- v  9.2.27
 			self:Unhook(this, "OnShow")
 		end)
 
-		self:SecureHookScript(_G.AuctionatorCancellingFrame, "OnShow", function(this)
+		aObj:SecureHookScript(_G.AuctionatorCancellingFrame, "OnShow", function(this)
 			self:skinObject("editbox", {obj=this.SearchFilter, si=true})
 			this.ResultsListing.ScrollFrame.scrollBar.Background:SetTexture(nil)
 			self:skinObject("slider", {obj=this.ResultsListing.ScrollFrame.scrollBar, rpTex="artwork"})
@@ -343,7 +343,7 @@ aObj.addonsToSkin.Auctionator = function(self) -- v  9.2.27
 			self:Unhook(this, "OnShow")
 		end)
 
-		self:SecureHookScript(_G.AuctionatorConfigFrame, "OnShow", function(this)
+		aObj:SecureHookScript(_G.AuctionatorConfigFrame, "OnShow", function(this)
 			if not self.isClsc then
 				self:removeInset(this)
 			else
@@ -363,7 +363,7 @@ aObj.addonsToSkin.Auctionator = function(self) -- v  9.2.27
 		end)
 
 		if _G.Auctionator.State.SplashScreenRef then
-			self:SecureHookScript(_G.Auctionator.State.SplashScreenRef, "OnShow", function(this)
+			aObj:SecureHookScript(_G.Auctionator.State.SplashScreenRef, "OnShow", function(this)
 				self:removeNineSlice(this.Border)
 				if self.isClsc then
 					self:removeInset(self:getChild(this.Inset, 1))
@@ -378,11 +378,11 @@ aObj.addonsToSkin.Auctionator = function(self) -- v  9.2.27
 
 				self:Unhook(this, "OnShow")
 			end)
-			self:checkShown(_G.Auctionator.State.SplashScreenRef)
+			aObj:checkShown(_G.Auctionator.State.SplashScreenRef)
 		end
 
 		if _G.Auctionator.State.TabFrameRef then
-			self:SecureHookScript(_G.Auctionator.State.TabFrameRef, "OnShow", function(this)
+			aObj:SecureHookScript(_G.Auctionator.State.TabFrameRef, "OnShow", function(this)
 				self:skinObject("tabs", {obj=this, tabs=this.Tabs, offsets={x1=8, y1=self.isTT and 2 or -3, x2=-8}, track=self.isClsc and false})
 				if self.isTT then
 					for key, tab in _G.ipairs(this.Tabs) do
@@ -406,11 +406,11 @@ aObj.addonsToSkin.Auctionator = function(self) -- v  9.2.27
 
 				self:Unhook(this, "OnShow")
 			end)
-			self:checkShown(_G.Auctionator.State.TabFrameRef)
+			aObj:checkShown(_G.Auctionator.State.TabFrameRef)
 		end
 
 		if _G.Auctionator.State.PageStatusFrameRef then
-			self:SecureHookScript(_G.Auctionator.State.PageStatusFrameRef, "OnShow", function(this)
+			aObj:SecureHookScript(_G.Auctionator.State.PageStatusFrameRef, "OnShow", function(this)
 				self:skinObject("frame", {obj=this, kfs=true, rns=true})
 
 				self:Unhook(this, "OnShow")
@@ -418,7 +418,7 @@ aObj.addonsToSkin.Auctionator = function(self) -- v  9.2.27
 		end
 
 		if _G.Auctionator.State.BuyFrameRef then
-			self:SecureHookScript(_G.Auctionator.State.BuyFrameRef, "OnShow", function(this)
+			aObj:SecureHookScript(_G.Auctionator.State.BuyFrameRef, "OnShow", function(this)
 				skinBuyFrame(this)
 				if self.modBtns then
 					self:skinStdButton{obj=this.ReturnButton}
@@ -435,7 +435,7 @@ aObj.addonsToSkin.Auctionator = function(self) -- v  9.2.27
 	end
 
 	self.RegisterMessage("Auctionator", "Auction_House_Show", function(_)
-		skinAuctionatorFrames(self)
+		skinAuctionatorFrames()
 
 		self.UnregisterMessage("Auctionator", "Auction_House_Show")
 	end)
@@ -472,7 +472,7 @@ aObj.addonsToSkin.Auctionator = function(self) -- v  9.2.27
 			pCnt = pCnt + 1
 			skinKids(panel)
 		end
-		if pCnt == 11 then
+		if pCnt == 10 then
 			self.UnregisterMessage("Auctionator_Config", "IOFPanel_Before_Skinning")
 		end
 	end)
