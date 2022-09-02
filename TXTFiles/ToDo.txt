@@ -31,9 +31,17 @@ ToDos
 		- happens after VehicleUI has been used
 
 	I	Auctionator, reported by Galthariel, 18.08.22
-x		- Options have no text on panel(s)
+?		- Options have no text on panel(s)
 
 	I	Journalator, reported by Galthariel, 20.08.22
 √		- Skinner\Modules\UIButtons.lua:311: attempt to index field 'obj' (a nil value)
 		[string "@Skinner\Modules\UIButtons.lua"]:311: in function `skinCloseButton'
 		[string "@Skinner\AddonSkins\Journalator-1.2-1-g9d284f1.lua"]:51: in function <Skinner\AddonSkins\Journalator.lua:8>
+
+?	I	reported by orau, 30.08.22
+		- Hi, i try this addon, and after i delete him - i have my interface saved for skinner changes, how to fully delete it?
+		- Add: Ok i got it, this addon even after delete didnt change back options for other interface addon, FOR REAL? I NEED TO CHECK EVERY ADDON TO MAKE IT OPTIONS BACK?
+		- Dear god please fix it
+		
+	I	Classic WotLK update, reported by nouse_001, 31.08.22
+√		- As of today, most of Blizzard standard frames (auction house, talents,...) do not work with Skinner in current classic-wotlk version

@@ -8,21 +8,5 @@ ToDo_classic_PTR
 
 	Classic_PTR
 		- Added
-√			- CalendarFrame
-			- InspectTalentFrame
-				- InspectTalentFramePointsBar
 		- Updated
-√			- PaperDollFrame
-√			- PetPaperDollFrame
-√			- Reputation Frame
-√			- MinimapFrame
-√			- QuestLog
-√			- InspectTalentFrame
-?			- ActionBarController
-√			- PVPFrame
-?			- PetStable
-x			- PlayerFrame
-√			- SpellBookFrame
-?			- TotemFrame (Death Knight)
-?			- UIPanelTemplates
 		- Deleted
