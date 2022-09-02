@@ -66,81 +66,172 @@ aObj.SetupClassic_UIFrames = function()
 		end
 	end
 
-	if aObj.isClscBC
-	or (_G.C_LFGList.IsLookingForGroupEnabled
-	and _G.C_LFGList.IsLookingForGroupEnabled())
-	then
+	if _G.C_LFGList.IsLookingForGroupEnabled() then
 		aObj.blizzFrames[ftype].LFGFrame = function(self)
 			if not self.prdb.LFGLFM or self.initialized.LFGFrame then return end
 			self.initialized.LFGFrame = true
 
 			self:SecureHookScript(_G.LFGParentFrame, "OnShow", function(this)
+				if self.isClscBC then
+					_G.LFGParentFramePortrait:DisableDrawLayer("BACKGROUND")
+					_G.LFGParentFramePortrait:DisableDrawLayer("ARTWORK")
+				end
 				self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, ignoreSize=true, lod=self.isTT and true, upwards=true, offsets={x1=6, y1=0, x2=-6, y2=2}})
 				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, x1=10, y1=-11, x2=-29, y2=70})
 				if self.modBtns then
-					self:skinCloseButton{obj=self:getChild(this, 3), fType=ftype}
+					self:skinCloseButton{obj=self:getChild(this, self.isClscBC and 1 or 3), fType=ftype}
 				end
 
-				self:SecureHookScript(_G.LFMFrame, "OnShow", function(fObj)
-					self:skinObject("dropdown", {obj=_G.LFMFrameEntryDropDown, fType=ftype})
-					self:removeInset(_G.LFMFrameInset)
-					self:skinObject("dropdown", {obj=_G.LFMFrameTypeDropDown, fType=ftype})
-					self:skinObject("dropdown", {obj=_G.LFMFrameActivityDropDown, fType=ftype})
-					for i = 1, 4 do
-						_G["LFMFrameColumnHeader" .. i]:DisableDrawLayer("BACKGROUND")
-						self:skinObject("frame", {obj=_G["LFMFrameColumnHeader" .. i], fType=ftype, ofs=0})
-					end
-					self:skinObject("slider", {obj=_G.LFMListScrollFrame.ScrollBar, fType=ftype})
-					self:moveObject{obj=_G.LFMFrameGroupInviteButton, x=-4}
-					if self.modBtns then
-						self:skinStdButton{obj=_G.LFMFrameGroupInviteButton, fType=ftype}
-						self:skinStdButton{obj=_G.LFMFrameSendMessageButton, fType=ftype}
-						self:skinStdButton{obj=_G.LFMFrameSearchButton, fType=ftype}
-						self:SecureHook(_G.LFMFrameGroupInviteButton, "SetEnabled", function(btn)
-							self:clrBtnBdr(btn)
-						end)
-						self:SecureHook(_G.LFMFrameSendMessageButton, "SetEnabled", function(btn)
-							self:clrBtnBdr(btn)
-						end)
-					end
-
-					self:Unhook(fObj, "OnShow")
-				end)
-				self:checkShown(_G.LFMFrame)
-
-				self:SecureHookScript(_G.LFGFrame, "OnShow", function(fObj)
-					for _, dd in _G.pairs(fObj.TypeDropDown) do
-						self:skinObject("dropdown", {obj=dd, fType=ftype})
-					end
-					for _, dd in _G.pairs(fObj.ActivityDropDown) do
-						self:skinObject("dropdown", {obj=dd, fType=ftype})
-					end
-					self:skinObject("editbox", {obj=fObj.Comment, fType=ftype, chginset=false, x1=-5})
-					self:moveObject{obj=_G.LFGFramePostButton, x=-10}
-					if self.modBtns then
-						self:skinStdButton{obj=_G.LFGFrameClearAllButton, fType=ftype}
-						self:skinStdButton{obj=_G.LFGFramePostButton, fType=ftype}
-						self:SecureHook(_G.LFGFramePostButton, "SetEnabled", function(btn, _)
-							self:clrBtnBdr(btn)
-						end)
-					end
-					if self.modBtnBs then
-						for i = 1, 3 do
-							self:addButtonBorder{obj=_G["LFGSearchIcon" .. i .. "Shine"], fType=ftype, x1=-6, y1=3, x2=6, y2=-4, clr="grey"}
+				if not self.isClscBC then
+					self:SecureHookScript(_G.LFMFrame, "OnShow", function(fObj)
+						self:skinObject("dropdown", {obj=_G.LFMFrameEntryDropDown, fType=ftype})
+						self:removeInset(_G.LFMFrameInset)
+						self:skinObject("dropdown", {obj=_G.LFMFrameTypeDropDown, fType=ftype})
+						self:skinObject("dropdown", {obj=_G.LFMFrameActivityDropDown, fType=ftype})
+						for i = 1, 4 do
+							_G["LFMFrameColumnHeader" .. i]:DisableDrawLayer("BACKGROUND")
+							self:skinObject("frame", {obj=_G["LFMFrameColumnHeader" .. i], fType=ftype, ofs=0})
 						end
-						self:SecureHook(fObj, "UpdateActivityIcon", function(frame, i)
-							local activityID = _G.UIDropDownMenu_GetSelectedValue(frame.ActivityDropDown[i])
-							if activityID then
-								self:clrBtnBdr(_G["LFGSearchIcon" .. i .. "Shine"])
-							else
-								self:clrBtnBdr(_G["LFGSearchIcon" .. i .. "Shine"], "grey")
+						self:skinObject("slider", {obj=_G.LFMListScrollFrame.ScrollBar, fType=ftype})
+						self:moveObject{obj=_G.LFMFrameGroupInviteButton, x=-4}
+						if self.modBtns then
+							self:skinStdButton{obj=_G.LFMFrameGroupInviteButton, fType=ftype}
+							self:skinStdButton{obj=_G.LFMFrameSendMessageButton, fType=ftype}
+							self:skinStdButton{obj=_G.LFMFrameSearchButton, fType=ftype}
+							self:SecureHook(_G.LFMFrameGroupInviteButton, "SetEnabled", function(btn)
+								self:clrBtnBdr(btn)
+							end)
+							self:SecureHook(_G.LFMFrameSendMessageButton, "SetEnabled", function(btn)
+								self:clrBtnBdr(btn)
+							end)
+						end
+
+						self:Unhook(fObj, "OnShow")
+					end)
+					self:checkShown(_G.LFMFrame)
+					self:SecureHookScript(_G.LFGFrame, "OnShow", function(fObj)
+						for _, dd in _G.pairs(fObj.TypeDropDown) do
+							self:skinObject("dropdown", {obj=dd, fType=ftype})
+						end
+						for _, dd in _G.pairs(fObj.ActivityDropDown) do
+							self:skinObject("dropdown", {obj=dd, fType=ftype})
+						end
+						self:skinObject("editbox", {obj=fObj.Comment, fType=ftype, chginset=false, x1=-5})
+						self:moveObject{obj=_G.LFGFramePostButton, x=-10}
+						if self.modBtns then
+							self:skinStdButton{obj=_G.LFGFrameClearAllButton, fType=ftype}
+							self:skinStdButton{obj=_G.LFGFramePostButton, fType=ftype}
+							self:SecureHook(_G.LFGFramePostButton, "SetEnabled", function(btn, _)
+								self:clrBtnBdr(btn)
+							end)
+						end
+						if self.modBtnBs then
+							for i = 1, 3 do
+								self:addButtonBorder{obj=_G["LFGSearchIcon" .. i .. "Shine"], fType=ftype, x1=-6, y1=3, x2=6, y2=-4, clr="grey"}
+							end
+							self:SecureHook(fObj, "UpdateActivityIcon", function(frame, i)
+								local activityID = _G.UIDropDownMenu_GetSelectedValue(frame.ActivityDropDown[i])
+								if activityID then
+									self:clrBtnBdr(_G["LFGSearchIcon" .. i .. "Shine"])
+								else
+									self:clrBtnBdr(_G["LFGSearchIcon" .. i .. "Shine"], "grey")
+								end
+							end)
+						end
+
+						self:Unhook(fObj, "OnShow")
+					end)
+					self:checkShown(_G.LFGFrame)
+				else
+					self:SecureHookScript(_G.LFGListingFrame, "OnShow", function(fObj)
+						self:keepFontStrings(fObj)
+						for _, btn in pairs(fObj.SoloRoleButtons.RoleButtons) do
+							btn:DisableDrawLayer("BACKGROUND")
+							if self.modChkBtns then
+								self:skinCheckButton{obj=btn.CheckButton, fType=ftype}
+							end
+						end
+						-- TODO: GroupRoleButtons
+						for _, btn in pairs(fObj.CategoryView.CategoryButtons) do
+							self:keepFontStrings(btn)
+							if self.modBtns then
+								self:skinStdButton{obj=btn, fType=ftype}
+							end
+						end
+						-- ActivityView
+						fObj.ActivityView:DisableDrawLayer("OVERLAY")
+						self:skinObject("scrollbar", {obj=fObj.ActivityView.ScrollBar, fType=ftype, rpTex="background"})
+						self:skinObject("frame", {obj=fObj.ActivityView.Comment, fType=ftype, kfs=true, fb=true, ofs=6})
+
+						if self.modBtns then
+							self:skinStdButton{obj=fObj.BackButton, fType=ftype}
+							self:SecureHook(fObj.BackButton, "SetEnabled", function(bObj)
+								self:clrBtnBdr(bObj)
+							end)
+							self:skinStdButton{obj=fObj.PostButton, fType=ftype}
+							self:SecureHook(fObj.PostButton, "SetEnabled", function(bObj)
+								self:clrBtnBdr(bObj)
+							end)
+						end
+						if self.modChkBtns then
+							self:skinCheckButton{obj=fObj.NewPlayerFriendlyButton.CheckButton, fType=ftype}
+						end
+
+						self:Unhook(fObj, "OnShow")
+					end)
+					self:checkShown(_G.LFGListingFrame)
+					if self.modBtnBs
+					or self.modChkBtns
+					then
+						self:SecureHook("LFGListingActivityView_InitActivityGroupButton", function(button, _)
+							if self.modBtnBs then
+								self:skinExpandButton{obj=button.ExpandOrCollapseButton, fType=ftype, onSB=true}
+							end
+							if self.modChkBtns then
+								self:skinCheckButton{obj=button.CheckButton, fType=ftype}
+							end
+						end)
+						self:SecureHook("LFGListingActivityView_InitActivityButton", function(button, _)
+							if self.modChkBtns then
+								self:skinCheckButton{obj=button.CheckButton, fType=ftype}
 							end
 						end)
 					end
+					self:SecureHookScript(_G.LFGBrowseFrame, "OnShow", function(fObj)
+						self:keepFontStrings(fObj)
+						self:skinObject("dropdown", {obj=fObj.SearchEntryDropDown, fType=ftype})
+						self:skinObject("dropdown", {obj=fObj.CategoryDropDown, fType=ftype})
+						self:skinObject("dropdown", {obj=fObj.ActivityDropDown, fType=ftype})
+						self:SecureHook("LFGBrowseActivityDropDown_Initialize", function(dropDown, _)
+							self:checkDisabledDD(dropDown)
+						end)
+						self:skinObject("scrollbar", {obj=fObj.ScrollBar, fType=ftype, rpTex="background"})
+						if self.modBtns then
+							self:skinStdButton{obj=fObj.SendMessageButton, fType=ftype}
+							self:SecureHook(fObj.SendMessageButton, "SetEnabled", function(bObj)
+								self:clrBtnBdr(bObj)
+							end)
+							self:skinStdButton{obj=fObj.GroupInviteButton, fType=ftype}
+							self:SecureHook(fObj.GroupInviteButton, "SetEnabled", function(bObj)
+								self:clrBtnBdr(bObj)
+							end)
+						end
+						if self.modBtnBs then
+							self:addButtonBorder{obj=fObj.RefreshButton, fType=ftype, ofs=-2, x1=1, clr="gold"}
+							self:SecureHook(fObj.RefreshButton, "SetEnabled", function(bObj)
+								self:clrBtnBdr(bObj)
+							end)
+						end
 
-					self:Unhook(fObj, "OnShow")
-				end)
-				self:checkShown(_G.LFGFrame)
+						-- tooltip
+						_G.C_Timer.After(0.1, function()
+							self:add2Table(self.ttList, _G.LFGBrowseSearchEntryTooltip)
+						end)
+
+						self:Unhook(fObj, "OnShow")
+					end)
+					self:checkShown(_G.LFGBrowseFrame)
+				end
 
 				self:Unhook(this, "OnShow")
 			end)
@@ -151,7 +242,7 @@ aObj.SetupClassic_UIFrames = function()
 
 		end
 	end
-
+	
 	aObj.blizzFrames[ftype].MainMenuBar = function(self)
 		if self.initialized.MainMenuBar then return end
 		self.initialized.MainMenuBar = true
@@ -300,11 +391,13 @@ aObj.SetupClassic_UIFrames = function()
 			return
 		end
 
-		if not self.isClscPTR then
+		if not self.isClscBC then
 			self:SecureHookScript(_G.QuestLogFrame, "OnShow", function(this)
 				_G.QuestLogCollapseAllButton:DisableDrawLayer("BACKGROUND")
 				self:keepFontStrings(_G.EmptyQuestLogFrame)
-				self:keepFontStrings(_G.QuestLogCount)
+				if not self.isClscERAPTR then
+					self:keepFontStrings(_G.QuestLogCount)
+				end
 				self:skinObject("slider", {obj=_G.QuestLogListScrollFrame.ScrollBar, fType=ftype})
 				self:skinObject("slider", {obj=_G.QuestLogDetailScrollFrame.ScrollBar, fType=ftype})
 				_G.QuestLogQuestTitle:SetTextColor(self.HT:GetRGB())
@@ -396,7 +489,7 @@ aObj.SetupClassic_UIFrames = function()
 
 	end
 
-	if not aObj.isClscPTR then
+	if not aObj.isClscBC then
 		aObj.blizzFrames[ftype].QuestTimer = function(self)
 			if not self.prdb.QuestTimer or self.initialized.QuestTimer then return end
 			self.initialized.QuestTimer = true
@@ -537,8 +630,8 @@ aObj.SetupClassic_UIFramesOptions = function(self)
 
 	local optTab = {
 		["Battlefield Frame"]       = true,
-		["GM Survey UI"]            = not self.isClscBC and true or nil,
-		["LFGLFM"]                  = (self.isClscBC or _G.C_LFGList.IsLookingForGroupEnabled and _G.C_LFGList.IsLookingForGroupEnabled()) and {desc = "Looking for Group/More Frame"} or nil,
+		["GM Survey UI"]            = not self.isClscBC and true,
+		["LFGLFM"]                  = _G.C_LFGList.IsLookingForGroupEnabled(),
 		["Product Choice"]          = {suff = "Frame"},
 		["Quest Log"]               = true,
 		["Quest Timer"]             = true,

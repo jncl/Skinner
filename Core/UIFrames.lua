@@ -213,7 +213,7 @@ aObj.blizzFrames[ftype].BNFrames = function(self)
 end
 
 if aObj.isRtl
-or aObj.isClscPTR
+or aObj.isClscBC
 then
 	aObj.blizzLoDFrames[ftype].Calendar = function(self)
 		if not self.prdb.Calendar or self.initialized.Calendar then return end
@@ -458,6 +458,7 @@ then
 	end
 
 end
+
 aObj.blizzFrames[ftype].ChatBubbles = function(self)
 	if not self.prdb.ChatBubbles.skin or self.initialized.ChatBubbles then return end
 	self.initialized.ChatBubbles = true
@@ -498,8 +499,14 @@ aObj.blizzFrames[ftype].ChatBubbles = function(self)
 		registerEvents()
 		skinChatBubbles()
 	end
+	local func
+	if not self.isClscBC then
+		func = "InterfaceOptionsDisplayPanelChatBubblesDropDown_SetValue"
+	else
+		func = "InterfaceOptionsSocialPanelChatBubblesDropDown_SetValue"
+	end
 	-- hook this to handle changes
-	self:SecureHook("InterfaceOptionsDisplayPanelChatBubblesDropDown_SetValue", function(_, value)
+	self:SecureHook(func, function(_, value)
 		-- unregister events
 		unRegisterEvents()
 		if value ~= 2 then -- either All or ExcludeParty
@@ -1787,7 +1794,7 @@ aObj.blizzFrames[ftype].Minimap = function(self)
 		self:getRegion(_G.MiniMapChallengeMode, 1):SetTexCoord(0, 1, 0.27, 1.27) -- remove top hanger texture
 		self:moveObject{obj=_G.MiniMapChallengeMode, x=6, y=-12}
 	else
-		if not self.isClscPTR then
+		if not self.isClscBC then
 			if self.modBtns then
 				_G.RaiseFrameLevelByTwo(_G.MinimapToggleButton)
 				self:moveObject{obj=_G.MinimapToggleButton, x=-8, y=1}
@@ -1875,7 +1882,7 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 	end
 
 	if self.isRtl
-	or self.isClscPTR
+	or self.isClscBC
 	then
 		-- Calendar button
 		makeBtnSquare(_G.GameTimeFrame, 0.1, 0.31, 0.16, 0.6)
@@ -1887,7 +1894,7 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 			_G.MiniMapTracking:SetScale(0.9)
 			self:skinObject("frame", {obj=_G.MiniMapTracking, fType=ftype})
 		end
-		if not self.isClscPTR then
+		if not self.isClscBC then
 			_G.QueueStatusMinimapButtonBorder:SetTexture(nil)
 			self:moveObject{obj=_G.QueueStatusMinimapButton, x=-16}
 			if not minBtn then
@@ -1923,7 +1930,7 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 			end
 		end)
 		_G.MiniMapTrackingBorder:SetTexture(nil)
-		if self.isBC then
+		if self.isClscBC then
 			self:moveObject{obj=_G.MiniMapTracking, x=-15}
 			if not minBtn then
 				self:skinObject("frame", {obj=_G.MiniMapTracking, fType=ftype, bd=10, x1=4, y1=-3})
@@ -1965,7 +1972,7 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 		if suff == "In" then
 			txt = self.modUIBtns.plus
 			if not self.isClsc
-			or self.isClscPTR
+			or self.isClscBC
 			then
 				xOfs, yOfs = 14, -12
 			else
@@ -1974,7 +1981,7 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 		else
 			txt = self.modUIBtns.minus
 			if not self.isClsc
-			or self.isClscPTR
+			or self.isClscBC
 			then
 				xOfs, yOfs = 20, -10
 			else

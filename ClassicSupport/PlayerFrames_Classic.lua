@@ -32,30 +32,29 @@ aObj.SetupClassic_PlayerFrames = function()
 			for _, btn in _G.pairs{_G.PaperDollItemsFrame:GetChildren()} do
 				-- handle non button children [ECS_StatsFrame]
 				if btn:IsObjectType("Button") then
-					btn:DisableDrawLayer("BACKGROUND")
-					if btn.ignoreTexture then
+					if btn ~= _G.GearManagerToggleButton then
+						btn:DisableDrawLayer("BACKGROUND")
+						if btn.ignoreTexture then
+							if self.modBtnBs then
+								self:addButtonBorder{obj=btn, ibt=true, reParent={btn.ignoreTexture}, clr="grey"}
+							end
+						else
+							btn:DisableDrawLayer("OVERLAY")
+							btn:GetNormalTexture():SetTexture(nil)
+							btn:GetPushedTexture():SetTexture(nil)
+							if self.modBtnBs then
+								self:addButtonBorder{obj=btn, reParent={btn.Count, self:getRegion(btn, 4)}, clr="grey"}
+							end
+						end
+						if btn == _G.CharacterAmmoSlot then
+							btn.icon = _G.CharacterAmmoSlotIconTexture
+						end
 						if self.modBtnBs then
-							self:addButtonBorder{obj=btn, ibt=true, reParent={btn.ignoreTexture}, clr="grey"}
+							_G.PaperDollItemSlotButton_Update(btn)
 						end
 					else
-						btn:DisableDrawLayer("OVERLAY")
-						btn:GetNormalTexture():SetTexture(nil)
-						btn:GetPushedTexture():SetTexture(nil)
 						if self.modBtnBs then
-							self:addButtonBorder{obj=btn, reParent={btn.Count, self:getRegion(btn, 4)}, clr="grey"}
-						end
-					end
-					if btn == _G.CharacterAmmoSlot then
-						btn.icon = _G.CharacterAmmoSlotIconTexture
-					end
-					if self.modBtnBs then
-						if aObj.isClscPTR
-						and btn == _G.GearManagerToggleButton
-						then
-							_G.nop()
-						else
-							-- force quality border update
-							_G.PaperDollItemSlotButton_Update(btn)
+							self:addButtonBorder{obj=btn, fType=ftype, x1=1, x2=-1, clr="grey"}
 						end
 					end
 				end
@@ -80,7 +79,7 @@ aObj.SetupClassic_PlayerFrames = function()
 			local awc
 			for i = 1, _G.NUM_FACTIONS_DISPLAYED do
 				if self.modBtns then
-					if not self.isClscPTR then
+					if not self.isClscBC then
 						self:skinExpandButton{obj=_G["ReputationHeader" .. i], fType=ftype, onSB=true}
 						self.modUIBtns:checkTex{obj=_G["ReputationHeader" .. i]}
 						self:skinObject("statusbar", {obj=_G["ReputationBar" .. i], regions={1, 2}, fi=0})
@@ -111,7 +110,7 @@ aObj.SetupClassic_PlayerFrames = function()
 		end)
 
 		self:SecureHookScript(_G.PetPaperDollFrame, "OnShow", function(this)
-			if not self.isClscPTR then
+			if self.isClscBC then
 				self:keepFontStrings(this)
 				self:skinObject("statusbar", {obj=_G.PetPaperDollFrameExpBar, regions={1, 2}, fi=0})
 				self:makeMFRotatable(_G.PetModelFrame)
@@ -199,17 +198,76 @@ aObj.SetupClassic_PlayerFrames = function()
 
 				self:Unhook(this, "OnShow")
 			end)
+			self:SecureHookScript(_G.PVPParentFrame, "OnShow", function(this)
+				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=12, y1=-12, x2=-32, y2=46})
+
+				self:Unhook(this, "OnShow")
+			end)
+			self:SecureHookScript(_G.GearManagerDialog, "OnShow", function(this)
+				if self.modBtnBs then
+					local btn
+					for i = 1, _G.MAX_EQUIPMENT_SETS_PER_PLAYER do
+						btn = _G["GearSetButton" .. i]
+						btn:DisableDrawLayer("BACKGROUND")
+						if self.modBtnBs then
+							self:addButtonBorder{obj=btn, fType=ftype, clr="grey", ca=0.85}
+						end
+					end
+				end
+				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ofs=-2 ,x1=3, x2=-1})
+				if self.modBtns then
+					self:skinCloseButton{obj=_G.GearManagerDialogClose, fType=ftype}
+					self:skinStdButton{obj=_G.GearManagerDialogDeleteSet, fType=ftype}
+					self:skinStdButton{obj=_G.GearManagerDialogEquipSet, fType=ftype}
+					self:skinStdButton{obj=_G.GearManagerDialogSaveSet, fType=ftype}
+					self:SecureHook(_G.GearManagerDialogDeleteSet, "Disable", function(bObj, _)
+						self:clrBtnBdr(bObj)
+					end)
+					self:SecureHook(_G.GearManagerDialogDeleteSet, "Enable", function(bObj, _)
+						self:clrBtnBdr(bObj)
+					end)
+					self:SecureHook(_G.GearManagerDialogEquipSet, "Disable", function(bObj, _)
+						self:clrBtnBdr(bObj)
+					end)
+					self:SecureHook(_G.GearManagerDialogEquipSet, "Enable", function(bObj, _)
+						self:clrBtnBdr(bObj)
+					end)
+					self:SecureHook(_G.GearManagerDialogSaveSet, "Disable", function(bObj, _)
+						self:clrBtnBdr(bObj)
+					end)
+					self:SecureHook(_G.GearManagerDialogSaveSet, "Enable", function(bObj, _)
+						self:clrBtnBdr(bObj)
+					end)
+				end
+
+				self:Unhook(this, "OnShow")
+			end)
+			self:SecureHookScript(_G.GearManagerDialogPopup, "OnShow", function(this)
+				self:skinObject("editbox", {obj=_G.GearManagerDialogPopupEditBox, fType=ftype})
+				self:skinObject("slider", {obj=_G.GearManagerDialogPopupScrollFrame.ScrollBar, fType=ftype, rpTex="background"})
+				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ofs=-4, x1=3})
+				if self.modBtns then
+					self:skinStdButton{obj=this.CancelButton}
+					self:skinStdButton{obj=this.OkayButton}
+					self:SecureHook("GearManagerDialogPopupOkay_Update", function()
+						self:clrBtnBdr(this.OkayButton)
+					end)
+				end
+				local bName
+				for i = 1, _G.NUM_GEARSET_ICONS_SHOWN do
+					bName = "GearManagerDialogPopupButton" .. i
+					_G[bName]:DisableDrawLayer("BACKGROUND")
+					if self.modBtnBs then
+						self:addButtonBorder{obj=_G[bName], relTo=_G[bName .. "Icon"], reParent={_G[bName .. "Name"]}, clr="grey", ca=0.85}
+					end
+				end
+
+				self:Unhook(this, "OnShow")
+			end)
 		else
 			self:SecureHookScript(_G.HonorFrame, "OnShow", function(this)
 				self:keepFontStrings(this)
 				self:skinObject("statusbar", {obj=_G.HonorFrameProgressBar, fi=0})
-
-				self:Unhook(this, "OnShow")
-			end)
-		end
-		if self.isClscPTR then
-			self:SecureHookScript(_G.PVPParentFrame, "OnShow", function(this)
-				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=12, y1=-12, x2=-32, y2=46})
 
 				self:Unhook(this, "OnShow")
 			end)
@@ -708,6 +766,23 @@ aObj.SetupClassic_PlayerFrames = function()
 
 	end
 
+	if aObj.isClscBC then
+		aObj.blizzLoDFrames[ftype].GlyphUI = function(self)
+			if not self.prdb.GlyphUI or self.initialized.GlyphUI then return end
+			self.initialized.GlyphUI = true
+
+			self:SecureHookScript(_G.GlyphFrame, "OnShow", function(this)
+				self:removeRegions(this, {1})
+				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, x1=10, y1=-12, x2=-31, y2=75})
+
+				self:Unhook(this, "OnShow")
+			end)
+			self:checkShown(_G.GlyphFrame)
+
+		end
+
+	end
+
 	local function colourBtn(btn)
 		if btn.sbb then
 			btn.sbb:SetBackdropBorderColor(_G[btn:GetName() .. "Slot"]:GetVertexColor())
@@ -845,7 +920,7 @@ aObj.SetupClassic_PlayerFrames = function()
 					self:clrPNBtns("SpellBook")
 				end)
 			end
-			if self.isClscPTR then
+			if self.isClscBC then
 				if self.modChkBtns then
 					self:skinCheckButton{obj=_G.ShowAllSpellRanksCheckBox, fType=ftype}
 				end
@@ -913,13 +988,42 @@ aObj.SetupClassic_PlayerFrames = function()
 		self:SecureHookScript(_G.PlayerTalentFrame, "OnShow", function(this)
 			local fName = this:GetName()
 			self:moveObject{obj=_G.PlayerTalentFrameTitleText, y=-2}
-			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true})
+			self:skinObject("tabs", {obj=this, prefix=fName, fType=ftype, lod=self.isTT and true})
 			self:skinObject("slider", {obj=_G[fName .. 'ScrollFrameScrollBar'], fType=ftype, rpTex="artwork"})
 			-- keep background Texture
-			self:removeRegions(this, {1, 2, 3, 4, 5, 11, 12, 13}) -- remove portrait, border & points border
 			self:skinObject("frame", {obj=this, fType=ftype, cb=true, x1=10, y1=-12, x2=-31, y2=75})
-			if self.modBtns then
-				self:skinStdButton{obj=_G[fName .. "CancelButton"], fType=ftype}
+			if not self.isClscBC then
+				self:removeRegions(this, {1, 2, 3, 4, 5, 11, 12, 13}) -- remove portrait, border & points border
+				if self.modBtns then
+					self:skinStdButton{obj=_G[fName .. "CancelButton"], fType=ftype}
+				end
+			else
+				self:removeRegions(this, {1, 3, 4, 5, 6})
+				self:keepFontStrings(_G.PlayerTalentFramePointsBar)
+				_G.PlayerTalentFramePreviewBar:DisableDrawLayer("BORDER")
+				_G.PlayerTalentFramePreviewBarFiller:DisableDrawLayer("BACKGROUND")
+				if self.modBtns then
+					self:skinStdButton{obj=_G.PlayerTalentFrameResetButton, fType=ftype}
+					self:skinStdButton{obj=_G.PlayerTalentFrameLearnButton, fType=ftype}
+					self:SecureHook(_G.PlayerTalentFrameResetButton, "Disable", function(bObj, _)
+						self:clrBtnBdr(bObj)
+					end)
+					self:SecureHook(_G.PlayerTalentFrameResetButton, "Enable", function(bObj, _)
+						self:clrBtnBdr(bObj)
+					end)
+					self:SecureHook(_G.PlayerTalentFrameLearnButton, "Disable", function(bObj, _)
+						self:clrBtnBdr(bObj)
+					end)
+					self:SecureHook(_G.PlayerTalentFrameLearnButton, "Enable", function(bObj, _)
+						self:clrBtnBdr(bObj)
+					end)
+				end
+				for i = 1, 3 do
+					self:removeRegions(_G["PlayerSpecTab" .. i], {1}) -- N.B. other regions are icon and highlight
+					if self.modBtnBs then
+						self:addButtonBorder{obj=_G["PlayerSpecTab" .. i]}
+					end
+				end
 			end
 			if self.modBtnBs then
 				skinTalentBtns(this)
@@ -1010,6 +1114,7 @@ aObj.SetupClassic_PlayerFramesOptions = function(self)
 
 	local optTab = {
 		["Craft UI"] = true,
+		["Glyph UI"] = self.isClscBC and true,
 	}
 	self:setupFramesOptions(optTab, "Player")
 	_G.wipe(optTab)
