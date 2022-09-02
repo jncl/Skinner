@@ -4,6 +4,369 @@ local _G = _G
 
 local ftype = "p"
 
+if not aObj.isClscERA then
+	aObj.blizzLoDFrames[ftype].AchievementUI = function(self)
+		if not self.prdb.AchievementUI.skin or self.initialized.AchievementUI then return end
+		self.initialized.AchievementUI = true
+
+		-- handle Overachiever hijacking OnShow script first time through
+		if _G.IsAddOnLoaded("Overachiever") then
+			self:SecureHook("AchievementFrame_OnShow", function(this)
+				_G.AchievementFrame:Hide()
+				_G.AchievementFrame:Show()
+
+				self:Unhook(this, "AchievementFrame_OnShow")
+			end)
+		end
+
+		self:SecureHookScript(_G.AchievementFrame, "OnShow", function(this)
+			local function skinSB(statusBar, type)
+				aObj:moveObject{obj=_G[statusBar .. type], y=-3}
+				aObj:moveObject{obj=_G[statusBar .. "Text"], y=-3}
+				_G[statusBar .. "Left"]:SetAlpha(0)
+				_G[statusBar .. "Right"]:SetAlpha(0)
+				_G[statusBar .. "Middle"]:SetAlpha(0)
+				aObj:skinObject("statusbar", {obj=_G[statusBar], fi=0, bg=_G[statusBar .. "FillBar"]})
+			end
+			local function skinCategories()
+				for _, btn in _G.pairs(_G.AchievementFrameCategoriesContainer.buttons) do
+					btn.background:SetAlpha(0)
+				end
+			end
+			local function skinBtn(btn)
+				if btn.NineSlice then
+					aObj:removeNineSlice(btn.NineSlice)
+				end
+				btn:DisableDrawLayer("BACKGROUND")
+				btn:DisableDrawLayer("BORDER")
+				btn:DisableDrawLayer("ARTWORK")
+				if btn.hiddenDescription then
+					btn.hiddenDescription:SetTextColor(aObj.BT:GetRGB())
+				end
+				aObj:nilTexture(btn.icon.frame, true)
+				aObj:secureHook(btn, "Desaturate", function(bObj)
+					if bObj.sbb then
+						bObj.sbb:SetBackdropBorderColor(bObj:GetBackdropBorderColor())
+						bObj.icon.sbb:SetBackdropBorderColor(bObj:GetBackdropBorderColor())
+					end
+				end)
+				aObj:secureHook(btn, "Saturate", function(bObj)
+					if bObj.sbb then
+						bObj.sbb:SetBackdropBorderColor(bObj:GetBackdropBorderColor())
+						bObj.icon.sbb:SetBackdropBorderColor(bObj:GetBackdropBorderColor())
+					end
+					if bObj.description then
+						bObj.description:SetTextColor(aObj.BT:GetRGB())
+					end
+				end)
+				-- if aObj.modBtns then
+					-- TODO: PlusMinus is really a texture NOT a button
+					-- aObj:SecureHook("AchievementButton_UpdatePlusMinusTexture", function(btn)
+						-- if not btn.id then return end
+						-- if btn:IsShown() then
+							-- btn.collapsed
+							-- btn.saturatedStyle
+							-- check for both, one of each and none to determine colour
+							-- testure used is: Interface\AchievementFrame\UI-Achievement-PlusMinus
+						-- end
+					-- end)
+				-- end
+				if aObj.modBtnBs then
+					aObj:addButtonBorder{obj=btn.icon, relTo=btn.texture, x1=4, y1=-1, x2=-4, y2=6}
+					aObj:addButtonBorder{obj=btn, ofs=0}
+				end
+				if aObj.modChkBtns
+				and btn.tracked
+				then
+					aObj:skinCheckButton{obj=btn.tracked, fType=ftype}
+				end
+			end
+			local function cleanButtons(frame, type)
+				if aObj.prdb.AchievementUI.style == 1 then return end -- don't remove textures if option not chosen
+				-- remove textures etc from buttons
+				local btnName
+				for _, btn in _G.pairs(frame.buttons) do
+					btnName = btn:GetName() .. (type == "Comparison" and "Player" or "")
+					skinBtn(_G[btnName])
+					if type == "Summary" then
+						if not _G[btnName].tooltipTitle then
+							_G[btnName]:Saturate()
+						end
+					elseif type == "Comparison" then
+						-- force update to colour the Player button
+						if _G[btnName].completed then
+							_G[btnName]:Saturate()
+						end
+						-- Friend
+						btn = _G[btnName:gsub("Player", "Friend")]
+						skinBtn(btn)
+						-- force update to colour the Friend button
+						if btn.completed then
+							btn:Saturate()
+						end
+					end
+				end
+			end
+			self:keepFontStrings(_G.AchievementFrameHeader)
+			self:moveObject{obj=_G.AchievementFrameHeaderTitle, x=-60, y=-25}
+			self:moveObject{obj=_G.AchievementFrameHeaderPoints, x=40, y=-5}
+			_G.AchievementFrameHeaderShield:SetAlpha(1)
+			self:skinObject("slider", {obj=_G.AchievementFrameCategoriesContainerScrollBar, fType=ftype, rpTex="background"})
+			self:skinObject("frame", {obj=_G.AchievementFrameCategories, fType=ftype, kfs=true, rns=true, fb=true, y1=0})
+			-- hook these to stop Categories skinFrame from changing
+			self:SecureHook(_G.AchievementFrameCategoriesContainerScrollBar, "Show", function(_)
+				_G.AchievementFrameCategories.sf:SetPoint("BOTTOMRIGHT", _G.AchievementFrameCategories, "BOTTOMRIGHT", 24, -2)
+			end)
+			self:SecureHook(_G.AchievementFrameCategoriesContainerScrollBar, "Hide", function(_)
+				_G.AchievementFrameCategories.sf:SetPoint("BOTTOMRIGHT", _G.AchievementFrameCategories, "BOTTOMRIGHT", 2, -2)
+			end)
+			self:SecureHook("AchievementFrameCategories_Update", function()
+				skinCategories()
+			end)
+			skinCategories()
+			if not self.isClscBC then
+				self:getChild(_G.AchievementFrameAchievements, 2):ClearBackdrop()
+			end
+			self:skinObject("frame", {obj=_G.AchievementFrameAchievements, fType=ftype, kfs=true, fb=true, y1=0, y2=-2})
+			self:skinObject("slider", {obj=_G.AchievementFrameAchievementsContainerScrollBar, fType=ftype})
+			if self.prdb.AchievementUI.style == 2 then
+				-- remove textures etc from buttons
+				cleanButtons(_G.AchievementFrameAchievementsContainer, "Achievements")
+				-- hook this to handle objectives text colour changes
+				self:SecureHookScript(_G.AchievementFrameAchievementsObjectives, "OnShow", function(fObj)
+					if fObj.completed then
+						for _, child in _G.ipairs{fObj:GetChildren()} do
+							for _, reg in _G.ipairs{child:GetChildren()} do
+								if reg:IsObjectType("FontString") then
+									reg:SetTextColor(self.BT:GetRGB())
+								end
+							end
+						end
+					end
+				end)
+				-- hook this to remove icon border used by the Objectives mini panels
+				self:RawHook("AchievementButton_GetMeta", function(...)
+					local obj = self.hooks.AchievementButton_GetMeta(...)
+					obj:DisableDrawLayer("BORDER")
+					if self.modBtnBs then
+						self:addButtonBorder{obj=obj, es=12, relTo=obj.icon}
+					end
+					return obj
+				end, true)
+			end
+			-- glaze any existing progress bars
+			local function glazeProgressBar(pBar)
+				_G[pBar]:DisableDrawLayer("ARTWORK")
+				aObj:skinObject("statusbar", {obj=_G[pBar], fi=0, bg=_G[pBar .. "BG"]})
+			end
+			for i = 1, 10 do
+				if _G["AchievementFrameProgressBar" .. i] then
+					glazeProgressBar("AchievementFrameProgressBar" .. i)
+				end
+			end
+			-- hook this to skin StatusBars used by the Objectives mini panels
+			self:RawHook("AchievementButton_GetProgressBar", function(...)
+				local obj = self.hooks.AchievementButton_GetProgressBar(...)
+				glazeProgressBar(obj:GetName())
+				return obj
+			end, true)
+			-- hook this to colour the metaCriteria & Criteria text
+			self:SecureHook("AchievementObjectives_DisplayCriteria", function(objectivesFrame, id, _)
+				if not id then return end
+				if not objectivesFrame.completed then return end
+				for _, child in _G.ipairs{objectivesFrame:GetChildren()} do
+					if child.label then -- metaCriteria
+						if _G.select(2, child.label:GetTextColor()) == 0 then -- completed criteria
+							child.label:SetTextColor(_G.HIGHLIGHT_FONT_COLOR:GetRGB())
+						end
+					elseif child.name then -- criteria
+						if _G.type(child.name) == "table" then
+							if _G.select(2, child.name:GetTextColor()) == 0 then -- completed criteria
+								child.name:SetTextColor(_G.HIGHLIGHT_FONT_COLOR:GetRGB())
+							end
+						end
+					end
+					if child.sbb then
+						self:clrBtnBdr(child.sbb, not child.check:IsShown() and "disabled")
+					end
+				end
+			end)
+			self:moveObject{obj=_G.AchievementFrameCloseButton, y=6}
+			-- this is not a standard dropdown
+			self:moveObject{obj=_G.AchievementFrameFilterDropDown, y=-7}
+			-- skin the dropdown frame
+			if self.prdb.TexturedDD then
+				local tex = _G.AchievementFrameFilterDropDown:CreateTexture(nil, "BORDER")
+				tex:SetTexture(self.itTex)
+				tex:SetSize(110, 19)
+				tex:SetPoint("RIGHT", _G.AchievementFrameFilterDropDown, "RIGHT", -3, 4)
+				self:skinObject("frame", {obj=_G.AchievementFrameFilterDropDown, fType=ftype, ng=true, x1=-7, y1=1, x2=1, y2=7})
+				if self.modBtnBs then
+				    self:addButtonBorder{obj=_G.AchievementFrameFilterDropDownButton, es=12, ofs=-2, x1=_G.IsAddOnLoaded("Overachiever") and 102 or 1}
+				end
+			end
+			if not self.isClscBC then
+				-- Search function
+				self:skinObject("editbox", {obj=this.searchBox, fType=ftype, si=true, six=5, ofs=-2, y1=-4, y2=4})
+				self:moveObject{obj=this.searchBox, y=-8}
+				self:skinObject("statusbar", {obj=this.searchProgressBar, fi=0, bg=this.searchProgressBar.bg})
+			end
+			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true, ignoreHLTex=false, regions={7, 8, 9, 10}, offsets={x1=11, y1=self.isTT and 2 or -3, x2=-12, y2=-7}})
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, y1=7, x2=0, y2=-2})
+
+			if not self.isClscBC then
+				self:SecureHookScript(this.searchPreviewContainer, "OnShow", function(fObj)
+					self:adjHeight{obj=fObj, adj=((4 * 27) + 30)}
+					for i = 1, 5 do
+						fObj["searchPreview" .. i]:SetNormalTexture(nil)
+						fObj["searchPreview" .. i]:SetPushedTexture(nil)
+						fObj["searchPreview" .. i].iconFrame:SetTexture(nil)
+						if self.modBtnBs then
+							self:addButtonBorder{obj=fObj["searchPreview" .. i], relTo=fObj["searchPreview" .. i].icon}
+						end
+					end
+					fObj.showAllSearchResults:SetNormalTexture(nil)
+					fObj.showAllSearchResults:SetPushedTexture(nil)
+					self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, y1=4, y2=2})
+					_G.LowerFrameLevel(fObj.sf)
+
+					self:Unhook(fObj, "OnShow")
+				end)
+
+				self:SecureHookScript(this.searchResults, "OnShow", function(fObj)
+					fObj.scrollFrame:SetPoint("BOTTOMRIGHT", fObj.bottomRightCorner, "RIGHT", -26, 8)
+					self:skinObject("slider", {obj=fObj.scrollFrame.scrollBar, fType=ftype})
+					for _, btn in _G.pairs(fObj.scrollFrame.buttons) do
+						btn:SetNormalTexture(nil)
+						btn:SetPushedTexture(nil)
+						btn.iconFrame:SetTexture(nil)
+						if self.modBtnBs then
+							self:addButtonBorder{obj=btn, relTo=btn.icon}
+						end
+					end
+					self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, cb=true, x1=-8, y1=-1, x2=1})
+
+					self:Unhook(fObj, "OnShow")
+				end)
+			end
+
+			self:SecureHookScript(_G.AchievementFrameStats, "OnShow", function(fObj)
+				self:skinObject("slider", {obj=_G.AchievementFrameStatsContainerScrollBar, fType=ftype})
+				_G.AchievementFrameStatsBG:SetAlpha(0)
+				if not self.isClscBC then
+					self:getChild(fObj, 3):ClearBackdrop()
+				else
+					self:removeNineSlice(self:getChild(fObj, 3).NineSlice)
+				end
+				self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, fb=true, y1=0, y2=-2})
+				local function skinStats()
+					for _, btn in _G.pairs(_G.AchievementFrameStatsContainer.buttons) do
+						btn.background:SetTexture(nil)
+						btn.left:SetAlpha(0)
+						btn.middle:SetAlpha(0)
+						btn.right:SetAlpha(0)
+					end
+				end
+				skinStats()
+				-- hook this to skin buttons
+				self:SecureHook("AchievementFrameStats_Update", function()
+					skinStats()
+				end)
+
+				self:Unhook(fObj, "OnShow")
+			end)
+
+			self:SecureHookScript(_G.AchievementFrameSummary, "OnShow", function(fObj)
+				_G.AchievementFrameSummaryBackground:SetAlpha(0)
+				_G.AchievementFrameSummaryAchievementsEmptyText:SetText() -- remove 'No recently completed Achievements' text
+				_G.AchievementFrameSummaryAchievementsHeaderHeader:SetAlpha(0)
+				self:skinObject("slider", {obj=_G.AchievementFrameAchievementsContainerScrollBar, fType=ftype})
+				-- remove textures etc from buttons
+				cleanButtons(_G.AchievementFrameSummaryAchievements, "Summary")
+				-- Categories SubPanel
+				self:keepFontStrings(_G.AchievementFrameSummaryCategoriesHeader)
+				for i = 1, self.isClscBC and 8 or 12 do
+					skinSB("AchievementFrameSummaryCategoriesCategory" .. i, "Label")
+				end
+				if not self.isClscBC then
+					self:getChild(fObj, 1):ClearBackdrop()
+				else
+					self:removeNineSlice(self:getChild(fObj, 1).NineSlice)
+				end
+				self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, fb=true, y1=-1, y2=-2})
+				skinSB("AchievementFrameSummaryCategoriesStatusBar", "Title")
+
+				self:Unhook(fObj, "OnShow")
+			end)
+			self:checkShown(_G.AchievementFrameSummary)
+
+			self:SecureHookScript(_G.AchievementFrameComparison, "OnShow", function(fOBj)
+				_G.AchievementFrameComparisonBackground:SetAlpha(0)
+				_G.AchievementFrameComparisonDark:SetAlpha(0)
+				_G.AchievementFrameComparisonWatermark:SetAlpha(0)
+				-- Header
+				self:keepFontStrings(_G.AchievementFrameComparisonHeader)
+				_G.AchievementFrameComparisonHeaderShield:SetAlpha(1)
+				-- move header info
+				_G.AchievementFrameComparisonHeaderShield:ClearAllPoints()
+				_G.AchievementFrameComparisonHeaderShield:SetPoint("RIGHT", _G.AchievementFrameCloseButton, "LEFT", -10, -1)
+				_G.AchievementFrameComparisonHeaderPoints:ClearAllPoints()
+				_G.AchievementFrameComparisonHeaderPoints:SetPoint("RIGHT", _G.AchievementFrameComparisonHeaderShield, "LEFT", -10, 1)
+				_G.AchievementFrameComparisonHeaderName:ClearAllPoints()
+				_G.AchievementFrameComparisonHeaderName:SetPoint("RIGHT", _G.AchievementFrameComparisonHeaderPoints, "LEFT", -10, 0)
+				-- Container
+				self:skinObject("slider", {obj=_G.AchievementFrameComparisonContainerScrollBar, fType=ftype})
+				-- Summary Panel
+				if not self.isClscBC then
+					self:getChild(fOBj, 5):ClearBackdrop()
+				else
+					self:removeNineSlice(self:getChild(fOBj, 5).NineSlice)
+				end
+				self:skinObject("frame", {obj=fOBj, fType=ftype, kfs=true, fb=true, y1=0, y2=-2})
+				for _, type in _G.pairs{"Player", "Friend"} do
+					if not aObj.isClscBC then
+						_G["AchievementFrameComparisonSummary" .. type]:ClearBackdrop()
+					else
+						self:removeNineSlice(_G["AchievementFrameComparisonSummary" .. type].NineSlice)
+					end
+					_G["AchievementFrameComparisonSummary" .. type .. "Background"]:SetAlpha(0)
+					skinSB("AchievementFrameComparisonSummary" .. type .. "StatusBar", "Title")
+				end
+				-- remove textures etc from buttons
+				cleanButtons(_G.AchievementFrameComparisonContainer, "Comparison")
+				self:skinObject("slider", {obj=_G.AchievementFrameComparisonStatsContainerScrollBar, fType=ftype})
+				local function skinComparisonStats()
+					for _, btn in _G.pairs(_G.AchievementFrameComparisonStatsContainer.buttons) do
+						if btn.isHeader then
+							btn.background:SetAlpha(0)
+						end
+						btn.left:SetAlpha(0)
+						btn.left2:SetAlpha(0)
+						btn.middle:SetAlpha(0)
+						btn.middle2:SetAlpha(0)
+						btn.right:SetAlpha(0)
+						btn.right2:SetAlpha(0)
+					end
+				end
+				self:SecureHook("AchievementFrameComparison_UpdateStats", function()
+					skinComparisonStats()
+				end)
+				self:SecureHook(_G.AchievementFrameComparisonStatsContainer, "Show", function()
+					skinComparisonStats()
+				end)
+
+				self:Unhook(fOBj, "OnShow")
+			end)
+			self:checkShown(_G.AchievementFrameComparison)
+
+			-- send message when UI is skinned (used by AchieveIt skin)
+			self:SendMessage("AchievementUI_Skinned", self)
+
+			self:Unhook(this, "OnShow")
+		end)
+
+	end
+end
 aObj.blizzFrames[ftype].Buffs = function(self)
 	if not self.prdb.Buffs or self.initialized.Buffs then return end
 	self.initialized.Buffs = true

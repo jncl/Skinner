@@ -56,6 +56,7 @@ aObj.SetupDefaults = function(self)
 			DisableAllNPC              = false,
 		-- Player Frames
 			DisableAllP                = false,
+			AchievementUI              = not aObj.isClscERA and {skin = true, style = 2} or nil,
 			CastingBar                 = {skin = true, glaze = true},
 			ContainerFrames            = {skin = true, fheight = 100},
 			LootFrames                 = {skin = true, size = 1},
@@ -765,6 +766,30 @@ aObj.SetupOptions = function(self)
 					type = "header",
 					name = self.L["or choose which frames to skin"],
 				},
+				AchievementUI = not self.isClscERA and {
+					type = "group",
+					order = -1,
+					inline = true,
+					name = self.L["Achievement UI"],
+					get = function(info) return db.AchievementUI[info[#info]] end,
+					set = function(info, value)
+						db.AchievementUI[info[#info]] = value
+						if _G.IsAddOnLoaded("Blizzard_AchievementUI") then	self:checkAndRun("AchievementUI", "p", true) end
+					end,
+					args = {
+						skin = {
+							type = "toggle",
+							name = self.L["Skin Frame"],
+							desc = self.L["Toggle the skin of the "] .. self.L["Achievement UI"],
+						},
+						style = {
+							type = "range",
+							name = self.L["Achievement Style"],
+							desc = self.L["Set the Achievement style (Textured, Untextured)"],
+							min = 1, max = 2, step = 1,
+						},
+					},
+				} or nil,
 				CastingBar = {
 					type = "group",
 					inline = true,
