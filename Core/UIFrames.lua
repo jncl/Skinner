@@ -1881,9 +1881,7 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 		end
 	end
 
-	if self.isRtl
-	or self.isClscBC
-	then
+	if not self.isClscERA then
 		-- Calendar button
 		makeBtnSquare(_G.GameTimeFrame, 0.1, 0.31, 0.16, 0.6)
 		_G.GameTimeFrame:SetNormalFontObject(_G.GameFontWhite) -- allow for font OUTLINE to be seen
@@ -1913,6 +1911,12 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 		if _G.IsAddOnLoaded("Bongos") then
 			_G.Bongos3MinimapButton.icon:SetDrawLayer("ARTWORK")
 		end
+		if not self.isClscBC then
+			self:moveObject{obj=_G.MiniMapTracking, x=-12}
+		end
+		if not minBtn then
+			self:skinObject("frame", {obj=_G.MiniMapTracking, fType=ftype, bd=10, x1=4, y1=-3})
+		end
 	else
 		-- remove ring from GameTimeFrame texture
 		self:RawHook(_G.GameTimeTexture, "SetTexCoord", function(this, minx, maxx, miny, maxy)
@@ -1930,16 +1934,9 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 			end
 		end)
 		_G.MiniMapTrackingBorder:SetTexture(nil)
-		if self.isClscBC then
-			self:moveObject{obj=_G.MiniMapTracking, x=-15}
-			if not minBtn then
-				self:skinObject("frame", {obj=_G.MiniMapTracking, fType=ftype, bd=10, x1=4, y1=-3})
-			end
-		else
-			self:moveObject{obj=_G.MiniMapTrackingFrame, x=-15}
-			if not minBtn then
-				self:skinObject("frame", {obj=_G.MiniMapTrackingFrame, fType=ftype, bd=10, x1=4, y1=-3})
-			end
+		self:moveObject{obj=_G.MiniMapTrackingFrame, x=-15}
+		if not minBtn then
+			self:skinObject("frame", {obj=_G.MiniMapTrackingFrame, fType=ftype, bd=10, x1=4, y1=-3})
 		end
 	end
 
