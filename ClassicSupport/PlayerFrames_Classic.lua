@@ -1043,10 +1043,14 @@ aObj.SetupClassic_PlayerFrames = function()
 				if self.modChkBtns then
 					self:skinCheckButton{obj=_G.TradeSkillFrameAvailableFilterCheckButton, fType=ftype}
 				end
-				self:skinObject("editbox", {obj=_G.TradeSearchInputBox, fType=ftype})
+				self:skinObject("editbox", {obj=_G.TradeSkillFrameEditBox, fType=ftype})
 			end
 			self:skinObject("statusbar", {obj=_G.TradeSkillRankFrame, fi=0, bg=_G.TradeSkillRankFrameBackground})
-			_G.TradeSkillRankFrameBorder:GetNormalTexture():SetTexture(nil)
+			if not self.isClscBC then
+				_G.TradeSkillRankFrameBorder:GetNormalTexture():SetTexture(nil)
+			else
+				_G.TradeSkillRankFrameBorder:SetTexture(nil)
+			end
 			self:keepFontStrings(_G.TradeSkillExpandButtonFrame)
 			self:keepFontStrings(_G.TradeSkillDetailScrollChildFrame)
 			local btnName
