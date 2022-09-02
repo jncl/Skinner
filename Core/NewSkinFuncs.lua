@@ -169,6 +169,72 @@ do
 	end
 end
 
+local function setScrollTrackOffsets(tbl, type)
+	local h, w, o = _G.Round(tbl.obj:GetHeight()), _G.Round(tbl.obj:GetWidth())
+	if type == "slider" then
+		o = tbl.obj:GetOrientation()
+	else
+		if tbl.obj.isHorizontal then
+			o = "HORIZONTAL"
+		else
+			o = "VERTICAL"
+		end
+	end
+	-- aObj:Debug("setScrollTrackOffsets#1 O/H/W: [%s, %s, %s, %s, %s]", type, o, h, w)
+	-- setup offsets based on Orientation/Height/Width
+	if o == "HORIZONTAL" then
+		if h <= 16 then
+			tbl.y1 = _G.rawget(tbl, "y1") or -1
+			tbl.y2 = _G.rawget(tbl, "y2") or 2
+		elseif h <= 18 then
+			tbl.y1 = _G.rawget(tbl, "y1") or -2
+			tbl.y2 = _G.rawget(tbl, "y2") or 3
+		elseif h <= 20 then
+			tbl.y1 = _G.rawget(tbl, "y1") or -3
+			tbl.y2 = _G.rawget(tbl, "y2") or 4
+		elseif h <= 22 then
+			tbl.y1 = _G.rawget(tbl, "y1") or -4
+			tbl.y2 = _G.rawget(tbl, "y2") or 5
+		end
+		tbl.x1 = _G.rawget(tbl, "x1") or 0
+		tbl.x2 = _G.rawget(tbl, "x2") or 0
+	else
+		if w <= 8 then
+			tbl.x1 = _G.rawget(tbl, "x1") or -4
+			tbl.x2 = _G.rawget(tbl, "x2") or 3
+			tbl.y1 = _G.rawget(tbl, "y1") or -1
+			tbl.y2 = _G.rawget(tbl, "y2") or 1
+		elseif w <= 10 then -- OribosScrollTemplate
+			tbl.x1 = _G.rawget(tbl, "x1") or -1
+			tbl.x2 = _G.rawget(tbl, "x2") or 1
+		elseif w <= 12 then
+			tbl.x1 = _G.rawget(tbl, "x1") or -2
+			tbl.x2 = _G.rawget(tbl, "x2") or -1
+		elseif w <= 16 then
+			tbl.x1 = _G.rawget(tbl, "x1") or 0
+			tbl.x2 = _G.rawget(tbl, "x2") or -1
+		elseif w <= 20 then
+			tbl.x1 = _G.rawget(tbl, "x1") or 3
+			tbl.x2 = _G.rawget(tbl, "x2") or -4
+			tbl.y1 = _G.rawget(tbl, "y1") or -2
+			tbl.y2 = _G.rawget(tbl, "y2") or 2
+		elseif w == 22 then
+			tbl.x1 = _G.rawget(tbl, "x1") or 3
+			tbl.x2 = _G.rawget(tbl, "x2") or -3
+			tbl.y1 = _G.rawget(tbl, "y1") or -1
+			tbl.y2 = _G.rawget(tbl, "y2") or 1
+		elseif w == 25 then
+			tbl.x1 = _G.rawget(tbl, "x1") or 2
+			tbl.x2 = _G.rawget(tbl, "x2") or 5
+			tbl.y1 = _G.rawget(tbl, "y1") or -1
+			tbl.y2 = _G.rawget(tbl, "y2") or 2
+		end
+		tbl.y1 = _G.rawget(tbl, "y1") or 0
+		tbl.y2 = _G.rawget(tbl, "y2") or 0
+	end
+	-- aObj:Debug("setScrollTrackOffsets#2: [%s, %s, %s, %s, %s]", tbl.x1, tbl.x2, tbl.y1, tbl.y2)
+end
+
 -- Add skinning functions to this table
 local skinFuncs = {}
 function aObj:skinObject(...)
@@ -627,6 +693,7 @@ local function skinScrollBar(tbl)
 	-- remove textures
 	tbl.obj:DisableDrawLayer("BACKGROUND")
 	tbl.obj.Background:DisableDrawLayer("artwork")
+	setScrollTrackOffsets(tbl, "scrollbar")
 	aObj:skinObject("frame", {obj=tbl.obj.Track, fType=tbl.fType, bd=4, ng=true, x1=tbl.x1, y1=tbl.y1, x2=tbl.x2, y2=tbl.y2, clr="slider"})
 end
 skinFuncs.scrollbar = function(table) skinScrollBar(table) end
@@ -651,55 +718,7 @@ local function skinSlider(tbl)
 			tbl.obj:GetParent():DisableDrawLayer(tbl.rpTex)
 		end
 	end
-	local h, w, o = _G.Round(tbl.obj:GetHeight()), _G.Round(tbl.obj:GetWidth()), tbl.obj:GetOrientation()
-	-- aObj:Debug("skinSlider H/W: [%s, %s, %s]", o, h, w)
-	-- setup offsets based on Orientation/Height/Width
-	if o == "HORIZONTAL" then
-		if h <= 16 then
-			tbl.y1 = _G.rawget(tbl, "y1") or -1
-			tbl.y2 = _G.rawget(tbl, "y2") or 2
-		elseif h <= 18 then
-			tbl.y1 = _G.rawget(tbl, "y1") or -2
-			tbl.y2 = _G.rawget(tbl, "y2") or 3
-		elseif h <= 20 then
-			tbl.y1 = _G.rawget(tbl, "y1") or -3
-			tbl.y2 = _G.rawget(tbl, "y2") or 4
-		elseif h <= 22 then
-			tbl.y1 = _G.rawget(tbl, "y1") or -4
-			tbl.y2 = _G.rawget(tbl, "y2") or 5
-		end
-		tbl.x1 = _G.rawget(tbl, "x1") or 0
-		tbl.x2 = _G.rawget(tbl, "x2") or 0
-	else
-		if w <= 8 then
-			tbl.x1 = _G.rawget(tbl, "x1") or -4
-			tbl.x2 = _G.rawget(tbl, "x2") or 3
-			tbl.y1 = _G.rawget(tbl, "y1") or -1
-			tbl.y2 = _G.rawget(tbl, "y2") or 1
-		elseif w <= 10 then -- OribosScrollTemplate
-			tbl.x1 = _G.rawget(tbl, "x1") or -1
-			tbl.x2 = _G.rawget(tbl, "x2") or 1
-		elseif w <= 12 then
-			tbl.x1 = _G.rawget(tbl, "x1") or -2
-			tbl.x2 = _G.rawget(tbl, "x2") or -1
-		elseif w <= 16 then
-			tbl.x1 = _G.rawget(tbl, "x1") or 0
-			tbl.x2 = _G.rawget(tbl, "x2") or -1
-		elseif w <= 20 then
-			tbl.x1 = _G.rawget(tbl, "x1") or 3
-			tbl.x2 = _G.rawget(tbl, "x2") or -4
-			tbl.y1 = _G.rawget(tbl, "y1") or -2
-			tbl.y2 = _G.rawget(tbl, "y2") or 2
-		elseif w == 22 then
-			tbl.x1 = _G.rawget(tbl, "x1") or 3
-			tbl.x2 = _G.rawget(tbl, "x2") or -3
-			tbl.y1 = _G.rawget(tbl, "y1") or -1
-			tbl.y2 = _G.rawget(tbl, "y2") or 1
-		end
-		tbl.y1 = _G.rawget(tbl, "y1") or 0
-		tbl.y2 = _G.rawget(tbl, "y2") or 0
-	end
-	-- aObj:Debug("skinSlider#2: [%s, %s, %s, %s]", tbl.x1, tbl.x2, tbl.y1, tbl.y2)
+	setScrollTrackOffsets(tbl, "slider")
 	aObj:skinObject("frame", {obj=tbl.obj, fType=tbl.fType, bd=4, ng=true, x1=tbl.x1, y1=tbl.y1, x2=tbl.x2, y2=tbl.y2, clr="slider"})
 	-- make objects visible
 	tbl.obj:SetAlpha(1)
