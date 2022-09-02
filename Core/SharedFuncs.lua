@@ -14,13 +14,13 @@ end
 
 local buildInfo = {
 	-- Testing
-	wow_classic_beta    = {"3.0.0",  99999, "Classic TBC Beta"},
-	wow_classic_ptr     = {"3.4.0",  45189, "Classic TBC PTR"},
+	wow_classic_beta    = {"4.0.0",  99999, "Classic TBC Beta"},
+	wow_classic_ptr     = {"3.4.0",  45327, "Classic TBC PTR"},
 	wow_classic_era_ptr = {"1.14.3", 44834, "Classic Era PTR"}, -- a.k.a. Season of Mastery Beta
 	wow_beta            = {"10.0.0", 99999, "Retail Beta"},
 	wow_ptr             = {"9.2.7",  45161, "Retail PTR"},
 	-- Live
-	wow_classic         = {"2.5.4",  44833, "Classic TBC"},
+	wow_classic         = {"3.4.0",  45327, "Classic TBC"}, -- a.k.a. Wrath of the Lich King Classic
 	wow_classic_era     = {"1.14.3", 44834, "Classic Era"},
 	wow                 = {"9.2.7",  45114, "Retail"},
 	-- Currently playing
