@@ -212,9 +212,7 @@ aObj.blizzFrames[ftype].BNFrames = function(self)
 
 end
 
-if aObj.isRtl
-or aObj.isClscBC
-then
+if not aObj.isClscERA then
 	aObj.blizzLoDFrames[ftype].Calendar = function(self)
 		if not self.prdb.Calendar or self.initialized.Calendar then return end
 		self.initialized.Calendar = true
@@ -456,7 +454,6 @@ then
 		end)
 
 	end
-
 end
 
 aObj.blizzFrames[ftype].ChatBubbles = function(self)
@@ -1945,7 +1942,7 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 	_G.MiniMapWorldMapButton:SetPoint("LEFT", _G.MinimapZoneTextButton, "RIGHT", -4, 0)
 	self:skinOtherButton{obj=_G.MiniMapWorldMapButton, font=self.fontP, text="M", noSkin=minBtn}
 	if _G.IsAddOnLoaded("SexyMap")
-	or self.isClscBC
+	or self.isClsc
 	then
 		_G.MiniMapWorldMapButton:DisableDrawLayer("OVERLAY") -- border texture
 	end
@@ -1966,21 +1963,17 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 		btn = _G["MinimapZoom" .. suff]
 		if suff == "In" then
 			txt = self.modUIBtns.plus
-			if not self.isClsc
-			or self.isClscBC
-			then
-				xOfs, yOfs = 14, -12
-			else
+			if self.isClscERA then
 				xOfs, yOfs = 9, -24
+			else
+				xOfs, yOfs = 14, -12
 			end
 		else
 			txt = self.modUIBtns.minus
-			if not self.isClsc
-			or self.isClscBC
-			then
-				xOfs, yOfs = 20, -10
-			else
+			if self.isClscERA then
 				xOfs, yOfs = 19, -12
+			else
+				xOfs, yOfs = 20, -10
 			end
 		end
 		self:moveObject{obj=btn, x=xOfs, y=yOfs}
@@ -1999,7 +1992,6 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 				clrZoomBtns()
 			end)
 			self:RegisterEvent("MINIMAP_UPDATE_ZOOM", clrZoomBtns)
-
 		end
 	end
 
