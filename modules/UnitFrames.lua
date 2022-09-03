@@ -124,7 +124,7 @@ function module:skinPlayerF()
 			if aObj.uCls == "DRUID"
 			or aObj.uCls == "ROGUE"
 			then
-				if not aObj.isClsc then
+				if aObj.isRtl then
 					_G.ComboPointPlayerFrame.Background:SetTexture(nil)
 					for i = 1, #_G.ComboPointPlayerFrame.ComboPoints do
 						_G.ComboPointPlayerFrame.ComboPoints[i].PointOff:SetTexture(nil)
@@ -668,13 +668,13 @@ function module:GetOptions()
 				name = aObj.L["Pet"],
 				desc = aObj.L["Toggle the skin of the "] .. aObj.L["Pet"] .. " " .. aObj.L["Unit Frame"],
 			} or nil,
-			petspec = not aObj.isClsc and aObj.uCls == "HUNTER" and {
+			petspec = aObj.isRtl and aObj.uCls == "HUNTER" and {
 				type = "toggle",
 				order = 3,
 				name = aObj.L["Pet Spec"],
 				desc = aObj.L["Toggle the Pet Spec on the Pet Frame"],
 			} or nil,
-			petlvl = aObj.isClsc and aObj.uCls == "HUNTER" and {
+			petlvl = not aObj.isRtl and aObj.uCls == "HUNTER" and {
 				type = "toggle",
 				order = 4,
 				name = aObj.L["Pet Level"],

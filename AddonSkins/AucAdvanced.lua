@@ -3,7 +3,7 @@ if not aObj:isAddonEnabled("Auc-Advanced") then return end
 local _G = _G
 
 -- ONLY supported in Classic
-if not aObj.isClscBC then return end
+if not aObj.isClsc then return end
 
 aObj.addonsToSkin["Auc-Advanced"] = function(self) -- v 1.13.6718
 	if not self.db.profile.AuctionUI then return end

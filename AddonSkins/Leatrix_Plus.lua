@@ -116,7 +116,7 @@ aObj.addonsToSkin.Leatrix_Plus = function(self) -- v 9.1.20/1.14.05/2.5.64
 		if self.isRtl then
 			self:skinStdButton{obj=self:getChild(_G.DressUpFrame.ResetButton, 4)}
 			self:skinStdButton{obj=self:getChild(_G.DressUpFrame.ResetButton, 5)}
-		elseif self.isClsc then
+		else
 			self:skinStdButton{obj=self:getChild(_G.SideDressUpFrame.ResetButton, 1)}
 			self:skinStdButton{obj=self:getChild(_G.SideDressUpFrame.ResetButton, 2)}
 		end
@@ -143,13 +143,8 @@ aObj.addonsToSkin.Leatrix_Plus = function(self) -- v 9.1.20/1.14.05/2.5.64
 	and self.prdb.CharacterFrames
 	and self.modBtnBs
 	then
-		if self.isClscBC then
-			self:addButtonBorder{obj=self:getChild(_G.PaperDollFrame, 6), ofs=-2, clr="gold"}
-		elseif self.isClsc then
-			self:addButtonBorder{obj=self:getChild(_G.PaperDollFrame, 5), ofs=-2, clr="gold"}
-		else
-			self:addButtonBorder{obj=self:getChild(_G.PaperDollFrame, 7), ofs=-2, clr="gold"}
-		end
+		local child = self.isRtl and 7 or self.isClscERA and 5 or 6
+		self:addButtonBorder{obj=self:getChild(_G.PaperDollFrame, child), ofs=-2, clr="gold"}
 	end
 
 	-- Vanity controls (PaperDollFrame) [Classic ONLY]

@@ -124,7 +124,7 @@ if not aObj.isClscERA then
 				skinCategories()
 			end)
 			skinCategories()
-			if not self.isClscBC then
+			if self.isRtl then
 				self:getChild(_G.AchievementFrameAchievements, 2):ClearBackdrop()
 			end
 			self:skinObject("frame", {obj=_G.AchievementFrameAchievements, fType=ftype, kfs=true, fb=true, y1=0, y2=-2})
@@ -205,7 +205,7 @@ if not aObj.isClscERA then
 				    self:addButtonBorder{obj=_G.AchievementFrameFilterDropDownButton, es=12, ofs=-2, x1=_G.IsAddOnLoaded("Overachiever") and 102 or 1}
 				end
 			end
-			if not self.isClscBC then
+			if self.isRtl then
 				-- Search function
 				self:skinObject("editbox", {obj=this.searchBox, fType=ftype, si=true, six=5, ofs=-2, y1=-4, y2=4})
 				self:moveObject{obj=this.searchBox, y=-8}
@@ -214,7 +214,7 @@ if not aObj.isClscERA then
 			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true, ignoreHLTex=false, regions={7, 8, 9, 10}, offsets={x1=11, y1=self.isTT and 2 or -3, x2=-12, y2=-7}})
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, y1=7, x2=0, y2=-2})
 
-			if not self.isClscBC then
+			if self.isRtl then
 				self:SecureHookScript(this.searchPreviewContainer, "OnShow", function(fObj)
 					self:adjHeight{obj=fObj, adj=((4 * 27) + 30)}
 					for i = 1, 5 do
@@ -253,7 +253,7 @@ if not aObj.isClscERA then
 			self:SecureHookScript(_G.AchievementFrameStats, "OnShow", function(fObj)
 				self:skinObject("slider", {obj=_G.AchievementFrameStatsContainerScrollBar, fType=ftype})
 				_G.AchievementFrameStatsBG:SetAlpha(0)
-				if not self.isClscBC then
+				if self.isRtl then
 					self:getChild(fObj, 3):ClearBackdrop()
 				else
 					self:removeNineSlice(self:getChild(fObj, 3).NineSlice)
@@ -285,10 +285,10 @@ if not aObj.isClscERA then
 				cleanButtons(_G.AchievementFrameSummaryAchievements, "Summary")
 				-- Categories SubPanel
 				self:keepFontStrings(_G.AchievementFrameSummaryCategoriesHeader)
-				for i = 1, self.isClscBC and 8 or 12 do
+				for i = 1, self.isRtl and 12 or 8 do
 					skinSB("AchievementFrameSummaryCategoriesCategory" .. i, "Label")
 				end
-				if not self.isClscBC then
+				if self.isRtl then
 					self:getChild(fObj, 1):ClearBackdrop()
 				else
 					self:removeNineSlice(self:getChild(fObj, 1).NineSlice)
@@ -317,14 +317,14 @@ if not aObj.isClscERA then
 				-- Container
 				self:skinObject("slider", {obj=_G.AchievementFrameComparisonContainerScrollBar, fType=ftype})
 				-- Summary Panel
-				if not self.isClscBC then
+				if self.isRtl then
 					self:getChild(fOBj, 5):ClearBackdrop()
 				else
 					self:removeNineSlice(self:getChild(fOBj, 5).NineSlice)
 				end
 				self:skinObject("frame", {obj=fOBj, fType=ftype, kfs=true, fb=true, y1=0, y2=-2})
 				for _, type in _G.pairs{"Player", "Friend"} do
-					if not aObj.isClscBC then
+					if self.isRtl then
 						_G["AchievementFrameComparisonSummary" .. type]:ClearBackdrop()
 					else
 						self:removeNineSlice(_G["AchievementFrameComparisonSummary" .. type].NineSlice)
@@ -545,7 +545,7 @@ aObj.blizzFrames[ftype].CompactFrames = function(self)
 			self:skinStdButton{obj=this.displayFrame.hiddenModeToggle, fType=ftype}
 			self:skinStdButton{obj=this.displayFrame.convertToRaid, fType=ftype}
 			self:skinStdButton{obj=this.displayFrame.leaderOptions.readyCheckButton, fType=ftype}
-			if not self.isClsc then
+			if self.isRtl then
 				for _, type in _G.pairs{"Tank", "Healer", "Damager"} do
 					self:skinStdButton{obj=this.displayFrame.filterOptions["filterRole" .. type]}
 				end
@@ -558,7 +558,7 @@ aObj.blizzFrames[ftype].CompactFrames = function(self)
 			end
 			self:SecureHook("CompactRaidFrameManager_UpdateOptionsFlowContainer", function(fObj)
 				self:clrBtnBdr(fObj.displayFrame.leaderOptions.readyCheckButton)
-				if not self.isClsc then
+				if self.isRtl then
 					self:clrBtnBdr(fObj.displayFrame.leaderOptions.rolePollButton)
 					self:clrBtnBdr(fObj.displayFrame.leaderOptions.countdownButton)
 				end
@@ -596,7 +596,7 @@ aObj.blizzLoDFrames[ftype].ItemSocketingUI = function(self)
 	}
 	self:SecureHookScript(_G.ItemSocketingFrame, "OnShow", function(this)
 		self:skinObject("slider", {obj=_G.ItemSocketingScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
-		if not self.isClscBC then
+		if self.isRtl then
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, x2=3})
 		else
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, x1=10, y1=-12, x2=-4, y2=30})
@@ -670,7 +670,7 @@ aObj.blizzFrames[ftype].LootFrames = function(self)
 
 		frame:DisableDrawLayer("BACKGROUND")
 		frame:DisableDrawLayer("BORDER")
-		if aObj.isClsc then
+		if not aObj.isRtl then
 			local fName = frame:GetName()
 			_G[fName .. "SlotTexture"]:SetTexture(nil)
 			_G[fName .. "NameFrame"]:SetTexture(nil)
@@ -687,7 +687,7 @@ aObj.blizzFrames[ftype].LootFrames = function(self)
 		end)
 
 		frame:SetScale(aObj.prdb.LootFrames.size ~= 1 and 0.75 or 1)
-		if not aObj.isClsc then
+		if aObj.isRtl then
 			frame.IconFrame.Border:SetAlpha(0)
 		end
 		if aObj.modBtns then
@@ -704,7 +704,7 @@ aObj.blizzFrames[ftype].LootFrames = function(self)
 			frame.PassButton:SetPoint("LEFT", frame.NeedButton, "RIGHT", 0, 2)
 			frame.GreedButton:ClearAllPoints()
 			frame.GreedButton:SetPoint("RIGHT", frame.NeedButton, "LEFT")
-			if not self.isClsc then
+			if aObj.isRtl then
 				frame.DisenchantButton:ClearAllPoints()
 				frame.DisenchantButton:SetPoint("RIGHT", frame.GreedButton, "LEFT", 2, 0)
 			end
@@ -740,7 +740,7 @@ aObj.blizzFrames[ftype].LootFrames = function(self)
 		self:Unhook(this, "OnShow")
 	end)
 
-	if not self.isClsc then
+	if self.isRtl then
 		self:SecureHookScript(_G.BonusRollFrame, "OnShow", function(this)
 			self:removeRegions(this, {1, 2, 3, 5})
 			self:skinObject("statusbar", {obj=this.PromptFrame.Timer, fi=0})
@@ -826,7 +826,7 @@ aObj.blizzFrames[ftype].MirrorTimers = function(self)
 		end
 	end
 
-	if not self.isClsc then
+	if self.isRtl then
 		-- Battleground/Arena/Island Expeditions Start Timer
 		local function skinTT(timer)
 
@@ -872,7 +872,7 @@ aObj.blizzLoDFrames[ftype].RaidUI = function(self)
 		self:removeRegions(_G["RaidClassButton" .. i], {1}) -- 2 is icon, 3 is text
 	end
 
-	if self.isClsc then
+	if not self.isRtl then
 		if self.modBtns then
 			self:skinStdButton{obj=_G.RaidFrameReadyCheckButton, fType=ftype}
 		end
@@ -901,7 +901,7 @@ aObj.blizzFrames[ftype].TradeFrame = function(self)
 	self.initialized.TradeFrame = true
 
 	self:SecureHookScript(_G.TradeFrame, "OnShow", function(this)
-		if not self.isClsc then
+		if self.isRtl then
 			this.RecipientOverlay.portrait:SetAlpha(0)
 			this.RecipientOverlay.portraitFrame:SetTexture(nil)
 		end

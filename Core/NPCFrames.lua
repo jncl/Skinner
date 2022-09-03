@@ -36,7 +36,7 @@ aObj.blizzFrames[ftype].GossipFrame = function(self)
 		self:keepFontStrings(_G.GossipFrameGreetingPanel)
 		_G.GossipGreetingText:SetTextColor(self.HT:GetRGB())
 		self:skinObject("slider", {obj=_G.GossipGreetingScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
-		if not self.isClsc then
+		if self.isRtl then
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, x2=3})
 		else
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=10, y1=-18, x2=-29, y2=60})
@@ -59,7 +59,7 @@ aObj.blizzFrames[ftype].GuildRegistrar = function(self)
 
 	self:SecureHookScript(_G.GuildRegistrarFrame, "OnShow", function(this)
 		self:keepFontStrings(_G.GuildRegistrarGreetingFrame)
-		if not self.isClsc then
+		if self.isRtl then
 			_G.AvailableServicesText:SetTextColor(self.HT:GetRGB())
 		else
 			_G.GuildAvailableServicesText:SetTextColor(self.HT:GetRGB())
@@ -68,7 +68,7 @@ aObj.blizzFrames[ftype].GuildRegistrar = function(self)
 		self:getRegion(_G.GuildRegistrarButton2, 3):SetTextColor(self.BT:GetRGB())
 		_G.GuildRegistrarPurchaseText:SetTextColor(self.BT:GetRGB())
 		self:skinObject("editbox", {obj=_G.GuildRegistrarFrameEditBox, fType=ftype})
-		if not self.isClsc then
+		if self.isRtl then
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true})
 		else
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=10, y1=-17, x2=-29, y2=62})
@@ -92,7 +92,7 @@ aObj.blizzFrames[ftype].MerchantFrame = function(self)
 		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true, offsets={x1=9, y1=self.isTT and 2 or -2, x2=-9, y2=2}})
 		self:removeInset(_G.MerchantMoneyInset)
 		_G.MerchantMoneyBg:DisableDrawLayer("BACKGROUND")
-		if not self.isClsc then
+		if self.isRtl then
 			self:skinObject("dropdown", {obj=_G.MerchantFrameLootFilter, fType=ftype})
 			self:removeInset(_G.MerchantExtraCurrencyInset)
 			_G.MerchantExtraCurrencyBg:DisableDrawLayer("BACKGROUND")
@@ -133,7 +133,7 @@ aObj.blizzFrames[ftype].MerchantFrame = function(self)
 			self:SecureHook("MerchantFrame_UpdateCanRepairAll", function()
 				self:clrBtnBdr(_G.MerchantRepairAllButton, "gold", 0.5)
 			end)
-			if not self.isClsc then
+			if self.isRtl then
 				self:SecureHook("MerchantFrame_UpdateGuildBankRepair", function()
 					self:clrBtnBdr(_G.MerchantGuildBankRepairButton, "gold", 0.5)
 				end)
@@ -168,7 +168,7 @@ aObj.blizzFrames[ftype].Petition = function(self)
 			_G["PetitionFrameMemberName" .. i]:SetTextColor(self.BT:GetRGB())
 		end
 		_G.PetitionFrameInstructions:SetTextColor(self.BT:GetRGB())
-		if not self.isClsc then
+		if self.isRtl then
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true})
 		else
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=10, y1=-17, x2=-29, y2=62})
@@ -197,7 +197,7 @@ aObj.blizzFrames[ftype].QuestFrame = function(self)
 			fontString:SetTextColor(self.BT:GetRGB())
 		end, true)
 
-		if not self.isClsc then
+		if self.isRtl then
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true})
 		else
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=10, y1=-18, x2=-29, y2=65})
@@ -244,7 +244,7 @@ aObj.blizzFrames[ftype].QuestFrame = function(self)
 			_G.CurrentQuestsText:SetTextColor(self.HT:GetRGB())
 			_G.AvailableQuestsText:SetTextColor(self.HT:GetRGB())
 		end
-		if self.isClsc then
+		if not self.isRtl then
 			for i = 1, _G.MAX_NUM_QUESTS do
 				self:hookQuestText(_G["QuestTitleButton" .. i])
 			end
@@ -280,7 +280,7 @@ aObj.blizzFrames[ftype].QuestFrame = function(self)
 				self:clrBtnBdr(bObj)
 			end)
 			self:skinStdButton{obj=_G.QuestFrameGreetingGoodbyeButton}
-			if self.isClsc then
+			if not self.isRtl then
 				self:skinStdButton{obj=_G.QuestFrameCancelButton}
 			end
 		end
@@ -318,7 +318,7 @@ aObj.blizzFrames[ftype].QuestInfo = function(self)
 		end
 		frame.ItemChooseText:SetTextColor(aObj.BT:GetRGB())
 		frame.ItemReceiveText:SetTextColor(aObj.BT:GetRGB())
-		if not self.isClscBC then
+		if not self.isClsc then
 			frame.PlayerTitleText:SetTextColor(aObj.BT:GetRGB())
 		end
 		if frame.XPFrame.ReceiveText then -- QuestInfoRewardsFrame
@@ -388,7 +388,7 @@ aObj.blizzFrames[ftype].QuestInfo = function(self)
 		-- QuestInfoSpecialObjectives Frame
 		_G.QuestInfoSpellObjectiveLearnLabel:SetTextColor(aObj.BT:GetRGB())
 		_G.QuestInfoSpellObjectiveFrameNameFrame:SetTexture(nil)
-		if not aObj.isClscBC then
+		if not aObj.isClsc then
 			_G.QuestInfoSpellObjectiveFrameSpellBorder:SetTexture(nil)
 		end
 		if aObj.modBtnBs then
@@ -475,7 +475,7 @@ aObj.blizzFrames[ftype].Tabard = function(self)
 	self.initialized.Tabard = true
 
 	self:SecureHookScript(_G.TabardFrame, "OnShow", function(this)
-		if self.isClscBC then
+		if self.isClsc then
 			self:removeBackdrop(_G.TabardFrameCostFrame)
 		else
 			self:removeNineSlice(_G.TabardFrameCostFrame.NineSlice)
@@ -488,7 +488,7 @@ aObj.blizzFrames[ftype].Tabard = function(self)
 				self:addButtonBorder{obj=_G["TabardFrameCustomization" .. i .. "RightButton"], ofs=-3, x1=1, clr="gold"}
 			end
 		end
-		if not self.isClsc then
+		if self.isRtl then
 			self:removeInset(_G.TabardFrameMoneyInset)
 			_G.TabardFrameMoneyBg:DisableDrawLayer("BACKGROUND")
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true})

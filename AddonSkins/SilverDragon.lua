@@ -29,7 +29,7 @@ aObj.addonsToSkin.SilverDragon = function(self) -- v 90005.0/11302.0
 		if _G.SilverDragonPopupButton then
 			skinPopup(_G.SilverDragonPopupButton)
 		end
-		if not self.isClsc then
+		if self.isRtl then
 			self:skinObject("frame", {obj=ct.anchor, kfs=true, ofs=0})
 			if self.modBtns then
 				self:skinCloseButton{obj=self:getChild(ct.anchor, 1), noSkin=true}

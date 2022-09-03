@@ -144,9 +144,7 @@ if aObj.isRtl then
 		end)
 
 	end
-end
-
-if aObj.isClsc then
+else
 	aObj.addonsToSkin["AAP-TBC-Classic"] = function(self) -- v 0.13
 
 		-- _G.Spew("", _G.AAPClassic)

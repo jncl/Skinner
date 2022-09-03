@@ -7,7 +7,7 @@ aObj.addonsToSkin.Mapster = function(self) -- v 1.8.4
 	local Mapster = _G.LibStub("AceAddon-3.0"):GetAddon("Mapster", true)
 	if not Mapster then return end
 
-	if not self.isClsc then
+	if self.isRtl then
 		self:keepFontStrings(_G.WorldMapFrame.BorderFrame)
 		self:addSkinFrame{obj=_G.WorldMapFrame, ft="a", kfs=true, nb=true, ofs=2}
 		self:removeNineSlice(_G.WorldMapFrame.BorderFrame.NineSlice)

@@ -373,9 +373,7 @@ if aObj.isRtl then
 		self:checkShown(_G.AltoholicFrame.TabOptions)
 
 	end
-end
-
-if aObj.isClsc then
+else
 	local function skinMenuItems(frameName, cnt, text)
 		local itm
 		for i = 1, cnt do
@@ -439,7 +437,7 @@ if aObj.isClsc then
 		-- Main Frame
 		self:skinObject("editbox", {obj=_G.AltoholicFrame_SearchEditBox})
 		self:skinObject("tabs", {obj=_G.AltoholicFrame, prefix=_G.AltoholicFrame:GetName(), numTabs=7})
-		self:skinObject("frame", {obj=_G.AltoholicFrame, kfs=true, cb=true, y1=-11, x2=0, y2=self.isClsc and 6 or 2})
+		self:skinObject("frame", {obj=_G.AltoholicFrame, kfs=true, cb=true, y1=-11, x2=0, y2=6})
 		if self.modBtns then
 			self:skinStdButton{obj=_G.AltoholicFrame_ResetButton}
 			self:skinStdButton{obj=_G.AltoholicFrame_SearchButton}

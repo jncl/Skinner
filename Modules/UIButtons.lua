@@ -151,7 +151,7 @@ function module:checkTex(...) -- luacheck: ignore self
 	__checkTex(opts)
 
 end
-if aObj.isClsc then
+if not aObj.isRtl then
 	_G.DULL_RED_FONT_COLOR = _G.CreateColor(0.75, 0.15, 0.15)
 end
 local function clrTex(clr, hTex)
@@ -355,7 +355,7 @@ function module:setBtnClr(bObj, quality)
 
 	if bObj.sbb then
 		if quality then
-			if quality >= (self.isClsc and _G.LE_ITEM_QUALITY_COMMON or _G.Enum.ItemQuality.Common)
+			if quality >= (self.isRtl and _G.Enum.ItemQuality.Common or _G.LE_ITEM_QUALITY_COMMON)
 			and _G.BAG_ITEM_QUALITY_COLORS[quality]
 			then
 				bObj.sbb:SetBackdropBorderColor(_G.BAG_ITEM_QUALITY_COLORS[quality].r, _G.BAG_ITEM_QUALITY_COLORS[quality].g, _G.BAG_ITEM_QUALITY_COLORS[quality].b, 1)

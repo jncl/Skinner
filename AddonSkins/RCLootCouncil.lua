@@ -41,7 +41,7 @@ local skinFunction = function(self) -- v 2.19.3/3.0.0/0.11.2
 				self:skinEditBox{obj=entry.noteEditbox, regs={6}} -- 6 is text
 				self:skinStatusBar{obj=entry.timeoutBar, fi=0}
 			end
-			if self.isClsc then
+			if not self.isRtl then
 				this.frame:SetHeight(this.frame.content:GetHeight())
 			end
 		end)
@@ -121,7 +121,7 @@ local skinFunction = function(self) -- v 2.19.3/3.0.0/0.11.2
 
 end
 
-if not aObj.isClsc then
+if aObj.isRtl then
 	aObj.addonsToSkin.RCLootCouncil = skinFunction
 else
 	aObj.addonsToSkin.RCLootCouncil_Classic = skinFunction

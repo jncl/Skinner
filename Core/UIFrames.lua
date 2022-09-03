@@ -23,7 +23,7 @@ aObj.blizzFrames[ftype].AddonList = function(self)
 		end
 		self:skinObject("slider", {obj=_G.AddonListScrollFrame.ScrollBar, fType=ftype, rpTex="background"})
 		self:skinObject("dropdown", {obj=_G.AddonCharacterDropDown, fType=ftype, x2=109})
-		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, x2=self.isClscBC and 1})
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, x2=self.isClsc and 1})
 		if self.modBtns then
 			self:skinStdButton{obj=this.CancelButton}
 			self:skinStdButton{obj=this.OkayButton}
@@ -114,7 +114,7 @@ aObj.blizzLoDFrames[ftype].BindingUI = function(self)
 				self:skinStdButton{obj=row.key2Button}
 				row.key1Button.sb:SetAlpha(row.key1Button:GetAlpha())
 				row.key2Button.sb:SetAlpha(row.key2Button:GetAlpha())
-				if not aObj.isClsc then
+				if self.isRtl then
 					self:SecureHook(row, "Update", function(fObj)
 						self:clrBtnBdr(fObj.key2Button)
 						fObj.key1Button.sb:SetAlpha(fObj.key1Button:GetAlpha())
@@ -132,7 +132,13 @@ aObj.blizzLoDFrames[ftype].BindingUI = function(self)
 					self:skinStdButton{obj=button}
 				end
 			end)
-			if self.isClsc then
+			if self.isRtl then
+				self:skinStdButton{obj=this.quickKeybindButton}
+				self:SecureHook(this, "UpdateUnbindKey", function(fObj)
+					self:clrBtnBdr(fObj.unbindButton)
+				end)
+				self:skinStdButton{obj=this.clickCastingButton, fType=ftype}
+			else
 				self:SecureHook("KeyBindingFrame_Update", function()
 					for _, row in _G.pairs(_G.KeyBindingFrame.keyBindingRows) do
 						self:clrBtnBdr(row.key2Button)
@@ -143,12 +149,6 @@ aObj.blizzLoDFrames[ftype].BindingUI = function(self)
 				self:SecureHook("KeyBindingFrame_UpdateUnbindKey", function()
 					self:clrBtnBdr(_G.KeyBindingFrame.unbindButton)
 				end)
-			else
-				self:skinStdButton{obj=this.quickKeybindButton}
-				self:SecureHook(this, "UpdateUnbindKey", function(fObj)
-					self:clrBtnBdr(fObj.unbindButton)
-				end)
-				self:skinStdButton{obj=this.clickCastingButton, fType=ftype}
 			end
 		end
 		if self.modChkBtns then
@@ -158,7 +158,7 @@ aObj.blizzLoDFrames[ftype].BindingUI = function(self)
 		self:Unhook(this, "OnShow")
 	end)
 
-	if not self.isClsc then
+	if self.isRtl then
 		self:SecureHookScript(_G.QuickKeybindFrame, "OnShow", function(this)
 			self:removeNineSlice(this.BG)
 			this.BG.Bg:SetTexture(nil)
@@ -249,7 +249,7 @@ then
 
 		self:SecureHookScript(_G.CalendarViewHolidayFrame, "OnShow", function(this)
 			self:removeNineSlice(this.Border)
-			if not self.isClscBC then
+			if self.isRtl then
 				self:skinObject("slider", {obj=_G.CalendarViewHolidayScrollFrame.ScrollBar, fType=ftype})
 			end
 			self:removeRegions(_G.CalendarViewHolidayCloseButton, {5})
@@ -263,7 +263,7 @@ then
 
 		self:SecureHookScript(_G.CalendarViewRaidFrame, "OnShow", function(this)
 			self:removeNineSlice(this.Border)
-			if not self.isClscBC then
+			if self.isRtl then
 				self:skinObject("slider", {obj=_G.CalendarViewRaidScrollFrame.ScrollBar, fType=ftype})
 			end
 			self:removeRegions(_G.CalendarViewRaidCloseButton, {5})
@@ -278,7 +278,7 @@ then
 		self:SecureHookScript(_G.CalendarViewEventFrame, "OnShow", function(this)
 			self:removeNineSlice(this.Border)
 			self:skinObject("frame", {obj=_G.CalendarViewEventDescriptionContainer, fType=ftype, fb=true})
-			if not self.isClscBC then
+			if self.isRtl then
 				self:skinObject("slider", {obj=_G.CalendarViewEventDescriptionScrollFrame.ScrollBar, fType=ftype})
 				self:skinObject("slider", {obj=_G.CalendarViewEventInviteListScrollFrameScrollBar, fType=ftype})
 			else
@@ -335,7 +335,7 @@ then
 			self:skinObject("dropdown", {obj=_G.CalendarCreateEventAMPMDropDown, fType=ftype})
 			self:skinObject("dropdown", {obj=_G.CalendarCreateEventDifficultyOptionDropDown, fType=ftype})
 			self:skinObject("frame", {obj=_G.CalendarCreateEventDescriptionContainer, fType=ftype, fb=true})
-			if not self.isClscBC then
+			if self.isRtl then
 				self:skinObject("slider", {obj=_G.CalendarCreateEventDescriptionScrollFrame.ScrollBar, fType=ftype})
 				self:skinObject("slider", {obj=_G.CalendarCreateEventInviteListScrollFrameScrollBar, fType=ftype})
 			else
@@ -412,7 +412,7 @@ then
 
 		self:SecureHookScript(_G.CalendarEventPickerFrame, "OnShow", function(this)
 			self:removeNineSlice(this.Border)
-			if not self.isClscBC then
+			if self.isRtl then
 				self:skinObject("slider", {obj=_G.CalendarEventPickerScrollBar, fType=ftype})
 			else
 				self:skinObject("scrollbar", {obj=_G.CalendarEventPickerFrame.ScrollBar, fType=ftype})
@@ -428,7 +428,7 @@ then
 
 		self:SecureHookScript(_G.CalendarTexturePickerFrame, "OnShow", function(this)
 			self:removeNineSlice(this.Border)
-			if not self.isClscBC then
+			if self.isRtl then
 				self:skinObject("slider", {obj=_G.CalendarTexturePickerScrollBar, fType=ftype})
 			else
 				self:skinObject("scrollbar", {obj=_G.CalendarTexturePickerFrame.ScrollBar, fType=ftype, x1=2, y1=-1, x2=5, y2=1})
@@ -500,7 +500,7 @@ aObj.blizzFrames[ftype].ChatBubbles = function(self)
 		skinChatBubbles()
 	end
 	local func
-	if not self.isClscBC then
+	if not self.isClsc then
 		func = "InterfaceOptionsDisplayPanelChatBubblesDropDown_SetValue"
 	else
 		func = "InterfaceOptionsSocialPanelChatBubblesDropDown_SetValue"
@@ -608,7 +608,7 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 		end
 		--	Channel Settings
 		self:skinObject("frame", {obj=_G.ChatConfigChannelSettingsLeft, fType=ftype, kfs=true, rns=true, fb=true})
-		if self.isClsc then
+		if not self.isRtl then
 			self:skinObject("frame", {obj=_G.ChatConfigChannelSettingsAvailable, fType=ftype, kfs=true, rns=true, fb=true})
 			if self.modBtns then
 				self:SecureHook("ChatConfig_CreateBoxes", function(frame, _)
@@ -903,7 +903,7 @@ aObj.blizzFrames[ftype].ChatTabs = function(self)
 		end)
 	end
 	local xOfs = 4
-	if aObj.isClscBC then
+	if aObj.isClsc then
 		xOfs = 1
 	end
 	self:skinObject("tabs", {obj=_G.FloatingChatFrameManager, tabs=fcfTabs, fType=ftype, lod=self.isTT and true, upwards=true, ignoreHLTex=false, regions={7, 8, 9, 10, 11}, offsets={x1=xOfs, y1=self.isTT and -10 or -12, x2=xOfs * -1, y2=self.isTT and -3 or -1}, track=false, func=function(tab) tab.sf:SetAlpha(tab:GetAlpha()) tab.sf:Hide() end})
@@ -1172,9 +1172,9 @@ aObj.blizzLoDFrames[ftype].GuildBankUI = function(self)
 		end
 		self:skinObject("slider", {obj=this.Log.TransactionsScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
 		self:skinObject("slider", {obj=this.Info.ScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
-		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true, cb=true, y1=self.isClscBC and -11, x2=self.isClscBC and 1, y2=self.isClscBC and 3 or -3})
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true, cb=true, y1=self.isClsc and -11, x2=self.isClsc and 1, y2=self.isClsc and 3 or -3})
 		if self.modBtns then
-			if self.isClscBC then
+			if self.isClsc then
 				self:skinCloseButton{obj=self:getChild(this, 11), fType=ftype}
 			end
 			self:skinStdButton{obj=this.DepositButton, x1=0} -- don't overlap withdraw button
@@ -1200,10 +1200,10 @@ aObj.blizzLoDFrames[ftype].GuildBankUI = function(self)
 
 	self:SecureHookScript(_G.GuildBankPopupFrame, "OnShow", function(this)
 		self:adjHeight{obj=this, adj=20}
-		if self.isClsc then
-			self:removeRegions(_G.BorderBox, {1, 2, 3, 4, 5, 6, 7, 8})
-		else
+		if self.isRtl then
 			self:removeRegions(this.BorderBox, {1, 2, 3, 4, 5, 6, 7, 8})
+		else
+			self:removeRegions(_G.BorderBox, {1, 2, 3, 4, 5, 6, 7, 8})
 		end
 		self:skinObject("editbox", {obj=this.EditBox, fType=ftype})
 		self:adjHeight{obj=this.ScrollFrame, adj=20} -- stretch to bottom of scroll area
@@ -1231,7 +1231,7 @@ aObj.blizzFrames[ftype].HelpFrame = function(self)
 
 	self:SecureHookScript(_G.HelpFrame, "OnShow", function(this)
 		self:removeInset(this.Browser.BrowserInset)
-		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true, ri=true, rns=true, cb=true, x1=self.isClsc and 0, x2=self.isClsc and 1 or 3})
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true, ri=true, rns=true, cb=true, x1=not self.isRtl and 0, x2=self.isRtl and 3 or 1})
 
 		self:Unhook(this, "OnShow")
 	end)
@@ -1437,9 +1437,9 @@ aObj.blizzFrames[ftype].ItemText = function(self)
 	self.initialized.ItemText = true
 
 	local function skinITFrame(frame)
-		aObj:skinObject("slider", {obj=_G.ItemTextScrollFrame.ScrollBar, fType=ftype, rpTex=aObj.isClsc and {"background", "artwork"} or nil})
+		aObj:skinObject("slider", {obj=_G.ItemTextScrollFrame.ScrollBar, fType=ftype, rpTex=not aObj.isRtl and {"background", "artwork"} or nil})
 		aObj:skinObject("statusbar", {obj=_G.ItemTextStatusBar, fi=0})
-		if not aObj.isClsc then
+		if aObj.isRtl then
 			aObj:skinObject("frame", {obj=frame, fType=ftype, kfs=true, ri=true, rns=true, cb=true, x2=3})
 		else
 			aObj:skinObject("frame", {obj=frame, fType=ftype, kfs=true, x1=10, y1=-12, x2=-31, y2=60})
@@ -1514,7 +1514,7 @@ aObj.blizzLoDFrames[ftype].MacroUI = function(self)
 		self:skinObject("editbox", {obj=_G.MacroPopupEditBox, fType=ftype})
 		self:adjHeight{obj=_G.MacroPopupScrollFrame, adj=20} -- stretch to bottom of scroll area
 		self:skinObject("slider", {obj=_G.MacroPopupScrollFrame.ScrollBar, fType=ftype, rpTex="background"})
-		if self.isClscBC then
+		if self.isClsc then
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, x2=-2, y2=4})
 		else
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ofs=2, y2=4})
@@ -1544,7 +1544,7 @@ aObj.blizzFrames[ftype].MailFrame = function(self)
 
 	self:SecureHookScript(_G.MailFrame, "OnShow", function(this)
 		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, offsets={x1=7, y1=self.isTT and 2 or -3, x2=-7, y2=2}})
-		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, cb=true, x2=self.isClsc and 1 or 3})
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, cb=true, x2=self.isRtl and 3 or 1})
 		--	Inbox Frame
 		for i = 1, _G.INBOXITEMS_TO_DISPLAY do
 			self:keepFontStrings(_G["MailItem" .. i])
@@ -1576,13 +1576,13 @@ aObj.blizzFrames[ftype].MailFrame = function(self)
 		end
 		--	Send Mail Frame
 		self:keepFontStrings(_G.SendMailFrame)
-		if self.isClsc then
+		if self.isRtl then
+			self:skinObject("slider", {obj=_G.SendMailScrollFrame.ScrollBar, fType=ftype, rpTex={"background", "artwork"}})
+			_G.SendMailBodyEditBox:SetTextColor(self.prdb.BodyText.r, self.prdb.BodyText.g, self.prdb.BodyText.b)
+		else
 			_G.MailEditBox.ScrollBox.EditBox:SetTextColor(self.BT:GetRGB())
 			_G.MailEditBox:DisableDrawLayer("BACKGROUND")
 			self:skinObject("scrollbar", {obj=_G.MailEditBoxScrollBar, fType=ftype, rpTex="background", x1=1, y1=-1, x2=5, y2=1})
-		else
-			self:skinObject("slider", {obj=_G.SendMailScrollFrame.ScrollBar, fType=ftype, rpTex={"background", "artwork"}})
-			_G.SendMailBodyEditBox:SetTextColor(self.prdb.BodyText.r, self.prdb.BodyText.g, self.prdb.BodyText.b)
 		end
 		for i = 1, _G.ATTACHMENTS_MAX_SEND do
 			if not self.modBtnBs then
@@ -1632,7 +1632,7 @@ aObj.blizzFrames[ftype].MailFrame = function(self)
 		end
 		-- Invoice Frame Text fields
 		local fields = {"ItemLabel", "Purchaser", "SalePrice", "Deposit", "HouseCut", "AmountReceived", "NotYetSent", "MoneyDelay"}
-		if self.isClsc then
+		if not self.isRtl then
 			self:add2Table(fields, "BuyMode")
 		end
 		for _, type in _G.pairs(fields) do
@@ -1689,7 +1689,7 @@ aObj.blizzFrames[ftype].MenuFrames = function(self)
 	self.initialized.MenuFrames = true
 
 	self:SecureHookScript(_G.GameMenuFrame, "OnShow", function(this)
-		if not self.isClsc then
+		if self.isRtl then
 			self:removeNineSlice(this.Border)
 		end
 		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true, ofs=0})
@@ -1706,7 +1706,7 @@ aObj.blizzFrames[ftype].MenuFrames = function(self)
 
 	-- Rating Menu
 	self:SecureHookScript(_G.RatingMenuFrame, "OnShow", function(this)
-		if not self.isClsc then
+		if self.isRtl then
 			self:removeNineSlice(this.Border)
 		end
 		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true, ofs=0})
@@ -1794,7 +1794,7 @@ aObj.blizzFrames[ftype].Minimap = function(self)
 		self:getRegion(_G.MiniMapChallengeMode, 1):SetTexCoord(0, 1, 0.27, 1.27) -- remove top hanger texture
 		self:moveObject{obj=_G.MiniMapChallengeMode, x=6, y=-12}
 	else
-		if not self.isClscBC then
+		if self.isClscERA then
 			if self.modBtns then
 				_G.RaiseFrameLevelByTwo(_G.MinimapToggleButton)
 				self:moveObject{obj=_G.MinimapToggleButton, x=-8, y=1}
@@ -1892,7 +1892,7 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 			_G.MiniMapTracking:SetScale(0.9)
 			self:skinObject("frame", {obj=_G.MiniMapTracking, fType=ftype})
 		end
-		if not self.isClscBC then
+		if self.isRtl then
 			_G.QueueStatusMinimapButtonBorder:SetTexture(nil)
 			self:moveObject{obj=_G.QueueStatusMinimapButton, x=-16}
 			if not minBtn then
@@ -1911,7 +1911,7 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 		if _G.IsAddOnLoaded("Bongos") then
 			_G.Bongos3MinimapButton.icon:SetDrawLayer("ARTWORK")
 		end
-		if not self.isClscBC then
+		if self.isRtl then
 			self:moveObject{obj=_G.MiniMapTracking, x=-12}
 		end
 		if not minBtn then
@@ -1929,9 +1929,7 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 			if not minBtn then
 				self:skinObject("frame", {obj=_G.GameTimeFrame, fType=ftype, ng=true, ofs=4})
 			end
-			if not self.isClscBC then
-				_G.GameTimeFrame_Update(_G.GameTimeFrame)
-			end
+			_G.GameTimeFrame_Update(_G.GameTimeFrame)
 		end)
 		_G.MiniMapTrackingBorder:SetTexture(nil)
 		self:moveObject{obj=_G.MiniMapTrackingFrame, x=-15}
@@ -1940,7 +1938,7 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 		end
 	end
 
-	if self.isClsc then
+	if not self.isRtl then
 		_G.MiniMapWorldBorder:SetTexture(nil)
 	end
 	_G.MiniMapWorldMapButton:ClearAllPoints()
@@ -2047,7 +2045,7 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 	end
 
 	-- Garrison Landing Page Minimap button
-	if not self.isClsc then
+	if self.isRtl then
 		local anchor = _G.AnchorUtil.CreateAnchor("TOPLEFT", "MinimapBackdrop", "TOPLEFT", 32, -140)
 		local function skinGLPM(mBtn)
 			if _G.C_Garrison.GetLandingPageGarrisonType() == _G.Enum.GarrisonType.Type_9_0
@@ -2159,7 +2157,7 @@ aObj.blizzFrames[ftype].Nameplates = function(self)
 				end
 			else
 				aObj:skinObject("statusbar", {obj=nHb, fi=0, bg=nHb.background})
-				if self.isClscBC then
+				if self.isClsc then
 					aObj:skinObject("statusbar", {obj=nCb, fi=0, bg=aObj:getRegion(nCb, 1)})
 					aObj:nilTexture(nCb.Border, true)
 					aObj:nilTexture(nCb.BorderShield, true)
@@ -2413,7 +2411,7 @@ aObj.blizzFrames[ftype].StaticPopups = function(self)
 			aObj:skinStdButton{obj=frame.CancelButton}
 		end
 	end
-	if not self.isClsc then
+	if self.isRtl then
 		self:SecureHookScript(_G.PetBattleQueueReadyFrame, "OnShow", function(this)
 			self:removeNineSlice(this.Border)
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true})
@@ -2452,7 +2450,7 @@ aObj.blizzFrames[ftype].SystemOptions = function(self)
 			self:skinStdButton{obj=_G.VideoOptionsFrameCancel, fType=ftype}
 			self:skinStdButton{obj=_G.VideoOptionsFrameOkay, fType=ftype}
 			self:skinStdButton{obj=_G.VideoOptionsFrameDefaults, fType=ftype}
-			if self.isClsc then
+			if not self.isRtl then
 				self:skinStdButton{obj=_G.VideoOptionsFrameClassic, fType=ftype}
 			end
 			self:SecureHook(_G.VideoOptionsFrameApply, "Disable", function(bObj)
@@ -2484,7 +2482,7 @@ aObj.blizzFrames[ftype].SystemOptions = function(self)
 
 		self:Unhook(this, "OnShow")
 	end)
-	if self.isClsc then
+	if not self.isRtl then
 		self:SecureHook("VideoOptionsDropDownMenu_DisableDropDown", function(dropDown)
 			self:checkDisabledDD(dropDown)
 		end)
@@ -2537,7 +2535,7 @@ aObj.blizzFrames[ftype].SystemOptions = function(self)
 			self:addButtonBorder{obj=this.TestInputDevice.ToggleTest, fType=ftype, ofs=0, y2=-2}
 			self:skinStdButton{obj=this.PushToTalkKeybindButton, fType=ftype}
 			this.PushToTalkKeybindButton.KeyLabel:SetDrawLayer("ARTWORK")
-			if not self.isClsc then
+			if self.isRtl then
 				self:skinStdButton{obj=this.MacMicrophoneAccessWarning.OpenAccessButton, fType=ftype}
 			end
 		end
@@ -2596,7 +2594,7 @@ aObj.blizzFrames[ftype].TimeManager = function(self)
 		self:skinObject("dropdown", {obj=_G.TimeManagerAlarmAMPMDropDown, fType=ftype, x2=-6})
 		self:skinObject("editbox", {obj=_G.TimeManagerAlarmMessageEditBox, fType=ftype})
 		self:removeRegions(_G.TimeManagerAlarmEnabledButton, {6, 7})
-		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, x2=self.isClsc and 1 or 3})
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, x2=self.isRtl and 3 or 1})
 		if self.modBtnBs then
 			self:addButtonBorder{obj=_G.TimeManagerStopwatchCheck, y1=2, y2=-4}
 		end
@@ -2697,7 +2695,7 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 		-- ensure it gets updated
 		self.ttHook[_G.ItemRefTooltip] = true
 		if self.modBtns then
-			self:skinCloseButton{obj=self.isClsc and _G.ItemRefCloseButton or this.CloseButton, noSkin=true}
+			self:skinCloseButton{obj=self.isRtl and this.CloseButton or _G.ItemRefCloseButton, noSkin=true}
 		end
 
 		self:Unhook(this, "OnShow")
@@ -2720,7 +2718,7 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 	addTooltip(self.ACD.tooltip)
 
 	-- SexyMapZoneTextTooltip
-	if not self.isClsc then
+	if self.isRtl then
 		if _G.IsAddOnLoaded("SexyMap") then
 			self:add2Table(self.ttList, "SexyMapZoneTextTooltip")
 		end

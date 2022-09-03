@@ -426,10 +426,10 @@ aObj.SetupOptions = function(self)
 			set = function(info, r, g, b, a)
 				local c
 				if info[#info]:find("ClassClr") then
-					if self.isClsc then
-						c = {_G.GetClassColorObj(self.uCls):GetRGBA()}
-					else
+					if self.isRtl then
 						c = {_G.C_ClassColor.GetClassColor(self.uCls):GetRGBA()}
+					else
+						c = {_G.GetClassColorObj(self.uCls):GetRGBA()}
 					end
 				end
 				if info[#info] == "ClassClrBd" then
@@ -683,30 +683,30 @@ aObj.SetupOptions = function(self)
 				if info[#info] == "GossipFrame" then
 					db.QuestFrame = value
 					db.QuestInfo = value
-					if self.isClsc then
-						db.QuestLog = value
-					else
+					if self.isRtl then
 						db.QuestMap = value
+					else
+						db.QuestLog = value
 					end
 					_G.InterfaceOptionsFrame_OpenToCategory(self.optionsFrame[self.L["UI Frames"]])
 					_G.InterfaceOptionsFrame_OpenToCategory(self.optionsFrame[self.L["NPC Frames"]])
 				elseif info[#info] == "QuestFrame" then
 					db.GossipFrame = value
 					db.QuestInfo = value
-					if self.isClsc then
-						db.QuestLog = value
-					else
+					if self.isRtl then
 						db.QuestMap = value
+					else
+						db.QuestLog = value
 					end
 					_G.InterfaceOptionsFrame_OpenToCategory(self.optionsFrame[self.L["UI Frames"]])
 					_G.InterfaceOptionsFrame_OpenToCategory(self.optionsFrame[self.L["NPC Frames"]])
 				elseif info[#info] == "QuestInfo" then
 					db.GossipFrame = value
 					db.QuestFrame = value
-					if self.isClsc then
-						db.QuestLog = value
-					else
+					if self.isRtl then
 						db.QuestMap = value
+					else
+						db.QuestLog = value
 					end
 					_G.InterfaceOptionsFrame_OpenToCategory(self.optionsFrame[self.L["UI Frames"]])
 					_G.InterfaceOptionsFrame_OpenToCategory(self.optionsFrame[self.L["NPC Frames"]])
@@ -1280,7 +1280,7 @@ aObj.SetupOptions = function(self)
 		["Stack Split"]           = {suff = "Frame"},
 		["Static Popups"]         = true,
 		["System Options"]        = true,
-		["Text To Speech Frame"]  = self.isRtl or self.isClscBC and true,
+		["Text To Speech Frame"]  = not self.isClscERA and true or nil,
 		["Time Manager"]          = {suff = "Frame"},
 		["Tutorial"]              = {suff = "Frame"},
 		["UI DropDown Menu"]      = {desc = "DropDown Panels"},

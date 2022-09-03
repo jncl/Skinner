@@ -10,7 +10,7 @@ aObj.addonsToSkin.DejaClassicStats = function(self) -- v 1307r005/205r013
 		_G.DCSMeleeEnhancementsStatsHeader:DisableDrawLayer("ARTWORK")
 		_G.DCSSpellEnhancementsStatsHeader:DisableDrawLayer("ARTWORK")
 		_G.DCSDefenseStatsHeader:DisableDrawLayer("ARTWORK")
-		if self.isClscBC then
+		if self.isClsc then
 			_G.DCSRangedStatsHeader:DisableDrawLayer("ARTWORK")
 		end
 		self:skinObject("frame", {obj=this, kfs=true, x1=-2, y1=14, x2=1, y2=-12})

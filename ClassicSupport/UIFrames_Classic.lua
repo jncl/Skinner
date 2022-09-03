@@ -37,14 +37,12 @@ aObj.SetupClassic_UIFrames = function()
 			end
 			self:addButtonBorder{obj=_G.ChatFrameChannelButton, ofs=1, clr="grey"}
 			self:addButtonBorder{obj=_G.ChatFrameMenuButton, ofs=-2, x1=1, clr="grey"}
-			if self.isClsc then
-				self:addButtonBorder{obj=_G.TextToSpeechButton, ofs=1, clr="grey"}
-			end
+			self:addButtonBorder{obj=_G.TextToSpeechButton, ofs=1, clr="grey"}
 		end
 
 	end
 
-	if not aObj.isClscBC then
+	if aObj.isClscERA then
 		aObj.blizzLoDFrames[ftype].GMSurveyUI = function(self)
 			if not self.prdb.GMSurveyUI or self.initialized.GMSurveyUI then return end
 			self.initialized.GMSurveyUI = true
@@ -68,21 +66,26 @@ aObj.SetupClassic_UIFrames = function()
 
 	if _G.C_LFGList.IsLookingForGroupEnabled() then
 		aObj.blizzFrames[ftype].LFGFrame = function(self)
-			if not self.prdb.LFGLFM or self.initialized.LFGFrame then return end
+			if not self.prdb.GroupFinder
+			or not self.prdb.LFGLFM
+			or self.initialized.LFGFrame
+			then
+				return
+			end
 			self.initialized.LFGFrame = true
 
 			self:SecureHookScript(_G.LFGParentFrame, "OnShow", function(this)
-				if self.isClscBC then
+				if not self.isClscERA then
 					_G.LFGParentFramePortrait:DisableDrawLayer("BACKGROUND")
 					_G.LFGParentFramePortrait:DisableDrawLayer("ARTWORK")
 				end
 				self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, ignoreSize=true, lod=self.isTT and true, upwards=true, offsets={x1=6, y1=0, x2=-6, y2=2}})
 				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, x1=10, y1=-11, x2=-29, y2=70})
 				if self.modBtns then
-					self:skinCloseButton{obj=self:getChild(this, self.isClscBC and 1 or 3), fType=ftype}
+					self:skinCloseButton{obj=self:getChild(this, self.isClscERA and 3 or 1), fType=ftype}
 				end
 
-				if not self.isClscBC then
+				if self.isClscERA then
 					self:SecureHookScript(_G.LFMFrame, "OnShow", function(fObj)
 						self:skinObject("dropdown", {obj=_G.LFMFrameEntryDropDown, fType=ftype})
 						self:removeInset(_G.LFMFrameInset)
@@ -391,7 +394,7 @@ aObj.SetupClassic_UIFrames = function()
 			return
 		end
 
-		if not self.isClscBC then
+		if self.isClscERA then
 			self:SecureHookScript(_G.QuestLogFrame, "OnShow", function(this)
 				_G.QuestLogCollapseAllButton:DisableDrawLayer("BACKGROUND")
 				self:keepFontStrings(_G.EmptyQuestLogFrame)
@@ -489,7 +492,7 @@ aObj.SetupClassic_UIFrames = function()
 
 	end
 
-	if not aObj.isClscBC then
+	if aObj.isClscERA then
 		aObj.blizzFrames[ftype].QuestTimer = function(self)
 			if not self.prdb.QuestTimer or self.initialized.QuestTimer then return end
 			self.initialized.QuestTimer = true
@@ -630,8 +633,9 @@ aObj.SetupClassic_UIFramesOptions = function(self)
 
 	local optTab = {
 		["Battlefield Frame"]       = true,
-		["GM Survey UI"]            = not self.isClscBC and true,
-		["LFGLFM"]                  = _G.C_LFGList.IsLookingForGroupEnabled(),
+		["GM Survey UI"]            = self.isClscERA and true or nil,
+		["Group Finder"]            = self.isClsc and _G.C_LFGList.IsLookingForGroupEnabled() or nil,
+		["LFGLFM"]                  = self.isClscERA and _G.C_LFGList.IsLookingForGroupEnabled() or nil,
 		["Product Choice"]          = {suff = "Frame"},
 		["Quest Log"]               = true,
 		["Quest Timer"]             = true,

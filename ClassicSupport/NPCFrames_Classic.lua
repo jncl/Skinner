@@ -5,7 +5,7 @@ local _G = _G
 aObj.SetupClassic_NPCFrames = function()
 	local ftype = "n"
 
-	if aObj.isClscBC then
+	if aObj.isClsc then
 		aObj.blizzFrames[ftype].ArenaFrame = function(self)
 			if not self.prdb.ArenaFrame or self.initialized.ArenaFrame then return end
 			self.initialized.ArenaFrame = true
@@ -117,7 +117,7 @@ aObj.SetupClassic_NPCFrames = function()
 				self:skinStdButton{obj=_G.BrowseCloseButton, fType=ftype}
 				self:skinStdButton{obj=_G.BrowseBuyoutButton, fType=ftype}
 				self:skinStdButton{obj=_G.BrowseBidButton, fType=ftype}
-				if self.isClscBC then
+				if self.isClsc then
 					self:skinStdButton{obj=_G.BrowseResetButton, fType=ftype}
 				end
 				for _, btn in _G.pairs{_G.BrowseBuyoutButton, _G.BrowseBidButton, _G.BrowseResetButton} do
@@ -251,7 +251,7 @@ aObj.SetupClassic_NPCFrames = function()
 
 		self:SecureHookScript(_G.BankFrame, "OnShow", function(this)
 			self:keepFontStrings(_G.BankSlotsFrame)
-			if not self.isClscBC then
+			if self.isClscC then
 				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, x1=10, y1=-11, x2=-33, y2=90})
 			else
 				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ofs=-12, x2=15, y2=90})
@@ -397,8 +397,8 @@ end
 aObj.SetupClassic_NPCFramesOptions = function(self)
 
 	local optTab = {
-		["Arena Frame"]           = self.isClscBC and true or nil,
-		["Arena Registrar Frame"] = self.isClscBC and true or nil,
+		["Arena Frame"]           = self.isClsc and true or nil,
+		["Arena Registrar Frame"] = self.isClsc and true or nil,
 		["Auction UI"]            = true,
 	}
 	self:setupFramesOptions(optTab, "NPC")

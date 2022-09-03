@@ -11,7 +11,7 @@ aObj.addonsToSkin["D4KiR Tank Helper"] = function(self) -- v 2.22
                 self:skinStdButton{obj=this["btnp" .. i], fType=ftype}
             end
             self:skinStdButton{obj=this.btnReadycheck, fType=ftype}
-            if not self.isClsc then
+            if self.isRtl then
                 self:skinStdButton{obj=this.btnRolepoll, fType=ftype}
             end
             self:skinStdButton{obj=this.btnDiscord, fType=ftype}

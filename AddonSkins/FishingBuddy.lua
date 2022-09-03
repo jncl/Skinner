@@ -47,7 +47,7 @@ aObj.addonsToSkin.FishingBuddy = function(self) -- v 1.16.5/0.7.5.5/0.7.3 Beta 5
 		self:Unhook(this, "OnShow")
 	end)
 
-	if self.isClsc then
+	if not self.isRtl then
 		self:SecureHookScript(_G.FishingOutfitFrameTab, "OnShow", function(this)
 			for _, btn in _G.ipairs{this.Outfit:GetChildren()} do
 				if btn:GetName():find("Skill") then break end
@@ -109,7 +109,7 @@ aObj.addonsToSkin.FishingBuddy = function(self) -- v 1.16.5/0.7.5.5/0.7.3 Beta 5
 		self:skinObject("dropdown", {obj=_G.FBOutfitManagerMenu})
 		self:skinObject("dropdown", {obj=_G.FBMouseEventMenu})
 		self:skinObject("dropdown", {obj=_G.FBEasyKeysMenu})
-		if not self.isClsc then
+		if self.isRtl then
 			self:skinObject("dropdown", {obj=_G.FishingBobbers})
 			self:skinObject("dropdown", {obj=_G.FishingPets})
 		end
@@ -144,7 +144,7 @@ aObj.addonsToSkin.FishingBuddy = function(self) -- v 1.16.5/0.7.5.5/0.7.3 Beta 5
 
 end
 
-if not aObj.isClsc then
+if aObj.isRtl then
 	aObj.addonsToSkin.FB_OutfitDisplayFrame = function(self) -- v 1.9.8
 
 		-- FishingOutfit Frame

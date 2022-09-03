@@ -2,7 +2,7 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("Healium") then return end
 local _G = _G
 
-if not aObj.isClsc then return end
+if aObj.isRtl then return end
 
 aObj.addonsToSkin.Healium = function(self) -- v 2.8.14Classic/2.8.15BC
 

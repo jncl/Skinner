@@ -571,7 +571,7 @@ if aObj.ACD then
 		return frame
 	end, true)
 	aObj:SecureHookScript(aObj.ACD.popup, "OnShow", function(this)
-		if not aObj.isClsc then
+		if aObj.isRtl then
 			aObj:keepFontStrings(aObj:getChild(this, 1))
 		end
 		aObj:skinObject("frame", {obj=this, kfs=true, ofs=-4})

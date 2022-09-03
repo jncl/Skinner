@@ -49,12 +49,12 @@ local function skinAtlasLoot()
 	skinSelect(frame.boss)
 	skinSelect(frame.extra)
 	aObj:skinObject("frame", {obj=frame, kfs=true, cb=true, ofs=0, y1=-3, x2=-3})
-	if aObj.isClsc then
+	if not aObj.isRtl then
 		frame.gameVersionLogo:SetAlpha(1)
 	end
 
 	frame.contentFrame:DisableDrawLayer("BACKGROUND")
-	if aObj.isClsc then
+	if not aObj.isRtl then
 		aObj:skinObject("editbox", {obj=frame.contentFrame.searchBox, si=true, y1=-4, y2=4})
 	end
 	aObj:SecureHookScript(frame.contentFrame.clasFilterButton, "OnClick", function(this)
@@ -148,7 +148,7 @@ local function skinAtlasLoot()
 		aObj:addButtonBorder{obj=_G.AtlasLootToggleFromWorldMap2}
 	end
 
-	if aObj.isClsc then
+	if not aObj.isRtl then
 		aObj:RawHook(_G.AtlasLoot.Button, "ExtraItemFrame_GetFrame", function(this, ...)
 			local eiFrame = aObj.hooks[this].ExtraItemFrame_GetFrame(this, ...)
 			aObj:skinObject("frame", {obj=eiFrame, ofs=0})

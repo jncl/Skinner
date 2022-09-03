@@ -15,12 +15,12 @@ aObj.SetupClassic_PlayerFrames = function()
 		self:SecureHookScript(_G.CharacterFrame, "OnShow", function(this)
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=10, y1=-12, x2=-31, y2=74})
 			self:keepFontStrings(_G.PaperDollFrame)
-			if self.isClscBC then
+			if self.isClsc then
 				self:skinObject("dropdown", {obj=_G.PlayerTitleDropDown, fType=ftype, y1=5, y2=13})
 			end
 			self:makeMFRotatable(_G.CharacterModelFrame)
 			_G.CharacterAttributesFrame:DisableDrawLayer("BACKGROUND")
-			if self.isClscBC then
+			if self.isClsc then
 				self:skinObject("dropdown", {obj=_G.PlayerStatFrameLeftDropDown, fType=ftype})
 				self:skinObject("dropdown", {obj=_G.PlayerStatFrameRightDropDown, fType=ftype})
 			end
@@ -79,7 +79,7 @@ aObj.SetupClassic_PlayerFrames = function()
 			local awc
 			for i = 1, _G.NUM_FACTIONS_DISPLAYED do
 				if self.modBtns then
-					if not self.isClscBC then
+					if self.isClscERA then
 						self:skinExpandButton{obj=_G["ReputationHeader" .. i], fType=ftype, onSB=true}
 						self.modUIBtns:checkTex{obj=_G["ReputationHeader" .. i]}
 						self:skinObject("statusbar", {obj=_G["ReputationBar" .. i], regions={1, 2}, fi=0})
@@ -110,21 +110,7 @@ aObj.SetupClassic_PlayerFrames = function()
 		end)
 
 		self:SecureHookScript(_G.PetPaperDollFrame, "OnShow", function(this)
-			if self.isClscBC then
-				self:keepFontStrings(this)
-				self:skinObject("statusbar", {obj=_G.PetPaperDollFrameExpBar, regions={1, 2}, fi=0})
-				self:makeMFRotatable(_G.PetModelFrame)
-				_G.PetAttributesFrame:DisableDrawLayer("BACKGROUND")
-				if self.modBtns then
-					self:skinStdButton{obj=_G.PetPaperDollCloseButton, fType=ftype}
-				end
-				if self.modBtnBs then
-					self:addButtonBorder{obj=_G.PetPaperDollPetInfo, ofs=1, x2=0, clr="gold"}
-					for i = 1, 5 do
-						self:addButtonBorder{obj=_G["PetMagicResFrame" .. i], es=24, ofs=2, y1=3, y2=-4, clr="grey"}
-					end
-				end
-			else
+			if self.isClscERA then
 				self:keepFontStrings(this)
 				self:removeRegions(_G.PetPaperDollFrameCompanionFrame, {1, 2})
 				self:makeMFRotatable(_G.CompanionModelFrame)
@@ -142,6 +128,20 @@ aObj.SetupClassic_PlayerFrames = function()
 						self:clrPNBtns("Companion")
 					end)
 
+				end
+			else
+				self:keepFontStrings(this)
+				self:skinObject("statusbar", {obj=_G.PetPaperDollFrameExpBar, regions={1, 2}, fi=0})
+				self:makeMFRotatable(_G.PetModelFrame)
+				_G.PetAttributesFrame:DisableDrawLayer("BACKGROUND")
+				if self.modBtns then
+					self:skinStdButton{obj=_G.PetPaperDollCloseButton, fType=ftype}
+				end
+				if self.modBtnBs then
+					self:addButtonBorder{obj=_G.PetPaperDollPetInfo, ofs=1, x2=0, clr="gold"}
+					for i = 1, 5 do
+						self:addButtonBorder{obj=_G["PetMagicResFrame" .. i], es=24, ofs=2, y1=3, y2=-4, clr="grey"}
+					end
 				end
 			end
 
@@ -173,7 +173,7 @@ aObj.SetupClassic_PlayerFrames = function()
 			self:Unhook(this, "OnShow")
 		end)
 
-		if self.isClscBC then
+		if self.isClsc then
 			self:SecureHookScript(_G.PVPFrame, "OnShow", function(this)
 				self:keepFontStrings(this)
 				if self.modBtnBs then
@@ -333,7 +333,7 @@ aObj.SetupClassic_PlayerFrames = function()
 		self.initialized.CraftUI = true
 
 		self:SecureHookScript(_G.CraftFrame, "OnShow", function(this)
-			if self.isClscBC then
+			if self.isClsc then
 				self:skinObject("dropdown", {obj=_G.CraftFrameFilterDropDown, fType=ftype})
 				if self.modChkBtns then
 					self:skinCheckButton{obj=_G.CraftFrameAvailableFilterCheckButton, fType=ftype}
@@ -427,7 +427,7 @@ aObj.SetupClassic_PlayerFrames = function()
 			self:skinObject("dropdown", {obj=_G.FriendsDropDown, fType=ftype})
 			self:skinObject("dropdown", {obj=_G.TravelPassDropDown, fType=ftype})
 			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true})
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, cb=true, x2=1, y2=self.isClscBC and -2 or -1})
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, cb=true, x2=1, y2=self.isClscERA and -1 or -2})
 
 			self:SecureHookScript(_G.FriendsTabHeader, "OnShow", function(fObj)
 				_G.FriendsFrameBattlenetFrame:DisableDrawLayer("BACKGROUND")
@@ -482,7 +482,7 @@ aObj.SetupClassic_PlayerFrames = function()
 						end
 					end
 				end
-				self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, fb=true, ofs=0, y1=-81, x2=-1, y2=self.isClscBC and 0 or 1})
+				self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, fb=true, ofs=0, y1=-81, x2=-1, y2=self.isClscERA and 1 or 0})
 				if self.modBtns then
 					self:skinStdButton{obj=_G.FriendsFrameAddFriendButton, fType=ftype, x1=1}
 					self:skinStdButton{obj=_G.FriendsFrameSendMessageButton, fType=ftype}
@@ -589,7 +589,7 @@ aObj.SetupClassic_PlayerFrames = function()
 				self:skinObject("dropdown", {obj=_G.GuildControlPopupFrameDropDown, fType=ftype})
 				_G.UIDropDownMenu_SetButtonWidth(_G.GuildControlPopupFrameDropDown, 24)
 				self:skinObject("editbox", {obj=_G.GuildControlPopupFrameEditBox, fType=ftype, regions={3, 4}, y1=-4, y2=4})
-				if self.isClscBC then
+				if self.isClsc then
 					self:skinObject("editbox", {obj=_G.GuildControlWithdrawGoldEditBox, fType=ftype, y1=-4, y2=4})
 					self:skinObject("editbox", {obj=_G.GuildControlWithdrawItemsEditBox, fType=ftype, y1=-4, y2=4})
 					for i = 1, 6 do
@@ -766,7 +766,7 @@ aObj.SetupClassic_PlayerFrames = function()
 
 	end
 
-	if aObj.isClscBC then
+	if aObj.isClsc then
 		aObj.blizzLoDFrames[ftype].GlyphUI = function(self)
 			if not self.prdb.GlyphUI or self.initialized.GlyphUI then return end
 			self.initialized.GlyphUI = true
@@ -799,7 +799,7 @@ aObj.SetupClassic_PlayerFrames = function()
 			colourBtn(btn)
 		end
 		local funcName
-		if aObj.isClscBC then
+		if aObj.isClsc then
 			funcName = "TalentFrame_Update"
 		else
 			funcName = "PlayerTalentFrame_Update"
@@ -920,7 +920,7 @@ aObj.SetupClassic_PlayerFrames = function()
 					self:clrPNBtns("SpellBook")
 				end)
 			end
-			if self.isClscBC then
+			if self.isClsc then
 				if self.modChkBtns then
 					self:skinCheckButton{obj=_G.ShowAllSpellRanksCheckBox, fType=ftype}
 				end
@@ -992,7 +992,7 @@ aObj.SetupClassic_PlayerFrames = function()
 			self:skinObject("slider", {obj=_G[fName .. 'ScrollFrameScrollBar'], fType=ftype, rpTex="artwork"})
 			-- keep background Texture
 			self:skinObject("frame", {obj=this, fType=ftype, cb=true, x1=10, y1=-12, x2=-31, y2=75})
-			if not self.isClscBC then
+			if self.isClscERA then
 				self:removeRegions(this, {1, 2, 3, 4, 5, 11, 12, 13}) -- remove portrait, border & points border
 				if self.modBtns then
 					self:skinStdButton{obj=_G[fName .. "CancelButton"], fType=ftype}
@@ -1039,14 +1039,14 @@ aObj.SetupClassic_PlayerFrames = function()
 		self.initialized.TradeSkillUI = true
 
 		self:SecureHookScript(_G.TradeSkillFrame, "OnShow", function(this)
-			if self.isClscBC then
+			if self.isClsc then
 				if self.modChkBtns then
 					self:skinCheckButton{obj=_G.TradeSkillFrameAvailableFilterCheckButton, fType=ftype}
 				end
 				self:skinObject("editbox", {obj=_G.TradeSkillFrameEditBox, fType=ftype})
 			end
 			self:skinObject("statusbar", {obj=_G.TradeSkillRankFrame, fi=0, bg=_G.TradeSkillRankFrameBackground})
-			if not self.isClscBC then
+			if self.isClscERA then
 				_G.TradeSkillRankFrameBorder:GetNormalTexture():SetTexture(nil)
 			else
 				_G.TradeSkillRankFrameBorder:SetTexture(nil)
@@ -1118,7 +1118,7 @@ aObj.SetupClassic_PlayerFramesOptions = function(self)
 
 	local optTab = {
 		["Craft UI"] = true,
-		["Glyph UI"] = self.isClscBC and true,
+		["Glyph UI"] = self.isClsc and true or nil,
 	}
 	self:setupFramesOptions(optTab, "Player")
 	_G.wipe(optTab)

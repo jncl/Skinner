@@ -83,7 +83,7 @@ function aObj:OnInitialize()
 		self:SetupRetail_NPCFramesOptions()
 		self:SetupRetail_PlayerFramesOptions()
 		self:SetupRetail_UIFramesOptions()
-	elseif self.isClsc then
+	else
 		self:SetupClassic_NPCFramesOptions()
 		self:SetupClassic_PlayerFramesOptions()
 		self:SetupClassic_UIFramesOptions()
@@ -255,7 +255,7 @@ function aObj:OnInitialize()
 	end
 
 	-- Load Classic Support, if required (done here for ElvUI/TukUI)
-	if self.isClsc then
+	if not self.isRtl then
 		self:checkAndRun("SetupClassic", "opt", nil, true)
 		self:checkAndRun("SetupClassic_NPCFrames", "opt", nil, true)
 		self:checkAndRun("SetupClassic_PlayerFrames", "opt", nil, true)
@@ -436,7 +436,7 @@ function aObj:OnEnable()
 	-- schedule scan of UIParent's Children after all AddOns have been loaded
 	_G.C_Timer.After(self.prdb.Delay.Init + self.prdb.Delay.Addons + 1, function() self:scanUIParentsChildren() end)
 
-	if not self.isClsc then
+	if self.isRtl then
 		-- hook this (used by Blizzard_OrderHallTalents, PVPMatchResults, PVPMatchScoreboard & Blizzard_WarboardUI)
 		-- N.B. use SecureHook as RawHook cause taint and INTERFACE_ACTION_BLOCKED message to be displayed
 		self:SecureHook("UIPanelCloseButton_SetBorderAtlas", function(this, _, _, _, _)

@@ -26,7 +26,7 @@ aObj.addonsToSkin.Auctionator = function(self) -- v  9.2.27
 			this.RecentsTabsContainer.Tabs = {this.RecentsTabsContainer.ListTab, this.RecentsTabsContainer.RecentsTab}
 			self:skinObject("tabs", {obj=this.RecentsTabsContainer, tabs=this.RecentsTabsContainer.Tabs, lod=self.isTT and true, selectedTab=2 , offsets={y1=-2, y2=-3}})
 			self:removeInset(this.ShoppingResultsInset)
-			if self.isClsc then
+			if not self.isRtl then
 				self:removeInset(self:getChild(this.ShoppingResultsInset, 1))
 			end
 			for _, child in _G.ipairs{this.ResultsListing.HeaderContainer:GetChildren()} do
@@ -59,7 +59,7 @@ aObj.addonsToSkin.Auctionator = function(self) -- v  9.2.27
 		if aslFrame.itemDialog then
 			aObj:SecureHookScript(aslFrame.itemDialog, "OnShow", function(this)
 				self:removeNineSlice(this.Border)
-				if self.isClsc then
+				if not self.isRtl then
 					self:removeInset(self:getChild(this.Inset, 1))
 				end
 				self:skinObject("editbox", {obj=this.SearchContainer.SearchString})
@@ -85,7 +85,7 @@ aObj.addonsToSkin.Auctionator = function(self) -- v  9.2.27
 		if aslFrame.exportDialog then
 			aObj:SecureHookScript(aslFrame.exportDialog, "OnShow", function(this)
 				self:removeNineSlice(this.Border)
-				if self.isClsc then
+				if not self.isRtl then
 					self:removeInset(self:getChild(this.Inset, 1))
 				end
 				self:skinObject("slider", {obj=this.ScrollFrame.ScrollBar, rpTex="artwork"})
@@ -112,7 +112,7 @@ aObj.addonsToSkin.Auctionator = function(self) -- v  9.2.27
 			end)
 			aObj:SecureHookScript(aslFrame.exportDialog.copyTextDialog, "OnShow", function(this)
 				self:removeNineSlice(this.Border)
-				if self.isClsc then
+				if not self.isRtl then
 					self:removeInset(self:getChild(this.Inset, 1))
 				end
 				self:skinObject("slider", {obj=this.ScrollFrame.ScrollBar})
@@ -127,7 +127,7 @@ aObj.addonsToSkin.Auctionator = function(self) -- v  9.2.27
 		if aslFrame.importDialog then
 			aObj:SecureHookScript(aslFrame.importDialog, "OnShow", function(this)
 				self:removeNineSlice(this.Border)
-				if self.isClsc then
+				if not self.isRtl then
 					self:removeInset(self:getChild(this.Inset, 1))
 				end
 				self:skinObject("slider", {obj=this.ScrollFrame.ScrollBar, rpTex="artwork"})
@@ -143,7 +143,7 @@ aObj.addonsToSkin.Auctionator = function(self) -- v  9.2.27
 		if aslFrame.exportCSVDialog then
 			aObj:SecureHookScript(aslFrame.exportCSVDialog, "OnShow", function(this)
 				self:removeNineSlice(this.Border)
-				if self.isClsc then
+				if not self.isRtl then
 					self:removeInset(self:getChild(this.Inset, 1))
 				end
 				self:skinObject("slider", {obj=this.ScrollFrame.ScrollBar})
@@ -158,7 +158,7 @@ aObj.addonsToSkin.Auctionator = function(self) -- v  9.2.27
 		if aslFrame.itemHistoryDialog then
 			aObj:SecureHookScript(aslFrame.itemHistoryDialog, "OnShow", function(this)
 				self:removeNineSlice(this.Border)
-				if self.isClsc then
+				if not self.isRtl then
 					self:removeInset(self:getChild(this.Inset, 1))
 				end
 				for _, child in _G.ipairs{this.ResultsListing.HeaderContainer:GetChildren()} do
@@ -246,7 +246,7 @@ aObj.addonsToSkin.Auctionator = function(self) -- v  9.2.27
 					self:clrBtnBdr(bObj.PostButton)
 				end)
 			end
-			if not self.isClsc then
+			if self.isRtl then
 				self:removeInset(this.BagInset)
 				self:skinObject("editbox", {obj=asi.Quantity.InputBox, y2=4})
 				self:skinObject("editbox", {obj=asi.Price.MoneyInput.GoldBox, ofs=-4, y2=8})
@@ -302,7 +302,7 @@ aObj.addonsToSkin.Auctionator = function(self) -- v  9.2.27
 				self:keepRegions(child, {4, 5, 6}) -- N.B. regions 4 is text, 5 is highlight, 6 is arrow
 				self:skinObject("frame", {obj=child, kfs=true, ofs=1, x1=-2, x2=2})
 			end
-			if not self.isClsc then
+			if self.isRtl then
 				local frame = self:getPenultimateChild(this) -- UndercutScan
 				if self.modBtns then
 					self:skinStdButton{obj=frame.StartScanButton}
@@ -344,7 +344,7 @@ aObj.addonsToSkin.Auctionator = function(self) -- v  9.2.27
 		end)
 
 		aObj:SecureHookScript(_G.AuctionatorConfigFrame, "OnShow", function(this)
-			if not self.isClsc then
+			if self.isRtl then
 				self:removeInset(this)
 			else
 				this.Bg:SetTexture(nil)
@@ -365,10 +365,10 @@ aObj.addonsToSkin.Auctionator = function(self) -- v  9.2.27
 		if _G.Auctionator.State.SplashScreenRef then
 			aObj:SecureHookScript(_G.Auctionator.State.SplashScreenRef, "OnShow", function(this)
 				self:removeNineSlice(this.Border)
-				if self.isClsc then
-					self:removeInset(self:getChild(this.Inset, 1))
-				else
+				if self.isRtl then
 					this.Bg:SetTexture(nil)
+				else
+					self:removeInset(self:getChild(this.Inset, 1))
 				end
 				self:skinObject("slider", {obj=this.ScrollFrame.ScrollBar})
 				self:skinObject("frame", {obj=this, kfs=true, ri=true, rns=true, cb=true, ofs=0, y1=-2, x2=-1})
@@ -383,16 +383,16 @@ aObj.addonsToSkin.Auctionator = function(self) -- v  9.2.27
 
 		if _G.Auctionator.State.TabFrameRef then
 			aObj:SecureHookScript(_G.Auctionator.State.TabFrameRef, "OnShow", function(this)
-				self:skinObject("tabs", {obj=this, tabs=this.Tabs, offsets={x1=8, y1=self.isTT and 2 or -3, x2=-8}, track=self.isClsc and false})
+				self:skinObject("tabs", {obj=this, tabs=this.Tabs, offsets={x1=8, y1=self.isTT and 2 or -3, x2=-8}, track=not self.isRtl and false})
 				if self.isTT then
 					for key, tab in _G.ipairs(this.Tabs) do
 						self:setInactiveTab(tab.sf)
-						if not self.isClsc then
+						if self.isRtl then
 							-- add to table to display tab textures
 							_G.AuctionHouseFrame.tabsForDisplayMode[tab.displayMode] = key + 3
 						end
 					end
-					if self.isClsc then
+					if not self.isRtl then
 						self:SecureHook("AuctionFrameTab_OnClick", function(tabButton, _)
 						    for _, tab in ipairs(this.Tabs) do
 								self:setInactiveTab(tab.sf)

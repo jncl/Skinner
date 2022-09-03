@@ -4,7 +4,7 @@ local _G = _G
 
 aObj.addonsToSkin.ColorPickerPlus = function(self) -- r 48
 
-	if not self.isClsc then
+	if self.isRtl then
 		self:keepFontStrings(_G.ColorPPHeaderTitle)
 		self:moveObject{obj=_G.ColorPPHeaderTitle, y=-4}
 	end
