@@ -1,3 +1,19 @@
+beta9.45327.2
+Jncl:
+	Updated MinimapButton skin
+	Update PlayerFrames to include AchievementUI for Classic WofLK
+	Update TradeSkill frame for Classic WotLK
+	
+beta9.45327.1
+Jncl:
+	ToDo.txt
+	Updated version numbers
+	Updated TOC
+	Updated NSF
+	Applied Classic PTR changes
+	Updated Auctionator skin
+	Update Minimap skin to handle different name for the TrackingFrame for classic versions
+	
 beta9.45043.2
 Jncl:
 	ToDo.txt
