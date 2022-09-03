@@ -1,3 +1,12 @@
+beta9.45435.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Replaced checks for Classic version with checks for Retail version
+	Changed checks for Classic/Classic Era versions
+	Updated TOC for WotLK
+	
 beta9.45327.2
 Jncl:
 	Updated MinimapButton skin
