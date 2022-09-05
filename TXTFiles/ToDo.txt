@@ -33,6 +33,6 @@ ToDos
 	I	Auctionator, reported by Galthariel, 18.08.22
 ?		- Options have no text on panel(s)
 
-	I	Missing localisations, reported by EpidemeDaBear, 02.09.22
-√		- Glyph UI
-√		- LFGLFM --> Group Finder
+	I/C	reported by gjmcelroy7, 04.09.22
+√		- Currency Tab isn't skinned
+√		- Group Finder isn't skinned
