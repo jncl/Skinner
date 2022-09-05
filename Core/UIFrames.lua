@@ -65,7 +65,9 @@ aObj.blizzLoDFrames[ftype].BattlefieldMap = function(self)
 
 		-- change the skinFrame's opacity as required
 		self:SecureHook(this, "RefreshAlpha", function(fObj)
-			fObj.sf:SetAlpha(1.0 - _G.BattlefieldMapOptions.opacity)
+			_G.C_Timer.After(0.05, function()
+				fObj.sf:SetAlpha(1.0 - _G.BattlefieldMapOptions.opacity)
+			end)
 		end)
 
 		if _G.IsAddOnLoaded("Capping") then
@@ -981,7 +983,7 @@ aObj.blizzFrames[ftype].ColorPicker = function(self)
 			self:removeNineSlice(this.Border)
 		end
 		self:skinObject("slider", {obj=_G.OpacityFrameSlider, fType=ftype})
-		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ofs=-2})
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ofs=-1})
 
 		self:Unhook(this, "OnShow")
 	end)
@@ -1910,6 +1912,8 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 		end
 		if self.isRtl then
 			self:moveObject{obj=_G.MiniMapTracking, x=-12}
+		else
+			self:moveObject{obj=_G.MiniMapTracking, x=-4}
 		end
 		if not minBtn then
 			self:skinObject("frame", {obj=_G.MiniMapTracking, fType=ftype, bd=10, x1=4, y1=-3})
@@ -2727,14 +2731,14 @@ aObj.blizzFrames[ftype].UIDropDownMenu = function(self)
 		if self.isRtl then
 			self:keepFontStrings(frame.Border)
 		end
-		if self.isClsc
+		if not self.isRtl
 		or _G.IsAddOnLoaded("TipTac")
 		then
 			aObj:removeBackdrop(_G[fName .. "Backdrop"])
 		end
 		aObj:removeBackdrop(_G[fName .. "MenuBackdrop"])
 		aObj:removeNineSlice(_G[fName .. "MenuBackdrop"].NineSlice)
-		aObj:skinObject("frame", {obj=frame, fType=ftype, kfs=true, ofs=-4})
+		aObj:skinObject("frame", {obj=frame, fType=ftype, kfs=true, ofs=-6})
 	end
 
 	for i = 1, _G.UIDROPDOWNMENU_MAXLEVELS do
