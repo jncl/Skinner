@@ -14,7 +14,12 @@ aObj.SetupClassic_PlayerFrames = function()
 
 		self:SecureHookScript(_G.CharacterFrame, "OnShow", function(this)
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=10, y1=-12, x2=-31, y2=74})
-			self:keepFontStrings(_G.PaperDollFrame)
+
+			self:Unhook(this, "OnShow")
+		end)
+
+		self:SecureHookScript(_G.PaperDollFrame, "OnShow", function(this)
+			self:keepFontStrings(this)
 			if self.isClsc then
 				self:skinObject("dropdown", {obj=_G.PlayerTitleDropDown, fType=ftype, y1=5, y2=13})
 			end
@@ -70,42 +75,7 @@ aObj.SetupClassic_PlayerFrames = function()
 					end
 				end
 			end)
-
-			self:Unhook(this, "OnShow")
-		end)
-
-		self:SecureHookScript(_G.ReputationFrame, "OnShow", function(this)
-			self:keepFontStrings(this)
-			local awc
-			for i = 1, _G.NUM_FACTIONS_DISPLAYED do
-				if self.modBtns then
-					if self.isClscERA then
-						self:skinExpandButton{obj=_G["ReputationHeader" .. i], fType=ftype, onSB=true}
-						self.modUIBtns:checkTex{obj=_G["ReputationHeader" .. i]}
-						self:skinObject("statusbar", {obj=_G["ReputationBar" .. i], regions={1, 2}, fi=0})
-						awc = self:getRegion(_G["ReputationBar" .. i .. "AtWarCheck"], 1)
-						awc:SetTexture(self.tFDIDs.cbSC)
-						awc:SetTexCoord(0, 1, 0, 1)
-						awc:SetSize(32, 32)
-					else
-						self:skinExpandButton{obj=_G["ReputationBar" .. i .. "ExpandOrCollapseButton"], fType=ftype, onSB=true}
-						self.modUIBtns:checkTex{obj=_G["ReputationBar" .. i .. "ExpandOrCollapseButton"]}
-						self:skinObject("statusbar", {obj=_G["ReputationBar" .. i .. "ReputationBar"], regions={3, 4}, fi=0})
-						self:removeRegions(_G["ReputationBar" .. i], {1, 2, 3})
-					end
-				end
-			end
-			self:skinObject("slider", {obj=_G.ReputationListScrollFrame.ScrollBar, fType=ftype, rpTex="background"})
-			self:skinObject("frame", {obj=_G.ReputationDetailFrame, fType=ftype, kfs=true, x1=6, y1=-6, x2=-6, y2=6})
-			if self.modBtns then
-				self:skinCloseButton{obj=_G.ReputationDetailCloseButton, fType=ftype}
-			end
-			if self.modChkBtns then
-				self:skinCheckButton{obj=_G.ReputationDetailAtWarCheckBox, fType=ftype}
-				self:skinCheckButton{obj=_G.ReputationDetailInactiveCheckBox, fType=ftype}
-				self:skinCheckButton{obj=_G.ReputationDetailMainScreenCheckBox, fType=ftype}
-			end
-
+			
 			self:Unhook(this, "OnShow")
 		end)
 
@@ -148,6 +118,41 @@ aObj.SetupClassic_PlayerFrames = function()
 			self:Unhook(this, "OnShow")
 		end)
 
+		self:SecureHookScript(_G.ReputationFrame, "OnShow", function(this)
+			self:keepFontStrings(this)
+			local awc
+			for i = 1, _G.NUM_FACTIONS_DISPLAYED do
+				if self.modBtns then
+					if self.isClscERA then
+						self:skinExpandButton{obj=_G["ReputationHeader" .. i], fType=ftype, onSB=true}
+						self.modUIBtns:checkTex{obj=_G["ReputationHeader" .. i]}
+						self:skinObject("statusbar", {obj=_G["ReputationBar" .. i], regions={1, 2}, fi=0})
+						awc = self:getRegion(_G["ReputationBar" .. i .. "AtWarCheck"], 1)
+						awc:SetTexture(self.tFDIDs.cbSC)
+						awc:SetTexCoord(0, 1, 0, 1)
+						awc:SetSize(32, 32)
+					else
+						self:skinExpandButton{obj=_G["ReputationBar" .. i .. "ExpandOrCollapseButton"], fType=ftype, onSB=true}
+						self.modUIBtns:checkTex{obj=_G["ReputationBar" .. i .. "ExpandOrCollapseButton"]}
+						self:skinObject("statusbar", {obj=_G["ReputationBar" .. i .. "ReputationBar"], regions={3, 4}, fi=0})
+						self:removeRegions(_G["ReputationBar" .. i], {1, 2, 3})
+					end
+				end
+			end
+			self:skinObject("slider", {obj=_G.ReputationListScrollFrame.ScrollBar, fType=ftype, rpTex="background"})
+			self:skinObject("frame", {obj=_G.ReputationDetailFrame, fType=ftype, kfs=true, x1=6, y1=-6, x2=-6, y2=6})
+			if self.modBtns then
+				self:skinCloseButton{obj=_G.ReputationDetailCloseButton, fType=ftype}
+			end
+			if self.modChkBtns then
+				self:skinCheckButton{obj=_G.ReputationDetailAtWarCheckBox, fType=ftype}
+				self:skinCheckButton{obj=_G.ReputationDetailInactiveCheckBox, fType=ftype}
+				self:skinCheckButton{obj=_G.ReputationDetailMainScreenCheckBox, fType=ftype}
+			end
+
+			self:Unhook(this, "OnShow")
+		end)
+
 		self:SecureHookScript(_G.SkillFrame, "OnShow", function(this)
 			self:keepFontStrings(this)
 			_G.SkillFrameExpandButtonFrame:DisableDrawLayer("BACKGROUND")
@@ -173,34 +178,24 @@ aObj.SetupClassic_PlayerFrames = function()
 			self:Unhook(this, "OnShow")
 		end)
 
-		if self.isClsc then
-			self:SecureHookScript(_G.PVPFrame, "OnShow", function(this)
+		if self.isClscERA then
+			self:SecureHookScript(_G.HonorFrame, "OnShow", function(this)
 				self:keepFontStrings(this)
-				if self.modBtnBs then
-					self:addButtonBorder{obj=_G.PVPFrameToggleButton, fType=ftype, clr="gold", x2=1}
-				end
+				self:skinObject("statusbar", {obj=_G.HonorFrameProgressBar, fi=0})
 
 				self:Unhook(this, "OnShow")
 			end)
-			self:SecureHookScript(_G.PVPTeamDetails, "OnShow", function(this)
-				self:skinObject("dropdown", {obj=_G.PVPDropDown, fType=ftype})
-				for i = 1, 5 do
-					_G["PVPTeamDetailsFrameColumnHeader" .. i]:DisableDrawLayer("BACKGROUND")
-					self:skinObject("frame", {obj=_G["PVPTeamDetailsFrameColumnHeader" .. i], fType=ftype, ofs=-1})
-				end
-				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true})
-				if self.modBtns then
-					self:skinStdButton{obj=_G.PVPTeamDetailsAddTeamMember, fType=ftype}
-				end
+		else
+			self:SecureHookScript(_G.PaperDollFrameItemFlyout, "OnShow", function(this)
+				self:skinObject("frame", {obj=this.buttonFrame, fType=ftype, kfs=true, clr="gold", x2=4})
 				if self.modBtnBs then
-					self:addButtonBorder{obj=_G.PVPTeamDetailsToggleButton, fType=ftype, clr="gold", ofs=-1, y1=-2, x2=-2}
+					self:SecureHook("PaperDollFrameItemFlyout_Show", function(slot)
+						for i = 1, #_G.PaperDollFrameItemFlyout.buttons do
+							self:addButtonBorder{obj=_G.PaperDollFrameItemFlyout.buttons[i], fType=ftype, ibt=true, clr="grey"}
+						end
+					end)
 				end
-
-				self:Unhook(this, "OnShow")
-			end)
-			self:SecureHookScript(_G.PVPParentFrame, "OnShow", function(this)
-				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=12, y1=-12, x2=-32, y2=46})
-
+				
 				self:Unhook(this, "OnShow")
 			end)
 			self:SecureHookScript(_G.GearManagerDialog, "OnShow", function(this)
@@ -240,34 +235,28 @@ aObj.SetupClassic_PlayerFrames = function()
 					end)
 				end
 
-				self:Unhook(this, "OnShow")
-			end)
-			self:SecureHookScript(_G.GearManagerDialogPopup, "OnShow", function(this)
-				self:skinObject("editbox", {obj=_G.GearManagerDialogPopupEditBox, fType=ftype})
-				self:skinObject("slider", {obj=_G.GearManagerDialogPopupScrollFrame.ScrollBar, fType=ftype, rpTex="background"})
-				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ofs=-4, x1=3})
-				if self.modBtns then
-					self:skinStdButton{obj=this.CancelButton}
-					self:skinStdButton{obj=this.OkayButton}
-					self:SecureHook("GearManagerDialogPopupOkay_Update", function()
-						self:clrBtnBdr(this.OkayButton)
-					end)
-				end
-				local bName
-				for i = 1, _G.NUM_GEARSET_ICONS_SHOWN do
-					bName = "GearManagerDialogPopupButton" .. i
-					_G[bName]:DisableDrawLayer("BACKGROUND")
-					if self.modBtnBs then
-						self:addButtonBorder{obj=_G[bName], relTo=_G[bName .. "Icon"], reParent={_G[bName .. "Name"]}, clr="grey", ca=0.85}
+				self:SecureHookScript(_G.GearManagerDialogPopup, "OnShow", function(this)
+					self:skinObject("editbox", {obj=_G.GearManagerDialogPopupEditBox, fType=ftype})
+					self:skinObject("slider", {obj=_G.GearManagerDialogPopupScrollFrame.ScrollBar, fType=ftype, rpTex="background"})
+					self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ofs=-4, x1=3})
+					if self.modBtns then
+						self:skinStdButton{obj=this.CancelButton}
+						self:skinStdButton{obj=this.OkayButton}
+						self:SecureHook("GearManagerDialogPopupOkay_Update", function()
+							self:clrBtnBdr(this.OkayButton)
+						end)
 					end
-				end
+					local bName
+					for i = 1, _G.NUM_GEARSET_ICONS_SHOWN do
+						bName = "GearManagerDialogPopupButton" .. i
+						_G[bName]:DisableDrawLayer("BACKGROUND")
+						if self.modBtnBs then
+							self:addButtonBorder{obj=_G[bName], relTo=_G[bName .. "Icon"], reParent={_G[bName .. "Name"]}, clr="grey", ca=0.85}
+						end
+					end
 
-				self:Unhook(this, "OnShow")
-			end)
-		else
-			self:SecureHookScript(_G.HonorFrame, "OnShow", function(this)
-				self:keepFontStrings(this)
-				self:skinObject("statusbar", {obj=_G.HonorFrameProgressBar, fi=0})
+					self:Unhook(this, "OnShow")
+				end)
 
 				self:Unhook(this, "OnShow")
 			end)
@@ -780,7 +769,6 @@ aObj.SetupClassic_PlayerFrames = function()
 			self:checkShown(_G.GlyphFrame)
 
 		end
-
 	end
 
 	local function colourBtn(btn)
