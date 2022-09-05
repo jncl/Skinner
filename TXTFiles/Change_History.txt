@@ -1,3 +1,9 @@
+beta9.45435.2
+Jncl:
+	Changed more Retail vs Classic checks
+	Updated Change_History.txt
+	Updated TOC to satisfy CurseForge checks
+	
 beta9.45435.1
 Jncl:
 	ToDo.txt
