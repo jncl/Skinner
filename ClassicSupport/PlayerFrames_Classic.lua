@@ -1034,6 +1034,45 @@ aObj.SetupClassic_PlayerFrames = function()
 
 	end
 
+	if aObj.isClsc then
+		aObj.blizzFrames[ftype].TokenUI = function(self)
+			if not self.prdb.TokenUI or self.initialized.TokenUI then return end
+			self.initialized.TokenUI = true
+		
+			self:SecureHookScript(_G.TokenFrame, "OnShow", function(this)
+				self:keepFontStrings(this)
+				self:skinObject("slider", {obj=_G.TokenFrameContainerScrollBar, fType=ftype, rpTex="background"})
+				self:getChild(this, 4):Hide() -- CloseButton
+				if self.modBtns then
+					self:skinStdButton{obj=_G.TokenFrameCancelButton, fType=ftype}
+				end
+				for i = 1, #_G.TokenFrameContainer.buttons do
+					_G.TokenFrameContainer.buttons[i].categoryLeft:SetTexture(nil)
+					_G.TokenFrameContainer.buttons[i].categoryRight:SetTexture(nil)
+				end
+				
+				self:Unhook(this, "OnShow")
+			end)
+			
+			self:SecureHookScript(_G.TokenFramePopup, "OnShow", function(this)
+				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, ofs=-6})
+				if self.modChkBtns then
+					self:skinCheckButton{obj=_G.TokenFramePopupInactiveCheckBox, fType=ftype}
+					self:skinCheckButton{obj=_G.TokenFramePopupBackpackCheckBox, fType=ftype}
+				end
+				
+				self:Unhook(this, "OnShow")
+			end)
+			
+			self:SecureHookScript(_G.BackpackTokenFrame, "OnShow", function(this)
+				this:DisableDrawLayer("BACKGROUND")
+				
+				self:Unhook(this, "OnShow")
+			end)
+			
+		end
+	end	
+
 	aObj.blizzLoDFrames[ftype].TradeSkillUI = function(self)
 		if not self.prdb.TradeSkillUI or self.initialized.TradeSkillUI then return end
 		self.initialized.TradeSkillUI = true
@@ -1119,6 +1158,7 @@ aObj.SetupClassic_PlayerFramesOptions = function(self)
 	local optTab = {
 		["Craft UI"] = true,
 		["Glyph UI"] = self.isClsc and true or nil,
+		["Token UI"] = self.isClsc and true or nil,
 	}
 	self:setupFramesOptions(optTab, "Player")
 	_G.wipe(optTab)
