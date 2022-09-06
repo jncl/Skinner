@@ -1,3 +1,13 @@
+beta9.45435.3
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated MinimapButtons skin
+	Updated Group Finder & PVPFrame skins
+	Updated Character frames
+	TokenUI skinned
+	Updated Auctionator skin
+	
 beta9.45435.2
 Jncl:
 	Changed more Retail vs Classic checks
