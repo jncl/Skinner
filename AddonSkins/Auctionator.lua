@@ -463,21 +463,28 @@ aObj.addonsToSkin.Auctionator = function(self) -- v  9.2.33
 			end
 		end
 	end
-	local pCnt, pTot = 0, self.isRtl and 10 or 9
-	self.RegisterMessage("Auctionator_Config", "IOFPanel_Before_Skinning", function(_, panel)
-		if panel.parent == "Auctionator"
-		and not self.iofSkinnedPanels[panel]
-		then
-			self.iofSkinnedPanels[panel] = true
-			pCnt = pCnt + 1
-			-- add a delay to see if it help the issue with missing text on some panels
-			_G.C_Timer.After(0.5, function()
-				skinKids(panel)
-			end)
-		end
-		if pCnt == pTot then
-			self.UnregisterMessage("Auctionator_Config", "IOFPanel_Before_Skinning")
-		end
-	end)
+	local frameList = {
+	    "BasicOptions",
+	    "Tooltips",
+	    "Selling",
+	    "SellingShortcuts",
+	    "SellingAllItems",
+	    "Cancelling",
+	    "Profile",
+	    "Advanced",
+	}
+	if self.isRtl then
+		self:add2Table(frameList, "Shopping")
+		self:add2Table(frameList, "Quantities")
+	else
+		self:add2Table(frameList, "ShoppingAlt")
+	end
+	for _, name in _G.pairs(frameList) do
+		self:SecureHookScript(_G["AuctionatorConfig" .. name .. "Frame"], "OnShow", function(this)
+			skinKids(this)
+
+			self:Unhook(this, "OnShow")
+		end)
+	end
 
 end
