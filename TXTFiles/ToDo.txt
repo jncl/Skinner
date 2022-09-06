@@ -33,6 +33,5 @@ ToDos
 	I	Auctionator, reported by Galthariel, 18.08.22
 ?		- Options have no text on panel(s)
 
-	I/C	reported by gjmcelroy7, 04.09.22
-√		- Currency Tab isn't skinned
-√		- Group Finder isn't skinned
+	I	Missing localisation, reported by EpidemeDaBear, 05.09.22
+√		- Token UI
