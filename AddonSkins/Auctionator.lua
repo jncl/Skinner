@@ -191,28 +191,13 @@ aObj.addonsToSkin.Auctionator = function(self) -- v  9.2.33
 			end
 			aObj:skinObject("frame", {obj=frame.BuyDialog, kfs=true, ofs=0})
 			if aObj.modBtns then
-				aObj:skinStdButton{obj=frame.HistoryButton}
-				aObj:skinStdButton{obj=frame.RefreshButton}
+				aObj:skinStdButton{obj=frame.HistoryButton, schk=true}
+				aObj:skinStdButton{obj=frame.RefreshButton, schk=true}
 				aObj:skinStdButton{obj=frame.BuyButton}
-				aObj:skinStdButton{obj=frame.CancelButton}
-				aObj:SecureHook(frame.HistoryButton, "Disable", function(bObj, _)
-					aObj:clrBtnBdr(bObj)
-				end)
-				aObj:SecureHook(frame.HistoryButton, "Enable", function(bObj, _)
-					aObj:clrBtnBdr(bObj)
-				end)
-				aObj:SecureHook(frame.RefreshButton, "Disable", function(bObj, _)
-					aObj:clrBtnBdr(bObj)
-				end)
-				aObj:SecureHook(frame.RefreshButton, "Enable", function(bObj, _)
-					aObj:clrBtnBdr(bObj)
-				end)
 				aObj:SecureHook(frame, "UpdateButtons", function(this)
 					aObj:clrBtnBdr(this.BuyButton)
 				end)
-				aObj:SecureHook(frame.CancelButton, "SetEnabled", function(bObj)
-					aObj:clrBtnBdr(bObj)
-				end)
+				aObj:skinStdButton{obj=frame.CancelButton, sechk=true}
 				aObj:skinStdButton{obj=frame.BuyDialog.Cancel}
 				aObj:skinStdButton{obj=frame.BuyDialog.BuyStack}
 			end
@@ -305,14 +290,8 @@ aObj.addonsToSkin.Auctionator = function(self) -- v  9.2.33
 			if aObj.isRtl then
 				local frame = aObj:getPenultimateChild(this) -- UndercutScan
 				if aObj.modBtns then
-					aObj:skinStdButton{obj=frame.StartScanButton}
-					aObj:SecureHook(frame.StartScanButton, "SetEnabled", function(bObj)
-						aObj:clrBtnBdr(bObj)
-					end)
-					aObj:skinStdButton{obj=frame.CancelNextButton}
-					aObj:SecureHook(frame.CancelNextButton, "SetEnabled", function(bObj)
-						aObj:clrBtnBdr(bObj)
-					end)
+					aObj:skinStdButton{obj=frame.StartScanButton, sechk=true}
+					aObj:skinStdButton{obj=frame.CancelNextButton, sechk=true}
 				end
 				if aObj.modBtnBs then
 					aObj:addButtonBorder{obj=aObj:getLastChild(this), ofs=-2, x1=1, clr="gold"} -- RefreshButton
@@ -323,20 +302,8 @@ aObj.addonsToSkin.Auctionator = function(self) -- v  9.2.33
 				aObj:removeInset(aObj:getChild(this.HistoricalPriceInset, 1))
 				if aObj.modBtns then
 					local ucsFrame = aObj:getLastChild(this)
-					aObj:skinStdButton{obj=ucsFrame.CancelNextButton}
-					aObj:skinStdButton{obj=ucsFrame.StartScanButton}
-					aObj:SecureHook(ucsFrame.CancelNextButton, "SetEnabled", function(bObj)
-						aObj:clrBtnBdr(bObj)
-					end)
-					aObj:SecureHook(ucsFrame.CancelNextButton, "Disable", function(bObj, _)
-						aObj:clrBtnBdr(bObj)
-					end)
-					aObj:SecureHook(ucsFrame.CancelNextButton, "Enable", function(bObj, _)
-						aObj:clrBtnBdr(bObj)
-					end)
-					aObj:SecureHook(ucsFrame.StartScanButton, "SetEnabled", function(bObj)
-						aObj:clrBtnBdr(bObj)
-					end)
+					aObj:skinStdButton{obj=ucsFrame.CancelNextButton, schk=true, sechk=true}
+					aObj:skinStdButton{obj=ucsFrame.StartScanButton, sechk=true}
 				end
 			end
 

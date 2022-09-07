@@ -539,10 +539,7 @@ aObj.SetupRetail_PlayerFrames = function()
 				self:skinStdButton{obj=this.BottomLeftInset.SuppressedMountEquipmentButton, fType=ftype}
 				self:skinStdButton{obj=_G.MountJournalFilterButton, fType=ftype}
 				self:skinCloseButton{obj=_G.MountJournalFilterButton.ResetButton, fType=ftype, noSkin=true}
-				self:skinStdButton{obj=this.MountButton, fType=ftype}
-				self:SecureHook(this.MountButton, "SetEnabled", function(bObj)
-					self:clrBtnBdr(bObj)
-				end)
+				self:skinStdButton{obj=this.MountButton, fType=ftype, sechk=true}
 			end
 			if self.modBtnBs then
 				self:addButtonBorder{obj=this.SlotButton, relTo=this.SlotButton.ItemIcon, reParent={this.SlotButton.SlotBorder, this.SlotButton.SlotBorderOpen}, clr="grey", ca=0.85}
@@ -947,12 +944,9 @@ aObj.SetupRetail_PlayerFrames = function()
 			self:moveObject{obj=this.AddToChatButton, x=-6, y=-6}
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, x1=-5})
 			if self.modBtns then
-				self:skinStdButton{obj=_G.JumpToUnreadButton}
-				self:skinStdButton{obj=this.InviteButton}
-				self:SecureHook(this.InviteButton, "SetEnabled", function(bObj)
-					self:clrBtnBdr(bObj)
-				end)
-				self:skinStdButton{obj=this.GuildLogButton}
+				self:skinStdButton{obj=_G.JumpToUnreadButton, fType=ftype}
+				self:skinStdButton{obj=this.InviteButton, fType=ftype, sechk=true}
+				self:skinStdButton{obj=this.GuildLogButton, fType=ftype}
 			end
 			if self.modBtnBs then
 				self:addButtonBorder{obj=this.AddToChatButton, ofs=1, clr="gold"}
@@ -1326,12 +1320,9 @@ aObj.SetupRetail_PlayerFrames = function()
 				self:skinObject("frame", {obj=fObj.Description, fType=ftype, kfs=true, fb=true, ofs=7})
 				self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true})
 				if self.modBtns then
-					self:skinStdButton{obj=fObj.Accept}
-					self:SecureHook(fObj.Accept, "SetEnabled", function(bObj)
-						self:clrBtnBdr(bObj)
-					end)
-					self:skinStdButton{obj=fObj.Delete}
-					self:skinStdButton{obj=fObj.Cancel}
+					self:skinStdButton{obj=fObj.Accept, fType=ftype, sechk=true}
+					self:skinStdButton{obj=fObj.Delete, fType=ftype}
+					self:skinStdButton{obj=fObj.Cancel, fType=ftype}
 				end
 				if self.modChkBtns then
 					self:skinCheckButton{obj=fObj.TypeCheckBox}
@@ -1386,12 +1377,9 @@ aObj.SetupRetail_PlayerFrames = function()
 
 			self:SecureHookScript(this.CommunitiesControlFrame, "OnShow", function(fObj)
 				if self.modBtns then
-					self:skinStdButton{obj=fObj.CommunitiesSettingsButton}
-					self:skinStdButton{obj=fObj.GuildRecruitmentButton}
-					self:SecureHook(fObj.GuildRecruitmentButton, "SetEnabled", function(bObj)
-						self:clrBtnBdr(bObj)
-					end)
-					self:skinStdButton{obj=fObj.GuildControlButton}
+					self:skinStdButton{obj=fObj.CommunitiesSettingsButton, fType=ftype}
+					self:skinStdButton{obj=fObj.GuildRecruitmentButton, fType=ftype, sechk=true}
+					self:skinStdButton{obj=fObj.GuildControlButton, fType=ftype}
 				end
 
 				self:Unhook(fObj, "OnShow")
@@ -1408,14 +1396,8 @@ aObj.SetupRetail_PlayerFrames = function()
 				self:adjWidth{obj=fObj.GroupInviteButton, adj=-4}
 				self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, cb=true, ofs=-7, x2=0})
 				if self.modBtns then
-					self:skinStdButton{obj=fObj.RemoveButton}
-					self:skinStdButton{obj=fObj.GroupInviteButton}
-					self:SecureHook(fObj.RemoveButton, "SetEnabled", function(bObj)
-						self:clrBtnBdr(bObj)
-					end)
-					self:SecureHook(fObj.GroupInviteButton, "SetEnabled", function(bObj)
-						self:clrBtnBdr(bObj)
-					end)
+					self:skinStdButton{obj=fObj.RemoveButton, fType=ftype, sechk=true}
+					self:skinStdButton{obj=fObj.GroupInviteButton, fType=ftype, sechk=true}
 				end
 
 				self:Unhook(fObj, "DisplayMember")
@@ -1455,14 +1437,8 @@ aObj.SetupRetail_PlayerFrames = function()
 			self:skinObject("frame", {obj=this.InviteManager, fType=ftype, kfs=true, fb=true, ofs=-4, x2=-7, y2=-5})
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, y1=-8, y2=6})
 			if self.modBtns then
-				self:skinStdButton{obj=this.LinkToChat}
-				self:SecureHook(this.LinkToChat, "SetEnabled", function(bObj)
-					self:clrBtnBdr(bObj)
-				end)
-				self:skinStdButton{obj=this.Copy}
-				self:SecureHook(this.Copy, "SetEnabled", function(bObj)
-					self:clrBtnBdr(bObj)
-				end)
+				self:skinStdButton{obj=this.LinkToChat, fType=ftype, sechk=true}
+				self:skinStdButton{obj=this.Copy, fType=ftype, sechk=true}
 				self:skinStdButton{obj=this.GenerateLinkButton}
 				self:skinStdButton{obj=this.Close}
 			end
@@ -2065,26 +2041,18 @@ aObj.SetupRetail_PlayerFrames = function()
 							bObj:GetParent().sbb:SetShown(this, show)
 						end)
 						btn.sbb:SetShown(btn.gameIcon:IsShown())
-						self:addButtonBorder{obj=btn.travelPassButton, ofs=0, y1=3, y2=-2}
-						self:addButtonBorder{obj=btn.summonButton}
-						for _, thBtn in _G.pairs{btn.travelPassButton, btn.summonButton} do
-							self:SecureHook(thBtn, "Disable", function(bObj, _)
-								self:clrBtnBdr(bObj)
-							end)
-							self:SecureHook(thBtn, "Enable", function(bObj, _)
-								self:clrBtnBdr(bObj)
-							end)
-						end
+						self:addButtonBorder{obj=btn.travelPassButton, sc =true, ofs=0, y1=3, y2=-2}
+						self:addButtonBorder{obj=btn.summonButton, sc =true}
 					end
 				end
 				addTabBorder(fObj)
 				if self.modBtns then
-					self:skinStdButton{obj=_G.FriendsFrameAddFriendButton, x1=1}
-					self:skinStdButton{obj=_G.FriendsFrameSendMessageButton}
-					self:skinStdButton{obj=self:getChild(fObj.RIDWarning, 1)}
+					self:skinStdButton{obj=_G.FriendsFrameAddFriendButton, fType=ftype, x1=1}
+					self:skinStdButton{obj=_G.FriendsFrameSendMessageButton, fType=ftype}
+					self:skinStdButton{obj=self:getChild(fObj.RIDWarning, 1), fType=ftype}
 					for invite in _G.FriendsListFrameScrollFrame.invitePool:EnumerateActive() do
-						self:skinStdButton{obj=invite.DeclineButton}
-						self:skinStdButton{obj=invite.AcceptButton}
+						self:skinStdButton{obj=invite.DeclineButton, fType=ftype}
+						self:skinStdButton{obj=invite.AcceptButton, fType=ftype}
 					end
 				end
 				if self.modBtnBs then
@@ -2229,13 +2197,7 @@ aObj.SetupRetail_PlayerFrames = function()
 			self:skinObject("frame", {obj=this.Border, fType=ftype, kfs=true, ofs=-8})
 			if self.modBtns then
 				self:skinCloseButton{obj=this.CloseButton}
-				self:skinStdButton{obj=this.GenerateOrCopyLinkButton}
-				self:SecureHook(this.GenerateOrCopyLinkButton, "Disable", function(bObj, _)
-					self:clrBtnBdr(bObj)
-				end)
-				self:SecureHook(this.GenerateOrCopyLinkButton, "SetEnabled", function(bObj)
-					self:clrBtnBdr(bObj)
-				end)
+				self:skinStdButton{obj=this.GenerateOrCopyLinkButton, schk=true}
 			end
 
 			self:Unhook(this, "OnShow")
@@ -3216,13 +3178,7 @@ aObj.SetupRetail_PlayerFrames = function()
 			this.BonusFrame.ShadowOverlay:DisableDrawLayer("OVERLAY")
 			self:removeMagicBtnTex(this.QueueButton)
 			if self.modBtns then
-				self:skinStdButton{obj=this.QueueButton}
-				self:SecureHook(this.QueueButton, "Disable", function(bObj, _)
-					self:clrBtnBdr(bObj)
-				end)
-				self:SecureHook(this.QueueButton, "Enable", function(bObj, _)
-					self:clrBtnBdr(bObj)
-				end)
+				self:skinStdButton{obj=this.QueueButton, schk=true}
 			end
 
 			self:Unhook(this, "OnShow")

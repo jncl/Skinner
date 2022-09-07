@@ -568,6 +568,8 @@ function module:skinStdButton(opts)
 		ca = set colour alpha
 		sabt = use SecureActionButtonTemplate
 		ignoreHLTex = ignore Highlight texture changes
+		schk = state check for colour changes
+		sechk = set enabled check for colour changes
 --]]
 	--@alpha@
 	_G.assert(opts.obj, "Missing object skinStdButton\n" .. _G.debugstack(2, 3, 2))
@@ -609,11 +611,25 @@ function module:skinStdButton(opts)
 		aObj:skinObject("skin", {obj=opts.obj, fType=opts.ftype, bd=aso.bd, ng=aso.ng})
 	end
 
-	module:clrBtnBdr(opts.obj, opts.clr, opts.ca)
-
 	if not opts.ignoreHLTex then
 		module:chgHLTex(opts.obj, opts.obj:GetHighlightTexture())
 		module:chgHLTex(opts.obj, opts.obj.selectedHighlight)
+	end
+
+	module:clrBtnBdr(opts.obj, opts.clr, opts.ca)
+
+	if opts.schk then
+		aObj:secureHook(opts.obj, "Disable", function(bObj, _)
+			aObj:clrBtnBdr(bObj)
+		end)
+		aObj:secureHook(opts.obj, "Enable", function(bObj, _)
+			aObj:clrBtnBdr(bObj)
+		end)
+	end
+	if opts.sechk then
+		self:SecureHook(opts.obj, "SetEnabled", function(bObj)
+			self:clrBtnBdr(bObj)
+		end)
 	end
 
 end
@@ -761,6 +777,7 @@ local function __addButtonBorder(opts)
 		nc = don't check to see if already skinned
 		clr = set colour
 		ca = set colour alpha
+		schk = state check for colour changes
 --]]
 	--@alpha@
 	 _G.assert(opts.obj, "Missing object__aBB\n" .. _G.debugstack(2, 3, 2))
@@ -850,6 +867,14 @@ local function __addButtonBorder(opts)
 		opts.obj.Name:SetParent(opts.obj.sbb)
 	elseif opts.gibt then -- Giant Item Buttons
 		module:clrButtonFromBorder(opts.obj)
+	end
+	if opts.schk then
+		aObj:secureHook(opts.obj, "Disable", function(bObj, _)
+			aObj:clrBtnBdr(bObj)
+		end)
+		aObj:secureHook(opts.obj, "Enable", function(bObj, _)
+			aObj:clrBtnBdr(bObj)
+		end)
 	end
 
 end

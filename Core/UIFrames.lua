@@ -291,34 +291,10 @@ if not aObj.isClscERA then
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true, ofs=-3})
 			if self.modBtns then
 				self:skinCloseButton{obj=_G.CalendarViewEventCloseButton, fType=ftype}
-				self:skinStdButton{obj=_G.CalendarViewEventAcceptButton, fType=ftype}
-				self:SecureHook(_G.CalendarViewEventAcceptButton, "Disable", function(bObj, _)
-					self:clrBtnBdr(bObj)
-				end)
-				self:SecureHook(_G.CalendarViewEventAcceptButton, "Enable", function(bObj, _)
-					self:clrBtnBdr(bObj)
-				end)
-				self:skinStdButton{obj=_G.CalendarViewEventTentativeButton, fType=ftype}
-				self:SecureHook(_G.CalendarViewEventTentativeButton, "Disable", function(bObj, _)
-					self:clrBtnBdr(bObj)
-				end)
-				self:SecureHook(_G.CalendarViewEventTentativeButton, "Enable", function(bObj, _)
-					self:clrBtnBdr(bObj)
-				end)
-				self:skinStdButton{obj=_G.CalendarViewEventDeclineButton, fType=ftype}
-				self:SecureHook(_G.CalendarViewEventDeclineButton, "Disable", function(bObj, _)
-					self:clrBtnBdr(bObj)
-				end)
-				self:SecureHook(_G.CalendarViewEventDeclineButton, "Enable", function(bObj, _)
-					self:clrBtnBdr(bObj)
-				end)
-				self:skinStdButton{obj=_G.CalendarViewEventRemoveButton, fType=ftype}
-				self:SecureHook(_G.CalendarViewEventRemoveButton, "Disable", function(bObj, _)
-					self:clrBtnBdr(bObj)
-				end)
-				self:SecureHook(_G.CalendarViewEventRemoveButton, "Enable", function(bObj, _)
-					self:clrBtnBdr(bObj)
-				end)
+				self:skinStdButton{obj=_G.CalendarViewEventAcceptButton, fType=ftype, schk=true}
+				self:skinStdButton{obj=_G.CalendarViewEventTentativeButton, fType=ftype, schk=true}
+				self:skinStdButton{obj=_G.CalendarViewEventDeclineButton, fType=ftype, schk=true}
+				self:skinStdButton{obj=_G.CalendarViewEventRemoveButton, fType=ftype, schk=true}
 			end
 
 			self:Unhook(this, "OnShow")
@@ -350,35 +326,11 @@ if not aObj.isClscERA then
 			self:removeRegions(_G.CalendarCreateEventCloseButton, {5})
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true, cb=true, ofs=-2})
 			if self.modBtns then
-				self:skinCloseButton{obj=_G.CalendarCreateEventCloseButton}
-				self:skinStdButton{obj=_G.CalendarCreateEventInviteButton}
-				self:SecureHook(_G.CalendarCreateEventInviteButton, "Disable", function(bObj, _)
-					self:clrBtnBdr(bObj)
-				end)
-				self:SecureHook(_G.CalendarCreateEventInviteButton, "Enable", function(bObj, _)
-					self:clrBtnBdr(bObj)
-				end)
-				self:skinStdButton{obj=_G.CalendarCreateEventMassInviteButton}
-				self:SecureHook(_G.CalendarCreateEventMassInviteButton, "Disable", function(bObj, _)
-					self:clrBtnBdr(bObj)
-				end)
-				self:SecureHook(_G.CalendarCreateEventMassInviteButton, "Enable", function(bObj, _)
-					self:clrBtnBdr(bObj)
-				end)
-				self:skinStdButton{obj=_G.CalendarCreateEventRaidInviteButton}
-				self:SecureHook(_G.CalendarCreateEventRaidInviteButton, "Disable", function(bObj, _)
-					self:clrBtnBdr(bObj)
-				end)
-				self:SecureHook(_G.CalendarCreateEventRaidInviteButton, "Enable", function(bObj, _)
-					self:clrBtnBdr(bObj)
-				end)
-				self:skinStdButton{obj=_G.CalendarCreateEventCreateButton}
-				self:SecureHook(_G.CalendarCreateEventCreateButton, "Disable", function(bObj, _)
-					self:clrBtnBdr(bObj)
-				end)
-				self:SecureHook(_G.CalendarCreateEventCreateButton, "Enable", function(bObj, _)
-					self:clrBtnBdr(bObj)
-				end)
+				self:skinCloseButton{obj=_G.CalendarCreateEventCloseButton, fType=ftype}
+				self:skinStdButton{obj=_G.CalendarCreateEventInviteButton, fType=ftype, schk=true}
+				self:skinStdButton{obj=_G.CalendarCreateEventMassInviteButton, fType=ftype, schk=true}
+				self:skinStdButton{obj=_G.CalendarCreateEventRaidInviteButton, fType=ftype, schk=true}
+				self:skinStdButton{obj=_G.CalendarCreateEventCreateButton, fType=ftype, schk=true}
 			end
 			if self.modChkBtns then
 				self:skinCheckButton{obj=_G.CalendarCreateEventAutoApproveCheck}
@@ -397,14 +349,8 @@ if not aObj.isClscERA then
 			self:removeRegions(_G.CalendarMassInviteCloseButton, {5})
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true, cb=true, ofs=-3, y2=20})
 			if self.modBtns then
-				self:skinCloseButton{obj=_G.CalendarMassInviteCloseButton}
-				self:skinStdButton{obj=_G.CalendarMassInviteAcceptButton}
-				self:SecureHook(_G.CalendarMassInviteAcceptButton, "Disable", function(bObj, _)
-					self:clrBtnBdr(bObj)
-				end)
-				self:SecureHook(_G.CalendarMassInviteAcceptButton, "Enable", function(bObj, _)
-					self:clrBtnBdr(bObj)
-				end)
+				self:skinCloseButton{obj=_G.CalendarMassInviteCloseButton, fType=ftype}
+				self:skinStdButton{obj=_G.CalendarMassInviteAcceptButton, fType=ftype, schk=true}
 			end
 
 			self:Unhook(this, "OnShow")
@@ -1176,22 +1122,10 @@ aObj.blizzLoDFrames[ftype].GuildBankUI = function(self)
 			if self.isClsc then
 				self:skinCloseButton{obj=self:getChild(this, 11), fType=ftype}
 			end
-			self:skinStdButton{obj=this.DepositButton, x1=0} -- don't overlap withdraw button
-			self:skinStdButton{obj=this.WithdrawButton, x2=0} -- don't overlap deposit button
-			self:SecureHook(this.WithdrawButton, "Disable", function(bObj, _)
-				self:clrBtnBdr(bObj)
-			end)
-			self:SecureHook(this.WithdrawButton, "Enable", function(bObj, _)
-				self:clrBtnBdr(bObj)
-			end)
-			self:skinStdButton{obj=this.BuyInfo.PurchaseButton}
-			self:SecureHook(this.BuyInfo.PurchaseButton, "Disable", function(bObj, _)
-				self:clrBtnBdr(bObj)
-			end)
-			self:SecureHook(this.BuyInfo.PurchaseButton, "Enable", function(bObj, _)
-				self:clrBtnBdr(bObj)
-			end)
-			self:skinStdButton{obj=this.Info.SaveButton}
+			self:skinStdButton{obj=this.DepositButton, fType=ftype, x1=0} -- don't overlap withdraw button
+			self:skinStdButton{obj=this.WithdrawButton, fType=ftype, schk=true, x2=0} -- don't overlap deposit button
+			self:skinStdButton{obj=this.BuyInfo.PurchaseButton, fType=ftype, schk=true}
+			self:skinStdButton{obj=this.Info.SaveButton, fType=ftype}
 		end
 
 		self:Unhook(this, "OnShow")
@@ -1485,20 +1419,12 @@ aObj.blizzLoDFrames[ftype].MacroUI = function(self)
 		end
 		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true, ri=true, rns=true, cb=true})
 		if self.modBtns then
-			self:skinStdButton{obj=_G.MacroEditButton}
-			self:skinStdButton{obj=_G.MacroCancelButton}
-			self:skinStdButton{obj=_G.MacroSaveButton}
-			self:skinStdButton{obj=_G.MacroDeleteButton}
-			self:skinStdButton{obj=_G.MacroNewButton, x2=-2}
-			self:skinStdButton{obj=_G.MacroExitButton, x1=2}
-			for _, btn in _G.pairs{_G.MacroEditButton, _G.MacroDeleteButton, _G.MacroNewButton} do
-				self:SecureHook(btn, "Disable", function(bObj, _)
-					self:clrBtnBdr(bObj)
-				end)
-				self:SecureHook(btn, "Enable", function(bObj, _)
-					self:clrBtnBdr(bObj)
-				end)
-			end
+			self:skinStdButton{obj=_G.MacroEditButton, fType=ftype, schk=true}
+			self:skinStdButton{obj=_G.MacroCancelButton, fType=ftype}
+			self:skinStdButton{obj=_G.MacroSaveButton, fType=ftype}
+			self:skinStdButton{obj=_G.MacroDeleteButton, fType=ftype, schk=true}
+			self:skinStdButton{obj=_G.MacroNewButton, fType=ftype, schk=true, x2=-2}
+			self:skinStdButton{obj=_G.MacroExitButton, fType=ftype, x1=2}
 		end
 		if self.modBtnBs then
 			self:addButtonBorder{obj=_G.MacroFrameSelectedMacroButton, relTo=_G.MacroFrameSelectedMacroButtonIcon, clr="grey", ca=0.85}
@@ -1555,13 +1481,7 @@ aObj.blizzFrames[ftype].MailFrame = function(self)
 		self:moveObject{obj=_G.InboxTooMuchMail, y=-24} -- move icon down
 		self:removeRegions(_G.InboxFrame, {1}) -- background texture
 		if self.modBtns then
-			self:skinStdButton{obj=_G.OpenAllMail}
-			self:SecureHook(_G.OpenAllMail, "Disable", function(bObj, _)
-				self:clrBtnBdr(bObj)
-			end)
-			self:SecureHook(_G.OpenAllMail, "Enable", function(bObj, _)
-				self:clrBtnBdr(bObj)
-			end)
+			self:skinStdButton{obj=_G.OpenAllMail, fType=ftype, schk=true}
 		end
 		if self.modBtnBs then
 			self:addButtonBorder{obj=_G.InboxPrevPageButton, ofs=-2, y1=-3, x2=-3}
@@ -1597,14 +1517,8 @@ aObj.blizzFrames[ftype].MailFrame = function(self)
 		self:removeInset(_G.SendMailMoneyInset)
 		_G.SendMailMoneyBg:DisableDrawLayer("BACKGROUND")
 		if self.modBtns then
-			self:skinStdButton{obj=_G.SendMailMailButton}
-			self:skinStdButton{obj=_G.SendMailCancelButton}
-			self:SecureHook(_G.SendMailMailButton, "Disable", function(bObj, _)
-				self:clrBtnBdr(bObj)
-			end)
-			self:SecureHook(_G.SendMailMailButton, "Enable", function(bObj, _)
-				self:clrBtnBdr(bObj)
-			end)
+			self:skinStdButton{obj=_G.SendMailMailButton, fType=ftype, schk=true}
+			self:skinStdButton{obj=_G.SendMailCancelButton, fType=ftype}
 		end
 		--	Open Mail Frame
 		_G.OpenMailScrollFrame:DisableDrawLayer("BACKGROUND")
@@ -2345,47 +2259,11 @@ aObj.blizzFrames[ftype].StaticPopups = function(self)
 			_G[objName .. "ItemFrameNameFrame"]:SetTexture(nil)
 			self:skinObject("frame", {obj=this, fType=ftype, ofs=-6})
 			if self.modBtns then
-				self:skinStdButton{obj=this.button1, y1=2}
-				self:SecureHook(this.button1, "Disable", function(bObj, _)
-					self:clrBtnBdr(bObj)
-				end)
-				self:SecureHook(this.button1, "Enable", function(bObj, _)
-					self:clrBtnBdr(bObj)
-				end)
-				self:SecureHook(this.button1, "SetEnabled", function(bObj)
-					self:clrBtnBdr(bObj)
-				end)
-				self:skinStdButton{obj=this.button2, y1=2}
-				self:SecureHook(this.button2, "Disable", function(bObj, _)
-					self:clrBtnBdr(bObj)
-				end)
-				self:SecureHook(this.button2, "Enable", function(bObj, _)
-					self:clrBtnBdr(bObj)
-				end)
-				self:SecureHook(this.button2, "SetEnabled", function(bObj)
-					self:clrBtnBdr(bObj)
-				end)
-				self:skinStdButton{obj=this.button3, y1=2}
-				self:SecureHook(this.button3, "Disable", function(bObj, _)
-					self:clrBtnBdr(bObj)
-				end)
-				self:SecureHook(this.button3, "SetEnabled", function(bObj)
-					self:clrBtnBdr(bObj)
-				end)
-				self:skinStdButton{obj=this.button4, y1=2}
-				self:SecureHook(this.button4, "Disable", function(bObj, _)
-					self:clrBtnBdr(bObj)
-				end)
-				self:SecureHook(this.button4, "Enable", function(bObj, _)
-					self:clrBtnBdr(bObj)
-				end)
-				self:skinStdButton{obj=this.extraButton, y1=2}
-				self:SecureHook(this.extraButton, "Disable", function(bObj, _)
-					self:clrBtnBdr(bObj)
-				end)
-				self:SecureHook(this.extraButton, "Enable", function(bObj, _)
-					self:clrBtnBdr(bObj)
-				end)
+				self:skinStdButton{obj=this.button1, fType=ftype, schk=true, sechk=true, y1=2}
+				self:skinStdButton{obj=this.button2, fType=ftype, schk=true, sechk=true, y1=2}
+				self:skinStdButton{obj=this.button3, fType=ftype, schk=true, y1=2}
+				self:skinStdButton{obj=this.button4, fType=ftype, schk=true, y1=2}
+				self:skinStdButton{obj=this.extraButton, fType=ftype, schk=true, y1=2}
 			end
 			if self.modBtnBs then
 				self:addButtonBorder{obj=_G[objName .. "ItemFrame"], ibt=true}
@@ -2442,19 +2320,13 @@ aObj.blizzFrames[ftype].SystemOptions = function(self)
 		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true})
 		_G.VideoOptionsFrameApply:SetFrameLevel(2) -- make it appear above the PanelContainer
 		if self.modBtns then
-			self:skinStdButton{obj=_G.VideoOptionsFrameApply, fType=ftype}
+			self:skinStdButton{obj=_G.VideoOptionsFrameApply, fType=ftype, schk=true}
 			self:skinStdButton{obj=_G.VideoOptionsFrameCancel, fType=ftype}
 			self:skinStdButton{obj=_G.VideoOptionsFrameOkay, fType=ftype}
 			self:skinStdButton{obj=_G.VideoOptionsFrameDefaults, fType=ftype}
 			if not self.isRtl then
 				self:skinStdButton{obj=_G.VideoOptionsFrameClassic, fType=ftype}
 			end
-			self:SecureHook(_G.VideoOptionsFrameApply, "Disable", function(bObj)
-				self:clrBtnBdr(bObj)
-			end)
-			self:SecureHook(_G.VideoOptionsFrameApply, "Enable", function(bObj)
-				self:clrBtnBdr(bObj)
-			end)
 		end
 		self:skinObject("tabs", {obj=_G.Display_, tabs={_G.GraphicsButton, _G.RaidButton}, fType=ftype, upwards=true, offsets={x1=4, y1=0, x2=0, y2=self.isTT and -3 or 2}, track=false, func=function(tab) tab:SetFrameLevel(20) tab.SetFrameLevel = _G.nop end})
 		if self.isTT then
@@ -2559,10 +2431,7 @@ aObj.blizzFrames[ftype].TextToSpeechFrame = function(self)
 		self:skinObject("slider", {obj=_G.TextToSpeechFrameAdjustVolumeSlider, fType=ftype})
 		if self.modBtns then
 			self:skinStdButton{obj=_G.TextToSpeechFramePlaySampleButton, fType=ftype}
-			self:skinStdButton{obj=_G.TextToSpeechFramePlaySampleAlternateButton, fType=ftype}
-			self:SecureHook(_G.TextToSpeechFramePlaySampleAlternateButton, "SetEnabled", function(bObj)
-				self:clrBtnBdr(bObj)
-			end)
+			self:skinStdButton{obj=_G.TextToSpeechFramePlaySampleAlternateButton, fType=ftype, sechk=true}
 		end
 		if self.modChkBtns then
 			self:skinCheckButton{obj=_G.TextToSpeechFramePanelContainer.PlaySoundSeparatingChatLinesCheckButton, fType=ftype}

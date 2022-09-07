@@ -175,14 +175,8 @@ aObj.SetupClassic_UIFrames = function()
 						self:skinObject("frame", {obj=fObj.ActivityView.Comment, fType=ftype, kfs=true, fb=true, ofs=6})
 
 						if self.modBtns then
-							self:skinStdButton{obj=fObj.BackButton, fType=ftype}
-							self:SecureHook(fObj.BackButton, "SetEnabled", function(bObj)
-								self:clrBtnBdr(bObj)
-							end)
-							self:skinStdButton{obj=fObj.PostButton, fType=ftype}
-							self:SecureHook(fObj.PostButton, "SetEnabled", function(bObj)
-								self:clrBtnBdr(bObj)
-							end)
+							self:skinStdButton{obj=fObj.BackButton, fType=ftype, sechk=true}
+							self:skinStdButton{obj=fObj.PostButton, fType=ftype, sechk=true}
 						end
 						if self.modChkBtns then
 							self:skinCheckButton{obj=fObj.NewPlayerFriendlyButton.CheckButton, fType=ftype}
@@ -218,20 +212,11 @@ aObj.SetupClassic_UIFrames = function()
 						end)
 						self:skinObject("scrollbar", {obj=fObj.ScrollBar, fType=ftype, rpTex="background"})
 						if self.modBtns then
-							self:skinStdButton{obj=fObj.SendMessageButton, fType=ftype}
-							self:SecureHook(fObj.SendMessageButton, "SetEnabled", function(bObj)
-								self:clrBtnBdr(bObj)
-							end)
-							self:skinStdButton{obj=fObj.GroupInviteButton, fType=ftype}
-							self:SecureHook(fObj.GroupInviteButton, "SetEnabled", function(bObj)
-								self:clrBtnBdr(bObj)
-							end)
+							self:skinStdButton{obj=fObj.SendMessageButton, fType=ftype, sechk=true}
+							self:skinStdButton{obj=fObj.GroupInviteButton, fType=ftype, sechk=true}
 						end
 						if self.modBtnBs then
-							self:addButtonBorder{obj=fObj.RefreshButton, fType=ftype, ofs=-2, x1=1, clr="gold"}
-							self:SecureHook(fObj.RefreshButton, "SetEnabled", function(bObj)
-								self:clrBtnBdr(bObj)
-							end)
+							self:addButtonBorder{obj=fObj.RefreshButton, fType=ftype, sechk=true, ofs=-2, x1=1, clr="gold"}
 						end
 
 						-- tooltip
@@ -489,15 +474,9 @@ aObj.SetupClassic_UIFrames = function()
 							self:checkTex{obj=_G["QuestLogTitle" .. i]}
 						end
 					end)
-					self:skinStdButton{obj=_G.QuestLogFrameAbandonButton, fType=ftype, x1=2, x2=-2}
+					self:skinStdButton{obj=_G.QuestLogFrameAbandonButton, fType=ftype, schk=true, x1=2, x2=-2}
 					self:skinStdButton{obj=_G.QuestFrameExitButton, fType=ftype}
-					self:skinStdButton{obj=_G.QuestFramePushQuestButton, fType=ftype, x1=2, x2=-2}
-					self:SecureHook(_G.QuestFramePushQuestButton, "Disable", function(bObj, _)
-						self:clrBtnBdr(bObj)
-					end)
-					self:SecureHook(_G.QuestFramePushQuestButton, "Enable", function(bObj, _)
-						self:clrBtnBdr(bObj)
-					end)
+					self:skinStdButton{obj=_G.QuestFramePushQuestButton, fType=ftype, schk=true, x1=2, x2=-2}
 				end
 
 				self:SecureHook("QuestLog_UpdateQuestDetails", function(_)
@@ -513,6 +492,9 @@ aObj.SetupClassic_UIFrames = function()
 				self:Unhook(this, "OnShow")
 			end)
 		else
+					self:skinStdButton{obj=_G.QuestLogFrameAbandonButton, fType=ftype, schk=true, x1=2, x2=-2}
+					self:skinStdButton{obj=_G.QuestLogFrameTrackButton, fType=ftype, schk=true}
+					self:skinStdButton{obj=_G.QuestFramePushQuestButton, fType=ftype, schk=true, x1=2, x2=-2}
 			self:SecureHookScript(_G.QuestLogFrame, "OnShow", function(this)
 				self:keepFontStrings(_G.EmptyQuestLogFrame)
 				self:keepFontStrings(_G.QuestLogCount)
@@ -530,15 +512,6 @@ aObj.SetupClassic_UIFrames = function()
 						end
 					end)
 					self:skinStdButton{obj=_G.QuestLogFrameCancelButton, fType=ftype, x1=2, x2=-2}
-					self:skinStdButton{obj=_G.QuestLogFrameAbandonButton, fType=ftype, x1=2, x2=-2}
-					self:skinStdButton{obj=_G.QuestLogFrameTrackButton, fType=ftype}
-					self:skinStdButton{obj=_G.QuestFramePushQuestButton, fType=ftype, x1=2, x2=-2}
-					self:SecureHook(_G.QuestFramePushQuestButton, "Disable", function(bObj, _)
-						self:clrBtnBdr(bObj)
-					end)
-					self:SecureHook(_G.QuestFramePushQuestButton, "Enable", function(bObj, _)
-						self:clrBtnBdr(bObj)
-					end)
 				end
 
 				self:Unhook(this, "OnShow")

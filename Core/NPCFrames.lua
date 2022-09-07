@@ -127,22 +127,15 @@ aObj.blizzFrames[ftype].MerchantFrame = function(self)
 			self:getRegion(_G.MerchantRepairItemButton, 1):SetTexCoord(0.01375, 0.2675, 0.01375, 0.54875)
 			_G.MerchantRepairAllIcon:SetTexCoord(0.295, 0.54875, 0.01375, 0.54875)
 			_G.MerchantGuildBankRepairButtonIcon:SetTexCoord(0.57375, 0.83, 0.01375, 0.54875)
-			self:addButtonBorder{obj=_G.MerchantRepairAllButton, clr="gold", ca=0.5}
-			self:addButtonBorder{obj=_G.MerchantRepairItemButton, clr="gold", ca=0.5}
-			self:addButtonBorder{obj=_G.MerchantGuildBankRepairButton, clr="gold", ca=0.5}
+			self:addButtonBorder{obj=_G.MerchantRepairAllButton, fType=ftype, clr="gold", ca=0.5}
+			self:addButtonBorder{obj=_G.MerchantRepairItemButton, fType=ftype, clr="gold", ca=0.5}
+			self:addButtonBorder{obj=_G.MerchantGuildBankRepairButton, fType=ftype, schk=true, clr="gold", ca=0.5}
 			self:SecureHook("MerchantFrame_UpdateCanRepairAll", function()
 				self:clrBtnBdr(_G.MerchantRepairAllButton, "gold", 0.5)
 			end)
 			if self.isRtl then
 				self:SecureHook("MerchantFrame_UpdateGuildBankRepair", function()
 					self:clrBtnBdr(_G.MerchantGuildBankRepairButton, "gold", 0.5)
-				end)
-			else
-				self:SecureHook(_G.MerchantGuildBankRepairButton, "Disable", function(bObj, _)
-					self:clrBtnBdr(bObj)
-				end)
-				self:SecureHook(_G.MerchantGuildBankRepairButton, "Enable", function(bObj, _)
-					self:clrBtnBdr(bObj)
 				end)
 			end
 		else
@@ -259,29 +252,17 @@ aObj.blizzFrames[ftype].QuestFrame = function(self)
 			self:SecureHook(_G.QuestFrameCloseButton, "Enable", function(bObj, _)
 				self:clrBtnBdr(bObj)
 			end)
-			self:skinStdButton{obj=_G.QuestFrameCompleteQuestButton}
-			self:SecureHook(_G.QuestFrameCompleteQuestButton, "Disable", function(bObj, _)
-				self:clrBtnBdr(bObj)
-			end)
-			self:SecureHook(_G.QuestFrameCompleteQuestButton, "Enable", function(bObj, _)
-				self:clrBtnBdr(bObj)
-			end)
-			self:skinStdButton{obj=_G.QuestFrameGoodbyeButton}
-			self:skinStdButton{obj=_G.QuestFrameCompleteButton}
+			self:skinStdButton{obj=_G.QuestFrameCompleteQuestButton, fType=ftype, schk=true}
+			self:skinStdButton{obj=_G.QuestFrameGoodbyeButton, fType=ftype}
+			self:skinStdButton{obj=_G.QuestFrameCompleteButton, fType=ftype}
 			self:SecureHookScript(_G.QuestFrameProgressPanel, "OnShow", function(_)
 				self:clrBtnBdr(_G.QuestFrameCompleteButton)
 			end)
-			self:skinStdButton{obj=_G.QuestFrameDeclineButton}
-			self:skinStdButton{obj=_G.QuestFrameAcceptButton}
-			self:SecureHook(_G.QuestFrameAcceptButton, "Disable", function(bObj, _)
-				self:clrBtnBdr(bObj)
-			end)
-			self:SecureHook(_G.QuestFrameAcceptButton, "Enable", function(bObj, _)
-				self:clrBtnBdr(bObj)
-			end)
-			self:skinStdButton{obj=_G.QuestFrameGreetingGoodbyeButton}
+			self:skinStdButton{obj=_G.QuestFrameDeclineButton, fType=ftype}
+			self:skinStdButton{obj=_G.QuestFrameAcceptButton, fType=ftype, schk=true}
+			self:skinStdButton{obj=_G.QuestFrameGreetingGoodbyeButton, fType=ftype}
 			if not self.isRtl then
-				self:skinStdButton{obj=_G.QuestFrameCancelButton}
+				self:skinStdButton{obj=_G.QuestFrameCancelButton, fType=ftype}
 			end
 		end
 

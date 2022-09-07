@@ -121,7 +121,7 @@ aObj.SetupRetail_NPCFrames = function()
 				fObj.RightDisplay.Tutorial1:SetTextColor(self.BT:GetRGB())
 				self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, y2=220})
 				if self.modBtns then
-					self:skinStdButton{obj=fObj.RightDisplay.StoreButton, x1=14, y1=2, x2=-14, y2=2, clr="gold"}
+					self:skinStdButton{obj=fObj.RightDisplay.StoreButton, fType=ftype, x1=14, y1=2, x2=-14, y2=2, clr="gold"}
 				end
 
 				self:Unhook(fObj, "OnShow")
@@ -129,12 +129,9 @@ aObj.SetupRetail_NPCFrames = function()
 			self:removeRegions(this.WoWTokenResults.TokenDisplay, {3}) -- background texture
 			if self.modBtns then
 				self:skinCloseButton{obj=this.SearchBar.FilterButton.ClearFiltersButton, fType=ftype, noSkin=true}
-				self:skinStdButton{obj=this.SearchBar.FilterButton}
-				self:skinStdButton{obj=this.SearchBar.SearchButton}
-				self:skinStdButton{obj=this.WoWTokenResults.Buyout}
-				self:SecureHook(this.WoWTokenResults.Buyout, "SetEnabled", function(bObj)
-					self:clrBtnBdr(bObj)
-				end)
+				self:skinStdButton{obj=this.SearchBar.FilterButton, fType=ftype}
+				self:skinStdButton{obj=this.SearchBar.SearchButton, fType=ftype}
+				self:skinStdButton{obj=this.WoWTokenResults.Buyout, fType=ftype, sechk=true}
 			end
 			local btn = this.WoWTokenResults.TokenDisplay.ItemButton
 			btn.IconBorder:SetTexture(nil)
@@ -156,21 +153,12 @@ aObj.SetupRetail_NPCFrames = function()
 			skinBidAmt(this.ItemBuyFrame.BidFrame.BidAmount)
 			skinItemList(this.ItemBuyFrame.ItemList)
 			if self.modBtns then
-				self:skinStdButton{obj=this.CommoditiesBuyFrame.BackButton}
-				self:skinStdButton{obj=this.CommoditiesBuyFrame.BuyDisplay.QuantityInput.MaxButton}
-				self:skinStdButton{obj=this.CommoditiesBuyFrame.BuyDisplay.BuyButton}
-				self:SecureHook(this.CommoditiesBuyFrame.BuyDisplay.BuyButton, "SetEnabled", function(bObj)
-					self:clrBtnBdr(bObj)
-				end)
-				self:skinStdButton{obj=this.ItemBuyFrame.BackButton}
-				self:skinStdButton{obj=this.ItemBuyFrame.BuyoutFrame.BuyoutButton}
-				self:SecureHook(this.ItemBuyFrame.BuyoutFrame.BuyoutButton, "SetEnabled", function(bObj)
-					self:clrBtnBdr(bObj)
-				end)
-				self:skinStdButton{obj=this.ItemBuyFrame.BidFrame.BidButton}
-				self:SecureHook(this.ItemBuyFrame.BidFrame.BidButton, "SetEnabled", function(bObj)
-					self:clrBtnBdr(bObj)
-				end)
+				self:skinStdButton{obj=this.CommoditiesBuyFrame.BackButton, fType=ftype}
+				self:skinStdButton{obj=this.CommoditiesBuyFrame.BuyDisplay.QuantityInput.MaxButton, fType=ftype}
+				self:skinStdButton{obj=this.CommoditiesBuyFrame.BuyDisplay.BuyButton, fType=ftype, sechk=true}
+				self:skinStdButton{obj=this.ItemBuyFrame.BackButton, fType=ftype}
+				self:skinStdButton{obj=this.ItemBuyFrame.BuyoutFrame.BuyoutButton, fType=ftype, sechk=true}
+				self:skinStdButton{obj=this.ItemBuyFrame.BidFrame.BidButton, fType=ftype, sechk=true}
 			end
 			-- Sell frames
 			local function skinPriceInp(frame)
@@ -188,14 +176,8 @@ aObj.SetupRetail_NPCFrames = function()
 				skinPriceInp(frame.PriceInput.MoneyInputFrame)
 				aObj:skinObject("dropdown", {obj=frame.DurationDropDown.DropDown, fType=ftype, lrgTpl=true, x1=0, y1=1, x2=-1, y2=3})
 				if aObj.modBtns then
-					aObj:skinStdButton{obj=frame.QuantityInput.MaxButton}
-					aObj:SecureHook(frame.QuantityInput.MaxButton, "SetEnabled", function(bObj)
-						aObj:clrBtnBdr(bObj)
-					end)
-					aObj:skinStdButton{obj=frame.PostButton}
-					aObj:SecureHook(frame.PostButton, "SetEnabled", function(bObj)
-						aObj:clrBtnBdr(bObj)
-					end)
+					aObj:skinStdButton{obj=frame.QuantityInput.MaxButton, fType=ftype, sechk=true}
+					aObj:skinStdButton{obj=frame.PostButton, fType=ftype, sechk=true}
 				end
 				if aObj.modBtnBs then
 					aObj:addButtonBorder{obj=frame.ItemDisplay.ItemButton, ftype=ftype, gibt=true, ofs=0}
@@ -217,10 +199,7 @@ aObj.SetupRetail_NPCFrames = function()
 			this.WoWTokenSellFrame.DummyItemList.DummyScrollBar:DisableDrawLayer("BACKGROUND")
 			this.WoWTokenSellFrame.DummyItemList.DummyScrollBar:DisableDrawLayer("ARTWORK")
 			if self.modBtns then
-				self:skinStdButton{obj=this.WoWTokenSellFrame.PostButton}
-				self:SecureHook(this.WoWTokenSellFrame.PostButton, "SetEnabled", function(bObj)
-					self:clrBtnBdr(bObj)
-				end)
+				self:skinStdButton{obj=this.WoWTokenSellFrame.PostButton, fType=ftype, sechk=true}
 			end
 			-- Auctions frames
 			self:skinObject("tabs", {obj=this.AuctionsFrame, tabs=this.AuctionsFrame.Tabs, fType=ftype, lod=self.isTT and true, upwards=true, offsets={x1=6, y1=-4, x2=-6, y2=self.isTT and -1 or 0}, track=false})
@@ -251,30 +230,15 @@ aObj.SetupRetail_NPCFrames = function()
 			_G.RaiseFrameLevelByTwo(this.AuctionsFrame)
 			_G.LowerFrameLevel(this.AuctionsFrame.sf)
 			if self.modBtns then
-				self:skinStdButton{obj=this.AuctionsFrame.CancelAuctionButton}
-				self:SecureHook(this.AuctionsFrame.CancelAuctionButton, "SetEnabled", function(bObj)
-					self:clrBtnBdr(bObj)
-				end)
-				self:skinStdButton{obj=this.AuctionsFrame.BuyoutFrame.BuyoutButton}
-				self:SecureHook(this.AuctionsFrame.BuyoutFrame.BuyoutButton, "SetEnabled", function(bObj)
-					self:clrBtnBdr(bObj)
-				end)
-				self:skinStdButton{obj=this.AuctionsFrame.BidFrame.BidButton}
-				self:SecureHook(this.AuctionsFrame.BidFrame.BidButton, "SetEnabled", function(bObj)
-					self:clrBtnBdr(bObj)
-				end)
+				self:skinStdButton{obj=this.AuctionsFrame.CancelAuctionButton, fType=ftype, sechk=true}
+				self:skinStdButton{obj=this.AuctionsFrame.BuyoutFrame.BuyoutButton, fType=ftype, sechk=true}
+				self:skinStdButton{obj=this.AuctionsFrame.BidFrame.BidButton, fType=ftype, sechk=true}
 			end
 			-- Dialogs
 			self:skinObject("frame", {obj=this.BuyDialog.Border, fType=ftype, kfs=true, ofs=-10})
 			if self.modBtns then
-				self:skinStdButton{obj=this.BuyDialog.BuyNowButton}
-				self:SecureHook(this.BuyDialog.BuyNowButton, "SetEnabled", function(bObj)
-					self:clrBtnBdr(bObj)
-				end)
-				self:skinStdButton{obj=this.BuyDialog.CancelButton}
-				self:SecureHook(this.BuyDialog.CancelButton, "SetEnabled", function(bObj)
-					self:clrBtnBdr(bObj)
-				end)
+				self:skinStdButton{obj=this.BuyDialog.BuyNowButton, fType=ftype, sechk=true}
+				self:skinStdButton{obj=this.BuyDialog.CancelButton, fType=ftype, sechk=true}
 			end
 
 			self:Unhook(this, "OnShow")
@@ -352,14 +316,8 @@ aObj.SetupRetail_NPCFrames = function()
 			_G.ReagentBankFrame.UnlockInfo:DisableDrawLayer("BORDER")
 			_G.RaiseFrameLevelByTwo(_G.ReagentBankFrame.UnlockInfo) -- hide the slot button textures
 			if self.modBtns then
-				self:skinStdButton{obj=_G.ReagentBankFrameUnlockInfoPurchaseButton}
-				self:skinStdButton{obj=_G.ReagentBankFrame.DespositButton}
-				self:SecureHook(_G.ReagentBankFrame.DespositButton, "Disable", function(bObj, _)
-					self:clrBtnBdr(bObj)
-				end)
-				self:SecureHook(_G.ReagentBankFrame.DespositButton, "Enable", function(bObj, _)
-					self:clrBtnBdr(bObj)
-				end)
+				self:skinStdButton{obj=_G.ReagentBankFrameUnlockInfoPurchaseButton, fType=ftype}
+				self:skinStdButton{obj=_G.ReagentBankFrame.DespositButton, fType=ftype, schk=true}
 			end
 			if self.modBtnBs then
 				-- add button borders to reagent bank items
@@ -826,13 +784,7 @@ aObj.SetupRetail_NPCFrames = function()
 			self:removeInset(this.bottomInset)
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true})
 			if self.modBtns then
-				self:skinStdButton{obj=_G.ClassTrainerTrainButton}
-				self:SecureHook(_G.ClassTrainerTrainButton, "Disable", function(bObj, _)
-					self:clrBtnBdr(bObj)
-				end)
-				self:SecureHook(_G.ClassTrainerTrainButton, "Enable", function(bObj, _)
-					self:clrBtnBdr(bObj)
-				end)
+				self:skinStdButton{obj=_G.ClassTrainerTrainButton, fType=ftype, schk=true}
 			end
 			if self.modBtnBs then
 				 self:addButtonBorder{obj=this.skillStepButton, relTo=this.skillStepButton.icon}
@@ -855,15 +807,9 @@ aObj.SetupRetail_NPCFrames = function()
 			self:skinObject("editbox", {obj=_G.VoidItemSearchBox, fType=ftype, si=true})
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x2=1})
 			if self.modBtns then
-				self:skinStdButton{obj=_G.VoidStorageTransferButton}
-				self:SecureHook(_G.VoidStorageTransferButton, "Disable", function(bObj, _)
-					self:clrBtnBdr(bObj)
-				end)
-				self:SecureHook(_G.VoidStorageTransferButton, "Enable", function(bObj, _)
-					self:clrBtnBdr(bObj)
-				end)
-				self:skinCloseButton{obj=_G.VoidStorageBorderFrame.CloseButton}
-				self:skinStdButton{obj=_G.VoidStoragePurchaseButton}
+				self:skinStdButton{obj=_G.VoidStorageTransferButton, fType=ftype, schk=true}
+				self:skinCloseButton{obj=_G.VoidStorageBorderFrame.CloseButton, fType=ftype}
+				self:skinStdButton{obj=_G.VoidStoragePurchaseButton, fType=ftype}
 				self:SecureHook("VoidStorageFrame_Update", function()
 					self:clrBtnBdr(_G.VoidStoragePurchaseButton)
 				end)

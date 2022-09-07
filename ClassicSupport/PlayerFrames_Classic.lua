@@ -212,27 +212,9 @@ aObj.SetupClassic_PlayerFrames = function()
 				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ofs=-2 ,x1=3, x2=-1})
 				if self.modBtns then
 					self:skinCloseButton{obj=_G.GearManagerDialogClose, fType=ftype}
-					self:skinStdButton{obj=_G.GearManagerDialogDeleteSet, fType=ftype}
-					self:skinStdButton{obj=_G.GearManagerDialogEquipSet, fType=ftype}
-					self:skinStdButton{obj=_G.GearManagerDialogSaveSet, fType=ftype}
-					self:SecureHook(_G.GearManagerDialogDeleteSet, "Disable", function(bObj, _)
-						self:clrBtnBdr(bObj)
-					end)
-					self:SecureHook(_G.GearManagerDialogDeleteSet, "Enable", function(bObj, _)
-						self:clrBtnBdr(bObj)
-					end)
-					self:SecureHook(_G.GearManagerDialogEquipSet, "Disable", function(bObj, _)
-						self:clrBtnBdr(bObj)
-					end)
-					self:SecureHook(_G.GearManagerDialogEquipSet, "Enable", function(bObj, _)
-						self:clrBtnBdr(bObj)
-					end)
-					self:SecureHook(_G.GearManagerDialogSaveSet, "Disable", function(bObj, _)
-						self:clrBtnBdr(bObj)
-					end)
-					self:SecureHook(_G.GearManagerDialogSaveSet, "Enable", function(bObj, _)
-						self:clrBtnBdr(bObj)
-					end)
+					self:skinStdButton{obj=_G.GearManagerDialogDeleteSet, fType=ftype, schk=true}
+					self:skinStdButton{obj=_G.GearManagerDialogEquipSet, fType=ftype, schk=true}
+					self:skinStdButton{obj=_G.GearManagerDialogSaveSet, fType=ftype, schk=true}
 				end
 
 				self:SecureHookScript(_G.GearManagerDialogPopup, "OnShow", function(this)
@@ -459,16 +441,8 @@ aObj.SetupClassic_PlayerFrames = function()
 							bObj:GetParent().sbb:SetShown(bObj, show)
 						end)
 						btn.sbb:SetShown(btn.gameIcon:IsShown())
-						self:addButtonBorder{obj=btn.travelPassButton, ofs=0, y1=3, y2=-2}
-						self:addButtonBorder{obj=btn.summonButton}
-						for _, name in _G.pairs{"travelPassButton", "summonButton"} do
-							self:SecureHook(btn[name], "Disable", function(bObj, _)
-								self:clrBtnBdr(bObj)
-							end)
-							self:SecureHook(btn[name], "Enable", function(bObj, _)
-								self:clrBtnBdr(bObj)
-							end)
-						end
+						self:addButtonBorder{obj=btn.travelPassButton, fType=ftype, schk=true, ofs=0, y1=3, y2=-2}
+						self:addButtonBorder{obj=btn.summonButton, fType=ftype, schk=true}
 					end
 				end
 				self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, fb=true, ofs=0, y1=-81, x2=-1, y2=self.isClscERA and 1 or 0})
@@ -600,15 +574,9 @@ aObj.SetupClassic_PlayerFrames = function()
 				end
 				if self.modBtns then
 					self:skinStdButton{obj=_G.GuildControlPopupFrameCancelButton, fType=ftype}
-					self:skinStdButton{obj=_G.GuildControlPopupAcceptButton, fType=ftype}
+					self:skinStdButton{obj=_G.GuildControlPopupAcceptButton, fType=ftype, schk=true}
 					self:skinExpandButton{obj=_G.GuildControlPopupFrameAddRankButton, fType=ftype, plus=true, ofs=0}
 					self:skinExpandButton{obj=_G.GuildControlPopupFrameRemoveRankButton, fType=ftype, ofs=0}
-					self:SecureHook(_G.GuildControlPopupAcceptButton, "Disable", function(bObj, _)
-						self:clrBtnBdr(bObj)
-					end)
-					self:SecureHook(_G.GuildControlPopupAcceptButton, "Enable", function(bObj, _)
-						self:clrBtnBdr(bObj)
-					end)
 					self:SecureHook("GuildControlPopupFrameRemoveRankButton_OnUpdate", function()
 						self:clrBtnBdr(_G.GuildControlPopupFrameRemoveRankButton)
 					end)
@@ -631,6 +599,7 @@ aObj.SetupClassic_PlayerFrames = function()
 					self:skinCloseButton{obj=_G.GuildInfoCloseButton, fType=ftype}
 					self:skinStdButton{obj=_G.GuildInfoSaveButton, fType=ftype}
 					self:skinStdButton{obj=_G.GuildInfoCancelButton, fType=ftype}
+					self:skinStdButton{obj=_G.GuildInfoGuildEventButton, fType=ftype}
 				end
 
 				self:Unhook(fObj, "OnShow")
@@ -991,20 +960,8 @@ aObj.SetupClassic_PlayerFrames = function()
 				_G.PlayerTalentFramePreviewBar:DisableDrawLayer("BORDER")
 				_G.PlayerTalentFramePreviewBarFiller:DisableDrawLayer("BACKGROUND")
 				if self.modBtns then
-					self:skinStdButton{obj=_G.PlayerTalentFrameResetButton, fType=ftype}
-					self:skinStdButton{obj=_G.PlayerTalentFrameLearnButton, fType=ftype}
-					self:SecureHook(_G.PlayerTalentFrameResetButton, "Disable", function(bObj, _)
-						self:clrBtnBdr(bObj)
-					end)
-					self:SecureHook(_G.PlayerTalentFrameResetButton, "Enable", function(bObj, _)
-						self:clrBtnBdr(bObj)
-					end)
-					self:SecureHook(_G.PlayerTalentFrameLearnButton, "Disable", function(bObj, _)
-						self:clrBtnBdr(bObj)
-					end)
-					self:SecureHook(_G.PlayerTalentFrameLearnButton, "Enable", function(bObj, _)
-						self:clrBtnBdr(bObj)
-					end)
+					self:skinStdButton{obj=_G.PlayerTalentFrameResetButton, fType=ftype, schk=true}
+					self:skinStdButton{obj=_G.PlayerTalentFrameLearnButton, fType=ftype, schk=true}
 				end
 				for i = 1, 3 do
 					self:removeRegions(_G["PlayerSpecTab" .. i], {1}) -- N.B. other regions are icon and highlight

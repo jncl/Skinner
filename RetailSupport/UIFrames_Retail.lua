@@ -698,13 +698,7 @@ aObj.SetupRetail_UIFrames = function()
 			this.AnimaDiversionCurrencyFrame:DisableDrawLayer("BACKGROUND")
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true, cbns=true, clr="sepia", x1=-4, y1=3, x2=2, y2=-5})
 			if self.modBtns then
-				self:skinStdButton{obj=this.ReinforceInfoFrame.AnimaNodeReinforceButton}
-				self:SecureHook(this.ReinforceInfoFrame.AnimaNodeReinforceButton, "Disable", function(bObj, _)
-					self:clrBtnBdr(bObj)
-				end)
-				self:SecureHook(this.ReinforceInfoFrame.AnimaNodeReinforceButton, "Enable", function(bObj, _)
-					self:clrBtnBdr(bObj)
-				end)
+				self:skinStdButton{obj=this.ReinforceInfoFrame.AnimaNodeReinforceButton, fType=ftype, schk=true}
 			end
 
 			self:Unhook(this, "OnShow")
@@ -1078,10 +1072,7 @@ aObj.SetupRetail_UIFrames = function()
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true, cb=true})
 			if self.modBtns then
 				self:skinStdButton{obj=this.SaveButton, fType=ftype}
-				self:skinStdButton{obj=this.AddBindingButton, fType=ftype}
-				self:SecureHook(this.AddBindingButton, "SetEnabled", function(bObj)
-					self:clrBtnBdr(bObj)
-				end)
+				self:skinStdButton{obj=this.AddBindingButton, fType=ftype, sechk=true}
 				self:skinStdButton{obj=this.ResetButton, fType=ftype}
 			end
 
@@ -2969,13 +2960,7 @@ aObj.SetupRetail_UIFrames = function()
 			self:removeRegions(this.BottomFrame.MicroButtonFrame, {1, 2, 3})
 			self:skinObject("frame", {obj=this.BottomFrame, fType=ftype, kfs=true, y1=8})
 			if self.modBtns then
-				self:skinStdButton{obj=this.BottomFrame.TurnTimer.SkipButton}
-				self:SecureHook(this.BottomFrame.TurnTimer.SkipButton, "Disable", function(bObj, _)
-					self:clrBtnBdr(bObj)
-				end)
-				self:SecureHook(this.BottomFrame.TurnTimer.SkipButton, "Enable", function(bObj, _)
-					self:clrBtnBdr(bObj)
-				end)
+				self:skinStdButton{obj=this.BottomFrame.TurnTimer.SkipButton, fType=ftype, schk=true}
 			end
 			if self.modBtnBs then
 				updBBClr()
@@ -3129,13 +3114,7 @@ aObj.SetupRetail_UIFrames = function()
 					for btn in opt.OptionButtonsContainer.buttonPool:EnumerateActive() do
 						-- DON'T skin magnifying glass button
 						if btn:GetText() ~= "Preview Covenant" then
-							aObj:skinStdButton{obj=btn}
-							aObj:secureHook(btn, "SetEnabled", function(bObj)
-								aObj:clrBtnBdr(bObj)
-							end)
-							aObj:secureHook(btn, "Disable", function(bObj, _)
-								aObj:clrBtnBdr(bObj)
-							end)
+							aObj:skinStdButton{obj=btn, fType=ftype, schk=true}
 						end
 					end
 				end
@@ -3613,17 +3592,11 @@ aObj.SetupRetail_UIFrames = function()
 			if self.modBtns then
 				self:skinCloseButton{obj=_G.RaidInfoCloseButton, fType=ftype}
 				self:skinStdButton{obj=_G.RaidFrameConvertToRaidButton, fType=ftype}
-				self:skinStdButton{obj=_G.RaidFrameRaidInfoButton, fType=ftype}
+				self:skinStdButton{obj=_G.RaidFrameRaidInfoButton, fType=ftype, schk=true}
 				self:skinStdButton{obj=_G.RaidInfoExtendButton, fType=ftype}
 				self:skinStdButton{obj=_G.RaidInfoCancelButton, fType=ftype}
 				self:SecureHook("RaidFrame_Update", function()
 					self:clrBtnBdr(_G.RaidFrameConvertToRaidButton)
-				end)
-				self:SecureHook(_G.RaidFrameRaidInfoButton, "Disable", function(bObj, _)
-					self:clrBtnBdr(bObj)
-				end)
-				self:SecureHook(_G.RaidFrameRaidInfoButton, "Enable", function(bObj, _)
-					self:clrBtnBdr(bObj)
 				end)
 				self:SecureHook("RaidInfoFrame_UpdateSelectedIndex", function()
 					self:clrBtnBdr(_G.RaidInfoExtendButton)
