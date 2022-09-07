@@ -214,7 +214,7 @@ end
 function module:skinPetF()
 
 	if not aObj.uCls == "HUNTER"
-	and not aObj.uCls == "WARLOCK"
+	or not aObj.uCls == "WARLOCK"
 	then
 		return
 	end
@@ -290,6 +290,11 @@ function module:skinPetF()
 				module:RegisterEvent("UNIT_LEVEL", function(_)
 					setLvl()
 				end)
+			end
+			if not aObj.isRtl
+			and aObj.modBtnBs
+			then
+				aObj:addButtonBorder{obj=_G.PetFrameHappiness, ofs=1, clr="gold"}
 			end
 		end
 		self:SecureHookScript(_G.PetFrame, "OnShow", function(this)
