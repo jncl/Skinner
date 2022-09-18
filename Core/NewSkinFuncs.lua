@@ -170,7 +170,7 @@ do
 end
 
 local function setScrollTrackOffsets(tbl, type)
-	local h, w, o = _G.Round(tbl.obj:GetHeight()), _G.Round(tbl.obj:GetWidth())
+	local h, w, o = _G.Round(tbl.obj:GetHeight()), _G.Round(tbl.obj:GetWidth()) -- luacheck: ignore 311 (value is unused)
 	if type == "slider" then
 		o = tbl.obj:GetOrientation()
 	else

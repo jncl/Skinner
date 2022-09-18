@@ -76,7 +76,7 @@ aObj.SetupClassic_UIFrames = function()
 					if self.modBtns then
 						self:skinCloseButton{obj=self:getChild(this, self.isClscERA and 3 or 1), fType=ftype}
 					end
-				
+
 					self:SecureHookScript(_G.LFMFrame, "OnShow", function(fObj)
 						self:skinObject("dropdown", {obj=_G.LFMFrameEntryDropDown, fType=ftype})
 						self:removeInset(_G.LFMFrameInset)
@@ -238,11 +238,11 @@ aObj.SetupClassic_UIFrames = function()
 					self:skinObject("button", {obj=_G.MiniMapLFGFrame, fType=ftype, ofs=-0})
 					self:moveObject{obj=_G.MiniMapLFGFrame, x=-20}
 				end
-			
+
 			end
 		end
 	end
-	
+
 	aObj.blizzFrames[ftype].MainMenuBar = function(self)
 		if self.initialized.MainMenuBar then return end
 		self.initialized.MainMenuBar = true
@@ -300,7 +300,6 @@ aObj.SetupClassic_UIFrames = function()
 				self:Unhook(this, "OnShow")
 			end)
 			self:checkShown(_G.MainMenuBar)
-
 			if self.modBtnBs then
 				skinMultiBarBtns("Right")
 				skinMultiBarBtns("Left")
@@ -357,27 +356,27 @@ aObj.SetupClassic_UIFrames = function()
 		aObj.blizzFrames[ftype].PVPFrame = function(self)
 			if not self.prdb.PVPFrame or self.initialized.PVPFrame then return end
 			self.initialized.PVPFrame = true
-	
+
 			self:SecureHookScript(_G.PVPParentFrame, "OnShow", function(this)
 				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=12, y1=-12, x2=-32, y2=46})
 
-				self:SecureHookScript(_G.PVPFrame, "OnShow", function(this)
-					self:keepFontStrings(this)
+				self:SecureHookScript(_G.PVPFrame, "OnShow", function(fObj)
+					self:keepFontStrings(fObj)
 					if self.modBtnBs then
 						self:addButtonBorder{obj=_G.PVPFrameToggleButton, fType=ftype, clr="gold", x2=1}
 					end
 
-					self:Unhook(this, "OnShow")
+					self:Unhook(fObj, "OnShow")
 				end)
 				self:checkShown(_G.PVPFrame)
 
-				self:SecureHookScript(_G.PVPTeamDetails, "OnShow", function(this)
+				self:SecureHookScript(_G.PVPTeamDetails, "OnShow", function(fObj)
 					self:skinObject("dropdown", {obj=_G.PVPDropDown, fType=ftype})
 					for i = 1, 5 do
 						_G["PVPTeamDetailsFrameColumnHeader" .. i]:DisableDrawLayer("BACKGROUND")
 						self:skinObject("frame", {obj=_G["PVPTeamDetailsFrameColumnHeader" .. i], fType=ftype, ofs=-1})
 					end
-					self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, ofs=-2})
+					self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, cb=true, ofs=-2})
 					if self.modBtns then
 						self:skinStdButton{obj=_G.PVPTeamDetailsAddTeamMember, fType=ftype}
 					end
@@ -385,7 +384,7 @@ aObj.SetupClassic_UIFrames = function()
 						self:addButtonBorder{obj=_G.PVPTeamDetailsToggleButton, fType=ftype, clr="gold", ofs=-1, y1=-2, x2=-2}
 					end
 
-					self:Unhook(this, "OnShow")
+					self:Unhook(fObj, "OnShow")
 				end)
 
 				self:Unhook(this, "OnShow")
@@ -393,11 +392,11 @@ aObj.SetupClassic_UIFrames = function()
 
 		end
 	end
-	
+
 	aObj.blizzFrames[ftype].PVPHelper = function(self)
 		if self.initialized.PVPHelper then return end
 		self.initialized.PVPHelper = true
-	
+
 		self:SecureHookScript(_G.PVPFramePopup, "OnShow", function(this)
 			this:DisableDrawLayer("BORDER")
 			_G.PVPFramePopupRing:SetTexture(nil)
@@ -422,9 +421,9 @@ aObj.SetupClassic_UIFrames = function()
 			self:Unhook(this, "OnShow")
 		end)
 		self:checkShown(_G.PVPReadyDialog)
-	
+
 	end
-	
+
 	aObj.blizzFrames[ftype].QuestLog = function(self)
 		if not self.prdb.QuestLog or self.initialized.QuestLog then return end
 		self.initialized.QuestLog = true

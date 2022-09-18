@@ -1,8 +1,8 @@
+--[===[@non-debug@
+
 local _, aObj = ...
 
 local _G = _G
-
---[===[@non-debug@
 
 local hOfs = -7
 local function hideHeader(obj)
