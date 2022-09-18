@@ -2197,7 +2197,7 @@ aObj.SetupRetail_PlayerFrames = function()
 			self:skinObject("frame", {obj=this.Border, fType=ftype, kfs=true, ofs=-8})
 			if self.modBtns then
 				self:skinCloseButton{obj=this.CloseButton}
-				self:skinStdButton{obj=this.GenerateOrCopyLinkButton, schk=true}
+				self:skinStdButton{obj=this.GenerateOrCopyLinkButton, schk=true, sechk=true}
 			end
 
 			self:Unhook(this, "OnShow")
