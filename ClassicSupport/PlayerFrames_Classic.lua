@@ -75,44 +75,59 @@ aObj.SetupClassic_PlayerFrames = function()
 					end
 				end
 			end)
-			
+
 			self:Unhook(this, "OnShow")
 		end)
 
 		self:SecureHookScript(_G.PetPaperDollFrame, "OnShow", function(this)
-			if self.isClscERA then
-				self:keepFontStrings(this)
-				self:removeRegions(_G.PetPaperDollFrameCompanionFrame, {1, 2})
-				self:makeMFRotatable(_G.CompanionModelFrame)
-				if self.modBtns then
-					self:skinStdButton{obj=_G.CompanionSummonButton, fType=ftype}
-				end
-				if self.modBtnBs then
-					for i = 1, 10 do
-						self:addButtonBorder{obj=_G["CompanionButton" .. i], fType=ftype, sft=true}
-					end
-					self:addButtonBorder{obj=_G.CompanionPrevPageButton, ofs=-2, y1=-3, x2=-3}
-					self:addButtonBorder{obj=_G.CompanionNextPageButton, ofs=-2, y1=-3, x2=-3}
-					self:clrPNBtns("Companion")
-					self:SecureHook("PetPaperDollFrame_SetCompanionPage", function(_)
-						self:clrPNBtns("Companion")
-					end)
-
-				end
-			else
-				self:keepFontStrings(this)
-				self:skinObject("statusbar", {obj=_G.PetPaperDollFrameExpBar, regions={1, 2}, fi=0})
-				self:makeMFRotatable(_G.PetModelFrame)
+			local function skinPetFrame()
+				aObj:skinObject("statusbar", {obj=_G.PetPaperDollFrameExpBar, regions={1, 2}, fi=0})
+				aObj:makeMFRotatable(_G.PetModelFrame)
 				_G.PetAttributesFrame:DisableDrawLayer("BACKGROUND")
-				if self.modBtns then
-					self:skinStdButton{obj=_G.PetPaperDollCloseButton, fType=ftype}
+				if aObj.modBtns then
+					aObj:skinStdButton{obj=_G.PetPaperDollCloseButton, fType=ftype}
 				end
-				if self.modBtnBs then
-					self:addButtonBorder{obj=_G.PetPaperDollPetInfo, ofs=1, x2=0, clr="gold"}
-					for i = 1, 5 do
-						self:addButtonBorder{obj=_G["PetMagicResFrame" .. i], es=24, ofs=2, y1=3, y2=-4, clr="grey"}
+				if aObj.modBtnBs then
+					aObj:addButtonBorder{obj=_G.PetPaperDollPetInfo, ofs=1, x2=0, clr="gold"}
+					for i = 1, _G.NUM_PET_RESISTANCE_TYPES do
+						aObj:addButtonBorder{obj=_G["PetMagicResFrame" .. i], es=24, ofs=2, y1=3, y2=-4, clr="grey"}
 					end
 				end
+			end
+			self:keepFontStrings(this)
+			if self.isClscERA then
+				skinPetFrame()
+			else
+				self:skinObject("tabs", {obj=this, prefix=this:GetName(), numTabs=3, fType=ftype, lod=self.isTT and true, offsets={x1=6, y1=-6, x2=-6, y2=0}})
+				self:SecureHookScript(_G.PetPaperDollFramePetFrame, "OnShow", function(fObj)
+					skinPetFrame()
+					self:skinObject("frame", {obj=fObj, fType=ftype, fb=true, x1=12, y1=-65, x2=-33, y2=76})
+
+					self:Unhook(fObj, "OnShow")
+				end)
+				self:checkShown(_G.PetPaperDollFramePetFrame)
+				self:SecureHookScript(_G.PetPaperDollFrameCompanionFrame, "OnShow", function(fObj)
+					self:removeRegions(_G.PetPaperDollFrameCompanionFrame, {1, 2})
+					self:makeMFRotatable(_G.CompanionModelFrame)
+					self:skinObject("frame", {obj=fObj, fType=ftype, fb=true, x1=12, y1=-65, x2=-33, y2=76})
+					if self.modBtns then
+						self:skinStdButton{obj=_G.CompanionSummonButton, fType=ftype}
+					end
+					if self.modBtnBs then
+						for i = 1, _G.NUM_COMPANIONS_PER_PAGE do
+							self:addButtonBorder{obj=_G["CompanionButton" .. i], fType=ftype, sft=true, clr="grey"}
+						end
+						self:addButtonBorder{obj=_G.CompanionPrevPageButton, ofs=-2, y1=-3, x2=-3}
+						self:addButtonBorder{obj=_G.CompanionNextPageButton, ofs=-2, y1=-3, x2=-3}
+						self:clrPNBtns("Companion")
+						self:SecureHook("PetPaperDollFrame_SetCompanionPage", function(_)
+							self:clrPNBtns("Companion")
+						end)
+					end
+
+					self:Unhook(fObj, "OnShow")
+				end)
+				self:checkShown(_G.PetPaperDollFrameCompanionFrame)
 			end
 
 			self:Unhook(this, "OnShow")
@@ -189,13 +204,13 @@ aObj.SetupClassic_PlayerFrames = function()
 			self:SecureHookScript(_G.PaperDollFrameItemFlyout, "OnShow", function(this)
 				self:skinObject("frame", {obj=this.buttonFrame, fType=ftype, kfs=true, clr="gold", x2=4})
 				if self.modBtnBs then
-					self:SecureHook("PaperDollFrameItemFlyout_Show", function(slot)
+					self:SecureHook("PaperDollFrameItemFlyout_Show", function(_)
 						for i = 1, #_G.PaperDollFrameItemFlyout.buttons do
 							self:addButtonBorder{obj=_G.PaperDollFrameItemFlyout.buttons[i], fType=ftype, ibt=true, clr="grey"}
 						end
 					end)
 				end
-				
+
 				self:Unhook(this, "OnShow")
 			end)
 			self:SecureHookScript(_G.GearManagerDialog, "OnShow", function(this)
@@ -217,15 +232,15 @@ aObj.SetupClassic_PlayerFrames = function()
 					self:skinStdButton{obj=_G.GearManagerDialogSaveSet, fType=ftype, schk=true}
 				end
 
-				self:SecureHookScript(_G.GearManagerDialogPopup, "OnShow", function(this)
+				self:SecureHookScript(_G.GearManagerDialogPopup, "OnShow", function(fObj)
 					self:skinObject("editbox", {obj=_G.GearManagerDialogPopupEditBox, fType=ftype})
 					self:skinObject("slider", {obj=_G.GearManagerDialogPopupScrollFrame.ScrollBar, fType=ftype, rpTex="background"})
-					self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ofs=-4, x1=3})
+					self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, ofs=-4, x1=3})
 					if self.modBtns then
-						self:skinStdButton{obj=this.CancelButton}
-						self:skinStdButton{obj=this.OkayButton}
+						self:skinStdButton{obj=fObj.CancelButton}
+						self:skinStdButton{obj=fObj.OkayButton}
 						self:SecureHook("GearManagerDialogPopupOkay_Update", function()
-							self:clrBtnBdr(this.OkayButton)
+							self:clrBtnBdr(fObj.OkayButton)
 						end)
 					end
 					local bName
@@ -237,7 +252,7 @@ aObj.SetupClassic_PlayerFrames = function()
 						end
 					end
 
-					self:Unhook(this, "OnShow")
+					self:Unhook(fObj, "OnShow")
 				end)
 
 				self:Unhook(this, "OnShow")
@@ -621,6 +636,20 @@ aObj.SetupClassic_PlayerFrames = function()
 				self:Unhook(fObj, "OnShow")
 			end)
 
+			if self.isClsc then
+				self:SecureHookScript(_G.GuildEventLogFrame, "OnShow", function(fObj)
+					self:skinObject("frame", {obj=_G.GuildEventFrame, fType=ftype, kfs=true, fb=true, ofs=0})
+					self:skinObject("slider", {obj=_G.GuildEventLogScrollFrame.ScrollBar, fType=ftype})
+					self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, rns=true, ofs=-6})
+					if self.modBtns then
+						self:skinCloseButton{obj=_G.GuildEventLogCloseButton, fType=ftype}
+						self:skinStdButton{obj=_G.GuildEventLogCancelButton, fType=ftype}
+					end
+
+					self:Unhook(fObj, "OnShow")
+				end)
+			end
+
 			-- tooltip
 			_G.C_Timer.After(0.1, function()
 				self:add2Table(self.ttList, _G.FriendsTooltip)
@@ -983,7 +1012,7 @@ aObj.SetupClassic_PlayerFrames = function()
 		aObj.blizzFrames[ftype].TokenUI = function(self)
 			if not self.prdb.TokenUI or self.initialized.TokenUI then return end
 			self.initialized.TokenUI = true
-		
+
 			self:SecureHookScript(_G.TokenFrame, "OnShow", function(this)
 				self:keepFontStrings(this)
 				self:skinObject("slider", {obj=_G.TokenFrameContainerScrollBar, fType=ftype, rpTex="background"})
@@ -995,28 +1024,28 @@ aObj.SetupClassic_PlayerFrames = function()
 					_G.TokenFrameContainer.buttons[i].categoryLeft:SetTexture(nil)
 					_G.TokenFrameContainer.buttons[i].categoryRight:SetTexture(nil)
 				end
-				
+
 				self:Unhook(this, "OnShow")
 			end)
-			
+
 			self:SecureHookScript(_G.TokenFramePopup, "OnShow", function(this)
 				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, ofs=-6})
 				if self.modChkBtns then
 					self:skinCheckButton{obj=_G.TokenFramePopupInactiveCheckBox, fType=ftype}
 					self:skinCheckButton{obj=_G.TokenFramePopupBackpackCheckBox, fType=ftype}
 				end
-				
+
 				self:Unhook(this, "OnShow")
 			end)
-			
+
 			self:SecureHookScript(_G.BackpackTokenFrame, "OnShow", function(this)
 				this:DisableDrawLayer("BACKGROUND")
-				
+
 				self:Unhook(this, "OnShow")
 			end)
-			
+
 		end
-	end	
+	end
 
 	aObj.blizzLoDFrames[ftype].TradeSkillUI = function(self)
 		if not self.prdb.TradeSkillUI or self.initialized.TradeSkillUI then return end
@@ -1096,14 +1125,37 @@ aObj.SetupClassic_PlayerFrames = function()
 
 	end
 
+	if aObj.isClsc then
+		aObj.blizzFrames[ftype].WatchFrame = function(self)
+			if not self.prdb.WatchFrame or self.initialized.WatchFrame then return end
+			self.initialized.WatchFrame = true
+
+			if self.modBtnBs then
+				self:addButtonBorder{obj=_G.WatchFrameCollapseExpandButton, es=12, ofs=0, x1=-1}
+				local function skinQuestBtns()
+					local bName
+					for i = 1, _G.WATCHFRAME_NUM_ITEMS do
+						bName = "WatchFrameItem" .. i
+						self:addButtonBorder{obj=_G[bName], fType=ftype, reParent={_G[bName .. "Count"], _G[bName .. "Stock"]}, clr="grey"}
+					end
+					return 0, 0, 0
+				end
+				_G.WatchFrame_AddObjectiveHandler(skinQuestBtns)
+			end
+
+		end
+
+	end
+
 end
 
 aObj.SetupClassic_PlayerFramesOptions = function(self)
 
 	local optTab = {
-		["Craft UI"] = true,
-		["Glyph UI"] = self.isClsc and true or nil,
-		["Token UI"] = self.isClsc and true or nil,
+		["Craft UI"]    = true,
+		["Glyph UI"]    = self.isClsc and true or nil,
+		["Token UI"]    = self.isClsc and true or nil,
+		["Watch Frame"] = self.isClsc and true or nil,
 	}
 	self:setupFramesOptions(optTab, "Player")
 	_G.wipe(optTab)

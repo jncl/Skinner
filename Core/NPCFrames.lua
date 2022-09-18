@@ -433,6 +433,9 @@ aObj.blizzFrames[ftype].QuestInfo = function(self)
 		skinRewardBtns(this, "libt")
 		this.XPFrame.ReceiveText:SetTextColor(self.BT:GetRGB())
 		self:removeRegions(_G.QuestInfoPlayerTitleFrame, {2, 3, 4}) -- NameFrame textures
+		if self.isClsc then
+			this.TalentFrame.ReceiveText:SetTextColor(self.BT:GetRGB())
+		end
 
 		self:Unhook(this, "OnShow")
 	end)

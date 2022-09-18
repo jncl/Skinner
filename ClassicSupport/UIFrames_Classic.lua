@@ -492,9 +492,22 @@ aObj.SetupClassic_UIFrames = function()
 				self:Unhook(this, "OnShow")
 			end)
 		else
+			if self.modBtns then
+				self:SecureHookScript(_G.QuestLogControlPanel, "OnShow", function(this)
 					self:skinStdButton{obj=_G.QuestLogFrameAbandonButton, fType=ftype, schk=true, x1=2, x2=-2}
 					self:skinStdButton{obj=_G.QuestLogFrameTrackButton, fType=ftype, schk=true}
 					self:skinStdButton{obj=_G.QuestFramePushQuestButton, fType=ftype, schk=true, x1=2, x2=-2}
+
+					self:Unhook(this, "OnShow")
+				end)
+				self:checkShown(_G.QuestLogControlPanel)
+			end
+			self:SecureHookScript(_G.QuestLogDetailFrame, "OnShow", function(this)
+				self:skinObject("slider", {obj=_G.QuestLogDetailScrollFrame.ScrollBar, fType=ftype, rpTex="background"})
+				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, ofs=1, y1=-11})
+
+				self:Unhook(this, "OnShow")
+			end)
 			self:SecureHookScript(_G.QuestLogFrame, "OnShow", function(this)
 				self:keepFontStrings(_G.EmptyQuestLogFrame)
 				self:keepFontStrings(_G.QuestLogCount)

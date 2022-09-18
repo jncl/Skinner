@@ -189,7 +189,9 @@ function module:skinPlayerF()
 			end
 			if not aObj.isClscERA then
 				--	skin the TotemFrame, if required
-				if aObj.uCls == "SHAMAN" then
+				if aObj.uCls == "SHAMAN"
+				or aObj.uCls == "DEATHKNIGHT"
+				then
 					for i = 1, _G.MAX_TOTEMS do
 						_G["TotemFrameTotem" .. i .. "Background"]:SetAlpha(0) -- texture is changed
 						aObj:getRegion(aObj:getChild(_G["TotemFrameTotem" .. i], 2), 1):SetAlpha(0) -- Totem Border texture

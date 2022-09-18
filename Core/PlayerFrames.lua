@@ -545,11 +545,13 @@ aObj.blizzFrames[ftype].CompactFrames = function(self)
 			self:skinStdButton{obj=this.displayFrame.hiddenModeToggle, fType=ftype}
 			self:skinStdButton{obj=this.displayFrame.convertToRaid, fType=ftype}
 			self:skinStdButton{obj=this.displayFrame.leaderOptions.readyCheckButton, fType=ftype}
+			if not self.isClscERA then
+				self:skinStdButton{obj=this.displayFrame.leaderOptions.rolePollButton, fType=ftype}
+			end
 			if self.isRtl then
 				for _, type in _G.pairs{"Tank", "Healer", "Damager"} do
 					self:skinStdButton{obj=this.displayFrame.filterOptions["filterRole" .. type]}
 				end
-				self:skinStdButton{obj=this.displayFrame.leaderOptions.rolePollButton, fType=ftype}
 				this.displayFrame.leaderOptions.countdownButton:DisableDrawLayer("ARTWORK") -- alpha values are changed in code
 				this.displayFrame.leaderOptions.countdownButton.Text:SetDrawLayer("OVERLAY") -- move draw layer so it is displayed
 				self:skinStdButton{obj=this.displayFrame.leaderOptions.countdownButton, fType=ftype}
@@ -557,10 +559,15 @@ aObj.blizzFrames[ftype].CompactFrames = function(self)
 				_G.CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton:GetNormalTexture():SetAlpha(1) -- icon
 			end
 			self:SecureHook("CompactRaidFrameManager_UpdateOptionsFlowContainer", function(fObj)
+				-- handle button skin frames not being created yet
+				if fObj.displayFrame.leaderOptions.readyCheckButton.sb then
 				self:clrBtnBdr(fObj.displayFrame.leaderOptions.readyCheckButton)
-				if self.isRtl then
+					if not self.isClscERA then
 					self:clrBtnBdr(fObj.displayFrame.leaderOptions.rolePollButton)
+					end
+					if self.isRtl then
 					self:clrBtnBdr(fObj.displayFrame.leaderOptions.countdownButton)
+				end
 				end
 			end)
 		end

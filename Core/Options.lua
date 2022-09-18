@@ -1253,6 +1253,7 @@ aObj.SetupOptions = function(self)
 
 	local uiOptTab = {
 		["Addon List"]            = {suff = "Frame"},
+		["Alert Frames"]          = not self.isClscERA and true or nil,
 		["Auto Complete"]         = {suff = "Frame"},
 		["Battlefield Map"]       = {suff = "Frame"},
 		["Binding UI"]            = {desc = "Key Bindings UI"},
@@ -1274,6 +1275,7 @@ aObj.SetupOptions = function(self)
 		["Move Pad"]              = true,
 		["Movie Frame"]           = true,
 		["Nameplates"]            = true,
+		["Override Action Bar"]   = not self.isClscERA and {desc = "Vehicle UI"} or nil,
 		["PTR Feedback"]          = _G.PTR_IssueReporter and {suff = "Frames"} or nil,
 		["Raid Frame"]            = true,
 		["Shared Basic Controls"] = {desc = "Script Errors Frame"},

@@ -39,6 +39,217 @@ aObj.blizzFrames[ftype].AddonList = function(self)
 
 end
 
+if not aObj.isClscERA then
+	aObj.blizzFrames[ftype].AlertFrames = function(self)
+		if not self.prdb.AlertFrames or self.initialized.AlertFrames then return end
+		self.initialized.AlertFrames = true
+
+		--@debug@
+		local dontDebug = {
+			["Achievement"] = true,
+			["GarrisonTalent"] = true,
+			["Loot"] = true,
+			["MoneyWon"] = true,
+			["WorldQuestComplete"] = true,
+		}
+		--@end-debug@
+		local alertType = {
+			["Achievement"]           = {ofs = 0, y1 = -8, y2 = 8, nt = {"Background"}, stc = {"Unlocked"}, icon = {obj = "Icon", ddl = {"border", "overlay"}, tex ="Texture"}},
+			["Criteria"]              = {ofs = 0, y1 = -8, y2 = 8, nt = {"Background"}, stc = {"Unlocked"}, icon = {obj = "Icon", ddl = {"border", "overlay"}, tex ="Texture"}},
+			["DigsiteComplete"]       = {ofs = -10, ddl = {"background"}},
+			["DungeonCompletion"]     = {ofs = -8, ddl = {"background", "border", "overlay"}, sdla = "dungeonTexture", icon = {tex = "dungeonTexture"}},
+			["GarrisonBuilding"]      = {ofs = -10, ddl = {"background", "border", "overlay"}},
+			["GarrisonFollower"]      = {ofs = -8, ddl = {"background"}, nt = {"PortraitFrame[\"LevelBorder\"]", "FollowerBG"},  stn = {"PortraitFrame[\"PortraitRing\"]"}},
+			["GarrisonMission"]       = {ofs = -10, ddl = {"background", "border"}},
+			["GarrisonRandomMission"] = {ofs = -10, ddl = {"background"}, sdlb = "MissionType"},
+			["GarrisonShipFollower"]  = {ofs = -8, ddl = {"background"}, nt = {"FollowerBG"}},
+			["GarrisonShipMission"]   = {ofs = -10, ddl = {"background"}},
+			["GarrisonTalent"]        = {ofs = -10, ddl = {"background"}},
+			["GuildChallenge"]        = {ofs = -10, ddl = {"background", "border", "overlay"}},
+			["HonorAwarded"]          = {ofs = -8, ddl = {"background"}, ib = true},
+			["Invasion"]              = {ofs = -8, ddl = {"background"}, sdla = "Icon"},
+			-- ["Item"]                  = {ofs = -8, ddl = {"background"}, ib = true},
+			["LegendaryItem"]         = {ofs = -20, x1 = 24, x2 = -4, ddl = {"background"}, stn = {"Background", "Background2", "Background3"}, iq = _G.Enum.ItemQuality.Legendary},
+			["LootUpgrade"]           = {ofs = -8, ddl = {"background"}, stn = {"BaseQualityBorder", "UpgradeQualityBorder"}},
+			["MoneyWon"]              = {ofs = -8, ddl = {"background"}, ib = true},
+			["NewMount"]              = {ofs = -8, ddl = {"background"}, iq = _G.Enum.ItemQuality.Epic},
+			["NewPet"]                = {ofs = -8, ddl = {"background"}},
+			["NewRecipeLearned"]      = {ofs = -8},
+			["Scenario"]              = {ofs = -12, ddl = {"background", "border", "overlay"}, sdla = "dungeonTexture", icon = {tex = "dungeonTexture"}},
+			["WorldQuestComplete"]    = {ofs = -6, ddl = {"background", "border"}, sdla = "QuestTexture", icon = {tex = "QuestTexture"}},
+		}
+		if self.isRtl then
+			alertType["EntitlementDelivered"] = {ofs = -10}
+			alertType["Loot"]                 = {ofs = -8, ddl = {"background"}, icon = {obj = "lootItem", stn = {"SpecRing"}, ib = true, tex =  "Icon"}}
+			alertType["NewCosmetic"]          = {ofs = -8, iq = _G.Enum.ItemQuality.Epic}
+			alertType["NewRuneforgePower"]    = {ofs = -8, iq = _G.Enum.ItemQuality.Legendary}
+			alertType["NewToy"]               = {ofs = -8}
+			alertType["RafRewardDelivered"]   = {ofs = -10}
+		else
+			alertType["Achievement"].stn      = {"OldAchievement"}
+			alertType["Loot"]                 = {ofs = -8, ddl = {"background"}, stn = {"SpecRing"}, ib = true}
+			alertType["StorePurchase"]        = {ofs = -12, ddl = {"background"}}
+		end
+		if self.isPTR then
+			alertType["SkillLineSpecsUnlocked"] = {ofs = -8, ddl = {"background"}, sdla = {"Icon"}}
+		end
+		local function skinAlertFrame(type, frame)
+			local tbl = alertType[type]
+			--@debug@
+			if not dontDebug[type] then
+				aObj:Debug("skinAlertFrame: [%s, %s, %s]", type, frame)
+				-- _G.Spew("", frame)
+				_G.Spew("", tbl)
+			end
+			--@end-debug@
+			-- Stop animations
+			if frame.animIn then
+				frame.animIn:Stop()
+				frame.waitAndAnimOut:Stop()
+			end
+			if tbl.ddl then
+				for _, ddl in _G.pairs(tbl.ddl) do
+					frame:DisableDrawLayer(ddl)
+				end
+			end
+			if tbl.nt then
+				for _, tex in _G.pairs(tbl.nt) do
+					aObj:nilTexture(frame[tex], true)
+				end
+			end
+			if tbl.stn then
+				for _, tex in _G.pairs(tbl.stn) do
+					frame[tex]:SetTexture(nil)
+				end
+			end
+			if tbl.sdla then
+				if type == "Invasion" then
+					frame.Icon = aObj:getRegion(frame, 2)
+				end
+				frame[tex]:SetDrawLayer("ARTWORK")
+			end
+			if tbl.sdla then
+				frame[tex]:SetDrawLayer("BORDER")
+			end
+			if tbl.stc then
+				for _, fs in _G.pairs(tbl.stc) do
+					frame[fs]:SetTextColor(aObj.BT:GetRGB())
+				end
+			end
+			-- setup offset as required
+			tbl.x1  = tbl.x1 or tbl.ofs * -1
+			tbl.y1  = tbl.y1 or tbl.ofs
+			tbl.x2  = tbl.x2 or tbl.ofs
+			tbl.y2  = tbl.y2 or tbl.ofs * -1
+			aObj:skinObject("frame", {obj=frame, fType=ftype, x1=tbl.x1, y1=tbl.y1, x2=tbl.x2, y2=tbl.y2})
+			-- add button border if required
+			if aObj.modBtnBs then
+				local itemQuality = tbl.iq
+				if frame.hyperlink then -- Loot Won & Loot Upgrade Alerts
+					if frame.isCurrency then
+						itemQuality = _G.C_CurrencyInfo.GetCurrencyInfoFromLink(frame.hyperlink).quality
+					else
+						itemQuality = _G.select(3, _G.GetItemInfo(frame.hyperlink))
+					end
+				elseif type == "NewPet" then
+					itemQuality = _G.select(5, _G.C_PetJournal.GetPetStats(frame.petID)) - 1 -- rarity value - 1
+				elseif type == "NewToy" then
+					itemQuality = _G.select(6, _G.C_ToyBox.GetToyInfo(frame.toyID))
+				-- TODO: Item has a quality iconborder atlas
+				elseif type == "Item" then
+					aObj:Debug("Item Alert Border Atlas: [%s, %s]", frame.IconBorder:GetAtlas())
+				end
+				if not tbl.icon then
+					frame.Icon:SetDrawLayer("BORDER")
+					if tbl.ib then
+						frame.IconBorder:SetTexture(nil)
+					end
+					aObj:addButtonBorder{obj=frame, relTo=frame.Icon}
+				else
+					if tbl.icon.ddl then
+						for _, ddl in _G.pairs(tbl.icon.ddl) do
+							frame[tbl.icon.obj or "Icon"]:DisableDrawLayer(ddl)
+						end
+					end
+					if tbl.icon.stn then
+						for _, tex in _G.pairs(tbl.icon.stn) do
+							frame[tbl.icon.obj or "Icon"][tex]:SetTexture(nil)
+						end
+					end
+					if tbl.icon.ib then
+						frame[tbl.icon.obj or "Icon"].IconBorder:SetTexture(nil)
+					end
+					-- change Icon object here, used for button border and quality colour
+					if tbl.icon.obj then
+						frame = frame[tbl.icon.obj]
+					end
+					aObj:addButtonBorder{obj=frame, fType=ftype, relTo=frame[tbl.icon.tex]}
+				end
+				if itemQuality then
+					aObj:setBtnClr(frame, itemQuality)
+				else
+					aObj:clrBtnBdr(frame.sbb)
+				end
+			end
+		end
+		for type, offset in _G.pairs(alertType) do
+			local sysName = "AlertSystem"
+			if type == "NewCosmetic" then
+				sysName = "AlertFrameSystem"
+			end
+			-- aObj:Debug("AlertFrameSystem: [%s, %s]", type)
+			self:SecureHook(_G[type .. sysName], "setUpFunction", function(frame, _)
+				skinAlertFrame(type, frame)
+			end)
+			for frame in _G[type .. sysName].alertFramePool:EnumerateActive() do
+				skinAlertFrame(type, frame)
+			end
+		end
+
+		-- hook this to stop gradient texture whiteout
+		self:RawHook(_G.AlertFrame, "AddAlertFrame", function(this, frame)
+			if _G.IsAddOnLoaded("Overachiever") then
+				local ocScript = frame:GetScript("OnClick")
+				if ocScript
+				and ocScript == _G.OverachieverAlertFrame_OnClick
+				then
+					-- stretch icon texture
+					frame.Icon.Texture:SetTexCoord(-0.04, 0.75, 0.0, 0.555)
+					skinAlertFrame("Achievement", frame)
+				end
+			end
+			-- run the hooked function
+			self.hooks[this].AddAlertFrame(this, frame)
+		end, true)
+
+		-- hook this to remove rewardFrame rings
+		self:SecureHook("StandardRewardAlertFrame_AdjustRewardAnchors", function(frame)
+			if frame.RewardFrames then
+				for i = 1, #frame.RewardFrames do
+					frame.RewardFrames[i]:DisableDrawLayer("OVERLAY") -- reward ring
+				end
+			end
+		end)
+
+		-- hook these to reset Gradients
+		self:SecureHook("AlertFrame_PauseOutAnimation", function(frame)
+			if frame.sf
+			and frame.sf.tfade
+			then
+				frame.sf.tfade:SetGradientAlpha(self:getGradientInfo())
+			end
+		end)
+		self:SecureHook("AlertFrame_ResumeOutAnimation", function(frame)
+			if frame.sf
+			and frame.sf.tfade
+			then
+				frame.sf.tfade:SetAlpha(0)
+			end
+		end)
+
+	end
+end
+
 aObj.blizzFrames[ftype].AutoComplete = function(self)
 	if not self.prdb.AutoComplete or self.initialized.AutoComplete then return end
 	self.initialized.AutoComplete = true
@@ -1578,6 +1789,20 @@ aObj.blizzFrames[ftype].MainMenuBarCommon = function(self)
 		end)
 		self:checkShown(_G.StanceBarFrame)
 
+		if not self.isClscERA then
+			self:SecureHookScript(_G.PossessBarFrame, "OnShow", function(this)
+				self:keepFontStrings(this)
+				if self.modBtnBs then
+					for i = 1, _G.NUM_POSSESS_SLOTS do
+						self:addButtonBorder{obj=_G["PossessButton" .. i], abt=true, sft=true, ofs=3}
+					end
+				end
+
+				self:Unhook(this, "OnShow")
+			end)
+			self:checkShown(_G.PossessBarFrame)
+		end
+
 		-- TODO: change button references when PetActionButtonTemplate & ActionButtonTemplate are fixed
 		self:SecureHookScript(_G.PetActionBarFrame, "OnShow", function(this)
 			self:keepFontStrings(_G.PetActionBarFrame)
@@ -2117,6 +2342,36 @@ aObj.blizzFrames[ftype].Nameplates = function(self)
 
 end
 
+if not aObj.isClscERA then
+	aObj.blizzFrames[ftype].OverrideActionBar = function(self) -- a.k.a. Vehicle UI
+		if not self.prdb.OverrideActionBar  or self.initialized.OverrideActionBar then return end
+		self.initialized.OverrideActionBar = true
+
+		self:SecureHookScript(_G.OverrideActionBar, "OnShow", function(this)
+			this:DisableDrawLayer("OVERLAY")
+			this:DisableDrawLayer("BACKGROUND")
+			this:DisableDrawLayer("BORDER")
+			this.PitchButtonBG:SetDrawLayer("BORDER")
+			this.pitchFrame:DisableDrawLayer("BORDER")
+			this.leaveFrame:DisableDrawLayer("BACKGROUND")
+			this.leaveFrame:DisableDrawLayer("BORDER")
+			this.xpBar:DisableDrawLayer("ARTWORK")
+			self:skinObject("statusbar", {obj=this.xpBar, fi=0, bg=aObj:getRegion(this.xpBar, 1)})
+			self:skinObject("frame", {obj=this, fType=ftype, x1=144, y1=6, x2=-142, y2=-2})
+			if self.modBtnBs then
+				self:addButtonBorder{obj=this.PitchUpButton}
+				self:addButtonBorder{obj=this.PitchDownButton}
+				self:addButtonBorder{obj=this.LeaveButton}
+				for i = 1, 6 do
+					self:addButtonBorder{obj=this["SpellButton" .. i], sabt=true}
+				end
+			end
+
+			self:Unhook(this, "OnShow")
+		end)
+
+	end
+end
 -- PTR Feedback Tool
 if _G.PTR_IssueReporter then
 	aObj.blizzFrames[ftype].PTRFeedback = function(self)

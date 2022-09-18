@@ -454,239 +454,6 @@ aObj.SetupRetail_UIFrames = function()
 
 	end
 
-	aObj.blizzFrames[ftype].AlertFrames = function(self)
-		if not self.prdb.AlertFrames or self.initialized.AlertFrames then return end
-		self.initialized.AlertFrames = true
-
-		local function skinAlertFrame(type, frame, ofs)
-			if type == "GuildChallenge" then
-				frame:DisableDrawLayer("BORDER")
-				frame:DisableDrawLayer("OVERLAY")
-			elseif type == "GarrisonMission" then
-				frame:DisableDrawLayer("BORDER")
-			elseif type == "GarrisonRandomMission" then
-				frame.MissionType:SetDrawLayer("BORDER")
-			elseif type == "GarrisonFollower" then
-				frame.PortraitFrame.PortraitRing:SetTexture(nil)
-				aObj:nilTexture(frame.PortraitFrame.LevelBorder, true)
-				aObj:nilTexture(frame.FollowerBG, true)
-			elseif type == "GarrisonShipFollower" then
-				aObj:nilTexture(frame.FollowerBG, true)
-			elseif type == "Loot" then
-				frame.lootItem.SpecRing:SetTexture(nil)
-			end
-			if frame.Icon then
-				frame.Icon:SetDrawLayer("BORDER")
-			end
-			if frame.IconBorder then
-				frame.IconBorder:SetTexture(nil)
-			end
-			frame:DisableDrawLayer("BACKGROUND")
-			aObj:skinObject("frame", {obj=frame, fType=ftype, ofs=ofs})
-			if aObj.modBtnBs then
-				local itemQuality
-				if frame.Icon then
-					if not frame.sbb then
-						aObj:addButtonBorder{obj=frame, relTo=frame.Icon}
-					end
-					if type == "NewPet" then
-						itemQuality = _G.select(5, _G.C_PetJournal.GetPetStats(frame.petID)) - 1 -- rarity value - 1
-					end
-					if type == "NewMount" then
-						itemQuality = _G.Enum.ItemQuality.Epic  -- Mounts don't have an inherent concept of quality so we always use epic (for now).
-					end
-					if type == "NewToy" then
-						itemQuality = _G.select(6, _G.C_ToyBox.GetToyInfo(frame.toyID))
-					end
-					if type == "NewRuneforgePower" then
-						itemQuality = _G.Enum.ItemQuality.Legendary
-					end
-					if type == "NewCosmetic" then
-						itemQuality = _G.Enum.ItemQuality.Epic -- most cosmetics are epic
-					end
-					if type == "LootUpgrade" then
-						itemQuality = _G.select(3, _G.GetItemInfo(frame.hyperlink))
-						frame.BaseQualityBorder:SetTexture(nil)
-						frame.UpgradeQualityBorder:SetTexture(nil)
-					end
-					if itemQuality then
-						aObj:setBtnClr(frame, itemQuality)
-					else
-						aObj:clrBtnBdr(frame.sbb)
-					end
-				end
-				if type == "Loot" then
-					itemQuality = _G.select(3, _G.GetItemInfo(frame.hyperlink))
-					if frame.isCurrency then
-						itemQuality = _G.C_CurrencyInfo.GetCurrencyInfoFromLink(frame.hyperlink).quality
-					end
-					frame.lootItem.IconBorder:SetTexture(nil)
-					aObj:addButtonBorder{obj=frame.lootItem, fType=ftype, relTo=frame.lootItem.Icon}
-					aObj:setBtnClr(frame.lootItem, itemQuality)
-				end
-			end
-		end
-		local alertType = {
-			["GuildChallenge"]        = -10,
-			-- ["DungeonCompletion"]     = -8,
-			-- ["Scenario"]              = -12,
-			-- ["Invasion"]              = -8,
-			["DigsiteComplete"]       = -10,
-			["EntitlementDelivered"]  = -10,
-			["RafRewardDelivered"]    = -10,
-			["GarrisonBuilding"]      = -10,
-			["GarrisonMission"]       = -10,
-			["GarrisonShipMission"]   = -10,
-			["GarrisonRandomMission"] = -10,
-			["GarrisonFollower"]      = -8,
-			["GarrisonShipFollower"]  = -8,
-			["GarrisonTalent"]        = -10,
-			-- ["WorldQuestComplete"]    = -6,
-			-- ["LegendaryItem"]         = -20,
-			["NewPet"]                = -8,
-			["NewMount"]              = -8,
-			["NewToy"]                = -8,
-			["NewRuneforgePower"]     = -8,
-			["NewCosmetic"]           = -8,
-			-- ["Achievement"]           = 0,
-			-- ["Criteria"]              = 0,
-			["Loot"]                  = -8,
-			["LootUpgrade"]           = -8,
-			["MoneyWon"]              = -8,
-			["HonorAwarded"]          = -8,
-			["NewRecipeLearned"]      = -8,
-			-- ["GroupLoot"]             = 0,
-		}
-		for type, offset in _G.pairs(alertType) do
-			local sysName = "AlertSystem"
-			if type == "NewCosmetic" then
-				sysName = "AlertFrameSystem"
-			end
-			self:SecureHook(_G[type .. sysName], "setUpFunction", function(frame, _)
-				skinAlertFrame(type, frame, offset)
-			end)
-			for frame in _G[type .. sysName].alertFramePool:EnumerateActive() do
-				skinAlertFrame(type, frame, offset)
-			end
-		end
-
-		local function skinDCSAlertFrames(type, frame)
-			if type == "Scenario" then
-				aObj:getRegion(frame, 1):SetTexture(nil) -- Toast-IconBG
-			end
-			frame:DisableDrawLayer("BORDER")
-			frame:DisableDrawLayer("OVERLAY")
-			frame.dungeonTexture:SetDrawLayer("ARTWORK") -- move Dungeon texture above skinFrame
-			aObj:skinObject("frame", {obj=frame, fType=ftype, ofs=type=="Scenario" and -12 or -8})
-			if aObj.modBtnBs then
-				-- wait for animation to finish
-				_G.C_Timer.After(0.2, function()
-					aObj:addButtonBorder{obj=frame, relTo=frame.dungeonTexture}
-				end)
-			end
-		end
-		for _, type in _G.pairs{"DungeonCompletion", "Scenario"} do
-			self:SecureHook(_G[type .. "AlertSystem"], "setUpFunction", function(frame, _)
-				skinDCSAlertFrames(type, frame)
-			end)
-			for frame in _G[type .. "AlertSystem"].alertFramePool:EnumerateActive() do
-				skinDCSAlertFrames(type, frame)
-			end
-		end
-
-		self:SecureHook(_G.InvasionAlertSystem, "setUpFunction", function(frame, _)
-			self:getRegion(frame, 1):SetTexture(nil) -- Background toast texture
-			self:getRegion(frame, 2):SetDrawLayer("ARTWORK") -- move icon to ARTWORK layer so it is displayed
-			self:skinObject("frame", {obj=frame, fType=ftype, ofs=-8})
-			if self.modBtnBs then
-				self:addButtonBorder{obj=frame, relTo=self:getRegion(frame, 2)}
-			end
-		end)
-		self:SecureHook(_G.WorldQuestCompleteAlertSystem, "setUpFunction", function(frame, _)
-			frame.QuestTexture:SetDrawLayer("ARTWORK")
-			frame:DisableDrawLayer("BORDER") -- toast texture
-			self:skinObject("frame", {obj=frame, ofs=-6})
-			if self.modBtnBs then
-				self:addButtonBorder{obj=frame, relTo=frame.QuestTexture}
-			end
-		end)
-		self:SecureHook(_G.LegendaryItemAlertSystem, "setUpFunction", function(frame, _)
-			frame.Background:SetTexture(nil)
-			frame.Background2:SetTexture(nil)
-			frame.Background3:SetTexture(nil)
-			self:skinObject("frame", {obj=frame, fType=ftype, ofs=-20, x1=24, x2=-4})
-			if self.modBtnBs then
-				self:addButtonBorder{obj=frame, relTo=frame.Icon}
-				-- set button border to Legendary colour
-				self:setBtnClr(frame, _G.Enum.ItemQuality.Legendary)
-			end
-		end)
-
-		local function skinACAlertFrames(_, frame)
-			aObj:nilTexture(frame.Background, true)
-			frame.Unlocked:SetTextColor(aObj.BT:GetRGB())
-			if frame.OldAchievement then
-				frame.OldAchievement:SetTexture(nil)
-			end
-			frame.Icon:DisableDrawLayer("BORDER")
-			frame.Icon:DisableDrawLayer("OVERLAY")
-			aObj:skinObject("frame", {obj=frame, fType=ftype, ofs=0, y1=frame.Shield and -15 or -8, y2=frame.Shield and 10 or 8}) -- adjust if Achievement Alert
-			if aObj.modBtnBs then
-				aObj:addButtonBorder{obj=frame.Icon, relTo=frame.Icon.Texture}
-			end
-		end
-		for _, type in _G.pairs{"Achievement", "Criteria"} do
-			self:SecureHook(_G[type .. "AlertSystem"], "setUpFunction", function(frame, _)
-				skinACAlertFrames(type, frame)
-			end)
-			for frame in _G[type .. "AlertSystem"].alertFramePool:EnumerateActive() do
-				skinACAlertFrames(type, frame)
-			end
-		end
-
-		-- hook this to stop gradient texture whiteout
-		self:RawHook(_G.AlertFrame, "AddAlertFrame", function(this, frame)
-			if _G.IsAddOnLoaded("Overachiever") then
-				local ocScript = frame:GetScript("OnClick")
-				if ocScript
-				and ocScript == _G.OverachieverAlertFrame_OnClick
-				then
-					-- stretch icon texture
-					frame.Icon.Texture:SetTexCoord(-0.04, 0.75, 0.0, 0.555)
-					skinACAlertFrames("Achievement", frame)
-				end
-			end
-			-- run the hooked function
-			self.hooks[this].AddAlertFrame(this, frame)
-		end, true)
-
-		-- hook this to remove rewardFrame rings
-		self:SecureHook("StandardRewardAlertFrame_AdjustRewardAnchors", function(frame)
-			if frame.RewardFrames then
-				for i = 1, #frame.RewardFrames do
-					frame.RewardFrames[i]:DisableDrawLayer("OVERLAY") -- reward ring
-				end
-			end
-		end)
-
-		-- hook these to reset Gradients
-		self:SecureHook("AlertFrame_PauseOutAnimation", function(frame)
-			if frame.sf
-			and frame.sf.tfade
-			then
-				frame.sf.tfade:SetGradientAlpha(self:getGradientInfo())
-			end
-		end)
-		self:SecureHook("AlertFrame_ResumeOutAnimation", function(frame)
-			if frame.sf
-			and frame.sf.tfade
-			then
-				frame.sf.tfade:SetAlpha(0)
-			end
-		end)
-
-	end
-
 	aObj.blizzLoDFrames[ftype].AnimaDiversionUI = function(self)
 		if not self.prdb.AnimaDiversionUI or self.initialized.AnimaDiversionUI then return end
 		self.initialized.AnimaDiversionUI = true
@@ -2612,18 +2379,6 @@ aObj.SetupRetail_UIFrames = function()
 			end)
 			self:checkShown(_G.StatusTrackingBarManager)
 
-			self:SecureHookScript(_G.PossessBarFrame, "OnShow", function(this)
-				self:keepFontStrings(this)
-				if self.modBtnBs then
-					for i = 1, _G.NUM_POSSESS_SLOTS do
-						self:addButtonBorder{obj=_G["PossessButton" .. i], sft=true}
-					end
-				end
-
-				self:Unhook(this, "OnShow")
-			end)
-			self:checkShown(_G.PossessBarFrame)
-
 			self:SecureHookScript(_G.MultiCastActionBarFrame, "OnShow", function(this)
 				self:keepFontStrings(_G.MultiCastFlyoutFrame) -- Shaman's Totem Frame
 				if self.modBtnBs then
@@ -2824,35 +2579,6 @@ aObj.SetupRetail_UIFrames = function()
 
 		end)
 		self:checkShown(_G.OrderHallCommandBar)
-
-	end
-
-	aObj.blizzFrames[ftype].OverrideActionBar = function(self) -- a.k.a. Vehicle UI
-		if not self.prdb.OverrideActionBar  or self.initialized.OverrideActionBar then return end
-		self.initialized.OverrideActionBar = true
-
-		self:SecureHookScript(_G.OverrideActionBar, "OnShow", function(this)
-			this:DisableDrawLayer("OVERLAY")
-			this:DisableDrawLayer("BACKGROUND")
-			this:DisableDrawLayer("BORDER")
-			this.PitchButtonBG:SetDrawLayer("BORDER")
-			this.pitchFrame:DisableDrawLayer("BORDER")
-			this.leaveFrame:DisableDrawLayer("BACKGROUND")
-			this.leaveFrame:DisableDrawLayer("BORDER")
-			this.xpBar:DisableDrawLayer("ARTWORK")
-			self:skinObject("statusbar", {obj=this.xpBar, fi=0, bg=aObj:getRegion(this.xpBar, 1)})
-			self:skinObject("frame", {obj=this, fType=ftype, x1=144, y1=6, x2=-142, y2=-2})
-			if self.modBtnBs then
-				self:addButtonBorder{obj=this.PitchUpButton}
-				self:addButtonBorder{obj=this.PitchDownButton}
-				self:addButtonBorder{obj=this.LeaveButton}
-				for i = 1, 6 do
-					self:addButtonBorder{obj=this["SpellButton" .. i], sabt=true}
-				end
-			end
-
-			self:Unhook(this, "OnShow")
-		end)
 
 	end
 
@@ -4006,7 +3732,6 @@ aObj.SetupRetail_UIFramesOptions = function(self)
 
 	local optTab = {
 		["Adventure Map"]                = true,
-		["Alert Frames"]                 = true,
 		["Anima Diversion UI"]           = true,
 		["Azerite Item Toasts"]          = true,
 		["Boss Banner Toast"]            = true,
@@ -4030,7 +3755,6 @@ aObj.SetupRetail_UIFramesOptions = function(self)
 		["New Player Experience"]        = true,
 		["Obliterum UI"]                 = true,
 		["Order Hall UI"]                = true,
-		["Override Action Bar"]          = {desc = "Vehicle UI"},
 		["Pet Battle UI"]                = true,
 		["Player Choice"]                = {suff = "Frame"},
 		["PVE Frame"]                    = {desc = "Group Finder Frame"},
