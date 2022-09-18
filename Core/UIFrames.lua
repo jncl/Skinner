@@ -1778,10 +1778,10 @@ aObj.blizzFrames[ftype].MainMenuBarCommon = function(self)
 
 	if self.prdb.MainMenuBar.skin then
 		self:SecureHookScript(_G.StanceBarFrame, "OnShow", function(this)
-			self:keepFontStrings(_G.StanceBarFrame)
+			self:keepFontStrings(this)
 			if self.modBtnBs then
-				for _, btn in _G.pairs(_G.StanceBarFrame.StanceButtons) do
-					self:addButtonBorder{obj=btn, abt=true, sft=true}
+				for _, btn in _G.pairs(this.StanceButtons) do
+					self:addButtonBorder{obj=btn, abt=true, sft=true, ofs=3, x1=-4}
 				end
 			end
 
