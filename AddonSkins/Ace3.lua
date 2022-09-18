@@ -558,6 +558,11 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 	end
 	objectsToSkin = {}
 
+	-- tooltip
+	_G.C_Timer.After(0.1, function()
+		self:add2Table(self.ttList, _G.AceGUITooltip)
+	end)
+
 end
 
 -- hook this to capture the creation of AceConfig IOF panels

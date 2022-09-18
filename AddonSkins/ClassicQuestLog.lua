@@ -2,8 +2,6 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("Classic Quest Log") then return end
 local _G = _G
 
-if aObj.isRtl then return end
-
 aObj.addonsToSkin["Classic Quest Log"] = function(self)
 
 	if aObj.isClscERA then -- v 1.4.6.-Classic

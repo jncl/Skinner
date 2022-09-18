@@ -126,8 +126,13 @@ aObj.addonsToSkin.Leatrix_Plus = function(self) -- v 9.1.20/1.14.05/2.5.64
 	if _G.LeaPlusDB["EnhanceQuestLog"] == "On"
 	and self.prdb.QuestLog
 	then
-		self:skinStdButton{obj=self:getPenultimateChild(_G.QuestLogFrame)} -- Map button
+		if self.isClscERA
+		and self.modBtns
+		then
+			self:skinStdButton{obj=self:getPenultimateChild(_G.QuestLogFrame)} -- Map button
+		end
 	end
+
 	-- Enhanced Professions (changes in CraftUI & TradeSkillUI)
 
 	-- Volume slider (Character frame)
