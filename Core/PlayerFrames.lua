@@ -72,7 +72,7 @@ if not aObj.isClscERA then
 					-- end)
 				-- end
 				if aObj.modBtnBs then
-					aObj:addButtonBorder{obj=btn.icon, relTo=btn.texture, x1=4, y1=-1, x2=-4, y2=6}
+					aObj:addButtonBorder{obj=btn.icon, relTo=btn.texture, x1=3, y1=0, x2=-3, y2=6}
 					aObj:addButtonBorder{obj=btn, ofs=0}
 				end
 				if aObj.modChkBtns
