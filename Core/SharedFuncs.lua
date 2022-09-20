@@ -15,14 +15,14 @@ end
 local buildInfo = {
 	-- Testing
 	wow_classic_beta    = {"4.0.0",  99999, "Classic Beta"},
-	wow_classic_ptr     = {"3.4.0",  45435, "Classic PTR"},
-	wow_classic_era_ptr = {"1.14.3", 44834, "Classic Era PTR"}, -- a.k.a. Season of Mastery Beta
+	wow_classic_ptr     = {"3.4.0",  45613, "Classic PTR"},
+	wow_classic_era_ptr = {"1.14.3", 44834, "Classic Era PTR"}, -- a.k.a. Season of Mastery PTR
 	wow_beta            = {"10.0.0", 99999, "Retail Beta"},
-	wow_ptr             = {"9.2.7",  45161, "Retail PTR"},
+	wow_ptr             = {"9.2.7",  45570, "Retail PTR"},
 	-- Live
-	wow_classic         = {"3.4.0",  45435, "Classic"}, -- a.k.a. Wrath of the Lich King Classic
+	wow_classic         = {"3.4.0",  45613, "Classic"}, -- a.k.a. Wrath of the Lich King Classic
 	wow_classic_era     = {"1.14.3", 44834, "Classic Era"},
-	wow                 = {"9.2.7",  45114, "Retail"},
+	wow                 = {"9.2.7",  45338, "Retail"},
 	-- Currently playing
 	curr                = {_G.GetBuildInfo()},
 }
@@ -40,7 +40,7 @@ function aObj:checkVersion()
 		end
 	end
 	-- self:Debug("checkVersion#0: [%s, %s, %s, %s, %s, %s, %s]", agentUID, _G.WOW_PROJECT_ID, _G.GetBuildInfo())
-	
+
 	-- check to see which WoW version we are running on
 	self.isClscBeta   = agentUID == "wow_classic_beta" and true
 	self.isClscPTR    = agentUID == "wow_classic_ptr" and true
