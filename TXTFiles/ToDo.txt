@@ -30,8 +30,38 @@ ToDos
 		- happens when OverrideBar is used, but not always...
 		- happens after VehicleUI has been used
 
-	I	Auctionator, reported by Galthariel, 18.08.22
-?		- Options have no text on panel(s)
+	O	Skin unskinned WotLK frames
+√		- GuildEventLogFrame
+√		- QuestLogDetailFrame
+¶√		- WatchFrame
+√		- PossessBarFrame
+√		- OverrideActionBar
+√		- PetPaperDollFramePetFrame
+√		- QuestInfoRewardsFrame.TalentFrame
+√		- AlertFrames
+		
+√	O	Move Button state checks and Enabled checks into UIButtons function
+	
+	I/C	RareScanner, reported by Captain Vaniron, 08.09.22
+√		- line 15, method/func changed
 
-	I	Missing localisation, reported by EpidemeDaBear, 05.09.22
-√		- Token UI
+≈	S	Questie
+
+	I	LibUIDropDownMenu, reported by MetalHeadTwo, 10.09.22
+?		- 3x ...faceSkinner\AddonSkins\LibUIDropDownMenu.lua:13: attempt to index field '?' (a nil value)
+		[string "=(tail call)"]: ?
+		[string "=[C]"]: in function `xpcall'
+		[string "@Skinner\Core\UtilFuncs.lua"]:286: in function <Skinner\Core\UtilFuncs.lua:280>
+		[string "=(tail call)"]: ?
+		[string "@Skinner\Core\AddonFrames.lua"]:86: in function <Skinner\Core\AddonFrames.lua:82>
+		[string "@Skinner\Core\AddonFrames.lua"]:135: in function `AddonFrames'
+		[string "@Skinner\Core\Skinner-beta9.45435.4.lua"]:435: in function <Skinner\Core\Skinner.lua:435>
+		
+	I	Classic Quest Log, reported by DarkLimpan, 11.09.22
+√		- not being skinned in Retail, no errors reported
+
+	I	RecruitAFriend, reported by Hayato2846, 11.09.22
+x		- [ADDON_ACTION_FORBIDDEN] AddOn 'Skinner' tried to call the protected function 'CopyToClipboard()'.
+		- Only way to get link is to disable FriendsFrame and reloadUI
+
+√	S	RotaCast, requested by Galthariel, 16.09.22
