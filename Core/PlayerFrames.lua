@@ -561,13 +561,13 @@ aObj.blizzFrames[ftype].CompactFrames = function(self)
 			self:SecureHook("CompactRaidFrameManager_UpdateOptionsFlowContainer", function(fObj)
 				-- handle button skin frames not being created yet
 				if fObj.displayFrame.leaderOptions.readyCheckButton.sb then
-				self:clrBtnBdr(fObj.displayFrame.leaderOptions.readyCheckButton)
+					self:clrBtnBdr(fObj.displayFrame.leaderOptions.readyCheckButton)
 					if not self.isClscERA then
-					self:clrBtnBdr(fObj.displayFrame.leaderOptions.rolePollButton)
+						self:clrBtnBdr(fObj.displayFrame.leaderOptions.rolePollButton)
 					end
 					if self.isRtl then
-					self:clrBtnBdr(fObj.displayFrame.leaderOptions.countdownButton)
-				end
+						self:clrBtnBdr(fObj.displayFrame.leaderOptions.countdownButton)
+					end
 				end
 			end)
 		end
