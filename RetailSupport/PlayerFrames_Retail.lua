@@ -2498,7 +2498,7 @@ aObj.SetupRetail_PlayerFrames = function()
 		self:SecureHookScript(_G.GuildInfoFrame, "OnShow", function(this)
 			self:removeRegions(this, {1, 2, 3, 4, 5, 6 ,7, 8}) -- Background textures and bars
 			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true, upwards=true, offsets={x1=2, y1=-5, x2=2, y2=self.isTT and -5 or 0}})
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, fb=true, x1=-4, y1=1, x2=7, y2=0})
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, fb=true, x1=-5, y1=1, x2=7, y2=0})
 
 			self:Unhook(this, "OnShow")
 		end)
