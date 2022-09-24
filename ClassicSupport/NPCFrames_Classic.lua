@@ -333,15 +333,13 @@ aObj.SetupClassic_NPCFrames = function()
 			_G.ClassTrainerSkillIcon:DisableDrawLayer("BACKGROUND")
 			self:skinObject("slider", {obj=_G.ClassTrainerListScrollFrame.ScrollBar, fType=ftype, rpTex="background"})
 			self:skinObject("slider", {obj=_G.ClassTrainerDetailScrollFrame.ScrollBar, fType=ftype, rpTex="background"})
-			local x1, y1, x2, y2
+			local x2, y2 = -32, 71
 			if _G.IsAddOnLoaded("Leatrix_Plus")
 			and _G.LeaPlusDB["EnhanceTrainers"] == "On"
 			then
-				x1, y1, x2, y2 = 10, -11, -33, 49
-			else
-				x1, y1, x2, y2 = 10, -11, -32, 71
+				x2, y2 = -33, 49
 			end
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, x1=x1, y1=y1, x2=x2, y2=y2})
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=10, y1=-11, x2=x2, y2=y2})
 			if self.modBtns then
 				self:skinStdButton{obj=_G.ClassTrainerTrainButton, fType=ftype, schk=true}
 				self:skinStdButton{obj=_G.ClassTrainerCancelButton, fType=ftype}
@@ -358,7 +356,7 @@ aObj.SetupClassic_NPCFrames = function()
 				end)
 			end
 			if self.modBtnBs then
-				self:addButtonBorder{obj=_G.ClassTrainerSkillIcon}
+				self:addButtonBorder{obj=_G.ClassTrainerSkillIcon, fType=ftype}
 			end
 
 			self:Unhook(this, "OnShow")
