@@ -2829,7 +2829,7 @@ aObj.SetupRetail_UIFrames = function()
 			end
 			for opt in frame.optionPools:EnumerateActiveByTemplate(frame.optionFrameTemplate) do
 				opt.OptionText.String:SetTextColor(aObj.BT:GetRGB())
-				opt.OptionText.HTML:SetTextColor(aObj.BT:GetRGB())
+				opt.OptionText.HTML:SetTextColor("P", aObj.BT:GetRGB())
 				if aObj.modBtns then
 					for btn in opt.OptionButtonsContainer.buttonPool:EnumerateActive() do
 						-- DON'T skin magnifying glass button

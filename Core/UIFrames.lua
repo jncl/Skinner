@@ -1731,7 +1731,7 @@ aObj.blizzFrames[ftype].MailFrame = function(self)
 		--	Open Mail Frame
 		_G.OpenMailScrollFrame:DisableDrawLayer("BACKGROUND")
 		self:skinObject("slider", {obj=_G.OpenMailScrollFrame.ScrollBar, fType=ftype, rpTex="overlay"})
-		_G.OpenMailBodyText:SetTextColor(self.BT:GetRGB())
+		_G.OpenMailBodyText:SetTextColor("P", self.BT:GetRGB())
 		self:skinObject("frame", {obj=_G.OpenMailFrame, fType=ftype, kfs=true, ri=true, cb=true})
 		if self.modBtns then
 			self:skinStdButton{obj=_G.OpenMailReportSpamButton}
