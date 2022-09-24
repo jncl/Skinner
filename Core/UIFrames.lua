@@ -54,8 +54,8 @@ if not aObj.isClscERA then
 		}
 		--@end-debug@
 		local alertType = {
-			["Achievement"]           = {ofs = 0, y1 = -8, y2 = 8, nt = {"Background"}, stc = {"Unlocked"}, icon = {obj = "Icon", ddl = {"border", "overlay"}, tex ="Texture"}},
-			["Criteria"]              = {ofs = 0, y1 = -8, y2 = 8, nt = {"Background"}, stc = {"Unlocked"}, icon = {obj = "Icon", ddl = {"border", "overlay"}, tex ="Texture"}},
+			["Achievement"]           = {ofs = 0, nt = {"Background"}, stc = "Unlocked", icon = {obj = "Icon", ddl = {"border", "overlay"}, tex ="Texture"}},
+			["Criteria"]              = {ofs = 0, nt = {"Background"}, stc = "Unlocked", icon = {obj = "Icon", ddl = {"border", "overlay"}, tex ="Texture"}},
 			["DigsiteComplete"]       = {ofs = -10, ddl = {"background"}},
 			["DungeonCompletion"]     = {ofs = -8, ddl = {"background", "border", "overlay"}, sdla = "dungeonTexture", icon = {tex = "dungeonTexture"}},
 			["GarrisonBuilding"]      = {ofs = -10, ddl = {"background", "border", "overlay"}},
@@ -68,8 +68,8 @@ if not aObj.isClscERA then
 			["GuildChallenge"]        = {ofs = -10, ddl = {"background", "border", "overlay"}},
 			["HonorAwarded"]          = {ofs = -8, ddl = {"background"}, ib = true},
 			["Invasion"]              = {ofs = -8, ddl = {"background"}, sdla = "Icon"},
-			-- ["Item"]                  = {ofs = -8, ddl = {"background"}, ib = true},
 			["LegendaryItem"]         = {ofs = -20, x1 = 24, x2 = -4, ddl = {"background"}, stn = {"Background", "Background2", "Background3"}, iq = _G.Enum.ItemQuality.Legendary},
+			["Loot"]                  = {ofs = -10, y1 = -12, y2 = 12, ddl = {"background"}},
 			["LootUpgrade"]           = {ofs = -8, ddl = {"background"}, stn = {"BaseQualityBorder", "UpgradeQualityBorder"}},
 			["MoneyWon"]              = {ofs = -8, ddl = {"background"}, ib = true},
 			["NewMount"]              = {ofs = -8, ddl = {"background"}, iq = _G.Enum.ItemQuality.Epic},
@@ -78,26 +78,35 @@ if not aObj.isClscERA then
 			["Scenario"]              = {ofs = -12, ddl = {"background", "border", "overlay"}, sdla = "dungeonTexture", icon = {tex = "dungeonTexture"}},
 			["WorldQuestComplete"]    = {ofs = -6, ddl = {"background", "border"}, sdla = "QuestTexture", icon = {tex = "QuestTexture"}},
 		}
+		-- N.B. Appears in XML file but not in LUA file
+		-- ["Item"]                  = {ofs = -8, ddl = {"background"}, ib = true},
 		if self.isRtl then
+			alertType["Achievement"].y1       = -15
+			alertType["Achievement"].y2       = 12
+			alertType["Scenario"].y1          = -8
+			alertType["Scenario"].y2          = 8
 			alertType["EntitlementDelivered"] = {ofs = -10}
-			alertType["Loot"]                 = {ofs = -8, ddl = {"background"}, icon = {obj = "lootItem", stn = {"SpecRing"}, ib = true, tex =  "Icon"}}
+			alertType["Loot"].icon            = {obj = "lootItem", stn = {"SpecRing"}, ib = true, tex =  "Icon"}
 			alertType["NewCosmetic"]          = {ofs = -8, iq = _G.Enum.ItemQuality.Epic}
 			alertType["NewRuneforgePower"]    = {ofs = -8, iq = _G.Enum.ItemQuality.Legendary}
 			alertType["NewToy"]               = {ofs = -8}
 			alertType["RafRewardDelivered"]   = {ofs = -10}
 		else
+			alertType["Achievement"].y1       = -10
+			alertType["Achievement"].y2       = 10
 			alertType["Achievement"].stn      = {"OldAchievement"}
-			alertType["Loot"]                 = {ofs = -8, ddl = {"background"}, stn = {"SpecRing"}, ib = true}
+			alertType["Loot"].stn             = {"SpecRing"}
+			alertType["Loot"].ib              = true
 			alertType["StorePurchase"]        = {ofs = -12, ddl = {"background"}}
 		end
-		if self.isPTR then
+		if self.isRtlPTR then
 			alertType["SkillLineSpecsUnlocked"] = {ofs = -8, ddl = {"background"}, sdla = {"Icon"}}
 		end
 		local function skinAlertFrame(type, frame)
+			aObj:Debug("skinAlertFrame: [%s, %s, %s]", type, frame)
 			local tbl = alertType[type]
 			--@debug@
 			if not dontDebug[type] then
-				aObj:Debug("skinAlertFrame: [%s, %s, %s]", type, frame)
 				-- _G.Spew("", frame)
 				_G.Spew("", tbl)
 			end
@@ -126,15 +135,13 @@ if not aObj.isClscERA then
 				if type == "Invasion" then
 					frame.Icon = aObj:getRegion(frame, 2)
 				end
-				frame[tex]:SetDrawLayer("ARTWORK")
+				frame[tbl.sdla]:SetDrawLayer("ARTWORK")
 			end
-			if tbl.sdla then
-				frame[tex]:SetDrawLayer("BORDER")
+			if tbl.sdlb then
+				frame[tbl.sdlb]:SetDrawLayer("BORDER")
 			end
 			if tbl.stc then
-				for _, fs in _G.pairs(tbl.stc) do
-					frame[fs]:SetTextColor(aObj.BT:GetRGB())
-				end
+				frame[tbl.stc]:SetTextColor(aObj.BT:GetRGB())
 			end
 			-- setup offset as required
 			tbl.x1  = tbl.x1 or tbl.ofs * -1
