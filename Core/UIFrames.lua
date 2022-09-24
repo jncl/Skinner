@@ -208,16 +208,6 @@ if not aObj.isClscERA then
 
 		-- hook this to stop gradient texture whiteout
 		self:RawHook(_G.AlertFrame, "AddAlertFrame", function(this, frame)
-			if _G.IsAddOnLoaded("Overachiever") then
-				local ocScript = frame:GetScript("OnClick")
-				if ocScript
-				and ocScript == _G.OverachieverAlertFrame_OnClick
-				then
-					-- stretch icon texture
-					frame.Icon.Texture:SetTexCoord(-0.04, 0.75, 0.0, 0.555)
-					skinAlertFrame("Achievement", frame)
-				end
-			end
 			-- run the hooked function
 			self.hooks[this].AddAlertFrame(this, frame)
 		end, true)

@@ -9,16 +9,6 @@ if not aObj.isClscERA then
 		if not self.prdb.AchievementUI.skin or self.initialized.AchievementUI then return end
 		self.initialized.AchievementUI = true
 
-		-- handle Overachiever hijacking OnShow script first time through
-		if _G.IsAddOnLoaded("Overachiever") then
-			self:SecureHook("AchievementFrame_OnShow", function(this)
-				_G.AchievementFrame:Hide()
-				_G.AchievementFrame:Show()
-
-				self:Unhook(this, "AchievementFrame_OnShow")
-			end)
-		end
-
 		self:SecureHookScript(_G.AchievementFrame, "OnShow", function(this)
 			local function skinSB(statusBar, type)
 				aObj:moveObject{obj=_G[statusBar .. type], y=-3}
