@@ -109,6 +109,7 @@
 <Script file="ItemRack.lua"/>
 <Script file="Journalator.lua"/>
 <Script file="KongConfig.lua"/>
+<Script file="Krowi_AchievementFilter.lua"/>
 <Script file="Leatrix_Plus.lua"/>
 <Script file="LibAboutPanel.lua"/>
 <Script file="LibAddonDropDownTemplates.lua"/>
