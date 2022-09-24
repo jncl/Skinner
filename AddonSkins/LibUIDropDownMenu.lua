@@ -19,6 +19,14 @@ aObj.libsToSkin["LibUIDropDownMenu-4.0"] = function(self) -- v 90100
 
 	local lDD = _G.LibStub:GetLibrary("LibUIDropDownMenu-4.0", true)
 
+	-- handle drop downs not yet created
+	if lDD
+	and not _G.L_DropDownList2
+	then
+		self.initialized.LibUIDropDownMenu = false
+		return
+	end
+
 	if lDD then
 		skinDDL(_G.L_DropDownList1)
 		skinDDL(_G.L_DropDownList2)
