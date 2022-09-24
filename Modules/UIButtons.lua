@@ -27,11 +27,11 @@ do
 	module.swarrow = "↙" -- South West Arrow (U+2199)
 	-- create font to use for Close Buttons
 	module.fontX = _G.CreateFont("fontX")
-	module.fontX:SetFont([[Fonts\FRIZQT__.TTF]], 20)
+	module.fontX:SetFont([[Fonts\FRIZQT__.TTF]], 20, "")
 	module.fontX:SetTextColor(_G.NORMAL_FONT_COLOR:GetRGB())
 	-- create font to use for Black Close Buttons (TalkingHeadFrame)
 	module.fontBX = _G.CreateFont("fontBX")
-	module.fontBX:SetFont([[Fonts\FRIZQT__.TTF]], 20)
+	module.fontBX:SetFont([[Fonts\FRIZQT__.TTF]], 20, "")
 	module.fontBX:SetTextColor(_G.BLACK_FONT_COLOR:GetRGB())
 	-- create font for disabled text
 	module.fontDX = _G.CreateFont("fontDX")
@@ -39,15 +39,15 @@ do
 	module.fontDX:SetTextColor(_G.DISABLED_FONT_COLOR:GetRGB())
 	-- create font to use for small blue Close Buttons (e.g. BNToastFrame)
 	module.fontSBX = _G.CreateFont("fontSBX")
-	module.fontSBX:SetFont([[Fonts\FRIZQT__.TTF]], 14)
+	module.fontSBX:SetFont([[Fonts\FRIZQT__.TTF]], 14, "")
 	module.fontSBX:SetTextColor(_G.BATTLENET_FONT_COLOR:GetRGB())
 	-- create font to use for small Buttons (e.g. MinimalArchaeology)
 	module.fontSB = _G.CreateFont("fontSB")
-	module.fontSB:SetFont([[Fonts\FRIZQT__.TTF]], 14)
+	module.fontSB:SetFont([[Fonts\FRIZQT__.TTF]], 14, "")
 	module.fontSB:SetTextColor(_G.NORMAL_FONT_COLOR:GetRGB())
 	-- create font to use for Minus/Plus Buttons
 	module.fontP = _G.CreateFont("fontP")
-	module.fontP:SetFont([[Fonts\ARIALN.TTF]], 16)
+	module.fontP:SetFont([[Fonts\ARIALN.TTF]], 16, "")
 	module.fontP:SetTextColor(_G.NORMAL_FONT_COLOR:GetRGB())
 	-- create font for disabled text on Minus/Plus Buttons
 	module.fontDP = _G.CreateFont("fontDP")
@@ -55,7 +55,7 @@ do
 	module.fontDP:SetTextColor(_G.DISABLED_FONT_COLOR:GetRGB())
 	-- create font to use for Arrow buttons
 	module.fontS = _G.CreateFont("fontS")
-	module.fontS:SetFont([[Interface\AddOns\]] .. aName .. [[\Fonts\NotoSansSymbols-Medium.ttf]], 14)
+	module.fontS:SetFont([[Interface\AddOns\]] .. aName .. [[\Fonts\NotoSansSymbols-Medium.ttf]], 14, "")
 	module.fontS:SetTextColor(_G.NORMAL_FONT_COLOR:GetRGB())
 	-- create font for disabled text
 	module.fontDS = _G.CreateFont("fontDS")
