@@ -319,13 +319,7 @@ aObj.SetupRetail_UIFrames = function()
 			end
 			aObj:skinObject("frame", {obj=frame, fType=ftype, x1=3, y1=6, y2=-16})
 			if aObj.modBtns then
-				aObj:skinStdButton{obj=frame.NextMissionButton}
-				aObj:SecureHook(frame.NextMissionButton, "Disable", function(this, _)
-					aObj:clrBtnBdr(this)
-				end)
-				aObj:SecureHook(frame.NextMissionButton, "Enable", function(this, _)
-					aObj:clrBtnBdr(this)
-				end)
+				aObj:skinStdButton{obj=frame.NextMissionButton, fType=ftype, schk=true}
 			end
 			for i = 1, #frame.Stage.EncountersFrame.Encounters do
 				if not naval then
@@ -3317,16 +3311,10 @@ aObj.SetupRetail_UIFrames = function()
 			self:skinObject("frame", {obj=_G.RaidInfoFrame, fType=ftype, kfs=true, hdr=true, ofs=-5, y1=-6})
 			if self.modBtns then
 				self:skinCloseButton{obj=_G.RaidInfoCloseButton, fType=ftype}
-				self:skinStdButton{obj=_G.RaidFrameConvertToRaidButton, fType=ftype}
+				self:skinStdButton{obj=_G.RaidFrameConvertToRaidButton, fType=ftype, sechk=true}
 				self:skinStdButton{obj=_G.RaidFrameRaidInfoButton, fType=ftype, schk=true}
-				self:skinStdButton{obj=_G.RaidInfoExtendButton, fType=ftype}
+				self:skinStdButton{obj=_G.RaidInfoExtendButton, fType=ftype, schk=true, sechk=true}
 				self:skinStdButton{obj=_G.RaidInfoCancelButton, fType=ftype}
-				self:SecureHook("RaidFrame_Update", function()
-					self:clrBtnBdr(_G.RaidFrameConvertToRaidButton)
-				end)
-				self:SecureHook("RaidInfoFrame_UpdateSelectedIndex", function()
-					self:clrBtnBdr(_G.RaidInfoExtendButton)
-				end)
 			end
 			if self.modChkBtns then
 				self:skinCheckButton{obj=_G.RaidFrameAllAssistCheckButton, fType=ftype}

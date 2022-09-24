@@ -1624,7 +1624,7 @@ aObj.blizzLoDFrames[ftype].MacroUI = function(self)
 			self:skinStdButton{obj=_G.MacroCancelButton, fType=ftype}
 			self:skinStdButton{obj=_G.MacroSaveButton, fType=ftype}
 			self:skinStdButton{obj=_G.MacroDeleteButton, fType=ftype, schk=true}
-			self:skinStdButton{obj=_G.MacroNewButton, fType=ftype, schk=true, x2=-2}
+			self:skinStdButton{obj=_G.MacroNewButton, fType=ftype, schk=true, sechk=true, x2=-2}
 			self:skinStdButton{obj=_G.MacroExitButton, fType=ftype, x1=2}
 		end
 		if self.modBtnBs then
