@@ -29,13 +29,7 @@ aObj.addonsToSkin.BugSack = function(self) -- v 9.0.0
 			local btn
 			for _, name in _G.pairs{"Prev", "Send", "Next"} do
 				btn = _G["BugSack" .. name .. "Button"]
-				self:skinStdButton{obj=btn}
-				self:SecureHook(btn, "Disable", function(this, _)
-					self:clrBtnBdr(this)
-				end)
-				self:SecureHook(btn, "Enable", function(this, _)
-					self:clrBtnBdr(this)
-				end)
+				self:skinStdButton{obj=btn, schk=true}
 			end
 			btn = nil
 		end

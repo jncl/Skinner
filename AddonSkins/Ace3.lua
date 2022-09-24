@@ -37,13 +37,7 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 			if objType == "Button" then
 				if aObj.modBtns then
 					-- TODO: handle PowerRaid reskinning buttons, DON't just nil out .sb as gradient is overloaded
-					aObj:skinStdButton{obj=obj.frame, x1=5, x2=-5}
-					aObj:secureHook(obj.frame, "Disable", function(this, _)
-						aObj:clrBtnBdr(this)
-					end)
-					aObj:secureHook(obj.frame, "Enable", function(this, _)
-						aObj:clrBtnBdr(this)
-					end)
+					aObj:skinStdButton{obj=obj.frame, schk=true, x1=5, x2=-5}
 				end
 
 			elseif objType == "CheckBox" then
@@ -136,13 +130,7 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 				aObj:skinObject("slider", {obj=obj.scrollBar})
 				aObj:removeBackdrop(obj.scrollBG)
 				if aObj.modBtns then
-					aObj:skinStdButton{obj=obj.button, ofs=0, y1=-2, y2=-2}
-					aObj:secureHook(obj.button, "Disable", function(this, _)
-						aObj:clrBtnBdr(this)
-					end)
-					aObj:secureHook(obj.button, "Enable", function(this, _)
-						aObj:clrBtnBdr(this)
-					end)
+					aObj:skinStdButton{obj=obj.button, schk=true, ofs=0, y1=-2, y2=-2}
 				end
 
 			elseif objType == "ScrollFrame" then

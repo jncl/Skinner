@@ -17,13 +17,7 @@ aObj.SetupClassic_NPCFrames = function()
 				if self.modBtns then
 					self:skinStdButton{obj=_G.ArenaFrameCancelButton, fType=ftype}
 					self:skinStdButton{obj=_G.ArenaFrameJoinButton, fType=ftype}
-					self:skinStdButton{obj=_G.ArenaFrameGroupJoinButton, fType=ftype}
-					self:SecureHook(_G.ArenaFrameGroupJoinButton, "Disable", function(btn, _)
-						self:clrBtnBdr(btn)
-					end)
-					self:SecureHook(_G.ArenaFrameGroupJoinButton, "Enable", function(btn, _)
-						self:clrBtnBdr(btn)
-					end)
+					self:skinStdButton{obj=_G.ArenaFrameGroupJoinButton, fType=ftype, schk=true}
 				end
 
 				self:Unhook(this, "OnShow")
@@ -192,15 +186,9 @@ aObj.SetupClassic_NPCFrames = function()
 			if self.modBtns then
 				self:skinStdButton{obj=_G.AuctionsStackSizeMaxButton, fType=ftype}
 				self:skinStdButton{obj=_G.AuctionsNumStacksMaxButton, fType=ftype}
-				self:skinStdButton{obj=_G.AuctionsCreateAuctionButton, fType=ftype}
+				self:skinStdButton{obj=_G.AuctionsCreateAuctionButton, fType=ftype, schk=true}
 				self:skinStdButton{obj=_G.AuctionsCancelAuctionButton, fType=ftype, x2=-1}
 				self:skinStdButton{obj=_G.AuctionsCloseButton, fType=ftype}
-				self:SecureHook(_G.AuctionsCreateAuctionButton, "Disable", function(btn, _)
-					self:clrBtnBdr(btn)
-				end)
-				self:SecureHook(_G.AuctionsCreateAuctionButton, "Enable", function(btn, _)
-					self:clrBtnBdr(btn)
-				end)
 				self:SecureHook("AuctionFrameAuctions_Update", function()
 					self:clrBtnBdr(_G.AuctionsCancelAuctionButton)
 				end)
@@ -355,13 +343,7 @@ aObj.SetupClassic_NPCFrames = function()
 			end
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, x1=x1, y1=y1, x2=x2, y2=y2})
 			if self.modBtns then
-				self:skinStdButton{obj=_G.ClassTrainerTrainButton, fType=ftype}
-				self:SecureHook(_G.ClassTrainerTrainButton, "Disable", function(btn, _)
-					self:clrBtnBdr(btn)
-				end)
-				self:SecureHook(_G.ClassTrainerTrainButton, "Enable", function(btn, _)
-					self:clrBtnBdr(btn)
-				end)
+				self:skinStdButton{obj=_G.ClassTrainerTrainButton, fType=ftype, schk=true}
 				self:skinStdButton{obj=_G.ClassTrainerCancelButton, fType=ftype}
 				self:skinExpandButton{obj=_G.ClassTrainerCollapseAllButton, fType=ftype, onSB=true}
 				for i = 1, _G.CLASS_TRAINER_SKILLS_DISPLAYED do

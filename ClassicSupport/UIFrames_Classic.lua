@@ -563,15 +563,9 @@ aObj.SetupClassic_UIFrames = function()
 			if self.modBtns then
 				self:skinCloseButton{obj=_G.RaidInfoCloseButton, fType=ftype}
 				self:skinStdButton{obj=_G.RaidFrameConvertToRaidButton, fType=ftype}
-				self:skinStdButton{obj=_G.RaidFrameRaidInfoButton, fType=ftype}
+				self:skinStdButton{obj=_G.RaidFrameRaidInfoButton, fType=ftype, schk=true}
 				self:SecureHook("RaidFrame_Update", function()
 					self:clrBtnBdr(_G.RaidFrameConvertToRaidButton)
-				end)
-				self:SecureHook(_G.RaidFrameRaidInfoButton, "Disable", function(btn, _)
-					self:clrBtnBdr(btn)
-				end)
-				self:SecureHook(_G.RaidFrameRaidInfoButton, "Enable", function(btn, _)
-					self:clrBtnBdr(btn)
 				end)
 			end
 			if self.modChkBtns then

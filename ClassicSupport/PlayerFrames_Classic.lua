@@ -353,14 +353,8 @@ aObj.SetupClassic_PlayerFrames = function()
 				if self.modBtns then
 					self:skinCloseButton{obj=_G.CraftFrameCloseButton, fType=ftype}
 					self:skinExpandButton{obj=_G.CraftCollapseAllButton, fType=ftype, onSB=true}
-					self:skinStdButton{obj=_G.CraftCreateButton, fType=ftype}
+					self:skinStdButton{obj=_G.CraftCreateButton, fType=ftype, schk=true}
 					self:skinStdButton{obj=_G.CraftCancelButton, fType=ftype}
-					self:SecureHook(_G.CraftCreateButton, "Disable", function(btn, _)
-						self:clrBtnBdr(btn)
-					end)
-					self:SecureHook(_G.CraftCreateButton, "Enable", function(btn, _)
-						self:clrBtnBdr(btn)
-					end)
 				end
 			else
 				skinaTS(this)
