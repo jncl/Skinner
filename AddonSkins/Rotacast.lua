@@ -5,10 +5,15 @@ local _G = _G
 aObj.addonsToSkin.RotaCast = function(self) -- v 11.0
 
 	-- Minimap icon
-	_G["Rotacast.Frames.Icon"]:DisableDrawLayer("BACKGROUND")
-	_G["Rotacast.Frames.Icon"]:DisableDrawLayer("OVERLAY")
-	self:skinObject("frame", {obj=_G["Rotacast.Frames.Icon"], ofs=0})
+	if self.prdb.MinimapButtons.skin then
+		_G["Rotacast.Frames.Icon"]:DisableDrawLayer("BACKGROUND")
+		_G["Rotacast.Frames.Icon"]:DisableDrawLayer("OVERLAY")
+		if not self.prdb.MinimapButtons.style then
+			self:skinObject("frame", {obj=_G["Rotacast.Frames.Icon"], ofs=0})
+		end
+	end
 
+	-- Cast(ing) buttons
 	self:skinObject("frame", {obj=_G["Rotacast.Frames.Edit.Header"], kfs=true, rns=true})
 	if self.modBtnBs then
 		self:addButtonBorder{obj=_G["Rotacast.Frames.Edit.SequenceDown"], ofs=0, x2=-1, clr="grey"}
@@ -20,9 +25,6 @@ aObj.addonsToSkin.RotaCast = function(self) -- v 11.0
 		for i = 2, 101 do
 			self:addButtonBorder{obj=self:getChild(eBar, i), abt=true, sabt=true, clr="grey"}
 		end
-	end
-
-	if self.modBtnBs then
 		self:addButtonBorder{obj=_G["Rotacast.Frames.CastButton"], abt=true, sabt=true}
 	end
 
