@@ -244,7 +244,7 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 					elseif objType == "RS_Markers" then
 						xOfs1, yOfs1, xOfs2, yOfs2 = 0, -18, 1, 0
 					end
-					aObj:skinObject("dropdown", {obj=obj.frame, regions={2, 3, 4}, rp=true, x1=xOfs1, y1=yOfs1, x2=xOfs2, y2=yOfs2})
+					aObj:skinObject("dropdown", {obj=obj.frame, regions={2, 3, 4}, rpc=true, x1=xOfs1, y1=yOfs1, x2=xOfs2, y2=yOfs2})
 					aObj:secureHook(obj, "SetDisabled", function(this, disabled)
 						aObj:checkDisabledDD(this.frame, disabled)
 					end)

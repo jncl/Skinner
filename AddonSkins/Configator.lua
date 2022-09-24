@@ -56,7 +56,7 @@ aObj.libsToSkin.Configator = function(self) -- v 1.13.6670
 				end
 				-- skin the DropDown
 				if cType == "Selectbox" then
-					self:skinObject("dropdown", {obj=control, rp=true, y2=-4})
+					self:skinObject("dropdown", {obj=control, rpc=true, y2=-4})
 					-- self:skinObject("frame", {obj=_G.SelectBoxMenu.back})
 				elseif cType == "Text" or cType == "TinyNumber" or cType == "NumberBox" then
 					self:skinObject("editbox", {obj=control, y1=-4, y2=4})
@@ -99,7 +99,7 @@ aObj.libsToSkin.Configator = function(self) -- v 1.13.6670
 									for _, tfck in _G.ipairs(tfc.kids) do
 										if tfck.stype then
 											if tfck.stype == "SelectBox" then
-												self:skinObject("dropdown", {obj=tfck, rp=true, y2=-4})
+												self:skinObject("dropdown", {obj=tfck, rpc=true, y2=-4})
 												self:skinObject("frame", {obj=_G.SelectBoxMenu.back})
 											elseif tfck.stype == "EditBox" then
 												self:skinObject("editbox", {obj=tfck, y1=-4, y2=4})

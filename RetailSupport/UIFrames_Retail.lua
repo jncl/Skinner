@@ -2016,7 +2016,7 @@ aObj.SetupRetail_UIFrames = function()
 			self:removeNineSlice(_G.LFGDungeonReadyStatus.Border)
 			self:removeNineSlice(_G.LFGDungeonReadyDialog.Border)
 			self:skinObject("frame", {obj=_G.LFGDungeonReadyStatus, fType=ftype, kfs=true, ofs=-5})
-			self:skinObject("frame", {obj=_G.LFGDungeonReadyDialog, fType=ftype, kfs=true, rp=true, ofs=-5, y2=10}) -- use rp=true to make background visible
+			self:skinObject("frame", {obj=_G.LFGDungeonReadyDialog, fType=ftype, kfs=true, rpc=true, ofs=-5, y2=10}) -- use rpc=true to make background visible
 			if self.modBtns then
 				self:skinOtherButton{obj=_G.LFGDungeonReadyStatusCloseButton, text=self.modUIBtns.minus}
 				self:skinOtherButton{obj=_G.LFGDungeonReadyDialogCloseButton, text=self.modUIBtns.minus}

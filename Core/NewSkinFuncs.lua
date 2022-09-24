@@ -34,7 +34,7 @@ aObj.skinTPLs = {
 		y2          = 7,
 		adjBtnX		= false,
 		initState	= false, -- initial State is "Enabled" i.e. NOT "Disabled"
-		rp			= false,
+		rpc			= false, -- reverse parent child relationship
 	},
 	editbox = {
 		-- bd          = 3, -- medium
@@ -65,7 +65,8 @@ aObj.skinTPLs = {
 		rb          = true, -- remove Backdrop
 		ri          = true, -- disable draw layers; [Background, Border & Overlay]
 		rns         = true, -- disable draw layers; [Background, Border & Overlay]
-		rp          = false, -- reverse parent child relationship
+		rp          = true, -- disable PortraitContainer.portrait (Dragonflight)
+		rpc         = false, -- reverse parent child relationship
 		-- sft         = true, -- use SecureFrameTemplate
 		ofs         = 2, -- skin frame offset to object
 		-- x1          = ofs * -2,
@@ -436,7 +437,7 @@ local function skinDropDown(tbl)
 	-- return if not to be skinned
 	if tbl.noSkin then return end
 	-- skin the DropDown
-	aObj:skinObject("frame", {obj=tbl.obj, fType=tbl.fType, ng=true, bd=5, rp=tbl.rp, x1=tbl.x1, y1=tbl.y1, x2=tbl.x2, y2=tbl.y2})
+	aObj:skinObject("frame", {obj=tbl.obj, fType=tbl.fType, ng=true, bd=5, rpc=tbl.rp, x1=tbl.x1, y1=tbl.y1, x2=tbl.x2, y2=tbl.y2})
 	-- add a button border around the dd button
 	if not tbl.noBB then
 		local btn = tbl.obj.Button or tbl.obj.dropButton or _G[tbl.obj:GetName() .. "Button"]
@@ -547,6 +548,12 @@ local function skinFrame(tbl)
 	then
 		aObj:removeNineSlice(tbl.obj.NineSlice)
 	end
+	if tbl.rp
+	and tbl.obj.PortraitContainer
+	and tbl.obj.PortraitContainer.portrait
+	then
+		tbl.obj.PortraitContainer.portrait:SetAlpha(0) -- texture changed in code
+	end
 	if tbl.hdr then
 		hideHeader(tbl.obj)
 	end
@@ -576,7 +583,7 @@ local function skinFrame(tbl)
 		end
 	end
 	-- reverse parent child relationship
-	if tbl.rp
+	if tbl.rpc
 	and not tbl.obj.SetParent_orig
 	then
 		tbl.obj.sf:SetParent(tbl.obj:GetParent())
