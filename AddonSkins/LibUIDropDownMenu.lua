@@ -12,31 +12,30 @@ local function skinDDL(frame)
 	aObj:removeBackdrop(frame.MenuBackdrop)
 	aObj:skinObject("frame", {obj=frame, ofs=-2})
 end
-
+local function skinDropDowns(lDD, ddPrefix)
+	skinDDL(_G[ddPrefix .. 1])
+	skinDDL(_G[ddPrefix .. 2])
+	local maxLvl = _G.L_UIDROPDOWNMENU_MAXLEVELS
+	aObj:SecureHook(lDD, "UIDropDownMenu_CreateFrames", function(this, _, _)
+		for i = maxLvl + 1, _G.L_UIDROPDOWNMENU_MAXLEVELS do
+			skinDDL(_G[ddPrefix .. i])
+		end
+		maxLvl = _G.L_UIDROPDOWNMENU_MAXLEVELS
+	end)
+end
 aObj.libsToSkin["LibUIDropDownMenu-4.0"] = function(self) -- v 90100
 	if self.initialized.LibUIDropDownMenu then return end
 	self.initialized.LibUIDropDownMenu = true
 
 	local lDD = _G.LibStub:GetLibrary("LibUIDropDownMenu-4.0", true)
 
-	-- handle drop downs not yet created
-	if lDD
-	and not _G.L_DropDownList2
-	then
-		self.initialized.LibUIDropDownMenu = false
-		return
+	local ddPrefix = "L_DropDownList"
+	if _G.IsAddOnLoaded("TLDRMissions") then
+		ddPrefix = "L_TLDR_DropDownList"
 	end
 
 	if lDD then
-		skinDDL(_G.L_DropDownList1)
-		skinDDL(_G.L_DropDownList2)
-		local maxLvl = _G.L_UIDROPDOWNMENU_MAXLEVELS
-		self:SecureHook(lDD, "UIDropDownMenu_CreateFrames", function(this, _, _)
-			for i = maxLvl + 1, _G.L_UIDROPDOWNMENU_MAXLEVELS do
-				skinDDL(_G["L_DropDownList" .. i])
-			end
-			maxLvl = _G.L_UIDROPDOWNMENU_MAXLEVELS
-		end)
+		skinDropDowns(lDD, ddPrefix)
 	end
 
 end
@@ -47,16 +46,9 @@ aObj.libsToSkin["LibUIDropDownMenuQuestie-4.0"] = function(self) -- v 90080
 
 	local lDD = _G.LibStub:GetLibrary("LibUIDropDownMenuQuestie-4.0", true)
 
+	local ddPrefix = "L_DropDownListQuestie"
 	if lDD then
-		skinDDL(_G.L_DropDownListQuestie1)
-		skinDDL(_G.L_DropDownListQuestie2)
-		local maxLvl = _G.L_UIDROPDOWNMENUQUESTIE_MAXLEVELS
-		self:SecureHook(lDD, "UIDropDownMenu_CreateFrames", function(this, _, _)
-			for i = maxLvl + 1, _G.L_UIDROPDOWNMENUQUESTIE_MAXLEVELS do
-				skinDDL(_G["L_DropDownListQuestie" .. i])
-			end
-			maxLvl = _G.L_UIDROPDOWNMENUQUESTIE_MAXLEVELS
-		end)
+		skinDropDowns(lDD, ddPrefix)
 	end
 
 end

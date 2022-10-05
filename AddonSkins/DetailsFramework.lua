@@ -2,7 +2,7 @@ local _, aObj = ...
 local _G = _G
 -- This is a Library
 
-aObj.libsToSkin["DetailsFramework-1.0"] = function(self) -- v 220
+aObj.libsToSkin["DetailsFramework-1.0"] = function(self) -- v 367
 	if self.initialized.DetailsFramework then return end
 	self.initialized.DetailsFramework = true
 
@@ -16,7 +16,6 @@ aObj.libsToSkin["DetailsFramework-1.0"] = function(self) -- v 220
 		self:RawHook(DF, "NewButton", function(this, ...)
 			local varCnt = _G.select("#", ...)
 			local btnObj = self.hooks[this].NewButton(this, ...)
-
 			-- check to see if a button template is specified
 			if varCnt == 13 then
 				if btnObj.param2 == "param2" then
@@ -45,7 +44,6 @@ aObj.libsToSkin["DetailsFramework-1.0"] = function(self) -- v 220
 				self:skinStdButton{obj=btnObj.button}
 				btnObj.button.sb.tfade:SetTexture(nil)
 			end
-
 			return btnObj
 		end, true)
 	end
@@ -56,7 +54,6 @@ aObj.libsToSkin["DetailsFramework-1.0"] = function(self) -- v 220
 	local function skinCooltip(frame)
 		frame:DisableDrawLayer("BACKGROUND")
 		frame:DisableDrawLayer("BORDER")
-		-- aObj:addSkinFrame{obj=frame, ft="a", kfs=true, nb=true, x1=-3, x2=3}
 		aObj:skinObject("frame", {obj=frame, kfs=true, x1=-3, x2=3})
 	end
 	if _G.GameCooltip2 then
@@ -67,7 +64,6 @@ aObj.libsToSkin["DetailsFramework-1.0"] = function(self) -- v 220
 		-- obj.frame1 -> GameCooltipFrame1
 		-- obj.frame2 -> GameCooltipFrame2
 		self:RawHook(DF, "CreateCoolTip", function(this)
-			-- print("DF CreateCoolTip:", this)
 			local obj = self.hooks[this].CreateCoolTip(this)
 			obj.SetBackdrop = _G.nop
 			skinCooltip(obj.frame1)
@@ -145,17 +141,18 @@ aObj.libsToSkin["DetailsFramework-1.0"] = function(self) -- v 220
 	-- CreateScrollBox ()
 
 	-- picture (parent, texture, w, h, layer, coords, member, name)
+	local texture
 	self:RawHook(DF, "NewImage", function(this, ...)
 		local obj = self.hooks[this].NewImage(this, ...)
-		local texture = _G.select(2, ...)
+		texture = _G.select(2, ...)
 		if texture
+		and _G.type(texture) == "String"
 		and (texture:find("PaperDollSidebarTabs")
 		or texture:find("BookCompletedLeft")
 		or texture:find("StatsBackground"))
 		then
 			obj.image:SetTexture(nil)
 		end
-		texture = nil
 		return obj
 	end, true)
 

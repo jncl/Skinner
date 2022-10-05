@@ -2,14 +2,14 @@ local _, aObj = ...
 local _G = _G
 -- This is a Library
 
-aObj.libsToSkin["MSA-Tutorials-1.0"] = function(self) -- v 4/8
+aObj.libsToSkin["MSA-Tutorials-1.0"] = function(self) -- v 4/8+
 	if self.initialized["MSA-Tutorials-1.0"] then return end
 	self.initialized["MSA-Tutorials-1.0"] = true
 
 	local tut, ver = _G.LibStub:GetLibrary("MSA-Tutorials-1.0", true)
 	if tut then
 		local function skinFrame(frame)
-			if ver == 8 then
+			if ver >= 8 then
 				for _, eb in _G.pairs(frame.editboxes) do
 					aObj:skinObject("editbox", {obj=eb})
 				end

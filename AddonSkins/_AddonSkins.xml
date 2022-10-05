@@ -158,6 +158,7 @@
 <Script file="oRA3.lua"/>
 <Script file="OrderHallCommander.lua"/>
 <Script file="Outfitter.lua"/>
+<Script file="Overachiever.lua"/>
 <Script file="Pawn.lua"/>
 <Script file="PerlClassic.lua"/>
 <Script file="PetBattleHUD.lua"/>

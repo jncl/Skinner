@@ -4,8 +4,8 @@ local _G = _G
 
 aObj.ItemPimper = true -- to stop IP skinning its frame
 
-local AceGUI = _G.LibStub:GetLibrary("AceGUI-3.0", true)
 local objectsToSkin = {}
+local AceGUI = _G.LibStub:GetLibrary("AceGUI-3.0", true)
 if AceGUI then
 	aObj:RawHook(AceGUI, "Create", function(this, objType)
 		local obj = aObj.hooks[this].Create(this, objType)
@@ -13,8 +13,6 @@ if AceGUI then
 		return obj
 	end, true)
 end
-
--- TODO: change ALL object types to use New Skin Funcs
 
 aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 	if self.initialized.Ace3 then return end
@@ -32,7 +30,7 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 		-- and not obj.sknd
 		-- and not (objType:find("TSM") and obj.sknrTSM) -- check objType as TSM overlays existing objects
 		then
-			-- aObj:Debug("Ace3 Skinning: [%s, %s]", obj, objType)
+			-- aObj:Debug("Ace3 Skinning: [%s, %s, %s]", obj, objType)
 
 			if objType == "Button" then
 				if aObj.modBtns then
@@ -79,12 +77,12 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 				and aObj.modBtns
 				then
 					aObj:secureHook(obj, "BuildTabs", function(this)
-						aObj:skinObject("tabs", {obj=this.frame, tabs=obj.tabs, lod=self.isTT and true, upwards=true, offsets={x1=8, y1=-2, x2=-8, y2=self.isTT and -5 or -2}, noCheck=true, track=false})
+						aObj:skinObject("tabs", {obj=this.frame, tabs=obj.tabs, lod=self.isTT and true, upwards=true, offsets={x1=8, y1=-2, x2=-8, y2=self.isTT and -5 or -2}, regions=aObj.isRtlPTR and {7} or nil, noCheck=true, track=false})
 						aObj:Unhook(this, "BuildTabs")
 					end)
 					if aObj.isTT then
-						aObj:secureHook(obj, "SelectTab", function(this, value)
-							for _, tab in _G.ipairs(this.tabs) do
+						aObj:secureHook(obj, "SelectTab", function(tgObj, value)
+							for _, tab in _G.ipairs(tgObj.tabs) do
 								if tab.value == value then
 									aObj:setActiveTab(tab.sf)
 								else
@@ -215,7 +213,7 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 			or objType == "LSM30_Statusbar"
 			or objType == "RS_Markers" -- RareScanner
 			then
-				if not aObj.db.profile.TexturedDD then
+				if not aObj.db.profile.TabDDTextures.textureddd then
 					aObj:keepFontStrings(obj.frame)
 				else
 					obj.alignoffset = 29 -- align to neighbouring DropDowns
@@ -448,6 +446,20 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 			elseif objType == "ItemList" then
 				aObj:skinObject("frame", {obj=obj.content:GetParent(), kfs=true})
 
+			-- JackJack
+			elseif objType == "JJWindow" then
+				obj.titletext:SetPoint("TOP", obj.frame, "TOP", 0, -6)
+				aObj:skinObject("frame", {obj=obj.frame, kfs=true, ofs=-1, y1=-2})
+				if aObj.modBtns
+				and obj.hidebutton
+				then
+					aObj:skinOtherButton{obj=obj.hidebutton, text=self.modUIBtns.minus}
+				end
+			elseif objType == "IconButton" then
+				if aObj.modBtns then
+					aObj:skinStdButton{obj=obj.frame, schk=true}
+				end
+
 			-- ignore these types for now
 			elseif objType == "BlizOptionsGroup"
 			or objType == "Dropdown-Item-Execute"
@@ -544,16 +556,32 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 	for obj in _G.ipairs(objectsToSkin) do
 		skinAceGUI(obj, objectsToSkin[obj])
 	end
-	objectsToSkin = {}
+	_G.wipe(objectsToSkin)
 
 	-- tooltip
 	_G.C_Timer.After(0.1, function()
 		self:add2Table(self.ttList, _G.AceGUITooltip)
 	end)
 
+	-- expose function to skin already created Ace3 GUI objects
+	-- used by JackJack & TLDRMissions AddOns (03.10.22)
+	function aObj:skinAceOptions(fObj)
+
+		if fObj.type then
+			skinAceGUI(fObj, fObj.type)
+			if fObj.children then
+				for _, child in _G.ipairs(fObj.children) do
+					self:skinAceOptions(child)
+				end
+			end
+		elseif fObj.obj then
+			self:skinAceOptions(fObj.obj)
+		end
+
+	end
+
 end
 
--- hook this to capture the creation of AceConfig IOF panels
 aObj.iofSkinnedPanels = {}
 aObj.ACD = _G.LibStub:GetLibrary("AceConfigDialog-3.0", true)
 if aObj.ACD then
