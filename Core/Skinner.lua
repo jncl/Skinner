@@ -56,6 +56,7 @@ function aObj:OnInitialize()
 			_G.assert(false, "callbacks Fire" .. _G.debugstack(2, 3, 2))
 		end
 	end)
+	self:SendMessage("AddOn_OnInitialize")
 	--@end-alpha@
 
 	-- get Locale
@@ -105,6 +106,11 @@ function aObj:OnInitialize()
 		self:SetupClassic_NPCFramesOptions()
 		self:SetupClassic_PlayerFramesOptions()
 		self:SetupClassic_UIFramesOptions()
+	end
+	if aObj.isRtlPTR then
+		self:SetupDragonflight_NPCFramesOptions()
+		self:SetupDragonflight_PlayerFramesOptions()
+		self:SetupDragonflight_UIFramesOptions()
 	end
 
 	-- register the default background texture
@@ -265,19 +271,22 @@ function aObj:OnInitialize()
 	-- table to hold StatusBars that have been glazed, with weak keys
 	self.sbGlazed = _G.setmetatable({}, {__mode = "k"})
 
-	-- Load Retail Support, if required (done here for ElvUI/TukUI)
 	if self.isRtl then
+		-- Load Retail Support, if required (done here for ElvUI/TukUI)
 		self:checkAndRun("SetupRetail_NPCFrames", "opt", nil, true)
 		self:checkAndRun("SetupRetail_PlayerFrames", "opt", nil, true)
 		self:checkAndRun("SetupRetail_UIFrames", "opt", nil, true)
-	end
-
-	-- Load Classic Support, if required (done here for ElvUI/TukUI)
-	if not self.isRtl then
+	else
+		-- Load Classic Support, if required (done here for ElvUI/TukUI)
 		self:checkAndRun("SetupClassic", "opt", nil, true)
 		self:checkAndRun("SetupClassic_NPCFrames", "opt", nil, true)
 		self:checkAndRun("SetupClassic_PlayerFrames", "opt", nil, true)
 		self:checkAndRun("SetupClassic_UIFrames", "opt", nil, true)
+	end
+	if aObj.isRtlPTR then
+		self:checkAndRun("SetupDragonflight_NPCFrames", "opt", nil, true)
+		self:checkAndRun("SetupDragonflight_PlayerFrames", "opt", nil, true)
+		self:checkAndRun("SetupDragonflight_UIFrames", "opt", nil, true)
 	end
 
 end

@@ -14,15 +14,15 @@ end
 
 local buildInfo = {
 	-- Testing
-	wow_classic_beta    = {"4.0.0",  99999, "Classic Beta"},
-	wow_classic_ptr     = {"3.4.0",  45613, "Classic PTR"},
+	wow_classic_beta    = {"3.4.0",  45854, "Classic Beta"},
+	wow_classic_ptr     = {"3.4.0",  45942, "Classic PTR"},
 	wow_classic_era_ptr = {"1.14.3", 44834, "Classic Era PTR"}, -- a.k.a. Season of Mastery PTR
-	wow_beta            = {"10.0.0", 99999, "Retail Beta"},
-	wow_ptr             = {"9.2.7",  45570, "Retail PTR"},
+	wow_beta            = {"10.0.2", 45779, "Retail Beta"}, -- a.k.a. Dragonflight
+	wow_ptr             = {"10.0.0", 45697, "Retail PTR"},
 	-- Live
-	wow_classic         = {"3.4.0",  45613, "Classic"}, -- a.k.a. Wrath of the Lich King Classic
+	wow_classic         = {"3.4.0",  45942, "Classic"}, -- a.k.a. Wrath of the Lich King Classic
 	wow_classic_era     = {"1.14.3", 44834, "Classic Era"},
-	wow                 = {"9.2.7",  45338, "Retail"},
+	wow                 = {"9.2.7",  45745, "Retail"},
 	-- Currently playing
 	curr                = {_G.GetBuildInfo()},
 }
@@ -63,6 +63,8 @@ function aObj:checkVersion()
 	self:Debug(vType .. " detected")
 	--@end-alpha@
 
+	-- handle Beta changes in PTR or Live
+	self.isClscBeta   = self.isClscBeta or self.isClscPTR and buildInfo.curr[1] > buildInfo.wow_classic_ptr[1]
 	-- indicate we're on ClassicPTR if on Classic Beta
 	self.isClscPTR    = self.isClscPTR or self.isClscBeta
 	-- indicate we're on Classic if on Classic PTR
@@ -70,8 +72,11 @@ function aObj:checkVersion()
 	-- indicate we're on ClassicERA if on Classic ERA PTR
 	self.isClscERA    = self.isClscERA  or self.isClscERAPTR
 	-- handle Beta changes in PTR or Live
-	self.isClscBeta   = self.isClscBeta or self.isClscPTR and buildInfo.curr[1] > buildInfo.wow_classic_ptr[1]
 	self.isRtlBeta    = self.isRtlBeta or self.isRtlPTR and buildInfo.curr[1] > buildInfo.wow_ptr[1]
+	-- indicate we're on Retail PTR if on Retail Beta
+	self.isRtlPTR     = self.isRtlPTR or self.isRtlBeta
+	-- indicate we're on Retail if on Retail PTR
+	self.isRtl        = self.isRtl or self.isRtlPTR
 	-- handle PTR changes going Live
 	self.isClscPTR    = self.isClscPTR or self.isPatch and self.isClsc and buildInfo.curr[1] > buildInfo.wow_classic[1]
 	self.isClscERAPTR = self.isClscERAPTR or self.isPatch and self.isClscERA and buildInfo.curr[1] > buildInfo.wow_classic_era[1]

@@ -132,7 +132,11 @@ function aObj:applyGradient(obj, fh, invert, rotate)
 		obj.tfade = obj:CreateTexture(nil, "BORDER", nil, -1)
 		obj.tfade:SetTexture(self.gradientTex)
 		obj.tfade:SetBlendMode("ADD")
-		obj.tfade:SetGradientAlpha(self:getGradientInfo(invert, rotate))
+		if not aObj.isRtlPTR then
+			obj.tfade:SetGradientAlpha(self:getGradientInfo(invert, rotate))
+		else
+			obj.tfade:SetGradient(self:getGradientInfo(invert, rotate))
+		end
 	end
 
 	if self.prdb.FadeHeight.enable
@@ -584,6 +588,7 @@ local clrTab = {
 	common   = _G.LIGHTGRAY_FONT_COLOR,
 	-- default is bbClr
 	disabled = _G.DISABLED_FONT_COLOR,
+	gold_df  = _G.GOLD_FONT_COLOR,
 	gold     = _G.PASSIVE_SPELL_FONT_COLOR,
 	green    = _G.GREEN_FONT_COLOR,
 	grey     = _G.GRAY_FONT_COLOR,
@@ -599,6 +604,9 @@ local clrTab = {
 	white    = _G.HIGHLIGHT_FONT_COLOR,
 	yellow   = _G.YELLOW_FONT_COLOR,
 }
+if aObj.isRtlPTR then
+	clrTab["black"] = _G.BLACK_FONT_COLOR
+end
 function aObj:getColourByName(clrName)
 
 	if not clrTab.slider then
@@ -620,12 +628,24 @@ function aObj:getGradientInfo(invert, rotate)
 
 	if self.prdb.Gradient.enable then
 		if invert then
-			return rotate and "HORIZONTAL" or "VERTICAL", MaxR, MaxG, MaxB, MaxA, MinR, MinG, MinB, MinA
+			if not aObj.isRtlPTR then
+				return rotate and "HORIZONTAL" or "VERTICAL", MaxR, MaxG, MaxB, MaxA, MinR, MinG, MinB, MinA
+			else
+				return rotate and "HORIZONTAL" or "VERTICAL", aObj.gmaxClr, aObj.gminClr
+			end
 		else
-			return rotate and "HORIZONTAL" or "VERTICAL", MinR, MinG, MinB, MinA, MaxR, MaxG, MaxB, MaxA
+			if not aObj.isRtlPTR then
+				return rotate and "HORIZONTAL" or "VERTICAL", MinR, MinG, MinB, MinA, MaxR, MaxG, MaxB, MaxA
+			else
+				return rotate and "HORIZONTAL" or "VERTICAL", aObj.gminClr, aObj.gmaxClr
+			end
 		end
 	else
-		return rotate and "HORIZONTAL" or "VERTICAL", 0, 0, 0, 1, 0, 0, 0, 1
+		if not aObj.isRtlPTR then
+			return rotate and "HORIZONTAL" or "VERTICAL", 0, 0, 0, 1, 0, 0, 0, 1
+		else
+			return rotate and "HORIZONTAL" or "VERTICAL", clrTab["black"]:GetRGBA(), clrTab["black"]:GetRGBA()
+		end
 	end
 
 end
@@ -663,6 +683,12 @@ end
 function aObj:getPenultimateChild(obj)
 
 	return self:getChild(obj, obj:GetNumChildren() - 1)
+
+end
+
+function aObj:getLastRegion(obj)
+
+	return self:getRegion(obj, obj:GetNumRegions())
 
 end
 
@@ -756,11 +782,19 @@ function aObj:hookSocialToastFuncs(frame)
 	self:SecureHook(frame.animIn, "Play", function(this)
 		if this.sf then
 			this.sf.tfade:SetParent(_G.MainMenuBar)
-			this.sf.tfade:SetGradientAlpha(self:getGradientInfo())
+			if not aObj.isRtlPTR then
+				this.sf.tfade:SetGradientAlpha(self:getGradientInfo())
+			else
+				this.sf.tfade:SetGradient(self:getGradientInfo())
+			end
 		end
 		if this.cb then
 			this.cb.tfade:SetParent(_G.MainMenuBar)
-			this.cb.tfade:SetGradientAlpha(self:getGradientInfo())
+			if not aObj.isRtlPTR then
+				this.cb.tfade:SetGradientAlpha(self:getGradientInfo())
+			else
+				this.cb.tfade:SetGradient(self:getGradientInfo())
+			end
 		end
 	end)
 	self:SecureHook(frame.waitAndAnimOut, "Play", function(this)
@@ -894,7 +928,8 @@ local function __moveObject(opts)
 
 	--@debug@
 	if opts.obj:GetNumPoints() > 1 then
-		aObj:CustomPrint(1, 0, 0, "moveObject: %s, GetNumPoints = %d", opts.obj, opts.obj:GetNumPoints())
+		aObj:CustomPrint(1, 0, 0, "moveObject: %s, GetNumPoints = %d\n%s", opts.obj, opts.obj:GetNumPoints())
+		_G.assert(false, _G.debugstack(2, 3, 2) )
 		return
 	end
 	--@end-debug@
@@ -1141,7 +1176,7 @@ end
 
 local function scanChildren(obj)
 
-	for idx, child in _G.ipairs{_G[obj]:GetChildren()} do
+	for idx, child in _G.ipairs_reverse{_G[obj]:GetChildren()} do
 		-- check for forbidden objects (StoreUI components etc.)
 		if not child:IsForbidden() then
 			aObj:SendMessage(obj .. "_GetChildren", child, idx)
@@ -1191,7 +1226,11 @@ function aObj:setActiveTab(tabSF)
 	if not tabSF.tfade then return end
 
 	tabSF.tfade:SetTexture(self.gradientTex)
-	tabSF.tfade:SetGradientAlpha(self:getGradientInfo(self.prdb.Gradient.invert, self.prdb.Gradient.rotate))
+	if not aObj.isRtlPTR then
+		tabSF.tfade:SetGradientAlpha(self:getGradientInfo(self.prdb.Gradient.invert, self.prdb.Gradient.rotate))
+	else
+		tabSF.tfade:SetGradient(self:getGradientInfo(self.prdb.Gradient.invert, self.prdb.Gradient.rotate))
+	end
 
 end
 
@@ -1254,17 +1293,15 @@ function aObj:setupFramesOptions(optTab, framesType)
 
 	local opt, oDesc
 	for optName, optVals in _G.pairs(optTab) do
-		opt = optName:gsub("%s+", "")
 		oDesc = optName
 		if _G.type(optVals) == "table" then
 			if optVals.desc then
 				oDesc = optVals.desc
 			elseif optVals.suff then
 				oDesc = _G.string.format("%s %s", optName, optVals.suff)
-			else
-				oDesc = optName
 			end
 		end
+		opt = optName:gsub("%s+", "")
 		-- aObj:Debug("setupFramesOptions: [%s, %s, %s, %s, %s]", optName, optVals, opt, oDesc)
 		self.db.defaults.profile[opt] = true
 		if self.db.profile[opt] == nil then
@@ -1316,6 +1353,9 @@ function aObj:setupTextures()
 		["tMB"]       = _G.GetFileIDFromPath([[Interface\Minimap\Tracking\Mailbox]]),
 		["w8x8"]      = _G.GetFileIDFromPath([[Interface\Buttons\WHITE8X8]]),
 	}
+	if aObj.isRtlPTR then
+		self.tFDIDs["cbMin"] = _G.GetFileIDFromPath([[interface/common/minimalcheckbox.blp]])
+	end
 
 end
 
@@ -1326,6 +1366,28 @@ function aObj:skinAceDropdown(obj, x2, y2)
 	self:secureHook(obj, "SetDisabled", function(this, disabled)
 		self:checkDisabledDD(this.dropdown, disabled)
 	end)
+
+end
+
+function aObj:skinIconSelector(frame)
+
+	self:removeNineSlice(frame.BorderBox)
+	frame.BorderBox.SelectedIconArea.SelectedIconButton:DisableDrawLayer("BACKGROUND")
+	self:skinObject("editbox", {obj=frame.BorderBox.IconSelectorEditBox, fType=ftype})
+	self:skinObject("scrollbar", {obj=frame.IconSelector.ScrollBar, fType=ftype})
+	self:skinObject("frame", {obj=frame, fType=ftype, ofs=1, y1=2})
+	if self.modBtns then
+		self:skinStdButton{obj=frame.BorderBox.CancelButton, fType=ftype}
+		self:skinStdButton{obj=frame.BorderBox.OkayButton, fType=ftype}
+	end
+	if self.modBtnBs then
+		self:addButtonBorder{obj=frame.BorderBox.SelectedIconArea.SelectedIconButton, fType=ftype, relTo=frame.BorderBox.SelectedIconArea.SelectedIconButton.Icon}
+		local function skinBtn(btn)
+			btn:DisableDrawLayer("BACKGROUND")
+			aObj:addButtonBorder{obj=btn, fType=ftype, relTo=btn.Icon, clr="grey"}
+		end
+		_G.ScrollUtil.AddInitializedFrameCallback(frame.IconSelector.ScrollBox, skinBtn, aObj, true)
+	end
 
 end
 

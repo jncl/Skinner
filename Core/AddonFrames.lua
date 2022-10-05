@@ -49,22 +49,12 @@ for i = 1, #addonSkins do
 		aObj.addonsToSkin[addonSkins[i]] = addonSkins[i]
 	end
 end
---@alpha@
-aObj.addonsToSkin = track(aObj.addonsToSkin)
---@end-alpha@
-
 aObj.libsToSkin = {
 	["LibTradeLinks-1.0"] = "LibTradeSkillScan",
 	["LibTradeSkillScan"] = "LibTradeSkillScan",
 	["X-UI"] = "LibXUI",
 }
---@alpha@
-aObj.libsToSkin = track(aObj.libsToSkin)
---@end-alpha@
 aObj.otherAddons = {}
---@alpha@
-aObj.otherAddons = track(aObj.otherAddons)
---@end-alpha@
 local lodFrames = {
 	"GarrisonMissionManager",
 	"GuildBankSearch",
@@ -75,8 +65,19 @@ for i = 1, #lodFrames do
 		aObj.lodAddons[lodFrames[i]] = lodFrames[i]
 	end
 end
+
 --@alpha@
-aObj.lodAddons = track(aObj.lodAddons)
+aObj.addonsToSkin = track(aObj.addonsToSkin)
+aObj.libsToSkin   = track(aObj.libsToSkin)
+aObj.otherAddons  = track(aObj.otherAddons)
+aObj.lodAddons    = track(aObj.lodAddons)
+aObj.RegisterMessage("AddonFrames", "AddOn_OnInitialize", function()
+	aObj.addonsToSkin = untrack(aObj.addonsToSkin)
+	aObj.libsToSkin   = untrack(aObj.libsToSkin)
+	aObj.otherAddons  = untrack(aObj.otherAddons)
+	aObj.lodAddons    = untrack(aObj.lodAddons)
+	aObj.UnregisterMessage("AddonFrames", "AddOn_OnInitialize")
+end)
 --@end-alpha@
 
 local function skinLibs()
@@ -107,12 +108,6 @@ local function skinBLoD(addon)
 	end
 end
 function aObj:AddonFrames()
-	--@alpha@
-	aObj.addonsToSkin = untrack(aObj.addonsToSkin)
-	aObj.libsToSkin = untrack(aObj.libsToSkin)
-	aObj.otherAddons = untrack(aObj.otherAddons)
-	aObj.lodAddons = untrack(aObj.lodAddons)
-	--@end-alpha@
 	-- self:Debug("AddonFrames")
 
 	-- used for Addons that aren't LoadOnDemand
@@ -215,6 +210,8 @@ end
 
 function aObj:TRADE_SKILL_SHOW()
 	-- self:Debug("TRADE_SKILL_SHOW")
+
+	self:SendMessage("Trade_Skill_Show")
 
 	if _G.Auctionator_Search then
 		self:skinStdButton{obj=_G.Auctionator_Search}

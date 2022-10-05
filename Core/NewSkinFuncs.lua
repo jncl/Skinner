@@ -140,7 +140,7 @@ aObj.skinTPLs = {
 		numTabs     = 1,
 		selectedTab = 1,
 		suffix      = "",
-		regions     = {7, 8},
+		regions     = aObj.isRtlPTR and {10} or {7, 8},
 		-- ng			= nil,
 		ignoreSize  = true,
 		lod         = false,
@@ -150,6 +150,7 @@ aObj.skinTPLs = {
 		track       = true,
 		noCheck     = false,
 		func        = nil,
+		pool		= false, -- uses TabSystem .tabPool (DF)
 	},
 	tooltip = {
 		-- ofs         = 2, -- skin frame offset to object
@@ -228,10 +229,15 @@ local function setScrollTrackOffsets(tbl, type)
 			tbl.y1 = _G.rawget(tbl, "y1") or -1
 			tbl.y2 = _G.rawget(tbl, "y2") or 1
 		elseif w == 25 then
-			tbl.x1 = _G.rawget(tbl, "x1") or 2
-			tbl.x2 = _G.rawget(tbl, "x2") or 5
-			tbl.y1 = _G.rawget(tbl, "y1") or -1
-			tbl.y2 = _G.rawget(tbl, "y2") or 2
+			if not aObj.isRtlPTR then
+				tbl.x1 = _G.rawget(tbl, "x1") or 2
+				tbl.x2 = _G.rawget(tbl, "x2") or 5
+				tbl.y1 = _G.rawget(tbl, "y1") or -1
+				tbl.y2 = _G.rawget(tbl, "y2") or 2
+			else
+				tbl.x1 = _G.rawget(tbl, "x1") or 0
+				tbl.x2 = _G.rawget(tbl, "x2") or 0
+			end
 		end
 		tbl.y1 = _G.rawget(tbl, "y1") or 0
 		tbl.y2 = _G.rawget(tbl, "y2") or 0
@@ -789,7 +795,9 @@ skinFuncs.statusbar = function(table) skinStatusBar(table) end
 local function skinTabs(tbl)
 	--@alpha@
 	_G.assert(tbl.obj, "Missing Tab Object (skinTabs)\n" .. _G.debugstack(2, 3, 2))
-	_G.assert(_G.type(tbl.tabs) == "table" or tbl.prefix, "Missing Tabs Table or Tab Prefix (skinTabs)\n" .. _G.debugstack(2, 3, 2))
+	if not aObj.isRtlPTR then
+		_G.assert(_G.type(tbl.tabs) == "table" or tbl.prefix, "Missing Tabs Table or Tab Prefix (skinTabs)\n" .. _G.debugstack(2, 3, 2))
+	end
 	--@end-alpha@
 	aObj:Debug2("skinTabs: [%s]", tbl)
 
@@ -800,29 +808,44 @@ local function skinTabs(tbl)
 		return
 	end
 	tbl.obj.sknd = true
-	-- create table of tab objects if not supplied
-	if not tbl.tabs then
-		tbl.tabs = {}
-		for i = 1, tbl.obj.numTabs or tbl.numTabs do
-			aObj:add2Table(tbl.tabs, _G[tbl.prefix .. "Tab"  ..  tbl.suffix .. i])
+	if not tbl.pool then
+		-- create table of tab objects if not supplied
+		if not tbl.tabs then
+			tbl.tabs = {}
+			for i = 1, tbl.obj.numTabs or tbl.numTabs do
+				aObj:add2Table(tbl.tabs, _G[tbl.prefix .. "Tab"  ..  tbl.suffix .. i])
+			end
 		end
 	end
 	tbl.offsets.x1 = tbl.offsets.x1 or 7
 	tbl.offsets.y1 = tbl.offsets.y1 or 2
 	tbl.offsets.x2 = tbl.offsets.x2 or -7
 	tbl.offsets.y2 = tbl.offsets.y2 or 2
-	for i, tab in _G.pairs(tbl.tabs) do
+	local function skinTabObject(tab, idx)
 		aObj:keepRegions(tab, tbl.regions)
 		if not aObj.isTT then
 			aObj:skinObject("frame", {obj=tab, fType=tbl.fType, ng=tbl.ng, x1=tbl.offsets.x1, y1=tbl.offsets.y1, x2=tbl.offsets.x2, y2=tbl.offsets.y2})
 		else
 			aObj:skinObject("frame", {obj=tab, fType=tbl.fType, noBdr=true, x1=tbl.offsets.x1, y1=tbl.offsets.y1, x2=tbl.offsets.x2, y2=tbl.offsets.y2})
 			if tbl.lod then
-				if i == (tbl.selectedTab or tbl.obj.selectedTab) then
+				if idx == (tbl.selectedTab or tbl.obj.selectedTab) then
 					aObj:setActiveTab(tab.sf)
 				else
 					aObj:setInactiveTab(tab.sf)
 				end
+			elseif tbl.pool then
+				if tab.isSelected then
+					aObj:setActiveTab(tab.sf)
+				else
+					aObj:setInactiveTab(tab.sf)
+				end
+				aObj:SecureHook(tab, "SetTabSelected", function(tObj, isSelected)
+					if tObj.isSelected then
+						aObj:setActiveTab(tObj.sf)
+					else
+						aObj:setInactiveTab(tObj.sf)
+					end
+				end)
 			end
 		end
 		tab.sf.ignore = tbl.ignoreSize
@@ -839,6 +862,19 @@ local function skinTabs(tbl)
 		end
 		if tbl.func then
 			tbl.func(tab)
+		end
+	end
+	if aObj.isRtlPTR
+	and tbl.pool
+	then
+		local idx = 0
+		for tab in tbl.obj.tabPool:EnumerateActive() do
+			idx = idx + 1
+			skinTabObject(tab, idx)
+		end
+	else
+		for i, tab in _G.pairs(tbl.tabs) do
+			skinTabObject(tab, i)
 		end
 	end
 	-- track tab updates

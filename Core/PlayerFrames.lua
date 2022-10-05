@@ -4,7 +4,9 @@ local _G = _G
 
 local ftype = "p"
 
-if not aObj.isClscERA then
+if not aObj.isClscERA
+and not aObj.isRtlPTR
+then
 	aObj.blizzLoDFrames[ftype].AchievementUI = function(self)
 		if not self.prdb.AchievementUI.skin or self.initialized.AchievementUI then return end
 		self.initialized.AchievementUI = true
@@ -354,39 +356,43 @@ if not aObj.isClscERA then
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.AchievementFrame)
 
 	end
 end
-aObj.blizzFrames[ftype].Buffs = function(self)
-	if not self.prdb.Buffs or self.initialized.Buffs then return end
-	self.initialized.Buffs = true
 
-	if self.modBtnBs then
-		local function skinBuffBtn(btn)
-			if btn
-			and not btn.sbb
-			then
-				aObj:addButtonBorder{obj=btn, reParent={btn.count, btn.duration}, ofs=3, clr="grey"}
+if not aObj.isRtlPTR then
+	aObj.blizzFrames[ftype].Buffs = function(self)
+		if not self.prdb.Buffs or self.initialized.Buffs then return end
+		self.initialized.Buffs = true
+
+		if self.modBtnBs then
+			local function skinBuffBtn(btn)
+				if btn
+				and not btn.sbb
+				then
+					aObj:addButtonBorder{obj=btn, reParent={btn.count, btn.duration}, ofs=3, clr="grey"}
+				end
+			end
+			-- skin current Buffs
+			for i = 1, _G.BUFF_MAX_DISPLAY do
+				skinBuffBtn(_G["BuffButton" .. i])
+			end
+			-- if not all buff buttons created yet
+			if not _G.BuffButton32 then
+				-- hook this to skin new Buffs
+				self:SecureHook("AuraButton_Update", function(buttonName, index, _)
+					if buttonName == "BuffButton" then
+						skinBuffBtn(_G[buttonName .. index])
+					end
+				end)
 			end
 		end
-		-- skin current Buffs
-		for i = 1, _G.BUFF_MAX_DISPLAY do
-			skinBuffBtn(_G["BuffButton" .. i])
-		end
-		-- if not all buff buttons created yet
-		if not _G.BuffButton32 then
-			-- hook this to skin new Buffs
-			self:SecureHook("AuraButton_Update", function(buttonName, index, _)
-				if buttonName == "BuffButton" then
-					skinBuffBtn(_G[buttonName .. index])
-				end
-			end)
-		end
+
+		-- Debuffs already have a coloured border
+		-- Temp Enchants already have a coloured border
+
 	end
-
-	-- Debuffs already have a coloured border
-	-- Temp Enchants already have a coloured border
-
 end
 
 aObj.blizzFrames[ftype].CastingBar = function(self)
@@ -400,15 +406,25 @@ aObj.blizzFrames[ftype].CastingBar = function(self)
 		return
 	end
 
-	local cbFrame
-	for _, type in _G.pairs{"", "Pet"} do
+	local cbTypes, cbFrame
+	if not aObj.isRtlPTR then
+		cbTypes = {"", "Pet"}
+	else
+		-- OverlayPlayerCastingBarFrame used by ClassTalents
+		cbTypes = {"Player", "Pet", "OverlayPlayer"}
+	end
+	for _, type in _G.pairs(cbTypes) do
 		cbFrame = _G[type .. "CastingBarFrame"]
-		cbFrame.Border:SetAlpha(0)
+		if not aObj.isRtlPTR then
+			cbFrame.Border:SetAlpha(0)
+		else
+			self:nilTexture(cbFrame.Border, true)
+		end
 		self:changeShield(cbFrame.BorderShield, cbFrame.Icon)
 		cbFrame.Flash:SetAllPoints()
 		cbFrame.Flash:SetTexture(self.tFDIDs.w8x8)
 		if self.prdb.CastingBar.glaze then
-			self:skinObject("statusbar", {obj=cbFrame, fi=0, bg=self:getRegion(cbFrame, 1)})
+			self:skinObject("statusbar", {obj=cbFrame, fi=0, bg=self:getRegion(cbFrame, self.isRtlPTR and 4 or 1), nilFuncs=true})
 		end
 		-- adjust text and spark in Classic mode
 		if not cbFrame.ignoreFramePositionManager then
@@ -417,8 +433,7 @@ aObj.blizzFrames[ftype].CastingBar = function(self)
 		end
 	end
 
-	-- hook this to handle the CastingBar being attached to the Unitframe and then reset
-	self:SecureHook("CastingBarFrame_SetLook", function(castBar, look)
+	local function setLook(castBar, look)
 		castBar.Border:SetAlpha(0)
 		castBar.Flash:SetAllPoints()
 		castBar.Flash:SetTexture(self.tFDIDs.w8x8)
@@ -426,7 +441,17 @@ aObj.blizzFrames[ftype].CastingBar = function(self)
 			castBar.Text:SetPoint("TOP", 0, 2)
 			castBar.Spark.offsetY = -1
 		end
-	end)
+	end
+	-- hook this to handle the CastingBar being attached to the Unitframe and then reset
+	if not aObj.isRtlPTR then
+		self:SecureHook("CastingBarFrame_SetLook", function(castBar, look)
+			setLook(castBar, look)
+		end)
+	else
+		self:SecureHook(_G.CastingBarMixin, "SetLook", function(castBar, look)
+			setLook(this, look)
+		end)
+	end
 
 end
 
@@ -440,6 +465,79 @@ aObj.blizzFrames[ftype].CompactFrames = function(self)
 		self.blizzFrames[ftype].CompactFrames = nil
 		return
 	end
+
+	-- handle AddOn being disabled
+	if not self:checkLoadable("Blizzard_CompactRaidFrames") then
+		return
+	end
+
+	-- Compact RaidFrame Manager
+	self:SecureHookScript(_G.CompactRaidFrameManager, "OnShow", function(this)
+		self:moveObject{obj=this.toggleButton, x=5}
+		this.toggleButton:SetSize(12, 32)
+		this.toggleButton.nt = this.toggleButton:GetNormalTexture()
+		this.toggleButton.nt:SetTexCoord(0.22, 0.5, 0.33, 0.67)
+		-- hook this to trim the texture
+		self:RawHook(this.toggleButton.nt, "SetTexCoord", function(tObj, x1, x2, _)
+			self.hooks[tObj].SetTexCoord(tObj, x1 == 0 and x1 + 0.22 or x1 + 0.26, x2, 0.33, 0.67)
+		end, true)
+		-- Display Frame
+		self:keepFontStrings(this.displayFrame)
+		this.displayFrame.filterOptions:DisableDrawLayer("BACKGROUND")
+		if not aObj.isRtlPTR then
+			self:skinObject("dropdown", {obj=this.displayFrame.profileSelector, fType=ftype})
+			self:skinObject("frame", {obj=this.containerResizeFrame, fType=ftype, kfs=true})
+			if self.modBtns then
+				self:skinStdButton{obj=this.displayFrame.lockedModeToggle, fType=ftype}
+			end
+		else
+			if self.modBtns then
+				self:skinStdButton{obj=this.displayFrame.editMode, fType=ftype, sechk=true}
+			end
+		end
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ofs=0})
+		if self.modBtns then
+			for i = 1, 8 do
+				self:skinStdButton{obj=this.displayFrame.filterOptions["filterGroup" .. i]}
+			end
+			self:skinStdButton{obj=this.displayFrame.hiddenModeToggle, fType=ftype}
+			self:skinStdButton{obj=this.displayFrame.convertToRaid, fType=ftype}
+			self:skinStdButton{obj=this.displayFrame.leaderOptions.readyCheckButton, fType=ftype}
+			if not self.isClscERA then
+				self:skinStdButton{obj=this.displayFrame.leaderOptions.rolePollButton, fType=ftype}
+			end
+			if self.isRtl then
+				for _, type in _G.pairs{"Tank", "Healer", "Damager"} do
+					self:skinStdButton{obj=this.displayFrame.filterOptions["filterRole" .. type]}
+				end
+				this.displayFrame.leaderOptions.countdownButton:DisableDrawLayer("ARTWORK") -- alpha values are changed in code
+				this.displayFrame.leaderOptions.countdownButton.Text:SetDrawLayer("OVERLAY") -- move draw layer so it is displayed
+				self:skinStdButton{obj=this.displayFrame.leaderOptions.countdownButton, fType=ftype}
+				self:skinStdButton{obj=_G.CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton, fType=ftype}
+				_G.CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton:GetNormalTexture():SetAlpha(1) -- icon
+			end
+			self:SecureHook("CompactRaidFrameManager_UpdateOptionsFlowContainer", function()
+				local fObj = _G.CompactRaidFrameManager
+				-- handle button skin frames not being created yet
+				if fObj.displayFrame.leaderOptions.readyCheckButton.sb then
+					self:clrBtnBdr(fObj.displayFrame.leaderOptions.readyCheckButton)
+					if not self.isClscERA then
+						self:clrBtnBdr(fObj.displayFrame.leaderOptions.rolePollButton)
+					end
+					if self.isRtl then
+						self:clrBtnBdr(fObj.displayFrame.leaderOptions.countdownButton)
+					end
+				end
+			end)
+		end
+		if self.modChkBtns then
+			self:skinCheckButton{obj=this.displayFrame.everyoneIsAssistButton}
+			_G.RaiseFrameLevel(this.displayFrame.everyoneIsAssistButton) -- so button border is visible
+		end
+
+		self:Unhook(this, "OnShow")
+	end)
+	self:checkShown(_G.CompactRaidFrameManager)
 
 	local function skinUnit(unit)
 		-- handle in combat
@@ -460,31 +558,22 @@ aObj.blizzFrames[ftype].CompactFrames = function(self)
 			aObj:skinObject("statusbar", {obj=unit.powerBar, fi=0, bg=unit.powerBar.background})
 		end
 	end
+	local grpName
 	local function skinGrp(grp)
-		aObj:skinObject("frame", {obj=grp.borderFrame, fType=ftype, kfs=true, ofs=1, y1=-1, x2=-4, y2=4})
-		local grpName = grp:GetName()
-		for i = 1, _G.MEMBERS_PER_RAID_GROUP do
-			skinUnit(_G[grpName .. "Member" .. i])
+		aObj:skinObject("frame", {obj=grp.borderFrame, fType=ftype, kfs=true}) --, ofs=1, y1=-1, x2=-4, y2=4})
+		grpName = grp:GetName()
+		if grpName ~= "CompactPartyFrame" then
+			for i = 1, _G.MEMBERS_PER_RAID_GROUP do
+				skinUnit(_G[grpName .. "Member" .. i])
+			end
 		end
 	end
-
-	-- Compact Party Frame
-	self:SecureHook("CompactPartyFrame_OnLoad", function()
-		self:skinObject("frame", {obj=_G.CompactPartyFrame.borderFrame, fType=ftype, kfs=true})
-
-		self:Unhook("CompactPartyFrame_OnLoad")
-	end)
 	-- hook this to skin any new CompactRaidGroup(s)
 	self:SecureHook("CompactRaidGroup_UpdateLayout", function(frame)
 		skinGrp(frame)
 	end)
 
 	-- Compact RaidFrame Container
-	-- handle AddOn being disabled
-	if not self:checkLoadable("Blizzard_CompactRaidFrames") then
-		return
-	end
-
 	local function skinCRFCframes()
 		for type, fTab in _G.pairs(_G.CompactRaidFrameContainer.frameUpdateList) do
 			for _, frame in _G.pairs(fTab) do
@@ -510,66 +599,6 @@ aObj.blizzFrames[ftype].CompactFrames = function(self)
 	skinCRFCframes()
 	self:skinObject("frame", {obj=_G.CompactRaidFrameContainer.borderFrame, fType=ftype, kfs=true, ofs=1, y1=-1, x2=-4, y2=4})
 
-	-- Compact RaidFrame Manager
-	self:SecureHookScript(_G.CompactRaidFrameManager, "OnShow", function(this)
-		self:moveObject{obj=this.toggleButton, x=5}
-		this.toggleButton:SetSize(12, 32)
-		this.toggleButton.nt = this.toggleButton:GetNormalTexture()
-		this.toggleButton.nt:SetTexCoord(0.22, 0.5, 0.33, 0.67)
-		-- hook this to trim the texture
-		self:RawHook(this.toggleButton.nt, "SetTexCoord", function(tObj, x1, x2, _)
-			self.hooks[tObj].SetTexCoord(tObj, x1 == 0 and x1 + 0.22 or x1 + 0.26, x2, 0.33, 0.67)
-		end, true)
-		-- Display Frame
-		_G.CompactRaidFrameManagerDisplayFrameHeaderBackground:SetTexture(nil)
-		_G.CompactRaidFrameManagerDisplayFrameHeaderDelineator:SetTexture(nil)
-		this.displayFrame.filterOptions:DisableDrawLayer("BACKGROUND")
-		self:skinObject("dropdown", {obj=this.displayFrame.profileSelector, fType=ftype})
-		self:skinObject("frame", {obj=this.containerResizeFrame, fType=ftype, kfs=true})
-		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ofs=0})
-		if self.modBtns then
-			for i = 1, 8 do
-				self:skinStdButton{obj=this.displayFrame.filterOptions["filterGroup" .. i]}
-			end
-			self:skinStdButton{obj=this.displayFrame.lockedModeToggle, fType=ftype}
-			self:skinStdButton{obj=this.displayFrame.hiddenModeToggle, fType=ftype}
-			self:skinStdButton{obj=this.displayFrame.convertToRaid, fType=ftype}
-			self:skinStdButton{obj=this.displayFrame.leaderOptions.readyCheckButton, fType=ftype}
-			if not self.isClscERA then
-				self:skinStdButton{obj=this.displayFrame.leaderOptions.rolePollButton, fType=ftype}
-			end
-			if self.isRtl then
-				for _, type in _G.pairs{"Tank", "Healer", "Damager"} do
-					self:skinStdButton{obj=this.displayFrame.filterOptions["filterRole" .. type]}
-				end
-				this.displayFrame.leaderOptions.countdownButton:DisableDrawLayer("ARTWORK") -- alpha values are changed in code
-				this.displayFrame.leaderOptions.countdownButton.Text:SetDrawLayer("OVERLAY") -- move draw layer so it is displayed
-				self:skinStdButton{obj=this.displayFrame.leaderOptions.countdownButton, fType=ftype}
-				self:skinStdButton{obj=_G.CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton, fType=ftype}
-				_G.CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton:GetNormalTexture():SetAlpha(1) -- icon
-			end
-			self:SecureHook("CompactRaidFrameManager_UpdateOptionsFlowContainer", function(fObj)
-				-- handle button skin frames not being created yet
-				if fObj.displayFrame.leaderOptions.readyCheckButton.sb then
-					self:clrBtnBdr(fObj.displayFrame.leaderOptions.readyCheckButton)
-					if not self.isClscERA then
-						self:clrBtnBdr(fObj.displayFrame.leaderOptions.rolePollButton)
-					end
-					if self.isRtl then
-						self:clrBtnBdr(fObj.displayFrame.leaderOptions.countdownButton)
-					end
-				end
-			end)
-		end
-		if self.modChkBtns then
-			self:skinCheckButton{obj=this.displayFrame.everyoneIsAssistButton}
-			_G.RaiseFrameLevel(this.displayFrame.everyoneIsAssistButton) -- so button border is visible
-		end
-
-		self:Unhook(this, "OnShow")
-	end)
-	self:checkShown(_G.CompactRaidFrameManager)
-
 end
 
 aObj.blizzLoDFrames[ftype].ItemSocketingUI = function(self)
@@ -578,19 +607,22 @@ aObj.blizzLoDFrames[ftype].ItemSocketingUI = function(self)
 
 	-- copy of GEM_TYPE_INFO from Blizzard_ItemSocketingUI.xml
 	local gemTypeInfo = {
-		Yellow          = {textureKit="yellow", r=0.97, g=0.82, b=0.29},
-		Red             = {textureKit="red", r=1, g=0.47, b=0.47},
-		Blue            = {textureKit="blue", r=0.47, g=0.67, b=1},
-		Hydraulic       = {textureKit="hydraulic", r=1, g=1, b=1},
-		Cogwheel        = {textureKit="cogwheel", r=1, g=1, b=1},
-		Meta            = {textureKit="meta", r=1, g=1, b=1},
-		Prismatic       = {textureKit="prismatic", r=1, g=1, b=1},
-		PunchcardRed    = {textureKit="punchcard-red", r=1, g=0.47, b=0.47},
-		PunchcardYellow = {textureKit="punchcard-yellow", r=0.97, g=0.82, b=0.29},
-		PunchcardBlue   = {textureKit="punchcard-blue", r=0.47, g=0.67, b=1},
-		Domination      = {textureKit="domination", r=1, g=1, b=1},
-		Cypher          = {textureKit="meta", r=1, g=1, b=1},
+		Yellow          = {textureKit = "yellow", r = 0.97, g = 0.82, b = 0.29},
+		Red             = {textureKit = "red", r = 1, g = 0.47, b = 0.47},
+		Blue            = {textureKit = "blue", r = 0.47, g = 0.67, b = 1},
+		Hydraulic       = {textureKit = "hydraulic", r = 1, g = 1, b = 1},
+		Cogwheel        = {textureKit = "cogwheel", r = 1, g = 1, b = 1},
+		Meta            = {textureKit = "meta", r = 1, g = 1, b = 1},
+		Prismatic       = {textureKit = "prismatic", r = 1, g = 1, b = 1},
+		PunchcardRed    = {textureKit = "punchcard-red",   r=1 ,  g=0.47 ,  b=0.47},
+		PunchcardYellow = {textureKit = "punchcard-yellow",   r=0.97 ,  g=0.82 ,  b=0.29},
+		PunchcardBlue   = {textureKit = "punchcard-blue",   r=0.47 ,  g=0.67 ,  b=1},
+		Domination      = {textureKit = "domination", r = 1, g = 1, b = 1},
+		Cypher          = {textureKit = "meta", r = 1, g = 1, b = 1},
 	}
+	if aObj.isRtlPTR then
+		gemTypeInfo[Tinker] = {textureKit = "punchcard-red", r = 1, g = 0.47, b = 0.47}
+	end
 	self:SecureHookScript(_G.ItemSocketingFrame, "OnShow", function(this)
 		self:skinObject("slider", {obj=_G.ItemSocketingScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
 		if self.isRtl then
@@ -805,27 +837,33 @@ aObj.blizzFrames[ftype].MirrorTimers = function(self)
 	for i = 1, _G.MIRRORTIMER_NUMTIMERS do
 		objName = "MirrorTimer" .. i
 		obj = _G[objName]
-		objBG = self:getRegion(obj, 1)
-		objSB = _G[objName .. "StatusBar"]
-		self:removeRegions(obj, {3})
-		obj:SetHeight(obj:GetHeight() * 1.25)
-		self:moveObject{obj=_G[objName .. "Text"], y=-2}
-		objBG:SetWidth(objBG:GetWidth() * 0.75)
-		objSB:SetWidth(objSB:GetWidth() * 0.75)
+		if not aObj.isRtlPTR then
+			self:removeRegions(obj, {3})
+			obj:SetHeight(obj:GetHeight() * 1.25)
+			self:moveObject{obj=_G[objName .. "Text"], y=-2}
+			objBG = self:getRegion(obj, 1)
+			objBG:SetWidth(objBG:GetWidth() * 0.75)
+			objSB = _G[objName .. "StatusBar"]
+			objSB:SetWidth(objSB:GetWidth() * 0.75)
+		else
+			obj.Border:SetTexture(nil)
+		end
 		if self.prdb.MirrorTimers.glaze then
-			self:skinObject("statusbar", {obj=objSB, fi=0, bg=objBG})
+			if not aObj.isRtlPTR then
+				self:skinObject("statusbar", {obj=objSB, fi=0, bg=objBG})
+			else
+				self:skinObject("statusbar", {obj=obj.StatusBar, fi=0, bg=self:getRegion(obj, 2)})
+			end
 		end
 	end
 
 	if self.isRtl then
 		-- Battleground/Arena/Island Expeditions Start Timer
 		local function skinTT(timer)
-
 			if not aObj.sbGlazed[timer.bar] then
 				_G[timer.bar:GetName() .. "Border"]:SetTexture(nil) -- animations
-				aObj:skinObject("statusbar", {obj=timer.bar, fi=0})
+				aObj:skinObject("statusbar", {obj=timer.bar, fi=0, bg=self:getRegion(timer.bar, 1)})
 			end
-
 		end
 		self:SecureHook("StartTimer_SetGoTexture", function(timer)
 			skinTT(timer)
@@ -855,7 +893,11 @@ aObj.blizzLoDFrames[ftype].RaidUI = function(self)
 	end
 	-- Raid Group Buttons
 	for i = 1, _G.MAX_RAID_GROUPS * 5 do
-		_G["RaidGroupButton" .. i]:SetNormalTexture(nil)
+		if not aObj.isRtlPTR then
+			_G["RaidGroupButton" .. i]:SetNormalTexture(nil)
+		else
+			_G["RaidGroupButton" .. i]:GetNormalTexture():SetTexture(nil)
+		end
 		self:skinObject("button", {obj=_G["RaidGroupButton" .. i], fType=ftype, subt=true--[[, bd=7]], ofs=1})
 	end
 	-- Raid Class Tabs (side)

@@ -4,53 +4,54 @@ local _G = _G
 
 local ftype = "n"
 
-aObj.blizzFrames[ftype].GossipFrame = function(self)
-	if not self.prdb.GossipFrame or self.initialized.GossipFrame then return end
-	self.initialized.GossipFrame = true
+if not aObj.isRtlPTR then
+	aObj.blizzFrames[ftype].GossipFrame = function(self)
+		if not self.prdb.GossipFrame or self.initialized.GossipFrame then return end
+		self.initialized.GossipFrame = true
 
-	if not (self:isAddonEnabled("Quester")
-	and _G.QuesterDB.gossipColor)
-	then
-		self:SecureHook("GossipFrameUpdate", function()
+		if not (self:isAddonEnabled("Quester")
+		and _G.QuesterDB.gossipColor)
+		then
+			self:SecureHook("GossipFrameUpdate", function()
+				if self.isRtl then
+					for _, btn in _G.pairs(_G.GossipFrame.buttons) do
+						local newText, upd = self:removeColourCodes(btn:GetText())
+						if upd then
+							btn:SetText(newText)
+						end
+						btn:GetFontString():SetTextColor(self.BT:GetRGB())
+					end
+				else
+					for i = 1, _G.NUMGOSSIPBUTTONS do
+						local newText, upd = self:removeColourCodes(_G["GossipTitleButton" .. i]:GetText())
+						if upd then
+							_G["GossipTitleButton" .. i]:SetText(newText)
+						end
+						_G["GossipTitleButton" .. i]:GetFontString():SetTextColor(self.BT:GetRGB())
+					end
+				end
+			end)
+		end
+
+		self:SecureHookScript(_G.GossipFrame, "OnShow", function(this)
+			self:keepFontStrings(_G.GossipFrameGreetingPanel)
+			_G.GossipGreetingText:SetTextColor(self.HT:GetRGB())
+			self:skinObject("slider", {obj=_G.GossipGreetingScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
 			if self.isRtl then
-				for _, btn in _G.pairs(_G.GossipFrame.buttons) do
-					local newText, upd = self:removeColourCodes(btn:GetText())
-					if upd then
-						btn:SetText(newText)
-					end
-					btn:GetFontString():SetTextColor(self.BT:GetRGB())
-				end
+				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, x2=3})
 			else
-				for i = 1, _G.NUMGOSSIPBUTTONS do
-					local newText, upd = self:removeColourCodes(_G["GossipTitleButton" .. i]:GetText())
-					if upd then
-						_G["GossipTitleButton" .. i]:SetText(newText)
-					end
-					_G["GossipTitleButton" .. i]:GetFontString():SetTextColor(self.BT:GetRGB())
-				end
+				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=10, y1=-18, x2=-29, y2=60})
 			end
+			if self.modBtns then
+				self:skinStdButton{obj=_G.GossipFrameGreetingGoodbyeButton}
+			end
+			self:removeRegions(_G.NPCFriendshipStatusBar, {1, 2, 5, 6, 7, 8 ,9})
+			self:skinObject("statusbar", {obj=_G.NPCFriendshipStatusBar, fi=0, bg=self:getRegion(_G.NPCFriendshipStatusBar, 10)})
+
+			self:Unhook(this, "OnShow")
 		end)
+
 	end
-
-	self:SecureHookScript(_G.GossipFrame, "OnShow", function(this)
-		self:keepFontStrings(_G.GossipFrameGreetingPanel)
-		_G.GossipGreetingText:SetTextColor(self.HT:GetRGB())
-		self:skinObject("slider", {obj=_G.GossipGreetingScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
-		if self.isRtl then
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, x2=3})
-		else
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=10, y1=-18, x2=-29, y2=60})
-		end
-		if self.modBtns then
-			self:skinStdButton{obj=_G.GossipFrameGreetingGoodbyeButton}
-		end
-
-		self:removeRegions(_G.NPCFriendshipStatusBar, {1, 2, 5, 6, 7, 8 ,9})
-		self:skinObject("statusbar", {obj=_G.NPCFriendshipStatusBar, fi=0, bg=self:getRegion(_G.NPCFriendshipStatusBar, 10)})
-
-		self:Unhook(this, "OnShow")
-	end)
-
 end
 
 aObj.blizzFrames[ftype].GuildRegistrar = function(self)

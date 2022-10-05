@@ -286,6 +286,14 @@ function module:isButton(obj) -- luacheck: ignore self
 
 end
 
+function module:secureHook(obj, method, func)
+
+	if not module:IsHooked(obj, method) then
+		module:SecureHook(obj, method, func)
+	end
+
+end
+
 function module:skinCloseButton(opts)
 -- text on button
 --[[
@@ -308,13 +316,19 @@ function module:skinCloseButton(opts)
 	    return
 	end
 
-	opts.obj:DisableDrawLayer("BACKGROUND")
-	opts.obj:SetNormalTexture(nil)
-	opts.obj:SetPushedTexture(nil)
+	if not aObj.isRtlPTR then
+		opts.obj:DisableDrawLayer("BACKGROUND")
+		opts.obj:SetNormalTexture(nil)
+		opts.obj:SetPushedTexture(nil)
+	else
+		opts.obj:DisableDrawLayer("ARTWORK")
+	end
 	if opts.obj.GetDisabledTexture	-- PVPReadyDialog missing this
 	and opts.obj:GetDisabledTexture()
 	then
-		opts.obj:SetDisabledTexture(nil)
+		if not aObj.isRtlPTR then
+			opts.obj:SetDisabledTexture(nil)
+		end
 	end
 
 	--@alpha@
@@ -347,6 +361,12 @@ function module:skinCloseButton(opts)
 		opts.obj.sb:SetNormalFontObject(opts.font or module.fontX)
 		opts.obj.sb:SetDisabledFontObject(opts.disfont or module.fontDX)
 		opts.obj.sb:SetText(module.mult)
+	end
+
+	if aObj.isRtlPTR then
+		local text = aObj:getLastRegion(opts.obj)
+		text:SetDrawLayer("OVERLAY")
+		aObj:moveObject{obj=text, x=-1, y=-1}
 	end
 
 end
@@ -505,6 +525,10 @@ function module:skinOtherButton(opts)
 	opts.obj:SetDisabledFontObject(opts.disfont or module.fontDP)
 	opts.obj:SetText(opts.text)
 	opts.obj:SetPushedTextOffset(-1, -1)
+	if aObj.isRtlPTR then
+		local text = aObj:getLastRegion(opts.obj)
+		aObj:moveObject{obj=text, x=-1, y=-5}
+	end
 	if not opts.noSkin then
 		if opts.sap then
 			aObj:skinObject("button", {obj=opts.obj, fType=opts.ftype, sap=true, aso=opts.aso})
@@ -603,32 +627,34 @@ function module:skinStdButton(opts)
 		opts.x2  = opts.x2 or opts.ofs
 		opts.y2  = opts.y2 or opts.ofs * -1
 		aObj:skinObject("button", {obj=opts.obj, fType=opts.ftype, name=opts.name, sabt=opts.sabt, aso=aso, x1=opts.x1, y1=opts.y1, x2=opts.x2, y2=opts.y2})
+		opts.obj.sb.clr = opts.clr
+		opts.obj.sb.ca = opts.ca
 	else
 		aso.obj = opts.obj
 		if bH < 16 then opts.obj:SetHeight(16) end -- set minimum button height (DBM option buttons)
 		if bW < 16 then opts.obj:SetWidth(16) end -- set minimum button width (oQueue remove buttons)
-		-- aObj:applySkin(aso)
 		aObj:skinObject("skin", {obj=opts.obj, fType=opts.ftype, bd=aso.bd, ng=aso.ng})
+		opts.obj.clr = opts.clr
+		opts.obj.ca = opts.ca
 	end
 
 	if not opts.ignoreHLTex then
 		module:chgHLTex(opts.obj, opts.obj:GetHighlightTexture())
-		module:chgHLTex(opts.obj, opts.obj.selectedHighlight)
 	end
 
 	module:clrBtnBdr(opts.obj, opts.clr, opts.ca)
 
 	if opts.schk then
-		aObj:secureHook(opts.obj, "Disable", function(bObj, _)
+		module:secureHook(opts.obj, "Disable", function(bObj, _)
 			aObj:clrBtnBdr(bObj)
 		end)
-		aObj:secureHook(opts.obj, "Enable", function(bObj, _)
-			aObj:clrBtnBdr(bObj)
+		module:secureHook(opts.obj, "Enable", function(bObj, _)
+			self:clrBtnBdr(bObj, bObj.sb.clr or bObj.clr, bObj.sb.ca or bObj.ca)
 		end)
 	end
 	if opts.sechk then
-		self:SecureHook(opts.obj, "SetEnabled", function(bObj)
-			self:clrBtnBdr(bObj)
+		module:SecureHook(opts.obj, "SetEnabled", function(bObj)
+			self:clrBtnBdr(bObj, bObj.sb.clr or bObj.clr, bObj.sb.ca or bObj.ca)
 		end)
 	end
 
@@ -827,6 +853,8 @@ local function __addButtonBorder(opts)
 	-- setup and apply the backdrop
 	opts.obj.sbb:SetBackdrop({edgeFile = aObj.Backdrop[1].edgeFile, edgeSize = opts.es or aObj.Backdrop[1].edgeSize})
 	module:clrBtnBdr(opts.obj, opts.clr, opts.ca)
+	opts.obj.sbb.clr = opts.clr
+	opts.obj.sbb.ca = opts.ca
 	-- position the frame
 	opts.ofs = opts.ofs or 2
 	opts.x1 = opts.x1 or opts.ofs * -1
@@ -844,36 +872,42 @@ local function __addButtonBorder(opts)
 		end
 	end
 	-- reparent these textures so they are displayed above the border
+	if opts.obj.HotKey then
+		opts.obj.HotKey:SetParent(opts.obj.sbb)
+	end
 	if opts.obj.Count then
 		opts.obj.Count:SetParent(opts.obj.sbb)
+	end
+	if opts.obj.Flash then
+		opts.obj.Flash:SetParent(opts.obj.sbb)
+	end
+	if opts.obj.Name then
+		opts.obj.Name:SetParent(opts.obj.sbb)
 	end
 	if opts.ibt then -- Item Buttons
 		aObj:getRegion(opts.obj, 3):SetParent(opts.obj.sbb) -- Stock region
 		opts.obj.searchOverlay:SetParent(opts.obj.sbb)
 		module:clrButtonFromBorder(opts.obj)
-	elseif opts.abt -- Action Buttons
-	or opts.sabt
-	and opts.obj.FlyoutArrow
-	then
-		opts.obj.Flash:SetParent(opts.obj.sbb)
-		opts.obj.FlyoutArrow:SetParent(opts.obj.sbb)
-		opts.obj.HotKey:SetParent(opts.obj.sbb)
-		opts.obj.Name:SetParent(opts.obj.sbb)
+	elseif opts.abt then -- Action Buttons
 		opts.obj.Border:SetParent(opts.obj.sbb)
 		opts.obj.NewActionTexture:SetParent(opts.obj.sbb)
-	elseif opts.libt -- Large Item Buttons
-	or opts.sibt -- Small Item Buttons
-	then
-		opts.obj.Name:SetParent(opts.obj.sbb)
+		if opts.obj.FlyoutArrow then
+			opts.obj.FlyoutArrow:SetParent(opts.obj.sbb)
+		end
 	elseif opts.gibt then -- Giant Item Buttons
 		module:clrButtonFromBorder(opts.obj)
 	end
 	if opts.schk then
-		aObj:secureHook(opts.obj, "Disable", function(bObj, _)
-			aObj:clrBtnBdr(bObj)
+		module:secureHook(opts.obj, "Disable", function(bObj, _)
+			module:clrBtnBdr(bObj)
 		end)
-		aObj:secureHook(opts.obj, "Enable", function(bObj, _)
-			aObj:clrBtnBdr(bObj)
+		module:secureHook(opts.obj, "Enable", function(bObj, _)
+			module:clrBtnBdr(bObj, bObj.sbb.clr, bObj.sbb.ca)
+		end)
+	end
+	if opts.sechk then
+		module:SecureHook(opts.obj, "SetEnabled", function(bObj)
+			module:clrBtnBdr(bObj, bObj.sbb.clr, bObj.sbb.ca)
 		end)
 	end
 
@@ -925,12 +959,18 @@ local function __skinCheckButton(opts)
 	-- check to see if it's a 'real' CheckButton
 	if not aObj:hasTextInTexture(opts.obj:GetNormalTexture(), "CheckBox")
 	and not aObj:hasTextInTexture(opts.obj:GetNormalTexture(), aObj.tFDIDs.cbUP)
+	and not (aObj.isRtlPTR and aObj:hasTextInTexture(opts.obj:GetNormalTexture(), aObj.tFDIDs.cbMin))
 	then
 		return
 	end
 
-	opts.obj:GetNormalTexture():SetTexture(nil)
-	opts.obj:GetPushedTexture():SetTexture(nil)
+	if not aObj.isRtlPTR then
+		opts.obj:GetNormalTexture():SetTexture(nil)
+		opts.obj:GetPushedTexture():SetTexture(nil)
+	else
+		opts.obj:GetNormalTexture():SetTexture("")
+		opts.obj:GetPushedTexture():SetTexture("")
+	end
 
 	-- handle small check buttons (e.g. GuildControlUI - Rank Permissions)
 	local bd, ofs, yOfs = 5, opts.ofs or -4, opts.yOfs or opts.ofs and opts.ofs * -1 + 1 or 5

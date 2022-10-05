@@ -1,3 +1,19 @@
+beta9.45613.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Updated CompactFrames RaidFrameManager
+	Updated code with luacheck changes
+	Updated AchievementUI skin
+	Updated RaF frame skin
+	Updated StanceBarFrame skin
+	Updated code to handle WotLK UI changes
+	Updated Ace3, ClassicQuestLog, Leatrix_Plus, LibUIDropDownMenu & RareScanner skins
+	Skinned Questie & RotaCast
+	Skin PetFrameHappiness button
+	Move Button state checks and Enabled checks into UIButtons function
+	
 beta9.45435.4
 Jncl:
 	ToDo.txt

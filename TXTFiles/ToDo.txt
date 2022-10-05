@@ -25,43 +25,57 @@ ToDos
 
 ?	O	Replace ObjectiveTracker Header Minimize button textures with suitable characters
 
+≈	O	Dragonflight Prepatch on PTR
+≈	O	Dragonflight Beta now available to skin
+
 ?	I	Fix ActionButtons/MultiBarButtons missing Text & PetActionButtons not being displayed
 		- when redisplayed after accessing Puzzle Caches in Zereth Mortis.
 		- happens when OverrideBar is used, but not always...
 		- happens after VehicleUI has been used
-
-	O	Skin unskinned WotLK frames
-√		- GuildEventLogFrame
-√		- QuestLogDetailFrame
-¶√		- WatchFrame
-√		- PossessBarFrame
-√		- OverrideActionBar
-√		- PetPaperDollFramePetFrame
-√		- QuestInfoRewardsFrame.TalentFrame
-√		- AlertFrames
-		
-√	O	Move Button state checks and Enabled checks into UIButtons function
 	
-	I/C	RareScanner, reported by Captain Vaniron, 08.09.22
-√		- line 15, method/func changed
+	I	RotaCast, reported by Galthariel, 20.09.22
+√		- respact minimap button option settings
 
-≈	S	Questie
+	I	reported by MetalHeadTwo, 20.09.22
+√		- Skinner\RetailSupport\PlayerFrames_Retail.lua:2559: Usage: SecureHookScript(object, method, [handler]): You can only hook a script on a frame object
+		[string "@Postal\Libs\AceHook-3.0\AceHook-3.0-9.lua"]:143: in function <...rfacePostal\Libs\AceHook-3.0\AceHook-3.0.lua:118>
+		[string "@Postal\Libs\AceHook-3.0\AceHook-3.0-9.lua"]:411: in function `SecureHookScript'
+		[string "@Skinner\RetailSupport\PlayerFrames_Retail.lua"]:2559: in function <Skinner\RetailSupport\PlayerFrames_Retail.lua:2386>
 
-	I	LibUIDropDownMenu, reported by MetalHeadTwo, 10.09.22
-?		- 3x ...faceSkinner\AddonSkins\LibUIDropDownMenu.lua:13: attempt to index field '?' (a nil value)
-		[string "=(tail call)"]: ?
-		[string "=[C]"]: in function `xpcall'
-		[string "@Skinner\Core\UtilFuncs.lua"]:286: in function <Skinner\Core\UtilFuncs.lua:280>
-		[string "=(tail call)"]: ?
-		[string "@Skinner\Core\AddonFrames.lua"]:86: in function <Skinner\Core\AddonFrames.lua:82>
-		[string "@Skinner\Core\AddonFrames.lua"]:135: in function `AddonFrames'
-		[string "@Skinner\Core\Skinner-beta9.45435.4.lua"]:435: in function <Skinner\Core\Skinner.lua:435>
+	I	reported by MetalHeadTwo, 20.09.22
+≈		- ...faceSkinner\AddonSkins\LibUIDropDownMenu.lua:6: attempt to index local 'frame' (a nil value)
+		[string "@Skinner\AddonSkins\LibUIDropDownMenu.lua"]:23: in function <...faceSkinner\AddonSkins\LibUIDropDownMenu.lua:16>
+	
+√	S	Krowi's Achievement, requested by Galthariel, 22.09.22
+
+	I	UnitFrames. reported by Galthariel, 24.09.22
+x		-  [ADDON_ACTION_BLOCKED] AddOn 'Skinner' tried to call the protected function 'Boss1TargetFrame:SetPoint()'.
 		
-	I	Classic Quest Log, reported by DarkLimpan, 11.09.22
-√		- not being skinned in Retail, no errors reported
+√	S	JackJack, requested by Galthariel, 24.09.22
 
-	I	RecruitAFriend, reported by Hayato2846, 11.09.22
-x		- [ADDON_ACTION_FORBIDDEN] AddOn 'Skinner' tried to call the protected function 'CopyToClipboard()'.
-		- Only way to get link is to disable FriendsFrame and reloadUI
+	I	GroupFinder, reported by segoitch, 25.09.22
+		- Interface broken ??
+		
+	S	Overachiever_Wrath, requested by amey0, 26.09.22
+√		- A couple of tabs need skinning
+	
+	I	Details, reported by Fakelssgaming, 28.09.22
+√		- ..rfaceSkinner\AddonSkins\DetailsFramework-367.nil.lua:152: attempt to call method 'find' (a nil value)
 
-√	S	RotaCast, requested by Galthariel, 16.09.22
+	I	AlertFrame, reported by DarkLimpan, 29.09.22
+√		- Skinner\Core\UIFrames.lua:129: attempt to index field '?' (a nil value)
+		[string "@Skinner\Core\UIFrames.lua"]:129: in function <Skinner\Core\UIFrames.lua:96>
+		[string "@Skinner\Core\UIFrames.lua"]:202: in function <Skinner\Core\UIFrames.lua:201>
+		
+	I/C	LibMSATutorials, reported by reiyo_oki/Galthariel, 30.09.22
+√		- Skinner\Core\NewSkinFuncs.lua:486: attempt to index field 'obj' (a nil value)
+		[string "@Skinner\Core\NewSkinFuncs.lua"]:516: in function `?'
+		[string "@Skinner\Core\NewSkinFuncs.lua"]:260: in function `skinObject'
+		[string "@Skinner\AddonSkins\LibMSATutorials.lua"]:17: in function `skinFrame'
+		[string "@Skinner\AddonSkins\LibMSATutorials.lua"]:45: in function <Skinner\AddonSkins\LibMSATutorials.lua:5>
+		
+√	S	TL;DR Missions requested by Acivien, 30.09.22
+	
+√	N	EveryGoldToBanker, reported by amey0, 30.09.22
+
+	

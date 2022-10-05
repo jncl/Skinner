@@ -15,7 +15,7 @@ aObj.SetupRetail_UIFrames = function()
 	-- [Shadowlands] Enum.GarrisonType.Type_9_0
 	if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 		function skinPortrait(frame)
-			if frame.PuckBorder then
+			if frame.PuckBorder then -- CovenantMissions
 				frame.TroopStackBorder1:SetTexture(nil)
 				frame.TroopStackBorder2:SetTexture(nil)
 				aObj:nilTexture(frame.PuckBorder, true)
@@ -55,15 +55,14 @@ aObj.SetupRetail_UIFrames = function()
 				end
 			end
 		end
-		function skinFollowerListButtons(frame)
-			for _, btn in _G.pairs(frame.listScroll.buttons) do
-				if frame ~= _G.GarrisonShipyardFrameFollowers
-				and frame ~= _G.GarrisonLandingPageShipFollowerList
-				then
-					skinFollower(btn.Follower)
-				else
-					skinFollower(btn)
-				end
+		function skinFollowerListButton(btn)
+			local frame = btn:GetParent():GetParent()
+			if frame ~= _G.GarrisonShipyardFrameFollowers
+			and frame ~= _G.GarrisonLandingPageShipFollowerList
+			then
+				skinFollower(btn.Follower)
+			else
+				skinFollower(btn)
 			end
 		end
 		function skinEquipment(frame)
@@ -105,25 +104,46 @@ aObj.SetupRetail_UIFrames = function()
 		end
 		function skinFollowerList(frame, colour)
 			local gOfs, y1Ofs, y2Ofs
-			if frame.ElevatedFrame then
+			if frame.ElevatedFrame then -- Covenant Missions
 				frame.ElevatedFrame:DisableDrawLayer("OVERLAY")
 				aObj:removeRegions(frame, {1})
-				aObj:removeRegions(frame.listScroll, {1})
-				aObj:skinObject("slider", {obj=frame.listScroll.scrollBar, fType=ftype, y1=5, y2=-10})
-				gOfs, y1Ofs, y2Ofs = 2, 5, -4
+				if not aObj.isRtlPTR then
+					aObj:removeRegions(frame.listScroll, {1})
+					aObj:skinObject("slider", {obj=frame.listScroll.scrollBar, fType=ftype, y1=5, y2=-10})
+					gOfs, y1Ofs, y2Ofs = 2, 5, -4
+				else
+					aObj:skinObject("scrollbar", {obj=frame.ScrollBar, fType=ftype})
+				end
 			else
-				frame:DisableDrawLayer("BORDER")
 				aObj:removeRegions(frame, {1, 2, not frame.isLandingPage and 3})
-				-- aObj:removeRegions(frame, {1, 2, frame:GetParent() ~= _G.GarrisonLandingPage and 3 or nil})
-				aObj:skinObject("slider", {obj=frame.listScroll.scrollBar, fType=ftype, y1=-2, y2=2})
-				gOfs, y1Ofs, y2Ofs = 4, 8, -8
+				if not aObj.isRtlPTR then
+					aObj:skinObject("slider", {obj=frame.listScroll.scrollBar, fType=ftype, y1=-2, y2=2})
+					gOfs, y1Ofs, y2Ofs = 4, 8, -8
+				else
+					aObj:skinObject("scrollbar", {obj=frame.ScrollBar, fType=ftype})
+				end
 			end
-			if frame.isLandingPage then
-				gOfs, y1Ofs, y2Ofs = 6, 5, -8
-			end
-			aObj:skinObject("frame", {obj=frame.listScroll, fType=ftype, fb=true, ofs=gOfs, y1=y1Ofs, y2=y2Ofs, clr=colour})
-			if frame.FollowerScrollFrame then
-				frame.FollowerScrollFrame:SetTexture(nil)
+			if not aObj.isRtlPTR then
+				if frame.isLandingPage then
+					gOfs, y1Ofs, y2Ofs = 6, 5, -8
+				end
+				aObj:skinObject("frame", {obj=frame.listScroll, fType=ftype, fb=true, ofs=gOfs, y1=y1Ofs, y2=y2Ofs, clr=colour})
+				-- if FollowerList not yet populated, hook the function
+				if not frame.listScroll.buttons then
+					aObj:SecureHook(frame, "Initialize", function(this, _)
+						for _, btn in _G.pairs(frame.listScroll.buttons) do
+							skinFollowerListButton(btn)
+						end
+						aObj:Unhook(this, "Initialize")
+					end)
+				else
+					for _, btn in _G.pairs(frame.listScroll.buttons) do
+						skinFollowerListButton(btn)
+					end
+				end
+			else
+				aObj:skinObject("frame", {obj=frame, fType=ftype, fb=true, ofs=4, y1=1, y2=4, clr="grey"})
+				_G.ScrollUtil.AddInitializedFrameCallback(frame.ScrollBox, skinFollowerListButton, aObj)
 			end
 			if frame.MaterialFrame then
 				frame.MaterialFrame:DisableDrawLayer("BACKGROUND")
@@ -135,15 +155,6 @@ aObj.SetupRetail_UIFrames = function()
 				if frame.isLandingPage then
 					aObj:moveObject{obj=frame.SearchBox, x=-10}
 				end
-			end
-			-- if FollowerList not yet populated, hook the function
-			if not frame.listScroll.buttons then
-				aObj:SecureHook(frame, "Initialize", function(this, _)
-					skinFollowerListButtons(this)
-					aObj:Unhook(this, "Initialize")
-				end)
-			else
-				skinFollowerListButtons(frame)
 			end
 			if frame.followerTab
 			and not aObj:hasTextInName(frame, "Ship") -- Shipyard & ShipFollowers
@@ -668,7 +679,11 @@ aObj.SetupRetail_UIFrames = function()
 				self:skinStdButton{obj=this.SettingsButton}
 			end
 			self:skinObject("slider", {obj=this.ChannelList.ScrollBar, fType=ftype})
-			self:skinObject("slider", {obj=this.ChannelRoster.ScrollFrame.scrollBar, fType=ftype, y1=-2, y2=2})
+			if not aObj.isRtlPTR then
+				self:skinObject("slider", {obj=this.ChannelRoster.ScrollFrame.scrollBar, fType=ftype, y1=-2, y2=2})
+			else
+				self:skinObject("scrollbar", {obj=this.ChannelRoster.ScrollBar, fType=ftype})
+			end
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, x1=-5, y2=-1})
 			-- Create Channel Popup
 			self:removeNineSlice(_G.CreateChannelPopup.BG)
@@ -795,6 +810,7 @@ aObj.SetupRetail_UIFrames = function()
 		self:SecureHookScript(_G.ClassTrialThanksForPlayingDialog, "OnShow", function(this)
 			this.ThanksText:SetTextColor(self.HT:GetRGB())
 			this.ClassNameText:SetTextColor(self.HT:GetRGB())
+			this.DialogText:SetTextColor(self.HT:GetRGB())
 			this.DialogFrame:SetTexture(nil)
 			self:skinObject("frame", {obj=this, fType=ftype, x1=600, y1=-100, x2=-600, y2=500})
 			if self.modBtns then
@@ -824,11 +840,13 @@ aObj.SetupRetail_UIFrames = function()
 		self.initialized.ClickBindingUI = true
 
 		self:SecureHookScript(_G.ClickBindingFrame, "OnShow", function(this)
-			this.TutorialButton.Ring:SetTexture(nil)
-			self:moveObject{obj=this.TutorialButton, y=-4}
 			self:removeBackdrop(this.ScrollBoxBackground)
 			self:skinObject("scrollbar", {obj=this.ScrollBar, fType=ftype, x1=0, y1=2, x2=0, y2=-2})
+			this.MacrosPortrait:DisableDrawLayer("OVERLAY")
+			this.SpellbookPortrait:DisableDrawLayer("OVERLAY")
 			this.TutorialFrame.Tutorial:SetDrawLayer("ARTWORK") -- make background visible
+			this.TutorialButton.Ring:SetTexture(nil)
+			self:moveObject{obj=this.TutorialButton, y=-4}
 			self:skinObject("frame", {obj=this.TutorialFrame, fType=ftype, rns=true, cb=true, ofs=3, y1=2}) -- DON'T remove artwork
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true, cb=true})
 			if self.modBtns then
@@ -836,25 +854,30 @@ aObj.SetupRetail_UIFrames = function()
 				self:skinStdButton{obj=this.AddBindingButton, fType=ftype, sechk=true}
 				self:skinStdButton{obj=this.ResetButton, fType=ftype}
 			end
+			if aObj.isRtlPTR
+			and self.modChkBtns
+			then
+				self:skinCheckButton{obj=this.EnableMouseoverCastCheckbox, fType=ftype}
+			end
 
 			self:Unhook(this, "OnShow")
 		end)
 
-		local function skinCCBindings()
-			_G.ClickBindingFrame.ScrollBox:ForEachFrame(function(bObj)
+		local function skinCCBindings(bObj)
+			_G.ClickBindingFrame.ScrollBox:ForEachFrame(function(btn, _)
 				-- N.B. Ignore headings
-				if bObj.DeleteButton then
-					aObj:removeRegions(bObj, {1}) -- background
+				if btn.DeleteButton then
+					aObj:removeRegions(btn, {1}) -- background
 					if aObj.modBtns	then
-						aObj:skinStdButton{obj=bObj.DeleteButton, fType=ftype, clr="grey"}
+						aObj:skinStdButton{obj=btn.DeleteButton, fType=ftype, clr="grey"}
 					end
 					if aObj.modBtnBs then
-						aObj:addButtonBorder{obj=bObj, fType=ftype, relTo=bObj.Icon, clr="grey"}
+						aObj:addButtonBorder{obj=btn, fType=ftype, relTo=btn.Icon, clr="grey"}
 					end
 				end
 			end)
 		end
-		_G.EventRegistry:RegisterCallback("ClickBindingFrame.UpdateFrames", skinCCBindings, self)
+		_G.EventRegistry:RegisterCallback("ClickBindingFrame.UpdateFrames", skinCCBindings, aObj)
 
 	end
 
@@ -871,6 +894,11 @@ aObj.SetupRetail_UIFrames = function()
 			this.Filters.BorderLeft:SetColorTexture(r, g, b, a)
 			self:getChild(this.Filters, 1).BorderTop:SetColorTexture(r, g, b, a)
 			self:getChild(this.Filters, 1).BorderBottom:SetColorTexture(r, g, b, a)
+
+			-- PTR
+				-- .CheatBrowserToggle
+				-- .MessageFrame
+				-- .ResizeButton
 
 			this.AutoComplete.BorderTop:SetColorTexture(r, g, b, a)
 			this.AutoComplete.BorderRight:SetColorTexture(r, g, b, a)
@@ -1113,18 +1141,26 @@ aObj.SetupRetail_UIFrames = function()
 		self:SecureHookScript(_G.GarrisonLandingPage, "OnShow", function(this)
 			-- ReportTab (ALWAYS shown first)
 			this.Report.List:DisableDrawLayer("BACKGROUND")
-			self:skinObject("slider", {obj=this.Report.List.listScroll.scrollBar, fType=ftype, x2=-4})
-			for _, btn in _G.pairs(this.Report.List.listScroll.buttons) do
+			local function skinBtn(btn)
 				btn:DisableDrawLayer("BACKGROUND")
 				btn:DisableDrawLayer("BORDER")
-				if self.modBtnBs then
+				if aObj.modBtnBs then
 					for _, reward in _G.pairs(btn.Rewards) do
-						self:addButtonBorder{obj=reward, relTo=reward.Icon, reParent={reward.Quantity}}
-						self:clrButtonFromBorder(reward)
+						aObj:addButtonBorder{obj=reward, relTo=reward.Icon, reParent={reward.Quantity}}
+						aObj:clrButtonFromBorder(reward)
 					end
 				end
 			end
-			self:skinObject("frame", {obj=this.Report.List, fType=ftype, fb=true, y1=4})
+			if not aObj.isRtlPTR then
+				self:skinObject("slider", {obj=this.Report.List.listScroll.scrollBar, fType=ftype, x2=-4})
+				for _, btn in _G.pairs(this.Report.List.listScroll.buttons) do
+					skinBtn(btn)
+				end
+			else
+				self:skinObject("scrollbar", {obj=this.Report.List.ScrollBar, fType=ftype})
+				_G.ScrollUtil.AddInitializedFrameCallback(this.Report.List.ScrollBox, skinBtn, aObj, true)
+			end
+			self:skinObject("frame", {obj=this.Report.List, fType=ftype, fb=true, y1=4, clr="grey"})
 			-- tabs (Top)
 			self:skinObject("tabs", {obj=this.Report, tabs={this.Report.InProgress, this.Report.Available}, fType=ftype, lod=self.isTT and true, ignoreHLTex=false, upwards=true, offsets={x1=4, y1=self.isTT and -2 or -5, x2=-4, y2=self.isTT and -4 or 1}, regions={2, 3}, track=false, func=function(tab) tab:GetNormalTexture():SetAlpha(0) tab:SetFrameLevel(20) end})
 			if self.isTT then
@@ -1133,9 +1169,9 @@ aObj.SetupRetail_UIFrames = function()
 					self:setActiveTab(tab.sf)
 				end)
 			end
-			skinFollowerList(this.FollowerList)
+			skinFollowerList(this.FollowerList, "grey")
 			skinFollowerPage(this.FollowerTab)
-			skinFollowerList(this.ShipFollowerList)
+			skinFollowerList(this.ShipFollowerList, "grey")
 			skinFollowerTraitsAndEquipment(this.ShipFollowerTab)
 			if _G.C_Garrison.GetLandingPageGarrisonType() == _G.Enum.GarrisonType.Type_9_0 then -- Covenant
 				local function skinPanelBtns(panel)
@@ -1165,7 +1201,7 @@ aObj.SetupRetail_UIFrames = function()
 			end
 			this.HeaderBar:SetTexture(nil)
 			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true, ignoreHLTex=false, offsets={x1=5, y1=self.isTT and -9 or -14, x2=-5, y2=-2}, regions={7, 8, 9, 10}})
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, ofs=-13, y2=6})
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, ofs=-10, y2=6})
 
 			-- N.B. Garrison Landing Page Minimap Button skinned with other minimap buttons
 			self:Unhook(this, "OnShow")
@@ -1333,7 +1369,7 @@ aObj.SetupRetail_UIFrames = function()
 			skinMissionFrame(this)
 
 			self:SecureHookScript(this.FollowerList, "OnShow", function(fObj)
-				skinFollowerList(fObj)
+				skinFollowerList(fObj, "grey")
 
 				self:Unhook(fObj, "OnShow")
 			end)
@@ -1521,7 +1557,7 @@ aObj.SetupRetail_UIFrames = function()
 			this.sf:SetFrameStrata("LOW") -- allow map textures to be visible
 
 			self:SecureHookScript(this.FollowerList, "OnShow", function(fObj)
-				skinFollowerList(fObj)
+				skinFollowerList(fObj, "grey")
 
 				self:Unhook(fObj, "OnShow")
 			end)
@@ -1583,7 +1619,7 @@ aObj.SetupRetail_UIFrames = function()
 			skinMissionFrame(this)
 			this.sf:SetFrameStrata("LOW") -- allow map textures to be visible
 			self:SecureHookScript(this.FollowerList, "OnShow", function(fObj)
-				skinFollowerList(fObj)
+				skinFollowerList(fObj, "grey")
 
 				self:Unhook(fObj, "OnShow")
 			end)
@@ -1914,19 +1950,17 @@ aObj.SetupRetail_UIFrames = function()
 	if _G.PVEFrame then
 		-- The following function is used by the LFDFrame & RaidFinder functions
 		function skinCheckBtns(frame)
-
 			for _, type in _G.pairs{"Tank", "Healer", "DPS", "Leader"} do
-				if aObj.modChkBtns then
-					aObj:skinCheckButton{obj=_G[frame .. "QueueFrameRoleButton" .. type].checkButton}
-				end
 				if _G[frame .. "QueueFrameRoleButton" .. type].background then
 					_G[frame .. "QueueFrameRoleButton" .. type].background:SetTexture(nil)
 				end
 				if _G[frame .. "QueueFrameRoleButton" .. type].incentiveIcon then
 					_G[frame .. "QueueFrameRoleButton" .. type].incentiveIcon.border:SetTexture(nil)
 				end
+				if aObj.modChkBtns then
+					aObj:skinCheckButton{obj=_G[frame .. "QueueFrameRoleButton" .. type].checkButton}
+				end
 			end
-
 		end
 	end
 	aObj.blizzFrames[ftype].LFDFrame = function(self)
@@ -1992,16 +2026,29 @@ aObj.SetupRetail_UIFrames = function()
 				end)
 			end
 
-			-- Specific List subFrame
-			for i = 1, _G.NUM_LFD_CHOICE_BUTTONS do
-				if self.modBtns then
-					self:skinExpandButton{obj=_G["LFDQueueFrameSpecificListButton" .. i].expandOrCollapseButton, sap=true}
+			if not aObj.isRtlPTR then
+				-- Specific List subFrame
+				for i = 1, _G.NUM_LFD_CHOICE_BUTTONS do
+					if self.modBtns then
+						self:skinExpandButton{obj=_G["LFDQueueFrameSpecificListButton" .. i].expandOrCollapseButton, sap=true}
+					end
+					if self.modChkBtns then
+						self:skinCheckButton{obj=_G["LFDQueueFrameSpecificListButton" .. i].enableButton}
+					end
 				end
-				if self.modChkBtns then
-					self:skinCheckButton{obj=_G["LFDQueueFrameSpecificListButton" .. i].enableButton}
+				self:skinObject("slider", {obj=_G.LFDQueueFrameSpecificListScrollFrame.ScrollBar, fType=ftype, rpTex="background"})
+			else
+				self:skinObject("scrollbar", {obj=_G.LFDQueueFrame.Specific.ScrollBar, fType=ftype})
+				local function skinBtn(btn)
+					if aObj.modBtns then
+						aObj:skinExpandButton{obj=btn.expandOrCollapseButton, sap=true}
+					end
+					if aObj.modChkBtns then
+						aObj:skinCheckButton{obj=btn.enableButton}
+					end
 				end
+				_G.ScrollUtil.AddInitializedFrameCallback(_G.LFDQueueFrame.Specific.ScrollBox, skinBtn, aObj, true)
 			end
-			self:skinObject("slider", {obj=_G.LFDQueueFrameSpecificListScrollFrame.ScrollBar, fType=ftype, rpTex="background"})
 
 			self:Unhook(this, "OnShow")
 		end)
@@ -2115,25 +2162,44 @@ aObj.SetupRetail_UIFrames = function()
 			self:skinObject("editbox", {obj=sp.SearchBox, fType=ftype, si=true})
 			self:skinObject("frame", {obj=sp.AutoCompleteFrame, fType=ftype, kfs=true, ofs=4})
 			self:removeInset(sp.ResultsInset)
-			self:skinObject("slider", {obj=sp.ScrollFrame.scrollBar, fType=ftype})
+			if not aObj.isRtlPTR then
+				self:skinObject("slider", {obj=sp.ScrollFrame.scrollBar, fType=ftype})
+			else
+				self:skinObject("dropdown", {obj=_G.LFGListLanguageFilterDropDownFrame, fType=ftype})
+				self:skinObject("scrollbar", {obj=sp.ScrollBar, fType=ftype})
+				local function skinBtn(btn)
+					if aObj.modBtns then
+						aObj:skinStdButton{obj=btn.CancelButton}
+					end
+				end
+				_G.ScrollUtil.AddInitializedFrameCallback(sp.ScrollBox, skinBtn, aObj, true)
+			end
 			self:removeMagicBtnTex(sp.BackButton)
 			self:removeMagicBtnTex(sp.SignUpButton)
 			if self.modBtns then
-				for _, btn in _G.pairs(sp.ScrollFrame.buttons) do
-					self:skinStdButton{obj=btn.CancelButton}
+				if not aObj.isRtlPTR then
+					for _, btn in _G.pairs(sp.ScrollFrame.buttons) do
+						self:skinStdButton{obj=btn.CancelButton}
+					end
+					self:skinStdButton{obj=sp.ScrollFrame.ScrollChild.StartGroupButton}
+				else
+					self:skinStdButton{obj=sp.ScrollBox.StartGroupButton}
 				end
-				self:skinStdButton{obj=sp.ScrollFrame.ScrollChild.StartGroupButton}
 				self:skinStdButton{obj=sp.BackButton}
 				self:skinStdButton{obj=sp.BackToGroupButton}
 				self:skinStdButton{obj=sp.SignUpButton}
 				self:SecureHook("LFGListSearchPanel_UpdateButtonStatus", function(fObj)
-					self:clrBtnBdr(fObj.ScrollFrame.ScrollChild.StartGroupButton)
+					if not aObj.isRtlPTR then
+						self:clrBtnBdr(fObj.ScrollFrame.ScrollChild.StartGroupButton)
+					else
+						self:clrBtnBdr(fObj.ScrollBox.StartGroupButton)
+					end
 					self:clrBtnBdr(fObj.SignUpButton)
 				end)
 			end
 			if self.modBtnBs then
 			    self:addButtonBorder{obj=sp.FilterButton, ofs=0}
-				self:addButtonBorder{obj=sp.RefreshButton, ofs=-2}
+				self:addButtonBorder{obj=sp.RefreshButton, ofs=-2, clr="gold"}
 			end
 			-- ApplicationViewer
 			local av = this.ApplicationViewer
@@ -2145,13 +2211,27 @@ aObj.SetupRetail_UIFrames = function()
 					 self:skinStdButton{obj=av[type .. "ColumnHeader"]}
 				end
 			end
-			self:skinObject("slider", {obj=av.ScrollFrame.scrollBar, fType=ftype})
+			if not aObj.isRtlPTR then
+				self:skinObject("slider", {obj=av.ScrollFrame.scrollBar, fType=ftype})
+			else
+				self:skinObject("scrollbar", {obj=av.ScrollBar, fType=ftype})
+				local function skinBtn(btn)
+					if aObj.modBtns then
+						aObj:skinStdButton{obj=btn.DeclineButton}
+						aObj:skinStdButton{obj=btn.InviteButton}
+						aObj:skinStdButton{obj=btn.InviteButtonSmall}
+					end
+				end
+				_G.ScrollUtil.AddInitializedFrameCallback(av.ScrollBox, skinBtn, aObj, true)
+			end
 			self:removeMagicBtnTex(av.RemoveEntryButton)
 			self:removeMagicBtnTex(av.EditButton)
 			if self.modBtns then
-				for _, btn in _G.pairs(av.ScrollFrame.buttons) do
-					self:skinStdButton{obj=btn.DeclineButton}
-					self:skinStdButton{obj=btn.InviteButton}
+				if not aObj.isRtlPTR then
+					for _, btn in _G.pairs(av.ScrollFrame.buttons) do
+						self:skinStdButton{obj=btn.DeclineButton}
+						self:skinStdButton{obj=btn.InviteButton}
+					end
 				end
 				self:skinStdButton{obj=av.RemoveEntryButton}
 				self:skinStdButton{obj=av.EditButton}
@@ -2169,8 +2249,13 @@ aObj.SetupRetail_UIFrames = function()
 			local ecafd = ec.ActivityFinder.Dialog
 			self:removeNineSlice(ecafd.Border)
 			self:skinObject("editbox", {obj=ecafd.EntryBox, fType=ftype})
-			self:skinObject("slider", {obj=ecafd.ScrollFrame.scrollBar, fType=ftype})
-			self:skinObject("frame", {obj=ecafd.ScrollFrame, fType=ftype, kfs=true, fb=true, ofs=4, clr="grey"})
+			if not aObj.isRtlPTR then
+				self:skinObject("slider", {obj=ecafd.ScrollFrame.scrollBar, fType=ftype})
+				self:skinObject("frame", {obj=ecafd.ScrollFrame, fType=ftype, kfs=true, fb=true, ofs=4, clr="grey"})
+			else
+				self:skinObject("scrollbar", {obj=ecafd.ScrollBar, fType=ftype})
+				self:skinObject("frame", {obj=ecafd.ScrollBox, fType=ftype, kfs=true, fb=true, ofs=4, clr="grey"})
+			end
 			self:removeNineSlice(ecafd.BorderFrame.NineSlice)
 			self:skinObject("frame", {obj=ecafd, fType=ftype, kfs=true})
 			if self.modBtns then
@@ -2319,35 +2404,56 @@ aObj.SetupRetail_UIFrames = function()
 				else
 					function skinABBtn(btn)
 						btn.Border:SetAlpha(0) -- texture changed in blizzard code
-						btn.FlyoutBorder:SetTexture(nil)
-						btn.FlyoutBorderShadow:SetTexture(nil)
+						if not aObj.isRtlPTR then
+							btn.FlyoutBorder:SetTexture(nil)
+							btn.FlyoutBorderShadow:SetTexture(nil)
+						else
+							btn.SlotBackground:SetTexture(nil)
+							btn.SlotArt:SetTexture(nil)
+							btn.FlyoutBorderShadow:SetTexture(nil)
+							aObj:removeNineSlice(btn.RightDivider)
+							aObj:removeNineSlice(btn.BottomDivider)
+						end
 						aObj:addButtonBorder{obj=btn, sabt=true, ofs=3}
-						_G[btn:GetName() .. "NormalTexture"]:SetTexture(nil)
+						if not aObj.isRtlPTR then
+							_G[btn:GetName() .. "NormalTexture"]:SetTexture(nil)
+						else
+							btn.NormalTexture:SetTexture(nil)
+						end
 					end
 					function skinMultiBarBtns(type)
 						local bName
 						for i = 1, _G.NUM_MULTIBAR_BUTTONS do
 							bName = "MultiBar" .. type .. "Button" .. i
-							if not _G[bName].noGrid then
-								_G[bName .. "FloatingBG"]:SetAlpha(0)
-							end
 							skinABBtn(_G[bName])
+							if not aObj.isRtlPTR then
+								if not _G[bName].noGrid then
+									_G[bName .. "FloatingBG"]:SetAlpha(0)
+								end
+							end
 						end
 					end
 				end
 			end
 			self:SecureHookScript(_G.MainMenuBar, "OnShow", function(this)
-				this.MicroButtonAndBagsBar.MicroBagBar:SetTexture(nil)
-				this.ArtFrame.Background.BackgroundLarge:SetTexture(nil)
-				this.ArtFrame.Background.BackgroundSmall:SetTexture(nil)
-				this.ArtFrame.LeftEndCap:SetTexture(nil)
-				this.ArtFrame.RightEndCap:SetTexture(nil)
+				if not aObj.isRtlPTR then
+					this.MicroButtonAndBagsBar.MicroBagBar:SetTexture(nil)
+					this.ArtFrame.Background.BackgroundLarge:SetTexture(nil)
+					this.ArtFrame.Background.BackgroundSmall:SetTexture(nil)
+					this.ArtFrame.LeftEndCap:SetTexture(nil)
+					this.ArtFrame.RightEndCap:SetTexture(nil)
+				else
+					self:removeNineSlice(this.BorderArt) -- ActionButtons
+					this.EndCaps:DisableDrawLayer("OVERLAY")
+				end
 				if self.modBtnBs then
 					for i = 1, _G.NUM_ACTIONBAR_BUTTONS do
 						skinABBtn(_G["ActionButton" .. i])
 					end
-					self:addButtonBorder{obj=_G.ActionBarUpButton, clr="gold"}
-					self:addButtonBorder{obj=_G.ActionBarDownButton, clr="gold"}
+					if not aObj.isRtlPTR then
+						self:addButtonBorder{obj=_G.ActionBarUpButton, clr="gold"}
+						self:addButtonBorder{obj=_G.ActionBarDownButton, clr="gold"}
+					end
 					skinMultiBarBtns("BottomLeft")
 					skinMultiBarBtns("BottomRight")
 				end
@@ -2390,12 +2496,14 @@ aObj.SetupRetail_UIFrames = function()
 			if self.modBtnBs then
 				skinMultiBarBtns("Right")
 				skinMultiBarBtns("Left")
-				for _, bName in _G.pairs(_G.MICRO_BUTTONS) do
-					self:addButtonBorder{obj=_G[bName], es=24, ofs=2, reParent={_G[bName].QuickKeybindHighlightTexture, _G[bName].Flash}, clr="grey"}
-				end
-				self:addButtonBorder{obj=_G.MainMenuBarBackpackButton, ibt=true, ofs=3}
-				for i = 1, _G.NUM_BAG_FRAMES do
-					self:addButtonBorder{obj=_G["CharacterBag" .. i - 1 .. "Slot"], ibt=true, ofs=3}
+				if not aObj.isRtlPTR then
+					for _, bName in _G.pairs(_G.MICRO_BUTTONS) do
+						self:addButtonBorder{obj=_G[bName], es=24, ofs=2, reParent={_G[bName].QuickKeybindHighlightTexture, _G[bName].Flash}, clr="grey"}
+					end
+					self:addButtonBorder{obj=_G.MainMenuBarBackpackButton, ibt=true, ofs=3}
+					for i = 1, _G.NUM_BAG_FRAMES do
+						self:addButtonBorder{obj=_G["CharacterBag" .. i - 1 .. "Slot"], ibt=true, ofs=3}
+					end
 				end
 			end
 
@@ -2720,7 +2828,11 @@ aObj.SetupRetail_UIFrames = function()
 						aObj.pbtt[i].tfade:SetParent(opts.parent or aObj.pbtt[i])
 						if opts.reset then
 							-- reset Gradient alpha
-							aObj.pbtt[i].tfade:SetGradientAlpha(aObj:getGradientInfo())
+							if not aObj.isRtlPTR then
+								aObj.pbtt[i].tfade:SetGradientAlpha(aObj:getGradientInfo())
+							else
+								aObj.pbtt[i].tfade:SetGradient(aObj:getGradientInfo())
+							end
 						end
 					end
 				end
@@ -2774,7 +2886,11 @@ aObj.SetupRetail_UIFrames = function()
 			self:SecureHookScript(_G.PetBattleFrame, "OnHide", function(_)
 				for i = 1, #aObj.pbtt do
 					aObj.pbtt[i].tfade:SetParent(aObj.pbtt[i])
-					aObj.pbtt[i].tfade:SetGradientAlpha(aObj:getGradientInfo())
+					if not aObj.isRtlPTR then
+						aObj.pbtt[i].tfade:SetGradientAlpha(aObj:getGradientInfo())
+					else
+						aObj.pbtt[i].tfade:SetGradient(aObj:getGradientInfo())
+					end
 				end
 			end)
 		end
@@ -2818,7 +2934,7 @@ aObj.SetupRetail_UIFrames = function()
 			x1Ofs, y1Ofs, x2Ofs, y2Ofs = nil, nil, nil, nil
 		end
 		local function skinOptions(frame, source) -- luacheck: ignore source
-			-- aObj:Debug("skinOptions PCUI: [%s, %s, %s, %s]", source, frame.uiTextureKit, frame.optionFrameTemplate)
+			aObj:Debug("skinOptions PCUI: [%s, %s, %s, %s]", source, frame.uiTextureKit, frame.optionFrameTemplate)
 			if not frame.optionFrameTemplate then return end
 			if frame.uiTextureKit == "jailerstower"
 			or frame.uiTextureKit == "cypherchoice"
@@ -2827,6 +2943,7 @@ aObj.SetupRetail_UIFrames = function()
 			else
 				frame.sf:Show()
 			end
+			local r, g, b
 			for opt in frame.optionPools:EnumerateActiveByTemplate(frame.optionFrameTemplate) do
 				opt.OptionText.String:SetTextColor(aObj.BT:GetRGB())
 				opt.OptionText.HTML:SetTextColor("P", aObj.BT:GetRGB())
@@ -2882,6 +2999,23 @@ aObj.SetupRetail_UIFrames = function()
 					end)
 				elseif frame.optionFrameTemplate == "PlayerChoiceTorghastOptionTemplate" then
 					opt.Header.Text:SetTextColor(aObj.HT:GetRGB())
+				elseif frame.optionFrameTemplate == "PlayerChoiceCypherOptionTemplate" then
+					-- TODO: stop animations changing border alpha values
+					for key, reg in _G.ipairs{opt:GetRegions()} do
+						if key > 3 then -- non icon textures
+							reg:SetTexture(nil)
+						end
+					end
+					aObj:skinObject("frame", {obj=opt, fType=ftype})
+					r, g, b = opt.optionInfo.rarityColor and opt.optionInfo.rarityColor:GetRGB() or _G.BAG_ITEM_QUALITY_COLORS[1]:GetRGB()
+					opt.sf:SetBackdropBorderColor(r, g, b, 1)
+					resizeSF(opt, 0)
+					if aObj.modBtns then
+						_G.CypherPlayerChoiceToggleButton:DisableDrawLayer("ARTWORK")
+						_G.CypherPlayerChoiceToggleButton:GetHighlightTexture():SetAlpha(0) -- texture changed in code
+						_G.CypherPlayerChoiceToggleButton.Text:SetDrawLayer("OVERLAY")
+						aObj:skinStdButton{obj=_G.CypherPlayerChoiceToggleButton, fType=ftype, ofs=-8, x1=30, x2=-30, clr="gold"}
+					end
 				end
 			end
 		end
@@ -2910,7 +3044,11 @@ aObj.SetupRetail_UIFrames = function()
 
 		self:SecureHookScript(_G.PVEFrame, "OnShow", function(this)
 			self:keepFontStrings(this.shadows)
-			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, offsets={x1=9, y1=self.isTT and 2 or -3, x2=-9, y2=2}})
+			if not aObj.isRtlPTR then
+				self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, offsets={x1=9, y1=self.isTT and 2 or -3, x2=-9, y2=2}})
+			else
+				self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, offsets={x1=0, y1=self.isTT and 2 or -3, x2=0, y2=2}})
+			end
 			-- GroupFinder Frame
 			for i = 1, 3 do
 				_G.GroupFinderFrame["groupButton" .. i].bg:SetTexture(nil)
@@ -3066,7 +3204,9 @@ aObj.SetupRetail_UIFrames = function()
 		self:SecureHookScript(_G.QuestMapFrame, "OnShow", function(this)
 			this.Background:SetAlpha(0) -- N.B. Texture changed in code
 			this.VerticalSeparator:SetTexture(nil)
-			self:skinObject("dropdown", {obj=_G.QuestMapQuestOptionsDropDown, fType=ftype})
+			if not aObj.isRtlPTR then
+				self:skinObject("dropdown", {obj=_G.QuestMapQuestOptionsDropDown, fType=ftype})
+			end
 			-- QuestsFrame
 			this.QuestsFrame:DisableDrawLayer("BACKGROUND")
 			this.QuestsFrame.Contents.Separator:DisableDrawLayer("OVERLAY")
@@ -3108,7 +3248,9 @@ aObj.SetupRetail_UIFrames = function()
 			end)
 			this.QuestsFrame.DetailFrame:DisableDrawLayer("ARTWORK")
 			self:skinObject("slider", {obj=this.QuestsFrame.ScrollBar, fType=ftype})
-			self:skinObject("frame", {obj=this.QuestsFrame.StoryTooltip, fType=ftype})
+			if not aObj.isRtlPTR then
+				self:skinObject("frame", {obj=this.QuestsFrame.StoryTooltip, fType=ftype})
+			end
 			-- QuestSessionManagement
 			this.QuestSessionManagement.BG:SetTexture(nil)
 			if self.modBtnBs then
@@ -3145,7 +3287,9 @@ aObj.SetupRetail_UIFrames = function()
 			-- CampaignOverview
 			this.CampaignOverview.BG:SetTexture(nil)
 			self:keepFontStrings(this.CampaignOverview.Header)
-			self:skinObject("slider", {obj=this.CampaignOverview.ScrollFrame.ScrollBar, fType=ftype, rpTex={"artwork", "overlay}"}})
+			if not aObj.isRtlPTR then
+				self:skinObject("slider", {obj=this.CampaignOverview.ScrollFrame.ScrollBar, fType=ftype, rpTex={"artwork", "overlay}"}})
+			end
 			self:SecureHook(this.CampaignOverview, "UpdateCampaignLoreText", function(fObj, _, _)
 				for tex in fObj.texturePool:EnumerateActive() do
 					tex:SetTexture(nil)
@@ -3305,7 +3449,11 @@ aObj.SetupRetail_UIFrames = function()
 			-- RaidInfo Frame
 			self:skinObject("frame", {obj=_G.RaidInfoInstanceLabel, fType=ftype, kfs=true, ofs=0})
 			self:skinObject("frame", {obj=_G.RaidInfoIDLabel, fType=ftype, kfs=true, ofs=0})
-			self:skinObject("slider", {obj=_G.RaidInfoScrollFrame.scrollBar, fType=ftype})
+			if not aObj.isRtlPTR then
+				self:skinObject("slider", {obj=_G.RaidInfoScrollFrame.scrollBar, fType=ftype})
+			else
+				self:skinObject("scrollbar", {obj=_G.RaidInfoFrame.ScrollBar, fType=ftype})
+			end
 			self:removeNineSlice(_G.RaidInfoFrame.Border)
 			self:moveObject{obj=_G.RaidInfoFrame.Header, y=-2}
 			self:skinObject("frame", {obj=_G.RaidInfoFrame, fType=ftype, kfs=true, hdr=true, ofs=-5, y1=-6})
@@ -3524,7 +3672,7 @@ aObj.SetupRetail_UIFrames = function()
 			-- stop animation before skinning, otherwise textures reappear
 			_G.AnimateMouse:Stop()
 			_G.AnimateCallout:Stop()
-			self:skinObject("frame", {obj=this, fType=ftype, y1=-11, x2=1})
+			self:skinObject("frame", {obj=this, fType=ftype, cb=self.isRtlPTR and true, y1=-11, x2=1})
 			if self.modBtns then
 				self:skinStdButton{obj=_G.TutorialFrameOkayButton}
 			end
@@ -3667,7 +3815,7 @@ aObj.SetupRetail_UIFrames = function()
 					oFrame:DisableDrawLayer("BACKGROUND")
 					oFrame.Border:SetTexture(nil)
 					if self.modBtns then
-						self:skinStdButton{obj=oFrame, ofs=-1, clr="gold"}
+						self:skinStdButton{obj=oFrame, ofs=-3, clr="gold"}
 						if oFrame.ActiveTexture then -- WorldMapTrackingPin
 							self:SecureHook(oFrame, "Refresh", function(bObj)
 								self:clrBtnBdr(bObj, "gold")
