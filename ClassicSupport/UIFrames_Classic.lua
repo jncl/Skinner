@@ -10,8 +10,17 @@ aObj.SetupClassic_UIFrames = function()
 		self.initialized.BattlefieldFrame = true
 
 		self:SecureHookScript(_G.BattlefieldFrame, "OnShow", function(this)
-			self:skinObject("slider", {obj=_G.BattlefieldListScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=10, y1=-11, x2=-32, y2=71})
+			if not aObj.isClsc then
+				self:skinObject("slider", {obj=_G.BattlefieldListScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
+			else
+				self:skinObject("slider", {obj=_G.BattlefieldFrameTypeScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
+				self:skinObject("slider", {obj=_G.BattlefieldFrameInfoScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
+				_G.BattlefieldFrameInfoScrollFrameChildFrameDescription:SetTextColor(self.BT:GetRGB())
+				_G.BattlefieldFrameInfoScrollFrameChildFrameRewardsInfoTitle:SetTextColor(self.BT:GetRGB())
+				_G.BattlefieldFrameInfoScrollFrameChildFrameRewardsInfoRewardsLabel:SetTextColor(self.BT:GetRGB())
+			end
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=12, y1=-12, x2=-32, y2=71})
+			_G.BattlefieldFrameCloseButton:Hide()
 			if self.modBtns then
 				self:skinStdButton{obj=_G.BattlefieldFrameCancelButton, fType=ftype}
 				self:skinStdButton{obj=_G.BattlefieldFrameJoinButton, fType=ftype}
@@ -358,7 +367,8 @@ aObj.SetupClassic_UIFrames = function()
 			self.initialized.PVPFrame = true
 
 			self:SecureHookScript(_G.PVPParentFrame, "OnShow", function(this)
-				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=12, y1=-12, x2=-32, y2=46})
+				self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, ignoreSize=true, lod=self.isTT and true, upwards=true, regions={7}, offsets={x1=6, y1=0, x2=-6, y2=2}})
+				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=12, y1=-12, x2=-32, y2=71})
 
 				self:SecureHookScript(_G.PVPFrame, "OnShow", function(fObj)
 					self:keepFontStrings(fObj)
