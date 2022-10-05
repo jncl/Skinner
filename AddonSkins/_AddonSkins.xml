@@ -107,6 +107,7 @@
 <Script file="InvenRaidFrames3.lua"/>
 <Script file="Inventorian.lua"/>
 <Script file="ItemRack.lua"/>
+<Script file="JackJack.lua"/>
 <Script file="Journalator.lua"/>
 <Script file="KongConfig.lua"/>
 <Script file="Krowi_AchievementFilter.lua"/>
@@ -120,6 +121,7 @@
 <Script file="LibExtraTip.lua"/>
 <Script file="LibInit.lua"/>
 <Script file="LibKeyBound.lua"/>
+<Script file="LibKrowiProgressBar.lua"/>
 <Script file="LibMSATutorials.lua"/>
 <Script file="LibQTip.lua"/>
 <Script file="LibScrollingTable.lua"/>
@@ -214,6 +216,7 @@
 <Script file="TinyTooltip.lua"/>
 <Script file="TipTac.lua"/>
 <Script file="TitanSocial.lua"/>
+<Script file="TLDRMissions.lua"/>
 <Script file="TomTom.lua"/>
 <Script file="TooManyAddons.lua"/>
 <Script file="TradeSkillDW.lua"/>
