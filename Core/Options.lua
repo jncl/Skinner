@@ -11,11 +11,8 @@ aObj.SetupDefaults = function(self)
 			Errors                     = true,
 			MinimapIcon                = {hide = false, minimapPos = 210, radius = 80},
 			FrameBorders               = true,
-			-- Tab and DropDown Texture settings
-			TexturedTab                = false,
-			TexturedDD                 = false,
-			TabDDFile                  = "None",
-			TabDDTexture               = aName .. " Inactive Tab",
+			-- Tab and DropDown Texture settings [changed 03.10.22 to allow defaults function to reset values correctly]
+			TabDDTextures			   = {texturedtab = false, textureddd = false, tabddfile = "None", tabddtex = aName .. " Inactive Tab"},
 			Delay                      = {Init = 0.5, Addons = 0.5},
 			FadeHeight                 = {enable = false, value = 500, force = false},
 			StatusBar                  = {texture = "Blizzard", r = 0, g = 0.5, b = 0.5, a = 0.5},
@@ -95,12 +92,25 @@ aObj.SetupOptions = function(self)
 	local db = self.db.profile
 	local dflts = self.db.defaults.profile
 
+	local iof_otc
+	if not aObj.isRtlPTR then
+		iof_otc = _G.InterfaceOptionsFrame_OpenToCategory
+	else
+		iof_otc = _G.Settings.OpenToCategory
+	end
+
 	local function reskinIOFBackdrop()
 		-- show changes by reskinning the Interface Options Frame with the new settings
-		self:setupBackdrop()
-		_G.InterfaceOptionsFrame.sf:SetBackdrop(self.backdrop)
-		_G.InterfaceOptionsFrame.sf:SetBackdropColor(aObj.bClr:GetRGBA())
-		_G.InterfaceOptionsFrame.sf:SetBackdropBorderColor(aObj.bbClr:GetRGBA())
+		aObj:setupBackdrop()
+		if not aObj.isRtlPTR then
+			_G.InterfaceOptionsFrame.sf:SetBackdrop(aObj.backdrop)
+			_G.InterfaceOptionsFrame.sf:SetBackdropColor(aObj.bClr:GetRGBA())
+			_G.InterfaceOptionsFrame.sf:SetBackdropBorderColor(aObj.bbClr:GetRGBA())
+		else
+			_G.SettingsPanel.sf:SetBackdrop(aObj.backdrop)
+			_G.SettingsPanel.sf:SetBackdropColor(aObj.bClr:GetRGBA())
+			_G.SettingsPanel.sf:SetBackdropBorderColor(aObj.bbClr:GetRGBA())
+		end
 	end
 
 	self.optTables = {
@@ -156,31 +166,46 @@ aObj.SetupOptions = function(self)
 					order = 10,
 					inline = true,
 					name = self.L["Inactive Tab & DropDown Texture Settings"],
+					get = function(info) return db[info[1]][info[#info]] end,
+					-- use this function when all AddOn have been changed
+					-- set = function(info, value) db[info[1]][info[#info]] = value end,
 					args = {
-						TexturedDD = {
+						textureddd = {
 							type = "toggle",
 							order = 1,
 							name = self.L["Textured DropDown"],
 							desc = self.L["Toggle the Texture of the DropDowns"],
+							set = function(info, value)
+								db[info[1]][info[#info]] = value
+								-- store without parent name until all AddOn changed
+								db.TexturedDD = value
+							end,
 						},
-						TexturedTab = {
+						texturedtab = {
 							type = "toggle",
 							order = 2,
 							name = self.L["Textured Tab"],
 							desc = self.L["Toggle the Texture of the Tabs"],
 							set = function(info, value)
-								db[info[#info]] = value
-								self.isTT = db[info[#info]] and true or false
+								db[info[1]][info[#info]] = value
+								self.isTT = db[info[1]][info[#info]] and true or false
+								-- store without parent name until all AddOn changed
+								db.TexturedTab = value
 							end,
 						},
-						TabDDFile = {
+						tabddfile = {
 							type = "input",
 							order = 3,
 							width = "full",
 							name = self.L["Inactive Tab & DropDown Texture File"],
 							desc = self.L["Set Inactive Tab & DropDown Texture Filename"],
+							set = function(info, value)
+								db[info[1]][info[#info]] = value
+								-- store without parent name until all AddOn changed
+								db.TabDDFile = value
+							end,
 						},
-						TabDDTexture = _G.AceGUIWidgetLSMlists and {
+						tabddtex = _G.AceGUIWidgetLSMlists and {
 							type = "select",
 							order = 4,
 							width = "double",
@@ -188,6 +213,11 @@ aObj.SetupOptions = function(self)
 							desc = self.L["Choose the Texture for the Inactive Tab & DropDowns"],
 							dialogControl = "LSM30_Background",
 							values = _G.AceGUIWidgetLSMlists.background,
+							set = function(info, value)
+								db[info[1]][info[#info]] = value
+								-- store without parent name until all AddOn changed
+								db.TabDDTexture = value
+							end,
 						} or nil,
 					},
 				},
@@ -257,9 +287,9 @@ aObj.SetupOptions = function(self)
 							desc = self.L["Choose the Texture for the Status Bars"],
 							dialogControl = "LSM30_Statusbar",
 							values = _G.AceGUIWidgetLSMlists.statusbar,
-							get = function(_) return db.StatusBar.texture end,
-							set = function(_, value)
-								db.StatusBar.texture = value
+							get = function(info) return db[info[1]][info[#info]] end,
+							set = function(info, value)
+								db[info[1]][info[#info]] = value
 								self:checkAndRun("updateSBTexture", "s") -- not an addon in its own right
 							end,
 						} or nil,
@@ -269,12 +299,12 @@ aObj.SetupOptions = function(self)
 							name = self.L["Background Colour"],
 							desc = self.L["Change the Colour of the Status Bar Background"],
 							hasAlpha = true,
-							get = function(_)
-								local c = db.StatusBar
+							get = function(info)
+								local c = db[info[1]]
 								return c.r, c.g, c.b, c.a
 							end,
-							set = function(_, r, g, b, a)
-								local c = db.StatusBar
+							set = function(info, r, g, b, a)
+								local c = db[info[1]]
 								c.r, c.g, c.b, c.a = r, g, b, a
 								self:checkAndRun("updateSBTexture", "s") -- not an addon in its own right
 							end,
@@ -688,8 +718,8 @@ aObj.SetupOptions = function(self)
 					else
 						db.QuestLog = value
 					end
-					_G.InterfaceOptionsFrame_OpenToCategory(self.optionsFrame[self.L["UI Frames"]])
-					_G.InterfaceOptionsFrame_OpenToCategory(self.optionsFrame[self.L["NPC Frames"]])
+					iof_otc(self.optionsFrames[self.L["UI Frames"]])
+					iof_otc(self.optionsFrames[self.L["NPC Frames"]])
 				elseif info[#info] == "QuestFrame" then
 					db.GossipFrame = value
 					db.QuestInfo = value
@@ -698,8 +728,8 @@ aObj.SetupOptions = function(self)
 					else
 						db.QuestLog = value
 					end
-					_G.InterfaceOptionsFrame_OpenToCategory(self.optionsFrame[self.L["UI Frames"]])
-					_G.InterfaceOptionsFrame_OpenToCategory(self.optionsFrame[self.L["NPC Frames"]])
+					iof_otc(self.optionsFrames[self.L["UI Frames"]])
+					iof_otc(self.optionsFrames[self.L["NPC Frames"]])
 				elseif info[#info] == "QuestInfo" then
 					db.GossipFrame = value
 					db.QuestFrame = value
@@ -708,8 +738,8 @@ aObj.SetupOptions = function(self)
 					else
 						db.QuestLog = value
 					end
-					_G.InterfaceOptionsFrame_OpenToCategory(self.optionsFrame[self.L["UI Frames"]])
-					_G.InterfaceOptionsFrame_OpenToCategory(self.optionsFrame[self.L["NPC Frames"]])
+					iof_otc(self.optionsFrames[self.L["UI Frames"]])
+					iof_otc(self.optionsFrames[self.L["NPC Frames"]])
 				end
 			end,
 			args = {
@@ -914,8 +944,8 @@ aObj.SetupOptions = function(self)
 					db.GossipFrame = value
 					db.QuestFrame = value
 					db.QuestInfo = value
-					_G.InterfaceOptionsFrame_OpenToCategory(self.optionsFrame[self.L["NPC Frames"]])
-					_G.InterfaceOptionsFrame_OpenToCategory(self.optionsFrame[self.L["UI Frames"]])
+					iof_otc(self.optionsFrames[self.L["NPC Frames"]])
+					iof_otc(self.optionsFrames[self.L["UI Frames"]])
 				else self:checkAndRun(info[#info], "u") end
 			end,
 			args = {
@@ -1244,9 +1274,9 @@ aObj.SetupOptions = function(self)
 		["Raid UI"]           = true,
 		["Ready Check"]       = {suff = "Frame"},
 		["SpellBook Frame"]   = true,
-		["Talent UI"]         = true,
+		["Talent UI"]         = not self.isRtlPTR and true or nil,
 		["Trade Frame"]       = true,
-		["Trade Skill UI"]    = true,
+		["Trade Skill UI"]    = not self.isRtlPTR and true or nil,
 	}
 	self:setupFramesOptions(pfOptTab, "Player")
 	_G.wipe(pfOptTab)
@@ -1256,7 +1286,7 @@ aObj.SetupOptions = function(self)
 		["Alert Frames"]          = not self.isClscERA and true or nil,
 		["Auto Complete"]         = {suff = "Frame"},
 		["Battlefield Map"]       = {suff = "Frame"},
-		["Binding UI"]            = {desc = "Key Bindings UI"},
+		["Binding UI"]            = not self.isRtlPTR and {desc = "Key Bindings UI"} or nil,
 		["BN Frames"]             = {desc = "BattleNet Frames"},
 		["Calendar"]              = true,
 		["Cinematic Frame"]       = true,
@@ -1299,99 +1329,82 @@ aObj.SetupOptions = function(self)
 		end
 	end
 
-	-- add DB profile options
-	self.optTables.Profiles = _G.LibStub:GetLibrary("AceDBOptions-3.0", true):GetOptionsTable(self.db)
 	self.ACR = _G.LibStub:GetLibrary("AceConfigRegistry-3.0", true)
 
-	-- register the options tables and add them to the blizzard frame
-	self.ACR:RegisterOptionsTable(aName, self.optTables.General)
-	self.optionsFrame = self.ACD:AddToBlizOptions(aName, self.L[aName]) -- N.B. display localised name
-
-	-- register the options, add them to the Blizzard Options in the order specified
-	local optCheck, optTitle = {}
-	for _, oName in _G.pairs{"Backdrop", "Background", "Colours", "Gradient", "Modules", "NPC Frames", "Player Frames", "UI Frames", "Disabled Skins", "Profiles"} do
-		optTitle = _G.strjoin(" ", aName, oName)
-		self.ACR:RegisterOptionsTable(optTitle, self.optTables[oName])
-		self.optionsFrame[self.L[oName]] = self.ACD:AddToBlizOptions(optTitle, self.L[oName], self.L[aName]) -- N.B. use localised name
-		optCheck[oName:lower()] = oName -- store option name in table
-	end
-
-	-- runs when the player clicks "Defaults"
-	self.optionsFrame.default = function()
-		for name, _ in _G.pairs(self.optTables.General.args) do
-			db[name] = dflts[name]
+	local function preLoadFunc()
+		-- add Disabled Skins entries
+		local function addDSOpt(name)
+			aObj.optTables["Disabled Skins"].args[name] = {
+				type = "toggle",
+				name = name,
+				desc = aObj.L["Toggle the skinning of "] .. name,
+				width = name:len() > 21 and "double" or nil,
+			}
 		end
-		-- refresh panel
-		_G.InterfaceOptionsFrame_OpenToCategory(self.optionsFrame)
-	end
-	self.optionsFrame[self.L["Backdrop"]].default = function()
-		for name, _ in _G.pairs(self.optTables.Backdrop.args) do
-			db[name] = dflts[name]
+		for name, _ in _G.pairs(aObj.addonsToSkin) do
+			if aObj:isAddonEnabled(name) then
+				addDSOpt(name)
+			end
 		end
-		-- refresh panel
-		_G.InterfaceOptionsFrame_OpenToCategory(self.optionsFrame[self.L["Backdrop"]])
-		reskinIOFBackdrop()
-	end
-	self.optionsFrame[self.L["Background"]].default = function()
-		for name, _ in _G.pairs(self.optTables.Background.args) do
-			db[name] = dflts[name]
+		for name, _ in _G.pairs(aObj.libsToSkin) do
+			if _G.LibStub:GetLibrary(name, true) then
+				addDSOpt(name .. " (Lib)")
+			end
 		end
-		-- refresh panel
-		_G.InterfaceOptionsFrame_OpenToCategory(self.optionsFrame[self.L["Background"]])
-	end
-	self.optionsFrame[self.L["Colours"]].default = function()
-		for name, _ in _G.pairs(self.optTables.Colours.args) do
-			db[name] = dflts[name]
+		for name, _ in _G.pairs(aObj.lodAddons) do
+			if aObj:isAddonEnabled(name) then
+				addDSOpt(name .. " (LoD)")
+			end
 		end
-		-- refresh panel
-		_G.InterfaceOptionsFrame_OpenToCategory(self.optionsFrame[self.L["Colours"]])
-	end
-	self.optionsFrame[self.L["Gradient"]].default = function()
-		for name, _ in _G.pairs(self.optTables.Gradient.args) do
-			db.Gradient[name] = dflts.Gradient[name]
+		for name, _ in _G.pairs(aObj.otherAddons) do
+			if aObj:isAddonEnabled(name) then
+				addDSOpt(name)
+			end
 		end
-		-- refresh panel
-		_G.InterfaceOptionsFrame_OpenToCategory(self.optionsFrame[self.L["Gradient"]])
 	end
-	self.optionsFrame[self.L["NPC Frames"]].default = function()
-		for name, _ in _G.pairs(self.optTables["NPC Frames"].args) do
-			db[name] = dflts[name]
+	local function postLoadFunc()
+		local method
+		if not aObj.isRtlPTR then
+			method = "default"
+		else
+			method = "OnDefault"
 		end
-		-- refresh panel
-		_G.InterfaceOptionsFrame_OpenToCategory(self.optionsFrame[self.L["NPC Frames"]])
-	end
-	self.optionsFrame[self.L["Player Frames"]].default = function()
-		for name, _ in _G.pairs(self.optTables["Player Frames"].args) do
-			db[name] = dflts[name]
+		aObj.optionsFrames["Backdrop"][method] = function()
+			for name, _ in _G.pairs(aObj.optTables["Backdrop"].args) do
+				db[name] = dflts[name]
+			end
+			reskinIOFBackdrop()
+			aObj.ACR:NotifyChange("Backdrop")
 		end
-		-- refresh panel
-		_G.InterfaceOptionsFrame_OpenToCategory(self.optionsFrame[self.L["Player Frames"]])
-	end
-	self.optionsFrame[self.L["UI Frames"]].default = function()
-		for name, _ in _G.pairs(self.optTables["UI Frames"].args) do
-			db[name] = dflts[name]
+		aObj.optionsFrames["Disabled Skins"][method] = function()
+			db.DisableAllAS = false
+			db.DisabledSkins = {}
+			aObj.ACR:NotifyChange("Disabled Skins")
 		end
-		-- refresh panel
-		_G.InterfaceOptionsFrame_OpenToCategory(self.optionsFrame[self.L["UI Frames"]])
 	end
-	self.optionsFrame[self.L["Disabled Skins"]].default = function()
-		db.DisableAllAS = false
-		db.DisabledSkins = {}
-		-- refresh panel
-		_G.InterfaceOptionsFrame_OpenToCategory(self.optionsFrame[self.L["Disabled Skins"]])
-	end
+	self:setupOptions({"Backdrop", "Background", "Colours", "Gradient", "Modules", "NPC Frames", "Player Frames", "UI Frames", "Disabled Skins"}, {"Backdrop", "Modules", "Disabled Skins"}, preLoadFunc, postLoadFunc)
 
 	-- Slash command handler
 	local function chatCommand(input)
 		if not input or input:trim() == "" then
 			-- Open general panel if there are no parameters, do twice to overcome Blizzard bug
-			_G.InterfaceOptionsFrame_OpenToCategory(aObj.optionsFrame)
-			_G.InterfaceOptionsFrame_OpenToCategory(aObj.optionsFrame)
-		elseif optCheck[input:lower()] then
-			_G.InterfaceOptionsFrame_OpenToCategory(aObj.optionsFrame[optCheck[input:lower()]])
-			_G.InterfaceOptionsFrame_OpenToCategory(aObj.optionsFrame[optCheck[input:lower()]])
+			aObj:SendMessage("Options_Selected", aObj)
+			if not aObj.isRtlPTR then
+				iof_otc(aObj.optionsFrames[aName])
+				iof_otc(aObj.optionsFrames[aName])
+			else
+				iof_otc(aName)
+			end
+		elseif aObj.optCheck[input:lower()] then
+			aObj:SendMessage("Options_Selected", aObj)
+			if not aObj.isRtlPTR then
+				iof_otc(aObj.optionsFrames[aObj.optCheck[input:lower()]])
+				iof_otc(aObj.optionsFrames[aObj.optCheck[input:lower()]])
+			else
+				iof_otc(aName)
+			end
 		else
-			_G.LibStub:GetLibrary("AceConfigCmd-3.0", true):HandleCommand(aName, self.L[aName], input)
+			_G.LibStub:GetLibrary("AceConfigCmd-3.0", true):HandleCommand(aName, aObj.L[aName], input)
 		end
 	end
 
@@ -1405,8 +1418,10 @@ aObj.SetupOptions = function(self)
 		icon = self.tFDIDs.mpw01,
 		OnClick = function()
 			-- do twice to overcome Blizzard bug
-			_G.InterfaceOptionsFrame_OpenToCategory(aObj.optionsFrame)
-			_G.InterfaceOptionsFrame_OpenToCategory(aObj.optionsFrame)
+			iof_otc(aObj.optionsFrame)
+			if not aObj.isRtlPTR then
+				iof_otc(aObj.optionsFrame)
+			end
 		end,
 		OnTooltipShow = function(tooltip)
 			tooltip:AddLine(self.L["Skinner"])
@@ -1416,51 +1431,5 @@ aObj.SetupOptions = function(self)
 
 	-- register the data object to the Icon library
 	self.DBIcon:Register(aName, self.DBObj, db.MinimapIcon)
-
-	-- defer populating Disabled Skins panel until required
-	self.RegisterMessage("Skinner_SO", "IOFPanel_Before_Skinning", function(_, panel)
-		if panel.parent ~= self.L[aName] -- N.B. use localised name
-		or panel.name ~= self.L["Disabled Skins"] -- N.B. use localised name
-		then
-			return
-		end
-
-		-- add Disabled Skins entries
-		local function addDSOpt(name)
-			aObj.optTables["Disabled Skins"].args[name] = {
-				type = "toggle",
-				name = name,
-				desc = aObj.L["Toggle the skinning of "] .. name,
-				width = name:len() > 21 and "double" or nil,
-			}
-		end
-		for name, _ in _G.pairs(self.addonsToSkin) do
-			if self:isAddonEnabled(name) then
-				addDSOpt(name)
-			end
-		end
-		for name, _ in _G.pairs(self.libsToSkin) do
-			if _G.LibStub:GetLibrary(name, true) then
-				addDSOpt(name .. " (Lib)")
-			end
-		end
-		for name, _ in _G.pairs(self.lodAddons) do
-			if self:isAddonEnabled(name) then
-				addDSOpt(name .. " (LoD)")
-			end
-		end
-		for name, _ in _G.pairs(self.otherAddons) do
-			if self:isAddonEnabled(name) then
-				addDSOpt(name)
-			end
-		end
-
-		self.UnregisterMessage("Skinner_SO", "IOFPanel_Before_Skinning")
-
-		-- ensure new entries are displayed
-		-- N.B. AFTER message is unregistered otherwise a stack overflow occurs
-		_G.InterfaceOptionsList_DisplayPanel(panel)
-
-	end)
 
 end

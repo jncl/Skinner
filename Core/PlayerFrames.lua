@@ -185,7 +185,7 @@ if not aObj.isClscERA then
 			-- this is not a standard dropdown
 			self:moveObject{obj=_G.AchievementFrameFilterDropDown, y=-7}
 			-- skin the dropdown frame
-			if self.prdb.TexturedDD then
+			if self.prdb.TabDDTextures.textureddd then
 				local tex = _G.AchievementFrameFilterDropDown:CreateTexture(nil, "BORDER")
 				tex:SetTexture(self.itTex)
 				tex:SetSize(110, 19)

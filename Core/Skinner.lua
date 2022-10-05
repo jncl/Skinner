@@ -75,6 +75,24 @@ function aObj:OnInitialize()
 	self.prdb = self.db.profile
 	local dflts = self.db.defaults.profile
 
+	-- handle changes to TabDDTextures options
+	if self.prdb.TexturedTab then
+		self.prdb.TabDDTextures.texturedtab = self.prdb.TexturedTab
+		self.prdb.TabDDTextures.textureddd  = self.prdb.TexturedDD
+		self.prdb.TabDDTextures.tabddfile   = self.prdb.TabDDFile
+		self.prdb.TabDDTextures.tabddtex    = self.prdb.TabDDTexture
+	end
+	--@debug@
+	self.prdb.TexturedTab  = nil
+	self.prdb.TexturedDD   = nil
+	self.prdb.TabDDFile    = nil
+	self.prdb.TabDDTexture = nil
+	--@end-debug@
+	--[===[@non-debug@
+	self.prdb.TexturedTab  = self.prdb.TabDDTextures.texturedtab
+	self.prdb.TexturedDD   = self.prdb.TabDDTextures.textureddd
+	--@end-non-debug@]===]
+
 	-- setup the Addon's core options
 	self:checkAndRun("SetupOptions", "opt")
 
@@ -213,13 +231,13 @@ function aObj:OnInitialize()
 	--@end-non-debug@]===]
 
 	-- Inactive Tab & DropDowns texture
-	if self.prdb.TabDDFile
-	and self.prdb.TabDDFile ~= "None"
+	if self.prdb.TabDDTextures.tabddfile
+	and self.prdb.TabDDTextures.tabddfile ~= "None"
 	then
-		self.LSM:Register("background", aName .. " User TabDDTexture", self.prdb.TabDDFile)
+		self.LSM:Register("background", aName .. " User TabDDTexture", self.prdb.TabDDTextures.tabddfile)
 		self.itTex = self.LSM:Fetch("background", aName .. " User TabDDTexture")
 	else
-		self.itTex = self.LSM:Fetch("background", self.prdb.TabDDTexture)
+		self.itTex = self.LSM:Fetch("background", self.prdb.TabDDTextures.tabddtex)
 	end
 
 	-- store Addons managed by LoadManagers
@@ -229,7 +247,7 @@ function aObj:OnInitialize()
 	self.initialized = {}
 
 	-- shorthand for the TexturedTab profile setting
-	self.isTT = self.prdb.TexturedTab and true or false
+	self.isTT = self.prdb.TabDDTextures.texturedtab and true or false
 
 	-- table to hold minimap buttons from other AddOn skins
 	self.mmButs = {}

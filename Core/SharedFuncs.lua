@@ -154,3 +154,89 @@ aObj.Debug = _G.nop
 aObj.Debug2 = _G.nop
 aObj.Debug3 = _G.nop
 --@end-non-debug@]===]
+
+function aObj:setupOptions(optNames, optIgnore, preLoadFunc, postLoadFunc)
+
+	local db = self.db.profile
+	local dflts = self.db.defaults.profile
+
+	-- add DB profile options
+	self.optTables.Profiles = _G.LibStub:GetLibrary("AceDBOptions-3.0", true):GetOptionsTable(self.db)
+	self:add2Table(optNames, "Profiles")
+	self:add2Table(optIgnore, "Profiles")
+
+	self.optionsFrames = {}
+	-- register the options tables and add them to the blizzard frame
+	self.ACR:RegisterOptionsTable(aName, self.optTables.General)
+	self.optionsFrames[aName] = self.ACD:AddToBlizOptions(aName, self.L[aName]) -- N.B. display localised name
+	self.optionsFrames[aName].OnDefault = function()
+		for name, _ in _G.pairs(aObj.optTables.General.args) do
+			db[name] = dflts[name]
+		end
+		aObj.ACR:NotifyChange(aName)
+	end
+
+	self.optCheck = {}
+	for _, oName in _G.pairs(optNames) do
+		self.optCheck[oName:lower()] = oName -- store option name in table
+	end
+	-- only setup the options if the AddOn's Options panel/subpanel is chosen
+	local optTitle
+	local function setupOptionPanels()
+		for _, oName in _G.ipairs(optNames) do
+			optTitle = _G.strjoin("_", aName, oName)
+			aObj.ACR:RegisterOptionsTable(optTitle, aObj.optTables[oName])
+			aObj.optionsFrames[oName] = aObj.ACD:AddToBlizOptions(optTitle, aObj.L[oName], aObj.L[aName]) -- N.B. use localised name
+			if not _G.tContains(optIgnore, oName) then
+				aObj.optionsFrames[oName].OnDefault = function()
+					for name, _ in _G.pairs(aObj.optTables[oName].args) do
+						db[name] = dflts[name]
+					end
+					aObj.ACR:NotifyChange(optTitle)
+				end
+			end
+		end
+	end
+	local function categorySelected()
+		if preLoadFunc then
+			preLoadFunc()
+		end
+		setupOptionPanels()
+		if postLoadFunc then
+			postLoadFunc()
+		end
+		if not aObj.isRtlPTR then
+			_G.InterfaceAddOnsList_Update()
+		else
+			-- toggle tabs to force refresh of Categories
+			_G.SettingsPanel.tabsGroup:SelectAtIndex(1)
+			_G.SettingsPanel.tabsGroup:SelectAtIndex(2)
+		end
+		aObj:UnregisterMessage("Options_Selected")
+	end
+	self:RegisterMessage("Options_Selected", function(_, addon)
+		if self ~= addon then return end
+		categorySelected()
+	end)
+	if not aObj.isRtlPTR then
+		self:RawHook("InterfaceOptionsListButton_OnClick", function(bObj, mouseButton)
+			if bObj.element.name == aName
+			and not bObj.element.hasChildren
+			then
+				categorySelected()
+				self:Unhook("InterfaceOptionsListButton_OnClick")
+				return
+			end
+			self.hooks.InterfaceOptionsListButton_OnClick(bObj, mouseButton)
+		end, true)
+	else
+		local function onCategorySelected(addon, category)
+			if category.name == aName then
+				categorySelected()
+				_G.SettingsPanel:GetCategoryList():UnregisterCallback(_G.SettingsCategoryListMixin.Event.OnCategorySelected, aObj)
+			end
+		end
+		_G.SettingsPanel:GetCategoryList():RegisterCallback(_G.SettingsCategoryListMixin.Event.OnCategorySelected, onCategorySelected, self)
+	end
+
+end

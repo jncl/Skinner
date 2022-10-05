@@ -539,7 +539,7 @@ local function __skinDropDown(opts)
 	aObj:removeRegions(opts.obj, opts.regs or {1, 2, 3})
 
 	-- return if not to be skinned
-	if not aObj.prdb.TexturedDD
+	if not aObj.prdb.TabDDTextures.textureddd
 	or opts.noSkin
 	then
 		return
@@ -547,7 +547,7 @@ local function __skinDropDown(opts)
 
 	-- add texture
 	opts.obj.ddTex = opts.obj:CreateTexture(nil, "ARTWORK", -5) -- appear behind text
-	opts.obj.ddTex:SetTexture(aObj.prdb.TexturedDD and aObj.itTex or nil)
+	opts.obj.ddTex:SetTexture(aObj.prdb.TabDDTextures.textureddd and aObj.itTex or nil)
 
 	-- align it to the middle texture
 	local lTex = opts.obj.Left or opts.obj.DLeft or _G[opts.obj:GetName() .. "Left"]

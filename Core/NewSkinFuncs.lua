@@ -449,9 +449,9 @@ local function skinDropDown(tbl)
 		end
 	end
 	-- add texture
-	if aObj.prdb.TexturedDD then
+	if aObj.prdb.TabDDTextures.textureddd then
 		tbl.obj.ddTex = tbl.obj:CreateTexture(nil, "ARTWORK", nil, -5) -- appear behind text
-		tbl.obj.ddTex:SetTexture(aObj.prdb.TexturedDD and aObj.itTex or nil)
+		tbl.obj.ddTex:SetTexture(aObj.itTex)
 		-- align it to the middle texture
 		local lTex = tbl.obj.Left or tbl.obj.DLeft or tbl.obj.LeftTexture or _G[tbl.obj:GetName() .. "Left"]
 		local rTex = tbl.obj.Right or tbl.obj.DRight or tbl.obj.RightTexture or _G[tbl.obj:GetName() .. "Right"]
