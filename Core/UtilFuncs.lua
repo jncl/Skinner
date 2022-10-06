@@ -1310,7 +1310,7 @@ function aObj:setupFramesOptions(optTab, framesType)
 		self.optTables[framesType .. " Frames"].args[opt] = {
 			type = "toggle",
 			name = self.L[oDesc],
-			desc = self.L["Toggle the skin of the "] .. self.L[oDesc],
+			desc = _G.strjoin(" ", self.L["Toggle the skin of the"], self.L[oDesc]),
 			width = oDesc:len() > 21 and "double" or nil,
 		}
 	end

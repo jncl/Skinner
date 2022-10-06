@@ -3925,7 +3925,7 @@ aObj.SetupRetail_UIFramesOptions = function(self)
 		type = "toggle",
 		order = 3,
 		name = self.L["Alternate Power Bars"],
-		desc = self.L["Toggle the skin of the "] .. self.L["Alternate Power Bars"],
+		desc = _G.strjoin(" ", self.L["Toggle the skin of the"], self.L["Alternate Power Bars"]),
 	}
 	self.db.defaults.profile.MainMenuBar.altpowerbar = true
 	if self.db.profile.MainMenuBar.altpowerbar == nil then
@@ -3935,7 +3935,7 @@ aObj.SetupRetail_UIFramesOptions = function(self)
 		type = "toggle",
 		order = 4,
 		name = self.L["Extra Action Button"],
-		desc = self.L["Toggle the skin of the "] .. self.L["Extra Action Button"],
+		desc = _G.strjoin(" ", self.L["Toggle the skin of the"], self.L["Extra Action Button"]),
 	}
 
 end
