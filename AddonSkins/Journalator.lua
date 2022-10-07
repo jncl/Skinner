@@ -63,7 +63,7 @@ aObj.addonsToSkin.Journalator = function(self) -- v 1.3
 		self:Unhook(this, "OnShow")
 	end)
 
-	self.RegisterMessage("Journalator", "IOFPanel_Before_Skinning", function(_, panel)
+	self.RegisterCallback("Journalator", "IOFPanel_Before_Skinning", function(_, panel)
 		if panel.name ~= "Journalator" then return end
 		aObj.iofSkinnedPanels[panel] = true
 
@@ -81,7 +81,7 @@ aObj.addonsToSkin.Journalator = function(self) -- v 1.3
 			self:skinCheckButton{obj=panel.DebugMode.CheckBox}
 		end
 
-		self.UnregisterMessage("Journalator", "IOFPanel_Before_Skinning")
+		self.UnregisterCallback("Journalator", "IOFPanel_Before_Skinning")
 	end)
 
 end

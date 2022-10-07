@@ -110,7 +110,7 @@ aObj.addonsToSkin.MountsJournal = function(self) -- v 9.1.16
 	end)
 
 	local pCnt = 0
-	self.RegisterMessage("MountsJournal", "IOFPanel_Before_Skinning", function(_, panel)
+	self.RegisterCallback("MountsJournal", "IOFPanel_Before_Skinning", function(_, panel)
 		if panel.name ~= "MountsJournal"
 		and panel.parent ~= "MountsJournal"
 		then
@@ -183,7 +183,7 @@ aObj.addonsToSkin.MountsJournal = function(self) -- v 9.1.16
 		end
 
 		if pCnt == 2 then
-			self.UnregisterMessage("MountsJournal", "IOFPanel_Before_Skinning")
+			self.UnregisterCallback("MountsJournal", "IOFPanel_Before_Skinning")
 		end
 	end)
 

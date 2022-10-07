@@ -71,12 +71,12 @@ aObj.addonsToSkin = track(aObj.addonsToSkin)
 aObj.libsToSkin   = track(aObj.libsToSkin)
 aObj.otherAddons  = track(aObj.otherAddons)
 aObj.lodAddons    = track(aObj.lodAddons)
-aObj.RegisterMessage("AddonFrames", "AddOn_OnInitialize", function()
+aObj.RegisterCallback("AddonFrames", "AddOn_OnInitialize", function()
 	aObj.addonsToSkin = untrack(aObj.addonsToSkin)
 	aObj.libsToSkin   = untrack(aObj.libsToSkin)
 	aObj.otherAddons  = untrack(aObj.otherAddons)
 	aObj.lodAddons    = untrack(aObj.lodAddons)
-	aObj.UnregisterMessage("AddonFrames", "AddOn_OnInitialize")
+	aObj.UnregisterCallback("AddonFrames", "AddOn_OnInitialize")
 end)
 --@end-alpha@
 
@@ -183,7 +183,6 @@ function aObj:ADDON_LOADED(_, addon)
 
 	self:LoDFrames(addon)
 
-	self:SendMessage("AddOn_Loaded", addon)
 	self.callbacks:Fire("AddOn_Loaded", addon)
 
 end
@@ -191,8 +190,9 @@ end
 function aObj:AUCTION_HOUSE_SHOW()
 	-- self:Debug("AUCTION_HOUSE_SHOW")
 
-	self:SendMessage("Auction_House_Show")
 	self.callbacks:Fire("Auction_House_Show")
+	-- remove all callbacks for this event
+	self.callbacks.events["Auction_House_Show"] = nil
 
 	self:UnregisterEvent("AUCTION_HOUSE_SHOW")
 
@@ -203,15 +203,17 @@ function aObj:PLAYER_ENTERING_WORLD()
 
 	-- delay issuing callback to allow for code to be loaded
 	_G.C_Timer.After(0.5, function()
-		self:SendMessage("Player_Entering_World")
+		self.callbacks:Fire("Player_Entering_World")
+		-- remove all callbacks for this event
+		self.callbacks.events["Player_Entering_World"] = nil
 	end)
+
+	self:UnregisterEvent("PLAYER_ENTERING_WORLD")
 
 end
 
 function aObj:TRADE_SKILL_SHOW()
 	-- self:Debug("TRADE_SKILL_SHOW")
-
-	self:SendMessage("Trade_Skill_Show")
 
 	if _G.Auctionator_Search then
 		self:skinStdButton{obj=_G.Auctionator_Search}

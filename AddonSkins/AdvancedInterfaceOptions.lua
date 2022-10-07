@@ -5,7 +5,7 @@ local _G = _G
 aObj.addonsToSkin.AdvancedInterfaceOptions = function(self) -- v 1.6.0
 
 	local cnt = 0
-	self.RegisterMessage("AdvancedInterfaceOptions", "IOFPanel_Before_Skinning", function(_, panel)
+	self.RegisterCallback("AdvancedInterfaceOptions", "IOFPanel_Before_Skinning", function(_, panel)
 		if panel.name ~= "AdvancedInterfaceOptions"
 		and panel.parent ~= "AdvancedInterfaceOptions"
 		or self.iofSkinnedPanels[panel]
@@ -28,7 +28,7 @@ aObj.addonsToSkin.AdvancedInterfaceOptions = function(self) -- v 1.6.0
 		end
 
 		if cnt == 6 then
-			self.UnregisterMessage("AdvancedInterfaceOptions", "IOFPanel_Before_Skinning")
+			self.UnregisterCallback("AdvancedInterfaceOptions", "IOFPanel_Before_Skinning")
 		end
 	end)
 

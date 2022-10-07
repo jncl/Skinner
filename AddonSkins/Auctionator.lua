@@ -401,10 +401,8 @@ aObj.addonsToSkin.Auctionator = function(self) -- v  9.2.33
 
 	end
 
-	self.RegisterMessage("Auctionator", "Auction_House_Show", function(_)
+	self.RegisterCallback("Auctionator", "Auction_House_Show", function(_)
 		skinAuctionatorFrames()
-
-		self.UnregisterMessage("Auctionator", "Auction_House_Show")
 	end)
 
 	local function skinKids(panel)

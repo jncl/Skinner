@@ -14,36 +14,36 @@ aObj.addonsToSkin.TinyTooltip = function(self) -- v 8.2.1
 	_G.TinyTooltip.db.spell.borderColor        = {self.tbClr:GetRGBA()}
 	_G.TinyTooltip.db.spell.background         = {self.bClr:GetRGBA()}
 
-	local LibEvent = _G.LibStub:GetLibrary("LibEvent.7000", true)
-	LibEvent:trigger("tooltip.statusbar.texture", _G.TinyTooltip.db.general.statusbarTexture)
+	local lEvent = _G.LibStub:GetLibrary("LibEvent.7000", true)
+	lEvent:trigger("tooltip.statusbar.texture", _G.TinyTooltip.db.general.statusbarTexture)
 
 	local function addGradient(tTip)
 	    tTip.style.mask:SetShown(false)
 		aObj:applyTooltipGradient(tTip.style)
 	end
 	-- hook this to handle gradient effect
-	LibEvent:attachTrigger("tooltip:show", function(_, tTip)
+	lEvent:attachTrigger("tooltip:show", function(_, tTip)
 		addGradient(tTip)
 	end)
-	self.RegisterMessage("TinyTooltip", "Tooltip_Setup", function(_, tTip, type)
+	self.RegisterCallback("TinyTooltip", "Tooltip_Setup", function(_, tTip, type)
 		if type == "init" then
-			LibEvent:trigger("tooltip.style.init", tTip)
+			lEvent:trigger("tooltip.style.init", tTip)
 		end
-		LibEvent:trigger("tooltip.scale", tTip, _G.TinyTooltip.db.general.scale)
-		LibEvent:trigger("tooltip.style.mask", tTip, _G.TinyTooltip.db.general.mask)
-		LibEvent:trigger("tooltip.style.bgfile", tTip, _G.TinyTooltip.db.general.bgfile)
-		LibEvent:trigger("tooltip.style.border.corner", tTip, _G.TinyTooltip.db.general.borderCorner)
-		LibEvent:trigger("tooltip.style.border.size", tTip, _G.TinyTooltip.db.general.borderSize)
-		LibEvent:trigger("tooltip.style.border.color", tTip, _G.unpack(_G.TinyTooltip.db.general.borderColor))
-		LibEvent:trigger("tooltip.style.background", tTip, _G.unpack(_G.TinyTooltip.db.general.background))
+		lEvent:trigger("tooltip.scale", tTip, _G.TinyTooltip.db.general.scale)
+		lEvent:trigger("tooltip.style.mask", tTip, _G.TinyTooltip.db.general.mask)
+		lEvent:trigger("tooltip.style.bgfile", tTip, _G.TinyTooltip.db.general.bgfile)
+		lEvent:trigger("tooltip.style.border.corner", tTip, _G.TinyTooltip.db.general.borderCorner)
+		lEvent:trigger("tooltip.style.border.size", tTip, _G.TinyTooltip.db.general.borderSize)
+		lEvent:trigger("tooltip.style.border.color", tTip, _G.unpack(_G.TinyTooltip.db.general.borderColor))
+		lEvent:trigger("tooltip.style.background", tTip, _G.unpack(_G.TinyTooltip.db.general.background))
 		addGradient(tTip)
 	end)
 	for _, tTip in _G.pairs(_G.TinyTooltip.tooltips) do
-		self:SendMessage("Tooltip_Setup", tTip)
+		self.callbacks:Fire("Tooltip_Setup", tTip)
 	end
 
 	-- find and skin the DropDown Frame
-	self.RegisterMessage("TinyTooltip", "UIParent_GetChildren", function(_, child, _)
+	self.RegisterCallback("TinyTooltip", "UIParent_GetChildren", function(_, child, _)
 		if child:IsObjectType("Frame")
 		and child.Bg
 		and child.ScrollFrame
@@ -52,13 +52,13 @@ aObj.addonsToSkin.TinyTooltip = function(self) -- v 8.2.1
 			self:skinObject("slider", {obj=child.ScrollFrame.ScrollBar})
 			child:DisableDrawLayer("BORDER")
 			self:skinObject("frame", {obj=child, x2=2})
-			self.UnregisterMessage("TinyTooltip", "UIParent_GetChildren")
+			self.UnregisterCallback("TinyTooltip", "UIParent_GetChildren")
 		end
 	end)
 
 	-- skin Option panels
 	local pCnt = 0
-	self.RegisterMessage("TinyTooltip", "IOFPanel_Before_Skinning", function(_, panel, _)
+	self.RegisterCallback("TinyTooltip", "IOFPanel_Before_Skinning", function(_, panel, _)
 		if panel.name == "TinyTooltip"
 		or panel.parent == "TinyTooltip"
 		and not self.iofSkinnedPanels[panel]
@@ -124,7 +124,7 @@ aObj.addonsToSkin.TinyTooltip = function(self) -- v 8.2.1
 			end
 		end
 		if pCnt == 6 then
-			self.UnregisterMessage("TinyTooltip", "IOFPanel_Before_Skinning")
+			self.UnregisterCallback("TinyTooltip", "IOFPanel_Before_Skinning")
 		end
 	end)
 

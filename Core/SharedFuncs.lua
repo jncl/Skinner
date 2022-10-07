@@ -217,10 +217,10 @@ function aObj:setupOptions(optNames, optIgnore, preLoadFunc, postLoadFunc)
 			_G.SettingsPanel.tabsGroup:SelectAtIndex(1)
 			_G.SettingsPanel.tabsGroup:SelectAtIndex(2)
 		end
-		aObj:UnregisterMessage("Options_Selected")
+		-- unregister here if called from elsewhere
+		aObj.UnregisterCallback(aName, "Options_Selected")
 	end
-	self:RegisterMessage("Options_Selected", function(_, addon)
-		if self ~= addon then return end
+	self.RegisterCallback(aName, "Options_Selected", function()
 		categorySelected()
 	end)
 	if not aObj.isRtlPTR then

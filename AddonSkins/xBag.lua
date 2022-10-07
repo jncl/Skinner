@@ -89,7 +89,7 @@ aObj.addonsToSkin.xBag = function(self) -- v 1.8
 	end)
 	-- get bank extra bags
 	local fCnt = 0
-	self.RegisterMessage("xBag", "UIParent_GetChildren", function(_, child, _)
+	self.RegisterCallback("xBag", "UIParent_GetChildren", function(_, child, _)
 		if child.AlwaysShow
 		and child.Header
 		and child.Title
@@ -101,7 +101,7 @@ aObj.addonsToSkin.xBag = function(self) -- v 1.8
 			fCnt = fCnt + 1
 		end
 		if fCnt == 30 then
-			self:UnregisterMessage("xBag", "UIParent_GetChildren")
+			self:UnregisterCallback("xBag", "UIParent_GetChildren")
 		end
 	end)
 	self:scanUIParentsChildren()

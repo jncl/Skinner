@@ -1550,16 +1550,16 @@ if not aObj.isRtlPTR then
 		end)
 
 		-- skin extra elements
-		self.RegisterMessage("IONP", "IOFPanel_After_Skinning", function(_, panel)
+		self.RegisterCallback("IONP", "IOFPanel_After_Skinning", function(_, panel)
 			if panel ~= _G.InterfaceOptionsNamesPanel then return end
 			skinKids(_G.InterfaceOptionsNamesPanelFriendly, ftype)
 			skinKids(_G.InterfaceOptionsNamesPanelEnemy, ftype)
 			skinKids(_G.InterfaceOptionsNamesPanelUnitNameplates, ftype)
 
-			self.UnregisterMessage("IONP", "IOFPanel_After_Skinning")
+			self.UnregisterCallback("IONP", "IOFPanel_After_Skinning")
 		end)
 
-		self.RegisterMessage("CUFP", "IOFPanel_After_Skinning", function(_, panel)
+		self.RegisterCallback("CUFP", "IOFPanel_After_Skinning", function(_, panel)
 			if panel ~= _G.CompactUnitFrameProfiles then
 				return
 			end
@@ -1588,14 +1588,13 @@ if not aObj.isRtlPTR then
 			end
 			_G.CompactUnitFrameProfiles.optionsFrame.autoActivateBG:SetTexture(nil)
 
-			self.UnregisterMessage("CUFP", "IOFPanel_After_Skinning")
+			self.UnregisterCallback("CUFP", "IOFPanel_After_Skinning")
 		end)
 
 		-- hook this to skin Interface Option panels
 		self:SecureHook("InterfaceOptionsList_DisplayPanel", function(panel)
 
 			-- let AddOn skins know when IOF panel is going to be skinned
-			self:SendMessage("IOFPanel_Before_Skinning", panel)
 			self.callbacks:Fire("IOFPanel_Before_Skinning", panel)
 
 			-- don't skin a panel twice
@@ -1605,7 +1604,6 @@ if not aObj.isRtlPTR then
 			end
 
 			-- let AddOn skins know when IOF panel has been skinned
-			self:SendMessage("IOFPanel_After_Skinning", panel)
 			self.callbacks:Fire("IOFPanel_After_Skinning", panel)
 
 		end)
@@ -2589,7 +2587,9 @@ aObj.blizzFrames[ftype].StackSplit = function(self)
 				self:skinStdButton{obj=_G.StackSplitCancelButton, fType=ftype}
 			end
 		end
-		self:SendMessage("StackSplit_skinned")
+		self.callbacks:Fire("StackSplit_skinned")
+		-- remove all callbacks for this event
+		self.callbacks.events["StackSplit_skinned"] = nil
 
 		self:Unhook(this, "OnShow")
 	end)
@@ -2867,7 +2867,7 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 	then
 		_G.setmetatable(self.ttList, {__newindex = function(_, _, tTip)
 			tTip = _G.type(tTip) == "string" and _G[tTip] or tTip
-			self:SendMessage("Tooltip_Setup", tTip, "init")
+			self.callbacks:Fire("Tooltip_Setup", tTip, "init")
 		end})
 		return
 	end

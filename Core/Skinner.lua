@@ -27,6 +27,9 @@ do
 	-- store player name (done here to fix enabled addon check)
 	aObj.uName = _G.UnitName("player")
 
+	-- setup callback registry
+	aObj.callbacks = _G.LibStub:GetLibrary("CallbackHandler-1.0"):New(aObj)
+
 end
 
 function aObj:OnInitialize()
@@ -35,29 +38,7 @@ function aObj:OnInitialize()
 	self:Debug("Debugging is enabled")
 	--@end-debug@
 
-	-- TODO: remove this in favour of RegisterMessage/SendMessage
-	-- add callbacks
-	self.callbacks = _G.LibStub:GetLibrary("CallbackHandler-1.0"):New(aObj)
-	--@alpha@
-	self:SecureHook(self, "RegisterCallback", function(_, ...)
-		_G.print("RegisterCallback", ...)
-		_G.assert(false, "RegisterCallback" .. _G.debugstack(2, 3, 2))
-	end)
-	self:SecureHook(self.callbacks, "Fire", function(_, event)
-		if not event:find("_GetChildren")
-		and not event:find("IOFPanel")
-		and not event:find("AddOn_Loaded")
-		and not event:find("Auction_House_Show")
-		and not event:find("PetBattleUI_OnShow")
-		-- and not event:find("Tooltip_Setup")
-		and not event:find("WardrobeCollectionFrame_OnShow")
-		then
-			_G.print("callbacks Fire", event)
-			_G.assert(false, "callbacks Fire" .. _G.debugstack(2, 3, 2))
-		end
-	end)
-	self:SendMessage("AddOn_OnInitialize")
-	--@end-alpha@
+	self.callbacks:Fire("AddOn_OnInitialize")
 
 	-- get Locale
 	self.L = _G.LibStub:GetLibrary("AceLocale-3.0"):GetLocale(aName)
@@ -395,10 +376,8 @@ function aObj:OnEnable()
 			self.prdb.BdBorderTexture = override
 		end
 	end)
-	self:RegisterMessage("Player_Entering_World", function(_)
+	self.RegisterCallback("OnEnable", "Player_Entering_World", function(_)
 		self:updateSBTexture()
-
-		self:UnregisterMessage("Player_Entering_World")
 	end)
 
 	-- hook to handle textured tabs on Blizzard & other Frames

@@ -45,11 +45,6 @@ aObj.addonsToSkin.NPCScan = function(self) -- v 9.0.1.3
 		aObj:scanUIParentsChildren()
 	end
 
-	-- Register to know when Targeting buttons are used
-	self:RegisterMessage("NPCScan_DetectedNPC", skinTargetButton)
-	self:RegisterMessage("NPCScan_TargetButtonRequestDeactivate", skinTargetButton)
-	self:RegisterMessage("NPCScan_TargetButtonNeedsReclassified", skinTargetButton)
-
 		-- skin the anchor frame
 	local function skinAnchor(cbName, addonName)
 		if addonName == "NPCScan" then

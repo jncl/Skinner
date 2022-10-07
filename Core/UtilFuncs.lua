@@ -1179,14 +1179,12 @@ local function scanChildren(obj)
 	for idx, child in _G.ipairs_reverse{_G[obj]:GetChildren()} do
 		-- check for forbidden objects (StoreUI components etc.)
 		if not child:IsForbidden() then
-			aObj:SendMessage(obj .. "_GetChildren", child, idx)
 			aObj.callbacks:Fire(obj .. "_GetChildren", child, idx)
 		end
 	end
 
 	-- remove all callbacks for this event
 	aObj.callbacks.events[obj .. "_GetChildren"] = nil
-	_G.LibStub:GetLibrary("AceEvent-3.0", true).messages.events[obj .. "_GetChildren"] = nil
 
 end
 function aObj:scanUIParentsChildren() -- luacheck: ignore self

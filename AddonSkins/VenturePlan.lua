@@ -4,7 +4,7 @@ local _G = _G
 
 aObj.addonsToSkin.VenturePlan = function(self) -- v 4.16a
 
-	self.RegisterMessage("VenturePlan", "CovenantMissionFrame_Skinned", function(_)
+	self.RegisterCallback("VenturePlan", "CovenantMissionFrame_Skinned", function(_)
 		-- wait for frames to be created
 		_G.C_Timer.After(0.1, function()
 			-- MissionList
@@ -75,10 +75,7 @@ aObj.addonsToSkin.VenturePlan = function(self) -- v 4.16a
 
 				self:Unhook(this, "OnShow")
 			end)
-
 		end)
-
-		self.UnregisterMessage("VenturePlan", "CovenantMissionFrame_Skinned")
 	end)
 
 end

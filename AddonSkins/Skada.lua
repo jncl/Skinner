@@ -36,14 +36,14 @@ aObj.addonsToSkin.Skada = function(self) -- v 1.8.3
 	end
 
 	-- skin popup frame
-	self.RegisterMessage("Skada", "UIParent_GetChildren", function(_, child)
+	self.RegisterCallback("Skada", "UIParent_GetChildren", function(_, child)
 		if child:IsObjectType("Frame")
 		and child:GetName() == nil
 		and _G.Round(child:GetWidth()) == 250
 		and _G.Round(child:GetHeight()) == 100
 		then
 			self:skinObject("frame", {obj=child})
-			self.UnregisterMessage("Skada", "UIParent_GetChildren")
+			self.UnregisterCallback("Skada", "UIParent_GetChildren")
 		end
 	end)
 

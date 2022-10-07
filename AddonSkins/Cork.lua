@@ -11,17 +11,17 @@ aObj.addonsToSkin.Cork = function(self) -- v 7.1.0.62-Beta
 	end)
 
 	-- anchor
-	self.RegisterMessage("Cork", "UIParent_GetChildren", function(_, child)
+	self.RegisterCallback("Cork", "UIParent_GetChildren", function(_, child)
 		if child:IsObjectType("Button")
 		and _G.Round(child:GetHeight()) == 24
 		then
 			self:skinObject("frame", {obj=child, kfs=true})
-			self.UnregisterMessage("Cork", "UIParent_GetChildren")
+			self.UnregisterCallback("Cork", "UIParent_GetChildren")
 		end
 	end)
 
 	-- config
-	self.RegisterMessage("Cork", "IOFPanel_Before_Skinning", function(_, panel)
+	self.RegisterCallback("Cork", "IOFPanel_Before_Skinning", function(_, panel)
 		if panel.name ~= "Cork" then return end
 		self.iofSkinnedPanels[panel] = true
 
@@ -48,7 +48,7 @@ aObj.addonsToSkin.Cork = function(self) -- v 7.1.0.62-Beta
 			end)
 		end})
 
-		self.UnregisterMessage("Cork", "IOFPanel_Before_Skinning")
+		self.UnregisterCallback("Cork", "IOFPanel_Before_Skinning")
 	end)
 
 end

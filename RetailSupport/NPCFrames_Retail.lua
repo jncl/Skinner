@@ -293,10 +293,8 @@ aObj.SetupRetail_NPCFrames = function()
 
 		end
 
-		self.RegisterMessage("AuctionHouseUI", "Auction_House_Show", function(_)
+		self.RegisterCallback("AuctionHouseUI", "Auction_House_Show", function(_)
 			skinAuctionHouseFrames()
-
-			self.UnregisterMessage("AuctionHouseUI", "Auction_House_Show")
 		end)
 
 	end

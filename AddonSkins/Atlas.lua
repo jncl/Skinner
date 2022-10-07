@@ -83,15 +83,13 @@ aObj.addonsToSkin.Atlas = function(self) -- v1.49.02/v1.49.01
 	_G.AtlasToggleFromWorldMap.Border:SetTexture(nil)
 
 	if self.modBtnBs then
-		self.RegisterMessage("Atlas", "EncounterJournal_Skinned", function(_, _)
+		self.RegisterCallback("Atlas", "EncounterJournal_Skinned", function(_, _)
 			if _G.AtlasToggleFromEncounterJournal then
 				_G.AtlasToggleFromEncounterJournal:GetNormalTexture():SetTexture([[Interface\WorldMap\WorldMap-Icon]])
 				_G.AtlasToggleFromEncounterJournal:SetScale(0.5)
 				self:addButtonBorder{obj=_G.AtlasToggleFromEncounterJournal}
 				self:moveObject{obj=_G.AtlasToggleFromEncounterJournal, x=-30, y=-15}
 			end
-
-			self.UnregisterMessage("Atlas", "EncounterJournal_Skinned")
 		end)
 	end
 

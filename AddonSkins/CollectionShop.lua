@@ -68,7 +68,6 @@ aObj.addonsToSkin.CollectionShop = function(self) -- v 3.05
 			self:skinStdButton{obj=_G._G.AuctionFrameCollectionShop_DialogFrame_BuyoutFrame_BuyoutButton}
 		end
 
-		self.UnregisterCallback("CollectionShop", "Auction_House_Show")
 	end)
 
 	-- Options frame

@@ -20,7 +20,7 @@ local function skinThings(app, oName)
 		return frame
 	end, true)
 	-- skin existing frames
-	aObj.RegisterMessage(oName, "UIParent_GetChildren", function(_, child)
+	aObj.RegisterCallback(oName, "UIParent_GetChildren", function(_, child)
 		if child.Suffix
 		and child.Toggle
 		and child.Update
@@ -43,16 +43,16 @@ local function skinThings(app, oName)
 		aObj:getRegion(_G[oName .. "-Minimap"], 2):SetDrawLayer("OVERLAY") -- make logo appear
 	end
 	-- Settings Panels
-	aObj.RegisterMessage(oName, "IOFPanel_Before_Skinning", function(_, panel)
+	aObj.RegisterCallback(oName, "IOFPanel_Before_Skinning", function(_, panel)
 		if panel.name ~= oName then return end
 
 		for _, btn in _G.pairs(panel.Tabs) do
 			aObj.iofBtn[btn] = true
 		end
 
-		aObj.UnregisterMessage(oName, "IOFPanel_Before_Skinning")
+		aObj.UnregisterCallback(oName, "IOFPanel_Before_Skinning")
 	end)
-	aObj.RegisterMessage(oName, "IOFPanel_After_Skinning", function(_, panel)
+	aObj.RegisterCallback(oName, "IOFPanel_After_Skinning", function(_, panel)
 		if panel.name ~= oName then return end
 
 		aObj:removeBackdrop(panel)
@@ -81,7 +81,7 @@ local function skinThings(app, oName)
 			end
 		end
 
-		aObj.UnregisterMessage(oName, "IOFPanel_After_Skinning")
+		aObj.UnregisterCallback(oName, "IOFPanel_After_Skinning")
 	end)
 end
 

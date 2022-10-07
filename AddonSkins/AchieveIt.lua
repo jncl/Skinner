@@ -15,12 +15,10 @@ aObj.addonsToSkin.AchieveIt = function(self) -- v 9.1.5.00
 		self:Unhook(this, "OnShow")
 	end)
 
-	self.RegisterMessage("AchieveIt", "AchievementUI_Skinned", function(_, _)
+	self.RegisterCallback("AchieveIt", "AchievementUI_Skinned", function(_, _)
 		if self.modBtns then
 			self:skinStdButton{obj=_G.AchieveIt_Locate_Button, ofs=-4, y1=-2, y2=-1}
 		end
-
-		self.UnregisterMessage("AchieveIt", "AchievementUI_Skinned")
 	end)
 
 end

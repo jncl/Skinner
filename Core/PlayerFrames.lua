@@ -351,8 +351,10 @@ then
 			end)
 			self:checkShown(_G.AchievementFrameComparison)
 
-			-- send message when UI is skinned (used by AchieveIt skin)
-			self:SendMessage("AchievementUI_Skinned", self)
+			-- let AddOn skins know when when UI is skinned (used by AchieveIt skin)
+			self.callbacks:Fire("AchievementUI_Skinned")
+			-- remove all callbacks for this event
+			self.callbacks.events["AchievementUI_Skinned"] = nil
 
 			self:Unhook(this, "OnShow")
 		end)

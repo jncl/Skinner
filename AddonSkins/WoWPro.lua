@@ -62,7 +62,7 @@ aObj.addonsToSkin.WoWPro = function(self) -- v 9.0.5-A5/2.5.2.-A0/1.14.0.A0
 
 	-- Options panels
 	local pCnt = 0
-	self.RegisterMessage("WoWPro", "IOFPanel_Before_Skinning", function(_, panel)
+	self.RegisterCallback("WoWPro", "IOFPanel_Before_Skinning", function(_, panel)
 		if panel.parent ~= "WoW-Pro" then return end
 		if panel.name == "Guide List"
 		and not self.iofSkinnedPanels[panel]
@@ -100,7 +100,7 @@ aObj.addonsToSkin.WoWPro = function(self) -- v 9.0.5-A5/2.5.2.-A0/1.14.0.A0
 		end
 
 		if pCnt == 2 then
-			self.UnregisterMessage("WoWPro", "IOFPanel_Before_Skinning")
+			self.UnregisterCallback("WoWPro", "IOFPanel_Before_Skinning")
 		end
 	end)
 

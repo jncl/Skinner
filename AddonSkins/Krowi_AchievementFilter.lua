@@ -208,9 +208,6 @@ aObj.addonsToSkin.Krowi_AchievementFilter = function(self) -- v 43
 
 	end
 
-	self.RegisterMessage("Krowi_AchievementFilter", "AchievementUI_Skinned", function(_, _)
-		skinK_AF()
-		self.UnregisterMessage("Krowi_AchievementFilter", "AchievementUI_Skinned")
-	end)
+	self.RegisterCallback("Krowi_AchievementFilter", "AchievementUI_Skinned", skinK_AF, self)
 
 end

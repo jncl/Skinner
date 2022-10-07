@@ -10,7 +10,7 @@ aObj.addonsToSkin.alaTradeSkill = function(self) -- v 205r.210902
 		end)
 		return
 	end
-			
+
 	-- hook this to skin dropdown frames
 	self:SecureHook("ALADROP", function(_, _, data, _)
 		if _G.type(data) ~= "table"
@@ -23,8 +23,8 @@ aObj.addonsToSkin.alaTradeSkill = function(self) -- v 205r.210902
 			self:skinObject("frame", {obj=frame, kfs=true, ofs=4})
 		end
 		frame = nil
-	end)			
-	
+	end)
+
 	-- ALA_TRADESKILL_EXPLORER
 		-- .SearchEditBox
 		-- .ScrollFrame
@@ -36,7 +36,7 @@ aObj.addonsToSkin.alaTradeSkill = function(self) -- v 205r.210902
 		self:skinObject("frame", {obj=this.SetFrame, kfs=true, ofs=0, y1=2})
 		self:skinObject("slider", {obj=this.SetFrame.PhaseSlider})
 		self:skinObject("frame", {obj=this, kfs=true, ofs=0})
-		
+
 		self:Unhook(this, "OnShow")
 	end)
 
@@ -58,13 +58,13 @@ aObj.addonsToSkin.alaTradeSkill = function(self) -- v 205r.210902
 	end)
 
 	-- BOARD
-	self.RegisterMessage("alaTradeSkill", "UIParent_GetChildren", function(_, child, _)
+	self.RegisterCallback("alaTradeSkill", "UIParent_GetChildren", function(_, child, _)
 		if child.info_lines
 		and child.T_Lines
 		and child.curLine
 		then
 			self:skinObject("frame", {obj=child, ofs=4})
-			self.UnregisterMessage("alaTradeSkill", "UIParent_GetChildren")
+			self.UnregisterCallback("alaTradeSkill", "UIParent_GetChildren")
 		end
 	end)
 	self:scanUIParentsChildren()

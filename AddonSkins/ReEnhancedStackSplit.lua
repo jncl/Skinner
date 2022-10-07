@@ -8,7 +8,7 @@ local _G = _G
 
 local function skinEnhancedStackSplit()
 
-	aObj:RegisterMessage("StackSplit_skinned", function(_)
+	aObj.RegisterCallback("ReEnhancedStackSplit", "StackSplit_skinned", function(_)
 		-- hook these to show/hide stack split value
 		if _G.StackSplitFrame.OkayButton then
 			_G.StackSplitFrame.OkayButton:HookScript("OnShow", function(_) _G.StackSplitFrame.StackSplitText:Show() end)

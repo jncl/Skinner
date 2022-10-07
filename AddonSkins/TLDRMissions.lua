@@ -105,7 +105,7 @@ aObj.addonsToSkin.TLDRMissions = function(self) -- v9.2-135
 	end)
 
 	self:SecureHookScript(_G.TLDRMissionsFrame.ProfileTabButton, "OnClick", function(this)
-		self.RegisterMessage("TLDRMissions", "UIParent_GetChildren", function(this, child)
+		self.RegisterCallback("TLDRMissions", "UIParent_GetChildren", function(this, child)
 			if child.height
 			and child.height == 500
 			and child.width
@@ -113,7 +113,7 @@ aObj.addonsToSkin.TLDRMissions = function(self) -- v9.2-135
 			and child:GetNumChildren() == 7
 			then
 				self:skinAceOptions(child)
-				self.UnregisterMessage("TLDRMissions", "UIParent_GetChildren")
+				self.UnregisterCallback("TLDRMissions", "UIParent_GetChildren")
 			end
 		end)
 		self:scanUIParentsChildren()
@@ -121,13 +121,13 @@ aObj.addonsToSkin.TLDRMissions = function(self) -- v9.2-135
 		self:Unhook(this, "OnClick")
 	end)
 
-	self.RegisterMessage("TLDRMissions", "IOFPanel_Before_Skinning", function(this, panel)
+	self.RegisterCallback("TLDRMissions", "IOFPanel_Before_Skinning", function(this, panel)
 		if panel.name ~= "TLDRMissions" then return end
 		self.iofSkinnedPanels[panel] = true
 
 		self:skinAceOptions(panel.obj)
 
-		self.UnregisterMessage("TLDRMissions", "IOFPanel_Before_Skinning")
+		self.UnregisterCallback("TLDRMissions", "IOFPanel_Before_Skinning")
 	end)
 
 end

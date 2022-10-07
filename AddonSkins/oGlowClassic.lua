@@ -28,7 +28,7 @@ aObj.addonsToSkin.oGlowClassic = function(self) -- v 0.1.1-beta
 	end)
 
 	local pCnt = 0
-	self.RegisterMessage("oGlowClassic_Config", "IOFPanel_Before_Skinning", function(_, panel)
+	self.RegisterCallback("oGlowClassic_Config", "IOFPanel_Before_Skinning", function(_, panel)
 		if panel.name ~= "oGlowClassic"
 		and panel.parent ~= "oGlowClassic"
 		then
@@ -79,7 +79,7 @@ aObj.addonsToSkin.oGlowClassic = function(self) -- v 0.1.1-beta
 		end
 
 		if pCnt == 3 then
-			self.UnregisterMessage("oGlowClassic_Config", "IOFPanel_Before_Skinning")
+			self.UnregisterCallback("oGlowClassic_Config", "IOFPanel_Before_Skinning")
 		end
 	end)
 

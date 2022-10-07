@@ -1388,7 +1388,7 @@ aObj.SetupOptions = function(self)
 	local function chatCommand(input)
 		if not input or input:trim() == "" then
 			-- Open general panel if there are no parameters, do twice to overcome Blizzard bug
-			aObj:SendMessage("Options_Selected", aObj)
+			aObj.callbacks:Fire("Options_Selected")
 			if not aObj.isRtlPTR then
 				iof_otc(aObj.optionsFrames[aName])
 				iof_otc(aObj.optionsFrames[aName])
@@ -1396,7 +1396,7 @@ aObj.SetupOptions = function(self)
 				iof_otc(aName)
 			end
 		elseif aObj.optCheck[input:lower()] then
-			aObj:SendMessage("Options_Selected", aObj)
+			aObj.callbacks:Fire("Options_Selected")
 			if not aObj.isRtlPTR then
 				iof_otc(aObj.optionsFrames[aObj.optCheck[input:lower()]])
 				iof_otc(aObj.optionsFrames[aObj.optCheck[input:lower()]])

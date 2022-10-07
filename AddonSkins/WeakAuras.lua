@@ -191,7 +191,7 @@ aObj.lodAddons.WeakAurasOptions = function(self) -- v 3.7.13
 	-- Templates
 	if self.modBtns then
 		-- event, addon
-		self.RegisterMessage("WeakAurasOptions", "AddOn_Loaded", function(_, addon)
+		self.RegisterCallback("WeakAurasOptions", "AddOn_Loaded", function(_, addon)
 			if addon == "WeakAurasTemplates" then
 				_G.C_Timer.After(0.1, function()
 					self:skinStdButton{obj=_G.WeakAurasOptions.newView.backButton}
@@ -199,7 +199,7 @@ aObj.lodAddons.WeakAurasOptions = function(self) -- v 3.7.13
 					self:skinStdButton{obj=_G.WeakAurasOptions.newView.batchButton}
 					self:skinStdButton{obj=self:getLastChild(_G.WeakAurasOptions.newView.frame)} -- cancel button
 				end)
-				self.UnregisterMessage("WeakAurasOptions", "AddOn_Loaded")
+				self.UnregisterCallback("WeakAurasOptions", "AddOn_Loaded")
 			end
 		end)
 	end

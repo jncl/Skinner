@@ -889,7 +889,6 @@ aObj.SetupRetail_PlayerFrames = function()
 			local x1Ofs, y1Ofs, x2Ofs, y2Ofs = -4, 2, 7, -4
 
 			if _G.IsAddOnLoaded("BetterWardrobe") then
-				self:SendMessage("WardrobeCollectionFrame_OnShow")
 				self.callbacks:Fire("WardrobeCollectionFrame_OnShow")
 			else
 				local function updBtnClr(btn)
@@ -2074,8 +2073,10 @@ aObj.SetupRetail_PlayerFrames = function()
 
 				self:Unhook(fObj, "OnShow")
 			end)
-			-- send message when UI is skinned (used by Atlas skin)
-			self:SendMessage("EncounterJournal_Skinned", self)
+			-- let AddOn skins know when when UI is skinned (used by Atlas skin)
+			self.callbacks:Fire("EncounterJournal_Skinned", self)
+			-- remove all callbacks for this event
+			self.callbacks.events["EncounterJournal_Skinned"] = nil
 
 			self:Unhook(this, "OnShow")
 		end)
@@ -2726,8 +2727,10 @@ aObj.SetupRetail_PlayerFrames = function()
 		self:SecureHookScript(_G.InspectFrame, "OnShow", function(this)
 			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true, offsets={x1=9, y1=self.isTT and 2 or -3, x2=-9, y2=2}})
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true})
-			-- send message when UI is skinned (used by oGlow skin)
-			self:SendMessage("InspectUI_Skinned", self)
+			-- let AddOn skins know when when UI is skinned (used by oGlow skin)
+			self.callbacks:Fire("InspectUI_Skinned", self)
+			-- remove all callbacks for this event
+			self.callbacks.events["InspectUI_Skinned"] = nil
 
 			self:Unhook(this, "OnShow")
 		end)
@@ -3915,8 +3918,10 @@ aObj.SetupRetail_PlayerFrames = function()
 
 					self:Unhook(fObj, "OnShow")
 				end)
-				-- send message when UI is skinned (used by oGlow skin)
-				self:SendMessage("TradeSkillUI_Skinned", self)
+				-- let AddOn skins know when when UI is skinned (used by oGlow skin)
+				self.callbacks:Fire("TradeSkillUI_Skinned", self)
+				-- remove all callbacks for this event
+				self.callbacks.events["TradeSkillUI_Skinned"] = nil
 
 				self:Unhook(this, "OnShow")
 			end)

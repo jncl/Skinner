@@ -6,7 +6,7 @@ aObj.addonsToSkin.RaiderIO = function(self) -- v 9.2.0 (v202205060600)
 
 	-- Config & SearchUI
 	local cPF, sUI -- configParentFrame, SearchUI
-	self.RegisterMessage("RaiderIO", "UIParent_GetChildren", function(_, child)
+	self.RegisterCallback("RaiderIO", "UIParent_GetChildren", function(_, child)
 		if child.scrollframe
 		and child.scrollbar
 		then
@@ -19,7 +19,7 @@ aObj.addonsToSkin.RaiderIO = function(self) -- v 9.2.0 (v202205060600)
 		if cPF
 		and sUI
 		then
-			self.UnregisterMessage("RaiderIO", "UIParent_GetChildren")
+			self.UnregisterCallback("RaiderIO", "UIParent_GetChildren")
 		end
 	end)
 	self:scanUIParentsChildren()

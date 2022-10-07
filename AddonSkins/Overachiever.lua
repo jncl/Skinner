@@ -22,7 +22,7 @@ aObj.addonsToSkin.Overachiever = function(self) -- v 1.2.3/1.2.6 Wrath
 		end
 	end
 	local pCnt = 0
-	self.RegisterMessage("Overachiever", "IOFPanel_Before_Skinning", function(_, panel)
+	self.RegisterCallback("Overachiever", "IOFPanel_Before_Skinning", function(_, panel)
 		if panel.name == "Overachiever"
 		or panel.parent == "Overachiever"
 		and not self.iofSkinnedPanels[panel]
@@ -32,7 +32,7 @@ aObj.addonsToSkin.Overachiever = function(self) -- v 1.2.3/1.2.6 Wrath
 			pCnt = pCnt + 1
 		end
 		if pCnt == 2 then
-			self.UnregisterMessage("Overachiever", "IOFPanel_Before_Skinning")
+			self.UnregisterCallback("Overachiever", "IOFPanel_Before_Skinning")
 		end
 	end)
 

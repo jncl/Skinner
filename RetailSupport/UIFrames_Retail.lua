@@ -1815,8 +1815,10 @@ aObj.SetupRetail_UIFrames = function()
 			if skinCovenantMissionFrame then
 				skinCovenantMissionFrame(this)
 				skinCovenantMissionFrame = nil
-				-- let other addons know when frame skinned (e.g. VenturePlan)
-				self:SendMessage("CovenantMissionFrame_Skinned")
+				-- let AddOn skins know when frame skinned (e.g. VenturePlan)
+				self.callbacks:Fire("CovenantMissionFrame_Skinned")
+				-- remove all callbacks for this event
+				self.callbacks.events["CovenantMissionFrame_Skinned"] = nil
 			end
 
 		end)
@@ -2858,9 +2860,10 @@ aObj.SetupRetail_UIFrames = function()
 				end)
 			end
 
-			self:Unhook(this, "OnShow")
-			self:SendMessage("PetBattleUI_OnShow")
+			-- let AddOn skins know when frame skinned
 			self.callbacks:Fire("PetBattleUI_OnShow")
+
+			self:Unhook(this, "OnShow")
 		end)
 		self:checkShown(_G.PetBattleFrame)
 

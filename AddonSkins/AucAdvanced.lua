@@ -11,7 +11,7 @@ aObj.addonsToSkin["Auc-Advanced"] = function(self) -- v 1.13.6718
 	-- progress bars
 	local api = _G.AucAdvanced.API
 	self:SecureHook(api , "ProgressBars", function(_, _)
-		self.RegisterMessage("AucAdvanced", "UIParent_GetChildren", function(_, child, _)
+		self.RegisterCallback("AucAdvanced", "UIParent_GetChildren", function(_, child, _)
 			if child:IsObjectType("StatusBar")
 			and child:GetName() == nil
 			and _G.Round(child:GetWidth()) == 300
@@ -23,7 +23,6 @@ aObj.addonsToSkin["Auc-Advanced"] = function(self) -- v 1.13.6718
 			end
 		end)
 		self:scanUIParentsChildren()
-		self.UnregisterMessage("AucAdvanced", "UIParent_GetChildren")
 	end)
 
 	-- Appraiser
