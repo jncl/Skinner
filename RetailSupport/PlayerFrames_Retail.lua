@@ -1757,10 +1757,15 @@ aObj.SetupRetail_PlayerFrames = function()
 
 		self:SecureHookScript(_G.DressUpFrame, "OnShow", function(this)
 			self:skinObject("dropdown", {obj=this.OutfitDropDown, fType=ftype, y2=-4})
-			this.MaxMinButtonFrame:DisableDrawLayer("BACKGROUND") -- button texture
-			self:skinObject("frame", {obj=this.OutfitDetailsPanel, fType=ftype, kfs=true, x1=2, y1=3})
+			this.MaxMinButtonFrame:DisableDrawLayer("BACKGROUND") -- corner texture
+			self:skinObject("frame", {obj=this.OutfitDetailsPanel, fType=ftype, kfs=true, ofs=-7})
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, y2=-4})
-			this.ModelBackground:SetAlpha(1) -- show model background
+			if self.prdb.DUTexture then
+				this.ModelBackground:SetDrawLayer("ARTWORK")
+				this.ModelBackground:SetAlpha(1)
+			else
+				this.ModelBackground:SetAlpha(0)
+			end
 			if self.modBtns then
 				self:skinStdButton{obj=this.OutfitDropDown.SaveButton}
 				self:skinOtherButton{obj=this.MaxMinButtonFrame.MaximizeButton, font=self.fontS, text=self.nearrow}

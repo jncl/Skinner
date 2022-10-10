@@ -30,6 +30,7 @@ aObj.SetupDefaults = function(self)
 			BgFile                     = "None",
 			BgTexture                  = "None",
 			BgTile                     = false,
+			DUTexture                  = true,
 			LFGTexture                 = false,
 		-- Colours
 			ClassClrBd                 = false,
@@ -395,6 +396,7 @@ aObj.SetupOptions = function(self)
 				db[info[#info]] = value == "" and "None" or value
 				if info[#info] ~= "BgUseTex"
 				and info[#info] ~= "LFGTexture"
+				and info[#info] ~= "DUTexture"
 				then
 					db.BgUseTex = true
 				end
@@ -429,6 +431,12 @@ aObj.SetupOptions = function(self)
 					order = 4,
 					name = self.L["Tile Background"],
 					desc = self.L["Tile or Stretch Background"],
+				},
+				DUTexture = {
+					type = "toggle",
+					width = "double",
+					name = _G.strjoin(" ", self.L["Show Dressing Room"], self.L["Background Texture"]),
+					desc = _G.strjoin(" ", self.L["Toggle the background texture"], self.L["of the Dressing Room Frame"]),
 				},
 				LFGTexture = {
 					type = "toggle",
