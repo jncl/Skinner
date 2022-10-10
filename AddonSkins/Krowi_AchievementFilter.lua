@@ -4,29 +4,41 @@ local _G = _G
 
 aObj.addonsToSkin.Krowi_AchievementFilter = function(self) -- v 43
 
-	local afsbs = {}
-	local function skinAlertFrame(frame)
-		frame.animIn:Stop()
-		frame.waitAndAnimOut:Stop()
-		frame.Background:SetTexture(nil)
-		frame:DisableDrawLayer("OVERLAY")
-		aObj:skinObject("frame", {obj=frame, ofs=-2})
-		frame.Unlocked:SetTextColor(aObj.BT:GetRGB())
-		if aObj.modBtnBs then
-			frame.Icon:DisableDrawLayer("OVERLAY")
-			aObj:addButtonBorder{obj=frame.Icon, relTo=frame.Icon.Texture}
-		end
-	end
+	local afsbs, skinAlertFrame = {}, _G.nop
+
 	if self.prdb.AlertFrames then
-		local af_afss = _G.AlertFrame.alertFrameSubSystems
-		self:SecureHook(af_afss[#af_afss], "setUpFunction", function(frame, _)
-			skinAlertFrame(frame)
-			if _G["AchievementFrameSideButton" .. frame.Event.Id] then
-				skinAlertFrame(_G["AchievementFrameSideButton" .. frame.Event.Id])
-			else
-				self:add2Table(afsbs, "AchievementFrameSideButton" .. frame.Event.Id)
+		function skinAlertFrame(frame)
+			frame.animIn:Stop()
+			frame.waitAndAnimOut:Stop()
+			frame.Background:SetTexture(nil)
+			frame:DisableDrawLayer("OVERLAY")
+			aObj:skinObject("frame", {obj=frame, ofs=-2})
+			frame.Unlocked:SetTextColor(aObj.BT:GetRGB())
+			if aObj.modBtnBs then
+				frame.Icon:DisableDrawLayer("OVERLAY")
+				aObj:addButtonBorder{obj=frame.Icon, relTo=frame.Icon.Texture}
 			end
-		end)
+		end
+
+		_G.C_Timer.NewTicker(0.1, function(ticker)
+			for _, afs in _G.ipairs_reverse(_G.AlertFrame.alertFrameSubSystems) do
+				if afs.alertFramePool then
+					if _G.strfind(afs.alertFramePool.frameTemplate, "KrowiAF_AlertFrame_") then
+						self:SecureHook(afs, "setUpFunction", function(frame, _)
+							skinAlertFrame(frame)
+							if _G["AchievementFrameSideButton" .. frame.Event.Id] then
+								skinAlertFrame(_G["AchievementFrameSideButton" .. frame.Event.Id])
+							else
+								self:add2Table(afsbs, "AchievementFrameSideButton" .. frame.Event.Id)
+							end
+						end)
+						ticker:Cancel()
+						break
+					end
+				end
+			end
+		end, 20)
+
 	end
 
 	local function skinK_AF()
@@ -141,7 +153,7 @@ aObj.addonsToSkin.Krowi_AchievementFilter = function(self) -- v 43
 			if aObj.modChkBtns
 			and btn.Tracked
 			then
-				aObj:skinCheckButton{obj=btn.Tracked, fType=ftype}
+				aObj:skinCheckButton{obj=btn.Tracked}
 			end
 		end
 		self:SecureHookScript(_G.KrowiAF_AchievementsFrame, "OnShow", function(this)
@@ -173,9 +185,11 @@ aObj.addonsToSkin.Krowi_AchievementFilter = function(self) -- v 43
 			self:skinObject("frame", {obj=this.ScrollFrameBorder, kfs=true})
 			for _, btn in _G.pairs(this.ScrollFrameBorder.ScrollFrame.buttons) do
 				skinAchievevment(btn)
-				btn.sbb:SetBackdropBorderColor(btn:GetBackdropBorderColor())
-				btn.Icon.sbb:SetBackdropBorderColor(btn:GetBackdropBorderColor())
 				btn.Description:SetTextColor(self.BT:GetRGB())
+				if btn.sbb then
+					btn.sbb:SetBackdropBorderColor(btn:GetBackdropBorderColor())
+					btn.Icon.sbb:SetBackdropBorderColor(btn:GetBackdropBorderColor())
+				end
 			end
 			self:skinObject("frame", {obj=this, kfs=true, y1=0, y2=0})
 
@@ -191,7 +205,7 @@ aObj.addonsToSkin.Krowi_AchievementFilter = function(self) -- v 43
 		_G.wipe(afsbs)
 
 		-- Tooltip StatusBar
-		for idx, child in _G.ipairs_reverse{_G.GameTooltip:GetChildren()} do
+		for _, child in _G.ipairs_reverse{_G.GameTooltip:GetChildren()} do
 			if child:GetName()
 			and child:GetName():find("Krowi_ProgressBar")
 			then
@@ -205,7 +219,6 @@ aObj.addonsToSkin.Krowi_AchievementFilter = function(self) -- v 43
 				break
 			end
 		end
-
 	end
 
 	self.RegisterCallback("Krowi_AchievementFilter", "AchievementUI_Skinned", skinK_AF, self)

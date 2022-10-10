@@ -88,7 +88,8 @@ local function skinAtlasLoot()
 			local mTT = _G.AtlasLoot.Button:GetType("Mount")
 			if mTT then
 				aObj:SecureHook(mTT, "ShowToolTipFrame", function(_)
-					aObj:addSkinFrame{obj=mTT.tooltipFrame, ft="a", kfs=true, nb=true}
+					aObj:skinObject("frame", {obj=mTT.tooltipFrame, kfs=true})
+
 					aObj:Unhook(mTT, "ShowToolTipFrame")
 				end)
 			end
@@ -96,14 +97,20 @@ local function skinAtlasLoot()
 			local pTT = _G.AtlasLoot.Button:GetType("Pet")
 			if pTT then
 				aObj:SecureHook(pTT, "ShowToolTipFrame", function(_)
-					aObj:addSkinFrame{obj=pTT.tooltipFrame, ft="a", kfs=true, nb=true}
+					aObj:skinObject("frame", {obj=pTT.tooltipFrame, kfs=true})
+
 					aObj:Unhook(pTT, "ShowToolTipFrame")
 				end)
 			end
 		end
 		local fTT = _G.AtlasLoot.Button:GetType("Faction")
 		if fTT then
-			aObj:SecureHook(fTT, "ShowToolTipFrame", function(_)
+			aObj:SecureHook(fTT, "ShowToolTipFrame", function(button)
+				if aObj.isClsc
+				and not _G.GetFactionInfoByID(button.FactionID)
+				then
+					return
+				end
 				aObj:removeBackdrop(fTT.tooltipFrame.standing)
 				aObj:skinObject("statusbar", {obj=fTT.tooltipFrame.standing.bar, fi=0})
 				aObj:skinObject("frame", {obj=fTT.tooltipFrame, kfs=true})
@@ -113,9 +120,10 @@ local function skinAtlasLoot()
 		end
 		local sTT = _G.AtlasLoot.Button:GetType("Set")
 		if sTT then
-			aObj:SecureHook(sTT, "ShowToolTipFrame", function(_)
+			aObj:SecureHook(sTT, "ShowToolTipFrame", function(button)
+				if not button.Items then return end
 				aObj:removeBackdrop(sTT.tooltipFrame.modelFrame)
-				if sTT.tooltipFrame.bonusDataFrame then
+				if aObj.isClsc then
 					aObj:skinObject("frame", {obj=sTT.tooltipFrame.bonusDataFrame, kfs=true})
 				end
 				aObj:skinObject("frame", {obj=sTT.tooltipFrame, kfs=true})
@@ -125,8 +133,21 @@ local function skinAtlasLoot()
 		end
 		local iTT = _G.AtlasLoot.Button:GetType("Item")
 		if iTT then
-			aObj:SecureHook(iTT, "ShowQuickDressUp", function(_)
-				if not iTT.previewTooltipFrame then return end
+			aObj:SecureHook(iTT, "ShowQuickDressUp", function(itemLink, ttFrame)
+				if aObj.isRtl then
+					if not itemLink
+					or not _G.IsEquippableItem(itemLink)
+					then
+						return
+					end
+				else
+					if not itemLink
+					or not ttFrame
+					or (not _G.IsEquippableItem(itemLink) and not _G.AtlasLoot.Data.Companion.IsCompanion(itemLink))
+					then
+						return
+					end
+				end
 				aObj:skinObject("frame", {obj=iTT.previewTooltipFrame, kfs=true})
 
 				aObj:Unhook(iTT, "ShowQuickDressUp")
@@ -163,7 +184,7 @@ local function skinAtlasLoot()
 				aObj:removeBackdrop(this.frame.content.headerBg)
 				aObj:removeBackdrop(this.frame.content.bottomBg)
 				aObj:removeBackdrop(this.frame.content.itemListBg)
-				skinDropDown(this.frame.content.listSelect)
+				aObj:skinObject("dropdown", {obj=this.frame.content.listSelect})
 				aObj:skinObject("editbox", {obj=this.frame.content.editBox, y1=-4, y2=4})
 				aObj:skinObject("slider", {obj=this.frame.content.scrollFrame.scrollbar})
 				aObj:skinObject("frame", {obj=this.frame, kfs=true, cb=true, ofs=0, y1=-1})
@@ -205,15 +226,14 @@ local function skinAtlasLoot()
 		end
 	end
 
-
 end
 
-aObj.addonsToSkin.AtlasLoot = function(_) -- v 8.10.00
+aObj.addonsToSkin.AtlasLoot = function(_) -- v 8.13.01
 
 	skinAtlasLoot()
 
 end
-aObj.addonsToSkin.AtlasLootClassic = function(_) -- v2.3.3-bcc/v2.1.0
+aObj.addonsToSkin.AtlasLootClassic = function(_) -- v 3.0.6
 
 	skinAtlasLoot()
 

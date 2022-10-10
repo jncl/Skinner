@@ -14,7 +14,9 @@ local function skinDDL(frame)
 end
 local function skinDropDowns(lDD, ddPrefix)
 	skinDDL(_G[ddPrefix .. 1])
-	skinDDL(_G[ddPrefix .. 2])
+	if _G[ddPrefix .. 2] then
+		skinDDL(_G[ddPrefix .. 2])
+	end
 	local maxLvl = _G.L_UIDROPDOWNMENU_MAXLEVELS
 	aObj:SecureHook(lDD, "UIDropDownMenu_CreateFrames", function(this, _, _)
 		for i = maxLvl + 1, _G.L_UIDROPDOWNMENU_MAXLEVELS do

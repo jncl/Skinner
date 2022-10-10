@@ -2,7 +2,7 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("Auctionator") then return end
 local _G = _G
 
-aObj.addonsToSkin.Auctionator = function(self) -- v  9.2.33
+aObj.addonsToSkin.Auctionator = function(self) -- v 9.2.42
 
 	local function skinAuctionatorFrames()
 		if not _G.AuctionatorSellingFrame then
@@ -12,7 +12,7 @@ aObj.addonsToSkin.Auctionator = function(self) -- v  9.2.33
 			return
 		end
 
-		aObj:SecureHookScript(_G.AuctionatorShoppingListFrame, "OnShow", function(this)
+		aObj:SecureHookScript(_G.AuctionatorShoppingFrame, "OnShow", function(this)
 			this:DisableDrawLayer("BACKGROUND")
 			aObj:skinObject("editbox", {obj=this.OneItemSearchBox})
 			aObj:skinObject("dropdown", {obj=this.ListDropdown})
@@ -55,9 +55,9 @@ aObj.addonsToSkin.Auctionator = function(self) -- v  9.2.33
 			aObj:Unhook(this, "OnShow")
 		end)
 
-		local aslFrame = _G.AuctionatorShoppingListFrame
-		if aslFrame.itemDialog then
-			aObj:SecureHookScript(aslFrame.itemDialog, "OnShow", function(this)
+		local asFrame = _G.AuctionatorShoppingFrame
+		if asFrame.itemDialog then
+			aObj:SecureHookScript(asFrame.itemDialog, "OnShow", function(this)
 				aObj:removeNineSlice(this.Border)
 				if not aObj.isRtl then
 					aObj:removeInset(aObj:getChild(this.Inset, 1))
@@ -82,8 +82,8 @@ aObj.addonsToSkin.Auctionator = function(self) -- v  9.2.33
 				aObj:Unhook(this, "OnShow")
 			end)
 		end
-		if aslFrame.exportDialog then
-			aObj:SecureHookScript(aslFrame.exportDialog, "OnShow", function(this)
+		if asFrame.exportDialog then
+			aObj:SecureHookScript(asFrame.exportDialog, "OnShow", function(this)
 				aObj:removeNineSlice(this.Border)
 				if not aObj.isRtl then
 					aObj:removeInset(aObj:getChild(this.Inset, 1))
@@ -110,7 +110,7 @@ aObj.addonsToSkin.Auctionator = function(self) -- v  9.2.33
 
 				aObj:Unhook(this, "OnShow")
 			end)
-			aObj:SecureHookScript(aslFrame.exportDialog.copyTextDialog, "OnShow", function(this)
+			aObj:SecureHookScript(asFrame.exportDialog.copyTextDialog, "OnShow", function(this)
 				aObj:removeNineSlice(this.Border)
 				if not aObj.isRtl then
 					aObj:removeInset(aObj:getChild(this.Inset, 1))
@@ -124,8 +124,8 @@ aObj.addonsToSkin.Auctionator = function(self) -- v  9.2.33
 				aObj:Unhook(this, "OnShow")
 			end)
 		end
-		if aslFrame.importDialog then
-			aObj:SecureHookScript(aslFrame.importDialog, "OnShow", function(this)
+		if asFrame.importDialog then
+			aObj:SecureHookScript(asFrame.importDialog, "OnShow", function(this)
 				aObj:removeNineSlice(this.Border)
 				if not aObj.isRtl then
 					aObj:removeInset(aObj:getChild(this.Inset, 1))
@@ -140,8 +140,8 @@ aObj.addonsToSkin.Auctionator = function(self) -- v  9.2.33
 				aObj:Unhook(this, "OnShow")
 			end)
 		end
-		if aslFrame.exportCSVDialog then
-			aObj:SecureHookScript(aslFrame.exportCSVDialog, "OnShow", function(this)
+		if asFrame.exportCSVDialog then
+			aObj:SecureHookScript(asFrame.exportCSVDialog, "OnShow", function(this)
 				aObj:removeNineSlice(this.Border)
 				if not aObj.isRtl then
 					aObj:removeInset(aObj:getChild(this.Inset, 1))
@@ -155,8 +155,8 @@ aObj.addonsToSkin.Auctionator = function(self) -- v  9.2.33
 				aObj:Unhook(this, "OnShow")
 			end)
 		end
-		if aslFrame.itemHistoryDialog then
-			aObj:SecureHookScript(aslFrame.itemHistoryDialog, "OnShow", function(this)
+		if asFrame.itemHistoryDialog then
+			aObj:SecureHookScript(asFrame.itemHistoryDialog, "OnShow", function(this)
 				aObj:removeNineSlice(this.Border)
 				if not aObj.isRtl then
 					aObj:removeInset(aObj:getChild(this.Inset, 1))
