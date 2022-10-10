@@ -16,19 +16,19 @@ ToDo_retail_PTR
 √				- TitleManagerPane
 √				- EquipmentManagerPane
 √			- ExpansionLandingPageMinimapButton
-¶√			- ClassTalentUI ("Class Talent UI")
-¶			- EditMode ("Edit Mode")
+√			- ClassTalentUI ("Class Talent UI")
+			- EditMode ("Edit Mode")
 √				- EditModeManagerFrame
-¶√			- Settings ("Options")
-¶≈			- Professions
-¶≈			- SocialBrowserFrame ("Twitter Login")
-¶≈			- ExpansionLandingPage ("Expansion Landing Page")
-¶			- MajorFactions UI ("Major Factions UI")
+√			- Settings ("Options")
+≈			- Professions
+≈			- SocialBrowserFrame ("Twitter Login")
+≈			- ExpansionLandingPage ("Expansion Landing Page")
+			- MajorFactions UI ("Major Factions UI")
 				- MajorFactionToasts
 				- MajorFactionUnlockToast
 				- MajorFactionsRenownToast
 ≈				- MajorFactionRenownFrame
-¶			- GenericTraitUI ("Trait U")
+			- GenericTraitUI ("Trait UI")
 ≈				- GenericTraitFrame
 			- ClassNameplateBar_Dracthyr
 ≈			- EssenceFramePlayer
@@ -36,6 +36,8 @@ ToDo_retail_PTR
 √			- FriendshipStatusBar
 √			- PetActionBar
 √			- PetActionBarFrame
+√			- SpellFlyout
+√			- TalkingHeadFrame ("Talking Head")
 x			- MacroIconSelector
 x			- GossipFrameShared
 x			- ClassResourceBarTemplate
@@ -80,11 +82,12 @@ x			- Tabs
 √			- MailFrame
 √			- GossipFrame
 ≈			- PlayerFrame
+√				- CastBar background texture
 √			- TargetFrame
-≈			- BossFrame(s)
+√			- BossFrame(s)
 √			- FocusFrame
 √			- PartyFrame(s)
-≈			- ArenaUI
+√			- ArenaUI
 √			- GarrisonLandingPage
 √			- ContainerFrames
 √			- SpellBookFrame
@@ -92,7 +95,7 @@ x			- Tabs
 √			- RaidFrame
 √			- ChatChannelsUI
 √			- MacroUI
-√			= AchievementUI
+√			- AchievementUI
 √			- AuctionHouseUI
 √			- CastingBar
 √			- Buffs
@@ -114,14 +117,16 @@ x			- Tabs
 √				- MountJournal
 √				- PetJournal
 √			- AddonList
+≈			- Communities
+√			- EncounterJournal
 		- Deleted
 √			- SetGradientAlpha method for Texture
 √			- InterfaceOptionsFrame_OpenToCategory
 x			- CompactUnitFrameProfiles
 x			- CharacterFrameTemplates
-√			- BindingUI
+¶√			- BindingUI
 √			- GarrisonLandingPageMinimapButton
-√			- InterfaceOptions
+¶√			- InterfaceOptions
 √				- MacOptionsPanel
 √				- AudioOptionsFrame
 √				- VideoOptionsFrame
@@ -130,6 +135,8 @@ x			- CharacterFrameTemplates
 √				- GearManagerDialogPopup
 √				- PaperDollTitlesPane
 √				- PaperDollEquipmentManagerPane
-√			- SystemOptions
-√			- TalentUI
-√			- TradeSkillUI
+¶√			- SystemOptions
+¶√			- TalentUI
+¶√			- TradeSkillUI
+¶√			- TalkingHeadUI
+¶√			- LookingForGuildUI
