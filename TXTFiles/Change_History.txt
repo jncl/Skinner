@@ -1,3 +1,26 @@
+beta9.45942.1
+Jncl:
+	Added support for Dragonflight expansion
+	Major rework of options handling
+	Updated Classic BattleField skin
+	Updated Ace3, DetailsFramework, EveryGoldToBanker, Krowi_AchievementFilter, LibMSATutorials, LibUIDropDownMenu & Overachiever skins
+	Skinned JackJack, LibKrowiProgressBar & TLDRMissions
+	Overachiever removal
+	Updated NSF DropDown skin
+	Updated ClassTrainer skin
+	Updated RotaCast skin
+	Bugfix for LibUIDropDowmMenu
+	More button state checks
+	Updated HTML SetTextColor lines
+	Updated NSF and skins to use rp & rpc options
+	Updated GuildInfoFrame skin
+	Update UIButtons font definitions
+	Updated AlertSystem skin
+	More button state checks updated
+	Removed obsolete GuildInfo frames
+	Obsoleted Overachiever
+	Skinned Krowi_AchievementFilter skin
+	
 beta9.45613.1
 Jncl:
 	ToDo.txt
