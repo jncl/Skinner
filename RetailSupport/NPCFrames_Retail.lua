@@ -855,6 +855,7 @@ aObj.SetupRetail_NPCFrames = function()
 		self:SecureHookScript(_G.VoidStorageFrame, "OnShow", function(this)
 			for _, type in _G.pairs{"Deposit", "Withdraw", "Storage", "Cost"} do
 				self:removeNineSlice(_G["VoidStorage" .. type .. "Frame"].NineSlice)
+				_G["VoidStorage" .. type .. "Frame"]:DisableDrawLayer("BACKGROUND")
 			end
 			self:keepFontStrings(_G.VoidStorageBorderFrame)
 			self:skinObject("editbox", {obj=_G.VoidItemSearchBox, fType=ftype, si=true})
@@ -866,6 +867,15 @@ aObj.SetupRetail_NPCFrames = function()
 				self:SecureHook("VoidStorageFrame_Update", function()
 					self:clrBtnBdr(_G.VoidStoragePurchaseButton)
 				end)
+			end
+			if self.modBtnBs then
+				for i = 1, 9 do
+					self:addButtonBorder{obj=_G["VoidStorageDepositButton" .. i], fType=ftype, clr="grey"}
+					self:addButtonBorder{obj=_G["VoidStorageWithdrawButton" .. i], fType=ftype, clr="grey"}
+				end
+				for i = 1, 80 do
+					self:addButtonBorder{obj=_G["VoidStorageStorageButton" .. i], fType=ftype, clr="grey"}
+				end
 			end
 			self:skinObject("frame", {obj=_G.VoidStoragePurchaseFrame, fType=ftype, kfs=true, ofs=0})
 			-- Tabs
