@@ -286,7 +286,7 @@ function module:isButton(obj) -- luacheck: ignore self
 
 end
 
-function module:secureHook(obj, method, func)
+function module:secureHook(obj, method, func) -- luacheck: ignore self
 
 	if not module:IsHooked(obj, method) then
 		module:SecureHook(obj, method, func)
@@ -525,10 +525,6 @@ function module:skinOtherButton(opts)
 	opts.obj:SetDisabledFontObject(opts.disfont or module.fontDP)
 	opts.obj:SetText(opts.text)
 	opts.obj:SetPushedTextOffset(-1, -1)
-	if aObj.isRtlPTR then
-		local text = aObj:getLastRegion(opts.obj)
-		aObj:moveObject{obj=text, x=-1, y=-5}
-	end
 	if not opts.noSkin then
 		if opts.sap then
 			aObj:skinObject("button", {obj=opts.obj, fType=opts.ftype, sap=true, aso=opts.aso})
@@ -853,6 +849,7 @@ local function __addButtonBorder(opts)
 	-- setup and apply the backdrop
 	opts.obj.sbb:SetBackdrop({edgeFile = aObj.Backdrop[1].edgeFile, edgeSize = opts.es or aObj.Backdrop[1].edgeSize})
 	module:clrBtnBdr(opts.obj, opts.clr, opts.ca)
+	-- store colour and alpha values with the skin button
 	opts.obj.sbb.clr = opts.clr
 	opts.obj.sbb.ca = opts.ca
 	-- position the frame

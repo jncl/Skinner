@@ -235,7 +235,7 @@ function aObj:setupOptions(optNames, optIgnore, preLoadFunc, postLoadFunc)
 			self.hooks.InterfaceOptionsListButton_OnClick(bObj, mouseButton)
 		end, true)
 	else
-		local function onCategorySelected(addon, category)
+		local function onCategorySelected(_, category)
 			if category.name == aName then
 				categorySelected()
 				_G.SettingsPanel:GetCategoryList():UnregisterCallback(_G.SettingsCategoryListMixin.Event.OnCategorySelected, aObj)

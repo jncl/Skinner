@@ -25,15 +25,17 @@ aObj.blizzFrames[ftype].AddonList = function(self)
 			self:skinObject("slider", {obj=_G.AddonListScrollFrame.ScrollBar, fType=ftype, rpTex="background"})
 		else
 			self:skinObject("scrollbar", {obj=this.ScrollBar, fType=ftype})
-			local function skinBtn(btn)
-				if aObj.modBtns then
-					aObj:skinStdButton{obj=btn.LoadAddonButton}
-				end
-				if aObj.modChkBtns then
-					aObj:skinCheckButton{obj=btn.Enabled}
+			local function skinElement(element, _, new)
+				if new ~= false then
+					if aObj.modBtns then
+						aObj:skinStdButton{obj=element.LoadAddonButton}
+					end
+					if aObj.modChkBtns then
+						aObj:skinCheckButton{obj=element.Enabled}
+					end
 				end
 			end
-			_G.ScrollUtil.AddInitializedFrameCallback(this.ScrollBox, skinBtn, aObj, true)
+			_G.ScrollUtil.AddAcquiredFrameCallback(this.ScrollBox, skinElement, aObj, true)
 		end
 		self:skinObject("dropdown", {obj=_G.AddonCharacterDropDown, fType=ftype, x2=109})
 		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, x2=self.isClsc and 1})
@@ -212,7 +214,7 @@ if not aObj.isClscERA then
 				end
 			end
 		end
-		for type, offset in _G.pairs(alertType) do
+		for type, _ in _G.pairs(alertType) do
 			local sysName = "AlertSystem"
 			if type == "NewCosmetic" then
 				sysName = "AlertFrameSystem"
@@ -418,7 +420,6 @@ if not aObj.isRtlPTR then
 					self:add2Table(self.ttList, _G.QuickKeybindTooltip)
 				end)
 			end
-		else
 		end
 	end
 end
@@ -1659,11 +1660,13 @@ aObj.blizzLoDFrames[ftype].MacroUI = function(self)
 			self:skinObject("scrollbar", {obj=this.MacroSelector.ScrollBar, fType=ftype})
 			self:skinObject("frame", {obj=this.MacroSelector, fType=ftype, kfs=true, fb=true, ofs=6, y1=10, x2=2})
 			if self.modBtnBs then
-				local function skinBtn(btn)
-					btn:DisableDrawLayer("BACKGROUND")
-					aObj:addButtonBorder{obj=btn, fType=ftype, relTo=btn.Icon, reParent={btn.Name}, clr="grey"}
+				local function skinElement(element, _, new)
+					if new ~= false then
+						element:DisableDrawLayer("BACKGROUND")
+						aObj:addButtonBorder{obj=element, fType=ftype, relTo=element.Icon, reParent={element.Name}, clr="grey"}
+					end
 				end
-				_G.ScrollUtil.AddInitializedFrameCallback(this.MacroSelector.ScrollBox, skinBtn, aObj, true)
+				_G.ScrollUtil.AddAcquiredFrameCallback(this.MacroSelector.ScrollBox, skinElement, aObj, true)
 			end
 		end
 		self:skinObject("slider", {obj=_G.MacroFrameScrollFrame.ScrollBar, fType=ftype})
@@ -1676,7 +1679,6 @@ aObj.blizzLoDFrames[ftype].MacroUI = function(self)
 					self:addButtonBorder{obj=_G["MacroButton" .. i], relTo=_G["MacroButton" .. i .. "Icon"], reParent={_G["MacroButton" .. i .. "Name"]}, clr="grey", ca=0.85}
 				end
 			end
-		else
 		end
 		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true, ri=true, rns=true, cb=true})
 		if self.modBtns then
@@ -2505,7 +2507,7 @@ if _G.PTR_IssueReporter then
 			self:Unhook(_G.PTR_IssueReporter, "GetStandaloneSurveyFrame")
 		end)
 
-		self:SecureHook(_G.PTR_IssueReporter, "BuildSurveyFrameFromSurveyData", function(surveyFrame, survey, _)
+		self:SecureHook(_G.PTR_IssueReporter, "BuildSurveyFrameFromSurveyData", function(surveyFrame, _, _)
 			skinFrame(surveyFrame)
 			for _, frame in _G.ipairs(surveyFrame.FrameComponents) do
 				if not aObj.isRtlPTR then

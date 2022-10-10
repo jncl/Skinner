@@ -6,7 +6,7 @@ aObj.SetupRetail_UIFrames = function()
 	local ftype = "u"
 
 	-- The following functions are used by the GarrisonUI & OrderHallUI
-	local skinPortrait, skinFollower, skinFollowerListButtons, skinEquipment, skinFollowerAbilitiesAndCounters, skinFollowerList, skinFollowerPage, skinFollowerTraitsAndEquipment, skinMissionFrame, skinCompleteDialog, skinMissionPage, skinMissionComplete, skinMissionList
+	local skinPortrait, skinFollower, skinFollowerListButton, skinEquipment, skinFollowerAbilitiesAndCounters, skinFollowerList, skinFollowerPage, skinFollowerTraitsAndEquipment, skinMissionFrame, skinCompleteDialog, skinMissionPage, skinMissionComplete, skinMissionList
 
 	-- [WoD] LE_FOLLOWER_TYPE_GARRISON_6_0
 	-- [WoD] LE_FOLLOWER_TYPE_GARRISON_6_2 (Shipyards)
@@ -49,11 +49,7 @@ aObj.SetupRetail_UIFrames = function()
 			if frame.PortraitFrame then
 				skinPortrait(frame.PortraitFrame)
 			end
-			if aObj.modBtnBs then
-				for _, fObj in _G.pairs(frame.Counters) do
-					aObj:addButtonBorder{obj=fObj, fType=ftype, relTo=frame.Icon, clr="white"}
-				end
-			end
+			-- DON'T add a border to Counters/Abilities buttons
 		end
 		function skinFollowerListButton(btn)
 			local frame = btn:GetParent():GetParent()
@@ -142,8 +138,16 @@ aObj.SetupRetail_UIFrames = function()
 					end
 				end
 			else
-				aObj:skinObject("frame", {obj=frame, fType=ftype, fb=true, ofs=4, y1=1, y2=4, clr="grey"})
-				_G.ScrollUtil.AddInitializedFrameCallback(frame.ScrollBox, skinFollowerListButton, aObj)
+				if frame.isLandingPage then
+					gOfs, y1Ofs, y2Ofs = 4, 1, 4
+				end
+				aObj:skinObject("frame", {obj=frame, fType=ftype, fb=true, ofs=gOfs, y1=y1Ofs, y2=y2Ofs, clr=colour})
+				local function skinElement(element, _, new)
+					if new ~= false then
+						skinFollowerListButton(element)
+					end
+				end
+				_G.ScrollUtil.AddAcquiredFrameCallback(frame.ScrollBox, skinElement, aObj, true)
 			end
 			if frame.MaterialFrame then
 				frame.MaterialFrame:DisableDrawLayer("BACKGROUND")
@@ -842,6 +846,20 @@ aObj.SetupRetail_UIFrames = function()
 		self:SecureHookScript(_G.ClickBindingFrame, "OnShow", function(this)
 			self:removeBackdrop(this.ScrollBoxBackground)
 			self:skinObject("scrollbar", {obj=this.ScrollBar, fType=ftype, x1=0, y1=2, x2=0, y2=-2})
+			local function skinElement(element, _, new)
+				if new ~= false then
+					if element.DeleteButton then
+						aObj:removeRegions(element, {1}) -- background
+						if aObj.modBtns	then
+							aObj:skinStdButton{obj=element.DeleteButton, fType=ftype, clr="grey"}
+						end
+						if aObj.modBtnBs then
+							aObj:addButtonBorder{obj=element, fType=ftype, relTo=element.Icon, clr="grey"}
+						end
+					end
+				end
+			end
+			_G.ScrollUtil.AddAcquiredFrameCallback(this.ScrollBox, skinElement, aObj, true)
 			this.MacrosPortrait:DisableDrawLayer("OVERLAY")
 			this.SpellbookPortrait:DisableDrawLayer("OVERLAY")
 			this.TutorialFrame.Tutorial:SetDrawLayer("ARTWORK") -- make background visible
@@ -862,22 +880,6 @@ aObj.SetupRetail_UIFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
-
-		local function skinCCBindings(bObj)
-			_G.ClickBindingFrame.ScrollBox:ForEachFrame(function(btn, _)
-				-- N.B. Ignore headings
-				if btn.DeleteButton then
-					aObj:removeRegions(btn, {1}) -- background
-					if aObj.modBtns	then
-						aObj:skinStdButton{obj=btn.DeleteButton, fType=ftype, clr="grey"}
-					end
-					if aObj.modBtnBs then
-						aObj:addButtonBorder{obj=btn, fType=ftype, relTo=btn.Icon, clr="grey"}
-					end
-				end
-			end)
-		end
-		_G.EventRegistry:RegisterCallback("ClickBindingFrame.UpdateFrames", skinCCBindings, aObj)
 
 	end
 
@@ -1158,7 +1160,19 @@ aObj.SetupRetail_UIFrames = function()
 				end
 			else
 				self:skinObject("scrollbar", {obj=this.Report.List.ScrollBar, fType=ftype})
-				_G.ScrollUtil.AddInitializedFrameCallback(this.Report.List.ScrollBox, skinBtn, aObj, true)
+				local function skinElement(element, _, new)
+					if new ~= false then
+						element:DisableDrawLayer("BACKGROUND")
+						element:DisableDrawLayer("BORDER")
+						if aObj.modBtnBs then
+							for _, reward in _G.pairs(element.Rewards) do
+								aObj:addButtonBorder{obj=reward, relTo=reward.Icon, reParent={reward.Quantity}}
+								aObj:clrButtonFromBorder(reward)
+							end
+						end
+					end
+				end
+				_G.ScrollUtil.AddAcquiredFrameCallback(this.Report.List.ScrollBox, skinElement, aObj, true)
 			end
 			self:skinObject("frame", {obj=this.Report.List, fType=ftype, fb=true, y1=4, clr="grey"})
 			-- tabs (Top)
@@ -1171,8 +1185,10 @@ aObj.SetupRetail_UIFrames = function()
 			end
 			skinFollowerList(this.FollowerList, "grey")
 			skinFollowerPage(this.FollowerTab)
-			skinFollowerList(this.ShipFollowerList, "grey")
-			skinFollowerTraitsAndEquipment(this.ShipFollowerTab)
+			if this.numTabs == 3 then
+				skinFollowerList(this.ShipFollowerList, "grey")
+				skinFollowerTraitsAndEquipment(this.ShipFollowerTab)
+			end
 			if _G.C_Garrison.GetLandingPageGarrisonType() == _G.Enum.GarrisonType.Type_9_0 then -- Covenant
 				local function skinPanelBtns(panel)
 					panel:DisableDrawLayer("BACKGROUND")
@@ -2041,15 +2057,17 @@ aObj.SetupRetail_UIFrames = function()
 				self:skinObject("slider", {obj=_G.LFDQueueFrameSpecificListScrollFrame.ScrollBar, fType=ftype, rpTex="background"})
 			else
 				self:skinObject("scrollbar", {obj=_G.LFDQueueFrame.Specific.ScrollBar, fType=ftype})
-				local function skinBtn(btn)
-					if aObj.modBtns then
-						aObj:skinExpandButton{obj=btn.expandOrCollapseButton, sap=true}
-					end
-					if aObj.modChkBtns then
-						aObj:skinCheckButton{obj=btn.enableButton}
+				local function skinElement(element, _, new)
+					if new ~= false then
+						if aObj.modBtns then
+							aObj:skinExpandButton{obj=element.expandOrCollapseButton, sap=true}
+						end
+						if aObj.modChkBtns then
+							aObj:skinCheckButton{obj=element.enableButton}
+						end
 					end
 				end
-				_G.ScrollUtil.AddInitializedFrameCallback(_G.LFDQueueFrame.Specific.ScrollBox, skinBtn, aObj, true)
+				_G.ScrollUtil.AddAcquiredFrameCallback(_G.LFDQueueFrame.Specific.ScrollBox, skinElement, aObj, true)
 			end
 
 			self:Unhook(this, "OnShow")
@@ -2169,12 +2187,14 @@ aObj.SetupRetail_UIFrames = function()
 			else
 				self:skinObject("dropdown", {obj=_G.LFGListLanguageFilterDropDownFrame, fType=ftype})
 				self:skinObject("scrollbar", {obj=sp.ScrollBar, fType=ftype})
-				local function skinBtn(btn)
-					if aObj.modBtns then
-						aObj:skinStdButton{obj=btn.CancelButton}
+				local function skinElement(element, _, new)
+					if new ~= false then
+						if aObj.modBtns then
+							aObj:skinStdButton{obj=element.CancelButton}
+						end
 					end
 				end
-				_G.ScrollUtil.AddInitializedFrameCallback(sp.ScrollBox, skinBtn, aObj, true)
+				_G.ScrollUtil.AddAcquiredFrameCallback(sp.ScrollBox, skinElement, aObj, true)
 			end
 			self:removeMagicBtnTex(sp.BackButton)
 			self:removeMagicBtnTex(sp.SignUpButton)
@@ -2217,14 +2237,16 @@ aObj.SetupRetail_UIFrames = function()
 				self:skinObject("slider", {obj=av.ScrollFrame.scrollBar, fType=ftype})
 			else
 				self:skinObject("scrollbar", {obj=av.ScrollBar, fType=ftype})
-				local function skinBtn(btn)
-					if aObj.modBtns then
-						aObj:skinStdButton{obj=btn.DeclineButton}
-						aObj:skinStdButton{obj=btn.InviteButton}
-						aObj:skinStdButton{obj=btn.InviteButtonSmall}
+				local function skinElement(element, _, new)
+					if new ~= false then
+						if aObj.modBtns then
+							aObj:skinStdButton{obj=element.DeclineButton}
+							aObj:skinStdButton{obj=element.InviteButton}
+							aObj:skinStdButton{obj=element.InviteButtonSmall}
+						end
 					end
 				end
-				_G.ScrollUtil.AddInitializedFrameCallback(av.ScrollBox, skinBtn, aObj, true)
+				_G.ScrollUtil.AddAcquiredFrameCallback(av.ScrollBox, skinElement, aObj, true)
 			end
 			self:removeMagicBtnTex(av.RemoveEntryButton)
 			self:removeMagicBtnTex(av.EditButton)
@@ -3591,40 +3613,42 @@ aObj.SetupRetail_UIFrames = function()
 
 	end
 
-	aObj.blizzLoDFrames[ftype].TalkingHeadUI = function(self)
-		if not self.prdb.TalkingHeadUI or self.initialized.TalkingHeadUI then return end
-		self.initialized.TalkingHeadUI = true
+	if not aObj.isRtlPTR then
+		aObj.blizzLoDFrames[ftype].TalkingHeadUI = function(self)
+			if not self.prdb.TalkingHeadUI or self.initialized.TalkingHeadUI then return end
+			self.initialized.TalkingHeadUI = true
 
-		self:SecureHookScript(_G.TalkingHeadFrame, "OnShow", function(this)
-			-- remove CloseButton animation
-			this.MainFrame.TalkingHeadsInAnim.CloseButton = nil
-			this.MainFrame.Close.CloseButton = nil
-			self:nilTexture(this.BackgroundFrame.TextBackground, true)
-			self:nilTexture(this.PortraitFrame.Portrait, true)
-			self:nilTexture(this.MainFrame.Model.PortraitBg, true)
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, bd=11, ng=true, ofs=-15, y2=14})
-			if self.modBtns then
-				self:skinCloseButton{obj=this.MainFrame.CloseButton, noSkin=true}
-			end
-
-			local function clrFrame(...)
-				local r, _,_,_ = ...
-				if r == 0 then -- use light background (Island Expeditions, Voldun Quest, Dark Iron intro)
-					_G.TalkingHeadFrame.sf:SetBackdropColor(.75, .75, .75, .75)
-					_G.TalkingHeadFrame.MainFrame.CloseButton:SetNormalFontObject(self.modUIBtns.fontBX)
-				else
-					_G.TalkingHeadFrame.sf:SetBackdropColor(.1, .1, .1, .75)
-					_G.TalkingHeadFrame.MainFrame.CloseButton:SetNormalFontObject(self.modUIBtns.fontX)
+			self:SecureHookScript(_G.TalkingHeadFrame, "OnShow", function(this)
+				-- remove CloseButton animation
+				this.MainFrame.TalkingHeadsInAnim.CloseButton = nil
+				this.MainFrame.Close.CloseButton = nil
+				self:nilTexture(this.BackgroundFrame.TextBackground, true)
+				self:nilTexture(this.PortraitFrame.Portrait, true)
+				self:nilTexture(this.MainFrame.Model.PortraitBg, true)
+				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, bd=11, ng=true, ofs=-15, y2=14})
+				if self.modBtns then
+					self:skinCloseButton{obj=this.MainFrame.CloseButton, noSkin=true}
 				end
-			end
-			clrFrame(this.TextFrame.Text:GetTextColor())
-			self:SecureHook(this.TextFrame.Text, "SetTextColor", function(_, ...)
-				clrFrame(...)
+
+				local function clrFrame(...)
+					local r, _,_,_ = ...
+					if r == 0 then -- use light background (Island Expeditions, Voldun Quest, Dark Iron intro)
+						_G.TalkingHeadFrame.sf:SetBackdropColor(.75, .75, .75, .75)
+						_G.TalkingHeadFrame.MainFrame.CloseButton:SetNormalFontObject(self.modUIBtns.fontBX)
+					else
+						_G.TalkingHeadFrame.sf:SetBackdropColor(.1, .1, .1, .75)
+						_G.TalkingHeadFrame.MainFrame.CloseButton:SetNormalFontObject(self.modUIBtns.fontX)
+					end
+				end
+				clrFrame(this.TextFrame.Text:GetTextColor())
+				self:SecureHook(this.TextFrame.Text, "SetTextColor", function(_, ...)
+					clrFrame(...)
+				end)
+
+				self:Unhook(this, "OnShow")
 			end)
 
-			self:Unhook(this, "OnShow")
-		end)
-
+		end
 	end
 
 	aObj.blizzLoDFrames[ftype].TorghastLevelPicker = function(self)
@@ -3905,7 +3929,7 @@ aObj.SetupRetail_UIFramesOptions = function(self)
 		["Splash Frame"]                 = {desc = "What's New Frame"},
 		["Soulbinds"]                    = {suff = "Frame"},
 		["Subscription Interstitial UI"] = {width = "double"},
-		["Talking Head UI"]              = true,
+		["Talking Head UI"]              = not self.isRtlPTR and true or nil,
 		["Torghast Level Picker"]        = {suff = "Frame"},
 		["Warfronts Party Pose UI"]      = true,
 		["Weekly Rewards"]               = {suff = "Frame"},

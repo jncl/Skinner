@@ -22,6 +22,7 @@ aObj.SetupDragonflight_UIFrames = function()
 			end
 			if self.modChkBtns then
 				self:skinCheckButton{obj=this.ShowGridCheckButton.Button, fType=ftype}
+				self:skinCheckButton{obj=this.EnableSnapCheckButton.Button, fType=ftype}
 				local checkButtons = {"TargetAndFocus", "PartyFrames", "RaidFrames", "StanceBar", "PetActionBar", "CastBar", "EncounterBar", "ExtraAbilities", "PossessActionBar", "BuffFrame", "DebuffFrame", "TalkingHeadFrame", "VehicleLeaveButton", "BossFrames", "ArenaFrames", "LootFrame", "HudTooltip"}
 				for _, cBtn in _G.pairs(checkButtons) do
 					self:skinCheckButton{obj=this.AccountSettings.Settings[cBtn].Button, fType=ftype}
@@ -90,6 +91,11 @@ aObj.SetupDragonflight_UIFrames = function()
 		end)
 
 		self:SecureHookScript(_G.EditModeSystemSettingsDialog, "OnShow", function(fObj)
+			self:removeNineSlice(fObj.Border)
+			self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, cb=true, y2=14})
+			if self.modBtns then
+				self:skinStdButton{obj=fObj.Buttons.RevertChangesButton, fType=ftype, sechk=true}
+			end
 			local function skinSettingsAndButtons(frame)
 				for dropdown in frame.pools:EnumerateActiveByTemplate("EditModeSettingDropdownTemplate") do
 					aObj:skinObject("dropdown", {obj=dropdown.Dropdown.DropDownMenu, fType=ftype})
@@ -108,13 +114,8 @@ aObj.SetupDragonflight_UIFrames = function()
 					end
 				end
 			end
-			self:removeNineSlice(fObj.Border)
-			self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, cb=true, y2=14})
-			if self.modBtns then
-				self:skinStdButton{obj=fObj.Buttons.RevertChangesButton, fType=ftype, sechk=true}
-			end
 			skinSettingsAndButtons(fObj)
-			self:SecureHook(fObj, "UpdateDialog", function(frame, systemFrame)
+			self:SecureHook(fObj, "UpdateDialog", function(frame, _)
 				skinSettingsAndButtons(frame)
 			end)
 
@@ -149,7 +150,7 @@ aObj.SetupDragonflight_UIFrames = function()
 			end)
 			-- N.B. keep background visible
 			aObj:skinObject("frame", {obj=oFrame.DragonridingPanel, fType=ftype, fb=true, y1=-2, x2=-2, y2=11, clr="grey"})
-			aObj:skinObject("frame", {obj=oFrame, fType=ftype, kfs=true, rns=true, cb=true, clr="gold_df"})
+			aObj:skinObject("frame", {obj=oFrame, fType=ftype, kfs=true, rns=true, cbns=true, ofs=-4, y1=-11, clr="gold_df"})
 			if aObj.modBtns then
 				aObj:skinStdButton{obj=oFrame.DragonridingPanel.SkillsButton, fType=ftype}
 			end
@@ -222,9 +223,9 @@ aObj.SetupDragonflight_UIFrames = function()
 			end)
 			skinRewards(this)
 			this.TrackFrame.Glow:SetAlpha(0) -- texture changed in code
-			self:skinObject("frame", {obj=this, fType=ftype, rns=true, cb=true, ofs=0, clr="gold_df"})
+			self:skinObject("frame", {obj=this, fType=ftype, rns=true, cbns=true, ofs=-2, y1=-7, clr="gold_df"})
 			if self.modBtns then
-				-- .LevelSkipButton
+				self:skinStdButton{obj=this.LevelSkipButton, fType=ftype, clr="gold"}
 			end
 
 			self:Unhook(this, "OnShow")
@@ -280,7 +281,7 @@ aObj.SetupDragonflight_UIFrames = function()
 			this.NineSlice.Text:SetDrawLayer("ARTWORK")
 			self:skinObject("tabs", {obj=this, tabs=this.tabsGroup.buttons, fType=ftype, ignoreSize=true, lod=self.isTT and true, upwards=true, regions={4}, offsets={x1=6, y1=-10, x2=-6, y2=-6}, track=false})
 			if self.isTT then
-				local function setTabState(_, btn, idx)
+				local function setTabState(_, _, idx)
 					for key, tab in _G.pairs(this.tabsGroup.buttons) do
 						aObj:setInactiveTab(tab.sf)
 						if key == idx then
@@ -292,14 +293,14 @@ aObj.SetupDragonflight_UIFrames = function()
 			end
 			self:skinObject("editbox", {obj=this.SearchBox, fType=ftype, si=true})
 			-- this.CategoryList.ScrollBar [DON'T skin (MinimalScrollBar)]
-			local function skinCategories(element)
-				if element.Background then
-					element.Background:SetTexture(nil)
-				end
-				-- Button
-				if element.Toggle then
-					if aObj.modBtnBs then
-						if not element.Toggle.sb then
+			local function skinCategory(element, _, new)
+				if new ~= false then
+					if element.Background then
+						element.Background:SetTexture(nil)
+					end
+					-- Button
+					if element.Toggle then
+						if aObj.modBtnBs then
 							aObj:skinExpandButton{obj=element.Toggle, fType=ftype, noddl=true, noHook=true, plus=true, ofs=0}
 							aObj:SecureHook(element, "SetExpanded", function(bObj, expanded)
 								if expanded then
@@ -312,7 +313,7 @@ aObj.SetupDragonflight_UIFrames = function()
 					end
 				end
 			end
-			_G.ScrollUtil.AddInitializedFrameCallback(this.CategoryList.ScrollBox, skinCategories, aObj, true)
+			_G.ScrollUtil.AddAcquiredFrameCallback(this.CategoryList.ScrollBox, skinCategory, aObj, true)
 			self:skinObject("frame", {obj=this.CategoryList, fType=ftype, fb=true, y1=12})
 
 			self:getRegion(this.Container.SettingsList.Header, 2):SetTexture(nil)
@@ -362,8 +363,8 @@ aObj.SetupDragonflight_UIFrames = function()
 					aObj:skinObject("slider", {obj=element.SliderWithSteppers.Slider, fType=ftype, y1=-12, y2=12})
 				end
 			end
-			local function skinSettings(element)
-				if element then
+			local function skinSetting(element, _, new)
+				if new ~= false then
 					local name = element:GetElementData().data.name
 					if element.EvaluateVisibility then -- handle ExpandableSection(s)
 						-- TODO: skin the .Button, needs to have a +/- character on RHS ??
@@ -386,7 +387,7 @@ aObj.SetupDragonflight_UIFrames = function()
 					end
 				end
 			end
-			_G.ScrollUtil.AddInitializedFrameCallback(this.Container.SettingsList.ScrollBox, skinSettings, aObj, true)
+			_G.ScrollUtil.AddAcquiredFrameCallback(this.Container.SettingsList.ScrollBox, skinSetting, aObj, true)
 			self:skinObject("frame", {obj=this.Container, fType=ftype, fb=true, y1=12})
 			-- .InputBlocker
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true})
@@ -419,6 +420,69 @@ aObj.SetupDragonflight_UIFrames = function()
 
 	end
 
+	aObj.blizzFrames[ftype].SpellFlyout = function(self)
+		if not self.prdb.SpellFlyout or self.initialized.SpellFlyout then return end
+		self.initialized.SpellFlyout = true
+
+		self:SecureHookScript(_G.SpellFlyout, "OnShow", function(this)
+			self:skinObject("frame", {obj=this.Background, fType=ftype, kfs=true, ofs=8, y2=-1, clr="grey"})
+			if self.modBtnBs then
+				local function skinBtns()
+					local i = 1
+					local button = _G["SpellFlyoutButton" .. i]
+					while (button and button:IsShown()) do
+						aObj:addButtonBorder{obj=button, fType=ftype, abt=true, sft=true, clr="grey"}
+						i = i+1
+						button = _G["SpellFlyoutButton" .. i]
+					end
+				end
+				skinBtns()
+				self:SecureHook(this, "Toggle", function(_)
+					skinBtns()
+				end)
+			end
+
+			self:Unhook(this, "OnShow")
+		end)
+
+	end
+
+	aObj.blizzFrames[ftype].TalkingHead = function(self)
+		if not self.prdb.TalkingHead or self.initialized.TalkingHead then return end
+		self.initialized.TalkingHead = true
+
+		self:SecureHookScript(_G.TalkingHeadFrame, "OnShow", function(this)
+			-- remove CloseButton animation
+			this.MainFrame.TalkingHeadsInAnim.CloseButton = nil
+			this.MainFrame.Close.CloseButton = nil
+			self:nilTexture(this.BackgroundFrame.TextBackground, true)
+			self:nilTexture(this.PortraitFrame.Portrait, true)
+			self:nilTexture(this.MainFrame.Model.PortraitBg, true)
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, bd=11, ng=true, ofs=-15, y2=14})
+			if self.modBtns then
+				self:skinCloseButton{obj=this.MainFrame.CloseButton, noSkin=true}
+			end
+
+			local function clrFrame(...)
+				local r, _,_,_ = ...
+				if r == 0 then -- use light background (Island Expeditions, Voldun Quest, Dark Iron intro)
+					_G.TalkingHeadFrame.sf:SetBackdropColor(.75, .75, .75, .75)
+					_G.TalkingHeadFrame.MainFrame.CloseButton:SetNormalFontObject(self.modUIBtns.fontBX)
+				else
+					_G.TalkingHeadFrame.sf:SetBackdropColor(.1, .1, .1, .75)
+					_G.TalkingHeadFrame.MainFrame.CloseButton:SetNormalFontObject(self.modUIBtns.fontX)
+				end
+			end
+			clrFrame(this.TextFrame.Text:GetTextColor())
+			self:SecureHook(this.TextFrame.Text, "SetTextColor", function(_, ...)
+				clrFrame(...)
+			end)
+
+			self:Unhook(this, "OnShow")
+		end)
+
+	end
+
 end
 
 aObj.SetupDragonflight_UIFramesOptions = function(self)
@@ -429,6 +493,8 @@ aObj.SetupDragonflight_UIFramesOptions = function(self)
 		["Major Factions"]         = {suff = "UI"},
 		["Settings"]               = {desc = "Options"},
 		["Social"]                 = {desc = "Twitter Login"},
+		["Spell Flyout"]           = true,
+		["Talking Head"]           = true,
 	}
 	self:setupFramesOptions(optTab, "UI")
 	_G.wipe(optTab)

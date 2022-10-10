@@ -35,7 +35,7 @@ aObj.SetupDragonflight_PlayerFrames = function()
 				end
 			end
 		end
-		self:SecureHookScript(afao, "OnShow", function(this)
+		self:SecureHookScript(afao, "OnShow", function(_)
 			skinAchievementsObjectives()
 		end)
 
@@ -48,10 +48,12 @@ aObj.SetupDragonflight_PlayerFrames = function()
 					if btn.HiddenDescription then
 						btn.HiddenDescription:SetTextColor(_G.HIGHLIGHT_FONT_COLOR:GetRGB())
 					end
-					if btn.saturatedStyle then
-						btn.Description:SetTextColor(_G.HIGHLIGHT_FONT_COLOR:GetRGB())
-					else
-						btn.Description:SetTextColor(.6, .6, .6, 1)
+					if btn.Description then
+						if btn.saturatedStyle then
+							btn.Description:SetTextColor(_G.HIGHLIGHT_FONT_COLOR:GetRGB())
+						else
+							btn.Description:SetTextColor(.6, .6, .6, 1)
+						end
 					end
 					aObj:skinObject("frame", {obj=btn, fType=ftype, rns=true, fb=true, ofs=0})
 					btn.sf:SetBackdropBorderColor(btn:GetBackdropBorderColor())
@@ -82,9 +84,9 @@ aObj.SetupDragonflight_PlayerFrames = function()
 						end
 					end)
 					if btn.Expand then
-						aObj:SecureHook(btn, "Expand", function(this, height)
-							if not this.collapsed
-							and this:GetHeight() == height
+						aObj:SecureHook(btn, "Expand", function(bObj, height)
+							if not bObj.collapsed
+							and bObj:GetHeight() == height
 							then
 								return
 							end
@@ -105,7 +107,6 @@ aObj.SetupDragonflight_PlayerFrames = function()
 			self:moveObject{obj=this.SearchBox, y=-8}
 			self:skinObject("statusbar", {obj=this.searchProgressBar, fi=0, bg=this.searchProgressBar.bg})
 			self:moveObject{obj=_G.AchievementFrameCloseButton, x=1, y=8}
-			-- TODO: shrink Highlight width to match tab width
 			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true, ignoreHLTex=false, regions={7, 8, 9, 10}, offsets={x1=6, y1=self.isTT and 2 or -3, x2=-2, y2=-7}})
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, y1=7, x2=0, y2=-2})
 
@@ -120,12 +121,14 @@ aObj.SetupDragonflight_PlayerFrames = function()
 			self:checkShown(this.Header)
 
 			self:SecureHookScript(this.Categories, "OnShow", function(fObj)
-				local function skinCategories(frame)
-					frame.Button:DisableDrawLayer("BACKGROUND")
-				end
 				self:skinObject("scrollbar", {obj=fObj.ScrollBar, fType=ftype})
 				self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, rns=true, fb=true, y1=0})
-				_G.ScrollUtil.AddInitializedFrameCallback(fObj.ScrollBox, skinCategories, aObj, true)
+				local function skinElement(element, _, new)
+					if new ~= false then
+						element.Button:DisableDrawLayer("BACKGROUND")
+					end
+				end
+				_G.ScrollUtil.AddAcquiredFrameCallback(fObj.ScrollBox, skinElement, aObj, true)
 
 				self:Unhook(fObj, "OnShow")
 			end)
@@ -136,7 +139,12 @@ aObj.SetupDragonflight_PlayerFrames = function()
 				self:skinObject("scrollbar", {obj=fObj.ScrollBar, fType=ftype})
 				self:removeNineSlice(self:getChild(fObj, 3).NineSlice)
 				self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, rns=true, fb=true, ofs=0, y2=-2})
-				_G.ScrollUtil.AddInitializedFrameCallback(fObj.ScrollBox, skinAchievement, aObj, true)
+				local function skinElement(element, _, new)
+					if new ~= false then
+						skinAchievement(element)
+					end
+				end
+				_G.ScrollUtil.AddAcquiredFrameCallback(fObj.ScrollBox, skinElement, aObj, true)
 
 				self:Unhook(fObj, "OnShow")
 			end)
@@ -146,10 +154,13 @@ aObj.SetupDragonflight_PlayerFrames = function()
 				self:skinObject("scrollbar", {obj=fObj.ScrollBar, fType=ftype})
 				self:removeNineSlice(self:getChild(fObj, 4).NineSlice)
 				self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, fb=true, ofs=0, x1=2, y2=-2})
-				local function skinStats(btn)
-					aObj:removeRegions(btn, {1, 2, 3, 4})
+				local function skinElement(element, _, new)
+					if new ~= false then
+						element.Background:SetTexture(nil)
+						aObj:removeRegions(element, {2, 3, 4})
+					end
 				end
-				_G.ScrollUtil.AddInitializedFrameCallback(fObj.ScrollBox, skinStats, aObj, true)
+				_G.ScrollUtil.AddAcquiredFrameCallback(fObj.ScrollBox, skinElement, aObj, true)
 
 				self:Unhook(fObj, "OnShow")
 			end)
@@ -178,37 +189,46 @@ aObj.SetupDragonflight_PlayerFrames = function()
 				self:Unhook(fObj, "OnShow")
 			end)
 
-			self:SecureHookScript(_G.AchievementFrameComparison, "OnShow", function(fOBj)
+			self:SecureHookScript(_G.AchievementFrameComparison, "OnShow", function(fObj)
 				fObj:DisableDrawLayer("BACKGROUND")
 				fObj:DisableDrawLayer("ARTWORK")
 				self:removeRegions(_G.AchievementFrameComparisonHeader, {1, 2, 3})
-				_G.AchievementFrameComparisonHeaderShield:ClearAllPoints()
-				_G.AchievementFrameComparisonHeaderShield:SetPoint("RIGHT", _G.AchievementFrameCloseButton, "LEFT", -10, -1)
-				_G.AchievementFrameComparisonHeaderPoints:ClearAllPoints()
-				_G.AchievementFrameComparisonHeaderPoints:SetPoint("RIGHT", _G.AchievementFrameComparisonHeaderShield, "LEFT", -10, 1)
+				_G.AchievementFrameComparisonHeader.Shield:ClearAllPoints()
+				_G.AchievementFrameComparisonHeader.Shield:SetPoint("RIGHT", _G.AchievementFrameCloseButton, "LEFT", -10, -3)
+				_G.AchievementFrameComparisonHeader.Points:ClearAllPoints()
+				_G.AchievementFrameComparisonHeader.Points:SetPoint("RIGHT", _G.AchievementFrameComparisonHeader.Shield, "LEFT", -10, 0)
 				_G.AchievementFrameComparisonHeaderName:ClearAllPoints()
-				_G.AchievementFrameComparisonHeaderName:SetPoint("RIGHT", _G.AchievementFrameComparisonHeaderPoints, "LEFT", -10, 0)
+				_G.AchievementFrameComparisonHeaderName:SetPoint("RIGHT", _G.AchievementFrameComparisonHeader.Points, "LEFT", -20, 0)
 				self:removeNineSlice(self:getChild(fObj, 5).NineSlice)
-				self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, rns=true, fb=true, ofs=0, y2=-2})
+				self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, rns=true, fb=true, ofs=0, x2=-20, y2=-2})
 				for _, type in _G.pairs{"Player", "Friend"} do
-					self:removeNineSlice(this.Summary[type].NineSlice)
-					self:removeRegions(this.Summary[type], {1})
-					self:moveObject{obj=this.Summary[type].StatusBar.Title, y=-3}
-					self:moveObject{obj=this.Summary[type].StatusBar.Text, y=-3}
-					skinSB(this.Summary[type].StatusBar)
+					self:removeNineSlice(fObj.Summary[type].NineSlice)
+					self:removeRegions(fObj.Summary[type], {1})
+					self:moveObject{obj=fObj.Summary[type].StatusBar.Title, y=-3}
+					self:moveObject{obj=fObj.Summary[type].StatusBar.Text, y=-3}
+					self:skinObject("statusbar", {obj=fObj.Summary[type].StatusBar, regions={3, 4, 5}, fi=0})
 				end
-				-- TODO: Complete the skinning of Achievements & Stats
-				self:skinObject("scrollbar", {obj=this.AchievementContainer.ScrollBar, fType=ftype})
-				local function skinComparison(frame)
+				self:skinObject("scrollbar", {obj=fObj.AchievementContainer.ScrollBar, fType=ftype})
+				local function skinAchieve(element, _, new)
+					if new ~= false then
+						skinAchievement(element.Player)
+						aObj:removeNineSlice(element.Friend.NineSlice)
+						skinAchievement(element.Friend)
+					end
 				end
-				_G.ScrollUtil.AddInitializedFrameCallback(this.AchievementContainer.ScrollBox, skinComparison, aObj, true)
-				self:skinObject("scrollbar", {obj=this.StatContainer.ScrollBar, fType=ftype})
-				local function skinComparisonStat(frame)
+				_G.ScrollUtil.AddAcquiredFrameCallback(fObj.AchievementContainer.ScrollBox, skinAchieve, aObj, true)
+				self:skinObject("scrollbar", {obj=fObj.StatContainer.ScrollBar, fType=ftype})
+				local function skinStat(element, _, new)
+					if new ~= false then
+						element.Background:SetTexture(nil)
+						aObj:removeRegions(element, {2, 3, 4, 5 ,6, 7})
+					end
 				end
-				_G.ScrollUtil.AddInitializedFrameCallback(this.StatContainer.ScrollBox, skinComparisonStat, aObj, true)
+				_G.ScrollUtil.AddAcquiredFrameCallback(fObj.StatContainer.ScrollBox, skinStat, aObj, true)
 
 				self:Unhook(fObj, "OnShow")
 			end)
+			self:checkShown(_G.AchievementFrameComparison)
 
 			self:SecureHookScript(_G.AchievementFrameFilterDropDown, "OnShow", function(fObj)
 				self:moveObject{obj=fObj, y=-7}
@@ -245,14 +265,16 @@ aObj.SetupDragonflight_PlayerFrames = function()
 
 			self:SecureHookScript(this.SearchResults, "OnShow", function(fObj)
 				self:skinObject("scrollbar", {obj=fObj.ScrollBar, fType=ftype})
-				local function skinBtn(btn)
-					aObj:removeRegions(btn, {6, 7,})
-					btn.IconFrame:SetTexture(nil)
-					if aObj.modBtnBs then
-						aObj:addButtonBorder{obj=btn, relTo=btn.Icon}
+				local function skinElement(element, _, new)
+					if new ~= false then
+						aObj:removeRegions(element, {6, 7,})
+						element.IconFrame:SetTexture(nil)
+						if aObj.modBtnBs then
+							aObj:addButtonBorder{obj=element, relTo=element.Icon}
+						end
 					end
 				end
-				_G.ScrollUtil.AddInitializedFrameCallback(fObj.ScrollBox, skinBtn, aObj, true)
+				_G.ScrollUtil.AddAcquiredFrameCallback(fObj.ScrollBox, skinElement, aObj, true)
 
 				self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, cb=true, x1=-8, y1=-1, x2=4})
 
@@ -379,33 +401,35 @@ aObj.SetupDragonflight_PlayerFrames = function()
 
 				self:SecureHookScript(fObj.SearchPreviewContainer, "OnShow", function(frame)
 					self:skinObject("scrollbar", {obj=frame.ScrollBar, fType=ftype})
-					local function skinBtn(btn)
-						btn.IconFrame:SetTexture(nil)
-						if aObj.modBtnBs then
-							aObj:addButtonBorder{obj=btn, fType=ftype, relTo=btn.Icon}
+					local function skinSearch(element, _, new)
+						if new ~= false then
+							element.IconFrame:SetTexture(nil)
+							if aObj.modBtnBs then
+								aObj:addButtonBorder{obj=element, fType=ftype, relTo=element.Icon}
+							end
 						end
 					end
-					_G.ScrollUtil.AddInitializedFrameCallback(frame.ScrollBox, skinBtn, aObj, true)
+					_G.ScrollUtil.AddAcquiredFrameCallback(frame.ScrollBox, skinSearch, aObj, true)
 					self:skinObject("frame", {obj=frame, fType=ftype, kfs=true, ofs=5, y2=-2})
 
-					self:Unhook(fObj, "OnShow")
+					self:Unhook(frame, "OnShow")
 				end)
 
 				self:SecureHookScript(fObj.PvPTalentList, "OnShow", function(frame)
 					self:skinObject("scrollbar", {obj=frame.ScrollBar, fType=ftype})
-					local eData
-					local function skinBtn(btn)
-						btn.Border:SetTexture(nil)
-						btn.Selected:SetTexture(nil)
-						btn.SelectedOtherCheck:SetTexture(nil)
-						if aObj.modBtnBs then
-							eData = btn:GetElementData()
-							aObj:Debug("eData: [%s, %s, %s]", eData.selectedHere, eData.selectedOther)
-							aObj:addButtonBorder{obj=btn, fType=ftype, relTo=btn.Icon}
-							aObj:clrBtnBdr(btn, (eData.selectedHere or eData.selectedOther) and "yellow" or "green")
+					local function skinElement(element, elementData, new)
+						if new ~= false then
+							element.Border:SetTexture(nil)
+							element.Selected:SetTexture(nil)
+							element.SelectedOtherCheck:SetTexture(nil)
+							if aObj.modBtnBs then
+								aObj:Debug("eData: [%s, %s, %s]", elementData.selectedHere, elementData.selectedOther)
+								aObj:addButtonBorder{obj=element, fType=ftype, relTo=element.Icon}
+								aObj:clrBtnBdr(element, (elementData.selectedHere or elementData.selectedOther) and "yellow" or "green")
+							end
 						end
 					end
-					_G.ScrollUtil.AddInitializedFrameCallback(frame.ScrollBox, skinBtn, aObj, true)
+					_G.ScrollUtil.AddAcquiredFrameCallback(frame.ScrollBox, skinElement, aObj, true)
 					self:skinObject("frame", {obj=frame, fType=ftype, kfs=true, ofs=6})
 
 					self:Unhook(frame, "OnShow")
@@ -462,6 +486,108 @@ aObj.SetupDragonflight_PlayerFrames = function()
 
 	end
 
+	aObj.blizzFrames[ftype].LootFrames = function(self)
+		if not self.prdb.LootFrames.skin or self.initialized.LootFrames then return end
+		self.initialized.LootFrames = true
+
+		self:SecureHookScript(_G.LootFrame, "OnShow", function(this)
+			this.Bg:SetTexture(nil)
+			self:skinObject("scrollbar", {obj=this.ScrollBar, fType=ftype})
+			local function skinElement(element, _, new)
+				if new ~= false then
+					if element.Item then
+						element.Item.NameFrame:SetTexture(nil)
+						if aObj.modBtnBs then
+							aObj:addButtonBorder{obj=element.Item, fType=ftype, ibt=true}
+						end
+					end
+				end
+			end
+			-- FIXME: Do I need to do this ?
+			-- self:keepFontStrings(this.ScrollBox.Shadows)
+			_G.ScrollUtil.AddAcquiredFrameCallback(this.ScrollBox, skinElement, aObj, true)
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true})
+			if self.modBtns then
+				self:skinCloseButton{obj=this.ClosePanelButton, fType=ftype}
+			end
+		end)
+
+		local function skinGroupLoot(frame)
+			frame:DisableDrawLayer("BACKGROUND")
+			frame:DisableDrawLayer("BORDER")
+			aObj:skinObject("statusbar", {obj=frame.Timer, fi=0, bg=frame.Timer.Background})
+			-- hook this to show the Timer
+			aObj:SecureHook(frame, "Show", function(fObj)
+				fObj.Timer:SetFrameLevel(fObj:GetFrameLevel() + 1)
+			end)
+			frame:SetScale(aObj.prdb.LootFrames.size ~= 1 and 0.75 or 1)
+			frame.IconFrame.Border:SetAlpha(0)
+			if aObj.modBtnBs then
+				aObj:addButtonBorder{obj=frame.IconFrame, fType=ftype, relTo=frame.IconFrame.Icon, reParent={frame.IconFrame.Count}}
+				-- TODO: colour the item border
+			end
+			-- if aObj.modBtns then
+			-- 	aObj:skinCloseButton{obj=frame.PassButton}
+			-- end
+			if aObj.prdb.LootFrames.size ~= 3 then -- Normal or small
+				aObj:skinObject("frame", {obj=frame, fType=ftype, kfs=true, x1=-3, y2=-3})
+			else -- Micro
+				aObj:moveObject{obj=frame.IconFrame, x=95, y=5}
+				frame.Name:SetAlpha(0)
+				frame.NeedButton:ClearAllPoints()
+				frame.NeedButton:SetPoint("TOPRIGHT", "$parent", "TOPRIGHT", -34, -4)
+				frame.PassButton:ClearAllPoints()
+				frame.PassButton:SetPoint("LEFT", frame.NeedButton, "RIGHT", 0, 2)
+				frame.GreedButton:ClearAllPoints()
+				frame.GreedButton:SetPoint("RIGHT", frame.NeedButton, "LEFT")
+				frame.DisenchantButton:ClearAllPoints()
+				frame.DisenchantButton:SetPoint("RIGHT", frame.GreedButton, "LEFT", 2, 0)
+				aObj:adjWidth{obj=frame.Timer, adj=-30}
+				frame.Timer:ClearAllPoints()
+				frame.Timer:SetPoint("BOTTOMRIGHT", "$parent", "BOTTOMRIGHT", -10, 13)
+				aObj:skinObject("frame", {obj=frame, fType=ftype, kfs=true, x1=97, y2=8})
+			end
+		end
+		for i = 1, _G.NUM_GROUP_LOOT_FRAMES do
+			self:SecureHookScript(_G["GroupLootFrame" .. i], "OnShow", function(this)
+				skinGroupLoot(this)
+
+				self:Unhook(this, "OnShow")
+			end)
+		end
+
+		-- BonusRollFrame
+		self:SecureHookScript(_G.BonusRollFrame, "OnShow", function(this)
+			self:removeRegions(this, {1, 2, 3, 5})
+			self:skinObject("statusbar", {obj=this.PromptFrame.Timer, fi=0})
+			self:skinObject("frame", {obj=this, fType=ftype, bg=true})
+			if self.modBtnBs then
+				 self:addButtonBorder{obj=this.PromptFrame, relTo=this.PromptFrame.Icon, reParent={this.SpecIcon}}
+			end
+
+			self:Unhook(this, "OnShow")
+		end)
+
+		-- TODO: check to see if these frames are skinned by the AlertSystem skin
+		-- BonusRollLootWonFrame
+		-- BonusRollMoneyWonFrame
+
+		self:SecureHookScript(_G.MasterLooterFrame, "OnShow", function(this)
+			self:removeRegions(this.Item, {2, 3, 4, 5})
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true})
+			if self.modBtns then
+				 self:skinCloseButton{obj=self:getChild(this, 3)} -- unamed close button
+			end
+			if self.modBtnBs then
+				self:addButtonBorder{obj=this.Item, relTo=this.Item.Icon}
+				-- TODO: colour the item border
+			end
+
+			self:Unhook(this, "OnShow")
+		end)
+
+	end
+
 	aObj.blizzLoDFrames[ftype].Professions = function(self)
 		if not self.prdb.Professions or self.initialized.Professions then return end
 		self.initialized.Professions = true
@@ -495,7 +621,7 @@ aObj.SetupDragonflight_PlayerFrames = function()
 				aObj:skinStdButton{obj=frame.QualityDialog.AcceptButton, fType=ftype}
 			end
 			aObj:SecureHook(frame, "Init", function(fObj, recipeInfo)
-				local slots = frame:GetSlots()
+				local slots = fObj:GetSlots()
 				aObj:Debug("SchematicForm Init: [%s, %s, %s]", recipeInfo, #slots)
 				for _, slot in _G.pairs(slots) do
 					if slot.InputSlot then -- Recraft slot
@@ -525,19 +651,20 @@ aObj.SetupDragonflight_PlayerFrames = function()
 				self:removeNineSlice(fObj.RecipeList.BackgroundNineSlice)
 				if self.modBtns then
 					self:skinStdButton{obj=fObj.RecipeList.FilterButton, fType=ftype, ofs=0, clr="grey"}
-	 				self:skinCloseButton{obj=fObj.RecipeList.FilterButton.ResetButton, fType=ftype, noSkin=true}
+					self:skinCloseButton{obj=fObj.RecipeList.FilterButton.ResetButton, fType=ftype, noSkin=true}
 				end
 				self:skinObject("editbox", {obj=fObj.RecipeList.SearchBox, fType=ftype, si=true})
 				self:skinObject("dropdown", {obj=fObj.RecipeList.ContextMenu, fType=ftype})
 				-- fObj.RecipeList.ScrollBar [DON'T skin (MinimalScrollBar)]
-				local function skinBtn(btn)
-					btn:DisableDrawLayer("BACKGROUND")
-					-- Category
-					if btn.RankBar then
-						aObj:skinObject("statusbar", {obj=btn.RankBar, regions={1, 2, 3}, fi=0})
+				local function skinElement(element, _, new)
+					if new ~= false then
+						element:DisableDrawLayer("BACKGROUND")
+						if element.RankBar then
+							aObj:skinObject("statusbar", {obj=element.RankBar, regions={1, 2, 3}, fi=0})
+						end
 					end
 				end
-				_G.ScrollUtil.AddInitializedFrameCallback(fObj.RecipeList.ScrollBox, skinBtn, aObj, true)
+				_G.ScrollUtil.AddAcquiredFrameCallback(fObj.RecipeList.ScrollBox, skinElement, aObj, true)
 				self:skinObject("frame", {obj=fObj.RecipeList, fType=ftype, kfs=true, fb=true, ofs=4, x2=0})
 				skinSchematicForm(fObj.SchematicForm)
 				fObj.RankBar.Background:SetTexture(nil)
@@ -586,7 +713,18 @@ aObj.SetupDragonflight_PlayerFrames = function()
 				local flyout = self.hooks.OpenProfessionsItemFlyout(owner, parent)
 				aObj:Debug("OpenProfessionsItemFlyout: [%s, %s, %s, %s]", owner, parent, flyout)
 				self:skinObject("frame", {obj=flyout, fType=ftype, kfs=true, rns=true})
-				_G.ScrollUtil.AddInitializedFrameCallback(flyout.ScrollBox, skinReagentBtn, aObj, true)
+				local function skinElement(element, _, new)
+					if new ~= false then
+						if aObj.modBtnBs then
+							if not element.sbb then
+								aObj:addButtonBorder{obj=element, fType=ftype, ibt=true, relTo=element.Icon}
+							else
+								aObj:clrButtonFromBorder(element)
+							end
+						end
+					end
+				end
+				_G.ScrollUtil.AddAcquiredFrameCallback(flyout.ScrollBox, skinElement, aObj, true)
 				if self.modChkBtns then
 					self:skinCheckButton{obj=flyout.HideUnownedCheckBox, fType=ftype}
 				end

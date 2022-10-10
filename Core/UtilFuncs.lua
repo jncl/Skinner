@@ -1371,20 +1371,22 @@ function aObj:skinIconSelector(frame)
 
 	self:removeNineSlice(frame.BorderBox)
 	frame.BorderBox.SelectedIconArea.SelectedIconButton:DisableDrawLayer("BACKGROUND")
-	self:skinObject("editbox", {obj=frame.BorderBox.IconSelectorEditBox, fType=ftype})
-	self:skinObject("scrollbar", {obj=frame.IconSelector.ScrollBar, fType=ftype})
-	self:skinObject("frame", {obj=frame, fType=ftype, ofs=1, y1=2})
+	self:skinObject("editbox", {obj=frame.BorderBox.IconSelectorEditBox})
+	self:skinObject("scrollbar", {obj=frame.IconSelector.ScrollBar})
+	self:skinObject("frame", {obj=frame, ofs=1, y1=2})
 	if self.modBtns then
-		self:skinStdButton{obj=frame.BorderBox.CancelButton, fType=ftype}
-		self:skinStdButton{obj=frame.BorderBox.OkayButton, fType=ftype}
+		self:skinStdButton{obj=frame.BorderBox.CancelButton}
+		self:skinStdButton{obj=frame.BorderBox.OkayButton}
 	end
 	if self.modBtnBs then
-		self:addButtonBorder{obj=frame.BorderBox.SelectedIconArea.SelectedIconButton, fType=ftype, relTo=frame.BorderBox.SelectedIconArea.SelectedIconButton.Icon}
-		local function skinBtn(btn)
-			btn:DisableDrawLayer("BACKGROUND")
-			aObj:addButtonBorder{obj=btn, fType=ftype, relTo=btn.Icon, clr="grey"}
+		self:addButtonBorder{obj=frame.BorderBox.SelectedIconArea.SelectedIconButton, relTo=frame.BorderBox.SelectedIconArea.SelectedIconButton.Icon}
+		local function skinElement(element, _, new)
+			if new ~= false then
+				element:DisableDrawLayer("BACKGROUND")
+				aObj:addButtonBorder{obj=element, relTo=element.Icon, clr="grey"}
+			end
 		end
-		_G.ScrollUtil.AddInitializedFrameCallback(frame.IconSelector.ScrollBox, skinBtn, aObj, true)
+		_G.ScrollUtil.AddAcquiredFrameCallback(frame.IconSelector.ScrollBox, skinElement, aObj, true)
 	end
 
 end

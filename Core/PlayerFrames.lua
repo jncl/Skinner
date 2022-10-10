@@ -420,13 +420,18 @@ aObj.blizzFrames[ftype].CastingBar = function(self)
 		if not aObj.isRtlPTR then
 			cbFrame.Border:SetAlpha(0)
 		else
+			self:nilTexture(cbFrame.TextBorder, true)
 			self:nilTexture(cbFrame.Border, true)
 		end
 		self:changeShield(cbFrame.BorderShield, cbFrame.Icon)
 		cbFrame.Flash:SetAllPoints()
 		cbFrame.Flash:SetTexture(self.tFDIDs.w8x8)
 		if self.prdb.CastingBar.glaze then
-			self:skinObject("statusbar", {obj=cbFrame, fi=0, bg=self:getRegion(cbFrame, self.isRtlPTR and 4 or 1), nilFuncs=true})
+			if not aObj.isRtlPTR then
+				self:skinObject("statusbar", {obj=cbFrame, fi=0, bg=self:getRegion(cbFrame, 1), nilFuncs=true})
+			else
+				self:skinObject("statusbar", {obj=cbFrame, fi=0, bg=self:getRegion(cbFrame, 4), nilFuncs=true})
+			end
 		end
 		-- adjust text and spark in Classic mode
 		if not cbFrame.ignoreFramePositionManager then
@@ -451,7 +456,7 @@ aObj.blizzFrames[ftype].CastingBar = function(self)
 		end)
 	else
 		self:SecureHook(_G.CastingBarMixin, "SetLook", function(castBar, look)
-			setLook(this, look)
+			setLook(castBar, look)
 		end)
 	end
 
@@ -609,21 +614,21 @@ aObj.blizzLoDFrames[ftype].ItemSocketingUI = function(self)
 
 	-- copy of GEM_TYPE_INFO from Blizzard_ItemSocketingUI.xml
 	local gemTypeInfo = {
-		Yellow          = {textureKit = "yellow", r = 0.97, g = 0.82, b = 0.29},
-		Red             = {textureKit = "red", r = 1, g = 0.47, b = 0.47},
-		Blue            = {textureKit = "blue", r = 0.47, g = 0.67, b = 1},
-		Hydraulic       = {textureKit = "hydraulic", r = 1, g = 1, b = 1},
-		Cogwheel        = {textureKit = "cogwheel", r = 1, g = 1, b = 1},
-		Meta            = {textureKit = "meta", r = 1, g = 1, b = 1},
-		Prismatic       = {textureKit = "prismatic", r = 1, g = 1, b = 1},
-		PunchcardRed    = {textureKit = "punchcard-red",   r=1 ,  g=0.47 ,  b=0.47},
-		PunchcardYellow = {textureKit = "punchcard-yellow",   r=0.97 ,  g=0.82 ,  b=0.29},
-		PunchcardBlue   = {textureKit = "punchcard-blue",   r=0.47 ,  g=0.67 ,  b=1},
-		Domination      = {textureKit = "domination", r = 1, g = 1, b = 1},
-		Cypher          = {textureKit = "meta", r = 1, g = 1, b = 1},
+		["Yellow"]          = {textureKit = "yellow", r = 0.97, g = 0.82, b = 0.29},
+		["Red"]             = {textureKit = "red", r = 1, g = 0.47, b = 0.47},
+		["Blue"]            = {textureKit = "blue", r = 0.47, g = 0.67, b = 1},
+		["Hydraulic"]       = {textureKit = "hydraulic", r = 1, g = 1, b = 1},
+		["Cogwheel"]        = {textureKit = "cogwheel", r = 1, g = 1, b = 1},
+		["Meta"]            = {textureKit = "meta", r = 1, g = 1, b = 1},
+		["Prismatic"]       = {textureKit = "prismatic", r = 1, g = 1, b = 1},
+		["PunchcardRed"]    = {textureKit = "punchcard-red",   r = 1 ,  g = 0.47 ,  b = 0.47},
+		["PunchcardYellow"] = {textureKit = "punchcard-yellow",   r = 0.97 ,  g = 0.82 ,  b = 0.29},
+		["PunchcardBlue"]   = {textureKit = "punchcard-blue",   r = 0.47 ,  g = 0.67 ,  b = 1},
+		["Domination"]      = {textureKit = "domination", r = 1, g = 1, b = 1},
+		["Cypher"]          = {textureKit = "meta", r = 1, g = 1, b = 1},
 	}
 	if aObj.isRtlPTR then
-		gemTypeInfo[Tinker] = {textureKit = "punchcard-red", r = 1, g = 0.47, b = 0.47}
+		gemTypeInfo["Tinker"] = {textureKit = "punchcard-red", r = 1, g = 0.47, b = 0.47}
 	end
 	self:SecureHookScript(_G.ItemSocketingFrame, "OnShow", function(this)
 		self:skinObject("slider", {obj=_G.ItemSocketingScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
@@ -664,134 +669,136 @@ aObj.blizzLoDFrames[ftype].ItemSocketingUI = function(self)
 
 end
 
-aObj.blizzFrames[ftype].LootFrames = function(self)
-	if not self.prdb.LootFrames.skin or self.initialized.LootFrames then return end
-	self.initialized.LootFrames = true
+if not aObj.isRtlPTR then
+	aObj.blizzFrames[ftype].LootFrames = function(self)
+		if not self.prdb.LootFrames.skin or self.initialized.LootFrames then return end
+		self.initialized.LootFrames = true
 
-	self:SecureHookScript(_G.LootFrame, "OnShow", function(this)
-		for i = 1, _G.LOOTFRAME_NUMBUTTONS do
-			_G["LootButton" .. i .. "NameFrame"]:SetTexture(nil)
-			if self.modBtnBs then
-				self:addButtonBorder{obj=_G["LootButton" .. i]}
-			end
-		end
-		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true})
-		if self.modBtnBs then
-			self:SecureHook("LootFrame_Update", function()
-				for i = 1, _G.LOOTFRAME_NUMBUTTONS do
-					if _G["LootButton" .. i].quality then
-						_G.SetItemButtonQuality(_G["LootButton" .. i], _G["LootButton" .. i].quality)
-					end
+		self:SecureHookScript(_G.LootFrame, "OnShow", function(this)
+			for i = 1, _G.LOOTFRAME_NUMBUTTONS do
+				_G["LootButton" .. i .. "NameFrame"]:SetTexture(nil)
+				if self.modBtnBs then
+					self:addButtonBorder{obj=_G["LootButton" .. i]}
 				end
-			end)
-			self:addButtonBorder{obj=_G.LootFrameDownButton, ofs=-2, clr="gold"}
-			self:addButtonBorder{obj=_G.LootFrameUpButton, ofs=-2, clr="gold"}
-		end
-
-		self:Unhook(this, "OnShow")
-	end)
-
-	local function skinGroupLoot(frame)
-
-		frame:DisableDrawLayer("BACKGROUND")
-		frame:DisableDrawLayer("BORDER")
-		if not aObj.isRtl then
-			local fName = frame:GetName()
-			_G[fName .. "SlotTexture"]:SetTexture(nil)
-			_G[fName .. "NameFrame"]:SetTexture(nil)
-			_G[fName .. "Corner"]:SetAlpha(0)
-			frame.Timer:DisableDrawLayer("ARTWORK")
-			if aObj.modBtnBs then
-				aObj:addButtonBorder{obj=frame, relTo=frame.Icon, reParent={frame.Count}}
 			end
-		end
-		aObj:skinObject("statusbar", {obj=frame.Timer, fi=0, bg=frame.Timer.Background})
-		-- hook this to show the Timer
-		aObj:secureHook(frame, "Show", function(this)
-			this.Timer:SetFrameLevel(this:GetFrameLevel() + 1)
-		end)
-
-		frame:SetScale(aObj.prdb.LootFrames.size ~= 1 and 0.75 or 1)
-		if aObj.isRtl then
-			frame.IconFrame.Border:SetAlpha(0)
-		end
-		if aObj.modBtns then
-			aObj:skinCloseButton{obj=frame.PassButton}
-		end
-		if aObj.prdb.LootFrames.size ~= 3 then -- Normal or small
-			aObj:skinObject("frame", {obj=frame, fType=ftype, kfs=true, cb=true, x1=-3, y2=-3})
-		else -- Micro
-			aObj:moveObject{obj=frame.IconFrame, x=95, y=5}
-			frame.Name:SetAlpha(0)
-			frame.NeedButton:ClearAllPoints()
-			frame.NeedButton:SetPoint("TOPRIGHT", "$parent", "TOPRIGHT", -34, -4)
-			frame.PassButton:ClearAllPoints()
-			frame.PassButton:SetPoint("LEFT", frame.NeedButton, "RIGHT", 0, 2)
-			frame.GreedButton:ClearAllPoints()
-			frame.GreedButton:SetPoint("RIGHT", frame.NeedButton, "LEFT")
-			if aObj.isRtl then
-				frame.DisenchantButton:ClearAllPoints()
-				frame.DisenchantButton:SetPoint("RIGHT", frame.GreedButton, "LEFT", 2, 0)
-			end
-			aObj:adjWidth{obj=frame.Timer, adj=-30}
-			frame.Timer:ClearAllPoints()
-			frame.Timer:SetPoint("BOTTOMRIGHT", "$parent", "BOTTOMRIGHT", -10, 13)
-			aObj:skinObject("frame", {obj=frame, fType=ftype, kfs=true, cb=true, x1=97, y2=8})
-		end
-
-	end
-	for i = 1, _G.NUM_GROUP_LOOT_FRAMES do
-		self:SecureHookScript(_G["GroupLootFrame" .. i], "OnShow", function(this)
-			skinGroupLoot(this)
-
-			self:Unhook(this, "OnShow")
-		end)
-	end
-
-	self:SecureHookScript(_G.MasterLooterFrame, "OnShow", function(this)
-		this:DisableDrawLayer("BACKGROUND")
-		this.Item.NameBorderLeft:SetTexture(nil)
-		this.Item.NameBorderRight:SetTexture(nil)
-		this.Item.NameBorderMid:SetTexture(nil)
-		this.Item.IconBorder:SetTexture(nil)
-		self:skinObject("frame", {obj=this, fType=ftype, kfs=true})
-		if self.modBtns then
-			 self:skinCloseButton{obj=self:getChild(this, 3)} -- unamed close button
-		end
-		if self.modBtnBs then
-			self:addButtonBorder{obj=this.Item, relTo=this.Item.Icon}
-		end
-
-		self:Unhook(this, "OnShow")
-	end)
-
-	if self.isRtl then
-		self:SecureHookScript(_G.BonusRollFrame, "OnShow", function(this)
-			self:removeRegions(this, {1, 2, 3, 5})
-			self:skinObject("statusbar", {obj=this.PromptFrame.Timer, fi=0})
-			self:skinObject("frame", {obj=this, fType=ftype, bg=true})
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true})
 			if self.modBtnBs then
-				 self:addButtonBorder{obj=this.PromptFrame, relTo=this.PromptFrame.Icon, reParent={this.SpecIcon}}
+				self:SecureHook("LootFrame_Update", function()
+					for i = 1, _G.LOOTFRAME_NUMBUTTONS do
+						if _G["LootButton" .. i].quality then
+							_G.SetItemButtonQuality(_G["LootButton" .. i], _G["LootButton" .. i].quality)
+						end
+					end
+				end)
+				self:addButtonBorder{obj=_G.LootFrameDownButton, ofs=-2, clr="gold"}
+				self:addButtonBorder{obj=_G.LootFrameUpButton, ofs=-2, clr="gold"}
 			end
 
 			self:Unhook(this, "OnShow")
 		end)
-		self:SecureHookScript(_G.BonusRollLootWonFrame, "OnShow", function(this)
+
+		local function skinGroupLoot(frame)
+
+			frame:DisableDrawLayer("BACKGROUND")
+			frame:DisableDrawLayer("BORDER")
+			if not aObj.isRtl then
+				local fName = frame:GetName()
+				_G[fName .. "SlotTexture"]:SetTexture(nil)
+				_G[fName .. "NameFrame"]:SetTexture(nil)
+				_G[fName .. "Corner"]:SetAlpha(0)
+				frame.Timer:DisableDrawLayer("ARTWORK")
+				if aObj.modBtnBs then
+					aObj:addButtonBorder{obj=frame, relTo=frame.Icon, reParent={frame.Count}}
+				end
+			end
+			aObj:skinObject("statusbar", {obj=frame.Timer, fi=0, bg=frame.Timer.Background})
+			-- hook this to show the Timer
+			aObj:secureHook(frame, "Show", function(this)
+				this.Timer:SetFrameLevel(this:GetFrameLevel() + 1)
+			end)
+
+			frame:SetScale(aObj.prdb.LootFrames.size ~= 1 and 0.75 or 1)
+			if aObj.isRtl then
+				frame.IconFrame.Border:SetAlpha(0)
+			end
+			if aObj.modBtns then
+				aObj:skinCloseButton{obj=frame.PassButton}
+			end
+			if aObj.prdb.LootFrames.size ~= 3 then -- Normal or small
+				aObj:skinObject("frame", {obj=frame, fType=ftype, kfs=true, cb=true, x1=-3, y2=-3})
+			else -- Micro
+				aObj:moveObject{obj=frame.IconFrame, x=95, y=5}
+				frame.Name:SetAlpha(0)
+				frame.NeedButton:ClearAllPoints()
+				frame.NeedButton:SetPoint("TOPRIGHT", "$parent", "TOPRIGHT", -34, -4)
+				frame.PassButton:ClearAllPoints()
+				frame.PassButton:SetPoint("LEFT", frame.NeedButton, "RIGHT", 0, 2)
+				frame.GreedButton:ClearAllPoints()
+				frame.GreedButton:SetPoint("RIGHT", frame.NeedButton, "LEFT")
+				if aObj.isRtl then
+					frame.DisenchantButton:ClearAllPoints()
+					frame.DisenchantButton:SetPoint("RIGHT", frame.GreedButton, "LEFT", 2, 0)
+				end
+				aObj:adjWidth{obj=frame.Timer, adj=-30}
+				frame.Timer:ClearAllPoints()
+				frame.Timer:SetPoint("BOTTOMRIGHT", "$parent", "BOTTOMRIGHT", -10, 13)
+				aObj:skinObject("frame", {obj=frame, fType=ftype, kfs=true, cb=true, x1=97, y2=8})
+			end
+
+		end
+		for i = 1, _G.NUM_GROUP_LOOT_FRAMES do
+			self:SecureHookScript(_G["GroupLootFrame" .. i], "OnShow", function(this)
+				skinGroupLoot(this)
+
+				self:Unhook(this, "OnShow")
+			end)
+		end
+
+		self:SecureHookScript(_G.MasterLooterFrame, "OnShow", function(this)
 			this:DisableDrawLayer("BACKGROUND")
-			if this.SpecRing then this.SpecRing:SetTexture(nil) end
-			self:skinObject("frame", {obj=this, fType=ftype, ofs=-10, y2=8})
+			this.Item.NameBorderLeft:SetTexture(nil)
+			this.Item.NameBorderRight:SetTexture(nil)
+			this.Item.NameBorderMid:SetTexture(nil)
+			this.Item.IconBorder:SetTexture(nil)
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true})
+			if self.modBtns then
+				 self:skinCloseButton{obj=self:getChild(this, 3)} -- unamed close button
+			end
+			if self.modBtnBs then
+				self:addButtonBorder{obj=this.Item, relTo=this.Item.Icon}
+			end
 
 			self:Unhook(this, "OnShow")
 		end)
-		self:SecureHookScript(_G.BonusRollMoneyWonFrame, "OnShow", function(this)
-			this:DisableDrawLayer("BACKGROUND")
-			if this.SpecRing then this.SpecRing:SetTexture(nil) end
-			self:skinObject("frame", {obj=this, fType=ftype, ofs=-8, y2=8})
 
-			self:Unhook(this, "OnShow")
-		end)
+		if self.isRtl then
+			self:SecureHookScript(_G.BonusRollFrame, "OnShow", function(this)
+				self:removeRegions(this, {1, 2, 3, 5})
+				self:skinObject("statusbar", {obj=this.PromptFrame.Timer, fi=0})
+				self:skinObject("frame", {obj=this, fType=ftype, bg=true})
+				if self.modBtnBs then
+					 self:addButtonBorder{obj=this.PromptFrame, relTo=this.PromptFrame.Icon, reParent={this.SpecIcon}}
+				end
+
+				self:Unhook(this, "OnShow")
+			end)
+			self:SecureHookScript(_G.BonusRollLootWonFrame, "OnShow", function(this)
+				this:DisableDrawLayer("BACKGROUND")
+				if this.SpecRing then this.SpecRing:SetTexture(nil) end
+				self:skinObject("frame", {obj=this, fType=ftype, ofs=-10, y2=8})
+
+				self:Unhook(this, "OnShow")
+			end)
+			self:SecureHookScript(_G.BonusRollMoneyWonFrame, "OnShow", function(this)
+				this:DisableDrawLayer("BACKGROUND")
+				if this.SpecRing then this.SpecRing:SetTexture(nil) end
+				self:skinObject("frame", {obj=this, fType=ftype, ofs=-8, y2=8})
+
+				self:Unhook(this, "OnShow")
+			end)
+		end
+
 	end
-
 end
 
 aObj.blizzFrames[ftype].LootHistory = function(self)

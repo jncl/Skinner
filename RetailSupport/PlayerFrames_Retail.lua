@@ -232,7 +232,7 @@ aObj.SetupRetail_PlayerFrames = function()
 				self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true, offsets={x1=8, y1=self.isTT and 2 or -3, x2=-8, y2=2}})
 				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, x2=3})
 			else
-				self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true, offsets={x1=4, x2=-4}})
+				self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true, offsets={x1=0, x2=0}})
 				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, rp=true, cb=true, x2=3})
 			end
 
@@ -320,22 +320,26 @@ aObj.SetupRetail_PlayerFrames = function()
 			else
 				self:SecureHookScript(this.TitleManagerPane, "OnShow", function(fObj)
 					self:skinObject("scrollbar", {obj=fObj.ScrollBar, fType=ftype})
-					local function skinBtn(btn)
-						btn:DisableDrawLayer("BACKGROUND")
+					local function skinElement(element, _, new)
+						if new ~= false then
+							element:DisableDrawLayer("BACKGROUND")
+						end
 					end
-					_G.ScrollUtil.AddInitializedFrameCallback(fObj.ScrollBox, skinBtn, aObj, true)
+					_G.ScrollUtil.AddAcquiredFrameCallback(fObj.ScrollBox, skinElement, aObj, true)
 
 					self:Unhook(fObj, "OnShow")
 				end)
 				self:SecureHookScript(this.EquipmentManagerPane, "OnShow", function(fObj)
 					self:skinObject("scrollbar", {obj=fObj.ScrollBar, fType=ftype})
-					local function skinBtn(btn)
-						btn:DisableDrawLayer("BACKGROUND")
-						if aObj.modBtnBs then
-							aObj:addButtonBorder{obj=btn, relTo=btn.icon}
+					local function skinElement(element, _, new)
+						if new ~= false then
+							element:DisableDrawLayer("BACKGROUND")
+							if aObj.modBtnBs then
+								aObj:addButtonBorder{obj=element, relTo=element.icon}
+							end
 						end
 					end
-					_G.ScrollUtil.AddInitializedFrameCallback(fObj.ScrollBox, skinBtn, aObj, true)
+					_G.ScrollUtil.AddAcquiredFrameCallback(fObj.ScrollBox, skinElement, aObj, true)
 
 					if self.modBtns then
 						self:skinStdButton{obj=fObj.EquipSet}
@@ -431,16 +435,18 @@ aObj.SetupRetail_PlayerFrames = function()
 				end
 			else
 				self:skinObject("scrollbar", {obj=this.ScrollBar, fType=ftype})
-				local function skinBtn(btn)
-					btn.Container.Background:SetAlpha(0)
-					btn.Container.ReputationBar.LeftTexture:SetAlpha(0)
-					btn.Container.ReputationBar.RightTexture:SetAlpha(0)
-					aObj:skinObject("statusbar", {obj=btn.Container.ReputationBar, fi=0})
-					if aObj.modBtns then
-						aObj:skinExpandButton{obj=btn.Container.ExpandOrCollapseButton, fType=ftype, onSB=true}
+				local function skinElement(element, _, new)
+					if new ~= false then
+						element.Container.Background:SetAlpha(0)
+						element.Container.ReputationBar.LeftTexture:SetAlpha(0)
+						element.Container.ReputationBar.RightTexture:SetAlpha(0)
+						aObj:skinObject("statusbar", {obj=element.Container.ReputationBar, fi=0})
+						if aObj.modBtns then
+							aObj:skinExpandButton{obj=element.Container.ExpandOrCollapseButton, fType=ftype, onSB=true}
+						end
 					end
 				end
-				_G.ScrollUtil.AddInitializedFrameCallback(this.ScrollBox, skinBtn, aObj, true)
+				_G.ScrollUtil.AddAcquiredFrameCallback(this.ScrollBox, skinElement, aObj, true)
 			end
 			-- ReputationDetailFrame
 			self:removeNineSlice(_G.ReputationDetailFrame.Border)
@@ -455,7 +461,7 @@ aObj.SetupRetail_PlayerFrames = function()
 						end
 					end)
 				else
-					-- ReputationDetailViewRenownButton
+					-- TODO: ReputationDetailViewRenownButton
 				end
 			end
 			if self.modChkBtns then
@@ -479,10 +485,12 @@ aObj.SetupRetail_PlayerFrames = function()
 				end
 			else
 				self:skinObject("scrollbar", {obj=this.ScrollBar, fType=ftype})
-				local function skinBtn(btn)
-					aObj:removeRegions(btn, {1, 6, 7, 8})
+				local function skinElement(element, _, new)
+					if new ~= false then
+						aObj:removeRegions(element, {1, 6, 7, 8})
+					end
 				end
-				_G.ScrollUtil.AddInitializedFrameCallback(this.ScrollBox, skinBtn, aObj, true)
+				_G.ScrollUtil.AddAcquiredFrameCallback(this.ScrollBox, skinElement, aObj, true)
 			end
 			_G.TokenFramePopup.Border:DisableDrawLayer("BACKGROUND")
 			self:skinObject("frame", {obj=_G.TokenFramePopup, fType=ftype, kfs=true, cb=true, ofs=-6, x1=0})
@@ -633,7 +641,16 @@ aObj.SetupRetail_PlayerFrames = function()
 				end
 			else
 				self:skinObject("scrollbar", {obj=this.ScrollBar, fType=ftype})
-				_G.ScrollUtil.AddInitializedFrameCallback(this.ScrollBox, skinMountBtn, aObj, true)
+				local function skinElement(element, _, new)
+					if new ~= false then
+						element:DisableDrawLayer("BACKGROUND")
+						if aObj.modBtnBs then
+							aObj:addButtonBorder{obj=element, fType=ftype, relTo=element.icon, reParent={element.favorite}}
+							updBtnClr(element)
+						end
+					end
+				end
+				_G.ScrollUtil.AddAcquiredFrameCallback(this.ScrollBox, skinElement, aObj, true)
 			end
 			self:removeMagicBtnTex(this.MountButton)
 			if self.modBtns then
@@ -661,7 +678,6 @@ aObj.SetupRetail_PlayerFrames = function()
 							updBtnClr(btn)
 						end
 					end)
-				else
 				end
 			end
 			if self.modChkBtns then
@@ -712,7 +728,17 @@ aObj.SetupRetail_PlayerFrames = function()
 				end
 			else
 				self:skinObject("scrollbar", {obj=this.ScrollBar, fType=ftype})
-				_G.ScrollUtil.AddInitializedFrameCallback(this.ScrollBox, skinCompanionBtn, aObj)
+				local function skinElement(element, _, new)
+					if new ~= false then
+						aObj:removeRegions(element, {1, 4}) -- background, iconBorder
+						aObj:changeTandC(element.dragButton.levelBG)
+						if aObj.modBtnBs then
+							aObj:addButtonBorder{obj=element, relTo=element.icon, reParent={element.dragButton.levelBG, element.dragButton.level, element.dragButton.favorite}}
+							aObj:clrButtonFromBorder(element)
+						end
+					end
+				end
+				_G.ScrollUtil.AddAcquiredFrameCallback(this.ScrollBox, skinElement, aObj, true)
 			end
 			self:keepFontStrings(this.loadoutBorder)
 			self:moveObject{obj=this.loadoutBorder, y=8} -- battle pet slots title
@@ -933,25 +959,36 @@ aObj.SetupRetail_PlayerFrames = function()
 								 self:addButtonBorder{obj=btn, relTo=btn.Icon, reParent={btn.Favorite}}
 							end
 						end
+						if self.modBtnBs then
+							local function colourBtns(sFrame)
+								for _, btn in _G.pairs(sFrame.buttons) do
+									btn:DisableDrawLayer("BACKGROUND")
+									aObj:clrBtnBdr(btn, btn.Icon:IsDesaturated() and "grey")
+								end
+							end
+							colourBtns(fObj.ScrollFrame)
+							self:SecureHook(fObj.ScrollFrame, "update", function(sfObj) -- use lowercase for scrollframe function
+								colourBtns(sfObj)
+							end)
+						end
 					else
+						self:skinObject("scrollbar", {obj=fObj.ListContainer.ScrollBar, fType=ftype})
+						local function skinElement(element, _, new)
+							if new ~= false then
+								element:DisableDrawLayer("BACKGROUND")
+								if aObj.modBtnBs then
+									 aObj:addButtonBorder{obj=element, relTo=element.Icon, reParent={element.Favorite}}
+									 aObj:clrBtnBdr(element, element.Icon:IsDesaturated() and "grey")
+								end
+							end
+						end
+						_G.ScrollUtil.AddAcquiredFrameCallback(fObj.ListContainer.ScrollBox, skinElement, aObj, true)
 					end
 					fObj.DetailsFrame:DisableDrawLayer("BACKGROUND")
 					fObj.DetailsFrame:DisableDrawLayer("BORDER")
 					self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, fb=true, x1=x1Ofs, y1=y1Ofs, x2=x2Ofs, y2=y2Ofs})
 					if self.modBtns then
 						 self:skinStdButton{obj=fObj.DetailsFrame.VariantSetsButton}
-					end
-					if self.modBtnBs then
-						local function colourBtns(sFrame)
-							for _, btn in _G.pairs(sFrame.buttons) do
-								btn:DisableDrawLayer("BACKGROUND")
-								aObj:clrBtnBdr(btn, btn.Icon:IsDesaturated() and "grey")
-							end
-						end
-						colourBtns(fObj.ScrollFrame)
-						self:SecureHook(fObj.ScrollFrame, "update", function(sfObj) -- use lowercase for scrollframe function
-							colourBtns(sfObj)
-						end)
 					end
 
 					self:Unhook(fObj, "OnShow")
@@ -1084,60 +1121,77 @@ aObj.SetupRetail_PlayerFrames = function()
 			self:SecureHookScript(this.CommunitiesList, "OnShow", function(fObj)
 				fObj:DisableDrawLayer("BORDER")
 				fObj:DisableDrawLayer("ARTWORK")
-				if not aObj.isRtlPTR then
-					self:skinObject("slider", {obj=fObj.ListScrollFrame.ScrollBar, fType=ftype})
-				else
-				end
 				self:skinObject("dropdown", {obj=fObj.EntryDropDown, fType=ftype})
 				fObj.FilligreeOverlay:DisableDrawLayer("ARTWORK")
 				fObj.FilligreeOverlay:DisableDrawLayer("OVERLAY")
 				fObj.FilligreeOverlay:DisableDrawLayer("BORDER")
 				self:removeInset(fObj.InsetFrame)
-				for _, btn in _G.pairs(fObj.ListScrollFrame.buttons) do
-					self:changeTex(btn.Selection, true)
-					btn.Selection:SetHeight(60)
-					btn.IconRing:SetAlpha(0) -- texture changed in code
-					self:changeTex(btn:GetHighlightTexture())
-					btn:GetHighlightTexture():SetHeight(60)
-					-- hook this to handle club info update changing texture
-					self:SecureHook(btn, "SetClubInfo", function(_, clubInfo, _)
-						if clubInfo then
+				if not aObj.isRtlPTR then
+					self:skinObject("slider", {obj=fObj.ListScrollFrame.ScrollBar, fType=ftype})
+					for _, btn in _G.pairs(fObj.ListScrollFrame.buttons) do
+						self:changeTex(btn.Selection, true)
+						btn.Selection:SetHeight(60)
+						btn.IconRing:SetAlpha(0) -- texture changed in code
+						self:changeTex(btn:GetHighlightTexture())
+						btn:GetHighlightTexture():SetHeight(60)
+						-- hook this to handle club info update changing texture
+						self:SecureHook(btn, "SetClubInfo", function(_, clubInfo, _)
+							if clubInfo then
+								self:changeTex(btn.Selection, true)
+								btn.Selection:SetHeight(60)
+							end
+						end)
+					end
+					self:SecureHook(fObj, "Update", function(cList)
+						for _, btn in _G.pairs(cList.ListScrollFrame.buttons) do
+							self:removeRegions(btn, {1})
 							self:changeTex(btn.Selection, true)
 							btn.Selection:SetHeight(60)
 						end
 					end)
-				end
-				self:SecureHook(fObj, "Update", function(cList)
-					for _, btn in _G.pairs(cList.ListScrollFrame.buttons) do
-						self:removeRegions(btn, {1})
-						self:changeTex(btn.Selection, true)
-						btn.Selection:SetHeight(60)
+				else
+					self:skinObject("scrollbar", {obj=fObj.ScrollBar, fType=ftype})
+					local function skinElement(element, _, new)
+						if new ~= false then
+							aObj:removeRegions(element, {1})
+							aObj:changeTex(element.Selection, true)
+							element.Selection:SetHeight(60)
+							element.IconRing:SetAlpha(0) -- texture changed in code
+							aObj:changeTex(element:GetHighlightTexture())
+							element:GetHighlightTexture():SetHeight(60)
+						end
 					end
-				end)
+					_G.ScrollUtil.AddAcquiredFrameCallback(fObj.ScrollBox, skinElement, aObj, true)
+				end
 
 				self:Unhook(fObj, "OnShow")
 			end)
 			self:checkShown(this.CommunitiesList)
 
 			self:SecureHookScript(this.MemberList, "OnShow", function(fObj)
-				self:SecureHookScript(fObj.ColumnDisplay, "OnShow", function(frame)
-					skinColumnDisplay(frame)
-				end)
+				skinColumnDisplay(fObj.ColumnDisplay)
 				if self.modChkBtns then
 					 self:skinCheckButton{obj=fObj.ShowOfflineButton, hf=true}
 				end
-				if not aObj.isRtlPTR then
-					self:skinObject("slider", {obj=fObj.ListScrollFrame.scrollBar, fType=ftype})
-				else
-				end
 				self:skinObject("dropdown", {obj=fObj.DropDown, fType=ftype})
 				self:removeInset(fObj.InsetFrame)
-				self:SecureHook(fObj, "RefreshListDisplay", function(frame)
-					if not frame:IsDisplayingProfessions() then return end
-					for _, btn in _G.pairs(frame.ListScrollFrame.buttons) do
-						self:removeRegions(btn.ProfessionHeader, {1, 2, 3}) -- header textures
+				if not aObj.isRtlPTR then
+					self:skinObject("slider", {obj=fObj.ListScrollFrame.scrollBar, fType=ftype})
+					self:SecureHook(fObj, "RefreshListDisplay", function(frame)
+						if not frame:IsDisplayingProfessions() then return end
+						for _, btn in _G.pairs(frame.ListScrollFrame.buttons) do
+							self:removeRegions(btn.ProfessionHeader, {1, 2, 3}) -- header textures
+						end
+					end)
+				else
+					self:skinObject("scrollbar", {obj=fObj.ScrollBar, fType=ftype})
+					local function skinElement(element, _, new)
+						if new ~= false then
+							aObj:removeRegions(element.ProfessionHeader, {1, 2, 3}) -- header textures
+						end
 					end
-				end)
+					_G.ScrollUtil.AddAcquiredFrameCallback(fObj.ScrollBox, skinElement, aObj, true)
+				end
 
 				self:Unhook(fObj, "OnShow")
 			end)
@@ -1155,14 +1209,27 @@ aObj.SetupRetail_PlayerFrames = function()
 				self:removeNineSlice(fObj.InsetFrame.NineSlice)
 				fObj.InsetFrame.Bg:SetTexture(nil)
 				if self.modBtns then
-					self:SecureHook(fObj, "RefreshLayout", function(frame)
-						for _, btn in _G.pairs(frame.ListScrollFrame.buttons) do
-							self:skinStdButton{obj=btn.CancelInvitationButton}
-							self:skinStdButton{obj=btn.InviteButton}
-						end
+					if not aObj.isRtlPTR then
+						self:SecureHook(fObj, "RefreshLayout", function(frame)
+							for _, btn in _G.pairs(frame.ListScrollFrame.buttons) do
+								self:skinStdButton{obj=btn.CancelInvitationButton}
+								self:skinStdButton{obj=btn.InviteButton}
+							end
 
-						self:Unhook(fObj, "RefreshLayout")
-					end)
+							self:Unhook(fObj, "RefreshLayout")
+						end)
+					else
+						self:skinObject("scrollbar", {obj=fObj.ScrollBar, fType=ftype})
+						local function skinElement(element, _, new)
+							if new ~= false then
+								if aObj.modBtns then
+									aObj:skinStdButton{obj=element.CancelInvitationButton}
+									aObj:skinStdButton{obj=element.InviteButton}
+								end
+							end
+						end
+						_G.ScrollUtil.AddAcquiredFrameCallback(fObj.ScrollBox, skinElement, aObj, true)
+					end
 				end
 
 				self:Unhook(fObj, "OnShow")
@@ -1224,17 +1291,29 @@ aObj.SetupRetail_PlayerFrames = function()
 					aObj:addButtonBorder{obj=frame.GuildCards.NextPage, ofs=-2, y1=-3, x2=-3, clr="disabled"}
 				end
 
-				aObj:skinObject("slider", {obj=frame.CommunityCards.ListScrollFrame.scrollBar, fType=ftype})
-				for _, btn in _G.pairs(frame.CommunityCards.ListScrollFrame.buttons) do
-					btn.LogoBorder:SetTexture(nil)
-					aObj:skinObject("frame", {obj=btn, fType=ftype, ofs=3})
-					aObj:SecureHook(btn, "SetDisabledState", function(fObj, shouldDisable)
-						if shouldDisable then
-							aObj:clrBBC(fObj.sf, "disabled")
-						else
-							aObj:clrBBC(fObj.sf, "common")
+				if not aObj.isRtlPTR then
+					aObj:skinObject("slider", {obj=frame.CommunityCards.ListScrollFrame.scrollBar, fType=ftype})
+					for _, btn in _G.pairs(frame.CommunityCards.ListScrollFrame.buttons) do
+						btn.LogoBorder:SetTexture(nil)
+						aObj:skinObject("frame", {obj=btn, fType=ftype, ofs=3})
+						aObj:SecureHook(btn, "SetDisabledState", function(fObj, shouldDisable)
+							if shouldDisable then
+								aObj:clrBBC(fObj.sf, "disabled")
+							else
+								aObj:clrBBC(fObj.sf, "common")
+							end
+						end)
+					end
+				else
+					self:skinObject("scrollbar", {obj=frame.CommunityCards.ScrollBar, fType=ftype})
+					local function skinElement(element, _, new)
+						if new ~= false then
+							element:DisableDrawLayer("BACKGROUND")
+							element.LogoBorder:SetTexture(nil)
+							aObj:skinObject("frame", {obj=element, fType=ftype, ofs=3, x2=-10})
 						end
-					end)
+					end
+					_G.ScrollUtil.AddAcquiredFrameCallback(frame.CommunityCards.ScrollBox, skinElement, aObj, true)
 				end
 
 				for _, btn in _G.pairs(frame.PendingGuildCards.Cards) do
@@ -1256,17 +1335,29 @@ aObj.SetupRetail_PlayerFrames = function()
 					aObj:addButtonBorder{obj=frame.PendingGuildCards.NextPage, ofs=-2, y1=-3, x2=-3, clr="gold"}
 				end
 
-				aObj:skinObject("slider", {obj=frame.PendingCommunityCards.ListScrollFrame.scrollBar, fType=ftype})
-				for _, btn in _G.pairs(frame.PendingCommunityCards.ListScrollFrame.buttons) do
-					btn.LogoBorder:SetTexture(nil)
-					aObj:skinObject("frame", {obj=btn, fType=ftype})
-					aObj:SecureHook(btn, "SetDisabledState", function(fObj, shouldDisable)
-						if shouldDisable then
-							aObj:clrBBC(fObj.sf, "disabled")
-						else
-							aObj:clrBBC(fObj.sf)
+				if not aObj.isRtlPTR then
+					aObj:skinObject("slider", {obj=frame.PendingCommunityCards.ListScrollFrame.scrollBar, fType=ftype})
+					for _, btn in _G.pairs(frame.PendingCommunityCards.ListScrollFrame.buttons) do
+						btn.LogoBorder:SetTexture(nil)
+						aObj:skinObject("frame", {obj=btn, fType=ftype})
+						aObj:SecureHook(btn, "SetDisabledState", function(fObj, shouldDisable)
+							if shouldDisable then
+								aObj:clrBBC(fObj.sf, "disabled")
+							else
+								aObj:clrBBC(fObj.sf)
+							end
+						end)
+					end
+				else
+					self:skinObject("scrollbar", {obj=frame.PendingCommunityCards.ScrollBar, fType=ftype})
+					local function skinElement(element, _, new)
+						if new ~= false then
+							element:DisableDrawLayer("BACKGROUND")
+							element.LogoBorder:SetTexture(nil)
+							aObj:skinObject("frame", {obj=element, fType=ftype, ofs=3, x2=-10})
 						end
-					end)
+					end
+					_G.ScrollUtil.AddAcquiredFrameCallback(frame.PendingCommunityCards.ScrollBox, skinElement, aObj, true)
 				end
 
 				skinReqToJoin(frame.RequestToJoinFrame)
@@ -1369,29 +1460,57 @@ aObj.SetupRetail_PlayerFrames = function()
 			self:SecureHookScript(this.GuildBenefitsFrame, "OnShow", function(fObj)
 				fObj:DisableDrawLayer("OVERLAY") -- inset textures
 				self:removeRegions(fObj.Perks, {1})
-				self:skinObject("slider", {obj=self:getChild(fObj.Perks.Container, 2), fType=ftype})
-				for _, btn in _G.pairs(fObj.Perks.Container.buttons) do
-					self:removeRegions(btn, {1, 2, 3, 4})
-					btn.NormalBorder:DisableDrawLayer("BACKGROUND")
-					btn.DisabledBorder:DisableDrawLayer("BACKGROUND")
-					if self.modBtnBs then
-						 self:addButtonBorder{obj=btn, relTo=btn.Icon, clr="grey"}
+				if not aObj.isRtlPTR then
+					self:skinObject("slider", {obj=self:getChild(fObj.Perks.Container, 2), fType=ftype})
+					for _, btn in _G.pairs(fObj.Perks.Container.buttons) do
+						self:removeRegions(btn, {1, 2, 3, 4})
+						btn.NormalBorder:DisableDrawLayer("BACKGROUND")
+						btn.DisabledBorder:DisableDrawLayer("BACKGROUND")
+						if self.modBtnBs then
+							 self:addButtonBorder{obj=btn, relTo=btn.Icon, clr="grey"}
+						end
 					end
+				else
+					self:skinObject("scrollbar", {obj=this.Perks.ScrollBar, fType=ftype})
+					local function skinElement(element, _, new)
+						if new ~= false then
+							aObj:removeRegions(element, {1, 2, 3, 4})
+							element.NormalBorder:DisableDrawLayer("BACKGROUND")
+							element.DisabledBorder:DisableDrawLayer("BACKGROUND")
+							if aObj.modBtnBs then
+								 aObj:addButtonBorder{obj=element, relTo=element.Icon, clr="grey"}
+							end
+						end
+					end
+					_G.ScrollUtil.AddAcquiredFrameCallback(this.Perks.ScrollBox, skinElement, aObj, true)
 				end
 				fObj.Rewards.Bg:SetTexture(nil)
-				self:skinObject("slider", {obj=fObj.Rewards.RewardsContainer.scrollBar, fType=ftype, rpTex="artwork"})
-				for _, btn in _G.pairs(fObj.Rewards.RewardsContainer.buttons) do
-					btn:GetNormalTexture():SetAlpha(0)
-					if self.modBtnBs then
-						 self:addButtonBorder{obj=btn, relTo=btn.Icon, reParent={btn.Lock}}
-					end
-				end
-				if self.modBtnBs then
-					self:SecureHook("CommunitiesGuildRewards_Update", function(gbF)
-						for _, btn in _G.pairs(gbF.RewardsContainer.buttons) do
-							btn.sbb:SetBackdropBorderColor(btn.Icon:GetVertexColor())
+				if not aObj.isRtlPTR then
+					self:skinObject("slider", {obj=fObj.Rewards.RewardsContainer.scrollBar, fType=ftype, rpTex="artwork"})
+					for _, btn in _G.pairs(fObj.Rewards.RewardsContainer.buttons) do
+						btn:GetNormalTexture():SetAlpha(0)
+						if self.modBtnBs then
+							 self:addButtonBorder{obj=btn, relTo=btn.Icon, reParent={btn.Lock}}
 						end
-					end)
+					end
+					if self.modBtnBs then
+						self:SecureHook("CommunitiesGuildRewards_Update", function(gbF)
+							for _, btn in _G.pairs(gbF.RewardsContainer.buttons) do
+								btn.sbb:SetBackdropBorderColor(btn.Icon:GetVertexColor())
+							end
+						end)
+					end
+				else
+					self:skinObject("scrollbar", {obj=this.Rewards.ScrollBar, fType=ftype})
+					local function skinElement(element, _, new)
+						if new ~= false then
+							element:GetNormalTexture():SetAlpha(0)
+							if aObj.modBtnBs then
+								 aObj:addButtonBorder{obj=element, relTo=element.Icon, reParent={element.Lock}}
+							end
+						end
+					end
+					_G.ScrollUtil.AddAcquiredFrameCallback(this.Rewards.ScrollBox, skinElement, aObj, true)
 				end
 				self:skinObject("dropdown", {obj=fObj.Rewards.DropDown, fType=ftype})
 				fObj.FactionFrame.Bar:DisableDrawLayer("BORDER")
@@ -1407,9 +1526,19 @@ aObj.SetupRetail_PlayerFrames = function()
 				self:skinObject("slider", {obj=fObj.Info.MOTDScrollFrame.ScrollBar, fType=ftype})
 				self:skinObject("slider", {obj=fObj.Info.DetailsFrame.ScrollBar, fType=ftype})
 				fObj.News:DisableDrawLayer("BACKGROUND")
-				self:skinObject("slider", {obj=fObj.News.Container.ScrollBar, fType=ftype})
-				for _, btn in _G.pairs(fObj.News.Container.buttons) do
-					btn.header:SetTexture(nil)
+				if not aObj.isRtlPTR then
+					self:skinObject("slider", {obj=fObj.News.Container.ScrollBar, fType=ftype})
+					for _, btn in _G.pairs(fObj.News.Container.buttons) do
+						btn.header:SetTexture(nil)
+					end
+				else
+					self:skinObject("scrollbar", {obj=this.News.ScrollBar, fType=ftype})
+					local function skinElement(element, _, new)
+						if new ~= false then
+							element.header:SetTexture(nil)
+						end
+					end
+					_G.ScrollUtil.AddAcquiredFrameCallback(this.News.ScrollBox, skinElement, aObj, true)
 				end
 				self:skinObject("dropdown", {obj=fObj.News.DropDown, fType=ftype})
 				self:keepFontStrings(fObj.News.BossModel)
@@ -1543,16 +1672,29 @@ aObj.SetupRetail_PlayerFrames = function()
 		self:SecureHookScript(_G.CommunitiesTicketManagerDialog, "OnShow", function(this)
 			self:skinObject("dropdown", {obj=this.UsesDropDownMenu, fType=ftype})
 			this.InviteManager.ArtOverlay:DisableDrawLayer("OVERLAY")
-			this.InviteManager.ListScrollFrame:DisableDrawLayer("BACKGROUND")
-			self:skinObject("slider", {obj=this.InviteManager.ListScrollFrame.scrollBar, fType=ftype})
 			skinColumnDisplay(this.InviteManager.ColumnDisplay)
-			if self.modBtns then
-				for _, btn in _G.pairs(this.InviteManager.ListScrollFrame.buttons) do
-					self:skinStdButton{obj=btn.CopyLinkButton}
-					if self.modBtnBs then
-						 self:addButtonBorder{obj=btn.RevokeButton, ofs=0, clr="grey"}
+			if not aObj.isRtlPTR then
+				this.InviteManager.ListScrollFrame:DisableDrawLayer("BACKGROUND")
+				self:skinObject("slider", {obj=this.InviteManager.ListScrollFrame.scrollBar, fType=ftype})
+				if self.modBtns then
+					for _, btn in _G.pairs(this.InviteManager.ListScrollFrame.buttons) do
+						self:skinStdButton{obj=btn.CopyLinkButton}
+						if self.modBtnBs then
+							 self:addButtonBorder{obj=btn.RevokeButton, ofs=0, clr="grey"}
+						end
 					end
 				end
+			else
+				self:skinObject("scrollbar", {obj=this.InviteManager.ScrollBar, fType=ftype})
+				local function skinElement(element, _, new)
+					if new ~= false then
+						aObj:skinStdButton{obj=element.CopyLinkButton}
+						if aObj.modBtnBs then
+							 aObj:addButtonBorder{obj=element.RevokeButton, ofs=0, clr="grey"}
+						end
+					end
+				end
+				_G.ScrollUtil.AddAcquiredFrameCallback(this.InviteManager.ScrollBox, skinElement, aObj, true)
 			end
 			self:skinObject("dropdown", {obj=this.ExpiresDropDownMenu, fType=ftype})
 			self:skinObject("frame", {obj=this.InviteManager, fType=ftype, kfs=true, fb=true, ofs=-4, x2=-7, y2=-5})
@@ -1671,10 +1813,10 @@ aObj.SetupRetail_PlayerFrames = function()
 			cfpb.Highlight:SetSize(22, 22)
 			if not aObj.isRtlPTR then
 				aObj:moveObject{obj=cfpb, x=7, y=-5}
-			end
-			if aObj.modBtns then
-				_G[objName .. "AddSlotsButton"]:DisableDrawLayer("OVERLAY")
-				aObj:skinStdButton{obj=_G[objName .. "AddSlotsButton"]}
+				if aObj.modBtns then
+					_G[objName .. "AddSlotsButton"]:DisableDrawLayer("OVERLAY")
+					aObj:skinStdButton{obj=_G[objName .. "AddSlotsButton"]}
+				end
 			end
 			if aObj.modBtnBs then
 				if not aObj.isRtlPTR then
@@ -1694,8 +1836,9 @@ aObj.SetupRetail_PlayerFrames = function()
 						btn.NormalTexture:SetAlpha(0)
 						btn.ExtendedSlot:SetTexture(nil)
 					end
+					-- remove button slot texture when empty
 					aObj:SecureHook(frame, "UpdateItems", function(fObj)
-						for i, itemButton in fObj:EnumerateValidItems() do
+						for _, itemButton in fObj:EnumerateValidItems() do
 							if not itemButton.hasItem then
 								itemButton:SetItemButtonTexture("")
 							end
@@ -1791,15 +1934,20 @@ aObj.SetupRetail_PlayerFrames = function()
 
 	end
 
-	aObj.blizzLoDFrames[ftype].EncounterJournal = function(self) -- a.k.a. Adenture Guide
+	aObj.blizzLoDFrames[ftype].EncounterJournal = function(self) -- a.k.a. Adventure Guide
 		if not self.prdb.EncounterJournal or self.initialized.EncounterJournal then return end
 		self.initialized.EncounterJournal = true
 
 		-- used by both Encounters & Loot sub frames
 		local function skinFilterBtn(btn)
 			btn:DisableDrawLayer("BACKGROUND")
-			btn:SetNormalTexture(nil)
-			btn:SetPushedTexture(nil)
+			if not aObj.isRtlPTR then
+				btn:SetNormalTexture(nil)
+				btn:SetPushedTexture(nil)
+			else
+				btn:GetNormalTexture():SetTexture(nil)
+				btn:GetPushedTexture():SetTexture(nil)
+			end
 			aObj.modUIBtns:skinStdButton{obj=btn, x1=-11, y1=-2, x2=11, y2=2, clr="gold"} -- use module function so button appears
 		end
 		self:SecureHookScript(_G.EncounterJournal, "OnShow", function(this)
@@ -1811,6 +1959,20 @@ aObj.SetupRetail_PlayerFrames = function()
 			self:skinObject("editbox", {obj=this.searchBox, fType=ftype, si=true})
 			self:skinObject("dropdown", {obj=this.LootJournalViewDropDown, fType=ftype, x2=-7})
 			self:skinObject("slider", {obj=_G.EncounterJournalScrollBar, fType=ftype})
+			if aObj.isRtlPTR then
+				self:skinObject("tabs", {obj=this, tabs=this.Tabs, selectedTab=this.selectedTab, fType=ftype, lod=self.isTT and true, ignoreHLTex=false, offsets={x1=-1, y1=2, x2=1, y2=1}, regions={7, 8, 9, 10, 11}, track=false, func=function(tab) tab:SetFrameLevel(20) end})
+				if self.isTT then
+					self:SecureHook("EJ_ContentTab_Select", function(id)
+						for i, tab in _G.pairs(this.Tabs) do
+							if i == id then
+								self:setActiveTab(tab.sf)
+							else
+								self:setInactiveTab(tab.sf)
+							end
+						end
+					end)
+				end
+			end
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true})
 
 			self:SecureHookScript(this.searchBox.searchPreviewContainer, "OnShow", function(fObj)
@@ -1831,14 +1993,29 @@ aObj.SetupRetail_PlayerFrames = function()
 			end)
 
 			self:SecureHookScript(this.searchResults, "OnShow", function(fObj)
-				self:skinObject("slider", {obj=fObj.scrollFrame.scrollBar, fType=ftype, y1=-2, y2=2})
-				for _, btn in _G.pairs(fObj.scrollFrame.buttons) do
-					self:removeRegions(btn, {1})
-					btn:GetNormalTexture():SetAlpha(0)
-					btn:GetPushedTexture():SetAlpha(0)
-					if self.modBtnBs then
-						 self:addButtonBorder{obj=btn, relTo=btn.icon}
+				if not aObj.isRtlPTR then
+					self:skinObject("slider", {obj=fObj.scrollFrame.scrollBar, fType=ftype, y1=-2, y2=2})
+					for _, btn in _G.pairs(fObj.scrollFrame.buttons) do
+						self:removeRegions(btn, {1})
+						btn:GetNormalTexture():SetAlpha(0)
+						btn:GetPushedTexture():SetAlpha(0)
+						if self.modBtnBs then
+							 self:addButtonBorder{obj=btn, relTo=btn.icon}
+						end
 					end
+				else
+					self:skinObject("scrollbar", {obj=fObj.ScrollBar, fType=ftype})
+					local function skinElement(element, _, new)
+						if new ~= false then
+							aObj:removeRegions(element, {1})
+							element:GetNormalTexture():SetAlpha(0)
+							element:GetPushedTexture():SetAlpha(0)
+							if aObj.modBtnBs then
+								 aObj:addButtonBorder{obj=element, relTo=element.icon}
+							end
+						end
+					end
+					_G.ScrollUtil.AddAcquiredFrameCallback(this.ScrollBox, skinElement, aObj, true)
 				end
 				fObj:SetFrameLevel(25) -- mkae it appear above tabs
 				self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, cb=true, ofs=6, y1=-1, x2=4})
@@ -1884,17 +2061,19 @@ aObj.SetupRetail_PlayerFrames = function()
 			self:checkShown(this.suggestFrame)
 
 			self:SecureHookScript(this.instanceSelect, "OnShow", function(fObj)
-				self:skinObject("tabs", {obj=fObj, tabs=fObj.Tabs, selectedTab=_G.EncounterJournal.selectedTab, fType=ftype, lod=self.isTT and true, ignoreHLTex=false, offsets={x1=-11, y1=-1, x2=11, y2=self.isTT and -4 or 1}, regions={8, 9, 10, 11}, track=false, func=function(tab) tab:SetFrameLevel(20) end})
-				if self.isTT then
-					self:SecureHook("EJ_ContentTab_Select", function(id)
-						for i, tab in _G.pairs(_G.EncounterJournal.instanceSelect.Tabs) do
-							if i == id then
-								self:setActiveTab(tab.sf)
-							else
-								self:setInactiveTab(tab.sf)
+				if not aObj.isRtlPTR then
+					self:skinObject("tabs", {obj=fObj, tabs=fObj.Tabs, selectedTab=_G.EncounterJournal.selectedTab, fType=ftype, lod=self.isTT and true, ignoreHLTex=false, offsets={x1=-11, y1=-1, x2=11, y2=self.isTT and -4 or 1}, regions={8, 9, 10, 11}, track=false, func=function(tab) tab:SetFrameLevel(20) end})
+					if self.isTT then
+						self:SecureHook("EJ_ContentTab_Select", function(id)
+							for i, tab in _G.pairs(this.instanceSelect.Tabs) do
+								if i == id then
+									self:setActiveTab(tab.sf)
+								else
+									self:setInactiveTab(tab.sf)
+								end
 							end
-						end
-					end)
+						end)
+					end
 				end
 				fObj.bg:SetAlpha(0)
 				self:skinObject("dropdown", {obj=fObj.tierDropDown, fType=ftype})
@@ -1904,18 +2083,32 @@ aObj.SetupRetail_PlayerFrames = function()
 				self:SecureHook("EncounterJournal_DisableTierDropDown", function()
 					self:checkDisabledDD(fObj.tierDropDown)
 				end)
-				self:skinObject("slider", {obj=fObj.scroll.ScrollBar, fType=ftype})
-				self:skinObject("frame", {obj=fObj.scroll, fType=ftype, fb=true, x1=-9, y1=6, x2=6, y2=-8})
-				if self.modBtnBs then
-					self:SecureHook("EncounterJournal_ListInstances", function()
-						local btn
-						for i = 1, 30 do
-							btn = _G.EncounterJournal.instanceSelect.scroll.child["instance" .. i]
-							if btn then
-								self:addButtonBorder{obj=btn, relTo=btn.bgImage, ofs=0}
+				if not aObj.isRtlPTR then
+					self:skinObject("slider", {obj=fObj.scroll.ScrollBar, fType=ftype})
+					self:skinObject("frame", {obj=fObj.scroll, fType=ftype, fb=true, x1=-9, y1=6, x2=6, y2=-8})
+					if self.modBtnBs then
+						self:SecureHook("EncounterJournal_ListInstances", function()
+							local btn
+							for i = 1, 30 do
+								btn = fObj.scroll.child["instance" .. i]
+								if btn then
+									self:addButtonBorder{obj=btn, relTo=btn.bgImage, ofs=0}
+								end
+							end
+						end)
+					end
+				else
+					self:skinObject("scrollbar", {obj=fObj.ScrollBar, fType=ftype})
+					-- FIXME: the frame isn't appearing when using offsets !
+					-- self:skinObject("frame", {obj=fObj.ScrollBox, fType=ftype, kfs=true, fb=true, ofs=6, x1=-9, y2=-8})
+					local function skinElement(element, _, new)
+						if new ~= false then
+							if aObj.modBtnBs then
+								aObj:addButtonBorder{obj=element, fType=ftype, relTo=element.bgImage, ofs=1}
 							end
 						end
-					end)
+					end
+					_G.ScrollUtil.AddAcquiredFrameCallback(fObj.ScrollBox, skinElement, aObj, true)
 				end
 
 				self:Unhook(fObj, "OnShow")
@@ -1931,46 +2124,79 @@ aObj.SetupRetail_PlayerFrames = function()
 				if self.modBtnBs then
 					self:addButtonBorder{obj=fObj.instance.mapButton, relTo=fObj.instance.mapButton.texture, x1=2, y1=-1, x2=-2, y2=1}
 				end
-				self:skinObject("slider", {obj=fObj.instance.loreScroll.ScrollBar, fType=ftype, x2=-4})
-				fObj.instance.loreScroll.child.lore:SetTextColor(self.BT:GetRGB())
-				-- Boss/Creature buttons
-				local function skinBossBtns()
-					for i = 1, 30 do
-						if _G["EncounterJournalBossButton" .. i] then
-							_G["EncounterJournalBossButton" .. i]:SetNormalTexture(nil)
-							_G["EncounterJournalBossButton" .. i]:SetPushedTexture(nil)
-						end
-					end
+				if not aObj.isRtlPTR then
+					self:skinObject("slider", {obj=fObj.instance.loreScroll.ScrollBar, fType=ftype, x2=-4})
+					fObj.instance.loreScroll.child.lore:SetTextColor(self.BT:GetRGB())
+				else
+					self:skinObject("scrollbar", {obj=fObj.instance.LoreScrollBar, fType=ftype})
+					fObj.instance.LoreScrollingFont:GetFontString():SetTextColor(self.BT:GetRGB())
 				end
-				self:SecureHook("EncounterJournal_DisplayInstance", function(_)
-					skinBossBtns()
-				end)
-				-- skin any existing Boss Buttons
-				skinBossBtns()
 				-- Info frame
 				fObj.info:DisableDrawLayer("BACKGROUND")
 				fObj.info.encounterTitle:SetTextColor(self.HT:GetRGB())
-				fObj.info.instanceButton:SetNormalTexture(nil)
-				fObj.info.instanceButton:SetPushedTexture(nil)
+				if not aObj.isRtlPTR then
+					fObj.info.instanceButton:SetNormalTexture(nil)
+					fObj.info.instanceButton:SetPushedTexture(nil)
+				else
+					fObj.info.instanceButton:GetNormalTexture():SetTexture(nil)
+				end
 				fObj.info.instanceButton:SetHighlightTexture(self.tFDIDs.ejt)
 				fObj.info.instanceButton:GetHighlightTexture():SetTexCoord(0.68945313, 0.81054688, 0.33300781, 0.39257813)
-				self:skinObject("slider", {obj=fObj.info.bossesScroll.ScrollBar, fType=ftype, x2=-4})
+				if not aObj.isRtlPTR then
+					self:skinObject("slider", {obj=fObj.info.bossesScroll.ScrollBar, fType=ftype, x2=-4})
+					-- Boss/Creature buttons
+					local function skinBossBtns()
+						for i = 1, 30 do
+							if _G["EncounterJournalBossButton" .. i] then
+								_G["EncounterJournalBossButton" .. i]:SetNormalTexture(nil)
+								_G["EncounterJournalBossButton" .. i]:SetPushedTexture(nil)
+							end
+						end
+					end
+					self:SecureHook("EncounterJournal_DisplayInstance", function(_)
+						skinBossBtns()
+					end)
+					-- skin any existing Boss Buttons
+					skinBossBtns()
+				else
+					self:skinObject("scrollbar", {obj=fObj.info.BossesScrollBar, fType=ftype})
+					local function skinBoss(element, _, new)
+						if new ~= false then
+							element:GetNormalTexture():SetTexture(nil)
+							element:GetPushedTexture():SetTexture(nil)
+						end
+					end
+					_G.ScrollUtil.AddAcquiredFrameCallback(fObj.info.BossesScrollBox, skinBoss, aObj, true)
+				end
 				skinFilterBtn(fObj.info.difficulty)
-				fObj.info.reset:SetNormalTexture(nil)
-				fObj.info.reset:SetPushedTexture(nil)
+				if not aObj.isRtlPTR then
+					fObj.info.reset:SetNormalTexture(nil)
+					fObj.info.reset:SetPushedTexture(nil)
+				else
+					fObj.info.reset:GetNormalTexture():SetTexture(nil)
+					fObj.info.reset:GetPushedTexture():SetTexture(nil)
+				end
 				if self.modBtns then
 					self:skinStdButton{obj=fObj.info.reset, y2=2, clr="gold"}
 				end
-				self:skinObject("slider", {obj=fObj.info.detailsScroll.ScrollBar, x2=-4})
-				fObj.info.detailsScroll.child.description:SetTextColor(self.BT:GetRGB())
+				self:skinObject("slider", {obj=fObj.info.detailsScroll.ScrollBar, fType=ftype, x2=-4})
 				self:skinObject("slider", {obj=fObj.info.overviewScroll.ScrollBar, fType=ftype, x2=-4})
+				if not aObj.isRtlPTR then
+					fObj.info.overviewScroll.child.overviewDescription.Text:SetTextColor(self.BT:GetRGB())
+				else
+					fObj.info.overviewScroll.child.overviewDescription.Text:SetTextColor("P", self.BT:GetRGB())
+				end
+				fObj.info.detailsScroll.child.description:SetTextColor(self.BT:GetRGB())
 				fObj.info.overviewScroll.child.loreDescription:SetTextColor(self.BT:GetRGB())
 				fObj.info.overviewScroll.child.header:SetTexture(nil)
-				fObj.info.overviewScroll.child.overviewDescription.Text:SetTextColor(self.BT:GetRGB())
 				-- Hook this to skin headers
 				local function skinHeader(header)
 					header.button:DisableDrawLayer("BACKGROUND")
-					header.overviewDescription.Text:SetTextColor(aObj.BT:GetRGB())
+					if not aObj.isRtlPTR then
+						header.overviewDescription.Text:SetTextColor(aObj.BT:GetRGB())
+					else
+						header.overviewDescription.Text:SetTextColor("H1", aObj.HT:GetRGB())
+					end
 					if header.description:GetText() then
 						local newText, upd = aObj:removeColourCodes(header.description:GetText()) -- handle embedded colour code
 						if upd then
@@ -1982,7 +2208,11 @@ aObj.SetupRetail_PlayerFrames = function()
 					header.descriptionBGBottom:SetTexture(nil)
 					aObj:getRegion(header.button.portrait, 2):SetTexture(nil)
 					for _, bObj in _G.pairs(header.Bullets) do
-						bObj.Text:SetTextColor(aObj.BT:GetRGB())
+						if not aObj.isRtlPTR then
+							bObj.Text:SetTextColor(aObj.BT:GetRGB())
+						else
+							bObj.Text:SetTextColor("P", aObj.BT:GetRGB())
+						end
 					end
 				end
 				self:SecureHook("EncounterJournal_ToggleHeaders", function(ejH, _)
@@ -1997,20 +2227,41 @@ aObj.SetupRetail_PlayerFrames = function()
 					end
 				end)
 				-- Loot Frame
-				self:skinObject("slider", {obj=fObj.info.lootScroll.scrollBar, fType=ftype, x2=-4})
-				skinFilterBtn(fObj.info.lootScroll.filter)
-				skinFilterBtn(fObj.info.lootScroll.slotFilter)
-				fObj.info.lootScroll.classClearFilter:DisableDrawLayer("BACKGROUND")
-				-- hook this to skin loot entries
-				self:SecureHook("EncounterJournal_LootUpdate", function()
-					for _, btn in _G.pairs(_G.EncounterJournal.encounter.info.lootScroll.buttons) do
-						btn.lootFrame:DisableDrawLayer("BORDER")
-						btn.lootFrame.armorType:SetTextColor(self.BT:GetRGB())
-						btn.lootFrame.slot:SetTextColor(self.BT:GetRGB())
-						btn.lootFrame.boss:SetTextColor(self.BT:GetRGB())
-						self:addButtonBorder{obj=btn.lootFrame, relTo=btn.lootFrame.icon}
+				if not aObj.isRtlPTR then
+					self:skinObject("slider", {obj=fObj.info.lootScroll.scrollBar, fType=ftype, x2=-4})
+					skinFilterBtn(fObj.info.lootScroll.filter)
+					skinFilterBtn(fObj.info.lootScroll.slotFilter)
+					fObj.info.lootScroll.classClearFilter:DisableDrawLayer("BACKGROUND")
+					-- hook this to skin loot entries
+					self:SecureHook("EncounterJournal_LootUpdate", function()
+						for _, btn in _G.pairs(_G.EncounterJournal.encounter.info.lootScroll.buttons) do
+							btn.lootFrame:DisableDrawLayer("BORDER")
+							btn.lootFrame.armorType:SetTextColor(self.BT:GetRGB())
+							btn.lootFrame.slot:SetTextColor(self.BT:GetRGB())
+							btn.lootFrame.boss:SetTextColor(self.BT:GetRGB())
+							if self.modBtnBs then
+								self:addButtonBorder{obj=btn.lootFrame, relTo=btn.lootFrame.icon}
+							end
+						end
+					end)
+				else
+					fObj.info.LootContainer.classClearFilter:DisableDrawLayer("BACKGROUND")
+					self:skinObject("scrollbar", {obj=fObj.info.LootContainer.ScrollBar, fType=ftype})
+					local function skinElement(element, _, new)
+						if new ~= false then
+							element:DisableDrawLayer("BORDER")
+							element.armorType:SetTextColor(self.BT:GetRGB())
+							element.slot:SetTextColor(self.BT:GetRGB())
+							element.boss:SetTextColor(self.BT:GetRGB())
+							if aObj.modBtnBs then
+								aObj:addButtonBorder{obj=element, relTo=element.icon}
+							end
+						end
 					end
-				end)
+					_G.ScrollUtil.AddAcquiredFrameCallback(fObj.info.LootContainer.ScrollBox, skinElement, aObj, true)
+					skinFilterBtn(fObj.info.LootContainer.filter)
+					skinFilterBtn(fObj.info.LootContainer.slotFilter)
+				end
 				-- Model Frame
 				self:keepFontStrings(fObj.info.model)
 				local function skinCreatureBtn(cBtn)
@@ -2019,7 +2270,11 @@ aObj.SetupRetail_PlayerFrames = function()
 					and not cBtn.sknd
 					then
 						cBtn.sknd = true
-						cBtn:SetNormalTexture(nil)
+						if not aObj.isRtlPTR then
+							cBtn:SetNormalTexture(nil)
+						else
+							cBtn:GetNormalTexture():SetTexture(nil)
+						end
 						hTex = cBtn:GetHighlightTexture()
 						hTex:SetTexture(aObj.tFDIDs.ejt)
 						hTex:SetTexCoord(0.68945313, 0.81054688, 0.33300781, 0.39257813)
@@ -2036,7 +2291,11 @@ aObj.SetupRetail_PlayerFrames = function()
 				end)
 				-- Tabs (side)
 				self:skinObject("tabs", {obj=fObj.info, tabs={fObj.info.overviewTab, fObj.info.lootTab, fObj.info.bossTab, fObj.info.modelTab}, fType=ftype, ignoreHLTex=false, ng=true, regions={4, 5, 6}, offsets={x1=9, y1=-6, x2=-6, y2=6}, track=false})
-				self:moveObject{obj=fObj.info.overviewTab, x=12}
+				if not aObj.isRtlPTR then
+					self:moveObject{obj=fObj.info.overviewTab, x=12}
+				else
+					self:moveObject{obj=fObj.info.overviewTab, x=7}
+				end
 
 				self:Unhook(fObj, "OnShow")
 			end)
@@ -2207,7 +2466,27 @@ aObj.SetupRetail_PlayerFrames = function()
 					end
 				else
 					self:skinObject("scrollbar", {obj=fObj.ScrollBar, fType=ftype})
-					_G.ScrollUtil.AddInitializedFrameCallback(fObj.ScrollBox, skinBtn, aObj, true)
+					local function skinElement(element, _, new)
+						if new ~= false then
+							element.background:SetAlpha(0)
+							if aObj.modBtnBs then
+								aObj:addButtonBorder{obj=element, relTo=element.gameIcon, ofs=0, clr="grey"}
+								aObj:SecureHook(element.gameIcon, "Show", function(bObj)
+									bObj:GetParent().sbb:Show()
+								end)
+								aObj:SecureHook(element.gameIcon, "Hide", function(bObj)
+									bObj:GetParent().sbb:Hide()
+								end)
+								aObj:SecureHook(element.gameIcon, "SetShown", function(bObj, show)
+									bObj:GetParent().sbb:SetShown(bObj, show)
+								end)
+								element.sbb:SetShown(element.gameIcon:IsShown())
+								aObj:addButtonBorder{obj=element.travelPassButton, schk=true, ofs=0, y1=3, y2=-2}
+								aObj:addButtonBorder{obj=element.summonButton, schk=true}
+							end
+						end
+					end
+					_G.ScrollUtil.AddAcquiredFrameCallback(fObj.ScrollBox, skinElement, aObj, true)
 				end
 				addTabBorder(fObj)
 				if self.modBtns then
@@ -2219,13 +2498,11 @@ aObj.SetupRetail_PlayerFrames = function()
 							self:skinStdButton{obj=invite.DeclineButton, fType=ftype}
 							self:skinStdButton{obj=invite.AcceptButton, fType=ftype}
 						end
-					else
 					end
 				end
 				if self.modBtnBs then
 					if not aObj.isRtlPTR then
 						self:addButtonBorder{obj=_G.FriendsListFrameScrollFrame.PendingInvitesHeaderButton}
-					else
 					end
 				end
 
@@ -2807,101 +3084,104 @@ aObj.SetupRetail_PlayerFrames = function()
 
 	end
 
-	aObj.blizzLoDFrames[ftype].LookingForGuildUI = function(self)
-		if not self.prdb.LookingForGuildUI or self.initialized.LookingForGuildUI then return end
+	if not aObj.isRtlPTR then
+		aObj.blizzLoDFrames[ftype].LookingForGuildUI = function(self)
+			if not self.prdb.LookingForGuildUI or self.initialized.LookingForGuildUI then return end
 
-		if not _G.LookingForGuildFrame then
-			_G.C_Timer.After(0.1, function()
-				self.blizzLoDFrames[ftype].LookingForGuildUI(self)
+			if not _G.LookingForGuildFrame then
+				_G.C_Timer.After(0.1, function()
+					self.blizzLoDFrames[ftype].LookingForGuildUI(self)
+				end)
+				return
+			end
+
+			self.initialized.LookingForGuildUI = true
+
+			self:SecureHookScript(_G.LookingForGuildFrame, "OnShow", function(this)
+				self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true, upwards=true, offsets={x1=0, y1=-5, x2=3, y2=-5}, func=function(tab) _G.RaiseFrameLevelByTwo(tab) end})
+				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true})
+
+				self:Unhook(this, "OnShow")
 			end)
-			return
+			self:checkShown(_G.LookingForGuildFrame)
+
+			self:SecureHookScript(_G.LookingForGuildStartFrame, "OnShow", function(this)
+				if self.modChkBtns then
+					self:skinCheckButton{obj=_G.LookingForGuildQuestButton}
+					self:skinCheckButton{obj=_G.LookingForGuildRaidButton}
+					self:skinCheckButton{obj=_G.LookingForGuildDungeonButton}
+					self:skinCheckButton{obj=_G.LookingForGuildPvPButton}
+					self:skinCheckButton{obj=_G.LookingForGuildRPButton}
+					self:skinCheckButton{obj=_G.LookingForGuildWeekdaysButton}
+					self:skinCheckButton{obj=_G.LookingForGuildWeekendsButton}
+					self:skinCheckButton{obj=_G.LookingForGuildTankButton.checkButton}
+					self:skinCheckButton{obj=_G.LookingForGuildHealerButton.checkButton}
+					self:skinCheckButton{obj=_G.LookingForGuildDamagerButton.checkButton}
+				end
+				_G.LookingForGuildInterestFrameBg:SetAlpha(0)
+				_G.LookingForGuildAvailabilityFrameBg:SetAlpha(0)
+				_G.LookingForGuildRolesFrameBg:SetAlpha(0)
+				_G.LookingForGuildCommentFrameBg:SetAlpha(0)
+				self:skinObject("slider", {obj=_G.LookingForGuildCommentInputFrameScrollFrame.ScrollBar, fType=ftype})
+				self:skinObject("frame", {obj=_G.LookingForGuildCommentInputFrame, fType=ftype, kfs=true, ofs=-1})
+				_G.LookingForGuildCommentEditBoxFill:SetTextColor(self.BT:GetRGB())
+				self:removeMagicBtnTex(_G.LookingForGuildBrowseButton)
+				if self.modBtns then
+					self:skinStdButton{obj=_G.LookingForGuildBrowseButton}
+				end
+				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, fb=true, x1=-5, y1=2, x2=7, y2=-28})
+
+				self:Unhook(this, "OnShow")
+			end)
+			self:checkShown(_G.LookingForGuildStartFrame)
+
+			self:SecureHookScript(_G.LookingForGuildBrowseFrame, "OnShow", function(this)
+				self:skinObject("slider", {obj=_G.LookingForGuildBrowseFrameContainerScrollBar, fType=ftype})
+				for _, btn in _G.pairs(_G.LookingForGuildBrowseFrameContainer.buttons) do
+					self:skinObject("frame", {obj=btn, fType=ftype})
+					_G[btn:GetName() .. "Ring"]:SetAlpha(0)
+				end
+				self:removeMagicBtnTex(_G.LookingForGuildRequestButton)
+				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, fb=true, x1=-5, y1=2, x2=7, y2=-28})
+				if self.modBtns then
+					self:skinStdButton{obj=_G.LookingForGuildRequestButton}
+				end
+
+				self:Unhook(this, "OnShow")
+			end)
+
+			-- Requests
+			self:SecureHookScript(_G.LookingForGuildAppsFrame, "OnShow", function(this)
+				self:skinObject("slider", {obj=_G.LookingForGuildAppsFrameContainerScrollBar, fType=ftype})
+				for _, btn in _G.pairs(_G.LookingForGuildAppsFrameContainer.buttons) do
+					self:skinObject("frame", {obj=btn, fType=ftype})
+				end
+				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, fb=true, x1=-5, y1=2, x2=7, y2=-28})
+
+				self:Unhook(this, "OnShow")
+			end)
+
+			self:SecureHookScript(_G.GuildFinderRequestMembershipFrame, "OnShow", function(this)
+				self:removeNineSlice(this.Border)
+				self:skinObject("slider", {obj=_G.GuildFinderRequestMembershipFrameInputFrameScrollFrame.ScrollBar, fType=ftype})
+				_G.GuildFinderRequestMembershipEditBoxFill:SetTextColor(self.BT:GetRGB())
+				self:skinObject("frame", {obj=_G.GuildFinderRequestMembershipFrameInputFrame, fType=ftype, ofs=-2})
+				if self.modBtns then
+					self:skinStdButton{obj=_G.GuildFinderRequestMembershipFrameAcceptButton}
+					self:skinStdButton{obj=_G.GuildFinderRequestMembershipFrameCancelButton}
+				end
+				self:skinObject("frame", {obj=this, fType=ftype})
+
+				self:Unhook(this, "OnShow")
+			end)
+
 		end
-
-		self.initialized.LookingForGuildUI = true
-
-		self:SecureHookScript(_G.LookingForGuildFrame, "OnShow", function(this)
-			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true, upwards=true, offsets={x1=0, y1=-5, x2=3, y2=-5}, func=function(tab) _G.RaiseFrameLevelByTwo(tab) end})
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true})
-
-			self:Unhook(this, "OnShow")
-		end)
-		self:checkShown(_G.LookingForGuildFrame)
-
-		self:SecureHookScript(_G.LookingForGuildStartFrame, "OnShow", function(this)
-			if self.modChkBtns then
-				self:skinCheckButton{obj=_G.LookingForGuildQuestButton}
-				self:skinCheckButton{obj=_G.LookingForGuildRaidButton}
-				self:skinCheckButton{obj=_G.LookingForGuildDungeonButton}
-				self:skinCheckButton{obj=_G.LookingForGuildPvPButton}
-				self:skinCheckButton{obj=_G.LookingForGuildRPButton}
-				self:skinCheckButton{obj=_G.LookingForGuildWeekdaysButton}
-				self:skinCheckButton{obj=_G.LookingForGuildWeekendsButton}
-				self:skinCheckButton{obj=_G.LookingForGuildTankButton.checkButton}
-				self:skinCheckButton{obj=_G.LookingForGuildHealerButton.checkButton}
-				self:skinCheckButton{obj=_G.LookingForGuildDamagerButton.checkButton}
-			end
-			_G.LookingForGuildInterestFrameBg:SetAlpha(0)
-			_G.LookingForGuildAvailabilityFrameBg:SetAlpha(0)
-			_G.LookingForGuildRolesFrameBg:SetAlpha(0)
-			_G.LookingForGuildCommentFrameBg:SetAlpha(0)
-			self:skinObject("slider", {obj=_G.LookingForGuildCommentInputFrameScrollFrame.ScrollBar, fType=ftype})
-			self:skinObject("frame", {obj=_G.LookingForGuildCommentInputFrame, fType=ftype, kfs=true, ofs=-1})
-			_G.LookingForGuildCommentEditBoxFill:SetTextColor(self.BT:GetRGB())
-			self:removeMagicBtnTex(_G.LookingForGuildBrowseButton)
-			if self.modBtns then
-				self:skinStdButton{obj=_G.LookingForGuildBrowseButton}
-			end
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, fb=true, x1=-5, y1=2, x2=7, y2=-28})
-
-			self:Unhook(this, "OnShow")
-		end)
-		self:checkShown(_G.LookingForGuildStartFrame)
-
-		self:SecureHookScript(_G.LookingForGuildBrowseFrame, "OnShow", function(this)
-			self:skinObject("slider", {obj=_G.LookingForGuildBrowseFrameContainerScrollBar, fType=ftype})
-			for _, btn in _G.pairs(_G.LookingForGuildBrowseFrameContainer.buttons) do
-				self:skinObject("frame", {obj=btn, fType=ftype})
-				_G[btn:GetName() .. "Ring"]:SetAlpha(0)
-			end
-			self:removeMagicBtnTex(_G.LookingForGuildRequestButton)
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, fb=true, x1=-5, y1=2, x2=7, y2=-28})
-			if self.modBtns then
-				self:skinStdButton{obj=_G.LookingForGuildRequestButton}
-			end
-
-			self:Unhook(this, "OnShow")
-		end)
-
-		-- Requests
-		self:SecureHookScript(_G.LookingForGuildAppsFrame, "OnShow", function(this)
-			self:skinObject("slider", {obj=_G.LookingForGuildAppsFrameContainerScrollBar, fType=ftype})
-			for _, btn in _G.pairs(_G.LookingForGuildAppsFrameContainer.buttons) do
-				self:skinObject("frame", {obj=btn, fType=ftype})
-			end
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, fb=true, x1=-5, y1=2, x2=7, y2=-28})
-
-			self:Unhook(this, "OnShow")
-		end)
-
-		self:SecureHookScript(_G.GuildFinderRequestMembershipFrame, "OnShow", function(this)
-			self:removeNineSlice(this.Border)
-			self:skinObject("slider", {obj=_G.GuildFinderRequestMembershipFrameInputFrameScrollFrame.ScrollBar, fType=ftype})
-			_G.GuildFinderRequestMembershipEditBoxFill:SetTextColor(self.BT:GetRGB())
-			self:skinObject("frame", {obj=_G.GuildFinderRequestMembershipFrameInputFrame, fType=ftype, ofs=-2})
-			if self.modBtns then
-				self:skinStdButton{obj=_G.GuildFinderRequestMembershipFrameAcceptButton}
-				self:skinStdButton{obj=_G.GuildFinderRequestMembershipFrameCancelButton}
-			end
-			self:skinObject("frame", {obj=this, fType=ftype})
-
-			self:Unhook(this, "OnShow")
-		end)
-
 	end
 
 	aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 		if not self.prdb.ObjectiveTracker.skin
 		and not self.prdb.ObjectiveTracker.popups
+		and not self.prdb.ObjectiveTracker.animapowers
 		and not self.prdb.ObjectiveTracker.headers
 		then
 			return
@@ -2973,14 +3253,11 @@ aObj.SetupRetail_PlayerFrames = function()
 		end
 
 		local skinMinBtn = _G.nop
-		-- FIXME: adding a button border to the minimize button causes ADDON_ACTION_FORBIDDEN event [16.04.21]
-		--@debug@
 		if self.modBtnBs then
 			 function skinMinBtn(btn)
-				aObj:addButtonBorder{obj=btn, es=12, ofs=1, x1=-1}
+				aObj:addButtonBorder{obj=btn, es=12, ofs=1, x1=-1, clr="grey"}
 			end
 		end
-		--@end-debug@
 		-- remove Glow/Sheen textures from WorldQuest modules
 		local function updTrackerModules()
 			for _, module in _G.pairs(_G.ObjectiveTrackerFrame.MODULES) do
@@ -3020,16 +3297,31 @@ aObj.SetupRetail_PlayerFrames = function()
 			skinMinBtn(_G.ObjectiveTrackerFrame.HeaderMenu.MinimizeButton)
 			-- hook this to skin QuestObjective Block Button(s)
 			local function aBB2rB(btn)
-				aObj:addButtonBorder{obj=btn, ofs=btn.Icon and -2 or nil, x1=btn.Icon and 0 or nil, reParent=btn.Count and {btn.Count} or nil, clr="gold"}
+				if btn.HotKey then -- QuestItem
+					aObj:addButtonBorder{obj=btn, reParent={btn.Count}, clr="grey"}
+				else -- GroupFinder
+					aObj:addButtonBorder{obj=btn, ofs=-2, x1=0, clr="gold"}
+				end
 			end
 			self:SecureHook("QuestObjectiveSetupBlockButton_AddRightButton", function(_, button, _)
 				aBB2rB(button)
 			end)
 			-- skin existing buttons
 			for _, mod in _G.pairs(_G.ObjectiveTrackerFrame.MODULES) do
-				for _, blk in _G.pairs(mod.usedBlocks) do
-					if blk.rightButton then
-						aBB2rB(blk.rightButton)
+				if _G.strfind(mod.friendlyName, "QUEST_TRACKER_MODULE")
+				and mod.poolCollection:GetNumActive() > 0
+				then
+					for blk in mod.poolCollection:EnumerateActiveByTemplate("ObjectiveTrackerBlockTemplate") do
+						if blk.rightButton then
+							-- aObj:Debug("OTBT rightButton found")
+							aBB2rB(blk.rightButton)
+						end
+					end
+					for blk in mod.poolCollection:EnumerateActiveByTemplate("BonusObjectiveTrackerBlockTemplate") do
+						if blk.rightButton then
+							-- aObj:Debug("BOTBT rightButton found")
+							aBB2rB(blk.rightButton)
+						end
 					end
 				end
 			end
@@ -3283,14 +3575,16 @@ aObj.SetupRetail_PlayerFrames = function()
 				end
 			else
 				self:skinObject("scrollbar", {obj=this.SpecificScrollBar, fType=ftype})
-				local function skinBtn(btn)
-					btn.Bg:SetTexture(nil)
-					btn.Border:SetTexture(nil)
-					if aObj.modBtnBs then
-						aObj:addButtonBorder{obj=btn, fType=ftype, relTo=btn.Icon, clr="grey"}
+				local function skinElement(element, _, new)
+					if new ~= false then
+						element.Bg:SetTexture(nil)
+						element.Border:SetTexture(nil)
+						if aObj.modBtnBs then
+							aObj:addButtonBorder{obj=element, fType=ftype, relTo=element.Icon, clr="grey"}
+						end
 					end
 				end
-				_G.ScrollUtil.AddInitializedFrameCallback(this.SpecificScrollBox, skinBtn, aObj, true)
+				_G.ScrollUtil.AddAcquiredFrameCallback(this.SpecificScrollBox, skinElement, aObj, true)
 			end
 			local btn
 			for _, bName in _G.pairs{"RandomBG", "RandomEpicBG", "Arena1", "Brawl", "SpecialEvent"} do
@@ -3470,8 +3764,6 @@ aObj.SetupRetail_PlayerFrames = function()
 				self:SecureHook("SpellButton_UpdateButton", function(bObj)
 					updBtn(bObj)
 				end)
-			else
-
 			end
 			-- Tabs (side)
 			local tBtn
@@ -3874,7 +4166,7 @@ aObj.SetupRetail_PlayerFrames = function()
 						 self:addButtonBorder{obj=btn, libt=true, relTo=btn.Icon, reParent={btn.Count}, clr="common"}
 					end
 				end
-				-- TODO: Find out why border colour changes when optional reagent chosen and revert when remmoved
+				-- TODO: Find out why border colour changes when optional reagent chosen and revert when removed
 				for _, btn in _G.pairs(cnts.OptionalReagents) do
 					btn.NameFrame:SetTexture(nil)
 					if self.modBtnBs then
