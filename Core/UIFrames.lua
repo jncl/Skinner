@@ -1770,7 +1770,7 @@ aObj.blizzFrames[ftype].MailFrame = function(self)
 		else
 			_G.MailEditBox.ScrollBox.EditBox:SetTextColor(self.BT:GetRGB())
 			_G.MailEditBox:DisableDrawLayer("BACKGROUND")
-			self:skinObject("scrollbar", {obj=_G.MailEditBoxScrollBar, fType=ftype, rpTex="background", x1=1, y1=-1, x2=5, y2=1})
+			self:skinObject("scrollbar", {obj=_G.MailEditBoxScrollBar, fType=ftype, x1=1, y1=-1, x2=5, y2=1})
 		end
 		for i = 1, _G.ATTACHMENTS_MAX_SEND do
 			if not self.modBtnBs then
@@ -2790,13 +2790,13 @@ aObj.blizzFrames[ftype].TextToSpeechFrame = function(self)
 	self:SecureHookScript(_G.TextToSpeechFrame, "OnShow", function(this)
 		self:skinObject("dropdown", {obj=_G.TextToSpeechFrameTtsVoiceDropdown, fType=ftype})
 		self:removeNineSlice(self:getChild(_G.TextToSpeechFrameTtsVoicePicker, 1).NineSlice)
-		self:skinObject("scrollbar", {obj=_G.TextToSpeechFrameTtsVoicePicker.ScrollBar, fType=ftype, rpTex="background"})
+		self:skinObject("scrollbar", {obj=_G.TextToSpeechFrameTtsVoicePicker.ScrollBar, fType=ftype})
 		self:skinObject("dropdown", {obj=_G.TextToSpeechFrameTtsVoiceAlternateDropdown, fType=ftype})
 		self:SecureHook("TextToSpeechFrame_UpdateAlternate", function()
 			self:checkDisabledDD(_G.TextToSpeechFrameTtsVoiceAlternateDropdown)
 		end)
 		self:removeNineSlice(self:getChild(_G.TextToSpeechFrameTtsVoiceAlternatePicker, 1).NineSlice)
-		self:skinObject("scrollbar", {obj=_G.TextToSpeechFrameTtsVoiceAlternatePicker.ScrollBar, fType=ftype, rpTex="background"})
+		self:skinObject("scrollbar", {obj=_G.TextToSpeechFrameTtsVoiceAlternatePicker.ScrollBar, fType=ftype})
 		self:skinObject("slider", {obj=_G.TextToSpeechFrameAdjustRateSlider, fType=ftype})
 		self:skinObject("slider", {obj=_G.TextToSpeechFrameAdjustVolumeSlider, fType=ftype})
 		if self.modBtns then

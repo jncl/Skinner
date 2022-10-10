@@ -110,7 +110,6 @@ aObj.skinTPLs = {
 		-- clr         = "darkgrey", -- backdrop border colour
 		-- ca          = 0.5, -- backdrop border alpha
 		-- ng          = true, -- no Gradient texture
-		rpTex       = false, -- remove parent's textures [single draw layer or array of draw layers]
 		-- x1          = 2,
 		-- y1          = -2,
 		-- x2          = -3,
@@ -708,7 +707,14 @@ local function skinScrollBar(tbl)
 	if tbl.obj.sf then return end
 	-- remove textures
 	tbl.obj:DisableDrawLayer("BACKGROUND")
-	tbl.obj.Background:DisableDrawLayer("artwork")
+	-- handle .Background frame being hijacked by a .Background texture
+	local child = aObj:getChild(tbl.obj, 1)
+	if child.Begin
+	and child.End
+	and child.Middle
+	then
+		child:DisableDrawLayer("artwork")
+	end
 	setScrollTrackOffsets(tbl, "scrollbar")
 	aObj:skinObject("frame", {obj=tbl.obj.Track, fType=tbl.fType, bd=4, ng=true, x1=tbl.x1, y1=tbl.y1, x2=tbl.x2, y2=tbl.y2, clr="slider"})
 end
@@ -839,7 +845,7 @@ local function skinTabs(tbl)
 				else
 					aObj:setInactiveTab(tab.sf)
 				end
-				aObj:SecureHook(tab, "SetTabSelected", function(tObj, isSelected)
+				aObj:SecureHook(tab, "SetTabSelected", function(tObj, _)
 					if tObj.isSelected then
 						aObj:setActiveTab(tObj.sf)
 					else

@@ -180,7 +180,7 @@ aObj.SetupClassic_UIFrames = function()
 						end
 						-- ActivityView
 						fObj.ActivityView:DisableDrawLayer("OVERLAY")
-						self:skinObject("scrollbar", {obj=fObj.ActivityView.ScrollBar, fType=ftype, rpTex="background"})
+						self:skinObject("scrollbar", {obj=fObj.ActivityView.ScrollBar, fType=ftype})
 						self:skinObject("frame", {obj=fObj.ActivityView.Comment, fType=ftype, kfs=true, fb=true, ofs=6})
 
 						if self.modBtns then
@@ -219,7 +219,7 @@ aObj.SetupClassic_UIFrames = function()
 						self:SecureHook("LFGBrowseActivityDropDown_Initialize", function(dropDown, _)
 							self:checkDisabledDD(dropDown)
 						end)
-						self:skinObject("scrollbar", {obj=fObj.ScrollBar, fType=ftype, rpTex="background"})
+						self:skinObject("scrollbar", {obj=fObj.ScrollBar, fType=ftype})
 						if self.modBtns then
 							self:skinStdButton{obj=fObj.SendMessageButton, fType=ftype, sechk=true}
 							self:skinStdButton{obj=fObj.GroupInviteButton, fType=ftype, sechk=true}
