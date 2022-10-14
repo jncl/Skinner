@@ -99,7 +99,7 @@ aObj.SetupRetail_PlayerFrames = function()
 			self:keepFontStrings(this.BorderFrame)
 			this.ForgeBadgeFrame:DisableDrawLayer("OVERLAY") -- this hides the frame
 			this.ForgeBadgeFrame.ForgeLevelLabel:SetDrawLayer("ARTWORK") -- this shows the artifact level
-			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true, offsets={x1=8, y1=self.isTT and 7 or 2, x2=-8, y2=2}})
+			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true})
 			self:skinObject("frame", {obj=this, fType=ftype, cb=true, ofs=5, y1=4, y2=-6})
 			-- Perks
 			this.PerksTab:DisableDrawLayer("BORDER")
@@ -228,11 +228,10 @@ aObj.SetupRetail_PlayerFrames = function()
 
 		self:SecureHookScript(_G.CharacterFrame, "OnShow", function(this)
 			self:removeInset(this.InsetRight)
+			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true})
 			if not aObj.isRtlPTR then
-				self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true, offsets={x1=8, y1=self.isTT and 2 or -3, x2=-8, y2=2}})
 				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, x2=3})
 			else
-				self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true, offsets={x1=0, x2=0}})
 				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, rp=true, cb=true, x2=3})
 			end
 
@@ -604,11 +603,7 @@ aObj.SetupRetail_PlayerFrames = function()
 		self.initialized.Collections = true
 
 		self:SecureHookScript(_G.CollectionsJournal, "OnShow", function(this)
-			if not aObj.isRtlPTR then
-				self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true, selectedTab=this.selectedTab, offsets={x1=9, y1=self.isTT and 3 or -2, x2=-9, y2=2}})
-			else
-				self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true, selectedTab=this.selectedTab, offsets={x1=3, y1=self.isTT and 3 or -2, x2=-3, y2=2}})
-			end
+			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true, selectedTab=this.selectedTab})
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true, cb=true, x2=3, y2=-1})
 
 			self:Unhook(this, "OnShow")
@@ -2394,11 +2389,7 @@ aObj.SetupRetail_PlayerFrames = function()
 		self:SecureHookScript(_G.FriendsFrame, "OnShow", function(this)
 			self:skinObject("dropdown", {obj=_G.FriendsDropDown, fType=ftype})
 			self:skinObject("dropdown", {obj=_G.TravelPassDropDown, fType=ftype})
-			if not aObj.isRtlPTR then
-				self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true, offsets={x1=8, y1=self.isTT and 1 or -4, x2=-8, y2=4}})
-			else
-				self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true, offsets={x1=4, y1=self.isTT and 1 or -4, x2=-4, y2=4}})
-			end
+			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true})
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, x2=3, y2=-3})
 			-- tooltip
 			_G.C_Timer.After(0.1, function()
@@ -2828,7 +2819,7 @@ aObj.SetupRetail_PlayerFrames = function()
 				-- N.B. NO CloseButton for GuildNameChangeAlertFrame
 				self:skinStdButton{obj=_G.GuildNameChangeFrame.button}
 			end
-			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true, offsets={x1=8, y1=self.isTT and 2 or -4, x2=-8, y2=2}})
+			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true})
 			if self.isTT then
 				_G.PanelTemplates_UpdateTabs(this)
 			end
@@ -3007,7 +2998,7 @@ aObj.SetupRetail_PlayerFrames = function()
 		self.initialized.InspectUI = true
 
 		self:SecureHookScript(_G.InspectFrame, "OnShow", function(this)
-			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true, offsets={x1=9, y1=self.isTT and 2 or -3, x2=-9, y2=2}})
+			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true})
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true})
 			-- let AddOn skins know when when UI is skinned (used by oGlow skin)
 			self.callbacks:Fire("InspectUI_Skinned", self)
@@ -3681,11 +3672,7 @@ aObj.SetupRetail_PlayerFrames = function()
 			this.MainHelpButton.Ring:SetTexture(nil)
 			self:moveObject{obj=this.MainHelpButton, y=-4}
 			this.numTabs = 5
-			if not aObj.isRtlPTR then
-				self:skinObject("tabs", {obj=this, prefix=this:GetName(), suffix="Button", fType=ftype, track=false, offsets={x1=8, y1=self.isTT and 3 or -2, x2=-8, y2=2}})
-			else
-				self:skinObject("tabs", {obj=this, prefix=this:GetName(), suffix="Button", fType=ftype, track=false, offsets={x1=0, y1=self.isTT and 3 or -2, x2=0, y2=2}})
-			end
+			self:skinObject("tabs", {obj=this, prefix=this:GetName(), suffix="Button", fType=ftype, track=false})
 			if self.isTT then
 				local function setTab(bookType)
 					local tab
@@ -3902,7 +3889,7 @@ aObj.SetupRetail_PlayerFrames = function()
 			end
 
 			self:SecureHookScript(_G.PlayerTalentFrame, "OnShow", function(this)
-				self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true, offsets={x1=8, y1=self.isTT and 3 or -2, x2=-8, y2=2}})
+				self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true})
 				-- Dual Spec Tabs
 				for i = 1, _G.MAX_TALENT_GROUPS do
 					self:removeRegions(_G["PlayerSpecTab" .. i], {1}) -- N.B. other regions are icon and highlight

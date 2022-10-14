@@ -90,7 +90,7 @@ aObj.blizzFrames[ftype].MerchantFrame = function(self)
 	self.initialized.MerchantFrame = true
 
 	self:SecureHookScript(_G.MerchantFrame, "OnShow", function(this)
-		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true, offsets={x1=9, y1=self.isTT and 2 or -2, x2=-9, y2=2}})
+		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true})
 		self:removeInset(_G.MerchantMoneyInset)
 		_G.MerchantMoneyBg:DisableDrawLayer("BACKGROUND")
 		if self.isRtl then

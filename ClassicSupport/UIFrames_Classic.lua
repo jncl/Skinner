@@ -80,7 +80,7 @@ aObj.SetupClassic_UIFrames = function()
 				self.initialized.LFGFrame = true
 
 				self:SecureHookScript(_G.LFGParentFrame, "OnShow", function(this)
-					self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, ignoreSize=true, lod=self.isTT and true, upwards=true, offsets={x1=6, y1=0, x2=-6, y2=2}})
+					self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, ignoreSize=true, lod=self.isTT and true, upwards=true})
 					self:skinObject("frame", {obj=this, fType=ftype, kfs=true, x1=10, y1=-11, x2=-29, y2=70})
 					if self.modBtns then
 						self:skinCloseButton{obj=self:getChild(this, self.isClscERA and 3 or 1), fType=ftype}
@@ -157,7 +157,7 @@ aObj.SetupClassic_UIFrames = function()
 				self:SecureHookScript(_G.LFGParentFrame, "OnShow", function(this)
 					_G.LFGParentFramePortrait:DisableDrawLayer("BACKGROUND")
 					_G.LFGParentFramePortrait:DisableDrawLayer("ARTWORK")
-					self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, ignoreSize=true, lod=self.isTT and true, upwards=true, offsets={x1=6, y1=0, x2=-6, y2=2}})
+					self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, ignoreSize=true, lod=self.isTT and true, upwards=true})
 					self:skinObject("frame", {obj=this, fType=ftype, kfs=true, x1=10, y1=-11, x2=-29, y2=70})
 					if self.modBtns then
 						self:skinCloseButton{obj=self:getChild(this, self.isClscERA and 3 or 1), fType=ftype}
@@ -367,8 +367,8 @@ aObj.SetupClassic_UIFrames = function()
 			self.initialized.PVPFrame = true
 
 			self:SecureHookScript(_G.PVPParentFrame, "OnShow", function(this)
-				self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, ignoreSize=true, lod=self.isTT and true, upwards=true, regions={7}, offsets={x1=6, y1=0, x2=-6, y2=2}})
-				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=12, y1=-12, x2=-32, y2=71})
+				self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, ignoreSize=true, lod=self.isTT and true, upwards=true, regions={7}})
+				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=12, y1=-12, x2=-32, y2=74})
 
 				self:SecureHookScript(_G.PVPFrame, "OnShow", function(fObj)
 					self:keepFontStrings(fObj)

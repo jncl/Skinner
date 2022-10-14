@@ -107,7 +107,7 @@ aObj.SetupDragonflight_PlayerFrames = function()
 			self:moveObject{obj=this.SearchBox, y=-8}
 			self:skinObject("statusbar", {obj=this.searchProgressBar, fi=0, bg=this.searchProgressBar.bg})
 			self:moveObject{obj=_G.AchievementFrameCloseButton, x=1, y=8}
-			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true, ignoreHLTex=false, regions={7, 8, 9, 10}, offsets={x1=6, y1=self.isTT and 2 or -3, x2=-2, y2=-7}})
+			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true, ignoreHLTex=false, regions={7, 8, 9, 10}, offsets={x1=6, x2=-2, y2=-7}})
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, y1=7, x2=0, y2=-2})
 
 			self:SecureHookScript(this.Header, "OnShow", function(fObj)
@@ -347,7 +347,7 @@ aObj.SetupDragonflight_PlayerFrames = function()
 
 		self:SecureHookScript(_G.ClassTalentFrame, "OnShow", function(this)
 			this.PortraitOverlay.Portrait:SetTexture(nil)
-			self:skinObject("tabs", {obj=this.TabSystem,  pool=true, fType=ftype, ignoreSize=true, offsets={x1=6, y1=3, x2=-6, y2=0}, track=false})
+			self:skinObject("tabs", {obj=this.TabSystem,  pool=true, fType=ftype, ignoreSize=true, track=false})
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true, cb=true})
 
 			self:SecureHookScript(this.SpecTab, "OnShow", function(fObj)
@@ -643,7 +643,7 @@ aObj.SetupDragonflight_PlayerFrames = function()
 			end
 		end
 		self:SecureHookScript(_G.ProfessionsFrame, "OnShow", function(this)
-			self:skinObject("tabs", {obj=this.TabSystem,  pool=true, fType=ftype, ignoreSize=true, offsets={x1=6, y1=2, x2=-6, y2=0}, track=false})
+			self:skinObject("tabs", {obj=this.TabSystem,  pool=true, fType=ftype, ignoreSize=true, track=false})
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true})
 
 			self:SecureHookScript(this.CraftingPage, "OnShow", function(fObj)

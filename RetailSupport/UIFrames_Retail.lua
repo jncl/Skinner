@@ -223,6 +223,7 @@ aObj.SetupRetail_UIFrames = function()
 			else
 				x2Ofs, y2Ofs = -10, 7
 			end
+			-- Top Tabs
 			aObj:skinObject("tabs", {obj=frame, prefix=frame:GetName(), fType=ftype, selectedTab=frame.selectedTab, lod=aObj.isTT and true, ignoreHLTex=false, regions={7, 8, 9, 10}, offsets={x1=10, y1=aObj.isTT and 2 or -2, x2=x2Ofs, y2=aObj.isTT and 4 or y2Ofs}})
 		end
 		function skinCompleteDialog(frame, naval)
@@ -356,6 +357,7 @@ aObj.SetupRetail_UIFrames = function()
 				aObj:skinObject("slider", {obj=ml.listScroll.scrollBar, fType=ftype, y1=5, y2=-10})
 			else
 				aObj:skinObject("slider", {obj=ml.listScroll.scrollBar, fType=ftype, y1=-2, y2=2})
+				-- Top Tabs
 				aObj:skinObject("tabs", {obj=ml, prefix=ml:GetName(), fType=ftype, numTabs=2, ignoreHLTex=false, upwards=true, lod=aObj.isTT and true, regions={7, 8, 9}, offsets={x1=tabOfs and tabOfs * -1 or 6, y1=tabOfs or -6, x2=tabOfs or -6, y2=aObj.isTT and 3 or 8}, track=false})
 				if aObj.isTT then
 					aObj:secureHook("GarrisonMissonListTab_SetSelected", function(tab, isSelected)
@@ -775,6 +777,7 @@ aObj.SetupRetail_UIFrames = function()
 		end
 		local function skinTempWindow(obj)
 			if aObj.prdb.ChatTabs then
+				-- Top Tabs
 				aObj:skinObject("tabs", {obj=obj, fType=ftype, tabs={_G[obj:GetName() .. "Tab"]}, lod=self.isTT and true, upwards=true, ignoreHLTex=false, regions={7, 8, 9, 10, 11}, offsets={x1=4, y1=self.isTT and -10 or -12, x2=-4, y2=self.isTT and -3 or -1}, track=false})
 			end
 			if aObj.prdb.ChatFrames	then
@@ -1175,7 +1178,7 @@ aObj.SetupRetail_UIFrames = function()
 				_G.ScrollUtil.AddAcquiredFrameCallback(this.Report.List.ScrollBox, skinElement, aObj, true)
 			end
 			self:skinObject("frame", {obj=this.Report.List, fType=ftype, fb=true, y1=4, clr="grey"})
-			-- tabs (Top)
+			-- Top Tabs
 			self:skinObject("tabs", {obj=this.Report, tabs={this.Report.InProgress, this.Report.Available}, fType=ftype, lod=self.isTT and true, ignoreHLTex=false, upwards=true, offsets={x1=4, y1=self.isTT and -2 or -5, x2=-4, y2=self.isTT and -4 or 1}, regions={2, 3}, track=false, func=function(tab) tab:GetNormalTexture():SetAlpha(0) tab:SetFrameLevel(20) end})
 			if self.isTT then
 				self:SecureHook("GarrisonLandingPageReport_SetTab", function(tab)
@@ -1216,8 +1219,8 @@ aObj.SetupRetail_UIFrames = function()
 				end
 			end
 			this.HeaderBar:SetTexture(nil)
-			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true, ignoreHLTex=false, offsets={x1=5, y1=self.isTT and -9 or -14, x2=-5, y2=-2}, regions={7, 8, 9, 10}})
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, ofs=-10, y2=6})
+			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true, ignoreHLTex=false, regions={7, 8, 9, 10}})
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, ofs=-10, y2=16})
 
 			-- N.B. Garrison Landing Page Minimap Button skinned with other minimap buttons
 			self:Unhook(this, "OnShow")
@@ -1267,7 +1270,8 @@ aObj.SetupRetail_UIFrames = function()
 				end)
 				fObj.MaterialFrame:DisableDrawLayer("BACKGROUND")
 				fObj.Tabs = {fObj.Tab1, fObj.Tab2, fObj.Tab3}
-				self:skinObject("tabs", {obj=fObj, tabs=fObj.Tabs, fType=ftype, lod=self.isTT and true, upwards=true, regions={1, 3}, offsets={x1=7, y1=-7, x2=-7, y2=self.isTT and 2 or 7}, track=false, func=aObj.isTT and function(tab)
+				-- Top Tabs
+				self:skinObject("tabs", {obj=fObj, tabs=fObj.Tabs, fType=ftype, lod=self.isTT and true, upwards=true, regions={1, 3}, offsets={y1=-7, y2=self.isTT and 2 or 7}, track=false, func=aObj.isTT and function(tab)
 					aObj:SecureHookScript(tab, "OnClick", function(blF)
 						for _, bTab in _G.pairs(blF:GetParent().Tabs) do
 							if bTab == this then
@@ -1432,7 +1436,7 @@ aObj.SetupRetail_UIFrames = function()
 			if self.modBtns then
 				self:skinCloseButton{obj=this.BorderFrame.CloseButton2, noSkin=true}
 			end
-			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true, ignoreHLTex=false, offsets={x1=10, y1=aObj.isTT and 2 or -1, x2=-11, y2=2}, regions={7, 8, 9, 10}})
+			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true, ignoreHLTex=false, regions={7, 8, 9, 10}})
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=2, y1=2, x2=1, y2=-4})
 
 			self:SecureHookScript(this.MissionTab.MissionList, "OnShow", function(fObj)
@@ -3069,11 +3073,7 @@ aObj.SetupRetail_UIFrames = function()
 
 		self:SecureHookScript(_G.PVEFrame, "OnShow", function(this)
 			self:keepFontStrings(this.shadows)
-			if not aObj.isRtlPTR then
-				self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, offsets={x1=9, y1=self.isTT and 2 or -3, x2=-9, y2=2}})
-			else
-				self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, offsets={x1=0, y1=self.isTT and 2 or -3, x2=0, y2=2}})
-			end
+			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype})
 			-- GroupFinder Frame
 			for i = 1, 3 do
 				_G.GroupFinderFrame["groupButton" .. i].bg:SetTexture(nil)
@@ -3164,7 +3164,7 @@ aObj.SetupRetail_UIFrames = function()
 			this.Content:DisableDrawLayer("OVERLAY")
 			self:skinObject("slider", {obj=this.ScrollFrame.ScrollBar, fType=ftype})
 			self:keepFontStrings(this.TabContainer)
-			self:skinObject("tabs", {obj=this.TabGroup, tabs=this.Tabs, fType=ftype, lod=self.isTT and true, offsets={x1=8, y1=self.isTT and 2 or -3, x2=-8, y2=2}, track=false})
+			self:skinObject("tabs", {obj=this.TabGroup, tabs=this.Tabs, fType=ftype, lod=self.isTT and true, track=false})
 			if self.isTT then
 				self:SecureHook(this, "OnTabGroupClicked", function(fObj, selectedTab)
 					for _, tab in _G.pairs(fObj.Tabs) do
@@ -3189,7 +3189,7 @@ aObj.SetupRetail_UIFrames = function()
 			this.scrollFrame.background:SetAlpha(0)
 			self:skinObject("slider", {obj=this.scrollFrame.scrollBar, fType=ftype})
 			self:keepFontStrings(this.content.tabContainer)
-			self:skinObject("tabs", {obj=this.tabGroup, tabs=this.Tabs, fType=ftype, lod=self.isTT and true, offsets={x1=8, y1=self.isTT and 2 or -3, x2=-8, y2=2}, track=false})
+			self:skinObject("tabs", {obj=this.tabGroup, tabs=this.Tabs, fType=ftype, lod=self.isTT and true, track=false})
 			if self.isTT then
 				self:SecureHook(this, "OnTabGroupClicked", function(fObj, selectedTab)
 					for _, tab in _G.pairs(fObj.Tabs) do
@@ -3464,7 +3464,7 @@ aObj.SetupRetail_UIFrames = function()
 		self.initialized.RaidFrame = true
 
 		self:SecureHookScript(_G.RaidParentFrame, "OnShow", function(this)
-			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true, offsets={x1=7, y1=self.isTT and 2 or -1, x2=-7, y2=0}})
+			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true})
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true})
 
 			self:Unhook(this, "OnShow")

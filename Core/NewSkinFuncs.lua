@@ -144,7 +144,7 @@ aObj.skinTPLs = {
 		ignoreSize  = true,
 		lod         = false,
 		upwards     = false,
-		offsets     = {x1=7, y1=2, x2=-7, y2=2},
+		offsets     = {x1=8, y1=-3, x2=-8, y2=2},
 		ignoreHLTex = true,
 		track       = true,
 		noCheck     = false,
@@ -823,10 +823,19 @@ local function skinTabs(tbl)
 			end
 		end
 	end
-	tbl.offsets.x1 = tbl.offsets.x1 or 7
-	tbl.offsets.y1 = tbl.offsets.y1 or 2
-	tbl.offsets.x2 = tbl.offsets.x2 or -7
-	tbl.offsets.y2 = tbl.offsets.y2 or 2
+	if aObj.isTT
+	and tbl.offsets.y1 == -3
+	then
+		tbl.offsets.y1 = 2
+	end
+	if aObj.isRtlPTR then
+		if tbl.offsets.x1 == 8 then
+			tbl.offsets.x1 = 0
+		end
+		if tbl.offsets.x1 == -8 then
+			tbl.offsets.x1 = 0
+		end
+	end
 	local function skinTabObject(tab, idx)
 		aObj:keepRegions(tab, tbl.regions)
 		if not aObj.isTT then

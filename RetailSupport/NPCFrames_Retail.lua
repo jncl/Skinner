@@ -55,7 +55,7 @@ aObj.SetupRetail_NPCFrames = function()
 			end
 			this.MoneyFrameBorder:DisableDrawLayer("BACKGROUND")
 			this.MoneyFrameBorder:DisableDrawLayer("BORDER")
-			self:skinObject("tabs", {obj=this, tabs=this.Tabs, fType=ftype, lod=self.isTT and true, offsets={x1=8, y1=self.isTT and 2 or -3, x2=-8, y2=2}, track=false})
+			self:skinObject("tabs", {obj=this, tabs=this.Tabs, fType=ftype, lod=self.isTT and true, track=false})
 			if self.isTT then
 				self:SecureHook(this, "SetDisplayMode", function(fObj, displayMode)
 					if not fObj.tabsForDisplayMode[displayMode] then return end
@@ -302,10 +302,11 @@ aObj.SetupRetail_NPCFrames = function()
 			end)
 
 			self:SecureHookScript(this.AuctionsFrame, "OnShow", function(fObj)
+				-- Top Tabs
 				self:skinObject("tabs", {obj=fObj, tabs=fObj.Tabs, fType=ftype, lod=self.isTT and true, upwards=true, offsets={x1=6, y1=-4, x2=-6, y2=self.isTT and -1 or 0}, track=false})
 				if self.isTT then
-					self:SecureHook(fObj, "SetDisplayMode", function(fObj, displayMode)
-						for i, tab in _G.pairs(fObj.Tabs) do
+					self:SecureHook(fObj, "SetDisplayMode", function(frame, displayMode)
+						for i, tab in _G.pairs(frame.Tabs) do
 							if i == displayMode then
 								self:setActiveTab(tab.sf)
 							else
@@ -392,11 +393,7 @@ aObj.SetupRetail_NPCFrames = function()
 			end
 			self:removeInset(_G.BankFrameMoneyFrameInset)
 			_G.BankFrameMoneyFrameBorder:DisableDrawLayer("BACKGROUND")
-			if not aObj.isRtlPTR then
-				self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, offsets={x1=8, y1=self.isTT and 2 or 0, x2=-8, y2=2}})
-			else
-				self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, offsets={x1=0, y1=self.isTT and 2 or 0, x2=0, y2=2}})
-			end
+			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype})
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true, cb=true})
 			self:keepFontStrings(_G.BankSlotsFrame)
 			if self.modBtnBs then

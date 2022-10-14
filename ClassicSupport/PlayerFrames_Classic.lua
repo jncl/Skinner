@@ -98,6 +98,7 @@ aObj.SetupClassic_PlayerFrames = function()
 			if self.isClscERA then
 				skinPetFrame()
 			else
+				-- Top Tabs
 				self:skinObject("tabs", {obj=this, prefix=this:GetName(), numTabs=3, fType=ftype, lod=self.isTT and true, offsets={x1=6, y1=-6, x2=-6, y2=0}})
 				self:SecureHookScript(_G.PetPaperDollFramePetFrame, "OnShow", function(fObj)
 					skinPetFrame()
@@ -429,6 +430,7 @@ aObj.SetupClassic_PlayerFrames = function()
 				_G.FriendsFrameStatusDropDownStatus:SetAlpha(1) -- display status icon
 				self:skinObject("editbox", {obj=_G.FriendsFrameBroadcastInput, fType=ftype})
 				_G.FriendsFrameBroadcastInputFill:SetTextColor(self.BT:GetRGB())
+				-- Top Tabs
 				self:skinObject("tabs", {obj=fObj, prefix=fObj:GetName(), numTabs=2, fType=ftype, lod=self.isTT and true, upwards=true, offsets={x1=0, y1=-5, x2=0, y2=-4}})
 				_G.RaiseFrameLevel(fObj)
 
@@ -849,6 +851,7 @@ aObj.SetupClassic_PlayerFrames = function()
 			self:SecureHookScript(_G.InspectTalentFrame, "OnShow", function(this)
 				this:DisableDrawLayer("BACKGROUND")
 				this:DisableDrawLayer("BORDER")
+				-- Top Tabs
 				self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true, offsets={x1=4, y1=-4, x2=-4, y2=-1}})
 				_G.InspectTalentFramePointsBar:DisableDrawLayer("BACKGROUND")
 				_G.InspectTalentFramePointsBar:DisableDrawLayer("BORDER")
@@ -873,6 +876,7 @@ aObj.SetupClassic_PlayerFrames = function()
 
 		self:SecureHookScript(_G.SpellBookFrame, "OnShow", function(this)
 			this.numTabs = 3
+			-- Side Tabs
 			self:skinObject("tabs", {obj=this, prefix=this:GetName(), suffix="Button", fType=ftype, lod=self.isTT and true, offsets={x1=13, y1=-14, x2=-13, y2=16}, regions={1, 3}, track=false})
 			if self.isTT then
 				local function setTab(bookType)
@@ -976,7 +980,7 @@ aObj.SetupClassic_PlayerFrames = function()
 			self:skinObject("tabs", {obj=this, prefix=fName, fType=ftype, lod=self.isTT and true})
 			self:skinObject("slider", {obj=_G[fName .. 'ScrollFrameScrollBar'], fType=ftype, rpTex="artwork"})
 			-- keep background Texture
-			self:skinObject("frame", {obj=this, fType=ftype, cb=true, x1=10, y1=-12, x2=-31, y2=75})
+			self:skinObject("frame", {obj=this, fType=ftype, cb=true, x1=10, y1=-12, x2=-31, y2=74})
 			if self.isClscERA then
 				self:removeRegions(this, {1, 2, 3, 4, 5, 11, 12, 13}) -- remove portrait, border & points border
 				if self.modBtns then

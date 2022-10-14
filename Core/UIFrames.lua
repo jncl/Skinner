@@ -751,6 +751,7 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 				tab.sf:Show()
 			end
 		end
+		-- Top Tabs
 		local tabSkin = self.skinTPLs.new("tabs", {obj=this.ChatTabManager, fType=ftype, upwards=true, ignoreHLTex=false, offsets={x1=4, y1=self.isTT and -10 or -12, x2=-4, y2=self.isTT and -5 or 0}, regions={8, 9, 10, 11}, noCheck=true, func=setTabState})
 		local function skinTabs(ctm)
 			tabSkin.tabs = {}
@@ -974,6 +975,7 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 			self:skinCheckButton{obj=_G.CombatConfigSettingsParty, fType=ftype}
 			self:skinCheckButton{obj=_G.CombatConfigSettingsRaid, fType=ftype}
 		end
+		-- Top Tabs
 		self:skinObject("tabs", {obj=_G.ChatConfigCombatSettings, prefix="CombatConfig", numTabs=#_G.COMBAT_CONFIG_TABS, fType=ftype, lod=self.isTT and true, upwards=true, offsets={x1=2, y1=-8, x2=-2, y2=self.isTT and -5 or 0}, regions={4, 5}, track=false})
 		if self.isTT then
 			self:SecureHook("ChatConfig_UpdateCombatTabs", function(selectedTabID)
@@ -1098,6 +1100,7 @@ aObj.blizzFrames[ftype].ChatTabs = function(self)
 	if self.isClsc then
 		xOfs = 1
 	end
+	-- Top Tabs
 	self:skinObject("tabs", {obj=_G.FloatingChatFrameManager, tabs=fcfTabs, fType=ftype, lod=self.isTT and true, upwards=true, ignoreHLTex=false, regions={7, 8, 9, 10, 11}, offsets={x1=xOfs, y1=self.isTT and -10 or -12, x2=xOfs * -1, y2=self.isTT and -3 or -1}, track=false, func=function(tab) tab.sf:SetAlpha(tab:GetAlpha()) tab.sf:Hide() end})
 	if self.isTT then
 		self:SecureHook("FCF_Tab_OnClick", function(this, _)
@@ -1354,7 +1357,7 @@ aObj.blizzLoDFrames[ftype].GuildBankUI = function(self)
 			self:skinObject("editbox", {obj=_G.GuildItemSearchBox, fType=ftype, si=true})
 			this.MoneyFrameBG:DisableDrawLayer("BACKGROUND")
 		end
-		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true, offsets={x1=9, y1=self.isTT and 2 or -3, x2=-9, y2=2}})
+		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true})
 		-- Tabs (side)
 		for _, tab in _G.pairs(this.BankTabs) do
 			tab:DisableDrawLayer("BACKGROUND")
@@ -1489,6 +1492,7 @@ if not aObj.isRtlPTR then
 			if self.isRtl then
 				self:removeNineSlice(this.Border)
 			end
+			-- Top Tabs
 			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true, upwards=true, offsets={x1=9, y1=self.isTT and 0 or -4, x2=-9, y2=self.isTT and -5 or 0}})
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true})
 			if self.modBtns then
@@ -1652,6 +1656,7 @@ aObj.blizzLoDFrames[ftype].MacroUI = function(self)
 	self.initialized.MacroUI = true
 
 	self:SecureHookScript(_G.MacroFrame, "OnShow", function(this)
+		-- Top Tabs
 		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true, upwards=true, offsets={x1=1, y1=-6, x2=-1, y2=self.isTT and -2 or 3}, func=function(tab) tab:SetFrameLevel(20) end})
 		if not aObj.isRtlPTR then
 			self:skinObject("frame", {obj=_G.MacroButtonScrollFrame, fType=ftype, kfs=true, fb=true, ofs=12, y1=10, x2=31})
@@ -1735,11 +1740,7 @@ aObj.blizzFrames[ftype].MailFrame = function(self)
 	self.initialized.MailFrame = true
 
 	self:SecureHookScript(_G.MailFrame, "OnShow", function(this)
-		if not aObj.isRtlPTR then
-			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, offsets={x1=7, y1=self.isTT and 2 or -3, x2=-7, y2=2}})
-		else
-			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, offsets={x1=0, y1=self.isTT and 2 or -3, x2=0, y2=2}})
-		end
+		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype})
 		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, cb=true, x2=self.isRtl and 3 or 1})
 		--	Inbox Frame
 		for i = 1, _G.INBOXITEMS_TO_DISPLAY do
@@ -2699,6 +2700,7 @@ if not aObj.isRtlPTR then
 					self:skinStdButton{obj=_G.VideoOptionsFrameClassic, fType=ftype}
 				end
 			end
+			-- Top Tabs
 			self:skinObject("tabs", {obj=_G.Display_, tabs={_G.GraphicsButton, _G.RaidButton}, fType=ftype, upwards=true, offsets={x1=4, y1=0, x2=0, y2=self.isTT and -3 or 2}, track=false, func=function(tab) tab:SetFrameLevel(20) tab.SetFrameLevel = _G.nop end})
 			if self.isTT then
 				self:SecureHook("GraphicsOptions_SelectBase", function()
