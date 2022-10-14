@@ -1,3 +1,16 @@
+beta9.45970.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	PTR & Beta changes
+	Updated NSF scrollbar skin
+	Updated VoidStorageUI
+	Added option to Show/Hide Dressing Room background texture
+	Updated AtlasLoot, Auctionator, Krowi_AchievementFilter & LibUIDropDownMenu
+	Extracted the AddOn from the rabbit hole of Messages vs Callbacks, Callbacks won
+	Updated Option names and descriptions to use strjoin
+	
 beta9.45942.1
 Jncl:
 	Added support for Dragonflight expansion
