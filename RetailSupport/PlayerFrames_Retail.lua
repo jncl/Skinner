@@ -1830,12 +1830,16 @@ aObj.SetupRetail_PlayerFrames = function()
 						aObj:addButtonBorder{obj=btn, fType=ftype, ibt=true, reParent={btn.IconQuestTexture, btn.UpgradeIcon, btn.NewItemTexture, btn.BattlepayItemTexture, btn.JunkIcon}, ofs=3}
 						btn.NormalTexture:SetAlpha(0)
 						btn.ExtendedSlot:SetTexture(nil)
+						-- btn.ItemSlotBackground = ""
 					end
 					-- remove button slot texture when empty
 					aObj:SecureHook(frame, "UpdateItems", function(fObj)
-						for _, itemButton in fObj:EnumerateValidItems() do
-							if not itemButton.hasItem then
-								itemButton:SetItemButtonTexture("")
+						for _, btn in fObj:EnumerateValidItems() do
+							if not btn.hasItem then
+								btn:SetItemButtonTexture("")
+							end
+							if btn.ItemSlotBackground then
+								btn.ItemSlotBackground:SetTexture("")
 							end
 						end
 					end)

@@ -1971,29 +1971,40 @@ aObj.blizzFrames[ftype].Minimap = function(self)
 		_G.Minimap:SetQuestBlobRingScalar(0)
 		_G.Minimap:SetQuestBlobRingAlpha(0)
 		-- Difficulty indicators
-		-- hook this to mamage MiniMapInstanceDifficulty texture
-		self:SecureHook("MiniMapInstanceDifficulty_Update", function()
-			local _, _, difficulty, _, maxPlayers, _, _ = _G.GetInstanceInfo()
-			local _, _, isHeroic, _ = _G.GetDifficultyInfo(difficulty)
-			local xOffset = 0
-			if maxPlayers >= 10
-			and maxPlayers <= 19
-			then
-				xOffset = -1
-			end
-			if isHeroic then
-				_G.MiniMapInstanceDifficultyTexture:SetTexCoord(0.0, 0.25, 0.125, 0.5) -- remove top hanger texture
-				_G.MiniMapInstanceDifficultyText:SetPoint("CENTER", xOffset, -1)
-			else
-				_G.MiniMapInstanceDifficultyTexture:SetTexCoord(0.0, 0.25, 0.625, 1) -- remove top hanger texture
-				_G.MiniMapInstanceDifficultyText:SetPoint("CENTER", xOffset, 5)
-			end
-		end)
-		self:moveObject{obj=_G.MiniMapInstanceDifficulty, x=6, y=-4}
-		_G.GuildInstanceDifficultyHanger:SetAlpha(0)
-		self:moveObject{obj=_G.GuildInstanceDifficulty, x=7}
-		self:getRegion(_G.MiniMapChallengeMode, 1):SetTexCoord(0, 1, 0.27, 1.27) -- remove top hanger texture
-		self:moveObject{obj=_G.MiniMapChallengeMode, x=6, y=-12}
+		if not aObj.isRtlPTR then
+			-- hook this to mamage MiniMapInstanceDifficulty texture
+			self:SecureHook("MiniMapInstanceDifficulty_Update", function()
+				local _, _, difficulty, _, maxPlayers, _, _ = _G.GetInstanceInfo()
+				local _, _, isHeroic, _ = _G.GetDifficultyInfo(difficulty)
+				local xOffset = 0
+				if maxPlayers >= 10
+				and maxPlayers <= 19
+				then
+					xOffset = -1
+				end
+				if isHeroic then
+					_G.MiniMapInstanceDifficultyTexture:SetTexCoord(0.0, 0.25, 0.125, 0.5) -- remove top hanger texture
+					_G.MiniMapInstanceDifficultyText:SetPoint("CENTER", xOffset, -1)
+				else
+					_G.MiniMapInstanceDifficultyTexture:SetTexCoord(0.0, 0.25, 0.625, 1) -- remove top hanger texture
+					_G.MiniMapInstanceDifficultyText:SetPoint("CENTER", xOffset, 5)
+				end
+			end)
+			self:moveObject{obj=_G.MiniMapInstanceDifficulty, x=6, y=-4}
+			_G.GuildInstanceDifficultyHanger:SetAlpha(0)
+			self:moveObject{obj=_G.GuildInstanceDifficulty, x=7}
+			self:getRegion(_G.MiniMapChallengeMode, 1):SetTexCoord(0, 1, 0.27, 1.27) -- remove top hanger texture
+			self:moveObject{obj=_G.MiniMapChallengeMode, x=6, y=-12}
+		else
+			-- .InstanceDifficulty
+				-- .Instance
+					-- .Border
+				-- .Guild
+					-- .Border
+					-- .Instance
+				-- .ChallengeMode
+					-- .Border
+		end
 	else
 		if self.isClscERA then
 			if self.modBtns then

@@ -149,7 +149,7 @@ aObj.SetupDragonflight_UIFrames = function()
 				skinFactionBtns(lObj)
 			end)
 			-- N.B. keep background visible
-			aObj:skinObject("frame", {obj=oFrame.DragonridingPanel, fType=ftype, fb=true, y1=-2, x2=-2, y2=11, clr="grey"})
+			aObj:skinObject("frame", {obj=oFrame.DragonridingPanel, fType=ftype, fb=true, y1=-1, x2=-1, y2=11, clr="grey"})
 			aObj:skinObject("frame", {obj=oFrame, fType=ftype, kfs=true, rns=true, cbns=true, ofs=-4, y1=-11, clr="gold_df"})
 			if aObj.modBtns then
 				aObj:skinStdButton{obj=oFrame.DragonridingPanel.SkillsButton, fType=ftype}

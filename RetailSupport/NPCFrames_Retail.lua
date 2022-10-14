@@ -887,12 +887,25 @@ aObj.SetupRetail_NPCFrames = function()
 			self:skinObject("dropdown", {obj=_G.ClassTrainerFrameFilterDropDown, fType=ftype})
 			self:removeMagicBtnTex(_G.ClassTrainerTrainButton)
 			this.skillStepButton:GetNormalTexture():SetTexture(nil)
+			if not aObj.isRtlPTR then
 			self:skinObject("slider", {obj=_G.ClassTrainerScrollFrameScrollBar, fType=ftype})
 			for _, btn in _G.pairs(this.scrollFrame.buttons) do
 				btn:GetNormalTexture():SetTexture(nil)
 				if self.modBtnBs then
 					self:addButtonBorder{obj=btn, relTo=btn.icon}
 				end
+			end
+			else
+				self:skinObject("scrollbar", {obj=this.ScrollBar, fType=ftype})
+				local function skinElement(element, _, new)
+					if new ~= false then
+						element:GetNormalTexture():SetTexture(nil)
+						if aObj.modBtnBs then
+							aObj:addButtonBorder{obj=element, relTo=element.icon}
+						end
+					end
+				end
+				_G.ScrollUtil.AddAcquiredFrameCallback(this.ScrollBox, skinElement, aObj, true)
 			end
 			self:removeInset(this.bottomInset)
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true})
