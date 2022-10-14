@@ -2,15 +2,16 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("BigWigs") then return end
 local _G = _G
 
-aObj.addonsToSkin.BigWigs = function(self) -- v 191.2
+if not aObj.isRtl then return end
 
-	-- skin BigWigs statusbar
+aObj.addonsToSkin.BigWigs = function(self) -- v 250.1
+
+	-- skin BigWigs statusbar on the LFGDungeonReadyPopup
 	if _G.BigWigsLoader then
-		_G.BigWigsLoader.RegisterCallback(self, "BigWigs_FrameCreated", function(event, frame, name)
+		_G.BigWigsLoader.RegisterMessage(self, "BigWigs_FrameCreated", function(event, frame, name)
 			if name == "QueueTimer" then
-				aObj:removeRegions(frame, {2, 4}) -- background & border textures
-				aObj:skinStatusBar{obj=frame, fi=0}
-				_G.BigWigsLoader.UnregisterCallback(self, "BigWigs_FrameCreated")
+				aObj:skinObject("statusbar", {obj=frame, regions={4}, fi=0, bg=aObj:getRegion(frame, 2)})
+				_G.BigWigsLoader.UnregisterMessage(self, "BigWigs_FrameCreated")
 			end
 		end)
 	end
