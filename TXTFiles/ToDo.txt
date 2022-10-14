@@ -21,8 +21,6 @@ ToDos
 ?	O	Make role icons square with a button border
 		- use UI-LFG-ICON-ROLES.BLP as source for all, size them as required
 
-?	O	Replace ObjectiveTracker Header Minimize button textures with suitable characters
-
 ≈	O	Dragonflight Prepatch on PTR
 ≈	O	Dragonflight Beta now available to skin
 
@@ -31,28 +29,19 @@ ToDos
 		- happens when OverrideBar is used, but not always...
 		- happens after VehicleUI has been used
 
-	I	LibUIDropDownMenu, reported by Galthariel, 05.10.22
-√		- ...faceSkinner\AddonSkins\LibUIDropDownMenu.lua:6: attempt to index local 'frame' (a nil value)
-		[string "@Skinner\AddonSkins\LibUIDropDownMenu.lua"]:16: in function <...faceSkinner\AddonSkins\LibUIDropDownMenu.lua:15>
-		[string "@Skinner\AddonSkins\LibUIDropDownMenu.lua"]:38: in function <...faceSkinner\AddonSkins\LibUIDropDownMenu.lua:26>
+	I	EveryGoldToBanker, reported by amey0, 10.10.22
+?		- still not skinned
 		
-	I	Krowi_AchievementFilter, reported by Galthariel, 05.10.22
-√		- ...ddOns\Skinner\AddonSkins\Krowi_AchievementFilter-43.0.lua:22: Usage: SecureHook([object], method, [handler]): Attempting to hook a non existing target
-		[string "@Ace3\AceHook-3.0\AceHook-3.0-9.lua"]:211: in function <Ace3\AceHook-3.0\AceHook-3.0.lua:118>
-		[string "@Ace3\AceHook-3.0\AceHook-3.0-9.lua"]:341: in function `SecureHook'
-		[string "@Skinner\AddonSkins\Krowi_AchievementFilter-43.0.lua"]:22: in function <...ddOns\Skinner\AddonSkins\Krowi_AchievementFilter.lua:5>
+	I	Missing localisations, reported by amey0/EpidemeDaBear, 10.10.22
+√		- 'Toggle the skin of the'
+√		- 'Set the'
+		
+	I/W	BigWigs, reported by EpidemeDaBear/Fakelessgaming, 10.10.22
+√		- Skinner\AddonSkins\BigWigs-v45.2-classic.lua:9: attempt to call field 'RegisterCallback' (a nil value)
+		
+	I	LibAboutPanel, reported by Galthariel, 11.10.22
+√		- Skinner\AddonSkins\LibAboutPanel.lua:16: attempt to call field 'RegisterCallabck' (a nil value)
 
-	I	DressingRoom, requested by krainz, 06.10.22
-√		- Allow for background texture to be hidden
-
-	I	Krowi_AchievementFilter, reported by EpidemeDaBear, 06.10.22
-√		- ...ddOns\Skinner\AddonSkins\Krowi_AchievementFilter-43.0.lua:176: attempt to index field 'sbb' (a nil value)
-
-	I/W	AtlasLoot, reported by EpidemeDaBear, 08.10.22
-√		- Skinner\AddonSkins\AtlasLoot-1.3000005.lua:107: attempt to index field 'tooltipFrame' (a nil value)
-
-	I	Auctionator, reported by Galthariel, 09.10.22
-√		- Skinner\AddonSkins\Auctionator-9.2.42.lua:15: Usage: SecureHookScript(object, method, [handler]): You can only hook a script on a frame object
-√		- Replacing the following instances in the Auctionator.lua plugin inside Skinner folder fixes the issue
- 		   - All instances of ScrollListShopping to ScrollListShoppingList and All Instances of ShoppingList with Shopping
- 
+	I/C	Tabs, requested by m33shochque, 12.10.22
+≈		- In Classic they're not aligned and spaced like retail
+	

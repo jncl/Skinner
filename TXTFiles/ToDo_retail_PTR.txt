@@ -119,6 +119,7 @@ x			- Tabs
 √			- AddonList
 ≈			- Communities
 √			- EncounterJournal
+√			- TrainerUI
 		- Deleted
 √			- SetGradientAlpha method for Texture
 √			- InterfaceOptionsFrame_OpenToCategory
