@@ -45,6 +45,14 @@ aObj.SetupRetail_NPCFrames = function()
 
 	aObj.blizzLoDFrames[ftype].AuctionHouseUI = function(self)
 		if not self.prdb.AuctionHouseUI or self.initialized.AuctionHouseUI then return end
+
+		if not _G.AuctionHouseFrame then
+			_G.C_Timer.After(0.1, function()
+				self.blizzLoDFrames[ftype].AuctionHouseUI(self)
+			end)
+			return
+		end
+
 		self.initialized.AuctionHouseUI = true
 
 		self:SecureHookScript(_G.AuctionHouseFrame, "OnShow", function(this)
@@ -287,8 +295,8 @@ aObj.SetupRetail_NPCFrames = function()
 				self:removeNineSlice(fObj.ItemDisplay.NineSlice)
 				self:removeRegions(fObj.ItemDisplay, {3})
 				self:removeNineSlice(fObj.DummyItemList.NineSlice)
-				fObje.DummyItemList.Background:SetTexture(nil)
-				fObje.DummyItemList.DummyScrollBar:DisableDrawLayer("BACKGROUND")
+				fObj.DummyItemList.Background:SetTexture(nil)
+				fObj.DummyItemList.DummyScrollBar:DisableDrawLayer("BACKGROUND")
 				if not aObj.isRtlPTR then
 					fObj.DummyItemList.DummyScrollBar:DisableDrawLayer("ARTWORK")
 				else
@@ -344,7 +352,7 @@ aObj.SetupRetail_NPCFrames = function()
 			end)
 
 			self:SecureHookScript(this.BuyDialog, "OnShow", function(fObj)
-				self:skinObject("frame", {obj=ahf.BuyDialog.Border, fType=ftype, kfs=true, ofs=-10})
+				self:skinObject("frame", {obj=fObj.Border, fType=ftype, kfs=true, ofs=-10})
 				if self.modBtns then
 					self:skinStdButton{obj=fObj.BuyNowButton, fType=ftype, sechk=true}
 					self:skinStdButton{obj=fObj.CancelButton, fType=ftype, sechk=true}
@@ -888,13 +896,13 @@ aObj.SetupRetail_NPCFrames = function()
 			self:removeMagicBtnTex(_G.ClassTrainerTrainButton)
 			this.skillStepButton:GetNormalTexture():SetTexture(nil)
 			if not aObj.isRtlPTR then
-			self:skinObject("slider", {obj=_G.ClassTrainerScrollFrameScrollBar, fType=ftype})
-			for _, btn in _G.pairs(this.scrollFrame.buttons) do
-				btn:GetNormalTexture():SetTexture(nil)
-				if self.modBtnBs then
-					self:addButtonBorder{obj=btn, relTo=btn.icon}
+				self:skinObject("slider", {obj=_G.ClassTrainerScrollFrameScrollBar, fType=ftype})
+				for _, btn in _G.pairs(this.scrollFrame.buttons) do
+					btn:GetNormalTexture():SetTexture(nil)
+					if self.modBtnBs then
+						self:addButtonBorder{obj=btn, relTo=btn.icon}
+					end
 				end
-			end
 			else
 				self:skinObject("scrollbar", {obj=this.ScrollBar, fType=ftype})
 				local function skinElement(element, _, new)
