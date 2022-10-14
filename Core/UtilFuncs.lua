@@ -1593,7 +1593,7 @@ function aObj:SetupCmds()
 	self:RegisterChatCommand("pii", function(msg) _G.print(_G.GetItemInfo(msg)) end)
 	self:RegisterChatCommand("pil", function(msg) _G.print(_G.gsub(msg, "\124", "\124\124")) end)
 	self:RegisterChatCommand("pin", function(msg) _G.print(msg, "is item:", (_G.GetItemInfoFromHyperlink(msg))) end)
-	self:RegisterChatCommand("rl", function() _G.C_UI.Reload() end)
+	-- self:RegisterChatCommand("rl", function() _G.C_UI.Reload() end)
 	self:RegisterChatCommand("si1", function(msg) showInfo(getObj(msg), true, true) end) -- 1 level only
 	self:RegisterChatCommand("si1p", function(msg) showInfo(getObjP(msg), true, true) end) -- 1 level only
 	self:RegisterChatCommand("si1gp", function(msg) showInfo(getObjGP(msg), true, true) end) -- 1 level only
@@ -1608,7 +1608,7 @@ function aObj:SetupCmds()
 	self:RegisterChatCommand("sspewp", function(msg) return _G.Spew and _G.Spew(msg, getObjP(msg)) end)
 	self:RegisterChatCommand("sspewgp", function(msg) return _G.Spew and _G.Spew(msg, getObjGP(msg)) end)
 
-	self:RegisterChatCommand("shc", function(_) self:Debug("Hooks table Count: [%s]", self:tableCount(self.hooks)) end)
+	self:RegisterChatCommand("shc", function() self:Debug("Hooks table Count: [%s]", self:tableCount(self.hooks)) end)
 
 	self:RegisterChatCommand("wai", function() -- where am I ?
 		local posTab = _G.C_Map.GetPlayerMapPosition(_G.C_Map.GetBestMapForUnit("player"), "player")
