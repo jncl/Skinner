@@ -17,11 +17,11 @@ local buildInfo = {
 	wow_classic_beta    = {"3.4.0",  45942, "Classic Beta"},
 	wow_classic_ptr     = {"3.4.0",  45942, "Classic PTR"},
 	wow_classic_era_ptr = {"1.14.3", 45437, "Classic Era PTR"}, -- a.k.a. Season of Mastery PTR
-	wow_beta            = {"10.0.2", 45969, "Retail Beta"}, -- a.k.a. Dragonflight
-	wow_ptr             = {"10.0.0", 45970, "Retail PTR"},
+	wow_beta            = {"10.0.2", 46092, "Retail Beta"}, -- a.k.a. Dragonflight
+	wow_ptr             = {"10.0.0", 46047, "Retail PTR"},
 	-- Live
 	wow_classic         = {"3.4.0",  45942, "Classic"}, -- a.k.a. Wrath of the Lich King Classic
-	wow_classic_era     = {"1.14.3", 44834, "Classic Era"},
+	wow_classic_era     = {"1.14.3", 45437, "Classic Era"},
 	wow                 = {"9.2.7",  45745, "Retail"},
 	-- Currently playing
 	curr                = {_G.GetBuildInfo()},
