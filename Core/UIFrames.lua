@@ -54,7 +54,6 @@ aObj.blizzFrames[ftype].AddonList = function(self)
 
 end
 
-if not aObj.isClscERA then
 aObj.blizzFrames[ftype].AlertFrames = function(self)
 	if not self.prdb.AlertFrames or self.initialized.AlertFrames then return end
 	self.initialized.AlertFrames = true
@@ -273,7 +272,6 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 		end
 	end)
 
-end
 end
 
 aObj.blizzFrames[ftype].AutoComplete = function(self)

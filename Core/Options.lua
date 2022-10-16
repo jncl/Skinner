@@ -1298,7 +1298,7 @@ aObj.SetupOptions = function(self)
 
 	local uiOptTab = {
 		["Addon List"]            = {suff = "Frame"},
-		["Alert Frames"]          = not self.isClscERA and true or nil,
+		["Alert Frames"]          = true,
 		["Auto Complete"]         = {suff = "Frame"},
 		["Battlefield Map"]       = {suff = "Frame"},
 		["Binding UI"]            = not self.isRtlPTR and {desc = "Key Bindings UI"} or nil,
@@ -1327,7 +1327,7 @@ aObj.SetupOptions = function(self)
 		["Stack Split"]           = {suff = "Frame"},
 		["Static Popups"]         = true,
 		["System Options"]        = true,
-		["Text To Speech Frame"]  = not self.isClscERA and true or nil,
+		["Text To Speech Frame"]  = true,
 		["Time Manager"]          = {suff = "Frame"},
 		["Tutorial"]              = {suff = "Frame"},
 		["UI DropDown Menu"]      = {desc = "DropDown Panels"},
