@@ -832,8 +832,8 @@ local function skinTabs(tbl)
 		if tbl.offsets.x1 == 8 then
 			tbl.offsets.x1 = 0
 		end
-		if tbl.offsets.x1 == -8 then
-			tbl.offsets.x1 = 0
+		if tbl.offsets.x2 == -8 then
+			tbl.offsets.x2 = 0
 		end
 	end
 	local function skinTabObject(tab, idx)
@@ -871,8 +871,8 @@ local function skinTabs(tbl)
 			if ht then
 				ht:SetTexture(aObj.tFDIDs.ctabHL)
 				ht:ClearAllPoints()
-				ht:SetPoint("TOPLEFT", tbl.offsets.x1, tbl.offsets.y1)
-				ht:SetPoint("BOTTOMRIGHT", tbl.offsets.x2, tbl.offsets.y2)
+				ht:SetPoint("TOPLEFT", tab, "TOPLEFT", tbl.offsets.x1, tbl.offsets.y1)
+				ht:SetPoint("BOTTOMRIGHT", tab, "BOTTOMRIGHT", tbl.offsets.x2, tbl.offsets.y2)
 			end
 		end
 		if tbl.func then
