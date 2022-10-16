@@ -55,225 +55,225 @@ aObj.blizzFrames[ftype].AddonList = function(self)
 end
 
 if not aObj.isClscERA then
-	aObj.blizzFrames[ftype].AlertFrames = function(self)
-		if not self.prdb.AlertFrames or self.initialized.AlertFrames then return end
-		self.initialized.AlertFrames = true
+aObj.blizzFrames[ftype].AlertFrames = function(self)
+	if not self.prdb.AlertFrames or self.initialized.AlertFrames then return end
+	self.initialized.AlertFrames = true
 
-		--@debug@
-		local dontDebug = {
-			["Achievement"] = true,
-			["GarrisonTalent"] = true,
-			["Loot"] = true,
-			["MoneyWon"] = true,
-			["WorldQuestComplete"] = true,
-		}
-		--@end-debug@
-		local alertType = {
-			["Achievement"]           = {ofs = 0, nt = {"Background"}, stc = "Unlocked", icon = {obj = "Icon", ddl = {"border", "overlay"}, tex ="Texture"}},
-			["Criteria"]              = {ofs = 0, nt = {"Background"}, stc = "Unlocked", icon = {obj = "Icon", ddl = {"border", "overlay"}, tex ="Texture"}},
-			["DigsiteComplete"]       = {ofs = -10, ddl = {"background"}},
-			["DungeonCompletion"]     = {ofs = -8, ddl = {"background", "border", "overlay"}, sdla = "dungeonTexture", icon = {tex = "dungeonTexture"}},
-			["GarrisonBuilding"]      = {ofs = -10, ddl = {"background", "border", "overlay"}},
-			["GarrisonFollower"]      = {ofs = -8, ddl = {"background"}, nt = {"PortraitFrame[\"LevelBorder\"]", "FollowerBG"},  stn = {"PortraitFrame[\"PortraitRing\"]"}},
-			["GarrisonMission"]       = {ofs = -10, ddl = {"background", "border"}},
-			["GarrisonRandomMission"] = {ofs = -10, ddl = {"background"}, sdlb = "MissionType"},
-			["GarrisonShipFollower"]  = {ofs = -8, ddl = {"background"}, nt = {"FollowerBG"}},
-			["GarrisonShipMission"]   = {ofs = -10, ddl = {"background"}},
-			["GarrisonTalent"]        = {ofs = -10, ddl = {"background"}},
-			["GuildChallenge"]        = {ofs = -10, ddl = {"background", "border", "overlay"}},
-			["HonorAwarded"]          = {ofs = -8, ddl = {"background"}, ib = true},
-			["Invasion"]              = {ofs = -8, ddl = {"background"}, sdla = "Icon"},
-			["LegendaryItem"]         = {ofs = -20, x1 = 24, x2 = -4, ddl = {"background"}, stn = {"Background", "Background2", "Background3"}, iq = _G.Enum.ItemQuality.Legendary},
-			["Loot"]                  = {ofs = -10, y1 = -12, y2 = 12, ddl = {"background"}},
-			["LootUpgrade"]           = {ofs = -8, ddl = {"background"}, stn = {"BaseQualityBorder", "UpgradeQualityBorder"}},
-			["MoneyWon"]              = {ofs = -8, ddl = {"background"}, ib = true},
-			["NewMount"]              = {ofs = -8, ddl = {"background"}, iq = _G.Enum.ItemQuality.Epic},
-			["NewPet"]                = {ofs = -8, ddl = {"background"}},
-			["NewRecipeLearned"]      = {ofs = -8},
-			["Scenario"]              = {ofs = -12, ddl = {"background", "border", "overlay"}, sdla = "dungeonTexture", icon = {tex = "dungeonTexture"}},
-			["WorldQuestComplete"]    = {ofs = -6, ddl = {"background", "border"}, sdla = "QuestTexture", icon = {tex = "QuestTexture"}},
-		}
-		-- N.B. Appears in XML file but not in LUA file
-		-- ["Item"]                  = {ofs = -8, ddl = {"background"}, ib = true},
-		if self.isRtl then
-			alertType["Achievement"].y1       = -15
-			alertType["Achievement"].y2       = 12
-			alertType["Scenario"].y1          = -8
-			alertType["Scenario"].y2          = 8
-			alertType["EntitlementDelivered"] = {ofs = -10}
-			alertType["Loot"].icon            = {obj = "lootItem", stn = {"SpecRing"}, ib = true, tex =  "Icon"}
-			alertType["NewCosmetic"]          = {ofs = -8, iq = _G.Enum.ItemQuality.Epic}
-			alertType["NewRuneforgePower"]    = {ofs = -8, iq = _G.Enum.ItemQuality.Legendary}
-			alertType["NewToy"]               = {ofs = -8}
-			alertType["RafRewardDelivered"]   = {ofs = -10}
-		else
-			alertType["Achievement"].y1       = -10
-			alertType["Achievement"].y2       = 10
-			alertType["Achievement"].stn      = {"OldAchievement"}
-			alertType["Loot"].stn             = {"SpecRing"}
-			alertType["Loot"].ib              = true
-			alertType["StorePurchase"]        = {ofs = -12, ddl = {"background"}}
-		end
-		if self.isRtlPTR then
-			alertType["SkillLineSpecsUnlocked"] = {ofs = -8, ddl = {"background"}, sdla = {"Icon"}}
-		end
-		local function skinAlertFrame(type, frame)
-			aObj:Debug("skinAlertFrame: [%s, %s, %s]", type, frame)
-			local tbl = alertType[type]
-			--@debug@
-			if not dontDebug[type] then
-				-- _G.Spew("", frame)
-				_G.Spew("", tbl)
-			end
-			--@end-debug@
-			-- Stop animations
-			if frame.animIn then
-				frame.animIn:Stop()
-				frame.waitAndAnimOut:Stop()
-			end
-			if tbl.ddl then
-				for _, ddl in _G.pairs(tbl.ddl) do
-					frame:DisableDrawLayer(ddl)
-				end
-			end
-			if tbl.nt then
-				for _, tex in _G.pairs(tbl.nt) do
-					aObj:nilTexture(frame[tex], true)
-				end
-			end
-			if tbl.stn then
-				for _, tex in _G.pairs(tbl.stn) do
-					frame[tex]:SetTexture(nil)
-				end
-			end
-			if tbl.sdla then
-				if type == "Invasion" then
-					frame.Icon = aObj:getRegion(frame, 2)
-				end
-				frame[tbl.sdla]:SetDrawLayer("ARTWORK")
-			end
-			if tbl.sdlb then
-				frame[tbl.sdlb]:SetDrawLayer("BORDER")
-			end
-			if tbl.stc then
-				frame[tbl.stc]:SetTextColor(aObj.BT:GetRGB())
-			end
-			-- setup offset as required
-			tbl.x1  = tbl.x1 or tbl.ofs * -1
-			tbl.y1  = tbl.y1 or tbl.ofs
-			tbl.x2  = tbl.x2 or tbl.ofs
-			tbl.y2  = tbl.y2 or tbl.ofs * -1
-			aObj:skinObject("frame", {obj=frame, fType=ftype, x1=tbl.x1, y1=tbl.y1, x2=tbl.x2, y2=tbl.y2})
-			-- add button border if required
-			if aObj.modBtnBs then
-				local itemQuality = tbl.iq
-				if frame.hyperlink then -- Loot Won & Loot Upgrade Alerts
-					if frame.isCurrency then
-						itemQuality = _G.C_CurrencyInfo.GetCurrencyInfoFromLink(frame.hyperlink).quality
-					else
-						itemQuality = _G.select(3, _G.GetItemInfo(frame.hyperlink))
-					end
-				elseif type == "NewPet" then
-					itemQuality = _G.select(5, _G.C_PetJournal.GetPetStats(frame.petID)) - 1 -- rarity value - 1
-				elseif type == "NewToy" then
-					itemQuality = _G.select(6, _G.C_ToyBox.GetToyInfo(frame.toyID))
-				-- TODO: Item has a quality iconborder atlas
-				elseif type == "Item" then
-					aObj:Debug("Item Alert Border Atlas: [%s, %s]", frame.IconBorder:GetAtlas())
-				end
-				if not tbl.icon then
-					frame.Icon:SetDrawLayer("BORDER")
-					if tbl.ib then
-						frame.IconBorder:SetTexture(nil)
-					end
-					aObj:addButtonBorder{obj=frame, relTo=frame.Icon}
-				else
-					if tbl.icon.ddl then
-						for _, ddl in _G.pairs(tbl.icon.ddl) do
-							frame[tbl.icon.obj or "Icon"]:DisableDrawLayer(ddl)
-						end
-					end
-					if tbl.icon.stn then
-						for _, tex in _G.pairs(tbl.icon.stn) do
-							frame[tbl.icon.obj or "Icon"][tex]:SetTexture(nil)
-						end
-					end
-					if tbl.icon.ib then
-						frame[tbl.icon.obj or "Icon"].IconBorder:SetTexture(nil)
-					end
-					-- change Icon object here, used for button border and quality colour
-					if tbl.icon.obj then
-						frame = frame[tbl.icon.obj]
-					end
-					aObj:addButtonBorder{obj=frame, fType=ftype, relTo=frame[tbl.icon.tex]}
-				end
-				if itemQuality then
-					aObj:setBtnClr(frame, itemQuality)
-				else
-					aObj:clrBtnBdr(frame.sbb)
-				end
-			end
-		end
-		for type, _ in _G.pairs(alertType) do
-			local sysName = "AlertSystem"
-			if type == "NewCosmetic" then
-				sysName = "AlertFrameSystem"
-			end
-			-- aObj:Debug("AlertFrameSystem: [%s, %s]", type)
-			self:SecureHook(_G[type .. sysName], "setUpFunction", function(frame, _)
-				skinAlertFrame(type, frame)
-			end)
-			for frame in _G[type .. sysName].alertFramePool:EnumerateActive() do
-				skinAlertFrame(type, frame)
-			end
-		end
-
-		-- hook this to stop gradient texture whiteout
-		self:RawHook(_G.AlertFrame, "AddAlertFrame", function(this, frame)
-			if _G.IsAddOnLoaded("Overachiever") then
-				local ocScript = frame:GetScript("OnClick")
-				if ocScript
-				and ocScript == _G.OverachieverAlertFrame_OnClick
-				then
-					-- stretch icon texture
-					frame.Icon.Texture:SetTexCoord(-0.04, 0.75, 0.0, 0.555)
-					skinAlertFrame("Achievement", frame)
-				end
-			end
-			-- run the hooked function
-			self.hooks[this].AddAlertFrame(this, frame)
-		end, true)
-
-		-- hook this to remove rewardFrame rings
-		self:SecureHook("StandardRewardAlertFrame_AdjustRewardAnchors", function(frame)
-			if frame.RewardFrames then
-				for i = 1, #frame.RewardFrames do
-					frame.RewardFrames[i]:DisableDrawLayer("OVERLAY") -- reward ring
-				end
-			end
-		end)
-
-		-- hook these to reset Gradients
-		self:SecureHook("AlertFrame_PauseOutAnimation", function(frame)
-			if frame.sf
-			and frame.sf.tfade
-			then
-				if not aObj.isRtlPTR then
-					frame.sf.tfade:SetGradientAlpha(self:getGradientInfo())
-				else
-					frame.sf.tfade:SetGradient(self:getGradientInfo())
-				end
-			end
-		end)
-		self:SecureHook("AlertFrame_ResumeOutAnimation", function(frame)
-			if frame.sf
-			and frame.sf.tfade
-			then
-				frame.sf.tfade:SetAlpha(0)
-			end
-		end)
-
+	--@debug@
+	local dontDebug = {
+		["Achievement"] = true,
+		["GarrisonTalent"] = true,
+		["Loot"] = true,
+		["MoneyWon"] = true,
+		["WorldQuestComplete"] = true,
+	}
+	--@end-debug@
+	local alertType = {
+		["Achievement"]           = {ofs = 0, nt = {"Background"}, stc = "Unlocked", icon = {obj = "Icon", ddl = {"border", "overlay"}, tex ="Texture"}},
+		["Criteria"]              = {ofs = 0, nt = {"Background"}, stc = "Unlocked", icon = {obj = "Icon", ddl = {"border", "overlay"}, tex ="Texture"}},
+		["DigsiteComplete"]       = {ofs = -10, ddl = {"background"}},
+		["DungeonCompletion"]     = {ofs = -8, ddl = {"background", "border", "overlay"}, sdla = "dungeonTexture", icon = {tex = "dungeonTexture"}},
+		["GarrisonBuilding"]      = {ofs = -10, ddl = {"background", "border", "overlay"}},
+		["GarrisonFollower"]      = {ofs = -8, ddl = {"background"}, nt = {"PortraitFrame[\"LevelBorder\"]", "FollowerBG"},  stn = {"PortraitFrame[\"PortraitRing\"]"}},
+		["GarrisonMission"]       = {ofs = -10, ddl = {"background", "border"}},
+		["GarrisonRandomMission"] = {ofs = -10, ddl = {"background"}, sdlb = "MissionType"},
+		["GarrisonShipFollower"]  = {ofs = -8, ddl = {"background"}, nt = {"FollowerBG"}},
+		["GarrisonShipMission"]   = {ofs = -10, ddl = {"background"}},
+		["GarrisonTalent"]        = {ofs = -10, ddl = {"background"}},
+		["GuildChallenge"]        = {ofs = -10, ddl = {"background", "border", "overlay"}},
+		["HonorAwarded"]          = {ofs = -8, ddl = {"background"}, ib = true},
+		["Invasion"]              = {ofs = -8, ddl = {"background"}, sdla = "Icon"},
+		["LegendaryItem"]         = {ofs = -20, x1 = 24, x2 = -4, ddl = {"background"}, stn = {"Background", "Background2", "Background3"}, iq = _G.Enum.ItemQuality.Legendary},
+		["Loot"]                  = {ofs = -10, y1 = -12, y2 = 12, ddl = {"background"}},
+		["LootUpgrade"]           = {ofs = -8, ddl = {"background"}, stn = {"BaseQualityBorder", "UpgradeQualityBorder"}},
+		["MoneyWon"]              = {ofs = -8, ddl = {"background"}, ib = true},
+		["NewMount"]              = {ofs = -8, ddl = {"background"}, iq = _G.Enum.ItemQuality.Epic},
+		["NewPet"]                = {ofs = -8, ddl = {"background"}},
+		["NewRecipeLearned"]      = {ofs = -8},
+		["Scenario"]              = {ofs = -12, ddl = {"background", "border", "overlay"}, sdla = "dungeonTexture", icon = {tex = "dungeonTexture"}},
+		["WorldQuestComplete"]    = {ofs = -6, ddl = {"background", "border"}, sdla = "QuestTexture", icon = {tex = "QuestTexture"}},
+	}
+	-- N.B. Appears in XML file but not in LUA file
+	-- ["Item"]                  = {ofs = -8, ddl = {"background"}, ib = true},
+	if self.isRtl then
+		alertType["Achievement"].y1       = -15
+		alertType["Achievement"].y2       = 12
+		alertType["Scenario"].y1          = -8
+		alertType["Scenario"].y2          = 8
+		alertType["EntitlementDelivered"] = {ofs = -10}
+		alertType["Loot"].icon            = {obj = "lootItem", stn = {"SpecRing"}, ib = true, tex =  "Icon"}
+		alertType["NewCosmetic"]          = {ofs = -8, iq = _G.Enum.ItemQuality.Epic}
+		alertType["NewRuneforgePower"]    = {ofs = -8, iq = _G.Enum.ItemQuality.Legendary}
+		alertType["NewToy"]               = {ofs = -8}
+		alertType["RafRewardDelivered"]   = {ofs = -10}
+	else
+		alertType["Achievement"].y1       = -10
+		alertType["Achievement"].y2       = 10
+		alertType["Achievement"].stn      = {"OldAchievement"}
+		alertType["Loot"].stn             = {"SpecRing"}
+		alertType["Loot"].ib              = true
+		alertType["StorePurchase"]        = {ofs = -12, ddl = {"background"}}
 	end
+	if self.isRtlPTR then
+		alertType["SkillLineSpecsUnlocked"] = {ofs = -8, ddl = {"background"}, sdla = {"Icon"}}
+	end
+	local function skinAlertFrame(type, frame)
+		aObj:Debug("skinAlertFrame: [%s, %s, %s]", type, frame)
+		local tbl = alertType[type]
+		--@debug@
+		if not dontDebug[type] then
+			-- _G.Spew("", frame)
+			_G.Spew("", tbl)
+		end
+		--@end-debug@
+		-- Stop animations
+		if frame.animIn then
+			frame.animIn:Stop()
+			frame.waitAndAnimOut:Stop()
+		end
+		if tbl.ddl then
+			for _, ddl in _G.pairs(tbl.ddl) do
+				frame:DisableDrawLayer(ddl)
+			end
+		end
+		if tbl.nt then
+			for _, tex in _G.pairs(tbl.nt) do
+				aObj:nilTexture(frame[tex], true)
+			end
+		end
+		if tbl.stn then
+			for _, tex in _G.pairs(tbl.stn) do
+				frame[tex]:SetTexture(nil)
+			end
+		end
+		if tbl.sdla then
+			if type == "Invasion" then
+				frame.Icon = aObj:getRegion(frame, 2)
+			end
+			frame[tbl.sdla]:SetDrawLayer("ARTWORK")
+		end
+		if tbl.sdlb then
+			frame[tbl.sdlb]:SetDrawLayer("BORDER")
+		end
+		if tbl.stc then
+			frame[tbl.stc]:SetTextColor(aObj.BT:GetRGB())
+		end
+		-- setup offset as required
+		tbl.x1  = tbl.x1 or tbl.ofs * -1
+		tbl.y1  = tbl.y1 or tbl.ofs
+		tbl.x2  = tbl.x2 or tbl.ofs
+		tbl.y2  = tbl.y2 or tbl.ofs * -1
+		aObj:skinObject("frame", {obj=frame, fType=ftype, x1=tbl.x1, y1=tbl.y1, x2=tbl.x2, y2=tbl.y2})
+		-- add button border if required
+		if aObj.modBtnBs then
+			local itemQuality = tbl.iq
+			if frame.hyperlink then -- Loot Won & Loot Upgrade Alerts
+				if frame.isCurrency then
+					itemQuality = _G.C_CurrencyInfo.GetCurrencyInfoFromLink(frame.hyperlink).quality
+				else
+					itemQuality = _G.select(3, _G.GetItemInfo(frame.hyperlink))
+				end
+			elseif type == "NewPet" then
+				itemQuality = _G.select(5, _G.C_PetJournal.GetPetStats(frame.petID)) - 1 -- rarity value - 1
+			elseif type == "NewToy" then
+				itemQuality = _G.select(6, _G.C_ToyBox.GetToyInfo(frame.toyID))
+				-- TODO: Item has a quality iconborder atlas
+			elseif type == "Item" then
+				aObj:Debug("Item Alert Border Atlas: [%s, %s]", frame.IconBorder:GetAtlas())
+			end
+			if not tbl.icon then
+				frame.Icon:SetDrawLayer("BORDER")
+				if tbl.ib then
+					frame.IconBorder:SetTexture(nil)
+				end
+				aObj:addButtonBorder{obj=frame, relTo=frame.Icon}
+			else
+				if tbl.icon.ddl then
+					for _, ddl in _G.pairs(tbl.icon.ddl) do
+						frame[tbl.icon.obj or "Icon"]:DisableDrawLayer(ddl)
+					end
+				end
+				if tbl.icon.stn then
+					for _, tex in _G.pairs(tbl.icon.stn) do
+						frame[tbl.icon.obj or "Icon"][tex]:SetTexture(nil)
+					end
+				end
+				if tbl.icon.ib then
+					frame[tbl.icon.obj or "Icon"].IconBorder:SetTexture(nil)
+				end
+				-- change Icon object here, used for button border and quality colour
+				if tbl.icon.obj then
+					frame = frame[tbl.icon.obj]
+				end
+				aObj:addButtonBorder{obj=frame, fType=ftype, relTo=frame[tbl.icon.tex]}
+			end
+			if itemQuality then
+				aObj:setBtnClr(frame, itemQuality)
+			else
+				aObj:clrBtnBdr(frame.sbb)
+			end
+		end
+	end
+	for type, _ in _G.pairs(alertType) do
+		local sysName = "AlertSystem"
+		if type == "NewCosmetic" then
+			sysName = "AlertFrameSystem"
+		end
+		-- aObj:Debug("AlertFrameSystem: [%s, %s]", type)
+		self:SecureHook(_G[type .. sysName], "setUpFunction", function(frame, _)
+			skinAlertFrame(type, frame)
+		end)
+		for frame in _G[type .. sysName].alertFramePool:EnumerateActive() do
+			skinAlertFrame(type, frame)
+		end
+	end
+
+	-- hook this to stop gradient texture whiteout
+	self:RawHook(_G.AlertFrame, "AddAlertFrame", function(this, frame)
+		if _G.IsAddOnLoaded("Overachiever") then
+			local ocScript = frame:GetScript("OnClick")
+			if ocScript
+			and ocScript == _G.OverachieverAlertFrame_OnClick
+			then
+				-- stretch icon texture
+				frame.Icon.Texture:SetTexCoord(-0.04, 0.75, 0.0, 0.555)
+				skinAlertFrame("Achievement", frame)
+			end
+		end
+		-- run the hooked function
+		self.hooks[this].AddAlertFrame(this, frame)
+	end, true)
+
+	-- hook this to remove rewardFrame rings
+	self:SecureHook("StandardRewardAlertFrame_AdjustRewardAnchors", function(frame)
+		if frame.RewardFrames then
+			for i = 1, #frame.RewardFrames do
+				frame.RewardFrames[i]:DisableDrawLayer("OVERLAY") -- reward ring
+			end
+		end
+	end)
+
+	-- hook these to reset Gradients
+	self:SecureHook("AlertFrame_PauseOutAnimation", function(frame)
+		if frame.sf
+		and frame.sf.tfade
+		then
+			if not aObj.isRtlPTR then
+				frame.sf.tfade:SetGradientAlpha(self:getGradientInfo())
+			else
+				frame.sf.tfade:SetGradient(self:getGradientInfo())
+			end
+		end
+	end)
+	self:SecureHook("AlertFrame_ResumeOutAnimation", function(frame)
+		if frame.sf
+		and frame.sf.tfade
+		then
+			frame.sf.tfade:SetAlpha(0)
+		end
+	end)
+
+end
 end
 
 aObj.blizzFrames[ftype].AutoComplete = function(self)
@@ -717,8 +717,6 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 		if self.isRtl then
 			self:removeNineSlice(this.Border)
 		end
-		self:skinObject("frame", {obj=_G.ChatConfigCategoryFrame, fType=ftype, kfs=true, rns=true, fb=true, ofs=0})
-		self:skinObject("frame", {obj=_G.ChatConfigBackgroundFrame, fType=ftype, kfs=true, rns=true, fb=true, ofs=0})
 		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true, ofs=-4, y1=0})
 		if self.modBtns then
 			self:skinStdButton{obj=this.DefaultButton}
@@ -732,130 +730,158 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 		if self.modChkBtns then
 			self:skinCheckButton{obj=_G.TextToSpeechCharacterSpecificButton, fType=ftype}
 		end
-		-- ChatTabManager
-		local setTabState
-		if self.isTT then
-			function setTabState(tab)
-				if tab:GetID() == _G.CURRENT_CHAT_FRAME_ID then
-					aObj:setActiveTab(tab.sf)
-				else
-					aObj:setInactiveTab(tab.sf)
-				end
-				tab.sf:Show()
-			end
-		else
-			function setTabState(tab)
-				tab:SetAlpha(1)
-				tab:SetFrameLevel(21)
-				tab.sf:SetFrameLevel(20)
-				tab.sf:Show()
-			end
-		end
-		-- Top Tabs
-		local tabSkin = self.skinTPLs.new("tabs", {obj=this.ChatTabManager, fType=ftype, upwards=true, ignoreHLTex=false, offsets={x1=4, y1=self.isTT and -10 or -12, x2=-4, y2=self.isTT and -5 or 0}, regions={8, 9, 10, 11}, noCheck=true, func=setTabState})
-		local function skinTabs(ctm)
-			tabSkin.tabs = {}
-			for tab in ctm.tabPool:EnumerateActive() do
-				aObj:add2Table(tabSkin.tabs, tab)
-				if tab:GetID() == _G.CURRENT_CHAT_FRAME_ID then
-					tab:GetFontString():SetTextColor(1, 1, 1)
-				else
-					tab:GetFontString():SetTextColor(_G.NORMAL_FONT_COLOR.r, _G.NORMAL_FONT_COLOR.g, _G.NORMAL_FONT_COLOR.b)
-				end
-			end
-			aObj:skinObject(tabSkin)
-		end
-		skinTabs(this.ChatTabManager)
-		self:SecureHook(this.ChatTabManager, "OnShow", function(fObj)
-			skinTabs(fObj)
+
+		self:SecureHookScript(_G.ChatConfigCategoryFrame, "OnShow", function(fObj)
+			self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, rns=true, fb=true, ofs=0})
+
+			self:Unhook(fObj, "OnShow")
 		end)
-		self:SecureHook(this.ChatTabManager, "UpdateSelection", function(fObj, _)
-			skinTabs(fObj)
-		end)
-		local function skinCB(cBox)
-			if aObj.isClsc
-			and _G[cBox].NineSlice
-			then
-				aObj:removeNineSlice(_G[cBox].NineSlice)
+		self:checkShown(_G.ChatConfigCategoryFrame)
+
+		self:SecureHookScript(this.ChatTabManager, "OnShow", function(fObj)
+			local setTabState
+			if self.isTT then
+				function setTabState(tab)
+					if tab:GetID() == _G.CURRENT_CHAT_FRAME_ID then
+						aObj:setActiveTab(tab.sf)
+					else
+						aObj:setInactiveTab(tab.sf)
+					end
+					tab.sf:Show()
+				end
 			else
-				aObj:removeBackdrop(_G[cBox])
+				function setTabState(tab)
+					tab:SetAlpha(1)
+					tab:SetFrameLevel(21)
+					tab.sf:SetFrameLevel(20)
+					tab.sf:Show()
+				end
+			end
+			-- Top Tabs
+			local tabSkin = self.skinTPLs.new("tabs", {obj=fObj, fType=ftype, upwards=true, ignoreHLTex=false, offsets={x1=0, y1=self.isTT and -10 or -12, x2=0, y2=self.isTT and -5 or 0}, regions={8, 9, 10, 11}, noCheck=true, func=setTabState})
+			local function skinTabs(ctm)
+				tabSkin.tabs = {}
+				for tab in ctm.tabPool:EnumerateActive() do
+					aObj:add2Table(tabSkin.tabs, tab)
+					if tab:GetID() == _G.CURRENT_CHAT_FRAME_ID then
+						tab:GetFontString():SetTextColor(1, 1, 1)
+					else
+						tab:GetFontString():SetTextColor(_G.NORMAL_FONT_COLOR.r, _G.NORMAL_FONT_COLOR.g, _G.NORMAL_FONT_COLOR.b)
+					end
+				end
+				aObj:skinObject(tabSkin)
+			end
+			skinTabs(fObj)
+			self:SecureHook(fObj, "UpdateSelection", function(frame, _)
+				skinTabs(frame)
+			end)
+
+			self:Unhook(fObj, "OnShow")
+		end)
+		self:checkShown(this.ChatTabManager)
+
+		self:SecureHookScript(_G.ChatConfigBackgroundFrame, "OnShow", function(fObj)
+			self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, rns=true, fb=true, ofs=0})
+
+			self:Unhook(fObj, "OnShow")
+		end)
+		self:checkShown(_G.ChatConfigBackgroundFrame)
+
+		local function skinCB(cBox)
+			if _G[cBox].NineSlice then
+				aObj:removeNineSlice(_G[cBox].NineSlice)
 			end
 			if aObj.modChkBtns then
 				local box
-				for _, suffix in _G.pairs{"", "Check", "ColorSwatch"} do
+				for _, suffix in _G.pairs{"", "Check", "ColorSwatch", "ColorClasses"} do
 					box = _G[cBox .. suffix]
 					if box
 					and box:IsObjectType("CheckButton")
 					then
 						aObj:skinCheckButton{obj=box}
+						if suffix == "ColorClasses" then
+							box:SetHeight(24)
+						end
 					end
 				end
 			end
 		end
-		--	Chat Settings
-		self:skinObject("frame", {obj=_G.ChatConfigChatSettingsLeft, fType=ftype, kfs=true, rns=true, fb=true})
-		if self.modChkBtns then
-			for i = 1, #_G.CHAT_CONFIG_CHAT_LEFT do
-				skinCB("ChatConfigChatSettingsLeftCheckBox" .. i)
-			end
-		end
-		--	Channel Settings
-		self:skinObject("frame", {obj=_G.ChatConfigChannelSettingsLeft, fType=ftype, kfs=true, rns=true, fb=true})
-		if not self.isRtl then
-			self:skinObject("frame", {obj=_G.ChatConfigChannelSettingsAvailable, fType=ftype, kfs=true, rns=true, fb=true})
-			if self.modBtns then
-				self:SecureHook("ChatConfig_CreateBoxes", function(frame, _)
-					local box
-					for i = 1, #frame.boxTable do
-						box = _G[frame:GetName() .. "Box" .. i]
-						self:removeNineSlice(box.NineSlice)
-						if self.modBtns then
-							self:skinStdButton{obj=box.Button, ofs=0}
-						end
-					end
-				end)
-			end
-		end
-		if self.modChkBtns then
-			if self.isRtl then
-				self:SecureHookScript(_G.ChatConfigChannelSettings, "OnShow", function(fObj)
-					for i = 1, #_G.CHAT_CONFIG_CHANNEL_LIST do
-						skinCB("ChatConfigChannelSettingsLeftCheckBox" .. i)
-					end
 
-					self:Unhook(fObj, "OnShow")
-				end)
-			else
-				self:SecureHook("ChatConfig_CreateCheckboxes", function(frame, _)
+		self:SecureHookScript(_G.ChatConfigChatSettings, "OnShow", function(fObj)
+			if self.isClsc then
+				self:skinObject("frame", {obj=_G.ChatConfigChatSettingsClassColorLegend, fType=ftype, kfs=true, rns=true, fb=true, ofs=0})
+			end
+			self:skinObject("frame", {obj=_G.ChatConfigChatSettingsLeft, fType=ftype, kfs=true, rns=true, fb=true, ofs=0})
+			if self.modChkBtns then
+				for i = 1, #_G.CHAT_CONFIG_CHAT_LEFT do
+					skinCB("ChatConfigChatSettingsLeftCheckBox" .. i)
+				end
+			end
+
+			self:Unhook(fObj, "OnShow")
+		end)
+		self:checkShown(_G.ChatConfigChatSettings)
+
+		self:SecureHookScript(_G.ChatConfigChannelSettings, "OnShow", function(fObj)
+			if self.isClsc then
+				self:skinObject("frame", {obj=_G.ChatConfigChannelSettingsClassColorLegend, fType=ftype, kfs=true, rns=true, fb=true, ofs=0})
+			end
+			self:skinObject("frame", {obj=_G.ChatConfigChannelSettingsLeft, fType=ftype, kfs=true, rns=true, fb=true, ofs=0})
+			local function skinLeft(frame)
+				for i = 1, #frame.checkBoxTable do
+					skinCB(frame:GetName() .. "CheckBox" .. i)
+				end
+			end
+			skinLeft(_G.ChatConfigChannelSettingsLeft)
+			self:SecureHook("ChatConfig_CreateCheckboxes", function(frame, _)
+				skinLeft(frame)
+			end)
+			if not self.isRtl then
+				self:skinObject("frame", {obj=_G.ChatConfigChannelSettingsAvailable, fType=ftype, kfs=true, rns=true, fb=true, ofs=0})
+				if self.modBtns then
 					local box
-					for i = 1, #frame.checkBoxTable do
-						box = _G[frame:GetName() .. "CheckBox" .. i]
-						self:removeNineSlice(box.NineSlice)
-						if self.modChkBtns then
-							 self:skinCheckButton{obj=box.CheckButton}
+					local function skinAvail()
+						for idx, _ in _G.ipairs(_G.ChatConfigChannelSettingsAvailable.boxTable) do
+							box = _G["ChatConfigChannelSettingsAvailableBox" .. idx]
+							aObj:removeNineSlice(box.NineSlice)
+							aObj:skinStdButton{obj=box.Button, ofs=0}
 						end
 					end
-				end)
+					skinAvail()
+					self:SecureHook("ChatConfig_CreateBoxes", function(_)
+						skinAvail()
+					end)
+				end
+			else
+				for i = 1, #_G.CHAT_CONFIG_CHANNEL_LIST do
+					skinCB("ChatConfigChannelSettingsLeftCheckBox" .. i)
+				end
 			end
-		end
-		--	Other Settings
-		for i = 1, #_G.CHAT_CONFIG_OTHER_COMBAT do
-			skinCB("ChatConfigOtherSettingsCombatCheckBox" .. i)
-		end
-		self:skinObject("frame", {obj=_G.ChatConfigOtherSettingsCombat, fType=ftype, kfs=true, rns=true, fb=true})
-		for i = 1, #_G.CHAT_CONFIG_OTHER_PVP do
-			skinCB("ChatConfigOtherSettingsPVPCheckBox" .. i)
-		end
-		self:skinObject("frame", {obj=_G.ChatConfigOtherSettingsPVP, fType=ftype, kfs=true, rns=true, fb=true})
-		for i = 1, #_G.CHAT_CONFIG_OTHER_SYSTEM do
-			skinCB("ChatConfigOtherSettingsSystemCheckBox" .. i)
-		end
-		self:skinObject("frame", {obj=_G.ChatConfigOtherSettingsSystem, fType=ftype, kfs=true, rns=true, fb=true})
-		for i = 1, #_G.CHAT_CONFIG_CHAT_CREATURE_LEFT do
-			skinCB("ChatConfigOtherSettingsCreatureCheckBox" .. i)
-		end
-		self:skinObject("frame", {obj=_G.ChatConfigOtherSettingsCreature, fType=ftype, kfs=true, rns=true, fb=true})
-		-- TextToSpeechSettings
+
+			self:Unhook(fObj, "OnShow")
+		end)
+
+		self:SecureHookScript(_G.ChatConfigOtherSettings, "OnShow", function(fObj)
+			for i = 1, #_G.CHAT_CONFIG_OTHER_COMBAT do
+				skinCB("ChatConfigOtherSettingsCombatCheckBox" .. i)
+			end
+			self:skinObject("frame", {obj=_G.ChatConfigOtherSettingsCombat, fType=ftype, kfs=true, rns=true, fb=true, ofs=0})
+			for i = 1, #_G.CHAT_CONFIG_OTHER_PVP do
+				skinCB("ChatConfigOtherSettingsPVPCheckBox" .. i)
+			end
+			self:skinObject("frame", {obj=_G.ChatConfigOtherSettingsPVP, fType=ftype, kfs=true, rns=true, fb=true, ofs=0})
+			for i = 1, #_G.CHAT_CONFIG_OTHER_SYSTEM do
+				skinCB("ChatConfigOtherSettingsSystemCheckBox" .. i)
+			end
+			self:skinObject("frame", {obj=_G.ChatConfigOtherSettingsSystem, fType=ftype, kfs=true, rns=true, fb=true, ofs=0})
+			for i = 1, #_G.CHAT_CONFIG_CHAT_CREATURE_LEFT do
+				skinCB("ChatConfigOtherSettingsCreatureCheckBox" .. i)
+			end
+			self:skinObject("frame", {obj=_G.ChatConfigOtherSettingsCreature, fType=ftype, kfs=true, rns=true, fb=true, ofs=0})
+
+			self:Unhook(fObj, "OnShow")
+		end)
+
 		-- N.B. TextToSpeechFrame is skinned separately
 		if self.modChkBtns then
 			self:SecureHook("TextToSpeechFrame_UpdateMessageCheckboxes", function(frame)
@@ -866,6 +892,7 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 				self:Unhook("TextToSpeechFrame_UpdateMessageCheckboxes")
 			end)
 		end
+
 		self:SecureHookScript(_G.ChatConfigTextToSpeechChannelSettings, "OnShow", function(fObj)
 			self:skinObject("frame", {obj=_G.ChatConfigTextToSpeechChannelSettingsLeft, fType=ftype, kfs=true, rns=true, fb=true})
 			for i = 1, #_G.CHAT_CONFIG_TEXT_TO_SPEECH_CHANNEL_LIST do
@@ -874,122 +901,150 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 
 			self:Unhook(fObj, "OnShow")
 		end)
-		--	Combat Settings
-		-- Filters
-		_G.ChatConfigCombatSettingsFiltersScrollFrameScrollBarBorder:Hide()
-		self:skinObject("slider", {obj=_G.ChatConfigCombatSettingsFiltersScrollFrameScrollBar, fType=ftype})
-		if self.modBtns then
-			self:skinStdButton{obj=_G.ChatConfigCombatSettingsFiltersDeleteButton}
-			self:skinStdButton{obj=_G.ChatConfigCombatSettingsFiltersAddFilterButton}
-			self:skinStdButton{obj=_G.ChatConfigCombatSettingsFiltersCopyFilterButton}
-		end
-		if self.modBtnBs then
-			self:addButtonBorder{obj=_G.ChatConfigMoveFilterUpButton, es=12, ofs=-5, x2=-6, y2=7, clr="grey"}
-			self:addButtonBorder{obj=_G.ChatConfigMoveFilterDownButton, es=12, ofs=-5, x2=-6, y2=7, clr="grey"}
-		end
-		self:skinObject("frame", {obj=_G.ChatConfigCombatSettingsFilters, fType=ftype, kfs=true, rns=true, fb=true, ofs=0})
-		_G.LowerFrameLevel(_G.ChatConfigCombatSettingsFilters) -- make frame appear below tab texture
-		-- Message Sources
-		for i = 1, #_G.COMBAT_CONFIG_MESSAGESOURCES_BY do
-			skinCB("CombatConfigMessageSourcesDoneByCheckBox" .. i)
-		end
-		self:skinObject("frame", {obj=_G.CombatConfigMessageSourcesDoneBy, fType=ftype, kfs=true, rns=true, fb=true})
-		for i = 1, #_G.COMBAT_CONFIG_MESSAGESOURCES_TO do
-			skinCB("CombatConfigMessageSourcesDoneToCheckBox" .. i)
-		end
-		self:skinObject("frame", {obj=_G.CombatConfigMessageSourcesDoneTo, fType=ftype, kfs=true, rns=true, fb=true})
-		-- Message Type
-		for i, val in _G.ipairs(_G.COMBAT_CONFIG_MESSAGETYPES_LEFT) do
-			skinCB("CombatConfigMessageTypesLeftCheckBox" .. i)
-			if val.subTypes then
-				for k, _ in _G.pairs(val.subTypes) do
-					skinCB("CombatConfigMessageTypesLeftCheckBox" .. i .. "_" .. k)
+
+		self:SecureHookScript(_G.ChatConfigCombatSettings, "OnShow", function(fObj)
+			-- Top Tabs
+			self:skinObject("tabs", {obj=_G.ChatConfigCombatSettings, prefix="CombatConfig", numTabs=#_G.COMBAT_CONFIG_TABS, fType=ftype, lod=self.isTT and true, upwards=true, offsets={y1=-8, y2=self.isTT and -5 or 0}, regions={4, 5}, track=false})
+			if self.isTT then
+				self:SecureHook("ChatConfig_UpdateCombatTabs", function(selectedTabID)
+					local tab
+					for i = 1, #_G.COMBAT_CONFIG_TABS do
+						tab = _G[_G.CHAT_CONFIG_COMBAT_TAB_NAME .. i]
+						if i == selectedTabID then
+							self:setActiveTab(tab.sf)
+						else
+							self:setInactiveTab(tab.sf)
+						end
+					end
+				end)
+			end
+
+			self:SecureHookScript(_G.ChatConfigCombatSettingsFilters, "OnShow", function(frame)
+				if not aObj.isRtlPTR then
+					_G.ChatConfigCombatSettingsFiltersScrollFrameScrollBarBorder:Hide()
+					self:skinObject("slider", {obj=_G.ChatConfigCombatSettingsFiltersScrollFrameScrollBar, fType=ftype})
+				else
+					self:skinObject("scrollbar", {obj=frame.ScrollBar, fType=ftype})
 				end
-			end
-		end
-		for i, val in _G.ipairs(_G.COMBAT_CONFIG_MESSAGETYPES_RIGHT) do
-			skinCB("CombatConfigMessageTypesRightCheckBox" .. i)
-			if val.subTypes then
-				for k, _ in _G.pairs(val.subTypes) do
-					skinCB("CombatConfigMessageTypesRightCheckBox" .. i .. "_" .. k)
+				self:skinObject("frame", {obj=_G.ChatConfigCombatSettingsFilters, fType=ftype, kfs=true, rns=true, fb=true, ofs=0, x2=-22})
+				_G.LowerFrameLevel(_G.ChatConfigCombatSettingsFilters) -- make frame appear below tab texture
+				if self.modBtns then
+					self:skinStdButton{obj=_G.ChatConfigCombatSettingsFiltersDeleteButton}
+					self:skinStdButton{obj=_G.ChatConfigCombatSettingsFiltersAddFilterButton}
+					self:skinStdButton{obj=_G.ChatConfigCombatSettingsFiltersCopyFilterButton}
 				end
-			end
-		end
-		for i, val in _G.ipairs(_G.COMBAT_CONFIG_MESSAGETYPES_MISC) do
-			skinCB("CombatConfigMessageTypesMiscCheckBox" .. i)
-			if val.subTypes then
-				for k, _ in _G.pairs(val.subTypes) do
-					skinCB("CombatConfigMessageTypesMiscCheckBox" .. i .. "_" .. k)
+				if self.modBtnBs then
+					self:addButtonBorder{obj=_G.ChatConfigMoveFilterUpButton, es=12, ofs=-5, x2=-6, y2=7, clr="grey"}
+					self:addButtonBorder{obj=_G.ChatConfigMoveFilterDownButton, es=12, ofs=-5, x2=-6, y2=7, clr="grey"}
 				end
-			end
-		end
-		-- Colors
-		for i = 1, #_G.COMBAT_CONFIG_UNIT_COLORS do
-			if self.isClsc
-			and _G["CombatConfigColorsUnitColorsSwatch" .. i].NineSlice
-			then
-				self:removeNineSlice(_G["CombatConfigColorsUnitColorsSwatch" .. i].NineSlice)
-			else
-				self:removeBackdrop(_G["CombatConfigColorsUnitColorsSwatch" .. i])
-			end
-		end
-		self:skinObject("frame", {obj=_G.CombatConfigColorsUnitColors, fType=ftype, kfs=true, rns=true, fb=true})
-		self:skinObject("frame", {obj=_G.CombatConfigColorsHighlighting, fType=ftype, kfs=true, rns=true, fb=true})
-		self:skinObject("frame", {obj=_G.CombatConfigColorsColorizeUnitName, fType=ftype, kfs=true, rns=true, fb=true})
-		self:skinObject("frame", {obj=_G.CombatConfigColorsColorizeSpellNames, fType=ftype, kfs=true, rns=true, fb=true})
-		self:skinObject("frame", {obj=_G.CombatConfigColorsColorizeDamageNumber, fType=ftype, kfs=true, rns=true, fb=true})
-		self:skinObject("frame", {obj=_G.CombatConfigColorsColorizeDamageSchool, fType=ftype, kfs=true, rns=true, fb=true})
-		self:skinObject("frame", {obj=_G.CombatConfigColorsColorizeEntireLine, fType=ftype, kfs=true, rns=true, fb=true})
-		if self.modChkBtns then
-			self:skinCheckButton{obj=_G.CombatConfigColorsHighlightingLine}
-			self:skinCheckButton{obj=_G.CombatConfigColorsHighlightingAbility}
-			self:skinCheckButton{obj=_G.CombatConfigColorsHighlightingDamage}
-			self:skinCheckButton{obj=_G.CombatConfigColorsHighlightingSchool}
-			self:skinCheckButton{obj=_G.CombatConfigColorsColorizeUnitNameCheck}
-			self:skinCheckButton{obj=_G.CombatConfigColorsColorizeSpellNamesCheck}
-			self:skinCheckButton{obj=_G.CombatConfigColorsColorizeSpellNamesSchoolColoring}
-			self:skinCheckButton{obj=_G.CombatConfigColorsColorizeDamageNumberCheck}
-			self:skinCheckButton{obj=_G.CombatConfigColorsColorizeDamageNumberSchoolColoring}
-			self:skinCheckButton{obj=_G.CombatConfigColorsColorizeDamageSchoolCheck}
-			self:skinCheckButton{obj=_G.CombatConfigColorsColorizeEntireLineCheck}
-		end
-		-- Formatting
-		if self.modChkBtns then
-			self:skinCheckButton{obj=_G.CombatConfigFormattingShowTimeStamp}
-			self:skinCheckButton{obj=_G.CombatConfigFormattingFullText}
-			if not self.isClscERA then
-				self:skinCheckButton{obj=_G.CombatConfigFormattingShowBraces}
-				self:skinCheckButton{obj=_G.CombatConfigFormattingUnitNames}
-				self:skinCheckButton{obj=_G.CombatConfigFormattingSpellNames}
-				self:skinCheckButton{obj=_G.CombatConfigFormattingItemNames}
-			end
-		end
-		-- Settings
-		self:skinObject("editbox", {obj=_G.CombatConfigSettingsNameEditBox, fType=ftype})
-		if self.modBtns then
-			self:skinStdButton{obj=_G.CombatConfigSettingsSaveButton, fType=ftype}
-		end
-		if self.modChkBtns then
-			self:skinCheckButton{obj=_G.CombatConfigSettingsShowQuickButton, fType=ftype}
-			self:skinCheckButton{obj=_G.CombatConfigSettingsSolo, fType=ftype}
-			self:skinCheckButton{obj=_G.CombatConfigSettingsParty, fType=ftype}
-			self:skinCheckButton{obj=_G.CombatConfigSettingsRaid, fType=ftype}
-		end
-		-- Top Tabs
-		self:skinObject("tabs", {obj=_G.ChatConfigCombatSettings, prefix="CombatConfig", numTabs=#_G.COMBAT_CONFIG_TABS, fType=ftype, lod=self.isTT and true, upwards=true, offsets={x1=2, y1=-8, x2=-2, y2=self.isTT and -5 or 0}, regions={4, 5}, track=false})
-		if self.isTT then
-			self:SecureHook("ChatConfig_UpdateCombatTabs", function(selectedTabID)
-				local tab
-				for i = 1, #_G.COMBAT_CONFIG_TABS do
-					tab = _G[_G.CHAT_CONFIG_COMBAT_TAB_NAME .. i]
-					if i == selectedTabID then
-						self:setActiveTab(tab.sf)
-					else
-						self:setInactiveTab(tab.sf)
+
+				self:Unhook(frame, "OnShow")
+			end)
+			self:checkShown(_G.ChatConfigCombatSettingsFilters)
+
+			self:SecureHookScript(_G.CombatConfigMessageSources, "OnShow", function(frame)
+				for i = 1, #_G.COMBAT_CONFIG_MESSAGESOURCES_BY do
+					skinCB("CombatConfigMessageSourcesDoneByCheckBox" .. i)
+				end
+				self:skinObject("frame", {obj=_G.CombatConfigMessageSourcesDoneBy, fType=ftype, kfs=true, rns=true, fb=true, ofs=0})
+				for i = 1, #_G.COMBAT_CONFIG_MESSAGESOURCES_TO do
+					skinCB("CombatConfigMessageSourcesDoneToCheckBox" .. i)
+				end
+				self:skinObject("frame", {obj=_G.CombatConfigMessageSourcesDoneTo, fType=ftype, kfs=true, rns=true, fb=true, ofs=0})
+
+				self:Unhook(frame, "OnShow")
+			end)
+			self:checkShown(_G.CombatConfigMessageSources)
+
+			self:SecureHookScript(_G.CombatConfigMessageTypes, "OnShow", function(frame)
+				for i, val in _G.ipairs(_G.COMBAT_CONFIG_MESSAGETYPES_LEFT) do
+					skinCB("CombatConfigMessageTypesLeftCheckBox" .. i)
+					if val.subTypes then
+						for k, _ in _G.pairs(val.subTypes) do
+							skinCB("CombatConfigMessageTypesLeftCheckBox" .. i .. "_" .. k)
+						end
 					end
 				end
+				for i, val in _G.ipairs(_G.COMBAT_CONFIG_MESSAGETYPES_RIGHT) do
+					skinCB("CombatConfigMessageTypesRightCheckBox" .. i)
+					if val.subTypes then
+						for k, _ in _G.pairs(val.subTypes) do
+							skinCB("CombatConfigMessageTypesRightCheckBox" .. i .. "_" .. k)
+						end
+					end
+				end
+				for i, val in _G.ipairs(_G.COMBAT_CONFIG_MESSAGETYPES_MISC) do
+					skinCB("CombatConfigMessageTypesMiscCheckBox" .. i)
+					if val.subTypes then
+						for k, _ in _G.pairs(val.subTypes) do
+							skinCB("CombatConfigMessageTypesMiscCheckBox" .. i .. "_" .. k)
+						end
+					end
+				end
+
+				self:Unhook(frame, "OnShow")
 			end)
-		end
+
+			self:SecureHookScript(_G.CombatConfigColors, "OnShow", function(frame)
+				for i = 1, #_G.COMBAT_CONFIG_UNIT_COLORS do
+					self:removeNineSlice(_G["CombatConfigColorsUnitColorsSwatch" .. i].NineSlice)
+				end
+				self:skinObject("frame", {obj=_G.CombatConfigColorsUnitColors, fType=ftype, kfs=true, rns=true, fb=true, ofs=0})
+				self:skinObject("frame", {obj=_G.CombatConfigColorsHighlighting, fType=ftype, kfs=true, rns=true, fb=true, ofs=0})
+				self:skinObject("frame", {obj=_G.CombatConfigColorsColorizeUnitName, fType=ftype, kfs=true, rns=true, fb=true, ofs=0})
+				self:skinObject("frame", {obj=_G.CombatConfigColorsColorizeSpellNames, fType=ftype, kfs=true, rns=true, fb=true, ofs=0})
+				self:skinObject("frame", {obj=_G.CombatConfigColorsColorizeDamageNumber, fType=ftype, kfs=true, rns=true, fb=true, ofs=0})
+				self:skinObject("frame", {obj=_G.CombatConfigColorsColorizeDamageSchool, fType=ftype, kfs=true, rns=true, fb=true, ofs=0})
+				self:skinObject("frame", {obj=_G.CombatConfigColorsColorizeEntireLine, fType=ftype, kfs=true, rns=true, fb=true, ofs=0})
+				if self.modChkBtns then
+					self:skinCheckButton{obj=_G.CombatConfigColorsHighlightingLine}
+					self:skinCheckButton{obj=_G.CombatConfigColorsHighlightingAbility}
+					self:skinCheckButton{obj=_G.CombatConfigColorsHighlightingDamage}
+					self:skinCheckButton{obj=_G.CombatConfigColorsHighlightingSchool}
+					self:skinCheckButton{obj=_G.CombatConfigColorsColorizeUnitNameCheck}
+					self:skinCheckButton{obj=_G.CombatConfigColorsColorizeSpellNamesCheck}
+					self:skinCheckButton{obj=_G.CombatConfigColorsColorizeSpellNamesSchoolColoring}
+					self:skinCheckButton{obj=_G.CombatConfigColorsColorizeDamageNumberCheck}
+					self:skinCheckButton{obj=_G.CombatConfigColorsColorizeDamageNumberSchoolColoring}
+					self:skinCheckButton{obj=_G.CombatConfigColorsColorizeDamageSchoolCheck}
+					self:skinCheckButton{obj=_G.CombatConfigColorsColorizeEntireLineCheck}
+				end
+
+				self:Unhook(frame, "OnShow")
+			end)
+
+			self:SecureHookScript(_G.CombatConfigFormatting, "OnShow", function(frame)
+				if self.modChkBtns then
+					self:skinCheckButton{obj=_G.CombatConfigFormattingShowTimeStamp}
+					self:skinCheckButton{obj=_G.CombatConfigFormattingFullText}
+					if not self.isClscERA then
+						self:skinCheckButton{obj=_G.CombatConfigFormattingShowBraces}
+						self:skinCheckButton{obj=_G.CombatConfigFormattingUnitNames}
+						self:skinCheckButton{obj=_G.CombatConfigFormattingSpellNames}
+						self:skinCheckButton{obj=_G.CombatConfigFormattingItemNames}
+					end
+				end
+
+				self:Unhook(frame, "OnShow")
+			end)
+
+			self:SecureHookScript(_G.CombatConfigSettings, "OnShow", function(frame)
+				self:skinObject("editbox", {obj=_G.CombatConfigSettingsNameEditBox, fType=ftype})
+				if self.modBtns then
+					self:skinStdButton{obj=_G.CombatConfigSettingsSaveButton, fType=ftype}
+				end
+				if self.modChkBtns then
+					self:skinCheckButton{obj=_G.CombatConfigSettingsShowQuickButton, fType=ftype}
+					self:skinCheckButton{obj=_G.CombatConfigSettingsSolo, fType=ftype}
+					self:skinCheckButton{obj=_G.CombatConfigSettingsParty, fType=ftype}
+					self:skinCheckButton{obj=_G.CombatConfigSettingsRaid, fType=ftype}
+				end
+
+				self:Unhook(frame, "OnShow")
+			end)
+
+			self:Unhook(fObj, "OnShow")
+		end)
 
 		self:Unhook(this, "OnShow")
 	end)
