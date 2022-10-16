@@ -352,6 +352,7 @@ aObj.SetupDragonflight_PlayerFrames = function()
 
 			self:SecureHookScript(this.SpecTab, "OnShow", function(fObj)
 				fObj.Background:SetTexture(nil)
+				fObj.BlackBG:SetTexture(nil)
 				local function skinSpecFrames()
 					for specContentFrame in fObj.SpecContentFramePool:EnumerateActive() do
 						specContentFrame:DisableDrawLayer("BORDER")

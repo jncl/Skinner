@@ -326,19 +326,19 @@ aObj.SetupDragonflight_UIFrames = function()
 			local function skinCommonElements(element)
 				if aObj.modBtns then
 					if element.Button then
-						aObj:skinStdButton{obj=element.Button, fType=ftype}
+						aObj:skinStdButton{obj=element.Button, fType=ftype, sechk=true}
 					elseif element.Buttons then
 						skinButtonsTable(element.Buttons)
+					elseif element.DropDown
+					and element.DropDown.Button
+					then
+						aObj:skinStdButton{obj=element.DropDown.Button, fType=ftype, clr="grey", ignoreHLTex=true, sechk=true, x1=10, y1=-4, x2=-10, y2=4}
 					elseif element.OpenAccessButton then
 						aObj:skinStdButton{obj=element.OpenAccessButton, fType=ftype}
 					elseif element.PushToTalkKeybindButton then
 						aObj:skinStdButton{obj=element.PushToTalkKeybindButton, fType=ftype}
 					elseif element.ToggleTest then
 						aObj:addButtonBorder{obj=element.ToggleTest, fType=ftype, clr="grey", ofs=1}
-					elseif element.DropDown
-					and element.DropDown.Button
-					then
-						aObj:skinStdButton{obj=element.DropDown.Button, fType=ftype, clr="grey", ignoreHLTex=true, x1=10, y1=-4, x2=-10, y2=4}
 					end
 				end
 				if aObj.modChkBtns
@@ -366,7 +366,12 @@ aObj.SetupDragonflight_UIFrames = function()
 			local function skinSetting(element, _, new)
 				if new ~= false then
 					local name = element:GetElementData().data.name
-					if element.EvaluateVisibility then -- handle ExpandableSection(s)
+					-- aObj:Debug("skinSetting: [%s, %s]", name)
+					if name == "Push to Talk Key" then
+						_G.C_Timer.After(0.1, function()
+							skinCommonElements(element)
+						end)
+					elseif element.EvaluateVisibility then -- handle ExpandableSection(s)
 						-- TODO: skin the .Button, needs to have a +/- character on RHS ??
 						if name == "Advanced"
 						or name == "Raid"
@@ -385,6 +390,7 @@ aObj.SetupDragonflight_UIFrames = function()
 					if element.VUMeter then
 						aObj:skinObject("frame", {obj=element.VUMeter, fType=ftype, kfs=true, rns=true, fb=true, clr="grey"})
 					end
+					-- TODO: skin TTS Voice DropDown button
 				end
 			end
 			_G.ScrollUtil.AddAcquiredFrameCallback(this.Container.SettingsList.ScrollBox, skinSetting, aObj, true)

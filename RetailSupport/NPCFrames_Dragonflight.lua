@@ -13,7 +13,7 @@ aObj.SetupDragonflight_NPCFrames = function()
 			-- TODO: Keep background visible ?
 			this.Header.TitleDivider:SetAlpha(0)
 			this.Currency:DisableDrawLayer("BACKGROUND")
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, ofs=-4, y1=-11})
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cbns=true, ofs=-4, y1=-11})
 
 			self:Unhook(this, "OnShow")
 		end)
