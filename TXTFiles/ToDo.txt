@@ -31,17 +31,11 @@ ToDos
 
 	I	EveryGoldToBanker, reported by amey0, 10.10.22
 ?		- still not skinned
-		
-	I	Missing localisations, reported by amey0/EpidemeDaBear, 10.10.22
-√		- 'Toggle the skin of the'
-√		- 'Set the'
-		
-	I/W	BigWigs, reported by EpidemeDaBear/Fakelessgaming, 10.10.22
-√		- Skinner\AddonSkins\BigWigs-v45.2-classic.lua:9: attempt to call field 'RegisterCallback' (a nil value)
-		
-	I	LibAboutPanel, reported by Galthariel, 11.10.22
-√		- Skinner\AddonSkins\LibAboutPanel.lua:16: attempt to call field 'RegisterCallabck' (a nil value)
 
-	I/C	Tabs, requested by m33shochque, 12.10.22
-≈		- In Classic they're not aligned and spaced like retail
-	
+	I	LibUIDropDownMenu, reported by Galthariel, 14.10.22
+√		- .faceSkinner\AddonSkins\LibUIDropDownMenu.lua:6: attempt to index local 'frame' (a nil value)
+		[string "@Skinner\AddonSkins\LibUIDropDownMenu.lua"]:16: in function <...faceSkinner\AddonSkins\LibUIDropDownMenu.lua:15>
+		[string "@Skinner\AddonSkins\LibUIDropDownMenu.lua"]:40: in function <...faceSkinner\AddonSkins\LibUIDropDownMenu.lua:28>
+		
+	I	Auctionator , reported by DarkLimpan, 14.10.22
+√		- Highlight on Shopping/Seeling frames buttons cover screen
