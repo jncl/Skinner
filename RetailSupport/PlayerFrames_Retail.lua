@@ -834,7 +834,7 @@ aObj.SetupRetail_PlayerFrames = function()
 			self:skinObject("statusbar", {obj=this.progressBar, fi=0})
 			self:skinObject("editbox", {obj=this.searchBox, fType=ftype, si=true})
 			if self.modBtns then
-				self:skinStdButton{obj=_G.ToyBoxFilterButton, fType=ftype}
+				self:skinStdButton{obj=_G.ToyBoxFilterButton, ftype=ftype, clr="grey"}
 				self:skinCloseButton{obj=_G.ToyBoxFilterButton.ResetButton, fType=ftype, noSkin=true}
 			end
 			self:removeInset(this.iconsFrame)
@@ -861,7 +861,7 @@ aObj.SetupRetail_PlayerFrames = function()
 			self:removeRegions(this.progressBar, {2, 3})
 			self:skinObject("editbox", {obj=this.SearchBox, fType=ftype, si=true})
 			if self.modBtns then
-				self:skinStdButton{obj=this.FilterButton, ftype=ftype}
+				self:skinStdButton{obj=this.FilterButton, ftype=ftype, clr="grey"}
 				self:skinCloseButton{obj=this.FilterButton.ResetButton, fType=ftype, noSkin=true}
 			end
 			self:skinObject("dropdown", {obj=this.classDropDown, fType=ftype})
@@ -903,7 +903,7 @@ aObj.SetupRetail_PlayerFrames = function()
 			self:skinObject("statusbar", {obj=this.progressBar, fi=0})
 			self:removeRegions(this.progressBar, {2, 3})
 			if self.modBtns then
-				self:skinStdButton{obj=this.FilterButton}
+				self:skinStdButton{obj=this.FilterButton, ftype=ftype, clr="grey"}
 				_G.RaiseFrameLevelByTwo(this.FilterButton) -- raise above SetsCollectionFrame when displayed on it
 				self:skinCloseButton{obj=this.FilterButton.ResetButton, fType=ftype, noSkin=true}
 			end
@@ -2376,7 +2376,7 @@ aObj.SetupRetail_PlayerFrames = function()
 		end)
 
 		self:SecureHookScript(_G.EquipmentFlyoutFrame, "OnShow", function(this)
-			self:skinObject("frame", {obj=this.buttonFrame, fType=ftype, ofs=2, x2=5, clr="white"})
+			self:skinObject("frame", {obj=this.buttonFrame, fType=ftype, ofs=2, x2=5, clr="grey"})
 
 			self:Unhook(this, "OnShow")
 		end)
@@ -4064,7 +4064,7 @@ aObj.SetupRetail_PlayerFrames = function()
 				self:skinObject("editbox", {obj=this.SearchBox, fType=ftype, si=true})
 				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true, cb=true})
 				if self.modBtns then
-					 self:skinStdButton{obj=this.FilterButton, fType=ftype, ofs=0}
+					 self:skinStdButton{obj=this.FilterButton, ftype=ftype, clr="grey", ofs=0}
 				end
 				if self.modBtnBs then
 					 self:addButtonBorder{obj=this.LinkToButton, x1=1, y1=-5, x2=-2, y2=2, clr="grey"}

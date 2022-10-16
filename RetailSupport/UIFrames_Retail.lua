@@ -2224,7 +2224,7 @@ aObj.SetupRetail_UIFrames = function()
 				end)
 			end
 			if self.modBtnBs then
-			    self:addButtonBorder{obj=sp.FilterButton, ofs=0}
+			    self:addButtonBorder{obj=sp.FilterButton, ftype=ftype, clr="grey", ofs=0}
 				self:addButtonBorder{obj=sp.RefreshButton, ofs=-2, clr="gold"}
 			end
 			-- ApplicationViewer
