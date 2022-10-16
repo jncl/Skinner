@@ -1,3 +1,15 @@
+beta9.46092.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Updated debug code
+	Bugfix for AuctionUI
+	PTR/Beta changes
+	Updated options text strings
+	Updated Tabs skinning code in all versions
+	Updated BigWigs & LibAboutPanel skins
+	
 beta9.45970.1
 Jncl:
 	ToDo.txt
