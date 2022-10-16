@@ -68,6 +68,7 @@ aObj.SetupDefaults = function(self)
 			ChatFrames                 = false, -- (inc ChatMinimizedFrames)
 			ChatMenus                  = true,
 			ChatTabs                   = false, -- (inc. ChatTemporaryWindow)
+			ChatTabsFade               = true,
 			CombatLogQBF               = not aObj.isClscERA and false or nil,
 			MainMenuBar                = {skin = true, glazesb = true},
 			Minimap                    = {skin = false, gloss = false},
@@ -998,6 +999,12 @@ aObj.SetupOptions = function(self)
 							order = 3,
 							name = self.L["Chat Tabs"],
 							desc = _G.strjoin(" ",  self.L["Toggle the skin of the"], self.L["Chat Tabs"]),
+						},
+						ChatTabsFade = {
+							type = "toggle",
+							order = 4,
+							name = self.L["Chat Tabs Fade"],
+							desc = self.L["Toggle the fading of the Chat Tabs"],
 						},
 						ChatFrames = {
 							type = "toggle",

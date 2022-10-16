@@ -1151,12 +1151,8 @@ aObj.blizzFrames[ftype].ChatTabs = function(self)
 			this.sf:SetAlpha(alpha)
 		end)
 	end
-	local xOfs = 4
-	if self.isClsc then
-		xOfs = 1
-	end
 	-- Top Tabs
-	self:skinObject("tabs", {obj=_G.FloatingChatFrameManager, tabs=fcfTabs, fType=ftype, lod=self.isTT and true, upwards=true, ignoreHLTex=false, regions={7, 8, 9, 10, 11}, offsets={x1=xOfs, y1=self.isTT and -10 or -12, x2=xOfs * -1, y2=self.isTT and -3 or -1}, track=false, func=function(tab) tab.sf:SetAlpha(tab:GetAlpha()) tab.sf:Hide() end})
+	self:skinObject("tabs", {obj=_G.FloatingChatFrameManager, tabs=fcfTabs, fType=ftype, lod=self.isTT and true, upwards=true, ignoreHLTex=false, regions={7, 8, 9, 10, 11}, offsets={x1=1, y1=self.isTT and -10 or -12, x2=-1, y2=self.isTT and -3 or -1}, track=false, func=function(tab) tab.sf:SetAlpha(tab:GetAlpha()) tab.sf:Hide() end})
 	if self.isTT then
 		self:SecureHook("FCF_Tab_OnClick", function(this, _)
 			for i = 1, _G.NUM_CHAT_WINDOWS do

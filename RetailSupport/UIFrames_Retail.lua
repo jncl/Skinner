@@ -3938,12 +3938,6 @@ aObj.SetupRetail_UIFramesOptions = function(self)
 	self:setupFramesOptions(optTab, "UI")
 	_G.wipe(optTab)
 
-	self.optTables["UI Frames"].args.chatopts.args.ChatTabsFade = {
-		type = "toggle",
-		order = 4,
-		name = self.L["Chat Tabs Fade"],
-		desc = self.L["Toggle the fading of the Chat Tabs"],
-	}
 	self.db.defaults.profile.MainMenuBar.extraab = true
 	if self.db.profile.MainMenuBar.extraab == nil then
 		self.db.profile.MainMenuBar.extraab = true
