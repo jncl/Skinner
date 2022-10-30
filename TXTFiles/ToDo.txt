@@ -29,13 +29,30 @@ ToDos
 		- happens when OverrideBar is used, but not always...
 		- happens after VehicleUI has been used
 
-	I	EveryGoldToBanker, reported by amey0, 10.10.22
-?		- still not skinned
-
-	I	LibUIDropDownMenu, reported by Galthariel, 14.10.22
-√		- .faceSkinner\AddonSkins\LibUIDropDownMenu.lua:6: attempt to index local 'frame' (a nil value)
-		[string "@Skinner\AddonSkins\LibUIDropDownMenu.lua"]:16: in function <...faceSkinner\AddonSkins\LibUIDropDownMenu.lua:15>
-		[string "@Skinner\AddonSkins\LibUIDropDownMenu.lua"]:40: in function <...faceSkinner\AddonSkins\LibUIDropDownMenu.lua:28>
+	I	LibUIDropDownMenu, reported by Galthariel, 16.10.22
+√		- ...faceSkinner\AddonSkins\LibUIDropDownMenu.lua:6: attempt to index local 'frame' (a nil value)
+		[string "@Skinner\AddonSkins\LibUIDropDownMenu.lua"]:6: in function <...faceSkinner\AddonSkins\LibUIDropDownMenu.lua:5>
+		[string "@Skinner\AddonSkins\LibUIDropDownMenu.lua"]:27: in function <...faceSkinner\AddonSkins\LibUIDropDownMenu.lua:25>
 		
-	I	Auctionator , reported by DarkLimpan, 14.10.22
-√		- Highlight on Shopping/Seeling frames buttons cover screen
+	I/C	Tabs, reported by EpidemeDaBear, 16.10.22
+≈		- Non textured tabs are below frame
+		
+	I/C	MountsJournal, reported by amey0, 21.10.22
+√		- Skinner\AddonSkins\MountsJournal-v3.4.17.lua:10: attempt to index field 'achiev' (a nil value)
+[string "@Skinner\AddonSkins\MountsJournal-v3.4.17.lua"]:10: in function <Skinner\AddonSkins\MountsJournal.lua:7>
+
+	I	Bagnon, reported by EpidemeDaBear, 21.10.22
+√		- Skinner\AddonSkins\Bagnon-10.0.1.lua:36: attempt to call method 'HasBrokerDisplay' (a nil value)
+		[string "@Skinner\AddonSkins\Bagnon-10.0.1.lua"]:36: in function <Skinner\AddonSkins\Bagnon.lua:18>
+
+	I	reported by amey0, 21.10.22
+x		- [ADDON_ACTION_BLOCKED] AddOn 'Skinner' tried to call the protected function 'Search()'.
+		[string "@!BugGrabber\BugGrabber.lua"]:480: in function <!BugGrabber\BugGrabber.lua:480>
+		[string "=[C]"]: in function `Search'
+		[string "@Blizzard_LookingForGroupUI\Blizzard_LFGBrowse.lua"]:225: in function `LFGBrowse_DoSearch'
+		[string "@Blizzard_LookingForGroupUI\Blizzard_LFGBrowse.lua"]:178: in function `SearchActiveEntry'
+		[string "@Blizzard_LookingForGroupUI\Blizzard_LFGParentFrame.lua"]:92: in function `LFGParentFrame_SearchActiveEntry'
+		[string "@Blizzard_LookingForGroupUI\Blizzard_LFGListing.lua"]:67: in function <...s\Blizzard_LookingForGroupUI\Blizzard_LFGListing.lua:49>
+		
+	I	Tab positioning, reported by Fakelessgaming, 24.10.22
+		- Review Top/Bottom tab positioning using 1 pixel border
