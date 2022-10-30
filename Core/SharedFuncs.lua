@@ -26,6 +26,10 @@ local buildInfo = {
 	-- Currently playing
 	curr                = {_G.GetBuildInfo()},
 }
+local function getTOCVer(ver)
+	local n1, n2,n3 = _G.string.match(buildInfo[ver][1], "(%d+).(%d+).(%d)")
+	return n1 * 10000 + n2 * 100 + n3
+end
 function aObj:checkVersion()
 
 	local agentUID = _G.C_CVar.GetCVar("agentUID")
@@ -39,7 +43,7 @@ function aObj:checkVersion()
 			agentUID = "wow_classic"
 		end
 	end
-	-- self:Debug("checkVersion#0: [%s, %s, %s, %s, %s, %s, %s]", agentUID, _G.WOW_PROJECT_ID, _G.GetBuildInfo())
+	-- self:Debug("checkVersion#0: [%s, %s, %s, %d, %s, %d, %s]", agentUID, _G.WOW_PROJECT_ID, _G.GetBuildInfo())
 
 	-- check to see which WoW version we are running on
 	self.isClscBeta   = agentUID == "wow_classic_beta" and true
@@ -50,21 +54,21 @@ function aObj:checkVersion()
 	self.isRtlBeta    = agentUID == "wow_beta" and true
 	self.isRtlPTR     = agentUID == "wow_ptr" and true
 	self.isRtl        = agentUID == "wow" and true
+	-- self:Debug("checkVersion#1: [%s, %s, %s, %s, %s, %s, %s, %s, %s]", self.isClscBeta, self.isClscPTR, self.isClsc, self.isClscERAPTR, self.isClscERA, self.isRtlBeta, self.isRtlPTR, self.isRtl)
 
-	-- self:Debug("checkVersion#1: [%s, %s, %s, %s, %s, %s, %s, %s]", self.isClscBeta, self.isClscPTR, self.isClsc, self.isClscERAPTR, self.isClscERA, self.isRtlBeta, self.isRtlPTR, self.isRtl)
-
+	self.tocVer = getTOCVer(agentUID)
 	-- check current version or build number against current wow version info, if greater then it's a patch
-	self.isPatch = (buildInfo.curr[1] ~= buildInfo[agentUID][1]) or (_G.tonumber(buildInfo.curr[2]) > _G.tonumber(buildInfo[agentUID][2]))
+	self.isPatch = (buildInfo.curr[4] > self.tocVer) or (_G.tonumber(buildInfo.curr[2]) > _G.tonumber(buildInfo[agentUID][2]))
 
 	--@alpha@
-	self:Printf("%s, %d, %s, %d, %s, %d, %s", buildInfo[agentUID][1], buildInfo[agentUID][2], buildInfo.curr[1], buildInfo.curr[2], buildInfo.curr[3], buildInfo.curr[4] , agentUID)
+	self:Printf("%s, %d, %d, %s, %d, %s, %d, %s", buildInfo[agentUID][1], buildInfo[agentUID][2], self.tocVer, buildInfo.curr[1], buildInfo.curr[2], buildInfo.curr[3], buildInfo.curr[4] , agentUID)
 	local vType = self.isPatch and buildInfo[agentUID][3] .. " (Patched)" or buildInfo[agentUID][3]
 	_G.DEFAULT_CHAT_FRAME:AddMessage(aName .. ": Detected that we're running on a " .. vType .. " version", 0.75, 0.5, 0.25, nil, true)
-	self:Debug(vType .. " detected")
+	self:Debug(vType .. " detected, ")
 	--@end-alpha@
 
 	-- handle Beta changes in PTR or Live
-	self.isClscBeta   = self.isClscBeta or self.isClscPTR and buildInfo.curr[1] > buildInfo.wow_classic_ptr[1]
+	self.isClscBeta   = self.isClscBeta or self.isClscPTR and self.isPatch
 	-- indicate we're on ClassicPTR if on Classic Beta
 	self.isClscPTR    = self.isClscPTR or self.isClscBeta
 	-- indicate we're on Classic if on Classic PTR
@@ -72,16 +76,15 @@ function aObj:checkVersion()
 	-- indicate we're on ClassicERA if on Classic ERA PTR
 	self.isClscERA    = self.isClscERA  or self.isClscERAPTR
 	-- handle Beta changes in PTR or Live
-	self.isRtlBeta    = self.isRtlBeta or self.isRtlPTR and buildInfo.curr[1] > buildInfo.wow_ptr[1]
+	self.isRtlBeta    = self.isRtlBeta or self.isRtlPTR and self.isPatch
 	-- indicate we're on Retail PTR if on Retail Beta
 	self.isRtlPTR     = self.isRtlPTR or self.isRtlBeta
 	-- indicate we're on Retail if on Retail PTR
 	self.isRtl        = self.isRtl or self.isRtlPTR
 	-- handle PTR changes going Live
-	self.isClscPTR    = self.isClscPTR or self.isPatch and self.isClsc and buildInfo.curr[1] > buildInfo.wow_classic[1]
-	self.isClscERAPTR = self.isClscERAPTR or self.isPatch and self.isClscERA and buildInfo.curr[1] > buildInfo.wow_classic_era[1]
-	self.isRtlPTR     = self.isRtlPTR or self.isPatch and self.isRtl and buildInfo.curr[1] > buildInfo.wow[1]
-
+	self.isClscPTR    = self.isClscPTR or self.isClsc and self.isPatch
+	self.isClscERAPTR = self.isClscERAPTR or self.isClscERA and self.isPatch
+	self.isRtlPTR     = self.isRtlPTR or self.isRtl and self.isPatch
 	-- self:Debug("checkVersion#2: [%s, %s, %s, %s, %s, %s, %s, %s, %s, %s]", self.isClscBeta, self.isClscPTR, self.isClsc, self.isClscERAPTR, self.isClscERA, self.isRtlBeta, self.isRtlPTR, self.isRtl, self.isPatch)
 
 end
