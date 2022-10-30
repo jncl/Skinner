@@ -68,6 +68,7 @@ function module:skinUnitButton(opts) -- luacheck: ignore self
 		opts.obj.threatIndicator:SetAllPoints(opts.obj.sb)
 		aObj:changeTex(opts.obj.threatIndicator, true, true)
 		-- stop changes to texture
+		opts.obj.threatIndicator.SetAtlas = _G.nop
 		opts.obj.threatIndicator.SetTexture = _G.nop
 		opts.obj.threatIndicator.SetTexCoord = _G.nop
 		opts.obj.threatIndicator.SetWidth = _G.nop
@@ -86,7 +87,7 @@ function module:skinPlayerF()
 			    aObj:add2Table(aObj.oocTab, {skinPlayerFrame, {frame}})
 			    return
 			end
-			if not aObj.isRtlPTR then
+			if not aObj.isRtl then
 				_G.PlayerFrameBackground:SetTexture(nil)
 				_G.PlayerFrameTexture:SetAlpha(0) -- texture file is changed dependant upon in vehicle or not
 				_G.PlayerFrameVehicleTexture:SetAlpha(0) -- texture file is changed dependant upon in vehicle or not
@@ -98,24 +99,16 @@ function module:skinPlayerF()
 				frame.PlayerFrameContainer.FrameTexture:SetTexture(nil)
 			end
 			if aObj.isRtl then
-				if not aObj.isRtlPTR then
-					aObj:skinObject("statusbar", {obj=frame.PlayerFrameHealthBarAnimatedLoss, fi=0})
-				else
-					aObj:skinObject("statusbar", {obj=frame.PlayerFrameContent.PlayerFrameContentMain.HealthBarArea.PlayerFrameHealthBarAnimatedLoss, fi=0})
-				end
+				aObj:skinObject("statusbar", {obj=frame.PlayerFrameContent.PlayerFrameContentMain.HealthBarArea.PlayerFrameHealthBarAnimatedLoss, fi=0})
 				aObj:skinObject("statusbar", {obj=frame.healthbar, fi=0, other={frame.myHealPredictionBar, frame.otherHealPredictionBar}})
 				aObj:skinObject("statusbar", {obj=frame.manabar, fi=0, other={frame.myManaCostPredictionBar, frame.manabar.FeedbackFrame.BarTexture}, nilFuncs=true})
 				-- AlternateManaBar
 				_G.PlayerFrameAlternateManaBar.DefaultBackground:SetAlpha(1)
 				aObj:skinObject("statusbar", {obj=_G.PlayerFrameAlternateManaBar, regions={2, 3, 4, 5, 6}, fi=0, bg=_G.PlayerFrameAlternateManaBar.DefaultBackground})
-				if not aObj.isRtlPTR then
-					aObj:moveObject{obj=_G.PlayerFrameAlternateManaBar, y=1}
-				else
-					frame.healthbar:SetStatusBarColor(0, 1, 0) -- green
-					-- FIXME: manabar colour remains white
-					frame.manabar:SetStatusBarColor(1, 0.5, 0) -- orange
-					frame.manabar:GetStatusBarTexture():RemoveMaskTexture(frame.PlayerFrameContent.PlayerFrameContentMain.ManaBarMask)
-				end
+				frame.healthbar:SetStatusBarColor(0, 1, 0) -- green
+				-- FIXME: manabar colour remains white
+				frame.manabar:SetStatusBarColor(1, 0.5, 0) -- orange
+				frame.manabar:GetStatusBarTexture():RemoveMaskTexture(frame.PlayerFrameContent.PlayerFrameContentMain.ManaBarMask)
 				-- move PvP Timer text down
 				aObj:moveObject{obj=_G.PlayerPVPTimerText, y=-10}
 			else
@@ -123,7 +116,7 @@ function module:skinPlayerF()
 				aObj:skinObject("statusbar", {obj=frame.healthbar, fi=0})
 				aObj:skinObject("statusbar", {obj=frame.manabar, fi=0, nilFuncs=true})
 			end
-			if not aObj.isRtlPTR then
+			if not aObj.isRtl then
 				module:adjustStatusBarPosn(frame.healthbar)
 				-- PowerBarAlt handled in MainMenuBar function (UIF)
 				-- casting bar handled in CastingBar function (PF)
@@ -136,9 +129,9 @@ function module:skinPlayerF()
 				aObj:keepFontStrings(_G.PlayerFrameGroupIndicator)
 				aObj:moveObject{obj=_G.PlayerFrameGroupIndicatorText, y=-1}
 			end
-			local y2Ofs = 2
+			local x1Ofs, y1Ofs, x2Ofs, y2Ofs = 35, -5, 2, 2
 			-- skin the EclipseBarFrame/ComboPoints, if required
-			if not aObj.isRtlPTR then
+			if not aObj.isRtl then
 				if aObj.uCls == "DRUID"
 				or aObj.uCls == "ROGUE"
 				then
@@ -260,8 +253,11 @@ function module:skinPlayerF()
 					y2Ofs = 9
 				end
 			end
-			-- skin the frame here as preceeding code changes yOfs value
-			module:skinUnitButton{obj=frame, ti=true, x1=aObj.isRtlPTR and 10 or 35, y1=-5, x2=2, y2=y2Ofs}
+			-- skin the frame here as preceeding code changes y2Ofs value
+			if aObj.isRtl then
+				x1Ofs, y1Ofs, x2Ofs, y2Ofs = 14, -10, -12, 11
+			end
+			module:skinUnitButton{obj=frame, ti=true, x1=x1Ofs, y1=y1Ofs, x2=x2Ofs, y2=y2Ofs}
 		end
 		self:SecureHookScript(_G.PlayerFrame, "OnShow", function(this)
 			skinPlayerFrame(this)
@@ -289,7 +285,7 @@ function module:skinPetF()
 			    return
 			end
 			module:skinUnitButton{obj=frame, ti=true, x1=1}
-			if not aObj.isRtlPTR then
+			if not aObj.isRtl then
 				_G.PetPortrait:SetDrawLayer("BORDER") -- move portrait to BORDER layer, so it is displayed
 				-- N.B. DON'T move the frame as it causes taint
 				_G.PetFrameTexture:SetAlpha(0) -- texture file is changed dependant upon in vehicle or not
@@ -310,7 +306,7 @@ function module:skinPetF()
 			end
 			-- casting bar handled in CastingBar function
 			if aObj.isRtl then
-				if not aObj.isRtlPTR then
+				if not aObj.isRtl then
 					for i = 1, 4 do
 						_G["PetFrameDebuff" .. i .. "Border"]:SetTexture(nil)
 					end
@@ -385,7 +381,7 @@ end
 function module:skinCommon(fName, adjSB)
 
 	local fo = _G[fName]
-	if not aObj.isRtlPTR then
+	if not aObj.isRtl then
 		_G[fName .. "Background"]:SetTexture(nil)
 		_G[fName .. "TextureFrameTexture"]:SetAlpha(0)
 	else
@@ -399,7 +395,7 @@ function module:skinCommon(fName, adjSB)
 
 	aObj:skinObject("statusbar", {obj=fo.healthbar, fi=0, other={fo.myHealPredictionBar, fo.otherHealPredictionBar}})
 	aObj:skinObject("statusbar", {obj=fo.manabar, fi=0, nilFuncs=true})
-	if not aObj.isRtlPTR then
+	if not aObj.isRtl then
 		if adjSB then
 			self:adjustStatusBarPosn(fo.healthbar)
 		end
@@ -418,14 +414,22 @@ end
 function module:skinButton(fName, ti)
 
 	local fo = _G[fName]
-	local xOfs1, yOfs1, xOfs2, yOfs2
+	local x1Ofs, y1Ofs, x2Ofs, y2Ofs
 	if fo.isBossFrame then
-		xOfs1, yOfs1, xOfs2, yOfs2 = -1, -14, -72, 5
+		if not aObj.isRtl then
+			x1Ofs, y1Ofs, x2Ofs, y2Ofs = -1, -14, -72, -10
+		else
+			x1Ofs, y1Ofs, x2Ofs, y2Ofs = 44, -20, -44, 10
+		end
 	else
-		xOfs1, yOfs1, xOfs2, yOfs2 = -2, -5, aObj.isRtlPTR and -10 or -35, 0
+		if not aObj.isRtl then
+			x1Ofs, y1Ofs, x2Ofs, y2Ofs = -2, -5, -35, 0
+		else
+			x1Ofs, y1Ofs, x2Ofs, y2Ofs = 14, -12, -14, 12
+		end
 	end
 
-	self:skinUnitButton{obj=fo, ti=ti or true, x1=xOfs1, y1=yOfs1, x2=xOfs2, y2=yOfs2}
+	self:skinUnitButton{obj=fo, ti=ti or true, x1=x1Ofs, y1=y1Ofs, x2=x2Ofs, y2=y2Ofs}
 	self:skinCommon(fName, true)
 	if _G[fName .. "NumericalThreat"] then
 		aObj:removeRegions(_G[fName .. "NumericalThreat"], {3}) -- threat border
@@ -433,15 +437,25 @@ function module:skinButton(fName, ti)
 
 	if not fo.isBossFrame then
 		-- move level & highlevel down, so they are more visible
-		if not aObj.isRtlPTR then
+		if not aObj.isRtl then
 			aObj:moveObject{obj=_G[fName .. "TextureFrameLevelText"], x=2, y=lOfs}
 		end
 	end
 
 	-- create a texture to show UnitClassification
 	fo.ucTex = fo:CreateTexture(nil, "ARTWORK")
-	fo.ucTex:SetSize(80, 50)
-	fo.ucTex:SetPoint("CENTER", fo.isBossFrame and 36 or 86, (fo.isBossFrame and -15 or -25) + lOfs)
+	if not aObj.isRtl then
+		fo.ucTex:SetSize(80, 50)
+		fo.ucTex:SetPoint("CENTER", fo.isBossFrame and 36 or 86, (fo.isBossFrame and -15 or -25) + lOfs)
+	else
+		if fo.isBossFrame then
+			fo.ucTex:SetSize(90, 70)
+			fo.ucTex:SetPoint("CENTER", 50, 0 + lOfs)
+		-- else
+		-- 	fo.ucTex:SetSize(80, 50)
+		-- 	fo.ucTex:SetPoint("CENTER", 86, -25 + lOfs)
+		end
+	end
 
 	if fo.spellbar then
 		fo.spellbar.Text:ClearAllPoints()
@@ -449,7 +463,7 @@ function module:skinButton(fName, ti)
 		fo.spellbar.Flash:SetAllPoints()
 		fo.spellbar.Border:SetAlpha(0) -- texture file is changed dependant upon spell type
 		aObj:changeShield(fo.spellbar.BorderShield, fo.spellbar.Icon)
-		if not aObj.isRtlPTR then
+		if not aObj.isRtl then
 			aObj:adjHeight{obj=fo.spellbar, adj=2}
 			aObj:skinObject("statusbar", {obj=fo.spellbar, fi=0, bg=aObj:getRegion(fo.spellbar, 1), other={fo.spellbar.Flash}})
 		else
@@ -473,10 +487,10 @@ function module:skinTargetF()
 			    return
 			end
 			module:skinButton("TargetFrame")
-			module:skinUnitButton{obj=frame.totFrame, x2=4, y2=4}
+			module:skinUnitButton{obj=frame.totFrame}
 			module:skinCommon(frame.totFrame:GetName(), true)
 			-- move level text down, so it is more visible
-			if not aObj.isRtlPTR then
+			if not aObj.isRtl then
 				module:SecureHook("TargetFrame_UpdateLevelTextAnchor", function(fObj, targetLevel)
 					fObj.levelText:SetPoint("CENTER", targetLevel == 100 and 61 or 62, -20 + lOfs)
 				end)
@@ -496,9 +510,11 @@ function module:skinTargetF()
 			    return
 			end
 			module:skinButton(frame:GetName(), false)
-			frame.ucTex:SetTexture(aObj.tFDIDs.enI)
+			if not aObj.isRtl then
+				frame.ucTex:SetTexture(aObj.tFDIDs.enI)
+			end
 		end
-		if not aObj.isRtlPTR then
+		if not aObj.isRtl then
 			for i = 1, _G.MAX_BOSS_FRAMES do
 				self:SecureHookScript(_G["Boss" .. i .. "TargetFrame"], "OnShow", function(this)
 					skinBossTargetFrame(this)
@@ -534,7 +550,7 @@ function module:skinFocusF()
 			module:skinButton("FocusFrame", false)
 			module:skinUnitButton{obj=frame.totFrame, x2=4, y2=4}
 			module:skinCommon("FocusFrameToT", true)
-			if not aObj.isRtlPTR then
+			if not aObj.isRtl then
 				aObj:moveObject{obj=_G["FocusFrameToTHealthBar"], y=-2} -- move HealthBar down to match other frames
 			end
 		end
@@ -558,7 +574,7 @@ function module:skinPartyF()
 			    return
 			end
 			module:skinUnitButton{obj=frame, ti=true, x1=2, y1=5, x2=-1}
-			if not aObj.isRtlPTR then
+			if not aObj.isRtl then
 				local pMF = frame:GetName()
 				_G[pMF .. "Background"]:SetTexture(nil)
 				_G[pMF .. "Texture"]:SetAlpha(0) -- texture file is changed dependant upon in vehicle or not
@@ -584,7 +600,7 @@ function module:skinPartyF()
 				aObj:skinObject("statusbar", {obj=frame.PetFrame.HealthBar, fi=0})
 			end
 		end
-		if not aObj.isRtlPTR then
+		if not aObj.isRtl then
 			for i = 1, _G.MAX_PARTY_MEMBERS do
 				self:SecureHookScript(_G["PartyMemberFrame" .. i], "OnShow", function(this)
 					skinPartyMemberFrame(this)
@@ -752,7 +768,7 @@ function module:OnEnable()
 				end
 			end
 		end
-		if not aObj.isRtlPTR then
+		if not aObj.isRtl then
 			-- hook this to show/hide the elite texture
 			self:SecureHook("TargetFrame_CheckClassification", function(frame, _)
 				chgTex(frame)
@@ -907,7 +923,7 @@ if aObj.isRtl then
 					aObj:moveObject{obj=_G[fName], x=-17} -- align under ArenaEnemy Health/Mana bars
 				end
 			end
-			if not aObj.isRtlPTR then
+			if not aObj.isRtl then
 				for i = 1, _G.MAX_ARENA_ENEMIES do
 					skinArenaFrame("ArenaPrepFrame" .. i)
 					skinArenaFrame("ArenaEnemyFrame" .. i)

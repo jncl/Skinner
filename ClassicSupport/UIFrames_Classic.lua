@@ -19,12 +19,76 @@ aObj.SetupClassic_UIFrames = function()
 				_G.BattlefieldFrameInfoScrollFrameChildFrameRewardsInfoTitle:SetTextColor(self.BT:GetRGB())
 				_G.BattlefieldFrameInfoScrollFrameChildFrameRewardsInfoRewardsLabel:SetTextColor(self.BT:GetRGB())
 			end
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=12, y1=-12, x2=-32, y2=71})
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=12, y1=-12, x2=-32, y2=74})
 			_G.BattlefieldFrameCloseButton:Hide()
 			if self.modBtns then
 				self:skinStdButton{obj=_G.BattlefieldFrameCancelButton, fType=ftype}
 				self:skinStdButton{obj=_G.BattlefieldFrameJoinButton, fType=ftype}
 				self:skinStdButton{obj=_G.BattlefieldFrameGroupJoinButton, fType=ftype}
+			end
+
+			self:Unhook(this, "OnShow")
+		end)
+
+	end
+
+	aObj.blizzLoDFrames[ftype].BindingUI = function(self)
+		if not self.prdb.BindingUI or self.initialized.BindingUI then return end
+		self.initialized.BindingUI = true
+
+		self:SecureHookScript(_G.KeyBindingFrame, "OnShow", function(this)
+			if self.isRtl then
+				self:removeNineSlice(this.BG)
+			end
+			self:skinObject("frame", {obj=this.categoryList, fType=ftype, kfs=true, fb=true})
+			self:skinObject("frame", {obj=this.bindingsContainer, fType=ftype, kfs=true, fb=true})
+			self:skinObject("slider", {obj=this.scrollFrame.ScrollBar, rpTex={"background", "border"}})
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true})
+			if self.modBtns then
+				for _, row in _G.pairs(this.keyBindingRows) do
+					self:skinStdButton{obj=row.key1Button}
+					self:skinStdButton{obj=row.key2Button}
+					row.key1Button.sb:SetAlpha(row.key1Button:GetAlpha())
+					row.key2Button.sb:SetAlpha(row.key2Button:GetAlpha())
+					if self.isRtl then
+						self:SecureHook(row, "Update", function(fObj)
+							self:clrBtnBdr(fObj.key2Button)
+							fObj.key1Button.sb:SetAlpha(fObj.key1Button:GetAlpha())
+							fObj.key2Button.sb:SetAlpha(fObj.key2Button:GetAlpha())
+						end)
+					end
+				end
+				self:skinStdButton{obj=this.unbindButton}
+				self:skinStdButton{obj=this.okayButton}
+				self:skinStdButton{obj=this.cancelButton}
+				self:skinStdButton{obj=this.defaultsButton}
+				-- hook this to handle custom buttons (e.g. Voice Chat: Push to Talk)
+				self:SecureHook("BindingButtonTemplate_SetupBindingButton", function(_, button)
+					if button.GetCustomBindingType then
+						self:skinStdButton{obj=button}
+					end
+				end)
+				if self.isRtl then
+					self:skinStdButton{obj=this.quickKeybindButton}
+					self:SecureHook(this, "UpdateUnbindKey", function(fObj)
+						self:clrBtnBdr(fObj.unbindButton)
+					end)
+					self:skinStdButton{obj=this.clickCastingButton, fType=ftype}
+				else
+					self:SecureHook("KeyBindingFrame_Update", function()
+						for _, row in _G.pairs(_G.KeyBindingFrame.keyBindingRows) do
+							self:clrBtnBdr(row.key2Button)
+							row.key1Button.sb:SetAlpha(row.key1Button:GetAlpha())
+							row.key2Button.sb:SetAlpha(row.key2Button:GetAlpha())
+						end
+					end)
+					self:SecureHook("KeyBindingFrame_UpdateUnbindKey", function()
+						self:clrBtnBdr(_G.KeyBindingFrame.unbindButton)
+					end)
+				end
+			end
+			if self.modChkBtns then
+				self:skinCheckButton{obj=this.characterSpecificButton}
 			end
 
 			self:Unhook(this, "OnShow")
@@ -71,6 +135,167 @@ aObj.SetupClassic_UIFrames = function()
 			end)
 
 		end
+	end
+
+	local checkChild, skinKids, cName
+	-- These functions are used by the InterfaceOptions & SystemOptions functions
+	function checkChild(child, frameType)
+		cName = child:GetName()
+		if aObj:isDropDown(child) then
+			aObj:skinObject("dropdown", {obj=child, fType=frameType, x2=aObj.iofDD[cName]})
+		elseif child:IsObjectType("Slider") then
+			aObj:skinObject("slider", {obj=child, fType=frameType})
+		elseif child:IsObjectType("CheckButton")
+		and aObj.modChkBtns
+		then
+			aObj:skinCheckButton{obj=child, fType=frameType, hf=true} -- handle hide/show
+		elseif child:IsObjectType("EditBox") then
+			aObj:skinObject("editbox", {obj=child, fType=frameType})
+		elseif child:IsObjectType("Button")
+		and aObj.modBtns
+		and not aObj.iofBtn[child]
+		then
+			aObj:skinStdButton{obj=child, fType=ftype}
+		end
+	end
+	function skinKids(obj, frameType)
+		-- wait for all objects to be created
+		_G.C_Timer.After(0.1, function()
+			for _, child in _G.ipairs{obj:GetChildren()} do
+				checkChild(child, frameType)
+			end
+		end)
+	end
+	aObj.blizzFrames[ftype].InterfaceOptions = function(self)
+		if not self.prdb.InterfaceOptions or self.initialized.InterfaceOptions then return end
+		self.initialized.InterfaceOptions = true
+
+		-- Interface
+		self:SecureHookScript(_G.InterfaceOptionsFrame, "OnShow", function(this)
+			if self.isRtl then
+				self:removeNineSlice(this.Border)
+			end
+			-- Top Tabs
+			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true, upwards=true, offsets={x1=9, y1=self.isTT and 0 or -4, x2=-9, y2=self.isTT and -5 or 0}})
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true})
+			if self.modBtns then
+				self:skinStdButton{obj=_G.InterfaceOptionsFrameCancel, fType=ftype}
+				self:skinStdButton{obj=_G.InterfaceOptionsFrameOkay, fType=ftype}
+				self:skinStdButton{obj=_G.InterfaceOptionsFrameDefaults, fType=ftype}
+			end
+			-- LHS panel (Game Tab)
+			self:SecureHookScript(_G.InterfaceOptionsFrameCategories, "OnShow", function(fObj)
+				self:skinObject("slider", {obj=_G.InterfaceOptionsFrameCategoriesListScrollBar, fType=ftype, x1=4, x2=-5})
+				self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, rns=true, fb=true, ofs=-1})
+
+				self:Unhook(fObj, "OnShow")
+			end)
+			self:checkShown(_G.InterfaceOptionsFrameCategories)
+			-- LHS panel (AddOns tab)
+			self:SecureHookScript(_G.InterfaceOptionsFrameAddOns, "OnShow", function(fObj)
+				self:skinObject("slider", {obj=_G.InterfaceOptionsFrameAddOnsListScrollBar, fType=ftype, x1=4, x2=-5})
+				self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, rns=true, fb=true, ofs=-1})
+				if self.modBtns then
+					-- skin toggle buttons
+					for _, btn in _G.pairs(_G.InterfaceOptionsFrameAddOns.buttons) do
+						self:skinExpandButton{obj=btn.toggle, fType=ftype, onSB=true, noHook=true}
+						self:checkTex{obj=btn.toggle}
+					end
+					self:SecureHook("InterfaceAddOnsList_Update", function()
+						for _, btn in _G.pairs(_G.InterfaceOptionsFrameAddOns.buttons) do
+							self:checkTex{obj=btn.toggle}
+						end
+					end)
+				end
+
+				self:Unhook(fObj, "OnShow")
+			end)
+			self:checkShown(_G.InterfaceOptionsFrameAddOns)
+			-- RHS Panel
+			self:skinObject("frame", {obj=_G.InterfaceOptionsFramePanelContainer, fType=ftype, kfs=true, rns=true, fb=true, ofs=-1, y2=0})
+			-- Social Browser Frame (Twitter integration)
+			self:SecureHookScript(_G.SocialBrowserFrame, "OnShow", function(fObj)
+				self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, cb=true, x2=1})
+
+				self:Unhook(fObj, "OnShow")
+			end)
+			if self.modBtns then
+				self:SecureHook(_G.InterfaceOptionsSocialPanel.EnableTwitter, "setFunc", function(_)
+					-- N.B. gets called when panel not skinned
+					if _G.InterfaceOptionsSocialPanel.TwitterLoginButton.sb then
+						self:clrBtnBdr(_G.InterfaceOptionsSocialPanel.TwitterLoginButton)
+					end
+				end)
+				self:SecureHook(_G.InterfaceOptionsAccessibilityPanelConfigureTextToSpeech, "SetEnabled", function(bObj)
+					self:clrBtnBdr(bObj)
+				end)
+				self:SecureHook(_G.InterfaceOptionsAccessibilityPanelRemoteTextToSpeechVoicePlaySample, "SetEnabled", function(bObj)
+					self:clrBtnBdr(bObj)
+				end)
+			end
+
+			self:Unhook(this, "OnShow")
+		end)
+
+		-- skin extra elements
+		self.RegisterCallback("IONP", "IOFPanel_After_Skinning", function(_, panel)
+			if panel ~= _G.InterfaceOptionsNamesPanel then return end
+			skinKids(_G.InterfaceOptionsNamesPanelFriendly, ftype)
+			skinKids(_G.InterfaceOptionsNamesPanelEnemy, ftype)
+			skinKids(_G.InterfaceOptionsNamesPanelUnitNameplates, ftype)
+
+			self.UnregisterCallback("IONP", "IOFPanel_After_Skinning")
+		end)
+
+		self.RegisterCallback("CUFP", "IOFPanel_After_Skinning", function(_, panel)
+			if panel ~= _G.CompactUnitFrameProfiles then
+				return
+			end
+			if self.isRtl then
+				self:removeNineSlice(_G.CompactUnitFrameProfiles.newProfileDialog.Border)
+				self:removeNineSlice(_G.CompactUnitFrameProfiles.deleteProfileDialog.Border)
+				self:removeNineSlice(_G.CompactUnitFrameProfiles.unsavedProfileDialog.Border)
+			end
+			skinKids(_G.CompactUnitFrameProfiles.newProfileDialog, ftype)
+			self:skinObject("frame", {obj=_G.CompactUnitFrameProfiles.newProfileDialog, fType=ftype, ofs=0})
+			skinKids(_G.CompactUnitFrameProfiles.deleteProfileDialog, ftype)
+			self:skinObject("frame", {obj=_G.CompactUnitFrameProfiles.deleteProfileDialog, fType=ftype, ofs=0})
+			skinKids(_G.CompactUnitFrameProfiles.unsavedProfileDialog, ftype)
+			self:skinObject("frame", {obj=_G.CompactUnitFrameProfiles.unsavedProfileDialog, fType=ftype, ofs=0})
+			skinKids(_G.CompactUnitFrameProfiles.optionsFrame, ftype)
+			if self.modBtns then
+				self:skinStdButton{obj=_G.CompactUnitFrameProfilesDeleteButton, fType=ftype}
+				self:skinStdButton{obj=_G.CompactUnitFrameProfilesSaveButton, fType=ftype}
+				self:SecureHook("CompactUnitFrameProfiles_UpdateManagementButtons", function()
+					self:clrBtnBdr(_G.CompactUnitFrameProfilesDeleteButton)
+					self:clrBtnBdr(_G.CompactUnitFrameProfilesSaveButton)
+				end)
+				self:SecureHook("CompactUnitFrameProfiles_UpdateNewProfileCreateButton", function()
+					self:clrBtnBdr(_G.CompactUnitFrameProfiles.newProfileDialog.createButton)
+				end)
+			end
+			_G.CompactUnitFrameProfiles.optionsFrame.autoActivateBG:SetTexture(nil)
+
+			self.UnregisterCallback("CUFP", "IOFPanel_After_Skinning")
+		end)
+
+		-- hook this to skin Interface Option panels
+		self:SecureHook("InterfaceOptionsList_DisplayPanel", function(panel)
+
+			-- let AddOn skins know when IOF panel is going to be skinned
+			self.callbacks:Fire("IOFPanel_Before_Skinning", panel)
+
+			-- don't skin a panel twice
+			if not self.iofSkinnedPanels[panel] then
+				skinKids(panel, panel.GetName and panel:GetName() and panel:GetName():find("InterfaceOptions") and ftype)
+				self.iofSkinnedPanels[panel] = true
+			end
+
+			-- let AddOn skins know when IOF panel has been skinned
+			self.callbacks:Fire("IOFPanel_After_Skinning", panel)
+
+		end)
+
 	end
 
 	if _G.C_LFGList.IsLookingForGroupEnabled() then
@@ -158,7 +383,7 @@ aObj.SetupClassic_UIFrames = function()
 					_G.LFGParentFramePortrait:DisableDrawLayer("BACKGROUND")
 					_G.LFGParentFramePortrait:DisableDrawLayer("ARTWORK")
 					self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, ignoreSize=true, lod=self.isTT and true, upwards=true})
-					self:skinObject("frame", {obj=this, fType=ftype, kfs=true, x1=10, y1=-11, x2=-29, y2=70})
+					self:skinObject("frame", {obj=this, fType=ftype, kfs=true, x1=10, y1=-11, x2=-29, y2=71})
 					if self.modBtns then
 						self:skinCloseButton{obj=self:getChild(this, self.isClscERA and 3 or 1), fType=ftype}
 					end
@@ -328,6 +553,58 @@ aObj.SetupClassic_UIFrames = function()
 		-- this is done here as other AddOns may require it to be skinned
 		if self.modBtnBs then
 			self:addButtonBorder{obj=_G.MainMenuBarVehicleLeaveButton, clr="grey"}
+		end
+
+	end
+
+	aObj.blizzFrames[ftype].MainMenuBarCommon = function(self)
+		if self.initialized.MainMenuBarCommon then return end
+		self.initialized.MainMenuBarCommon = true
+
+		if _G.IsAddOnLoaded("Bartender4") then
+			return
+		end
+
+		if self.prdb.MainMenuBar.skin then
+			self:SecureHookScript(_G.StanceBarFrame, "OnShow", function(this)
+				self:keepFontStrings(this)
+				if self.modBtnBs then
+					for _, btn in _G.pairs(this.StanceButtons) do
+						self:addButtonBorder{obj=btn, abt=true, sft=true, ofs=3, x1=-4}
+					end
+				end
+
+				self:Unhook(this, "OnShow")
+			end)
+			self:checkShown(_G.StanceBarFrame)
+			-- TODO: change button references when PetActionButtonTemplate & ActionButtonTemplate are fixed
+			self:SecureHookScript(_G.PetActionBarFrame, "OnShow", function(this)
+				self:keepFontStrings(_G.PetActionBarFrame)
+				if self.modBtnBs then
+					local bName
+					for i = 1, _G.NUM_PET_ACTION_SLOTS do
+						bName = "PetActionButton" .. i
+						self:addButtonBorder{obj=_G[bName], sft=true, reParent={_G[bName .. "AutoCastable"], _G[bName .. "SpellHighlightTexture"], _G[bName .. "Shine"]}, ofs=3, x2=2}
+						_G[bName .. "NormalTexture2"]:SetTexture(nil)
+					end
+				end
+
+				self:Unhook(this, "OnShow")
+			end)
+			self:checkShown(_G.PetActionBarFrame)
+			if not self.isClscERA then
+				self:SecureHookScript(_G.PossessBarFrame, "OnShow", function(this)
+					self:keepFontStrings(this)
+					if self.modBtnBs then
+						for i = 1, _G.NUM_POSSESS_SLOTS do
+							self:addButtonBorder{obj=_G["PossessButton" .. i], abt=true, sft=true, ofs=3}
+						end
+					end
+
+					self:Unhook(this, "OnShow")
+				end)
+				self:checkShown(_G.PossessBarFrame)
+			end
 		end
 
 	end
@@ -587,6 +864,114 @@ aObj.SetupClassic_UIFrames = function()
 
 	end
 
+	aObj.blizzFrames[ftype].SystemOptions = function(self)
+		if not self.prdb.SystemOptions or self.initialized.SystemOptions then return end
+		self.initialized.SystemOptions = true
+
+		self:SecureHookScript(_G.VideoOptionsFrame, "OnShow", function(this)
+			if self.isRtl then
+				self:removeNineSlice(this.Border)
+			end
+			self:skinObject("frame", {obj=_G.VideoOptionsFrameCategoryFrame, fType=ftype, kfs=true, rns=true, fb=true})
+			self:skinObject("slider", {obj=_G.VideoOptionsFrameCategoryFrameListScrollBar, fType=ftype, x1=4, x2=-5})
+			self:skinObject("frame", {obj=_G.VideoOptionsFramePanelContainer, fType=ftype, kfs=true, rns=true, fb=true})
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true})
+			_G.VideoOptionsFrameApply:SetFrameLevel(2) -- make it appear above the PanelContainer
+			if self.modBtns then
+				self:skinStdButton{obj=_G.VideoOptionsFrameApply, fType=ftype, schk=true}
+				self:skinStdButton{obj=_G.VideoOptionsFrameCancel, fType=ftype}
+				self:skinStdButton{obj=_G.VideoOptionsFrameOkay, fType=ftype}
+				self:skinStdButton{obj=_G.VideoOptionsFrameDefaults, fType=ftype}
+				if not self.isRtl then
+					self:skinStdButton{obj=_G.VideoOptionsFrameClassic, fType=ftype}
+				end
+			end
+			-- Top Tabs
+			self:skinObject("tabs", {obj=_G.Display_, tabs={_G.GraphicsButton, _G.RaidButton}, fType=ftype, upwards=true, offsets={x1=4, y1=0, x2=0, y2=self.isTT and -3 or 2}, track=false, func=function(tab) tab:SetFrameLevel(20) tab.SetFrameLevel = _G.nop end})
+			if self.isTT then
+				self:SecureHook("GraphicsOptions_SelectBase", function()
+					self:setActiveTab(_G.GraphicsButton.sf)
+					self:setInactiveTab(_G.RaidButton.sf)
+				end)
+				self:SecureHook("GraphicsOptions_SelectRaid", function()
+					if _G.Display_RaidSettingsEnabledCheckBox:GetChecked() then
+						self:setActiveTab(_G.RaidButton.sf)
+						self:setInactiveTab(_G.GraphicsButton.sf)
+					end
+				end)
+			end
+			skinKids(_G.Display_, ftype)
+			self:skinObject("frame", {obj=_G.Display_, fType=ftype, kfs=true, rns=true, fb=true})
+			skinKids(_G.Graphics_, ftype)
+			self:skinObject("frame", {obj=_G.Graphics_, fType=ftype, kfs=true, rns=true, fb=true})
+			skinKids(_G.RaidGraphics_, ftype)
+			self:skinObject("frame", {obj=_G.RaidGraphics_, fType=ftype, kfs=true, rns=true, fb=true})
+
+			self:Unhook(this, "OnShow")
+		end)
+		if not self.isRtl then
+			self:SecureHook("VideoOptionsDropDownMenu_DisableDropDown", function(dropDown)
+				self:checkDisabledDD(dropDown)
+			end)
+			self:SecureHook("VideoOptionsDropDownMenu_EnableDropDown", function(dropDown)
+				self:checkDisabledDD(dropDown)
+			end)
+		end
+
+		-- Advanced
+		self:SecureHookScript(_G.Advanced_, "OnShow", function(this)
+			skinKids(this, ftype)
+
+			self:Unhook(this, "OnShow")
+		end)
+		-- Network
+		self:SecureHookScript(_G.NetworkOptionsPanel, "OnShow", function(this)
+			skinKids(this, ftype)
+
+			self:Unhook(this, "OnShow")
+		end)
+		-- Languages
+		self:SecureHookScript(_G.InterfaceOptionsLanguagesPanel, "OnShow", function(this)
+			skinKids(this, ftype)
+
+			self:Unhook(this, "OnShow")
+		end)
+		-- Keyboard
+		self:SecureHookScript(_G.MacKeyboardOptionsPanel, "OnShow", function(this)
+			-- Languages
+			skinKids(this, ftype)
+
+			self:Unhook(this, "OnShow")
+		end)
+		-- Sound
+		self:SecureHookScript(_G.AudioOptionsSoundPanel, "OnShow", function(this)
+			skinKids(this, ftype)
+			self:skinObject("frame", {obj=_G.AudioOptionsSoundPanelPlayback, fType=ftype, kfs=true, rns=true, fb=true})
+			self:skinObject("frame", {obj=_G.AudioOptionsSoundPanelHardware, fType=ftype, kfs=true, rns=true, fb=true})
+			self:skinObject("frame", {obj=_G.AudioOptionsSoundPanelVolume, fType=ftype, kfs=true, rns=true, fb=true})
+
+			self:Unhook(this, "OnShow")
+		end)
+		-- Voice
+		self:SecureHookScript(_G.AudioOptionsVoicePanel, "OnShow", function(this)
+			self.iofBtn[this.PushToTalkKeybindButton] = true
+			skinKids(this, ftype)
+			this.TestInputDevice.ToggleTest:DisableDrawLayer("BACKGROUND")
+			self:skinObject("frame", {obj=this.TestInputDevice.VUMeter, fType=ftype, kfs=true, rns=true, fb=true})
+			if self.modBtnBs then
+				self:addButtonBorder{obj=this.TestInputDevice.ToggleTest, fType=ftype, ofs=0, y2=-2}
+				self:skinStdButton{obj=this.PushToTalkKeybindButton, fType=ftype}
+				this.PushToTalkKeybindButton.KeyLabel:SetDrawLayer("ARTWORK")
+				if self.isRtl then
+					self:skinStdButton{obj=this.MacMicrophoneAccessWarning.OpenAccessButton, fType=ftype}
+				end
+			end
+
+			self:Unhook(this, "OnShow")
+		end)
+
+	end
+
 	aObj.blizzFrames[ftype].Tutorial = function(self)
 		if not self.prdb.Tutorial or self.initialized.Tutorial then return end
 		self.initialized.Tutorial = true
@@ -677,13 +1062,16 @@ aObj.SetupClassic_UIFramesOptions = function(self)
 
 	local optTab = {
 		["Battlefield Frame"]       = true,
+		["Binding UI"]              = {desc = "Key Bindings UI"},
 		["GM Survey UI"]            = self.isClscERA and true or nil,
+		["Interface Options"]       = true,
 		["LookingforGroupUI"]       = self.isClsc and _G.C_LFGList.IsLookingForGroupEnabled() and {desc = "Group Finder"} or nil,
 		["LFGLFM"]                  = self.isClscERA and _G.C_LFGList.IsLookingForGroupEnabled() or nil,
 		["Product Choice"]          = {suff = "Frame"},
 		["PVP Frame"]               = self.isClsc and true or nil,
 		["Quest Log"]               = true,
 		["Quest Timer"]             = true,
+		["System Options"]          = true,
 		["World State Score Frame"] = {desc = "Battle Score Frame"},
 	}
 	self:setupFramesOptions(optTab, "UI")

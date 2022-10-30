@@ -4,9 +4,5 @@
 <script file="NPCFrames_Retail.lua"/>
 <script file="PlayerFrames_Retail.lua"/>
 <script file="UIFrames_Retail.lua"/>
-<!-- Dragonflight updates -->
-<script file="NPCFrames_Dragonflight.lua"/>
-<script file="PlayerFrames_Dragonflight.lua"/>
-<script file="UIFrames_Dragonflight.lua"/>
 
 </Ui>

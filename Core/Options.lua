@@ -95,7 +95,7 @@ aObj.SetupOptions = function(self)
 	local dflts = self.db.defaults.profile
 
 	local iof_otc
-	if not aObj.isRtlPTR then
+	if not self.isRtl then
 		iof_otc = _G.InterfaceOptionsFrame_OpenToCategory
 	else
 		iof_otc = _G.Settings.OpenToCategory
@@ -104,7 +104,7 @@ aObj.SetupOptions = function(self)
 	local function reskinIOFBackdrop()
 		-- show changes by reskinning the Interface Options Frame with the new settings
 		aObj:setupBackdrop()
-		if not aObj.isRtlPTR then
+		if not aObj.isRtl then
 			_G.InterfaceOptionsFrame.sf:SetBackdrop(aObj.backdrop)
 			_G.InterfaceOptionsFrame.sf:SetBackdropColor(aObj.bClr:GetRGBA())
 			_G.InterfaceOptionsFrame.sf:SetBackdropBorderColor(aObj.bbClr:GetRGBA())
@@ -1289,9 +1289,7 @@ aObj.SetupOptions = function(self)
 		["Raid UI"]           = true,
 		["Ready Check"]       = {suff = "Frame"},
 		["SpellBook Frame"]   = true,
-		["Talent UI"]         = not self.isRtlPTR and true or nil,
 		["Trade Frame"]       = true,
-		["Trade Skill UI"]    = not self.isRtlPTR and true or nil,
 	}
 	self:setupFramesOptions(pfOptTab, "Player")
 	_G.wipe(pfOptTab)
@@ -1301,7 +1299,6 @@ aObj.SetupOptions = function(self)
 		["Alert Frames"]          = true,
 		["Auto Complete"]         = {suff = "Frame"},
 		["Battlefield Map"]       = {suff = "Frame"},
-		["Binding UI"]            = not self.isRtlPTR and {desc = "Key Bindings UI"} or nil,
 		["BN Frames"]             = {desc = "BattleNet Frames"},
 		["Calendar"]              = true,
 		["Cinematic Frame"]       = true,
@@ -1312,7 +1309,6 @@ aObj.SetupOptions = function(self)
 		["GM Chat UI"]            = true,
 		["Guild Bank UI"]         = true,
 		["Help Frame"]            = {desc = "Customer Support Frame"},
-		["Interface Options"]     = true,
 		["Item Text"]             = {suff = "Frame"},
 		["Macro UI"]              = {desc = "Macros UI"},
 		["Mail Frame"]            = true,
@@ -1326,13 +1322,12 @@ aObj.SetupOptions = function(self)
 		["Shared Basic Controls"] = {desc = "Script Errors Frame"},
 		["Stack Split"]           = {suff = "Frame"},
 		["Static Popups"]         = true,
-		["System Options"]        = true,
 		["Text To Speech Frame"]  = true,
 		["Time Manager"]          = {suff = "Frame"},
 		["Tutorial"]              = {suff = "Frame"},
 		["UI DropDown Menu"]      = {desc = "DropDown Panels"},
 		["UI Widgets"]            = true,
-		["UnitPopup"]            = {desc = "Unit Popups"},
+		["UnitPopup"]             = {desc = "Unit Popups"},
 	}
 	self:setupFramesOptions(uiOptTab, "UI")
 	_G.wipe(uiOptTab)
@@ -1379,7 +1374,7 @@ aObj.SetupOptions = function(self)
 	end
 	local function postLoadFunc()
 		local method
-		if not aObj.isRtlPTR then
+		if not self.isRtl then
 			method = "default"
 		else
 			method = "OnDefault"
@@ -1404,7 +1399,7 @@ aObj.SetupOptions = function(self)
 		if not input or input:trim() == "" then
 			-- Open general panel if there are no parameters, do twice to overcome Blizzard bug
 			aObj.callbacks:Fire("Options_Selected")
-			if not aObj.isRtlPTR then
+			if not self.isRtl then
 				iof_otc(aObj.optionsFrames[aName])
 				iof_otc(aObj.optionsFrames[aName])
 			else
@@ -1412,7 +1407,7 @@ aObj.SetupOptions = function(self)
 			end
 		elseif aObj.optCheck[input:lower()] then
 			aObj.callbacks:Fire("Options_Selected")
-			if not aObj.isRtlPTR then
+			if not self.isRtl then
 				iof_otc(aObj.optionsFrames[aObj.optCheck[input:lower()]])
 				iof_otc(aObj.optionsFrames[aObj.optCheck[input:lower()]])
 			else
@@ -1434,7 +1429,7 @@ aObj.SetupOptions = function(self)
 		OnClick = function()
 			-- do twice to overcome Blizzard bug
 			iof_otc(aObj.optionsFrame)
-			if not aObj.isRtlPTR then
+			if not self.isRtl then
 				iof_otc(aObj.optionsFrame)
 			end
 		end,

@@ -139,12 +139,12 @@ aObj.skinTPLs = {
 		numTabs     = 1,
 		selectedTab = 1,
 		suffix      = "",
-		regions     = aObj.isRtlPTR and {10} or {7, 8},
+		regions     = aObj.isRtl and {10} or {7, 8},
 		-- ng			= nil,
 		ignoreSize  = true,
 		lod         = false,
 		upwards     = false,
-		offsets     = {x1=8, y1=-3, x2=-8, y2=2},
+		offsets     = {x1=8, y1=0, x2=-8, y2=2},
 		ignoreHLTex = true,
 		track       = true,
 		noCheck     = false,
@@ -228,7 +228,7 @@ local function setScrollTrackOffsets(tbl, type)
 			tbl.y1 = _G.rawget(tbl, "y1") or -1
 			tbl.y2 = _G.rawget(tbl, "y2") or 1
 		elseif w == 25 then
-			if not aObj.isRtlPTR then
+			if not aObj.isRtl then
 				tbl.x1 = _G.rawget(tbl, "x1") or 2
 				tbl.x2 = _G.rawget(tbl, "x2") or 5
 				tbl.y1 = _G.rawget(tbl, "y1") or -1
@@ -801,7 +801,7 @@ skinFuncs.statusbar = function(table) skinStatusBar(table) end
 local function skinTabs(tbl)
 	--@alpha@
 	_G.assert(tbl.obj, "Missing Tab Object (skinTabs)\n" .. _G.debugstack(2, 3, 2))
-	if not aObj.isRtlPTR then
+	if not aObj.isRtl then
 		_G.assert(_G.type(tbl.tabs) == "table" or tbl.prefix, "Missing Tabs Table or Tab Prefix (skinTabs)\n" .. _G.debugstack(2, 3, 2))
 	end
 	--@end-alpha@
@@ -824,11 +824,11 @@ local function skinTabs(tbl)
 		end
 	end
 	if aObj.isTT
-	and tbl.offsets.y1 == -3
+	and tbl.offsets.y1 == 0
 	then
 		tbl.offsets.y1 = 2
 	end
-	if aObj.isRtlPTR then
+	if aObj.isRtl then
 		if tbl.offsets.x1 == 8 then
 			tbl.offsets.x1 = 0
 		end
@@ -879,7 +879,7 @@ local function skinTabs(tbl)
 			tbl.func(tab)
 		end
 	end
-	if aObj.isRtlPTR
+	if aObj.isRtl
 	and tbl.pool
 	then
 		local idx = 0

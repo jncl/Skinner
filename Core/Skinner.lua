@@ -88,11 +88,6 @@ function aObj:OnInitialize()
 		self:SetupClassic_PlayerFramesOptions()
 		self:SetupClassic_UIFramesOptions()
 	end
-	if aObj.isRtlPTR then
-		self:SetupDragonflight_NPCFramesOptions()
-		self:SetupDragonflight_PlayerFramesOptions()
-		self:SetupDragonflight_UIFramesOptions()
-	end
 
 	-- register the default background texture
 	self.LSM:Register("background", dflts.BdTexture, self.tFDIDs.cfBg)
@@ -263,11 +258,6 @@ function aObj:OnInitialize()
 		self:checkAndRun("SetupClassic_NPCFrames", "opt", nil, true)
 		self:checkAndRun("SetupClassic_PlayerFrames", "opt", nil, true)
 		self:checkAndRun("SetupClassic_UIFrames", "opt", nil, true)
-	end
-	if aObj.isRtlPTR then
-		self:checkAndRun("SetupDragonflight_NPCFrames", "opt", nil, true)
-		self:checkAndRun("SetupDragonflight_PlayerFrames", "opt", nil, true)
-		self:checkAndRun("SetupDragonflight_UIFrames", "opt", nil, true)
 	end
 
 end

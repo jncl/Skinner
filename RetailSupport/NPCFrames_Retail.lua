@@ -18,9 +18,9 @@ aObj.SetupRetail_NPCFrames = function()
 			this.RaceInfoFrame.ScrollFrame.Child.ObjectivesFrame.HeaderBackground:SetTexture(nil)
 			this.RaceInfoFrame.ScrollFrame.Child.ObjectivesFrame:DisableDrawLayer("BACKGROUND")
 			self:skinObject("slider", {obj=this.RaceInfoFrame.ScrollFrame.ScrollBar, fType=ftype, rpTex="background"})
-			this.RaceInfoFrame.ScrollFrame.ScrollBar.ScrollUpBorder:ClearBackdrop()
-			this.RaceInfoFrame.ScrollFrame.ScrollBar.ScrollDownBorder:ClearBackdrop()
-			this.RaceInfoFrame.ScrollFrame.ScrollBar.Border:ClearBackdrop()
+			self:removeNineSlice(this.RaceInfoFrame.ScrollFrame.ScrollBar.ScrollUpBorder.NineSlice)
+			self:removeNineSlice(this.RaceInfoFrame.ScrollFrame.ScrollBar.ScrollDownBorder.NineSlice)
+			self:removeNineSlice(this.RaceInfoFrame.ScrollFrame.ScrollBar.Border.NineSlice)
 			this.RaceInfoFrame.AlliedRacesRaceName:SetTextColor(self.HT:GetRGB())
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true})
 			if self.modBtnBs then
@@ -56,11 +56,7 @@ aObj.SetupRetail_NPCFrames = function()
 		self.initialized.AuctionHouseUI = true
 
 		self:SecureHookScript(_G.AuctionHouseFrame, "OnShow", function(this)
-			if not aObj.isRtlPTR then
-				self:removeInset(self:getChild(this, 3)) -- MerchantMoneyInset
-			else
-				self:removeInset(this.MoneyFrameInset) -- MerchantMoneyInset
-			end
+			self:removeInset(this.MoneyFrameInset) -- MerchantMoneyInset
 			this.MoneyFrameBorder:DisableDrawLayer("BACKGROUND")
 			this.MoneyFrameBorder:DisableDrawLayer("BORDER")
 			self:skinObject("tabs", {obj=this, tabs=this.Tabs, fType=ftype, lod=self.isTT and true, track=false})
@@ -98,38 +94,33 @@ aObj.SetupRetail_NPCFrames = function()
 			self:SecureHookScript(this.CategoriesList, "OnShow", function(fObj)
 				fObj:DisableDrawLayer("BACKGROUND")
 				self:removeNineSlice(fObj.NineSlice)
-				if not aObj.isRtlPTR then
-					for _, btn in _G.pairs(fObj.FilterButtons) do
-						self:keepRegions(btn, {3, 4, 5}) -- N.B. region 3 is highlight, 4 is selected, 5 is text
-						self.modUIBtns:skinStdButton{obj=btn, fType=ftype, ignoreHLTex=true, ofs=1}
+				self:skinObject("scrollbar", {obj=fObj.ScrollBar, fType=ftype})
+				local function skinElement(...)
+					local _, element, new
+					if _G.select("#", ...) == 2 then
+						element, _ = ...
+					elseif _G.select("#", ...) == 3 then
+						element, _, new = ...
+					else
+						_, element, _, new = ...
 					end
-					self:SecureHook("FilterButton_SetUp", function(button, _)
-						button.NormalTexture:SetAlpha(0)
-					end)
-					self:skinObject("slider", {obj=fObj.ScrollFrame.ScrollBar, fType=ftype, rpTex="border"})
-					fObj.ScrollFrame:DisableDrawLayer("BACKGROUND")
-					fObj.Background:SetTexture(nil)
-				else
-					self:skinObject("scrollbar", {obj=fObj.ScrollBar, fType=ftype})
-					local function skinElement(element, _, new)
-						if new ~= false then
-							aObj:keepRegions(element, {3, 4, 5}) -- N.B. region 3 is highlight, 4 is selected, 5 is text
-							aObj.modUIBtns:skinStdButton{obj=element, fType=ftype, ignoreHLTex=true}
-							element.sb:Show()
-							element.sb:ClearAllPoints()
-							if element.type == "category" then
-								element.sb:SetPoint("TOPLEFT", element, "TOPLEFT", -1, 1)
-								element.sb:SetPoint("BOTTOMRIGHT", element, "BOTTOMRIGHT", -4, -1)
-							elseif element.type == "subCategory" then
-								element.sb:SetPoint("TOPLEFT", element, "TOPLEFT", 10, 1)
-								element.sb:SetPoint("BOTTOMRIGHT", element, "BOTTOMRIGHT", -4, -1)
-							elseif element.type == "subSubCategory" then
-								element.sb:Hide()
-							end
+					if new ~= false then
+						aObj:keepRegions(element, {3, 4, 5}) -- N.B. region 3 is highlight, 4 is selected, 5 is text
+						aObj.modUIBtns:skinStdButton{obj=element, fType=ftype, ignoreHLTex=true}
+						element.sb:Show()
+						element.sb:ClearAllPoints()
+						if element.type == "category" then
+							element.sb:SetPoint("TOPLEFT", element, "TOPLEFT", -1, 1)
+							element.sb:SetPoint("BOTTOMRIGHT", element, "BOTTOMRIGHT", -4, -1)
+						elseif element.type == "subCategory" then
+							element.sb:SetPoint("TOPLEFT", element, "TOPLEFT", 10, 1)
+							element.sb:SetPoint("BOTTOMRIGHT", element, "BOTTOMRIGHT", -4, -1)
+						elseif element.type == "subSubCategory" then
+							element.sb:Hide()
 						end
 					end
-					_G.ScrollUtil.AddAcquiredFrameCallback(fObj.ScrollBox, skinElement, aObj, true)
 				end
+				_G.ScrollUtil.AddAcquiredFrameCallback(fObj.ScrollBox, skinElement, aObj, true)
 
 				self:Unhook(fObj, "OnShow")
 			end)
@@ -150,11 +141,7 @@ aObj.SetupRetail_NPCFrames = function()
 				aObj:SecureHook(frame, "RefreshScrollFrame", function(fObj)
 					skinHeaders(fObj)
 				end)
-				if not aObj.isRtlPTR then
-					aObj:skinObject("slider", {obj=frame.ScrollFrame.scrollBar, fType=ftype, y1=-2, y2=2})
-				else
-					aObj:skinObject("scrollbar", {obj=frame.ScrollBar, fType=ftype})
-				end
+				aObj:skinObject("scrollbar", {obj=frame.ScrollBar, fType=ftype})
 				if aObj.modBtnBs then
 					aObj:addButtonBorder{obj=frame.RefreshFrame.RefreshButton, ofs=-2, x1=1, clr="gold"}
 				end
@@ -202,11 +189,7 @@ aObj.SetupRetail_NPCFrames = function()
 					self:clrButtonFromBorder(btn)
 				end
 				fObj.DummyScrollBar:DisableDrawLayer("BACKGROUND")
-				if not aObj.isRtlPTR then
-					fObj.DummyScrollBar:DisableDrawLayer("ARTWORK")
-				else
-					fObj.DummyScrollBar.Background:DisableDrawLayer("ARTWORK")
-				end
+				fObj.DummyScrollBar.Background:DisableDrawLayer("ARTWORK")
 
 				self:Unhook(fObj, "OnShow")
 			end)
@@ -297,11 +280,7 @@ aObj.SetupRetail_NPCFrames = function()
 				self:removeNineSlice(fObj.DummyItemList.NineSlice)
 				fObj.DummyItemList.Background:SetTexture(nil)
 				fObj.DummyItemList.DummyScrollBar:DisableDrawLayer("BACKGROUND")
-				if not aObj.isRtlPTR then
-					fObj.DummyItemList.DummyScrollBar:DisableDrawLayer("ARTWORK")
-				else
-					fObj.DummyItemList.DummyScrollBar.Background:DisableDrawLayer("ARTWORK")
-				end
+				fObj.DummyItemList.DummyScrollBar.Background:DisableDrawLayer("ARTWORK")
 				if self.modBtns then
 					self:skinStdButton{obj=fObj.PostButton, fType=ftype, sechk=true}
 				end
@@ -327,11 +306,7 @@ aObj.SetupRetail_NPCFrames = function()
 				self:removeInset(fObj.SummaryList)
 				self:removeNineSlice(fObj.SummaryList.NineSlice)
 				fObj.SummaryList.Background:SetTexture(nil)
-				if not aObj.isRtlPTR then
-					self:skinObject("slider", {obj=fObj.SummaryList.ScrollFrame.scrollBar, fType=ftype, rpTex="background"})
-				else
-					self:skinObject("scrollbar", {obj=fObj.SummaryList.ScrollBar, fType=ftype})
-				end
+				self:skinObject("scrollbar", {obj=fObj.SummaryList.ScrollBar, fType=ftype})
 				self:removeNineSlice(fObj.ItemDisplay.NineSlice)
 				self:removeRegions(fObj.ItemDisplay, {3})
 				skinItemList(fObj.AllAuctionsList)
@@ -709,6 +684,71 @@ aObj.SetupRetail_NPCFrames = function()
 
 	end
 
+	aObj.blizzLoDFrames[ftype].GenericTraitUI = function(self)
+		if not self.prdb.GenericTraitUI or self.initialized.GenericTraitUI then return end
+		self.initialized.GenericTraitUI = true
+
+		self:SecureHookScript(_G.GenericTraitFrame, "OnShow", function(this)
+			-- TODO: Keep background visible ?
+			this.Header.TitleDivider:SetAlpha(0)
+			this.Currency:DisableDrawLayer("BACKGROUND")
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cbns=true, ofs=-4, y1=-11})
+
+			self:Unhook(this, "OnShow")
+		end)
+
+	end
+
+	aObj.blizzFrames[ftype].GossipFrame = function(self)
+		if not self.prdb.GossipFrame or self.initialized.GossipFrame then return end
+		self.initialized.GossipFrame = true
+
+		local skinGossip = _G.nop
+		if not (self:isAddonEnabled("Quester")
+		and _G.QuesterDB.gossipColor)
+		then
+			function skinGossip(...)
+				local _, element, elementData
+				if _G.select("#", ...) == 2 then
+					element, elementData = ...
+				elseif _G.select("#", ...) == 3 then
+					element, elementData, _ = ...
+				else
+					_, element, elementData, _ = ...
+				end
+				-- _G.C_Timer.After(1, function()
+				-- 	_G.Spew("skinGossip", elementData)
+				-- end)
+				if elementData.buttonType == 1 then -- Greeting
+					element.GreetingText:SetTextColor(aObj.HT:GetRGB())
+				elseif elementData.buttonType == 3 then -- Gossip
+					element:GetFontString():SetTextColor(aObj.BT:GetRGB())
+				elseif elementData.buttonType == 4 -- Quest
+				or elementData.buttonType == 5 -- Campaign Quest
+				then
+					_G.C_Timer.After(0.05, function()
+						element:SetText(elementData.info.title)
+						element:GetFontString():SetTextColor(aObj.BT:GetRGB())
+					end)
+				end
+			end
+		end
+
+		self:SecureHookScript(_G.GossipFrame, "OnShow", function(this)
+			self:removeRegions(this.FriendshipStatusBar, {1, 2, 5, 6, 7, 8 ,9})
+			self:skinObject("statusbar", {obj=this.FriendshipStatusBar, fi=0, bg=self:getRegion(this.FriendshipStatusBar, 10)})
+			self:skinObject("scrollbar", {obj=this.GreetingPanel.ScrollBar, fType=ftype})
+			_G.ScrollUtil.AddAcquiredFrameCallback(this.GreetingPanel.ScrollBox, skinGossip, aObj, true)
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, x2=3})
+			if self.modBtns then
+				self:skinStdButton{obj=this.GreetingPanel.GoodbyeButton}
+			end
+
+			self:Unhook(this, "OnShow")
+		end)
+
+	end
+
 	aObj.blizzLoDFrames[ftype].ItemInteractionUI = function(self) -- a.k.a. Titanic Purification/Runecarver reclaim soulessence/Creation Catalyst
 		if not self.prdb.ItemInteractionUI or self.initialized.ItemInteractionUI then return end
 		self.initialized.ItemInteractionUI = true
@@ -895,26 +935,24 @@ aObj.SetupRetail_NPCFrames = function()
 			self:skinObject("dropdown", {obj=_G.ClassTrainerFrameFilterDropDown, fType=ftype})
 			self:removeMagicBtnTex(_G.ClassTrainerTrainButton)
 			this.skillStepButton:GetNormalTexture():SetTexture(nil)
-			if not aObj.isRtlPTR then
-				self:skinObject("slider", {obj=_G.ClassTrainerScrollFrameScrollBar, fType=ftype})
-				for _, btn in _G.pairs(this.scrollFrame.buttons) do
-					btn:GetNormalTexture():SetTexture(nil)
-					if self.modBtnBs then
-						self:addButtonBorder{obj=btn, relTo=btn.icon}
+			self:skinObject("scrollbar", {obj=this.ScrollBar, fType=ftype})
+			local function skinElement(...)
+				local _, element, new
+				if _G.select("#", ...) == 2 then
+					element, _ = ...
+				elseif _G.select("#", ...) == 3 then
+					element, _, new = ...
+				else
+					_, element, _, new = ...
+				end
+				if new ~= false then
+					element:GetNormalTexture():SetTexture(nil)
+					if aObj.modBtnBs then
+						aObj:addButtonBorder{obj=element, relTo=element.icon}
 					end
 				end
-			else
-				self:skinObject("scrollbar", {obj=this.ScrollBar, fType=ftype})
-				local function skinElement(element, _, new)
-					if new ~= false then
-						element:GetNormalTexture():SetTexture(nil)
-						if aObj.modBtnBs then
-							aObj:addButtonBorder{obj=element, relTo=element.icon}
-						end
-					end
-				end
-				_G.ScrollUtil.AddAcquiredFrameCallback(this.ScrollBox, skinElement, aObj, true)
 			end
+			_G.ScrollUtil.AddAcquiredFrameCallback(this.ScrollBox, skinElement, aObj, true)
 			self:removeInset(this.bottomInset)
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true})
 			if self.modBtns then
@@ -986,6 +1024,7 @@ aObj.SetupRetail_NPCFramesOptions = function(self)
 		["Covenant Renown"]             = true,
 		["Covenant Sanctum"]            = true,
 		["Flight Map"]                  = true,
+		["Generic Trait UI"]            = {desc = "Trait UI"},
 		["Item Interaction UI"]         = true,
 		["Item Upgrade UI"]             = true,
 		["New Player Experience Guide"] = {suff = "Frame"},

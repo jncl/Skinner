@@ -4,56 +4,6 @@ local _G = _G
 
 local ftype = "n"
 
-if not aObj.isRtlPTR then
-	aObj.blizzFrames[ftype].GossipFrame = function(self)
-		if not self.prdb.GossipFrame or self.initialized.GossipFrame then return end
-		self.initialized.GossipFrame = true
-
-		if not (self:isAddonEnabled("Quester")
-		and _G.QuesterDB.gossipColor)
-		then
-			self:SecureHook("GossipFrameUpdate", function()
-				if self.isRtl then
-					for _, btn in _G.pairs(_G.GossipFrame.buttons) do
-						local newText, upd = self:removeColourCodes(btn:GetText())
-						if upd then
-							btn:SetText(newText)
-						end
-						btn:GetFontString():SetTextColor(self.BT:GetRGB())
-					end
-				else
-					for i = 1, _G.NUMGOSSIPBUTTONS do
-						local newText, upd = self:removeColourCodes(_G["GossipTitleButton" .. i]:GetText())
-						if upd then
-							_G["GossipTitleButton" .. i]:SetText(newText)
-						end
-						_G["GossipTitleButton" .. i]:GetFontString():SetTextColor(self.BT:GetRGB())
-					end
-				end
-			end)
-		end
-
-		self:SecureHookScript(_G.GossipFrame, "OnShow", function(this)
-			self:keepFontStrings(_G.GossipFrameGreetingPanel)
-			_G.GossipGreetingText:SetTextColor(self.HT:GetRGB())
-			self:skinObject("slider", {obj=_G.GossipGreetingScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
-			if self.isRtl then
-				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, x2=3})
-			else
-				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=10, y1=-18, x2=-29, y2=60})
-			end
-			if self.modBtns then
-				self:skinStdButton{obj=_G.GossipFrameGreetingGoodbyeButton}
-			end
-			self:removeRegions(_G.NPCFriendshipStatusBar, {1, 2, 5, 6, 7, 8 ,9})
-			self:skinObject("statusbar", {obj=_G.NPCFriendshipStatusBar, fi=0, bg=self:getRegion(_G.NPCFriendshipStatusBar, 10)})
-
-			self:Unhook(this, "OnShow")
-		end)
-
-	end
-end
-
 aObj.blizzFrames[ftype].GuildRegistrar = function(self)
 	if not self.prdb.GuildRegistrar or self.initialized.GuildRegistrar then return end
 	self.initialized.GuildRegistrar = true
@@ -334,6 +284,14 @@ aObj.blizzFrames[ftype].QuestInfo = function(self)
 		for spellLine in frame.spellHeaderPool:EnumerateActive() do
 			spellLine:SetVertexColor(aObj.BT:GetRGB())
 		end
+		if self.isRtl then
+			for rep in frame.reputationRewardPool:EnumerateActive() do
+				rep.NameFrame:SetTexture(nil)
+				if aObj.modBtnBs then
+					aObj:addButtonBorder{obj=rep, fType=ftype, relTo=rep.Icon, reParent={rep.RewardAmount}, clr="grey"}
+				end
+			end
+		end
 	end
 	local function updateQIDisplay(_)
 		local br, bg, bb = aObj.BT:GetRGB()
@@ -358,12 +316,10 @@ aObj.blizzFrames[ftype].QuestInfo = function(self)
 		-- skin rewards
 		skinRewards(_G.QuestInfoFrame.rewardsFrame)
 		-- Objectives
-		local obj
-		for i = 1, #_G.QuestInfoObjectivesFrame.Objectives do
-			obj = _G.QuestInfoObjectivesFrame.Objectives[i]
+		for _, obj in _G.pairs(_G.QuestInfoObjectivesFrame.Objectives) do
 			r, g ,b = obj:GetTextColor()
-			-- if red colour is less than 0.2 then it needs to be coloured
-			if r < 0.2 then
+			-- if red colour is less than 0.25 then it needs to be coloured
+			if r < 0.25 then
 				obj:SetTextColor(br - r, bg - g, bb - b)
 			end
 		end
@@ -416,7 +372,7 @@ aObj.blizzFrames[ftype].QuestInfo = function(self)
 		self:Unhook(this, "OnShow")
 	end)
 
-	local function skinRewardBtns(frame, _)
+	local function skinRewardBtns(frame)
 		for _, type in _G.pairs{"HonorFrame", "ArtifactXPFrame", "WarModeBonusFrame", "SkillPointFrame", "TitleFrame"} do
 			-- Classic DOESN'T have a WarModeBonusFrame
 			if frame[type] then
@@ -425,7 +381,15 @@ aObj.blizzFrames[ftype].QuestInfo = function(self)
 					frame[type].NameFrame:SetTexture(nil)
 				end
 				if aObj.modBtnBs then
-					aObj:addButtonBorder{obj=frame[type], btnType=true, relTo=frame[type].Icon, reParent=type == "SkillPointFrame" and {frame[type].CircleBackground, frame[type].CircleBackgroundGlow, frame[type].ValueText}, clr="grey"}
+					aObj:addButtonBorder{obj=frame[type], sibt=true, relTo=frame[type].Icon, reParent=type == "SkillPointFrame" and {frame[type].CircleBackground, frame[type].CircleBackgroundGlow, frame[type].ValueText} or nil, clr="grey"}
+				end
+			end
+		end
+		if self.isRtl then
+			for rep in frame.reputationRewardPool:EnumerateActive() do
+				rep.NameFrame:SetTexture(nil)
+				if aObj.modBtnBs then
+					aObj:addButtonBorder{obj=rep, fType=ftype, relTo=rep.Icon, reParent={rep.RewardAmount}, clr="grey"}
 				end
 			end
 		end
@@ -442,7 +406,7 @@ aObj.blizzFrames[ftype].QuestInfo = function(self)
 	end)
 
 	self:SecureHookScript(_G.MapQuestInfoRewardsFrame, "OnShow", function(this)
-		skinRewardBtns(this, "sibt")
+		skinRewardBtns(this)
 		for _, type in _G.pairs{"XPFrame", "MoneyFrame"} do
 			this[type].NameFrame:SetTexture(nil)
 			if self.modBtnBs then

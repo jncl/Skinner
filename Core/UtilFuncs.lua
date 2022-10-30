@@ -132,7 +132,7 @@ function aObj:applyGradient(obj, fh, invert, rotate)
 		obj.tfade = obj:CreateTexture(nil, "BORDER", nil, -1)
 		obj.tfade:SetTexture(self.gradientTex)
 		obj.tfade:SetBlendMode("ADD")
-		if not aObj.isRtlPTR then
+		if not self.isRtl then
 			obj.tfade:SetGradientAlpha(self:getGradientInfo(invert, rotate))
 		else
 			obj.tfade:SetGradient(self:getGradientInfo(invert, rotate))
@@ -604,9 +604,6 @@ local clrTab = {
 	white    = _G.HIGHLIGHT_FONT_COLOR,
 	yellow   = _G.YELLOW_FONT_COLOR,
 }
-if aObj.isRtlPTR then
-	clrTab["black"] = _G.BLACK_FONT_COLOR
-end
 function aObj:getColourByName(clrName)
 
 	if not clrTab.slider then
@@ -628,23 +625,23 @@ function aObj:getGradientInfo(invert, rotate)
 
 	if self.prdb.Gradient.enable then
 		if invert then
-			if not aObj.isRtlPTR then
+			if not aObj.isRtl then
 				return rotate and "HORIZONTAL" or "VERTICAL", MaxR, MaxG, MaxB, MaxA, MinR, MinG, MinB, MinA
 			else
 				return rotate and "HORIZONTAL" or "VERTICAL", aObj.gmaxClr, aObj.gminClr
 			end
 		else
-			if not aObj.isRtlPTR then
+			if not aObj.isRtl then
 				return rotate and "HORIZONTAL" or "VERTICAL", MinR, MinG, MinB, MinA, MaxR, MaxG, MaxB, MaxA
 			else
 				return rotate and "HORIZONTAL" or "VERTICAL", aObj.gminClr, aObj.gmaxClr
 			end
 		end
 	else
-		if not aObj.isRtlPTR then
+		if not self.isRtl then
 			return rotate and "HORIZONTAL" or "VERTICAL", 0, 0, 0, 1, 0, 0, 0, 1
 		else
-			return rotate and "HORIZONTAL" or "VERTICAL", clrTab["black"]:GetRGBA(), clrTab["black"]:GetRGBA()
+			return rotate and "HORIZONTAL" or "VERTICAL", _G.BLACK_FONT_COLOR, _G.BLACK_FONT_COLOR
 		end
 	end
 
@@ -782,7 +779,7 @@ function aObj:hookSocialToastFuncs(frame)
 	self:SecureHook(frame.animIn, "Play", function(this)
 		if this.sf then
 			this.sf.tfade:SetParent(_G.MainMenuBar)
-			if not aObj.isRtlPTR then
+			if not self.isRtl then
 				this.sf.tfade:SetGradientAlpha(self:getGradientInfo())
 			else
 				this.sf.tfade:SetGradient(self:getGradientInfo())
@@ -790,7 +787,7 @@ function aObj:hookSocialToastFuncs(frame)
 		end
 		if this.cb then
 			this.cb.tfade:SetParent(_G.MainMenuBar)
-			if not aObj.isRtlPTR then
+			if not aObj.isRtl then
 				this.cb.tfade:SetGradientAlpha(self:getGradientInfo())
 			else
 				this.cb.tfade:SetGradient(self:getGradientInfo())
@@ -1224,7 +1221,7 @@ function aObj:setActiveTab(tabSF)
 	if not tabSF.tfade then return end
 
 	tabSF.tfade:SetTexture(self.gradientTex)
-	if not aObj.isRtlPTR then
+	if not aObj.isRtl then
 		tabSF.tfade:SetGradientAlpha(self:getGradientInfo(self.prdb.Gradient.invert, self.prdb.Gradient.rotate))
 	else
 		tabSF.tfade:SetGradient(self:getGradientInfo(self.prdb.Gradient.invert, self.prdb.Gradient.rotate))
@@ -1351,7 +1348,7 @@ function aObj:setupTextures()
 		["tMB"]       = _G.GetFileIDFromPath([[Interface\Minimap\Tracking\Mailbox]]),
 		["w8x8"]      = _G.GetFileIDFromPath([[Interface\Buttons\WHITE8X8]]),
 	}
-	if aObj.isRtlPTR then
+	if aObj.isRtl then
 		self.tFDIDs["cbMin"] = _G.GetFileIDFromPath([[interface/common/minimalcheckbox.blp]])
 	end
 
@@ -1376,11 +1373,19 @@ function aObj:skinIconSelector(frame)
 	self:skinObject("frame", {obj=frame, ofs=1, y1=2})
 	if self.modBtns then
 		self:skinStdButton{obj=frame.BorderBox.CancelButton}
-		self:skinStdButton{obj=frame.BorderBox.OkayButton}
+		self:skinStdButton{obj=frame.BorderBox.OkayButton, schk=true}
 	end
 	if self.modBtnBs then
 		self:addButtonBorder{obj=frame.BorderBox.SelectedIconArea.SelectedIconButton, relTo=frame.BorderBox.SelectedIconArea.SelectedIconButton.Icon}
-		local function skinElement(element, _, new)
+		local function skinElement(...)
+			local _, element, new
+			if _G.select("#", ...) == 2 then
+				element, _ = ...
+			elseif _G.select("#", ...) == 3 then
+				element, _, new = ...
+			else
+				_, element, _, new = ...
+			end
 			if new ~= false then
 				element:DisableDrawLayer("BACKGROUND")
 				aObj:addButtonBorder{obj=element, relTo=element.Icon, clr="grey"}

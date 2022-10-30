@@ -316,7 +316,7 @@ function module:skinCloseButton(opts)
 	    return
 	end
 
-	if not aObj.isRtlPTR then
+	if not aObj.isRtl then
 		opts.obj:DisableDrawLayer("BACKGROUND")
 		opts.obj:SetNormalTexture(nil)
 		opts.obj:SetPushedTexture(nil)
@@ -326,7 +326,7 @@ function module:skinCloseButton(opts)
 	if opts.obj.GetDisabledTexture	-- PVPReadyDialog missing this
 	and opts.obj:GetDisabledTexture()
 	then
-		if not aObj.isRtlPTR then
+		if not aObj.isRtl then
 			opts.obj:SetDisabledTexture(nil)
 		end
 	end
@@ -363,7 +363,7 @@ function module:skinCloseButton(opts)
 		opts.obj.sb:SetText(module.mult)
 	end
 
-	if aObj.isRtlPTR then
+	if aObj.isRtl then
 		local text = aObj:getLastRegion(opts.obj)
 		text:SetDrawLayer("OVERLAY")
 		aObj:moveObject{obj=text, x=-1, y=-1}
@@ -956,12 +956,12 @@ local function __skinCheckButton(opts)
 	-- check to see if it's a 'real' CheckButton
 	if not aObj:hasTextInTexture(opts.obj:GetNormalTexture(), "CheckBox")
 	and not aObj:hasTextInTexture(opts.obj:GetNormalTexture(), aObj.tFDIDs.cbUP)
-	and not (aObj.isRtlPTR and aObj:hasTextInTexture(opts.obj:GetNormalTexture(), aObj.tFDIDs.cbMin))
+	and not (aObj.isRtl and aObj:hasTextInTexture(opts.obj:GetNormalTexture(), aObj.tFDIDs.cbMin))
 	then
 		return
 	end
 
-	if not aObj.isRtlPTR then
+	if not aObj.isRtl then
 		opts.obj:GetNormalTexture():SetTexture(nil)
 		opts.obj:GetPushedTexture():SetTexture(nil)
 	else

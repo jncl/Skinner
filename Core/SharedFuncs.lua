@@ -210,7 +210,7 @@ function aObj:setupOptions(optNames, optIgnore, preLoadFunc, postLoadFunc)
 		if postLoadFunc then
 			postLoadFunc()
 		end
-		if not aObj.isRtlPTR then
+		if not aObj.isRtl then
 			_G.InterfaceAddOnsList_Update()
 		else
 			-- toggle tabs to force refresh of Categories
@@ -223,7 +223,7 @@ function aObj:setupOptions(optNames, optIgnore, preLoadFunc, postLoadFunc)
 	self.RegisterCallback(aName, "Options_Selected", function()
 		categorySelected()
 	end)
-	if not aObj.isRtlPTR then
+	if not self.isRtl then
 		self:RawHook("InterfaceOptionsListButton_OnClick", function(bObj, mouseButton)
 			if bObj.element.name == aName
 			and not bObj.element.hasChildren
