@@ -1,3 +1,16 @@
+beta9.46158.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	PTR/Beta changes
+	Enabled AlertFrames & TextToSpeech frame skins in classic
+	Updated all FilterButtons colour to grey
+	Updated ChatTabs skin
+	Updated ChatConfig skin
+	Bugfix for misplaced tab highlight texture
+	Updated LibUIDropDownMenu skin
+	
 beta9.46092.1
 Jncl:
 	ToDo.txt
