@@ -77,7 +77,7 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 				and aObj.modBtns
 				then
 					aObj:secureHook(obj, "BuildTabs", function(this)
-						aObj:skinObject("tabs", {obj=this.frame, tabs=obj.tabs, lod=self.isTT and true, upwards=true, offsets={x1=8, y1=-2, x2=-8, y2=self.isTT and -5 or -2}, regions=aObj.isRtlPTR and {7} or nil, noCheck=true, track=false})
+						aObj:skinObject("tabs", {obj=this.frame, tabs=obj.tabs, lod=self.isTT and true, upwards=true, regions=aObj.isRtl and {7} or nil, noCheck=true, track=false, offsets={x1=6, x2=-6, y2=-5}})
 						aObj:Unhook(this, "BuildTabs")
 					end)
 					if aObj.isTT then

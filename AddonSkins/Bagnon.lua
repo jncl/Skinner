@@ -2,76 +2,60 @@ local aName, aObj = ...
 if not aObj:isAddonEnabled("Bagnon") then return end
 local _G = _G
 
-aObj.addonsToSkin.Bagnon = function(self) -- v 8.2.29
+aObj.addonsToSkin.Bagnon = function(self) -- v 9.2.2/10.0.1
 	if not self.db.profile.ContainerFrames or self.initialized.Bagnon then return end
 	self.initialized.Bagnon = true
 
-	local Bagnon = _G.Bagnon
 	-- hide empty slot background
-	Bagnon.sets['emptySlots'] = false
+	_G.Bagnon.sets.emptySlots = false
 
 	-- skin the bag frames
 	local function skinFrame(frame, id)
-		aObj:addSkinFrame{obj=frame, ft="a", kfs=true, nb=true}
+		aObj:skinObject("frame", {obj=frame, kfs=true, cb=true})
 		frame.SetBackdropColor = _G.nop
 		frame.SetBackdropBorderColor = _G.nop
 		aObj:secureHookScript(frame, "OnShow", function(this)
 			if aObj.modBtnBs then
-				for i = 1, #this.menuButtons do
-					aObj:addButtonBorder{obj=this.menuButtons[i], ofs=3, clr="grey"}
+				for _, btn in _G.pairs(this.menuButtons) do
+					aObj:addButtonBorder{obj=btn, ofs=3, clr="grey"}
 				end
 				-- bag/tab buttons
-				if this.bagFrame then
-					local kids = {this.bagFrame:GetChildren()}
-					for _, child in _G.ipairs(kids) do
+				if this.bagGroup then
+					for _, child in _G.ipairs{this.bagGroup:GetChildren()} do
 						if child:IsObjectType("CheckButton") then
-							aObj:addButtonBorder{obj=child, ofs=3}
+							aObj:addButtonBorder{obj=child, ofs=4, clr="grey"}
 						end
 					end
-					kids = nil
 				end
+				-- Options button
 				if this:HasOptionsToggle() then
-					aObj:addButtonBorder{obj=this.optionsToggle, ofs=3, clr="grey"}
+					aObj:addButtonBorder{obj=this.OptionsToggle or this.optionsToggle, ofs=3, clr="grey"}
 				end
-				if this:HasBrokerDisplay() then
+				-- Broker button
+				if this.HasBrokerCarrousel
+				and this:HasBrokerCarrousel()
+				then
+					aObj:addButtonBorder{obj=this.Broker, relTo=this.Broker.Icon, ofs=3, clr="grey"}
+				elseif this.HasBrokerDisplay
+				and this:HasBrokerDisplay()
+				then
 					aObj:addButtonBorder{obj=this.brokerDisplay, relTo=this.brokerDisplay.icon, ofs=3, clr="grey"}
 				end
 				-- VoidStorage Transfer button
-				if this:HasMoneyFrame()
-				and this.moneyFrame.icon
-				then
-					aObj:addButtonBorder{obj=this.moneyFrame.icon:GetParent(), relTo=this.moneyFrame.icon, ofs=3, clr="grey"}
+				if this.frameID == "vault" then
+					if this.Money then
+						aObj:addButtonBorder{obj=this.Money.Button, relTo=this.Money.Button.Icon, ofs=3, clr="grey"}
+					else
+						aObj:addButtonBorder{obj=this.moneyFrame.Button, relTo=this.moneyFrame.Button.Icon, ofs=3, clr="grey"}
+					end
 				end
-			end
-			if aObj.modBtns then
-				if this.closeButton then
-					aObj:skinCloseButton{obj=this.closeButton}
-				end
-			end
-			if frame.CreateLogFrame then
-				aObj:SecureHook(frame, "CreateLogFrame", function(this)
-					aObj:skinSlider{obj=this.logFrame.ScrollBar}
-					-- DON'T unhook as new frames are created each time
-				end)
-			end
-			if frame.CreateEditFrame then
-				aObj:SecureHook(frame, "CreateEditFrame", function(this)
-					aObj:skinSlider{obj=this.editFrame.ScrollBar}
-					aObj:Unhook(this, "CreateEditFrame")
-				end)
 			end
 
 			aObj:Unhook(this, "OnShow")
 		end)
 	end
-	-- skin the Search EditBox
-	self:RawHook(Bagnon["SearchFrame"], "New", function(this, ...)
-		local eb = self.hooks[this].New(this, ...)
-		self:skinEditBox{obj=eb, regs={9}}
-		return eb
-	end)
 	-- hook this to skin new frames
-	self:RawHook(Bagnon.Frames, "New", function(this, id)
+	self:RawHook(_G.Bagnon.Frames, "New", function(this, id)
 		local frame = self.hooks[this].New(this, id)
 		if frame then
 			skinFrame(frame, id)
@@ -81,24 +65,28 @@ aObj.addonsToSkin.Bagnon = function(self) -- v 8.2.29
 		end
 	end)
 
+	-- skin the Search EditBox
+	self:RawHook(_G.Bagnon["SearchFrame"], "New", function(this, ...)
+		local eb = self.hooks[this].New(this, ...)
+		self:skinObject("editbox", {obj=eb})
+		return eb
+	end)
+
 end
 
 -- Bagnon_GuildBank frame handled in above skinFrame function
 -- Bagnon_VoidStorage frame handled in above skinFrame function
 
-aObj.lodAddons.Bagnon_Config = function(self) -- v 8.2.29
+aObj.lodAddons.Bagnon_Config = function(self) -- v 9.2.2
 
 	-- register callback to skin elements
 	self.RegisterCallback("Bagnon_Config", "IOFPanel_After_Skinning", function(this, panel)
 		local function skinKids(panel)
 			for _, child in _G.ipairs{panel:GetChildren()} do
 				if aObj:isDropDown(child) then
-					aObj:skinDropDown{obj=child, x2=-1}
+					aObj:skinObject("dropdown", {obj=child})
 				elseif child:IsObjectType("Slider") then
-					aObj:skinSlider{obj=child}
-					if Round(child:GetHeight()) == 17 then
-						aObj:adjHeight(child, -4)
-					end
+					aObj:skinObject("slider", {obj=child})
 				elseif child:IsObjectType("Frame") then
 					skinKids(child)
 				end

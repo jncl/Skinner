@@ -2,7 +2,7 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("TLDRMissions") then return end
 local _G = _G
 
-aObj.addonsToSkin.TLDRMissions = function(self) -- v9.2-135
+aObj.addonsToSkin.TLDRMissions = function(self) -- v9.2-138
 
 	self:SecureHookScript(_G.TLDRMissionsFollowerList, "OnShow", function(this)
 		function skinFollower(frame)
@@ -48,8 +48,8 @@ aObj.addonsToSkin.TLDRMissions = function(self) -- v9.2-135
 	end)
 
 	if self.modBtns then
-		self:skinStdButton{obj=_G.TLDRMissionsToggleButton}
-		self:skinStdButton{obj=_G.TLDRMissionsShortcutButton}
+		self:skinStdButton{obj=_G.TLDRMissionsToggleButton, clr="grey"}
+		self:skinStdButton{obj=_G.TLDRMissionsShortcutButton, clr="grey"}
 	end
 
 	self:SecureHookScript(_G.TLDRMissionsFrame, "OnShow", function(this)
@@ -62,7 +62,7 @@ aObj.addonsToSkin.TLDRMissions = function(self) -- v9.2-135
 		self:skinObject("editbox", {obj=this.MaxSimulationsEditBox})
 		self:skinObject("slider", {obj=this.DurationLowerSlider})
 		self:skinObject("slider", {obj=this.DurationHigherSlider})
-		self:skinObject("frame", {obj=this, kfs=true, cb=true, ofs=0, y2=-2})
+		self:skinObject("frame", {obj=this, kfs=true, cb=true, ofs=0})
 		if self.modBtns then
 			self:skinStdButton{obj=this.CalculateButton, sechk=true}
 			self:skinStdButton{obj=this.AbortButton, sechk=true}
