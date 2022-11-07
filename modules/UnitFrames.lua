@@ -31,24 +31,61 @@ local unitFrames = {
 
 module.isSkinned = _G.setmetatable({}, {__index = function(t, k) t[k] = true end})
 
--- N.B. handle bug in XML & lua which places mana bar 1 pixel too high
-function module:adjustStatusBarPosn(sBar, yAdj)
-
-	local oPnt
-	yAdj = yAdj or 1
-	if sBar.TextString then
-		oPnt = {sBar.TextString:GetPoint()}
-		sBar.TextString:SetPoint(oPnt[1], oPnt[2], oPnt[3], oPnt[4], oPnt[5] + yAdj)
-	end
-	if sBar == _G.PlayerFrame.healthbar then
-		self:RawHook(sBar, "SetPoint", function(this, posn, xOfs, yOfs)
-			self.hooks[this].SetPoint(this, posn, xOfs, yOfs + yAdj)
+if aObj.isRtl then
+	local function colourManaBar(manaBar)
+		local powerType, powerToken, altR, altG, altB = _G.UnitPowerType(manaBar.unit)
+		local info = _G.PowerBarColor[powerToken]
+		if info then
+			local playerDeadOrGhost = (manaBar.unit == "player" and (_G.UnitIsDead("player") or _G.UnitIsGhost("player")))
+			if playerDeadOrGhost then
+				manaBar:SetStatusBarColor(0.6, 0.6, 0.6, 0.5)
+			else
+				manaBar:SetStatusBarColor(info.r, info.g, info.b)
+			end
+		elseif altR then
+			manaBar:SetStatusBarColor(altR, altG, altB)
+		else
+			info = _G.PowerBarColor[powerType] or _G.PowerBarColor["MANA"]
+			manaBar:SetStatusBarColor(info.r, info.g, info.b)
+		end
+		-- change colour if white
+		aObj:rawHook(manaBar, "SetStatusBarColor", function(this, r, g, b, a)
+			if r ~= 1
+			or g ~= 1
+			or b ~= 1
+			then
+				aObj.hooks[this].SetStatusBarColor(this, r, g, b, a)
+			end
 		end, true)
-	else
-		oPnt = {sBar:GetPoint()}
-		sBar:SetPoint(oPnt[1], oPnt[2], oPnt[3], oPnt[4], oPnt[5] + yAdj)
 	end
+	-- hook this to manage colour changes
+	aObj:SecureHook("UnitFrameHealthBar_Update", function(statusbar, _)
+		statusbar:SetStatusBarColor(0, 1, 0) -- green
+	end)
+	aObj:SecureHook("UnitFrameManaBar_UpdateType", function(statusbar, _)
+		colourManaBar(statusbar)
+	end)
+end
+if not aObj.isRtl then
+	-- N.B. handle bug in XML & lua which places mana bar 1 pixel too high
+	function module:adjustStatusBarPosn(sBar, yAdj)
 
+		local oPnt
+		yAdj = yAdj or 1
+		if sBar.TextString then
+			oPnt = {sBar.TextString:GetPoint()}
+			sBar.TextString:SetPoint(oPnt[1], oPnt[2], oPnt[3], oPnt[4], oPnt[5] + yAdj)
+		end
+		if sBar == _G.PlayerFrame.healthbar then
+			self:RawHook(sBar, "SetPoint", function(this, posn, xOfs, yOfs)
+				self.hooks[this].SetPoint(this, posn, xOfs, yOfs + yAdj)
+			end, true)
+		else
+			oPnt = {sBar:GetPoint()}
+			sBar:SetPoint(oPnt[1], oPnt[2], oPnt[3], oPnt[4], oPnt[5] + yAdj)
+		end
+
+	end
 end
 function module:skinUnitButton(opts) -- luacheck: ignore self
 
@@ -87,6 +124,8 @@ function module:skinPlayerF()
 			    aObj:add2Table(aObj.oocTab, {skinPlayerFrame, {frame}})
 			    return
 			end
+			-- PowerBarAlt handled in MainMenuBar function (UIF)
+			-- casting bar handled in CastingBar function (PF)
 			if not aObj.isRtl then
 				_G.PlayerFrameBackground:SetTexture(nil)
 				_G.PlayerFrameTexture:SetAlpha(0) -- texture file is changed dependant upon in vehicle or not
@@ -95,39 +134,24 @@ function module:skinPlayerF()
 				_G.PlayerRestGlow:SetTexture(nil)
 				_G.PlayerAttackGlow:SetTexture(nil)
 				_G.PlayerAttackBackground:SetTexture(nil)
-			else
-				frame.PlayerFrameContainer.FrameTexture:SetTexture(nil)
-			end
-			if aObj.isRtl then
-				aObj:skinObject("statusbar", {obj=frame.PlayerFrameContent.PlayerFrameContentMain.HealthBarArea.PlayerFrameHealthBarAnimatedLoss, fi=0})
-				aObj:skinObject("statusbar", {obj=frame.healthbar, fi=0, other={frame.myHealPredictionBar, frame.otherHealPredictionBar}})
-				aObj:skinObject("statusbar", {obj=frame.manabar, fi=0, other={frame.myManaCostPredictionBar, frame.manabar.FeedbackFrame.BarTexture}, nilFuncs=true})
-				-- AlternateManaBar
-				_G.PlayerFrameAlternateManaBar.DefaultBackground:SetAlpha(1)
-				aObj:skinObject("statusbar", {obj=_G.PlayerFrameAlternateManaBar, regions={2, 3, 4, 5, 6}, fi=0, bg=_G.PlayerFrameAlternateManaBar.DefaultBackground})
-				frame.healthbar:SetStatusBarColor(0, 1, 0) -- green
-				-- FIXME: manabar colour remains white
-				frame.manabar:SetStatusBarColor(1, 0.5, 0) -- orange
-				frame.manabar:GetStatusBarTexture():RemoveMaskTexture(frame.PlayerFrameContent.PlayerFrameContentMain.ManaBarMask)
-				-- move PvP Timer text down
-				aObj:moveObject{obj=_G.PlayerPVPTimerText, y=-10}
-			else
 				frame.threatIndicator = _G.PlayerAttackBackground
 				aObj:skinObject("statusbar", {obj=frame.healthbar, fi=0})
 				aObj:skinObject("statusbar", {obj=frame.manabar, fi=0, nilFuncs=true})
-			end
-			if not aObj.isRtl then
 				module:adjustStatusBarPosn(frame.healthbar)
-				-- PowerBarAlt handled in MainMenuBar function (UIF)
-				-- casting bar handled in CastingBar function (PF)
 				-- move level & rest icon down, so they are more visible
 				module:SecureHook("PlayerFrame_UpdateLevelTextAnchor", function(level)
 					_G.PlayerLevelText:SetPoint("CENTER", _G.PlayerFrameTexture, "CENTER", level == 100 and -62 or -61, -20 + lOfs)
 				end)
 				_G.PlayerRestIcon:SetPoint("TOPLEFT", 36, -63)
-				-- remove group indicator textures
 				aObj:keepFontStrings(_G.PlayerFrameGroupIndicator)
-				aObj:moveObject{obj=_G.PlayerFrameGroupIndicatorText, y=-1}
+			else
+				frame.PlayerFrameContainer.FrameTexture:SetAlpha(0) -- texture file is changed dependant upon in vehicle or not
+				frame.PlayerFrameContainer.VehicleFrameTexture:SetAlpha(0) -- texture file is changed dependant upon in vehicle or not
+				aObj:skinObject("statusbar", {obj=frame.PlayerFrameContent.PlayerFrameContentMain.HealthBarArea.PlayerFrameHealthBarAnimatedLoss, fi=0})
+				aObj:skinObject("statusbar", {obj=frame.healthbar, fi=0, other={frame.myHealPredictionBar, frame.otherHealPredictionBar}})
+				aObj:skinObject("statusbar", {obj=frame.manabar, fi=0, other={frame.myManaCostPredictionBar, frame.manabar.FeedbackFrame.BarTexture}, hookFunc=true})
+				-- _G.PlayerFrameAlternateManaBar.DefaultBackground:SetAlpha(1)
+				-- aObj:skinObject("statusbar", {obj=_G.PlayerFrameAlternateManaBar, regions={2, 3, 4, 5, 6}, fi=0, bg=_G.PlayerFrameAlternateManaBar.DefaultBackground})
 			end
 			local x1Ofs, y1Ofs, x2Ofs, y2Ofs = 35, -5, 2, 2
 			-- skin the EclipseBarFrame/ComboPoints, if required
@@ -135,16 +159,20 @@ function module:skinPlayerF()
 				if aObj.uCls == "DRUID"
 				or aObj.uCls == "ROGUE"
 				then
-					if aObj.isRtl then
-						_G.ComboPointPlayerFrame.Background:SetTexture(nil)
-						for i = 1, #_G.ComboPointPlayerFrame.ComboPoints do
-							_G.ComboPointPlayerFrame.ComboPoints[i].PointOff:SetTexture(nil)
-						end
-					else
-						for i = 1, #_G.ComboFrame.ComboPoints do
-							_G.ComboFrame.ComboPoints[i]:DisableDrawLayer("BACKGROUND")
-						end
+					for i = 1, #_G.ComboFrame.ComboPoints do
+						_G.ComboFrame.ComboPoints[i]:DisableDrawLayer("BACKGROUND")
 					end
+				end
+				--	skin the TotemFrame, if required
+				if aObj.uCls == "SHAMAN"
+				or aObj.uCls == "DEATHKNIGHT"
+				then
+					for i = 1, _G.MAX_TOTEMS do
+						_G["TotemFrameTotem" .. i .. "Background"]:SetAlpha(0) -- texture is changed
+						aObj:getRegion(aObj:getChild(_G["TotemFrameTotem" .. i], 2), 1):SetAlpha(0) -- Totem Border texture
+					end
+					aObj:moveObject{obj=_G.TotemFrameTotem1, y=lOfs} -- covers level text when active
+					y2Ofs = 9
 				end
 				-- skin the PaladinPowerBarFrame, if required
 				if aObj.uCls == "PALADIN" then
@@ -152,58 +180,56 @@ function module:skinPlayerF()
 					_G.PaladinPowerBarFrame.glow:DisableDrawLayer("BACKGROUND")
 					y2Ofs = 6
 				end
-				if aObj.isRtl then
-					-- skin the ArcaneChargesFrame, if required
-					if aObj.uCls == "MAGE" then
-						_G.MageArcaneChargesFrame:DisableDrawLayer("BACKGROUND")
+				-- skin the ArcaneChargesFrame, if required
+				if aObj.uCls == "MAGE" then
+					_G.MageArcaneChargesFrame:DisableDrawLayer("BACKGROUND")
+				end
+				-- skin the MonkHarmonyBar/MonkStaggerBar, if required
+				if aObj.uCls == "MONK" then
+					-- MonkHarmonyBarFrame (Windwalker)
+					aObj:removeRegions(_G.MonkHarmonyBarFrame, {1, 2})
+					for i = 1, #_G.MonkHarmonyBarFrame.LightEnergy do
+						_G.MonkHarmonyBarFrame.LightEnergy[i]:DisableDrawLayer("BACKGROUND")
 					end
-					-- skin the MonkHarmonyBar/MonkStaggerBar, if required
-					if aObj.uCls == "MONK" then
-						-- MonkHarmonyBarFrame (Windwalker)
-						aObj:removeRegions(_G.MonkHarmonyBarFrame, {1, 2})
-						for i = 1, #_G.MonkHarmonyBarFrame.LightEnergy do
-							_G.MonkHarmonyBarFrame.LightEnergy[i]:DisableDrawLayer("BACKGROUND")
+					-- hook this to handle orb 5
+					module:SecureHook(_G.MonkPowerBar, "UpdateMaxPower", function(this)
+						if this.maxLight == 5 then
+							_G.MonkHarmonyBarFrame.LightEnergy[5]:DisableDrawLayer("BACKGROUND")
+							aObj:Unhook(_G.MonkPowerBar, "UpdateMaxPower")
 						end
-						-- hook this to handle orb 5
-						module:SecureHook(_G.MonkPowerBar, "UpdateMaxPower", function(this)
-							if this.maxLight == 5 then
-								_G.MonkHarmonyBarFrame.LightEnergy[5]:DisableDrawLayer("BACKGROUND")
-								aObj:Unhook(_G.MonkPowerBar, "UpdateMaxPower")
-							end
-						end)
-						-- MonkStaggerBar (Brewmaster)
-						aObj:skinObject("statusbar", {obj=_G.MonkStaggerBar, regions= {2, 3, 4, 5, 6}, fi=0, bg=_G.MonkStaggerBar.DefaultBackground})
-						-- extend frame if Brewmaster specialization
-						if _G.MonkStaggerBar.class == aObj.uCls
-						and _G.MonkStaggerBar.specRestriction == _G.GetSpecialization()
-						then
-							y2Ofs = 3
-						end
-					end
-					-- skin the PriestBarFrame/InsanityBarFrame, if required
-					if aObj.uCls == "PRIEST" then
-						for i = 1, #_G.PriestBarFrame.LargeOrbs do
-							_G.PriestBarFrame.LargeOrbs[i].Highlight:SetTexture(nil)
-						end
-						for i = 1, #_G.PriestBarFrame.SmallOrbs do
-							_G.PriestBarFrame.SmallOrbs[i].Highlight:SetTexture(nil)
-						end
-						-- InsanityBarFrame
-						_G.InsanityBarFrame.InsanityOn.PortraitOverlay:SetTexture(nil)
-						_G.InsanityBarFrame.InsanityOn.TopShadowStay:SetTexture(nil)
-					end
-					-- skin the WarlockPowerFrame, if required
-					if aObj.uCls == "WARLOCK" then
-						_G.WarlockPowerFrame:DisableDrawLayer("BACKGROUND") -- Shard(s) background texture
+					end)
+					-- MonkStaggerBar (Brewmaster)
+					aObj:skinObject("statusbar", {obj=_G.MonkStaggerBar, regions= {2, 3, 4, 5, 6}, fi=0, bg=_G.MonkStaggerBar.DefaultBackground})
+					-- extend frame if Brewmaster specialization
+					if _G.MonkStaggerBar.class == aObj.uCls
+					and _G.MonkStaggerBar.specRestriction == _G.GetSpecialization()
+					then
+						y2Ofs = 3
 					end
 				end
-			else
-				if aObj.uCls == "DRUID" then
-					for btn in _G.ComboPointDruidPlayerFrame.classResourceButtonPool:EnumerateActive() do
-						btn.PointOff:SetAlpha(0)
+				-- skin the PriestBarFrame/InsanityBarFrame, if required
+				if aObj.uCls == "PRIEST" then
+					for i = 1, #_G.PriestBarFrame.LargeOrbs do
+						_G.PriestBarFrame.LargeOrbs[i].Highlight:SetTexture(nil)
 					end
-				elseif aObj.uCls == "ROGUE" then
-					for btn in _G.ComboPointPlayerFrame.classResourceButtonPool:EnumerateActive() do
+					for i = 1, #_G.PriestBarFrame.SmallOrbs do
+						_G.PriestBarFrame.SmallOrbs[i].Highlight:SetTexture(nil)
+					end
+					-- InsanityBarFrame
+					_G.InsanityBarFrame.InsanityOn.PortraitOverlay:SetTexture(nil)
+					_G.InsanityBarFrame.InsanityOn.TopShadowStay:SetTexture(nil)
+				end
+				-- skin the WarlockPowerFrame, if required
+				if aObj.uCls == "WARLOCK" then
+					_G.WarlockPowerFrame:DisableDrawLayer("BACKGROUND") -- Shard(s) background texture
+				end
+			else
+				if aObj.uCls == "DEATHKNIGHT" then	-- luacheck: ignore 542 (empty if branch)
+					-- RuneFrame
+				elseif aObj.uCls == "DRACTHYR" then	-- luacheck: ignore 542 (empty if branch)
+					-- EssencePlayerFrame
+				elseif aObj.uCls == "DRUID" then
+					for btn in _G.ComboPointDruidPlayerFrame.classResourceButtonPool:EnumerateActive() do
 						btn.PointOff:SetAlpha(0)
 					end
 				elseif aObj.uCls == "MAGE" then
@@ -232,25 +258,25 @@ function module:skinPlayerF()
 					end
 					_G.InsanityBarFrame.InsanityOn.PortraitOverlay:SetTexture(nil)
 					_G.InsanityBarFrame.InsanityOn.TopShadowStay:SetTexture(nil)
+				elseif aObj.uCls == "ROGUE" then
+					for btn in _G.ComboPointPlayerFrame.classResourceButtonPool:EnumerateActive() do
+						btn.PointOff:SetAlpha(0)
+					end
+				elseif aObj.uCls == "SHAMAN" then
+					local function skinTotems(fObj)
+						for btn  in fObj.totemPool:EnumerateActive() do
+							aObj:getRegion(btn, 1):SetAlpha(0) -- Background texture
+							aObj:getRegion(aObj:getChild(btn, 2), 1):SetAlpha(0) -- TotemBorder texture
+						end
+					end
+					self:SecureHook(_G.TotemFrame, "Update", function(this)
+						skinTotems(this)
+					end)
+					skinTotems(_G.TotemFrame)
 				elseif aObj.uCls == "WARLOCK" then
 					for btn in _G.WarlockPowerFrame.classResourceButtonPool:EnumerateActive() do
 						btn:DisableDrawLayer("BACKGROUND")
 					end
-				elseif aObj.uCls == "DRACTHYR" then
-					-- EssencePlayerFrame
-				end
-			end
-			if not aObj.isClscERA then
-				--	skin the TotemFrame, if required
-				if aObj.uCls == "SHAMAN"
-				or aObj.uCls == "DEATHKNIGHT"
-				then
-					for i = 1, _G.MAX_TOTEMS do
-						_G["TotemFrameTotem" .. i .. "Background"]:SetAlpha(0) -- texture is changed
-						aObj:getRegion(aObj:getChild(_G["TotemFrameTotem" .. i], 2), 1):SetAlpha(0) -- Totem Border texture
-					end
-					aObj:moveObject{obj=_G.TotemFrameTotem1, y=lOfs} -- covers level text when active
-					y2Ofs = 9
 				end
 			end
 			-- skin the frame here as preceeding code changes y2Ofs value
@@ -299,21 +325,12 @@ function module:skinPetF()
 				aObj:nilTexture(_G.PetFrameTexture, true)
 				_G.PetAttackModeTexture:SetTexture(nil)
 				aObj:skinObject("statusbar", {obj=frame.healthbar, fi=0, other={frame.MyHealPredictionBar, frame.OtherHealPredictionBar}})
-				aObj:skinObject("statusbar", {obj=frame.manabar, fi=0, nilFuncs=true})
-				frame.healthbar:SetStatusBarColor(0, 1, 0) -- green
-				frame.manabar:SetStatusBarColor(1, 0.5, 0) -- orange
-				frame.manabar:GetStatusBarTexture():AddMaskTexture(_G.ManaBarMask)
+				aObj:skinObject("statusbar", {obj=frame.manabar, fi=0, hookFunc=true})
 			end
 			-- casting bar handled in CastingBar function
 			if aObj.isRtl then
-				if not aObj.isRtl then
-					for i = 1, 4 do
-						_G["PetFrameDebuff" .. i .. "Border"]:SetTexture(nil)
-					end
-				else
-					for btn in _G.PetFrame.DebuffFramePool:EnumerateActive() do
-						btn.Border:SetTexture(nil)
-					end
+				for btn in _G.PetFrame.DebuffFramePool:EnumerateActive() do
+					btn.Border:SetTexture(nil)
 				end
 			end
 			if aObj.isRtl
@@ -394,19 +411,14 @@ function module:skinCommon(fName, adjSB)
 	end
 
 	aObj:skinObject("statusbar", {obj=fo.healthbar, fi=0, other={fo.myHealPredictionBar, fo.otherHealPredictionBar}})
-	aObj:skinObject("statusbar", {obj=fo.manabar, fi=0, nilFuncs=true})
+	aObj:skinObject("statusbar", {obj=fo.manabar, fi=0, hookFunc=true})
 	if not aObj.isRtl then
 		if adjSB then
 			self:adjustStatusBarPosn(fo.healthbar)
 		end
 	else
-		fo.healthbar:SetStatusBarColor(0, 1, 0) -- green
-		-- FIXME: manabar colour remains white
-		fo.manabar:SetStatusBarColor(0.52, 0.75, 1) -- light blue
 		if fo.TargetFrameContent then
-			local targetFrameContentMain = fo.TargetFrameContent.TargetFrameContentMain
-			targetFrameContentMain.ManaBar:GetStatusBarTexture():RemoveMaskTexture(targetFrameContentMain.ManaBarMask)
-			targetFrameContentMain.HealthBar.HealthBarTexture.SetAtlas = _G.nop
+			fo.TargetFrameContent.TargetFrameContentMain.HealthBar.HealthBarTexture.SetAtlas = _G.nop
 		end
 	end
 
@@ -431,8 +443,10 @@ function module:skinButton(fName, ti)
 
 	self:skinUnitButton{obj=fo, ti=ti or true, x1=x1Ofs, y1=y1Ofs, x2=x2Ofs, y2=y2Ofs}
 	self:skinCommon(fName, true)
-	if _G[fName .. "NumericalThreat"] then
-		aObj:removeRegions(_G[fName .. "NumericalThreat"], {3}) -- threat border
+	if not aObj.isClscERA then
+		if fo.threatNumericIndicator then
+			fo.threatNumericIndicator:DisableDrawLayer("ARTWORK")
+		end
 	end
 
 	if not fo.isBossFrame then
@@ -458,18 +472,18 @@ function module:skinButton(fName, ti)
 	end
 
 	if fo.spellbar then
-		fo.spellbar.Text:ClearAllPoints()
-		fo.spellbar.Text:SetPoint("TOP", 0, 3)
-		fo.spellbar.Flash:SetAllPoints()
-		fo.spellbar.Border:SetAlpha(0) -- texture file is changed dependant upon spell type
 		aObj:changeShield(fo.spellbar.BorderShield, fo.spellbar.Icon)
+		fo.spellbar.Border:SetAlpha(0) -- texture file is changed dependant upon spell type
 		if not aObj.isRtl then
 			aObj:adjHeight{obj=fo.spellbar, adj=2}
+			fo.spellbar.Flash:SetAllPoints()
+			fo.spellbar.Text:ClearAllPoints()
+			fo.spellbar.Text:SetPoint("TOP", 0, 3)
 			aObj:skinObject("statusbar", {obj=fo.spellbar, fi=0, bg=aObj:getRegion(fo.spellbar, 1), other={fo.spellbar.Flash}})
 		else
+			aObj:adjHeight{obj=fo.spellbar, adj=4}
 			aObj:nilTexture(fo.spellbar.TextBorder, true)
-			aObj:nilTexture(fo.spellbar.Border, true)
-			aObj:skinObject("statusbar", {obj=fo.spellbar, fi=0, bg=aObj:getRegion(fo.spellbar, 2)})
+			aObj:skinObject("statusbar", {obj=fo.spellbar, fi=0, bg=fo.spellbar.Background, hookFunc=true})
 		end
 	end
 
@@ -893,9 +907,6 @@ if aObj.isRtl then
 
 		if db.arena then
 			local function skinArenaFrame(fName)
-				_G.C_Timer.After(1, function()
-					_G.Spew("skinArenaFrame", _G[fName])
-				end)
 				if _G.InCombatLockdown() then
 				    aObj:add2Table(aObj.oocTab, {skinArenaFrame, {fName}})
 				    return
@@ -912,7 +923,7 @@ if aObj.isRtl then
 				aObj:moveObject{obj=_G[cBar].Text, y=-1}
 				_G[cBar].Flash:SetAllPoints()
 				aObj:skinObject("statusbar", {obj=_G[cBar], fi=0, bg=aObj:getRegion(_G[cBar], 1), other={_G[cBar].Flash}})
-				_G[cBar]:SetStatusBarColor(0, 1, 0)
+				-- _G[cBar]:SetStatusBarColor(0, 1, 0)
 				if _G[fName].petFrame then
 					fName = fName .. "PetFrame"
 					module:skinUnitButton{obj=_G[fName], y1=1, x2=1, y2=2}
