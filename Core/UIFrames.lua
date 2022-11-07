@@ -74,17 +74,21 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 		["Loot"]               = true,
 		["LootUpgrade"]        = true,
 		["MoneyWon"]           = true,
+		["NewCosmetic"]        = true,
 		["NewMount"]           = true,
+		["NewPet"]             = true,
+		["NewToy"]             = true,
 		["WorldQuestComplete"] = true,
 	}
 	--@end-debug@
+
 	local alertType = {
 		["Achievement"]           = {ofs = 0, nt = {"Background"}, stc = "Unlocked", icon = {obj = "Icon", ddl = {"border", "overlay"}, tex ="Texture"}},
 		["Criteria"]              = {ofs = -8, nt = {"Background"}, stc = "Unlocked", icon = {obj = "Icon", ddl = {"border", "overlay"}, tex ="Texture"}},
 		["DigsiteComplete"]       = {ofs = -10, ddl = {"background"}},
 		["DungeonCompletion"]     = {ofs = -8, ddl = {"background", "border", "overlay"}, sdla = "dungeonTexture", icon = {tex = "dungeonTexture"}},
 		["GarrisonBuilding"]      = {ofs = -10, ddl = {"background", "border", "overlay"}},
-		["GarrisonFollower"]      = {ofs = -8, ddl = {"background"}, nt = {"PortraitFrame[\"LevelBorder\"]", "FollowerBG"},  stn = {"PortraitFrame[\"PortraitRing\"]"}},
+		["GarrisonFollower"]      = {ofs = -8, nt = {"FollowerBG"}, nt2 = {PortraitFrame = "LevelBorder"}, stn2 = {PortraitFrame = "PortraitRing"}, ddl = {"background"}},
 		["GarrisonMission"]       = {ofs = -10, ddl = {"background", "border"}},
 		["GarrisonRandomMission"] = {ofs = -10, ddl = {"background"}, sdlb = "MissionType"},
 		["GarrisonShipFollower"]  = {ofs = -8, ddl = {"background"}, nt = {"FollowerBG"}},
@@ -149,9 +153,19 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 				aObj:nilTexture(frame[tex], true)
 			end
 		end
+		if tbl.nt2 then
+			for key, tex in _G.pairs(tbl.nt2) do
+				aObj:nilTexture(frame[key][tex], true)
+			end
+		end
 		if tbl.stn then
 			for _, tex in _G.pairs(tbl.stn) do
 				frame[tex]:SetTexture(nil)
+			end
+		end
+		if tbl.stn2 then
+			for key, tex in _G.pairs(tbl.stn2) do
+				frame[key][tex]:SetTexture(nil)
 			end
 		end
 		if tbl.sdla then
@@ -2172,8 +2186,11 @@ if not aObj.isClscERA then
 				self:addButtonBorder{obj=this.PitchUpButton}
 				self:addButtonBorder{obj=this.PitchDownButton}
 				self:addButtonBorder{obj=this.LeaveButton}
-				for i = 1, 6 do
-					self:addButtonBorder{obj=this["SpellButton" .. i], sabt=true}
+				-- FIXME: Addon blocked in Retail/PTR/Beta when pressing any button on OAB
+				if not aObj.isRtl then
+					for i = 1, 6 do
+						self:addButtonBorder{obj=this["SpellButton" .. i], sabt=true}
+					end
 				end
 			end
 
