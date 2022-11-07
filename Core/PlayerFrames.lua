@@ -256,7 +256,7 @@ aObj.blizzFrames[ftype].MirrorTimers = function(self)
 	for i = 1, _G.MIRRORTIMER_NUMTIMERS do
 		objName = "MirrorTimer" .. i
 		obj = _G[objName]
-		if not aObj.isRtl then
+		if not self.isRtl then
 			self:removeRegions(obj, {3})
 			obj:SetHeight(obj:GetHeight() * 1.25)
 			self:moveObject{obj=_G[objName .. "Text"], y=-2}
@@ -266,23 +266,46 @@ aObj.blizzFrames[ftype].MirrorTimers = function(self)
 			objSB:SetWidth(objSB:GetWidth() * 0.75)
 		else
 			self:nilTexture(obj.TextBorder, true)
+			objBG = self:getRegion(obj, 2)
 			self:nilTexture(obj.Border, true)
 		end
 		if self.prdb.MirrorTimers.glaze then
 			if not self.isRtl then
 				self:skinObject("statusbar", {obj=objSB, fi=0, bg=objBG})
 			else
-				self:skinObject("statusbar", {obj=obj.StatusBar, fi=0, bg=self:getRegion(obj, 2)})
+				self:skinObject("statusbar", {obj=obj.StatusBar, fi=0, bg=objBG, hookFunc=true})
 			end
 		end
+	end
+	if self.prdb.MirrorTimers.glaze
+	and self.isRtl then
+		self:RawHook("MirrorTimer_Show", function(timer, value, maxvalue, scale, paused, label)
+			local dialog = self.hooks.MirrorTimer_Show(timer, value, maxvalue, scale, paused, label)
+			local statusbar = dialog.StatusBar
+			if timer == "BREATH" then
+				statusbar:SetStatusBarColor(self:getColourByName("light_blue"))
+			elseif timer == "DEATH" then
+				statusbar:SetStatusBarColor(self:getColourByName("blue"))
+			elseif timer == "EXHAUSTION" then
+				statusbar:SetStatusBarColor(self:getColourByName("yellow"))
+			elseif timer == "FEIGNDEATH" then
+				statusbar:SetStatusBarColor(self:getColourByName("yellow"))
+			end
+			return dialog
+		end, true)
 	end
 
 	if self.isRtl then
 		-- Battleground/Arena/Island Expeditions Start Timer
 		local function skinTT(timer)
-			if not aObj.sbGlazed[timer.bar] then
-				_G[timer.bar:GetName() .. "Border"]:SetTexture(nil) -- animations
-				aObj:skinObject("statusbar", {obj=timer.bar, fi=0, bg=self:getRegion(timer.bar, 1)})
+			_G[timer.bar:GetName() .. "Border"]:SetTexture(nil) -- animations
+			if aObj.prdb.MirrorTimers.glaze then
+				if not aObj.sbGlazed[timer.bar]	then
+					aObj:skinObject("statusbar", {obj=timer.bar, fi=0, bg=self:getRegion(timer.bar, 1)})
+				end
+				if aObj.isRtl then
+					timer.bar:SetStatusBarColor(aObj:getColourByName("red"))
+				end
 			end
 		end
 		self:SecureHook("StartTimer_SetGoTexture", function(timer)
