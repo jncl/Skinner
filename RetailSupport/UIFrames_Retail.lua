@@ -111,7 +111,7 @@ aObj.SetupRetail_UIFrames = function()
 			aObj:skinObject("frame", {obj=frame, fType=ftype, kfs=true, fb=true, ofs=gOfs, y1=y1Ofs, x2=4, y2=y2Ofs, clr=colour})
 			aObj:skinObject("scrollbar", {obj=frame.ScrollBar, fType=ftype})
 			local function skinElement(...)
-				local _, element, new
+				local _, element, elementData, new
 				if _G.select("#", ...) == 2 then
 					element, elementData = ...
 				elseif _G.select("#", ...) == 3 then
@@ -184,7 +184,7 @@ aObj.SetupRetail_UIFrames = function()
 			if frame == _G.CovenantMissionFrame then
 				x1Ofs = -2
 				y1Ofs = 6
-				y2Ofs = -6
+				y2Ofs = -5
 			elseif frame == _G.BFAMissionFrame then
 				y1Ofs = 1
 				y2Ofs = -5
@@ -192,14 +192,13 @@ aObj.SetupRetail_UIFrames = function()
 				y2Ofs = -3
 			end
 			frame.GarrCorners:DisableDrawLayer("BACKGROUND")
+			-- if frame == _G.GarrisonMissionFrame then
+			-- 	x2Ofs, y2Ofs = -11, 2
+			-- else
+			-- 	x2Ofs, y2Ofs = -10, 7
+			-- end
+			aObj:skinObject("tabs", {obj=frame, prefix=frame:GetName(), fType=ftype, selectedTab=frame.selectedTab, lod=aObj.isTT and true, regions={7, 8, 9, 10}})
 			aObj:skinObject("frame", {obj=frame, fType=ftype, kfs=true, cbns=true, x1=x1Ofs, y1=y1Ofs, x2=x2Ofs, y2=y2Ofs})
-			if frame == _G.GarrisonMissionFrame then
-				x2Ofs, y2Ofs = -11, 2
-			else
-				x2Ofs, y2Ofs = -10, 7
-			end
-			-- Top Tabs
-			aObj:skinObject("tabs", {obj=frame, prefix=frame:GetName(), fType=ftype, selectedTab=frame.selectedTab, lod=aObj.isTT and true, ignoreHLTex=false, regions={7, 8, 9, 10}})
 		end
 		function skinCompleteDialog(frame, naval)
 			if not naval then
@@ -351,13 +350,13 @@ aObj.SetupRetail_UIFrames = function()
 			end
 			aObj:skinObject("scrollbar", {obj=ml.ScrollBar, fType=ftype})
 			local function skinElement(...)
-				local _, element, elementData, new
+				local _, element, new
 				if _G.select("#", ...) == 2 then
-					element, elementData = ...
+					element, _ = ...
 				elseif _G.select("#", ...) == 3 then
-					element, elementData, new = ...
+					element, _, new = ...
 				else
-					_, element, elementData, new = ...
+					_, element, _, new = ...
 				end
 				if new ~= false then
 					element:DisableDrawLayer("BACKGROUND")
@@ -1158,7 +1157,7 @@ aObj.SetupRetail_UIFrames = function()
 				fObj.LockedState:DisableDrawLayer("BACKGROUND")
 				fObj.UnlockedState:DisableDrawLayer("BACKGROUND")
 				-- FIXME: colour should be more of a powder blue
-				aObj:skinObject("frame", {obj=fObj, fType=ftype, fb=true, x1=28, x2=-29, y2=0, clr="blue"})
+				aObj:skinObject("frame", {obj=fObj, fType=ftype, fb=true, x1=29, x2=-29, y2=0, clr="blue", ca=0.25})
 				if aObj.modChkBtns then
 					aObj:skinCheckButton{obj=fObj.UnlockedState.WatchFactionButton, fType=ftype}
 					fObj.UnlockedState.WatchFactionButton:SetSize(20, 20)
@@ -1203,7 +1202,9 @@ aObj.SetupRetail_UIFrames = function()
 			    aObj:add2Table(aObj.oocTab, {skinBtn, {btn}})
 			    return
 			end
+			if btn.NormalTexture then
 			btn:GetNormalTexture():SetTexture(nil)
+			end
 			if aObj.modBtnBs then
 				aObj:addButtonBorder{obj=btn, sabt=true, ofs=2, reParent={btn.HotKey and btn.HotKey}}
 			end
@@ -1273,19 +1274,14 @@ aObj.SetupRetail_UIFrames = function()
 		self.initialized.GarrisonUI = true
 
 		self:SecureHookScript(_G.GarrisonLandingPage, "OnShow", function(this)
-			-- ReportTab (ALWAYS shown first)
-			this.Report.List:DisableDrawLayer("BACKGROUND")
-			local function skinBtn(btn)
-				btn:DisableDrawLayer("BACKGROUND")
-				btn:DisableDrawLayer("BORDER")
-				if aObj.modBtnBs then
-					for _, reward in _G.pairs(btn.Rewards) do
-						aObj:addButtonBorder{obj=reward, relTo=reward.Icon, reParent={reward.Quantity}}
-						aObj:clrButtonFromBorder(reward)
-					end
-				end
-			end
-			self:skinObject("scrollbar", {obj=this.Report.List.ScrollBar, fType=ftype})
+			this.HeaderBar:SetTexture(nil)
+			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true, regions={7, 8, 9, 10}})
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, ofs=-10, y2=18})
+
+			self:SecureHookScript(this.Report, "OnShow", function(fObj)
+				fObj.List:DisableDrawLayer("BACKGROUND")
+				self:skinObject("scrollbar", {obj=fObj.List.ScrollBar, fType=ftype})
+				self:skinObject("frame", {obj=fObj.List, fType=ftype, fb=true, y1=4, clr="grey"})
 			local function skinElement(...)
 				local _, element, new
 				if _G.select("#", ...) == 2 then
@@ -1306,28 +1302,32 @@ aObj.SetupRetail_UIFrames = function()
 					end
 				end
 			end
-			_G.ScrollUtil.AddAcquiredFrameCallback(this.Report.List.ScrollBox, skinElement, aObj, true)
-			self:skinObject("frame", {obj=this.Report.List, fType=ftype, fb=true, y1=4, clr="grey"})
+				_G.ScrollUtil.AddAcquiredFrameCallback(fObj.List.ScrollBox, skinElement, aObj, true)
 			-- Top Tabs
-			self:skinObject("tabs", {obj=this.Report, tabs={this.Report.InProgress, this.Report.Available}, fType=ftype, lod=self.isTT and true, ignoreHLTex=false, upwards=true, offsets={x1=4, y1=self.isTT and -2 or -5, x2=-4, y2=self.isTT and -4 or 1}, regions={2, 3}, track=false, func=function(tab) tab:GetNormalTexture():SetAlpha(0) tab:SetFrameLevel(20) end})
+				self:skinObject("tabs", {obj=fObj, tabs={fObj.InProgress, fObj.Available}, fType=ftype, lod=self.isTT and true, upwards=true, offsets={x1=4, y1=self.isTT and -4 or -5, x2=-4, y2=self.isTT and -4 or 1}, regions={2, 3}, track=false, func=function(tab) tab:GetNormalTexture():SetAlpha(0) tab:SetFrameLevel(20) end})
 			if self.isTT then
 				self:SecureHook("GarrisonLandingPageReport_SetTab", function(tab)
 					self:setInactiveTab(tab:GetParent().unselectedTab.sf)
 					self:setActiveTab(tab.sf)
 				end)
 			end
+
+				self:Unhook(fObj, "OnShow")
+			end)
+			self:checkShown(this.Report)
+
 			skinFollowerList(this.FollowerList, "grey")
 			skinFollowerPage(this.FollowerTab)
-			if this.numTabs == 3 then
+
+			if this.garrTypeID == _G.Enum.GarrisonType.Type_6_0 and _G.C_Garrison.HasShipyard() then
 				skinFollowerList(this.ShipFollowerList, "grey")
 				skinFollowerTraitsAndEquipment(this.ShipFollowerTab)
-			end
-			if _G.C_Garrison.GetLandingPageGarrisonType() == _G.Enum.GarrisonType.Type_9_0 then -- Covenant
+			elseif _G.C_Garrison.GetLandingPageGarrisonType() == _G.Enum.GarrisonType.Type_9_0 then -- Covenant
 				local function skinPanelBtns(panel)
 					panel:DisableDrawLayer("BACKGROUND")
-					aObj:skinObject("frame", {obj=panel.RenownButton, fType=ftype, regions={3, 5, 6}, ofs=-4, y1=-5, y2=3, clr="turq"})
+					aObj:skinObject("frame", {obj=panel.RenownButton, fType=ftype, regions={3, 5, 6}, ofs=-4, y1=-5, y2=3, clr="turq", ca=0.25})
 					panel.RenownButton.UpdateButtonTextures = _G.nop
-					aObj:skinObject("frame", {obj=panel.SoulbindButton, fType=ftype, regions={1, 2}, ofs=-4, y1=-5, y2=3, clr="turq"})
+					aObj:skinObject("frame", {obj=panel.SoulbindButton, fType=ftype, regions={1, 2}, ofs=-4, y1=-5, y2=3, clr="turq", ca=0.25})
 					panel.SoulbindButton.Portrait.SetAtlas = _G.nop
 					skinPanelBtns = nil
 				end
@@ -1348,9 +1348,6 @@ aObj.SetupRetail_UIFrames = function()
 					self:nilTexture(self:getChild(this.ArdenwealdGardeningPanel, 1).Border, true)
 				end
 			end
-			this.HeaderBar:SetTexture(nil)
-			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true, ignoreHLTex=false, regions={7, 8, 9, 10}})
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, ofs=-10, y2=16})
 
 			-- N.B. Garrison Landing Page Minimap Button skinned with other minimap buttons
 			self:Unhook(this, "OnShow")
