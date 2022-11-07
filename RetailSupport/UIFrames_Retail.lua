@@ -2601,14 +2601,23 @@ aObj.SetupRetail_UIFrames = function()
 
 			local function skinSTBars(frame)
 				for _, bar in _G.pairs(frame.bars) do
-					-- TODO: remove this skin line, changing textures breaks the display
-					-- aObj:skinObject("statusbar", {obj=bar.StatusBar, bg=bar.StatusBar.Background, other={bar.StatusBar.Underlay, bar.StatusBar.Overlay, bar.ExhaustionLevelFillBar or nil}})
-					if bar.ExhaustionTick then -- ExpStatusBar
+					aObj:skinObject("statusbar", {obj=bar.StatusBar, bg=bar.StatusBar.Background, other={bar.StatusBar.Underlay, bar.StatusBar.Overlay}, hookFunc=true})
+					if bar.priority == 0 then -- Azerite bar
+						bar.StatusBar:SetStatusBarColor(self:getColourByName("yellow"))
+					elseif bar.priority == 1 then -- Rep bar
+						bar.StatusBar:SetStatusBarColor(self:getColourByName("light_blue"))
+					elseif bar.priority == 2 then -- Honor bar
+						bar.StatusBar:SetStatusBarColor(self:getColourByName("blue"))
+					elseif bar.priority == 3 then -- XP bar
 						bar.ExhaustionTick:GetNormalTexture():SetTexture(nil)
 						bar.ExhaustionTick:GetHighlightTexture():SetTexture(nil)
-					elseif bar.Tick then -- ArtifactStatusBar
+						bar.ExhaustionLevelFillBar:SetTexture(aObj.sbTexture)
+						bar.ExhaustionLevelFillBar:SetVertexColor(self:getColourByName("bright_blue"))
+						bar.StatusBar:SetStatusBarColor(self:getColourByName("blue"))
+					elseif bar.priority == 4 then -- Artifact bar
 						bar.Tick:GetNormalTexture():SetTexture(nil)
 						bar.Tick:GetHighlightTexture():SetTexture(nil)
+						bar.StatusBar:SetStatusBarColor(self:getColourByName("yellow"))
 					end
 				end
 			end
@@ -2619,7 +2628,7 @@ aObj.SetupRetail_UIFrames = function()
 				self:Unhook(this, "OnShow")
 			end)
 			self:checkShown(_G.StatusTrackingBarManager)
-			self:SecureHook(_G.StatusTrackingBarManager, "AddBarFromTemplate", function(this, frameType, template)
+			self:SecureHook(_G.StatusTrackingBarManager, "AddBarFromTemplate", function(this, _, _)
 				skinSTBars(this)
 			end)
 
