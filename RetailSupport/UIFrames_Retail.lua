@@ -1203,7 +1203,7 @@ aObj.SetupRetail_UIFrames = function()
 			    return
 			end
 			if btn.NormalTexture then
-			btn:GetNormalTexture():SetTexture(nil)
+				btn:GetNormalTexture():SetTexture(nil)
 			end
 			if aObj.modBtnBs then
 				aObj:addButtonBorder{obj=btn, sabt=true, ofs=2, reParent={btn.HotKey and btn.HotKey}}
@@ -1282,35 +1282,35 @@ aObj.SetupRetail_UIFrames = function()
 				fObj.List:DisableDrawLayer("BACKGROUND")
 				self:skinObject("scrollbar", {obj=fObj.List.ScrollBar, fType=ftype})
 				self:skinObject("frame", {obj=fObj.List, fType=ftype, fb=true, y1=4, clr="grey"})
-			local function skinElement(...)
-				local _, element, new
-				if _G.select("#", ...) == 2 then
-					element, _ = ...
-				elseif _G.select("#", ...) == 3 then
-					element, _, new = ...
-				else
-					_, element, _, new = ...
-				end
-				if new ~= false then
-					element:DisableDrawLayer("BACKGROUND")
-					element:DisableDrawLayer("BORDER")
-					if aObj.modBtnBs then
-						for _, reward in _G.pairs(element.Rewards) do
-							aObj:addButtonBorder{obj=reward, relTo=reward.Icon, reParent={reward.Quantity}}
-							aObj:clrButtonFromBorder(reward)
+				local function skinElement(...)
+					local _, element, new
+					if _G.select("#", ...) == 2 then
+						element, _ = ...
+					elseif _G.select("#", ...) == 3 then
+						element, _, new = ...
+					else
+						_, element, _, new = ...
+					end
+					if new ~= false then
+						element:DisableDrawLayer("BACKGROUND")
+						element:DisableDrawLayer("BORDER")
+						if aObj.modBtnBs then
+							for _, reward in _G.pairs(element.Rewards) do
+								aObj:addButtonBorder{obj=reward, relTo=reward.Icon, reParent={reward.Quantity}}
+								aObj:clrButtonFromBorder(reward)
+							end
 						end
 					end
 				end
-			end
 				_G.ScrollUtil.AddAcquiredFrameCallback(fObj.List.ScrollBox, skinElement, aObj, true)
-			-- Top Tabs
+				-- Top Tabs
 				self:skinObject("tabs", {obj=fObj, tabs={fObj.InProgress, fObj.Available}, fType=ftype, lod=self.isTT and true, upwards=true, offsets={x1=4, y1=self.isTT and -4 or -5, x2=-4, y2=self.isTT and -4 or 1}, regions={2, 3}, track=false, func=function(tab) tab:GetNormalTexture():SetAlpha(0) tab:SetFrameLevel(20) end})
-			if self.isTT then
-				self:SecureHook("GarrisonLandingPageReport_SetTab", function(tab)
-					self:setInactiveTab(tab:GetParent().unselectedTab.sf)
-					self:setActiveTab(tab.sf)
-				end)
-			end
+				if self.isTT then
+					self:SecureHook("GarrisonLandingPageReport_SetTab", function(tab)
+						self:setInactiveTab(tab:GetParent().unselectedTab.sf)
+						self:setActiveTab(tab.sf)
+					end)
+				end
 
 				self:Unhook(fObj, "OnShow")
 			end)
@@ -2287,15 +2287,15 @@ aObj.SetupRetail_UIFrames = function()
 				self:removeInset(fObj.Inset)
 				self:removeMagicBtnTex(fObj.FindGroupButton)
 				self:removeMagicBtnTex(fObj.StartGroupButton)
-			if self.modBtns then
+				if self.modBtns then
 					self:skinStdButton{obj=fObj.StartGroupButton, sechk=true}
 					self:skinStdButton{obj=fObj.FindGroupButton, sechk=true}
-			end
+				end
 				self:SecureHook("LFGListCategorySelection_AddButton", function(frame, _)
 					for _, btn in _G.pairs(frame.CategoryButtons) do
-					btn.Cover:SetTexture(nil)
-				end
-			end)
+						btn.Cover:SetTexture(nil)
+					end
+				end)
 
 				self:Unhook(fObj, "OnShow")
 			end)
@@ -2307,15 +2307,15 @@ aObj.SetupRetail_UIFrames = function()
 				self:skinObject("editbox", {obj=fObj.SearchBox, fType=ftype, si=true})
 				self:skinObject("frame", {obj=fObj.AutoCompleteFrame, fType=ftype, kfs=true, ofs=4})
 				self:removeInset(fObj.ResultsInset)
-			self:skinObject("dropdown", {obj=_G.LFGListLanguageFilterDropDownFrame, fType=ftype})
+				self:skinObject("dropdown", {obj=_G.LFGListLanguageFilterDropDownFrame, fType=ftype})
 				self:skinObject("scrollbar", {obj=fObj.ScrollBar, fType=ftype})
-			local function skinElement(...)
+				local function skinElement(...)
 					local _, element
-				if _G.select("#", ...) == 2 then
-					element, _ = ...
-				elseif _G.select("#", ...) == 3 then
+					if _G.select("#", ...) == 2 then
+						element, _ = ...
+					elseif _G.select("#", ...) == 3 then
 						_, element, _ = ...
-				end
+					end
 					element.ResultBG:SetTexture(nil)
 					if element.CancelButton
 					and aObj.modBtns
@@ -2330,16 +2330,16 @@ aObj.SetupRetail_UIFrames = function()
 				_G.ScrollUtil.AddInitializedFrameCallback(fObj.ScrollBox, skinElement, aObj, true)
 				self:removeMagicBtnTex(fObj.BackButton)
 				self:removeMagicBtnTex(fObj.SignUpButton)
-			if self.modBtns then
+				if self.modBtns then
 					self:skinStdButton{obj=fObj.ScrollBox.StartGroupButton, schk=true}
 					self:skinStdButton{obj=fObj.BackButton}
 					self:skinStdButton{obj=fObj.BackToGroupButton}
 					self:skinStdButton{obj=fObj.SignUpButton, schk=true}
-			end
-			if self.modBtnBs then
+				end
+				if self.modBtnBs then
 				    self:addButtonBorder{obj=fObj.FilterButton, ftype=ftype, clr="grey", ofs=1}
 					self:addButtonBorder{obj=fObj.RefreshButton, ofs=-2, clr="gold"}
-			end
+				end
 
 				self:Unhook(fObj, "OnShow")
 			end)
@@ -2347,44 +2347,44 @@ aObj.SetupRetail_UIFrames = function()
 			self:SecureHookScript(this.ApplicationViewer, "OnShow", function(fObj)
 				fObj:DisableDrawLayer("BACKGROUND")
 				self:removeInset(fObj.Inset)
-			for _ ,type in _G.pairs{"Name", "Role", "ItemLevel"} do
-				self:removeRegions(av[type .. "ColumnHeader"], {1, 2, 3})
-				if self.modBtns then
-					 self:skinStdButton{obj=av[type .. "ColumnHeader"]}
-				end
-			end
-				self:skinObject("scrollbar", {obj=fObj.ScrollBar, fType=ftype})
-			local function skinElement(...)
-				local _, element, new
-				if _G.select("#", ...) == 2 then
-					element, _ = ...
-				elseif _G.select("#", ...) == 3 then
-					element, _, new = ...
-				else
-					_, element, _, new = ...
-				end
-				if new ~= false then
-					if aObj.modBtns then
-						aObj:skinStdButton{obj=element.DeclineButton}
-						aObj:skinStdButton{obj=element.InviteButton}
-						aObj:skinStdButton{obj=element.InviteButtonSmall}
+				for _ ,type in _G.pairs{"Name", "Role", "ItemLevel"} do
+					self:removeRegions(av[type .. "ColumnHeader"], {1, 2, 3})
+					if self.modBtns then
+						 self:skinStdButton{obj=av[type .. "ColumnHeader"]}
 					end
 				end
-			end
+				self:skinObject("scrollbar", {obj=fObj.ScrollBar, fType=ftype})
+				local function skinElement(...)
+					local _, element, new
+					if _G.select("#", ...) == 2 then
+						element, _ = ...
+					elseif _G.select("#", ...) == 3 then
+						element, _, new = ...
+					else
+						_, element, _, new = ...
+					end
+					if new ~= false then
+						if aObj.modBtns then
+							aObj:skinStdButton{obj=element.DeclineButton}
+							aObj:skinStdButton{obj=element.InviteButton}
+							aObj:skinStdButton{obj=element.InviteButtonSmall}
+						end
+					end
+				end
 				_G.ScrollUtil.AddAcquiredFrameCallback(fObj.ScrollBox, skinElement, aObj, true)
 				self:removeMagicBtnTex(fObj.RemoveEntryButton)
 				self:removeMagicBtnTex(fObj.EditButton)
-			if self.modBtns then
+				if self.modBtns then
 					self:skinStdButton{obj=fObj.RemoveEntryButton}
 					self:skinStdButton{obj=fObj.EditButton}
 					self:skinStdButton{obj=fObj.BrowseGroupsButton}
-			end
-			if self.modBtnBs then
+				end
+				if self.modBtnBs then
 					 self:addButtonBorder{obj=fObj.RefreshButton, ofs=-2, clr="gold"}
-			end
-			if self.modChkBtns then
+				end
+				if self.modChkBtns then
 					 self:skinCheckButton{obj=fObj.AutoAcceptButton}
-			end
+				end
 
 				self:Unhook(fObj, "OnShow")
 			end)
@@ -2392,16 +2392,16 @@ aObj.SetupRetail_UIFrames = function()
 			self:SecureHookScript(this.EntryCreation, "OnShow", function(fObj)
 				self:removeInset(fObj.Inset)
 				local ecafd = fObj.ActivityFinder.Dialog
-			self:removeNineSlice(ecafd.Border)
-			self:skinObject("editbox", {obj=ecafd.EntryBox, fType=ftype})
-			self:skinObject("scrollbar", {obj=ecafd.ScrollBar, fType=ftype})
-			self:skinObject("frame", {obj=ecafd.ScrollBox, fType=ftype, kfs=true, fb=true, ofs=4, clr="grey"})
-			self:removeNineSlice(ecafd.BorderFrame.NineSlice)
-			self:skinObject("frame", {obj=ecafd, fType=ftype, kfs=true})
-			if self.modBtns then
-				self:skinStdButton{obj=ecafd.SelectButton}
-				self:skinStdButton{obj=ecafd.CancelButton}
-			end
+				self:removeNineSlice(ecafd.Border)
+				self:skinObject("editbox", {obj=ecafd.EntryBox, fType=ftype})
+				self:skinObject("scrollbar", {obj=ecafd.ScrollBar, fType=ftype})
+				self:skinObject("frame", {obj=ecafd.ScrollBox, fType=ftype, kfs=true, fb=true, ofs=4, clr="grey"})
+				self:removeNineSlice(ecafd.BorderFrame.NineSlice)
+				self:skinObject("frame", {obj=ecafd, fType=ftype, kfs=true})
+				if self.modBtns then
+					self:skinStdButton{obj=ecafd.SelectButton}
+					self:skinStdButton{obj=ecafd.CancelButton}
+				end
 				self:skinObject("editbox", {obj=fObj.Name, fType=ftype})
 				self:skinObject("dropdown", {obj=fObj.PlayStyleDropdown, fType=ftype})
 				self:skinObject("editbox", {obj=fObj.PvpItemLevel.EditBox, fType=ftype})
@@ -2414,11 +2414,11 @@ aObj.SetupRetail_UIFrames = function()
 				self:skinObject("editbox", {obj=fObj.VoiceChat.EditBox, fType=ftype})
 				self:removeMagicBtnTex(fObj.ListGroupButton)
 				self:removeMagicBtnTex(fObj.CancelButton)
-			if self.modBtns then
+				if self.modBtns then
 					self:skinStdButton{obj=fObj.ListGroupButton, sechk=true}
 					self:skinStdButton{obj=fObj.CancelButton}
-			end
-			if self.modChkBtns then
+				end
+				if self.modChkBtns then
 					self:skinCheckButton{obj=fObj.ItemLevel.CheckButton}
 					self:skinCheckButton{obj=fObj.PvpItemLevel.CheckButton}
 					self:skinCheckButton{obj=fObj.PVPRating.CheckButton}
@@ -2426,7 +2426,7 @@ aObj.SetupRetail_UIFrames = function()
 					self:skinCheckButton{obj=fObj.VoiceChat.CheckButton}
 					self:skinCheckButton{obj=fObj.CrossFactionGroup.CheckButton}
 					self:skinCheckButton{obj=fObj.PrivateGroup.CheckButton}
-			end
+				end
 
 				self:Unhook(fObj, "OnShow")
 			end)

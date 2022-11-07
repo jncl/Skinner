@@ -2652,24 +2652,24 @@ aObj.SetupRetail_PlayerFrames = function()
 					end
 					if new ~= false then
 						if element.background then
-						element.background:SetAlpha(0)
-						if aObj.modBtnBs then
-							aObj:addButtonBorder{obj=element, relTo=element.gameIcon, ofs=0, clr="grey"}
-							aObj:SecureHook(element.gameIcon, "Show", function(bObj)
-								bObj:GetParent().sbb:Show()
-							end)
-							aObj:SecureHook(element.gameIcon, "Hide", function(bObj)
-								bObj:GetParent().sbb:Hide()
-							end)
-							aObj:SecureHook(element.gameIcon, "SetShown", function(bObj, show)
-								bObj:GetParent().sbb:SetShown(bObj, show)
-							end)
-							element.sbb:SetShown(element.gameIcon:IsShown())
-							aObj:addButtonBorder{obj=element.travelPassButton, schk=true, ofs=0, y1=3, y2=-2}
-							aObj:addButtonBorder{obj=element.summonButton, schk=true}
+							element.background:SetAlpha(0)
+							if aObj.modBtnBs then
+								aObj:addButtonBorder{obj=element, relTo=element.gameIcon, ofs=0, clr="grey"}
+								aObj:SecureHook(element.gameIcon, "Show", function(bObj)
+									bObj:GetParent().sbb:Show()
+								end)
+								aObj:SecureHook(element.gameIcon, "Hide", function(bObj)
+									bObj:GetParent().sbb:Hide()
+								end)
+								aObj:SecureHook(element.gameIcon, "SetShown", function(bObj, show)
+									bObj:GetParent().sbb:SetShown(bObj, show)
+								end)
+								element.sbb:SetShown(element.gameIcon:IsShown())
+								aObj:addButtonBorder{obj=element.travelPassButton, schk=true, ofs=0, y1=3, y2=-2}
+								aObj:addButtonBorder{obj=element.summonButton, schk=true}
+							end
 						end
 					end
-				end
 				end
 				_G.ScrollUtil.AddAcquiredFrameCallback(fObj.ScrollBox, skinElement, aObj, true)
 				addTabBorder(fObj)
@@ -3803,16 +3803,16 @@ aObj.SetupRetail_PlayerFrames = function()
 						element:DisableDrawLayer("BACKGROUND")
 						if element.RankBar then
 							aObj:skinObject("statusbar", {obj=element.RankBar, regions={1, 2, 3}, fi=0})
-							end
 						end
 					end
+				end
 				_G.ScrollUtil.AddAcquiredFrameCallback(fObj.RecipeList.ScrollBox, skinRecipeElement, aObj, true)
 				-- hook this to skin headers
 				self:SecureHook(fObj, "SetupTable", function(frame, _)
 					for hdr in frame.tableBuilder:EnumerateHeaders() do
 						hdr:DisableDrawLayer("BACKGROUND")
 						self:skinObject("frame", {obj=hdr, fType=ftype, ofs=0})
-				end
+					end
 				end)
 				self:skinObject("scrollbar", {obj=fObj.OrderList.ScrollBar, fType=ftype})
 				local function skinOrderElement(...)
@@ -3823,7 +3823,7 @@ aObj.SetupRetail_PlayerFrames = function()
 						element, elementData, new = ...
 					else
 						_, element, elementData, new = ...
-				end
+					end
 					if new ~= false then
 						-- TODO: skin Order elements
 					end
@@ -3831,7 +3831,7 @@ aObj.SetupRetail_PlayerFrames = function()
 				_G.ScrollUtil.AddAcquiredFrameCallback(fObj.OrderList.ScrollBox, skinOrderElement, aObj, true)
 
 				self:Unhook(fObj, "OnShow")
-		end)
+			end)
 			self:checkShown(this.BrowseOrders)
 
 			self:SecureHookScript(this.Form, "OnShow", function(fObj)

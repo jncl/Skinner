@@ -176,7 +176,7 @@ function aObj:setupOptions(optNames, optIgnore, preLoadFunc, postLoadFunc)
 	self.optionsFrames = {}
 	-- register the options tables and add them to the blizzard frame
 	self.ACR:RegisterOptionsTable(aName, self.optTables.General)
-	self.optionsFrames[aName] = self.ACD:AddToBlizOptions(aName, self.L[aName]) -- N.B. display localised name
+	self.optionsFrames[aName], _ = self.ACD:AddToBlizOptions(aName, self.L[aName]) -- N.B. display localised name
 	self.optionsFrames[aName].OnDefault = function()
 		for name, _ in _G.pairs(aObj.optTables.General.args) do
 			db[name] = dflts[name]
@@ -194,7 +194,7 @@ function aObj:setupOptions(optNames, optIgnore, preLoadFunc, postLoadFunc)
 		for _, oName in _G.ipairs(optNames) do
 			optTitle = _G.strjoin("_", aName, oName)
 			aObj.ACR:RegisterOptionsTable(optTitle, aObj.optTables[oName])
-			aObj.optionsFrames[oName] = aObj.ACD:AddToBlizOptions(optTitle, aObj.L[oName], aObj.L[aName]) -- N.B. use localised name
+			aObj.optionsFrames[oName], _ = aObj.ACD:AddToBlizOptions(optTitle, aObj.L[oName], aObj.L[aName]) -- N.B. use localised name
 			if not _G.tContains(optIgnore, oName) then
 				aObj.optionsFrames[oName].OnDefault = function()
 					for name, _ in _G.pairs(aObj.optTables[oName].args) do
@@ -222,6 +222,7 @@ function aObj:setupOptions(optNames, optIgnore, preLoadFunc, postLoadFunc)
 		end
 		-- unregister here if called from elsewhere
 		aObj.UnregisterCallback(aName, "Options_Selected")
+		_G.SettingsPanel:GetCategoryList():UnregisterCallback(_G.SettingsCategoryListMixin.Event.OnCategorySelected, aObj)
 	end
 	self.RegisterCallback(aName, "Options_Selected", function()
 		categorySelected()
@@ -241,7 +242,6 @@ function aObj:setupOptions(optNames, optIgnore, preLoadFunc, postLoadFunc)
 		local function onCategorySelected(_, category)
 			if category.name == aName then
 				categorySelected()
-				_G.SettingsPanel:GetCategoryList():UnregisterCallback(_G.SettingsCategoryListMixin.Event.OnCategorySelected, aObj)
 			end
 		end
 		_G.SettingsPanel:GetCategoryList():RegisterCallback(_G.SettingsCategoryListMixin.Event.OnCategorySelected, onCategorySelected, self)
