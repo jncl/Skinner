@@ -2236,7 +2236,10 @@ aObj.SetupRetail_PlayerFrames = function()
 			self:skinObject("editbox", {obj=this.searchBox, fType=ftype, si=true})
 			self:skinObject("dropdown", {obj=this.LootJournalViewDropDown, fType=ftype, x2=-7})
 			self:skinObject("slider", {obj=_G.EncounterJournalScrollBar, fType=ftype})
-			self:skinObject("tabs", {obj=this, tabs=this.Tabs, selectedTab=this.selectedTab, fType=ftype, lod=self.isTT and true, ignoreHLTex=false, offsets={x1=-1, y1=2, x2=1, y2=1}, regions={7, 8, 9, 10, 11}, track=false, func=function(tab) tab:SetFrameLevel(20) end})
+			self:skinObject("tabs", {obj=this, tabs=this.Tabs, selectedTab=this.selectedTab, fType=ftype, lod=self.isTT and true, offsets={x1=-1, y1=2, x2=1, y2=1}, regions={7, 8, 9, 10, 11}, track=false, func=function(tab) tab:SetFrameLevel(20) end})
+			-- for _, tab in _G.pairs(this.Tabs) do
+			-- 	tab.grayBox:DisableDrawLayer("BACKGROUND")
+			-- end
 			if self.isTT then
 				self:SecureHook("EJ_ContentTab_Select", function(id)
 					for i, tab in _G.pairs(this.Tabs) do
@@ -2382,7 +2385,7 @@ aObj.SetupRetail_PlayerFrames = function()
 				fObj.info.instanceButton:SetHighlightTexture(self.tFDIDs.ejt)
 				fObj.info.instanceButton:GetHighlightTexture():SetTexCoord(0.68945313, 0.81054688, 0.33300781, 0.39257813)
 				self:skinObject("scrollbar", {obj=fObj.info.BossesScrollBar, fType=ftype})
-				local function skinElement(...)
+				local function skinBossesElement(...)
 					local _, element, new
 					if _G.select("#", ...) == 2 then
 						element, _ = ...
@@ -2396,7 +2399,7 @@ aObj.SetupRetail_PlayerFrames = function()
 						element:GetPushedTexture():SetTexture(nil)
 					end
 				end
-				_G.ScrollUtil.AddAcquiredFrameCallback(fObj.info.BossesScrollBox, skinElement, aObj, true)
+				_G.ScrollUtil.AddAcquiredFrameCallback(fObj.info.BossesScrollBox, skinBossesElement, aObj, true)
 				skinFilterBtn(fObj.info.difficulty)
 				fObj.info.reset:GetNormalTexture():SetTexture(nil)
 				fObj.info.reset:GetPushedTexture():SetTexture(nil)
@@ -2443,7 +2446,7 @@ aObj.SetupRetail_PlayerFrames = function()
 				skinFilterBtn(fObj.info.LootContainer.filter)
 				skinFilterBtn(fObj.info.LootContainer.slotFilter)
 				fObj.info.LootContainer.classClearFilter:DisableDrawLayer("BACKGROUND")
-				local function skinElement(...)
+				local function skinLootElement(...)
 					local _, element, new
 					if _G.select("#", ...) == 2 then
 						element, _ = ...
@@ -2464,7 +2467,7 @@ aObj.SetupRetail_PlayerFrames = function()
 						end
 					end
 				end
-				_G.ScrollUtil.AddAcquiredFrameCallback(fObj.info.LootContainer.ScrollBox, skinElement, aObj, true)
+				_G.ScrollUtil.AddAcquiredFrameCallback(fObj.info.LootContainer.ScrollBox, skinLootElement, aObj, true)
 				-- Model Frame
 				self:keepFontStrings(fObj.info.model)
 				local function skinCreatureBtn(cBtn)
