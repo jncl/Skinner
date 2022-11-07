@@ -4414,7 +4414,7 @@ aObj.SetupRetail_PlayerFrames = function()
 			skinProf("Primary", 2)
 			-- Secondary professions
 			skinProf("Secondary", 3)
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, x2=2, y2=-4})
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, x2=2, y2=-3})
 			if self.modBtnBs then
 				self:addButtonBorder{obj=_G.SpellBookPrevPageButton, ofs=-2, y1=-3, x2=-3}
 				self:addButtonBorder{obj=_G.SpellBookNextPageButton, ofs=-2, y1=-3, x2=-3}
