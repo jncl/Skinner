@@ -2809,34 +2809,9 @@ aObj.SetupRetail_UIFrames = function()
 
 	end
 
-	-- The following functions are used by several Chat* functions
-	local skinPointerFrame, hookPointerFrame
-	if not aObj.isRtl then
-		function skinPointerFrame(frame)
-			aObj:skinObject("glowbox", {obj=frame.Content, fType=ftype})
-			frame.Glow:SetBackdrop(nil)
-		end
-		function hookPointerFrame()
-			aObj:RawHook(_G.NPE_TutorialPointerFrame, "_GetFrame", function(this, ...)
-				local frame = aObj.hooks[this]._GetFrame(this, ...)
-				skinPointerFrame(frame)
-				return frame
-			end, true)
-			if _G.NPE_PointerFrame_1
-			and not _G.NPE_PointerFrame_1.sf
-			then
-				skinPointerFrame(_G.NPE_PointerFrame_1)
-			end
-			hookPointerFrame = nil
-		end
-	end
 	aObj.blizzLoDFrames[ftype].NewPlayerExperience = function(self)
 		if not self.prdb.NewPlayerExperience or self.initialized.NewPlayerExperience then return end
 		self.initialized.NewPlayerExperience = true
-
-		if hookPointerFrame then
-			hookPointerFrame()
-		end
 
 		local function skinFrame(frame)
 			frame:DisableDrawLayer("BORDER") -- hide NineSlice UniqueCornersLayout
