@@ -10,7 +10,7 @@ aObj.skinTPLs = {
 		-- type        =,
 	},
 	button = {
-		name		= nil, -- use a name if required (VuhDo Options)
+		name		= false, -- use a name if required (VuhDo Options)
 		aso         = {},-- applySkin options,
 		hide        = false, -- hide skin
 		ofs         = 4, -- skin frame offset to object
@@ -55,7 +55,7 @@ aObj.skinTPLs = {
 		mix			= 6, -- Instructions x offset
 	},
 	frame = {
-		name		= nil, -- use a name if required (VuhDo Options)
+		name		= false, -- use a name if required (VuhDo Options)
 		-- bg          = true, -- put into Background FrameStrata
 		-- cb          = true, -- skin close button
 		-- cbns        = true, -- use noSkin otion when skinning the close button
@@ -79,7 +79,7 @@ aObj.skinTPLs = {
 		-- noBdr       = true, -- equivalent to bd=11 when true
 		-- ba          = 1, -- backdrop alpha
 		-- clr         = "default", -- backdrop border colour
-		-- bba         = 1, -- backdrop border alpha
+		-- ca          = 1, -- backdrop border alpha
 		-- ng          = true, -- no Gradient texture
 		-- fh          =, -- fade height
 		-- invert      = true, -- invert Gradient
@@ -127,11 +127,12 @@ aObj.skinTPLs = {
 		-- y2          = 3,
 	},
 	statusbar = {
-		fi          = 0, -- frame inset
-		regions     = {}, -- remove specified regions
-		-- bg       = nil, -- existing background texture
-		-- other.   = {}, -- other texture objects
-		-- nilFuncs = false, -- nop Atlas functions
+		fi        = 0, -- frame inset
+		regions   = {}, -- remove specified regions
+		-- bg        = false, -- existing background texture
+		-- other.    = {}, -- other texture objects
+		-- nilFuncs  = false, -- nop Atlas functions
+		-- hookFuncs = false, -- raw hook SetStatusBarTexture function
 	},
 	tabs = {
 		-- prefix      = "",
@@ -228,15 +229,15 @@ local function setScrollTrackOffsets(tbl, type)
 			tbl.y1 = _G.rawget(tbl, "y1") or -1
 			tbl.y2 = _G.rawget(tbl, "y2") or 1
 		elseif w == 25 then
-			if not aObj.isRtl then
-				tbl.x1 = _G.rawget(tbl, "x1") or 2
-				tbl.x2 = _G.rawget(tbl, "x2") or 5
-				tbl.y1 = _G.rawget(tbl, "y1") or -1
-				tbl.y2 = _G.rawget(tbl, "y2") or 2
-			else
+			-- if not aObj.isRtl then
+			-- 	tbl.x1 = _G.rawget(tbl, "x1") or 2
+			-- 	tbl.x2 = _G.rawget(tbl, "x2") or 5
+			-- 	tbl.y1 = _G.rawget(tbl, "y1") or -1
+			-- 	tbl.y2 = _G.rawget(tbl, "y2") or 2
+			-- else
 				tbl.x1 = _G.rawget(tbl, "x1") or 0
 				tbl.x2 = _G.rawget(tbl, "x2") or 0
-			end
+			-- end
 		end
 		tbl.y1 = _G.rawget(tbl, "y1") or 0
 		tbl.y2 = _G.rawget(tbl, "y2") or 0
@@ -625,7 +626,7 @@ local function skinFrame(tbl)
 	so.bd     = tbl.noBdr and 11 or tbl.bd
 	so.ba     = tbl.ba
 	so.bbclr  = tbl.clr
-	so.bba    = tbl.bba
+	so.bba    = tbl.ca
 	so.ng     = tbl.ng
 	so.fh     = tbl.fh
 	so.invert = tbl.invert
@@ -796,6 +797,11 @@ local function skinStatusBar(tbl)
 			tex.SetAtlas = _G.nop
 		end
 	end
+	if tbl.hookFunc then
+		aObj:RawHook(tbl.obj, "SetStatusBarTexture", function(this, _)
+			aObj.hooks[this].SetStatusBarTexture(this, aObj.sbTexture)
+		end, true)
+	end
 end
 skinFuncs.statusbar = function(table) skinStatusBar(table) end
 local function skinTabs(tbl)
@@ -806,7 +812,6 @@ local function skinTabs(tbl)
 	end
 	--@end-alpha@
 	aObj:Debug2("skinTabs: [%s]", tbl)
-
 	-- don't skin it twice unless required (Ace3)
 	if tbl.obj.sknd
 	and not tbl.noCheck
@@ -824,15 +829,20 @@ local function skinTabs(tbl)
 		end
 	end
 	if aObj.isTT
-	and tbl.offsets.y1 == 0
+	and not tbl.offsets.y1
+	or tbl.offsets.y1 == 0
 	then
-		tbl.offsets.y1 = 2
+		tbl.offsets.y1 = 3
 	end
 	if aObj.isRtl then
-		if tbl.offsets.x1 == 8 then
+		if not tbl.offsets.x1
+		or tbl.offsets.x1 == 8
+		then
 			tbl.offsets.x1 = 0
 		end
-		if tbl.offsets.x2 == -8 then
+		if not tbl.offsets.x2
+		or tbl.offsets.x2 == -8
+		then
 			tbl.offsets.x2 = 0
 		end
 	end
@@ -867,12 +877,20 @@ local function skinTabs(tbl)
 		tab.sf.up = tbl.upwards
 		-- change highlight texture
 		if tbl.ignoreHLTex then
-			local ht = tab:GetHighlightTexture()
-			if ht then
-				ht:SetTexture(aObj.tFDIDs.ctabHL)
-				ht:ClearAllPoints()
-				ht:SetPoint("TOPLEFT", tab, "TOPLEFT", tbl.offsets.x1, tbl.offsets.y1)
-				ht:SetPoint("BOTTOMRIGHT", tab, "BOTTOMRIGHT", tbl.offsets.x2, tbl.offsets.y2)
+			if not aObj.isRtl then
+				local ht = tab:GetHighlightTexture()
+				if ht then
+					ht:SetTexture(aObj.tFDIDs.ctabHL)
+					ht:ClearAllPoints()
+					ht:SetPoint("TOPLEFT", tab, "TOPLEFT", tbl.offsets.x1, tbl.offsets.y1)
+					ht:SetPoint("BOTTOMRIGHT", tab, "BOTTOMRIGHT", tbl.offsets.x2, tbl.offsets.y2)
+				end
+			else
+				if tab.LeftHighlight then
+					tab.LeftHighlight:SetTexture(nil)
+					tab.RightHighlight:SetTexture(nil)
+					tab.MiddleHighlight:SetTexture(nil)
+				end
 			end
 		end
 		if tbl.func then
