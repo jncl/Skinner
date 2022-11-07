@@ -2592,13 +2592,13 @@ aObj.SetupRetail_PlayerFrames = function()
 		self.initialized.FriendsFrame = true
 
 		local function addTabBorder(frame)
-			aObj:skinObject("frame", {obj=frame, fType=ftype, fb=true, x1=0, y1=-81, x2=1, y2=-1})
+			aObj:skinObject("frame", {obj=frame, fType=ftype, fb=true, x1=0, y1=-81, x2=1, y2=0})
 		end
 		self:SecureHookScript(_G.FriendsFrame, "OnShow", function(this)
 			self:skinObject("dropdown", {obj=_G.FriendsDropDown, fType=ftype})
 			self:skinObject("dropdown", {obj=_G.TravelPassDropDown, fType=ftype})
 			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true})
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, x2=3, y2=-3})
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, x2=3, y2=-2})
 			-- tooltip
 			_G.C_Timer.After(0.1, function()
 				self:add2Table(self.ttList, _G.FriendsTooltip)
@@ -2631,7 +2631,8 @@ aObj.SetupRetail_PlayerFrames = function()
 				end)
 				self:skinObject("dropdown", {obj=_G.FriendsFrameStatusDropDown, fType=ftype})
 				_G.FriendsFrameStatusDropDownStatus:SetAlpha(1) -- display status icon
-				self:skinObject("tabs", {obj=fTH, prefix=fTH:GetName(), fType=ftype, lod=self.isTT and true, upwards=true, offsets={x1=1, y1=self.isTT and -4 or -8, x2=-1, y2=self.isTT and -4 or 1}})
+				-- Top Tabs
+				self:skinObject("tabs", {obj=fTH, prefix=fTH:GetName(), fType=ftype, lod=self.isTT and true, upwards=true, offsets={x1=1, y1=self.isTT and -4 or -8, x2=-1, y2=-4}})
 				_G.RaiseFrameLevel(fTH)
 
 				self:Unhook(fTH, "OnShow")
@@ -2639,24 +2640,6 @@ aObj.SetupRetail_PlayerFrames = function()
 			self:checkShown(_G.FriendsTabHeader)
 
 			self:SecureHookScript(_G.FriendsListFrame, "OnShow", function(fObj)
-				local function skinBtn(btn)
-					btn.background:SetAlpha(0)
-					if aObj.modBtnBs then
-						aObj:addButtonBorder{obj=btn, relTo=btn.gameIcon, ofs=0, clr="grey"}
-						aObj:SecureHook(btn.gameIcon, "Show", function(bObj)
-							bObj:GetParent().sbb:Show()
-						end)
-						aObj:SecureHook(btn.gameIcon, "Hide", function(bObj)
-							bObj:GetParent().sbb:Hide()
-						end)
-						aObj:SecureHook(btn.gameIcon, "SetShown", function(bObj, show)
-							bObj:GetParent().sbb:SetShown(bObj, show)
-						end)
-						btn.sbb:SetShown(btn.gameIcon:IsShown())
-						aObj:addButtonBorder{obj=btn.travelPassButton, schk=true, ofs=0, y1=3, y2=-2}
-						aObj:addButtonBorder{obj=btn.summonButton, schk=true}
-					end
-				end
 				self:skinObject("scrollbar", {obj=fObj.ScrollBar, fType=ftype})
 				local function skinElement(...)
 					local _, element, new
@@ -2668,6 +2651,7 @@ aObj.SetupRetail_PlayerFrames = function()
 						_, element, _, new = ...
 					end
 					if new ~= false then
+						if element.background then
 						element.background:SetAlpha(0)
 						if aObj.modBtnBs then
 							aObj:addButtonBorder{obj=element, relTo=element.gameIcon, ofs=0, clr="grey"}
@@ -2685,6 +2669,7 @@ aObj.SetupRetail_PlayerFrames = function()
 							aObj:addButtonBorder{obj=element.summonButton, schk=true}
 						end
 					end
+				end
 				end
 				_G.ScrollUtil.AddAcquiredFrameCallback(fObj.ScrollBox, skinElement, aObj, true)
 				addTabBorder(fObj)
@@ -2798,7 +2783,7 @@ aObj.SetupRetail_PlayerFrames = function()
 			self:removeInset(this.RewardClaiming.Inset)
 			this.RecruitList.Header:DisableDrawLayer("BACKGROUND")
 			self:removeInset(this.RecruitList.ScrollFrameInset)
-			self:skinObject("slider", {obj=this.RecruitList.ScrollFrame.Slider, fType=ftype})
+			self:skinObject("scrollbar", {obj=this.RecruitList.ScrollBar, fType=ftype})
 			this.SplashFrame.Description:SetTextColor(self.BT:GetRGB())
 			self:skinObject("frame", {obj=this.SplashFrame, fType=ftype, ofs=2, y1=4, y2=-5})
 			addTabBorder(this)
@@ -2813,7 +2798,7 @@ aObj.SetupRetail_PlayerFrames = function()
 
 		self:SecureHookScript(_G.RecruitAFriendRewardsFrame, "OnShow", function(this)
 			this:DisableDrawLayer("BACKGROUND")
-			self:skinObject("frame", {obj=this.Border, fType=ftype, kfs=true, ofs=-8})
+			self:skinObject("frame", {obj=this.Border, fType=ftype, kfs=true, ofs=-4})
 			if self.modBtns then
 				self:skinCloseButton{obj=this.CloseButton}
 			end
@@ -2829,7 +2814,7 @@ aObj.SetupRetail_PlayerFrames = function()
 		self:SecureHookScript(_G.RecruitAFriendRecruitmentFrame, "OnShow", function(this)
 			self:skinObject("editbox", {obj=this.EditBox, fType=ftype})
 			self:adjHeight{obj=this.EditBox, adj=-6}
-			self:skinObject("frame", {obj=this.Border, fType=ftype, kfs=true, ofs=-8})
+			self:skinObject("frame", {obj=this.Border, fType=ftype, kfs=true, ofs=-4})
 			if self.modBtns then
 				self:skinCloseButton{obj=this.CloseButton}
 				self:skinStdButton{obj=this.GenerateOrCopyLinkButton, schk=true, sechk=true}
