@@ -368,6 +368,14 @@ function module:skinCloseButton(opts)
 		text:SetDrawLayer("OVERLAY")
 		aObj:moveObject{obj=text, x=-1, y=-1}
 	end
+	if opts.schk then
+		module:secureHook(opts.obj, "Disable", function(bObj, _)
+			module:clrBtnBdr(bObj)
+		end)
+		module:secureHook(opts.obj, "Enable", function(bObj, _)
+			module:clrBtnBdr(bObj, bObj.sb.clr or bObj.clr, bObj.sb.ca or bObj.ca)
+		end)
+	end
 
 end
 
@@ -380,15 +388,15 @@ function module:setBtnClr(bObj, quality)
 			then
 				bObj.sbb:SetBackdropBorderColor(_G.BAG_ITEM_QUALITY_COLORS[quality].r, _G.BAG_ITEM_QUALITY_COLORS[quality].g, _G.BAG_ITEM_QUALITY_COLORS[quality].b, 1)
 			else
-				self:clrBtnBdr(bObj, "grey")
+				module:clrBtnBdr(bObj, "grey")
 			end
 		else
-			self:clrBtnBdr(bObj, "grey")
+			module:clrBtnBdr(bObj, "grey")
 			if _G.TradeSkillFrame
 			and _G.TradeSkillFrame.DetailsFrame
 			and bObj == _G.TradeSkillFrame.DetailsFrame.Contents.ResultIcon
 			then
-				self:clrBtnBdr(bObj, "normal")
+				module:clrBtnBdr(bObj, "normal")
 			end
 		end
 	end
@@ -642,15 +650,15 @@ function module:skinStdButton(opts)
 
 	if opts.schk then
 		module:secureHook(opts.obj, "Disable", function(bObj, _)
-			aObj:clrBtnBdr(bObj)
+			module:clrBtnBdr(bObj)
 		end)
 		module:secureHook(opts.obj, "Enable", function(bObj, _)
-			self:clrBtnBdr(bObj, bObj.sb.clr or bObj.clr, bObj.sb.ca or bObj.ca)
+			module:clrBtnBdr(bObj, bObj.sb.clr or bObj.clr, bObj.sb.ca or bObj.ca)
 		end)
 	end
 	if opts.sechk then
 		module:SecureHook(opts.obj, "SetEnabled", function(bObj)
-			self:clrBtnBdr(bObj, bObj.sb.clr or bObj.clr, bObj.sb.ca or bObj.ca)
+			module:clrBtnBdr(bObj, bObj.sb.clr or bObj.clr, bObj.sb.ca or bObj.ca)
 		end)
 	end
 
