@@ -142,9 +142,9 @@ aObj.blizzFrames[ftype].QuestFrame = function(self)
 		end, true)
 
 		if self.isRtl then
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true})
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true})
 		else
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=10, y1=-18, x2=-29, y2=65})
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, x1=10, y1=-18, x2=-29, y2=65})
 		end
 
 		--	Reward Panel
@@ -197,18 +197,10 @@ aObj.blizzFrames[ftype].QuestFrame = function(self)
 		end
 
 		if self.modBtns then
-			self:SecureHook(_G.QuestFrameCloseButton, "Disable", function(bObj, _)
-				self:clrBtnBdr(bObj)
-			end)
-			self:SecureHook(_G.QuestFrameCloseButton, "Enable", function(bObj, _)
-				self:clrBtnBdr(bObj)
-			end)
+			self:skinCloseButton{obj=_G.QuestFrameCloseButton, fType=ftype, schk=true}
 			self:skinStdButton{obj=_G.QuestFrameCompleteQuestButton, fType=ftype, schk=true}
 			self:skinStdButton{obj=_G.QuestFrameGoodbyeButton, fType=ftype}
-			self:skinStdButton{obj=_G.QuestFrameCompleteButton, fType=ftype}
-			self:SecureHookScript(_G.QuestFrameProgressPanel, "OnShow", function(_)
-				self:clrBtnBdr(_G.QuestFrameCompleteButton)
-			end)
+			self:skinStdButton{obj=_G.QuestFrameCompleteButton, fType=ftype, schk=true}
 			self:skinStdButton{obj=_G.QuestFrameDeclineButton, fType=ftype}
 			self:skinStdButton{obj=_G.QuestFrameAcceptButton, fType=ftype, schk=true}
 			self:skinStdButton{obj=_G.QuestFrameGreetingGoodbyeButton, fType=ftype}
