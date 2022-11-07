@@ -57,8 +57,9 @@ aObj.SetupRetail_NPCFrames = function()
 
 		self:SecureHookScript(_G.AuctionHouseFrame, "OnShow", function(this)
 			self:removeInset(this.MoneyFrameInset) -- MerchantMoneyInset
-			this.MoneyFrameBorder:DisableDrawLayer("BACKGROUND")
-			this.MoneyFrameBorder:DisableDrawLayer("BORDER")
+			-- this.MoneyFrameBorder:DisableDrawLayer("BACKGROUND")
+			-- this.MoneyFrameBorder:DisableDrawLayer("BORDER")
+			self:removeNineSlice(this.MoneyFrameBorder)
 			self:skinObject("tabs", {obj=this, tabs=this.Tabs, fType=ftype, lod=self.isTT and true, track=false})
 			if self.isTT then
 				self:SecureHook(this, "SetDisplayMode", function(fObj, displayMode)
@@ -79,17 +80,14 @@ aObj.SetupRetail_NPCFrames = function()
 				self:skinObject("editbox", {obj=fObj.FilterButton.LevelRangeFrame.MinLevel, fType=ftype})
 				self:skinObject("editbox", {obj=fObj.FilterButton.LevelRangeFrame.MaxLevel, fType=ftype})
 				if self.modBtns then
+					self:skinStdButton{obj=fObj.FavoritesSearchButton, fType=ftype, ofs=-2, clr="grey"}
 					self:skinCloseButton{obj=fObj.FilterButton.ClearFiltersButton, fType=ftype, noSkin=true}
 					self:skinStdButton{obj=fObj.FilterButton, fType=ftype, clr="grey"}
 					self:skinStdButton{obj=fObj.SearchButton, fType=ftype}
 				end
-				if self.modBtnBs then
-					self:addButtonBorder{obj=fObj.FavoritesSearchButton, ofs=-2, x1=1, clr="grey"}
-				end
 
 				self:Unhook(fObj, "OnShow")
 			end)
-			-- self:checkShown(this.SearchBar)
 
 			self:SecureHookScript(this.CategoriesList, "OnShow", function(fObj)
 				fObj:DisableDrawLayer("BACKGROUND")
@@ -124,7 +122,6 @@ aObj.SetupRetail_NPCFrames = function()
 
 				self:Unhook(fObj, "OnShow")
 			end)
-			-- self:checkShown(this.CategoriesList)
 
 			local function skinItemList(frame)
 				aObj:removeNineSlice(frame.NineSlice)
@@ -133,7 +130,7 @@ aObj.SetupRetail_NPCFrames = function()
 					if fObj.tableBuilder then
 						for hdr in fObj.tableBuilder.headerPoolCollection:EnumerateActive() do
 							aObj:removeRegions(hdr, {1, 2, 3})
-							aObj:skinObject("frame", {obj=hdr, fType=ftype, ofs=0, x1=1, x2=-1})
+							aObj:skinObject("frame", {obj=hdr, fType=ftype, ofs=1})
 						end
 					end
 				end
@@ -142,8 +139,8 @@ aObj.SetupRetail_NPCFrames = function()
 					skinHeaders(fObj)
 				end)
 				aObj:skinObject("scrollbar", {obj=frame.ScrollBar, fType=ftype})
-				if aObj.modBtnBs then
-					aObj:addButtonBorder{obj=frame.RefreshFrame.RefreshButton, ofs=-2, x1=1, clr="gold"}
+				if aObj.modBtns then
+					aObj:skinStdButton{obj=frame.RefreshFrame.RefreshButton, fType=ftype, ofs=-2, clr="gold"}
 				end
 			end
 			local function skinBidAmt(frame)
@@ -290,7 +287,7 @@ aObj.SetupRetail_NPCFrames = function()
 
 			self:SecureHookScript(this.AuctionsFrame, "OnShow", function(fObj)
 				-- Top Tabs
-				self:skinObject("tabs", {obj=fObj, tabs=fObj.Tabs, fType=ftype, lod=self.isTT and true, upwards=true, offsets={x1=6, y1=-4, x2=-6, y2=self.isTT and -1 or 0}, track=false})
+				self:skinObject("tabs", {obj=fObj, tabs=fObj.Tabs, fType=ftype, lod=self.isTT and true, upwards=true, offsets={x1=4, y1=-8, x2=-4,  y2=-1}, track=false})
 				if self.isTT then
 					self:SecureHook(fObj, "SetDisplayMode", function(frame, displayMode)
 						for i, tab in _G.pairs(frame.Tabs) do
