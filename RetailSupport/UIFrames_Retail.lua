@@ -3924,7 +3924,7 @@ aObj.SetupRetail_UIFrames = function()
 		self.initialized.Social = true
 
 		self:SecureHookScript(_G.SocialBrowserFrame, "OnShow", function(this)
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x2=-3})
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, y1=-1, x2=0})
 
 			self:Unhook(this, "OnShow")
 		end)
