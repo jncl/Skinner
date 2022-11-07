@@ -171,28 +171,6 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 					aObj:skinObject("slider", {obj=aObj:getChild(obj.frame, 2).scrollBar, rpTex="artwork"})
 				end
 
-			-- -- Snowflake objects (Producer AddOn)
-			-- elseif objType == "SnowflakeEditBox" then
-			-- 	aObj:skinObject("editbox", {obj=obj.box})
-			--
-			-- elseif objType == "SnowflakeGroup" then
-			-- 	aObj:skinObject("slider", {obj=obj.slider})
-			-- 	aObj:applySkin{obj=obj.frame}
-			-- 	-- hook this for frame refresh
-			-- 	aObj:secureHook(obj, "Refresh", function(this)
-			-- 		this.frame:SetBackdrop(aObj.Backdrop[1])
-			-- 		this.frame:SetBackdropColor(aObj.bClr:GetRGBA())
-			-- 		this.frame:SetBackdropBorderColor(aObj.bbClr:GetRGBA())
-			-- 	end)
-			--
-			-- -- Producer objects
-			-- elseif objType == "ProducerHead" then
-			-- 	aObj:applySkin{obj=obj.frame}
-			-- 	obj.SetBorder = _G.nop
-			-- 	if aObj.modBtns then
-			-- 		aObj:skinCloseButton{obj=obj.close, onSB=true}
-			-- 	end
-			--
 			-- ListBox object (AuctionLite)
 			elseif objType == "ListBox" then
 				for _, child in _G.ipairs{obj.frame:GetChildren()} do
@@ -202,7 +180,6 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 						break
 					end
 				end
-				-- aObj:applySkin{obj=obj.box, kfs=true}
 				aObj:skinObject("skin", {obj=obj.box, kfs=true})
 
 			-- LibSharedMedia objects
@@ -269,6 +246,17 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 					aObj:skinExpandButton{obj=obj.expand, onSB=true}
 				end
 
+			elseif objType == "WeakAurasMultiLineEditBox" then
+				aObj:skinObject("frame", {obj=obj.scrollBG, kfs=true, fb=true})
+				if aObj.modBtns then
+					-- wait for the extra buttons to be created
+					_G.C_Timer.After(0.05, function()
+						for _, btn in _G.pairs(obj.extraButtons) do
+							aObj:skinStdButton{obj=btn}
+						end
+					end)
+				end
+
 			elseif objType == "WeakAurasNewButton" then
 				obj.background:SetTexture(nil)
 				if aObj.modBtnBs then
@@ -282,105 +270,12 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 			elseif objType == "WeakAurasNewHeaderButton" then
 				obj.frame.background:SetTexture(nil)
 
-			elseif objType == "WeakAurasSortedDropdown" then
-				aObj:skinAceDropdown(obj, nil, 1)
-
-			elseif objType == "WeakAurasMultiLineEditBox" then
-				aObj:skinObject("frame", {obj=obj.scrollBG, kfs=true, fb=true})
-				if aObj.modBtns then
-					-- wait for the extra buttons to be created
-					_G.C_Timer.After(0.05, function()
-						for _, btn in _G.pairs(obj.extraButtons) do
-							aObj:skinStdButton{obj=btn}
-						end
-					end)
-				end
-
 			elseif objType == "WeakAurasSnippetButton" then
 				aObj:skinObject("editbox", {obj=obj.renameEditBox, ofs=3})
 				if aObj.modBtnBs then
 					aObj:addButtonBorder{obj=obj.deleteButton, es=10, ofs=-1, x1=2.5, y2=3.5}
 				end
 
-			-- -- TradeSkillMaster (TSM) objects
-			-- elseif objType == "TSMButton" then
-			--    obj.btn:SetBackdrop(nil)
-			-- 	if aObj.modBtns then
-			-- 		aObj:skinStdButton{obj=obj.btn, as=true} -- just skin it otherwise text is hidden
-			-- 	end
-			-- 	 obj.sknrTSM = true
-			--
-			-- elseif objType == "TSMDropdown" then
-			-- 	aObj:skinAceDropdown(obj, 0, 0)
-			-- 	 obj.sknrTSM = true
-			--
-			-- elseif objType == "TSMDropdown-Pullout" then
-			-- 	aObj:applySkin{obj=obj.frame}
-			-- 	 obj.sknrTSM = true
-			--
-			-- elseif objType == "TSMEditBox" then
-			-- 	if aObj.modBtns then
-			-- 		aObj:skinStdButton{obj=obj.button, as=true}
-			-- 	end
-			-- 	 obj.sknrTSM = true
-			--
-			-- elseif objType == "TSMInlineGroup"
-			-- then
-			-- 	obj.HideBorder = _G.nop
-			-- 	obj.SetBackdrop = _G.nop
-			-- 	obj.border:Hide()
-			-- 	obj.titletext:ClearAllPoints()
-			-- 	obj.titletext:SetPoint("TOPLEFT", 10, -6)
-			-- 	obj.titletext:SetPoint("TOPRIGHT", -14, -6)
-			-- 	aObj:applySkin{obj=obj.frame}
-			-- 	obj.sknrTSM = true
-			--
-			-- elseif objType == "TSMMacroButton"
-			-- or objType == "TSMFastDestroyButton"
-			-- then
-			-- 	obj.frame:SetBackdrop(nil)
-			-- 	if aObj.modBtns then
-			-- 		aObj:skinStdButton{obj=obj.frame}
-			-- 	end
-			-- 	obj.sknrTSM = true
-			--
-			-- elseif objType == "TSMMainFrame" then
-			-- 	aObj:applySkin{obj=obj.frame}
-			-- 	aObj:getChild(obj.frame, 1):SetBackdrop(nil)
-			-- 	if aObj.modBtns then
-			-- 		aObj:skinStdButton{obj=aObj:getChild(obj.frame, 1), nc=true, ofs=2} -- close button
-			-- 	end
-			-- 	obj.sknrTSM = true
-			--
-			-- elseif objType == "TSMScrollingTable" then
-			-- 	aObj:skinObject("frame", {obj=obj.frame, ofs-2})
-			-- 	obj.sknrTSM = true
-			--
-			-- elseif objType == "TSMSelectionList" then
-			-- 	aObj:skinObject("slider", {obj=obj.leftScrollFrame._scrollbar})
-			-- 	aObj:applySkin{obj=obj.leftFrame}
-			-- 	aObj:skinObject("slider", {obj=obj.rightScrollFrame._scrollbar})
-			-- 	aObj:applySkin{obj=obj.rightFrame}
-			-- 	obj.sknrTSM = true
-			--
-			-- elseif objType == "TSMTabGroup"
-			-- then
-			-- 	aObj:applySkin{obj=obj.content:GetParent()}
-			-- 	obj.sknrTSM = true
-			--
-			-- elseif objType == "TSMTreeGroup" then
-			-- 	aObj:applySkin{obj=obj.border}
-			-- 	aObj:applySkin{obj=obj.treeframe}
-			-- 	obj.sknrTSM = true
-			--
-			-- elseif objType == "TSMWindow" then
-			-- 	aObj:applySkin{obj=obj.frame, kfs=true}
-			--    obj.titletext:SetPoint("TOP", obj.frame, "TOP", 0, -6)
-			-- 	if aObj.modBtns then
-			-- 		aObj:skinCloseButton{obj=obj.closebutton}
-			-- 	end
-			-- 	 obj.sknrTSM = true
-			--
 			-- AuctionMaster objects
 			elseif objType == "ScrollableSimpleHTML" then
 				aObj:skinObject("slider", {obj=obj.scrollFrame.ScrollBar})
@@ -471,42 +366,28 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 			or objType == "Icon"
 			or objType == "InteractiveLabel"
 			or objType == "Label"
-			-- -- Snowflake objects
-			-- or objType == "SnowflakeButton"
-			-- or objType == "SnowflakeEscape"
-			-- or objType == "SnowflakePlain"
-			-- or objType == "SnowflakeTitle"
 			-- LSM30 objects
 			or objType == "LSM30_Statusbar_Overlay"
 			or objType == "LSM30_Statusbar_Overlay-Item-Toggle"
 			-- WeakAuras objects
-			or objType == "WeakAurasExpand"
+			or objType == "WeakAurasInlineGroup"
+			or objType == "WeakAurasTreeGroup"
+			or objType == "WeakAurasAnchorButtons"
 			or objType == "WeakAurasExpandAnchor"
 			or objType == "WeakAurasExpandSmall"
 			or objType == "WeakAurasIcon"
 			or objType == "WeakAurasIconButton"
 			or objType == "WeakAurasImportButton"
-			or objType == "WeakAurasInlineGroup"
-			or objType == "WeakAurasTemplateGroup"
+			or objType == "WeakAurasMiniTalent_Dragonflight"
+			or objType == "WeakAurasMiniTalent_Wrath"
+			or objType == "WeakAurasPendingInstallButton"
+			or objType == "WeakAurasPendingUpdateButton"
+			or objType == "WeakAurasProgressBar"
 			or objType == "WeakAurasTextureButton"
 			or objType == "WeakAurasToolbarButton"
-			or objType == "WeakAurasTreeGroup"
 			or objType == "WeakAurasTwoColumnDropdown"
 			-- ReagentRestocker object
 			or objType == "DragDropTarget"
-			-- -- TradeSkillMaster objects
-			-- or objType == "TSMCheckBox"
-			-- or objType == "TSMColorPicker"
-			-- or objType == "TSMDropdown-Item-Execute"
-			-- or objType == "TSMDropdown-Item-Toggle"
-			-- or objType == "TSMImage"
-			-- or objType == "TSMLabel"
-			-- or objType == "TSMMultiLabel"
-			-- or objType == "TSMScrollFrame"
-			-- or objType == "TSMSimpleGroup"
-			-- or objType == "TSMSlider"
-			-- or objType == "TSMGroupBox"
-			-- or objType == "TSMInteractiveLabel"
 			-- CollectMe objects
 			or objType == "CollectMeLabel"
 			-- CompactMissions objects
@@ -587,9 +468,9 @@ aObj.ACD = _G.LibStub:GetLibrary("AceConfigDialog-3.0", true)
 if aObj.ACD then
 	-- hook this to manage IOF panels that have already been skinned by Ace3 skin
 	aObj:RawHook(aObj.ACD, "AddToBlizOptions", function(this, ...)
-		local frame = aObj.hooks[this].AddToBlizOptions(this, ...)
+		local frame, name = aObj.hooks[this].AddToBlizOptions(this, ...)
 		aObj.iofSkinnedPanels[frame] = true
-		return frame
+		return frame, name
 	end, true)
 	aObj:SecureHookScript(aObj.ACD.popup, "OnShow", function(this)
 		if aObj.isRtl then

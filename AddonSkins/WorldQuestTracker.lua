@@ -2,7 +2,7 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("WorldQuestTracker") then return end
 local _G = _G
 
-aObj.addonsToSkin.WorldQuestTracker = function(self) -- v 9.0.2.414
+aObj.addonsToSkin.WorldQuestTracker = function(self) -- v 10.0.0.451-Retail
 
 	_G.WorldQuestTrackerZoneSummaryFrame.Header.Background:SetTexture(nil)
 	_G.WorldQuestTrackerSummaryHeader.BlackBackground:SetTexture(nil)
@@ -12,7 +12,7 @@ aObj.addonsToSkin.WorldQuestTracker = function(self) -- v 9.0.2.414
 	end
 
 	if self.modBtns then
-		self:SecureHookScript(_G.LFGListSearchPanelScrollFrame.ScrollChild.StartGroupButton, "OnClick", function(this)
+		self:SecureHookScript(_G.LFGListFrame.SearchPanel.ScrollBox.StartGroupButton, "OnClick", function(this)
 			_G.C_Timer.After(0.1, function()
 				self:skinCloseButton{obj=_G.WorldQuestTrackerGroupFinderPopup.CloseButton, noSkin=true}
 			end)

@@ -1,9 +1,9 @@
 -- many thanks to acirac/diacono for their work on previous skins
-local aName, aObj = ...
+local _, aObj = ...
 if not aObj:isAddonEnabled("HealBot") then return end
 local _G = _G
 
-aObj.addonsToSkin.HealBot = function(self) -- v 9.0.2.0
+aObj.addonsToSkin.HealBot = function(self) -- v 10.0.0.1
 
 	local function skinKids(frame)
 		local cType
@@ -40,7 +40,6 @@ aObj.addonsToSkin.HealBot = function(self) -- v 9.0.2.0
 			-- elseif cType == "StatusBar" then -- used as a header
 			end
 		end
-		cType = nil
 	end
 	self:SecureHookScript(_G.HealBot_Options, "OnShow", function(this)
 		self:skinObject("frame", {obj=this, kfs=true})
@@ -57,7 +56,7 @@ aObj.addonsToSkin.HealBot = function(self) -- v 9.0.2.0
 		_G.HealBot_Options_FramesSelFrame.sf:SetShown(_G.HealBot_Options_FramesSelFrame:IsShown())
 
 		if self.modBtns then
-			self:SecureHook("HealBot_Options_ObjectsEnableDisable", function(oName, oEnable)
+			self:SecureHook("HealBot_Options_ObjectsEnableDisable", function(oName, _)
 				local obj = _G[oName]
 				if obj:IsObjectType("Button")
 				and obj.Left
@@ -65,11 +64,11 @@ aObj.addonsToSkin.HealBot = function(self) -- v 9.0.2.0
 					self:clrBtnBdr(obj)
 				end
 			end)
-			self:SecureHook(_G.HealBot_Options_NewSkinb, "Disable", function(this, _)
-				self:clrBtnBdr(this)
+			self:SecureHook(_G.HealBot_Options_NewSkinb, "Disable", function(bObj, _)
+				self:clrBtnBdr(bObj)
 			end)
-			self:SecureHook(_G.HealBot_Options_NewSkinb, "Enable", function(this, _)
-				self:clrBtnBdr(this)
+			self:SecureHook(_G.HealBot_Options_NewSkinb, "Enable", function(bObj, _)
+				self:clrBtnBdr(bObj)
 			end)
 			self:SecureHook("HealBot_Options_CDebuffCatNameUpdate", function()
 				self:clrBtnBdr(_G.HealBot_Options_DeleteCDebuffBtn)
@@ -77,13 +76,13 @@ aObj.addonsToSkin.HealBot = function(self) -- v 9.0.2.0
 				self:clrBtnBdr(_G.HealBot_Options_NewCDebuffBtn)
 				self:clrBtnBdr(_G.HealBot_Options_CustomDebuffPresetColour)
 			end)
-			self:SecureHook("HealBot_Options_NewCDebuff_OnTextChanged", function(this)
+			self:SecureHook("HealBot_Options_NewCDebuff_OnTextChanged", function(_)
 				self:clrBtnBdr(_G.HealBot_Options_NewCDebuffBtn)
 			end)
 			self:SecureHook("HealBot_Options_SetEnableDisableCDBtn", function()
 				self:clrBtnBdr(_G.HealBot_Options_EnableDisableCDBtn)
 			end)
-			self:SecureHook("HealBot_Options_NewHoTBuff_OnTextChanged", function(this)
+			self:SecureHook("HealBot_Options_NewHoTBuff_OnTextChanged", function(_)
 				self:clrBtnBdr(_G.HealBot_Options_NewBuffHoTBtn)
 			end)
 			self:SecureHook("HealBot_Options_setCustomDebuffList", function()
@@ -99,17 +98,12 @@ aObj.addonsToSkin.HealBot = function(self) -- v 9.0.2.0
 		self:Unhook(this, "OnShow")
 	end)
 
-	-- tooltip
-	_G.C_Timer.After(0.1, function()
-		self:add2Table(self.ttList, _G.HealBot_Tooltip)
-	end)
-
 	-- minimap button
 	self.mmButs["HealBot"] = _G.HealBot_MMButton
 
 end
 
-aObj.lodAddons.HealBot_Tooltip = function(self) -- v 9.0.2.0
+aObj.lodAddons.HealBot_Tooltip = function(self) -- v 10.0.0.1
 
 	-- tooltip
 	_G.C_Timer.After(0.1, function()

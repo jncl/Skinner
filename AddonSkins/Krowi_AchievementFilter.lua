@@ -2,7 +2,7 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("Krowi_AchievementFilter") then return end
 local _G = _G
 
-aObj.addonsToSkin.Krowi_AchievementFilter = function(self) -- v 43
+aObj.addonsToSkin.Krowi_AchievementFilter = function(self) -- v 45.4
 
 	local afsbs, skinAlertFrame = {}, _G.nop
 
@@ -42,7 +42,11 @@ aObj.addonsToSkin.Krowi_AchievementFilter = function(self) -- v 43
 	end
 
 	local function skinK_AF()
-		self:moveObject{obj=_G.AchievementFrameHeaderTitle, x=-20}
+		if _G.AchievementFrame.Header.Title then
+			self:moveObject{obj=_G.AchievementFrame.Header.Title, x=-20}
+		else
+			self:moveObject{obj=_G.AchievementFrameHeaderTitle, x=-20}
+		end
 		self:moveObject{obj=_G.KrowiAF_AchievementFrameFilterButton, x=0, y=-5}
 		if self.modBtns then
 			self:skinStdButton{obj=_G.KrowiAF_AchievementFrameFilterButton, ofs=0, clr="grey"}

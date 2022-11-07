@@ -2,7 +2,7 @@ local aName, aObj = ...
 if not aObj:isAddonEnabled("Rematch") then return end
 local _G = _G
 
-aObj.addonsToSkin.Rematch = function(self) -- v 4.11.12
+aObj.addonsToSkin.Rematch = function(self) -- v 4.14.4
 
 	local function skinScrollFrame(frame)
 	    aObj:removeInset(frame.List.Background)
@@ -38,7 +38,7 @@ aObj.addonsToSkin.Rematch = function(self) -- v 4.11.12
     end, true)
 
 	local function skinTabs(frame)
-		aObj:skinObject("tabs", {obj=frame, tabs=frame.PanelTabs.Tabs, ignoreSize=true, lod=true, selectedTab=frame == _G.RematchFrame and _G.RematchSettings.ActivePanel or _G.RematchSettings.JournalPanel, offsets={x1=8, y1=0, x2=-8, y2=1}, track=false, func=aObj.isTT and function(tab)
+		aObj:skinObject("tabs", {obj=frame, tabs=frame.PanelTabs.Tabs, ignoreSize=true, lod=true, selectedTab=frame == _G.RematchFrame and _G.RematchSettings.ActivePanel or _G.RematchSettings.JournalPanel, regions={3}, track=false, func=aObj.isTT and function(tab)
 			aObj:SecureHookScript(tab, "OnClick", function(this)
 				for _, tab in _G.pairs(this:GetParent().Tabs) do
 					aObj:setInactiveTab(tab.sf)
@@ -58,7 +58,7 @@ aObj.addonsToSkin.Rematch = function(self) -- v 4.11.12
 			end
 		end
 		skinTabs(this)
-		self:skinObject("frame", {obj=this, kfs=true, rns=true, cb=true, x1=-4, y1=2, x2=2.5, y2=-5})
+		self:skinObject("frame", {obj=this, kfs=true, rns=true, cb=true, x1=-4, y1=2, x2=1, y2=-2})
 
 		self:Unhook(this, "OnShow")
 	end)
@@ -75,13 +75,12 @@ aObj.addonsToSkin.Rematch = function(self) -- v 4.11.12
 	    this:DisableDrawLayer("BORDER")
 	    self:keepFontStrings(this.TitleBar)
 		skinTabs(this)
-		self:skinObject("frame", {obj=this, kfs=true, x1=-4, y1=2, x2=1, y2=-5})
+		self:skinObject("frame", {obj=this, kfs=true, cb=true, x1=-4, y1=2, x2=1, y2=-2})
 		if self.modBtns then
-			self:skinStdButton{obj=this.TitleBar.LockButton, ofs=-6}
-			self:skinStdButton{obj=this.TitleBar.SinglePanelButton, ofs=-6}
-		    self:skinOtherButton{obj=this.TitleBar.MinimizeButton, text=""} -- uses existing texture
-			self:skinCloseButton{obj=this.TitleBar.CloseButton}
-			self:removeRegions(this.TitleBar.CloseButton, {5})
+			-- FIXME: skin buttons
+			-- self:skinStdButton{obj=this.TitleBar.LockButton}
+			-- self:skinStdButton{obj=this.TitleBar.SinglePanelButton}
+		    -- self:skinOtherButton{obj=this.TitleBar.MinimizeButton, text=""} -- uses existing texture
 		end
 		-- remove these textures after buttons skinned, otherwise texture remains for some reason
 	    self:removeRegions(this.TitleBar.LockButton, {5})
@@ -119,9 +118,9 @@ aObj.addonsToSkin.Rematch = function(self) -- v 4.11.12
 	self:SecureHookScript(_G.RematchMiniPanel, "OnShow", function(this)
 	    for _, pet in _G.pairs(this.Pets) do
 	        pet.HP:DisableDrawLayer("OVERLAY")
-			self:skinStatusBar{obj=pet.HP, fi=0, bgTex=self:getRegion(pet.HP, 6)}
+			self:skinObject("statusbar", {obj=pet.HP, fi=0, bg=self:getRegion(pet.HP, 6)})
 	        pet.XP:DisableDrawLayer("OVERLAY")
-			self:skinStatusBar{obj=pet.XP, fi=0, bgTex=self:getRegion(pet.XP, 4)}
+			self:skinObject("statusbar", {obj=pet.XP, fi=0, bg=self:getRegion(pet.XP, 4)})
 	    end
 	    self:removeInset(this.Background)
 	    self:removeInset(this.Target)
@@ -136,7 +135,7 @@ aObj.addonsToSkin.Rematch = function(self) -- v 4.11.12
 	self:SecureHookScript(_G.RematchPetPanel, "OnShow", function(this)
 	    self:removeInset(this.Top)
 		self:skinObject("editbox", {obj=this.Top.SearchBox, chginset=false, regions={3}, ofs=0})
-		self:skinObject("tabs", {obj=this.Top.TypeBar, tabs=this.Top.TypeBar.Tabs, ignoreSize=true, lod=true, offsets={x1=4, y1=0, x2=-2, y2=-2}, track=false, func=aObj.isTT and function(tab)
+		self:skinObject("tabs", {obj=this.Top.TypeBar, tabs=this.Top.TypeBar.Tabs, ignoreSize=true, lod=true, regions={8}, offsets={x1=4, y1=0, x2=-2, y2=-2}, track=false, func=aObj.isTT and function(tab)
 			aObj:SecureHookScript(tab, "OnClick", function(this)
 				for _, tab in _G.pairs(this:GetParent().Tabs) do
 					aObj:setInactiveTab(tab.sf)
@@ -190,9 +189,9 @@ aObj.addonsToSkin.Rematch = function(self) -- v 4.11.12
 	    for _, frame in _G.pairs(this.Loadouts) do
 	        self:removeInset(frame)
 	        frame.XP:DisableDrawLayer("OVERLAY")
-			self:skinStatusBar{obj=frame.XP, fi=0, bgTex=self:getRegion(frame.XP, 11)}
+			self:skinObject("statusbar", {obj=frame.XP, fi=0, bg=self:getRegion(frame.XP, 11)})
 	        frame.HP:DisableDrawLayer("OVERLAY")
-			self:skinStatusBar{obj=frame.HP, fi=0, bgTex=self:getRegion(frame.HP, 6)}
+			self:skinObject("statusbar", {obj=frame.HP, fi=0, bg=self:getRegion(frame.HP, 6)})
 			self:skinObject("frame", {obj=frame, kfs=true, fb=true, ofs=0})
 	    end
 	    self:removeInset(this.Target)
@@ -278,7 +277,7 @@ aObj.addonsToSkin.Rematch = function(self) -- v 4.11.12
 	    this.Front.Middle:DisableDrawLayer("BACKGROUND")
 	    this.Front.Middle:DisableDrawLayer("ARTWORK") -- line
 	    this.Front.Middle.XP:DisableDrawLayer("OVERLAY")
-		self:skinStatusBar{obj=this.Front.Middle.XP, fi=0, bgTex=self:getRegion(this.Front.Middle.XP, 11)}
+		self:skinObject("statusbar", {obj=this.Front.Middle.XP, fi=0, bg=self:getRegion(this.Front.Middle.XP, 11)})
 		self:skinObject("frame", {obj=this.Front, kfs=true})
 	    this.Back.Source:DisableDrawLayer("BACKGROUND")
 	    self:removeRegions(this.Back.Source, {3}) -- line
@@ -292,7 +291,7 @@ aObj.addonsToSkin.Rematch = function(self) -- v 4.11.12
 		self:skinObject("frame", {obj=this, kfs=true, cb=true, x2=0.5})
 		if self.modBtns then
 			self:skinStdButton{obj=this.PinButton, ofs=-6}
-			self:removeRegions(this.CloseButton, {5})
+			-- self:removeRegions(this.CloseButton, {5})
 		end
 	    self:removeRegions(this.PinButton, {5})
 

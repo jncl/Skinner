@@ -2,7 +2,7 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("WeakAuras") then return end
 local _G = _G
 
-aObj.addonsToSkin.WeakAuras = function(self) -- v 3.7.13
+aObj.addonsToSkin.WeakAuras = function(self) -- v 5.0.5
 
 	if _G.WeakAuras.ShowDisplayTooltip then
 		-- hook this to skin the WeakAuras added elements
@@ -69,11 +69,6 @@ aObj.addonsToSkin.WeakAuras = function(self) -- v 3.7.13
 			end
 		end)
 	end
-
-	-- setup defaults for Progress Bars
-	local c = self.prdb.StatusBar
-	_G.WeakAuras.regionTypes["aurabar"].default.texture = c.texture
-	_G.WeakAuras.regionTypes["aurabar"].default.barColor = {c.r, c.g, c.b, c.a}
 
 	-- hook this as frame is shown before it is fully setup
 	self:SecureHook(_G.WeakAuras.RealTimeProfilingWindow, "UpdateButtons", function(this)
