@@ -630,22 +630,11 @@ aObj.SetupRetail_PlayerFrames = function()
 		for _, type in _G.pairs{"Player", "Pet", "OverlayPlayer"} do
 			cbFrame = _G[type .. "CastingBarFrame"]
 			self:nilTexture(cbFrame.TextBorder, true)
-			self:nilTexture(cbFrame.Border, true)
 			self:changeShield(cbFrame.BorderShield, cbFrame.Icon)
-			-- cbFrame.Flash:SetAllPoints()
-			-- cbFrame.Flash:SetTexture(self.tFDIDs.w8x8)
-			-- TODO: remove this skin line, changing textures breaks the display
-			-- self:skinObject("statusbar", {obj=cbFrame, fi=0, bg=self:getRegion(cbFrame, 4), nilFuncs=true})
+			self:nilTexture(cbFrame.Border, true)
+			self:nilTexture(cbFrame.Flash, true)
+			self:skinObject("statusbar", {obj=cbFrame--[[, fi=0]], bg=cbFrame.Background, hookFunc=true})
 		end
-
-		-- local function setLook(castBar, _)
-		-- 	castBar.Flash:SetAllPoints()
-		-- 	castBar.Flash:SetTexture(self.tFDIDs.w8x8)
-		-- end
-		-- -- hook this to handle the CastingBar being attached to the Unitframe and then reset
-		-- self:SecureHook(_G.CastingBarMixin, "SetLook", function(castBar, look)
-		-- 	setLook(castBar, look)
-		-- end)
 
 	end
 
