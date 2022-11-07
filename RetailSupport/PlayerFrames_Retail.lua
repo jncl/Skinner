@@ -972,7 +972,7 @@ aObj.SetupRetail_PlayerFrames = function()
 		self.initialized.ClassTalentUI = true
 
 		self:SecureHookScript(_G.ClassTalentFrame, "OnShow", function(this)
-			this.PortraitOverlay.Portrait:SetTexture(nil)
+			this.PortraitOverlay.Portrait:SetAlpha(0)
 			self:skinObject("tabs", {obj=this.TabSystem,  pool=true, fType=ftype, ignoreSize=true, track=false})
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true, cb=true})
 
