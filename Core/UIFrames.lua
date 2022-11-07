@@ -2075,26 +2075,29 @@ aObj.blizzFrames[ftype].Nameplates = function(self)
 		then
 			local nHb, nCb = nP.healthBar, nP.castBar or nP.CastBar
 			nHb.border:DisableDrawLayer("ARTWORK")
-			if self.isRtl then
-				aObj:skinObject("statusbar", {obj=nHb, fi=0, bg=nHb.background, other={nHb.myHealPrediction, nHb.otherHealPrediction}})
-				if nCb then
-					aObj:skinObject("statusbar", {obj=nCb, fi=0, bg=nCb.background})
-				end
-			else
+			if not aObj.isRtl then
 				aObj:skinObject("statusbar", {obj=nHb, fi=0, bg=nHb.background})
-				if self.isClsc then
+				if aObj.isClsc then
 					aObj:skinObject("statusbar", {obj=nCb, fi=0, bg=aObj:getRegion(nCb, 1)})
 					aObj:nilTexture(nCb.Border, true)
 					aObj:nilTexture(nCb.BorderShield, true)
+				end
+			else
+				aObj:skinObject("statusbar", {obj=nHb, fi=0, bg=nHb.background, other={nHb.myHealPrediction, nHb.otherHealPrediction}})
+				if nCb then
+					aObj:skinObject("statusbar", {obj=nCb, fi=0, bg=nCb.Background, hookFunc=true})
 				end
 			end
 			-- N.B. WidgetContainer objects managed in UIWidgets code
 		end
 	end
 	self:SecureHook(_G.NamePlateDriverFrame, "OnNamePlateAdded", function(_, namePlateUnitToken)
-		skinNamePlate(_G.C_NamePlate.GetNamePlateForUnit(namePlateUnitToken, _G.issecure()))
+		local namePlate = _G.C_NamePlate.GetNamePlateForUnit(namePlateUnitToken, _G.issecure())
+		if namePlate then
+			skinNamePlate(namePlate)
+		end
 	end)
-	for _, frame in _G.ipairs(_G.C_NamePlate.GetNamePlates(_G.issecure())) do
+	for _, frame in _G.pairs(_G.C_NamePlate.GetNamePlates(_G.issecure())) do
 		skinNamePlate(frame)
 	end
 
