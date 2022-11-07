@@ -1762,6 +1762,7 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 
 	if not self.modBtns then return end
 
+	local minBtn = self.prdb.MinimapButtons.style
 	local ignBtn = {
 		["OQ_MinimapButton"] = true,
 	}
@@ -1777,8 +1778,6 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 		ignBtn[_G.Minimap.ZoomIn]  = true
 		ignBtn[_G.Minimap.ZoomOut] = true
 	end
-	local minBtn = self.prdb.MinimapButtons.style
-
 	local function mmKids(mmObj)
 		local objName, objType
 		for _, obj in _G.ipairs{mmObj:GetChildren()} do
@@ -1835,44 +1834,7 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 		end
 	end
 
-	if not self.isClscERA then
-		if not self.isRtl then
-			-- Calendar button
-			makeBtnSquare(_G.GameTimeFrame, 0.1, 0.31, 0.16, 0.6)
-			_G.GameTimeFrame:SetNormalFontObject(_G.GameFontWhite) -- allow for font OUTLINE to be seen
-			_G.MiniMapTrackingBackground:SetTexture(nil)
-			_G.MiniMapTrackingButtonBorder:SetTexture(nil)
-			if not minBtn then
-				_G.MiniMapTracking:SetScale(0.9)
-				self:skinObject("frame", {obj=_G.MiniMapTracking, fType=ftype})
-			end
-			if self.isRtl then
-				_G.QueueStatusMinimapButtonBorder:SetTexture(nil)
-				self:moveObject{obj=_G.QueueStatusMinimapButton, x=-16}
-				if not minBtn then
-					self:skinObject("button", {obj=_G.QueueStatusMinimapButton, fType=ftype, ofs=-1})
-					_G.RaiseFrameLevelByTwo(_G.QueueStatusMinimapButton)
-					_G.LowerFrameLevel(_G.QueueStatusMinimapButton.sb)
-				end
-			else
-				_G.MiniMapBattlefieldFrame:SetSize(28, 28)
-			end
-			if not self.isRtl then
-				self:moveObject{obj=_G.MiniMapTracking, x=-4}
-			end
-			if not minBtn then
-				self:skinObject("frame", {obj=_G.MiniMapTracking, fType=ftype, bd=10, x1=4, y1=-3})
-			end
-		end
-		-- skin any moved Minimap buttons if required
-		if _G.IsAddOnLoaded("MinimapButtonFrame") then
-			mmKids(_G.MinimapButtonFrame)
-		end
-		-- show the Bongos minimap icon if required
-		if _G.IsAddOnLoaded("Bongos") then
-			_G.Bongos3MinimapButton.icon:SetDrawLayer("ARTWORK")
-		end
-	else
+	if self.isClscERA then
 		-- remove ring from GameTimeFrame texture
 		self:RawHook(_G.GameTimeTexture, "SetTexCoord", function(this, minx, maxx, miny, maxy)
 			self.hooks[this].SetTexCoord(this, minx + 0.075, maxx - 0.075, miny + 0.175, maxy - 0.2)
@@ -1891,9 +1853,36 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 		if not minBtn then
 			self:skinObject("frame", {obj=_G.MiniMapTrackingFrame, fType=ftype, bd=10, x1=4, y1=-3})
 		end
+	else
+		if self.isClsc then
+			-- Calendar button
+			makeBtnSquare(_G.GameTimeFrame, 0.1, 0.31, 0.16, 0.6)
+			_G.GameTimeFrame:SetNormalFontObject(_G.GameFontWhite) -- allow for font OUTLINE to be seen
+			_G.MiniMapTrackingBackground:SetTexture(nil)
+			_G.MiniMapTrackingButtonBorder:SetTexture(nil)
+			self:moveObject{obj=_G.MiniMapTracking, x=-4}
+			if not minBtn then
+				_G.MiniMapTracking:SetScale(0.9)
+				self:skinObject("frame", {obj=_G.MiniMapTracking, fType=ftype, bd=10, x1=4, y1=-3})
+			end
+			_G.MiniMapBattlefieldFrame:SetSize(28, 28)
+		end
+		-- skin any moved Minimap buttons if required
+		if _G.IsAddOnLoaded("MinimapButtonFrame") then
+			mmKids(_G.MinimapButtonFrame)
+		end
+		-- show the Bongos minimap icon if required
+		if _G.IsAddOnLoaded("Bongos") then
+			_G.Bongos3MinimapButton.icon:SetDrawLayer("ARTWORK")
+		end
 	end
 
+	_G.MiniMapMailIcon:SetTexture(self.tFDIDs.tMB)
+	_G.MiniMapMailIcon:ClearAllPoints()
 	if not self.isRtl then
+		_G.MiniMapMailIcon:SetPoint("CENTER", _G.MiniMapMailFrame)
+		_G.MiniMapMailFrame:SetSize(26, 26)
+		self:moveObject{obj=_G.MiniMapMailFrame, y=-4}
 		_G.MiniMapWorldBorder:SetTexture(nil)
 		_G.MiniMapWorldMapButton:ClearAllPoints()
 		_G.MiniMapWorldMapButton:SetPoint("LEFT", _G.MinimapZoneTextButton, "RIGHT", -4, 0)
@@ -1903,19 +1892,6 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 		then
 			_G.MiniMapWorldMapButton:DisableDrawLayer("OVERLAY") -- border texture
 		end
-		_G.MiniMapMailFrame:SetSize(26, 26)
-		self:moveObject{obj=_G.MiniMapMailFrame, y=-4}
-	end
-	_G.MiniMapMailIcon:SetTexture(self.tFDIDs.tMB)
-	_G.MiniMapMailIcon:ClearAllPoints()
-	_G.MiniMapMailIcon:SetPoint("CENTER", _G.MiniMapMailFrame)
-	_G.TimeManagerClockButton:DisableDrawLayer("BORDER")
-	_G.TimeManagerClockButton:SetSize(36, 14)
-	if not _G.IsAddOnLoaded("SexyMap") then
-		self:moveObject{obj=_G.TimeManagerClockTicker, x=-3, y=-1}
-	end
-
-	if not self.isRtl then
 		-- Zoom Buttons
 		local btn, txt, xOfs, yOfs
 		for _, suff in _G.pairs{"In", "Out"} do
@@ -1953,6 +1929,20 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 				self:RegisterEvent("MINIMAP_UPDATE_ZOOM", clrZoomBtns)
 			end
 		end
+	else
+		_G.MiniMapMailIcon:SetPoint("CENTER", _G.MinimapCluster.MailFrame)
+		-- ExpansionLandingPageMinimapButton
+		_G.ExpansionLandingPageMinimapButton.AlertBG:SetTexture(nil)
+		local anchor = _G.AnchorUtil.CreateAnchor("TOPLEFT", "MinimapBackdrop", "TOPLEFT", -10, -200)
+		anchor:SetPoint(_G.ExpansionLandingPageMinimapButton, true)
+		self:SecureHook(_G.ExpansionLandingPageMinimapButton, "UpdateIconForGarrison", function(this)
+			anchor:SetPoint(this, true)
+		end)
+	end
+	_G.TimeManagerClockButton:DisableDrawLayer("BORDER")
+	_G.TimeManagerClockButton:SetSize(36, 14)
+	if not _G.IsAddOnLoaded("SexyMap") then
+		self:moveObject{obj=_G.TimeManagerClockTicker, x=-3, y=-1}
 	end
 
 	-- skin Minimap children, allow for delayed addons to be loaded (e.g. Baggins)
@@ -1999,16 +1989,6 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 	self.DBIcon:RegisterCallback("LibDBIcon_IconCreated", skinDBI)
 	for name, button in _G.pairs(self.DBIcon.objects) do
 		skinDBI(nil, button, name)
-	end
-
-	if self.isRtl then
-		-- ExpansionLandingPageMinimapButton
-		_G.ExpansionLandingPageMinimapButton.AlertBG:SetTexture(nil)
-		local anchor = _G.AnchorUtil.CreateAnchor("TOPLEFT", "MinimapBackdrop", "TOPLEFT", -10, -200)
-		anchor:SetPoint(_G.ExpansionLandingPageMinimapButton, true)
-		self:SecureHook(_G.ExpansionLandingPageMinimapButton, "UpdateIconForGarrison", function(this)
-			anchor:SetPoint(this, true)
-		end)
 	end
 
 end
