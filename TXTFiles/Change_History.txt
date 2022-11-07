@@ -1,3 +1,12 @@
+beta10.46366.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Updated checks for PTR changes going live
+	Applied PTR changes
+	Updated Ace3, Bagnon, LibSFDropDown, LibUIDropDownMenu, MountsJournal & TLDRMissions skins
+	
 beta9.46158.1
 Jncl:
 	ToDo.txt
