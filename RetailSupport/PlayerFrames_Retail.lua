@@ -1135,16 +1135,12 @@ aObj.SetupRetail_PlayerFrames = function()
 
 		self:SecureHookScript(_G.CollectionsJournal, "OnShow", function(this)
 			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true, selectedTab=this.selectedTab})
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true, cb=true, x2=3, y2=-3})
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true, cb=true, x2=3, y2=-2})
 
 			self:Unhook(this, "OnShow")
 		end)
 
 		self:SecureHookScript(_G.MountJournal, "OnShow", function(this)
-			local function updBtnClr(btn)
-				local r, g, b = btn.icon:GetVertexColor()
-				btn.sbb:SetBackdropBorderColor(r, g, b, btn.icon:GetAlpha())
-			end
 			self:removeInset(this.LeftInset)
 			self:removeInset(this.BottomLeftInset)
 			self:removeRegions(this.SlotButton, {1, 3})
@@ -1211,14 +1207,6 @@ aObj.SetupRetail_PlayerFrames = function()
 				self:skinCloseButton{obj=_G.PetJournalFilterButton.ResetButton, fType=ftype, noSkin=true}
 			end
 			-- PetList
-			local function skinCompanionBtn(btn)
-				aObj:removeRegions(btn, {1, 4}) -- background, iconBorder
-				aObj:changeTandC(btn.dragButton.levelBG)
-				if aObj.modBtnBs then
-					aObj:addButtonBorder{obj=btn, relTo=btn.icon, reParent={btn.dragButton.levelBG, btn.dragButton.level, btn.dragButton.favorite}}
-					aObj:clrButtonFromBorder(btn)
-				end
-			end
 			self:skinObject("scrollbar", {obj=this.ScrollBar, fType=ftype})
 			local function skinElement(...)
 				local _, element, new
@@ -1405,7 +1393,7 @@ aObj.SetupRetail_PlayerFrames = function()
 		end)
 
 		self:SecureHookScript(_G.WardrobeCollectionFrame, "OnShow", function(this)
-			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true, upwards=true, offsets={x1=2, y1=-4, x2=-2, y2=self.isTT and -4 or 0}})
+			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true, upwards=true, offsets={x1=2, y1=-4, x2=-2, y2=-4}})
 			self:skinObject("editbox", {obj=this.searchBox, fType=ftype, si=true})
 			_G.RaiseFrameLevelByTwo(this.searchBox) -- raise above SetsCollectionFrame when displayed on it
 			self:skinObject("statusbar", {obj=this.progressBar, fi=0})
@@ -1415,7 +1403,7 @@ aObj.SetupRetail_PlayerFrames = function()
 				_G.RaiseFrameLevelByTwo(this.FilterButton) -- raise above SetsCollectionFrame when displayed on it
 				self:skinCloseButton{obj=this.FilterButton.ResetButton, fType=ftype, noSkin=true}
 			end
-			local x1Ofs, y1Ofs, x2Ofs, y2Ofs = -4, 2, 7, -6
+			local x1Ofs, y1Ofs, x2Ofs, y2Ofs = -4, 2, 7, -5
 
 			if _G.IsAddOnLoaded("BetterWardrobe") then
 				self.callbacks:Fire("WardrobeCollectionFrame_OnShow")
