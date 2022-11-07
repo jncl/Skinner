@@ -1747,7 +1747,7 @@ aObj.SetupRetail_PlayerFrames = function()
 				end
 
 				self:skinObject("scrollbar", {obj=frame.CommunityCards.ScrollBar, fType=ftype})
-				local function skinElement(...)
+				local function skinCardElement(...)
 					local _, element, new
 					if _G.select("#", ...) == 2 then
 						element, _ = ...
@@ -1762,7 +1762,7 @@ aObj.SetupRetail_PlayerFrames = function()
 						aObj:skinObject("frame", {obj=element, fType=ftype, ofs=3, x2=-10})
 					end
 				end
-				_G.ScrollUtil.AddAcquiredFrameCallback(frame.CommunityCards.ScrollBox, skinElement, aObj, true)
+				_G.ScrollUtil.AddAcquiredFrameCallback(frame.CommunityCards.ScrollBox, skinCardElement, aObj, true)
 
 				for _, btn in _G.pairs(frame.PendingGuildCards.Cards) do
 					btn:DisableDrawLayer("BACKGROUND")
@@ -1784,7 +1784,7 @@ aObj.SetupRetail_PlayerFrames = function()
 				end
 
 				self:skinObject("scrollbar", {obj=frame.PendingCommunityCards.ScrollBar, fType=ftype})
-				local function skinElement(...)
+				local function skinPendingElement(...)
 					local _, element, new
 					if _G.select("#", ...) == 2 then
 						element, _ = ...
@@ -1799,7 +1799,7 @@ aObj.SetupRetail_PlayerFrames = function()
 						aObj:skinObject("frame", {obj=element, fType=ftype, ofs=3, x2=-10})
 					end
 				end
-				_G.ScrollUtil.AddAcquiredFrameCallback(frame.PendingCommunityCards.ScrollBox, skinElement, aObj, true)
+				_G.ScrollUtil.AddAcquiredFrameCallback(frame.PendingCommunityCards.ScrollBox, skinPendingElement, aObj, true)
 
 				skinReqToJoin(frame.RequestToJoinFrame)
 
@@ -1833,6 +1833,7 @@ aObj.SetupRetail_PlayerFrames = function()
 
 				self:Unhook(fObj, "OnShow")
 			end)
+			self:checkShown(this.GuildFinderFrame)
 
 			self:SecureHookScript(this.CommunityFinderFrame, "OnShow", function(fObj)
 				skinCFGaCF(fObj)
@@ -1840,113 +1841,6 @@ aObj.SetupRetail_PlayerFrames = function()
 				self:Unhook(fObj, "OnShow")
 			end)
 			self:checkShown(this.CommunityFinderFrame)
-
-			self:SecureHookScript(this.Chat, "OnShow", function(fObj)
-				self:skinObject("slider", {obj=fObj.MessageFrame.ScrollBar, fType=ftype})
-				self:removeInset(fObj.InsetFrame)
-
-				self:Unhook(fObj, "OnShow")
-			end)
-			self:checkShown(this.Chat)
-
-			self:SecureHookScript(this.InvitationFrame, "OnShow", function(fObj)
-				fObj:DisableDrawLayer("BACKGROUND")
-				fObj:DisableDrawLayer("ARTWORK")
-				self:removeInset(fObj.InsetFrame)
-				self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true})
-				if self.modBtns then
-					self:skinStdButton{obj=fObj.AcceptButton}
-					self:skinStdButton{obj=fObj.DeclineButton}
-				end
-
-				self:Unhook(fObj, "OnShow")
-			end)
-			self:checkShown(this.InvitationFrame)
-
-			self:SecureHookScript(this.ClubFinderInvitationFrame, "OnShow", function(fObj)
-				fObj:DisableDrawLayer("BACKGROUND")
-				self:removeInset(fObj.InsetFrame)
-				self:removeNineSlice(fObj.InsetFrame.NineSlice)
-				self:skinObject("frame", {obj=fObj.WarningDialog.BG, fType=ftype, kfs=true})
-				if self.modBtns then
-					self:skinStdButton{obj=fObj.WarningDialog.Accept}
-					self:skinStdButton{obj=fObj.WarningDialog.Cancel}
-					self:skinStdButton{obj=fObj.AcceptButton}
-					self:skinStdButton{obj=fObj.ApplyButton}
-					self:skinStdButton{obj=fObj.DeclineButton}
-					self:SecureHook(fObj, "DisplayInvitation", function(cfiF, _)
-						self:clrBtnBdr(cfiF.ApplyButton)
-					end)
-					self:SecureHook(fObj.AcceptButton, "SetEnabled", function(cfiF, _)
-						self:clrBtnBdr(cfiF)
-					end)
-				end
-				skinReqToJoin(fObj.RequestToJoinFrame)
-
-				self:Unhook(fObj, "OnShow")
-			end)
-			self:checkShown(this.ClubFinderInvitationFrame)
-
-			self:SecureHookScript(this.TicketFrame, "OnShow", function(fObj)
-				self:removeNineSlice(fObj.InsetFrame.NineSlice)
-				if self.modBtns then
-					self:skinStdButton{obj=fObj.AcceptButton}
-					self:skinStdButton{obj=fObj.DeclineButton}
-				end
-
-				self:Unhook(fObj, "OnShow")
-			end)
-			self:checkShown(this.TicketFrame)
-
-			self:SecureHookScript(this.GuildBenefitsFrame, "OnShow", function(fObj)
-				fObj:DisableDrawLayer("OVERLAY") -- inset textures
-				self:removeRegions(fObj.Perks, {1})
-				self:skinObject("scrollbar", {obj=this.Perks.ScrollBar, fType=ftype})
-				local function skinElement(...)
-					local _, element, new
-					if _G.select("#", ...) == 2 then
-						element, _ = ...
-					elseif _G.select("#", ...) == 3 then
-						element, _, new = ...
-					else
-						_, element, _, new = ...
-					end
-					if new ~= false then
-						aObj:removeRegions(element, {1, 2, 3, 4})
-						element.NormalBorder:DisableDrawLayer("BACKGROUND")
-						element.DisabledBorder:DisableDrawLayer("BACKGROUND")
-						if aObj.modBtnBs then
-							 aObj:addButtonBorder{obj=element, relTo=element.Icon, clr="grey"}
-						end
-					end
-				end
-				_G.ScrollUtil.AddAcquiredFrameCallback(this.Perks.ScrollBox, skinElement, aObj, true)
-				fObj.Rewards.Bg:SetTexture(nil)
-				self:skinObject("scrollbar", {obj=this.Rewards.ScrollBar, fType=ftype})
-				local function skinElement(...)
-					local _, element, new
-					if _G.select("#", ...) == 2 then
-						element, _ = ...
-					elseif _G.select("#", ...) == 3 then
-						element, _, new = ...
-					else
-						_, element, _, new = ...
-					end
-					if new ~= false then
-						element:GetNormalTexture():SetAlpha(0)
-						if aObj.modBtnBs then
-							 aObj:addButtonBorder{obj=element, relTo=element.Icon, reParent={element.Lock}}
-						end
-					end
-				end
-				_G.ScrollUtil.AddAcquiredFrameCallback(this.Rewards.ScrollBox, skinElement, aObj, true)
-				self:skinObject("dropdown", {obj=fObj.Rewards.DropDown, fType=ftype})
-				fObj.FactionFrame.Bar:DisableDrawLayer("BORDER")
-				self:changeTex2SB(fObj.FactionFrame.Bar.Progress)
-				fObj.FactionFrame.Bar.Shadow:SetTexture(nil)
-
-				self:Unhook(fObj, "OnShow")
-			end)
 			self:checkShown(this.GuildDetailsFrame)
 
 			self:SecureHookScript(this.GuildDetailsFrame, "OnShow", function(fObj)
