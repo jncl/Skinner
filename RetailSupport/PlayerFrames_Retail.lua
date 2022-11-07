@@ -3670,9 +3670,9 @@ aObj.SetupRetail_PlayerFrames = function()
 				aObj:skinStdButton{obj=frame.QualityDialog.CancelButton, fType=ftype}
 				aObj:skinStdButton{obj=frame.QualityDialog.AcceptButton, fType=ftype}
 			end
-			aObj:SecureHook(frame, "Init", function(fObj, recipeInfo)
+			aObj:SecureHook(frame, "Init", function(fObj, _)
 				local slots = fObj:GetSlots()
-				aObj:Debug("SchematicForm Init: [%s, %s, %s]", recipeInfo, #slots)
+				-- aObj:Debug("SchematicForm Init: [%s, %s, %s]", recipeInfo, #slots)
 				for _, slot in _G.pairs(slots) do
 					if slot.InputSlot then -- Recraft slot
 					else -- Reagent, Optional, Salvage, Enchant
@@ -3767,11 +3767,30 @@ aObj.SetupRetail_PlayerFrames = function()
 				self:Unhook(fObj, "OnShow")
 			end)
 
-			self:RawHook("OpenProfessionsItemFlyout", function(owner, parent)
-				local flyout = self.hooks.OpenProfessionsItemFlyout(owner, parent)
-				aObj:Debug("OpenProfessionsItemFlyout: [%s, %s, %s, %s]", owner, parent, flyout)
-				self:skinObject("frame", {obj=flyout, fType=ftype, kfs=true, rns=true})
-				local function skinElement(...)
+			self:Unhook(this, "OnShow")
+		end)
+		self:checkShown(_G.ProfessionsFrame)
+
+	end
+
+	aObj.blizzLoDFrames[ftype].ProfessionsCrafterOrders = function(self)
+		if not self.prdb.Professions or self.initialized.ProfessionsCrafterOrders then return end
+		self.initialized.ProfessionsCrafterOrders = true
+
+		self:SecureHookScript(_G.ProfessionsCrafterOrdersFrame, "OnShow", function(this)
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true, cb=true})
+
+			self:SecureHookScript(this.BrowseOrders, "OnShow", function(fObj)
+				self:skinObject("editbox", {obj=fObj.SearchBar.SearchBox, fType=ftype, si=true})
+				self:skinObject("dropdown", {obj=fObj.OrderRecipientDropDown, fType=ftype, lrgTpl=true, x1=-1, y1=2, x2=0, y2=2})
+				if self.modBtns then
+					self:skinStdButton{obj=fObj.SearchBar.FavoritesSearchButton, fType=ftype, ofs=-2, clr="gold"}
+					self:skinStdButton{obj=fObj.SearchBar.SearchButton, fType=ftype}
+					self:skinCloseButton{obj=fObj.FilterButton.ResetButton, fType=ftype, noSkin=true}
+					self:skinStdButton{obj=fObj.FilterButton, fType=ftype, clr="grey"}
+				end
+				self:skinObject("scrollbar", {obj=fObj.RecipeList.ScrollBar, fType=ftype})
+				local function skinRecipeElement(...)
 					local _, element, new
 					if _G.select("#", ...) == 2 then
 						element, _ = ...
@@ -3781,37 +3800,57 @@ aObj.SetupRetail_PlayerFrames = function()
 						_, element, _, new = ...
 					end
 					if new ~= false then
-						if aObj.modBtnBs then
-							if not element.sbb then
-								aObj:addButtonBorder{obj=element, fType=ftype, ibt=true, relTo=element.Icon}
-							else
-								aObj:clrButtonFromBorder(element)
+						element:DisableDrawLayer("BACKGROUND")
+						if element.RankBar then
+							aObj:skinObject("statusbar", {obj=element.RankBar, regions={1, 2, 3}, fi=0})
 							end
 						end
 					end
+				_G.ScrollUtil.AddAcquiredFrameCallback(fObj.RecipeList.ScrollBox, skinRecipeElement, aObj, true)
+				-- hook this to skin headers
+				self:SecureHook(fObj, "SetupTable", function(frame, _)
+					for hdr in frame.tableBuilder:EnumerateHeaders() do
+						hdr:DisableDrawLayer("BACKGROUND")
+						self:skinObject("frame", {obj=hdr, fType=ftype, ofs=0})
 				end
-				_G.ScrollUtil.AddAcquiredFrameCallback(flyout.ScrollBox, skinElement, aObj, true)
-				if self.modChkBtns then
-					self:skinCheckButton{obj=flyout.HideUnownedCheckBox, fType=ftype}
+				end)
+				self:skinObject("scrollbar", {obj=fObj.OrderList.ScrollBar, fType=ftype})
+				local function skinOrderElement(...)
+					local _, element, elementData, new
+					if _G.select("#", ...) == 2 then
+						element, elementData = ...
+					elseif _G.select("#", ...) == 3 then
+						element, elementData, new = ...
+					else
+						_, element, elementData, new = ...
 				end
-				self:Unhook(this, "OpenProfessionsItemFlyout")
-				return flyout
-			end, true)
+					if new ~= false then
+						-- TODO: skin Order elements
+					end
+				end
+				_G.ScrollUtil.AddAcquiredFrameCallback(fObj.OrderList.ScrollBox, skinOrderElement, aObj, true)
 
-			self:Unhook(this, "OnShow")
+				self:Unhook(fObj, "OnShow")
 		end)
-		self:checkShown(_G.ProfessionsFrame)
+			self:checkShown(this.BrowseOrders)
 
-	end
+			self:SecureHookScript(this.Form, "OnShow", function(fObj)
+				-- .CustomerDetails
+					-- .BackButton
+					-- .ScrollBoxContainer
+					-- .TipMoneyDisplayFrame
+					-- .CancelOrderButton
+					-- .DeclineOrderButton
 
-	-- TODO: skin ProfessionsCrafterOrders frame
-	aObj.blizzLoDFrames[ftype].ProfessionsCrafterOrders = function(self)
-		if not self.prdb.Professions or self.initialized.ProfessionsCrafterOrders then return end
-		self.initialized.ProfessionsCrafterOrders = true
+				-- .StartOrderButton
+				-- .CreateOrderButton
 
-		self:SecureHookScript(_G.ProfessionsCrafterOrdersFrame, "OnShow", function(this)
+				-- .CraftingOutputDialog
+				-- .SchematicForm
 
-			-- so-f
+				self:Unhook(fObj, "OnShow")
+			end)
+			self:checkShown(this.Form)
 
 			self:Unhook(this, "OnShow")
 		end)
@@ -3819,18 +3858,212 @@ aObj.SetupRetail_PlayerFrames = function()
 
 	end
 
-	-- TODO: skin ProfessionsCustomerOrders frame
 	aObj.blizzLoDFrames[ftype].ProfessionsCustomerOrders = function(self)
 		if not self.prdb.Professions or self.initialized.ProfessionsCustomerOrders then return end
+
+		if not _G.ProfessionsCustomerOrdersFrame then
+			_G.C_Timer.After(0.1, function()
+				self.blizzLoDFrames[ftype].ProfessionsCustomerOrders(self)
+			end)
+			return
+		end
+
 		self.initialized.ProfessionsCustomerOrders = true
 
 		self:SecureHookScript(_G.ProfessionsCustomerOrdersFrame, "OnShow", function(this)
+			self:removeInset(this.MoneyFrameInset)
+			self:removeNineSlice(this.MoneyFrameBorder)
+			self:skinObject("tabs", {obj=this, tabs={this.BrowseTab, this.OrdersTab}, fType=ftype, lod=self.isTT and true, track=false})
+			-- TODO: identify selected Textured Tab
+			-- if self.isTT then
+			-- 	self:SecureHook(this, "SetDisplayMode", function(fObj, displayMode)
+			-- 		if not fObj.tabsForDisplayMode[displayMode] then return end
+			-- 		for i, tab in _G.ipairs(fObj.Tabs) do
+			-- 			if i == fObj.tabsForDisplayMode[displayMode] then
+			-- 				self:setActiveTab(tab.sf)
+			-- 			else
+			-- 				self:setInactiveTab(tab.sf)
+			-- 			end
+			-- 		end
+			-- 	end)
+			-- end
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true, cb=true, y2=0})
 
-			-- so-f
+			self:SecureHookScript(this.Form, "OnShow", function(fObj)
+				fObj:DisableDrawLayer("ARTWORK")
+				self:skinObject("dropdown", {obj=fObj.MinimumQualityDropDown, fType=ftype, lrgTpl=true, x1=-1, y1=2, x2=0, y2=2})
+				self:skinObject("dropdown", {obj=fObj.OrderRecipientDropDown, fType=ftype, lrgTpl=true, x1=-1, y1=2, x2=0, y2=2})
+				self:skinObject("frame", {obj=fObj.ReagentContainer, fType=ftype, kfs=true, fb=true, ofs=4})
+				-- TODO: skin Reagent buttons
+				self:skinObject("frame", {obj=fObj.PaymentContainer, fType=ftype, kfs=true, fb=true, ofs=4})
+				self:skinObject("frame", {obj=fObj.PaymentContainer.ScrollBoxContainer, fType=ftype, kfs=true, fb=true})
+				self:skinObject("editbox", {obj=fObj.PaymentContainer.TipMoneyInputFrame.CopperBox, fType=ftype, y2=4})
+				self:skinObject("editbox", {obj=fObj.PaymentContainer.TipMoneyInputFrame.SilverBox, fType=ftype, y2=4})
+				self:skinObject("editbox", {obj=fObj.PaymentContainer.TipMoneyInputFrame.GoldBox, fType=ftype, y2=4})
+				self:skinObject("dropdown", {obj=fObj.PaymentContainer.DurationDropDown, fType=ftype, lrgTpl=true, x1=-1, y1=2, x2=0, y2=2})
+				-- .QualityDialog
+				if self.modBtns then
+					self:skinStdButton{obj=fObj.BackButton, fType=ftype}
+					self:skinStdButton{obj=fObj.PaymentContainer.ListOrderButton, fType=ftype}
+				end
+
+				self:Unhook(fObj, "OnShow")
+			end)
+
+			self:SecureHookScript(this.BrowseOrders, "OnShow", function(fObj)
+				self:skinObject("editbox", {obj=fObj.SearchBar.SearchBox, fType=ftype, si=true})
+				self:skinObject("editbox", {obj=fObj.SearchBar.FilterButton.LevelRangeFrame.MinLevel, fType=ftype})
+				self:skinObject("editbox", {obj=fObj.SearchBar.FilterButton.LevelRangeFrame.MaxLevel, fType=ftype})
+				if self.modBtns then
+					self:skinStdButton{obj=fObj.SearchBar.FavoritesSearchButton, fType=ftype, ofs=-2, clr="grey"}
+					self:skinStdButton{obj=fObj.SearchBar.FilterButton, fType=ftype, clr="grey"}
+					self:skinCloseButton{obj=fObj.SearchBar.FilterButton.ClearFiltersButton, fType=ftype, noSkin=true}
+					self:skinStdButton{obj=fObj.SearchBar.SearchButton, fType=ftype}
+				end
+
+				local function skinHdrs(frame)
+					for hdr in frame.tableBuilder:EnumerateHeaders() do
+						hdr:DisableDrawLayer("BACKGROUND")
+						self:skinObject("frame", {obj=hdr, fType=ftype, ofs=0})
+					end
+				end
+				self:SecureHook(fObj, "SetupTable", function(frame, _)
+					skinHdrs(frame)
+				end)
+				skinHdrs(fObj)
+
+				self:SecureHookScript(fObj.CategoryList, "OnShow", function(frame)
+					frame:DisableDrawLayer("BACKGROUND")
+					self:removeNineSlice(frame.NineSlice)
+					self:skinObject("scrollbar", {obj=frame.ScrollBar, fType=ftype})
+					local function skinElement(...)
+						local _, element
+						if _G.select("#", ...) == 2 then
+							element, _ = ...
+						elseif _G.select("#", ...) == 3 then
+							_, element, _ = ...
+						end
+						aObj:keepRegions(element, {3, 4, 5}) -- N.B. region 3 is highlight, 4 is selected, 5 is text
+						aObj.modUIBtns:skinStdButton{obj=element, fType=ftype, ignoreHLTex=true}
+						element.sb:Show()
+						element.sb:ClearAllPoints()
+						if element.categoryInfo.type == _G.Enum.CraftingOrderCustomerCategoryType.Primary then
+							element.sb:SetPoint("TOPLEFT", element, "TOPLEFT", -1, 1)
+							element.sb:SetPoint("BOTTOMRIGHT", element, "BOTTOMRIGHT", -4, -1)
+						elseif element.categoryInfo.type == _G.Enum.CraftingOrderCustomerCategoryType.Secondary  then
+							element.sb:SetPoint("TOPLEFT", element, "TOPLEFT", 10, 1)
+							element.sb:SetPoint("BOTTOMRIGHT", element, "BOTTOMRIGHT", -4, -1)
+						elseif element.categoryInfo.type == _G.Enum.CraftingOrderCustomerCategoryType.Tertiary then
+							element.sb:Hide()
+						end
+					end
+					_G.ScrollUtil.AddInitializedFrameCallback(frame.ScrollBox, skinElement, aObj, true)
+
+					self:Unhook(frame, "OnShow")
+				end)
+				self:checkShown(fObj.CategoryList)
+
+				self:SecureHookScript(fObj.RecipeList, "OnShow", function(frame)
+					frame.Background:SetTexture(nil)
+					self:removeNineSlice(frame.NineSlice)
+					self:skinObject("scrollbar", {obj=frame.ScrollBar, fType=ftype})
+					-- local function skinElement(...)
+					-- 	local _, element, elementData, new
+					-- 	if _G.select("#", ...) == 2 then
+					-- 		element, elementData = ...
+					-- 	elseif _G.select("#", ...) == 3 then
+					-- 		element, elementData, new = ...
+					-- 	else
+					-- 		_, element, elementData, new = ...
+					-- 	end
+					-- 	if new ~= false then
+					-- 	end
+					-- end
+					-- _G.ScrollUtil.AddAcquiredFrameCallback(frame.ScrollBox, skinElement, aObj, true)
+
+					self:Unhook(frame, "OnShow")
+				end)
+				self:checkShown(fObj.RecipeList)
+
+				self:Unhook(fObj, "OnShow")
+			end)
+			self:checkShown(this.BrowseOrders)
+
+			self:SecureHookScript(this.MyOrdersPage, "OnShow", function(fObj)
+				self:skinObject("scrollbar", {obj=fObj.CategoryList.ScrollBar, fType=ftype})
+				local function skinCategoryElement(...)
+					local _, element, elementData, new
+					if _G.select("#", ...) == 2 then
+						element, elementData = ...
+					elseif _G.select("#", ...) == 3 then
+						element, elementData, new = ...
+					else
+						_, element, elementData, new = ...
+					end
+					if new ~= false then
+					end
+				end
+				_G.ScrollUtil.AddAcquiredFrameCallback(fObj.CategoryList.ScrollBox, skinCategoryElement, aObj, true)
+				self:skinObject("scrollbar", {obj=fObj.OrderList.ScrollBar, fType=ftype})
+				local function skinOrderElement(...)
+					local _, element, elementData, new
+					if _G.select("#", ...) == 2 then
+						element, elementData = ...
+					elseif _G.select("#", ...) == 3 then
+						element, elementData, new = ...
+					else
+						_, element, elementData, new = ...
+					end
+					if new ~= false then
+					end
+				end
+				_G.ScrollUtil.AddAcquiredFrameCallback(fObj.OrderList.ScrollBox, skinOrderElement, aObj, true)
+
+				self:Unhook(fObj, "OnShow")
+			end)
+			self:checkShown(this.MyOrdersPage)
 
 			self:Unhook(this, "OnShow")
 		end)
 		self:checkShown(_G.ProfessionsCustomerOrdersFrame)
+
+	end
+
+	aObj.blizzFrames[ftype].ProfessionsRecipeFlyout = function(self)
+		if not self.prdb.Professions or self.initialized.ProfessionsRecipeFlyout then return end
+		self.initialized.ProfessionsRecipeFlyout = true
+
+		self:RawHook("ToggleProfessionsItemFlyout", function(owner, parent)
+			local flyout = self.hooks.ToggleProfessionsItemFlyout(owner, parent)
+			aObj:Debug("ToggleProfessionsItemFlyout: [%s, %s, %s, %s]", owner, parent, flyout)
+			self:skinObject("frame", {obj=flyout, fType=ftype, kfs=true, rns=true})
+			local function skinElement(...)
+				local _, element, new
+				if _G.select("#", ...) == 2 then
+					element, _ = ...
+				elseif _G.select("#", ...) == 3 then
+					element, _, new = ...
+				else
+					_, element, _, new = ...
+				end
+				if new ~= false then
+					if aObj.modBtnBs then
+						-- TODO: sort out item colour issue
+						if not element.sbb then
+							aObj:addButtonBorder{obj=element, fType=ftype, ibt=true, relTo=element.Icon}
+						else
+							aObj:clrButtonFromBorder(element)
+						end
+					end
+				end
+			end
+			_G.ScrollUtil.AddAcquiredFrameCallback(flyout.ScrollBox, skinElement, aObj, true)
+			if self.modChkBtns then
+				self:skinCheckButton{obj=flyout.HideUnownedCheckBox, fType=ftype}
+			end
+			self:Unhook("ToggleProfessionsItemFlyout")
+			return flyout
+		end, true)
 
 	end
 
