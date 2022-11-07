@@ -2111,8 +2111,7 @@ aObj.SetupRetail_PlayerFrames = function()
 		end
 
 		local function skinBag(frame, id)
-			local objName = frame:GetName()
-			aObj:skinObject("frame", {obj=frame, fType=ftype, kfs=true, cb=true})
+			aObj:skinObject("frame", {obj=frame, fType=ftype, kfs=true, cbns=true})
 			-- Add gear texture to portrait button for settings
 			local cfpb = frame.PortraitButton
 			cfpb.gear = cfpb:CreateTexture(nil, "artwork")
@@ -2127,7 +2126,6 @@ aObj.SetupRetail_PlayerFrames = function()
 					aObj:addButtonBorder{obj=btn, fType=ftype, ibt=true, reParent={btn.IconQuestTexture, btn.UpgradeIcon, btn.NewItemTexture, btn.BattlepayItemTexture, btn.JunkIcon}, ofs=3}
 					btn.NormalTexture:SetAlpha(0)
 					btn.ExtendedSlot:SetTexture(nil)
-					-- btn.ItemSlotBackground = ""
 				end
 				-- remove button slot texture when empty
 				aObj:SecureHook(frame, "UpdateItems", function(fObj)
@@ -2153,13 +2151,11 @@ aObj.SetupRetail_PlayerFrames = function()
 			end
 		end
 
-		-- Hook this to skinhide/show the gear button
 		self:SecureHook("ContainerFrame_GenerateFrame", function(frame, _, id)
 			-- skin the frame if required
 			if not frame.sf then
 				skinBag(frame, id)
 			end
-
 		end)
 
 	end
