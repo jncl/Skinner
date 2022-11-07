@@ -3159,7 +3159,7 @@ aObj.SetupRetail_UIFrames = function()
 			x1Ofs, y1Ofs, x2Ofs, y2Ofs = nil, nil, nil, nil
 		end
 		local function skinOptions(frame, source) -- luacheck: ignore source
-			aObj:Debug("skinOptions PCUI: [%s, %s, %s, %s]", source, frame.uiTextureKit, frame.optionFrameTemplate)
+			-- aObj:Debug("skinOptions PCUI: [%s, %s, %s, %s]", source, frame.uiTextureKit, frame.optionFrameTemplate)
 			if not frame.optionFrameTemplate then return end
 			if frame.uiTextureKit == "jailerstower"
 			or frame.uiTextureKit == "cypherchoice"
@@ -3168,7 +3168,6 @@ aObj.SetupRetail_UIFrames = function()
 			else
 				frame.sf:Show()
 			end
-			local r, g, b
 			for opt in frame.optionPools:EnumerateActiveByTemplate(frame.optionFrameTemplate) do
 				-- aObj:Debug("PCF skinOptions: [%s, %s]", frame.optionFrameTemplate)
 				opt.OptionText.String:SetTextColor(aObj.BT:GetRGB())
@@ -3226,15 +3225,17 @@ aObj.SetupRetail_UIFrames = function()
 				elseif frame.optionFrameTemplate == "PlayerChoiceTorghastOptionTemplate" then
 					opt.Header.Text:SetTextColor(aObj.HT:GetRGB())
 				elseif frame.optionFrameTemplate == "PlayerChoiceCypherOptionTemplate" then
-					-- TODO: stop animations changing border alpha values
 					for key, reg in _G.ipairs{opt:GetRegions()} do
 						if key > 3 then -- non icon textures
 							reg:SetTexture(nil)
 						end
 					end
 					aObj:skinObject("frame", {obj=opt, fType=ftype})
-					r, g, b = opt.optionInfo.rarityColor and opt.optionInfo.rarityColor:GetRGB() or _G.BAG_ITEM_QUALITY_COLORS[1]:GetRGB()
-					opt.sf:SetBackdropBorderColor(r, g, b, 1)
+					if opt.optionInfo.rarityColor then
+						opt.sf:SetBackdropBorderColor(opt.optionInfo.rarityColor:GetRGBA())
+					else
+						opt.sf:SetBackdropBorderColor(aObj:getColourByName("gold_df"))
+					end
 					resizeSF(opt, 0)
 					if aObj.modBtns then
 						_G.CypherPlayerChoiceToggleButton:DisableDrawLayer("ARTWORK")
