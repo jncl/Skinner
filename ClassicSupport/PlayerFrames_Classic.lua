@@ -98,6 +98,9 @@ aObj.SetupClassic_PlayerFrames = function()
 						end
 					end
 				end
+				if self.modBtnBs then
+					self:addButtonBorder{obj=_G.AchievementFrameFilterDropDownButton, fType=ftype, es=12, ofs=-2, x1=1}
+				end
 				self:keepFontStrings(_G.AchievementFrameHeader)
 				self:moveObject{obj=_G.AchievementFrameHeaderTitle, x=-60, y=-25}
 				self:moveObject{obj=_G.AchievementFrameHeaderPoints, x=40, y=-5}
