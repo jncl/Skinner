@@ -71,12 +71,16 @@ aObj.SetupRetail_PlayerFrames = function()
 					aObj:SecureHook(btn, "Desaturate", function(bObj)
 						if bObj.sf then
 							bObj.sf:SetBackdropBorderColor(bObj:GetBackdropBorderColor())
+						end
+						if bObj.Icon.sbb then
 							bObj.Icon.sbb:SetBackdropBorderColor(bObj:GetBackdropBorderColor())
 						end
 					end)
 					aObj:SecureHook(btn, "Saturate", function(bObj)
 						if bObj.sf then
 							bObj.sf:SetBackdropBorderColor(bObj:GetBackdropBorderColor())
+						end
+						if bObj.Icon.sbb then
 							bObj.Icon.sbb:SetBackdropBorderColor(bObj:GetBackdropBorderColor())
 						end
 						if bObj.Description then
@@ -103,12 +107,15 @@ aObj.SetupRetail_PlayerFrames = function()
 				end
 				aObj:skinObject("statusbar", {obj=_G[statusBar], regions={3, 4, 5}, fi=0, bg=_G[statusBar .. "FillBar"]})
 			end
+			if self.modBtnBs then
+				self:addButtonBorder{obj=_G.AchievementFrameFilterDropDownButton, fType=ftype, es=12, ofs=-2, x1=1}
+			end
 			self:skinObject("editbox", {obj=this.SearchBox, fType=ftype, si=true, y1=-4, y2=4})
 			self:moveObject{obj=this.SearchBox, y=-8}
 			self:skinObject("statusbar", {obj=this.searchProgressBar, fi=0, bg=this.searchProgressBar.bg})
 			self:moveObject{obj=_G.AchievementFrameCloseButton, x=1, y=8}
 			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true, ignoreHLTex=false, regions={7, 8, 9, 10}, offsets={x1=6, x2=-2, y2=-7}})
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, y1=7, x2=0, y2=-2})
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, y1=7, x2=0, y2=0})
 
 			self:SecureHookScript(this.Header, "OnShow", function(fObj)
 				self:keepFontStrings(fObj)
@@ -164,6 +171,7 @@ aObj.SetupRetail_PlayerFrames = function()
 
 				self:Unhook(fObj, "OnShow")
 			end)
+			self:checkShown(_G.AchievementFrameAchievements)
 
 			self:SecureHookScript(_G.AchievementFrameStats, "OnShow", function(fObj)
 				self:getChild(fObj, 1):DisableDrawLayer("BACKGROUND")
@@ -212,6 +220,7 @@ aObj.SetupRetail_PlayerFrames = function()
 
 				self:Unhook(fObj, "OnShow")
 			end)
+			self:checkShown(_G.AchievementFrameSummary)
 
 			self:SecureHookScript(_G.AchievementFrameComparison, "OnShow", function(fObj)
 				fObj:DisableDrawLayer("BACKGROUND")
@@ -552,7 +561,6 @@ aObj.SetupRetail_PlayerFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
-
 
 	end
 
