@@ -838,9 +838,10 @@ aObj.SetupRetail_PlayerFrames = function()
 			self:skinObject("frame", {obj=_G.ReputationDetailFrame, fType=ftype, kfs=true, ofs=-6})
 			if self.modBtns then
 				self:skinCloseButton{obj=_G.ReputationDetailCloseButton}
-				-- hook to manage changes to button textures
-				-- TODO: ReputationDetailViewRenownButton
+				self:skinStdButton{obj=_G.ReputationDetailViewRenownButton, fType=ftype, clr="gold"}
+				self:adjHeight{obj=_G.ReputationDetailViewRenownButton, adj=4}
 			end
+
 			if self.modChkBtns then
 				self:skinCheckButton{obj=_G.ReputationDetailAtWarCheckBox}
 				self:skinCheckButton{obj=_G.ReputationDetailInactiveCheckBox}
