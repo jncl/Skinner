@@ -2185,11 +2185,11 @@ aObj.SetupRetail_PlayerFrames = function()
 			-- Backpack
 			if id == 0 then
 				aObj:skinObject("editbox", {obj=_G.BagItemSearchBox, fType=ftype, si=true, ca=true})
+				frame.MoneyFrame.Border:DisableDrawLayer("BACKGROUND")
+				_G.BackpackTokenFrame:DisableDrawLayer("BACKGROUND")
 				if aObj.modBtnBs then
 					aObj:addButtonBorder{obj=_G.BagItemAutoSortButton, ofs=0, y1=1, clr="grey"}
 				end
-				frame.MoneyFrame.Border:DisableDrawLayer("BACKGROUND")
-				_G.BackpackTokenFrame:DisableDrawLayer("BACKGROUND")
 			end
 		end
 
