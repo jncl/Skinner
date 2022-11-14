@@ -1112,8 +1112,33 @@ aObj.SetupRetail_UIFrames = function()
 		if not self.prdb.EventToastManager or self.initialized.EventToastManager then return end
 		self.initialized.EventToastManager = true
 
-		local function skinToasts(frame)
-			for toast in frame.eventToastPools:EnumerateActive() do
+		-- table copied from EventToastManager.lua
+		local eventToastTemplatesByToastType = {
+			[_G.Enum.EventToastDisplayType.NormalSingleLine] = {template = "EventToastManagerNormalSingleLineTemplate", frameType= "FRAME", hideAutomatically = true, },
+			[_G.Enum.EventToastDisplayType.NormalBlockText] = {template ="EventToastManagerNormalBlockTextTemplate", frameType= "FRAME", hideAutomatically = true,},
+			[_G.Enum.EventToastDisplayType.NormalTitleAndSubTitle] = {template = "EventToastManagerNormalTitleAndSubtitleTemplate", frameType= "FRAME", hideAutomatically = true,},
+			[_G.Enum.EventToastDisplayType.NormalTextWithIcon] = {template = "EventToastWithIconNormalTemplate", frameType= "FRAME", hideAutomatically = true,},
+			[_G.Enum.EventToastDisplayType.LargeTextWithIcon] = {template = "EventToastWithIconLargeTextTemplate", frameType= "FRAME", hideAutomatically = true,},
+			[_G.Enum.EventToastDisplayType.NormalTextWithIconAndRarity] = {template = "EventToastWithIconWithRarityTemplate", frameType= "FRAME", hideAutomatically = true,},
+			[_G.Enum.EventToastDisplayType.Scenario] = {template = "EventToastScenarioToastTemplate", frameType= "BUTTON", hideAutomatically = true,},
+			[_G.Enum.EventToastDisplayType.ChallengeMode] = {template = "EventToastChallengeModeToastTemplate", frameType= "FRAME", hideAutomatically = true,},
+			[_G.Enum.EventToastDisplayType.ScenarioClickExpand] = {template = "EventToastScenarioExpandToastTemplate", frameType= "BUTTON", hideAutomatically = false,},
+		}
+		local function skinToast(frame)
+			if not frame.currentDisplayingToast
+			or not frame.toastInfo
+			then
+				return
+			end
+			local toastInfo = frame.toastInfo
+			_G.C_Timer.After(1, function()
+				_G.Spew("skinToast", toastInfo)
+			end)
+			local toastTable = eventToastTemplatesByToastType[toastInfo.displayType]
+			if not toastTable then
+				return
+			end
+			local toast = frame:GetToastFrame(toastTable)
 				toast:DisableDrawLayer("BORDER")
 				if toast.BannerFrame then
 					toast.BannerFrame:DisableDrawLayer("BACKGROUND")
@@ -1123,12 +1148,17 @@ aObj.SetupRetail_UIFrames = function()
 						toast.BannerFrame.MedalIcon:SetDrawLayer("ARTWORK", 2)
 					end
 				end
+			if toast.Icon
+			and aObj.modBtnBs
+			then
+				aObj:addButtonBorder{obj=toast, fType=ftype, relTo=toast.Icon}
+				aObj:clrButtonFromBorder(toast)
 			end
 		end
 		self:SecureHook(_G.EventToastManagerFrame, "DisplayToast", function(this, _)
-			skinToasts(this)
+			skinToast(this)
 		end)
-		skinToasts(_G.EventToastManagerFrame)
+		skinToast(_G.EventToastManagerFrame)
 
 		self:SecureHookScript(_G.EventToastManagerFrame, "OnShow", function(this)
 			this:DisableDrawLayer("BACKGROUND")
