@@ -63,11 +63,14 @@ aObj.SetupRetail_NPCFrames = function()
 			self:skinObject("tabs", {obj=this, tabs=this.Tabs, fType=ftype, lod=self.isTT and true, track=false})
 			if self.isTT then
 				self:SecureHook(this, "SetDisplayMode", function(fObj, displayMode)
-					if not fObj.tabsForDisplayMode[displayMode] then return end
 					for i, tab in _G.ipairs(fObj.Tabs) do
+						self:setInactiveTab(tab.sf)
 						if i == fObj.tabsForDisplayMode[displayMode] then
 							self:setActiveTab(tab.sf)
-						else
+						end
+					end
+					if _G.IsAddOnLoaded("Auctionator") then
+						for _, tab in _G.ipairs(_G.AuctionatorAHTabsContainer.Tabs) do
 							self:setInactiveTab(tab.sf)
 						end
 					end
