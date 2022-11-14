@@ -2576,36 +2576,33 @@ aObj.SetupRetail_UIFrames = function()
 						if not aObj.isRtl then
 							btn.FlyoutBorder:SetTexture(nil)
 							btn.FlyoutBorderShadow:SetTexture(nil)
+							_G[btn:GetName() .. "NormalTexture"]:SetTexture(nil)
 						else
 							btn.SlotBackground:SetTexture(nil)
 							btn.SlotArt:SetTexture(nil)
 							btn.FlyoutBorderShadow:SetTexture(nil)
 							aObj:removeNineSlice(btn.RightDivider)
 							aObj:removeNineSlice(btn.BottomDivider)
-						end
-						aObj:addButtonBorder{obj=btn, sabt=true, ofs=3}
-						if not aObj.isRtl then
-							_G[btn:GetName() .. "NormalTexture"]:SetTexture(nil)
-						else
 							btn.NormalTexture:SetTexture(nil)
 						end
+						aObj:addButtonBorder{obj=btn, sabt=true, ofs=3}
 					end
 					function skinMultiBarBtns(type)
 						local bName
 						for i = 1, _G.NUM_MULTIBAR_BUTTONS do
 							bName = "MultiBar" .. type .. "Button" .. i
 							skinABBtn(_G[bName])
-							if not aObj.isRtl then
-								if not _G[bName].noGrid then
+							if not aObj.isRtl
+							and not _G[bName].noGrid
+							then
 									_G[bName .. "FloatingBG"]:SetAlpha(0)
 								end
 							end
 						end
 					end
 				end
-			end
 			self:SecureHookScript(_G.MainMenuBar, "OnShow", function(this)
-				if not aObj.isRtl then
+				if not self.isRtl then
 					this.MicroButtonAndBagsBar.MicroBagBar:SetTexture(nil)
 					this.ArtFrame.Background.BackgroundLarge:SetTexture(nil)
 					this.ArtFrame.Background.BackgroundSmall:SetTexture(nil)
@@ -2616,12 +2613,12 @@ aObj.SetupRetail_UIFrames = function()
 					this.EndCaps:DisableDrawLayer("OVERLAY")
 				end
 				if self.modBtnBs then
-					for i = 1, _G.NUM_ACTIONBAR_BUTTONS do
-						skinABBtn(_G["ActionButton" .. i])
-					end
-					if not aObj.isRtl then
+					if not self.isRtl then
 						self:addButtonBorder{obj=_G.ActionBarUpButton, clr="gold"}
 						self:addButtonBorder{obj=_G.ActionBarDownButton, clr="gold"}
+					end
+					for i = 1, _G.NUM_ACTIONBAR_BUTTONS do
+						skinABBtn(_G["ActionButton" .. i])
 					end
 					skinMultiBarBtns("BottomLeft")
 					skinMultiBarBtns("BottomRight")
@@ -2681,7 +2678,7 @@ aObj.SetupRetail_UIFrames = function()
 			if self.modBtnBs then
 				skinMultiBarBtns("Right")
 				skinMultiBarBtns("Left")
-				if not aObj.isRtl then
+				if not self.isRtl then
 					for _, bName in _G.pairs(_G.MICRO_BUTTONS) do
 						self:addButtonBorder{obj=_G[bName], es=24, ofs=2, reParent={_G[bName].QuickKeybindHighlightTexture, _G[bName].Flash}, clr="grey"}
 					end
@@ -2743,7 +2740,7 @@ aObj.SetupRetail_UIFrames = function()
 
 		if self.prdb.MainMenuBar.skin then
 			local function skinActionBtns(frame)
-				if self.modBtnBs then
+				if aObj.modBtnBs then
 					for _, btn in _G.pairs(frame.actionButtons) do
 						btn.SlotBackground:SetTexture(nil)
 						btn.SlotArt:SetTexture(nil)
