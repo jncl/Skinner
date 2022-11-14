@@ -296,6 +296,22 @@ function aObj:OnEnable()
 				end
 				self:setBtnClr(button, quality)
 			end)
+			if aObj.isRtlBeta then
+				-- hook these to reparent the ProfessionQualityOverlay
+				self:SecureHook("SetItemCraftingQualityOverlay", function(button, _)
+					if button.noProfessionQualityOverlay then
+						return
+					end
+					if button.ProfessionQualityOverlay then
+						button.ProfessionQualityOverlay:SetParent(button.sbb)
+					end
+				end)
+				self:SecureHook("SetItemCraftingQualityOverlayOverride", function(button, _)
+					if button.ProfessionQualityOverlay then
+						button.ProfessionQualityOverlay:SetParent(button.sbb)
+					end
+				end)
+			end
 		end
 		if btnModDB.profile.CheckButtons then
 			self.modChkBtns = true
