@@ -1139,15 +1139,15 @@ aObj.SetupRetail_UIFrames = function()
 				return
 			end
 			local toast = frame:GetToastFrame(toastTable)
-				toast:DisableDrawLayer("BORDER")
-				if toast.BannerFrame then
-					toast.BannerFrame:DisableDrawLayer("BACKGROUND")
-					toast.BannerFrame:DisableDrawLayer("BORDER")
-					toast.BannerFrame:DisableDrawLayer("OVERLAY")
-					if toast.BannerFrame.MedalIcon then -- ChallengeMode
-						toast.BannerFrame.MedalIcon:SetDrawLayer("ARTWORK", 2)
-					end
+			toast:DisableDrawLayer("BORDER")
+			if toast.BannerFrame then
+				toast.BannerFrame:DisableDrawLayer("BACKGROUND")
+				toast.BannerFrame:DisableDrawLayer("BORDER")
+				toast.BannerFrame:DisableDrawLayer("OVERLAY")
+				if toast.BannerFrame.MedalIcon then -- ChallengeMode
+					toast.BannerFrame.MedalIcon:SetDrawLayer("ARTWORK", 2)
 				end
+			end
 			if toast.Icon
 			and aObj.modBtnBs
 			then
@@ -2352,11 +2352,11 @@ aObj.SetupRetail_UIFrames = function()
 								aObj:skinStdButton{obj=aObj:getChild(element, 1), fType=ftype}
 							end
 						else
-					element.ResultBG:SetTexture(nil)
+							element.ResultBG:SetTexture(nil)
 							if aObj.modBtns then
-						aObj:skinStdButton{obj=element.CancelButton}
-					end
-				end
+								aObj:skinStdButton{obj=element.CancelButton}
+							end
+						end
 					end
 				end
 				_G.ScrollUtil.AddAcquiredFrameCallback(fObj.ScrollBox, skinElement, aObj, true)
@@ -2595,12 +2595,12 @@ aObj.SetupRetail_UIFrames = function()
 							if not aObj.isRtl
 							and not _G[bName].noGrid
 							then
-									_G[bName .. "FloatingBG"]:SetAlpha(0)
-								end
+								_G[bName .. "FloatingBG"]:SetAlpha(0)
 							end
 						end
 					end
 				end
+			end
 			self:SecureHookScript(_G.MainMenuBar, "OnShow", function(this)
 				if not self.isRtl then
 					this.MicroButtonAndBagsBar.MicroBagBar:SetTexture(nil)
@@ -4347,6 +4347,12 @@ aObj.SetupRetail_UIFrames = function()
 					oFrame.ActionFrameTexture:SetTexture(nil)
 					if self.modBtnBs then
 						self:addButtonBorder{obj=oFrame.SpellButton}
+					end
+
+				elseif oFrame.BountyDropDown then
+					oFrame.IconBorder:SetTexture(nil)
+					if self.modBtnBs then
+						self:addButtonBorder{obj=oFrame.BountyDropdownButton, fType=ftype, ofs=-2, x1=1, clr="gold"}
 					end
 				end
 			end
