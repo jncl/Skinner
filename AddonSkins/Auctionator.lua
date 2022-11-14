@@ -2,7 +2,7 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("Auctionator") then return end
 local _G = _G
 
-aObj.addonsToSkin.Auctionator = function(self) -- v 10.0.5
+aObj.addonsToSkin.Auctionator = function(self) -- v 10.0.7
 
 	local function skinAuctionatorFrames()
 		if not _G.AuctionatorSellingFrame then
@@ -220,8 +220,8 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 10.0.5
 			aObj:SecureHook(asi.Icon, "SetItemInfo", function(bObj, _)
 				aObj:clrButtonFromBorder(bObj)
 			end)
-			aObj:skinObject("slider", {obj=this.BagListing.ScrollFrame.ScrollBar, rpTex={"background", "artwork"}})
-			for _, child in _G.pairs{this.BagListing.ScrollFrame.ItemListingFrame:GetChildren()} do
+			aObj:skinObject("scrollbar", {obj=this.BagListing.ScrollBar, fType=ftype})
+			for _, child in _G.pairs{this.BagListing.ScrollBox.ItemListingFrame:GetChildren()} do
 				aObj:keepRegions(child.SectionTitle, {3, 4, 5}) -- N.B. region 3 is highlight, 4 is selected, 5 is text
 				aObj:skinObject("frame", {obj=child.SectionTitle, kfs=true, bd=5, ofs=0, x1=-2, x2=2})
 			end
@@ -339,16 +339,21 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 10.0.5
 				if aObj.isTT then
 					for key, tab in _G.ipairs(this.Tabs) do
 						aObj:setInactiveTab(tab.sf)
-						if aObj.isRtl then
-							-- add to table to display tab textures
-							_G.AuctionHouseFrame.tabsForDisplayMode[tab.displayMode] = key + 3
-						end
 					end
 					if not aObj.isRtl then
 						aObj:SecureHook("AuctionFrameTab_OnClick", function(tabButton, _)
 						    for _, tab in _G.ipairs(this.Tabs) do
 								aObj:setInactiveTab(tab.sf)
 								if tabButton == tab then
+									aObj:setActiveTab(tab.sf)
+								end
+						    end
+						end)
+					else
+						aObj:SecureHook(_G.LibStub:GetLibrary("LibAHTab-1-0", true), "SetSelected", function(lObj, tabID)
+						    for _, tab in ipairs(lObj.internalState.Tabs) do
+								aObj:setInactiveTab(tab.sf)
+								if lObj:GetButton(tabID) == tab then
 									aObj:setActiveTab(tab.sf)
 								end
 						    end

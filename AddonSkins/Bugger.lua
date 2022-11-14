@@ -23,16 +23,10 @@ aObj.addonsToSkin.Bugger = function(self) -- v 8.0.0.0
 		if self.modBtns then
 			self:skinCloseButton{obj=_G[this.frame:GetName() .. "Close"]}
 			self:skinStdButton{obj=this.reload}
-			self:skinStdButton{obj=this.clear}
-			self:skinStdButton{obj=this.showLocals}
-			self:skinStdButton{obj=this.next}
-			self:skinStdButton{obj=this.previous}
-			self:SecureHook(this, "ShowError", function(this, _)
-				self:clrBtnBdr(this.showLocals)
-				self:clrBtnBdr(this.previous)
-				self:clrBtnBdr(this.next)
-				self:clrBtnBdr(this.clear)
-			end)
+			self:skinStdButton{obj=this.clear, schk=true, sechk=true}
+			self:skinStdButton{obj=this.showLocals, schk=true}
+			self:skinStdButton{obj=this.next, schk=true, sechk=true}
+			self:skinStdButton{obj=this.previous, schk=true, sechk=true}
 		end
 
 		self:Unhook(_G.Bugger, "SetupFrame")

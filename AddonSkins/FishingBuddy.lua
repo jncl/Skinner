@@ -10,10 +10,9 @@ local function skinCBs(objPrefix)
 			aObj:skinCheckButton{obj=obj}
 		end
 	end
-	obj = nil
 end
 
-aObj.addonsToSkin.FishingBuddy = function(self) -- v 1.16.5/0.7.5.5/0.7.3 Beta 5
+aObj.addonsToSkin.FishingBuddy = function(self) -- v 1.19 Beta 2/0.8.4
 
 	self:SecureHookScript(_G.FishingBuddyFrame, "OnShow", function(this)
 		self:skinObject("tabs", {obj=this, tabs=this.Tabs, lod=self.isTT and true})
@@ -28,17 +27,35 @@ aObj.addonsToSkin.FishingBuddy = function(self) -- v 1.16.5/0.7.5.5/0.7.3 Beta 5
 	end)
 
 	self:SecureHookScript(_G.FishingLocationsFrame, "OnShow", function(this)
-		_G.FishingLocationExpandButtonFrame:DisableDrawLayer("BACKGROUND")
-		self:skinSlider{obj=_G.FishingLocsScrollFrame.ScrollBar, rt="background"}
-		-- m/p buttons
+		if not self.isRtl then
+			_G.FishingLocationExpandButtonFrame:DisableDrawLayer("BACKGROUND")
+			self:skinObject("slider", {obj=_G.FishingLocsScrollFrame.ScrollBar, rpTex="background"})
+		else
+			self:skinObject("scrollbar", {obj=this.ScrollBar})
+			if self.modBtns then
+				local function skinElement(...)
+					local _, element
+					if _G.select("#", ...) == 2 then
+						element, _ = ...
+					elseif _G.select("#", ...) == 3 then
+						_, element, _ = ...
+					end
+					self:skinExpandButton{obj=element.Container.ExpandOrCollapseButton, onSB=true, plus=true}
+				end
+				_G.ScrollUtil.AddInitializedFrameCallback(this.ScrollBox, skinElement, aObj, true)
+			end
+		end
 		if self.modBtns then
 			self:skinStdButton{obj=_G.FishingLocationsSwitchButton}
-			self:SecureHook(_G.FishingBuddy.Locations, "Update", function(...)
-				for i = 1, 22 do
-					self:skinExpandButton{obj=_G["FishingLocations" .. i], onSB=true, plus=true}
-				end
-				self:skinExpandButton{obj=_G.FishingLocationsCollapseAllButton, onSB=true, plus=true}
-			end)
+			-- m/p buttons
+			if not aObj.isRtl then
+				self:SecureHook(_G.FishingBuddy.Locations, "Update", function(_)
+					for i = 1, 22 do
+						self:skinExpandButton{obj=_G["FishingLocations" .. i], onSB=true}
+					end
+					self:skinExpandButton{obj=_G.FishingLocationsCollapseAllButton, onSB=true}
+				end)
+			end
 		end
 		if self.modChkBtns then
 			self:skinCheckButton{obj=_G.FishingBuddyOptionSLZ}
@@ -85,7 +102,6 @@ aObj.addonsToSkin.FishingBuddy = function(self) -- v 1.16.5/0.7.5.5/0.7.3 Beta 5
 					self:addButtonBorder{obj=tabObj}
 				end
 			end
-			tabObj = nil
 			-- tooltip
 			_G.C_Timer.After(0.1, function()
 				self:add2Table(self.ttList, _G.FishingOutfitTooltip)
@@ -93,9 +109,9 @@ aObj.addonsToSkin.FishingBuddy = function(self) -- v 1.16.5/0.7.5.5/0.7.3 Beta 5
 			-- Options
 			if self.modChkBtns then
 				-- hook this to skin checkbuttons
-				self:SecureHook(_G.OptionsOutfits, "LayoutOptions", function(this, options)
+				self:SecureHook(_G.OptionsOutfits, "LayoutOptions", function(fObj, _)
 					skinCBs("OptionsOutfitsOpt")
-					self:Unhook(this, "LayoutOptions")
+					self:Unhook(fObj, "LayoutOptions")
 				end)
 			end
 
@@ -124,11 +140,12 @@ aObj.addonsToSkin.FishingBuddy = function(self) -- v 1.16.5/0.7.5.5/0.7.3 Beta 5
 				end
 			end
 		end
-		tabObj = nil
 		if self.modChkBtns then
-			skinCBs("FishingOptionsFrameOpt")
+			self:SecureHook(_G.FishingBuddy, "OptionsUpdate", function(this, _)
+				skinCBs("FishingOptionsFrameOpt")
+			end)
 		end
-		
+
 		self:Unhook(this, "OnShow")
 	end)
 
@@ -138,7 +155,7 @@ aObj.addonsToSkin.FishingBuddy = function(self) -- v 1.16.5/0.7.5.5/0.7.3 Beta 5
 		if self.isTT then
 			self:setActiveTab(_G.FishingWatchTab.sf)
 		end
-		
+
 		self:Unhook(this, "OnShow")
 	end)
 
@@ -177,7 +194,6 @@ if aObj.isRtl then
 				self:addButtonBorder{obj=tabObj}
 			end
 		end
-		tabObj = nil
 
 		-- tooltip
 		_G.C_Timer.After(0.1, function()
@@ -187,7 +203,7 @@ if aObj.isRtl then
 		-- Options
 		if self.modChkBtns then
 			-- hook this to skin checkbuttons
-			self:SecureHook(_G.OptionsOutfits, "LayoutOptions", function(this, options)
+			self:SecureHook(_G.OptionsOutfits, "LayoutOptions", function(this, _)
 				skinCBs("OptionsOutfitsOpt")
 				self:Unhook(this, "LayoutOptions")
 			end)
@@ -216,7 +232,6 @@ if aObj.isRtl then
 				self:addButtonBorder{obj=tabObj}
 			end
 		end
-		tabObj = nil
 
 		-- Options
 		if self.modChkBtns then

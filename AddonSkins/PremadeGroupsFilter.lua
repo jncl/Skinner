@@ -1,9 +1,8 @@
--- many thanks to acirac for this skin
 local aName, aObj = ...
 if not aObj:isAddonEnabled("PremadeGroupsFilter") then return end
 local _G = _G
 
-aObj.addonsToSkin.PremadeGroupsFilter = function(self) -- v 1.17
+aObj.addonsToSkin.PremadeGroupsFilter = function(self) -- v 3.1.3
 
 	local dialog = _G.PremadeGroupsFilterDialog
 
@@ -11,46 +10,36 @@ aObj.addonsToSkin.PremadeGroupsFilter = function(self) -- v 1.17
 		self:skinCheckButton{obj=_G.UsePFGButton}
 	end
 
-    self:skinDropDown{obj=dialog.Difficulty.DropDown}
-	-- hook this to skin dropdown menu
+	local mmf = dialog.MaximizeMinimizeFrame
+	mmf:DisableDrawLayer("BACKGROUND")
+	if self.modBtns then
+		self:skinOtherButton{obj=mmf.MaximizeButton, font=self.fontS, text=self.nearrow}
+		self:skinOtherButton{obj=mmf.MinimizeButton, font=self.fontS, disfont=self.fontDS, text=self.swarrow}
+	end
+	self:skinObject("dropdown", {obj=dialog.Difficulty.DropDown})
 	self:SecureHookScript(dialog.Difficulty.DropDown.Button, "OnClick", function(this)
-		self:addSkinFrame{obj=self:getLastChild(_G.PremadeGroupsFilterDialog), ft="a", nb=true}
+		self:skinObject("frame", {obj=self:getLastChild(_G.PremadeGroupsFilterDialog), ofs=0})
 		self:Unhook(this, "OnClick")
 	end)
-
-	dialog.Advanced:DisableDrawLayer("BACKGROUND")
-	dialog.Advanced:DisableDrawLayer("BORDER")
-
-	self:skinCheckButton{obj=dialog.Difficulty.Act}
-	self:skinCheckButton{obj=dialog.Ilvl.Act}
-    self:skinEditBox{obj=dialog.Ilvl.Min, x=-8, y=4}
-    self:skinEditBox{obj=dialog.Ilvl.Max, x=-8, y=4}
-	self:skinCheckButton{obj=dialog.Noilvl.Act}
-	self:skinCheckButton{obj=dialog.Defeated.Act}
-    self:skinEditBox{obj=dialog.Defeated.Min, x=-8, y=4}
-    self:skinEditBox{obj=dialog.Defeated.Max, x=-8, y=4}
-	self:skinCheckButton{obj=dialog.Members.Act}
-    self:skinEditBox{obj=dialog.Members.Min, x=-8, y=4}
-    self:skinEditBox{obj=dialog.Members.Max, x=-8, y=4}
-	self:skinCheckButton{obj=dialog.Tanks.Act}
-    self:skinEditBox{obj=dialog.Tanks.Min, x=-8, y=4}
-    self:skinEditBox{obj=dialog.Tanks.Max, x=-8, y=4}
-	self:skinCheckButton{obj=dialog.Heals.Act}
-    self:skinEditBox{obj=dialog.Heals.Min, x=-8, y=4}
-    self:skinEditBox{obj=dialog.Heals.Max, x=-8, y=4}
-	self:skinCheckButton{obj=dialog.Dps.Act}
-    self:skinEditBox{obj=dialog.Dps.Min, x=-8, y=4}
-    self:skinEditBox{obj=dialog.Dps.Max, x=-8, y=4}
-
-    self:addSkinFrame{obj=dialog.Expression, ft="a", kfs=true, nb=true, x1=-4, x2=6, y1=4, y2=-5}
-    self:skinSlider{obj=dialog.Expression.ScrollBar}
-
-	self:skinStdButton{obj=dialog.ResetButton}
+	if self.modChkBtns then
+		self:skinCheckButton{obj=dialog.Difficulty.Act}
+	end
+	for _, name in _G.pairs{"Defeated", "MPRating", "PVPRating", "Members", "Tanks", "Heals", "Dps"} do
+		self:skinObject("editbox", {obj=dialog[name].Min})
+		self:skinObject("editbox", {obj=dialog[name].Max})
+		if self.modChkBtns then
+			self:skinCheckButton{obj=dialog[name].Act, fType=ftype}
+		end
+	end
+	self:skinObject("editbox", {obj=dialog.Sorting.SortingExpression})
+	self:skinObject("slider", {obj=dialog.Expression.ScrollBar})
+	self:skinObject("frame", {obj=dialog.Expression, kfs=true, fb=true, ofs=6})
 	self:removeMagicBtnTex(dialog.ResetButton)
-	self:skinStdButton{obj=dialog.RefreshButton}
 	self:removeMagicBtnTex(dialog.RefreshButton)
-    self:addSkinFrame{obj=dialog, ft="a", kfs=true, ofs=1, y1=2, y2=-5}
-
-	dialog = nil
+	self:skinObject("frame", {obj=dialog, kfs=true, cb=true, ofs=1, y1=2, y2=-3})
+	if self.modBtns then
+		self:skinStdButton{obj=dialog.ResetButton}
+		self:skinStdButton{obj=dialog.RefreshButton}
+	end
 
 end

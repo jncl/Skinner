@@ -7,13 +7,18 @@ aObj.libsToSkin["LibKeyBound-1.0"] = function(self) -- v 110
 	self.initialized.LibKeyBound = true
 
 	local lKB = _G.LibStub("LibKeyBound-1.0", true)
+
 	if lKB then
 		-- skin KeyboundDialog frame
 		if self.db.profile.MenuFrames then
-			self:skinCheckButton{obj=_G.KeyboundDialogCheck}
-			self:skinStdButton{obj=_G.KeyboundDialogOkay}
-			self:skinStdButton{obj=_G.KeyboundDialogCancel}
-			self:addSkinFrame{obj=_G.KeyboundDialog, ft="a", kfs=true, nb=true, y1=4, y2=6}
+			self:skinObject("frame", {obj=_G.KeyboundDialog, kfs=true, ofs=4})
+			if self.modBtns then
+				self:skinStdButton{obj=_G.KeyboundDialogOkay}
+				self:skinStdButton{obj=_G.KeyboundDialogCancel}
+			end
+			if self.modChkBtns then
+				self:skinCheckButton{obj=_G.KeyboundDialogCheck}
+			end
 		end
 	end
 
