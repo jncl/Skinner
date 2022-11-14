@@ -3608,7 +3608,7 @@ aObj.SetupRetail_UIFrames = function()
 					sEntry.EntrySeparator:SetColorTexture(r, g, b, 0.75)
 				end
 			end
-			self:SecureHook("QueueStatusFrame_Update", function(fObj)
+			self:SecureHook(_G.QueueStatusFrame, "Update", function(fObj)
 				clrEntry(fObj)
 			end)
 			clrEntry(this)
