@@ -722,30 +722,30 @@ aObj.SetupOptions = function(self)
 				if info[#info] == "GossipFrame" then
 					db.QuestFrame = value
 					db.QuestInfo = value
-					if self.isRtl then
-						db.QuestMap = value
-					else
+					if not self.isRtl then
 						db.QuestLog = value
+					else
+						db.QuestMap = value
 					end
 					iof_otc(self.optionsFrames[self.L["UI Frames"]])
 					iof_otc(self.optionsFrames[self.L["NPC Frames"]])
 				elseif info[#info] == "QuestFrame" then
 					db.GossipFrame = value
 					db.QuestInfo = value
-					if self.isRtl then
-						db.QuestMap = value
-					else
+					if not self.isRtl then
 						db.QuestLog = value
+					else
+						db.QuestMap = value
 					end
 					iof_otc(self.optionsFrames[self.L["UI Frames"]])
 					iof_otc(self.optionsFrames[self.L["NPC Frames"]])
 				elseif info[#info] == "QuestInfo" then
 					db.GossipFrame = value
 					db.QuestFrame = value
-					if self.isRtl then
-						db.QuestMap = value
-					else
+					if not self.isRtl then
 						db.QuestLog = value
+					else
+						db.QuestMap = value
 					end
 					iof_otc(self.optionsFrames[self.L["UI Frames"]])
 					iof_otc(self.optionsFrames[self.L["NPC Frames"]])
