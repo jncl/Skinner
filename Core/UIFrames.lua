@@ -2179,19 +2179,16 @@ if not aObj.isClscERA then
 			this.leaveFrame:DisableDrawLayer("BACKGROUND")
 			this.leaveFrame:DisableDrawLayer("BORDER")
 			this.xpBar:DisableDrawLayer("ARTWORK")
-			self:skinObject("statusbar", {obj=this.xpBar, fi=0, bg=aObj:getRegion(this.xpBar, 1)})
+			self:skinObject("statusbar", {obj=this.xpBar, bg=aObj:getRegion(this.xpBar, 1)})
 			self:skinObject("frame", {obj=this, fType=ftype, x1=144, y1=6, x2=-142, y2=-2})
 			if self.modBtnBs then
 				self:addButtonBorder{obj=this.PitchUpButton}
 				self:addButtonBorder{obj=this.PitchDownButton}
 				self:addButtonBorder{obj=this.LeaveButton}
-				-- FIXME: Addon blocked in Retail/PTR/Beta when pressing any button on OAB
-				if not aObj.isRtl then
 					for i = 1, 6 do
 						self:addButtonBorder{obj=this["SpellButton" .. i], sabt=true}
 					end
 				end
-			end
 
 			self:Unhook(this, "OnShow")
 		end)
