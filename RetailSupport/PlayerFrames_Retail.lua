@@ -1841,14 +1841,57 @@ aObj.SetupRetail_PlayerFrames = function()
 				self:Unhook(fObj, "OnShow")
 			end)
 			self:checkShown(this.CommunityFinderFrame)
-			self:checkShown(this.GuildDetailsFrame)
+
+			self:SecureHookScript(this.GuildBenefitsFrame, "OnShow", function(fObj)
+				fObj:DisableDrawLayer("OVERLAY")
+				self:keepFontStrings(fObj.Perks)
+				self:skinObject("scrollbar", {obj=fObj.Perks.ScrollBar, fType=ftype})
+				local function skinPerk(...)
+					local _, element
+					if _G.select("#", ...) == 2 then
+						element, _ = ...
+					elseif _G.select("#", ...) == 3 then
+						_, element, _ = ...
+					end
+					aObj:keepFontStrings(element)
+					element.Icon:SetAlpha(1)
+					if aObj.modBtnBs then
+						aObj:addButtonBorder{obj=element, fType=ftype, relTo=element.Icon, clr="grey"}
+					end
+					aObj:keepFontStrings(element.NormalBorder)
+					aObj:keepFontStrings(element.DisabledBorder)
+				end
+				_G.ScrollUtil.AddInitializedFrameCallback(fObj.Perks.ScrollBox, skinPerk, aObj, true)
+				self:keepFontStrings(fObj.Rewards)
+				self:skinObject("scrollbar", {obj=fObj.Rewards.ScrollBar, fType=ftype})
+				local function skinReward(...)
+					local _, element
+					if _G.select("#", ...) == 2 then
+						element, _ = ...
+					elseif _G.select("#", ...) == 3 then
+						_, element, _ = ...
+					end
+					aObj:skinObject("frame", {obj=element, fType=ftype, kfs=true, clr="sepia"})
+					element.Icon:SetAlpha(1)
+					if aObj.modBtnBs then
+						aObj:addButtonBorder{obj=element, fType=ftype, relTo=element.Icon, clr="grey"}
+					end
+				end
+				_G.ScrollUtil.AddInitializedFrameCallback(fObj.Rewards.ScrollBox, skinReward, aObj, true)
+				fObj.FactionFrame.Bar:DisableDrawLayer("BORDER")
+				fObj.FactionFrame.Bar.Progress:SetTexture(self.sbTexture)
+
+				self:Unhook(fObj, "OnShow")
+			end)
+			self:checkShown(this.GuildBenefitsFrame)
 
 			self:SecureHookScript(this.GuildDetailsFrame, "OnShow", function(fObj)
+				fObj:DisableDrawLayer("OVERLAY")
 				self:removeRegions(fObj.Info, {2, 3, 4, 5, 6, 7, 8, 9, 10})
 				self:skinObject("slider", {obj=fObj.Info.MOTDScrollFrame.ScrollBar, fType=ftype})
 				self:skinObject("slider", {obj=fObj.Info.DetailsFrame.ScrollBar, fType=ftype})
 				fObj.News:DisableDrawLayer("BACKGROUND")
-				self:skinObject("scrollbar", {obj=this.News.ScrollBar, fType=ftype})
+				self:skinObject("scrollbar", {obj=fObj.News.ScrollBar, fType=ftype})
 				local function skinElement(...)
 					local _, element, new
 					if _G.select("#", ...) == 2 then
@@ -1862,11 +1905,10 @@ aObj.SetupRetail_PlayerFrames = function()
 						element.header:SetTexture(nil)
 					end
 				end
-				_G.ScrollUtil.AddAcquiredFrameCallback(this.News.ScrollBox, skinElement, aObj, true)
+				_G.ScrollUtil.AddAcquiredFrameCallback(fObj.News.ScrollBox, skinElement, aObj, true)
 				self:skinObject("dropdown", {obj=fObj.News.DropDown, fType=ftype})
 				self:keepFontStrings(fObj.News.BossModel)
 				self:removeRegions(fObj.News.BossModel.TextFrame, {2, 3, 4, 5, 6}) -- border textures
-				fObj:DisableDrawLayer("OVERLAY")
 
 				self:Unhook(fObj, "OnShow")
 			end)
