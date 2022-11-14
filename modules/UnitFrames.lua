@@ -31,7 +31,27 @@ local unitFrames = {
 
 module.isSkinned = _G.setmetatable({}, {__index = function(t, k) t[k] = true end})
 
-if aObj.isRtl then
+if not aObj.isRtl then
+	-- N.B. handle bug in XML & lua which places mana bar 1 pixel too high
+	function module:adjustStatusBarPosn(sBar, yAdj)
+
+		local oPnt
+		yAdj = yAdj or 1
+		if sBar.TextString then
+			oPnt = {sBar.TextString:GetPoint()}
+			sBar.TextString:SetPoint(oPnt[1], oPnt[2], oPnt[3], oPnt[4], oPnt[5] + yAdj)
+		end
+		if sBar == _G.PlayerFrame.healthbar then
+			self:RawHook(sBar, "SetPoint", function(this, posn, xOfs, yOfs)
+				self.hooks[this].SetPoint(this, posn, xOfs, yOfs + yAdj)
+			end, true)
+		else
+			oPnt = {sBar:GetPoint()}
+			sBar:SetPoint(oPnt[1], oPnt[2], oPnt[3], oPnt[4], oPnt[5] + yAdj)
+		end
+
+	end
+else
 	local function colourManaBar(manaBar)
 		local powerType, powerToken, altR, altG, altB = _G.UnitPowerType(manaBar.unit)
 		local info = _G.PowerBarColor[powerToken]
@@ -65,27 +85,6 @@ if aObj.isRtl then
 	aObj:SecureHook("UnitFrameManaBar_UpdateType", function(statusbar, _)
 		colourManaBar(statusbar)
 	end)
-end
-if not aObj.isRtl then
-	-- N.B. handle bug in XML & lua which places mana bar 1 pixel too high
-	function module:adjustStatusBarPosn(sBar, yAdj)
-
-		local oPnt
-		yAdj = yAdj or 1
-		if sBar.TextString then
-			oPnt = {sBar.TextString:GetPoint()}
-			sBar.TextString:SetPoint(oPnt[1], oPnt[2], oPnt[3], oPnt[4], oPnt[5] + yAdj)
-		end
-		if sBar == _G.PlayerFrame.healthbar then
-			self:RawHook(sBar, "SetPoint", function(this, posn, xOfs, yOfs)
-				self.hooks[this].SetPoint(this, posn, xOfs, yOfs + yAdj)
-			end, true)
-		else
-			oPnt = {sBar:GetPoint()}
-			sBar:SetPoint(oPnt[1], oPnt[2], oPnt[3], oPnt[4], oPnt[5] + yAdj)
-		end
-
-	end
 end
 function module:skinUnitButton(opts) -- luacheck: ignore self
 
@@ -147,6 +146,7 @@ function module:skinPlayerF()
 			else
 				frame.PlayerFrameContainer.FrameTexture:SetAlpha(0) -- texture file is changed dependant upon in vehicle or not
 				frame.PlayerFrameContainer.VehicleFrameTexture:SetAlpha(0) -- texture file is changed dependant upon in vehicle or not
+				aObj:keepFontStrings(frame.PlayerFrameContent.PlayerFrameContentContextual.GroupIndicator)
 				aObj:skinObject("statusbar", {obj=frame.PlayerFrameContent.PlayerFrameContentMain.HealthBarArea.PlayerFrameHealthBarAnimatedLoss, fi=0})
 				aObj:skinObject("statusbar", {obj=frame.healthbar, fi=0, other={frame.myHealPredictionBar, frame.otherHealPredictionBar}})
 				aObj:skinObject("statusbar", {obj=frame.manabar, fi=0, other={frame.myManaCostPredictionBar, frame.manabar.FeedbackFrame.BarTexture}, hookFunc=true})
@@ -481,9 +481,8 @@ function module:skinButton(fName, ti)
 			fo.spellbar.Text:SetPoint("TOP", 0, 3)
 			aObj:skinObject("statusbar", {obj=fo.spellbar, fi=0, bg=aObj:getRegion(fo.spellbar, 1), other={fo.spellbar.Flash}})
 		else
-			aObj:adjHeight{obj=fo.spellbar, adj=4}
 			aObj:nilTexture(fo.spellbar.TextBorder, true)
-			aObj:skinObject("statusbar", {obj=fo.spellbar, fi=0, bg=fo.spellbar.Background, hookFunc=true})
+			aObj:skinObject("statusbar", {obj=fo.spellbar--[[, fi=0]], bg=fo.spellbar.Background, hookFunc=true})
 		end
 	end
 
@@ -902,54 +901,52 @@ function module:GetOptions()
 
 end
 
-if aObj.isRtl then
-	aObj.blizzLoDFrames[ftype].ArenaUI = function(_)
+aObj.blizzLoDFrames[ftype].ArenaUI = function(_)
 
-		if db.arena then
-			local function skinArenaFrame(fName)
-				if _G.InCombatLockdown() then
-				    aObj:add2Table(aObj.oocTab, {skinArenaFrame, {fName}})
-				    return
-				end
-				module:skinUnitButton{obj=_G[fName], x1=-3, x2=3, y2=-6}
-				_G[fName .. "Background"]:SetTexture(nil)
+	if db.arena then
+		local function skinArenaFrame(fName)
+			if _G.InCombatLockdown() then
+			    aObj:add2Table(aObj.oocTab, {skinArenaFrame, {fName}})
+			    return
+			end
+			module:skinUnitButton{obj=_G[fName], x1=-3, x2=3, y2=-6}
+			_G[fName .. "Background"]:SetTexture(nil)
+			_G[fName .. "Texture"]:SetTexture(nil)
+			_G[fName .. "Status"]:SetTexture(nil)
+			_G[fName .. "SpecBorder"]:SetTexture(nil)
+			aObj:skinObject("statusbar", {obj=_G[fName .. "HealthBar"], fi=0})
+			aObj:skinObject("statusbar", {obj=_G[fName .. "ManaBar"], fi=0, nilFuncs=true})
+			local cBar = fName .. "CastingBar"
+			aObj:adjHeight{obj=_G[cBar], adj=2}
+			aObj:moveObject{obj=_G[cBar].Text, y=-1}
+			_G[cBar].Flash:SetAllPoints()
+			aObj:skinObject("statusbar", {obj=_G[cBar], fi=0, bg=aObj:getRegion(_G[cBar], 1), other={_G[cBar].Flash}})
+			-- _G[cBar]:SetStatusBarColor(0, 1, 0)
+			if _G[fName].petFrame then
+				fName = fName .. "PetFrame"
+				module:skinUnitButton{obj=_G[fName], y1=1, x2=1, y2=2}
+				_G[fName .. "Flash"]:SetTexture(nil)
 				_G[fName .. "Texture"]:SetTexture(nil)
-				_G[fName .. "Status"]:SetTexture(nil)
-				_G[fName .. "SpecBorder"]:SetTexture(nil)
 				aObj:skinObject("statusbar", {obj=_G[fName .. "HealthBar"], fi=0})
 				aObj:skinObject("statusbar", {obj=_G[fName .. "ManaBar"], fi=0, nilFuncs=true})
-				local cBar = fName .. "CastingBar"
-				aObj:adjHeight{obj=_G[cBar], adj=2}
-				aObj:moveObject{obj=_G[cBar].Text, y=-1}
-				_G[cBar].Flash:SetAllPoints()
-				aObj:skinObject("statusbar", {obj=_G[cBar], fi=0, bg=aObj:getRegion(_G[cBar], 1), other={_G[cBar].Flash}})
-				-- _G[cBar]:SetStatusBarColor(0, 1, 0)
-				if _G[fName].petFrame then
-					fName = fName .. "PetFrame"
-					module:skinUnitButton{obj=_G[fName], y1=1, x2=1, y2=2}
-					_G[fName .. "Flash"]:SetTexture(nil)
-					_G[fName .. "Texture"]:SetTexture(nil)
-					aObj:skinObject("statusbar", {obj=_G[fName .. "HealthBar"], fi=0})
-					aObj:skinObject("statusbar", {obj=_G[fName .. "ManaBar"], fi=0, nilFuncs=true})
-					aObj:moveObject{obj=_G[fName], x=-17} -- align under ArenaEnemy Health/Mana bars
-				end
+				aObj:moveObject{obj=_G[fName], x=-17} -- align under ArenaEnemy Health/Mana bars
 			end
-			if not aObj.isRtl then
-				for i = 1, _G.MAX_ARENA_ENEMIES do
-					skinArenaFrame("ArenaPrepFrame" .. i)
-					skinArenaFrame("ArenaEnemyFrame" .. i)
-				end
-			else
-				for _, frame in _G.pairs(_G.ArenaEnemyPrepFramesContainer.UnitFrames) do
-					skinArenaFrame(frame:GetName())
-				end
-				for _, frame in _G.pairs(_G.ArenaEnemyMatchFramesContainer.UnitFrames) do
-					skinArenaFrame(frame:GetName())
-				end
-			end
-			aObj:skinObject("frame", {obj=_G.ArenaPrepBackground, fType=ftype})
-			aObj:skinObject("frame", {obj=_G.ArenaEnemyBackground, fType=ftype})
 		end
-
+		if not aObj.isRtl then
+			for i = 1, _G.MAX_ARENA_ENEMIES do
+				skinArenaFrame("ArenaPrepFrame" .. i)
+				skinArenaFrame("ArenaEnemyFrame" .. i)
+			end
+		else
+			for _, frame in _G.pairs(_G.ArenaEnemyPrepFramesContainer.UnitFrames) do
+				skinArenaFrame(frame:GetName())
+			end
+			for _, frame in _G.pairs(_G.ArenaEnemyMatchFramesContainer.UnitFrames) do
+				skinArenaFrame(frame:GetName())
+			end
+		end
+		aObj:skinObject("frame", {obj=_G.ArenaPrepBackground, fType=ftype})
+		aObj:skinObject("frame", {obj=_G.ArenaEnemyBackground, fType=ftype})
 	end
+
 end
