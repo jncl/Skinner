@@ -709,13 +709,8 @@ aObj.SetupRetail_NPCFrames = function()
 				if _G.select("#", ...) == 2 then
 					element, elementData = ...
 				elseif _G.select("#", ...) == 3 then
-					element, elementData, _ = ...
-				else
-					_, element, elementData, _ = ...
+					_, element, elementData = ...
 				end
-				-- _G.C_Timer.After(1, function()
-				-- 	_G.Spew("skinGossip", elementData)
-				-- end)
 				if elementData.buttonType == 1 then -- Greeting
 					element.GreetingText:SetTextColor(aObj.HT:GetRGB())
 				elseif elementData.buttonType == 3 then -- Gossip
@@ -735,7 +730,7 @@ aObj.SetupRetail_NPCFrames = function()
 			self:removeRegions(this.FriendshipStatusBar, {1, 2, 5, 6, 7, 8 ,9})
 			self:skinObject("statusbar", {obj=this.FriendshipStatusBar, fi=0, bg=self:getRegion(this.FriendshipStatusBar, 10)})
 			self:skinObject("scrollbar", {obj=this.GreetingPanel.ScrollBar, fType=ftype})
-			_G.ScrollUtil.AddAcquiredFrameCallback(this.GreetingPanel.ScrollBox, skinGossip, aObj, true)
+			_G.ScrollUtil.AddInitializedFrameCallback(this.GreetingPanel.ScrollBox, skinGossip, aObj, true)
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, x2=3})
 			if self.modBtns then
 				self:skinStdButton{obj=this.GreetingPanel.GoodbyeButton}
