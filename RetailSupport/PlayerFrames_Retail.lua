@@ -3239,7 +3239,11 @@ aObj.SetupRetail_PlayerFrames = function()
 			for _, btn in _G.ipairs{_G.InspectPaperDollItemsFrame:GetChildren()} do
 				btn:DisableDrawLayer("BACKGROUND")
 				if self.modBtnBs then
+					if btn ~= _G.InspectPaperDollItemsFrame.InspectTalents then
 					self:addButtonBorder{obj=btn, ibt=true, clr="grey"}
+					else
+						self:skinStdButton{obj=btn, fType=ftype, sechk=true}
+					end
 				end
 			end
 
