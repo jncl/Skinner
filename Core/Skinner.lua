@@ -178,10 +178,6 @@ function aObj:OnInitialize()
 	self.BT = _G.CreateColor(c.r, c.g, c.b)
 	c = self.prdb.IgnoredText
 	self.IT = _G.CreateColor(c.r, c.g, c.b)
-	-- The following variables are used by the GossipFrame & QuestFrame
-	self.NORMAL_QUEST_DISPLAY  = self.HT:WrapTextInColorCode("%s|r")
-	self.TRIVIAL_QUEST_DISPLAY = self.BT:WrapTextInColorCode("%s (low level)|r")
-	self.IGNORED_QUEST_DISPLAY = self.IT:WrapTextInColorCode("%s (ignored)|r")
 
 	-- StatusBar texture
 	c = self.prdb.StatusBar

@@ -765,13 +765,13 @@ function aObj:hookQuestText(btn)
 
 	self:rawHook(btn, "SetFormattedText", function(this, fmtString, text)
 		if fmtString == _G.NORMAL_QUEST_DISPLAY then
-			fmtString = aObj.NORMAL_QUEST_DISPLAY
+			fmtString = self.HT:WrapTextInColorCode("%s|r")
 		elseif fmtString == _G.TRIVIAL_QUEST_DISPLAY then
-			fmtString = aObj.TRIVIAL_QUEST_DISPLAY
+			fmtString = self.BT:WrapTextInColorCode("%s (low level)|r")
 		elseif fmtString == _G.IGNORED_QUEST_DISPLAY then
-			fmtString = aObj.IGNORED_QUEST_DISPLAY
+			fmtString = self.IT:WrapTextInColorCode("%s (ignored)|r")
 		end
-		return aObj.hooks[this].SetFormattedText(this, fmtString, text)
+		return self.hooks[this].SetFormattedText(this, fmtString, text)
 	end, true)
 
 end
