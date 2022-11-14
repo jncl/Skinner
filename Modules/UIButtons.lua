@@ -808,6 +808,7 @@ local function __addButtonBorder(opts)
 		clr = set colour
 		ca = set colour alpha
 		schk = state check for colour changes
+		sechk = set enabled check for colour changes
 --]]
 	--@alpha@
 	 _G.assert(opts.obj, "Missing object__aBB\n" .. _G.debugstack(2, 3, 2))
@@ -822,8 +823,8 @@ local function __addButtonBorder(opts)
 	--@end-alpha@
 	if not opts.obj then return end
 	-- don't skin it twice unless required
-	if not opts.nc
-	and opts.obj.sbb
+	if opts.obj.sbb
+	and not opts.nc
 	then
 		return
 	end
