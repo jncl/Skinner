@@ -1,3 +1,39 @@
+beta10.46479.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Updated SetupOptions function
+	Updated UtilFuncs colour table
+	Updated NSF functions
+	Updated SocialBrowserFrame skin
+	Updated PlayerChoice skin
+	Updated Retail MainMenuBar skin
+	Updated LFGUI skin
+	Updated GarrisonUI skin
+	Updated Classic AchievevmentsUI skin
+	PTR changes
+	Updated SpellBook skin
+	Updated Professions skin
+	Updated Retail FriendsFrame skin
+	Updated EncounterJournal skin
+	Updated Retail Containers skin
+	Updated CommunitiesUI skin
+	Updated CollectionsUI skin
+	Updated ClassTalent skin
+	Updated Retail ReputationFrame skin
+	Updated Retail CastingBar skin
+	Updated Retail AchievementsUI skin
+	Updated Retail AuctionHouseUI skin
+	Updated UnitFrames code
+	Updated UIButtons code
+	Updated AlertFrames skin
+	Updated Nameplates skin
+	Updated MinimapButtons skin
+	Updated MirrorTimers skin
+	Updated QuestFrame skin
+	Updated Ace3, Auctionator, HealBot, Inventorian, Krowi_AchievementFilter, Rematch, Rotacast, Spew, WeakAuras & WorldQuestTracker skins
+	
 beta10.46366.1
 Jncl:
 	ToDo.txt
