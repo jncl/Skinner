@@ -1353,7 +1353,7 @@ aObj.blizzLoDFrames[ftype].GuildBankUI = function(self)
 		end
 		self:skinObject("slider", {obj=this.Log.TransactionsScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
 		self:skinObject("slider", {obj=this.Info.ScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
-		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true, cb=true, y1=self.isClsc and -11, x2=self.isClsc and 1, y2=self.isClsc and 3 or -3})
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true, cb=true, y1=self.isClsc and -11, x2=self.isClsc and 1, y2=self.isClsc and 3 or -1})
 		if self.modBtns then
 			if self.isClsc then
 				self:skinCloseButton{obj=self:getChild(this, 11), fType=ftype}
