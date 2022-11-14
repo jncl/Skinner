@@ -111,24 +111,24 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 	-- N.B. Appears in XML file but not in LUA file (used by NewPet, NewMount, NewToy, NewRuneforge & NewCosmetic alerts templates)
 	-- ["Item"]                  = {ofs = -8, ddl = {"background"}, ib = true},
 	if self.isRtl then
-		alertType["Achievement"].y1       = -15
-		alertType["Achievement"].y2       = 12
-		alertType["Scenario"].y1          = -8
-		alertType["Scenario"].y2          = 8
-		alertType["EntitlementDelivered"] = {ofs = -10}
-		alertType["Loot"].icon            = {obj = "lootItem", stn = {"SpecRing"}, ib = true, tex =  "Icon"}
-		alertType["NewCosmetic"]          = {ofs = -8, ddl = {"background"}, ib = true, iq = _G.Enum.ItemQuality.Epic}
-		alertType["NewRuneforgePower"]    = {ofs = -8, ddl = {"background"}, ib = true, iq = _G.Enum.ItemQuality.Legendary}
-		alertType["NewToy"]               = {ofs = -8, ddl = {"background"}, ib = true}
-		alertType["RafRewardDelivered"]   = {ofs = -10}
+		alertType["Achievement"].y1         = -15
+		alertType["Achievement"].y2         = 12
+		alertType["Scenario"].y1            = -8
+		alertType["Scenario"].y2            = 8
+		alertType["EntitlementDelivered"]   = {ofs = -10}
+		alertType["Loot"].icon              = {obj = "lootItem", stn = {"SpecRing"}, ib = true, tex =  "Icon"}
+		alertType["NewCosmetic"]            = {ofs = -8, ddl = {"background"}, ib = true, iq = _G.Enum.ItemQuality.Epic}
+		alertType["NewRuneforgePower"]      = {ofs = -8, ddl = {"background"}, ib = true, iq = _G.Enum.ItemQuality.Legendary}
+		alertType["NewToy"]                 = {ofs = -8, ddl = {"background"}, ib = true}
+		alertType["RafRewardDelivered"]     = {ofs = -10}
 		alertType["SkillLineSpecsUnlocked"] = {ofs = -8, ddl = {"background"}}
 	else
-		alertType["Achievement"].y1       = -10
-		alertType["Achievement"].y2       = 10
-		alertType["Achievement"].stn      = {"OldAchievement"}
-		alertType["Loot"].stn             = {"SpecRing"}
-		alertType["Loot"].ib              = true
-		alertType["StorePurchase"]        = {ofs = -12, ddl = {"background"}}
+		alertType["Achievement"].y1         = -10
+		alertType["Achievement"].y2         = 10
+		alertType["Achievement"].stn        = {"OldAchievement"}
+		alertType["Loot"].stn               = {"SpecRing"}
+		alertType["Loot"].ib                = true
+		alertType["StorePurchase"]          = {ofs = -12, ddl = {"background"}}
 	end
 	local function skinAlertFrame(type, frame)
 		aObj:Debug("skinAlertFrame: [%s, %s, %s]", type, frame)
@@ -210,7 +210,7 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 					frame.IconBorder:SetTexture(nil)
 				end
 				if not tbl.nis then
-				aObj:addButtonBorder{obj=frame, relTo=frame.Icon}
+					aObj:addButtonBorder{obj=frame, relTo=frame.Icon}
 				end
 			else
 				if tbl.icon.ddl then
@@ -2144,7 +2144,7 @@ aObj.blizzFrames[ftype].Nameplates = function(self)
 		end
 		for _, rune in _G.pairs(_G.DeathKnightResourceOverlayFrame.Runes) do
 			rune.EmptyRune:SetTexture(nil)
-			end
+		end
 		-- ClassNameplateBarDracthyrFrame
 		for combo in _G.ClassNameplateBarDruidFrame.classResourceButtonPool:EnumerateActive() do
 			combo:DisableDrawLayer("BACKGROUND")
@@ -2185,10 +2185,10 @@ if not aObj.isClscERA then
 				self:addButtonBorder{obj=this.PitchUpButton}
 				self:addButtonBorder{obj=this.PitchDownButton}
 				self:addButtonBorder{obj=this.LeaveButton}
-					for i = 1, 6 do
-						self:addButtonBorder{obj=this["SpellButton" .. i], sabt=true}
-					end
+				for i = 1, 6 do
+					self:addButtonBorder{obj=this["SpellButton" .. i], sabt=true}
 				end
+			end
 
 			self:Unhook(this, "OnShow")
 		end)
@@ -2740,6 +2740,17 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 		end
 	end
 
+	if self.isRtlBeta then
+		self:SecureHookScript(_G.UIWidgetCenterDisplayFrame, "OnShow", function(this)
+
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true})
+			if self.modBtnBs then
+				self:skinStdButton{obj=this.CloseButton, fType=ftype}
+			end
+
+			self:Unhook(this, "OnShow")
+		end)
+	end
 	if self.isRtl then
 		local function hookAndSkinWidgets(widgetContainer)
 			-- aObj:Debug("hookAndSkinWidgets: [%s, %s, %s]", widgetContainer:IsForbidden(), widgetContainer:IsForbidden() or widgetContainer:GetDebugName())
@@ -2754,7 +2765,6 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 					skinWidget(widget, _G.UIWidgetManager:GetWidgetTypeInfo(widget.widgetType))
 				end
 			end)
-			-- skin existing widgets
 			for widget in widgetContainer.widgetPools:EnumerateActive() do
 				skinWidget(widget, _G.UIWidgetManager:GetWidgetTypeInfo(widget.widgetType))
 			end
