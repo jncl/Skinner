@@ -2338,24 +2338,28 @@ aObj.SetupRetail_UIFrames = function()
 				self:skinObject("dropdown", {obj=_G.LFGListLanguageFilterDropDownFrame, fType=ftype})
 				self:skinObject("scrollbar", {obj=fObj.ScrollBar, fType=ftype})
 				local function skinElement(...)
-					local _, element
+					local _, element, elementData, new
 					if _G.select("#", ...) == 2 then
-						element, _ = ...
+						element, elementData = ...
 					elseif _G.select("#", ...) == 3 then
-						_, element, _ = ...
-					end
-					element.ResultBG:SetTexture(nil)
-					if element.CancelButton
-					and aObj.modBtns
-					then
-						aObj:skinStdButton{obj=element.CancelButton}
+						element, elementData, new = ...
 					else
-						--@debug@
-						_G.Spew("skinSPElement", element)
-						--@end-debug@
+						_, element, elementData, new = ...
+					end
+					if new ~= false then
+						if elementData.startGroup then
+							if aObj.modBtns then
+								aObj:skinStdButton{obj=aObj:getChild(element, 1), fType=ftype}
+							end
+						else
+					element.ResultBG:SetTexture(nil)
+							if aObj.modBtns then
+						aObj:skinStdButton{obj=element.CancelButton}
 					end
 				end
-				_G.ScrollUtil.AddInitializedFrameCallback(fObj.ScrollBox, skinElement, aObj, true)
+					end
+				end
+				_G.ScrollUtil.AddAcquiredFrameCallback(fObj.ScrollBox, skinElement, aObj, true)
 				self:removeMagicBtnTex(fObj.BackButton)
 				self:removeMagicBtnTex(fObj.SignUpButton)
 				if self.modBtns then
@@ -2376,9 +2380,9 @@ aObj.SetupRetail_UIFrames = function()
 				fObj:DisableDrawLayer("BACKGROUND")
 				self:removeInset(fObj.Inset)
 				for _ ,type in _G.pairs{"Name", "Role", "ItemLevel"} do
-					self:removeRegions(av[type .. "ColumnHeader"], {1, 2, 3})
+					self:removeRegions(fObj[type .. "ColumnHeader"], {1, 2, 3})
 					if self.modBtns then
-						 self:skinStdButton{obj=av[type .. "ColumnHeader"]}
+						 self:skinStdButton{obj=fObj[type .. "ColumnHeader"]}
 					end
 				end
 				self:skinObject("scrollbar", {obj=fObj.ScrollBar, fType=ftype})
