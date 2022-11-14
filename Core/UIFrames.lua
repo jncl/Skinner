@@ -2076,7 +2076,7 @@ aObj.blizzFrames[ftype].Nameplates = function(self)
 	end
 
 	local function skinNamePlate(frame)
-		-- aObj:Debug("skinNamePlate: [%s, %s]", frame)
+		-- aObj:Debug("skinNamePlate: [%s, %s]", frame, frame:IsForbidden())
 		if not frame -- happens when called again after combat and frame doesn't exist any more
 		or frame:IsForbidden()
 		then
@@ -2089,20 +2089,21 @@ aObj.blizzFrames[ftype].Nameplates = function(self)
 		local nP = frame.UnitFrame or aObj:getChild(frame, 1)
 		if nP
 		and nP.healthBar
+		and not nP.classNamePlatePowerBar
 		then
 			local nHb, nCb = nP.healthBar, nP.castBar or nP.CastBar
 			nHb.border:DisableDrawLayer("ARTWORK")
 			if not aObj.isRtl then
-				aObj:skinObject("statusbar", {obj=nHb, fi=0, bg=nHb.background})
+				aObj:skinObject("statusbar", {obj=nHb, bg=nHb.background})
 				if aObj.isClsc then
-					aObj:skinObject("statusbar", {obj=nCb, fi=0, bg=aObj:getRegion(nCb, 1)})
 					aObj:nilTexture(nCb.Border, true)
 					aObj:nilTexture(nCb.BorderShield, true)
+					aObj:skinObject("statusbar", {obj=nCb, bg=aObj:getRegion(nCb, 1)})
 				end
 			else
-				aObj:skinObject("statusbar", {obj=nHb, fi=0, bg=nHb.background, other={nHb.myHealPrediction, nHb.otherHealPrediction}})
+				aObj:skinObject("statusbar", {obj=nHb, bg=nHb.background, other={nHb.myHealPrediction, nHb.otherHealPrediction}})
 				if nCb then
-					aObj:skinObject("statusbar", {obj=nCb, fi=0, bg=nCb.Background, hookFunc=true})
+					aObj:skinObject("statusbar", {obj=nCb, bg=nCb.Background, hookFunc=true})
 				end
 			end
 			-- N.B. WidgetContainer objects managed in UIWidgets code
@@ -2119,47 +2120,42 @@ aObj.blizzFrames[ftype].Nameplates = function(self)
 	end
 
 	-- Class Nameplate Frames
-	if self.isRtl then
+	if not self.isRtl then
+		-- DeathKnight (nothing to skin)
+		-- Mage (nothing to skin)
+		for _, cpoint in _G.pairs(_G.ClassNameplateBarRogueDruidFrame.ComboPoints) do
+			cpoint:DisableDrawLayer("BACKGROUND")
+		end
+		for _, shard in _G.pairs(_G.ClassNameplateBarWarlockFrame.Shards) do
+			shard.ShardOff:SetTexture(nil)
+		end
+	else
 		local mF = _G.ClassNameplateManaBarFrame
 		if mF then
-			self:skinObject("statusbar", {obj=mF, fi=0, other={mF.ManaCostPredictionBar, mF.FeedbackFrame.BarTexture}})
+			mF.Border:DisableDrawLayer("BACKGROUND")
+			self:skinObject("statusbar", {obj=mF, bg=mF.background, other={mF.ManaCostPredictionBar, mF.FeedbackFrame.BarTexture}})
 		end
-		-- Monk
-		for i = 1, #_G.ClassNameplateBarWindwalkerMonkFrame.Chi do
-			_G.ClassNameplateBarWindwalkerMonkFrame.Chi[i]:DisableDrawLayer("BACKGROUND")
+		for _, chi in _G.pairs(_G.ClassNameplateBarWindwalkerMonkFrame.Chi) do
+			chi:DisableDrawLayer("BACKGROUND")
 		end
 		self:skinObject("statusbar", {obj=_G.ClassNameplateBrewmasterBarFrame, fi=0})
-		-- Paladin
-		for i = 1, #_G.ClassNameplateBarPaladinFrame.Runes do
-			_G.ClassNameplateBarPaladinFrame.Runes[i].OffTexture:SetTexture(nil)
+		for _, rune in _G.pairs(_G.ClassNameplateBarPaladinFrame.Runes) do
+			rune.OffTexture:SetTexture(nil)
 		end
-		if not aObj.isRtl then
-			-- DeathKnight (nothing to skin)
-			-- Mage (nothing to skin)
-			-- Rogue/Druid
-			for i = 1, #_G.ClassNameplateBarRogueDruidFrame.ComboPoints do
-				_G.ClassNameplateBarRogueDruidFrame.ComboPoints[i]:DisableDrawLayer("BACKGROUND")
+		for _, rune in _G.pairs(_G.DeathKnightResourceOverlayFrame.Runes) do
+			rune.EmptyRune:SetTexture(nil)
 			end
-			-- Warlock
-			for i = 1, #_G.ClassNameplateBarWarlockFrame.Shards do
-				_G.ClassNameplateBarWarlockFrame.Shards[i].ShardOff:SetTexture(nil)
-			end
-		else
-		for i = 1, #_G.DeathKnightResourceOverlayFrame.Runes do
-			_G.DeathKnightResourceOverlayFrame.Runes[i].EmptyRune:SetTexture(nil)
+		-- ClassNameplateBarDracthyrFrame
+		for combo in _G.ClassNameplateBarDruidFrame.classResourceButtonPool:EnumerateActive() do
+			combo:DisableDrawLayer("BACKGROUND")
 		end
 		-- ClassNameplateBarMageFrame
 		for combo in _G.ClassNameplateBarRogueFrame.classResourceButtonPool:EnumerateActive() do
 			combo:DisableDrawLayer("BACKGROUND")
 		end
-		for combo in _G.ClassNameplateBarDruidFrame.classResourceButtonPool:EnumerateActive() do
-			combo:DisableDrawLayer("BACKGROUND")
-		end
 		for shard in _G.ClassNameplateBarWarlockFrame.classResourceButtonPool:EnumerateActive() do
 			shard.ShardOff:SetTexture(nil)
 		end
-		-- ClassNameplateBarDracthyrFrame
-	end
 	end
 
 	-- tooltip
