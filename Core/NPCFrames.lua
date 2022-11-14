@@ -237,18 +237,17 @@ aObj.blizzFrames[ftype].QuestInfo = function(self)
 	self.initialized.QuestInfo = true
 
 	local function skinRewards(frame)
-		if frame.Header:IsObjectType("FontString") then -- QuestInfoRewardsFrame
+		if frame.Header:IsObjectType("FontString") then
 			frame.Header:SetTextColor(aObj.HT:GetRGB())
 		end
 		frame.ItemChooseText:SetTextColor(aObj.BT:GetRGB())
 		frame.ItemReceiveText:SetTextColor(aObj.BT:GetRGB())
-		if not self.isClsc then
+		if not aObj.isClsc then
 			frame.PlayerTitleText:SetTextColor(aObj.BT:GetRGB())
 		end
-		if frame.XPFrame.ReceiveText then -- QuestInfoRewardsFrame
+		if frame.XPFrame.ReceiveText then
 			frame.XPFrame.ReceiveText:SetTextColor(aObj.BT:GetRGB())
 		end
-		-- RewardButtons
 		for _, btn in _G.pairs(frame.RewardButtons) do
 			btn.NameFrame:SetTexture(nil)
 			if aObj.modBtnBs then
@@ -256,7 +255,6 @@ aObj.blizzFrames[ftype].QuestInfo = function(self)
 				aObj:clrButtonFromBorder(btn)
 			end
 		end
-		-- SpellReward
 		for spellBtn in frame.spellRewardPool:EnumerateActive() do
 			spellBtn.NameFrame:SetTexture(nil)
 			spellBtn:DisableDrawLayer("OVERLAY")
@@ -264,7 +262,6 @@ aObj.blizzFrames[ftype].QuestInfo = function(self)
 				 aObj:addButtonBorder{obj=spellBtn, relTo=spellBtn.Icon, clr="grey"}
 			end
 		end
-		-- FollowerReward
 		for flwrBtn in frame.followerRewardPool:EnumerateActive() do
 			flwrBtn.BG:SetTexture(nil)
 			flwrBtn.PortraitFrame.PortraitRing:SetTexture(nil)
@@ -276,7 +273,7 @@ aObj.blizzFrames[ftype].QuestInfo = function(self)
 		for spellLine in frame.spellHeaderPool:EnumerateActive() do
 			spellLine:SetVertexColor(aObj.BT:GetRGB())
 		end
-		if self.isRtl then
+		if aObj.isRtl then
 			for rep in frame.reputationRewardPool:EnumerateActive() do
 				rep.NameFrame:SetTexture(nil)
 				if aObj.modBtnBs then
@@ -286,15 +283,13 @@ aObj.blizzFrames[ftype].QuestInfo = function(self)
 		end
 	end
 	local function updateQIDisplay(_)
-		local br, bg, bb = aObj.BT:GetRGB()
-		-- headers
 		_G.QuestInfoTitleHeader:SetTextColor(aObj.HT:GetRGB())
 		_G.QuestInfoDescriptionHeader:SetTextColor(aObj.HT:GetRGB())
 		_G.QuestInfoObjectivesHeader:SetTextColor(aObj.HT:GetRGB())
-		-- other text
 		_G.QuestInfoQuestType:SetTextColor(aObj.BT:GetRGB())
 		_G.QuestInfoObjectivesText:SetTextColor(aObj.BT:GetRGB())
 		_G.QuestInfoRewardText:SetTextColor(aObj.BT:GetRGB())
+		local br, bg, bb = aObj.BT:GetRGB()
 		local r, g, b = _G.QuestInfoRequiredMoneyText:GetTextColor()
 		_G.QuestInfoRequiredMoneyText:SetTextColor(br - r, bg - g, bb - b)
 		_G.QuestInfoGroupSize:SetTextColor(aObj.BT:GetRGB())
@@ -305,9 +300,6 @@ aObj.blizzFrames[ftype].QuestInfo = function(self)
 			_G.QuestInfoDescriptionText:SetText(newText)
 		end
 		_G.QuestInfoDescriptionText:SetTextColor(aObj.BT:GetRGB())
-		-- skin rewards
-		skinRewards(_G.QuestInfoFrame.rewardsFrame)
-		-- Objectives
 		for _, obj in _G.pairs(_G.QuestInfoObjectivesFrame.Objectives) do
 			r, g ,b = obj:GetTextColor()
 			-- if red colour is less than 0.25 then it needs to be coloured
@@ -315,7 +307,6 @@ aObj.blizzFrames[ftype].QuestInfo = function(self)
 				obj:SetTextColor(br - r, bg - g, bb - b)
 			end
 		end
-		-- QuestInfoSpecialObjectives Frame
 		_G.QuestInfoSpellObjectiveLearnLabel:SetTextColor(aObj.BT:GetRGB())
 		_G.QuestInfoSpellObjectiveFrameNameFrame:SetTexture(nil)
 		if not aObj.isClsc then
@@ -324,7 +315,6 @@ aObj.blizzFrames[ftype].QuestInfo = function(self)
 		if aObj.modBtnBs then
 			 aObj:addButtonBorder{obj=_G.QuestInfoSpellObjectiveFrame, relTo=_G.QuestInfoSpellObjectiveFrame.Icon, clr="grey"}
 		end
-		-- QuestInfoSeal Frame text colour
 		-- TODO: can this be replaced with removeColourCodes function ?
 		if _G.QuestInfoSealFrame:IsShown()
 		and _G.QuestInfoSealFrame.theme
@@ -332,6 +322,7 @@ aObj.blizzFrames[ftype].QuestInfo = function(self)
 			local sealText = aObj:unwrapTextFromColourCode(_G.QuestInfoSealFrame.theme.signature)
 			_G.QuestInfoSealFrame.Text:SetText(aObj.HT:WrapTextInColorCode(sealText)) -- re-colour text
 		end
+	 	skinRewards(_G.QuestInfoFrame.rewardsFrame)
 	end
 
 	self:SecureHook("QuestInfo_Display", function(...)
@@ -377,7 +368,7 @@ aObj.blizzFrames[ftype].QuestInfo = function(self)
 				end
 			end
 		end
-		if self.isRtl then
+		if aObj.isRtl then
 			for rep in frame.reputationRewardPool:EnumerateActive() do
 				rep.NameFrame:SetTexture(nil)
 				if aObj.modBtnBs then
@@ -387,7 +378,7 @@ aObj.blizzFrames[ftype].QuestInfo = function(self)
 		end
 	end
 	self:SecureHookScript(_G.QuestInfoRewardsFrame, "OnShow", function(this)
-		skinRewardBtns(this, "libt")
+		-- skinRewardBtns(this)
 		this.XPFrame.ReceiveText:SetTextColor(self.BT:GetRGB())
 		self:removeRegions(_G.QuestInfoPlayerTitleFrame, {2, 3, 4}) -- NameFrame textures
 		if self.isClsc then
@@ -398,7 +389,7 @@ aObj.blizzFrames[ftype].QuestInfo = function(self)
 	end)
 
 	self:SecureHookScript(_G.MapQuestInfoRewardsFrame, "OnShow", function(this)
-		skinRewardBtns(this)
+		-- skinRewardBtns(this)
 		for _, type in _G.pairs{"XPFrame", "MoneyFrame"} do
 			this[type].NameFrame:SetTexture(nil)
 			if self.modBtnBs then
