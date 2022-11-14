@@ -77,6 +77,7 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 		["NewCosmetic"]        = true,
 		["NewMount"]           = true,
 		["NewPet"]             = true,
+		["NewRecipeLearned"]   = true,
 		["NewToy"]             = true,
 		["WorldQuestComplete"] = true,
 	}
@@ -88,7 +89,7 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 		["DigsiteComplete"]       = {ofs = -10, ddl = {"background"}},
 		["DungeonCompletion"]     = {ofs = -8, ddl = {"background", "border", "overlay"}, sdla = "dungeonTexture", icon = {tex = "dungeonTexture"}},
 		["GarrisonBuilding"]      = {ofs = -10, ddl = {"background", "border", "overlay"}},
-		["GarrisonFollower"]      = {ofs = -8, nt = {"FollowerBG"}, nt2 = {PortraitFrame = "LevelBorder"}, stn2 = {PortraitFrame = "PortraitRing"}, ddl = {"background"}},
+		["GarrisonFollower"]      = {ofs = -8, ddl = {"background"}, nt = {"FollowerBG"}, nt2 = {PortraitFrame = "LevelBorder"}, stn2 = {PortraitFrame = "PortraitRing"}},
 		["GarrisonMission"]       = {ofs = -10, ddl = {"background", "border"}},
 		["GarrisonRandomMission"] = {ofs = -10, ddl = {"background"}, sdlb = "MissionType"},
 		["GarrisonShipFollower"]  = {ofs = -8, ddl = {"background"}, nt = {"FollowerBG"}},
@@ -103,7 +104,7 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 		["MoneyWon"]              = {ofs = -8, ddl = {"background"}, ib = true},
 		["NewMount"]              = {ofs = -8, ddl = {"background"}, ib = true, iq = _G.Enum.ItemQuality.Epic},
 		["NewPet"]                = {ofs = -8, ddl = {"background"}, ib = true},
-		["NewRecipeLearned"]      = {ofs = -8},
+		["NewRecipeLearned"]      = {ofs = -4, ddl = {"background"}, nis=true},
 		["Scenario"]              = {ofs = -12, ddl = {"background", "border", "overlay"}, sdla = "dungeonTexture", icon = {tex = "dungeonTexture"}},
 		["WorldQuestComplete"]    = {ofs = -6, ddl = {"background", "border"}, sdla = "QuestTexture", icon = {tex = "QuestTexture"}},
 	}
@@ -120,7 +121,7 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 		alertType["NewRuneforgePower"]    = {ofs = -8, ddl = {"background"}, ib = true, iq = _G.Enum.ItemQuality.Legendary}
 		alertType["NewToy"]               = {ofs = -8, ddl = {"background"}, ib = true}
 		alertType["RafRewardDelivered"]   = {ofs = -10}
-		alertType["SkillLineSpecsUnlocked"] = {ofs = -8, ddl = {"background"}, sdla = {"Icon"}}
+		alertType["SkillLineSpecsUnlocked"] = {ofs = -8, ddl = {"background"}}
 	else
 		alertType["Achievement"].y1       = -10
 		alertType["Achievement"].y2       = 10
@@ -208,7 +209,9 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 				if tbl.ib then
 					frame.IconBorder:SetTexture(nil)
 				end
+				if not tbl.nis then
 				aObj:addButtonBorder{obj=frame, relTo=frame.Icon}
+				end
 			else
 				if tbl.icon.ddl then
 					for _, ddl in _G.pairs(tbl.icon.ddl) do
@@ -232,7 +235,7 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 			if itemQuality then
 				aObj:setBtnClr(frame, itemQuality)
 			else
-				aObj:clrBtnBdr(frame.sbb)
+				aObj:clrBtnBdr(frame)
 			end
 		end
 	end
