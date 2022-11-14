@@ -284,9 +284,7 @@ aObj.SetupRetail_UIFrames = function()
 			frame:DisableDrawLayer("BORDER")
 			frame:DisableDrawLayer("ARTWORK")
 			aObj:removeRegions(frame.Stage, naval and {1, 2, 3, 4} or stageRegs) -- top half only
-			local flwr
-			for i = 1, #frame.Stage.FollowersFrame.Followers do
-				flwr = frame.Stage.FollowersFrame.Followers[i]
+			for _, flwr in _G.pairs(frame.Stage.FollowersFrame.Followers) do
 		        if naval then
 		            flwr.NameBG:SetTexture(nil)
 		        else
