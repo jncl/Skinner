@@ -28,7 +28,9 @@ ToDos
 		- happens when OverrideBar is used, but not always...
 		- happens after VehicleUI has been used
 
-≈	I	AlertFrames - GarrisonFollower not skinned properly
+≈	I	AlertFrames
+	 	- GarrisonFollower not skinned properly
+		- SkillLineSpecsUnlocked not skinned properly
 
 	I/C	Tabs, reported by EpidemeDaBear, 16.10.22
 ≈		- Non textured tabs are below frame
@@ -36,65 +38,50 @@ ToDos
 	I	Tab positioning, reported by Fakelessgaming, 24.10.22
 ≈		- Review Top/Bottom tab positioning using 1 pixel border
 
-	I	WeakAuras, reported by MetalHeadTwo/EpidemeDaBear, 30.10.22
-√		- Interface/AddOns/Skinner/AddonSkins/WeakAuras.lua:75: attempt to index field 'regionTypes' (a nil value)
+	I	SoulshapeJournal, reported by Acivien, 07.11.22
+x		- Interface/AddOns/Skinner/Core/UtilFuncs.lua:936: attempt to index field 'obj' (a nil value)
+		[string "@Interface/AddOns/Skinner/Core/UtilFuncs.lua"]:936: in function <Interface/AddOns/Skinner/Core/UtilFuncs.lua:919>
+		[string "@Interface/AddOns/Skinner/Core/UtilFuncs.lua"]:984: in function `moveObject'
+		[string "@Interface/AddOns/Skinner/Core/NewSkinFuncs.lua"]:507: in function <Interface/AddOns/Skinner/Core/NewSkinFuncs.lua:485>
+		[string "@Interface/AddOns/Skinner/Core/NewSkinFuncs.lua"]:523: in function `?'
+		[string "@Interface/AddOns/Skinner/Core/NewSkinFuncs.lua"]:267: in function `skinObject'
+		[string "@Interface/AddOns/Skinner/AddonSkins/SoulshapeJournal.lua"]:16: in function <...rface/AddOns/Skinner/AddonSkins/SoulshapeJournal.lua:7>
 		
-	I	Inventorian, reported by EpidemeDaBear, 30.10.22
-√		- Interface/AddOns/Skinner/AddonSkins/Inventorian.lua:13: attempt to index field 'Border' (a nil value)
-		
-	I	HealBot, reported by EpidemeDaBear, 30.10.22
-√		-  table index is nil
-			[string "=[C]"]: in function `rawset'
-			[string "@Interface/AddOns/Skinner/Core/UIFrames.lua"]:2498: in function <Interface/AddOns/Skinner/Core/UIFrames.lua:2494>
-			[string "@Interface/AddOns/Skinner/Core/SharedFuncs.lua"]:11: in function `add2Table'
-			[string "@Interface/AddOns/Skinner/AddonSkins/HealBot.lua"]:104: in function <Interface/AddOns/Skinner/AddonSkins/HealBot.lua:103>
-	
-	I	Krowi_AchievementFilter, reported by EpidemeDaBear, 30.10.22
-√		- Interface/AddOns/Skinner/Core/UtilFuncs.lua:934: attempt to index field 'obj' (a nil value)
-		[string "@Interface/AddOns/Skinner/Core/UtilFuncs.lua"]:934: in function <Interface/AddOns/Skinner/Core/UtilFuncs.lua:917>
-		[string "@Interface/AddOns/Skinner/Core/UtilFuncs.lua"]:982: in function `moveObject'
-		[string "@Interface/AddOns/Skinner/AddonSkins/Krowi_AchievementFilter.lua"]:45: in function <...ddOns/Skinner/AddonSkins/Krowi_AchievementFilter.lua:44>
-	
-	I	MinimapMailIcon, reported by Galthariel, 30.10.22
-√		- positioned in the centre of the screen
-		
-	I	Rematch, reported by Galthariel, 30.10.22
-√		- Interface/AddOns/Skinner/Modules/UIButtons.lua:324: attempt to index field 'obj' (a nil value)
-		[string "@Interface/AddOns/Skinner/Modules/UIButtons.lua"]:324: in function `skinCloseButton'
-		[string "@Interface/AddOns/Skinner/AddonSkins/Rematch.lua"]:83: in function <Interface/AddOns/Skinner/AddonSkins/Rematch.lua:73>
-	
-	i	WorldQuestTracker, reported by Galthariel, 30.10.22
-√		- 1x ...face/AddOns/Skinner/AddonSkins/WorldQuestTracker.lua:15: attempt to index field 'LFGListSearchPanel' (a nil value)
-	
-	I	RotaCast, reported by Galthariel, 31.10.22
-√		- Interface/AddOns/Skinner/Core/NewSkinFuncs.lua:176: attempt to call method 'GetOrientation' (a nil value)
-		[string "@Interface/AddOns/Skinner/Core/NewSkinFuncs.lua"]:743: in function <Interface/AddOns/Skinner/Core/NewSkinFuncs.lua:722>
-		[string "@Interface/AddOns/Skinner/Core/NewSkinFuncs.lua"]:749: in function `?'
-		[string "@Interface/AddOns/Skinner/Core/NewSkinFuncs.lua"]:266: in function `skinObject'
-		[string "@Interface/AddOns/Skinner/AddonSkins/RotaCast.lua"]:44: in function <Interface/AddOns/Skinner/AddonSkins/RotaCast.lua:5>
-	
-	I	reported by Galthariel, 31.10.22
-x		- [ADDON_ACTION_BLOCKED] AddOn 'Skinner' tried to call the protected function 'MultiBarBottomLeftButton7:SetAttribute()'.
-	
-	I	AceConfigDialog, reported by StormFX, 01.11.22
-√		- returns 2 values NOT 1
+	I	PremadeGroupsFilter, reported by Carica18, 07.11.22
+√		- ...ce/AddOns/Skinner/AddonSkins/PremadeGroupsFilter.lua:21: attempt to index field 'Advanced' (a nil value)
 
-	I	Auctionator, reported by Galthariel/reiyo_oki, 02.11.22
-√		- Interface/AddOns/Ace3/AceHook-3.0-9/AceHook-3.0.lua:180: Attempting to rehook already active hook SetItemInfo.
-		[string "@Interface/AddOns/Ace3/AceHook-3.0-9/AceHook-3.0.lua"]:180: in function <Interface/AddOns/Ace3/AceHook-3.0/AceHook-3.0.lua:118>
-		[string "@Interface/AddOns/Ace3/AceHook-3.0-9/AceHook-3.0.lua"]:340: in function `SecureHook'
-		[string "@Interface/AddOns/Skinner/AddonSkins/Auctionator.lua"]:220: in function <Interface/AddOns/Skinner/AddonSkins/Auctionator.lua:216>
-√		- Interface/AddOns/Skinner/AddonSkins/Auctionator.lua:241: attempt to index field 'ScrollFrame' (a nil value)
-		[string "@Interface/AddOns/Skinner/AddonSkins/Auctionator.lua"]:241: in function <Interface/AddOns/Skinner/AddonSkins/Auctionator.lua:216>
-
-	I	LFGListFrame, reported by Galthariel, 04.11.22
-√		- Interface/AddOns/Skinner/Modules/UIButtons.lua:604: attempt to index field 'obj' (a nil value)
-		[string "@Interface/AddOns/Skinner/Modules/UIButtons.lua"]:604: in function `skinStdButton'
-		[string "@Interface/AddOns/Skinner/RetailSupport/UIFrames_Retail.lua"]:2327: in function <...ace/AddOns/Skinner/RetailSupport/UIFrames_Retail.lua:2316>
+	I/R	Auctionator, reported by EpidemeDaBear, 07.11.22
+√		-  Interface/AddOns/Skinner/AddonSkins/Auctionator.lua:223: attempt to index field 'ScrollFrame' (a nil value)
+		4x Interface/AddOns/Skinner/AddonSkins/Auctionator.lua:223: attempt to index field 'ScrollFrame' (a nil value)
+		[string "@Interface/AddOns/Skinner/AddonSkins/Auctionator.lua"]:223: in function <Interface/AddOns/Skinner/AddonSkins/Auctionator.lua:216
 		
-	I	AchievementUI etc, reported by Fakelessgaming, 05.11.22
-x		- Achievement sub text is black when completed but unselected, white when selected
-√		- ..AddOns/Skinner/RetailSupport/PlayerFrames_Retail.lua:80: attempt to index field 'sbb' (a nil value)
-		[string "@Interface/AddOns/Skinner/RetailSupport/PlayerFrames_Retail.lua"]:80: in function
-		<...AddOns/Skinner/RetailSupport/PlayerFrames_Retail.lua:77>
-√		- EncounterJournal, tab highlight texture needs changing
+	I	LFGListFrame, reported by Galthariel, 07.11.22
+√		- ..ace/AddOns/Skinner/RetailSupport/UIFrames_Retail.lua:2351: attempt to index global 'av' (a nil value)
+		[string "@Interface/AddOns/Skinner/RetailSupport/UIFrames_Retail.lua"]:2351:
+		in function <...ace/AddOns/Skinner/RetailSupport/UIFrames_Retail.lua:2347>
+		
+	I	QueueStatusFrame, reported by Galthariel, 07.11.22
+√		- ...ace/AddOns/Skinner/RetailSupport/UIFrames_Retail.lua:3582: Usage: SecureHook([object], method, [handler]): Attempting to hook a non existing target
+		
+√	N	FishingBuddy, reported by Galthariel, 07.11.22
+	
+	I	Auctionator, reported by reiyo_oki, 07.11.22
+√		- Interface/AddOns/Skinner/AddonSkins/Auctionator.lua:344: table index is nil
+		[string "@Interface/AddOns/Skinner/AddonSkins/Auctionator.lua"]:344: in function <Interface/AddOns/Skinner/AddonSkins/Auctionator.lua:337>
+	
+	I	GuildBenefitsFrame, reported by Fakelessgaming, 08.11.22
+√		- Not skinned
+
+~	I	ADDON_ACTION_BLOCKED/ADDON_ACTION_FORBIDDEN, reported by , 08.11.22 (An action was blocked because of taint from, An action was blocked in combat because of taint from)
+√		- Disable UnitFrame(s) skinning
+√		- Disable Nameplate skinning
+√		- Disable Container skinning
+√		- Use Masque Addon to skin buttons
+√		- Use BT4 AddOn (has Masque support)
+		- Use Bagnon AddOn + Masque support
+		
+		- Disable CastingBar skinning
+		- Disable CompactUnitFrame(s) skinning
+
+	I	Box of Many things in Torghast, reported by Galthariel, 13.11.22
+		- disabling OrderHall UI it works again
