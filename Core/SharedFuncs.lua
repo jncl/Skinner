@@ -165,6 +165,7 @@ aObj.Debug3 = _G.nop
 
 function aObj:setupOptions(optNames, optIgnore, preLoadFunc, postLoadFunc)
 
+	local _
 	local db = self.db.profile
 	local dflts = self.db.defaults.profile
 
@@ -220,19 +221,18 @@ function aObj:setupOptions(optNames, optIgnore, preLoadFunc, postLoadFunc)
 			_G.SettingsPanel.tabsGroup:SelectAtIndex(1)
 			_G.SettingsPanel.tabsGroup:SelectAtIndex(2)
 		end
-		-- unregister here if called from elsewhere
-		aObj.UnregisterCallback(aName, "Options_Selected")
-		_G.SettingsPanel:GetCategoryList():UnregisterCallback(_G.SettingsCategoryListMixin.Event.OnCategorySelected, aObj)
 	end
 	self.RegisterCallback(aName, "Options_Selected", function()
+		self.UnregisterCallback(aName, "Options_Selected")
 		categorySelected()
 	end)
 	if not self.isRtl then
 		self:RawHook("InterfaceOptionsListButton_OnClick", function(bObj, mouseButton)
-			if bObj.element.name == aName
-			and not bObj.element.hasChildren
-			then
+			if bObj.element.name == aName then
+				if not bObj.element.hasChildren then
 				categorySelected()
+				end
+				self.hooks.InterfaceOptionsListButton_OnClick(bObj, mouseButton)
 				self:Unhook("InterfaceOptionsListButton_OnClick")
 				return
 			end
@@ -241,6 +241,7 @@ function aObj:setupOptions(optNames, optIgnore, preLoadFunc, postLoadFunc)
 	else
 		local function onCategorySelected(_, category)
 			if category.name == aName then
+				_G.SettingsPanel:GetCategoryList():UnregisterCallback(_G.SettingsCategoryListMixin.Event.OnCategorySelected, aObj)
 				categorySelected()
 			end
 		end
