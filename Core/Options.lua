@@ -70,7 +70,7 @@ aObj.SetupDefaults = function(self)
 			ChatTabs                   = false, -- (inc. ChatTemporaryWindow)
 			ChatTabsFade               = true,
 			CombatLogQBF               = not aObj.isClscERA and false or nil,
-			MainMenuBar                = {skin = true, glazesb = true},
+			MainMenuBar                = {skin = true, glazesb = true, actbtns=false},
 			Minimap                    = {skin = false, gloss = false},
 			MinimapButtons             = {skin = false, style = false},
 			Tooltips                   = {skin = true, style = 1, glazesb = true, border = 1},
@@ -1103,6 +1103,13 @@ aObj.SetupOptions = function(self)
 							name = self.L["Glaze Status Bar"],
 							desc = _G.strjoin(" ",  self.L["Toggle the glazing of the"], self.L["Status Bar"])
 						},
+						actbtns = self.isRtl and {
+							type = "toggle",
+							order = 3,
+							width = "double",
+							name = _G.strjoin(" ",  self.L["Skin"], self.L["Action Buttons"]),
+							desc = _G.strjoin(" ",  self.L["Toggle the skinning of the"], self.L["Action Buttons"])
+						} or nil,
 					},
 				},
 				Minimap = {

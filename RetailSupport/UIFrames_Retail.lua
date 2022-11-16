@@ -2585,7 +2585,9 @@ aObj.SetupRetail_UIFrames = function()
 							aObj:removeNineSlice(btn.BottomDivider)
 							btn.NormalTexture:SetTexture(nil)
 						end
-						aObj:addButtonBorder{obj=btn, sabt=true, ofs=3}
+						if aObj.prdb.MainMenuBar.actbtns then
+							aObj:addButtonBorder{obj=btn, sabt=true, ofs=3}
+						end
 					end
 					function skinMultiBarBtns(type)
 						local bName
@@ -2734,7 +2736,9 @@ aObj.SetupRetail_UIFrames = function()
 		if self.initialized.MainMenuBarCommon then return end
 		self.initialized.MainMenuBarCommon = true
 
-		if _G.IsAddOnLoaded("Bartender4") then
+		if _G.IsAddOnLoaded("Dominos")
+		or _G.IsAddOnLoaded("Bartender4")
+		then
 			return
 		end
 
@@ -2745,7 +2749,9 @@ aObj.SetupRetail_UIFrames = function()
 						btn.SlotBackground:SetTexture(nil)
 						btn.SlotArt:SetTexture(nil)
 						btn.Border:SetTexture(nil)
-						aObj:addButtonBorder{obj=btn, abt=true, sft=true, reParent={btn.Name, btn.AutoCastable, btn.SpellHighlightTexture, btn.AutoCastShine}, ofs=3, clr="grey"}
+						if aObj.prdb.MainMenuBar.actbtns then
+							aObj:addButtonBorder{obj=btn, abt=true, sft=true, reParent={btn.Name, btn.AutoCastable, btn.SpellHighlightTexture, btn.AutoCastShine}, ofs=3, clr="grey"}
+						end
 					end
 				end
 			end
