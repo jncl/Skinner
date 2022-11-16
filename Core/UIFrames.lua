@@ -2120,16 +2120,7 @@ aObj.blizzFrames[ftype].Nameplates = function(self)
 	end
 
 	-- Class Nameplate Frames
-	if not self.isRtl then
-		-- DeathKnight (nothing to skin)
-		-- Mage (nothing to skin)
-		for _, cpoint in _G.pairs(_G.ClassNameplateBarRogueDruidFrame.ComboPoints) do
-			cpoint:DisableDrawLayer("BACKGROUND")
-		end
-		for _, shard in _G.pairs(_G.ClassNameplateBarWarlockFrame.Shards) do
-			shard.ShardOff:SetTexture(nil)
-		end
-	else
+	if self.isRtl then
 		local mF = _G.ClassNameplateManaBarFrame
 		if mF then
 			mF.Border:DisableDrawLayer("BACKGROUND")
