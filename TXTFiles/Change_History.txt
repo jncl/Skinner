@@ -1,3 +1,33 @@
+beta10.46619.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Updated ButtonBorders code to manage ProfessionQuality indicator
+	Updated WorldMap skin
+	Updated QueueStatusFrame skin
+	Updated Retail MainMenuBar skin
+	Updated LFGList frame skin
+	Updated EventToastManager skin
+	Updated GarrisonFollowers skin
+	Updated Retail Professions skin
+	Updated Retail Inspect frame skin
+	Updated Retail Containers skin
+	Updated CommunitiesUI skin
+	Updated Retail AuctionHouse skin
+	Updated GossipFrame skin
+	Updated UnitFrames
+	Updated UIButtons
+	Update VehicleUI skin
+	Updated VehicleUI skin
+	Updated GuildBankUI
+	Updated Nameplates skin
+	Updated AlertFrame skin
+	Updated QuestDisplay code
+	Updated Options
+	Updated QuestInfo skin
+	Updated Auctionator, Bartender4, Bugger, FishingBuddy, LibKeyBound & PremadeGroupFilter skins
+	
 beta10.46479.1
 Jncl:
 	ToDo.txt
