@@ -18,11 +18,11 @@ local buildInfo = {
 	wow_classic_ptr     = {"3.4.0",  46368, "Classic PTR"},
 	wow_classic_era_ptr = {"1.14.3", 46575, "Classic Era PTR"}, -- a.k.a. Season of Mastery PTR
 	wow_beta            = {"10.0.2", 46619, "Retail Beta"}, -- a.k.a. Dragonflight
-	wow_ptr             = {"10.0.2", 46479, "Retail PTR"},
+	wow_ptr             = {"10.0.2", 46658, "Retail PTR"},
 	-- Live
 	wow_classic         = {"3.4.0",  46368, "Classic"}, -- a.k.a. Wrath of the Lich King Classic
 	wow_classic_era     = {"1.14.3", 46575, "Classic Era"},
-	wow                 = {"10.0.0", 46597, "Retail"},
+	wow                 = {"10.0.2", 46658, "Retail"},
 	-- Currently playing
 	curr                = {_G.GetBuildInfo()},
 }
@@ -230,7 +230,7 @@ function aObj:setupOptions(optNames, optIgnore, preLoadFunc, postLoadFunc)
 		self:RawHook("InterfaceOptionsListButton_OnClick", function(bObj, mouseButton)
 			if bObj.element.name == aName then
 				if not bObj.element.hasChildren then
-				categorySelected()
+					categorySelected()
 				end
 				self.hooks.InterfaceOptionsListButton_OnClick(bObj, mouseButton)
 				self:Unhook("InterfaceOptionsListButton_OnClick")
