@@ -1108,7 +1108,7 @@ aObj.SetupOptions = function(self)
 							order = 3,
 							width = "double",
 							name = _G.strjoin(" ",  self.L["Skin"], self.L["Action Buttons"]),
-							desc = _G.strjoin(" ",  self.L["Toggle the skinning of the"], self.L["Action Buttons"])
+							desc = _G.strjoin(" ",  self.L["Toggle the skinning of"], self.L[" the"], self.L["Action Buttons"])
 						} or nil,
 					},
 				},

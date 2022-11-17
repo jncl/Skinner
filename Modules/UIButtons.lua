@@ -1079,19 +1079,19 @@ function module:GetOptions() -- luacheck: ignore self
 				type = "toggle",
 				order = 1,
 				name = aObj.L["Buttons"],
-				desc = aObj.L["Toggle the skinning of the UI Buttons, reload required"],
+				desc = _G.strjoin(" ",  aObj.L["Toggle the skinning of"], aObj.L[" the"], aObj.L["UI Buttons"], aObj.L["(reload required)"]),
 			},
 			ButtonBorders = {
 				type = "toggle",
 				order = 2,
 				name = aObj.L["Button Borders"],
-				desc = aObj.L["Toggle the skinning of the Button Borders, reload required"],
+				desc = _G.strjoin(" ",  aObj.L["Toggle the skinning of"], aObj.L[" the"], aObj.L["Button Borders"], aObj.L["(reload required)"]),
 			},
 			CheckButtons = {
 				type = "toggle",
 				order = 3,
 				name = aObj.L["Check Buttons"],
-				desc = aObj.L["Toggle the skinning of the Check Buttons, reload required"],
+				desc = _G.strjoin(" ",  aObj.L["Toggle the skinning of"], aObj.L[" the"], aObj.L["Check Buttons"], aObj.L["(reload required)"]),
 			},
 			Quality = {
 				type = "group",
