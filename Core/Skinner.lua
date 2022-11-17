@@ -282,21 +282,30 @@ function aObj:OnEnable()
 		end
 		if btnModDB.profile.ButtonBorders then
 			self.modBtnBs = true
-			-- hook this to colour container item borders (inc. Bags, Bank, GuildBank, ReagentBank)
-			self:SecureHook("SetItemButtonQuality", function(button, quality, itemIDOrLink, _)
-				-- self:Debug("SetItemButtonQuality: [%s, %s, %s, %s, %s, %s]", button, button.IconBorder, button.sbb, quality, itemIDOrLink, suppressOverlays)
-				-- self:Debug("SIBQ: [%s, %s]", button.IconBorder:IsShown(), button.IconOverlay:IsShown())
-				-- show Artifact Relic Item border
-				if itemIDOrLink
-				and (_G.IsArtifactRelicItem and _G.IsArtifactRelicItem(itemIDOrLink))
-				then
-					button.IconBorder:SetAlpha(1)
-				else
-					button.IconBorder:SetAlpha(0)
-				end
-				self:setBtnClr(button, quality)
-			end)
-			if aObj.isRtlBeta then
+			if not aObj.isRtl then
+				-- hook this to colour container item borders (inc. Bags, Bank, GuildBank, ReagentBank)
+				self:SecureHook("SetItemButtonQuality", function(button, quality, itemIDOrLink, _)
+					-- self:Debug("SetItemButtonQuality: [%s, %s, %s, %s, %s, %s]", button, button.IconBorder, button.sbb, quality, itemIDOrLink, suppressOverlays)
+					-- self:Debug("SIBQ: [%s, %s]", button.IconBorder:IsShown(), button.IconOverlay:IsShown())
+					-- show Artifact Relic Item border
+					if itemIDOrLink
+					and (_G.IsArtifactRelicItem and _G.IsArtifactRelicItem(itemIDOrLink))
+					then
+						button.IconBorder:SetAlpha(1)
+					else
+						button.IconBorder:SetAlpha(0)
+					end
+					self:setBtnClr(button, quality)
+				end)
+			else
+				self:SecureHook("SetItemButtonBorderVertexColor", function(button, r, g, b)
+					-- aObj:Debug("SetItemButtonBorderVertexColor: [%s, %s, %s, %s, %s]", button, button.SetItemButtonBorderVertexColor, r, g, b)
+					if button.sbb then
+						self:clrButtonFromBorder(button)
+					end
+				end)
+			end
+			if self.isRtlBeta then
 				-- hook these to reparent the ProfessionQualityOverlay
 				self:SecureHook("SetItemCraftingQualityOverlay", function(button, _)
 					if button.noProfessionQualityOverlay then
