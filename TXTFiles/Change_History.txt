@@ -1,3 +1,13 @@
+beta10.46658.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Updated SetupOptions code
+	Updated TOC
+	Updated Nameplates skin
+	Added option to not skin Action Buttons on MainMenuBar(s)
+	
 beta10.46619.1
 Jncl:
 	ToDo.txt
