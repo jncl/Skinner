@@ -1,3 +1,13 @@
+beta10.46702.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Updated Bartender4 & Dominos skins
+	Updated ButtonBorder colouring code
+	Updated Tooltip skin
+	Bugfix for missing localisation
+	
 beta10.46658.1
 Jncl:
 	ToDo.txt
