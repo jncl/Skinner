@@ -16,12 +16,10 @@ ToDos
 
 ≈	O	Add checks for Button state as required
 
-≈	O	Refactor NewSkinFuncs in Blizzard/AddOn skins
+≈	O	Refactor NewSkinFuncs in AddOn skins
 
 ?	O	Make role icons square with a button border
 		- use UI-LFG-ICON-ROLES.BLP as source for all, size them as required
-
-≈	O	Dragonflight Beta now available to skin
 
 ?	I	Fix ActionButtons/MultiBarButtons missing Text & PetActionButtons not being displayed
 		- when redisplayed after accessing Puzzle Caches in Zereth Mortis.
@@ -52,3 +50,16 @@ ToDos
 		
 	I	Box of Many things in Torghast, reported by Galthariel, 13.11.22
 ?		- disabling OrderHall UI it works again
+
+	I	Localisation missing, reported by Fakelessgaming/Galthariel/MetalHeadTwo/the9thresident/reiyo_oki, 16.11.22
+√		- AceLocale-3.0-6: Skinner: Missing entry for 'Toggle the skinning of the'
+		
+	I	Dominos_Config, reported by Fakelessgaming, 16.11.22
+x		-  Interface/AddOns/Dominos_Config/widgets/panel.lua:488: attempt to index field 'owner' (a nil value)
+		[string "@Interface/AddOns/Dominos_Config/widgets/panel.lua"]:488: in function `SetSavedValue'
+		[string "@Interface/AddOns/Dominos_Config/widgets/textInput.lua"]:165: in function `Save'
+		[string "@Interface/AddOns/Dominos_Config/widgets/textInput.lua"]:8: in function <...nterface/AddOns/Dominos_Config/widgets/textInput.lua:7>
+		[string "@Interface/AddOns/Dominos_Config/main.lua"]:248: in function <Interface/AddOns/Dominos_Config/main.lua:245>
+
+	I	GameTooltip StatusBar, reportedby Fakelessgaming, 16.11.22
+√		- Flickers when displayed
