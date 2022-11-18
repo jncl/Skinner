@@ -2,36 +2,27 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("Dominos") then return end
 local _G = _G
 
-aObj.addonsToSkin.Dominos = function(self) -- v 8.3.11
-
-	-- ConfigOverlay
-	local mod = _G.Dominos:GetModule('ConfigOverlay', true)
-	if mod then
-		-- hook to skin the configHelper panel
-		self:RawHook(mod, "CreateHelpDialog", function(this)
-			local dialog = self.hooks[this].CreateHelpDialog(this)
-			self:rmRegionsTex(dialog, {10}) -- header texture, N.B. created after other textures
-			self:addSkinFrame{obj=dialog, ft="a", kfs=true, nb=true, ofs=0, y1=4, y2=4}
-			if self.modBtns then
-				self:skinStdButton{obj=self:getChild(dialog, 1)} -- this is a CheckButton object
-			end
-
-			self:Unhook(this, "CreateHelpDialog")
-			return dialog
-		end, true)
-	end
-	mod = nil
-
-end
-
-aObj.lodAddons.Dominos_Config = function(self) -- v 8.3.11
+aObj.lodAddons.Dominos_Config = function(self) -- v 10.0.8
 
 	local Options = _G.Dominos.Options
+
+	_G.C_Timer.After(0.25, function()
+		self:removeRegions(Options.HelpDialog, {10}) -- header texture
+		self:moveObject{obj=self:getRegion(Options.HelpDialog, 11), y=-6}
+	end)
+	self:skinObject("slider", {obj=self:getLastChild(Options.HelpDialog), rpTex="background"})
+	self:skinObject("frame", {obj=Options.HelpDialog, kfs=true, hdr=true, ofs=0})
+	if self.modBtns then
+		self:skinStdButton{obj=Options.HelpDialog.exitButton}
+	end
+	if self.modChkBtns then
+		self:skinCheckButton{obj=Options.HelpDialog.showGridButton}
+	end
 
 	-- hook this to skin first menu displayed and its dropdown
 	self:RawHook(Options.Menu, "New", function(this, parent)
 		local menu = self.hooks[this].New(this, parent)
-		self:addSkinFrame{obj=menu, ft="a", kfs=true, nb=true, ofs=0, y1=-2, x2=-1}
+		self:skinObject("frame", {obj=menu, kfs=true, ofs=0, y1=-2, x2=-1})
 		if self.modBtns then
 			self:skinCloseButton{obj=_G[menu:GetName() .. "Close"]}
 		end
@@ -40,26 +31,25 @@ aObj.lodAddons.Dominos_Config = function(self) -- v 8.3.11
 
 	self:RawHook(Options.ScrollableContainer, "New", function(this, options)
 		local container = self.hooks[this].New(this, options)
-		self:skinSlider{obj=container.scrollFrame.ScrollBar, wdth=-6}
+		self:skinObject("slider", {obj=container.scrollFrame.ScrollBar})
 		return container
 	end, true)
 
 	self:RawHook(Options.Slider, "New", function(this, options)
 		local slider = self.hooks[this].New(this, options)
-		self:skinSlider{obj=slider, wdth=-6}
+		self:skinObject("slider", {obj=slider})
 		return slider
 	end, true)
 
 	self:RawHook(Options.Dropdown, "New", function(this, options)
 		local dropdown = self.hooks[this].New(this, options)
-		self:skinDropDown{obj=dropdown.dropdownMenu, x2=109}
+		self:skinObject("dropdown", {obj=dropdown.dropdownMenu, x2=109})
 		return dropdown
 	end, true)
 
 	self:RawHook(Options.TextInput, "New", function(this, options)
 		local textInput = self.hooks[this].New(this, options)
-		-- self:skinEditBox{obj=textInput.editBox, regs={6}} -- 6 is text
-		self:skinSlider{obj=textInput.vScrollBar, rt="backgroubd", wdth=-6}
+		self:skinObject("slider", {obj=textInput.vScrollBar, rpTex="background"})
 		return textInput
 	end, true)
 
