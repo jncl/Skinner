@@ -1435,9 +1435,11 @@ aObj.SetupOptions = function(self)
 		icon = self.tFDIDs.mpw01,
 		OnClick = function()
 			-- do twice to overcome Blizzard bug
-			iof_otc(aObj.optionsFrame)
 			if not self.isRtl then
-				iof_otc(aObj.optionsFrame)
+				iof_otc(aObj.optionsFrames[aName])
+				iof_otc(aObj.optionsFrames[aName])
+			else
+				iof_otc(aName)
 			end
 		end,
 		OnTooltipShow = function(tooltip)
