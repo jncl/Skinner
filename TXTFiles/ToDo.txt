@@ -61,5 +61,8 @@ x		-  Interface/AddOns/Dominos_Config/widgets/panel.lua:488: attempt to index fi
 		[string "@Interface/AddOns/Dominos_Config/widgets/textInput.lua"]:8: in function <...nterface/AddOns/Dominos_Config/widgets/textInput.lua:7>
 		[string "@Interface/AddOns/Dominos_Config/main.lua"]:248: in function <Interface/AddOns/Dominos_Config/main.lua:245>
 
-	I	GameTooltip StatusBar, reportedby Fakelessgaming, 16.11.22
+	I	GameTooltip StatusBar, reported by Fakelessgaming, 16.11.22
 √		- Flickers when displayed
+
+	I	DataBroker icon, reported by SimbaTV, 18.11.22
+		- error opening options using the DataBroker icon, incorrect syntax
