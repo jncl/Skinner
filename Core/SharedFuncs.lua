@@ -15,7 +15,7 @@ end
 local buildInfo = {
 	-- Testing
 	wow_classic_beta    = {"3.4.0",  46158, "Classic Beta"},
-	wow_classic_ptr     = {"3.4.0",  46368, "Classic PTR"},
+	wow_classic_ptr     = {"3.4.1",  46722, "Classic PTR"},
 	wow_classic_era_ptr = {"1.14.3", 46575, "Classic Era PTR"}, -- a.k.a. Season of Mastery PTR
 	wow_beta            = {"10.0.2", 46702, "Retail Beta"}, -- a.k.a. Dragonflight
 	wow_ptr             = {"10.0.2", 46702, "Retail PTR"},
