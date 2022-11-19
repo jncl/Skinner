@@ -51,18 +51,11 @@ ToDos
 	I	Box of Many things in Torghast, reported by Galthariel, 13.11.22
 ?		- disabling OrderHall UI it works again
 
-	I	Localisation missing, reported by Fakelessgaming/Galthariel/MetalHeadTwo/the9thresident/reiyo_oki, 16.11.22
-√		- AceLocale-3.0-6: Skinner: Missing entry for 'Toggle the skinning of the'
-		
-	I	Dominos_Config, reported by Fakelessgaming, 16.11.22
-x		-  Interface/AddOns/Dominos_Config/widgets/panel.lua:488: attempt to index field 'owner' (a nil value)
-		[string "@Interface/AddOns/Dominos_Config/widgets/panel.lua"]:488: in function `SetSavedValue'
-		[string "@Interface/AddOns/Dominos_Config/widgets/textInput.lua"]:165: in function `Save'
-		[string "@Interface/AddOns/Dominos_Config/widgets/textInput.lua"]:8: in function <...nterface/AddOns/Dominos_Config/widgets/textInput.lua:7>
-		[string "@Interface/AddOns/Dominos_Config/main.lua"]:248: in function <Interface/AddOns/Dominos_Config/main.lua:245>
+	I	Localisation error, reported by MetalHeadTwo/Fakelessgaming/shizophase/
+√		- " the" should be "the"
+√		- "Toggle the skinning of " should be "Toggle the skinning of"
 
-	I	GameTooltip StatusBar, reported by Fakelessgaming, 16.11.22
-√		- Flickers when displayed
-
-	I	DataBroker icon, reported by SimbaTV, 18.11.22
-		- error opening options using the DataBroker icon, incorrect syntax
+	I	SexyMap animation, reported by reiyo_oki, 18.11.22
+√		- ...ace/AddOns/Skinner/RetailSupport/UIFrames_Retail.lua:3626: attempt to index field 'QueueStatusMinimapButton' (a nil value)
+		[string "@Interface/AddOns/Skinner/RetailSupport/UIFrames_Retail.lua"]:3626: in function <...ace/AddOns/Skinner/RetailSupport/UIFrames_Retail.lua:3625>
+		[string "@Interface/AddOns/Skinner/RetailSupport/UIFrames_Retail.lua"]:3634: in function <...ace/AddOns/Skinner/RetailSupport/UIFrames_Retail.lua:3634>
