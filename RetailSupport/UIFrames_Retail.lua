@@ -3623,10 +3623,12 @@ aObj.SetupRetail_UIFrames = function()
 			if _G.IsAddOnLoaded("SexyMap") then
 				local rtEvt
 				local function checkForAnimGrp()
-					if _G.QueueStatusMinimapButton.smAlphaAnim then
+					if _G.QueueStatusMinimapButton
+					and _G.QueueStatusMinimapButton.sexyMapFadeOut
+					then
 						rtEvt:Cancel()
 						rtEvt = nil
-						aObj:SecureHookScript(_G.QueueStatusMinimapButton.smAnimGroup, "OnFinished", function(_)
+						aObj:SecureHookScript(_G.QueueStatusMinimapButton.sexyMapFadeOut, "OnFinished", function(_)
 							_G.QueueStatusFrame.sf:Hide()
 						end)
 					end
