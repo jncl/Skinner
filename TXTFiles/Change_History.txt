@@ -1,3 +1,11 @@
+beta10.46722.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Bugfix for QueueStatusFrame & SexyMap
+	Bugfix for localisations (pesky spaces)
+	
 beta10.46702.2
 Jncl:
 	ToDo.txt
