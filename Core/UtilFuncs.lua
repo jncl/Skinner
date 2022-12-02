@@ -1318,6 +1318,12 @@ function aObj:setupTextures()
 --[[
 	N.B. Texture paths replaced by FileDataIDs
 	These can be found here: https://wow.tools/files/#search=&page=1&sort=0&desc=asc
+
+		-- 136509 - ui-backpack-emptyslot
+		-- 4701874 - bagitemslot2x
+		-- 651080 - whiteiconframe
+		-- 130841 - ui-quickslot2
+
 --]]
 	self.tFDIDs = {
 		["bHLS"]      = _G.GetFileIDFromPath([[Interface\Buttons\ButtonHilight-Square]]),
