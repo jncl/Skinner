@@ -1335,11 +1335,19 @@ aObj.blizzLoDFrames[ftype].GuildBankUI = function(self)
 		this.Emblem:Hide()
 		for _, col in _G.pairs(this.Columns) do
 			col:DisableDrawLayer("BACKGROUND")
+		end
 			if self.modBtnBs then
+			self:SecureHook(this, "Update", function(fObj)
+				for _, col in _G.pairs(fObj.Columns) do
 				for _, btn in _G.pairs(col.Buttons) do
+						if not btn.sbb then
 					self:addButtonBorder{obj=btn, ibt=true, clr="grey", ca=0.85}
+						else
+							self:clrButtonFromBorder(btn)
+						end
 				end
 			end
+			end)
 		end
 		if self.isRtl then
 			self:skinObject("editbox", {obj=_G.GuildItemSearchBox, fType=ftype, si=true})
