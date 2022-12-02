@@ -236,10 +236,10 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 				aObj:setBtnClr(frame, itemQuality)
 			else
 				if not tbl.nis then
-				aObj:clrBtnBdr(frame)
+					aObj:clrBtnBdr(frame)
+				end
 			end
 		end
-	end
 	end
 	for type, _ in _G.pairs(alertType) do
 		local sysName = "AlertSystem"
@@ -1336,17 +1336,17 @@ aObj.blizzLoDFrames[ftype].GuildBankUI = function(self)
 		for _, col in _G.pairs(this.Columns) do
 			col:DisableDrawLayer("BACKGROUND")
 		end
-			if self.modBtnBs then
+		if self.modBtnBs then
 			self:SecureHook(this, "Update", function(fObj)
 				for _, col in _G.pairs(fObj.Columns) do
-				for _, btn in _G.pairs(col.Buttons) do
+					for _, btn in _G.pairs(col.Buttons) do
 						if not btn.sbb then
-					self:addButtonBorder{obj=btn, ibt=true, clr="grey", ca=0.85}
+							self:addButtonBorder{obj=btn, ibt=true, clr="grey", ca=0.85}
 						else
 							self:clrButtonFromBorder(btn)
 						end
+					end
 				end
-			end
 			end)
 		end
 		if self.isRtl then
@@ -1716,11 +1716,6 @@ aObj.blizzFrames[ftype].Minimap = function(self)
 	then
 		self.blizzFrames[ftype].Minimap = nil
 		return
-	end
-
-	-- fix for Titan Panel moving MinimapCluster
-	if _G.IsAddOnLoaded("Titan") then
-		_G.TitanMovable_AddonAdjust("MinimapCluster", true)
 	end
 
 	-- hook this to handle Jostle Library
