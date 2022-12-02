@@ -3885,7 +3885,6 @@ aObj.SetupRetail_UIFrames = function()
 					aObj:skinObject("slider", {obj=element.SliderWithSteppers.Slider, fType=ftype, y1=-12, y2=12})
 				end
 			end
-			-- local function skinSetting(element, elementData, new)
 			local function skinSetting(...)
 				local _, element, elementData, new
 				if _G.select("#", ...) == 2 then
@@ -3952,6 +3951,19 @@ aObj.SetupRetail_UIFrames = function()
 		-- tooltip
 		_G.C_Timer.After(0.1, function()
 			self:add2Table(self.ttList, _G.SettingsTooltip)
+		end)
+
+		-- hook this to skin AddOns Settings panels
+		self:SecureHook(_G.SettingsPanel, "DisplayCategory", function(this, category)
+			-- aObj:Debug("SP DisplayCategory#1: [%s, %s]", category, category.name)
+			local layout = this:GetLayout(category)
+			if layout:GetLayoutType() == _G.SettingsLayoutMixin.LayoutType.Canvas then
+				local frame = layout:GetFrame()
+				-- aObj:Debug("SP DisplayCategory#2: [%s, %s]", frame.name, frame.parent)
+				-- let AddOn skins know when the panel is displayed
+				self.callbacks:Fire("IOFPanel_Before_Skinning", frame)
+				self.callbacks:Fire("IOFPanel_After_Skinning", frame)
+			end
 		end)
 
 	end
