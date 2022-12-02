@@ -388,15 +388,15 @@ function module:setBtnClr(bObj, quality)
 			then
 				bObj.sbb:SetBackdropBorderColor(_G.BAG_ITEM_QUALITY_COLORS[quality].r, _G.BAG_ITEM_QUALITY_COLORS[quality].g, _G.BAG_ITEM_QUALITY_COLORS[quality].b, 1)
 			else
-				module:clrBtnBdr(bObj, "grey")
+				module:clrBtnBdr(bObj, "grey", 0.75)
 			end
 		else
-			module:clrBtnBdr(bObj, "grey")
+			module:clrBtnBdr(bObj, "grey", 0.75)
 			if _G.TradeSkillFrame
 			and _G.TradeSkillFrame.DetailsFrame
 			and bObj == _G.TradeSkillFrame.DetailsFrame.Contents.ResultIcon
 			then
-				module:clrBtnBdr(bObj, "normal")
+				module:clrBtnBdr(bObj, "normal", 1)
 			end
 		end
 	end
@@ -878,18 +878,6 @@ local function __addButtonBorder(opts)
 		end
 	end
 	-- reparent these textures so they are displayed above the border
-	if opts.obj.HotKey then
-		opts.obj.HotKey:SetParent(opts.obj.sbb)
-	end
-	if opts.obj.Count then
-		opts.obj.Count:SetParent(opts.obj.sbb)
-	end
-	if opts.obj.Flash then
-		opts.obj.Flash:SetParent(opts.obj.sbb)
-	end
-	if opts.obj.Name then
-		opts.obj.Name:SetParent(opts.obj.sbb)
-	end
 	if opts.ibt then -- Item Buttons
 		aObj:getRegion(opts.obj, 3):SetParent(opts.obj.sbb) -- Stock region
 		opts.obj.searchOverlay:SetParent(opts.obj.sbb)
@@ -902,6 +890,20 @@ local function __addButtonBorder(opts)
 		end
 	elseif opts.gibt then -- Giant Item Buttons
 		module:clrButtonFromBorder(opts.obj)
+	end
+	if opts.obj.HotKey then
+		opts.obj.HotKey:SetParent(opts.obj.sbb)
+	end
+	if opts.obj.Count then
+		opts.obj.Count:SetParent(opts.obj.sbb)
+	end
+	if opts.obj.Flash
+	and opts.obj.Flash:GetObjectType() == "Texture" -- N.B. ignore Bagnon AnimationGroup
+	then
+		opts.obj.Flash:SetParent(opts.obj.sbb)
+	end
+	if opts.obj.Name then
+		opts.obj.Name:SetParent(opts.obj.sbb)
 	end
 	if opts.schk then
 		module:secureHook(opts.obj, "Disable", function(bObj, _)
