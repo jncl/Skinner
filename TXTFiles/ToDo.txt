@@ -44,18 +44,23 @@ ToDos
 ?		- Disable CastingBar skinning
 ?		- Disable CompactUnitFrame(s) skinning
 
-√		- Use Masque Addon to skin buttons
-√		- Use BT4 AddOn (has Masque support)
-		- Use a Bag AddOn with Masque support
+√		- Use BT4 AddOn
+		- Use a Bag AddOn
 		
 	I	Box of Many things in Torghast, reported by Galthariel, 13.11.22
 ?		- disabling OrderHall UI it works again
 
-	I	Localisation error, reported by MetalHeadTwo/Fakelessgaming/shizophase/
-√		- " the" should be "the"
-√		- "Toggle the skinning of " should be "Toggle the skinning of"
-
-	I	SexyMap animation, reported by reiyo_oki, 18.11.22
-√		- ...ace/AddOns/Skinner/RetailSupport/UIFrames_Retail.lua:3626: attempt to index field 'QueueStatusMinimapButton' (a nil value)
-		[string "@Interface/AddOns/Skinner/RetailSupport/UIFrames_Retail.lua"]:3626: in function <...ace/AddOns/Skinner/RetailSupport/UIFrames_Retail.lua:3625>
-		[string "@Interface/AddOns/Skinner/RetailSupport/UIFrames_Retail.lua"]:3634: in function <...ace/AddOns/Skinner/RetailSupport/UIFrames_Retail.lua:3634>
+	I	Titan Panel,
+√		- Titan Panel moving MinimapCluster function needs removing as no longer required
+		
+√	S	Healium, requted by Galthariel, 26.11.22
+	
+	I	Inventorian, reported by Galthariel, 27.11.22
+√		- make the Inventorian Empty slots transparent?
+		
+	I	Krowi_AchievementFilter, reported by Quartzfire, 27.11.22
+√		- Ace3/AceHook-3.0-9/AceHook-3.0.lua:180: Attempting to rehook already active hook setUpFunction.
+		[string "@Ace3/AceHook-3.0-9/AceHook-3.0.lua"]:180: in function <Ace3/AceHook-3.0/AceHook-3.0.lua:118>
+		[string "@Ace3/AceHook-3.0-9/AceHook-3.0.lua"]:340: in function `SecureHook'
+		[string "@Skinner/AddonSkins/Krowi_AchievementFilter.lua"]:27: in function <...ddOns/Skinner/AddonSkins/Krowi_AchievementFilter.lua:23>
+		
