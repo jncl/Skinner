@@ -235,9 +235,11 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 			if itemQuality then
 				aObj:setBtnClr(frame, itemQuality)
 			else
+				if not tbl.nis then
 				aObj:clrBtnBdr(frame)
 			end
 		end
+	end
 	end
 	for type, _ in _G.pairs(alertType) do
 		local sysName = "AlertSystem"
