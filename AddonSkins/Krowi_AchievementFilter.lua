@@ -2,35 +2,27 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("Krowi_AchievementFilter") then return end
 local _G = _G
 
-aObj.addonsToSkin.Krowi_AchievementFilter = function(self) -- v 45.4
+aObj.addonsToSkin.Krowi_AchievementFilter = function(self) -- v 49.0
 
-	local afsbs, skinAlertFrame = {}, _G.nop
-
-	if self.prdb.AlertFrames then
-		function skinAlertFrame(frame)
-			frame.animIn:Stop()
-			frame.waitAndAnimOut:Stop()
-			frame.Background:SetTexture(nil)
-			frame:DisableDrawLayer("OVERLAY")
-			aObj:skinObject("frame", {obj=frame, ofs=-2})
-			frame.Unlocked:SetTextColor(aObj.BT:GetRGB())
-			if aObj.modBtnBs then
-				frame.Icon:DisableDrawLayer("OVERLAY")
-				aObj:addButtonBorder{obj=frame.Icon, relTo=frame.Icon.Texture}
-			end
+	local function skinAlertFrame(frame)
+		frame.animIn:Stop()
+		frame.waitAndAnimOut:Stop()
+		frame.Background:SetTexture(nil)
+		frame:DisableDrawLayer("OVERLAY")
+		aObj:skinObject("frame", {obj=frame, ofs=-6, y2=8})
+		frame.Unlocked:SetTextColor(aObj.BT:GetRGB())
+		if aObj.modBtnBs then
+			frame.Icon:DisableDrawLayer("OVERLAY")
+			aObj:addButtonBorder{obj=frame.Icon, relTo=frame.Icon.Texture}
 		end
-
+	end
+	if self.prdb.AlertFrames then
 		_G.C_Timer.NewTicker(0.1, function(ticker)
 			for _, afs in _G.ipairs_reverse(_G.AlertFrame.alertFrameSubSystems) do
 				if afs.alertFramePool then
 					if _G.strfind(afs.alertFramePool.frameTemplate, "KrowiAF_AlertFrame_") then
-						self:SecureHook(afs, "setUpFunction", function(frame, _)
+						self:secureHook(afs, "setUpFunction", function(frame, _)
 							skinAlertFrame(frame)
-							if _G["AchievementFrameSideButton" .. frame.Event.Id] then
-								skinAlertFrame(_G["AchievementFrameSideButton" .. frame.Event.Id])
-							else
-								self:add2Table(afsbs, "AchievementFrameSideButton" .. frame.Event.Id)
-							end
 						end)
 						ticker:Cancel()
 						break
@@ -38,9 +30,17 @@ aObj.addonsToSkin.Krowi_AchievementFilter = function(self) -- v 45.4
 				end
 			end
 		end, 20)
-
 	end
 
+	local function skinSideBtns()
+	    local i = 1
+	    local button = _G["AchievementFrameSideButton" .. i]
+	    while button do
+	        skinAlertFrame(button)
+	        i = i + 1
+	        button = _G["AchievementFrameSideButton" .. i]
+	    end
+	end
 	local function skinK_AF()
 		if _G.AchievementFrame.Header.Title then
 			self:moveObject{obj=_G.AchievementFrame.Header.Title, x=-20}
@@ -201,12 +201,17 @@ aObj.addonsToSkin.Krowi_AchievementFilter = function(self) -- v 45.4
 		end)
 
 		-- skin any AchievementFrameSideButtons if they exist
-		for _, fName in _G.ipairs(afsbs) do
-			if _G[fName] then
-				skinAlertFrame(_G[fName])
+		skinSideBtns()
+		local updTicker = _G.C_Timer.NewTicker(5, skinSideBtns)
+	    hooksecurefunc(_G.AchievementFrame, "Show", function(this)
+			skinSideBtns()
+			if updTicker:IsCancelled() then
+				updTicker = _G.C_Timer.NewTicker(5, skinSideBtns)
 			end
-		end
-		_G.wipe(afsbs)
+		end)
+	    hooksecurefunc(_G.AchievementFrame, "Hide", function(this)
+			updTicker:Cancel()
+		end)
 
 		-- Tooltip StatusBar
 		for _, child in _G.ipairs_reverse{_G.GameTooltip:GetChildren()} do
