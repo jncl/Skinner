@@ -121,7 +121,7 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 		alertType["NewRuneforgePower"]      = {ofs = -8, ddl = {"background"}, ib = true, iq = _G.Enum.ItemQuality.Legendary}
 		alertType["NewToy"]                 = {ofs = -8, ddl = {"background"}, ib = true}
 		alertType["RafRewardDelivered"]     = {ofs = -10}
-		alertType["SkillLineSpecsUnlocked"] = {ofs = -8, ddl = {"background"}}
+		alertType["SkillLineSpecsUnlocked"] = {ofs = 0, ddl = {"background"}}
 	else
 		alertType["Achievement"].y1         = -10
 		alertType["Achievement"].y2         = 10
