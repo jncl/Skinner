@@ -1618,12 +1618,13 @@ aObj.blizzFrames[ftype].MailFrame = function(self)
 			_G.MailEditBox:DisableDrawLayer("BACKGROUND")
 			self:skinObject("scrollbar", {obj=_G.MailEditBoxScrollBar, fType=ftype, x1=1, y1=-1, x2=5, y2=1})
 		end
-		for i = 1, _G.ATTACHMENTS_MAX_SEND do
+		local btn
+		for _, btn in _G.pairs(_G.SendMailFrame.SendMailAttachments) do
 			if not self.modBtnBs then
-				self:resizeEmptyTexture(self:getRegion(_G["SendMailAttachment" .. i], 1))
+				self:resizeEmptyTexture(self:getRegion(btn, 1))
 			else
-				_G["SendMailAttachment" .. i]:DisableDrawLayer("BACKGROUND")
-				self:addButtonBorder{obj=_G["SendMailAttachment" .. i], reParent={_G["SendMailAttachment" .. i].Count}}
+				btn:DisableDrawLayer("BACKGROUND")
+				self:addButtonBorder{obj=btn, reParent={btn.Count}, clr="grey"}
 			end
 		end
 		self:skinObject("editbox", {obj=_G.SendMailNameEditBox, fType=ftype, regions={4, 5, 6}})
@@ -1634,6 +1635,15 @@ aObj.blizzFrames[ftype].MailFrame = function(self)
 		if self.modBtns then
 			self:skinStdButton{obj=_G.SendMailMailButton, fType=ftype, schk=true}
 			self:skinStdButton{obj=_G.SendMailCancelButton, fType=ftype}
+		end
+		if self.modBtnBs then
+			self:SecureHook("ClickSendMailItemButton", function(id, rb)
+				if id
+				and rb
+				then
+					self:clrBtnBdr(_G.SendMailFrame.SendMailAttachments[id], "grey")
+				end
+			end)
 		end
 		--	Open Mail Frame
 		_G.OpenMailScrollFrame:DisableDrawLayer("BACKGROUND")
@@ -1654,8 +1664,8 @@ aObj.blizzFrames[ftype].MailFrame = function(self)
 		if self.modBtnBs then
 			self:addButtonBorder{obj=_G.OpenMailLetterButton, ibt=true}
 			self:addButtonBorder{obj=_G.OpenMailMoneyButton, ibt=true}
-			for i = 1, _G.ATTACHMENTS_MAX_RECEIVE do
-				self:addButtonBorder{obj=_G["OpenMailAttachmentButton" .. i], ibt=true}
+			for _, btn in _G.pairs(_G.OpenMailFrame.OpenMailAttachments) do
+				self:addButtonBorder{obj=btn, ibt=true}
 			end
 		end
 		-- Invoice Frame Text fields
