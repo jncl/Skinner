@@ -336,12 +336,14 @@ function aObj:OnEnable()
 	self.fontP               = self.modBtns and self.modUIBtns.fontP or _G.nop
 	self.fontS               = self.modBtns and self.modUIBtns.fontS or _G.nop
 	self.fontSBX             = self.modBtns and self.modUIBtns.fontSBX or _G.nop
-	self.downarrow           = self.modBtns and self.modUIBtns.downarrow or _G.nop
+	self.downarrow           = self.modBtns and self.modUIBtns.darrow or _G.nop
 	self.larrow              = self.modBtns and self.modUIBtns.larrow or _G.nop
 	self.nearrow             = self.modBtns and self.modUIBtns.nearrow or _G.nop
+	self.nwarrow             = self.modBtns and self.modUIBtns.nwarrow or _G.nop
 	self.rarrow              = self.modBtns and self.modUIBtns.rarrow or _G.nop
+	self.searrow             = self.modBtns and self.modUIBtns.searrow or _G.nop
 	self.swarrow             = self.modBtns and self.modUIBtns.swarrow or _G.nop
-	self.uparrow             = self.modBtns and self.modUIBtns.uparrow or _G.nop
+	self.uparrow             = self.modBtns and self.modUIBtns.uarrow or _G.nop
 	self.checkTex            = self.modBtns and self.modUIBtns.checkTex or _G.nop
 	self.isButton            = self.modBtns and self.modUIBtns.isButton or _G.nop
 	self.skinAllButtons      = self.modBtns and self.modUIBtns.skinAllButtons or _G.nop

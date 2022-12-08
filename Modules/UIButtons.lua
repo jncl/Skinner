@@ -16,14 +16,16 @@ local defaults = {
 
 do
 	-- characters used on buttons
-	module.mult = "×" -- multiplication sign NOT lower case X
-	module.plus = "+"
-	module.minus = "-" -- using Hyphen-minus(-) instead of minus sign(−) for font compatiblity reasons
-	module.larrow = "←" -- Leftwards Arrow (U+2190)
-	module.uparrow = "↑" -- Upwards Arrow (U+2191)
-	module.rarrow = "→" -- Rightwards Arrow (U+2192)
-	module.downarrow = "↓" -- Downwards Arrow (U+2193)
+	module.mult    = "×" -- multiplication sign NOT lower case X
+	module.plus    = "+"
+	module.minus   = "-" -- using Hyphen-minus(-) instead of minus sign(−) for font compatiblity reasons
+	module.larrow  = "←" -- Leftwards Arrow (U+2190)
+	module.uarrow  = "↑" -- Upwards Arrow (U+2191)
+	module.rarrow  = "→" -- Rightwards Arrow (U+2192)
+	module.darrow  = "↓" -- Downwards Arrow (U+2193)
+	module.nwarrow = "↖" -- North West Arrow (U+2196)
 	module.nearrow = "↗" -- North East Arrow (U+2197)
+	module.searrow = "↘" -- South East Arrow (U+2198)
 	module.swarrow = "↙" -- South West Arrow (U+2199)
 	-- create font to use for Close Buttons
 	module.fontX = _G.CreateFont("fontX")
@@ -57,7 +59,7 @@ do
 	module.fontS = _G.CreateFont("fontS")
 	module.fontS:SetFont([[Interface\AddOns\]] .. aName .. [[\Fonts\NotoSansSymbols-Medium.ttf]], 14, "")
 	module.fontS:SetTextColor(_G.NORMAL_FONT_COLOR:GetRGB())
-	-- create font for disabled text
+	-- create font for disabled Arrow buttons
 	module.fontDS = _G.CreateFont("fontDS")
 	module.fontDS:SetFont(module.fontS:GetFont())
 	module.fontDS:SetTextColor(_G.DISABLED_FONT_COLOR:GetRGB())
