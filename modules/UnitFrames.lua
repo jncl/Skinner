@@ -753,6 +753,12 @@ function module:OnInitialize()
 		aObj.blizzLoDFrames[ftype].ArenaUI = _G.nop
 	end
 
+	-- disable module as it causee ADDON_ACTION_BLOCKED/ADDON_ACTION_FORBIDDEN errors
+	if self.isRtl then
+		self:Disable()
+		aObj.blizzLoDFrames[ftype].ArenaUI = _G.nop
+	end
+
 end
 
 function module:OnEnable()

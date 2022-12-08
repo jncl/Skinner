@@ -57,6 +57,15 @@ function aObj:OnInitialize()
 	self.prdb = self.db.profile
 	local dflts = self.db.defaults.profile
 
+	-- disable functions which cause ADDON_ACTION_BLOCKED/ADDON_ACTION_FORBIDDEN errors
+	if self.isRtl then
+		self.prdb.MainMenuBar.actbtns  = false
+		self.prdb.Nameplates           = false
+		self.prdb.ContainerFrames.skin = false
+		self.prdb.CompactFrames        = false
+		self.prdb.OverrideActionBar    = false
+	end
+
 	-- handle changes to TabDDTextures options
 	if self.prdb.TexturedTab then
 		self.prdb.TabDDTextures.texturedtab = self.prdb.TexturedTab
