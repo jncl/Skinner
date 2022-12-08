@@ -74,6 +74,7 @@
 <Script file="Cork.lua"/>
 <Script file="Cosplay.lua"/>
 <Script file="CovenantMissionHelper.lua"/>
+<Script file="CustomTutorials.lua"/>
 <Script file="D4KiR Tank Helper.lua"/>
 <Script file="DBM.lua"/>
 <Script file="DejaCharacterStats.lua"/>
@@ -206,6 +207,7 @@
 <Script file="Skillet.lua"/>
 <Script file="SorhaQuestLog.lua"/>
 <Script file="Sorted.lua"/>
+<Script file="Storyline.lua"/>
 <Script file="SoulshapeJournal.lua"/>
 <Script file="Spew.lua"/>
 <Script file="Spy.lua"/>
