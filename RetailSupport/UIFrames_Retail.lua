@@ -1125,14 +1125,15 @@ aObj.SetupRetail_UIFrames = function()
 			[_G.Enum.EventToastDisplayType.ScenarioClickExpand] = {template = "EventToastScenarioExpandToastTemplate", frameType= "BUTTON", hideAutomatically = false,},
 		}
 		local function skinToast(frame)
-			if not frame.currentDisplayingToast
-			or not frame.toastInfo
-			then
+			-- _G.C_Timer.After(1, function()
+			-- 	_G.Spew("skinToast#1", frame)
+			-- end)
+			local toastInfo = _G.C_EventToastManager.GetNextToastToDisplay()
+			if not toastInfo then
 				return
 			end
-			local toastInfo = frame.toastInfo
 			_G.C_Timer.After(1, function()
-				_G.Spew("skinToast", toastInfo)
+				_G.Spew("skinToast#2", toastInfo)
 			end)
 			local toastTable = eventToastTemplatesByToastType[toastInfo.displayType]
 			if not toastTable then
@@ -1192,7 +1193,17 @@ aObj.SetupRetail_UIFrames = function()
 				end
 			end)
 		end
-		local function skinOverlay(overlay)
+		local function skinOverlay(_, overlay)
+			aObj:Debug("skinOverlay: [%s, %s]", overlay)
+			_G.C_Timer.After(1, function()
+				_G.Spew("skinOverlay", overlay)
+			end)
+			if overlay
+			and overlay.GetNumChildren
+			and overlay:GetNumChildren() == 0
+			then
+				return
+			end
 			local oFrame = aObj:getChild(overlay, 1)
 			oFrame.Header.TitleDivider:SetTexture(nil)
 			aObj:skinObject("scrollbar", {obj=oFrame.MajorFactionList.ScrollBar, fType=ftype})
@@ -1211,7 +1222,7 @@ aObj.SetupRetail_UIFrames = function()
 
 		self:SecureHookScript(_G.ExpansionLandingPage, "OnShow", function(this)
 			-- FIXME: Blizzard bug uses self.Overlay instead of self.overlay 01.10.22
-			skinOverlay(this.Overlay or this.overlay)
+			skinOverlay(self, this.Overlay or this.overlay)
 
 			self:Unhook(this, "OnShow")
 		end)
