@@ -26,9 +26,9 @@ ToDos
 		- happens when OverrideBar is used, but not always...
 		- happens after VehicleUI has been used
 
-≈	I	AlertFrames
+	I	AlertFrames
 	 	- GarrisonFollower not skinned properly
-		- SkillLineSpecsUnlocked not skinned properly
+≈		- SkillLineSpecsUnlocked not skinned properly
 
 	I/C	Tabs, reported by EpidemeDaBear, 16.10.22
 ≈		- Non textured tabs are below frame
@@ -37,30 +37,59 @@ ToDos
 ≈		- Review Top/Bottom tab positioning using 1 pixel border
 
 ~	I	ADDON_ACTION_BLOCKED/ADDON_ACTION_FORBIDDEN, reported by various, *.11.22 (An action was blocked because of taint from, An action was blocked in combat because of taint from)
-√		- Disable UnitFrame(s) skinning
+√		- Disable Action Button skinning for MainMenuBar
 √		- Disable Nameplate skinning
-√		- Disable Container skinning
+√		- Disable ContainerFrames skinning
+√		- Disable CompactUnitFrame(s) skinning
+√		- Disable UnitFrame(s) skinning
+√		- Disable OverrideActionBar skinning
 
 ?		- Disable CastingBar skinning
-?		- Disable CompactUnitFrame(s) skinning
 
-√		- Use BT4 AddOn
+		- Use a Action Button AddOn
 		- Use a Bag AddOn
 		
 	I	Box of Many things in Torghast, reported by Galthariel, 13.11.22
 ?		- disabling OrderHall UI it works again
 
-	I	Titan Panel,
-√		- Titan Panel moving MinimapCluster function needs removing as no longer required
-		
-√	S	Healium, requted by Galthariel, 26.11.22
+	I	Auctionator, reported by Quartzfire, 03.12.22
+√		- Skinner/Core/NewSkinFuncs.lua:493: attempt to index field 'obj' (a nil value)
+		[string "@Skinner/Core/NewSkinFuncs.lua"]:493: in function <Skinner/Core/NewSkinFuncs.lua:485>
+		[string "@Skinner/Core/NewSkinFuncs.lua"]:523: in function `?'
+		[string "@Skinner/Core/NewSkinFuncs.lua"]:267: in function `skinObject'
+		[string "@Skinner/AddonSkins/Auctionator.lua"]:17: in function <Skinner/AddonSkins/Auctionator.lua:15>
+
+	I	reported by Happyh7, 04.12.22 
+?		- Whenever I try to use a skill I get a popup with this message:
+		Skinner has been blocked from using an action only available to the Blizzard UI. You can disable this addon and reload the UI.
+
+	I	RareScanner, reported by Fakelessgaming, 05.12.22
+√		- Skinner/Core/NewSkinFuncs.lua:440: attempt to index field 'obj' (a nil value)
+		[string "@Skinner/Core/NewSkinFuncs.lua"]:440: in function <Skinner/Core/NewSkinFuncs.lua:432>
+		[string "@Skinner/Core/NewSkinFuncs.lua"]:484: in function `?'
+		[string "@Skinner/Core/NewSkinFuncs.lua"]:267: in function `skinObject'
+		[string "@Skinner/AddonSkins/RareScanner.lua"]:19: in function <Skinner/AddonSkins/RareScanner.lua:16>
 	
-	I	Inventorian, reported by Galthariel, 27.11.22
-√		- make the Inventorian Empty slots transparent?
+≈	S	Storyline, requested by the9thresident, 05.12.22
+	
+	I	ArchaeologyUI, reported by reiyo_oki, 05.12.22
+√		- Skinner/Core/NewSkinFuncs.lua:759: attempt to index field 'obj' (a nil value)
+		[string "@Skinner/Core/NewSkinFuncs.lua"]:759: in function <Skinner/Core/NewSkinFuncs.lua:751>
+		[string "@Skinner/Core/NewSkinFuncs.lua"]:806: in function `?'
+		[string "@Skinner/Core/NewSkinFuncs.lua"]:267: in function `skinObject'
+		[string "@Skinner/RetailSupport/PlayerFrames_Retail.lua"]:408: in function <Skinner/RetailSupport/PlayerFrames_Retail.lua:355>
+	
+	I	BetterWardrobe, reported by Acivien, 06.12.22
+√		- Skinner/AddonSkins/BetterWardrobe.lua:14: attempt to call method 'SetBackdrop' (a nil value)
+		[string "@Skinner/AddonSkins/BetterWardrobe.lua"]:14: in function <Skinner/AddonSkins/BetterWardrobe.lua:8>
 		
-	I	Krowi_AchievementFilter, reported by Quartzfire, 27.11.22
-√		- Ace3/AceHook-3.0-9/AceHook-3.0.lua:180: Attempting to rehook already active hook setUpFunction.
-		[string "@Ace3/AceHook-3.0-9/AceHook-3.0.lua"]:180: in function <Ace3/AceHook-3.0/AceHook-3.0.lua:118>
-		[string "@Ace3/AceHook-3.0-9/AceHook-3.0.lua"]:340: in function `SecureHook'
-		[string "@Skinner/AddonSkins/Krowi_AchievementFilter.lua"]:27: in function <...ddOns/Skinner/AddonSkins/Krowi_AchievementFilter.lua:23>
-		
+	I	SoulshapeJournal, reported by Acivien, 06.12.22
+√		- Skinner/Core/UtilFuncs.lua:936: attempt to index field 'obj' (a nil value)
+		[string "@Skinner/Core/UtilFuncs.lua"]:936: in function <Skinner/Core/UtilFuncs.lua:919>
+		[string "@Skinner/Core/UtilFuncs.lua"]:984: in function `moveObject'
+		[string "@Skinner/Core/NewSkinFuncs.lua"]:507: in function <Skinner/Core/NewSkinFuncs.lua:485>
+		[string "@Skinner/Core/NewSkinFuncs.lua"]:523: in function `?'
+		[string "@Skinner/Core/NewSkinFuncs.lua"]:267: in function `skinObject'
+		[string "@Skinner/AddonSkins/SoulshapeJournal.lua"]:16: in function <...rfaceSkinner/AddonSkins/SoulshapeJournal.lua:7>
+	
+	
