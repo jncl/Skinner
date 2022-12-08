@@ -1,3 +1,16 @@
+beta10.46879.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Updated SettingsPanel skin
+	Updated UIButtons code
+	Updated TextureID skin comment
+	Bugfix for TitanPanel issue
+	Updated GuildBankUI skin
+	Bugfix for AlertFrames skin
+	Updated Bagnon, Healium, Inventorian & Krowi_AchievementFilter skins
+	
 beta10.46722.1
 Jncl:
 	ToDo.txt
