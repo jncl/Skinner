@@ -2,7 +2,7 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("Auctionator") then return end
 local _G = _G
 
-aObj.addonsToSkin.Auctionator = function(self) -- v 10.0.7
+aObj.addonsToSkin.Auctionator = function(self) -- v 10.0.17
 
 	local function skinAuctionatorFrames()
 		if not _G.AuctionatorSellingFrame then
@@ -14,7 +14,7 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 10.0.7
 
 		aObj:SecureHookScript(_G.AuctionatorShoppingFrame, "OnShow", function(this)
 			this:DisableDrawLayer("BACKGROUND")
-			aObj:skinObject("editbox", {obj=this.OneItemSearchBox})
+			aObj:skinObject("editbox", {obj=this.OneItemSearch.SearchBox})
 			aObj:skinObject("dropdown", {obj=this.ListDropdown})
 			aObj:removeInset(this.ScrollListShoppingList.Inset)
 			aObj:skinObject("scrollbar", {obj=this.ScrollListShoppingList.ScrollBar})
@@ -42,8 +42,8 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 10.0.7
 				aObj:skinObject("frame", {obj=child, kfs=true, ofs=1, x1=-2, x2=2})
 			end
 			if aObj.modBtns then
-				aObj:skinStdButton{obj=this.OneItemSearchButton}
-				aObj:skinStdButton{obj=this.OneItemSearchExtendedButton, schk=true}
+				aObj:skinStdButton{obj=this.OneItemSearch.SearchButton}
+				aObj:skinStdButton{obj=this.OneItemSearch.ExtendedButton, schk=true}
 				aObj:skinStdButton{obj=this.Export, schk=true}
 				aObj:skinStdButton{obj=this.Import, schk=true}
 				aObj:skinStdButton{obj=this.AddItem, schk=true}

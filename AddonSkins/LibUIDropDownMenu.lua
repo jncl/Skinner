@@ -4,7 +4,8 @@ local _G = _G
 
 local function skinDDL(frame)
 	if frame
-	and not frame.sf then
+	and not frame.sf
+	then
 		if frame.Border then
 			aObj:removeBackdrop(frame.Border)
 		end

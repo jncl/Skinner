@@ -1,4 +1,4 @@
-local aName, aObj = ...
+local _, aObj = ...
 local _G = _G
 -- This is a Library
 
@@ -19,8 +19,8 @@ aObj.libsToSkin["SecureTabs-2.0"] = function(self) -- v 2
 		end
 	end
 	local function skinTab(tab)
-		aObj:keepRegions(tab, {7, 8}) -- 7 is text, 8 is highlight
-		aObj:skinObject("frame", {obj=tab, noBdr=aObj.isTT, x1=6, y1=aObj.isTT and 3 or -2, x2=-6, y2=2})
+		aObj:keepRegions(tab, {10}) -- 10 is text
+		aObj:skinObject("frame", {obj=tab, noBdr=aObj.isTT, x1=0, y1=aObj.isTT and 3 or -2, x2=0, y2=2})
 		if aObj.isTT then
 			aObj:setInactiveTab(tab.sf)
 		end

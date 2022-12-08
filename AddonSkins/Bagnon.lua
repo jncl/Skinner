@@ -1,4 +1,4 @@
-local aName, aObj = ...
+local _, aObj = ...
 if not aObj:isAddonEnabled("Bagnon") then return end
 local _G = _G
 
@@ -6,6 +6,29 @@ aObj.addonsToSkin.Bagnon = function(self) -- v 10.0.8
 	if not self.db.profile.ContainerFrames or self.initialized.Bagnon then return end
 	self.initialized.Bagnon = true
 
+	local function skinBagGrp(frame)
+		for _, child in _G.ipairs{frame.bagGroup:GetChildren()} do
+			if child:IsObjectType("CheckButton") then
+				aObj:addButtonBorder{obj=child, ofs=3, clr="grey"}
+				if child.info
+				and child.info.count == 0 -- no bag equipped
+				then
+					_G.SetItemButtonTexture(child, nil)
+				end
+			end
+		end
+		aObj:SecureHook(frame.bagGroup, "Show", function(fObj)
+			for _, child in _G.ipairs{fObj:GetChildren()} do
+				if child:IsObjectType("CheckButton") then
+					if child.info
+					and child.info.count == 0 -- no bag equipped
+					then
+						_G.SetItemButtonTexture(child, nil)
+					end
+				end
+			end
+		end)
+	end
 	local function updBtn(btn)
 		local bIT = btn:GetItemButtonIconTexture():GetTexture()
 		-- aObj:Debug("updBtn: [%s, %s, %s]", btn.info.quality, bIT)
@@ -17,7 +40,7 @@ aObj.addonsToSkin.Bagnon = function(self) -- v 10.0.8
 		end
 	end
 	-- skin the bag frames
-	local function skinFrame(frame, id)
+	local function skinFrame(frame, _)
 		aObj:skinObject("frame", {obj=frame, kfs=true, cb=true})
 		frame.SetBackdropColor = _G.nop
 		frame.SetBackdropBorderColor = _G.nop
@@ -49,17 +72,14 @@ aObj.addonsToSkin.Bagnon = function(self) -- v 10.0.8
 					end
 				end
 				-- bag/tab buttons
-				aObj:SecureHook(frame, "CreateBagGroup", function(fObj)
-					for _, child in _G.ipairs{fObj.bagGroup:GetChildren()} do
-						if child:IsObjectType("CheckButton") then
-							aObj:addButtonBorder{obj=child, ofs=4, clr="grey"}
-							if child.info.count == 0 then -- no bag equipped
-								_G.SetItemButtonTexture(child, nil)
-							end
-						end
-					end
-					aObj:Unhook(frame, "CreateBagGroup")
-				end)
+				if frame.bagGroup then
+					skinBagGrp(frame)
+				else
+					aObj:SecureHook(frame, "CreateBagGroup", function(fObj)
+						skinBagGrp(fObj)
+						aObj:Unhook(frame, "CreateBagGroup")
+					end)
+				end
 				-- bag buttons
 				aObj:SecureHook(frame.ItemGroup, "Layout", function(igObj)
 					for _, btn in _G.ipairs(igObj.order) do
@@ -104,8 +124,8 @@ aObj.lodAddons.Bagnon_Config = function(self) -- v 10.0.8
 
 	-- register callback to skin elements
 	self.RegisterCallback("Bagnon_Config", "IOFPanel_After_Skinning", function(_, panel)
-		local function skinKids(panel)
-			for _, child in _G.ipairs{panel:GetChildren()} do
+		local function skinKids(pObj)
+			for _, child in _G.ipairs{pObj:GetChildren()} do
 				if aObj:isDropDown(child) then
 					aObj:skinObject("dropdown", {obj=child, x2=-1})
 				elseif child:IsObjectType("Slider") then
@@ -114,7 +134,6 @@ aObj.lodAddons.Bagnon_Config = function(self) -- v 10.0.8
 					skinKids(child)
 				end
 			end
-
 		end
 		if not aObj.isRtl then
 			if panel.name:find("Bagnon$")

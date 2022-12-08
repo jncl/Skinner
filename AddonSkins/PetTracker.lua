@@ -40,31 +40,6 @@ local function skinSlot(slot, isBattle)
 end
 aObj.addonsToSkin.PetTracker = function(self) -- v 9.1.0
 
-	-- Custom Tutorials
-	local cTut = _G.LibStub:GetLibrary('CustomTutorials-2.1', true)
-	if cTut then
-		for _, frame in _G.pairs(cTut.frames) do
-			self:skinObject("frame", {obj=frame, kfs=true, ri=true, cb=true, ofs=2, x2=0})
-			if self.modBtns then
-				self:addButtonBorder{obj=frame.prev, ofs=-1, clr="gold"}
-				self:addButtonBorder{obj=frame.next, ofs=-1, clr="gold"}
-				self:SecureHook(frame.prev, "Disable", function(this, _)
-					self:clrBtnBdr(this, "gold")
-				end)
-				self:SecureHook(frame.prev, "Enable", function(this, _)
-					self:clrBtnBdr(this, "gold")
-				end)
-				self:SecureHook(frame.next, "Disable", function(this, _)
-					self:clrBtnBdr(this, "gold")
-				end)
-				self:SecureHook(frame.next, "Enable", function(this, _)
-					self:clrBtnBdr(this, "gold")
-				end)
-			end
-		end
-	end
-	cTut = nil
-
 	if _G.PetTracker.Objectives
 	and _G.PetTracker.Objectives.Header
 	then
@@ -128,10 +103,10 @@ aObj.lodAddons.PetTracker_Battle = function(self) -- v 9.1.0
 		self:keepFontStrings(self:getChild(this, 4)) -- slot borders
 		self:keepFontStrings(self:getChild(this, 5)) -- slot borders
 		self:skinObject("frame", {obj=this, kfs=true, ri=true, rns=true, cb=true, x2=3})
-		
+
 		self:Unhook(this, "OnShow")
 	end)
-	
+
 	self:SecureHook(_G.PetTrackerSwitcher, "Update", function(this)
 		for i = 1, _G.NUM_BATTLE_PETS_IN_BATTLE do
 			skinSlot(this[_G.LE_BATTLE_PET_ENEMY .. i], true)
@@ -238,7 +213,7 @@ aObj.lodAddons.PetTracker_Journal = function(self) -- v 9.1.0
 		for i = 1, _G.CollectionsJournal.numTabs do
 			_G.PanelTemplates_DeselectTab(_G["CollectionsJournalTab" .. i])
 		end
-			
+
 	end)
 
 	self:SecureHookScript(_G.PetTrackerRivalsJournal, "OnHide", function(this)
