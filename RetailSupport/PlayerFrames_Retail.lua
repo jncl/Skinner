@@ -405,7 +405,7 @@ aObj.SetupRetail_PlayerFrames = function()
 				self:addButtonBorder{obj=this.artifactPage, relTo=this.artifactPage.icon, ofs=1}
 			end
 			self:getRegion(this.artifactPage.solveFrame.statusBar, 1):Hide() -- BarBG texture
-			self:skinObject("statusbar", {obj=this.artifactPage.solveFrame.statusbar, fi=0})
+			self:skinObject("statusbar", {obj=this.artifactPage.solveFrame.statusBar, fi=0})
 			this.artifactPage.solveFrame.statusBar:SetStatusBarColor(0.75, 0.45, 0, 0.7)
 			this.artifactPage.historyTitle:SetTextColor(self.HT:GetRGB())
 			this.artifactPage.historyScroll.child.text:SetTextColor(self.BT:GetRGB())
