@@ -277,16 +277,8 @@ aObj.SetupClassic_NPCFrames = function()
 		if not (self:isAddonEnabled("Quester")
 		and _G.QuesterDB.gossipColor)
 		then
-			self:SecureHook("GossipFrameUpdate", function()
-				if self.isRtl then
-					for _, btn in _G.pairs(_G.GossipFrame.buttons) do
-						local newText, upd = self:removeColourCodes(btn:GetText())
-						if upd then
-							btn:SetText(newText)
-						end
-						btn:GetFontString():SetTextColor(self.BT:GetRGB())
-					end
-				else
+			if self.isClscPTR then
+				self:SecureHook(_G.GossipFrame, "Update", function()
 					for i = 1, _G.NUMGOSSIPBUTTONS do
 						local newText, upd = self:removeColourCodes(_G["GossipTitleButton" .. i]:GetText())
 						if upd then
@@ -294,8 +286,18 @@ aObj.SetupClassic_NPCFrames = function()
 						end
 						_G["GossipTitleButton" .. i]:GetFontString():SetTextColor(self.BT:GetRGB())
 					end
-				end
-			end)
+				end)
+			else
+				self:SecureHook("GossipFrameUpdate", function()
+					for i = 1, _G.NUMGOSSIPBUTTONS do
+						local newText, upd = self:removeColourCodes(_G["GossipTitleButton" .. i]:GetText())
+						if upd then
+							_G["GossipTitleButton" .. i]:SetText(newText)
+						end
+						_G["GossipTitleButton" .. i]:GetFontString():SetTextColor(self.BT:GetRGB())
+					end
+				end)
+			end
 		end
 
 		self:SecureHookScript(_G.GossipFrame, "OnShow", function(this)
