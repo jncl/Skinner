@@ -1125,16 +1125,20 @@ aObj.SetupRetail_UIFrames = function()
 			[_G.Enum.EventToastDisplayType.ScenarioClickExpand] = {template = "EventToastScenarioExpandToastTemplate", frameType= "BUTTON", hideAutomatically = false,},
 		}
 		local function skinToast(frame)
+			--@debug@
 			-- _G.C_Timer.After(1, function()
 			-- 	_G.Spew("skinToast#1", frame)
 			-- end)
+			--@end-debug@
 			local toastInfo = _G.C_EventToastManager.GetNextToastToDisplay()
 			if not toastInfo then
 				return
 			end
+			--@debug@
 			_G.C_Timer.After(1, function()
 				_G.Spew("skinToast#2", toastInfo)
 			end)
+			--@end-debug@
 			local toastTable = eventToastTemplatesByToastType[toastInfo.displayType]
 			if not toastTable then
 				return
@@ -1195,9 +1199,11 @@ aObj.SetupRetail_UIFrames = function()
 		end
 		local function skinOverlay(_, overlay)
 			aObj:Debug("skinOverlay: [%s, %s]", overlay)
+			--@debug@
 			_G.C_Timer.After(1, function()
 				_G.Spew("skinOverlay", overlay)
 			end)
+			--@end-debug@
 			if overlay
 			and overlay.GetNumChildren
 			and overlay:GetNumChildren() == 0
