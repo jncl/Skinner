@@ -132,7 +132,9 @@ function aObj:applyGradient(obj, fh, invert, rotate)
 		obj.tfade = obj:CreateTexture(nil, "BORDER", nil, -1)
 		obj.tfade:SetTexture(self.gradientTex)
 		obj.tfade:SetBlendMode("ADD")
-		if not self.isRtl then
+		if not self.isRtl
+		and not self.isClscPTR
+		then
 			obj.tfade:SetGradientAlpha(self:getGradientInfo(invert, rotate))
 		else
 			obj.tfade:SetGradient(self:getGradientInfo(invert, rotate))
@@ -627,20 +629,26 @@ function aObj:getGradientInfo(invert, rotate)
 
 	if self.prdb.Gradient.enable then
 		if invert then
-			if not aObj.isRtl then
+			if not self.isRtl
+			and not self.isClscPTR
+			then
 				return rotate and "HORIZONTAL" or "VERTICAL", MaxR, MaxG, MaxB, MaxA, MinR, MinG, MinB, MinA
 			else
 				return rotate and "HORIZONTAL" or "VERTICAL", aObj.gmaxClr, aObj.gminClr
 			end
 		else
-			if not aObj.isRtl then
+			if not self.isRtl
+			and not self.isClscPTR
+			then
 				return rotate and "HORIZONTAL" or "VERTICAL", MinR, MinG, MinB, MinA, MaxR, MaxG, MaxB, MaxA
 			else
 				return rotate and "HORIZONTAL" or "VERTICAL", aObj.gminClr, aObj.gmaxClr
 			end
 		end
 	else
-		if not self.isRtl then
+		if not self.isRtl
+		and not self.isClscPTR
+		then
 			return rotate and "HORIZONTAL" or "VERTICAL", 0, 0, 0, 1, 0, 0, 0, 1
 		else
 			return rotate and "HORIZONTAL" or "VERTICAL", _G.BLACK_FONT_COLOR, _G.BLACK_FONT_COLOR
@@ -781,7 +789,9 @@ function aObj:hookSocialToastFuncs(frame)
 	self:SecureHook(frame.animIn, "Play", function(this)
 		if this.sf then
 			this.sf.tfade:SetParent(_G.MainMenuBar)
-			if not self.isRtl then
+			if not self.isRtl
+			and not self.isClscPTR
+			then
 				this.sf.tfade:SetGradientAlpha(self:getGradientInfo())
 			else
 				this.sf.tfade:SetGradient(self:getGradientInfo())
@@ -789,7 +799,9 @@ function aObj:hookSocialToastFuncs(frame)
 		end
 		if this.cb then
 			this.cb.tfade:SetParent(_G.MainMenuBar)
-			if not aObj.isRtl then
+			if not self.isRtl
+			and not self.isClscPTR
+			then
 				this.cb.tfade:SetGradientAlpha(self:getGradientInfo())
 			else
 				this.cb.tfade:SetGradient(self:getGradientInfo())
@@ -1223,7 +1235,9 @@ function aObj:setActiveTab(tabSF)
 	if not tabSF.tfade then return end
 
 	tabSF.tfade:SetTexture(self.gradientTex)
-	if not aObj.isRtl then
+	if not self.isRtl
+	and not self.isClscPTR
+	then
 		tabSF.tfade:SetGradientAlpha(self:getGradientInfo(self.prdb.Gradient.invert, self.prdb.Gradient.rotate))
 	else
 		tabSF.tfade:SetGradient(self:getGradientInfo(self.prdb.Gradient.invert, self.prdb.Gradient.rotate))
