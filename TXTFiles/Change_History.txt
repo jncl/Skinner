@@ -1,3 +1,18 @@
+beta10.46924.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Updated ExpansionLandingPage skin
+	Updated AlertFrame skin
+	Disable Functions/modules causing ADDON_ACTION_BLOCKED/FORBIDDEN errors in Retail
+	Bugfix for ArchaeologyUI skin
+	Updated MailFrame skin
+	Updated UIButtons skin
+	Updated NotoSansSymbols-Medium font
+	Updated Auctionator, Bagnon, BetterWardrobe, LibUIDropDownMenu, PetTracker, RareScanner, SecureTabs & SoulshapeJournal skins
+	Skinned CustomTutorials & Storyline
+	
 beta10.46879.1
 Jncl:
 	ToDo.txt
