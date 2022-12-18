@@ -4628,4 +4628,3 @@ aObj.SetupRetail_PlayerFramesOptions = function(self)
 	}
 
 end
---
