@@ -2,7 +2,7 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("Auctionator") then return end
 local _G = _G
 
-aObj.addonsToSkin.Auctionator = function(self) -- v 10.0.17
+aObj.addonsToSkin.Auctionator = function(self) -- v 10.0.17/10.0.16/10.0.15
 
 	local function skinAuctionatorFrames()
 		if not _G.AuctionatorSellingFrame then
@@ -177,29 +177,59 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 10.0.17
 		end
 
 		local function skinBuyFrame(frame)
-			frame.Inset.Bg:SetTexture(nil)
-			aObj:removeInset(aObj:getChild(frame.Inset, 1))
-			aObj:skinObject("scrollbar", {obj=frame.SearchResultsListing.ScrollArea.ScrollBar, fType=ftype})
-			aObj:skinObject("scrollbar", {obj=frame.HistoryResultsListing.ScrollArea.ScrollBar, fType=ftype})
-			for _, child in _G.ipairs{frame.SearchResultsListing.HeaderContainer:GetChildren()} do
-				aObj:keepRegions(child, {4, 5, 6}) -- N.B. regions 4 is text, 5 is highlight, 6 is arrow
-				aObj:skinObject("frame", {obj=child, kfs=true, ofs=1, x1=-2, x2=2})
+			if aObj.isRtl then
+				frame.Inset.Bg:SetTexture(nil)
+				aObj:removeInset(aObj:getChild(frame.Inset, 1))
+				aObj:skinObject("scrollbar", {obj=frame.SearchResultsListing.ScrollArea.ScrollBar})
+				for _, child in _G.ipairs{frame.SearchResultsListing.HeaderContainer:GetChildren()} do
+					aObj:keepRegions(child, {4, 5, 6}) -- N.B. regions 4 is text, 5 is highlight, 6 is arrow
+					aObj:skinObject("frame", {obj=child, kfs=true, ofs=1, x1=-2, x2=2})
+				end
+				aObj:skinObject("scrollbar", {obj=frame.HistoryResultsListing.ScrollArea.ScrollBar})
+				for _, child in _G.ipairs{frame.HistoryResultsListing.HeaderContainer:GetChildren()} do
+					aObj:keepRegions(child, {4, 5, 6}) -- N.B. regions 4 is text, 5 is highlight, 6 is arrow
+					aObj:skinObject("frame", {obj=child, kfs=true, ofs=1, x1=-2, x2=2})
+				end
+				aObj:skinObject("frame", {obj=frame.BuyDialog, kfs=true, ofs=0})
+				if aObj.modBtns then
+					aObj:skinStdButton{obj=frame.HistoryButton, schk=true}
+					aObj:skinStdButton{obj=frame.RefreshButton, schk=true}
+					aObj:skinStdButton{obj=frame.BuyButton, sechk=true}
+					aObj:skinStdButton{obj=frame.CancelButton, sechk=true}
+					aObj:skinStdButton{obj=frame.BuyDialog.Cancel}
+					aObj:skinStdButton{obj=frame.BuyDialog.BuyStack}
+				end
+			else
+				frame.CurrentPrices.Inset.Bg:SetTexture(nil)
+				aObj:removeInset(aObj:getChild(frame.CurrentPrices.Inset, 1))
+				aObj:skinObject("scrollbar", {obj=frame.CurrentPrices.SearchResultsListing.ScrollArea.ScrollBar})
+				for _, child in _G.ipairs{frame.CurrentPrices.SearchResultsListing.HeaderContainer:GetChildren()} do
+					aObj:keepRegions(child, {4, 5, 6}) -- N.B. regions 4 is text, 5 is highlight, 6 is arrow
+					aObj:skinObject("frame", {obj=child, kfs=true, ofs=1, x1=-2, x2=2})
+				end
+				aObj:skinObject("frame", {obj=frame.CurrentPrices.BuyDialog, kfs=true, ofs=0})
+				frame.HistoryPrices.Inset.Bg:SetTexture(nil)
+				aObj:removeInset(aObj:getChild(frame.HistoryPrices.Inset, 1))
+				aObj:skinObject("scrollbar", {obj=frame.HistoryPrices.RealmHistoryResultsListing.ScrollArea.ScrollBar})
+				for _, child in _G.ipairs{frame.HistoryPrices.RealmHistoryResultsListing.HeaderContainer:GetChildren()} do
+					aObj:keepRegions(child, {4, 5, 6}) -- N.B. regions 4 is text, 5 is highlight, 6 is arrow
+					aObj:skinObject("frame", {obj=child, kfs=true, ofs=1, x1=-2, x2=2})
+				end
+				aObj:skinObject("scrollbar", {obj=frame.HistoryPrices.PostingHistoryResultsListing.ScrollArea.ScrollBar})
+				for _, child in _G.ipairs{frame.HistoryPrices.PostingHistoryResultsListing.HeaderContainer:GetChildren()} do
+					aObj:keepRegions(child, {4, 5, 6}) -- N.B. regions 4 is text, 5 is highlight, 6 is arrow
+					aObj:skinObject("frame", {obj=child, kfs=true, ofs=1, x1=-2, x2=2})
+				end
 			end
-			for _, child in _G.ipairs{frame.HistoryResultsListing.HeaderContainer:GetChildren()} do
-				aObj:keepRegions(child, {4, 5, 6}) -- N.B. regions 4 is text, 5 is highlight, 6 is arrow
-				aObj:skinObject("frame", {obj=child, kfs=true, ofs=1, x1=-2, x2=2})
-			end
-			aObj:skinObject("frame", {obj=frame.BuyDialog, kfs=true, ofs=0})
 			if aObj.modBtns then
 				aObj:skinStdButton{obj=frame.HistoryButton, schk=true}
-				aObj:skinStdButton{obj=frame.RefreshButton, schk=true}
-				aObj:skinStdButton{obj=frame.BuyButton}
-				aObj:SecureHook(frame, "UpdateButtons", function(this)
-					aObj:clrBtnBdr(this.BuyButton)
-				end)
-				aObj:skinStdButton{obj=frame.CancelButton, sechk=true}
-				aObj:skinStdButton{obj=frame.BuyDialog.Cancel}
-				aObj:skinStdButton{obj=frame.BuyDialog.BuyStack}
+				aObj:skinStdButton{obj=frame.CurrentPrices.CancelButton, sechk=true}
+				aObj:skinStdButton{obj=frame.CurrentPrices.BuyButton, schk=true, sechk=true}
+				aObj:skinStdButton{obj=frame.CurrentPrices.RefreshButton, schk=true}
+				aObj:skinStdButton{obj=frame.CurrentPrices.BuyDialog.Cancel}
+				aObj:skinStdButton{obj=frame.CurrentPrices.BuyDialog.BuyStack}
+				aObj:skinStdButton{obj=frame.HistoryPrices.PostingHistoryButton, schk=true}
+				aObj:skinStdButton{obj=frame.HistoryPrices.RealmHistoryButton, schk=true}
 			end
 		end
 		local function skinHdrs(frame)

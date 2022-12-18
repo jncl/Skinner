@@ -2,7 +2,7 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("DBM-Core") then return end
 local _G = _G
 
-aObj.addonsToSkin["DBM-Core"] = function(self) -- v 9.0.30/2.5.15
+aObj.addonsToSkin["DBM-Core"] = function(self) -- v 10.0.5/2.5.15
 
 	-- hook this to skin the InfoFrame frame
 	self:SecureHook(_G.DBM.InfoFrame, "Show", function(_, _, event, _)
@@ -58,7 +58,7 @@ aObj.addonsToSkin["DBM-Core"] = function(self) -- v 9.0.30/2.5.15
 
 end
 
-aObj.lodAddons["DBM-GUI"] = function(self) -- v 9.0.30/2.5.15
+aObj.lodAddons["DBM-GUI"] = function(self) -- v 10.0.5/2.5.15
 
 	self:SecureHook(_G.DBM_GUI_OptionsFrame, "UpdateMenuFrame", function(_)
 		for _, btn in _G.pairs(_G.DBM_GUI_OptionsFrameList.buttons) do
@@ -86,10 +86,18 @@ aObj.lodAddons["DBM-GUI"] = function(self) -- v 9.0.30/2.5.15
 		self:skinObject("slider", {obj=_G.DBM_GUI_OptionsFramePanelContainerFOV.ScrollBar})
 		self:skinObject("frame", {obj=_G.DBM_GUI_OptionsFramePanelContainer, kfs=true, fb=true})
 		_G.DBM_GUI_OptionsFrame.numTabs = 2
-		self:skinObject("tabs", {obj=this, prefix=this:GetName(), ignoreSize=true, ignoreHLTex=true, lod=self.isTT and true, upwards=true, offsets={x1=4, y1=0, x2=-4, y2=-2}})
-		self:SecureHook(_G.DBM_GUI_OptionsFrame, "ShowTab", function(fObj, tab)
-			_G.PanelTemplates_SetTab(fObj, tab)
-		end)
+		self:skinObject("tabs", {obj=this, prefix=this:GetName(), ignoreSize=true, ignoreHLTex=true, lod=self.isTT and true, upwards=true, regions={7}, offsets={x1=6, y1=-2, x2=14, y2=-4}, track=false})
+		if self.isTT then
+			self:SecureHook(_G.DBM_GUI_OptionsFrame, "ShowTab", function(_, tab)
+				for i = 1, #_G.DBM_GUI.tabs do
+					if i == tab then
+						self:setActiveTab(_G["DBM_GUI_OptionsFrameTab" .. i].sf)
+					else
+						self:setInactiveTab(_G["DBM_GUI_OptionsFrameTab" .. i].sf)
+					end
+				end
+			end)
+		end
 		self:skinObject("frame", {obj=this, kfs=true, hdr=true})
 		if self.modBtns then
 			self:skinStdButton{obj=_G.DBM_GUI_OptionsFrameOkay}
@@ -123,14 +131,14 @@ aObj.lodAddons["DBM-GUI"] = function(self) -- v 9.0.30/2.5.15
 				aObj:skinObject("skin", {obj=child, bd=10, ng=true}) -- frame border
 				for _, gChild in _G.ipairs{child:GetChildren()} do
 					if aObj:isDropDown(gChild) then
-						aObj:skinObject("dropdown", {obj=gChild, x2=34})
+						aObj:skinObject("dropdown", {obj=gChild, x2=gChild.width and 34 or nil})
 					elseif gChild:IsObjectType("CheckButton")
 					and aObj.modChkBtns
 					then -- NewSpecialWarning object
 						aObj:skinCheckButton{obj=gChild}
 						for _, ggChild in _G.ipairs{gChild:GetChildren()} do
 							if aObj:isDropDown(ggChild) then
-								aObj:skinObject("dropdown", {obj=ggChild, x1=16, x2=34, y2=-1})
+								aObj:skinObject("dropdown", {obj=ggChild, x1=16, y2=-1})
 							end
 						end
 					elseif gChild:IsObjectType("Button")
