@@ -285,7 +285,9 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 		if frame.sf
 		and frame.sf.tfade
 		then
-			if not self.isRtl then
+			if not self.isRtl
+			and not self.isClscPTR
+			then
 				frame.sf.tfade:SetGradientAlpha(self:getGradientInfo())
 			else
 				frame.sf.tfade:SetGradient(self:getGradientInfo())
@@ -422,9 +424,6 @@ if not aObj.isClscERA then
 
 		self:SecureHookScript(_G.CalendarViewHolidayFrame, "OnShow", function(this)
 			self:removeNineSlice(this.Border)
-			if self.isRtl then
-				self:skinObject("slider", {obj=_G.CalendarViewHolidayScrollFrame.ScrollBar, fType=ftype})
-			end
 			self:removeRegions(_G.CalendarViewHolidayCloseButton, {5})
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true, ofs=-3})
 			if self.modBtns then
@@ -451,13 +450,8 @@ if not aObj.isClscERA then
 		self:SecureHookScript(_G.CalendarViewEventFrame, "OnShow", function(this)
 			self:removeNineSlice(this.Border)
 			self:skinObject("frame", {obj=_G.CalendarViewEventDescriptionContainer, fType=ftype, fb=true})
-			if self.isRtl then
-				self:skinObject("slider", {obj=_G.CalendarViewEventDescriptionScrollFrame.ScrollBar, fType=ftype})
-				self:skinObject("slider", {obj=_G.CalendarViewEventInviteListScrollFrameScrollBar, fType=ftype})
-			else
-				self:skinObject("scrollbar", {obj=_G.CalendarViewEventDescriptionContainer.ScrollBar, fType=ftype})
-				self:skinObject("scrollbar", {obj=_G.CalendarViewEventInviteList.ScrollBar, fType=ftype})
-			end
+			self:skinObject("scrollbar", {obj=_G.CalendarViewEventDescriptionContainer.ScrollBar, fType=ftype})
+			self:skinObject("scrollbar", {obj=_G.CalendarViewEventInviteList.ScrollBar, fType=ftype})
 			self:keepFontStrings(_G.CalendarViewEventInviteListSection)
 			self:skinObject("frame", {obj=_G.CalendarViewEventInviteList, fType=ftype, fb=true})
 			self:removeRegions(_G.CalendarViewEventCloseButton, {5})
@@ -484,12 +478,7 @@ if not aObj.isClscERA then
 			self:skinObject("dropdown", {obj=_G.CalendarCreateEventAMPMDropDown, fType=ftype})
 			self:skinObject("dropdown", {obj=_G.CalendarCreateEventDifficultyOptionDropDown, fType=ftype})
 			self:skinObject("frame", {obj=_G.CalendarCreateEventDescriptionContainer, fType=ftype, fb=true})
-			if self.isRtl then
-				self:skinObject("slider", {obj=_G.CalendarCreateEventDescriptionScrollFrame.ScrollBar, fType=ftype})
-				self:skinObject("slider", {obj=_G.CalendarCreateEventInviteListScrollFrameScrollBar, fType=ftype})
-			else
-				self:skinObject("scrollbar", {obj=_G.CalendarCreateEventDescriptionContainer.ScrollBar, fType=ftype})
-			end
+			self:skinObject("scrollbar", {obj=_G.CalendarCreateEventDescriptionContainer.ScrollBar, fType=ftype})
 			self:keepFontStrings(_G.CalendarCreateEventInviteListSection)
 			self:skinObject("frame", {obj=_G.CalendarCreateEventInviteList, fType=ftype, fb=true})
 			self:skinObject("editbox", {obj=_G.CalendarCreateEventInviteEdit, fType=ftype})
@@ -531,11 +520,7 @@ if not aObj.isClscERA then
 
 		self:SecureHookScript(_G.CalendarEventPickerFrame, "OnShow", function(this)
 			self:removeNineSlice(this.Border)
-			if self.isRtl then
-				self:skinObject("slider", {obj=_G.CalendarEventPickerScrollBar, fType=ftype})
-			else
-				self:skinObject("scrollbar", {obj=_G.CalendarEventPickerFrame.ScrollBar, fType=ftype})
-			end
+			self:skinObject("scrollbar", {obj=this.ScrollBar, fType=ftype})
 			self:removeRegions(_G.CalendarEventPickerCloseButton, {7})
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true, ofs=-3})
 			if self.modBtns then
@@ -547,11 +532,7 @@ if not aObj.isClscERA then
 
 		self:SecureHookScript(_G.CalendarTexturePickerFrame, "OnShow", function(this)
 			self:removeNineSlice(this.Border)
-			if self.isRtl then
-				self:skinObject("slider", {obj=_G.CalendarTexturePickerScrollBar, fType=ftype})
-			else
-				self:skinObject("scrollbar", {obj=_G.CalendarTexturePickerFrame.ScrollBar, fType=ftype, x1=2, y1=-1, x2=5, y2=1})
-			end
+			self:skinObject("scrollbar", {obj=this.ScrollBar, fType=ftype, x1=2, y1=-1, x2=5, y2=1})
 			_G.CalendarTexturePickerCancelButtonBorder:SetAlpha(0)
 			_G.CalendarTexturePickerAcceptButtonBorder:SetAlpha(0)
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true, ofs=-3})
