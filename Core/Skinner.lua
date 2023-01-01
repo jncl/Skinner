@@ -57,7 +57,7 @@ function aObj:OnInitialize()
 	self.prdb = self.db.profile
 	local dflts = self.db.defaults.profile
 
-	-- disable functions which cause ADDON_ACTION_BLOCKED/ADDON_ACTION_FORBIDDEN errors
+	-- disable functions which cause ADDON_ACTION_BLOCKED/ADDON_ACTION_FORBIDDEN errors (Dragonflight changes)
 	if self.isRtl then
 		self.prdb.MainMenuBar.actbtns  = false
 		self.prdb.Nameplates           = false

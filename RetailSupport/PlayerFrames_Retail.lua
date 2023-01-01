@@ -588,18 +588,24 @@ aObj.SetupRetail_PlayerFrames = function()
 				end
 			end
 			local function skinBuffs(frame)
-				for buff in frame.auraPool:EnumerateActiveByTemplate(frame.auraTemplate) do
-					skinBuffBtn(buff)
-				end
-				for buff in frame.auraPool:EnumerateActiveByTemplate(frame.exampleAuraTemplate) do
-					skinBuffBtn(buff)
-				end
-				if frame == _G.BuffFrame then
-					for buff in frame.auraPool:EnumerateActiveByTemplate("TempEnchantButtonTemplate") do
+				if not aObj.isRtlPTR then
+					for buff in frame.auraPool:EnumerateActiveByTemplate(frame.auraTemplate) do
 						skinBuffBtn(buff)
 					end
+					for buff in frame.auraPool:EnumerateActiveByTemplate(frame.exampleAuraTemplate) do
+						skinBuffBtn(buff)
+					end
+					if frame == _G.BuffFrame then
+						for buff in frame.auraPool:EnumerateActiveByTemplate("TempEnchantButtonTemplate") do
+							skinBuffBtn(buff)
+						end
+					else
+						for buff in frame.auraPool:EnumerateActiveByTemplate("DeadlyDebuffButtonTemplate") do
+							skinBuffBtn(buff)
+						end
+					end
 				else
-					for buff in frame.auraPool:EnumerateActiveByTemplate("DeadlyDebuffButtonTemplate") do
+					for _, buff in _G.pairs(frame.auraFrames) do
 						skinBuffBtn(buff)
 					end
 				end
@@ -608,6 +614,13 @@ aObj.SetupRetail_PlayerFrames = function()
 				skinBuffs(frame)
 				self:SecureHook(frame, "UpdateAuraButtons", function(this)
 					skinBuffs(this)
+				end)
+			end
+			if aObj.isRtlPTR then
+				self:SecureHookScript(_G.DeadlyDebuffFrame, "OnShow", function(this)
+					skinBuffBtn(this.Debuff)
+
+					self:Unhook(this, "OnShow")
 				end)
 			end
 		end
@@ -972,7 +985,11 @@ aObj.SetupRetail_PlayerFrames = function()
 		self.initialized.ClassTalentUI = true
 
 		self:SecureHookScript(_G.ClassTalentFrame, "OnShow", function(this)
-			this.PortraitOverlay.Portrait:SetAlpha(0)
+			if not aObj.isRtlPTR then
+				this.PortraitOverlay.Portrait:SetAlpha(0)
+			else
+				this.PortraitContainer.portrait:SetAlpha(0)
+			end
 			self:skinObject("tabs", {obj=this.TabSystem,  pool=true, fType=ftype, ignoreSize=true, track=false})
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true, cb=true})
 
@@ -2339,43 +2356,6 @@ aObj.SetupRetail_PlayerFrames = function()
 				self:Unhook(fObj, "OnShow")
 			end)
 
-			self:SecureHookScript(this.suggestFrame, "OnShow", function(fObj)
-				local ejsfs
-				for i = 1, _G.AJ_MAX_NUM_SUGGESTIONS do
-					ejsfs = fObj["Suggestion" .. i]
-					ejsfs.bg:SetTexture(nil)
-					ejsfs.iconRing:SetTexture(nil)
-					ejsfs.centerDisplay.title.text:SetTextColor(self.HT:GetRGB())
-					ejsfs.centerDisplay.description.text:SetTextColor(self.BT:GetRGB())
-					if i == 1 then
-						ejsfs.reward.text:SetTextColor(self.BT:GetRGB())
-					end
-					ejsfs.reward.iconRing:SetTexture(nil)
-					if self.modBtns then
-						if i ~= 1 then
-							self:skinStdButton{obj=ejsfs.centerDisplay.button}
-						else
-							self:skinStdButton{obj=ejsfs.button}
-						end
-					end
-					if self.modBtnBs
-					and i == 1
-					then
-						self:addButtonBorder{obj=ejsfs.prevButton, ofs=-2, y1=-3, x2=-3, clr="gold"}
-						self:addButtonBorder{obj=ejsfs.nextButton, ofs=-2, y1=-3, x2=-3, clr="gold"}
-						self:SecureHook("EJSuggestFrame_RefreshDisplay", function()
-							local frame = _G.EncounterJournal.suggestFrame.Suggestion1
-							self:clrBtnBdr(frame.prevButton, "gold")
-							self:clrBtnBdr(frame.nextButton, "gold")
-						end)
-					end
-				end
-				self:skinObject("frame", {obj=fObj, fType=ftype, fb=true, x1=-9, y1=6, x2=7, y2=-5})
-
-				self:Unhook(fObj, "OnShow")
-			end)
-			self:checkShown(this.suggestFrame)
-
 			self:SecureHookScript(this.instanceSelect, "OnShow", function(fObj)
 				fObj.bg:SetAlpha(0)
 				self:skinObject("dropdown", {obj=fObj.tierDropDown, fType=ftype})
@@ -2540,6 +2520,72 @@ aObj.SetupRetail_PlayerFrames = function()
 				self:Unhook(fObj, "OnShow")
 			end)
 			self:checkShown(this.encounter)
+
+			if aObj.isRtlPTR then
+				self:SecureHookScript(this.MonthlyActivitiesFrame, "OnShow", function(fObj)
+					fObj:DisableDrawLayer("BACKGROUND")
+					fObj:DisableDrawLayer("BORDER")
+					fObj.HelpButton.Ring:SetTexture(nil)
+					fObj.ThresholdBar:DisableDrawLayer("BORDER")
+					-- TODO: Remove RewardITem border
+					fObj.FilterList:DisableDrawLayer("BACKGROUND")
+					-- fObj.ScrollBar [DON'T skin (MinimalScrollBar)]
+					local function skinElement(...)
+						local _, element
+						if _G.select("#", ...) == 2 then
+							element, _ = ...
+						elseif _G.select("#", ...) == 3 then
+							_, element, _ = ...
+						end
+						element.ActiveBg:SetTexture(nil)
+						element:GetNormalTexture():SetTexture(nil)
+						element.Name:SetTextColor(self.BT:GetRGB())
+						self:skinObject("frame", {obj=element, fType=ftype, ofs=-3, y2=4, fb=true})
+					end
+					_G.ScrollUtil.AddInitializedFrameCallback(fObj.ScrollBox, skinElement, aObj, true)
+
+					self:Unhook(fObj, "OnShow")
+				end)
+				self:checkShown(this.MonthlyActivitiesFrame)
+			end
+
+
+			self:SecureHookScript(this.suggestFrame, "OnShow", function(fObj)
+				local ejsfs
+				for i = 1, _G.AJ_MAX_NUM_SUGGESTIONS do
+					ejsfs = fObj["Suggestion" .. i]
+					ejsfs.bg:SetTexture(nil)
+					ejsfs.iconRing:SetTexture(nil)
+					ejsfs.centerDisplay.title.text:SetTextColor(self.HT:GetRGB())
+					ejsfs.centerDisplay.description.text:SetTextColor(self.BT:GetRGB())
+					if i == 1 then
+						ejsfs.reward.text:SetTextColor(self.BT:GetRGB())
+					end
+					ejsfs.reward.iconRing:SetTexture(nil)
+					if self.modBtns then
+						if i ~= 1 then
+							self:skinStdButton{obj=ejsfs.centerDisplay.button}
+						else
+							self:skinStdButton{obj=ejsfs.button}
+						end
+					end
+					if self.modBtnBs
+					and i == 1
+					then
+						self:addButtonBorder{obj=ejsfs.prevButton, ofs=-2, y1=-3, x2=-3, clr="gold"}
+						self:addButtonBorder{obj=ejsfs.nextButton, ofs=-2, y1=-3, x2=-3, clr="gold"}
+						self:SecureHook("EJSuggestFrame_RefreshDisplay", function()
+							local frame = _G.EncounterJournal.suggestFrame.Suggestion1
+							self:clrBtnBdr(frame.prevButton, "gold")
+							self:clrBtnBdr(frame.nextButton, "gold")
+						end)
+					end
+				end
+				self:skinObject("frame", {obj=fObj, fType=ftype, fb=true, x1=-9, y1=6, x2=7, y2=-5})
+
+				self:Unhook(fObj, "OnShow")
+			end)
+			self:checkShown(this.suggestFrame)
 
 			self:SecureHookScript(this.LootJournal, "OnShow", function(fObj)
 				self:skinObject("scrollbar", {obj=fObj.ScrollBar, fType=ftype})

@@ -661,7 +661,7 @@ aObj.SetupRetail_UIFrames = function()
 				self:skinStdButton{obj=_G.CreateChannelPopup.OKButton}
 				self:skinStdButton{obj=_G.CreateChannelPopup.CancelButton}
 			end
-			self:skinObject("frame", {obj=_G.CreateChannelPopup, fType=ftype, kfs=true, cb=true, ofs=-6, y1=-7})
+			self:skinObject("frame", {obj=_G.CreateChannelPopup, fType=ftype, kfs=true, hdr=aObj.isRtlPTR and true, cb=true, ofs=not aObj.isRtlPTR and -6 or nil, y1=not aObj.isRtlPTR and -7 or nil})
 
 			self:Unhook(this, "OnShow")
 		end)
@@ -3834,7 +3834,7 @@ aObj.SetupRetail_UIFrames = function()
 				end
 				if new ~= false then
 					if element.Background then
-						element.Background:SetAlpha(0) -- texture changed in ncode
+						element.Background:SetAlpha(0) -- texture changed in code
 					end
 					-- Button
 					if element.Toggle then
@@ -4384,7 +4384,6 @@ aObj.SetupRetail_UIFrames = function()
 					if self.modBtnBs then
 						self:addButtonBorder{obj=oFrame.SpellButton}
 					end
-
 				elseif oFrame.BountyDropDown then
 					oFrame.IconBorder:SetTexture(nil)
 					if self.modBtnBs then
