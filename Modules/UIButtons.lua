@@ -296,16 +296,40 @@ function module:secureHook(obj, method, func) -- luacheck: ignore self
 
 end
 
+function module:setBtnClr(bObj, quality)
+
+	if bObj.sbb then
+		if quality then
+			if quality >= (self.isRtl and _G.Enum.ItemQuality.Common or _G.LE_ITEM_QUALITY_COMMON)
+			and _G.BAG_ITEM_QUALITY_COLORS[quality]
+			then
+				bObj.sbb:SetBackdropBorderColor(_G.BAG_ITEM_QUALITY_COLORS[quality].r, _G.BAG_ITEM_QUALITY_COLORS[quality].g, _G.BAG_ITEM_QUALITY_COLORS[quality].b, 1)
+			else
+				module:clrBtnBdr(bObj, "grey", 0.75)
+			end
+		else
+			module:clrBtnBdr(bObj, "grey", 0.75)
+			if _G.TradeSkillFrame
+			and _G.TradeSkillFrame.DetailsFrame
+			and bObj == _G.TradeSkillFrame.DetailsFrame.Contents.ResultIcon
+			then
+				module:clrBtnBdr(bObj, "normal", 1)
+			end
+		end
+	end
+
+end
+
 function module:skinCloseButton(opts)
 -- text on button
 --[[
 	Calling parameters:
-		obj = object (Mandatory)
-		ft = Frame Type (Skinner classification)
-		sap = set all points of skinButton to object
-		onSB = put text on skinButton
-		noSkin = don't add skin frame
-		font = font to use
+		obj     = object (Mandatory)
+		ft      = Frame Type (Skinner classification)
+		sap     = set all points of skinButton to object
+		onSB    = put text on skinButton
+		noSkin  = don't add skin frame
+		font    = font to use
 		disfont = disabled font to use
 --]]
 	--@alpha@
@@ -380,31 +404,6 @@ function module:skinCloseButton(opts)
 	end
 
 end
-
-function module:setBtnClr(bObj, quality)
-
-	if bObj.sbb then
-		if quality then
-			if quality >= (self.isRtl and _G.Enum.ItemQuality.Common or _G.LE_ITEM_QUALITY_COMMON)
-			and _G.BAG_ITEM_QUALITY_COLORS[quality]
-			then
-				bObj.sbb:SetBackdropBorderColor(_G.BAG_ITEM_QUALITY_COLORS[quality].r, _G.BAG_ITEM_QUALITY_COLORS[quality].g, _G.BAG_ITEM_QUALITY_COLORS[quality].b, 1)
-			else
-				module:clrBtnBdr(bObj, "grey", 0.75)
-			end
-		else
-			module:clrBtnBdr(bObj, "grey", 0.75)
-			if _G.TradeSkillFrame
-			and _G.TradeSkillFrame.DetailsFrame
-			and bObj == _G.TradeSkillFrame.DetailsFrame.Contents.ResultIcon
-			then
-				module:clrBtnBdr(bObj, "normal", 1)
-			end
-		end
-	end
-
-end
-
 function module:skinCloseButton1(opts) -- luacheck: ignore self
 -- text on button
 	opts.cb = nil
@@ -430,14 +429,14 @@ end
 function module:skinExpandButton(opts)
 --[[
 	Calling parameters:
-		obj = object (Mandatory)
-		ft = Frame Type (Skinner classification)
-		aso = applySkin options
-		as = use applySkin rather than addSkinButton, used when text appears behind the gradient
+		obj    = object (Mandatory)
+		ft     = Frame Type (Skinner classification)
+		aso    = applySkin options
+		as     = use applySkin rather than addSkinButton, used when text appears behind the gradient
 		noHook = don't hook SetNormalTexture function to manage texture changes
-		onSB = put text on skinButton
-		plus = use plus sign
-		clr = border colour
+		onSB   = put text on skinButton
+		plus   = use plus sign
+		clr    = border colour
 --]]
 	--@alpha@
 	_G.assert(opts.obj, "Missing object skinExpandButton\n" .. _G.debugstack(2, 3, 2))
@@ -504,13 +503,13 @@ end
 function module:skinOtherButton(opts)
 --[[
 	Calling parameters:
-		obj = object (Mandatory)
-		ft = Frame Type (Skinner classification)
-		size = use smaller edgesize, different highlight textue and resize the button
-		sap = set all points of skinButton to object
-		font = font to use
+		obj     = object (Mandatory)
+		ft      = Frame Type (Skinner classification)
+		size    = use smaller edgesize, different highlight textue and resize the button
+		sap     = set all points of skinButton to object
+		font    = font to use
 		disfont = disabled font to use
-		text = text to use
+		text    = text to use
 --]]
 	--@alpha@
 	_G.assert(opts.obj, "Missing object skinOtherButton\n" .. _G.debugstack(2, 3, 2))
@@ -590,16 +589,16 @@ function module:skinStdButton(opts)
 -- standard panel button
 --[[
 	Calling parameters:
-		obj = object (Mandatory)
-		ft = Frame Type (Skinner classification)
-		aso = applySkin options
-		as = use applySkin rather than addSkinButton, used when text appears behind the gradient
-		clr = set colour
-		ca = set colour alpha
-		sabt = use SecureActionButtonTemplate
+		obj         = object (Mandatory)
+		ft          = Frame Type (Skinner classification)
+		aso         = applySkin options
+		as          = use applySkin rather than addSkinButton, used when text appears behind the gradient
+		clr         = set colour
+		ca          = set colour alpha
+		sabt        = use SecureActionButtonTemplate
 		ignoreHLTex = ignore Highlight texture changes
-		schk = state check for colour changes
-		sechk = set enabled check for colour changes
+		schk        = state check for colour changes
+		sechk       = set enabled check for colour changes
 --]]
 	--@alpha@
 	_G.assert(opts.obj, "Missing object skinStdButton\n" .. _G.debugstack(2, 3, 2))
@@ -785,32 +784,33 @@ end
 local function __addButtonBorder(opts)
 --[[
 	Calling parameters:
-		obj = object (Mandatory)
-		relTo = object to position relative to
-		ofs = global offset
-		abt = Action Button template
-		ibt = Item Button template
-		tibt = Talent Item Button template
-		libt = Large Item Button template
-		sibt = Small Item Button template
-		gibt = Giant Item Button template
-		auit = auction item template(s)
-		bmit = blackmarket item template
-		sft = requires SecureFrameTemplate
-		sabt = requires SecureActionButtonTemplate
-		subt = requires SecureUnitButtonTemplate
+		obj      = object (Mandatory)
+		relTo    = object to position relative to
+		ofs      = global offset
+		abt      = Action Button template
+		ibt      = Item Button template
+		tibt     = Talent Item Button template
+		libt     = Large Item Button template
+		sibt     = Small Item Button template
+		gibt     = Giant Item Button template
+		cgibt    = Circular Giant Item Button template
+		auit     = auction item template(s)
+		bmit     = blackmarket item template
+		sft      = requires SecureFrameTemplate
+		sabt     = requires SecureActionButtonTemplate
+		subt     = requires SecureUnitButtonTemplate
 		reParent = table of objects to reparent to the border frame
-		es = edgeSize, used for small icons
-		ofs = offset value to use
-		x1 = X offset for TOPLEFT
-		y1 = Y offset for TOPLEFT
-		x2 = X offset for BOTTOMRIGHT
-		y2 = Y offset for BOTTOMRIGHT
-		nc = don't check to see if already skinned
-		clr = set colour
-		ca = set colour alpha
-		schk = state check for colour changes
-		sechk = set enabled check for colour changes
+		es       = edgeSize, used for small icons
+		ofs      = offset value to use
+		x1       = X offset for TOPLEFT
+		y1       = Y offset for TOPLEFT
+		x2       = X offset for BOTTOMRIGHT
+		y2       = Y offset for BOTTOMRIGHT
+		nc       = don't check to see if already skinned
+		clr      = set colour
+		ca       = set colour alpha
+		schk     = state check for colour changes
+		sechk    = set enabled check for colour changes
 --]]
 	--@alpha@
 	 _G.assert(opts.obj, "Missing object__aBB\n" .. _G.debugstack(2, 3, 2))
@@ -890,7 +890,9 @@ local function __addButtonBorder(opts)
 		if opts.obj.FlyoutArrow then
 			opts.obj.FlyoutArrow:SetParent(opts.obj.sbb)
 		end
-	elseif opts.gibt then -- Giant Item Buttons
+	elseif opts.gibt  -- Giant Item Buttons
+	or opts.cgibt -- Circular Giant Item Buttons
+	then
 		module:clrButtonFromBorder(opts.obj)
 	end
 	if opts.obj.HotKey then
@@ -946,8 +948,8 @@ local function __skinCheckButton(opts)
 --[[
 	Calling parameters:
 		obj = object (Mandatory)
-		nc = don't check to see if already skinned
-		hf = hook show/hide functions
+		nc  = don't check to see if already skinned
+		hf  = hook show/hide functions
 --]]
 	--@alpha@
 	 _G.assert(opts.obj, "Missing object __sCB\n" .. _G.debugstack(2, 3, 2))
