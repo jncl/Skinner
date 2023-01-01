@@ -8,5 +8,36 @@ ToDo_retail_PTR
 
 	Retail_PTR (Dragonflight 10.0.0)
 		- Added
+			- MonthlyActivities
+			- MonthlyActivitiesObjectiveTracker
+√			- PerksProgram
+			- EncounterJournal
+≈				- .MonthlyActivitiesFrame
+			- CreateChannelPopup
+√				- .Header
+			- MotionSickness
 		- Updated
+√			- Buffs
+√			- ClassTalentUI
+x			- CharacterCustomize
+			- DeathRecap
+			- GuildRoster
+			- ProfessionsCustomerOrdersForm
+			- ProfessionsCustomerOrdersMyOrder
+			- ProfessionsRecipeCrafterDetails
+			- TokenUI
+			- AlertFrameSystems
+				- MonthlyActivityFrameTemplate
+x			- BankFrame
+√			- EditModeManager
+			- EditModeSystemTemplates
+			- FloatingGarrisonFollowerTooltip
+			- FloatingPetBattleTooltip
+			- LootHistory
+x			- MainMenuBarBagButtons
+x			- RaidFrame
+x			- ReputationFrame
+x			- StatusTrackingBar
 		- Deleted
+			- BattlefieldMap
+x				- .CloseButtonBorder

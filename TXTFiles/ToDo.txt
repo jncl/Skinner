@@ -27,14 +27,8 @@ ToDos
 		- happens after VehicleUI has been used
 
 	I	AlertFrames
-	 	- GarrisonFollower not skinned properly
+≈	 	- GarrisonFollower not skinned properly
 ≈		- SkillLineSpecsUnlocked not skinned properly
-
-	I/C	Tabs, reported by EpidemeDaBear, 16.10.22
-≈		- Non textured tabs are below frame
-		
-	I	Tab positioning, reported by Fakelessgaming, 24.10.22
-≈		- Review Top/Bottom tab positioning using 1 pixel border
 
 ~	I	ADDON_ACTION_BLOCKED/ADDON_ACTION_FORBIDDEN, reported by various, *.11.22 (An action was blocked because of taint from, An action was blocked in combat because of taint from)
 √		- Disable Action Button skinning for MainMenuBar
@@ -49,6 +43,12 @@ ToDos
 		- Use a Action Button AddOn
 		- Use a Bag AddOn
 		
+	I/C	Tabs, reported by EpidemeDaBear, 16.10.22
+≈		- Non textured tabs are below frame
+		
+	I	Tab positioning, reported by Fakelessgaming, 24.10.22
+≈		- Review Top/Bottom tab positioning using 1 pixel border
+
 	I	Box of Many things in Torghast, reported by Galthariel, 13.11.22
 ?		- disabling OrderHall UI it works again
 
@@ -56,44 +56,13 @@ ToDos
 ?		- Whenever I try to use a skill I get a popup with this message:
 		Skinner has been blocked from using an action only available to the Blizzard UI. You can disable this addon and reload the UI.
 
-	I	reported by reiyo_oki, 09.12.22
-√		- ...aceSkinner/RetailSupport/UIFrames_Retail.lua:1199: attempt to call field 'Spew' (a nil value)
-		[string "@Skinner/RetailSupport/UIFrames_Retail.lua"]:1199: in function <...aceSkinner/RetailSupport/UIFrames_Retail.lua:1198>
-√		- ...aceSkinner/RetailSupport/UIFrames_Retail.lua:1136: attempt to call field 'Spew' (a nil value)
-		[string "@Skinner/RetailSupport/UIFrames_Retail.lua"]:1136: in function <...aceSkinner/RetailSupport/UIFrames_Retail.lua:1135>
-		
 	I	ChatBubbles, reported by resikagames, 10.12.22
 ?		- have Blizzard Textures as well as skinned ones
 		
 	I	Renown Popup, reported by resikagames, 10.12.22
 		- which option controls them? EventToastManager
 
-	I	DBM, reported by the9thresident, 11.12.22
-√		- SharedXML/SharedUIPanelTemplates.lua:632: attempt to index field 'Middle' (a nil value)
-		[string "@SharedXML/SharedUIPanelTemplates.lua"]:632: in function <SharedXML/SharedUIPanelTemplates.lua:630>
-		[string "=[C]"]: in function `PanelTemplates_DeselectTab'
-		[string "@SharedXML/SharedUIPanelTemplates.lua"]:508: in function `PanelTemplates_UpdateTabs'
-		[string "@SharedXML/SharedUIPanelTemplates.lua"]:487: in function `PanelTemplates_SetTab'
-		[string "@Skinner/AddonSkins/DBM.lua"]:91: in function <Skinner/AddonSkins/DBM.lua:90>
-		
-	I	Calendar, reported by DarkLimpan, 11.12.22
-√		- Skinner/Core/UIFrames.lua:455: attempt to index field 'CalendarViewEventDescriptionScrollFrame' (a nil value)
-		[string "@Skinner/Core/UIFrames.lua"]:455: in function <Skinner/Core/UIFrames.lua:451>
-		
-	I	Calendar, reported by the9thresident, 11.12.22
-√		- Skinner/Core/UIFrames.lua:426: attempt to index field 'CalendarViewHolidayScrollFrame' (a nil value)
-		[string "@Skinner/Core/UIFrames.lua"]:426: in function <Skinner/Core/UIFrames.lua:423>
-	
-	I/C	Auctionator
-√		- 1x Skinner\AddonSkins\Auctionator-10.0.16.lua:180: attempt to index field 'Inset' (a nil value)
-		[string "@Skinner\AddonSkins\Auctionator-10.0.16.lua"]:180: in function <Skinner\AddonSkins\Auctionator.lua:179>
-		[string "@Skinner\AddonSkins\Auctionator-10.0.16.lua"]:242: in function <Skinner\AddonSkins\Auctionator.lua:216>
+	I	Atlas, reported by Quartzfire, 21.12.22
+√		- Skinner/AddonSkins/Atlas.lua:83: attempt to index field 'AtlasToggleFromWorldMap' (a nil value)
 
-	I	LiteBag, reported by Quartzfire, 14.12.22
-√		- Skinner/AddonSkins/LiteBag.lua:18: attempt to index field '?' (a nil value)
-		[string "@Skinner/AddonSkins/LiteBag.lua"]:31: in function <Skinner/AddonSkins/LiteBag.lua:5>
-
-	I	reported by the9thresident, 16.12.22
-≈		- ...aceSkinner/RetailSupport/UIFrames_Retail.lua:1208: attempt to index local 'oFrame' (a nil value)
-		[string "@Skinner/RetailSupport/UIFrames_Retail.lua"]:1208: in function <...aceSkinner/RetailSupport/UIFrames_Retail.lua:1196>
-		
+√	N	CompactVendor, reported by Talyrius, 30.12.22
