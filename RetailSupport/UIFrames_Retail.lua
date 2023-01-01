@@ -1007,9 +1007,8 @@ aObj.SetupRetail_UIFrames = function()
 			if self.modChkBtns then
 				self:skinCheckButton{obj=this.ShowGridCheckButton.Button, fType=ftype}
 				self:skinCheckButton{obj=this.EnableSnapCheckButton.Button, fType=ftype}
-				local checkButtons = {"TargetAndFocus", "PartyFrames", "RaidFrames", "StanceBar", "PetActionBar", "CastBar", "EncounterBar", "ExtraAbilities", "PossessActionBar", "BuffFrame", "DebuffFrame", "TalkingHeadFrame", "VehicleLeaveButton", "BossFrames", "ArenaFrames", "LootFrame", "HudTooltip"}
-				for _, cBtn in _G.pairs(checkButtons) do
-					self:skinCheckButton{obj=this.AccountSettings.Settings[cBtn].Button, fType=ftype}
+				for _, child in _G.ipairs{this.AccountSettings.Settings:GetChildren()} do
+					self:skinCheckButton{obj=child.Button, fType=ftype}
 				end
 			end
 
