@@ -2,20 +2,22 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("CompactVendor") then return end
 local _G = _G
 
-aObj.addonsToSkin.CompactVendor = function(self) -- v 9.0.0.200731
+aObj.addonsToSkin.CompactVendor = function(self) -- v 10.0.2.221230
 
-	self:SecureHookScript(_G.VladsVendorFrame, "OnShow", function(this)
-		self:skinEditBox{obj=this.Search, regs={6, 7}, mi=true} -- 6 is text, 7 is icon
-		self:skinSlider{obj=this.List.ListScrollFrame.ScrollBar, rt="background", wdth=-4}--, size=3, hgt=-10}
-		self:removeInset(this.List.InsetFrame)
+	self:SecureHookScript(_G.CompactVendorFrame, "OnShow", function(this)
+		self:skinObject("editbox", {obj=this.Search, si=true, y1=-4, y2=4})
+		self:skinObject("scrollbar", {obj=this.ScrollBar})
+		if self.modBtnBs then
+			self:addButtonBorder{obj=_G.CompactVendorFilterButton, ofs=-2, x1=1, clr="grey"}
+		end
 
 		self:Unhook(this, "OnShow")
 	end)
 
-	self:SecureHookScript(_G.VladsVendorListItemQuantityStackSplitFrame, "OnShow", function(this)
+	self:SecureHookScript(_G.CompactVendorFrameMerchantStackSplitFrame, "OnShow", function(this)
 		this.SingleItemSplitBackground:SetTexture(nil)
 		this.MultiItemSplitBackground:SetTexture(nil)
-		self:addSkinFrame{obj=this, ft="a", kfs=true, nb=true, ofs=-6}
+		self:skinObject("frame", {obj=this, kfs=true})
 		if self.modBtns then
 			self:skinStdButton{obj=this.OkayButton}
 			self:skinStdButton{obj=this.CancelButton}

@@ -2,7 +2,7 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("Atlas") then return end
 local _G = _G
 
-aObj.addonsToSkin.Atlas = function(self) -- v1.49.02/v1.49.01
+aObj.addonsToSkin.Atlas = function(self) -- v1.52.05/v1.49.01
 
 	self:SecureHookScript(_G.AtlasFrame, "OnShow", function(this)
 		self:skinObject("dropdown", {obj=_G.AtlasFrameDropDownType})
@@ -80,7 +80,11 @@ aObj.addonsToSkin.Atlas = function(self) -- v1.49.02/v1.49.01
 		self:Unhook(this, "OnShow")
 	end)
 
-	_G.AtlasToggleFromWorldMap.Border:SetTexture(nil)
+	_G.Krowi_WorldMapButtons1.Background:SetTexture(nil)
+	_G.Krowi_WorldMapButtons1.Border:SetTexture(nil)
+	if self.modBtns then
+		self:skinStdButton{obj=_G.Krowi_WorldMapButtons1, ofs=-3, clr="gold"}
+	end
 
 	if self.modBtnBs then
 		self.RegisterCallback("Atlas", "EncounterJournal_Skinned", function(_, _)
