@@ -3704,6 +3704,9 @@ aObj.SetupRetail_PlayerFrames = function()
 			end
 		end
 		local function skinSchematicForm(frame)
+			if aObj.modBtnBs then
+				aObj:addButtonBorder{obj=frame.OutputIcon, fType=ftype, cgibt=true, relTo=frame.OutputIcon.Icon}
+			end
 			frame.Background:SetAlpha(0)
 			for i = 1, 3 do
 				skinReagentBtn(frame.QualityDialog["Container" .. i].Button)
