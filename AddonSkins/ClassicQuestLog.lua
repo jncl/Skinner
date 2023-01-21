@@ -4,7 +4,7 @@ local _G = _G
 
 aObj.addonsToSkin["Classic Quest Log"] = function(self)
 
-	if aObj.isClscERA then -- v 1.4.6.-Classic
+	if self.isClscERA then -- v 1.4.6.-Classic
 		self:SecureHookScript(_G.ClassicQuestLog, "OnShow", function(this)
 			self:removeMagicBtnTex(this.close)
 			self:removeMagicBtnTex(this.abandon)
@@ -25,8 +25,8 @@ aObj.addonsToSkin["Classic Quest Log"] = function(self)
 		        for i = 1, #this.scrollFrame.buttons do
 		            self:skinExpandButton{obj=this.scrollFrame.buttons[i], onSB=true}
 		        end
-				self:SecureHook(this, "UpdateLog", function(this)
-		            for _, btn in _G.pairs(this.scrollFrame.buttons) do
+				self:SecureHook(this, "UpdateLog", function(fObj)
+		            for _, btn in _G.pairs(fObj.scrollFrame.buttons) do
 		                aObj:checkTex(btn)
 		            end
 				end)
@@ -35,25 +35,25 @@ aObj.addonsToSkin["Classic Quest Log"] = function(self)
 				self:skinStdButton{obj=this.push}
 				self:skinStdButton{obj=this.track}
 				self:skinStdButton{obj=this.options}
-				self:SecureHook(this, "UpdateControlButtons", function(this)
-					self:clrBtnBdr(this.abandon)
-					self:clrBtnBdr(this.push)
-					self:clrBtnBdr(this.track)
+				self:SecureHook(this, "UpdateControlButtons", function(fObj)
+					self:clrBtnBdr(fObj.abandon)
+					self:clrBtnBdr(fObj.push)
+					self:clrBtnBdr(fObj.track)
 				end)
 			end
 			if self.modBtnBs then
 				self:addButtonBorder{obj=this.mapButton, ofs=-2, y1=0, y2=0, clr="gold"}
 			end
-			self:SecureHookScript(this.optionsFrame, "OnShow", function(this)
-				self:skinObject("frame", {obj=this, kfs=true, cb=true, x2=1})
+			self:SecureHookScript(this.optionsFrame, "OnShow", function(fObj)
+				self:skinObject("frame", {obj=fObj, kfs=true, cb=true, x2=1})
 				if self.modChkBtns then
-					self:skinCheckButton{obj=this.UndockWindow}
-					self:skinCheckButton{obj=this.LockWindow}
-					self:skinCheckButton{obj=this.ShowResizeGrip}
-					self:skinCheckButton{obj=this.ShowLevels}
-					self:skinCheckButton{obj=this.ShowTooltips}
-					self:skinCheckButton{obj=this.SolidBackground}
-					self:skinCheckButton{obj=this.UseClassicSkin}
+					self:skinCheckButton{obj=fObj.UndockWindow}
+					self:skinCheckButton{obj=fObj.LockWindow}
+					self:skinCheckButton{obj=fObj.ShowResizeGrip}
+					self:skinCheckButton{obj=fObj.ShowLevels}
+					self:skinCheckButton{obj=fObj.ShowTooltips}
+					self:skinCheckButton{obj=fObj.SolidBackground}
+					self:skinCheckButton{obj=fObj.UseClassicSkin}
 				end
 
 				self:Unhook(this.optionsFrame, "OnShow")
@@ -61,7 +61,7 @@ aObj.addonsToSkin["Classic Quest Log"] = function(self)
 
 			self:Unhook(this, "OnShow")
 		end)
-	else -- v 2.0.4
+	else -- v 2.3.1
 		self:SecureHookScript(_G.ClassicQuestLog, "OnShow", function(this)
 			this:DisableDrawLayer("BACKGROUND")
 			this.log:DisableDrawLayer("BACKGROUND")
@@ -73,22 +73,23 @@ aObj.addonsToSkin["Classic Quest Log"] = function(self)
 			this.detail.DetailBG:SetTexture(nil)
 			self:skinObject("frame", {obj=this, kfs=true, ri=true, rns=true, cb=true, y1=2, x2=3})
 		    if self.modBtns then
-		        local function qlUpd()
-		            if _G.InCombatLockdown() then
-		                aObj:add2Table(aObj.oocTab, {qlUpd, {nil}})
-		                return
-		            end
-		            for _, btn in _G.pairs(_G.ClassicQuestLog.log.buttons) do
-		                aObj:checkTex(btn)
-		            end
-		        end
-		        self:SecureHook(this.log, "UpdateLog", function()
-		            qlUpd()
-		        end)
 				self:skinExpandButton{obj=this.log.expandAll, onSB=true}
-		        for _, btn in _G.pairs(this.log.buttons) do
-		            self:skinExpandButton{obj=btn, onSB=true}
-		        end
+				-- TODO: skin expand texture
+		        -- for _, btn in _G.pairs(this.log.buttons) do
+		        --     self:skinExpandButton{obj=btn, onSB=true}
+		        -- end
+		        -- local function qlUpd(fObj)
+		        --     if _G.InCombatLockdown() then
+		        --         aObj:add2Table(aObj.oocTab, {qlUpd, {fObj}})
+		        --         return
+		        --     end
+		        --     for _, btn in _G.pairs(fObj.buttons) do
+		        --         aObj:checkTex(btn.expand)
+		        --     end
+		        -- end
+		        -- self:SecureHook(this.log, "UpdateLog", function(fObj)
+		        --     qlUpd(fObj)
+		        -- end)
 			end
 			self:removeInset(this.chrome.countFrame)
 			if self.modBtns then
@@ -98,9 +99,9 @@ aObj.addonsToSkin["Classic Quest Log"] = function(self)
 				self:skinStdButton{obj=this.chrome.closeButton}
 				self:skinStdButton{obj=this.chrome.optionsButton}
 				self:skinStdButton{obj=this.chrome.syncButton}
-				self:SecureHook(this.chrome, "Update", function(this)
-					self:clrBtnBdr(this.abandonButton)
-					self:clrBtnBdr(this.pushButton)
+				self:SecureHook(this.chrome, "Update", function(fObj)
+					self:clrBtnBdr(fObj.abandonButton)
+					self:clrBtnBdr(fObj.pushButton)
 				end)
 			end
 			if self.modBtnBs then
@@ -109,11 +110,12 @@ aObj.addonsToSkin["Classic Quest Log"] = function(self)
 			this.options:DisableDrawLayer("BACKGROUND")
 			this.options:DisableDrawLayer("BORDER")
 			this.options.content.headerBack:SetTexture(nil)
+			self:skinObject("slider", {obj=this.options.content.UseCustomScale.ScaleSlider})
 			if self.modBtns then
 				self:skinCloseButton{obj=this.options.content.close}
 			end
 			if self.modChkBtns then
-				for _, bName in _G.pairs{"LockWindow", "ShowResizeGrip", "ShowLevels", "ShowTooltips", "SolidBackground", "ShowFromObjectiveTracker"} do
+				for _, bName in _G.pairs{"LockWindow", "ShowResizeGrip", "ShowLevels", "ShowTooltips", "ShowFromObjectiveTracker", "DontOverrideBind", "ShowMinimapButton", "UseCustomScale"} do
 					self:skinCheckButton{obj=this.options.content[bName].check}
 				end
 			end
