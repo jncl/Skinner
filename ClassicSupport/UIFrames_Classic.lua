@@ -798,7 +798,7 @@ aObj.SetupClassic_UIFrames = function()
 				self:keepFontStrings(_G.EmptyQuestLogFrame)
 				self:keepFontStrings(_G.QuestLogCount)
 				self:skinObject("slider", {obj=_G.QuestLogListScrollFrame.scrollBar, fType=ftype})
-				self:skinObject("slider", {obj=_G.QuestLogDetailScrollFrame.ScrollBar, fType=ftype})
+				self:skinObject("slider", {obj=_G.QuestLogDetailScrollFrame.ScrollBar, fType=ftype, rpTex="background"})
 				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=10, y1=-11, x2=0, y2=4})
 				if self.modBtns then
 					for _, btn in _G.pairs(_G.QuestLogListScrollFrame.buttons) do

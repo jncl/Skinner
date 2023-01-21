@@ -285,9 +285,7 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 		if frame.sf
 		and frame.sf.tfade
 		then
-			if not self.isRtl
-			and not self.isClscPTR
-			then
+			if self.isClscERA then
 				frame.sf.tfade:SetGradientAlpha(self:getGradientInfo())
 			else
 				frame.sf.tfade:SetGradient(self:getGradientInfo())

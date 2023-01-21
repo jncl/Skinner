@@ -277,7 +277,7 @@ aObj.SetupClassic_NPCFrames = function()
 		if not (self:isAddonEnabled("Quester")
 		and _G.QuesterDB.gossipColor)
 		then
-			if self.isClscPTR then
+			if self.isClsc then
 				self:SecureHook(_G.GossipFrame, "Update", function()
 					for i = 1, _G.NUMGOSSIPBUTTONS do
 						local newText, upd = self:removeColourCodes(_G["GossipTitleButton" .. i]:GetText())
