@@ -342,20 +342,7 @@ function module:skinCloseButton(opts)
 	    return
 	end
 
-	if not aObj.isRtl then
-		opts.obj:DisableDrawLayer("BACKGROUND")
-		opts.obj:SetNormalTexture(nil)
-		opts.obj:SetPushedTexture(nil)
-	else
-		opts.obj:DisableDrawLayer("ARTWORK")
-	end
-	if opts.obj.GetDisabledTexture	-- PVPReadyDialog missing this
-	and opts.obj:GetDisabledTexture()
-	then
-		if not aObj.isRtl then
-			opts.obj:SetDisabledTexture(nil)
-		end
-	end
+	aObj:keepFontStrings(opts.obj)
 
 	--@alpha@
 	-- skin GlowBox frame
@@ -454,8 +441,7 @@ function module:skinExpandButton(opts)
 	if not opts.noddl then
 		opts.obj:DisableDrawLayer("BACKGROUND")
 	end
-	if opts.obj:GetNormalTexture() then opts.obj:GetNormalTexture():SetAlpha(0) end
-	if opts.obj:GetPushedTexture() then opts.obj:GetPushedTexture():SetAlpha(0) end
+	aObj:keepFontStrings(opts.obj)
 
 	if not opts.as then
 		aObj:skinObject("button", {obj=opts.obj, fType=opts.ftype, sap=opts.sap, bd=6, ofs=opts.ofs, clr=opts.clr})
@@ -523,9 +509,8 @@ function module:skinOtherButton(opts)
 	end
 
 	opts.obj:DisableDrawLayer("BACKGROUND")
-	if opts.obj:GetNormalTexture() then opts.obj:GetNormalTexture():SetAlpha(0) end
-	if opts.obj:GetPushedTexture() then opts.obj:GetPushedTexture():SetAlpha(0) end
-	if opts.obj:GetDisabledTexture() then opts.obj:GetDisabledTexture():SetAlpha(0) end
+	aObj:keepFontStrings(opts.obj)
+
 	if opts.size then
 		opts.obj:SetSize(opts.size, opts.size)
 		opts.obj:SetHighlightTexture(aObj.tFDIDs.pMBHL)
