@@ -307,7 +307,7 @@ function aObj:OnEnable()
 					self:setBtnClr(button, quality)
 				end)
 			else
-				self:SecureHook("SetItemButtonBorderVertexColor", function(button, r, g, b)
+				self:SecureHook("SetItemButtonBorderVertexColor", function(button, _)
 					-- aObj:Debug("SetItemButtonBorderVertexColor: [%s, %s, %s, %s, %s]", button, button.SetItemButtonBorderVertexColor, r, g, b)
 					if button.sbb then
 						self:clrButtonFromBorder(button)

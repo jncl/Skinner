@@ -1597,7 +1597,6 @@ aObj.blizzFrames[ftype].MailFrame = function(self)
 			_G.MailEditBox:DisableDrawLayer("BACKGROUND")
 			self:skinObject("scrollbar", {obj=_G.MailEditBoxScrollBar, fType=ftype, x1=1, y1=-1, x2=5, y2=1})
 		end
-		local btn
 		for _, btn in _G.pairs(_G.SendMailFrame.SendMailAttachments) do
 			if not self.modBtnBs then
 				self:resizeEmptyTexture(self:getRegion(btn, 1))

@@ -2549,7 +2549,6 @@ aObj.SetupRetail_PlayerFrames = function()
 				self:checkShown(this.MonthlyActivitiesFrame)
 			end
 
-
 			self:SecureHookScript(this.suggestFrame, "OnShow", function(fObj)
 				local ejsfs
 				for i = 1, _G.AJ_MAX_NUM_SUGGESTIONS do
@@ -3827,12 +3826,12 @@ aObj.SetupRetail_PlayerFrames = function()
 				self:skinObject("frame", {obj=fObj.GuildFrame.Container, fType=ftype, kfs=true, rns=true, fb=true})
 				-- fObj.CraftingOutputLog.ScrollBar [DON'T skin (MinimalScrollBar)]
 				self:skinObject("scrollbar", {obj=fObj.CraftingOutputLog.ScrollBar, fType=ftype})
-				local function skinElement(...)
-					local _, element, elementData
+				local function skinLine(...)
+					local _, element
 					if _G.select("#", ...) == 2 then
-						element, elementData = ...
+						element, _ = ...
 					elseif _G.select("#", ...) == 3 then
-						_, element, elementData = ...
+						_, element, _ = ...
 					end
 					element.ItemContainer.NameFrame:SetTexture(nil)
 					element.ItemContainer.BorderFrame:SetTexture(nil)
@@ -3840,7 +3839,7 @@ aObj.SetupRetail_PlayerFrames = function()
 						aObj:addButtonBorder{obj=element.ItemContainer.Item, fType=ftype, ibt=true}
 					end
 				end
-				_G.ScrollUtil.AddInitializedFrameCallback(fObj.CraftingOutputLog.ScrollBox, skinElement, aObj, true)
+				_G.ScrollUtil.AddInitializedFrameCallback(fObj.CraftingOutputLog.ScrollBox, skinLine, aObj, true)
 				self:skinObject("frame", {obj=fObj.CraftingOutputLog, fType=ftype, kfs=true, rns=true})
 				if self.modBtns then
 					self:skinStdButton{obj=fObj.CreateAllButton, fType=ftype, sechk=true}
@@ -3895,7 +3894,7 @@ aObj.SetupRetail_PlayerFrames = function()
 				if self.modBtns then
 					self:skinStdButton{obj=fObj.ApplyButton, fType=ftype, sechk=true, ofs=2}
 					self:skinStdButton{obj=fObj.UnlockTabButton, fType=ftype, sechk=true, ofs=2}
-					self:skinStdButton{obj=fObj.DetailedView.UnlockPathButton, fType=ftype, sechk=trueffff}
+					self:skinStdButton{obj=fObj.DetailedView.UnlockPathButton, fType=ftype, sechk=true}
 					self:skinStdButton{obj=fObj.DetailedView.SpendPointsButton, fType=ftype, sechk=true}
 				end
 
@@ -3907,7 +3906,7 @@ aObj.SetupRetail_PlayerFrames = function()
 				self:skinObject("tabs", {obj=bFrame, tabs=bFrame.orderTypeTabs, fType=ftype, ignoreSize=true, lod=self.isTT and true, offsets={y2=-4}, track=false})
 				if self.isTT then
 					self:SecureHook(fObj, "SetCraftingOrderType", function(frame, orderType)
-						for _, typeTab in _G.ipairs(bFrame.orderTypeTabs) do
+						for _, typeTab in _G.ipairs(frame.orderTypeTabs) do
 							if typeTab.orderType == orderType then
 								self:setActiveTab(typeTab.sf)
 							else
