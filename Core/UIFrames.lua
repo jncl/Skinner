@@ -1055,16 +1055,20 @@ aObj.blizzFrames[ftype].ChatTabs = function(self)
 	for i = 1, _G.NUM_CHAT_WINDOWS do
 		self:add2Table(fcfTabs, _G["ChatFrame" .. i .. "Tab"])
 		self:SecureHook(_G["ChatFrame" .. i .. "Tab"], "SetParent", function(this, parent)
+			if this.sf then
 			if parent == _G.GeneralDockManager.scrollFrame.child then
 				this.sf:SetParent(_G.GeneralDockManager)
 			else
 				this.sf:SetParent(this)
 				this.sf:SetFrameLevel(1) -- reset frame level so that the texture is behind text etc
 			end
+			end
 		end)
 		-- hook this to manage alpha changes when chat frame fades in and out
 		self:SecureHook(_G["ChatFrame" .. i .. "Tab"], "SetAlpha", function(this, alpha)
+			if this.sf then
 			this.sf:SetAlpha(alpha)
+			end
 		end)
 	end
 	-- Top Tabs
