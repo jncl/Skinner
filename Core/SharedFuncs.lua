@@ -15,19 +15,20 @@ end
 local buildInfo = {
 	-- Testing
 	wow_classic_beta    = {"3.4.0",  46158, "Classic Beta"},
-	wow_classic_ptr     = {"3.4.1",  47014, "Classic PTR"},
+	wow_classic_ptr     = {"3.4.1",  47720, "Classic PTR"},
 	wow_classic_era_ptr = {"1.14.3", 46575, "Classic Era PTR"}, -- a.k.a. Season of Mastery PTR
 	wow_beta            = {"10.0.2", 47120, "Retail Beta"}, -- a.k.a. Dragonflight
-	wow_ptr             = {"10.0.5", 47215, "Retail PTR"},
+	wow_ptr             = {"10.0.5", 47660, "Retail PTR"},
 	-- Live
-	wow_classic         = {"3.4.0",  47168, "Classic"}, -- a.k.a. Wrath of the Lich King Classic
+	wow_classic         = {"3.4.1",  47720, "Classic"}, -- a.k.a. Wrath of the Lich King Classic
 	wow_classic_era     = {"1.14.3", 46575, "Classic Era"},
-	wow                 = {"10.0.2", 47213, "Retail"},
+	wow                 = {"10.0.2", 47631, "Retail"},
 	-- Currently playing
 	curr                = {_G.GetBuildInfo()},
 }
+
 local function getTOCVer(ver)
-	local n1, n2,n3 = _G.string.match(buildInfo[ver][1], "(%d+).(%d+).(%d)")
+	local n1, n2, n3 = _G.string.match(buildInfo[ver][1], "(%d+).(%d+).(%d)")
 	return n1 * 10000 + n2 * 100 + n3
 end
 function aObj:checkVersion()
