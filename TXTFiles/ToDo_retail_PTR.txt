@@ -10,12 +10,12 @@ ToDo_retail_PTR
 		- Added
 			- MonthlyActivities
 			- MonthlyActivitiesObjectiveTracker
-√			- PerksProgram
+¶√			- PerksProgram
 			- EncounterJournal
 ≈				- .MonthlyActivitiesFrame
 			- CreateChannelPopup
 √				- .Header
-			- MotionSickness
+?			- MotionSickness
 		- Updated
 √			- Buffs
 √			- ClassTalentUI

@@ -46,7 +46,7 @@ ToDos
 	I/C	Tabs, reported by EpidemeDaBear, 16.10.22
 ≈		- Non textured tabs are below frame
 		
-	I	Tab positioning, reported by Fakelessgaming, 24.10.22
+	I	Tab positioning, reported by Fakelessgaming, 24.10.22/08.01.23
 ≈		- Review Top/Bottom tab positioning using 1 pixel border
 
 	I	Box of Many things in Torghast, reported by Galthariel, 13.11.22
@@ -62,7 +62,33 @@ ToDos
 	I	Renown Popup, reported by resikagames, 10.12.22
 		- which option controls them? EventToastManager
 
-	I	Atlas, reported by Quartzfire, 21.12.22
-√		- Skinner/AddonSkins/Atlas.lua:83: attempt to index field 'AtlasToggleFromWorldMap' (a nil value)
+√	N	Journalator, reported by Galthariel, 06.01.23
+	
+	I/C	Classic Quest Log, reported by Galthariel, 11.01.23
+≈		- Quest text is black
+		
+	I	AdventureGuide, reported by Fakelessgaming, 11.01.23
+?		- Loot item description colours?
 
-√	N	CompactVendor, reported by Talyrius, 30.12.22
+	I	Adventure Journal, reported by Fakelessgaming, 17.01.23
+√		- 1x ...faceSkinner/Libs/AceHook-3.0-9/AceHook-3.0.lua:180: Attempting to rehook already active hook OnShow.
+		[string "=[C]"]: ?
+		[string "@Skinner/Libs/AceHook-3.0-9/AceHook-3.0.lua"]:180: in function <...faceSkinner/Libs/AceHook-3.0/AceHook-3.0.lua:118>
+		[string "@Skinner/Libs/AceHook-3.0-9/AceHook-3.0.lua"]:410: in function `SecureHookScript'
+		[string "@Skinner/RetailSupport/PlayerFrames_Retail.lua"]:2315: in function <Skinner/RetailSupport/PlayerFrames_Retail.lua:2289>
+
+	I	PerksProgram, reported by Galthariel, 18.01.23
+√		- 2x AceLocale-3.0-6: Skinner: Missing entry for 'Trading Post'
+		[string "@Skinner/Core/UtilFuncs.lua"]:1323: in function `setupFramesOptions'
+		[string "@Skinner/RetailSupport/NPCFrames_Retail.lua"]:1095: in function `SetupRetail_NPCFramesOptions'
+		[string "@Skinner/Core/Skinner.lua"]:92: in function <Skinner/Core/Skinner.lua:35>
+	
+	I/C	reported by Sausje, 19.01.23
+		- 1x Usage: self:SetNormalTexture(asset)
+		[string "=[C]"]: in function `SetNormalTexture'
+		[string "@Skinner/Modules/UIButtons.lua"]:347: in function `skinCloseButton'
+		[string "@Skinner/Core/NewSkinFuncs.lua"]:588: in function <Skinner/Core/NewSkinFuncs.lua:524>
+		[string "@Skinner/Core/NewSkinFuncs.lua"]:638: in function `?'
+		[string "@Skinner/Core/NewSkinFuncs.lua"]:267: in function `skinObject'
+		[string "@Skinner/ClassicSupport/PlayerFrames_Classic.lua"]:452: in function <...dOns/Skinner/ClassicSupport/PlayerFrames_Classic.lua:451>
+		
