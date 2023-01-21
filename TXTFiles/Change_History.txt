@@ -1,3 +1,14 @@
+beta10.47215.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	PTR changes
+	Updated EditModeManager skin
+	Updated Professions skin
+	Updated UIButtons code
+	Updated Atlas, CompactVendor & LibDialog skins
+	
 beta10.47187.1
 Jncl:
 	ToDo.txt
