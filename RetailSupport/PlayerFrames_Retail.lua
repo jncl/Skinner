@@ -588,26 +588,8 @@ aObj.SetupRetail_PlayerFrames = function()
 				end
 			end
 			local function skinBuffs(frame)
-				if not aObj.isRtlPTR then
-					for buff in frame.auraPool:EnumerateActiveByTemplate(frame.auraTemplate) do
-						skinBuffBtn(buff)
-					end
-					for buff in frame.auraPool:EnumerateActiveByTemplate(frame.exampleAuraTemplate) do
-						skinBuffBtn(buff)
-					end
-					if frame == _G.BuffFrame then
-						for buff in frame.auraPool:EnumerateActiveByTemplate("TempEnchantButtonTemplate") do
-							skinBuffBtn(buff)
-						end
-					else
-						for buff in frame.auraPool:EnumerateActiveByTemplate("DeadlyDebuffButtonTemplate") do
-							skinBuffBtn(buff)
-						end
-					end
-				else
-					for _, buff in _G.pairs(frame.auraFrames) do
-						skinBuffBtn(buff)
-					end
+				for _, buff in _G.pairs(frame.auraFrames) do
+					skinBuffBtn(buff)
 				end
 			end
 			for _, frame in _G.pairs{_G.BuffFrame, _G.DebuffFrame} do
@@ -616,13 +598,11 @@ aObj.SetupRetail_PlayerFrames = function()
 					skinBuffs(this)
 				end)
 			end
-			if aObj.isRtlPTR then
-				self:SecureHookScript(_G.DeadlyDebuffFrame, "OnShow", function(this)
-					skinBuffBtn(this.Debuff)
+			self:SecureHookScript(_G.DeadlyDebuffFrame, "OnShow", function(this)
+				skinBuffBtn(this.Debuff)
 
-					self:Unhook(this, "OnShow")
-				end)
-			end
+				self:Unhook(this, "OnShow")
+			end)
 		end
 
 	end
@@ -985,11 +965,7 @@ aObj.SetupRetail_PlayerFrames = function()
 		self.initialized.ClassTalentUI = true
 
 		self:SecureHookScript(_G.ClassTalentFrame, "OnShow", function(this)
-			if not aObj.isRtlPTR then
-				this.PortraitOverlay.Portrait:SetAlpha(0)
-			else
-				this.PortraitContainer.portrait:SetAlpha(0)
-			end
+			this.PortraitContainer.portrait:SetAlpha(0)
 			self:skinObject("tabs", {obj=this.TabSystem,  pool=true, fType=ftype, ignoreSize=true, track=false})
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true, cb=true})
 
@@ -2521,33 +2497,31 @@ aObj.SetupRetail_PlayerFrames = function()
 			end)
 			self:checkShown(this.encounter)
 
-			if aObj.isRtlPTR then
-				self:SecureHookScript(this.MonthlyActivitiesFrame, "OnShow", function(fObj)
-					fObj:DisableDrawLayer("BACKGROUND")
-					fObj:DisableDrawLayer("BORDER")
-					fObj.HelpButton.Ring:SetTexture(nil)
-					fObj.ThresholdBar:DisableDrawLayer("BORDER")
-					-- TODO: Remove RewardITem border
-					fObj.FilterList:DisableDrawLayer("BACKGROUND")
-					-- fObj.ScrollBar [DON'T skin (MinimalScrollBar)]
-					local function skinElement(...)
-						local _, element
-						if _G.select("#", ...) == 2 then
-							element, _ = ...
-						elseif _G.select("#", ...) == 3 then
-							_, element, _ = ...
-						end
-						element.ActiveBg:SetTexture(nil)
-						element:GetNormalTexture():SetTexture(nil)
-						element.Name:SetTextColor(self.BT:GetRGB())
-						self:skinObject("frame", {obj=element, fType=ftype, ofs=-3, y2=4, fb=true})
+			self:SecureHookScript(this.MonthlyActivitiesFrame, "OnShow", function(fObj)
+				fObj:DisableDrawLayer("BACKGROUND")
+				fObj:DisableDrawLayer("BORDER")
+				fObj.HelpButton.Ring:SetTexture(nil)
+				fObj.ThresholdBar:DisableDrawLayer("BORDER")
+				-- TODO: Remove RewardITem border
+				fObj.FilterList:DisableDrawLayer("BACKGROUND")
+				-- fObj.ScrollBar [DON'T skin (MinimalScrollBar)]
+				local function skinElement(...)
+					local _, element
+					if _G.select("#", ...) == 2 then
+						element, _ = ...
+					elseif _G.select("#", ...) == 3 then
+						_, element, _ = ...
 					end
-					_G.ScrollUtil.AddInitializedFrameCallback(fObj.ScrollBox, skinElement, aObj, true)
+					element.ActiveBg:SetTexture(nil)
+					element:GetNormalTexture():SetTexture(nil)
+					element.Name:SetTextColor(self.BT:GetRGB())
+					self:skinObject("frame", {obj=element, fType=ftype, ofs=-3, y2=4, fb=true})
+				end
+				_G.ScrollUtil.AddInitializedFrameCallback(fObj.ScrollBox, skinElement, aObj, true)
 
-					self:Unhook(fObj, "OnShow")
-				end)
-				self:checkShown(this.MonthlyActivitiesFrame)
-			end
+				self:Unhook(fObj, "OnShow")
+			end)
+			self:checkShown(this.MonthlyActivitiesFrame)
 
 			self:SecureHookScript(this.suggestFrame, "OnShow", function(fObj)
 				local ejsfs

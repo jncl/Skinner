@@ -772,68 +772,66 @@ aObj.SetupRetail_NPCFrames = function()
 
 	end
 
-	if aObj.isRtlPTR then
-		aObj.blizzLoDFrames[ftype].PerksProgram = function(self)
-			if not self.prdb.PerksProgram or self.initialized.PerksProgram then return end
-			self.initialized.PerksProgram = true
+	aObj.blizzLoDFrames[ftype].PerksProgram = function(self)
+		if not self.prdb.PerksProgram or self.initialized.PerksProgram then return end
+		self.initialized.PerksProgram = true
 
-			self:SecureHookScript(_G.PerksProgramFrame, "OnShow", function(this)
-				self:removeNineSlice(this.ProductsFrame.ProductsScrollBoxContainer.Border)
-				self:skinObject("frame", {obj=this.ProductsFrame.ProductsScrollBoxContainer, fType=ftype, kfs=true, x1=-4})
-				self:skinObject("scrollbar", {obj=this.ProductsFrame.ProductsScrollBoxContainer.ScrollBar, fType=ftype})
-				local function skinElement(...)
-					local _, element, new
-					if _G.select("#", ...) == 2 then
-						element, _ = ...
-					elseif _G.select("#", ...) == 3 then
-						element, _, new = ...
-					else
-						_, element, _, new = ...
-					end
-					if new ~= false then
-						if aObj.modBtnBs then
-							aObj:addButtonBorder{obj=element.ContentsContainer, relTo=element.ContentsContainer.Icon, fType=ftype, clr="grey"}
-						end
+		self:SecureHookScript(_G.PerksProgramFrame, "OnShow", function(this)
+			self:removeNineSlice(this.ProductsFrame.ProductsScrollBoxContainer.Border)
+			self:skinObject("frame", {obj=this.ProductsFrame.ProductsScrollBoxContainer, fType=ftype, kfs=true, x1=-4})
+			self:skinObject("scrollbar", {obj=this.ProductsFrame.ProductsScrollBoxContainer.ScrollBar, fType=ftype})
+			local function skinElement(...)
+				local _, element, new
+				if _G.select("#", ...) == 2 then
+					element, _ = ...
+				elseif _G.select("#", ...) == 3 then
+					element, _, new = ...
+				else
+					_, element, _, new = ...
+				end
+				if new ~= false then
+					if aObj.modBtnBs then
+						aObj:addButtonBorder{obj=element.ContentsContainer, relTo=element.ContentsContainer.Icon, fType=ftype, clr="grey"}
 					end
 				end
-				_G.ScrollUtil.AddAcquiredFrameCallback(this.ProductsFrame.ProductsScrollBoxContainer.ScrollBox, skinElement, aObj, true)
+			end
+			_G.ScrollUtil.AddAcquiredFrameCallback(this.ProductsFrame.ProductsScrollBoxContainer.ScrollBox, skinElement, aObj, true)
 
-				self:removeNineSlice(this.ProductsFrame.ProductsScrollBoxContainer.PerksProgramHoldFrame.NineSlice)
-				-- .FrozenItemFrame
-					-- .FrozenButton
-				self:removeNineSlice(this.ProductsFrame.PerksProgramProductDetailsContainerFrame.Border)
-				self:skinObject("frame", {obj=this.ProductsFrame.PerksProgramProductDetailsContainerFrame, fType=ftype, kfs=true})
-				-- .DetailsFrame
-				-- .DividerFrame
-				-- .CarouselFrame
-					-- .DecrementButton
-					-- .IncrementButton
+			self:removeNineSlice(this.ProductsFrame.ProductsScrollBoxContainer.PerksProgramHoldFrame.NineSlice)
+			-- .FrozenItemFrame
+				-- .FrozenButton
+			self:removeNineSlice(this.ProductsFrame.PerksProgramProductDetailsContainerFrame.Border)
+			self:skinObject("frame", {obj=this.ProductsFrame.PerksProgramProductDetailsContainerFrame, fType=ftype, kfs=true})
+			-- .DetailsFrame
+			-- .DividerFrame
+			-- .CarouselFrame
+				-- .DecrementButton
+				-- .IncrementButton
 
-				if self.modBtns then
-					self:skinStdButton{obj=this.ProductsFrame.PerksProgramFilter.FilterDropDownButton, fType=ftype, ofs=-5, y2=8, clr="grey"}
-					self:skinStdButton{obj=this.FooterFrame.LeaveButton, fType=ftype, ofs=-4}
-					self:skinStdButton{obj=this.FooterFrame.PurchaseButton, fType=ftype--[[, schk=true]], sechk=true, ofs=-4}
-					self:skinStdButton{obj=this.FooterFrame.RefundButton, fType=ftype, ofs=-4}
-				end
-				if self.modBtnBs then
-					self:addButtonBorder{obj=this.ProductsFrame.PerksProgramCurrencyFrame, fType=ftype, relTo=this.ProductsFrame.PerksProgramCurrencyFrame.Icon, clr="grey"}
-					self:addButtonBorder{obj=this.FooterFrame.RotateButtonContainer.RotateLeftButton, fType=ftype, ofs=-3, clr="grey"}
-					self:addButtonBorder{obj=this.FooterFrame.RotateButtonContainer.RotateRightButton, fType=ftype, ofs=-3, clr="grey"}
-				end
-				if self.modChkBtns then
-					self:skinCheckButton{obj=this.FooterFrame.TogglePlayerPreview, fType=ftype}
-					self:skinCheckButton{obj=this.FooterFrame.ToggleHideArmor, fType=ftype}
-				end
+			if self.modBtns then
+				self:skinStdButton{obj=this.ProductsFrame.PerksProgramFilter.FilterDropDownButton, fType=ftype, ofs=-5, y2=8, clr="grey"}
+				self:skinStdButton{obj=this.FooterFrame.LeaveButton, fType=ftype, ofs=-4}
+				self:skinStdButton{obj=this.FooterFrame.PurchaseButton, fType=ftype--[[, schk=true]], sechk=true, ofs=-4}
+				self:skinStdButton{obj=this.FooterFrame.RefundButton, fType=ftype, ofs=-4}
+			end
+			if self.modBtnBs then
+				self:addButtonBorder{obj=this.ProductsFrame.PerksProgramCurrencyFrame, fType=ftype, relTo=this.ProductsFrame.PerksProgramCurrencyFrame.Icon, clr="grey"}
+				self:addButtonBorder{obj=this.FooterFrame.RotateButtonContainer.RotateLeftButton, fType=ftype, ofs=-3, clr="grey"}
+				self:addButtonBorder{obj=this.FooterFrame.RotateButtonContainer.RotateRightButton, fType=ftype, ofs=-3, clr="grey"}
+			end
+			if self.modChkBtns then
+				self:skinCheckButton{obj=this.FooterFrame.TogglePlayerPreview, fType=ftype}
+				self:skinCheckButton{obj=this.FooterFrame.ToggleHideArmor, fType=ftype}
+			end
 
-				self:Unhook(this, "OnShow")
-			end)
+			self:Unhook(this, "OnShow")
+		end)
 
-			-- tooltip
-			_G.C_Timer.After(0.1, function()
-				self:add2Table(self.ttList, _G.PerksProgramTooltip)
-			end)
+		-- tooltip
+		_G.C_Timer.After(0.1, function()
+			self:add2Table(self.ttList, _G.PerksProgramTooltip)
+		end)
 
-		end
 	end
 
 	aObj.blizzFrames[ftype].PetStableFrame = function(self)
@@ -1042,7 +1040,7 @@ aObj.SetupRetail_NPCFramesOptions = function(self)
 		["Item Interaction UI"]         = true,
 		["Item Upgrade UI"]             = true,
 		["New Player Experience Guide"] = {suff = "Frame"},
-		["Perks Program"] 				= aObj.isRtlPTR and {desc = "Trading Post"} or nil,
+		["Perks Program"] 				= {desc = "Trading Post"},
 		["Rune Forge UI"]               = true,
 		["Void Storage UI"]             = true,
 	}

@@ -661,7 +661,7 @@ aObj.SetupRetail_UIFrames = function()
 				self:skinStdButton{obj=_G.CreateChannelPopup.OKButton}
 				self:skinStdButton{obj=_G.CreateChannelPopup.CancelButton}
 			end
-			self:skinObject("frame", {obj=_G.CreateChannelPopup, fType=ftype, kfs=true, hdr=aObj.isRtlPTR and true, cb=true, ofs=not aObj.isRtlPTR and -6 or nil, y1=not aObj.isRtlPTR and -7 or nil})
+			self:skinObject("frame", {obj=_G.CreateChannelPopup, fType=ftype, kfs=true, hdr=true, cb=true})
 
 			self:Unhook(this, "OnShow")
 		end)
@@ -2669,7 +2669,8 @@ aObj.SetupRetail_UIFrames = function()
 				end
 			end
 			self:SecureHookScript(_G.StatusTrackingBarManager, "OnShow", function(this)
-				this:DisableDrawLayer("OVERLAY") -- status bar textures
+				this.MainStatusTrackingBarContainer:DisableDrawLayer("OVERLAY") -- status bar textures
+				this.SecondaryStatusTrackingBarContainer:DisableDrawLayer("OVERLAY") -- status bar textures
 				skinSTBars(this)
 
 				self:Unhook(this, "OnShow")
