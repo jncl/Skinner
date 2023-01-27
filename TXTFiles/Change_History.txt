@@ -1,3 +1,16 @@
+beta10.47720.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Updated UIButtons code
+	Updatred Minimap button skinning code
+	Bugfix for ChatFrame tabs
+	Added debug lines and corrected Patch/PTR checks
+	lua check changes
+	Classic PTR changes made live
+	Updated ClassicQuestLog & Journalator skins
+	
 beta10.47215.1
 Jncl:
 	ToDo.txt
