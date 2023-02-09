@@ -2395,7 +2395,7 @@ aObj.SetupRetail_UIFrames = function()
 			self:SecureHookScript(this.ApplicationViewer, "OnShow", function(fObj)
 				fObj:DisableDrawLayer("BACKGROUND")
 				self:removeInset(fObj.Inset)
-				for _ ,type in _G.pairs{"Name", "Role", "ItemLevel"} do
+				for _ ,type in _G.pairs{"Name", "Role", "ItemLevel", "LFGApplicationViewerRating"} do
 					self:removeRegions(fObj[type .. "ColumnHeader"], {1, 2, 3})
 					if self.modBtns then
 						 self:skinStdButton{obj=fObj[type .. "ColumnHeader"]}
