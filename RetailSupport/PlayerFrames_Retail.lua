@@ -197,18 +197,23 @@ aObj.SetupRetail_PlayerFrames = function()
 				self:Unhook(fObj, "OnShow")
 			end)
 
+			local function skinSummaryAchievements()
+				for i = 1, _G.ACHIEVEMENTUI_MAX_SUMMARY_ACHIEVEMENTS do
+					skinAchievement(_G.AchievementFrameSummaryAchievements.buttons[i])
+				end
+			end
 			self:SecureHookScript(_G.AchievementFrameSummary, "OnShow", function(fObj)
 				fObj:DisableDrawLayer("BACKGROUND")
 				self:skinObject("frame", {obj=self:getChild(fObj, 1), fType=ftype, kfs=true, fb=true, ofs=0, x1=2, y2=-2})
 				_G.AchievementFrameSummaryAchievementsHeaderHeader:SetTexture(nil)
 				self:SecureHook("AchievementFrameSummary_UpdateAchievements", function(...)
-					for i = 1, _G.ACHIEVEMENTUI_MAX_SUMMARY_ACHIEVEMENTS do
-						skinAchievement(_G.AchievementFrameSummaryAchievements.buttons[i])
-					end
+					skinSummaryAchievements()
 					if _G.select("#", ...) == 0 then
 						_G.AchievementFrameSummaryAchievementsEmptyText:Hide()
 					end
 				end)
+				skinSummaryAchievements()
+				_G.AchievementFrameSummaryAchievementsEmptyText:Hide()
 				local catName = "AchievementFrameSummaryCategories"
 				_G[catName .. "HeaderTexture"]:SetTexture(nil)
 				self:moveObject{obj=_G[catName .. "StatusBarTitle"], y=-3}
