@@ -2171,6 +2171,7 @@ aObj.SetupRetail_PlayerFrames = function()
 						if btn.ItemSlotBackground then
 							btn.ItemSlotBackground:SetTexture("")
 						end
+						aObj:clrButtonFromBorder(btn)
 					end
 				end)
 				frame:UpdateItems()
