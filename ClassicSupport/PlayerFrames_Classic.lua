@@ -118,9 +118,6 @@ aObj.SetupClassic_PlayerFrames = function()
 					skinCategories()
 				end)
 				skinCategories()
-				if self.isRtl then
-					self:getChild(_G.AchievementFrameAchievements, 2):ClearBackdrop()
-				end
 				self:skinObject("frame", {obj=_G.AchievementFrameAchievements, fType=ftype, kfs=true, fb=true, y1=0, y2=-2})
 				self:skinObject("slider", {obj=_G.AchievementFrameAchievementsContainerScrollBar, fType=ftype})
 				if self.prdb.AchievementUI.style == 2 then
@@ -199,59 +196,13 @@ aObj.SetupClassic_PlayerFrames = function()
 					    self:addButtonBorder{obj=_G.AchievementFrameFilterDropDownButton, es=12, ofs=-2, x1=1}
 					end
 				end
-				if self.isRtl then
-					-- Search function
-					self:skinObject("editbox", {obj=this.searchBox, fType=ftype, si=true, six=5, ofs=-2, y1=-4, y2=4})
-					self:moveObject{obj=this.searchBox, y=-8}
-					self:skinObject("statusbar", {obj=this.searchProgressBar, fi=0, bg=this.searchProgressBar.bg})
-				end
 				self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true, ignoreHLTex=false, regions={7, 8, 9, 10}, offsets={x1=10, x2=-11, y2=-8}})
 				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, y1=7, x2=0--[[, y2=0]]})
-
-				if self.isRtl then
-					self:SecureHookScript(this.searchPreviewContainer, "OnShow", function(fObj)
-						self:adjHeight{obj=fObj, adj=((4 * 27) + 30)}
-						for i = 1, 5 do
-							fObj["searchPreview" .. i]:SetNormalTexture(nil)
-							fObj["searchPreview" .. i]:SetPushedTexture(nil)
-							fObj["searchPreview" .. i].iconFrame:SetTexture(nil)
-							if self.modBtnBs then
-								self:addButtonBorder{obj=fObj["searchPreview" .. i], relTo=fObj["searchPreview" .. i].icon}
-							end
-						end
-						fObj.showAllSearchResults:SetNormalTexture(nil)
-						fObj.showAllSearchResults:SetPushedTexture(nil)
-						self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, y1=4, y2=2})
-						_G.LowerFrameLevel(fObj.sf)
-
-						self:Unhook(fObj, "OnShow")
-					end)
-
-					self:SecureHookScript(this.searchResults, "OnShow", function(fObj)
-						fObj.scrollFrame:SetPoint("BOTTOMRIGHT", fObj.bottomRightCorner, "RIGHT", -26, 8)
-						self:skinObject("slider", {obj=fObj.scrollFrame.scrollBar, fType=ftype})
-						for _, btn in _G.pairs(fObj.scrollFrame.buttons) do
-							btn:SetNormalTexture(nil)
-							btn:SetPushedTexture(nil)
-							btn.iconFrame:SetTexture(nil)
-							if self.modBtnBs then
-								self:addButtonBorder{obj=btn, relTo=btn.icon}
-							end
-						end
-						self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, cb=true, x1=-8, y1=-1, x2=1})
-
-						self:Unhook(fObj, "OnShow")
-					end)
-				end
 
 				self:SecureHookScript(_G.AchievementFrameStats, "OnShow", function(fObj)
 					self:skinObject("slider", {obj=_G.AchievementFrameStatsContainerScrollBar, fType=ftype})
 					_G.AchievementFrameStatsBG:SetAlpha(0)
-					if self.isRtl then
-						self:getChild(fObj, 3):ClearBackdrop()
-					else
-						self:removeNineSlice(self:getChild(fObj, 3).NineSlice)
-					end
+					self:removeNineSlice(self:getChild(fObj, 3).NineSlice)
 					self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, fb=true, y1=0, y2=-2})
 					local function skinStats()
 						for _, btn in _G.pairs(_G.AchievementFrameStatsContainer.buttons) do
@@ -279,14 +230,10 @@ aObj.SetupClassic_PlayerFrames = function()
 					cleanButtons(_G.AchievementFrameSummaryAchievements, "Summary")
 					-- Categories SubPanel
 					self:keepFontStrings(_G.AchievementFrameSummaryCategoriesHeader)
-					for i = 1, self.isRtl and 12 or 8 do
+					for i = 1, 8 do
 						skinSB("AchievementFrameSummaryCategoriesCategory" .. i, "Label")
 					end
-					if self.isRtl then
-						self:getChild(fObj, 1):ClearBackdrop()
-					else
-						self:removeNineSlice(self:getChild(fObj, 1).NineSlice)
-					end
+					self:removeNineSlice(self:getChild(fObj, 1).NineSlice)
 					self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, fb=true, y1=-1, y2=-2})
 					skinSB("AchievementFrameSummaryCategoriesStatusBar", "Title")
 
@@ -311,18 +258,10 @@ aObj.SetupClassic_PlayerFrames = function()
 					-- Container
 					self:skinObject("slider", {obj=_G.AchievementFrameComparisonContainerScrollBar, fType=ftype})
 					-- Summary Panel
-					if self.isRtl then
-						self:getChild(fOBj, 5):ClearBackdrop()
-					else
-						self:removeNineSlice(self:getChild(fOBj, 5).NineSlice)
-					end
+					self:removeNineSlice(self:getChild(fOBj, 5).NineSlice)
 					self:skinObject("frame", {obj=fOBj, fType=ftype, kfs=true, fb=true, y1=0, y2=-2})
 					for _, type in _G.pairs{"Player", "Friend"} do
-						if self.isRtl then
-							_G["AchievementFrameComparisonSummary" .. type]:ClearBackdrop()
-						else
-							self:removeNineSlice(_G["AchievementFrameComparisonSummary" .. type].NineSlice)
-						end
+						self:removeNineSlice(_G["AchievementFrameComparisonSummary" .. type].NineSlice)
 						_G["AchievementFrameComparisonSummary" .. type .. "Background"]:SetAlpha(0)
 						skinSB("AchievementFrameComparisonSummary" .. type .. "StatusBar", "Title")
 					end
@@ -1337,15 +1276,13 @@ aObj.SetupClassic_PlayerFrames = function()
 
 			frame:DisableDrawLayer("BACKGROUND")
 			frame:DisableDrawLayer("BORDER")
-			if not aObj.isRtl then
-				local fName = frame:GetName()
-				_G[fName .. "SlotTexture"]:SetTexture(nil)
-				_G[fName .. "NameFrame"]:SetTexture(nil)
-				_G[fName .. "Corner"]:SetAlpha(0)
-				frame.Timer:DisableDrawLayer("ARTWORK")
-				if aObj.modBtnBs then
-					aObj:addButtonBorder{obj=frame, relTo=frame.Icon, reParent={frame.Count}}
-				end
+			local fName = frame:GetName()
+			_G[fName .. "SlotTexture"]:SetTexture(nil)
+			_G[fName .. "NameFrame"]:SetTexture(nil)
+			_G[fName .. "Corner"]:SetAlpha(0)
+			frame.Timer:DisableDrawLayer("ARTWORK")
+			if aObj.modBtnBs then
+				aObj:addButtonBorder{obj=frame, relTo=frame.Icon, reParent={frame.Count}}
 			end
 			aObj:skinObject("statusbar", {obj=frame.Timer, fi=0, bg=frame.Timer.Background})
 			-- hook this to show the Timer
@@ -1354,9 +1291,6 @@ aObj.SetupClassic_PlayerFrames = function()
 			end)
 
 			frame:SetScale(aObj.prdb.LootFrames.size ~= 1 and 0.75 or 1)
-			if aObj.isRtl then
-				frame.IconFrame.Border:SetAlpha(0)
-			end
 			if aObj.modBtns then
 				aObj:skinCloseButton{obj=frame.PassButton}
 			end
@@ -1371,10 +1305,6 @@ aObj.SetupClassic_PlayerFrames = function()
 				frame.PassButton:SetPoint("LEFT", frame.NeedButton, "RIGHT", 0, 2)
 				frame.GreedButton:ClearAllPoints()
 				frame.GreedButton:SetPoint("RIGHT", frame.NeedButton, "LEFT")
-				if aObj.isRtl then
-					frame.DisenchantButton:ClearAllPoints()
-					frame.DisenchantButton:SetPoint("RIGHT", frame.GreedButton, "LEFT", 2, 0)
-				end
 				aObj:adjWidth{obj=frame.Timer, adj=-30}
 				frame.Timer:ClearAllPoints()
 				frame.Timer:SetPoint("BOTTOMRIGHT", "$parent", "BOTTOMRIGHT", -10, 13)
@@ -1406,33 +1336,6 @@ aObj.SetupClassic_PlayerFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
-
-		if self.isRtl then
-			self:SecureHookScript(_G.BonusRollFrame, "OnShow", function(this)
-				self:removeRegions(this, {1, 2, 3, 5})
-				self:skinObject("statusbar", {obj=this.PromptFrame.Timer, fi=0})
-				self:skinObject("frame", {obj=this, fType=ftype, bg=true})
-				if self.modBtnBs then
-					 self:addButtonBorder{obj=this.PromptFrame, relTo=this.PromptFrame.Icon, reParent={this.SpecIcon}}
-				end
-
-				self:Unhook(this, "OnShow")
-			end)
-			self:SecureHookScript(_G.BonusRollLootWonFrame, "OnShow", function(this)
-				this:DisableDrawLayer("BACKGROUND")
-				if this.SpecRing then this.SpecRing:SetTexture(nil) end
-				self:skinObject("frame", {obj=this, fType=ftype, ofs=-10, y2=8})
-
-				self:Unhook(this, "OnShow")
-			end)
-			self:SecureHookScript(_G.BonusRollMoneyWonFrame, "OnShow", function(this)
-				this:DisableDrawLayer("BACKGROUND")
-				if this.SpecRing then this.SpecRing:SetTexture(nil) end
-				self:skinObject("frame", {obj=this, fType=ftype, ofs=-8, y2=8})
-
-				self:Unhook(this, "OnShow")
-			end)
-		end
 
 	end
 
