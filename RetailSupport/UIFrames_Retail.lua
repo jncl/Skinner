@@ -3840,7 +3840,7 @@ aObj.SetupRetail_UIFrames = function()
 					-- Button
 					if element.Toggle then
 						if aObj.modBtnBs then
-							aObj:skinExpandButton{obj=element.Toggle, fType=ftype, noddl=true, noHook=true, plus=true, ofs=0}
+							aObj:skinExpandButton{obj=element.Toggle, fType=ftype, noddl=true, noHook=true, plus=true, ofs=-2}
 							aObj:SecureHook(element, "SetExpanded", function(bObj, expanded)
 								if expanded then
 									bObj.Toggle:SetText(aObj.modUIBtns.minus)
