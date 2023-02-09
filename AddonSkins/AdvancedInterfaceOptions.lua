@@ -1,8 +1,7 @@
 local _, aObj = ...
 if not aObj:isAddonEnabled("AdvancedInterfaceOptions") then return end
-local _G = _G
 
-aObj.addonsToSkin.AdvancedInterfaceOptions = function(self) -- v 1.6.0
+aObj.addonsToSkin.AdvancedInterfaceOptions = function(self) -- v 1.8.4
 
 	local cnt = 0
 	self.RegisterCallback("AdvancedInterfaceOptions", "IOFPanel_Before_Skinning", function(_, panel)
@@ -23,8 +22,7 @@ aObj.addonsToSkin.AdvancedInterfaceOptions = function(self) -- v 1.6.0
 			local bFrame = self:getChild(panel, 2)
 			self:keepFontStrings(bFrame)
 			self:removeInset(bFrame)
-			self:removeNineSlice(bFrame.NineSlice)
-			self:skinObject("slider", {obj=self:getChild(bFrame, 3)})
+			self:skinObject("slider", {obj=bFrame.scrollbar})
 		end
 
 		if cnt == 6 then

@@ -2,7 +2,7 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("TipTac") then return end
 local _G = _G
 
-aObj.addonsToSkin.TipTac = function(self) -- v 22.02.23
+aObj.addonsToSkin.TipTac = function(self) -- v 23.02.06
 
 	-- Anchor frame
 	self:SecureHookScript(_G.TipTac, "OnShow", function(this)
@@ -23,7 +23,7 @@ aObj.addonsToSkin.TipTac = function(self) -- v 22.02.23
 	_G.TipTac_Config.backdropInsets = self.prdb.BdInset
 	_G.TipTac_Config.gradientTip = false
 	_G.TipTac_Config.pixelPerfectBackdrop = false
-	_G.TipTac:ApplySettings()
+	_G.TipTac:ApplyConfig()
 
 end
 

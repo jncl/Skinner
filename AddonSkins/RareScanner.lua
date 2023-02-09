@@ -2,7 +2,7 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("RareScanner") then return end
 local _G = _G
 
-aObj.addonsToSkin.RareScanner = function(self) -- v 10.0.2.6/3.4.0.1
+aObj.addonsToSkin.RareScanner = function(self) -- v 10.0.5.2/3.4.1
 
 	if self.isRtl then
 		-- EditBox on WorldMapFrame
@@ -38,7 +38,7 @@ aObj.addonsToSkin.RareScanner = function(self) -- v 10.0.2.6/3.4.0.1
 			self:skinObject("frame", {obj=this.RareNPCList, fb=true, ofs=0})
 			this.RareInfo:DisableDrawLayer("BORDER")
 			this.RareInfo.RaisedFrameEdges:DisableDrawLayer("BORDER")
-			for _, type	in _G.pairs{"Mounts", "Pets", "Toys", "Appearances"} do
+			for _, type	in _G.pairs{"Mounts", "Pets", "Toys", "Drakewatcher", "Appearances"} do
 				this.RareInfo[type].Background1:SetTexture(nil)
 				this.RareInfo[type].NoItems:SetTextColor(self.BT:GetRGB())
 			end
@@ -63,7 +63,6 @@ aObj.addonsToSkin.RareScanner = function(self) -- v 10.0.2.6/3.4.0.1
 			end
 			if self.modChkBtns then
 				self:skinCheckButton{obj=this.Control.AutoFilterCheckButton}
-				self:skinCheckButton{obj=this.Control.FilterWorldmapCheckButton}
 				self:skinCheckButton{obj=this.Control.CreateProfilesBackupCheckButton}
 			end
 
@@ -74,8 +73,8 @@ aObj.addonsToSkin.RareScanner = function(self) -- v 10.0.2.6/3.4.0.1
 	self:SecureHookScript(_G.scanner_button, "OnShow", function(this)
 		self:skinObject("frame", {obj=this, kfs=true, sft=true, cbns=true})
 		if self.modBtns then
-			self:skinOtherButton{obj=this.FilterDisabledButton, text=self.modUIBtns.minus, noSkin=true}
-			self:skinOtherButton{obj=this.FilterEnabledButton, text=self.modUIBtns.plus, noSkin=true}
+			self:skinOtherButton{obj=this.FilterEntityButton, text=self.modUIBtns.minus, noSkin=true}
+			-- self:skinOtherButton{obj=this.UnfilterEnabledButton, text=self.modUIBtns.plus, noSkin=true}
 		end
 		-- TODO: skin loot buttons
 
@@ -93,6 +92,7 @@ aObj.addonsToSkin.RareScanner = function(self) -- v 10.0.2.6/3.4.0.1
 		self:add2Table(self.ttList, _G.RSMapItemToolTip)
 		self:add2Table(self.ttList, _G.RSMapItemToolTipComp1)
 		self:add2Table(self.ttList, _G.RSMapItemToolTipComp2)
+		self:add2Table(self.ttList, _G["AceConfigDialogTooltip-RSmod"])
 	end)
 
 end
