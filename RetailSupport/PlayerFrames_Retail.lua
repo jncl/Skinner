@@ -3693,6 +3693,7 @@ aObj.SetupRetail_PlayerFrames = function()
 		_G.ObjectiveTrackerFrame.BlocksFrame.CampaignQuestHeader.Background:SetTexture(nil)
 		_G.ObjectiveTrackerFrame.BlocksFrame.QuestHeader.Background:SetTexture(nil)
 		_G.ObjectiveTrackerFrame.BlocksFrame.ScenarioHeader.Background:SetTexture(nil)
+		_G.ObjectiveTrackerFrame.BlocksFrame.MonthlyActivitiesHeader.Background:SetTexture(nil)
 		_G.BONUS_OBJECTIVE_TRACKER_MODULE.Header.Background:SetTexture(nil)
 		_G.WORLD_QUEST_TRACKER_MODULE.Header.Background:SetTexture(nil)
 
