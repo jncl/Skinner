@@ -32,35 +32,59 @@ ToDos
 
 ~	I	ADDON_ACTION_BLOCKED/ADDON_ACTION_FORBIDDEN, reported by various, *.11.22 (An action was blocked because of taint from, An action was blocked in combat because of taint from)
 √		- Disable Action Button skinning for MainMenuBar
-√		- Disable Nameplate skinning
 √		- Disable ContainerFrames skinning
+√		- Disable OverrideActionBar skinning
+
+√		- Disable Nameplate skinning
 √		- Disable CompactUnitFrame(s) skinning
 √		- Disable UnitFrame(s) skinning
-√		- Disable OverrideActionBar skinning
 
 ?		- Disable CastingBar skinning
 
 		- Use a Action Button AddOn
 		- Use a Bag AddOn
 		
-	I/C	Tabs, reported by EpidemeDaBear, 16.10.22
-≈		- Non textured tabs are below frame
+	I/W	Tabs, reported by EpidemeDaBear, 16.10.22
+		- Non textured tabs are below frame
 		
 	I	Tab positioning, reported by Fakelessgaming, 24.10.22/08.01.23
-≈		- Review Top/Bottom tab positioning using 1 pixel border
+		- Review Top/Bottom tab positioning using 1 pixel border
 
-	I/W	GossipFrame, reported by amey0/Sausje, 22.01.23/24.1.23
-√		- 7x Interface/AddOns/Skinner/Core/UtilFuncs.lua:851: attempt to index local 'obj' (a nil value)
-		[string "@Interface/AddOns/Skinner/Core/UtilFuncs.lua"]:851: in function `keepFontStrings'
-		[string "@Interface/AddOns/Skinner/ClassicSupport/NPCFrames_Classic.lua"]:304: in function
-		<.../AddOns/Skinner/ClassicSupport/NPCFrames_Classic.lua:303>
-	
-	I/W	GossipFrame, reported by amey0/Sausje, 22.01.23/24.1.23
-√		- 8x .../AddOns/Skinner/ClassicSupport/NPCFrames_Classic.lua:282: 'for' limit must be a number
-		[string "@Interface/AddOns/Skinner/ClassicSupport/NPCFrames_Classic.lua"]:282: in function
-		<.../AddOns/Skinner/ClassicSupport/NPCFrames_Classic.lua:281>
+	I/W	AdvancedInterfaceOptions, reported by ZylxTV, 28.01.23
+√		- 1x Skinner/Core/UtilFuncs.lua:1058: attempt to index local 'frame' (a nil value)
+		[string "@Skinner/Core/UtilFuncs.lua"]:1058: in function <Skinner/Core/UtilFuncs.lua:1057>
+		[string "@Skinner/Core/UtilFuncs.lua"]:1091: in function `removeNineSlice'
+		[string "@Skinner/AddonSkins/AdvancedInterfaceOptions.lua"]:26: in function <...dOns/Skinner/AddonSkins/AdvancedInterfaceOptions.lua:8>
 
-	I	ClassTalentFrame, reported by Galthariel, 25.01.23
-√		- 16x Skinner/RetailSupport/PlayerFrames_Retail.lua:989: attempt to index field 'PortraitOverlay' (a nil value)
-		[string "@Skinner/RetailSupport/PlayerFrames_Retail.lua"]:989:
-		in function <Skinner/RetailSupport/PlayerFrames_Retail.lua:987>
+	I	RareScanner, reported by Acivien, 31.01.23
+√		- 84x Skinner/Modules/UIButtons.lua:511: attempt to index field 'obj' (a nil value)
+		[string "@Skinner/Modules/UIButtons.lua"]:511: in function `skinOtherButton'
+		[string "@Skinner/AddonSkins/RareScanner.lua"]:77: in function <Skinner/AddonSkins/RareScanner.lua:74>
+		
+	I	Tiptac, reported by DarkLimpan, 05.02.23
+√		- 9x Skinner/AddonSkins/TipTac.lua:26: attempt to call method 'ApplySettings' (a nil value)
+
+	I	Tooltips, reported by Fakelessgaming, 09.02.23
+√		- tooltip skin causes UseToy() errors amongst others
+
+	I	AchievementFrame, reported by Fakelessgaming, 09.02.23
+√		- Summary Frame Achievevment sub text not coloured correctly when first shown
+		
+	I	LFG, reported by Fakelessgaming, 09.02.23
+√		- Texture visible on heading line for Dungeons & Raids
+		
+√	I/E	QuestLogFrame, reported by amey0, 10.02.23
+
+	I	Dominos, reported by Nylrith/ilias222, 14.02.23/15.02.23
+		- Errors on mouseover/click of action buttons
+		
+	I/W	reported by ZylxTV, 22.02.23
+√		- Skinner/Core/NewSkinFuncs.lua:535: attempt to index field 'obj' (a nil value)
+		[string "@Skinner/Core/NewSkinFuncs.lua"]:535: in function <Skinner/Core/NewSkinFuncs.lua:524>
+		[string "@Skinner/Core/NewSkinFuncs.lua"]:638: in function `?'
+		[string "@Skinner/Core/NewSkinFuncs.lua"]:267: in function `skinObject'
+		[string "@Skinner/Core/UIFrames.lua"]:1480: in function <Skinner/Core/UIFrames.lua:1476>
+
+	I	MainMenuBar, reported by Detraun224, 23.02.23
+√		- Skinner is somehow disableing the Blizzard Art Bar in Bartender 4. How do I fix this? I want the Blizzard Art Bar
+		

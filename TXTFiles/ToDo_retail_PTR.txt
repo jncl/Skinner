@@ -6,7 +6,7 @@ ToDo_retail_PTR
 	x				- indicates nothing to change
 	¶ is Alt+7		- indicates localisation changes required
 
-	Retail_PTR (Dragonflight 10.0.0)
+	Retail_PTR (Dragonflight 10.0.5)
 		- Added
 		- Updated
 		- Deleted

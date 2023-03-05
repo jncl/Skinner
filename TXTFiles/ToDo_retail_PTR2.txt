@@ -1,0 +1,18 @@
+ToDo_retail_PTR2
+±±±±±±±±±±±±±±±±
+
+	√ is Alt+v		- indicates completed
+	≈ is Alt+x		- indicates partially completed or dry-coded
+	x				- indicates nothing to change
+	¶ is Alt+7		- indicates localisation changes required
+
+	Retail_PTR2 (Dragonflight 10.0.7)
+		- Added
+		- Updated
+√			- ItemSocketing gems table
+			- Blizzard_ProfessionsCrafterOrderView
+			- Blizzard_ProfessionsSpecializations
+			- Blizzard_ProfessionsCustomerOrdersForm
+			- AlertFrameSystems
+			- RecruitAFriendFrame
+		- Deleted
