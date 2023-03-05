@@ -1287,7 +1287,7 @@ aObj.SetupOptions = function(self)
 	local pfOptTab = {
 		["Buffs"]             = {desc = "Buffs Buttons"},
 		["Character Frames"]  = true,
-		["Compact Frames"]    = true,
+		["Compact Frames"]    = not self.isRtl and true or nil,
 		["Dress Up Frame"]    = true,
 		["Friends Frame"]     = {desc = "Social Frame"},
 		["Inspect UI"]        = true,
@@ -1322,7 +1322,7 @@ aObj.SetupOptions = function(self)
 		["Menu Frames"]           = true,
 		["Move Pad"]              = true,
 		["Movie Frame"]           = true,
-		["Nameplates"]            = true,
+		["Nameplates"]            = not self.isRtl and true or nil,
 		["Override Action Bar"]   = not self.isClscERA and {desc = "Vehicle UI"} or nil,
 		["PTR Feedback"]          = _G.PTR_IssueReporter and {suff = "Frames"} or nil,
 		["Raid Frame"]            = true,
@@ -1341,8 +1341,10 @@ aObj.SetupOptions = function(self)
 
 	-- module options
 	for _, mod in self:IterateModules() do
-		if mod.GetOptions then
-			self.optTables["Modules"].args[mod.name] = mod:GetOptions()
+		if mod:IsEnabled() then
+			if mod.GetOptions then
+				self.optTables["Modules"].args[mod.name] = mod:GetOptions()
+			end
 		end
 	end
 
