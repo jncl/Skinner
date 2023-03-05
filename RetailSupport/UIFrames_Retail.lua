@@ -3516,7 +3516,7 @@ aObj.SetupRetail_UIFrames = function()
 					end
 				end
 				if self.modBtns then
-					for hdr in _G.QuestScrollFrame.headerFramePool:EnumerateActive() do
+					for hdr in this.QuestsFrame.headerFramePool:EnumerateActive() do
 						skinEB(hdr)
 					end
 				end
@@ -3557,12 +3557,22 @@ aObj.SetupRetail_UIFrames = function()
 				end)
 			end
 			-- CampaignOverview
-			this.CampaignOverview.BG:SetTexture(nil)
 			self:keepFontStrings(this.CampaignOverview.Header)
+			self:skinObject("slider", {obj=this.CampaignOverview.ScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
+			this.CampaignOverview.BG:SetTexture(nil)
 			self:SecureHook(this.CampaignOverview, "UpdateCampaignLoreText", function(fObj, _, _)
 				for tex in fObj.texturePool:EnumerateActive() do
 					tex:SetTexture(nil)
 				end
+			end)
+
+			local wct = this.QuestsFrame.CampaignTooltip
+			wct.ItemTooltip.FollowerTooltip.PortraitFrame.PortraitRing:SetTexture(nil)
+			wct.ItemTooltip.FollowerTooltip.PortraitFrame.LevelBorder:SetAlpha(0)
+			_G.C_Timer.After(0.1, function()
+				wct.ofs = -2
+				self.ttHook[wct] = "Show"
+				self:add2Table(self.ttList, wct)
 			end)
 
 			self:Unhook(this, "OnShow")
@@ -3582,16 +3592,6 @@ aObj.SetupRetail_UIFrames = function()
 			end
 
 			self:Unhook(this, "OnShow")
-		end)
-
-		-- tooltip
-		-- BETA: Tooltip name change
-		local wct = _G.QuestMapFrame.QuestsFrame.CampaignTooltip
-		wct.ItemTooltip.FollowerTooltip.PortraitFrame.PortraitRing:SetTexture(nil)
-		wct.ItemTooltip.FollowerTooltip.PortraitFrame.LevelBorder:SetAlpha(0)
-		_G.C_Timer.After(0.1, function()
-			wct.ofs = -2
-			self:add2Table(self.ttList, wct)
 		end)
 
 	end
