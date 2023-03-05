@@ -499,7 +499,7 @@ function module:skinTargetF()
 			    aObj:add2Table(aObj.oocTab, {skinTargetFrame, {frame}})
 			    return
 			end
-			module:skinButton("TargetFrame")
+			module:skinButton(frame:GetName())
 			module:skinUnitButton{obj=frame.totFrame}
 			module:skinCommon(frame.totFrame:GetName(), true)
 			-- move level text down, so it is more visible
@@ -560,9 +560,9 @@ function module:skinFocusF()
 			    aObj:add2Table(aObj.oocTab, {skinFocusFrame, {frame}})
 			    return
 			end
-			module:skinButton("FocusFrame", false)
+			module:skinButton(frame:GetName(), false)
 			module:skinUnitButton{obj=frame.totFrame, x2=4, y2=4}
-			module:skinCommon("FocusFrameToT", true)
+			module:skinCommon(frame.totFrame:GetName(), true)
 			if not aObj.isRtl then
 				aObj:moveObject{obj=_G["FocusFrameToTHealthBar"], y=-2} -- move HealthBar down to match other frames
 			end
@@ -722,6 +722,13 @@ end
 
 function module:OnInitialize()
 
+	-- disable ourself if another unitframe addon is loaded
+	if _G.IsAddOnLoaded("Perl_Config")
+	or _G.IsAddOnLoaded("XPerl")
+	then
+		self:SetEnabledState(false)
+	end
+
 	self.db = aObj.db:RegisterNamespace("UnitFrames", defaults)
 	db = self.db.profile
 
@@ -741,23 +748,14 @@ function module:OnInitialize()
 	and not db.pet
 	and not db.arena
 	then
-		self:Disable()
-		aObj.blizzLoDFrames[ftype].ArenaUI = _G.nop
+		self:SetEnabledState(false)
 	end
 
-	-- disable ourself if another unitframe addon is loaded
-	if _G.IsAddOnLoaded("Perl_Config")
-	or _G.IsAddOnLoaded("XPerl")
-	then
-		self:Disable()
-		aObj.blizzLoDFrames[ftype].ArenaUI = _G.nop
-	end
+end
 
-	-- disable module as it causee ADDON_ACTION_BLOCKED/ADDON_ACTION_FORBIDDEN errors
-	if self.isRtl then
-		self:Disable()
-		aObj.blizzLoDFrames[ftype].ArenaUI = _G.nop
-	end
+function module:OnDisable()
+
+	aObj.blizzLoDFrames[ftype].ArenaUI = _G.nop
 
 end
 
@@ -840,8 +838,25 @@ function module:GetOptions()
 		set = function(info, value)
 			if not self:IsEnabled() then self:Enable() end
 			db[info[#info]] = value
-			if info[#info] == "petspec" then db.pet = true end -- enable pet frame when enabled
-			if info[#info] == "petlvl" then db.pet = true end -- enable pet frame when enabled (Classic Support)
+			 -- enable pet frame when enabled
+			if info[#info] == "petspec"
+			and value == true
+			then
+				db.pet = true
+			end
+			 -- enable pet frame when enabled (Classic Support)
+			if info[#info] == "petlvl"
+			and value == true
+			then
+				db.pet = true
+			end
+			-- disable if required
+			if info[#info] == "pet"
+			and value == false
+			then
+				if db.petspec then db.petspec = value end
+				if db.petlvl then db.petlvl = value end
+			end
 			self:adjustUnitFrames(info[#info])
 		end,
 		args = {
