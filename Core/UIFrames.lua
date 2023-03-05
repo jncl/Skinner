@@ -1214,7 +1214,8 @@ aObj.blizzLoDFrames[ftype].DebugTools = function(self)
 		self:Unhook(this, "OnShow")
 	end)
 
-	-- tooltips
+	-- tooltip
+	self.ttHook[_G.FrameStackTooltip] = "OnUpdate"
 	_G.C_Timer.After(0.1, function()
 		self:add2Table(self.ttList, _G.FrameStackTooltip)
 		_G.FrameStackTooltip:SetFrameLevel(20)
@@ -1477,7 +1478,7 @@ aObj.blizzLoDFrames[ftype].MacroUI = function(self)
 	self:SecureHookScript(_G.MacroFrame, "OnShow", function(this)
 		-- Top Tabs
 		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true, upwards=true, offsets={x1=1, y1=-6, x2=-1, y2=self.isTT and -2 or 3}, func=function(tab) tab:SetFrameLevel(20) end})
-		if not self.isRtl then
+		if self.isClscERA then
 			self:skinObject("frame", {obj=_G.MacroButtonScrollFrame, fType=ftype, kfs=true, fb=true, ofs=12, y1=10, x2=31})
 			self:skinObject("slider", {obj=_G.MacroButtonScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
 		else
@@ -1504,7 +1505,7 @@ aObj.blizzLoDFrames[ftype].MacroUI = function(self)
 		self:skinObject("slider", {obj=_G.MacroFrameScrollFrame.ScrollBar, fType=ftype})
 		self:skinObject("frame", {obj=_G.MacroFrameTextBackground, fType=ftype, kfs=true, rns=true, fb=true, ofs=0, x2=1})
 		_G.MacroFrameSelectedMacroButton:DisableDrawLayer("BACKGROUND")
-		if not self.isRtl then
+		if self.isClscERA then
 			for i = 1, _G.MAX_ACCOUNT_MACROS do
 				_G["MacroButton" .. i]:DisableDrawLayer("BACKGROUND")
 				if self.modBtnBs then
@@ -2156,7 +2157,7 @@ end
 
 if not aObj.isClscERA then
 	aObj.blizzFrames[ftype].OverrideActionBar = function(self) -- a.k.a. Vehicle UI
-		if not self.prdb.OverrideActionBar  or self.initialized.OverrideActionBar then return end
+		if not self.prdb.OverrideActionBar or self.initialized.OverrideActionBar then return end
 		self.initialized.OverrideActionBar = true
 
 		self:SecureHookScript(_G.OverrideActionBar, "OnShow", function(this)
@@ -2483,15 +2484,28 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 		_G.rawset(tab, tTip, true)
 		-- skin here so tooltip initially skinned
 		self:skinObject("tooltip", {obj=tTip, ftype=tTip.ftype})
-		-- hook this to prevent Gradient overlay when tooltip reshown
-		self:HookScript(tTip, "OnUpdate", function(this)
-			self:applyTooltipGradient(this.sf)
-		end)
-		-- hook Show function for tooltips which don't get Updated
+		-- ensure tooltip gradient updated
+		if not self.ttHook[tTip] then
+			if self.isRtl then
+				self.ttHook[tTip] = "OnShow"
+			else
+				self.ttHook[tTip] = "OnUpdate"
+			end
+		end
+		-- hook Show function for tooltips as required
+		-- handle specified function if required [QuestMapFrame.QuestsFrame.CampaignTooltip uses this]
 		if self.ttHook[tTip] then
-			self:SecureHookScript(tTip, "OnShow", function(this)
-				self:applyTooltipGradient(this.sf)
-			end)
+			if self.ttHook[tTip]:find("^On%u")
+			and tTip:HasScript(self.ttHook[tTip])
+			then
+				self:SecureHookScript(tTip, self.ttHook[tTip], function(this)
+					self:applyTooltipGradient(this.sf)
+				end)
+			else
+				self:SecureHook(tTip, self.ttHook[tTip], function(this)
+					self:applyTooltipGradient(this.sf)
+				end)
+			end
 		end
 		-- if it has an ItemTooltip then add a button border
 		if tTip.ItemTooltip
@@ -2522,27 +2536,37 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 		tTip.ftype = ftype
 		aObj:add2Table(aObj.ttList, tTip)
 	end
-	for _, tTip in _G.pairs{_G.GameTooltip, _G.EmbeddedItemTooltip, _G.GameNoHeaderTooltip, _G.GameSmallHeaderTooltip,  _G.ItemRefTooltip, _G.SmallTextTooltip} do
-		addTooltip(tTip)
-		if tTip.shoppingTooltips then
-			for _, tip in _G.pairs(tTip.shoppingTooltips) do
-				if not _G.rawget(self.ttList, tip) then
-					addTooltip(tip)
-				end
-			end
+	local toolTips = {
+		_G.ShoppingTooltip1,
+		_G.ShoppingTooltip2,
+		_G.GameTooltip,
+		_G.EmbeddedItemTooltip,
+		_G.ItemRefShoppingTooltip1,
+		_G.ItemRefShoppingTooltip2,
+		_G.ItemRefTooltip,
+	}
+	if self.isRtl then
+		-- self:add2Table(toolTips, _G.GameNoHeaderTooltip) -- N.B. defined in GameTooltip.xml but NOT referenced in code
+		self:add2Table(toolTips, _G.GameSmallHeaderTooltip)
+	else
+		self:add2Table(toolTips, _G.SmallTextTooltip)
+	end
+	for _, tTip in _G.ipairs(toolTips) do
+		if tTip == _G.GameTooltip
+		and self.isRtl
+		then
+			self.ttHook[tTip] = "Show"
 		end
+		if self:hasTextInName(tTip, "ShoppingTooltip") then
+			self.ttHook[tTip] = "SetShown"
+		end
+		addTooltip(tTip)
+	end
+	if self.modBtns then
+		self:skinCloseButton{obj=self.isRtl and _G.ItemRefTooltip.CloseButton or _G.ItemRefCloseButton, noSkin=true}
 	end
 
-	self:SecureHookScript(_G.ItemRefTooltip, "OnShow", function(this)
-		-- ensure it gets updated
-		self.ttHook[_G.ItemRefTooltip] = true
-		if self.modBtns then
-			self:skinCloseButton{obj=self.isRtl and this.CloseButton or _G.ItemRefCloseButton, noSkin=true}
-		end
-
-		self:Unhook(this, "OnShow")
-	end)
-
+	-- skin status bars
 	if self.prdb.Tooltips.glazesb then
 		self:SecureHook("GameTooltip_AddStatusBar", function(this, _)
 			for statusBar in this.statusBarPool:EnumerateActive() do
@@ -2554,16 +2578,6 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 				self:skinObject("statusbar", {obj=progressBar.Bar, regions={1, 2, 3, 4, 5}, bg=self:getRegion(progressBar.Bar, 7), nilFuncs=true})
 			end
 		end)
-	end
-
-	-- AceConfigDialog tooltip
-	addTooltip(self.ACD.tooltip)
-
-	-- SexyMapZoneTextTooltip
-	if self.isRtl then
-		if _G.IsAddOnLoaded("SexyMap") then
-			self:add2Table(self.ttList, "SexyMapZoneTextTooltip")
-		end
 	end
 
 end
