@@ -281,16 +281,13 @@ aObj.SetupClassic_UIFrames = function()
 
 		-- hook this to skin Interface Option panels
 		self:SecureHook("InterfaceOptionsList_DisplayPanel", function(panel)
-
 			-- let AddOn skins know when IOF panel is going to be skinned
 			self.callbacks:Fire("IOFPanel_Before_Skinning", panel)
-
 			-- don't skin a panel twice
 			if not self.iofSkinnedPanels[panel] then
 				skinKids(panel, panel.GetName and panel:GetName() and panel:GetName():find("InterfaceOptions") and ftype)
 				self.iofSkinnedPanels[panel] = true
 			end
-
 			-- let AddOn skins know when IOF panel has been skinned
 			self.callbacks:Fire("IOFPanel_After_Skinning", panel)
 
@@ -562,6 +559,7 @@ aObj.SetupClassic_UIFrames = function()
 		self.initialized.MainMenuBarCommon = true
 
 		if _G.IsAddOnLoaded("Bartender4") then
+			self.blizzFrames[ftype].MainMenuBarCommon = nil
 			return
 		end
 
@@ -724,9 +722,6 @@ aObj.SetupClassic_UIFrames = function()
 			self:SecureHookScript(_G.QuestLogFrame, "OnShow", function(this)
 				_G.QuestLogCollapseAllButton:DisableDrawLayer("BACKGROUND")
 				self:keepFontStrings(_G.EmptyQuestLogFrame)
-				if not self.isClscERAPTR then
-					self:keepFontStrings(_G.QuestLogCount)
-				end
 				self:skinObject("slider", {obj=_G.QuestLogListScrollFrame.ScrollBar, fType=ftype})
 				self:skinObject("slider", {obj=_G.QuestLogDetailScrollFrame.ScrollBar, fType=ftype})
 				_G.QuestLogQuestTitle:SetTextColor(self.HT:GetRGB())
