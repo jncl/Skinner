@@ -33,10 +33,8 @@ do
 end
 
 function aObj:OnInitialize()
-	--@debug@
-	self:Print("Debugging is enabled")
+
 	self:Debug("Debugging is enabled")
-	--@end-debug@
 
 	self.callbacks:Fire("AddOn_OnInitialize")
 
@@ -59,8 +57,8 @@ function aObj:OnInitialize()
 
 	-- disable functions/modules which cause ADDON_ACTION_BLOCKED/ADDON_ACTION_FORBIDDEN errors (Dragonflight changes)
 	if self.isRtl then
-		self.prdb.Nameplates           = false
-		self.prdb.CompactFrames        = false
+		self.prdb.Nameplates    = false
+		self.prdb.CompactFrames = false
 		self:DisableModule("UnitFrames")
 	end
 		-- self.prdb.OverrideActionBar    = false
@@ -270,7 +268,6 @@ end
 
 function aObj:OnEnable()
 
-	-- handle InCombat issues
 	self.oocTab = {}
 	self:RegisterEvent("PLAYER_REGEN_ENABLED", function()
 		for _, entry in _G.ipairs(self.oocTab) do
