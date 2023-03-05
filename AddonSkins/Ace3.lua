@@ -439,9 +439,11 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 	end
 	_G.wipe(objectsToSkin)
 
-	-- tooltip
+	-- tooltips
+	self.ACD.tooltip:DisableDrawLayer("OVERLAY")
 	_G.C_Timer.After(0.1, function()
 		self:add2Table(self.ttList, _G.AceGUITooltip)
+		self:add2Table(self.ttList, self.ACD.tooltip)
 	end)
 
 	-- expose function to skin already created Ace3 GUI objects
@@ -484,4 +486,5 @@ if aObj.ACD then
 
 		aObj:Unhook(this, "OnShow")
 	end)
+
 end

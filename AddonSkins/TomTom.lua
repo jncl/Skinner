@@ -19,6 +19,5 @@ aObj.addonsToSkin.TomTom = function(self) -- v 800001-1.0.0/3.0.2
 	_G.C_Timer.After(0.1, function()
 		self:add2Table(self.ttList, _G.TomTomTooltip)
 	end)
-	self.ttHook[_G.TomTomTooltip] = true
 
 end

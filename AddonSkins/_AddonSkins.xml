@@ -200,6 +200,7 @@
 <Script file="Scrap.lua"/>
 <Script file="SecureTabs.lua"/>
 <Script file="ServerHop.lua"/>
+<Script file="SexyMap.lua"/>
 <Script file="SilverDragon.lua"/>
 <Script file="Simulationcraft.lua"/>
 <Script file="SinStats.lua"/>

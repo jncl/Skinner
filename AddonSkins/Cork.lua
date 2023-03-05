@@ -6,7 +6,6 @@ aObj.addonsToSkin.Cork = function(self) -- v 7.1.0.62-Beta
 
 	-- tooltip
 	_G.C_Timer.After(0.1, function()
-		self.ttHook[_G.Corkboard] = true
 		self:add2Table(self.ttList, _G.Corkboard)
 	end)
 

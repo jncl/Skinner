@@ -1,4 +1,4 @@
-local aName, aObj = ...
+local _, aObj = ...
 local _G = _G
 -- This is a Library
 
@@ -13,7 +13,6 @@ aObj.libsToSkin["LibDBIcon-1.0"] = function(self) -- v r36
 		-- tooltip
 		_G.C_Timer.After(0.1, function()
 			self:add2Table(self.ttList, lDBI.tooltip)
-			lDBI = nil
 		end)
 	end
 
