@@ -122,6 +122,7 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 		alertType["NewToy"]                 = {ofs = -8, ddl = {"background"}, ib = true}
 		alertType["RafRewardDelivered"]     = {ofs = -10}
 		alertType["SkillLineSpecsUnlocked"] = {ofs = 0, ddl = {"background"}}
+		alertType["MonthlyActivity"]        = {ofs = 0, nt = {"Background"}, stc = "Unlocked", icon = {obj = "Icon", ddl = {"border", "overlay"}, tex ="Texture"}}
 	else
 		alertType["Achievement"].y1         = -10
 		alertType["Achievement"].y2         = 10
