@@ -1155,7 +1155,7 @@ aObj.SetupRetail_UIFrames = function()
 			if toast.Icon
 			and aObj.modBtnBs
 			then
-				aObj:addButtonBorder{obj=toast, fType=ftype, relTo=toast.Icon}
+				aObj:addButtonBorder{obj=toast, fType=ftype, relTo=toast.Icon, reParent={toast.SubIcon, toast.SubIconRight}}
 				aObj:clrButtonFromBorder(toast)
 			end
 		end
