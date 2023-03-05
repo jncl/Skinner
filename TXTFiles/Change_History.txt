@@ -1,3 +1,13 @@
+beta10.47825.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated TOC
+	Updated version check code to handle PTR changes going live correctly
+	Updated version numbers
+	Applied PTR changes
+	Updated GossipFrame skinning code for Classic/Retail
+	
 beta10.47720.1
 Jncl:
 	ToDo.txt
