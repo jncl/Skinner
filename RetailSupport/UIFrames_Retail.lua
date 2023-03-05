@@ -2575,13 +2575,15 @@ aObj.SetupRetail_UIFrames = function()
 		if self.initialized.MainMenuBar then return end
 		self.initialized.MainMenuBar = true
 
-		if _G.IsAddOnLoaded("Dominos") then
+		if _G.IsAddOnLoaded("Dominos")
+		or _G.IsAddOnLoaded("Bartender4")
+		then
 			self.blizzFrames[ftype].MainMenuBar = nil
 			return
 		end
 
-		local skinABBtn, skinMultiBarBtns
 		if self.prdb.MainMenuBar.skin then
+			local skinABBtn, skinMultiBarBtns
 			if self.modBtnBs then
 				if _G.IsAddOnLoaded("Bartender4") then
 					skinABBtn = _G.nop
@@ -2756,6 +2758,7 @@ aObj.SetupRetail_UIFrames = function()
 		if _G.IsAddOnLoaded("Dominos")
 		or _G.IsAddOnLoaded("Bartender4")
 		then
+			self.blizzFrames[ftype].MainMenuBarCommon = nil
 			return
 		end
 
