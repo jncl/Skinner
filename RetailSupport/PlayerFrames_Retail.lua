@@ -4116,19 +4116,19 @@ aObj.SetupRetail_PlayerFrames = function()
 				end
 				self:removeNineSlice(fObj.OrderList.NineSlice)
 				self:skinObject("scrollbar", {obj=fObj.OrderList.ScrollBar, fType=ftype})
-				local function skinOrderElement(...)
-					local _, element, elementData, new
-					if _G.select("#", ...) == 2 then
-						element, elementData = ...
-					elseif _G.select("#", ...) == 3 then
-						element, elementData, new = ...
-					else
-						_, element, elementData, new = ...
-					end
-					if new ~= false then
-					end
-				end
-				_G.ScrollUtil.AddAcquiredFrameCallback(fObj.OrderList.ScrollBox, skinOrderElement, aObj, true)
+				-- local function skinOrderElement(...)
+				-- 	local _, element, elementData, new
+				-- 	if _G.select("#", ...) == 2 then
+				-- 		element, elementData = ...
+				-- 	elseif _G.select("#", ...) == 3 then
+				-- 		element, elementData, new = ...
+				-- 	else
+				-- 		_, element, elementData, new = ...
+				-- 	end
+				-- 	if new ~= false then
+				-- 	end
+				-- end
+				-- _G.ScrollUtil.AddAcquiredFrameCallback(fObj.OrderList.ScrollBox, skinOrderElement, aObj, true)
 				if self.modBtnBs then
 					self:addButtonBorder{obj=fObj.RefreshButton, ofs=-2, x1=1, clr="gold", sechk=true}
 				end
