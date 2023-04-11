@@ -1346,8 +1346,10 @@ aObj.blizzLoDFrames[ftype].GuildBankUI = function(self)
 				 self:addButtonBorder{obj=tab.Button, relTo=tab.Button.IconTexture, ofs=3, x2=2}
 			end
 		end
-		self:skinObject("slider", {obj=this.Log.TransactionsScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
-		self:skinObject("slider", {obj=this.Info.ScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
+		if not aObj.isRtlPTR then
+			self:skinObject("slider", {obj=this.Log.TransactionsScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
+			self:skinObject("slider", {obj=this.Info.ScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
+		end
 		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true, cb=true, y1=self.isClsc and -11, x2=self.isClsc and 1, y2=self.isClsc and 3 or -1})
 		if self.modBtns then
 			if self.isClsc then
@@ -1596,7 +1598,11 @@ aObj.blizzFrames[ftype].MailFrame = function(self)
 		--	Send Mail Frame
 		self:keepFontStrings(_G.SendMailFrame)
 		if self.isRtl then
-			self:skinObject("slider", {obj=_G.SendMailScrollFrame.ScrollBar, fType=ftype, rpTex={"background", "artwork"}})
+			if not aObj.isRtlPTR then
+				self:skinObject("slider", {obj=_G.SendMailScrollFrame.ScrollBar, fType=ftype, rpTex={"background", "artwork"}})
+			else
+				_G.SendMailScrollFrame:DisableDrawLayer("BACKGROUND")
+			end
 			_G.SendMailBodyEditBox:SetTextColor(self.prdb.BodyText.r, self.prdb.BodyText.g, self.prdb.BodyText.b)
 		else
 			_G.MailEditBox.ScrollBox.EditBox:SetTextColor(self.BT:GetRGB())
@@ -1631,7 +1637,9 @@ aObj.blizzFrames[ftype].MailFrame = function(self)
 		end
 		--	Open Mail Frame
 		_G.OpenMailScrollFrame:DisableDrawLayer("BACKGROUND")
-		self:skinObject("slider", {obj=_G.OpenMailScrollFrame.ScrollBar, fType=ftype, rpTex="overlay"})
+		if not aObj.isRtlPTR then
+			self:skinObject("slider", {obj=_G.OpenMailScrollFrame.ScrollBar, fType=ftype, rpTex="overlay"})
+		end
 		_G.OpenMailBodyText:SetTextColor("P", self.BT:GetRGB())
 		self:skinObject("frame", {obj=_G.OpenMailFrame, fType=ftype, kfs=true, ri=true, cb=true})
 		if self.modBtns then

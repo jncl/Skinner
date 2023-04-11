@@ -2364,7 +2364,9 @@ aObj.SetupRetail_PlayerFrames = function()
 			this.navBar.home.text:SetPoint("RIGHT", -20, 0)
 			self:skinObject("editbox", {obj=this.searchBox, fType=ftype, si=true})
 			self:skinObject("dropdown", {obj=this.LootJournalViewDropDown, fType=ftype, x2=-7})
-			self:skinObject("slider", {obj=_G.EncounterJournalScrollBar, fType=ftype})
+			if not aObj.isRtlPTR then
+				self:skinObject("slider", {obj=_G.EncounterJournalScrollBar, fType=ftype})
+			end
 			self:skinObject("tabs", {obj=this, tabs=this.Tabs, selectedTab=this.selectedTab, fType=ftype, lod=self.isTT and true, offsets={x1=-1, y1=2, x2=1, y2=1}, regions={7, 8, 9, 10, 11}, track=false, func=function(tab) tab:SetFrameLevel(20) end})
 			-- for _, tab in _G.pairs(this.Tabs) do
 			-- 	tab.grayBox:DisableDrawLayer("BACKGROUND")
@@ -2498,8 +2500,10 @@ aObj.SetupRetail_PlayerFrames = function()
 				if self.modBtns then
 					self:skinStdButton{obj=fObj.info.reset, y2=2, clr="gold"}
 				end
-				self:skinObject("slider", {obj=fObj.info.detailsScroll.ScrollBar, fType=ftype, x2=-4})
-				self:skinObject("slider", {obj=fObj.info.overviewScroll.ScrollBar, fType=ftype, x2=-4})
+				if not aObj.isRtlPTR then
+					self:skinObject("slider", {obj=fObj.info.detailsScroll.ScrollBar, fType=ftype, x2=-4})
+					self:skinObject("slider", {obj=fObj.info.overviewScroll.ScrollBar, fType=ftype, x2=-4})
+				end
 				fObj.info.overviewScroll.child.overviewDescription.Text:SetTextColor("P", self.BT:GetRGB())
 				fObj.info.detailsScroll.child.description:SetTextColor(self.BT:GetRGB())
 				fObj.info.overviewScroll.child.loreDescription:SetTextColor(self.BT:GetRGB())
