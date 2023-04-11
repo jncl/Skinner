@@ -1,3 +1,32 @@
+beta10.48340.1
+Jncl:
+	Updated ToDo.txt files
+	Updated Change_History.txt
+	Updated version numbers
+	Updated version checks to handle PTR 10.0.7
+	Removed spurious debug/comment code
+	Reverted disabled options causing ADDON errors due to Tooltip skinning issues
+	Updated Tooltip skinning code
+	Updated AlertFrameSystem skin
+	PTR 10.0.7 changes
+	Updated Options code
+	Updated QuestMapFrame skin
+	Updated Retail MainMenuBar skin
+	Updated EventToastManager skin
+	Updated ProfessionsCustomerOrdersFrame skin
+	Updated ObjectiveTrackerFrame skin
+	Updated TradingPostFrame skin
+	Updated UnitFrames skin
+	Updated Classic QuestLogFrame skin
+	Updated Ace3, Cork, LibDBIcon, SexyMap, TitanSocial & TomTom skins
+	Updated Embedded Library files
+	Updated AdvancedInterfaceOptions, RareScanner & TipTac skins
+	Updated Settings Frame skin Retail
+	Updated LFG Frame skin Retail
+	Updated AchievementsUI Retail
+	Updated ContainerFrames skin Retail
+	Updated PlayerFrames_Classic to remove retail version checks
+	
 beta10.47825.1
 Jncl:
 	ToDo.txt
