@@ -6,7 +6,56 @@ ToDo_retail_PTR
 	x				- indicates nothing to change
 	¶ is Alt+7		- indicates localisation changes required
 
-	Retail_PTR (Dragonflight 10.0.5)
+	Retail_PTR (Dragonflight 10.1.0)
 		- Added
 		- Updated
+			- WowTrimScrollBar replaced by MinimalScrollBar
+			- Blizzard_AdventureMap
+				- AM_QuestDialog
+					- Details
+			- Blizzard_AlliedRacesFrameUI
+			- Blizzard_ArchaeologyUI
+			- Blizzard_AuctionHouseAuctionsFrame
+			- Blizzard_AuctionHouseCategoriesList
+			- Blizzard_AuctionHouseItemList
+			- Blizzard_AzeriteEssenceUI
+			- Blizzard_BlackMarketUI
+			- Blizzard_Calendar
+			- Blizzard_CalendarTemplates
+			- ChannelList
+			- ChannelRoster
+			- Blizzard_CharacterCustomize
+			- CommunitiesChatFrame
+			- CommunitiesStreams
+			- GuildInfo
+			- Blizzard_Console
+			- Blizzard_TableInspector
+			- Blizzard_EncounterJournal
+			- Blizzard_LootJournalItems
+			- Blizzard_AdventuresCombatLog
+			- Blizzard_GuildBankUI
+			- Blizzard_GuildControlUI
+			- Blizzard_ItemSocketingUI
+			- Blizzard_ClassNameplateBar_DeathKnight
+			- Blizzard_ClassNameplateBar_Mage
+			- Blizzard_ClassNameplateBar_Monk
+			- Blizzard_ClassNameplateBar_Paladin
+			- Blizzard_ClassNameplateBar_Warlock
+			- Blizzard_ProfessionsFrame
+			- Blizzard_ProfessionsRecipeCrafterDetails
+			- Blizzard_ProfessionsRecipeSchematicForm
+			- Blizzard_UIWidgetCenterDisplayFrame
+			- Blizzard_TalentUI
+			- MageArcaneChargesBar
+			- MonkHarmonyBar
+			- PaladinPowerBar
+			- ReportFrame
+			- RuneFrame
+			- ShardBar
+			- StatusTrackingBar
+√			- ChatFrame(s) ScrollToBottomButton now a texture
+≈			- ScrollFrames now secure, without sliders
+√			- EditModeManager
+			- Guild Achievement Alerts not skinned properly
 		- Deleted
+√			- RaidBrowserFrame
