@@ -2395,7 +2395,7 @@ aObj.SetupRetail_UIFrames = function()
 			self:SecureHookScript(this.ApplicationViewer, "OnShow", function(fObj)
 				fObj:DisableDrawLayer("BACKGROUND")
 				self:removeInset(fObj.Inset)
-				for _ ,type in _G.pairs{"Name", "Role", "ItemLevel", "LFGApplicationViewerRating"} do
+				for _ ,type in _G.pairs{"Name", "Role", "ItemLevel", "Rating"} do
 					self:removeRegions(fObj[type .. "ColumnHeader"], {1, 2, 3})
 					if self.modBtns then
 						 self:skinStdButton{obj=fObj[type .. "ColumnHeader"]}
@@ -2648,8 +2648,8 @@ aObj.SetupRetail_UIFrames = function()
 			end)
 			self:checkShown(_G.MainMenuBar)
 
-			local function skinSTBars(frame)
-				for _, bar in _G.pairs(frame.bars) do
+			local function skinSTBars(container)
+				for _, bar in _G.pairs(container.bars) do
 					aObj:skinObject("statusbar", {obj=bar.StatusBar, bg=bar.StatusBar.Background, other={bar.StatusBar.Underlay, bar.StatusBar.Overlay}, hookFunc=true})
 					if bar.priority == 0 then -- Azerite bar
 						bar.StatusBar:SetStatusBarColor(self:getColourByName("yellow"))
@@ -3984,18 +3984,6 @@ aObj.SetupRetail_UIFrames = function()
 				self.callbacks:Fire("IOFPanel_Before_Skinning", frame)
 				self.callbacks:Fire("IOFPanel_After_Skinning", frame)
 			end
-		end)
-
-	end
-
-	aObj.blizzFrames[ftype].Social = function(self)
-		if not self.prdb.Social or self.initialized.Social then return end
-		self.initialized.Social = true
-
-		self:SecureHookScript(_G.SocialBrowserFrame, "OnShow", function(this)
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, y1=-1, x2=0})
-
-			self:Unhook(this, "OnShow")
 		end)
 
 	end

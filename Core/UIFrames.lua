@@ -2552,11 +2552,6 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 		self:add2Table(toolTips, _G.SmallTextTooltip)
 	end
 	for _, tTip in _G.ipairs(toolTips) do
-		if tTip == _G.GameTooltip
-		and self.isRtl
-		then
-			self.ttHook[tTip] = "Show"
-		end
 		if self:hasTextInName(tTip, "ShoppingTooltip") then
 			self.ttHook[tTip] = "SetShown"
 		end

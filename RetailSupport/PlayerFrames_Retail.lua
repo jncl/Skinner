@@ -1840,6 +1840,57 @@ aObj.SetupRetail_PlayerFrames = function()
 			end)
 			self:checkShown(this.CommunityFinderFrame)
 
+			self:SecureHookScript(this.Chat, "OnShow", function(fObj)
+				self:skinObject("slider", {obj=fObj.MessageFrame.ScrollBar, fType=ftype, rpTex="background"})
+				self:removeInset(fObj.InsetFrame)
+
+				self:Unhook(fObj, "OnShow")
+			end)
+			self:checkShown(this.Chat)
+
+			self:SecureHookScript(this.InvitationFrame, "OnShow", function(fObj)
+				self:removeInset(fObj.InsetFrame)
+				fObj.IconRing:SetTexture(nil)
+				self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, ofs=0})
+				if self.modBtns then
+					self:skinStdButton{obj=fObj.AcceptButton, fType=ftype}
+					self:skinStdButton{obj=fObj.DeclineButton, fType=ftype}
+				end
+
+				self:Unhook(fObj, "OnShow")
+			end)
+
+			self:SecureHookScript(this.ClubFinderInvitationFrame, "OnShow", function(fObj)
+				fObj.WarningDialog.BG.Bg:SetTexture(nil)
+				self:skinObject("frame", {obj=fObj.WarningDialog, fType=ftype, kfs=true, ofs=0})
+				if self.modBtns then
+					self:skinStdButton{obj=fObj.WarningDialog.Accept, fType=ftype}
+					self:skinStdButton{obj=fObj.WarningDialog.Cancel, fType=ftype}
+				end
+				self:removeInset(fObj.InsetFrame)
+				fObj.IconRing:SetTexture(nil)
+				self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, ofs=0})
+				if self.modBtns then
+					self:skinStdButton{obj=fObj.AcceptButton, fType=ftype}
+					self:skinStdButton{obj=fObj.ApplyButton, fType=ftype}
+					self:skinStdButton{obj=fObj.DeclineButton, fType=ftype}
+				end
+
+				self:Unhook(fObj, "OnShow")
+			end)
+
+			self:SecureHookScript(this.TicketFrame, "OnShow", function(fObj)
+				self:removeInset(fObj.InsetFrame)
+				fObj.IconRing:SetTexture(nil)
+				self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, ofs=0})
+				if self.modBtns then
+					self:skinStdButton{obj=fObj.AcceptButton, fType=ftype}
+					self:skinStdButton{obj=fObj.DeclineButton, fType=ftype}
+				end
+
+				self:Unhook(fObj, "OnShow")
+			end)
+
 			self:SecureHookScript(this.GuildBenefitsFrame, "OnShow", function(fObj)
 				fObj:DisableDrawLayer("OVERLAY")
 				self:keepFontStrings(fObj.Perks)
@@ -1912,6 +1963,13 @@ aObj.SetupRetail_PlayerFrames = function()
 			end)
 			self:checkShown(this.GuildDetailsFrame)
 
+			self:SecureHookScript(this.GuildNameAlertFrame, "OnShow", function(fObj)
+				self:skinObject("glowbox", {obj=fObj, fType=ftype})
+
+				self:Unhook(fObj, "OnShow")
+			end)
+			self:checkShown(this.GuildNameAlertFrame)
+
 			self:SecureHookScript(this.GuildNameChangeFrame, "OnShow", function(fObj)
 				fObj:DisableDrawLayer("BACKGROUND")
 				self:skinObject("editbox", {obj=fObj.EditBox, fType=ftype})
@@ -1925,6 +1983,36 @@ aObj.SetupRetail_PlayerFrames = function()
 				self:Unhook(fObj, "OnShow")
 			end)
 			self:checkShown(this.GuildNameChangeFrame)
+
+			self:SecureHookScript(this.CommunityNameChangeFrame, "OnShow", function(fObj)
+				self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, cbns=true, ofs=0})
+				if self.modBtns then
+					self:skinStdButton{obj=fObj.Button, fType=ftype}
+				end
+
+				self:Unhook(fObj, "OnShow")
+			end)
+			self:checkShown(this.CommunityNameChangeFrame)
+
+			self:SecureHookScript(this.GuildPostingChangeFrame, "OnShow", function(fObj)
+				self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, cbns=true, ofs=0})
+				if self.modBtns then
+					self:skinStdButton{obj=fObj.Button, fType=ftype}
+				end
+
+				self:Unhook(fObj, "OnShow")
+			end)
+			self:checkShown(this.GuildPostingChangeFrame)
+
+			self:SecureHookScript(this.CommunityPostingChangeFrame, "OnShow", function(fObj)
+				self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, cbns=true, ofs=0})
+				if self.modBtns then
+					self:skinStdButton{obj=fObj.Button, fType=ftype}
+				end
+
+				self:Unhook(fObj, "OnShow")
+			end)
+			self:checkShown(this.CommunityPostingChangeFrame)
 
 			self:SecureHookScript(this.EditStreamDialog, "OnShow", function(fObj)
 				self:removeNineSlice(fObj.BG)
