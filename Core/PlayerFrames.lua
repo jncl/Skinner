@@ -340,7 +340,7 @@ aObj.blizzLoDFrames[ftype].RaidUI = function(self)
 	-- Raid Group Buttons
 	for i = 1, _G.MAX_RAID_GROUPS * 5 do
 		if not self.isRtl then
-			_G["RaidGroupButton" .. i]:SetNormalTexture(nil)
+			_G["RaidGroupButton" .. i]:SetNormalTexture("")
 		else
 			_G["RaidGroupButton" .. i]:GetNormalTexture():SetTexture(nil)
 		end
