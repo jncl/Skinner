@@ -5,7 +5,7 @@ local _G = _G
 -- used by all contained functions
 local Details = _G.LibStub:GetLibrary("AceAddon-3.0"):GetAddon("_detalhes", true)
 
-aObj.addonsToSkin.Details = function(self) -- v 9.2.0.9735.146
+aObj.addonsToSkin.Details = function(self) -- v 10.0.7.10737.148/1.14.3.223.142
 
 	-- Player Details Window
 	self:skinObject("frame", {obj=_G.DetailsPlayerDetailsWindow, kfs=true, ofs=4})
@@ -25,6 +25,12 @@ aObj.addonsToSkin.Details = function(self) -- v 9.2.0.9735.146
 	local function skinNews()
 		_G.DetailsNewsWindow.DumpTableFrame.editbox.sf:Hide() -- not really an editbox
 		aObj:skinObject("slider", {obj=_G.DetailsNewsWindowSlider})
+		if not _G.DetailsNewsWindow.sf then -- ClassicERA version
+			aObj:skinObject("frame", {obj=_G.DetailsNewsWindow, kfs=true, cb=true})
+			if aObj.modBtns then
+				aObj:skinStdButton{obj=_G.DetailsNewsWindowForumButton}
+			end
+		end
 	end
 	if _G.DetailsNewsWindow then
 		skinNews()
@@ -41,20 +47,8 @@ aObj.addonsToSkin.Details = function(self) -- v 9.2.0.9735.146
 		aObj:skinObject("frame", {obj=_G.DetailsWelcomeWindow})
 		if aObj.modBtnBs then
 			local pBtn, nBtn = aObj:getChild(_G.DetailsWelcomeWindow, 2),aObj:getChild(_G.DetailsWelcomeWindow, 3)
-			aObj:addButtonBorder{obj=pBtn, ofs=-2, x1=1, clr="gold"}
-			aObj:addButtonBorder{obj=nBtn, ofs=-2, x1=1, clr="gold"}
-			aObj:SecureHook(pBtn, "Disable", function(bObj, _)
-				aObj:clrBtnBdr(bObj)
-			end)
-			aObj:SecureHook(pBtn, "Enable", function(bObj, _)
-				aObj:clrBtnBdr(bObj, "gold")
-			end)
-			aObj:SecureHook(nBtn, "Disable", function(bObj, _)
-				aObj:clrBtnBdr(bObj)
-			end)
-			aObj:SecureHook(nBtn, "Enable", function(bObj, _)
-				aObj:clrBtnBdr(bObj, "gold")
-			end)
+			aObj:addButtonBorder{obj=pBtn, ofs=-2, x1=1, clr="gold", schk=true}
+			aObj:addButtonBorder{obj=nBtn, ofs=-2, x1=1, clr="gold", schk=true}
 		end
 	end
 	if _G.DetailsWelcomeWindow then
@@ -63,7 +57,7 @@ aObj.addonsToSkin.Details = function(self) -- v 9.2.0.9735.146
 		self:SecureHook(Details, "OpenWelcomeWindow", function(this)
 			skinWelcome()
 
-			self:Unhook(Details, "OpenWelcomeWindow")
+			self:Unhook(this, "OpenWelcomeWindow")
 		end)
 	end
 
@@ -72,23 +66,27 @@ aObj.addonsToSkin.Details = function(self) -- v 9.2.0.9735.146
 		frame.cabecalho.top_bg:SetTexture(nil)
 		aObj:skinObject("frame", {obj=frame, kfs=true, ofs=4, y1=22})
 	end
-	self:SecureHook(Details.gump, "CriaJanelaPrincipal", function(this, ID, instancia, criando)
+	self:SecureHook(Details.gump, "CriaJanelaPrincipal", function(_, ID, _, _)
 		skinInstance(_G["DetailsBaseFrame" .. ID])
 	end)
 	-- skin existing instance(s)
-	for _, v in _G.ipairs(Details.tabela_instancias) do
+	for _, v in _G.ipairs(_G.Details.tabela_instancias) do
 		if v.baseframe then
 			skinInstance(v.baseframe)
 		end
 	end
 
-	if not Details:GetTutorialCVar("WINDOW_LOCK_UNLOCK1") then
-		-- hook this to skin LockPopUp
-		self:SecureHook(Details, "DelayOptionsRefresh", function(this)
-			self:skinObject("glowbox", {obj=_G.DetailsWindowLockPopUp1})
-
-			self:Unhook(this, "DelayOptionsRefresh")
+	if not _G.DetailsWindowLockPopUp1 then
+		self:SecureHook(Details, "SetTutorialCVar", function(this, cVar, choice)
+			if cVar == "WINDOW_LOCK_UNLOCK1"
+			and choice == true
+			then
+				self:skinObject("glowbox", {obj=_G.DetailsWindowLockPopUp1})
+				self:Unhook(this, "SetTutorialCVar")
+			end
 		end)
+	else
+		self:skinObject("glowbox", {obj=_G.DetailsWindowLockPopUp1})
 	end
 
 	-- CopyPaste Panel
@@ -98,7 +96,7 @@ aObj.addonsToSkin.Details = function(self) -- v 9.2.0.9735.146
 		self:skinObject("editbox", {obj=eb, regions={3, 4, 5, 6, 7, 8, 9, 10, 11}})
 		eb.SetBackdropColor = _G.nop
 		eb.SetBackdropBorderColor = _G.nop
-		self:skinObject("frame", {obj=_G.DetailsCopy, kfs=true, ri=true, ofs=2, x2=1})
+		self:skinObject("frame", {obj=_G.DetailsCopy, kfs=true, ri=true, cbns=true, ofs=2, x2=1})
 	end
 	if _G.DetailsCopy then
 		skinCopy()
@@ -113,6 +111,16 @@ aObj.addonsToSkin.Details = function(self) -- v 9.2.0.9735.146
 	-- Plugins
 	for _, v in _G.pairs{"DmgRank", "DpsTuning", "TimeAttack", "Vanguard"} do
 		self:checkAndRunAddOn("Details_" .. v, "Details_" .. v)
+	end
+
+	self:skinObject("frame", {obj=_G.DetailsYesNoWindow, kfs=true})
+
+	if self.modBtns then
+		self:SecureHook(Details, "WipeConfig", function(this)
+			self:skinStdButton{obj=_G.DetailsResetConfigButton}
+
+			self:Unhook(this, "WipeConfig")
+		end)
 	end
 
 end
@@ -178,13 +186,12 @@ function aObj:Details_Vanguard()
 	end
 
 	if not Vanguard.db.first_run then
-		self:SecureHook(Vanguard, "OnDetailsEvent", function(this, event, ...)
+		self:SecureHook(Vanguard, "OnDetailsEvent", function(this, event, _)
 			-- help frame displayed on 1st show
 			if event == "SHOW" then
 				local frame = self:findFrame2(_G.UIParent, "Frame", 175, 400)
 				if frame then
 					self:skinObject("frame", {obj=frame, kfs=true, ofs=4})
-					frame = nil
 				end
 			end
 
