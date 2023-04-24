@@ -596,15 +596,16 @@ function module:skinStdButton(opts)
 	end
 
 	opts.obj:DisableDrawLayer("BACKGROUND")
-	if opts.obj:GetNormalTexture() then
-		opts.obj:GetNormalTexture():SetAlpha(0)
-	end
-	if opts.obj:GetPushedTexture() then
-		opts.obj:GetPushedTexture():SetAlpha(0)
-	end
-	if opts.obj:GetDisabledTexture() then
-		opts.obj:GetDisabledTexture():SetAlpha(0)
-	end
+	-- if opts.obj:GetNormalTexture() then
+	-- 	opts.obj:GetNormalTexture():SetAlpha(0)
+	-- end
+	-- if opts.obj:GetPushedTexture() then
+	-- 	opts.obj:GetPushedTexture():SetAlpha(0)
+	-- end
+	-- if opts.obj:GetDisabledTexture() then
+	-- 	opts.obj:GetDisabledTexture():SetAlpha(0)
+	-- end
+	aObj:keepFontStrings(opts.obj)
 
 	local bW, bH = _G.Round(opts.obj:GetWidth()), _G.Round(opts.obj:GetHeight())
 
