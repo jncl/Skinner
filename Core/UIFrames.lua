@@ -531,7 +531,7 @@ if not aObj.isClscERA then
 
 		self:SecureHookScript(_G.CalendarTexturePickerFrame, "OnShow", function(this)
 			self:removeNineSlice(this.Border)
-			self:skinObject("scrollbar", {obj=this.ScrollBar, fType=ftype, x1=2, y1=-1, x2=5, y2=1})
+			self:skinObject("scrollbar", {obj=this.ScrollBar, fType=ftype})
 			_G.CalendarTexturePickerCancelButtonBorder:SetAlpha(0)
 			_G.CalendarTexturePickerAcceptButtonBorder:SetAlpha(0)
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true, ofs=-3})
@@ -1233,9 +1233,9 @@ aObj.blizzLoDFrames[ftype].EventTrace = function(self)
 	end
 	aObj:SecureHookScript(_G.EventTrace, "OnShow", function(this)
 		aObj:skinObject("editbox", {obj=this.Log.Bar.SearchBox, fType=ftype, si=true})
-		aObj:skinObject("scrollbar", {obj=this.Log.Events.ScrollBar, fType=ftype, x1=0, x2=0})
-		aObj:skinObject("scrollbar", {obj=this.Log.Search.ScrollBar, fType=ftype, x1=0, x2=0})
-		aObj:skinObject("scrollbar", {obj=this.Filter.ScrollBar, fType=ftype, x1=0, x2=0})
+		aObj:skinObject("scrollbar", {obj=this.Log.Events.ScrollBar, fType=ftype})
+		aObj:skinObject("scrollbar", {obj=this.Log.Search.ScrollBar, fType=ftype})
+		aObj:skinObject("scrollbar", {obj=this.Filter.ScrollBar, fType=ftype})
 		aObj:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, x2=aObj.isRtl and 3 or 1})
 		if aObj.modBtns then
 			skinMenuBtn(this.SubtitleBar.ViewLog)
@@ -1607,7 +1607,7 @@ aObj.blizzFrames[ftype].MailFrame = function(self)
 		else
 			_G.MailEditBox.ScrollBox.EditBox:SetTextColor(self.BT:GetRGB())
 			_G.MailEditBox:DisableDrawLayer("BACKGROUND")
-			self:skinObject("scrollbar", {obj=_G.MailEditBoxScrollBar, fType=ftype, x1=1, y1=-1, x2=5, y2=1})
+			self:skinObject("scrollbar", {obj=_G.MailEditBoxScrollBar, fType=ftype})
 		end
 		for _, btn in _G.pairs(_G.SendMailFrame.SendMailAttachments) do
 			if not self.modBtnBs then

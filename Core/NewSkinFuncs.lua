@@ -204,12 +204,7 @@ local function setScrollTrackOffsets(tbl, type)
 		tbl.x1 = _G.rawget(tbl, "x1") or 0
 		tbl.x2 = _G.rawget(tbl, "x2") or 0
 	else
-		if w <= 8 then
-			tbl.x1 = _G.rawget(tbl, "x1") or -4
-			tbl.x2 = _G.rawget(tbl, "x2") or 3
-			tbl.y1 = _G.rawget(tbl, "y1") or -1
-			tbl.y2 = _G.rawget(tbl, "y2") or 1
-		elseif w <= 10 then -- OribosScrollTemplate
+		if w <= 10 then -- OribosScrollTemplate/WowTrimScrollBar/MinimalScrollBar
 			tbl.x1 = _G.rawget(tbl, "x1") or -1
 			tbl.x2 = _G.rawget(tbl, "x2") or 1
 		elseif w <= 12 then
@@ -229,15 +224,8 @@ local function setScrollTrackOffsets(tbl, type)
 			tbl.y1 = _G.rawget(tbl, "y1") or -1
 			tbl.y2 = _G.rawget(tbl, "y2") or 1
 		elseif w == 25 then
-			-- if not aObj.isRtl then
-			-- 	tbl.x1 = _G.rawget(tbl, "x1") or 2
-			-- 	tbl.x2 = _G.rawget(tbl, "x2") or 5
-			-- 	tbl.y1 = _G.rawget(tbl, "y1") or -1
-			-- 	tbl.y2 = _G.rawget(tbl, "y2") or 2
-			-- else
-				tbl.x1 = _G.rawget(tbl, "x1") or 0
-				tbl.x2 = _G.rawget(tbl, "x2") or 0
-			-- end
+			tbl.x1 = _G.rawget(tbl, "x1") or 0
+			tbl.x2 = _G.rawget(tbl, "x2") or 0
 		end
 		tbl.y1 = _G.rawget(tbl, "y1") or 0
 		tbl.y2 = _G.rawget(tbl, "y2") or 0

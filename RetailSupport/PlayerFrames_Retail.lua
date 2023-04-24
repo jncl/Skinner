@@ -2600,7 +2600,7 @@ aObj.SetupRetail_PlayerFrames = function()
 				fObj.ThresholdBar:DisableDrawLayer("BORDER")
 				-- TODO: Remove RewardItem border
 				fObj.FilterList:DisableDrawLayer("BACKGROUND")
-				-- fObj.ScrollBar [DON'T skin (MinimalScrollBar)]
+				self:skinObject("scrollbar", {obj=fObj.ScrollBar, fType=ftype})
 				local function skinElement(...)
 					local _, element
 					if _G.select("#", ...) == 2 then
@@ -3869,7 +3869,7 @@ aObj.SetupRetail_PlayerFrames = function()
 				end
 				self:skinObject("editbox", {obj=fObj.RecipeList.SearchBox, fType=ftype, si=true})
 				self:skinObject("dropdown", {obj=fObj.RecipeList.ContextMenu, fType=ftype})
-				-- fObj.RecipeList.ScrollBar [DON'T skin (MinimalScrollBar)]
+				self:skinObject("scrollbar", {obj=fObj.RecipeList.ScrollBar, fType=ftype})
 				local function skinElement(...)
 					local _, element, new
 					if _G.select("#", ...) == 2 then
@@ -3892,9 +3892,9 @@ aObj.SetupRetail_PlayerFrames = function()
 				fObj.RankBar.Border:SetTexture(nil)
 				-- DON'T skin RankBar
 				skinNISpinner(fObj.CreateMultipleInputBox)
-				-- fObj.GuildFrame.Container.ScrollBar  [DON'T skin (MinimalScrollBar)]
+				self:skinObject("scrollbar", {obj=fObj.GuildFrame.Container.ScrollBar, fType=ftype})
 				self:skinObject("frame", {obj=fObj.GuildFrame.Container, fType=ftype, kfs=true, rns=true, fb=true})
-				-- fObj.CraftingOutputLog.ScrollBar [DON'T skin (MinimalScrollBar)]
+				self:skinObject("scrollbar", {obj=fObj.CraftingOutputLog.ScrollBar, fType=ftype})
 				self:skinObject("scrollbar", {obj=fObj.CraftingOutputLog.ScrollBar, fType=ftype})
 				local function skinLine(...)
 					local _, element

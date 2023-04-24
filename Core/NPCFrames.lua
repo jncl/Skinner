@@ -290,7 +290,6 @@ aObj.blizzFrames[ftype].QuestFrame = function(self)
 	self:keepFontStrings(_G.QuestNPCModelTextFrame)
 	if not aObj.isRtlPTR then
 		self:skinObject("slider", {obj=_G.QuestNPCModelTextScrollFrame.ScrollBar, fType=ftype})
-	else
 	end
 
 end

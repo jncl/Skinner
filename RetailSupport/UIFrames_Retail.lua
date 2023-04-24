@@ -809,7 +809,7 @@ aObj.SetupRetail_UIFrames = function()
 
 		self:SecureHookScript(_G.ClickBindingFrame, "OnShow", function(this)
 			self:removeBackdrop(this.ScrollBoxBackground)
-			self:skinObject("scrollbar", {obj=this.ScrollBar, fType=ftype, x1=0, y1=2, x2=0, y2=-2})
+			self:skinObject("scrollbar", {obj=this.ScrollBar, fType=ftype})
 			local function skinElement(...)
 				local _, element, new
 				if _G.select("#", ...) == 2 then
@@ -3855,7 +3855,7 @@ aObj.SetupRetail_UIFrames = function()
 			end
 			self:skinObject("editbox", {obj=this.SearchBox, fType=ftype, si=true})
 
-			-- this.CategoryList.ScrollBar [DON'T skin (MinimalScrollBar)]
+			self:skinObject("scrollbar", {obj=this.CategoryList.ScrollBar, fType=ftype})
 			local function skinCategory(...)
 				local _, element, new
 				if _G.select("#", ...) == 2 then
@@ -3888,7 +3888,7 @@ aObj.SetupRetail_UIFrames = function()
 			self:skinObject("frame", {obj=this.CategoryList, fType=ftype, fb=true, ofs=4, y1=12})
 
 			self:getRegion(this.Container.SettingsList.Header, 2):SetTexture(nil)
-			-- this.Container.SettingsList.ScrollBar [DON'T skin (MinimalScrollBar)]
+			self:skinObject("scrollbar", {obj=this.Container.SettingsList.ScrollBar, fType=ftype})
 			local function skinCommonElements(element)
 				if aObj.modBtns then
 					if element.Button then
