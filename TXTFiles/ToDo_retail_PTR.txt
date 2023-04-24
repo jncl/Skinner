@@ -13,39 +13,29 @@ ToDo_retail_PTR
 			- Blizzard_AdventureMap
 				- AM_QuestDialog
 					- Details
+			- ActionBarController
+			- ActionButtonTemplate
+			- AddonCompartment
+			- ArtifactBar
+			- AzeriteBar
+			- Bindings
 			- Blizzard_AlliedRacesFrameUI
 			- Blizzard_ArchaeologyUI
 			- Blizzard_AuctionHouseAuctionsFrame
 			- Blizzard_AuctionHouseCategoriesList
 			- Blizzard_AuctionHouseItemList
-			- Blizzard_AuctionHouseWoWTokenFrame
 			- Blizzard_AzeriteEssenceUI
 			- Blizzard_BlackMarketUI
 			- Blizzard_Calendar
 			- Blizzard_CalendarTemplates
-			- ChannelList
-			- ChannelRoster
 			- Blizzard_CharacterCreate
 			- Blizzard_CharacterCustomize
 			- Blizzard_ClickBindingUI
-			- Blizzard_MountCollection
-			- Blizzard_PetCollection
-			- Blizzard_Wardrobe
-			- ClubFinder
-			- ClubFinderApplicantList
-			- CommunitiesAddDialog
-			- CommunitiesAvatarPickerDialog
-			- CommunitiesChatFrame
-			- CommunitiesList
-			- CommunitiesMemberList
-			- CommunitiesStreams
-			- CommunitiesTicketManagerDialog
 			- Blizzard_Communities/GuildInfo
 			- Blizzard_Communities/GuildNews
 			- Blizzard_Communities/GuildPerks
 			- Blizzard_Communities/GuildRewards
 			- Blizzard_Console
-			- Blizzard_TableInspector
 			- Blizzard_EncounterJournal
 			- Blizzard_EncounterJournal/Blizzard_LootJournal
 			- Blizzard_EncounterJournal/Blizzard_LootJournalItems
@@ -63,6 +53,7 @@ ToDo_retail_PTR
 			- Blizzard_MacroUI/Blizzard_MacroUI
 			- Blizzard_MajorFactions/Blizzard_MajorFactionsLandingTemplates
 			- Blizzard_MawBuffs/Blizzard_MawBuffs
+			- Blizzard_MountCollection
 			- Blizzard_NamePlates/Blizzard_ClassNameplateBar_DeathKnight
 			- Blizzard_NamePlates/Blizzard_ClassNameplateBar_Mage
 			- Blizzard_NamePlates/Blizzard_ClassNameplateBar_Monk
@@ -70,9 +61,7 @@ ToDo_retail_PTR
 			- Blizzard_NamePlates/Blizzard_ClassNameplateBar_Warlock
 			- Blizzard_NewPlayerExperienceGuide/GuideFrame
 			- Blizzard_ObjectiveTracker/Blizzard_ObjectiveTracker
-			- Blizzard_PVPMatch/PVPMatchResults
-			- Blizzard_PVPMatch/PVPMatchScoreboard
-			- Blizzard_PVPUI/Blizzard_PVPUI
+			- Blizzard_PetCollection
 			- Blizzard_Professions/Blizzard_ProfessionsCrafterOrderView
 			- Blizzard_Professions/Blizzard_ProfessionsCrafting
 			- Blizzard_Professions/Blizzard_ProfessionsFrame
@@ -83,6 +72,9 @@ ToDo_retail_PTR
 			- Blizzard_ProfessionsTemplates/Blizzard_ProfessionsRecipeReagentSlotBase
 			- Blizzard_ProfessionsTemplates/Blizzard_ProfessionsRecipeSchematicForm
 			- Blizzard_ProfessionsTemplates/Blizzard_ProfessionsTemplates
+			- Blizzard_PVPMatch/PVPMatchResults
+			- Blizzard_PVPMatch/PVPMatchScoreboard
+			- Blizzard_PVPUI/Blizzard_PVPUI
 			- Blizzard_QuestNavigation/SuperTrackedFrame
 			- Blizzard_SharedMapDataProviders/MapHighlightDataProvider
 			- Blizzard_SharedMapDataProviders/QuestDataProvider
@@ -90,23 +82,30 @@ ToDo_retail_PTR
 			- Blizzard_SharedMapDataProviders/VignetteDataProvider
 			- Blizzard_SharedMapDataProviders/WorldQuestDataProvider
 			- Blizzard_SharedWidgetFrames/Blizzard_UIWidgetCenterDisplayFrame
+			- Blizzard_TableInspector
 			- Blizzard_TalentUI/Blizzard_TalentUI
 			- Blizzard_TokenUI/Blizzard_TokenUI
 			- Blizzard_TrainerUI/Blizzard_TrainerUI
 			- Blizzard_UIWidgets/Blizzard_UIWidgetManager
 			- Blizzard_UIWidgets/Blizzard_UIWidgetTemplateStatusBar
-			- ActionBarController
-			- ActionButtonTemplate
-			- AddonCompartment
-			- ArtifactBar
-			- AzeriteBar
-			- Bindings
+			- Blizzard_Wardrobe
 			- BuffFrame
 			- CampaignOverview
 			- CastingBarFrame
-			- ChatConfigFrame
 √			- ChatFrame
+			- ChannelList
+			- ChannelRoster
+			- ChatConfigFrame
 			- ClassResourceBarTemplate
+			- ClubFinder
+			- ClubFinderApplicantList
+			- CommunitiesAddDialog
+			- CommunitiesAvatarPickerDialog
+			- CommunitiesChatFrame
+			- CommunitiesList
+			- CommunitiesMemberList
+			- CommunitiesStreams
+			- CommunitiesTicketManagerDialog
 			- CompactRaidGroup
 			- CompactUnitFrame
 √			- EditModeManager
