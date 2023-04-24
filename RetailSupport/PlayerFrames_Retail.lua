@@ -2438,8 +2438,6 @@ aObj.SetupRetail_PlayerFrames = function()
 					self:checkDisabledDD(fObj.tierDropDown)
 				end)
 				self:skinObject("scrollbar", {obj=fObj.ScrollBar, fType=ftype})
-				-- FIXME: the frame isn't appearing when using offsets !
-				-- self:skinObject("frame", {obj=fObj.ScrollBox, fType=ftype, kfs=true, fb=true, ofs=6, x1=-9, y2=-8})
 				local function skinElement(...)
 					local _, element, new
 					if _G.select("#", ...) == 2 then
@@ -2600,7 +2598,7 @@ aObj.SetupRetail_PlayerFrames = function()
 				fObj:DisableDrawLayer("BORDER")
 				fObj.HelpButton.Ring:SetTexture(nil)
 				fObj.ThresholdBar:DisableDrawLayer("BORDER")
-				-- TODO: Remove RewardITem border
+				-- TODO: Remove RewardItem border
 				fObj.FilterList:DisableDrawLayer("BACKGROUND")
 				-- fObj.ScrollBar [DON'T skin (MinimalScrollBar)]
 				local function skinElement(...)
@@ -2652,7 +2650,6 @@ aObj.SetupRetail_PlayerFrames = function()
 						end)
 					end
 				end
-				self:skinObject("frame", {obj=fObj, fType=ftype, fb=true, x1=-9, y1=6, x2=7, y2=-5})
 
 				self:Unhook(fObj, "OnShow")
 			end)
