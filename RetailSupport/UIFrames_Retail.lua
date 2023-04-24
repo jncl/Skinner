@@ -650,7 +650,7 @@ aObj.SetupRetail_UIFrames = function()
 				self:skinStdButton{obj=this.SettingsButton}
 			end
 			if not aObj.isRtlPTR then
-			self:skinObject("slider", {obj=this.ChannelList.ScrollBar, fType=ftype})
+				self:skinObject("slider", {obj=this.ChannelList.ScrollBar, fType=ftype})
 			else
 				self:skinObject("scrollbar", {obj=this.ChannelList.ScrollBar, fType=ftype})
 			end
@@ -2706,7 +2706,6 @@ aObj.SetupRetail_UIFrames = function()
 				self:SecureHook(_G.StatusTrackingBarManager, "AddBarFromTemplate", function(this, _, _)
 					skinSTBars(this)
 				end)
-			else
 			end
 
 			self:SecureHookScript(_G.MultiCastActionBarFrame, "OnShow", function(this)
@@ -3890,7 +3889,7 @@ aObj.SetupRetail_UIFrames = function()
 			end
 			_G.ScrollUtil.AddAcquiredFrameCallback(this.CategoryList.ScrollBox, skinCategory, aObj, true)
 			if not aObj.isRtlPTR then
-			self:skinObject("frame", {obj=this.CategoryList, fType=ftype, fb=true, ofs=4, y1=12})
+				self:skinObject("frame", {obj=this.CategoryList, fType=ftype, fb=true, ofs=4, y1=12})
 			else
 				self:skinObject("frame", {obj=this.CategoryList, fType=ftype, fb=true, ofs=4, y1=12, y2=-7})
 			end
@@ -3993,7 +3992,7 @@ aObj.SetupRetail_UIFrames = function()
 			end
 			_G.ScrollUtil.AddAcquiredFrameCallback(this.Container.SettingsList.ScrollBox, skinSetting, aObj, true)
 			if not aObj.isRtlPTR then
-			self:skinObject("frame", {obj=this.Container, fType=ftype, fb=true, y1=12})
+				self:skinObject("frame", {obj=this.Container, fType=ftype, fb=true, y1=12})
 			else
 				self:skinObject("frame", {obj=this.Container, fType=ftype, fb=true, y1=12, y2=-8})
 			end

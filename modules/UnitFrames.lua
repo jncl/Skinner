@@ -753,7 +753,7 @@ function module:OnInitialize()
 
 end
 
-function module:OnDisable()
+function module:OnDisable() -- luacheck: ignore self
 
 	aObj.blizzLoDFrames[ftype].ArenaUI = _G.nop
 
