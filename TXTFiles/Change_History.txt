@@ -1,3 +1,25 @@
+beta10.49229.1
+Jncl:
+	Merge branch 'master' of https://github.com/jncl/Skinner
+	# Conflicts:
+	#       TXTFiles/ToDo.txt
+	#       TXTFiles/ToDo_retail_PTR.txt
+	#       TXTFiles/ToDo_retail_PTR2.txt
+	Updated ToDo.txt files
+	Updated Change_History.txt
+	Updated version numbers
+	Updates for luacheck
+	PTR changes
+	Updated MinimalScrollBar skinning
+	Updated UIButtons skin
+	Updated EncounterJournal skin
+	Updated AchievementUI
+	Updated QuestInfoFrame skin
+	Updated Krowi_AchievementFilter skin
+	Updated RaidUI skin
+	Updated Details! skin
+	Updated ToDo.txt files
+	
 beta10.48966.1
 Jncl:
 	Updated ToDo.txt files
