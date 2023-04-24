@@ -8,22 +8,5 @@ ToDo_retail_PTR2
 
 	Retail_PTR2 (Dragonflight 10.0.7)
 		- Added
-√			- CommunitiesFrame.Chat
-√			- CommunitiesFrame.InvitationFrame
-√			- CommunitiesFrame.ClubFinderInvitationFrame
-√			- CommunitiesFrame.TicketFrame
-√			- CommunitiesFrame.GuildNameAlertFrame
-√			- CommunitiesFrame.CommunityNameChangeFrame
-√			- CommunitiesFrame.GuildPostingChangeFrame
-√			- CommunitiesFrame.CommunityPostingChangeFrame
-			- QueueStatusFrame.AssignedSpec
 		- Updated
-√			- ItemSocketing gems table
-			- Blizzard_ProfessionsCrafterOrderView
-			- Blizzard_ProfessionsSpecializations
-			- Blizzard_ProfessionsCustomerOrdersForm
-			- AlertFrameSystems
-			- RecruitAFriendFrame
-			- StaticPopupSpecial
 		- Deleted
-√			- SocialBrowserFrame

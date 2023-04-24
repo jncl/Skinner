@@ -18,44 +18,150 @@ ToDo_retail_PTR
 			- Blizzard_AuctionHouseAuctionsFrame
 			- Blizzard_AuctionHouseCategoriesList
 			- Blizzard_AuctionHouseItemList
+			- Blizzard_AuctionHouseWoWTokenFrame
 			- Blizzard_AzeriteEssenceUI
 			- Blizzard_BlackMarketUI
 			- Blizzard_Calendar
 			- Blizzard_CalendarTemplates
 			- ChannelList
 			- ChannelRoster
+			- Blizzard_CharacterCreate
 			- Blizzard_CharacterCustomize
+			- Blizzard_ClickBindingUI
+			- Blizzard_MountCollection
+			- Blizzard_PetCollection
+			- Blizzard_Wardrobe
+			- ClubFinder
+			- ClubFinderApplicantList
+			- CommunitiesAddDialog
+			- CommunitiesAvatarPickerDialog
 			- CommunitiesChatFrame
+			- CommunitiesList
+			- CommunitiesMemberList
 			- CommunitiesStreams
-			- GuildInfo
+			- CommunitiesTicketManagerDialog
+			- Blizzard_Communities/GuildInfo
+			- Blizzard_Communities/GuildNews
+			- Blizzard_Communities/GuildPerks
+			- Blizzard_Communities/GuildRewards
 			- Blizzard_Console
 			- Blizzard_TableInspector
 			- Blizzard_EncounterJournal
-			- Blizzard_LootJournalItems
-			- Blizzard_AdventuresCombatLog
-			- Blizzard_GuildBankUI
-			- Blizzard_GuildControlUI
-			- Blizzard_ItemSocketingUI
-			- Blizzard_ClassNameplateBar_DeathKnight
-			- Blizzard_ClassNameplateBar_Mage
-			- Blizzard_ClassNameplateBar_Monk
-			- Blizzard_ClassNameplateBar_Paladin
-			- Blizzard_ClassNameplateBar_Warlock
-			- Blizzard_ProfessionsFrame
-			- Blizzard_ProfessionsRecipeCrafterDetails
-			- Blizzard_ProfessionsRecipeSchematicForm
-			- Blizzard_UIWidgetCenterDisplayFrame
-			- Blizzard_TalentUI
+			- Blizzard_EncounterJournal/Blizzard_LootJournal
+			- Blizzard_EncounterJournal/Blizzard_LootJournalItems
+			- Blizzard_EventTrace/Blizzard_EventTrace
+			- Blizzard_GarrisonTemplates/Blizzard_CovenantMissionTemplates
+			- Blizzard_GarrisonTemplates/Blizzard_GarrisonSharedTemplates
+			- Blizzard_GarrisonUI/Blizzard_AdventuresCombatLog
+			- Blizzard_GarrisonUI/Blizzard_GarrisonLandingPage
+			- Blizzard_GarrisonUI/Blizzard_GarrisonShipyardUI
+			- Blizzard_GuildBankUI/Blizzard_GuildBankUI
+			- Blizzard_GuildControlUI/Blizzard_GuildControlUI
+			- Blizzard_ItemSocketingUI/Blizzard_ItemSocketingUI
+			- Blizzard_ItemUpgradeUI/Blizzard_ItemUpgradeUI
+			- Blizzard_MacroUI/Blizzard_MacroIconSelector
+			- Blizzard_MacroUI/Blizzard_MacroUI
+			- Blizzard_MajorFactions/Blizzard_MajorFactionsLandingTemplates
+			- Blizzard_MawBuffs/Blizzard_MawBuffs
+			- Blizzard_NamePlates/Blizzard_ClassNameplateBar_DeathKnight
+			- Blizzard_NamePlates/Blizzard_ClassNameplateBar_Mage
+			- Blizzard_NamePlates/Blizzard_ClassNameplateBar_Monk
+			- Blizzard_NamePlates/Blizzard_ClassNameplateBar_Paladin
+			- Blizzard_NamePlates/Blizzard_ClassNameplateBar_Warlock
+			- Blizzard_NewPlayerExperienceGuide/GuideFrame
+			- Blizzard_ObjectiveTracker/Blizzard_ObjectiveTracker
+			- Blizzard_PVPMatch/PVPMatchResults
+			- Blizzard_PVPMatch/PVPMatchScoreboard
+			- Blizzard_PVPUI/Blizzard_PVPUI
+			- Blizzard_Professions/Blizzard_ProfessionsCrafterOrderView
+			- Blizzard_Professions/Blizzard_ProfessionsCrafting
+			- Blizzard_Professions/Blizzard_ProfessionsFrame
+			- Blizzard_Professions/Blizzard_ProfessionsSpecializations
+			- Blizzard_ProfessionsCustomerOrders/Blizzard_ProfessionsCustomerOrdersForm
+			- Blizzard_ProfessionsTemplates/Blizzard_ProfessionsRecipeCrafterDetails
+			- Blizzard_ProfessionsTemplates/Blizzard_ProfessionsRecipeFlyout
+			- Blizzard_ProfessionsTemplates/Blizzard_ProfessionsRecipeReagentSlotBase
+			- Blizzard_ProfessionsTemplates/Blizzard_ProfessionsRecipeSchematicForm
+			- Blizzard_ProfessionsTemplates/Blizzard_ProfessionsTemplates
+			- Blizzard_QuestNavigation/SuperTrackedFrame
+			- Blizzard_SharedMapDataProviders/MapHighlightDataProvider
+			- Blizzard_SharedMapDataProviders/QuestDataProvider
+			- Blizzard_SharedMapDataProviders/SharedMapPoiTemplates
+			- Blizzard_SharedMapDataProviders/VignetteDataProvider
+			- Blizzard_SharedMapDataProviders/WorldQuestDataProvider
+			- Blizzard_SharedWidgetFrames/Blizzard_UIWidgetCenterDisplayFrame
+			- Blizzard_TalentUI/Blizzard_TalentUI
+			- Blizzard_TokenUI/Blizzard_TokenUI
+			- Blizzard_TrainerUI/Blizzard_TrainerUI
+			- Blizzard_UIWidgets/Blizzard_UIWidgetManager
+			- Blizzard_UIWidgets/Blizzard_UIWidgetTemplateStatusBar
+			- ActionBarController
+			- ActionButtonTemplate
+			- AddonCompartment
+			- ArtifactBar
+			- AzeriteBar
+			- Bindings
+			- BuffFrame
+			- CampaignOverview
+			- CastingBarFrame
+			- ChatConfigFrame
+√			- ChatFrame
+			- ClassResourceBarTemplate
+			- CompactRaidGroup
+			- CompactUnitFrame
+√			- EditModeManager
+			- EditModeSystemTemplates
+			- EditModeTemplates
+			- EssenceFramePlayer
+			- EventToastManager
+			- ExpBar
+			- FloatingChatFrame
+			- Fonts
+			- FriendsFrame
+			- GossipFrame
+			- GroupLootFrame
+			- GuildRegistrarFrame
+			- InstanceDifficulty
+			- ItemTextFrame
+			- LFDFrame
+			- LFGList
+			- LootHistory
 			- MageArcaneChargesBar
+			- MailFrame
+			- MainMenuBar
+			- MainMenuBarMicroButtons
+			- Minimap
 			- MonkHarmonyBar
+			- MultiActionBars
 			- PaladinPowerBar
+			- PaperDollFrame
+			- PartyFrameTemplates
+			- PetFrame
+			- PetitionFrame
+			- PlayerFrame
+			- QuestFrame
+			- QuestFrameTemplates
+			- QuestInfo
+			- QuestMapFrame
+			- QuestPOI
+			- QueueStatusFrame
+			- QuickJoin
+			- RaidFinder
+			- RaidFrame
+			- RaidWarning
+			- RecruitAFriendFrame
 			- ReportFrame
+			- ReputationFrame
 			- RuneFrame
+			- SettingDefinitions/Definitions
 			- ShardBar
 			- StatusTrackingBar
-√			- ChatFrame(s) ScrollToBottomButton now a texture
-≈			- ScrollFrames now secure, without sliders
-√			- EditModeManager
+			- StatusTrackingBarTemplate
+			- TextToSpeechFrame
+			- TutorialFrame
+			- UIPanelTemplates
+			- UIParent
+			- UnitPowerBarAlt
 			- Guild Achievement Alerts not skinned properly
 		- Deleted
 √			- RaidBrowserFrame
