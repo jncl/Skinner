@@ -204,7 +204,7 @@ aObj.blizzFrames[ftype].QuestFrame = function(self)
 		--	Reward Panel
 		self:keepFontStrings(_G.QuestFrameRewardPanel)
 		if not aObj.isRtlPTR then
-		self:skinObject("slider", {obj=_G.QuestRewardScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
+			self:skinObject("slider", {obj=_G.QuestRewardScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
 		end
 
 		--	Progress Panel
@@ -214,7 +214,7 @@ aObj.blizzFrames[ftype].QuestFrame = function(self)
 		_G.QuestProgressRequiredMoneyText:SetTextColor(self.BT:GetRGB())
 		_G.QuestProgressRequiredItemsText:SetTextColor(self.HT:GetRGB())
 		if not aObj.isRtlPTR then
-		self:skinObject("slider", {obj=_G.QuestProgressScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
+			self:skinObject("slider", {obj=_G.QuestProgressScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
 		end
 		local btnName
 		for i = 1, _G.MAX_REQUIRED_ITEMS do
@@ -236,7 +236,7 @@ aObj.blizzFrames[ftype].QuestFrame = function(self)
 		--	Detail Panel
 		self:keepFontStrings(_G.QuestFrameDetailPanel)
 		if not aObj.isRtlPTR then
-		self:skinObject("slider", {obj=_G.QuestDetailScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
+			self:skinObject("slider", {obj=_G.QuestDetailScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
 		end
 
 		--	Greeting Panel
@@ -289,7 +289,7 @@ aObj.blizzFrames[ftype].QuestFrame = function(self)
 	end
 	self:keepFontStrings(_G.QuestNPCModelTextFrame)
 	if not aObj.isRtlPTR then
-	self:skinObject("slider", {obj=_G.QuestNPCModelTextScrollFrame.ScrollBar, fType=ftype})
+		self:skinObject("slider", {obj=_G.QuestNPCModelTextScrollFrame.ScrollBar, fType=ftype})
 	else
 	end
 
@@ -385,7 +385,7 @@ aObj.blizzFrames[ftype].QuestInfo = function(self)
 			local sealText = aObj:unwrapTextFromColourCode(_G.QuestInfoSealFrame.theme.signature)
 			_G.QuestInfoSealFrame.Text:SetText(aObj.HT:WrapTextInColorCode(sealText)) -- re-colour text
 		end
-	 	skinRewards(_G.QuestInfoFrame.rewardsFrame)
+		skinRewards(_G.QuestInfoFrame.rewardsFrame)
 	end
 
 	self:SecureHook("QuestInfo_Display", function(...)
@@ -418,28 +418,28 @@ aObj.blizzFrames[ftype].QuestInfo = function(self)
 		self:Unhook(this, "OnShow")
 	end)
 
-	local function skinRewardBtns(frame)
-		for _, type in _G.pairs{"HonorFrame", "ArtifactXPFrame", "WarModeBonusFrame", "SkillPointFrame", "TitleFrame"} do
-			-- Classic DOESN'T have a WarModeBonusFrame
-			if frame[type] then
-				-- QIRF's TitleFrame DOESN'T have a NameFrame
-				if frame[type].NameFrame then
-					frame[type].NameFrame:SetTexture(nil)
-				end
-				if aObj.modBtnBs then
-					aObj:addButtonBorder{obj=frame[type], sibt=true, relTo=frame[type].Icon, reParent=type == "SkillPointFrame" and {frame[type].CircleBackground, frame[type].CircleBackgroundGlow, frame[type].ValueText} or nil, clr="grey"}
-				end
-			end
-		end
-		if aObj.isRtl then
-			for rep in frame.reputationRewardPool:EnumerateActive() do
-				rep.NameFrame:SetTexture(nil)
-				if aObj.modBtnBs then
-					aObj:addButtonBorder{obj=rep, fType=ftype, relTo=rep.Icon, reParent={rep.RewardAmount}, clr="grey"}
-				end
-			end
-		end
-	end
+	-- local function skinRewardBtns(frame)
+	-- 	for _, type in _G.pairs{"HonorFrame", "ArtifactXPFrame", "WarModeBonusFrame", "SkillPointFrame", "TitleFrame"} do
+	-- 		-- Classic DOESN'T have a WarModeBonusFrame
+	-- 		if frame[type] then
+	-- 			-- QIRF's TitleFrame DOESN'T have a NameFrame
+	-- 			if frame[type].NameFrame then
+	-- 				frame[type].NameFrame:SetTexture(nil)
+	-- 			end
+	-- 			if aObj.modBtnBs then
+	-- 				aObj:addButtonBorder{obj=frame[type], sibt=true, relTo=frame[type].Icon, reParent=type == "SkillPointFrame" and {frame[type].CircleBackground, frame[type].CircleBackgroundGlow, frame[type].ValueText} or nil, clr="grey"}
+	-- 			end
+	-- 		end
+	-- 	end
+	-- 	if aObj.isRtl then
+	-- 		for rep in frame.reputationRewardPool:EnumerateActive() do
+	-- 			rep.NameFrame:SetTexture(nil)
+	-- 			if aObj.modBtnBs then
+	-- 				aObj:addButtonBorder{obj=rep, fType=ftype, relTo=rep.Icon, reParent={rep.RewardAmount}, clr="grey"}
+	-- 			end
+	-- 		end
+	-- 	end
+	-- end
 	self:SecureHookScript(_G.QuestInfoRewardsFrame, "OnShow", function(this)
 		-- skinRewardBtns(this)
 		this.XPFrame.ReceiveText:SetTextColor(self.BT:GetRGB())
