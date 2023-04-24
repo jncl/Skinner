@@ -115,7 +115,7 @@ aObj.SetupRetail_PlayerFrames = function()
 			self:skinObject("statusbar", {obj=this.searchProgressBar, fi=0, bg=this.searchProgressBar.bg})
 			self:moveObject{obj=_G.AchievementFrameCloseButton, x=1, y=8}
 			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true, ignoreHLTex=false, regions={7, 8, 9, 10}, offsets={x1=6, x2=-2, y2=-7}})
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, y1=7, x2=0, y2=0})
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, y1=7, x2=0, y2=-1})
 
 			self:SecureHookScript(this.Header, "OnShow", function(fObj)
 				self:keepFontStrings(fObj)
