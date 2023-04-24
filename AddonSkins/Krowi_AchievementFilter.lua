@@ -2,7 +2,7 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("Krowi_AchievementFilter") then return end
 local _G = _G
 
-aObj.addonsToSkin.Krowi_AchievementFilter = function(self) -- v 49.0
+aObj.addonsToSkin.Krowi_AchievementFilter = function(self) -- v 55.0
 
 	local function skinAlertFrame(frame)
 		frame.animIn:Stop()
@@ -157,9 +157,47 @@ aObj.addonsToSkin.Krowi_AchievementFilter = function(self) -- v 49.0
 			if aObj.modChkBtns
 			and btn.Tracked
 			then
+				btn.Tracked:SetSize(20, 20)
 				aObj:skinCheckButton{obj=btn.Tracked}
 			end
 		end
+		-- hook these to skin the Achievement objectives
+		self:RawHook(_G.KrowiAF_AchievementsObjectives, "GetTextCriteria", function(this, index)
+			local frame = self.hooks[this].GetTextCriteria(this, index)
+			self:rawHook(frame.Label, "SetTextColor", function(fObj, r, g, b, _)
+				local label = self.hooks[fObj].SetTextColor(fObj, r, g, b, _)
+				if r == 0
+				and g == 0
+				and b == 0
+				then
+					self.hooks[fObj].SetTextColor(fObj, _G.HIGHLIGHT_FONT_COLOR:GetRGBA())
+				end
+				return label
+			end, true)
+			return frame
+		end, true)
+		self:RawHook(_G.KrowiAF_AchievementsObjectives, "GetMeta", function(this, index)
+			local frame = self.hooks[this].GetMeta(this, index)
+			self:rawHook(frame.Label, "SetTextColor", function(fObj, r, g, b, _)
+				local label = self.hooks[fObj].SetTextColor(fObj, r, g, b, _)
+				if r == 0
+				and g == 0
+				and b == 0
+				then
+					self.hooks[fObj].SetTextColor(fObj, _G.HIGHLIGHT_FONT_COLOR:GetRGBA())
+				end
+				return label
+			end, true)
+			return frame
+		end, true)
+		self:RawHook(_G.KrowiAF_AchievementsObjectives, "GetProgressBar", function(this, index)
+			local frame = self.hooks[this].GetProgressBar(this, index)
+			if not aObj.sbGlazed[frame] then
+				aObj:skinObject("statusbar", {obj=frame, regions={1, 3, 4, 5}, fi=0})
+			end
+			return frame
+		end, true)
+
 		self:SecureHookScript(_G.KrowiAF_AchievementsFrame, "OnShow", function(this)
 			self:removeNineSlice(this.Border.NineSlice)
 			self:skinObject("slider", {obj=this.ScrollFrame.ScrollBar, rpTex="background"})
