@@ -214,41 +214,43 @@ aObj.blizzLoDFrames[ftype].ItemSocketingUI = function(self)
 
 end
 
-aObj.blizzFrames[ftype].LootHistory = function(self)
-	if not self.prdb.LootHistory or self.initialized.LootHistory then return end
-	self.initialized.LootHistory = true
+if not aObj.isRtlPTR then
+	aObj.blizzFrames[ftype].LootHistory = function(self)
+		if not self.prdb.LootHistory or self.initialized.LootHistory then return end
+		self.initialized.LootHistory = true
 
-	self:SecureHookScript(_G.LootHistoryFrame, "OnShow", function(this)
-		this:DisableDrawLayer("BACKGROUND")
-		this.Divider:SetTexture(nil)
-		self:skinObject("slider", {obj=this.ScrollFrame.ScrollBar, fType=ftype, rpTex="background"})
-		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, ofs=-1})
-		local function skinItemFrames(obj)
-			for _, frame in _G.pairs(obj.itemFrames) do
-				frame.Divider:SetTexture(nil)
-				frame.NameBorderLeft:SetTexture(nil)
-				frame.NameBorderRight:SetTexture(nil)
-				frame.NameBorderMid:SetTexture(nil)
-				frame.ActiveHighlight:SetTexture(nil)
-				if aObj.modBtns then
-					if not frame.ToggleButton.sb then
-						aObj:skinExpandButton{obj=frame.ToggleButton, plus=true}
+		self:SecureHookScript(_G.LootHistoryFrame, "OnShow", function(this)
+			this:DisableDrawLayer("BACKGROUND")
+			this.Divider:SetTexture(nil)
+			self:skinObject("slider", {obj=this.ScrollFrame.ScrollBar, fType=ftype, rpTex="background"})
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, ofs=-1})
+			local function skinItemFrames(obj)
+				for _, frame in _G.pairs(obj.itemFrames) do
+					frame.Divider:SetTexture(nil)
+					frame.NameBorderLeft:SetTexture(nil)
+					frame.NameBorderRight:SetTexture(nil)
+					frame.NameBorderMid:SetTexture(nil)
+					frame.ActiveHighlight:SetTexture(nil)
+					if aObj.modBtns then
+						if not frame.ToggleButton.sb then
+							aObj:skinExpandButton{obj=frame.ToggleButton, plus=true}
+						end
 					end
 				end
 			end
-		end
-		-- hook this to skin loot history items
-		self:SecureHook("LootHistoryFrame_FullUpdate", function(fObj)
-			skinItemFrames(fObj)
+			-- hook this to skin loot history items
+			self:SecureHook("LootHistoryFrame_FullUpdate", function(fObj)
+				skinItemFrames(fObj)
+			end)
+			-- skin existing itemFrames
+			skinItemFrames(this)
+
+			self:skinObject("dropdown", {obj=_G.LootHistoryDropDown, fType=ftype})
+
+			self:Unhook(this, "OnShow")
 		end)
-		-- skin existing itemFrames
-		skinItemFrames(this)
 
-		self:skinObject("dropdown", {obj=_G.LootHistoryDropDown, fType=ftype})
-
-		self:Unhook(this, "OnShow")
-	end)
-
+	end
 end
 
 aObj.blizzFrames[ftype].MirrorTimers = function(self)

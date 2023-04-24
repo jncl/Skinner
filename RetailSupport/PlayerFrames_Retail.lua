@@ -1841,8 +1841,12 @@ aObj.SetupRetail_PlayerFrames = function()
 			self:checkShown(this.CommunityFinderFrame)
 
 			self:SecureHookScript(this.Chat, "OnShow", function(fObj)
-				self:skinObject("slider", {obj=fObj.MessageFrame.ScrollBar, fType=ftype, rpTex="background"})
 				self:removeInset(fObj.InsetFrame)
+				if not aObj.isRtlPTR then
+					self:skinObject("slider", {obj=fObj.MessageFrame.ScrollBar, fType=ftype, rpTex="background"})
+				else
+					self:skinObject("scrollbar", {obj=fObj.ScrollBar, fType=ftype})
+				end
 
 				self:Unhook(fObj, "OnShow")
 			end)

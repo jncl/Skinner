@@ -1019,6 +1019,9 @@ aObj.blizzFrames[ftype].ChatFrames = function(self)
 	self.initialized.ChatFrames = true
 
 	for i = 1, _G.NUM_CHAT_WINDOWS do
+		if self.isRtl then
+			self:skinObject("scrollbar", {obj=_G["ChatFrame" .. i].ScrollBar, fType=ftype})
+		end
 		self:skinObject("frame", {obj=_G["ChatFrame" .. i], fType=ftype, ofs=6, y1=_G["ChatFrame" .. i] == _G.COMBATLOG and 30, x2=27, y2=-9})
 	end
 
@@ -1504,7 +1507,11 @@ aObj.blizzLoDFrames[ftype].MacroUI = function(self)
 				_G.ScrollUtil.AddAcquiredFrameCallback(this.MacroSelector.ScrollBox, skinElement, aObj, true)
 			end
 		end
-		self:skinObject("slider", {obj=_G.MacroFrameScrollFrame.ScrollBar, fType=ftype})
+		if not aObj.isRtlPTR then
+			self:skinObject("slider", {obj=_G.MacroFrameScrollFrame.ScrollBar, fType=ftype})
+		else
+			self:skinObject("scrollbar", {obj=_G.MacroFrameScrollFrame.ScrollBar, fType=ftype})
+		end
 		self:skinObject("frame", {obj=_G.MacroFrameTextBackground, fType=ftype, kfs=true, rns=true, fb=true, ofs=0, x2=1})
 		_G.MacroFrameSelectedMacroButton:DisableDrawLayer("BACKGROUND")
 		if self.isClscERA then
