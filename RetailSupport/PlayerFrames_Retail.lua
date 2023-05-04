@@ -1692,7 +1692,7 @@ aObj.SetupRetail_PlayerFrames = function()
 			local function skinReqToJoin(frame)
 				frame.MessageFrame:DisableDrawLayer("BACKGROUND")
 				frame.MessageFrame.MessageScroll:DisableDrawLayer("BACKGROUND")
-				aObj:skinObject("frame", {obj=frame.MessageFrame, fType=ftype, kfs=true, fb=true, ofs=2})
+				aObj:skinObject("frame", {obj=frame.MessageFrame, fType=ftype, kfs=true, fb=true, ofs=4})
 				aObj:skinObject("frame", {obj=frame.BG, fType=ftype, kfs=true})
 				if aObj.modBtns then
 					 aObj:skinStdButton{obj=frame.Apply}
