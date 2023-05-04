@@ -1292,7 +1292,6 @@ aObj.SetupOptions = function(self)
 		["Friends Frame"]     = {desc = "Social Frame"},
 		["Inspect UI"]        = true,
 		["Item Socketing UI"] = true,
-		["Loot History"]      = not self.isRtlPTR and {suff = "Frame"} or nil,
 		["Raid UI"]           = true,
 		["Ready Check"]       = {suff = "Frame"},
 		["SpellBook Frame"]   = true,

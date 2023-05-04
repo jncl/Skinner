@@ -602,9 +602,6 @@ aObj.SetupRetail_UIFrames = function()
 		if self.modBtnBs then
 			for i = 1, _G.NUM_CHAT_WINDOWS do
 				self:addButtonBorder{obj=_G["ChatFrame" .. i].buttonFrame.minimizeButton, ofs=-2, clr="grey"}
-				if not aObj.isRtlPTR then
-					self:addButtonBorder{obj=_G["ChatFrame" .. i].ScrollToBottomButton, ofs=-1, x1=0, reParent={_G["ChatFrame" .. i].ScrollToBottomButton.Flash}, clr="grey"}
-				end
 				_G["ChatFrame" .. i].buttonFrame.sknd = true
 			end
 			self:addButtonBorder{obj=_G.ChatFrameChannelButton, ofs=0, clr="grey"}
@@ -649,11 +646,7 @@ aObj.SetupRetail_UIFrames = function()
 				self:skinStdButton{obj=this.NewButton}
 				self:skinStdButton{obj=this.SettingsButton}
 			end
-			if not aObj.isRtlPTR then
-				self:skinObject("slider", {obj=this.ChannelList.ScrollBar, fType=ftype})
-			else
-				self:skinObject("scrollbar", {obj=this.ChannelList.ScrollBar, fType=ftype})
-			end
+			self:skinObject("scrollbar", {obj=this.ChannelList.ScrollBar, fType=ftype})
 			self:skinObject("scrollbar", {obj=this.ChannelRoster.ScrollBar, fType=ftype})
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, x1=-5, y2=-1})
 			-- Create Channel Popup
@@ -1013,17 +1006,11 @@ aObj.SetupRetail_UIFrames = function()
 			if self.modChkBtns then
 				self:skinCheckButton{obj=this.ShowGridCheckButton.Button, fType=ftype}
 				self:skinCheckButton{obj=this.EnableSnapCheckButton.Button, fType=ftype}
-				if not aObj.isRtlPTR then
-					for _, child in _G.ipairs{this.AccountSettings.Settings:GetChildren()} do
-						self:skinCheckButton{obj=child.Button, fType=ftype}
-					end
-				else
-					self:skinCheckButton{obj=this.EnableAdvancedOptionsCheckButton.Button, fType=ftype}
-					self:removeNineSlice(this.AccountSettings.SettingsContainer.BorderArt)
-					self:skinObject("frame", {obj=this.AccountSettings.SettingsContainer, fType=ftype, kfs=true, fb=true, ofs=3})
-					for _, frame in _G.pairs(this.AccountSettings.settingsCheckButtons) do
-						self:skinCheckButton{obj=frame.Button, fType=ftype}
-					end
+				self:skinCheckButton{obj=this.EnableAdvancedOptionsCheckButton.Button, fType=ftype}
+				self:removeNineSlice(this.AccountSettings.SettingsContainer.BorderArt)
+				self:skinObject("frame", {obj=this.AccountSettings.SettingsContainer, fType=ftype, kfs=true, fb=true, ofs=3})
+				for _, frame in _G.pairs(this.AccountSettings.settingsCheckButtons) do
+					self:skinCheckButton{obj=frame.Button, fType=ftype}
 				end
 			end
 
@@ -2207,9 +2194,6 @@ aObj.SetupRetail_UIFrames = function()
 			skinCheckBtns("LFD")
 			_G.LFDQueueFrameBackground:SetAlpha(0)
 			self:skinObject("dropdown", {obj=_G.LFDQueueFrameTypeDropDown, fType=ftype})
-			if not aObj.isRtlPTR then
-				self:skinObject("slider", {obj=_G.LFDQueueFrameRandomScrollFrame.ScrollBar, fType=ftype})
-			end
 			_G.LFDQueueFrameRandomScrollFrameChildFrame.MoneyReward.NameFrame:SetTexture(nil)
 			self:removeMagicBtnTex(_G.LFDQueueFrameFindGroupButton)
 			if self.modBtns then
@@ -2533,49 +2517,6 @@ aObj.SetupRetail_UIFrames = function()
 
 	end
 
-	if not aObj.isRtlPTR then
-		aObj.blizzFrames[ftype].LFRFrame = function(self)
-			if not self.prdb.RaidFrame or self.initialized.LFRFrame then return end
-			self.initialized.LFRFrame = true
-
-			self:SecureHookScript(_G.RaidBrowserFrame, "OnShow", function(this)
-				self:skinObject("frame", {obj=this, fType=ftype, kfs=true})
-				-- LFR Parent Frame
-				-- LFR Queue Frame
-				self:removeInset(_G.LFRQueueFrameRoleInset)
-				self:removeInset(_G.LFRQueueFrameCommentInset)
-				self:removeInset(_G.LFRQueueFrameListInset)
-				_G.LFRQueueFrameCommentExplanation:SetTextColor(self.BT:GetRGB())
-
-				-- Specific List subFrame
-				for i = 1, _G.NUM_LFR_CHOICE_BUTTONS do
-					if self.modBtns then
-						self:skinExpandButton{obj=_G["LFRQueueFrameSpecificListButton" .. i].expandOrCollapseButton, sap=true}
-					end
-					if self.modChkBtns then
-						self:skinCheckButton{obj=_G["LFRQueueFrameSpecificListButton" .. i].enableButton}
-					end
-				end
-				self:skinObject("slider", {obj=_G.LFRQueueFrameSpecificListScrollFrame.ScrollBar, fType=ftype})
-
-				-- LFR Browse Frame
-				self:removeInset(_G.LFRBrowseFrameRoleInset)
-				self:skinObject("dropdown", {obj=_G.LFRBrowseFrameRaidDropDown, fType=ftype})
-				self:skinObject("slider", {obj=_G.LFRBrowseFrameListScrollFrame.ScrollBar, fType=ftype, rpTex="background"})
-				self:keepFontStrings(_G.LFRBrowseFrame)
-
-				-- Tabs (side)
-				for i = 1, 2 do
-					_G["LFRParentFrameSideTab" .. i]:DisableDrawLayer("BACKGROUND")
-					self:addButtonBorder{obj=_G["LFRParentFrameSideTab" .. i]}
-				end
-
-				self:Unhook(this, "OnShow")
-			end)
-
-		end
-	end
-
 	aObj.blizzFrames[ftype].LossOfControl = function(self)
 		if not self.prdb.LossOfControl or self.initialized.LossOfControl then return end
 		self.initialized.LossOfControl = true
@@ -2692,21 +2633,12 @@ aObj.SetupRetail_UIFrames = function()
 			self:SecureHookScript(_G.StatusTrackingBarManager, "OnShow", function(this)
 				this.MainStatusTrackingBarContainer:DisableDrawLayer("OVERLAY") -- status bar textures
 				this.SecondaryStatusTrackingBarContainer:DisableDrawLayer("OVERLAY") -- status bar textures
-				if not aObj.isRtlPTR then
-					skinSTBars(this)
-				else
-					skinSTBars(this.MainStatusTrackingBarContainer)
-					skinSTBars(this.SecondaryStatusTrackingBarContainer)
-				end
+				skinSTBars(this.MainStatusTrackingBarContainer)
+				skinSTBars(this.SecondaryStatusTrackingBarContainer)
 
 				self:Unhook(this, "OnShow")
 			end)
 			self:checkShown(_G.StatusTrackingBarManager)
-			if not aObj.isRtlPTR then
-				self:SecureHook(_G.StatusTrackingBarManager, "AddBarFromTemplate", function(this, _, _)
-					skinSTBars(this)
-				end)
-			end
 
 			self:SecureHookScript(_G.MultiCastActionBarFrame, "OnShow", function(this)
 				self:keepFontStrings(_G.MultiCastFlyoutFrame) -- Shaman's Totem Frame
@@ -3548,9 +3480,6 @@ aObj.SetupRetail_UIFrames = function()
 				end
 			end)
 			this.QuestsFrame.DetailFrame:DisableDrawLayer("ARTWORK")
-			if not aObj.isRtlPTR then
-				self:skinObject("slider", {obj=this.QuestsFrame.ScrollBar, fType=ftype})
-			end
 			-- QuestSessionManagement
 			this.QuestSessionManagement.BG:SetTexture(nil)
 			if self.modBtnBs then
@@ -3560,9 +3489,6 @@ aObj.SetupRetail_UIFrames = function()
 			self:keepFontStrings(this.DetailsFrame)
 			self:keepFontStrings(this.DetailsFrame.RewardsFrame)
 			self:getRegion(this.DetailsFrame.RewardsFrame, 3):SetTextColor(self.HT:GetRGB())
-			if not aObj.isRtlPTR then
-				self:skinObject("slider", {obj=this.DetailsFrame.ScrollFrame.ScrollBar, fType=ftype})
-			end
 			this.DetailsFrame.CompleteQuestFrame:DisableDrawLayer("BACKGROUND")
 			this.DetailsFrame.CompleteQuestFrame:DisableDrawLayer("ARTWORK")
 			this.DetailsFrame.CompleteQuestFrame.CompleteButton:DisableDrawLayer("BORDER")
@@ -3588,9 +3514,6 @@ aObj.SetupRetail_UIFrames = function()
 			end
 			-- CampaignOverview
 			self:keepFontStrings(this.CampaignOverview.Header)
-			if not aObj.isRtlPTR then
-				self:skinObject("slider", {obj=this.CampaignOverview.ScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
-			end
 			this.CampaignOverview.BG:SetTexture(nil)
 			self:SecureHook(this.CampaignOverview, "UpdateCampaignLoreText", function(fObj, _, _)
 				for tex in fObj.texturePool:EnumerateActive() do
@@ -3888,11 +3811,7 @@ aObj.SetupRetail_UIFrames = function()
 				end
 			end
 			_G.ScrollUtil.AddAcquiredFrameCallback(this.CategoryList.ScrollBox, skinCategory, aObj, true)
-			if not aObj.isRtlPTR then
-				self:skinObject("frame", {obj=this.CategoryList, fType=ftype, fb=true, ofs=4, y1=12})
-			else
-				self:skinObject("frame", {obj=this.CategoryList, fType=ftype, fb=true, ofs=4, y1=12, y2=-7})
-			end
+			self:skinObject("frame", {obj=this.CategoryList, fType=ftype, fb=true, ofs=4, y1=12, y2=-7})
 
 			self:getRegion(this.Container.SettingsList.Header, 2):SetTexture(nil)
 			self:skinObject("scrollbar", {obj=this.Container.SettingsList.ScrollBar, fType=ftype})
@@ -3991,11 +3910,7 @@ aObj.SetupRetail_UIFrames = function()
 				end
 			end
 			_G.ScrollUtil.AddAcquiredFrameCallback(this.Container.SettingsList.ScrollBox, skinSetting, aObj, true)
-			if not aObj.isRtlPTR then
-				self:skinObject("frame", {obj=this.Container, fType=ftype, fb=true, y1=12})
-			else
-				self:skinObject("frame", {obj=this.Container, fType=ftype, fb=true, y1=12, y2=-8})
-			end
+			self:skinObject("frame", {obj=this.Container, fType=ftype, fb=true, y1=12, y2=-8})
 			-- .InputBlocker
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true})
 			if self.modBtns then

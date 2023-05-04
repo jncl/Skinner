@@ -203,9 +203,6 @@ aObj.blizzFrames[ftype].QuestFrame = function(self)
 
 		--	Reward Panel
 		self:keepFontStrings(_G.QuestFrameRewardPanel)
-		if not aObj.isRtlPTR then
-			self:skinObject("slider", {obj=_G.QuestRewardScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
-		end
 
 		--	Progress Panel
 		self:keepFontStrings(_G.QuestFrameProgressPanel)
@@ -213,9 +210,6 @@ aObj.blizzFrames[ftype].QuestFrame = function(self)
 		_G.QuestProgressText:SetTextColor(self.BT:GetRGB())
 		_G.QuestProgressRequiredMoneyText:SetTextColor(self.BT:GetRGB())
 		_G.QuestProgressRequiredItemsText:SetTextColor(self.HT:GetRGB())
-		if not aObj.isRtlPTR then
-			self:skinObject("slider", {obj=_G.QuestProgressScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
-		end
 		local btnName
 		for i = 1, _G.MAX_REQUIRED_ITEMS do
 			btnName = "QuestProgressItem" .. i
@@ -235,9 +229,6 @@ aObj.blizzFrames[ftype].QuestFrame = function(self)
 
 		--	Detail Panel
 		self:keepFontStrings(_G.QuestFrameDetailPanel)
-		if not aObj.isRtlPTR then
-			self:skinObject("slider", {obj=_G.QuestDetailScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
-		end
 
 		--	Greeting Panel
 		self:keepFontStrings(_G.QuestFrameGreetingPanel)
@@ -288,9 +279,6 @@ aObj.blizzFrames[ftype].QuestFrame = function(self)
 		self:skinObject("frame", {obj=_G.QuestNPCModel, fType=ftype, kfs=true, x1=-5, x2=5, y2=-81})
 	end
 	self:keepFontStrings(_G.QuestNPCModelTextFrame)
-	if not aObj.isRtlPTR then
-		self:skinObject("slider", {obj=_G.QuestNPCModelTextScrollFrame.ScrollBar, fType=ftype})
-	end
 
 end
 
