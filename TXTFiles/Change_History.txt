@@ -1,3 +1,11 @@
+beta10.49444.1
+Jncl:
+	Updated ToDo.txt files
+	Updated version numbers
+	Apply Retail PTR changes
+	Bugfix for NSF
+	Update workflow
+	
 beta10.49229.1
 Jncl:
 	Merge branch 'master' of https://github.com/jncl/Skinner
