@@ -1,3 +1,11 @@
+beta10.49444.2
+Jncl:
+	Updated ToDo.txt files
+	Updated Change_History.txt
+	Updated CommunitiesUI
+	Bugfix for TableViewerFrame
+	Updated Ace3, ClassicQuestLog, LibUIDropDownMenu & WeakAuras skins
+	
 beta10.49444.1
 Jncl:
 	Updated ToDo.txt files
