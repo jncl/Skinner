@@ -41,23 +41,8 @@ ToDos
 	I	Tab positioning, reported by Fakelessgaming, 24.10.22/08.01.23
 		- Review Top/Bottom tab positioning using 1 pixel border
 
-	I	QuestLog, reported by Galthariel, 11.04.23
-?		- Text is black, both Retail & Classic
-		
-	I/C	reported by Sausje, 11.04.23
-√		- 1x Usage: self:SetNormalTexture(asset)
-		[string "@Skinner/Core/PlayerFrames.lua"]:343: in function <Skinner/Core/PlayerFrames.lua:325>
-		
-	I	Details, reported by MetalHeadTwo, 12.04.23
-x		- 1x Skinner/Core/NewSkinFuncs.lua:535: attempt to index field 'obj' (a nil value)
-		[string "@Skinner/Core/NewSkinFuncs.lua"]:638: in function `?'
-		[string "@Skinner/Core/NewSkinFuncs.lua"]:267: in function `skinObject'
-		[string "@Skinner/AddonSkins/Details.lua"]:11: in function <Skinner/AddonSkins/Details.lua:8>
-
-	I	Krowi_AchievementFilter, reported by Galthariel, 17.04.23
-x		- ...ddOns/Skinner/AddonSkins/Krowi_AchievementFilter.lua:188: attempt to index field 'ScrollFrameBorder' (a nil value)
-		[string "@Skinner/AddonSkins/Krowi_AchievementFilter.lua"]:188: in function <...ddOns/Skinner/AddonSkins/Krowi_AchievementFilter.lua:184>
-
-	I	LFGList reported by Galthariel, 17.04.23
-x		- Change font used in LFGList ActivityName from Grey to White
-		- causes [ADDON_ACTION_BLOCKED] AddOn 'Skinner' tried to call the protected function 'GetPlaystyleString()'.
+	I	ChatFrames, reported by DarkLimpan, 25.04.23
+√		- Skinner/Core/NewSkinFuncs.lua:702: attempt to index local 'child' (a nil value)
+		[string "@Skinner/Core/NewSkinFuncs.lua"]:710: in function `?'
+		[string "@Skinner/Core/NewSkinFuncs.lua"]:255: in function `skinObject'
+		[string "@Skinner/Core/UIFrames.lua"]:1023: in function <Skinner/Core/UIFrames.lua:1017>
