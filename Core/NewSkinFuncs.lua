@@ -698,9 +698,10 @@ local function skinScrollBar(tbl)
 	tbl.obj:DisableDrawLayer("BACKGROUND")
 	-- handle .Background frame being hijacked by a .Background texture
 	local child = aObj:getChild(tbl.obj, 1)
-	if child.Begin
-	and child.End
+	if child
+	and child.Begin
 	and child.Middle
+	and child.End
 	then
 		child:DisableDrawLayer("artwork")
 	end
