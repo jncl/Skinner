@@ -1627,7 +1627,10 @@ aObj.SetupRetail_PlayerFrames = function()
 			self:checkShown(this.CommunitiesList)
 
 			self:SecureHookScript(this.MemberList, "OnShow", function(fObj)
-				skinColumnDisplay(fObj.ColumnDisplay)
+				self:SecureHookScript(fObj.ColumnDisplay, "OnShow", function(frame)
+					skinColumnDisplay(frame)
+				end)
+				self:checkShown(fObj.ColumnDisplay)
 				if self.modChkBtns then
 					 self:skinCheckButton{obj=fObj.ShowOfflineButton, hf=true}
 				end
@@ -1660,30 +1663,28 @@ aObj.SetupRetail_PlayerFrames = function()
 					skinColumnDisplay(frame)
 				end)
 				self:checkShown(fObj.ColumnDisplay)
-				self:skinObject("slider", {obj=fObj.ListScrollFrame.scrollBar, fType=ftype, rpTex="background"})
+				self:skinObject("scrollbar", {obj=fObj.ScrollBar, fType=ftype})
 				self:skinObject("dropdown", {obj=fObj.DropDown, fType=ftype})
 				self:removeNineSlice(fObj.InsetFrame.NineSlice)
 				fObj.InsetFrame.Bg:SetTexture(nil)
-				if self.modBtns then
-					self:skinObject("scrollbar", {obj=fObj.ScrollBar, fType=ftype})
-					local function skinElement(...)
-						local _, element, new
-						if _G.select("#", ...) == 2 then
-							element, _ = ...
-						elseif _G.select("#", ...) == 3 then
-							element, _, new = ...
-						else
-							_, element, _, new = ...
-						end
-						if new ~= false then
-							if aObj.modBtns then
-								aObj:skinStdButton{obj=element.CancelInvitationButton}
-								aObj:skinStdButton{obj=element.InviteButton}
-							end
+				self:skinObject("scrollbar", {obj=fObj.ScrollBar, fType=ftype})
+				local function skinElement(...)
+					local _, element, new
+					if _G.select("#", ...) == 2 then
+						element, _ = ...
+					elseif _G.select("#", ...) == 3 then
+						element, _, new = ...
+					else
+						_, element, _, new = ...
+					end
+					if new ~= false then
+						if aObj.modBtns then
+							aObj:skinStdButton{obj=element.CancelInvitationButton}
+							aObj:skinStdButton{obj=element.InviteButton}
 						end
 					end
-					_G.ScrollUtil.AddAcquiredFrameCallback(fObj.ScrollBox, skinElement, aObj, true)
 				end
+				_G.ScrollUtil.AddAcquiredFrameCallback(fObj.ScrollBox, skinElement, aObj, true)
 
 				self:Unhook(fObj, "OnShow")
 			end)
@@ -1862,6 +1863,7 @@ aObj.SetupRetail_PlayerFrames = function()
 
 			self:SecureHookScript(this.ClubFinderInvitationFrame, "OnShow", function(fObj)
 				fObj.WarningDialog.BG.Bg:SetTexture(nil)
+				self:removeNineSlice(fObj.WarningDialog.BG)
 				self:skinObject("frame", {obj=fObj.WarningDialog, fType=ftype, kfs=true, ofs=0})
 				if self.modBtns then
 					self:skinStdButton{obj=fObj.WarningDialog.Accept, fType=ftype}
@@ -1937,8 +1939,8 @@ aObj.SetupRetail_PlayerFrames = function()
 			self:SecureHookScript(this.GuildDetailsFrame, "OnShow", function(fObj)
 				fObj:DisableDrawLayer("OVERLAY")
 				self:removeRegions(fObj.Info, {2, 3, 4, 5, 6, 7, 8, 9, 10})
-				self:skinObject("slider", {obj=fObj.Info.MOTDScrollFrame.ScrollBar, fType=ftype})
-				self:skinObject("slider", {obj=fObj.Info.DetailsFrame.ScrollBar, fType=ftype})
+				self:skinObject("scrollbar", {obj=fObj.Info.MOTDScrollFrame.ScrollBar, fType=ftype})
+				self:skinObject("scrollbar", {obj=fObj.Info.DetailsFrame.ScrollBar, fType=ftype})
 				fObj.News:DisableDrawLayer("BACKGROUND")
 				self:skinObject("scrollbar", {obj=fObj.News.ScrollBar, fType=ftype})
 				local function skinElement(...)
@@ -2035,13 +2037,14 @@ aObj.SetupRetail_PlayerFrames = function()
 
 			self:SecureHookScript(this.NotificationSettingsDialog, "OnShow", function(fObj)
 				self:skinObject("dropdown", {obj=fObj.CommunitiesListDropDownMenu, fType=ftype})
-				self:skinObject("slider", {obj=fObj.ScrollFrame.ScrollBar, fType=ftype})
+				self:skinObject("scrollbar", {obj=fObj.ScrollFrame.ScrollBar, fType=ftype})
+				self:removeNineSlice(fObj.Selector)
 				self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, ofs=-6, x2=-4})
 				if self.modBtns then
 					self:skinStdButton{obj=fObj.ScrollFrame.Child.NoneButton}
 					self:skinStdButton{obj=fObj.ScrollFrame.Child.AllButton}
-					self:skinStdButton{obj=fObj.CancelButton}
-					self:skinStdButton{obj=fObj.OkayButton}
+					self:skinStdButton{obj=fObj.Selector.CancelButton}
+					self:skinStdButton{obj=fObj.Selector.OkayButton}
 				end
 				if self.modChkBtns then
 					 self:skinCheckButton{obj=fObj.ScrollFrame.Child.QuickJoinButton}
@@ -2190,7 +2193,7 @@ aObj.SetupRetail_PlayerFrames = function()
 		end)
 
 		self:SecureHookScript(_G.CommunitiesGuildTextEditFrame, "OnShow", function(this)
-			self:skinObject("slider", {obj=this.Container.ScrollFrame.ScrollBar, fType=ftype})
+			self:skinObject("scrollbar", {obj=this.Container.ScrollFrame.ScrollBar, fType=ftype})
 			self:skinObject("frame", {obj=this.Container, fType=ftype, kfs=true, fb=true})
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, ofs=-7})
 			if self.modBtns then
@@ -2202,7 +2205,7 @@ aObj.SetupRetail_PlayerFrames = function()
 		end)
 
 		self:SecureHookScript(_G.CommunitiesGuildLogFrame, "OnShow", function(this)
-			self:skinObject("slider", {obj=this.Container.ScrollFrame.ScrollBar, fType=ftype})
+			self:skinObject("scrollbar", {obj=this.Container.ScrollFrame.ScrollBar, fType=ftype})
 			self:skinObject("frame", {obj=this.Container, fType=ftype, kfs=true, fb=true})
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, ofs=-7})
 			if self.modBtns then
@@ -3061,11 +3064,11 @@ aObj.SetupRetail_PlayerFrames = function()
 			end)
 
 			self:SecureHookScript(this.bankTabFrame, "OnShow", function(fObj)
-				self:skinObject("slider", {obj=fObj.inset.scrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
 				self:skinObject("dropdown", {obj=fObj.dropdown, fType=ftype})
 				_G.UIDropDownMenu_SetButtonWidth(fObj.dropdown, 24)
 				fObj.inset:DisableDrawLayer("BACKGROUND")
 				fObj.inset:DisableDrawLayer("BORDER")
+				self:skinObject("scrollbar", {obj=fObj.inset.scrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
 
 				self:Unhook(fObj, "OnShow")
 			end)
