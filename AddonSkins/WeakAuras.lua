@@ -2,7 +2,7 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("WeakAuras") then return end
 local _G = _G
 
-aObj.addonsToSkin.WeakAuras = function(self) -- v 5.0.5
+aObj.addonsToSkin.WeakAuras = function(self) -- v 5.5.2
 
 	if _G.WeakAuras.ShowDisplayTooltip then
 		-- hook this to skin the WeakAuras added elements
@@ -76,19 +76,9 @@ aObj.addonsToSkin.WeakAuras = function(self) -- v 5.0.5
 		-- statsFrame
 		self:skinObject("frame", {obj=this})
 		if self.modBtns then
-			self:skinCloseButton{obj=self:getChild(this.titleFrame, 1)}
-			self:moveObject{obj=self:getChild(this.titleFrame, 1), x=4}
-			local minBtn = self:getChild(this.titleFrame, 2)
-			self:skinOtherButton{obj=minBtn, font=self.fontS, text=aObj.swarrow, size=28}
-			self:moveObject{obj=minBtn, y=-2}
-			self:SecureHookScript(minBtn, "OnClick", function(bObj)
-				if bObj:GetParent():GetParent().minimized then
-					bObj:SetText(aObj.nearrow)
-					self:adjHeight{obj=bObj:GetParent():GetParent(), adj=2}
-				else
-					bObj:SetText(aObj.swarrow)
-				end
-			end)
+			self:skinCloseButton{obj=this.CloseButton}
+			self:skinOtherButton{obj=this.MaxMinButtonFrame.MaximizeButton, font=self.fontS, text=self.nearrow}
+			self:skinOtherButton{obj=this.MaxMinButtonFrame.MinimizeButton, font=self.fontS, text=self.swarrow}
 			self:skinStdButton{obj=this.toggleButton}
 			self:skinStdButton{obj=this.reportButton}
 			self:skinStdButton{obj=this.combatButton}
@@ -98,21 +88,9 @@ aObj.addonsToSkin.WeakAuras = function(self) -- v 5.0.5
 		self:Unhook(this, "UpdateButtons")
 	end)
 
-	self:SecureHook(_G.WeakAuras, "PrintProfile", function(this)
-		self:skinObject("slider", {obj=_G.WADebugEditBox.ScrollFrame.ScrollBar})
-		_G.WADebugEditBox.Background:DisableDrawLayer("OVERLAY") -- titlebg
-		self:getChild(_G.WADebugEditBox.Background, 2):DisableDrawLayer("BACKGROUND")
-		self:skinObject("frame", {obj=_G.WADebugEditBox.Background, y1=4})
-		if self.modBtns then
-			self:skinCloseButton{obj=self:getChild(_G.WADebugEditBox.Background, 1)}
-		end
-
-		self:Unhook(this, "PrintProfile")
-	end)
-
 end
 
-aObj.lodAddons.WeakAurasOptions = function(self) -- v 3.7.13
+aObj.lodAddons.WeakAurasOptions = function(self) -- v 5.5.2
 
 	-- wait until frame is created
 	if not _G.WeakAurasOptions then
@@ -124,30 +102,12 @@ aObj.lodAddons.WeakAurasOptions = function(self) -- v 3.7.13
 
 	self:SecureHookScript(_G.WeakAurasOptions, "OnShow", function(this)
 		self:skinObject("editbox", {obj=this.filterInput, si=true, ca=true})
-		self:moveObject{obj=self:getRegion(self:getChild(this, 2), 1), y=-10} -- title text
 		this.moversizer:SetBackdropBorderColor(self.bbClr:GetRGB())
-		self:skinObject("frame", {obj=this, kfs=true, ofs=-1, y1=5})
+		self:skinObject("frame", {obj=this, kfs=true, x2=0, y1=-1})
 		if self.modBtns then
-			local function skinBtn(id)
-				local frame = aObj:getChild(this, id)
-				aObj:keepFontStrings(frame)
-				aObj:moveObject{obj=frame, x=23, y=id ~= 2 and 1 or 0}
-				if id == 1 then
-					aObj:skinCloseButton{obj=aObj:getChild(frame, 1)}
-				end
-				if id == 5 then -- up-down arrow
-					aObj:skinOtherButton{obj=aObj:getChild(frame, 1), font=aObj.fontS, text=aObj.swarrow, size=28}
-					aObj:SecureHookScript(aObj:getChild(frame, 1), "OnClick", function(bObj)
-						if _G.WeakAurasOptions.minimized then
-							bObj:SetText(aObj.nearrow)
-						else
-							bObj:SetText(aObj.swarrow)
-						end
-					end)
-				end
-			end
-			skinBtn(1) -- close button frame
-			skinBtn(5) -- minimize button frame
+			self:skinCloseButton{obj=this.CloseButton, fType=ftype}
+			self:skinOtherButton{obj=this.MaxMinButtonFrame.MaximizeButton, font=self.fontS, text=self.nearrow}
+			self:skinOtherButton{obj=this.MaxMinButtonFrame.MinimizeButton, font=self.fontS, text=self.swarrow}
 		end
 		-- hide the frame skin around the RHS InlineGroup
 		if this.container.content:GetParent().sf then
@@ -176,7 +136,7 @@ aObj.lodAddons.WeakAurasOptions = function(self) -- v 3.7.13
 			self:skinStdButton{obj=_G.WASettingsButton}
 			self:skinStdButton{obj=self:getChild(this.texteditor.frame, 4)}
 			self:skinStdButton{obj=_G.WASnippetsButton}
-			self:skinStdButton{obj=self:getChild(_G.WeakAurasSnippets, 1)}
+			self:skinStdButton{obj=self:getChild(_G.WeakAurasSnippets, 5)} -- AddSnippetButton
 		end
 
 		self:Unhook(this, "OnShow")

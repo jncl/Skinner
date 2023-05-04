@@ -30,7 +30,7 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 		-- and not obj.sknd
 		-- and not (objType:find("TSM") and obj.sknrTSM) -- check objType as TSM overlays existing objects
 		then
-			-- aObj:Debug("Ace3 Skinning: [%s, %s, %s]", obj, objType)
+			aObj:Debug("Ace3 Skinning: [%s, %s, %s]", obj, objType)
 
 			if objType == "Button" then
 				if aObj.modBtns then
@@ -211,18 +211,18 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 					aObj:secureHook(obj, "SetDisabled", function(this, disabled)
 						aObj:checkDisabledDD(this.frame, disabled)
 					end)
-					aObj:secureHookScript(obj.frame.dropButton, "OnClick", function(_)
-						if obj.dropdown then
-							if not obj.dropdown.sf then
-								aObj:skinObject("slider", {obj=obj.dropdown.slider})
-								aObj:skinObject("frame", {obj=obj.dropdown, ofs=0})
-								_G.RaiseFrameLevel(obj.dropdown)
-							else
-								aObj:removeBackdrop(obj.dropdown)
-							end
+ 				end
+				aObj:secureHookScript(obj.frame.dropButton, "OnClick", function(_)
+					if obj.dropdown then
+						if not obj.dropdown.sf then
+							aObj:skinObject("slider", {obj=obj.dropdown.slider})
+							aObj:skinObject("frame", {obj=obj.dropdown, ofs=0})
+							_G.RaiseFrameLevel(obj.dropdown)
+						else
+							aObj:removeBackdrop(obj.dropdown)
 						end
-					end)
-				end
+					end
+				end)
 
 			-- WeakAuras objects
 			elseif objType == "WeakAurasDisplayButton" then
@@ -286,7 +286,6 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 
 			-- CompactMissions objects
 			elseif objType == "Mission" then
-				-- aObj:applySkin{obj=obj.frame, kfs=true}
 				aObj:skinObject("skin", {obj=obj.frame, kfs=true})
 				if aObj.modBtns then
 					aObj:skinStdButton{obj=obj.startbutton, as=true}
@@ -386,6 +385,9 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 			or objType == "WeakAurasTextureButton"
 			or objType == "WeakAurasToolbarButton"
 			or objType == "WeakAurasTwoColumnDropdown"
+			or objType == "WeakAurasScrollArea"
+			or objType == "WeakAurasExpand"
+			or objType == "WeakAurasSpinBox"
 			-- ReagentRestocker object
 			or objType == "DragDropTarget"
 			-- CollectMe objects
