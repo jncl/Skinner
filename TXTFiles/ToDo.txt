@@ -41,29 +41,13 @@ ToDos
 	I	Tab positioning, reported by Fakelessgaming, 24.10.22/08.01.23
 		- Review Top/Bottom tab positioning using 1 pixel border
 
-	I	ChatFrames, reported by DarkLimpan, 25.04.23
-√		- Skinner/Core/NewSkinFuncs.lua:702: attempt to index local 'child' (a nil value)
-		[string "@Skinner/Core/NewSkinFuncs.lua"]:710: in function `?'
-		[string "@Skinner/Core/NewSkinFuncs.lua"]:255: in function `skinObject'
-		[string "@Skinner/Core/UIFrames.lua"]:1023: in function <Skinner/Core/UIFrames.lua:1017>
-
-	I	Details, reported by MetalHeadTwo, 02.05.23
-x		- Skinner/Core/NewSkinFuncs.lua:523: attempt to index field 'obj' (a nil value)
-		[string "@Skinner/Core/NewSkinFuncs.lua"]:626: in function `?'
-		[string "@Skinner/Core/NewSkinFuncs.lua"]:255: in function `skinObject'
+	I	Details, reported by Sparky24, 05.05.23
+√		- Skinner/Core/NewSkinFuncs.lua:523: attempt to index field 'obj' (a nil value)
+		[string "@Skinner/Core/NewSkinFuncs.lua"]:626: in function ?'
+		[string "@Skinner/Core/NewSkinFuncs.lua"]:255: in function skinObject'
 		[string "@Skinner/AddonSkins/Details.lua"]:11: in function <Skinner/AddonSkins/Details.lua:8>
-
-	I	ClassicQuestLog, reported by therealdeerez, 03.05.23
-√		- Skinner/Core/NewSkinFuncs.lua:177: attempt to call method 'GetOrientation' (a nil value)
-		[string "@Skinner/Core/NewSkinFuncs.lua"]:177: in function <Skinner/Core/NewSkinFuncs.lua:174>
-		[string "@Skinner/Core/NewSkinFuncs.lua"]:732: in function <Skinner/Core/NewSkinFuncs.lua:711>
-		[string "@Skinner/Core/NewSkinFuncs.lua"]:738: in function `?'
-		[string "@Skinner/Core/NewSkinFuncs.lua"]:255: in function `skinObject'
-		[string "@Skinner/AddonSkins/ClassicQuestLog.lua"]:72: in function <Skinner/AddonSkins/ClassicQuestLog.lua:65>
-
-	I	WeakAuras, reported by Sausje, 03.05.23
-√		- Skinner/Core/UtilFuncs.lua:936: attempt to index field 'obj' (a nil value)
-		[string "@Skinner/Core/UtilFuncs.lua"]:936: in function <Skinner/Core/UtilFuncs.lua:919>
-		[string "@Skinner/Core/UtilFuncs.lua"]:984: in function `moveObject'
-		[string "@Skinner/AddonSkins/WeakAuras.lua"]:127: in function <Skinner/AddonSkins/WeakAuras.lua:125>
-	
+		
+	I	Bartender4, reported by Sparky24, 05.05.23
+√		- Skinner/AddonSkins/Bartender4.lua:89: bad argument #1 to 'ipairs' (table expected, got nil)
+		[string "@Skinner/AddonSkins/Bartender4.lua"]:89: in function `skinStatusBars'
+		[string "@Skinner/AddonSkins/Bartender4.lua"]:101: in function <Skinner/AddonSkins/Bartender4.lua:5>
