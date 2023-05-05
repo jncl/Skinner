@@ -2,7 +2,7 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("Bartender4") then return end
 local _G = _G
 
-aObj.addonsToSkin.Bartender4 = function(self) -- v 4.13.5
+aObj.addonsToSkin.Bartender4 = function(self) -- v 4.14.9
 
 	self:SecureHook(_G.Bartender4, "ShowUnlockDialog", function(this)
 		self:skinObject("frame", {obj=this.unlock_dialog, kfs=true, y1=6})
@@ -83,19 +83,34 @@ aObj.addonsToSkin.Bartender4 = function(self) -- v 4.13.5
 
 	mod = _G.Bartender4:GetModule("StatusTrackingBar", true)
 	if mod then
-		local function skinStatusBars(mObj)
-			-- skin Status bars
-			mObj.bar.manager:DisableDrawLayer("OVERLAY") -- status bar textures
-			for _, bar in _G.ipairs(mObj.bar.manager.bars) do
-				aObj:skinObject("statusbar", {obj=bar.StatusBar, bg=bar.StatusBar.Background})
-				if bar.ExhaustionTick then -- HonorStatusBar & ExpStatusBar
+		-- N.B. following function copied from UIF-R MainMenuBar
+		local function skinSTBars(container)
+			for _, bar in _G.pairs(container.bars) do
+				aObj:skinObject("statusbar", {obj=bar.StatusBar, bg=bar.StatusBar.Background, other={bar.StatusBar.Underlay, bar.StatusBar.Overlay}, hookFunc=true})
+				if bar.priority == 0 then -- Azerite bar
+					bar.StatusBar:SetStatusBarColor(aObj:getColourByName("yellow"))
+				elseif bar.priority == 1 then -- Rep bar
+					bar.StatusBar:SetStatusBarColor(aObj:getColourByName("light_blue"))
+				elseif bar.priority == 2 then -- Honor bar
+					bar.StatusBar:SetStatusBarColor(self:getColourByName("blue"))
+				elseif bar.priority == 3 then -- XP bar
 					bar.ExhaustionTick:GetNormalTexture():SetTexture(nil)
 					bar.ExhaustionTick:GetHighlightTexture():SetTexture(nil)
-				elseif bar.Tick then -- ArtifactStatusBar
+					bar.ExhaustionLevelFillBar:SetTexture(aObj.sbTexture)
+					bar.ExhaustionLevelFillBar:SetVertexColor(aObj:getColourByName("bright_blue"))
+					bar.StatusBar:SetStatusBarColor(self:getColourByName("blue"))
+				elseif bar.priority == 4 then -- Artifact bar
 					bar.Tick:GetNormalTexture():SetTexture(nil)
 					bar.Tick:GetHighlightTexture():SetTexture(nil)
+					bar.StatusBar:SetStatusBarColor(aObj:getColourByName("yellow"))
 				end
 			end
+		end
+		local function skinStatusBars(mObj)
+			mObj.bar.manager.MainStatusTrackingBarContainer:DisableDrawLayer("OVERLAY") -- status bar textures
+			mObj.bar.manager.SecondaryStatusTrackingBarContainer:DisableDrawLayer("OVERLAY") -- status bar textures
+			skinSTBars(mObj.bar.manager.MainStatusTrackingBarContainer)
+			skinSTBars(mObj.bar.manager.SecondaryStatusTrackingBarContainer)
 		end
 		if mod.enabledState then
 			skinStatusBars(mod)

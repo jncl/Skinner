@@ -7,15 +7,21 @@ local Details = _G.LibStub:GetLibrary("AceAddon-3.0"):GetAddon("_detalhes", true
 
 aObj.addonsToSkin.Details = function(self) -- v 10.0.7.10737.148/1.14.3.223.142
 
-	-- Player Details Window
-	self:skinObject("frame", {obj=_G.DetailsPlayerDetailsWindow, kfs=true, ofs=4})
+	-- -- Player Details Window
+	-- self:skinObject("frame", {obj=_G.DetailsPlayerDetailsWindow, kfs=true, ofs=4})
 
 	-- Report Window
+	local function skinReportWindow()
+		aObj:skinObject("frame", {obj=_G.DetailsReportWindow, kfs=true, ofs=4})
+		if aObj.modBtns then
+			aObj:skinCloseButton{obj=_G.DetailsReportWindow.fechar, noSkin=true}
+		end
+	end
 	if _G.DetailsReportWindow then
-		self:skinObject("frame", {obj=_G.DetailsReportWindow, kfs=true, ofs=4})
+		skinReportWindow()
 	else
 		self:SecureHook(Details.gump, "CriaJanelaReport", function(this)
-			self:skinObject("frame", {obj=_G.DetailsReportWindow, kfs=true, ofs=4})
+			skinReportWindow()
 
 			self:Unhook(this, "CriaJanelaReport")
 		end)
