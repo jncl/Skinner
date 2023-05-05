@@ -2612,21 +2612,21 @@ aObj.SetupRetail_UIFrames = function()
 				for _, bar in _G.pairs(container.bars) do
 					aObj:skinObject("statusbar", {obj=bar.StatusBar, bg=bar.StatusBar.Background, other={bar.StatusBar.Underlay, bar.StatusBar.Overlay}, hookFunc=true})
 					if bar.priority == 0 then -- Azerite bar
-						bar.StatusBar:SetStatusBarColor(self:getColourByName("yellow"))
+						bar.StatusBar:SetStatusBarColor(aObj:getColourByName("yellow"))
 					elseif bar.priority == 1 then -- Rep bar
-						bar.StatusBar:SetStatusBarColor(self:getColourByName("light_blue"))
+						bar.StatusBar:SetStatusBarColor(aObj:getColourByName("light_blue"))
 					elseif bar.priority == 2 then -- Honor bar
 						bar.StatusBar:SetStatusBarColor(self:getColourByName("blue"))
 					elseif bar.priority == 3 then -- XP bar
 						bar.ExhaustionTick:GetNormalTexture():SetTexture(nil)
 						bar.ExhaustionTick:GetHighlightTexture():SetTexture(nil)
 						bar.ExhaustionLevelFillBar:SetTexture(aObj.sbTexture)
-						bar.ExhaustionLevelFillBar:SetVertexColor(self:getColourByName("bright_blue"))
+						bar.ExhaustionLevelFillBar:SetVertexColor(aObj:getColourByName("bright_blue"))
 						bar.StatusBar:SetStatusBarColor(self:getColourByName("blue"))
 					elseif bar.priority == 4 then -- Artifact bar
 						bar.Tick:GetNormalTexture():SetTexture(nil)
 						bar.Tick:GetHighlightTexture():SetTexture(nil)
-						bar.StatusBar:SetStatusBarColor(self:getColourByName("yellow"))
+						bar.StatusBar:SetStatusBarColor(aObj:getColourByName("yellow"))
 					end
 				end
 			end
