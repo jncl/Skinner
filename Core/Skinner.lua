@@ -289,7 +289,7 @@ function aObj:OnEnable()
 		end
 		if btnModDB.profile.ButtonBorders then
 			self.modBtnBs = true
-			if not aObj.isRtl then
+			if not self.isRtl then
 				-- hook this to colour container item borders (inc. Bags, Bank, GuildBank, ReagentBank)
 				self:SecureHook("SetItemButtonQuality", function(button, quality, itemIDOrLink, _)
 					-- self:Debug("SetItemButtonQuality: [%s, %s, %s, %s, %s, %s]", button, button.IconBorder, button.sbb, quality, itemIDOrLink, suppressOverlays)
@@ -312,7 +312,7 @@ function aObj:OnEnable()
 					end
 				end)
 			end
-			if self.isRtlBeta then
+			if self.isRtl then
 				-- hook these to reparent the ProfessionQualityOverlay
 				self:SecureHook("SetItemCraftingQualityOverlay", function(button, _)
 					if button.noProfessionQualityOverlay then
