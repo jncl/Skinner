@@ -2537,17 +2537,26 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 		aObj:add2Table(aObj.ttList, tTip)
 	end
 	local toolTips = {
-		_G.ShoppingTooltip1,
-		_G.ShoppingTooltip2,
 		_G.GameTooltip,
 		_G.EmbeddedItemTooltip,
+		_G.ItemRefTooltip,
 		_G.ItemRefShoppingTooltip1,
 		_G.ItemRefShoppingTooltip2,
-		_G.ItemRefTooltip,
+		_G.ShoppingTooltip1,
+		_G.ShoppingTooltip2,
 	}
 	if self.isRtl then
 		-- self:add2Table(toolTips, _G.GameNoHeaderTooltip) -- N.B. defined in GameTooltip.xml but NOT referenced in code
 		self:add2Table(toolTips, _G.GameSmallHeaderTooltip)
+		self:SecureHook(_G.GameTooltip, "SetPoint", function(this, _)
+			if this.sf.tfade then
+				local th = _G.Round(this:GetHeight())
+				local fh = _G.Round(this.sf.tfade:GetHeight())
+				if fh > th then
+					self:applyTooltipGradient(this.sf)
+				end
+			end
+		end)
 	else
 		self:add2Table(toolTips, _G.SmallTextTooltip)
 	end
