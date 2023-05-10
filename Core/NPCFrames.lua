@@ -233,7 +233,7 @@ aObj.blizzFrames[ftype].QuestFrame = function(self)
 		--	Greeting Panel
 		self:keepFontStrings(_G.QuestFrameGreetingPanel)
 		self:keepFontStrings(_G.QuestGreetingScrollChildFrame) -- hide Horizontal Break texture
-		self:skinObject("slider", {obj=_G.QuestGreetingScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
+		self:skinObject("scrollbar", {obj=_G.QuestGreetingScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
 		if _G.QuestFrameGreetingPanel:IsShown() then
 			_G.GreetingText:SetTextColor(self.BT:GetRGB())
 			_G.CurrentQuestsText:SetTextColor(self.HT:GetRGB())
