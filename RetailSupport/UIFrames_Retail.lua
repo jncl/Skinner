@@ -4300,13 +4300,13 @@ aObj.SetupRetail_UIFrames = function()
 			end
 			this.BorderFrame.Tutorial.Ring:SetTexture(nil)
 			for _, oFrame in _G.pairs(this.overlayFrames) do
-				-- Tracking Options Button
+				-- Tracking Options/Pin Button
 				if oFrame.IconOverlay then
 					oFrame:DisableDrawLayer("BACKGROUND")
 					oFrame.Border:SetTexture(nil)
 					if self.modBtns then
 						self:skinStdButton{obj=oFrame, ofs=-3, clr="gold"}
-						if oFrame.ActiveTexture then -- WorldMapTrackingPin
+						if oFrame.ActiveTexture then -- TrackingPin
 							self:SecureHook(oFrame, "Refresh", function(bObj)
 								self:clrBtnBdr(bObj, "gold")
 							end)
