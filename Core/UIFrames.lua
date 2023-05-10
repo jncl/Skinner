@@ -1440,7 +1440,7 @@ aObj.blizzFrames[ftype].ItemText = function(self)
 	self.initialized.ItemText = true
 
 	local function skinITFrame(frame)
-		aObj:skinObject("slider", {obj=_G.ItemTextScrollFrame.ScrollBar, fType=ftype, rpTex=not aObj.isRtl and {"background", "artwork"} or nil})
+		aObj:skinObject("scrollbar", {obj=_G.ItemTextScrollFrame.ScrollBar, fType=ftype, rpTex=not aObj.isRtl and {"background", "artwork"} or nil})
 		aObj:skinObject("statusbar", {obj=_G.ItemTextStatusBar, fi=0})
 		if aObj.isRtl then
 			aObj:skinObject("frame", {obj=frame, fType=ftype, kfs=true, ri=true, rns=true, cb=true, x2=3})
