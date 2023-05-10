@@ -575,6 +575,10 @@ aObj.SetupRetail_PlayerFrames = function()
 
 		if self.modBtnBs then
 			local function skinBuffBtn(btn)
+				-- ignore privateAuraAnchor(s)
+				if not btn:GetDebugName():find("AuraContainer") then
+					return
+				end
 				if btn.symbol then
 					-- handle DebuffButtonTemplate
 					aObj:addButtonBorder{obj=btn, relTo=btn.Icon, reParent={btn.count, btn.duration, btn.symbol}, ofs=3}
