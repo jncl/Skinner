@@ -2,19 +2,24 @@
 ## Interface-Classic: 11403
 ## Interface-BCC: 20504
 ## Interface-Wrath: 30401
+
 ## Title: Skinner
+## IconTexture: Interface\Icons\INV_Misc_Pelt_Wolf_01
+
 ## Notes: Changes the look of the default UI
 ## Notes-esES: Cambia el aspecto del UI predeterminado
 ## Notes-zhCN: 更改默认用户界面的视觉样式。
 ## Notes-zhTW: 更改預設用戶介面的視覺樣式。
 ## Author: Jncl
 ## Version: @project-version@
+
 ## DefaultState: Enabled
 ## LoadOnDemand: 0
 ## SavedVariables: SkinnerDB
-## Globe: check-classic
-## X-Curse-Project-ID: 14661
 ## OptionalDeps: Ace3, LibSharedMedia-3.0, AceGUI-3.0-SharedMediaWidgets
+## Globe: check-classic
+
+## X-Curse-Project-ID: 14661
 
 Libs\_RequiredLibs.xml
 Libs\_OptionalLibs.xml
