@@ -2,7 +2,7 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("WeakAuras") then return end
 local _G = _G
 
-aObj.addonsToSkin.WeakAuras = function(self) -- v 5.5.2
+aObj.addonsToSkin.WeakAuras = function(self) -- v 5.5.3
 
 	if _G.WeakAuras.ShowDisplayTooltip then
 		-- hook this to skin the WeakAuras added elements
@@ -90,7 +90,7 @@ aObj.addonsToSkin.WeakAuras = function(self) -- v 5.5.2
 
 end
 
-aObj.lodAddons.WeakAurasOptions = function(self) -- v 5.5.2
+aObj.lodAddons.WeakAurasOptions = function(self) -- v 5.5.3
 
 	-- wait until frame is created
 	if not _G.WeakAurasOptions then
@@ -105,7 +105,7 @@ aObj.lodAddons.WeakAurasOptions = function(self) -- v 5.5.2
 		this.moversizer:SetBackdropBorderColor(self.bbClr:GetRGB())
 		self:skinObject("frame", {obj=this, kfs=true, x2=0, y1=-1})
 		if self.modBtns then
-			self:skinCloseButton{obj=this.CloseButton, fType=ftype}
+			self:skinCloseButton{obj=this.CloseButton}
 			self:skinOtherButton{obj=this.MaxMinButtonFrame.MaximizeButton, font=self.fontS, text=self.nearrow}
 			self:skinOtherButton{obj=this.MaxMinButtonFrame.MinimizeButton, font=self.fontS, text=self.swarrow}
 		end
@@ -113,13 +113,15 @@ aObj.lodAddons.WeakAurasOptions = function(self) -- v 5.5.2
 		if this.container.content:GetParent().sf then
 			this.container.content:GetParent().sf:Hide()
 		end
-		local _, _, _, enabled, loadable = _G.GetAddOnInfo("WeakAurasTutorials")
-		if enabled
-		and loadable
-		then
-			self:keepFontStrings(self:getChild(this, 5)) -- tutorial button frame
-		end
 		-- additional frames
+		local tipPopup = self:getChild(_G.WeakAurasOptions, 8)
+		local eb = self:getChild(tipPopup, 1)
+		if eb
+		and eb:GetObjectType() == "EditBox"
+		then
+			self:skinObject("editbox", {obj=eb, y1=-4, y2=4})
+			self:skinObject("frame", {obj=tipPopup, kfs=true, ofs=0})
+		end
 		self:skinObject("editbox", {obj=self:getChild(this.iconPicker.frame, 2), ofs=4})
 		self:skinObject("frame", {obj=_G.WeakAurasSnippets, kfs=true})
 		if self.modBtns then
@@ -133,10 +135,10 @@ aObj.lodAddons.WeakAurasOptions = function(self) -- v 5.5.2
 			self:skinStdButton{obj=self:getLastChild(this.codereview.frame)}
 			self:skinStdButton{obj=self:getChild(this.texteditor.frame, 2)}
 			self:skinStdButton{obj=self:getChild(this.texteditor.frame, 3)}
-			self:skinStdButton{obj=_G.WASettingsButton}
 			self:skinStdButton{obj=self:getChild(this.texteditor.frame, 4)}
+			self:skinStdButton{obj=_G.WASettingsButton}
 			self:skinStdButton{obj=_G.WASnippetsButton}
-			self:skinStdButton{obj=self:getChild(_G.WeakAurasSnippets, 5)} -- AddSnippetButton
+			self:skinStdButton{obj=self:getChild(_G.WeakAurasSnippets, _G.WeakAurasSnippets:GetNumChildren() - 2)} -- AddSnippetButton
 		end
 
 		self:Unhook(this, "OnShow")
@@ -157,15 +159,6 @@ aObj.lodAddons.WeakAurasOptions = function(self) -- v 5.5.2
 				self.UnregisterCallback("WeakAurasOptions", "AddOn_Loaded")
 			end
 		end)
-	end
-
-	local tipPopup = self:getChild(_G.WeakAurasOptions, 7)
-	local eb = self:getChild(tipPopup, 1)
-	if eb
-	and eb:GetObjectType() == "EditBox"
-	then
-		self:skinObject("editbox", {obj=eb})
-		self:skinObject("frame", {obj=tipPopup, kfs=true, ofs=0})
 	end
 
 end

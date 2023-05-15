@@ -2,7 +2,7 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("Krowi_AchievementFilter") then return end
 local _G = _G
 
-aObj.addonsToSkin.Krowi_AchievementFilter = function(self) -- v 55.0
+aObj.addonsToSkin.Krowi_AchievementFilter = function(self) -- v 56.4
 
 	local function skinAlertFrame(frame)
 		frame.animIn:Stop()
@@ -200,20 +200,39 @@ aObj.addonsToSkin.Krowi_AchievementFilter = function(self) -- v 55.0
 
 		self:SecureHookScript(_G.KrowiAF_AchievementsFrame, "OnShow", function(this)
 			self:removeNineSlice(this.Border.NineSlice)
-			self:skinObject("slider", {obj=this.ScrollFrame.ScrollBar, rpTex="background"})
-			for _, btn in _G.pairs(this.ScrollFrame.buttons) do
-				skinAchievevment(btn)
+			self:skinObject("scrollbar", {obj=this.ScrollBar, fType=ftype})
+			local function skinElement(...)
+				local _, element, elementData, new
+				if _G.select("#", ...) == 2 then
+					element, elementData = ...
+				elseif _G.select("#", ...) == 3 then
+					element, elementData, new = ...
+				else
+					_, element, elementData, new = ...
+				end
+				if new ~= false then
+					skinAchievevment(element)
+				end
 			end
+			_G.ScrollUtil.AddAcquiredFrameCallback(this.ScrollBox, skinElement, aObj, true)
 			self:skinObject("frame", {obj=this, kfs=true, y1=0, y2=0})
 
 			self:Unhook(this, "OnShow")
 		end)
 
 		self:SecureHookScript(_G.KrowiAF_CategoriesFrame, "OnShow", function(this)
-			self:skinObject("slider", {obj=this.ScrollFrame.ScrollBar, rpTex="background"})
-			for _, btn in _G.pairs(this.ScrollFrame.buttons) do
-				btn:DisableDrawLayer("BACKGROUND")
+			self:removeNineSlice(this.Border.NineSlice)
+			self:skinObject("scrollbar", {obj=this.ScrollBar, fType=ftype})
+			local function skinElement(...)
+				local _, element, elementData
+				if _G.select("#", ...) == 2 then
+					element, elementData = ...
+				elseif _G.select("#", ...) == 3 then
+					_, element, elementData = ...
+				end
+				element:DisableDrawLayer("BACKGROUND")
 			end
+			_G.ScrollUtil.AddInitializedFrameCallback(this.ScrollBox, skinElement, aObj, true)
 			self:skinObject("frame", {obj=this, kfs=true, y1=0, y2=0})
 
 			self:Unhook(this, "OnShow")
@@ -223,16 +242,25 @@ aObj.addonsToSkin.Krowi_AchievementFilter = function(self) -- v 55.0
 			self:removeNineSlice(self:getChild(this, 1).NineSlice)
 			this.Achievements.Header.Texture:SetTexture(nil)
 			this.Categories.Header.Texture:SetTexture(nil)
-			self:skinObject("slider", {obj=this.ScrollFrameBorder.ScrollFrame.ScrollBar, rpTex="background"})
-			self:skinObject("frame", {obj=this.ScrollFrameBorder, kfs=true})
-			for _, btn in _G.pairs(this.ScrollFrameBorder.ScrollFrame.buttons) do
-				skinAchievevment(btn)
-				btn.Description:SetTextColor(self.BT:GetRGB())
-				if btn.sbb then
-					btn.sbb:SetBackdropBorderColor(btn:GetBackdropBorderColor())
-					btn.Icon.sbb:SetBackdropBorderColor(btn:GetBackdropBorderColor())
+			self:removeNineSlice(this.AchievementsFrame.Border.NineSlice)
+			self:skinObject("scrollbar", {obj=this.AchievementsFrame.ScrollBar, fType=ftype})
+			local function skinElement(...)
+				local _, element, elementData
+				if _G.select("#", ...) == 2 then
+					element, elementData = ...
+				elseif _G.select("#", ...) == 3 then
+					_, element, elementData = ...
+				end
+				skinAchievevment(element)
+				element.Description:SetTextColor(self.BT:GetRGB())
+				if element.sbb then
+					element.sbb:SetBackdropBorderColor(element:GetBackdropBorderColor())
+					element.Icon.sbb:SetBackdropBorderColor(element:GetBackdropBorderColor())
 				end
 			end
+			_G.ScrollUtil.AddInitializedFrameCallback(this.AchievementsFrame.ScrollBox, skinElement, aObj, true)
+			self:skinObject("frame", {obj=this.AchievementsFrame, kfs=true, fb=true})
+
 			self:skinObject("frame", {obj=this, kfs=true, y1=0, y2=0})
 
 			self:Unhook(this, "OnShow")
