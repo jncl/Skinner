@@ -30,7 +30,7 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 		-- and not obj.sknd
 		-- and not (objType:find("TSM") and obj.sknrTSM) -- check objType as TSM overlays existing objects
 		then
-			aObj:Debug("Ace3 Skinning: [%s, %s, %s]", obj, objType)
+			-- aObj:Debug("Ace3 Skinning: [%s, %s, %s]", obj, objType)
 
 			if objType == "Button" then
 				if aObj.modBtns then
