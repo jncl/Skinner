@@ -3479,7 +3479,7 @@ aObj.SetupRetail_PlayerFrames = function()
 				aObj:skinObject("frame", {obj=frame, fType=ftype, kfs=true, x1=97, y2=8})
 			end
 		end
-		for i = 1, _G.NUM_GROUP_LOOT_FRAMES do
+		for i = 1, 4 do
 			self:SecureHookScript(_G["GroupLootFrame" .. i], "OnShow", function(this)
 				skinGroupLoot(this)
 
