@@ -2,16 +2,6 @@ local aName, aObj = ...
 
 local _G = _G
 
-function aObj:add2Table(table, value) -- luacheck: ignore self
-	--@alpha@
-	_G.assert(table, "Unknown table add2Table\n" .. _G.debugstack(2, 3, 2))
-	_G.assert(value, "Missing value add2Table\n" .. _G.debugstack(2, 3, 2))
-	--@end-alpha@
-
-	table[#table + 1] = value
-
-end
-
 local buildInfo = {
 	-- Testing
 	-- wow_classic_beta    = {"3.4.0",  46158, "Classic Beta"},
@@ -102,80 +92,15 @@ function aObj:checkVersion()
 
 end
 
-local function makeString(obj)
-	if _G.type(obj) == "table" then
-		if _G.type(_G.rawget(obj, 0)) == "userdata"
-		and _G.type(obj.GetObjectType) == "function"
-		then
-			return ("<%s:%s:%s>"):format(_G.tostring(obj), obj:GetObjectType(), obj:GetName() or "(Anon)")
-		end
-	end
-	return _G.tostring(obj)
-end
-local function makeText(fStr, ...)
-	local tmpTab = {}
-	local output = ""
-	if fStr
-	and fStr.find
-	and fStr:find("%%")
-	and _G.select('#', ...) >= 1
-	then
-		for i = 1, _G.select('#', ...) do
-			tmpTab[i] = makeString(_G.select(i, ...))
-		end
-		 -- handle missing variables
-		local varCnt = _G.select(2, fStr:gsub("%%", ""))
-		for i = #tmpTab, varCnt do
-			tmpTab[i + 1] = "nil"
-		end
-		output = _G.strjoin(" ", fStr:format(_G.unpack(tmpTab)))
-	else
-		tmpTab[1] = output
-		tmpTab[2] = fStr and _G.type(fStr) == "table" and makeString(fStr) or fStr or ""
-		for i = 1, _G.select('#', ...) do
-			tmpTab[i + 2] = makeString(_G.select(i, ...))
-		end
-		output = _G.table.concat(tmpTab, " ")
-	end
-	return output
-end
-local function printIt(text, frame, r, g, b)
-	(frame or _G.DEFAULT_CHAT_FRAME):AddMessage(text, r, g, b)
-end
-function aObj:CustomPrint(r, g, b, ...) -- luacheck: ignore self
+function aObj:add2Table(table, value) -- luacheck: ignore self
+	--@alpha@
+	_G.assert(table, "Unknown table add2Table\n" .. _G.debugstack(2, 3, 2))
+	_G.assert(value, "Missing value add2Table\n" .. _G.debugstack(2, 3, 2))
+	--@end-alpha@
 
-	printIt(_G.WrapTextInColorCode(aName, "ffffff78") .. " " .. makeText(...), nil, r, g, b)
+	table[#table + 1] = value
 
 end
-
---@debug@
-aObj.debugFrame = _G.ChatFrame10
-function aObj:Debug(...)
-
-	local output = ("(DBG) %s:[%s.%03d]"):format(aName, _G.date("%H:%M:%S"), (_G.GetTime() % 1) * 1000)
-	printIt(_G.WrapTextInColorCode(output, "ff7fff7f") .. " " .. makeText(...), self.debugFrame)
-
-end
-local dbg2Flag = false
-function aObj:Debug2(...)
-
-	if dbg2Flag then
-		printIt("dbg2: " .. makeText(...), self.debugFrame)
-	end
-
-end
-function aObj:Debug3(...)
-	-- used by showCmds function
-	printIt("dbg3: " .. makeText(...), self.debugFrame)
-
-end
---@end-debug@
---[===[@non-debug@
-aObj.Debug = _G.nop
-aObj.Debug2 = _G.nop
-aObj.Debug3 = _G.nop
---@end-non-debug@]===]
-
 function aObj:setupOptions(optNames, optIgnore, preLoadFunc, postLoadFunc)
 
 	local _
@@ -262,3 +187,77 @@ function aObj:setupOptions(optNames, optIgnore, preLoadFunc, postLoadFunc)
 	end
 
 end
+
+local function makeString(obj)
+	if _G.type(obj) == "table" then
+		if _G.type(_G.rawget(obj, 0)) == "userdata"
+		and _G.type(obj.GetObjectType) == "function"
+		then
+			return ("<%s:%s:%s>"):format(_G.tostring(obj), obj:GetObjectType(), obj:GetName() or "(Anon)")
+		end
+	end
+	return _G.tostring(obj)
+end
+local function makeText(fStr, ...)
+	local tmpTab = {}
+	local output = ""
+	if fStr
+	and fStr.find
+	and fStr:find("%%")
+	and _G.select('#', ...) >= 1
+	then
+		for i = 1, _G.select('#', ...) do
+			tmpTab[i] = makeString(_G.select(i, ...))
+		end
+		 -- handle missing variables
+		local varCnt = _G.select(2, fStr:gsub("%%", ""))
+		for i = #tmpTab, varCnt do
+			tmpTab[i + 1] = "nil"
+		end
+		output = _G.strjoin(" ", fStr:format(_G.unpack(tmpTab)))
+	else
+		tmpTab[1] = output
+		tmpTab[2] = fStr and _G.type(fStr) == "table" and makeString(fStr) or fStr or ""
+		for i = 1, _G.select('#', ...) do
+			tmpTab[i + 2] = makeString(_G.select(i, ...))
+		end
+		output = _G.table.concat(tmpTab, " ")
+	end
+	return output
+end
+local function printIt(text, frame, r, g, b)
+	(frame or _G.DEFAULT_CHAT_FRAME):AddMessage(text, r, g, b)
+end
+function aObj:CustomPrint(r, g, b, ...) -- luacheck: ignore self
+
+	printIt(_G.WrapTextInColorCode(aName, "ffffff78") .. " " .. makeText(...), nil, r, g, b)
+
+end
+
+--@debug@
+aObj.debugFrame = _G.ChatFrame10
+function aObj:Debug(...)
+
+	local output = ("(DBG) %s:[%s.%03d]"):format(aName, _G.date("%H:%M:%S"), (_G.GetTime() % 1) * 1000)
+	printIt(_G.WrapTextInColorCode(output, "ff7fff7f") .. " " .. makeText(...), self.debugFrame)
+
+end
+local dbg2Flag = false
+function aObj:Debug2(...)
+
+	if dbg2Flag then
+		printIt("dbg2: " .. makeText(...), self.debugFrame)
+	end
+
+end
+function aObj:Debug3(...)
+	-- used by showCmds function
+	printIt("dbg3: " .. makeText(...), self.debugFrame)
+
+end
+--@end-debug@
+--[===[@non-debug@
+aObj.Debug = _G.nop
+aObj.Debug2 = _G.nop
+aObj.Debug3 = _G.nop
+--@end-non-debug@]===]
