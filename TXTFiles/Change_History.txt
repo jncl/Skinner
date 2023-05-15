@@ -1,3 +1,9 @@
+beta10.49444.5
+Jncl:
+	Updated ToDo.txt files
+	Updated MainMenuBar skin
+	Updated Bartender4 & Details skins
+	
 beta10.49444.4
 Jncl:
 	Updated Change_History.txt
