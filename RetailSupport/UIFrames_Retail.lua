@@ -1115,15 +1115,51 @@ aObj.SetupRetail_UIFrames = function()
 
 		-- table copied from EventToastManager.lua
 		local eventToastTemplatesByToastType = {
-			[_G.Enum.EventToastDisplayType.NormalSingleLine] = {template = "EventToastManagerNormalSingleLineTemplate", frameType= "FRAME", hideAutomatically = true, },
-			[_G.Enum.EventToastDisplayType.NormalBlockText] = {template ="EventToastManagerNormalBlockTextTemplate", frameType= "FRAME", hideAutomatically = true,},
-			[_G.Enum.EventToastDisplayType.NormalTitleAndSubTitle] = {template = "EventToastManagerNormalTitleAndSubtitleTemplate", frameType= "FRAME", hideAutomatically = true,},
-			[_G.Enum.EventToastDisplayType.NormalTextWithIcon] = {template = "EventToastWithIconNormalTemplate", frameType= "FRAME", hideAutomatically = true,},
-			[_G.Enum.EventToastDisplayType.LargeTextWithIcon] = {template = "EventToastWithIconLargeTextTemplate", frameType= "FRAME", hideAutomatically = true,},
-			[_G.Enum.EventToastDisplayType.NormalTextWithIconAndRarity] = {template = "EventToastWithIconWithRarityTemplate", frameType= "FRAME", hideAutomatically = true,},
-			[_G.Enum.EventToastDisplayType.Scenario] = {template = "EventToastScenarioToastTemplate", frameType= "BUTTON", hideAutomatically = true,},
-			[_G.Enum.EventToastDisplayType.ChallengeMode] = {template = "EventToastChallengeModeToastTemplate", frameType= "FRAME", hideAutomatically = true,},
-			[_G.Enum.EventToastDisplayType.ScenarioClickExpand] = {template = "EventToastScenarioExpandToastTemplate", frameType= "BUTTON", hideAutomatically = false,},
+			[_G.Enum.EventToastDisplayType.NormalSingleLine] = {
+				template = "EventToastManagerNormalSingleLineTemplate",
+				frameType= "FRAME",
+				hideAutomatically = true,
+			},
+			[_G.Enum.EventToastDisplayType.NormalBlockText] = {
+				template ="EventToastManagerNormalBlockTextTemplate",
+				frameType= "FRAME",
+				hideAutomatically = true,
+			},
+			[_G.Enum.EventToastDisplayType.NormalTitleAndSubTitle] = {
+				template = "EventToastManagerNormalTitleAndSubtitleTemplate",
+				frameType= "FRAME",
+				hideAutomatically = true,
+			},
+			[_G.Enum.EventToastDisplayType.NormalTextWithIcon] = {
+				template = "EventToastWithIconNormalTemplate",
+				frameType= "FRAME",
+				hideAutomatically = true,
+			},
+			[_G.Enum.EventToastDisplayType.LargeTextWithIcon] = {
+				template = "EventToastWithIconLargeTextTemplate",
+				frameType= "FRAME",
+				hideAutomatically = true,
+			},
+			[_G.Enum.EventToastDisplayType.NormalTextWithIconAndRarity] = {
+				template = "EventToastWithIconWithRarityTemplate",
+				frameType= "FRAME",
+				hideAutomatically = true,
+			},
+			[_G.Enum.EventToastDisplayType.Scenario] = {
+				template = "EventToastScenarioToastTemplate",
+				frameType= "BUTTON",
+				hideAutomatically = true,
+			},
+			[_G.Enum.EventToastDisplayType.ChallengeMode] = {
+				template = "EventToastChallengeModeToastTemplate",
+				frameType= "FRAME",
+				hideAutomatically = true,
+			},
+			[_G.Enum.EventToastDisplayType.ScenarioClickExpand] = {
+				template = "EventToastScenarioExpandToastTemplate",
+				frameType= "BUTTON",
+				hideAutomatically = false,
+			},
 		}
 		local function skinToast(frame)
 			--@debug@
@@ -1145,6 +1181,11 @@ aObj.SetupRetail_UIFrames = function()
 				return
 			end
 			local toast = frame:GetToastFrame(toastTable)
+			--@debug@
+			_G.C_Timer.After(1, function()
+				_G.Spew("skinToast#3", toast)
+			end)
+			--@end-debug@
 			toast:DisableDrawLayer("BORDER")
 			if toast.BannerFrame then
 				toast.BannerFrame:DisableDrawLayer("BACKGROUND")
@@ -1161,20 +1202,21 @@ aObj.SetupRetail_UIFrames = function()
 				aObj:clrButtonFromBorder(toast)
 			end
 		end
+		skinToast(_G.EventToastManagerFrame)
+
 		self:SecureHook(_G.EventToastManagerFrame, "DisplayToast", function(this, _)
 			skinToast(this)
 		end)
-		skinToast(_G.EventToastManagerFrame)
 
 		self:SecureHookScript(_G.EventToastManagerFrame, "OnShow", function(this)
-			this:DisableDrawLayer("BACKGROUND")
+			this.BlackBG:SetAtlas(nil)
 
 			self:Unhook(this, "OnShow")
 		end)
 		self:checkShown(_G.EventToastManagerFrame)
 
 		self:SecureHookScript(_G.EventToastManagerSideDisplay, "OnShow", function(this)
-			this:DisableDrawLayer("BACKGROUND")
+			this.BlackBG:SetAtlas(nil)
 
 			self:Unhook(this, "OnShow")
 		end)
