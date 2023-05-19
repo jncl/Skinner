@@ -400,7 +400,7 @@ aObj.SetupRetail_UIFrames = function()
 		self:SecureHookScript(_G.AdventureMapQuestChoiceDialog, "OnShow", function(this)
 			this:DisableDrawLayer("BACKGROUND") -- remove textures
 			this.Details.ScrollBar:DisableDrawLayer("ARTWORK")
-			self:skinObject("slider", {obj=this.Details.ScrollBar, fType=ftype})
+			self:skinObject("scrollbar", {obj=this.Details.ScrollBar, fType=ftype})
 			this.Details.Child.TitleHeader:SetTextColor(self.HT:GetRGB())
 			this.Details.Child.DescriptionText:SetTextColor(self.BT:GetRGB())
 			this.Details.Child.ObjectivesHeader:SetTextColor(self.HT:GetRGB())
