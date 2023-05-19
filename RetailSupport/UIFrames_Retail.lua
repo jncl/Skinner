@@ -4215,7 +4215,7 @@ aObj.SetupRetail_UIFrames = function()
 				_G["TutorialFrameRight" .. i]:SetTexture(nil)
 			end
 			_G.TutorialTextBorder:SetAlpha(0)
-			self:skinObject("slider", {obj=_G.TutorialFrameTextScrollFrame.ScrollBar, fType=ftype})
+			self:skinObject("scrollbar", {obj=_G.TutorialFrameTextScrollFrame.ScrollBar, fType=ftype})
 			-- stop animation before skinning, otherwise textures reappear
 			_G.AnimateMouse:Stop()
 			_G.AnimateCallout:Stop()
