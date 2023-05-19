@@ -3505,52 +3505,15 @@ aObj.SetupRetail_UIFrames = function()
 		self:SecureHookScript(_G.QuestMapFrame, "OnShow", function(this)
 			this.Background:SetAlpha(0) -- N.B. Texture changed in code
 			this.VerticalSeparator:SetTexture(nil)
-			-- QuestsFrame
 			this.QuestsFrame:DisableDrawLayer("BACKGROUND")
+			this.QuestsFrame.Edge:SetTexture(nil)
 			this.QuestsFrame.Contents.Separator:DisableDrawLayer("OVERLAY")
 			this.QuestsFrame.Contents.StoryHeader:DisableDrawLayer("BACKGROUND")
-			self:SecureHook("QuestLogQuests_Update", function(_)
-				for hdr in this.QuestsFrame.campaignHeaderFramePool:EnumerateActive() do
-					hdr.Background:SetTexture(nil)
-					hdr.TopFiligree:SetTexture(nil)
-					hdr.HighlightTexture:SetAtlas("CampaignHeader_SelectedGlow")
-					hdr.SelectedHighlight:SetTexture(nil)
-					if self.modBtns then
-						self:skinExpandButton{obj=hdr.CollapseButton, onSB=true}
-					end
-				end
-				local tex
-				local function skinEB(hdr)
-					tex = hdr:GetNormalTexture() and hdr:GetNormalTexture():GetTexture()
-					if tex
-					and _G.tonumber(tex)
-					and tex == 904010 -- Campaign_HeaderIcon_* [Atlas]
-					and not hdr.sb
-					then
-						aObj:skinExpandButton{obj=hdr, onSB=true}
-						aObj:checkTex{obj=hdr}
-					end
-				end
-				for hdr in this.QuestsFrame.covenantCallingsHeaderFramePool:EnumerateActive() do
-					self:removeRegions(hdr, {2, 3, 4})
-					hdr.HighlightBackground:SetTexture(self.tFDIDs.qltHL)
-					if self.modBtns then
-						skinEB(hdr)
-					end
-				end
-				if self.modBtns then
-					for hdr in this.QuestsFrame.headerFramePool:EnumerateActive() do
-						skinEB(hdr)
-					end
-				end
-			end)
 			this.QuestsFrame.DetailFrame:DisableDrawLayer("ARTWORK")
-			-- QuestSessionManagement
 			this.QuestSessionManagement.BG:SetTexture(nil)
 			if self.modBtnBs then
 				self:addButtonBorder{obj=this.QuestSessionManagement.ExecuteSessionCommand, ofs=1, clr="gold"}
 			end
-			-- Details Frame
 			self:keepFontStrings(this.DetailsFrame)
 			self:keepFontStrings(this.DetailsFrame.RewardsFrame)
 			self:getRegion(this.DetailsFrame.RewardsFrame, 3):SetTextColor(self.HT:GetRGB())
@@ -3566,26 +3529,10 @@ aObj.SetupRetail_UIFrames = function()
 				self:skinStdButton{obj=this.DetailsFrame.AbandonButton}
 				self:skinStdButton{obj=this.DetailsFrame.ShareButton}
 				self:skinStdButton{obj=this.DetailsFrame.TrackButton, x2=-2}
-				self:SecureHook("QuestMapFrame_UpdateQuestDetailsButtons", function()
-					self:clrBtnBdr(_G.QuestMapFrame.DetailsFrame.AbandonButton)
-					self:clrBtnBdr(_G.QuestMapFrame.DetailsFrame.TrackButton)
-					self:clrBtnBdr(_G.QuestMapFrame.DetailsFrame.ShareButton)
-					if _G.QuestLogPopupDetailFrame.AbandonButton.sb then
-						self:clrBtnBdr(_G.QuestLogPopupDetailFrame.AbandonButton)
-						self:clrBtnBdr(_G.QuestLogPopupDetailFrame.TrackButton)
-						self:clrBtnBdr(_G.QuestLogPopupDetailFrame.ShareButton)
-					end
-				end)
 			end
-			-- CampaignOverview
 			self:keepFontStrings(this.CampaignOverview.Header)
 			this.CampaignOverview.BG:SetTexture(nil)
-			self:SecureHook(this.CampaignOverview, "UpdateCampaignLoreText", function(fObj, _, _)
-				for tex in fObj.texturePool:EnumerateActive() do
-					tex:SetTexture(nil)
-				end
-			end)
-
+			this.CampaignOverview.ScrollFrame:DisableDrawLayer("OVERLAY")
 			local wct = this.QuestsFrame.CampaignTooltip
 			wct.ItemTooltip.FollowerTooltip.PortraitFrame.PortraitRing:SetTexture(nil)
 			wct.ItemTooltip.FollowerTooltip.PortraitFrame.LevelBorder:SetAlpha(0)
@@ -3598,9 +3545,8 @@ aObj.SetupRetail_UIFrames = function()
 			self:Unhook(this, "OnShow")
 		end)
 
-		-- Quest Log Popup Detail Frame
 		self:SecureHookScript(_G.QuestLogPopupDetailFrame, "OnShow", function(this)
-			self:skinObject("slider", {obj=this.ScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
+			self:skinObject("scrollbar", {obj=this.ScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true})
 			if self.modBtns then
 				self:skinStdButton{obj=this.AbandonButton}
@@ -3613,6 +3559,66 @@ aObj.SetupRetail_UIFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+
+		self:SecureHook("QuestLogQuests_Update", function(_)
+			local tex
+			local function skinEB(hdr)
+				tex = hdr:GetNormalTexture() and hdr:GetNormalTexture():GetTexture()
+				if tex
+				and _G.tonumber(tex)
+				and tex == 904010 -- Campaign_HeaderIcon_* [Atlas]
+				and not hdr.sb
+				then
+					aObj:skinExpandButton{obj=hdr, onSB=true}
+					aObj:checkTex{obj=hdr}
+				end
+			end
+			for hdr in _G.QuestScrollFrame.headerFramePool:EnumerateActive() do
+				if self.modBtns then
+					skinEB(hdr)
+				end
+			end
+			for hdr in _G.QuestScrollFrame.campaignHeaderFramePool:EnumerateActive() do
+				hdr.Background:SetTexture(nil)
+				hdr.TopFiligree:SetTexture(nil)
+				hdr.HighlightTexture:SetAtlas("CampaignHeader_SelectedGlow")
+				hdr.SelectedHighlight:SetTexture(nil)
+				if self.modBtns then
+					self:skinExpandButton{obj=hdr.CollapseButton, onSB=true}
+				end
+			end
+			for hdr in _G.QuestScrollFrame.campaignHeaderMinimalFramePool:EnumerateActive() do
+				if self.modBtns then
+					self:skinExpandButton{obj=hdr.CollapseButton, onSB=true}
+				end
+			end
+			for hdr in _G.QuestScrollFrame.covenantCallingsHeaderFramePool:EnumerateActive() do
+				self:removeRegions(hdr, {2, 3, 4})
+				hdr.HighlightBackground:SetTexture(self.tFDIDs.qltHL)
+				if self.modBtns then
+					skinEB(hdr)
+				end
+			end
+		end)
+		self:SecureHook(_G.QuestMapFrame.CampaignOverview, "UpdateCampaignLoreText", function(fObj, _, _)
+			for tex in fObj.texturePool:EnumerateActive() do
+				tex:SetTexture(nil) -- divider lines
+			end
+		end)
+		if self.modBtns then
+			self:SecureHook("QuestMapFrame_UpdateQuestDetailsButtons", function()
+				if _G.QuestMapFrame.DetailsFrame.AbandonButton.sb then
+					self:clrBtnBdr(_G.QuestMapFrame.DetailsFrame.AbandonButton)
+					self:clrBtnBdr(_G.QuestMapFrame.DetailsFrame.TrackButton)
+					self:clrBtnBdr(_G.QuestMapFrame.DetailsFrame.ShareButton)
+					if _G.QuestLogPopupDetailFrame.AbandonButton.sb then
+						self:clrBtnBdr(_G.QuestLogPopupDetailFrame.AbandonButton)
+						self:clrBtnBdr(_G.QuestLogPopupDetailFrame.TrackButton)
+						self:clrBtnBdr(_G.QuestLogPopupDetailFrame.ShareButton)
+					end
+				end
+			end)
+		end
 
 	end
 
