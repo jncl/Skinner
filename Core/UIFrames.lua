@@ -633,13 +633,12 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 		end
 		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true, ofs=-4, y1=0})
 		if self.modBtns then
-			self:skinStdButton{obj=this.DefaultButton}
-			self:skinStdButton{obj=this.RedockButton}
-			self:skinStdButton{obj=_G.CombatLogDefaultButton}
-			self:skinStdButton{obj=this.ToggleChatButton}
+			self:skinStdButton{obj=this.DefaultButton, fType=ftype}
+			self:skinStdButton{obj=this.RedockButton, fType=ftype}
+			self:skinStdButton{obj=_G.CombatLogDefaultButton, fType=ftype}
 			self:skinStdButton{obj=_G.TextToSpeechDefaultButton, fType=ftype}
-			self:skinStdButton{obj=_G.ChatConfigFrameCancelButton}
-			self:skinStdButton{obj=_G.ChatConfigFrameOkayButton}
+			self:skinStdButton{obj=_G.ChatConfigFrameCancelButton, fType=ftype}
+			self:skinStdButton{obj=_G.ChatConfigFrameOkayButton, fType=ftype}
 		end
 		if self.modChkBtns then
 			self:skinCheckButton{obj=_G.TextToSpeechCharacterSpecificButton, fType=ftype}
@@ -834,11 +833,11 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 			end
 
 			self:SecureHookScript(_G.ChatConfigCombatSettingsFilters, "OnShow", function(frame)
-				if not self.isRtl then
+				if self.isRtl then
+					self:skinObject("scrollbar", {obj=frame.ScrollBar, fType=ftype})
+				else
 					_G.ChatConfigCombatSettingsFiltersScrollFrameScrollBarBorder:Hide()
 					self:skinObject("slider", {obj=_G.ChatConfigCombatSettingsFiltersScrollFrameScrollBar, fType=ftype})
-				else
-					self:skinObject("scrollbar", {obj=frame.ScrollBar, fType=ftype})
 				end
 				self:skinObject("frame", {obj=_G.ChatConfigCombatSettingsFilters, fType=ftype, kfs=true, rns=true, fb=true, ofs=0, x2=-22})
 				_G.LowerFrameLevel(_G.ChatConfigCombatSettingsFilters) -- make frame appear below tab texture
