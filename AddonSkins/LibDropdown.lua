@@ -16,13 +16,12 @@ local function hookFuncs(lib)
 			aObj:skinObject("frame", {obj=parent, kfs=true, ofs=0})
 		end
 	end, true)
-	aObj:SecureHook(lib, "Ace3MenuSelect", function(this, t, parent)
+	aObj:SecureHook(lib, "Ace3MenuSelect", function(_, _, parent)
 		aObj:skinObject("frame", {obj=parent, kfs=true})
 	end)
 	aObj:SecureHook(lib, "Ace3InputShow", function(_, _, parent)
 		local eB = parent:GetParent().input
 		aObj:skinObject("editbox", {obj=eB})
-		-- aObj:skinEditBox{obj=parent:GetParent().input, regs={9}}
 		eB.SetHeight = _G.nop -- stop height being reset
 		aObj:skinObject("frame", {obj=parent, kfs=true})
 	end, true)
@@ -46,6 +45,29 @@ aObj.libsToSkin["LibDropdownMC-1.0"] = function(self) -- v LibDropdownMC-1.0, 1
 	local lDD = _G.LibStub:GetLibrary("LibDropdownMC-1.0", true)
 	if lDD then
 		hookFuncs(lDD)
+	end
+
+end
+
+aObj.libsToSkin["LibDropDown"] = function(self) -- v LibDropDown, 6
+	if self.initialized.LibDropDown then return end
+	self.initialized.LibDropDown = true
+
+	local lDD = _G.LibStub:GetLibrary("LibDropDown", true)
+	if lDD then
+		local function skinDD(menu)
+			aObj:removeBackdrop(menu.Backdrop)
+			aObj:skinObject("frame", {obj=menu, kfs=true, ofs=6})
+			_G.RaiseFrameLevelByTwo(menu)
+		end
+		self:RawHook(lDD, "NewMenu", function(this, parent, name)
+			local menu = self.hooks[this].NewMenu(this, parent, name)
+			skinDD(menu)
+			return menu
+		end, true)
+		for menu, _ in _G.pairs(lDD.dropdowns) do
+			skinDD(menu)
+		end
 	end
 
 end
