@@ -1527,7 +1527,9 @@ aObj.blizzLoDFrames[ftype].MacroUI = function(self)
 	end)
 
 	self:SecureHookScript(_G.MacroPopupFrame, "OnShow", function(this)
-		if not self.isRtl then
+		if  self.isRtl then
+			self:skinIconSelector(this)
+		else
 			self:adjHeight{obj=this, adj=20} -- so buttons don't overlay icons
 			self:removeRegions(this.BorderBox, {1, 2, 3, 4, 5, 6, 7, 8})
 			self:skinObject("editbox", {obj=_G.MacroPopupEditBox, fType=ftype})
@@ -1551,8 +1553,6 @@ aObj.blizzLoDFrames[ftype].MacroUI = function(self)
 					self:addButtonBorder{obj=_G["MacroPopupButton" .. i], relTo=_G["MacroPopupButton" .. i .. "Icon"], reParent={_G["MacroPopupButton" .. i .. "Name"]}, clr="grey", ca=0.85}
 				end
 			end
-		else
-			self:skinIconSelector(this)
 		end
 
 		self:Unhook(this, "OnShow")
