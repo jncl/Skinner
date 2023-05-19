@@ -36,17 +36,16 @@ if not aObj.isClscERA then
 		end
 
 		self:SecureHookScript(_G.GossipFrame, "OnShow", function(this)
+			self:keepFontStrings(this.GreetingPanel)
 			self:skinObject("scrollbar", {obj=this.GreetingPanel.ScrollBar, fType=ftype})
 			_G.ScrollUtil.AddInitializedFrameCallback(this.GreetingPanel.ScrollBox, skinGossip, aObj, true)
+			local sBar = self.isRtl and this.FriendshipStatusBar or _G.NPCFriendshipStatusBar
+			self:removeRegions(sBar, {1, 2, 5, 6, 7, 8 ,9})
+			self:skinObject("statusbar", {obj=sBar, fi=0, bg=self:getRegion(sBar, 10)})
 			if self.isRtl then
-				self:removeRegions(this.FriendshipStatusBar, {1, 2, 5, 6, 7, 8 ,9})
-				self:skinObject("statusbar", {obj=this.FriendshipStatusBar, fi=0, bg=self:getRegion(this.FriendshipStatusBar, 10)})
 				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, x2=3})
 			else
-				self:keepFontStrings(this.GreetingPanel)
 				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=14, y1=-18, x2=-29, y2=66})
-				self:removeRegions(_G.NPCFriendshipStatusBar, {1, 2, 5, 6, 7, 8 ,9})
-				self:skinObject("statusbar", {obj=_G.NPCFriendshipStatusBar, fi=0, bg=self:getRegion(_G.NPCFriendshipStatusBar, 10)})
 			end
 			if self.modBtns then
 				self:skinStdButton{obj=this.GreetingPanel.GoodbyeButton}
