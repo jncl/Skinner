@@ -187,23 +187,7 @@ aObj.blizzFrames[ftype].QuestFrame = function(self)
 	self.initialized.QuestFrame = true
 
 	self:SecureHookScript(_G.QuestFrame, "OnShow", function(this)
-		self:RawHook("QuestFrame_SetTitleTextColor", function(fontString, _)
-			fontString:SetTextColor(self.HT:GetRGB())
-		end, true)
-		self:RawHook("QuestFrame_SetTextColor", function(fontString, _)
-			fontString:SetTextColor(self.BT:GetRGB())
-		end, true)
-
-		if self.isRtl then
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true})
-		else
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, x1=10, y1=-18, x2=-29, y2=65})
-		end
-
-		--	Reward Panel
 		self:keepFontStrings(_G.QuestFrameRewardPanel)
-
-		--	Progress Panel
 		self:keepFontStrings(_G.QuestFrameProgressPanel)
 		_G.QuestProgressTitleText:SetTextColor(self.HT:GetRGB())
 		_G.QuestProgressText:SetTextColor(self.BT:GetRGB())
@@ -217,35 +201,26 @@ aObj.blizzFrames[ftype].QuestFrame = function(self)
 				 self:addButtonBorder{obj=_G[btnName], libt=true, clr="grey"}
 			end
 		end
-		self:SecureHook("QuestFrameProgressItems_Update", function()
-			local br, bg, bb = self.BT:GetRGB()
-			local r, g ,b = _G.QuestProgressRequiredMoneyText:GetTextColor()
-			-- if red colour is less than 0.2 then it needs to be coloured
-			if r < 0.2 then
-				_G.QuestProgressRequiredMoneyText:SetTextColor(br - r, bg - g, bb - b)
-			end
-		end)
-
-		--	Detail Panel
 		self:keepFontStrings(_G.QuestFrameDetailPanel)
-
-		--	Greeting Panel
 		self:keepFontStrings(_G.QuestFrameGreetingPanel)
 		self:keepFontStrings(_G.QuestGreetingScrollChildFrame) -- hide Horizontal Break texture
-		self:skinObject("scrollbar", {obj=_G.QuestGreetingScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
 		if _G.QuestFrameGreetingPanel:IsShown() then
 			_G.GreetingText:SetTextColor(self.BT:GetRGB())
 			_G.CurrentQuestsText:SetTextColor(self.HT:GetRGB())
 			_G.AvailableQuestsText:SetTextColor(self.HT:GetRGB())
 		end
-		if not self.isRtl then
+		if self.isRtl then
+			self:skinObject("scrollbar", {obj=_G.QuestGreetingScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true})
+		else
+			self:skinObject("slider", {obj=_G.QuestGreetingScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
 			for i = 1, _G.MAX_NUM_QUESTS do
 				self:hookQuestText(_G["QuestTitleButton" .. i])
 			end
 			-- force recolouring of quest text
 			self:checkShown(_G.QuestFrameGreetingPanel)
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, x1=10, y1=-18, x2=-29, y2=65})
 		end
-
 		if self.modBtns then
 			self:skinCloseButton{obj=_G.QuestFrameCloseButton, fType=ftype, schk=true}
 			self:skinStdButton{obj=_G.QuestFrameCompleteQuestButton, fType=ftype, schk=true}
@@ -278,6 +253,21 @@ aObj.blizzFrames[ftype].QuestFrame = function(self)
 		self:skinObject("frame", {obj=_G.QuestNPCModel, fType=ftype, kfs=true, x1=-5, x2=5, y2=-81})
 	end
 	self:keepFontStrings(_G.QuestNPCModelTextFrame)
+
+	self:RawHook("QuestFrame_SetTitleTextColor", function(fontString, _)
+		fontString:SetTextColor(self.HT:GetRGB())
+	end, true)
+	self:RawHook("QuestFrame_SetTextColor", function(fontString, _)
+		fontString:SetTextColor(self.BT:GetRGB())
+	end, true)
+	self:SecureHook("QuestFrameProgressItems_Update", function()
+		local br, bg, bb = self.BT:GetRGB()
+		local r, g ,b = _G.QuestProgressRequiredMoneyText:GetTextColor()
+		-- if red colour is less than 0.2 then it needs to be coloured
+		if r < 0.2 then
+			_G.QuestProgressRequiredMoneyText:SetTextColor(br - r, bg - g, bb - b)
+		end
+	end)
 
 end
 
