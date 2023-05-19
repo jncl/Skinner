@@ -2156,6 +2156,13 @@ if not aObj.isClscERA then
 		if not self.prdb.OverrideActionBar or self.initialized.OverrideActionBar then return end
 		self.initialized.OverrideActionBar = true
 
+		if _G.IsAddOnLoaded("Dominos")
+		or _G.IsAddOnLoaded("Bartender4")
+		then
+			self.blizzFrames[ftype].OverrideActionBar = nil
+			return
+		end
+
 		self:SecureHookScript(_G.OverrideActionBar, "OnShow", function(this)
 			this:DisableDrawLayer("OVERLAY")
 			this:DisableDrawLayer("BACKGROUND")
