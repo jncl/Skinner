@@ -446,39 +446,37 @@ aObj.SetupRetail_NPCFrames = function()
 		self.initialized.BlackMarketUI = true
 
 		self:SecureHookScript(_G.BlackMarketFrame, "OnShow", function(this)
-			-- move title text
-			self:moveObject{obj=self:getRegion(this, 22), y=-4}
-			-- column headings
+			self:moveObject{obj=self:getRegion(this, 22), y=-4} -- title
 			for _, type in _G.pairs{"Name", "Level", "Type", "Duration", "HighBidder", "CurrentBid"} do
 				self:skinObject("frame", {obj=this["Column" .. type], fType=ftype, kfs=true, bd=5, ofs=0})
 			end
-			self:skinObject("slider", {obj=_G.BlackMarketScrollFrameScrollBar, fType=ftype})
+			self:skinObject("scrollbar", {obj=this.ScrollBar, fType=ftype})
+			local function skinElement(...)
+				local _, element
+				if _G.select("#", ...) == 2 then
+					element, _ = ...
+				elseif _G.select("#", ...) == 3 then
+					_, element, _ = ...
+				end
+				aObj:removeRegions(element, {1, 2, 3})
+				element.Item:GetNormalTexture():SetTexture(nil)
+				element.Item:GetPushedTexture():SetTexture(nil)
+				if aObj.modBtnBs then
+					aObj:addButtonBorder{obj=element.Item, reParent={element.Item.Count, element.Item.Stock, element.Item.IconOverlay}}
+					aObj:clrButtonFromBorder(element.Item)
+				end
+			end
+			_G.ScrollUtil.AddInitializedFrameCallback(this.ScrollBox, skinElement, aObj, true)
 			this.MoneyFrameBorder:DisableDrawLayer("BACKGROUND")
 			self:skinObject("moneyframe", {obj=_G.BlackMarketBidPrice})
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, cb=true, x2=1})
 			if self.modBtns then
 				self:skinStdButton{obj=this.BidButton}
 			end
-			-- HotDeal frame
 			self:keepFontStrings(this.HotDeal)
 			if self.modBtnBs then
-				self:addButtonBorder{obj=this.HotDeal.Item, reParent={this.HotDeal.Item.Count, this.HotDeal.Item.Stock}}
+				self:addButtonBorder{obj=this.HotDeal.Item, reParent={this.HotDeal.Item.Count, this.HotDeal.Item.Stock, this.HotDeal.Item.IconOverlay}}
 			end
-
-			local function skinSFButtons(scrollFrame)
-				for _, btn in _G.pairs(scrollFrame.buttons) do
-					aObj:removeRegions(btn, {1, 2, 3})
-					btn.Item:GetNormalTexture():SetTexture(nil)
-					btn.Item:GetPushedTexture():SetTexture(nil)
-					if aObj.modBtnBs then
-						aObj:addButtonBorder{obj=btn.Item, reParent={btn.Item.Count, btn.Item.Stock}}
-						aObj:clrButtonFromBorder(btn.Item)
-					end
-				end
-			end
-			self:SecureHook("BlackMarketScrollFrame_Update", function()
-				skinSFButtons(_G.BlackMarketScrollFrame)
-			end)
 
 			self:Unhook(this, "OnShow")
 		end)
