@@ -414,7 +414,7 @@ aObj.SetupRetail_PlayerFrames = function()
 			this.artifactPage.solveFrame.statusBar:SetStatusBarColor(0.75, 0.45, 0, 0.7)
 			this.artifactPage.historyTitle:SetTextColor(self.HT:GetRGB())
 			this.artifactPage.historyScroll.child.text:SetTextColor(self.BT:GetRGB())
-			self:skinObject("slider", {obj=this.artifactPage.historyScroll.ScrollBar, fType=ftype})
+			self:skinObject("scrollbar", {obj=this.artifactPage.historyScroll.ScrollBar, fType=ftype})
 
 			self:removeRegions(this.helpPage, {2, 3}) -- title textures
 			this.helpPage.titleText:SetTextColor(self.HT:GetRGB())
