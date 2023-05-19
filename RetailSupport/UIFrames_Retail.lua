@@ -2522,7 +2522,7 @@ aObj.SetupRetail_UIFrames = function()
 		-- LFGListApplication Dialog
 		self:SecureHookScript(_G.LFGListApplicationDialog, "OnShow", function(this)
 			self:removeNineSlice(this.Border)
-			self:skinObject("slider", {obj=this.Description.ScrollBar, fType=ftype})
+			self:skinObject("scrollbar", {obj=this.Description.ScrollBar, fType=ftype})
 			self:skinObject("frame", {obj=this.Description, fType=ftype, kfs=true, fb=true, ofs=6})
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true})
 			if self.modBtns then
