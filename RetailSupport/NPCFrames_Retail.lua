@@ -748,6 +748,12 @@ aObj.SetupRetail_NPCFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		if self.modBtnBs then
+			-- hook this to reset UpgradeItemButton border colour
+			self:SecureHookScript(_G.ItemUpgradeFrame, "OnHide", function(this)
+				self:clrBtnBdr(this.UpgradeItemButton)
+			end)
+		end
 
 	end
 
