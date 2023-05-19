@@ -174,10 +174,11 @@ aObj.blizzLoDFrames[ftype].ItemSocketingUI = function(self)
 		gemTypeInfo["Primordial"] = {textureKit="meta", r=1, g=1, b=1}
 	end
 	self:SecureHookScript(_G.ItemSocketingFrame, "OnShow", function(this)
-		self:skinObject("slider", {obj=_G.ItemSocketingScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
 		if self.isRtl then
+			self:skinObject("scrollbar", {obj=_G.ItemSocketingScrollFrame.ScrollBar, fType=ftype})
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, x2=3})
 		else
+			self:skinObject("slider", {obj=_G.ItemSocketingScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, x1=10, y1=-12, x2=-4, y2=30})
 			if self.modBtns then
 				self:skinCloseButton{obj=_G.ItemSocketingCloseButton, fType=ftype}
