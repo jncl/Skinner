@@ -1362,10 +1362,9 @@ aObj.blizzLoDFrames[ftype].GuildBankUI = function(self)
 	self:SecureHookScript(_G.GuildBankPopupFrame, "OnShow", function(this)
 		self:adjHeight{obj=this, adj=20}
 		if self.isRtl then
-			self:removeRegions(this.BorderBox, {1, 2, 3, 4, 5, 6, 7, 8})
+			self:skinIconSelector(this)
 		else
 			self:removeRegions(_G.BorderBox, {1, 2, 3, 4, 5, 6, 7, 8})
-		end
 		self:skinObject("editbox", {obj=this.EditBox, fType=ftype})
 		self:adjHeight{obj=this.ScrollFrame, adj=20} -- stretch to bottom of scroll area
 		self:skinObject("slider", {obj=this.ScrollFrame.ScrollBar, fType=ftype, rpTex="background"})
@@ -1379,6 +1378,7 @@ aObj.blizzLoDFrames[ftype].GuildBankUI = function(self)
 		if self.modBtns then
 			self:skinStdButton{obj=this.CancelButton}
 			self:skinStdButton{obj=this.OkayButton}
+		end
 		end
 
 		self:Unhook(this, "OnShow")
