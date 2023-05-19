@@ -8,11 +8,11 @@ aObj.SetupRetail_UIFrames = function()
 	-- The following functions are used by the GarrisonUI & OrderHallUI
 	local skinPortrait, skinFollower, skinFollowerListButton, skinEquipment, skinFollowerAbilitiesAndCounters, skinFollowerList, skinFollowerPage, skinFollowerTraitsAndEquipment, skinMissionFrame, skinCompleteDialog, skinMissionPage, skinMissionComplete, skinMissionList
 
-	-- [WoD] LE_FOLLOWER_TYPE_GARRISON_6_0
-	-- [WoD] LE_FOLLOWER_TYPE_GARRISON_6_2 (Shipyards)
-	-- [Legion] LE_FOLLOWER_TYPE_GARRISON_7_0
-	-- [BfA] LE_FOLLOWER_TYPE_GARRISON_8_0
-	-- [Shadowlands] Enum.GarrisonType.Type_9_0
+	-- [WoD] Enum.Type_6_0_Garrison
+	-- [WoD] Enum.Type_6_0_Garrison and C_Garrison.HasShipyard()
+	-- [Legion] Enum.Type_7_0_Garrison
+	-- [BfA] Enum.Type_8_0_Garrison
+	-- [Shadowlands] Enum.Type_9_0_Garrison
 	if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 		function skinPortrait(frame)
 			if frame.PuckBorder then -- CovenantMissions
