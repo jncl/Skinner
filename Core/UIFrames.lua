@@ -434,9 +434,6 @@ if not aObj.isClscERA then
 
 		self:SecureHookScript(_G.CalendarViewRaidFrame, "OnShow", function(this)
 			self:removeNineSlice(this.Border)
-			if self.isRtl then
-				self:skinObject("slider", {obj=_G.CalendarViewRaidScrollFrame.ScrollBar, fType=ftype})
-			end
 			self:removeRegions(_G.CalendarViewRaidCloseButton, {5})
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true, ofs=-3})
 			if self.modBtns then
