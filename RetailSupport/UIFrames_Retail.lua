@@ -3409,7 +3409,23 @@ aObj.SetupRetail_UIFrames = function()
 		self:SecureHookScript(_G.PVPMatchScoreboard, "OnShow", function(this)
 			this.Content:DisableDrawLayer("BACKGROUND")
 			this.Content:DisableDrawLayer("OVERLAY")
-			self:skinObject("slider", {obj=this.ScrollFrame.ScrollBar, fType=ftype})
+			this.Content.ScrollBox.Background:SetAlpha(0)
+			self:skinObject("scrollbar", {obj=this.Content.ScrollBar, fType=ftype})
+			-- TODO: skin elements
+			self:skinObject("scrollbar", {obj=this.Content.ScrollBar, fType=ftype})
+			local function skinElement(...)
+				local _, element, elementData, new
+				if _G.select("#", ...) == 2 then
+					element, elementData = ...
+				elseif _G.select("#", ...) == 3 then
+					element, elementData, new = ...
+				else
+					_, element, elementData, new = ...
+				end
+				if new ~= false then
+				end
+			end
+			_G.ScrollUtil.AddAcquiredFrameCallback(this.Content.ScrollBox, skinElement, aObj, true)
 			self:keepFontStrings(this.TabContainer)
 			self:skinObject("tabs", {obj=this.TabGroup, tabs=this.Tabs, fType=ftype, lod=self.isTT and true, track=false})
 			if self.isTT then
@@ -3433,8 +3449,23 @@ aObj.SetupRetail_UIFrames = function()
 		self:SecureHookScript(_G.PVPMatchResults, "OnShow", function(this)
 			this.content:DisableDrawLayer("BACKGROUND")
 			this.content:DisableDrawLayer("OVERLAY")
-			this.scrollFrame.background:SetAlpha(0)
-			self:skinObject("slider", {obj=this.scrollFrame.scrollBar, fType=ftype})
+			this.content.scrollBox.Background:SetAlpha(0)
+			self:skinObject("scrollbar", {obj=this.content.scrollBar, fType=ftype})
+			-- TODO: skin elements
+			self:skinObject("scrollbar", {obj=this.content.ScrollBar, fType=ftype})
+			local function skinElement(...)
+				local _, element, elementData, new
+				if _G.select("#", ...) == 2 then
+					element, elementData = ...
+				elseif _G.select("#", ...) == 3 then
+					element, elementData, new = ...
+				else
+					_, element, elementData, new = ...
+				end
+				if new ~= false then
+				end
+			end
+			_G.ScrollUtil.AddAcquiredFrameCallback(this.content.ScrollBox, skinElement, aObj, true)
 			self:keepFontStrings(this.content.tabContainer)
 			self:skinObject("tabs", {obj=this.tabGroup, tabs=this.Tabs, fType=ftype, lod=self.isTT and true, track=false})
 			if self.isTT then
@@ -3448,10 +3479,9 @@ aObj.SetupRetail_UIFrames = function()
 					end
 				end)
 			end
-			self:skinObject("frame", {obj=this.scrollFrame, fType=ftype, kfs=true, fb=true, ofs=4, y1=55, x2=23})
 			this.earningsArt:DisableDrawLayer("ARTWORK")
 			this.CloseButton.Border:SetAtlas(nil)
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, ofs=0, x2=1})
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true})
 			if self.modBtns then
 				self:skinStdButton{obj=this.buttonContainer.leaveButton, fType=ftype}
 				self:skinStdButton{obj=this.buttonContainer.requeueButton, fType=ftype}
