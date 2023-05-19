@@ -785,37 +785,11 @@ aObj.SetupRetail_PlayerFrames = function()
 			self:Unhook(this, "OnShow")
 		end)
 
-		if not self.isRtl then
-			self:SecureHookScript(_G.GearManagerDialogPopup, "OnShow", function(this)
-				self:adjHeight{obj=_G.GearManagerDialogPopupScrollFrame, adj=20}
-				self:skinObject("slider", {obj=_G.GearManagerDialogPopupScrollFrame.ScrollBar, fType=ftype, rpTex="background"})
-				self:removeRegions(this.BorderBox, {1, 2, 3, 4, 5, 6, 7, 8})
-				self:adjHeight{obj=this, adj=20}
-				for _, btn in _G.pairs(this.buttons) do
-					btn:DisableDrawLayer("BACKGROUND")
-					if self.modBtnBs then
-						self:addButtonBorder{obj=btn}
-					end
-				end
-				self:skinObject("editbox", {obj=_G.GearManagerDialogPopupEditBox, fType=ftype})
-				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=4, y1=-2, x2=-1, y2=3})
-				if self.modBtns then
-					self:skinStdButton{obj=_G.GearManagerDialogPopupCancel}
-					self:skinStdButton{obj=_G.GearManagerDialogPopupOkay}
-					self:SecureHook("GearManagerDialogPopupOkay_Update", function()
-						self:clrBtnBdr(_G.GearManagerDialogPopupOkay)
-					end)
-				end
-
-				self:Unhook(this, "OnShow")
-			end)
-		else
 			self:SecureHookScript(_G.GearManagerPopupFrame, "OnShow", function(this)
 				self:skinIconSelector(this)
 
 				self:Unhook(this, "OnShow")
 			end)
-		end
 
 		self:SecureHookScript(_G.ReputationFrame, "OnShow", function(this)
 			self:keepFontStrings(this)
