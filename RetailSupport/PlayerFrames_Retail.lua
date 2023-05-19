@@ -2884,7 +2884,7 @@ aObj.SetupRetail_PlayerFrames = function()
 			self:removeNineSlice(this.Border)
 			self:skinObject("dropdown", {obj=_G.FriendsFriendsFrameDropDown, fType=ftype})
 			self:removeBackdrop(this.ScrollFrameBorder)
-			self:skinObject("slider", {obj=_G.FriendsFriendsScrollFrame.Slider, fType=ftype})
+			self:skinObject("scrollbar", {obj=this.ScrollBar, fType=ftype})
 			self:skinObject("frame", {obj=this, fType=ftype})
 			if self.modBtns then
 				self:skinStdButton{obj=this.SendRequestButton}
