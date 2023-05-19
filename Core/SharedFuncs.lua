@@ -26,6 +26,7 @@ function aObj:checkVersion()
 
 	local agentUID = _G.C_CVar.GetCVar("agentUID")
 	-- handle different country versions, e.g. wow_enus
+	-- WOW_PROJECT_BURNING_CRUSADE_CLASSIC [Unused ?]
 	if not buildInfo[agentUID] then
 		if _G.WOW_PROJECT_ID == _G.WOW_PROJECT_MAINLINE then
 			agentUID = "wow"
@@ -48,7 +49,8 @@ function aObj:checkVersion()
 	self.isClscERA    = agentUID == "wow_classic_era" and true
 	self.isRtlBeta    = agentUID == "wow_beta" and true
 	self.isRtlPTR     = agentUID == "wow_ptr" and true
-	self.isRtlPTR2    = agentUID == "wow_classic_era_ptr" and true
+	self.isRtlPTR2    = agentUID == "wow_classic_era_ptr" or "wow_ptr_x" and true
+	-- self.isRtlPTR2    = agentUID == "wow_ptr_x" and true
 	self.isRtl        = agentUID == "wow" and true
 	--@debug@
 	self:Debug("checkVersion#1: [%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s]", self.isClscBeta, self.isClscPTR, self.isClsc, self.isClscERAPTR, self.isClscERA, self.isRtlBeta, self.isRtlPTR, self.isRtlPTR2, self.isRtl, self.isPatch)
