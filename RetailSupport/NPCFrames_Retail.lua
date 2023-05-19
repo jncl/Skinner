@@ -770,7 +770,7 @@ aObj.SetupRetail_NPCFrames = function()
 			self:removeNineSlice(this.ScrollFrame.ScrollBar.ScrollUpBorder.NineSlice)
 			self:removeNineSlice(this.ScrollFrame.ScrollBar.ScrollDownBorder.NineSlice)
 			self:removeNineSlice(this.ScrollFrame.ScrollBar.Border.NineSlice)
-			self:skinObject("slider", {obj=this.ScrollFrame.ScrollBar, fType=ftype})
+			self:skinObject("scrollbar", {obj=this.ScrollFrame.ScrollBar, fType=ftype})
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true, cb=true})
 			if self.modBtns then
 				self:skinStdButton{obj=this.ScrollFrame.ConfirmationButton}
