@@ -13,17 +13,7 @@ aObj.blizzFrames[ftype].AddonList = function(self)
 		self:removeMagicBtnTex(this.OkayButton)
 		self:removeMagicBtnTex(this.EnableAllButton)
 		self:removeMagicBtnTex(this.DisableAllButton)
-		if not self.isRtl then
-			for i = 1, _G.MAX_ADDONS_DISPLAYED do
-				if self.modBtns then
-					self:skinStdButton{obj=_G["AddonListEntry" .. i .. "Load"]}
-				end
-				if self.modChkBtns then
-					self:skinCheckButton{obj=_G["AddonListEntry" .. i .. "Enabled"]}
-				end
-			end
-			self:skinObject("slider", {obj=_G.AddonListScrollFrame.ScrollBar, fType=ftype, rpTex="background"})
-		else
+		if self.isRtl then
 			self:skinObject("scrollbar", {obj=this.ScrollBar, fType=ftype})
 			local function skinElement(...)
 				local _, element, new
@@ -44,6 +34,16 @@ aObj.blizzFrames[ftype].AddonList = function(self)
 				end
 			end
 			_G.ScrollUtil.AddAcquiredFrameCallback(this.ScrollBox, skinElement, aObj, true)
+		else
+			for i = 1, _G.MAX_ADDONS_DISPLAYED do
+				if self.modBtns then
+					self:skinStdButton{obj=_G["AddonListEntry" .. i .. "Load"]}
+				end
+				if self.modChkBtns then
+					self:skinCheckButton{obj=_G["AddonListEntry" .. i .. "Enabled"]}
+				end
+			end
+			self:skinObject("slider", {obj=_G.AddonListScrollFrame.ScrollBar, fType=ftype, rpTex="background"})
 		end
 		self:skinObject("dropdown", {obj=_G.AddonCharacterDropDown, fType=ftype, x2=109})
 		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, x2=self.isClsc and 1})
