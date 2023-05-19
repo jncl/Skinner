@@ -808,7 +808,9 @@ local function __addButtonBorder(opts)
 		aObj:CustomPrint(1, 0, 0, "Using deprecated options - sec, use sft instead", opts.obj)
 	end
 	--@end-alpha@
-	if not opts.obj then return end
+	if not opts.obj then
+		return
+	end
 	-- don't skin it twice unless required
 	if opts.obj.sbb
 	and not opts.nc
@@ -844,10 +846,6 @@ local function __addButtonBorder(opts)
 	-- DON'T lower the frame level otherwise the border appears below the frame
 	-- setup and apply the backdrop
 	opts.obj.sbb:SetBackdrop({edgeFile = aObj.Backdrop[1].edgeFile, edgeSize = opts.es or aObj.Backdrop[1].edgeSize})
-	module:clrBtnBdr(opts.obj, opts.clr, opts.ca)
-	-- store colour and alpha values with the skin button
-	opts.obj.sbb.clr = opts.clr
-	opts.obj.sbb.ca = opts.ca
 	-- position the frame
 	opts.ofs = opts.ofs or 2
 	opts.x1 = opts.x1 or opts.ofs * -1
@@ -861,43 +859,77 @@ local function __addButtonBorder(opts)
 	-- reparent objects
 	if opts.reParent then
 		for _, obj in _G.pairs(opts.reParent) do
-			obj:SetParent(opts.obj.sbb)
+			if obj then
+				obj:SetParent(opts.obj.sbb)
+			end
 		end
 	end
 	-- reparent these textures so they are displayed above the border
-	if opts.ibt then -- Item Buttons
-		aObj:getRegion(opts.obj, 3):SetParent(opts.obj.sbb) -- Stock region
-		opts.obj.searchOverlay:SetParent(opts.obj.sbb)
-		module:clrButtonFromBorder(opts.obj)
-	elseif opts.abt then -- Action Buttons
-		opts.obj.Border:SetParent(opts.obj.sbb)
-		opts.obj.NewActionTexture:SetParent(opts.obj.sbb)
-		if opts.obj.FlyoutArrow then
-			opts.obj.FlyoutArrow:SetParent(opts.obj.sbb)
-		end
-	elseif opts.gibt  -- Giant Item Buttons
-	or opts.cgibt -- Circular Giant Item Buttons
-	then
-		module:clrButtonFromBorder(opts.obj)
-	end
-	if opts.obj.HotKey then
-		opts.obj.HotKey:SetParent(opts.obj.sbb)
-	end
-	if opts.obj.Count then
-		opts.obj.Count:SetParent(opts.obj.sbb)
-	end
+	-- & colour the button border
 	if opts.obj.Flash
 	and opts.obj.Flash:GetObjectType() == "Texture" -- N.B. ignore Bagnon AnimationGroup
 	then
 		opts.obj.Flash:SetParent(opts.obj.sbb)
 	end
-	if opts.obj.Name then
-		opts.obj.Name:SetParent(opts.obj.sbb)
+	local rpObj
+	if opts.obj.Name
+	or opts.obj:GetName() and _G[opts.obj:GetName() .. "Name"]
+	then
+		rpObj = opts.obj.Name or _G[opts.obj:GetName() .. "Name"]
+		rpObj:SetParent(opts.obj.sbb)
+	end
+	if opts.obj.Count then
+		opts.obj.Count:SetParent(opts.obj.sbb)
+	end
+	if opts.obj.ItemOverlay then
+		opts.obj.ItemOverlay:SetParent(opts.obj.sbb)
+	end
+	if opts.obj.ItemOverlay2 then
+		opts.obj.ItemOverlay2:SetParent(opts.obj.sbb)
+	end
+	if opts.obj.ProfessionQualityOverlay then
+		opts.obj.ProfessionQualityOverlay:SetParent(opts.obj.sbb)
+	end
+	if opts.ibt then -- Item Buttons
+		if opts.obj.Stock
+		or opts.obj:GetName() and _G[opts.obj:GetName() .. "Stock"]
+		then
+			rpObj = opts.obj.Stock or _G[opts.obj:GetName() .. "Stock"]
+			rpObj:SetParent(opts.obj.sbb)
+		end
+		opts.obj.searchOverlay:SetParent(opts.obj.sbb)
+		if opts.obj.ItemContextOverlay then
+			opts.obj.ItemContextOverlay:SetParent(opts.obj.sbb)
+		end
+		module:clrButtonFromBorder(opts.obj)
+	elseif opts.abt then -- Action Buttons
+		if opts.obj.FlyoutArrow then
+			opts.obj.FlyoutArrow:SetParent(opts.obj.sbb)
+		end
+		opts.obj.HotKey:SetParent(opts.obj.sbb)
+		opts.obj.Border:SetParent(opts.obj.sbb)
+		opts.obj.NewActionTexture:SetParent(opts.obj.sbb)
+		opts.obj.SpellHighlightTexture:SetParent(opts.obj.sbb)
+		opts.obj.AutoCastable:SetParent(opts.obj.sbb)
+		if opts.obj.LevelLinkLockIcon then
+			opts.obj.LevelLinkLockIcon:SetParent(opts.obj.sbb)
+		end
+		opts.obj.AutoCastShine:SetParent(opts.obj.sbb)
+		module:clrBtnBdr(opts.obj, opts.clr, opts.ca)
+	elseif opts.gibt  -- Giant Item Buttons
+	or opts.cgibt -- Circular Giant Item Buttons
+	then
+		module:clrButtonFromBorder(opts.obj)
+	else
+		module:clrBtnBdr(opts.obj, opts.clr, opts.ca)
 	end
 	if opts.schk then
 		module:secureHook(opts.obj, "Disable", function(bObj, _)
 			module:clrBtnBdr(bObj)
 		end)
+		-- store colour and alpha values with the skin button
+		opts.obj.sbb.clr = opts.clr
+		opts.obj.sbb.ca = opts.ca
 		module:secureHook(opts.obj, "Enable", function(bObj, _)
 			module:clrBtnBdr(bObj, bObj.sbb.clr, bObj.sbb.ca)
 		end)

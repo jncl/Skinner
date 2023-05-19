@@ -423,7 +423,7 @@ aObj.SetupClassic_PlayerFrames = function()
 							btn:GetNormalTexture():SetTexture(nil)
 							btn:GetPushedTexture():SetTexture(nil)
 							if self.modBtnBs then
-								self:addButtonBorder{obj=btn, reParent={btn.Count, self:getRegion(btn, 4)}, clr="grey"}
+								self:addButtonBorder{obj=btn, reParent={self:getRegion(btn, 4)}, clr="grey"}
 							end
 						end
 						if btn == _G.CharacterAmmoSlot then
@@ -624,7 +624,7 @@ aObj.SetupClassic_PlayerFrames = function()
 						bName = "GearManagerDialogPopupButton" .. i
 						_G[bName]:DisableDrawLayer("BACKGROUND")
 						if self.modBtnBs then
-							self:addButtonBorder{obj=_G[bName], relTo=_G[bName .. "Icon"], reParent={_G[bName .. "Name"]}, clr="grey", ca=0.85}
+							self:addButtonBorder{obj=_G[bName], relTo=_G[bName .. "Icon"], clr="grey", ca=0.85}
 						end
 					end
 
@@ -723,7 +723,7 @@ aObj.SetupClassic_PlayerFrames = function()
 				for i = 1, _G.MAX_CRAFT_REAGENTS do
 					_G["CraftReagent" .. i].NameFrame:SetTexture(nil)
 					if self.modBtnBs then
-						self:addButtonBorder{obj=_G["CraftReagent" .. i], fType=ftype, libt=true, reParent={_G["CraftReagent" .. i].Count}}
+						self:addButtonBorder{obj=_G["CraftReagent" .. i], fType=ftype, libt=true}
 					end
 				end
 				if self.modBtns then
@@ -1282,7 +1282,7 @@ aObj.SetupClassic_PlayerFrames = function()
 			_G[fName .. "Corner"]:SetAlpha(0)
 			frame.Timer:DisableDrawLayer("ARTWORK")
 			if aObj.modBtnBs then
-				aObj:addButtonBorder{obj=frame, relTo=frame.Icon, reParent={frame.Count}}
+				aObj:addButtonBorder{obj=frame, relTo=frame.Icon}
 			end
 			aObj:skinObject("statusbar", {obj=frame.Timer, fi=0, bg=frame.Timer.Background})
 			-- hook this to show the Timer
@@ -1608,7 +1608,7 @@ aObj.SetupClassic_PlayerFrames = function()
 					local bName
 					for i = 1, _G.WATCHFRAME_NUM_ITEMS do
 						bName = "WatchFrameItem" .. i
-						self:addButtonBorder{obj=_G[bName], fType=ftype, reParent={_G[bName .. "Count"], _G[bName .. "Stock"]}, clr="grey"}
+						self:addButtonBorder{obj=_G[bName], fType=ftype, reParent={_G[bName .. "HotKey"], _G[bName .. "Count"], _G[bName .. "Stock"]}, clr="grey"}
 					end
 					return 0, 0, 0
 				end

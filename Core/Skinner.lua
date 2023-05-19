@@ -305,26 +305,11 @@ function aObj:OnEnable()
 					self:setBtnClr(button, quality)
 				end)
 			else
-				self:SecureHook("SetItemButtonBorderVertexColor", function(button, _)
-					-- aObj:Debug("SetItemButtonBorderVertexColor: [%s, %s, %s, %s, %s]", button, button.SetItemButtonBorderVertexColor, r, g, b)
+				self:SecureHook("SetItemButtonBorderVertexColor", function(button, r, g, b)
+					-- aObj:Debug("SetItemButtonBorderVertexColor: [%s, %s, %s, %s, %s]", button, r, g, b)
 					if button.sbb then
-						self:clrButtonFromBorder(button)
-					end
-				end)
-			end
-			if self.isRtl then
-				-- hook these to reparent the ProfessionQualityOverlay
-				self:SecureHook("SetItemCraftingQualityOverlay", function(button, _)
-					if button.noProfessionQualityOverlay then
-						return
-					end
-					if button.ProfessionQualityOverlay then
-						button.ProfessionQualityOverlay:SetParent(button.sbb)
-					end
-				end)
-				self:SecureHook("SetItemCraftingQualityOverlayOverride", function(button, _)
-					if button.ProfessionQualityOverlay then
-						button.ProfessionQualityOverlay:SetParent(button.sbb)
+						-- self:clrButtonFromBorder(button)
+						button.sbb:SetBackdropBorderColor(r, g, b)
 					end
 				end)
 			end

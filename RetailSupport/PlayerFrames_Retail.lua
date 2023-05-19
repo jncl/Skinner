@@ -533,7 +533,7 @@ aObj.SetupRetail_PlayerFrames = function()
 					element, _, new = ...
 				else
 					_, element, _, new = ...
-					end
+				end
 				if new ~= false then
 					aObj:nilTexture(element.Background, true)
 					if aObj.modBtnBs then
@@ -542,7 +542,7 @@ aObj.SetupRetail_PlayerFrames = function()
 				else
 					if aObj.modBtnBs then
 						element.sbb:SetBackdropBorderColor(element.Name:GetTextColor())
-				end
+					end
 				end
 			end
 			_G.ScrollUtil.AddAcquiredFrameCallback(this.EssenceList.ScrollBox, skinElement, aObj, true)
@@ -785,11 +785,11 @@ aObj.SetupRetail_PlayerFrames = function()
 			self:Unhook(this, "OnShow")
 		end)
 
-			self:SecureHookScript(_G.GearManagerPopupFrame, "OnShow", function(this)
-				self:skinIconSelector(this)
+		self:SecureHookScript(_G.GearManagerPopupFrame, "OnShow", function(this)
+			self:skinIconSelector(this)
 
-				self:Unhook(this, "OnShow")
-			end)
+			self:Unhook(this, "OnShow")
+		end)
 
 		self:SecureHookScript(_G.ReputationFrame, "OnShow", function(this)
 			self:keepFontStrings(this)
@@ -2237,9 +2237,9 @@ aObj.SetupRetail_PlayerFrames = function()
 			cfpb.Highlight:SetSize(22, 22)
 			if aObj.modBtnBs then
 				for _, btn in frame:EnumerateValidItems() do
-					aObj:addButtonBorder{obj=btn, fType=ftype, ibt=true, reParent={btn.IconQuestTexture, btn.UpgradeIcon, btn.NewItemTexture, btn.BattlepayItemTexture, btn.JunkIcon}, ofs=3}
-					btn.NormalTexture:SetAlpha(0)
+					aObj:addButtonBorder{obj=btn, fType=ftype, ibt=true, reParent={btn.IconQuestTexture, btn.UpgradeIcon, btn.flash, btn.NewItemTexture, btn.BattlepayItemTexture, btn.BagIndicator, btn.JunkIcon}, ofs=3}
 					btn.ExtendedSlot:SetTexture(nil)
+					btn.NormalTexture:SetAlpha(0)
 				end
 				-- remove button slot texture when empty
 				aObj:SecureHook(frame, "UpdateItems", function(fObj)
@@ -3235,7 +3235,7 @@ aObj.SetupRetail_PlayerFrames = function()
 			frame:SetScale(aObj.prdb.LootFrames.size ~= 1 and 0.75 or 1)
 			frame.IconFrame.Border:SetAlpha(0)
 			if aObj.modBtnBs then
-				aObj:addButtonBorder{obj=frame.IconFrame, fType=ftype, relTo=frame.IconFrame.Icon, reParent={frame.IconFrame.Count}}
+				aObj:addButtonBorder{obj=frame.IconFrame, fType=ftype, relTo=frame.IconFrame.Icon}
 				-- TODO: colour the item border
 			end
 			-- if aObj.modBtns then
@@ -3420,7 +3420,7 @@ aObj.SetupRetail_PlayerFrames = function()
 			-- hook this to skin QuestObjective Block Button(s)
 			local function aBB2rB(btn)
 				if btn.HotKey then -- QuestItem
-					aObj:addButtonBorder{obj=btn, reParent={btn.Count}, clr="grey"}
+					aObj:addButtonBorder{obj=btn, clr="grey"}
 				else -- GroupFinder
 					aObj:addButtonBorder{obj=btn, ofs=-2, x1=0, clr="gold"}
 				end
@@ -3501,7 +3501,7 @@ aObj.SetupRetail_PlayerFrames = function()
 				frame.Rewards[i].ItemBorder:SetTexture(nil)
 				if aObj.modBtnBs then
 					if not frame.Rewards[i].sbb then
-						aObj:addButtonBorder{obj=frame.Rewards[i], relTo=frame.Rewards[i].ItemIcon, reParent={frame.Rewards[i].Count}}
+						aObj:addButtonBorder{obj=frame.Rewards[i], relTo=frame.Rewards[i].ItemIcon}
 					end
 				end
 			end

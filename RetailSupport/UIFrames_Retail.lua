@@ -421,7 +421,7 @@ aObj.SetupRetail_UIFrames = function()
 			self:SecureHook(_G.AdventureMapQuestChoiceDialog, "RefreshRewards", function(this)
 				for reward in this.rewardPool:EnumerateActive() do
 					reward.ItemNameBG:SetTexture(nil)
-					self:addButtonBorder{obj=reward, relTo=reward.Icon, reParent={reward.Count}}
+					self:addButtonBorder{obj=reward, relTo=reward.Icon}
 				end
 			end)
 		end
@@ -748,7 +748,7 @@ aObj.SetupRetail_UIFrames = function()
 			and aObj.modBtnBs
 			then
 				aObj:addButtonBorder{obj=obj.buttonFrame.minimizeButton, ofs=-2, clr="grey"}
-				aObj:addButtonBorder{obj=obj.ScrollToBottomButton, ofs=-1, x1=0, reParent={obj.ScrollToBottomButton.Flash}, clr="grey"}
+				aObj:addButtonBorder{obj=obj.ScrollToBottomButton, ofs=-1, x1=0, clr="grey"}
 			end
 		end
 		-- hook this to handle Temporary windows (BN Conversations, Pet Battles etc)
@@ -1247,11 +1247,11 @@ aObj.SetupRetail_UIFrames = function()
 					element.UnlockedState:DisableDrawLayer("BACKGROUND")
 					-- TODO: change colour to match Faction colour
 					aObj:skinObject("frame", {obj=element, fType=ftype, fb=true, x1=29, x2=-29, y2=0, clr="blue", ca=0.35})
-				if aObj.modChkBtns then
+					if aObj.modChkBtns then
 						aObj:skinCheckButton{obj=element.UnlockedState.WatchFactionButton, fType=ftype}
 						element.UnlockedState.WatchFactionButton:SetSize(20, 20)
+					end
 				end
-		end
 			end
 			_G.ScrollUtil.AddAcquiredFrameCallback(oFrame.MajorFactionList.ScrollBox, skinElement, aObj, true)
 			-- N.B. keep background visible
@@ -1289,7 +1289,7 @@ aObj.SetupRetail_UIFrames = function()
 				btn:GetNormalTexture():SetTexture(nil)
 			end
 			if aObj.modBtnBs then
-				aObj:addButtonBorder{obj=btn, sabt=true, ofs=2, reParent={btn.HotKey and btn.HotKey}}
+				aObj:addButtonBorder{obj=btn, sabt=true, reParent={btn.HotKey, btn.Count, btn.Flash, btn.style, btn.cooldown}, ofs=2}
 			end
 		end
 		if self.prdb.MainMenuBar.extraab then
@@ -1701,7 +1701,7 @@ aObj.SetupRetail_UIFrames = function()
 						btn = fObj.CapacitiveDisplay.Reagents[i]
 						btn.NameFrame:SetTexture(nil)
 						if self.modBtnBs then
-							self:addButtonBorder{obj=btn, relTo=btn.Icon, reParent={btn.Count}}
+							self:addButtonBorder{obj=btn, relTo=btn.Icon}
 						end
 					end
 				end
@@ -2110,7 +2110,7 @@ aObj.SetupRetail_UIFrames = function()
 				end
 			end
 			if aObj.modBtnBs then
-				aObj:addButtonBorder{obj=frame.RewardAnimations.RewardFrame, relTo=frame.RewardAnimations.RewardFrame.Icon, reParent={frame.RewardAnimations.RewardFrame.Count}}
+				aObj:addButtonBorder{obj=frame.RewardAnimations.RewardFrame, relTo=frame.RewardAnimations.RewardFrame.Icon}
 			end
 		end
 	end
@@ -2700,7 +2700,7 @@ aObj.SetupRetail_UIFrames = function()
 				skinMultiBarBtns("Left")
 				if not self.isRtl then
 					for _, bName in _G.pairs(_G.MICRO_BUTTONS) do
-						self:addButtonBorder{obj=_G[bName], es=24, ofs=2, reParent={_G[bName].QuickKeybindHighlightTexture, _G[bName].Flash}, clr="grey"}
+						self:addButtonBorder{obj=_G[bName], es=24, ofs=2, reParent={_G[bName].QuickKeybindHighlightTexture}, clr="grey"}
 					end
 					self:addButtonBorder{obj=_G.MainMenuBarBackpackButton, ibt=true, ofs=3}
 					for i = 1, _G.NUM_BAG_FRAMES do
@@ -2764,7 +2764,7 @@ aObj.SetupRetail_UIFrames = function()
 						btn.SlotArt:SetTexture(nil)
 						btn.Border:SetTexture(nil)
 						if aObj.prdb.MainMenuBar.actbtns then
-							aObj:addButtonBorder{obj=btn, abt=true, sft=true, reParent={btn.Name, btn.AutoCastable, btn.SpellHighlightTexture, btn.AutoCastShine}, ofs=3, clr="grey"}
+							aObj:addButtonBorder{obj=btn, abt=true, sft=true, ofs=3, clr="grey"}
 						end
 					end
 				end
@@ -3244,7 +3244,7 @@ aObj.SetupRetail_UIFrames = function()
 						end
 						if aObj.modBtnBs then
 							if reward.Icon then
-								aObj:addButtonBorder{obj=reward, fType=ftype, relTo=reward.Icon, reParent={reward.Count}}
+								aObj:addButtonBorder{obj=reward, fType=ftype, relTo=reward.Icon}
 							elseif reward.itemButton then
 								aObj:addButtonBorder{obj=reward.itemButton, fType=ftype, ibt=true}
 							end

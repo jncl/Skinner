@@ -1365,20 +1365,20 @@ aObj.blizzLoDFrames[ftype].GuildBankUI = function(self)
 			self:skinIconSelector(this)
 		else
 			self:removeRegions(_G.BorderBox, {1, 2, 3, 4, 5, 6, 7, 8})
-		self:skinObject("editbox", {obj=this.EditBox, fType=ftype})
-		self:adjHeight{obj=this.ScrollFrame, adj=20} -- stretch to bottom of scroll area
-		self:skinObject("slider", {obj=this.ScrollFrame.ScrollBar, fType=ftype, rpTex="background"})
-		for _, btn in _G.pairs(this.Buttons) do
-			btn:DisableDrawLayer("BACKGROUND")
-			if self.modBtnBs then
-				self:addButtonBorder{obj=btn, relTo=btn.Icon, clr="grey"}
+			self:skinObject("editbox", {obj=this.EditBox, fType=ftype})
+			self:adjHeight{obj=this.ScrollFrame, adj=20} -- stretch to bottom of scroll area
+			self:skinObject("slider", {obj=this.ScrollFrame.ScrollBar, fType=ftype, rpTex="background"})
+			for _, btn in _G.pairs(this.Buttons) do
+				btn:DisableDrawLayer("BACKGROUND")
+				if self.modBtnBs then
+					self:addButtonBorder{obj=btn, relTo=btn.Icon, clr="grey"}
+				end
 			end
-		end
-		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true, ofs=-6})
-		if self.modBtns then
-			self:skinStdButton{obj=this.CancelButton}
-			self:skinStdButton{obj=this.OkayButton}
-		end
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true, ofs=-6})
+			if self.modBtns then
+				self:skinStdButton{obj=this.CancelButton}
+				self:skinStdButton{obj=this.OkayButton}
+			end
 		end
 
 		self:Unhook(this, "OnShow")
@@ -1493,7 +1493,7 @@ aObj.blizzLoDFrames[ftype].MacroUI = function(self)
 					end
 					if new ~= false then
 						element:DisableDrawLayer("BACKGROUND")
-						aObj:addButtonBorder{obj=element, fType=ftype, relTo=element.Icon, reParent={element.Name}, clr="grey"}
+						aObj:addButtonBorder{obj=element, fType=ftype, relTo=element.Icon, clr="grey"}
 					end
 				end
 				_G.ScrollUtil.AddAcquiredFrameCallback(this.MacroSelector.ScrollBox, skinElement, aObj, true)
@@ -1506,7 +1506,7 @@ aObj.blizzLoDFrames[ftype].MacroUI = function(self)
 			for i = 1, _G.MAX_ACCOUNT_MACROS do
 				_G["MacroButton" .. i]:DisableDrawLayer("BACKGROUND")
 				if self.modBtnBs then
-					self:addButtonBorder{obj=_G["MacroButton" .. i], relTo=_G["MacroButton" .. i .. "Icon"], reParent={_G["MacroButton" .. i .. "Name"]}, clr="grey", ca=0.85}
+					self:addButtonBorder{obj=_G["MacroButton" .. i], relTo=_G["MacroButton" .. i .. "Icon"], clr="grey", ca=0.85}
 				end
 			end
 		end
@@ -1550,7 +1550,7 @@ aObj.blizzLoDFrames[ftype].MacroUI = function(self)
 			for i = 1, _G.NUM_MACRO_ICONS_SHOWN do
 				_G["MacroPopupButton" .. i]:DisableDrawLayer("BACKGROUND")
 				if self.modBtnBs then
-					self:addButtonBorder{obj=_G["MacroPopupButton" .. i], relTo=_G["MacroPopupButton" .. i .. "Icon"], reParent={_G["MacroPopupButton" .. i .. "Name"]}, clr="grey", ca=0.85}
+					self:addButtonBorder{obj=_G["MacroPopupButton" .. i], relTo=_G["MacroPopupButton" .. i .. "Icon"], clr="grey", ca=0.85}
 				end
 			end
 		end
@@ -1605,7 +1605,7 @@ aObj.blizzFrames[ftype].MailFrame = function(self)
 				self:resizeEmptyTexture(self:getRegion(btn, 1))
 			else
 				btn:DisableDrawLayer("BACKGROUND")
-				self:addButtonBorder{obj=btn, reParent={btn.Count}, clr="grey"}
+				self:addButtonBorder{obj=btn, clr="grey"}
 			end
 		end
 		self:skinObject("editbox", {obj=_G.SendMailNameEditBox, fType=ftype, regions={4, 5, 6}})
@@ -2266,7 +2266,7 @@ aObj.blizzFrames[ftype].SharedBasicControls = function(self)
 		if self.isRtl then
 			self:skinObject("scrollbox", {obj=this.ScrollFrame.ScrollBar, fType=ftype})
 		else
-		self:skinObject("slider", {obj=this.ScrollFrame.ScrollBar, fType=ftype})
+			self:skinObject("slider", {obj=this.ScrollFrame.ScrollBar, fType=ftype})
 		end
 		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ofs=-1, y1=-2})
 		if self.modBtns then
@@ -2507,14 +2507,14 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 			then
 				self:SecureHookScript(tTip, self.ttHook[tTip], function(this)
 					_G.C_Timer.After(0.025, function() -- slight delay to allow for the tooltip to be populated
-					self:applyTooltipGradient(this.sf)
-				end)
+						self:applyTooltipGradient(this.sf)
+					end)
 				end)
 			else
 				self:SecureHook(tTip, self.ttHook[tTip], function(this)
 					_G.C_Timer.After(0.025, function() -- slight delay to allow for the tooltip to be populated
-					self:applyTooltipGradient(this.sf)
-				end)
+						self:applyTooltipGradient(this.sf)
+					end)
 				end)
 			end
 		end
@@ -2522,7 +2522,7 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 		if tTip.ItemTooltip
 		and self.modBtnBs
 		then
-			self:addButtonBorder{obj=tTip.ItemTooltip, relTo=tTip.ItemTooltip.Icon, reParent={tTip.ItemTooltip.Count}}
+			self:addButtonBorder{obj=tTip.ItemTooltip, relTo=tTip.ItemTooltip.Icon}
 		end
 		-- glaze the Status bar(s) if required
 		if self.prdb.Tooltips.glazesb then

@@ -106,7 +106,7 @@ aObj.SetupClassic_UIFrames = function()
 				self:addButtonBorder{obj=_G["ChatFrame" .. i].buttonFrame.downButton, ofs=-2, x1=1, clr="grey"}
 				self:addButtonBorder{obj=_G["ChatFrame" .. i].buttonFrame.upButton, ofs=-2, x1=1, clr="grey"}
 				self:addButtonBorder{obj=_G["ChatFrame" .. i].buttonFrame.minimizeButton, ofs=-2, x=1, clr="grey"}
-				self:addButtonBorder{obj=_G["ChatFrame" .. i].ScrollToBottomButton, ofs=-1, reParent={_G["ChatFrame" .. i].ScrollToBottomButton.Flash}}
+				self:addButtonBorder{obj=_G["ChatFrame" .. i].ScrollToBottomButton, ofs=-1}
 			end
 			self:addButtonBorder{obj=_G.ChatFrameChannelButton, ofs=1, clr="grey"}
 			self:addButtonBorder{obj=_G.ChatFrameMenuButton, ofs=-2, x1=1, clr="grey"}
@@ -535,7 +535,7 @@ aObj.SetupClassic_UIFrames = function()
 				skinMultiBarBtns("Right")
 				skinMultiBarBtns("Left")
 				for _, bName in _G.pairs(_G.MICRO_BUTTONS) do
-					self:addButtonBorder{obj=_G[bName], es=24, ofs=2, y1=-18, reParent={_G[bName].QuickKeybindHighlightTexture, _G[bName].Flash}, clr="grey"}
+					self:addButtonBorder{obj=_G[bName], es=24, ofs=2, y1=-18, reParent={_G[bName].QuickKeybindHighlightTexture}, clr="grey"}
 				end
 
 				self:addButtonBorder{obj=_G.MainMenuBarBackpackButton, ibt=true, ofs=3}
@@ -582,7 +582,7 @@ aObj.SetupClassic_UIFrames = function()
 					local bName
 					for i = 1, _G.NUM_PET_ACTION_SLOTS do
 						bName = "PetActionButton" .. i
-						self:addButtonBorder{obj=_G[bName], sft=true, reParent={_G[bName .. "AutoCastable"], _G[bName .. "SpellHighlightTexture"], _G[bName .. "Shine"]}, ofs=3, x2=2}
+						self:addButtonBorder{obj=_G[bName], abt=true, sft=true, reParent={_G[bName .. "AutoCastable"], _G[bName .. "Shine"]}, ofs=3, x2=2}
 						_G[bName .. "NormalTexture2"]:SetTexture(nil)
 					end
 				end

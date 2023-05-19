@@ -182,7 +182,7 @@ aObj.SetupRetail_NPCFrames = function()
 				local btn = fObj.TokenDisplay.ItemButton
 				btn.IconBorder:SetTexture(nil)
 				if self.modBtnBs then
-					self:addButtonBorder{obj=btn, relTo=btn.Icon, reParent={btn.Count}}
+					self:addButtonBorder{obj=btn, relTo=btn.Icon}
 					self:clrButtonFromBorder(btn)
 				end
 				fObj.DummyScrollBar:DisableDrawLayer("BACKGROUND")
@@ -384,8 +384,10 @@ aObj.SetupRetail_NPCFrames = function()
 			if self.modBtnBs then
 				self:addButtonBorder{obj=_G.BankItemAutoSortButton, ofs=0, y1=1, clr="grey"}
 				-- add button borders to bank items
+				local btn
 				for i = 1, _G.NUM_BANKGENERIC_SLOTS do
-					self:addButtonBorder{obj=_G.BankSlotsFrame["Item" .. i], ibt=true, reParent={_G["BankFrameItem" .. i].IconQuestTexture}}
+					btn = _G.BankSlotsFrame["Item" .. i]
+					self:addButtonBorder{obj=btn, ibt=true, reParent={btn.IconQuestTexture}}
 					-- force quality border update
 					_G.BankFrameItemButton_Update(btn)
 				end
@@ -409,8 +411,10 @@ aObj.SetupRetail_NPCFrames = function()
 			if self.modBtnBs then
 				-- add button borders to reagent bank items
 				self:SecureHookScript(_G.ReagentBankFrame, "OnShow", function(fObj)
+					local btn
 					for i = 1, fObj.size do
-						self:addButtonBorder{obj=fObj["Item" .. i], ibt=true, reParent={fObj["Item" .. i].IconQuestTexture}}
+						btn = fObj["Item" .. i]
+						self:addButtonBorder{obj=btn, ibt=true, reParent={btn.IconQuestTexture}}
 						-- force quality border update
 						_G.BankFrameItemButton_Update(fObj["Item" .. i])
 					end
@@ -740,7 +744,7 @@ aObj.SetupRetail_NPCFrames = function()
 			this.PlayerCurrenciesBorder:DisableDrawLayer("background")
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, x2=3})
 			if self.modBtns then
-				self:skinStdButton{obj=this.UpgradeButton, fType=ftype}
+				self:skinStdButton{obj=this.UpgradeButton, fType=ftype, sechk=true}
 			end
 			if self.modBtnBs then
 				self:addButtonBorder{obj=this.UpgradeItemButton, fType=ftype}
