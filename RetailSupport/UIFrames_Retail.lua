@@ -3750,7 +3750,7 @@ aObj.SetupRetail_UIFrames = function()
 			self:nilTexture(_G.RaidFinderQueueFrameBackground, true)
 			skinCheckBtns("RaidFinder")
 			self:skinObject("dropdown", {obj=_G.RaidFinderQueueFrameSelectionDropDown, fType=ftype})
-			self:skinObject("slider", {obj=_G.RaidFinderQueueFrameScrollFrame.ScrollBar, fType=ftype, rpTex={"background", "artwork"}})
+			self:skinObject("scrollbar", {obj=_G.RaidFinderQueueFrameScrollFrame.ScrollBar, fType=ftype, rpTex={"background", "artwork"}})
 
 			self:Unhook(this, "OnShow")
 		end)
