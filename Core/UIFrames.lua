@@ -2506,11 +2506,15 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 			and tTip:HasScript(self.ttHook[tTip])
 			then
 				self:SecureHookScript(tTip, self.ttHook[tTip], function(this)
+					_G.C_Timer.After(0.025, function() -- slight delay to allow for the tooltip to be populated
 					self:applyTooltipGradient(this.sf)
+				end)
 				end)
 			else
 				self:SecureHook(tTip, self.ttHook[tTip], function(this)
+					_G.C_Timer.After(0.025, function() -- slight delay to allow for the tooltip to be populated
 					self:applyTooltipGradient(this.sf)
+				end)
 				end)
 			end
 		end
@@ -2555,15 +2559,6 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 	if self.isRtl then
 		-- self:add2Table(toolTips, _G.GameNoHeaderTooltip) -- N.B. defined in GameTooltip.xml but NOT referenced in code
 		self:add2Table(toolTips, _G.GameSmallHeaderTooltip)
-		self:SecureHook(_G.GameTooltip, "SetPoint", function(this, _)
-			if this.sf.tfade then
-				local th = _G.Round(this:GetHeight())
-				local fh = _G.Round(this.sf.tfade:GetHeight())
-				if fh > th then
-					self:applyTooltipGradient(this.sf)
-				end
-			end
-		end)
 	else
 		self:add2Table(toolTips, _G.SmallTextTooltip)
 	end
@@ -2586,7 +2581,7 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 		end)
 		self:SecureHook("GameTooltip_AddProgressBar", function(this, _)
 			for progressBar in this.progressBarPool:EnumerateActive() do
-				self:skinObject("statusbar", {obj=progressBar.Bar, regions={1, 2, 3, 4, 5}, bg=self:getRegion(progressBar.Bar, 7), nilFuncs=true})
+				self:skinObject("statusbar", {obj=progressBar.Bar, regions={1, 2, 3, 4, 5}, fi=0, bg=self:getRegion(progressBar.Bar, 7), nilFuncs=true})
 			end
 		end)
 	end
