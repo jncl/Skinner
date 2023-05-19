@@ -2571,6 +2571,11 @@ aObj.SetupRetail_UIFrames = function()
 		if self.initialized.MainMenuBar then return end
 		self.initialized.MainMenuBar = true
 
+		-- this is done here as other AddOns may require it to be skinned
+		if self.modBtnBs then
+			self:addButtonBorder{obj=_G.MainMenuBarVehicleLeaveButton, clr="grey"}
+		end
+
 		if _G.IsAddOnLoaded("Dominos")
 		or _G.IsAddOnLoaded("Bartender4")
 		then
@@ -2736,11 +2741,6 @@ aObj.SetupRetail_UIFrames = function()
 				end
 			end
 			-- UIWidgetPowerBarContainerFrame
-		end
-
-		-- this is done here as other AddOns may require it to be skinned
-		if self.modBtnBs then
-			self:addButtonBorder{obj=_G.MainMenuBarVehicleLeaveButton, clr="grey"}
 		end
 
 	end
