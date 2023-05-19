@@ -2263,7 +2263,11 @@ aObj.blizzFrames[ftype].SharedBasicControls = function(self)
 	self:checkShown(_G.BasicMessageDialog)
 
 	self:SecureHookScript(_G.ScriptErrorsFrame, "OnShow", function(this)
+		if self.isRtl then
+			self:skinObject("scrollbox", {obj=this.ScrollFrame.ScrollBar, fType=ftype})
+		else
 		self:skinObject("slider", {obj=this.ScrollFrame.ScrollBar, fType=ftype})
+		end
 		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ofs=-1, y1=-2})
 		if self.modBtns then
 			self:skinCloseButton{obj=_G.ScriptErrorsFrameClose}
