@@ -524,23 +524,28 @@ aObj.SetupRetail_PlayerFrames = function()
 			end
 			-- RHS
 			self:removeInset(this.RightInset)
-			self:skinObject("slider", {obj=this.EssenceList.ScrollBar, fType=ftype})
-			if self.modBtnBs then
-				local function clrBB(sf)
-					for _, btn in _G.ipairs(sf.buttons) do
-						btn.sbb:SetBackdropBorderColor(btn.Name:GetTextColor())
+			self:skinObject("scrollbar", {obj=this.EssenceList.ScrollBar, fType=ftype})
+			local function skinElement(...)
+				local _, element, new
+				if _G.select("#", ...) == 2 then
+					element, _ = ...
+				elseif _G.select("#", ...) == 3 then
+					element, _, new = ...
+				else
+					_, element, _, new = ...
 					end
+				if new ~= false then
+					aObj:nilTexture(element.Background, true)
+					if aObj.modBtnBs then
+						aObj:addButtonBorder{obj=element, relTo=element.Icon, reParent={element.IconCover, element.Glow, element.Glow2, element.Glow3}, clr="grey"}
+					end
+				else
+					if aObj.modBtnBs then
+						element.sbb:SetBackdropBorderColor(element.Name:GetTextColor())
 				end
-				-- self:skinStdButton{obj=this.ScrollFrame.HeaderButton}
-				for _, btn in _G.ipairs(this.EssenceList.buttons) do
-					self:nilTexture(btn.Background, true)
-					self:addButtonBorder{obj=btn, relTo=btn.Icon, reParent={btn.IconCover, btn.Glow, btn.Glow2, btn.Glow3}, clr="grey"}
 				end
-				clrBB(this.EssenceList)
-				self:SecureHook(this.EssenceList, "UpdateMouseOverTooltip", function(fObj)
-					clrBB(fObj)
-				end)
 			end
+			_G.ScrollUtil.AddAcquiredFrameCallback(this.EssenceList.ScrollBox, skinElement, aObj, true)
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true})
 
 			self:Unhook(this, "OnShow")
