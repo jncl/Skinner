@@ -3439,9 +3439,8 @@ aObj.SetupRetail_UIFrames = function()
 					end
 				end)
 			end
-			self:skinObject("frame", {obj=this.ScrollFrame, fType=ftype, kfs=true, fb=true, ofs=0, y1=55, x2=23, y2=-4})
 			this.CloseButton.Border:SetAtlas(nil)
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, ofs=0, x2=1})
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true})
 
 			self:Unhook(this, "OnShow")
 		end)
