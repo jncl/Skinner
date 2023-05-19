@@ -2096,7 +2096,7 @@ aObj.SetupRetail_PlayerFrames = function()
 		self:checkShown(_G.CommunitiesFrame)
 
 		self:SecureHookScript(_G.CommunitiesAvatarPickerDialog, "OnShow", function(this)
-			self:skinObject("slider", {obj=this.ScrollFrame.ScrollBar, fType=ftype, rpTex="background"})
+			self:skinObject("scrollbar", {obj=this.ScrollBar, fType=ftype})
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, y1=-12})
 			if self.modBtns then
 				self:skinStdButton{obj=this.CancelButton}
