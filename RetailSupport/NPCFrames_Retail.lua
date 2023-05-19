@@ -366,6 +366,11 @@ aObj.SetupRetail_NPCFrames = function()
 		if not self.prdb.BankFrame or self.initialized.BankFrame then return end
 		self.initialized.BankFrame = true
 
+		if _G.IsAddOnLoaded("LiteBag") then
+			self.blizzFrames[ftype].BankFrame = nil
+			return
+		end
+
 		self:SecureHookScript(_G.BankFrame, "OnShow", function(this)
 			self:skinObject("editbox", {obj=_G.BankItemSearchBox, fType=ftype, si=true})
 			if self.modBtns then
@@ -377,24 +382,13 @@ aObj.SetupRetail_NPCFrames = function()
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true, cb=true})
 			self:keepFontStrings(_G.BankSlotsFrame)
 			if self.modBtnBs then
-				self:SecureHook("BankFrameItemButton_Update", function(btn)
-					if btn.sbb -- ReagentBank buttons may not be skinned yet
-					and not btn.hasItem then
-						self:clrBtnBdr(btn, "grey")
-					end
-				end)
 				self:addButtonBorder{obj=_G.BankItemAutoSortButton, ofs=0, y1=1, clr="grey"}
 				-- add button borders to bank items
 				for i = 1, _G.NUM_BANKGENERIC_SLOTS do
 					self:addButtonBorder{obj=_G.BankSlotsFrame["Item" .. i], ibt=true, reParent={_G["BankFrameItem" .. i].IconQuestTexture}}
 					-- force quality border update
-					_G.BankFrameItemButton_Update(_G.BankSlotsFrame["Item" .. i])
+					_G.BankFrameItemButton_Update(btn)
 				end
-				self:SecureHook("UpdateBagSlotStatus", function()
-					for i = 1, _G.NUM_BANKBAGSLOTS do
-						_G.BankSlotsFrame["Bag" .. i].sbb:SetBackdropBorderColor(_G.BankSlotsFrame["Bag" .. i].icon:GetVertexColor())
-					end
-				end)
 				-- add button borders to bags
 				for i = 1, _G.NUM_BANKBAGSLOTS do
 					self:addButtonBorder{obj=_G.BankSlotsFrame["Bag" .. i], ibt=true}
@@ -427,6 +421,23 @@ aObj.SetupRetail_NPCFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		if self.modBtnBs then
+			self:SecureHook("BankFrameItemButton_Update", function(btn)
+				if btn.sbb -- ReagentBank buttons may not be skinned yet
+				and not btn.hasItem then
+					self:clrBtnBdr(btn, "grey")
+				end
+			end)
+			self:SecureHook("UpdateBagSlotStatus", function()
+				local bag
+				for i = 1, _G.NUM_BANKBAGSLOTS do
+					bag = _G.BankSlotsFrame["Bag" .. i]
+					if bag.sbb then
+						bag.sbb:SetBackdropBorderColor(bag.icon:GetVertexColor())
+					end
+				end
+			end)
+		end
 
 	end
 
