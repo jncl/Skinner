@@ -1228,38 +1228,32 @@ aObj.SetupRetail_UIFrames = function()
 		if not self.prdb.ExpansionLandingPage or self.initialized.ExpansionLandingPage then return end
 		self.initialized.ExpansionLandingPage = true
 
-		local function skinFactionBtns(list)
-			list.ScrollBox.view:ForEachFrame(function(fObj, _)
-				fObj.LockedState:DisableDrawLayer("BACKGROUND")
-				fObj.UnlockedState:DisableDrawLayer("BACKGROUND")
-				-- FIXME: colour should be more of a powder blue
-				aObj:skinObject("frame", {obj=fObj, fType=ftype, fb=true, x1=29, x2=-29, y2=0, clr="blue", ca=0.25})
-				if aObj.modChkBtns then
-					aObj:skinCheckButton{obj=fObj.UnlockedState.WatchFactionButton, fType=ftype}
-					fObj.UnlockedState.WatchFactionButton:SetSize(20, 20)
-				end
-			end)
-		end
-		local function skinOverlay(_, overlay)
-			aObj:Debug("skinOverlay: [%s, %s]", overlay)
-			--@debug@
-			_G.C_Timer.After(1, function()
-				_G.Spew("skinOverlay", overlay)
-			end)
-			--@end-debug@
-			if overlay
-			and overlay.GetNumChildren
-			and overlay:GetNumChildren() == 0
-			then
-				return
-			end
+		local function skinOverlay(...)
+			local _, overlay = ...
 			local oFrame = aObj:getChild(overlay, 1)
 			oFrame.Header.TitleDivider:SetTexture(nil)
 			aObj:skinObject("scrollbar", {obj=oFrame.MajorFactionList.ScrollBar, fType=ftype})
-			skinFactionBtns(oFrame.MajorFactionList)
-			aObj:SecureHook(oFrame.MajorFactionList, "Refresh", function(lObj)
-				skinFactionBtns(lObj)
-			end)
+			local function skinElement(...)
+				local _, element, new
+				if _G.select("#", ...) == 2 then
+					element, _ = ...
+				elseif _G.select("#", ...) == 3 then
+					element, _, new = ...
+				else
+					_, element, _, new = ...
+				end
+				if new ~= false then
+					element.LockedState:DisableDrawLayer("BACKGROUND")
+					element.UnlockedState:DisableDrawLayer("BACKGROUND")
+					-- TODO: change colour to match Faction colour
+					aObj:skinObject("frame", {obj=element, fType=ftype, fb=true, x1=29, x2=-29, y2=0, clr="blue", ca=0.35})
+				if aObj.modChkBtns then
+						aObj:skinCheckButton{obj=element.UnlockedState.WatchFactionButton, fType=ftype}
+						element.UnlockedState.WatchFactionButton:SetSize(20, 20)
+				end
+		end
+			end
+			_G.ScrollUtil.AddAcquiredFrameCallback(oFrame.MajorFactionList.ScrollBox, skinElement, aObj, true)
 			-- N.B. keep background visible
 			aObj:skinObject("frame", {obj=oFrame.DragonridingPanel, fType=ftype, fb=true, y1=-1, x2=-1, y2=11, clr="grey"})
 			aObj:skinObject("frame", {obj=oFrame, fType=ftype, kfs=true, rns=true, cbns=true, ofs=-4, y1=-11, clr="gold_df"})
@@ -1270,8 +1264,9 @@ aObj.SetupRetail_UIFrames = function()
 		_G.EventRegistry:RegisterCallback("ExpansionLandingPage.OverlayChanged", skinOverlay, aObj)
 
 		self:SecureHookScript(_G.ExpansionLandingPage, "OnShow", function(this)
-			-- FIXME: Blizzard bug uses self.Overlay instead of self.overlay 01.10.22
-			skinOverlay(self, this.Overlay or this.overlay)
+			if this.overlay then
+				skinOverlay(self, this.Overlay)
+			end
 
 			self:Unhook(this, "OnShow")
 		end)
