@@ -135,7 +135,15 @@ function aObj:setupOptions(optNames, optIgnore, preLoadFunc, postLoadFunc)
 		for _, oName in _G.ipairs(optNames) do
 			optTitle = _G.strjoin("_", aName, oName)
 			aObj.ACR:RegisterOptionsTable(optTitle, aObj.optTables[oName])
+			-- N.B. use existing hooked function, created in Ace3 skin, if it exists
+			if aObj.hooks
+			and aObj.ACD
+			and aObj.hooks[aObj.ACD].AddToBlizOptions
+			then
+				aObj.optionsFrames[oName], _ = aObj.hooks[aObj.ACD].AddToBlizOptions(aObj.ACD, optTitle, aObj.L[oName], aObj.L[aName]) -- N.B. use localised name
+			else
 			aObj.optionsFrames[oName], _ = aObj.ACD:AddToBlizOptions(optTitle, aObj.L[oName], aObj.L[aName]) -- N.B. use localised name
+			end
 			if not _G.tContains(optIgnore, oName) then
 				aObj.optionsFrames[oName].OnDefault = function()
 					for name, _ in _G.pairs(aObj.optTables[oName].args) do

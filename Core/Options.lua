@@ -150,9 +150,9 @@ aObj.SetupOptions = function(self)
 					order = 5,
 					name = self.L["Minimap icon"],
 					desc = self.L["Toggle the minimap icon"],
-					get = function(_) return not db.MinimapIcon.hide end,
-					set = function(_, value)
-						db.MinimapIcon.hide = not value
+					get = function(info) return not db[info[1]].hide end,
+					set = function(info, value)
+						db[info[1]].hide = not value
 						if value then self.DBIcon:Show(aName) else self.DBIcon:Hide(aName) end
 					end,
 					hidden = function() return not self.DBIcon end,
@@ -228,8 +228,8 @@ aObj.SetupOptions = function(self)
 					order = 12,
 					inline = true,
 					name = self.L["Skinning Delays"],
-					get = function(info) return db.Delay[info[#info]] end,
-					set = function(info, value) db.Delay[info[#info]] = value end,
+					get = function(info) return db[info[1]][info[#info]] end,
+					set = function(info, value) db[info[1]][info[#info]] = value end,
 					args = {
 						Init = {
 							type = "range",
@@ -252,8 +252,8 @@ aObj.SetupOptions = function(self)
 					order = 14,
 					inline = true,
 					name = self.L["Fade Height"],
-					get = function(info) return db.FadeHeight[info[#info]] end,
-					set = function(info, value) db.FadeHeight[info[#info]] = value end,
+					get = function(info) return db[info[1]][info[#info]] end,
+					set = function(info, value) db[info[1]][info[#info]] = value end,
 					args = {
 						enable = {
 							type = "toggle",
