@@ -1072,7 +1072,7 @@ aObj.blizzFrames[ftype].ChatTabs = function(self)
 		end)
 	end
 	-- Top Tabs
-	self:skinObject("tabs", {obj=_G.FloatingChatFrameManager, tabs=fcfTabs, fType=ftype, lod=self.isTT and true, upwards=true, ignoreHLTex=false, regions={7, 8, 9, 10, 11}, offsets={x1=1, y1=self.isTT and -10 or -12, x2=-1, y2=self.isTT and -3 or -1}, track=false, func=function(tab) tab.sf:SetAlpha(tab:GetAlpha()) tab.sf:Hide() end})
+	self:skinObject("tabs", {obj=_G.FloatingChatFrameManager, tabs=fcfTabs, fType=ftype, lod=self.isTT and true, upwards=true, ignoreHLTex=false, regions={7, 8, 9, 10, 11}, offsets={x1=1, y1=-10, x2=-1, y2=-3}, track=false, func=function(tab) tab.sf:SetAlpha(tab:GetAlpha()) tab.sf:Hide() end})
 	if self.isTT then
 		self:SecureHook("FCF_Tab_OnClick", function(this, _)
 			for i = 1, _G.NUM_CHAT_WINDOWS do
@@ -1345,7 +1345,7 @@ aObj.blizzLoDFrames[ftype].GuildBankUI = function(self)
 				 self:addButtonBorder{obj=tab.Button, relTo=tab.Button.IconTexture, ofs=3, x2=2}
 			end
 		end
-		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true, cb=true, y1=self.isClsc and -11, x2=self.isClsc and 1, y2=self.isClsc and 3 or -1})
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true, cb=true, y1=self.isClsc and -11, x2=self.isClsc and 1, y2=self.isClsc and 3 or -2})
 		if self.modBtns then
 			if self.isClsc then
 				self:skinCloseButton{obj=self:getChild(this, 11), fType=ftype}
@@ -1474,7 +1474,7 @@ aObj.blizzLoDFrames[ftype].MacroUI = function(self)
 
 	self:SecureHookScript(_G.MacroFrame, "OnShow", function(this)
 		-- Top Tabs
-		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true, upwards=true, offsets={x1=1, y1=-6, x2=-1, y2=self.isTT and -2 or 3}, func=function(tab) tab:SetFrameLevel(20) end})
+		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true, upwards=true, offsets={x1=1, y1=-6, x2=-1, y2=-2}, func=function(tab) tab:SetFrameLevel(20) end})
 		if self.isClscERA then
 			self:skinObject("frame", {obj=_G.MacroButtonScrollFrame, fType=ftype, kfs=true, fb=true, ofs=12, y1=10, x2=31})
 			self:skinObject("slider", {obj=_G.MacroButtonScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
