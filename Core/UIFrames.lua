@@ -85,7 +85,7 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 
 	local alertType = {
 		["Achievement"]           = {ofs = 0, nt = {"Background"}, stc = "Unlocked", icon = {obj = "Icon", ddl = {"border", "overlay"}, tex ="Texture"}},
-		["Criteria"]              = {ofs = -8, nt = {"Background"}, stc = "Unlocked", icon = {obj = "Icon", ddl = {"border", "overlay"}, tex ="Texture"}},
+		["Criteria"]              = {ofs = -8, y1 = -6, nt = {"Background"}, stc = "Unlocked", icon = {obj = "Icon", ddl = {"border", "overlay"}, tex ="Texture"}},
 		["DigsiteComplete"]       = {ofs = -10, ddl = {"background"}},
 		["DungeonCompletion"]     = {ofs = -8, ddl = {"background", "border", "overlay"}, sdla = "dungeonTexture", icon = {tex = "dungeonTexture"}},
 		["GarrisonBuilding"]      = {ofs = -10, ddl = {"background", "border", "overlay"}},
@@ -117,9 +117,9 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 		alertType["Scenario"].y2            = 8
 		alertType["EntitlementDelivered"]   = {ofs = -10}
 		alertType["Loot"].icon              = {obj = "lootItem", stn = {"SpecRing"}, ib = true, tex =  "Icon"}
-		alertType["NewCosmetic"]            = {ofs = -8, ddl = {"background"}, ib = true, iq = _G.Enum.ItemQuality.Epic}
+		alertType["NewCosmetic"]            = {ofs = -8, y1 = -12, ddl = {"background"}, ib = true, iq = _G.Enum.ItemQuality.Epic}
 		alertType["NewRuneforgePower"]      = {ofs = -8, ddl = {"background"}, ib = true, iq = _G.Enum.ItemQuality.Legendary}
-		alertType["NewToy"]                 = {ofs = -8, ddl = {"background"}, ib = true}
+		alertType["NewToy"]                 = {ofs = -8, y1 = -12, ddl = {"background"}, ib = true}
 		alertType["RafRewardDelivered"]     = {ofs = -10}
 		alertType["SkillLineSpecsUnlocked"] = {ofs = 0, ddl = {"background"}}
 		alertType["MonthlyActivity"]        = {ofs = 0, nt = {"Background"}, stc = "Unlocked", icon = {obj = "Icon", ddl = {"border", "overlay"}, tex ="Texture"}}
