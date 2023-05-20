@@ -5,6 +5,10 @@ local _G = _G
 aObj.addonsToSkin.LiteBag = function(self) -- v 10.1.0-3
 
 	local function skinFrame(frame)
+		for _, btn in _G.pairs(_G[frame].panels[1].bagButtons) do
+			aObj:keepFontStrings(btn)
+			btn.icon:SetAlpha(1)
+		end
 		_G[frame .. "PanelMoneyFrame"].Border:DisableDrawLayer("BACKGROUND")
 		_G[frame].numTabs = 2
 		aObj:skinObject("tabs", {obj=_G[frame], prefix=frame, lod=self.isTT and true})
@@ -44,7 +48,6 @@ aObj.addonsToSkin.LiteBag = function(self) -- v 10.1.0-3
 	if self.modBtnBs then
 		if _G.LiteBag_RegisterHook then
 		    _G.LiteBag_RegisterHook('LiteBagItemButton_Update', function (btn)
-				aObj:Debug("LiteBagItemButton_Update: [%s, %s]", btn, btn.ProfessionQualityOverlay)
 				local bIT = btn.icon:GetTexture()
 				if bIT == 136509 -- ui-backpack-emptyslot
 				or bIT == 4701874 -- bagitemslot2x
