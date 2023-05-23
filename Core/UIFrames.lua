@@ -74,6 +74,7 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 		["Loot"]               = true,
 		["LootUpgrade"]        = true,
 		["MoneyWon"]           = true,
+		["MonthlyActivity"]    = true,
 		["NewCosmetic"]        = true,
 		["NewMount"]           = true,
 		["NewPet"]             = true,

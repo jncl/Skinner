@@ -289,7 +289,7 @@ function aObj:OnEnable()
 		end
 		if btnModDB.profile.ButtonBorders then
 			self.modBtnBs = true
-				-- hook this to colour container item borders (inc. Bags, Bank, GuildBank, ReagentBank)
+			-- hook this to colour container item borders (inc. Bags, Bank, GuildBank, ReagentBank)
 			if self.isRtl then
 				self:SecureHook("SetItemButtonBorderVertexColor", function(button, r, g, b)
 					-- aObj:Debug("SetItemButtonBorderVertexColor: [%s, %s, %s, %s, %s]", button, r, g, b)
