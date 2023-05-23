@@ -1162,30 +1162,22 @@ aObj.SetupRetail_UIFrames = function()
 			},
 		}
 		local function skinToast(frame)
+			if not frame:IsShown() then
+				return
+			end
+			local toast = frame.currentDisplayingToast
+			local toastInfo = toast.toastInfo
 			--@debug@
 			-- _G.C_Timer.After(1, function()
-			-- 	_G.Spew("skinToast#1", frame)
+			-- 	_G.Spew("skinToast#2", toast)
 			-- end)
 			--@end-debug@
-			local toastInfo = _G.C_EventToastManager.GetNextToastToDisplay()
-			if not toastInfo then
-				return
-			end
 			--@debug@
-			_G.C_Timer.After(1, function()
-				_G.Spew("skinToast#2", toastInfo)
-			end)
+			-- _G.C_Timer.After(1, function()
+			-- 	_G.Spew("skinToast#3", toastInfo)
+			-- end)
 			--@end-debug@
-			local toastTable = eventToastTemplatesByToastType[toastInfo.displayType]
-			if not toastTable then
-				return
-			end
-			local toast = frame:GetToastFrame(toastTable)
-			--@debug@
-			_G.C_Timer.After(1, function()
-				_G.Spew("skinToast#3", toast)
-			end)
-			--@end-debug@
+			toast:DisableDrawLayer("BACKGROUND")
 			toast:DisableDrawLayer("BORDER")
 			if toast.BannerFrame then
 				toast.BannerFrame:DisableDrawLayer("BACKGROUND")
@@ -1209,7 +1201,7 @@ aObj.SetupRetail_UIFrames = function()
 		end)
 
 		self:SecureHookScript(_G.EventToastManagerFrame, "OnShow", function(this)
-			this.BlackBG:SetAtlas(nil)
+			this:DisableDrawLayer("BACKGROUND")
 
 			self:Unhook(this, "OnShow")
 		end)
