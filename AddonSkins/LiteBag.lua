@@ -56,7 +56,7 @@ aObj.addonsToSkin.LiteBag = function(self) -- v 10.1.0-3
 				end
 				if not btn.sbb then
 					local bName = btn:GetName()
-					aObj:addButtonBorder{obj=btn, ibt=true, reParent={btn.IconQuestTexture, btn.UpgradeIcon, btn.flash, btn.NewItemTexture, btn.BattlepayItemTexture, btn.BagIndicator, btn.JunkIcon, _G[bName .. "LiteBagEQTexture1"], _G[bName .. "LiteBagEQTexture2"], _G[bName .. "LiteBagEQTexture3"], _G[bName .. "LiteBagEQTexture4"], btn.LiteBagBindsOnText}, ofs=3}
+					aObj:addButtonBorder{obj=btn, ibt=true, reParent={btn.IconQuestTexture, btn.UpgradeIcon, btn.flash, btn.NewItemTexture, btn.BattlepayItemTexture, btn.BagIndicator, btn.JunkIcon, btn.LiteBagBindsOnText}, ofs=3}
 					btn.ExtendedSlot:SetTexture(nil)
 				end
 				local info = _G.C_Container.GetContainerItemInfo(btn:GetParent():GetID(), btn:GetID()) -- bag, slot

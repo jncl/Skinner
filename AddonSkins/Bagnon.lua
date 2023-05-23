@@ -2,7 +2,7 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("Bagnon") then return end
 local _G = _G
 
-aObj.addonsToSkin.Bagnon = function(self) -- v 10.0.8
+aObj.addonsToSkin.Bagnon = function(self) -- v 10.1
 	if not self.db.profile.ContainerFrames or self.initialized.Bagnon then return end
 	self.initialized.Bagnon = true
 
@@ -30,9 +30,9 @@ aObj.addonsToSkin.Bagnon = function(self) -- v 10.0.8
 		end)
 	end
 	local function updBtn(btn)
+		aObj:setBtnClr(btn, btn.info.quality)
 		local bIT = btn:GetItemButtonIconTexture():GetTexture()
 		-- aObj:Debug("updBtn: [%s, %s, %s]", btn.info.quality, bIT)
-		aObj:setBtnClr(btn, btn.info.quality)
 		if bIT == 136509 -- ui-backpack-emptyslot
 		or bIT == 4701874 -- bagitemslot2x
 		then
@@ -81,7 +81,7 @@ aObj.addonsToSkin.Bagnon = function(self) -- v 10.0.8
 					end)
 				end
 				-- bag buttons
-				aObj:SecureHook(frame.ItemGroup, "Layout", function(igObj)
+				local function skinBtns(igObj)
 					for _, btn in _G.ipairs(igObj.order) do
 						aObj:addButtonBorder{obj=btn, ibt=true, reParent={btn.IconQuestTexture}, y2=-3}
 						updBtn(btn)
@@ -89,7 +89,11 @@ aObj.addonsToSkin.Bagnon = function(self) -- v 10.0.8
 							updBtn(bObj)
 						end)
 					end
+				end
+				aObj:SecureHook(frame.ItemGroup, "Layout", function(igObj)
+					skinBtns(igObj)
 				end)
+				skinBtns(frame.ItemGroup)
 			end
 
 			aObj:Unhook(this, "OnShow")
@@ -111,7 +115,7 @@ aObj.addonsToSkin.Bagnon = function(self) -- v 10.0.8
 	-- skin the Search EditBox
 	self:RawHook(_G.Bagnon["SearchFrame"], "New", function(this, ...)
 		local eb = self.hooks[this].New(this, ...)
-		self:skinObject("editbox", {obj=eb})
+		self:skinObject("editbox", {obj=eb, x1=4, y1=-2, x2=-4, y2=2})
 		return eb
 	end)
 
