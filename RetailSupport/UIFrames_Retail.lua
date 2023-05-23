@@ -3073,13 +3073,16 @@ aObj.SetupRetail_UIFrames = function()
 				_G.hooksecurefunc("PetBattleFrame_UpdateSpeedIndicators", function(_)
 					updBBClr()
 				end)
-				self:addButtonBorder{obj=this.BottomFrame.SwitchPetButton, reParent={this.BetterIcon}, ofs=3, x2=2, y2=-2}
-				self:addButtonBorder{obj=this.BottomFrame.CatchButton, reParent={this.BetterIcon}, ofs=3, x2=2, y2=-2}
-				self:addButtonBorder{obj=this.BottomFrame.ForfeitButton, ofs=3, x2=2, y2=-2}
+				local btn
+				for _, bName in _G.pairs{"SwitchPetButton", "CatchButton", "ForfeitButton"} do
+					btn = this.BottomFrame[bName]
+					self:addButtonBorder{obj=btn, reParent={btn.BetterIcon}, ofs=3, x2=2, y2=-2}
+				end
 				_G.C_Timer.After(0.1, function()
-					self:addButtonBorder{obj=this.BottomFrame.abilityButtons[1], reParent={this.BetterIcon}, ofs=3, x2=2, y2=-2}
-					self:addButtonBorder{obj=this.BottomFrame.abilityButtons[2], reParent={this.BetterIcon}, ofs=3, x2=2, y2=-2}
-					self:addButtonBorder{obj=this.BottomFrame.abilityButtons[3], reParent={this.BetterIcon}, ofs=3, x2=2, y2=-2}
+					for i = 1, 3 do
+						btn = this.BottomFrame.abilityButtons[i]
+						self:addButtonBorder{obj=btn, reParent={btn.BetterIcon}, ofs=3, x2=2, y2=-2}
+					end
 				end)
 				-- hook this for pet ability buttons
 				self:SecureHook("PetBattleActionButton_UpdateState", function(bObj)
