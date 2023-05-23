@@ -289,8 +289,26 @@ function aObj:OnEnable()
 		end
 		if btnModDB.profile.ButtonBorders then
 			self.modBtnBs = true
-			if not self.isRtl then
 				-- hook this to colour container item borders (inc. Bags, Bank, GuildBank, ReagentBank)
+			if self.isRtl then
+				self:SecureHook("SetItemButtonBorderVertexColor", function(button, r, g, b)
+					-- aObj:Debug("SetItemButtonBorderVertexColor: [%s, %s, %s, %s, %s]", button, r, g, b)
+					if button.sbb then
+						button.sbb:SetBackdropBorderColor(r, g, b)
+					end
+				end)
+				self:SecureHook(_G.ItemButtonMixin, "UpdateCraftedProfessionsQualityShown", function(button)
+					-- aObj:Debug("IBM UpdateCraftedProfessionsQualityShown: [%s, %s]", button, button.ProfessionQualityOverlay)
+					if not button.ProfessionQualityOverlay then
+						return
+					end
+					if button.sbb then
+						if button.ProfessionQualityOverlay then
+							button.ProfessionQualityOverlay:SetParent(button.sbb)
+						end
+					end
+				end)
+			else
 				self:SecureHook("SetItemButtonQuality", function(button, quality, itemIDOrLink, _)
 					-- self:Debug("SetItemButtonQuality: [%s, %s, %s, %s, %s, %s]", button, button.IconBorder, button.sbb, quality, itemIDOrLink, suppressOverlays)
 					-- self:Debug("SIBQ: [%s, %s]", button.IconBorder:IsShown(), button.IconOverlay:IsShown())
@@ -303,14 +321,6 @@ function aObj:OnEnable()
 						button.IconBorder:SetAlpha(0)
 					end
 					self:setBtnClr(button, quality)
-				end)
-			else
-				self:SecureHook("SetItemButtonBorderVertexColor", function(button, r, g, b)
-					-- aObj:Debug("SetItemButtonBorderVertexColor: [%s, %s, %s, %s, %s]", button, r, g, b)
-					if button.sbb then
-						-- self:clrButtonFromBorder(button)
-						button.sbb:SetBackdropBorderColor(r, g, b)
-					end
 				end)
 			end
 		end
