@@ -2786,16 +2786,16 @@ aObj.SetupRetail_UIFrames = function()
 		self.initialized.MajorFactions = true
 
 		self:SecureHookScript(_G.MajorFactionUnlockToast, "OnShow", function(this)
-			this:DisableDrawLayer("BACKGROUND")
-			this:DisableDrawLayer("ARTWORK")
+			this.ToastBG:SetTexture(nil)
+			this:DisableDrawLayer("ARTWORK") -- .GlowLineBottom
 
 			self:Unhook(this, "OnShow")
 		end)
 
 		self:SecureHookScript(_G.MajorFactionsRenownToast, "OnShow", function(this)
-			this:DisableDrawLayer("BACKGROUND")
-			this:DisableDrawLayer("ARTWORK")
-			this:DisableDrawLayer("OVERLAY")
+			this.ToastBG:SetTexture(nil)
+			this.GlowLineBottom:SetAlpha(0) -- texture changed in code
+			this.RewardIconRing:SetTexture(nil)
 
 			self:Unhook(this, "OnShow")
 		end)
@@ -2808,9 +2808,10 @@ aObj.SetupRetail_UIFrames = function()
 			end
 		end
 		self:SecureHookScript(_G.MajorFactionRenownFrame, "OnShow", function(this)
-			this:DisableDrawLayer("BACKGROUND")
-			this:DisableDrawLayer("BORDER")
-			this:DisableDrawLayer("ARTWORK")
+			-- this.Background:SetTexture(nil)
+			-- this.CelebrationModelSceneTarget:SetTexture(nil)
+			-- this.TopGlow:SetTexture(nil)
+			-- this.BottomGlow:SetTexture(nil)
 			this.NineSlice:DisableDrawLayer("ARTWORK")
 			this.HeaderFrame.Background:SetAlpha(0) -- texture changed in code
 			self:SecureHook(this, "SetRewards", function(fObj, _)
@@ -2818,7 +2819,7 @@ aObj.SetupRetail_UIFrames = function()
 			end)
 			skinRewards(this)
 			this.TrackFrame.Glow:SetAlpha(0) -- texture changed in code
-			self:skinObject("frame", {obj=this, fType=ftype, rns=true, cbns=true, ofs=-2, y1=-7, clr="gold_df"})
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true, cbns=true, ofs=-2, y1=-7, clr="gold_df"})
 			if self.modBtns then
 				self:skinStdButton{obj=this.LevelSkipButton, fType=ftype, clr="gold"}
 			end
