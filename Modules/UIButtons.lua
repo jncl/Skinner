@@ -796,6 +796,7 @@ local function __addButtonBorder(opts)
 		ca       = set colour alpha
 		schk     = state check for colour changes
 		sechk    = set enabled check for colour changes
+		ignTex	 = ignore changes to Normal & Pushed textures
 --]]
 	--@alpha@
 	 _G.assert(opts.obj, "Missing object__aBB\n" .. _G.debugstack(2, 3, 2))
@@ -818,20 +819,22 @@ local function __addButtonBorder(opts)
 		return
 	end
 	-- remove Normal/Pushed textures if required (vertex colour changed in blizzard code)
-	if opts.ibt
-	or opts.abt
-	or opts.auit
-	or opts.bmit
-	then
-		if opts.obj.GetNormalTexture
-		and opts.obj:GetNormalTexture()
+	if not opts.ignTex then -- ProfessionCraftingPageRecipe slots [isModifyingRequired]
+		if opts.ibt
+		or opts.abt
+		or opts.auit
+		or opts.bmit
 		then
-			opts.obj:GetNormalTexture():SetTexture(nil)
-		end
-		if opts.obj.GetPushedTexture
-		and opts.obj:GetPushedTexture()
-		then
-			opts.obj:GetPushedTexture():SetTexture(nil)
+			if opts.obj.GetNormalTexture
+			and opts.obj:GetNormalTexture()
+			then
+				opts.obj:GetNormalTexture():SetTexture(nil)
+			end
+			if opts.obj.GetPushedTexture
+			and opts.obj:GetPushedTexture()
+			then
+				opts.obj:GetPushedTexture():SetTexture(nil)
+			end
 		end
 	end
 	if opts.gibt then
