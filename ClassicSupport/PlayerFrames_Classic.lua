@@ -656,7 +656,7 @@ aObj.SetupClassic_PlayerFrames = function()
 				local bo
 				for i = 1, _G.MAX_CONTAINER_ITEMS do
 					bo = _G[objName .. "Item" .. i]
-					aObj:addButtonBorder{obj=bo, ibt=true, reParent={_G[objName .. "Item" .. i .. "IconQuestTexture"], bo.JunkIcon, bo.UpgradeIcon, bo.flash, bo.NewItemTexture, bo.BattlepayItemTexture}}
+					aObj:addButtonBorder{obj=bo, ibt=true, reParent={bo.JunkIcon, bo.UpgradeIcon, bo.flash, bo.NewItemTexture, bo.BattlepayItemTexture}}
 				end
 				-- update Button quality borders
 				_G.ContainerFrame_Update(frame)

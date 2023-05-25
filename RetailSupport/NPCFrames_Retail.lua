@@ -387,7 +387,7 @@ aObj.SetupRetail_NPCFrames = function()
 				local btn
 				for i = 1, _G.NUM_BANKGENERIC_SLOTS do
 					btn = _G.BankSlotsFrame["Item" .. i]
-					self:addButtonBorder{obj=btn, ibt=true, reParent={btn.IconQuestTexture}}
+					self:addButtonBorder{obj=btn, ibt=true}
 					-- force quality border update
 					_G.BankFrameItemButton_Update(btn)
 				end
@@ -414,7 +414,7 @@ aObj.SetupRetail_NPCFrames = function()
 					local btn
 					for i = 1, fObj.size do
 						btn = fObj["Item" .. i]
-						self:addButtonBorder{obj=btn, ibt=true, reParent={btn.IconQuestTexture}}
+						self:addButtonBorder{obj=btn, ibt=true}
 						-- force quality border update
 						_G.BankFrameItemButton_Update(fObj["Item" .. i])
 					end

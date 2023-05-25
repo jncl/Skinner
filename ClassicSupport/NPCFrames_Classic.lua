@@ -69,11 +69,10 @@ aObj.SetupClassic_NPCFrames = function()
 			_G[btnName .. idx .. "Highlight"]:SetAlpha(1)
 			_G[btnName .. idx .. "ItemNormalTexture"]:SetAlpha(0) -- texture changed in code
 			if aObj.modBtnBs then
-				aObj:addButtonBorder{obj=_G[btnName .. idx .. "Item"], reParent={_G[btnName .. idx .. "Count"], _G[btnName .. idx .. "Stock"]}}
+				aObj:addButtonBorder{obj=_G[btnName .. idx .. "Item"], reParent={_G[btnName .. idx .. "Count"], _G[btnName .. idx .. "Stock"], _G[btnName .. idx .. "IconOverlay"]}}
 				aObj:clrButtonFromBorder(_G[btnName .. idx .. "Item"])
 			end
 		end
-
 		self:SecureHookScript(_G.AuctionFrame, "OnShow", function(this)
 			-- hide filter texture when filter is clicked
 			self:SecureHook("FilterButton_SetUp", function(button, _)
@@ -248,7 +247,7 @@ aObj.SetupClassic_NPCFrames = function()
 				end)
 				-- add button borders to bank items
 				for i = 1, _G.NUM_BANKGENERIC_SLOTS do
-					self:addButtonBorder{obj=_G.BankSlotsFrame["Item" .. i], ibt=true, reParent={_G["BankFrameItem" .. i].IconQuestTexture}}
+					self:addButtonBorder{obj=_G.BankSlotsFrame["Item" .. i], ibt=true}
 					-- force quality border update
 					_G.BankFrameItemButton_Update(_G.BankSlotsFrame["Item" .. i])
 				end

@@ -904,6 +904,9 @@ local function __addButtonBorder(opts)
 		if opts.obj.ItemContextOverlay then
 			opts.obj.ItemContextOverlay:SetParent(opts.obj.sbb)
 		end
+		if opts.obj.IconQuestTexture then
+			opts.obj.IconQuestTexture:SetParent(opts.obj.sbb)
+		end
 		module:clrButtonFromBorder(opts.obj)
 	elseif opts.abt then -- Action Buttons
 		if opts.obj.FlyoutArrow then

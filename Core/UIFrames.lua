@@ -1569,11 +1569,14 @@ aObj.blizzFrames[ftype].MailFrame = function(self)
 		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype})
 		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, cb=true, x2=self.isRtl and 3 or 1})
 		--	Inbox Frame
+		local miName, miBtn
 		for i = 1, _G.INBOXITEMS_TO_DISPLAY do
-			self:keepFontStrings(_G["MailItem" .. i])
-			_G["MailItem" .. i].Button:DisableDrawLayer("BACKGROUND")
+			miName = "MailItem" .. i
+			miBtn = _G["MailItem" .. i].Button
+			self:keepFontStrings(_G[miName])
+			miBtn:DisableDrawLayer("BACKGROUND")
 			if self.modBtnBs then
-				self:addButtonBorder{obj=_G["MailItem" .. i].Button, relTo=_G["MailItem" .. i].Button.Icon, reParent={_G["MailItem" .. i .. "ButtonCount"]}}
+				self:addButtonBorder{obj=miBtn, relTo=miBtn.Icon, reParent={_G[miName .. "ButtonCODBackground"], _G[miName .. "ButtonCount"], miBtn.IconOverlay, miBtn.IconOverlay2 and miBtn.IconOverlay2}}
 			end
 		end
 		self:moveObject{obj=_G.InboxTooMuchMail, y=-24} -- move icon down
@@ -1606,7 +1609,7 @@ aObj.blizzFrames[ftype].MailFrame = function(self)
 				self:resizeEmptyTexture(self:getRegion(btn, 1))
 			else
 				btn:DisableDrawLayer("BACKGROUND")
-				self:addButtonBorder{obj=btn, clr="grey"}
+				self:addButtonBorder{obj=btn, reParent={btn.Count, btn.IconOverlay, btn.IconOverlay2 and btn.IconOverlay2}, clr="grey"}
 			end
 		end
 		self:skinObject("editbox", {obj=_G.SendMailNameEditBox, fType=ftype, regions={4, 5, 6}})
