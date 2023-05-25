@@ -1,3 +1,22 @@
+beta10.49570.1
+Jncl:
+	Updated ToDo.txt files
+	Updated Change_History.txt
+	Updated version numbers
+	Updated SharedFuncs
+	Updated LootFrames skin
+	Updated Ace3 skin
+	Updated Krowi_AchievementFilter & WeakAuras skins
+	Update TOC to include icon texture
+	Update Retail version checks
+	Update Tooltips skin
+	Revert change to UIButtons skin
+	Update UIWidgets skin
+	Bugfix ItemTextScrollFrame
+	Bugfix QuestGreetScrollFrame
+	Update comments for WorldMap Overlay frames
+	Don't add ButtonBorders to Debuff Aura Anchors
+	
 beta10.49444.5
 Jncl:
 	Updated ToDo.txt files
