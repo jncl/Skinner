@@ -1375,6 +1375,9 @@ aObj.SetupRetail_PlayerFrames = function()
 
 		self:SecureHookScript(_G.WardrobeCollectionFrame, "OnShow", function(this)
 			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true, upwards=true, offsets={x1=2, y1=-4, x2=-2, y2=-4}})
+			if aObj.isRtlPTRX then
+				this.InfoButton.Ring:SetTexture(nil)
+			end
 			self:skinObject("editbox", {obj=this.searchBox, fType=ftype, si=true})
 			_G.RaiseFrameLevelByTwo(this.searchBox) -- raise above SetsCollectionFrame when displayed on it
 			self:skinObject("statusbar", {obj=this.progressBar, fi=0})
@@ -3331,7 +3334,11 @@ aObj.SetupRetail_PlayerFrames = function()
 						if questTitle
 						and questTitle ~= ""
 						then
-							block = owningModule:GetBlock(questID, "ScrollFrame", "AutoQuestPopUpBlockTemplate")
+							if not aObj.isRtlPTRX then
+								block = owningModule:GetBlock(questID, "ScrollFrame", "AutoQuestPopUpBlockTemplate")
+							else
+								block = owningModule:GetBlock(questID .. popUpType, "ScrollFrame", "AutoQuestPopUpBlockTemplate")
+							end
 							if not block.module.hasSkippedBlocks then
 								if block.init then
 									aObj:skinObject("frame", {obj=block.ScrollChild, kfs=true, fType=ftype, ofs=0, x1=33})
