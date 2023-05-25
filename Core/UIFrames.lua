@@ -2487,7 +2487,7 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 		return
 	end
 
-	local delay = 0.025
+	local delay = 0.2
 	-- using a metatable to manage tooltips when they are added in different functions
 	_G.setmetatable(self.ttList, {__newindex = function(tab, _, tTip)
 		-- get object reference for tooltip, handle either strings or objects being passed
@@ -2591,7 +2591,7 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 		end)
 	end
 
-	-- TODO: Find out and fix why GameTooltip sometimes doesn't adjust it's gradient when it appears in the BLH corner.
+	-- TODO: Find out and fix why GameTooltip sometimes doesn't adjust it's gradient when it appears
 
 end
 
