@@ -6,14 +6,15 @@ local buildInfo = {
 	-- Testing
 	-- wow_classic_beta    = {"3.4.0",  46158, "Classic Beta"},
 	-- wow_beta            = {"10.0.2", 47120, "Retail Beta"}, -- a.k.a. Dragonflight
-	wow_classic_ptr     = {"3.4.2",  49563, "Classic PTR"},
-	-- wow_classic_era_ptr = {"1.14.3", 46575, "Classic Era PTR"}, -- a.k.a. Season of Mastery PTR
-	wow_classic_era_ptr = {"10.1.5", 49516, "Retail PTR 2"}, -- a.k.a. PTR DF 10.0.7
-	wow_ptr             = {"10.1.0", 49570, "Retail PTR"},
+	wow_classic_ptr     = {"3.4.2",  49705, "Classic PTR"},
+	-- wow_classic_era_ptr = {"1.14.3", 49229, "Classic Era PTR"}, -- a.k.a. Season of Mastery PTR
+	-- wow_classic_era_ptr = {"10.1.5", 49595, "Retail PTR2"}, -- a.k.a. PTR DF 10.1.5
+	wow_ptr_x           = {"10.1.5", 49719, "Retail PTR2"}, -- a.k.a. PTR DF 10.1.5 [wowxptr]
+	wow_ptr             = {"10.1.0", 49570, "Retail PTR"}, -- a.k.a. [wowt]
 	-- Live
 	wow_classic         = {"3.4.1",  49345, "Classic"}, -- a.k.a. Wrath of the Lich King Classic
 	wow_classic_era     = {"1.14.3", 49229, "Classic Era"},
-	wow                 = {"10.1.0", 49570, "Retail"},
+	wow                 = {"10.1.0", 49741, "Retail"},
 	-- Currently playing
 	curr                = {_G.GetBuildInfo()},
 }
@@ -142,7 +143,7 @@ function aObj:setupOptions(optNames, optIgnore, preLoadFunc, postLoadFunc)
 			then
 				aObj.optionsFrames[oName], _ = aObj.hooks[aObj.ACD].AddToBlizOptions(aObj.ACD, optTitle, aObj.L[oName], aObj.L[aName]) -- N.B. use localised name
 			else
-			aObj.optionsFrames[oName], _ = aObj.ACD:AddToBlizOptions(optTitle, aObj.L[oName], aObj.L[aName]) -- N.B. use localised name
+				aObj.optionsFrames[oName], _ = aObj.ACD:AddToBlizOptions(optTitle, aObj.L[oName], aObj.L[aName]) -- N.B. use localised name
 			end
 			if not _G.tContains(optIgnore, oName) then
 				aObj.optionsFrames[oName].OnDefault = function()
