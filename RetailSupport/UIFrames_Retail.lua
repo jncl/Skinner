@@ -2800,10 +2800,6 @@ aObj.SetupRetail_UIFrames = function()
 			end
 		end
 		self:SecureHookScript(_G.MajorFactionRenownFrame, "OnShow", function(this)
-			-- this.Background:SetTexture(nil)
-			-- this.CelebrationModelSceneTarget:SetTexture(nil)
-			-- this.TopGlow:SetTexture(nil)
-			-- this.BottomGlow:SetTexture(nil)
 			this.NineSlice:DisableDrawLayer("ARTWORK")
 			this.HeaderFrame.Background:SetAlpha(0) -- texture changed in code
 			self:SecureHook(this, "SetRewards", function(fObj, _)
