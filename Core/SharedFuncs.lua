@@ -49,11 +49,11 @@ function aObj:checkVersion()
 	self.isClscERA    = agentUID == "wow_classic_era" and true
 	self.isRtlBeta    = agentUID == "wow_beta" and true
 	self.isRtlPTR     = agentUID == "wow_ptr" and true
-	self.isRtlPTR2    = agentUID == "wow_classic_era_ptr" or "wow_ptr_x" and true
-	-- self.isRtlPTR2    = agentUID == "wow_ptr_x" and true
+	-- self.isRtlPTRX    = agentUID == "wow_classic_era_ptr" or "wow_ptr_x" and true
+	self.isRtlPTRX    = agentUID == "wow_ptr_x" and true
 	self.isRtl        = agentUID == "wow" and true
 	--@debug@
-	self:Debug("checkVersion#1: [%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s]", self.isClscBeta, self.isClscPTR, self.isClsc, self.isClscERAPTR, self.isClscERA, self.isRtlBeta, self.isRtlPTR, self.isRtlPTR2, self.isRtl, self.isPatch)
+	self:Debug("checkVersion#1: [%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s]", self.isClscBeta, self.isClscPTR, self.isClsc, self.isClscERAPTR, self.isClscERA, self.isRtlBeta, self.isRtlPTR, self.isRtlPTRX, self.isRtl, self.isPatch)
 	--@end-debug@
 
 	self.tocVer = getTOCVer(agentUID)
@@ -82,14 +82,14 @@ function aObj:checkVersion()
 	-- indicate we're on Retail PTR if on Retail Beta
 	self.isRtlPTR     = self.isRtlPTR or self.isRtlBeta
 	-- indicate we're on Retail if on Retail PTR
-	self.isRtl        = self.isRtl or self.isRtlPTR or self.isRtlPTR2
+	self.isRtl        = self.isRtl or self.isRtlPTR or self.isRtlPTRX
 	-- handle PTR changes going Live
 	self.isClscPTR    = self.isClscPTR or self.isClsc and (buildInfo.curr[4] == getTOCVer("wow_classic")) and self.isPatch
 	self.isClscERAPTR = self.isClscERAPTR or self.isClscERA and (buildInfo.curr[4] == getTOCVer("wow_classic_era")) and self.isPatch
 	self.isRtlPTR     = self.isRtlPTR or self.isRtl and (buildInfo.curr[4] == getTOCVer("wow_ptr")) and self.isPatch
-	self.isRtlPTR2    = self.isRtlPTR2 or self.isRtl and (buildInfo.curr[4] == getTOCVer("wow_classic_era_ptr")) and self.isPatch
+	self.isRtlPTRX    = self.isRtlPTRX or self.isRtl and (buildInfo.curr[4] == getTOCVer("wow_ptr_x")) and self.isPatch
 	--@debug@
-	self:Debug("checkVersion#2: [%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s]", self.isClscBeta, self.isClscPTR, self.isClsc, self.isClscERAPTR, self.isClscERA, self.isRtlBeta, self.isRtlPTR, self.isRtlPTR2, self.isRtl, self.isPatch)
+	self:Debug("checkVersion#2: [%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s]", self.isClscBeta, self.isClscPTR, self.isClsc, self.isClscERAPTR, self.isClscERA, self.isRtlBeta, self.isRtlPTR, self.isRtlPTRX, self.isRtl, self.isPatch)
 	--@end-debug@
 
 end
@@ -243,6 +243,7 @@ function aObj:CustomPrint(r, g, b, ...) -- luacheck: ignore self
 	printIt(_G.WrapTextInColorCode(aName, "ffffff78") .. " " .. makeText(...), nil, r, g, b)
 
 end
+
 
 --@debug@
 aObj.debugFrame = _G.ChatFrame10
