@@ -55,8 +55,7 @@ aObj.addonsToSkin.LiteBag = function(self) -- v 10.1.0-3
 					btn.icon:SetTexture(nil)
 				end
 				if not btn.sbb then
-					local bName = btn:GetName()
-					aObj:addButtonBorder{obj=btn, ibt=true, reParent={btn.IconQuestTexture, btn.UpgradeIcon, btn.flash, btn.NewItemTexture, btn.BattlepayItemTexture, btn.BagIndicator, btn.JunkIcon, btn.LiteBagBindsOnText}, ofs=3}
+					aObj:addButtonBorder{obj=btn, ibt=true, reParent={btn.UpgradeIcon, btn.flash, btn.NewItemTexture, btn.BattlepayItemTexture, btn.BagIndicator, btn.JunkIcon, btn.LiteBagBindsOnText}, ofs=3}
 					btn.ExtendedSlot:SetTexture(nil)
 				end
 				local info = _G.C_Container.GetContainerItemInfo(btn:GetParent():GetID(), btn:GetID()) -- bag, slot
@@ -68,7 +67,7 @@ aObj.addonsToSkin.LiteBag = function(self) -- v 10.1.0-3
 			local btn
 			for i = 1, fObj.size do
 				btn = fObj["Item" .. i]
-				self:addButtonBorder{obj=btn, ibt=true, reParent={btn.IconQuestTexture}}
+				self:addButtonBorder{obj=btn, ibt=true}
 				-- force quality border update
 				_G.BankFrameItemButton_Update(btn)
 			end

@@ -83,7 +83,7 @@ aObj.addonsToSkin.Bagnon = function(self) -- v 10.1
 				-- bag buttons
 				local function skinBtns(igObj)
 					for _, btn in _G.ipairs(igObj.order) do
-						aObj:addButtonBorder{obj=btn, ibt=true, reParent={btn.IconQuestTexture}, y2=-3}
+						aObj:addButtonBorder{obj=btn, ibt=true, y2=-3}
 						updBtn(btn)
 						aObj:secureHook(btn, "Update", function(bObj)
 							updBtn(bObj)

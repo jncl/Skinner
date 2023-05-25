@@ -2,7 +2,7 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("AdiBags") then return end
 local _G = _G
 
-aObj.addonsToSkin.AdiBags = function(self) -- v1.9.25/v1.9.26-bcc/v1.9.20-classic
+aObj.addonsToSkin.AdiBags = function(self) -- v1.10.15/v1.9.26-bcc/v1.9.20-classic
 
 	local aBag = _G.LibStub("AceAddon-3.0"):GetAddon("AdiBags", true)
 
@@ -11,7 +11,7 @@ aObj.addonsToSkin.AdiBags = function(self) -- v1.9.25/v1.9.26-bcc/v1.9.20-classi
 		aObj:skinObject("editbox", {obj=_G[bag.frame:GetName() .. "SearchBox"], si=true})
 		aObj:skinObject("frame", {obj=bag.frame, kfs=true})
 		if aObj.modBtns then
-			aObj:skinCloseButton{obj=bag.frame.CloseButton}
+			aObj:skinStdButton{obj=bag.frame.CloseButton}
 			-- delay to allow all buttons to be created
 			_G.C_Timer.After(0.1, function()
 				for _, object in _G.pairs(bag.frame.HeaderRightRegion.widgets) do
@@ -60,14 +60,12 @@ aObj.addonsToSkin.AdiBags = function(self) -- v1.9.25/v1.9.26-bcc/v1.9.20-classi
 				btn.sbb:SetBackdrop(aObj.modUIBtns.iqbDrop)
 				btn.sbb:SetBackdropBorderColor(btn.IconQuestTexture:GetVertexColor())
 			end
-			btn.IconQuestTexture:SetTexture()
+			btn.IconQuestTexture:SetTexture(nil)
 		end
 		aBag:RegisterMessage("AdiBags_UpdateButton", function(_, btn)
-			aObj:Debug("AdiBags_UpdateButton: [%s, %s]", btn)
 			clrBB(btn)
 		end)
 		aBag:RegisterMessage("AdiBags_UpdateBorder", function(_, btn)
-			aObj:Debug("AdiBags_UpdateBorder: [%s, %s]", btn)
 			clrBB(btn)
 		end)
 	end

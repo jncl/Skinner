@@ -2,7 +2,7 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("Inventorian") then return end
 local _G = _G
 
-aObj.addonsToSkin.Inventorian = function(self) -- v 10.0.2.2
+aObj.addonsToSkin.Inventorian = function(self) -- v 10.1.0.0
 
 	local Inventorian = _G.LibStub("AceAddon-3.0"):GetAddon("Inventorian", true)
 
@@ -19,7 +19,7 @@ aObj.addonsToSkin.Inventorian = function(self) -- v 10.0.2.2
 	end
 	local function skinBtns(icObj)
 		for _, btn in _G.pairs(icObj.items) do
-			aObj:addButtonBorder{obj=btn, ibt=true, reParent={btn.IconQuestTexture}, clr="grey"}
+			aObj:addButtonBorder{obj=btn, ibt=true, clr="grey"}
 			updBtn(btn)
 			aObj:secureHook(btn, "Update", function(bObj) -- N.B. use reusable hook function here
 				updBtn(bObj)
