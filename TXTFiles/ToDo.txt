@@ -41,30 +41,29 @@ ToDos
 	I	Tab positioning, reported by Fakelessgaming, 24.10.22/08.01.23
 		- Review Top/Bottom tab positioning using 1 pixel border
 
-	I	WeakAuras, reported by Sausje, 05.05.23
-√		- Skinner/Modules/UIButtons.lua:598: attempt to index field 'obj' (a nil value)
-		[string "@Skinner/Modules/UIButtons.lua"]:598: in function `skinStdButton'
-		[string "@Skinner/AddonSkins/WeakAuras.lua"]:139: in function <Skinner/AddonSkins/WeakAuras.lua:103>
-		
-	I	Krowi_AchievementFilter, reported by therealdeerez, 06.05.23
-√		- ...ddOns/Skinner/AddonSkins/Krowi_AchievementFilter.lua:226: attempt to index field 'ScrollFrameBorder' (a nil value)
-		[string "@Skinner/AddonSkins/Krowi_AchievementFilter.lua"]:226: in function <...ddOns/Skinner/AddonSkins/Krowi_AchievementFilter.lua:222>
-		- ...ddOns/Skinner/AddonSkins/Krowi_AchievementFilter.lua:213: attempt to index field 'ScrollFrame' (a nil value)
-		[string "@Skinner/AddonSkins/Krowi_AchievementFilter.lua"]:213: in function <...ddOns/Skinner/AddonSkins/Krowi_AchievementFilter.lua:212>
-	
-	I	QuestFrame, reported by Nylrith, 08.05.23
-√		-  .../ArkInventory/Externals/Ace3/AceHook/AceHook-3.0-9.lua:180: Attempting to rehook already active hook QuestFrame_SetTitleTextColor.
-		[string "@ArkInventory/Externals/Ace3/AceHook/AceHook-3.0-9.lua"]:180: in function <.../ArkInventory/Externals/Ace3/AceHook/AceHook-3.0.lua:118>
-		[string "@ArkInventory/Externals/Ace3/AceHook/AceHook-3.0-9.lua"]:321: in function `RawHook'
-		[string "@Skinner/Core/NPCFrames.lua"]:191: in function <Skinner/Core/NPCFrames.lua:190>
-	
-	I	ItemText, reported by Galthariel, 08.05.23
-√		- not being skinned
-		
-	I	QuestFrame, reported by reiyo_oki, 09.05.23
+	I	PremadeGroupsFilter, reported by Carica18, 16.05.23
 √		- Skinner/Core/NewSkinFuncs.lua:177: attempt to call method 'GetOrientation' (a nil value)
-		[string "@Skinner/Core/NewSkinFuncs.lua"]:177: in function <Skinner/Core/NewSkinFuncs.lua:174>
-		[string "@Skinner/Core/NewSkinFuncs.lua"]:732: in function <Skinner/Core/NewSkinFuncs.lua:711>
-		[string "@Skinner/Core/NewSkinFuncs.lua"]:738: in function `?'
+		[string "@Skinner/Core/NewSkinFuncs.lua"]:733: in function <Skinner/Core/NewSkinFuncs.lua:712>
+		[string "@Skinner/Core/NewSkinFuncs.lua"]:739: in function `?'
 		[string "@Skinner/Core/NewSkinFuncs.lua"]:255: in function `skinObject'
-		[string "@Skinner/Core/NPCFrames.lua"]:245: in function <Skinner/Core/NPCFrames.lua:190>
+		[string "@Skinner/AddonSkins/PremadeGroupsFilter.lua"]:35: in function <...ceSkinner/AddonSkins/PremadeGroupsFilter.lua:5>
+		
+	I	LFGList, reported by reiyo_oki, 16.05.23
+√		- Interface/AddOns/Skinner/Core/NewSkinFuncs.lua:715: Not a Slider (skinSlider)
+		[string "@Interface/AddOns/Skinner/Core/NewSkinFuncs.lua"]:739: in function '?'
+		[string "@Interface/AddOns/Skinner/Core/NewSkinFuncs.lua"]:255: in function 'skinObject'
+		[string "@Interface/AddOns/Skinner/RetailSupport/UIFrames_Retail.lua"]:2489: in function 
+
+	I	QuestFrame, reported by Sausje, 16.05.23
+√		- Skinner/Core/NewSkinFuncs.lua:523: attempt to index field 'obj' (a nil value)
+		[string "@Skinner/Core/NewSkinFuncs.lua"]:523: in function <Skinner/Core/NewSkinFuncs.lua:512>
+		[string "@Skinner/Core/NewSkinFuncs.lua"]:626: in function `?'
+		[string "@Skinner/Core/NewSkinFuncs.lua"]:255: in function `skinObject'
+		[string "@Skinner/Core/NewSkinFuncs.lua"]:709: in function <Skinner/Core/NewSkinFuncs.lua:688>
+		[string "@Skinner/Core/NewSkinFuncs.lua"]:711: in function `?'
+		[string "@Skinner/Core/NewSkinFuncs.lua"]:255: in function `skinObject'
+		[string "@Skinner/Core/NPCFrames.lua"]:236: in function <Skinner/Core/NPCFrames.lua:190>
+		
+	I	ItemButtons, reported by Galthariel, 17.05.23
+√		- After the last update, my bags stopped showing the quality of the items (mats and potions) in the top left corner (1, 2, and 3 stars).
+		

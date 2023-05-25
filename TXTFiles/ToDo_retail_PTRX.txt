@@ -1,0 +1,32 @@
+ToDo_retail_PTRX
+±±±±±±±±±±±±±±±±
+
+	√ is Alt+v		- indicates completed
+	≈ is Alt+x		- indicates partially completed or dry-coded
+	x				- indicates nothing to change
+	¶ is Alt+7		- indicates localisation changes required
+
+	Retail_PTRX (Dragonflight 10.1.5)
+		- Added
+			- Blizzard_PVPUI
+				- .RoleShortageBonus
+		- Updated
+√			- Blizzard_Wardrobe
+			- Blizzard_Console
+√			- Blizzard_ObjectiveTracker
+			- DungeonEntranceDataProvider
+			- QuestDataProvider
+			- Blizzard_TimeManager
+			- Blizzard_UIWidgetManager
+			- ActionButtonTemplate
+			- AlternatePowerBar
+			- CompactPartyFrame
+			- CompactRaidGroup
+			- CompactUnitFrame
+			- GroupLootFrame
+			- LFGFrame
+			- MonkStaggerBar
+			- PlayerFrame
+			- QuestMapFrame
+			- TabardFrame
+		- Deleted
