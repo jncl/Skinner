@@ -189,6 +189,11 @@ aObj.blizzFrames[ftype].QuestFrame = function(self)
 	self:SecureHookScript(_G.QuestFrame, "OnShow", function(this)
 		self:keepFontStrings(_G.QuestFrameRewardPanel)
 		self:keepFontStrings(_G.QuestFrameProgressPanel)
+		if self.isRtl then
+			self:skinObject("scrollbar", {obj=_G.QuestProgressScrollFrame.ScrollBar, fType=ftype})
+		else
+			self:skinObject("slider", {obj=_G.QuestProgressScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
+		end
 		_G.QuestProgressTitleText:SetTextColor(self.HT:GetRGB())
 		_G.QuestProgressText:SetTextColor(self.BT:GetRGB())
 		_G.QuestProgressRequiredMoneyText:SetTextColor(self.BT:GetRGB())
@@ -202,6 +207,11 @@ aObj.blizzFrames[ftype].QuestFrame = function(self)
 			end
 		end
 		self:keepFontStrings(_G.QuestFrameDetailPanel)
+		if self.isRtl then
+			self:skinObject("scrollbar", {obj=_G.QuestDetailScrollFrame.ScrollBar, fType=ftype})
+		else
+			self:skinObject("slider", {obj=_G.QuestDetailScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
+		end
 		self:keepFontStrings(_G.QuestFrameGreetingPanel)
 		self:keepFontStrings(_G.QuestGreetingScrollChildFrame) -- hide Horizontal Break texture
 		if _G.QuestFrameGreetingPanel:IsShown() then
