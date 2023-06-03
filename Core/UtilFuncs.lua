@@ -1356,8 +1356,10 @@ function aObj:setupTextures()
 		["tMB"]       = _G.GetFileIDFromPath([[Interface\Minimap\Tracking\Mailbox]]),
 		["w8x8"]      = _G.GetFileIDFromPath([[Interface\Buttons\WHITE8X8]]),
 	}
-	if aObj.isRtl then
-		self.tFDIDs["cbMin"] = _G.GetFileIDFromPath([[interface/common/minimalcheckbox.blp]])
+	if aObj.isRtl
+	or aObj.isClscPTR
+	then
+		self.tFDIDs["cbMin"] = _G.GetFileIDFromPath([[interface/common/minimalcheckbox.blp]]) -- Settings CheckButton
 	end
 
 end
@@ -1378,7 +1380,7 @@ function aObj:skinIconSelector(frame)
 	frame.BorderBox.SelectedIconArea.SelectedIconButton:DisableDrawLayer("BACKGROUND")
 	self:skinObject("editbox", {obj=frame.BorderBox.IconSelectorEditBox})
 	self:skinObject("scrollbar", {obj=frame.IconSelector.ScrollBar})
-	self:skinObject("frame", {obj=frame, ofs=1, y1=2})
+	self:skinObject("frame", {obj=frame, ofs=-3, x1=-2})
 	if self.modBtns then
 		self:skinStdButton{obj=frame.BorderBox.CancelButton}
 		self:skinStdButton{obj=frame.BorderBox.OkayButton, schk=true}
