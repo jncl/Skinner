@@ -95,7 +95,9 @@ aObj.SetupOptions = function(self)
 	local dflts = self.db.defaults.profile
 
 	local iof_otc
-	if not self.isRtl then
+	if not self.isRtl
+	and not self.isClscPTR
+	then
 		iof_otc = _G.InterfaceOptionsFrame_OpenToCategory
 	else
 		iof_otc = _G.Settings.OpenToCategory
@@ -1325,6 +1327,7 @@ aObj.SetupOptions = function(self)
 		["Override Action Bar"]   = not self.isClscERA and {desc = "Vehicle UI"} or nil,
 		["PTR Feedback"]          = _G.PTR_IssueReporter and {suff = "Frames"} or nil,
 		["Raid Frame"]            = true,
+		["Settings"]              = self.isRtl or self.isClscPTR and {desc = "Options"} or nil,
 		["Shared Basic Controls"] = {desc = "Script Errors Frame"},
 		["Stack Split"]           = {suff = "Frame"},
 		["Static Popups"]         = true,
