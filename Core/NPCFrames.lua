@@ -220,7 +220,7 @@ aObj.blizzFrames[ftype].QuestFrame = function(self)
 			_G.AvailableQuestsText:SetTextColor(self.HT:GetRGB())
 		end
 		if self.isRtl then
-			self:skinObject("scrollbar", {obj=_G.QuestGreetingScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
+			self:skinObject("scrollbar", {obj=_G.QuestGreetingScrollFrame.ScrollBar, fType=ftype})
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true})
 		else
 			self:skinObject("slider", {obj=_G.QuestGreetingScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
