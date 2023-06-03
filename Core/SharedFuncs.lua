@@ -139,6 +139,7 @@ function aObj:setupOptions(optNames, optIgnore, preLoadFunc, postLoadFunc)
 			-- N.B. use existing hooked function, created in Ace3 skin, if it exists
 			if aObj.hooks
 			and aObj.ACD
+			and aObj.hooks[aObj.ACD]
 			and aObj.hooks[aObj.ACD].AddToBlizOptions
 			then
 				aObj.optionsFrames[oName], _ = aObj.hooks[aObj.ACD].AddToBlizOptions(aObj.ACD, optTitle, aObj.L[oName], aObj.L[aName]) -- N.B. use localised name
