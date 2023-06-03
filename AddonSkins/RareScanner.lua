@@ -2,7 +2,7 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("RareScanner") then return end
 local _G = _G
 
-aObj.addonsToSkin.RareScanner = function(self) -- v 10.0.5.2/3.4.1
+aObj.addonsToSkin.RareScanner = function(self) -- v 10.1.0.10/3.4.1
 
 	if self.isRtl then
 		-- EditBox on WorldMapFrame
@@ -56,7 +56,7 @@ aObj.addonsToSkin.RareScanner = function(self) -- v 10.0.5.2/3.4.1
 						aObj:addButtonBorder{obj=btn, clr="grey"}
 					end
 				end
-				self:SecureHook(this.RareNPCList, "SelectNpc", function(fObj, npcID)
+				self:SecureHook(this.RareNPCList, "SelectNpc", function(fObj, _)
 					skinBtns(fObj:GetParent())
 				end)
 				skinBtns(this)
@@ -92,7 +92,9 @@ aObj.addonsToSkin.RareScanner = function(self) -- v 10.0.5.2/3.4.1
 		self:add2Table(self.ttList, _G.RSMapItemToolTip)
 		self:add2Table(self.ttList, _G.RSMapItemToolTipComp1)
 		self:add2Table(self.ttList, _G.RSMapItemToolTipComp2)
-		self:add2Table(self.ttList, _G["AceConfigDialogTooltip-RSmod"])
+		if _G["AceConfigDialogTooltip-RSmod"] then
+			self:add2Table(self.ttList, _G["AceConfigDialogTooltip-RSmod"])
+		end
 	end)
 
 end

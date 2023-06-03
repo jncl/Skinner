@@ -2,7 +2,7 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("Auctionator") then return end
 local _G = _G
 
-aObj.addonsToSkin.Auctionator = function(self) -- v 10.0.17/10.0.16/10.0.15
+aObj.addonsToSkin.Auctionator = function(self) -- v 10.1.3/10.0.16/10.0.15
 
 	local function skinAuctionatorFrames()
 		if not _G.AuctionatorSellingFrame then
@@ -14,24 +14,24 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 10.0.17/10.0.16/10.0.15
 
 		aObj:SecureHookScript(_G.AuctionatorShoppingFrame, "OnShow", function(this)
 			this:DisableDrawLayer("BACKGROUND")
-			aObj:skinObject("editbox", {obj=this.OneItemSearch.SearchBox})
-			aObj:skinObject("dropdown", {obj=this.ListDropdown})
-			aObj:removeInset(this.ScrollListShoppingList.Inset)
-			aObj:skinObject("scrollbar", {obj=this.ScrollListShoppingList.ScrollBar})
-			aObj:removeInset(this.ScrollListRecents.Inset)
+			aObj:skinObject("editbox", {obj=this.SearchOptions.SearchString})
+			-- aObj:skinObject("dropdown", {obj=this.ListDropdown})
+			aObj:removeInset(this.ListsContainer.Inset)
+			aObj:skinObject("scrollbar", {obj=this.ListsContainer.ScrollBar})
+			aObj:removeInset(this.RecentsContainer.Inset)
 			if not aObj.isRtl then
-				aObj:getChild(this.ScrollListRecents.Inset, 1):DisableDrawLayer("BORDER")
+				aObj:getChild(this.RecentsContainer.Inset, 1):DisableDrawLayer("BORDER")
 			end
-			aObj:skinObject("scrollbar", {obj=this.ScrollListRecents.ScrollBar})
-			aObj:skinObject("frame", {obj=this.ScrollListShoppingList, kfs=true, fb=true, x2=1})
+			aObj:skinObject("scrollbar", {obj=this.RecentsContainer.ScrollBar})
+			aObj:skinObject("frame", {obj=this.ListsContainer, kfs=true, fb=true, x2=1})
 			if not aObj.isRtl then
-				aObj:getChild(this.ScrollListShoppingList.Inset, 1):DisableDrawLayer("BORDER")
+				aObj:getChild(this.ListsContainer.Inset, 1):DisableDrawLayer("BORDER")
 			end
 			aObj:removeInset(this.ShoppingResultsInset)
 			aObj:skinObject("scrollbar", {obj=this.ResultsListing.ScrollArea.ScrollBar})
-			aObj:skinObject("frame", {obj=this.ScrollListRecents, kfs=true, fb=true, x2=1})
-			this.RecentsTabsContainer.Tabs = {this.RecentsTabsContainer.ListTab, this.RecentsTabsContainer.RecentsTab}
-			aObj:skinObject("tabs", {obj=this.RecentsTabsContainer, tabs=this.RecentsTabsContainer.Tabs, lod=aObj.isTT and true, selectedTab=2, offsets={y1=-6, y2=-2}})
+			aObj:skinObject("frame", {obj=this.RecentsContainer, kfs=true, fb=true, x2=1})
+			-- this.ContainerTabs.Tabs = {this.ContainerTabs.ListTab, this.ContainerTabs.RecentsTab}
+			aObj:skinObject("tabs", {obj=this.ContainerTabs, tabs=this.ContainerTabs.Tabs, lod=aObj.isTT and true, selectedTab=2, offsets={y1=-6, y2=-2}})
 			if not aObj.isRtl then
 				aObj:removeInset(aObj:getChild(this.ShoppingResultsInset, 1))
 			else
@@ -42,13 +42,12 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 10.0.17/10.0.16/10.0.15
 				aObj:skinObject("frame", {obj=child, kfs=true, ofs=1, x1=-2, x2=2})
 			end
 			if aObj.modBtns then
-				aObj:skinStdButton{obj=this.OneItemSearch.SearchButton}
-				aObj:skinStdButton{obj=this.OneItemSearch.ExtendedButton, schk=true}
-				aObj:skinStdButton{obj=this.Export, schk=true}
-				aObj:skinStdButton{obj=this.Import, schk=true}
-				aObj:skinStdButton{obj=this.AddItem, schk=true}
-				aObj:skinStdButton{obj=this.SortItems, schk=true}
-				aObj:skinStdButton{obj=this.ManualSearch, schk=true}
+				aObj:skinStdButton{obj=this.SearchOptions.SearchButton}
+				aObj:skinStdButton{obj=this.SearchOptions.MoreButton}
+				aObj:skinStdButton{obj=this.SearchOptions.AddToListButton, schk=true}
+				aObj:skinStdButton{obj=this.NewListButton, schk=true}
+				aObj:skinStdButton{obj=this.ImportButton, schk=true}
+				aObj:skinStdButton{obj=this.ExportButton, schk=true}
 				aObj:skinStdButton{obj=this.ExportCSV, schk=true}
 			end
 
@@ -88,17 +87,17 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 10.0.17/10.0.16/10.0.15
 				if not aObj.isRtl then
 					aObj:removeInset(aObj:getChild(this.Inset, 1))
 				end
-				aObj:skinObject("slider", {obj=this.ScrollFrame.ScrollBar, rpTex="artwork"})
+				aObj:skinObject("scrollbar", {obj=this.ScrollBar, rpTex="artwork"})
 				aObj:skinObject("frame", {obj=this, kfs=true, ri=true, rns=true})
 				if aObj.modBtns then
 					 aObj:skinCloseButton{obj=this.CloseDialog}
+					 aObj:skinStdButton{obj=this.Export}
 					 aObj:skinStdButton{obj=this.SelectAll}
 					 aObj:skinStdButton{obj=this.UnselectAll}
-					 aObj:skinStdButton{obj=this.Export}
 				end
 				if aObj.modChkBtns then
 					local function skinCBs()
-						for _, frame in _G.ipairs(this.checkBoxPool) do
+						for frame in this.checkBoxPool:EnumerateActive() do
 							aObj:skinCheckButton{obj=frame.CheckBox}
 						end
 					end
@@ -115,7 +114,7 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 10.0.17/10.0.16/10.0.15
 				if not aObj.isRtl then
 					aObj:removeInset(aObj:getChild(this.Inset, 1))
 				end
-				aObj:skinObject("slider", {obj=this.ScrollFrame.ScrollBar})
+				aObj:skinObject("scrollbar", {obj=this.ScrollBar})
 				aObj:skinObject("frame", {obj=this, kfs=true, ri=true, rns=true})
 				if aObj.modBtns then
 					aObj:skinStdButton{obj=this.Close}
@@ -130,7 +129,7 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 10.0.17/10.0.16/10.0.15
 				if not aObj.isRtl then
 					aObj:removeInset(aObj:getChild(this.Inset, 1))
 				end
-				aObj:skinObject("slider", {obj=this.ScrollFrame.ScrollBar, rpTex="artwork"})
+				aObj:skinObject("scrollbar", {obj=this.ScrollBar, rpTex="artwork"})
 				aObj:skinObject("frame", {obj=this, kfs=true, ri=true, rns=true})
 				if aObj.modBtns then
 					 aObj:skinCloseButton{obj=this.CloseDialog}
@@ -146,7 +145,7 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 10.0.17/10.0.16/10.0.15
 				if not aObj.isRtl then
 					aObj:removeInset(aObj:getChild(this.Inset, 1))
 				end
-				aObj:skinObject("slider", {obj=this.ScrollFrame.ScrollBar})
+				aObj:skinObject("scrollbar", {obj=this.ScrollBar})
 				aObj:skinObject("frame", {obj=this, kfs=true, ri=true, rns=true})
 				if aObj.modBtns then
 					aObj:skinStdButton{obj=this.Close}
@@ -165,7 +164,7 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 10.0.17/10.0.16/10.0.15
 					aObj:keepRegions(child, {4, 5, 6}) -- N.B. regions 4 is text, 5 is highlight, 6 is arrow
 					aObj:skinObject("frame", {obj=child, kfs=true, ofs=1, x1=-2, x2=2})
 				end
-				aObj:skinObject("slider", {obj=this.ResultsListing.ScrollFrame.scrollBar, rpTex="background"})
+				aObj:skinObject("scrollbar", {obj=this.ResultsListing.ScrollArea.ScrollBar, rpTex="background"})
 				aObj:skinObject("frame", {obj=this, ri=true, rns=true})
 				if aObj.modBtns then
 					aObj:skinStdButton{obj=this.Dock}
@@ -250,7 +249,7 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 10.0.17/10.0.16/10.0.15
 			aObj:SecureHook(asi.Icon, "SetItemInfo", function(bObj, _)
 				aObj:clrButtonFromBorder(bObj)
 			end)
-			aObj:skinObject("scrollbar", {obj=this.BagListing.ScrollBar, fType=ftype})
+			aObj:skinObject("scrollbar", {obj=this.BagListing.ScrollBar})
 			for _, child in _G.pairs{this.BagListing.ScrollBox.ItemListingFrame:GetChildren()} do
 				aObj:keepRegions(child.SectionTitle, {3, 4, 5}) -- N.B. region 3 is highlight, 4 is selected, 5 is text
 				aObj:skinObject("frame", {obj=child.SectionTitle, kfs=true, bd=5, ofs=0, x1=-2, x2=2})
@@ -367,7 +366,7 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 10.0.17/10.0.16/10.0.15
 			aObj:SecureHookScript(_G.Auctionator.State.TabFrameRef, "OnShow", function(this)
 				aObj:skinObject("tabs", {obj=this, tabs=this.Tabs, track=not aObj.isRtl and false})
 				if aObj.isTT then
-					for key, tab in _G.ipairs(this.Tabs) do
+					for _, tab in _G.ipairs(this.Tabs) do
 						aObj:setInactiveTab(tab.sf)
 					end
 					if not aObj.isRtl then
