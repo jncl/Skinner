@@ -226,7 +226,7 @@ function module:clrButtonFromBorder(bObj, texture)
 	 _G.assert(bObj.sbb, "Missing object__cBB\n" .. _G.debugstack(2, 3, 2))
 	--@end-alpha@
 
-	local iBdr = bObj.IconBorder or bObj.iconBorder or bObj[texture]
+	local iBdr = bObj[texture] or bObj.IconBorder or bObj.iconBorder
 	iBdr:SetAlpha(1) -- ensure alpha is 1 otherwise btn.sbb isn't displayed
 	-- use the colour of the quality border as the BackdropBorderColor if shown
 	if iBdr:IsShown() then
