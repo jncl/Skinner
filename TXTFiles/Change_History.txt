@@ -1,3 +1,66 @@
+beta10.49741.1
+Jncl:
+	Updated ToDo.txt files
+	Updated Change_History.txt
+	Updated version numbers
+	Retail PTR 10.1.5 changes
+	Retail PTR 10.1.5 changes
+	Updated Tooltips code
+	Updated MajorFactions skin
+	Updated ButtonBorder code
+	Updated AdiBags, Bagnon, Inventorian & LiteBag skins
+	Updated PetBattleUI
+	Updated EventToastManager skin
+	Updated MajorFactions skin
+	Updated ProfessionCrafting & ProfessionsOrders frame skins
+	Updated ButtonBorder code
+	Updated AlertFrame skin
+	Updated ButtonBorder code
+	Updated Tab handling code
+	Updated Bagnon & LiteBag skins
+	Updated skinTabs code
+	Updated Tooltips code
+	Updated AlertFrame skin
+	Updated LiteBag skin
+	Updated setupOptions code
+	Updated Garrison Enum values
+	Updated SharedFuncs code
+	Updated UIButtonBorder skin
+	Updated Tutorial skin
+	Updated RaidFinder skin
+	Updated QuestMap skin
+	PVPMatch
+	Updated PVPMatch skin
+	Updated MainMenuBar skin
+	Bugfix for LFGList skin
+	Updated GarrisonUI
+	Updated ExpansionLandingPage skin
+	Updated EventToastManager skin
+	Updated AdventureMap skin
+	Removed GuildUI skin
+	Updated FriendsFrame skin
+	Updated Communities skin
+	Updated CharacterFrames skin
+	Updated AzeriteEssenceUI
+	Updated ArtifactUI
+	Updated NewPlayerExperienceGuide skin
+	Updated ItemUpgradeFrame skin
+	Updated BlackMarketUI
+	Updated BankFrame skin
+	Updated AlliedRacesUI
+	Updated Toooltips skin
+	Updated ScriptErrorsFrame skin
+	Updated OverrideActionBar skin
+	Updated MacroUI
+	Updated GuildBankUI
+	Updated ChatConfig skin
+	Updated CalendarUI skin
+	Updated AddonList skin
+	Updated ItemSocketingFrame skin
+	Bigfix for QuestFrame skin
+	Updated GossipFrame skin
+	Updated LibDropDown, LiteBag & PremadeGroupsFilter skins
+	
 beta10.49570.1
 Jncl:
 	Updated ToDo.txt files
