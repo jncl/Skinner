@@ -4,6 +4,8 @@ local _G = _G
 
 local ftype = "u"
 
+-- luacheck: ignore 631 (line is too long)
+
 aObj.blizzFrames[ftype].AddonList = function(self)
 	if not self.prdb.AddonList or self.initialized.AddonList then return end
 	self.initialized.AddonList = true
@@ -1501,7 +1503,7 @@ aObj.blizzLoDFrames[ftype].MacroUI = function(self)
 			end
 		end
 		if self.isRtl then
-		self:skinObject("scrollbar", {obj=_G.MacroFrameScrollFrame.ScrollBar, fType=ftype})
+			self:skinObject("scrollbar", {obj=_G.MacroFrameScrollFrame.ScrollBar, fType=ftype})
 		else
 			self:skinObject("slider", {obj=_G.MacroFrameScrollFrame.ScrollBar, fType=ftype})
 		end
@@ -2344,7 +2346,6 @@ then
 					aObj:addButtonBorder{obj=element.DropDown.IncrementButton, fType=ftype, clr="grey", ofs=-2, y1=-3}
 					aObj:addButtonBorder{obj=element.DropDown.DecrementButton, fType=ftype, clr="grey", ofs=-2, y1=-3}
 				end
-				aObj:Debug("skinCommonElements: [%s, %s]", aObj.modChkBtns, element.CheckBox)
 				if aObj.modChkBtns
 				and element.CheckBox
 				then
@@ -2404,11 +2405,13 @@ then
 							element.Button.Right:SetAlpha(1) -- make texture visible
 							element.Button.Right:SetDesaturated(1) -- make texture destaurated
 							aObj:RawHook(element.Button.Right, "SetAtlas", function(eObj, tex, useAtlasSize)
+								-- aObj:Debug("SetAtlas#1: [%s, %s]", tex)
 								if tex == "Options_ListExpand_Right_Expanded" then
-									tex= "ui-hud-minimap-zoom-out"
+									tex = "ui-hud-minimap-zoom-out"
 								else
 									tex = "ui-hud-minimap-zoom-in"
 								end
+								-- aObj:Debug("SetAtlas#2: [%s, %s]", tex)
 								aObj.hooks[eObj].SetAtlas(eObj, tex, useAtlasSize)
 							end, true)
 							aObj:SecureHook(element, "EvaluateVisibility", function(eObj, _)
@@ -2550,15 +2553,15 @@ aObj.blizzFrames[ftype].StaticPopups = function(self)
 
 	for i = 1, _G.STATICPOPUP_NUMDIALOGS do
 		self:SecureHookScript(_G["StaticPopup" .. i], "OnShow", function(this)
+			local objName = this:GetName()
 			if self.isRtl then
 				self:removeNineSlice(this.Border)
 			end
 			this.Separator:SetTexture(nil)
-			local objName = this:GetName()
 			self:skinObject("editbox", {obj=_G[objName .. "EditBox"], fType=ftype, ofs=0, y1=-4, y2=4})
 			self:skinObject("moneyframe", {obj=_G[objName .. "MoneyInputFrame"], moveIcon=true})
 			_G[objName .. "ItemFrameNameFrame"]:SetTexture(nil)
-			self:skinObject("frame", {obj=this, fType=ftype, ofs=-6})
+			self:skinObject("frame", {obj=this, fType=ftype, rb=self.isClscPTR and true, ofs=-6})
 			if self.modBtns then
 				self:skinStdButton{obj=this.button1, fType=ftype, schk=true, sechk=true, y1=2}
 				self:skinStdButton{obj=this.button2, fType=ftype, schk=true, sechk=true, y1=2}
