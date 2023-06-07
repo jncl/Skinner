@@ -23,6 +23,7 @@ local function getTOCVer(ver)
 	local n1, n2, n3 = _G.string.match(buildInfo[ver][1], "(%d+).(%d+).(%d)")
 	return n1 * 10000 + n2 * 100 + n3
 end
+-- luacheck: ignore 631 (line is too long)
 function aObj:checkVersion()
 
 	local agentUID = _G.C_CVar.GetCVar("agentUID")
@@ -105,10 +106,18 @@ function aObj:add2Table(table, value) -- luacheck: ignore self
 
 end
 function aObj:setupOptions(optNames, optIgnore, preLoadFunc, postLoadFunc)
-
 	local _
 	local db = self.db.profile
 	local dflts = self.db.defaults.profile
+	local acdObj = self.ACD
+	-- N.B. use existing hooked function, created in Ace3 skin, if it exists
+	if self.hooks
+	and self.ACD
+	and self.hooks[self.ACD]
+	and self.hooks[self.ACD].AddToBlizOptions
+	then
+		acdObj = self.hooks[self.ACD]
+	end
 
 	-- add DB profile options
 	self.optTables.Profiles = _G.LibStub:GetLibrary("AceDBOptions-3.0", true):GetOptionsTable(self.db)
@@ -136,16 +145,7 @@ function aObj:setupOptions(optNames, optIgnore, preLoadFunc, postLoadFunc)
 		for _, oName in _G.ipairs(optNames) do
 			optTitle = _G.strjoin("_", aName, oName)
 			aObj.ACR:RegisterOptionsTable(optTitle, aObj.optTables[oName])
-			-- N.B. use existing hooked function, created in Ace3 skin, if it exists
-			if aObj.hooks
-			and aObj.ACD
-			and aObj.hooks[aObj.ACD]
-			and aObj.hooks[aObj.ACD].AddToBlizOptions
-			then
-				aObj.optionsFrames[oName], _ = aObj.hooks[aObj.ACD].AddToBlizOptions(aObj.ACD, optTitle, aObj.L[oName], aObj.L[aName]) -- N.B. use localised name
-			else
-				aObj.optionsFrames[oName], _ = aObj.ACD:AddToBlizOptions(optTitle, aObj.L[oName], aObj.L[aName]) -- N.B. use localised name
-			end
+			aObj.optionsFrames[oName], _ = acdObj.AddToBlizOptions(aObj.ACD, optTitle, aObj.L[oName], aObj.L[aName]) -- N.B. use localised name
 			if not _G.tContains(optIgnore, oName) then
 				aObj.optionsFrames[oName].OnDefault = function()
 					for name, _ in _G.pairs(aObj.optTables[oName].args) do
@@ -245,7 +245,6 @@ function aObj:CustomPrint(r, g, b, ...) -- luacheck: ignore self
 	printIt(_G.WrapTextInColorCode(aName, "ffffff78") .. " " .. makeText(...), nil, r, g, b)
 
 end
-
 
 --@debug@
 aObj.debugFrame = _G.ChatFrame10
