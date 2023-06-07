@@ -584,6 +584,7 @@ function module:skinStdButton(opts)
 		ignoreHLTex = ignore Highlight texture changes
 		schk        = state check for colour changes
 		sechk       = set enabled check for colour changes
+		bd			= backdrop type
 --]]
 	--@alpha@
 	_G.assert(opts.obj, "Missing object skinStdButton\n" .. _G.debugstack(2, 3, 2))
@@ -608,22 +609,20 @@ function module:skinStdButton(opts)
 
 	local bW, bH = _G.Round(opts.obj:GetWidth()), _G.Round(opts.obj:GetHeight())
 
-	local aso = opts.aso or {}
-	aso.bd = bH > 18 and 5 or 7 -- use narrower backdrop if required
+	opts.bd = opts.bd or bH > 18 and 5 or 7 -- use narrower backdrop if required
 	if not opts.as then
 		opts.ofs = opts.ofs or 0
 		opts.x1  = opts.x1 or opts.ofs * -1
 		opts.y1  = opts.y1 or opts.ofs
 		opts.x2  = opts.x2 or opts.ofs
 		opts.y2  = opts.y2 or opts.ofs * -1
-		aObj:skinObject("button", {obj=opts.obj, fType=opts.ftype, name=opts.name, sabt=opts.sabt, aso=aso, x1=opts.x1, y1=opts.y1, x2=opts.x2, y2=opts.y2})
+		aObj:skinObject("button", {obj=opts.obj, fType=opts.ftype, name=opts.name, sabt=opts.sabt, bd=opts.bd, x1=opts.x1, y1=opts.y1, x2=opts.x2, y2=opts.y2})
 		opts.obj.sb.clr = opts.clr
 		opts.obj.sb.ca = opts.ca
 	else
-		aso.obj = opts.obj
 		if bH < 16 then opts.obj:SetHeight(16) end -- set minimum button height (DBM option buttons)
 		if bW < 16 then opts.obj:SetWidth(16) end -- set minimum button width (oQueue remove buttons)
-		aObj:skinObject("skin", {obj=opts.obj, fType=opts.ftype, bd=aso.bd, ng=aso.ng})
+		aObj:skinObject("skin", {obj=opts.obj, fType=opts.ftype, bd=opts.bd, ng=opts.ng})
 		opts.obj.clr = opts.clr
 		opts.obj.ca = opts.ca
 	end

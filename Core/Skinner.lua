@@ -121,15 +121,15 @@ function aObj:OnInitialize()
 
 	self.Backdrop = {}
 	self.Backdrop[1] = _G.CopyTable(self.backdrop)
-	-- wide backdrop for ScrollBars & EditBoxes (16,16,4)
-	self.Backdrop[2] = _G.CopyTable(self.backdrop)
-	-- medium backdrop for ScrollBars & EditBoxes (12,12,3)
-	self.Backdrop[3] = _G.CopyTable(self.Backdrop[2])
-	self.Backdrop[3].tileSize = 12
-	self.Backdrop[3].edgeSize = 12
-	self.Backdrop[3].insets = {left = 3, right = 3, top = 3, bottom = 3}
+	-- -- wide backdrop for ScrollBars & EditBoxes (16,16,4)
+	-- self.Backdrop[2] = _G.CopyTable(self.backdrop)
+	-- -- medium backdrop for ScrollBars & EditBoxes (12,12,3)
+	-- self.Backdrop[3] = _G.CopyTable(self.backdrop)
+	-- self.Backdrop[3].tileSize = 12
+	-- self.Backdrop[3].edgeSize = 12
+	-- self.Backdrop[3].insets = {left = 3, right = 3, top = 3, bottom = 3}
 	-- narrow backdrop for ScrollBars & EditBoxes (8,8,2)
-	self.Backdrop[4] = _G.CopyTable(self.Backdrop[2])
+	self.Backdrop[4] = _G.CopyTable(self.backdrop)
 	self.Backdrop[4].tileSize = 8
 	self.Backdrop[4].edgeSize = 8
 	self.Backdrop[4].insets = {left = 2, right = 2, top = 2, bottom = 2}
@@ -141,8 +141,8 @@ function aObj:OnInitialize()
 	self.Backdrop[6] = _G.CopyTable(self.Backdrop[5])
 	self.Backdrop[6].tileSize = 10
 	self.Backdrop[6].edgeSize = 10
-	self.Backdrop[7] = _G.CopyTable(self.backdrop)
-	self.Backdrop[7].edgeSize = 10
+	self.Backdrop[7] = _G.CopyTable(self.Backdrop[4])
+	self.Backdrop[7].insets = {left = 4, right = 4, top = 4, bottom = 4}
 	-- this backdrop is for the BattlefieldMinimap/Minimap/Pet LoadOut frames
 	self.Backdrop[8] = _G.CopyTable(self.backdrop)
 	self.Backdrop[8].bgFile = nil

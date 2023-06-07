@@ -2,6 +2,8 @@ local _, aObj = ...
 
 local _G = _G
 
+-- luacheck: ignore 631 (line is too long)
+
 -- skin Templates
 aObj.skinTPLs = {
 	defaults = {
@@ -62,7 +64,7 @@ aObj.skinTPLs = {
 		-- hat         = true, -- hide all textures except font strings
 		-- kfs         = true, -- remove all textures except font strings
 		regions     = {}, -- remove specified regions
-		rb          = true, -- remove Backdrop
+		rb          = true, -- remove Backdrop, "nop" ApplyBackdrop function
 		ri          = true, -- disable draw layers; [Background, Border & Overlay]
 		rns         = true, -- disable draw layers; [Background, Border & Overlay]
 		rp          = true, -- disable PortraitContainer.portrait (Dragonflight)
@@ -530,7 +532,7 @@ local function skinFrame(tbl)
 		aObj:removeRegions(tbl.obj, tbl.regions)
 	end
 	if tbl.rb then
-		aObj:removeBackdrop(tbl.obj)
+		aObj:removeBackdrop(tbl.obj, tbl.rb=="nop" and true)
 	end
 	if tbl.ri
 	and tbl.obj.Inset or (tbl.obj.inset and _G.type(tbl.obj.inset) ~= "number")
