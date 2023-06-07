@@ -1,3 +1,19 @@
+beta10.49871.1
+Jncl:
+	Updated ToDo.txt files
+	Updated version numbers
+	Removed redundant texture file
+	Classic PTR changes
+	Updated RaiderIO skin
+	Updated UIButtons code
+	Classic PTR changes
+	Updated iconSelector skin code
+	Bugfix for SharedFuncs
+	Update QuestGreetingFrame  skin
+	Bugfix for MacroUI
+	Bugfix for QuestFrame
+	Updated Auctionator, ls_Toasts & RareScanner skins
+	
 beta10.49741.1
 Jncl:
 	Updated ToDo.txt files

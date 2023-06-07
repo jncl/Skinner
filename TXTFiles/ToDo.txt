@@ -35,40 +35,14 @@ ToDos
 √		- Disable CompactUnitFrame(s) skinning
 √		- Disable UnitFrame(s) skinning
 		
-	I	LS: Toasts, reported by Sausje, 25.05.23
-√		- No error, not disabled, just not being skinned anymore
+	I	LS: Toasts, reported by Sausje, 05.06.23
+√		- Skinner/Modules/UIButtons.lua:598: attempt to index field 'obj' (a nil value)
+		[string "@Skinner/AddonSkins/ls_Toasts.lua"]:51: in function <Skinner/AddonSkins/ls_Toasts.lua:5>
 
-	I	Auctionator, reported by Sausje. 26.05.23
-√		 -Skinner/AddonSkins/Auctionator.lua:17: attempt to index field 'OneItemSearch' (a nil value)
-		 [string "@Skinner/AddonSkins/Auctionator.lua"]:17: in function <Skinner/AddonSkins/Auctionator.lua:15>
-		 
-	I	RareScanner, reported by Sausje. 26.05.23
-√		- table index is nil
-		[string "=[C]"]: in function `rawset'
-		[string "@Skinner/Core/UIFrames.lua"]:2484: in function <Skinner/Core/UIFrames.lua:2480>
-		[string "@Skinner/Core/SharedFuncs.lua"]:101: in function `add2Table'
-		[string "@Skinner/AddonSkins/RareScanner.lua"]:95: in function <Skinner/AddonSkins/RareScanner.lua:85>
+√	S/C	Nova Raid Companion, requested by Sausje, 05.06.23
+	
+	I	Missing Localisation, reported by Galthariel, 05.06.23
+√		- AceLocale-3.0-6: Skinner: Missing entry for 'Settings'
+		[string "@Skinner/Core/UtilFuncs.lua"]:1309: in function `?'
+		[string "@Skinner/Core/Options.lua"]:1341: in function <Skinner/Core/Options.lua:92>
 		
-	I/C	MacroPopupFrame, reported by Sausje, 26.05.23
-√		- Skinner/Core/NewSkinFuncs.lua:481: attempt to index field 'obj' (a nil value)
-		[string "@Skinner/Core/NewSkinFuncs.lua"]:481: in function <Skinner/Core/NewSkinFuncs.lua:473>
-		[string "@Skinner/Core/NewSkinFuncs.lua"]:511: in function `?'
-		[string "@Skinner/Core/NewSkinFuncs.lua"]:255: in function `skinObject'
-		[string "@Skinner/Core/UIFrames.lua"]:1536: in function <Skinner/Core/UIFrames.lua:1530>
-
-	I/C	QuestFrame, reported by Sausje, 26.05.23
-√		- Skinner/Core/NewSkinFuncs.lua:523: attempt to index field 'obj' (a nil value)
-		[string "@Skinner/Core/NewSkinFuncs.lua"]:523: in function <Skinner/Core/NewSkinFuncs.lua:512>
-		[string "@Skinner/Core/NewSkinFuncs.lua"]:626: in function `?'
-		[string "@Skinner/Core/NewSkinFuncs.lua"]:255: in function `skinObject'
-		[string "@Skinner/Core/NewSkinFuncs.lua"]:709: in function <Skinner/Core/NewSkinFuncs.lua:688>
-		[string "@Skinner/Core/NewSkinFuncs.lua"]:711: in function `?'
-		[string "@Skinner/Core/NewSkinFuncs.lua"]:255: in function `skinObject'
-		[string "@Skinner/Core/NPCFrames.lua"]:236: in function <Skinner/Core/NPCFrames.lua:190>
-		
-	I	RaiderIO, reported by Acivien, 04.06.23
-√		- table index is nil
-		[string "=[C]"]: in function `rawset'
-		[string "@Skinner/Core/UIFrames.lua"]:2490: in function <Skinner/Core/UIFrames.lua:2486>
-		[string "@Skinner/Core/SharedFuncs.lua"]:11: in function `add2Table'
-		[string "@Skinner/AddonSkins/RaiderIO.lua"]:65: in function <Skinner/AddonSkins/RaiderIO.lua:64>
