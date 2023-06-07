@@ -45,7 +45,6 @@
 <Script file="BonusRollPreview.lua"/>
 <Script file="BossNotes.lua"/>
 <Script file="BtWLoadouts.lua"/>
-<Script file="BtWQuests.lua"/>
 <Script file="BuffomatClassic.lua"/>
 <Script file="Bugger.lua"/>
 <Script file="BugSack.lua"/>
@@ -120,7 +119,6 @@
 <Script file="LibDialog.lua"/>
 <Script file="LibDropdown.lua"/>
 <Script file="LibExtraTip.lua"/>
-<Script file="LibInit.lua"/>
 <Script file="LibKeyBound.lua"/>
 <Script file="LibKrowiProgressBar.lua"/>
 <Script file="LibMSATutorials.lua"/>
