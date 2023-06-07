@@ -1450,7 +1450,6 @@ aObj.SetupRetail_UIFrames = function()
 				end
 			end
 			local function skinBLbuttons()
-				aObj:Debug("skinBLbuttons")
 				for i = 1, #_G.GarrisonBuildingFrame.BuildingList.Buttons do
 					local btn = _G.GarrisonBuildingFrame.BuildingList.Buttons[i]
 					btn.BG:SetTexture(nil)

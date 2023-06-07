@@ -1047,7 +1047,6 @@ aObj.SetupRetail_PlayerFrames = function()
 							element.Selected:SetTexture(nil)
 							element.SelectedOtherCheck:SetTexture(nil)
 							if aObj.modBtnBs then
-								aObj:Debug("eData: [%s, %s, %s]", elementData.selectedHere, elementData.selectedOther)
 								aObj:addButtonBorder{obj=element, fType=ftype, relTo=element.Icon}
 								aObj:clrBtnBdr(element, (elementData.selectedHere or elementData.selectedOther) and "yellow" or "green")
 							end
