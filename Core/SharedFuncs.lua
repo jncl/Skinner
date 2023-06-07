@@ -273,3 +273,9 @@ aObj.Debug = _G.nop
 aObj.Debug2 = _G.nop
 aObj.Debug3 = _G.nop
 --@end-non-debug@]===]
+
+-- Addon Compartment
+_G[aName .. "_OnAddonCompartmentClick"] = function(addonName, button, ddlButton)
+	aObj.callbacks:Fire("Options_Selected")
+	_G.Settings.OpenToCategory(addonName)
+end
