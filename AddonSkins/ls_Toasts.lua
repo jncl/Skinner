@@ -4,8 +4,6 @@ local _G = _G
 
 function aObj:ls_Toasts() -- v 100100.03
 
-	-- do return end
-
 	local function getColour(obj)
 		local vc = {obj["TOP"]:GetVertexColor()}
 		vc[1] = aObj:round2(vc[1], 5)
@@ -45,10 +43,14 @@ function aObj:ls_Toasts() -- v 100100.03
 	end)
 
 	-- Config
-	self.iofDD["LSToastsConfigPanelDirectionDropDown"] = 110
-
-	if self.modBtns then
+	self.RegisterCallback("ls_Toasts", "IOFPanel_Before_Skinning", function(this, panel)
+		if panel ~= _G.LSTConfigPanel then
+			return
+		end
+		self.iofSkinnedPanels[panel] = true
 		self:skinStdButton{obj=self:getChild(_G.LSTConfigPanel, 1)}
-	end
+
+		self.UnregisterCallback("ls_Toasts", "IOFPanel_Before_Skinning")
+	end)
 
 end

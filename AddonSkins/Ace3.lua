@@ -488,5 +488,4 @@ if aObj.ACD then
 
 		aObj:Unhook(this, "OnShow")
 	end)
-
 end
