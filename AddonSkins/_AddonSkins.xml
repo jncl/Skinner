@@ -151,6 +151,7 @@
 <Script file="NickTag.lua"/>
 <Script file="Notes.lua"/>
 <Script file="NovaInstanceTracker.lua"/>
+<Script file="NovaRaidCompanion.lua"/>
 <Script file="NovaWorldBuffs.lua"/>
 <Script file="NPCScan.lua"/>
 <Script file="oGlowClassic.lua"/>
