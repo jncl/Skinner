@@ -1,3 +1,8 @@
+beta10.49908.2
+Jncl:
+	Updated Change_History.txt
+	Comment out Addon Compartment TOC line
+	
 beta10.49908.1
 Jncl:
 	Updated ToDo.txt files
