@@ -4275,10 +4275,9 @@ aObj.SetupRetail_UIFramesOptions = function(self)
 		["Quest Session"]                = {suff = "Frames"},
 		["Queue Status Frame"]           = true,
 		["Scrapping Machine UI"]         = true,
-		["Social"]                       = {desc = "Twitter Login"},
-		["Splash Frame"]                 = {desc = "What's New Frame"},
-		["Spell Flyout"]                 = true,
 		["Soulbinds"]                    = {suff = "Frame"},
+		["Spell Flyout"]                 = true,
+		["Splash Frame"]                 = {desc = "What's New Frame"},
 		["Subscription Interstitial UI"] = {width = "double"},
 		["Talking Head"]                 = true,
 		["Torghast Level Picker"]        = {suff = "Frame"},
@@ -4296,7 +4295,7 @@ aObj.SetupRetail_UIFramesOptions = function(self)
 	end
 	self.optTables["UI Frames"].args.MainMenuBar.args.altpowerbar = {
 		type = "toggle",
-		order = 3,
+		order = 4,
 		name = self.L["Alternate Power Bars"],
 		desc = _G.strjoin(" ", self.L["Toggle the skin of the"], self.L["Alternate Power Bars"]),
 	}
@@ -4306,7 +4305,7 @@ aObj.SetupRetail_UIFramesOptions = function(self)
 	end
 	self.optTables["UI Frames"].args.MainMenuBar.args.extraab = {
 		type = "toggle",
-		order = 4,
+		order = 5,
 		name = self.L["Extra Action Button"],
 		desc = _G.strjoin(" ", self.L["Toggle the skin of the"], self.L["Extra Action Button"]),
 	}
