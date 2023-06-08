@@ -1,11 +1,10 @@
 ﻿## Interface: 100100
-## Interface-Classic: 11403
-## Interface-BCC: 20504
 ## Interface-Wrath: 30401
+## Interface-BCC: 20504
+## Interface-Classic: 11403
 
 ## Title: Skinner
 ## IconTexture: Interface\Icons\INV_Misc_Pelt_Wolf_01
-# ## AddonCompartmentFunc: Skinner_OnAddonCompartmentClick
 
 ## Notes: Changes the look of the default UI
 ## Notes-esES: Cambia el aspecto del UI predeterminado
@@ -30,6 +29,7 @@ Locales\_Locales.xml
 Core\_Core.xml
 
 #@version-retail@
+## AddonCompartmentFunc: Skinner_OnAddonCompartmentClick
 RetailSupport\_RetailSupport.xml
 #@end-version-retail@
 #@non-version-retail@
