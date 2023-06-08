@@ -1,3 +1,17 @@
+beta10.49908.1
+Jncl:
+	Updated ToDo.txt files
+	Updated version numbers
+	Added support for Addon Compartment
+	Removed Debug lines
+	Updated setupOptions shared code
+	Updated Button skinning code
+	Bugfix for TableAttributeDisplayFrame
+	Bugfix for Missing localisation
+	Obsoleted BtWQuests & LibInit skins
+	Skinned NovaRaidCompanion
+	Updated Ace3 & ls_Toasts skins
+	
 beta10.49871.1
 Jncl:
 	Updated ToDo.txt files
