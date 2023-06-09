@@ -1114,60 +1114,11 @@ aObj.SetupRetail_UIFrames = function()
 		if not self.prdb.EventToastManager or self.initialized.EventToastManager then return end
 		self.initialized.EventToastManager = true
 
-		-- table copied from EventToastManager.lua
-		local eventToastTemplatesByToastType = {
-			[_G.Enum.EventToastDisplayType.NormalSingleLine] = {
-				template = "EventToastManagerNormalSingleLineTemplate",
-				frameType= "FRAME",
-				hideAutomatically = true,
-			},
-			[_G.Enum.EventToastDisplayType.NormalBlockText] = {
-				template ="EventToastManagerNormalBlockTextTemplate",
-				frameType= "FRAME",
-				hideAutomatically = true,
-			},
-			[_G.Enum.EventToastDisplayType.NormalTitleAndSubTitle] = {
-				template = "EventToastManagerNormalTitleAndSubtitleTemplate",
-				frameType= "FRAME",
-				hideAutomatically = true,
-			},
-			[_G.Enum.EventToastDisplayType.NormalTextWithIcon] = {
-				template = "EventToastWithIconNormalTemplate",
-				frameType= "FRAME",
-				hideAutomatically = true,
-			},
-			[_G.Enum.EventToastDisplayType.LargeTextWithIcon] = {
-				template = "EventToastWithIconLargeTextTemplate",
-				frameType= "FRAME",
-				hideAutomatically = true,
-			},
-			[_G.Enum.EventToastDisplayType.NormalTextWithIconAndRarity] = {
-				template = "EventToastWithIconWithRarityTemplate",
-				frameType= "FRAME",
-				hideAutomatically = true,
-			},
-			[_G.Enum.EventToastDisplayType.Scenario] = {
-				template = "EventToastScenarioToastTemplate",
-				frameType= "BUTTON",
-				hideAutomatically = true,
-			},
-			[_G.Enum.EventToastDisplayType.ChallengeMode] = {
-				template = "EventToastChallengeModeToastTemplate",
-				frameType= "FRAME",
-				hideAutomatically = true,
-			},
-			[_G.Enum.EventToastDisplayType.ScenarioClickExpand] = {
-				template = "EventToastScenarioExpandToastTemplate",
-				frameType= "BUTTON",
-				hideAutomatically = false,
-			},
-		}
 		local function skinToast(frame)
 			if not frame:IsShown() then
 				return
 			end
 			local toast = frame.currentDisplayingToast
-			local toastInfo = toast.toastInfo
 			--@debug@
 			-- _G.C_Timer.After(1, function()
 			-- 	_G.Spew("skinToast#2", toast)
@@ -1175,7 +1126,7 @@ aObj.SetupRetail_UIFrames = function()
 			--@end-debug@
 			--@debug@
 			-- _G.C_Timer.After(1, function()
-			-- 	_G.Spew("skinToast#3", toastInfo)
+			-- 	_G.Spew("skinToast#3", toast.toastInfo)
 			-- end)
 			--@end-debug@
 			toast:DisableDrawLayer("BACKGROUND")
@@ -3403,19 +3354,19 @@ aObj.SetupRetail_UIFrames = function()
 			this.Content:DisableDrawLayer("OVERLAY")
 			this.Content.ScrollBox.Background:SetAlpha(0)
 			self:skinObject("scrollbar", {obj=this.Content.ScrollBar, fType=ftype})
-			-- TODO: skin elements
 			self:skinObject("scrollbar", {obj=this.Content.ScrollBar, fType=ftype})
+			-- TODO: skin elements
 			local function skinElement(...)
-				local _, element, elementData, new
-				if _G.select("#", ...) == 2 then
-					element, elementData = ...
-				elseif _G.select("#", ...) == 3 then
-					element, elementData, new = ...
-				else
-					_, element, elementData, new = ...
-				end
-				if new ~= false then
-				end
+			-- 	local _, element, elementData, new
+			-- 	if _G.select("#", ...) == 2 then
+			-- 		element, elementData = ...
+			-- 	elseif _G.select("#", ...) == 3 then
+			-- 		element, elementData, new = ...
+			-- 	else
+			-- 		_, element, elementData, new = ...
+			-- 	end
+			-- 	if new ~= false then
+			-- 	end
 			end
 			_G.ScrollUtil.AddAcquiredFrameCallback(this.Content.ScrollBox, skinElement, aObj, true)
 			self:keepFontStrings(this.TabContainer)
@@ -3442,19 +3393,19 @@ aObj.SetupRetail_UIFrames = function()
 			this.content:DisableDrawLayer("OVERLAY")
 			this.content.scrollBox.Background:SetAlpha(0)
 			self:skinObject("scrollbar", {obj=this.content.scrollBar, fType=ftype})
-			-- TODO: skin elements
 			self:skinObject("scrollbar", {obj=this.content.ScrollBar, fType=ftype})
+			-- TODO: skin elements
 			local function skinElement(...)
-				local _, element, elementData, new
-				if _G.select("#", ...) == 2 then
-					element, elementData = ...
-				elseif _G.select("#", ...) == 3 then
-					element, elementData, new = ...
-				else
-					_, element, elementData, new = ...
-				end
-				if new ~= false then
-				end
+				-- local _, element, elementData, new
+				-- if _G.select("#", ...) == 2 then
+				-- 	element, elementData = ...
+				-- elseif _G.select("#", ...) == 3 then
+				-- 	element, elementData, new = ...
+				-- else
+				-- 	_, element, elementData, new = ...
+				-- end
+				-- if new ~= false then
+				-- end
 			end
 			_G.ScrollUtil.AddAcquiredFrameCallback(this.content.ScrollBox, skinElement, aObj, true)
 			self:keepFontStrings(this.content.tabContainer)
