@@ -1,6 +1,7 @@
 local _, aObj = ...
 -- This is a Framework
 local _G = _G
+-- luacheck: ignore 631 (line is too long)
 
 aObj.ItemPimper = true -- to stop IP skinning its frame
 
@@ -14,11 +15,12 @@ if AceGUI then
 	end, true)
 end
 
+local skinAceGUI
 aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 	if self.initialized.Ace3 then return end
 	self.initialized.Ace3 = true
 
-	local function skinAceGUI(obj, objType)
+	function skinAceGUI(obj, objType)
 		-- local objVer = AceGUI.GetWidgetVersion and AceGUI:GetWidgetVersion(objType) or 0
 		-- if not objType:find("CollectMe") then
 			-- aObj:Debug("skinAceGUI: [%s, %s, %s]", obj, objType, objVer)
@@ -211,7 +213,7 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 					aObj:secureHook(obj, "SetDisabled", function(this, disabled)
 						aObj:checkDisabledDD(this.frame, disabled)
 					end)
- 				end
+				end
 				aObj:secureHookScript(obj.frame.dropButton, "OnClick", function(_)
 					if obj.dropdown then
 						if not obj.dropdown.sf then
@@ -448,23 +450,6 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 		self:add2Table(self.ttList, self.ACD.tooltip)
 	end)
 
-	-- expose function to skin already created Ace3 GUI objects
-	-- used by JackJack & TLDRMissions AddOns (03.10.22)
-	function aObj:skinAceOptions(fObj)
-
-		if fObj.type then
-			skinAceGUI(fObj, fObj.type)
-			if fObj.children then
-				for _, child in _G.ipairs(fObj.children) do
-					self:skinAceOptions(child)
-				end
-			end
-		elseif fObj.obj then
-			self:skinAceOptions(fObj.obj)
-		end
-
-	end
-
 end
 
 aObj.iofSkinnedPanels = {}
@@ -488,4 +473,21 @@ if aObj.ACD then
 
 		aObj:Unhook(this, "OnShow")
 	end)
+end
+
+-- expose function to skin already created Ace3 GUI objects
+-- used by JackJack & TLDRMissions AddOns (03.10.22)
+function aObj:skinAceOptions(fObj)
+
+	if fObj.type then
+		skinAceGUI(fObj, fObj.type)
+		if fObj.children then
+			for _, child in _G.ipairs(fObj.children) do
+				self:skinAceOptions(child)
+			end
+		end
+	elseif fObj.obj then
+		self:skinAceOptions(fObj.obj)
+	end
+
 end

@@ -1,8 +1,8 @@
-local aName, aObj = ...
+local _, aObj = ...
 if not aObj:isAddonEnabled("Pawn") then return end
 local _G = _G
 
-aObj.addonsToSkin.Pawn = function(self) -- v 2.3.16
+aObj.addonsToSkin.Pawn = function(self) -- v 2.8.1
 
 	-- remove button textures from behind buttons
 	_G.PawnUI_InventoryPawnButton:DisableDrawLayer("BACKGROUND")
@@ -12,19 +12,19 @@ aObj.addonsToSkin.Pawn = function(self) -- v 2.3.16
 	end
 
 	-- skin the UI
-	self:skinTabs{obj=_G.PawnUIFrame, lod=true, x1=6, y1=0, x2=-6, y2=2}
 	self:moveObject{obj=_G.PawnUIFrame_TinyCloseButton, x=16, y=16}
-	self:addSkinFrame{obj=_G.PawnUIFrame, ft="a", kfs=true, nb=true, ofs=0, y2=1}
+	self:skinObject("tabs", {obj=_G.PawnUIFrame, prefix="PawnUIFrame", lod=self.isTT and true})
+	self:skinObject("frame", {obj=_G.PawnUIFrame, kfs=true, y2=4})
 	if self.modBtns then
 		self:skinCloseButton{obj=_G.PawnUIFrame_TinyCloseButton}
 	end
 
 	-- Scales Tab
 	self:keepFontStrings(_G.PawnUIScaleSelector)
-	self:skinSlider{obj=_G.PawnUIScaleSelectorScrollFrame.ScrollBar}
+	self:skinObject("slider", {obj=_G.PawnUIScaleSelectorScrollFrame.ScrollBar})
 	if self.modBtns then
-		self:skinStdButton{obj=_G.PawnUIFrame_RenameScaleButton}
-		self:skinStdButton{obj=_G.PawnUIFrame_DeleteScaleButton}
+		self:skinStdButton{obj=_G.PawnUIFrame_RenameScaleButton, schk=true}
+		self:skinStdButton{obj=_G.PawnUIFrame_DeleteScaleButton, schk=true}
 		self:skinStdButton{obj=_G.PawnUIFrame_ImportScaleButton}
 		self:skinStdButton{obj=_G.PawnUIFrame_ExportScaleButton}
 		self:skinStdButton{obj=_G.PawnUIFrame_CopyScaleButton}
@@ -38,10 +38,10 @@ aObj.addonsToSkin.Pawn = function(self) -- v 2.3.16
 		self:skinCheckButton{obj=_G.PawnUIFrame_ShowScaleCheck}
 	end
 
-	-- Values Tab
-	self:skinEditBox{obj=_G.PawnUIFrame_StatValueBox, regs={9}}
-	self:skinSlider{obj=_G.PawnUIFrame_StatsList.ScrollBar}
-	self:addSkinFrame{obj=self:getChild(_G.PawnUIValuesTabPage, 1), ft="a", kfs=true, nb=true}
+	-- Values Tab a.k.a Weights
+	self:skinObject("editbox", {obj=_G.PawnUIFrame_StatValueBox})
+	self:skinObject("slider", {obj=_G.PawnUIFrame_StatsList.ScrollBar})
+	self:skinObject("frame", {obj=self:getChild(_G.PawnUIValuesTabPage, 1), kfs=true, fb=true})
 	if self.modBtns then
 		self:skinStdButton{obj=_G.PawnUIFrame_ClearValueButton}
 	end
@@ -53,7 +53,7 @@ aObj.addonsToSkin.Pawn = function(self) -- v 2.3.16
 	end
 
 	-- Compare Tab
-	self:skinSlider{obj=_G.PawnUICompareScrollFrame.ScrollBar}
+	self:skinObject("slider", {obj=_G.PawnUICompareScrollFrame.ScrollBar})
 	if self.modBtnBs then
 		self:addButtonBorder{obj=_G.PawnUICompareItemIcon1}
 		self:addButtonBorder{obj=_G.PawnUICompareItemIcon2}
@@ -66,31 +66,32 @@ aObj.addonsToSkin.Pawn = function(self) -- v 2.3.16
 
 	-- Gems Tab
 	self:keepFontStrings(_G.PawnUIGemsTabPage)
-	self:skinEditBox{obj=_G.PawnUIFrame_GemQualityLevelBox, regs={9}}
-	self:skinSlider{obj=_G.PawnUIGemScrollFrame.ScrollBar}
+	self:skinObject("editbox", {obj=_G.PawnUIFrame_GemQualityLevelBox,})
+	self:skinObject("slider", {obj=_G.PawnUIGemScrollFrame.ScrollBar})
 
 	-- Options Tab
 	for _, child in _G.pairs{_G.PawnUIOptionsTabPage:GetChildren()} do
 		if child:IsObjectType("CheckButton")
 		and self.modChkBtns
+		and child.GetPushedTexture
+		and child:GetPushedTexture()
 		then
 			self:skinCheckButton{obj=child}
-		elseif child:IsObjectType("Button")
-		and self.modBtns
-		then
-			self:skinStdButton{obj=child}
 		end
+	end
+	if self.modBtns then
+		self:skinStdButton{obj=_G.PawnUIFrame_ResetUpgradesButton, clr="grey"}
 	end
 
 	-- Dialog Frames
-	self:skinEditBox{obj=_G.PawnUIStringDialogSingleLine.TextBox, regs={6}} -- 6 is text
-	self:addSkinFrame{obj=_G.PawnUIStringDialogSingleLine, ft="a", kfs=true, nb=true}
-	self:addSkinFrame{obj=self:getChild(_G.PawnUIStringDialogMultiLine, 2), ft="a", kfs=true, nb=true}
-	self:addSkinFrame{obj=_G.PawnUIStringDialogMultiLine, ft="a", kfs=true, nb=true}
+	self:skinObject("editbox", {obj=_G.PawnUIStringDialogSingleLine.TextBox})
+	self:skinObject("frame", {obj=_G.PawnUIStringDialogSingleLine, kfs=true})
+	self:skinObject("frame", {obj=self:getChild(_G.PawnUIStringDialogMultiLine, 2), kfs=true})
+	self:skinObject("frame", {obj=_G.PawnUIStringDialogMultiLine, kfs=true})
 	if self.modBtns then
-		self:skinStdButton{obj=_G.PawnUIStringDialogSingleLine.OKButton}
+		self:skinStdButton{obj=_G.PawnUIStringDialogSingleLine.OKButton, schk=true}
 		self:skinStdButton{obj=_G.PawnUIStringDialogSingleLine.CancelButton}
-		self:skinStdButton{obj=_G.PawnUIStringDialogMultiLine.OKButton}
+		self:skinStdButton{obj=_G.PawnUIStringDialogMultiLine.OKButton, schk=true}
 		self:skinStdButton{obj=_G.PawnUIStringDialogMultiLine.CancelButton}
 	end
 
@@ -106,7 +107,7 @@ aObj.addonsToSkin.Pawn = function(self) -- v 2.3.16
 	end
 
 	-- register callback to indicate already skinned
-	self.RegisterCallback("Pawn", "IOFPanel_Before_Skinning", function(this, panel)
+	self.RegisterCallback("Pawn", "IOFPanel_Before_Skinning", function(_, panel)
 		if panel.name ~= "Pawn" then return end
 		self.iofSkinnedPanels[panel] = true
 		self.UnregisterCallback("Pawn", "IOFPanel_Before_Skinning")
