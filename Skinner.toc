@@ -5,7 +5,9 @@
 
 ## Title: Skinner
 ## IconTexture: Interface\Icons\INV_Misc_Pelt_Wolf_01
+#@version-retail@
 ## AddonCompartmentFunc: Skinner_OnAddonCompartmentClick
+#@end-version-retail@
 
 ## Notes: Changes the look of the default UI
 ## Notes-esES: Cambia el aspecto del UI predeterminado

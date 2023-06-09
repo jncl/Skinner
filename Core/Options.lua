@@ -1433,26 +1433,24 @@ aObj.SetupOptions = function(self)
 	self:RegisterChatCommand(self.L[aName], chatCommand) -- N.B. use localised name
 	self:RegisterChatCommand("skin", chatCommand)
 
+	if not self.isRtl then
 	-- setup the DB object
-	self.DBObj = _G.LibStub:GetLibrary("LibDataBroker-1.1", true):NewDataObject(aName, {
+	local DBObj = _G.LibStub:GetLibrary("LibDataBroker-1.1", true):NewDataObject(aName, {
 		type = "launcher",
-		icon = self.tFDIDs.mpw01,
+		icon = aObj.tFDIDs.mpw01,
 		OnClick = function()
+			aObj.callbacks:Fire("Options_Selected")
 			-- do twice to overcome Blizzard bug
-			if not self.isRtl then
 				iof_otc(aObj.optionsFrames[aName])
 				iof_otc(aObj.optionsFrames[aName])
-			else
-				iof_otc(aName)
-			end
 		end,
 		OnTooltipShow = function(tooltip)
-			tooltip:AddLine(self.L["Skinner"])
-			tooltip:AddLine(self.L["Click to open config panel"], 1, 1, 1)
+			tooltip:AddLine(aObj.L[aName])
+			tooltip:AddLine(aObj.L["Click to open config panel"], 1, 1, 1)
 		end,
 	})
-
 	-- register the data object to the Icon library
-	self.DBIcon:Register(aName, self.DBObj, db.MinimapIcon)
+	self.DBIcon:Register(aName, DBObj, db.MinimapIcon)
+	end
 
 end

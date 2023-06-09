@@ -274,8 +274,10 @@ aObj.Debug2 = _G.nop
 aObj.Debug3 = _G.nop
 --@end-non-debug@]===]
 
--- Addon Compartment
-_G[aName .. "_OnAddonCompartmentClick"] = function(addonName, button, ddlButton)
-	aObj.callbacks:Fire("Options_Selected")
-	_G.Settings.OpenToCategory(addonName)
+-- Addon Compartment (Retail only)
+if _G.WOW_PROJECT_ID == _G.WOW_PROJECT_MAINLINE then
+	_G[aName .. "_OnAddonCompartmentClick"] = function(addonName, _, _)
+		aObj.callbacks:Fire("Options_Selected")
+		_G.Settings.OpenToCategory(addonName)
+	end
 end
