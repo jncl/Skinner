@@ -46,3 +46,15 @@ ToDos
 		[string "@Skinner/Core/UtilFuncs.lua"]:1309: in function `?'
 		[string "@Skinner/Core/Options.lua"]:1341: in function <Skinner/Core/Options.lua:92>
 		
+	I	ClassTalentUI, reported by Sparky, 08.06.23
+√		- Skinner/Core/NewSkinFuncs.lua:696: attempt to index field 'obj' (a nil value)
+		[string "@Skinner/Core/NewSkinFuncs.lua"]:696: in function <Skinner/Core/NewSkinFuncs.lua:688>
+		[string "@Skinner/Core/NewSkinFuncs.lua"]:711: in function `?'
+		[string "@Skinner/Core/NewSkinFuncs.lua"]:255: in function `skinObject'
+		[string "@Skinner/RetailSupport/PlayerFrames_Retail.lua"]:1011: in function <Skinner/RetailSupport/PlayerFrames_Retail.lua:1010>
+
+	I	Pawn, reported by Sparky, 08.06.23
+√		- Skinner/Modules/UIButtons.lua:1007: attempt to index a nil value
+		[string "@Skinner/Modules/UIButtons.lua"]:1039: in function `skinCheckButton'
+		[string "@Skinner/AddonSkins/Pawn.lua"]:77: in function <Skinner/AddonSkins/Pawn.lua:5>
+		- Interface/AddOns/Skinner/AddonSkins/Pawn.lua:15: attempt to call method 'skinTabs' (a nil value)
