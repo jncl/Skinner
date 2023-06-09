@@ -1,6 +1,7 @@
 local _, aObj = ...
 
 local _G = _G
+-- luacheck: ignore 631 (line is too long)
 
 --@alpha@
 local index = {}

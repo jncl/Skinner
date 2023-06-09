@@ -1,6 +1,7 @@
 local aName, aObj = ...
 
 local _G = _G
+-- luacheck: ignore 631 (line is too long)
 
 local buildInfo = {
 	-- Testing
@@ -23,7 +24,6 @@ local function getTOCVer(ver)
 	local n1, n2, n3 = _G.string.match(buildInfo[ver][1], "(%d+).(%d+).(%d)")
 	return n1 * 10000 + n2 * 100 + n3
 end
--- luacheck: ignore 631 (line is too long)
 function aObj:checkVersion()
 
 	local agentUID = _G.C_CVar.GetCVar("agentUID")

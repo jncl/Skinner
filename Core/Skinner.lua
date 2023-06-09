@@ -2,6 +2,8 @@ local aName, aObj = ...
 
 local _G = _G
 
+-- luacheck: ignore 631 (line is too long)
+
 do
 	-- check to see if required libraries are loaded
 	_G.assert(_G.LibStub, aName .. " requires LibStub")
