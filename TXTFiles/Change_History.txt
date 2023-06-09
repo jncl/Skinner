@@ -1,3 +1,8 @@
+beta10.49908.3
+Jncl:
+	Updated Change_History.txt
+	Updated TOC to include AddonCompartmentFunc line in Retail version only
+	
 beta10.49908.2
 Jncl:
 	Updated Change_History.txt
