@@ -1009,7 +1009,6 @@ aObj.SetupRetail_PlayerFrames = function()
 				end
 
 				self:SecureHookScript(fObj.SearchPreviewContainer, "OnShow", function(frame)
-					self:skinObject("scrollbar", {obj=frame.ScrollBar, fType=ftype})
 					local function skinSearch(...)
 						local _, element, new
 						if _G.select("#", ...) == 2 then
@@ -1033,7 +1032,6 @@ aObj.SetupRetail_PlayerFrames = function()
 				end)
 
 				self:SecureHookScript(fObj.PvPTalentList, "OnShow", function(frame)
-					self:skinObject("scrollbar", {obj=frame.ScrollBar, fType=ftype})
 					local function skinElement(...)
 						local _, element, elementData, new
 						if _G.select("#", ...) == 2 then
