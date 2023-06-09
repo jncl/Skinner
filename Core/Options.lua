@@ -1408,18 +1408,17 @@ aObj.SetupOptions = function(self)
 
 	-- Slash command handler
 	local function chatCommand(input)
+		aObj.callbacks:Fire("Options_Selected")
 		if not input or input:trim() == "" then
 			-- Open general panel if there are no parameters, do twice to overcome Blizzard bug
-			aObj.callbacks:Fire("Options_Selected")
-			if not self.isRtl then
+			if not aObj.isRtl then
 				iof_otc(aObj.optionsFrames[aName])
 				iof_otc(aObj.optionsFrames[aName])
 			else
 				iof_otc(aName)
 			end
 		elseif aObj.optCheck[input:lower()] then
-			aObj.callbacks:Fire("Options_Selected")
-			if not self.isRtl then
+			if not aObj.isRtl then
 				iof_otc(aObj.optionsFrames[aObj.optCheck[input:lower()]])
 				iof_otc(aObj.optionsFrames[aObj.optCheck[input:lower()]])
 			else
@@ -1430,28 +1429,28 @@ aObj.SetupOptions = function(self)
 		end
 	end
 
-	-- Register slash command handlers
-	self:RegisterChatCommand(self.L[aName], chatCommand) -- N.B. use localised name
-	self:RegisterChatCommand("skin", chatCommand)
+	-- Register slash command handlers, N.B. use localised name
+	self:RegisterChatCommand(self.L[aName], chatCommand)
+	self:RegisterChatCommand(self.L["Skin"], chatCommand)
 
 	if not self.isRtl then
-	-- setup the DB object
-	local DBObj = _G.LibStub:GetLibrary("LibDataBroker-1.1", true):NewDataObject(aName, {
-		type = "launcher",
-		icon = aObj.tFDIDs.mpw01,
-		OnClick = function()
-			aObj.callbacks:Fire("Options_Selected")
-			-- do twice to overcome Blizzard bug
+		-- setup the DB object
+		local DBObj = _G.LibStub:GetLibrary("LibDataBroker-1.1", true):NewDataObject(aName, {
+			type = "launcher",
+			icon = aObj.tFDIDs.mpw01,
+			OnClick = function()
+				aObj.callbacks:Fire("Options_Selected")
+				-- do twice to overcome Blizzard bug
 				iof_otc(aObj.optionsFrames[aName])
 				iof_otc(aObj.optionsFrames[aName])
-		end,
-		OnTooltipShow = function(tooltip)
-			tooltip:AddLine(aObj.L[aName])
-			tooltip:AddLine(aObj.L["Click to open config panel"], 1, 1, 1)
-		end,
-	})
-	-- register the data object to the Icon library
-	self.DBIcon:Register(aName, DBObj, db.MinimapIcon)
+			end,
+			OnTooltipShow = function(tooltip)
+				tooltip:AddLine(aObj.L[aName])
+				tooltip:AddLine(aObj.L["Click to open config panel"], 1, 1, 1)
+			end,
+		})
+		-- register the data object to the Icon library
+		self.DBIcon:Register(aName, DBObj, db.MinimapIcon)
 	end
 
 end
