@@ -1,6 +1,6 @@
 ---
 name: Bug report
-about: AddOn skin Warning/Error report
+about: AddOn skin Bug report
 title: "[BUG]: "
 labels: bug
 assignees: jncl
@@ -8,7 +8,7 @@ assignees: jncl
 ---
 
 **WoW Version**
-Which version of WoW this bug occurs in  (Retail, Wrath Classic, Classic Era) 
+Which version of WoW this bug occurs in:  ( Retail / Wrath Classic / Classic Era / All ) 
 
 **AddOn skin name**
 Name of the AddOn skin producing this bug, if known
