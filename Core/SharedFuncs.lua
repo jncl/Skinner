@@ -171,28 +171,29 @@ function aObj:setupOptions(optNames, optIgnore, preLoadFunc, postLoadFunc)
 			_G.SettingsPanel.tabsGroup:SelectAtIndex(1)
 			_G.SettingsPanel.tabsGroup:SelectAtIndex(2)
 		end
+		-- prevent function from running again as it has three different triggers
+		categorySelected = _G.nop
 	end
 	self.RegisterCallback(aName, "Options_Selected", function()
-		self.UnregisterCallback(aName, "Options_Selected")
 		categorySelected()
+		self.UnregisterCallback(aName, "Options_Selected")
 	end)
 	if not self.isRtl then
 		self:RawHook("InterfaceOptionsListButton_OnClick", function(bObj, mouseButton)
+			self.hooks.InterfaceOptionsListButton_OnClick(bObj, mouseButton)
 			if bObj.element.name == aName then
 				if not bObj.element.hasChildren then
 					categorySelected()
 				end
-				self.hooks.InterfaceOptionsListButton_OnClick(bObj, mouseButton)
 				self:Unhook("InterfaceOptionsListButton_OnClick")
 				return
 			end
-			self.hooks.InterfaceOptionsListButton_OnClick(bObj, mouseButton)
 		end, true)
 	else
 		local function onCategorySelected(_, category)
 			if category.name == aName then
-				_G.SettingsPanel:GetCategoryList():UnregisterCallback(_G.SettingsCategoryListMixin.Event.OnCategorySelected, aObj)
 				categorySelected()
+				_G.SettingsPanel:GetCategoryList():UnregisterCallback(_G.SettingsCategoryListMixin.Event.OnCategorySelected, aObj)
 			end
 		end
 		_G.SettingsPanel:GetCategoryList():RegisterCallback(_G.SettingsCategoryListMixin.Event.OnCategorySelected, onCategorySelected, self)
