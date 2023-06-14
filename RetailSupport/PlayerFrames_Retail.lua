@@ -2352,9 +2352,6 @@ aObj.SetupRetail_PlayerFrames = function()
 			self:skinObject("editbox", {obj=this.searchBox, fType=ftype, si=true})
 			self:skinObject("dropdown", {obj=this.LootJournalViewDropDown, fType=ftype, x2=-7})
 			self:skinObject("tabs", {obj=this, tabs=this.Tabs, selectedTab=this.selectedTab, fType=ftype, lod=self.isTT and true, offsets={x1=-1, y1=2, x2=1, y2=1}, regions={7, 8, 9, 10, 11}, track=false, func=function(tab) tab:SetFrameLevel(20) end})
-			-- for _, tab in _G.pairs(this.Tabs) do
-			-- 	tab.grayBox:DisableDrawLayer("BACKGROUND")
-			-- end
 			if self.isTT then
 				self:SecureHook("EJ_ContentTab_Select", function(id)
 					for i, tab in _G.pairs(this.Tabs) do
@@ -2573,6 +2570,7 @@ aObj.SetupRetail_PlayerFrames = function()
 			end)
 			self:checkShown(this.encounter)
 
+			-- a.k.a. Traveler's Log
 			self:SecureHookScript(this.MonthlyActivitiesFrame, "OnShow", function(fObj)
 				fObj:DisableDrawLayer("BACKGROUND")
 				fObj:DisableDrawLayer("BORDER")
@@ -2661,16 +2659,22 @@ aObj.SetupRetail_PlayerFrames = function()
 			self:checkShown(this.LootJournal)
 
 			self:SecureHookScript(this.LootJournalItems, "OnShow", function(fObj)
-				local function skinItemSets()
-					for _, set in _G.pairs(fObj.ItemSetsFrame.buttons) do
-						set.Background:SetTexture(nil)
+				fObj:DisableDrawLayer("BACKGROUND")
+				self:skinObject("scrollbar", {obj=fObj.ItemSetsFrame.ScrollBar, fType=ftype})
+				local function skinElement(...)
+					local _, element, new
+					if _G.select("#", ...) == 2 then
+						element, _ = ...
+					elseif _G.select("#", ...) == 3 then
+						element, _, new = ...
+					else
+						_, element, _, new = ...
+					end
+					if new ~= false then
+						element.Background:SetTexture(nil)
 					end
 				end
-				self:SecureHook(fObj.ItemSetsFrame, "UpdateList", function(_)
-					skinItemSets()
-				end)
-				skinItemSets()
-				fObj:DisableDrawLayer("BACKGROUND")
+				_G.ScrollUtil.AddAcquiredFrameCallback(fObj.ItemSetsFrame.ScrollBox, skinElement, aObj, true)
 				self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, fb=true, x1=-8, y1=6, x2=8, y2=-5})
 				skinFilterBtn(fObj.ItemSetsFrame.ClassButton)
 
