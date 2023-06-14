@@ -1,8 +1,9 @@
 local _, aObj = ...
 if not aObj:isAddonEnabled("Auctionator") then return end
 local _G = _G
+-- luacheck: ignore 631 (line is too long)
 
-aObj.addonsToSkin.Auctionator = function(self) -- v 10.1.3/10.0.16/10.0.15
+aObj.addonsToSkin.Auctionator = function(self) -- v 10.1.6/10.1.6/10.1.6
 
 	local function skinAuctionatorFrames()
 		if not _G.AuctionatorSellingFrame then
@@ -10,6 +11,66 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 10.1.3/10.0.16/10.0.15
 				skinAuctionatorFrames()
 			end)
 			return
+		end
+
+		if _G.Auctionator.State.SplashScreenRef then
+			aObj:SecureHookScript(_G.Auctionator.State.SplashScreenRef, "OnShow", function(this)
+				aObj:removeNineSlice(this.Border)
+				if aObj.isRtl then
+					this.Bg:SetTexture(nil)
+				else
+					aObj:removeInset(aObj:getChild(this.Inset, 1))
+				end
+				aObj:skinObject("scrollbar", {obj=this.ScrollBar})
+				aObj:skinObject("frame", {obj=this, kfs=true, ri=true, rns=true, cb=true, ofs=0, x2=1})
+				if aObj.modChkBtns then
+					aObj:skinCheckButton{obj=this.HideCheckbox.CheckBox}
+				end
+
+				aObj:Unhook(this, "OnShow")
+			end)
+			aObj:checkShown(_G.Auctionator.State.SplashScreenRef)
+		end
+
+		if _G.Auctionator.State.TabFrameRef then
+			aObj:SecureHookScript(_G.Auctionator.State.TabFrameRef, "OnShow", function(this)
+				aObj:skinObject("tabs", {obj=this, tabs=this.Tabs, track=not aObj.isRtl and false})
+				if aObj.isTT then
+					for _, tab in _G.ipairs(this.Tabs) do
+						aObj:setInactiveTab(tab.sf)
+					end
+					if not aObj.isRtl then
+						aObj:SecureHook("AuctionFrameTab_OnClick", function(tabButton, _)
+						    for _, tab in _G.ipairs(this.Tabs) do
+								aObj:setInactiveTab(tab.sf)
+								if tabButton == tab then
+									aObj:setActiveTab(tab.sf)
+								end
+						    end
+						end)
+					else
+						aObj:SecureHook(_G.LibStub:GetLibrary("LibAHTab-1-0", true), "SetSelected", function(lObj, tabID)
+						    for _, tab in ipairs(lObj.internalState.Tabs) do
+								aObj:setInactiveTab(tab.sf)
+								if lObj:GetButton(tabID) == tab then
+									aObj:setActiveTab(tab.sf)
+								end
+						    end
+						end)
+					end
+				end
+
+				aObj:Unhook(this, "OnShow")
+			end)
+			aObj:checkShown(_G.Auctionator.State.TabFrameRef)
+		end
+
+		if _G.Auctionator.State.PageStatusFrameRef then
+			aObj:SecureHookScript(_G.Auctionator.State.PageStatusFrameRef, "OnShow", function(this)
+				aObj:skinObject("frame", {obj=this, kfs=true, rns=true})
+
+				aObj:Unhook(this, "OnShow")
+			end)
 		end
 
 		aObj:SecureHookScript(_G.AuctionatorShoppingFrame, "OnShow", function(this)
@@ -30,8 +91,7 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 10.1.3/10.0.16/10.0.15
 			aObj:removeInset(this.ShoppingResultsInset)
 			aObj:skinObject("scrollbar", {obj=this.ResultsListing.ScrollArea.ScrollBar})
 			aObj:skinObject("frame", {obj=this.RecentsContainer, kfs=true, fb=true, x2=1})
-			-- this.ContainerTabs.Tabs = {this.ContainerTabs.ListTab, this.ContainerTabs.RecentsTab}
-			aObj:skinObject("tabs", {obj=this.ContainerTabs, tabs=this.ContainerTabs.Tabs, lod=aObj.isTT and true, selectedTab=2, offsets={y1=-6, y2=-2}})
+			aObj:skinObject("tabs", {obj=this.ContainerTabs, tabs=this.ContainerTabs.Tabs, lod=aObj.isTT and true, offsets={y1=-6, y2=-2}})
 			if not aObj.isRtl then
 				aObj:removeInset(aObj:getChild(this.ShoppingResultsInset, 1))
 			else
@@ -67,7 +127,10 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 10.1.3/10.0.16/10.0.15
 					aObj:skinObject("editbox", {obj=this[level].MinBox})
 					aObj:skinObject("editbox", {obj=this[level].MaxBox})
 				end
+				aObj:skinObject("editbox", {obj=this.PurchaseQuantity.InputBox, y1=4})
 				aObj:skinObject("dropdown", {obj=this.QualityContainer.DropDown.DropDown})
+				aObj:skinObject("dropdown", {obj=this.ExpansionContainer.DropDown.DropDown})
+				aObj:skinObject("dropdown", {obj=this.TierContainer.DropDown.DropDown})
 				aObj:skinObject("frame", {obj=this, kfs=true, ri=true, rns=true})
 				if aObj.modBtns then
 					aObj:skinStdButton{obj=this.Finished}
@@ -294,6 +357,21 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 10.1.3/10.0.16/10.0.15
 			aObj:Unhook(this, "OnShow")
 		end)
 
+		if _G.Auctionator.State.BuyFrameRef then
+			aObj:SecureHookScript(_G.Auctionator.State.BuyFrameRef, "OnShow", function(this)
+				skinBuyFrame(this)
+				if aObj.modBtns then
+					aObj:skinStdButton{obj=this.ReturnButton}
+				end
+				if aObj.modBtnBs then
+					local btn = aObj:getLastChild(this)
+					aObj:addButtonBorder{obj=btn, relTo=btn.Icon, clr="grey"}
+				end
+
+				aObj:Unhook(this, "OnShow")
+			end)
+		end
+
 		aObj:SecureHookScript(_G.AuctionatorCancellingFrame, "OnShow", function(this)
 			aObj:skinObject("editbox", {obj=this.SearchFilter, si=true})
 			self:skinObject("scrollbar", {obj=this.ResultsListing.ScrollArea.ScrollBar})
@@ -343,81 +421,6 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 10.1.3/10.0.16/10.0.15
 			aObj:Unhook(this, "OnShow")
 		end)
 
-		if _G.Auctionator.State.SplashScreenRef then
-			aObj:SecureHookScript(_G.Auctionator.State.SplashScreenRef, "OnShow", function(this)
-				aObj:removeNineSlice(this.Border)
-				if aObj.isRtl then
-					this.Bg:SetTexture(nil)
-				else
-					aObj:removeInset(aObj:getChild(this.Inset, 1))
-				end
-				aObj:skinObject("slider", {obj=this.ScrollFrame.ScrollBar})
-				aObj:skinObject("frame", {obj=this, kfs=true, ri=true, rns=true, cb=true, ofs=0, y1=-2, x2=-1})
-				if aObj.modChkBtns then
-					aObj:skinCheckButton{obj=this.HideCheckbox.CheckBox}
-				end
-
-				aObj:Unhook(this, "OnShow")
-			end)
-			aObj:checkShown(_G.Auctionator.State.SplashScreenRef)
-		end
-
-		if _G.Auctionator.State.TabFrameRef then
-			aObj:SecureHookScript(_G.Auctionator.State.TabFrameRef, "OnShow", function(this)
-				aObj:skinObject("tabs", {obj=this, tabs=this.Tabs, track=not aObj.isRtl and false})
-				if aObj.isTT then
-					for _, tab in _G.ipairs(this.Tabs) do
-						aObj:setInactiveTab(tab.sf)
-					end
-					if not aObj.isRtl then
-						aObj:SecureHook("AuctionFrameTab_OnClick", function(tabButton, _)
-						    for _, tab in _G.ipairs(this.Tabs) do
-								aObj:setInactiveTab(tab.sf)
-								if tabButton == tab then
-									aObj:setActiveTab(tab.sf)
-								end
-						    end
-						end)
-					else
-						aObj:SecureHook(_G.LibStub:GetLibrary("LibAHTab-1-0", true), "SetSelected", function(lObj, tabID)
-						    for _, tab in ipairs(lObj.internalState.Tabs) do
-								aObj:setInactiveTab(tab.sf)
-								if lObj:GetButton(tabID) == tab then
-									aObj:setActiveTab(tab.sf)
-								end
-						    end
-						end)
-					end
-				end
-
-				aObj:Unhook(this, "OnShow")
-			end)
-			aObj:checkShown(_G.Auctionator.State.TabFrameRef)
-		end
-
-		if _G.Auctionator.State.PageStatusFrameRef then
-			aObj:SecureHookScript(_G.Auctionator.State.PageStatusFrameRef, "OnShow", function(this)
-				aObj:skinObject("frame", {obj=this, kfs=true, rns=true})
-
-				aObj:Unhook(this, "OnShow")
-			end)
-		end
-
-		if _G.Auctionator.State.BuyFrameRef then
-			aObj:SecureHookScript(_G.Auctionator.State.BuyFrameRef, "OnShow", function(this)
-				skinBuyFrame(this)
-				if aObj.modBtns then
-					aObj:skinStdButton{obj=this.ReturnButton}
-				end
-				if aObj.modBtnBs then
-					local btn = aObj:getLastChild(this)
-					aObj:addButtonBorder{obj=btn, relTo=btn.Icon, clr="grey"}
-				end
-
-				aObj:Unhook(this, "OnShow")
-			end)
-		end
-
 	end
 
 	self.RegisterCallback("Auctionator", "Auction_House_Show", function(_)
@@ -436,9 +439,12 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 10.1.3/10.0.16/10.0.15
 				aObj:skinObject("dropdown", {obj=child})
 			elseif child:IsObjectType("CheckButton")
 			and aObj.modChkBtns
+			and child.GetPushedTexture
+			and child:GetPushedTexture()
 			then
 				aObj:skinCheckButton{obj=child}
 			elseif child:IsObjectType("Button")
+			and not child:IsObjectType("CheckButton")
 			and aObj.modBtns
 			then
 				aObj:skinStdButton{obj=child}
