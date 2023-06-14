@@ -95,14 +95,7 @@ aObj.SetupOptions = function(self)
 	local db = self.db.profile
 	local dflts = self.db.defaults.profile
 
-	local iof_otc
-	if not self.isRtl
-	and not self.isClscPTR
-	then
-		iof_otc = _G.InterfaceOptionsFrame_OpenToCategory
-	else
-		iof_otc = _G.Settings.OpenToCategory
-	end
+	local iof_otc = _G.InterfaceOptionsFrame_OpenToCategory or _G.Settings and _G.Settings.OpenToCategory
 
 	local function reskinIOFBackdrop()
 		-- show changes by reskinning the Interface Options Frame with the new settings
