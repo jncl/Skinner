@@ -904,14 +904,16 @@ aObj.SetupClassic_PlayerFrames = function()
 
 			if self.modBtns then
 				self:SecureHook("GuildStatus_Update", function()
+					if _G.GuildFrame.sf then
+						self:clrBtnBdr(_G.GuildFrameControlButton)
+						self:clrBtnBdr(_G.GuildFrameAddMemberButton)
+					end
 					if _G.GuildMemberDetailFrame.sf then
-						self:clrBtnBdr(_G.GuildFramePromoteButton)
-						self:clrBtnBdr(_G.GuildFrameDemoteButton)
 						self:clrBtnBdr(_G.GuildMemberRemoveButton)
 						self:clrBtnBdr(_G.GuildMemberGroupInviteButton)
+						self:clrBtnBdr(_G.GuildFramePromoteButton)
+						self:clrBtnBdr(_G.GuildFrameDemoteButton)
 					end
-					self:clrBtnBdr(_G.GuildFrameControlButton)
-					self:clrBtnBdr(_G.GuildFrameAddMemberButton)
 				end)
 			end
 			self:SecureHookScript(_G.GuildFrame, "OnShow", function(fObj)
@@ -926,8 +928,8 @@ aObj.SetupClassic_PlayerFrames = function()
 				self:skinObject("slider", {obj=_G.GuildListScrollFrame.ScrollBar, fType=ftype, rpTex="background"})
 				if self.modBtns then
 					self:skinStdButton{obj=_G.GuildFrameImpeachButton, fType=ftype}
-					self:skinStdButton{obj=_G.GuildFrameControlButton, fType=ftype}
-					self:skinStdButton{obj=_G.GuildFrameAddMemberButton, fType=ftype}
+					self:skinStdButton{obj=_G.GuildFrameControlButton, fType=ftype, schk=true}
+					self:skinStdButton{obj=_G.GuildFrameAddMemberButton, fType=ftype, schk=true}
 					self:skinStdButton{obj=_G.GuildFrameGuildInformationButton, fType=ftype}
 				end
 				if self.modBtnBs then
@@ -1004,10 +1006,10 @@ aObj.SetupClassic_PlayerFrames = function()
 				self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, ofs=0})
 				if self.modBtns then
 					self:skinCloseButton{obj=_G.GuildMemberDetailCloseButton, fType=ftype}
-					self:skinStdButton{obj=_G.GuildMemberRemoveButton, fType=ftype}
-					self:skinStdButton{obj=_G.GuildMemberGroupInviteButton, fType=ftype}
-					self:skinStdButton{obj=_G.GuildFramePromoteButton, fType=ftype}
-					self:skinStdButton{obj=_G.GuildFrameDemoteButton, fType=ftype}
+					self:skinStdButton{obj=_G.GuildMemberRemoveButton, fType=ftype, schk=true}
+					self:skinStdButton{obj=_G.GuildMemberGroupInviteButton, fType=ftype, schk=true}
+					self:skinStdButton{obj=_G.GuildFramePromoteButton, fType=ftype, schk=true}
+					self:skinStdButton{obj=_G.GuildFrameDemoteButton, fType=ftype, schk=true}
 				end
 
 				self:Unhook(fObj, "OnShow")
