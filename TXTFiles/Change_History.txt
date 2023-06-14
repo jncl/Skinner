@@ -1,12 +1,18 @@
-beta10.49908.3
-Jncl:
-	Updated Change_History.txt
-	Updated TOC to include AddonCompartmentFunc line in Retail version only
-	
 beta10.49908.2
 Jncl:
+	Updated ToDo.txt files
 	Updated Change_History.txt
-	Comment out Addon Compartment TOC line
+	Updated EventToastManager skin
+	Bugfix for ClassTalentUI
+	Updated Options code
+	Added luacheck comment lines
+	Updated AddonCompartmentFunc support
+	Updated README.md
+	Updated Ace3 & Pawn skins
+	Updated UI Frames options
+	Updated TOC and release workflow for Wago support
+	Added Issue Templates
+	Added README.md
 	
 beta10.49908.1
 Jncl:
