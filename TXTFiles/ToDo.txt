@@ -5,6 +5,7 @@ ToDos
 	≈ is Alt+x		- indicates partially completed or dry-coded
 	x				- indicates nothing to change
 	¶ is Alt+7		- indicates localisation changes required
+	#nnn			- Indicates Issue number
 	S/N/I/U/O/E/W	- Skin request/New Version/Issue(Bug)/Unobsolete skin/Other changes/Classic Era/Wrath Classic
 
 ≈	O	Rework how AddOn skins are handled
@@ -34,27 +35,32 @@ ToDos
 √		- Disable Nameplate skinning
 √		- Disable CompactUnitFrame(s) skinning
 √		- Disable UnitFrame(s) skinning
-		
-	I	LS: Toasts, reported by Sausje, 05.06.23
-√		- Skinner/Modules/UIButtons.lua:598: attempt to index field 'obj' (a nil value)
-		[string "@Skinner/AddonSkins/ls_Toasts.lua"]:51: in function <Skinner/AddonSkins/ls_Toasts.lua:5>
 
-√	S/C	Nova Raid Companion, requested by Sausje, 05.06.23
+	I	Auctionator, reported by Galthariel, 09.06.23
+√		- 2x Interface/AddOns/Skinner/AddonSkins/Auctionator.lua:354: attempt to index field 'ScrollFrame' (a nil value)
+		[string "@Interface/AddOns/Skinner/AddonSkins/Auctionator.lua"]:354: in function <Interface/AddOns/Skinner/AddonSkins/Auctionator.lua:347>
+		[string "=(tail call)"]: ?
+		[string "=[C]:"]: ?
+		[string "=[C]:"]: in function 'Show'
+		[string "@Interface/AddOns/Skinner/Core/UtilFuncs.lua"]:436: in function 'checkShown'
+		[string "@Interface/AddOns/Skinner/AddonSkins/Auctionator.lua"]:362: in function <Interface/AddOns/Skinner/AddonSkins/Auctionator.lua:7>
+		[string "@Interface/AddOns/Skinner/AddonSkins/Auctionator.lua"]:10: in function <Interface/AddOns/Skinner/AddonSkins/Auctionator.lua:9>
+
+#5	I	EncounterJournal, reported by Galthariel, 13.06.23
+√		- Skinner/RetailSupport/PlayerFrames_Retail.lua:2665: bad argument #1 to 'pairs' (table expected, got nil)
+		[string "=[C]"]: in function `pairs'
+		[string "@Skinner/RetailSupport/PlayerFrames_Retail.lua"]:2665: in function `skinItemSets'
+		[string "@Skinner/RetailSupport/PlayerFrames_Retail.lua"]:2672: in function <Skinner/RetailSupport/PlayerFrames_Retail.lua:2663>
+
+	I/C	reported by Sausje, 13.06.23
+√		- Skinner/Core/UtilFuncs.lua:461: attempt to call method 'SetBackdropBorderColor' (a nil value)
+		[string "@Skinner/Core/UtilFuncs.lua"]:461: in function `clrBBC'
+		[string "@Skinner/Modules/UIButtons.lua"]:246: in function `clrBtnBdr'
+		[string "@Skinner/ClassicSupport/PlayerFrames_Classic.lua"]:913: in function <...dOns/Skinner/ClassicSupport/PlayerFrames_Classic.lua:906>
+		
+	N	PremadeGroupsFilter, reported by Carica18, 13.06.23
+√		- new version 4.0.1
+
+#6	I	Error when loading into game addon does not load
+√		- Skinner/Core/Options.lua:104: attempt to index field 'Settings' (a nil value)
 	
-	I	Missing Localisation, reported by Galthariel, 05.06.23
-√		- AceLocale-3.0-6: Skinner: Missing entry for 'Settings'
-		[string "@Skinner/Core/UtilFuncs.lua"]:1309: in function `?'
-		[string "@Skinner/Core/Options.lua"]:1341: in function <Skinner/Core/Options.lua:92>
-		
-	I	ClassTalentUI, reported by Sparky, 08.06.23
-√		- Skinner/Core/NewSkinFuncs.lua:696: attempt to index field 'obj' (a nil value)
-		[string "@Skinner/Core/NewSkinFuncs.lua"]:696: in function <Skinner/Core/NewSkinFuncs.lua:688>
-		[string "@Skinner/Core/NewSkinFuncs.lua"]:711: in function `?'
-		[string "@Skinner/Core/NewSkinFuncs.lua"]:255: in function `skinObject'
-		[string "@Skinner/RetailSupport/PlayerFrames_Retail.lua"]:1011: in function <Skinner/RetailSupport/PlayerFrames_Retail.lua:1010>
-
-	I	Pawn, reported by Sparky, 08.06.23
-√		- Skinner/Modules/UIButtons.lua:1007: attempt to index a nil value
-		[string "@Skinner/Modules/UIButtons.lua"]:1039: in function `skinCheckButton'
-		[string "@Skinner/AddonSkins/Pawn.lua"]:77: in function <Skinner/AddonSkins/Pawn.lua:5>
-		- Interface/AddOns/Skinner/AddonSkins/Pawn.lua:15: attempt to call method 'skinTabs' (a nil value)
