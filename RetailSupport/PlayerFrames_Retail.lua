@@ -1006,6 +1006,7 @@ aObj.SetupRetail_PlayerFrames = function()
 				fObj.WarmodeButton.Ring:SetAlpha(0)
 				if self.modBtns then
 					self:skinStdButton{obj=fObj.ApplyButton, fType=ftype, sechk=true, ofs=2}
+					self:skinStdButton{obj=fObj.InspectCopyButton, fType=ftype}
 				end
 
 				self:SecureHookScript(fObj.SearchPreviewContainer, "OnShow", function(frame)
@@ -1059,6 +1060,7 @@ aObj.SetupRetail_PlayerFrames = function()
 
 				self:Unhook(fObj, "OnShow")
 			end)
+			self:checkShown(this.TalentsTab)
 
 			self:Unhook(this, "OnShow")
 		end)
