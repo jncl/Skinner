@@ -312,6 +312,7 @@ function module:skinPetF()
 			    return
 			end
 			module:skinUnitButton{obj=frame, ti=true, x1=1}
+			-- casting bar handled in CastingBar function
 			if not aObj.isRtl then
 				_G.PetPortrait:SetDrawLayer("BORDER") -- move portrait to BORDER layer, so it is displayed
 				-- N.B. DON'T move the frame as it causes taint
@@ -322,69 +323,62 @@ function module:skinPetF()
 				aObj:skinObject("statusbar", {obj=_G.PetFrameManaBar, fi=0, nilFuncs=true})
 				module:adjustStatusBarPosn(_G.PetFrameHealthBar, 0)
 				module:adjustStatusBarPosn(_G.PetFrameManaBar, -1)
+				if db.petlvl
+				and aObj.uCls == "HUNTER"
+				then
+					-- Add pet level to pet frame, if required
+					frame.level = frame:CreateFontString(nil, "artwork", "GameNormalNumberFont")
+					frame.level:SetPoint("bottomleft", 5, 5)
+					frame.level:SetText(_G.UnitLevel("pet"))
+					-- get Pet's Level when changed
+					local function setLvl()
+						if _G.UnitIsVisible("pet") then
+							_G.PetFrame.level:SetText(_G.UnitLevel("pet"))
+						end
+					end
+					-- get level when pet changes
+					module:RegisterEvent("UNIT_PET", function(_)
+						setLvl()
+					end)
+					module:RegisterEvent("UNIT_LEVEL", function(_)
+						setLvl()
+					end)
+				end
+				if aObj.modBtnBs then
+					aObj:addButtonBorder{obj=_G.PetFrameHappiness, ofs=1, clr="gold"}
+				end
 			else
 				aObj:nilTexture(_G.PetFrameTexture, true)
 				_G.PetAttackModeTexture:SetTexture(nil)
 				aObj:skinObject("statusbar", {obj=frame.healthbar, fi=0, other={frame.MyHealPredictionBar, frame.OtherHealPredictionBar}})
 				aObj:skinObject("statusbar", {obj=frame.manabar, fi=0, hookFunc=true})
-			end
-			-- casting bar handled in CastingBar function
-			if aObj.isRtl then
 				for btn in _G.PetFrame.DebuffFramePool:EnumerateActive() do
 					btn.Border:SetTexture(nil)
 				end
-			end
-			if aObj.isRtl
-			and db.petspec
-			and aObj.uCls == "HUNTER"
-			then
-				-- Add pet spec icon to pet frame, if required
-				frame.roleIcon = _G.PetFrame:CreateTexture(nil, "artwork")
-				frame.roleIcon:SetSize(24, 24)
-				frame.roleIcon:SetPoint("left", -10, 0)
-				frame.roleIcon:SetTexture(aObj.tFDIDs.lfgIR)
-				local function setSpec()
-					local petSpec = _G.GetSpecialization(nil, true)
-					if petSpec then
-						_G.PetFrame.roleIcon:SetTexCoord(_G.GetTexCoordsForRole(_G.GetSpecializationRole(petSpec, nil, true)))
+				if db.petspec
+				and aObj.uCls == "HUNTER"
+				then
+					-- Add pet spec icon to pet frame, if required
+					frame.roleIcon = _G.PetFrame:CreateTexture(nil, "artwork")
+					frame.roleIcon:SetSize(24, 24)
+					frame.roleIcon:SetPoint("left", -10, 0)
+					frame.roleIcon:SetTexture(aObj.tFDIDs.lfgIR)
+					local function setSpec()
+						local petSpec = _G.GetSpecialization(nil, true)
+						if petSpec then
+							_G.PetFrame.roleIcon:SetTexCoord(_G.GetTexCoordsForRole(_G.GetSpecializationRole(petSpec, nil, true)))
+						end
 					end
+					-- get Pet's Specialization Role to set roleIcon TexCoord
+					module:RegisterEvent("UNIT_PET", function(_, arg1)
+						if arg1 == "player"
+						and _G.UnitIsVisible("pet")
+						then
+							setSpec()
+						end
+					end)
+					setSpec()
 				end
-				-- get Pet's Specialization Role to set roleIcon TexCoord
-				module:RegisterEvent("UNIT_PET", function(_, arg1)
-					if arg1 == "player"
-					and _G.UnitIsVisible("pet")
-					then
-						setSpec()
-					end
-				end)
-				setSpec()
-			end
-			if aObj.isClsc
-			and db.petlvl
-			and aObj.uCls == "HUNTER"
-			then
-				-- Add pet level to pet frame, if required
-				frame.level = frame:CreateFontString(nil, "artwork", "GameNormalNumberFont")
-				frame.level:SetPoint("bottomleft", 5, 5)
-				frame.level:SetText(_G.UnitLevel("pet"))
-				-- get Pet's Level when changed
-				local function setLvl()
-					if _G.UnitIsVisible("pet") then
-						_G.PetFrame.level:SetText(_G.UnitLevel("pet"))
-					end
-				end
-				-- get level when pet changes
-				module:RegisterEvent("UNIT_PET", function(_)
-					setLvl()
-				end)
-				module:RegisterEvent("UNIT_LEVEL", function(_)
-					setLvl()
-				end)
-			end
-			if not aObj.isRtl
-			and aObj.modBtnBs
-			then
-				aObj:addButtonBorder{obj=_G.PetFrameHappiness, ofs=1, clr="gold"}
 			end
 		end
 		self:SecureHookScript(_G.PetFrame, "OnShow", function(this)
@@ -392,7 +386,7 @@ function module:skinPetF()
 
 			self:Unhook(this, "OnShow")
 		end)
-		aObj:checkShown(_G.PetFrame)
+		self:checkShown(_G.PetFrame)
 	end
 
 end
