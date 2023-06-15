@@ -3156,10 +3156,6 @@ aObj.SetupRetail_PlayerFrames = function()
 				slot.Border:SetTexture(nil)
 				self:makeIconSquare(slot, "Texture")
 			end
-			self:moveObject{obj=this.PortraitBackground, x=8, y=-10}
-			self:SecureHook(this, "Hide", function(_)
-				_G.InspectFrame.portrait:SetAlpha(0)
-			end)
 
 			self:Unhook(this, "OnShow")
 		end)
