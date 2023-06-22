@@ -1358,9 +1358,7 @@ function aObj:setupTextures()
 		["tMB"]       = _G.GetFileIDFromPath([[Interface\Minimap\Tracking\Mailbox]]),
 		["w8x8"]      = _G.GetFileIDFromPath([[Interface\Buttons\WHITE8X8]]),
 	}
-	if aObj.isRtl
-	or aObj.isClscPTR
-	then
+	if not aObj.isClscERA then
 		self.tFDIDs["cbMin"] = _G.GetFileIDFromPath([[interface/common/minimalcheckbox.blp]]) -- Settings CheckButton
 	end
 

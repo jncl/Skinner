@@ -1321,7 +1321,7 @@ aObj.SetupOptions = function(self)
 		["Override Action Bar"]   = not self.isClscERA and {desc = "Vehicle UI"} or nil,
 		["PTR Feedback"]          = _G.PTR_IssueReporter and {suff = "Frames"} or nil,
 		["Raid Frame"]            = true,
-		["Settings"]              = (self.isRtl or self.isClscPTR) and {desc = "Options"} or nil,
+		["Settings"]              = not self.isClscERA and {desc = "Options"} or nil,
 		["Shared Basic Controls"] = {desc = "Script Errors Frame"},
 		["Stack Split"]           = {suff = "Frame"},
 		["Static Popups"]         = true,

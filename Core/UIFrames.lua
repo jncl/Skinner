@@ -1166,12 +1166,12 @@ aObj.blizzLoDFrames[ftype].DebugTools = function(self)
 
 	local function skinTAD(frame)
 		aObj:skinObject("editbox", {obj=frame.FilterBox, fType=ftype, si=true})
-		if self.isRtl then
-			aObj:skinObject("scrollbar", {obj=frame.LinesScrollFrame.ScrollBar, fType=ftype})
-		else
+		if aObj.isClscERA then
 			aObj:skinObject("slider", {obj=frame.LinesScrollFrame.ScrollBar, fType=ftype})
+		else
+			aObj:skinObject("scrollbar", {obj=frame.LinesScrollFrame.ScrollBar, fType=ftype, x1=aObj.isClsc and 1 or nil, x2=aObj.isClsc and 5 or nil})
 		end
-		aObj:skinObject("frame", {obj=frame.ScrollFrameArt, fType=ftype, rns=true, fb=true, x2=self.isClscPTR and -10})
+		aObj:skinObject("frame", {obj=frame.ScrollFrameArt, fType=ftype, rns=true, fb=true, x2=self.isClsc and -10})
 		aObj:skinObject("frame", {obj=frame, fType=ftype, kfs=true, cb=true, ofs=-2, x1=5, x2=-1})
 		if aObj.modBtns then
 			aObj:skinOtherButton{obj=frame.OpenParentButton, font=aObj.fontS, disfont=aObj.fontDS, text=aObj.uparrow}
@@ -1794,15 +1794,16 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 	}
 	if not self.isRtl then
 		ignBtn["GameTimeFrame"]                    = true
-		ignBtn["GarrisonLandingPageMinimapButton"] = true
-		ignBtn["MiniMapTracking"]                  = true
+		ignBtn["MiniMapTrackingFrame"]             = true -- ClassicERA
+		ignBtn["MiniMapTracking"]                  = true -- Classic
 		ignBtn["MiniMapWorldMapButton"]            = true
 		ignBtn["MinimapZoomIn"]                    = true
 		ignBtn["MinimapZoomOut"]                   = true
-		ignBtn["QueueStatusMinimapButton"]         = true
+		-- ignBtn["QueueStatusMinimapButton"]         = true
 	else
-		ignBtn[_G.Minimap.ZoomIn]  = true
-		ignBtn[_G.Minimap.ZoomOut] = true
+		ignBtn["ExpansionLandingPageMinimapButton"] = true
+		ignBtn[_G.Minimap.ZoomIn]                   = true
+		ignBtn[_G.Minimap.ZoomOut]                  = true
 	end
 	local function mmKids(mmObj)
 		local objName, objType
@@ -1889,7 +1890,8 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 			self:moveObject{obj=_G.MiniMapTracking, x=-4}
 			if not minBtn then
 				_G.MiniMapTracking:SetScale(0.9)
-				self:skinObject("frame", {obj=_G.MiniMapTracking, fType=ftype, bd=10, ofs=0})
+				self:skinObject("frame", {obj=_G.MiniMapTrackingButton, fType=ftype, bd=10, ofs=0})
+				-- TODO: Background alpha is 0
 			end
 			_G.MiniMapBattlefieldFrame:SetSize(28, 28)
 		end
@@ -2261,9 +2263,7 @@ if _G.PTR_IssueReporter then
 	end
 end
 
-if aObj.isRtl
-or aObj.isClscPTR
-then
+if not aObj.isClscERA then
 	aObj.blizzFrames[ftype].Settings = function(self)
 		if not self.prdb.Settings or self.initialized.Settings then return end
 		self.initialized.Settings = true
@@ -2465,8 +2465,8 @@ then
 		end)
 
 	end
-
 end
+
 aObj.blizzFrames[ftype].SharedBasicControls = function(self)
 	if not self.prdb.SharedBasicControls or self.initialized.SharedBasicControls then return end
 	self.initialized.SharedBasicControls = true
@@ -2565,7 +2565,7 @@ aObj.blizzFrames[ftype].StaticPopups = function(self)
 			self:skinObject("editbox", {obj=_G[objName .. "EditBox"], fType=ftype, ofs=0, y1=-4, y2=4})
 			self:skinObject("moneyframe", {obj=_G[objName .. "MoneyInputFrame"], moveIcon=true})
 			_G[objName .. "ItemFrameNameFrame"]:SetTexture(nil)
-			self:skinObject("frame", {obj=this, fType=ftype, rb=self.isClscPTR and true, ofs=-6})
+			self:skinObject("frame", {obj=this, fType=ftype, rb=self.isClsc and true, ofs=-6})
 			if self.modBtns then
 				self:skinStdButton{obj=this.button1, fType=ftype, schk=true, sechk=true, y1=2}
 				self:skinStdButton{obj=this.button2, fType=ftype, schk=true, sechk=true, y1=2}
