@@ -386,7 +386,7 @@ function module:skinPetF()
 
 			self:Unhook(this, "OnShow")
 		end)
-		self:checkShown(_G.PetFrame)
+		aObj:checkShown(_G.PetFrame)
 	end
 
 end
