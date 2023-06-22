@@ -19,48 +19,23 @@ ToDos
 
 ≈	O	Refactor NewSkinFuncs in AddOn skins
 
-?	O	Make role icons square with a button border
-		- use UI-LFG-ICON-ROLES.BLP as source for all, size them as required
+	O	Make role icons square with no border
+≈		- use lfgroles.blp as texture file
+			- ClassTalentFrame.SpecTab
+			- ConquestFrame
+			- HonorFrame
+			- InspectTalentFrame
+			- LFDQueueFrame
+			- LFGDungeonReadyStatus
+			- LFGDungeonReadyDialog
+			- LFGListApplicationDialog
+			- LFGListInviteDialog
+			- PVPReadyDialog
+			- PVPReadyPopup
+			- PVPRoleCheckPopup
+			- QueueStatusFrame
+			- RaidFinderQueueFrame
+			- RolePollPopup
+			- QuickJoinRoleSelectionFrame
 
-?	I	Fix ActionButtons/MultiBarButtons missing Text & PetActionButtons not being displayed
-		- when redisplayed after accessing Puzzle Caches in Zereth Mortis.
-		- happens when OverrideBar is used, but not always...
-		- happens after VehicleUI has been used
-
-	I	AlertFrames
-≈	 	- GarrisonFollower not skinned properly
-≈		- SkillLineSpecsUnlocked not skinned properly
-
-~	I	ADDON_ACTION_BLOCKED/ADDON_ACTION_FORBIDDEN, reported by various, *.11.22 (An action was blocked because of taint from, An action was blocked in combat because of taint from)
-√		- Disable Nameplate skinning
-√		- Disable CompactUnitFrame(s) skinning
-√		- Disable UnitFrame(s) skinning
-
-	I	Auctionator, reported by Galthariel, 09.06.23
-√		- 2x Interface/AddOns/Skinner/AddonSkins/Auctionator.lua:354: attempt to index field 'ScrollFrame' (a nil value)
-		[string "@Interface/AddOns/Skinner/AddonSkins/Auctionator.lua"]:354: in function <Interface/AddOns/Skinner/AddonSkins/Auctionator.lua:347>
-		[string "=(tail call)"]: ?
-		[string "=[C]:"]: ?
-		[string "=[C]:"]: in function 'Show'
-		[string "@Interface/AddOns/Skinner/Core/UtilFuncs.lua"]:436: in function 'checkShown'
-		[string "@Interface/AddOns/Skinner/AddonSkins/Auctionator.lua"]:362: in function <Interface/AddOns/Skinner/AddonSkins/Auctionator.lua:7>
-		[string "@Interface/AddOns/Skinner/AddonSkins/Auctionator.lua"]:10: in function <Interface/AddOns/Skinner/AddonSkins/Auctionator.lua:9>
-
-#5	I	EncounterJournal, reported by Galthariel, 13.06.23
-√		- Skinner/RetailSupport/PlayerFrames_Retail.lua:2665: bad argument #1 to 'pairs' (table expected, got nil)
-		[string "=[C]"]: in function `pairs'
-		[string "@Skinner/RetailSupport/PlayerFrames_Retail.lua"]:2665: in function `skinItemSets'
-		[string "@Skinner/RetailSupport/PlayerFrames_Retail.lua"]:2672: in function <Skinner/RetailSupport/PlayerFrames_Retail.lua:2663>
-
-	I/C	reported by Sausje, 13.06.23
-√		- Skinner/Core/UtilFuncs.lua:461: attempt to call method 'SetBackdropBorderColor' (a nil value)
-		[string "@Skinner/Core/UtilFuncs.lua"]:461: in function `clrBBC'
-		[string "@Skinner/Modules/UIButtons.lua"]:246: in function `clrBtnBdr'
-		[string "@Skinner/ClassicSupport/PlayerFrames_Classic.lua"]:913: in function <...dOns/Skinner/ClassicSupport/PlayerFrames_Classic.lua:906>
-		
-	N	PremadeGroupsFilter, reported by Carica18, 13.06.23
-√		- new version 4.0.1
-
-#6	I	Error when loading into game addon does not load
-√		- Skinner/Core/Options.lua:104: attempt to index field 'Settings' (a nil value)
-	
+#7√	I	SavedInstances, reported by MetalHeadTwo, 22.06.23
