@@ -1,7 +1,6 @@
 local aName, aObj = ...
 
 local _G = _G
-
 -- luacheck: ignore 631 (line is too long)
 
 function aObj:addBackdrop(obj) -- luacheck: ignore self
@@ -1342,7 +1341,7 @@ function aObj:setupTextures()
 		["gAOI"]      = _G.GetFileIDFromPath([[Interface\Glues\CharacterSelect\Glues-AddOn-Icons]]),
 		["gearWhl"]   = _G.GetFileIDFromPath([[Interface\AddOns\]] .. aName .. [[\Textures\gear]]),
 		["inactTab"]  = _G.GetFileIDFromPath([[Interface\AddOns\]] .. aName .. [[\Textures\inactive]]),
-		["lfgIR"]     = _G.GetFileIDFromPath([[Interface\LFGFrame\UI-LFG-ICON-ROLES]]),
+		["lfgIR"]     = _G.GetFileIDFromPath([[Interface\AddOns\]] .. aName .. [[\Textures\lfgroles]]),
 		["lvlBG"]     = _G.GetFileIDFromPath([[Interface\PetBattles\BattleBar-AbilityBadge-Neutral]]),
 		["mHG"]       = _G.GetFileIDFromPath([[Interface\Common\mini-hourglass]]),
 		["mpTex"]     = _G.GetFileIDFromPath([[Interface\Common\UI-ModelControlPanel]]),

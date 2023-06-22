@@ -2120,19 +2120,26 @@ aObj.SetupRetail_UIFrames = function()
 
 	end
 
-	local skinCheckBtns
+	local skinRoleBtns
 	if _G.PVEFrame then
 		-- The following function is used by the LFDFrame & RaidFinder functions
-		function skinCheckBtns(frame)
+		function skinRoleBtns(frame)
+			local roleBtn
 			for _, type in _G.pairs{"Tank", "Healer", "DPS", "Leader"} do
-				if _G[frame .. "QueueFrameRoleButton" .. type].background then
-					_G[frame .. "QueueFrameRoleButton" .. type].background:SetTexture(nil)
+				roleBtn = _G[frame .. "QueueFrameRoleButton" .. type]
+				roleBtn:SetNormalTexture(aObj.tFDIDs.lfgIR)
+				roleBtn.cover:SetTexture(aObj.tFDIDs.lfgIR)
+				if roleBtn.background then
+					roleBtn.background:SetTexture(nil)
 				end
-				if _G[frame .. "QueueFrameRoleButton" .. type].incentiveIcon then
-					_G[frame .. "QueueFrameRoleButton" .. type].incentiveIcon.border:SetTexture(nil)
+				if roleBtn.shortageBorder then
+					roleBtn.shortageBorder:SetTexture(nil)
+				end
+				if roleBtn.incentiveIcon then
+					roleBtn.incentiveIcon.border:SetTexture(nil)
 				end
 				if aObj.modChkBtns then
-					aObj:skinCheckButton{obj=_G[frame .. "QueueFrameRoleButton" .. type].checkButton}
+					aObj:skinCheckButton{obj=roleBtn.checkButton}
 				end
 			end
 		end
@@ -2170,7 +2177,7 @@ aObj.SetupRetail_UIFrames = function()
 			self:removeInset(this.Inset)
 
 			-- LFD Queue Frame
-			skinCheckBtns("LFD")
+			skinRoleBtns("LFD")
 			_G.LFDQueueFrameBackground:SetAlpha(0)
 			self:skinObject("dropdown", {obj=_G.LFDQueueFrameTypeDropDown, fType=ftype})
 			_G.LFDQueueFrameRandomScrollFrameChildFrame.MoneyReward.NameFrame:SetTexture(nil)
@@ -2229,8 +2236,22 @@ aObj.SetupRetail_UIFrames = function()
 
 		self:SecureHookScript(_G.LFGDungeonReadyPopup, "OnShow", function(this) -- a.k.a. ReadyCheck, also used for Island Expeditions
 			self:removeNineSlice(_G.LFGDungeonReadyStatus.Border)
-			self:removeNineSlice(_G.LFGDungeonReadyDialog.Border)
+			local roleBtn
+			for i = 1, 5 do
+				roleBtn = _G["LFGDungeonReadyStatusIndividualPlayer" .. i]
+				roleBtn.texture:SetTexture(self.tFDIDs.lfgIR)
+			end
+			for _, type in _G.pairs{"Healer", "Tank", "Damager"} do
+				roleBtn = _G["LFGDungeonReadyStatusGrouped" .. type]
+				roleBtn.Texture:SetNormalTexture(aObj.tFDIDs.lfgIR)
+			end
+			_G.LFGDungeonReadyStatusRolelessReady:SetTexture(self.tFDIDs.lfgIR)
 			self:skinObject("frame", {obj=_G.LFGDungeonReadyStatus, fType=ftype, kfs=true, ofs=-5})
+
+			self:removeNineSlice(_G.LFGDungeonReadyDialog.Border)
+			_G.LFGDungeonReadyDialogRoleIconTexture:SetTexture(self.tFDIDs.lfgIR)
+			_G.LFGDungeonReadyDialog.SetBackdrop = _G.nop
+			_G.LFGDungeonReadyDialog.instanceInfo:DisableDrawLayer("BACKGROUND")
 			self:skinObject("frame", {obj=_G.LFGDungeonReadyDialog, fType=ftype, kfs=true, rpc=true, ofs=-5, y2=10}) -- use rpc=true to make background visible
 			if self.modBtns then
 				self:skinOtherButton{obj=_G.LFGDungeonReadyStatusCloseButton, text=self.modUIBtns.minus}
@@ -2238,9 +2259,6 @@ aObj.SetupRetail_UIFrames = function()
 				self:skinStdButton{obj=_G.LFGDungeonReadyDialog.enterButton}
 				self:skinStdButton{obj=_G.LFGDungeonReadyDialog.leaveButton}
 			end
-			_G.LFGDungeonReadyDialog.SetBackdrop = _G.nop
-
-			_G.LFGDungeonReadyDialog.instanceInfo:DisableDrawLayer("BACKGROUND")
 
 			-- show background texture if required
 			if self.prdb.LFGTexture then
@@ -2465,6 +2483,12 @@ aObj.SetupRetail_UIFrames = function()
 		-- LFGListApplication Dialog
 		self:SecureHookScript(_G.LFGListApplicationDialog, "OnShow", function(this)
 			self:removeNineSlice(this.Border)
+			local roleBtn
+			for _, type in _G.pairs{"Healer", "Tank", "Damager"} do
+				roleBtn = frame[type .. "Button"]
+				roleBtn.Texture:SetNormalTexture(self.tFDIDs.lfgIR)
+				roleBtn.cover:SetTexture(self.tFDIDs.lfgIR)
+			end
 			self:skinObject("scrollbar", {obj=this.Description.ScrollBar, fType=ftype})
 			self:skinObject("frame", {obj=this.Description, fType=ftype, kfs=true, fb=true, ofs=6})
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true})
@@ -2484,6 +2508,7 @@ aObj.SetupRetail_UIFrames = function()
 		-- LFGListInvite Dialog
 		self:SecureHookScript(_G.LFGListInviteDialog, "OnShow", function(this)
 			self:removeNineSlice(this.Border)
+			this.RoleIcon:SetTexture(self.tFDIDs.lfgIR)
 			self:skinObject("frame", {obj=this, fType=ftype})
 			if self.modBtns then
 				self:skinStdButton{obj=this.AcceptButton}
@@ -3315,6 +3340,7 @@ aObj.SetupRetail_UIFrames = function()
 
 		self:SecureHookScript(_G.PVPRoleCheckPopup, "OnShow", function(this)
 			self:removeNineSlice(this.Border)
+			this.roleIcon.Texture:SetTexture(self.tFDIDs.lfgIR)
 			self:skinObject("frame", {obj=this, fType=ftype})
 			if self.modBtns then
 				self:skinStdButton{obj=_G.PVPRoleCheckPopupAcceptButton}
@@ -3343,6 +3369,25 @@ aObj.SetupRetail_UIFrames = function()
 		end)
 		self:checkShown(_G.PVPReadyDialog)
 
+		local function skinRoles(frame)
+			for roleBtn in frame.RolePool:EnumerateActive() do
+				roleBtn.Texture:SetTexture(aObj.tFDIDs.lfgIR)
+			end
+		end
+		self:SecureHookScript(_G.PVPReadyPopup, "OnShow", function(this)
+			self:removeNineSlice(_G.ReadyStatus.Border)
+			this.RolelessButton.Texture:SetTexture(self.tFDIDs.lfgIR)
+			skinRoles(this)
+			self:SecureHook(this, "Setup", function(fObj, _)
+				skinRoles(fObj)
+			end)
+			self:skinObject("frame", {obj=_G.ReadyStatus, fType=ftype, kfs=true, ofs=-6, x2=-5})
+			if self.modBtns then
+				self:skinOtherButton{obj=_G.ReadyStatus.CloseButton, fType=ftype, text=self.modUIBtns.minus}
+			end
+
+			self:Unhook(this, "OnShow")
+		end)
 	end
 
 	aObj.blizzFrames[ftype].PVPMatch = function(self)
@@ -3600,7 +3645,16 @@ aObj.SetupRetail_UIFrames = function()
 			local function clrEntry(frame)
 				local r, g, b, _ = self.bbClr:GetRGBA()
 				for sEntry in frame.statusEntriesPool:EnumerateActive() do
+					for i = 1, 3 do
+						sEntry["RoleIcon" .. i]:SetTexture(self.tFDIDs.lfgIR)
+					end
 					sEntry.EntrySeparator:SetColorTexture(r, g, b, 0.75)
+					local roleBtn
+					for _, type in _G.pairs{"Healer", "Tank", "Damagers"} do
+						roleBtn = frame[type .. "Found"]
+						roleBtn.Texture:SetNormalTexture(aObj.tFDIDs.lfgIR)
+						roleBtn.Cover:SetTexture(aObj.tFDIDs.lfgIR)
+					end
 				end
 			end
 			self:SecureHook(_G.QueueStatusFrame, "Update", function(fObj)
@@ -3691,7 +3745,7 @@ aObj.SetupRetail_UIFrames = function()
 			-- TODO texture is present behind frame
 			-- RaidFinderQueueFrame
 			self:nilTexture(_G.RaidFinderQueueFrameBackground, true)
-			skinCheckBtns("RaidFinder")
+			skinRoleBtns("RaidFinder")
 			self:skinObject("dropdown", {obj=_G.RaidFinderQueueFrameSelectionDropDown, fType=ftype})
 			self:skinObject("scrollbar", {obj=_G.RaidFinderQueueFrameScrollFrame.ScrollBar, fType=ftype, rpTex={"background", "artwork"}})
 

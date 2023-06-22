@@ -967,6 +967,7 @@ aObj.SetupRetail_PlayerFrames = function()
 						specContentFrame:DisableDrawLayer("OVERLAY")
 						-- add border around SpecImage
 						aObj.modUIBtns:addButtonBorder{obj=specContentFrame, fType=ftype, relTo=specContentFrame.SpecImage}
+						specContentFrame.RoleIcon:SetTexture(self.tFDIDs.lfgIR)
 						-- .SpellButtonPool
 						self:skinObject("frame", {obj=specContentFrame, fType=ftype, fb=true, y2=-4})
 						if specContentFrame.specIndex == fObj:GetCurrentSpecIndex() then
@@ -2981,6 +2982,12 @@ aObj.SetupRetail_PlayerFrames = function()
 
 		self:SecureHookScript(_G.QuickJoinRoleSelectionFrame, "OnShow", function(this)
 			self:removeNineSlice(this.Border)
+			local roleBtn
+			for _, type in _G.pairs{"Healer", "Tank", "DPS"} do
+				roleBtn = this["RoleButton" .. type]
+				roleBtn:SetTexture(self.tFDIDs.lfgIR)
+				roleBtn.Cover:SetTexture(self.tFDIDs.lfgIR)
+			end
 			self:skinObject("frame", {obj=this, fType=ftype, cb=true, ofs=-5})
 			if self.modBtns then
 				self:skinStdButton{obj=this.AcceptButton}
@@ -3166,6 +3173,7 @@ aObj.SetupRetail_PlayerFrames = function()
 			-- self:keepFontStrings(this)
 			this:DisableDrawLayer("border")
 			this.InspectSpec.ring:SetTexture(nil)
+			this.InspectSpec.roleIcon:SetTexture(self.tFDIDs.lfgIR)
 			self:makeIconSquare(this.InspectSpec, "specIcon")
 			for i = 1, _G.MAX_TALENT_TIERS do
 				for j = 1, _G.NUM_TALENT_COLUMNS do
@@ -4251,6 +4259,12 @@ aObj.SetupRetail_PlayerFrames = function()
 			aObj:skinObject("statusbar", {obj=frame.ConquestBar, fi=0, bg=frame.ConquestBar.Background})
 			local btn = frame.ConquestBar.Reward
 			btn.Ring:SetTexture(nil)
+			local roleBtn
+			for _, type in _G.pairs{"Healer", "Tank", "DPS"} do
+				roleBtn = frame[type .. "Icon"]
+				roleBtn:SetNormalTexture(aObj.tFDIDs.lfgIR)
+				roleBtn.cover:SetTexture(aObj.tFDIDs.lfgIR)
+			end
 			if aObj.modBtnBs then
 				aObj:addButtonBorder{obj=btn, relTo=btn.Icon, reParent={btn.CheckMark}, clr="silver"}
 			end
@@ -4320,9 +4334,19 @@ aObj.SetupRetail_PlayerFrames = function()
 			skinCommon(this)
 			this:DisableDrawLayer("BACKGROUND")
 			this:DisableDrawLayer("BORDER")
-			for _, bName in _G.pairs{"Arena2v2", "Arena3v3", "RatedBG", "RatedSoloShuffle"} do
-				this[bName].NormalTexture:SetTexture(nil)
-				this[bName].Reward.Border:SetTexture(nil)
+			for _, btn in _G.pairs(_G.CONQUEST_BUTTONS) do
+				btn.NormalTexture:SetTexture(nil)
+				btn.Reward.Border:SetTexture(nil)
+				if self.modBtnBs then
+					self:addButtonBorder{obj=btn.Reward, relTo=btn.Reward.Icon, reParent={btn.Reward.EnlistmentBonus}}
+				end
+			end
+			if self.modBtnBs then
+				self:SecureHook("ConquestFrame_Update", function(fObj)
+					for _, btn in _G.pairs(_G.CONQUEST_BUTTONS) do
+						self:clrBtnBdr(btn.Reward, "gold")
+					end
+				end)
 			end
 			this.ShadowOverlay:DisableDrawLayer("OVERLAY")
 			self:skinObject("glowbox", {obj=this.NoSeason, fType=ftype})
@@ -4348,6 +4372,12 @@ aObj.SetupRetail_PlayerFrames = function()
 
 		self:SecureHookScript(_G.RolePollPopup, "OnShow", function(this)
 			self:removeNineSlice(this.Border)
+			local roleBtn
+			for _, type in _G.pairs{"Healer", "Tank", "DPS"} do
+				roleBtn = frame[type .. "Icon"]
+				roleBtn:SetNormalTexture(aObj.tFDIDs.lfgIR)
+				roleBtn.cover:SetTexture(aObj.tFDIDs.lfgIR)
+			end
 			self:skinObject("frame", {obj=this, fType=ftype, ofs=5})
 			if self.modBtns then
 				self:skinStdButton{obj=this.acceptButton}
