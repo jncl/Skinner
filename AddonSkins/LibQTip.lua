@@ -7,8 +7,13 @@ local function skinTT(key, tTip)
 	-- ignore tooltips if required
 	if not aObj.ignoreLQTT[key] then
 		aObj:skinObject("tooltip", {obj=tTip})
+		_G.C_Timer.After(aObj.ttDelay, function() -- slight delay to allow for the tooltip to be populated
+			aObj:applyTooltipGradient(tTip.sf)
+		end)
 		tTip:SetScript("OnUpdate", function(ttObj)
-			aObj:applyTooltipGradient(ttObj.sf)
+			_G.C_Timer.After(aObj.ttDelay, function() -- slight delay to allow for the tooltip to be populated
+				aObj:applyTooltipGradient(ttObj.sf)
+			end)
 		end)
 		aObj:hook(tTip, "UpdateScrolling", function(ttObj)
 			if ttObj.slider then
