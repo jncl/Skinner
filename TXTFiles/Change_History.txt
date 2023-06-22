@@ -1,3 +1,14 @@
+beta10.50000.1
+Jncl:
+	Updated ToDo.txt files
+	Updated Change_History.txt
+	Updated version numbers
+	Bugfix for IOF/Settings, fixes issue #6
+	Bugfix for Options handling in SharedFuncs
+	Bugfix for EncounterJournal, fixes issue #5
+	Bugfix for GuildFrame
+	Updated Auctionator & PremadeGroupsFilter skins
+	
 beta10.49908.2
 Jncl:
 	Updated ToDo.txt files
