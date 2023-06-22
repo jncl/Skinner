@@ -8,7 +8,7 @@ assignees: jncl
 ---
 
 **WoW Version**
-Which version(s) of WoW this AddOn works in (Retail, Wrath Classic, Classic Era) 
+Which version(s) of WoW this AddOn is for: ( Retail / Wrath Classic / Classic Era / All ) 
 
 **AddOn Name**
 Name of the AddOn for which a skin is requested
