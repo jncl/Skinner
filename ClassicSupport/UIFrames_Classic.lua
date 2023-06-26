@@ -388,13 +388,21 @@ aObj.SetupClassic_UIFrames = function()
 
 					self:SecureHookScript(_G.LFGListingFrame, "OnShow", function(fObj)
 						self:keepFontStrings(fObj)
-						for _, btn in pairs(fObj.SoloRoleButtons.RoleButtons) do
-							btn:DisableDrawLayer("BACKGROUND")
+						for _, roleBtn in pairs(fObj.SoloRoleButtons.RoleButtons) do
+							roleBtn:DisableDrawLayer("BACKGROUND")
+							roleBtn:SetNormalTexture(self.tFDIDs.lfgIR)
+							roleBtn.cover:SetTexture(self.tFDIDs.lfgIR)
 							if self.modChkBtns then
-								self:skinCheckButton{obj=btn.CheckButton, fType=ftype}
+								self:skinCheckButton{obj=roleBtn.CheckButton, fType=ftype}
 							end
 						end
-						-- TODO: GroupRoleButtons
+						fObj.GroupRoleButtons.RoleIcon:DisableDrawLayer("BACKGROUND")
+						fObj.GroupRoleButtons.RoleIcon:SetNormalTexture(self.tFDIDs.lfgIR)
+						fObj.GroupRoleButtons.RoleIcon.cover:SetTexture(self.tFDIDs.lfgIR)
+
+						fObj.NewPlayerFriendlyButton:SetNormalTexture(self.tFDIDs.lfgIR)
+						fObj.NewPlayerFriendlyButton.cover:SetTexture(self.tFDIDs.lfgIR)
+
 						for _, btn in pairs(fObj.CategoryView.CategoryButtons) do
 							self:keepFontStrings(btn)
 							if self.modBtns then
@@ -409,6 +417,7 @@ aObj.SetupClassic_UIFrames = function()
 						if self.modBtns then
 							self:skinStdButton{obj=fObj.BackButton, fType=ftype, sechk=true}
 							self:skinStdButton{obj=fObj.PostButton, fType=ftype, sechk=true}
+							self:skinStdButton{obj=fObj.GroupRoleButtons.RolePollButton, fType=ftype, sechk=true}
 						end
 						if self.modChkBtns then
 							self:skinCheckButton{obj=fObj.NewPlayerFriendlyButton.CheckButton, fType=ftype}
@@ -685,6 +694,7 @@ aObj.SetupClassic_UIFrames = function()
 
 		self:SecureHookScript(_G.PVPFramePopup, "OnShow", function(this)
 			this:DisableDrawLayer("BORDER")
+			this.RolelessButton.Texture:SetTexture(self.tFDIDs.lfgIR)
 			_G.PVPFramePopupRing:SetTexture(nil)
 			self:skinObject("frame", {obj=this, fType=ftype, ofs=0})
 			if self.modBtns then

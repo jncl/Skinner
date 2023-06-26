@@ -1449,6 +1449,8 @@ aObj.SetupClassic_PlayerFrames = function()
 		self:SecureHookScript(_G.PlayerTalentFrame, "OnShow", function(this)
 			local fName = this:GetName()
 			self:moveObject{obj=_G.PlayerTalentFrameTitleText, y=-2}
+			_G.PlayerTalentFrameRoleButton:SetNormalTexture(self.tFDIDs.lfgIR)
+			_G.PlayerTalentFrameRoleButton.cover:SetTexture(self.tFDIDs.lfgIR)
 			self:skinObject("tabs", {obj=this, prefix=fName, fType=ftype, lod=self.isTT and true})
 			self:skinObject("slider", {obj=_G[fName .. 'ScrollFrameScrollBar'], fType=ftype, rpTex="artwork"})
 			-- keep background Texture
