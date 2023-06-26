@@ -2485,7 +2485,7 @@ aObj.SetupRetail_UIFrames = function()
 			self:removeNineSlice(this.Border)
 			local roleBtn
 			for _, type in _G.pairs{"Healer", "Tank", "Damager"} do
-				roleBtn = frame[type .. "Button"]
+					roleBtn = this[type .. "Button"]
 				roleBtn.Texture:SetNormalTexture(self.tFDIDs.lfgIR)
 				roleBtn.cover:SetTexture(self.tFDIDs.lfgIR)
 			end
