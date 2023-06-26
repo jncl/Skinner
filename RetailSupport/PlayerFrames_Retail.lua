@@ -4139,9 +4139,9 @@ aObj.SetupRetail_PlayerFrames = function()
 			self.initialized.ProfessionsRecipeFlyout = true
 
 			self:RawHook("OpenProfessionsItemFlyout", function(owner, parent)
-				local flyout = self.hooks.ToggleProfessionsItemFlyout(owner, parent)
+				local flyout = self.hooks.OpenProfessionsItemFlyout(owner, parent)
 				self:skinObject("frame", {obj=flyout, fType=ftype, kfs=true, rns=true, ofs=0})
-				if aObj.modBtnBs then
+				if self.modBtnBs then
 					local function skinElement(...)
 						local _, element, new
 						if _G.select("#", ...) == 2 then
