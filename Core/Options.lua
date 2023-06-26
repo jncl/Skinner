@@ -1290,6 +1290,7 @@ aObj.SetupOptions = function(self)
 		["Item Socketing UI"] = true,
 		["Raid UI"]           = true,
 		["Ready Check"]       = {suff = "Frame"},
+		["Role Poll Popup"]   = not self.isClscERA and true or nil,
 		["SpellBook Frame"]   = true,
 		["Trade Frame"]       = true,
 	}
