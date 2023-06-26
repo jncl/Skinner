@@ -1,3 +1,18 @@
+beta10.50129.1
+Jncl:
+	Merge branch 'master' of https://github.com/jncl/Skinner
+	Updated ToDo.txt files
+	Updated Change_History.txt
+	Updated version numbers
+	Updated SavedInstances skin fixes #7
+	Updated LibQTips skin and Tooltips skinning code
+	Bugfix for UnitFrames
+	Added new lfgroles texture file and changed code to use it
+	Applied Classic PTR changes
+	Update ClassTalentUI skin
+	Update PetFrame skin
+	Bugfix for InspectPVPFrame
+	
 beta10.50000.1
 Jncl:
 	Updated ToDo.txt files
