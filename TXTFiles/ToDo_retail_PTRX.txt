@@ -10,7 +10,12 @@ ToDo_retail_PTRX
 		- Added
 			- Blizzard_PVPUI
 				- .RoleShortageBonus
+			- Blizzard_PlayerChoice
+				- Blizzard_PlayerChoiceGenericPowerChoiceOptionTemplate
+					- .BackgroundContainer
 		- Updated
+			- RoleIcon textures replaced by specific Atlas
+			- Blizzard_ChallengesUI
 √			- Blizzard_Wardrobe
 			- Blizzard_Console
 √			- Blizzard_ObjectiveTracker
@@ -25,8 +30,15 @@ ToDo_retail_PTRX
 			- CompactUnitFrame
 			- GroupLootFrame
 			- LFGFrame
+			- MerchantFrame
+√			- MirrorTimers
 			- MonkStaggerBar
+√			- ObjectiveTracker
 			- PlayerFrame
+√			- PVPReadyDialog
+			- PartyFrameTemplates
 			- QuestMapFrame
 			- TabardFrame
+√			- WardrobeCollectionFrame
 		- Deleted
+√			- ProfessionsRecipeFlyout

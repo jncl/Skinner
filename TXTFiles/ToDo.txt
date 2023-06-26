@@ -8,34 +8,21 @@ ToDos
 	#nnn			- Indicates Issue number
 	S/N/I/U/O/E/W	- Skin request/New Version/Issue(Bug)/Unobsolete skin/Other changes/Classic Era/Wrath Classic
 
-≈	O	Rework how AddOn skins are handled
-		- replace table in AddonFrames with individual entries in each skin file
+≈		O	Rework how AddOn skins are handled
+			- replace table in AddonFrames with individual entries in each skin file
 
-≈	O	Rename variables and use function for colours
-		- self.bColour to self.bClr
-		- self.bbColour to self.bbClr
+≈		O	Rename variables and use function for colours
+			- self.bColour to self.bClr
+			- self.bbColour to self.bbClr
 
-≈	O	Add checks for Button state as required
+≈		O	Add checks for Button state as required
 
-≈	O	Refactor NewSkinFuncs in AddOn skins
+≈		O	Refactor NewSkinFuncs in AddOn skins
 
-	O	Make role icons square with no border
-≈		- use lfgroles.blp as texture file
-			- ClassTalentFrame.SpecTab
-			- ConquestFrame
-			- HonorFrame
-			- InspectTalentFrame
-			- LFDQueueFrame
-			- LFGDungeonReadyStatus
-			- LFGDungeonReadyDialog
-			- LFGListApplicationDialog
-			- LFGListInviteDialog
-			- PVPReadyDialog
-			- PVPReadyPopup
-			- PVPRoleCheckPopup
-			- QueueStatusFrame
-			- RaidFinderQueueFrame
-			- RolePollPopup
-			- QuickJoinRoleSelectionFrame
+#8	√	I/C	All The Things Classic, reported by sausje, 23.06.23
 
-#7√	I	SavedInstances, reported by MetalHeadTwo, 22.06.23
+#9	√	I	LFGList, reported by Galthariel, 24.06.23
+			-  ...aceSkinner/RetailSupport/UIFrames_Retail.lua:2488: attempt to index global 'frame' (a nil value)
+			[string "@Skinner/RetailSupport/UIFrames_Retail.lua"]:2488: in function <...aceSkinner/RetailSupport/UIFrames_Retail.lua:2484>
+		
+#10	√	I	Auctionator, reported by Galthariel, 24.06.23
