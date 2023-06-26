@@ -219,46 +219,74 @@ aObj.blizzFrames[ftype].MirrorTimers = function(self)
 	self.initialized.MirrorTimers = true
 
 	local objName, obj, objBG, objSB
-	for i = 1, _G.MIRRORTIMER_NUMTIMERS do
-		objName = "MirrorTimer" .. i
-		obj = _G[objName]
-		if not self.isRtl then
-			self:removeRegions(obj, {3})
-			obj:SetHeight(obj:GetHeight() * 1.25)
-			self:moveObject{obj=_G[objName .. "Text"], y=-2}
-			objBG = self:getRegion(obj, 1)
-			objBG:SetWidth(objBG:GetWidth() * 0.75)
-			objSB = _G[objName .. "StatusBar"]
-			objSB:SetWidth(objSB:GetWidth() * 0.75)
-		else
-			self:nilTexture(obj.TextBorder, true)
-			objBG = self:getRegion(obj, 2)
-			self:nilTexture(obj.Border, true)
-		end
-		if self.prdb.MirrorTimers.glaze then
+	if not aObj.isRtlPTRX then
+		for i = 1, 3 do
+			objName = "MirrorTimer" .. i
+			obj = _G[objName]
 			if not self.isRtl then
-				self:skinObject("statusbar", {obj=objSB, fi=0, bg=objBG})
+				self:removeRegions(obj, {3})
+				obj:SetHeight(obj:GetHeight() * 1.25)
+				self:moveObject{obj=_G[objName .. "Text"], y=-2}
+				objBG = self:getRegion(obj, 1)
+				objBG:SetWidth(objBG:GetWidth() * 0.75)
+				objSB = _G[objName .. "StatusBar"]
+				objSB:SetWidth(objSB:GetWidth() * 0.75)
 			else
-				self:skinObject("statusbar", {obj=obj.StatusBar, fi=0, bg=objBG, hookFunc=true})
+				self:nilTexture(obj.TextBorder, true)
+				objBG = self:getRegion(obj, 2)
+				self:nilTexture(obj.Border, true)
+			end
+			if self.prdb.MirrorTimers.glaze then
+				if not self.isRtl then
+					self:skinObject("statusbar", {obj=objSB, fi=0, bg=objBG})
+				else
+					self:skinObject("statusbar", {obj=obj.StatusBar, fi=0, bg=objBG, hookFunc=true})
+				end
+			end
+		end
+	else
+		for _, timer in _G.pairs(_G.MirrorTimerContainer.mirrorTimers) do
+			if timer.StatusBar then
+				self:nilTexture(timer.TextBorder, true)
+				self:nilTexture(timer.Border, true)
+				if self.prdb.MirrorTimers.glaze then
+					self:skinObject("statusbar", {obj=timer.StatusBar, fi=0, bg=self:getRegion(timer, 2), hookFunc=true})
+				end
 			end
 		end
 	end
-	if self.prdb.MirrorTimers.glaze
-	and self.isRtl then
-		self:RawHook("MirrorTimer_Show", function(timer, value, maxvalue, scale, paused, label)
-			local dialog = self.hooks.MirrorTimer_Show(timer, value, maxvalue, scale, paused, label)
-			local statusbar = dialog.StatusBar
-			if timer == "BREATH" then
-				statusbar:SetStatusBarColor(self:getColourByName("light_blue"))
-			elseif timer == "DEATH" then
-				statusbar:SetStatusBarColor(self:getColourByName("blue"))
-			elseif timer == "EXHAUSTION" then
-				statusbar:SetStatusBarColor(self:getColourByName("yellow"))
-			elseif timer == "FEIGNDEATH" then
-				statusbar:SetStatusBarColor(self:getColourByName("yellow"))
-			end
-			return dialog
-		end, true)
+
+	if self.prdb.MirrorTimers.glaze then
+		if aObj.isRtlPTRX then
+			self:SecureHook(_G.MirrorTimerContainer, "SetupTimer", function(this, timer, _)
+				aObj:Debug("MTC SetupTimer: [%s, %s]", timer)
+				local actTimer = this:GetActiveTimer(timer)
+				if timer == "EXHAUSTION" then
+					actTimer.StatusBar:SetStatusBarColor(self:getColourByName("yellow"))
+				elseif timer == "BREATH" then
+					actTimer.StatusBar:SetStatusBarColor(self:getColourByName("light_blue"))
+				elseif timer == "DEATH" then
+					actTimer.StatusBar:SetStatusBarColor(self:getColourByName("blue"))
+				else -- FEIGNDEATH
+					actTimer.StatusBar:SetStatusBarColor(self:getColourByName("yellow"))
+				end
+			end)
+		elseif self.isRtl then
+			self:RawHook("MirrorTimer_Show", function(timer, ...)
+				local dialog = self.hooks.MirrorTimer_Show(timer, ...)
+				local statusbar = dialog.StatusBar
+				if timer == "BREATH" then
+					statusbar:SetStatusBarColor(self:getColourByName("light_blue"))
+				elseif timer == "DEATH" then
+					statusbar:SetStatusBarColor(self:getColourByName("blue"))
+				elseif timer == "EXHAUSTION" then
+					statusbar:SetStatusBarColor(self:getColourByName("yellow"))
+				elseif timer == "FEIGNDEATH" then
+					statusbar:SetStatusBarColor(self:getColourByName("yellow"))
+				end
+				return dialog
+			end, true)
+		end
 	end
 
 	if self.isRtl then

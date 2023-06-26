@@ -1702,6 +1702,11 @@ aObj.SetupRetail_PlayerFrames = function()
 				aObj:skinObject("dropdown", {obj=frame.OptionsList.ClubFilterDropdown, fType=ftype})
 				aObj:skinObject("dropdown", {obj=frame.OptionsList.ClubSizeDropdown, fType=ftype})
 				aObj:skinObject("dropdown", {obj=frame.OptionsList.SortByDropdown, fType=ftype})
+				-- TODO: find out how to change atlas for each type, maybe by using tex coords
+				-- ==> :SetAtlas(GetIconForRole(role1, showDisabled), TextureKitConstants.IgnoreAtlasSize)
+				-- for _, role in _G.pairs{"Tank", "Healer", "Dps"} do
+				-- 	frame.OptionsList[role .. "RoleFrame"].Icon:SetTexture(self.tFDIDs.lfgIR)
+				-- end
 				aObj:skinObject("editbox", {obj=frame.OptionsList.SearchBox, fType=ftype, si=true, y1=-6, y2=6})
 				aObj:moveObject{obj=frame.OptionsList.Search, x=3, y=-4}
 				if aObj.modBtns then
@@ -2589,7 +2594,9 @@ aObj.SetupRetail_PlayerFrames = function()
 					elseif _G.select("#", ...) == 3 then
 						_, element, _ = ...
 					end
-					element.ActiveBg:SetTexture(nil)
+					if not aObj.isRtlPTRX then
+						element.ActiveBg:SetTexture(nil)
+					end
 					element:GetNormalTexture():SetTexture(nil)
 					element.Name:SetTextColor(self.BT:GetRGB())
 					self:skinObject("frame", {obj=element, fType=ftype, ofs=-3, y2=4, fb=true})
@@ -3521,9 +3528,13 @@ aObj.SetupRetail_PlayerFrames = function()
 				end
 			end
 		end
-		self:SecureHook("BonusObjectiveTracker_AnimateReward", function(block)
-			skinRewards(block.module.rewardsFrame)
-		end)
+		if not aObj.isRtlPTRX then
+			self:SecureHook("BonusObjectiveTracker_AnimateReward", function(block)
+				skinRewards(block.module.rewardsFrame)
+			end)
+		else
+			-- replaced by block.module.rewardsFrame:AnimateReward(block, data)
+		end
 		self:SecureHook("ScenarioObjectiveTracker_AnimateReward", function(_)
 			_G.ObjectiveTrackerScenarioRewardsFrame:DisableDrawLayer("ARTWORK")
 			_G.ObjectiveTrackerScenarioRewardsFrame:DisableDrawLayer("BORDER")
@@ -4122,41 +4133,43 @@ aObj.SetupRetail_PlayerFrames = function()
 
 	end
 
-	aObj.blizzFrames[ftype].ProfessionsRecipeFlyout = function(self)
-		if not self.prdb.Professions or self.initialized.ProfessionsRecipeFlyout then return end
-		self.initialized.ProfessionsRecipeFlyout = true
+	if not aObj.isRtlPTRX then
+		aObj.blizzFrames[ftype].ProfessionsRecipeFlyout = function(self)
+			if not self.prdb.Professions or self.initialized.ProfessionsRecipeFlyout then return end
+			self.initialized.ProfessionsRecipeFlyout = true
 
-		self:RawHook("ToggleProfessionsItemFlyout", function(owner, parent)
-			local flyout = self.hooks.ToggleProfessionsItemFlyout(owner, parent)
-			self:skinObject("frame", {obj=flyout, fType=ftype, kfs=true, rns=true, ofs=0})
-			if aObj.modBtnBs then
-				local function skinElement(...)
-					local _, element, new
-					if _G.select("#", ...) == 2 then
-						element, _ = ...
-					elseif _G.select("#", ...) == 3 then
-						element, _, new = ...
-					else
-						_, element, _, new = ...
-					end
-					if new ~= false then
-						-- TODO: sort out item colour issue
-						if not element.sbb then
-							aObj:addButtonBorder{obj=element, fType=ftype, ibt=true, relTo=element.Icon}
+			self:RawHook("OpenProfessionsItemFlyout", function(owner, parent)
+				local flyout = self.hooks.ToggleProfessionsItemFlyout(owner, parent)
+				self:skinObject("frame", {obj=flyout, fType=ftype, kfs=true, rns=true, ofs=0})
+				if aObj.modBtnBs then
+					local function skinElement(...)
+						local _, element, new
+						if _G.select("#", ...) == 2 then
+							element, _ = ...
+						elseif _G.select("#", ...) == 3 then
+							element, _, new = ...
 						else
-							aObj:clrButtonFromBorder(element)
+							_, element, _, new = ...
+						end
+						if new ~= false then
+							-- TODO: sort out item colour issue
+							if not element.sbb then
+								aObj:addButtonBorder{obj=element, fType=ftype, ibt=true, relTo=element.Icon}
+							else
+								aObj:clrButtonFromBorder(element)
+							end
 						end
 					end
+					_G.ScrollUtil.AddAcquiredFrameCallback(flyout.ScrollBox, skinElement, aObj, true)
 				end
-				_G.ScrollUtil.AddAcquiredFrameCallback(flyout.ScrollBox, skinElement, aObj, true)
-			end
-			if self.modChkBtns then
-				self:skinCheckButton{obj=flyout.HideUnownedCheckBox, fType=ftype}
-			end
-			self:Unhook("ToggleProfessionsItemFlyout")
-			return flyout
-		end, true)
+				if self.modChkBtns then
+					self:skinCheckButton{obj=flyout.HideUnownedCheckBox, fType=ftype}
+				end
+				self:Unhook("OpenProfessionsItemFlyout")
+				return flyout
+			end, true)
 
+		end
 	end
 
 	aObj.blizzFrames[ftype].PVPHonorSystem = function(self)
@@ -4259,11 +4272,14 @@ aObj.SetupRetail_PlayerFrames = function()
 			aObj:skinObject("statusbar", {obj=frame.ConquestBar, fi=0, bg=frame.ConquestBar.Background})
 			local btn = frame.ConquestBar.Reward
 			btn.Ring:SetTexture(nil)
-			local roleBtn
-			for _, type in _G.pairs{"Healer", "Tank", "DPS"} do
-				roleBtn = frame[type .. "Icon"]
-				roleBtn:SetNormalTexture(aObj.tFDIDs.lfgIR)
-				roleBtn.cover:SetTexture(aObj.tFDIDs.lfgIR)
+			if not aObj.isRtlPTRX then
+				local roleBtn
+				for _, type in _G.pairs{"Healer", "Tank", "DPS"} do
+					roleBtn = frame[type .. "Icon"]
+					roleBtn:SetNormalTexture(aObj.tFDIDs.lfgIR)
+					roleBtn.cover:SetTexture(aObj.tFDIDs.lfgIR)
+				end
+			else
 			end
 			if aObj.modBtnBs then
 				aObj:addButtonBorder{obj=btn, relTo=btn.Icon, reParent={btn.CheckMark}, clr="silver"}
@@ -4362,31 +4378,6 @@ aObj.SetupRetail_PlayerFrames = function()
 
 		_G.C_Timer.After(0.1, function()
 			self:add2Table(self.ttList, _G.ConquestTooltip)
-		end)
-
-	end
-
-	aObj.blizzFrames[ftype].RolePollPopup = function(self)
-		if not self.prdb.RolePollPopup or self.initialized.RolePollPopup then return end
-		self.initialized.RolePollPopup = true
-
-		self:SecureHookScript(_G.RolePollPopup, "OnShow", function(this)
-			self:removeNineSlice(this.Border)
-			local roleBtn
-			for _, type in _G.pairs{"Healer", "Tank", "DPS"} do
-				roleBtn = frame[type .. "Icon"]
-				roleBtn:SetNormalTexture(aObj.tFDIDs.lfgIR)
-				roleBtn.cover:SetTexture(aObj.tFDIDs.lfgIR)
-			end
-			self:skinObject("frame", {obj=this, fType=ftype, ofs=5})
-			if self.modBtns then
-				self:skinStdButton{obj=this.acceptButton}
-				self:SecureHook("RolePollPopup_UpdateChecked", function(fObj)
-					self:clrBtnBdr(fObj.acceptButton)
-				end)
-			end
-
-			self:Unhook(this, "OnShow")
 		end)
 
 	end
@@ -4600,7 +4591,6 @@ aObj.SetupRetail_PlayerFramesOptions = function(self)
 		["Looking For Guild UI"] = {desc = "Looking for Guild UI"},
 		["Professions"]          = true,
 		["PVP UI"]               = {desc = "PVP Frame"},
-		["Role Poll Popup"]      = true,
 	}
 	self:setupFramesOptions(optTab, "Player")
 	_G.wipe(optTab)

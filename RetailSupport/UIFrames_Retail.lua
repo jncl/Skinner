@@ -2127,8 +2127,10 @@ aObj.SetupRetail_UIFrames = function()
 			local roleBtn
 			for _, type in _G.pairs{"Tank", "Healer", "DPS", "Leader"} do
 				roleBtn = _G[frame .. "QueueFrameRoleButton" .. type]
-				roleBtn:SetNormalTexture(aObj.tFDIDs.lfgIR)
-				roleBtn.cover:SetTexture(aObj.tFDIDs.lfgIR)
+				if not aObj.isRtlPTRX then
+					roleBtn:SetNormalTexture(aObj.tFDIDs.lfgIR)
+					roleBtn.cover:SetTexture(aObj.tFDIDs.lfgIR)
+				end
 				if roleBtn.background then
 					roleBtn.background:SetTexture(nil)
 				end
@@ -2483,11 +2485,13 @@ aObj.SetupRetail_UIFrames = function()
 		-- LFGListApplication Dialog
 		self:SecureHookScript(_G.LFGListApplicationDialog, "OnShow", function(this)
 			self:removeNineSlice(this.Border)
-			local roleBtn
-			for _, type in _G.pairs{"Healer", "Tank", "Damager"} do
+			if not aObj.isRtlPTRX then
+				local roleBtn
+				for _, type in _G.pairs{"Healer", "Tank", "Damager"} do
 					roleBtn = this[type .. "Button"]
-				roleBtn.Texture:SetNormalTexture(self.tFDIDs.lfgIR)
-				roleBtn.cover:SetTexture(self.tFDIDs.lfgIR)
+					roleBtn.Texture:SetNormalTexture(self.tFDIDs.lfgIR)
+					roleBtn.cover:SetTexture(self.tFDIDs.lfgIR)
+				end
 			end
 			self:skinObject("scrollbar", {obj=this.Description.ScrollBar, fType=ftype})
 			self:skinObject("frame", {obj=this.Description, fType=ftype, kfs=true, fb=true, ofs=6})
@@ -3355,7 +3359,9 @@ aObj.SetupRetail_UIFrames = function()
 			if not self.prdb.LFGTexture then
 				self:nilTexture(this.background, true)
 			end
-			self:nilTexture(this.filigree, true)
+			if not aObj.isRtlPTRX then
+				self:nilTexture(this.filigree, true)
+			end
 			self:nilTexture(this.bottomArt, true)
 			this.instanceInfo.underline:SetTexture(nil)
 			self:skinObject("frame", {obj=this, fType=ftype, ofs=-1, y1=-5, x2=-4})
@@ -3639,6 +3645,7 @@ aObj.SetupRetail_UIFrames = function()
 		if not self.prdb.QueueStatusFrame or self.initialized.QueueStatusFrame then return end
 		self.initialized.QueueStatusFrame = true
 
+		-- TODO: RoleIcon texture
 		self:SecureHookScript(_G.QueueStatusFrame, "OnShow", function(this)
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true})
 			-- change the colour of the Entry Separator texture

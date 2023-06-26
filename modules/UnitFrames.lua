@@ -169,8 +169,12 @@ function module:skinPlayerF()
 				or aObj.uCls == "DEATHKNIGHT"
 				then
 					for i = 1, _G.MAX_TOTEMS do
-						_G["TotemFrameTotem" .. i .. "Background"]:SetAlpha(0) -- texture is changed
-						aObj:getRegion(aObj:getChild(_G["TotemFrameTotem" .. i], 2), 1):SetAlpha(0) -- Totem Border texture
+						if not aObj.isRtlPTRX then
+							_G["TotemFrameTotem" .. i .. "Background"]:SetAlpha(0) -- texture is changed
+							aObj:getRegion(aObj:getChild(_G["TotemFrameTotem" .. i], 2), 1):SetAlpha(0) -- Totem Border texture
+						else
+							_G["TotemFrameTotem" .. i].Border:SetAlpha(0) -- texture is changed
+						end
 					end
 					aObj:moveObject{obj=_G.TotemFrameTotem1, y=lOfs} -- covers level text when active
 					y2Ofs = 9
