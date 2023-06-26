@@ -3,7 +3,7 @@ if not aObj:isAddonEnabled("Auctionator") then return end
 local _G = _G
 -- luacheck: ignore 631 (line is too long)
 
-aObj.addonsToSkin.Auctionator = function(self) -- v 10.1.6/10.1.6/10.1.6
+aObj.addonsToSkin.Auctionator = function(self) -- v 10.1.8/10.1.8/10.1.8
 
 	local function skinAuctionatorFrames()
 		if not _G.AuctionatorSellingFrame then
@@ -456,6 +456,7 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 10.1.6/10.1.6/10.1.6
 	local frameList = {
 	    "BasicOptions",
 	    "Tooltips",
+		"ShoppingAlt",
 	    "Selling",
 	    "SellingShortcuts",
 	    "SellingAllItems",
@@ -464,10 +465,7 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 10.1.6/10.1.6/10.1.6
 	    "Advanced",
 	}
 	if self.isRtl then
-		self:add2Table(frameList, "Shopping")
 		self:add2Table(frameList, "Quantities")
-	else
-		self:add2Table(frameList, "ShoppingAlt")
 	end
 	for _, name in _G.pairs(frameList) do
 		self:SecureHookScript(_G["AuctionatorConfig" .. name .. "Frame"], "OnShow", function(this)
