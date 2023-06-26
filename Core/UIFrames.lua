@@ -2565,7 +2565,7 @@ aObj.blizzFrames[ftype].StaticPopups = function(self)
 			self:skinObject("editbox", {obj=_G[objName .. "EditBox"], fType=ftype, ofs=0, y1=-4, y2=4})
 			self:skinObject("moneyframe", {obj=_G[objName .. "MoneyInputFrame"], moveIcon=true})
 			_G[objName .. "ItemFrameNameFrame"]:SetTexture(nil)
-			self:skinObject("frame", {obj=this, fType=ftype, rb=self.isClsc and true, ofs=-6})
+			self:skinObject("frame", {obj=this, fType=ftype, rb=not self.isRtl and true, ofs=-6})
 			if self.modBtns then
 				self:skinStdButton{obj=this.button1, fType=ftype, schk=true, sechk=true, y1=2}
 				self:skinStdButton{obj=this.button2, fType=ftype, schk=true, sechk=true, y1=2}
