@@ -2038,19 +2038,7 @@ aObj.blizzLoDFrames[ftype].MovePad = function(self)
 			self:skinStdButton{obj=_G.MovePadBackward}
 			self:skinStdButton{obj=_G.MovePadStrafeLeft}
 			self:skinStdButton{obj=_G.MovePadStrafeRight}
-			-- Lock button, change texture
-			local tex = _G.MovePadLock:GetNormalTexture()
-			tex:SetTexture(self.tFDIDs.gAOI)
-			tex:SetTexCoord(0, 0.25, 0, 1.0)
-			tex:SetAlpha(1)
-			tex = _G.MovePadLock:GetPushedTexture()
-			tex:SetTexture(self.tFDIDs.gAOI)
-			tex:SetTexCoord(0.25, 0.5, 0, 1.0)
-			tex:SetAlpha(0.75)
-			tex = _G.MovePadLock:GetCheckedTexture()
-			tex:SetTexture(self.tFDIDs.gAOI)
-			tex:SetTexCoord(0.25, 0.5, 0, 1.0)
-			tex:SetAlpha(1)
+			self:changeLock(_G.MovePadLock)
 			self:moveObject{obj=_G.MovePadLock, x=-6, y=7} -- move it up and left
 		end
 
