@@ -19,10 +19,9 @@ ToDos
 
 ≈		O	Refactor NewSkinFuncs in AddOn skins
 
-#8	√	I/C	All The Things Classic, reported by sausje, 23.06.23
+#11	√	I	Profession UI
+			- Skinner/RetailSupport/PlayerFrames_Retail.lua:4142: attempt to call field 'ToggleProfessionsItemFlyout' (a nil value)
+			[string "@Skinner/RetailSupport/PlayerFrames_Retail.lua"]:4142: in function <Skinner/RetailSupport/PlayerFrames_Retail.lua:4141>
 
-#9	√	I	LFGList, reported by Galthariel, 24.06.23
-			-  ...aceSkinner/RetailSupport/UIFrames_Retail.lua:2488: attempt to index global 'frame' (a nil value)
-			[string "@Skinner/RetailSupport/UIFrames_Retail.lua"]:2488: in function <...aceSkinner/RetailSupport/UIFrames_Retail.lua:2484>
-		
-#10	√	I	Auctionator, reported by Galthariel, 24.06.23
+#12		I	CharacterFrame
+			- Bug caused by AddOn?
