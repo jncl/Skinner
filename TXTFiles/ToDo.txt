@@ -25,3 +25,5 @@ ToDos
 
 #12		I	CharacterFrame
 			- Bug caused by AddOn?
+
+#13	√	I	LFGDungeonReadyPopup
