@@ -2489,7 +2489,7 @@ aObj.SetupRetail_UIFrames = function()
 				local roleBtn
 				for _, type in _G.pairs{"Healer", "Tank", "Damager"} do
 					roleBtn = this[type .. "Button"]
-					roleBtn.Texture:SetNormalTexture(self.tFDIDs.lfgIR)
+					roleBtn:SetNormalTexture(self.tFDIDs.lfgIR)
 					roleBtn.cover:SetTexture(self.tFDIDs.lfgIR)
 				end
 			end
