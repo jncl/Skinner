@@ -1,3 +1,12 @@
+beta10.50199.1
+Jncl:
+	Updated version numbers
+	Updated ToDo.txt files
+	Bugfix for LFGDungeonReadyPopup, fixes #13
+	Updated DejaCharacterStats skin
+	Updated MovePad skin
+	Bugfix for ProfessionsRecipeFlyout fixes #11
+	
 beta10.50172.1
 Jncl:
 	Updated ToDo.txt files
