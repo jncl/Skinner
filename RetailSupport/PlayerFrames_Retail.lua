@@ -3685,7 +3685,8 @@ aObj.SetupRetail_PlayerFrames = function()
 				aObj:skinCheckButton{obj=frame.AllocateBestQualityCheckBox, fType=ftype}
 			end
 		end
-		self:SecureHookScript(_G.ProfessionsFrame, "OnShow", function(this)
+		local function skinProfFrame()
+			local this = _G.ProfessionsFrame
 			self:skinObject("tabs", {obj=this.TabSystem,  pool=true, fType=ftype, ignoreSize=true, track=false})
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true})
 			if self.modBtns then
@@ -3740,6 +3741,7 @@ aObj.SetupRetail_PlayerFrames = function()
 
 				self:Unhook(fObj, "OnShow")
 			end)
+
 			self:SecureHookScript(this.CraftingPage.CraftingOutputLog, "OnShow", function(frame)
 				self:keepFontStrings(frame.ScrollBox.Shadows)
 				self:skinObject("scrollbar", {obj=frame.ScrollBar, fType=ftype})
@@ -3764,6 +3766,7 @@ aObj.SetupRetail_PlayerFrames = function()
 
 				self:Unhook(frame, "OnShow")
 			end)
+
 			self:SecureHookScript(this.CraftingPage.SchematicForm.QualityDialog, "OnShow", function(frame)
 				self:skinObject("frame", {obj=frame, fType=ftype, kfs=true, rns=true})
 				for i = 1, 3 do
@@ -3900,9 +3903,40 @@ aObj.SetupRetail_PlayerFrames = function()
 				self:Unhook(fObj, "OnShow")
 			end)
 
-			self:Unhook(this, "OnShow")
-		end)
-		self:checkShown(_G.ProfessionsFrame)
+			self:RawHook("OpenProfessionsItemFlyout", function(owner, parent)
+				local flyout = self.hooks.OpenProfessionsItemFlyout(owner, parent)
+				self:skinObject("frame", {obj=flyout, fType=ftype, kfs=true, rns=true, ofs=0})
+				if self.modBtnBs then
+					local function skinElement(...)
+						local _, element, new
+						if _G.select("#", ...) == 2 then
+							element, _ = ...
+						elseif _G.select("#", ...) == 3 then
+							element, _, new = ...
+						else
+							_, element, _, new = ...
+						end
+						if new ~= false then
+							-- TODO: sort out item colour issue
+							if not element.sbb then
+								aObj:addButtonBorder{obj=element, fType=ftype, ibt=true, relTo=element.Icon}
+							else
+								aObj:clrButtonFromBorder(element)
+							end
+						end
+					end
+					_G.ScrollUtil.AddAcquiredFrameCallback(flyout.ScrollBox, skinElement, aObj, true)
+				end
+				if self.modChkBtns then
+					self:skinCheckButton{obj=flyout.HideUnownedCheckBox, fType=ftype}
+				end
+				self:Unhook("OpenProfessionsItemFlyout")
+				return flyout
+			end, true)
+
+			_G.EventRegistry:UnregisterCallback("ProfessionsFrame.Show", self)
+		end
+		_G.EventRegistry:RegisterCallback("ProfessionsFrame.Show", skinProfFrame, self)
 
 	end
 
@@ -4131,45 +4165,6 @@ aObj.SetupRetail_PlayerFrames = function()
 		end)
 		self:checkShown(_G.ProfessionsCustomerOrdersFrame)
 
-	end
-
-	if not aObj.isRtlPTRX then
-		aObj.blizzFrames[ftype].ProfessionsRecipeFlyout = function(self)
-			if not self.prdb.Professions or self.initialized.ProfessionsRecipeFlyout then return end
-			self.initialized.ProfessionsRecipeFlyout = true
-
-			self:RawHook("OpenProfessionsItemFlyout", function(owner, parent)
-				local flyout = self.hooks.OpenProfessionsItemFlyout(owner, parent)
-				self:skinObject("frame", {obj=flyout, fType=ftype, kfs=true, rns=true, ofs=0})
-				if self.modBtnBs then
-					local function skinElement(...)
-						local _, element, new
-						if _G.select("#", ...) == 2 then
-							element, _ = ...
-						elseif _G.select("#", ...) == 3 then
-							element, _, new = ...
-						else
-							_, element, _, new = ...
-						end
-						if new ~= false then
-							-- TODO: sort out item colour issue
-							if not element.sbb then
-								aObj:addButtonBorder{obj=element, fType=ftype, ibt=true, relTo=element.Icon}
-							else
-								aObj:clrButtonFromBorder(element)
-							end
-						end
-					end
-					_G.ScrollUtil.AddAcquiredFrameCallback(flyout.ScrollBox, skinElement, aObj, true)
-				end
-				if self.modChkBtns then
-					self:skinCheckButton{obj=flyout.HideUnownedCheckBox, fType=ftype}
-				end
-				self:Unhook("OpenProfessionsItemFlyout")
-				return flyout
-			end, true)
-
-		end
 	end
 
 	aObj.blizzFrames[ftype].PVPHonorSystem = function(self)
