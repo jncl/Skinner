@@ -19,11 +19,7 @@ ToDos
 
 ≈		O	Refactor NewSkinFuncs in AddOn skins
 
-#11	√	I	Profession UI
-			- Skinner/RetailSupport/PlayerFrames_Retail.lua:4142: attempt to call field 'ToggleProfessionsItemFlyout' (a nil value)
-			[string "@Skinner/RetailSupport/PlayerFrames_Retail.lua"]:4142: in function <Skinner/RetailSupport/PlayerFrames_Retail.lua:4141>
-
 #12		I	CharacterFrame
 			- Bug caused by AddOn?
 
-#13	√	I	LFGDungeonReadyPopup
+#15	√	I	LFGListApplicationDialog
