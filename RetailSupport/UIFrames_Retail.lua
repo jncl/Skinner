@@ -2245,7 +2245,7 @@ aObj.SetupRetail_UIFrames = function()
 			end
 			for _, type in _G.pairs{"Healer", "Tank", "Damager"} do
 				roleBtn = _G["LFGDungeonReadyStatusGrouped" .. type]
-				roleBtn.texture:SetNormalTexture(self.tFDIDs.lfgIR)
+				roleBtn.texture:SetTexture(self.tFDIDs.lfgIR)
 			end
 			_G.LFGDungeonReadyStatusRolelessReady:SetTexture(self.tFDIDs.lfgIR)
 			self:skinObject("frame", {obj=_G.LFGDungeonReadyStatus, fType=ftype, kfs=true, ofs=-5})
