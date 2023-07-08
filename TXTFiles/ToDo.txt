@@ -22,4 +22,4 @@ ToDos
 #12		I	CharacterFrame
 			- Bug caused by AddOn?
 
-#15	√	I	LFGListApplicationDialog
+#16	√	I	QueueStatusFrame
