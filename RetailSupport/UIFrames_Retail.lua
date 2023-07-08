@@ -3657,9 +3657,9 @@ aObj.SetupRetail_UIFrames = function()
 					end
 					sEntry.EntrySeparator:SetColorTexture(r, g, b, 0.75)
 					local roleBtn
-					for _, type in _G.pairs{"Healer", "Tank", "Damagers"} do
-						roleBtn = frame[type .. "Found"]
-						roleBtn.Texture:SetNormalTexture(aObj.tFDIDs.lfgIR)
+					for _, type in _G.pairs{"Healers", "Tanks", "Damagers"} do
+						roleBtn = sEntry[type .. "Found"]
+						roleBtn.Texture:SetTexture(aObj.tFDIDs.lfgIR)
 						roleBtn.Cover:SetTexture(aObj.tFDIDs.lfgIR)
 					end
 				end
