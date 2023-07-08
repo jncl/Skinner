@@ -3407,7 +3407,7 @@ aObj.SetupRetail_UIFrames = function()
 			self:skinObject("scrollbar", {obj=this.Content.ScrollBar, fType=ftype})
 			self:skinObject("scrollbar", {obj=this.Content.ScrollBar, fType=ftype})
 			-- TODO: skin elements
-			local function skinElement(...)
+			local function skinElement(_)
 			-- 	local _, element, elementData, new
 			-- 	if _G.select("#", ...) == 2 then
 			-- 		element, elementData = ...
@@ -3446,7 +3446,7 @@ aObj.SetupRetail_UIFrames = function()
 			self:skinObject("scrollbar", {obj=this.content.scrollBar, fType=ftype})
 			self:skinObject("scrollbar", {obj=this.content.ScrollBar, fType=ftype})
 			-- TODO: skin elements
-			local function skinElement(...)
+			local function skinElement(_)
 				-- local _, element, elementData, new
 				-- if _G.select("#", ...) == 2 then
 				-- 	element, elementData = ...

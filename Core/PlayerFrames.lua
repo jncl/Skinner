@@ -380,7 +380,6 @@ if not aObj.isClscERA then
 					roleBtn:SetNormalTexture(aObj.tFDIDs.lfgIR)
 					roleBtn.cover:SetTexture(aObj.tFDIDs.lfgIR)
 				end
-			else
 			end
 			self:skinObject("frame", {obj=this, fType=ftype, ofs=5})
 			if self.modBtns then
