@@ -1,3 +1,11 @@
+beta10.50250.1
+Jncl:
+	Update ToDo.txt
+	Update Change_History.txt
+	Updated version numbers
+	Retail PTR changes for Profession Frame
+	Bugfix for LFGListApplicationDialog, fixes #15
+	
 beta10.50199.1
 Jncl:
 	Updated version numbers
