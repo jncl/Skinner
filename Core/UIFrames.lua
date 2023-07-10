@@ -1,10 +1,9 @@
 local _, aObj = ...
 
 local _G = _G
+-- luacheck: ignore 631 (line is too long)
 
 local ftype = "u"
-
--- luacheck: ignore 631 (line is too long)
 
 aObj.blizzFrames[ftype].AddonList = function(self)
 	if not self.prdb.AddonList or self.initialized.AddonList then return end
@@ -2772,8 +2771,10 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 		self:add2Table(toolTips, _G.SmallTextTooltip)
 	end
 	for _, tTip in _G.ipairs(toolTips) do
-		if self:hasTextInName(tTip, "ShoppingTooltip") then
-			self.ttHook[tTip] = "SetShown"
+		if self.isRtl then
+			if self:hasTextInName(tTip, "ShoppingTooltip") then
+				self.ttHook[tTip] = "SetShown"
+			end
 		end
 		addTooltip(tTip)
 	end
