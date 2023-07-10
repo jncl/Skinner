@@ -141,6 +141,7 @@
 <Script file="MinimalArchaeology.lua"/>
 <Script file="MinimapButtonFrame.lua"/>
 <Script file="MissingTradeSkillsList.lua"/>
+<Script file="ModernCharacterFrame.lua"/>
 <Script file="MogIt.lua"/>
 <Script file="mOnArs_WardrobeHelper.lua"/>
 <Script file="MountsJournal.lua"/>
