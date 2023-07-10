@@ -396,12 +396,10 @@ aObj.SetupClassic_PlayerFrames = function()
 
 		self:SecureHookScript(_G.PaperDollFrame, "OnShow", function(this)
 			self:keepFontStrings(this)
-			if self.isClsc then
-				self:skinObject("dropdown", {obj=_G.PlayerTitleDropDown, fType=ftype, y1=5, y2=13})
-			end
 			self:makeMFRotatable(_G.CharacterModelFrame)
 			_G.CharacterAttributesFrame:DisableDrawLayer("BACKGROUND")
 			if self.isClsc then
+				self:skinObject("dropdown", {obj=_G.PlayerTitleDropDown, fType=ftype, y1=5, y2=13})
 				self:skinObject("dropdown", {obj=_G.PlayerStatFrameLeftDropDown, fType=ftype})
 				self:skinObject("dropdown", {obj=_G.PlayerStatFrameRightDropDown, fType=ftype})
 			end
