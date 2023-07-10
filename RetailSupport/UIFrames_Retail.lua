@@ -2247,7 +2247,7 @@ aObj.SetupRetail_UIFrames = function()
 				roleBtn = _G["LFGDungeonReadyStatusGrouped" .. type]
 				roleBtn.texture:SetTexture(self.tFDIDs.lfgIR)
 			end
-			_G.LFGDungeonReadyStatusRolelessReady:SetTexture(self.tFDIDs.lfgIR)
+			_G.LFGDungeonReadyStatusRoleless.ready.texture:SetTexture(self.tFDIDs.lfgIR)
 			self:skinObject("frame", {obj=_G.LFGDungeonReadyStatus, fType=ftype, kfs=true, ofs=-5})
 
 			self:removeNineSlice(_G.LFGDungeonReadyDialog.Border)
