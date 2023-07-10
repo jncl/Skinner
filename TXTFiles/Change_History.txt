@@ -1,3 +1,12 @@
+beta10.50355.1
+Jncl:
+    Updated ToDo files
+    Updated Change_History.txt
+    Updated version numbers
+    luacheck changes
+    Updated LFGDungeonReadyStatus skin
+    Bugfix for QueueStatusFrame, fixes #16
+
 beta10.50250.1
 Jncl:
 	Update ToDo.txt
