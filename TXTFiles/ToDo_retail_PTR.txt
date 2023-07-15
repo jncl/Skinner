@@ -6,7 +6,27 @@ ToDo_retail_PTR
 	x				- indicates nothing to change
 	¶ is Alt+7		- indicates localisation changes required
 
-	Retail_PTR (Dragonflight 10.1.0)
+	Retail_PTR (Dragonflight 10.1.7)
 		- Added
+			- Blizzard_CompactRaidFrameManager
+				- .RestrictPingsButton
+			- Blizzard_DragonflightLandingPage
+				- .ScrollFadeOverlay
+			- Blizzard_PingUI
 		- Updated
+			- Blizzard_MajorFactionsLandingTemplates
+			- CompactUnitFrame
+			- Deprecated_ArenaUI
+			- LFDFrame
+			- LowHealthFrame
+			- Minimap
+			- PartyFrame
+			- PartyFrameTemplates
+			- PetFrame
+			- PlayerFrame
+			- QuestFrame
+			- RaidFinder
+			- RaidWarning
+			- TargetFrame
+			- UIErrorsFrame
 		- Deleted
