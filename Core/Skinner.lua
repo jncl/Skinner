@@ -32,6 +32,15 @@ do
 	-- setup callback registry
 	aObj.callbacks = _G.LibStub:GetLibrary("CallbackHandler-1.0"):New(aObj)
 
+	--@alpha@
+	aObj:RegisterEvent("ADDON_ACTION_BLOCKED", function(isTainted, func)
+		aObj:Debug("ADDON_ACTION_BLOCKED", isTainted, func, _G.debugstack(2, 3, 2))
+	end)
+	aObj:RegisterEvent("ADDON_ACTION_FORBIDDEN", function(isTainted, func)
+		aObj:Debug("ADDON_ACTION_FORBIDDEN", isTainted, func, _G.debugstack(2, 3, 2))
+	end)
+	--@end-alpha@
+
 end
 
 function aObj:OnInitialize()
