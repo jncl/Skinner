@@ -39,6 +39,8 @@ function aObj:OnInitialize()
 	self:Debug("Debugging is enabled")
 
 	self.callbacks:Fire("AddOn_OnInitialize")
+	-- remove all callbacks for this event
+	self.callbacks.events["AddOn_OnInitialize"] = nil
 
 	-- get Locale
 	self.L = _G.LibStub:GetLibrary("AceLocale-3.0"):GetLocale(aName)

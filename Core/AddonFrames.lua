@@ -185,6 +185,8 @@ function aObj:ADDON_LOADED(_, addon)
 	self:LoDFrames(addon)
 
 	self.callbacks:Fire("AddOn_Loaded", addon)
+	-- remove all callbacks for this event
+	self.callbacks.events["AddOn_Loaded"] = nil
 
 end
 

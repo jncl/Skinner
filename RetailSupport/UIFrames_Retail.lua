@@ -3107,6 +3107,8 @@ aObj.SetupRetail_UIFrames = function()
 
 			-- let AddOn skins know when frame skinned
 			self.callbacks:Fire("PetBattleUI_OnShow")
+			-- remove all callbacks for this event
+			self.callbacks.events["PetBattleUI_OnShow"] = nil
 
 			self:Unhook(this, "OnShow")
 		end)
