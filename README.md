@@ -25,6 +25,7 @@ If you have found a issue or have a skin request, please use the [issue tracker]
 ### Downloads
 
 These are available, for ALL game versions, on the following sites:
-[CurseForge](https://www.curseforge.com/wow/addons/skinner)
-[GitHub](https://github.com/jncl/Skinner)
+
+[CurseForge](https://www.curseforge.com/wow/addons/skinner),
+[GitHub](https://github.com/jncl/Skinner),
 [Wago](https://addons.wago.io/addons/skinner)
