@@ -1,3 +1,12 @@
+beta10.50355.2
+Jncl:
+    Updated ToDo.txt files
+    Updated Change_History.txt
+    Updated Tooltips skin
+    Skinned ModernCharacterFrame, closes #18
+    Bugfix for LFGDungeonReadyStatus, fixes #17
+    Updated Classic PaperDollFrame skin
+
 beta10.50355.1
 Jncl:
     Updated ToDo files
