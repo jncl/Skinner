@@ -169,7 +169,7 @@ function module:skinPlayerF()
 				or aObj.uCls == "DEATHKNIGHT"
 				then
 					for i = 1, _G.MAX_TOTEMS do
-						if not aObj.isRtlPTRX then
+						if not aObj.isRtl then
 							_G["TotemFrameTotem" .. i .. "Background"]:SetAlpha(0) -- texture is changed
 							aObj:getRegion(aObj:getChild(_G["TotemFrameTotem" .. i], 2), 1):SetAlpha(0) -- Totem Border texture
 						else

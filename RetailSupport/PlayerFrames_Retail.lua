@@ -1376,9 +1376,7 @@ aObj.SetupRetail_PlayerFrames = function()
 
 		self:SecureHookScript(_G.WardrobeCollectionFrame, "OnShow", function(this)
 			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true, upwards=true, offsets={x1=2, y1=-4, x2=-2, y2=-4}})
-			if aObj.isRtlPTRX then
-				this.InfoButton.Ring:SetTexture(nil)
-			end
+			this.InfoButton.Ring:SetTexture(nil)
 			self:skinObject("editbox", {obj=this.searchBox, fType=ftype, si=true})
 			_G.RaiseFrameLevelByTwo(this.searchBox) -- raise above SetsCollectionFrame when displayed on it
 			self:skinObject("statusbar", {obj=this.progressBar, fi=0})
@@ -2594,9 +2592,6 @@ aObj.SetupRetail_PlayerFrames = function()
 					elseif _G.select("#", ...) == 3 then
 						_, element, _ = ...
 					end
-					if not aObj.isRtlPTRX then
-						element.ActiveBg:SetTexture(nil)
-					end
 					element:GetNormalTexture():SetTexture(nil)
 					element.Name:SetTextColor(self.BT:GetRGB())
 					self:skinObject("frame", {obj=element, fType=ftype, ofs=-3, y2=4, fb=true})
@@ -3349,11 +3344,7 @@ aObj.SetupRetail_PlayerFrames = function()
 						if questTitle
 						and questTitle ~= ""
 						then
-							if not aObj.isRtlPTRX then
-								block = owningModule:GetBlock(questID, "ScrollFrame", "AutoQuestPopUpBlockTemplate")
-							else
-								block = owningModule:GetBlock(questID .. popUpType, "ScrollFrame", "AutoQuestPopUpBlockTemplate")
-							end
+							block = owningModule:GetBlock(questID .. popUpType, "ScrollFrame", "AutoQuestPopUpBlockTemplate")
 							if not block.module.hasSkippedBlocks then
 								if block.init then
 									aObj:skinObject("frame", {obj=block.ScrollChild, kfs=true, fType=ftype, ofs=0, x1=33})
@@ -3519,22 +3510,18 @@ aObj.SetupRetail_PlayerFrames = function()
 		end
 
 		local function skinRewards(frame)
-			for i = 1, #frame.Rewards do
-				frame.Rewards[i].ItemBorder:SetTexture(nil)
+			for _, reward in _G.pairs(frame.Rewards) do
+				reward.ItemBorder:SetTexture(nil)
 				if aObj.modBtnBs then
-					if not frame.Rewards[i].sbb then
-						aObj:addButtonBorder{obj=frame.Rewards[i], relTo=frame.Rewards[i].ItemIcon}
-					end
+					aObj:addButtonBorder{obj=reward, relTo=reward.ItemIcon}
 				end
 			end
 		end
-		if not aObj.isRtlPTRX then
-			self:SecureHook("BonusObjectiveTracker_AnimateReward", function(block)
+		self:SecureHook("BonusObjectiveTracker_AddReward", function(_, block, _, _)
+			if #block.module.rewardsFrame.storedData.rewards > 0 then
 				skinRewards(block.module.rewardsFrame)
-			end)
-		else
-			-- replaced by block.module.rewardsFrame:AnimateReward(block, data)
-		end
+			end
+		end)
 		self:SecureHook("ScenarioObjectiveTracker_AnimateReward", function(_)
 			_G.ObjectiveTrackerScenarioRewardsFrame:DisableDrawLayer("ARTWORK")
 			_G.ObjectiveTrackerScenarioRewardsFrame:DisableDrawLayer("BORDER")
@@ -4267,15 +4254,13 @@ aObj.SetupRetail_PlayerFrames = function()
 			aObj:skinObject("statusbar", {obj=frame.ConquestBar, fi=0, bg=frame.ConquestBar.Background})
 			local btn = frame.ConquestBar.Reward
 			btn.Ring:SetTexture(nil)
-			if not aObj.isRtlPTRX then
-				local roleBtn
-				for _, type in _G.pairs{"Healer", "Tank", "DPS"} do
-					roleBtn = frame[type .. "Icon"]
-					roleBtn:SetNormalTexture(aObj.tFDIDs.lfgIR)
-					roleBtn.cover:SetTexture(aObj.tFDIDs.lfgIR)
-				end
-			else
-			end
+			-- TODO: skin role button textures
+			-- local roleBtn
+			-- for _, type in _G.pairs{"Healer", "Tank", "DPS"} do
+			-- 	roleBtn = frame[type .. "Icon"]
+			-- 	roleBtn:SetNormalTexture(aObj.tFDIDs.lfgIR)
+			-- 	roleBtn.cover:SetTexture(aObj.tFDIDs.lfgIR)
+			-- end
 			if aObj.modBtnBs then
 				aObj:addButtonBorder{obj=btn, relTo=btn.Icon, reParent={btn.CheckMark}, clr="silver"}
 			end

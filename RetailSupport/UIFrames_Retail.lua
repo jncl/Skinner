@@ -2127,10 +2127,9 @@ aObj.SetupRetail_UIFrames = function()
 			local roleBtn
 			for _, type in _G.pairs{"Tank", "Healer", "DPS", "Leader"} do
 				roleBtn = _G[frame .. "QueueFrameRoleButton" .. type]
-				if not aObj.isRtlPTRX then
-					roleBtn:SetNormalTexture(aObj.tFDIDs.lfgIR)
-					roleBtn.cover:SetTexture(aObj.tFDIDs.lfgIR)
-				end
+				-- TODO: skin role button textures
+				-- roleBtn:SetNormalTexture(aObj.tFDIDs.lfgIR)
+				-- roleBtn.cover:SetTexture(aObj.tFDIDs.lfgIR)
 				if roleBtn.background then
 					roleBtn.background:SetTexture(nil)
 				end
@@ -2485,14 +2484,13 @@ aObj.SetupRetail_UIFrames = function()
 		-- LFGListApplication Dialog
 		self:SecureHookScript(_G.LFGListApplicationDialog, "OnShow", function(this)
 			self:removeNineSlice(this.Border)
-			if not aObj.isRtlPTRX then
-				local roleBtn
-				for _, type in _G.pairs{"Healer", "Tank", "Damager"} do
-					roleBtn = this[type .. "Button"]
-					roleBtn:SetNormalTexture(self.tFDIDs.lfgIR)
-					roleBtn.cover:SetTexture(self.tFDIDs.lfgIR)
-				end
-			end
+			-- TODO: skin role button textures
+			-- local roleBtn
+			-- for _, type in _G.pairs{"Healer", "Tank", "Damager"} do
+			-- 	roleBtn = this[type .. "Button"]
+			-- 	roleBtn:SetNormalTexture(self.tFDIDs.lfgIR)
+			-- 	roleBtn.cover:SetTexture(self.tFDIDs.lfgIR)
+			-- end
 			self:skinObject("scrollbar", {obj=this.Description.ScrollBar, fType=ftype})
 			self:skinObject("frame", {obj=this.Description, fType=ftype, kfs=true, fb=true, ofs=6})
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true})
@@ -3358,9 +3356,6 @@ aObj.SetupRetail_UIFrames = function()
 			self:removeNineSlice(this.Border)
 			if not self.prdb.LFGTexture then
 				self:nilTexture(this.background, true)
-			end
-			if not aObj.isRtlPTRX then
-				self:nilTexture(this.filigree, true)
 			end
 			self:nilTexture(this.bottomArt, true)
 			this.instanceInfo.underline:SetTexture(nil)
