@@ -4338,7 +4338,7 @@ aObj.SetupRetail_PlayerFrames = function()
 				end
 			end
 			if self.modBtnBs then
-				self:SecureHook("ConquestFrame_Update", function(fObj)
+				self:SecureHook("ConquestFrame_Update", function(_)
 					for _, btn in _G.pairs(_G.CONQUEST_BUTTONS) do
 						self:clrBtnBdr(btn.Reward, "gold")
 					end

@@ -301,8 +301,8 @@ function module:skinPlayerF()
 end
 function module:skinPetF()
 
-	if not aObj.uCls == "HUNTER"
-	or not aObj.uCls == "WARLOCK"
+	if aObj.uCls ~= "HUNTER"
+	or aObj.uCls ~= "WARLOCK"
 	then
 		return
 	end
