@@ -1397,6 +1397,7 @@ aObj.blizzFrames[ftype].HelpFrame = function(self)
 	self.initialized.HelpFrame = true
 
 	self:SecureHookScript(_G.HelpFrame, "OnShow", function(this)
+		this.TitleContainer.TitleBg:SetTexture(nil)
 		self:removeInset(this.Browser.BrowserInset)
 		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true, ri=true, rns=true, cb=true, x1=not self.isRtl and 0, x2=self.isRtl and 3 or 1})
 
