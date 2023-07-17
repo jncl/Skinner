@@ -2251,6 +2251,23 @@ if _G.PTR_IssueReporter then
 end
 
 if not aObj.isClscERA then
+aObj.blizzFrames[ftype].ReportFrame = function(self)
+	if not self.prdb.ReportFrame or self.initialized.ReportFrame then return end
+	self.initialized.ReportFrame = true
+
+	self:SecureHookScript(_G.ReportFrame, "OnShow", function(this)
+		self:removeNineSlice(this.Border)
+		self:skinObject("dropdown", {obj=this.ReportingMajorCategoryDropdown, fType=ftype})
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, cb=true, ofs=-3})
+		if self.modBtns then
+			self:skinStdButton{obj=this.ReportButton, fType=ftype}
+		end
+
+		self:Unhook(this, "OnShow")
+	end)
+
+end
+
 	aObj.blizzFrames[ftype].Settings = function(self)
 		if not self.prdb.Settings or self.initialized.Settings then return end
 		self.initialized.Settings = true
