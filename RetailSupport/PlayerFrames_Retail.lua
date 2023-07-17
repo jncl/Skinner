@@ -3834,7 +3834,7 @@ aObj.SetupRetail_PlayerFrames = function()
 					end)
 				end
 				self:skinObject("frame", {obj=bFrame, fType=ftype, kfs=true, fb=true, ofs=-1, y1=-90})
-				bFrame.RecipeList.Backgroud:SetTexture(nil) -- TODO: Backgroud is spelt incorrectly
+				bFrame.RecipeList.Background:SetTexture(nil) -- TODO: Backgroud is spelt incorrectly
 				self:removeNineSlice(bFrame.RecipeList.BackgroundNineSlice)
 				self:skinObject("editbox", {obj=bFrame.RecipeList.SearchBox, fType=ftype, si=true})
 				self:skinObject("scrollbar", {obj=bFrame.RecipeList.ScrollBar, fType=ftype})
