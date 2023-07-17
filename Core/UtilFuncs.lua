@@ -1401,6 +1401,7 @@ function aObj:skinIconSelector(frame)
 	self:removeNineSlice(frame.BorderBox)
 	frame.BorderBox.SelectedIconArea.SelectedIconButton:DisableDrawLayer("BACKGROUND")
 	self:skinObject("editbox", {obj=frame.BorderBox.IconSelectorEditBox})
+	self:skinObject("dropdown", {obj=frame.BorderBox.IconTypeDropDown.DropDownMenu})
 	self:skinObject("scrollbar", {obj=frame.IconSelector.ScrollBar})
 	self:skinObject("frame", {obj=frame, ofs=-3, x1=-2})
 	if self.modBtns then
