@@ -1,3 +1,14 @@
+beta10.50469.1
+Jncl:
+	Updated ToDo.txt files
+	Updated Change_History.txt
+	Updated version numbers
+	Added debugging checks
+	luacheck changes
+	Remove callbacks after Event
+	Applied PTR changes
+	Updated README.md
+	
 beta10.50355.2
 Jncl:
     Updated ToDo.txt files
