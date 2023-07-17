@@ -101,7 +101,7 @@ aObj.blizzFrames[ftype].MerchantFrame = function(self)
 			self:skinObject("dropdown", {obj=_G.MerchantFrameLootFilter, fType=ftype})
 			self:removeInset(_G.MerchantExtraCurrencyInset)
 			_G.MerchantExtraCurrencyBg:DisableDrawLayer("BACKGROUND")
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, y2=-3})
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, y2=-2})
 		else
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, cb=true, x2=1, y2=-3})
 		end
@@ -126,23 +126,22 @@ aObj.blizzFrames[ftype].MerchantFrame = function(self)
 		end
 		_G.MerchantBuyBackItemNameFrame:SetTexture(nil)
 		if self.modBtnBs then
-			_G.MerchantBuyBackItemSlotTexture:SetTexture(nil)
-			self:addButtonBorder{obj=_G.MerchantBuyBackItem.ItemButton, ibt=true}
-			-- remove surrounding border (diff=0.01375)
-			self:getRegion(_G.MerchantRepairItemButton, 1):SetTexCoord(0.01375, 0.2675, 0.01375, 0.54875)
-			_G.MerchantRepairAllIcon:SetTexCoord(0.295, 0.54875, 0.01375, 0.54875)
-			_G.MerchantGuildBankRepairButtonIcon:SetTexCoord(0.57375, 0.83, 0.01375, 0.54875)
-			self:addButtonBorder{obj=_G.MerchantRepairAllButton, fType=ftype, clr="gold", ca=0.5}
-			self:addButtonBorder{obj=_G.MerchantRepairItemButton, fType=ftype, clr="gold", ca=0.5}
-			self:addButtonBorder{obj=_G.MerchantGuildBankRepairButton, fType=ftype, schk=true, clr="gold", ca=0.5}
+			local btn
+			for _, type in _G.pairs{"SellAllJunk", "RepairAll", "RepairItem", "GuildBankRepair"} do
+				btn = _G["Merchant" .. type .. "Button"]
+				self:getRegion(btn, 1):SetTexture(nil)
+				self:addButtonBorder{obj=btn, fType=ftype, clr="gold"}
+			end
 			self:SecureHook("MerchantFrame_UpdateCanRepairAll", function()
-				self:clrBtnBdr(_G.MerchantRepairAllButton, "gold", 0.5)
+				self:clrBtnBdr(_G.MerchantRepairAllButton, "gold")
 			end)
 			if self.isRtl then
 				self:SecureHook("MerchantFrame_UpdateGuildBankRepair", function()
-					self:clrBtnBdr(_G.MerchantGuildBankRepairButton, "gold", 0.5)
+					self:clrBtnBdr(_G.MerchantGuildBankRepairButton, "gold")
 				end)
 			end
+			_G.MerchantBuyBackItem.SlotTexture:SetTexture(nil)
+			self:addButtonBorder{obj=_G.MerchantBuyBackItem.ItemButton, ibt=true}
 		else
 			_G.MerchantBuyBackItemSlotTexture:SetTexture(self.tFDIDs.esTex)
 		end
