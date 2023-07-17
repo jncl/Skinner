@@ -8,8 +8,7 @@ local buildInfo = {
 	-- wow_classic_beta    = {"3.4.0",  46158, "Classic Beta"},
 	-- wow_beta            = {"10.0.2", 47120, "Retail Beta"}, -- a.k.a. Dragonflight
 	wow_classic_ptr     = {"3.4.2",  50375, "Classic PTR"},
-	-- wow_classic_era_ptr = {"1.14.3", 49229, "Classic Era PTR"}, -- a.k.a. Season of Mastery PTR
-	-- wow_classic_era_ptr = {"10.1.5", 49595, "Retail PTR2"},
+	wow_classic_era_ptr = {"1.14.4", 50461, "Classic Era PTR"},
 	wow_ptr_x           = {"10.1.5", 50469, "Retail PTRX"}, -- [wowxptr]
 	wow_ptr             = {"10.1.7", 50442, "Retail PTR"},
 	-- Live
@@ -46,12 +45,10 @@ function aObj:checkVersion()
 	self.isClscBeta   = agentUID == "wow_classic_beta" and true
 	self.isClscPTR    = agentUID == "wow_classic_ptr" and true
 	self.isClsc       = agentUID == "wow_classic" and true
-	-- self.isClscERAPTR = agentUID == "wow_classic_era_ptr" and true
-	self.isClscERAPTR = false
+	self.isClscERAPTR = agentUID == "wow_classic_era_ptr" and true
 	self.isClscERA    = agentUID == "wow_classic_era" and true
 	self.isRtlBeta    = agentUID == "wow_beta" and true
 	self.isRtlPTR     = agentUID == "wow_ptr" and true
-	-- self.isRtlPTRX    = agentUID == "wow_classic_era_ptr" or "wow_ptr_x" and true
 	self.isRtlPTRX    = agentUID == "wow_ptr_x" and true
 	self.isRtl        = agentUID == "wow" and true
 	--@debug@
