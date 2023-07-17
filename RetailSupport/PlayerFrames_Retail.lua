@@ -3956,7 +3956,7 @@ aObj.SetupRetail_PlayerFrames = function()
 			-- 		end
 			-- 	end)
 			-- end
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true, cb=true, y2=0})
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true, cb=true, y2=1})
 
 			self:SecureHookScript(this.Form, "OnShow", function(fObj)
 				self:removeRegions(fObj, {1}) -- RecipeHeader
@@ -3992,6 +3992,7 @@ aObj.SetupRetail_PlayerFrames = function()
 					self:SecureHook(fObj, "UpdateReagentSlots", function(frame)
 						skinReagentBtns(frame)
 					end)
+					skinReagentBtns(fObj)
 				end
 				if self.modChkBtns then
 					self:skinCheckButton{obj=fObj.FavoriteButton, fType=ftype}
