@@ -637,6 +637,9 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 		if self.modBtns then
 			self:skinStdButton{obj=this.DefaultButton, fType=ftype}
 			self:skinStdButton{obj=this.RedockButton, fType=ftype}
+			if aObj.isClscERAPTR then
+				self:skinStdButton{obj=this.ToggleChatButton, fType=ftype}
+			end
 			self:skinStdButton{obj=_G.CombatLogDefaultButton, fType=ftype}
 			self:skinStdButton{obj=_G.TextToSpeechDefaultButton, fType=ftype}
 			self:skinStdButton{obj=_G.ChatConfigFrameCancelButton, fType=ftype}
@@ -1165,12 +1168,14 @@ aObj.blizzLoDFrames[ftype].DebugTools = function(self)
 
 	local function skinTAD(frame)
 		aObj:skinObject("editbox", {obj=frame.FilterBox, fType=ftype, si=true})
-		if aObj.isClscERA then
+		if aObj.isClscERA
+		and not aObj.isClscERAPTR
+		then
 			aObj:skinObject("slider", {obj=frame.LinesScrollFrame.ScrollBar, fType=ftype})
 		else
-			aObj:skinObject("scrollbar", {obj=frame.LinesScrollFrame.ScrollBar, fType=ftype, x1=aObj.isClsc and 1 or nil, x2=aObj.isClsc and 5 or nil})
+			aObj:skinObject("scrollbar", {obj=frame.LinesScrollFrame.ScrollBar, fType=ftype, x1=aObj.isClsc and 1 or nil, x2=not aObj.isRtl and 5 or nil})
 		end
-		aObj:skinObject("frame", {obj=frame.ScrollFrameArt, fType=ftype, rns=true, fb=true, x2=self.isClsc and -10})
+		aObj:skinObject("frame", {obj=frame.ScrollFrameArt, fType=ftype, rns=true, fb=true, x2=self.isClsc or self.isClscERAPTR and -10})
 		aObj:skinObject("frame", {obj=frame, fType=ftype, kfs=true, cb=true, ofs=-2, x1=5, x2=-1})
 		if aObj.modBtns then
 			aObj:skinOtherButton{obj=frame.OpenParentButton, font=aObj.fontS, disfont=aObj.fontDS, text=aObj.uparrow}
@@ -1482,7 +1487,9 @@ aObj.blizzLoDFrames[ftype].MacroUI = function(self)
 	self:SecureHookScript(_G.MacroFrame, "OnShow", function(this)
 		-- Top Tabs
 		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true, upwards=true, offsets={x1=1, y1=-6, x2=-1, y2=-2}, func=function(tab) tab:SetFrameLevel(20) end})
-		if self.isClscERA then
+		if self.isClscERA
+		and not self.isClscERAPTR
+		then
 			self:skinObject("frame", {obj=_G.MacroButtonScrollFrame, fType=ftype, kfs=true, fb=true, ofs=12, y1=10, x2=31})
 			self:skinObject("slider", {obj=_G.MacroButtonScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
 		else
@@ -1513,7 +1520,9 @@ aObj.blizzLoDFrames[ftype].MacroUI = function(self)
 		end
 		self:skinObject("frame", {obj=_G.MacroFrameTextBackground, fType=ftype, kfs=true, rns=true, fb=true, ofs=0, x2=1})
 		_G.MacroFrameSelectedMacroButton:DisableDrawLayer("BACKGROUND")
-		if self.isClscERA then
+		if self.isClscERA
+		and not self.isClscERAPTR
+		then
 			for i = 1, _G.MAX_ACCOUNT_MACROS do
 				_G["MacroButton" .. i]:DisableDrawLayer("BACKGROUND")
 				if self.modBtnBs then
@@ -1538,9 +1547,9 @@ aObj.blizzLoDFrames[ftype].MacroUI = function(self)
 	end)
 
 	self:SecureHookScript(_G.MacroPopupFrame, "OnShow", function(this)
-		if not self.isClscERA then
-			self:skinIconSelector(this)
-		else
+		if self.isClscERA
+		and not self.isClscERAPTR
+		then
 			self:adjHeight{obj=this, adj=20} -- so buttons don't overlay icons
 			self:removeRegions(this.BorderBox, {1, 2, 3, 4, 5, 6, 7, 8})
 			self:skinObject("editbox", {obj=_G.MacroPopupEditBox, fType=ftype})
@@ -1564,6 +1573,8 @@ aObj.blizzLoDFrames[ftype].MacroUI = function(self)
 					self:addButtonBorder{obj=_G["MacroPopupButton" .. i], relTo=_G["MacroPopupButton" .. i .. "Icon"], clr="grey", ca=0.85}
 				end
 			end
+		else
+			self:skinIconSelector(this)
 		end
 
 		self:Unhook(this, "OnShow")
@@ -2251,7 +2262,6 @@ if _G.PTR_IssueReporter then
 	end
 end
 
-if not aObj.isClscERA then
 aObj.blizzFrames[ftype].ReportFrame = function(self)
 	if not self.prdb.ReportFrame or self.initialized.ReportFrame then return end
 	self.initialized.ReportFrame = true
@@ -2269,6 +2279,11 @@ aObj.blizzFrames[ftype].ReportFrame = function(self)
 
 end
 
+-- if not aObj.isClscERA then
+if aObj.isRtl
+or aObj.isClsc
+or aObj.isClscERAPTR
+then
 	aObj.blizzFrames[ftype].Settings = function(self)
 		if not self.prdb.Settings or self.initialized.Settings then return end
 		self.initialized.Settings = true
@@ -2350,7 +2365,7 @@ end
 				end
 				if aObj.modBtnBs
 				and element.DropDown
-				and element.DropDown.IncrementButton
+				and element.DropDown.DecrementButton
 				then
 					aObj:addButtonBorder{obj=element.DropDown.IncrementButton, fType=ftype, clr="grey", ofs=-2, y1=-3}
 					aObj:addButtonBorder{obj=element.DropDown.DecrementButton, fType=ftype, clr="grey", ofs=-2, y1=-3}

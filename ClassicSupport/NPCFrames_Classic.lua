@@ -108,6 +108,9 @@ aObj.SetupClassic_NPCFrames = function()
 			_G.BrowseCloseButton:DisableDrawLayer("BORDER")
 			if self.modBtns then
 				self:skinStdButton{obj=_G.BrowseSearchButton, fType=ftype}
+				if aObj.isClscERAPTR then
+					self:skinStdButton{obj=_G.BrowseResetButton, fType=ftype, schk=true}
+				end
 				self:skinStdButton{obj=_G.BrowseCloseButton, fType=ftype}
 				self:skinStdButton{obj=_G.BrowseBuyoutButton, fType=ftype, schk=true}
 				self:skinStdButton{obj=_G.BrowseBidButton, fType=ftype, schk=true}
@@ -268,42 +271,6 @@ aObj.SetupClassic_NPCFrames = function()
 			self:Unhook(this, "OnShow")
 		end)
 
-	end
-
-	if aObj.isClscERA then
-		aObj.blizzFrames[ftype].GossipFrame = function(self)
-			if not self.prdb.GossipFrame or self.initialized.GossipFrame then return end
-			self.initialized.GossipFrame = true
-
-			if not (self:isAddonEnabled("Quester")
-			and _G.QuesterDB.gossipColor)
-			then
-				self:SecureHook("GossipFrameUpdate", function()
-					for i = 1, _G.NUMGOSSIPBUTTONS do
-						local newText, upd = self:removeColourCodes(_G["GossipTitleButton" .. i]:GetText())
-						if upd then
-							_G["GossipTitleButton" .. i]:SetText(newText)
-						end
-						_G["GossipTitleButton" .. i]:GetFontString():SetTextColor(self.BT:GetRGB())
-					end
-				end)
-			end
-
-			self:SecureHookScript(_G.GossipFrame, "OnShow", function(this)
-				self:keepFontStrings(_G.GossipFrameGreetingPanel)
-				_G.GossipGreetingText:SetTextColor(self.HT:GetRGB())
-				self:skinObject("slider", {obj=_G.GossipGreetingScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
-				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=10, y1=-18, x2=-29, y2=60})
-				if self.modBtns then
-					self:skinStdButton{obj=_G.GossipFrameGreetingGoodbyeButton}
-				end
-				self:removeRegions(_G.NPCFriendshipStatusBar, {1, 2, 5, 6, 7, 8 ,9})
-				self:skinObject("statusbar", {obj=_G.NPCFriendshipStatusBar, fi=0, bg=self:getRegion(_G.NPCFriendshipStatusBar, 10)})
-
-				self:Unhook(this, "OnShow")
-			end)
-
-		end
 	end
 
 	aObj.blizzFrames[ftype].PetStableFrame = function(self)

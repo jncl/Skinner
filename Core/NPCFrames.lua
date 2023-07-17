@@ -5,15 +5,26 @@ local _G = _G
 
 local ftype = "n"
 
-if not aObj.isClscERA then
-	aObj.blizzFrames[ftype].GossipFrame = function(self)
-		if not self.prdb.GossipFrame or self.initialized.GossipFrame then return end
-		self.initialized.GossipFrame = true
+aObj.blizzFrames[ftype].GossipFrame = function(self)
+	if not self.prdb.GossipFrame or self.initialized.GossipFrame then return end
+	self.initialized.GossipFrame = true
 
-		local skinGossip = _G.nop
-		if not (self:isAddonEnabled("Quester")
-		and _G.QuesterDB.gossipColor)
+	local skinGossip = _G.nop
+	if not (self:isAddonEnabled("Quester") and _G.QuesterDB.gossipColor) then
+		if self.isClscERA
+		and not self.isClscERAPTR
 		then
+			self:SecureHook("GossipFrameUpdate", function()
+				for i = 1, _G.NUMGOSSIPBUTTONS do
+					local newText, upd = self:removeColourCodes(_G["GossipTitleButton" .. i]:GetText())
+					if upd then
+						_G["GossipTitleButton" .. i]:SetText(newText)
+					end
+					_G["GossipTitleButton" .. i]:GetFontString():SetTextColor(self.BT:GetRGB())
+				end
+			end)
+			return
+		else
 			function skinGossip(...)
 				local _, element, elementData
 				if _G.select("#", ...) == 2 then
@@ -35,27 +46,27 @@ if not aObj.isClscERA then
 				end
 			end
 		end
-
-		self:SecureHookScript(_G.GossipFrame, "OnShow", function(this)
-			self:keepFontStrings(this.GreetingPanel)
-			self:skinObject("scrollbar", {obj=this.GreetingPanel.ScrollBar, fType=ftype})
-			_G.ScrollUtil.AddInitializedFrameCallback(this.GreetingPanel.ScrollBox, skinGossip, aObj, true)
-			local sBar = self.isRtl and this.FriendshipStatusBar or _G.NPCFriendshipStatusBar
-			self:removeRegions(sBar, {1, 2, 5, 6, 7, 8 ,9})
-			self:skinObject("statusbar", {obj=sBar, fi=0, bg=self:getRegion(sBar, 10)})
-			if self.isRtl then
-				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, x2=3})
-			else
-				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=14, y1=-18, x2=-29, y2=66})
-			end
-			if self.modBtns then
-				self:skinStdButton{obj=this.GreetingPanel.GoodbyeButton}
-			end
-
-			self:Unhook(this, "OnShow")
-		end)
-
 	end
+
+	self:SecureHookScript(_G.GossipFrame, "OnShow", function(this)
+		self:keepFontStrings(this.GreetingPanel)
+		self:skinObject("scrollbar", {obj=this.GreetingPanel.ScrollBar, fType=ftype})
+		_G.ScrollUtil.AddInitializedFrameCallback(this.GreetingPanel.ScrollBox, skinGossip, aObj, true)
+		local sBar = self.isRtl and this.FriendshipStatusBar or _G.NPCFriendshipStatusBar
+		self:removeRegions(sBar, {1, 2, 5, 6, 7, 8 ,9})
+		self:skinObject("statusbar", {obj=sBar, fi=0, bg=self:getRegion(sBar, 10)})
+		if self.isRtl then
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, x2=3})
+		else
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=14, y1=-18, x2=-29, y2=66})
+		end
+		if self.modBtns then
+			self:skinStdButton{obj=this.GreetingPanel.GoodbyeButton}
+		end
+
+		self:Unhook(this, "OnShow")
+	end)
+
 end
 
 aObj.blizzFrames[ftype].GuildRegistrar = function(self)

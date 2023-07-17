@@ -1379,7 +1379,9 @@ aObj.SetupClassic_PlayerFrames = function()
 					self:clrPNBtns("SpellBook")
 				end)
 			end
-			if self.isClsc then
+			if self.isClsc
+			or aObj.isClscERAPTR
+			then
 				if self.modChkBtns then
 					self:skinCheckButton{obj=_G.ShowAllSpellRanksCheckBox, fType=ftype}
 				end
@@ -1453,7 +1455,9 @@ aObj.SetupClassic_PlayerFrames = function()
 			self:skinObject("slider", {obj=_G[fName .. 'ScrollFrameScrollBar'], fType=ftype, rpTex="artwork"})
 			-- keep background Texture
 			self:skinObject("frame", {obj=this, fType=ftype, cb=true, x1=10, y1=-12, x2=-31, y2=74})
-			if self.isClscERA then
+			if self.isClscERA
+			and not aObj.isClscERAPTR
+			then
 				self:removeRegions(this, {1, 2, 3, 4, 5, 11, 12, 13}) -- remove portrait, border & points border
 				if self.modBtns then
 					self:skinStdButton{obj=_G[fName .. "CancelButton"], fType=ftype}
@@ -1619,7 +1623,6 @@ aObj.SetupClassic_PlayerFrames = function()
 			end
 
 		end
-
 	end
 
 end

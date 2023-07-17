@@ -133,7 +133,9 @@ function aObj:applyGradient(obj, fh, invert, rotate)
 		obj.tfade = obj:CreateTexture(nil, "BORDER", nil, -1)
 		obj.tfade:SetTexture(self.gradientTex)
 		obj.tfade:SetBlendMode("ADD")
-		if self.isClscERA then
+		if self.isClscERA
+		and not self.isClscERAPTR
+		then
 			obj.tfade:SetGradientAlpha(self:getGradientInfo(invert, rotate))
 		else
 			obj.tfade:SetGradient(self:getGradientInfo(invert, rotate))
@@ -651,20 +653,26 @@ function aObj:getGradientInfo(invert, rotate)
 
 	if self.prdb.Gradient.enable then
 		if invert then
-			if self.isClscERA then
+			if self.isClscERA
+			and not self.isClscERAPTR
+			then
 				return rotate and "HORIZONTAL" or "VERTICAL", MaxR, MaxG, MaxB, MaxA, MinR, MinG, MinB, MinA
 			else
 				return rotate and "HORIZONTAL" or "VERTICAL", aObj.gmaxClr, aObj.gminClr
 			end
 		else
-			if self.isClscERA then
+			if self.isClscERA
+			and not self.isClscERAPTR
+			then
 				return rotate and "HORIZONTAL" or "VERTICAL", MinR, MinG, MinB, MinA, MaxR, MaxG, MaxB, MaxA
 			else
 				return rotate and "HORIZONTAL" or "VERTICAL", aObj.gminClr, aObj.gmaxClr
 			end
 		end
 	else
-		if self.isClscERA then
+		if self.isClscERA
+		and not self.isClscERAPTR
+		then
 			return rotate and "HORIZONTAL" or "VERTICAL", 0, 0, 0, 1, 0, 0, 0, 1
 		else
 			return rotate and "HORIZONTAL" or "VERTICAL", _G.BLACK_FONT_COLOR, _G.BLACK_FONT_COLOR
@@ -1247,7 +1255,9 @@ function aObj:setActiveTab(tabSF)
 	if not tabSF.tfade then return end
 
 	tabSF.tfade:SetTexture(self.gradientTex)
-	if self.isClscERA then
+	if self.isClscERA
+	and not self.isClscERAPTR
+	then
 		tabSF.tfade:SetGradientAlpha(self:getGradientInfo(self.prdb.Gradient.invert, self.prdb.Gradient.rotate))
 	else
 		tabSF.tfade:SetGradient(self:getGradientInfo(self.prdb.Gradient.invert, self.prdb.Gradient.rotate))
@@ -1380,7 +1390,11 @@ function aObj:setupTextures()
 		["tMB"]       = _G.GetFileIDFromPath([[Interface\Minimap\Tracking\Mailbox]]),
 		["w8x8"]      = _G.GetFileIDFromPath([[Interface\Buttons\WHITE8X8]]),
 	}
-	if not aObj.isClscERA then
+	if aObj.isRtl
+	or aObj.isClsc
+	or aObj.isClscERAPTR
+	then
+	-- if not aObj.isClscERA then
 		self.tFDIDs["cbMin"] = _G.GetFileIDFromPath([[interface/common/minimalcheckbox.blp]]) -- Settings CheckButton
 	end
 
