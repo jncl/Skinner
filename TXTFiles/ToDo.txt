@@ -21,4 +21,7 @@ ToDos
 
 #12		I	CharacterFrame
 			- Bug caused by AddOn?
-  
+
+#19	√	I	MerchantFrame
+
+#20	√	I	ProfessionsFrameOrdersPage

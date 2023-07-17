@@ -6,7 +6,56 @@ ToDo_classic_era_PTR
 	x				- indicates nothing to change
 	¶ is Alt+7		- indicates localisation changes required
 
-	Classic_Era_PTR
+	Classic_Era_PTR (1.14.4)
 		- Added
+x			- Blizzard_AchievementUI
+x			- Blizzard_BarbershopUI
+x			- Blizzard_GlyphUI
+x			- Blizzard_PTRFeedback
+x			- Blizzard_SharedWidgetFrames
+x			- Blizzard_SocialUI
+x			- Blizzard_TokenUI
+x			- Blizzard_ToolsUI
+x			- MultiCastActionBarFrame
+x			- OverrideActionBar
+x			- PossessActionBar
+x			- PvpPopup
+x			- QueueReadyCheckFrame
+√			- ReportFrame
+x			- RuneFrame
+x			- SocialQueue
+√			- Settings
 		- Updated
+√			- Blizzard_AuctionUI
+x			- Blizzard_LookingForGroupUI
+√			- Blizzard_MacroUI
+√			- CommunitiesSettings
+√			- CommunitiesStreams
+x			- Blizzard_CompactRaidFrameManager
+x			- Blizzard_Console
+√			- Blizzard_TableInspector
+x			- Blizzard_EventTrace
+x			- InspectTalentFrame
+x			- Blizzard_ItemSocketingUI
+x			- Bindings
+√			- Blizzard_MacroUI
+x			- Blizzard_MovePad
+x			- AudioOptionsPanels
+x			- BuffFrame
+x			- ClassTrainerFrameTemplates
+x			- ContainerFrame
+x			- FontStyles
+x			- Fonts
+x			- GameMenuFrame
+√			- GossipFrame
+√			- HelpFrame
+√			- MirrorTimer
+x			- PVPFrameTemplates
+x			- PetStable
+x			- PlayerFrame
+√			- SpellBookFrame
+x			- UIPanelTemplates
 		- Deleted
+√			- InterfaceOptions
+√			- SystemOptions
+			
