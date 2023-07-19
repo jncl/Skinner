@@ -41,7 +41,7 @@ then
 			end
 			-- tabs (side)
 			local tabs = {"ChatTab", "RosterTab"}
-			if self.Rtl then
+			if self.isRtl then
 				aObj:add2Table(tabs, "GuildBenefitsTab")
 				aObj:add2Table(tabs, "GuildInfoTab")
 			end
@@ -69,7 +69,7 @@ then
 				if self.modBtns then
 					self:skinOtherButton{obj=fObj.MaximizeButton, font=self.fontS, text=self.nearrow}
 					self:skinOtherButton{obj=fObj.MinimizeButton, font=self.fontS, disfont=self.fontDS, text=self.swarrow}
-					if self.Rtl then
+					if self.isRtl then
 						self:SecureHook(this, "UpdateMaximizeMinimizeButton", function(frame)
 							self:clrBtnBdr(frame.MaximizeMinimizeFrame.MinimizeButton)
 						end)
@@ -88,7 +88,7 @@ then
 				fObj.FilligreeOverlay:DisableDrawLayer("OVERLAY")
 				fObj.FilligreeOverlay:DisableDrawLayer("BORDER")
 				self:removeInset(fObj.InsetFrame)
-				if self.Rtl then
+				if self.isRtl then
 					self:skinObject("scrollbar", {obj=fObj.ScrollBar, fType=ftype})
 					local function skinElement(...)
 						local _, element, new
@@ -127,7 +127,7 @@ then
 				end
 				self:skinObject("dropdown", {obj=fObj.DropDown, fType=ftype})
 				self:removeInset(fObj.InsetFrame)
-				if self.Rtl then
+				if self.isRtl then
 					self:skinObject("scrollbar", {obj=fObj.ScrollBar, fType=ftype})
 					local function skinElement(...)
 						local _, element, new
@@ -233,7 +233,7 @@ then
 			self:SecureHookScript(this.CommunitiesControlFrame, "OnShow", function(fObj)
 				if self.modBtns then
 					self:skinStdButton{obj=fObj.CommunitiesSettingsButton, fType=ftype}
-					if self.Rtl then
+					if self.isRtl then
 						self:skinStdButton{obj=fObj.GuildRecruitmentButton, fType=ftype, sechk=true}
 						self:skinStdButton{obj=fObj.GuildControlButton, fType=ftype}
 					end
