@@ -4,6 +4,7 @@ local _G = _G
 
 aObj.addonsToSkin.ModernCharacterFrame = function(self) -- v 0.8.2
 
+	local y2Ofs = 72
 	self:SecureHook("MCF_CharacterFrame_OnShow", function(this)
 		self:removeInset(_G.CharacterFrame.InsetRight)
 		_G.CharacterModelFrame:DisableDrawLayer("BACKGROUND")
@@ -81,7 +82,9 @@ aObj.addonsToSkin.ModernCharacterFrame = function(self) -- v 0.8.2
 			if _G.CharacterFrame.Expanded
 			and xOfs == -31
 			then
-				_G.CharacterFrame.sf:SetPoint("BOTTOMRIGHT", _G.CharacterFrame, "BOTTOMRIGHT", 171, 74)
+				_G.CharacterFrame.sf:SetPoint("BOTTOMRIGHT", _G.CharacterFrame, "BOTTOMRIGHT", 171, y2Ofs)
+			else
+				_G.CharacterFrame.sf:SetPoint("BOTTOMRIGHT", _G.CharacterFrame, "BOTTOMRIGHT", -31, y2Ofs)
 			end
 		end)
 
@@ -109,13 +112,13 @@ aObj.addonsToSkin.ModernCharacterFrame = function(self) -- v 0.8.2
 	-- hook these to adjust width of CharacterFrame skin frame
 	self:SecureHook("MCF_CharacterFrame_Collapse", function()
 		if _G.CharacterFrame.sf then
-			_G.CharacterFrame.sf:SetPoint("BOTTOMRIGHT", _G.CharacterFrame, "BOTTOMRIGHT", -31, 74)
+			_G.CharacterFrame.sf:SetPoint("BOTTOMRIGHT", _G.CharacterFrame, "BOTTOMRIGHT", -31, y2Ofs)
 		end
 
 	end)
 	self:SecureHook("MCF_CharacterFrame_Expand", function()
 		if _G.CharacterFrame.sf then
-			_G.CharacterFrame.sf:SetPoint("BOTTOMRIGHT", _G.CharacterFrame, "BOTTOMRIGHT", 171, 74)
+			_G.CharacterFrame.sf:SetPoint("BOTTOMRIGHT", _G.CharacterFrame, "BOTTOMRIGHT", 171, y2Ofs)
 		end
 
 	end)
