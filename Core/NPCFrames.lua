@@ -199,6 +199,7 @@ aObj.blizzFrames[ftype].QuestFrame = function(self)
 
 	self:SecureHookScript(_G.QuestFrame, "OnShow", function(this)
 		self:keepFontStrings(_G.QuestFrameRewardPanel)
+		_G.QuestRewardScrollFrame:DisableDrawLayer("ARTWORK")
 		self:keepFontStrings(_G.QuestFrameProgressPanel)
 		if self.isRtl then
 			self:skinObject("scrollbar", {obj=_G.QuestProgressScrollFrame.ScrollBar, fType=ftype})
