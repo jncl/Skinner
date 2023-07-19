@@ -1,3 +1,16 @@
+beta10.50469.2
+Jncl:
+	Updated ToDo.txt files
+	Updated Change_History.txt
+	Updated version numbers
+	Classic ERA PTR changes
+	Updated HelpFrame skin
+	Updated IconSelectorFrame skin
+	Updated ProfessionsFrame skin
+	Skinned ReportFrame
+	Updated MerchantFrame, fixes #19
+	Updated ProfessionsFrameOrdersPage, fixes #20
+	
 beta10.50469.1
 Jncl:
 	Updated ToDo.txt files
