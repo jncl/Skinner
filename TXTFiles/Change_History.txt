@@ -1,3 +1,13 @@
+beta10.50469.3
+Jncl:
+	Updated ToDo.txt files
+	Updated Change_History.txt
+	Updated Professions skin
+	Updated Retail version checks, fixes #22
+	Updated Options, fixes #21
+	Updated QuestFrame skin
+	Updated ModernCharacterFrame skin
+	
 beta10.50469.2
 Jncl:
 	Updated ToDo.txt files
