@@ -22,6 +22,4 @@ ToDos
 #12		I	CharacterFrame
 			- Bug caused by AddOn?
 
-#21	√	I	Options
-
-#22	√	I	CommunitiesUI
+#23		I	ADDON_ACTION_BLOCKED

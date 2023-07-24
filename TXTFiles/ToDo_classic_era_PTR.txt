@@ -13,7 +13,6 @@ x			- Blizzard_BarbershopUI
 x			- Blizzard_GlyphUI
 x			- Blizzard_PTRFeedback
 x			- Blizzard_SharedWidgetFrames
-x			- Blizzard_SocialUI
 x			- Blizzard_TokenUI
 x			- Blizzard_ToolsUI
 x			- MultiCastActionBarFrame
@@ -56,6 +55,7 @@ x			- PlayerFrame
 √			- SpellBookFrame
 x			- UIPanelTemplates
 		- Deleted
+√			- Blizzard_SocialUI
 √			- InterfaceOptions
 √			- SystemOptions
 			
