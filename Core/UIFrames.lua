@@ -2262,28 +2262,27 @@ if _G.PTR_IssueReporter then
 	end
 end
 
-aObj.blizzFrames[ftype].ReportFrame = function(self)
-	if not self.prdb.ReportFrame or self.initialized.ReportFrame then return end
-	self.initialized.ReportFrame = true
-
-	self:SecureHookScript(_G.ReportFrame, "OnShow", function(this)
-		self:removeNineSlice(this.Border)
-		self:skinObject("dropdown", {obj=this.ReportingMajorCategoryDropdown, fType=ftype})
-		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, cb=true, ofs=-3})
-		if self.modBtns then
-			self:skinStdButton{obj=this.ReportButton, fType=ftype}
-		end
-
-		self:Unhook(this, "OnShow")
-	end)
-
-end
-
 -- if not aObj.isClscERA then
 if aObj.isRtl
 or aObj.isClsc
 or aObj.isClscERAPTR
 then
+	aObj.blizzFrames[ftype].ReportFrame = function(self)
+		if not self.prdb.ReportFrame or self.initialized.ReportFrame then return end
+		self.initialized.ReportFrame = true
+
+		self:SecureHookScript(_G.ReportFrame, "OnShow", function(this)
+			self:removeNineSlice(this.Border)
+			self:skinObject("dropdown", {obj=this.ReportingMajorCategoryDropdown, fType=ftype})
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, cb=true, ofs=-3})
+			if self.modBtns then
+				self:skinStdButton{obj=this.ReportButton, fType=ftype}
+			end
+
+			self:Unhook(this, "OnShow")
+		end)
+
+	end
 	aObj.blizzFrames[ftype].Settings = function(self)
 		if not self.prdb.Settings or self.initialized.Settings then return end
 		self.initialized.Settings = true
@@ -2529,8 +2528,12 @@ aObj.blizzFrames[ftype].SharedBasicControls = function(self)
 
 end
 
---> N.B. The following frame can't be skinned, as the XML has a ScopedModifier element saying forbidden="true"
-	-- SocialUI
+if aObj.isClscERA
+and not aObj.isClscERAPTR
+then -- luacheck: ignore 542 (empty if branch)
+	--> N.B. The following frame can't be skinned, as the XML has a ScopedModifier element saying forbidden="true"
+		-- SocialUI
+end
 
 aObj.blizzFrames[ftype].StackSplit = function(self)
 	if not self.prdb.StackSplit or self.initialized.StackSplit then return end
@@ -2899,7 +2902,7 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 		end
 		-- aObj:Debug("skinWidget: [%s, %s, %s, %s, %s, %s, %s]", wFrame, wFrame:GetDebugName(), wFrame.widgetType, wFrame.widgetTag, wFrame.widgetSetID, wFrame.widgetID, wInfo)
 
-		-- luacheck: ignore 542 ((W542) empty if branch)
+		-- luacheck: ignore 542 (empty if branch)
 		if wFrame.widgetType == 0 then -- IconAndText (World State: ICONS at TOP)
 			-- N.B. DON'T add buttonborder to Icon(s)
 		elseif wFrame.widgetType == 1 then -- CaptureBar (World State: Capture bar on RHS)
