@@ -634,12 +634,13 @@ then
 		self:checkShown(_G.CommunitiesFrame)
 
 		self:SecureHookScript(_G.CommunitiesSettingsDialog, "OnShow", function(this)
+			this.Separator:SetTexture(nil)
 			this.IconPreviewRing:SetTexture(nil)
 			self:skinObject("editbox", {obj=this.NameEdit, fType=ftype})
 			self:skinObject("editbox", {obj=this.ShortNameEdit, fType=ftype})
 			self:skinObject("frame", {obj=this.MessageOfTheDay, fType=ftype, kfs=true, fb=true, ofs=8})
 			self:skinObject("frame", {obj=this.Description, fType=ftype, kfs=true, fb=true, ofs=8})
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ofs=-10})
+			self:skinObject("frame", {obj=this, fType=ftype, ofs=-10})
 			if self.modBtns then
 				self:skinStdButton{obj=this.ChangeAvatarButton}
 				self:skinStdButton{obj=this.Delete}
