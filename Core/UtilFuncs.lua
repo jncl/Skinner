@@ -368,15 +368,16 @@ function aObj:checkAndRun(funcName, funcType, LoD, quiet)
 			self:CustomPrint(1, 0, 0, funcName, "not skinned, flagged as disabled (c&R)")
 			hadWarning[funcName] = true
 		end
+		tObj[funcName] = nil
 		return
+	end
+
+	self:Debug2("checkAndRun #2: [%s]", _G.type(tObj[funcName]))
+	if _G.type(tObj[funcName]) == "function" then
+		return safecall(funcName, tObj[funcName], nil, quiet)
 	else
-		self:Debug2("checkAndRun #2: [%s]", _G.type(tObj[funcName]))
-		if _G.type(tObj[funcName]) == "function" then
-			return safecall(funcName, tObj[funcName], nil, quiet)
-		else
-			if not quiet and self.prdb.Warnings then
-				self:CustomPrint(1, 0, 0, "function [" .. funcName .. "] not found in " .. aName .. " (c&R)")
-			end
+		if not quiet and self.prdb.Warnings then
+			self:CustomPrint(1, 0, 0, "function [" .. funcName .. "] not found in " .. aName .. " (c&R)")
 		end
 	end
 

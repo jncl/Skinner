@@ -1340,10 +1340,10 @@ aObj.SetupOptions = function(self)
 
 	-- module options
 	for _, mod in self:IterateModules() do
-		if mod:IsEnabled() then
-			if mod.GetOptions then
-				self.optTables["Modules"].args[mod.name] = mod:GetOptions()
-			end
+		if mod:IsEnabled()
+		and mod.GetOptions
+		then
+			self.optTables["Modules"].args[mod.name] = mod:GetOptions()
 		end
 	end
 

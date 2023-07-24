@@ -43,8 +43,8 @@ if not aObj.isRtl then
 			sBar.TextString:SetPoint(oPnt[1], oPnt[2], oPnt[3], oPnt[4], oPnt[5] + yAdj)
 		end
 		if sBar == _G.PlayerFrame.healthbar then
-			self:RawHook(sBar, "SetPoint", function(this, posn, xOfs, yOfs)
-				self.hooks[this].SetPoint(this, posn, xOfs, yOfs + yAdj)
+			module:RawHook(sBar, "SetPoint", function(this, posn, xOfs, yOfs)
+				module.hooks[this].SetPoint(this, posn, xOfs, yOfs + yAdj)
 			end, true)
 		else
 			oPnt = {sBar:GetPoint()}
@@ -52,42 +52,82 @@ if not aObj.isRtl then
 		end
 
 	end
-else
-	local function colourManaBar(manaBar)
-		local powerType, powerToken, altR, altG, altB = _G.UnitPowerType(manaBar.unit)
-		local info = _G.PowerBarColor[powerToken]
-		if info then
-			local playerDeadOrGhost = (manaBar.unit == "player" and (_G.UnitIsDead("player") or _G.UnitIsGhost("player")))
-			if playerDeadOrGhost then
-				manaBar:SetStatusBarColor(0.6, 0.6, 0.6, 0.5)
-			else
-				manaBar:SetStatusBarColor(info.r, info.g, info.b)
-			end
-		elseif altR then
-			manaBar:SetStatusBarColor(altR, altG, altB)
-		else
-			info = _G.PowerBarColor[powerType] or _G.PowerBarColor["MANA"]
-			manaBar:SetStatusBarColor(info.r, info.g, info.b)
-		end
-		-- change colour if white
-		aObj:rawHook(manaBar, "SetStatusBarColor", function(this, r, g, b, a)
-			if r ~= 1
-			or g ~= 1
-			or b ~= 1
-			then
-				aObj.hooks[this].SetStatusBarColor(this, r, g, b, a)
-			end
-		end, true)
-	end
-	-- hook this to manage colour changes
-	aObj:SecureHook("UnitFrameHealthBar_Update", function(statusbar, _)
-		statusbar:SetStatusBarColor(0, 1, 0) -- green
-	end)
-	aObj:SecureHook("UnitFrameManaBar_UpdateType", function(statusbar, _)
-		colourManaBar(statusbar)
-	end)
 end
-function module:skinUnitButton(opts) -- luacheck: ignore self
+local function changeUFOpacity()
+
+	-- handle in combat
+	if _G.InCombatLockdown() then
+	    aObj:add2Table(aObj.oocTab, {changeUFOpacity, {nil}})
+	    return
+	end
+
+	for i = 1 ,#unitFrames do
+		if _G[unitFrames[i]].sf then
+			_G[unitFrames[i]].sf:SetAlpha(db.alpha)
+		end
+		if _G[unitFrames[i]].totFrame
+		and _G[unitFrames[i]].totFrame.sf
+		then
+			_G[unitFrames[i]].totFrame.sf:SetAlpha(db.alpha)
+		end
+	end
+	for i = 1, _G.MAX_BOSS_FRAMES do
+		if _G["Boss" .. i .. "TargetFrame"].sf then
+			_G["Boss" .. i .. "TargetFrame"].sf:SetAlpha(db.alpha)
+		end
+	end
+	for i = 1, _G.MAX_PARTY_MEMBERS do
+		if _G["PartyMemberFrame" .. i].sf then
+			_G["PartyMemberFrame" .. i].sf:SetAlpha(db.alpha)
+			_G["PartyMemberFrame" .. i .. "PetFrame"].sf:SetAlpha(db.alpha)
+		end
+	end
+	if _G.PartyMemberBackground.sf then
+		_G.PartyMemberBackground:SetAlpha(db.alpha)
+	end
+
+	if _G.IsAddOnLoaded("Blizzard_ArenaUI") then
+		if _G.ArenaPrepBackground.sf then
+			_G.ArenaPrepBackground.sf:SetAlpha(db.alpha)
+		end
+		if _G.ArenaEnemyBackground.sf then
+			_G.ArenaEnemyBackground.sf:SetAlpha(db.alpha)
+		end
+		for i = 1, _G.MAX_ARENA_ENEMIES do
+			if _G["ArenaEnemyFrame" .. i].sf then
+				_G["ArenaEnemyFrame" .. i].sf:SetAlpha(db.alpha)
+				_G["ArenaEnemyFrame" .. i .. "PetFrame"].sf:SetAlpha(db.alpha)
+			end
+		end
+	end
+
+end
+function module:adjustUnitFrames(opt)
+
+	if opt == "init" then
+		self:skinPlayerF()
+		self:skinPetF()
+		self:skinTargetF()
+		self:skinFocusF()
+		self:skinPartyF()
+		self:skinPartyTooltip()
+	elseif opt == "player" then
+		self:skinPlayerF()
+	elseif opt == "pet" then
+		self:skinPetF()
+	elseif opt == "target" then
+		self:skinTargetF()
+	elseif opt == "focus" then
+		self:skinFocusF()
+	elseif opt == "party" then
+		self:skinPartyF()
+		self:skinPartyTooltip()
+	elseif opt == "alpha" then
+		changeUFOpacity()
+	end
+
+end
+function module:skinUnitButton(opts) -- luacheck: ignore 212 (unused argument)
 
 	-- setup offset values
 	opts.ofs = opts.ofs or 0
@@ -126,6 +166,7 @@ function module:skinPlayerF()
 			end
 			-- PowerBarAlt handled in MainMenuBar function (UIF)
 			-- casting bar handled in CastingBar function (PF)
+			local x1Ofs, y1Ofs, x2Ofs, y2Ofs
 			if not aObj.isRtl then
 				_G.PlayerFrameBackground:SetTexture(nil)
 				_G.PlayerFrameTexture:SetAlpha(0) -- texture file is changed dependant upon in vehicle or not
@@ -144,19 +185,7 @@ function module:skinPlayerF()
 				end)
 				_G.PlayerRestIcon:SetPoint("TOPLEFT", 36, -63)
 				aObj:keepFontStrings(_G.PlayerFrameGroupIndicator)
-			else
-				frame.PlayerFrameContainer.FrameTexture:SetAlpha(0) -- texture file is changed dependant upon in vehicle or not
-				frame.PlayerFrameContainer.VehicleFrameTexture:SetAlpha(0) -- texture file is changed dependant upon in vehicle or not
-				aObj:keepFontStrings(frame.PlayerFrameContent.PlayerFrameContentContextual.GroupIndicator)
-				aObj:skinObject("statusbar", {obj=frame.PlayerFrameContent.PlayerFrameContentMain.HealthBarArea.PlayerFrameHealthBarAnimatedLoss, fi=0})
-				aObj:skinObject("statusbar", {obj=frame.healthbar, fi=0, other={frame.myHealPredictionBar, frame.otherHealPredictionBar}})
-				aObj:skinObject("statusbar", {obj=frame.manabar, fi=0, other={frame.myManaCostPredictionBar, frame.manabar.FeedbackFrame.BarTexture}, hookFunc=true})
-				-- _G.PlayerFrameAlternateManaBar.DefaultBackground:SetAlpha(1)
-				-- aObj:skinObject("statusbar", {obj=_G.PlayerFrameAlternateManaBar, regions={2, 3, 4, 5, 6}, fi=0, bg=_G.PlayerFrameAlternateManaBar.DefaultBackground})
-			end
-			local x1Ofs, y1Ofs, x2Ofs, y2Ofs = 35, -5, 2, 2
-			-- skin the EclipseBarFrame/ComboPoints, if required
-			if not aObj.isRtl then
+				x1Ofs, y1Ofs, x2Ofs, y2Ofs = 35, -5, 2, 2
 				if aObj.uCls == "DRUID"
 				or aObj.uCls == "ROGUE"
 				then
@@ -164,32 +193,19 @@ function module:skinPlayerF()
 						_G.ComboFrame.ComboPoints[i]:DisableDrawLayer("BACKGROUND")
 					end
 				end
-				--	skin the TotemFrame, if required
 				if aObj.uCls == "SHAMAN"
 				or aObj.uCls == "DEATHKNIGHT"
 				then
 					for i = 1, _G.MAX_TOTEMS do
-						if not aObj.isRtl then
-							_G["TotemFrameTotem" .. i .. "Background"]:SetAlpha(0) -- texture is changed
-							aObj:getRegion(aObj:getChild(_G["TotemFrameTotem" .. i], 2), 1):SetAlpha(0) -- Totem Border texture
-						else
-							_G["TotemFrameTotem" .. i].Border:SetAlpha(0) -- texture is changed
-						end
+						_G["TotemFrameTotem" .. i .. "Background"]:SetAlpha(0) -- texture is changed
+						aObj:getRegion(aObj:getChild(_G["TotemFrameTotem" .. i], 2), 1):SetAlpha(0) -- Totem Border texture
 					end
 					aObj:moveObject{obj=_G.TotemFrameTotem1, y=lOfs} -- covers level text when active
 					y2Ofs = 9
 				end
-				-- skin the PaladinPowerBarFrame, if required
-				if aObj.uCls == "PALADIN" then
-					_G.PaladinPowerBarFrame:DisableDrawLayer("BACKGROUND")
-					_G.PaladinPowerBarFrame.glow:DisableDrawLayer("BACKGROUND")
-					y2Ofs = 6
-				end
-				-- skin the ArcaneChargesFrame, if required
 				if aObj.uCls == "MAGE" then
 					_G.MageArcaneChargesFrame:DisableDrawLayer("BACKGROUND")
 				end
-				-- skin the MonkHarmonyBar/MonkStaggerBar, if required
 				if aObj.uCls == "MONK" then
 					-- MonkHarmonyBarFrame (Windwalker)
 					aObj:removeRegions(_G.MonkHarmonyBarFrame, {1, 2})
@@ -212,7 +228,11 @@ function module:skinPlayerF()
 						y2Ofs = 3
 					end
 				end
-				-- skin the PriestBarFrame/InsanityBarFrame, if required
+				if aObj.uCls == "PALADIN" then
+					_G.PaladinPowerBarFrame:DisableDrawLayer("BACKGROUND")
+					_G.PaladinPowerBarFrame.glow:DisableDrawLayer("BACKGROUND")
+					y2Ofs = 6
+				end
 				if aObj.uCls == "PRIEST" then
 					for i = 1, #_G.PriestBarFrame.LargeOrbs do
 						_G.PriestBarFrame.LargeOrbs[i].Highlight:SetTexture(nil)
@@ -224,25 +244,31 @@ function module:skinPlayerF()
 					_G.InsanityBarFrame.InsanityOn.PortraitOverlay:SetTexture(nil)
 					_G.InsanityBarFrame.InsanityOn.TopShadowStay:SetTexture(nil)
 				end
-				-- skin the WarlockPowerFrame, if required
 				if aObj.uCls == "WARLOCK" then
 					_G.WarlockPowerFrame:DisableDrawLayer("BACKGROUND") -- Shard(s) background texture
 				end
 			else
-				if aObj.uCls == "DEATHKNIGHT" then	-- luacheck: ignore 542 (empty if branch)
-					-- RuneFrame
-				elseif aObj.uCls == "DRACTHYR" then	-- luacheck: ignore 542 (empty if branch)
-					-- EssencePlayerFrame
-				elseif aObj.uCls == "DRUID" then
+				frame.PlayerFrameContainer.FrameTexture:SetAlpha(0) -- texture file is changed dependant upon in vehicle or not
+				frame.PlayerFrameContainer.VehicleFrameTexture:SetAlpha(0) -- texture file is changed dependant upon in vehicle or not
+				aObj:keepFontStrings(frame.PlayerFrameContent.PlayerFrameContentContextual.GroupIndicator)
+				aObj:skinObject("statusbar", {obj=frame.PlayerFrameHealthBarAnimatedLoss, fi=0})
+				aObj:skinObject("statusbar", {obj=frame.healthbar, fi=0, other={frame.myHealPredictionBar, frame.otherHealPredictionBar}})
+				aObj:skinObject("statusbar", {obj=frame.manabar, fi=0, other={frame.myManaCostPredictionBar, frame.manabar.FeedbackFrame.BarTexture}, hookFunc=true})
+				x1Ofs, y1Ofs, x2Ofs, y2Ofs = 14, -10, -12, 11
+				-- DEATHKNIGHT RuneFrame
+				-- DRACTHYR EssencePlayerFrame
+				if aObj.uCls == "DRUID" then
 					for btn in _G.ComboPointDruidPlayerFrame.classResourceButtonPool:EnumerateActive() do
 						btn.PointOff:SetAlpha(0)
 					end
-				elseif aObj.uCls == "MAGE" then
+				end
+				if aObj.uCls == "MAGE" then
 					_G.MageArcaneChargesFrame:DisableDrawLayer("BACKGROUND")
 					for btn in _G.MageArcaneChargesFrame.classResourceButtonPool:EnumerateActive() do
 						btn:DisableDrawLayer("BACKGROUND")
 					end
-				elseif aObj.uCls == "MONK" then
+				end
+				if aObj.uCls == "MONK" then
 					aObj:removeRegions(_G.MonkHarmonyBarFrame, {1, 2})
 					for btn in _G.MonkHarmonyBarFrame.classResourceButtonPool:EnumerateActive() do
 						btn:DisableDrawLayer("BACKGROUND")
@@ -253,7 +279,8 @@ function module:skinPlayerF()
 							aObj:Unhook(fObj, "UpdateMaxPower")
 						end
 					end)
-				elseif aObj.uCls == "PRIEST" then
+				end
+				if aObj.uCls == "PRIEST" then
 					_G.PriestBarFrame:DisableDrawLayer("BACKGROUND")
 					for _, lOrb in _G.pairs(_G.PriestBarFrame.LargeOrbs) do
 						lOrb.Bg:SetTexture(nil)
@@ -263,34 +290,34 @@ function module:skinPlayerF()
 					end
 					_G.InsanityBarFrame.InsanityOn.PortraitOverlay:SetTexture(nil)
 					_G.InsanityBarFrame.InsanityOn.TopShadowStay:SetTexture(nil)
-				elseif aObj.uCls == "ROGUE" then
+				end
+				if aObj.uCls == "ROGUE" then
 					for btn in _G.ComboPointPlayerFrame.classResourceButtonPool:EnumerateActive() do
 						btn.PointOff:SetAlpha(0)
 					end
-				elseif aObj.uCls == "SHAMAN" then
+				end
+				if aObj.uCls == "SHAMAN" then
 					local function skinTotems(fObj)
 						for btn  in fObj.totemPool:EnumerateActive() do
 							aObj:getRegion(btn, 1):SetAlpha(0) -- Background texture
 							aObj:getRegion(aObj:getChild(btn, 2), 1):SetAlpha(0) -- TotemBorder texture
 						end
 					end
-					self:SecureHook(_G.TotemFrame, "Update", function(this)
+					module:SecureHook(_G.TotemFrame, "Update", function(this)
 						skinTotems(this)
 					end)
 					skinTotems(_G.TotemFrame)
-				elseif aObj.uCls == "WARLOCK" then
+				end
+				if aObj.uCls == "WARLOCK" then
 					for btn in _G.WarlockPowerFrame.classResourceButtonPool:EnumerateActive() do
 						btn:DisableDrawLayer("BACKGROUND")
 					end
 				end
 			end
 			-- skin the frame here as preceeding code changes y2Ofs value
-			if aObj.isRtl then
-				x1Ofs, y1Ofs, x2Ofs, y2Ofs = 14, -10, -12, 11
-			end
 			module:skinUnitButton{obj=frame, ti=true, x1=x1Ofs, y1=y1Ofs, x2=x2Ofs, y2=y2Ofs}
 		end
-		self:SecureHookScript(_G.PlayerFrame, "OnShow", function(this)
+		module:SecureHookScript(_G.PlayerFrame, "OnShow", function(this)
 			skinPlayerFrame(this)
 
 			self:Unhook(this, "OnShow")
@@ -385,7 +412,7 @@ function module:skinPetF()
 				end
 			end
 		end
-		self:SecureHookScript(_G.PetFrame, "OnShow", function(this)
+		module:SecureHookScript(_G.PetFrame, "OnShow", function(this)
 			skinPetFrame(this)
 
 			self:Unhook(this, "OnShow")
@@ -413,7 +440,7 @@ function module:skinCommon(fName, adjSB)
 	aObj:skinObject("statusbar", {obj=fo.manabar, fi=0, hookFunc=true})
 	if not aObj.isRtl then
 		if adjSB then
-			self:adjustStatusBarPosn(fo.healthbar)
+			module:adjustStatusBarPosn(fo.healthbar)
 		end
 	else
 		if fo.TargetFrameContent then
@@ -424,64 +451,56 @@ function module:skinCommon(fName, adjSB)
 end
 function module:skinButton(fName, ti)
 
-	local fo = _G[fName]
+	local fObj = _G[fName]
 	local x1Ofs, y1Ofs, x2Ofs, y2Ofs
-	if fo.isBossFrame then
-		if not aObj.isRtl then
+	if not aObj.isRtl then
+		if fObj.isBossFrame then
 			x1Ofs, y1Ofs, x2Ofs, y2Ofs = -1, -14, -72, -10
 		else
-			x1Ofs, y1Ofs, x2Ofs, y2Ofs = 44, -20, -44, 10
+			x1Ofs, y1Ofs, x2Ofs, y2Ofs = -2, -5, -35, 0
+			-- move level & highlevel down, so they are more visible
+			aObj:moveObject{obj=_G[fName .. "TextureFrameLevelText"], x=2, y=lOfs}
 		end
 	else
-		if not aObj.isRtl then
-			x1Ofs, y1Ofs, x2Ofs, y2Ofs = -2, -5, -35, 0
+		if fObj.isBossFrame then
+			x1Ofs, y1Ofs, x2Ofs, y2Ofs = 44, -20, -44, 10
 		else
 			x1Ofs, y1Ofs, x2Ofs, y2Ofs = 14, -12, -14, 12
 		end
 	end
 
-	self:skinUnitButton{obj=fo, ti=ti or true, x1=x1Ofs, y1=y1Ofs, x2=x2Ofs, y2=y2Ofs}
+	self:skinUnitButton{obj=fObj, ti=ti or true, x1=x1Ofs, y1=y1Ofs, x2=x2Ofs, y2=y2Ofs}
 	self:skinCommon(fName, true)
 	if not aObj.isClscERA then
-		if fo.threatNumericIndicator then
-			fo.threatNumericIndicator:DisableDrawLayer("ARTWORK")
-		end
-	end
-
-	if not fo.isBossFrame then
-		-- move level & highlevel down, so they are more visible
-		if not aObj.isRtl then
-			aObj:moveObject{obj=_G[fName .. "TextureFrameLevelText"], x=2, y=lOfs}
+		if fObj.threatNumericIndicator then
+			fObj.threatNumericIndicator:DisableDrawLayer("ARTWORK")
 		end
 	end
 
 	-- create a texture to show UnitClassification
-	fo.ucTex = fo:CreateTexture(nil, "ARTWORK")
+	fObj.ucTex = fObj:CreateTexture(nil, "ARTWORK")
 	if not aObj.isRtl then
-		fo.ucTex:SetSize(80, 50)
-		fo.ucTex:SetPoint("CENTER", fo.isBossFrame and 36 or 86, (fo.isBossFrame and -15 or -25) + lOfs)
+		fObj.ucTex:SetSize(80, 50)
+		fObj.ucTex:SetPoint("CENTER", fObj.isBossFrame and 36 or 86, (fObj.isBossFrame and -15 or -25) + lOfs)
 	else
-		if fo.isBossFrame then
-			fo.ucTex:SetSize(90, 70)
-			fo.ucTex:SetPoint("CENTER", 50, 0 + lOfs)
-		-- else
-		-- 	fo.ucTex:SetSize(80, 50)
-		-- 	fo.ucTex:SetPoint("CENTER", 86, -25 + lOfs)
+		if fObj.isBossFrame then
+			fObj.ucTex:SetSize(90, 70)
+			fObj.ucTex:SetPoint("CENTER", 50, 0 + lOfs)
 		end
 	end
 
-	if fo.spellbar then
-		aObj:changeShield(fo.spellbar.BorderShield, fo.spellbar.Icon)
-		fo.spellbar.Border:SetAlpha(0) -- texture file is changed dependant upon spell type
+	if fObj.spellbar then
+		aObj:changeShield(fObj.spellbar.BorderShield, fObj.spellbar.Icon)
+		fObj.spellbar.Border:SetAlpha(0) -- texture file is changed dependant upon spell type
 		if not aObj.isRtl then
-			aObj:adjHeight{obj=fo.spellbar, adj=2}
-			fo.spellbar.Flash:SetAllPoints()
-			fo.spellbar.Text:ClearAllPoints()
-			fo.spellbar.Text:SetPoint("TOP", 0, 3)
-			aObj:skinObject("statusbar", {obj=fo.spellbar, fi=0, bg=aObj:getRegion(fo.spellbar, 1), other={fo.spellbar.Flash}})
+			aObj:adjHeight{obj=fObj.spellbar, adj=2}
+			fObj.spellbar.Flash:SetAllPoints()
+			fObj.spellbar.Text:ClearAllPoints()
+			fObj.spellbar.Text:SetPoint("TOP", 0, 3)
+			aObj:skinObject("statusbar", {obj=fObj.spellbar, fi=0, bg=aObj:getRegion(fObj.spellbar, 1), other={fObj.spellbar.Flash}})
 		else
-			aObj:nilTexture(fo.spellbar.TextBorder, true)
-			aObj:skinObject("statusbar", {obj=fo.spellbar--[[, fi=0]], bg=fo.spellbar.Background, hookFunc=true})
+			aObj:nilTexture(fObj.spellbar.TextBorder, true)
+			aObj:skinObject("statusbar", {obj=fObj.spellbar--[[, fi=0]], bg=fObj.spellbar.Background, hookFunc=true})
 		end
 	end
 
@@ -509,7 +528,7 @@ function module:skinTargetF()
 				aObj:moveObject{obj=_G["TargetFrameToTHealthBar"], y=-2} -- move HealthBar down to match other frames
 			end
 		end
-		self:SecureHookScript(_G.TargetFrame, "OnShow", function(this)
+		module:SecureHookScript(_G.TargetFrame, "OnShow", function(this)
 			skinTargetFrame(this)
 
 			self:Unhook(this, "OnShow")
@@ -528,7 +547,7 @@ function module:skinTargetF()
 		end
 		if not aObj.isRtl then
 			for i = 1, _G.MAX_BOSS_FRAMES do
-				self:SecureHookScript(_G["Boss" .. i .. "TargetFrame"], "OnShow", function(this)
+				module:SecureHookScript(_G["Boss" .. i .. "TargetFrame"], "OnShow", function(this)
 					skinBossTargetFrame(this)
 
 					self:Unhook(this, "OnShow")
@@ -537,7 +556,7 @@ function module:skinTargetF()
 			end
 		else
 			for _, frame in _G.pairs(_G.BossTargetFrameContainer.BossTargetFrames) do
-				self:SecureHookScript(frame, "OnShow", function(this)
+				module:SecureHookScript(frame, "OnShow", function(this)
 					skinBossTargetFrame(this)
 
 					self:Unhook(this, "OnShow")
@@ -566,7 +585,7 @@ function module:skinFocusF()
 				aObj:moveObject{obj=_G["FocusFrameToTHealthBar"], y=-2} -- move HealthBar down to match other frames
 			end
 		end
-		self:SecureHookScript(_G.FocusFrame, "OnShow", function(this)
+		module:SecureHookScript(_G.FocusFrame, "OnShow", function(this)
 			skinFocusFrame(this)
 
 			self:Unhook(this, "OnShow")
@@ -580,6 +599,7 @@ function module:skinPartyF()
 	if db.party
 	and not self.isSkinned["Party"]
 	then
+		aObj:Debug("skinPartyF function")
 		local function skinPartyMemberFrame(frame)
 			if _G.InCombatLockdown() then
 			    aObj:add2Table(aObj.oocTab, {skinPartyMemberFrame, {frame}})
@@ -614,7 +634,7 @@ function module:skinPartyF()
 		end
 		if not aObj.isRtl then
 			for i = 1, _G.MAX_PARTY_MEMBERS do
-				self:SecureHookScript(_G["PartyMemberFrame" .. i], "OnShow", function(this)
+				module:SecureHookScript(_G["PartyMemberFrame" .. i], "OnShow", function(this)
 					skinPartyMemberFrame(this)
 
 					self:Unhook(this, "OnShow")
@@ -624,7 +644,7 @@ function module:skinPartyF()
 			aObj:skinObject("frame", {obj=_G.PartyMemberBackground, fType=ftype, x1=4, y2=2})
 		else
 			for frame in _G.PartyFrame.PartyMemberFramePool:EnumerateActive() do
-				self:SecureHookScript(frame, "OnShow", function(this)
+				module:SecureHookScript(frame, "OnShow", function(this)
 					skinPartyMemberFrame(this)
 
 					self:Unhook(this, "OnShow")
@@ -659,61 +679,12 @@ function module:skinPartyTooltip()
 				end
 			end
 		end
-		if not self:IsHooked(_G.PartyMemberBuffTooltip, "OnShow") then
-			self:SecureHookScript(_G.PartyMemberBuffTooltip, "OnShow", function(this)
+		if not module:IsHooked(_G.PartyMemberBuffTooltip, "OnShow") then
+			module:SecureHookScript(_G.PartyMemberBuffTooltip, "OnShow", function(this)
 				skinPartyMemberBuffTooltip(this)
 
 				self:Unhook(this, "OnShow")
 			end)
-		end
-	end
-
-end
-local function changeUFOpacity()
-
-	-- handle in combat
-	if _G.InCombatLockdown() then
-	    aObj:add2Table(aObj.oocTab, {changeUFOpacity, {nil}})
-	    return
-	end
-
-	for i = 1 ,#unitFrames do
-		if _G[unitFrames[i]].sf then
-			_G[unitFrames[i]].sf:SetAlpha(db.alpha)
-		end
-		if _G[unitFrames[i]].totFrame
-		and _G[unitFrames[i]].totFrame.sf
-		then
-			_G[unitFrames[i]].totFrame.sf:SetAlpha(db.alpha)
-		end
-	end
-	for i = 1, _G.MAX_BOSS_FRAMES do
-		if _G["Boss" .. i .. "TargetFrame"].sf then
-			_G["Boss" .. i .. "TargetFrame"].sf:SetAlpha(db.alpha)
-		end
-	end
-	for i = 1, _G.MAX_PARTY_MEMBERS do
-		if _G["PartyMemberFrame" .. i].sf then
-			_G["PartyMemberFrame" .. i].sf:SetAlpha(db.alpha)
-			_G["PartyMemberFrame" .. i .. "PetFrame"].sf:SetAlpha(db.alpha)
-		end
-	end
-	if _G.PartyMemberBackground.sf then
-		_G.PartyMemberBackground:SetAlpha(db.alpha)
-	end
-
-	if _G.IsAddOnLoaded("Blizzard_ArenaUI") then
-		if _G.ArenaPrepBackground.sf then
-			_G.ArenaPrepBackground.sf:SetAlpha(db.alpha)
-		end
-		if _G.ArenaEnemyBackground.sf then
-			_G.ArenaEnemyBackground.sf:SetAlpha(db.alpha)
-		end
-		for i = 1, _G.MAX_ARENA_ENEMIES do
-			if _G["ArenaEnemyFrame" .. i].sf then
-				_G["ArenaEnemyFrame" .. i].sf:SetAlpha(db.alpha)
-				_G["ArenaEnemyFrame" .. i .. "PetFrame"].sf:SetAlpha(db.alpha)
-			end
 		end
 	end
 
@@ -752,7 +723,9 @@ function module:OnInitialize()
 
 end
 
-function module:OnDisable() -- luacheck: ignore self
+function module:OnDisable() -- luacheck: ignore 212 (unused argument)
+
+	module:UnhookAll()
 
 	aObj.blizzLoDFrames[ftype].ArenaUI = _G.nop
 
@@ -760,7 +733,43 @@ end
 
 function module:OnEnable()
 
-	self:adjustUnitFrames("init")
+	if aObj.isRtl then
+		local function colourManaBar(manaBar)
+			local powerType, powerToken, altR, altG, altB = _G.UnitPowerType(manaBar.unit)
+			local info = _G.PowerBarColor[powerToken]
+			if info then
+				local playerDeadOrGhost = (manaBar.unit == "player" and (_G.UnitIsDead("player") or _G.UnitIsGhost("player")))
+				if playerDeadOrGhost then
+					manaBar:SetStatusBarColor(0.6, 0.6, 0.6, 0.5)
+				else
+					manaBar:SetStatusBarColor(info.r, info.g, info.b)
+				end
+			elseif altR then
+				manaBar:SetStatusBarColor(altR, altG, altB)
+			else
+				info = _G.PowerBarColor[powerType] or _G.PowerBarColor["MANA"]
+				manaBar:SetStatusBarColor(info.r, info.g, info.b)
+			end
+			-- change colour if white
+			if not module:IsHooked(manaBar, "SetStatusBarColor") then
+				module:RawHook(manaBar, "SetStatusBarColor", function(this, r, g, b, a)
+					if r ~= 1
+					or g ~= 1
+					or b ~= 1
+					then
+						module.hooks[this].SetStatusBarColor(this, r, g, b, a)
+					end
+				end, true)
+			end
+		end
+		-- hook this to manage colour changes
+		module:SecureHook("UnitFrameHealthBar_Update", function(statusbar, _)
+			statusbar:SetStatusBarColor(0, 1, 0) -- green
+		end)
+		module:SecureHook("UnitFrameManaBar_UpdateType", function(statusbar, _)
+			colourManaBar(statusbar)
+		end)
+	end
 
 	if db.target
 	or db.focus
@@ -786,44 +795,20 @@ function module:OnEnable()
 		end
 		if not aObj.isRtl then
 			-- hook this to show/hide the elite texture
-			self:SecureHook("TargetFrame_CheckClassification", function(frame, _)
+			module:SecureHook("TargetFrame_CheckClassification", function(frame, _)
 				chgTex(frame)
 			end)
 		else
-			self:SecureHook(_G.TargetFrame, "CheckClassification", function(this, _)
+			module:SecureHook(_G.TargetFrame, "CheckClassification", function(this, _)
 				chgTex(this)
 			end)
-			self:SecureHook(_G.FocusFrame, "CheckClassification", function(this, _)
+			module:SecureHook(_G.FocusFrame, "CheckClassification", function(this, _)
 				chgTex(this)
 			end)
 		end
 	end
 
-end
-
-function module:adjustUnitFrames(opt)
-
-	if opt == "init" then
-		self:skinPlayerF()
-		self:skinPetF()
-		self:skinTargetF()
-		self:skinFocusF()
-		self:skinPartyF()
-		self:skinPartyTooltip()
-	elseif opt == "player" then
-		self:skinPlayerF()
-	elseif opt == "pet" then
-		self:skinPetF()
-	elseif opt == "target" then
-		self:skinTargetF()
-	elseif opt == "focus" then
-		self:skinFocusF()
-	elseif opt == "party" then
-		self:skinPartyF()
-		self:skinPartyTooltip()
-	elseif opt == "alpha" then
-		changeUFOpacity()
-	end
+	self:adjustUnitFrames("init")
 
 end
 

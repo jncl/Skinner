@@ -11,9 +11,11 @@ do
 	for _, lib in _G.pairs(lTab) do
 		hasError = not _G.assert(_G.LibStub:GetLibrary(lib, true), aName .. " requires " .. lib)
 	end
-	if hasError then return end
+	if hasError then
+		return
+	end
 
-	-- create the addon and make it available in the Global namespace (Ara-Broker-... addons use its by name if available)
+	-- create the addon and make it available in the Global namespace (Ara-Broker-... addons use it by name if available)
 	_G.Skinner = _G.LibStub:GetLibrary("AceAddon-3.0"):NewAddon(aObj, aName, "AceConsole-3.0", "AceEvent-3.0", "AceHook-3.0")
 
 	aObj:checkVersion()
@@ -32,11 +34,14 @@ do
 	aObj.callbacks = _G.LibStub:GetLibrary("CallbackHandler-1.0"):New(aObj)
 
 	--@alpha@
-	aObj:RegisterEvent("ADDON_ACTION_BLOCKED", function(isTainted, func)
-		aObj:Debug("ADDON_ACTION_BLOCKED", isTainted, func, _G.debugstack(2, 3, 2))
+	local function handleEvent(event, addonName, addonFunc)
+		aObj:Debug(event, addonName, addonFunc, _G.debugstack(2, 3, 2))
+	end
+	aObj:RegisterEvent("ADDON_ACTION_BLOCKED", function(...)
+		handleEvent(...)
 	end)
-	aObj:RegisterEvent("ADDON_ACTION_FORBIDDEN", function(isTainted, func)
-		aObj:Debug("ADDON_ACTION_FORBIDDEN", isTainted, func, _G.debugstack(2, 3, 2))
+	aObj:RegisterEvent("ADDON_ACTION_FORBIDDEN", function(...)
+		handleEvent(...)
 	end)
 	--@end-alpha@
 
