@@ -3,7 +3,7 @@ local aName, aObj = ...
 local _G = _G
 -- luacheck: ignore 631 (line is too long)
 
-function aObj:addBackdrop(obj) -- luacheck: ignore self
+function aObj:addBackdrop(obj) -- luacheck: ignore 212 (unused argument)
 
 	if not obj.ApplyBackdrop then
 		_G.Mixin(obj, _G.BackdropTemplateMixin)
@@ -31,7 +31,7 @@ local function __adjHeight(opts)
 	end
 
 end
-function aObj:adjHeight(...) -- luacheck: ignore self
+function aObj:adjHeight(...) -- luacheck: ignore 212 (unused argument)
 
 	local opts = _G.select(1, ...)
 
@@ -72,7 +72,7 @@ local function __adjWidth(opts)
 	end
 
 end
-function aObj:adjWidth(...) -- luacheck: ignore self
+function aObj:adjWidth(...) -- luacheck: ignore 212 (unused argument)
 
 	local opts = _G.select(1, ...)
 
@@ -208,13 +208,13 @@ function aObj:applyTooltipGradient(obj)
 
 end
 
-function aObj:capitStr(str) -- luacheck: ignore self
+function aObj:capitStr(str) -- luacheck: ignore 212 (unused argument)
 
 	return str:sub(1,1):upper() .. str:sub(2):lower()
 
 end
 
-function aObj:changeMinusPlusTex(obj, minus) -- luacheck: ignore self
+function aObj:changeMinusPlusTex(obj, minus) -- luacheck: ignore 212 (unused argument)
 	--@alpha@
 	_G.assert(obj, "Unknown object changeMinusPlusTex\n" .. _G.debugstack(2, 3, 2))
 	--@end-alpha@
@@ -409,6 +409,7 @@ function aObj:checkAndRunAddOn(addonName, addonFunc, LoD)
 			self:CustomPrint(1, 0, 0, addonName, "not skinned, flagged as disabled (c&RA)")
 			hadWarning[addonName] = true
 		end
+		addonFunc = nil -- luacheck: ignore 311 (value is unused)
 		return
 	end
 
@@ -420,7 +421,7 @@ function aObj:checkAndRunAddOn(addonName, addonFunc, LoD)
 			self.lmAddons[addonName:lower()] = addonFunc -- store with lowercase addonname (AddonLoader fix)
 		-- Nil out loaded Skins for Addons that aren't loaded
 		elseif addonFunc then
-			addonFunc = nil -- luacheck: ignore addonFunc
+			addonFunc = nil -- luacheck: ignore 311 (value is unused)
 		end
 	else
 		-- check to see if AddonSkin is loaded when Addon is loaded
@@ -453,7 +454,7 @@ function aObj:checkLoadable(addonName)
 
 end
 
-function aObj:checkShown(frame) -- luacheck: ignore self
+function aObj:checkShown(frame) -- luacheck: ignore 212 (unused argument)
 
 	if frame:IsShown() then
 		frame:Hide()
@@ -488,7 +489,7 @@ end
 
 -- colour Frame border based upon Covenant
 local tKit, r, g, b
-function aObj:clrCovenantBdr(frame, uiTextureKit) -- luacheck: ignore self
+function aObj:clrCovenantBdr(frame, uiTextureKit) -- luacheck: ignore 212 (unused argument)
 
 	tKit = uiTextureKit or _G.C_Covenants.GetCovenantData(_G.C_Covenants.GetActiveCovenantID()).textureKit
 	r, g, b = _G.COVENANT_COLORS[tKit]:GetRGB()
@@ -509,7 +510,7 @@ function aObj:clrPNBtns(framePrefix, isObj)
 
 end
 
-function aObj:findFrame(height, width, children) -- luacheck: ignore self
+function aObj:findFrame(height, width, children) -- luacheck: ignore 212 (unused argument)
 	-- find frame by matching children's object types
 
 	local matched, frame
@@ -551,7 +552,7 @@ function aObj:findFrame(height, width, children) -- luacheck: ignore self
 
 end
 
-function aObj:findFrame2(parent, objType, ...) -- luacheck: ignore self
+function aObj:findFrame2(parent, objType, ...) -- luacheck: ignore 212 (unused argument)
 	--@alpha@
 	_G.assert(parent, "Unknown object findFrame2\n" .. _G.debugstack(2, 3, 2))
 	--@end-alpha@
@@ -600,7 +601,7 @@ function aObj:findFrame2(parent, objType, ...) -- luacheck: ignore self
 
 end
 
-function aObj:getChild(obj, childNo) -- luacheck: ignore self
+function aObj:getChild(obj, childNo) -- luacheck: ignore 212 (unused argument)
 	--@alpha@
 	_G.assert(obj, "Unknown object getChild\n" .. _G.debugstack(2, 3, 2))
 	--@end-alpha@
@@ -681,7 +682,7 @@ function aObj:getGradientInfo(invert, rotate)
 
 end
 
-function aObj:getInt(num) -- luacheck: ignore self
+function aObj:getInt(num) -- luacheck: ignore 212 (unused argument)
 	--@alpha@
 	_G.assert(num, "Missing number\n" .. _G.debugstack(2, 3, 2))
 	-- handle AddOn skins still using this code rather than _G.Round
@@ -692,7 +693,7 @@ function aObj:getInt(num) -- luacheck: ignore self
 
 end
 
-function aObj:getKeys(curTab) -- luacheck: ignore self
+function aObj:getKeys(curTab) -- luacheck: ignore 212 (unused argument)
 
 	if not curTab then return end
 
@@ -723,7 +724,7 @@ function aObj:getLastRegion(obj)
 
 end
 
-function aObj:getRegion(obj, regNo) -- luacheck: ignore self
+function aObj:getRegion(obj, regNo) -- luacheck: ignore 212 (unused argument)
 	--@alpha@
 	_G.assert(obj, "Unknown object getRegion\n" .. _G.debugstack(2, 3, 2))
 	_G.assert(regNo, "Missing value getRegion\n" .. _G.debugstack(2, 3, 2))
@@ -733,7 +734,7 @@ function aObj:getRegion(obj, regNo) -- luacheck: ignore self
 
 end
 
-function aObj:hasTextInName(obj, text) -- luacheck: ignore self
+function aObj:hasTextInName(obj, text) -- luacheck: ignore 212 (unused argument)
 	--@alpha@
 	_G.assert(obj, "Unknown object hasTextInName\n" .. _G.debugstack(2, 3, 2))
 	_G.assert(text, "Missing value hasTextInName\n" .. _G.debugstack(2, 3, 2))
@@ -743,7 +744,7 @@ function aObj:hasTextInName(obj, text) -- luacheck: ignore self
 
 end
 
-function aObj:hasTextInDebugNameRE(obj, text) -- luacheck: ignore self
+function aObj:hasTextInDebugNameRE(obj, text) -- luacheck: ignore 212 (unused argument)
 	--@alpha@
 	_G.assert(obj, "Unknown object hasTextInName\n" .. _G.debugstack(2, 3, 2))
 	_G.assert(text, "Missing value hasTextInName\n" .. _G.debugstack(2, 3, 2))
@@ -753,7 +754,7 @@ function aObj:hasTextInDebugNameRE(obj, text) -- luacheck: ignore self
 
 end
 
-function aObj:hasAnyTextInName(obj, tab) -- luacheck: ignore self
+function aObj:hasAnyTextInName(obj, tab) -- luacheck: ignore 212 (unused argument)
 	--@alpha@
 	_G.assert(obj, "Unknown object hasAnyTextInName\n" .. _G.debugstack(2, 3, 2))
 	_G.assert(tab, "Missing value hasAnyTextInName\n" .. _G.debugstack(2, 3, 2))
@@ -775,7 +776,7 @@ function aObj:hasAnyTextInName(obj, tab) -- luacheck: ignore self
 
 end
 
-function aObj:hasTextInTexture(obj, text) -- luacheck: ignore self
+function aObj:hasTextInTexture(obj, text) -- luacheck: ignore 212 (unused argument)
 	--@alpha@
 	_G.assert(obj, "Unknown object hasTextInTexture\n" .. _G.debugstack(2, 3, 2))
 	_G.assert(text, "Missing value hasTextInTexture\n" .. _G.debugstack(2, 3, 2))
@@ -875,7 +876,7 @@ function aObj:isDropDown(obj)
 
 end
 
-function aObj:keepFontStrings(obj, hide) -- luacheck: ignore self
+function aObj:keepFontStrings(obj, hide) -- luacheck: ignore 212 (unused argument)
 	--@alpha@
 	_G.assert(obj, "Missing object kFS\n" .. _G.debugstack(2, 3, 2))
 	--@end-alpha@
@@ -991,7 +992,7 @@ local function __moveObject(opts)
 	opts.obj:SetPoint(point, relTo, relPoint, xOfs, yOfs)
 
 end
-function aObj:moveObject(...) -- luacheck: ignore self
+function aObj:moveObject(...) -- luacheck: ignore 212 (unused argument)
 
 	local opts = _G.select(1, ...)
 
@@ -1017,7 +1018,7 @@ function aObj:moveObject(...) -- luacheck: ignore self
 
 end
 
-function aObj:nilTexture(obj, nop) -- luacheck: ignore self
+function aObj:nilTexture(obj, nop) -- luacheck: ignore 212 (unused argument)
 
 	obj:SetTexture(nil)
 	obj:SetAtlas(nil)
@@ -1037,7 +1038,7 @@ function aObj:rawHook(obj, method, func, sec)
 
 end
 
-function aObj:removeBackdrop(obj, nop) -- luacheck: ignore self
+function aObj:removeBackdrop(obj, nop) -- luacheck: ignore 212 (unused argument)
 
 	if obj.ClearBackdrop then
 		obj:ClearBackdrop()
@@ -1066,7 +1067,7 @@ local function tohex(str)
 	end))
 end
 --@end-debug@
-function aObj:removeColourCodes(text) -- luacheck: ignore self
+function aObj:removeColourCodes(text) -- luacheck: ignore 212 (unused argument)
 
 	-- N.B. codes checked for are ASCII
 	if text then
@@ -1091,7 +1092,7 @@ local function ddlBBO(frame)
 	frame:DisableDrawLayer("BORDER")
 	frame:DisableDrawLayer("OVERLAY")
 end
-function aObj:removeInset(frame) -- luacheck: ignore self
+function aObj:removeInset(frame) -- luacheck: ignore 212 (unused argument)
 	--@alpha@
 	_G.assert(frame, "Unknown object removeInset\n" .. _G.debugstack(2, 3, 2))
 	--@end-alpha@
@@ -1104,7 +1105,7 @@ function aObj:removeInset(frame) -- luacheck: ignore self
 
 end
 
-function aObj:removeMagicBtnTex(btn) -- luacheck: ignore self
+function aObj:removeMagicBtnTex(btn) -- luacheck: ignore 212 (unused argument)
 	--@alpha@
 	_G.assert(btn, "Unknown object removeMagicBtnTex\n" .. _G.debugstack(2, 3, 2))
 	--@end-alpha@
@@ -1115,7 +1116,7 @@ function aObj:removeMagicBtnTex(btn) -- luacheck: ignore self
 
 end
 
-function aObj:removeNineSlice(frame) -- luacheck: ignore self
+function aObj:removeNineSlice(frame) -- luacheck: ignore 212 (unused argument)
 	--@alpha@
 	_G.assert(frame, "Unknown object removeNineSlice\n" .. _G.debugstack(2, 3, 2))
 	--@end-alpha@
@@ -1144,7 +1145,7 @@ function aObj:removeRegions(obj, regions)
 
 end
 
-function aObj:resizeTabs(frame) -- luacheck: ignore self
+function aObj:resizeTabs(frame) -- luacheck: ignore 212 (unused argument)
 	--@alpha@
 	_G.assert(frame, "Unknown object resizeTabs\n" .. _G.debugstack(2, 3, 2))
 	--@end-alpha@
@@ -1196,7 +1197,7 @@ function aObj:rmRegionsTex(obj, regions)
 
 end
 
-function aObj:round2(num, idp) -- luacheck: ignore self
+function aObj:round2(num, idp) -- luacheck: ignore 212 (unused argument)
 	--@alpha@
 	_G.assert(num, "Missing number\n" .. _G.debugstack(2, 3, 2))
 	--@end-alpha@
@@ -1218,13 +1219,13 @@ local function scanChildren(obj)
 	aObj.callbacks.events[obj .. "_GetChildren"] = nil
 
 end
-function aObj:scanUIParentsChildren() -- luacheck: ignore self
+function aObj:scanUIParentsChildren() -- luacheck: ignore 212 (unused argument)
 
 	scanChildren("UIParent")
 
 end
 
-function aObj:scanWorldFrameChildren() -- luacheck: ignore self
+function aObj:scanWorldFrameChildren() -- luacheck: ignore 212 (unused argument)
 
 	scanChildren("WorldFrame")
 
@@ -1443,7 +1444,7 @@ function aObj:skinIconSelector(frame)
 
 end
 
-function aObj:skinNavBarButton(btn) -- luacheck: ignore self
+function aObj:skinNavBarButton(btn) -- luacheck: ignore 212 (unused argument)
 
 	btn:DisableDrawLayer("OVERLAY")
 	btn:GetNormalTexture():SetAlpha(0)
@@ -1452,7 +1453,7 @@ function aObj:skinNavBarButton(btn) -- luacheck: ignore self
 end
 
 --@debug@
-function aObj:tableCount(table) -- luacheck: ignore self
+function aObj:tableCount(table) -- luacheck: ignore 212 (unused argument)
 
 	local count = 0
 
@@ -1487,7 +1488,7 @@ function aObj:updateSBTexture()
 
 end
 
-function aObj:unwrapTextFromColourCode(text, sOfs, eOfs) -- luacheck: ignore self
+function aObj:unwrapTextFromColourCode(text, sOfs, eOfs) -- luacheck: ignore 212 (unused argument)
 
 	local newText = _G.gsub(text, "\124", "\124\124") -- turn Hex string into text
 
@@ -1500,7 +1501,7 @@ function aObj:unwrapTextFromColourCode(text, sOfs, eOfs) -- luacheck: ignore sel
 
 end
 
-function aObj:RaiseFrameLevelByFour(frame) -- luacheck: ignore self
+function aObj:RaiseFrameLevelByFour(frame) -- luacheck: ignore 212 (unused argument)
 
 	frame:SetFrameLevel(frame:GetFrameLevel() + 4)
 

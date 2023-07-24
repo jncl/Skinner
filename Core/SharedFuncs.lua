@@ -93,7 +93,7 @@ function aObj:checkVersion()
 
 end
 
-function aObj:add2Table(table, value) -- luacheck: ignore self
+function aObj:add2Table(table, value) -- luacheck: ignore 212 (unused argument)
 	--@alpha@
 	_G.assert(table, "Unknown table add2Table\n" .. _G.debugstack(2, 3, 2))
 	_G.assert(value, "Missing value add2Table\n" .. _G.debugstack(2, 3, 2))
@@ -238,7 +238,7 @@ end
 local function printIt(text, frame, r, g, b)
 	(frame or _G.DEFAULT_CHAT_FRAME):AddMessage(text, r, g, b)
 end
-function aObj:CustomPrint(r, g, b, ...) -- luacheck: ignore self
+function aObj:CustomPrint(r, g, b, ...) -- luacheck: ignore 212 (unused argument)
 
 	printIt(_G.WrapTextInColorCode(aName, "ffffff78") .. " " .. makeText(...), nil, r, g, b)
 

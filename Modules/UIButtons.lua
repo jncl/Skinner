@@ -133,7 +133,7 @@ local function __checkTex(opts)
 	end
 
 end
-function module:checkTex(...) -- luacheck: ignore self
+function module:checkTex(...) -- luacheck: ignore 212 (unused argument)
 
 	local opts = _G.select(1, ...)
 
@@ -154,6 +154,7 @@ function module:checkTex(...) -- luacheck: ignore self
 	__checkTex(opts)
 
 end
+
 if not aObj.isRtl then
 	_G.DULL_RED_FONT_COLOR = _G.CreateColor(0.75, 0.15, 0.15)
 end
@@ -239,7 +240,7 @@ function module:clrButtonFromBorder(bObj, texture)
 
 end
 
-function module:clrBtnBdr(bObj, clrName, alpha) -- luacheck: ignore self
+function module:clrBtnBdr(bObj, clrName, alpha) -- luacheck: ignore 212 (unused argument)
 
 	-- check button state and alter colour accordingly
 	clrName = bObj.IsEnabled and not bObj:IsEnabled() and "disabled" or clrName
@@ -247,7 +248,7 @@ function module:clrBtnBdr(bObj, clrName, alpha) -- luacheck: ignore self
 
 end
 
-function module:isButton(obj) -- luacheck: ignore self
+function module:isButton(obj) -- luacheck: ignore 212 (unused argument)
 
 	-- ignore named/AceConfig/XConfig/AceGUI objects
 	if aObj:hasAnyTextInName(obj, {"AceConfig", "XConfig", "AceGUI"}) then return end
@@ -289,7 +290,7 @@ function module:isButton(obj) -- luacheck: ignore self
 
 end
 
-function module:secureHook(obj, method, func) -- luacheck: ignore self
+function module:secureHook(obj, method, func) -- luacheck: ignore 212 (unused argument)
 
 	if not module:IsHooked(obj, method) then
 		module:SecureHook(obj, method, func)
@@ -392,20 +393,20 @@ function module:skinCloseButton(opts)
 	end
 
 end
-function module:skinCloseButton1(opts) -- luacheck: ignore self
+function module:skinCloseButton1(opts) -- luacheck: ignore 212 (unused argument)
 -- text on button
 	opts.cb = nil
 	module:skinCloseButton(opts)
 
 end
-function module:skinCloseButton2(opts) -- luacheck: ignore self
+function module:skinCloseButton2(opts) -- luacheck: ignore 212 (unused argument)
 -- text on skinButton
 	opts.cb2 = nil
 	opts.onSB = true
 	module:skinCloseButton(opts)
 
 end
-function module:skinCloseButton3(opts) -- luacheck: ignore self
+function module:skinCloseButton3(opts) -- luacheck: ignore 212 (unused argument)
 -- small text on skinButton (used by Details)
 	opts.font = module.fontSBX
 	opts.cb3 = nil
@@ -437,7 +438,11 @@ function module:skinExpandButton(opts)
 	end
 
 	-- don't skin it twice (BUGFIX)
-	if opts.obj and opts.obj.sb then return end
+	if opts.obj
+	and opts.obj.sb
+	then
+		return
+	end
 
 	if not opts.noddl then
 		opts.obj:DisableDrawLayer("BACKGROUND")
@@ -455,9 +460,6 @@ function module:skinExpandButton(opts)
 			end)
 		end
 	else -- Ace3, Archy, ReagentRestocker
-		-- opts.aso.bd  = opts.aso.bd or 6
-		-- opts.aso.obj = opts.obj
-		-- aObj:applySkin(opts.aso)
 		aObj:skinObject("skin", {obj=opts.obj, fType=opts.ftype, bd=opts.aso.bd or 6})
 	end
 	opts.obj.onSB = opts.onSB -- store this for use in checkTex function
@@ -474,13 +476,13 @@ function module:skinExpandButton(opts)
 	end
 
 end
-function module:skinExpandButton1(opts) -- luacheck: ignore self
+function module:skinExpandButton1(opts) -- luacheck: ignore 212 (unused argument)
 -- text on skinButton
 	opts.onSB = true
 	module:skinExpandButton(opts)
 
 end
-function module:skinExpandButton2(opts) -- luacheck: ignore self
+function module:skinExpandButton2(opts) -- luacheck: ignore 212 (unused argument)
 -- text on button
 	opts.sap = true
 	module:skinExpandButton(opts)
@@ -534,7 +536,7 @@ function module:skinOtherButton(opts)
 	end
 
 end
-function module:skinOtherButton1(opts) -- luacheck: ignore self
+function module:skinOtherButton1(opts) -- luacheck: ignore 212 (unused argument)
 -- text on button
 	opts.font = module.fontP
 	opts.text = opts.ob
@@ -542,7 +544,7 @@ function module:skinOtherButton1(opts) -- luacheck: ignore self
 	module:skinOtherButton(opts)
 
 end
-function module:skinOtherButton2(opts) -- luacheck: ignore self
+function module:skinOtherButton2(opts) -- luacheck: ignore 212 (unused argument)
 -- small text on button
 	opts.size = 18
 	opts.sap = true
@@ -552,7 +554,7 @@ function module:skinOtherButton2(opts) -- luacheck: ignore self
 	module:skinOtherButton(opts)
 
 end
-function module:skinOtherButton3(opts) -- luacheck: ignore self
+function module:skinOtherButton3(opts) -- luacheck: ignore 212 (unused argument)
 -- sizeUp/Down text on button
 
 	opts.font = module.fontS
@@ -561,7 +563,7 @@ function module:skinOtherButton3(opts) -- luacheck: ignore self
 	module:skinOtherButton(opts)
 
 end
-function module:skinOtherButton4(opts) -- luacheck: ignore self
+function module:skinOtherButton4(opts) -- luacheck: ignore 212 (unused argument)
 -- Normal text on button
 
 	opts.font = "GameFontNormal"
@@ -643,14 +645,14 @@ function module:skinStdButton(opts)
 		end)
 	end
 	if opts.sechk then
-		module:SecureHook(opts.obj, "SetEnabled", function(bObj)
+		module:secureHook(opts.obj, "SetEnabled", function(bObj)
 			module:clrBtnBdr(bObj, bObj.sb.clr or bObj.clr, bObj.sb.ca or bObj.ca)
 		end)
 	end
 
 end
 
-function module:skinButton(opts) -- luacheck: ignore self
+function module:skinButton(opts) -- luacheck: ignore 212 (unused argument)
 --[[
 	Calling parameters:
 		as = use applySkin rather than addSkinButton, used when text appears behind the gradient
@@ -744,7 +746,7 @@ local function __skinAllButtons(opts, bgen)
 	end
 
 end
-function module:skinAllButtons(...) -- luacheck: ignore self
+function module:skinAllButtons(...) -- luacheck: ignore 212 (unused argument)
 
 	local opts = _G.select(1, ...)
 
@@ -941,13 +943,13 @@ local function __addButtonBorder(opts)
 		end)
 	end
 	if opts.sechk then
-		module:SecureHook(opts.obj, "SetEnabled", function(bObj)
+		module:secureHook(opts.obj, "SetEnabled", function(bObj)
 			module:clrBtnBdr(bObj, bObj.sbb.clr, bObj.sbb.ca)
 		end)
 	end
 
 end
-function module:addButtonBorder(...) -- luacheck: ignore self
+function module:addButtonBorder(...) -- luacheck: ignore 212 (unused argument)
 
 	local opts = _G.select(1, ...)
 
@@ -1020,7 +1022,7 @@ local function __skinCheckButton(opts)
 	aObj:skinObject("button", {obj=opts.obj, fType=opts.ftype, bd=bd, ng=true, ofs=ofs, y2=yOfs, clr="grey"})
 
 end
-function module:skinCheckButton(...) -- luacheck: ignore self
+function module:skinCheckButton(...) -- luacheck: ignore 212 (unused argument)
 
 	local opts = _G.select(1, ...)
 
@@ -1093,7 +1095,7 @@ function module:OnEnable()
 
 end
 
-function module:GetOptions() -- luacheck: ignore self
+function module:GetOptions() -- luacheck: ignore 212 (unused argument)
 
 	local options = {
 		type = "group",

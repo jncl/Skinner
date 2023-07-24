@@ -3179,7 +3179,7 @@ aObj.SetupRetail_UIFrames = function()
 			frame.sf:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", x2Ofs, y2Ofs)
 			x1Ofs, y1Ofs, x2Ofs, y2Ofs = nil, nil, nil, nil
 		end
-		local function skinOptions(frame, source) -- luacheck: ignore source
+		local function skinOptions(frame, source) -- luacheck: ignore 212 (unused argument)
 			-- aObj:Debug("skinOptions PCUI: [%s, %s, %s, %s]", source, frame.uiTextureKit, frame.optionFrameTemplate)
 			if not frame.optionFrameTemplate then return end
 			if frame.uiTextureKit == "jailerstower"

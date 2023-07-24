@@ -159,7 +159,7 @@ function module:OnEnable()
 
 end
 
-function module:adjustMiddleFrames(_, value) -- luacheck: ignore self
+function module:adjustMiddleFrames(_, value) -- luacheck: ignore 212 (unused argument)
 
 	if not value then
 		for i = 1, MAX_MIDDLEFRAMES do
@@ -172,7 +172,7 @@ function module:adjustMiddleFrames(_, value) -- luacheck: ignore self
 
 end
 
-function module:GetOptions() -- luacheck: ignore self
+function module:GetOptions() -- luacheck: ignore 212 (unused argument)
 
 	local options = {
 		type = "group",

@@ -48,7 +48,7 @@ function module:OnInitialize()
 
 end
 
-function module:OnDisable() -- luacheck: ignore self
+function module:OnDisable() -- luacheck: ignore 212 (unused argument)
 
 	_G.CinematicFrame_OnShow = module.CinematicFrame_OnShow and module.CinematicFrame_OnShow
 	_G.CinematicFrame_OnHide = module.CinematicFrame_OnHide and module.CinematicFrame_OnHide
@@ -155,7 +155,7 @@ function module:adjustViewPort(opt)
 
 end
 
-function module:GetOptions() -- luacheck: ignore self
+function module:GetOptions() -- luacheck: ignore 212 (unused argument)
 
 	local c
 	local options = {

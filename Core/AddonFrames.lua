@@ -226,7 +226,7 @@ function aObj:TRADE_SKILL_SHOW()
 
 end
 
-function aObj:PLAYER_LEVEL_CHANGED(...) -- luacheck: ignore self
+function aObj:PLAYER_LEVEL_CHANGED(...) -- luacheck: ignore 212 (unused argument)
 --[[
 	arg1 - event name
 	arg2 - old player level

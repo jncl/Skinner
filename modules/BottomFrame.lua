@@ -47,7 +47,7 @@ function module:OnEnable()
 end
 
 local btmframe
-function module:adjustBottomFrame() -- luacheck: ignore self
+function module:adjustBottomFrame() -- luacheck: ignore 212 (unused argument)
 
 	if db.shown then
 		btmframe = btmframe or _G.CreateFrame("Frame", nil, _G.UIParent)
@@ -77,7 +77,7 @@ function module:adjustBottomFrame() -- luacheck: ignore self
 
 end
 
-function module:GetOptions() -- luacheck: ignore self
+function module:GetOptions() -- luacheck: ignore 212 (unused argument)
 
 	local options = {
 		type = "group",

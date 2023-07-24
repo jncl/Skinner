@@ -62,7 +62,7 @@ function module:OnEnable()
 end
 
 local topframe
-function module:adjustTopFrame() -- luacheck: ignore self
+function module:adjustTopFrame() -- luacheck: ignore 212 (unused argument)
 
 	if db.shown then
 		topframe = topframe or _G.CreateFrame("Frame", nil, _G.UIParent)
@@ -94,7 +94,7 @@ function module:adjustTopFrame() -- luacheck: ignore self
 
 end
 
-function module:GetOptions() -- luacheck: ignore self
+function module:GetOptions() -- luacheck: ignore 212 (unused argument)
 
 	local options = {
 		type = "group",
