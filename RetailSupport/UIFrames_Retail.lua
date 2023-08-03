@@ -3956,10 +3956,11 @@ aObj.SetupRetail_UIFrames = function()
 		if not self.prdb.TalkingHead or self.initialized.TalkingHead then return end
 		self.initialized.TalkingHead = true
 
+		-- remove CloseButton animation
+		_G.TalkingHeadFrame.MainFrame.TalkingHeadsInAnim.CloseButton = nil
+		_G.TalkingHeadFrame.MainFrame.Close.CloseButton = nil
+
 		self:SecureHookScript(_G.TalkingHeadFrame, "OnShow", function(this)
-			-- remove CloseButton animation
-			this.MainFrame.TalkingHeadsInAnim.CloseButton = nil
-			this.MainFrame.Close.CloseButton = nil
 			self:nilTexture(this.BackgroundFrame.TextBackground, true)
 			self:nilTexture(this.PortraitFrame.Portrait, true)
 			self:nilTexture(this.MainFrame.Model.PortraitBg, true)
