@@ -106,6 +106,7 @@ aObj.SetupRetail_NPCFrames = function()
 					if new ~= false then
 						aObj:keepRegions(element, {3, 4, 5}) -- N.B. region 3 is highlight, 4 is selected, 5 is text
 						aObj.modUIBtns:skinStdButton{obj=element, fType=ftype, ignoreHLTex=true}
+					end
 						element.sb:Show()
 						element.sb:ClearAllPoints()
 						if element.type == "category" then
@@ -118,7 +119,6 @@ aObj.SetupRetail_NPCFrames = function()
 							element.sb:Hide()
 						end
 					end
-				end
 				_G.ScrollUtil.AddAcquiredFrameCallback(fObj.ScrollBox, skinElement, aObj, true)
 
 				self:Unhook(fObj, "OnShow")
