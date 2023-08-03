@@ -2193,8 +2193,10 @@ if not aObj.isClscERA then
 				self:addButtonBorder{obj=this.PitchUpButton, clr="sepia"}
 				self:addButtonBorder{obj=this.PitchDownButton, clr="sepia"}
 				self:addButtonBorder{obj=this.LeaveButton, clr="sepia"}
-				for i = 1, 6 do
-					self:addButtonBorder{obj=this["SpellButton" .. i], sabt=true, clr="grey"}
+				if aObj.prdb.MainMenuBar.actbtns then
+					for i = 1, 6 do
+						self:addButtonBorder{obj=this["SpellButton" .. i], sabt=true, clr="grey"}
+					end
 				end
 			end
 
