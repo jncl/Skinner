@@ -107,18 +107,18 @@ aObj.SetupRetail_NPCFrames = function()
 						aObj:keepRegions(element, {3, 4, 5}) -- N.B. region 3 is highlight, 4 is selected, 5 is text
 						aObj.modUIBtns:skinStdButton{obj=element, fType=ftype, ignoreHLTex=true}
 					end
-						element.sb:Show()
-						element.sb:ClearAllPoints()
-						if element.type == "category" then
-							element.sb:SetPoint("TOPLEFT", element, "TOPLEFT", -1, 1)
-							element.sb:SetPoint("BOTTOMRIGHT", element, "BOTTOMRIGHT", -4, -1)
-						elseif element.type == "subCategory" then
-							element.sb:SetPoint("TOPLEFT", element, "TOPLEFT", 10, 1)
-							element.sb:SetPoint("BOTTOMRIGHT", element, "BOTTOMRIGHT", -4, -1)
-						elseif element.type == "subSubCategory" then
-							element.sb:Hide()
-						end
+					element.sb:Show()
+					element.sb:ClearAllPoints()
+					if element.type == "category" then
+						element.sb:SetPoint("TOPLEFT", element, "TOPLEFT", -1, 1)
+						element.sb:SetPoint("BOTTOMRIGHT", element, "BOTTOMRIGHT", -4, -1)
+					elseif element.type == "subCategory" then
+						element.sb:SetPoint("TOPLEFT", element, "TOPLEFT", 10, 1)
+						element.sb:SetPoint("BOTTOMRIGHT", element, "BOTTOMRIGHT", -4, -1)
+					elseif element.type == "subSubCategory" then
+						element.sb:Hide()
 					end
+				end
 				_G.ScrollUtil.AddAcquiredFrameCallback(fObj.ScrollBox, skinElement, aObj, true)
 
 				self:Unhook(fObj, "OnShow")
@@ -985,7 +985,7 @@ aObj.SetupRetail_NPCFrames = function()
 			self:removeInset(this.bottomInset)
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true})
 			if self.modBtns then
-				self:skinStdButton{obj=_G.ClassTrainerTrainButton, fType=ftype, schk=true}
+				self:skinStdButton{obj=_G.ClassTrainerTrainButton, fType=ftype, sechk=true}
 			end
 			if self.modBtnBs then
 				 self:addButtonBorder{obj=this.skillStepButton, relTo=this.skillStepButton.icon}
