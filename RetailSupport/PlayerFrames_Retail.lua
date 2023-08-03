@@ -738,10 +738,9 @@ aObj.SetupRetail_PlayerFrames = function()
 					end
 				end
 				_G.ScrollUtil.AddAcquiredFrameCallback(fObj.ScrollBox, skinElement, aObj, true)
-
 				if self.modBtns then
 					self:skinStdButton{obj=fObj.EquipSet}
-					self:skinStdButton{obj=fObj.SaveSet}
+					self:skinStdButton{obj=fObj.SaveSet, schk=true}
 					self:SecureHook("PaperDollEquipmentManagerPane_Update", function()
 						self:clrBtnBdr(fObj.EquipSet)
 						self:clrBtnBdr(fObj.SaveSet)
