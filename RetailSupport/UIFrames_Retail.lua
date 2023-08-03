@@ -2435,6 +2435,7 @@ aObj.SetupRetail_UIFrames = function()
 
 				self:Unhook(fObj, "OnShow")
 			end)
+			self:checkShown(this.ApplicationViewer)
 
 			self:SecureHookScript(this.EntryCreation, "OnShow", function(fObj)
 				self:removeInset(fObj.Inset)
@@ -3656,8 +3657,7 @@ aObj.SetupRetail_UIFrames = function()
 					local roleBtn
 					for _, type in _G.pairs{"Healers", "Tanks", "Damagers"} do
 						roleBtn = sEntry[type .. "Found"]
-						roleBtn.Texture:SetTexture(aObj.tFDIDs.lfgIR)
-						roleBtn.Cover:SetTexture(aObj.tFDIDs.lfgIR)
+						roleBtn.RoleIcon:SetTexture(aObj.tFDIDs.lfgIR)
 					end
 				end
 			end
