@@ -3710,37 +3710,36 @@ aObj.SetupRetail_PlayerFrames = function()
 				setTab(this.bookType)
 			end
 			-- Spellbook Panel
+			local spellString, subSpellString
 			local function updBtn(btn)
 				-- handle in combat
 				if _G.InCombatLockdown() then
 				    aObj:add2Table(aObj.oocTab, {updBtn, {btn}})
 				    return
 				end
-				if aObj.modBtnBs
-				and btn.sbb -- allow for not skinned during combat
-				then
+				spellString, subSpellString = _G[btn:GetName() .. "SpellName"], _G[btn:GetName() .. "SubSpellName"]
+				if _G[btn:GetName() .. "IconTexture"]:IsDesaturated() then -- player level too low, see Trainer, or offSpec
+					spellString:SetTextColor(_G.DISABLED_FONT_COLOR:GetRGB())
+					subSpellString:SetTextColor(_G.DISABLED_FONT_COLOR:GetRGB())
+					btn.RequiredLevelString:SetTextColor(_G.DISABLED_FONT_COLOR:GetRGB())
+					btn.SeeTrainerString:SetTextColor(_G.DISABLED_FONT_COLOR:GetRGB())
+				else
+					spellString:SetTextColor(aObj.HT:GetRGB())
+					subSpellString:SetTextColor(aObj.BT:GetRGB())
+				end
+				 -- allow for not skinned during combat
+				if btn.sbb then
 					if btn:IsEnabled() then
 						btn.sbb:Show()
 					else
 						btn.sbb:Hide()
 						return
 					end
-				end
-				local spellString, subSpellString = _G[btn:GetName() .. "SpellName"], _G[btn:GetName() .. "SubSpellName"]
-				if _G[btn:GetName() .. "IconTexture"]:IsDesaturated() then -- player level too low, see Trainer, or offSpec
-					if btn.sbb then
+					if _G[btn:GetName() .. "IconTexture"]:IsDesaturated() then -- player level too low, see Trainer, or offSpec
 						aObj:clrBtnBdr(btn, "disabled")
-					end
-					spellString:SetTextColor(_G.DISABLED_FONT_COLOR:GetRGB())
-					subSpellString:SetTextColor(_G.DISABLED_FONT_COLOR:GetRGB())
-					btn.RequiredLevelString:SetTextColor(_G.DISABLED_FONT_COLOR:GetRGB())
-					btn.SeeTrainerString:SetTextColor(_G.DISABLED_FONT_COLOR:GetRGB())
-				else
-					if btn.sbb then
+					else
 						aObj:clrBtnBdr(btn)
 					end
-					spellString:SetTextColor(aObj.HT:GetRGB())
-					subSpellString:SetTextColor(aObj.BT:GetRGB())
 				end
 			end
 			_G.SpellBookPageText:SetTextColor(self.BT:GetRGB())
