@@ -2810,7 +2810,8 @@ aObj.SetupRetail_PlayerFrames = function()
 			end
 		end
 		self:SecureHook("BonusObjectiveTracker_AddReward", function(_, block, _, _)
-			if #block.module.rewardsFrame.storedData.rewards > 0 then
+			if block.module.rewardsFrame.storedData.rewards
+			and #block.module.rewardsFrame.storedData.rewards > 0 then
 				skinRewards(block.module.rewardsFrame)
 			end
 		end)
