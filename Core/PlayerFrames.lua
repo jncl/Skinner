@@ -111,6 +111,9 @@ then
 					_G.ScrollUtil.AddAcquiredFrameCallback(fObj.ScrollBox, skinElement, aObj, true)
 				else
 					self:skinObject("slider", {obj=fObj.ListScrollFrame.scrollBar, fType=ftype})
+					for _, btn in _G.pairs(fObj.ListScrollFrame.buttons) do
+						btn.IconRing:SetTexture(nil)
+					end
 				end
 
 				self:Unhook(fObj, "OnShow")
@@ -634,12 +637,11 @@ then
 		self:checkShown(_G.CommunitiesFrame)
 
 		self:SecureHookScript(_G.CommunitiesSettingsDialog, "OnShow", function(this)
-			this.Separator:SetTexture(nil)
 			this.IconPreviewRing:SetTexture(nil)
 			self:skinObject("editbox", {obj=this.NameEdit, fType=ftype})
 			self:skinObject("editbox", {obj=this.ShortNameEdit, fType=ftype})
-			self:skinObject("frame", {obj=this.MessageOfTheDay, fType=ftype, kfs=true, fb=true, ofs=8})
-			self:skinObject("frame", {obj=this.Description, fType=ftype, kfs=true, fb=true, ofs=8})
+			self:skinObject("frame", {obj=this.MessageOfTheDay, fType=ftype, kfs=true, fb=true, ofs=8, clr="grey"})
+			self:skinObject("frame", {obj=this.Description, fType=ftype, kfs=true, fb=true, ofs=8, clr="grey"})
 			self:skinObject("frame", {obj=this, fType=ftype, ofs=-10})
 			if self.modBtns then
 				self:skinStdButton{obj=this.ChangeAvatarButton}
@@ -669,15 +671,39 @@ then
 
 		self:SecureHookScript(_G.CommunitiesAvatarPickerDialog, "OnShow", function(this)
 			if self.isRtl then
+				self:removeNineSlice(this.Selector)
 				self:skinObject("scrollbar", {obj=this.ScrollBar, fType=ftype})
+				local function skinElement(...)
+					local _, element, elementData
+					if _G.select("#", ...) == 2 then
+						element, elementData = ...
+					elseif _G.select("#", ...) == 3 then
+						_, element, elementData = ...
+					end
+					if self.modBtnBs then
+						self:addButtonBorder{obj=element, fType=ftype, clr="grey"}
+					end
+				end
+				_G.ScrollUtil.AddInitializedFrameCallback(this.ScrollBox, skinElement, aObj, true)
+				if self.modBtns then
+					self:skinStdButton{obj=this.Selector.CancelButton}
+					self:skinStdButton{obj=this.Selector.OkayButton}
+				end
 			else
 				this.ScrollFrame:DisableDrawLayer("BACKGROUND")
+				if self.modBtnBs then
+					for i = 1, 5 do
+						for j = 1, 6 do
+							self:addButtonBorder{obj=this.ScrollFrame.avatarButtons[i][j], fType=ftype, clr="grey"}
+						end
+					end
+				end
+				if self.modBtns then
+					self:skinStdButton{obj=this.CancelButton}
+					self:skinStdButton{obj=this.OkayButton}
+				end
 			end
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, y1=-12})
-			if self.modBtns then
-				self:skinStdButton{obj=this.CancelButton}
-				self:skinStdButton{obj=this.OkayButton}
-			end
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ofs=-4})
 
 			self:Unhook(this, "OnShow")
 		end)
