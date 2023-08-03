@@ -967,7 +967,8 @@ aObj.SetupRetail_PlayerFrames = function()
 						specContentFrame:DisableDrawLayer("OVERLAY")
 						-- add border around SpecImage
 						aObj.modUIBtns:addButtonBorder{obj=specContentFrame, fType=ftype, relTo=specContentFrame.SpecImage}
-						specContentFrame.RoleIcon:SetTexture(self.tFDIDs.lfgIR)
+						-- TODO: Select correct role icon
+						-- specContentFrame.RoleIcon:SetTexture(self.tFDIDs.lfgIR)
 						-- .SpellButtonPool
 						self:skinObject("frame", {obj=specContentFrame, fType=ftype, fb=true, y2=-4})
 						if specContentFrame.specIndex == fObj:GetCurrentSpecIndex() then
