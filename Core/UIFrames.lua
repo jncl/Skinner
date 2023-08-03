@@ -2190,11 +2190,11 @@ if not aObj.isClscERA then
 			self:skinObject("statusbar", {obj=this.xpBar, bg=aObj:getRegion(this.xpBar, 1)})
 			self:skinObject("frame", {obj=this, fType=ftype, x1=144, y1=6, x2=-142, y2=-2})
 			if self.modBtnBs then
-				self:addButtonBorder{obj=this.PitchUpButton}
-				self:addButtonBorder{obj=this.PitchDownButton}
-				self:addButtonBorder{obj=this.LeaveButton}
+				self:addButtonBorder{obj=this.PitchUpButton, clr="sepia"}
+				self:addButtonBorder{obj=this.PitchDownButton, clr="sepia"}
+				self:addButtonBorder{obj=this.LeaveButton, clr="sepia"}
 				for i = 1, 6 do
-					self:addButtonBorder{obj=this["SpellButton" .. i], sabt=true}
+					self:addButtonBorder{obj=this["SpellButton" .. i], sabt=true, clr="grey"}
 				end
 			end
 
