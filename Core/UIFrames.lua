@@ -69,19 +69,20 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 
 	--@debug@
 	local dontDebug = {
-		["Achievement"]        = true,
-		["Criteria"]           = true,
-		["GarrisonTalent"]     = true,
-		["Loot"]               = true,
-		["LootUpgrade"]        = true,
-		["MoneyWon"]           = true,
-		["MonthlyActivity"]    = true,
-		["NewCosmetic"]        = true,
-		["NewMount"]           = true,
-		["NewPet"]             = true,
-		["NewRecipeLearned"]   = true,
-		["NewToy"]             = true,
-		["WorldQuestComplete"] = true,
+		["Achievement"]            = true,
+		["Criteria"]               = true,
+		["GarrisonTalent"]         = true,
+		["Loot"]                   = true,
+		["LootUpgrade"]            = true,
+		["MoneyWon"]               = true,
+		["MonthlyActivity"]        = true,
+		["NewCosmetic"]            = true,
+		["NewMount"]               = true,
+		["NewPet"]                 = true,
+		["NewRecipeLearned"]       = true,
+		["NewToy"]                 = true,
+		["SkillLineSpecsUnlocked"] = true,
+		["WorldQuestComplete"]     = true,
 	}
 	--@end-debug@
 
