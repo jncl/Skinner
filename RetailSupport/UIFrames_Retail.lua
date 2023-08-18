@@ -4090,6 +4090,14 @@ aObj.SetupRetail_UIFrames = function()
 		end)
 		self:checkShown(_G.HelpPlateTooltip)
 
+		if aObj.isRtlPTR then
+			self:SecureHookScript(_G.PingSystemTutorial, "OnShow", function(this)
+				self:skinObject("frame", {obj=this, fType=ftype, cb=true, ofs=0, y1=-1})
+
+				self:Unhook(this, "OnShow")
+			end)
+		end
+
 	end
 
 	aObj.blizzFrames[ftype].TutorialManager = function(self)
