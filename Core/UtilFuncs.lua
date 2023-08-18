@@ -612,6 +612,7 @@ function aObj:getChild(obj, childNo) -- luacheck: ignore 212 (unused argument)
 end
 
 local clrTab = {
+	black       = _G.BLACK_FONT_COLOR,
 	blue        = _G.BLUE_FONT_COLOR,
 	bright_blue = _G.BRIGHTBLUE_FONT_COLOR,
 	light_blue  = _G.LIGHTBLUE_FONT_COLOR,
