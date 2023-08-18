@@ -140,8 +140,10 @@ aObj.blizzFrames[ftype].MerchantFrame = function(self)
 			local btn
 			for _, type in _G.pairs{"SellAllJunk", "RepairAll", "RepairItem", "GuildBankRepair"} do
 				btn = _G["Merchant" .. type .. "Button"]
-				self:getRegion(btn, 1):SetTexture(nil)
-				self:addButtonBorder{obj=btn, fType=ftype, clr="gold"}
+				if btn then
+					self:getRegion(btn, 1):SetTexture(nil)
+					self:addButtonBorder{obj=btn, fType=ftype, clr="gold"}
+				end
 			end
 			self:SecureHook("MerchantFrame_UpdateCanRepairAll", function()
 				self:clrBtnBdr(_G.MerchantRepairAllButton, "gold")
@@ -151,7 +153,7 @@ aObj.blizzFrames[ftype].MerchantFrame = function(self)
 					self:clrBtnBdr(_G.MerchantGuildBankRepairButton, "gold")
 				end)
 			end
-			_G.MerchantBuyBackItem.SlotTexture:SetTexture(nil)
+			_G.MerchantBuyBackItemSlotTexture:SetTexture(nil)
 			self:addButtonBorder{obj=_G.MerchantBuyBackItem.ItemButton, ibt=true}
 		else
 			_G.MerchantBuyBackItemSlotTexture:SetTexture(self.tFDIDs.esTex)
