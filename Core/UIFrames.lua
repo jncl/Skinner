@@ -1618,74 +1618,74 @@ aObj.blizzFrames[ftype].MailFrame = function(self)
 
 		self:SecureHookScript(_G.SendMailFrame, "OnShow", function(fObj)
 			self:keepFontStrings(fObj)
-		if self.isRtl then
-			_G.SendMailScrollFrame:DisableDrawLayer("BACKGROUND")
+			if self.isRtl then
+				_G.SendMailScrollFrame:DisableDrawLayer("BACKGROUND")
 				self:skinObject("scrollbar", {obj=_G.SendMailScrollFrame.ScrollBar, fType=ftype})
-			_G.SendMailBodyEditBox:SetTextColor(self.prdb.BodyText.r, self.prdb.BodyText.g, self.prdb.BodyText.b)
-		else
-			_G.MailEditBox.ScrollBox.EditBox:SetTextColor(self.BT:GetRGB())
-			_G.MailEditBox:DisableDrawLayer("BACKGROUND")
-				self:skinObject("scrollbar", {obj=_G.MailEditBoxScrollBar, fType=ftype, x1=1, x2=5})
-		end
-			for _, btn in _G.pairs(fObj.SendMailAttachments) do
-			if not self.modBtnBs then
-				self:resizeEmptyTexture(self:getRegion(btn, 1))
+				_G.SendMailBodyEditBox:SetTextColor(self.prdb.BodyText.r, self.prdb.BodyText.g, self.prdb.BodyText.b)
 			else
-				btn:DisableDrawLayer("BACKGROUND")
-				self:addButtonBorder{obj=btn, reParent={btn.Count, btn.IconOverlay, btn.IconOverlay2 and btn.IconOverlay2}, clr="grey"}
+				_G.MailEditBox.ScrollBox.EditBox:SetTextColor(self.BT:GetRGB())
+				_G.MailEditBox:DisableDrawLayer("BACKGROUND")
+				self:skinObject("scrollbar", {obj=_G.MailEditBoxScrollBar, fType=ftype, x1=1, x2=5})
 			end
-		end
-		self:skinObject("editbox", {obj=_G.SendMailNameEditBox, fType=ftype, regions={4, 5, 6}})
-		self:skinObject("editbox", {obj=_G.SendMailSubjectEditBox, fType=ftype, regions={4, 5, 6}})
-		self:skinObject("moneyframe", {obj=_G.SendMailMoney, moveIcon=true, moveGEB=true, moveSEB=true})
-		self:removeInset(_G.SendMailMoneyInset)
-		_G.SendMailMoneyBg:DisableDrawLayer("BACKGROUND")
-		if self.modBtns then
-			self:skinStdButton{obj=_G.SendMailMailButton, fType=ftype, schk=true}
-			self:skinStdButton{obj=_G.SendMailCancelButton, fType=ftype}
-		end
-		if self.modBtnBs then
+			for _, btn in _G.pairs(fObj.SendMailAttachments) do
+				if not self.modBtnBs then
+					self:resizeEmptyTexture(self:getRegion(btn, 1))
+				else
+					btn:DisableDrawLayer("BACKGROUND")
+					self:addButtonBorder{obj=btn, reParent={btn.Count, btn.IconOverlay, btn.IconOverlay2 and btn.IconOverlay2}, clr="grey"}
+				end
+			end
+			self:skinObject("editbox", {obj=_G.SendMailNameEditBox, fType=ftype, regions={4, 5, 6}})
+			self:skinObject("editbox", {obj=_G.SendMailSubjectEditBox, fType=ftype, regions={4, 5, 6}})
+			self:skinObject("moneyframe", {obj=_G.SendMailMoney, moveIcon=true, moveGEB=true, moveSEB=true})
+			self:removeInset(_G.SendMailMoneyInset)
+			_G.SendMailMoneyBg:DisableDrawLayer("BACKGROUND")
+			if self.modBtns then
+				self:skinStdButton{obj=_G.SendMailMailButton, fType=ftype, schk=true}
+				self:skinStdButton{obj=_G.SendMailCancelButton, fType=ftype}
+			end
+			if self.modBtnBs then
 				self:SecureHook("SendMailFrame_Update", function()
 					for i = 1, _G.ATTACHMENTS_MAX_SEND do
 						if not _G.HasSendMailItem(i) then
 							self:clrBtnBdr(fObj.SendMailAttachments[i], "grey")
 						end
-				end
-			end)
-		end
+					end
+				end)
+			end
 
 			self:Unhook(fObj, "OnShow")
 		end)
 		self:SecureHookScript(_G.OpenMailFrame, "OnShow", function(fObj)
 			if self.isRtl then
-		_G.OpenMailScrollFrame:DisableDrawLayer("BACKGROUND")
+				_G.OpenMailScrollFrame:DisableDrawLayer("BACKGROUND")
 				self:skinObject("scrollbar", {obj=_G.OpenMailScrollFrame.ScrollBar, fType=ftype})
 			else
 				self:skinObject("slider", {obj=_G.OpenMailScrollFrame.ScrollBar, fType=ftype, rpTex={"background", "overlay"}})
 			end
-		_G.OpenMailBodyText:SetTextColor("P", self.BT:GetRGB())
+			_G.OpenMailBodyText:SetTextColor("P", self.BT:GetRGB())
 			self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, ri=true, cb=true})
-		if self.modBtns then
+			if self.modBtns then
 				self:skinStdButton{obj=_G.OpenMailReportSpamButton, schk=true}
-			self:skinStdButton{obj=_G.OpenMailCancelButton}
-			self:skinStdButton{obj=_G.OpenMailDeleteButton}
+				self:skinStdButton{obj=_G.OpenMailCancelButton}
+				self:skinStdButton{obj=_G.OpenMailDeleteButton}
 				self:skinStdButton{obj=_G.OpenMailReplyButton, schk=true}
-		end
-		if self.modBtnBs then
-			self:addButtonBorder{obj=_G.OpenMailLetterButton, ibt=true}
-			self:addButtonBorder{obj=_G.OpenMailMoneyButton, ibt=true}
-				for _, btn in _G.pairs(fObj.OpenMailAttachments) do
-				self:addButtonBorder{obj=btn, ibt=true}
 			end
-		end
-		-- Invoice Frame Text fields
-		local fields = {"ItemLabel", "Purchaser", "SalePrice", "Deposit", "HouseCut", "AmountReceived", "NotYetSent", "MoneyDelay"}
-		if not self.isRtl then
-			self:add2Table(fields, "BuyMode")
-		end
-		for _, type in _G.pairs(fields) do
-			_G["OpenMailInvoice" .. type]:SetTextColor(self.BT:GetRGB())
-		end
+			if self.modBtnBs then
+				self:addButtonBorder{obj=_G.OpenMailLetterButton, ibt=true}
+				self:addButtonBorder{obj=_G.OpenMailMoneyButton, ibt=true}
+				for _, btn in _G.pairs(fObj.OpenMailAttachments) do
+					self:addButtonBorder{obj=btn, ibt=true}
+				end
+			end
+			-- Invoice Frame Text fields
+			local fields = {"ItemLabel", "Purchaser", "SalePrice", "Deposit", "HouseCut", "AmountReceived", "NotYetSent", "MoneyDelay"}
+			if not self.isRtl then
+				self:add2Table(fields, "BuyMode")
+			end
+			for _, type in _G.pairs(fields) do
+				_G["OpenMailInvoice" .. type]:SetTextColor(self.BT:GetRGB())
+			end
 
 			self:Unhook(fObj, "OnShow")
 		end)
@@ -2284,9 +2284,15 @@ then
 		self:SecureHookScript(_G.ReportFrame, "OnShow", function(this)
 			self:removeNineSlice(this.Border)
 			self:skinObject("dropdown", {obj=this.ReportingMajorCategoryDropdown, fType=ftype})
+			self:skinObject("frame", {obj=this.Comment, fType=ftype, kfs=true, fb=true, ofs=6, clr="grey"})
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, cb=true, ofs=-3})
 			if self.modBtns then
-				self:skinStdButton{obj=this.ReportButton, fType=ftype}
+				self:skinStdButton{obj=this.ReportButton, fType=ftype, sechk=true}
+				self:SecureHook(this, "MajorTypeSelected", function(fObj, _, _)
+					for catBtn in fObj.MinorCategoryButtonPool:EnumerateActive() do
+						self:skinStdButton{obj=catBtn, fType=ftype, clr="black"}
+					end
+				end)
 			end
 
 			self:Unhook(this, "OnShow")
