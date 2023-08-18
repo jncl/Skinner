@@ -2455,7 +2455,7 @@ then
 				end
 			end
 			_G.ScrollUtil.AddAcquiredFrameCallback(this.Container.SettingsList.ScrollBox, skinSetting, aObj, true)
-			self:skinObject("frame", {obj=this.Container, fType=ftype, fb=true, y1=12, y2=-8})
+			self:skinObject("frame", {obj=this.Container, fType=ftype, fb=true, x1=-14, y1=12, y2=-8})
 			-- .InputBlocker
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true})
 			if self.modBtns then
