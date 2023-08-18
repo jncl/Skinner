@@ -599,7 +599,6 @@ function module:skinPartyF()
 	if db.party
 	and not self.isSkinned["Party"]
 	then
-		aObj:Debug("skinPartyF function")
 		local function skinPartyMemberFrame(frame)
 			if _G.InCombatLockdown() then
 			    aObj:add2Table(aObj.oocTab, {skinPartyMemberFrame, {frame}})
