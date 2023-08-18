@@ -34,7 +34,7 @@ module.isSkinned = _G.setmetatable({}, {__index = function(t, k) t[k] = true end
 
 if not aObj.isRtl then
 	-- N.B. handle bug in XML & lua which places mana bar 1 pixel too high
-	function module:adjustStatusBarPosn(sBar, yAdj)
+	function module:adjustStatusBarPosn(sBar, yAdj) -- luacheck: ignore 212 (unused argument)
 
 		local oPnt
 		yAdj = yAdj or 1
@@ -421,7 +421,7 @@ function module:skinPetF()
 	end
 
 end
-function module:skinCommon(fName, adjSB)
+function module:skinCommon(fName, adjSB) -- luacheck: ignore 212 (unused argument)
 
 	local fo = _G[fName]
 	if not aObj.isRtl then

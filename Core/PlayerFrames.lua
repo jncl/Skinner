@@ -674,11 +674,11 @@ then
 				self:removeNineSlice(this.Selector)
 				self:skinObject("scrollbar", {obj=this.ScrollBar, fType=ftype})
 				local function skinElement(...)
-					local _, element, elementData
+					local _, element
 					if _G.select("#", ...) == 2 then
-						element, elementData = ...
+						element, _ = ...
 					elseif _G.select("#", ...) == 3 then
-						_, element, elementData = ...
+						_, element, _ = ...
 					end
 					if self.modBtnBs then
 						self:addButtonBorder{obj=element, fType=ftype, clr="grey"}

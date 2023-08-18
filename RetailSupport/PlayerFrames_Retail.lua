@@ -3162,8 +3162,8 @@ aObj.SetupRetail_PlayerFrames = function()
 				self:SecureHookScript(fObj.BrowseFrame, "OnShow", function(frame)
 					self:skinObject("tabs", {obj=frame, tabs=frame.orderTypeTabs, fType=ftype, ignoreSize=true, lod=self.isTT and true, offsets={y2=-4}, track=false})
 					if self.isTT then
-						self:SecureHook(fObj, "SetCraftingOrderType", function(frame, orderType)
-							for _, typeTab in _G.ipairs(frame.BrowseFrame.orderTypeTabs) do
+						self:SecureHook(fObj, "SetCraftingOrderType", function(frmObj, orderType)
+							for _, typeTab in _G.ipairs(frmObj.BrowseFrame.orderTypeTabs) do
 								if typeTab.orderType == orderType then
 									self:setActiveTab(typeTab.sf)
 								else
