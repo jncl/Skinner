@@ -35,7 +35,7 @@ do
 
 	--@alpha@
 	local function handleEvent(event, addonName, addonFunc)
-		aObj:Debug(event, addonName, addonFunc, _G.debugstack(2, 3, 2))
+		aObj:Debug(event, addonName, addonFunc, _G.debugstack(3))
 	end
 	aObj:RegisterEvent("ADDON_ACTION_BLOCKED", function(...)
 		handleEvent(...)
