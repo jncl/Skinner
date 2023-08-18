@@ -2,7 +2,7 @@ local _, aObj = ...
 local _G = _G
 -- This is a Library
 
-aObj.libsToSkin["LibSFDropDown-1.4"] = function(self) -- v LibSFDropDown-1.4, 5
+aObj.libsToSkin["LibSFDropDown-1.4"] = function(self) -- v LibSFDropDown-1.4, 7
 	if self.initialized.LibSFDropDown then return end
 	self.initialized.LibSFDropDown = true
 
@@ -10,22 +10,23 @@ aObj.libsToSkin["LibSFDropDown-1.4"] = function(self) -- v LibSFDropDown-1.4, 5
 
 	if lSFdd then
 		for _, menu in lSFdd:IterateMenus() do
-			self:skinObject("frame", {obj=menu.styles.backdrop, kfs=true})
-			self:skinObject("frame", {obj=menu.styles.menuBackdrop, kfs=true, rns=true})
+			for _, style in _G.pairs(menu.styles) do
+				-- aObj:Debug("IterateMenus: [%s, %s]", style)
+				self:skinObject("frame", {obj=style, kfs=true, rns=true})
+			end
 		end
-		lSFdd._v.menuStyles.backdrop = function(parent)
-			aObj:Debug("backdrop: [%s, %s]", parent)
-			local frame = _G.CreateFrame("FRAME", nil, parent, "DialogBorderDarkTemplate")
-			aObj:skinObject("frame", {obj=frame, kfs=true})
-			return frame
+		for name, func in _G.pairs(lSFdd._v.menuStyles) do
+			-- aObj:Debug("menuStyles: [%s, %s]", name, func)
+			lSFdd._v.menuStyles[name] = function(parent)
+				-- aObj:Debug("menuStyles style: [%s, %s]", parent)
+				local frame = _G.CreateFrame("FRAME", nil, parent, "BackdropTemplate")
+				aObj:skinObject("frame", {obj=frame, kfs=true, rns=true})
+				return frame
+			end
 		end
-		lSFdd._v.menuStyles.menuBackdrop = function(parent)
-			aObj:Debug("menuBackdrop: [%s, %s]", parent)
-			local frame = _G.CreateFrame("FRAME", nil, parent, "TooltipBackdropTemplate")
-			aObj:skinObject("frame", {obj=frame, kfs=true, rns=true})
-			return frame
-		end
+
 		local function skinSearchFrame(frame)
+			-- aObj:Debug("searchFrame: [%s, %s]", frame)
 			aObj:skinObject("editbox", {obj=frame.searchBox, si=true})
 			aObj:skinObject("slider", {obj=frame.listScroll.scrollBar, rpTex="background"})
 		end
