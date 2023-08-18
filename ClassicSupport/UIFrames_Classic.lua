@@ -527,6 +527,8 @@ aObj.SetupClassic_UIFrames = function()
 				_G.MainMenuBarRightEndCap:SetTexture(nil)
 				local rwbSB = _G.ReputationWatchBar.StatusBar
 				self:removeRegions(rwbSB, {1, 2, 3, 4, 5, 6, 7, 8, 9})
+				rwbSB:SetSize(1011, 8)
+				self:moveObject{obj=rwbSB, x=1, y=2}
 				self:skinObject("statusbar", {obj=rwbSB, bg=rwbSB.Background, other={rwbSB.Underlay, rwbSB.Overlay}})
 				if self.modBtnBs then
 					for i = 1, _G.NUM_ACTIONBAR_BUTTONS do
