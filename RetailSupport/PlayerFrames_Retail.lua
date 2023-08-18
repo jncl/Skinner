@@ -1,6 +1,5 @@
 local _, aObj = ...
 
-
 local _G = _G
 -- luacheck: ignore 631 (line is too long)
 
@@ -817,7 +816,7 @@ aObj.SetupRetail_PlayerFrames = function()
 			_G.ScrollUtil.AddAcquiredFrameCallback(this.ScrollBox, skinElement, aObj, true)
 			-- ReputationDetailFrame
 			self:removeNineSlice(_G.ReputationDetailFrame.Border)
-			self:skinObject("frame", {obj=_G.ReputationDetailFrame, fType=ftype, kfs=true, ofs=-6})
+			self:skinObject("frame", {obj=_G.ReputationDetailFrame, fType=ftype, kfs=true, ofs=-3})
 			if self.modBtns then
 				self:skinCloseButton{obj=_G.ReputationDetailCloseButton}
 				self:skinStdButton{obj=_G.ReputationDetailViewRenownButton, fType=ftype, clr="gold"}
