@@ -164,11 +164,9 @@ function aObj:setupOptions(optNames, optIgnore, preLoadFunc, postLoadFunc)
 		if not aObj.isRtl then
 			_G.InterfaceAddOnsList_Update()
 		else
-			-- toggle tabs to force refresh of Categories
-			_G.SettingsPanel.tabsGroup:SelectAtIndex(1)
-			_G.SettingsPanel.tabsGroup:SelectAtIndex(2)
+			_G.SettingsPanel:CallRefreshOnCanvases()
 		end
-		-- prevent function from running again as it has three different triggers
+		-- prevent function from running again as it has two different triggers
 		categorySelected = _G.nop
 	end
 	self.RegisterCallback(aName, "Options_Selected", function()
