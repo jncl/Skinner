@@ -2416,9 +2416,9 @@ aObj.SetupRetail_PlayerFrames = function()
 		self:SecureHookScript(_G.InspectFrame, "OnShow", function(this)
 			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true})
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true})
+
 			-- let AddOn skins know when when UI is skinned (used by oGlow skin)
 			self.callbacks:Fire("InspectUI_Skinned", self)
-			-- remove all callbacks for this event
 			self.callbacks.events["InspectUI_Skinned"] = nil
 
 			self:Unhook(this, "OnShow")
@@ -2455,33 +2455,16 @@ aObj.SetupRetail_PlayerFrames = function()
 		end)
 
 		self:SecureHookScript(_G.InspectPVPFrame, "OnShow", function(this)
-			self:keepFontStrings(this)
+			this.BG:SetTexture(nil)
 			for _, slot in _G.ipairs(this.Slots) do
 				slot.Border:SetTexture(nil)
-				self:makeIconSquare(slot, "Texture")
+				self:makeIconSquare(slot, "Texture", "gold")
 			end
 
 			self:Unhook(this, "OnShow")
 		end)
 
-		self:SecureHookScript(_G.InspectTalentFrame, "OnShow", function(this)
-			-- self:keepFontStrings(this)
-			this:DisableDrawLayer("border")
-			this.InspectSpec.ring:SetTexture(nil)
-			this.InspectSpec.roleIcon:SetTexture(self.tFDIDs.lfgIR)
-			self:makeIconSquare(this.InspectSpec, "specIcon")
-			for i = 1, _G.MAX_TALENT_TIERS do
-				for j = 1, _G.NUM_TALENT_COLUMNS do
-					this.InspectTalents["tier" .. i]["talent" .. j].Slot:SetTexture(nil)
-					if self.modBtnBs then
-						this.InspectTalents["tier" .. i]["talent" .. j].border:SetAlpha(0)
-						self:addButtonBorder{obj=this.InspectTalents["tier" .. i]["talent" .. j], relTo=this.InspectTalents["tier" .. i]["talent" .. j].icon, clr="grey"}
-					end
-				end
-			end
-
-			self:Unhook(this, "OnShow")
-		end)
+		-- N.B. InspectTalentFrame now replaced by new TalentUI
 
 		self:SecureHookScript(_G.InspectGuildFrame, "OnShow", function(this)
 			_G.InspectGuildFrameBG:SetAlpha(0)
