@@ -328,11 +328,11 @@ function module:skinPlayerF()
 end
 function module:skinPetF()
 
-	if aObj.uCls ~= "HUNTER"
-	or aObj.uCls ~= "WARLOCK"
-	then
+	if not (aObj.uCls == "HUNTER" or aObj.uCls == "WARLOCK") then
 		return
 	end
+
+	-- aObj:Debug("skinPetFrame[ %s, %s, %s]", aObj.uCls, db.pet, not _G.rawget(module.isSkinned, "Pet"))
 
 	if db.pet
 	and not self.isSkinned["Pet"]
@@ -342,7 +342,7 @@ function module:skinPetF()
 			    aObj:add2Table(aObj.oocTab, {skinPetFrame, {frame}})
 			    return
 			end
-			module:skinUnitButton{obj=frame, ti=true, x1=1}
+			self:skinUnitButton{obj=frame, ti=true, x1=1}
 			-- casting bar handled in CastingBar function
 			if not aObj.isRtl then
 				_G.PetPortrait:SetDrawLayer("BORDER") -- move portrait to BORDER layer, so it is displayed
@@ -352,8 +352,8 @@ function module:skinPetF()
 				-- status bars
 				aObj:skinObject("statusbar", {obj=_G.PetFrameHealthBar, fi=0})
 				aObj:skinObject("statusbar", {obj=_G.PetFrameManaBar, fi=0, nilFuncs=true})
-				module:adjustStatusBarPosn(_G.PetFrameHealthBar, 0)
-				module:adjustStatusBarPosn(_G.PetFrameManaBar, -1)
+				self:adjustStatusBarPosn(_G.PetFrameHealthBar, 0)
+				self:adjustStatusBarPosn(_G.PetFrameManaBar, -1)
 				if db.petlvl
 				and aObj.uCls == "HUNTER"
 				then
@@ -368,10 +368,10 @@ function module:skinPetF()
 						end
 					end
 					-- get level when pet changes
-					module:RegisterEvent("UNIT_PET", function(_)
+					self:RegisterEvent("UNIT_PET", function(_)
 						setLvl()
 					end)
-					module:RegisterEvent("UNIT_LEVEL", function(_)
+					self:RegisterEvent("UNIT_LEVEL", function(_)
 						setLvl()
 					end)
 				end
@@ -401,7 +401,7 @@ function module:skinPetF()
 						end
 					end
 					-- get Pet's Specialization Role to set roleIcon TexCoord
-					module:RegisterEvent("UNIT_PET", function(_, arg1)
+					self:RegisterEvent("UNIT_PET", function(_, arg1)
 						if arg1 == "player"
 						and _G.UnitIsVisible("pet")
 						then
@@ -412,7 +412,7 @@ function module:skinPetF()
 				end
 			end
 		end
-		module:SecureHookScript(_G.PetFrame, "OnShow", function(this)
+		self:SecureHookScript(_G.PetFrame, "OnShow", function(this)
 			skinPetFrame(this)
 
 			self:Unhook(this, "OnShow")
