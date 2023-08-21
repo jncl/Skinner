@@ -1449,11 +1449,12 @@ aObj.blizzFrames[ftype].ItemText = function(self)
 	self.initialized.ItemText = true
 
 	local function skinITFrame(frame)
-		aObj:skinObject("scrollbar", {obj=_G.ItemTextScrollFrame.ScrollBar, fType=ftype, rpTex=not aObj.isRtl and {"background", "artwork"} or nil})
 		aObj:skinObject("statusbar", {obj=_G.ItemTextStatusBar, fi=0})
 		if aObj.isRtl then
+			aObj:skinObject("scrollbar", {obj=_G.ItemTextScrollFrame.ScrollBar, fType=ftype, rpTex=not aObj.isRtl and {"background", "artwork"} or nil})
 			aObj:skinObject("frame", {obj=frame, fType=ftype, kfs=true, ri=true, rns=true, cb=true, x2=3})
 		else
+			aObj:skinObject("slider", {obj=_G.ItemTextScrollFrame.ScrollBar, fType=ftype, rpTex={"background", "artwork"}})
 			aObj:skinObject("frame", {obj=frame, fType=ftype, kfs=true, x1=10, y1=-12, x2=-31, y2=60})
 			if aObj.modBtns then
 				aObj:skinCloseButton{obj=_G.ItemTextCloseButton}
@@ -1467,7 +1468,9 @@ aObj.blizzFrames[ftype].ItemText = function(self)
 		skinITFrame = nil
 	end
 	self:SecureHookScript(_G.ItemTextFrame, "OnShow", function(this)
-		if not self.isRtl then
+		if self.isClscERA
+		and not self.isClscERAPTR
+		then
 			_G.ItemTextPageText:SetTextColor(self.BT:GetRGB())
 		end
 		_G.ItemTextPageText:SetTextColor("P", self.BT:GetRGB())
