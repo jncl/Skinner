@@ -2359,6 +2359,9 @@ then
 				if aObj.modBtns then
 					if element.Button then
 						aObj:skinStdButton{obj=element.Button, fType=ftype, sechk=true}
+					elseif element.NewButton then -- RaidProfiles
+						aObj:skinStdButton{obj=element.NewButton, fType=ftype, sechk=true}
+						aObj:skinStdButton{obj=element.DeleteButton, fType=ftype, sechk=true}
 					elseif element.CustomButton then
 						aObj:skinStdButton{obj=element.CustomButton, fType=ftype}
 					elseif element.OpenAccessButton then
