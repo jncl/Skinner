@@ -1,4 +1,4 @@
-ToDo_retail_PTR
+ ToDo_retail_PTR
 ±±±±±±±±±±±±±±±
 
 	√ is Alt+v		- indicates completed
@@ -13,12 +13,17 @@ ToDo_retail_PTR
 			- Blizzard_DragonflightLandingPage
 				- .ScrollFadeOverlay
 			- Blizzard_PingUI
+√				- PingSystemTutorial
 		- Updated
 			- Blizzard_MajorFactionsLandingTemplates
+			- Blizzard_PvPTalentSlotTemplates
+			- Blizzard_CompactRaidFrameManager
+			- Blizzard_UIWidgetTemplateBase
 			- CompactUnitFrame
 			- Deprecated_ArenaUI
 			- LFDFrame
 			- LowHealthFrame
+			- MerchantFrame
 			- Minimap
 			- PartyFrame
 			- PartyFrameTemplates
@@ -27,6 +32,7 @@ ToDo_retail_PTR
 			- QuestFrame
 			- RaidFinder
 			- RaidWarning
+			- ReadyCheck
 			- TargetFrame
 			- UIErrorsFrame
 		- Deleted
