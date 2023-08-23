@@ -108,7 +108,7 @@ aObj.SetupClassic_NPCFrames = function()
 			_G.BrowseCloseButton:DisableDrawLayer("BORDER")
 			if self.modBtns then
 				self:skinStdButton{obj=_G.BrowseSearchButton, fType=ftype}
-				if aObj.isClscERAPTR then
+				if self.isClscERA then
 					self:skinStdButton{obj=_G.BrowseResetButton, fType=ftype, schk=true}
 				end
 				self:skinStdButton{obj=_G.BrowseCloseButton, fType=ftype}

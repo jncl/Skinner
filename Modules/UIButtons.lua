@@ -996,8 +996,7 @@ local function __skinCheckButton(opts)
 	-- check to see if it's a 'real' CheckButton
 	if not aObj:hasTextInTexture(opts.obj:GetNormalTexture(), "CheckBox")
 	and not aObj:hasTextInTexture(opts.obj:GetNormalTexture(), aObj.tFDIDs.cbUP)
-	and not (aObj.isRtl or aObj.isClsc or aObj.isClscERAPTR and aObj:hasTextInTexture(opts.obj:GetNormalTexture(), aObj.tFDIDs.cbMin)) -- Settings CheckButton
-	-- and not (not aObj.isClscERA and aObj:hasTextInTexture(opts.obj:GetNormalTexture(), aObj.tFDIDs.cbMin)) -- Settings CheckButton
+	and not aObj:hasTextInTexture(opts.obj:GetNormalTexture(), aObj.tFDIDs.cbMin) -- Settings CheckButton
 	then
 		return
 	end

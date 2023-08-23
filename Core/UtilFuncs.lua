@@ -133,13 +133,7 @@ function aObj:applyGradient(obj, fh, invert, rotate)
 		obj.tfade = obj:CreateTexture(nil, "BORDER", nil, -1)
 		obj.tfade:SetTexture(self.gradientTex)
 		obj.tfade:SetBlendMode("ADD")
-		if self.isClscERA
-		and not self.isClscERAPTR
-		then
-			obj.tfade:SetGradientAlpha(self:getGradientInfo(invert, rotate))
-		else
-			obj.tfade:SetGradient(self:getGradientInfo(invert, rotate))
-		end
+		obj.tfade:SetGradient(self:getGradientInfo(invert, rotate))
 	end
 
 	if self.prdb.FadeHeight.enable
@@ -656,30 +650,12 @@ function aObj:getGradientInfo(invert, rotate)
 
 	if self.prdb.Gradient.enable then
 		if invert then
-			if self.isClscERA
-			and not self.isClscERAPTR
-			then
-				return rotate and "HORIZONTAL" or "VERTICAL", MaxR, MaxG, MaxB, MaxA, MinR, MinG, MinB, MinA
-			else
-				return rotate and "HORIZONTAL" or "VERTICAL", aObj.gmaxClr, aObj.gminClr
-			end
+			return rotate and "HORIZONTAL" or "VERTICAL", aObj.gmaxClr, aObj.gminClr
 		else
-			if self.isClscERA
-			and not self.isClscERAPTR
-			then
-				return rotate and "HORIZONTAL" or "VERTICAL", MinR, MinG, MinB, MinA, MaxR, MaxG, MaxB, MaxA
-			else
-				return rotate and "HORIZONTAL" or "VERTICAL", aObj.gminClr, aObj.gmaxClr
-			end
+			return rotate and "HORIZONTAL" or "VERTICAL", aObj.gminClr, aObj.gmaxClr
 		end
 	else
-		if self.isClscERA
-		and not self.isClscERAPTR
-		then
-			return rotate and "HORIZONTAL" or "VERTICAL", 0, 0, 0, 1, 0, 0, 0, 1
-		else
-			return rotate and "HORIZONTAL" or "VERTICAL", _G.BLACK_FONT_COLOR, _G.BLACK_FONT_COLOR
-		end
+		return rotate and "HORIZONTAL" or "VERTICAL", _G.BLACK_FONT_COLOR, _G.BLACK_FONT_COLOR
 	end
 
 end
@@ -1258,13 +1234,7 @@ function aObj:setActiveTab(tabSF)
 	if not tabSF.tfade then return end
 
 	tabSF.tfade:SetTexture(self.gradientTex)
-	if self.isClscERA
-	and not self.isClscERAPTR
-	then
-		tabSF.tfade:SetGradientAlpha(self:getGradientInfo(self.prdb.Gradient.invert, self.prdb.Gradient.rotate))
-	else
-		tabSF.tfade:SetGradient(self:getGradientInfo(self.prdb.Gradient.invert, self.prdb.Gradient.rotate))
-	end
+	tabSF.tfade:SetGradient(self:getGradientInfo(self.prdb.Gradient.invert, self.prdb.Gradient.rotate))
 
 end
 
@@ -1365,6 +1335,7 @@ function aObj:setupTextures()
 	self.tFDIDs = {
 		["bHLS"]      = _G.GetFileIDFromPath([[Interface\Buttons\ButtonHilight-Square]]),
 		["btnTex"]    = _G.GetFileIDFromPath([[Interface\HelpFrame\HelpButtons]]),
+		["cbMin"]     = _G.GetFileIDFromPath([[interface/common/minimalcheckbox.blp]]),
 		["cbSC"]      = _G.GetFileIDFromPath([[Interface\Buttons\UI-Checkbox-SwordCheck]]),
 		["cbUP"]      = _G.GetFileIDFromPath([[interface\Buttons\UI-CheckBox-Up]]),
 		["ccLF"]      = _G.GetFileIDFromPath([[Interface\Glues\CharacterCreate\CharacterCreate-LabelFrame]]),
@@ -1393,13 +1364,6 @@ function aObj:setupTextures()
 		["tMB"]       = _G.GetFileIDFromPath([[Interface\Minimap\Tracking\Mailbox]]),
 		["w8x8"]      = _G.GetFileIDFromPath([[Interface\Buttons\WHITE8X8]]),
 	}
-	if aObj.isRtl
-	or aObj.isClsc
-	or aObj.isClscERAPTR
-	then
-	-- if not aObj.isClscERA then
-		self.tFDIDs["cbMin"] = _G.GetFileIDFromPath([[interface/common/minimalcheckbox.blp]]) -- Settings CheckButton
-	end
 
 end
 

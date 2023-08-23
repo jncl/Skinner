@@ -1379,9 +1379,7 @@ aObj.SetupClassic_PlayerFrames = function()
 					self:clrPNBtns("SpellBook")
 				end)
 			end
-			if self.isClsc
-			or aObj.isClscERAPTR
-			then
+			if not self.isRtl then
 				if self.modChkBtns then
 					self:skinCheckButton{obj=_G.ShowAllSpellRanksCheckBox, fType=ftype}
 				end
@@ -1455,27 +1453,18 @@ aObj.SetupClassic_PlayerFrames = function()
 			self:skinObject("slider", {obj=_G[fName .. 'ScrollFrameScrollBar'], fType=ftype, rpTex="artwork"})
 			-- keep background Texture
 			self:skinObject("frame", {obj=this, fType=ftype, cb=true, x1=10, y1=-12, x2=-31, y2=74})
-			if self.isClscERA
-			and not aObj.isClscERAPTR
-			then
-				self:removeRegions(this, {1, 2, 3, 4, 5, 11, 12, 13}) -- remove portrait, border & points border
-				if self.modBtns then
-					self:skinStdButton{obj=_G[fName .. "CancelButton"], fType=ftype}
-				end
-			else
-				self:removeRegions(this, {1, 3, 4, 5, 6})
-				self:keepFontStrings(_G.PlayerTalentFramePointsBar)
-				_G.PlayerTalentFramePreviewBar:DisableDrawLayer("BORDER")
-				_G.PlayerTalentFramePreviewBarFiller:DisableDrawLayer("BACKGROUND")
-				if self.modBtns then
-					self:skinStdButton{obj=_G.PlayerTalentFrameResetButton, fType=ftype, schk=true}
-					self:skinStdButton{obj=_G.PlayerTalentFrameLearnButton, fType=ftype, schk=true}
-				end
-				for i = 1, 3 do
-					self:removeRegions(_G["PlayerSpecTab" .. i], {1}) -- N.B. other regions are icon and highlight
-					if self.modBtnBs then
-						self:addButtonBorder{obj=_G["PlayerSpecTab" .. i]}
-					end
+			self:removeRegions(this, {1, 3, 4, 5, 6})
+			self:keepFontStrings(_G.PlayerTalentFramePointsBar)
+			_G.PlayerTalentFramePreviewBar:DisableDrawLayer("BORDER")
+			_G.PlayerTalentFramePreviewBarFiller:DisableDrawLayer("BACKGROUND")
+			if self.modBtns then
+				self:skinStdButton{obj=_G.PlayerTalentFrameResetButton, fType=ftype, schk=true}
+				self:skinStdButton{obj=_G.PlayerTalentFrameLearnButton, fType=ftype, schk=true}
+			end
+			for i = 1, 3 do
+				self:removeRegions(_G["PlayerSpecTab" .. i], {1}) -- N.B. other regions are icon and highlight
+				if self.modBtnBs then
+					self:addButtonBorder{obj=_G["PlayerSpecTab" .. i]}
 				end
 			end
 			if self.modBtnBs then

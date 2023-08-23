@@ -11,21 +11,7 @@ aObj.blizzFrames[ftype].GossipFrame = function(self)
 
 	local skinGossip = _G.nop
 	if not (self:isAddonEnabled("Quester") and _G.QuesterDB.gossipColor) then
-		if self.isClscERA
-		and not self.isClscERAPTR
-		then
-			self:SecureHook("GossipFrameUpdate", function()
-				for i = 1, _G.NUMGOSSIPBUTTONS do
-					local newText, upd = self:removeColourCodes(_G["GossipTitleButton" .. i]:GetText())
-					if upd then
-						_G["GossipTitleButton" .. i]:SetText(newText)
-					end
-					_G["GossipTitleButton" .. i]:GetFontString():SetTextColor(self.BT:GetRGB())
-				end
-			end)
-			return
-		else
-			function skinGossip(...)
+		function skinGossip(...)
 				local _, element, elementData
 				if _G.select("#", ...) == 2 then
 					element, elementData = ...
@@ -45,7 +31,6 @@ aObj.blizzFrames[ftype].GossipFrame = function(self)
 					end)
 				end
 			end
-		end
 	end
 
 	self:SecureHookScript(_G.GossipFrame, "OnShow", function(this)

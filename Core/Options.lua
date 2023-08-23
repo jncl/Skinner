@@ -1283,7 +1283,7 @@ aObj.SetupOptions = function(self)
 	local pfOptTab = {
 		["Buffs"]             = {desc = "Buffs Buttons"},
 		["Character Frames"]  = true,
-		["Communities"]       = (self.isRtl or self.isClscERAPTR) and {suff = "UI"} or nil,
+		["Communities"]       = {suff = "UI"} or nil,
 		["Compact Frames"]    = not self.isRtl and true or nil,
 		["Dress Up Frame"]    = true,
 		["Friends Frame"]     = {desc = "Social Frame"},
@@ -1324,7 +1324,7 @@ aObj.SetupOptions = function(self)
 		["PTR Feedback"]          = _G.PTR_IssueReporter and {suff = "Frames"} or nil,
 		["Raid Frame"]            = true,
 		["Report Frame"]          = true,
-		["Settings"]              = (self.isRtl or self.isClsc or self.isClscERAPTR) and {desc = "Options"} or nil,
+		["Settings"]              = {desc = "Options"} or nil,
 		["Shared Basic Controls"] = {desc = "Script Errors Frame"},
 		["Stack Split"]           = {suff = "Frame"},
 		["Static Popups"]         = true,
