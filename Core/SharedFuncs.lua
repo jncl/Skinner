@@ -52,7 +52,7 @@ function aObj:checkVersion()
 	self.isRtlPTRX    = agentUID == "wow_ptr_x" and true
 	self.isRtl        = agentUID == "wow" and true
 	--@debug@
-	self:Debug("checkVersion#1: [%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s]", self.isClscBeta, self.isClscPTR, self.isClsc, self.isClscERAPTR, self.isClscERA, self.isRtlBeta, self.isRtlPTR, self.isRtlPTRX, self.isRtl, self.isPatch)
+	self:Debug("checkVersion#1: [%s, %s, %s, %s, %s, %s, %s, %s, %s, %s]", self.isClscBeta, self.isClscPTR, self.isClsc, self.isClscERAPTR, self.isClscERA, self.isRtlBeta, self.isRtlPTR, self.isRtlPTRX, self.isRtl, self.isPatch)
 	--@end-debug@
 
 	self.tocVer = getTOCVer(agentUID)
@@ -83,12 +83,12 @@ function aObj:checkVersion()
 	-- indicate we're on Retail if on Retail PTR
 	self.isRtl        = self.isRtl or self.isRtlPTR or self.isRtlPTRX
 	-- handle PTR changes going Live
-	self.isClscPTR    = self.isClscPTR or self.isClsc and (buildInfo.curr[4] == getTOCVer("wow_classic")) and self.isPatch
-	self.isClscERAPTR = self.isClscERAPTR or self.isClscERA and (buildInfo.curr[4] == getTOCVer("wow_classic_era")) and self.isPatch
-	self.isRtlPTR     = self.isRtlPTR or self.isRtl and (buildInfo.curr[4] == getTOCVer("wow_ptr")) and self.isPatch
-	self.isRtlPTRX    = self.isRtlPTRX or self.isRtl and (buildInfo.curr[4] == getTOCVer("wow_ptr_x")) and self.isPatch
+	self.isClscPTR    = self.isClscPTR or self.isClsc and self.isPatch
+	self.isClscERAPTR = self.isClscERAPTR or self.isClscERA and self.isPatch
+	self.isRtlPTR     = self.isRtlPTR or self.isRtl and self.isPatch
+	self.isRtlPTRX    = self.isRtlPTRX or self.isRtl and self.isPatch
 	--@debug@
-	self:Debug("checkVersion#2: [%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s]", self.isClscBeta, self.isClscPTR, self.isClsc, self.isClscERAPTR, self.isClscERA, self.isRtlBeta, self.isRtlPTR, self.isRtlPTRX, self.isRtl, self.isPatch)
+	self:Debug("checkVersion#2: [%s, %s, %s, %s, %s, %s, %s, %s, %s, %s]", self.isClscBeta, self.isClscPTR, self.isClsc, self.isClscERAPTR, self.isClscERA, self.isRtlBeta, self.isRtlPTR, self.isRtlPTRX, self.isRtl, self.isPatch)
 	--@end-debug@
 
 end
