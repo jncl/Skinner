@@ -6,15 +6,15 @@ local _G = _G
 local buildInfo = {
 	-- Testing
 	-- wow_classic_beta    = {"3.4.0",  46158, "Classic Beta"},
-	-- wow_beta            = {"10.0.2", 47120, "Retail Beta"}, -- a.k.a. Dragonflight
+	-- wow_beta            = {"11.0.0", nnnnn, "Retail Beta"}, -- a.k.a. ?
 	wow_classic_ptr     = {"3.4.2",  50375, "Classic PTR"},
-	wow_classic_era_ptr = {"1.14.4", 50547, "Classic Era PTR"},
-	wow_ptr_x           = {"10.1.5", 50585, "Retail PTRX"}, -- [wowxptr]
-	wow_ptr             = {"10.1.7", 50505, "Retail PTR"},
+	wow_classic_era_ptr = {"1.14.4", 51001, "Classic Era PTR"},
+	wow_ptr_x           = {"10.1.5", 50791, "Retail PTRX"}, -- [wowxptr]
+	wow_ptr             = {"10.1.7", 50893, "Retail PTR"},
 	-- Live
-	wow_classic         = {"3.4.2",  50375, "Classic"}, -- a.k.a. Wrath of the Lich King Classic
-	wow_classic_era     = {"1.14.3", 49821, "Classic Era"},
-	wow                 = {"10.1.5", 50585, "Retail"},
+	wow_classic         = {"3.4.2",  50664, "Classic"}, -- a.k.a. Wrath of the Lich King Classic
+	wow_classic_era     = {"1.14.4", 51001, "Classic Era"},
+	wow                 = {"10.1.5", 50791, "Retail"},
 	-- Currently playing
 	curr                = {_G.GetBuildInfo()},
 }
