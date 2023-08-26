@@ -92,7 +92,6 @@
 <Script file="Fizzle.lua"/>
 <Script file="FlaresThatWork.lua"/>
 <Script file="FlyoutButtonCustom.lua"/>
-<Script file="FramesResized.lua"/>
 <Script file="GarrisonCommander.lua"/>
 <Script file="GarrisonMissionManager.lua"/>
 <Script file="GroupCalendar.lua"/>
