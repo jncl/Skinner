@@ -2416,7 +2416,7 @@ aObj.blizzFrames[ftype].Settings = function(self)
 		_G.ScrollUtil.AddAcquiredFrameCallback(this.Container.SettingsList.ScrollBox, skinSetting, aObj, true)
 		self:skinObject("frame", {obj=this.Container, fType=ftype, fb=true, x1=-14, y1=12, y2=-8})
 		-- .InputBlocker
-		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true})
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true, ofs=0, y1=-1})
 		if self.modBtns then
 			self:skinCloseButton{obj=this.ClosePanelButton, fType=ftype}
 			self:skinStdButton{obj=this.Container.SettingsList.Header.DefaultsButton, fType=ftype}
