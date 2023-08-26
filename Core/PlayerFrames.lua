@@ -309,11 +309,6 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 				aObj:skinObject("dropdown", {obj=frame.OptionsList.ClubFilterDropdown, fType=ftype})
 				aObj:skinObject("dropdown", {obj=frame.OptionsList.ClubSizeDropdown, fType=ftype})
 				aObj:skinObject("dropdown", {obj=frame.OptionsList.SortByDropdown, fType=ftype})
-				-- TODO: find out how to change atlas for each type, maybe by using tex coords
-				-- ==> :SetAtlas(GetIconForRole(role1, showDisabled), TextureKitConstants.IgnoreAtlasSize)
-				-- for _, role in _G.pairs{"Tank", "Healer", "Dps"} do
-				-- 	frame.OptionsList[role .. "RoleFrame"].Icon:SetTexture(self.tFDIDs.lfgIR)
-				-- end
 				aObj:skinObject("editbox", {obj=frame.OptionsList.SearchBox, fType=ftype, si=true, y1=-6, y2=6})
 				aObj:moveObject{obj=frame.OptionsList.Search, x=3, y=-4}
 				if aObj.modBtns then

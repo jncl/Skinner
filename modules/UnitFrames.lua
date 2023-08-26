@@ -393,7 +393,9 @@ function module:skinPetF()
 					frame.roleIcon = _G.PetFrame:CreateTexture(nil, "artwork")
 					frame.roleIcon:SetSize(24, 24)
 					frame.roleIcon:SetPoint("left", -10, 0)
+					if not aObj.isRtl then
 					frame.roleIcon:SetTexture(aObj.tFDIDs.lfgIR)
+					end
 					local function setSpec()
 						local petSpec = _G.GetSpecialization(nil, true)
 						if petSpec then
