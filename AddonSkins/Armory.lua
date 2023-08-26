@@ -252,7 +252,7 @@ aObj.addonsToSkin.Armory = function(self) -- v 15.1.0
 		end)
 	end
 	-- Guild Bank Tab
-	if _G.IsAddOnLoaded("ArmoryGuildBank") then
+	if self:isAddOnLoaded("ArmoryGuildBank") then
 		_G.ArmoryInventoryGuildBankScrollFrame:DisableDrawLayer("BACKGROUND")
 		self:skinSlider{obj=_G.ArmoryInventoryGuildBankScrollFrame.ScrollBar}
 		if self.modBtns then

@@ -13,7 +13,7 @@ aObj.otherAddons.TukuiInit = function(self) -- v 20.02
 	local mult = 1
 	if ver > 12 then
 		mediapath = [[Interface\AddOns\Tukui\Medias\Textures\]]
-	    if _G.IsAddOnLoaded("Tukui") then
+	    if self:isAddOnLoaded("Tukui") then
 	        local T, C, L = _G.unpack(_G.Tukui)
 	        borderr, borderg, borderb = _G.unpack(C.General.BorderColor)
 	        backdropr, backdropg, backdropb = _G.unpack(C.General.BackdropColor)

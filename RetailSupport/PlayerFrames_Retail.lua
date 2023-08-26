@@ -626,8 +626,8 @@ aObj.SetupRetail_PlayerFrames = function()
 		if not self.prdb.CastingBar.skin or self.initialized.CastingBar then return end
 		self.initialized.CastingBar = true
 
-		if _G.IsAddOnLoaded("Quartz")
-		or _G.IsAddOnLoaded("Dominos_Cast")
+		if self:isAddOnLoaded("Quartz")
+		or self:isAddOnLoaded("Dominos_Cast")
 		then
 			self.blizzFrames[ftype].CastingBar = nil
 			return
@@ -1385,7 +1385,7 @@ aObj.SetupRetail_PlayerFrames = function()
 			end
 			local x1Ofs, y1Ofs, x2Ofs, y2Ofs = -4, 2, 7, -5
 
-			if _G.IsAddOnLoaded("BetterWardrobe") then
+			if self:isAddOnLoaded("BetterWardrobe") then
 				self.callbacks:Fire("WardrobeCollectionFrame_OnShow")
 			else
 				local function updBtnClr(btn)
@@ -1513,7 +1513,7 @@ aObj.SetupRetail_PlayerFrames = function()
 		if not self.prdb.ContainerFrames.skin or self.initialized.ContainerFrames then return end
 		self.initialized.ContainerFrames = true
 
-		if _G.IsAddOnLoaded("LiteBag") then
+		if self:isAddOnLoaded("LiteBag") then
 			self.blizzFrames[ftype].ContainerFrames = nil
 			return
 		end
@@ -1576,7 +1576,7 @@ aObj.SetupRetail_PlayerFrames = function()
 		if not self.prdb.DressUpFrame or self.initialized.DressUpFrame then return end
 		self.initialized.DressUpFrame = true
 
-		if _G.IsAddOnLoaded("DressUp") then
+		if self:isAddOnLoaded("DressUp") then
 			self.blizzFrames[ftype].DressUpFrame = nil
 			return
 		end

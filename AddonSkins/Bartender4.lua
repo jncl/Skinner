@@ -17,7 +17,7 @@ aObj.addonsToSkin.Bartender4 = function(self) -- v 4.14.9
 	end)
 
 	local mod
-	if not _G.IsAddOnLoaded("Masque") then
+	if not self:isAddOnLoaded("Masque") then
 		if self.modBtns then
 			mod = _G.Bartender4:GetModule("ActionBars", true)
 			if mod then

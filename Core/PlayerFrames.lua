@@ -785,8 +785,8 @@ aObj.blizzFrames[ftype].CompactFrames = function(self)
 	if not self.prdb.CompactFrames or self.initialized.CompactFrames then return end
 	self.initialized.CompactFrames = true
 
-	if _G.IsAddOnLoaded("Tukui")
-	or _G.IsAddOnLoaded("ElvUI")
+	if self:isAddOnLoaded("Tukui")
+	or self:isAddOnLoaded("ElvUI")
 	then
 		self.blizzFrames[ftype].CompactFrames = nil
 		return

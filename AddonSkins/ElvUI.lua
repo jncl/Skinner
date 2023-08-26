@@ -7,7 +7,7 @@ aObj.otherAddons.ElvUIInit = function(self) -- v 12.21
 
 	local E, L, V, P, G
 	local borderr, borderg, borderb, backdropr, backdropg, backdropb
-    if _G.IsAddOnLoaded("ElvUI") then
+    if self:isAddOnLoaded("ElvUI") then
 		E, L, V, P, G = _G.unpack(_G.ElvUI)
        	borderr, borderg, borderb = _G.unpack(E.media.bordercolor)
         backdropr, backdropg, backdropb = _G.unpack(E.media.backdropcolor)

@@ -916,12 +916,12 @@ local function skinTooltip(tbl)
 	if not tbl.obj.sf then
 		-- Bugfix for ElvUI
 		local ttSB
-		if _G.IsAddOnLoaded("ElvUI") then
+		if aObj:isAddOnLoaded("ElvUI") then
 			ttSB = tbl.obj.SetBackdrop
 			tbl.obj.SetBackdrop = _G.nop
 		end
 		aObj:skinObject("frame", {obj=tbl.obj, fType=tbl.ftype, kfs=true, rns=true, ng=true, ofs=tbl.ofs or 0})
-		if _G.IsAddOnLoaded("ElvUI") then
+		if aObj:isAddOnLoaded("ElvUI") then
 			tbl.obj.SetBackdrop = ttSB
 		end
 	end

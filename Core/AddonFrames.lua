@@ -101,7 +101,7 @@ local function skinBLoD(addon)
 		for fName, _ in _G.pairs(fTab) do
 			if addon
 			and addon == "Blizzard_" .. fName
-			or _G.IsAddOnLoaded("Blizzard_" .. fName)
+			or aObj:isAddOnLoaded("Blizzard_" .. fName)
 			then
 				aObj:checkAndRun(fName, fType, true)
 			end
@@ -109,7 +109,6 @@ local function skinBLoD(addon)
 	end
 end
 function aObj:AddonFrames()
-	-- self:Debug("AddonFrames")
 
 	-- used for Addons that aren't LoadOnDemand
 	for addonName, skinFunc in _G.pairs(self.addonsToSkin) do
@@ -121,7 +120,7 @@ function aObj:AddonFrames()
 	_G.C_Timer.After(0.2, function()
 		skinBLoD()
 		for name, skinFunc in _G.pairs(self.lodAddons) do
-			if _G.IsAddOnLoaded(name) then
+			if self:isAddOnLoaded(name) then
 				self:checkAndRunAddOn(name, skinFunc, true)
 			end
 		end
@@ -162,7 +161,7 @@ function aObj:LoDFrames(addon)
 	end
 
 	-- handle FramesResized changes
-	if _G.IsAddOnLoaded("FramesResized") then
+	if self:isAddOnLoaded("FramesResized") then
 		if addon == "Blizzard_TradeSkillUI"
 		and self.FR_TradeSkillUI then
 			self:checkAndRun("FR_TradeSkillUI", "s") -- not an addon in its own right

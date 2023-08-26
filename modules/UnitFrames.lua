@@ -86,7 +86,7 @@ local function changeUFOpacity()
 		_G.PartyMemberBackground:SetAlpha(db.alpha)
 	end
 
-	if _G.IsAddOnLoaded("Blizzard_ArenaUI") then
+	if aObj:isAddOnLoaded("Blizzard_ArenaUI") then
 		if _G.ArenaPrepBackground.sf then
 			_G.ArenaPrepBackground.sf:SetAlpha(db.alpha)
 		end
@@ -394,7 +394,7 @@ function module:skinPetF()
 					frame.roleIcon:SetSize(24, 24)
 					frame.roleIcon:SetPoint("left", -10, 0)
 					if not aObj.isRtl then
-					frame.roleIcon:SetTexture(aObj.tFDIDs.lfgIR)
+						frame.roleIcon:SetTexture(aObj.tFDIDs.lfgIR)
 					end
 					local function setSpec()
 						local petSpec = _G.GetSpecialization(nil, true)
@@ -694,8 +694,8 @@ end
 function module:OnInitialize()
 
 	-- disable ourself if another unitframe addon is loaded
-	if _G.IsAddOnLoaded("Perl_Config")
-	or _G.IsAddOnLoaded("XPerl")
+	if aObj:isAddOnLoaded("Perl_Config")
+	or aObj:isAddOnLoaded("XPerl")
 	then
 		self:SetEnabledState(false)
 	end

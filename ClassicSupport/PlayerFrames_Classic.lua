@@ -341,8 +341,8 @@ aObj.SetupClassic_PlayerFrames = function()
 		if not self.prdb.CastingBar.skin or self.initialized.CastingBar then return end
 		self.initialized.CastingBar = true
 
-		if _G.IsAddOnLoaded("Quartz")
-		or _G.IsAddOnLoaded("Dominos_Cast")
+		if self:isAddOnLoaded("Quartz")
+		or self:isAddOnLoaded("Dominos_Cast")
 		then
 			self.blizzFrames[ftype].CastingBar = nil
 			return
@@ -679,7 +679,7 @@ aObj.SetupClassic_PlayerFrames = function()
 	end
 
 	local function skinaTS(parent)
-		if _G.IsAddOnLoaded("alaTradeSkill") then
+		if self:isAddOnLoaded("alaTradeSkill") then
 			aObj:keepFontStrings(parent.frame.TextureBackground)
 			parent.frame.TabFrame:ClearAllPoints()
 			parent.frame.TabFrame:SetPoint("BOTTOM", parent, "TOP", 0, -13)
@@ -705,7 +705,7 @@ aObj.SetupClassic_PlayerFrames = function()
 			self:keepFontStrings(_G.CraftExpandButtonFrame)
 			self:keepFontStrings(_G.CraftDetailScrollChildFrame)
 			local x1, y1, x2, y2
-			if _G.IsAddOnLoaded("Leatrix_Plus")
+			if self:isAddOnLoaded("Leatrix_Plus")
 			and _G.LeaPlusDB["EnhanceProfessions"] == "On"
 			then
 				x1, y1, x2, y2 = 10, -11, -33, 49
@@ -716,7 +716,7 @@ aObj.SetupClassic_PlayerFrames = function()
 			if self.modBtnBs then
 				self:addButtonBorder{obj=_G.CraftIcon, clr="gold"}
 			end
-			if not _G.IsAddOnLoaded("alaTradeSkill") then
+			if not self:isAddOnLoaded("alaTradeSkill") then
 				self:skinObject("slider", {obj=_G.CraftListScrollFrameScrollBar, fType=ftype, rpTex="background"})
 				self:skinObject("slider", {obj=_G.CraftDetailScrollFrameScrollBar, fType=ftype, rpTex="background"})
 				for i = 1, _G.MAX_CRAFT_REAGENTS do
@@ -744,7 +744,7 @@ aObj.SetupClassic_PlayerFrames = function()
 		if not self.prdb.DressUpFrame or self.initialized.DressUpFrame then return end
 		self.initialized.DressUpFrame = true
 
-		if _G.IsAddOnLoaded("DressUp") then
+		if self:isAddOnLoaded("DressUp") then
 			self.blizzFrames[ftype].DressUpFrame = nil
 			return
 		end
@@ -1547,14 +1547,14 @@ aObj.SetupClassic_PlayerFrames = function()
 				self:addButtonBorder{obj=_G.TradeSkillSkillIcon, clr="gold"}
 			end
 			local x1, y1, x2, y2
-			if _G.IsAddOnLoaded("Leatrix_Plus")
+			if self:isAddOnLoaded("Leatrix_Plus")
 			and _G.LeaPlusDB["EnhanceProfessions"] == "On"
 			then
 				x1, y1, x2, y2 = 10, -11, -33, 49
 			else
 				x1, y1, x2, y2 = 10, -11, -32, 70
 			end
-			if not _G.IsAddOnLoaded("alaTradeSkill") then
+			if not self:isAddOnLoaded("alaTradeSkill") then
 				self:skinObject("dropdown", {obj=_G.TradeSkillInvSlotDropDown, fType=ftype})
 				self:skinObject("dropdown", {obj=_G.TradeSkillSubClassDropDown, fType=ftype})
 				self:skinObject("slider", {obj=_G.TradeSkillListScrollFrame.ScrollBar, fType=ftype, rpTex="background"})

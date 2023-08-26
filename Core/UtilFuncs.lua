@@ -408,9 +408,9 @@ function aObj:checkAndRunAddOn(addonName, addonFunc, LoD)
 		return
 	end
 
-	self:Debug2("checkAndRunAddOn #2: [%s, %s, %s, %s]", _G.IsAddOnLoaded(addonName), _G.IsAddOnLoadOnDemand(addonName), addonFunc, _G.type(addonFunc))
+	self:Debug2("checkAndRunAddOn #2: [%s, %s, %s, %s]", self:isAddOnLoaded(addonName), _G.IsAddOnLoadOnDemand(addonName), addonFunc, _G.type(addonFunc))
 
-	if not _G.IsAddOnLoaded(addonName) then
+	if not self:isAddOnLoaded(addonName) then
 		-- deal with Addons under the control of an LoadManager
 		if _G.IsAddOnLoadOnDemand(addonName) and not LoD then
 			self.lmAddons[addonName:lower()] = addonFunc -- store with lowercase addonname (AddonLoader fix)
@@ -645,9 +645,6 @@ end
 
 function aObj:getGradientInfo(invert, rotate)
 
-	local MinR, MinG, MinB, MinA = aObj.gminClr:GetRGBA()
-	local MaxR, MaxG, MaxB, MaxA = aObj.gmaxClr:GetRGBA()
-
 	if self.prdb.Gradient.enable then
 		if invert then
 			return rotate and "HORIZONTAL" or "VERTICAL", aObj.gmaxClr, aObj.gminClr
@@ -826,12 +823,20 @@ function aObj:hookScript(obj, method, func)
 
 end
 
+function aObj:isAddOnLoaded(addonName) -- luacheck: ignore 212 (unused argument)
+
+	local isAddOnLoaded = _G.IsAddOnLoaded or _G.C_AddOns.IsAddOnLoaded
+	return isAddOnLoaded(addonName)
+
+end
+
 function aObj:isAddonEnabled(addonName)
 	--@alpha@
 	_G.assert(addonName, "Unknown object isAddonEnabled\n" .. _G.debugstack(2, 3, 2))
 	--@end-alpha@
 
-	return _G.GetAddOnEnableState(self.uName, addonName) == 2 and true or false
+	local getAddOnEnableState = _G.GetAddOnEnableState or _G.C_AddOns.GetAddOnEnableState;
+	return getAddOnEnableState(self.uName, addonName) == 2 and true or false
 
 end
 
@@ -897,7 +902,7 @@ function aObj:makeMFRotatable(modelFrame)
 	--@end-alpha@
 
 	-- Don't make Model Frames Rotatable if CloseUp is loaded
-	if _G.IsAddOnLoaded("CloseUp") then return end
+	if self:isAddOnLoaded("CloseUp") then return end
 
 	-- hide rotation buttons
 	for _, child in _G.ipairs{modelFrame:GetChildren()} do
@@ -1635,7 +1640,8 @@ function aObj:SetupCmds()
 		return
 	end)
 
-	self:RegisterChatCommand("tad", function(frame) _G.LoadAddOn("Blizzard_DebugTools"); _G.TableAttributeDisplay:InspectTable(_G[frame] or _G.GetMouseFocus()); _G.TableAttributeDisplay:Show() end)
+	local loadAddOn = _G.LoadAddOn or _G.C_AddOns.LoadAddOn;
+	self:RegisterChatCommand("tad", function(frame) loadAddOn("Blizzard_DebugTools"); _G.TableAttributeDisplay:InspectTable(_G[frame] or _G.GetMouseFocus()); _G.TableAttributeDisplay:Show() end)
 
 end
 --@end-alpha@

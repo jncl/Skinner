@@ -67,7 +67,7 @@ aObj.SetupRetail_NPCFrames = function()
 							self:setActiveTab(tab.sf)
 						end
 					end
-					if _G.IsAddOnLoaded("Auctionator") then
+					if self:isAddOnLoaded("Auctionator") then
 						for _, tab in _G.ipairs(_G.AuctionatorAHTabsContainer.Tabs) do
 							self:setInactiveTab(tab.sf)
 						end
@@ -367,7 +367,7 @@ aObj.SetupRetail_NPCFrames = function()
 		if not self.prdb.BankFrame or self.initialized.BankFrame then return end
 		self.initialized.BankFrame = true
 
-		if _G.IsAddOnLoaded("LiteBag") then
+		if self:isAddOnLoaded("LiteBag") then
 			self.blizzFrames[ftype].BankFrame = nil
 			return
 		end

@@ -1201,12 +1201,12 @@ function aObj:skinTooltip(tooltip)
 	if not tooltip.sf then
 		-- Bugfix for ElvUI
 		local ttSB
-		if _G.IsAddOnLoaded("ElvUI") then
+		if self:isAddOnLoaded("ElvUI") then
 			ttSB = tooltip.SetBackdrop
 			tooltip.SetBackdrop = _G.nop
 		end
 		self:skinObject("frame", {obj=tooltip, fType=tooltip.ftype, kfs=true, rns=true, ng=true, ofs=tooltip.ofs or 0})
-		if _G.IsAddOnLoaded("ElvUI") then
+		if self:isAddOnLoaded("ElvUI") then
 			tooltip.SetBackdrop = ttSB
 		end
 	end

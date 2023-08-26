@@ -1,13 +1,13 @@
-local aName, aObj = ...
+local _, aObj = ...
 if not aObj:isAddonEnabled("PetBattleHUD") then return end
 local _G = _G
 
 aObj.addonsToSkin.PetBattleHUD = function(self) -- v 8.0.0.1
 
-	if not (IsAddOnLoaded("Tukui")
-	or IsAddOnLoaded("AsphyxiaUI")
-	or IsAddOnLoaded("DuffedUI")
-	or IsAddOnLoaded("ElvUI"))
+	if not (self:isAddOnLoaded("Tukui")
+	or self:isAddOnLoaded("AsphyxiaUI")
+	or self:isAddOnLoaded("DuffedUI")
+	or self:isAddOnLoaded("ElvUI"))
 	then
 		return
 	end

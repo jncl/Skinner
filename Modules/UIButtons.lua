@@ -1065,10 +1065,10 @@ end
 function module:OnEnable()
 
 	-- bypass the Item Quality Border Texture changes if the specified addons aren't loaded
-	if not _G.IsAddOnLoaded("AdiBags")
-	and not _G.IsAddOnLoaded("Fizzle")
-	and not _G.IsAddOnLoaded("oGlowClassic")
-	and not _G.IsAddOnLoaded("XLoot")
+	if not aObj:isAddOnLoaded("AdiBags")
+	and not aObj:isAddOnLoaded("Fizzle")
+	and not aObj:isAddOnLoaded("oGlowClassic")
+	and not aObj:isAddOnLoaded("XLoot")
 	then
 		return
 	end
@@ -1130,10 +1130,10 @@ function module:GetOptions() -- luacheck: ignore 212 (unused argument)
 				inline = true,
 				name = aObj.L["Item Quality Border"],
 				hidden = function()
-					if not _G.IsAddOnLoaded("AdiBags")
-					and not _G.IsAddOnLoaded("Fizzle")
-					and not _G.IsAddOnLoaded("oGlowClassic")
-					and not _G.IsAddOnLoaded("XLoot")
+					if not self:isAddOnLoaded("AdiBags")
+					and not self:isAddOnLoaded("Fizzle")
+					and not self:isAddOnLoaded("oGlowClassic")
+					and not self:isAddOnLoaded("XLoot")
 					then
 						return true
 					else
