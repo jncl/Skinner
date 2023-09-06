@@ -4049,13 +4049,12 @@ aObj.SetupRetail_UIFrames = function()
 		end)
 		self:checkShown(_G.HelpPlateTooltip)
 
-		if aObj.isRtlPTR then
-			self:SecureHookScript(_G.PingSystemTutorial, "OnShow", function(this)
-				self:skinObject("frame", {obj=this, fType=ftype, cb=true, ofs=0, y1=-1})
+		self:SecureHookScript(_G.PingSystemTutorial, "OnShow", function(this)
+			this.Bg:SetAlpha(0)
+			self:skinObject("frame", {obj=this, fType=ftype, cb=true, bg=true, ofs=0, y1=-1, y2=-2})
 
-				self:Unhook(this, "OnShow")
-			end)
-		end
+			self:Unhook(this, "OnShow")
+		end)
 
 	end
 

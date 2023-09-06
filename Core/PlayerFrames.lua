@@ -859,6 +859,9 @@ aObj.blizzFrames[ftype].CompactFrames = function(self)
 		if self.modChkBtns then
 			self:skinCheckButton{obj=this.displayFrame.everyoneIsAssistButton}
 			_G.RaiseFrameLevel(this.displayFrame.everyoneIsAssistButton) -- so button border is visible
+			if self.isRtl then
+				self:skinCheckButton{obj=this.displayFrame.RestrictPingsButton, fType=ftype}
+			end
 		end
 
 		self:Unhook(this, "OnShow")

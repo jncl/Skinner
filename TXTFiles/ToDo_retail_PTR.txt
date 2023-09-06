@@ -8,31 +8,6 @@
 
 	Retail_PTR (Dragonflight 10.1.7)
 		- Added
-			- Blizzard_CompactRaidFrameManager
-				- .RestrictPingsButton
-			- Blizzard_DragonflightLandingPage
-				- .ScrollFadeOverlay
-			- Blizzard_PingUI
-√				- PingSystemTutorial
 		- Updated
-			- Blizzard_MajorFactionsLandingTemplates
-			- Blizzard_PvPTalentSlotTemplates
-			- Blizzard_CompactRaidFrameManager
-			- Blizzard_UIWidgetTemplateBase
-			- CompactUnitFrame
-			- Deprecated_ArenaUI
-			- LFDFrame
-			- LowHealthFrame
-			- MerchantFrame
-			- Minimap
-			- PartyFrame
-			- PartyFrameTemplates
-			- PetFrame
-			- PlayerFrame
-			- QuestFrame
-			- RaidFinder
-			- RaidWarning
-			- ReadyCheck
-			- TargetFrame
-			- UIErrorsFrame
 		- Deleted
+			
