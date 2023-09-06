@@ -1,3 +1,43 @@
+beta10.51001.1
+Jncl:
+	Updated ToDo.txt files
+	Updated version numbers
+	Updated SharedFuncs patch checks
+	Applied Classic ERA PTR changes
+	Updated UnitFrames PetFrame skin
+	Updated ItemTextFrame skin
+	Updated Settings skin
+	Updated SharedFuncs Settings code
+	Updated Retail InspectUI skin
+	Removed debug line
+	Updated colourTable for buttons
+	Updated ReportFrame skin
+	Updated MailFrame skin
+	Retail PTR changes
+	Updated Settings skin
+	Updated code for luacheck issues
+	Updated Retail ReputationFrame skin
+	Updated debug event info display
+	Updated MerchantFrame skin
+	Updated Classic MainMenuBar skin
+	Updated LibSFDropDown & MountsJournal skins
+	Added AlertFrame debug entry
+	Bugfix for ADDON_ACTION_BLOCKED, hopefully fixes #23
+	Updated OverrideActionBar
+	Updated OverrideActionBar
+	Updated ClassTalentUI Retail
+	Updated TalkingHeadsFrame Retail
+	Updated LFGList Retail
+	Updated SpellBook Retail
+	Updated Professions & ProfessionsOrders Retail
+	Bugfix for ObjectiveTracker Retail
+	Updated Containers Retail
+	Updated CharacterFrames Retail
+	Updated ArtifactFrame Retail
+	Updated ClassTrainerFame Retail
+	Updated Retail AuctionUI
+	Updated CommunitiesUI
+	
 beta10.50469.3
 Jncl:
 	Updated ToDo.txt files
