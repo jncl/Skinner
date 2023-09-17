@@ -1322,6 +1322,7 @@ aObj.SetupOptions = function(self)
 		["Nameplates"]            = not self.isRtl and true or nil,
 		["Override Action Bar"]   = not self.isClscERA and {desc = "Vehicle UI"} or nil,
 		["PTR Feedback"]          = _G.PTR_IssueReporter and {suff = "Frames"} or nil,
+		["PVE Frame"]             = (aObj.isRtl or aObj.isClscPTR) and {desc = "Group Finder Frame"} or nil,
 		["Raid Frame"]            = true,
 		["Report Frame"]          = true,
 		["Settings"]              = {desc = "Options Frame"} or nil,
