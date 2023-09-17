@@ -19,9 +19,5 @@ ToDos
 
 ≈		O	Refactor NewSkinFuncs in AddOn skins
 
-#12	?	I	CharacterFrame
-			- Bug caused by AddOn?
-
-#25	?	I	ADDON_ACTION_BLOCKED - TargetFrameToT:Hide()
-
-#26	√	I	Options not being displayed when clicked
+#28		I	WOTLK PTR
+√			- Skinner/Core/NewSkinFuncs.lua:325: attempt to index field 'Backdrop' (a nil value) [string "@Skinner/Core/NewSkinFuncs.lua"]

@@ -8,5 +8,25 @@ ToDo_retail_PTRX
 
 	Retail_PTRX (Dragonflight 10.1.5)
 		- Added
+			- Blizzard_MonthlyActivities
+x				- .HeaderContainer
+x				- .ThemeContainer
+			- Blizzard_PerksProgram
+				- .ProductsFrame
+√					- .ProductsScrollBoxContainer
+x				- .ThemeContainer
 		- Updated
+			- Blizzard_AdventureGuide
+x				- Sub Activities buttons & Textures
+			- Blizzard_Console
+x				- Background now a parentKey
+			- Blizzard_UIWidgetTemplateBase
+			- ExpansionLandingPage
+√				- ScrollFadeOverlay
+			- TargetFrame
+				- .Count
+√			- AddOn functions now in C_AddOns
 		- Deleted
+			- Blizzard_PerksProgram
+x				- .ProductsFrame
+		

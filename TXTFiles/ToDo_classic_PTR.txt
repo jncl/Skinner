@@ -9,21 +9,26 @@ ToDo_classic_PTR
 	Classic_PTR
 		- Added
 √			- Settings
+√			- C_LFGInfo
+√			- LFDFrame
+√			- LFGFrame
+√			- LFGList
+√			- PVEFrame
 		- Updated
 			- InputScrollFrameTemplate replaced by UIPanelInputScrollFrameTemplate
 			- CommunitiesAddDialog
 			- CommunitiesSettings
 			- CommunitiesStreams
-			- Blizzard_CompactRaidFrameManager
-			- Blizzard_Console
-			- Blizzard_TableInspector
-			- Blizzard_EventTrace
+			- Blizzard_CompactRaidFrameManagero
+x			- Blizzard_Console
+x			- Blizzard_TableInspector
+x			- Blizzard_EventTrace
 			- GlowEmitter now has a NineSlice frame
 			- Blizzard_ItemSocketingUI
-			- Blizzard_LFGListing
-			- Blizzard_MacroIconSelector
+√			- Blizzard_LFGListing
+√			- Blizzard_MacroIconSelector
 √			- Blizzard_MacroUI
-			- Blizzard_MovePad
+xp			- Blizzard_MovePad
 			- Blizzard_UIWidgetCenterDisplayFrame
 			- ClassTrainerFrameTemplates
 x			- GameMenuFrame
