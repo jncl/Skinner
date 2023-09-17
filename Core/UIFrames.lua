@@ -638,7 +638,7 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 		if self.modBtns then
 			self:skinStdButton{obj=this.DefaultButton, fType=ftype}
 			self:skinStdButton{obj=this.RedockButton, fType=ftype}
-			if aObj.isClscERA then
+			if self.isClsc then
 				self:skinStdButton{obj=this.ToggleChatButton, fType=ftype}
 			end
 			self:skinStdButton{obj=_G.CombatLogDefaultButton, fType=ftype}
