@@ -217,15 +217,15 @@ aObj.SetupClassic_UIFrames = function()
 					end
 
 					local function skinRoleBtn(roleBtn)
-							roleBtn:DisableDrawLayer("BACKGROUND")
-							roleBtn:SetNormalTexture(self.tFDIDs.lfgIR)
-							roleBtn.cover:SetTexture(self.tFDIDs.lfgIR)
+						roleBtn:DisableDrawLayer("BACKGROUND")
+						roleBtn:SetNormalTexture(self.tFDIDs.lfgIR)
+						roleBtn.cover:SetTexture(self.tFDIDs.lfgIR)
 						if roleBtn.CheckButton
 						and self.modChkBtns
 						then
-								self:skinCheckButton{obj=roleBtn.CheckButton, fType=ftype}
-							end
+							self:skinCheckButton{obj=roleBtn.CheckButton, fType=ftype}
 						end
+					end
 					self:SecureHookScript(_G.LFGListingFrame, "OnShow", function(fObj)
 						self:keepFontStrings(fObj)
 						for _, btn in pairs(fObj.SoloRoleButtons.RoleButtons) do
@@ -236,7 +236,7 @@ aObj.SetupClassic_UIFrames = function()
 						fObj.NewPlayerFriendlyButton.cover:SetTexture(self.tFDIDs.lfgIR)
 						if self.modChkBtns then
 							self:skinCheckButton{obj=fObj.NewPlayerFriendlyButton.CheckButton, fType=ftype}
-							end
+						end
 						for _, btn in pairs(fObj.CategoryView.CategoryButtons) do
 							btn.Cover:SetAlpha(0)
 						end
@@ -790,18 +790,15 @@ aObj.SetupClassic_UIFramesOptions = function(self)
 		["Battlefield Frame"]       = true,
 		["Binding UI"]              = {desc = "Key Bindings UI"},
 		["GM Survey UI"]            = self.isClscERA and true or nil,
-		["Interface Options"]       = true,
 		["LookingforGroupUI"]       = (self.isClsc and not self.isClscPTR) and checkGF() and {desc = "Group Finder"} or nil,
 		["LFGLFM"]                  = self.isClscERA and checkGF() or nil,
 		["Product Choice"]          = {suff = "Frame"},
 		["PVP Frame"]               = self.isClsc and true or nil,
 		["Quest Log"]               = true,
-		["Quest Timer"]             = true,
-		["System Options"]          = true,
+		["Quest Timer"]             = self.isClscERA and true or nil,
 		["World State Score Frame"] = {desc = "Battle Score Frame"},
 	}
 	self:setupFramesOptions(optTab, "UI")
 	_G.wipe(optTab)
 
 end
-
