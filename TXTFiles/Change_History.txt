@@ -1,3 +1,15 @@
+beta10.51237.1
+Jncl:
+	Updated ToDo.txt files
+	Updated Change_History.txt
+	Updated version numbers
+	Applied PTR changes
+	Updated SharedFuncs to display options, fixes #26
+	Updated Settings skin
+	Changed all usages of IsAddOnLoaded function from a Global one to a Skinner one, to handle change to C_AddOns when it occurs
+	Removed RoleIcon texture changes from Retail specific code
+	Obsoleted FramesResized skin
+	
 beta10.51001.1
 Jncl:
 	Updated ToDo.txt files
