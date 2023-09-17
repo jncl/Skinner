@@ -1324,7 +1324,7 @@ aObj.SetupOptions = function(self)
 		["PTR Feedback"]          = _G.PTR_IssueReporter and {suff = "Frames"} or nil,
 		["Raid Frame"]            = true,
 		["Report Frame"]          = true,
-		["Settings"]              = {desc = "Options"} or nil,
+		["Settings"]              = {desc = "Options Frame"} or nil,
 		["Shared Basic Controls"] = {desc = "Script Errors Frame"},
 		["Stack Split"]           = {suff = "Frame"},
 		["Static Popups"]         = true,
