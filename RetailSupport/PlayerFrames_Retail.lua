@@ -1880,13 +1880,15 @@ aObj.SetupRetail_PlayerFrames = function()
 					if _G.select("#", ...) == 2 then
 						element, _ = ...
 					elseif _G.select("#", ...) == 3 then
-						_, element, _ = ...
+						element, _, _ = ...
+					else
+						_, element, _, _ = ...
 					end
-					element:GetNormalTexture():SetTexture(nil)
-					element.Name:SetTextColor(self.BT:GetRGB())
-					self:skinObject("frame", {obj=element, fType=ftype, ofs=-3, y2=4, fb=true})
+					element:GetNormalTexture():SetAlpha(0)
+					element.Name:SetTextColor(aObj.BT:GetRGB())
+					aObj:skinObject("frame", {obj=element, fType=ftype, ofs=-3, y2=4, fb=true})
 				end
-				_G.ScrollUtil.AddInitializedFrameCallback(fObj.ScrollBox, skinElement, aObj, true)
+				_G.ScrollUtil.AddAcquiredFrameCallback(fObj.ScrollBox, skinElement, aObj, true)
 
 				self:Unhook(fObj, "OnShow")
 			end)
