@@ -213,14 +213,23 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 
 		self:SecureHookScript(this.NotificationSettingsDialog, "OnShow", function(fObj)
 			self:skinObject("dropdown", {obj=fObj.CommunitiesListDropDownMenu, fType=ftype})
-			self:skinObject("scrollbar", {obj=fObj.ScrollFrame.ScrollBar, fType=ftype})
-			self:removeNineSlice(fObj.Selector)
+			if self.isRtl then
+				self:skinObject("scrollbar", {obj=fObj.ScrollFrame.ScrollBar, fType=ftype})
+				self:removeNineSlice(fObj.Selector)
+			else
+				self:skinObject("slider", {obj=fObj.ScrollFrame.ScrollBar, fType=ftype})
+			end
 			self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, ofs=-6, x2=-4})
 			if self.modBtns then
 				self:skinStdButton{obj=fObj.ScrollFrame.Child.NoneButton}
 				self:skinStdButton{obj=fObj.ScrollFrame.Child.AllButton}
-				self:skinStdButton{obj=fObj.Selector.CancelButton}
-				self:skinStdButton{obj=fObj.Selector.OkayButton}
+				if self.isRtl then
+					self:skinStdButton{obj=fObj.Selector.CancelButton}
+					self:skinStdButton{obj=fObj.Selector.OkayButton}
+				else
+					self:skinStdButton{obj=fObj.CancelButton}
+					self:skinStdButton{obj=fObj.OkayButton}
+				end
 			end
 			if self.modChkBtns then
 				 self:skinCheckButton{obj=fObj.ScrollFrame.Child.QuickJoinButton}
@@ -629,7 +638,7 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 	self:checkShown(_G.CommunitiesFrame)
 
 	self:SecureHookScript(_G.CommunitiesSettingsDialog, "OnShow", function(this)
-		this.IconPreviewRing:SetTexture(nil)
+		this.IconPreviewRing:SetAlpha(0)
 		self:skinObject("editbox", {obj=this.NameEdit, fType=ftype})
 		self:skinObject("editbox", {obj=this.ShortNameEdit, fType=ftype})
 		self:skinObject("frame", {obj=this.MessageOfTheDay, fType=ftype, kfs=true, fb=true, ofs=8, clr="grey"})
