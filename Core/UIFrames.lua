@@ -1351,6 +1351,11 @@ aObj.blizzLoDFrames[ftype].GuildBankUI = function(self)
 				 self:addButtonBorder{obj=tab.Button, relTo=tab.Button.IconTexture, ofs=3, x2=2}
 			end
 		end
+		if self.isRtl then
+			self:skinObject("scrollbar", {obj=_G.GuildBankInfo.ScrollFrame.ScrollBar, fType=ftype})
+		else
+			self:skinObject("slider", {obj=_G.GuildBankInfo.ScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
+		end
 		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true, cb=true, y1=self.isClsc and -11, x2=self.isClsc and 1, y2=self.isClsc and 3 or -2})
 		if self.modBtns then
 			if self.isClsc then
