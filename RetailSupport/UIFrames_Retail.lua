@@ -1176,6 +1176,9 @@ aObj.SetupRetail_UIFrames = function()
 			local _, overlay = ...
 			local oFrame = aObj:getChild(overlay, 1)
 			oFrame.Header.TitleDivider:SetTexture(nil)
+			if oFrame.ScrollFadeOverlay then
+				oFrame.ScrollFadeOverlay:DisableDrawLayer("ARTWORK")
+			end
 			aObj:skinObject("scrollbar", {obj=oFrame.MajorFactionList.ScrollBar, fType=ftype})
 			local function skinElement(...)
 				local _, element, new
