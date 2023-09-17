@@ -14,7 +14,7 @@ aObj.SetupRetail_UIFrames = function()
 	-- [Legion] Enum.Type_7_0_Garrison
 	-- [BfA] Enum.Type_8_0_Garrison
 	-- [Shadowlands] Enum.Type_9_0_Garrison
-	if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
+	if aObj:isAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 		function skinPortrait(frame)
 			if frame.PuckBorder then -- CovenantMissions
 				frame.TroopStackBorder1:SetTexture(nil)
@@ -2037,7 +2037,7 @@ aObj.SetupRetail_UIFrames = function()
 
 	-- The following function is used by the IslandsPartyPoseUI & WarfrontsPartyPoseUI functions
 	local skinPartyPoseFrame
-	if _G.IsAddOnLoadOnDemand("Blizzard_IslandsPartyPoseUI") then
+	if aObj:isAddOnLoadOnDemand("Blizzard_IslandsPartyPoseUI") then
 		function skinPartyPoseFrame(frame)
 			frame.Border:DisableDrawLayer("BORDER") -- PartyPose NineSliceLayout
 			frame.RewardAnimations.RewardFrame.NameFrame:SetTexture(nil)

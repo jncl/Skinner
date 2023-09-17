@@ -1130,10 +1130,10 @@ function module:GetOptions() -- luacheck: ignore 212 (unused argument)
 				inline = true,
 				name = aObj.L["Item Quality Border"],
 				hidden = function()
-					if not self:isAddOnLoaded("AdiBags")
-					and not self:isAddOnLoaded("Fizzle")
-					and not self:isAddOnLoaded("oGlowClassic")
-					and not self:isAddOnLoaded("XLoot")
+					if not aObj:isAddOnLoaded("AdiBags")
+					and not aObj:isAddOnLoaded("Fizzle")
+					and not aObj:isAddOnLoaded("oGlowClassic")
+					and not aObj:isAddOnLoaded("XLoot")
 					then
 						return true
 					else

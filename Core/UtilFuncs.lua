@@ -382,7 +382,7 @@ function aObj:checkAndRunAddOn(addonName, addonFunc, LoD)
 	_G.assert(addonName, "Unknown object checkAndRunAddOn\n" .. _G.debugstack(2, 3, 2))
 	--@end-alpha@
 
-	self:Debug2("checkAndRunAddOn#1: [%s, %s, %s, %s]", addonName, addonFunc, LoD, _G.type(addonFunc))
+	self:Debug2("checkAndRunAddOn #1: [%s, %s, %s, %s]", addonName, addonFunc, LoD, _G.type(addonFunc))
 
 	-- handle in combat
 	if _G.InCombatLockdown() then
@@ -408,11 +408,13 @@ function aObj:checkAndRunAddOn(addonName, addonFunc, LoD)
 		return
 	end
 
-	self:Debug2("checkAndRunAddOn #2: [%s, %s, %s, %s]", self:isAddOnLoaded(addonName), _G.IsAddOnLoadOnDemand(addonName), addonFunc, _G.type(addonFunc))
+	self:Debug2("checkAndRunAddOn #2: [%s, %s, %s, %s]", self:isAddOnLoaded(addonName), self:isAddOnLoadOnDemand(addonName), addonFunc, _G.type(addonFunc))
 
 	if not self:isAddOnLoaded(addonName) then
 		-- deal with Addons under the control of an LoadManager
-		if _G.IsAddOnLoadOnDemand(addonName) and not LoD then
+		if self:isAddOnLoadOnDemand(addonName)
+		and not LoD
+		then
 			self.lmAddons[addonName:lower()] = addonFunc -- store with lowercase addonname (AddonLoader fix)
 		-- Nil out loaded Skins for Addons that aren't loaded
 		elseif addonFunc then
@@ -435,10 +437,13 @@ function aObj:checkAndRunAddOn(addonName, addonFunc, LoD)
 
 end
 
+local getAddOnInfo = _G.GetAddOnInfo or _G.C_AddOns.GetAddOnInfo
 function aObj:checkLoadable(addonName)
+	--@alpha@
+	_G.assert(addonName, "Unknown object checkLoadable\n" .. _G.debugstack(2, 3, 2))
+	--@end-alpha@
 
-	local _, _, _, loadable, reason = _G.GetAddOnInfo(addonName)
-	-- local name, title, notes, loadable, reason, security, newVersion = _G.GetAddOnInfo(addonName)
+	local _, _, _, loadable, reason, _, _ = getAddOnInfo(addonName)
 	if not loadable then
 		if self.prdb.Warnings then
 			self:CustomPrint(1, 0, 0, addonName, "not skinned, flagged as:", reason, "(cL)")
@@ -823,10 +828,21 @@ function aObj:hookScript(obj, method, func)
 
 end
 
+local isAddOnLoaded = _G.IsAddOnLoaded or _G.C_AddOns.IsAddOnLoaded
+local isAddOnLoadOnDemand = _G.IsAddOnLoadOnDemand or _G.C_AddOns.IsAddOnLoadOnDemand
+local getAddOnEnableState = _G.GetAddOnEnableState or _G.C_AddOns.GetAddOnEnableState
 function aObj:isAddOnLoaded(addonName) -- luacheck: ignore 212 (unused argument)
+	--@alpha@
+	_G.assert(addonName, "Unknown object isAddOnLoaded\n" .. _G.debugstack(2, 3, 2))
+	--@end-alpha@
 
-	local isAddOnLoaded = _G.IsAddOnLoaded or _G.C_AddOns.IsAddOnLoaded
 	return isAddOnLoaded(addonName)
+
+end
+
+function aObj:isAddOnLoadOnDemand(addonName) -- luacheck: ignore 212 (unused argument)
+
+	return isAddOnLoadOnDemand(addonName)
 
 end
 
@@ -835,7 +851,6 @@ function aObj:isAddonEnabled(addonName)
 	_G.assert(addonName, "Unknown object isAddonEnabled\n" .. _G.debugstack(2, 3, 2))
 	--@end-alpha@
 
-	local getAddOnEnableState = _G.GetAddOnEnableState or _G.C_AddOns.GetAddOnEnableState;
 	return getAddOnEnableState(self.uName, addonName) == 2 and true or false
 
 end
@@ -1387,7 +1402,7 @@ function aObj:skinIconSelector(frame)
 	self:removeNineSlice(frame.BorderBox)
 	frame.BorderBox.SelectedIconArea.SelectedIconButton:DisableDrawLayer("BACKGROUND")
 	self:skinObject("editbox", {obj=frame.BorderBox.IconSelectorEditBox})
-	self:skinObject("dropdown", {obj=frame.BorderBox.IconTypeDropDown.DropDownMenu})
+		self:skinObject("dropdown", {obj=frame.BorderBox.IconTypeDropDown.DropDownMenu})
 	self:skinObject("scrollbar", {obj=frame.IconSelector.ScrollBar})
 	self:skinObject("frame", {obj=frame, ofs=-3, x1=-2})
 	if self.modBtns then
@@ -1640,7 +1655,7 @@ function aObj:SetupCmds()
 		return
 	end)
 
-	local loadAddOn = _G.LoadAddOn or _G.C_AddOns.LoadAddOn;
+	local loadAddOn = _G.LoadAddOn or _G.C_AddOns.LoadAddOn
 	self:RegisterChatCommand("tad", function(frame) loadAddOn("Blizzard_DebugTools"); _G.TableAttributeDisplay:InspectTable(_G[frame] or _G.GetMouseFocus()); _G.TableAttributeDisplay:Show() end)
 
 end
