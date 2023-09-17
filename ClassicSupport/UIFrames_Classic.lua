@@ -3,6 +3,16 @@ local _, aObj = ...
 local _G = _G
 -- luacheck: ignore 631 (line is too long)
 
+local function checkGF()
+	local canUseGF
+	if not aObj.isClscPTR then
+		canUseGF = _G.C_LFGList.IsLookingForGroupEnabled()
+	else
+		canUseGF, _ = _G.C_LFGInfo.CanPlayerUseGroupFinder()
+	end
+	return canUseGF
+end
+
 aObj.SetupClassic_UIFrames = function()
 	local ftype = "u"
 
@@ -116,7 +126,7 @@ aObj.SetupClassic_UIFrames = function()
 
 	end
 
-	if _G.C_LFGList.IsLookingForGroupEnabled() then
+	if checkGF() then
 		if aObj.isClscERA then
 			aObj.blizzFrames[ftype].LFGFrame = function(self)
 				if not self.prdb.LFGLFM or self.initialized.LFGFrame then return end
@@ -192,7 +202,7 @@ aObj.SetupClassic_UIFrames = function()
 					self:Unhook(this, "OnShow")
 				end)
 			end
-		else
+		elseif not aObj.isClscPTR then
 			aObj.blizzLoDFrames[ftype].LookingforGroupUI = function(self)
 				if not self.prdb.LookingforGroupUI or self.initialized.LookingforGroupUI then return end
 				self.initialized.LookingforGroupUI = true
@@ -206,41 +216,37 @@ aObj.SetupClassic_UIFrames = function()
 						self:skinCloseButton{obj=self:getChild(this, self.isClscERA and 3 or 1), fType=ftype}
 					end
 
-					self:SecureHookScript(_G.LFGListingFrame, "OnShow", function(fObj)
-						self:keepFontStrings(fObj)
-						for _, roleBtn in pairs(fObj.SoloRoleButtons.RoleButtons) do
+					local function skinRoleBtn(roleBtn)
 							roleBtn:DisableDrawLayer("BACKGROUND")
 							roleBtn:SetNormalTexture(self.tFDIDs.lfgIR)
 							roleBtn.cover:SetTexture(self.tFDIDs.lfgIR)
-							if self.modChkBtns then
+						if roleBtn.CheckButton
+						and self.modChkBtns
+						then
 								self:skinCheckButton{obj=roleBtn.CheckButton, fType=ftype}
 							end
 						end
-						fObj.GroupRoleButtons.RoleIcon:DisableDrawLayer("BACKGROUND")
-						fObj.GroupRoleButtons.RoleIcon:SetNormalTexture(self.tFDIDs.lfgIR)
-						fObj.GroupRoleButtons.RoleIcon.cover:SetTexture(self.tFDIDs.lfgIR)
-
+					self:SecureHookScript(_G.LFGListingFrame, "OnShow", function(fObj)
+						self:keepFontStrings(fObj)
+						for _, btn in pairs(fObj.SoloRoleButtons.RoleButtons) do
+							skinRoleBtn(btn)
+						end
+						skinRoleBtn(fObj.GroupRoleButtons.RoleIcon)
 						fObj.NewPlayerFriendlyButton:SetNormalTexture(self.tFDIDs.lfgIR)
 						fObj.NewPlayerFriendlyButton.cover:SetTexture(self.tFDIDs.lfgIR)
-
-						for _, btn in pairs(fObj.CategoryView.CategoryButtons) do
-							self:keepFontStrings(btn)
-							if self.modBtns then
-								self:skinStdButton{obj=btn, fType=ftype}
+						if self.modChkBtns then
+							self:skinCheckButton{obj=fObj.NewPlayerFriendlyButton.CheckButton, fType=ftype}
 							end
+						for _, btn in pairs(fObj.CategoryView.CategoryButtons) do
+							btn.Cover:SetAlpha(0)
 						end
-						-- ActivityView
 						fObj.ActivityView:DisableDrawLayer("OVERLAY")
 						self:skinObject("scrollbar", {obj=fObj.ActivityView.ScrollBar, fType=ftype})
 						self:skinObject("frame", {obj=fObj.ActivityView.Comment, fType=ftype, kfs=true, fb=true, ofs=6})
-
 						if self.modBtns then
 							self:skinStdButton{obj=fObj.BackButton, fType=ftype, sechk=true}
 							self:skinStdButton{obj=fObj.PostButton, fType=ftype, sechk=true}
 							self:skinStdButton{obj=fObj.GroupRoleButtons.RolePollButton, fType=ftype, sechk=true}
-						end
-						if self.modChkBtns then
-							self:skinCheckButton{obj=fObj.NewPlayerFriendlyButton.CheckButton, fType=ftype}
 						end
 
 						self:Unhook(fObj, "OnShow")
@@ -785,8 +791,8 @@ aObj.SetupClassic_UIFramesOptions = function(self)
 		["Binding UI"]              = {desc = "Key Bindings UI"},
 		["GM Survey UI"]            = self.isClscERA and true or nil,
 		["Interface Options"]       = true,
-		["LookingforGroupUI"]       = self.isClsc and _G.C_LFGList.IsLookingForGroupEnabled() and {desc = "Group Finder"} or nil,
-		["LFGLFM"]                  = self.isClscERA and _G.C_LFGList.IsLookingForGroupEnabled() or nil,
+		["LookingforGroupUI"]       = (self.isClsc and not self.isClscPTR) and checkGF() and {desc = "Group Finder"} or nil,
+		["LFGLFM"]                  = self.isClscERA and checkGF() or nil,
 		["Product Choice"]          = {suff = "Frame"},
 		["PVP Frame"]               = self.isClsc and true or nil,
 		["Quest Log"]               = true,
