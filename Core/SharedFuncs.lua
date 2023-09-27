@@ -161,13 +161,9 @@ function aObj:setupOptions(optNames, optIgnore, preLoadFunc, postLoadFunc)
 		if postLoadFunc then
 			postLoadFunc()
 		end
-		if not aObj.isRtl then
-			_G.InterfaceAddOnsList_Update()
-		else
 			-- toggle tabs to force refresh of Categories
 			_G.SettingsPanel.tabsGroup:SelectAtIndex(1)
 			_G.SettingsPanel.tabsGroup:SelectAtIndex(2)
-		end
 		-- prevent function from running again as it has two different triggers
 		categorySelected = _G.nop
 	end
@@ -175,18 +171,6 @@ function aObj:setupOptions(optNames, optIgnore, preLoadFunc, postLoadFunc)
 		categorySelected()
 		self.UnregisterCallback(aName, "Options_Selected")
 	end)
-	if not self.isRtl then
-		self:RawHook("InterfaceOptionsListButton_OnClick", function(bObj, mouseButton)
-			self.hooks.InterfaceOptionsListButton_OnClick(bObj, mouseButton)
-			if bObj.element.name == aName then
-				if not bObj.element.hasChildren then
-					categorySelected()
-				end
-				self:Unhook("InterfaceOptionsListButton_OnClick")
-				return
-			end
-		end, true)
-	else
 		local function onCategorySelected(_, category)
 			if category.name == aName then
 				categorySelected()
@@ -194,7 +178,6 @@ function aObj:setupOptions(optNames, optIgnore, preLoadFunc, postLoadFunc)
 			end
 		end
 		_G.SettingsPanel:GetCategoryList():RegisterCallback(_G.SettingsCategoryListMixin.Event.OnCategorySelected, onCategorySelected, self)
-	end
 
 end
 
