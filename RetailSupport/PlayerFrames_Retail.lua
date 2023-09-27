@@ -1162,8 +1162,10 @@ aObj.SetupRetail_PlayerFrames = function()
 				self:addButtonBorder{obj=this.SlotButton, relTo=this.SlotButton.ItemIcon, reParent={this.SlotButton.SlotBorder, this.SlotButton.SlotBorderOpen}, clr="grey", ca=0.85}
 				self:addButtonBorder{obj=this.SummonRandomFavoriteButton, ofs=3}
 				self:addButtonBorder{obj=this.MountDisplay.InfoButton, relTo=this.MountDisplay.InfoButton.Icon, clr="white"}
-				self:addButtonBorder{obj=this.MountDisplay.ModelScene.RotateLeftButton, ofs=-3, clr="grey"}
-				self:addButtonBorder{obj=this.MountDisplay.ModelScene.RotateRightButton, ofs=-3, clr="grey"}
+				if not aObj.isRtlPTRX then
+					self:addButtonBorder{obj=this.MountDisplay.ModelScene.RotateLeftButton, ofs=-3, clr="grey"}
+					self:addButtonBorder{obj=this.MountDisplay.ModelScene.RotateRightButton, ofs=-3, clr="grey"}
+				end
 			end
 			if self.modChkBtns then
 				self:skinCheckButton{obj=this.MountDisplay.ModelScene.TogglePlayer}
