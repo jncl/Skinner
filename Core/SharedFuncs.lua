@@ -7,14 +7,14 @@ local buildInfo = {
 	-- Testing
 	-- wow_classic_beta    = {"3.4.0",  46158, "Classic Beta"},
 	-- wow_beta            = {"11.0.0", nnnnn, "Retail Beta"}, -- a.k.a. ?
-	wow_classic_ptr     = {"3.4.3",  51397, "Classic PTR"},
+	wow_classic_ptr     = {"3.4.3",  51470, "Classic PTR"},
 	wow_classic_era_ptr = {"1.14.4", 51146, "Classic Era PTR"},
-	wow_ptr_x           = {"10.2.0", 51297, "Retail PTRX"}, -- [wowxptr]
-	wow_ptr             = {"10.1.7", 51313, "Retail PTR"},
+	wow_ptr_x           = {"10.2.0", 51425, "Retail PTRX"}, -- [wowxptr]
+	wow_ptr             = {"10.1.7", 51485, "Retail PTR"},
 	-- Live
 	wow_classic         = {"3.4.2",  50664, "Classic"}, -- a.k.a. Wrath of the Lich King Classic
-	wow_classic_era     = {"1.14.4", 51311, "Classic Era"},
-	wow                 = {"10.1.7", 51313, "Retail"},
+	wow_classic_era     = {"1.14.4", 51395, "Classic Era"},
+	wow                 = {"10.1.7", 51485, "Retail"},
 	-- Currently playing
 	curr                = {_G.GetBuildInfo()},
 }
@@ -161,9 +161,9 @@ function aObj:setupOptions(optNames, optIgnore, preLoadFunc, postLoadFunc)
 		if postLoadFunc then
 			postLoadFunc()
 		end
-			-- toggle tabs to force refresh of Categories
-			_G.SettingsPanel.tabsGroup:SelectAtIndex(1)
-			_G.SettingsPanel.tabsGroup:SelectAtIndex(2)
+		-- toggle tabs to force refresh of Categories
+		_G.SettingsPanel.tabsGroup:SelectAtIndex(1)
+		_G.SettingsPanel.tabsGroup:SelectAtIndex(2)
 		-- prevent function from running again as it has two different triggers
 		categorySelected = _G.nop
 	end
@@ -171,13 +171,13 @@ function aObj:setupOptions(optNames, optIgnore, preLoadFunc, postLoadFunc)
 		categorySelected()
 		self.UnregisterCallback(aName, "Options_Selected")
 	end)
-		local function onCategorySelected(_, category)
-			if category.name == aName then
-				categorySelected()
-				_G.SettingsPanel:GetCategoryList():UnregisterCallback(_G.SettingsCategoryListMixin.Event.OnCategorySelected, aObj)
-			end
+	local function onCategorySelected(_, category)
+		if category.name == aName then
+			categorySelected()
+			_G.SettingsPanel:GetCategoryList():UnregisterCallback(_G.SettingsCategoryListMixin.Event.OnCategorySelected, aObj)
 		end
-		_G.SettingsPanel:GetCategoryList():RegisterCallback(_G.SettingsCategoryListMixin.Event.OnCategorySelected, onCategorySelected, self)
+	end
+	_G.SettingsPanel:GetCategoryList():RegisterCallback(_G.SettingsCategoryListMixin.Event.OnCategorySelected, onCategorySelected, self)
 
 end
 
