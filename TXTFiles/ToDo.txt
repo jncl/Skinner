@@ -19,5 +19,6 @@ ToDos
 
 ≈		O	Refactor NewSkinFuncs in AddOn skins
 
-#28		I	WOTLK PTR
-√			- Skinner/Core/NewSkinFuncs.lua:325: attempt to index field 'Backdrop' (a nil value) [string "@Skinner/Core/NewSkinFuncs.lua"]
+#29 √	I	Skinner Options not being displayed in Wrath Classic & Classic
+
+#30	√	S	Baganator
