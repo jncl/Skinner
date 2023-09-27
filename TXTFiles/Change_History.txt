@@ -1,3 +1,20 @@
+beta10.51397.1
+Jncl:
+	Updated ToDo.txt files
+	Updated Change_History.txt
+	Updated version numbers
+	Updated skinIconSelector function
+	Updated ChatConfigFrame skin
+	Updated EncounterJournal MonthlyActivitiesFrame skin
+	Updated ExpansionLandingPage skin
+	Classic PTR changes
+	Updated to use new C_AddOns module
+	Updated GuildBank skin
+	Updated CommunitiesUI
+	Updated options text for Options Frame
+	Updates UIFrames_Classic to remove unused options and make some version specific
+	Updated UIFrames_Classic, fixes #28
+	
 beta10.51237.1
 Jncl:
 	Updated ToDo.txt files
