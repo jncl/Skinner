@@ -28,6 +28,7 @@
 <Script file="AuctionMaster.lua"/>
 <Script file="AutoBag.lua"/>
 <Script file="Azeroth Auto Pilot.lua"/>
+<Script file="Baganator.lua"/>
 <Script file="Baggins.lua"/>
 <Script file="Bagnon.lua"/>
 <Script file="BagSync.lua"/>
