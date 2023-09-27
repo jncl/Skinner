@@ -1418,25 +1418,42 @@ aObj.SetupRetail_PlayerFrames = function()
 					self:Unhook(fObj, "OnShow")
 				end)
 				self:checkShown(this.ItemsCollectionFrame)
+
+				local SetsDataProvider = _G.CreateFromMixins(_G.WardrobeSetsDataProviderMixin)
 				self:SecureHookScript(this.SetsCollectionFrame, "OnShow", function(fObj)
 					self:removeInset(fObj.LeftInset)
 					self:keepFontStrings(fObj.RightInset)
 					self:removeNineSlice(fObj.RightInset.NineSlice)
 					self:skinObject("scrollbar", {obj=fObj.ListContainer.ScrollBar, fType=ftype})
 					local function skinElement(...)
-						local _, element, new
+						local _, element, elementData, new
 						if _G.select("#", ...) == 2 then
-							element, _ = ...
+							element, elementData = ...
 						elseif _G.select("#", ...) == 3 then
-							element, _, new = ...
+							element, elementData, new = ...
 						else
-							_, element, _, new = ...
+							_, element, elementData, new = ...
 						end
 						if new ~= false then
 							element:DisableDrawLayer("BACKGROUND")
 							if aObj.modBtnBs then
 								 aObj:addButtonBorder{obj=element, relTo=element.Icon, reParent={element.Favorite}}
-								 aObj:clrBtnBdr(element, element.Icon:IsDesaturated() and "grey")
+							end
+						end
+						local displayData = elementData
+						if elementData.hiddenUntilCollected and not elementData.collected then
+							local variantSets = _G.C_TransmogSets.GetVariantSets(elementData.setID);
+							if variantSets then
+								displayData = variantSets[1]
+							end
+						end
+						local topSourcesCollected, topSourcesTotal = SetsDataProvider:GetSetSourceTopCounts(displayData.setID)
+						local setCollected = displayData.collected or topSourcesCollected == topSourcesTotal
+						if element.sbb then
+							if setCollected then
+								aObj:clrBtnBdr(element, "gold")
+							else
+								aObj:clrBtnBdr(element, topSourcesCollected == 0 and "grey")
 							end
 						end
 					end
