@@ -1,3 +1,13 @@
+beta10.51485.1
+Jncl:
+	Updated ToDo.txt files
+	Updated Change_History.txt
+	Updated version numbers
+	PTRX change
+	Updated WardrobeCollections skin
+	Updated SharedFuncs to display all Skinner Options, fixes #29
+	Skinned Baganator, closes #30
+	
 beta10.51397.1
 Jncl:
 	Updated ToDo.txt files
