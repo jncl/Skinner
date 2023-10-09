@@ -209,7 +209,7 @@ aObj.SetupRetail_UIFrames = function()
 				aObj:moveObject{obj=frame, x=4, y=20}
 				_G.RaiseFrameLevelByTwo(frame) -- raise above markers on mission frame
 			end
-			frame:SetSize(naval and 935 or 948, self:isAddOnLoaded("GarrisonCommander") and 640 or naval and 648 or 630)
+			frame:SetSize(naval and 935 or 948, aObj:isAddOnLoaded("GarrisonCommander") and 640 or naval and 648 or 630)
 			aObj:removeRegions(frame.BorderFrame.Stage, {1, 2, 3, 4, 5, 6})
 			aObj:skinObject("frame", {obj=frame.BorderFrame, fType=ftype, kfs=true, y2=-2})
 			if aObj.modBtns then
@@ -260,7 +260,7 @@ aObj.SetupRetail_UIFrames = function()
 			if frame.FollowerModel then
 				aObj:moveObject{obj=frame.FollowerModel, x=-6, y=0}
 			end
-			if not self:isAddOnLoaded("MasterPlan") then
+			if not aObj:isAddOnLoaded("MasterPlan") then
 				frame.CloseButton:SetSize(28, 28) -- make button smaller
 			end
 			local y1Ofs, x2Ofs, y2Ofs = 5, 3, -20
