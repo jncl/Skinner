@@ -861,8 +861,6 @@ aObj.SetupRetail_NPCFrames = function()
 			self:removeInset(this.BottomInset)
 			_G.PetStableActiveBg:Hide()
 			_G.PetStableFrameStableBg:Hide()
-			self:makeMFRotatable(_G.PetStableModel)
-			_G.PetStableModelShadow:Hide()
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true})
 			if self.modBtnBs then
 				self:addButtonBorder{obj=_G.PetStablePetInfo, relTo=_G.PetStableSelectedPetIcon, clr="grey", ca=0.85}
