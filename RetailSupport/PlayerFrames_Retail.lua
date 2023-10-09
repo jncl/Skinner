@@ -3384,7 +3384,7 @@ aObj.SetupRetail_PlayerFrames = function()
 						local _, element
 						if _G.select("#", ...) == 2 then
 							element, _ = ...
-						elseif _G.select("#", ...) == 3 then
+						else
 							_, element, _ = ...
 						end
 						if element.isSpacer then
