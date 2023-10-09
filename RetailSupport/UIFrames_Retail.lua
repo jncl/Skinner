@@ -3805,8 +3805,13 @@ aObj.SetupRetail_UIFrames = function()
 			this.NavBar:DisableDrawLayer("BORDER")
 			this.NavBar.overlay:DisableDrawLayer("OVERLAY")
 			if self.modBtns then
-				self:skinOtherButton{obj=this.BorderFrame.MaxMinButtonFrame.MaximizeButton, font=self.fontS, text=self.nearrow}
-				self:skinOtherButton{obj=this.BorderFrame.MaxMinButtonFrame.MinimizeButton, font=self.fontS, text=self.swarrow}
+				if not aObj.isRtlPTRX then
+					self:skinOtherButton{obj=this.BorderFrame.MaxMinButtonFrame.MaximizeButton, font=self.fontS, text=self.nearrow}
+					self:skinOtherButton{obj=this.BorderFrame.MaxMinButtonFrame.MinimizeButton, font=self.fontS, text=self.swarrow}
+				else
+					self:skinOtherButton{obj=this.BorderFrame.MaximizeMinimizeFrame.MaximizeButton, font=self.fontS, text=self.nearrow}
+					self:skinOtherButton{obj=this.BorderFrame.MaximizeMinimizeFrame.MinimizeButton, font=self.fontS, text=self.swarrow}
+				end
 			end
 			if self.modBtnBs then
 				self:addButtonBorder{obj=this.SidePanelToggle.CloseButton, clr="gold"}
