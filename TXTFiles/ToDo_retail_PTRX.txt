@@ -21,10 +21,16 @@ x				- Sub Activities buttons & Textures
 			- Blizzard_Console
 x				- Background now a parentKey
 			- Blizzard_UIWidgetTemplateBase
+			- DressUpFrame
+√				- MaxMinFrame renamed to MaximizeMinimizeFrame
 			- ExpansionLandingPage
 √				- ScrollFadeOverlay
 			- TargetFrame
 				- .Count
+			- ProfessionsFrame
+√				- MaxMinFrame renamed to MaximizeMinimizeFrame
+			- WorldMapFrame
+√				- MaxMinFrame renamed to MaximizeMinimizeFrame
 √			- AddOn functions now in C_AddOns
 		- Deleted
 			- Blizzard_PerksProgram

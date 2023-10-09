@@ -18,7 +18,3 @@ ToDos
 ≈		O	Add checks for Button state as required
 
 ≈		O	Refactor NewSkinFuncs in AddOn skins
-
-#29 √	I	Skinner Options not being displayed in Wrath Classic & Classic
-
-#30	√	S	Baganator
