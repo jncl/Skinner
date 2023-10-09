@@ -1894,20 +1894,22 @@ aObj.SetupRetail_PlayerFrames = function()
 				-- TODO: Remove RewardItem border
 				fObj.FilterList:DisableDrawLayer("BACKGROUND")
 				self:skinObject("scrollbar", {obj=fObj.ScrollBar, fType=ftype})
-				local function skinElement(...)
+				local function skinActivities(...)
+					aObj:Debug("skinActivities: [%s, %s, %s, %s, %s]", _G.select("#", ...), ...)
 					local _, element
 					if _G.select("#", ...) == 2 then
 						element, _ = ...
-					elseif _G.select("#", ...) == 3 then
-						element, _, _ = ...
 					else
 						_, element, _, _ = ...
 					end
+					aObj:Debug("skinActivities#2: [%s, %s]", element)
 					element:GetNormalTexture():SetAlpha(0)
 					element.Name:SetTextColor(aObj.BT:GetRGB())
 					aObj:skinObject("frame", {obj=element, fType=ftype, ofs=-3, y2=4, fb=true})
+					-- TODO: skin HeaderCollapseIndicator ?
 				end
-				_G.ScrollUtil.AddAcquiredFrameCallback(fObj.ScrollBox, skinElement, aObj, true)
+				_G.ScrollUtil.AddInitializedFrameCallback(fObj.ScrollBox, skinActivities, aObj, true)
+				_G.ScrollUtil.AddAcquiredFrameCallback(fObj.ScrollBox, skinActivities, aObj, true)
 
 				self:Unhook(fObj, "OnShow")
 			end)
