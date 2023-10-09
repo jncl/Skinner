@@ -473,7 +473,7 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 					local _, element
 					if _G.select("#", ...) == 2 then
 						element, _ = ...
-					elseif _G.select("#", ...) == 3 then
+					else
 						_, element, _ = ...
 					end
 					aObj:keepFontStrings(element)
@@ -491,7 +491,7 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 					local _, element
 					if _G.select("#", ...) == 2 then
 						element, _ = ...
-					elseif _G.select("#", ...) == 3 then
+					else
 						_, element, _ = ...
 					end
 					aObj:skinObject("frame", {obj=element, fType=ftype, kfs=true, clr="sepia"})
