@@ -1173,7 +1173,12 @@ aObj.SetupRetail_UIFrames = function()
 		self.initialized.ExpansionLandingPage = true
 
 		local function skinOverlay(...)
-			local _, overlay = ...
+			local _, overlay
+			if _G.select('#', ...) == 1 then
+				overlay = ...
+			elseif _G.select('#', ...) == 2 then
+				_, overlay = ...
+			end
 			local oFrame = aObj:getChild(overlay, 1)
 			oFrame.Header.TitleDivider:SetTexture(nil)
 			if oFrame.ScrollFadeOverlay then
