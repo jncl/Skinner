@@ -460,7 +460,7 @@ aObj.SetupRetail_NPCFrames = function()
 				local _, element
 				if _G.select("#", ...) == 2 then
 					element, _ = ...
-				elseif _G.select("#", ...) == 3 then
+				else
 					_, element, _ = ...
 				end
 				aObj:removeRegions(element, {1, 2, 3})
