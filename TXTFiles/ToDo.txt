@@ -18,3 +18,7 @@ ToDos
 ≈		O	Add checks for Button state as required
 
 ≈		O	Refactor NewSkinFuncs in AddOn skins
+
+#31 √	I/W IsLookingForGroupEnabled error
+
+#32 √	I/W IsLookingForGroupEnabled error
