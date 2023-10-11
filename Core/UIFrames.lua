@@ -1478,9 +1478,7 @@ aObj.blizzFrames[ftype].ItemText = function(self)
 
 end
 
-if aObj.isRtl
-or aObj.isClscPTR
-then
+if not aObj.isClscERA then
 	local skinRoleBtns
 	if _G.PVEFrame then
 		-- The following function is used by the LFDFrame & RaidFinder functions
@@ -2610,9 +2608,7 @@ if _G.PTR_IssueReporter then
 	end
 end
 
-if aObj.isRtl
-or aObj.isClscPTR
-then
+if not aObj.isClscERA then
 	aObj.blizzFrames[ftype].PVEFrame = function(self)
 		if not self.prdb.PVEFrame or self.initialized.PVEFrame then return end
 		self.initialized.PVEFrame = true
