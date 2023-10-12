@@ -19,6 +19,6 @@ ToDos
 
 ≈		O	Refactor NewSkinFuncs in AddOn skins
 
-#31 √	I/W IsLookingForGroupEnabled error
+#33	√	I	Questie
 
-#32 √	I/W IsLookingForGroupEnabled error
+#34	√	I/W	PlayerTalentFrameRoleButton
