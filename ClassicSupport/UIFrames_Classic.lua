@@ -627,10 +627,22 @@ aObj.SetupClassic_UIFrames = function()
 			if not self:isAddOnLoaded("Mapster")
 			and not self:isAddOnLoaded("AlleyMap")
 			then
-				self:keepFontStrings(_G.WorldMapFrame)
 				self:skinObject("frame", {obj=_G.WorldMapFrame.BorderFrame, fType=ftype, kfs=true, ofs=1})
-				-- make sure map textures are displayed
-				_G.WorldMapFrame.BorderFrame.sf:SetFrameStrata("LOW")
+				if self.isClscERA then
+					self:keepFontStrings(_G.WorldMapFrame)
+					-- make sure map textures are displayed
+					_G.WorldMapFrame.BorderFrame.sf:SetFrameStrata("LOW")
+				else
+					self:skinObject("frame", {obj=_G.WorldMapFrame.MiniBorderFrame, fType=ftype, kfs=true, ofs=-4, y1=-25, x1=16})
+					if self.modBtns then
+						self:skinOtherButton{obj=this.MaximizeMinimizeFrame.MaximizeButton, font=self.fontS, text=self.nearrow}
+						self:skinOtherButton{obj=this.MaximizeMinimizeFrame.MinimizeButton, font=self.fontS, disfont=self.fontDS, text=self.swarrow}
+					end
+					if self.modChkBtns then
+						self:skinCheckButton{obj=_G.WorldMapTrackQuest, fType=ftype}
+						self:skinCheckButton{obj=_G.WorldMapQuestShowObjectives, fType=ftype}
+					end
+				end
 			end
 
 			self:skinObject("dropdown", {obj=_G.WorldMapContinentDropDown, fType=ftype})
@@ -638,8 +650,11 @@ aObj.SetupClassic_UIFrames = function()
 			self:skinObject("dropdown", {obj=_G.WorldMapZoneMinimapDropDown, fType=ftype})
 			if self.modBtns then
 				self:skinCloseButton{obj=_G.WorldMapFrameCloseButton, fType=ftype}
-				self:skinStdButton{obj=_G.WorldMapZoomOutButton, fType=ftype}
+				self:skinStdButton{obj=_G.WorldMapZoomOutButton, fType=ftype, schk=true}
 			end
+			-- tooltip
+			self.ttHook["WorldMapTooltip"] = true
+			self:add2Table(self.ttList, "WorldMapTooltip")
 
 			self:Unhook(this, "OnShow")
 		end)
