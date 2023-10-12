@@ -21,7 +21,7 @@ local function skinDDL(frame)
 end
 local function skinDropDowns(lDD, lVer)
 	local ddPrefix = "L_DropDownList"
-	if lVer == 90080 then
+	if lVer == 90117 then
 		ddPrefix = "L_DropDownListQuestie"
 	elseif lVer == 90096 then
 		ddPrefix = "L_TLDR_DropDownList"
