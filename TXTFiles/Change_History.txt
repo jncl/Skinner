@@ -1,3 +1,10 @@
+beta10.51666.1
+Jncl:
+	Updated ToDo.txt files
+	Updated version numbers
+	Bugfix for Wrath Classic IsLookingForGroupEnabled, fixes #31 #32
+	Updated TOC
+	
 beta10.51485.1
 Jncl:
 	Updated ToDo.txt files
