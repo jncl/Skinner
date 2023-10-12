@@ -679,7 +679,7 @@ aObj.SetupClassic_PlayerFrames = function()
 	end
 
 	local function skinaTS(parent)
-		if self:isAddOnLoaded("alaTradeSkill") then
+		if aObj:isAddOnLoaded("alaTradeSkill") then
 			aObj:keepFontStrings(parent.frame.TextureBackground)
 			parent.frame.TabFrame:ClearAllPoints()
 			parent.frame.TabFrame:SetPoint("BOTTOM", parent, "TOP", 0, -13)
