@@ -2899,7 +2899,7 @@ aObj.blizzFrames[ftype].SharedBasicControls = function(self)
 
 	self:SecureHookScript(_G.ScriptErrorsFrame, "OnShow", function(this)
 		if self.isRtl
-		or self.isClscPTR
+		or self.isClsc
 		then
 			self:skinObject("scrollbar", {obj=this.ScrollFrame.ScrollBar, fType=ftype})
 		else
