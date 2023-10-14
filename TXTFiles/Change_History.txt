@@ -1,3 +1,15 @@
+beta10.51685.1
+Jncl:
+	Updated ToDo.txt files
+	Updated Change_History.txt
+	Updated version numbers
+	Applied ClassicPTR changes
+	Updated WorldMapFrame skin
+	Updated Classic PlayerTalentFrame skin
+	Replaced self with aObj
+	Updated Questie skin, fixes #33
+	Updated Bugger skin
+	
 beta10.51666.1
 Jncl:
 	Updated ToDo.txt files
