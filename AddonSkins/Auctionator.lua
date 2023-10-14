@@ -3,7 +3,7 @@ if not aObj:isAddonEnabled("Auctionator") then return end
 local _G = _G
 -- luacheck: ignore 631 (line is too long)
 
-aObj.addonsToSkin.Auctionator = function(self) -- v 10.1.8/10.1.8/10.1.8
+aObj.addonsToSkin.Auctionator = function(self) -- v 10.1.27
 
 	local function skinAuctionatorFrames()
 		if not _G.AuctionatorSellingFrame then
@@ -305,6 +305,41 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 10.1.8/10.1.8/10.1.8
 				end
 			end)
 		end
+		local function skinView(fObj)
+			for group in fObj.groupPool:EnumerateActive() do
+				local hdr = group.GroupTitle
+				if group.collapsable then
+					-- SellingTab View
+					aObj:removeRegions(hdr, {1, 2, 3})
+					aObj:skinObject("frame", {obj=hdr, ofs=1, x1=-2})
+				else
+					-- CustomiseGroup View
+					if group.isCustom then
+						if group.Quantity.NumStacks then
+							aObj:skinObject("editbox", {obj=group.Quantity.NumStacks, ofs=-2, x1=-5})
+							aObj:skinObject("editbox", {obj=group.Quantity.StackSize, ofs=-2, x1=-5})
+						else
+							aObj:skinObject("editbox", {obj=group.Quantity.Quantity, ofs=-2})
+						end
+						if aObj.modBtns	then
+							aObj:skinStdButton{obj=group.FocusButton, schk=true}
+							aObj:skinStdButton{obj=group.RenameButton, schk=true}
+							aObj:skinStdButton{obj=group.DeleteButton, schk=true}
+							aObj:skinStdButton{obj=group.HideButton, schk=true}
+							aObj:skinStdButton{obj=group.ShiftUpButton, schk=true}
+							aObj:skinStdButton{obj=group.ShiftDownButton, schk=true}
+						end
+					end
+				end
+				if aObj.modBtnBs then
+					for _, btn in _G.ipairs(group.buttons) do
+						aObj:addButtonBorder{obj=btn, relTo=btn.Icon, reParent={btn.Text}}
+						aObj:clrButtonFromBorder(btn)
+					end
+				end
+			end
+			fObj:UpdateGroupHeights()
+		end
 		aObj:SecureHookScript(_G.AuctionatorSellingFrame, "OnShow", function(this)
 			local asi = this.AuctionatorSaleItem
 			asi.Icon.EmptySlot:SetTexture(nil)
@@ -312,14 +347,15 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 10.1.8/10.1.8/10.1.8
 			aObj:SecureHook(asi.Icon, "SetItemInfo", function(bObj, _)
 				aObj:clrButtonFromBorder(bObj)
 			end)
-			aObj:skinObject("scrollbar", {obj=this.BagListing.ScrollBar})
-			for _, child in _G.pairs{this.BagListing.ScrollBox.ItemListingFrame:GetChildren()} do
-				aObj:keepRegions(child.SectionTitle, {3, 4, 5}) -- N.B. region 3 is highlight, 4 is selected, 5 is text
-				aObj:skinObject("frame", {obj=child.SectionTitle, kfs=true, bd=5, ofs=0, x1=-2, x2=2})
-			end
 			if aObj.modBtns then
 				aObj:skinStdButton{obj=asi.PostButton, schk=true}
+				aObj:skinStdButton{obj=this.BagListing.CustomiseButton}
 			end
+			local blv = this.BagListing.View
+			aObj:skinObject("scrollbar", {obj=blv.ScrollBar})
+			aObj:SecureHook(blv, "UpdateFromExisting", function(fObj)
+				skinView(fObj)
+			end)
 			if not aObj.isRtl then
 				aObj:skinObject("editbox", {obj=asi.UnitPrice.MoneyInput.GoldBox, ofs=-4, y2=8})
 				aObj:skinObject("editbox", {obj=asi.UnitPrice.MoneyInput.SilverBox, ofs=-4, y2=8})
@@ -340,7 +376,6 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 10.1.8/10.1.8/10.1.8
 				aObj:skinObject("editbox", {obj=asi.Quantity.InputBox, y2=4})
 				aObj:skinObject("editbox", {obj=asi.Price.MoneyInput.GoldBox, ofs=-4, y2=8})
 				aObj:skinObject("editbox", {obj=asi.Price.MoneyInput.SilverBox, ofs=-4, y2=8})
-				aObj:skinObject("frame", {obj=this.BagListing, fb=true, ofs=5, x2=6, y2=-4})
 				for _, list in _G.pairs{"CurrentPricesListing", "HistoricalPriceListing", "PostingHistoryListing"} do
 					self:skinObject("scrollbar", {obj=this[list].ScrollArea.ScrollBar})
 					skinHdrs(this[list])
@@ -355,6 +390,22 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 10.1.8/10.1.8/10.1.8
 			end
 
 			aObj:Unhook(this, "OnShow")
+		end)
+
+		aObj:SecureHook(_G.Auctionator.Groups, "OpenCustomiseView", function()
+			local agcf = _G.AuctionatorGroupsCustomiseFrame
+			aObj:skinObject("scrollbar", {obj=agcf.View.ScrollBar})
+			aObj:skinObject("frame", {obj=agcf, kfs=true, ri=true, cb=true})
+			if aObj.modBtns then
+				aObj:skinStdButton{obj=agcf.BackButton}
+				aObj:skinStdButton{obj=agcf.NewGroupButton}
+			end
+
+			aObj:SecureHook(agcf, "UpdateGroupVisuals", function(fObj)
+				skinView(fObj.View)
+			end)
+
+			aObj:Unhook(_G.Auctionator.Groups, "OpenCustomiseView")
 		end)
 
 		if _G.Auctionator.State.BuyFrameRef then
