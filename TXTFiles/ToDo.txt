@@ -19,6 +19,4 @@ ToDos
 
 ≈		O	Refactor NewSkinFuncs in AddOn skins
 
-#33	√	I	Questie
-
-#34	√	I/W	PlayerTalentFrameRoleButton
+#35	√	I/W	Auctionator
