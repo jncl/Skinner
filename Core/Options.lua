@@ -1283,6 +1283,7 @@ aObj.SetupOptions = function(self)
 	local pfOptTab = {
 		["Buffs"]             = {desc = "Buffs Buttons"},
 		["Character Frames"]  = true,
+		["Collections"]       = not self.isClscERA and {suff = "Journal"} or nil,
 		["Communities"]       = {suff = "UI"} or nil,
 		["Compact Frames"]    = not self.isRtl and true or nil,
 		["Dress Up Frame"]    = true,
