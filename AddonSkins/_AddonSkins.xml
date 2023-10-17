@@ -1,6 +1,7 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
 ../../FrameXML/UI.xsd">
 
+<Script file="!Swatter.lua"/>
 <Script file="Accountant_Classic.lua"/>
 <Script file="Ace3.lua"/>
 <Script file="AchieveIt.lua"/>
@@ -118,7 +119,6 @@
 <Script file="LibDBIcon.lua"/>
 <Script file="LibDialog.lua"/>
 <Script file="LibDropdown.lua"/>
-<Script file="LibExtraTip.lua"/>
 <Script file="LibKeyBound.lua"/>
 <Script file="LibKrowiProgressBar.lua"/>
 <Script file="LibMSATutorials.lua"/>
