@@ -19,4 +19,8 @@ ToDos
 
 ≈		O	Refactor NewSkinFuncs in AddOn skins
 
-#35	√	I/W	Auctionator
+#36	√	I	MountsJournal
+
+#37	x	I 	ADDON_ACTION_BLOCKED
+
+#38	√	I/W	Auc-Advanced
