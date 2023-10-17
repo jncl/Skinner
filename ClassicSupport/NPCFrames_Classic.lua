@@ -93,6 +93,7 @@ aObj.SetupClassic_NPCFrames = function()
 				self:keepRegions(_G["Browse" .. type .. "Sort"], {4, 5, 6}) -- N.B. region 4 is the text, 5 is the arrow, 6 is the highlight
 				self:skinObject("frame", {obj=_G["Browse" .. type .. "Sort"], fType=ftype, bd=5, x2=-2})
 			end
+			self:skinObject("frame", {obj=_G.BrowsePriceOptionsFrame, fType=ftype, kfs=true, ofs=0})
 			for i = 1, _G.NUM_BROWSE_TO_DISPLAY do
 				if _G["BrowseButton" .. i].Orig then break end -- Auctioneer CompactUI loaded
 				skinBtn("BrowseButton", i)
@@ -108,6 +109,7 @@ aObj.SetupClassic_NPCFrames = function()
 			_G.BrowseCloseButton:DisableDrawLayer("BORDER")
 			if self.modBtns then
 				self:skinStdButton{obj=_G.BrowseSearchButton, fType=ftype}
+				self:skinStdButton{obj=self:getPenultimateChild(_G.BrowsePriceOptionsFrame), fType=ftype}
 				if self.isClscERA then
 					self:skinStdButton{obj=_G.BrowseResetButton, fType=ftype, schk=true}
 				end
@@ -119,6 +121,7 @@ aObj.SetupClassic_NPCFrames = function()
 				end
 			end
 			if self.modBtnBs then
+				self:addButtonBorder{obj=_G.BrowsePriceOptionsButtonFrame.Button, fType=ftype, ofs=-1, clr="gold"}
 				self:addButtonBorder{obj=_G.BrowsePrevPageButton, ofs=-2, y1=-3, x2=-3}
 				self:addButtonBorder{obj=_G.BrowseNextPageButton, ofs=-2, y1=-3, x2=-3}
 				self:SecureHookScript(_G.BrowseSearchButton, "OnUpdate", function(_, _)
