@@ -5,7 +5,7 @@ local _G = _G
 -- ONLY supported in Classic
 if not aObj.isClsc then return end
 
-aObj.addonsToSkin["Auc-Advanced"] = function(self) -- v 1.13.6718
+aObj.addonsToSkin["Auc-Advanced"] = function(self) -- v 3.4.6952
 	if not self.db.profile.AuctionUI then return end
 
 	-- progress bars
@@ -43,10 +43,10 @@ aObj.addonsToSkin["Auc-Advanced"] = function(self) -- v 1.13.6718
 			aObj:adjWidth{obj=frame.salebox.numberentry, adj=14}
 			aObj:skinObject("slider", {obj=frame.salebox.duration})
 			aObj:skinObject("dropdown", {obj=frame.salebox.model})
-			aObj:skinMoneyFrame{obj=frame.salebox.bid, moveSEB=true, moveGEB=true}
-			aObj:skinMoneyFrame{obj=frame.salebox.buy, moveSEB=true, moveGEB=true}
-			aObj:skinMoneyFrame{obj=frame.salebox.bid.stack}
-			aObj:skinMoneyFrame{obj=frame.salebox.buy.stack}
+			aObj:skinObject("moneyframe", {obj=frame.salebox.bid, moveSEB=true, moveGEB=true})
+			aObj:skinObject("moneyframe", {obj=frame.salebox.buy, moveSEB=true, moveGEB=true})
+			aObj:skinObject("moneyframe", {obj=frame.salebox.bid.stack})
+			aObj:skinObject("moneyframe", {obj=frame.salebox.buy.stack})
 			frame.switchToStack:SetHeight(20)
 			frame.switchToStack2:SetHeight(20)
 			aObj:skinObject("frame", {obj=frame.manifest, ofs=0, x1=19}) -- a.k.a. Sidebar
@@ -104,7 +104,7 @@ aObj.addonsToSkin["Auc-Advanced"] = function(self) -- v 1.13.6718
 			gui.frame.progressbar:SetBackdrop(nil)
 			self:skinObject("statusbar", {obj=gui.frame.progressbar})
 			self:skinObject("editbox", {obj=gui.saves.name})
-			self:skinMoneyFrame{obj=gui.frame.bidbox, noWidth=true, moveSEB=true}
+			self:skinObject("moneyframe", {obj=gui.frame.bidbox, moveSEB=true})
 			if self.modBtns then
 				self:skinStdButton{obj=gui.saves.load}
 				self:skinStdButton{obj=gui.saves.save}
@@ -137,7 +137,6 @@ aObj.addonsToSkin["Auc-Advanced"] = function(self) -- v 1.13.6718
 			if rt then
 				self:RawHook(rt, "CreateRTSButton", function(...)
 					local btn = self.hooks[rt].CreateRTSButton(...)
-					-- self:Debug("CreateRTSButton: [%s, %s]", lib, btn.hasRight)
 					self:skinStdButton{obj=btn, y1=1}
 					if not btn.hasRight then
 						self:Unhook(rt, "CreateRTSButton") -- both are now skinnned
@@ -152,7 +151,7 @@ aObj.addonsToSkin["Auc-Advanced"] = function(self) -- v 1.13.6718
 			local function skinSnatch()
 				ls.Private.frame.slot:SetTexture(aObj.tFDIDs.esTex)
 				aObj:skinObject("editbox", {obj=ls.Private.frame.pctBox, y1=-4, y2=4})
-				aObj:skinMoneyFrame{obj=ls.Private.frame.money, noWidth=true, moveSEB=true}
+				aObj:skinObject("moneyframe", {obj=ls.Private.frame.money, moveSEB=true})
 				if aObj.modBtns then
 					aObj:skinStdButton{obj=ls.Private.frame.additem}
 					aObj:skinStdButton{obj=ls.Private.frame.removeitem}
@@ -198,8 +197,8 @@ aObj.addonsToSkin["Auc-Advanced"] = function(self) -- v 1.13.6718
 		self:SecureHook(sa.Private, "CreateFrames", function()
 			local frame = sa.Private.frame
 			frame.slot:SetTexture(self.tFDIDs.esTex)
-			self:skinMoneyFrame{obj=frame.minprice, noWidth=true, moveSEB=true}
-			self:skinMoneyFrame{obj=frame.buyout, noWidth=true, moveSEB=true}
+			aObj:skinObject("moneyframe", {obj=frame.minprice, moveSEB=true})
+			aObj:skinObject("moneyframe", {obj=frame.buyout, moveSEB=true})
 			self:skinObject("editbox", {obj=frame.stacks.num})
 			self:moveObject{obj=frame.stacks.mult, y=5}
 			self:skinObject("editbox", {obj=frame.stacks.size})
@@ -391,7 +390,7 @@ aObj.addonsToSkin["Auc-Advanced"] = function(self) -- v 1.13.6718
 
 end
 
-aObj.addonsToSkin.BeanCounter = function(self) -- v 1.13.6682
+aObj.addonsToSkin.BeanCounter = function(self) -- v 3.4.6983
 
 	self:SecureHookScript(_G.BeanCounterBaseFrame, "OnShow", function(this)
 		self:skinObject("frame", {obj=this, ofs=0})

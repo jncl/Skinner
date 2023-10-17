@@ -2,7 +2,7 @@ local _, aObj = ...
 local _G = _G
 -- This is a Library
 
-aObj.libsToSkin.Configator = function(self) -- v 1.13.6670
+aObj.libsToSkin.Configator = function(self) -- v 3.4.6987
 	if self.initialized.Configator then return end
 	self.initialized.Configator = true
 
@@ -46,11 +46,11 @@ aObj.libsToSkin.Configator = function(self) -- v 1.13.6670
 			skinHelp(this)
 
 			-- hook this to skin various controls
-			self:RawHook(frame, "AddControl", function(this, id, cType, column, ...)
-				local control = self.hooks[frame].AddControl(this, id, cType, column, ...)
-	 			-- self:Debug("Configator_Create_AddControl: [%s, %s, %s, %s, %s, %s]", control, id, cType, column, ...)
-				self:skinObject("frame", {obj=this.tabs[id].frame, y1=0})
-				if this.tabs[id].scroll then
+			self:RawHook(frame, "AddControl", function(fObj, id, cType, column, ...)
+				local control = self.hooks[frame].AddControl(fObj, id, cType, column, ...)
+				-- self:Debug("Configator_Create_AddControl: [%s, %s, %s, %s, %s, %s]", control, id, cType, column, ...)
+				self:skinObject("frame", {obj=fObj.tabs[id].frame, y1=0})
+				if fObj.tabs[id].scroll then
 					self:skinObject("slider", {obj=this.tabs[id].scroll.hScroll})
 					self:skinObject("slider", {obj=this.tabs[id].scroll.vScroll})
 				end
@@ -61,9 +61,9 @@ aObj.libsToSkin.Configator = function(self) -- v 1.13.6670
 				elseif cType == "Text" or cType == "TinyNumber" or cType == "NumberBox" then
 					self:skinObject("editbox", {obj=control, y1=-4, y2=4})
 				elseif cType == "NumeriSlider" or cType == "NumeriWide" or cType == "NumeriTiny" then
-					self:skinObject("editbox", {obj=control.slave, y1=-4, y2=4})
+					self:skinObject("editbox", {obj=control.subcontrol, y1=-4, y2=4})
 				elseif cType == "MoneyFrame" or cType == "MoneyFramePinned" then
-					self:skinMoneyFrame{obj=control, noWidth=true, moveSEB=true}
+					self:skinObject("moneyframe", {obj=control, moveSEB=true})
 				elseif cType == "Button" then
 					if self.modBtns then
 						self:skinStdButton{obj=control}
