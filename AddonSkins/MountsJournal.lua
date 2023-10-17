@@ -2,9 +2,22 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("MountsJournal") then return end
 local _G = _G
 
-aObj.addonsToSkin.MountsJournal = function(self) -- v 10.1.4/3.4.30
+aObj.addonsToSkin.MountsJournal = function(self) -- v 10.1.12/3.4.34
+
+	if self.isClsc
+	and self.modChkBtns
+	then
+		self.RegisterCallback("MountsJournal", "Collections_Skinned", function(_, _)
+			-- wait for check button to be created
+			_G.C_Timer.After(0.05, function()
+				self:skinCheckButton{obj=_G.MountsJournalFrame.useMountsJournalButton}
+			end)
+			self.UnregisterCallback("MountsJournal", "Collections_Skinned")
+		end)
+	end
 
 	self:SecureHook(_G.MountsJournalFrame, "init", function(mjFrame)
+		aObj:Debug("MountsJournalFrame init")
 		local this = mjFrame.bgFrame
 		self:removeInset(this.mountCount)
 		if not self.isClsc then
@@ -30,46 +43,32 @@ aObj.addonsToSkin.MountsJournal = function(self) -- v 10.1.4/3.4.30
 		self:skinObject("frame", {obj=this.filtersPanel.filtersBar, kfs=true,})
 		self:removeInset(this.shownPanel)
 		self:removeInset(this.leftInset)
-		if not self.isClsc then
-			self:skinObject("scrollbar", {obj=this.scrollBar, fType=ftype})
-			local function skinElement(...)
-				local _, element, _new
-				if _G.select("#", ...) == 2 then
-					element, _ = ...
-				elseif _G.select("#", ...) == 3 then
-					element, _, new = ...
-				else
-					_, element, _, new = ...
-				end
-				if new ~= false then
-					if element.mounts then
-						if self.modBtnBs then
-							for _, btn in _G.pairs(element.mounts) do
-								self:addButtonBorder{obj=btn, relTo=btn.icon, reParent={btn.favorite}, clr="grey"}
-							end
-						end
-					else
-						element.background:SetTexture(nil)
-						if self.modBtnBs then
-							self:addButtonBorder{obj=element.dragButton, relTo=element.dragButton.Icon, reParent={element.dragButton.favorite}, clr="grey"}
-						end
-					end
-				end
+		self:skinObject("scrollbar", {obj=this.scrollBar})
+		local function skinMount(...)
+			local _, element, new
+			if _G.select("#", ...) == 2 then
+				element, _ = ...
+			elseif _G.select("#", ...) == 3 then
+				element, _, new = ...
+			else
+				_, element, _, new = ...
 			end
-			_G.ScrollUtil.AddAcquiredFrameCallback(this.scrollBox, skinElement, aObj, true)
-		else
-			self:skinObject("slider", {obj=this.scrollFrame.scrollBar, ofs=0, clr="grey"})
-			for _, btn in _G.pairs(this.scrollFrame.buttons) do
-				btn.defaultList.btn.background:SetTexture(nil)
-				if self.modBtnBs then
-					self:addButtonBorder{obj=btn.defaultList.dragButton, relTo=btn.defaultList.dragButton.icon, reParent={btn.defaultList.dragButton.favorite}, clr="grey"}
-					for _, gridBtn in _G.pairs(btn.grid3List.mounts) do
-						self:addButtonBorder{obj=gridBtn, relTo=gridBtn.icon, reParent={gridBtn.favorite}, clr="grey"}
+			if new ~= false then
+				if element.mounts then
+					if self.modBtnBs then
+						for _, btn in _G.pairs(element.mounts) do
+							self:addButtonBorder{obj=btn, relTo=btn.icon, reParent={btn.favorite}, clr="grey"}
+						end
 					end
-
+				else
+					element.background:SetTexture(nil)
+					if self.modBtnBs then
+						self:addButtonBorder{obj=element.dragButton, relTo=element.dragButton.Icon, reParent={element.dragButton.favorite}, clr="grey"}
+					end
 				end
 			end
 		end
+		_G.ScrollUtil.AddAcquiredFrameCallback(this.scrollBox, skinMount, aObj, true)
 		self:removeInset(this.rightInset)
 		this.mountDisplay:DisableDrawLayer("BACKGROUND")
 		this.mountDisplay.shadowOverlay:DisableDrawLayer("OVERLAY")
@@ -81,17 +80,17 @@ aObj.addonsToSkin.MountsJournal = function(self) -- v 10.1.4/3.4.30
 		this.mountDisplay.info.petSelectionBtn.bg:SetTexture(nil)
 		this.mountDisplay.info.petSelectionBtn.border:SetTexture(nil)
 		self:SecureHookScript(this.mountDisplay.info.petSelectionBtn, "onClick", function(fObj)
-			local this = fObj.petSelectionList
-			self:removeInset(this.controlPanel)
-			self:skinObject("editbox", {obj=this.searchBox, si=true})
+			local psl = fObj.petSelectionList
+			self:removeInset(psl.controlPanel)
+			self:skinObject("editbox", {obj=psl.searchBox, si=true})
 			if not aObj.isClsc then
-				self:removeInset(this.filtersPanel)
+				self:removeInset(psl.filtersPanel)
 			end
-			self:removeInset(this.controlButtons)
-			self:removeInset(this.petListFrame)
+			self:removeInset(psl.controlButtons)
+			self:removeInset(psl.petListFrame)
 			if not self.isClsc then
-				self:skinObject("scrollbar", {obj=this.petListFrame.scrollBar, fType=ftype})
-				local function skinElement(...)
+				self:skinObject("scrollbar", {obj=psl.petListFrame.scrollBar})
+				local function skinPet(...)
 					local _, element, new
 					if _G.select("#", ...) == 2 then
 						element, _ = ...
@@ -104,10 +103,10 @@ aObj.addonsToSkin.MountsJournal = function(self) -- v 10.1.4/3.4.30
 						element.background:SetTexture(nil)
 					end
 				end
-				_G.ScrollUtil.AddAcquiredFrameCallback(this.petListFrame.scrollBox, skinElement, aObj, true)
+				_G.ScrollUtil.AddAcquiredFrameCallback(psl.petListFrame.scrollBox, skinPet, aObj, true)
 			else
-				self:skinObject("slider", {obj=this.listScroll.scrollBar})
-				for _, btn in _G.pairs(this.listScroll.buttons) do
+				self:skinObject("slider", {obj=psl.listScroll.scrollBar})
+				for _, btn in _G.pairs(psl.listScroll.buttons) do
 					btn.background:SetTexture(nil)
 				end
 			end
@@ -124,14 +123,12 @@ aObj.addonsToSkin.MountsJournal = function(self) -- v 10.1.4/3.4.30
 		self:removeInset(this.mapSettings)
 		self:removeInset(this.mapSettings.mapControl)
 		self:skinObject("editbox", {obj=this.mapSettings.existingLists.searchBox, si=true})
-		if not self.isClsc then
-			self:skinObject("scrollbar", {obj=this.mapSettings.existingLists.scrollFrame.ScrollBar})
-		else
-			self:skinObject("slider", {obj=this.mapSettings.existingLists.scrollFrame.ScrollBar})
-		end
+		self:skinObject("scrollbar", {obj=this.mapSettings.existingLists.scrollFrame.ScrollBar})
 		self:skinObject("frame", {obj=this.mapSettings.existingLists, kfs=true, x1=-1, y2=self.isClsc and -1 or -2})
-		self:skinObject("editbox", {obj=this.mountsWeight.edit})
-		self:skinObject("slider", {obj=this.mountsWeight.slider})
+		if self.isClsc then
+			self:skinObject("editbox", {obj=this.mountsWeight.edit})
+			self:skinObject("slider", {obj=this.mountsWeight.slider})
+		end
 		self:skinObject("frame", {obj=this, kfs=true, cb=true, x2=3, y2=-1})
 		if self.modBtns then
 			self:skinStdButton{obj=this.summonButton}
@@ -140,7 +137,7 @@ aObj.addonsToSkin.MountsJournal = function(self) -- v 10.1.4/3.4.30
 			self:skinStdButton{obj=mjFrame.filtersButton, clr="grey"}
 			self:skinStdButton{obj=this.mapSettings.dnr, clr="grey"}
 			self:skinStdButton{obj=this.mapSettings.CurrentMap}
-			-- TODO: skin frame.mapSettings.existingLists.lists (minusplus frames)
+			-- TODO: skin frame.mapSettings.existingLists.lists (.toggle checkbutton)
 			local function skinFilterBtn(btn)
 				aObj:skinObject("frame", {obj=btn, kfs=true})
 				btn.icon:SetAlpha(1)
