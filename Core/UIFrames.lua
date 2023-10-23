@@ -523,7 +523,7 @@ if not aObj.isClscERA then
 			self:removeRegions(_G.CalendarEventPickerCloseButton, {7})
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true, ofs=-3})
 			if self.modBtns then
-				self:skinCloseButton{obj=_G.CalendarEventPickerCloseButton}
+				self:skinStdButton{obj=_G.CalendarEventPickerCloseButton}
 			end
 
 			self:Unhook(this, "OnShow")
