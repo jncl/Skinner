@@ -1,3 +1,14 @@
+beta10.51754.1
+Jncl:
+	Updated ToDo.txt files
+	Updated Change_History.txt
+	Updated version numbers
+	Moved skinning of Collections frames to include Wrath Classic version
+	Updated Classic AuctionHouse skin
+	Updated MountsJournal skin, fixes #36
+	Updated AucAdvanced skin, fixes #38
+	Unobsoleted Swatter, Obsoleted LibExtraTip
+	
 beta10.51739.1
 Jncl:
 	Updated ToDo.txt files
