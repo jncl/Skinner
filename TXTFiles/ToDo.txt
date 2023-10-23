@@ -18,9 +18,3 @@ ToDos
 ≈		O	Add checks for Button state as required
 
 ≈		O	Refactor NewSkinFuncs in AddOn skins
-
-#36	√	I	MountsJournal
-
-#37	x	I 	ADDON_ACTION_BLOCKED
-
-#38	√	I/W	Auc-Advanced
