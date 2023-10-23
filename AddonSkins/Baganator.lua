@@ -3,7 +3,7 @@ if not aObj:isAddonEnabled("Baganator") then return end
 local _G = _G
 -- luacheck: ignore 631 (line is too long)
 
-aObj.addonsToSkin.Baganator = function(self) -- v 0.33
+aObj.addonsToSkin.Baganator = function(self) -- v 0.42
 
 	local skinBtns
 	if self.modBtnBs then
@@ -105,7 +105,8 @@ aObj.addonsToSkin.Baganator = function(self) -- v 0.33
 		self:Unhook(this, "OnShow")
 	end)
 
-	self:SecureHookScript(_G.BaganatorCustomiseDialogFrame, "OnShow", function(this)
+	_G.Baganator.CallbackRegistry:RegisterCallback("ShowCustomise", function()
+		local this = _G.BaganatorCustomiseDialogFrame
 		this.Bg:SetTexture(nil)
 		this.TopTileStreaks:SetTexture(nil)
 		for _, frame in _G.ipairs(this.Views) do
@@ -128,7 +129,7 @@ aObj.addonsToSkin.Baganator = function(self) -- v 0.33
 		self:skinObject("tabs", {obj=this, tabs=this.Tabs, ignoreSize=true, lod=self.isTT and true, upwards=true, offsets={x1=8, y1=-4, x2=-8, y2=-2}})
 		self:skinObject("frame", {obj=this, kfs=true, ri=true, cb=true, ofs=0, y1=self.isRtl and -1 or 2})
 
-		self:Unhook(this, "OnShow")
+		_G.Baganator.CallbackRegistry:UnregisterCallback("ShowCustomise", aObj)
 	end)
 
 end
