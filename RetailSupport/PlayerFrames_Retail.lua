@@ -3214,9 +3214,10 @@ aObj.SetupRetail_PlayerFrames = function()
 			if self.modBtnBs then
 				self:SecureHook("HonorFrameBonusFrame_Update", function()
 					self:clrBtnBdr(_G.HonorFrame.BonusFrame.RandomBGButton.Reward, "gold")
-					self:clrBtnBdr(_G.HonorFrame.BonusFrame.Arena1Button.Reward, "gold")
 					self:clrBtnBdr(_G.HonorFrame.BonusFrame.RandomEpicBGButton.Reward, "gold")
+					self:clrBtnBdr(_G.HonorFrame.BonusFrame.Arena1Button.Reward, "gold")
 					self:clrBtnBdr(_G.HonorFrame.BonusFrame.BrawlButton.Reward, "gold")
+					self:clrBtnBdr(_G.HonorFrame.BonusFrame.BrawlButton2.Reward, "gold")
 				end)
 			end
 			this.BonusFrame:DisableDrawLayer("BACKGROUND")
