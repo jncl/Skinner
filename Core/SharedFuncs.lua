@@ -9,12 +9,12 @@ local buildInfo = {
 	-- wow_beta            = {"11.0.0", nnnnn, "Retail Beta"}, -- a.k.a. ?
 	wow_classic_ptr     = {"3.4.3",  51739, "Classic PTR"},
 	wow_classic_era_ptr = {"1.14.4", 51146, "Classic Era PTR"},
-	wow_ptr_x           = {"10.2.0", 51685, "Retail PTRX"}, -- [wowxptr]
-	wow_ptr             = {"10.1.7", 51485, "Retail PTR"},
+	wow_ptr_x           = {"10.2.0", 51825, "Retail PTRX"}, -- [wowxptr]
+	wow_ptr             = {"10.1.7", 51754, "Retail PTR"},
 	-- Live
 	wow_classic         = {"3.4.3",  51739, "Classic"}, -- a.k.a. Wrath of the Lich King Classic
 	wow_classic_era     = {"1.14.4", 51535, "Classic Era"},
-	wow                 = {"10.1.7", 51536, "Retail"},
+	wow                 = {"10.1.7", 51754, "Retail"},
 	-- Currently playing
 	curr                = {_G.GetBuildInfo()},
 }
