@@ -24,7 +24,7 @@ aObj.addonsToSkin.Bartender4 = function(self) -- v 4.14.9
 				local function skinActionButtons(mObj)
 					for _, bar in mObj:GetAll() do
 						for _, btn in bar:GetAll() do
-							btn.NormalTexture:SetTexture(nil)
+							btn.NormalTexture:SetAlpha(0)
 							aObj:addButtonBorder{obj=btn, sabt=true}
 						end
 					end
