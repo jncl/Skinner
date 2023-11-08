@@ -6,8 +6,10 @@
 	x				- indicates nothing to change
 	¶ is Alt+7		- indicates localisation changes required
 
-	Retail_PTR (Dragonflight 10.1.7)
+	Retail_PTR (Dragonflight 10.2.0)
 		- Added
 		- Updated
+			- Blizzard_AlliedRacesFrameUI
+√				- ModelFrame ==> ModelScene
 		- Deleted
 			
