@@ -828,21 +828,29 @@ function aObj:hookScript(obj, method, func)
 
 end
 
-local isAddOnLoaded = _G.IsAddOnLoaded or _G.C_AddOns.IsAddOnLoaded
-local isAddOnLoadOnDemand = _G.IsAddOnLoadOnDemand or _G.C_AddOns.IsAddOnLoadOnDemand
-local getAddOnEnableState = _G.GetAddOnEnableState or _G.C_AddOns.GetAddOnEnableState
 function aObj:isAddOnLoaded(addonName) -- luacheck: ignore 212 (unused argument)
 	--@alpha@
 	_G.assert(addonName, "Unknown object isAddOnLoaded\n" .. _G.debugstack(2, 3, 2))
 	--@end-alpha@
 
-	return isAddOnLoaded(addonName)
+	if _G.IsAddOnLoaded then
+		return _G.IsAddOnLoaded(addonName)
+	else
+	    return _G.C_AddOns.IsAddOnLoaded(addonName)
+	end
 
 end
 
 function aObj:isAddOnLoadOnDemand(addonName) -- luacheck: ignore 212 (unused argument)
+	--@alpha@
+	_G.assert(addonName, "Unknown object isAddOnLoadOnDemand\n" .. _G.debugstack(2, 3, 2))
+	--@end-alpha@
 
-	return isAddOnLoadOnDemand(addonName)
+	if _G.IsAddOnLoadOnDemand then
+		return _G.IsAddOnLoadOnDemand(addonName)
+	else
+	    return _G.C_AddOns.IsAddOnLoadOnDemand(addonName)
+	end
 
 end
 
@@ -851,7 +859,11 @@ function aObj:isAddonEnabled(addonName)
 	_G.assert(addonName, "Unknown object isAddonEnabled\n" .. _G.debugstack(2, 3, 2))
 	--@end-alpha@
 
-	return getAddOnEnableState(self.uName, addonName) == 2 and true or false
+	if _G.GetAddOnEnableState then
+		return _G.GetAddOnEnableState(self.uName, addonName) == 2 and true or false
+	else
+	    return _G.C_AddOns.GetAddOnEnableState(addonName, self.uName) == 2 and true or false
+	end
 
 end
 
