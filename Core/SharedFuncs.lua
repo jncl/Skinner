@@ -82,11 +82,11 @@ function aObj:checkVersion()
 	self.isRtlPTR     = self.isRtlPTR or self.isRtlBeta
 	-- indicate we're on Retail if on Retail PTR
 	self.isRtl        = self.isRtl or self.isRtlPTR or self.isRtlPTRX
-	-- -- handle PTR changes going Live
-	-- self.isClscPTR    = self.isClscPTR or self.isClsc and self.isPatch
-	-- self.isClscERAPTR = self.isClscERAPTR or self.isClscERA and self.isPatch
-	-- self.isRtlPTR     = self.isRtlPTR or self.isRtl and self.isPatch
-	-- self.isRtlPTRX    = self.isRtlPTRX or self.isRtl and self.isPatch
+	-- handle PTR changes going Live
+	self.isClscPTR    = self.isClscPTR or self.isClsc and self.isPatch
+	self.isClscERAPTR = self.isClscERAPTR or self.isClscERA and self.isPatch
+	self.isRtlPTR     = self.isRtlPTR or self.isRtl and self.isPatch
+	self.isRtlPTRX    = self.isRtlPTRX or self.isRtl and self.isPatch
 	--@debug@
 	self:Debug("checkVersion#2: [%s, %s, %s, %s, %s, %s, %s, %s, %s, %s]", self.isClscBeta, self.isClscPTR, self.isClsc, self.isClscERAPTR, self.isClscERA, self.isRtlBeta, self.isRtlPTR, self.isRtlPTRX, self.isRtl, self.isPatch)
 	--@end-debug@
