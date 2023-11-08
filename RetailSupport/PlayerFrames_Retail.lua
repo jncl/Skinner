@@ -1193,9 +1193,6 @@ aObj.SetupRetail_PlayerFrames = function()
 
 		self:SecureHookScript(_G.DressUpFrame, "OnShow", function(this)
 			self:skinObject("dropdown", {obj=this.OutfitDropDown, fType=ftype, y2=-4})
-			if not aObj.isRtlPTRX then
-				this.MaxMinButtonFrame:DisableDrawLayer("BACKGROUND") -- corner texture
-			end
 			self:skinObject("frame", {obj=this.OutfitDetailsPanel, fType=ftype, kfs=true, ofs=-7})
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, y2=-4})
 			if self.prdb.DUTexture then
@@ -1206,13 +1203,8 @@ aObj.SetupRetail_PlayerFrames = function()
 			end
 			if self.modBtns then
 				self:skinStdButton{obj=this.OutfitDropDown.SaveButton}
-				if not aObj.isRtlPTRX then
-					self:skinOtherButton{obj=this.MaxMinButtonFrame.MaximizeButton, font=self.fontS, text=self.nearrow}
-					self:skinOtherButton{obj=this.MaxMinButtonFrame.MinimizeButton, font=self.fontS, text=self.swarrow}
-				else
 					self:skinOtherButton{obj=this.MaximizeMinimizeFrame.MaximizeButton, font=self.fontS, text=self.nearrow}
 					self:skinOtherButton{obj=this.MaximizeMinimizeFrame.MinimizeButton, font=self.fontS, text=self.swarrow}
-				end
 				self:skinStdButton{obj=_G.DressUpFrameCancelButton}
 				self:skinStdButton{obj=this.ResetButton}
 				self:skinStdButton{obj=this.LinkButton, x1=4}
@@ -2595,14 +2587,9 @@ aObj.SetupRetail_PlayerFrames = function()
 			self:skinObject("tabs", {obj=this.TabSystem,  pool=true, fType=ftype, ignoreSize=true, track=false})
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true})
 			if self.modBtns then
-				if not aObj.isRtlPTRX then
-					self:skinOtherButton{obj=this.MaxMinButtonFrame.MaximizeButton, font=self.fontS, text=self.nearrow}
-					self:skinOtherButton{obj=this.MaxMinButtonFrame.MinimizeButton, font=self.fontS, text=self.swarrow}
-				else
 					self:skinOtherButton{obj=this.MaximizeMinimize.MaximizeButton, font=self.fontS, text=self.nearrow}
 					self:skinOtherButton{obj=this.MaximizeMinimize.MinimizeButton, font=self.fontS, text=self.swarrow}
 				end
-			end
 
 			self:SecureHookScript(this.CraftingPage, "OnShow", function(fObj)
 				fObj.TutorialButton.Ring:SetTexture(nil)

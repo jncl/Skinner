@@ -64,12 +64,11 @@ if not aObj.isClscERA then
 				if self.isRtl then
 					self:addButtonBorder{obj=this.SlotButton, relTo=this.SlotButton.ItemIcon, reParent={this.SlotButton.SlotBorder, this.SlotButton.SlotBorderOpen}, clr="grey", ca=0.85}
 					self:addButtonBorder{obj=this.SummonRandomFavoriteButton, ofs=3}
-				end
-				self:addButtonBorder{obj=this.MountDisplay.InfoButton, relTo=this.MountDisplay.InfoButton.Icon, clr="white"}
-				if not aObj.isRtlPTRX then
+				else
 					self:addButtonBorder{obj=this.MountDisplay.ModelScene.RotateLeftButton, ofs=-3, clr="grey"}
 					self:addButtonBorder{obj=this.MountDisplay.ModelScene.RotateRightButton, ofs=-3, clr="grey"}
 				end
+				self:addButtonBorder{obj=this.MountDisplay.InfoButton, relTo=this.MountDisplay.InfoButton.Icon, clr="white"}
 			end
 			if self.modChkBtns
 			and self.isRtl
