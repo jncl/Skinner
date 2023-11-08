@@ -25,7 +25,7 @@ aObj.SetupRetail_NPCFrames = function()
 			this.RaceInfoFrame.ScrollFrame.Child.ObjectivesFrame:DisableDrawLayer("BACKGROUND")
 			self:skinObject("scrollbar", {obj=this.RaceInfoFrame.ScrollFrame.ScrollBar, fType=ftype, rpTex="background"})
 			this.RaceInfoFrame.AlliedRacesRaceName:SetTextColor(self.HT:GetRGB())
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true})
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, y1=1})
 			if self.modBtnBs then
 				if not aObj.isRtl then
 					self:addButtonBorder{obj=this.ModelFrame.AlliedRacesMaleButton, ofs=0, clr="grey"}
@@ -521,7 +521,7 @@ aObj.SetupRetail_NPCFrames = function()
 					self:addButtonBorder{obj=btn, ofs=-4, es=20, clr="gold", ca=0.4}
 				end
 			end
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true, cb=true, ofs=0, y1=-1})
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true, cb=true, ofs=2, y1=1})
 			if self.modBtns then
 				self:skinStdButton{obj=this.SelectButton}
 				self:SecureHook(this.SelectButton, "UpdateButtonState", function(bObj, _)
@@ -782,9 +782,6 @@ aObj.SetupRetail_NPCFrames = function()
 			this.ScrollFrame.Child.Text:SetTextColor(self.BT:GetRGB())
 			this.ScrollFrame.Child.ObjectivesFrame:DisableDrawLayer("BORDER")
 			this.ScrollFrame.Child.ObjectivesFrame:DisableDrawLayer("BACKGROUND")
-			self:removeNineSlice(this.ScrollFrame.ScrollBar.ScrollUpBorder.NineSlice)
-			self:removeNineSlice(this.ScrollFrame.ScrollBar.ScrollDownBorder.NineSlice)
-			self:removeNineSlice(this.ScrollFrame.ScrollBar.Border.NineSlice)
 			self:skinObject("scrollbar", {obj=this.ScrollFrame.ScrollBar, fType=ftype})
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true, cb=true})
 			if self.modBtns then
@@ -799,6 +796,7 @@ aObj.SetupRetail_NPCFrames = function()
 
 	end
 
+	-- Trading Post Frame
 	aObj.blizzLoDFrames[ftype].PerksProgram = function(self)
 		if not self.prdb.PerksProgram or self.initialized.PerksProgram then return end
 		self.initialized.PerksProgram = true
@@ -823,18 +821,9 @@ aObj.SetupRetail_NPCFrames = function()
 				end
 			end
 			_G.ScrollUtil.AddAcquiredFrameCallback(this.ProductsFrame.ProductsScrollBoxContainer.ScrollBox, skinElement, aObj, true)
-
 			self:removeNineSlice(this.ProductsFrame.ProductsScrollBoxContainer.PerksProgramHoldFrame.NineSlice)
-			-- .FrozenItemFrame
-				-- .FrozenButton
 			self:removeNineSlice(this.ProductsFrame.PerksProgramProductDetailsContainerFrame.Border)
 			self:skinObject("frame", {obj=this.ProductsFrame.PerksProgramProductDetailsContainerFrame, fType=ftype, kfs=true})
-			-- .DetailsFrame
-			-- .DividerFrame
-			-- .CarouselFrame
-				-- .DecrementButton
-				-- .IncrementButton
-
 			if self.modBtns then
 				self:skinStdButton{obj=this.ProductsFrame.PerksProgramFilter.FilterDropDownButton, fType=ftype, ofs=-5, y2=8, clr="grey"}
 				self:skinStdButton{obj=this.FooterFrame.LeaveButton, fType=ftype, ofs=-4}

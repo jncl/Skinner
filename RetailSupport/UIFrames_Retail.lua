@@ -3074,6 +3074,9 @@ aObj.SetupRetail_UIFrames = function()
 				self:skinStdButton{obj=this.DetailsFrame.ShareButton}
 				self:skinStdButton{obj=this.DetailsFrame.TrackButton, x2=-2}
 			end
+			_G.C_Timer.After(0.1, function()
+				self:add2Table(self.ttList, this.QuestsFrame.StoryTooltip)
+			end)
 			self:keepFontStrings(this.CampaignOverview.Header)
 			this.CampaignOverview.BG:SetTexture(nil)
 			this.CampaignOverview.ScrollFrame:DisableDrawLayer("OVERLAY")
@@ -3805,9 +3808,9 @@ aObj.SetupRetail_UIFrames = function()
 			this.NavBar:DisableDrawLayer("BORDER")
 			this.NavBar.overlay:DisableDrawLayer("OVERLAY")
 			if self.modBtns then
-					self:skinOtherButton{obj=this.BorderFrame.MaximizeMinimizeFrame.MaximizeButton, font=self.fontS, text=self.nearrow}
-					self:skinOtherButton{obj=this.BorderFrame.MaximizeMinimizeFrame.MinimizeButton, font=self.fontS, text=self.swarrow}
-				end
+				self:skinOtherButton{obj=this.BorderFrame.MaximizeMinimizeFrame.MaximizeButton, font=self.fontS, text=self.nearrow}
+				self:skinOtherButton{obj=this.BorderFrame.MaximizeMinimizeFrame.MinimizeButton, font=self.fontS, text=self.swarrow}
+			end
 			if self.modBtnBs then
 				self:addButtonBorder{obj=this.SidePanelToggle.CloseButton, clr="gold"}
 				self:addButtonBorder{obj=this.SidePanelToggle.OpenButton, clr="gold"}

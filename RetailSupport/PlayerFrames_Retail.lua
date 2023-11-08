@@ -894,7 +894,7 @@ aObj.SetupRetail_PlayerFrames = function()
 						self:skinCheckButton{obj=frame.Button, fType=ftype}
 					end
 				end
-				for btn in fObj.pools:GetPool("CharCustomizeShapeshiftFormButtonTemplate"):EnumerateActive() do
+				for btn in fObj.pools:GetPool("CharCustomizeConditionalModelButtonTemplate"):EnumerateActive() do
 					btn.Ring:SetTexture(nil)
 				end
 				for frame in fObj.selectionPopoutPool:EnumerateActive() do
@@ -1203,8 +1203,8 @@ aObj.SetupRetail_PlayerFrames = function()
 			end
 			if self.modBtns then
 				self:skinStdButton{obj=this.OutfitDropDown.SaveButton}
-					self:skinOtherButton{obj=this.MaximizeMinimizeFrame.MaximizeButton, font=self.fontS, text=self.nearrow}
-					self:skinOtherButton{obj=this.MaximizeMinimizeFrame.MinimizeButton, font=self.fontS, text=self.swarrow}
+				self:skinOtherButton{obj=this.MaximizeMinimizeFrame.MaximizeButton, font=self.fontS, text=self.nearrow}
+				self:skinOtherButton{obj=this.MaximizeMinimizeFrame.MinimizeButton, font=self.fontS, text=self.swarrow}
 				self:skinStdButton{obj=_G.DressUpFrameCancelButton}
 				self:skinStdButton{obj=this.ResetButton}
 				self:skinStdButton{obj=this.LinkButton, x1=4}
@@ -1473,22 +1473,21 @@ aObj.SetupRetail_PlayerFrames = function()
 				-- TODO: Remove RewardItem border
 				fObj.FilterList:DisableDrawLayer("BACKGROUND")
 				self:skinObject("scrollbar", {obj=fObj.ScrollBar, fType=ftype})
+				aObj:skinObject("scrollbar", {obj=fObj.ScrollBar, fType=ftype})
 				local function skinActivities(...)
-					aObj:Debug("skinActivities: [%s, %s, %s, %s, %s]", _G.select("#", ...), ...)
+					-- aObj:Debug("skinActivities: [%s, %s, %s, %s]", ...)
 					local _, element
 					if _G.select("#", ...) == 2 then
 						element, _ = ...
-					else
-						_, element, _, _ = ...
+					elseif _G.select("#", ...) == 3 then
+						_, element, _ = ...
 					end
-					aObj:Debug("skinActivities#2: [%s, %s]", element)
 					element:GetNormalTexture():SetAlpha(0)
 					element.Name:SetTextColor(aObj.BT:GetRGB())
 					aObj:skinObject("frame", {obj=element, fType=ftype, ofs=-3, y2=4, fb=true})
-					-- TODO: skin HeaderCollapseIndicator ?
+					element.SetNormalAtlas = _G.nop
 				end
 				_G.ScrollUtil.AddInitializedFrameCallback(fObj.ScrollBox, skinActivities, aObj, true)
-				_G.ScrollUtil.AddAcquiredFrameCallback(fObj.ScrollBox, skinActivities, aObj, true)
 
 				self:Unhook(fObj, "OnShow")
 			end)
@@ -2587,9 +2586,9 @@ aObj.SetupRetail_PlayerFrames = function()
 			self:skinObject("tabs", {obj=this.TabSystem,  pool=true, fType=ftype, ignoreSize=true, track=false})
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true})
 			if self.modBtns then
-					self:skinOtherButton{obj=this.MaximizeMinimize.MaximizeButton, font=self.fontS, text=self.nearrow}
-					self:skinOtherButton{obj=this.MaximizeMinimize.MinimizeButton, font=self.fontS, text=self.swarrow}
-				end
+				self:skinOtherButton{obj=this.MaximizeMinimize.MaximizeButton, font=self.fontS, text=self.nearrow}
+				self:skinOtherButton{obj=this.MaximizeMinimize.MinimizeButton, font=self.fontS, text=self.swarrow}
+			end
 
 			self:SecureHookScript(this.CraftingPage, "OnShow", function(fObj)
 				fObj.TutorialButton.Ring:SetTexture(nil)
@@ -2654,12 +2653,13 @@ aObj.SetupRetail_PlayerFrames = function()
 						_, element, _ = ...
 					end
 					element.ItemContainer.NameFrame:SetTexture(nil)
-					element.ItemContainer.BorderFrame:SetTexture(nil)
+					element.ItemContainer.BorderFrame:SetAlpha(0)
 					if aObj.modBtnBs then
 						aObj:addButtonBorder{obj=element.ItemContainer.Item, fType=ftype, ibt=true}
 					end
 				end
-				_G.ScrollUtil.AddInitializedFrameCallback(frame.ScrollBox, skinLine, aObj, true)
+				-- _G.ScrollUtil.AddInitializedFrameCallback(frame.ScrollBox, skinLine, aObj, true)
+				_G.ScrollUtil.AddAcquiredFrameCallback(frame.ScrollBox, skinLine, aObj, true)
 				self:skinObject("frame", {obj=frame, fType=ftype, kfs=true, rns=true})
 				if self.modBtns then
 					self:skinCloseButton{obj=frame.ClosePanelButton, fType=ftype}
@@ -2684,20 +2684,26 @@ aObj.SetupRetail_PlayerFrames = function()
 			end)
 
 			self:SecureHookScript(this.SpecPage, "OnShow", function(fObj)
-				for tab in fObj.tabsPool:EnumerateActive() do
-					self:keepFontStrings(tab)
-					if not self.isTT then
-						self:skinObject("frame", {obj=tab, fType=ftype})
-					else
-						self:skinObject("frame", {obj=tab, fType=ftype, noBdr=true, y2=0})
-						if tab.isSelected then
-							self:setActiveTab(tab.sf)
+				local function skinTabs(tabsPool)
+					for tab in tabsPool:EnumerateActive() do
+						aObj:keepFontStrings(tab)
+						if not aObj.isTT then
+							aObj:skinObject("frame", {obj=tab, fType=ftype})
 						else
-							self:setInactiveTab(tab.sf)
+							aObj:skinObject("frame", {obj=tab, fType=ftype, noBdr=true, y2=0})
+							if tab.isSelected then
+								aObj:setActiveTab(tab.sf)
+							else
+								aObj:setInactiveTab(tab.sf)
+							end
 						end
+						tab.sf.ignore = true
 					end
-					tab.sf.ignore = true
 				end
+				self:SecureHook(fObj, "InitializeTabs", function(frame, professionInfo)
+						skinTabs(frame.tabsPool)
+				end)
+				skinTabs(fObj.tabsPool)
 				if self.isTT then
 					local function TabSelectedCallback(_, selectedID)
 						for tab in fObj.tabsPool:EnumerateActive() do
