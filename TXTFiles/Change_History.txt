@@ -34,6 +34,23 @@ Jncl:
 	Bugfix for Wrath Classic IsLookingForGroupEnabled, fixes #31 #32
 	Updated TOC
 	
+beta10.51536.1
+Jncl:
+	Updated ToDo.txt files
+	Updated version numbers
+	Updated Change_History.txt
+	Retail PTR X changes
+	Updated ExpansionLandingPage
+	Replaced self: by aObj:
+	Updated ProfessionsCustomerOrdersFrame CategoryList
+	Updated CraftingOutputLog
+	Updated ObjectiveTracker
+	Updated MonthlyActivitiesFrame
+	Updated PetStableFrame
+	updated BlackMarketFrame
+	Updated CommunitiesAvatarPickerDialog
+	Updated GuildBenefitsFrame
+
 beta10.51485.1
 Jncl:
 	Updated ToDo.txt files
