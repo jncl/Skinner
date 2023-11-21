@@ -18,3 +18,7 @@ ToDos
 ≈		O	Add checks for Button state as required
 
 ≈		O	Refactor NewSkinFuncs in AddOn skins
+
+#39	√	N	Rematch
+
+#40	√	I/C	Classic updated to 1.15.0
