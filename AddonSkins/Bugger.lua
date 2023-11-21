@@ -1,16 +1,17 @@
 local _, aObj = ...
 if not aObj:isAddonEnabled("Bugger") then return end
 local _G = _G
+-- luacheck: ignore 631 (line is too long)
 
 aObj.addonsToSkin.Bugger = function(self) -- v 8.0.0.0
 
 	self:SecureHook(_G.Bugger, "SetupFrame", function(this)
 		self:skinObject("slider", {obj=this.scrollFrame.ScrollBar})
-		self:skinObject("tabs", {obj=this.frame, tabs=this.tabs, selectedTab=3, lod=self.isTT and true, track=false, regions=self.isClsc and {10} or nil})
+		self:skinObject("tabs", {obj=this.frame, tabs=this.tabs, selectedTab=3, lod=self.isTT and true, track=false, regions={10}})
 		if self.isTT then
-			self:SecureHook(this, "ShowSession", function(this, session)
+			self:SecureHook(this, "ShowSession", function(fObj, session)
 				session = session or "current"
-				for _, tab in _G.pairs(this.tabs) do
+				for _, tab in _G.pairs(fObj.tabs) do
 					if tab.session == session then
 						self:setActiveTab(tab.sf)
 					else

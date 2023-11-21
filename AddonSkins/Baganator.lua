@@ -3,7 +3,7 @@ if not aObj:isAddonEnabled("Baganator") then return end
 local _G = _G
 -- luacheck: ignore 631 (line is too long)
 
-aObj.addonsToSkin.Baganator = function(self) -- v 0.42
+aObj.addonsToSkin.Baganator = function(self) -- v 0.46
 
 	local skinBtns
 	if self.modBtnBs then
@@ -34,6 +34,7 @@ aObj.addonsToSkin.Baganator = function(self) -- v 0.42
 			self:skinStdButton{obj=this.ToggleBankButton, ofs=-1}
 			self:skinStdButton{obj=this.ToggleReagentsButton}
 			self:skinStdButton{obj=this.ToggleReagentsBankButton}
+			self:skinStdButton{obj=this.ToggleBagSlotsButton, ofs=-1}
 			self:skinStdButton{obj=this.ToggleAllCharacters, ofs=-1}
 		end
 
@@ -89,6 +90,7 @@ aObj.addonsToSkin.Baganator = function(self) -- v 0.42
 			self:skinStdButton{obj=this.CustomiseButton}
 			self:moveObject{obj=this.CustomiseButton, y=-1}
 			self:skinStdButton{obj=this.SortButton}
+			self:skinStdButton{obj=this.ToggleBagSlotsButton}
 			self:skinStdButton{obj=this.ToggleReagentsBankButton}
 			self:skinStdButton{obj=this.DepositIntoReagentsBankButton}
 		end
