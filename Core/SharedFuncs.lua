@@ -52,7 +52,7 @@ function aObj:checkVersion()
 	self.isRtlPTRX    = agentUID == "wow_ptr_x" and true
 	self.isRtl        = agentUID == "wow" and true
 	--@debug@
-	self:Debug("checkVersion#1: [%s, %s, %s, %s, %s, %s, %s, %s, %s, %s]", self.isClscBeta, self.isClscPTR, self.isClsc, self.isClscERAPTR, self.isClscERA, self.isRtlBeta, self.isRtlPTR, self.isRtlPTRX, self.isRtl, self.isPatch)
+	self:Debug("checkVersion#1: [%s, %s, %s, %s, %s, %s, %s, %s, %s]", self.isClscBeta, self.isClscPTR, self.isClsc, self.isClscERAPTR, self.isClscERA, self.isRtlBeta, self.isRtlPTR, self.isRtlPTRX, self.isRtl)
 	--@end-debug@
 
 	self.tocVer = getTOCVer(agentUID)
