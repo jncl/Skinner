@@ -3,12 +3,6 @@ local _, aObj = ...
 local _G = _G
 -- luacheck: ignore 631 (line is too long)
 
-local checkGF
-if aObj.isClscERA then
-	function checkGF()
-		return _G.C_LFGList.IsLookingForGroupEnabled()
-	end
-end
 aObj.SetupClassic_UIFrames = function()
 	local ftype = "u"
 
@@ -120,85 +114,6 @@ aObj.SetupClassic_UIFrames = function()
 			self:addButtonBorder{obj=_G.TextToSpeechButton, ofs=1, clr="grey"}
 		end
 
-	end
-
-	if aObj.isClscERA
-	and checkGF()
-	then
-		aObj.blizzFrames[ftype].LFGFrame = function(self)
-			if not self.prdb.LFGLFM or self.initialized.LFGFrame then return end
-			self.initialized.LFGFrame = true
-
-			self:SecureHookScript(_G.LFGParentFrame, "OnShow", function(this)
-				self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, ignoreSize=true, lod=self.isTT and true, upwards=true})
-				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, x1=10, y1=-11, x2=-29, y2=70})
-				if self.modBtns then
-					self:skinCloseButton{obj=self:getChild(this, self.isClscERA and 3 or 1), fType=ftype}
-				end
-
-				self:SecureHookScript(_G.LFMFrame, "OnShow", function(fObj)
-					self:skinObject("dropdown", {obj=_G.LFMFrameEntryDropDown, fType=ftype})
-					self:removeInset(_G.LFMFrameInset)
-					self:skinObject("dropdown", {obj=_G.LFMFrameTypeDropDown, fType=ftype})
-					self:skinObject("dropdown", {obj=_G.LFMFrameActivityDropDown, fType=ftype})
-					for i = 1, 4 do
-						_G["LFMFrameColumnHeader" .. i]:DisableDrawLayer("BACKGROUND")
-						self:skinObject("frame", {obj=_G["LFMFrameColumnHeader" .. i], fType=ftype, ofs=0})
-					end
-					self:skinObject("slider", {obj=_G.LFMListScrollFrame.ScrollBar, fType=ftype})
-					self:moveObject{obj=_G.LFMFrameGroupInviteButton, x=-4}
-					if self.modBtns then
-						self:skinStdButton{obj=_G.LFMFrameGroupInviteButton, fType=ftype}
-						self:skinStdButton{obj=_G.LFMFrameSendMessageButton, fType=ftype}
-						self:skinStdButton{obj=_G.LFMFrameSearchButton, fType=ftype}
-						self:SecureHook(_G.LFMFrameGroupInviteButton, "SetEnabled", function(btn)
-							self:clrBtnBdr(btn)
-						end)
-						self:SecureHook(_G.LFMFrameSendMessageButton, "SetEnabled", function(btn)
-							self:clrBtnBdr(btn)
-						end)
-					end
-
-					self:Unhook(fObj, "OnShow")
-				end)
-				self:checkShown(_G.LFMFrame)
-				self:SecureHookScript(_G.LFGFrame, "OnShow", function(fObj)
-					for _, dd in _G.pairs(fObj.TypeDropDown) do
-						self:skinObject("dropdown", {obj=dd, fType=ftype})
-					end
-					for _, dd in _G.pairs(fObj.ActivityDropDown) do
-						self:skinObject("dropdown", {obj=dd, fType=ftype})
-					end
-					self:skinObject("editbox", {obj=fObj.Comment, fType=ftype, chginset=false, x1=-5})
-					self:moveObject{obj=_G.LFGFramePostButton, x=-10}
-					if self.modBtns then
-						self:skinStdButton{obj=_G.LFGFrameClearAllButton, fType=ftype}
-						self:skinStdButton{obj=_G.LFGFramePostButton, fType=ftype}
-						self:SecureHook(_G.LFGFramePostButton, "SetEnabled", function(btn, _)
-							self:clrBtnBdr(btn)
-						end)
-					end
-					if self.modBtnBs then
-						for i = 1, 3 do
-							self:addButtonBorder{obj=_G["LFGSearchIcon" .. i .. "Shine"], fType=ftype, x1=-6, y1=3, x2=6, y2=-4, clr="grey"}
-						end
-						self:SecureHook(fObj, "UpdateActivityIcon", function(frame, i)
-							local activityID = _G.UIDropDownMenu_GetSelectedValue(frame.ActivityDropDown[i])
-							if activityID then
-								self:clrBtnBdr(_G["LFGSearchIcon" .. i .. "Shine"])
-							else
-								self:clrBtnBdr(_G["LFGSearchIcon" .. i .. "Shine"], "grey")
-							end
-						end)
-					end
-
-					self:Unhook(fObj, "OnShow")
-				end)
-				self:checkShown(_G.LFGFrame)
-
-				self:Unhook(this, "OnShow")
-			end)
-		end
 	end
 
 	aObj.blizzFrames[ftype].MainMenuBar = function(self)
@@ -696,7 +611,6 @@ aObj.SetupClassic_UIFramesOptions = function(self)
 		["Battlefield Frame"]       = true,
 		["Binding UI"]              = {desc = "Key Bindings UI"},
 		["GM Survey UI"]            = self.isClscERA and true or nil,
-		["LFGLFM"]                  = self.isClscERA and checkGF() or nil,
 		["Product Choice"]          = {suff = "Frame"},
 		["PVP Frame"]               = self.isClsc and true or nil,
 		["Quest Log"]               = true,
