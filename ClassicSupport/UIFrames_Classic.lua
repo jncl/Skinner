@@ -543,16 +543,12 @@ aObj.SetupClassic_UIFrames = function()
 			and not self:isAddOnLoaded("AlleyMap")
 			then
 				self:skinObject("frame", {obj=_G.WorldMapFrame.BorderFrame, fType=ftype, kfs=true, ofs=1})
-				if self.isClscERA then
-					self:keepFontStrings(_G.WorldMapFrame)
-					-- make sure map textures are displayed
-					_G.WorldMapFrame.BorderFrame.sf:SetFrameStrata("LOW")
-				else
-					self:skinObject("frame", {obj=_G.WorldMapFrame.MiniBorderFrame, fType=ftype, kfs=true, ofs=-4, y1=-25, x1=16})
-					if self.modBtns then
-						self:skinOtherButton{obj=this.MaximizeMinimizeFrame.MaximizeButton, font=self.fontS, text=self.nearrow}
-						self:skinOtherButton{obj=this.MaximizeMinimizeFrame.MinimizeButton, font=self.fontS, disfont=self.fontDS, text=self.swarrow}
-					end
+				self:skinObject("frame", {obj=_G.WorldMapFrame.MiniBorderFrame, fType=ftype, kfs=true, ofs=-4, y1=-25, x1=16})
+				if self.modBtns then
+					self:skinOtherButton{obj=this.MaximizeMinimizeFrame.MaximizeButton, font=self.fontS, text=self.nearrow}
+					self:skinOtherButton{obj=this.MaximizeMinimizeFrame.MinimizeButton, font=self.fontS, disfont=self.fontDS, text=self.swarrow}
+				end
+				if self.isClsc then
 					if self.modChkBtns then
 						self:skinCheckButton{obj=_G.WorldMapTrackQuest, fType=ftype}
 						self:skinCheckButton{obj=_G.WorldMapQuestShowObjectives, fType=ftype}

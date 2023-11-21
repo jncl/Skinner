@@ -411,7 +411,9 @@ aObj.SetupClassic_PlayerFrames = function()
 			for _, btn in _G.pairs{_G.PaperDollItemsFrame:GetChildren()} do
 				-- handle non button children [ECS_StatsFrame]
 				if btn:IsObjectType("Button") then
-					if btn ~= _G.GearManagerToggleButton then
+					if btn ~= _G.GearManagerToggleButton -- Wrath
+					and btn ~= _G.RuneFrameControlButton -- ERA
+					then
 						btn:DisableDrawLayer("BACKGROUND")
 						if btn.ignoreTexture then
 							if self.modBtnBs then
@@ -1447,10 +1449,6 @@ aObj.SetupClassic_PlayerFrames = function()
 		self:SecureHookScript(_G.PlayerTalentFrame, "OnShow", function(this)
 			local fName = this:GetName()
 			self:moveObject{obj=_G.PlayerTalentFrameTitleText, y=-2}
-			if self.isClscERA then
-				_G.PlayerTalentFrameRoleButton:SetNormalTexture(self.tFDIDs.lfgIR)
-				_G.PlayerTalentFrameRoleButton.cover:SetTexture(self.tFDIDs.lfgIR)
-			end
 			self:skinObject("tabs", {obj=this, prefix=fName, fType=ftype, lod=self.isTT and true})
 			self:skinObject("slider", {obj=_G[fName .. 'ScrollFrameScrollBar'], fType=ftype, rpTex="artwork"})
 			-- keep background Texture
