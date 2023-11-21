@@ -2994,7 +2994,6 @@ aObj.SetupRetail_UIFrames = function()
 			this.content:DisableDrawLayer("OVERLAY")
 			this.content.scrollBox.Background:SetAlpha(0)
 			self:skinObject("scrollbar", {obj=this.content.scrollBar, fType=ftype})
-			self:skinObject("scrollbar", {obj=this.content.ScrollBar, fType=ftype})
 			-- TODO: skin elements
 			local function skinElement(_)
 				-- local _, element, elementData, new
@@ -3008,7 +3007,7 @@ aObj.SetupRetail_UIFrames = function()
 				-- if new ~= false then
 				-- end
 			end
-			_G.ScrollUtil.AddAcquiredFrameCallback(this.content.ScrollBox, skinElement, aObj, true)
+			_G.ScrollUtil.AddAcquiredFrameCallback(this.content.scrollBox, skinElement, aObj, true)
 			self:keepFontStrings(this.content.tabContainer)
 			self:skinObject("tabs", {obj=this.tabGroup, tabs=this.Tabs, fType=ftype, lod=self.isTT and true, track=false})
 			if self.isTT then
@@ -3027,7 +3026,7 @@ aObj.SetupRetail_UIFrames = function()
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true})
 			if self.modBtns then
 				self:skinStdButton{obj=this.buttonContainer.leaveButton, fType=ftype}
-				self:skinStdButton{obj=this.buttonContainer.requeueButton, fType=ftype}
+				self:skinStdButton{obj=this.buttonContainer.requeueButton, fType=ftype, schk=true, fsechk=true}
 			end
 
 			self:Unhook(this, "OnShow")
