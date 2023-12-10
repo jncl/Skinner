@@ -1465,6 +1465,13 @@ aObj.SetupRetail_PlayerFrames = function()
 			self:checkShown(this.encounter)
 
 			-- a.k.a. Traveler's Log
+			local function changeHCI(bObj)
+				if bObj:GetElementData():IsCollapsed() then
+					bObj.HeaderCollapseIndicator:SetAtlas("ui-hud-minimap-zoom-in")
+				else
+					bObj.HeaderCollapseIndicator:SetAtlas("ui-hud-minimap-zoom-out")
+				end
+			end
 			self:SecureHookScript(this.MonthlyActivitiesFrame, "OnShow", function(fObj)
 				fObj:DisableDrawLayer("BACKGROUND")
 				fObj:DisableDrawLayer("BORDER")
@@ -1483,9 +1490,18 @@ aObj.SetupRetail_PlayerFrames = function()
 						_, element, _ = ...
 					end
 					element:GetNormalTexture():SetAlpha(0)
-					element.Name:SetTextColor(aObj.BT:GetRGB())
-					aObj:skinObject("frame", {obj=element, fType=ftype, ofs=-3, y2=4, fb=true})
 					element.SetNormalAtlas = _G.nop
+					element.SetNormalTexturem = _G.nop
+					if not aObj.isRtlPTR then
+					element.Name:SetTextColor(aObj.BT:GetRGB())
+					end
+					if element.HeaderCollapseIndicator then
+						changeHCI(element)
+						aObj:secureHook(element, "UpdateButtonState", function(bObj)
+							changeHCI(bObj)
+						end)
+					end
+					aObj:skinObject("frame", {obj=element, fType=ftype, ofs=-3, y2=4, fb=true})
 				end
 				_G.ScrollUtil.AddInitializedFrameCallback(fObj.ScrollBox, skinActivities, aObj, true)
 
