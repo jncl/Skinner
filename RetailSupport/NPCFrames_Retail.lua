@@ -805,22 +805,24 @@ aObj.SetupRetail_NPCFrames = function()
 			self:removeNineSlice(this.ProductsFrame.ProductsScrollBoxContainer.Border)
 			self:skinObject("frame", {obj=this.ProductsFrame.ProductsScrollBoxContainer, fType=ftype, kfs=true, x1=-4})
 			self:skinObject("scrollbar", {obj=this.ProductsFrame.ProductsScrollBoxContainer.ScrollBar, fType=ftype})
-			local function skinElement(...)
-				local _, element, new
+			local function skinProduct(...)
+				local _, element, elementData, new
 				if _G.select("#", ...) == 2 then
-					element, _ = ...
+					element, elementData = ...
 				elseif _G.select("#", ...) == 3 then
-					element, _, new = ...
+					element, elementData, new = ...
 				else
-					_, element, _, new = ...
+					_, element, elementData, new = ...
 				end
 				if new ~= false then
-					if aObj.modBtnBs then
+					if aObj.modBtnBs
+					and elementData.isItemInfo
+					then
 						aObj:addButtonBorder{obj=element.ContentsContainer, relTo=element.ContentsContainer.Icon, fType=ftype, clr="grey"}
 					end
 				end
 			end
-			_G.ScrollUtil.AddAcquiredFrameCallback(this.ProductsFrame.ProductsScrollBoxContainer.ScrollBox, skinElement, aObj, true)
+			_G.ScrollUtil.AddAcquiredFrameCallback(this.ProductsFrame.ProductsScrollBoxContainer.ScrollBox, skinProduct, aObj, true)
 			self:removeNineSlice(this.ProductsFrame.ProductsScrollBoxContainer.PerksProgramHoldFrame.NineSlice)
 			self:removeNineSlice(this.ProductsFrame.PerksProgramProductDetailsContainerFrame.Border)
 			self:skinObject("frame", {obj=this.ProductsFrame.PerksProgramProductDetailsContainerFrame, fType=ftype, kfs=true})
