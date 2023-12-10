@@ -344,6 +344,11 @@ aObj.SetupClassic_NPCFrames = function()
 			and _G.LeaPlusDB["EnhanceTrainers"] == "On"
 			then
 				x2, y2 = -33, 49
+				if self.isClscERA
+				and self.modBtns
+				then
+					self:skinStdButton{obj=_G.LeaPlusGlobalTrainAllButton, sechk=true} -- Train All button
+				end
 			end
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=10, y1=-11, x2=x2, y2=y2})
 			if self.modBtns then
