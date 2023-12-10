@@ -2722,18 +2722,25 @@ aObj.SetupRetail_UIFrames = function()
 
 		if self.prdb.Tooltips.skin then
 			-- skin the tooltips
+			local tTip
 			for _, prefix in _G.pairs{"PetBattlePrimaryUnit", "PetBattlePrimaryAbility", "FloatingBattlePet", "FloatingPetBattleAbility", "BattlePet"} do
-				_G[prefix .. "Tooltip"]:DisableDrawLayer("BACKGROUND")
-				if _G[prefix .. "Tooltip"].Delimiter then
-					_G[prefix .. "Tooltip"].Delimiter:SetTexture(nil)
+				tTip = _G[prefix .. "Tooltip"]
+				tTip:DisableDrawLayer("BACKGROUND")
+				if tTip.Delimiter then
+				   tTip.Delimiter:SetTexture(nil)
 				end
-				if _G[prefix .. "Tooltip"].Delimiter1 then
-					_G[prefix .. "Tooltip"].Delimiter1:SetTexture(nil)
+				if tTip.Delimiter1 then
+				   tTip.Delimiter1:SetTexture(nil)
 				end
-				if _G[prefix .. "Tooltip"].Delimiter2 then
-					_G[prefix .. "Tooltip"].Delimiter2:SetTexture(nil)
+				if tTip.Delimiter2 then
+					tTip.Delimiter2:SetTexture(nil)
 				end
-				self:skinObject("frame", {obj=_G[prefix .. "Tooltip"], fType=ftype})
+				self:skinObject("frame", {obj=tTip, fType=ftype})
+				if self.modBtns
+				and prefix == "Floating"
+				then
+					self:skinCloseButton{obj=tTip.CloseButton, fType=ftype, noSkin=true}
+				end
 			end
 			self:changeTex2SB(_G.PetBattlePrimaryUnitTooltip.ActualHealthBar)
 			self:changeTex2SB(_G.PetBattlePrimaryUnitTooltip.XPBar)
