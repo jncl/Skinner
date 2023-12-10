@@ -20,7 +20,14 @@ local defaults = {
 	}
 }
 
-
+local wF = _G.C_UI.GetWorldFrame and _G.C_UI.GetWorldFrame() or _G.WorldFrame
+local function resetWF()
+	aObj:Debug("Viewport resetWF")
+	wF:ClearAllPoints()
+	wF:SetPoint("TOPLEFT", 0, 0)
+	wF:SetPoint("BOTTOMRIGHT", 0, 0)
+	wF:SetUserPlaced(false)
+end
 function module:OnInitialize()
 
 	-- check to see if any other Viewport Addons are enabled
@@ -29,7 +36,7 @@ function module:OnInitialize()
 	or aObj:isAddonEnabled("CT_Viewport")
 	or aObj:isAddonEnabled("SunnArt")
 	then
-		self:Disable() -- disable ourself
+		self:Disable()
 		return
 	end
 
@@ -44,29 +51,32 @@ function module:OnInitialize()
 		aObj.db.profile.ViewPort = nil
 	end
 
-	if not db.shown then self:Disable() end -- disable ourself
-
-end
-
-function module:OnDisable() -- luacheck: ignore 212 (unused argument)
-
-	_G.CinematicFrame_OnShow = module.CinematicFrame_OnShow and module.CinematicFrame_OnShow
-	_G.CinematicFrame_OnHide = module.CinematicFrame_OnHide and module.CinematicFrame_OnHide
-	_G.WorldFrame:SetUserPlaced(false)
-
-end
-
-function module:OnEnable()
-
-	if db.shown then
-		module.CinematicFrame_OnShow = _G.CinematicFrame_OnShow
-		module.CinematicFrame_OnHide = _G.CinematicFrame_OnHide
-		_G.CinematicFrame_OnShow = _G.nop
-		_G.CinematicFrame_OnHide = _G.nop
-		self:adjustViewPort("init")
-		_G.WorldFrame:SetUserPlaced(true)
+	if not db.shown then
+		self:Disable()
 	end
 
+end
+
+local CinematicFrame_OnShow, CinematicFrame_OnHide
+function module:OnDisable() -- luacheck: ignore 212 (unused argument)
+
+	_G.CinematicFrame_OnShow = CinematicFrame_OnShow
+	_G.CinematicFrame_OnHide = CinematicFrame_OnHide
+
+	aObj:UnregisterEvent("CINEMATIC_STOP")
+	aObj:Unhook("GameMovieFinished")
+
+	resetWF()
+
+end
+
+local uiP
+function module:OnEnable()
+
+	CinematicFrame_OnShow = _G.CinematicFrame_OnShow
+	CinematicFrame_OnHide = _G.CinematicFrame_OnHide
+	_G.CinematicFrame_OnShow = _G.nop
+	_G.CinematicFrame_OnHide = _G.nop
 	-- handle Viewport being reset when certain cutscenes are shown
 	aObj:RegisterEvent("CINEMATIC_STOP", function(_, _)
 		module:adjustViewPort("shown")
@@ -74,6 +84,9 @@ function module:OnEnable()
 	aObj:SecureHook("GameMovieFinished", function()
 		module:adjustViewPort("shown")
 	end)
+
+	uiP = _G.C_UI.GetUIParent and _G.C_UI:GetUIParent() or _G.UIParent
+	self:adjustViewPort("init")
 
 end
 
@@ -83,7 +96,7 @@ local function checkOverlay(scale)
 		if db.overlay then
 			if not vpoF then
 				vpoF = _G.CreateFrame("Frame", nil)
-				vpoF:SetAllPoints(_G.UIParent)
+				vpoF:SetAllPoints(uiP)
 				vpoF:SetFrameLevel(0)
 				vpoF:SetFrameStrata("BACKGROUND")
 				vpoF:EnableMouse(false)
@@ -135,22 +148,24 @@ function module:adjustViewPort(opt)
 
 	-- handle in combat
 	if _G.InCombatLockdown() then
-	    aObj:add2Table(aObj.oocTab, {self.adjustViewPort, {opt}})
+	    aObj:add2Table(aObj.oocTab, {module.adjustViewPort, {opt}})
 	    return
 	end
 
-	local scale = _G.UIParent:GetEffectiveScale()
+	local scale = uiP:GetEffectiveScale()
 
 	if db.shown then
-		_G.WorldFrame:ClearAllPoints()
-		_G.WorldFrame:SetPoint("TOPLEFT", (db.left * scale), -(db.top * scale))
-		_G.WorldFrame:SetPoint("BOTTOMRIGHT", -(db.right * scale), (db.bottom * scale))
-		checkOverlay(scale)
+		-- N.B. add delay before resizing WorldFrame otherwise the TOPLEFT point isn't changed
+		_G.C_Timer.After(0.05, function()
+			wF:ClearAllPoints()
+			wF:SetPoint("TOPLEFT", db.left * scale, -db.top * scale)
+			wF:SetPoint("BOTTOMRIGHT", -db.right * scale, db.bottom * scale)
+			checkOverlay(scale)
+		end)
 	else
-		_G.WorldFrame:ClearAllPoints()
-		_G.WorldFrame:SetPoint("TOPLEFT")
-		_G.WorldFrame:SetPoint("BOTTOMRIGHT")
+		resetWF()
 		checkOverlay(scale)
+		self:Disable()
 	end
 
 end
@@ -203,7 +218,6 @@ function module:GetOptions() -- luacheck: ignore 212 (unused argument)
 			shown = {
 				type = "toggle",
 				order = 1,
-				-- width = "full",
 				name = aObj.L["ViewPort Show"],
 				desc = aObj.L["Toggle the ViewPort"],
 			},
