@@ -1403,7 +1403,7 @@ aObj.blizzFrames[ftype].HelpFrame = function(self)
 
 	self:SecureHookScript(_G.HelpFrame, "OnShow", function(this)
 		if not self.isRtl then
-		this.TitleContainer.TitleBg:SetTexture(nil)
+			this.TitleContainer.TitleBg:SetTexture(nil)
 		end
 		self:removeInset(this.Browser.BrowserInset)
 		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true, ri=true, rns=true, cb=true, x1=2, x2=2, y2=0})
@@ -1548,11 +1548,11 @@ aObj.blizzFrames[ftype].LFDFrame = function(self)
 			self:SecureHook("LFDQueueFrameRandom_UpdateFrame", function()
 				local fName = "LFDQueueFrameRandomScrollFrameChildFrame"
 				for i = 1, _G[fName].numRewardFrames do
-						if _G[fName .. "Item" .. i] then
-							_G[fName .. "Item" .. i .. "NameFrame"]:SetTexture(nil)
-							self:addButtonBorder{obj=_G[fName .. "Item" .. i], libt=true}
-						end
+					if _G[fName .. "Item" .. i] then
+						_G[fName .. "Item" .. i .. "NameFrame"]:SetTexture(nil)
+						self:addButtonBorder{obj=_G[fName .. "Item" .. i], libt=true}
 					end
+				end
 			end)
 		end
 		self:skinObject("scrollbar", {obj=_G.LFDQueueFrame.Specific.ScrollBar, fType=ftype})
@@ -2555,6 +2555,9 @@ if _G.PTR_IssueReporter then
 		local function skinFrame(frame, ofs, border)
 			if frame.Border then
 				aObj:removeBackdrop(frame.Border)
+			end
+			if frame.Background then
+				frame.Background:SetTexture(nil)
 			end
 			aObj:skinObject("frame", {obj=frame, fType=ftype, kfs=not border and true, ofs=ofs or 4, clr="blue"})
 		end
