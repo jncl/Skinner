@@ -1545,25 +1545,18 @@ aObj.blizzFrames[ftype].LFDFrame = function(self)
 		end
 		if self.modBtnBs then
 			self:addButtonBorder{obj=_G.LFDQueueFrameRandomScrollFrameChildFrame.MoneyReward, libt=true}
-		end
-		if self.modBtns
-		or self.modBtnBs
-		then
 			self:SecureHook("LFDQueueFrameRandom_UpdateFrame", function()
 				local fName = "LFDQueueFrameRandomScrollFrameChildFrame"
-				if self.modBtnBs then
-					for i = 1, _G.LFDQueueFrameRandomScrollFrameChildFrame.numRewardFrames do
+				for i = 1, _G[fName].numRewardFrames do
 						if _G[fName .. "Item" .. i] then
 							_G[fName .. "Item" .. i .. "NameFrame"]:SetTexture(nil)
 							self:addButtonBorder{obj=_G[fName .. "Item" .. i], libt=true}
 						end
 					end
-				end
 			end)
 		end
-
 		self:skinObject("scrollbar", {obj=_G.LFDQueueFrame.Specific.ScrollBar, fType=ftype})
-		local function skinElement(...)
+		local function skinDungeonLine(...)
 			local _, element, new
 			if _G.select("#", ...) == 2 then
 				element, _ = ...
@@ -1581,7 +1574,11 @@ aObj.blizzFrames[ftype].LFDFrame = function(self)
 				end
 			end
 		end
-		_G.ScrollUtil.AddAcquiredFrameCallback(_G.LFDQueueFrame.Specific.ScrollBox, skinElement, aObj, true)
+		_G.ScrollUtil.AddAcquiredFrameCallback(_G.LFDQueueFrame.Specific.ScrollBox, skinDungeonLine, aObj, true)
+		if aObj.isRtlPTR then
+			self:skinObject("scrollbar", {obj=_G.LFDQueueFrame.Follower.ScrollBar, fType=ftype})
+			_G.ScrollUtil.AddAcquiredFrameCallback(_G.LFDQueueFrame.Follower.ScrollBox, skinDungeonLine, aObj, true)
+		end
 
 		self:Unhook(this, "OnShow")
 	end)
