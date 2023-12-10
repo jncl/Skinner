@@ -251,11 +251,13 @@ if not aObj.isClscERA then
 			end
 			self:removeInset(this.iconsFrame)
 			self:keepFontStrings(this.iconsFrame)
+			local btn
 			for i = 1, 18 do
-				this.iconsFrame["spellButton" .. i].slotFrameCollected:SetTexture(nil)
-				this.iconsFrame["spellButton" .. i].slotFrameUncollected:SetTexture(nil)
+				btn = this.iconsFrame["spellButton" .. i]
+				btn.slotFrameCollected:SetTexture(nil)
+				btn.slotFrameUncollected:SetTexture(nil)
 				if self.modBtnBs then
-					self:addButtonBorder{obj=this.iconsFrame["spellButton" .. i], sft=true, ofs=0}
+					self:addButtonBorder{obj=btn, reParent={btn.new}, sft=true, ofs=0}
 				end
 			end
 			if self.modBtnBs then
@@ -290,7 +292,7 @@ if not aObj.isClscERA then
 				for _, frame in _G.pairs(fObj.heirloomEntryFrames) do
 					frame.slotFrameCollected:SetTexture(nil)
 					frame.slotFrameUncollected:SetTexture(nil)
-					-- ignore btn.levelBackground as its textures is changed when upgraded
+					-- ignore btn.levelBackground as its texture is changed when upgraded
 					if self.modBtnBs then
 						self:addButtonBorder{obj=frame, sft=true, ofs=0, reParent={frame.new, frame.levelBackground, frame.level}}
 						skinCollectionBtn(frame)
@@ -312,7 +314,7 @@ if not aObj.isClscERA then
 			self:Unhook(this, "OnShow")
 		end)
 
-		if not aObj.isClsc then
+		if not self.isClsc then
 			self:SecureHookScript(_G.WardrobeCollectionFrame, "OnShow", function(this)
 				self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true, upwards=true, offsets={x1=2, y1=-4, x2=-2, y2=-4}})
 				this.InfoButton.Ring:SetTexture(nil)
