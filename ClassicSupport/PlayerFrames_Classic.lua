@@ -411,9 +411,15 @@ aObj.SetupClassic_PlayerFrames = function()
 			for _, btn in _G.pairs{_G.PaperDollItemsFrame:GetChildren()} do
 				-- handle non button children [ECS_StatsFrame]
 				if btn:IsObjectType("Button") then
-					if btn ~= _G.GearManagerToggleButton -- Wrath
-					and btn ~= _G.RuneFrameControlButton -- ERA
+					if btn == _G.GearManagerToggleButton -- Wrath
+					and self.modBtnBs
 					then
+						self:addButtonBorder{obj=btn, fType=ftype, x1=1, x2=-1, clr="grey"}
+					elseif btn == _G.RuneFrameControlButton -- ERA SoD
+					and self.modBtnBs
+					then
+						self:addButtonBorder{obj=btn, fType=ftype, clr="grey"}
+					else
 						btn:DisableDrawLayer("BACKGROUND")
 						if btn.ignoreTexture then
 							if self.modBtnBs then
@@ -432,10 +438,6 @@ aObj.SetupClassic_PlayerFrames = function()
 						end
 						if self.modBtnBs then
 							_G.PaperDollItemSlotButton_Update(btn)
-						end
-					else
-						if self.modBtnBs then
-							self:addButtonBorder{obj=btn, fType=ftype, x1=1, x2=-1, clr="grey"}
 						end
 					end
 				end
@@ -779,6 +781,37 @@ aObj.SetupClassic_PlayerFrames = function()
 			self:Unhook(this, "OnShow")
 		end)
 
+	end
+
+	if aObj.isClscERA then
+		aObj.blizzLoDFrames[ftype].EngravingUI = function(self)
+			if not self.prdb.EngravingUI or self.initialized.EngravingUI then return end
+			self.initialized.EngravingUI = true
+
+			self:SecureHookScript(_G.EngravingFrame, "OnShow", function(this)
+				self:removeInset(this.sideInset)
+				self:skinObject("editbox", {obj=_G.EngravingFrameSearchBox, fType=ftype, si=true})
+				self:skinObject("dropdown", {obj=_G.EngravingFrameFilterDropDown, fType=ftype})
+				self:skinObject("slider", {obj=_G.EngravingFrameScrollFrameScrollBar, fType=ftype})
+				self:skinObject("frame", {obj=this.Border, fType=ftype, kfs=true, rns=true, ofs=1, y2=1})
+				local btn
+				for i = 1, 15 do
+					btn = _G["EngravingFrameHeader" .. i]
+					btn.middle:SetTexture(nil)
+					btn.leftEdge:SetTexture(nil)
+					btn.rightEdge:SetTexture(nil)
+				end
+				for _,btn in _G.ipairs(this.scrollFrame.buttons) do
+					btn:GetNormalTexture():SetTexture(nil)
+					if self.modBtnBs then
+						self:addButtonBorder{obj=btn, fType=ftype, relTo=btn.icon, clr="grey"}
+					end
+				end
+
+				self:Unhook(this, "OnShow")
+			end)
+
+		end
 	end
 
 	aObj.blizzFrames[ftype].FriendsFrame = function(self)
@@ -1162,20 +1195,6 @@ aObj.SetupClassic_PlayerFrames = function()
 			_G[fName .. "Talent" .. i .. "RankBorder"]:SetTexture(nil)
 			aObj:addButtonBorder{obj=btn, ibt=true, reParent={_G[fName .. "Talent" .. i .. "Rank"]}}
 			colourBtn(btn)
-		end
-		local funcName
-		if aObj.isClsc then
-			funcName = "TalentFrame_Update"
-		else
-			funcName = "PlayerTalentFrame_Update"
-		end
-		if not aObj:IsHooked(funcName) then
-			aObj:SecureHook(funcName, function(fObj)
-				local fObjName = fObj and fObj:GetName() or "PlayerTalentFrame"
-				for i = 1, _G.MAX_NUM_TALENTS do
-					colourBtn(_G[fObjName .. "Talent" .. i])
-				end
-			end)
 		end
 	end
 	aObj.blizzLoDFrames[ftype].InspectUI = function(self)
@@ -1620,6 +1639,7 @@ aObj.SetupClassic_PlayerFramesOptions = function(self)
 
 	local optTab = {
 		["Craft UI"]       = true,
+		["Engraving UI"]   = self.isClscERA and {desc = "Runes UI"} or nil,
 		["Glyph UI"]       = self.isClsc and true or nil,
 		["Talent UI"]      = true,
 		["Token UI"]       = self.isClsc and true or nil,
