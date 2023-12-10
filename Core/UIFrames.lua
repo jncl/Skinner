@@ -2230,7 +2230,7 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 		_G.MiniMapTrackingBorder:SetTexture(nil)
 		self:moveObject{obj=_G.MiniMapTrackingFrame, x=-15}
 		if not minBtn then
-			self:skinObject("frame", {obj=_G.MiniMapTrackingFrame, fType=ftype, bd=10, ofs=0})
+			self:skinObject("frame", {obj=_G.MiniMapTrackingFrame, fType=ftype, bd=10, x1=3, y1=-3, x2=4, y2=-2})
 		end
 	else
 		if self.isClsc then
