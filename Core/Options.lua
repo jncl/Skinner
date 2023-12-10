@@ -1285,7 +1285,7 @@ aObj.SetupOptions = function(self)
 		["Character Frames"]  = true,
 		["Collections"]       = not self.isClscERA and {suff = "Journal"} or nil,
 		["Communities"]       = {suff = "UI"} or nil,
-		["Compact Frames"]    = not self.isRtl and true or nil,
+		["Compact Frames"]    = true,
 		["Dress Up Frame"]    = true,
 		["Friends Frame"]     = {desc = "Social Frame"},
 		["Inspect UI"]        = true,

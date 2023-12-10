@@ -1351,6 +1351,11 @@ aObj.blizzFrames[ftype].CompactFrames = function(self)
 	end)
 	self:checkShown(_G.CompactRaidFrameManager)
 
+	-- Don't skin Group & Unit frames as it causes errors
+	if self.isRtl then
+		return
+	end
+
 	local function skinUnit(unit)
 		-- handle in combat
 		if _G.InCombatLockdown() then
@@ -1594,34 +1599,20 @@ aObj.blizzFrames[ftype].ReadyCheck = function(self)
 
 end
 
-if not aObj.isClscERA then
-	aObj.blizzFrames[ftype].RolePollPopup = function(self)
-		if not self.prdb.RolePollPopup or self.initialized.RolePollPopup then return end
-		self.initialized.RolePollPopup = true
+aObj.blizzFrames[ftype].RolePollPopup = function(self)
+	if not self.prdb.RolePollPopup or self.initialized.RolePollPopup then return end
+	self.initialized.RolePollPopup = true
 
-		self:SecureHookScript(_G.RolePollPopup, "OnShow", function(this)
-			self:removeNineSlice(this.Border)
-			-- TODO: Retail - skin role button textures
-			if not self.isRtl then
-				local roleBtn
-				for _, type in _G.pairs{"Healer", "Tank", "DPS"} do
-					roleBtn = _G["RolePollPopupRoleButton" .. type]
-					roleBtn:SetNormalTexture(aObj.tFDIDs.lfgIR)
-					roleBtn.cover:SetTexture(aObj.tFDIDs.lfgIR)
-				end
-			end
-			self:skinObject("frame", {obj=this, fType=ftype, ofs=5})
-			if self.modBtns then
-				self:skinStdButton{obj=this.acceptButton}
-				self:SecureHook("RolePollPopup_UpdateChecked", function(fObj)
-					self:clrBtnBdr(fObj.acceptButton)
-				end)
-			end
+	self:SecureHookScript(_G.RolePollPopup, "OnShow", function(this)
+		self:removeNineSlice(this.Border)
+		self:skinObject("frame", {obj=this, fType=ftype, cb=true, ofs=5})
+		if self.modBtns then
+			self:skinStdButton{obj=this.acceptButton, schk=true}
+		end
 
-			self:Unhook(this, "OnShow")
-		end)
+		self:Unhook(this, "OnShow")
+	end)
 
-	end
 end
 
 aObj.blizzFrames[ftype].TradeFrame = function(self)
