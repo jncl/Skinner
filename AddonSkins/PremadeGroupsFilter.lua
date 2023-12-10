@@ -3,7 +3,7 @@ if not aObj:isAddonEnabled("PremadeGroupsFilter") then return end
 local _G = _G
 -- luacheck: ignore 631 (line is too long)
 
-aObj.addonsToSkin.PremadeGroupsFilter = function(self) -- v 4.0.1
+aObj.addonsToSkin.PremadeGroupsFilter = function(self) -- v 5.2.1
 
 	local function skinCBAct(checkbtn)
 		if not checkbtn then
@@ -40,7 +40,7 @@ aObj.addonsToSkin.PremadeGroupsFilter = function(self) -- v 4.0.1
 			self:skinStdButton{obj=this.RefreshButton}
 		end
 
-		for _, name in _G.pairs{"Arena", "Dungeon", "Expression", "Raid", "RBG"} do
+		for _, name in _G.pairs{"Arena", "Dungeon", "Mini", "Raid", "Role", "RBG"} do
 			local panel = _G["PremadeGroupsFilter" .. name .. "Panel"]
 			if panel.Group then
 				if panel.Group.Difficulty then
@@ -63,7 +63,7 @@ aObj.addonsToSkin.PremadeGroupsFilter = function(self) -- v 4.0.1
 				self:skinObject("editbox", {obj=panel.Sorting.Expression})
 			end
 			self:skinObject("scrollbar", {obj=panel.Advanced.Expression.ScrollBar})
-			self:skinObject("frame", {obj=panel.Advanced.Expression, kfs=true, fb=true, ofs=6})
+			self:skinObject("frame", {obj=panel.Advanced.Expression, kfs=true, fb=true, ofs=6, clr="grey"})
 		end
 
 		self:Unhook(this, "OnShow")
