@@ -92,6 +92,7 @@ aObj.addonsToSkin.Baganator = function(self) -- v 0.46
 			self:skinStdButton{obj=this.SortButton}
 			self:skinStdButton{obj=this.ToggleBagSlotsButton}
 			self:skinStdButton{obj=this.ToggleReagentsBankButton}
+			self:skinStdButton{obj=this.BuyReagentBankButton}
 			self:skinStdButton{obj=this.DepositIntoReagentsBankButton}
 		end
 

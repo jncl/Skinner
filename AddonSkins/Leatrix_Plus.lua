@@ -2,7 +2,7 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("Leatrix_Plus") then return end
 local _G = _G
 
-aObj.addonsToSkin.Leatrix_Plus = function(self) -- v 9.1.20/1.14.05/2.5.64
+aObj.addonsToSkin.Leatrix_Plus = function(self) -- v 10.2.04/1.15.06/3.0.167
 
 	local lpPanels = {
 		-- All versions
@@ -64,7 +64,10 @@ aObj.addonsToSkin.Leatrix_Plus = function(self) -- v 9.1.20/1.14.05/2.5.64
 				and child.tiptext
 				and aObj.modBtns
 				then
-					aObj:skinStdButton{obj=child}
+					-- ignore Sell Junk Exclusions Help button
+					if not child.t then
+						aObj:skinStdButton{obj=child}
+					end
 				elseif child:IsObjectType("Frame")
 				and child:GetNumChildren() == 2
 				and aObj:getChild(child, 1):GetNumRegions() == 5
@@ -134,6 +137,8 @@ aObj.addonsToSkin.Leatrix_Plus = function(self) -- v 9.1.20/1.14.05/2.5.64
 	end
 
 	-- Enhanced Professions (changes in CraftUI & TradeSkillUI)
+
+	-- Enhanced Trainers [handled in ClassTrainerFrame skin code]
 
 	-- Volume slider (Character frame)
 	if _G.LeaPlusDB["ShowVolume"] == "On"
