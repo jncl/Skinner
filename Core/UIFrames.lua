@@ -1829,7 +1829,7 @@ aObj.blizzFrames[ftype].LFGList = function(self)
 	self:SecureHookScript(_G.LFGListApplicationDialog, "OnShow", function(this)
 		self:removeNineSlice(this.Border)
 		self:skinObject("scrollbar", {obj=this.Description.ScrollBar, fType=ftype})
-		self:skinObject("frame", {obj=this.Description, fType=ftype, kfs=true, fb=true, ofs=6})
+		self:skinObject("frame", {obj=this.Description, fType=ftype, kfs=true, fb=true, ofs=6, clr="grey"})
 		self:skinObject("frame", {obj=this, fType=ftype, kfs=true})
 		if self.modBtns then
 			self:skinStdButton{obj=this.SignUpButton, fType=ftype, schk=true}
