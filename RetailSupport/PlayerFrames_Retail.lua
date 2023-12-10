@@ -1493,7 +1493,7 @@ aObj.SetupRetail_PlayerFrames = function()
 					element.SetNormalAtlas = _G.nop
 					element.SetNormalTexturem = _G.nop
 					if not aObj.isRtlPTR then
-					element.Name:SetTextColor(aObj.BT:GetRGB())
+						element.Name:SetTextColor(aObj.BT:GetRGB())
 					end
 					if element.HeaderCollapseIndicator then
 						changeHCI(element)
@@ -2716,7 +2716,7 @@ aObj.SetupRetail_PlayerFrames = function()
 						tab.sf.ignore = true
 					end
 				end
-				self:SecureHook(fObj, "InitializeTabs", function(frame, professionInfo)
+				self:SecureHook(fObj, "InitializeTabs", function(frame, _)
 						skinTabs(frame.tabsPool)
 				end)
 				skinTabs(fObj.tabsPool)
