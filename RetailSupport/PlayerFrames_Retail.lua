@@ -1491,7 +1491,7 @@ aObj.SetupRetail_PlayerFrames = function()
 					end
 					element:GetNormalTexture():SetAlpha(0)
 					element.SetNormalAtlas = _G.nop
-					element.SetNormalTexturem = _G.nop
+					element.SetNormalTexture = _G.nop
 					if not aObj.isRtlPTR then
 						element.Name:SetTextColor(aObj.BT:GetRGB())
 					end
