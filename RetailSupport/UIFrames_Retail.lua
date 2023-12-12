@@ -2735,12 +2735,7 @@ aObj.SetupRetail_UIFrames = function()
 				if tTip.Delimiter2 then
 					tTip.Delimiter2:SetTexture(nil)
 				end
-				self:skinObject("frame", {obj=tTip, fType=ftype})
-				if self.modBtns
-				and prefix == "Floating"
-				then
-					self:skinCloseButton{obj=tTip.CloseButton, fType=ftype, noSkin=true}
-				end
+				self:skinObject("frame", {obj=tTip, fType=ftype, cbns=true})
 			end
 			self:changeTex2SB(_G.PetBattlePrimaryUnitTooltip.ActualHealthBar)
 			self:changeTex2SB(_G.PetBattlePrimaryUnitTooltip.XPBar)
