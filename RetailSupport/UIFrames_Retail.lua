@@ -3525,10 +3525,6 @@ aObj.SetupRetail_UIFrames = function()
 		if not self.prdb.TalkingHead or self.initialized.TalkingHead then return end
 		self.initialized.TalkingHead = true
 
-		-- remove CloseButton animation
-		_G.TalkingHeadFrame.MainFrame.TalkingHeadsInAnim.CloseButton = nil
-		_G.TalkingHeadFrame.MainFrame.Close.CloseButton = nil
-
 		self:SecureHookScript(_G.TalkingHeadFrame, "OnShow", function(this)
 			self:nilTexture(this.BackgroundFrame.TextBackground, true)
 			self:nilTexture(this.PortraitFrame.Portrait, true)
@@ -3536,6 +3532,10 @@ aObj.SetupRetail_UIFrames = function()
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, bd=11, ng=true, ofs=-15, y2=14})
 			if self.modBtns then
 				self:skinCloseButton{obj=this.MainFrame.CloseButton, noSkin=true}
+				-- remove textures here to stop them reappearing when Animated
+				this.MainFrame.CloseButton:SetNormalTexture(nil)
+				this.MainFrame.CloseButton:SetDisabledTexture(nil)
+				this.MainFrame.CloseButton:SetPushedTexture(nil)
 			end
 
 			local function clrFrame(...)
