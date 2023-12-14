@@ -15,6 +15,17 @@ if AceGUI then
 	end, true)
 end
 
+local function cBoxType(obj, type)
+	if type == "radio"
+	or _G.Round(obj.checkbg:GetWidth()) == 16
+	then
+		obj.check:SetParent(obj.frame)
+		obj.frame.sbb:Hide()
+	else
+		obj.check:SetParent(obj.frame.sbb)
+		obj.frame.sbb:Show()
+	end
+end
 local skinAceGUI
 aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 	if self.initialized.Ace3 then return end
@@ -32,7 +43,7 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 		-- and not obj.sknd
 		-- and not (objType:find("TSM") and obj.sknrTSM) -- check objType as TSM overlays existing objects
 		then
-			-- aObj:Debug("Ace3 Skinning: [%s, %s, %s]", obj, objType)
+			-- aObj:Debug("skinAceGUI: [%s, %s]", obj, objType)
 
 			if objType == "Button" then
 				if aObj.modBtns then
@@ -45,16 +56,9 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 					-- force creation of button border so check texture can be reparented
 					aObj.modUIBtns:addButtonBorder{obj=obj.frame, ofs=-2, relTo=obj.checkbg, reParent={obj.check}, clr="grey"}
 					-- hide button border if Radio Button
+					cBoxType(obj, nil)
 					aObj:secureHook(obj, "SetType", function(this, type)
-						if type == "radio"
-						or _G.Round(this.checkbg:GetWidth()) == 16
-						then
-							this.check:SetParent(this.frame)
-							this.frame.sbb:Hide()
-						else
-							this.check:SetParent(this.frame.sbb)
-							this.frame.sbb:Show()
-						end
+						cBoxType(this, type)
 					end)
 					obj.checkbg:SetTexture(nil)
 				end
