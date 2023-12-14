@@ -2,7 +2,7 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("Questie") then return end
 local _G = _G
 
-aObj.addonsToSkin.Questie = function(self) -- v 8.10.6/9.0.4
+aObj.addonsToSkin.Questie = function(self) -- v 9.2.1
 
 	local qMods = _G.QuestieLoader._modules
 
@@ -15,6 +15,9 @@ aObj.addonsToSkin.Questie = function(self) -- v 8.10.6/9.0.4
 		end)
 		self:SecureHook(qMods.QuestieOptions, "OpenConfigWindow", function(this)
 			self:skinStdButton{obj=self:getLastChild(_G.QuestieConfigFrame.frame)}
+			if not _G.QuestieConfigFrame.frame.sf then
+				self:skinAceOptions(_G.QuestieConfigFrame)
+			end
 
 			self:Unhook(this, "Initialize")
 		end)
@@ -48,7 +51,7 @@ aObj.addonsToSkin.Questie = function(self) -- v 8.10.6/9.0.4
 
 	if qMods.QuestieDebugOffer then
 		self:SecureHook(qMods.QuestieDebugOffer, "ShowOffer", function(this, _)
-			self:skinObject("editbox", {obj=_G.QuestieDebugOffer.discordLinkEditBox})
+			self:skinObject("editbox", {obj=_G.QuestieDebugOfferFrame.discordLinkEditBox})
 			self:skinObject("frame", {obj=_G.QuestieDebugOfferFrame, kfs=true})
 			if self.modBtns then
 				self:skinStdButton{obj=_G.QuestieDebugOfferFrame.dismissButton}
