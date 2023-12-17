@@ -1489,9 +1489,7 @@ aObj.SetupRetail_PlayerFrames = function()
 					elseif _G.select("#", ...) == 3 then
 						_, element, _ = ...
 					end
-					element:GetNormalTexture():SetAlpha(0)
-					element.SetNormalAtlas = _G.nop
-					element.SetNormalTexture = _G.nop
+					element:GetNormalTexture():SetTexture(nil)
 					if not aObj.isRtlPTR then
 						element.Name:SetTextColor(aObj.BT:GetRGB())
 					end
