@@ -28,6 +28,7 @@ do
 	module.nearrow = "↗" -- North East Arrow (U+2197)
 	module.searrow = "↘" -- South East Arrow (U+2198)
 	module.swarrow = "↙" -- South West Arrow (U+2199)
+	module.gearcog = "⛯" -- Lighthouse Map Symbol (U+26EF)
 	-- create font to use for Close Buttons
 	module.fontX = _G.CreateFont("fontX")
 	module.fontX:SetFont([[Fonts\FRIZQT__.TTF]], 20, "")
@@ -58,7 +59,7 @@ do
 	module.fontDP:SetTextColor(_G.DISABLED_FONT_COLOR:GetRGB())
 	-- create font to use for Arrow buttons
 	module.fontS = _G.CreateFont("fontS")
-	module.fontS:SetFont([[Interface\AddOns\]] .. aName .. [[\Fonts\NotoSansSymbols-Medium.ttf]], 14, "")
+	module.fontS:SetFont([[Interface\AddOns\]] .. aName .. [[\Fonts\NotoSansSymbols-Medium.ttf]], 16, "")
 	module.fontS:SetTextColor(_G.NORMAL_FONT_COLOR:GetRGB())
 	-- create font for disabled Arrow buttons
 	module.fontDS = _G.CreateFont("fontDS")

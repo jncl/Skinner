@@ -1,0 +1,74 @@
+local _, aObj = ...
+if not aObj:isAddonEnabled("BtWQuests") then return end
+local _G = _G
+
+aObj.addonsToSkin.BtWQuests = function(self) -- v 2.34.1
+
+	local function hookDDList(frame)
+		aObj:RawHook(frame, "GetListFrame", function(this)
+			local list = aObj.hooks[this].GetListFrame(this)
+			aObj:removeBackdrop(list.Backdrop)
+			aObj:removeBackdrop(list.MenuBackdrop)
+			aObj:skinObject("frame", {obj=list, kfs=true, ofs=0})
+			aObj:Unhook(this, "GetListFrame")
+			return list
+		end, true)
+	end
+
+	hookDDList(_G.BtWQuestsOptionsMenu)
+
+	self:SecureHookScript(_G.BtWQuestsFrame, "OnShow", function(this)
+		self:skinObject("editbox", {obj=this.SearchBox, si=true})
+		self:skinObject("frame", {obj=this.SearchPreview, kfs=true, ofs=5})
+		self:skinObject("slider", {obj=this.SearchResults.scrollFrame.scrollBar})
+		self:skinObject("frame", {obj=this.SearchResults, kfs=true, cb=true, x1=-4, y1=1, x2=6, y2=-3})
+		self:skinObject("dropdown", {obj=this.CharacterDropDown, ddtx1=-4, ddty1=4, ddtx2=12, ddty2=4, x2=11})
+		self:moveObject{obj=this.CharacterDropDown.Button, y=-1}
+		hookDDList(this.CharacterDropDown)
+		this.navBar:DisableDrawLayer("BACKGROUND")
+		this.navBar:DisableDrawLayer("BORDER")
+		this.navBar.overlay:DisableDrawLayer("OVERLAY")
+		self:skinNavBarButton(this.navBar.home)
+		hookDDList(this.navBar.dropDown)
+		-- self:skinObject("dropdown", {obj=this.ExpansionDropDown})
+		hookDDList(this.ExpansionDropDown)
+		self:removeInset(this.Inset)
+		local eFrame
+		for i = 1, 3 do
+			eFrame = this.ExpansionList["Expansion" .. i]
+			self:skinObject("frame", {obj=eFrame, kfs=true, fb=true, ofs=0, clr="grey"})
+			if self.modBtns then
+				self:skinStdButton{obj=eFrame.ViewAll, ofs=0}
+				self:skinStdButton{obj=eFrame.Load, ofs=0}
+			end
+			if self.modChkBtns then
+				self:skinCheckButton{obj=eFrame.AutoLoad}
+				eFrame.AutoLoad:SetSize(20, 20)
+			end
+		end
+		self:skinObject("slider", {obj=this.Category.Scroll.ScrollBar})
+		self:skinObject("slider", {obj=this.Chain.Scroll.ScrollBar})
+		self:skinObject("frame", {obj=this, kfs=true, cbns=true})
+		if self.modBtns then
+			self:skinOtherButton{obj=this.NavBack, font=self.fontS, disfont=self.fontDS, text=self.larrow, noSkin=true}
+			self:skinOtherButton{obj=this.NavForward, font=self.fontS, disfont=self.fontDS, text=self.rarrow, noSkin=true}
+			self:skinOtherButton{obj=this.NavHere, font=self.fontS, disfont=self.fontDS, text=self.swarrow, noSkin=true}
+			self:skinOtherButton{obj=this.OptionsButton, font=self.fontS, disfont=self.fontDS, text=self.gearcog, noSkin=true}
+			self:moveObject{obj=this.OptionsButton, y=-3}
+		end
+
+		-- tooltips
+		_G.C_Timer.After(0.1, function()
+			self:add2Table(self.ttList, _G.BtWQuestsFrameChainTooltip)
+			self:add2Table(self.ttList, _G.BtWQuestsFrameTooltip)
+		end)
+
+		self:Unhook(this, "OnShow")
+	end)
+
+	-- tooltip
+	_G.C_Timer.After(0.1, function()
+		self:add2Table(self.ttList, _G.BtWQuestsTooltip)
+	end)
+
+end

@@ -362,6 +362,7 @@ function aObj:OnEnable()
 	self.searrow             = self.modBtns and self.modUIBtns.searrow or _G.nop
 	self.swarrow             = self.modBtns and self.modUIBtns.swarrow or _G.nop
 	self.uparrow             = self.modBtns and self.modUIBtns.uarrow or _G.nop
+	self.gearcog             = self.modBtns and self.modUIBtns.gearcog or _G.nop
 	self.checkTex            = self.modBtns and self.modUIBtns.checkTex or _G.nop
 	self.isButton            = self.modBtns and self.modUIBtns.isButton or _G.nop
 	self.skinAllButtons      = self.modBtns and self.modUIBtns.skinAllButtons or _G.nop

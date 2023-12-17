@@ -33,6 +33,10 @@ aObj.skinTPLs = {
 		y1          = -1,
 		x2          = -16,
 		y2          = 7,
+		ddtx1		= -5,
+		ddty1		= 2,
+		ddtx2		= 5,
+		ddty2		= 2,
 		adjBtnX		= false,
 		initState	= false, -- initial State is "Enabled" i.e. NOT "Disabled"
 		rpc			= false, -- reverse parent child relationship
@@ -455,8 +459,8 @@ local function skinDropDown(tbl)
 			tbl.obj.ddTex:SetPoint("RIGHT", rTex, "LEFT", -15, 0)
 			tbl.obj.ddTex:SetHeight(24)
 		else
-			tbl.obj.ddTex:SetPoint("LEFT", lTex, "RIGHT", -5, 2)
-			tbl.obj.ddTex:SetPoint("RIGHT", rTex, "LEFT", 5, 2)
+			tbl.obj.ddTex:SetPoint("LEFT", lTex, "RIGHT", tbl.ddtx1, tbl.ddty1)
+			tbl.obj.ddTex:SetPoint("RIGHT", rTex, "LEFT", tbl.ddtx2, tbl.ddty2)
 			tbl.obj.ddTex:SetHeight(17)
 		end
 	end

@@ -47,6 +47,7 @@
 <Script file="BonusRollPreview.lua"/>
 <Script file="BossNotes.lua"/>
 <Script file="BtWLoadouts.lua"/>
+<Script file="BtWQuests.lua"/>
 <Script file="BuffomatClassic.lua"/>
 <Script file="Bugger.lua"/>
 <Script file="BugSack.lua"/>
