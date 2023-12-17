@@ -19,6 +19,10 @@ ToDos
 
 ≈		O	Refactor NewSkinFuncs in AddOn skins
 
-#39	√	N	Rematch
+#41	√	I	Viewport issue.
 
-#40	√	I/C	Classic updated to 1.15.0
+¶	√	E	SoD Engraving UI a.k.a. Runes UI
+
+#42 √	I	PremadeGroupsFilter
+
+#43	√	I/W Questie
