@@ -3533,9 +3533,9 @@ aObj.SetupRetail_UIFrames = function()
 			if self.modBtns then
 				self:skinCloseButton{obj=this.MainFrame.CloseButton, noSkin=true}
 				-- remove textures here to stop them reappearing when Animated
-				this.MainFrame.CloseButton:SetNormalTexture(nil)
-				this.MainFrame.CloseButton:SetDisabledTexture(nil)
-				this.MainFrame.CloseButton:SetPushedTexture(nil)
+				this.MainFrame.CloseButton:GetNormalTexture():SetTexture(nil)
+				this.MainFrame.CloseButton:GetDisabledTexture():SetTexture(nil)
+				this.MainFrame.CloseButton:GetPushedTexture():SetTexture(nil)
 			end
 
 			local function clrFrame(...)
