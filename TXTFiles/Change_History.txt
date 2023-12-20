@@ -1,3 +1,34 @@
+beta10.52485.1
+Jncl:
+	Updated ToDo.txt files
+	Updated Change_History.txt
+	Updated version numbers
+	Updated TalkingHeadFrame code
+	Updated MonthlyActivities code
+	Skinned BtWQuests
+	Updated IconSelector code
+	Updated Questie skin, fixes #43
+	Updated Ace3 skin
+	Updated TalkingHeadsFrame code
+	Updated PetBattle* Tooltips code
+	Updated AdventureLog code
+	Updated PetBattle tooltips code
+	Updated PrefessionsFrame code
+	Updated AdventureGuide code
+	Updated TradingPostFrame code
+	Updated PTR_IssueReporter code
+	Updated Classic MinimapButtons code
+	Updated LFG code
+	Updated LFD code
+	Updated HelpFrame code
+	Updated CompactFrames for Classic/Retail
+	Updated Collections UI
+	Updated Classic CharacterFrame skin
+	Updated Classic TRainerUI
+	Updated Baganator, BugSack, Leatrix_Plus & Questie skins
+	Updated PremadeGroupsFilter skin, fixes #42
+	Updated Viewport code, fixes #41
+	
 beta10.52212.1
 Jncl:
 	Updated ToDo.txt files
