@@ -69,26 +69,26 @@ function aObj:checkVersion()
 	--@end-alpha@
 
 	-- handle Beta changes in PTR or Live
-	self.isClscBeta   = self.isClscBeta or self.isClscPTR and self.isPatch
+	-- self.isClscBeta   = self.isClscBeta or self.isClscPTR and self.isPatch
 	-- indicate we're on ClassicPTR if on Classic Beta
-	self.isClscPTR    = self.isClscPTR or self.isClscBeta
+	-- self.isClscPTR    = self.isClscPTR or self.isClscBeta
 	-- indicate we're on Classic if on Classic PTR
-	self.isClsc       = self.isClsc or self.isClscPTR
+	-- self.isClsc       = self.isClsc or self.isClscPTR
 	-- indicate we're on ClassicERA if on Classic ERA PTR
-	self.isClscERA    = self.isClscERA  or self.isClscERAPTR
+	-- self.isClscERA    = self.isClscERA  or self.isClscERAPTR
 	-- handle Beta changes in PTR or Live
-	self.isRtlBeta    = self.isRtlBeta or self.isRtlPTR and self.isPatch
+	-- self.isRtlBeta    = self.isRtlBeta or self.isRtlPTR and self.isPatch
 	-- indicate we're on Retail PTR if on Retail Beta
-	self.isRtlPTR     = self.isRtlPTR or self.isRtlBeta
+	-- self.isRtlPTR     = self.isRtlPTR or self.isRtlBeta
 	-- indicate we're on Retail if on Retail PTR
-	self.isRtl        = self.isRtl or self.isRtlPTR or self.isRtlPTRX
+	-- self.isRtl        = self.isRtl or self.isRtlPTR or self.isRtlPTRX
 	-- handle PTR changes going Live
-	self.isClscPTR    = self.isClscPTR or self.isClsc and self.isPatch
-	self.isClscERAPTR = self.isClscERAPTR or self.isClscERA and self.isPatch
-	self.isRtlPTR     = self.isRtlPTR or self.isRtl and self.isPatch
-	self.isRtlPTRX    = self.isRtlPTRX or self.isRtl and self.isPatch
+	-- self.isClscPTR    = self.isClscPTR or self.isClsc and self.isPatch
+	-- self.isClscERAPTR = self.isClscERAPTR or self.isClscERA and self.isPatch
+	-- self.isRtlPTR     = self.isRtlPTR or self.isRtl and self.isPatch
+	-- self.isRtlPTRX    = self.isRtlPTRX or self.isRtl and self.isPatch
 	--@debug@
-	self:Debug("checkVersion#2: [%s, %s, %s, %s, %s, %s, %s, %s, %s, %s]", self.isClscBeta, self.isClscPTR, self.isClsc, self.isClscERAPTR, self.isClscERA, self.isRtlBeta, self.isRtlPTR, self.isRtlPTRX, self.isRtl, self.isPatch)
+	-- self:Debug("checkVersion#2: [%s, %s, %s, %s, %s, %s, %s, %s, %s, %s]", self.isClscBeta, self.isClscPTR, self.isClsc, self.isClscERAPTR, self.isClscERA, self.isRtlBeta, self.isRtlPTR, self.isRtlPTRX, self.isRtl, self.isPatch)
 	--@end-debug@
 
 end
