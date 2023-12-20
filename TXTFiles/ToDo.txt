@@ -19,10 +19,7 @@ ToDos
 
 ≈		O	Refactor NewSkinFuncs in AddOn skins
 
-#41	√	I	Viewport issue.
+#44	√	I	Mail content for Fulfilled Orders too dark
 
-¶	√	E	SoD Engraving UI a.k.a. Runes UI
-
-#42 √	I	PremadeGroupsFilter
-
-#43	√	I/W Questie
+#45	√	I	LFDQueueFrame
+			- incorrect identification of Retail PTR
