@@ -2019,8 +2019,8 @@ aObj.blizzFrames[ftype].MailFrame = function(self)
 			for _, type in _G.pairs(fields) do
 				_G["OpenMailInvoice" .. type]:SetTextColor(self.BT:GetRGB())
 			end
-			_G.OpenMailSalePriceMoneyFrame.Count:SetTextColor(self.BT:GetRGB())
 			if self.isRtl then
+				_G.OpenMailSalePriceMoneyFrame.Count:SetTextColor(self.BT:GetRGB())
 				_G.ConsortiumMailFrame.OpeningText:SetTextColor(self.BT:GetRGB())
 				_G.ConsortiumMailFrame.CrafterText:SetTextColor(self.BT:GetRGB())
 				_G.ConsortiumMailFrame.CommissionReceived:SetTextColor(self.BT:GetRGB())
