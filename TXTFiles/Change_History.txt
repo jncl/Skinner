@@ -1,3 +1,11 @@
+beta10.52607.1
+Jncl:
+	Updated ToDo.txt files
+	Updated Change_History.txt
+	Updated version numbers
+	Removed checks to handle PTR/Patch changes as they aren't working correctly, fixes #45
+	Updated MailFrame, fixes #44
+	
 beta10.52485.1
 Jncl:
 	Updated ToDo.txt files
