@@ -19,7 +19,9 @@ ToDos
 
 ≈		O	Refactor NewSkinFuncs in AddOn skins
 
-#44	√	I	Mail content for Fulfilled Orders too dark
+#46	√	I	CharacterPanel error
 
-#45	√	I	LFDQueueFrame
-			- incorrect identification of Retail PTR
+	√	I	DejaClassicStats
+	√	I	ExtendedCharacterStats
+
+#47	√	I	Baganator, missing text on skinned frame
