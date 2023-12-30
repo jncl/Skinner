@@ -394,6 +394,7 @@ aObj.SetupClassic_PlayerFrames = function()
 			self:Unhook(this, "OnShow")
 		end)
 
+		local pdfSlots = {"Head", "Neck", "Shoulder", "Back", "Chest", "Shirt", "Tabard", "Wrist", "Hands", "Waist", "Legs", "Feet", "Finger0", "Finger1", "Trinket0", "Trinket1", "MainHand", "SecondaryHand", "Ranged"}
 		self:SecureHookScript(_G.PaperDollFrame, "OnShow", function(this)
 			self:keepFontStrings(this)
 			self:makeMFRotatable(_G.CharacterModelFrame)
@@ -407,52 +408,36 @@ aObj.SetupClassic_PlayerFrames = function()
 				for i = 1, 5 do
 					self:addButtonBorder{obj=_G["MagicResFrame" .. i], es=24, ofs=2, x1=-1, y2=-4, clr="grey"}
 				end
-			end
-			for _, btn in _G.pairs{_G.PaperDollItemsFrame:GetChildren()} do
-				-- handle non button children [ECS_StatsFrame]
-				if btn:IsObjectType("Button") then
-					if btn == _G.GearManagerToggleButton -- Wrath
-					and self.modBtnBs
-					then
-						self:addButtonBorder{obj=btn, fType=ftype, x1=1, x2=-1, clr="grey"}
-					elseif btn == _G.RuneFrameControlButton -- ERA SoD
-					and self.modBtnBs
-					then
-						self:addButtonBorder{obj=btn, fType=ftype, clr="grey"}
-					else
-						btn:DisableDrawLayer("BACKGROUND")
-						if btn.ignoreTexture then
-							if self.modBtnBs then
-								self:addButtonBorder{obj=btn, ibt=true, reParent={btn.ignoreTexture}, clr="grey"}
-							end
+				local btn
+				for _, sName in _G.ipairs(pdfSlots) do
+					btn = _G["Character" .. sName .. "Slot"]
+					self:addButtonBorder{obj=btn, ibt=true, reParent={btn.ignoreTexture}, clr="grey"}
+					_G.PaperDollItemSlotButton_Update(btn)
+				end
+				btn = _G.CharacterAmmoSlot
+				btn:DisableDrawLayer("BACKGROUND")
+				btn.icon = _G.CharacterAmmoSlotIconTexture
+				self:addButtonBorder{obj=btn, reParent={btn.Count, self:getRegion(btn, 4)}, clr="grey"}
+
+				self:SecureHook("PaperDollItemSlotButton_Update", function(bObj)
+					-- ignore buttons with no skin border
+					if bObj.sbb then
+						if not bObj.hasItem then
+							self:clrBtnBdr(bObj, "grey")
+							bObj.icon:SetTexture(nil)
 						else
-							btn:DisableDrawLayer("OVERLAY")
-							btn:GetNormalTexture():SetTexture(nil)
-							btn:GetPushedTexture():SetTexture(nil)
-							if self.modBtnBs then
-								self:addButtonBorder{obj=btn, reParent={self:getRegion(btn, 4)}, clr="grey"}
-							end
-						end
-						if btn == _G.CharacterAmmoSlot then
-							btn.icon = _G.CharacterAmmoSlotIconTexture
-						end
-						if self.modBtnBs then
-							_G.PaperDollItemSlotButton_Update(btn)
+							bObj.sbb:SetBackdropBorderColor(bObj.icon:GetVertexColor())
 						end
 					end
+				end)
+
+				if _G.RuneFrameControlButton then -- ERA SoD
+					self:addButtonBorder{obj=btn, fType=ftype, clr="grey"}
+				end
+				if _G.GearManagerToggleButton then -- Wrath
+					self:addButtonBorder{obj=btn, fType=ftype, x1=1, x2=-1, clr="grey"}
 				end
 			end
-			self:SecureHook("PaperDollItemSlotButton_Update", function(btn)
-				-- ignore buttons with no border
-				if btn.sbb then
-					if not btn.hasItem then
-						self:clrBtnBdr(btn, "grey")
-						btn.icon:SetTexture(nil)
-					else
-						btn.sbb:SetBackdropBorderColor(btn.icon:GetVertexColor())
-					end
-				end
-			end)
 
 			self:Unhook(this, "OnShow")
 		end)
@@ -801,10 +786,10 @@ aObj.SetupClassic_PlayerFrames = function()
 					btn.leftEdge:SetTexture(nil)
 					btn.rightEdge:SetTexture(nil)
 				end
-				for _,btn in _G.ipairs(this.scrollFrame.buttons) do
-					btn:GetNormalTexture():SetTexture(nil)
+				for _, bObj in _G.ipairs(this.scrollFrame.buttons) do
+					bObj:GetNormalTexture():SetTexture(nil)
 					if self.modBtnBs then
-						self:addButtonBorder{obj=btn, fType=ftype, relTo=btn.icon, clr="grey"}
+						self:addButtonBorder{obj=bObj, fType=ftype, relTo=bObj.icon, clr="grey"}
 					end
 				end
 
