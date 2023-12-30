@@ -3,7 +3,7 @@ if not aObj:isAddonEnabled("Baganator") then return end
 local _G = _G
 -- luacheck: ignore 631 (line is too long)
 
-aObj.addonsToSkin.Baganator = function(self) -- v 0.46
+aObj.addonsToSkin.Baganator = function(self) -- v 0.104
 
 	local skinBtns
 	if self.modBtnBs then
@@ -16,9 +16,11 @@ aObj.addonsToSkin.Baganator = function(self) -- v 0.46
 	end
 
 	self:SecureHookScript(_G.Baganator_MainViewFrame, "OnShow", function(this)
-		this:DisableDrawLayer("BACKGROUND")
 		this:DisableDrawLayer("BORDER")
 		this:DisableDrawLayer("OVERLAY")
+		if not self.isRtl then
+			this.TitleText:SetDrawLayer("BACKGROUND")
+		end
 		self:skinObject("editbox", {obj=this.SearchBox, si=true})
 		if this.Tabs then
 			self:skinObject("tabs", {obj=this, tabs=this.Tabs, lod=self.isTT and true})
@@ -120,6 +122,24 @@ aObj.addonsToSkin.Baganator = function(self) -- v 0.46
 					self:skinCheckButton{obj=child.CheckBox}
 				elseif child.Slider then
 					self:skinObject("slider", {obj=child.Slider})
+				elseif child.DropDown
+				and child.DropDown.Popout
+				then
+					self:skinObject("frame", {obj=child.DropDown.Popout.Border, kfs=true, x1=7, y1=0, x2=-12, y2=20, clr="grey"})
+				elseif child:IsObjectType("Button") -- Icons, Icon Corners
+				and child:GetNumChildren() == 4
+				then
+					if self.modBtnBs then
+						self:addButtonBorder{obj=child, clr="grey"}
+					end
+					for _, kid in _G.ipairs{child:GetChildren()} do
+						if kid.DropDown
+						and kid.DropDown.Popout
+						then
+
+							self:skinObject("frame", {obj=kid.DropDown.Popout.Border, kfs=true, x1=7, y1=0, x2=-12, y2=20, clr="grey"})
+						end
+					end
 				end
 			end
 			if frame.ResetFramePositions
