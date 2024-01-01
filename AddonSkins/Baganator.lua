@@ -15,29 +15,34 @@ aObj.addonsToSkin.Baganator = function(self) -- v 0.104
 		end
 	end
 
-	self:SecureHookScript(_G.Baganator_MainViewFrame, "OnShow", function(this)
-		this:DisableDrawLayer("BORDER")
-		this:DisableDrawLayer("OVERLAY")
-		if not self.isRtl then
-			this.TitleText:SetDrawLayer("BACKGROUND")
+	local function skinFrame(frame)
+		frame:DisableDrawLayer("BORDER")
+		frame:DisableDrawLayer("OVERLAY")
+		if not aObj.isRtl then
+			frame.TitleText:SetDrawLayer("BACKGROUND")
 		end
-		self:skinObject("editbox", {obj=this.SearchBox, si=true})
+		aObj:skinObject("editbox", {obj=frame.SearchBox, si=true})
+		aObj:skinObject("frame", {obj=frame, kfs=true, ri=true, cb=true, x2=1})
+		if aObj.modBtns then
+			aObj:skinStdButton{obj=frame.CustomiseButton}
+			aObj:moveObject{obj=frame.CustomiseButton, y=-1}
+			aObj:skinStdButton{obj=frame.SortButton}
+			aObj:skinStdButton{obj=frame.ToggleBagSlotsButton, ofs=-1}
+			aObj:skinStdButton{obj=frame.ToggleReagentsBankButton}
+		end
+	end
+	self:SecureHookScript(_G.Baganator_MainViewFrame, "OnShow", function(this)
+		skinFrame(this)
 		if this.Tabs then
 			self:skinObject("tabs", {obj=this, tabs=this.Tabs, lod=self.isTT and true})
 		end
 		self:SecureHook(this, "RefreshTabs", function(fObj)
 			self:skinObject("tabs", {obj=fObj, tabs=fObj.Tabs, lod=self.isTT and true})
 		end)
-		self:skinObject("frame", {obj=this, kfs=true, ri=true, cb=true, x2=1})
 		if self.modBtns then
-			self:skinStdButton{obj=this.CustomiseButton}
-			self:moveObject{obj=this.CustomiseButton, y=-1}
-			self:skinStdButton{obj=this.SortButton}
+			self:skinStdButton{obj=this.ToggleAllCharacters, ofs=-1}
 			self:skinStdButton{obj=this.ToggleBankButton, ofs=-1}
 			self:skinStdButton{obj=this.ToggleReagentsButton}
-			self:skinStdButton{obj=this.ToggleReagentsBankButton}
-			self:skinStdButton{obj=this.ToggleBagSlotsButton, ofs=-1}
-			self:skinStdButton{obj=this.ToggleAllCharacters, ofs=-1}
 		end
 
 		self:SecureHookScript(this.CharacterSelect, "OnShow", function(fObj)
@@ -83,19 +88,10 @@ aObj.addonsToSkin.Baganator = function(self) -- v 0.104
 	end)
 
 	self:SecureHookScript(_G.Baganator_BankOnlyViewFrame, "OnShow", function(this)
-		this:DisableDrawLayer("BACKGROUND")
-		this:DisableDrawLayer("BORDER")
-		this:DisableDrawLayer("OVERLAY")
-		self:skinObject("editbox", {obj=this.SearchBox, si=true})
-		self:skinObject("frame", {obj=this, kfs=true, ri=true, cb=true, x2=1})
+		skinFrame(this)
 		if self.modBtns then
-			self:skinStdButton{obj=this.CustomiseButton}
-			self:moveObject{obj=this.CustomiseButton, y=-1}
-			self:skinStdButton{obj=this.SortButton}
-			self:skinStdButton{obj=this.ToggleBagSlotsButton}
-			self:skinStdButton{obj=this.ToggleReagentsBankButton}
-			self:skinStdButton{obj=this.BuyReagentBankButton}
 			self:skinStdButton{obj=this.DepositIntoReagentsBankButton}
+			self:skinStdButton{obj=this.BuyReagentBankButton}
 		end
 
 		if self.modBtnBs then
