@@ -2175,8 +2175,10 @@ aObj.SetupRetail_UIFrames = function()
 							btn.SlotBackground:SetTexture(nil)
 							btn.SlotArt:SetTexture(nil)
 							btn.FlyoutBorderShadow:SetTexture(nil)
-							aObj:removeNineSlice(btn.RightDivider)
-							aObj:removeNineSlice(btn.BottomDivider)
+							if not aObj.isRtlPTR then
+								aObj:removeNineSlice(btn.RightDivider)
+								aObj:removeNineSlice(btn.BottomDivider)
+							end
 							btn.NormalTexture:SetTexture(nil)
 						end
 						if aObj.prdb.MainMenuBar.actbtns then
@@ -2198,22 +2200,12 @@ aObj.SetupRetail_UIFrames = function()
 				end
 			end
 			self:SecureHookScript(_G.MainMenuBar, "OnShow", function(this)
-				if not self.isRtl then
-					this.MicroButtonAndBagsBar.MicroBagBar:SetTexture(nil)
-					this.ArtFrame.Background.BackgroundLarge:SetTexture(nil)
-					this.ArtFrame.Background.BackgroundSmall:SetTexture(nil)
-					this.ArtFrame.LeftEndCap:SetTexture(nil)
-					this.ArtFrame.RightEndCap:SetTexture(nil)
-				else
+				if not aObj.isRtlPTR then
 					self:removeNineSlice(this.BorderArt)
 					self:removeNineSlice(this.Background)
-					this.EndCaps:DisableDrawLayer("OVERLAY")
 				end
+				this.EndCaps:DisableDrawLayer("OVERLAY")
 				if self.modBtnBs then
-					if not self.isRtl then
-						self:addButtonBorder{obj=_G.ActionBarUpButton, clr="gold"}
-						self:addButtonBorder{obj=_G.ActionBarDownButton, clr="gold"}
-					end
 					for i = 1, _G.NUM_ACTIONBAR_BUTTONS do
 						skinABBtn(_G["ActionButton" .. i])
 					end

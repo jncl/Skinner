@@ -1244,7 +1244,7 @@ aObj.SetupRetail_PlayerFrames = function()
 			self:skinNavBarButton(this.navBar.home)
 			this.navBar.home.text:SetPoint("RIGHT", -20, 0)
 			self:skinObject("editbox", {obj=this.searchBox, fType=ftype, si=true})
-			self:skinObject("dropdown", {obj=this.LootJournalViewDropDown, fType=ftype, x2=-7})
+			self:skinObject("dropdown", {obj=this.LootJournalViewDropDown, fType=ftype, x2=aObj.isRtlPTR and -16 or -7})
 			self:skinObject("tabs", {obj=this, tabs=this.Tabs, selectedTab=this.selectedTab, fType=ftype, lod=self.isTT and true, offsets={x1=-1, y1=2, x2=1, y2=1}, regions={7, 8, 9, 10, 11}, track=false, func=function(tab) tab:SetFrameLevel(20) end})
 			if self.isTT then
 				self:SecureHook("EJ_ContentTab_Select", function(id)
