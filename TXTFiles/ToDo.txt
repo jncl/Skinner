@@ -19,9 +19,4 @@ ToDos
 
 ≈		O	Refactor NewSkinFuncs in AddOn skins
 
-#46	√	I	CharacterPanel error
-
-	√	I	DejaClassicStats
-	√	I	ExtendedCharacterStats
-
-#47	√	I	Baganator, missing text on skinned frame
+#48	√	I	Baganator, missing Text on Bank Frame
