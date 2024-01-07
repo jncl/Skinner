@@ -1,3 +1,14 @@
+beta10.52649.1
+Jncl:
+	Updated ToDo.txt files
+	Updated Change_History.txt
+	Updated version numbers
+	Updated Baganator skin, fixes #47
+	Updated Classic PaperDollFrame, fixes #46
+	Updated DejaCharacterStats & ExtendedCharacterStats skins
+	Bugfix for non Retail MailFrame code
+	Updated ChatOptions frame code
+	
 beta10.52607.1
 Jncl:
 	Updated ToDo.txt files
