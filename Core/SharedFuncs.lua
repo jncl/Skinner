@@ -12,8 +12,8 @@ local buildInfo = {
 	wow_ptr_x           = {"10.2.0", 52649, "Retail PTRX"}, -- [wowxptr]
 	wow_ptr             = {"10.2.5", 52646, "Retail PTR"},
 	-- Live
-	wow_classic         = {"3.4.3",  52237, "Classic"}, -- a.k.a. Wrath of the Lich King Classic
 	wow_classic_era     = {"1.15.0", 52610, "Classic Era"},
+	wow_classic         = {"3.4.3",  52237, "Classic"}, -- a.k.a. Wrath of the Lich King Classic
 	wow                 = {"10.2.0", 52649, "Retail"},
 	-- Currently playing
 	curr                = {_G.GetBuildInfo()},
@@ -73,15 +73,15 @@ function aObj:checkVersion()
 	-- indicate we're on ClassicPTR if on Classic Beta
 	-- self.isClscPTR    = self.isClscPTR or self.isClscBeta
 	-- indicate we're on Classic if on Classic PTR
-	-- self.isClsc       = self.isClsc or self.isClscPTR
+	self.isClsc       = self.isClsc or self.isClscPTR
 	-- indicate we're on ClassicERA if on Classic ERA PTR
-	-- self.isClscERA    = self.isClscERA  or self.isClscERAPTR
+	self.isClscERA    = self.isClscERA  or self.isClscERAPTR
 	-- handle Beta changes in PTR or Live
 	-- self.isRtlBeta    = self.isRtlBeta or self.isRtlPTR and self.isPatch
 	-- indicate we're on Retail PTR if on Retail Beta
 	-- self.isRtlPTR     = self.isRtlPTR or self.isRtlBeta
 	-- indicate we're on Retail if on Retail PTR
-	-- self.isRtl        = self.isRtl or self.isRtlPTR or self.isRtlPTRX
+	self.isRtl        = self.isRtl or self.isRtlPTR or self.isRtlPTRX
 	-- handle PTR changes going Live
 	-- self.isClscPTR    = self.isClscPTR or self.isClsc and self.isPatch
 	-- self.isClscERAPTR = self.isClscERAPTR or self.isClscERA and self.isPatch
