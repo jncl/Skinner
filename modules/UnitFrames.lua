@@ -203,50 +203,6 @@ function module:skinPlayerF()
 					aObj:moveObject{obj=_G.TotemFrameTotem1, y=lOfs} -- covers level text when active
 					y2Ofs = 9
 				end
-				if aObj.uCls == "MAGE" then
-					_G.MageArcaneChargesFrame:DisableDrawLayer("BACKGROUND")
-				end
-				if aObj.uCls == "MONK" then
-					-- MonkHarmonyBarFrame (Windwalker)
-					aObj:removeRegions(_G.MonkHarmonyBarFrame, {1, 2})
-					for i = 1, #_G.MonkHarmonyBarFrame.LightEnergy do
-						_G.MonkHarmonyBarFrame.LightEnergy[i]:DisableDrawLayer("BACKGROUND")
-					end
-					-- hook this to handle orb 5
-					module:SecureHook(_G.MonkPowerBar, "UpdateMaxPower", function(this)
-						if this.maxLight == 5 then
-							_G.MonkHarmonyBarFrame.LightEnergy[5]:DisableDrawLayer("BACKGROUND")
-							aObj:Unhook(_G.MonkPowerBar, "UpdateMaxPower")
-						end
-					end)
-					-- MonkStaggerBar (Brewmaster)
-					aObj:skinObject("statusbar", {obj=_G.MonkStaggerBar, regions= {2, 3, 4, 5, 6}, fi=0, bg=_G.MonkStaggerBar.DefaultBackground})
-					-- extend frame if Brewmaster specialization
-					if _G.MonkStaggerBar.class == aObj.uCls
-					and _G.MonkStaggerBar.specRestriction == _G.GetSpecialization()
-					then
-						y2Ofs = 3
-					end
-				end
-				if aObj.uCls == "PALADIN" then
-					_G.PaladinPowerBarFrame:DisableDrawLayer("BACKGROUND")
-					_G.PaladinPowerBarFrame.glow:DisableDrawLayer("BACKGROUND")
-					y2Ofs = 6
-				end
-				if aObj.uCls == "PRIEST" then
-					for i = 1, #_G.PriestBarFrame.LargeOrbs do
-						_G.PriestBarFrame.LargeOrbs[i].Highlight:SetTexture(nil)
-					end
-					for i = 1, #_G.PriestBarFrame.SmallOrbs do
-						_G.PriestBarFrame.SmallOrbs[i].Highlight:SetTexture(nil)
-					end
-					-- InsanityBarFrame
-					_G.InsanityBarFrame.InsanityOn.PortraitOverlay:SetTexture(nil)
-					_G.InsanityBarFrame.InsanityOn.TopShadowStay:SetTexture(nil)
-				end
-				if aObj.uCls == "WARLOCK" then
-					_G.WarlockPowerFrame:DisableDrawLayer("BACKGROUND") -- Shard(s) background texture
-				end
 			else
 				frame.PlayerFrameContainer.FrameTexture:SetAlpha(0) -- texture file is changed dependant upon in vehicle or not
 				frame.PlayerFrameContainer.VehicleFrameTexture:SetAlpha(0) -- texture file is changed dependant upon in vehicle or not
