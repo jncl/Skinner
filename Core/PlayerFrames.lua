@@ -495,16 +495,6 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 
 	self.initialized.Communities = true
 
-	local function skinColumnDisplay(frame)
-		frame:DisableDrawLayer("BACKGROUND")
-		frame:DisableDrawLayer("BORDER")
-		frame:DisableDrawLayer("ARTWORK")
-		for header in frame.columnHeaders:EnumerateActive() do
-			header:DisableDrawLayer("BACKGROUND")
-			aObj:skinObject("frame", {obj=header, fType=ftype, x2=-2})
-		end
-	end
-
 	self:SecureHookScript(_G.CommunitiesFrame, "OnShow", function(this)
 		self:keepFontStrings(this.PortraitOverlay)
 		if not self.isRtl then
@@ -593,7 +583,7 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 
 		self:SecureHookScript(this.MemberList, "OnShow", function(fObj)
 			self:SecureHookScript(fObj.ColumnDisplay, "OnShow", function(frame)
-				skinColumnDisplay(frame)
+				self:skinColumnDisplay(frame)
 			end)
 			self:checkShown(fObj.ColumnDisplay)
 			if self.modChkBtns then
@@ -737,7 +727,7 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 				fObj:DisableDrawLayer("BACKGROUND")
 				fObj:DisableDrawLayer("ARTWORK")
 				self:SecureHookScript(fObj.ColumnDisplay, "OnShow", function(frame)
-					skinColumnDisplay(frame)
+					self:skinColumnDisplay(frame)
 				end)
 				self:checkShown(fObj.ColumnDisplay)
 				self:skinObject("scrollbar", {obj=fObj.ScrollBar, fType=ftype})
@@ -1186,7 +1176,7 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 	self:SecureHookScript(_G.CommunitiesTicketManagerDialog, "OnShow", function(this)
 		self:skinObject("dropdown", {obj=this.UsesDropDownMenu, fType=ftype})
 		this.InviteManager.ArtOverlay:DisableDrawLayer("OVERLAY")
-		skinColumnDisplay(this.InviteManager.ColumnDisplay)
+		self:skinColumnDisplay(this.InviteManager.ColumnDisplay)
 		self:skinObject("scrollbar", {obj=this.InviteManager.ScrollBar, fType=ftype})
 		local function skinElement(...)
 			local _, element, new

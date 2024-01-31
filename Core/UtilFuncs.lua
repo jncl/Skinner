@@ -1409,6 +1409,18 @@ function aObj:skinAceDropdown(obj, x2, y2)
 
 end
 
+function aObj:skinColumnDisplay(frame)
+
+	frame:DisableDrawLayer("BACKGROUND")
+	frame:DisableDrawLayer("BORDER")
+	frame:DisableDrawLayer("ARTWORK")
+	for header in frame.columnHeaders:EnumerateActive() do
+		header:DisableDrawLayer("BACKGROUND")
+		self:skinObject("frame", {obj=header, fType=ftype, x2=-2})
+	end
+
+end
+
 function aObj:skinIconSelector(frame)
 
 	self:removeNineSlice(frame.BorderBox)
