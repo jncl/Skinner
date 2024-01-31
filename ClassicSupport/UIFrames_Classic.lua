@@ -116,6 +116,31 @@ aObj.SetupClassic_UIFrames = function()
 
 	end
 
+	aObj.blizzFrames[ftype].ColorPicker = function(self)
+		if not self.prdb.ColorPicker or self.initialized.ColorPicker then return end
+		self.initialized.ColorPicker = true
+
+		self:SecureHookScript(_G.ColorPickerFrame, "OnShow", function(this)
+			self:skinObject("slider", {obj=_G.OpacitySliderFrame, fType=ftype})
+			self:skinObject("frame", {obj=this, fType=ftype, hdr=true, ofs=0})
+			if self.modBtns then
+				self:skinStdButton{obj=_G.ColorPickerOkayButton}
+				self:skinStdButton{obj=_G.ColorPickerCancelButton}
+			end
+
+			self:Unhook(this, "OnShow")
+		end)
+
+		self:SecureHookScript(_G.OpacityFrame, "OnShow", function(this)
+			-- used by BattlefieldMinimap amongst others
+			self:skinObject("slider", {obj=_G.OpacityFrameSlider, fType=ftype})
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ofs=-1})
+
+			self:Unhook(this, "OnShow")
+		end)
+
+	end
+
 	aObj.blizzFrames[ftype].MainMenuBar = function(self)
 		if self.initialized.MainMenuBar then return end
 		self.initialized.MainMenuBar = true

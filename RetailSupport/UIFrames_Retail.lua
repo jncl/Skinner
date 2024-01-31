@@ -851,6 +851,24 @@ aObj.SetupRetail_UIFrames = function()
 
 	end
 
+	aObj.blizzFrames[ftype].ColorPicker = function(self)
+		if not self.prdb.ColorPicker or self.initialized.ColorPicker then return end
+		self.initialized.ColorPicker = true
+
+		self:SecureHookScript(_G.ColorPickerFrame, "OnShow", function(this)
+			self:removeNineSlice(this.Border)
+			self:skinObject("editbox", {obj=this.Content.HexBox, fType=ftype})
+			self:skinObject("frame", {obj=this, fType=ftype, hdr=true, ofs=0})
+			if self.modBtns then
+				self:skinStdButton{obj=this.Footer.CancelButton}
+				self:skinStdButton{obj=this.Footer.OkayButton}
+			end
+
+			self:Unhook(this, "OnShow")
+		end)
+
+	end
+
 	aObj.blizzFrames[ftype].Console = function(self)
 		if not self.prdb.Console or self.initialized.Console then return end
 		self.initialized.Console = true
