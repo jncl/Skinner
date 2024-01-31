@@ -2163,6 +2163,32 @@ aObj.SetupRetail_PlayerFrames = function()
 			end)
 		end
 
+		self:SecureHookScript(_G.GroupLootHistoryFrame, "OnShow", function(this)
+			this.Bg:DisableDrawLayer("BACKGROUND")
+			self:skinObject("dropdown", {obj=this.EncounterDropDown, fType=ftype})
+			self:skinObject("scrollbar", {obj=this.ScrollBar, fType=ftype})
+			local function skinHistory(...)
+				local _, element, elementData
+				if _G.select("#", ...) == 2 then
+					element, elementData = ...
+				else
+					_, element, elementData = ...
+				end
+				-- TODO: skin elements
+			end
+			_G.ScrollUtil.AddInitializedFrameCallback(this.ScrollBox, skinHistory, aObj, true)
+			this.Timer.Background:SetTexture(self.sbTexture)
+			this.Timer.Background:SetVertexColor(self.sbClr:GetRGBA())
+			this.Timer.Fill:SetTexture(self.sbTexture)
+			this.Timer.Border:SetTexture(nil)
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ofs=0, y1=-1})
+			if self.modBtns then
+				self:skinCloseButton{obj=this.ClosePanelButton, fType=ftype}
+			end
+
+			self:Unhook(this, "OnShow")
+		end)
+
 		-- BonusRollFrame
 		self:SecureHookScript(_G.BonusRollFrame, "OnShow", function(this)
 			self:removeRegions(this, {1, 2, 3, 5})

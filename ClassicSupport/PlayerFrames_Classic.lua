@@ -1327,6 +1327,15 @@ aObj.SetupClassic_PlayerFrames = function()
 			end)
 		end
 
+		self:SecureHookScript(_G.LootHistoryFrame, "OnShow", function(this)
+			this.Divider:SetTexture(nil)
+			self:skinObject("dropdown", {obj=_G.LootHistoryDropDown, fType=ftype})
+			self:skinObject("slider", {obj=this.ScrollFrame.ScrollBar, fType=ftype, rpTex="background"})
+			self:skinObject("frame", {obj=this, fType=ftype, rns=true, cb=true})
+
+			self:Unhook(this, "OnShow")
+		end)
+
 		self:SecureHookScript(_G.MasterLooterFrame, "OnShow", function(this)
 			this:DisableDrawLayer("BACKGROUND")
 			this.Item.NameBorderLeft:SetTexture(nil)
