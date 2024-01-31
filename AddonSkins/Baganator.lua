@@ -3,11 +3,12 @@ if not aObj:isAddonEnabled("Baganator") then return end
 local _G = _G
 -- luacheck: ignore 631 (line is too long)
 
-aObj.addonsToSkin.Baganator = function(self) -- v 0.104
+aObj.addonsToSkin.Baganator = function(self) -- v 0.134
 
 	local skinBtns
 	if self.modBtnBs then
 		function skinBtns(frame)
+			aObj:Debug("skinBtns: [%s, %s]", frame)
 			for _, btn in _G.ipairs(frame.buttons) do
 				aObj:addButtonBorder{obj=btn, ibt=true, reParent={btn.ItemLevel, btn.BindingText, btn.UpgradeArrow}}
 				aObj:clrButtonFromBorder(btn)
@@ -27,10 +28,12 @@ aObj.addonsToSkin.Baganator = function(self) -- v 0.104
 			aObj:skinStdButton{obj=frame.CustomiseButton}
 			aObj:moveObject{obj=frame.CustomiseButton, y=-1}
 			aObj:skinStdButton{obj=frame.SortButton}
-			aObj:skinStdButton{obj=frame.ToggleBagSlotsButton, ofs=-1}
+			aObj:skinStdButton{obj=frame.TransferButton}
+			aObj:skinStdButton{obj=frame.ToggleBagSlotsButton, ofs=0}
 			aObj:skinStdButton{obj=frame.ToggleReagentsBankButton}
 		end
 	end
+
 	self:SecureHookScript(_G.Baganator_MainViewFrame, "OnShow", function(this)
 		skinFrame(this)
 		if this.Tabs then
@@ -40,9 +43,8 @@ aObj.addonsToSkin.Baganator = function(self) -- v 0.104
 			self:skinObject("tabs", {obj=fObj, tabs=fObj.Tabs, lod=self.isTT and true})
 		end)
 		if self.modBtns then
-			self:skinStdButton{obj=this.ToggleAllCharacters, ofs=-1}
-			self:skinStdButton{obj=this.ToggleBankButton, ofs=-1}
-			self:skinStdButton{obj=this.ToggleReagentsButton}
+			self:skinStdButton{obj=this.ToggleBankButton, ofs=0}
+			self:skinStdButton{obj=this.ToggleAllCharacters, ofs=0}
 		end
 
 		self:SecureHookScript(this.CharacterSelect, "OnShow", function(fObj)
@@ -61,28 +63,48 @@ aObj.addonsToSkin.Baganator = function(self) -- v 0.104
 			self:SecureHook(this.BagLive, "ShowCharacter", function(fObj, _)
 				skinBtns(fObj)
 			end)
-			self:SecureHook(this.ReagentBagLive, "ShowCharacter", function(fObj, _)
+			self:SecureHook(this.BagCached, "ShowCharacter", function(fObj, _)
 				skinBtns(fObj)
 			end)
 			self:SecureHook(this.BankLive, "ShowCharacter", function(fObj, _)
 				skinBtns(fObj)
 			end)
-			self:SecureHook(this.ReagentBankLive, "ShowCharacter", function(fObj, _)
-				skinBtns(fObj)
-			end)
-			self:SecureHook(this.BagCached, "ShowCharacter", function(fObj, _)
-				skinBtns(fObj)
-			end)
-			self:SecureHook(this.ReagentBagCached, "ShowCharacter", function(fObj, _)
-				skinBtns(fObj)
-			end)
 			self:SecureHook(this.BankCached, "ShowCharacter", function(fObj, _)
+				skinBtns(fObj)
+			end)
+			self:SecureHook(this.ReagentBankLive, "ShowCharacter", function(fObj, _)
 				skinBtns(fObj)
 			end)
 			self:SecureHook(this.ReagentBankCached, "ShowCharacter", function(fObj, _)
 				skinBtns(fObj)
 			end)
 		end
+		-- hook this to skin ReagentBag & ReagentBankBag
+		self:SecureHook(_G.Baganator_MainViewFrame, "UpdateForCharacter", function(fObj, _)
+
+			if fObj.CollapsingBags
+			and fObj.CollapsingBags[1]
+			and fObj.CollapsingBags[1].key == "reagentBag"
+			then
+				skinBtns(fObj.CollapsingBags[1].live)
+				skinBtns(fObj.CollapsingBags[1].cached)
+				if self.modBtns then
+					self:skinStdButton{obj=fObj.CollapsingBags[1].button, ofs=0}
+				end
+			end
+
+			if fObj.CollapsingBankBags
+			and fObj.CollapsingBankBags[1]
+			and fObj.CollapsingBankBags[1].key == "reagentBag"
+			then
+				skinBtns(fObj.CollapsingBankBags[1].live)
+				skinBtns(fObj.CollapsingBankBags[1].cached)
+				if self.modBtns then
+					self:skinStdButton{obj=fObj.CollapsingBankBags[1].button, ofs=0}
+				end
+			end
+
+		end)
 
 		self:Unhook(this, "OnShow")
 	end)
@@ -122,20 +144,22 @@ aObj.addonsToSkin.Baganator = function(self) -- v 0.104
 				and child.DropDown.Popout
 				then
 					self:skinObject("frame", {obj=child.DropDown.Popout.Border, kfs=true, x1=7, y1=0, x2=-12, y2=20, clr="grey"})
-				elseif child:IsObjectType("Button") -- Icons, Icon Corners
-				and child:GetNumChildren() == 4
+				elseif child:IsObjectType("Frame")
+				and child:GetNumChildren() == 6  -- Icons, Icon Corners
 				then
-					if self.modBtnBs then
-						self:addButtonBorder{obj=child, clr="grey"}
-					end
 					for _, kid in _G.ipairs{child:GetChildren()} do
-						if kid.DropDown
-						and kid.DropDown.Popout
-						then
-
-							self:skinObject("frame", {obj=kid.DropDown.Popout.Border, kfs=true, x1=7, y1=0, x2=-12, y2=20, clr="grey"})
+						if kid.Popout then
+							self:skinObject("frame", {obj=kid.Popout.Border, kfs=true, x1=7, y1=0, x2=-12, y2=20, clr="grey"})
+						elseif kid.ScrollBar then
+							self:skinObject("scrollbar", {obj=kid.ScrollBar})
+							self:skinObject("frame", {obj=kid, kfs=true, rns=true, fb=true, clr="grey"})
 						end
 					end
+				elseif child:IsObjectType("Button")
+				and child.Count
+				and self.modBtnBs
+				then
+					self:addButtonBorder{obj=child, clr="grey"}
 				end
 			end
 			if frame.ResetFramePositions

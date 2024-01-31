@@ -2,7 +2,7 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("Bagnon") then return end
 local _G = _G
 
-aObj.addonsToSkin.Bagnon = function(self) -- v 10.1
+aObj.addonsToSkin.Bagnon = function(self) -- v 10.2.17
 	if not self.db.profile.ContainerFrames or self.initialized.Bagnon then return end
 	self.initialized.Bagnon = true
 
@@ -41,12 +41,15 @@ aObj.addonsToSkin.Bagnon = function(self) -- v 10.1
 	end
 	-- skin the bag frames
 	local function skinFrame(frame, _)
-		aObj:skinObject("frame", {obj=frame, kfs=true, cb=true})
-		frame.SetBackdropColor = _G.nop
-		frame.SetBackdropBorderColor = _G.nop
+		if frame.skinned then return end
 		aObj:SecureHookScript(frame, "OnShow", function(this)
+			aObj:skinObject("editbox", {obj=this.SearchFrame})
+			aObj:skinObject("frame", {obj=this.bg, kfs=true, ofs=1})
+			if aObj.modBtns then
+				aObj:skinCloseButton{obj=this.CloseButton}
+			end
 			if aObj.modBtnBs then
-				for _, btn in _G.pairs(this.menuButtons) do
+				for _, btn in _G.pairs(this.MenuButtons) do
 					aObj:addButtonBorder{obj=btn, ofs=3, clr="grey"}
 				end
 				-- Options button
@@ -75,9 +78,11 @@ aObj.addonsToSkin.Bagnon = function(self) -- v 10.1
 				if frame.bagGroup then
 					skinBagGrp(frame)
 				else
-					aObj:SecureHook(frame, "CreateBagGroup", function(fObj)
-						skinBagGrp(fObj)
-						aObj:Unhook(frame, "CreateBagGroup")
+					aObj:SecureHook(frame, "PlaceBagGroup", function(fObj)
+						if fObj.bagGroup then
+							skinBagGrp(fObj)
+							aObj:Unhook(frame, "PlaceBagGroup")
+						end
 					end)
 				end
 				-- bag buttons
@@ -98,14 +103,13 @@ aObj.addonsToSkin.Bagnon = function(self) -- v 10.1
 
 			aObj:Unhook(this, "OnShow")
 		end)
+		frame.skinned = true
 	end
 	-- hook this to skin new frames
 	self:RawHook(_G.Bagnon.Frames, "New", function(this, id)
 		local frame = self.hooks[this].New(this, id)
 		if frame then
-			if not frame.sf then
-				skinFrame(frame, id)
-			end
+			skinFrame(frame, id)
 			return frame
 		else
 			return
@@ -139,6 +143,7 @@ aObj.lodAddons.Bagnon_Config = function(self) -- v 10.0.8
 				end
 			end
 		end
+
 		if not aObj.isRtl then
 			if panel.name:find("Bagnon$")
 			or panel.parent

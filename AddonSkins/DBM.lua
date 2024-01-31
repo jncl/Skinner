@@ -1,12 +1,15 @@
 local _, aObj = ...
 if not aObj:isAddonEnabled("DBM-Core") then return end
 local _G = _G
+-- luacheck: ignore 631 (line is too long)
 
-aObj.addonsToSkin["DBM-Core"] = function(self) -- v 10.0.5/2.5.15
+aObj.addonsToSkin["DBM-Core"] = function(self) -- v 10.2.19/3.4.56
 
 	-- hook this to skin the InfoFrame frame
 	self:SecureHook(_G.DBM.InfoFrame, "Show", function(_, _, event, _)
-		if _G.DBM.Options.DontShowInfoFrame and (event or 0) ~= "test" then return end
+		if _G.DBM.Options.DontShowInfoFrame and not (event or ""):find("test") then
+			return
+		end
 		self:skinObject("frame", {obj=_G.DBMInfoFrame})
 
 		self:Unhook(_G.DBM.InfoFrame, "Show")
@@ -15,7 +18,7 @@ aObj.addonsToSkin["DBM-Core"] = function(self) -- v 10.0.5/2.5.15
 	-- hook this to skin UpdateReminder frame
 	self:SecureHook(_G.DBM, "ShowUpdateReminder", function(_, _)
 		self:skinObject("editbox", {obj=self:getChild(_G.DBMUpdateReminder, 1), y1=-4, y2=4})
-		self:skinObject("frame", {obj=_G.DBMUpdateReminder, ofs=0})
+		self:skinObject("frame", {obj=_G.DBMUpdateReminder, ofs=-2})
 		if self.modBtns then
 			self:skinStdButton{obj=self:getChild(_G.DBMUpdateReminder, 2)}
 		end
@@ -25,12 +28,12 @@ aObj.addonsToSkin["DBM-Core"] = function(self) -- v 10.0.5/2.5.15
 
 	-- hook this to skin DBMNotesEditor frame
 	self:SecureHook(_G.DBM, "ShowNoteEditor", function(this, _)
-		self:skinObject("editbox", {obj=self:getChild(this.Noteframe, 1), y1=-4, y2=4})
-		self:skinObject("frame", {obj=this.Noteframe, ofs=0})
+		self:skinObject("editbox", {obj=self:getChild(_G.DBMNotesEditor, 1), y1=-4, y2=4})
+		self:skinObject("frame", {obj=_G.DBMNotesEditor, ofs=-2})
 		if self.modBtns then
-			self:skinStdButton{obj=self:getChild(this.Noteframe, 2)}
-			self:skinStdButton{obj=self:getChild(this.Noteframe, 3)}
-			self:skinStdButton{obj=self:getChild(this.Noteframe, 4)}
+			self:skinStdButton{obj=self:getChild(_G.DBMNotesEditor, 2)}
+			self:skinStdButton{obj=self:getChild(_G.DBMNotesEditor, 3)}
+			self:skinStdButton{obj=self:getChild(_G.DBMNotesEditor, 4)}
 		end
 
 		self:Unhook(this, "ShowNoteEditor")
@@ -46,19 +49,53 @@ aObj.addonsToSkin["DBM-Core"] = function(self) -- v 10.0.5/2.5.15
 		bar:SetStatusBarTexture(self.sbTexture)
 	end
 
-	-- minimap button
-	if _G.DBMMinimapButton -- from 17687 alpha uses lib DBIcon for minimap button
-	and self.db.profile.MinimapButtons.skin
-	then
-		_G.DBMMinimapButton:GetNormalTexture():SetTexCoord(.3, .7, .3, .7)
-		_G.DBMMinimapButton:GetPushedTexture():SetTexCoord(.3, .7, .3, .7)
-		_G.DBMMinimapButton:SetSize(22, 22)
-		self:addSkinButton{obj=_G.DBMMinimapButton, parent=_G.DBMMinimapButton}
-	end
-
 end
 
-aObj.lodAddons["DBM-GUI"] = function(self) -- v 10.0.5/2.5.15
+aObj.lodAddons["DBM-GUI"] = function(self) -- v 10.2.19/3.4.56
+
+	--	Options Frame
+	self:SecureHookScript(_G.DBM_GUI_OptionsFrame, "OnShow", function(this)
+		local frameWrapper = self:getLastChild(this)
+		self:skinObject("frame", {obj=frameWrapper, kfs=true, fb=true, x2=4})
+		self:skinObject("slider", {obj=_G.DBM_GUI_OptionsFrameList.ScrollBar})
+		self:skinObject("frame", {obj=_G.DBM_GUI_OptionsFrameList, kfs=true, fb=true})
+		self:removeBackdrop(self:getChild(_G.DBM_GUI_OptionsFramePanelContainerFOV.ScrollBar, 3))
+		self:skinObject("slider", {obj=_G.DBM_GUI_OptionsFramePanelContainerFOV.ScrollBar})
+		self:skinObject("frame", {obj=_G.DBM_GUI_OptionsFramePanelContainer, kfs=true, fb=true})
+		if self.isRtl then
+			_G.Spew("", _G.DBM_GUI.tabs)
+			self:skinObject("tabs", {obj=this, prefix=this:GetName(), ignoreSize=true, ignoreHLTex=true, lod=self.isTT and true, upwards=true, offsets = {x1=8, y1=-3, x2=-8, y2=-3}})
+		else
+			self:skinObject("tabs", {obj=this, tabs=this.tabsGroup.buttons, ignoreSize=true, ignoreHLTex=true, lod=self.isTT and true, upwards=true, offsets = {x1=0, y1=-8, x2=0, y2=-3}, regions={4}, track=false})
+			if self.isTT then
+				self:SecureHook(this, "ShowTab", function(_, tabNo)
+					for idx, btn in _G.ipairs(this.tabsGroup.buttons) do
+						if tabNo == idx then
+							self:setActiveTab(btn.sf)
+						else
+							self:setInactiveTab(btn.sf)
+						end
+					end
+				end)
+			end
+		end
+		self:skinObject("frame", {obj=this, kfs=true, hdr=true, y2=0})
+		if self.modBtns then
+			if self.isClsc then
+				self:skinCloseButton{obj=_G.DBM_GUI_OptionsFrameClosePanelButton}
+			end
+			self:skinStdButton{obj=_G.DBM_GUI_OptionsFrameOkay}
+			self:skinStdButton{obj=_G.DBM_GUI_OptionsFrameWebsiteButton}
+			-- skin the Bosses LoadAddOn buttons
+			for _, addon in _G.ipairs(_G.DBM.AddOns) do
+				if addon.panel.frame:GetNumChildren() == 2 then
+					self:skinStdButton{obj=self:getChild(addon.panel.frame, 1)}
+				end
+			end
+		end
+
+		self:Unhook(this, "OnShow")
+	end)
 
 	self:SecureHook(_G.DBM_GUI_OptionsFrame, "UpdateMenuFrame", function(_)
 		for _, btn in _G.pairs(_G.DBM_GUI_OptionsFrameList.buttons) do
@@ -77,41 +114,6 @@ aObj.lodAddons["DBM-GUI"] = function(self) -- v 10.0.5/2.5.15
 			end
 		end
 	end)
-	--	Options Frame
-	self:SecureHookScript(_G.DBM_GUI_OptionsFrame, "OnShow", function(this)
-		self:removeBackdrop(_G.DBM_GUI_OptionsFrameListList)
-		self:skinObject("slider", {obj=_G.DBM_GUI_OptionsFrameListListScrollBar})
-		self:skinObject("frame", {obj=_G.DBM_GUI_OptionsFrameList, kfs=true, fb=true})
-		self:removeBackdrop(self:getChild(_G.DBM_GUI_OptionsFramePanelContainerFOV.ScrollBar, 3))
-		self:skinObject("slider", {obj=_G.DBM_GUI_OptionsFramePanelContainerFOV.ScrollBar})
-		self:skinObject("frame", {obj=_G.DBM_GUI_OptionsFramePanelContainer, kfs=true, fb=true})
-		_G.DBM_GUI_OptionsFrame.numTabs = 2
-		self:skinObject("tabs", {obj=this, prefix=this:GetName(), ignoreSize=true, ignoreHLTex=true, lod=self.isTT and true, upwards=true, regions={7}, offsets={x1=6, y1=-2, x2=14, y2=-4}, track=false})
-		if self.isTT then
-			self:SecureHook(_G.DBM_GUI_OptionsFrame, "ShowTab", function(_, tab)
-				for i = 1, #_G.DBM_GUI.tabs do
-					if i == tab then
-						self:setActiveTab(_G["DBM_GUI_OptionsFrameTab" .. i].sf)
-					else
-						self:setInactiveTab(_G["DBM_GUI_OptionsFrameTab" .. i].sf)
-					end
-				end
-			end)
-		end
-		self:skinObject("frame", {obj=this, kfs=true, hdr=true})
-		if self.modBtns then
-			self:skinStdButton{obj=_G.DBM_GUI_OptionsFrameOkay}
-			self:skinStdButton{obj=_G.DBM_GUI_OptionsFrameWebsiteButton}
-			-- skin the Bosses LoadAddOn buttons
-			for _, addon in _G.ipairs(_G.DBM.AddOns) do
-				if addon.panel.frame:GetNumChildren() == 1 then
-					self:skinStdButton{obj=self:getChild(addon.panel.frame, 1)}
-				end
-			end
-		end
-
-		self:Unhook(this, "OnShow")
-	end)
 
 	self:SecureHookScript(_G.DBM_GUI_DropDown, "OnShow", function(this)
 		self:skinObject("slider", {obj=_G.DBM_GUI_DropDownListScrollBar, x1=6, x2=-6})
@@ -121,53 +123,60 @@ aObj.lodAddons["DBM-GUI"] = function(self) -- v 10.0.5/2.5.15
 	end)
 
 	-- skin dropdown menu
-	local cW, cH
+	local oW, oH, btn
 	local function skinSubPanels(frame)
 		for _, child in _G.ipairs{frame:GetChildren()} do
-			if child.mytype == "area"
-			and not child.sknd
-			then
+			if not child.sknd then
 				child.sknd = true
-				aObj:skinObject("skin", {obj=child, bd=10, ng=true}) -- frame border
-				for _, gChild in _G.ipairs{child:GetChildren()} do
-					if aObj:isDropDown(gChild) then
-						aObj:skinObject("dropdown", {obj=gChild, x2=gChild.width and 34 or nil})
-					elseif gChild:IsObjectType("CheckButton")
-					and aObj.modChkBtns
-					then -- NewSpecialWarning object
-						aObj:skinCheckButton{obj=gChild}
-						for _, ggChild in _G.ipairs{gChild:GetChildren()} do
-							if aObj:isDropDown(ggChild) then
-								aObj:skinObject("dropdown", {obj=ggChild, x1=16, y2=-1})
+				-- "line" ?
+				if child.mytype == "area"
+				or child.mytype == "ability"
+				then
+					aObj:skinObject("skin", {obj=child, bd=10, ng=true}) -- frame border
+					for _, gChild in _G.ipairs{child:GetChildren()} do
+						oW, oH = _G.Round(gChild:GetWidth()), _G.Round(gChild:GetHeight())
+						if gChild.mytype == "checkbutton" then
+							if aObj.modChkBtns then
+								aObj:skinCheckButton{obj=gChild}
 							end
-						end
-					elseif gChild:IsObjectType("Button")
-					and aObj.modBtns
-					then
-						cW, cH = _G.Round(gChild:GetWidth()), _G.Round(gChild:GetHeight())
-						-- aObj:Debug("skinSubPanels Button: [%s, %s]", cW, cH)
-						-- handle expand button (Spell/Skill Cooldowns)
-						if cW == 15
-						and cH == 15
+							for _, ggChild in _G.ipairs{gChild:GetChildren()} do
+								if ggChild.mytype == "dropdown" then
+									aObj:skinObject("dropdown", {obj=ggChild, x2=oW==26 and 34, y2=oH==26 and 0})
+								end
+							end
+						elseif gChild.mytype == "button"
+						and aObj.modBtns
 						then
-							gChild:SetSize(8, 8)
-							aObj:skinExpandButton{obj=gChild}
-							aObj:checkTex(gChild)
-						else
-							-- increase high of short, narrow buttons
-							if cH <= 16 then
-								gChild:SetHeight(20)
+							-- handle expand button (Spell/Skill Cooldowns)
+							if oW == 15
+							and oH == 15
+							then
+								gChild:SetSize(8, 8)
+								aObj:skinExpandButton{obj=gChild}
+								aObj:checkTex(gChild)
+							else
+								-- increase high of short, narrow buttons
+								if oH <= 16 then
+									gChild:SetHeight(20)
+								end
+								if oW == 25 then -- handle Note buttons
+									gChild:SetWidth(28)
+								end
+								aObj:skinStdButton{obj=gChild, ofs=0, x1=4, x2=-4}
 							end
-							if cW == 25 then -- handle Note buttons
-								gChild:SetWidth(28)
-							end
-							aObj:skinStdButton{obj=gChild, ofs=0, x1=4, x2=-4}
+						elseif gChild:IsObjectType("EditBox") then
+							aObj:skinObject("editbox", {obj=gChild})
+						elseif gChild:IsObjectType("Slider") then
+							aObj:removeBackdrop(gChild)
+							aObj:skinObject("slider", {obj=gChild})
+						elseif gChild.mytype == "dropdown" then
+							aObj:skinObject("dropdown", {obj=gChild, x2=gChild.width and 34 or nil})
+						elseif child.mytype == "ability" then
+							btn = aObj:getChild(child, 2)
+							btn.toggle:SetSize(8, 8)
+							aObj:skinExpandButton{obj=btn.toggle}
+							aObj:checkTex(btn.toggle)
 						end
-					elseif gChild:IsObjectType("EditBox") then
-						aObj:skinObject("editbox", {obj=gChild})
-					elseif gChild:IsObjectType("Slider") then
-						aObj:removeBackdrop(gChild)
-						aObj:skinObject("slider", {obj=gChild})
 					end
 				end
 			end
@@ -189,30 +198,23 @@ aObj.lodAddons["DBM-GUI"] = function(self) -- v 10.0.5/2.5.15
 		end
 	end)
 
-	local function skinPopupFrame()
-		local pFrame = aObj:getLastChild(_G.UIParent)
-		aObj:removeBackdrop(aObj:getChild(pFrame, 1))
-		aObj:skinObject("frame", {obj=_G.TestEditBox, kfs=true, fb=true, y2=-4})
-		aObj:skinObject("slider", {obj=_G.TestScrollFrame.ScrollBar})
-		aObj:skinObject("frame", {obj=pFrame, ofs=0})
-		if aObj.modBtns then
-			aObj:skinStdButton{obj=aObj:getPenultimateChild(pFrame)}
-			aObj:skinStdButton{obj=pFrame.import}
-		end
+	local pfSkinned = false
+	for _, method in pairs{"CreateImportProfile", "CreateExportProfile"} do
+		self:SecureHook(_G.DBM_GUI, method, function(_, _)
+			if not pfSkinned then
+				local pFrame = aObj:getLastChild(_G.UIParent)
+				aObj:removeBackdrop(aObj:getChild(pFrame, 1))
+				aObj:skinObject("slider", {obj=aObj:getChild(pFrame, 2).ScrollBar})
+				aObj:skinObject("frame", {obj=pFrame, ofs=0})
+				if aObj.modBtns then
+					aObj:skinStdButton{obj=aObj:getChild(pFrame, 3)} -- Import
+					aObj:skinStdButton{obj=aObj:getChild(pFrame, 4)} -- Close
+				end
+				pfSkinned = true
+			end
+
+			self:Unhook(_G.DBM_GUI, method)
+		end)
 	end
-	self:SecureHook(_G.DBM_GUI, "CreateExportProfile", function(_, _)
-		if skinPopupFrame then
-			skinPopupFrame()
-		end
-
-		self:Unhook(_G.DBM_GUI, "CreateExportProfile")
-	end)
-	self:SecureHook(_G.DBM_GUI, "CreateImportProfile", function(_, _)
-		if skinPopupFrame then
-			skinPopupFrame()
-		end
-
-		self:Unhook(_G.DBM_GUI, "CreateImportProfile")
-	end)
 
 end
