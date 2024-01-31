@@ -2193,10 +2193,6 @@ aObj.SetupRetail_UIFrames = function()
 							btn.SlotBackground:SetTexture(nil)
 							btn.SlotArt:SetTexture(nil)
 							btn.FlyoutBorderShadow:SetTexture(nil)
-							if not aObj.isRtlPTR then
-								aObj:removeNineSlice(btn.RightDivider)
-								aObj:removeNineSlice(btn.BottomDivider)
-							end
 							btn.NormalTexture:SetTexture(nil)
 						end
 						if aObj.prdb.MainMenuBar.actbtns then
@@ -2218,10 +2214,6 @@ aObj.SetupRetail_UIFrames = function()
 				end
 			end
 			self:SecureHookScript(_G.MainMenuBar, "OnShow", function(this)
-				if not aObj.isRtlPTR then
-					self:removeNineSlice(this.BorderArt)
-					self:removeNineSlice(this.Background)
-				end
 				this.EndCaps:DisableDrawLayer("OVERLAY")
 				if self.modBtnBs then
 					for i = 1, _G.NUM_ACTIONBAR_BUTTONS do
