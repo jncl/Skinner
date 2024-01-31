@@ -19,4 +19,13 @@ ToDos
 
 ≈		O	Refactor NewSkinFuncs in AddOn skins
 
-#48	√	I	Baganator, missing Text on Bank Frame
+#49		O	Colour Buttons etc
+
+#50	√	N	Krowi's Achievement Filter
+
+#51	√	N	Bagnon
+
+#52	√	I 	Color Picker Frame
+
+#53	√	N	DBM
+			- loot roll information box not skinned (in ElvUI) ?
