@@ -1489,7 +1489,8 @@ aObj.SetupRetail_PlayerFrames = function()
 					elseif _G.select("#", ...) == 3 then
 						_, element, _ = ...
 					end
-					element:GetNormalTexture():SetTexture(nil)
+					element:GetNormalTexture():SetAlpha(0)
+					element.TextContainer.NameText:SetTextColor(aObj.BT:GetRGB())
 					if element.HeaderCollapseIndicator then
 						changeHCI(element)
 						aObj:secureHook(element, "UpdateButtonState", function(bObj)
