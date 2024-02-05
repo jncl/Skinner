@@ -2096,13 +2096,14 @@ aObj.SetupRetail_PlayerFrames = function()
 				if new ~= false then
 					if element.Item then
 						element.NameFrame:SetTexture(nil)
+						element.BorderFrame:SetAlpha(0)
 						element.HighlightNameFrame:SetTexture(nil)
-						element.BorderFrame:SetTexture(nil)
+						element.PushedNameFrame:SetTexture(nil)
 						if element.QualityStripe then
 							element.QualityStripe:SetTexture(nil)
 						end
 						if aObj.modBtnBs then
-							aObj:addButtonBorder{obj=element.Item, fType=ftype, relTo=element.Item.icon, ibt=true, ofs=3, y2=-2}
+							aObj:addButtonBorder{obj=element.Item, fType=ftype, ibt=true, ofs=3, y2=-2}
 						end
 					end
 				end
