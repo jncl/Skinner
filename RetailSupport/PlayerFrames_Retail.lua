@@ -2171,7 +2171,14 @@ aObj.SetupRetail_PlayerFrames = function()
 				else
 					_, element, elementData = ...
 				end
-				-- TODO: skin elements
+				if elementData.lootListID then
+					element.BackgroundArtFrame.NameFrame:SetTexture(nil)
+					element.BackgroundArtFrame.BorderFrame:SetAlpha(0)
+					aObj:skinObject("frame", {obj=element, fType=ftype, kfs=true})
+					if aObj.modBtnBs then
+						aObj:addButtonBorder{obj=element.Item, fType=ftype, ibt=true}
+					end
+				end
 			end
 			_G.ScrollUtil.AddInitializedFrameCallback(this.ScrollBox, skinHistory, aObj, true)
 			this.Timer.Background:SetTexture(self.sbTexture)

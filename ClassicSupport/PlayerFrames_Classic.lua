@@ -1332,6 +1332,19 @@ aObj.SetupClassic_PlayerFrames = function()
 			self:skinObject("dropdown", {obj=_G.LootHistoryDropDown, fType=ftype})
 			self:skinObject("slider", {obj=this.ScrollFrame.ScrollBar, fType=ftype, rpTex="background"})
 			self:skinObject("frame", {obj=this, fType=ftype, rns=true, cb=true})
+			if self.modBtnBs then
+				local function skinLootItems(frame)
+					for _, btn in _G.pairs(frame.itemFrames) do
+						aObj:removeRegions(btn, {1, 3, 4, 5, 6})
+						aObj:addButtonBorder{obj=btn, fType=ftype, relTo=btn.Icon}
+						aObj:skinExpandButton{obj=btn.ToggleButton, fType=ftype, onSB=true}
+					end
+				end
+				skinLootItems(this)
+				self:SecureHook("LootHistoryFrame_FullUpdate", function(fObj)
+					skinLootItems(fObj)
+				end)
+			end
 
 			self:Unhook(this, "OnShow")
 		end)
