@@ -1,3 +1,13 @@
+beta10.53104.1
+Jncl:
+	Updated ToDo.txt files
+	Updated version numbers
+	Applied PTR changes
+	Moved skinning of ColumnDisplay to sharedFuncs for use in other AddOn skins
+	Skinned Retail/Classic ColorPickerFrame, fixes #52
+	Skinned Retail GroupLootHistory & Classic LootHistory frames
+	Updated Baganator, Bagnon, DBM, Krowi_AchievementFilter & LibSushi skins, fixes #50, #51 & #53
+	
 beta10.52649.1
 Jncl:
 	Updated ToDo.txt files
