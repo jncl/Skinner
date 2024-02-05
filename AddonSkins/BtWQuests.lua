@@ -2,7 +2,7 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("BtWQuests") then return end
 local _G = _G
 
-aObj.addonsToSkin.BtWQuests = function(self) -- v 2.34.1
+aObj.addonsToSkin.BtWQuests = function(self) -- v 2.35.0
 
 	local function hookDDList(frame)
 		aObj:RawHook(frame, "GetListFrame", function(this)
@@ -17,6 +17,22 @@ aObj.addonsToSkin.BtWQuests = function(self) -- v 2.34.1
 
 	hookDDList(_G.BtWQuestsOptionsMenu)
 
+	local function skinCategoryEntries(frame)
+		for btn in frame.categoryItemPool:EnumerateActive() do
+			-- ignore Header(s)
+			if btn.item.item.type ~= "header" then
+				btn:GetNormalTexture():SetAlpha(0)
+				aObj:skinObject("frame", {obj=btn, fb=true, ofs=-2})
+			end
+		end
+	end
+	local function skinChainEntries(frame)
+		for btn in frame.itemPool:EnumerateActive() do
+			btn.Icon:SetTexture(nil)
+			btn.Cover:SetTexture(nil)
+			aObj:skinObject("frame", {obj=btn, ofs=0})
+		end
+	end
 	self:SecureHookScript(_G.BtWQuestsFrame, "OnShow", function(this)
 		self:skinObject("editbox", {obj=this.SearchBox, si=true})
 		self:skinObject("frame", {obj=this.SearchPreview, kfs=true, ofs=5})
@@ -30,7 +46,6 @@ aObj.addonsToSkin.BtWQuests = function(self) -- v 2.34.1
 		this.navBar.overlay:DisableDrawLayer("OVERLAY")
 		self:skinNavBarButton(this.navBar.home)
 		hookDDList(this.navBar.dropDown)
-		-- self:skinObject("dropdown", {obj=this.ExpansionDropDown})
 		hookDDList(this.ExpansionDropDown)
 		self:removeInset(this.Inset)
 		local eFrame
@@ -55,6 +70,13 @@ aObj.addonsToSkin.BtWQuests = function(self) -- v 2.34.1
 			self:skinOtherButton{obj=this.NavHere, font=self.fontS, disfont=self.fontDS, text=self.swarrow, noSkin=true}
 			self:skinOtherButton{obj=this.OptionsButton, font=self.fontS, disfont=self.fontDS, text=self.gearcog, noSkin=true}
 			self:moveObject{obj=this.OptionsButton, y=-3}
+			self:SecureHook(this, "DisplayItemList", function(fObj, ...)
+				skinCategoryEntries(fObj)
+			end)
+			skinCategoryEntries(this)
+			self:SecureHook(this.Chain.Scroll, "SetChain", function(fObj, ...)
+				skinChainEntries(fObj)
+			end)
 		end
 
 		-- tooltips

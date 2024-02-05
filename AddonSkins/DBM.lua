@@ -63,7 +63,6 @@ aObj.lodAddons["DBM-GUI"] = function(self) -- v 10.2.19/3.4.56
 		self:skinObject("slider", {obj=_G.DBM_GUI_OptionsFramePanelContainerFOV.ScrollBar})
 		self:skinObject("frame", {obj=_G.DBM_GUI_OptionsFramePanelContainer, kfs=true, fb=true})
 		if self.isRtl then
-			_G.Spew("", _G.DBM_GUI.tabs)
 			self:skinObject("tabs", {obj=this, prefix=this:GetName(), ignoreSize=true, ignoreHLTex=true, lod=self.isTT and true, upwards=true, offsets = {x1=8, y1=-3, x2=-8, y2=-3}})
 		else
 			self:skinObject("tabs", {obj=this, tabs=this.tabsGroup.buttons, ignoreSize=true, ignoreHLTex=true, lod=self.isTT and true, upwards=true, offsets = {x1=0, y1=-8, x2=0, y2=-3}, regions={4}, track=false})
