@@ -1138,14 +1138,8 @@ aObj.SetupRetail_UIFrames = function()
 			end
 			local toast = frame.currentDisplayingToast
 			--@debug@
-			-- _G.C_Timer.After(1, function()
-			-- 	_G.Spew("skinToast#2", toast)
-			-- end)
-			--@end-debug@
-			--@debug@
-			-- _G.C_Timer.After(1, function()
-			-- 	_G.Spew("skinToast#3", toast.toastInfo)
-			-- end)
+			-- _G.Spew("skinToast#2", toast)
+			-- _G.Spew("skinToast#3", toast.toastInfo)
 			--@end-debug@
 			toast:DisableDrawLayer("BACKGROUND")
 			toast:DisableDrawLayer("BORDER")
