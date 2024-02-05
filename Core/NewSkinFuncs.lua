@@ -340,7 +340,7 @@ local function skinButton(tbl)
 	--@alpha@
 	_G.assert(tbl.obj, "Missing object (skinButton)\n" .. _G.debugstack(2, 3, 2))
 	 if tbl.sec then
-		-- handle AddOn skins using deprecated options
+	-- handle AddOn skins using deprecated options
 		aObj:CustomPrint(1, 0, 0, "Using deprecated options - sec, use sft instead", tbl.obj)
 	end
 	--@end-alpha@
