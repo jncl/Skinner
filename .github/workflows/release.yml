@@ -39,4 +39,4 @@ jobs:
 
       # once cloned, we just run the GitHub Action for the packager project (builds 1 zip file with 3 TOC files)
       - name: Package and release
-        uses: BigWigsMods/packager@main
+        uses: BigWigsMods/packager@v2
