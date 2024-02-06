@@ -242,6 +242,7 @@ function aObj:PLAYER_LEVEL_CHANGED(...) -- luacheck: ignore 212 (unused argument
 		6 : Legion (110)
 		7 : Battle for Azeroth (120)
 		8 : Shadowlands (60), start @ 50
+		9 : Dragonflight (70)
 --]]
 
 	local newPLevel = _G.select(3, ...)
