@@ -29,13 +29,7 @@ local function skinThings(app, appName)
 		skinFrame(frame)
 	end
 
-	-- N.B. GameTooltipIcon object is not available ?, therefore cannot be skinned
-	-- Tooltip Model frame
-	aObj:skinObject("frame", {obj=_G.ATTGameTooltipModel, kfs=true})
-	-- hook to align to GameTooltip
-	aObj:RawHook(_G.ATTGameTooltipModel, "SetPoint", function(this, point, relTo, relPoint, xOfs, yOfs)
-		aObj.hooks[this].SetPoint(this, point, relTo, relPoint, xOfs, -2)
-	end, true)
+	aObj:skinObject("frame", {obj=_G.ATTGameTooltipModel1:GetParent(), kfs=true, ofs=0})
 
 	-- minimap button
 	if _G[appName .. "-Minimap"] then
@@ -43,57 +37,52 @@ local function skinThings(app, appName)
 		_G[appName .. "-Minimap"].texture:SetDrawLayer("OVERLAY") -- make logo appear
 	end
 
-	aObj.RegisterCallback("", "IOFPanel_Before_Skinning", function(this, panel)
-		if panel.name ~= appName then return end
+	aObj.RegisterCallback("AllTheThings", "IOFPanel_Before_Skinning", function(_, panel)
+		if panel.name ~= appName then
+			return
+		end
 		aObj.iofSkinnedPanels[panel] = true
 
-		aObj:removeBackdrop(panel)
-		aObj:skinObject("tabs", {obj=panel, tabs=panel.Tabs, ignoreSize=true, lod=true, offsets={x1=6, y1=0, x2=-6, y2=-4}})
-
-		if appName ~= "ATT-Classic" then
-			aObj:skinObject("slider", {obj=panel.ContainsSlider})
-			if aObj.modChkBtns then
-				aObj:skinCheckButton{obj=panel.SkipAutoRefreshCheckbox}
-			end
-		end
-		aObj:skinObject("slider", {obj=panel.LocationsSlider})
-		aObj:skinObject("slider", {obj=panel.MainListScaleSlider})
-		aObj:skinObject("slider", {obj=panel.MiniListScaleSlider})
-		aObj:skinObject("slider", {obj=panel.PrecisionSlider})
-		aObj:skinObject("slider", {obj=panel.MinimapButtonSizeSlider})
-
-		if aObj.modBtns then
-			if appName == "ATT-Classic" then
-				aObj:skinStdButton{obj=panel.curse}
-				aObj:skinStdButton{obj=panel.discord}
-			else
-				aObj:skinStdButton{obj=panel.community}
-				aObj:skinStdButton{obj=panel.patreon}
-				aObj:skinStdButton{obj=panel.merch}
-			end
-			aObj:skinStdButton{obj=panel.twitch}
-		end
-
-		for i, tabPanel in _G.pairs(panel.Tabs) do
-			for _, obj in _G.ipairs(tabPanel.objects) do
-				if obj:IsObjectType("CheckButton")
+		local function skinObjects(frame)
+			for _, obj in _G.pairs(frame.Objects) do
+				if obj:IsObjectType("EditBox") then
+					aObj:skinObject("editbox", {obj=obj})
+				elseif obj:IsObjectType("Slider") then
+					aObj:skinObject("slider", {obj=obj})
+				elseif obj:IsObjectType("CheckButton")
 				and aObj.modChkBtns
 				then
-					aObj:skinCheckButton{obj=obj, hf=true}
+					aObj:skinCheckButton{obj=obj}
 				elseif obj:IsObjectType("Button")
 				and aObj.modBtns
 				then
-					aObj:skinStdButton{obj=obj}
+					aObj:skinStdButton{obj=obj, schk=true}
+				elseif obj:IsObjectType("Frame") then
+					if obj.ScrollContainer then
+						aObj:skinObject("frame", {obj=obj.ScrollContainer, kfs=true, fb=true, y1=8})
+						if aObj.modChkBtns then
+							aObj:RawHook(obj, "CreateCheckBoxWithCount", function(this, ...)
+								local cBox = aObj.hooks[this].CreateCheckBoxWithCount(this, ...)
+								aObj:skinCheckButton{obj=cBox}
+								return cBox
+							end, true)
+						end
+					end
+					if obj.Objects then
+						skinObjects(obj)
+					end
 				end
 			end
 		end
+		skinObjects(panel)
+		aObj:skinObject("dropdown", {obj=_G.dropdownSoundpack})
 
-		aObj.UnregisterCallback("", "IOFPanel_Before_Skinning")
+		aObj.UnregisterCallback("AllTheThings", "IOFPanel_Before_Skinning")
 	end)
 
 end
 
-aObj.addonsToSkin.AllTheThings = function(_) -- v DF-3.4.10
+aObj.addonsToSkin.AllTheThings = function(_) -- v DF-3.9.4a
 
 	skinThings(_G.AllTheThings, "AllTheThings")
 

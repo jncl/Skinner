@@ -30,7 +30,9 @@ aObj.addonsToSkin.Baganator = function(self) -- v 0.134
 			aObj:skinStdButton{obj=frame.SortButton}
 			aObj:skinStdButton{obj=frame.TransferButton}
 			aObj:skinStdButton{obj=frame.ToggleBagSlotsButton, ofs=0}
-			aObj:skinStdButton{obj=frame.ToggleReagentsBankButton}
+			if frame.ToggleReagentsBankButton then
+				aObj:skinStdButton{obj=frame.ToggleReagentsBankButton}
+			end
 		end
 	end
 
