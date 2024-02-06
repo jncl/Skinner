@@ -1,4 +1,10 @@
-beta10.53162.1
+beta10.53162.3
+Jncl:
+	Updated Change_History.txt
+	Updated ToDo.txt files
+	Updated AllTheThings & Baganator skins, fixes #54
+
+beta10.53162.2
 Jncl:
 	Updated Change_History.txt
 	Updated github packager workflow
