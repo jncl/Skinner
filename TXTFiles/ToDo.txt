@@ -19,5 +19,4 @@ ToDos
 
 ≈		O	Refactor NewSkinFuncs in AddOn skins
 
-#53	√	I	DBM
-	≈		- Loot Rolls still unskinned
+#54	√	N	AllTheThings
