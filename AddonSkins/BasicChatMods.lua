@@ -2,30 +2,53 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("BasicChatMods") then return end
 local _G = _G
 
-aObj.addonsToSkin.BasicChatMods = function(self) -- v 9.0.2
+aObj.addonsToSkin.BasicChatMods = function(self) -- v v10.2.2
 
-	-- handle module not enabled
-	if not _G.bcmDB.BCM_ChatCopy then
-		self:SecureHookScript(_G.BCMCopyFrame, "OnShow", function(this)
-			self:skinObject("slider", {obj=_G.BCMCopyScroll.ScrollBar})
-			self:skinObject("frame", {obj=this})
+	-- find and skin chatcopy frame
+	self.RegisterCallback("BasicChatMods", "UIParent_GetChildren", function(_, child, _)
+		if child.font
+		and child.box
+		and child.scroll
+		then
+			self:skinObject("frame", {obj=child})
 			if self.modBtns then
-				self:skinCloseButton{obj=_G.BCMCloseButton}
+				self:skinCloseButton{obj=child.ClosePanelButton}
 			end
+			self.UnregisterCallback("BasicChatMods", "UIParent_GetChildren")
+		end
+	end)
+	self:scanUIParentsChildren()
 
-			self:Unhook(this, "OnShow")
-		end)
-		-- tooltip
-		_G.C_Timer.After(0.1, function()
-			self:add2Table(self.ttList, _G.BCMtooltip)
-		end)
-	end
+	self:add2Table(self.ttList, _G.BCMtooltip)
 
-	-- Config changes
-	self.iofDD["BCM_ChanName_Drop"] = 124
-	self.iofDD["BCM_EditBoxPosition"] = 94
-	self.iofDD["BCM_FontName"] = 94
-	self.iofDD["BCM_FontFlag"] = 94
-	self.iofDD["BCM_Sticky_Drop"] = 109
+	self.RegisterCallback("BasicChatMods", "IOFPanel_Before_Skinning", function(this, panel)
+		if panel.name ~= "BasicChatMods" then return end
+		self.iofSkinnedPanels[panel] = true
+
+		local function skinObjects(frame)
+			for _, obj in _G.pairs{frame:GetChildren()} do
+				if aObj:isDropDown(obj) then
+					aObj:skinObject("dropdown", {obj=obj, x2=obj.Middle:GetWidth() - 6})
+				elseif obj:IsObjectType("EditBox") then
+					aObj:skinObject("editbox", {obj=obj})
+				elseif obj:IsObjectType("Slider") then
+					aObj:skinObject("slider", {obj=obj})
+				elseif obj:IsObjectType("CheckButton")
+				and aObj.modChkBtns
+				then
+					aObj:skinCheckButton{obj=obj}
+				elseif obj:IsObjectType("Button")
+				and aObj.modBtns
+				then
+					aObj:skinStdButton{obj=obj}
+				elseif obj:IsObjectType("Frame") then
+					skinObjects(obj)
+				end
+			end
+		end
+		skinObjects(panel)
+
+		self.UnregisterCallback("BasicChatMods", "IOFPanel_Before_Skinning")
+	end)
 
 end

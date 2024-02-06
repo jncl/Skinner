@@ -3,9 +3,9 @@ if not aObj:isAddonEnabled("Baganator") then return end
 local _G = _G
 -- luacheck: ignore 631 (line is too long)
 
-aObj.addonsToSkin.Baganator = function(self) -- v 0.134
+aObj.addonsToSkin.Baganator = function(self) -- v 0.143
 
-	local skinBtns
+	local skinBtns = _G.nop
 	if self.modBtnBs then
 		function skinBtns(frame)
 			aObj:Debug("skinBtns: [%s, %s]", frame)
