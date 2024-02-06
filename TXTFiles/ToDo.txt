@@ -19,4 +19,5 @@ ToDos
 
 ≈		O	Refactor NewSkinFuncs in AddOn skins
 
-#54	√	N	AllTheThings
+#55	√	I 	Baganator
+		N	BasicChatMods
