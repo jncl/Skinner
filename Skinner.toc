@@ -1,7 +1,7 @@
 ﻿## Interface: 100205
 ## Interface-Wrath: 30403
 ## Interface-BCC: 20504
-## Interface-Classic: 11500
+## Interface-Classic: 11501
 
 ## Title: Skinner
 ## IconTexture: Interface\Icons\INV_Misc_Pelt_Wolf_01
