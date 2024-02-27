@@ -1488,11 +1488,11 @@ aObj.blizzFrames[ftype].LFDFrame = function(self)
 
 	self:SecureHookScript(_G.LFDReadyCheckPopup, "OnShow", function(this)
 		self:removeNineSlice(this.Border)
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true})
 		if self.modBtns then
 			self:skinStdButton{obj=this.YesButton}
 			self:skinStdButton{obj=this.NoButton}
 		end
-		self:skinObject("frame", {obj=this, fType=ftype, kfs=true})
 
 		self:Unhook(this, "OnShow")
 	end)
