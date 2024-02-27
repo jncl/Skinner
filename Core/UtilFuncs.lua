@@ -362,7 +362,8 @@ function aObj:checkAndRun(funcName, funcType, LoD, quiet)
 			self:CustomPrint(1, 0, 0, funcName, "not skinned, flagged as disabled (c&R)")
 			hadWarning[funcName] = true
 		end
-		tObj[funcName] = nil
+		-- N.B. DON'T nil the function otherwise it won't appear in list of disabled skins
+		tObj[funcName] = _G.nop
 		return
 	end
 
