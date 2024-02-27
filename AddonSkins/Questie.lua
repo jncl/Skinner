@@ -2,7 +2,7 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("Questie") then return end
 local _G = _G
 
-aObj.addonsToSkin.Questie = function(self) -- v 9.2.1
+aObj.addonsToSkin.Questie = function(self) -- v 9.4.4
 
 	local qMods = _G.QuestieLoader._modules
 
@@ -48,6 +48,23 @@ aObj.addonsToSkin.Questie = function(self) -- v 9.2.1
 			self:Unhook(this, "CreateChooseObjectiveTypeFrame")
 		end)
 	end
+
+    if _G.Questie.IsSoD
+	and not _G.Questie.db.profile.tutorialShowRunesDone
+	then
+		self:SecureHook(qMods.Tutorial, "ShowRunes", function(this)
+			self:skinObject("frame", {obj=_G.QuestieTutorialShowRunes})
+			if self.modBtns then
+				for _, child in _G.ipairs_reverse{_G.QuestieTutorialShowRunes:GetChildren()} do
+					if child:IsObjectType("Button") then
+						self:skinStdButton{obj=child}
+					end
+				end
+			end
+
+			self:Unhook(this, "ShowRunes")
+		end)
+    end
 
 	if qMods.QuestieDebugOffer then
 		self:SecureHook(qMods.QuestieDebugOffer, "ShowOffer", function(this, _)

@@ -3,15 +3,40 @@ if not aObj:isAddonEnabled("Baganator") then return end
 local _G = _G
 -- luacheck: ignore 631 (line is too long)
 
-aObj.addonsToSkin.Baganator = function(self) -- v 0.143
+aObj.addonsToSkin.Baganator = function(self) -- v 0.166
 
-	local skinBtns = _G.nop
+	local skinBtns, skinBags, skinBagSlots = _G.nop, _G.nop, _G.nop
 	if self.modBtnBs then
 		function skinBtns(frame)
-			aObj:Debug("skinBtns: [%s, %s]", frame)
 			for _, btn in _G.ipairs(frame.buttons) do
 				aObj:addButtonBorder{obj=btn, ibt=true, reParent={btn.ItemLevel, btn.BindingText, btn.UpgradeArrow}}
 				aObj:clrButtonFromBorder(btn)
+			end
+		end
+		function skinBags(frame)
+			if frame.CollapsingBags then
+				for _, layout in _G.ipairs(frame.CollapsingBags) do
+					skinBtns(layout.live)
+					skinBtns(layout.cached)
+					aObj:skinStdButton{obj=layout.button, ofs=0} -- Show Reagents button
+				end
+			end
+			if frame.CollapsingBankBags then
+				for _, layout in _G.ipairs(frame.CollapsingBankBags) do
+					skinBtns(layout.live)
+					skinBtns(layout.cached)
+					aObj:skinStdButton{obj=layout.button, ofs=0} -- Show Reagents button
+				end
+			end
+		end
+		function skinBagSlots(frame)
+			for _, btn in _G.ipairs(frame.liveBagSlots) do
+				self:addButtonBorder{obj=btn, ibt=true}
+				self:clrButtonFromBorder(btn)
+			end
+			for _, btn in _G.ipairs(frame.cachedBagSlots) do
+				self:addButtonBorder{obj=btn, ibt=true}
+				self:clrButtonFromBorder(btn)
 			end
 		end
 	end
@@ -47,6 +72,7 @@ aObj.addonsToSkin.Baganator = function(self) -- v 0.143
 		if self.modBtns then
 			self:skinStdButton{obj=this.ToggleBankButton, ofs=0}
 			self:skinStdButton{obj=this.ToggleAllCharacters, ofs=0}
+			skinBags(this)
 		end
 
 		self:SecureHookScript(this.CharacterSelect, "OnShow", function(fObj)
@@ -74,39 +100,12 @@ aObj.addonsToSkin.Baganator = function(self) -- v 0.143
 			self:SecureHook(this.BankCached, "ShowCharacter", function(fObj, _)
 				skinBtns(fObj)
 			end)
-			self:SecureHook(this.ReagentBankLive, "ShowCharacter", function(fObj, _)
-				skinBtns(fObj)
-			end)
-			self:SecureHook(this.ReagentBankCached, "ShowCharacter", function(fObj, _)
-				skinBtns(fObj)
+			-- hook this to skin ReagentBag & ReagentBankBag
+			self:SecureHook(this, "UpdateForCharacter", function(fObj, _)
+				skinBags(fObj)
+				skinBagSlots(fObj)
 			end)
 		end
-		-- hook this to skin ReagentBag & ReagentBankBag
-		self:SecureHook(_G.Baganator_MainViewFrame, "UpdateForCharacter", function(fObj, _)
-
-			if fObj.CollapsingBags
-			and fObj.CollapsingBags[1]
-			and fObj.CollapsingBags[1].key == "reagentBag"
-			then
-				skinBtns(fObj.CollapsingBags[1].live)
-				skinBtns(fObj.CollapsingBags[1].cached)
-				if self.modBtns then
-					self:skinStdButton{obj=fObj.CollapsingBags[1].button, ofs=0}
-				end
-			end
-
-			if fObj.CollapsingBankBags
-			and fObj.CollapsingBankBags[1]
-			and fObj.CollapsingBankBags[1].key == "reagentBag"
-			then
-				skinBtns(fObj.CollapsingBankBags[1].live)
-				skinBtns(fObj.CollapsingBankBags[1].cached)
-				if self.modBtns then
-					self:skinStdButton{obj=fObj.CollapsingBankBags[1].button, ofs=0}
-				end
-			end
-
-		end)
 
 		self:Unhook(this, "OnShow")
 	end)
@@ -116,14 +115,16 @@ aObj.addonsToSkin.Baganator = function(self) -- v 0.143
 		if self.modBtns then
 			self:skinStdButton{obj=this.DepositIntoReagentsBankButton}
 			self:skinStdButton{obj=this.BuyReagentBankButton}
+			skinBags(this)
 		end
 
 		if self.modBtnBs then
 			self:SecureHook(this.BankLive, "ShowCharacter", function(fObj, _)
 				skinBtns(fObj)
 			end)
-			self:SecureHook(this.ReagentBankLive, "ShowCharacter", function(fObj, _)
-				skinBtns(fObj)
+			-- hook this to skin ReagentBag & ReagentBankBag
+			self:SecureHook(this, "UpdateForCharacter", function(fObj, _)
+				skinBags(fObj)
 			end)
 		end
 

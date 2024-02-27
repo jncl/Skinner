@@ -3,8 +3,6 @@ local _, aObj = ...
 local _G = _G
 -- luacheck: ignore 631 (line is too long)
 
-aObj.ItemPimper = true -- to stop IP skinning its frame
-
 local objectsToSkin = {}
 local AceGUI = _G.LibStub:GetLibrary("AceGUI-3.0", true)
 if AceGUI then
@@ -13,6 +11,48 @@ if AceGUI then
 		objectsToSkin[obj] = objType
 		return obj
 	end, true)
+end
+
+local skinAceGUI
+
+aObj.iofSkinnedPanels = {}
+aObj.ACD = _G.LibStub:GetLibrary("AceConfigDialog-3.0", true)
+if aObj.ACD then
+	-- hook this to manage IOF panels that have already been skinned by Ace3 skin
+	aObj:RawHook(aObj.ACD, "AddToBlizOptions", function(this, ...)
+		local frame, name = aObj.hooks[this].AddToBlizOptions(this, ...)
+		aObj.iofSkinnedPanels[frame] = true
+		return frame, name
+	end, true)
+	aObj:SecureHookScript(aObj.ACD.popup, "OnShow", function(this)
+		if aObj.isRtl then
+			aObj:keepFontStrings(aObj:getChild(this, 1))
+		end
+		aObj:skinObject("frame", {obj=this, kfs=true, ofs=-4})
+		if aObj.modBtnBs then
+			aObj:skinStdButton{obj=this.accept}
+			aObj:skinStdButton{obj=this.cancel}
+		end
+
+		aObj:Unhook(this, "OnShow")
+	end)
+end
+
+-- expose function to skin already created Ace3 GUI objects
+-- used by ExtendedCharacterStats, JackJack, Questie & TLDRMissions AddOns
+function aObj:skinAceOptions(fObj)
+
+	if fObj.type then
+		skinAceGUI(fObj, fObj.type)
+		if fObj.children then
+			for _, child in _G.ipairs(fObj.children) do
+				self:skinAceOptions(child)
+			end
+		end
+	elseif fObj.obj then
+		self:skinAceOptions(fObj.obj)
+	end
+
 end
 
 local function cBoxType(obj, type)
@@ -26,7 +66,6 @@ local function cBoxType(obj, type)
 		obj.frame.sbb:Show()
 	end
 end
-local skinAceGUI
 aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 	if self.initialized.Ace3 then return end
 	self.initialized.Ace3 = true
@@ -339,12 +378,11 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 
 			-- quantify
 			elseif objType == "QuantifyInlineGroup" then
-				-- aObj:applySkin{obj=obj.border, kfs=true}
 				aObj:skinObject("skin", {obj=obj.border, kfs=true})
 
-			-- AdiBags
+			-- AdiBags/BetterBags
 			elseif objType == "ItemList" then
-				aObj:skinObject("frame", {obj=obj.content:GetParent(), kfs=true})
+				aObj:skinObject("frame", {obj=obj.content:GetParent(), kfs=true, fb=true, ofs=0})
 
 			-- JackJack
 			elseif objType == "JJWindow" then
@@ -456,42 +494,5 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 
 end
 
-aObj.iofSkinnedPanels = {}
-aObj.ACD = _G.LibStub:GetLibrary("AceConfigDialog-3.0", true)
-if aObj.ACD then
-	-- hook this to manage IOF panels that have already been skinned by Ace3 skin
-	aObj:RawHook(aObj.ACD, "AddToBlizOptions", function(this, ...)
-		local frame, name = aObj.hooks[this].AddToBlizOptions(this, ...)
-		aObj.iofSkinnedPanels[frame] = true
-		return frame, name
-	end, true)
-	aObj:SecureHookScript(aObj.ACD.popup, "OnShow", function(this)
-		if aObj.isRtl then
-			aObj:keepFontStrings(aObj:getChild(this, 1))
-		end
-		aObj:skinObject("frame", {obj=this, kfs=true, ofs=-4})
-		if aObj.modBtnBs then
-			aObj:skinStdButton{obj=this.accept}
-			aObj:skinStdButton{obj=this.cancel}
-		end
-
-		aObj:Unhook(this, "OnShow")
-	end)
-end
-
--- expose function to skin already created Ace3 GUI objects
--- used by JackJack & TLDRMissions AddOns (03.10.22)
-function aObj:skinAceOptions(fObj)
-
-	if fObj.type then
-		skinAceGUI(fObj, fObj.type)
-		if fObj.children then
-			for _, child in _G.ipairs(fObj.children) do
-				self:skinAceOptions(child)
-			end
-		end
-	elseif fObj.obj then
-		self:skinAceOptions(fObj.obj)
-	end
-
-end
+-- stop IP skinning its frame
+aObj.ItemPimper = true
