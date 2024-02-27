@@ -51,10 +51,6 @@ function aObj:OnInitialize()
 
 	self:Debug("Debugging is enabled")
 
-	self.callbacks:Fire("AddOn_OnInitialize")
-	-- remove all callbacks for this event
-	self.callbacks.events["AddOn_OnInitialize"] = nil
-
 	-- get Locale
 	self.L = _G.LibStub:GetLibrary("AceLocale-3.0"):GetLocale(aName)
 	-- pointer to LibDBIcon-1.0 library
@@ -280,6 +276,10 @@ function aObj:OnInitialize()
 		self:checkAndRun("SetupClassic_UIFrames", "opt", nil, true)
 	end
 
+	self.callbacks:Fire("AddOn_OnInitialize")
+	-- remove all callbacks for this event
+	self.callbacks.events["AddOn_OnInitialize"] = nil
+
 end
 
 function aObj:OnEnable()
@@ -476,7 +476,7 @@ function aObj:OnEnable()
 
 	if self.isRtl then
 		-- hook this (used by Blizzard_OrderHallTalents, PVPMatchResults, PVPMatchScoreboard & Blizzard_WarboardUI)
-		-- N.B. use SecureHook as RawHook cause taint and INTERFACE_ACTION_BLOCKED message to be displayed
+		-- N.B. use SecureHook as RawHook cause taint and causes INTERFACE_ACTION_BLOCKED message to be displayed
 		self:SecureHook("UIPanelCloseButton_SetBorderAtlas", function(this, _, _, _, _)
 			this.Border:SetTexture(nil)
 		end)
