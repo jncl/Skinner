@@ -3,9 +3,11 @@ if not aObj:isAddonEnabled("Rematch") then return end
 local _G = _G
 -- luacheck: ignore 631 (line is too long)
 
-aObj.addonsToSkin.Rematch = function(self) -- v 5.0.1
+aObj.addonsToSkin.Rematch = function(self) -- v 5.1.3
 
-	local function removeInset(frame)
+	-- TODO: See if buttons and checkbox textures can be replaced
+
+	local function rmInset(frame)
 		frame.TopLeft:SetTexture(nil)
 		frame.TopRight:SetTexture(nil)
 		frame.Top:SetTexture(nil)
@@ -15,10 +17,32 @@ aObj.addonsToSkin.Rematch = function(self) -- v 5.0.1
 		frame.Left:SetTexture(nil)
 		frame.Right:SetTexture(nil)
 	end
+	local function skinPanel(frame)
+		aObj:removeInset(frame.Top)
+		frame.Top.Back:SetTexture(nil)
+		if frame.Top.SearchBox then
+			aObj:skinObject("editbox", {obj=frame.Top.SearchBox, chginset=false, mi=true, mix=20})
+		end
+	    aObj:removeInset(frame.List)
+		aObj:skinObject("scrollbar", {obj=frame.List.ScrollBar})
+	end
 
 	self:SecureHookScript(_G.RematchFrame, "OnShow", function(this)
 	    this:DisableDrawLayer("BACKGROUND")
 	    this:DisableDrawLayer("BORDER")
+		self:skinObject("tabs", {obj=this, tabs={this.PanelTabs:GetChildren()}, ignoreSize=true, lod=true, regions={3}, track=false})
+		if self.isTT then
+			self:SecureHook(_G.Rematch.panelTabs, "Update", function(fObj)
+				for _, tab in _G.ipairs{fObj:GetChildren()} do
+					if tab.isSelected then
+						self:setActiveTab(tab.sf)
+					else
+						self:setInactiveTab(tab.sf)
+					end
+				end
+			end)
+		end
+		self:skinObject("frame", {obj=this, kfs=true, x1=-4, y1=2, x2=1, y2=-2})
 
 	    self:keepFontStrings(this.TitleBar)
 		if self.modBtns then
@@ -40,154 +64,6 @@ aObj.addonsToSkin.Rematch = function(self) -- v 5.0.1
 			end
 		end
 
-		self:removeInset(this.PetsPanel.Top)
-		this.PetsPanel.Top.Back:SetTexture(nil)
-		self:skinObject("editbox", {obj=this.PetsPanel.Top.SearchBox, chginset=false, mi=true, mix=20})
-		if self.modBtns then
-			self:skinStdButton{obj=this.PetsPanel.Top.FilterButton, clr="grey"}
-		end
-		if self.modBtnBs then
-			self:addButtonBorder{obj=this.PetsPanel.Top.ToggleButton, clr="grey", ofs=1}
-		end
-		-- .TypeBar appears when ToggleButton clicked
-		self:skinObject("tabs", {obj=this.PetsPanel.Top.TypeBar, tabs=this.PetsPanel.Top.TypeBar.Tabs, ignoreSize=true, lod=true, regions={3}, offsets={x1=4, y1=0, x2=-2, y2=-2}, track=false, func=aObj.isTT and function(tab)
-			self:SecureHookScript(tab, "OnClick", function(tObj)
-				for _, btn in _G.pairs(tObj:GetParent().Tabs) do
-					self:setInactiveTab(btn.sf)
-				end
-				if tObj.isSelected then
-					self:setActiveTab(tObj.sf)
-				end
-			end)
-		end})
-		this.PetsPanel.Top.TypeBar.TabbedBorder:SetTexture(nil)
-		self:skinObject("frame", {obj=this.PetsPanel.Top.TypeBar, y1=-19, fb=true})
-	    self:removeInset(this.PetsPanel.ResultsBar)
-	    self:removeInset(this.PetsPanel.List)
-		self:skinObject("scrollbar", {obj=this.PetsPanel.List.ScrollBar})
-		local function skinElement(...)
-			local _, element
-			if _G.select("#", ...) == 2 then
-				element, _ = ...
-			else
-				_, element, _ = ...
-			end
-			element.Back:SetTexture(nil)
-		end
-		_G.ScrollUtil.AddInitializedFrameCallback(this.PetsPanel.List.ScrollBox, skinElement, aObj, true)
-
-		self:removeInset(this.LoadedTargetPanel)
-		this.LoadedTargetPanel.InsetBack:SetTexture(nil)
-		if self.modBtns then
-			self:removeInset(this.LoadedTeamPanel.TeamButton)
-			self:skinStdButton{obj=this.LoadedTeamPanel.TeamButton}
-		end
-
-		for _,loadout in pairs(this.LoadoutPanel.Loadouts) do
-			removeInset(loadout)
-			loadout.Back:SetTexture(nil)
-			loadout.Pet.LevelBubble:SetTexture(nil)
-			loadout.XpBarBack:SetTexture(nil)
-			loadout.XpBar:SetTexture(self.sbTexture)
-			loadout.XpBarBorder:SetTexture(nil)
-			loadout.HpBarBack:SetTexture(nil)
-			loadout.HpBar:SetTexture(self.sbTexture)
-			loadout.HpBarBorder:SetTexture(nil)
-			-- loadout.
-			self:skinObject("frame", {obj=loadout, fb=true})
-		end
-
-		for _,loadout in pairs(this.MiniLoadoutPanel.Loadouts) do
-			removeInset(loadout)
-			loadout.Back:SetTexture(nil)
-			loadout.LevelBubble:SetTexture(nil)
-			loadout.TopStatusBarBack:SetTexture(nil)
-			loadout.BottomStatusBarBack:SetTexture(nil)
-			loadout.TopStatusBar:SetTexture(self.sbTexture)
-			loadout.BottomStatusBar:SetTexture(self.sbTexture)
-			loadout.TopStatusBarBorder:SetTexture(nil)
-			loadout.BottomStatusBarBorder:SetTexture(nil)
-			-- loadout.
-			self:skinObject("frame", {obj=loadout, fb=true})
-		end
-
-		self:removeInset(this.TeamsPanel.Top)
-		this.TeamsPanel.Top.Back:SetTexture(nil)
-		self:skinObject("editbox", {obj=this.TeamsPanel.Top.SearchBox, chginset=false, mi=true, mix=20})
-		if self.modBtns then
-			self:skinStdButton{obj=this.TeamsPanel.Top.TeamsButton, clr="grey"}
-		end
-	    self:removeInset(this.TeamsPanel.List)
-		self:skinObject("scrollbar", {obj=this.TeamsPanel.List.ScrollBar})
-		-- local function skinTeam(...)
-		-- 	local _, element, elementData
-		-- 	if _G.select("#", ...) == 2 then
-		-- 		element, elementData = ...
-		-- 	else
-		-- 		_, element, elementData = ...
-		-- 	end
-		-- 	-- element.Back:SetTexture(nil)
-		-- end
-		-- _G.ScrollUtil.AddInitializedFrameCallback(this.TeamsPanel.List.ScrollBox, skinTeam, aObj, true)
-
-		self:removeInset(this.TargetsPanel.Top)
-		this.TargetsPanel.Top.Back:SetTexture(nil)
-		self:skinObject("editbox", {obj=this.TargetsPanel.Top.SearchBox, chginset=false, mi=true, mix=20})
-	    self:removeInset(this.TargetsPanel.List)
-		self:skinObject("scrollbar", {obj=this.TargetsPanel.List.ScrollBar})
-		-- local function skinTarget(...)
-		-- 	local _, element, elementData
-		-- 	if _G.select("#", ...) == 2 then
-		-- 		element, elementData = ...
-		-- 	else
-		-- 		_, element, elementData = ...
-		-- 	end
-		-- 	-- element.Back:SetTexture(nil)
-		-- end
-		-- _G.ScrollUtil.AddInitializedFrameCallback(this.TargetsPanel.List.ScrollBox, skinTarget, aObj, true)
-
-		self:removeInset(this.QueuePanel.PreferencesFrame)
-		if self.modBtnBs then
-			self:addButtonBorder{obj=this.QueuePanel.PreferencesFrame.PreferencesButton, clr="grey", ofs=1}
-		end
-		self:removeInset(this.QueuePanel.Top)
-		this.QueuePanel.Top.Back:SetTexture(nil)
-		if self.modBtns then
-			self:skinStdButton{obj=this.QueuePanel.Top.QueueButton, clr="grey"}
-		end
-		self:removeInset(this.QueuePanel.StatusBar)
-	    self:removeInset(this.QueuePanel.List)
-		self:skinObject("scrollbar", {obj=this.QueuePanel.List.ScrollBar})
-		-- local function skinQueue(...)
-		-- 	local _, element, elementData
-		-- 	if _G.select("#", ...) == 2 then
-		-- 		element, elementData = ...
-		-- 	else
-		-- 		_, element, elementData = ...
-		-- 	end
-		-- 	-- element.Back:SetTexture(nil)
-		-- end
-		-- _G.ScrollUtil.AddInitializedFrameCallback(this.QueuePanel.List.ScrollBox, skinQueue, aObj, true)
-
-		self:removeInset(this.OptionsPanel.Top)
-		this.OptionsPanel.Top.Back:SetTexture(nil)
-		self:skinObject("editbox", {obj=this.OptionsPanel.Top.SearchBox, chginset=false, mi=true, mix=20})
-	    self:removeInset(this.OptionsPanel.List)
-		self:skinObject("scrollbar", {obj=this.OptionsPanel.List.ScrollBar})
-		-- local function skinOption(...)
-		-- 	local _, element, elementData
-		-- 	if _G.select("#", ...) == 2 then
-		-- 		element, elementData = ...
-		-- 	else
-		-- 		_, element, elementData = ...
-		-- 	end
-		-- 	-- element.Back:SetTexture(nil)
-		-- end
-		-- _G.ScrollUtil.AddInitializedFrameCallback(this.OptionsPanel.List.ScrollBox, skinOption, aObj, true)
-
-		-- TODO: skin option check buttons
-
-
 		-- side tabs
 		for _, tab in pairs(this.TeamTabs.Tabs) do
 			if self.modBtns then
@@ -205,20 +81,166 @@ aObj.addonsToSkin.Rematch = function(self) -- v 5.0.1
 			self:skinCheckButton{obj=this.BottomBar.UseRematchCheckButton}
 		end
 
-		-- bottom tabs
-		self:skinObject("tabs", {obj=this, tabs={this.PanelTabs:GetChildren()}, ignoreSize=true, lod=true, regions={3}, track=false})
-		if self.isTT then
-			self:SecureHook(_G.Rematch.panelTabs, "Update", function(fObj)
-				for _, tab in _G.ipairs{fObj:GetChildren()} do
-					if tab.isSelected then
-						self:setActiveTab(tab.sf)
-					else
-						self:setInactiveTab(tab.sf)
+		self:SecureHookScript(this.LoadedTeamPanel, "OnShow", function(fObj)
+			self:removeInset(fObj.TeamButton)
+			if self.modBtns then
+				self:skinStdButton{obj=fObj.PreferencesFrame.PreferencesButton, clr="grey"}
+				self:skinStdButton{obj=fObj.NotesFrame.NotesButton, clr="grey"}
+				self:skinStdButton{obj=fObj.TeamButton, clr="gold"}
+			end
+
+			self:Unhook(fObj, "OnShow")
+		end)
+		self:checkShown(this.LoadedTeamPanel)
+
+		self:SecureHookScript(this.PetsPanel, "OnShow", function(fObj)
+			self:removeInset(fObj.Top)
+			fObj.Top.Back:SetTexture(nil)
+			self:skinObject("editbox", {obj=fObj.Top.SearchBox, chginset=false, mi=true, mix=20})
+			if self.modBtns then
+				self:skinStdButton{obj=fObj.Top.FilterButton, clr="grey"}
+			end
+			if self.modBtnBs then
+				self:addButtonBorder{obj=fObj.Top.ToggleButton, clr="grey", ofs=1}
+			end
+			-- .TypeBar appears when ToggleButton clicked
+			self:skinObject("tabs", {obj=fObj.Top.TypeBar, tabs=fObj.Top.TypeBar.Tabs, ignoreSize=true, lod=true, regions={3}, offsets={x1=4, y1=0, x2=-2, y2=-2}, track=false, func=aObj.isTT and function(tab)
+				self:SecureHookScript(tab, "OnClick", function(tObj)
+					for _, btn in _G.pairs(tObj:GetParent().Tabs) do
+						self:setInactiveTab(btn.sf)
 					end
+					if tObj.isSelected then
+						self:setActiveTab(tObj.sf)
+					end
+				end)
+			end})
+			fObj.Top.TypeBar.TabbedBorder:SetTexture(nil)
+			self:skinObject("frame", {obj=fObj.Top.TypeBar, y1=-19, fb=true})
+		    self:removeInset(fObj.ResultsBar)
+		    self:removeInset(fObj.List)
+			self:skinObject("scrollbar", {obj=fObj.List.ScrollBar})
+			local function skinElement(...)
+				local _, element
+				if _G.select("#", ...) == 2 then
+					element, _ = ...
+				else
+					_, element, _ = ...
 				end
-			end)
-		end
-		self:skinObject("frame", {obj=this, kfs=true, x1=-4, y1=2, x2=1, y2=-2})
+				element.Back:SetTexture(nil)
+			end
+			_G.ScrollUtil.AddInitializedFrameCallback(fObj.List.ScrollBox, skinElement, aObj, true)
+
+			self:Unhook(fObj, "OnShow")
+		end)
+		self:checkShown(this.PetsPanel)
+
+		self:SecureHookScript(this.LoadedTargetPanel, "OnShow", function(fObj)
+			self:removeInset(fObj)
+			fObj.InsetBack:SetTexture(nil)
+			if self.modBtns then
+				self:skinStdButton{obj=fObj.AllyTeam.PrevTeamButton, clr="grey"}
+				self:skinStdButton{obj=fObj.AllyTeam.NextTeamButton, clr="grey"}
+				self:skinStdButton{obj=fObj.BigLoadSaveButton, clr="grey"}
+				self:skinStdButton{obj=fObj.MediumLoadButton, clr="grey"}
+				self:skinStdButton{obj=fObj.SmallRandomButton, clr="grey"}
+				self:skinStdButton{obj=fObj.SmallTeamsButton, clr="grey"}
+				self:skinStdButton{obj=fObj.SmallSaveButton, clr="grey"}
+			end
+
+			self:Unhook(fObj, "OnShow")
+		end)
+		self:checkShown(this.LoadedTargetPanel)
+
+		self:SecureHookScript(this.LoadoutPanel, "OnShow", function(fObj)
+			for _,loadout in pairs(fObj.Loadouts) do
+				rmInset(loadout)
+				loadout.Back:SetTexture(nil)
+				loadout.Pet.LevelBubble:SetTexture(nil)
+				loadout.XpBarBack:SetTexture(nil)
+				loadout.XpBar:SetTexture(self.sbTexture)
+				loadout.XpBarBorder:SetTexture(nil)
+				loadout.HpBarBack:SetTexture(nil)
+				loadout.HpBar:SetTexture(self.sbTexture)
+				loadout.HpBarBorder:SetTexture(nil)
+				-- loadout.
+				self:skinObject("frame", {obj=loadout, fb=true})
+				fObj.AbilityFlyout.Border:SetTexture(nil)
+				self:skinObject("frame", {obj=fObj.AbilityFlyout, fb=true})
+			end
+
+			self:Unhook(fObj, "OnShow")
+		end)
+		self:checkShown(this.LoadoutPanel)
+
+		self:SecureHookScript(this.MiniLoadoutPanel, "OnShow", function(fObj)
+			for _,loadout in pairs(fObj.Loadouts) do
+				rmInset(loadout)
+				loadout.Back:SetTexture(nil)
+				loadout.LevelBubble:SetTexture(nil)
+				loadout.TopStatusBarBack:SetTexture(nil)
+				loadout.BottomStatusBarBack:SetTexture(nil)
+				loadout.TopStatusBar:SetTexture(self.sbTexture)
+				loadout.BottomStatusBar:SetTexture(self.sbTexture)
+				loadout.TopStatusBarBorder:SetTexture(nil)
+				loadout.BottomStatusBarBorder:SetTexture(nil)
+				-- loadout.
+				self:skinObject("frame", {obj=loadout, fb=true})
+			end
+
+			self:Unhook(fObj, "OnShow")
+		end)
+		self:checkShown(this.MiniLoadoutPanel)
+
+		self:SecureHookScript(this.TeamsPanel, "OnShow", function(fObj)
+			skinPanel(fObj)
+			if self.modBtns then
+				self:skinStdButton{obj=fObj.Top.TeamsButton, clr="grey"}
+			end
+
+			self:Unhook(fObj, "OnShow")
+		end)
+		self:checkShown(this.TeamsPanel)
+
+		self:SecureHookScript(this.TargetsPanel, "OnShow", function(fObj)
+			skinPanel(fObj)
+
+			self:Unhook(fObj, "OnShow")
+		end)
+		self:checkShown(this.TargetsPanel)
+
+		self:SecureHookScript(this.QueuePanel, "OnShow", function(fObj)
+			skinPanel(fObj)
+			self:removeInset(fObj.PreferencesFrame)
+			self:removeInset(fObj.StatusBar)
+			local function skinElement(...)
+				local _, element
+				if _G.select("#", ...) == 2 then
+					element, _ = ...
+				else
+					_, element, _ = ...
+				end
+				element.Back:SetTexture(nil)
+			end
+			_G.ScrollUtil.AddInitializedFrameCallback(fObj.List.ScrollBox, skinElement, aObj, true)
+			if self.modBtns then
+				self:skinStdButton{obj=fObj.Top.QueueButton, clr="grey"}
+			end
+			if self.modBtnBs then
+				self:addButtonBorder{obj=fObj.PreferencesFrame.PreferencesButton, clr="grey", ofs=1}
+			end
+
+			self:Unhook(fObj, "OnShow")
+		end)
+		self:checkShown(this.QueuePanel)
+
+		self:SecureHookScript(this.OptionsPanel, "OnShow", function(fObj)
+			skinPanel(fObj)
+
+			-- TODO: skin option check buttons
+
+			self:Unhook(fObj, "OnShow")
+		end)
+		self:checkShown(this.OptionsPanel)
 
 		self:Unhook(this, "OnShow")
 	end)
@@ -231,18 +253,21 @@ aObj.addonsToSkin.Rematch = function(self) -- v 5.0.1
 				if child.menuName == menuName
 				and child.relativeTo == parent
 				then
-					aObj:skinObject("frame", {obj=child, kfs=true})
+					return child
 				end
 			end
 		end
-
 	end
 	self:SecureHook(_G.Rematch.menus, "Show", function(_, menuName, parent, _)
-	    local parentFrame = parent:GetParent()
+	    local parentFrame, menuFrame = parent:GetParent()
 		if not parentFrame.isRematchMenu then
-			scanChildren(_G.UIParent, menuName, parent)
+			menuFrame = scanChildren(_G.UIParent, menuName, parent)
 		else
-			scanChildren(parent, menuName, parent)
+			menuFrame = scanChildren(parent, menuName, parent)
+		end
+		if menuFrame then
+			self:keepFontStrings(menuFrame.Title)
+			self:skinObject("frame", {obj=menuFrame, kfs=true})
 		end
 	end)
 
@@ -268,44 +293,161 @@ aObj.addonsToSkin.Rematch = function(self) -- v 5.0.1
 
 	-- TODO: Finish skinning all dialog subframes
 	self:SecureHookScript(_G.RematchDialog, "OnShow", function(this)
-		self:skinObject("editbox", {obj=this.Canvas.EditBox.EditBox})
-		self:removeInset(this.Canvas.MultiLineEditBox)
-		self:skinObject("slider", {obj=this.Canvas.MultiLineEditBox.ScrollFrame.ScrollBar})
+		this.Prompt:DisableDrawLayer("BACKGROUND")
+		this.Prompt:DisableDrawLayer("BORDER")
 		self:skinObject("frame", {obj=this, kfs=true, cb=true})
 		if self.modBtns then
+			-- .MinimizeButton
 			self:skinStdButton{obj=this.CancelButton}
 			self:skinStdButton{obj=this.OtherButton}
 			self:skinStdButton{obj=this.AcceptButton}
 		end
-		if self.modChkBtns then
-			self:skinCheckButton{obj=this.Canvas.CheckButton.Check}
-			self:skinCheckButton{obj=this.Canvas.IncludeCheckButtons.IncludePreferences}
-			self:skinCheckButton{obj=this.Canvas.IncludeCheckButtons.IncludeNotes}
-		end
+
+		self:SecureHookScript(this.Canvas.EditBox, "OnShow", function(fObj)
+			self:skinObject("editbox", {obj=fObj.EditBox})
+
+			self:Unhook(fObj, "OnShow")
+		end)
+		self:checkShown(this.Canvas.EditBox)
+
+		self:SecureHookScript(this.Canvas.MultiLineEditBox, "OnShow", function(fObj)
+			self:removeInset(fObj)
+			self:skinObject("slider", {obj=fObj.ScrollFrame.ScrollBar})
+
+			self:Unhook(fObj, "OnShow")
+		end)
+		self:checkShown(this.Canvas.MultiLineEditBox)
+
+		self:SecureHookScript(this.Canvas.CheckButton, "OnShow", function(fObj)
+			if self.modChkBtns then
+				self:skinCheckButton{obj=fObj.Check}
+			end
+
+			self:Unhook(fObj, "OnShow")
+		end)
+		self:checkShown(this.Canvas.CheckButton)
+
+		self:SecureHookScript(this.Canvas.IncludeCheckButtons, "OnShow", function(fObj)
+			if self.modChkBtns then
+				self:skinCheckButton{obj=fObj.IncludePreferences}
+				self:skinCheckButton{obj=fObj.IncludeNotes}
+			end
+
+			self:Unhook(fObj, "OnShow")
+		end)
+		self:checkShown(this.Canvas.IncludeCheckButtons)
+
+		-- Icon
+		-- ColorPicker
+		self:SecureHookScript(this.Canvas.DropDown, "OnShow", function(fObj)
+			self:skinObject("dropdown", {obj=fObj.DropDown, noBB=true, x1=0, y1=0, x2=0, y2=0})
+
+			self:Unhook(fObj, "OnShow")
+		end)
+		self:checkShown(this.Canvas.DropDown)
+
+		self:SecureHookScript(this.Canvas.Pet, "OnShow", function(fObj)
+			fObj.ListButtonPet.Back:SetTexture(nil)
+
+			self:Unhook(fObj, "OnShow")
+		end)
+		self:checkShown(this.Canvas.Pet)
+		-- Team
+		-- LayoutTabs
+		-- PreferencesReadOnly
+		self:SecureHookScript(this.Canvas.Preferences, "OnShow", function(fObj)
+			self:skinObject("editbox", {obj=fObj.MaxLevel})
+			self:skinObject("editbox", {obj=fObj.MinLevel})
+			self:skinObject("editbox", {obj=fObj.MaxHealth})
+			self:skinObject("editbox", {obj=fObj.MinHealth})
+			if self.modChkBtns then
+				self:skinCheckButton{obj=fObj.AllowMM}
+			end
+
+			self:Unhook(fObj, "OnShow")
+		end)
+
+		self:SecureHookScript(this.Canvas.IconPicker, "OnShow", function(fObj)
+			self:skinObject("editbox", {obj=fObj.SearchBox, chginset=false, mi=true, mix=20})
+		    self:removeInset(fObj.List)
+			self:skinObject("scrollbar", {obj=fObj.List.ScrollBar})
+
+			self:Unhook(fObj, "OnShow")
+		end)
+		self:checkShown(this.Canvas.IconPicker)
+
+		self:SecureHookScript(this.Canvas.TeamPicker, "OnShow", function(fObj)
+			self:removeInset(fObj.Lister.Top)
+			fObj.Lister.Top.Back:SetTexture(nil)
+		    self:removeInset(fObj.Lister.List)
+			self:skinObject("scrollbar", {obj=fObj.Lister.List.ScrollBar})
+			self:removeInset(fObj.Picker.Top)
+			fObj.Picker.Top.Back:SetTexture(nil)
+		    self:removeInset(fObj.Picker.List)
+			self:skinObject("scrollbar", {obj=fObj.Picker.List.ScrollBar})
+			self:skinObject("editbox", {obj=fObj.Picker.SearchBox, chginset=false, mi=true, mix=20})
+			if self.modBtns then
+				self:skinStdButton{obj=fObj.Lister.Top.AddButton, clr="grey"}
+				self:skinStdButton{obj=fObj.Lister.Top.DeleteButton, clr="grey"}
+				self:skinStdButton{obj=fObj.Lister.Top.DownButton, clr="grey"}
+				self:skinStdButton{obj=fObj.Lister.Top.UpButton, clr="grey"}
+				self:skinStdButton{obj=fObj.Picker.Top.AllButton, clr="grey"}
+				self:skinStdButton{obj=fObj.Picker.Top.CancelButton, clr="grey"}
+			end
+
+			self:Unhook(fObj, "OnShow")
+		end)
+		self:checkShown(this.Canvas.TeamPicker)
+
+		self:SecureHookScript(this.Canvas.GroupPicker, "OnShow", function(fObj)
+			self:removeInset(fObj.Top)
+			fObj.List:DisableDrawLayer("BACKGROUND")
+			fObj.List:DisableDrawLayer("BORDER")
+			if self.modBtns then
+				self:skinStdButton{obj=fObj.Top.CancelButton, clr="grey"}
+			end
+
+			self:Unhook(fObj, "OnShow")
+		end)
+		self:checkShown(this.Canvas.GroupPicker)
+
+		-- ComboBox
+		-- TeamWithAbilities
+		-- OtherTeamWithAbilities
+		-- GroupSelect
+		-- WinRecord
+		-- ListData
+		-- ConflictRadios
+		-- MultiTeam
+		-- Slider
+		-- TeamWarning
+		-- PetSummary
+		-- BarChartDropDown
+		-- BarChart
+		-- BattleSummary
+		-- PetHerderPicker
 
 		self:Unhook(this, "OnShow")
 	end)
 
 	self:SecureHookScript(_G.RematchTooltip, "OnShow", function(this)
-
 		self:skinObject("frame", {obj=this, kfs=true})
 
 		self:Unhook(this, "OnShow")
 	end)
 
 	self:SecureHookScript(_G.RematchGameTooltip, "OnShow", function(this)
-
 		self:skinObject("frame", {obj=this, kfs=true})
 
 		self:Unhook(this, "OnShow")
 	end)
 
 	self:SecureHookScript(_G.RematchAbilityTooltip, "OnShow", function(this)
-
 		self:skinObject("frame", {obj=this, kfs=true})
 
 		self:Unhook(this, "OnShow")
 	end)
+	self:checkShown(_G.RematchAbilityTooltip)
 
 	if self.modChkBtns then
 		self.RegisterCallback("rematch.journal", "AddOn_Loaded", function(_, addon)
@@ -318,4 +460,5 @@ aObj.addonsToSkin.Rematch = function(self) -- v 5.0.1
 			end
 		end)
 	end
+
 end

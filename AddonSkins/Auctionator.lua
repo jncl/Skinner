@@ -3,7 +3,7 @@ if not aObj:isAddonEnabled("Auctionator") then return end
 local _G = _G
 -- luacheck: ignore 631 (line is too long)
 
-aObj.addonsToSkin.Auctionator = function(self) -- v 10.1.27
+aObj.addonsToSkin.Auctionator = function(self) -- v 10.2.25
 
 	local function skinAuctionatorFrames()
 		if not _G.AuctionatorSellingFrame then
@@ -349,7 +349,6 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 10.1.27
 			end)
 			if aObj.modBtns then
 				aObj:skinStdButton{obj=asi.PostButton, schk=true}
-				aObj:skinStdButton{obj=this.BagListing.CustomiseButton}
 			end
 			local blv = this.BagListing.View
 			aObj:skinObject("scrollbar", {obj=blv.ScrollBar})
@@ -390,22 +389,6 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 10.1.27
 			end
 
 			aObj:Unhook(this, "OnShow")
-		end)
-
-		aObj:SecureHook(_G.Auctionator.Groups, "OpenCustomiseView", function()
-			local agcf = _G.AuctionatorGroupsCustomiseFrame
-			aObj:skinObject("scrollbar", {obj=agcf.View.ScrollBar})
-			aObj:skinObject("frame", {obj=agcf, kfs=true, ri=true, cb=true})
-			if aObj.modBtns then
-				aObj:skinStdButton{obj=agcf.BackButton}
-				aObj:skinStdButton{obj=agcf.NewGroupButton}
-			end
-
-			aObj:SecureHook(agcf, "UpdateGroupVisuals", function(fObj)
-				skinView(fObj.View)
-			end)
-
-			aObj:Unhook(_G.Auctionator.Groups, "OpenCustomiseView")
 		end)
 
 		if _G.Auctionator.State.BuyFrameRef then
