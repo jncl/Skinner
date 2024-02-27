@@ -458,7 +458,7 @@ if not aObj.isClscERA then
 						end)
 				end
 				if self.modBtnBs then
-					self:addButtonBorder{obj=this.ModelScene.ClearAllPendingButton, ofs=1, x2=0, relTo=this.ModelScene.ClearAllPendingButton.Icon}
+					self:addButtonBorder{obj=this.ModelScene.ClearAllPendingButton, relTo=this.ModelScene.ClearAllPendingButton.Icon, ofs=5, clr="grey"}
 					self:addButtonBorder{obj=this.SpecButton, ofs=0}
 				end
 				if self.modChkBtns then
