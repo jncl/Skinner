@@ -432,10 +432,10 @@ aObj.SetupClassic_PlayerFrames = function()
 				end)
 
 				if _G.RuneFrameControlButton then -- ERA SoD
-					self:addButtonBorder{obj=btn, fType=ftype, clr="grey"}
+					self:addButtonBorder{obj=_G.RuneFrameControlButton, fType=ftype, clr="grey"}
 				end
 				if _G.GearManagerToggleButton then -- Wrath
-					self:addButtonBorder{obj=btn, fType=ftype, x1=1, x2=-1, clr="grey"}
+					self:addButtonBorder{obj=_G.GearManagerToggleButton, fType=ftype, x1=1, x2=-1, clr="grey"}
 				end
 			end
 
