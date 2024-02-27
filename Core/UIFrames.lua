@@ -1559,15 +1559,15 @@ aObj.blizzFrames[ftype].LFGFrame = function(self)
 
 	self:SecureHookScript(_G.LFGDungeonReadyPopup, "OnShow", function(this) -- a.k.a. ReadyCheck, also used for Island Expeditions
 		self:removeNineSlice(_G.LFGDungeonReadyStatus.Border)
-		self:skinObject("frame", {obj=_G.LFGDungeonReadyStatus, fType=ftype, kfs=true, ofs=-5})
+		self:skinObject("frame", {obj=_G.LFGDungeonReadyStatusCloseButton, fType=ftype, kfs=true, ofs=-5})
 
 		self:removeNineSlice(_G.LFGDungeonReadyDialog.Border)
 		_G.LFGDungeonReadyDialog.SetBackdrop = _G.nop
 		_G.LFGDungeonReadyDialog.instanceInfo:DisableDrawLayer("BACKGROUND")
 		self:skinObject("frame", {obj=_G.LFGDungeonReadyDialog, fType=ftype, kfs=true, rpc=true, ofs=-5, y2=10}) -- use rpc=true to make background visible
 		if self.modBtns then
-			self:skinOtherButton{obj=_G.LFGDungeonReadyStatusCloseButton, text=self.modUIBtns.minus}
-			self:skinOtherButton{obj=_G.LFGDungeonReadyDialogCloseButton, text=self.modUIBtns.minus}
+			self:skinOtherButton{obj=_G.LFGDungeonReadyStatusCloseButton, text=self.modUIBtns.minus, noSkin=true}
+			self:skinOtherButton{obj=_G.LFGDungeonReadyDialogCloseButton, text=self.modUIBtns.minus, noSkin=true}
 			self:skinStdButton{obj=_G.LFGDungeonReadyDialog.enterButton}
 			self:skinStdButton{obj=_G.LFGDungeonReadyDialog.leaveButton}
 		end
