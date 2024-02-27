@@ -1,3 +1,10 @@
+beta10.53162.4
+Jncl:
+	Updated ToDo.txt files
+	Updated Change_History.txt
+	Updated AddonFrames code
+	Updated Baganator & BasicChatMods skins, fixes #55
+	
 beta10.53162.3
 Jncl:
 	Updated Change_History.txt
