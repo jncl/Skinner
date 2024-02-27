@@ -896,21 +896,30 @@ local function __addButtonBorder(opts)
 	if opts.obj.ProfessionQualityOverlay then
 		opts.obj.ProfessionQualityOverlay:SetParent(opts.obj.sbb)
 	end
-	if opts.ibt then -- Item Buttons
+	if opts.ibt
+	or opts.libt
+	then -- Item Buttons & Large Item Buttons
 		if opts.obj.Stock
 		or opts.obj:GetName() and _G[opts.obj:GetName() .. "Stock"]
 		then
 			rpObj = opts.obj.Stock or _G[opts.obj:GetName() .. "Stock"]
 			rpObj:SetParent(opts.obj.sbb)
 		end
-		opts.obj.searchOverlay:SetParent(opts.obj.sbb)
+		if opts.obj.searchOverlay then
+			opts.obj.searchOverlay:SetParent(opts.obj.sbb)
+		end
 		if opts.obj.ItemContextOverlay then
 			opts.obj.ItemContextOverlay:SetParent(opts.obj.sbb)
 		end
 		if opts.obj.IconQuestTexture then
 			opts.obj.IconQuestTexture:SetParent(opts.obj.sbb)
 		end
-		module:clrButtonFromBorder(opts.obj)
+		-- N.B. leave subicon/SubIconTexture below .sbb (Classic ERA)
+		if opts.libt
+		and aObj.isRtl
+		then
+			module:clrButtonFromBorder(opts.obj)
+		end
 	elseif opts.abt then -- Action Buttons
 		if opts.obj.FlyoutArrow then
 			opts.obj.FlyoutArrow:SetParent(opts.obj.sbb)
