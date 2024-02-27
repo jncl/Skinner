@@ -17,7 +17,15 @@ ToDos
 
 ≈		O	Add checks for Button state as required
 
-≈		O	Refactor NewSkinFuncs in AddOn skins
+≈		O	Refactor NewSkinFuncs in AddOn skinsn
 
-#55	√	I 	Baganator
-		N	BasicChatMods
+#56		I	Missing Skins
+	√	N	Rematch
+	√	N	Auctionator
+
+#57		I 	Missing Icons
+	√	N	Armory
+
+#58 √	I/W Auctionator
+
+#59	√	S	Better Bags
