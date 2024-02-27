@@ -852,7 +852,7 @@ aObj.SetupRetail_PlayerFrames = function()
 			end
 			_G.ScrollUtil.AddAcquiredFrameCallback(this.ScrollBox, skinElement, aObj, true)
 			_G.TokenFramePopup.Border:DisableDrawLayer("BACKGROUND")
-			self:skinObject("frame", {obj=_G.TokenFramePopup, fType=ftype, kfs=true, cb=true, ofs=-6, x1=0})
+			self:skinObject("frame", {obj=_G.TokenFramePopup, fType=ftype, kfs=true, cb=true, ofs=-3, x1=0})
 			if self.modBtns then
 				-- FIXME: CloseButton skinned here as it has a prefix of $parent, bug in Blizzard XML file
 				self:skinCloseButton{obj=self:getChild(_G.TokenFramePopup, 4), fType=ftype}
