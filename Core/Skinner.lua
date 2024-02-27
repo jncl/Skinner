@@ -388,8 +388,6 @@ function aObj:OnEnable()
 	self:RegisterEvent("AUCTION_HOUSE_SHOW")
 	-- track when Player enters World (used for texture updates and UIParent child processing)
 	self:RegisterEvent("PLAYER_ENTERING_WORLD")
-	-- track when Trade Skill is opened (used by MrTrader_SkillWindow)
-	self:RegisterEvent("TRADE_SKILL_SHOW")
 	-- track when player changes level, to manage MainMenuBars' WatchBars' placement
 	if _G.UnitLevel("player") >= _G.MAX_PLAYER_LEVEL - 5
 	and not _G.IsTrialAccount()

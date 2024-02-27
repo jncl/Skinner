@@ -50,11 +50,7 @@ for i = 1, #addonSkins do
 		aObj.addonsToSkin[addonSkins[i]] = addonSkins[i]
 	end
 end
-aObj.libsToSkin = {
-	["LibTradeLinks-1.0"] = "LibTradeSkillScan",
-	["LibTradeSkillScan"] = "LibTradeSkillScan",
-	["X-UI"] = "LibXUI",
-}
+aObj.libsToSkin = {}
 aObj.otherAddons = {}
 local lodFrames = {
 	"GarrisonMissionManager",
@@ -211,17 +207,6 @@ function aObj:PLAYER_ENTERING_WORLD()
 	end)
 
 	self:UnregisterEvent("PLAYER_ENTERING_WORLD")
-
-end
-
-function aObj:TRADE_SKILL_SHOW()
-	-- self:Debug("TRADE_SKILL_SHOW")
-
-	if _G.Auctionator_Search then
-		self:skinStdButton{obj=_G.Auctionator_Search}
-	end
-
-	self:UnregisterEvent("TRADE_SKILL_SHOW")
 
 end
 

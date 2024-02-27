@@ -129,9 +129,7 @@
 <Script file="LibSushi.lua"/>
 <Script file="LibTextDump.lua"/>
 <Script file="LibToast.lua"/>
-<Script file="LibTradeSkillScan.lua"/>
 <Script file="LibUIDropDownMenu.lua"/>
-<Script file="LibXUI.lua"/>
 <Script file="LightHeaded.lua"/>
 <Script file="LiteBag.lua"/>
 <Script file="Livestock.lua"/>
