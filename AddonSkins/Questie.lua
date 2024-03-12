@@ -2,7 +2,7 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("Questie") then return end
 local _G = _G
 
-aObj.addonsToSkin.Questie = function(self) -- v 9.4.4
+aObj.addonsToSkin.Questie = function(self) -- v 9.4.5
 
 	local qMods = _G.QuestieLoader._modules
 
@@ -19,7 +19,7 @@ aObj.addonsToSkin.Questie = function(self) -- v 9.4.4
 				self:skinAceOptions(_G.QuestieConfigFrame)
 			end
 
-			self:Unhook(this, "Initialize")
+			self:Unhook(this, "OpenConfigWindow")
 		end)
 		self:SecureHook(qMods.TrackerLinePool, "Initialize", function(this)
 			-- TODO skin TrackedQuests expandQuest buttons

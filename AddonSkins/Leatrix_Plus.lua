@@ -2,7 +2,7 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("Leatrix_Plus") then return end
 local _G = _G
 
-aObj.addonsToSkin.Leatrix_Plus = function(self) -- v 10.2.04/1.15.06/3.0.167
+aObj.addonsToSkin.Leatrix_Plus = function(self) -- v 10.2.04/1.15.19/3.0.167
 
 	local lpPanels = {
 		-- All versions
@@ -52,7 +52,7 @@ aObj.addonsToSkin.Leatrix_Plus = function(self) -- v 10.2.04/1.15.06/3.0.167
 				if child:IsObjectType("Slider") then
 					aObj:skinObject("slider", {obj=child})
 				elseif child:IsObjectType("ScrollFrame") then
-					aObj:skinObject("slider", {obj=child.ScrollBar})
+					aObj:skinObject("scrollbar", {obj=child.ScrollBar, x1=2, x2=4})
 				elseif child:IsObjectType("EditBox") then
 					aObj:skinObject("editbox", {obj=child})
 					child.f:SetBackdrop(nil)
@@ -126,7 +126,7 @@ aObj.addonsToSkin.Leatrix_Plus = function(self) -- v 10.2.04/1.15.06/3.0.167
 	end
 
 	-- Enhanced QuestLog
-	if _G.LeaPlusDB["EnhanceQuestLog"] == "On"
+	if _G.LeaPlusDB["EnhanceQuestTaller"] == "On"
 	and self.prdb.QuestLog
 	then
 		if self.isClscERA

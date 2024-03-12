@@ -3,7 +3,7 @@ if not aObj:isAddonEnabled("Auctionator") then return end
 local _G = _G
 -- luacheck: ignore 631 (line is too long)
 
-aObj.addonsToSkin.Auctionator = function(self) -- v 10.2.25
+aObj.addonsToSkin.Auctionator = function(self) -- v 10.2.27
 
 	local function skinAuctionatorFrames()
 		if not _G.AuctionatorSellingFrame then
@@ -348,7 +348,7 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 10.2.25
 				aObj:clrButtonFromBorder(bObj)
 			end)
 			if aObj.modBtns then
-				aObj:skinStdButton{obj=asi.PostButton, schk=true}
+				aObj:skinStdButton{obj=asi.PostButton, schk=true, sechk=true}
 			end
 			local blv = this.BagListing.View
 			aObj:skinObject("scrollbar", {obj=blv.ScrollBar})
@@ -454,6 +454,15 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 10.2.25
 
 			aObj:Unhook(this, "OnShow")
 		end)
+
+		if _G.Auctionator.Selling.ShowPopup then
+			aObj:SecureHook(_G.Auctionator.Selling, "ShowPopup", function(this, _)
+				aObj:removeNineSlice(_G.AuctionatorSellingPopupFrame.Border)
+				aObj:skinObject("frame", {obj=_G.AuctionatorSellingPopupFrame, ofs=-4})
+
+				aObj:Unhook(this, "ShowPopup")
+			end)
+		end
 
 	end
 

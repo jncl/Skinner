@@ -85,7 +85,8 @@ aObj.addonsToSkin.Rematch = function(self) -- v 5.1.3
 			self:removeInset(fObj.TeamButton)
 			if self.modBtns then
 				self:skinStdButton{obj=fObj.PreferencesFrame.PreferencesButton, clr="grey"}
-				self:skinStdButton{obj=fObj.NotesFrame.NotesButton, clr="grey"}
+				self:removeInset(fObj.NotesFrame)
+				self:skinStdButton{obj=fObj.NotesFrame.NotesButton, ofs=1, clr="grey"}
 				self:skinStdButton{obj=fObj.TeamButton, clr="gold"}
 			end
 
@@ -119,7 +120,7 @@ aObj.addonsToSkin.Rematch = function(self) -- v 5.1.3
 		    self:removeInset(fObj.ResultsBar)
 		    self:removeInset(fObj.List)
 			self:skinObject("scrollbar", {obj=fObj.List.ScrollBar})
-			local function skinElement(...)
+			local function skinList(...)
 				local _, element
 				if _G.select("#", ...) == 2 then
 					element, _ = ...
@@ -127,8 +128,13 @@ aObj.addonsToSkin.Rematch = function(self) -- v 5.1.3
 					_, element, _ = ...
 				end
 				element.Back:SetTexture(nil)
+				aObj:changeTandC(element.LevelBubble)
+				if aObj.modBtnBs then
+					aObj:addButtonBorder{obj=element, relTo=element.Icon, reParent={element.Favorite, element.LevelBubble, element.LevelText}, ofs=4}
+					element.sbb:SetBackdropBorderColor(element.Border:GetVertexColor())
+				end
 			end
-			_G.ScrollUtil.AddInitializedFrameCallback(fObj.List.ScrollBox, skinElement, aObj, true)
+			_G.ScrollUtil.AddInitializedFrameCallback(fObj.List.ScrollBox, skinList, aObj, true)
 
 			self:Unhook(fObj, "OnShow")
 		end)
@@ -155,7 +161,7 @@ aObj.addonsToSkin.Rematch = function(self) -- v 5.1.3
 			for _,loadout in pairs(fObj.Loadouts) do
 				rmInset(loadout)
 				loadout.Back:SetTexture(nil)
-				loadout.Pet.LevelBubble:SetTexture(nil)
+				self:changeTandC(loadout.Pet.LevelBubble)
 				loadout.XpBarBack:SetTexture(nil)
 				loadout.XpBar:SetTexture(self.sbTexture)
 				loadout.XpBarBorder:SetTexture(nil)
@@ -163,6 +169,15 @@ aObj.addonsToSkin.Rematch = function(self) -- v 5.1.3
 				loadout.HpBar:SetTexture(self.sbTexture)
 				loadout.HpBarBorder:SetTexture(nil)
 				-- loadout.
+				if self.modBtnBs then
+					self:addButtonBorder{obj=loadout.Pet, relTo=loadout.Pet.Icon, reParent={loadout.Pet.Favorite, loadout.Pet.LevelBubble, loadout.Pet.LevelText}, ofs=4}
+					_G.C_Timer.After(0.5, function()
+						loadout.Pet.sbb:SetBackdropBorderColor(loadout.Pet.Border:GetVertexColor())
+					end)
+					for _, btn in _G.pairs(loadout.AbilityBar.Abilities) do
+						self:addButtonBorder{obj=btn, relTo=btn.Icon, clr="grey", ofs=4}
+					end
+				end
 				self:skinObject("frame", {obj=loadout, fb=true})
 				fObj.AbilityFlyout.Border:SetTexture(nil)
 				self:skinObject("frame", {obj=fObj.AbilityFlyout, fb=true})
@@ -193,6 +208,21 @@ aObj.addonsToSkin.Rematch = function(self) -- v 5.1.3
 
 		self:SecureHookScript(this.TeamsPanel, "OnShow", function(fObj)
 			skinPanel(fObj)
+			self:skinObject("scrollbar", {obj=fObj.List.ScrollBar})
+			local function skinList(...)
+				local _, element, child
+				if _G.select("#", ...) == 2 then
+					element, _ = ...
+				else
+					_, element, _ = ...
+				end
+				if element.teamID then
+					element.Back:SetTexture(nil)
+					element.Border:SetTexture(nil)
+				end
+				-- groupID
+			end
+			_G.ScrollUtil.AddInitializedFrameCallback(fObj.List.ScrollBox, skinList, aObj, true)
 			if self.modBtns then
 				self:skinStdButton{obj=fObj.Top.TeamsButton, clr="grey"}
 			end
@@ -203,6 +233,17 @@ aObj.addonsToSkin.Rematch = function(self) -- v 5.1.3
 
 		self:SecureHookScript(this.TargetsPanel, "OnShow", function(fObj)
 			skinPanel(fObj)
+			self:skinObject("scrollbar", {obj=fObj.List.ScrollBar})
+			local function skinList(...)
+				local _, element
+				if _G.select("#", ...) == 2 then
+					element, _ = ...
+				else
+					_, element, _ = ...
+				end
+				element.Back:SetTexture(nil)
+			end
+			_G.ScrollUtil.AddInitializedFrameCallback(fObj.List.ScrollBox, skinList, aObj, true)
 
 			self:Unhook(fObj, "OnShow")
 		end)
@@ -212,7 +253,8 @@ aObj.addonsToSkin.Rematch = function(self) -- v 5.1.3
 			skinPanel(fObj)
 			self:removeInset(fObj.PreferencesFrame)
 			self:removeInset(fObj.StatusBar)
-			local function skinElement(...)
+			self:skinObject("scrollbar", {obj=fObj.List.ScrollBar})
+			local function skinList(...)
 				local _, element
 				if _G.select("#", ...) == 2 then
 					element, _ = ...
@@ -221,7 +263,7 @@ aObj.addonsToSkin.Rematch = function(self) -- v 5.1.3
 				end
 				element.Back:SetTexture(nil)
 			end
-			_G.ScrollUtil.AddInitializedFrameCallback(fObj.List.ScrollBox, skinElement, aObj, true)
+			_G.ScrollUtil.AddInitializedFrameCallback(fObj.List.ScrollBox, skinList, aObj, true)
 			if self.modBtns then
 				self:skinStdButton{obj=fObj.Top.QueueButton, clr="grey"}
 			end
@@ -235,6 +277,17 @@ aObj.addonsToSkin.Rematch = function(self) -- v 5.1.3
 
 		self:SecureHookScript(this.OptionsPanel, "OnShow", function(fObj)
 			skinPanel(fObj)
+			self:skinObject("scrollbar", {obj=fObj.List.ScrollBar})
+			local function skinList(...)
+				local _, element
+				if _G.select("#", ...) == 2 then
+					element, _ = ...
+				else
+					_, element, _ = ...
+				end
+				element.Back:SetTexture(nil)
+			end
+			_G.ScrollUtil.AddInitializedFrameCallback(fObj.List.ScrollBox, skinList, aObj, true)
 
 			-- TODO: skin option check buttons
 
@@ -259,8 +312,8 @@ aObj.addonsToSkin.Rematch = function(self) -- v 5.1.3
 		end
 	end
 	self:SecureHook(_G.Rematch.menus, "Show", function(_, menuName, parent, _)
-	    local parentFrame, menuFrame = parent:GetParent()
-		if not parentFrame.isRematchMenu then
+	    local menuFrame
+		if not parent:GetParent().isRematchMenu then
 			menuFrame = scanChildren(_G.UIParent, menuName, parent)
 		else
 			menuFrame = scanChildren(parent, menuName, parent)
@@ -287,6 +340,21 @@ aObj.addonsToSkin.Rematch = function(self) -- v 5.1.3
 		this.Content.Back.Lore.Text:SetTextColor(self.BT:GetRGB())
 		self:skinObject("frame", {obj=this.Content, kfs=true})
 		self:skinObject("frame", {obj=this, kfs=true, cb=true})
+
+		self:Unhook(this, "OnShow")
+	end)
+
+	self:SecureHookScript(_G.RematchNotesCard, "OnShow", function(this)
+		this.Content.Top.Back:SetTexture(nil)
+		this.Content.Bottom.Back:SetTexture(nil)
+		self:skinObject("slider", {obj=this.Content.ScrollFrame.ScrollBar--[[, rpTex="background"--]]})
+		self:skinObject("frame", {obj=this.Content, kfs=true})
+		self:skinObject("frame", {obj=this, kfs=true, cb=true})
+		if self.modBtns then
+			self:skinStdButton{obj=this.Content.Bottom.DeleteButton}
+			self:skinStdButton{obj=this.Content.Bottom.UndoButton}
+			self:skinStdButton{obj=this.Content.Bottom.SaveButton}
+		end
 
 		self:Unhook(this, "OnShow")
 	end)
@@ -371,6 +439,16 @@ aObj.addonsToSkin.Rematch = function(self) -- v 5.1.3
 			self:skinObject("editbox", {obj=fObj.SearchBox, chginset=false, mi=true, mix=20})
 		    self:removeInset(fObj.List)
 			self:skinObject("scrollbar", {obj=fObj.List.ScrollBar})
+			local function skinList(...)
+				local _, element
+				if _G.select("#", ...) == 2 then
+					element, _ = ...
+				else
+					_, element, _ = ...
+				end
+				element.Back:SetTexture(nil)
+			end
+			_G.ScrollUtil.AddInitializedFrameCallback(fObj.List.ScrollBox, skinList, aObj, true)
 
 			self:Unhook(fObj, "OnShow")
 		end)
@@ -381,11 +459,30 @@ aObj.addonsToSkin.Rematch = function(self) -- v 5.1.3
 			fObj.Lister.Top.Back:SetTexture(nil)
 		    self:removeInset(fObj.Lister.List)
 			self:skinObject("scrollbar", {obj=fObj.Lister.List.ScrollBar})
+			local function skinLister(...)
+				local _, element
+				if _G.select("#", ...) == 2 then
+					element, _ = ...
+				else
+					_, element, _ = ...
+				end
+				element.Back:SetTexture(nil)
+			end
+			_G.ScrollUtil.AddInitializedFrameCallback(fObj.Lister.List.ScrollBox, skinLister, aObj, true)
 			self:removeInset(fObj.Picker.Top)
 			fObj.Picker.Top.Back:SetTexture(nil)
 		    self:removeInset(fObj.Picker.List)
 			self:skinObject("scrollbar", {obj=fObj.Picker.List.ScrollBar})
-			self:skinObject("editbox", {obj=fObj.Picker.SearchBox, chginset=false, mi=true, mix=20})
+			local function skinPicker(...)
+				local _, element
+				if _G.select("#", ...) == 2 then
+					element, _ = ...
+				else
+					_, element, _ = ...
+				end
+				element.Back:SetTexture(nil)
+			end
+			_G.ScrollUtil.AddInitializedFrameCallback(fObj.Picker.List.ScrollBox, skinPicker, aObj, true)
 			if self.modBtns then
 				self:skinStdButton{obj=fObj.Lister.Top.AddButton, clr="grey"}
 				self:skinStdButton{obj=fObj.Lister.Top.DeleteButton, clr="grey"}
@@ -403,6 +500,17 @@ aObj.addonsToSkin.Rematch = function(self) -- v 5.1.3
 			self:removeInset(fObj.Top)
 			fObj.List:DisableDrawLayer("BACKGROUND")
 			fObj.List:DisableDrawLayer("BORDER")
+			self:skinObject("scrollbar", {obj=fObj.List.ScrollBar})
+			local function skinList(...)
+				local _, element
+				if _G.select("#", ...) == 2 then
+					element, _ = ...
+				else
+					_, element, _ = ...
+				end
+				element.Back:SetTexture(nil)
+			end
+			_G.ScrollUtil.AddInitializedFrameCallback(fObj.List.ScrollBox, skinList, aObj, true)
 			if self.modBtns then
 				self:skinStdButton{obj=fObj.Top.CancelButton, clr="grey"}
 			end
@@ -443,6 +551,9 @@ aObj.addonsToSkin.Rematch = function(self) -- v 5.1.3
 	end)
 
 	self:SecureHookScript(_G.RematchAbilityTooltip, "OnShow", function(this)
+		this.Top.Back:SetTexture(nil)
+		this.Hints.Back:SetTexture(nil)
+		this.Details.Back:SetTexture(nil)
 		self:skinObject("frame", {obj=this, kfs=true})
 
 		self:Unhook(this, "OnShow")
