@@ -1495,6 +1495,9 @@ aObj.SetupClassic_PlayerFrames = function()
 			end
 			if self.modBtnBs then
 				skinTalentBtns(this)
+				self:SecureHook("TalentFrame_Update", function(fObj)
+					skinTalentBtns(fObj)
+				end)
 			end
 
 			self:Unhook(this, "OnShow")
