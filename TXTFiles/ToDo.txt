@@ -19,13 +19,7 @@ ToDos
 
 ≈		O	Refactor NewSkinFuncs in AddOn skinsn
 
-#56		I	Missing Skins
-	√	N	Rematch
-	√	N	Auctionator
+#60	x	I	PetBattleTeams
+	x		Auctionator
 
-#57		I 	Missing Icons
-	√	N	Armory
-
-#58 √	I/W Auctionator
-
-#59	√	S	Better Bags
+#61	√	I/W	PVEFrame
