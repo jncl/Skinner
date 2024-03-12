@@ -2119,13 +2119,14 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 		["OQ_MinimapButton"] = true,
 	}
 	if not self.isRtl then
-		ignBtn["GameTimeFrame"]                    = true
-		ignBtn["MiniMapTrackingFrame"]             = true -- ClassicERA
-		ignBtn["MiniMapTracking"]                  = true -- Classic
-		ignBtn["MiniMapWorldMapButton"]            = true
-		ignBtn["MinimapZoomIn"]                    = true
-		ignBtn["MinimapZoomOut"]                   = true
-		-- ignBtn["QueueStatusMinimapButton"]         = true
+		ignBtn["GameTimeFrame"]               = true
+		ignBtn["MiniMapTrackingFrame"]        = true -- ClassicERA
+		ignBtn["MiniMapTracking"]             = true -- Classic
+		ignBtn["MiniMapWorldMapButton"]       = true
+		ignBtn["MiniMapLFGFrame"]             = true
+		ignBtn["MinimapZoomIn"]               = true
+		ignBtn["MinimapZoomOut"]              = true
+		-- ignBtn["QueueStatusMinimapButton"] = true
 	else
 		ignBtn["ExpansionLandingPageMinimapButton"] = true
 		ignBtn[_G.Minimap.ZoomIn]                   = true
@@ -2297,6 +2298,10 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 	_G.TimeManagerClockButton:SetSize(36, 14)
 	if not self:isAddOnLoaded("SexyMap") then
 		self:moveObject{obj=_G.TimeManagerClockTicker, x=-3, y=-1}
+	end
+	if self.isClsc then
+		self:skinObject("frame", {obj=_G.MiniMapLFGFrame, fType=ftype, kfs=true, ofs=0})
+		-- self:skinObject("frame", {obj=_G.MiniMapLFGFrameDropDown, fType=ftype})
 	end
 
 	-- skin Minimap children, allow for delayed addons to be loaded (e.g. Baggins)
