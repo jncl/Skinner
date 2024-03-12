@@ -789,7 +789,7 @@ aObj.SetupClassic_PlayerFrames = function()
 				for _, bObj in _G.ipairs(this.scrollFrame.buttons) do
 					bObj:GetNormalTexture():SetTexture(nil)
 					if self.modBtnBs then
-						self:addButtonBorder{obj=bObj, fType=ftype, relTo=bObj.icon, clr="grey"}
+						self:addButtonBorder{obj=bObj, fType=ftype, relTo=bObj.icon, clr="white"}
 					end
 				end
 
