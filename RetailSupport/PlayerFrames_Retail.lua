@@ -2033,6 +2033,16 @@ aObj.SetupRetail_PlayerFrames = function()
 			_G.InspectModelFrame:DisableDrawLayer("BORDER")
 			_G.InspectModelFrame:DisableDrawLayer("OVERLAY")
 			_G.InspectModelFrame.controlFrame:DisableDrawLayer("BACKGROUND")
+			for _, btn in _G.ipairs{_G.InspectPaperDollItemsFrame:GetChildren()} do
+				btn:DisableDrawLayer("BACKGROUND")
+				if self.modBtnBs then
+					if btn ~= _G.InspectPaperDollItemsFrame.InspectTalents then
+						self:addButtonBorder{obj=btn, ibt=true, clr="grey"}
+					else
+						self:skinStdButton{obj=btn, fType=ftype, sechk=true}
+					end
+				end
+			end
 			if self.modBtns then
 				self:skinStdButton{obj=this.ViewButton}
 			end
@@ -2043,16 +2053,6 @@ aObj.SetupRetail_PlayerFrames = function()
 						btn.icon:SetTexture(nil)
 					end
 				end)
-			end
-			for _, btn in _G.ipairs{_G.InspectPaperDollItemsFrame:GetChildren()} do
-				btn:DisableDrawLayer("BACKGROUND")
-				if self.modBtnBs then
-					if btn ~= _G.InspectPaperDollItemsFrame.InspectTalents then
-						self:addButtonBorder{obj=btn, ibt=true, clr="grey"}
-					else
-						self:skinStdButton{obj=btn, fType=ftype, sechk=true}
-					end
-				end
 			end
 
 			self:Unhook(this, "OnShow")
