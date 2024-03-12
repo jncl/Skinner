@@ -1510,8 +1510,6 @@ aObj.blizzFrames[ftype].LFDFrame = function(self)
 		_G.LFDQueueFrameRandomScrollFrameChildFrame.MoneyReward.NameFrame:SetTexture(nil)
 		self:removeMagicBtnTex(_G.LFDQueueFrameFindGroupButton)
 		self:skinObject("scrollbar", {obj=_G.LFDQueueFrame.Specific.ScrollBar, fType=ftype})
-		self:skinObject("scrollbar", {obj=_G.LFDQueueFrame.Follower.ScrollBar, fType=ftype})
-		self:getRegion(_G.LFDQueueFrame.Follower, 3):SetTexture(nil)
 		local function skinDungeonLine(...)
 			local _, element, new
 			if _G.select("#", ...) == 2 then
@@ -1531,7 +1529,6 @@ aObj.blizzFrames[ftype].LFDFrame = function(self)
 			end
 		end
 		_G.ScrollUtil.AddAcquiredFrameCallback(_G.LFDQueueFrame.Specific.ScrollBox, skinDungeonLine, aObj, true)
-		_G.ScrollUtil.AddAcquiredFrameCallback(_G.LFDQueueFrame.Follower.ScrollBox, skinDungeonLine, aObj, true)
 		if self.modBtns then
 			self:skinStdButton{obj=_G.LFDQueueFrameFindGroupButton, schk=true}
 		end
