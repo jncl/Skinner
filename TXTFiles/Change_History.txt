@@ -1,3 +1,23 @@
+beta10.53262.1
+Jncl:
+	Updated ToDo.txt files
+	Updated Change_History.txt
+	Updated version numbers
+	Updated TOC for Classic ERA SoD
+	UPdated AddOn Initialise code
+	Updated TokenFramePopup skin
+	Updated UIButtons skinning code
+	Fix for missing DisabledSkins entries
+	Updated LFGDungeonReady skin
+	Updated LFDReadyCheck skin
+	Updated Collections skin
+	Updated Classic CharacterFrame skin
+	Updated Ace3, Baganator & Questie skins
+	Updated Auctionator & Rematch skins, fixes #56, fixes #58
+	Updated Armory skin, closes #57
+	Skinned BetterBags, closes #59
+	Obsoleted LibTradeSkillScan & LibXUI
+	
 beta10.53162.4
 Jncl:
 	Updated ToDo.txt files
