@@ -3191,46 +3191,6 @@ aObj.SetupRetail_UIFrames = function()
 
 	end
 
-	aObj.blizzFrames[ftype].QueueStatusFrame = function(self)
-		if not self.prdb.QueueStatusFrame or self.initialized.QueueStatusFrame then return end
-		self.initialized.QueueStatusFrame = true
-
-		self:SecureHookScript(_G.QueueStatusFrame, "OnShow", function(this)
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true})
-			-- change the colour of the Entry Separator texture
-			local function clrEntry(frame)
-				local r, g, b, _ = self.bbClr:GetRGBA()
-				for sEntry in frame.statusEntriesPool:EnumerateActive() do
-					sEntry.EntrySeparator:SetColorTexture(r, g, b, 0.75)
-				end
-			end
-			self:SecureHook(_G.QueueStatusFrame, "Update", function(fObj)
-				clrEntry(fObj)
-			end)
-			clrEntry(this)
-
-			-- handle SexyMap's use of AnimationGroups to show and hide frames
-			if self:isAddOnLoaded("SexyMap") then
-				local rtEvt
-				local function checkForAnimGrp()
-					if _G.QueueStatusMinimapButton
-					and _G.QueueStatusMinimapButton.sexyMapFadeOut
-					then
-						rtEvt:Cancel()
-						rtEvt = nil
-						aObj:SecureHookScript(_G.QueueStatusMinimapButton.sexyMapFadeOut, "OnFinished", function(_)
-							_G.QueueStatusFrame.sf:Hide()
-						end)
-					end
-				end
-				rtEvt = _G.C_Timer.NewTicker(0.2, function() checkForAnimGrp() end)
-			end
-
-			self:Unhook(this, "OnShow")
-		end)
-
-	end
-
 	aObj.blizzFrames[ftype].QuickKeybind = function(self)
 		if not self.prdb.BindingUI and not self.prdb.EditMode or self.initialized.QuickKeybind then return end
 		self.initialized.QuickKeybind = true
@@ -3855,7 +3815,6 @@ aObj.SetupRetail_UIFramesOptions = function(self)
 		["PVP Match"]                    = {suff = "Frame"},
 		["Quest Map"]                    = true,
 		["Quest Session"]                = {suff = "Frames"},
-		["Queue Status Frame"]           = true,
 		["Scrapping Machine UI"]         = true,
 		["Soulbinds"]                    = {suff = "Frame"},
 		["Spell Flyout"]                 = true,
