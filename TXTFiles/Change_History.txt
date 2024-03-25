@@ -1,3 +1,19 @@
+beta10.53623.1
+Jncl:
+	Updated ToDo.txt files
+	Updated Change_History.txt
+	Updated version numbers
+	Updated Auctionator, Baganator, Leatrix_Plus, Questie & Rematch skins
+	Updated MinimapButtons for Classic
+	Updated LFDQueueFrame, fixes #61
+	Moved QueueStatusFrame skin as used by All flavours
+	Updated Retail Inspect Frame
+	Updated Classic QuestLog
+	Updated Classic Talents Frame
+	Updated Classic Runes Frame
+	Updated Classic BankFrame
+	Updated Classic AuctionsUI
+	
 beta10.53262.1
 Jncl:
 	Updated ToDo.txt files
