@@ -51,8 +51,8 @@ aObj.libsToSkin.Configator = function(self) -- v 3.4.6987
 				-- self:Debug("Configator_Create_AddControl: [%s, %s, %s, %s, %s, %s]", control, id, cType, column, ...)
 				self:skinObject("frame", {obj=fObj.tabs[id].frame, y1=0})
 				if fObj.tabs[id].scroll then
-					self:skinObject("slider", {obj=this.tabs[id].scroll.hScroll})
-					self:skinObject("slider", {obj=this.tabs[id].scroll.vScroll})
+					self:skinObject("slider", {obj=fObj.tabs[id].scroll.hScroll})
+					self:skinObject("slider", {obj=fObj.tabs[id].scroll.vScroll})
 				end
 				-- skin the DropDown
 				if cType == "Selectbox" then
