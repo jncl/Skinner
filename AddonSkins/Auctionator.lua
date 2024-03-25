@@ -3,7 +3,7 @@ if not aObj:isAddonEnabled("Auctionator") then return end
 local _G = _G
 -- luacheck: ignore 631 (line is too long)
 
-aObj.addonsToSkin.Auctionator = function(self) -- v 10.2.27
+aObj.addonsToSkin.Auctionator = function(self) -- v 10.2.29
 
 	local function skinAuctionatorFrames()
 		if not _G.AuctionatorSellingFrame then
@@ -76,7 +76,6 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 10.2.27
 		aObj:SecureHookScript(_G.AuctionatorShoppingFrame, "OnShow", function(this)
 			this:DisableDrawLayer("BACKGROUND")
 			aObj:skinObject("editbox", {obj=this.SearchOptions.SearchString})
-			-- aObj:skinObject("dropdown", {obj=this.ListDropdown})
 			aObj:removeInset(this.ListsContainer.Inset)
 			aObj:skinObject("scrollbar", {obj=this.ListsContainer.ScrollBar})
 			aObj:removeInset(this.RecentsContainer.Inset)
@@ -84,7 +83,7 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 10.2.27
 				aObj:getChild(this.RecentsContainer.Inset, 1):DisableDrawLayer("BORDER")
 			end
 			aObj:skinObject("scrollbar", {obj=this.RecentsContainer.ScrollBar})
-			aObj:skinObject("frame", {obj=this.ListsContainer, kfs=true, fb=true, x2=1})
+			aObj:skinObject("frame", {obj=this.ListsContainer, kfs=true, fb=true, x1=0, x2=1})
 			if not aObj.isRtl then
 				aObj:getChild(this.ListsContainer.Inset, 1):DisableDrawLayer("BORDER")
 			end
@@ -238,61 +237,58 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 10.2.27
 			end)
 		end
 
+		local function skinHeaders(fObj)
+			for _, child in _G.ipairs{fObj.HeaderContainer:GetChildren()} do
+				aObj:keepRegions(child, {4, 5, 6}) -- N.B. regions 4 is text, 5 is highlight, 6 is arrow
+				aObj:skinObject("frame", {obj=child, kfs=true, ofs=1, x1=-2, x2=2})
+			end
+		end
+
 		local function skinBuyFrame(frame)
-			if aObj.isRtl then
-				frame.Inset.Bg:SetTexture(nil)
-				aObj:removeInset(aObj:getChild(frame.Inset, 1))
-				aObj:skinObject("scrollbar", {obj=frame.SearchResultsListing.ScrollArea.ScrollBar})
-				for _, child in _G.ipairs{frame.SearchResultsListing.HeaderContainer:GetChildren()} do
-					aObj:keepRegions(child, {4, 5, 6}) -- N.B. regions 4 is text, 5 is highlight, 6 is arrow
-					aObj:skinObject("frame", {obj=child, kfs=true, ofs=1, x1=-2, x2=2})
-				end
-				aObj:skinObject("scrollbar", {obj=frame.HistoryResultsListing.ScrollArea.ScrollBar})
-				for _, child in _G.ipairs{frame.HistoryResultsListing.HeaderContainer:GetChildren()} do
-					aObj:keepRegions(child, {4, 5, 6}) -- N.B. regions 4 is text, 5 is highlight, 6 is arrow
-					aObj:skinObject("frame", {obj=child, kfs=true, ofs=1, x1=-2, x2=2})
-				end
-				aObj:skinObject("frame", {obj=frame.BuyDialog, kfs=true, ofs=0})
-				if aObj.modBtns then
-					aObj:skinStdButton{obj=frame.HistoryButton, schk=true}
-					aObj:skinStdButton{obj=frame.RefreshButton, schk=true}
-					aObj:skinStdButton{obj=frame.BuyButton, sechk=true}
-					aObj:skinStdButton{obj=frame.CancelButton, sechk=true}
-					aObj:skinStdButton{obj=frame.BuyDialog.Cancel}
-					aObj:skinStdButton{obj=frame.BuyDialog.BuyStack}
-				end
-			else
-				frame.CurrentPrices.Inset.Bg:SetTexture(nil)
-				aObj:removeInset(aObj:getChild(frame.CurrentPrices.Inset, 1))
-				aObj:skinObject("scrollbar", {obj=frame.CurrentPrices.SearchResultsListing.ScrollArea.ScrollBar})
-				for _, child in _G.ipairs{frame.CurrentPrices.SearchResultsListing.HeaderContainer:GetChildren()} do
-					aObj:keepRegions(child, {4, 5, 6}) -- N.B. regions 4 is text, 5 is highlight, 6 is arrow
-					aObj:skinObject("frame", {obj=child, kfs=true, ofs=1, x1=-2, x2=2})
-				end
-				aObj:skinObject("frame", {obj=frame.CurrentPrices.BuyDialog, kfs=true, ofs=0})
+			if aObj.modBtns then
+				aObj:skinStdButton{obj=frame.HistoryButton, schk=true}
+			end
+			if not aObj.isRtl then
 				frame.HistoryPrices.Inset.Bg:SetTexture(nil)
 				aObj:removeInset(aObj:getChild(frame.HistoryPrices.Inset, 1))
 				aObj:skinObject("scrollbar", {obj=frame.HistoryPrices.RealmHistoryResultsListing.ScrollArea.ScrollBar})
-				for _, child in _G.ipairs{frame.HistoryPrices.RealmHistoryResultsListing.HeaderContainer:GetChildren()} do
-					aObj:keepRegions(child, {4, 5, 6}) -- N.B. regions 4 is text, 5 is highlight, 6 is arrow
-					aObj:skinObject("frame", {obj=child, kfs=true, ofs=1, x1=-2, x2=2})
-				end
+				skinHeaders(frame.HistoryPrices.RealmHistoryResultsListing)
 				aObj:skinObject("scrollbar", {obj=frame.HistoryPrices.PostingHistoryResultsListing.ScrollArea.ScrollBar})
-				for _, child in _G.ipairs{frame.HistoryPrices.PostingHistoryResultsListing.HeaderContainer:GetChildren()} do
-					aObj:keepRegions(child, {4, 5, 6}) -- N.B. regions 4 is text, 5 is highlight, 6 is arrow
-					aObj:skinObject("frame", {obj=child, kfs=true, ofs=1, x1=-2, x2=2})
+				skinHeaders(frame.HistoryPrices.PostingHistoryResultsListing)
+				if aObj.modBtns then
+					aObj:skinStdButton{obj=frame.HistoryPrices.PostingHistoryButton, schk=true}
+					aObj:skinStdButton{obj=frame.HistoryPrices.RealmHistoryButton, schk=true}
 				end
+				if aObj.modChkBtns then
+					aObj:skinCheckButton{obj=frame.CurrentPrices.BuyDialog.ChainBuy.CheckBox}
+				end
+				frame = frame.CurrentPrices
+			else
+				aObj:skinObject("scrollbar", {obj=frame.HistoryResultsListing.ScrollArea.ScrollBar})
+				skinHeaders(frame.HistoryResultsListing)
 			end
+			frame.Inset.Bg:SetTexture(nil)
+			aObj:removeInset(aObj:getChild(frame.Inset, 1))
+			aObj:skinObject("scrollbar", {obj=frame.SearchResultsListing.ScrollArea.ScrollBar})
+			skinHeaders(frame.SearchResultsListing)
+			aObj:skinObject("frame", {obj=frame.BuyDialog, kfs=true, ofs=0})
 			if aObj.modBtns then
-				aObj:skinStdButton{obj=frame.HistoryButton, schk=true}
-				aObj:skinStdButton{obj=frame.CurrentPrices.CancelButton, sechk=true}
-				aObj:skinStdButton{obj=frame.CurrentPrices.BuyButton, schk=true, sechk=true}
-				aObj:skinStdButton{obj=frame.CurrentPrices.RefreshButton, schk=true}
-				aObj:skinStdButton{obj=frame.CurrentPrices.BuyDialog.Cancel}
-				aObj:skinStdButton{obj=frame.CurrentPrices.BuyDialog.BuyStack}
-				aObj:skinStdButton{obj=frame.HistoryPrices.PostingHistoryButton, schk=true}
-				aObj:skinStdButton{obj=frame.HistoryPrices.RealmHistoryButton, schk=true}
+				aObj:skinStdButton{obj=frame.RefreshButton, schk=true}
+				aObj:skinStdButton{obj=frame.BuyButton, sechk=true}
+				aObj:skinStdButton{obj=frame.CancelButton, sechk=true}
+				aObj:skinStdButton{obj=frame.BuyDialog.Cancel}
+				aObj:skinStdButton{obj=frame.BuyDialog.BuyStack, sechk=true}
 			end
+			aObj:SecureHookScript(frame.BuyDialog.WarningDialog, "OnShow", function(fObj)
+				aObj:Debug("WarningDialog OnShow")
+				aObj:skinObject("frame", {obj=fObj, kfs=true, ofs=0})
+				if aObj.modBtns then
+					aObj:skinStdButton{obj=fObj.Stop}
+					aObj:skinStdButton{obj=fObj.BuyStack}
+				end
+
+				aObj:Unhook(fObj, "OnShow")
+			end)
 		end
 		local function skinHdrs(frame)
 			aObj:SecureHook(frame, "UpdateTable", function(this)
@@ -406,13 +402,96 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 10.2.27
 			end)
 		end
 
+		if _G.Auctionator.State.BuyItemFrameRef then
+			aObj:SecureHookScript(_G.Auctionator.State.BuyItemFrameRef, "OnShow", function(this)
+				skinHeaders(this.ResultsListing)
+				aObj:skinObject("scrollbar", {obj=this.ResultsListing.ScrollArea.ScrollBar})
+				aObj:removeInset(this.Inset)
+				aObj:skinObject("frame", {obj=this.ResultsListing.ScrollArea, fb=true})
+				if aObj.modBtns then
+					aObj:skinStdButton{obj=this.BackButton}
+				end
+				if aObj.modBtnBs then
+					aObj:addButtonBorder{obj=this.IconAndName, relTo=this.IconAndName.Icon, clr="grey"}
+					this.IconAndName.sbb:SetBackdropBorderColor(this.IconAndName.QualityBorder:GetVertexColor())
+					this.IconAndName.QualityBorder:SetAlpha(0)
+					aObj:addButtonBorder{obj=aObj:getChild(this, 2), ofs=-2, x1=1, clr="gold"} -- RefreshButton
+				end
+
+				aObj:SecureHookScript(this.BuyDialog, "OnShow", function(fObj)
+					aObj:skinObject("frame", {obj=fObj})
+					if aObj.modBtns then
+						aObj:skinStdButton{obj=fObj.Cancel}
+						aObj:skinStdButton{obj=fObj.Buy}
+					end
+					if aObj.modBtnBs then
+						aObj:addButtonBorder{obj=fObj.IconAndName, relTo=fObj.IconAndName.Icon, clr="grey"}
+						fObj.IconAndName.sbb:SetBackdropBorderColor(fObj.IconAndName.QualityBorder:GetVertexColor())
+						fObj.IconAndName.QualityBorder:SetAlpha(0)
+					end
+
+					aObj:Unhook(fObj, "OnShow")
+				end)
+
+				aObj:Unhook(this, "OnShow")
+			end)
+		end
+
+		if _G.Auctionator.State.BuyCommodityFrameRef then
+			aObj:SecureHookScript(_G.Auctionator.State.BuyCommodityFrameRef, "OnShow", function(this)
+				aObj:skinObject("editbox", {obj=this.DetailsContainer.Quantity})
+				skinHeaders(this.ResultsListing)
+				aObj:skinObject("scrollbar", {obj=this.ResultsListing.ScrollArea.ScrollBar})
+				aObj:removeInset(this.Inset)
+				aObj:skinObject("frame", {obj=this.ResultsListing.ScrollArea, fb=true})
+				if aObj.modBtns then
+					aObj:skinStdButton{obj=this.BackButton}
+					aObj:skinStdButton{obj=this.DetailsContainer.BuyButton, sechk=true}
+				end
+				if aObj.modBtnBs then
+					aObj:addButtonBorder{obj=this.IconAndName, relTo=this.IconAndName.Icon, clr="grey"}
+					this.IconAndName.sbb:SetBackdropBorderColor(this.IconAndName.QualityBorder:GetVertexColor())
+					this.IconAndName.QualityBorder:SetAlpha(0)
+					aObj:addButtonBorder{obj=aObj:getChild(this, 2), ofs=-2, x1=1, clr="gold"} -- RefreshButton
+				end
+
+				aObj:SecureHookScript(this.WidePriceRangeWarningDialog, "OnShow", function(fObj)
+					aObj:skinObject("frame", {obj=fObj})
+					if aObj.modBtns then
+						aObj:skinStdButton{obj=fObj.CancelButton}
+						aObj:skinStdButton{obj=fObj.ContinueButton}
+					end
+
+					aObj:Unhook(fObj, "OnShow")
+				end)
+				aObj:SecureHookScript(this.FinalConfirmationDialog, "OnShow", function(fObj)
+					aObj:skinObject("frame", {obj=fObj})
+					if aObj.modBtns then
+						aObj:skinStdButton{obj=fObj.CancelButton}
+						aObj:skinStdButton{obj=fObj.AcceptButton}
+					end
+
+					aObj:Unhook(fObj, "OnShow")
+				end)
+				aObj:SecureHookScript(this.QuantityCheckConfirmationDialog, "OnShow", function(fObj)
+					aObj:skinObject("editbox", {obj=fObj.QuantityInput})
+					aObj:skinObject("frame", {obj=fObj})
+					if aObj.modBtns then
+						aObj:skinStdButton{obj=fObj.CancelButton}
+						aObj:skinStdButton{obj=fObj.AcceptButton}
+					end
+
+					aObj:Unhook(fObj, "OnShow")
+				end)
+
+				aObj:Unhook(this, "OnShow")
+			end)
+		end
+
 		aObj:SecureHookScript(_G.AuctionatorCancellingFrame, "OnShow", function(this)
 			aObj:skinObject("editbox", {obj=this.SearchFilter, si=true})
 			self:skinObject("scrollbar", {obj=this.ResultsListing.ScrollArea.ScrollBar})
-			for _, child in _G.ipairs{this.ResultsListing.HeaderContainer:GetChildren()} do
-				aObj:keepRegions(child, {4, 5, 6}) -- N.B. regions 4 is text, 5 is highlight, 6 is arrow
-				aObj:skinObject("frame", {obj=child, kfs=true, ofs=1, x1=-2, x2=2})
-			end
+			skinHeaders(this.ResultsListing)
 			if aObj.isRtl then
 				local frame = aObj:getPenultimateChild(this) -- UndercutScan
 				if aObj.modBtns then
