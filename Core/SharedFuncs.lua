@@ -4,18 +4,15 @@ local _G = _G
 -- luacheck: ignore 631 (line is too long)
 
 local buildInfo = {
-	-- Testing
-	-- wow_classic_beta    = {"3.4.0",  46158, "Classic Beta"},
-	-- wow_beta            = {"11.0.0", nnnnn, "Retail Beta"}, -- a.k.a. ?
-	wow_classic_ptr     = {"3.4.3",  52237, "Classic PTR"},
+	-- wow_classic_beta    = {"n.n.n",  nnnnn, "Classic Beta"},
+	-- wow_beta            = {"n.n.n", nnnnn, "Retail Beta"}, -- a.k.a. ?
+	wow_classic         = {"3.4.3",  53788, "Classic"}, -- a.k.a. Wrath of the Lich King Classic
+	wow_classic_era     = {"1.15.1", 53623, "Classic Era"}, -- a.k.a. Season of Discovery
 	wow_classic_era_ptr = {"1.15.1", 53623, "Classic Era PTR"},
-	wow_ptr_x           = {"10.2.0", 52808, "Retail PTRX"}, -- [wowxptr]
+	wow_classic_ptr     = {"3.4.3",  52237, "Classic PTR"},
 	wow_ptr             = {"10.2.5", 53584, "Retail PTR"},
-	-- Live
-	wow_classic_era     = {"1.15.1", 53623, "Classic Era"},
-	wow_classic         = {"3.4.3",  53622, "Classic"}, -- a.k.a. Wrath of the Lich King Classic
-	wow                 = {"10.2.5", 53584, "Retail"},
-	-- Currently playing
+	wow                 = {"10.2.6", 53840, "Retail"},
+	wow_ptr_x           = {"10.2.0", 52808, "Retail PTRX"},
 	curr                = {_G.GetBuildInfo()},
 }
 
