@@ -17,9 +17,12 @@ ToDos
 
 ≈		O	Add checks for Button state as required
 
-≈		O	Refactor NewSkinFuncs in AddOn skinsn
+≈		O	Refactor NewSkinFuncs in AddOn skins
 
 #60	x	I	PetBattleTeams
 	x		Auctionator
+	√	S	OPie
 
-#61	√	I/W	PVEFrame
+#61	√	I/W	Auctioneer
+
+#62	√	I/W	BankFrame
