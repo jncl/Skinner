@@ -4,7 +4,7 @@ if not aObj:isAddonEnabled("Spew") then return end
 aObj.addonsToSkin.Spew = function(self) -- v 3.0.3.5
 
 	self:SecureHookScript(_G.SpewPanel, "OnShow", function(this)
-		self:skinObject("frame", {obj=this, kfs=true, ofs=-9, x2=2})
+		self:skinObject("frame", {obj=this, kfs=true, ofs=-11, x2=0})
 		this:SetFrameLevel(this:GetFrameLevel() + 10)
 		if self.modBtns then
 			self:skinCloseButton{obj=self:getChild(this, 1)}

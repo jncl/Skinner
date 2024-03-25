@@ -3,7 +3,7 @@ if not aObj:isAddonEnabled("Baganator") then return end
 local _G = _G
 -- luacheck: ignore 631 (line is too long)
 
-aObj.addonsToSkin.Baganator = function(self) -- v 0.196
+aObj.addonsToSkin.Baganator = function(self) -- v 216
 
 	local skinBtns, skinBags = _G.nop, _G.nop
 	if self.modBtnBs then
@@ -31,7 +31,7 @@ aObj.addonsToSkin.Baganator = function(self) -- v 0.196
 		end
 	end
 
-	local function skinFrame(frame)
+	local function skinFrame(frame, type)
 		frame:DisableDrawLayer("BORDER")
 		frame:DisableDrawLayer("OVERLAY")
 		if not aObj.isRtl then
@@ -59,6 +59,39 @@ aObj.addonsToSkin.Baganator = function(self) -- v 0.196
 				end
 			end
 		end
+		if aObj.modBtnBs then
+			local method = type == "guild" and "ShowGuild" or "ShowCharacter"
+			for _, layout in _G.pairs(frame.Layouts) do
+				aObj:SecureHook(layout, method, function(fObj)
+					skinBtns(fObj)
+				end)
+			end
+		end
+		if type == "guild" then
+			return
+		end
+		aObj:SecureHook(frame, "UpdateForCharacter", function(fObj, _)
+			for _, bag in _G.ipairs(fObj.CollapsingBags or fObj.CollapsingBankBags) do
+				bag.divider:DisableDrawLayer("BACKGROUND")
+			end
+			if self.modBtnBs then
+				skinBags(fObj)
+			end
+			for _, btn in _G.ipairs(fObj.liveBagSlots or fObj.liveBankBagSlots) do
+				self:addButtonBorder{obj=btn, ibt=true}
+				self:clrButtonFromBorder(btn)
+				if btn.needPurchase then
+					self:clrBBC(btn.sbb, "red")
+				end
+			end
+			for _, btn in _G.ipairs(fObj.cachedBagSlots or fObj.cachedBankBagSlots) do
+				self:addButtonBorder{obj=btn, ibt=true}
+				self:clrButtonFromBorder(btn)
+				if btn.needPurchase then
+					self:clrBBC(btn.sbb, "red")
+				end
+			end
+		end)
 	end
 
 	self:SecureHookScript(_G.Baganator_BackpackViewFrame, "OnShow", function(this)
@@ -73,79 +106,25 @@ aObj.addonsToSkin.Baganator = function(self) -- v 0.196
 			self:skinStdButton{obj=this.GlobalSearchButton}
 			skinBags(this)
 		end
-		if self.modBtnBs then
-			for _, layout in _G.pairs(this.Layouts) do
-				self:SecureHook(layout, "ShowCharacter", function(fObj)
-					skinBtns(fObj)
-				end)
-			end
-		end
 
 		self:SecureHookScript(this.CharacterSelect, "OnShow", function(fObj)
-			fObj.Bg:DisableDrawLayer("BACKGROUND")
-			if not self.isRtl then
-				fObj.TitleContainer.TitleBg:SetTexture(nil)
-			end
 			self:skinObject("editbox", {obj=fObj.SearchBox, si=true})
 			self:skinObject("scrollbar", {obj=fObj.ScrollBar})
-			self:skinObject("frame", {obj=fObj, kfs=true, cb=true})
+			self:skinObject("frame", {obj=fObj, kfs=true, ri=true, cb=true, x2=1})
 
 			self:Unhook(fObj, "OnShow")
-		end)
-		self:SecureHook(this, "UpdateForCharacter", function(fObj, _)
-			for _, bag in _G.ipairs(fObj.CollapsingBags) do
-				bag.divider:DisableDrawLayer("BACKGROUND")
-			end
-			for _, bag in _G.ipairs(fObj.CollapsingBankBags) do
-				bag.divider:DisableDrawLayer("BACKGROUND")
-			end
-			if self.modBtnBs then
-				skinBags(fObj)
-				for _, btn in _G.ipairs(fObj.liveBagSlots) do
-					self:addButtonBorder{obj=btn, ibt=true}
-					self:clrButtonFromBorder(btn)
-				end
-				for _, btn in _G.ipairs(fObj.cachedBagSlots) do
-					self:addButtonBorder{obj=btn, ibt=true}
-					self:clrButtonFromBorder(btn)
-				end
-			end
 		end)
 
 		self:Unhook(this, "OnShow")
 	end)
 
-	self:SecureHookScript(_G.Baganator_BankOnlyViewFrame, "OnShow", function(this)
+	self:SecureHookScript(_G.Baganator_BankViewFrame, "OnShow", function(this)
 		skinFrame(this)
 		if self.modBtns then
 			self:skinStdButton{obj=this.DepositIntoReagentsBankButton}
 			self:skinStdButton{obj=this.BuyReagentBankButton}
 			skinBags(this)
 		end
-		if self.modBtnBs then
-			for _, layout in _G.pairs(this.Layouts) do
-				self:SecureHook(layout, "ShowCharacter", function(fObj)
-					skinBtns(fObj)
-				end)
-			end
-		end
-
-		self:SecureHook(this, "UpdateForCharacter", function(fObj, _)
-			for _, bag in _G.ipairs(fObj.CollapsingBankBags) do
-				bag.divider:DisableDrawLayer("BACKGROUND")
-			end
-			if self.modBtnBs then
-				skinBags(fObj)
-				for _, btn in _G.ipairs(fObj.bankBagSlots) do
-					self:addButtonBorder{obj=btn, ibt=true}
-					if btn.needPurchase then
-						self:clrBBC(btn.sbb, "red")
-					else
-						self:clrBBC(btn.sbb, "grey")
-					end
-				end
-			end
-		end)
 
 		self:Unhook(this, "OnShow")
 	end)
@@ -154,20 +133,13 @@ aObj.addonsToSkin.Baganator = function(self) -- v 0.196
 	and _G.Baganator.Config.Get(_G.Baganator.Config.Options.ENABLE_GUILD_VIEW)
 	then
 		self:SecureHookScript(_G.Baganator_GuildViewFrame, "OnShow", function(this)
-			skinFrame(this)
+			skinFrame(this, "guild")
 			if this.Tabs then
 				for _, tab in _G.pairs(this.Tabs) do
 					tab:DisableDrawLayer("BACKGROUND")
 					if self.modBtnBs then
 						 self:addButtonBorder{obj=tab, relTo=tab.Icon, ofs=3, x2=2}
 					end
-				end
-			end
-			if self.modBtnBs then
-				for _, layout in _G.pairs(this.Layouts) do
-					self:SecureHook(layout, "ShowGuild", function(fObj)
-						skinBtns(fObj)
-					end)
 				end
 			end
 
