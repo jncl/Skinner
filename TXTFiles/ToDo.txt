@@ -19,10 +19,6 @@ ToDos
 
 ≈		O	Refactor NewSkinFuncs in AddOn skins
 
-#60	x	I	PetBattleTeams
-	x		Auctionator
-	√	S	OPie
+#63	√	I/W	Auctioneer
 
-#61	√	I/W	Auctioneer
-
-#62	√	I/W	BankFrame
+#64	√	I/W	BankFrame
