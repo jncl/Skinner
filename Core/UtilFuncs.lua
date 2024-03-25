@@ -17,9 +17,9 @@ local function __adjHeight(opts)
 		obj = object (Mandatory)
 		adj = value to adjust height by
 --]]
-	--@alpha@
+	--@debug@
 	_G.assert(opts.obj, "Missing object aH\n" .. _G.debugstack(2, 3, 2))
-	--@end-alpha@
+	--@end-debug@
 
 	if opts.adj == 0 then return end
 
@@ -35,9 +35,9 @@ function aObj:adjHeight(...) -- luacheck: ignore 212 (unused argument)
 
 	local opts = _G.select(1, ...)
 
-	--@alpha@
+	--@debug@
 	_G.assert(opts, "Missing object aH\n" .. _G.debugstack(2, 3, 2))
-	--@end-alpha@
+	--@end-debug@
 
 	-- handle missing object (usually when addon changes)
 	if not opts then return end
@@ -58,9 +58,9 @@ local function __adjWidth(opts)
 		obj = object (Mandatory)
 		adj = value to adjust width by
 --]]
-	--@alpha@
+	--@debug@
 	_G.assert(opts.obj, "Missing object aW\n" .. _G.debugstack(2, 3, 2))
-	--@end-alpha@
+	--@end-debug@
 
 	if opts.adj == 0 then return end
 
@@ -76,9 +76,9 @@ function aObj:adjWidth(...) -- luacheck: ignore 212 (unused argument)
 
 	local opts = _G.select(1, ...)
 
-	--@alpha@
+	--@debug@
 	_G.assert(opts, "Missing object aW\n" .. _G.debugstack(2, 3, 2))
-	--@end-alpha@
+	--@end-debug@
 
 	-- handle missing object (usually when addon changes)
 	if not opts then return end
@@ -209,9 +209,9 @@ function aObj:capitStr(str) -- luacheck: ignore 212 (unused argument)
 end
 
 function aObj:changeMinusPlusTex(obj, minus) -- luacheck: ignore 212 (unused argument)
-	--@alpha@
+	--@debug@
 	_G.assert(obj, "Unknown object changeMinusPlusTex\n" .. _G.debugstack(2, 3, 2))
-	--@end-alpha@
+	--@end-debug@
 
 	local nTex = obj:GetNormalTexture()
 	nTex:SetTexture(aObj.tFDIDs.mpTex)
@@ -224,9 +224,9 @@ function aObj:changeMinusPlusTex(obj, minus) -- luacheck: ignore 212 (unused arg
 end
 
 function aObj:changeLock(lockObj)
-	--@alpha@
+	--@debug@
 	_G.assert(lockObj, "Unknown object changeLock\n" .. _G.debugstack(2, 3, 2))
-	--@end-alpha@
+	--@end-debug@
 
 	-- Lock button, change texture
 	local tex = lockObj:GetNormalTexture()
@@ -247,10 +247,10 @@ function aObj:changeLock(lockObj)
 end
 
 function aObj:changeShield(shldReg, iconReg)
-	--@alpha@
+	--@debug@
 	_G.assert(shldReg, "Unknown object changeShield\n" .. _G.debugstack(2, 3, 2))
 	_G.assert(iconReg, "Unknown object changeShield\n" .. _G.debugstack(2, 3, 2))
-	--@end-alpha@
+	--@end-debug@
 
 	self:changeTandC(shldReg, self.tFDIDs.shieldTex)
 	shldReg:SetSize(44, 44)
@@ -261,12 +261,12 @@ function aObj:changeShield(shldReg, iconReg)
 end
 
 function aObj:changeTandC(obj, tex)
-	--@alpha@
+	--@debug@
 	_G.assert(obj, "Unknown object changeTandC\n" .. _G.debugstack(2, 3, 2))
 	if tex == self.tFDIDs.lvlBG then
 		self:CustomPrint(1, 0, 0, "changeTandC - Using default texture")
 	end
-	--@end-alpha@
+	--@end-debug@
 
 	obj:SetTexture(tex or self.tFDIDs.lvlBG)
 	obj:SetTexCoord(0, 1, 0, 1)
@@ -277,9 +277,9 @@ function aObj:changeTandC(obj, tex)
 end
 
 function aObj:changeTex(obj, isYellow, isUnitFrame)
-	--@alpha@
+	--@debug@
 	_G.assert(obj, "Unknown object changeTex\n" .. _G.debugstack(2, 3, 2))
-	--@end-alpha@
+	--@end-debug@
 
 	obj:SetTexture(self.tFDIDs.btnTex)
 	if isYellow then
@@ -291,9 +291,9 @@ function aObj:changeTex(obj, isYellow, isUnitFrame)
 end
 
 function aObj:changeTex2SB(obj)
-	--@alpha@
+	--@debug@
 	_G.assert(obj, "Unknown object changeTex2SB\n" .. _G.debugstack(2, 3, 2))
-	--@end-alpha@
+	--@end-debug@
 
 	obj:SetTexture(self.sbTexture)
 	self.sbGlazed[obj] = {}
@@ -302,18 +302,18 @@ end
 
 local errorhandler = _G.geterrorhandler()
 local function safecall(funcName, funcObj, LoD, quiet)
-	--@alpha@
+	--@debug@
 	_G.assert(funcObj, "Unknown object safecall\n" .. _G.debugstack(2, 3, 2))
 	local beginTime = _G.debugprofilestop()
-	--@end-alpha@
+	--@end-debug@
 	-- handle errors from internal functions
 	local success, err = _G.xpcall(function() return funcObj(aObj, LoD) end, errorhandler)
-	--@alpha@
+	--@debug@
 	local timeUsed = _G.Round(_G.debugprofilestop() - beginTime)
 	if timeUsed > 5 then
 		 _G.print("Took " .. timeUsed .. " milliseconds to load " .. funcName)
 	end
-	--@end-alpha@
+	--@end-debug@
 	if quiet then
 		return success, err
 	end
@@ -326,10 +326,10 @@ end
 
 local hadWarning = {}
 function aObj:checkAndRun(funcName, funcType, LoD, quiet)
-	--@alpha@
+	--@debug@
 	_G.assert(funcName, "Unknown functionName checkAndRun\n" .. _G.debugstack(2, 3, 2))
 	_G.assert(funcType, "Unknown functionType checkAndRun\n" .. _G.debugstack(2, 3, 2))
-	--@end-alpha@
+	--@end-debug@
 
 	self:Debug2("checkAndRun: [%s, %s, %s, %s]", funcName, funcType, LoD, quiet)
 
@@ -379,9 +379,9 @@ function aObj:checkAndRun(funcName, funcType, LoD, quiet)
 end
 
 function aObj:checkAndRunAddOn(addonName, addonFunc, LoD)
-	--@alpha@
+	--@debug@
 	_G.assert(addonName, "Unknown object checkAndRunAddOn\n" .. _G.debugstack(2, 3, 2))
-	--@end-alpha@
+	--@end-debug@
 
 	self:Debug2("checkAndRunAddOn #1: [%s, %s, %s, %s]", addonName, addonFunc, LoD, _G.type(addonFunc))
 
@@ -440,9 +440,9 @@ end
 
 local getAddOnInfo = _G.GetAddOnInfo or _G.C_AddOns.GetAddOnInfo
 function aObj:checkLoadable(addonName)
-	--@alpha@
+	--@debug@
 	_G.assert(addonName, "Unknown object checkLoadable\n" .. _G.debugstack(2, 3, 2))
-	--@end-alpha@
+	--@end-debug@
 
 	local _, _, _, loadable, reason, _, _ = getAddOnInfo(addonName)
 	if not loadable then
@@ -554,9 +554,9 @@ function aObj:findFrame(height, width, children) -- luacheck: ignore 212 (unused
 end
 
 function aObj:findFrame2(parent, objType, ...) -- luacheck: ignore 212 (unused argument)
-	--@alpha@
+	--@debug@
 	_G.assert(parent, "Unknown object findFrame2\n" .. _G.debugstack(2, 3, 2))
-	--@end-alpha@
+	--@end-debug@
 
 	if not parent then return end
 
@@ -603,9 +603,9 @@ function aObj:findFrame2(parent, objType, ...) -- luacheck: ignore 212 (unused a
 end
 
 function aObj:getChild(obj, childNo) -- luacheck: ignore 212 (unused argument)
-	--@alpha@
+	--@debug@
 	_G.assert(obj, "Unknown object getChild\n" .. _G.debugstack(2, 3, 2))
-	--@end-alpha@
+	--@end-debug@
 
 	if obj and childNo then return (_G.select(childNo, obj:GetChildren())) end
 
@@ -664,11 +664,11 @@ function aObj:getGradientInfo(invert, rotate)
 end
 
 function aObj:getInt(num) -- luacheck: ignore 212 (unused argument)
-	--@alpha@
+	--@debug@
 	_G.assert(num, "Missing number\n" .. _G.debugstack(2, 3, 2))
 	-- handle AddOn skins still using this code rather than _G.Round
 	aObj:CustomPrint(1, 0, 0, "Using deprecated function - getInt, use _G.Round instead", _G.debugstack(2, 3, 2))
-		--@end-alpha@
+		--@end-debug@
 
 	return _G.math.floor(num + 0.5)
 
@@ -706,40 +706,40 @@ function aObj:getLastRegion(obj)
 end
 
 function aObj:getRegion(obj, regNo) -- luacheck: ignore 212 (unused argument)
-	--@alpha@
+	--@debug@
 	_G.assert(obj, "Unknown object getRegion\n" .. _G.debugstack(2, 3, 2))
 	_G.assert(regNo, "Missing value getRegion\n" .. _G.debugstack(2, 3, 2))
-	--@end-alpha@
+	--@end-debug@
 
 	if obj and regNo then return (_G.select(regNo, obj:GetRegions())) end
 
 end
 
 function aObj:hasTextInName(obj, text) -- luacheck: ignore 212 (unused argument)
-	--@alpha@
+	--@debug@
 	_G.assert(obj, "Unknown object hasTextInName\n" .. _G.debugstack(2, 3, 2))
 	_G.assert(text, "Missing value hasTextInName\n" .. _G.debugstack(2, 3, 2))
-	--@end-alpha@
+	--@end-debug@
 
 	return obj and obj.GetName and obj:GetName() and obj:GetName():find(text, 1, true) and true or false
 
 end
 
 function aObj:hasTextInDebugNameRE(obj, text) -- luacheck: ignore 212 (unused argument)
-	--@alpha@
+	--@debug@
 	_G.assert(obj, "Unknown object hasTextInName\n" .. _G.debugstack(2, 3, 2))
 	_G.assert(text, "Missing value hasTextInName\n" .. _G.debugstack(2, 3, 2))
-	--@end-alpha@
+	--@end-debug@
 
 	return obj and obj.GetDebugName and obj:GetDebugName() and obj:GetDebugName():find(text) and true or false
 
 end
 
 function aObj:hasAnyTextInName(obj, tab) -- luacheck: ignore 212 (unused argument)
-	--@alpha@
+	--@debug@
 	_G.assert(obj, "Unknown object hasAnyTextInName\n" .. _G.debugstack(2, 3, 2))
 	_G.assert(tab, "Missing value hasAnyTextInName\n" .. _G.debugstack(2, 3, 2))
-	--@end-alpha@
+	--@end-debug@
 
 	if obj
 	and obj.GetName
@@ -758,10 +758,10 @@ function aObj:hasAnyTextInName(obj, tab) -- luacheck: ignore 212 (unused argumen
 end
 
 function aObj:hasTextInTexture(obj, text) -- luacheck: ignore 212 (unused argument)
-	--@alpha@
+	--@debug@
 	_G.assert(obj, "Unknown object hasTextInTexture\n" .. _G.debugstack(2, 3, 2))
 	_G.assert(text, "Missing value hasTextInTexture\n" .. _G.debugstack(2, 3, 2))
-	--@end-alpha@
+	--@end-debug@
 
 	return obj and obj.GetTexture and obj:GetTexture() and _G.tostring(obj:GetTexture()):find(text, 1, true) and true or false
 
@@ -830,9 +830,9 @@ function aObj:hookScript(obj, method, func)
 end
 
 function aObj:isAddOnLoaded(addonName) -- luacheck: ignore 212 (unused argument)
-	--@alpha@
+	--@debug@
 	_G.assert(addonName, "Unknown object isAddOnLoaded\n" .. _G.debugstack(2, 3, 2))
-	--@end-alpha@
+	--@end-debug@
 
 	if _G.IsAddOnLoaded then
 		return _G.IsAddOnLoaded(addonName)
@@ -843,9 +843,9 @@ function aObj:isAddOnLoaded(addonName) -- luacheck: ignore 212 (unused argument)
 end
 
 function aObj:isAddOnLoadOnDemand(addonName) -- luacheck: ignore 212 (unused argument)
-	--@alpha@
+	--@debug@
 	_G.assert(addonName, "Unknown object isAddOnLoadOnDemand\n" .. _G.debugstack(2, 3, 2))
-	--@end-alpha@
+	--@end-debug@
 
 	if _G.IsAddOnLoadOnDemand then
 		return _G.IsAddOnLoadOnDemand(addonName)
@@ -856,9 +856,9 @@ function aObj:isAddOnLoadOnDemand(addonName) -- luacheck: ignore 212 (unused arg
 end
 
 function aObj:isAddonEnabled(addonName)
-	--@alpha@
+	--@debug@
 	_G.assert(addonName, "Unknown object isAddonEnabled\n" .. _G.debugstack(2, 3, 2))
-	--@end-alpha@
+	--@end-debug@
 
 	if _G.GetAddOnEnableState then
 		return _G.GetAddOnEnableState(self.uName, addonName) == 2 and true or false
@@ -869,9 +869,9 @@ function aObj:isAddonEnabled(addonName)
 end
 
 function aObj:isDropDown(obj)
-	--@alpha@
+	--@debug@
 	_G.assert(obj, "Unknown object isDropDown\n" .. _G.debugstack(2, 3, 2))
-	--@end-alpha@
+	--@end-debug@
 
 	if obj:IsObjectType("Frame") then
 		local chkObj = obj.Left or obj:GetName() and _G[obj:GetName() .. "Left"]
@@ -888,9 +888,9 @@ function aObj:isDropDown(obj)
 end
 
 function aObj:keepFontStrings(obj, hide) -- luacheck: ignore 212 (unused argument)
-	--@alpha@
+	--@debug@
 	_G.assert(obj, "Missing object kFS\n" .. _G.debugstack(2, 3, 2))
-	--@end-alpha@
+	--@end-debug@
 
 	for _, reg in _G.ipairs{obj:GetRegions()} do
 		if not reg:IsObjectType("FontString") then
@@ -905,9 +905,9 @@ function aObj:keepFontStrings(obj, hide) -- luacheck: ignore 212 (unused argumen
 end
 
 function aObj:keepRegions(obj, regions)
-	--@alpha@
+	--@debug@
 	_G.assert(obj, "Missing object kR\n" .. _G.debugstack(2, 3, 2))
-	--@end-alpha@
+	--@end-debug@
 
 	local tmpTab = self:getKeys(regions) or {}
 	for key, reg in _G.ipairs{obj:GetRegions()} do
@@ -925,9 +925,9 @@ function aObj:keepRegions(obj, regions)
 end
 
 function aObj:makeMFRotatable(modelFrame)
-	--@alpha@
+	--@debug@
 	_G.assert(modelFrame and modelFrame:IsObjectType("PlayerModel"), "Not a PlayerModel\n" .. _G.debugstack(2, 3, 2))
-	--@end-alpha@
+	--@end-debug@
 
 	-- Don't make Model Frames Rotatable if CloseUp is loaded
 	if self:isAddOnLoaded("CloseUp") then return end
@@ -983,9 +983,9 @@ local function __moveObject(opts)
 	if not point then return end
 
 	relTo = opts.relTo or relTo
-	--@alpha@
+	--@debug@
 	_G.assert(relTo, "__moveObject relTo is nil\n" .. _G.debugstack(2, 3, 2))
-	--@end-alpha@
+	--@end-debug@
 	-- Workaround for relativeTo crash
 	if not relTo then
 		if aObj.prdb.Warnings then
@@ -1007,9 +1007,9 @@ function aObj:moveObject(...) -- luacheck: ignore 212 (unused argument)
 
 	local opts = _G.select(1, ...)
 
-	--@alpha@
+	--@debug@
 	_G.assert(opts, "Missing object mO\n" .. _G.debugstack(2, 3, 2))
-	--@end-alpha@
+	--@end-debug@
 
 	-- handle missing object (usually when addon changes)
 	if not opts then return end
@@ -1104,9 +1104,9 @@ local function ddlBBO(frame)
 	frame:DisableDrawLayer("OVERLAY")
 end
 function aObj:removeInset(frame) -- luacheck: ignore 212 (unused argument)
-	--@alpha@
+	--@debug@
 	_G.assert(frame, "Unknown object removeInset\n" .. _G.debugstack(2, 3, 2))
-	--@end-alpha@
+	--@end-debug@
 
 	ddlBBO(frame)
 	-- InsetFrameTemplate has a NineSlice child
@@ -1117,9 +1117,9 @@ function aObj:removeInset(frame) -- luacheck: ignore 212 (unused argument)
 end
 
 function aObj:removeMagicBtnTex(btn) -- luacheck: ignore 212 (unused argument)
-	--@alpha@
+	--@debug@
 	_G.assert(btn, "Unknown object removeMagicBtnTex\n" .. _G.debugstack(2, 3, 2))
-	--@end-alpha@
+	--@end-debug@
 
 	-- Magic Button textures
 	if btn.LeftSeparator then btn.LeftSeparator:SetTexture(nil) end
@@ -1128,18 +1128,18 @@ function aObj:removeMagicBtnTex(btn) -- luacheck: ignore 212 (unused argument)
 end
 
 function aObj:removeNineSlice(frame) -- luacheck: ignore 212 (unused argument)
-	--@alpha@
+	--@debug@
 	_G.assert(frame, "Unknown object removeNineSlice\n" .. _G.debugstack(2, 3, 2))
-	--@end-alpha@
+	--@end-debug@
 
 	ddlBBO(frame)
 
 end
 
 function aObj:removeRegions(obj, regions)
-	--@alpha@
+	--@debug@
 	_G.assert(obj, "Missing object (removeRegions)\n" .. _G.debugstack(2, 3, 2))
-	--@end-alpha@
+	--@end-debug@
 
 	local tmpTab = self:getKeys(regions) or {}
 	for key, reg in _G.pairs{obj:GetRegions()} do
@@ -1157,9 +1157,9 @@ function aObj:removeRegions(obj, regions)
 end
 
 function aObj:resizeTabs(frame) -- luacheck: ignore 212 (unused argument)
-	--@alpha@
+	--@debug@
 	_G.assert(frame, "Unknown object resizeTabs\n" .. _G.debugstack(2, 3, 2))
-	--@end-alpha@
+	--@end-debug@
 
 	local tabName, nT, tTW, fW, tLW
 	tabName = frame:GetName() .. "Tab"
@@ -1187,9 +1187,9 @@ function aObj:resizeTabs(frame) -- luacheck: ignore 212 (unused argument)
 end
 
 function aObj:resizeEmptyTexture(texture)
-	--@alpha@
+	--@debug@
 	_G.assert(texture, "Unknown object resizeEmptyTexture\n" .. _G.debugstack(2, 3, 2))
-	--@end-alpha@
+	--@end-debug@
 
 	texture:SetTexture(self.tFDIDs.esTex)
 	texture:SetSize(64, 64)
@@ -1200,18 +1200,18 @@ function aObj:resizeEmptyTexture(texture)
 end
 
 function aObj:rmRegionsTex(obj, regions)
-	--@alpha@
+	--@debug@
 	aObj:CustomPrint(1, 0, 0, "Using deprecated function - rmRegionsTex, use removeRegions(obj, regions) instead", obj)
-	--@end-alpha@
+	--@end-debug@
 
 	self:removeRegions(obj, regions)
 
 end
 
 function aObj:round2(num, idp) -- luacheck: ignore 212 (unused argument)
-	--@alpha@
+	--@debug@
 	_G.assert(num, "Missing number\n" .. _G.debugstack(2, 3, 2))
-	--@end-alpha@
+	--@end-debug@
 
   return _G.tonumber(_G.string.format("%." .. (idp or 0) .. "f", num))
 
@@ -1259,9 +1259,9 @@ function aObj:secureHookScript(obj, method, func)
 end
 
 function aObj:setActiveTab(tabSF)
-	--@alpha@
+	--@debug@
 	_G.assert(tabSF, "Missing object sAT\n" .. _G.debugstack(2, 3, 2))
-	--@end-alpha@
+	--@end-debug@
 
 	if not tabSF then return end
 	if not tabSF.tfade then return end
@@ -1272,9 +1272,9 @@ function aObj:setActiveTab(tabSF)
 end
 
 function aObj:setInactiveTab(tabSF)
-	--@alpha@
+	--@debug@
 	_G.assert(tabSF, "Missing object sIT\n" .. _G.debugstack(2, 3, 2))
-	--@end-alpha@
+	--@end-debug@
 
 	if not tabSF then return end
 	if not tabSF.tfade then return end
@@ -1518,7 +1518,7 @@ function aObj:RaiseFrameLevelByFour(frame) -- luacheck: ignore 212 (unused argum
 
 end
 
---@alpha@
+--@debug@
 function aObj:SetupCmds()
 
 	local function makeString(obj)
@@ -1684,4 +1684,4 @@ function aObj:SetupCmds()
 	self:RegisterChatCommand("tad", function(frame) loadAddOn("Blizzard_DebugTools"); _G.TableAttributeDisplay:InspectTable(_G[frame] or _G.GetMouseFocus()); _G.TableAttributeDisplay:Show() end)
 
 end
---@end-alpha@
+--@end-debug@

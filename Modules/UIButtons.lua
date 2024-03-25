@@ -87,9 +87,9 @@ local function __checkTex(opts)
 		nTex = Texture
 		mp2 = minus/plus type 2
 --]]
-	--@alpha@
+	--@debug@
 	 _G.assert(opts.obj, "Missing object __cT\n" .. _G.debugstack(2, 3, 2))
-	 --@end-alpha@
+	 --@end-debug@
 
 	 -- handle in combat
 	 if _G.InCombatLockdown() then
@@ -138,9 +138,9 @@ function module:checkTex(...) -- luacheck: ignore 212 (unused argument)
 
 	local opts = _G.select(1, ...)
 
-	--@alpha@
+	--@debug@
 	 _G.assert(opts, "Missing object cT\n" .. _G.debugstack(2, 3, 2))
-	 --@end-alpha@
+	 --@end-debug@
 
 	-- handle missing object (usually when addon changes)
 	if not opts then return end
@@ -225,9 +225,9 @@ function module:clrButtonFromBorder(bObj, texture)
 		return
 	end
 
-	--@alpha@
+	--@debug@
 	 _G.assert(bObj.sbb, "Missing object__cBB\n" .. _G.debugstack(2, 3, 2))
-	--@end-alpha@
+	--@end-debug@
 
 	local iBdr = bObj[texture] or bObj.IconBorder or bObj.iconBorder
 	iBdr:SetAlpha(1) -- ensure alpha is 1 otherwise btn.sbb isn't displayed
@@ -335,9 +335,9 @@ function module:skinCloseButton(opts)
 		font    = font to use
 		disfont = disabled font to use
 --]]
-	--@alpha@
+	--@debug@
 	_G.assert(opts.obj, "Missing object skinCloseButton\n" .. _G.debugstack(2, 3, 2))
-	--@end-alpha@
+	--@end-debug@
 
 	-- handle in combat
 	if _G.InCombatLockdown() then
@@ -347,12 +347,12 @@ function module:skinCloseButton(opts)
 
 	aObj:keepFontStrings(opts.obj)
 
-	--@alpha@
+	--@debug@
 	-- skin GlowBox frame
 	if opts.obj:GetParent().GlowTop then
 		 _G.assert(opts.noSkin, "GlowBox should be skinned" .. _G.debugstack(2, 3, 2))
 	end
-	--@end-alpha@
+	--@end-debug@
 
 	-- don't skin button if required
 	if not opts.noSkin then
@@ -428,9 +428,9 @@ function module:skinExpandButton(opts)
 		plus   = use plus sign
 		clr    = border colour
 --]]
-	--@alpha@
+	--@debug@
 	_G.assert(opts.obj, "Missing object skinExpandButton\n" .. _G.debugstack(2, 3, 2))
-	--@end-alpha@
+	--@end-debug@
 
 	-- handle in combat
 	if _G.InCombatLockdown() then
@@ -501,10 +501,10 @@ function module:skinOtherButton(opts)
 		disfont = disabled font to use
 		text    = text to use
 --]]
-	--@alpha@
+	--@debug@
 	_G.assert(opts.obj, "Missing object skinOtherButton\n" .. _G.debugstack(2, 3, 2))
 	_G.assert(opts.text, "Missing text to use skinOtherButton\n" .. _G.debugstack(2, 3, 2))
-	--@end-alpha@
+	--@end-debug@
 
 	-- handle in combat
 	if _G.InCombatLockdown() then
@@ -590,9 +590,9 @@ function module:skinStdButton(opts)
 		sechk       = set enabled check for colour changes
 		bd			= backdrop type
 --]]
-	--@alpha@
+	--@debug@
 	_G.assert(opts.obj, "Missing object skinStdButton\n" .. _G.debugstack(2, 3, 2))
-	--@end-alpha@
+	--@end-debug@
 
 	-- handle in combat
 	if _G.InCombatLockdown() then
@@ -668,11 +668,11 @@ function module:skinButton(opts) -- luacheck: ignore 212 (unused argument)
 		other options as per addSkinButton
 		nc = don't check to see if already skinned (Ace3)
 --]]
-	--@alpha@
+	--@debug@
 	_G.assert(opts.obj, "Missing object skinButton\n" .. _G.debugstack(2, 3, 2))
 	aObj:CustomPrint(1, 0, 0, "Not using a specific Button skinning function", opts.obj, opts.cb)
 	if not opts.obj:GetName() then _G.print("No Name supplied __sB\n", _G.debugstack(2, 5, 2)) end
-	--@end-alpha@
+	--@end-debug@
 
 	if not opts.obj then return end
 
@@ -714,11 +714,11 @@ local function __skinAllButtons(opts, bgen)
 		bgen = generations of children to traverse
 		other options as per skinButton
 --]]
-	--@alpha@
+	--@debug@
 	_G.assert(opts.obj, "Missing object__sAB\n" .. _G.debugstack(2, 3, 2))
 	-- handle AddOn skins still using this code
 	aObj:CustomPrint(1, 0, 0, "Using deprecated function - skinAllButtons", opts.obj)
-	--@end-alpha@
+	--@end-debug@
 	if not opts.obj then return end
 
 	-- maximum number of button generations to traverse
@@ -751,11 +751,11 @@ function module:skinAllButtons(...) -- luacheck: ignore 212 (unused argument)
 
 	local opts = _G.select(1, ...)
 
-	--@alpha@
+	--@debug@
 	 _G.assert(opts, "Missing object sAB\n" .. _G.debugstack(2, 3, 2))
 	-- handle AddOn skins still using this code rather than skinning button individually
 	aObj:CustomPrint(1, 0, 0, "Using deprecated function - skinAllButtons, use skin???Button instead", opts.obj)
-	--@end-alpha@
+	--@end-debug@
 
 	-- handle missing object (usually when addon changes)
 	if not opts then return end
@@ -801,7 +801,7 @@ local function __addButtonBorder(opts)
 		sechk    = set enabled check for colour changes
 		ignTex	 = ignore changes to Normal & Pushed textures
 --]]
-	--@alpha@
+	--@debug@
 	 _G.assert(opts.obj, "Missing object__aBB\n" .. _G.debugstack(2, 3, 2))
 	-- handle AddOn skins using deprecated options
 	 if opts.seca
@@ -811,7 +811,7 @@ local function __addButtonBorder(opts)
 	 elseif opts.sec then
 		aObj:CustomPrint(1, 0, 0, "Using deprecated options - sec, use sft instead", opts.obj)
 	end
-	--@end-alpha@
+	--@end-debug@
 	if not opts.obj then
 		return
 	end
@@ -963,9 +963,9 @@ function module:addButtonBorder(...) -- luacheck: ignore 212 (unused argument)
 
 	local opts = _G.select(1, ...)
 
-	--@alpha@
+	--@debug@
 	 _G.assert(opts, "Missing object sAB\n" .. _G.debugstack(2, 3, 2))
-	 --@end-alpha@
+	 --@end-debug@
 
 	-- handle missing object (usually when addon changes)
 	if not opts then return end
@@ -986,9 +986,9 @@ local function __skinCheckButton(opts)
 		nc  = don't check to see if already skinned
 		hf  = hook show/hide functions
 --]]
-	--@alpha@
+	--@debug@
 	 _G.assert(opts.obj, "Missing object __sCB\n" .. _G.debugstack(2, 3, 2))
-	 --@end-alpha@
+	 --@end-debug@
 
 	 -- handle in combat
 	 if _G.InCombatLockdown() then
@@ -1035,9 +1035,9 @@ function module:skinCheckButton(...) -- luacheck: ignore 212 (unused argument)
 
 	local opts = _G.select(1, ...)
 
-	--@alpha@
+	--@debug@
 	 _G.assert(opts, "Missing object sCB\n" .. _G.debugstack(2, 3, 2))
-	 --@end-alpha@
+	 --@end-debug@
 
 	-- handle missing object (usually when addon changes)
 	if not opts then return end

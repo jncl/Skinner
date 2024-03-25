@@ -3,7 +3,7 @@ local _, aObj = ...
 local _G = _G
 -- luacheck: ignore 631 (line is too long)
 
---@alpha@
+--@debug@
 local index = {}
 local mt = {
 	__index = function (t, k)
@@ -27,7 +27,7 @@ end
 local function untrack (t)
 	return t[index]
 end
---@end-alpha@
+--@end-debug@
 
 local addonSkins = {
 	"BindPad", "BossNotes", "BossNotes_PersonalNotes", "BuyEmAll",
@@ -63,7 +63,7 @@ for i = 1, #lodFrames do
 	end
 end
 
---@alpha@
+--@debug@
 aObj.addonsToSkin = track(aObj.addonsToSkin)
 aObj.libsToSkin   = track(aObj.libsToSkin)
 aObj.otherAddons  = track(aObj.otherAddons)
@@ -75,7 +75,7 @@ aObj.RegisterCallback("AddonFrames", "AddOn_OnInitialize", function()
 	aObj.lodAddons    = untrack(aObj.lodAddons)
 	aObj.UnregisterCallback("AddonFrames", "AddOn_OnInitialize")
 end)
---@end-alpha@
+--@end-debug@
 
 local function skinLibs()
 	for libName, skinFunc in _G.pairs(aObj.libsToSkin) do
