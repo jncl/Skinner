@@ -4,21 +4,12 @@ local _G = _G
 -- luacheck: ignore 631 (line is too long)
 
 do
-	-- check to see if required libraries are loaded
-	_G.assert(_G.LibStub, aName .. " requires LibStub")
-	local lTab = {"AceAddon-3.0", "AceConfig-3.0", "AceConfigCmd-3.0", "AceConfigDialog-3.0", "AceConfigRegistry-3.0", "AceConsole-3.0", "AceDB-3.0", "AceDBOptions-3.0", "AceEvent-3.0", "AceGUI-3.0", "AceHook-3.0", "AceLocale-3.0", "CallbackHandler-1.0", "LibDataBroker-1.1", "LibDBIcon-1.0", "LibSharedMedia-3.0"}
-	local hasError
-	for _, lib in _G.pairs(lTab) do
-		hasError = not _G.assert(_G.LibStub:GetLibrary(lib, true), aName .. " requires " .. lib)
-	end
-	if hasError then
+	if aObj:checkLibraries({"LibSharedMedia-3.0", "LibDBIcon-1.0"}) then
+		-- create the addon and make it available in the Global namespace (Ara-Broker-... addons use it by name if available)
+		aObj:createAddOn(true)
+	else
 		return
 	end
-
-	-- create the addon and make it available in the Global namespace (Ara-Broker-... addons use it by name if available)
-	_G.Skinner = _G.LibStub:GetLibrary("AceAddon-3.0"):NewAddon(aObj, aName, "AceConsole-3.0", "AceEvent-3.0", "AceHook-3.0")
-
-	aObj:checkVersion()
 
 	-- define tables to hold skin functions
 	aObj.blizzFrames = {p = {}, n = {}, u = {}, opt = {}}
@@ -29,21 +20,6 @@ do
 
 	-- store player name (done here to fix enabled addon check)
 	aObj.uName = _G.UnitName("player")
-
-	-- setup callback registry
-	aObj.callbacks = _G.LibStub:GetLibrary("CallbackHandler-1.0"):New(aObj)
-
-	--@alpha@
-	local function handleEvent(event, addonName, addonFunc)
-		aObj:Debug(event, addonName, addonFunc, _G.debugstack(3))
-	end
-	aObj:RegisterEvent("ADDON_ACTION_BLOCKED", function(...)
-		handleEvent(...)
-	end)
-	aObj:RegisterEvent("ADDON_ACTION_FORBIDDEN", function(...)
-		handleEvent(...)
-	end)
-	--@end-alpha@
 
 end
 
@@ -284,6 +260,12 @@ end
 
 function aObj:OnEnable()
 
+	--@debug@
+	if self.isPatch then
+		_G.message("Runnning as a Patched version, please update Shared_Funcs variable")
+	end
+	--@end-debug@
+
 	self.oocTab = {}
 	self:RegisterEvent("PLAYER_REGEN_ENABLED", function()
 		for _, entry in _G.ipairs(self.oocTab) do
@@ -482,9 +464,9 @@ function aObj:OnEnable()
 		end)
 	end
 
-	--@alpha@
+	--@debug@
 	self:SetupCmds()
-	--@end-alpha@
+	--@end-debug@
 
 end
 

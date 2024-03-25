@@ -23,7 +23,7 @@ local function getTOCVer(ver)
 	local n1, n2, n3 = _G.string.match(buildInfo[ver][1], "(%d+).(%d+).(%d)")
 	return n1 * 10000 + n2 * 100 + n3
 end
-function aObj:checkVersion()
+function aObj:checkWoWVersion()
 
 	local agentUID = _G.C_CVar.GetCVar("agentUID")
 	-- handle different country versions, e.g. wow_enus
@@ -38,7 +38,7 @@ function aObj:checkVersion()
 		end
 	end
 	--@debug@
-	self:Debug("checkVersion#0: [%s, %s, %s, %d, %s, %d, %s]", agentUID, _G.WOW_PROJECT_ID, _G.GetBuildInfo())
+	self:Debug("checkVersion#1: [%s, %d, %d, %s, %d, %s, %d]", agentUID, _G.WOW_PROJECT_ID, _G.LE_EXPANSION_LEVEL_CURRENT, _G.GetBuildInfo())
 	--@end-debug@
 
 	-- check to see which WoW version we are running on
@@ -52,23 +52,14 @@ function aObj:checkVersion()
 	self.isRtlPTRX    = agentUID == "wow_ptr_x" and true
 	self.isRtl        = agentUID == "wow" and true
 	--@debug@
-	self:Debug("checkVersion#1: [%s, %s, %s, %s, %s, %s, %s, %s, %s]", self.isClscBeta, self.isClscPTR, self.isClsc, self.isClscERAPTR, self.isClscERA, self.isRtlBeta, self.isRtlPTR, self.isRtlPTRX, self.isRtl)
+	self:Debug("checkVersion#2: [%s, %s, %s, %s, %s, %s, %s, %s, %s]", self.isClscBeta, self.isClscPTR, self.isClsc, self.isClscERAPTR, self.isClscERA, self.isRtlBeta, self.isRtlPTR, self.isRtlPTRX, self.isRtl)
 	--@end-debug@
 
 	self.tocVer = getTOCVer(agentUID)
 	-- check current version or build number against current wow version info, if greater then it's a patch
 	self.isPatch = (buildInfo.curr[4] > self.tocVer) or (_G.tonumber(buildInfo.curr[2]) > _G.tonumber(buildInfo[agentUID][2]))
 
-	--@alpha@
-	self:Printf("%s, %d, %d, %s, %d, %s, %d, %s", buildInfo[agentUID][1], buildInfo[agentUID][2], self.tocVer, buildInfo.curr[1], buildInfo.curr[2], buildInfo.curr[3], buildInfo.curr[4] , agentUID)
-	local vType = self.isPatch and buildInfo[agentUID][3] .. " (Patched)" or buildInfo[agentUID][3]
-	_G.DEFAULT_CHAT_FRAME:AddMessage(aName .. ": Detected that we're running on a " .. vType .. " version", 0.75, 0.5, 0.25, nil, true)
-	--@debug@
-	self:Debug(vType .. " detected, ")
-	--@end-debug@
-	--@end-alpha@
-
-	-- handle Beta changes in PTR or Live
+	-- handle Classic Beta changes in PTR or Live
 	-- self.isClscBeta   = self.isClscBeta or self.isClscPTR and self.isPatch
 	-- indicate we're on ClassicPTR if on Classic Beta
 	-- self.isClscPTR    = self.isClscPTR or self.isClscBeta
@@ -76,28 +67,68 @@ function aObj:checkVersion()
 	self.isClsc       = self.isClsc or self.isClscPTR
 	-- indicate we're on ClassicERA if on Classic ERA PTR
 	self.isClscERA    = self.isClscERA  or self.isClscERAPTR
-	-- handle Beta changes in PTR or Live
+	-- handle Retail Beta changes in PTR or Live
 	-- self.isRtlBeta    = self.isRtlBeta or self.isRtlPTR and self.isPatch
 	-- indicate we're on Retail PTR if on Retail Beta
 	-- self.isRtlPTR     = self.isRtlPTR or self.isRtlBeta
 	-- indicate we're on Retail if on Retail PTR
 	self.isRtl        = self.isRtl or self.isRtlPTR or self.isRtlPTRX
-	-- handle PTR changes going Live
+	-- handle Classic or Retail PTR changes going Live
 	-- self.isClscPTR    = self.isClscPTR or self.isClsc and self.isPatch
 	-- self.isClscERAPTR = self.isClscERAPTR or self.isClscERA and self.isPatch
 	-- self.isRtlPTR     = self.isRtlPTR or self.isRtl and self.isPatch
 	-- self.isRtlPTRX    = self.isRtlPTRX or self.isRtl and self.isPatch
 	--@debug@
-	-- self:Debug("checkVersion#2: [%s, %s, %s, %s, %s, %s, %s, %s, %s, %s]", self.isClscBeta, self.isClscPTR, self.isClsc, self.isClscERAPTR, self.isClscERA, self.isRtlBeta, self.isRtlPTR, self.isRtlPTRX, self.isRtl, self.isPatch)
+	self:Debug("checkVersion#3: [%s, %s, %s, %s, %s, %s, %s, %s, %s, %s]", self.isClscBeta, self.isClscPTR, self.isClsc, self.isClscERAPTR, self.isClscERA, self.isRtlBeta, self.isRtlPTR, self.isRtlPTRX, self.isRtl, self.isPatch)
+	--@end-debug@
+
+	--@debug@
+	self:Printf("%s, %d, %d, %s, %d, %s, %d, %s", buildInfo[agentUID][1], buildInfo[agentUID][2], self.tocVer, buildInfo.curr[1], buildInfo.curr[2], buildInfo.curr[3], buildInfo.curr[4] , agentUID)
+	local vType = self.isPatch and buildInfo[agentUID][3] .. " (Patched)" or buildInfo[agentUID][3]
+	_G.DEFAULT_CHAT_FRAME:AddMessage(aName .. ": Detected that we're running on a " .. vType .. " version", 0.75, 0.5, 0.25, nil, true)
+	self:Debug(vType .. " detected, ")
 	--@end-debug@
 
 end
 
+function aObj:checkLibraries(extraLibs) -- luacheck: ignore 212 (unused argument)
+
+	if not _G.assert(_G.LibStub, aName .. " requires LibStub") then return false end
+
+	local lTab = {"AceAddon-3.0", "AceConfig-3.0", "AceConfigCmd-3.0", "AceConfigDialog-3.0", "AceConfigRegistry-3.0", "AceConsole-3.0", "AceDB-3.0", "AceDBOptions-3.0", "AceEvent-3.0", "AceGUI-3.0", "AceHook-3.0", "AceLocale-3.0", "CallbackHandler-1.0", "LibDataBroker-1.1"}
+	for _, lib in _G.pairs(extraLibs) do
+		lTab[#lTab + 1] = lib
+	end
+
+	local hasError
+	for _, lib in _G.pairs(lTab) do
+		hasError = not _G.assert(_G.LibStub:GetLibrary(lib, true), aName .. " requires " .. lib)
+	end
+
+	return not hasError
+
+end
+
+function aObj:createAddOn(makeGlobal)
+
+	_G.LibStub:GetLibrary("AceAddon-3.0"):NewAddon(aObj, aName, "AceConsole-3.0", "AceEvent-3.0", "AceHook-3.0")
+	-- add to Global namespace if required
+	if makeGlobal then
+		_G[aName] = aObj
+	end
+
+	-- setup callback registry
+	aObj.callbacks = _G.LibStub:GetLibrary("CallbackHandler-1.0", true):New(aObj)
+
+	aObj:checkWoWVersion()
+
+end
+
 function aObj:add2Table(table, value) -- luacheck: ignore 212 (unused argument)
-	--@alpha@
+	--@debug@
 	_G.assert(table, "Unknown table add2Table\n" .. _G.debugstack(2, 3, 2))
 	_G.assert(value, "Missing value add2Table\n" .. _G.debugstack(2, 3, 2))
-	--@end-alpha@
+	--@end-debug@
 
 	table[#table + 1] = value
 
