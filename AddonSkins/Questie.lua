@@ -69,7 +69,7 @@ aObj.addonsToSkin.Questie = function(self) -- v 9.4.5
 	if qMods.QuestieDebugOffer then
 		self:SecureHook(qMods.QuestieDebugOffer, "ShowOffer", function(this, _)
 			self:skinObject("editbox", {obj=_G.QuestieDebugOfferFrame.discordLinkEditBox})
-			self:skinObject("frame", {obj=_G.QuestieDebugOfferFrame, kfs=true})
+			self:skinObject("frame", {obj=_G.QuestieDebugOfferFrame, kfs=true, ofs=0})
 			if self.modBtns then
 				self:skinStdButton{obj=_G.QuestieDebugOfferFrame.dismissButton}
 			end
