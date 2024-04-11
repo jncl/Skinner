@@ -7,7 +7,7 @@ aObj.addonsToSkin.Bugger = function(self) -- v 8.0.0.0
 
 	self:SecureHook(_G.Bugger, "SetupFrame", function(this)
 		self:skinObject("slider", {obj=this.scrollFrame.ScrollBar})
-		self:skinObject("tabs", {obj=this.frame, tabs=this.tabs, selectedTab=3, lod=self.isTT and true, track=false, regions={10}})
+		self:skinObject("tabs", {obj=this.frame, tabs=this.tabs, selectedTab=3, lod=self.isTT and true, track=false, regions={7}})
 		if self.isTT then
 			self:SecureHook(this, "ShowSession", function(fObj, session)
 				session = session or "current"

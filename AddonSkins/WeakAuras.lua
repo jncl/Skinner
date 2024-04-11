@@ -2,7 +2,7 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("WeakAuras") then return end
 local _G = _G
 
-aObj.addonsToSkin.WeakAuras = function(self) -- v 5.5.3
+aObj.addonsToSkin.WeakAuras = function(self) -- v 5.12.6
 
 	if _G.WeakAuras.ShowDisplayTooltip then
 		-- hook this to skin the WeakAuras added elements
@@ -70,27 +70,35 @@ aObj.addonsToSkin.WeakAuras = function(self) -- v 5.5.3
 		end)
 	end
 
-	-- hook this as frame is shown before it is fully setup
-	self:SecureHook(_G.WeakAuras.RealTimeProfilingWindow, "UpdateButtons", function(this)
-		-- barsFrame
-		-- statsFrame
-		self:skinObject("frame", {obj=this})
+	self:SecureHookScript(_G.WeakAurasProfilingFrame, "OnShow", function(this)
+		self:keepFontStrings(this.ColumnDisplay)
+		self:skinColumnDisplay(this.ColumnDisplay)
+		self:skinObject("dropdown", {obj=this.buttons.modeDropDown})
+		this.ScrollBox:DisableDrawLayer("BACKGROUND")
+		self:skinObject("scrollbar", {obj=this.ScrollBar})
+		self:skinObject("frame", {obj=this, kfs=true, cb=true, ofs=self.isRtl and -1 or 2, x2=self.isRtl and 0 or 1})
 		if self.modBtns then
-			self:skinCloseButton{obj=this.CloseButton}
 			self:skinOtherButton{obj=this.MaxMinButtonFrame.MaximizeButton, font=self.fontS, text=self.nearrow}
 			self:skinOtherButton{obj=this.MaxMinButtonFrame.MinimizeButton, font=self.fontS, text=self.swarrow}
-			self:skinStdButton{obj=this.toggleButton}
-			self:skinStdButton{obj=this.reportButton}
-			self:skinStdButton{obj=this.combatButton}
-			self:skinStdButton{obj=this.encounterButton}
+			self:skinStdButton{obj=this.buttons.report}
+			self:skinStdButton{obj=this.buttons.stop}
+			self:skinStdButton{obj=this.buttons.start, clr="grey"}
 		end
 
-		self:Unhook(this, "UpdateButtons")
+		self:Unhook(this, "OnShow")
+	end)
+
+	self:SecureHookScript(_G.WeakAurasProfilingReport, "OnShow", function(this)
+		self:skinObject("scrollbar", {obj=this.ScrollBox.ScrollBar})
+		this.ScrollBox.messageFrame:DisableDrawLayer("BACKGROUND")
+		self:skinObject("frame", {obj=this, kfs=true, cb=true, ofs=self.isRtl and -1 or 2, x2=self.isRtl and 0 or 1})
+
+		self:Unhook(this, "OnShow")
 	end)
 
 end
 
-aObj.lodAddons.WeakAurasOptions = function(self) -- v 5.5.3
+aObj.lodAddons.WeakAurasOptions = function(self) -- v 5.12.6
 
 	-- wait until frame is created
 	if not _G.WeakAurasOptions then
@@ -103,7 +111,7 @@ aObj.lodAddons.WeakAurasOptions = function(self) -- v 5.5.3
 	self:SecureHookScript(_G.WeakAurasOptions, "OnShow", function(this)
 		self:skinObject("editbox", {obj=this.filterInput, si=true, ca=true})
 		this.moversizer:SetBackdropBorderColor(self.bbClr:GetRGB())
-		self:skinObject("frame", {obj=this, kfs=true, x2=0, y1=-1})
+		self:skinObject("frame", {obj=this, kfs=true, ofs=self.isRtl and -1 or 2, x2=self.isRtl and 0 or 1})
 		if self.modBtns then
 			self:skinCloseButton{obj=this.CloseButton}
 			self:skinOtherButton{obj=this.MaxMinButtonFrame.MaximizeButton, font=self.fontS, text=self.nearrow}
