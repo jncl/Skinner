@@ -19,6 +19,4 @@ ToDos
 
 ≈		O	Refactor NewSkinFuncs in AddOn skins
 
-#63	√	I/W	Auctioneer
-
-#64	√	I/W	BankFrame
+#65	√	I/W	WeakAuras
