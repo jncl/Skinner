@@ -7,12 +7,12 @@ local buildInfo = {
 	-- wow_classic_beta    = {"n.n.n",  nnnnn, "Classic Beta"},
 	-- wow_beta            = {"n.n.n", nnnnn, "Retail Beta"}, -- a.k.a. ?
 	wow_classic         = {"3.4.3",  53788, "Classic"}, -- a.k.a. Wrath of the Lich King Classic
-	wow_classic_era     = {"1.15.1", 53623, "Classic Era"}, -- a.k.a. Season of Discovery
-	wow_classic_era_ptr = {"1.15.1", 53623, "Classic Era PTR"},
+	wow_classic_era     = {"1.15.2", 54092, "Classic Era"}, -- a.k.a. Season of Discovery
+	wow_classic_era_ptr = {"1.15.2", 54067, "Classic Era PTR"},
 	wow_classic_ptr     = {"3.4.3",  52237, "Classic PTR"},
-	wow_ptr             = {"10.2.5", 53584, "Retail PTR"},
-	wow                 = {"10.2.6", 53840, "Retail"},
-	wow_ptr_x           = {"10.2.0", 52808, "Retail PTRX"},
+	wow_ptr             = {"10.2.7", 54171, "Retail PTR"},
+	wow                 = {"10.2.6", 54070, "Retail"},
+	wow_ptr_x           = {"10.2.6", 53989, "Retail PTRX"},
 	curr                = {_G.GetBuildInfo()},
 }
 
