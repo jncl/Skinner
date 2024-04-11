@@ -1,3 +1,22 @@
+beta10.53840.2
+Jncl:
+	Updated ToDo.txt files now using correct issue numbers, closes #63, closes #64
+	
+beta10.53840.1
+Jncl:
+	Updated ToDo.txt files
+	Updated Change_History.txt
+	Updated version numbers
+	Updated TOC
+	Updated AddOn setup code
+	Updated Settings skin
+	Updated UnitFrames code
+	Changed packager alpha code indicators to debug
+	Updated Classic BankFrame skin, closes #61
+	Updated Configator library skin, closes #61
+	Updated Auctionator skin, Skinned OPie, closes #60
+	Updated !Swatter, Baganator & Spew skins
+	
 beta10.53623.1
 Jncl:
 	Updated ToDo.txt files
