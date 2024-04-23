@@ -1128,7 +1128,9 @@ aObj.SetupRetail_PlayerFrames = function()
 			cfpb.Highlight:ClearAllPoints()
 			cfpb.Highlight:SetPoint("center")
 			cfpb.Highlight:SetSize(22, 22)
-			if aObj.modBtnBs then
+			if aObj.modBtnBs
+			and aObj.prdb.ContainerFrames.itmbtns
+			then
 				for _, btn in frame:EnumerateValidItems() do
 					aObj:addButtonBorder{obj=btn, fType=ftype, ibt=true, reParent={btn.UpgradeIcon, btn.flash, btn.NewItemTexture, btn.BattlepayItemTexture, btn.BagIndicator, btn.JunkIcon}, ofs=3}
 					btn.ExtendedSlot:SetTexture(nil)

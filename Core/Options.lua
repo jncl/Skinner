@@ -57,7 +57,7 @@ aObj.SetupDefaults = function(self)
 			DisableAllP                = false,
 			AchievementUI              = not aObj.isClscERA and {skin = true, style = 2} or nil,
 			CastingBar                 = {skin = true, glaze = true},
-			ContainerFrames            = {skin = true, fheight = 100},
+			ContainerFrames            = {skin = false, itmbtns = false, fheight = 100},
 			LootFrames                 = {skin = true, size = 1},
 			MirrorTimers               = {skin = true, glaze = true},
 		-- UI Frames
@@ -71,7 +71,7 @@ aObj.SetupDefaults = function(self)
 			ChatTabs                   = false, -- (inc. ChatTemporaryWindow)
 			ChatTabsFade               = true,
 			CombatLogQBF               = not aObj.isClscERA and false or nil,
-			MainMenuBar                = {skin = true, glazesb = true, actbtns=false},
+			MainMenuBar                = {skin = true, glazesb = true, actbtns = false},
 			Minimap                    = {skin = false, gloss = false},
 			MinimapButtons             = {skin = false, style = false},
 			Tooltips                   = {skin = true, style = 1, glazesb = true, border = 1},
@@ -840,13 +840,13 @@ aObj.SetupOptions = function(self)
 							type = "toggle",
 							order = 1,
 							name = self.L["Skin Frames"],
-							desc = _G.strjoin(" ",  self.L["Toggle the skin of the"], self.L["Casting Bar Frames"]),
+							desc = _G.strjoin(" ", self.L["Toggle the skin of the"], self.L["Casting Bar Frames"]),
 						},
 						glaze = {
 							type = "toggle",
 							order = 2,
 							name = self.L["Glaze Frames"],
-							desc = _G.strjoin(" ",  self.L["Toggle the glazing of the"], self.L["Casting Bar Frames"])
+							desc = _G.strjoin(" ", self.L["Toggle the glazing of the"], self.L["Casting Bar Frames"])
 						},
 					},
 				},
@@ -865,11 +865,17 @@ aObj.SetupOptions = function(self)
 							type = "toggle",
 							order = 1,
 							name = self.L["Skin Frames"],
-							desc = _G.strjoin(" ",  self.L["Toggle the skin of the"], self.L["Container Frames"]),
+							desc = _G.strjoin(" ", self.L["Toggle the skin of the"], self.L["Container Frames"]),
 						},
+						itmbtns = self.isRtl and {
+							type = "toggle",
+							order = 2,
+							name = _G.strjoin(" ", self.L["Skin"], self.L["Item Buttons"]),
+							desc = _G.strjoin(" ", self.L["Toggle the skinning of"], self.L["the"], self.L["Item Buttons"]),
+						} or nil,
 						fheight = {
 							type = "range",
-							order = 2,
+							order = 3,
 							name = self.L["CF Fade Height"],
 							desc = self.L["Change the Height of the Fade Effect"],
 							min = 0, max = 300, step = 1,
@@ -891,7 +897,7 @@ aObj.SetupOptions = function(self)
 							type = "toggle",
 							order = 1,
 							name = self.L["Skin Frames"],
-							desc = _G.strjoin(" ",  self.L["Toggle the skin of the"], self.L["Loot Frames"]),
+							desc = _G.strjoin(" ", self.L["Toggle the skin of the"], self.L["Loot Frames"]),
 						},
 						size = {
 							type = "range",
@@ -917,13 +923,13 @@ aObj.SetupOptions = function(self)
 							type = "toggle",
 							order = 1,
 							name = self.L["Skin Frames"],
-							desc = _G.strjoin(" ",  self.L["Toggle the skin of the"], self.L["Timer Frames"]),
+							desc = _G.strjoin(" ", self.L["Toggle the skin of the"], self.L["Timer Frames"]),
 						},
 						glaze = {
 							type = "toggle",
 							order = 2,
 							name = self.L["Glaze Frames"],
-							desc = _G.strjoin(" ",  self.L["Toggle the glazing of the"], self.L["Timer Frames"])
+							desc = _G.strjoin(" ", self.L["Toggle the glazing of the"], self.L["Timer Frames"])
 						},
 					},
 				},
@@ -982,19 +988,19 @@ aObj.SetupOptions = function(self)
 							type = "toggle",
 							order = 1,
 							name = self.L["Chat Menus"],
-							desc = _G.strjoin(" ",  self.L["Toggle the skin of the"], self.L["Chat Menus"]),
+							desc = _G.strjoin(" ", self.L["Toggle the skin of the"], self.L["Chat Menus"]),
 						},
 						ChatConfig = {
 							type = "toggle",
 							order = 2,
 							name = self.L["Chat Config Frame"],
-							desc = _G.strjoin(" ",  self.L["Toggle the skin of the"], self.L["Chat Config Frame"]),
+							desc = _G.strjoin(" ", self.L["Toggle the skin of the"], self.L["Chat Config Frame"]),
 						},
 						ChatTabs = {
 							type = "toggle",
 							order = 3,
 							name = self.L["Chat Tabs"],
-							desc = _G.strjoin(" ",  self.L["Toggle the skin of the"], self.L["Chat Tabs"]),
+							desc = _G.strjoin(" ", self.L["Toggle the skin of the"], self.L["Chat Tabs"]),
 						},
 						ChatTabsFade = {
 							type = "toggle",
@@ -1006,20 +1012,20 @@ aObj.SetupOptions = function(self)
 							type = "toggle",
 							order = 5,
 							name = self.L["Chat Frames"],
-							desc = _G.strjoin(" ",  self.L["Toggle the skin of the"], self.L["Chat Frames"]),
+							desc = _G.strjoin(" ", self.L["Toggle the skin of the"], self.L["Chat Frames"]),
 						},
 						ChatButtons = {
 							type = "toggle",
 							order = 6,
 							name = self.L["Chat Buttons"],
-							desc = _G.strjoin(" ",  self.L["Toggle the skin of the"], self.L["Chat Buttons"]),
+							desc = _G.strjoin(" ", self.L["Toggle the skin of the"], self.L["Chat Buttons"]),
 						},
 						CombatLogQBF = not self.isClscERA and {
 							type = "toggle",
 							width = "double",
 							order = 7,
 							name = self.L["CombatLog Quick Button Frame"],
-							desc = _G.strjoin(" ",  self.L["Toggle the skin of the"], self.L["CombatLog Quick Button Frame"]),
+							desc = _G.strjoin(" ", self.L["Toggle the skin of the"], self.L["CombatLog Quick Button Frame"]),
 						} or nil,
 					},
 				},
@@ -1038,7 +1044,7 @@ aObj.SetupOptions = function(self)
 							type = "toggle",
 							order = 1,
 							name = self.L["Chat Bubbles Skin"],
-							desc = _G.strjoin(" ",  self.L["Toggle the skin of the"], self.L["Chat Bubbles"]),
+							desc = _G.strjoin(" ", self.L["Toggle the skin of the"], self.L["Chat Bubbles"]),
 						},
 						alpha = {
 							type = "range",
@@ -1064,7 +1070,7 @@ aObj.SetupOptions = function(self)
 							type = "toggle",
 							order = 1,
 							name = self.L["Skin Frames"],
-							desc = _G.strjoin(" ",  self.L["Toggle the skin of the"], self.L["Chat Edit Box Frames"]),
+							desc = _G.strjoin(" ", self.L["Toggle the skin of the"], self.L["Chat Edit Box Frames"]),
 						},
 						style = {
 							type = "range",
@@ -1090,21 +1096,21 @@ aObj.SetupOptions = function(self)
 							type = "toggle",
 							order = 1,
 							name = self.L["Skin Frame"],
-							desc = _G.strjoin(" ",  self.L["Toggle the skin of the"], self.L["Main Menu Bar"]),
+							desc = _G.strjoin(" ", self.L["Toggle the skin of the"], self.L["Main Menu Bar"]),
 						},
 						glazesb = {
 							type = "toggle",
 							order = 2,
 							width = "double",
 							name = self.L["Glaze Status Bar"],
-							desc = _G.strjoin(" ",  self.L["Toggle the glazing of the"], self.L["Status Bar"])
+							desc = _G.strjoin(" ", self.L["Toggle the glazing of the"], self.L["Status Bar"])
 						},
 						actbtns = self.isRtl and {
 							type = "toggle",
 							order = 3,
 							width = "double",
-							name = _G.strjoin(" ",  self.L["Skin"], self.L["Action Buttons"]),
-							desc = _G.strjoin(" ",  self.L["Toggle the skinning of"], self.L["the"], self.L["Action Buttons"])
+							name = _G.strjoin(" ", self.L["Skin"], self.L["Action Buttons"]),
+							desc = _G.strjoin(" ", self.L["Toggle the skinning of"], self.L["the"], self.L["Action Buttons"])
 						} or nil,
 					},
 				},
@@ -1129,7 +1135,7 @@ aObj.SetupOptions = function(self)
 						skin = {
 							type = "toggle",
 							name = self.L["Skin Frame"],
-							desc = _G.strjoin(" ",  self.L["Toggle the skin of the"], self.L["Minimap"]),
+							desc = _G.strjoin(" ", self.L["Toggle the skin of the"], self.L["Minimap"]),
 							order = 1,
 						},
 						gloss = {
@@ -1159,7 +1165,7 @@ aObj.SetupOptions = function(self)
 							type = "toggle",
 							order = 1,
 							name = self.L["Skin Buttons"],
-							desc = _G.strjoin(" ",  self.L["Toggle the skin of the"], self.L["Minimap Buttons"]),
+							desc = _G.strjoin(" ", self.L["Toggle the skin of the"], self.L["Minimap Buttons"]),
 						},
 						style = {
 							type = "toggle",
@@ -1180,14 +1186,14 @@ aObj.SetupOptions = function(self)
 							type = "toggle",
 							order = 1,
 							name = self.L["Skin Frames"],
-							desc = _G.strjoin(" ",  self.L["Toggle the skin of the"], self.L["Tooltips"]),
+							desc = _G.strjoin(" ", self.L["Toggle the skin of the"], self.L["Tooltips"]),
 						},
 						glazesb = {
 							type = "toggle",
 							order = 2,
 							width = "double",
 							name = self.L["Glaze Status Bar"],
-							desc = _G.strjoin(" ",  self.L["Toggle the glazing of the"], self.L["Status Bar"])
+							desc = _G.strjoin(" ", self.L["Toggle the glazing of the"], self.L["Status Bar"])
 						},
 						style = {
 							type = "range",
@@ -1358,7 +1364,7 @@ aObj.SetupOptions = function(self)
 			aObj.optTables["Disabled Skins"].args[name] = {
 				type = "toggle",
 				name = name,
-				desc = _G.strjoin(" ",  aObj.L["Toggle the skinning of"], name),
+				desc = _G.strjoin(" ", aObj.L["Toggle the skinning of"], name),
 				width = name:len() > 21 and "double" or nil,
 			}
 		end
