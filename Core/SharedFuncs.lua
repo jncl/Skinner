@@ -2,16 +2,17 @@ local aName, aObj = ...
 
 local _G = _G
 -- luacheck: ignore 631 (line is too long)
+-- luacheck: ignore 212 (unused argument)
 
 local buildInfo = {
 	-- wow_classic_beta    = {"n.n.n",  nnnnn, "Classic Beta"},
 	-- wow_beta            = {"n.n.n", nnnnn, "Retail Beta"}, -- a.k.a. ?
-	wow_classic         = {"3.4.3",  53788, "Classic"}, -- a.k.a. Wrath of the Lich King Classic
-	wow_classic_era     = {"1.15.2", 54092, "Classic Era"}, -- a.k.a. Season of Discovery
+	wow_classic         = {"3.4.3",  54261, "Classic"}, -- a.k.a. Wrath of the Lich King Classic
+	wow_classic_era     = {"1.15.2", 54332, "Classic Era"}, -- a.k.a. Season of Discovery
 	wow_classic_era_ptr = {"1.15.2", 54067, "Classic Era PTR"},
 	wow_classic_ptr     = {"3.4.3",  52237, "Classic PTR"},
-	wow_ptr             = {"10.2.7", 54171, "Retail PTR"},
-	wow                 = {"10.2.6", 54070, "Retail"},
+	wow_ptr             = {"10.2.7", 54295, "Retail PTR"},
+	wow                 = {"10.2.6", 54358, "Retail"},
 	wow_ptr_x           = {"10.2.6", 53989, "Retail PTRX"},
 	curr                = {_G.GetBuildInfo()},
 }
@@ -88,7 +89,7 @@ function aObj:checkWoWVersion()
 
 end
 
-function aObj:checkLibraries(extraLibs) -- luacheck: ignore 212 (unused argument)
+function aObj:checkLibraries(extraLibs)
 
 	if not _G.assert(_G.LibStub, aName .. " requires LibStub") then return false end
 
@@ -107,7 +108,6 @@ function aObj:checkLibraries(extraLibs) -- luacheck: ignore 212 (unused argument
 end
 
 function aObj:createAddOn(makeGlobal)
-
 	_G.LibStub:GetLibrary("AceAddon-3.0"):NewAddon(aObj, aName, "AceConsole-3.0", "AceEvent-3.0", "AceHook-3.0")
 	-- add to Global namespace if required
 	if makeGlobal then
@@ -121,7 +121,7 @@ function aObj:createAddOn(makeGlobal)
 
 end
 
-function aObj:add2Table(table, value) -- luacheck: ignore 212 (unused argument)
+function aObj:add2Table(table, value)
 	--@debug@
 	_G.assert(table, "Unknown table add2Table\n" .. _G.debugstack(2, 3, 2))
 	_G.assert(value, "Missing value add2Table\n" .. _G.debugstack(2, 3, 2))
@@ -249,7 +249,7 @@ end
 local function printIt(text, frame, r, g, b)
 	(frame or _G.DEFAULT_CHAT_FRAME):AddMessage(text, r, g, b)
 end
-function aObj:CustomPrint(r, g, b, ...) -- luacheck: ignore 212 (unused argument)
+function aObj:CustomPrint(r, g, b, ...)
 
 	printIt(_G.WrapTextInColorCode(aName, "ffffff78") .. " " .. makeText(...), nil, r, g, b)
 
