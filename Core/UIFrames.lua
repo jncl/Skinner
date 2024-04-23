@@ -1857,7 +1857,7 @@ aObj.blizzLoDFrames[ftype].MacroUI = function(self)
 		end
 		self:skinObject("frame", {obj=_G.MacroFrameTextBackground, fType=ftype, kfs=true, rns=true, fb=true, ofs=0, x2=1})
 		_G.MacroFrameSelectedMacroButton:DisableDrawLayer("BACKGROUND")
-		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true, ri=true, rns=true, cb=true})
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true, ri=true, rns=true, cb=true, x2=1})
 		if self.modBtns then
 			self:skinStdButton{obj=_G.MacroEditButton, fType=ftype, schk=true}
 			self:skinStdButton{obj=_G.MacroCancelButton, fType=ftype}
