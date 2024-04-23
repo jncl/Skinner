@@ -1,3 +1,12 @@
+beta10.54092.1
+Jncl:
+	Updated ToDo.txt files
+	Updated Change_History.txt
+	Updated version numbers
+	Updated Questie
+	Updated TOC for Classic SoD
+	Updated Baganator, Bugger & WeakAuras, closes #65
+	
 beta10.53840.2
 Jncl:
 	Updated ToDo.txt files now using correct issue numbers, closes #63, closes #64
