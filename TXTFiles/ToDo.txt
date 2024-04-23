@@ -19,4 +19,6 @@ ToDos
 
 ≈		O	Refactor NewSkinFuncs in AddOn skins
 
-#65	√	I/W	WeakAuras
+#66	√	I	Classic Quest Log 3.0.0-beta-03/4
+
+#67	√	I	ContainerFrames not skinned in Retail
