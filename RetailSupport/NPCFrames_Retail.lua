@@ -826,10 +826,12 @@ aObj.SetupRetail_NPCFrames = function()
 			self:removeNineSlice(this.ProductsFrame.ProductsScrollBoxContainer.PerksProgramHoldFrame.NineSlice)
 			self:removeNineSlice(this.ProductsFrame.PerksProgramProductDetailsContainerFrame.Border)
 			self:skinObject("frame", {obj=this.ProductsFrame.PerksProgramProductDetailsContainerFrame, fType=ftype, kfs=true})
+			this.ThemeContainer.ProductList:DisableDrawLayer("BACKGROUND")
+			this.ThemeContainer.ProductDetails:DisableDrawLayer("BACKGROUND")
 			if self.modBtns then
 				self:skinStdButton{obj=this.ProductsFrame.PerksProgramFilter.FilterDropDownButton, fType=ftype, ofs=-5, y2=8, clr="grey"}
 				self:skinStdButton{obj=this.FooterFrame.LeaveButton, fType=ftype, ofs=-4}
-				self:skinStdButton{obj=this.FooterFrame.PurchaseButton, fType=ftype--[[, schk=true]], sechk=true, ofs=0, y2=-1}
+				self:skinStdButton{obj=this.FooterFrame.PurchaseButton, fType=ftype, sechk=true, ofs=0, y2=-1}
 				self:skinStdButton{obj=this.FooterFrame.RefundButton, fType=ftype, ofs=-4}
 			end
 			if self.modBtnBs then
