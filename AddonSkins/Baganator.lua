@@ -44,7 +44,7 @@ aObj.addonsToSkin.Baganator = function(self) -- v 243
 		if frame.ScrollBar then
 			self:skinObject("scrollbar", {obj=frame.ScrollBar})
 		end
-		aObj:skinObject("frame", {obj=frame, kfs=true, ri=true, cb=true, x2=1})
+		aObj:skinObject("frame", {obj=frame, kfs=true, ri=true, cb=true, ofs=3, x2=1, y2=-2})
 	end
 	local function skinFrameBtns(frame, type)
 		if aObj.modBtns then
