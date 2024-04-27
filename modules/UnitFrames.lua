@@ -331,7 +331,9 @@ function module:skinPetF()
 						setLvl()
 					end)
 				end
-				if aObj.modBtnBs then
+				if _G.PetFrameHappiness
+				and aObj.modBtnBs
+				then
 					aObj:addButtonBorder{obj=_G.PetFrameHappiness, ofs=1, clr="gold"}
 				end
 			else
