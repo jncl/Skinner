@@ -36,30 +36,15 @@ aObj.SetupClassic_PlayerFrames = function()
 						btn.hiddenDescription:SetTextColor(aObj.BT:GetRGB())
 					end
 					aObj:nilTexture(btn.icon.frame, true)
-					aObj:secureHook(btn, "Desaturate", function(bObj)
-						if bObj.sbb then
-							bObj.sbb:SetBackdropBorderColor(bObj:GetBackdropBorderColor())
-							bObj.icon.sbb:SetBackdropBorderColor(bObj:GetBackdropBorderColor())
-						end
-					end)
-					aObj:secureHook(btn, "Saturate", function(bObj)
-						if bObj.sbb then
-							bObj.sbb:SetBackdropBorderColor(bObj:GetBackdropBorderColor())
-							bObj.icon.sbb:SetBackdropBorderColor(bObj:GetBackdropBorderColor())
-						end
-						if bObj.description then
-							bObj.description:SetTextColor(aObj.BT:GetRGB())
-						end
-					end)
 					-- if aObj.modBtns then
-						-- TODO: PlusMinus is really a texture NOT a button
+					-- 	-- TODO: PlusMinus is really a texture NOT a button
 						-- aObj:SecureHook("AchievementButton_UpdatePlusMinusTexture", function(btn)
 							-- if not btn.id then return end
 							-- if btn:IsShown() then
 								-- btn.collapsed
 								-- btn.saturatedStyle
 								-- check for both, one of each and none to determine colour
-								-- testure used is: Interface\AchievementFrame\UI-Achievement-PlusMinus
+					-- 			texture used is: Interface\AchievementFrame\UI-Achievement-PlusMinus
 							-- end
 						-- end)
 					-- end
@@ -78,6 +63,21 @@ aObj.SetupClassic_PlayerFrames = function()
 					-- remove textures etc from buttons
 					local btnName
 					for _, btn in _G.pairs(frame.buttons) do
+						aObj:SecureHook(btn, "Desaturate", function(bObj)
+							if bObj.sbb then
+								bObj.sbb:SetBackdropBorderColor(bObj:GetBackdropBorderColor())
+								bObj.icon.sbb:SetBackdropBorderColor(bObj:GetBackdropBorderColor())
+							end
+						end)
+						aObj:SecureHook(btn, "Saturate", function(bObj)
+							if bObj.sbb then
+								bObj.sbb:SetBackdropBorderColor(bObj:GetBackdropBorderColor())
+								bObj.icon.sbb:SetBackdropBorderColor(bObj:GetBackdropBorderColor())
+							end
+							if bObj.description then
+								bObj.description:SetTextColor(aObj.BT:GetRGB())
+							end
+						end)
 						btnName = btn:GetName() .. (type == "Comparison" and "Player" or "")
 						skinBtn(_G[btnName])
 						if type == "Summary" then
@@ -1280,7 +1280,6 @@ aObj.SetupClassic_PlayerFrames = function()
 		end)
 
 		local function skinGroupLoot(frame)
-
 			frame:DisableDrawLayer("BACKGROUND")
 			frame:DisableDrawLayer("BORDER")
 			local fName = frame:GetName()
@@ -1292,11 +1291,6 @@ aObj.SetupClassic_PlayerFrames = function()
 				aObj:addButtonBorder{obj=frame, relTo=frame.Icon}
 			end
 			aObj:skinObject("statusbar", {obj=frame.Timer, fi=0, bg=frame.Timer.Background})
-			-- hook this to show the Timer
-			aObj:secureHook(frame, "Show", function(this)
-				this.Timer:SetFrameLevel(this:GetFrameLevel() + 1)
-			end)
-
 			frame:SetScale(aObj.prdb.LootFrames.size ~= 1 and 0.75 or 1)
 			if aObj.modBtns then
 				aObj:skinCloseButton{obj=frame.PassButton}
@@ -1317,13 +1311,16 @@ aObj.SetupClassic_PlayerFrames = function()
 				frame.Timer:SetPoint("BOTTOMRIGHT", "$parent", "BOTTOMRIGHT", -10, 13)
 				aObj:skinObject("frame", {obj=frame, fType=ftype, kfs=true, cb=true, x1=97, y2=8})
 			end
-
 		end
 		for i = 1, _G.NUM_GROUP_LOOT_FRAMES do
 			self:SecureHookScript(_G["GroupLootFrame" .. i], "OnShow", function(this)
 				skinGroupLoot(this)
 
 				self:Unhook(this, "OnShow")
+			end)
+			-- hook this to show the Timer
+			aObj:SecureHook(_G["GroupLootFrame" .. i], "Show", function(this)
+				this.Timer:SetFrameLevel(this:GetFrameLevel() + 1)
 			end)
 		end
 
