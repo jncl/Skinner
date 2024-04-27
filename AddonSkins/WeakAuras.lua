@@ -2,7 +2,7 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("WeakAuras") then return end
 local _G = _G
 
-aObj.addonsToSkin.WeakAuras = function(self) -- v 5.12.6
+aObj.addonsToSkin.WeakAuras = function(self) -- v 5.12.8
 
 	if _G.WeakAuras.ShowDisplayTooltip then
 		-- hook this to skin the WeakAuras added elements
@@ -98,7 +98,7 @@ aObj.addonsToSkin.WeakAuras = function(self) -- v 5.12.6
 
 end
 
-aObj.lodAddons.WeakAurasOptions = function(self) -- v 5.12.6
+aObj.lodAddons.WeakAurasOptions = function(self) -- v 5.12.8
 
 	-- wait until frame is created
 	if not _G.WeakAurasOptions then
@@ -168,5 +168,12 @@ aObj.lodAddons.WeakAurasOptions = function(self) -- v 5.12.6
 			end
 		end)
 	end
+
+	self:SecureHookScript(_G.WeakAurasOptions.tipPopup, "OnShow", function(this)
+		self:skinObject("editbox", {obj=self:getChild(this, 1), y1=-4, y2=4})
+		self:skinObject("frame", {obj=this, kfs=true, ofs=0})
+
+		self:Unhook(this, "OnShow")
+	end)
 
 end

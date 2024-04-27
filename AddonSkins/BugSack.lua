@@ -3,7 +3,7 @@ if not aObj:isAddonEnabled("BugSack") then return end
 local _G = _G
 -- luacheck: ignore 631 (line is too long)
 
-aObj.addonsToSkin.BugSack = function(self) -- v10.2.1
+aObj.addonsToSkin.BugSack = function(self) -- v10.2.3
 
 	if not _G.BugGrabber then
 		return
@@ -16,18 +16,18 @@ aObj.addonsToSkin.BugSack = function(self) -- v10.2.1
 		self:skinObject("slider", {obj=_G.BugSackScroll.ScrollBar})
 		self:moveObject{obj=self:getRegion(_G.BugSackFrame, 11), y=-8} -- countLabel
 		_G.BugSackFrame.Tabs = {_G.BugSackTabAll, _G.BugSackTabSession, _G.BugSackTabLast}
-		self:skinObject("tabs", {obj=this, tabs=_G.BugSackFrame.Tabs, regions={7, 8}, lod=self.isTT and true, offsets={x1=7, y1=self.isTT and 2 or -3, x2=-7, y2=2}, track=false, func=self.isTT and function(tab)
+		self:skinObject("tabs", {obj=this, tabs=_G.BugSackFrame.Tabs, lod=self.isTT and true, offsets={x1=7, y1=self.isTT and 2 or -3, x2=-7, y2=2}, track=false, func=self.isTT and function(tab)
 			self:SecureHookScript(tab, "OnClick", function(tObj)
-				for _, tab in _G.pairs(tObj:GetParent().Tabs) do
-					if tab == this then
-						aObj:setActiveTab(tab.sf)
+				for _, tabObj in _G.pairs(tObj:GetParent().Tabs) do
+					if tabObj == tObj then
+						aObj:setActiveTab(tabObj.sf)
 					else
-						aObj:setInactiveTab(tab.sf)
+						aObj:setInactiveTab(tabObj.sf)
 					end
 				end
 			end)
 		end})
-		self:skinObject("frame", {obj=_G.BugSackFrame, kfs=true, ofs=-2, x2=-1, y2=4})
+		self:skinObject("frame", {obj=_G.BugSackFrame, kfs=true, ofs=-2, x2=-1, y2=2})
 		_G.BugSackFrame:SetFrameStrata("FULLSCREEN_DIALOG")
 		if self.modBtns then
 			self:skinCloseButton{obj=self:getChild(_G.BugSackFrame, 1)}
