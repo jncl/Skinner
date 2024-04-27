@@ -1683,6 +1683,30 @@ aObj.blizzFrames[ftype].LFGList = function(self)
 				end
 			end
 			_G.ScrollUtil.AddAcquiredFrameCallback(fObj.ScrollBox, skinElement, aObj, true)
+			-- hook this to colour text
+			local appStatus, pendingStatus, isAppFinished, searchResultInfo
+			self:SecureHook("LFGListSearchEntry_Update", function(lObj)
+				_, appStatus, pendingStatus, _ = _G.C_LFGList.GetApplicationInfo(lObj.resultID)
+				isAppFinished = _G.LFGListUtil_IsStatusInactive(appStatus) or _G.LFGListUtil_IsStatusInactive(pendingStatus)
+				searchResultInfo = _G.C_LFGList.GetSearchResultInfo(lObj.resultID)
+
+				if searchResultInfo.isDelisted
+				or isAppFinished
+				then
+					-- LFG_LIST_DELISTED_FONT_COLOR for both
+					lObj.Name:SetTextColor(aObj.DT:GetRGB())
+					lObj.ActivityName:SetTextColor(aObj.DT:GetRGB())
+				elseif searchResultInfo.numBNetFriends > 0
+				or searchResultInfo.numCharFriends > 0
+				or searchResultInfo.numGuildMates > 0
+				then
+					-- BATTLENET_FONT_COLOR for name
+					lObj.ActivityName:SetTextColor(aObj.BT:GetRGB())
+				else
+					lObj.Name:SetTextColor(aObj.HT:GetRGB())
+					lObj.ActivityName:SetTextColor(aObj.BT:GetRGB())
+				end
+			end)
 			self:removeMagicBtnTex(fObj.BackButton)
 			self:removeMagicBtnTex(fObj.SignUpButton)
 			if self.modBtns then

@@ -165,13 +165,15 @@ function aObj:OnInitialize()
 		end
 	end
 
-	-- Heading, Body & Ignored Text colours
+	-- Heading, Body, Ignored & Disabled Text colours
 	local c = self.prdb.HeadText
 	self.HT = _G.CreateColor(c.r, c.g, c.b)
 	c = self.prdb.BodyText
 	self.BT = _G.CreateColor(c.r, c.g, c.b)
 	c = self.prdb.IgnoredText
 	self.IT = _G.CreateColor(c.r, c.g, c.b)
+	c = self.prdb.DisabledText
+	self.DT = _G.CreateColor(c.r, c.g, c.b)
 
 	-- StatusBar texture
 	c = self.prdb.StatusBar

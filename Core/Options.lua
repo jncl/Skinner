@@ -45,6 +45,7 @@ aObj.SetupDefaults = function(self)
 			HeadText                   = _G.CreateColor(0.8, 0.8, 0, 1),
 			BodyText                   = _G.CreateColor(0.6, 0.6, 0, 1),
 			IgnoredText                = _G.CreateColor(0.5, 0.5, 0, 1),
+			DisabledText               = _G.CreateColor(0.3, 0.3, 0, 1),
 			GradientMin                = _G.CreateColor(0.1, 0.1, 0.1, 0),
 			GradientMax                = _G.CreateColor(0.25, 0.25, 0.25, 1),
 			BagginsBBC                 = _G.CreateColor(0.5, 0.5, 0.5, 1),
@@ -586,6 +587,13 @@ aObj.SetupOptions = function(self)
 					width = "double",
 					name = self.L["Ignored Text Colour"],
 					desc = _G.strjoin(" ", self.L["Set"], self.L["Ignored Text Colour"]),
+				},
+				DisabledText = {
+					type = "color",
+					order = 12,
+					width = "double",
+					name = self.L["Disabled Text Colour"],
+					desc = _G.strjoin(" ", self.L["Set"], self.L["Disabled Text Colour"]),
 				},
 				GradientMin = {
 					type = "color",
