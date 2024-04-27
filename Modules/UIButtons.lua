@@ -303,7 +303,7 @@ function module:setBtnClr(bObj, quality)
 
 	if bObj.sbb then
 		if quality then
-			if quality >= (self.isRtl and _G.Enum.ItemQuality.Common or _G.LE_ITEM_QUALITY_COMMON)
+			if quality >= (_G.Enum and _G.Enum.ItemQuality and _G.Enum.ItemQuality.Common or _G.LE_ITEM_QUALITY_COMMON)
 			and _G.BAG_ITEM_QUALITY_COLORS[quality]
 			then
 				bObj.sbb:SetBackdropBorderColor(_G.BAG_ITEM_QUALITY_COLORS[quality].r, _G.BAG_ITEM_QUALITY_COLORS[quality].g, _G.BAG_ITEM_QUALITY_COLORS[quality].b, 1)
