@@ -96,7 +96,7 @@ aObj.SetupOptions = function(self)
 	local db = self.db.profile
 	local dflts = self.db.defaults.profile
 
-	local iof_otc = _G.InterfaceOptionsFrame_OpenToCategory or _G.Settings and _G.Settings.OpenToCategory
+	local aVersion = _G.C_AddOns.GetAddOnMetadata(aName, "Version") or ""
 
 	local function reskinIOFBackdrop()
 		-- show changes by reskinning the Interface Options Frame with the new settings
@@ -123,7 +123,7 @@ aObj.SetupOptions = function(self)
 				desc = {
 					type = "description",
 					order = 1,
-					name = self.L["UI Enhancement"]  .. " - "..(_G.GetAddOnMetadata(aName, "X-Curse-Packaged-Version") or _G.GetAddOnMetadata(aName, "Version") or "") .. "\n",
+					name = _G.strjoin(" ", self.L["UI Enhancement"], "-", aVersion, "\n"),
 				},
 				longdesc = {
 					type = "description",
@@ -731,8 +731,6 @@ aObj.SetupOptions = function(self)
 					else
 						db.QuestMap = value
 					end
-					iof_otc(self.optionsFrames[self.L["UI Frames"]])
-					iof_otc(self.optionsFrames[self.L["NPC Frames"]])
 				elseif info[#info] == "QuestFrame" then
 					db.GossipFrame = value
 					db.QuestInfo = value
@@ -741,8 +739,6 @@ aObj.SetupOptions = function(self)
 					else
 						db.QuestMap = value
 					end
-					iof_otc(self.optionsFrames[self.L["UI Frames"]])
-					iof_otc(self.optionsFrames[self.L["NPC Frames"]])
 				elseif info[#info] == "QuestInfo" then
 					db.GossipFrame = value
 					db.QuestFrame = value
@@ -751,8 +747,6 @@ aObj.SetupOptions = function(self)
 					else
 						db.QuestMap = value
 					end
-					iof_otc(self.optionsFrames[self.L["UI Frames"]])
-					iof_otc(self.optionsFrames[self.L["NPC Frames"]])
 				end
 			end,
 			args = {
@@ -959,12 +953,10 @@ aObj.SetupOptions = function(self)
 					end
 				-- treat GossipFrame, QuestFrame, QuestInfo & QuestLog/QuestMap as one
 				-- as they all change the quest text colours
-				elseif info[#info] == self.isCls and "QuestLog" or "QuestMap" then
+				elseif info[#info] == not self.isRtl and "QuestLog" or "QuestMap" then
 					db.GossipFrame = value
 					db.QuestFrame = value
 					db.QuestInfo = value
-					iof_otc(self.optionsFrames[self.L["NPC Frames"]])
-					iof_otc(self.optionsFrames[self.L["UI Frames"]])
 				else self:checkAndRun(info[#info], "u") end
 			end,
 			args = {
@@ -1355,7 +1347,6 @@ aObj.SetupOptions = function(self)
 	self:setupFramesOptions(uiOptTab, "UI")
 	_G.wipe(uiOptTab)
 
-	-- module options
 	for _, mod in self:IterateModules() do
 		if mod:IsEnabled()
 		and mod.GetOptions
@@ -1419,50 +1410,33 @@ aObj.SetupOptions = function(self)
 	end
 	self:setupOptions({"Backdrop", "Background", "Colours", "Gradient", "Modules", "NPC Frames", "Player Frames", "UI Frames", "Disabled Skins"}, {"Backdrop", "Modules", "Disabled Skins"}, preLoadFunc, postLoadFunc)
 
-	-- Slash command handler
 	local function chatCommand(input)
 		aObj.callbacks:Fire("Options_Selected")
 		if not input or input:trim() == "" then
-			-- Open general panel if there are no parameters, do twice to overcome Blizzard bug
-			if not aObj.isRtl then
-				iof_otc(aObj.optionsFrames[aName])
-				iof_otc(aObj.optionsFrames[aName])
-			else
-				iof_otc(aName)
-			end
+			_G.Settings.OpenToCategory(aName)
 		elseif aObj.optCheck[input:lower()] then
-			if not aObj.isRtl then
-				iof_otc(aObj.optionsFrames[aObj.optCheck[input:lower()]])
-				iof_otc(aObj.optionsFrames[aObj.optCheck[input:lower()]])
-			else
-				iof_otc(aName)
-			end
+			_G.Settings.OpenToCategory(aName)
 		else
 			_G.LibStub:GetLibrary("AceConfigCmd-3.0", true):HandleCommand(aName, aObj.L[aName], input)
 		end
 	end
 
-	-- Register slash command handlers, N.B. use localised name
 	self:RegisterChatCommand(self.L[aName], chatCommand)
 	self:RegisterChatCommand(self.L["Skin"], chatCommand)
 
 	if not self.isRtl then
-		-- setup the DB object
 		local DBObj = _G.LibStub:GetLibrary("LibDataBroker-1.1", true):NewDataObject(aName, {
 			type = "launcher",
 			icon = aObj.tFDIDs.mpw01,
 			OnClick = function()
 				aObj.callbacks:Fire("Options_Selected")
-				-- do twice to overcome Blizzard bug
-				iof_otc(aObj.optionsFrames[aName])
-				iof_otc(aObj.optionsFrames[aName])
+				_G.Settings.OpenToCategory(aName)
 			end,
 			OnTooltipShow = function(tooltip)
 				tooltip:AddLine(aObj.L[aName])
 				tooltip:AddLine(aObj.L["Click to open config panel"], 1, 1, 1)
 			end,
 		})
-		-- register the data object to the Icon library
 		self.DBIcon:Register(aName, DBObj, db.MinimapIcon)
 	end
 
