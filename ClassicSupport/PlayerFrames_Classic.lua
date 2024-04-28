@@ -1175,20 +1175,15 @@ aObj.SetupClassic_PlayerFrames = function()
 		end
 	end
 
-	local function colourBtn(btn)
-		if btn.sbb then
-			btn.sbb:SetBackdropBorderColor(_G[btn:GetName() .. "Slot"]:GetVertexColor())
 		end
 	end
 	local function skinTalentBtns(frame)
 		local fName = frame:GetName()
-		local btn
 		for i = 1, _G.MAX_NUM_TALENTS do
-			btn = _G[fName .. "Talent" .. i]
 			_G[fName .. "Talent" .. i .. "Slot"]:SetTexture(nil)
-			_G[fName .. "Talent" .. i .. "RankBorder"]:SetTexture(nil)
-			aObj:addButtonBorder{obj=btn, ibt=true, reParent={_G[fName .. "Talent" .. i .. "Rank"]}}
-			colourBtn(btn)
+			aObj:changeTandC(_G[fName .. "Talent" .. i .. "RankBorder"])
+			aObj:addButtonBorder{obj=_G[fName .. "Talent" .. i], ibt=true, reParent={_G[fName .. "Talent" .. i .. "RankBorder"], _G[fName .. "Talent" .. i .. "Rank"]}}
+			_G[fName .. "Talent" .. i].sbb:SetBackdropBorderColor(_G[fName .. "Talent" .. i .. "Slot"]:GetVertexColor())
 		end
 	end
 	aObj.blizzLoDFrames[ftype].InspectUI = function(self)
@@ -1253,6 +1248,9 @@ aObj.SetupClassic_PlayerFrames = function()
 				end
 				if self.modBtnBs then
 					skinTalentBtns(this)
+					self:SecureHook("InspectTalentFrame_Update", function()
+						skinTalentBtns(_G.InspectTalentFrame)
+					end)
 				end
 
 				self:Unhook(this, "OnShow")
