@@ -812,7 +812,7 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 					aObj:addButtonBorder{obj=frame.GuildCards.NextPage, ofs=-2, y1=-3, x2=-3, clr="disabled"}
 				end
 
-				self:skinObject("scrollbar", {obj=frame.CommunityCards.ScrollBar, fType=ftype})
+				aObj:skinObject("scrollbar", {obj=frame.CommunityCards.ScrollBar, fType=ftype})
 				local function skinCardElement(...)
 					local _, element, new
 					if _G.select("#", ...) == 2 then
@@ -849,7 +849,7 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 					aObj:addButtonBorder{obj=frame.PendingGuildCards.NextPage, ofs=-2, y1=-3, x2=-3, clr="gold"}
 				end
 
-				self:skinObject("scrollbar", {obj=frame.PendingCommunityCards.ScrollBar, fType=ftype})
+				aObj:skinObject("scrollbar", {obj=frame.PendingCommunityCards.ScrollBar, fType=ftype})
 				local function skinPendingElement(...)
 					local _, element, new
 					if _G.select("#", ...) == 2 then
@@ -891,7 +891,7 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 			self:SecureHookScript(this.GuildFinderFrame, "OnShow", function(fObj)
 				skinCFGaCF(fObj)
 				if self.modBtnBs then
-					self:secureHook(fObj.GuildCards, "RefreshLayout", function(frame, _)
+					self:SecureHook(fObj.GuildCards, "RefreshLayout", function(frame, _)
 						self:clrBtnBdr(frame.PreviousPage, "gold")
 						self:clrBtnBdr(frame.NextPage, "gold")
 					end)
