@@ -470,7 +470,7 @@ aObj.SetupClassic_UIFrames = function()
 						self:skinExpandButton{obj=btn, fType=ftype, noddl=true, onSB=true}
 						self:checkTex{obj=btn}
 					end
-					self:SecureHook(_G.QuestLogListScrollFrame, "update", function()
+					self:SecureHook("QuestLog_Update", function()
 						for _, btn in _G.pairs(_G.QuestLogListScrollFrame.buttons) do
 							self:checkTex{obj=btn}
 						end
