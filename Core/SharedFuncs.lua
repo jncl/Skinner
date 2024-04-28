@@ -82,9 +82,9 @@ function aObj:checkWoWVersion()
 
 	--@debug@
 	self:Printf("%s, %d, %d, %s, %d, %s, %d, %s", buildInfo[agentUID][1], buildInfo[agentUID][2], self.tocVer, buildInfo.curr[1], buildInfo.curr[2], buildInfo.curr[3], buildInfo.curr[4] , agentUID)
-	local vType = self.isPatch and buildInfo[agentUID][3] .. " (Patched)" or buildInfo[agentUID][3]
-	_G.DEFAULT_CHAT_FRAME:AddMessage(aName .. ": Detected that we're running on a " .. vType .. " version", 0.75, 0.5, 0.25, nil, true)
-	self:Debug(vType .. " detected, ")
+	local vType = _G.strjoin(" ", buildInfo[agentUID][3], "version", self.isPatch and "(Patched)" or "")
+	_G.DEFAULT_CHAT_FRAME:AddMessage(_G.strjoin(" ", aName, ": Detected that we're running on a", vType), 0.75, 0.5, 0.25, nil, true)
+	self:Debug(_G.strjoin(" ", "detected", vType))
 	--@end-debug@
 
 end
@@ -221,7 +221,7 @@ local function makeString(obj)
 end
 local function makeText(fStr, ...)
 	local tmpTab = {}
-	local output = ""
+	local output
 	if fStr
 	and fStr.find
 	and fStr:find("%%")
@@ -259,7 +259,7 @@ aObj.debugFrame = _G.ChatFrame10
 function aObj:Debug(...)
 
 	local output = ("(DBG) %s:[%s.%03d]"):format(aName, _G.date("%H:%M:%S"), (_G.GetTime() % 1) * 1000)
-	printIt(_G.WrapTextInColorCode(output, "ff7fff7f") .. " " .. makeText(...), self.debugFrame)
+	printIt(_G.strjoin(" ", _G.WrapTextInColorCode(output, "ff7fff7f"), makeText(...)), self.debugFrame)
 
 end
 local dbg2Flag = false
