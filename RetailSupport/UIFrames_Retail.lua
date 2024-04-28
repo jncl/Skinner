@@ -330,15 +330,7 @@ aObj.SetupRetail_UIFrames = function()
 			else
 				-- Top Tabs
 				aObj:skinObject("tabs", {obj=ml, prefix=ml:GetName(), fType=ftype, numTabs=2, ignoreHLTex=false, upwards=true, lod=aObj.isTT and true, regions={7, 8, 9}, offsets={x1=tabOfs and tabOfs * -1 or nil, y1=tabOfs or -6, x2=tabOfs or nil, y2=aObj.isTT and 3 or 8}, track=false})
-				if aObj.isTT then
-					aObj:secureHook("GarrisonMissonListTab_SetSelected", function(tab, isSelected)
-						if isSelected then
-							aObj:setActiveTab(tab.sf)
-						else
-							aObj:setInactiveTab(tab.sf)
-						end
-					end)
-				else
+				if not aObj.isTT then
 					if ml.UpdateMissions then
 						aObj:clrBBC(ml.Tab2.sf, not ml.Tab2:IsEnabled() and "disabled")
 						aObj:SecureHook(ml.Tab2, "SetEnabled", function(bObj, state)
@@ -1319,6 +1311,16 @@ aObj.SetupRetail_UIFrames = function()
 		end
 
 		self.initialized.GarrisonUI = true
+
+		if aObj.isTT then
+			aObj:SecureHook("GarrisonMissonListTab_SetSelected", function(tab, isSelected)
+				if isSelected then
+					aObj:setActiveTab(tab.sf)
+				else
+					aObj:setInactiveTab(tab.sf)
+				end
+			end)
+		end
 
 		self:SecureHookScript(_G.GarrisonLandingPage, "OnShow", function(this)
 			this.HeaderBar:SetTexture(nil)

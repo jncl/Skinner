@@ -913,7 +913,7 @@ aObj.SetupRetail_PlayerFrames = function()
 					if self.modBtnBs then
 						self:addButtonBorder{obj=frame.IncrementButton, ofs=-2, x1=3, y1=-3, clr="gold"}
 						self:addButtonBorder{obj=frame.DecrementButton, ofs=-2, x1=3, y1=-3, clr="gold"}
-						self:secureHook(frame, "UpdateButtons", function(_)
+						self:SecureHook(frame, "UpdateButtons", function(_)
 							self:clrBtnBdr(frame.IncrementButton, "gold")
 							self:clrBtnBdr(frame.DecrementButton, "gold")
 						end)
