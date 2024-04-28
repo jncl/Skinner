@@ -405,7 +405,7 @@ aObj.SetupClassic_PlayerFrames = function()
 				self:skinObject("dropdown", {obj=_G.PlayerStatFrameRightDropDown, fType=ftype})
 			end
 			if self.modBtnBs then
-				for i = 1, 5 do
+					for i = 1, _G.NUM_RESISTANCE_TYPES do
 					self:addButtonBorder{obj=_G["MagicResFrame" .. i], es=24, ofs=2, x1=-1, y2=-4, clr="grey"}
 				end
 				local btn
@@ -779,12 +779,14 @@ aObj.SetupClassic_PlayerFrames = function()
 				self:skinObject("dropdown", {obj=_G.EngravingFrameFilterDropDown, fType=ftype})
 				self:skinObject("slider", {obj=_G.EngravingFrameScrollFrameScrollBar, fType=ftype})
 				self:skinObject("frame", {obj=this.Border, fType=ftype, kfs=true, rns=true, ofs=1, y2=1})
-				local btn
-				for i = 1, 15 do
-					btn = _G["EngravingFrameHeader" .. i]
-					btn.middle:SetTexture(nil)
-					btn.leftEdge:SetTexture(nil)
-					btn.rightEdge:SetTexture(nil)
+				local i = 1
+				local hdr = _G["EngravingFrameHeader" .. i]
+				while hdr do
+					hdr.middle:SetTexture(nil)
+					hdr.leftEdge:SetTexture(nil)
+					hdr.rightEdge:SetTexture(nil)
+					i = i + 1
+					hdr = _G["EngravingFrameHeader" .. i]
 				end
 				for _, bObj in _G.ipairs(this.scrollFrame.buttons) do
 					bObj:GetNormalTexture():SetTexture(nil)
@@ -967,7 +969,7 @@ aObj.SetupClassic_PlayerFrames = function()
 				if self.isClsc then
 					self:skinObject("editbox", {obj=_G.GuildControlWithdrawGoldEditBox, fType=ftype, y1=-4, y2=4})
 					self:skinObject("editbox", {obj=_G.GuildControlWithdrawItemsEditBox, fType=ftype, y1=-4, y2=4})
-					for i = 1, 6 do
+					for i = 1, _G.MAX_GUILDBANK_TABS do
 						self:keepFontStrings(_G["GuildBankTabPermissionsTab" .. i])
 					end
 					self:skinObject("frame", {obj=_G.GuildControlPopupFrameTabPermissions, fType=ftype, fb=true})

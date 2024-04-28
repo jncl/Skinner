@@ -2307,10 +2307,12 @@ aObj.SetupRetail_UIFrames = function()
 				skinUnitPowerBarAlt(_G.PlayerPowerBarAlt)
 			end
 			-- skin BuffTimers
-			for i = 1, 10 do
-				if _G["BuffTimer" .. i] then
-					skinUnitPowerBarAlt(_G["BuffTimer" .. i])
-				end
+			local i = 1
+			local bt = _G["BuffTimer" .. i]
+			while bt do
+				skinUnitPowerBarAlt(bt)
+				i = i + 1
+				bt = _G["BuffTimer" .. i]
 			end
 			-- UIWidgetPowerBarContainerFrame
 		end
@@ -3553,7 +3555,8 @@ aObj.SetupRetail_UIFrames = function()
 			this:DisableDrawLayer("BACKGROUND")
 			_G.TutorialFrameTop:SetTexture(nil)
 			_G.TutorialFrameBottom:SetTexture(nil)
-			for i = 1, 30 do
+			local MAX_TUTORIAL_VERTICAL_TILE = 30
+			for i = 1, MAX_TUTORIAL_VERTICAL_TILE do
 				_G["TutorialFrameLeft" .. i]:SetTexture(nil)
 				_G["TutorialFrameRight" .. i]:SetTexture(nil)
 			end

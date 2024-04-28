@@ -2538,7 +2538,8 @@ if not aObj.isClscERA then
 				self:addButtonBorder{obj=this.PitchDownButton, clr="sepia"}
 				self:addButtonBorder{obj=this.LeaveButton, clr="sepia"}
 				if aObj.prdb.MainMenuBar.actbtns then
-					for i = 1, 6 do
+					local MAX_ALT_SPELLBUTTONS = 6
+					for i = 1, MAX_ALT_SPELLBUTTONS do
 						self:addButtonBorder{obj=this["SpellButton" .. i], sabt=true, clr="grey"}
 					end
 				end
@@ -2615,7 +2616,7 @@ aObj.blizzFrames[ftype].PVEFrame = function(self)
 	if not self.prdb.PVEFrame or self.initialized.PVEFrame then return end
 	self.initialized.PVEFrame = true
 
-	-- "LFDParentFrame", "RaidFinderFrame", "LFGListPVEStub"
+	local groupFrames = { "LFDParentFrame", "RaidFinderFrame", "LFGListPVEStub" }
 
 	self:SecureHookScript(_G.PVEFrame, "OnShow", function(this)
 		self:keepFontStrings(this.shadows)
@@ -2623,7 +2624,7 @@ aObj.blizzFrames[ftype].PVEFrame = function(self)
 			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype})
 		end
 		-- GroupFinder Frame
-		for i = 1, 3 do
+		for i = 1, #groupFrames do
 			_G.GroupFinderFrame["groupButton" .. i].bg:SetTexture(nil)
 			_G.GroupFinderFrame["groupButton" .. i].ring:SetTexture(nil)
 			self:changeTex(_G.GroupFinderFrame["groupButton" .. i]:GetHighlightTexture())

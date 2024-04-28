@@ -549,7 +549,7 @@ aObj.SetupClassic_UIFrames = function()
 		if self.modBtns then
 			_G.C_Timer.After(0.5, function()
 				local btn
-				for i = 1, 10 do
+				for i = 1, _G.MAX_TUTORIAL_ALERTS do
 					btn = _G["TutorialFrameAlertButton" .. i]
 					self:moveObject{obj=btn:GetHighlightTexture(), x=3}
 					self:skinOtherButton{obj=btn, fType=ftype, sap=true, font="ZoneTextFont", text="!"}

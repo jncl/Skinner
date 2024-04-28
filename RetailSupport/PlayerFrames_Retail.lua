@@ -2156,7 +2156,8 @@ aObj.SetupRetail_PlayerFrames = function()
 				aObj:skinObject("frame", {obj=frame, fType=ftype, kfs=true, x1=97, y2=8})
 			end
 		end
-		for i = 1, 4 do
+		local NUM_GROUP_LOOT_FRAMES = 4
+		for i = 1, NUM_GROUP_LOOT_FRAMES do
 			self:SecureHookScript(_G["GroupLootFrame" .. i], "OnShow", function(this)
 				skinGroupLoot(this)
 
@@ -3127,8 +3128,10 @@ aObj.SetupRetail_PlayerFrames = function()
 		if not self.prdb.PVPUI or self.initialized.PVPUI then return end
 		self.initialized.PVPUI = true
 
+		local pvpFrames = { "HonorFrame", "ConquestFrame", "LFGListPVPStub" }
+
 		self:SecureHookScript(_G.PVPQueueFrame, "OnShow", function(this)
-			for i = 1, 3 do
+			for i = 1, #pvpFrames do
 				this["CategoryButton" .. i].Background:SetTexture(nil)
 				this["CategoryButton" .. i].Ring:SetTexture(nil)
 				self:changeTex(this["CategoryButton" .. i]:GetHighlightTexture())
@@ -3143,7 +3146,7 @@ aObj.SetupRetail_PlayerFrames = function()
 			end
 			-- hook this to change selected texture
 			self:SecureHook("PVPQueueFrame_SelectButton", function(index)
-				for i = 1, 3 do
+				for i = 1, #pvpFrames do
 					if i == index then
 						self:changeTex(this["CategoryButton" .. i].Background, true)
 					else
@@ -3165,7 +3168,6 @@ aObj.SetupRetail_PlayerFrames = function()
 					else
 						self:clrBtnBdr(fObj.NextRewardLevel, "white", 0.75)
 					end
-
 				end)
 			end
 			this.HonorInset.RatedPanel.WeeklyChest.FlairTexture:SetTexture(nil)

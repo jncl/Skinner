@@ -1018,17 +1018,20 @@ aObj.SetupRetail_NPCFrames = function()
 				end)
 			end
 			if self.modBtnBs then
-				for i = 1, 9 do
+				local VOID_DEPOSIT_MAX = 9
+				for i = 1, VOID_DEPOSIT_MAX do
 					self:addButtonBorder{obj=_G["VoidStorageDepositButton" .. i], fType=ftype, clr="grey"}
 					self:addButtonBorder{obj=_G["VoidStorageWithdrawButton" .. i], fType=ftype, clr="grey"}
 				end
-				for i = 1, 80 do
+				local VOID_STORAGE_MAX = 80
+				for i = 1, VOID_STORAGE_MAX do
 					self:addButtonBorder{obj=_G["VoidStorageStorageButton" .. i], fType=ftype, clr="grey"}
 				end
 			end
 			self:skinObject("frame", {obj=_G.VoidStoragePurchaseFrame, fType=ftype, kfs=true, ofs=0})
 			-- Tabs
-			for i = 1, 2 do
+			local VOID_STORAGE_PAGES = 2
+			for i = 1, VOID_STORAGE_PAGES do
 				_G.VoidStorageFrame["Page" .. i]:DisableDrawLayer("BACKGROUND")
 				if self.modBtns then
 					self:addButtonBorder{obj=_G.VoidStorageFrame["Page" .. i]}
