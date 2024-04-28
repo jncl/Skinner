@@ -25,7 +25,7 @@ end
 
 function aObj:OnInitialize()
 
-	self:Debug("Debugging is enabled")
+	self:Debug("debugging is enabled")
 
 	-- get Locale
 	self.L = _G.LibStub:GetLibrary("AceLocale-3.0"):GetLocale(aName)
