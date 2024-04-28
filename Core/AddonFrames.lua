@@ -230,13 +230,15 @@ function aObj:PLAYER_LEVEL_CHANGED(...) -- luacheck: ignore 212 (unused argument
 		9 : Dragonflight (70)
 --]]
 
-	local newPLevel = _G.select(3, ...)
-
+	-- local newPLevel = _G.select(3, ...)
 	-- if new level < old level then just started shadowlands expansion
+	-- if newPLevel < _G.MAX_PLAYER_LEVEL then return end
 
-	if newPLevel < _G.MAX_PLAYER_LEVEL then return end
+	if not _G.IsPlayerAtEffectiveMaxLevel() then
+		return
+	end
 
-	-- max XP level reached, adjust watchbar positions
+	-- Max XP level reached, adjust watchbar positions
 	for _, bar in _G.pairs{_G.ReputationWatchBar, _G.ArtifactWatchBar, _G.HonorWatchBar} do
 		bar.SetPoint = bar.OrigSetPoint
 		aObj:moveObject{obj=bar, y=2}
