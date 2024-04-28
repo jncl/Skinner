@@ -1876,6 +1876,17 @@ aObj.SetupRetail_PlayerFrames = function()
 			return flyout
 		end, true)
 	end
+	local function skinQualityDialog(frame)
+		for _, c in _G.pairs(frame.containers) do
+			skinReagentBtn(c.Button)
+			skinNISpinner(c.EditBox)
+		end
+		if aObj.modBtns then
+			aObj:skinCloseButton{obj=frame.ClosePanelButton, fType=ftype}
+			aObj:skinStdButton{obj=frame.CancelButton, fType=ftype}
+			aObj:skinStdButton{obj=frame.AcceptButton, fType=ftype, sechk=true}
+		end
+	end
 	aObj.blizzLoDFrames[ftype].Professions = function(self)
 		if not self.prdb.Professions or self.initialized.Professions then return end
 		self.initialized.Professions = true
@@ -2004,16 +2015,7 @@ aObj.SetupRetail_PlayerFrames = function()
 			end)
 
 			self:SecureHookScript(this.CraftingPage.SchematicForm.QualityDialog, "OnShow", function(frame)
-				self:skinObject("frame", {obj=frame, fType=ftype, kfs=true, rns=true})
-				for i = 1, 3 do
-					skinReagentBtn(frame["Container" .. i].Button)
-					skinNISpinner(frame["Container" .. i].EditBox)
-				end
-				if self.modBtns then
-					self:skinCloseButton{obj=frame.ClosePanelButton, fType=ftype}
-					self:skinStdButton{obj=frame.CancelButton, fType=ftype}
-					self:skinStdButton{obj=frame.AcceptButton, fType=ftype, sechk=true}
-				end
+				skinQualityDialog(frame)
 
 				self:Unhook(frame, "OnShow")
 			end)
@@ -2241,16 +2243,7 @@ aObj.SetupRetail_PlayerFrames = function()
 				self:Unhook(fObj, "OnShow")
 			end)
 			self:SecureHookScript(this.Form.QualityDialog, "OnShow", function(fObj)
-				self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, rns=true})
-				for i = 1, 3 do
-					skinReagentBtn(fObj["Container" .. i].Button)
-					skinNISpinner(fObj["Container" .. i].EditBox)
-				end
-				if self.modBtns then
-					self:skinCloseButton{obj=fObj.ClosePanelButton, fType=ftype}
-					self:skinStdButton{obj=fObj.CancelButton, fType=ftype}
-					self:skinStdButton{obj=fObj.AcceptButton, fType=ftype, sechk=true}
-				end
+				skinQualityDialog(fObj)
 				
 				self:Unhook(fObj, "OnShow")
 			end)
