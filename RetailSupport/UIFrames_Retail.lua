@@ -2016,23 +2016,6 @@ aObj.SetupRetail_UIFrames = function()
 
 	end
 
-	aObj.blizzFrames[ftype].GhostFrame = function(self)
-		if not self.prdb.GhostFrame or self.initialized.GhostFrame then return end
-		self.initialized.GhostFrame = true
-
-		self:SecureHookScript(_G.GhostFrame, "OnShow", function(this)
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true})
-			_G.RaiseFrameLevelByTwo(this) -- make it appear above other frames
-			if self.modBtnBs then
-				self:addButtonBorder{obj=_G.GhostFrameContentsFrame, relTo=_G.GhostFrameContentsFrameIcon}
-			end
-
-			self:Unhook(this, "OnShow")
-		end)
-		self:checkShown(_G.GhostFrame)
-
-	end
-
 	aObj.blizzFrames[ftype].HelpTip = function(self)
 		if not self.prdb.HelpTip or self.initialized.HelpTip then return end
 		self.initialized.HelpTip = true
@@ -2393,43 +2376,6 @@ aObj.SetupRetail_UIFrames = function()
 			end
 
 			self:Unhook(this, "OnShow")
-		end)
-
-	end
-
-	aObj.blizzFrames[ftype].NavigationBar = function(self)
-		if not self.prdb.NavigationBar or self.initialized.NavigationBar then return end
-		self.initialized.NavigationBar = true
-		-- Helper function, used by several frames
-
-		-- hook this to handle navbar buttons
-		self:SecureHook("NavBar_AddButton", function(this, _)
-			for i = 1, #this.navList do
-				self:skinNavBarButton(this.navList[i])
-				if self.modBtnBs
-				and this.navList[i].MenuArrowButton -- Home button doesn't have one
-				and not this.navList[i].MenuArrowButton.sbb
-				then
-					self:addButtonBorder{obj=this.navList[i].MenuArrowButton, ofs=-2, x1=-1, x2=0, clr="gold", ca=0.75}
-					if this.navList[i].MenuArrowButton.sbb then
-						this.navList[i].MenuArrowButton.sbb:SetAlpha(0) -- hide button border
-					end
-					-- handle in combat hooking
-					self:hookScript(this.navList[i].MenuArrowButton, "OnEnter", function(bObj)
-						bObj.sbb:SetAlpha(1)
-					end)
-					self:hookScript(this.navList[i].MenuArrowButton, "OnLeave", function(bObj)
-						bObj.sbb:SetAlpha(0)
-					end)
-				end
-			end
-			-- overflow Button
-			this.overflowButton:GetNormalTexture():SetAlpha(0)
-			this.overflowButton:GetPushedTexture():SetAlpha(0)
-			this.overflowButton:GetHighlightTexture():SetAlpha(0)
-			this.overflowButton:SetText("<<")
-			this.overflowButton:SetNormalFontObject(self.modUIBtns.fontP) -- use module name instead of shortcut
-
 		end)
 
 	end
@@ -3797,14 +3743,12 @@ aObj.SetupRetail_UIFramesOptions = function(self)
 		["Event Toast Manager"]          = {suff = "Frame"},
 		["Expansion Landing Page"]       = true,
 		["Garrison UI"]                  = true,
-		["Ghost Frame"]                  = true,
 		["Help Tip"]                     = {desc = "Help Tips"},
 		["Islands Party Pose UI"]        = true,
 		["Islands Queue UI"]             = true,
 		["Level Up Display"]             = true,
 		["Loss Of Control"]              = {suff = "Frame"},
 		["Major Factions"]               = {suff = "UI"},
-		["Navigation Bar"]               = true,
 		["New Player Experience"]        = true,
 		["Obliterum UI"]                 = true,
 		["Order Hall UI"]                = true,

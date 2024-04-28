@@ -1251,6 +1251,27 @@ aObj.blizzLoDFrames[ftype].EventTrace = function(self)
 
 end
 
+if aObj.isRTl
+or aObj.isClscPtr
+then
+	aObj.blizzFrames[ftype].GhostFrame = function(self)
+		if not self.prdb.GhostFrame or self.initialized.GhostFrame then return end
+		self.initialized.GhostFrame = true
+
+		self:SecureHookScript(_G.GhostFrame, "OnShow", function(this)
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true})
+			_G.RaiseFrameLevelByTwo(this) -- make it appear above other frames
+			if self.modBtnBs then
+				self:addButtonBorder{obj=_G.GhostFrameContentsFrame, relTo=_G.GhostFrameContentsFrameIcon}
+			end
+
+			self:Unhook(this, "OnShow")
+		end)
+		self:checkShown(_G.GhostFrame)
+
+	end
+end
+	
 aObj.blizzLoDFrames[ftype].GMChatUI = function(self)
 	if not self.prdb.GMChatUI or self.initialized.GMChatUI then return end
 	self.initialized.GMChatUI = true
@@ -2511,6 +2532,43 @@ aObj.blizzFrames[ftype].Nameplates = function(self)
 end
 
 if not aObj.isClscERA then
+	aObj.blizzFrames[ftype].NavigationBar = function(self)
+		if not self.prdb.NavigationBar or self.initialized.NavigationBar then return end
+		self.initialized.NavigationBar = true
+		-- Helper function, used by several frames
+
+		-- hook this to handle navbar buttons
+		self:SecureHook("NavBar_AddButton", function(this, _)
+			for _, btn in _G.pairs(this.navList) do
+				self:skinNavBarButton(btn)
+				if self.modBtnBs
+				and btn.MenuArrowButton -- Home button doesn't have one
+				and not btn.MenuArrowButton.sbb
+				then
+					self:addButtonBorder{obj=btn.MenuArrowButton, ofs=-2, x1=-1, x2=0, clr="gold", ca=0.75}
+					if btn.MenuArrowButton.sbb then
+						btn.MenuArrowButton.sbb:SetAlpha(0) -- hide button border
+					end
+					-- handle in combat hooking
+					self:hookScript(btn.MenuArrowButton, "OnEnter", function(bObj)
+						bObj.sbb:SetAlpha(1)
+					end)
+					self:hookScript(btn.MenuArrowButton, "OnLeave", function(bObj)
+						bObj.sbb:SetAlpha(0)
+					end)
+				end
+			end
+			-- overflow Button
+			this.overflowButton:GetNormalTexture():SetAlpha(0)
+			this.overflowButton:GetPushedTexture():SetAlpha(0)
+			this.overflowButton:GetHighlightTexture():SetAlpha(0)
+			this.overflowButton:SetText("<<")
+			this.overflowButton:SetNormalFontObject(self.modUIBtns.fontP) -- use module name instead of shortcut
+
+		end)
+
+	end
+
 	aObj.blizzFrames[ftype].OverrideActionBar = function(self) -- a.k.a. Vehicle UI
 		if not self.prdb.OverrideActionBar or self.initialized.OverrideActionBar then return end
 		self.initialized.OverrideActionBar = true

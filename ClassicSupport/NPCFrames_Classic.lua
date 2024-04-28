@@ -6,7 +6,9 @@ local _G = _G
 aObj.SetupClassic_NPCFrames = function()
 	local ftype = "n"
 
-	if aObj.isClsc then
+	if aObj.isClsc
+	and not aObj.isClscPTR
+	then
 		aObj.blizzFrames[ftype].ArenaFrame = function(self)
 			if not self.prdb.ArenaFrame or self.initialized.ArenaFrame then return end
 			self.initialized.ArenaFrame = true
@@ -323,6 +325,33 @@ aObj.SetupClassic_NPCFrames = function()
 
 	end
 
+	if aObj.isClscPTR then
+		aObj.blizzLoDFrames[ftype].ReforgingUI = function(self)
+			if not self.prdb.ReforgingUI or self.initialized.ReforgingUI then return end
+			self.initialized.ReforgingUI = true
+
+			self:SecureHookScript(_G.ReforgingFrame, "OnShow", function(this)
+				_G.ReforgingFrameItemButton:DisableDrawLayer("BACKGROUND")
+				_G.ReforgingFrameItemButton:DisableDrawLayer("OVERLAY")
+				self:removeMagicBtnTex(_G.ReforgingFrameRestoreButton)
+				self:removeMagicBtnTex(_G.ReforgingFrameReforgeButton)
+				self:keepFontStrings(_G[this:GetName() .. "ButtonFrame"])
+				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x2=1})
+				if self.modBtns then
+					self:skinStdButton{obj=_G.ReforgingFrameRestoreButton, fType=ftype, schk=truec}
+					self:skinStdButton{obj=_G.ReforgingFrameReforgeButton, fType=ftype, schk=truec}
+				end
+				if self.modBtnBs then
+					self:addButtonBorder{obj=_G.ReforgingFrameItemButton, fType=ftype, clr="bronze"}
+				end
+
+				self:Unhook(this, "OnShow")
+			end)
+
+		end
+
+	end
+
 	aObj.blizzFrames[ftype].TaxiFrame = function(self)
 		if not self.prdb.TaxiFrame or self.initialized.TaxiFrame then return end
 		self.initialized.TaxiFrame = true
@@ -394,6 +423,7 @@ aObj.SetupClassic_NPCFramesOptions = function(self)
 		["Arena Frame"]           = self.isClsc and true or nil,
 		["Arena Registrar Frame"] = self.isClsc and true or nil,
 		["Auction UI"]            = true,
+		["Reforging UI"]		  = self.isClscPTR and true or nil,
 	}
 	self:setupFramesOptions(optTab, "NPC")
 	_G.wipe(optTab)

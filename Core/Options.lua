@@ -1287,12 +1287,15 @@ aObj.SetupOptions = function(self)
 	_G.wipe(npcOptTab)
 
 	local pfOptTab = {
+		["Archaeology UI"]    = self.isRtl or aObj.isClscPTR and true or nil,
 		["Buffs"]             = {desc = "Buffs Buttons"},
 		["Character Frames"]  = true,
 		["Collections"]       = not self.isClscERA and {suff = "Journal"} or nil,
 		["Communities"]       = {suff = "UI"} or nil,
 		["Compact Frames"]    = true,
 		["Dress Up Frame"]    = true,
+		["Encounter Journal"] = not self.isClscERA and {desc = self.isRtl and "Adventure Guide" or "Dungeon Journal"} or nil,
+		["Equipment Flyout"]  = self.isRtl or aObj.isClscPTR and true or nil,
 		["Friends Frame"]     = {desc = "Social Frame"},
 		["Inspect UI"]        = true,
 		["Item Socketing UI"] = true,
@@ -1317,6 +1320,7 @@ aObj.SetupOptions = function(self)
 		["Color Picker"]          = {suff = "Frame"},
 		["Debug Tools"]           = {suff = "Frames"},
 		["Event Trace"]           = true,
+		["Ghost Frame"]           = self.isRtl or aObj.isClscPTR and true or nil,
 		["GM Chat UI"]            = true,
 		["Guild Bank UI"]         = true,
 		["Help Frame"]            = {desc = "Customer Support Frame"},
@@ -1327,6 +1331,7 @@ aObj.SetupOptions = function(self)
 		["Move Pad"]              = true,
 		["Movie Frame"]           = true,
 		["Nameplates"]            = not self.isRtl and true or nil,
+		["Navigation Bar"]        = not self.isClscERA and true or nil,
 		["Override Action Bar"]   = not self.isClscERA and {desc = "Vehicle UI"} or nil,
 		["PTR Feedback"]          = _G.PTR_IssueReporter and {suff = "Frames"} or nil,
 		["PVE Frame"]             = {desc = "Group Finder Frame"},

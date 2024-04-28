@@ -6,31 +6,33 @@ local _G = _G
 aObj.SetupClassic_UIFrames = function()
 	local ftype = "u"
 
-	aObj.blizzFrames[ftype].BattlefieldFrame = function(self)
-		if not self.prdb.BattlefieldFrame or self.initialized.BattlefieldFrame then return end
-		self.initialized.BattlefieldFrame = true
+	if not aObj.isClscPTR then
+		aObj.blizzFrames[ftype].BattlefieldFrame = function(self)
+			if not self.prdb.BattlefieldFrame or self.initialized.BattlefieldFrame then return end
+			self.initialized.BattlefieldFrame = true
 
-		self:SecureHookScript(_G.BattlefieldFrame, "OnShow", function(this)
-			if not aObj.isClsc then
-				self:skinObject("slider", {obj=_G.BattlefieldListScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
-			else
-				self:skinObject("slider", {obj=_G.BattlefieldFrameTypeScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
-				self:skinObject("slider", {obj=_G.BattlefieldFrameInfoScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
-				_G.BattlefieldFrameInfoScrollFrameChildFrameDescription:SetTextColor(self.BT:GetRGB())
-				_G.BattlefieldFrameInfoScrollFrameChildFrameRewardsInfoTitle:SetTextColor(self.BT:GetRGB())
-				_G.BattlefieldFrameInfoScrollFrameChildFrameRewardsInfoRewardsLabel:SetTextColor(self.BT:GetRGB())
-			end
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=12, y1=-12, x2=-32, y2=74})
-			_G.BattlefieldFrameCloseButton:Hide()
-			if self.modBtns then
-				self:skinStdButton{obj=_G.BattlefieldFrameCancelButton, fType=ftype}
-				self:skinStdButton{obj=_G.BattlefieldFrameJoinButton, fType=ftype}
-				self:skinStdButton{obj=_G.BattlefieldFrameGroupJoinButton, fType=ftype}
-			end
+			self:SecureHookScript(_G.BattlefieldFrame, "OnShow", function(this)
+				if not aObj.isClsc then
+					self:skinObject("slider", {obj=_G.BattlefieldListScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
+				else
+					self:skinObject("slider", {obj=_G.BattlefieldFrameTypeScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
+					self:skinObject("slider", {obj=_G.BattlefieldFrameInfoScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
+					_G.BattlefieldFrameInfoScrollFrameChildFrameDescription:SetTextColor(self.BT:GetRGB())
+					_G.BattlefieldFrameInfoScrollFrameChildFrameRewardsInfoTitle:SetTextColor(self.BT:GetRGB())
+					_G.BattlefieldFrameInfoScrollFrameChildFrameRewardsInfoRewardsLabel:SetTextColor(self.BT:GetRGB())
+				end
+				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=12, y1=-12, x2=-32, y2=74})
+				_G.BattlefieldFrameCloseButton:Hide()
+				if self.modBtns then
+					self:skinStdButton{obj=_G.BattlefieldFrameCancelButton, fType=ftype}
+					self:skinStdButton{obj=_G.BattlefieldFrameJoinButton, fType=ftype}
+					self:skinStdButton{obj=_G.BattlefieldFrameGroupJoinButton, fType=ftype}
+				end
 
-			self:Unhook(this, "OnShow")
-		end)
+				self:Unhook(this, "OnShow")
+			end)
 
+		end
 	end
 
 	aObj.blizzLoDFrames[ftype].BindingUI = function(self)
@@ -106,12 +108,17 @@ aObj.SetupClassic_UIFrames = function()
 				self:addButtonBorder{obj=_G["ChatFrame" .. i].buttonFrame.bottomButton, ofs=-2, x1=1, clr="grey"}
 				self:addButtonBorder{obj=_G["ChatFrame" .. i].buttonFrame.downButton, ofs=-2, x1=1, clr="grey"}
 				self:addButtonBorder{obj=_G["ChatFrame" .. i].buttonFrame.upButton, ofs=-2, x1=1, clr="grey"}
-				self:addButtonBorder{obj=_G["ChatFrame" .. i].buttonFrame.minimizeButton, ofs=-2, x=1, clr="grey"}
+				if not aObj.isClscPTR then
+					self:addButtonBorder{obj=_G["ChatFrame" .. i].buttonFrame.minimizeButton, ofs=-2, x=1, clr="grey"}
+				end
 				self:addButtonBorder{obj=_G["ChatFrame" .. i].ScrollToBottomButton, ofs=-1}
 			end
-			self:addButtonBorder{obj=_G.ChatFrameChannelButton, ofs=1, clr="grey"}
-			self:addButtonBorder{obj=_G.ChatFrameMenuButton, ofs=-2, x1=1, clr="grey"}
-			self:addButtonBorder{obj=_G.TextToSpeechButton, ofs=1, clr="grey"}
+			self:addButtonBorder{obj=_G.ChatFrameChannelButton, fType=ftype, ofs=1, clr="grey"}
+			self:addButtonBorder{obj=_G.ChatFrameMenuButton, fType=ftype, ofs=-2, x1=1, clr="grey"}
+			self:addButtonBorder{obj=_G.TextToSpeechButton, fType=ftype, ofs=1, clr="grey"}
+			if aObj.isClscPTR then
+				self:addButtonBorder{obj=_G.FriendsMicroButton, fType=ftype, x1=1, x2=-2, clr="grey"}
+			end
 		end
 
 	end
@@ -310,39 +317,117 @@ aObj.SetupClassic_UIFrames = function()
 			if not self.prdb.PVPFrame or self.initialized.PVPFrame then return end
 			self.initialized.PVPFrame = true
 
-			self:SecureHookScript(_G.PVPParentFrame, "OnShow", function(this)
-				self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, ignoreSize=true, lod=self.isTT and true, upwards=true, regions={7}})
-				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=12, y1=-12, x2=-32, y2=74})
+			if not aObj.isClscPTR then
+				self:SecureHookScript(_G.PVPParentFrame, "OnShow", function(this)
+					self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, ignoreSize=true, lod=self.isTT and true, upwards=true, regions={7}})
+					self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=12, y1=-12, x2=-32, y2=74})
 
-				self:SecureHookScript(_G.PVPFrame, "OnShow", function(fObj)
-					self:keepFontStrings(fObj)
-					if self.modBtnBs then
-						self:addButtonBorder{obj=_G.PVPFrameToggleButton, fType=ftype, clr="gold", x2=1}
-					end
+					self:SecureHookScript(_G.PVPFrame, "OnShow", function(fObj)
+						self:keepFontStrings(fObj)
+						if self.modBtnBs then
+							self:addButtonBorder{obj=_G.PVPFrameToggleButton, fType=ftype, clr="gold", x2=1}
+						end
 
-					self:Unhook(fObj, "OnShow")
+						self:Unhook(fObj, "OnShow")
+					end)
+					self:checkShown(_G.PVPFrame)
+
+					self:SecureHookScript(_G.PVPTeamDetails, "OnShow", function(fObj)
+						self:skinObject("dropdown", {obj=_G.PVPDropDown, fType=ftype})
+						for i = 1, 5 do
+							_G["PVPTeamDetailsFrameColumnHeader" .. i]:DisableDrawLayer("BACKGROUND")
+							self:skinObject("frame", {obj=_G["PVPTeamDetailsFrameColumnHeader" .. i], fType=ftype, ofs=-1})
+						end
+						self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, cb=true, ofs=-2})
+						if self.modBtns then
+							self:skinStdButton{obj=_G.PVPTeamDetailsAddTeamMember, fType=ftype}
+						end
+						if self.modBtnBs then
+							self:addButtonBorder{obj=_G.PVPTeamDetailsToggleButton, fType=ftype, clr="gold", ofs=-1, y1=-2, x2=-2}
+						end
+
+						self:Unhook(fObj, "OnShow")
+					end)
+
+					self:Unhook(this, "OnShow")
 				end)
-				self:checkShown(_G.PVPFrame)
-
-				self:SecureHookScript(_G.PVPTeamDetails, "OnShow", function(fObj)
-					self:skinObject("dropdown", {obj=_G.PVPDropDown, fType=ftype})
-					for i = 1, 5 do
-						_G["PVPTeamDetailsFrameColumnHeader" .. i]:DisableDrawLayer("BACKGROUND")
-						self:skinObject("frame", {obj=_G["PVPTeamDetailsFrameColumnHeader" .. i], fType=ftype, ofs=-1})
-					end
-					self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, cb=true, ofs=-2})
+			else
+				self:SecureHookScript(_G.PVPFrame, "OnShow", function(this)
+					-- Currency
+					self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, ignoreSize=true, lod=self.isTT and true, upwards=true, regions={7}})
+					_G.PVPFrameConquestBar:DisableDrawLayer("BORDER")
+					self:removeInset(this.topInset)
+					self:removeMagicBtnTex(_G.PVPFrameLeftButton)
+					self:removeMagicBtnTex(_G.PVPFrameRightButton)
+					self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x2=1})
 					if self.modBtns then
-						self:skinStdButton{obj=_G.PVPTeamDetailsAddTeamMember, fType=ftype}
+						self:skinStdButton{obj=_G.PVPFrameLeftButton, fType=ftype, schk=true}
+						self:skinStdButton{obj=_G.PVPFrameRightButton, fType=ftype, schk=true}
 					end
-					if self.modBtnBs then
-						self:addButtonBorder{obj=_G.PVPTeamDetailsToggleButton, fType=ftype, clr="gold", ofs=-1, y1=-2, x2=-2}
+					if self.modChkBtns then
+						for _, name in _G.pairs{"Tank", "Healer", "DPS"} do
+							self:skinCheckButton{obj=this[name .. "Icon"].checkButton, fType=ftype}
+							this[name .. "Icon"].checkButton:SetSize(26, 26)
+						end
 					end
 
-					self:Unhook(fObj, "OnShow")
+					self:SecureHookScript(_G.PVPHonorFrame, "OnShow", function(fObj)
+						fObj:DisableDrawLayer("ARTWORK")
+						self:skinObject("scrollbar", {obj=fObj.bgTypeScrollBar, fType=ftype, x1=1, x2=5})
+						self:skinObject("scrollbar", {obj=_G.PVPHonorFrameInfoScrollFrame.ScrollBar, fType=ftype, x1=1, x2=5})
+						_G.PVPHonorFrameInfoScrollFrame.scrollBarBackground:SetTexture(nil)
+						_G.PVPHonorFrameInfoScrollFrame.scrollBarArtTop:SetTexture(nil)
+						_G.PVPHonorFrameInfoScrollFrame.scrollBarArtBottom:SetTexture(nil)
+						_G.PVPHonorFrameInfoScrollFrameChildFrameDescription:SetTextColor(self.BT:GetRGB())
+
+						self:Unhook(fObj, "OnShow")
+					end)
+					self:checkShown(_G.PVPHonorFrame)
+
+					self:SecureHookScript(_G.PVPConquestFrame, "OnShow", function(fObj)
+						fObj:DisableDrawLayer("ARTWORK")
+						fObj.infoButton:DisableDrawLayer("BORDER")
+
+						self:Unhook(fObj, "OnShow")
+					end)
+
+					self:SecureHookScript(_G.WarGamesFrame, "OnShow", function(fObj)
+						fObj:DisableDrawLayer("BACKGROUND")
+						fObj:DisableDrawLayer("ARTWORK")
+						self:skinObject("scrollbar", {obj=fObj.scrollBar, fType=ftype, x1=1, x2=5})
+						local function skinElement(...)
+							local _, element
+							if _G.select("#", ...) == 2 then
+								element, _ = ...
+							else
+								_, element, _ = ...
+							end
+							if element.Bg then
+								element.Bg:SetTexture(nil)
+								element.Border:SetTexture(nil)
+							else
+								if aObj.modBtns then
+									aObj:skinExpandButton{obj=element, fType=ftype, onSB=true}
+								end
+							end
+						end
+						_G.ScrollUtil.AddInitializedFrameCallback(fObj.scrollBox, skinElement, aObj, true)
+						self:skinObject("scrollbar", {obj=_G.WarGamesFrameInfoScrollFrame.ScrollBar, fType=ftype, x1=1, x2=5})
+						_G.WarGamesFrameInfoScrollFrame.scrollBarBackground:SetTexture(nil)
+						_G.WarGamesFrameInfoScrollFrame.scrollBarArtTop:SetTexture(nil)
+						_G.WarGamesFrameInfoScrollFrame.scrollBarArtBottom:SetTexture(nil)
+						_G.WarGamesFrameDescription:SetTextColor(self.BT:GetRGB())
+						self:removeMagicBtnTex(_G.WarGameStartButton)
+						if self.modBtns then
+							self:skinStdButton{obj=_G.WarGameStartButton, fType=ftype, schk=true}
+						end
+
+						self:Unhook(fObj, "OnShow")
+					end)
+
+					self:Unhook(this, "OnShow")
 				end)
-
-				self:Unhook(this, "OnShow")
-			end)
+			end
 
 		end
 	end
@@ -593,6 +678,9 @@ aObj.SetupClassic_UIFrames = function()
 					if self.modChkBtns then
 						self:skinCheckButton{obj=_G.WorldMapTrackQuest, fType=ftype}
 						self:skinCheckButton{obj=_G.WorldMapQuestShowObjectives, fType=ftype}
+						if aObj.isClscPTR then
+							self:skinCheckButton{obj=_G.WorldMapShowDigsites, fType=ftype}
+						end
 					end
 				end
 			end

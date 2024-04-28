@@ -31,7 +31,7 @@ function aObj:checkWoWVersion()
 			agentUID = "wow"
 		elseif _G.WOW_PROJECT_ID == _G.WOW_PROJECT_CLASSIC then
 			agentUID = "wow_classic_era"
-		elseif _G.WOW_PROJECT_ID == _G.WOW_PROJECT_WRATH_CLASSIC then
+		else
 			agentUID = "wow_classic"
 		end
 	end
@@ -57,24 +57,21 @@ function aObj:checkWoWVersion()
 	-- check current version or build number against current wow version info, if greater then it's a patch
 	self.isPatch = (buildInfo.curr[4] > self.tocVer) or (_G.tonumber(buildInfo.curr[2]) > _G.tonumber(buildInfo[agentUID][2]))
 
-	-- handle Classic Beta changes in PTR or Live
-	-- self.isClscBeta   = self.isClscBeta or self.isClscPTR and self.isPatch
 	-- indicate we're on ClassicPTR if on Classic Beta
-	-- self.isClscPTR    = self.isClscPTR or self.isClscBeta
+	self.isClscPTR    = self.isClscPTR or self.isClscBeta
 	-- indicate we're on Classic if on Classic PTR
 	self.isClsc       = self.isClsc or self.isClscPTR
 	-- indicate we're on ClassicERA if on Classic ERA PTR
 	self.isClscERA    = self.isClscERA  or self.isClscERAPTR
-	-- handle Retail Beta changes in PTR or Live
-	-- self.isRtlBeta    = self.isRtlBeta or self.isRtlPTR and self.isPatch
 	-- indicate we're on Retail PTR if on Retail Beta
-	-- self.isRtlPTR     = self.isRtlPTR or self.isRtlBeta
+	self.isRtlPTR     = self.isRtlPTR or self.isRtlBeta
 	-- indicate we're on Retail if on Retail PTR
 	self.isRtl        = self.isRtl or self.isRtlPTR or self.isRtlPTRX
-	-- handle Classic or Retail PTR changes going Live
-	-- self.isClscPTR    = self.isClscPTR or self.isClsc and self.isPatch
-	-- self.isClscERAPTR = self.isClscERAPTR or self.isClscERA and self.isPatch
-	-- self.isRtlPTR     = self.isRtlPTR or self.isRtl and self.isPatch
+
+	-- handle Classic, ClassicERA or Retail PTR changes going Live
+	self.isClscPTR    = self.isClscPTR or self.isClsc and self.isPatch
+	self.isClscERAPTR = self.isClscERAPTR or self.isClscERA and self.isPatch
+	self.isRtlPTR     = self.isRtlPTR or self.isRtl and self.isPatch
 	-- self.isRtlPTRX    = self.isRtlPTRX or self.isRtl and self.isPatch
 	--@debug@
 	self:Debug("checkVersion#3: [%s, %s, %s, %s, %s, %s, %s, %s, %s, %s]", self.isClscBeta, self.isClscPTR, self.isClsc, self.isClscERAPTR, self.isClscERA, self.isRtlBeta, self.isRtlPTR, self.isRtlPTRX, self.isRtl, self.isPatch)
