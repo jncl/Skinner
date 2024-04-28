@@ -484,6 +484,22 @@ aObj.SetupClassic_UIFrames = function()
 
 	end
 
+	if aObj.isClsc then
+		aObj.blizzFrames[ftype].QuestMapFrame = function(self)
+			if not self.prdb.WorldMap.skin or self.initialized.QuestMapFrame then return end
+			self.initialized.QuestMapFrame = true
+
+			self:SecureHookScript(_G.QuestMapFrame, "OnShow", function(this)
+				self:skinObject("dropdown", {obj=_G.QuestMapQuestOptionsDropDown, fType=ftype})
+				self:skinObject("scrollbar", {obj=this.QuestsFrame.ScrollBar, fType=ftype, x1=1, x2=5})
+				self:skinObject("slider", {obj=this.DetailsFrame.ScrollFrame.ScrollBar, fType=ftype})
+
+				self:Unhook(this, "OnShow")
+			end)
+
+		end
+	end
+
 	if aObj.isClscERA then
 		aObj.blizzFrames[ftype].QuestTimer = function(self)
 			if not self.prdb.QuestTimer or self.initialized.QuestTimer then return end
