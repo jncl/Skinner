@@ -1534,6 +1534,9 @@ aObj.SetupClassic_PlayerFrames = function()
 			end)
 
 			self:SecureHookScript(_G.TokenFramePopup, "OnShow", function(this)
+				if this.Border then
+					self:keepFontStrings(this.Border)
+				end
 				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, ofs=-6})
 				if self.modChkBtns then
 					self:skinCheckButton{obj=_G.TokenFramePopupInactiveCheckBox, fType=ftype}
