@@ -571,6 +571,13 @@ aObj.SetupClassic_PlayerFrames = function()
 					self:SecureHook("PaperDollFrameItemFlyout_Show", function(_)
 							for _, btn in _G.pairs(_G.PaperDollFrameItemFlyout.buttons) do
 								self:addButtonBorder{obj=btn, fType=ftype, ibt=true}
+								if btn.location >= _G.PDFITEMFLYOUT_FIRST_SPECIAL_LOCATION then
+									self:clrBtnBdr(btn, "grey")
+									btn.sbb.SetBackdropBorderColor = _G.nop
+								end
+							end
+							for i = 1, this.buttonFrame["numBGs"] do
+								this.buttonFrame["bg" .. i]:SetTexture(nil)
 						end
 					end)
 				end
