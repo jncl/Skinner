@@ -1331,6 +1331,23 @@ aObj.SetupClassic_PlayerFrames = function()
 			end)
 		end
 
+		self:SecureHookScript(_G.MasterLooterFrame, "OnShow", function(this)
+			this:DisableDrawLayer("BACKGROUND")
+			this.Item.NameBorderLeft:SetTexture(nil)
+			this.Item.NameBorderRight:SetTexture(nil)
+			this.Item.NameBorderMid:SetTexture(nil)
+			this.Item.IconBorder:SetTexture(nil)
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true})
+			if self.modBtns then
+				 self:skinCloseButton{obj=self:getChild(this, 3)} -- unamed close button
+			end
+			if self.modBtnBs then
+				self:addButtonBorder{obj=this.Item, relTo=this.Item.Icon}
+			end
+
+			self:Unhook(this, "OnShow")
+		end)
+
 		self:SecureHookScript(_G.LootHistoryFrame, "OnShow", function(this)
 			this.Divider:SetTexture(nil)
 			self:skinObject("dropdown", {obj=_G.LootHistoryDropDown, fType=ftype})
@@ -1353,32 +1370,15 @@ aObj.SetupClassic_PlayerFrames = function()
 			self:Unhook(this, "OnShow")
 		end)
 
-		self:SecureHookScript(_G.MasterLooterFrame, "OnShow", function(this)
-			this:DisableDrawLayer("BACKGROUND")
-			this.Item.NameBorderLeft:SetTexture(nil)
-			this.Item.NameBorderRight:SetTexture(nil)
-			this.Item.NameBorderMid:SetTexture(nil)
-			this.Item.IconBorder:SetTexture(nil)
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true})
-			if self.modBtns then
-				 self:skinCloseButton{obj=self:getChild(this, 3)} -- unamed close button
-			end
-			if self.modBtnBs then
-				self:addButtonBorder{obj=this.Item, relTo=this.Item.Icon}
-			end
-
-			self:Unhook(this, "OnShow")
-		end)
-
 	end
 
+	if not aObj.isClscPTR then
 	aObj.blizzFrames[ftype].SpellBookFrame = function(self)
 		if not self.prdb.SpellBookFrame or self.initialized.SpellBookFrame then return end
 		self.initialized.SpellBookFrame = true
 
 		self:SecureHookScript(_G.SpellBookFrame, "OnShow", function(this)
 			this.numTabs = 3
-			-- Side Tabs
 			self:skinObject("tabs", {obj=this, prefix=this:GetName(), suffix="Button", fType=ftype, lod=self.isTT and true, offsets={x1=13, y1=-14, x2=-13, y2=16}, regions={1, 3}, track=false})
 			if self.isTT then
 				local function setTab(bookType)
