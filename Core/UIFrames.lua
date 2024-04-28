@@ -278,8 +278,8 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 	-- hook this to remove rewardFrame rings
 	self:SecureHook("StandardRewardAlertFrame_AdjustRewardAnchors", function(frame)
 		if frame.RewardFrames then
-			for i = 1, #frame.RewardFrames do
-				frame.RewardFrames[i]:DisableDrawLayer("OVERLAY") -- reward ring
+			for _, rf in _G.pairs(frame.RewardFrames) do
+				rf:DisableDrawLayer("OVERLAY") -- reward ring
 			end
 		end
 	end)
@@ -1617,8 +1617,8 @@ aObj.blizzFrames[ftype].LFGFrame = function(self)
 			self:skinStdButton{obj=_G.LFGInvitePopupDeclineButton}
 		end
 		if self.modChkBtns then
-			for i = 1, #this.RoleButtons do
-				self:skinCheckButton{obj=this.RoleButtons[i].checkButton}
+			for _, btn in _G.pairs(this.RoleButtons) do
+				self:skinCheckButton{obj=btn.checkButton}
 			end
 		end
 

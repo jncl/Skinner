@@ -61,14 +61,14 @@ local function changeUFOpacity()
 	    return
 	end
 
-	for i = 1 ,#unitFrames do
-		if _G[unitFrames[i]].sf then
-			_G[unitFrames[i]].sf:SetAlpha(db.alpha)
+	for _, uf in _G.pairs(unitFrames) do
+		if _G[uf].sf then
+			_G[uf].sf:SetAlpha(db.alpha)
 		end
-		if _G[unitFrames[i]].totFrame
-		and _G[unitFrames[i]].totFrame.sf
+		if _G[uf].totFrame
+		and _G[uf].totFrame.sf
 		then
-			_G[unitFrames[i]].totFrame.sf:SetAlpha(db.alpha)
+			_G[uf].totFrame.sf:SetAlpha(db.alpha)
 		end
 	end
 	for i = 1, _G.MAX_BOSS_FRAMES do
@@ -189,8 +189,8 @@ function module:skinPlayerF()
 				if aObj.uCls == "DRUID"
 				or aObj.uCls == "ROGUE"
 				then
-					for i = 1, #_G.ComboFrame.ComboPoints do
-						_G.ComboFrame.ComboPoints[i]:DisableDrawLayer("BACKGROUND")
+					for _, cp in _G.pairs(_G.ComboFrame.ComboPoints) do
+						cp:DisableDrawLayer("BACKGROUND")
 					end
 				end
 				if aObj.uCls == "SHAMAN"

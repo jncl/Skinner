@@ -569,8 +569,8 @@ aObj.SetupClassic_PlayerFrames = function()
 				self:skinObject("frame", {obj=this.buttonFrame, fType=ftype, kfs=true, clr="gold", x2=4})
 				if self.modBtnBs then
 					self:SecureHook("PaperDollFrameItemFlyout_Show", function(_)
-						for i = 1, #_G.PaperDollFrameItemFlyout.buttons do
-							self:addButtonBorder{obj=_G.PaperDollFrameItemFlyout.buttons[i], fType=ftype, ibt=true, clr="grey"}
+							for _, btn in _G.pairs(_G.PaperDollFrameItemFlyout.buttons) do
+								self:addButtonBorder{obj=btn, fType=ftype, ibt=true}
 						end
 					end)
 				end
@@ -1516,9 +1516,13 @@ aObj.SetupClassic_PlayerFrames = function()
 				if self.modBtns then
 					self:skinStdButton{obj=_G.TokenFrameCancelButton, fType=ftype}
 				end
-				for i = 1, #_G.TokenFrameContainer.buttons do
-					_G.TokenFrameContainer.buttons[i].categoryLeft:SetTexture(nil)
-					_G.TokenFrameContainer.buttons[i].categoryRight:SetTexture(nil)
+				end
+				for _, btn in _G.pairs(_G.TokenFrameContainer.buttons) do
+					btn.categoryLeft:SetTexture(nil)
+					btn.categoryRight:SetTexture(nil)
+					if btn.categoryMiddle then
+						btn.categoryMiddle:SetTexture(nil)
+					end
 				end
 
 				self:Unhook(this, "OnShow")

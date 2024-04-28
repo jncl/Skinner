@@ -532,9 +532,11 @@ function aObj:findFrame(height, width, children) -- luacheck: ignore 212 (unused
 							tmpTab[#tmpTab + 1] = child:GetObjectType()
 						end
 						matched = 0
-						for i = 1, #children do
-							for j = 1, #tmpTab do
-								if children[i] == tmpTab[j] then matched = matched + 1 end
+						for _, c in _G.pairs(children) do
+							for _, t in _G.pairs(tmpTab) do
+								if c == t then
+									matched = matched + 1
+								end
 							end
 						end
 						if matched == #children then
@@ -679,8 +681,8 @@ function aObj:getKeys(curTab) -- luacheck: ignore 212 (unused argument)
 	if not curTab then return end
 
 	local tmpTab = {}
-	for i = 1, #curTab do
-		tmpTab[curTab[i]] = true
+	for _, ct in _G.pairs(curTab) do
+		tmpTab[ct] = true
 	end
 
 	return tmpTab
@@ -1579,8 +1581,8 @@ function aObj:SetupCmds()
 		end
 		-- then build string in the form _G["str1"]["str2"]...["strn"]
 		local objString = "_G"
-		for i = 1, #tmpTab do
-			objString = objString .. '["' .. tmpTab[i] .. '"]'
+		for _, t in _G.pairs(tmpTab) do
+			objString = objString .. '["' .. t .. '"]'
 		end
 		-- finally use loadstring to get the object from the command
 		-- _G.print("getObjFromString", input, objString)

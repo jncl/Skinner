@@ -227,8 +227,8 @@ local function makeText(fStr, ...)
 	and fStr:find("%%")
 	and _G.select('#', ...) >= 1
 	then
-		for i = 1, _G.select('#', ...) do
-			tmpTab[i] = makeString(_G.select(i, ...))
+		for k, str in _G.ipairs{...} do
+			tmpTab[k] = makeString(str)
 		end
 		 -- handle missing variables
 		local varCnt = _G.select(2, fStr:gsub("%%", ""))
@@ -237,10 +237,9 @@ local function makeText(fStr, ...)
 		end
 		output = _G.strjoin(" ", fStr:format(_G.unpack(tmpTab)))
 	else
-		tmpTab[1] = output
-		tmpTab[2] = fStr and _G.type(fStr) == "table" and makeString(fStr) or fStr or ""
-		for i = 1, _G.select('#', ...) do
-			tmpTab[i + 2] = makeString(_G.select(i, ...))
+		tmpTab[1] = fStr and _G.type(fStr) == "table" and makeString(fStr) or fStr or ""
+		for k, str in _G.ipairs{...} do
+			tmpTab[k + 2] = makeString(str)
 		end
 		output = _G.table.concat(tmpTab, " ")
 	end

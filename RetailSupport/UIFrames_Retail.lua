@@ -240,20 +240,20 @@ aObj.SetupRetail_UIFrames = function()
 				frame.RewardsFrame:DisableDrawLayer("BORDER")
 			end
 			if frame.Enemies then
-				for i = 1, #frame.Enemies do
-					if frame.Enemies[i].PortraitFrame then
-						frame.Enemies[i].PortraitFrame.PortraitRing:SetTexture(nil)
+				for _, e in _G.pairs(frame.Enemies) do
+					if e.PortraitFrame then
+						e.PortraitFrame.PortraitRing:SetTexture(nil)
 					else
-						frame.Enemies[i].PortraitRing:SetTexture(nil)
+						e.PortraitRing:SetTexture(nil)
 					end
 				end
-				for i = 1, #frame.Followers do
-					if frame.Followers[i].PortraitFrame then
-						aObj:removeRegions(frame.Followers[i], {1})
-						skinPortrait(frame.Followers[i].PortraitFrame)
+				for _, f in _G.pairs(frame.Followers ) do
+					if f.PortraitFrame then
+						aObj:removeRegions(f, {1})
+						skinPortrait(f.PortraitFrame)
 					end
-					if frame.Followers[i].DurabilityBackground then
-						frame.Followers[i].DurabilityBackground:SetTexture(nil)
+					if f.DurabilityBackground then
+						f.DurabilityBackground:SetTexture(nil)
 					end
 				end
 			end
@@ -303,18 +303,18 @@ aObj.SetupRetail_UIFrames = function()
 			aObj:getRegion(frame.BonusRewards, 11):SetTextColor(aObj.HT:GetRGB()) -- Heading
 		    frame.BonusRewards.Saturated:DisableDrawLayer("BACKGROUND")
 			frame.BonusRewards.Saturated:DisableDrawLayer("BORDER")
-			for i = 1, #frame.BonusRewards.Rewards do
-				aObj:addButtonBorder{obj=frame.BonusRewards.Rewards[i], relTo=frame.BonusRewards.Rewards[i].Icon, reParent={frame.BonusRewards.Rewards[i].Quantity}}
+			for _, r in _G.pairs(frame.BonusRewards.Rewards) do
+				aObj:addButtonBorder{obj=r, relTo=r.Icon, reParent={r.Quantity}}
 			end
 			aObj:skinObject("frame", {obj=frame, fType=ftype, x1=3, y1=6, y2=-16})
 			if aObj.modBtns then
 				aObj:skinStdButton{obj=frame.NextMissionButton, fType=ftype, schk=true}
 			end
-			for i = 1, #frame.Stage.EncountersFrame.Encounters do
+			for _, e in _G.pairs(frame.Stage.EncountersFrame.Encounters) do
 				if not naval then
-					frame.Stage.EncountersFrame.Encounters[i].Ring:SetTexture(nil)
+					e.Ring:SetTexture(nil)
 				else
-					frame.Stage.EncountersFrame.Encounters[i].PortraitRing:SetTexture(nil)
+					e.PortraitRing:SetTexture(nil)
 				end
 			end
 		    aObj:removeRegions(frame.Stage.MissionInfo, naval and {1, 2, 3, 4, 5, 8, 9, 10} or {1, 2, 3, 4, 5, 11, 12, 13})
@@ -759,9 +759,9 @@ aObj.SetupRetail_UIFrames = function()
 			return frame
 		end, true)
 		-- skin any existing temporary windows
-		for i = 1, #_G.CHAT_FRAMES do
-			if _G[_G.CHAT_FRAMES[i]].isTemporary then
-				skinTempWindow(_G[_G.CHAT_FRAMES[i]])
+		for _, cf in _G.pairs(_G.CHAT_FRAMES) do
+			if _G[cf].isTemporary then
+				skinTempWindow(_G[cf])
 			end
 		end
 
@@ -1422,8 +1422,7 @@ aObj.SetupRetail_UIFrames = function()
 				end
 			end
 			local function skinBLbuttons()
-				for i = 1, #_G.GarrisonBuildingFrame.BuildingList.Buttons do
-					local btn = _G.GarrisonBuildingFrame.BuildingList.Buttons[i]
+				for _, btn in _G.pairs(_G.GarrisonBuildingFrame.BuildingList.Buttons) do
 					btn.BG:SetTexture(nil)
 					if aObj.modBtnBs then
 						aObj:addButtonBorder{obj=btn, relTo=btn.Icon}
@@ -1659,9 +1658,7 @@ aObj.SetupRetail_UIFrames = function()
 			-- hook this to skin reagents
 			self:SecureHook("GarrisonCapacitiveDisplayFrame_Update", function(fObj, success, _)
 				if success ~= 0 then
-					local btn
-					for i = 1, #fObj.CapacitiveDisplay.Reagents do
-						btn = fObj.CapacitiveDisplay.Reagents[i]
+					for _, btn in _G.pairs(fObj.CapacitiveDisplay.Reagents) do
 						btn.NameFrame:SetTexture(nil)
 						if self.modBtnBs then
 							self:addButtonBorder{obj=btn, relTo=btn.Icon}
@@ -2108,9 +2105,8 @@ aObj.SetupRetail_UIFrames = function()
 
 		self:SecureHookScript(_G.IslandsQueueFrame, "OnShow", function(this)
 			this.TitleBanner.Banner:SetTexture(nil)
-			for i = 1, #this.IslandCardsFrame.IslandCards do
-				-- IQF.IslandCardsFrame.IslandCards[i].Background:SetTexture(nil)
-				this.IslandCardsFrame.IslandCards[i].TitleScroll.Parchment:SetTexture(nil)
+			for _, ic in _G.pairs(this.IslandCardsFrame.IslandCards) do
+				ic.TitleScroll.Parchment:SetTexture(nil)
 			end
 			this.DifficultySelectorFrame.Background:SetTexture(nil)
 			if self.modBtns then
@@ -2481,8 +2477,8 @@ aObj.SetupRetail_UIFrames = function()
 		self.initialized.OrderHallUI = true
 
 		self:SecureHookScript(_G.OrderHallTalentFrame, "OnShow", function(this)
-			for i = 1, #this.FrameTick do
-				this.FrameTick[i]:SetTextColor(self.BT:GetRGB())
+			for _, ft in _G.pairs(this.FrameTick) do
+				ft:SetTextColor(self.BT:GetRGB())
 			end
 			self:nilTexture(this.OverlayElements.CornerLogo, true)
 			this.Currency.Icon:SetAlpha(1) -- show currency icon
@@ -2657,8 +2653,7 @@ aObj.SetupRetail_UIFrames = function()
 					self:addButtonBorder{obj=btn, reParent={btn.BetterIcon}, ofs=3, x2=2, y2=-2}
 				end
 				_G.C_Timer.After(0.1, function()
-					for i = 1, 3 do
-						btn = this.BottomFrame.abilityButtons[i]
+					for _, btn in _G.pairs(this.BottomFrame.abilityButtons) do
 						self:addButtonBorder{obj=btn, reParent={btn.BetterIcon}, ofs=3, x2=2, y2=-2}
 					end
 				end)
@@ -2679,11 +2674,11 @@ aObj.SetupRetail_UIFrames = function()
 			if self.prdb.Tooltips.skin then
 				-- hook these to stop tooltip gradient being whiteouted !!
 				local function reParent(opts)
-					for i = 1, #aObj.pbtt do
-						aObj.pbtt[i].tfade:SetParent(opts.parent or aObj.pbtt[i])
+					for _, f in _G.pairs(aObj.pbtt) do
+						f.tfade:SetParent(opts.parent or f)
 						if opts.reset then
 							-- reset Gradient alpha
-							aObj.pbtt[i].tfade:SetGradient(aObj:getGradientInfo())
+							f.tfade:SetGradient(aObj:getGradientInfo())
 						end
 					end
 				end
@@ -2740,9 +2735,9 @@ aObj.SetupRetail_UIFrames = function()
 			self:add2Table(self.pbtt, _G.PetBattlePrimaryUnitTooltip.sf)
 			-- hook this to reset tooltip gradients
 			self:SecureHookScript(_G.PetBattleFrame, "OnHide", function(_)
-				for i = 1, #aObj.pbtt do
-					aObj.pbtt[i].tfade:SetParent(aObj.pbtt[i])
-					aObj.pbtt[i].tfade:SetGradient(aObj:getGradientInfo())
+				for _, f in _G.pairs(aObj.pbtt) do
+					f.tfade:SetParent(f)
+					f.tfade:SetGradient(aObj:getGradientInfo())
 				end
 			end)
 		end

@@ -463,9 +463,9 @@ aObj.SetupRetail_PlayerFrames = function()
 			_G.ArtifactPerksMixin.RefreshBackground = _G.nop
 			local function skinPowerBtns()
 				if this.PerksTab.PowerButtons then
-					for i = 1, #this.PerksTab.PowerButtons do
-						aObj:changeTandC(this.PerksTab.PowerButtons[i].RankBorder)
-						aObj:changeTandC(this.PerksTab.PowerButtons[i].RankBorderFinal)
+					for _, btn in _G.pairs(this.PerksTab.PowerButtons) do
+						aObj:changeTandC(btn.RankBorder)
+						aObj:changeTandC(btn.RankBorderFinal)
 					end
 				end
 			end
@@ -566,8 +566,8 @@ aObj.SetupRetail_PlayerFrames = function()
 			self:skinObject("frame", {obj=this.BorderFrame, fType=ftype, bg=true})
 			this.ClipFrame.BackgroundFrame:DisableDrawLayer("BACKGROUND")
 			this.ClipFrame.BackgroundFrame.KeyOverlay:DisableDrawLayer("ARTWORK")
-			for i = 1, #this.ClipFrame.BackgroundFrame.RankFrames do
-				this.ClipFrame.BackgroundFrame.RankFrames[i]:DisableDrawLayer("BORDER")
+			for _, rf in _G.pairs(this.ClipFrame.BackgroundFrame.RankFrames) do
+				rf:DisableDrawLayer("BORDER")
 			end
 
 			self:Unhook(this, "OnShow")
