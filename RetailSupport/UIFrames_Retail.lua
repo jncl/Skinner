@@ -2647,10 +2647,8 @@ aObj.SetupRetail_UIFrames = function()
 				_G.hooksecurefunc("PetBattleFrame_UpdateSpeedIndicators", function(_)
 					updBBClr()
 				end)
-				local btn
 				for _, bName in _G.pairs{"SwitchPetButton", "CatchButton", "ForfeitButton"} do
-					btn = this.BottomFrame[bName]
-					self:addButtonBorder{obj=btn, reParent={btn.BetterIcon}, ofs=3, x2=2, y2=-2}
+					self:addButtonBorder{obj=this.BottomFrame[bName], reParent={this.BottomFrame[bName].BetterIcon}, ofs=3, x2=2, y2=-2}
 				end
 				_G.C_Timer.After(0.1, function()
 					for _, btn in _G.pairs(this.BottomFrame.abilityButtons) do

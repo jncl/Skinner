@@ -422,10 +422,8 @@ aObj.SetupRetail_NPCFrames = function()
 			if self.modBtnBs then
 				-- add button borders to reagent bank items
 				self:SecureHookScript(_G.ReagentBankFrame, "OnShow", function(fObj)
-					local btn
 					for i = 1, fObj.size do
-						btn = fObj["Item" .. i]
-						self:addButtonBorder{obj=btn, ibt=true}
+						self:addButtonBorder{obj=fObj["Item" .. i], ibt=true}
 						-- force quality border update
 						_G.BankFrameItemButton_Update(fObj["Item" .. i])
 					end
