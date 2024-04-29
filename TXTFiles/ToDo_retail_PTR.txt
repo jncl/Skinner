@@ -8,10 +8,12 @@
 
 	Retail_PTR (Dragonflight 10.2.7)
 		- Added
-			- Blizzard_ObjectiveTrackerShared
-				- ScenarioObjectiveFindGroupButtonTemplate
+?			- Blizzard_ObjectiveTrackerShared
+?				- ScenarioObjectiveFindGroupButtonTemplate
+√			- Blizzard_StableUI
 		- Updated
-			- GuildControlUI
-			- InspectPaperDollFrame
+?			- GuildControlUI
+x			- InspectPaperDollFrame
 		- Deleted
+√			- PetStableFrame
 			

@@ -8,5 +8,27 @@ ToDo_classic_PTR
 
 	Classic_PTR
 		- Added
+¶√			- ReforgingUI
+?			- VoidStorage
+√			- FriendsMicroButton
 		- Updated
+√			- ChatButtons
+√			- CharacterFrames
+√				- PaperDollFrame Flyout
+√			- SpellBookFrame
+√			- TalentUI
+√			- GlyphUI
+√			- QuestLog
+√			- AchievementUI
+≈			- CommunitiesFrame
+√			- Collections
+?			- CompactRaidFrameManager
+√			- PVPFrame
+¶√			- EncounterJournal (a.k.a. Dungeon Journal)
+√			- NavigationBar
+√			- WorldMapFrame
+√			- EquipmentFlyout
+√			- function SetItemButtonQuality
+≈			- InspectUI
+?			- Kiosk
 		- Deleted
