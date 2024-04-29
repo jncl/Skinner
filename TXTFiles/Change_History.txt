@@ -1,3 +1,13 @@
+beta10.54358.1
+Jncl:
+	Updated ToDo.txt files
+	Updated Change_History.txt
+	Updated version numbers
+	Updated ContainerFrames skin & options, closes #67
+	Updated TradingPost skin
+	Updated MacroUI skin
+	Updated Baganator & ClassicQuestLog, closes #66
+	
 beta10.54092.1
 Jncl:
 	Updated ToDo.txt files
