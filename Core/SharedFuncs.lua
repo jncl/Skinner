@@ -221,8 +221,11 @@ local function makeString(obj)
 		then
 			return ("<%s:%s:%s>"):format(_G.tostring(obj), obj:GetObjectType(), obj:GetName() or "(Anon)")
 		end
-	end
+	elseif _G.type(obj) ~= "string" then
 	return _G.tostring(obj)
+	else
+		return obj
+	end
 end
 local function makeText(fStr, ...)
 	local tmpTab = {}
@@ -232,8 +235,8 @@ local function makeText(fStr, ...)
 	and fStr:find("%%")
 	and _G.select('#', ...) >= 1
 	then
-		for k, str in _G.ipairs{...} do
-			tmpTab[k] = makeString(str)
+		for _, str in _G.ipairs{...} do
+			tmpTab[#tmpTab + 1] = makeString(str)
 		end
 		 -- handle missing variables
 		local varCnt = _G.select(2, fStr:gsub("%%", ""))
@@ -243,8 +246,8 @@ local function makeText(fStr, ...)
 		output = _G.strjoin(" ", fStr:format(_G.unpack(tmpTab)))
 	else
 		tmpTab[1] = fStr and _G.type(fStr) == "table" and makeString(fStr) or fStr or ""
-		for k, str in _G.ipairs{...} do
-			tmpTab[k + 2] = makeString(str)
+		for _, str in _G.ipairs{...} do
+			tmpTab[#tmpTab + 1] = makeString(str)
 		end
 		output = _G.table.concat(tmpTab, " ")
 	end
@@ -255,7 +258,7 @@ local function printIt(text, frame, r, g, b)
 end
 function aObj:CustomPrint(r, g, b, ...)
 
-	printIt(_G.WrapTextInColorCode(aName, "ffffff78") .. " " .. makeText(...), nil, r, g, b)
+	printIt(_G.strjoin(" ", _G.WrapTextInColorCode(aName, "ffffff78"), makeText(...)), nil, r, g, b)
 
 end
 
