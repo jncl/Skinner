@@ -1457,6 +1457,13 @@ function aObj:skinIconSelector(frame)
 
 end
 
+function aObj:skinMainHelpBtn(frame)
+
+	frame.MainHelpButton.Ring:SetTexture(nil)
+	self:moveObject{obj=frame.MainHelpButton, y=-4}
+
+end
+
 function aObj:skinNavBarButton(btn) -- luacheck: ignore 212 (unused argument)
 
 	btn:DisableDrawLayer("OVERLAY")

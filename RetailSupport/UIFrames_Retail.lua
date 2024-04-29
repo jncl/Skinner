@@ -1408,8 +1408,7 @@ aObj.SetupRetail_UIFrames = function()
 		end
 
 		self:SecureHookScript(_G.GarrisonBuildingFrame, "OnShow", function(this)
-			this.MainHelpButton.Ring:SetTexture(nil)
-			self:moveObject{obj=this.MainHelpButton, y=-4}
+			self:skinMainHelpBtn(this)
 			this.GarrCorners:DisableDrawLayer("BACKGROUND")
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cbns=true, ofs=2})
 			local function clrTabText()

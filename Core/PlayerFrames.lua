@@ -1038,8 +1038,7 @@ if not aObj.isClscERA then
 		self:SecureHookScript(_G.PetJournal, "OnShow", function(this)
 			self:removeInset(this.PetCount)
 			if self.isRtl then
-				this.MainHelpButton.Ring:SetTexture(nil)
-				self:moveObject{obj=this.MainHelpButton, y=-4}
+				self:skinMainHelpBtn(this)
 				_G.PetJournalHealPetButtonBorder:SetTexture(nil)
 			end
 			self:removeInset(this.LeftInset)
@@ -3019,8 +3018,7 @@ then
 
 		self:SecureHookScript(_G.SpellBookFrame, "OnShow", function(this)
 			if self.isRtl then
-				this.MainHelpButton.Ring:SetTexture(nil)
-				self:moveObject{obj=this.MainHelpButton, y=-4}
+				self:skinMainHelpBtn(this)
 			end
 			this.numTabs = 5
 			self:skinObject("tabs", {obj=this, prefix=this:GetName(), suffix="Button", fType=ftype, track=false})
