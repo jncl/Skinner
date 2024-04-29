@@ -1,17 +1,16 @@
 local aName, aObj = ...
 
 local _G = _G
--- luacheck: ignore 631 (line is too long)
--- luacheck: ignore 212 (unused argument)
+-- luacheck: ignore 212 631 (unused argument|line is too long)
 
 local buildInfo = {
-	-- wow_classic_beta    = {"n.n.n",  nnnnn, "Classic Beta"},
-	-- wow_beta            = {"n.n.n", nnnnn, "Retail Beta"}, -- a.k.a. ?
 	wow_classic         = {"3.4.3",  54261, "Classic"}, -- a.k.a. Wrath of the Lich King Classic
+	wow_classic_beta    = {"4.4.0",  54427, "Cataclysm Classic Beta"},
 	wow_classic_era     = {"1.15.2", 54332, "Classic Era"}, -- a.k.a. Season of Discovery
 	wow_classic_era_ptr = {"1.15.2", 54067, "Classic Era PTR"},
-	wow_classic_ptr     = {"3.4.3",  52237, "Classic PTR"},
-	wow_ptr             = {"10.2.7", 54295, "Retail PTR"},
+	wow_classic_ptr     = {"4.4.0",  54377, "Classic PTR"},
+	wow_beta            = {"11.0.0", 56000, "Retail Beta"}, -- a.k.a. The War Within
+	wow_ptr             = {"10.2.7", 54366, "Retail PTR"},
 	wow                 = {"10.2.6", 54358, "Retail"},
 	wow_ptr_x           = {"10.2.6", 53989, "Retail PTRX"},
 	curr                = {_G.GetBuildInfo()},
@@ -222,7 +221,7 @@ local function makeString(obj)
 			return ("<%s:%s:%s>"):format(_G.tostring(obj), obj:GetObjectType(), obj:GetName() or "(Anon)")
 		end
 	elseif _G.type(obj) ~= "string" then
-	return _G.tostring(obj)
+		return _G.tostring(obj)
 	else
 		return obj
 	end
