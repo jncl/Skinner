@@ -21,6 +21,15 @@ local function getTOCVer(ver)
 	local n1, n2, n3 = _G.string.match(buildInfo[ver][1], "(%d+).(%d+).(%d)")
 	return n1 * 10000 + n2 * 100 + n3
 end
+local function compareBuildInfo(ver1, ver2, exact)
+	if exact then
+		-- aObj:Debug("cBI#1: [%s, %s]", getTOCVer(ver1) == getTOCVer(ver2), _G.tonumber(buildInfo[ver1][2]) == _G.tonumber(buildInfo[ver2][2]))
+		return (getTOCVer(ver1) == getTOCVer(ver2) and _G.tonumber(buildInfo[ver1][2]) == _G.tonumber(buildInfo[ver2][2]))
+	else
+		-- aObj:Debug("cBI#2: [%s, %s]", getTOCVer(ver1) >= getTOCVer(ver2), _G.tonumber(buildInfo[ver1][2]) >= _G.tonumber(buildInfo[ver2][2]))
+		return (getTOCVer(ver1) >= getTOCVer(ver2) and _G.tonumber(buildInfo[ver1][2]) >= _G.tonumber(buildInfo[ver2][2]))
+	end
+end
 function aObj:checkWoWVersion()
 
 	local agentUID = _G.C_CVar.GetCVar("agentUID")
@@ -53,26 +62,25 @@ function aObj:checkWoWVersion()
 	self:Debug("checkVersion#2: [%s, %s, %s, %s, %s, %s, %s, %s, %s]", self.isClscBeta, self.isClscPTR, self.isClsc, self.isClscERAPTR, self.isClscERA, self.isRtlBeta, self.isRtlPTR, self.isRtlPTRX, self.isRtl)
 	--@end-debug@
 
-	self.tocVer = getTOCVer(agentUID)
-	-- check current version or build number against current wow version info, if greater then it's a patch
-	self.isPatch = (buildInfo.curr[4] > self.tocVer) or (_G.tonumber(buildInfo.curr[2]) > _G.tonumber(buildInfo[agentUID][2]))
-
-	-- indicate we're on ClassicPTR if on Classic Beta
+	-- handle PTR and Beta versions
 	self.isClscPTR    = self.isClscPTR or self.isClscBeta
-	-- indicate we're on Classic if on Classic PTR
 	self.isClsc       = self.isClsc or self.isClscPTR
-	-- indicate we're on ClassicERA if on Classic ERA PTR
 	self.isClscERA    = self.isClscERA  or self.isClscERAPTR
-	-- indicate we're on Retail PTR if on Retail Beta
 	self.isRtlPTR     = self.isRtlPTR or self.isRtlBeta
-	-- indicate we're on Retail if on Retail PTR
 	self.isRtl        = self.isRtl or self.isRtlPTR or self.isRtlPTRX
 
-	-- handle Classic, ClassicERA or Retail PTR changes going Live
-	self.isClscPTR    = self.isClscPTR or self.isClsc and self.isPatch
-	self.isClscERAPTR = self.isClscERAPTR or self.isClscERA and self.isPatch
-	self.isRtlPTR     = self.isRtlPTR or self.isRtl and self.isPatch
-	-- self.isRtlPTRX    = self.isRtlPTRX or self.isRtl and self.isPatch
+	self.isPatch = not compareBuildInfo(agentUID, "curr", true)
+	if self.isPatch then
+		if self.isRtl then
+			self.isRtlPTR = compareBuildInfo(agentUID, "wow_ptr", false)
+			self.isRtlPTRX = compareBuildInfo(agentUID, "wow_ptr_x", false)
+		elseif self.isClsc then
+			self.isClscPTR = compareBuildInfo(agentUID, "wow_classic_ptr", false)
+		elseif self.isClscERA then
+			self.isClscERAPTR = compareBuildInfo(agentUID, "wow_classic_era_ptr", false)
+		end
+	end
+
 	--@debug@
 	self:Debug("checkVersion#3: [%s, %s, %s, %s, %s, %s, %s, %s, %s, %s]", self.isClscBeta, self.isClscPTR, self.isClsc, self.isClscERAPTR, self.isClscERA, self.isRtlBeta, self.isRtlPTR, self.isRtlPTRX, self.isRtl, self.isPatch)
 	--@end-debug@
