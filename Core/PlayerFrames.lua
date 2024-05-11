@@ -609,11 +609,7 @@ if not aObj.isClscERA then
 		end)
 
 	end
-end
 
-if aObj.isRtl
-or aObj.isClscPTR
-then
 	aObj.blizzLoDFrames[ftype].ArchaeologyUI = function(self)
 		if not self.prdb.ArchaeologyUI or self.initialized.ArchaeologyUI then return end
 		self.initialized.ArchaeologyUI = true
@@ -705,8 +701,8 @@ then
 		self:SecureHookScript(_G.CharacterFrame, "OnShow", function(this)
 			self:removeInset(this.InsetRight)
 			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true})
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, rp=true, cb=true, x2=3})
-			if self.isClscPTR then
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, rp=true, cb=true, x2=self.isClsc and 1 or 3})
+			if self.isClsc then
 				if self.modBtnBs then
 					self:addButtonBorder{obj=_G.CharacterFrameExpandButton, fType=ftype, ofs=-2, x1=1, clr="gold"}
 				end
@@ -959,9 +955,7 @@ then
 		end
 
 	end
-end
 
-if not aObj.isClscERA then
 	aObj.blizzLoDFrames[ftype].Collections = function(self)
 		if not self.prdb.Collections or self.initialized.Collections then return end
 		self.initialized.Collections = true
@@ -1269,9 +1263,7 @@ if not aObj.isClscERA then
 			self:Unhook(this, "OnShow")
 		end)
 
-		if self.isRtl
-		or aObj.isClscPTR
-		then
+		if not self.isClscERA then
 			self:SecureHookScript(_G.WardrobeCollectionFrame, "OnShow", function(this)
 				if self.isRtl then
 					this.InfoButton.Ring:SetTexture(nil)
@@ -1402,7 +1394,7 @@ if not aObj.isClscERA then
 			self:SecureHookScript(_G.WardrobeTransmogFrame, "OnShow", function(this)
 				this:DisableDrawLayer("ARTWORK")
 				self:removeInset(this.Inset)
-				if not aObj.isClscPTR then
+				if not self.isClsc then
 					self:skinObject("dropdown", {obj=this.OutfitDropDown, fType=ftype, y2=-3})
 					this.ModelScene.ControlFrame:DisableDrawLayer("BACKGROUND")
 				end
@@ -1413,7 +1405,7 @@ if not aObj.isClscERA then
 					end
 				end
 				if self.modBtns then
-					if not aObj.isClscPTR then
+					if not self.isClsc then
 						self:skinStdButton{obj=this.OutfitDropDown.SaveButton}
 						self:SecureHook(this.OutfitDropDown, "UpdateSaveButton", function(fObj)
 							self:clrBtnBdr(fObj.SaveButton)
@@ -1425,7 +1417,7 @@ if not aObj.isClscERA then
 						end)
 				end
 				if self.modBtnBs then
-					if not aObj.isClscPTR then
+					if not self.isClsc then
 						self:addButtonBorder{obj=this.ModelScene.ClearAllPendingButton, relTo=this.ModelScene.ClearAllPendingButton.Icon, ofs=5, clr="grey"}
 						self:addButtonBorder{obj=this.SpecButton, ofs=0}
 					end
@@ -1466,14 +1458,12 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 
 	self:SecureHookScript(_G.CommunitiesFrame, "OnShow", function(this)
 		self:keepFontStrings(this.PortraitOverlay)
-		if not self.isRtl
-		and not aObj.isClscPTR
-		then
+		if self.isClscERA then
 			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true, selectedTab=5})
 		end
 		-- tabs (side)
 		local tabs = {"ChatTab", "RosterTab"}
-		if self.isRtl then
+		if not self.isClscERA then
 			aObj:add2Table(tabs, "GuildBenefitsTab")
 			aObj:add2Table(tabs, "GuildInfoTab")
 		end
@@ -1520,9 +1510,7 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 			fObj.FilligreeOverlay:DisableDrawLayer("OVERLAY")
 			fObj.FilligreeOverlay:DisableDrawLayer("BORDER")
 			self:removeInset(fObj.InsetFrame)
-			if self.isRtl
-			or aObj.isClscPTR
-			then
+			if not self.isClscERA then
 				self:skinObject("scrollbar", {obj=fObj.ScrollBar, fType=ftype})
 				local function skinElement(...)
 					local _, element, new
@@ -1564,9 +1552,7 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 			end
 			self:skinObject("dropdown", {obj=fObj.DropDown, fType=ftype})
 			self:removeInset(fObj.InsetFrame)
-			if self.isRtl
-			or aObj.isClscPTR
-			then
+			if not aObj.isClscERA then
 				self:skinObject("scrollbar", {obj=fObj.ScrollBar, fType=ftype})
 				local function skinElement(...)
 					local _, element, new
@@ -1592,9 +1578,7 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 
 		self:SecureHookScript(this.Chat, "OnShow", function(fObj)
 			self:removeInset(fObj.InsetFrame)
-			if self.isRtl
-			or aObj.isClscPTR
-			then
+			if not aObj.isClscERA then
 				self:skinObject("scrollbar", {obj=fObj.ScrollBar, fType=ftype})
 			else
 				self:skinObject("slider", {obj=fObj.MessageFrame.ScrollBar, fType=ftype})
@@ -1654,10 +1638,8 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 
 		self:SecureHookScript(this.NotificationSettingsDialog, "OnShow", function(fObj)
 			self:skinObject("dropdown", {obj=fObj.CommunitiesListDropDownMenu, fType=ftype})
-			if self.isRtl
-			or aObj.isClscPTR
-			then
-				self:skinObject("scrollbar", {obj=fObj.ScrollFrame.ScrollBar, fType=ftype, x1=aObj.isClscPTR and 2, x2=aObj.isClscPTR and 4})
+			if not aObj.isClscERA then
+				self:skinObject("scrollbar", {obj=fObj.ScrollFrame.ScrollBar, fType=ftype})
 				self:removeNineSlice(fObj.Selector)
 			else
 				self:skinObject("slider", {obj=fObj.ScrollFrame.ScrollBar, fType=ftype})
@@ -1666,9 +1648,7 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 			if self.modBtns then
 				self:skinStdButton{obj=fObj.ScrollFrame.Child.NoneButton}
 				self:skinStdButton{obj=fObj.ScrollFrame.Child.AllButton}
-				if self.isRtl
-				or aObj.isClscPTR
-				then
+				if not aObj.isClscERA then
 					self:skinStdButton{obj=fObj.Selector.CancelButton}
 					self:skinStdButton{obj=fObj.Selector.OkayButton}
 				else
@@ -1697,7 +1677,7 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 		end)
 		self:checkShown(this.CommunitiesControlFrame)
 
-		if self.isRtl then
+		if not self.isClscERA then
 			self:skinObject("dropdown", {obj=this.GuildMemberListDropDownMenu, fType=ftype})
 			self:skinObject("dropdown", {obj=this.CommunityMemberListDropDownMenu, fType=ftype})
 			if self.modBtns then
@@ -2066,7 +2046,7 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 				self:skinObject("frame", {obj=fObj.OfficerNoteBackground, fType=ftype, fb=true, ofs=0})
 				self:adjWidth{obj=fObj.RemoveButton, adj=-4}
 				self:adjWidth{obj=fObj.GroupInviteButton, adj=-4}
-				self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, cb=true, ofs=-7, x2=0})
+				self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, cb=true, ofs=-5, x2=0})
 				if self.modBtns then
 					self:skinStdButton{obj=fObj.RemoveButton, fType=ftype, sechk=true}
 					self:skinStdButton{obj=fObj.GroupInviteButton, fType=ftype, sechk=true}
@@ -2116,9 +2096,7 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 	end)
 
 	self:SecureHookScript(_G.CommunitiesAvatarPickerDialog, "OnShow", function(this)
-		if self.isRtl
-		or aObj.isClscPTR
-		then
+		if not aObj.isClscERA then
 			self:removeNineSlice(this.Selector)
 			self:skinObject("scrollbar", {obj=this.ScrollBar, fType=ftype})
 			local function skinElement(...)
@@ -2179,7 +2157,7 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 		end
 		_G.ScrollUtil.AddAcquiredFrameCallback(this.InviteManager.ScrollBox, skinElement, aObj, true)
 		self:skinObject("dropdown", {obj=this.ExpiresDropDownMenu, fType=ftype})
-		self:skinObject("frame", {obj=this.InviteManager, fType=ftype, kfs=true, fb=true, ofs=-4, x2=-7, y2=-5})
+		self:skinObject("frame", {obj=this.InviteManager, fType=ftype, kfs=true, fb=true, ofs=-4, x2=-5, y2=-5})
 		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, y1=-8, y2=6})
 		if self.modBtns then
 			self:skinStdButton{obj=this.LinkToChat, fType=ftype, sechk=true}
@@ -2194,11 +2172,11 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 		self:Unhook(this, "OnShow")
 	end)
 
-	if self.isRtl then
+	if not self.isClscERA then
 		self:SecureHookScript(_G.CommunitiesGuildTextEditFrame, "OnShow", function(this)
 			self:skinObject("scrollbar", {obj=this.Container.ScrollFrame.ScrollBar, fType=ftype})
 			self:skinObject("frame", {obj=this.Container, fType=ftype, kfs=true, fb=true})
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, ofs=-7})
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, ofs=-5})
 			if self.modBtns then
 				self:skinStdButton{obj=_G.CommunitiesGuildTextEditFrameAcceptButton}
 				self:skinStdButton{obj=self:getChild(_G.CommunitiesGuildTextEditFrame, 4)} -- bottom close button, uses same name as previous CB
@@ -2210,7 +2188,7 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 		self:SecureHookScript(_G.CommunitiesGuildLogFrame, "OnShow", function(this)
 			self:skinObject("scrollbar", {obj=this.Container.ScrollFrame.ScrollBar, fType=ftype})
 			self:skinObject("frame", {obj=this.Container, fType=ftype, kfs=true, fb=true})
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, ofs=-7})
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, ofs=-5})
 			if self.modBtns then
 				 self:skinStdButton{obj=self:getChild(this, 3)} -- bottom close button
 			end
@@ -2219,7 +2197,7 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 		end)
 
 		self:SecureHookScript(_G.CommunitiesGuildNewsFiltersFrame, "OnShow", function(this)
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, ofs=-7})
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, ofs=-5})
 			if self.modChkBtns then
 				self:skinCheckButton{obj=this.GuildAchievement}
 				self:skinCheckButton{obj=this.Achievement}
@@ -2412,7 +2390,7 @@ if not aObj.isClscERA then
 			this.navBar.home.text:SetPoint("RIGHT", -20, 0)
 			self:skinObject("editbox", {obj=this.searchBox, fType=ftype, si=true})
 			if self.isRtl then
-				self:skinObject("dropdown", {obj=this.LootJournalViewDropDown, fType=ftype, x2=-7})
+				self:skinObject("dropdown", {obj=this.LootJournalViewDropDown, fType=ftype})
 			end
 			self:skinObject("tabs", {obj=this, tabs=this.Tabs, selectedTab=this.selectedTab, fType=ftype, lod=self.isTT and true, offsets={x1=-1, y1=2, x2=1, y2=1}, regions=self.isRtl and {7, 8, 9, 10, 11} or {10, 21}, track=false, func=function(tab) tab:SetFrameLevel(20) end})
 			if self.isTT then
@@ -2777,11 +2755,7 @@ if not aObj.isClscERA then
 		end)
 
 	end
-end
 
-if aObj.isRtl
-or aObj.isClscPTR
-then
 	aObj.blizzFrames[ftype].EquipmentFlyout = function(self)
 		if not self.prdb.EquipmentFlyout or self.initialized.EquipmentFlyout then return end
 		self.initialized.EquipmentFlyout = true
@@ -3009,9 +2983,7 @@ aObj.blizzFrames[ftype].RolePollPopup = function(self)
 
 end
 
-if aObj.isRtl
-or aObj.isClscPTR
-then
+if not aObj.isClscERA then
 	aObj.blizzFrames[ftype].SpellBookFrame = function(self)
 		if not self.prdb.SpellBookFrame or self.initialized.SpellBookFrame then return end
 		self.initialized.SpellBookFrame = true
@@ -3087,7 +3059,7 @@ then
 				btn.TrainFrame:SetAlpha(0)
 				if self.modBtnBs then
 					self:addButtonBorder{obj=btn, sft=true, reParent={btn.FlyoutArrow, _G["SpellButton" .. i .. "AutoCastable"]}, ofs=3}
-					if aObj.isClscPTR then
+					if self.isClsc then
 						btn:GetNormalTexture():SetTexture(nil)
 					end
 					btn.sbb:SetShown(btn:IsEnabled())
@@ -3180,6 +3152,7 @@ then
 
 				self:Unhook(fObj, "OnShow")
 			end)
+			self:checkShown(_G.SpellBookProfessionFrame)
 
 			self:Unhook(this, "OnShow")
 		end)

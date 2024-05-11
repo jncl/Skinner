@@ -326,7 +326,7 @@ function aObj:OnEnable()
 					else
 						button.IconBorder:SetAlpha(0)
 					end
-					if not aObj.isClscPTR then
+					if not self.isClsc then
 						self:setBtnClr(button, quality)
 					end
 				end)

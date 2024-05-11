@@ -230,8 +230,8 @@ local function setScrollTrackOffsets(tbl, type)
 			tbl.y1 = _G.rawget(tbl, "y1") or -1
 			tbl.y2 = _G.rawget(tbl, "y2") or 1
 		elseif w == 25 then
-			tbl.x1 = _G.rawget(tbl, "x1") or 0
-			tbl.x2 = _G.rawget(tbl, "x2") or 0
+			tbl.x1 = _G.rawget(tbl, "x1") or aObj.isClsc and 2 or 0
+			tbl.x2 = _G.rawget(tbl, "x2") or aObj.isClsc and 4 or 0
 		end
 		tbl.y1 = _G.rawget(tbl, "y1") or 0
 		tbl.y2 = _G.rawget(tbl, "y2") or 0

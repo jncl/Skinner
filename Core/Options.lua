@@ -1288,7 +1288,7 @@ aObj.SetupOptions = function(self)
 	_G.wipe(npcOptTab)
 
 	local pfOptTab = {
-		["Archaeology UI"]    = self.isRtl or aObj.isClscPTR and true or nil,
+		["Archaeology UI"]    = not self.isClscERA and true or nil,
 		["Buffs"]             = {desc = "Buffs Buttons"},
 		["Character Frames"]  = true,
 		["Collections"]       = not self.isClscERA and {suff = "Journal"} or nil,
@@ -1296,7 +1296,7 @@ aObj.SetupOptions = function(self)
 		["Compact Frames"]    = true,
 		["Dress Up Frame"]    = true,
 		["Encounter Journal"] = not self.isClscERA and {desc = self.isRtl and "Adventure Guide" or "Dungeon Journal"} or nil,
-		["Equipment Flyout"]  = self.isRtl or aObj.isClscPTR and true or nil,
+		["Equipment Flyout"]  = not self.isClscERA and true or nil,
 		["Friends Frame"]     = {desc = "Social Frame"},
 		["Inspect UI"]        = true,
 		["Item Socketing UI"] = true,
@@ -1321,7 +1321,7 @@ aObj.SetupOptions = function(self)
 		["Color Picker"]          = {suff = "Frame"},
 		["Debug Tools"]           = {suff = "Frames"},
 		["Event Trace"]           = true,
-		["Ghost Frame"]           = self.isRtl or aObj.isClscPTR and true or nil,
+		["Ghost Frame"]           = not self.isClscERA and true or nil,
 		["GM Chat UI"]            = true,
 		["Guild Bank UI"]         = true,
 		["Help Frame"]            = {desc = "Customer Support Frame"},

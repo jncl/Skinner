@@ -1251,9 +1251,7 @@ aObj.blizzLoDFrames[ftype].EventTrace = function(self)
 
 end
 
-if aObj.isRTl
-or aObj.isClscPtr
-then
+if not aObj.isClscERA then
 	aObj.blizzFrames[ftype].GhostFrame = function(self)
 		if not self.prdb.GhostFrame or self.initialized.GhostFrame then return end
 		self.initialized.GhostFrame = true
@@ -1271,7 +1269,7 @@ then
 
 	end
 end
-	
+
 aObj.blizzLoDFrames[ftype].GMChatUI = function(self)
 	if not self.prdb.GMChatUI or self.initialized.GMChatUI then return end
 	self.initialized.GMChatUI = true

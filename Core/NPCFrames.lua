@@ -259,12 +259,10 @@ aObj.blizzFrames[ftype].QuestFrame = function(self)
 		end
 	end
 	local modelObj
-	if self.isRtl
-	or self.isClscPTR
-	then
-		modelObj = _G.QuestModelScene
-	else
+	if self.isClscERA then
 		modelObj = _G.QuestNPCModel
+	else
+		modelObj = _G.QuestModelScene
 	end
 	self:skinObject("frame", {obj=modelObj, fType=ftype, kfs=true, ofs=0, y1=-24, y2=-24})
 	self:keepFontStrings(_G.QuestNPCModelTextFrame)
@@ -438,9 +436,9 @@ aObj.blizzFrames[ftype].Tabard = function(self)
 
 	self:SecureHookScript(_G.TabardFrame, "OnShow", function(this)
 		if self.isClsc then
-			self:removeBackdrop(_G.TabardFrameCostFrame)
-		else
 			self:removeNineSlice(_G.TabardFrameCostFrame.NineSlice)
+		else
+			self:removeBackdrop(_G.TabardFrameCostFrame)
 		end
 		self:keepFontStrings(_G.TabardFrameCustomizationFrame)
 		for i = 1, 5 do

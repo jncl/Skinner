@@ -6,63 +6,6 @@ local _G = _G
 aObj.SetupClassic_NPCFrames = function()
 	local ftype = "n"
 
-	if aObj.isClsc
-	and not aObj.isClscPTR
-	then
-		aObj.blizzFrames[ftype].ArenaFrame = function(self)
-			if not self.prdb.ArenaFrame or self.initialized.ArenaFrame then return end
-			self.initialized.ArenaFrame = true
-
-			self:SecureHookScript(_G.ArenaFrame, "OnShow", function(this)
-				self:keepFontStrings(this)
-				_G.ArenaFrameZoneDescription:SetTextColor(self.BT:GetRGB())
-				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=10, y1=-11, x2=-32, y2=70})
-				if self.modBtns then
-					self:skinStdButton{obj=_G.ArenaFrameCancelButton, fType=ftype}
-					self:skinStdButton{obj=_G.ArenaFrameJoinButton, fType=ftype}
-					self:skinStdButton{obj=_G.ArenaFrameGroupJoinButton, fType=ftype, schk=true}
-				end
-
-				self:Unhook(this, "OnShow")
-			end)
-
-		end
-
-		aObj.blizzFrames[ftype].ArenaRegistrarFrame = function(self)
-			if not self.prdb.ArenaRegistrarFrame or self.initialized.ArenaRegistrarFrame then return end
-			self.initialized.ArenaRegistrarFrame = true
-
-			self:SecureHookScript(_G.ArenaRegistrarFrame, "OnShow", function(this)
-				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true})
-
-				self:Unhook(this, "OnShow")
-			end)
-
-			self:SecureHookScript(_G.PVPBannerFrame, "OnShow", function(this)
-				self:keepRegions(this, {17, 18, 19, 20, 21, 22}) -- 17-20 are emblem textures, 21 & 22 are text
-				self:keepFontStrings(_G.PVPBannerFrameCustomizationFrame1)
-				self:keepFontStrings(_G.PVPBannerFrameCustomizationFrame2)
-				if self.modBtnBs then
-					self:addButtonBorder{obj=_G.PVPBannerFrameCustomization1LeftButton, fType=ftype, ofs=-2, x1=1, clr="gold"}
-					self:addButtonBorder{obj=_G.PVPBannerFrameCustomization1RightButton, fType=ftype, ofs=-2, x1=1, clr="gold"}
-					self:addButtonBorder{obj=_G.PVPBannerFrameCustomization2LeftButton, fType=ftype, ofs=-2, x1=1, clr="gold"}
-					self:addButtonBorder{obj=_G.PVPBannerFrameCustomization2RightButton, fType=ftype, ofs=-2, x1=1, clr="gold"}
-				end
-				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true})
-				if self.modBtns then
-					self:skinStdButton{obj=_G.PVPColorPickerButton1, fType=ftype}
-					self:skinStdButton{obj=_G.PVPColorPickerButton2, fType=ftype}
-					self:skinStdButton{obj=_G.PVPColorPickerButton3, fType=ftype}
-					self:skinStdButton{obj=_G.PVPBannerFrameSaveButton, fType=ftype}
-					self:skinStdButton{obj=_G.PVPBannerFrameAcceptButton, fType=ftype}
-					self:skinStdButton{obj=_G.PVPBannerFrameCancelButton, fType=ftype}
-				end
-
-				self:Unhook(this, "OnShow")
-			end)
-		end
-	end
-
 	aObj.blizzLoDFrames[ftype].AuctionUI = function(self)
 		if not self.prdb.AuctionUI or self.initialized.AuctionUI then return end
 		self.initialized.AuctionUI = true
@@ -325,7 +268,7 @@ aObj.SetupClassic_NPCFrames = function()
 
 	end
 
-	if aObj.isClscPTR then
+	if aObj.isClsc then
 		aObj.blizzLoDFrames[ftype].ReforgingUI = function(self)
 			if not self.prdb.ReforgingUI or self.initialized.ReforgingUI then return end
 			self.initialized.ReforgingUI = true
@@ -420,10 +363,8 @@ end
 aObj.SetupClassic_NPCFramesOptions = function(self)
 
 	local optTab = {
-		["Arena Frame"]           = self.isClsc and true or nil,
-		["Arena Registrar Frame"] = self.isClsc and true or nil,
 		["Auction UI"]            = true,
-		["Reforging UI"]		  = self.isClscPTR and true or nil,
+		["Reforging UI"]		  = self.isClsc and true or nil,
 	}
 	self:setupFramesOptions(optTab, "NPC")
 	_G.wipe(optTab)

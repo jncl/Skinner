@@ -119,9 +119,7 @@ aObj.SetupClassic_PlayerFrames = function()
 					skinCategories()
 				end)
 				skinCategories()
-				if aObj.isClscPTR then
-					self:removeNineSlice(self:getChild(_G.AchievementFrameAchievements, 2).NineSlice)
-				end
+				self:removeNineSlice(self:getChild(_G.AchievementFrameAchievements, 2).NineSlice)
 				self:skinObject("frame", {obj=_G.AchievementFrameAchievements, fType=ftype, kfs=true, fb=true, y1=0, y2=-2})
 				self:skinObject("slider", {obj=_G.AchievementFrameAchievementsContainerScrollBar, fType=ftype})
 				if self.prdb.AchievementUI.style == 2 then
@@ -237,10 +235,7 @@ aObj.SetupClassic_PlayerFrames = function()
 					for i = 1, 8 do
 						skinSB("AchievementFrameSummaryCategoriesCategory" .. i, "Label")
 					end
-					if not aObj.isClscPTR then
-						self:removeNineSlice(self:getChild(fObj, 1).NineSlice)
-					end
-					self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, fb=true, y1=aObj.isClscPTR and 0 or -1, y2=-2})
+					self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, fb=true, y1=self.isClsc and 0 or -1, y2=-2})
 					skinSB("AchievementFrameSummaryCategoriesStatusBar", "Title")
 
 					self:Unhook(fObj, "OnShow")
@@ -386,7 +381,7 @@ aObj.SetupClassic_PlayerFrames = function()
 
 	end
 
-	if not aObj.isClscPTR then
+	if aObj.isClscERA then
 		aObj.blizzFrames[ftype].CharacterFrames = function(self)
 			if not self.prdb.CharacterFrames or self.initialized.CharacterFrames then return end
 			self.initialized.CharacterFrames = true
@@ -563,78 +558,12 @@ aObj.SetupClassic_PlayerFrames = function()
 				self:Unhook(this, "OnShow")
 			end)
 
-			if self.isClscERA then
-				self:SecureHookScript(_G.HonorFrame, "OnShow", function(this)
-					self:keepFontStrings(this)
-					self:skinObject("statusbar", {obj=_G.HonorFrameProgressBar, fi=0})
+			self:SecureHookScript(_G.HonorFrame, "OnShow", function(this)
+				self:keepFontStrings(this)
+				self:skinObject("statusbar", {obj=_G.HonorFrameProgressBar, fi=0})
 
-					self:Unhook(this, "OnShow")
-				end)
-			elseif not aObj.isClscPTR then
-				self:SecureHookScript(_G.PaperDollFrameItemFlyout, "OnShow", function(this)
-					self:skinObject("frame", {obj=this.buttonFrame, fType=ftype, kfs=true, clr="gold", x2=4})
-					if self.modBtnBs then
-						self:SecureHook("PaperDollFrameItemFlyout_Show", function(_)
-							for _, btn in _G.pairs(_G.PaperDollFrameItemFlyout.buttons) do
-								self:addButtonBorder{obj=btn, fType=ftype, ibt=true}
-								if btn.location >= _G.PDFITEMFLYOUT_FIRST_SPECIAL_LOCATION then
-									self:clrBtnBdr(btn, "grey")
-									btn.sbb.SetBackdropBorderColor = _G.nop
-								end
-							end
-							for i = 1, this.buttonFrame["numBGs"] do
-								this.buttonFrame["bg" .. i]:SetTexture(nil)
-							end
-						end)
-					end
-
-					self:Unhook(this, "OnShow")
-				end)
-				self:SecureHookScript(_G.GearManagerDialog, "OnShow", function(this)
-					if self.modBtnBs then
-						local btn
-						for i = 1, _G.MAX_EQUIPMENT_SETS_PER_PLAYER do
-							btn = _G["GearSetButton" .. i]
-							btn:DisableDrawLayer("BACKGROUND")
-							if self.modBtnBs then
-								self:addButtonBorder{obj=btn, fType=ftype, clr="grey", ca=0.85}
-							end
-						end
-					end
-					self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ofs=-2 ,x1=3, x2=-1})
-					if self.modBtns then
-						self:skinCloseButton{obj=_G.GearManagerDialogClose, fType=ftype}
-						self:skinStdButton{obj=_G.GearManagerDialogDeleteSet, fType=ftype, schk=true}
-						self:skinStdButton{obj=_G.GearManagerDialogEquipSet, fType=ftype, schk=true}
-						self:skinStdButton{obj=_G.GearManagerDialogSaveSet, fType=ftype, schk=true}
-					end
-
-					self:SecureHookScript(_G.GearManagerDialogPopup, "OnShow", function(fObj)
-						self:skinObject("editbox", {obj=_G.GearManagerDialogPopupEditBox, fType=ftype})
-						self:skinObject("slider", {obj=_G.GearManagerDialogPopupScrollFrame.ScrollBar, fType=ftype, rpTex="background"})
-						self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, ofs=-4, x1=3})
-						if self.modBtns then
-							self:skinStdButton{obj=fObj.CancelButton}
-							self:skinStdButton{obj=fObj.OkayButton}
-							self:SecureHook("GearManagerDialogPopupOkay_Update", function()
-								self:clrBtnBdr(fObj.OkayButton)
-							end)
-						end
-						local bName
-						for i = 1, _G.NUM_GEARSET_ICONS_SHOWN do
-							bName = "GearManagerDialogPopupButton" .. i
-							_G[bName]:DisableDrawLayer("BACKGROUND")
-							if self.modBtnBs then
-								self:addButtonBorder{obj=_G[bName], relTo=_G[bName .. "Icon"], clr="grey", ca=0.85}
-							end
-						end
-
-						self:Unhook(fObj, "OnShow")
-					end)
-
-					self:Unhook(this, "OnShow")
-				end)
-			end
+				self:Unhook(this, "OnShow")
+			end)
 
 		end
 	end
@@ -1171,56 +1100,49 @@ aObj.SetupClassic_PlayerFrames = function()
 			if not self.prdb.GlyphUI or self.initialized.GlyphUI then return end
 			self.initialized.GlyphUI = true
 
-			if not aObj.isClscPTR then
-				self:SecureHookScript(_G.GlyphFrame, "OnShow", function(this)
-					self:removeRegions(this, {1})
-					self:skinObject("frame", {obj=this, fType=ftype, kfs=true, x1=10, y1=-12, x2=-31, y2=75})
-
-					self:Unhook(this, "OnShow")
-				end)
-			else
-				local clrBB, fName
-				if self.modBtnBs then
-					function clrBB(btn)
+			local clrBB, fName
+			if self.modBtnBs then
+				function clrBB(btn)
+					if btn.sbb then
 						if btn.disabledBG:IsShown() then
 							aObj:clrBtnBdr(btn.sbb, "grey")
 						else
 							aObj:clrBtnBdr(btn.sbb, "white")
 						end
 					end
-					self:SecureHook("GlyphFrame_UpdateGlyphList", function()
-						for _, btn in _G.pairs(_G.GlyphFrame.scrollFrame.buttons) do
-							clrBB(btn)
-						end
-					end)
-				else
-					clrBB = _G.nop
 				end
-				self:SecureHookScript(_G.GlyphFrame, "OnShow", function(this)
-					fName = this:GetName()
-					self:keepFontStrings(this)
-					self:removeInset(this.sideInset)
-					self:skinObject("editbox", {obj=_G[fName .. "SearchBox"], fType=ftype, si=true})
-					self:skinObject("dropdown", {obj=_G[fName .. "FilterDropDown"], fType=ftype})
-					self:skinObject("slider", {obj=_G[fName .. "ScrollFrameScrollBar"], fType=ftype, rpTex="background", x1=2, x2=-3})
-					for i = 1, #_G.GLYPH_TYPE_INFO do
-						self:removeRegions(_G[fName .. "Header" .. i], {1, 2, 3})
+				self:SecureHook("GlyphFrame_UpdateGlyphList", function()
+					for _, btn in _G.pairs(_G.GlyphFrame.scrollFrame.buttons) do
+						clrBB(btn)
 					end
-					for _, btn in _G.pairs(this.scrollFrame.buttons) do
-						btn:GetNormalTexture():SetTexture(nil)
-						btn.disabledBG:SetTexture(nil)
-						if self.modBtnBs then
-							self:addButtonBorder{obj=btn, fType=ftype, relTo=btn.icon}
-							clrBB(btn)
-						end
-					end
-					if self.modBtnBs then
-						self:addButtonBorder{obj=this.clearInfo, fType=ftype}
-					end
-
-					self:Unhook(this, "OnShow")
 				end)
+			else
+				clrBB = _G.nop
 			end
+			self:SecureHookScript(_G.GlyphFrame, "OnShow", function(this)
+				fName = this:GetName()
+				self:keepFontStrings(this)
+				self:removeInset(this.sideInset)
+				self:skinObject("editbox", {obj=_G[fName .. "SearchBox"], fType=ftype, si=true})
+				self:skinObject("dropdown", {obj=_G[fName .. "FilterDropDown"], fType=ftype})
+				self:skinObject("slider", {obj=_G[fName .. "ScrollFrameScrollBar"], fType=ftype, rpTex="background", x1=2, x2=-3})
+				for i = 1, #_G.GLYPH_TYPE_INFO do
+					self:removeRegions(_G[fName .. "Header" .. i], {1, 2, 3})
+				end
+				for _, btn in _G.pairs(this.scrollFrame.buttons) do
+					btn:GetNormalTexture():SetTexture(nil)
+					btn.disabledBG:SetTexture(nil)
+					if self.modBtnBs then
+						self:addButtonBorder{obj=btn, fType=ftype, relTo=btn.icon}
+						clrBB(btn)
+					end
+				end
+				if self.modBtnBs then
+					self:addButtonBorder{obj=this.clearInfo, fType=ftype}
+				end
+
+				self:Unhook(this, "OnShow")
+			end)
 			self:checkShown(_G.GlyphFrame)
 		end
 	end
@@ -1420,7 +1342,7 @@ aObj.SetupClassic_PlayerFrames = function()
 
 	end
 
-	if not aObj.isClscPTR then
+	if aObj.isClscERA then
 		aObj.blizzFrames[ftype].SpellBookFrame = function(self)
 			if not self.prdb.SpellBookFrame or self.initialized.SpellBookFrame then return end
 			self.initialized.SpellBookFrame = true
@@ -1523,7 +1445,7 @@ aObj.SetupClassic_PlayerFrames = function()
 		if not self.prdb.TalentUI or self.initialized.TalentUI then return end
 		self.initialized.TalentUI = true
 
-		if not aObj.isClscPTR then
+		if self.isClscERA then
 			self:SecureHookScript(_G.PlayerTalentFrame, "OnShow", function(this)
 				local fName = this:GetName()
 				self:moveObject{obj=_G.PlayerTalentFrameTitleText, y=-2}
@@ -1650,19 +1572,13 @@ aObj.SetupClassic_PlayerFrames = function()
 	end
 
 	if aObj.isClsc then
-		aObj.blizzFrames[ftype].TokenUI = function(self)
+		aObj.blizzFrames[ftype].TokenUI = function(self) -- Currency tab on Character frame
 			if not self.prdb.TokenUI or self.initialized.TokenUI then return end
 			self.initialized.TokenUI = true
 
 			self:SecureHookScript(_G.TokenFrame, "OnShow", function(this)
 				self:keepFontStrings(this)
 				self:skinObject("slider", {obj=_G.TokenFrameContainerScrollBar, fType=ftype, rpTex="background"})
-				if not aObj.isClscPTR then
-					self:getChild(this, 4):Hide() -- CloseButton
-					if self.modBtns then
-						self:skinStdButton{obj=_G.TokenFrameCancelButton, fType=ftype}
-					end
-				end
 				for _, btn in _G.pairs(_G.TokenFrameContainer.buttons) do
 					btn.categoryLeft:SetTexture(nil)
 					btn.categoryRight:SetTexture(nil)
