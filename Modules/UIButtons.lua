@@ -953,6 +953,9 @@ local function __addButtonBorder(opts)
 		end)
 	end
 	if opts.sechk then
+		-- store colour and alpha values with the skin button
+		opts.obj.sbb.clr = opts.clr
+		opts.obj.sbb.ca = opts.ca
 		module:secureHook(opts.obj, "SetEnabled", function(bObj)
 			module:clrBtnBdr(bObj, bObj.sbb.clr, bObj.sbb.ca)
 		end)
