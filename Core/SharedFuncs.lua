@@ -22,10 +22,14 @@ local function getTOCVer(ver)
 end
 local function compareBuildInfo(ver1, ver2, exact)
 	if exact then
-		-- aObj:Debug("cBI#1: [%s, %s]", getTOCVer(ver1) == getTOCVer(ver2), _G.tonumber(buildInfo[ver1][2]) == _G.tonumber(buildInfo[ver2][2]))
+		--@debug@
+		aObj:Debug("cBI#1: [%s, %s, %d, %d, %d, %d]", ver1, ver2, getTOCVer(ver1), getTOCVer(ver2), _G.tonumber(buildInfo[ver1][2]), _G.tonumber(buildInfo[ver2][2]))
+		--@end-debug@
 		return (getTOCVer(ver1) == getTOCVer(ver2) and _G.tonumber(buildInfo[ver1][2]) == _G.tonumber(buildInfo[ver2][2]))
 	else
-		-- aObj:Debug("cBI#2: [%s, %s]", getTOCVer(ver1) >= getTOCVer(ver2), _G.tonumber(buildInfo[ver1][2]) >= _G.tonumber(buildInfo[ver2][2]))
+		--@debug@
+		aObj:Debug("cBI#2: [%s, %s, %d, %d, %d, %d]", ver1, ver2, getTOCVer(ver1), getTOCVer(ver2), _G.tonumber(buildInfo[ver1][2]), _G.tonumber(buildInfo[ver2][2]))
+		--@end-debug@
 		return (getTOCVer(ver1) >= getTOCVer(ver2) and _G.tonumber(buildInfo[ver1][2]) >= _G.tonumber(buildInfo[ver2][2]))
 	end
 end
@@ -68,15 +72,15 @@ function aObj:checkWoWVersion()
 	self.isRtlPTR     = self.isRtlPTR or self.isRtlBeta
 	self.isRtl        = self.isRtl or self.isRtlPTR or self.isRtlPTRX
 
-	self.isPatch = not compareBuildInfo(agentUID, "curr", true)
+	self.isPatch = not compareBuildInfo("curr", agentUID, true)
 	if self.isPatch then
 		if self.isRtl then
-			self.isRtlPTR = compareBuildInfo(agentUID, "wow_ptr", false)
-			self.isRtlPTRX = compareBuildInfo(agentUID, "wow_ptr_x", false)
+			self.isRtlPTR = compareBuildInfo("wow_ptr",agentUID, false)
+			self.isRtlPTRX = compareBuildInfo("wow_ptr_x", agentUID, false)
 		elseif self.isClsc then
-			self.isClscPTR = compareBuildInfo(agentUID, "wow_classic_ptr", false)
+			self.isClscPTR = compareBuildInfo("wow_classic_ptr", agentUID, false)
 		elseif self.isClscERA then
-			self.isClscERAPTR = compareBuildInfo(agentUID, "wow_classic_era_ptr", false)
+			self.isClscERAPTR = compareBuildInfo("wow_classic_era_ptr", agentUID, false)
 		end
 	end
 
