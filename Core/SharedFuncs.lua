@@ -4,14 +4,14 @@ local _G = _G
 -- luacheck: ignore 212 631 (unused argument|line is too long)
 
 local buildInfo = {
-	wow_classic         = {"3.4.3",  54261, "Classic"}, -- a.k.a. Wrath of the Lich King Classic
-	wow_classic_beta    = {"4.4.0",  54427, "Cataclysm Classic Beta"},
+	wow_classic         = {"4.4.0",  54647, "Classic"}, -- a.k.a. Wrath of the Lich King Classic
+	wow_classic_beta    = {"4.4.0",  54647, "Cataclysm Classic Beta"},
 	wow_classic_era     = {"1.15.2", 54332, "Classic Era"}, -- a.k.a. Season of Discovery
 	wow_classic_era_ptr = {"1.15.2", 54067, "Classic Era PTR"},
-	wow_classic_ptr     = {"4.4.0",  54377, "Classic PTR"},
+	wow_classic_ptr     = {"4.4.0",  54647, "Classic PTR"},
 	wow_beta            = {"11.0.0", 56000, "Retail Beta"}, -- a.k.a. The War Within
-	wow_ptr             = {"10.2.7", 54366, "Retail PTR"},
-	wow                 = {"10.2.6", 54358, "Retail"},
+	wow_ptr             = {"10.2.7", 54630, "Retail PTR"},
+	wow                 = {"10.2.7", 54630, "Retail"},
 	wow_ptr_x           = {"10.2.6", 53989, "Retail PTRX"},
 	curr                = {_G.GetBuildInfo()},
 }
