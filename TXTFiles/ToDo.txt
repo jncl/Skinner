@@ -19,4 +19,6 @@ ToDos
 
 ≈		O	Refactor NewSkinFuncs in AddOn skins
 
-#68	√	I	GroupFinder, colour Headings and Description as they are difficult to see on most backgrounds
+#69	√	I	Skinner not loading in Classic CATA
+
+#70	√	I	New Error with 10.2.7

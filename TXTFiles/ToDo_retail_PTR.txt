@@ -6,14 +6,8 @@
 	x				- indicates nothing to change
 	¶ is Alt+7		- indicates localisation changes required
 
-	Retail_PTR (Dragonflight 10.2.7)
+	Retail_PTR (DF 10.2.7)
 		- Added
-?			- Blizzard_ObjectiveTrackerShared
-?				- ScenarioObjectiveFindGroupButtonTemplate
-√			- Blizzard_StableUI
 		- Updated
-?			- GuildControlUI
-x			- InspectPaperDollFrame
 		- Deleted
-√			- PetStableFrame
 			
