@@ -3,7 +3,7 @@ if not aObj:isAddonEnabled("Baganator") then return end
 local _G = _G
 -- luacheck: ignore 631 (line is too long)
 
-aObj.addonsToSkin.Baganator = function(self) -- v 243
+aObj.addonsToSkin.Baganator = function(self) -- v 253
 
 	local skinBtns, skinBags = _G.nop, _G.nop
 	if self.modBtnBs then
@@ -99,13 +99,13 @@ aObj.addonsToSkin.Baganator = function(self) -- v 243
 			skinBags(this)
 		end
 
-		self:SecureHookScript(this.CharacterSelect, "OnShow", function(fObj)
-			skinFrame(fObj)
-
-			self:Unhook(fObj, "OnShow")
-		end)
-
 		self:Unhook(this, "OnShow")
+	end)
+
+	self:SecureHookScript(_G.Baganator_CharacterSelectFrame, "OnShow", function(fObj)
+		skinFrame(fObj)
+
+		self:Unhook(fObj, "OnShow")
 	end)
 
 	self:SecureHookScript(_G.Baganator_BankViewFrame, "OnShow", function(this)
