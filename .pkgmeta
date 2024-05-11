@@ -28,8 +28,6 @@ ignore:
     - TXTFiles
     - ObsoleteSkins
 
-enable-toc-creation: yes
-
 tools-used:
     - findglobals
     # https://www.townlong-yak.com/globe/
