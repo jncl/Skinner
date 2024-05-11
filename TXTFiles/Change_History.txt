@@ -1,3 +1,35 @@
+beta10.54427.1
+Jncl:
+	Updated ToDo.txt files
+	Updated Change_History.txt
+	Updated version numbers
+	Updated debug message handling
+	Added checks to handle PTR changes going live
+	Added function to skin MainHelpButton
+	Retail PTR changes
+	Updated code to handle when a player reaches max level
+	Updated Professions QualityDialog code
+	Classic PTR/Beta changes for 4.4.0
+	Updated debugging output
+	Updated MasterLooterFrame code
+	Updated code to define SecureHook functions only once
+	Removed unnecessary local variables
+	Updated SharedFuncs debug output code
+	Updated CommunitiesUI code
+	Skinned Classic QuestMapFrame
+	Bugfix for Classic QuestLog List
+	Updated Classic TokenFramePopup skin
+	Updated Classic TalentButton skinning code
+	Updated Classic PaperDollFrameItemFlyout skin
+	Updated code to replace for numeric loops with ipairs/pairs
+	Updated code to remove hard coded loop control values
+	Updated Options code to use latest Blizzard functions
+	Updated PF_Classic code to only hook a function once
+	Bugfix for PetFrame skin
+	Updated UIButtons code
+	Updated BugSack, SilverDragon & WeakAuras skins
+	Updated LFGList SearchPanel results to colour the text fields, closes #68
+	
 beta10.54358.1
 Jncl:
 	Updated ToDo.txt files
