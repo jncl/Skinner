@@ -2240,7 +2240,7 @@ aObj.SetupRetail_PlayerFrames = function()
 			end)
 			self:SecureHookScript(this.Form.QualityDialog, "OnShow", function(fObj)
 				skinQualityDialog(fObj)
-				
+
 				self:Unhook(fObj, "OnShow")
 			end)
 			self:SecureHookScript(this.Form.CurrentListings, "OnShow", function(fObj)

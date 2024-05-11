@@ -852,53 +852,6 @@ aObj.SetupRetail_NPCFrames = function()
 
 	end
 
-	if not aObj.isRtlPTR then
-		aObj.blizzFrames[ftype].PetStableFrame = function(self)
-			if not self.prdb.PetStableFrame or self.initialized.PetStableFrame then return end
-			self.initialized.PetStableFrame = true
-
-			self:SecureHookScript(_G.PetStableFrame, "OnShow", function(this)
-				_G.PetStableFrameModelBg:Hide()
-				self:removeInset(this.LeftInset)
-				self:removeInset(this.BottomInset)
-				_G.PetStableActiveBg:Hide()
-				_G.PetStableFrameStableBg:Hide()
-				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true})
-				if self.modBtnBs then
-					self:addButtonBorder{obj=_G.PetStablePetInfo, relTo=_G.PetStableSelectedPetIcon, clr="grey", ca=0.85}
-					self:addButtonBorder{obj=_G.PetStableDiet, ofs=1, x2=0, clr="gold"}
-					self:addButtonBorder{obj=_G.PetStableNextPageButton, ofs=0, clr="grey"}
-					self:addButtonBorder{obj=_G.PetStablePrevPageButton, ofs=0, clr="grey"}
-					self:SecureHook("PetStable_Update", function(_)
-						self:clrBtnBdr(_G.PetStableNextPageButton, "gold")
-						self:clrBtnBdr(_G.PetStablePrevPageButton, "gold")
-					end)
-				end
-				-- slots
-				for i = 1, _G.NUM_PET_ACTIVE_SLOTS do
-					_G["PetStableActivePet" .. i].Border:Hide()
-					if not self.modBtnBs then
-						self:resizeEmptyTexture(_G["PetStableActivePet" .. i].Background)
-					else
-						_G["PetStableActivePet" .. i].Background:Hide()
-						self:addButtonBorder{obj=_G["PetStableActivePet" .. i], clr="gold"}
-					end
-				end
-				for i = 1, _G.NUM_PET_STABLE_SLOTS do
-					if not self.modBtnBs then
-						self:resizeEmptyTexture(_G["PetStableStabledPet" .. i].Background)
-					else
-						_G["PetStableStabledPet" .. i].Background:Hide()
-						self:addButtonBorder{obj=_G["PetStableStabledPet" .. i], clr="grey", ca=0.85}
-					end
-				end
-
-				self:Unhook(this, "OnShow")
-			end)
-
-		end
-	end
-
 	aObj.blizzLoDFrames[ftype].RuneForgeUI = function(self)
 		if not self.prdb.RuneForgeUI or self.initialized.RuneForgeUI then return end
 		self.initialized.RuneForgeUI = true
@@ -935,76 +888,82 @@ aObj.SetupRetail_NPCFrames = function()
 
 	end
 
-	if aObj.isRtlPTR then
-		aObj.blizzFrames[ftype].StableUI = function(self)
-			if not self.prdb.StableUI or self.initialized.StableUI then return end
-			self.initialized.StableUI = true
+	aObj.blizzFrames[ftype].StableUI = function(self)
+		if not self.prdb.StableUI or self.initialized.StableUI then return end
+		self.initialized.StableUI = true
 
-			self:SecureHookScript(_G.StableFrame, "OnShow", function(this)
-				self:skinMainHelpBtn(this)
-				this.PetModelScene:DisableDrawLayer("BACKGROUND")
-				this.PetModelScene:DisableDrawLayer("ARTWORK")
-				self:removeInset(this.PetModelScene.Inset)
-				this.PetModelScene.PetModelSceneShadow:DisableDrawLayer("OVERLAY")
-				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true})
+		self:SecureHookScript(_G.StableFrame, "OnShow", function(this)
+			self:skinMainHelpBtn(this)
+			this.PetModelScene:DisableDrawLayer("BACKGROUND")
+			this.PetModelScene:DisableDrawLayer("ARTWORK")
+			self:removeInset(this.PetModelScene.Inset)
+			this.PetModelScene.PetModelSceneShadow:DisableDrawLayer("OVERLAY")
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true})
+			if self.modBtns then
+				self:skinStdButton{obj=this.StableTogglePetButton, fType=ftype, schk=true, sechk=true}
+				self:skinStdButton{obj=this.ReleasePetButton, fType=ftype, schk=true, sechk=true}
+			end
+			if self.modBtnBs then
+				self:addButtonBorder{obj=this.PetModelScene.PetInfo.NameBox.EditButton, fType=ftype, clr="grey", ofs=-1}
+			end
+
+			local function changePetButton(btn, active)
+				if active then
+					btn.Background:SetTexture(nil)
+					btn.BackgroundMask:SetTexture(nil)
+					btn.Highlight:SetSize(75, 75)
+					btn.Highlight:SetTexture(aObj.tFDIDs.cbH)
+				end
+				btn.Border:SetAlpha(0)
+				aObj:makeIconSquare(btn, "Icon", active and "grey" or "gold", not active and {btn.FavoriteIcon} or {})
+			end
+			self:SecureHookScript(this.StabledPetList, "OnShow", function(fObj)
+				self:keepFontStrings(fObj)
+				fObj.ListCounter:DisableDrawLayer("BACKGROUND")
+				fObj.ListCounter:DisableDrawLayer("BORDER")
+				self:removeInset(fObj.Inset)
+				self:skinObject("scrollbar", {obj=fObj.ScrollBar, fType=ftype})
+				local function skinStabledPet(...)
+					local _, element, new
+					if _G.select("#", ...) == 2 then
+						element, _ = ...
+					elseif _G.select("#", ...) == 3 then
+						element, _, new = ...
+					else
+						_, element, _, new = ...
+					end
+					if new ~= false then
+						element:DisableDrawLayer("BACKGROUND")
+						if element.Portrait then
+							changePetButton(element.Portrait)
+						end
+					end
+				end
+				_G.ScrollUtil.AddAcquiredFrameCallback(fObj.ScrollBox, skinStabledPet, aObj, true)
+				self:skinObject("editbox", {obj=fObj.FilterBar.SearchBox, fType=ftype, si=true})
 				if self.modBtns then
-					self:skinStdButton{obj=this.StableTogglePetButton, fType=ftype, schk=true, sechk=true}
-					self:skinStdButton{obj=this.ReleasePetButton, fType=ftype, schk=true, sechk=true}
-				end
-				if self.modBtnBs then
-					self:addButtonBorder{obj=this.PetModelScene.PetInfo.NameBox.EditButton, fType=ftype, clr="grey", ofs=-1}
+					self:skinStdButton{obj=fObj.FilterBar.FilterButton, fType=ftype, clr="grey"}
 				end
 
-				self:SecureHookScript(this.StabledPetList, "OnShow", function(fObj)
-					self:keepFontStrings(fObj)
-					fObj.ListCounter:DisableDrawLayer("BACKGROUND")
-					fObj.ListCounter:DisableDrawLayer("BORDER")
-					self:removeInset(fObj.Inset)
-					self:skinObject("scrollbar", {obj=fObj.ScrollBar, fType=ftype})
-					local function skinStabledPet(...)
-						local _, element, new
-						if _G.select("#", ...) == 2 then
-							element, _ = ...
-						elseif _G.select("#", ...) == 3 then
-							element, _, new = ...
-						else
-							_, element, _, new = ...
-						end
-						if new ~= false then
-							if element.petData then
-								element:DisableDrawLayer("BACKGROUND")
-								element.Portrait.Border:SetAlpha(0)
-							else
-								element:DisableDrawLayer("BACKGROUND")
-							end
-						end
-					end
-					_G.ScrollUtil.AddAcquiredFrameCallback(fObj.ScrollBox, skinStabledPet, aObj, true)
-					self:skinObject("editbox", {obj=fObj.FilterBar.SearchBox, fType=ftype, si=true})
-					if self.modBtns then
-						self:skinStdButton{obj=fObj.FilterBar.FilterButton, fType=ftype, clr="grey"}
-					end
-
-					self:Unhook(fObj, "OnShow")
-				end)
-				self:checkShown(this.StabledPetList)
-
-				self:SecureHookScript(this.ActivePetList, "OnShow", function(fObj)
-					fObj.ActivePetListBG:SetTexture(nil)
-					fObj.ActivePetListBGBar:SetTexture(nil)
-					for _, btn in _G.pairs(fObj.PetButtons) do
-						btn.Background:SetTexture(nil)
-					end
-					fObj.BeastMasterSecondaryPetButton.Background:SetTexture(nil)
-
-					self:Unhook(fObj, "OnShow")
-				end)
-				self:checkShown(this.ActivePetList)
-
-				self:Unhook(this, "OnShow")
+				self:Unhook(fObj, "OnShow")
 			end)
+			self:checkShown(this.StabledPetList)
 
-		end
+			self:SecureHookScript(this.ActivePetList, "OnShow", function(fObj)
+				fObj.ActivePetListBG:SetTexture(nil)
+				fObj.ActivePetListBGBar:SetTexture(nil)
+				for _, btn in _G.pairs(fObj.PetButtons) do
+					changePetButton(btn, true)
+				end
+				changePetButton(fObj.BeastMasterSecondaryPetButton, true)
+
+				self:Unhook(fObj, "OnShow")
+			end)
+			self:checkShown(this.ActivePetList)
+
+			self:Unhook(this, "OnShow")
+		end)
+
 	end
 
 	aObj.blizzFrames[ftype].TaxiFrame = function(self)
