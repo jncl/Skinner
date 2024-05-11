@@ -1,3 +1,20 @@
+beta10.54647.1
+Jncl:
+	Updated ToDo.txt files
+	Updated Change_History.txt
+	Updated version numbers
+	Updated TOC & .pkgmeta for new Interface line allowing multiple version strings
+	Bugfix to code to handle PTR changes going live, closes #69, closes #70
+	Applied Retail PTR changes
+	Applied Classic PTR changes for Cataclysm
+	Updated Professions code
+	UPdated CharCustomizeFrame code
+	Updated UIButtons code
+	Updated several Utility functions
+	Removed deprecated skinRewards function
+	Updated code to change DropDown border colour when they are disabled/enabled
+	Updated Baganator skin
+	
 beta10.54427.1
 Jncl:
 	Updated ToDo.txt files
