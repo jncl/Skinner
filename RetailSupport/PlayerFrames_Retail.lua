@@ -1798,8 +1798,8 @@ aObj.SetupRetail_PlayerFrames = function()
 		ebObj:DisableDrawLayer("BACKGROUND")
 		aObj:skinObject("editbox", {obj=ebObj, fType=ftype, chginset=false, ofs=0, x1=-6})
 		if aObj.modBtnBs then
-			aObj:addButtonBorder{obj=ebObj.IncrementButton, ofs=0, x2=-1, sechk=true, clr="gold"}
-			aObj:addButtonBorder{obj=ebObj.DecrementButton, ofs=0, x2=-1, sechk=true, clr="gold"}
+			aObj:addButtonBorder{obj=ebObj.IncrementButton, ofs=0, x2=-1, clr="gold", sechk=true}
+			aObj:addButtonBorder{obj=ebObj.DecrementButton, ofs=0, x2=-1, clr="gold", sechk=true}
 		end
 	end
 	local function skinReagentBtn(btn, ignTex)
