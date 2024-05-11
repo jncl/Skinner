@@ -484,14 +484,6 @@ function aObj:skinColHeads(buttonName, noCols, ftype)
 
 end
 
-do
-	aObj:SecureHook("UIDropDownMenu_DisableDropDown", function(dropDown)
-		aObj:checkDisabledDD(dropDown)
-	end)
-	aObj:SecureHook("UIDropDownMenu_EnableDropDown", function(dropDown)
-		aObj:checkDisabledDD(dropDown)
-	end)
-end
 local function __skinDropDown(opts)
 --[[
 	Calling parameters:
