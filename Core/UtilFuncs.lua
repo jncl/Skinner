@@ -281,7 +281,7 @@ function aObj:changeTex(obj, isYellow, isUnitFrame)
 	_G.assert(obj, "Unknown object changeTex\n" .. _G.debugstack(2, 3, 2))
 	--@end-debug@
 
-	obj:SetTexture(self.tFDIDs.btnTex)
+	obj:SetTexture(self.tFDIDs.hfHB)
 	if isYellow then
 		obj:SetTexCoord(isUnitFrame and 0.015 or 0.0038, isUnitFrame and 0.66 or 0.7, 0.67, 0.855) -- yellow
 	else
@@ -952,12 +952,12 @@ function aObj:makeMFRotatable(modelFrame)
 
 end
 
-function aObj:makeIconSquare(obj, iconObjName, clr)
+function aObj:makeIconSquare(obj, iconObjName, clr, rpArray)
 
 	obj[iconObjName]:SetTexCoord(.1, .9, .1, .9)
 
 	if self.modBtnBs then
-		self:addButtonBorder{obj=obj, relTo=obj[iconObjName], ofs=3, clr=clr}
+		self:addButtonBorder{obj=obj, relTo=obj[iconObjName], reParent=rpArray, ofs=3, clr=clr}
 	end
 
 end
@@ -1368,9 +1368,11 @@ function aObj:setupTextures()
 
 --]]
 	self.tFDIDs = {
-		["bHLS"]      = _G.GetFileIDFromPath([[Interface\Buttons\ButtonHilight-Square]]),
-		["btnTex"]    = _G.GetFileIDFromPath([[Interface\HelpFrame\HelpButtons]]),
-		["cbMin"]     = _G.GetFileIDFromPath([[interface/common/minimalcheckbox.blp]]),
+		["bHLS"]      = _G.GetFileIDFromPath([[Interface\Buttons\ButtonHilight-Square]]), -- blue highlight
+		["bHLSQ"]     = _G.GetFileIDFromPath([[Interface\Buttons\ButtonHilight-SquareQuickslot]]), -- smaller & lighter blue highlight
+		["cbH"]       = _G.GetFileIDFromPath([[Interface\Buttons\CheckButtonHilight]]), -- yellow highlight
+		["hfHB"]      = _G.GetFileIDFromPath([[Interface\HelpFrame\HelpButtons]]),
+		["cbMin"]     = _G.GetFileIDFromPath([[interface\Common\minimalcheckbox.blp]]),
 		["cbSC"]      = _G.GetFileIDFromPath([[Interface\Buttons\UI-Checkbox-SwordCheck]]),
 		["cbUP"]      = _G.GetFileIDFromPath([[interface\Buttons\UI-CheckBox-Up]]),
 		["ccLF"]      = _G.GetFileIDFromPath([[Interface\Glues\CharacterCreate\CharacterCreate-LabelFrame]]),
