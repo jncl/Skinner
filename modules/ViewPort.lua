@@ -1,7 +1,7 @@
 local aName, aObj = ...
 
 local _G = _G
--- luacheck: ignore 631 (line is too long)
+-- luacheck: ignore 212 631 (unused argument|line is too long)
 
 local module = aObj:NewModule("ViewPort")
 
@@ -58,7 +58,7 @@ function module:OnInitialize()
 end
 
 local CinematicFrame_OnShow, CinematicFrame_OnHide
-function module:OnDisable() -- luacheck: ignore 212 (unused argument)
+function module:OnDisable()
 
 	_G.CinematicFrame_OnShow = CinematicFrame_OnShow
 	_G.CinematicFrame_OnHide = CinematicFrame_OnHide
@@ -170,7 +170,7 @@ function module:adjustViewPort(opt)
 
 end
 
-function module:GetOptions() -- luacheck: ignore 212 (unused argument)
+function module:GetOptions()
 
 	local c
 	local options = {

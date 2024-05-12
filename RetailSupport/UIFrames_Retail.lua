@@ -3,7 +3,7 @@ if _G.WOW_PROJECT_ID ~= _G.WOW_PROJECT_MAINLINE then return end
 local _, aObj = ...
 
 local _G = _G
--- luacheck: ignore 631 (line is too long)
+-- luacheck: ignore 212 631 (unused argument|line is too long)
 
 aObj.SetupRetail_UIFrames = function()
 	local ftype = "u"
@@ -2727,7 +2727,7 @@ aObj.SetupRetail_UIFrames = function()
 			frame.sf:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", x2Ofs, y2Ofs)
 			x1Ofs, y1Ofs, x2Ofs, y2Ofs = nil, nil, nil, nil
 		end
-		local function skinOptions(frame, source) -- luacheck: ignore 212 (unused argument)
+		local function skinOptions(frame, source)
 			-- aObj:Debug("skinOptions PCUI: [%s, %s, %s, %s]", source, frame.uiTextureKit, frame.optionFrameTemplate)
 			if not frame.optionFrameTemplate then return end
 			if frame.uiTextureKit == "jailerstower"

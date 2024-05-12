@@ -1,7 +1,7 @@
 local aName, aObj = ...
 
 local _G = _G
--- luacheck: ignore 631 (line is too long)
+-- luacheck: ignore 212 631 (unused argument|line is too long)
 
 local module = aObj:NewModule("UIButtons", "AceEvent-3.0", "AceHook-3.0")
 
@@ -134,7 +134,7 @@ local function __checkTex(opts)
 	end
 
 end
-function module:checkTex(...) -- luacheck: ignore 212 (unused argument)
+function module:checkTex(...)
 
 	local opts = _G.select(1, ...)
 
@@ -241,7 +241,7 @@ function module:clrButtonFromBorder(bObj, texture)
 
 end
 
-function module:clrBtnBdr(bObj, clrName, alpha) -- luacheck: ignore 212 (unused argument)
+function module:clrBtnBdr(bObj, clrName, alpha)
 
 	-- check button state and alter colour accordingly
 	clrName = bObj.IsEnabled and not bObj:IsEnabled() and "disabled" or clrName
@@ -249,7 +249,7 @@ function module:clrBtnBdr(bObj, clrName, alpha) -- luacheck: ignore 212 (unused 
 
 end
 
-function module:isButton(obj) -- luacheck: ignore 212 (unused argument)
+function module:isButton(obj)
 
 	-- ignore named/AceConfig/XConfig/AceGUI objects
 	if aObj:hasAnyTextInName(obj, {"AceConfig", "XConfig", "AceGUI"}) then return end
@@ -291,7 +291,7 @@ function module:isButton(obj) -- luacheck: ignore 212 (unused argument)
 
 end
 
-function module:secureHook(obj, method, func) -- luacheck: ignore 212 (unused argument)
+function module:secureHook(obj, method, func)
 
 	if not module:IsHooked(obj, method) then
 		module:SecureHook(obj, method, func)
@@ -394,20 +394,20 @@ function module:skinCloseButton(opts)
 	end
 
 end
-function module:skinCloseButton1(opts) -- luacheck: ignore 212 (unused argument)
+function module:skinCloseButton1(opts)
 -- text on button
 	opts.cb = nil
 	module:skinCloseButton(opts)
 
 end
-function module:skinCloseButton2(opts) -- luacheck: ignore 212 (unused argument)
+function module:skinCloseButton2(opts)
 -- text on skinButton
 	opts.cb2 = nil
 	opts.onSB = true
 	module:skinCloseButton(opts)
 
 end
-function module:skinCloseButton3(opts) -- luacheck: ignore 212 (unused argument)
+function module:skinCloseButton3(opts)
 -- small text on skinButton (used by Details)
 	opts.font = module.fontSBX
 	opts.cb3 = nil
@@ -477,13 +477,13 @@ function module:skinExpandButton(opts)
 	end
 
 end
-function module:skinExpandButton1(opts) -- luacheck: ignore 212 (unused argument)
+function module:skinExpandButton1(opts)
 -- text on skinButton
 	opts.onSB = true
 	module:skinExpandButton(opts)
 
 end
-function module:skinExpandButton2(opts) -- luacheck: ignore 212 (unused argument)
+function module:skinExpandButton2(opts)
 -- text on button
 	opts.sap = true
 	module:skinExpandButton(opts)
@@ -537,7 +537,7 @@ function module:skinOtherButton(opts)
 	end
 
 end
-function module:skinOtherButton1(opts) -- luacheck: ignore 212 (unused argument)
+function module:skinOtherButton1(opts)
 -- text on button
 	opts.font = module.fontP
 	opts.text = opts.ob
@@ -545,7 +545,7 @@ function module:skinOtherButton1(opts) -- luacheck: ignore 212 (unused argument)
 	module:skinOtherButton(opts)
 
 end
-function module:skinOtherButton2(opts) -- luacheck: ignore 212 (unused argument)
+function module:skinOtherButton2(opts)
 -- small text on button
 	opts.size = 18
 	opts.sap = true
@@ -555,7 +555,7 @@ function module:skinOtherButton2(opts) -- luacheck: ignore 212 (unused argument)
 	module:skinOtherButton(opts)
 
 end
-function module:skinOtherButton3(opts) -- luacheck: ignore 212 (unused argument)
+function module:skinOtherButton3(opts)
 -- sizeUp/Down text on button
 
 	opts.font = module.fontS
@@ -564,7 +564,7 @@ function module:skinOtherButton3(opts) -- luacheck: ignore 212 (unused argument)
 	module:skinOtherButton(opts)
 
 end
-function module:skinOtherButton4(opts) -- luacheck: ignore 212 (unused argument)
+function module:skinOtherButton4(opts)
 -- Normal text on button
 
 	opts.font = "GameFontNormal"
@@ -653,7 +653,7 @@ function module:skinStdButton(opts)
 
 end
 
-function module:skinButton(opts) -- luacheck: ignore 212 (unused argument)
+function module:skinButton(opts)
 --[[
 	Calling parameters:
 		as = use applySkin rather than addSkinButton, used when text appears behind the gradient
@@ -747,7 +747,7 @@ local function __skinAllButtons(opts, bgen)
 	end
 
 end
-function module:skinAllButtons(...) -- luacheck: ignore 212 (unused argument)
+function module:skinAllButtons(...)
 
 	local opts = _G.select(1, ...)
 
@@ -918,7 +918,7 @@ local function __addButtonBorder(opts)
 		if opts.libt
 		and aObj.isRtl
 		then
-			module:clrButtonFromBorder(opts.obj)
+		module:clrButtonFromBorder(opts.obj)
 		end
 	elseif opts.abt then -- Action Buttons
 		if opts.obj.FlyoutArrow then
@@ -962,7 +962,7 @@ local function __addButtonBorder(opts)
 	end
 
 end
-function module:addButtonBorder(...) -- luacheck: ignore 212 (unused argument)
+function module:addButtonBorder(...)
 
 	local opts = _G.select(1, ...)
 
@@ -1034,7 +1034,7 @@ local function __skinCheckButton(opts)
 	aObj:skinObject("button", {obj=opts.obj, fType=opts.ftype, bd=bd, ng=true, ofs=ofs, y2=yOfs, clr="grey"})
 
 end
-function module:skinCheckButton(...) -- luacheck: ignore 212 (unused argument)
+function module:skinCheckButton(...)
 
 	local opts = _G.select(1, ...)
 
@@ -1107,7 +1107,7 @@ function module:OnEnable()
 
 end
 
-function module:GetOptions() -- luacheck: ignore 212 (unused argument)
+function module:GetOptions()
 
 	local options = {
 		type = "group",

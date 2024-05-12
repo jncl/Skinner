@@ -1,7 +1,7 @@
 local _, aObj = ...
 
 local _G = _G
--- luacheck: ignore 631 (line is too long)
+-- luacheck: ignore 311 631 (value is unused|line is too long)
 
 -- skin Templates
 aObj.skinTPLs = {
@@ -178,7 +178,7 @@ do
 end
 
 local function setScrollTrackOffsets(tbl, type)
-	local h, w, o = _G.Round(tbl.obj:GetHeight()), _G.Round(tbl.obj:GetWidth()) -- luacheck: ignore 311 (value is unused)
+	local h, w, o = _G.Round(tbl.obj:GetHeight()), _G.Round(tbl.obj:GetWidth())
 	if type == "slider" then
 		o = tbl.obj:GetOrientation()
 	else

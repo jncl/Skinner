@@ -1,7 +1,7 @@
 local _, aObj = ...
 
 local _G = _G
--- luacheck: ignore 631 (line is too long)
+-- luacheck: ignore 212 631 (unused argument|line is too long)
 
 local ftype = "p"
 
@@ -34,7 +34,7 @@ module.isSkinned = _G.setmetatable({}, {__index = function(t, k) t[k] = true end
 
 if not aObj.isRtl then
 	-- N.B. handle bug in XML & lua which places mana bar 1 pixel too high
-	function module:adjustStatusBarPosn(sBar, yAdj) -- luacheck: ignore 212 (unused argument)
+	function module:adjustStatusBarPosn(sBar, yAdj)
 
 		local oPnt
 		yAdj = yAdj or 1
@@ -127,7 +127,7 @@ function module:adjustUnitFrames(opt)
 	end
 
 end
-function module:skinUnitButton(opts) -- luacheck: ignore 212 (unused argument)
+function module:skinUnitButton(opts)
 
 	-- setup offset values
 	opts.ofs = opts.ofs or 0
@@ -381,7 +381,7 @@ function module:skinPetF()
 	end
 
 end
-function module:skinCommon(fName, adjSB) -- luacheck: ignore 212 (unused argument)
+function module:skinCommon(fName, adjSB)
 
 	local fo = _G[fName]
 	if not aObj.isRtl then
@@ -682,7 +682,7 @@ function module:OnInitialize()
 
 end
 
-function module:OnDisable() -- luacheck: ignore 212 (unused argument)
+function module:OnDisable()
 
 	module:UnhookAll()
 

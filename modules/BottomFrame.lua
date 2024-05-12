@@ -1,7 +1,7 @@
 local _, aObj = ...
 
 local _G = _G
--- luacheck: ignore 631 (line is too long)
+-- luacheck: ignore 212 631 (unused argument|line is too long)
 
 local ftype = "s"
 
@@ -47,7 +47,7 @@ function module:OnEnable()
 end
 
 local btmframe
-function module:adjustBottomFrame() -- luacheck: ignore 212 (unused argument)
+function module:adjustBottomFrame()
 
 	if db.shown then
 		btmframe = btmframe or _G.CreateFrame("Frame", nil, _G.UIParent)
@@ -77,7 +77,7 @@ function module:adjustBottomFrame() -- luacheck: ignore 212 (unused argument)
 
 end
 
-function module:GetOptions() -- luacheck: ignore 212 (unused argument)
+function module:GetOptions()
 
 	local options = {
 		type = "group",

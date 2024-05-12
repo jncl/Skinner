@@ -1,7 +1,7 @@
 local _, aObj = ...
 
 local _G = _G
--- luacheck: ignore 631 (line is too long)
+-- luacheck: ignore 542 631 (empty if branch|line is too long)
 
 local ftype = "u"
 
@@ -3391,7 +3391,6 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 		end
 		-- aObj:Debug("skinWidget: [%s, %s, %s, %s, %s, %s, %s]", wFrame, wFrame:GetDebugName(), wFrame.widgetType, wFrame.widgetTag, wFrame.widgetSetID, wFrame.widgetID, wInfo)
 
-		-- luacheck: ignore 542 (empty if branch)
 		if wFrame.widgetType == 0 then -- IconAndText (World State: ICONS at TOP)
 			-- N.B. DON'T add buttonborder to Icon(s)
 		elseif wFrame.widgetType == 1 then -- CaptureBar (World State: Capture bar on RHS)

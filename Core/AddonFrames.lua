@@ -1,7 +1,7 @@
 local _, aObj = ...
 
 local _G = _G
--- luacheck: ignore 631 (line is too long)
+-- luacheck: ignore 212 631 (unused argument|line is too long)
 
 --@debug@
 local index = {}
@@ -210,7 +210,7 @@ function aObj:PLAYER_ENTERING_WORLD()
 
 end
 
-function aObj:PLAYER_LEVEL_CHANGED(...) -- luacheck: ignore 212 (unused argument)
+function aObj:PLAYER_LEVEL_CHANGED(...)
 --[[
 	arg1 - event name
 	arg2 - old player level

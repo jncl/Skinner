@@ -1,7 +1,7 @@
 local _, aObj = ...
 -- This is a Framework
 local _G = _G
--- luacheck: ignore 631 (line is too long)
+-- luacheck: ignore 542 631 (empty if branch|line is too long)
 
 local objectsToSkin = {}
 local AceGUI = _G.LibStub:GetLibrary("AceGUI-3.0", true)
@@ -457,7 +457,7 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 			-- KongConfig
 			or objType == "CollapsibleGroup"
 			or objType == "EasyMenuDropDown"
-			then -- luacheck: ignore 542 (empty if branch)
+			then
 				-- aObj:Debug("Ignoring: [%s]", objType)
 			-- any other types
 			else

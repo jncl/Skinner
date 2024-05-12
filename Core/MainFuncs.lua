@@ -1,4 +1,4 @@
--- luacheck: ignore 631 (line is too long)
+-- luacheck: ignore 212 631 (unused argument|line is too long)
 --[===[@non-debug@
 
 local _, aObj = ...
@@ -169,7 +169,7 @@ local function __addSkinButton(opts)
 	return opts.obj.sb
 
 end
-function aObj:addSkinButton(...) -- luacheck: ignore 212 (unused argument)
+function aObj:addSkinButton(...)
 
 	local opts = _G.select(1, ...)
 
@@ -330,7 +330,7 @@ local function __addSkinFrame(opts)
 	return opts.obj.sf
 
 end
-function aObj:addSkinFrame(...) -- luacheck: ignore 212 (unused argument)
+function aObj:addSkinFrame(...)
 
 	local opts = _G.select(1, ...)
 
@@ -443,7 +443,7 @@ local function __applySkin(opts)
 	end
 
 end
-function aObj:applySkin(...) -- luacheck: ignore 212 (unused argument)
+function aObj:applySkin(...)
 
 	local opts = _G.select(1, ...)
 
@@ -576,7 +576,7 @@ local function __skinDropDown(opts)
 	aObj:checkDisabledDD(opts.obj)
 
 end
-function aObj:skinDropDown(...) -- luacheck: ignore 212 (unused argument)
+function aObj:skinDropDown(...)
 
 	local opts = _G.select(1, ...)
 
@@ -690,7 +690,7 @@ local function __skinEditBox(opts)
 	end
 
 end
-function aObj:skinEditBox(...) -- luacheck: ignore 212 (unused argument)
+function aObj:skinEditBox(...)
 
 	local opts = _G.select(1, ...)
 
@@ -789,7 +789,7 @@ local function __skinMoneyFrame(opts)
 	end
 
 end
-function aObj:skinMoneyFrame(...) -- luacheck: ignore 212 (unused argument)
+function aObj:skinMoneyFrame(...)
 
 	local opts = _G.select(1, ...)
 
@@ -847,7 +847,7 @@ local function __skinScrollBar(opts)
 	aObj:skinUsingBD{obj=_G[opts.obj:GetName() .. "ScrollBar"], size=opts.size}
 
 end
-function aObj:skinScrollBar(...) -- luacheck: ignore 212 (unused argument)
+function aObj:skinScrollBar(...)
 
 	local opts = _G.select(1, ...)
 
@@ -924,7 +924,7 @@ local function __skinSlider(opts)
 	end
 
 end
-function aObj:skinSlider(...) -- luacheck: ignore 212 (unused argument)
+function aObj:skinSlider(...)
 
 	local opts = _G.select(1, ...)
 
@@ -1017,7 +1017,7 @@ local function __skinStatusBar(opts)
 	end
 
 end
-function aObj:skinStatusBar(...) -- luacheck: ignore 212 (unused argument)
+function aObj:skinStatusBar(...)
 
 	local opts = _G.select(1, ...)
 
@@ -1143,7 +1143,7 @@ local function __skinTabs(opts)
 	aObj.tabFrames[opts.obj] = true
 
 end
-function aObj:skinTabs(...) -- luacheck: ignore 212 (unused argument)
+function aObj:skinTabs(...)
 
 	local opts = _G.select(1, ...)
 
@@ -1239,7 +1239,7 @@ local function __skinUsingBD(opts)
 	opts.obj:SetBackdropBorderColor(aObj.prdb.SliderBorder:GetRGBA())
 
 end
-function aObj:skinUsingBD(...) -- luacheck: ignore 212 (unused argument)
+function aObj:skinUsingBD(...)
 
 	local opts = _G.select(1, ...)
 
