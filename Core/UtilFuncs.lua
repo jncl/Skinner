@@ -1421,7 +1421,7 @@ function aObj:skinColumnDisplay(frame)
 	frame:DisableDrawLayer("ARTWORK")
 	for header in frame.columnHeaders:EnumerateActive() do
 		header:DisableDrawLayer("BACKGROUND")
-		self:skinObject("frame", {obj=header, fType=ftype, x2=-2})
+		self:skinObject("frame", {obj=header, x2=-2})
 	end
 
 end
