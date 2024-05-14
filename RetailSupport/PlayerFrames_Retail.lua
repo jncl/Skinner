@@ -1,9 +1,9 @@
+-- luacheck: ignore 631 (line is too long)
 if _G.WOW_PROJECT_ID ~= _G.WOW_PROJECT_MAINLINE then return end
 
 local _, aObj = ...
 
 local _G = _G
--- luacheck: ignore 631 (line is too long)
 
 aObj.SetupRetail_PlayerFrames = function()
 	local ftype = "p"

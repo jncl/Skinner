@@ -1,7 +1,7 @@
+-- luacheck: ignore 631 (line is too long)
 local aName, aObj = ...
 
 local _G = _G
--- luacheck: ignore 631 (line is too long)
 
 do
 	if aObj:checkLibraries({"LibSharedMedia-3.0", "LibDBIcon-1.0"}) then

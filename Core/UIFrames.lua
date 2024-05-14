@@ -1,7 +1,7 @@
+-- luacheck: ignore 542 631 (empty if branch|line is too long)
 local _, aObj = ...
 
 local _G = _G
--- luacheck: ignore 542 631 (empty if branch|line is too long)
 
 local ftype = "u"
 

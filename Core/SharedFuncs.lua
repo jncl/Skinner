@@ -1,7 +1,7 @@
+-- luacheck: ignore 212 631 (unused argument|line is too long)
 local aName, aObj = ...
 
 local _G = _G
--- luacheck: ignore 212 631 (unused argument|line is too long)
 
 local buildInfo = {
 	wow_classic         = {"4.4.0",  54647, "Classic"}, -- a.k.a. Wrath of the Lich King Classic

@@ -1,7 +1,7 @@
+-- luacheck: ignore 212 631 (unused argument|line is too long)
 local aName, aObj = ...
 
 local _G = _G
--- luacheck: ignore 212 631 (unused argument|line is too long)
 
 local module = aObj:NewModule("ViewPort")
 
