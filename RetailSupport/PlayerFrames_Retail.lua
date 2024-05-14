@@ -1590,12 +1590,21 @@ aObj.SetupRetail_PlayerFrames = function()
 
 		local skinMinBtn = _G.nop
 		if self.modBtnBs then
+			local module
 			 function skinMinBtn(btn)
-				aObj:addButtonBorder{obj=btn, es=12, ofs=1, x1=-1, clr="grey"}
+				module = btn:GetParent().module or _G.ObjectiveTrackerFrame
+				btn:SetSize(23, 23)
+				if not btn .sb then
+					aObj:skinOtherButton{obj=btn, text=module.collapsed and aObj.modUIBtns.plus or aObj.modUIBtns.minus}
+				else
+					btn:SetText(module.collapsed and aObj.modUIBtns.plus or aObj.modUIBtns.minus)
+				end
 			end
 		end
 		-- remove Glow/Sheen textures from WorldQuest modules
+		-- skin MinimizeButton(s)
 		local function updTrackerModules()
+			skinMinBtn(_G.ObjectiveTrackerFrame.HeaderMenu.MinimizeButton)
 			for _, module in _G.pairs(_G.ObjectiveTrackerFrame.MODULES) do
 				if module.ShowWorldQuests then
 					for _, blk in _G.pairs(module.usedBlocks) do
@@ -1630,7 +1639,6 @@ aObj.SetupRetail_PlayerFrames = function()
 		self:skinObject("dropdown", {obj=_G.ObjectiveTrackerFrame.BlockDropDown, fType=ftype})
 
 		if self.modBtnBs then
-			skinMinBtn(_G.ObjectiveTrackerFrame.HeaderMenu.MinimizeButton)
 			-- hook this to skin QuestObjective Block Button(s)
 			local function aBB2rB(btn)
 				if btn.HotKey then -- QuestItem
