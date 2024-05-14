@@ -67,8 +67,6 @@ aObj.SetupRetail_NPCFrames = function()
 
 		self:SecureHookScript(_G.AuctionHouseFrame, "OnShow", function(this)
 			self:removeInset(this.MoneyFrameInset) -- MerchantMoneyInset
-			-- this.MoneyFrameBorder:DisableDrawLayer("BACKGROUND")
-			-- this.MoneyFrameBorder:DisableDrawLayer("BORDER")
 			self:removeNineSlice(this.MoneyFrameBorder)
 			self:skinObject("tabs", {obj=this, tabs=this.Tabs, fType=ftype, lod=self.isTT and true, track=false})
 			if self.isTT then
@@ -170,7 +168,6 @@ aObj.SetupRetail_NPCFrames = function()
 
 				self:Unhook(fObj, "OnShow")
 			end)
-			-- self:checkShown(this.BrowseResultsFrame)
 
 			self:SecureHookScript(this.WoWTokenResults, "OnShow", function(fObj)
 				fObj.Background:SetTexture(nil)
@@ -191,12 +188,6 @@ aObj.SetupRetail_NPCFrames = function()
 				self:removeRegions(fObj.TokenDisplay, {3}) -- background texture
 				if self.modBtns then
 					self:skinStdButton{obj=fObj.Buyout, fType=ftype, sechk=true}
-				end
-				local btn = fObj.TokenDisplay.ItemButton
-				btn.IconBorder:SetTexture(nil)
-				if self.modBtnBs then
-					self:addButtonBorder{obj=btn, relTo=btn.Icon}
-					self:clrButtonFromBorder(btn)
 				end
 				fObj.DummyScrollBar:DisableDrawLayer("BACKGROUND")
 				fObj.DummyScrollBar.Background:DisableDrawLayer("ARTWORK")
