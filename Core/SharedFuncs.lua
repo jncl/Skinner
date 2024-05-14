@@ -219,11 +219,7 @@ end
 
 local function makeString(obj)
 	if _G.type(obj) == "table" then
-		if _G.type(_G.rawget(obj, 0)) == "userdata"
-		and _G.type(obj.GetObjectType) == "function"
-		then
-			return ("<%s:%s:%s>"):format(_G.tostring(obj), obj:GetObjectType(), obj:GetName() or "(Anon)")
-		end
+		return ("<%s:%s:%s>"):format(_G.tostring(obj), obj.GetObjectType and obj:GetObjectType() or _G.type(obj), obj.GetName and obj:GetName() or "(Anon)")
 	elseif _G.type(obj) ~= "string" then
 		return _G.tostring(obj)
 	else
@@ -234,7 +230,7 @@ local function makeText(fStr, ...)
 	local tmpTab = {}
 	local output
 	if fStr
-	and fStr.find
+	and _G.type(fStr) == "string"
 	and fStr:find("%%")
 	and _G.select('#', ...) >= 1
 	then
