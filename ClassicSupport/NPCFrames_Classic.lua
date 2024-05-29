@@ -18,7 +18,6 @@ aObj.SetupClassic_NPCFrames = function()
 			_G[btnName .. idx .. "ItemNormalTexture"]:SetAlpha(0) -- texture changed in code
 			if aObj.modBtnBs then
 				aObj:addButtonBorder{obj=_G[btnName .. idx .. "Item"], reParent={_G[btnName .. idx .. "Count"], _G[btnName .. idx .. "Stock"], _G[btnName .. idx .. "IconOverlay"]}}
-				aObj:clrButtonFromBorder(_G[btnName .. idx .. "Item"])
 			end
 		end
 		self:SecureHookScript(_G.AuctionFrame, "OnShow", function(this)
@@ -75,6 +74,16 @@ aObj.SetupClassic_NPCFrames = function()
 					self:SecureHookScript(_G.BrowseSearchButton, "OnUpdate", function(_, _)
 						if _G.CanSendAuctionQuery("list") then
 							self:clrPNBtns("Browse")
+						end
+					end)
+					self:SecureHook("AuctionFrameBrowse_Update", function()
+						if _G.AuctionFrame_DoesCategoryHaveFlag("WOW_TOKEN_FLAG", _G.AuctionFrameBrowse.selectedCategoryIndex) then
+							return
+						end
+						for i = 1, _G.NUM_BROWSE_TO_DISPLAY do
+							if _G["BrowseButton" .. i .. "Item"].sbb then
+								_G["BrowseButton" .. i .. "Item"].sbb:SetBackdropBorderColor(_G["BrowseButton" .. i .. "Name"]:GetVertexColor())
+							end
 						end
 					end)
 				end
