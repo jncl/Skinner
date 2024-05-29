@@ -653,10 +653,13 @@ aObj.SetupClassic_PlayerFrames = function()
 			if not self:isAddOnLoaded("alaTradeSkill") then
 				self:skinObject("slider", {obj=_G.CraftListScrollFrameScrollBar, fType=ftype, rpTex="background"})
 				self:skinObject("slider", {obj=_G.CraftDetailScrollFrameScrollBar, fType=ftype, rpTex="background"})
+				local btnName
 				for i = 1, _G.MAX_CRAFT_REAGENTS do
-					_G["CraftReagent" .. i].NameFrame:SetTexture(nil)
+					btnName = "CraftReagent" .. i
+					_G[btnName].NameFrame:SetTexture(nil)
 					if self.modBtnBs then
-						self:addButtonBorder{obj=_G["CraftReagent" .. i], fType=ftype, libt=true}
+						self:addButtonBorder{obj=_G[btnName], fType=ftype, libt=true}
+						_G[btnName].sbb:SetBackdropBorderColor(_G[btnName .. "IconTexture"]:GetVertexColor())
 					end
 				end
 				if self.modBtns then
