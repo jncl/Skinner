@@ -360,6 +360,35 @@ aObj.SetupClassic_UIFrames = function()
 					self:Unhook(fObj, "OnShow")
 				end)
 
+				self:SecureHookScript(_G.PVPTeamManagementFrame, "OnShow", function(fObj)
+					self:keepFontStrings(fObj)
+					self:keepFontStrings(_G.PVPTeamManagementFrameWeeklyDisplay)
+					if self.modBtnBs then
+						self:addButtonBorder{obj=_G.PVPFrameToggleButton, fType=ftype, clr="gold", ofs=-1, x2=-2, y2=2}
+					end
+
+					self:SecureHookScript(_G.PVPTeamDetails, "OnShow", function(frame)
+						frame:SetFrameLevel(_G.PVPFrame:GetFrameLevel() + 10)
+						self:skinObject("dropdown", {obj=_G.PVPDropDown, fType=ftype})
+						for i = 1, 5 do
+							self:removeRegions(_G["PVPTeamDetailsFrameColumnHeader" .. i], {1, 2, 3})
+							if self.modBtns then
+								 self:skinStdButton{obj=_G["PVPTeamDetailsFrameColumnHeader" .. i]}
+							end
+						end
+						self:skinObject("frame", {obj=frame, fType=ftype, kfs=true, cb=true, ofs=-2})
+						if self.modBtns then
+							self:skinStdButton{obj=_G.PVPTeamDetailsAddTeamMember, fType=ftype}
+						end
+						if self.modBtnBs then
+							self:addButtonBorder{obj=_G.PVPTeamDetailsToggleButton, fType=ftype, ofs=-2, y1=-1, clr="gold"}
+						end
+
+						self:Unhook(frame, "OnShow")
+					end)
+					self:Unhook(fObj, "OnShow")
+				end)
+
 				self:SecureHookScript(_G.WarGamesFrame, "OnShow", function(fObj)
 					fObj:DisableDrawLayer("BACKGROUND")
 					fObj:DisableDrawLayer("ARTWORK")
