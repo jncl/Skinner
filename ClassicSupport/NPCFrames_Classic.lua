@@ -292,8 +292,8 @@ aObj.SetupClassic_NPCFrames = function()
 				self:keepFontStrings(_G[this:GetName() .. "ButtonFrame"])
 				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x2=1})
 				if self.modBtns then
-					self:skinStdButton{obj=_G.ReforgingFrameRestoreButton, fType=ftype, schk=truec}
-					self:skinStdButton{obj=_G.ReforgingFrameReforgeButton, fType=ftype, schk=truec}
+					self:skinStdButton{obj=_G.ReforgingFrameRestoreButton, fType=ftype, schk=true}
+					self:skinStdButton{obj=_G.ReforgingFrameReforgeButton, fType=ftype, schk=true}
 				end
 				if self.modBtnBs then
 					self:addButtonBorder{obj=_G.ReforgingFrameItemButton, fType=ftype, clr="bronze"}
@@ -303,7 +303,6 @@ aObj.SetupClassic_NPCFrames = function()
 			end)
 
 		end
-
 	end
 
 	aObj.blizzFrames[ftype].TaxiFrame = function(self)
