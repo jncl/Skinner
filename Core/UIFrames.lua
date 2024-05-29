@@ -3092,7 +3092,7 @@ aObj.blizzFrames[ftype].StaticPopups = function(self)
 				self:skinStdButton{obj=this.extraButton, fType=ftype, schk=true, y1=2}
 			end
 			if self.modBtnBs then
-				self:addButtonBorder{obj=_G[objName .. "ItemFrame"], ibt=true}
+				self:addButtonBorder{obj=_G[objName .. "ItemFrame"], fType=ftype, ibt=true}
 			end
 			-- prevent FrameLevel from being changed (LibRock does this)
 			this.sf.SetFrameLevel = _G.nop
