@@ -93,6 +93,17 @@ aObj.blizzFrames[ftype].MerchantFrame = function(self)
 		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true})
 		self:removeInset(_G.MerchantMoneyInset)
 		_G.MerchantMoneyBg:DisableDrawLayer("BACKGROUND")
+		-- Items/Buyback Items
+		for i = 1, _G.math.max(_G.MERCHANT_ITEMS_PER_PAGE, _G.BUYBACK_ITEMS_PER_PAGE) do
+			_G["MerchantItem" .. i .. "NameFrame"]:SetTexture(nil)
+			if not self.modBtnBs then
+				_G["MerchantItem" .. i .. "SlotTexture"]:SetTexture(self.tFDIDs.esTex)
+			else
+				_G["MerchantItem" .. i .. "SlotTexture"]:SetTexture(nil)
+				self:addButtonBorder{obj=_G["MerchantItem" .. i].ItemButton, fType=ftype, ibt=true}
+			end
+		end
+		_G.MerchantBuyBackItemNameFrame:SetTexture(nil)
 		if self.isRtl then
 			self:skinObject("dropdown", {obj=_G.MerchantFrameLootFilter, fType=ftype})
 			self:removeInset(_G.MerchantExtraCurrencyInset)
@@ -109,25 +120,15 @@ aObj.blizzFrames[ftype].MerchantFrame = function(self)
 			self:SecureHook("MerchantFrame_UpdateMerchantInfo", function()
 				self:clrPNBtns("Merchant")
 			end)
-		end
-		-- Items/Buyback Items
-		for i = 1, _G.math.max(_G.MERCHANT_ITEMS_PER_PAGE, _G.BUYBACK_ITEMS_PER_PAGE) do
-			_G["MerchantItem" .. i .. "NameFrame"]:SetTexture(nil)
-			if not self.modBtnBs then
-				_G["MerchantItem" .. i .. "SlotTexture"]:SetTexture(self.tFDIDs.esTex)
-			else
-				_G["MerchantItem" .. i .. "SlotTexture"]:SetTexture(nil)
-				self:addButtonBorder{obj=_G["MerchantItem" .. i].ItemButton, ibt=true}
-			end
-		end
-		_G.MerchantBuyBackItemNameFrame:SetTexture(nil)
-		if self.modBtnBs then
+			self:SecureHook("MerchantFrameItem_UpdateQuality", function(item, _, _)
+				self:clrButtonFromBorder(item.ItemButton)
+			end)
 			local btn
 			for _, type in _G.pairs{"SellAllJunk", "RepairAll", "RepairItem", "GuildBankRepair"} do
 				btn = _G["Merchant" .. type .. "Button"]
 				if btn then
-					self:getRegion(btn, 1):SetTexture(nil)
-					self:addButtonBorder{obj=btn, fType=ftype, clr="gold"}
+					btn:DisableDrawLayer("BACKGROUND") -- Retail EmptySlot texture
+					self:addButtonBorder{obj=btn, fType=ftype, clr="gold", sechk=true}
 				end
 			end
 			self:SecureHook("MerchantFrame_UpdateCanRepairAll", function()
@@ -139,7 +140,7 @@ aObj.blizzFrames[ftype].MerchantFrame = function(self)
 				end)
 			end
 			_G.MerchantBuyBackItemSlotTexture:SetTexture(nil)
-			self:addButtonBorder{obj=_G.MerchantBuyBackItem.ItemButton, ibt=true}
+			self:addButtonBorder{obj=_G.MerchantBuyBackItem.ItemButton, fType=ftype, ibt=true}
 		else
 			_G.MerchantBuyBackItemSlotTexture:SetTexture(self.tFDIDs.esTex)
 		end
