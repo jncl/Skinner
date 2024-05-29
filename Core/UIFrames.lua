@@ -3207,6 +3207,7 @@ aObj.blizzFrames[ftype].TimeManager = function(self)
 
 end
 
+aObj.ttDelay = 0.2
 aObj.blizzFrames[ftype].Tooltips = function(self)
 	if not self.prdb.Tooltips.skin or self.initialized.Tooltips then return end
 	self.initialized.Tooltips = true
@@ -3221,7 +3222,6 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 		return
 	end
 
-	self.ttDelay = 0.2
 	-- using a metatable to manage tooltips when they are added in different functions
 	_G.setmetatable(self.ttList, {__newindex = function(tab, _, tTip)
 		-- get object reference for tooltip, handle either strings or objects being passed
