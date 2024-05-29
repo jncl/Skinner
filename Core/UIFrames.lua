@@ -1553,13 +1553,13 @@ aObj.blizzFrames[ftype].LFDFrame = function(self)
 			self:skinStdButton{obj=_G.LFDQueueFrameFindGroupButton, schk=true}
 		end
 		if self.modBtnBs then
-			self:addButtonBorder{obj=_G.LFDQueueFrameRandomScrollFrameChildFrame.MoneyReward, libt=true}
+			self:addButtonBorder{obj=_G.LFDQueueFrameRandomScrollFrameChildFrame.MoneyReward, fType=ftype, libt=true}
 			self:SecureHook("LFDQueueFrameRandom_UpdateFrame", function()
 				local fName = "LFDQueueFrameRandomScrollFrameChildFrame"
 				for i = 1, _G[fName].numRewardFrames do
 					if _G[fName .. "Item" .. i] then
 						_G[fName .. "Item" .. i .. "NameFrame"]:SetTexture(nil)
-						self:addButtonBorder{obj=_G[fName .. "Item" .. i], libt=true}
+						self:addButtonBorder{obj=_G[fName .. "Item" .. i], fType=ftype, libt=true}
 					end
 				end
 			end)
@@ -1624,7 +1624,7 @@ aObj.blizzFrames[ftype].LFGFrame = function(self)
 		local frame = self.hooks.LFGRewardsFrame_SetItemButton(...)
 		_G[frame:GetName() .. "NameFrame"]:SetTexture(nil)
 		if self.modBtnBs then
-			self:addButtonBorder{obj=frame, libt=true}
+			self:addButtonBorder{obj=frame, fType=ftype, libt=true}
 		end
 		return frame
 	end, true)
