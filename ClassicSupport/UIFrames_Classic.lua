@@ -215,12 +215,14 @@ aObj.SetupClassic_UIFrames = function()
 				for _, bName in _G.pairs(_G.MICRO_BUTTONS) do
 					self:addButtonBorder{obj=_G[bName], es=24, ofs=2, y1=-18, reParent={_G[bName].QuickKeybindHighlightTexture}, clr="grey"}
 				end
-
-				self:addButtonBorder{obj=_G.MainMenuBarBackpackButton, ibt=true, ofs=3}
-				self:addButtonBorder{obj=_G.CharacterBag0Slot, ibt=true, ofs=3}
-				self:addButtonBorder{obj=_G.CharacterBag1Slot, ibt=true, ofs=3}
-				self:addButtonBorder{obj=_G.CharacterBag2Slot, ibt=true, ofs=3}
-				self:addButtonBorder{obj=_G.CharacterBag3Slot, ibt=true, ofs=3}
+				local function abb2Bag(bag)
+					aObj:addButtonBorder{obj=bag, fType=ftype, ibt=true, ofs=3}
+				 	bag.sbb:SetBackdropBorderColor(bag.icon:GetVertexColor())
+				end
+				abb2Bag(_G.MainMenuBarBackpackButton)
+				for i = 0, 3 do
+					abb2Bag(_G["CharacterBag" .. i .. "Slot"])
+				end
 				self:addButtonBorder{obj=_G.KeyRingButton, ofs=2, clr="grey"}
 			end
 		end
