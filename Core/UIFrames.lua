@@ -2014,10 +2014,10 @@ aObj.blizzFrames[ftype].MailFrame = function(self)
 				self:skinStdButton{obj=_G.OpenMailReplyButton, schk=true}
 			end
 			if self.modBtnBs then
-				self:addButtonBorder{obj=_G.OpenMailLetterButton, ibt=true}
-				self:addButtonBorder{obj=_G.OpenMailMoneyButton, ibt=true}
+				self:addButtonBorder{obj=_G.OpenMailLetterButton, fType=ftype, ibt=true}
+				self:addButtonBorder{obj=_G.OpenMailMoneyButton, fType=ftype, ibt=true}
 				for _, btn in _G.pairs(fObj.OpenMailAttachments) do
-					self:addButtonBorder{obj=btn, ibt=true}
+					self:addButtonBorder{obj=btn, fType=ftype, ibt=true}
 				end
 			end
 			-- Invoice Frame Text fields
@@ -2673,7 +2673,12 @@ aObj.blizzFrames[ftype].PVEFrame = function(self)
 	if not self.prdb.PVEFrame or self.initialized.PVEFrame then return end
 	self.initialized.PVEFrame = true
 
-	local groupFrames = { "LFDParentFrame", "RaidFinderFrame", "LFGListPVEStub" }
+	local groupFrames
+	if _G.PVEFrame:ScenariosEnabled() then
+		groupFrames = { "LFDParentFrame", "ScenarioFinderFrame", "RaidFinderFrame", "LFGListPVEStub" }
+	else
+		groupFrames = { "LFDParentFrame", "RaidFinderFrame", "LFGListPVEStub" }
+	end
 
 	self:SecureHookScript(_G.PVEFrame, "OnShow", function(this)
 		self:keepFontStrings(this.shadows)
@@ -2690,7 +2695,7 @@ aObj.blizzFrames[ftype].PVEFrame = function(self)
 		end
 		-- hook this to change selected texture
 		self:SecureHook("GroupFinderFrame_SelectGroupButton", function(index)
-			for i = 1, 3 do
+			for i = 1, #groupFrames do
 				if i == index then
 					self:changeTex(_G.GroupFinderFrame["groupButton" .. i].bg, true)
 				else
@@ -2702,7 +2707,7 @@ aObj.blizzFrames[ftype].PVEFrame = function(self)
 		if self.modBtnBs then
 			-- hook this to change button border colour
 			self:SecureHook("GroupFinderFrame_EvaluateButtonVisibility", function(_, _)
-				for i = 1, 3 do
+				for i = 1, #groupFrames do
 					self:clrBtnBdr(_G.GroupFinderFrame["groupButton" .. i])
 				end
 			end)
