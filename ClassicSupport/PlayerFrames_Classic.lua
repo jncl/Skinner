@@ -414,7 +414,7 @@ aObj.SetupClassic_PlayerFrames = function()
 					local btn
 					for _, sName in _G.ipairs(pdfSlots) do
 						btn = _G["Character" .. sName .. "Slot"]
-						self:addButtonBorder{obj=btn, ibt=true, reParent={btn.ignoreTexture}, clr="grey"}
+						self:addButtonBorder{obj=btn, fType=ftype, ibt=true, reParent={btn.ignoreTexture}--[[, clr="grey"--]]}
 						_G.PaperDollItemSlotButton_Update(btn)
 					end
 					btn = _G.CharacterAmmoSlot
