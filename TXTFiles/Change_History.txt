@@ -1,7 +1,11 @@
+beta10.54647.2
+Jncl:
+	Updated Change_History.txt
+	Removed Build type version keywords from TOC and replaced with lua conditional statements as they are no longer allowed in a multi-version build
+	
 beta10.54647.1
 Jncl:
 	Updated ToDo.txt files
-	Updated Change_History.txt
 	Updated version numbers
 	Updated TOC & .pkgmeta for new Interface line allowing multiple version strings
 	Bugfix to code to handle PTR changes going live, closes #69, closes #70
