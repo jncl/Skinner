@@ -2523,11 +2523,6 @@ aObj.blizzFrames[ftype].Nameplates = function(self)
 		end
 	end
 
-	-- tooltip
-	_G.C_Timer.After(0.1, function()
-		self:add2Table(self.ttList, _G.NamePlateTooltip)
-	end)
-
 end
 
 if not aObj.isClscERA then
@@ -3298,6 +3293,7 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 	if self.isRtl then
 		-- self:add2Table(toolTips, _G.GameNoHeaderTooltip) -- N.B. defined in GameTooltip.xml but NOT referenced in code
 		self:add2Table(toolTips, _G.GameSmallHeaderTooltip)
+		self:add2Table(toolTips, _G.NamePlateTooltip) -- N.B. Done here as Nameplate skinning function is disabled
 	else
 		self:add2Table(toolTips, _G.SmallTextTooltip)
 	end
