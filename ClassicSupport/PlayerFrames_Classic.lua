@@ -1643,7 +1643,8 @@ aObj.SetupClassic_PlayerFrames = function()
 				btnName = "TradeSkillReagent" .. i
 				_G[btnName .. "NameFrame"]:SetTexture(nil)
 				if self.modBtnBs then
-					 self:addButtonBorder{obj=_G[btnName], libt=true, clr="grey"}
+					 self:addButtonBorder{obj=_G[btnName], fType=ftype, libt=true}
+					 _G[btnName].sbb:SetBackdropBorderColor(_G[btnName .. "IconTexture"]:GetVertexColor())
 				end
 			end
 			self:skinObject("editbox", {obj=_G.TradeSkillInputBox, fType=ftype})
