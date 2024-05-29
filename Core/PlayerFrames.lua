@@ -2775,8 +2775,8 @@ if not aObj.isClscERA then
 				for _, btn in _G.ipairs(_G.EquipmentFlyoutFrame.buttons) do
 					self:addButtonBorder{obj=btn, fType=ftype, ibt=true, reParent={btn.UpgradeIcon}}
 					if self.isClsc then
-					if btn.location >= _G.EQUIPMENTFLYOUT_FIRST_SPECIAL_LOCATION then
-						self:clrBtnBdr(btn, "grey")
+						if btn.location >= _G.EQUIPMENTFLYOUT_FIRST_SPECIAL_LOCATION then
+							self:clrBtnBdr(btn, "grey")
 						end
 					end
 				end
@@ -3023,7 +3023,6 @@ if not aObj.isClscERA then
 			-- Spellbook Panel
 			local bName, spellString, subSpellString
 			local function updBtn(btn)
-				aObj:Debug("updBtn: [%s, %s]", btn, btn:IsEnabled())
 				-- handle in combat
 				if _G.InCombatLockdown() then
 				    aObj:add2Table(aObj.oocTab, {updBtn, {btn}})
@@ -3121,7 +3120,7 @@ if not aObj.isClscERA then
 								end
 							else
 								if aObj.modBtnBs then
-									self:clrBtnBdr(obj, "disabled")
+									aObj:clrBtnBdr(obj, "disabled")
 								end
 							end
 						else
@@ -3146,16 +3145,18 @@ if not aObj.isClscERA then
 					end
 				end
 				skinProf("Primary", 2)
-				if not aObj.isRtl then
+				if not self.isRtl then
 					skinProf("Secondary", 4)
 				else
 					skinProf("Secondary", 3)
 				end
-				self:SecureHook("SpellBook_UpdateProfTab", function()
-					local prof1, prof2, _, _, _ = _G.GetProfessions()
-					self:clrBtnBdr(_G.PrimaryProfession1, not prof1 and "disabled")
-					self:clrBtnBdr(_G.PrimaryProfession2, not prof2 and "disabled")
-				end)
+				if self.modBtnBs then
+					self:SecureHook("SpellBook_UpdateProfTab", function()
+						local prof1, prof2, _, _, _ = _G.GetProfessions()
+						self:clrBtnBdr(_G.PrimaryProfession1, not prof1 and "disabled")
+						self:clrBtnBdr(_G.PrimaryProfession2, not prof2 and "disabled")
+					end)
+				end
 
 				self:Unhook(fObj, "OnShow")
 			end)
@@ -3194,7 +3195,7 @@ aObj.blizzFrames[ftype].TradeFrame = function(self)
 				for _, type in _G.pairs{"Player", "Recipient"} do
 					_G["Trade" .. type .. "Item" .. i .. "SlotTexture"]:SetTexture(nil)
 					_G["Trade" .. type .. "Item" .. i .. "NameFrame"]:SetTexture(nil)
-					self:addButtonBorder{obj=_G["Trade" .. type .. "Item" .. i .. "ItemButton"], ibt=true}
+					self:addButtonBorder{obj=_G["Trade" .. type .. "Item" .. i .. "ItemButton"], fType=ftype, ibt=true}
 				end
 			end
 		end
