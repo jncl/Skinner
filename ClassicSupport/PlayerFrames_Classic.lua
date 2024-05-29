@@ -1154,11 +1154,13 @@ aObj.SetupClassic_PlayerFrames = function()
 
 	local function skinTalentBtns(frame)
 		local fName = frame:GetName()
+		local tName
 		for i = 1, _G.MAX_NUM_TALENTS do
-			_G[fName .. "Talent" .. i .. "Slot"]:SetTexture(nil)
-			aObj:changeTandC(_G[fName .. "Talent" .. i .. "RankBorder"])
-			aObj:addButtonBorder{obj=_G[fName .. "Talent" .. i], ibt=true, reParent={_G[fName .. "Talent" .. i .. "RankBorder"], _G[fName .. "Talent" .. i .. "Rank"]}}
-			_G[fName .. "Talent" .. i].sbb:SetBackdropBorderColor(_G[fName .. "Talent" .. i .. "Slot"]:GetVertexColor())
+			tName = fName .. "Talent" .. i
+			_G[tName .. "Slot"]:SetTexture(nil)
+			aObj:changeTandC(_G[tName .. "RankBorder"])
+			aObj:addButtonBorder{obj=_G[tName], fType=ftype, ibt=true, reParent={_G[tName .. "RankBorder"], _G[tName .. "Rank"]}}
+			_G[tName].sbb:SetBackdropBorderColor(_G[tName .. "Slot"]:GetVertexColor())
 		end
 	end
 	aObj.blizzLoDFrames[ftype].InspectUI = function(self)
