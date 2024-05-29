@@ -585,11 +585,11 @@ aObj.SetupClassic_PlayerFrames = function()
 				aObj:skinStdButton{obj=_G[objName .. "AddSlotsButton"], fType=ftype}
 			end
 			if aObj.modBtnBs then
-				-- skin the item buttons
 				local bo
 				for i = 1, _G.MAX_CONTAINER_ITEMS do
 					bo = _G[objName .. "Item" .. i]
-					aObj:addButtonBorder{obj=bo, ibt=true, reParent={bo.JunkIcon, bo.UpgradeIcon, bo.flash, bo.NewItemTexture, bo.BattlepayItemTexture}}
+					aObj:addButtonBorder{obj=bo, fType=ftype, ibt=true, reParent={bo.JunkIcon, bo.UpgradeIcon, bo.flash, bo.NewItemTexture, bo.BattlepayItemTexture}}
+					aObj:add2Table(aObj.btnIgnore, bo)
 				end
 				-- update Button quality borders
 				_G.ContainerFrame_Update(frame)
