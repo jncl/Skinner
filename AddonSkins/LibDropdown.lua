@@ -27,26 +27,22 @@ local function hookFuncs(lib)
 	end, true)
 end
 
-aObj.libsToSkin["LibDropdown-1.0"] = function(self) -- v LibDropdown-1.0, 1
-	if self.initialized.LibDropdown then return end
-	self.initialized.LibDropdown = true
+local libsToSkin = {
+	"LibDropdown-1.0",
+	"LibDropdownMC-1.0",
+}
 
-	local lDD = _G.LibStub:GetLibrary("LibDropdown-1.0", true)
-	if lDD then
-		hookFuncs(lDD)
+do
+	for _, lib in _G.pairs(libsToSkin) do
+		aObj.libsToSkin[lib] = function(self)
+			if self.initialized[lib] then return end
+			self.initialized[lib] = true
+			local lDD = _G.LibStub:GetLibrary(lib, true)
+			if lDD then
+				hookFuncs(lDD)
+			end
+		end
 	end
-
-end
-
-aObj.libsToSkin["LibDropdownMC-1.0"] = function(self) -- v LibDropdownMC-1.0, 1
-	if self.initialized.LibDropdownMC then return end
-	self.initialized.LibDropdownMC = true
-
-	local lDD = _G.LibStub:GetLibrary("LibDropdownMC-1.0", true)
-	if lDD then
-		hookFuncs(lDD)
-	end
-
 end
 
 aObj.libsToSkin["LibDropDown"] = function(self) -- v LibDropDown, 6
@@ -60,14 +56,14 @@ aObj.libsToSkin["LibDropDown"] = function(self) -- v LibDropDown, 6
 			aObj:skinObject("frame", {obj=menu, kfs=true, ofs=6})
 			_G.RaiseFrameLevelByTwo(menu)
 		end
+		for menu, _ in _G.pairs(lDD.dropdowns) do
+			skinDD(menu)
+		end
 		self:RawHook(lDD, "NewMenu", function(this, parent, name)
 			local menu = self.hooks[this].NewMenu(this, parent, name)
 			skinDD(menu)
 			return menu
 		end, true)
-		for menu, _ in _G.pairs(lDD.dropdowns) do
-			skinDD(menu)
-		end
 	end
 
 end

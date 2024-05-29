@@ -1,8 +1,9 @@
+-- luacheck: ignore 631 (line is too long)
 local _, aObj = ...
 if not aObj:isAddonEnabled("MountsJournal") then return end
 local _G = _G
 
-aObj.addonsToSkin.MountsJournal = function(self) -- v 10.1.12/3.4.34
+aObj.addonsToSkin.MountsJournal = function(self) -- v 10.2.43/4.4.8
 
 	if self.isClsc
 	and self.modChkBtns
@@ -17,10 +18,9 @@ aObj.addonsToSkin.MountsJournal = function(self) -- v 10.1.12/3.4.34
 	end
 
 	self:SecureHook(_G.MountsJournalFrame, "init", function(mjFrame)
-		aObj:Debug("MountsJournalFrame init")
 		local this = mjFrame.bgFrame
 		self:removeInset(this.mountCount)
-		if not self.isClsc then
+		if self.isRtl then
 			this.achiev:DisableDrawLayer("BACKGROUND")
 			this.slotButton:DisableDrawLayer("BACKGROUND")
 		end
@@ -73,7 +73,13 @@ aObj.addonsToSkin.MountsJournal = function(self) -- v 10.1.12/3.4.34
 		this.mountDisplay:DisableDrawLayer("BACKGROUND")
 		this.mountDisplay.shadowOverlay:DisableDrawLayer("OVERLAY")
 		self:skinObject("dropdown", {obj=this.mountDisplay.modelScene.animationsCombobox, x1=1, y1=2, x2=-1, y2=0})
-		if not self.isClsc then
+		self:skinObject("slider", {obj=mjFrame.xInitialAcceleration.slider})
+		self:skinObject("slider", {obj=mjFrame.xAcceleration.slider})
+		self:skinObject("slider", {obj=mjFrame.xMinSpeed.slider})
+		self:skinObject("slider", {obj=mjFrame.yInitialAcceleration.slider})
+		self:skinObject("slider", {obj=mjFrame.yAcceleration.slider})
+		self:skinObject("slider", {obj=mjFrame.yMinSpeed.slider})
+		if self.isRtl then
 			this.mountDisplay.modelScene.playerToggle.border:SetTexture(nil)
 			this.mountDisplay.info.petSelectionBtn.infoFrame.levelBG:SetTexture(nil)
 		end
@@ -83,12 +89,12 @@ aObj.addonsToSkin.MountsJournal = function(self) -- v 10.1.12/3.4.34
 			local psl = fObj.petSelectionList
 			self:removeInset(psl.controlPanel)
 			self:skinObject("editbox", {obj=psl.searchBox, si=true})
-			if not aObj.isClsc then
+			if self.isRtl then
 				self:removeInset(psl.filtersPanel)
 			end
 			self:removeInset(psl.controlButtons)
 			self:removeInset(psl.petListFrame)
-			if not self.isClsc then
+			if self.isRtl then
 				self:skinObject("scrollbar", {obj=psl.petListFrame.scrollBar})
 				local function skinPet(...)
 					local _, element, new
@@ -120,23 +126,40 @@ aObj.addonsToSkin.MountsJournal = function(self) -- v 10.1.12/3.4.34
 		end)
 		self:removeInset(this.worldMap)
 		self:skinObject("dropdown", {obj=this.worldMap.navigation, x1=1, y1=2, x2=-1, y2=-2})
-		self:removeInset(this.mapSettings)
-		self:removeInset(this.mapSettings.mapControl)
-		self:skinObject("editbox", {obj=this.mapSettings.existingLists.searchBox, si=true})
-		self:skinObject("scrollbar", {obj=this.mapSettings.existingLists.scrollFrame.ScrollBar})
-		self:skinObject("frame", {obj=this.mapSettings.existingLists, kfs=true, x1=-1, y2=self.isClsc and -1 or -2})
-		if self.isClsc then
-			self:skinObject("editbox", {obj=this.mountsWeight.edit})
-			self:skinObject("slider", {obj=this.mountsWeight.slider})
-		end
+		self:SecureHookScript(this.mapSettings, "OnShow", function(fObj)
+			self:removeInset(fObj)
+			self:removeInset(fObj.mapControl)
+			self:skinObject("editbox", {obj=fObj.existingLists.searchBox, si=true})
+			self:skinObject("scrollbar", {obj=fObj.existingLists.scrollBar})
+			self:skinObject("frame", {obj=fObj.existingLists, kfs=true, x1=-1, y2=self.isClsc and -1 or -2})
+
+			self:Unhook(fObj, "OnShow")
+		end)
+		-- if self.isClsc then
+		-- 	self:skinObject("editbox", {obj=this.mountsWeight.edit})
+		-- 	self:skinObject("slider", {obj=this.mountsWeight.slider})
+		-- end
+		self:skinObject("slider", {obj=this.percentSlider.slider})
+		self:SecureHookScript(this.calendarFrame, "OnShow", function(fObj)
+			fObj.monthBackground:SetTexture(nil)
+			fObj.yearBackground:SetTexture(nil)
+			if self.modBtnBs then
+				self:addButtonBorder{obj=fObj.prevMonthButton, ofs=-2, y1=-3, x2=-3, clr="gold"}
+				self:addButtonBorder{obj=fObj.nextMonthButton, ofs=-2, y1=-3, x2=-3, clr="gold"}
+
+			end
+			self:Unhook(fObj, "OnShow")
+		end)
 		self:skinObject("frame", {obj=this, kfs=true, cb=true, x2=3, y2=-1})
 		if self.modBtns then
 			self:skinStdButton{obj=this.summonButton}
 			self:skinStdButton{obj=this.btnConfig}
+			self:skinStdButton{obj=this.mountSpecial}
 			self:skinStdButton{obj=this.profilesMenu, clr="grey"}
 			self:skinStdButton{obj=mjFrame.filtersButton, clr="grey"}
 			self:skinStdButton{obj=this.mapSettings.dnr, clr="grey"}
 			self:skinStdButton{obj=this.mapSettings.CurrentMap}
+			self:skinStdButton{obj=this.mapSettings.listFromMap, clr="grey"}
 			-- TODO: skin frame.mapSettings.existingLists.lists (.toggle checkbutton)
 			local function skinFilterBtn(btn)
 				aObj:skinObject("frame", {obj=btn, kfs=true})
@@ -156,7 +179,7 @@ aObj.addonsToSkin.MountsJournal = function(self) -- v 10.1.12/3.4.34
 		end
 		if self.modBtnBs then
 			self:addButtonBorder{obj=this.navBarBtn, clr="grey", ofs=0, x1=3, x2=-3} -- map / model toggle
-			if not self.isClsc then
+			if self.isRtl then
 				self:addButtonBorder{obj=this.mountDisplay.info.mountDescriptionToggle, ofs=0}
 				self:addButtonBorder{obj=this.slotButton, relTo=this.slotButton.ItemIcon, reParent={this.slotButton.SlotBorder, this.slotButton.SlotBorderOpen}, clr="grey", ca=0.85}
 			end
@@ -169,8 +192,9 @@ aObj.addonsToSkin.MountsJournal = function(self) -- v 10.1.12/3.4.34
 			self:addButtonBorder{obj=this.mapSettings.existingListsToggle, ofs=0}
 		end
 		if self.modChkBtns then
-			if not self.isClsc then
+			if self.isRtl then
 				self:skinCheckButton{obj=mjFrame.useMountsJournalButton}
+				self:skinCheckButton{obj=this.mapSettings.Fly}
 				self:skinCheckButton{obj=this.mapSettings.HerbGathering}
 			end
 			self:skinCheckButton{obj=this.mapSettings.Flags}
@@ -200,36 +224,34 @@ aObj.addonsToSkin.MountsJournal = function(self) -- v 10.1.12/3.4.34
 			if panel:GetName() == "MountsJournalConfig" then
 				local leftFrame = self:getChild(panel, 1)
 				local rightFrame = self:getChild(panel, 2)
-				self:skinObject("dropdown", {obj=panel.modifierCombobox, x1=1, y1=2, x2=-1, y2=0})
 				self:skinObject("frame", {obj=leftFrame, kfs=true, fb=true})
 				local rightPanelScroll = self:getChild(rightFrame, 1)
 				self:skinObject("scrollbar", {obj=rightPanelScroll.ScrollBar})
-				self:skinObject("dropdown", {obj=panel.repairMountsCombobox, x1=1, y1=2, x2=-1, y2=0})
-				-- TODO: change colour of Combobox when disabled
 				self:skinObject("frame", {obj=rightFrame, kfs=true, fb=true})
 				if self.modBtns then
 					self:skinStdButton{obj=panel.createMacroBtn}
-					self:skinStdButton{obj=panel.bindMount, seca=true}
+					self:skinStdButton{obj=panel.bindMount}
 					self:skinStdButton{obj=panel.createSecondMacroBtn}
-					self:skinStdButton{obj=panel.bindSecondMount, seca=true}
-					if not self.isClsc then
+					self:skinStdButton{obj=panel.bindSecondMount}
+					if self.isRtl then
+						self:skinStdButton{obj=panel.createThirdMacroBtn}
+						self:skinStdButton{obj=panel.bindThirdMount}
 						self:skinStdButton{obj=panel.resetHelp, schk=true}
 					end
 					self:skinStdButton{obj=panel.applyBtn, schk=true}
 					self:skinStdButton{obj=panel.cancelBtn, schk=true}
 				end
 				if self.modChkBtns then
-					if not self.isClsc then
-						self:skinCheckButton{obj=panel.waterJump}
+					if self.isRtl then
 						self:skinCheckButton{obj=panel.useHerbMounts}
 						self:skinCheckButton{obj=panel.herbMountsOnZones}
 						self:skinCheckButton{obj=panel.useUnderlightAngler}
 						self:skinCheckButton{obj=panel.autoUseUnderlightAngler}
-						self:skinCheckButton{obj=panel.showWowheadLink}
 					else
 						self:skinCheckButton{obj=panel.showMinimapButton}
 						self:skinCheckButton{obj=panel.lockMinimapButton}
 					end
+					self:skinCheckButton{obj=panel.waterJump}
 					self:skinCheckButton{obj=panel.useRepairMounts}
 					self:skinCheckButton{obj=panel.repairFlyable}
 					self:skinCheckButton{obj=panel.useMagicBroom}
@@ -240,6 +262,7 @@ aObj.addonsToSkin.MountsJournal = function(self) -- v 10.1.12/3.4.34
 					self:skinCheckButton{obj=panel.copyMountTarget}
 					self:skinCheckButton{obj=panel.arrowButtons}
 					self:skinCheckButton{obj=panel.openLinks}
+					self:skinCheckButton{obj=panel.showWowheadLink}
 				end
 			elseif panel:GetName() == "MountsJournalConfigClasses" then
 				local leftFrame = self:getChild(panel, 1)
@@ -250,14 +273,14 @@ aObj.addonsToSkin.MountsJournal = function(self) -- v 10.1.12/3.4.34
 				self:skinObject("frame", {obj=panel.moveFallMF.background, kfs=true, fb=true})
 				self:skinObject("frame", {obj=panel.combatMF.background, kfs=true, fb=true})
 				self:skinObject("frame", {obj=panel.rightPanel, kfs=true, fb=true})
-				if not self.isClsc then
+				if self.isRtl then
 					for frame in panel.sliderPool:EnumerateActive() do
 						self:skinObject("editbox", {obj=frame.edit})
 						self:skinObject("slider", {obj=frame.slider})
 					end
 				end
 				self:SecureHook(panel, "showClassSettings", function(this, _)
-					if not self.isClsc then
+					if self.isRtl then
 						for frame in this.sliderPool:EnumerateActive() do
 							self:skinObject("editbox", {obj=frame.edit})
 							self:skinObject("slider", {obj=frame.slider})

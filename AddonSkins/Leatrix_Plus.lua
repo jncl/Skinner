@@ -2,7 +2,7 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("Leatrix_Plus") then return end
 local _G = _G
 
-aObj.addonsToSkin.Leatrix_Plus = function(self) -- v 10.2.04/1.15.19/3.0.167
+aObj.addonsToSkin.Leatrix_Plus = function(self) -- v 10.2.26/1.15.30/4.0.05
 
 	local lpPanels = {
 		-- All versions
@@ -15,6 +15,7 @@ aObj.addonsToSkin.Leatrix_Plus = function(self) -- v 10.2.04/1.15.19/3.0.167
 		"ClassFrame",
 		"QuestTextPanel",
 		"MailTextPanel",
+		"MuteCustomPanel",
 		"SideMinimap",
 		"ExcludedButtonsPanel",
 		"ChatFilterPanel",
@@ -22,33 +23,39 @@ aObj.addonsToSkin.Leatrix_Plus = function(self) -- v 10.2.04/1.15.19/3.0.167
 		"DressupPanel",
 		"ReleasePanel",
 		"weatherPanel",
-		"BuffPanel",
-		"SideFrames",
 		"CooldownPanel",
 		"SideTip",
 		"InvPanel",
-		-- Classic/ClassicBCC
+		-- ClassicERA only
+		"FlightPanel",
+		-- Classic only
+		"VehiclePanel",
+		"FocusPanel",
+		-- ClassicERA/Classic only
 		"BookTextPanel",
+		"DurabilityPanel",
+		"TimerPanel",
+		"TrainerPanel",
 		"EnhanceQuestPanel",
 		"DismountFrame",
+		"BuffPanel",
+		"SideFrames",
 		"WidgetPanel",
 		"SideViewport",
-		-- ClassicBCC/Retail
-		"FocusPanel",
-		-- Retail
-		"MovieSkipPanel",
+		-- Retail only
+		"MountPanel",
+		"FasterLootPanel",
+		"ChatFontSizePanel",
 		"transPanel",
-		"WidgetPowerPanel",
 		"WidgetTopPanel",
 		"ControlPanel",
-		"PowerPanel",
 		"HideChatButtonsPanel",
 		"bordersPanel",
 	}
 
 	self:SecureHookScript(_G.LeaPlusGlobalPanel, "OnShow", function(this)
 		local function skinKids(frame)
-			for _, child in ipairs{frame:GetChildren()} do
+			for _, child in _G.ipairs{frame:GetChildren()} do
 				if child:IsObjectType("Slider") then
 					aObj:skinObject("slider", {obj=child})
 				elseif child:IsObjectType("ScrollFrame") then
@@ -78,6 +85,11 @@ aObj.addonsToSkin.Leatrix_Plus = function(self) -- v 10.2.04/1.15.19/3.0.167
 					dd.Button = aObj:getChild(dd, 1)
 					aObj:skinObject("dropdown", {obj=dd})
 					aObj:skinObject("frame", {obj=aObj:getChild(child, 2), kfs=true, ofs=0}) -- dropdown list
+				elseif child:IsObjectType("Frame")
+				and child.scroll -- MuteCustomSounds
+				then
+					aObj:skinObject("frame", {obj=child, rb=true, fb=true, ofs=0})
+					skinKids(child)
 				end
 			end
 		end
@@ -98,6 +110,12 @@ aObj.addonsToSkin.Leatrix_Plus = function(self) -- v 10.2.04/1.15.19/3.0.167
 			sideF = _G["LeaPlusGlobalPanel_" .. frameRef]
 			if sideF then
 				skinKids(sideF)
+				-- if scrolling
+				if sideF.backFrame then
+					self:removeBackdrop(sideF.backFrame)
+					aObj:skinObject("scrollbar", {obj=sideF.scrollFrame.ScrollBar})
+					skinKids(sideF.scrollChild)
+				end
 				sideF.t:SetTexture(nil)
 				self:skinObject("frame", {obj=sideF, kfs=true, ofs=-1})
 				if self.modBtns then

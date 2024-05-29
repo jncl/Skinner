@@ -2,11 +2,11 @@ local _, aObj = ...
 local _G = _G
 -- This is a Library
 
-aObj.libsToSkin["LibSFDropDown-1.4"] = function(self) -- v LibSFDropDown-1.4, 7
+aObj.libsToSkin["LibSFDropDown-1.5"] = function(self) -- v LibSFDropDown-1.5, 5
 	if self.initialized.LibSFDropDown then return end
 	self.initialized.LibSFDropDown = true
 
-	local lSFdd = _G.LibStub:GetLibrary("LibSFDropDown-1.4", true)
+	local lSFdd = _G.LibStub:GetLibrary("LibSFDropDown-1.5", true)
 
 	if lSFdd then
 		for _, menu in lSFdd:IterateMenus() do
@@ -15,7 +15,7 @@ aObj.libsToSkin["LibSFDropDown-1.4"] = function(self) -- v LibSFDropDown-1.4, 7
 				self:skinObject("frame", {obj=style, kfs=true, rns=true})
 			end
 		end
-		for name, func in _G.pairs(lSFdd._v.menuStyles) do
+		for name, _ in _G.pairs(lSFdd._v.menuStyles) do
 			-- aObj:Debug("menuStyles: [%s, %s]", name, func)
 			lSFdd._v.menuStyles[name] = function(parent)
 				-- aObj:Debug("menuStyles style: [%s, %s]", parent)
@@ -37,11 +37,23 @@ aObj.libsToSkin["LibSFDropDown-1.4"] = function(self) -- v LibSFDropDown-1.4, 7
 			_G.rawset(tab, key, frame)
 			skinSearchFrame(frame)
 		end})
-		self:RawHook(lSFdd, "CreateButtonOriginal", function(this, parent, width)
-			local btn = self.hooks[this].CreateButtonOriginal(this, parent, width)
-			self:skinObject("dropdown", {obj=btn, x1=1, y1=2, x2=-1, y2=0})
+
+		local function skinDD(btn)
+			aObj:skinObject("dropdown", {obj=btn, initState=not btn.Button:IsEnabled() ,x1=1, y1=2, x2=-1, y2=0})
+			aObj:SecureHook(btn.Button, "SetEnabled", function(this, enabled)
+				aObj:clrBBC(this:GetParent().sf, not enabled and "disabled")
+				aObj:clrBtnBdr(this)
+			end)
+		end
+		for _, btn in lSFdd:IterateCreatedButtons() do
+			skinDD(btn)
+		end
+		self:RawHook(lSFdd, "CreateButton", function(this, ...)
+			local btn = self.hooks[this].CreateButton(this, ...)
+			skinDD(btn)
 			return btn
 		end, true)
+
 		if self.modBtns then
 			local function skinStretchBtn(btn)
 				aObj:skinStdButton{obj=btn, clr="grey"}
@@ -49,8 +61,8 @@ aObj.libsToSkin["LibSFDropDown-1.4"] = function(self) -- v LibSFDropDown-1.4, 7
 			for _, btn in lSFdd:IterateCreatedStretchButtons() do
 				skinStretchBtn(btn)
 			end
-			self:RawHook(lSFdd, "CreateStretchButtonOriginal", function(this, ...)
-				local btn = self.hooks[this].CreateStretchButtonOriginal(this, ...)
+			self:RawHook(lSFdd, "CreateStretchButton", function(this, ...)
+				local btn = self.hooks[this].CreateStretchButton(this, ...)
 				skinStretchBtn(btn)
 				return btn
 			end, true)

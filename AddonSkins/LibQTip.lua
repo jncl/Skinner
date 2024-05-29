@@ -1,11 +1,11 @@
 local _, aObj = ...
--- This is a Library
 local _G = _G
+-- This is a Library
 
-aObj.ignoreLQTT = {}
-local function skinTT(key, tTip)
+aObj.ignoreQT = {}
+local function skinQT(key, tTip)
 	-- ignore tooltips if required
-	if not aObj.ignoreLQTT[key] then
+	if not aObj.ignoreQT[key] then
 		aObj:skinObject("tooltip", {obj=tTip})
 		_G.C_Timer.After(aObj.ttDelay, function() -- slight delay to allow for the tooltip to be populated
 			aObj:applyTooltipGradient(tTip.sf)
@@ -22,35 +22,31 @@ local function skinTT(key, tTip)
 		end)
 	end
 end
-local function hookFuncs(lib)
+local function skinAndHook(lib)
+	for key, tTip in lib:IterateTooltips() do
+		skinQT(key, tTip)
+	end
 	aObj:RawHook(lib, "Acquire", function(this, key, ...)
 		local tTip = aObj.hooks[this].Acquire(this, key, ...)
-		skinTT(key, tTip)
+		skinQT(key, tTip)
 		return tTip
 	end, true)
-	for key, tTip in lib:IterateTooltips() do
-		skinTT(key, tTip)
-	end
 end
 
-aObj.libsToSkin["LibQTip-1.0"] = function(self) -- v LibQTip-1.0, 44
-	if not self.db.profile.Tooltips.skin or self.initialized.LibQTip then return end
-	self.initialized.LibQTip = true
+local libsToSkin = {
+	"LibQTip-1.0",
+	"LibQTip-1.0RS",
+}
 
-	local lqt = _G.LibStub:GetLibrary("LibQTip-1.0", true)
-	if lqt then
-		hookFuncs(lqt)
+do
+	for _, lib in _G.pairs(libsToSkin) do
+		aObj.libsToSkin[lib] = function(self)
+			if not self.prdb.Tooltips.skin or self.initialized[lib] then return end
+			self.initialized[lib] = true
+			local lQT = _G.LibStub:GetLibrary(lib, true)
+			if lQT then
+				skinAndHook(lQT)
+			end
+		end
 	end
-
-end
-
-aObj.libsToSkin["LibQTip-1.0RS"] = function(self) -- v LibQTip-1.0RS, 44
-	if not self.db.profile.Tooltips.skin or self.initialized.LibQTipRS then return end
-	self.initialized.LibQTipRS = true
-
-	local lqt = _G.LibStub:GetLibrary("LibQTip-1.0RS", true)
-	if lqt then
-		hookFuncs(lqt)
-	end
-
 end

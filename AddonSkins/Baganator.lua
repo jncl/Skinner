@@ -1,9 +1,9 @@
+-- luacheck: ignore 631 (line is too long)
 local _, aObj = ...
 if not aObj:isAddonEnabled("Baganator") then return end
 local _G = _G
--- luacheck: ignore 631 (line is too long)
 
-aObj.addonsToSkin.Baganator = function(self) -- v 253
+aObj.addonsToSkin.Baganator = function(self) -- v 273
 
 	local skinBtns, skinBags = _G.nop, _G.nop
 	if self.modBtnBs then
@@ -31,15 +31,15 @@ aObj.addonsToSkin.Baganator = function(self) -- v 253
 		end
 	end
 
-	local function skinFrame(frame)
+	local function skinFrame(frame, _)
 		frame:DisableDrawLayer("BACKGROUND")
 		frame:DisableDrawLayer("BORDER")
 		frame:DisableDrawLayer("OVERLAY")
 		if not aObj.isRtl then
 			frame.TitleText:SetDrawLayer("ARTWORK")
 		end
-		if frame.SearchBox then
-			aObj:skinObject("editbox", {obj=frame.SearchBox, si=true})
+		if frame.SearchWidget.SearchBox then
+			aObj:skinObject("editbox", {obj=frame.SearchWidget.SearchBox, si=true})
 		end
 		if frame.ScrollBar then
 			self:skinObject("scrollbar", {obj=frame.ScrollBar})
@@ -48,23 +48,26 @@ aObj.addonsToSkin.Baganator = function(self) -- v 253
 	end
 	local function skinFrameBtns(frame, type)
 		if aObj.modBtns then
+			aObj:skinStdButton{obj=frame.SearchWidget.GlobalSearchButton}
 			for _, array in _G.pairs {"FixedButtons", "AllFixedButtons", "TopButtons", "LiveButtons"} do
-				if frame[array] then
-					for _, btn in _G.pairs(frame[array]) do
+				if frame[array] or frame.Character and frame.Character[array] then
+					for _, btn in _G.pairs(frame[array] or frame.Character and frame.Character[array]) do
 						aObj:skinStdButton{obj=btn}
 					end
 				end
 			end
 		end
 		if aObj.modBtnBs then
-			local method = type == "guild" and "ShowGuild" or "ShowCharacter"
-			for _, layout in _G.pairs(frame.Layouts) do
-				aObj:SecureHook(layout, method, function(fObj)
+			type = type or "Bag"
+			frame = frame.Character or frame
+			local method = type == "Guild" and "ShowGuild" or "ShowCharacter"
+			for _, layout in _G.pairs{"Live", "Cached"} do
+				aObj:SecureHook(frame[type .. layout], method, function(fObj)
 					skinBtns(fObj)
 				end)
 			end
 		end
-		if type ~= "guild" then
+		if type ~= "Guild" then
 			aObj:SecureHook(frame, "UpdateForCharacter", function(fObj, _)
 				for _, bag in _G.ipairs(fObj.CollapsingBags or fObj.CollapsingBankBags) do
 					bag.divider:DisableDrawLayer("BACKGROUND")
@@ -72,7 +75,7 @@ aObj.addonsToSkin.Baganator = function(self) -- v 253
 				if aObj.modBtnBs then
 					skinBags(fObj)
 				end
-				for _, array in _G.pairs{fObj.liveBagSlots or fObj.liveBankBagSlots, fObj.cachedBagSlots or fObj.cachedBankBagSlots} do
+				for _, array in _G.pairs{fObj.liveBagSlots, fObj.cachedBagSlots} do
 					for _, btn in _G.ipairs(array) do
 						aObj:addButtonBorder{obj=btn, ibt=true}
 						aObj:clrButtonFromBorder(btn)
@@ -85,7 +88,7 @@ aObj.addonsToSkin.Baganator = function(self) -- v 253
 		end
 	end
 
-	self:SecureHookScript(_G.Baganator_BackpackViewFrame, "OnShow", function(this)
+	self:SecureHookScript(_G.Baganator_SingleViewBackpackViewFrame, "OnShow", function(this)
 		skinFrame(this)
 		skinFrameBtns(this)
 		if this.Tabs then
@@ -95,7 +98,6 @@ aObj.addonsToSkin.Baganator = function(self) -- v 253
 			self:skinObject("tabs", {obj=fObj, tabs=fObj.Tabs, lod=self.isTT and true})
 		end)
 		if self.modBtns then
-			self:skinStdButton{obj=this.GlobalSearchButton}
 			skinBags(this)
 		end
 
@@ -108,12 +110,10 @@ aObj.addonsToSkin.Baganator = function(self) -- v 253
 		self:Unhook(fObj, "OnShow")
 	end)
 
-	self:SecureHookScript(_G.Baganator_BankViewFrame, "OnShow", function(this)
-		skinFrame(this)
-		skinFrameBtns(this)
+	self:SecureHookScript(_G.Baganator_SingleViewBankViewFrame, "OnShow", function(this)
+		skinFrame(this, "Bank")
+		skinFrameBtns(this, "Bank")
 		if self.modBtns then
-			self:skinStdButton{obj=this.DepositIntoReagentsBankButton}
-			self:skinStdButton{obj=this.BuyReagentBankButton}
 			skinBags(this)
 		end
 
@@ -123,9 +123,9 @@ aObj.addonsToSkin.Baganator = function(self) -- v 253
     if not _G.Baganator.Constants.IsEra
 	and _G.Baganator.Config.Get(_G.Baganator.Config.Options.ENABLE_GUILD_VIEW)
 	then
-		self:SecureHookScript(_G.Baganator_GuildViewFrame, "OnShow", function(this)
-			skinFrame(this, "guild")
-			skinFrameBtns(this, "guild")
+		self:SecureHookScript(_G.Baganator_SingleViewGuildViewFrame, "OnShow", function(this)
+			skinFrame(this, "Guild")
+			skinFrameBtns(this, "Guild")
 			if this.Tabs then
 				for _, tab in _G.pairs(this.Tabs) do
 					tab:DisableDrawLayer("BACKGROUND")
@@ -200,4 +200,48 @@ aObj.addonsToSkin.Baganator = function(self) -- v 253
 		_G.Baganator.CallbackRegistry:UnregisterCallback("ShowCustomise", aObj)
 	end)
 
+	self.RegisterCallback("Baganator", "IOFPanel_Before_Skinning", function(_, panel, category)
+		if category.name ~= "Baganator"
+		or self.iofSkinnedPanels[panel]
+		then
+			return
+		end
+
+		if self.modBtns then
+			self:skinStdButton{obj=self:getChild(panel, 1)}
+		end
+
+		self.UnregisterCallback("Baganator", "IOFPanel_Before_Skinning")
+	end)
+
 end
+
+aObj.addonsToSkin.Syndicator = function(self) -- v 42
+
+	self.RegisterCallback("Syndicator", "IOFPanel_Before_Skinning", function(_, panel, category)
+		if category.name ~= "Syndicator"
+		or self.iofSkinnedPanels[panel]
+		then
+			return
+		end
+
+		local function skinKids(frame)
+			for _, child in _G.ipairs_reverse{frame:GetChildren()} do
+				if child:IsObjectType("CheckButton")
+				and self.modChkBtns
+				then
+					self:skinCheckButton{obj=child}
+				elseif child:IsObjectType("Slider") then
+					self:skinObject("slider", {obj=child})
+				elseif child:IsObjectType("Frame") then
+					skinKids(child)
+				end
+			end
+		end
+		skinKids(panel)
+
+		self.UnregisterCallback("Syndicator", "IOFPanel_Before_Skinning")
+	end)
+
+end
+

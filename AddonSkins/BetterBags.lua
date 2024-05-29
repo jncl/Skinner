@@ -2,14 +2,13 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("BetterBags") then return end
 local _G = _G
 
-aObj.addonsToSkin.BetterBags = function(self) -- v 0.1.7
+aObj.addonsToSkin.BetterBags = function(self) -- v 0.1.48
 
 	local bBag = _G.LibStub("AceAddon-3.0"):GetAddon("BetterBags", true)
 	if not bBag then return end
 
-	local const, skinBtn, skinCVBtns = _G.nop, _G.nop, _G.nop
+	local skinBtn = _G.nop
 	if self.modBtnBs then
-		const = bBag:GetModule("Constants", true)
 		function skinBtn(btn, empty)
 			aObj:addButtonBorder{obj=btn, ibt=true}
 			if aObj.isRtl then
@@ -22,7 +21,7 @@ aObj.addonsToSkin.BetterBags = function(self) -- v 0.1.7
 			aObj:clrButtonFromBorder(btn)
 		end
 		local cV
-		function skinCVBtns(bagType)
+		local function skinCVBtns(bagType)
 			cV = bBag.Bags[bagType].currentView
 			local data
 			for _, item in _G.pairs(cV.itemsByBagAndSlot) do
@@ -52,9 +51,6 @@ aObj.addonsToSkin.BetterBags = function(self) -- v 0.1.7
 				aObj:getRegion(this.PortraitContainer, 1):SetAlpha(1) -- portrait texture
 			else
 				aObj:getRegion(this, 18):SetAlpha(1) -- menu button texture
-			end
-			if aObj.modBtnBs then
-				skinCVBtns(bagObj.kind == const.BAG_KIND.BACKPACK and "Backpack" or "Bank")
 			end
 
 			aObj:Unhook(this, "OnShow")
