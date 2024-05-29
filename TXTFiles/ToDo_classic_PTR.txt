@@ -8,5 +8,6 @@ ToDo_classic_PTR
 
 	Classic_PTR
 		- Added
+√			- PVPTeamManagementFrame
 		- Updated
 		- Deleted

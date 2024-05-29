@@ -19,6 +19,10 @@ ToDos
 
 ≈		O	Refactor NewSkinFuncs in AddOn skins
 
-#69	√	I	Skinner not loading in Classic CATA
+#71	√	N	MountsJournal
 
-#70	√	I	New Error with 10.2.7
+#72	√	N	BetterBags
+
+#73	√	I/C	SpellBookFrame
+
+#74	≈	I/C	LibQTip
