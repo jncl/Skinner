@@ -822,7 +822,7 @@ if not aObj.isClscERA then
 			local function skinSlot(btn)
 				btn:DisableDrawLayer("BACKGROUND")
 				if aObj.modBtnBs then
-					aObj:addButtonBorder{obj=btn, ibt=true, reParent={btn.ignoreTexture}, clr="grey"}
+					aObj:addButtonBorder{obj=btn, fType=ftype, ibt=true, reParent={btn.ignoreTexture}--[[, clr="grey"--]]}
 					-- force quality border update
 					_G.PaperDollItemSlotButton_Update(btn)
 					if self.isRtl then
@@ -831,6 +831,12 @@ if not aObj.isClscERA then
 						btn.RankFrame.Texture:SetSize(20, 20)
 						btn.RankFrame.Label:ClearAllPoints()
 						btn.RankFrame.Label:SetPoint("CENTER", btn.RankFrame.Texture)
+						if btn.SocketDisplay then -- MoP Remix
+							for _, socket in _G.ipairs(btn.SocketDisplay.Slots) do
+								socket.Slot:SetTexture(nil)
+								aObj:addButtonBorder{obj=socket, fType=ftype, es=8, ofs=0, y2=1, clr="grey"}
+							end
+						end
 					end
 				end
 			end
