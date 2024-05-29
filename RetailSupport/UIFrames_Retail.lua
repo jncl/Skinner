@@ -3227,6 +3227,38 @@ aObj.SetupRetail_UIFrames = function()
 
 	end
 
+	aObj.blizzFrames[ftype].ScenarioFinderFrame = function(self)
+		if not self.prdb.PVEFrame or self.initialized.ScenarioFinderFrame then return end
+		self.initialized.ScenarioFinderFrame = true
+
+		self:SecureHookScript(_G.ScenarioFinderFrame, "OnShow", function(this)
+			self:removeInset(this.Inset)
+			this.Queue.Bg:SetAlpha(0)
+			self:skinObject("dropdown", {obj=this.Queue.Dropdown, fType=ftype})
+			self:skinObject("scrollbar", {obj=this.Queue.Random.ScrollFrame.ScrollBar, fType=ftype})
+			self:skinObject("slider", {obj=this.Queue.Specific.ScrollFrame.ScrollBar, fType=ftype, rpTex={"background"}})
+			-- .Queue.PartyBackfill
+			-- .Queue.CooldownFrame
+			if self.modBtns then
+				self:skinStdButton{obj=_G.ScenarioQueueFrameFindGroupButton, fType=ftype}
+			end
+			self:SecureHook("ScenarioQueueFrameSpecific_Update", function()
+				for i = 1, _G.NUM_SCENARIO_CHOICE_BUTTONS do
+					if self.modBtns then
+						self:skinExpandButton{obj=this.Queue.Specific["Button" .. i].expandOrCollapseButton, sap=true}
+					end
+					if self.modChkBtns then
+						self:skinCheckButton{obj=this.Queue.Specific["Button" .. i].enableButton}
+					end
+				end
+			end)
+
+			self:Unhook(this, "OnShow")
+		end)
+
+	end
+
+
 	aObj.blizzFrames[ftype].RaidFrame = function(self)
 		if not self.prdb.RaidFrame or self.initialized.RaidFrame then return end
 		self.initialized.RaidFrame = true
