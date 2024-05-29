@@ -1320,7 +1320,7 @@ aObj.blizzLoDFrames[ftype].GuildBankUI = function(self)
 				for _, col in _G.pairs(fObj.Columns) do
 					for _, btn in _G.pairs(col.Buttons) do
 						if not btn.sbb then
-							self:addButtonBorder{obj=btn, ibt=true, clr="grey", ca=0.85}
+							self:addButtonBorder{obj=btn, fType=ftype, ibt=true}
 						else
 							self:clrButtonFromBorder(btn)
 						end
