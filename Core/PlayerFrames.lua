@@ -2766,17 +2766,18 @@ if not aObj.isClscERA then
 		if not self.prdb.EquipmentFlyout or self.initialized.EquipmentFlyout then return end
 		self.initialized.EquipmentFlyout = true
 
-		-- Used by RuneForgeUI/PaperDollFrameItems amongst others
-		self:SecureHook("EquipmentFlyout_Show", function(_)
+		-- Used by RuneForgeUI/ItemUpgrades/EquipmentFlyoutuipmentManager
+		self:SecureHook("EquipmentFlyout_UpdateItems", function(_)
 			for i = 1, _G.EquipmentFlyoutFrame.buttonFrame.numBGs do
 				_G.EquipmentFlyoutFrame.buttonFrame["bg" .. i]:SetAlpha(0)
 			end
 			if self.modBtnBs then
-				for _, btn in _G.pairs(_G.EquipmentFlyoutFrame.buttons) do
-					self:addButtonBorder{obj=btn, ibt=true, reParent={btn.UpgradeIcon}}
+				for _, btn in _G.ipairs(_G.EquipmentFlyoutFrame.buttons) do
+					self:addButtonBorder{obj=btn, fType=ftype, ibt=true, reParent={btn.UpgradeIcon}}
+					if self.isClsc then
 					if btn.location >= _G.EQUIPMENTFLYOUT_FIRST_SPECIAL_LOCATION then
 						self:clrBtnBdr(btn, "grey")
-						btn.sbb.SetBackdropBorderColor = _G.nop
+						end
 					end
 				end
 			end
