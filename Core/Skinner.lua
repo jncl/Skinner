@@ -287,24 +287,48 @@ function aObj:OnEnable()
 	end)
 
 	-- add support for UIButton skinning
-	local btnModDB = self.db:GetNamespace("UIButtons", true)
 	self.modUIBtns = self:GetModule("UIButtons", true)
 	if self.modUIBtns:IsEnabled() then
+		local btnModDB = self.db:GetNamespace("UIButtons", true)
 		if btnModDB.profile.UIButtons then
 			self.modBtns = true
 		end
 		if btnModDB.profile.ButtonBorders then
 			self.modBtnBs = true
-			-- hook this to colour container item borders (inc. Bags, Bank, GuildBank, ReagentBank)
+			-- hook these to colour container item borders (inc. Bags, Bank, GuildBank, ReagentBank, Professions etc)
 			if self.isRtl then
-				self:SecureHook("SetItemButtonBorderVertexColor", function(button, r, g, b)
-					-- aObj:Debug("SetItemButtonBorderVertexColor: [%s, %s, %s, %s, %s]", button, r, g, b)
-					if button.sbb then
+				local function setItemButtonQuality(button, quality, itemIDOrLink)
+					-- aObj:Debug("SetItemButtonQuality: [%s, %s, %s, %s, %s]", button, button.IconBorder, button.sbb, quality, itemIDOrLink)
+					-- aObj:Debug("SIBQ: [%s, %s]", button.IconBorder:IsShown(), button.IconOverlay:IsShown())
+					-- show Artifact Relic Item border
+					if itemIDOrLink
+					and _G.IsArtifactRelicItem
+					and _G.IsArtifactRelicItem(itemIDOrLink)
+					then
+						button.IconBorder:SetAlpha(1)
+					else
+						button.IconBorder:SetAlpha(0)
+					end
+					aObj:setBtnClr(button, quality)
+				end
+				self:SecureHook("SetItemButtonQuality", function(button, quality, itemIDOrLink, _, _)
+					setItemButtonQuality(button, quality, itemIDOrLink)
+				end)
+				self:SecureHook(_G.ItemButtonMixin, "SetItemButtonQuality", function(button, quality, itemIDOrLink, _, _)
+					setItemButtonQuality(button, quality, itemIDOrLink)
+				end)
+				self:SecureHook(_G.CircularGiantItemButtonMixin, "SetItemButtonQuality", function(button, quality, _, _, _)
+					setItemButtonQuality(button, quality)
+				end)
+				self:SecureHook(_G.ItemButtonMixin, "SetItemButtonBorderVertexColor", function(button, r, g, b)
+					-- aObj:Debug("IBM SetItemButtonBorderVertexColor: [%s, %s, %s, %s]", btn, r ,g, b)
+					if button.sbb
+					and r
+					then
 						button.sbb:SetBackdropBorderColor(r, g, b)
 					end
 				end)
 				self:SecureHook(_G.ItemButtonMixin, "UpdateCraftedProfessionsQualityShown", function(button)
-					-- aObj:Debug("IBM UpdateCraftedProfessionsQualityShown: [%s, %s]", button, button.ProfessionQualityOverlay)
 					if not button.ProfessionQualityOverlay then
 						return
 					end
@@ -315,19 +339,27 @@ function aObj:OnEnable()
 					end
 				end)
 			else
-				self:SecureHook("SetItemButtonQuality", function(button, quality, itemIDOrLink, _)
-					-- self:Debug("SetItemButtonQuality: [%s, %s, %s, %s, %s, %s]", button, button.IconBorder, button.sbb, quality, itemIDOrLink, suppressOverlays)
-					-- self:Debug("SIBQ: [%s, %s]", button.IconBorder:IsShown(), button.IconOverlay:IsShown())
-					-- show Artifact Relic Item border
-					if itemIDOrLink
-					and (_G.IsArtifactRelicItem and _G.IsArtifactRelicItem(itemIDOrLink))
+				self:SecureHook("SetItemButtonQuality", function(button, quality, _, _)
+					-- aObj:Debug("SetItemButtonQuality: [%s, %s]", button, quality)
+					button.IconBorder:SetAlpha(0)
+					if quality
+					and _G.type(quality) ~= "table" -- N.B. returned from EquipmentFlyout
 					then
-						button.IconBorder:SetAlpha(1)
-					else
-						button.IconBorder:SetAlpha(0)
-					end
-					if not self.isClsc then
 						self:setBtnClr(button, quality)
+					end
+				end)
+				-- table to hold button objects to ignore, e.g. ContainerFrame items
+				self.btnIgnore = {}
+				-- hook this to colour buttons e.g. TradeSkill reagents
+				self:SecureHook("SetItemButtonTextureVertexColor", function(button, r, g, b)
+					-- aObj:Debug("SetItemButtonTextureVertexColor: [%s, %s, %s, %s]", button, r, g, b)
+					if _G.tContains(self.btnIgnore, button) then
+						return
+					end
+					if button.sbb
+					and r
+					then
+						button.sbb:SetBackdropBorderColor(r, g, b)
 					end
 				end)
 			end
