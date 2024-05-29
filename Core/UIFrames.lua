@@ -71,6 +71,7 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 	local dontDebug = {
 		["Achievement"]            = true,
 		["Criteria"]               = true,
+		["GarrisonFollower"]       = true,
 		["GarrisonTalent"]         = true,
 		["Loot"]                   = true,
 		["LootUpgrade"]            = true,
@@ -135,7 +136,7 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 		alertType["StorePurchase"]          = {ofs = -12, ddl = {"background"}}
 	end
 	local function skinAlertFrame(type, frame)
-		aObj:Debug("skinAlertFrame: [%s, %s, %s]", type, frame)
+		-- aObj:Debug("skinAlertFrame: [%s, %s, %s]", type, frame)
 		local tbl = alertType[type]
 		--@debug@
 		if not dontDebug[type] then
