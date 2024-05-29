@@ -1183,7 +1183,7 @@ aObj.SetupClassic_PlayerFrames = function()
 			for _, btn in _G.ipairs{_G.InspectPaperDollItemsFrame:GetChildren()} do
 				btn:DisableDrawLayer("BACKGROUND")
 				if self.modBtnBs then
-					self:addButtonBorder{obj=btn, ibt=true, clr="grey"}
+					self:addButtonBorder{obj=btn, fType=ftype, ibt=true}
 				end
 			end
 			if self.modBtnBs then
