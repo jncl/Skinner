@@ -203,7 +203,7 @@ aObj.blizzFrames[ftype].QuestFrame = function(self)
 			btnName = "QuestProgressItem" .. i
 			_G[btnName .. "NameFrame"]:SetTexture(nil)
 			if self.modBtns then
-				 self:addButtonBorder{obj=_G[btnName], libt=true, clr="grey"}
+				 self:addButtonBorder{obj=_G[btnName], fType=ftype, libt=true--[[, clr="grey"--]]}
 			end
 		end
 		self:keepFontStrings(_G.QuestFrameDetailPanel)
@@ -304,7 +304,7 @@ aObj.blizzFrames[ftype].QuestInfo = function(self)
 		for _, btn in _G.pairs(frame.RewardButtons) do
 			btn.NameFrame:SetTexture(nil)
 			if aObj.modBtnBs then
-				aObj:addButtonBorder{obj=btn, libt=true}
+				aObj:addButtonBorder{obj=btn, fType=ftype, libt=true}
 				aObj:clrButtonFromBorder(btn)
 			end
 		end
@@ -422,7 +422,7 @@ aObj.blizzFrames[ftype].QuestInfo = function(self)
 		for _, type in _G.pairs{"XPFrame", "MoneyFrame"} do
 			this[type].NameFrame:SetTexture(nil)
 			if self.modBtnBs then
-				self:addButtonBorder{obj=this[type], sibt=true, relTo=this[type].Icon, clr="grey"}
+				self:addButtonBorder{obj=this[type], fType=ftype, sibt=true, relTo=this[type].Icon, clr="grey"}
 			end
 		end
 
