@@ -221,13 +221,13 @@ aObj.SetupClassic_NPCFrames = function()
 				end)
 				-- add button borders to bank items
 				for i = 1, _G.NUM_BANKGENERIC_SLOTS do
-					self:addButtonBorder{obj=_G.BankSlotsFrame["Item" .. i], ibt=true}
+					self:addButtonBorder{obj=_G.BankSlotsFrame["Item" .. i], fType=ftype, ibt=true}
 					-- force quality border update
 					_G.BankFrameItemButton_Update(_G.BankSlotsFrame["Item" .. i])
 				end
 				-- add button borders to bag slots
 				for i = 1, _G.NUM_BANKBAGSLOTS do
-					self:addButtonBorder{obj=_G.BankSlotsFrame["Bag" .. i], ibt=true}
+					self:addButtonBorder{obj=_G.BankSlotsFrame["Bag" .. i], fType=ftype, ibt=true}
 				end
 				self:SecureHook("UpdateBagSlotStatus", function()
 					for i = 1, _G.NUM_BANKBAGSLOTS do
