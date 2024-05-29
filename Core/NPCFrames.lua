@@ -436,11 +436,7 @@ aObj.blizzFrames[ftype].Tabard = function(self)
 	self.initialized.Tabard = true
 
 	self:SecureHookScript(_G.TabardFrame, "OnShow", function(this)
-		if self.isClsc then
-			self:removeNineSlice(_G.TabardFrameCostFrame.NineSlice)
-		else
-			self:removeBackdrop(_G.TabardFrameCostFrame)
-		end
+		self:removeNineSlice(_G.TabardFrameCostFrame.NineSlice)
 		self:keepFontStrings(_G.TabardFrameCustomizationFrame)
 		for i = 1, 5 do
 			self:keepFontStrings(_G["TabardFrameCustomization" .. i])
