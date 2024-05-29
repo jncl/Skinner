@@ -472,7 +472,7 @@ aObj.SetupClassic_UIFrames = function()
 				for i = 1, _G.MAX_NUM_ITEMS do
 					_G["QuestLogItem" .. i .. "NameFrame"]:SetTexture(nil)
 					if self.modBtns then
-						 self:addButtonBorder{obj=_G["QuestLogItem" .. i], libt=true}
+						 self:addButtonBorder{obj=_G["QuestLogItem" .. i], fType=ftype, libt=true}
 					end
 				end
 				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=10, y1=-11, x2=-33, y2=48})
