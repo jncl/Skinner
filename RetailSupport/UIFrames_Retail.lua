@@ -2256,9 +2256,9 @@ aObj.SetupRetail_UIFrames = function()
 					for _, bName in _G.pairs(_G.MICRO_BUTTONS) do
 						self:addButtonBorder{obj=_G[bName], es=24, ofs=2, reParent={_G[bName].QuickKeybindHighlightTexture}, clr="grey"}
 					end
-					self:addButtonBorder{obj=_G.MainMenuBarBackpackButton, ibt=true, ofs=3}
+					self:addButtonBorder{obj=_G.MainMenuBarBackpackButton, fType=ftype, ibt=true, ofs=3}
 					for i = 1, _G.NUM_BAG_FRAMES do
-						self:addButtonBorder{obj=_G["CharacterBag" .. i - 1 .. "Slot"], ibt=true, ofs=3}
+						self:addButtonBorder{obj=_G["CharacterBag" .. i - 1 .. "Slot"], fType=ftype, ibt=true, ofs=3}
 					end
 				else
 					skinMultiBarBtns("5")
@@ -2991,6 +2991,7 @@ aObj.SetupRetail_UIFrames = function()
 			this.Background:SetAlpha(0) -- N.B. Texture changed in code
 			this.VerticalSeparator:SetTexture(nil)
 			this.QuestsFrame:DisableDrawLayer("BACKGROUND")
+			self:skinObject("scrollbar", {obj=this.QuestsFrame.ScrollBar, fType=ftype})
 			this.QuestsFrame.Edge:SetTexture(nil)
 			this.QuestsFrame.Contents.Separator:DisableDrawLayer("OVERLAY")
 			this.QuestsFrame.Contents.StoryHeader:DisableDrawLayer("BACKGROUND")
@@ -3193,19 +3194,19 @@ aObj.SetupRetail_UIFrames = function()
 			self:removeInset(_G.RaidFinderFrameRoleInset)
 			self:removeInset(_G.RaidFinderFrameBottomInset)
 			if self.modBtnBs then
-				self:addButtonBorder{obj=_G.RaidFinderQueueFrameScrollFrameChildFrameItem1, libt=true}
-				self:addButtonBorder{obj=_G.RaidFinderQueueFrameScrollFrameChildFrame.MoneyReward, libt=true}
+				self:addButtonBorder{obj=_G.RaidFinderQueueFrameScrollFrameChildFrameItem1, fType=ftype, libt=true}
+				self:addButtonBorder{obj=_G.RaidFinderQueueFrameScrollFrameChildFrame.MoneyReward, fType=ftype, libt=true}
 			end
 			_G.RaidFinderQueueFrameScrollFrameChildFrameItem1NameFrame:SetTexture(nil)
 			if _G.RaidFinderQueueFrameScrollFrameChildFrameItem2 then
 				if self.modBtnBs then
-					self:addButtonBorder{obj=_G.RaidFinderQueueFrameScrollFrameChildFrameItem2, libt=true}
+					self:addButtonBorder{obj=_G.RaidFinderQueueFrameScrollFrameChildFrameItem2, fType=ftype, libt=true}
 				end
 				_G.RaidFinderQueueFrameScrollFrameChildFrameItem2NameFrame:SetTexture(nil)
 			end
 			if _G.RaidFinderQueueFrameScrollFrameChildFrameItem3 then
 				if self.modBtnBs then
-					self:addButtonBorder{obj=_G.RaidFinderQueueFrameScrollFrameChildFrameItem3, libt=true}
+					self:addButtonBorder{obj=_G.RaidFinderQueueFrameScrollFrameChildFrameItem3, fType=ftype, libt=true}
 				end
 				_G.RaidFinderQueueFrameScrollFrameChildFrameItem3NameFrame:SetTexture(nil)
 			end

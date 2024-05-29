@@ -391,13 +391,13 @@ aObj.SetupRetail_NPCFrames = function()
 				local btn
 				for i = 1, _G.NUM_BANKGENERIC_SLOTS do
 					btn = _G.BankSlotsFrame["Item" .. i]
-					self:addButtonBorder{obj=btn, ibt=true}
+					self:addButtonBorder{obj=btn, fType=ftype, ibt=true}
 					-- force quality border update
 					_G.BankFrameItemButton_Update(btn)
 				end
 				-- add button borders to bags
 				for i = 1, _G.NUM_BANKBAGSLOTS do
-					self:addButtonBorder{obj=_G.BankSlotsFrame["Bag" .. i], ibt=true}
+					self:addButtonBorder{obj=_G.BankSlotsFrame["Bag" .. i], fType=ftype, ibt=true}
 				end
 				-- colour button borders
 				_G.UpdateBagSlotStatus()
@@ -416,7 +416,7 @@ aObj.SetupRetail_NPCFrames = function()
 				-- add button borders to reagent bank items
 				self:SecureHookScript(_G.ReagentBankFrame, "OnShow", function(fObj)
 					for i = 1, fObj.size do
-						self:addButtonBorder{obj=fObj["Item" .. i], ibt=true}
+						self:addButtonBorder{obj=fObj["Item" .. i], fType=ftype, ibt=true}
 						-- force quality border update
 						_G.BankFrameItemButton_Update(fObj["Item" .. i])
 					end
@@ -832,6 +832,7 @@ aObj.SetupRetail_NPCFrames = function()
 			end
 			if self.modChkBtns then
 				self:skinCheckButton{obj=this.FooterFrame.TogglePlayerPreview, fType=ftype}
+				self:skinCheckButton{obj=this.FooterFrame.ToggleMountSpecial, fType=ftype}
 				self:skinCheckButton{obj=this.FooterFrame.ToggleHideArmor, fType=ftype}
 			end
 
@@ -1011,6 +1012,11 @@ aObj.SetupRetail_NPCFrames = function()
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true})
 			if self.modBtns then
 				self:skinStdButton{obj=_G.ClassTrainerTrainButton, fType=ftype, sechk=true}
+				if self:isAddOnLoaded("Leatrix_Plus")
+				and _G.LeaPlusDB["ShowTrainAllButton"] == "On"
+				then
+					self:skinStdButton{obj=_G.LeaPlusGlobalTrainAllButton, sechk=true} -- Train All button
+				end
 			end
 			if self.modBtnBs then
 				 self:addButtonBorder{obj=this.skillStepButton, relTo=this.skillStepButton.icon}

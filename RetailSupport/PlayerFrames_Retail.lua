@@ -838,7 +838,9 @@ aObj.SetupRetail_PlayerFrames = function()
 						if btn.ItemSlotBackground then
 							btn.ItemSlotBackground:SetTexture("")
 						end
-						aObj:clrButtonFromBorder(btn)
+						if btn.sbb then
+							aObj:clrButtonFromBorder(btn)
+						end
 					end
 				end)
 				frame:UpdateItems()
@@ -988,17 +990,6 @@ aObj.SetupRetail_PlayerFrames = function()
 						if element.background then
 							element.background:SetAlpha(0)
 							if aObj.modBtnBs then
-								aObj:addButtonBorder{obj=element, relTo=element.gameIcon, ofs=0, clr="grey"}
-								aObj:SecureHook(element.gameIcon, "Show", function(bObj)
-									bObj:GetParent().sbb:Show()
-								end)
-								aObj:SecureHook(element.gameIcon, "Hide", function(bObj)
-									bObj:GetParent().sbb:Hide()
-								end)
-								aObj:SecureHook(element.gameIcon, "SetShown", function(bObj, show)
-									bObj:GetParent().sbb:SetShown(bObj, show)
-								end)
-								element.sbb:SetShown(element.gameIcon:IsShown())
 								aObj:addButtonBorder{obj=element.travelPassButton, schk=true, ofs=0, y1=3, y2=-2}
 								aObj:addButtonBorder{obj=element.summonButton, schk=true}
 							end
@@ -1323,7 +1314,7 @@ aObj.SetupRetail_PlayerFrames = function()
 				btn:DisableDrawLayer("BACKGROUND")
 				if self.modBtnBs then
 					if btn ~= _G.InspectPaperDollItemsFrame.InspectTalents then
-						self:addButtonBorder{obj=btn, ibt=true, clr="grey"}
+						self:addButtonBorder{obj=btn, fType=ftype, ibt=true--[[, clr="grey"--]]}
 					else
 						self:skinStdButton{obj=btn, fType=ftype, sechk=true}
 					end
@@ -1591,7 +1582,7 @@ aObj.SetupRetail_PlayerFrames = function()
 		local skinMinBtn = _G.nop
 		if self.modBtnBs then
 			local module
-			 function skinMinBtn(btn)
+			function skinMinBtn(btn)
 				module = btn:GetParent().module or _G.ObjectiveTrackerFrame
 				btn:SetSize(23, 23)
 				if not btn .sb then
@@ -1804,39 +1795,13 @@ aObj.SetupRetail_PlayerFrames = function()
 
 	end
 
+	local skinReagentBtn, skinReagentBtns = _G.nop, _G.nop
 	local function skinNISpinner(ebObj)
 		ebObj:DisableDrawLayer("BACKGROUND")
 		aObj:skinObject("editbox", {obj=ebObj, fType=ftype, chginset=false, ofs=0, x1=-6})
 		if aObj.modBtnBs then
 			aObj:addButtonBorder{obj=ebObj.IncrementButton, ofs=0, x2=-1, clr="gold", sechk=true}
 			aObj:addButtonBorder{obj=ebObj.DecrementButton, ofs=0, x2=-1, clr="gold", sechk=true}
-		end
-	end
-	local function skinReagentBtn(btn, ignTex)
-		if not aObj.modBtnBs then
-			skinReagentBtn = _G.nop
-			return
-		end
-		ignTex = ignTex or false
-		if btn.CropFrame then
-			btn.CropFrame:SetTexture(nil)
-			-- show Normal/Pushed texture if CropFrame shown
-			if btn.CropFrame:IsShown() then
-				ignTex = true
-			end
-		end
-		if btn.SlotBackground then
-			btn.SlotBackground:SetTexture(nil)
-		end
-		if not btn.sbb then
-			aObj:addButtonBorder{obj=btn, fType=ftype, ibt=true, relTo=btn.Icon, reParent={btn.QualityOverlay}, ignTex=ignTex}
-			if btn:GetParent().Update then
-				aObj:SecureHook(btn:GetParent(), "Update", function(sObj)
-					aObj:clrButtonFromBorder(sObj.Button)
-				end)
-			end
-		else
-			aObj:clrButtonFromBorder(btn)
 		end
 	end
 	local function skinHdrs(frame)
@@ -1851,36 +1816,6 @@ aObj.SetupRetail_PlayerFrames = function()
 		skinReagentBtn(frame.InputSlot, true)
 		frame.OutputSlot.ItemFrame:SetTexture(nil)
 		skinReagentBtn(frame.OutputSlot)
-		aObj:rawHook("OpenProfessionsItemFlyout", function(owner, parent)
-			local flyout = aObj.hooks.OpenProfessionsItemFlyout(owner, parent)
-			aObj:skinObject("frame", {obj=flyout, fType=ftype, kfs=true, rns=true, ofs=0})
-			if aObj.modBtnBs then
-				local function skinElement(...)
-					local _, element, new
-					if _G.select("#", ...) == 2 then
-						element, _ = ...
-					elseif _G.select("#", ...) == 3 then
-						element, _, new = ...
-					else
-						_, element, _, new = ...
-					end
-					if new ~= false then
-						-- TODO: sort out item colour issue
-						if not element.sbb then
-							aObj:addButtonBorder{obj=element, fType=ftype, ibt=true, relTo=element.Icon}
-						else
-							aObj:clrButtonFromBorder(element)
-						end
-					end
-				end
-				_G.ScrollUtil.AddAcquiredFrameCallback(flyout.ScrollBox, skinElement, aObj, true)
-			end
-			if aObj.modChkBtns then
-				aObj:skinCheckButton{obj=flyout.HideUnownedCheckBox, fType=ftype}
-			end
-			aObj:Unhook("OpenProfessionsItemFlyout")
-			return flyout
-		end, true)
 	end
 	local function skinQualityDialog(frame)
 		for _, c in _G.pairs(frame.containers) do
@@ -1897,6 +1832,76 @@ aObj.SetupRetail_PlayerFrames = function()
 		if not self.prdb.Professions or self.initialized.Professions then return end
 		self.initialized.Professions = true
 
+		if aObj.modBtnBs then
+			function skinReagentBtn(btn, ignTex)
+				ignTex = ignTex or false
+				if btn.CropFrame then
+					btn.CropFrame:SetTexture(nil)
+					-- show Normal/Pushed texture if CropFrame shown
+					if btn.CropFrame:IsShown() then
+						ignTex = true
+					end
+				end
+				if btn.SlotBackground then
+					btn.SlotBackground:SetTexture(nil)
+				end
+				if not btn.sbb then
+			aObj:addButtonBorder{obj=btn, fType=ftype, ibt=true, relTo=btn.Icon, reParent={btn.QualityOverlay}, ignTex=ignTex}
+				end
+			end
+			function skinReagentBtns(sfFrame)
+				for slot in sfFrame.reagentSlotPool:EnumerateActive() do
+					skinReagentBtn(slot.Button)
+					if aObj.modChkBtns
+					and slot.Checkbox
+					then
+						aObj:skinCheckButton{obj=slot.Checkbox, fType=ftype}
+					end
+				end
+				if sfFrame.extraSlotFrames then
+					for _, slot in _G.pairs(sfFrame.extraSlotFrames) do
+						if slot.Button
+						and (slot == sfFrame.salvageSlot
+						or slot == sfFrame.enchantSlot)
+						then
+							skinReagentBtn(slot.Button)
+						end
+					end
+				end
+			end
+		end
+
+		self:RawHook("OpenProfessionsItemFlyout", function(owner, parent)
+			local flyout = self.hooks.OpenProfessionsItemFlyout(owner, parent)
+			self:skinObject("frame", {obj=flyout, fType=ftype, kfs=true, rns=true, ofs=0})
+			if self.modBtnBs then
+				local function skinElement(...)
+					local _, element, new
+					if _G.select("#", ...) == 2 then
+						element, _ = ...
+					elseif _G.select("#", ...) == 3 then
+						element, _, new = ...
+					else
+						_, element, _, new = ...
+					end
+					if new ~= false then
+						-- TODO: sort out item colour issue
+						if not element.sbb then
+							self:addButtonBorder{obj=element, fType=ftype, ibt=true, relTo=element.Icon}
+						else
+							self:clrButtonFromBorder(element)
+						end
+					end
+				end
+				_G.ScrollUtil.AddAcquiredFrameCallback(flyout.ScrollBox, skinElement, aObj, true)
+			end
+			if self.modChkBtns then
+				aObj:skinCheckButton{obj=flyout.HideUnownedCheckBox, fType=ftype}
+			end
+			self:Unhook("OpenProfessionsItemFlyout")
+			return flyout
+		end, true)
+
 		local function skinSchematicForm(frame)
 			skinRecraftSlot(frame.recraftSlot)
 			aObj:removeRegions(frame.RecipeLevelBar, {1, 2, 3})
@@ -1907,26 +1912,10 @@ aObj.SetupRetail_PlayerFrames = function()
 				aObj:skinStdButton{obj=frame.RecipeLevelSelector, fType=ftype, ofs=0, clr="grey"}
 			end
 			if aObj.modBtnBs then
-				aObj:addButtonBorder{obj=frame.OutputIcon, fType=ftype, cgibt=true, relTo=frame.OutputIcon.Icon}
-				local function skinReagentBtns(sfFrame)
-					for slot in sfFrame.reagentSlotPool:EnumerateActive() do
-						skinReagentBtn(slot.Button)
-					end
-					for _, slot in _G.pairs(sfFrame.extraSlotFrames) do
-						if slot.Button
-						and (slot == sfFrame.salvageSlot
-						or slot == sfFrame.enchantSlot)
-						then
-							skinReagentBtn(slot.Button)
-						end
-					end
-				end
 				aObj:SecureHook(frame, "Init", function(fObj, _)
 					skinReagentBtns(fObj)
 				end)
 				skinReagentBtns(frame)
-			else
-				skinReagentBtn = _G.nop
 			end
 			if aObj.modChkBtns then
 				aObj:skinCheckButton{obj=frame.TrackRecipeCheckBox, fType=ftype}
@@ -1944,6 +1933,7 @@ aObj.SetupRetail_PlayerFrames = function()
 
 			self:SecureHookScript(this.CraftingPage, "OnShow", function(fObj)
 				fObj.TutorialButton.Ring:SetTexture(nil)
+				fObj.GearSlotDivider:DisableDrawLayer("ARTWORK")
 				self:removeNineSlice(fObj.RecipeList.BackgroundNineSlice)
 				self:skinObject("editbox", {obj=fObj.RecipeList.SearchBox, fType=ftype, si=true})
 				self:skinObject("dropdown", {obj=fObj.RecipeList.ContextMenu, fType=ftype})
@@ -1986,7 +1976,8 @@ aObj.SetupRetail_PlayerFrames = function()
 				if self.modBtnBs then
 					for _, btn in _G.pairs(fObj.InventorySlots) do
 						btn.NormalTexture:SetTexture(nil)
-						self:addButtonBorder{obj=btn, fType=ftype, ibt=true, clr="grey"}
+						self:addButtonBorder{obj=btn, fType=ftype, ibt=true}
+						self:clrButtonFromBorder(btn)
 					end
 					self:addButtonBorder{obj=fObj.LinkButton, fType=ftype, clr="grey", ofs=-2, x1=0, y1=-4}
 				end
@@ -2225,17 +2216,8 @@ aObj.SetupRetail_PlayerFrames = function()
 					self:skinStdButton{obj=fObj.PaymentContainer.ListOrderButton, fType=ftype}
 				end
 				if self.modBtnBs then
-					self:addButtonBorder{obj=fObj.OutputIcon, fType=ftype, cgibt=true, relTo=fObj.OutputIcon.Icon}
 					self:addButtonBorder{obj=fObj.OrderRecipientDisplay.SocialDropdownButton, fType=ftype, ofs=1, x1=-1, clr="grey"}
 					skinRecraftSlot(fObj.RecraftSlot)
-					local function skinReagentBtns(sfFrame)
-						for slot in sfFrame.reagentSlotPool:EnumerateActive() do
-							skinReagentBtn(slot.Button)
-							if aObj.modChkBtns then
-								aObj:skinCheckButton{obj=slot.Checkbox, fType=ftype}
-							end
-						end
-					end
 					self:SecureHook(fObj, "UpdateReagentSlots", function(frame)
 						skinReagentBtns(frame)
 					end)
@@ -2248,11 +2230,13 @@ aObj.SetupRetail_PlayerFrames = function()
 
 				self:Unhook(fObj, "OnShow")
 			end)
+
 			self:SecureHookScript(this.Form.QualityDialog, "OnShow", function(fObj)
 				skinQualityDialog(fObj)
 
 				self:Unhook(fObj, "OnShow")
 			end)
+
 			self:SecureHookScript(this.Form.CurrentListings, "OnShow", function(fObj)
 				skinHdrs(fObj)
 				self:skinObject("scrollbar", {obj=fObj.OrderList.ScrollBar, fType=ftype})
@@ -2446,12 +2430,12 @@ aObj.SetupRetail_PlayerFrames = function()
 			hld:DisableDrawLayer("BORDER")
 			self:removeRegions(hld.NextRewardLevel, {2, 4}) -- IconCover & RingBorder
 			if self.modBtnBs then
-				self:addButtonBorder{obj=hld.NextRewardLevel, relTo=hld.NextRewardLevel.RewardIcon, clr="white", ca=0.75}
+				self:addButtonBorder{obj=hld.NextRewardLevel, relTo=hld.NextRewardLevel.RewardIcon, clr="gold"}
 				self:SecureHook(hld, "Update", function(fObj)
 					if fObj.NextRewardLevel.RewardIcon:IsDesaturated() then
 						self:clrBtnBdr(fObj.NextRewardLevel, "disabled")
 					else
-						self:clrBtnBdr(fObj.NextRewardLevel, "white", 0.75)
+						self:clrBtnBdr(fObj.NextRewardLevel, "gold")
 					end
 				end)
 			end
@@ -2459,12 +2443,12 @@ aObj.SetupRetail_PlayerFrames = function()
 			local srf =this.HonorInset.RatedPanel.SeasonRewardFrame
 			srf.Ring:SetTexture(nil)
 			if self.modBtnBs then
-				self:addButtonBorder{obj=srf, relTo=srf.Icon, clr="white", ca=0.75}
+				self:addButtonBorder{obj=srf, relTo=srf.Icon, clr="gold"}
 				self:SecureHook(srf, "Update", function(fObj)
 					if fObj.Icon:IsDesaturated() then
 						self:clrBtnBdr(fObj, "disabled")
 					else
-						self:clrBtnBdr(fObj, "white", 0.75)
+						self:clrBtnBdr(fObj, "gold")
 					end
 				end)
 			end
@@ -2494,7 +2478,7 @@ aObj.SetupRetail_PlayerFrames = function()
 			local btn = frame.ConquestBar.Reward
 			btn.Ring:SetTexture(nil)
 			if aObj.modBtnBs then
-				aObj:addButtonBorder{obj=btn, relTo=btn.Icon, reParent={btn.CheckMark}, clr="silver"}
+				aObj:addButtonBorder{obj=btn, relTo=btn.Icon, reParent={btn.CheckMark}, clr="gold"}
 			end
 			if aObj.modChkBtns then
 				aObj:skinCheckButton{obj=frame.HealerIcon.checkButton}
