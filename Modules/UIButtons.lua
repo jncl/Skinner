@@ -299,11 +299,12 @@ function module:secureHook(obj, method, func)
 
 end
 
+local common = _G.Enum.ItemQuality.Common or _G.Enum.ItemQuality.Standard
 function module:setBtnClr(bObj, quality)
 
 	if bObj.sbb then
 		if quality then
-			if quality >= (_G.Enum and _G.Enum.ItemQuality and _G.Enum.ItemQuality.Common or _G.LE_ITEM_QUALITY_COMMON)
+			if quality >= common
 			and _G.BAG_ITEM_QUALITY_COLORS[quality]
 			then
 				bObj.sbb:SetBackdropBorderColor(_G.BAG_ITEM_QUALITY_COLORS[quality].r, _G.BAG_ITEM_QUALITY_COLORS[quality].g, _G.BAG_ITEM_QUALITY_COLORS[quality].b, 1)
@@ -593,6 +594,9 @@ function module:skinStdButton(opts)
 	--@debug@
 	_G.assert(opts.obj, "Missing object skinStdButton\n" .. _G.debugstack(2, 3, 2))
 	--@end-debug@
+	 if opts.seca then
+		aObj:CustomPrint(1, 0, 0, "Using deprecated option - seca, use sabt instead", opts.obj)
+	end
 
 	-- handle in combat
 	if _G.InCombatLockdown() then
@@ -914,11 +918,11 @@ local function __addButtonBorder(opts)
 		if opts.obj.IconQuestTexture then
 			opts.obj.IconQuestTexture:SetParent(opts.obj.sbb)
 		end
-		-- N.B. leave subicon/SubIconTexture below .sbb (Classic ERA)
-		if opts.libt
-		and aObj.isRtl
-		then
-		module:clrButtonFromBorder(opts.obj)
+		-- N.B. leave subicon/SubIconTexture below .sbb (Classic ERA Engraving)
+		if aObj.isRtl then
+			module:clrButtonFromBorder(opts.obj)
+		else
+			module:clrBtnBdr(opts.obj, opts.clr or "common", opts.ca or 1)
 		end
 	elseif opts.abt then -- Action Buttons
 		if opts.obj.FlyoutArrow then
@@ -1066,12 +1070,13 @@ function module:OnInitialize()
 		aObj.db.profile.Buttons = nil
 	end
 
+	 -- disable ourself if required
 	if not db.UIButtons
 	and not db.ButtonBorders
 	and not db.CheckButtons
 	then
 		self:Disable()
-	end -- disable ourself
+	end
 
 end
 
