@@ -2669,7 +2669,7 @@ aObj.blizzFrames[ftype].PVEFrame = function(self)
 	self.initialized.PVEFrame = true
 
 	local groupFrames
-	if _G.PVEFrame:ScenariosEnabled() then
+	if _G.PVEFrame.ScenariosEnabled and _G.PVEFrame:ScenariosEnabled() then
 		groupFrames = { "LFDParentFrame", "ScenarioFinderFrame", "RaidFinderFrame", "LFGListPVEStub" }
 	else
 		groupFrames = { "LFDParentFrame", "RaidFinderFrame", "LFGListPVEStub" }
