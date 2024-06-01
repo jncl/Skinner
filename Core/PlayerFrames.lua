@@ -834,7 +834,7 @@ if not aObj.isClscERA then
 						if btn.SocketDisplay then -- MoP Remix
 							for _, socket in _G.ipairs(btn.SocketDisplay.Slots) do
 								socket.Slot:SetTexture(nil)
-								aObj:addButtonBorder{obj=socket, fType=ftype, es=8, ofs=0, y2=1, clr="grey"}
+								aObj:addButtonBorder{obj=socket, fType=ftype, es=8, ofs=0, clr="grey"}
 							end
 						end
 					end
