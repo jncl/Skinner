@@ -1575,45 +1575,57 @@ aObj.blizzFrames[ftype].LFGFrame = function(self)
 	self.initialized.LFGFrame = true
 
 	self:SecureHookScript(_G.LFGDungeonReadyPopup, "OnShow", function(this) -- a.k.a. ReadyCheck, also used for Island Expeditions
-		self:removeNineSlice(_G.LFGDungeonReadyStatus.Border)
-		self:skinObject("frame", {obj=_G.LFGDungeonReadyStatusCloseButton, fType=ftype, kfs=true, ofs=-5})
+		self:SecureHookScript(_G.LFGDungeonReadyStatus, "OnShow", function(fObj)
+			self:removeNineSlice(fObj.Border)
+			self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, ofs=-5})
+			if self.modBtns then
+				self:skinOtherButton{obj=_G.LFGDungeonReadyStatusCloseButton, text=self.modUIBtns.minus, noSkin=true}
+			end
 
-		self:removeNineSlice(_G.LFGDungeonReadyDialog.Border)
-		_G.LFGDungeonReadyDialog.SetBackdrop = _G.nop
-		_G.LFGDungeonReadyDialog.instanceInfo:DisableDrawLayer("BACKGROUND")
-		self:skinObject("frame", {obj=_G.LFGDungeonReadyDialog, fType=ftype, kfs=true, rpc=true, ofs=-5, y2=10}) -- use rpc=true to make background visible
-		if self.modBtns then
-			self:skinOtherButton{obj=_G.LFGDungeonReadyStatusCloseButton, text=self.modUIBtns.minus, noSkin=true}
-			self:skinOtherButton{obj=_G.LFGDungeonReadyDialogCloseButton, text=self.modUIBtns.minus, noSkin=true}
-			self:skinStdButton{obj=_G.LFGDungeonReadyDialog.enterButton}
-			self:skinStdButton{obj=_G.LFGDungeonReadyDialog.leaveButton}
-		end
+			self:Unhook(fObj, "OnShow")
+		end)
+		self:checkShown(_G.LFGDungeonReadyStatus)
 
-		-- show background texture if required
-		if self.prdb.LFGTexture then
-			self:SecureHook("LFGDungeonReadyPopup_Update", function()
-				local lfgTex = _G.LFGDungeonReadyDialog.background
-				lfgTex:SetAlpha(1) -- show texture
-				-- adjust texture to fit within skinFrame
-				lfgTex:SetWidth(288)
-				if _G.LFGDungeonReadyPopup:GetHeight() < 200 then
-					lfgTex:SetHeight(170)
-				else
-					lfgTex:SetHeight(200)
-				end
-				lfgTex:SetTexCoord(0, 1, 0, 1)
-				lfgTex:ClearAllPoints()
-				lfgTex:SetPoint("TOPLEFT", _G.LFGDungeonReadyDialog, "TOPLEFT", 9, -9)
-			end)
-		end
+		self:SecureHookScript(_G.LFGDungeonReadyDialog, "OnShow", function(fObj)
+			self:removeNineSlice(fObj.Border)
+			fObj.SetBackdrop = _G.nop
+			fObj.instanceInfo:DisableDrawLayer("BACKGROUND")
+			self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, rpc=true, ofs=-5, y2=10}) -- use rpc=true to make background visible
+			if self.modBtns then
+				self:skinOtherButton{obj=_G.LFGDungeonReadyDialogCloseButton, text=self.modUIBtns.minus, noSkin=true}
+				self:skinStdButton{obj=fObj.enterButton}
+				self:skinStdButton{obj=fObj.leaveButton}
+			end
 
-		-- RewardsFrame
-		_G.LFGDungeonReadyDialogRewardsFrameReward1Border:SetAlpha(0)
-		_G.LFGDungeonReadyDialogRewardsFrameReward2Border:SetAlpha(0)
-		if self.modBtnBs then
-			self:addButtonBorder{obj=_G.LFGDungeonReadyDialogRewardsFrameReward1, relTo=_G.LFGDungeonReadyDialogRewardsFrameReward1.texture}
-			self:addButtonBorder{obj=_G.LFGDungeonReadyDialogRewardsFrameReward2, relTo=_G.LFGDungeonReadyDialogRewardsFrameReward2.texture}
-		end
+			-- show background texture if required
+			if self.prdb.LFGTexture then
+				self:SecureHook("LFGDungeonReadyPopup_Update", function()
+					local lfgTex = _G.LFGDungeonReadyDialog.background
+					lfgTex:SetAlpha(1) -- show texture
+					-- adjust texture to fit within skinFrame
+					lfgTex:SetWidth(288)
+					if _G.LFGDungeonReadyPopup:GetHeight() < 200 then
+						lfgTex:SetHeight(170)
+					else
+						lfgTex:SetHeight(200)
+					end
+					lfgTex:SetTexCoord(0, 1, 0, 1)
+					lfgTex:ClearAllPoints()
+					lfgTex:SetPoint("TOPLEFT", _G.LFGDungeonReadyDialog, "TOPLEFT", 9, -9)
+				end)
+			end
+
+			-- RewardsFrame
+			_G.LFGDungeonReadyDialogRewardsFrameReward1Border:SetAlpha(0)
+			_G.LFGDungeonReadyDialogRewardsFrameReward2Border:SetAlpha(0)
+			if self.modBtnBs then
+				self:addButtonBorder{obj=_G.LFGDungeonReadyDialogRewardsFrameReward1, relTo=_G.LFGDungeonReadyDialogRewardsFrameReward1.texture}
+				self:addButtonBorder{obj=_G.LFGDungeonReadyDialogRewardsFrameReward2, relTo=_G.LFGDungeonReadyDialogRewardsFrameReward2.texture}
+			end
+
+			self:Unhook(fObj, "OnShow")
+		end)
+		self:checkShown(_G.LFGDungeonReadyDialog)
 
 		self:Unhook(this, "OnShow")
 	end)
