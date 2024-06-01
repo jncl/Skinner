@@ -956,12 +956,17 @@ aObj.SetupRetail_UIFrames = function()
 		self:SecureHookScript(_G.DeathRecapFrame, "OnShow", function(this)
 			this:DisableDrawLayer("BORDER")
 			this.Background:SetTexture(nil)
+			_G.RaiseFrameLevelByTwo(this)
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ofs=-1, y1=-2})
 			if self.modBtns then
 				self:skinCloseButton{obj=this.CloseXButton}
 				self:skinStdButton{obj=this.CloseButton}
 			end
-			_G.RaiseFrameLevelByTwo(this)
+			if self.modBtnBs then
+				for i = 1, _G.NUM_DEATH_RECAP_EVENTS do
+					self:addButtonBorder{obj=this["Recap" .. i].SpellInfo, fType=ftype, relTo=this["Recap" .. i].SpellInfo.Icon, clr="gold"}
+				end
+			end
 
 			self:Unhook(this, "OnShow")
 		end)
