@@ -2784,7 +2784,12 @@ if not aObj.isClscERA then
 		end)
 
 		self:SecureHookScript(_G.EquipmentFlyoutFrame, "OnShow", function(this)
-			self:skinObject("frame", {obj=this.buttonFrame, fType=ftype, ofs=2, x2=5, clr="gold"})
+			self:skinObject("frame", {obj=this.buttonFrame, fType=ftype, ofs=5, x2=7, clr="gold"})
+			self:skinObject("frame", {obj=this.NavigationFrame, fType=ftype, kfs=true, x1=0, y2=1, clr="gold"})
+			if self.modBtnBs then
+				self:addButtonBorder{obj=this.NavigationFrame.PrevButton, fType=ftype, ofs=-2, x1=1, clr="gold", schk=true}
+				self:addButtonBorder{obj=this.NavigationFrame.NextButton, fType=ftype, ofs=-2, x1=1, clr="gold", schk=true}
+			end
 
 			self:Unhook(this, "OnShow")
 		end)
