@@ -19,10 +19,10 @@ ToDos
 
 ≈		O	Refactor NewSkinFuncs in AddOn skins
 
-#71	√	N	MountsJournal
+#75	√	I	Outfitter
+	√	I	ClassicQuestLog
+	≈	I	LFD/LFG ReadyPopup not skinned properly
 
-#72	√	N	BetterBags
+#76	√	I/C	Minimal Archaeology
 
-#73	√	I/C	SpellBookFrame
-
-#74	≈	I/C	LibQTip
+#77 √	I/C	ScenariosEnabled error
