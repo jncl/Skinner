@@ -1,3 +1,48 @@
+beta10.54904.1
+Jncl:
+	Updated ToDo.txt files
+	Updated Change_History.txt
+	Updated version numbers
+	Updated ItemButton border colouring code
+	Updated Retail ButtonBorder skinning code
+	Skinned Retail ScenarioFinderFrame
+	Updated UIButtons
+	Updated UtilFuncs
+	Updated Nameplate Tooltip skinning code
+	Updated Tooltips, closes #74
+	Updated StaticPopups
+	Updated SettingsFrame
+	Updated PVPFrame
+	Updated LFD & LFG Frames
+	Updated GuildBankFrame
+	Updated AlertFrames
+	Updated Retail SpellBookFrame, closes #73
+	Updated Retail EquipmentFlyoutFrame
+	Updated Retail PaperDollFrame
+	Updated TabardFrame
+	Updated QuestFrame
+	Updated MerchantFrame
+	Updated Classic PVPFrame
+	Updated Classic QuestLogFrame
+	Updated Classic MainMenuBar
+	Updated Classic TradeSkillUI
+	Updated Classic InspectUI
+	Updated Classic TalentUI
+	Updated Classic CraftUI
+	Updated Classic Container Frames
+	Updated Classic PaperDollFrame
+	Updated Classic ReforgingUI
+	Updated Classic BankFrame
+	Updated Classic AuctionHouseUI
+	Updated Baganator, BetterBags, LeatrixPlus, LibDropDown, LibQTip, LibSFDropDown, LibUIDropDownMenu, MountsJournal & Spew addOn skins, closes #71, closes #72
+	Updated ObjectiveTracker code
+	Updated Retail AuctionHouseUI code
+	Updated UtilFuncs
+	Updated SharedFuncs makeString & makeText functions
+	Moved luacheck lines to top of lua files
+	Updated luacheck ignore warning lines
+	Added lua conditional statement to ClassicSupport so its functions aren't loaded in a Retail environment
+	
 beta10.54647.2
 Jncl:
 	Updated Change_History.txt
