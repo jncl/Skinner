@@ -31,6 +31,7 @@ aObj.addonsToSkin.Baganator = function(self) -- v 273
 		end
 	end
 
+	local sBox
 	local function skinFrame(frame, _)
 		frame:DisableDrawLayer("BACKGROUND")
 		frame:DisableDrawLayer("BORDER")
@@ -38,9 +39,8 @@ aObj.addonsToSkin.Baganator = function(self) -- v 273
 		if not aObj.isRtl then
 			frame.TitleText:SetDrawLayer("ARTWORK")
 		end
-		if frame.SearchWidget.SearchBox then
-			aObj:skinObject("editbox", {obj=frame.SearchWidget.SearchBox, si=true})
-		end
+		sBox = frame.SearchBox or frame.SearchWidget.SearchBox
+		aObj:skinObject("editbox", {obj=sBox, si=true})
 		if frame.ScrollBar then
 			self:skinObject("scrollbar", {obj=frame.ScrollBar})
 		end
@@ -74,13 +74,13 @@ aObj.addonsToSkin.Baganator = function(self) -- v 273
 				end
 				if aObj.modBtnBs then
 					skinBags(fObj)
-				end
-				for _, array in _G.pairs{fObj.liveBagSlots, fObj.cachedBagSlots} do
-					for _, btn in _G.ipairs(array) do
-						aObj:addButtonBorder{obj=btn, ibt=true}
-						aObj:clrButtonFromBorder(btn)
-						if btn.needPurchase then
-							aObj:clrBBC(btn.sbb, "red")
+					for _, array in _G.pairs{fObj.BagSlots.liveBagSlots, fObj.BagSlots.cachedBagSlots} do
+						for _, btn in _G.ipairs(array) do
+							aObj:addButtonBorder{obj=btn, ibt=true}
+							aObj:clrButtonFromBorder(btn)
+							if btn.needPurchase then
+								aObj:clrBBC(btn.sbb, "red")
+							end
 						end
 					end
 				end

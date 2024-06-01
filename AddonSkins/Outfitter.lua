@@ -1,8 +1,9 @@
+-- luacheck: ignore 631 (line is too long)
 local _, aObj = ...
 if not aObj:isAddonEnabled("Outfitter") then return end
 local _G = _G
 
-aObj.addonsToSkin.Outfitter = function(self) -- v 6.0.1
+aObj.addonsToSkin.Outfitter = function(self) -- v 10.2.7.0
 
 	self:SecureHook(_G.Outfitter, "PlayerEnteringWorld", function(this)
 		local function skinOutfitBars(fObj)
@@ -61,7 +62,7 @@ aObj.addonsToSkin.Outfitter = function(self) -- v 6.0.1
 			_G.OutfitterMainFrame:DisableDrawLayer("BACKGROUND")
 			_G.OutfitterMainFrameScrollbarTrench:DisableDrawLayer("OVERLAY")
 			self:skinObject("slider", {obj=_G.OutfitterMainFrameScrollFrame.ScrollBar})
-			self:skinObject("tabs", {obj=fObj, prefix=fObj:GetName(), numTabs=3, lod=true})
+			self:skinObject("tabs", {obj=fObj, prefix=fObj:GetName(), numTabs=3, lod=true, offsets={x1=8, y1=0, x2=-8, y2=2}})
 			self:skinObject("frame", {obj=fObj, kfs=true, x1=-1, y2=-6})
 			if self.modBtns then
 				self:skinCloseButton{obj=_G.OutfitterCloseButton}
@@ -238,12 +239,6 @@ aObj.addonsToSkin.Outfitter = function(self) -- v 6.0.1
 
 			self:Unhook(fObj, "OnShow")
 		end)
-
-		self.mmButs["Outfitter"] = _G["OutfitterMinimapButton"]
-		_G.OutfitterMinimapButton:GetNormalTexture():SetAlpha(0) -- ring texture
-		-- reduce size of button and texture
-		_G.OutfitterMinimapButton:SetSize(26, 26)
-		self:getRegion(_G.OutfitterMinimapButton, 3):SetScale(0.85)
 
 		self:Unhook(this, "PlayerEnteringWorld")
 	end)

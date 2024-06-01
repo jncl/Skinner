@@ -73,37 +73,38 @@ aObj.addonsToSkin["Classic Quest Log"] = function(self)
 				self:checkShown(this)
 			end
 		end)
-	elseif v1 == 3 then -- v 3.0.0-beta-04
+	elseif v1 == 3 then -- v 3.0.2
 		self:SecureHookScript(_G.ClassicQuestLog, "OnShow", function(this)
 			self:removeInset(this.Chrome.CountFrame)
+			self:removeInset(this.Log)
+			self:skinObject("scrollbar", {obj=this.Log.ScrollFrame.ScrollBar})
+			this.Log.ScrollFrame.AllButton:DisableDrawLayer("BACKGROUND")
+			self:removeInset(this.Detail)
+			self:skinObject("scrollbar", {obj=this.Detail.ScrollFrame.ScrollBar})
 			if self.modBtns then
 				for _, btn in _G.pairs(this.Chrome.PanelButtons) do
 					self:skinStdButton{obj=btn, sechk=true}
 				end
+				self:skinExpandButton{obj=this.Log.ScrollFrame.AllButton, onSB=true}
+				-- TODO: skin ExpandButton texture in Log entries
 			end
 			if self.modBtnBs then
 				self:addButtonBorder{obj=this.Chrome.MapButton, ofs=-2, y1=0, y2=0, clr="grey", schk=true}
 				self:addButtonBorder{obj=this.Chrome.OptionsButton, ofs=0, x1=1, x2=2, clr="grey"}
 			end
-			self:removeInset(this.Log)
-			self:skinObject("scrollbar", {obj=this.Log.ScrollFrame.ScrollBar})
-			this.Log.ScrollFrame.AllButton:DisableDrawLayer("BACKGROUND")
-		    if self.modBtns then
-				self:skinExpandButton{obj=this.Log.ScrollFrame.AllButton, onSB=true}
-				-- TODO: skin expand texture
-			end
-			self:add2Table(self.ttList, this.Log.CampaignTooltip)
-			self:removeInset(this.Detail)
-			self:skinObject("scrollbar", {obj=this.Detail.ScrollFrame.ScrollBar})
-			this.Detail.ScrollFrame.Content.TitleHeader:SetTextColor(self.HT:GetRGB())
-			this.Detail.ScrollFrame.Content.ObjectivesText:SetTextColor(self.BT:GetRGB())
-			this.Detail.ScrollFrame.Content.GroupSize:SetTextColor(self.BT:GetRGB())
-			this.Detail.ScrollFrame.Content.DescriptionHeader:SetTextColor(self.HT:GetRGB())
-			this.Detail.ScrollFrame.Content.DescriptionText:SetTextColor(self.BT:GetRGB())
-			this.Detail.ScrollFrame.Content.StatusTitle:SetTextColor(self.BT:GetRGB())
-			this.Detail.ScrollFrame.Content.StatusText:SetTextColor(self.BT:GetRGB())
-			--TODO: this.Detail.ScrollFrame.Content.SealFrame
-			this.Detail.ScrollFrame.Content.RewardsFrame.Header:SetTextColor(self.HT:GetRGB())
+
+			self:SecureHook(this.Detail, "Update", function(fObj)
+				aObj:Debug("this.Detail Update")
+				fObj.ScrollFrame.Content.TitleHeader:SetTextColor(self.HT:GetRGB())
+				fObj.ScrollFrame.Content.ObjectivesText:SetTextColor(self.BT:GetRGB())
+				fObj.ScrollFrame.Content.GroupSize:SetTextColor(self.BT:GetRGB())
+				fObj.ScrollFrame.Content.DescriptionHeader:SetTextColor(self.HT:GetRGB())
+				fObj.ScrollFrame.Content.DescriptionText:SetTextColor(self.BT:GetRGB())
+				fObj.ScrollFrame.Content.StatusTitle:SetTextColor(self.BT:GetRGB())
+				fObj.ScrollFrame.Content.StatusText:SetTextColor(self.BT:GetRGB())
+				fObj.ScrollFrame.Content.RewardsFrame.Header:SetTextColor(self.HT:GetRGB())
+				--TODO: fObj.ScrollFrame.Content.SealFrame
+			end)
 			self:SecureHook(this.Detail, "ShowObjectives", function(fObj, _)
 				for _, objective in _G.pairs(fObj.ScrollFrame.Content.ObjectivesFrame.Objectives) do
 					objective:SetTextColor(self.BT:GetRGB())
@@ -145,14 +146,17 @@ aObj.addonsToSkin["Classic Quest Log"] = function(self)
 					end
 				end
 			end)
-			self:removeInset(this.Options)
-			self:skinObject("scrollbar", {obj=this.Options.ScrollFrame.ScrollBar})
-			if self.modChkBtns then
-				for _, cBtn in _G.pairs(this.Options.ScrollFrame.Content.CheckButtons) do
-					-- TODO: skin pseudo check buttons
-				end
-			end
 			self:skinObject("frame", {obj=this, kfs=true, ri=true, rns=true, cb=true, y1=2, x2=3})
+
+			self:SecureHookScript(this.Options, "OnShow", function(fObj)
+				self:removeInset(fObj)
+				self:skinObject("scrollbar", {obj=fObj.ScrollFrame.ScrollBar})
+				-- TODO: skin pseudo check buttons
+
+				self:add2Table(self.ttList, this.Log.CampaignTooltip)
+
+				self:Unhook(fObj, "OnShow")
+			end)
 
 			self:Unhook(this, "OnShow")
 			if self.modBtns then
