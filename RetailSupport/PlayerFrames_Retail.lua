@@ -1362,6 +1362,7 @@ aObj.SetupRetail_PlayerFrames = function()
 
 		self:SecureHookScript(_G.LootFrame, "OnShow", function(this)
 			self:skinObject("scrollbar", {obj=this.ScrollBar, fType=ftype})
+			self:keepFontStrings(this.ScrollBox.Shadows)
 			local function skinElement(...)
 				local _, element, new
 				if _G.select("#", ...) == 2 then
