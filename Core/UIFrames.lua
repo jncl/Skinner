@@ -1497,11 +1497,11 @@ aObj.blizzFrames[ftype].LFDFrame = function(self)
 
 	self:SecureHookScript(_G.LFDRoleCheckPopup, "OnShow", function(this)
 		self:removeNineSlice(this.Border)
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true})
 		if self.modBtns then
 			self:skinStdButton{obj=_G.LFDRoleCheckPopupAcceptButton}
 			self:skinStdButton{obj=_G.LFDRoleCheckPopupDeclineButton}
 		end
-		self:skinObject("frame", {obj=this, fType=ftype, kfs=true})
 
 		self:Unhook(this, "OnShow")
 	end)
@@ -1522,7 +1522,6 @@ aObj.blizzFrames[ftype].LFDFrame = function(self)
 	self:SecureHookScript(_G.LFDParentFrame, "OnShow", function(this)
 		self:keepFontStrings(this)
 		self:removeInset(this.Inset)
-
 		-- LFD Queue Frame
 		skinRoleBtns("LFD")
 		_G.LFDQueueFrameBackground:SetAlpha(0)
@@ -1577,7 +1576,7 @@ aObj.blizzFrames[ftype].LFGFrame = function(self)
 	self:SecureHookScript(_G.LFGDungeonReadyPopup, "OnShow", function(this) -- a.k.a. ReadyCheck, also used for Island Expeditions
 		self:SecureHookScript(_G.LFGDungeonReadyStatus, "OnShow", function(fObj)
 			self:removeNineSlice(fObj.Border)
-			self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, ofs=-5})
+			self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, ofs=0})
 			if self.modBtns then
 				self:skinOtherButton{obj=_G.LFGDungeonReadyStatusCloseButton, text=self.modUIBtns.minus, noSkin=true}
 			end
