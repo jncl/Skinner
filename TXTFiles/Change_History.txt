@@ -1,3 +1,16 @@
+beta10.54904.2
+Jncl:
+	Updated ToDo.txt files
+	Updated Change_History.txt
+	Updated version numbers
+	Skinned Classic HelpPlateTooltip
+	Updated DeathRecapFrame skin
+	Updated LFGDungeonPopup & LFGDungenReadyDialog, fixes #75
+	Updated EquipmentFlyoutFrame skin
+	Updated PaperDollFrame
+	Updated PVEFrame skin, closes #77
+	Updated Baganator, ClassicQuestLog, MinimalArchaeology & Outfitter skins, closes #75, closes #76
+	
 beta10.54904.1
 Jncl:
 	Updated ToDo.txt files
