@@ -1278,7 +1278,6 @@ aObj.SetupOptions = function(self)
 		["Petition"]         = {suff = "Frame"},
 		["Quest Frame"]      = true,
 		["Quest Info"]       = {suff = "Frame"},
-		["Stable UI"]        = {desc = "Stable Frame"},
 		["Tabard"]           = {suff = "Frame"},
 		["Taxi Frame"]       = true,
 		["Trainer UI"]       = true,

@@ -1093,6 +1093,7 @@ aObj.SetupRetail_NPCFramesOptions = function(self)
 		["New Player Experience Guide"] = {suff = "Frame"},
 		["Perks Program"] 				= {desc = "Trading Post"},
 		["Rune Forge UI"]               = true,
+		["Stable UI"]                   = {desc = "Stable Frame"},
 		["Void Storage UI"]             = true,
 	}
 	self:setupFramesOptions(optTab, "NPC")

@@ -374,6 +374,7 @@ aObj.SetupClassic_NPCFramesOptions = function(self)
 
 	local optTab = {
 		["Auction UI"]            = true,
+		["PetStableFrame"]        = {desc = "Stable Frame"},
 		["Reforging UI"]		  = self.isClsc and true or nil,
 	}
 	self:setupFramesOptions(optTab, "NPC")
