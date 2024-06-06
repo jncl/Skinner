@@ -18,11 +18,3 @@ ToDos
 ≈		O	Add checks for Button state as required
 
 ≈		O	Refactor NewSkinFuncs in AddOn skins
-
-#75	√	I	Outfitter
-	√	I	ClassicQuestLog
-	≈	I	LFD/LFG ReadyPopup not skinned properly
-
-#76	√	I/C	Minimal Archaeology
-
-#77 √	I/C	ScenariosEnabled error
