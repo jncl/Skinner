@@ -4,14 +4,14 @@ local aName, aObj = ...
 local _G = _G
 
 local buildInfo = {
-	wow_classic         = {"4.4.0",  54901, "Classic"}, -- a.k.a. Wrath of the Lich King Classic
+	wow_classic         = {"4.4.0",  55006, "Classic"}, -- a.k.a. Wrath of the Lich King Classic
 	wow_classic_beta    = {"4.4.0",  54737, "Cataclysm Classic Beta"},
-	wow_classic_era     = {"1.15.2", 54902, "Classic Era"}, -- a.k.a. Season of Discovery
+	wow_classic_era     = {"1.15.2", 55002, "Classic Era"}, -- a.k.a. Season of Discovery
 	wow_classic_era_ptr = {"1.15.2", 54067, "Classic Era PTR"},
-	wow_classic_ptr     = {"4.4.0",  54901, "Classic PTR"},
+	wow_classic_ptr     = {"4.4.0",  55006, "Classic PTR"},
 	-- wow_beta            = {"11.0.0", 56000, "Retail Beta"}, -- a.k.a. The War Within
-	wow_ptr             = {"10.2.7", 54904, "Retail PTR"},
-	wow                 = {"10.2.7", 54904, "Retail"},
+	wow_ptr             = {"10.2.7", 54988, "Retail PTR"},
+	wow                 = {"10.2.7", 54988, "Retail"},
 	wow_ptr_x           = {"10.2.6", 53989, "Retail PTRX"},
 	curr                = {_G.GetBuildInfo()},
 }
