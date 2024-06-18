@@ -305,6 +305,53 @@ aObj.SetupClassic_PlayerFrames = function()
 			self:checkShown(_G.AchievementFrame)
 
 		end
+
+		aObj.blizzLoDFrames[ftype].BarberShopUI = function(self)
+			if not self.prdb.BarberShopUI or self.initialized.BarberShopUI then return end
+			self.initialized.BarberShopUI = true
+
+			self:SecureHookScript(_G.BarberShopFrame, "OnShow", function(this)
+				_G.BarberShopFrameMaleButton:DisableDrawLayer("BACKGROUND") -- Shadow texture
+				_G.BarberShopFrameFemaleButton:DisableDrawLayer("BACKGROUND") -- Shadow texture
+				_G.BarberShopFrameMoneyFrame:DisableDrawLayer("BACKGROUND")
+				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ofs=-15})
+				if self.modBtns then
+					self:skinStdButton{obj=_G.BarberShopFrameOkayButton, fType=ftype, schk=true}
+					self:skinStdButton{obj=_G.BarberShopFrameCancelButton, fType=ftype}
+					self:skinStdButton{obj=_G.BarberShopFrameResetButton, fType=ftype, schk=true}
+				end
+				if self.modBtnBs then
+					self:addButtonBorder{obj=_G.BarberShopFrameMaleButton, fType=ftype, clr="grey"}
+					self:addButtonBorder{obj=_G.BarberShopFrameFemaleButton, fType=ftype, clr="grey"}
+					for _, btn in _G.pairs(_G.BarberShopFrame.Selector) do
+						self:addButtonBorder{obj=btn.Prev, fType=ftype, ofs=-2, x1=1, clr="gold"}
+						self:addButtonBorder{obj=btn.Next, fType=ftype, ofs=-2, x1=1, clr="gold"}
+					end
+				end
+
+				self:Unhook(this, "OnShow")
+			end)
+			self:checkShown(_G.BarberShopFrame)
+
+			self:SecureHookScript(_G.BarberShopBannerFrame, "OnShow", function(this)
+				_G.BarberShopBannerFrameBGTexture:SetAlpha(0)
+
+				self:Unhook(this, "OnShow")
+			end)
+			self:checkShown(_G.BarberShopBannerFrame)
+
+			self:SecureHookScript(_G.BarbersChoiceConfirmFrame, "OnShow", function(this)
+				_G.BarbersChoiceConfirmFrameMoneyFrame:DisableDrawLayer("BACKGROUND")
+				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ofs=-35})
+				if self.modBtns then
+					self:skinStdButton{obj=_G.BarbersChoiceConfirmFrameBarbersChoiceOkayButton, fType=ftype}
+					self:skinStdButton{obj=_G.BarbersChoiceConfirmFrameBarbersChoiceCancelButton, fType=ftype}
+				end
+
+				self:Unhook(this, "OnShow")
+			end)
+
+		end
 	end
 
 	aObj.blizzFrames[ftype].Buffs = function(self)
@@ -1724,6 +1771,7 @@ end
 aObj.SetupClassic_PlayerFramesOptions = function(self)
 
 	local optTab = {
+		["Barber Shop UI"] = self.isClsc and true or nil,
 		["Craft UI"]       = true,
 		["Engraving UI"]   = self.isClscERA and {desc = "Runes UI"} or nil,
 		["Glyph UI"]       = self.isClsc and true or nil,
