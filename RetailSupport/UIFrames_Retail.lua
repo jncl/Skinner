@@ -3248,13 +3248,17 @@ aObj.SetupRetail_UIFrames = function()
 			if self.modBtns then
 				self:skinStdButton{obj=_G.ScenarioQueueFrameFindGroupButton, fType=ftype}
 			end
+			local btn
 			self:SecureHook("ScenarioQueueFrameSpecific_Update", function()
 				for i = 1, _G.NUM_SCENARIO_CHOICE_BUTTONS do
-					if self.modBtns then
-						self:skinExpandButton{obj=this.Queue.Specific["Button" .. i].expandOrCollapseButton, sap=true}
-					end
-					if self.modChkBtns then
-						self:skinCheckButton{obj=this.Queue.Specific["Button" .. i].enableButton}
+					btn = this.Queue.Specific["Button" .. i]
+					if btn then
+						if self.modBtns then
+							self:skinExpandButton{obj=btn.expandOrCollapseButton, sap=true}
+						end
+						if self.modChkBtns then
+							self:skinCheckButton{obj=btn.enableButton}
+						end
 					end
 				end
 			end)
