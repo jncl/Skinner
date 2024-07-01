@@ -413,7 +413,7 @@ function aObj:OnEnable()
 	-- track when Player enters World (used for texture updates and UIParent child processing)
 	self:RegisterEvent("PLAYER_ENTERING_WORLD")
 	-- track when player changes level, to manage MainMenuBars' WatchBars' placement
-	if _G.UnitLevel("player") >= _G.MAX_PLAYER_LEVEL - 5
+	if not _G.IsPlayerAtEffectiveMaxLevel()
 	and not _G.IsTrialAccount()
 	then
 		self:RegisterEvent("PLAYER_LEVEL_CHANGED")
