@@ -2,22 +2,25 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("Dominos") then return end
 local _G = _G
 
-aObj.lodAddons.Dominos_Config = function(self) -- v 10.0.8
+aObj.lodAddons.Dominos_Config = function(self) -- v 10.2.36
 
-	local Options = _G.Dominos.Options
+	local Options = _G.LibStub:GetLibrary("AceAddon-3.0"):GetAddon("Dominos_Config", true)
+	if not Options then return end
 
-	_G.C_Timer.After(0.25, function()
-		self:removeRegions(Options.HelpDialog, {10}) -- header texture
-		self:moveObject{obj=self:getRegion(Options.HelpDialog, 11), y=-6}
+	self:SecureHookScript(Options.HelpDialog, "OnShow", function(this)
+		self:removeRegions(this, {10}) -- header texture
+		self:moveObject{obj=self:getRegion(this, 11), y=-6}
+		self:skinObject("slider", {obj=self:getLastChild(this), rpTex="background"})
+		self:skinObject("frame", {obj=this, kfs=true, hdr=true, ofs=0})
+		if self.modBtns then
+			self:skinStdButton{obj=this.exitButton}
+		end
+		if self.modChkBtns then
+			self:skinCheckButton{obj=this.showGridButton}
+		end
+
+		self:Unhook(this, "OnShow")
 	end)
-	self:skinObject("slider", {obj=self:getLastChild(Options.HelpDialog), rpTex="background"})
-	self:skinObject("frame", {obj=Options.HelpDialog, kfs=true, hdr=true, ofs=0})
-	if self.modBtns then
-		self:skinStdButton{obj=Options.HelpDialog.exitButton}
-	end
-	if self.modChkBtns then
-		self:skinCheckButton{obj=Options.HelpDialog.showGridButton}
-	end
 
 	-- hook this to skin first menu displayed and its dropdown
 	self:RawHook(Options.Menu, "New", function(this, parent)

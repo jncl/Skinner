@@ -2,22 +2,15 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("BetterBags") then return end
 local _G = _G
 
-aObj.addonsToSkin.BetterBags = function(self) -- v 0.1.48
+aObj.addonsToSkin.BetterBags = function(self) -- v 0.1.70
 
 	local bBag = _G.LibStub("AceAddon-3.0"):GetAddon("BetterBags", true)
 	if not bBag then return end
 
 	local skinBtn = _G.nop
 	if self.modBtnBs then
-		function skinBtn(btn, empty)
+		function skinBtn(btn)
 			aObj:addButtonBorder{obj=btn, ibt=true}
-			if aObj.isRtl then
-				btn.ItemSlotBackground:SetAlpha(0)
-			else
-				if empty then
-					_G.SetItemButtonTexture(btn, nil)
-				end
-			end
 			aObj:clrButtonFromBorder(btn)
 		end
 		local cV
@@ -42,22 +35,35 @@ aObj.addonsToSkin.BetterBags = function(self) -- v 0.1.48
 		events:RegisterMessage("items/RefreshBank/Done", function(_, _)
 			skinCVBtns("Bank")
 		end)
+		events:RegisterMessage("item/NewButton", function(_, _, button)
+			if aObj.isRtl then
+				button.ItemSlotBackground:SetAlpha(0)
+			else
+				_G.SetItemButtonTexture(button, nil)
+			end
+		end)
 	end
 
+	local function skinFrame(frame)
+		if frame.Bg then
+			frame.Bg:SetTexture(nil)
+		end
+		if frame.TitleContainer
+		and frame.TitleContainer.TitleBg
+		then
+			frame.TitleContainer.TitleBg:SetTexture(nil)
+		end
+		aObj:skinObject("frame", {obj=frame, kfs=true, cb=true, bg=true})
+	end
 	local function handleBag(bagObj)
 		aObj:SecureHookScript(bagObj.frame, "OnShow", function(this)
-			aObj:skinObject("frame", {obj=this, kfs=true, cb=true, y1=aObj.isRtl and -1 or nil, x2=aObj.isClsc and 1 or 0})
-			if aObj.isRtl then
-				aObj:getRegion(this.PortraitContainer, 1):SetAlpha(1) -- portrait texture
-			else
-				aObj:getRegion(this, 18):SetAlpha(1) -- menu button texture
-			end
+			skinFrame(aObj:getLastChild(this)) -- decorator frame
 
 			aObj:Unhook(this, "OnShow")
 		end)
 
 		aObj:SecureHookScript(bagObj.slots.frame, "OnShow", function(this)
-			aObj:skinObject("frame", {obj=this, kfs=true, cb=true, x2=1})
+			skinFrame(aObj:getLastChild(this)) -- decorator frame
 
 			aObj:Unhook(this, "OnShow")
 		end)
@@ -67,6 +73,13 @@ aObj.addonsToSkin.BetterBags = function(self) -- v 0.1.48
 					skinBtn(cell.frame, cell.empty)
 					if cell.canBuy then
 						aObj:clrBBC(cell.frame.sbb, "red")
+					end
+					if cell.empty then
+						if aObj.isRtl then
+							cell.frame.ItemSlotBackground:SetTexture(nil)
+						else
+							_G.SetItemButtonTexture(cell.frame, nil)
+						end
 					end
 				end
 			end
@@ -78,17 +91,21 @@ aObj.addonsToSkin.BetterBags = function(self) -- v 0.1.48
 
 		if bagObj.currencyFrame then
 			aObj:SecureHookScript(bagObj.currencyFrame.frame, "OnShow", function(this)
-				self:skinObject("frame", {obj=this, kfs=true})
+				skinFrame(aObj:getLastChild(this)) -- decorator frame
 
-				self:Unhook(this, "OnShow")
+				aObj:Unhook(this, "OnShow")
 			end)
 			if aObj.modBtnBs then
 				local info
 				local function skinCurBtns(frame)
 					for _, cell in _G.ipairs(frame.content.cells) do
 						aObj:addButtonBorder{obj=cell.frame, relTo=cell.icon, clr="grey"}
-						info = _G.C_CurrencyInfo.GetCurrencyListInfo(cell.index)
-						cell.frame.sbb:SetShown(not info.isHeader)
+						if aObj.isRtl then
+							info = _G.C_CurrencyInfo.GetCurrencyListInfo(cell.index)
+						else
+							info = {_G.GetCurrencyListInfo(cell.index)}
+						end
+						cell.frame.sbb:SetShown(not (info.isHeader or info[2]))
 					end
 				end
 				aObj:SecureHook(bagObj.currencyFrame, "Update", function(this)
@@ -96,6 +113,20 @@ aObj.addonsToSkin.BetterBags = function(self) -- v 0.1.48
 				end)
 				skinCurBtns(bagObj.currencyFrame)
 			end
+		end
+		if bagObj.themeConfigFrame then
+			aObj:SecureHookScript(bagObj.themeConfigFrame.frame, "OnShow", function(this)
+				skinFrame(aObj:getLastChild(this)) -- decorator frame
+
+				aObj:Unhook(this, "OnShow")
+			end)
+		end
+		if bagObj.sectionConfigFrame then
+			aObj:SecureHookScript(bagObj.sectionConfigFrame.frame, "OnShow", function(this)
+				skinFrame(aObj:getLastChild(this)) -- decorator frame
+
+				aObj:Unhook(this, "OnShow")
+			end)
 		end
 
 	end
@@ -106,7 +137,7 @@ aObj.addonsToSkin.BetterBags = function(self) -- v 0.1.48
 	local search = bBag:GetModule("Search", true)
 	self:SecureHookScript(search.searchFrame.frame, "OnShow", function(this)
 		this:DisableDrawLayer("BORDER")
-		self:skinObject("frame", {obj=this, kfs=true})
+		self:skinObject("frame", {obj=this, kfs=true, ofs=0})
 
 		self:Unhook(this, "OnShow")
 	end)
