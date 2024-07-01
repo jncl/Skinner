@@ -1,3 +1,12 @@
+beta10.55006.1
+Jncl:
+	Updated ToDo.txt files
+	Updated Change_History.txt
+	Updated version numbers
+	Fix Classiv PetStableFrame not being skinned
+	Updated Retail LootFrames
+	Updated LFD/LFG frames
+	
 beta10.54904.2
 Jncl:
 	Updated ToDo.txt files
