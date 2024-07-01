@@ -6,7 +6,7 @@ ToDos
 	x				- indicates nothing to change
 	¶ is Alt+7		- indicates localisation changes required
 	#nnn			- Indicates Issue number
-	S/N/I/U/O/E/W	- Skin request/New Version/Issue(Bug)/Unobsolete skin/Other changes/Classic Era/Wrath Classic
+	S/N/I/U/O/E/C/R	- Skin request/New Version/Issue(Bug)/Unobsolete Skin/Other changes/Classic Era/Cata Classic/Retail
 
 ≈		O	Rework how AddOn skins are handled
 			- replace table in AddonFrames with individual entries in each skin file
@@ -18,3 +18,9 @@ ToDos
 ≈		O	Add checks for Button state as required
 
 ≈		O	Refactor NewSkinFuncs in AddOn skins
+
+#78	√	N/R	BetterBags
+#78	√	N/E	BetterBags
+#78	√	N/C	BetterBags
+
+#79	√	N	Dominos
