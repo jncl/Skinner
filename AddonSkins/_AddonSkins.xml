@@ -32,7 +32,6 @@
 <Script file="Baganator.lua"/>
 <Script file="Baggins.lua"/>
 <Script file="Bagnon.lua"/>
-<Script file="BagSync.lua"/>
 <Script file="BankItems.lua"/>
 <Script file="Bartender4.lua"/>
 <Script file="BasicChatMods.lua"/>
