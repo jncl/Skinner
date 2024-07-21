@@ -1183,14 +1183,8 @@ aObj.SetupRetail_UIFrames = function()
 		if not self.prdb.ExpansionLandingPage or self.initialized.ExpansionLandingPage then return end
 		self.initialized.ExpansionLandingPage = true
 
-		local function skinOverlay(...)
-			local _, overlay
-			if _G.select('#', ...) == 1 then
-				overlay = ...
-			elseif _G.select('#', ...) == 2 then
-				_, overlay = ...
-			end
-			local oFrame = aObj:getChild(overlay, 1)
+		local function skinOverlay()
+			local oFrame = aObj:getChild(_G.ExpansionLandingPage.Overlay, 1)
 			oFrame.Header.TitleDivider:SetTexture(nil)
 			if oFrame.ScrollFadeOverlay then
 				oFrame.ScrollFadeOverlay:DisableDrawLayer("ARTWORK")
@@ -1227,9 +1221,7 @@ aObj.SetupRetail_UIFrames = function()
 		_G.EventRegistry:RegisterCallback("ExpansionLandingPage.OverlayChanged", skinOverlay, aObj)
 
 		self:SecureHookScript(_G.ExpansionLandingPage, "OnShow", function(this)
-			if this.overlay then
-				skinOverlay(self, this.Overlay)
-			end
+			skinOverlay(self, this.Overlay)
 
 			self:Unhook(this, "OnShow")
 		end)
@@ -1321,10 +1313,12 @@ aObj.SetupRetail_UIFrames = function()
 
 		if aObj.isTT then
 			aObj:SecureHook("GarrisonMissonListTab_SetSelected", function(tab, isSelected)
-				if isSelected then
-					aObj:setActiveTab(tab.sf)
-				else
-					aObj:setInactiveTab(tab.sf)
+				if tab.sf then
+					if isSelected then
+						aObj:setActiveTab(tab.sf)
+					else
+						aObj:setInactiveTab(tab.sf)
+					end
 				end
 			end)
 		end
@@ -1638,7 +1632,7 @@ aObj.SetupRetail_UIFrames = function()
 			skinFollowerList(this.FollowerList, "grey")
 			self:SecureHookScript(this.FollowerTab, "OnShow", function(fObj)
 				skinFollowerTraitsAndEquipment(fObj)
-				self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, fb=true, clr="sepia"})
+				self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, fb=true, ofs=-1, clr="sepia"})
 
 				self:Unhook(fObj, "OnShow")
 			end)
@@ -1666,6 +1660,7 @@ aObj.SetupRetail_UIFrames = function()
 			-- hook this to skin reagents
 			self:SecureHook("GarrisonCapacitiveDisplayFrame_Update", function(fObj, success, _)
 				if success ~= 0 then
+					if not _G.C_Garrison.GetNumPendingShipments() then return end
 					for _, btn in _G.pairs(fObj.CapacitiveDisplay.Reagents) do
 						btn.NameFrame:SetTexture(nil)
 						if self.modBtnBs then
@@ -1673,15 +1668,11 @@ aObj.SetupRetail_UIFrames = function()
 						end
 					end
 				end
-				if self.modBtns then
-					self:clrBtnBdr(fObj.StartWorkOrderButton)
-					self:clrBtnBdr(fObj.CreateAllWorkOrdersButton)
-				end
 			end)
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true})
 			if self.modBtns then
-				self:skinStdButton{obj=this.StartWorkOrderButton}
-				self:skinStdButton{obj=this.CreateAllWorkOrdersButton}
+				self:skinStdButton{obj=this.StartWorkOrderButton, sechk=true}
+				self:skinStdButton{obj=this.CreateAllWorkOrdersButton, sechk=true}
 			end
 			if self.modBtnBs then
 				self:addButtonBorder{obj=this.CapacitiveDisplay.ShipmentIconFrame, relTo=this.CapacitiveDisplay.ShipmentIconFrame.Icon}
@@ -3267,7 +3258,6 @@ aObj.SetupRetail_UIFrames = function()
 		end)
 
 	end
-
 
 	aObj.blizzFrames[ftype].RaidFrame = function(self)
 		if not self.prdb.RaidFrame or self.initialized.RaidFrame then return end
