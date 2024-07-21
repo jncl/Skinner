@@ -1,7 +1,7 @@
+-- luacheck: ignore 542 631 (empty if branch|line is too long)
 local _, aObj = ...
 -- This is a Framework
 local _G = _G
--- luacheck: ignore 542 631 (empty if branch|line is too long)
 
 local objectsToSkin = {}
 local AceGUI = _G.LibStub:GetLibrary("AceGUI-3.0", true)
@@ -82,7 +82,7 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 		-- and not obj.sknd
 		-- and not (objType:find("TSM") and obj.sknrTSM) -- check objType as TSM overlays existing objects
 		then
-			-- aObj:Debug("skinAceGUI: [%s, %s]", obj, objType)
+			aObj:Debug("skinAceGUI: [%s, %s]", obj, objType)
 
 			if objType == "Button" then
 				if aObj.modBtns then
@@ -184,7 +184,9 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 				aObj:skinObject("editbox", {obj=obj.editbox})
 				aObj:skinObject("slider", {obj=obj.slider})
 
-			elseif objType == "TreeGroup" then
+			elseif objType == "TreeGroup"
+			or objType == "WeakAurasTreeGroup"
+			then
 				aObj:skinObject("slider", {obj=obj.scrollbar})
 				aObj:skinObject("frame", {obj=obj.border, fb=true, ofs=0})
 				aObj:skinObject("frame", {obj=obj.treeframe, fb=true, ofs=0})
@@ -198,6 +200,9 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 							aObj:checkTex(btn.toggle)
 						end
 					end)
+				end
+				if objType == "WeakAurasTreeGroup" then
+					aObj:removeBackdrop(aObj:getChild(obj.treeframe, 1))
 				end
 
 			elseif objType == "Window" then
@@ -324,6 +329,7 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 			-- AuctionMaster objects
 			elseif objType == "ScrollableSimpleHTML" then
 				aObj:skinObject("slider", {obj=obj.scrollFrame.ScrollBar})
+
 			elseif objType == "EditDropdown" then
 				if aObj.modBtnBs then
 					aObj:addButtonBorder{obj=obj.button, es=12, ofs=-2}
@@ -339,6 +345,7 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 			-- GarrisonMissionCommander/OrderHallCommander/ChampionCommander objects
 			elseif objType == "GMCLayer" then
 				aObj:skinObject("frame", {obj=obj.frame, ofs=-4})
+
 			elseif objType == "GMCMissionButton"
 			or objType == "GMCSlimMissionButton"
 			or objType == "OHCMissionButton"
@@ -393,6 +400,7 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 				then
 					aObj:skinOtherButton{obj=obj.hidebutton, text=self.modUIBtns.minus}
 				end
+
 			elseif objType == "IconButton" then
 				if aObj.modBtns then
 					aObj:skinStdButton{obj=obj.frame, schk=true}
@@ -414,18 +422,19 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 			or objType == "LSM30_Statusbar_Overlay-Item-Toggle"
 			-- WeakAuras objects
 			or objType == "WeakAurasInlineGroup"
-			or objType == "WeakAurasTreeGroup"
 			or objType == "WeakAurasAnchorButtons"
 			or objType == "WeakAurasExpandAnchor"
 			or objType == "WeakAurasExpandSmall"
 			or objType == "WeakAurasIcon"
 			or objType == "WeakAurasIconButton"
 			or objType == "WeakAurasImportButton"
+			or objType == "WeakAurasInput"
 			or objType == "WeakAurasMiniTalent_Dragonflight"
 			or objType == "WeakAurasMiniTalent_Wrath"
 			or objType == "WeakAurasPendingInstallButton"
 			or objType == "WeakAurasPendingUpdateButton"
 			or objType == "WeakAurasProgressBar"
+			or objType == "WeakAurasTemplateGroup"
 			or objType == "WeakAurasTextureButton"
 			or objType == "WeakAurasToolbarButton"
 			or objType == "WeakAurasTwoColumnDropdown"
@@ -463,6 +472,8 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 			else
 				aObj:Debug("AceGUI, unmatched type - %s", objType)
 			end
+			-- trigger any registered callbacks
+			aObj.callbacks:Fire("Ace3_" .. objType, obj)
 		end
 	end
 

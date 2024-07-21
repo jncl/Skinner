@@ -2,7 +2,7 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("WeakAuras") then return end
 local _G = _G
 
-aObj.addonsToSkin.WeakAuras = function(self) -- v 5.12.8
+aObj.addonsToSkin.WeakAuras = function(self) -- v 5.15.0
 
 	if _G.WeakAuras.ShowDisplayTooltip then
 		-- hook this to skin the WeakAuras added elements
@@ -98,7 +98,7 @@ aObj.addonsToSkin.WeakAuras = function(self) -- v 5.12.8
 
 end
 
-aObj.lodAddons.WeakAurasOptions = function(self) -- v 5.12.8
+aObj.lodAddons.WeakAurasOptions = function(self) -- v 5.15.0
 
 	-- wait until frame is created
 	if not _G.WeakAurasOptions then
@@ -121,37 +121,83 @@ aObj.lodAddons.WeakAurasOptions = function(self) -- v 5.12.8
 		if this.container.content:GetParent().sf then
 			this.container.content:GetParent().sf:Hide()
 		end
-		-- additional frames
-		local tipPopup = self:getChild(_G.WeakAurasOptions, 8)
-		local eb = self:getChild(tipPopup, 1)
-		if eb
-		and eb:GetObjectType() == "EditBox"
-		then
-			self:skinObject("editbox", {obj=eb, y1=-4, y2=4})
-			self:skinObject("frame", {obj=tipPopup, kfs=true, ofs=0})
-		end
-		self:skinObject("editbox", {obj=self:getChild(this.iconPicker.frame, 2), ofs=4})
-		self:skinObject("frame", {obj=_G.WeakAurasSnippets, kfs=true})
-		if self.modBtns then
-			self:skinStdButton{obj=self:getPenultimateChild(this.texturePicker.frame)}
-			self:skinStdButton{obj=self:getLastChild(this.texturePicker.frame)}
-			self:skinStdButton{obj=self:getPenultimateChild(this.iconPicker.frame)}
-			self:skinStdButton{obj=self:getLastChild(this.iconPicker.frame)}
-			self:skinStdButton{obj=self:getPenultimateChild(this.modelPicker.frame)}
-			self:skinStdButton{obj=self:getLastChild(this.modelPicker.frame)}
-			self:skinStdButton{obj=self:getLastChild(this.importexport.frame)}
-			self:skinStdButton{obj=self:getLastChild(this.codereview.frame)}
-			self:skinStdButton{obj=self:getChild(this.texteditor.frame, 2)}
-			self:skinStdButton{obj=self:getChild(this.texteditor.frame, 3)}
-			self:skinStdButton{obj=self:getChild(this.texteditor.frame, 4)}
-			self:skinStdButton{obj=_G.WASettingsButton}
-			self:skinStdButton{obj=_G.WASnippetsButton}
-			self:skinStdButton{obj=self:getChild(_G.WeakAurasSnippets, _G.WeakAurasSnippets:GetNumChildren() - 2)} -- AddSnippetButton
-		end
 
 		self:Unhook(this, "OnShow")
 	end)
 	self:checkShown(_G.WeakAurasOptions)
+
+	local function skinKids(frame)
+		for _, child in _G.ipairs_reverse{frame:GetChildren()} do
+			if child:IsObjectType("EditBox") then
+				aObj:skinObject("editbox", {obj=child, ofs=4})
+			elseif child:IsObjectType("Button")
+			and not child.obj
+			and aObj.modBtns
+			then
+				aObj:skinStdButton{obj=child}
+			end
+		end
+	end
+	-- IconPicker
+	self.RegisterCallback("WeakAurasOptions", "Ace3_InlineGroup", function(_, iGrp)
+		_G.C_Timer.After(0.1, function() -- wait for object to be populated
+			if iGrp.frame:GetParent() == _G.WeakAurasOptions then
+				skinKids(iGrp.frame)
+				self.UnregisterCallback("WeakAurasOptions", "Ace3_InlineGroup")
+			end
+		end)
+	end)
+	-- ImportExport, TextEditor, CodeReview, DebugLog
+	self.RegisterCallback("WeakAurasOptions", "Ace3_WeakAurasInlineGroup", function(_, waiGrp)
+		_G.C_Timer.After(0.1, function()
+			skinKids(waiGrp.frame)
+			-- Code Editor frame
+			if _G.WeakAurasSnippets then
+				self:secureHookScript(_G.WeakAurasSnippets, "OnShow", function(this)
+					self:skinObject("frame", {obj=this, kfs=true, cb=true})
+					if self.modBtns then
+						self:skinStdButton{obj=self:getChild(this, 5)} -- AddSnippetButton
+					end
+
+					self:Unhook(this, "OnShow")
+				end)
+				self:secureHookScript(_G.WeakAurasAPISearchFrame, "OnShow", function(this)
+					self:skinObject("editbox", {obj=_G.WeakAurasAPISearchFilterInput, si=true})
+					self:skinObject("frame", {obj=this, kfs=true, cb=true})
+
+					self:Unhook(this, "OnShow")
+				end)
+				if self.modBtns then
+					self:skinStdButton{obj=_G.WASettingsButton}
+				end
+			end
+		end)
+	end)
+	-- Template
+	self.RegisterCallback("WeakAurasOptions", "Ace3_WeakAurasTemplateGroup", function(_, watGrp)
+		_G.C_Timer.After(0.1, function()
+			skinKids(watGrp.frame)
+			self.UnregisterCallback("WeakAurasOptions", "Ace3_WeakAurasTemplateGroup")
+		end)
+	end)
+	-- UpdateFrame
+	self.RegisterCallback("WeakAurasOptions", "Ace3_ScrollFrame", function(_, sFrm)
+		_G.C_Timer.After(0.1, function()
+			if sFrm.frame:GetParent() == _G.WeakAurasOptions then
+				skinKids(sFrm.frame)
+				self.UnregisterCallback("WeakAurasOptions", "Ace3_ScrollFrame")
+			end
+		end)
+	end)
+	-- TexturePicker, ModelPicker
+	self.RegisterCallback("WeakAurasOptions", "Ace3_SimpleGroup", function(_, sGrp)
+		_G.C_Timer.After(0.1, function() -- wait for object to be populated
+			if sGrp.frame:GetParent() == _G.WeakAurasOptions then
+				skinKids(sGrp.frame)
+			end
+			-- TODO: Add button border to .textureWidgets
+		end)
+	end)
 
 	-- Templates
 	if self.modBtns then
@@ -172,6 +218,12 @@ aObj.lodAddons.WeakAurasOptions = function(self) -- v 5.12.8
 	self:SecureHookScript(_G.WeakAurasOptions.tipPopup, "OnShow", function(this)
 		self:skinObject("editbox", {obj=self:getChild(this, 1), y1=-4, y2=4})
 		self:skinObject("frame", {obj=this, kfs=true, ofs=0})
+
+		self:Unhook(this, "OnShow")
+	end)
+
+	self:SecureHookScript(_G.WeakAurasOptions.dynamicTextCodesFrame, "OnShow", function(this)
+		self:skinObject("frame", {obj=this, kfs=true, cb=true})
 
 		self:Unhook(this, "OnShow")
 	end)

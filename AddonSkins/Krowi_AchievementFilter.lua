@@ -2,7 +2,7 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("Krowi_AchievementFilter") then return end
 local _G = _G
 
-aObj.addonsToSkin.Krowi_AchievementFilter = function(self) -- v 68.1
+aObj.addonsToSkin.Krowi_AchievementFilter = function(self) -- v 73.6
 
 	local function skinAlertFrame(frame)
 		frame.animIn:Stop()
@@ -125,9 +125,13 @@ aObj.addonsToSkin.Krowi_AchievementFilter = function(self) -- v 68.1
 		if self.modBtns then
 			self:skinStdButton{obj=_G.KrowiAF_AchievementFrameFilterButton, ofs=0, clr="grey"}
 			self:skinStdButton{obj=_G.KrowiAF_SearchOptionsMenuButton, ofs=0, clr="grey"}
-			-- self:moveObject{obj=_G.KrowiAF_SearchOptionsMenuButton, x=4}
 		end
-		self:moveObject{obj=_G.KrowiAF_AchievementCalendarButton, x=10, y=0}
+		self:moveObject{obj=_G.KrowiAF_AchievementFrameCalendarButton, x=10, y=0}
+		self:moveObject{obj=_G.KrowiAF_AchievementFrameBrowsingHistoryNextAchievementButton, x=0, y=20}
+		if self.modBtnBs then
+			self:addButtonBorder{obj=_G.KrowiAF_AchievementFrameBrowsingHistoryPrevAchievementButton,  clr="grey", ofs=-2, x1=1}
+			self:addButtonBorder{obj=_G.KrowiAF_AchievementFrameBrowsingHistoryNextAchievementButton,  clr="grey", ofs=-2, x1=1}
+		end
 		self:skinObject("editbox", {obj=_G.KrowiAF_SearchBoxFrame, si=true, y1=-4, y2=4})
 
 		-- TODO: handle search options menu button
