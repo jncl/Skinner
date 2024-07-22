@@ -1,3 +1,11 @@
+beta10.55664.1
+Jncl:
+	Updated ToDo.txt files
+	Updated version numbers
+	Updated ExpansionLandingPage & GarrisonCapacitiveDisplayFrame, closes #84
+	Updated Ace3, Krowi_AchievementFilter, MasterPlan & WeakAuras skins, closes #81, closes #82, closes #83
+	Obsoleted BagSync, closes #80
+	
 beta10.55006.1
 Jncl:
 	Updated ToDo.txt files
