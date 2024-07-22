@@ -19,13 +19,4 @@ ToDos
 
 ≈		O	Refactor NewSkinFuncs in AddOn skins
 
-#80	√	I	BagSync
-
-#81	√	I	WeakAuras
-
-#82	√	I	MasterPlan
-
-#83	√	I	Krowi_AchievementFilter	
-
-#84	√	I	ExpansionLandingPage
-	≈	I	GarrisonCapacitiveDisplayFrame
+#85	√	I GarrisonCapacitiveDisplayFrame
