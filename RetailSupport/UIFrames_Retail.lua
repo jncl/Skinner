@@ -1662,9 +1662,14 @@ aObj.SetupRetail_UIFrames = function()
 				if success ~= 0 then
 					if not _G.C_Garrison.GetNumPendingShipments() then return end
 					for _, btn in _G.pairs(fObj.CapacitiveDisplay.Reagents) do
-						btn.NameFrame:SetTexture(nil)
-						if self.modBtnBs then
-							self:addButtonBorder{obj=btn, relTo=btn.Icon}
+						if _G.type(btn) == "table"
+						and _G.type(_G.rawget(btn, 0)) ~= "userdata"
+						and btn:IsObjectType("Button")
+						then
+							btn.NameFrame:SetTexture(nil)
+							if self.modBtnBs then
+								self:addButtonBorder{obj=btn, relTo=btn.Icon}
+							end
 						end
 					end
 				end
