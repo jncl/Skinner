@@ -13,8 +13,8 @@ aObj.SetupRetail_NPCFrames = function()
 		self.initialized.AlliedRacesUI = true
 
 		self:SecureHookScript(_G.AlliedRacesFrame, "OnShow", function(this)
-				this.ModelScene:DisableDrawLayer("BORDER")
-				this.ModelScene:DisableDrawLayer("ARTWORK")
+			this.ModelScene:DisableDrawLayer("BORDER")
+			this.ModelScene:DisableDrawLayer("ARTWORK")
 			this.RaceInfoFrame.ScrollFrame.Child.RaceDescriptionText:SetTextColor(self.BT:GetRGB())
 			this.RaceInfoFrame.ScrollFrame.Child.ObjectivesFrame.Description:SetTextColor(self.BT:GetRGB())
 			this.RaceInfoFrame.ScrollFrame.Child.RacialTraitsLabel:SetTextColor(self.HT:GetRGB())
@@ -78,11 +78,8 @@ aObj.SetupRetail_NPCFrames = function()
 
 			self:SecureHookScript(this.SearchBar, "OnShow", function(fObj)
 				self:skinObject("editbox", {obj=fObj.SearchBox, fType=ftype, si=true})
-				self:skinObject("editbox", {obj=fObj.FilterButton.LevelRangeFrame.MinLevel, fType=ftype})
-				self:skinObject("editbox", {obj=fObj.FilterButton.LevelRangeFrame.MaxLevel, fType=ftype})
+				self:skinObject("ddbutton", {obj=fObj.FilterButton, fType=ftype, filter=true, filtercb="ClearFiltersButton"})
 				if self.modBtns then
-					self:skinCloseButton{obj=fObj.FilterButton.ClearFiltersButton, fType=ftype, noSkin=true}
-					self:skinStdButton{obj=fObj.FilterButton, fType=ftype, clr="grey"}
 					self:skinStdButton{obj=fObj.FavoritesSearchButton, fType=ftype, ofs=-2}
 					self:skinStdButton{obj=fObj.SearchButton, fType=ftype}
 				end
@@ -228,7 +225,7 @@ aObj.SetupRetail_NPCFrames = function()
 				aObj:removeRegions(frame.ItemDisplay, {3})
 				aObj:skinObject("editbox", {obj=frame.QuantityInput.InputBox, fType=ftype, ofs=0})
 				skinPriceInp(frame.PriceInput.MoneyInputFrame)
-				aObj:skinObject("dropdown", {obj=frame.DurationDropDown.DropDown, fType=ftype, lrgTpl=true, x1=0, y1=1, x2=-1, y2=3})
+				aObj:skinObject("ddbutton", {obj=frame.Duration.Dropdown, fType=ftype})
 				if aObj.modBtns then
 					aObj:skinStdButton{obj=frame.QuantityInput.MaxButton, fType=ftype, sechk=true}
 					aObj:skinStdButton{obj=frame.PostButton, fType=ftype, sechk=true}
@@ -370,11 +367,13 @@ aObj.SetupRetail_NPCFrames = function()
 			if self.modBtns then
 				 self:skinStdButton{obj=_G.BankFramePurchaseButton}
 			end
-			self:removeInset(_G.BankFrameMoneyFrameInset)
 			_G.BankFrameMoneyFrameBorder:DisableDrawLayer("BACKGROUND")
+			-- Tabs (Bottom)
 			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype})
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true, cb=true})
-			self:keepFontStrings(_G.BankSlotsFrame)
+			self:keepFontStrings(_G.BankSlotsFrame) -- bank slots textures
+			self:removeNineSlice(_G.BankSlotsFrame.NineSlice)
+			self:keepFontStrings(_G.BankSlotsFrame.EdgeShadows)
 			if self.modBtnBs then
 				self:addButtonBorder{obj=_G.BankItemAutoSortButton, ofs=0, y1=1}
 				-- add button borders to bank items
@@ -392,28 +391,122 @@ aObj.SetupRetail_NPCFrames = function()
 				-- colour button borders
 				_G.UpdateBagSlotStatus()
 			end
-			-- ReagentBankFrame
-			_G.ReagentBankFrame:DisableDrawLayer("ARTWORK") -- bank slots texture
-			_G.ReagentBankFrame:DisableDrawLayer("BACKGROUND") -- bank slots shadow texture
-			_G.ReagentBankFrame:DisableDrawLayer("BORDER") -- shadow textures
-			_G.ReagentBankFrame.UnlockInfo:DisableDrawLayer("BORDER")
-			_G.RaiseFrameLevelByTwo(_G.ReagentBankFrame.UnlockInfo) -- hide the slot button textures
-			if self.modBtns then
-				self:skinStdButton{obj=_G.ReagentBankFrameUnlockInfoPurchaseButton, fType=ftype}
-				self:skinStdButton{obj=_G.ReagentBankFrame.DespositButton, fType=ftype, schk=true}
-			end
-			if self.modBtnBs then
-				-- add button borders to reagent bank items
-				self:SecureHookScript(_G.ReagentBankFrame, "OnShow", function(fObj)
+
+			self:SecureHookScript(_G.ReagentBankFrame, "OnShow", function(fObj)
+				self:removeNineSlice(fObj.NineSlice)
+				self:keepFontStrings(fObj.EdgeShadows)
+				fObj:DisableDrawLayer("ARTWORK") -- bank slots texture
+				fObj:DisableDrawLayer("BACKGROUND") -- bank slots shadow texture
+				fObj.UnlockInfo:DisableDrawLayer("BORDER")
+				_G.RaiseFrameLevelByTwo(fObj.UnlockInfo) -- hide the slot button textures
+				if self.modBtns then
+					self:skinStdButton{obj=_G.ReagentBankFrameUnlockInfoPurchaseButton, fType=ftype}
+					self:skinStdButton{obj=fObj.DespositButton, fType=ftype, schk=true}
+				end
+				if self.modBtnBs then
 					for i = 1, fObj.size do
 						self:addButtonBorder{obj=fObj["Item" .. i], fType=ftype, ibt=true}
 						-- force quality border update
 						_G.BankFrameItemButton_Update(fObj["Item" .. i])
 					end
+				end
 
-					self:Unhook(fObj, "OnShow")
+				self:Unhook(fObj, "OnShow")
+			end)
+			self:checkShown(_G.ReagentBankFrame)
+
+			self:SecureHookScript(_G.AccountBankPanel, "OnShow", function(fObj)
+				self:removeNineSlice(fObj.NineSlice)
+				self:keepFontStrings(fObj.EdgeShadows)
+				fObj.PurchaseTab.Border:SetTexture(nil)
+				-- Tabs (Side)
+				local function skinSideTabs(frame)
+					for tab in frame.bankTabPool:EnumerateActive() do
+						tab.Border:SetTexture(nil)
+						if aObj.modBtnBs then
+							 aObj:addButtonBorder{obj=tab, relTo=tab.Icon}
+						end
+					end
+				end
+				self:SecureHook(fObj, "RefreshBankTabs", function(frame)
+					skinSideTabs(frame)
 				end)
-			end
+				skinSideTabs(fObj)
+				if self.modBtnBs then
+					self:addButtonBorder{obj=fObj.PurchaseTab, relTo=fObj.PurchaseTab.Icon}
+					for btn in fObj.itemButtonPool:EnumerateActive() do
+						btn.Background:SetTexture(nil)
+						self:addButtonBorder{obj=btn, fType=ftype, ibt=true}
+					end
+				end
+
+				self:SecureHookScript(fObj.MoneyFrame, "OnShow", function(frame)
+					self:keepFontStrings(frame.Border)
+					if self.modBtns then
+						self:skinStdButton{obj=frame.WithdrawButton, fType=ftype, sechk=true}
+						self:skinStdButton{obj=frame.DepositButton, fType=ftype}
+					end
+
+					self:Unhook(frame, "OnShow")
+				end)
+				self:checkShown(fObj.MoneyFrame)
+
+				self:SecureHookScript(fObj.ItemDepositFrame, "OnShow", function(frame)
+					if self.modBtns then
+						self:skinStdButton{obj=frame.DepositButton, fType=ftype}
+					end
+					if self.modChkBtns then
+						self:skinCheckButton{obj=frame.IncludeReagentsCheckbox, fType=ftype}
+						frame.IncludeReagentsCheckbox:SetSize(24, 24)
+					end
+
+					self:Unhook(frame, "OnShow")
+				end)
+				self:checkShown(fObj.ItemDepositFrame)
+
+				self:SecureHookScript(fObj.PurchasePrompt, "OnShow", function(frame)
+					self:skinObject("frame", {obj=frame, fType=ftype, kfs=true, clr="gold"})
+					if self.modBtns then
+						self:skinStdButton{obj=frame.TabCostFrame.PurchaseButton, fType=ftype}
+					end
+
+					self:Unhook(frame, "OnShow")
+				end)
+				self:checkShown(fObj.PurchasePrompt)
+
+				self:SecureHookScript(fObj.LockPrompt, "OnShow", function(frame)
+					self:skinObject("frame", {obj=fObj.LockPrompt, fType=ftype, kfs=true, fb=true, ofs=1, x1=3, x2=-3, clr="gold"})
+					fObj.LockPrompt.Background:SetAlpha(1)
+
+					self:Unhook(frame, "OnShow")
+				end)
+				self:checkShown(fObj.LockPrompt)
+
+				self:SecureHookScript(fObj.TabSettingsMenu, "OnShow", function(frame)
+					self:skinIconSelector(frame, ftype)
+					-- frame.DepositSettingsMenu.Separator:SetTexture(nil)
+					self:removeRegions(frame.DepositSettingsMenu, {4}) -- Separator texture
+					self:skinObject("ddbutton", {obj=frame.DepositSettingsMenu.ExpansionFilterDropdown, fType=ftype})
+					self:skinObject("frame", {obj=frame, fType=ftype, kfs=true})
+					if self.modChkBtns then
+						local function skinCB(cBtn)
+							aObj:skinCheckButton{obj=cBtn, fType=ftype}
+							cBtn:SetSize(20, 20)
+						end
+						skinCB(frame.DepositSettingsMenu.AssignEquipmentCheckbox)
+						skinCB(frame.DepositSettingsMenu.AssignConsumablesCheckbox)
+						skinCB(frame.DepositSettingsMenu.AssignProfessionGoodsCheckbox)
+						skinCB(frame.DepositSettingsMenu.AssignReagentsCheckbox)
+						skinCB(frame.DepositSettingsMenu.AssignJunkCheckbox)
+						skinCB(frame.DepositSettingsMenu.IgnoreCleanUpCheckbox)
+					end
+
+					self:Unhook(frame, "OnShow")
+				end)
+
+				self:Unhook(fObj, "OnShow")
+			end)
+			self:checkShown(_G.AccountBankPanel)
 
 			self:Unhook(this, "OnShow")
 		end)
@@ -707,7 +800,7 @@ aObj.SetupRetail_NPCFrames = function()
 
 		self:SecureHookScript(_G.ItemInteractionFrame, "OnShow", function(this)
 			-- use module to make button slot visible
-			self.modUIBtns:addButtonBorder{obj=this.ItemSlot, relTo=this.ItemSlot.Icon, clr="grey"}
+			self.modUIBtns:addButtonBorder{obj=this.ItemSlot, relTo=this.ItemSlot.Icon}
 			this.ItemConversionFrame.ItemConversionInputSlot.ButtonFrame:SetAlpha(0) -- N.B. Texture changed in code
 			this.ButtonFrame:DisableDrawLayer("BORDER")
 			this.ButtonFrame.MoneyFrameEdge:DisableDrawLayer("BACKGROUND")
@@ -730,9 +823,9 @@ aObj.SetupRetail_NPCFrames = function()
 
 		self:SecureHookScript(_G.ItemUpgradeFrame, "OnShow", function(this)
 			this.UpgradeItemButton.ButtonFrame:SetTexture(nil)
-			self:skinObject("dropdown", {obj=this.ItemInfo.Dropdown, fType=ftype})
-			self:skinObject("frame", {obj=this.LeftItemPreviewFrame, fType=ftype, fb=true, clr="grey"})
-			self:skinObject("frame", {obj=this.RightItemPreviewFrame, fType=ftype, fb=true, clr="grey"})
+			self:skinObject("ddbutton", {obj=this.ItemInfo.Dropdown, fType=ftype})
+			self:skinObject("frame", {obj=this.LeftItemPreviewFrame, fType=ftype, fb=true})
+			self:skinObject("frame", {obj=this.RightItemPreviewFrame, fType=ftype, fb=true})
 			this.PlayerCurrenciesBorder:DisableDrawLayer("background")
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, x2=3})
 			if self.modBtns then
@@ -783,6 +876,7 @@ aObj.SetupRetail_NPCFrames = function()
 		self.initialized.PerksProgram = true
 
 		self:SecureHookScript(_G.PerksProgramFrame, "OnShow", function(this)
+			self:skinObject("ddbutton", {obj=this.ProductsFrame.PerksProgramFilter, fType=ftype})
 			self:removeNineSlice(this.ProductsFrame.ProductsScrollBoxContainer.Border)
 			self:skinObject("frame", {obj=this.ProductsFrame.ProductsScrollBoxContainer, fType=ftype, kfs=true, x1=-4})
 			self:skinObject("scrollbar", {obj=this.ProductsFrame.ProductsScrollBoxContainer.ScrollBar, fType=ftype})
@@ -977,7 +1071,7 @@ aObj.SetupRetail_NPCFrames = function()
 			_G.ClassTrainerStatusBarMiddle:SetAlpha(0)
 			_G.ClassTrainerStatusBarSkillRank:SetPoint("CENTER", _G.ClassTrainerStatusBar) -- Blizzard bug
 			self:skinObject("statusbar", {obj=_G.ClassTrainerStatusBar, fi=0, bg=_G.ClassTrainerStatusBarBackground})
-			self:skinObject("dropdown", {obj=_G.ClassTrainerFrameFilterDropDown, fType=ftype})
+			self:skinObject("ddbutton", {obj=this.FilterDropdown, fType=ftype})
 			self:removeMagicBtnTex(_G.ClassTrainerTrainButton)
 			this.skillStepButton:GetNormalTexture():SetTexture(nil)
 			self:skinObject("scrollbar", {obj=this.ScrollBar, fType=ftype})
@@ -1005,11 +1099,11 @@ aObj.SetupRetail_NPCFrames = function()
 				if self:isAddOnLoaded("Leatrix_Plus")
 				and _G.LeaPlusDB["ShowTrainAllButton"] == "On"
 				then
-					self:skinStdButton{obj=_G.LeaPlusGlobalTrainAllButton, sechk=true} -- Train All button
+					self:skinStdButton{obj=_G.LeaPlusGlobalTrainAllButton, fType=ftype, sechk=true} -- Train All button
 				end
 			end
 			if self.modBtnBs then
-				 self:addButtonBorder{obj=this.skillStepButton, relTo=this.skillStepButton.icon}
+				 self:addButtonBorder{obj=this.skillStepButton, fType=ftype, relTo=this.skillStepButton.icon}
 			end
 
 			self:Unhook(this, "OnShow")

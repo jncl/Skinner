@@ -1301,7 +1301,6 @@ aObj.SetupOptions = function(self)
 		["Raid UI"]           = true,
 		["Ready Check"]       = {suff = "Frame"},
 		["Role Poll Popup"]   = not self.isClscERA and true or nil,
-		["SpellBook Frame"]   = true,
 		["Trade Frame"]       = true,
 	}
 	self:setupFramesOptions(pfOptTab, "Player")
@@ -1326,6 +1325,7 @@ aObj.SetupOptions = function(self)
 		["Item Text"]             = {suff = "Frame"},
 		["Macro UI"]              = {desc = "Macros UI"},
 		["Mail Frame"]            = true,
+		["Menu"]                  = self.isRtl and {desc = "Dropdown Frames"} or nil,
 		["Menu Frames"]           = true,
 		["Move Pad"]              = true,
 		["Movie Frame"]           = true,
@@ -1333,7 +1333,7 @@ aObj.SetupOptions = function(self)
 		["Navigation Bar"]        = not self.isClscERA and true or nil,
 		["Override Action Bar"]   = not self.isClscERA and {desc = "Vehicle UI"} or nil,
 		["PTR Feedback"]          = _G.PTR_IssueReporter and {suff = "Frames"} or nil,
-		["PVE Frame"]             = {desc = "Group Finder Frame"},
+		["PVE Frame"]             = not self.isClscERA and {desc = "Group Finder Frame"} or nil,
 		["Queue Status Frame"]    = true,
 		["Raid Frame"]            = true,
 		["Report Frame"]          = true,
@@ -1344,7 +1344,7 @@ aObj.SetupOptions = function(self)
 		["Text To Speech Frame"]  = true,
 		["Time Manager"]          = {suff = "Frame"},
 		["Tutorial"]              = {suff = "Frame"},
-		["UI DropDown Menu"]      = {desc = "DropDown Panels"},
+		["UI DropDown Menu"]      = not self.isRtl and {desc = "DropDown Panels"} or nil,
 		["UI Widgets"]            = true,
 		["UnitPopup"]             = {desc = "Unit Popups"},
 	}

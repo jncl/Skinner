@@ -105,7 +105,7 @@ aObj.blizzFrames[ftype].MerchantFrame = function(self)
 		end
 		_G.MerchantBuyBackItemNameFrame:SetTexture(nil)
 		if self.isRtl then
-			self:skinObject("dropdown", {obj=_G.MerchantFrameLootFilter, fType=ftype})
+			self:skinObject("ddbutton", {obj=_G.MerchantFrame.FilterDropdown, fType=ftype})
 			self:removeInset(_G.MerchantExtraCurrencyInset)
 			_G.MerchantExtraCurrencyBg:DisableDrawLayer("BACKGROUND")
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, y2=-2})

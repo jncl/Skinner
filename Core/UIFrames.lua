@@ -35,6 +35,7 @@ aObj.blizzFrames[ftype].AddonList = function(self)
 				end
 			end
 			_G.ScrollUtil.AddAcquiredFrameCallback(this.ScrollBox, skinElement, aObj, true)
+			self:skinObject("ddbutton", {obj=this.Dropdown, fType=ftype})
 		else
 			for i = 1, _G.MAX_ADDONS_DISPLAYED do
 				if self.modBtns then
@@ -45,8 +46,8 @@ aObj.blizzFrames[ftype].AddonList = function(self)
 				end
 			end
 			self:skinObject("slider", {obj=_G.AddonListScrollFrame.ScrollBar, fType=ftype, rpTex="background"})
+			self:skinObject("dropdown", {obj=_G.AddonCharacterDropDown, fType=ftype, x2=109})
 		end
-		self:skinObject("dropdown", {obj=_G.AddonCharacterDropDown, fType=ftype, x2=109})
 		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, x2=self.isClsc and 1})
 		if self.modBtns then
 			self:skinStdButton{obj=this.CancelButton}
@@ -403,11 +404,15 @@ if not aObj.isClscERA then
 
 		self:SecureHookScript(_G.CalendarFrame, "OnShow", function(this)
 			_G.CalendarTodayFrame:DisableDrawLayer("BORDER")
-			self:keepFontStrings(_G.CalendarFilterFrame)
+			if self.isRtl then
+				self:skinObject("ddbutton", {obj=this.FilterButton, fType=ftype, filter=true})
+			else
+				self:keepFontStrings(_G.CalendarFilterFrame)
+				self:skinObject("frame", {obj=_G.CalendarContextMenu, fType=ftype}) -- pseudo tooltip
+				self:skinObject("frame", {obj=_G.CalendarInviteStatusContextMenu, fType=ftype}) -- pseudo tooltip
+			end
 			self:moveObject{obj=_G.CalendarCloseButton, y=14}
 			self:adjHeight{obj=_G.CalendarCloseButton, adj=-2}
-			self:skinObject("frame", {obj=_G.CalendarContextMenu, fType=ftype}) -- pseudo tooltip
-			self:skinObject("frame", {obj=_G.CalendarInviteStatusContextMenu, fType=ftype}) -- pseudo tooltip
 			-- remove texture from day buttons
 			for i = 1, 7 * 6 do
 				_G["CalendarDayButton" .. i]:GetNormalTexture():SetTexture(nil)
@@ -473,12 +478,21 @@ if not aObj.isClscERA then
 			self:removeNineSlice(this.Border)
 			_G.CalendarCreateEventIcon:SetAlpha(1) -- show event icon
 			self:skinObject("editbox", {obj=_G.CalendarCreateEventTitleEdit, fType=ftype})
-			self:skinObject("dropdown", {obj=_G.CalendarCreateEventCommunityDropDown, fType=ftype})
-			self:skinObject("dropdown", {obj=_G.CalendarCreateEventTypeDropDown, fType=ftype})
-			self:skinObject("dropdown", {obj=_G.CalendarCreateEventHourDropDown, fType=ftype, x2=-6})
-			self:skinObject("dropdown", {obj=_G.CalendarCreateEventMinuteDropDown, fType=ftype, x2=-6})
-			self:skinObject("dropdown", {obj=_G.CalendarCreateEventAMPMDropDown, fType=ftype})
-			self:skinObject("dropdown", {obj=_G.CalendarCreateEventDifficultyOptionDropDown, fType=ftype})
+			if self.isRtl then
+				self:skinObject("ddbutton", {obj=this.EventTypeDropdown, fType=ftype})
+				self:skinObject("ddbutton", {obj=this.HourDropdown, fType=ftype})
+				self:skinObject("ddbutton", {obj=this.MinuteDropdown, fType=ftype})
+				self:skinObject("ddbutton", {obj=this.AMPMDropdown, fType=ftype})
+				self:skinObject("ddbutton", {obj=this.DifficultyOptionDropdown, fType=ftype})
+				self:skinObject("ddbutton", {obj=this.CommunityDropdown, fType=ftype})
+			else
+				self:skinObject("dropdown", {obj=_G.CalendarCreateEventCommunityDropDown, fType=ftype})
+				self:skinObject("dropdown", {obj=_G.CalendarCreateEventTypeDropDown, fType=ftype})
+				self:skinObject("dropdown", {obj=_G.CalendarCreateEventHourDropDown, fType=ftype, x2=-6})
+				self:skinObject("dropdown", {obj=_G.CalendarCreateEventMinuteDropDown, fType=ftype, x2=-6})
+				self:skinObject("dropdown", {obj=_G.CalendarCreateEventAMPMDropDown, fType=ftype})
+				self:skinObject("dropdown", {obj=_G.CalendarCreateEventDifficultyOptionDropDown, fType=ftype})
+			end
 			self:skinObject("frame", {obj=_G.CalendarCreateEventDescriptionContainer, fType=ftype, fb=true})
 			self:skinObject("scrollbar", {obj=_G.CalendarCreateEventDescriptionContainer.ScrollBar, fType=ftype})
 			self:keepFontStrings(_G.CalendarCreateEventInviteListSection)
@@ -506,10 +520,15 @@ if not aObj.isClscERA then
 
 		self:SecureHookScript(_G.CalendarMassInviteFrame, "OnShow", function(this)
 			self:removeNineSlice(this.Border)
-			self:skinObject("dropdown", {obj=_G.CalendarMassInviteCommunityDropDown, fType=ftype})
+			if self.isRtl then
+				self:skinObject("ddbutton", {obj=this.CommunityDropdown, fType=ftype})
+				self:skinObject("ddbutton", {obj=this.RankDropdown, fType=ftype})
+			else
+				self:skinObject("dropdown", {obj=_G.CalendarMassInviteCommunityDropDown, fType=ftype})
+				self:skinObject("dropdown", {obj=_G.CalendarMassInviteRankMenu, fType=ftype})
+			end
 			self:skinObject("editbox", {obj=_G.CalendarMassInviteMinLevelEdit, fType=ftype})
 			self:skinObject("editbox", {obj=_G.CalendarMassInviteMaxLevelEdit, fType=ftype})
-			self:skinObject("dropdown", {obj=_G.CalendarMassInviteRankMenu, fType=ftype})
 			self:removeRegions(_G.CalendarMassInviteCloseButton, {5})
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true, cb=true, ofs=-3, y2=20})
 			if self.modBtns then
@@ -710,6 +729,9 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 		self:checkShown(_G.ChatConfigBackgroundFrame)
 
 		local function skinCB(cBox)
+			if aObj.isRtl then
+				cBox = cBox:gsub("CheckBox", "Checkbox")
+			end
 			if _G[cBox].NineSlice then
 				aObj:removeNineSlice(_G[cBox].NineSlice)
 			end
@@ -720,7 +742,7 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 					if box
 					and box:IsObjectType("CheckButton")
 					then
-						aObj:skinCheckButton{obj=box}
+						aObj:skinCheckButton{obj=box, fType=ftype}
 						if suffix == "ColorClasses" then
 							box:SetHeight(24)
 						end
@@ -730,10 +752,10 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 		end
 
 		self:SecureHookScript(_G.ChatConfigChatSettings, "OnShow", function(fObj)
-			if self.isClsc then
+			self:skinObject("frame", {obj=_G.ChatConfigChatSettingsLeft, fType=ftype, kfs=true, rns=true, fb=true, ofs=0})
+			if not self.isRtl then
 				self:skinObject("frame", {obj=_G.ChatConfigChatSettingsClassColorLegend, fType=ftype, kfs=true, rns=true, fb=true, ofs=0})
 			end
-			self:skinObject("frame", {obj=_G.ChatConfigChatSettingsLeft, fType=ftype, kfs=true, rns=true, fb=true, ofs=0})
 			if self.modChkBtns then
 				for i = 1, #_G.CHAT_CONFIG_CHAT_LEFT do
 					skinCB("ChatConfigChatSettingsLeftCheckBox" .. i)
@@ -745,10 +767,10 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 		self:checkShown(_G.ChatConfigChatSettings)
 
 		self:SecureHookScript(_G.ChatConfigChannelSettings, "OnShow", function(fObj)
-			if self.isClsc then
+			self:skinObject("frame", {obj=_G.ChatConfigChannelSettingsLeft, fType=ftype, kfs=true, rns=true, fb=true, ofs=0})
+			if not self.isRtl then
 				self:skinObject("frame", {obj=_G.ChatConfigChannelSettingsClassColorLegend, fType=ftype, kfs=true, rns=true, fb=true, ofs=0})
 			end
-			self:skinObject("frame", {obj=_G.ChatConfigChannelSettingsLeft, fType=ftype, kfs=true, rns=true, fb=true, ofs=0})
 			local function skinLeft(frame)
 				for i = 1, #frame.checkBoxTable do
 					skinCB(frame:GetName() .. "CheckBox" .. i)
@@ -808,7 +830,7 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 		if self.modChkBtns then
 			self:SecureHook("TextToSpeechFrame_UpdateMessageCheckboxes", function(frame)
 				for i = 1, #frame.checkBoxTable do
-					self:skinCheckButton{obj=_G[frame:GetName() .. "CheckBox" .. i], fType=ftype}
+					self:skinCheckButton{obj=_G[frame:GetName() .. (self.isRtl and "Checkbox" or "CheckBox") .. i], fType=ftype}
 				end
 
 				self:Unhook("TextToSpeechFrame_UpdateMessageCheckboxes")
@@ -826,7 +848,7 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 
 		self:SecureHookScript(_G.ChatConfigCombatSettings, "OnShow", function(fObj)
 			-- Top Tabs
-			self:skinObject("tabs", {obj=_G.ChatConfigCombatSettings, prefix="CombatConfig", numTabs=#_G.COMBAT_CONFIG_TABS, fType=ftype, lod=self.isTT and true, upwards=true, offsets={y1=-8, y2=self.isTT and -5 or 0}, regions={4, 5}, track=false})
+			self:skinObject("tabs", {obj=fObj, prefix="CombatConfig", numTabs=#_G.COMBAT_CONFIG_TABS, fType=ftype, lod=self.isTT and true, upwards=true, offsets={y1=-8, y2=self.isTT and -5 or 0}, regions={4, 5}, track=false})
 			if self.isTT then
 				self:SecureHook("ChatConfig_UpdateCombatTabs", function(selectedTabID)
 					local tab
@@ -1048,10 +1070,10 @@ aObj.blizzFrames[ftype].ChatMenus = function(self)
 	if not self.prdb.ChatMenus or self.initialized.ChatMenus then return end
 	self.initialized.ChatMenus = true
 
-	self:skinObject("frame", {obj=_G.ChatMenu, fType=ftype, rns=true, ofs=0})
-	self:skinObject("frame", {obj=_G.EmoteMenu, fType=ftype, rns=true, ofs=0})
-	self:skinObject("frame", {obj=_G.LanguageMenu, fType=ftype, rns=true, ofs=0})
-	self:skinObject("frame", {obj=_G.VoiceMacroMenu, fType=ftype, rns=true, ofs=0})
+		self:skinObject("frame", {obj=_G.ChatMenu, fType=ftype, rns=true, ofs=0})
+		self:skinObject("frame", {obj=_G.EmoteMenu, fType=ftype, rns=true, ofs=0})
+		self:skinObject("frame", {obj=_G.LanguageMenu, fType=ftype, rns=true, ofs=0})
+		self:skinObject("frame", {obj=_G.VoiceMacroMenu, fType=ftype, rns=true, ofs=0})
 	self:skinObject("frame", {obj=_G.GeneralDockManagerOverflowButtonList, fType=ftype, rns=true, ofs=0})
 
 end
@@ -1139,9 +1161,35 @@ aObj.blizzLoDFrames[ftype].DebugTools = function(self)
 	if not self.prdb.DebugTools or self.initialized.DebugTools then return end
 	self.initialized.DebugTools = true
 
+	local makeWider, makeKeyWider = _G.nop, _G.nop
+	--@debug@
+	local wOfs, hOfs, w, h = 750, 200
+	function makeWider(obj, height)
+		w, h = obj:GetSize()
+		if not obj.wider then
+			obj:SetSize(w+ wOfs, h + (height and hOfs or 0))
+			obj.wider = true
+		end
+	end
+	local kwOfs = 120
+	function makeKeyWider(obj)
+		w, h = obj:GetSize()
+		if not obj.wider then
+			obj:SetSize(w + kwOfs, h)
+			obj.wider = true
+		end
+	end
+	--@end-debug@
+	
 	local function skinTAD(frame)
+		makeWider(frame, true)
+		makeWider(frame.FilterBox)
 		aObj:skinObject("editbox", {obj=frame.FilterBox, fType=ftype, si=true})
+		makeWider(frame.TitleButton)
+		makeWider(frame.TitleButton.Text)
 		aObj:skinObject("scrollbar", {obj=frame.LinesScrollFrame.ScrollBar, fType=ftype, x1=aObj.isClsc and 1 or nil, x2=not aObj.isRtl and 5 or nil})
+		makeWider(frame.LinesScrollFrame, true)
+		makeWider(frame.LinesScrollFrame.LinesContainer)
 		aObj:skinObject("frame", {obj=frame.ScrollFrameArt, fType=ftype, rns=true, fb=true, x2=not self.isRtl and -10})
 		aObj:skinObject("frame", {obj=frame, fType=ftype, kfs=true, cb=true, ofs=-2, x1=5, x2=-1})
 		if aObj.modBtns then
@@ -1179,6 +1227,28 @@ aObj.blizzLoDFrames[ftype].DebugTools = function(self)
 			aObj:skinCheckButton{obj=frame.HighlightButton}
 			aObj:skinCheckButton{obj=frame.DynamicUpdateButton}
 		end
+
+		aObj:SecureHook(frame, "UpdateLines", function(fObj)
+			for _, line in _G.pairs(fObj.lines) do
+				makeWider(line)
+				if line.Key then
+					makeKeyWider(line.Key)
+					makeKeyWider(line.Key.Text)
+				end
+				if line.Text then
+					makeWider(line.Text)
+				end
+				if line.Value
+				and line.Value:IsObjectType("FontString")
+				then
+					makeWider(line.Value)
+				end
+				if line.ValueButton then
+					makeWider(line.ValueButton)
+					makeWider(line.ValueButton.Text)
+				end
+			end
+		end)
 	end
 	self:SecureHookScript(_G.TableAttributeDisplay, "OnShow", function(this)
 		skinTAD(this)
@@ -1191,7 +1261,6 @@ aObj.blizzLoDFrames[ftype].DebugTools = function(self)
 		self:Unhook(this, "OnShow")
 	end)
 
-	-- tooltip
 	self.ttHook[_G.FrameStackTooltip] = "OnUpdate"
 	_G.C_Timer.After(0.1, function()
 		self:add2Table(self.ttList, _G.FrameStackTooltip)
@@ -1208,13 +1277,16 @@ aObj.blizzLoDFrames[ftype].EventTrace = function(self)
 		aObj:skinStdButton{obj=btn, fType=ftype, y1=2, y2=-3}
 		aObj.modUIBtns:chgHLTex(btn, btn.MouseoverOverlay)
 	end
-	aObj:SecureHookScript(_G.EventTrace, "OnShow", function(this)
-		aObj:skinObject("editbox", {obj=this.Log.Bar.SearchBox, fType=ftype, si=true})
-		aObj:skinObject("scrollbar", {obj=this.Log.Events.ScrollBar, fType=ftype})
-		aObj:skinObject("scrollbar", {obj=this.Log.Search.ScrollBar, fType=ftype})
-		aObj:skinObject("scrollbar", {obj=this.Filter.ScrollBar, fType=ftype})
-		aObj:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, x2=aObj.isRtl and 3 or 1})
-		if aObj.modBtns then
+	self:SecureHookScript(_G.EventTrace, "OnShow", function(this)
+		self:skinObject("editbox", {obj=this.Log.Bar.SearchBox, fType=ftype, si=true})
+		self:skinObject("scrollbar", {obj=this.Log.Events.ScrollBar, fType=ftype})
+		self:skinObject("scrollbar", {obj=this.Log.Search.ScrollBar, fType=ftype})
+		self:skinObject("scrollbar", {obj=this.Filter.ScrollBar, fType=ftype})
+		if self.isRtl then
+			self:skinObject("ddbutton", {obj=this.SubtitleBar.OptionsDropdown, fType=ftype, filter=true})
+		end
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, x2=aObj.isRtl and 3 or 1})
+		if self.modBtns then
 			skinMenuBtn(this.SubtitleBar.ViewLog)
 			skinMenuBtn(this.SubtitleBar.ViewFilter)
 			if not self.isRtl then
@@ -1228,22 +1300,22 @@ aObj.blizzLoDFrames[ftype].EventTrace = function(self)
 			skinMenuBtn(this.Filter.Bar.DiscardAllButton)
 		end
 
-		aObj:Unhook(this, "OnShow")
+		self:Unhook(this, "OnShow")
 	end)
-	if aObj.modBtns
-	or aObj.modChkBtns
+	if self.modBtns
+	or self.modChkBtns
 	then
-		aObj:SecureHook(_G.EventTraceLogEventButtonMixin, "Init", function(this, _)
-			if aObj.modBtns then
-				aObj:skinCloseButton{obj=this.HideButton, fType=ftype, noSkin=true}
+		self:SecureHook(_G.EventTraceLogEventButtonMixin, "Init", function(this, _)
+			if self.modBtns then
+				self:skinCloseButton{obj=this.HideButton, fType=ftype, noSkin=true}
 			end
 		end)
-		aObj:SecureHook(_G.EventTraceFilterButtonMixin, "Init", function(this, _)
-			if aObj.modBtns then
-				aObj:skinCloseButton{obj=this.HideButton, fType=ftype, noSkin=true}
+		self:SecureHook(_G.EventTraceFilterButtonMixin, "Init", function(this, _)
+			if self.modBtns then
+				self:skinCloseButton{obj=this.HideButton, fType=ftype, noSkin=true}
 			end
-			if aObj.modChkBtns then
-				aObj:skinCheckButton{obj=this.CheckButton, fType=ftype, ofs=-1}
+			if self.modChkBtns then
+				self:skinCheckButton{obj=this.CheckButton, fType=ftype, ofs=-1}
 			end
 		end)
 	end
@@ -1366,7 +1438,7 @@ aObj.blizzLoDFrames[ftype].GuildBankUI = function(self)
 	self:SecureHookScript(_G.GuildBankPopupFrame, "OnShow", function(this)
 		self:adjHeight{obj=this, adj=20}
 		if self.isRtl then
-			self:skinIconSelector(this)
+			self:skinIconSelector(this, ftype)
 		else
 			self:removeRegions(_G.BorderBox, {1, 2, 3, 4, 5, 6, 7, 8})
 			self:skinObject("editbox", {obj=this.EditBox, fType=ftype})
@@ -1473,302 +1545,72 @@ aObj.blizzFrames[ftype].ItemText = function(self)
 
 end
 
-local skinRoleBtns
-if _G.PVEFrame then
-	-- The following function is used by the LFDFrame & RaidFinder functions
-	function skinRoleBtns(frame)
-		local roleBtn
-		for _, type in _G.pairs{"Tank", "Healer", "DPS", "Leader"} do
-			roleBtn = _G[frame .. "QueueFrameRoleButton" .. type]
-			if roleBtn.background then
-				roleBtn.background:SetTexture(nil)
-			end
-			if roleBtn.shortageBorder then
-				roleBtn.shortageBorder:SetTexture(nil)
-			end
-			if roleBtn.incentiveIcon then
-				roleBtn.incentiveIcon.border:SetTexture(nil)
-			end
-			if aObj.modChkBtns then
-				aObj:skinCheckButton{obj=roleBtn.checkButton}
+if not aObj.isClscERA then
+	local skinRoleBtns
+	if _G.PVEFrame then
+		-- The following function is used by the LFDFrame & RaidFinder functions
+		function skinRoleBtns(frame)
+			local roleBtn
+			for _, type in _G.pairs{"Tank", "Healer", "DPS", "Leader"} do
+				roleBtn = _G[frame .. "QueueFrameRoleButton" .. type]
+				if roleBtn.background then
+					roleBtn.background:SetTexture(nil)
+				end
+				if roleBtn.shortageBorder then
+					roleBtn.shortageBorder:SetTexture(nil)
+				end
+				if roleBtn.incentiveIcon then
+					roleBtn.incentiveIcon.border:SetTexture(nil)
+				end
+				if aObj.modChkBtns then
+					aObj:skinCheckButton{obj=roleBtn.checkButton}
+				end
 			end
 		end
 	end
-end
-aObj.blizzFrames[ftype].LFDFrame = function(self)
-	if not self.prdb.PVEFrame or self.initialized.LFDFrame then return end
-	self.initialized.LFDFrame = true
+	aObj.blizzFrames[ftype].LFDFrame = function(self)
+		if not self.prdb.PVEFrame or self.initialized.LFDFrame then return end
+		self.initialized.LFDFrame = true
 
-	self:SecureHookScript(_G.LFDRoleCheckPopup, "OnShow", function(this)
-		self:removeNineSlice(this.Border)
-		self:skinObject("frame", {obj=this, fType=ftype, kfs=true})
-		if self.modBtns then
-			self:skinStdButton{obj=_G.LFDRoleCheckPopupAcceptButton}
-			self:skinStdButton{obj=_G.LFDRoleCheckPopupDeclineButton}
-		end
+		self:SecureHookScript(_G.LFDRoleCheckPopup, "OnShow", function(this)
+			self:removeNineSlice(this.Border)
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true})
+			if self.modBtns then
+				self:skinStdButton{obj=_G.LFDRoleCheckPopupAcceptButton}
+				self:skinStdButton{obj=_G.LFDRoleCheckPopupDeclineButton}
+			end
 
-		self:Unhook(this, "OnShow")
-	end)
+			self:Unhook(this, "OnShow")
+		end)
 
-	self:SecureHookScript(_G.LFDReadyCheckPopup, "OnShow", function(this)
-		self:removeNineSlice(this.Border)
-		self:skinObject("frame", {obj=this, fType=ftype, kfs=true})
-		if self.modBtns then
-			self:skinStdButton{obj=this.YesButton}
-			self:skinStdButton{obj=this.NoButton}
-		end
+		self:SecureHookScript(_G.LFDReadyCheckPopup, "OnShow", function(this)
+			self:removeNineSlice(this.Border)
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true})
+			if self.modBtns then
+				self:skinStdButton{obj=this.YesButton}
+				self:skinStdButton{obj=this.NoButton}
+			end
 
-		self:Unhook(this, "OnShow")
-	end)
-	self:checkShown(_G.LFDReadyCheckPopup)
+			self:Unhook(this, "OnShow")
+		end)
+		self:checkShown(_G.LFDReadyCheckPopup)
 
-	-- LFD Parent Frame (now part of PVE Frame)
-	self:SecureHookScript(_G.LFDParentFrame, "OnShow", function(this)
-		self:keepFontStrings(this)
-		self:removeInset(this.Inset)
-		-- LFD Queue Frame
-		skinRoleBtns("LFD")
-		_G.LFDQueueFrameBackground:SetAlpha(0)
-		self:skinObject("dropdown", {obj=_G.LFDQueueFrameTypeDropDown, fType=ftype})
-		_G.LFDQueueFrameRandomScrollFrameChildFrame.MoneyReward.NameFrame:SetTexture(nil)
-		self:removeMagicBtnTex(_G.LFDQueueFrameFindGroupButton)
-		self:skinObject("scrollbar", {obj=_G.LFDQueueFrame.Specific.ScrollBar, fType=ftype})
-		local function skinDungeonLine(...)
-			local _, element, new
-			if _G.select("#", ...) == 2 then
-				element, _ = ...
-			elseif _G.select("#", ...) == 3 then
-				element, _, new = ...
+		-- LFD Parent Frame (now part of PVE Frame)
+		self:SecureHookScript(_G.LFDParentFrame, "OnShow", function(this)
+			self:keepFontStrings(this)
+			self:removeInset(this.Inset)
+			-- LFD Queue Frame
+			skinRoleBtns("LFD")
+			_G.LFDQueueFrameBackground:SetAlpha(0)
+			if self.isRtl then
+				self:skinObject("ddbutton", {obj=_G.LFDQueueFrame.TypeDropdown, fType=ftype})
 			else
-				_, element, _, new = ...
+				self:skinObject("dropdown", {obj=_G.LFDQueueFrameTypeDropDown, fType=ftype})
 			end
-			if new ~= false then
-				if aObj.modBtns then
-					aObj:skinExpandButton{obj=element.expandOrCollapseButton, sap=true}
-				end
-				if aObj.modChkBtns then
-					aObj:skinCheckButton{obj=element.enableButton}
-				end
-			end
-		end
-		_G.ScrollUtil.AddAcquiredFrameCallback(_G.LFDQueueFrame.Specific.ScrollBox, skinDungeonLine, aObj, true)
-		if self.modBtns then
-			self:skinStdButton{obj=_G.LFDQueueFrameFindGroupButton, schk=true}
-		end
-		if self.modBtnBs then
-			self:addButtonBorder{obj=_G.LFDQueueFrameRandomScrollFrameChildFrame.MoneyReward, fType=ftype, libt=true}
-			self:SecureHook("LFDQueueFrameRandom_UpdateFrame", function()
-				local fName = "LFDQueueFrameRandomScrollFrameChildFrame"
-				for i = 1, _G[fName].numRewardFrames do
-					if _G[fName .. "Item" .. i] then
-						_G[fName .. "Item" .. i .. "NameFrame"]:SetTexture(nil)
-						self:addButtonBorder{obj=_G[fName .. "Item" .. i], fType=ftype, libt=true}
-					end
-				end
-			end)
-		end
-
-		self:Unhook(this, "OnShow")
-	end)
-
-end
-
-aObj.blizzFrames[ftype].LFGFrame = function(self)
-	if not self.prdb.PVEFrame or self.initialized.LFGFrame then return end
-	self.initialized.LFGFrame = true
-
-	self:SecureHookScript(_G.LFGDungeonReadyPopup, "OnShow", function(this) -- a.k.a. ReadyCheck, also used for Island Expeditions
-		self:SecureHookScript(_G.LFGDungeonReadyStatus, "OnShow", function(fObj)
-			self:removeNineSlice(fObj.Border)
-			self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, ofs=0})
-			if self.modBtns then
-				self:skinOtherButton{obj=_G.LFGDungeonReadyStatusCloseButton, text=self.modUIBtns.minus, noSkin=true}
-			end
-
-			self:Unhook(fObj, "OnShow")
-		end)
-		self:checkShown(_G.LFGDungeonReadyStatus)
-
-		self:SecureHookScript(_G.LFGDungeonReadyDialog, "OnShow", function(fObj)
-			self:removeNineSlice(fObj.Border)
-			fObj.SetBackdrop = _G.nop
-			fObj.instanceInfo:DisableDrawLayer("BACKGROUND")
-			self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, rpc=true, ofs=-5, y2=10}) -- use rpc=true to make background visible
-			if self.modBtns then
-				self:skinOtherButton{obj=_G.LFGDungeonReadyDialogCloseButton, text=self.modUIBtns.minus, noSkin=true}
-				self:skinStdButton{obj=fObj.enterButton}
-				self:skinStdButton{obj=fObj.leaveButton}
-			end
-
-			-- show background texture if required
-			if self.prdb.LFGTexture then
-				self:SecureHook("LFGDungeonReadyPopup_Update", function()
-					local lfgTex = _G.LFGDungeonReadyDialog.background
-					lfgTex:SetAlpha(1) -- show texture
-					-- adjust texture to fit within skinFrame
-					lfgTex:SetWidth(288)
-					if _G.LFGDungeonReadyPopup:GetHeight() < 200 then
-						lfgTex:SetHeight(170)
-					else
-						lfgTex:SetHeight(200)
-					end
-					lfgTex:SetTexCoord(0, 1, 0, 1)
-					lfgTex:ClearAllPoints()
-					lfgTex:SetPoint("TOPLEFT", _G.LFGDungeonReadyDialog, "TOPLEFT", 9, -9)
-				end)
-			end
-
-			-- RewardsFrame
-			_G.LFGDungeonReadyDialogRewardsFrameReward1Border:SetAlpha(0)
-			_G.LFGDungeonReadyDialogRewardsFrameReward2Border:SetAlpha(0)
-			if self.modBtnBs then
-				self:addButtonBorder{obj=_G.LFGDungeonReadyDialogRewardsFrameReward1, relTo=_G.LFGDungeonReadyDialogRewardsFrameReward1.texture}
-				self:addButtonBorder{obj=_G.LFGDungeonReadyDialogRewardsFrameReward2, relTo=_G.LFGDungeonReadyDialogRewardsFrameReward2.texture}
-			end
-
-			self:Unhook(fObj, "OnShow")
-		end)
-		self:checkShown(_G.LFGDungeonReadyDialog)
-
-		self:Unhook(this, "OnShow")
-	end)
-	self:checkShown(_G.LFGDungeonReadyPopup)
-
-	-- hook new button creation
-	self:RawHook("LFGRewardsFrame_SetItemButton", function(...)
-		local frame = self.hooks.LFGRewardsFrame_SetItemButton(...)
-		_G[frame:GetName() .. "NameFrame"]:SetTexture(nil)
-		if self.modBtnBs then
-			self:addButtonBorder{obj=frame, fType=ftype, libt=true}
-		end
-		return frame
-	end, true)
-
-	self:SecureHookScript(_G.LFGInvitePopup, "OnShow", function(this)
-		self:removeNineSlice(this.Border)
-		self:skinObject("frame", {obj=this, fType=ftype})
-		if self.modBtns then
-			self:skinStdButton{obj=_G.LFGInvitePopupAcceptButton}
-			self:skinStdButton{obj=_G.LFGInvitePopupDeclineButton}
-		end
-		if self.modChkBtns then
-			for _, btn in _G.pairs(this.RoleButtons) do
-				self:skinCheckButton{obj=btn.checkButton}
-			end
-		end
-
-		self:Unhook(this, "OnShow")
-	end)
-
-end
-
-aObj.blizzFrames[ftype].LFGList = function(self)
-	if not self.prdb.PVEFrame or self.initialized.LFGList then return end
-	self.initialized.LFGList = true
-
-	self:SecureHookScript(_G.LFGListFrame, "OnShow", function(this)
-		-- Premade Groups LFGListPVEStub/LFGListPVPStub
-
-		self:SecureHookScript(this.CategorySelection, "OnShow", function(fObj)
-			self:removeInset(fObj.Inset)
-			self:removeMagicBtnTex(fObj.FindGroupButton)
-			self:removeMagicBtnTex(fObj.StartGroupButton)
-			if self.modBtns then
-				self:skinStdButton{obj=fObj.StartGroupButton, sechk=true}
-				self:skinStdButton{obj=fObj.FindGroupButton, sechk=true}
-			end
-			self:SecureHook("LFGListCategorySelection_AddButton", function(frame, _)
-				for _, btn in _G.pairs(frame.CategoryButtons) do
-					btn.Cover:SetTexture(nil)
-				end
-			end)
-
-			self:Unhook(fObj, "OnShow")
-		end)
-		self:checkShown(this.CategorySelection)
-
-		self:removeInset(this.NothingAvailable.Inset)
-
-		self:SecureHookScript(this.SearchPanel, "OnShow", function(fObj)
-			self:skinObject("editbox", {obj=fObj.SearchBox, fType=ftype, si=true})
-			self:skinObject("frame", {obj=fObj.AutoCompleteFrame, fType=ftype, kfs=true, ofs=4})
-			self:removeInset(fObj.ResultsInset)
-			self:skinObject("dropdown", {obj=_G.LFGListLanguageFilterDropDownFrame, fType=ftype})
-			self:skinObject("scrollbar", {obj=fObj.ScrollBar, fType=ftype})
-			local function skinElement(...)
-				local _, element, elementData, new
-				if _G.select("#", ...) == 2 then
-					element, elementData = ...
-				elseif _G.select("#", ...) == 3 then
-					element, elementData, new = ...
-				else
-					_, element, elementData, new = ...
-				end
-				if new ~= false then
-					if elementData.startGroup then
-						if aObj.modBtns then
-							aObj:skinStdButton{obj=aObj:getChild(element, 1), fType=ftype}
-						end
-					else
-						element.ResultBG:SetTexture(nil)
-						if aObj.modBtns then
-							aObj:skinStdButton{obj=element.CancelButton}
-						end
-					end
-				end
-			end
-			_G.ScrollUtil.AddAcquiredFrameCallback(fObj.ScrollBox, skinElement, aObj, true)
-			-- hook this to colour text
-			local appStatus, pendingStatus, isAppFinished, searchResultInfo
-			self:SecureHook("LFGListSearchEntry_Update", function(lObj)
-				_, appStatus, pendingStatus, _ = _G.C_LFGList.GetApplicationInfo(lObj.resultID)
-				isAppFinished = _G.LFGListUtil_IsStatusInactive(appStatus) or _G.LFGListUtil_IsStatusInactive(pendingStatus)
-				searchResultInfo = _G.C_LFGList.GetSearchResultInfo(lObj.resultID)
-
-				if searchResultInfo.isDelisted
-				or isAppFinished
-				then
-					-- LFG_LIST_DELISTED_FONT_COLOR for both
-					lObj.Name:SetTextColor(aObj.DT:GetRGB())
-					lObj.ActivityName:SetTextColor(aObj.DT:GetRGB())
-				elseif searchResultInfo.numBNetFriends > 0
-				or searchResultInfo.numCharFriends > 0
-				or searchResultInfo.numGuildMates > 0
-				then
-					-- BATTLENET_FONT_COLOR for name
-					lObj.ActivityName:SetTextColor(aObj.BT:GetRGB())
-				else
-					lObj.Name:SetTextColor(aObj.HT:GetRGB())
-					lObj.ActivityName:SetTextColor(aObj.BT:GetRGB())
-				end
-			end)
-			self:removeMagicBtnTex(fObj.BackButton)
-			self:removeMagicBtnTex(fObj.SignUpButton)
-			if self.modBtns then
-				self:skinStdButton{obj=fObj.ScrollBox.StartGroupButton, schk=true}
-				self:skinStdButton{obj=fObj.BackButton}
-				self:skinStdButton{obj=fObj.BackToGroupButton}
-				self:skinStdButton{obj=fObj.SignUpButton, schk=true}
-			end
-			if self.modBtnBs then
-			    self:addButtonBorder{obj=fObj.FilterButton, ftype=ftype, clr="grey", ofs=1}
-				self:addButtonBorder{obj=fObj.RefreshButton, ofs=-2, clr="gold"}
-			end
-
-			self:Unhook(fObj, "OnShow")
-		end)
-
-		self:SecureHookScript(this.ApplicationViewer, "OnShow", function(fObj)
-			fObj:DisableDrawLayer("BACKGROUND")
-			self:removeInset(fObj.Inset)
-			for _ ,type in _G.pairs{"Name", "Role", "ItemLevel", "Rating"} do
-				self:removeRegions(fObj[type .. "ColumnHeader"], {1, 2, 3})
-				if self.modBtns then
-					 self:skinStdButton{obj=fObj[type .. "ColumnHeader"]}
-				end
-			end
-			self:skinObject("scrollbar", {obj=fObj.ScrollBar, fType=ftype})
-			local function skinElement(...)
+			_G.LFDQueueFrameRandomScrollFrameChildFrame.MoneyReward.NameFrame:SetTexture(nil)
+			self:removeMagicBtnTex(_G.LFDQueueFrameFindGroupButton)
+			self:skinObject("scrollbar", {obj=_G.LFDQueueFrame.Specific.ScrollBar, fType=ftype})
+			local function skinDungeonLine(...)
 				local _, element, new
 				if _G.select("#", ...) == 2 then
 					element, _ = ...
@@ -1779,108 +1621,360 @@ aObj.blizzFrames[ftype].LFGList = function(self)
 				end
 				if new ~= false then
 					if aObj.modBtns then
-						aObj:skinStdButton{obj=element.DeclineButton}
-						aObj:skinStdButton{obj=element.InviteButton}
-						aObj:skinStdButton{obj=element.InviteButtonSmall}
+						aObj:skinExpandButton{obj=element.expandOrCollapseButton, sap=true}
+					end
+					if aObj.modChkBtns then
+						aObj:skinCheckButton{obj=element.enableButton}
 					end
 				end
 			end
-			_G.ScrollUtil.AddAcquiredFrameCallback(fObj.ScrollBox, skinElement, aObj, true)
-			self:removeMagicBtnTex(fObj.RemoveEntryButton)
-			self:removeMagicBtnTex(fObj.EditButton)
+			_G.ScrollUtil.AddAcquiredFrameCallback(_G.LFDQueueFrame.Specific.ScrollBox, skinDungeonLine, aObj, true)
 			if self.modBtns then
-				self:skinStdButton{obj=fObj.RemoveEntryButton}
-				self:skinStdButton{obj=fObj.EditButton}
-				self:skinStdButton{obj=fObj.BrowseGroupsButton}
+				self:skinStdButton{obj=_G.LFDQueueFrameFindGroupButton, schk=true}
 			end
 			if self.modBtnBs then
-				 self:addButtonBorder{obj=fObj.RefreshButton, ofs=-2, clr="gold"}
+				self:addButtonBorder{obj=_G.LFDQueueFrameRandomScrollFrameChildFrame.MoneyReward, fType=ftype, libt=true}
+				self:SecureHook("LFDQueueFrameRandom_UpdateFrame", function()
+					local fName = "LFDQueueFrameRandomScrollFrameChildFrame"
+					for i = 1, _G[fName].numRewardFrames do
+						if _G[fName .. "Item" .. i] then
+							_G[fName .. "Item" .. i .. "NameFrame"]:SetTexture(nil)
+							self:addButtonBorder{obj=_G[fName .. "Item" .. i], fType=ftype, libt=true}
+						end
+					end
+				end)
+			end
+
+			self:Unhook(this, "OnShow")
+		end)
+
+	end
+
+	aObj.blizzFrames[ftype].LFGFrame = function(self)
+		if not self.prdb.PVEFrame or self.initialized.LFGFrame then return end
+		self.initialized.LFGFrame = true
+
+		self:SecureHookScript(_G.LFGDungeonReadyPopup, "OnShow", function(this) -- a.k.a. ReadyCheck, also used for Island Expeditions
+			self:SecureHookScript(_G.LFGDungeonReadyStatus, "OnShow", function(fObj)
+				self:removeNineSlice(fObj.Border)
+				self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, ofs=0})
+				if self.modBtns then
+					self:skinOtherButton{obj=_G.LFGDungeonReadyStatusCloseButton, text=self.modUIBtns.minus, noSkin=true}
+				end
+
+				self:Unhook(fObj, "OnShow")
+			end)
+			self:checkShown(_G.LFGDungeonReadyStatus)
+
+			self:SecureHookScript(_G.LFGDungeonReadyDialog, "OnShow", function(fObj)
+				self:removeNineSlice(fObj.Border)
+				fObj.SetBackdrop = _G.nop
+				fObj.instanceInfo:DisableDrawLayer("BACKGROUND")
+				self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, rpc=true, ofs=-5, y2=10}) -- use rpc=true to make background visible
+				if self.modBtns then
+					self:skinOtherButton{obj=_G.LFGDungeonReadyDialogCloseButton, text=self.modUIBtns.minus, noSkin=true}
+					self:skinStdButton{obj=fObj.enterButton}
+					self:skinStdButton{obj=fObj.leaveButton}
+				end
+
+				-- show background texture if required
+				if self.prdb.LFGTexture then
+					self:SecureHook("LFGDungeonReadyPopup_Update", function()
+						local lfgTex = _G.LFGDungeonReadyDialog.background
+						lfgTex:SetAlpha(1) -- show texture
+						-- adjust texture to fit within skinFrame
+						lfgTex:SetWidth(288)
+						if _G.LFGDungeonReadyPopup:GetHeight() < 200 then
+							lfgTex:SetHeight(170)
+						else
+							lfgTex:SetHeight(200)
+						end
+						lfgTex:SetTexCoord(0, 1, 0, 1)
+						lfgTex:ClearAllPoints()
+						lfgTex:SetPoint("TOPLEFT", _G.LFGDungeonReadyDialog, "TOPLEFT", 9, -9)
+					end)
+				end
+
+				-- RewardsFrame
+				_G.LFGDungeonReadyDialogRewardsFrameReward1Border:SetAlpha(0)
+				_G.LFGDungeonReadyDialogRewardsFrameReward2Border:SetAlpha(0)
+				if self.modBtnBs then
+					self:addButtonBorder{obj=_G.LFGDungeonReadyDialogRewardsFrameReward1, relTo=_G.LFGDungeonReadyDialogRewardsFrameReward1.texture}
+					self:addButtonBorder{obj=_G.LFGDungeonReadyDialogRewardsFrameReward2, relTo=_G.LFGDungeonReadyDialogRewardsFrameReward2.texture}
+				end
+
+				self:Unhook(fObj, "OnShow")
+			end)
+			self:checkShown(_G.LFGDungeonReadyDialog)
+
+			self:Unhook(this, "OnShow")
+		end)
+		self:checkShown(_G.LFGDungeonReadyPopup)
+
+		-- hook new button creation
+		self:RawHook("LFGRewardsFrame_SetItemButton", function(...)
+			local frame = self.hooks.LFGRewardsFrame_SetItemButton(...)
+			_G[frame:GetName() .. "NameFrame"]:SetTexture(nil)
+			if self.modBtnBs then
+				self:addButtonBorder{obj=frame, fType=ftype, libt=true}
+			end
+			return frame
+		end, true)
+
+		self:SecureHookScript(_G.LFGInvitePopup, "OnShow", function(this)
+			self:removeNineSlice(this.Border)
+			self:skinObject("frame", {obj=this, fType=ftype})
+			if self.modBtns then
+				self:skinStdButton{obj=_G.LFGInvitePopupAcceptButton}
+				self:skinStdButton{obj=_G.LFGInvitePopupDeclineButton}
 			end
 			if self.modChkBtns then
-				 self:skinCheckButton{obj=fObj.AutoAcceptButton}
+				for _, btn in _G.pairs(this.RoleButtons) do
+					self:skinCheckButton{obj=btn.checkButton}
+				end
 			end
 
-			self:Unhook(fObj, "OnShow")
+			self:Unhook(this, "OnShow")
 		end)
-		self:checkShown(this.ApplicationViewer)
 
-		self:SecureHookScript(this.EntryCreation, "OnShow", function(fObj)
-			self:removeInset(fObj.Inset)
-			local ecafd = fObj.ActivityFinder.Dialog
-			self:removeNineSlice(ecafd.Border)
-			self:skinObject("editbox", {obj=ecafd.EntryBox, fType=ftype})
-			self:skinObject("scrollbar", {obj=ecafd.ScrollBar, fType=ftype})
+	end
+
+	aObj.blizzFrames[ftype].LFGList = function(self)
+		if not self.prdb.PVEFrame or self.initialized.LFGList then return end
+		self.initialized.LFGList = true
+
+		self:SecureHookScript(_G.LFGListFrame, "OnShow", function(this)
+			-- Premade Groups LFGListPVEStub/LFGListPVPStub
+
+			self:SecureHookScript(this.CategorySelection, "OnShow", function(fObj)
+				self:removeInset(fObj.Inset)
+				self:removeMagicBtnTex(fObj.FindGroupButton)
+				self:removeMagicBtnTex(fObj.StartGroupButton)
+				if self.modBtns then
+					self:skinStdButton{obj=fObj.StartGroupButton, sechk=true}
+					self:skinStdButton{obj=fObj.FindGroupButton, sechk=true}
+				end
+				self:SecureHook("LFGListCategorySelection_AddButton", function(frame, _)
+					for _, btn in _G.pairs(frame.CategoryButtons) do
+						btn.Cover:SetTexture(nil)
+					end
+				end)
+
+				self:Unhook(fObj, "OnShow")
+			end)
+			self:checkShown(this.CategorySelection)
+
+			self:removeInset(this.NothingAvailable.Inset)
+
+			self:SecureHookScript(this.SearchPanel, "OnShow", function(fObj)
+				self:skinObject("editbox", {obj=fObj.SearchBox, fType=ftype, si=true})
+				if self.isRtl then
+					self:skinObject("ddbutton", {obj=fObj.FilterButton, fType=ftype, filter=true})
+				end
+				self:skinObject("frame", {obj=fObj.AutoCompleteFrame, fType=ftype, kfs=true, ofs=4})
+				self:removeInset(fObj.ResultsInset)
+				if not self.isRtl then
+					self:skinObject("dropdown", {obj=_G.LFGListLanguageFilterDropDownFrame, fType=ftype})
+				end
+				self:skinObject("scrollbar", {obj=fObj.ScrollBar, fType=ftype})
+				local function skinElement(...)
+					local _, element, elementData, new
+					if _G.select("#", ...) == 2 then
+						element, elementData = ...
+					elseif _G.select("#", ...) == 3 then
+						element, elementData, new = ...
+					else
+						_, element, elementData, new = ...
+					end
+					if new ~= false then
+						if elementData.startGroup then
+							if aObj.modBtns then
+								aObj:skinStdButton{obj=aObj:getChild(element, 1), fType=ftype}
+							end
+						else
+							element.ResultBG:SetTexture(nil)
+							if aObj.modBtns then
+								aObj:skinStdButton{obj=element.CancelButton}
+							end
+						end
+					end
+				end
+				_G.ScrollUtil.AddAcquiredFrameCallback(fObj.ScrollBox, skinElement, aObj, true)
+				-- hook this to colour text
+				local appStatus, pendingStatus, isAppFinished, searchResultInfo
+				self:SecureHook("LFGListSearchEntry_Update", function(lObj)
+					_, appStatus, pendingStatus, _ = _G.C_LFGList.GetApplicationInfo(lObj.resultID)
+					isAppFinished = _G.LFGListUtil_IsStatusInactive(appStatus) or _G.LFGListUtil_IsStatusInactive(pendingStatus)
+					searchResultInfo = _G.C_LFGList.GetSearchResultInfo(lObj.resultID)
+
+					if searchResultInfo.isDelisted
+					or isAppFinished
+					then
+						-- LFG_LIST_DELISTED_FONT_COLOR for both
+						lObj.Name:SetTextColor(aObj.DT:GetRGB())
+						lObj.ActivityName:SetTextColor(aObj.DT:GetRGB())
+					elseif searchResultInfo.numBNetFriends > 0
+					or searchResultInfo.numCharFriends > 0
+					or searchResultInfo.numGuildMates > 0
+					then
+						-- BATTLENET_FONT_COLOR for name
+						lObj.ActivityName:SetTextColor(aObj.BT:GetRGB())
+					else
+						lObj.Name:SetTextColor(aObj.HT:GetRGB())
+						lObj.ActivityName:SetTextColor(aObj.BT:GetRGB())
+					end
+				end)
+				self:removeMagicBtnTex(fObj.BackButton)
+				self:removeMagicBtnTex(fObj.SignUpButton)
+				if self.modBtns then
+					if not self.isRtl then
+						self:skinStdButton{obj=fObj.FilterButton, fType=ftype}
+					end
+					self:skinStdButton{obj=fObj.ScrollBox.StartGroupButton, schk=true}
+					self:skinStdButton{obj=fObj.BackButton}
+					self:skinStdButton{obj=fObj.BackToGroupButton}
+					self:skinStdButton{obj=fObj.SignUpButton, schk=true}
+				end
+				if self.modBtnBs then
+					if not self.isRtl then
+						self:addButtonBorder{obj=fObj.FilterButton, ftype=ftype, ofs=1}
+					end
+					self:addButtonBorder{obj=fObj.RefreshButton, ofs=-2, clr="gold"}
+				end
+
+				self:Unhook(fObj, "OnShow")
+			end)
+
+			self:SecureHookScript(this.ApplicationViewer, "OnShow", function(fObj)
+				fObj:DisableDrawLayer("BACKGROUND")
+				self:removeInset(fObj.Inset)
+				for _ ,type in _G.pairs{"Name", "Role", "ItemLevel", "Rating"} do
+					self:removeRegions(fObj[type .. "ColumnHeader"], {1, 2, 3})
+					if self.modBtns then
+						 self:skinStdButton{obj=fObj[type .. "ColumnHeader"]}
+					end
+				end
+				self:skinObject("scrollbar", {obj=fObj.ScrollBar, fType=ftype})
+				local function skinElement(...)
+					local _, element, new
+					if _G.select("#", ...) == 2 then
+						element, _ = ...
+					elseif _G.select("#", ...) == 3 then
+						element, _, new = ...
+					else
+						_, element, _, new = ...
+					end
+					if new ~= false then
+						if aObj.modBtns then
+							aObj:skinStdButton{obj=element.DeclineButton}
+							aObj:skinStdButton{obj=element.InviteButton}
+							aObj:skinStdButton{obj=element.InviteButtonSmall}
+						end
+					end
+				end
+				_G.ScrollUtil.AddAcquiredFrameCallback(fObj.ScrollBox, skinElement, aObj, true)
+				self:removeMagicBtnTex(fObj.RemoveEntryButton)
+				self:removeMagicBtnTex(fObj.EditButton)
+				if self.modBtns then
+					self:skinStdButton{obj=fObj.RemoveEntryButton}
+					self:skinStdButton{obj=fObj.EditButton}
+					self:skinStdButton{obj=fObj.BrowseGroupsButton}
+				end
+				if self.modBtnBs then
+					 self:addButtonBorder{obj=fObj.RefreshButton, ofs=-2, clr="gold"}
+				end
+				if self.modChkBtns then
+					 self:skinCheckButton{obj=fObj.AutoAcceptButton}
+				end
+
+				self:Unhook(fObj, "OnShow")
+			end)
+			self:checkShown(this.ApplicationViewer)
+
+			self:SecureHookScript(this.EntryCreation, "OnShow", function(fObj)
+				self:removeInset(fObj.Inset)
+				local ecafd = fObj.ActivityFinder.Dialog
+				self:removeNineSlice(ecafd.Border)
+				self:skinObject("editbox", {obj=ecafd.EntryBox, fType=ftype})
+				self:skinObject("scrollbar", {obj=ecafd.ScrollBar, fType=ftype})
 				self:skinObject("frame", {obj=ecafd.ScrollBox, fType=ftype, kfs=true, fb=true, ofs=4})
-			self:removeNineSlice(ecafd.BorderFrame.NineSlice)
-			self:skinObject("frame", {obj=ecafd, fType=ftype, kfs=true})
-			if self.modBtns then
-				self:skinStdButton{obj=ecafd.SelectButton}
-				self:skinStdButton{obj=ecafd.CancelButton}
-			end
-			self:skinObject("editbox", {obj=fObj.Name, fType=ftype})
-			self:skinObject("dropdown", {obj=fObj.PlayStyleDropdown, fType=ftype})
-			self:skinObject("editbox", {obj=fObj.PvpItemLevel.EditBox, fType=ftype})
-			self:skinObject("editbox", {obj=fObj.PVPRating.EditBox, fType=ftype})
-			self:skinObject("editbox", {obj=fObj.MythicPlusRating.EditBox, fType=ftype})
-			self:skinObject("dropdown", {obj=fObj.GroupDropDown, fType=ftype})
-			self:skinObject("dropdown", {obj=fObj.ActivityDropDown, fType=ftype})
+				self:removeNineSlice(ecafd.BorderFrame.NineSlice)
+				self:skinObject("frame", {obj=ecafd, fType=ftype, kfs=true})
+				if self.modBtns then
+					self:skinStdButton{obj=ecafd.SelectButton}
+					self:skinStdButton{obj=ecafd.CancelButton}
+				end
+				self:skinObject("editbox", {obj=fObj.Name, fType=ftype})
+				self:skinObject("editbox", {obj=fObj.PvpItemLevel.EditBox, fType=ftype})
+				self:skinObject("editbox", {obj=fObj.PVPRating.EditBox, fType=ftype})
+				self:skinObject("editbox", {obj=fObj.MythicPlusRating.EditBox, fType=ftype})
+				if self.isRtl then
+					self:skinObject("ddbutton", {obj=fObj.GroupDropdown, fType=ftype})
+					self:skinObject("ddbutton", {obj=fObj.ActivityDropdown, fType=ftype})
+					self:skinObject("ddbutton", {obj=fObj.PlayStyleDropdown, fType=ftype})
+				else
+					self:skinObject("dropdown", {obj=fObj.PlayStyleDropdown, fType=ftype})
+					self:skinObject("dropdown", {obj=fObj.GroupDropDown, fType=ftype})
+					self:skinObject("dropdown", {obj=fObj.ActivityDropDown, fType=ftype})
+				end
 				self:skinObject("frame", {obj=fObj.Description, fType=ftype, kfs=true, fb=true, ofs=6})
-			self:skinObject("editbox", {obj=fObj.ItemLevel.EditBox, fType=ftype})
-			self:skinObject("editbox", {obj=fObj.VoiceChat.EditBox, fType=ftype})
-			self:removeMagicBtnTex(fObj.ListGroupButton)
-			self:removeMagicBtnTex(fObj.CancelButton)
-			if self.modBtns then
-				self:skinStdButton{obj=fObj.ListGroupButton, sechk=true}
-				self:skinStdButton{obj=fObj.CancelButton}
-			end
-			if self.modChkBtns then
-				self:skinCheckButton{obj=fObj.ItemLevel.CheckButton}
-				self:skinCheckButton{obj=fObj.PvpItemLevel.CheckButton}
-				self:skinCheckButton{obj=fObj.PVPRating.CheckButton}
-				self:skinCheckButton{obj=fObj.MythicPlusRating.CheckButton}
-				self:skinCheckButton{obj=fObj.VoiceChat.CheckButton}
-				self:skinCheckButton{obj=fObj.CrossFactionGroup.CheckButton}
-				self:skinCheckButton{obj=fObj.PrivateGroup.CheckButton}
-			end
+				self:skinObject("editbox", {obj=fObj.ItemLevel.EditBox, fType=ftype})
+				self:skinObject("editbox", {obj=fObj.VoiceChat.EditBox, fType=ftype})
+				self:removeMagicBtnTex(fObj.ListGroupButton)
+				self:removeMagicBtnTex(fObj.CancelButton)
+				if self.modBtns then
+					self:skinStdButton{obj=fObj.ListGroupButton, sechk=true}
+					self:skinStdButton{obj=fObj.CancelButton}
+				end
+				if self.modChkBtns then
+					self:skinCheckButton{obj=fObj.ItemLevel.CheckButton}
+					self:skinCheckButton{obj=fObj.PvpItemLevel.CheckButton}
+					self:skinCheckButton{obj=fObj.PVPRating.CheckButton}
+					self:skinCheckButton{obj=fObj.MythicPlusRating.CheckButton}
+					self:skinCheckButton{obj=fObj.VoiceChat.CheckButton}
+					self:skinCheckButton{obj=fObj.CrossFactionGroup.CheckButton}
+					self:skinCheckButton{obj=fObj.PrivateGroup.CheckButton}
+				end
 
-			self:Unhook(fObj, "OnShow")
+				self:Unhook(fObj, "OnShow")
+			end)
+
+			self:Unhook(this, "OnShow")
 		end)
 
-		self:Unhook(this, "OnShow")
-	end)
-
-	-- LFGListApplication Dialog
-	self:SecureHookScript(_G.LFGListApplicationDialog, "OnShow", function(this)
-		self:removeNineSlice(this.Border)
-		self:skinObject("scrollbar", {obj=this.Description.ScrollBar, fType=ftype})
+		-- LFGListApplication Dialog
+		self:SecureHookScript(_G.LFGListApplicationDialog, "OnShow", function(this)
+			self:removeNineSlice(this.Border)
+			self:skinObject("scrollbar", {obj=this.Description.ScrollBar, fType=ftype})
 			self:skinObject("frame", {obj=this.Description, fType=ftype, kfs=true, fb=true, ofs=6})
-		self:skinObject("frame", {obj=this, fType=ftype, kfs=true})
-		if self.modBtns then
-			self:skinStdButton{obj=this.SignUpButton, fType=ftype, schk=true}
-			self:skinStdButton{obj=this.CancelButton, fType=ftype}
-		end
-		if self.modChkBtns then
-			self:skinCheckButton{obj=this.HealerButton.CheckButton, fType=ftype}
-			self:skinCheckButton{obj=this.TankButton.CheckButton, fType=ftype}
-			self:skinCheckButton{obj=this.DamagerButton.CheckButton, fType=ftype}
-		end
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true})
+			if self.modBtns then
+				self:skinStdButton{obj=this.SignUpButton, fType=ftype, schk=true}
+				self:skinStdButton{obj=this.CancelButton, fType=ftype}
+			end
+			if self.modChkBtns then
+				self:skinCheckButton{obj=this.HealerButton.CheckButton, fType=ftype}
+				self:skinCheckButton{obj=this.TankButton.CheckButton, fType=ftype}
+				self:skinCheckButton{obj=this.DamagerButton.CheckButton, fType=ftype}
+			end
 
-		self:Unhook(this, "OnShow")
-	end)
+			self:Unhook(this, "OnShow")
+		end)
 
-	-- LFGListInvite Dialog
-	self:SecureHookScript(_G.LFGListInviteDialog, "OnShow", function(this)
-		self:removeNineSlice(this.Border)
-		self:skinObject("frame", {obj=this, fType=ftype})
-		if self.modBtns then
-			self:skinStdButton{obj=this.AcceptButton}
-			self:skinStdButton{obj=this.DeclineButton}
-			self:skinStdButton{obj=this.AcknowledgeButton}
-		end
+		-- LFGListInvite Dialog
+		self:SecureHookScript(_G.LFGListInviteDialog, "OnShow", function(this)
+			self:removeNineSlice(this.Border)
+			self:skinObject("frame", {obj=this, fType=ftype})
+			if self.modBtns then
+				self:skinStdButton{obj=this.AcceptButton}
+				self:skinStdButton{obj=this.DeclineButton}
+				self:skinStdButton{obj=this.AcknowledgeButton}
+			end
 
-		self:Unhook(this, "OnShow")
-	end)
+			self:Unhook(this, "OnShow")
+		end)
 
+	end
 end
 
 aObj.blizzLoDFrames[ftype].MacroUI = function(self)
@@ -2058,6 +2152,29 @@ aObj.blizzFrames[ftype].MailFrame = function(self)
 
 		self:Unhook(this, "OnShow")
 	end)
+
+end
+
+if aObj.isRtl then
+	aObj.blizzFrames[ftype].Menu = function(self) -- Dropdown Menus
+		if not self.prdb.Menu or self.initialized.Menu then return end
+		self.initialized.Menu = true
+
+		local ddMenus, mixin = {}
+		for i = 1, 10 do
+			mixin = "MenuStyle" .. i .. "Mixin"
+			if _G[mixin] then
+				self:RawHook(_G[mixin], "Generate", function(menu)
+					if not _G.tContains(ddMenus, menu) then
+						aObj:skinObject("scrollbar", {obj=menu.ScrollBar, fType=ftype})
+						aObj:skinObject("frame", {obj=menu, fType=ftype, ofs=3, y1=-1, y2=6})
+						aObj:add2Table(ddMenus, menu)
+					end
+				end, true)
+			end
+		end
+
+	end
 
 end
 
@@ -2679,53 +2796,55 @@ if _G.PTR_IssueReporter then
 	end
 end
 
-aObj.blizzFrames[ftype].PVEFrame = function(self)
-	if not self.prdb.PVEFrame or self.initialized.PVEFrame then return end
-	self.initialized.PVEFrame = true
+if not aObj.isClscERA then
+	aObj.blizzFrames[ftype].PVEFrame = function(self)
+		if not self.prdb.PVEFrame or self.initialized.PVEFrame then return end
+		self.initialized.PVEFrame = true
 
-	local groupFrames
-	if _G.PVEFrame.ScenariosEnabled and _G.PVEFrame:ScenariosEnabled() then
-		groupFrames = { "LFDParentFrame", "ScenarioFinderFrame", "RaidFinderFrame", "LFGListPVEStub" }
-	else
-		groupFrames = { "LFDParentFrame", "RaidFinderFrame", "LFGListPVEStub" }
-	end
+		local groupFrames
+		if _G.PVEFrame.ScenariosEnabled and _G.PVEFrame:ScenariosEnabled() then
+			groupFrames = { "LFDParentFrame", "ScenarioFinderFrame", "RaidFinderFrame", "LFGListPVEStub" }
+		else
+			groupFrames = { "LFDParentFrame", "RaidFinderFrame", "LFGListPVEStub" }
+		end
 
-	self:SecureHookScript(_G.PVEFrame, "OnShow", function(this)
-		self:keepFontStrings(this.shadows)
-		if self.isRtl then
-			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype})
-		end
-		-- GroupFinder Frame
-		for i = 1, #groupFrames do
-			_G.GroupFinderFrame["groupButton" .. i].bg:SetTexture(nil)
-			_G.GroupFinderFrame["groupButton" .. i].ring:SetTexture(nil)
-			self:changeTex(_G.GroupFinderFrame["groupButton" .. i]:GetHighlightTexture())
-			-- make icon square
-			self:makeIconSquare(_G.GroupFinderFrame["groupButton" .. i], "icon")
-		end
-		-- hook this to change selected texture
-		self:SecureHook("GroupFinderFrame_SelectGroupButton", function(index)
-			for i = 1, #groupFrames do
-				if i == index then
-					self:changeTex(_G.GroupFinderFrame["groupButton" .. i].bg, true)
-				else
-					_G.GroupFinderFrame["groupButton" .. i].bg:SetTexture(nil)
-				end
+		self:SecureHookScript(_G.PVEFrame, "OnShow", function(this)
+			self:keepFontStrings(this.shadows)
+			if self.isRtl then
+				self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype})
 			end
-		end)
-		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, x1=-4, x2=3})
-		if self.modBtnBs then
-			-- hook this to change button border colour
-			self:SecureHook("GroupFinderFrame_EvaluateButtonVisibility", function(_, _)
+			-- GroupFinder Frame
+			for i = 1, #groupFrames do
+				_G.GroupFinderFrame["groupButton" .. i].bg:SetTexture(nil)
+				_G.GroupFinderFrame["groupButton" .. i].ring:SetTexture(nil)
+				self:changeTex(_G.GroupFinderFrame["groupButton" .. i]:GetHighlightTexture())
+				-- make icon square
+				self:makeIconSquare(_G.GroupFinderFrame["groupButton" .. i], "icon")
+			end
+			-- hook this to change selected texture
+			self:SecureHook("GroupFinderFrame_SelectGroupButton", function(index)
 				for i = 1, #groupFrames do
-					self:clrBtnBdr(_G.GroupFinderFrame["groupButton" .. i])
+					if i == index then
+						self:changeTex(_G.GroupFinderFrame["groupButton" .. i].bg, true)
+					else
+						_G.GroupFinderFrame["groupButton" .. i].bg:SetTexture(nil)
+					end
 				end
 			end)
-		end
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, x1=-4, x2=3})
+			if self.modBtnBs then
+				-- hook this to change button border colour
+				self:SecureHook("GroupFinderFrame_EvaluateButtonVisibility", function(_, _)
+					for i = 1, #groupFrames do
+						self:clrBtnBdr(_G.GroupFinderFrame["groupButton" .. i])
+					end
+				end)
+			end
 
-		self:Unhook(this, "OnShow")
-	end)
+			self:Unhook(this, "OnShow")
+		end)
 
+	end
 end
 
 aObj.blizzFrames[ftype].QueueStatusFrame = function(self)
@@ -2774,7 +2893,11 @@ aObj.blizzFrames[ftype].ReportFrame = function(self)
 
 	self:SecureHookScript(_G.ReportFrame, "OnShow", function(this)
 		self:removeNineSlice(this.Border)
-		self:skinObject("dropdown", {obj=this.ReportingMajorCategoryDropdown, fType=ftype})
+		if self.isRtl then
+			self:skinObject("ddbutton", {obj=this.ReportingMajorCategoryDropdown, fType=ftype})
+		else
+			self:skinObject("dropdown", {obj=this.ReportingMajorCategoryDropdown, fType=ftype})
+		end
 		self:skinObject("frame", {obj=this.Comment, fType=ftype, kfs=true, fb=true, ofs=6})
 		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, cb=true, ofs=-3})
 		if self.modBtns then
@@ -2881,9 +3004,10 @@ aObj.blizzFrames[ftype].Settings = function(self)
 				aObj:addButtonBorder{obj=element.DropDown.DecrementButton, fType=ftype, ofs=-2, y1=-3, sechk=true}
 			end
 			if aObj.modChkBtns
-			and element.CheckBox
+			and element.Checkbox
+			or element.CheckBox
 			then
-				aObj:skinCheckButton{obj=element.CheckBox, fType=ftype}
+				aObj:skinCheckButton{obj=element.Checkbox or element.CheckBox, fType=ftype}
 			end
 			if element.DropDown
 			and element.DropDown.Button
@@ -2936,18 +3060,7 @@ aObj.blizzFrames[ftype].Settings = function(self)
 					else
 						-- keybindings
 						aObj:removeRegions(element.Button, {1, 2, 3})
-						element.Button.Right:SetAlpha(1) -- make texture visible
-						element.Button.Right:SetDesaturated(1) -- make texture destaurated
-						aObj:RawHook(element.Button.Right, "SetAtlas", function(eObj, tex, useAtlasSize)
-							-- aObj:Debug("SetAtlas#1: [%s, %s]", tex)
-							if tex == "Options_ListExpand_Right_Expanded" then
-								tex = "ui-hud-minimap-zoom-out"
-							else
-								tex = "ui-hud-minimap-zoom-in"
-							end
-							-- aObj:Debug("SetAtlas#2: [%s, %s]", tex)
-							aObj.hooks[eObj].SetAtlas(eObj, tex, useAtlasSize)
-						end, true)
+						aObj:changeHdrExpandTex(element.Button.Right)
 						aObj:SecureHook(element, "EvaluateVisibility", function(eObj, _)
 							for _, control in _G.ipairs(eObj.Controls) do
 								skinCommonElements(control)
@@ -3147,15 +3260,20 @@ aObj.blizzFrames[ftype].TextToSpeechFrame = function(self)
 	self.initialized.TextToSpeechFrame = true
 
 	self:SecureHookScript(_G.TextToSpeechFrame, "OnShow", function(this)
-		self:skinObject("dropdown", {obj=_G.TextToSpeechFrameTtsVoiceDropdown, fType=ftype})
-		self:removeNineSlice(self:getChild(_G.TextToSpeechFrameTtsVoicePicker, 1).NineSlice)
-		self:skinObject("scrollbar", {obj=_G.TextToSpeechFrameTtsVoicePicker.ScrollBar, fType=ftype})
-		self:skinObject("dropdown", {obj=_G.TextToSpeechFrameTtsVoiceAlternateDropdown, fType=ftype})
-		self:SecureHook("TextToSpeechFrame_UpdateAlternate", function()
-			self:checkDisabledDD(_G.TextToSpeechFrameTtsVoiceAlternateDropdown)
-		end)
-		self:removeNineSlice(self:getChild(_G.TextToSpeechFrameTtsVoiceAlternatePicker, 1).NineSlice)
-		self:skinObject("scrollbar", {obj=_G.TextToSpeechFrameTtsVoiceAlternatePicker.ScrollBar, fType=ftype})
+		if self.isRtl then
+			self:skinObject("ddbutton", {obj=_G.TextToSpeechFrameTtsVoiceDropdown, fType=ftype})
+			self:skinObject("ddbutton", {obj=_G.TextToSpeechFrameTtsVoiceAlternateDropdown, fType=ftype})
+		else
+			self:skinObject("dropdown", {obj=_G.TextToSpeechFrameTtsVoiceDropdown, fType=ftype})
+			self:skinObject("dropdown", {obj=_G.TextToSpeechFrameTtsVoiceAlternateDropdown, fType=ftype})
+			self:removeNineSlice(self:getChild(_G.TextToSpeechFrameTtsVoicePicker, 1).NineSlice)
+			self:skinObject("scrollbar", {obj=_G.TextToSpeechFrameTtsVoicePicker.ScrollBar, fType=ftype})
+			self:SecureHook("TextToSpeechFrame_UpdateAlternate", function()
+				self:checkDisabledDD(_G.TextToSpeechFrameTtsVoiceAlternateDropdown)
+			end)
+			self:removeNineSlice(self:getChild(_G.TextToSpeechFrameTtsVoiceAlternatePicker, 1).NineSlice)
+			self:skinObject("scrollbar", {obj=_G.TextToSpeechFrameTtsVoiceAlternatePicker.ScrollBar, fType=ftype})
+		end
 		self:skinObject("slider", {obj=_G.TextToSpeechFrameAdjustRateSlider, fType=ftype})
 		self:skinObject("slider", {obj=_G.TextToSpeechFrameAdjustVolumeSlider, fType=ftype})
 		if self.modBtns then
@@ -3183,33 +3301,43 @@ aObj.blizzFrames[ftype].TimeManager = function(self)
 	self:SecureHookScript(_G.TimeManagerFrame, "OnShow", function(this)
 		_G.TimeManagerFrameTicker:Hide()
 		self:keepFontStrings(_G.TimeManagerStopwatchFrame)
-		self:skinObject("dropdown", {obj=_G.TimeManagerAlarmHourDropDown, fType=ftype, x2=-6})
-		self:skinObject("dropdown", {obj=_G.TimeManagerAlarmMinuteDropDown, fType=ftype, x2=-6})
-		self:skinObject("dropdown", {obj=_G.TimeManagerAlarmAMPMDropDown, fType=ftype, x2=-6})
-		self:skinObject("editbox", {obj=_G.TimeManagerAlarmMessageEditBox, fType=ftype})
-		if not aObj.isRtl then
-			self:removeRegions(_G.TimeManagerAlarmEnabledButton, {6, 7})
+		if self.isRtl then
+			self:skinObject("ddbutton", {obj=this.AlarmTimeFrame.HourDropdown, fType=ftype})
+			self:skinObject("ddbutton", {obj=this.AlarmTimeFrame.MinuteDropdown, fType=ftype})
+			self:skinObject("ddbutton", {obj=this.AlarmTimeFrame.AMPMDropdown, fType=ftype})
 		else
+			self:skinObject("dropdown", {obj=_G.TimeManagerAlarmHourDropDown, fType=ftype, x2=-6})
+			self:skinObject("dropdown", {obj=_G.TimeManagerAlarmMinuteDropDown, fType=ftype, x2=-6})
+			self:skinObject("dropdown", {obj=_G.TimeManagerAlarmAMPMDropDown, fType=ftype, x2=-6})
+		end
+		self:skinObject("editbox", {obj=_G.TimeManagerAlarmMessageEditBox, fType=ftype})
+		if self.isRtl then
 			self:removeRegions(_G.TimeManagerAlarmEnabledButton, {4, 5})
+		else
+			self:removeRegions(_G.TimeManagerAlarmEnabledButton, {6, 7})
 		end
 		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, x2=self.isRtl and 3 or 1})
 		if self.modBtnBs then
-			self:addButtonBorder{obj=_G.TimeManagerStopwatchCheck, y1=2, y2=-4}
+			self:addButtonBorder{obj=_G.TimeManagerStopwatchCheck, fType=ftype, y1=2, y2=-4}
 		end
 		if self.modChkBtns then
 			self:skinCheckButton{obj=_G.TimeManagerAlarmEnabledButton, fType=ftype}
 			self:skinCheckButton{obj=_G.TimeManagerMilitaryTimeCheck, fType=ftype}
 			self:skinCheckButton{obj=_G.TimeManagerLocalTimeCheck, fType=ftype}
 		end
-		-- Stopwatch Frame
+
+		self:Unhook(this, "OnShow")
+	end)
+
+	self:SecureHookScript(_G.StopwatchFrame, "OnShow", function(this)
 		self:keepFontStrings(_G.StopwatchTabFrame)
-		self:skinObject("frame", {obj=_G.StopwatchFrame, fType=ftype, kfs=true, y1=-16, x2=-1, y2=2})
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, y1=-16, x2=-1, y2=2})
 		if self.modBtns then
 			self:skinCloseButton{obj=_G.StopwatchCloseButton, fType=ftype, noSkin=true}
 		end
 		if self.modBtnBs then
-			self:addButtonBorder{obj=_G.StopwatchPlayPauseButton, ofs=-1, x1=0, clr="gold"}
-			self:addButtonBorder{obj=_G.StopwatchResetButton, ofs=-1, x1=0, clr="gold"}
+			self:addButtonBorder{obj=_G.StopwatchResetButton, fType=ftype, ofs=-1, x1=0, clr="gold"}
+			self:addButtonBorder{obj=_G.StopwatchPlayPauseButton, fType=ftype, ofs=-1, x1=0, clr="gold"}
 		end
 
 		self:Unhook(this, "OnShow")
@@ -3342,39 +3470,34 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 
 end
 
-aObj.blizzFrames[ftype].UIDropDownMenu = function(self)
-	if not self.prdb.UIDropDownMenu or self.initialized.UIDropDownMenu then return end
-	self.initialized.UIDropDownMenu = true
+if not aObj.isRtl then
+	aObj.blizzFrames[ftype].UIDropDownMenu = function(self)
+		if not self.prdb.UIDropDownMenu or self.initialized.UIDropDownMenu then return end
+		self.initialized.UIDropDownMenu = true
 
-	local function skinDDList(frame)
-		local fName = frame:GetName()
-		if self.isRtl then
-			self:keepFontStrings(frame.Border)
-		end
-		if not self.isRtl
-		or self:isAddOnLoaded("TipTac")
-		then
+		local function skinDDList(frame)
+			local fName = frame:GetName()
 			aObj:removeBackdrop(_G[fName .. "Backdrop"])
+			aObj:removeBackdrop(_G[fName .. "MenuBackdrop"])
+			aObj:removeNineSlice(_G[fName .. "MenuBackdrop"].NineSlice)
+			aObj:skinObject("frame", {obj=frame, fType=ftype, kfs=true, ofs=self.isRtl and -4 or -6})
 		end
-		aObj:removeBackdrop(_G[fName .. "MenuBackdrop"])
-		aObj:removeNineSlice(_G[fName .. "MenuBackdrop"].NineSlice)
-		aObj:skinObject("frame", {obj=frame, fType=ftype, kfs=true, ofs=self.isRtl and -4 or -6})
-	end
 
-	for i = 1, _G.UIDROPDOWNMENU_MAXLEVELS do
-		self:SecureHookScript(_G["DropDownList" .. i], "OnShow", function(this)
-			skinDDList(this)
+		for i = 1, _G.UIDROPDOWNMENU_MAXLEVELS do
+			self:SecureHookScript(_G["DropDownList" .. i], "OnShow", function(this)
+				skinDDList(this)
 
-			self:Unhook(this, "OnShow")
+				self:Unhook(this, "OnShow")
+			end)
+		end
+
+		self:SecureHook("UIDropDownMenu_CreateFrames", function(_)
+			if not _G["DropDownList" .. _G.UIDROPDOWNMENU_MAXLEVELS].sf then
+				skinDDList(_G["DropDownList" .. _G.UIDROPDOWNMENU_MAXLEVELS])
+			end
 		end)
+
 	end
-
-	self:SecureHook("UIDropDownMenu_CreateFrames", function(_)
-		if not _G["DropDownList" .. _G.UIDROPDOWNMENU_MAXLEVELS].sf then
-			skinDDList(_G["DropDownList" .. _G.UIDROPDOWNMENU_MAXLEVELS])
-		end
-	end)
-
 end
 
 aObj.blizzFrames[ftype].UIWidgets = function(self)
@@ -3551,8 +3674,10 @@ aObj.blizzFrames[ftype].UnitPopup = function(self)
 	if not self.prdb.UnitPopup or self.initialized.UnitPopup then return end
 	self.initialized.UnitPopup = true
 
-	self:skinObject("slider", {obj=_G.UnitPopupVoiceSpeakerVolume.Slider, fType=ftype})
-	self:skinObject("slider", {obj=_G.UnitPopupVoiceMicrophoneVolume.Slider, fType=ftype})
-	self:skinObject("slider", {obj=_G.UnitPopupVoiceUserVolume.Slider, fType=ftype})
+	if not aObj.isRtl then
+		self:skinObject("slider", {obj=_G.UnitPopupVoiceSpeakerVolume.Slider, fType=ftype})
+		self:skinObject("slider", {obj=_G.UnitPopupVoiceMicrophoneVolume.Slider, fType=ftype})
+		self:skinObject("slider", {obj=_G.UnitPopupVoiceUserVolume.Slider, fType=ftype})
+	end
 
 end

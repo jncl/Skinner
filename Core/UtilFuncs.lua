@@ -109,21 +109,35 @@ end
 
 function aObj:applyGradient(obj, fh, invert, rotate)
 
+	if not self.prdb.Gradient.enable then
+		return
+	end
+
 	-- don't apply a gradient if required
 	if not self.prdb.Gradient.char then
-		if self.gradFrames.p[obj] then return end
+		if self.gradFrames.p[obj] then
+			return
+		end
 	end
 	if not self.prdb.Gradient.ui then
-		if self.gradFrames.u[obj] then return end
+		if self.gradFrames.u[obj] then
+			return
+		end
 	end
 	if not self.prdb.Gradient.npc then
-		if self.gradFrames.n[obj] then return end
+		if self.gradFrames.n[obj] then
+			return
+		end
 	end
 	if not self.prdb.Gradient.skinner then
-		if self.gradFrames.s[obj] then return end
+		if self.gradFrames.s[obj] then
+			return
+		end
 	end
 	if not self.prdb.Gradient.addon then
-		if self.gradFrames.a[obj] then return end
+		if self.gradFrames.a[obj] then
+			return
+		end
 	end
 
 	invert = invert or self.prdb.Gradient.invert
@@ -208,18 +222,31 @@ function aObj:capitStr(str)
 
 end
 
-function aObj:changeMinusPlusTex(obj, minus)
+local coords
+function aObj:changeHdrExpandTex(reg, type)
 	--@debug@
-	_G.assert(obj, "Unknown object changeMinusPlusTex\n" .. _G.debugstack(2, 3, 2))
+	_G.assert(reg, "Unknown region changeHdrExpandTex\n" .. _G.debugstack(2, 3, 2))
 	--@end-debug@
 
-	local nTex = obj:GetNormalTexture()
-	nTex:SetTexture(aObj.tFDIDs.mpTex)
-	if minus then
-		nTex:SetTexCoord(0.29687500, 0.54687500, 0.00781250, 0.13281250)
-	else
-		nTex:SetTexCoord(0.57812500, 0.82812500, 0.14843750, 0.27343750)
-	end
+	reg:SetAlpha(1)
+	reg:SetDesaturated(1) -- make texture desaturated
+	aObj:RawHook(reg, "SetAtlas", function(eReg, tex, useAtlasSize)
+		-- aObj:Debug("changeHdrExpandTex SetAtlas: [%s, %s]", reg, tex)
+		if tex == "Options_ListExpand_Right_Expanded" then -- minus
+			tex = aObj.isRtl and "ui-hud-minimap-zoom-out" or aObj.tFDIDs.mpTex
+			coords = not aObj.isRtl and {0.29687500, 0.54687500, 0.00781250, 0.13281250}
+		else
+			tex = aObj.isRtl and "ui-hud-minimap-zoom-in" or aObj.tFDIDs.mpTex
+			coords = not aObj.isRtl and {0.57812500, 0.82812500, 0.14843750, 0.27343750}
+		end
+		if aObj.isRtl then
+			aObj.hooks[eReg].SetAtlas(eReg, tex, useAtlasSize)
+		else
+			eReg:SetTexture(tex) -- N.B. use SetTexture instead of SetAtlas otherwise the texture isn't dosplay correctly
+			eReg:SetTexCoord(coords[1], coords[2], coords[3], coords[4])
+			eReg:SetScale(0.75)
+		end
+	end, true)
 
 end
 
@@ -488,6 +515,14 @@ function aObj:clrBBC(obj, clrName, alpha)
 
 end
 
+function aObj:clrFrameBdr(fObj, clrName, alpha)
+
+	-- check frame state and alter colour accordingly
+	clrName = fObj.IsEnabled and not fObj:IsEnabled() and "disabled" or clrName
+	aObj:clrBBC(fObj.sf, clrName, alpha)
+
+end
+
 -- colour Frame border based upon Covenant
 local tKit, r, g, b
 function aObj:clrCovenantBdr(frame, uiTextureKit)
@@ -627,13 +662,13 @@ local clrTab = {
 	grey        = _G.GRAY_FONT_COLOR,
 	normal      = _G.NORMAL_FONT_COLOR,
 	orange      = _G.ORANGE_FONT_COLOR,
-	red         = _G.DULL_RED_FONT_COLOR,
+	red         = aObj.isRtl and _G.DULL_RED_FONT_COLOR or _G.CreateColor(0.75, 0.15, 0.15),
 	selected    = _G.PAPER_FRAME_EXPANDED_COLOR,
 	sepia       = _G.SEPIA_COLOR,
 	silver      = _G.QUEST_OBJECTIVE_FONT_COLOR,
 	topaz       = _G.CreateColor(0.6, 0.31, 0.24),
 	turq        = _G.ADVENTURES_BUFF_BLUE,
-	unused      = _G.DULL_RED_FONT_COLOR,
+	-- unused      = _G.DULL_RED_FONT_COLOR,
 	white       = _G.HIGHLIGHT_FONT_COLOR,
 	yellow      = _G.YELLOW_FONT_COLOR,
 }
@@ -641,6 +676,9 @@ function aObj:getColourByName(clrName)
 
 	if not clrTab.slider then
 		clrTab.slider = _G.CopyTable(self.prdb.SliderBorder)
+	end
+	if not clrTab.unused then
+		clrTab.unused = clrTab["red"]
 	end
 
 	if clrTab[clrName] then
@@ -673,19 +711,6 @@ function aObj:getInt(num)
 		--@end-debug@
 
 	return _G.math.floor(num + 0.5)
-
-end
-
-function aObj:getKeys(curTab)
-
-	if not curTab then return end
-
-	local tmpTab = {}
-	for _, ct in _G.pairs(curTab) do
-		tmpTab[ct] = true
-	end
-
-	return tmpTab
 
 end
 
@@ -723,6 +748,7 @@ function aObj:hasTextInName(obj, text)
 	_G.assert(text, "Missing value hasTextInName\n" .. _G.debugstack(2, 3, 2))
 	--@end-debug@
 
+	-- ignore embedded hyphens
 	return obj and obj.GetName and obj:GetName() and obj:GetName():find(text, 1, true) and true or false
 
 end
@@ -740,7 +766,7 @@ end
 function aObj:hasAnyTextInName(obj, tab)
 	--@debug@
 	_G.assert(obj, "Unknown object hasAnyTextInName\n" .. _G.debugstack(2, 3, 2))
-	_G.assert(tab, "Missing value hasAnyTextInName\n" .. _G.debugstack(2, 3, 2))
+	_G.assert(tab and _G.type(tab) == "table", "Missing text table hasAnyTextInName\n" .. _G.debugstack(2, 3, 2))
 	--@end-debug@
 
 	if obj
@@ -836,11 +862,7 @@ function aObj:isAddOnLoaded(addonName)
 	_G.assert(addonName, "Unknown object isAddOnLoaded\n" .. _G.debugstack(2, 3, 2))
 	--@end-debug@
 
-	if _G.IsAddOnLoaded then
-		return _G.IsAddOnLoaded(addonName)
-	else
-	    return _G.C_AddOns.IsAddOnLoaded(addonName)
-	end
+	return _G.IsAddOnLoaded and _G.IsAddOnLoaded(addonName) or _G.C_AddOns.IsAddOnLoaded(addonName)
 
 end
 
@@ -849,11 +871,7 @@ function aObj:isAddOnLoadOnDemand(addonName)
 	_G.assert(addonName, "Unknown object isAddOnLoadOnDemand\n" .. _G.debugstack(2, 3, 2))
 	--@end-debug@
 
-	if _G.IsAddOnLoadOnDemand then
-		return _G.IsAddOnLoadOnDemand(addonName)
-	else
-	    return _G.C_AddOns.IsAddOnLoadOnDemand(addonName)
-	end
+	return _G.IsAddOnLoadOnDemand and _G.IsAddOnLoadOnDemand(addonName) or _G.C_AddOns.IsAddOnLoadOnDemand(addonName)
 
 end
 
@@ -862,11 +880,7 @@ function aObj:isAddonEnabled(addonName)
 	_G.assert(addonName, "Unknown object isAddonEnabled\n" .. _G.debugstack(2, 3, 2))
 	--@end-debug@
 
-	if _G.GetAddOnEnableState then
-		return _G.GetAddOnEnableState(self.uName, addonName) == 2 and true or false
-	else
-	    return _G.C_AddOns.GetAddOnEnableState(addonName, self.uName) == 2 and true or false
-	end
+	return _G.GetAddOnEnableState and (_G.GetAddOnEnableState(self.uName, addonName) == 2 and true or false) or (_G.C_AddOns.GetAddOnEnableState(addonName, self.uName) == 2 and true or false)
 
 end
 
@@ -911,7 +925,7 @@ function aObj:keepRegions(obj, regions)
 	_G.assert(obj, "Missing object kR\n" .. _G.debugstack(2, 3, 2))
 	--@end-debug@
 
-	local tmpTab = self:getKeys(regions) or {}
+	local tmpTab = _G.tInvert(regions)
 	for key, reg in _G.ipairs{obj:GetRegions()} do
 		if not tmpTab[key] then
 			reg:SetAlpha(0)
@@ -1111,7 +1125,7 @@ function aObj:removeInset(frame)
 	--@end-debug@
 
 	ddlBBO(frame)
-	-- InsetFrameTemplate has a NineSlice child
+	-- InsetFrameTemplate can have a NineSlice child
 	if frame.NineSlice then
 		self:removeNineSlice(frame.NineSlice)
 	end
@@ -1124,8 +1138,11 @@ function aObj:removeMagicBtnTex(btn)
 	--@end-debug@
 
 	-- Magic Button textures
-	if btn.LeftSeparator then btn.LeftSeparator:SetTexture(nil) end
-	if btn.RightSeparator then btn.RightSeparator:SetTexture(nil) end
+	for _, prefix in _G.pairs("Left", "Right") do
+		if btn[prefix .. "Separator"] then
+			btn[prefix .. "Separator"]:SetTexture(nil)
+		end
+	end
 
 end
 
@@ -1143,7 +1160,7 @@ function aObj:removeRegions(obj, regions)
 	_G.assert(obj, "Missing object (removeRegions)\n" .. _G.debugstack(2, 3, 2))
 	--@end-debug@
 
-	local tmpTab = self:getKeys(regions) or {}
+	local tmpTab = _G.tInvert(regions)
 	for key, reg in _G.pairs{obj:GetRegions()} do
 		if tmpTab[key] then
 			reg:SetAlpha(0)
@@ -1219,7 +1236,7 @@ function aObj:round2(num, idp)
 
 end
 
-local function scanChildren(obj)
+function aObj:scanChildren(obj)
 
 	for idx, child in _G.ipairs_reverse{_G[obj]:GetChildren()} do
 		-- check for forbidden objects (StoreUI components etc.)
@@ -1234,13 +1251,7 @@ local function scanChildren(obj)
 end
 function aObj:scanUIParentsChildren()
 
-	scanChildren("UIParent")
-
-end
-
-function aObj:scanWorldFrameChildren()
-
-	scanChildren("WorldFrame")
+	self:scanChildren("UIParent")
 
 end
 
@@ -1371,6 +1382,7 @@ function aObj:setupTextures()
 		["bHLS"]      = _G.GetFileIDFromPath([[Interface\Buttons\ButtonHilight-Square]]), -- blue highlight
 		["bHLSQ"]     = _G.GetFileIDFromPath([[Interface\Buttons\ButtonHilight-SquareQuickslot]]), -- smaller & lighter blue highlight
 		["cbH"]       = _G.GetFileIDFromPath([[Interface\Buttons\CheckButtonHilight]]), -- yellow highlight
+		["cfEA"]      = _G.GetFileIDFromPath([[Interface/ChatFrame/ChatFrameExpandArrow]]),
 		["hfHB"]      = _G.GetFileIDFromPath([[Interface\HelpFrame\HelpButtons]]),
 		["cbMin"]     = _G.GetFileIDFromPath([[interface\Common\minimalcheckbox.blp]]),
 		["cbSC"]      = _G.GetFileIDFromPath([[Interface\Buttons\UI-Checkbox-SwordCheck]]),
@@ -1416,20 +1428,24 @@ function aObj:skinColumnDisplay(frame)
 
 end
 
-function aObj:skinIconSelector(frame)
+function aObj:skinIconSelector(frame, ftype)
 
 	self:removeNineSlice(frame.BorderBox)
 	frame.BorderBox.SelectedIconArea.SelectedIconButton:DisableDrawLayer("BACKGROUND")
-	self:skinObject("editbox", {obj=frame.BorderBox.IconSelectorEditBox})
-	self:skinObject("dropdown", {obj=frame.BorderBox.IconTypeDropDown.DropDownMenu})
-	self:skinObject("scrollbar", {obj=frame.IconSelector.ScrollBar})
-	self:skinObject("frame", {obj=frame, ofs=-3, x1=-2})
+	self:skinObject("editbox", {obj=frame.BorderBox.IconSelectorEditBox, fType=ftype or "a"})
+	if self.isRtl then
+		self:skinObject("ddbutton", {obj=frame.BorderBox.IconTypeDropdown, fType=ftype or "a"})
+	else
+		self:skinObject("dropdown", {obj=frame.BorderBox.IconTypeDropDown.DropDownMenu, fType=ftype or "a"})
+	end
+	self:skinObject("scrollbar", {obj=frame.IconSelector.ScrollBar, fType=ftype or "a"})
+	self:skinObject("frame", {obj=frame, fType=ftype or "a", ofs=-3, x1=-2})
 	if self.modBtns then
-		self:skinStdButton{obj=frame.BorderBox.CancelButton}
-		self:skinStdButton{obj=frame.BorderBox.OkayButton, schk=true}
+		self:skinStdButton{obj=frame.BorderBox.CancelButton, fType=ftype or "a"}
+		self:skinStdButton{obj=frame.BorderBox.OkayButton, fType=ftype or "a", schk=true}
 	end
 	if self.modBtnBs then
-		self:addButtonBorder{obj=frame.BorderBox.SelectedIconArea.SelectedIconButton, relTo=frame.BorderBox.SelectedIconArea.SelectedIconButton.Icon}
+		self:addButtonBorder{obj=frame.BorderBox.SelectedIconArea.SelectedIconButton, fType=ftype or "a", relTo=frame.BorderBox.SelectedIconArea.SelectedIconButton.Icon}
 		local function skinElement(...)
 			local _, element, new
 			if _G.select("#", ...) == 2 then
@@ -1441,7 +1457,7 @@ function aObj:skinIconSelector(frame)
 			end
 			if new ~= false then
 				element:DisableDrawLayer("BACKGROUND")
-				aObj:addButtonBorder{obj=element, relTo=element.Icon, clr="grey"}
+				aObj:addButtonBorder{obj=element, fType=ftype or "a", relTo=element.Icon}
 			end
 		end
 		_G.ScrollUtil.AddAcquiredFrameCallback(frame.IconSelector.ScrollBox, skinElement, aObj, true)
@@ -1464,20 +1480,15 @@ function aObj:skinNavBarButton(btn)
 
 end
 
---@debug@
-function aObj:tableCount(table)
+function aObj:skinPagingControls(frame)
 
-	local count = 0
-
-	for _ in _G.pairs(table) do count = count + 1 end
-
-	return count
+	frame.PageText:SetTextColor(self.BT:GetRGB())
+	if self.modBtnBs then
+		self:addButtonBorder{obj=frame.PrevPageButton, ofs=-2, x1=1, clr="gold", sechk=true}
+		self:addButtonBorder{obj=frame.NextPageButton, ofs=-2, x1=1, clr="gold", sechk=true}
+	end
 
 end
---@end-debug@
---[===[@non-debug@
-aObj.tableCount = _G.nop
---@end-non-debug@]===]
 
 function aObj:updateSBTexture()
 
@@ -1673,7 +1684,7 @@ function aObj:SetupCmds()
 	self:RegisterChatCommand("sspewp", function(msg) return _G.Spew and _G.Spew(msg, getObjP(msg)) end)
 	self:RegisterChatCommand("sspewgp", function(msg) return _G.Spew and _G.Spew(msg, getObjGP(msg)) end)
 
-	self:RegisterChatCommand("shc", function() self:Debug("Hooks table Count: [%s]", self:tableCount(self.hooks)) end)
+	self:RegisterChatCommand("shc", function() self:Debug("Hooks table Count: [%s]", _G.CountTable(self.hooks)) end)
 
 	self:RegisterChatCommand("wai", function() -- where am I ?
 		local posTab = _G.C_Map.GetPlayerMapPosition(_G.C_Map.GetBestMapForUnit("player"), "player")

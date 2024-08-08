@@ -98,13 +98,14 @@ local function __checkTex(opts)
 	 end
 
 	-- hide existing textures if they exist (Armory/GupCharacter requires this)
-	if opts.obj:GetNormalTexture() then opts.obj:GetNormalTexture():SetAlpha(0) end
-	if opts.obj:GetPushedTexture() then opts.obj:GetPushedTexture():SetAlpha(0) end
-	if opts.obj:GetDisabledTexture() then opts.obj:GetDisabledTexture():SetAlpha(0) end
+	if opts.obj.GetNormalTexture and opts.obj:GetNormalTexture() then opts.obj:GetNormalTexture():SetAlpha(0) end
+	if opts.obj.GetPushedTexture and opts.obj:GetPushedTexture() then opts.obj:GetPushedTexture():SetAlpha(0) end
+	if opts.obj.GetDisabledTexture and opts.obj:GetDisabledTexture() then opts.obj:GetDisabledTexture():SetAlpha(0) end
 
 	btn = opts.obj.onSB and opts.obj.sb or opts.obj
 	if not btn then return end -- handle unskinned buttons
 	nTex = opts.nTex or opts.obj:GetNormalTexture() and opts.obj:GetNormalTexture():GetTexture() or nil
+	-- aObj:Debug("__checkTex: [%s, %s]", nTex)
 
 	local header = false
 	if nTex then
@@ -156,20 +157,8 @@ function module:checkTex(...)
 
 end
 
-if not aObj.isRtl then
-	_G.DULL_RED_FONT_COLOR = _G.CreateColor(0.75, 0.15, 0.15)
-end
 local function clrTex(clr, hTex)
-	local r, g, b
-	if clr == "grey" then
-		r, g, b = _G.GRAY_FONT_COLOR:GetRGB()
-	elseif clr == "red" then
-		r, g, b = _G.DULL_RED_FONT_COLOR:GetRGB()
-	elseif clr == "blue" then
-		r, g, b = _G.LIGHTBLUE_FONT_COLOR:GetRGB()
-	elseif clr == "yellow" then
-		r, g, b = _G.YELLOW_FONT_COLOR:GetRGB()
-	end
+	local r, g, b, _ = aObj:getColourByName(clr)
 	hTex:SetColorTexture(r, g, b, 0.25)
 end
 function module:chgHLTex(obj, hTex)
@@ -454,12 +443,19 @@ function module:skinExpandButton(opts)
 	if not opts.as then
 		aObj:skinObject("button", {obj=opts.obj, fType=opts.ftype, sap=opts.sap, bd=6, ofs=opts.ofs, clr=opts.clr})
 		if not opts.noHook then
-			module:SecureHook(opts.obj, "SetNormalTexture", function(this, tObj)
-				module:checkTex{obj=this, nTex=tObj}
-			end)
-			module:SecureHook(opts.obj, "SetNormalAtlas", function(this, tObj)
-				module:checkTex{obj=this, nTex=tObj}
-			end)
+			if aObj.isRtl then
+				nTex = opts.obj:GetNormalTexture()
+				module:SecureHook(nTex, "SetAtlas", function(this, tObj)
+					module:checkTex{obj=opts.obj, nTex=tObj}
+				end)
+			else
+				module:SecureHook(opts.obj, "SetNormalTexture", function(this, tObj)
+					module:checkTex{obj=this, nTex=tObj}
+				end)
+				module:SecureHook(opts.obj, "SetNormalAtlas", function(this, tObj)
+					module:checkTex{obj=this, nTex=tObj}
+				end)
+			end
 		end
 	else -- Ace3, Archy, ReagentRestocker
 		aObj:skinObject("skin", {obj=opts.obj, fType=opts.ftype, bd=opts.aso.bd or 6})
@@ -594,7 +590,7 @@ function module:skinStdButton(opts)
 	--@debug@
 	_G.assert(opts.obj, "Missing object skinStdButton\n" .. _G.debugstack(2, 3, 2))
 	--@end-debug@
-	 if opts.seca then
+	if opts.seca then
 		aObj:CustomPrint(1, 0, 0, "Using deprecated option - seca, use sabt instead", opts.obj)
 	end
 
@@ -989,12 +985,14 @@ end
 local function __skinCheckButton(opts)
 --[[
 	Calling parameters:
-		obj = object (Mandatory)
-		nc  = don't check to see if already skinned
-		hf  = hook show/hide functions
+		obj   = object (Mandatory)
+		nc    = don't check to see if already skinned
+		hf    = hook show/hide functions
+		sechk = set enabled check for colour changes
 --]]
 	--@debug@
 	 _G.assert(opts.obj, "Missing object __sCB\n" .. _G.debugstack(2, 3, 2))
+	 _G.assert(opts.obj.IsObjectType and opts.obj:IsObjectType("CheckButton"), "NOT a CheckButton __sCB\n" .. _G.debugstack(2, 3, 2))
 	 --@end-debug@
 
 	 -- handle in combat
@@ -1011,7 +1009,8 @@ local function __skinCheckButton(opts)
 	end
 
 	-- check to see if it's a 'real' CheckButton
-	if not aObj:hasTextInTexture(opts.obj:GetNormalTexture(), "CheckBox")
+	if not opts.obj.GetNormalTexture
+	or not aObj:hasTextInTexture(opts.obj:GetNormalTexture(), "CheckBox")
 	and not aObj:hasTextInTexture(opts.obj:GetNormalTexture(), aObj.tFDIDs.cbUP)
 	and not aObj:hasTextInTexture(opts.obj:GetNormalTexture(), aObj.tFDIDs.cbMin) -- Settings CheckButton
 	then
@@ -1035,7 +1034,16 @@ local function __skinCheckButton(opts)
 			yOfs = nil
 		end
 	end
-	aObj:skinObject("button", {obj=opts.obj, fType=opts.ftype, bd=bd, ng=true, ofs=ofs, y2=yOfs, clr="grey"})
+	aObj:skinObject("button", {obj=opts.obj, fType=opts.ftype, bd=bd, ng=true, ofs=ofs, y2=yOfs})
+	module:clrBtnBdr(opts.obj, opts.clr, opts.ca)
+	if opts.sechk then
+		-- store colour and alpha values with the skin button
+		opts.obj.sb.clr = opts.clr
+		opts.obj.sb.ca = opts.ca
+		module:secureHook(opts.obj, "SetEnabled", function(bObj)
+			module:clrBtnBdr(bObj, bObj.sb.clr, bObj.sb.ca)
+		end)
+	end
 
 end
 function module:skinCheckButton(...)

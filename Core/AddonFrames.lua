@@ -45,23 +45,17 @@ local addonSkins = {
 	"XLoot", "xMerchant",
 }
 aObj.addonsToSkin = {}
-for i = 1, #addonSkins do
-	if aObj:isAddonEnabled(addonSkins[i]) then
-		aObj.addonsToSkin[addonSkins[i]] = addonSkins[i]
-	end
-end
+_G.MergeTable(aObj.addonsToSkin, _G.CopyValuesAsKeys(addonSkins))
+
 aObj.libsToSkin = {}
 aObj.otherAddons = {}
+
 local lodFrames = {
 	"GarrisonMissionManager",
 	"GuildBankSearch",
 }
 aObj.lodAddons = {}
-for i = 1, #lodFrames do
-	if aObj:isAddonEnabled(lodFrames[i]) then
-		aObj.lodAddons[lodFrames[i]] = lodFrames[i]
-	end
-end
+_G.MergeTable(aObj.lodAddons, _G.CopyValuesAsKeys(lodFrames))
 
 --@debug@
 aObj.addonsToSkin = track(aObj.addonsToSkin)
@@ -97,7 +91,7 @@ local function skinBLoD(addon)
 		for fName, _ in _G.pairs(fTab) do
 			if addon
 			and addon == "Blizzard_" .. fName
-			or aObj:isAddOnLoaded("Blizzard_" .. fName)
+			and aObj:isAddOnLoaded("Blizzard_" .. fName)
 			then
 				aObj:checkAndRun(fName, fType, true)
 			end
@@ -108,16 +102,18 @@ function aObj:AddonFrames()
 
 	-- used for Addons that aren't LoadOnDemand
 	for addonName, skinFunc in _G.pairs(self.addonsToSkin) do
-		self:checkAndRunAddOn(addonName, skinFunc)
+		if self:isAddonEnabled(addonName) then
+			self:checkAndRunAddOn(addonName, skinFunc)
+		end
 	end
 
 	-- skin any Blizzard LoD frames or LoD addons that have already been loaded by other addons, waiting to allow them to be loaded
 	-- (Tukui does this for the PetJournal, other addons do it as well)
 	_G.C_Timer.After(0.2, function()
 		skinBLoD()
-		for name, skinFunc in _G.pairs(self.lodAddons) do
-			if self:isAddOnLoaded(name) then
-				self:checkAndRunAddOn(name, skinFunc, true)
+		for addonName, skinFunc in _G.pairs(self.lodAddons) do
+			if self:isAddOnLoaded(addonName) then
+				self:checkAndRunAddOn(addonName, skinFunc, true)
 			end
 		end
 	end)

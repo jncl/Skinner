@@ -5,11 +5,6 @@ local _G = _G
 
 -- skin Templates
 aObj.skinTPLs = {
-	defaults = {
-		fType		= "a",
-		-- obj         =,
-		-- type        =,
-	},
 	button = {
 		name		= false, -- use a name if required (VuhDo Options)
 		aso         = {},-- applySkin options,
@@ -25,7 +20,20 @@ aObj.skinTPLs = {
 		subt		= false, -- use SecureUnitButtonTemplate
 		shat		= false, -- use SecureHandlerAttributeTemplate
 	},
-	dropdown= {
+	ddbutton = {
+		-- clr      = "grey",
+		-- filter   = false,
+		-- filtercb = "ResetButton",
+		-- noBB     = false, -- don't skin button
+		-- noSF     = false, -- don't skin frame
+		ofs         = -1,
+		-- sechk    = false,
+		-- x1       = nil,
+		y1          = 2,
+		-- x2       = nil,
+		y2          = 4,
+	},
+	dropdown = {
 		lrgTpl      = false,
 		noBB        = false,
 		noSkin      = false,
@@ -168,11 +176,9 @@ aObj.skinTPLs = {
 }
 do
 	for name, table in _G.pairs(aObj.skinTPLs) do
-		if _G.type(table) == "table"
-		and name ~= "defaults"
-		then
+		if _G.type(table) == "table" then
 			table.type = name
-			_G.setmetatable(table, {__index = function(_, key) return aObj.skinTPLs.defaults[key] end})
+			table.ftype = "a"
 		end
 	end
 end
@@ -254,7 +260,7 @@ function aObj:skinObject(...)
 		table = ...
 	end
 	--@debug@
-	_G.assert(table and _G.type(table), "Missing table (skinObject)\n" .. _G.debugstack(2, 3, 2))
+	_G.assert(table and _G.type(table) == "table", "Missing table (skinObject)\n" .. _G.debugstack(2, 3, 2))
 	--@end-debug@
 
 	if type then
@@ -426,6 +432,54 @@ local function skinButton(tbl)
 	return tbl.obj.sb
 end
 skinFuncs.button = function(table) skinButton(table) end
+local function skinDDButton(tbl)
+	--@debug@
+	_G.assert(tbl.obj, "Missing object (skinDDButton)\n" .. _G.debugstack(2, 3, 2))
+	--@end-debug@
+
+	aObj:Debug2("skinDDButton: [%s]", tbl)
+
+	-- don't skin it twice
+	if tbl.obj.sf
+	or tbl.obj.sb
+	then
+		return
+	end
+
+	if tbl.filter then
+		-- skin the WowStyle1FilterDropdownTemplate
+		aObj:skinStdButton{obj=tbl.obj, fType=tbl.ftype, bd=5, sechk=true, y2=-2}
+		aObj.modUIBtns:skinCloseButton{obj=tbl.obj[tbl.filtercb or "ResetButton"], fType=tbl.ftype, noSkin=true}
+		tbl.obj.arrow = tbl.obj:CreateTexture(nil, "ARTWORK", nil, 5)
+		tbl.obj.arrow:SetTexture(aObj.tFDIDs.cfEA)
+		tbl.obj.arrow:SetSize(16, 16)
+		tbl.obj.arrow:SetPoint("RIGHT", -2, -1)
+	else
+		-- skin the WowStyle1DropdownTemplate/WowStyle2DropdownTemplate & other DropdownButtons
+		if tbl.obj.Background then
+			tbl.obj.Background:SetTexture(nil)
+		end
+		if not tbl.noSF then
+			aObj:skinObject("frame", {obj=tbl.obj, fType=tbl.ftype, sechk=tbl.sechk})
+			if aObj.prdb.TabDDTextures.textureddd then
+				tbl.obj.Background:SetTexture(aObj.itTex)
+				tbl.obj.Background:SetPoint("TOPLEFT", 0, 0)
+				tbl.obj.Background:SetPoint("BOTTOMRIGHT", 0, 0)
+			end
+		end
+		if not tbl.noBB then
+			-- position around the original frame
+			tbl.x1  = tbl.x1 or tbl.ofs * -1
+			tbl.y1  = tbl.y1 or tbl.ofs
+			tbl.x2  = tbl.x2 or tbl.ofs
+			tbl.y2  = tbl.y2 or tbl.ofs * -1
+			aObj:addButtonBorder{obj=tbl.obj, fType=tbl.ftype, relTo=tbl.obj.Arrow, clr=tbl.clr, sechk=tbl.sechk, ofs=tbl.ofs, x1=tbl.x1, y1=tbl.y1, x2=tbl.x2, y2=tbl.y2}
+		end
+	end
+	-- tbl.obj:RegisterCallback(_G.DropdownButtonMixin.Event.OnMenuOpen, aObj.OnMenuOpen, aObj)
+
+end
+skinFuncs.ddbutton = function(table) skinDDButton(table) end
 local function skinDropDown(tbl)
 	--@debug@
 	_G.assert(tbl.obj, "Missing object (skinDropDown)\n" .. _G.debugstack(2, 3, 2))
@@ -630,6 +684,15 @@ local function skinFrame(tbl)
 	so.rotate = tbl.rotate
 	-- apply the 'Skinner effect' to the frame
 	aObj:skinObject(so)
+	if tbl.sechk then
+		-- save colour info on object
+		tbl.obj.sf.clr = tbl.clr
+		tbl.obj.sf.ca = tbl.ca
+		aObj:clrFrameBdr(tbl.obj, tbl.clr, tbl.ca)
+		aObj:secureHook(tbl.obj, "SetEnabled", function(fObj)
+			aObj:clrFrameBdr(fObj, fObj.sf.clr, fObj.sf.ca)
+		end)
+	end
 	return tbl.obj.sf
 end
 skinFuncs.frame = function(table) skinFrame(table) end
