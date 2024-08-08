@@ -1099,17 +1099,19 @@ if not aObj.isClscERA then
 				self:skinCheckButton{obj=this.MountDisplay.ModelScene.TogglePlayer}
 			end
 
-			self:SecureHookScript(this.DynamicFlightFlyout, "OnShow", function(fObj)
-				self:skinObject("frame", {obj=fObj.Background, fType=ftype, kfs=true, ofs=0, y1=4})
-				if self.modBtnBs then
-					self:addButtonBorder{obj=fObj.OpenDynamicFlightSkillTreeButton, fType=ftype}
-					self:moveObject{obj=fObj.OpenDynamicFlightSkillTreeButton, x=1}
-					self:addButtonBorder{obj=fObj.DynamicFlightModeButton, fType=ftype}
-					self:moveObject{obj=fObj.DynamicFlightModeButtonf, x=1}
-				end
+			if self.isRtl then
+				self:SecureHookScript(this.DynamicFlightFlyout, "OnShow", function(fObj)
+					self:skinObject("frame", {obj=fObj.Background, fType=ftype, kfs=true, ofs=0, y1=4})
+					if self.modBtnBs then
+						self:addButtonBorder{obj=fObj.OpenDynamicFlightSkillTreeButton, fType=ftype}
+						self:moveObject{obj=fObj.OpenDynamicFlightSkillTreeButton, x=1}
+						self:addButtonBorder{obj=fObj.DynamicFlightModeButton, fType=ftype}
+						self:moveObject{obj=fObj.DynamicFlightModeButtonf, x=1}
+					end
 
-				self:Unhook(fObj, "OnShow")
-			end)
+					self:Unhook(fObj, "OnShow")
+				end)
+			end
 
 			self:Unhook(this, "OnShow")
 		end)
