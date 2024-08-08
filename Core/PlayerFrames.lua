@@ -1036,6 +1036,7 @@ if not aObj.isClscERA then
 			self:Unhook(this, "OnShow")
 		end)
 
+		local btn
 		self:SecureHookScript(_G.MountJournal, "OnShow", function(this)
 			self:removeInset(this.LeftInset)
 			self:removeInset(this.RightInset)
@@ -1083,6 +1084,8 @@ if not aObj.isClscERA then
 			if self.modBtnBs then
 				if self.isRtl then
 					self:addButtonBorder{obj=this.SlotButton, relTo=this.SlotButton.ItemIcon, reParent={this.SlotButton.SlotBorder, this.SlotButton.SlotBorderOpen}, ca=0.85}
+					btn = this.ToggleDynamicFlightFlyoutButton
+					self:addButtonBorder{obj=btn, ofs=3, reParent={btn.FlyoutArrowNormal, btn.FlyoutArrowPushed, btn.FlyoutArrowHighlight}}
 					self:addButtonBorder{obj=this.SummonRandomFavoriteButton, ofs=3}
 				else
 					self:addButtonBorder{obj=this.MountDisplay.ModelScene.RotateLeftButton, ofs=-3}
@@ -1095,6 +1098,18 @@ if not aObj.isClscERA then
 			then
 				self:skinCheckButton{obj=this.MountDisplay.ModelScene.TogglePlayer}
 			end
+
+			self:SecureHookScript(this.DynamicFlightFlyout, "OnShow", function(fObj)
+				self:skinObject("frame", {obj=fObj.Background, fType=ftype, kfs=true, ofs=0, y1=4})
+				if self.modBtnBs then
+					self:addButtonBorder{obj=fObj.OpenDynamicFlightSkillTreeButton, fType=ftype}
+					self:moveObject{obj=fObj.OpenDynamicFlightSkillTreeButton, x=1}
+					self:addButtonBorder{obj=fObj.DynamicFlightModeButton, fType=ftype}
+					self:moveObject{obj=fObj.DynamicFlightModeButtonf, x=1}
+				end
+
+				self:Unhook(fObj, "OnShow")
+			end)
 
 			self:Unhook(this, "OnShow")
 		end)
