@@ -20,15 +20,13 @@ ToDos
 ≈		O	Refactor NewSkinFuncs in AddOn skins
 
 		O	Refactor frame children loops to use Utility function via callback
-		
-#86	√	I/E	ElvUI profile settings
-	
-#87	≈	I	Pre-Patch Errors
-#88
-#89
-#90
-#91
 
-#92	√	I	Baganator Skin Category Layout(s)
+#94	√	I	ViewPort
 
-#93	√	I	BetterBags
+#95	√	I 	Missing entry for 'Professions Book Frame'
+
+#96	√	I	removeMagicBtnTex function
+
+#97	√	I	The guild & communities frames are not skinned at all
+
+#98	√	I	Krowi_AchievementFilter
