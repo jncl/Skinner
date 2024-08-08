@@ -550,6 +550,9 @@ aObj.SetupClassic_UIFrames = function()
 					end)
 					self:skinStdButton{obj=_G.QuestLogFrameCancelButton, fType=ftype, x1=2, x2=-2}
 				end
+				if self.modBtnBs then
+					self:addButtonBorder{obj=_G.QuestLogFrameShowMapButton, fType=ftype, relTo=_G.QuestLogFrameShowMapButton.texture, ofs=0, x1=2, x2=-2}
+				end
 
 				self:Unhook(this, "OnShow")
 			end)
