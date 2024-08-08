@@ -19,4 +19,16 @@ ToDos
 
 ≈		O	Refactor NewSkinFuncs in AddOn skins
 
-#85	√	I GarrisonCapacitiveDisplayFrame
+		O	Refactor frame children loops to use Utility function via callback
+		
+#86	√	I/E	ElvUI profile settings
+	
+#87	≈	I	Pre-Patch Errors
+#88
+#89
+#90
+#91
+
+#92	√	I	Baganator Skin Category Layout(s)
+
+#93	√	I	BetterBags

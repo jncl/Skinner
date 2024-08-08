@@ -6,8 +6,52 @@
 	x				- indicates nothing to change
 	¶ is Alt+7		- indicates localisation changes required
 
-	Retail_PTR (DF 10.2.7)
+	Retail_PTR (TWW 11.0.2)
 		- Added
+			- UIWidgetTemplateScenarioHeaderDelves
 		- Updated
+			- ChallengesUI
+			- FloatingChatFrame
+			- ClubFinderApplicantList
+			- Blizzard_CompactRaidFrameManager
+			- DelvesCompanionConfiguration
+			- DelvesDashboardUI
+			- AdventuresFollowerTooltip
+			- CharacterSelect
+			- CharacterServices
+			- EncounterJournal
+			- EventToastManager
+			- FontStyles
+			- GluePartyPoseUI
+			- PlunderstormLobby
+			- LFGFrame
+			- MenuTemplates
+			- ScenarioObjectiveTracker
+			- PVPUI
+			- PlayerChoiceNormalOptionTemplate
+			- PlayerSpellsFrame
+			- HeroTalentsSelectionDialog
+			- SpellBookFrame
+			- SpellBookItem
+			- PrivateAurasUI
+			- ProfessionsCrafterOrderPage
+			- ProfessionsCrafterOrderView
+			- ProfessionsTemplates
+			- SettingsPanel
+			- AreaPOIEventDataProvider
+			- DelveEntranceDataProvider
+			- StorylineQuestDataProvider
+			- ColorSwatch
+			- SoulbindsViewer
+			- UIPanelTemplates
+			- BankFrame
+			- MapLegendFrame
+			- QuestFrame
+			- ReputationFrame
+			- UIWidgetTemplateBase
+			- WeeklyRewards
 		- Deleted
+			- FloatingChatFrameMenus
+			- MoneyFrame
+			- MoneyInputFrame
 			
