@@ -64,7 +64,8 @@ function module:OnDisable()
 	_G.CinematicFrame_OnHide = CinematicFrame_OnHide
 
 	aObj:UnregisterEvent("CINEMATIC_STOP")
-	aObj:Unhook("GameMovieFinished")
+	aObj:Unhook("MovieFrame_StopMovie")
+	aObj:Unhook("MovieFrame_OnMovieFinished")
 
 	resetWF()
 
@@ -73,19 +74,24 @@ end
 local uiP
 function module:OnEnable()
 
+	-- Store the existing functions
 	CinematicFrame_OnShow = _G.CinematicFrame_OnShow
 	CinematicFrame_OnHide = _G.CinematicFrame_OnHide
 	_G.CinematicFrame_OnShow = _G.nop
 	_G.CinematicFrame_OnHide = _G.nop
+
 	-- handle Viewport being reset when certain cutscenes are shown
 	aObj:RegisterEvent("CINEMATIC_STOP", function(_, _)
 		module:adjustViewPort("shown")
 	end)
-	aObj:SecureHook("GameMovieFinished", function()
+	aObj:SecureHook("MovieFrame_StopMovie", function(_)
+		module:adjustViewPort("shown")
+	end)
+	aObj:SecureHook("MovieFrame_OnMovieFinished", function(_)
 		module:adjustViewPort("shown")
 	end)
 
-	uiP = _G.C_UI.GetUIParent and _G.C_UI:GetUIParent() or _G.UIParent
+	uiP = _G.UIParent or _G.C_UI.GetUIParent and _G.C_UI:GetUIParent()
 	self:adjustViewPort("init")
 
 end
