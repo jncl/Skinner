@@ -4,7 +4,7 @@ local aName, aObj = ...
 local _G = _G
 
 local buildInfo = {
-	wow_classic         = {"4.4.0",  55639, "Classic"}, -- a.k.a. Cataclysm Classic
+	wow_classic         = {"4.4.0",  56014, "Classic"}, -- a.k.a. Cataclysm Classic
 	-- wow_classic_beta    = {"4.4.0",  54737, "Classic Beta"},
 	wow_classic_era     = {"1.15.3", 55917, "Classic Era"}, -- a.k.a. Season of Discovery
 	wow_classic_era_ptr = {"1.15.3", 55917, "Classic Era PTR"},
