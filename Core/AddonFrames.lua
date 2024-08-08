@@ -156,17 +156,6 @@ function aObj:LoDFrames(addon)
 		self.lmAddons[addon:lower()] = nil
 	end
 
-	-- handle FramesResized changes
-	if self:isAddOnLoaded("FramesResized") then
-		if addon == "Blizzard_TradeSkillUI"
-		and self.FR_TradeSkillUI then
-			self:checkAndRun("FR_TradeSkillUI", "s") -- not an addon in its own right
-		elseif addon == "Blizzard_TrainerUI"
-		and self.FR_TrainerUI then
-			self:checkAndRun("FR_TrainerUI", "s") -- not an addon in its own right
-		end
-	end
-
 	-- load library skins here as well, they may only get loaded by a LoD AddOn
 	-- e.g. ArkDewdrop by ArkInventory when an AddonLoader is used
 	skinLibs()
