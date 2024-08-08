@@ -596,16 +596,16 @@ aObj.SetupRetail_UIFrames = function()
 		-- QuickJoinToastButton & frames (attached to ChatFrame)
 		if self.modBtnBs then
 			for i = 1, _G.NUM_CHAT_WINDOWS do
-				self:addButtonBorder{obj=_G["ChatFrame" .. i].buttonFrame.minimizeButton, ofs=-2, clr="grey"}
+				self:addButtonBorder{obj=_G["ChatFrame" .. i].buttonFrame.minimizeButton, ofs=-2}
 				_G["ChatFrame" .. i].buttonFrame.sknd = true
 			end
-			self:addButtonBorder{obj=_G.ChatFrameChannelButton, ofs=0, clr="grey"}
-			self:addButtonBorder{obj=_G.ChatFrameToggleVoiceDeafenButton, ofs=0, clr="grey"}
-			self:addButtonBorder{obj=_G.ChatFrameToggleVoiceMuteButton, ofs=0, clr="grey"}
-			self:addButtonBorder{obj=_G.ChatFrameMenuButton, ofs=-2, x1=1, clr="grey"}
-			self:addButtonBorder{obj=_G.TextToSpeechButton, ofs=1, clr="grey"}
+			self:addButtonBorder{obj=_G.ChatFrameChannelButton, ofs=0}
+			self:addButtonBorder{obj=_G.ChatFrameToggleVoiceDeafenButton, ofs=0}
+			self:addButtonBorder{obj=_G.ChatFrameToggleVoiceMuteButton, ofs=0}
+			self:addButtonBorder{obj=_G.ChatFrameMenuButton, ofs=-2, x1=1}
+			self:addButtonBorder{obj=_G.TextToSpeechButton, ofs=1}
 			-- QuickJoinToastButton(s)
-			self:addButtonBorder{obj=_G.QuickJoinToastButton, x1=1, y1=2, x2=-2, y2=-2, clr="grey"}
+			self:addButtonBorder{obj=_G.QuickJoinToastButton, x1=1, y1=2, x2=-2, y2=-2}
 			for _, type in _G.pairs{"Toast", "Toast2"} do
 				_G.QuickJoinToastButton[type]:DisableDrawLayer("BACKGROUND")
 				self:moveObject{obj=_G.QuickJoinToastButton[type], x=7}
@@ -742,8 +742,8 @@ aObj.SetupRetail_UIFrames = function()
 			if aObj.prdb.ChatButtons
 			and aObj.modBtnBs
 			then
-				aObj:addButtonBorder{obj=obj.buttonFrame.minimizeButton, ofs=-2, clr="grey"}
-				aObj:addButtonBorder{obj=obj.ScrollToBottomButton, ofs=-1, x1=0, clr="grey"}
+				aObj:addButtonBorder{obj=obj.buttonFrame.minimizeButton, ofs=-2}
+				aObj:addButtonBorder{obj=obj.ScrollToBottomButton, ofs=-1, x1=0}
 			end
 		end
 		-- hook this to handle Temporary windows (BN Conversations, Pet Battles etc)
@@ -815,10 +815,10 @@ aObj.SetupRetail_UIFrames = function()
 					if element.DeleteButton then
 						aObj:removeRegions(element, {1}) -- background
 						if aObj.modBtns	then
-							aObj:skinStdButton{obj=element.DeleteButton, fType=ftype, clr="grey"}
+							aObj:skinStdButton{obj=element.DeleteButton, fType=ftype}
 						end
 						if aObj.modBtnBs then
-							aObj:addButtonBorder{obj=element, fType=ftype, relTo=element.Icon, clr="grey"}
+							aObj:addButtonBorder{obj=element, fType=ftype, relTo=element.Icon}
 						end
 					end
 				end
@@ -1212,7 +1212,7 @@ aObj.SetupRetail_UIFrames = function()
 			end
 			_G.ScrollUtil.AddAcquiredFrameCallback(oFrame.MajorFactionList.ScrollBox, skinElement, aObj, true)
 			-- N.B. keep background visible
-			aObj:skinObject("frame", {obj=oFrame.DragonridingPanel, fType=ftype, fb=true, y1=-1, x2=-1, y2=11, clr="grey"})
+			aObj:skinObject("frame", {obj=oFrame.DragonridingPanel, fType=ftype, fb=true, y1=-1, x2=-1, y2=11})
 			aObj:skinObject("frame", {obj=oFrame, fType=ftype, kfs=true, rns=true, cbns=true, ofs=-4, y1=-11, clr="gold_df"})
 			if aObj.modBtns then
 				aObj:skinStdButton{obj=oFrame.DragonridingPanel.SkillsButton, fType=ftype}
@@ -1331,7 +1331,7 @@ aObj.SetupRetail_UIFrames = function()
 			self:SecureHookScript(this.Report, "OnShow", function(fObj)
 				fObj.List:DisableDrawLayer("BACKGROUND")
 				self:skinObject("scrollbar", {obj=fObj.List.ScrollBar, fType=ftype})
-				self:skinObject("frame", {obj=fObj.List, fType=ftype, fb=true, y1=4, clr="grey"})
+				self:skinObject("frame", {obj=fObj.List, fType=ftype, fb=true, y1=4})
 				local function skinElement(...)
 					local _, element, new
 					if _G.select("#", ...) == 2 then
@@ -1780,7 +1780,7 @@ aObj.SetupRetail_UIFrames = function()
 					self:skinStdButton{obj=fObj.ZoneSupportMissionPage.StartMissionButton}
 				end
 				if self.modBtnBs then
-					self:addButtonBorder{obj=fObj.ZoneSupportMissionPage.CombatAllySpell, clr="grey", ca=1}
+					self:addButtonBorder{obj=fObj.ZoneSupportMissionPage.CombatAllySpell, ca=1}
 				end
 				skinMissionPage(fObj.MissionPage)
 
@@ -1864,10 +1864,10 @@ aObj.SetupRetail_UIFrames = function()
 					skinPuck(btn)
 				end
 				for btn in bFrame.enemySocketFramePool:EnumerateActive() do
-					aObj:skinObject("frame", {obj=btn, fType=ftype, kfs=true, fb=true, ofs=2, clr="grey"})
+					aObj:skinObject("frame", {obj=btn, fType=ftype, kfs=true, fb=true, ofs=2})
 				end
 				for btn in bFrame.followerSocketFramePool:EnumerateActive() do
-					aObj:skinObject("frame", {obj=btn, fType=ftype, kfs=true, fb=true, ofs=2, clr="grey"})
+					aObj:skinObject("frame", {obj=btn, fType=ftype, kfs=true, fb=true, ofs=2})
 				end
 			end
 			frame.OverlayElements.CloseButtonBorder:SetTexture(nil)
@@ -1891,7 +1891,7 @@ aObj.SetupRetail_UIFrames = function()
 				aObj:clrBBC(this.MissionList.sf, "grey")
 				-- ZoneSupportMissionPage
 				skinMissionPage(this.MissionPage)
-				aObj:skinObject("frame", {obj=this.MissionPage.StartMissionFrame, fType=ftype, kfs=true, ng=true, clr="grey", x1=40, y1=-8, x2=-30, y2=10})
+				aObj:skinObject("frame", {obj=this.MissionPage.StartMissionFrame, fType=ftype, kfs=true, ng=true, x1=40, y1=-8, x2=-30, y2=10})
 				aObj:clrBBC(this.MissionPage.sf, "grey")
 				skinBoard(this.MissionPage.Board)
 
@@ -1901,8 +1901,8 @@ aObj.SetupRetail_UIFrames = function()
 			aObj:SecureHookScript(frame.FollowerTab, "OnShow", function(this)
 				this.RaisedFrameEdges:DisableDrawLayer("BORDER")
 				this.HealFollowerFrame.ButtonFrame:SetTexture(nil)
-				aObj:skinObject("frame", {obj=this, fType=ftype, kfs=true, fb=true, clr="grey", y2=0})
-				aObj:skinObject("frame", {obj=this.HealFollowerFrame, fType=ftype, kfs=true, ng=true, clr="grey", x1=140, y1=-517, x2=-130, y2=-12})
+				aObj:skinObject("frame", {obj=this, fType=ftype, kfs=true, fb=true, y2=0})
+				aObj:skinObject("frame", {obj=this.HealFollowerFrame, fType=ftype, kfs=true, ng=true, x1=140, y1=-517, x2=-130, y2=-12})
 				if aObj.modBtns then
 					aObj:skinStdButton{obj=this.HealFollowerFrame.HealFollowerButton}
 					aObj:SecureHook(this, "UpdateHealCost", function(fObj)
@@ -1964,9 +1964,9 @@ aObj.SetupRetail_UIFrames = function()
 				-- MissionInfo (RHS)
 				this.MissionInfo.Header:SetTexture(nil)
 				aObj:nilTexture(this.MissionInfo.IconBG, true)
-				aObj:skinObject("frame", {obj=this.MissionInfo, fType=ftype, kfs=true, fb=true, clr="grey", ofs=4, y2=-303})
+				aObj:skinObject("frame", {obj=this.MissionInfo, fType=ftype, kfs=true, fb=true, ofs=4, y2=-303})
 				skinBoard(this.Board)
-				aObj:skinObject("frame", {obj=this.CompleteFrame, fType=ftype, kfs=true, ng=true, clr="grey", x1=40, y1=-8, x2=-40, y2=10})
+				aObj:skinObject("frame", {obj=this.CompleteFrame, fType=ftype, kfs=true, ng=true, x1=40, y1=-8, x2=-40, y2=10})
 				if aObj.modBtns then
 					aObj:skinStdButton{obj=this.CompleteFrame.ContinueButton}
 					aObj:skinStdButton{obj=this.CompleteFrame.SpeedButton}
@@ -2143,7 +2143,7 @@ aObj.SetupRetail_UIFrames = function()
 
 		-- this is done here as other AddOns may require it to be skinned
 		if self.modBtnBs then
-			self:addButtonBorder{obj=_G.MainMenuBarVehicleLeaveButton, clr="grey"}
+			self:addButtonBorder{obj=_G.MainMenuBarVehicleLeaveButton}
 		end
 
 		if self:isAddOnLoaded("Dominos")
@@ -2300,7 +2300,7 @@ aObj.SetupRetail_UIFrames = function()
 						btn.SlotArt:SetTexture(nil)
 						btn.Border:SetTexture(nil)
 						if aObj.prdb.MainMenuBar.actbtns then
-							aObj:addButtonBorder{obj=btn, abt=true, sft=true, ofs=3, clr="grey"}
+							aObj:addButtonBorder{obj=btn, abt=true, sft=true, ofs=3}
 						end
 					end
 				end
@@ -2412,7 +2412,7 @@ aObj.SetupRetail_UIFrames = function()
 			self:nilTexture(this.OverlayElements.CornerLogo, true)
 			this.Currency.Icon:SetAlpha(1) -- show currency icon
 			if self.modBtnBs then
-				self:addButtonBorder{obj=this.Currency, relTo=this.Currency.Icon, clr="grey"}
+				self:addButtonBorder{obj=this.Currency, relTo=this.Currency.Icon}
 			end
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, cb=true, ofs=2, x2=3})
 
@@ -2750,12 +2750,12 @@ aObj.SetupRetail_UIFrames = function()
 							end
 						end
 					end
-					aObj:skinObject("frame", {obj=opt, fType=ftype, fb=true, clr="grey"})
+					aObj:skinObject("frame", {obj=opt, fType=ftype, fb=true})
 					resizeSF(opt, 0)
 				elseif frame.optionFrameTemplate == "PlayerChoiceCovenantChoiceOptionTemplate" then
 					opt.BackgroundShadowSmall:SetTexture(nil)
 					opt.BackgroundShadowLarge:SetTexture(nil)
-					aObj:skinObject("frame", {obj=opt, fType=ftype, fb=true, clr="grey"})
+					aObj:skinObject("frame", {obj=opt, fType=ftype, fb=true})
 					resizeSF(opt, 999)
 					-- hook these to handle size changes on mouseover (used in Oribos for covenant choice)
 					aObj:SecureHook(opt, "OnUpdate", function(this, _) -- used for first time enlargement
@@ -3295,7 +3295,7 @@ aObj.SetupRetail_UIFrames = function()
 			this.ItemSlots:DisableDrawLayer("ARTWORK")
 			for slot in this.ItemSlots.scrapButtons:EnumerateActive() do
 				self:nilTexture(slot.IconBorder, true)
-				self.modUIBtns:addButtonBorder{obj=slot, relTo=slot.Icon, clr="grey"} -- use module function to force button border
+				self.modUIBtns:addButtonBorder{obj=slot, relTo=slot.Icon} -- use module function to force button border
 				-- hook this to reset sbb colour
 				self:SecureHook(slot, "ClearSlot", function(bObj)
 					self:clrBtnBdr(bObj, "grey")
@@ -3356,14 +3356,14 @@ aObj.SetupRetail_UIFrames = function()
 		end
 		local skinBtns
 		self:SecureHookScript(_G.SpellFlyout, "OnShow", function(this)
-			self:skinObject("frame", {obj=this.Background, fType=ftype, kfs=true, sft=true, clr="grey"})
+			self:skinObject("frame", {obj=this.Background, fType=ftype, kfs=true, sft=true})
 			posnSkin(this)
 			if self.modBtnBs then
 				function skinBtns()
 					local i = 1
 					local button = _G["SpellFlyoutButton" .. i]
 					while (button and button:IsShown()) do
-						aObj:addButtonBorder{obj=button, fType=ftype, abt=true, sft=true, clr="grey"}
+						aObj:addButtonBorder{obj=button, fType=ftype, abt=true, sft=true}
 						i = i + 1
 						button = _G["SpellFlyoutButton" .. i]
 					end
@@ -3637,7 +3637,7 @@ aObj.SetupRetail_UIFrames = function()
 				this[frame].Background:SetAlpha(1)
 			end
 			for _, frame in _G.pairs(this.Activities) do
-				self:skinObject("frame", {obj=frame, fType=ftype, kfs=true, fb=true, ofs=-3, x2=1, y2=-1, clr="grey"})
+				self:skinObject("frame", {obj=frame, fType=ftype, kfs=true, fb=true, ofs=-3, x2=1, y2=-1})
 				-- show required textures
 				if frame.Background then
 					frame.Background:SetAlpha(1)

@@ -321,8 +321,8 @@ aObj.SetupClassic_PlayerFrames = function()
 					self:skinStdButton{obj=_G.BarberShopFrameResetButton, fType=ftype, schk=true}
 				end
 				if self.modBtnBs then
-					self:addButtonBorder{obj=_G.BarberShopFrameMaleButton, fType=ftype, clr="grey"}
-					self:addButtonBorder{obj=_G.BarberShopFrameFemaleButton, fType=ftype, clr="grey"}
+					self:addButtonBorder{obj=_G.BarberShopFrameMaleButton, fType=ftype}
+					self:addButtonBorder{obj=_G.BarberShopFrameFemaleButton, fType=ftype}
 					for _, btn in _G.pairs(_G.BarberShopFrame.Selector) do
 						self:addButtonBorder{obj=btn.Prev, fType=ftype, ofs=-2, x1=1, clr="gold"}
 						self:addButtonBorder{obj=btn.Next, fType=ftype, ofs=-2, x1=1, clr="gold"}
@@ -363,7 +363,7 @@ aObj.SetupClassic_PlayerFrames = function()
 				if btn
 				and not btn.sbb
 				then
-					aObj:addButtonBorder{obj=btn, reParent={btn.count, btn.duration}, ofs=3, clr="grey"}
+					aObj:addButtonBorder{obj=btn, reParent={btn.count, btn.duration}, ofs=3}
 				end
 			end
 			-- skin current Buffs
@@ -456,18 +456,18 @@ aObj.SetupClassic_PlayerFrames = function()
 				end
 				if self.modBtnBs then
 					for i = 1, _G.NUM_RESISTANCE_TYPES do
-						self:addButtonBorder{obj=_G["MagicResFrame" .. i], es=24, ofs=2, x1=-1, y2=-4, clr="grey"}
+						self:addButtonBorder{obj=_G["MagicResFrame" .. i], es=24, ofs=2, x1=-1, y2=-4}
 					end
 					local btn
 					for _, sName in _G.ipairs(pdfSlots) do
 						btn = _G["Character" .. sName .. "Slot"]
-						self:addButtonBorder{obj=btn, fType=ftype, ibt=true, reParent={btn.ignoreTexture}--[[, clr="grey"--]]}
+						self:addButtonBorder{obj=btn, fType=ftype, ibt=true, reParent={btn.ignoreTexture}--[[--]]}
 						_G.PaperDollItemSlotButton_Update(btn)
 					end
 					btn = _G.CharacterAmmoSlot
 					btn:DisableDrawLayer("BACKGROUND")
 					btn.icon = _G.CharacterAmmoSlotIconTexture
-					self:addButtonBorder{obj=btn, reParent={btn.Count, self:getRegion(btn, 4)}, clr="grey"}
+					self:addButtonBorder{obj=btn, reParent={btn.Count, self:getRegion(btn, 4)}}
 
 					self:SecureHook("PaperDollItemSlotButton_Update", function(bObj)
 						-- ignore buttons with no skin border
@@ -482,10 +482,10 @@ aObj.SetupClassic_PlayerFrames = function()
 					end)
 
 					if _G.RuneFrameControlButton then -- ERA SoD
-						self:addButtonBorder{obj=_G.RuneFrameControlButton, fType=ftype, clr="grey"}
+						self:addButtonBorder{obj=_G.RuneFrameControlButton, fType=ftype}
 					end
 					if _G.GearManagerToggleButton then -- Wrath
-						self:addButtonBorder{obj=_G.GearManagerToggleButton, fType=ftype, x1=1, x2=-1, clr="grey"}
+						self:addButtonBorder{obj=_G.GearManagerToggleButton, fType=ftype, x1=1, x2=-1}
 					end
 				end
 
@@ -503,7 +503,7 @@ aObj.SetupClassic_PlayerFrames = function()
 					if aObj.modBtnBs then
 						aObj:addButtonBorder{obj=_G.PetPaperDollPetInfo, ofs=1, x2=0, clr="gold"}
 						for i = 1, _G.NUM_PET_RESISTANCE_TYPES do
-							aObj:addButtonBorder{obj=_G["PetMagicResFrame" .. i], es=24, ofs=2, y1=3, y2=-4, clr="grey"}
+							aObj:addButtonBorder{obj=_G["PetMagicResFrame" .. i], es=24, ofs=2, y1=3, y2=-4}
 						end
 					end
 				end
@@ -529,7 +529,7 @@ aObj.SetupClassic_PlayerFrames = function()
 						end
 						if self.modBtnBs then
 							for i = 1, _G.NUM_COMPANIONS_PER_PAGE do
-								self:addButtonBorder{obj=_G["CompanionButton" .. i], fType=ftype, sft=true, clr="grey"}
+								self:addButtonBorder{obj=_G["CompanionButton" .. i], fType=ftype, sft=true}
 							end
 							self:addButtonBorder{obj=_G.CompanionPrevPageButton, ofs=-2, y1=-3, x2=-3}
 							self:addButtonBorder{obj=_G.CompanionNextPageButton, ofs=-2, y1=-3, x2=-3}
@@ -601,7 +601,7 @@ aObj.SetupClassic_PlayerFrames = function()
 					self:skinStdButton{obj=_G.SkillFrameCancelButton, fType=ftype}
 				end
 				if self.modBtnBs then
-					self:addButtonBorder{obj=_G.SkillDetailStatusBarUnlearnButton, fType=ftype, ofs=-4, x1=6, y2=7, clr="grey"}
+					self:addButtonBorder{obj=_G.SkillDetailStatusBarUnlearnButton, fType=ftype, ofs=-4, x1=6, y2=7}
 				end
 
 				self:Unhook(this, "OnShow")
@@ -837,7 +837,7 @@ aObj.SetupClassic_PlayerFrames = function()
 					btn = _G["FriendsFrameFriendsScrollFrameButton" .. i]
 					btn.background:SetAlpha(0)
 					if self.modBtnBs then
-						self:addButtonBorder{obj=btn, relTo=btn.gameIcon, ofs=0, clr="grey"}
+						self:addButtonBorder{obj=btn, relTo=btn.gameIcon, ofs=0}
 						self:SecureHook(btn.gameIcon, "Show", function(bObj)
 							bObj:GetParent().sbb:Show()
 						end)
@@ -1396,9 +1396,9 @@ aObj.SetupClassic_PlayerFrames = function()
 
 	end
 
-		aObj.blizzFrames[ftype].SpellBookFrame = function(self)
-			if not self.prdb.SpellBookFrame or self.initialized.SpellBookFrame then return end
-			self.initialized.SpellBookFrame = true
+	aObj.blizzFrames[ftype].SpellBookFrame = function(self)
+		if not self.prdb.SpellBookFrame or self.initialized.SpellBookFrame then return end
+		self.initialized.SpellBookFrame = true
 
 		if aObj.isClsc then
 			self:SecureHookScript(_G.SpellBookFrame, "OnShow", function(this)
@@ -1919,7 +1919,7 @@ aObj.SetupClassic_PlayerFrames = function()
 					local bName
 					for i = 1, _G.WATCHFRAME_NUM_ITEMS do
 						bName = "WatchFrameItem" .. i
-						self:addButtonBorder{obj=_G[bName], fType=ftype, reParent={_G[bName .. "HotKey"], _G[bName .. "Count"], _G[bName .. "Stock"]}, clr="grey"}
+						self:addButtonBorder{obj=_G[bName], fType=ftype, reParent={_G[bName .. "HotKey"], _G[bName .. "Count"], _G[bName .. "Stock"]}}
 					end
 					return 0, 0, 0
 				end
@@ -1934,15 +1934,15 @@ end
 aObj.SetupClassic_PlayerFramesOptions = function(self)
 
 	local optTab = {
-		["Barber Shop UI"] = self.isClsc and true or nil,
-		["Craft UI"]       = true,
-		["Engraving UI"]   = self.isClscERA and {desc = "Runes UI"} or nil,
-		["Glyph UI"]       = self.isClsc and true or nil,
+		["Barber Shop UI"]  = self.isClsc and true or nil,
+		["Craft UI"]        = true,
+		["Engraving UI"]    = self.isClscERA and {desc = "Runes UI"} or nil,
+		["Glyph UI"]        = self.isClsc and true or nil,
 		["SpellBook Frame"] = true,
-		["Talent UI"]      = true,
-		["Token UI"]       = self.isClsc and true or nil,
-		["Trade Skill UI"] = true,
-		["Watch Frame"]    = self.isClsc and true or nil,
+		["Talent UI"]       = true,
+		["Token UI"]        = self.isClsc and true or nil,
+		["Trade Skill UI"]  = true,
+		["Watch Frame"]     = self.isClsc and true or nil,
 	}
 	self:setupFramesOptions(optTab, "Player")
 	_G.wipe(optTab)

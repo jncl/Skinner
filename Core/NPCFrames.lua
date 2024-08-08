@@ -203,7 +203,7 @@ aObj.blizzFrames[ftype].QuestFrame = function(self)
 			btnName = "QuestProgressItem" .. i
 			_G[btnName .. "NameFrame"]:SetTexture(nil)
 			if self.modBtns then
-				 self:addButtonBorder{obj=_G[btnName], fType=ftype, libt=true--[[, clr="grey"--]]}
+				 self:addButtonBorder{obj=_G[btnName], fType=ftype, libt=true}
 			end
 		end
 		self:keepFontStrings(_G.QuestFrameDetailPanel)
@@ -312,7 +312,7 @@ aObj.blizzFrames[ftype].QuestInfo = function(self)
 			spellBtn.NameFrame:SetTexture(nil)
 			spellBtn:DisableDrawLayer("OVERLAY")
 			if aObj.modBtnBs then
-				 aObj:addButtonBorder{obj=spellBtn, relTo=spellBtn.Icon, clr="grey"}
+				 aObj:addButtonBorder{obj=spellBtn, relTo=spellBtn.Icon}
 			end
 		end
 		for flwrBtn in frame.followerRewardPool:EnumerateActive() do
@@ -330,7 +330,7 @@ aObj.blizzFrames[ftype].QuestInfo = function(self)
 			for rep in frame.reputationRewardPool:EnumerateActive() do
 				rep.NameFrame:SetTexture(nil)
 				if aObj.modBtnBs then
-					aObj:addButtonBorder{obj=rep, fType=ftype, relTo=rep.Icon, reParent={rep.RewardAmount}, clr="grey"}
+					aObj:addButtonBorder{obj=rep, fType=ftype, relTo=rep.Icon, reParent={rep.RewardAmount}}
 				end
 			end
 		end
@@ -366,7 +366,7 @@ aObj.blizzFrames[ftype].QuestInfo = function(self)
 			_G.QuestInfoSpellObjectiveFrameSpellBorder:SetTexture(nil)
 		end
 		if aObj.modBtnBs then
-			 aObj:addButtonBorder{obj=_G.QuestInfoSpellObjectiveFrame, relTo=_G.QuestInfoSpellObjectiveFrame.Icon, clr="grey"}
+			 aObj:addButtonBorder{obj=_G.QuestInfoSpellObjectiveFrame, relTo=_G.QuestInfoSpellObjectiveFrame.Icon}
 		end
 		-- TODO: can this be replaced with removeColourCodes function ?
 		if _G.QuestInfoSealFrame:IsShown()
@@ -422,7 +422,7 @@ aObj.blizzFrames[ftype].QuestInfo = function(self)
 		for _, type in _G.pairs{"XPFrame", "MoneyFrame"} do
 			this[type].NameFrame:SetTexture(nil)
 			if self.modBtnBs then
-				self:addButtonBorder{obj=this[type], fType=ftype, sibt=true, relTo=this[type].Icon, clr="grey"}
+				self:addButtonBorder{obj=this[type], fType=ftype, sibt=true, relTo=this[type].Icon}
 			end
 		end
 

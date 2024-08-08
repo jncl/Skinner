@@ -822,7 +822,7 @@ if not aObj.isClscERA then
 			local function skinSlot(btn)
 				btn:DisableDrawLayer("BACKGROUND")
 				if aObj.modBtnBs then
-					aObj:addButtonBorder{obj=btn, fType=ftype, ibt=true, reParent={btn.ignoreTexture}--[[, clr="grey"--]]}
+					aObj:addButtonBorder{obj=btn, fType=ftype, ibt=true, reParent={btn.ignoreTexture}--[[--]]}
 					-- force quality border update
 					_G.PaperDollItemSlotButton_Update(btn)
 					if self.isRtl then
@@ -834,7 +834,7 @@ if not aObj.isClscERA then
 						if btn.SocketDisplay then -- MoP Remix
 							for _, socket in _G.ipairs(btn.SocketDisplay.Slots) do
 								socket.Slot:SetTexture(nil)
-								aObj:addButtonBorder{obj=socket, fType=ftype, es=8, ofs=0, clr="grey"}
+								aObj:addButtonBorder{obj=socket, fType=ftype, es=8, ofs=0}
 							end
 						end
 					end
@@ -1018,11 +1018,11 @@ if not aObj.isClscERA then
 			end
 			if self.modBtnBs then
 				if self.isRtl then
-					self:addButtonBorder{obj=this.SlotButton, relTo=this.SlotButton.ItemIcon, reParent={this.SlotButton.SlotBorder, this.SlotButton.SlotBorderOpen}, clr="grey", ca=0.85}
+					self:addButtonBorder{obj=this.SlotButton, relTo=this.SlotButton.ItemIcon, reParent={this.SlotButton.SlotBorder, this.SlotButton.SlotBorderOpen}, ca=0.85}
 					self:addButtonBorder{obj=this.SummonRandomFavoriteButton, ofs=3}
 				else
-					self:addButtonBorder{obj=this.MountDisplay.ModelScene.RotateLeftButton, ofs=-3, clr="grey"}
-					self:addButtonBorder{obj=this.MountDisplay.ModelScene.RotateRightButton, ofs=-3, clr="grey"}
+					self:addButtonBorder{obj=this.MountDisplay.ModelScene.RotateLeftButton, ofs=-3}
+					self:addButtonBorder{obj=this.MountDisplay.ModelScene.RotateRightButton, ofs=-3}
 				end
 				self:addButtonBorder{obj=this.MountDisplay.InfoButton, relTo=this.MountDisplay.InfoButton.Icon, clr="white"}
 			end
@@ -1125,7 +1125,7 @@ if not aObj.isClscERA then
 				for i = 1, 6 do
 					pc["spell" .. i].BlackCover:SetAlpha(0) -- N.B. texture is changed in code
 					if self.modBtnBs then
-						self:addButtonBorder{obj=pc["spell" .. i], relTo=pc["spell" .. i].icon, clr="grey", ca=0.85}
+						self:addButtonBorder{obj=pc["spell" .. i], relTo=pc["spell" .. i].icon, ca=0.85}
 					end
 				end
 				if self.modBtnBs then
@@ -1146,16 +1146,16 @@ if not aObj.isClscERA then
 					self:skinStdButton{obj=this.SummonButton, sechk=true}
 				end
 				if self.modBtnBs then
-					self:addButtonBorder{obj=this.HealPetButton, sft=true, clr="grey", ca=1}
-					self:addButtonBorder{obj=this.SummonRandomFavoritePetButton, ofs=3, clr="grey", ca=1}
+					self:addButtonBorder{obj=this.HealPetButton, sft=true, ca=1}
+					self:addButtonBorder{obj=this.SummonRandomFavoritePetButton, ofs=3, ca=1}
 				end
 			else
 				this.PetCard.PetBackground:SetAlpha(0)
 				this.PetCard.ShadowOverlay:SetAlpha(0)
 				if self.modBtnBs then
 					self:addButtonBorder{obj=this.PetCard.PetInfo, relTo=this.PetCard.PetInfo.icon, reParent={this.PetCard.PetInfo.favorite}}
-					self:addButtonBorder{obj=this.PetCard.modelScene.RotateLeftButton, ofs=-3, clr="grey"}
-					self:addButtonBorder{obj=this.PetCard.modelScene.RotateRightButton, ofs=-3, clr="grey"}
+					self:addButtonBorder{obj=this.PetCard.modelScene.RotateLeftButton, ofs=-3}
+					self:addButtonBorder{obj=this.PetCard.modelScene.RotateRightButton, ofs=-3}
 				end
 			end
 
@@ -1424,8 +1424,8 @@ if not aObj.isClscERA then
 				end
 				if self.modBtnBs then
 					if not self.isClsc then
-						self:addButtonBorder{obj=this.ModelScene.ClearAllPendingButton, relTo=this.ModelScene.ClearAllPendingButton.Icon, ofs=5, clr="grey"}
 						self:addButtonBorder{obj=this.SpecButton, ofs=0}
+						self:addButtonBorder{obj=this.ModelScene.ClearAllPendingButton, fType=ftype, relTo=this.ModelScene.ClearAllPendingButton.Icon, ofs=5}
 					end
 				end
 				if self.modChkBtns then
@@ -1910,7 +1910,7 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 					aObj:keepFontStrings(element)
 					element.Icon:SetAlpha(1)
 					if aObj.modBtnBs then
-						aObj:addButtonBorder{obj=element, fType=ftype, relTo=element.Icon, clr="grey"}
+					aObj:addButtonBorder{obj=element, fType=ftype, relTo=element.Icon}
 					end
 					aObj:keepFontStrings(element.NormalBorder)
 					aObj:keepFontStrings(element.DisabledBorder)
@@ -1928,7 +1928,7 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 					aObj:skinObject("frame", {obj=element, fType=ftype, kfs=true, clr="sepia"})
 					element.Icon:SetAlpha(1)
 					if aObj.modBtnBs then
-						aObj:addButtonBorder{obj=element, fType=ftype, relTo=element.Icon, clr="grey"}
+					aObj:addButtonBorder{obj=element, fType=ftype, relTo=element.Icon}
 					end
 				end
 				_G.ScrollUtil.AddInitializedFrameCallback(fObj.Rewards.ScrollBox, skinReward, aObj, true)
@@ -2072,8 +2072,8 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 		this.IconPreviewRing:SetAlpha(0)
 		self:skinObject("editbox", {obj=this.NameEdit, fType=ftype})
 		self:skinObject("editbox", {obj=this.ShortNameEdit, fType=ftype})
-		self:skinObject("frame", {obj=this.MessageOfTheDay, fType=ftype, kfs=true, fb=true, ofs=8, clr="grey"})
-		self:skinObject("frame", {obj=this.Description, fType=ftype, kfs=true, fb=true, ofs=8, clr="grey"})
+		self:skinObject("frame", {obj=this.MessageOfTheDay, fType=ftype, kfs=true, fb=true, ofs=8})
+		self:skinObject("frame", {obj=this.Description, fType=ftype, kfs=true, fb=true, ofs=8})
 		self:skinObject("frame", {obj=this, fType=ftype, ofs=-10})
 		if self.modBtns then
 			self:skinStdButton{obj=this.ChangeAvatarButton}
@@ -2113,7 +2113,7 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 					_, element, _ = ...
 				end
 				if self.modBtnBs then
-					self:addButtonBorder{obj=element, fType=ftype, clr="grey"}
+					self:addButtonBorder{obj=element, fType=ftype}
 				end
 			end
 			_G.ScrollUtil.AddInitializedFrameCallback(this.ScrollBox, skinElement, aObj, true)
@@ -2126,7 +2126,7 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 			if self.modBtnBs then
 				for i = 1, 5 do
 					for j = 1, 6 do
-						self:addButtonBorder{obj=this.ScrollFrame.avatarButtons[i][j], fType=ftype, clr="grey"}
+						self:addButtonBorder{obj=this.ScrollFrame.avatarButtons[i][j], fType=ftype}
 					end
 				end
 			end
@@ -2157,12 +2157,11 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 			if new ~= false then
 				aObj:skinStdButton{obj=element.CopyLinkButton}
 				if aObj.modBtnBs then
-					 aObj:addButtonBorder{obj=element.RevokeButton, ofs=0, clr="grey"}
+					 aObj:addButtonBorder{obj=element.RevokeButton, ofs=0}
 				end
 			end
 		end
 		_G.ScrollUtil.AddAcquiredFrameCallback(this.InviteManager.ScrollBox, skinElement, aObj, true)
-		self:skinObject("dropdown", {obj=this.ExpiresDropDownMenu, fType=ftype})
 		self:skinObject("frame", {obj=this.InviteManager, fType=ftype, kfs=true, fb=true, ofs=-4, x2=-5, y2=-5})
 		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, y1=-8, y2=6})
 		if self.modBtns then

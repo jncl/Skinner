@@ -419,7 +419,9 @@ if not aObj.isClscERA then
 			if self.modBtnBs then
 				self:addButtonBorder{obj=_G.CalendarPrevMonthButton, ofs=-1, y1=-2, x2=-2, clr="gold", schk=true}
 				self:addButtonBorder{obj=_G.CalendarNextMonthButton, ofs=-1, y1=-2, x2=-2, clr="gold", schk=true}
-				self:addButtonBorder{obj=_G.CalendarFilterButton, es=14, x1=3, y1=0, x2=3, y2=0, clr="grey"}
+				if not self.isRtl then
+					self:addButtonBorder{obj=_G.CalendarFilterButton, es=14, x1=3, y1=0, x2=3, y2=0}
+				end
 			end
 
 			self:Unhook(this, "OnShow")
@@ -854,8 +856,8 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 					self:skinStdButton{obj=_G.ChatConfigCombatSettingsFiltersCopyFilterButton}
 				end
 				if self.modBtnBs then
-					self:addButtonBorder{obj=_G.ChatConfigMoveFilterUpButton, es=12, ofs=-5, x2=-6, y2=7, clr="grey"}
-					self:addButtonBorder{obj=_G.ChatConfigMoveFilterDownButton, es=12, ofs=-5, x2=-6, y2=7, clr="grey"}
+					self:addButtonBorder{obj=_G.ChatConfigMoveFilterUpButton, es=12, ofs=-5, x2=-6, y2=7}
+					self:addButtonBorder{obj=_G.ChatConfigMoveFilterDownButton, es=12, ofs=-5, x2=-6, y2=7}
 				end
 
 				self:Unhook(frame, "OnShow")
@@ -1215,7 +1217,9 @@ aObj.blizzLoDFrames[ftype].EventTrace = function(self)
 		if aObj.modBtns then
 			skinMenuBtn(this.SubtitleBar.ViewLog)
 			skinMenuBtn(this.SubtitleBar.ViewFilter)
-			aObj:skinStdButton{obj=this.SubtitleBar.OptionsDropDown, fType=ftype, clr="grey"}
+			if not self.isRtl then
+				self:skinStdButton{obj=this.SubtitleBar.OptionsDropDown, fType=ftype}
+			end
 			skinMenuBtn(this.Log.Bar.MarkButton)
 			skinMenuBtn(this.Log.Bar.PlaybackButton)
 			skinMenuBtn(this.Log.Bar.DiscardAllButton)
@@ -1371,7 +1375,7 @@ aObj.blizzLoDFrames[ftype].GuildBankUI = function(self)
 			for _, btn in _G.pairs(this.Buttons) do
 				btn:DisableDrawLayer("BACKGROUND")
 				if self.modBtnBs then
-					self:addButtonBorder{obj=btn, relTo=btn.Icon, clr="grey"}
+					self:addButtonBorder{obj=btn, relTo=btn.Icon}
 				end
 			end
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true, ofs=-6})
@@ -1806,7 +1810,7 @@ aObj.blizzFrames[ftype].LFGList = function(self)
 			self:removeNineSlice(ecafd.Border)
 			self:skinObject("editbox", {obj=ecafd.EntryBox, fType=ftype})
 			self:skinObject("scrollbar", {obj=ecafd.ScrollBar, fType=ftype})
-			self:skinObject("frame", {obj=ecafd.ScrollBox, fType=ftype, kfs=true, fb=true, ofs=4, clr="grey"})
+				self:skinObject("frame", {obj=ecafd.ScrollBox, fType=ftype, kfs=true, fb=true, ofs=4})
 			self:removeNineSlice(ecafd.BorderFrame.NineSlice)
 			self:skinObject("frame", {obj=ecafd, fType=ftype, kfs=true})
 			if self.modBtns then
@@ -1820,7 +1824,7 @@ aObj.blizzFrames[ftype].LFGList = function(self)
 			self:skinObject("editbox", {obj=fObj.MythicPlusRating.EditBox, fType=ftype})
 			self:skinObject("dropdown", {obj=fObj.GroupDropDown, fType=ftype})
 			self:skinObject("dropdown", {obj=fObj.ActivityDropDown, fType=ftype})
-			self:skinObject("frame", {obj=fObj.Description, fType=ftype, kfs=true, fb=true, ofs=6, clr="grey"})
+				self:skinObject("frame", {obj=fObj.Description, fType=ftype, kfs=true, fb=true, ofs=6})
 			self:skinObject("editbox", {obj=fObj.ItemLevel.EditBox, fType=ftype})
 			self:skinObject("editbox", {obj=fObj.VoiceChat.EditBox, fType=ftype})
 			self:removeMagicBtnTex(fObj.ListGroupButton)
@@ -1849,7 +1853,7 @@ aObj.blizzFrames[ftype].LFGList = function(self)
 	self:SecureHookScript(_G.LFGListApplicationDialog, "OnShow", function(this)
 		self:removeNineSlice(this.Border)
 		self:skinObject("scrollbar", {obj=this.Description.ScrollBar, fType=ftype})
-		self:skinObject("frame", {obj=this.Description, fType=ftype, kfs=true, fb=true, ofs=6, clr="grey"})
+			self:skinObject("frame", {obj=this.Description, fType=ftype, kfs=true, fb=true, ofs=6})
 		self:skinObject("frame", {obj=this, fType=ftype, kfs=true})
 		if self.modBtns then
 			self:skinStdButton{obj=this.SignUpButton, fType=ftype, schk=true}
@@ -1900,7 +1904,7 @@ aObj.blizzLoDFrames[ftype].MacroUI = function(self)
 				end
 				if new ~= false then
 					element:DisableDrawLayer("BACKGROUND")
-					aObj:addButtonBorder{obj=element, fType=ftype, relTo=element.Icon, clr="grey"}
+					aObj:addButtonBorder{obj=element, fType=ftype, relTo=element.Icon}
 				end
 			end
 			_G.ScrollUtil.AddAcquiredFrameCallback(this.MacroSelector.ScrollBox, skinElement, aObj, true)
@@ -1922,14 +1926,14 @@ aObj.blizzLoDFrames[ftype].MacroUI = function(self)
 			self:skinStdButton{obj=_G.MacroExitButton, fType=ftype, x1=2}
 		end
 		if self.modBtnBs then
-			self:addButtonBorder{obj=_G.MacroFrameSelectedMacroButton, relTo=_G.MacroFrameSelectedMacroButtonIcon, clr="grey", ca=0.85}
+			self:addButtonBorder{obj=_G.MacroFrameSelectedMacroButton, relTo=_G.MacroFrameSelectedMacroButtonIcon, ca=0.85}
 		end
 
 		self:Unhook(this, "OnShow")
 	end)
 
 	self:SecureHookScript(_G.MacroPopupFrame, "OnShow", function(this)
-		self:skinIconSelector(this)
+		self:skinIconSelector(this, ftype)
 
 		self:Unhook(this, "OnShow")
 	end)
@@ -1985,7 +1989,7 @@ aObj.blizzFrames[ftype].MailFrame = function(self)
 					self:resizeEmptyTexture(self:getRegion(btn, 1))
 				else
 					btn:DisableDrawLayer("BACKGROUND")
-					self:addButtonBorder{obj=btn, reParent={btn.Count, btn.IconOverlay, btn.IconOverlay2 and btn.IconOverlay2}, clr="grey"}
+					self:addButtonBorder{obj=btn, reParent={btn.Count, btn.IconOverlay, btn.IconOverlay2 and btn.IconOverlay2}}
 				end
 			end
 			self:skinObject("editbox", {obj=_G.SendMailNameEditBox, fType=ftype, regions={4, 5, 6}})
@@ -2603,7 +2607,7 @@ if not aObj.isClscERA then
 				if aObj.prdb.MainMenuBar.actbtns then
 					local MAX_ALT_SPELLBUTTONS = 6
 					for i = 1, MAX_ALT_SPELLBUTTONS do
-						self:addButtonBorder{obj=this["SpellButton" .. i], sabt=true, clr="grey"}
+						self:addButtonBorder{obj=this["SpellButton" .. i], sabt=true}
 					end
 				end
 			end
@@ -2771,7 +2775,7 @@ aObj.blizzFrames[ftype].ReportFrame = function(self)
 	self:SecureHookScript(_G.ReportFrame, "OnShow", function(this)
 		self:removeNineSlice(this.Border)
 		self:skinObject("dropdown", {obj=this.ReportingMajorCategoryDropdown, fType=ftype})
-		self:skinObject("frame", {obj=this.Comment, fType=ftype, kfs=true, fb=true, ofs=6, clr="grey"})
+		self:skinObject("frame", {obj=this.Comment, fType=ftype, kfs=true, fb=true, ofs=6})
 		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, cb=true, ofs=-3})
 		if self.modBtns then
 			self:skinStdButton{obj=this.ReportButton, fType=ftype, sechk=true}
@@ -2861,20 +2865,20 @@ aObj.blizzFrames[ftype].Settings = function(self)
 						aObj:skinStdButton{obj=btn, fType=ftype}
 					end
 				elseif element.ToggleTest then
-					aObj:addButtonBorder{obj=element.ToggleTest, fType=ftype, clr="grey", ofs=1}
+					aObj:addButtonBorder{obj=element.ToggleTest, fType=ftype, ofs=1}
 				end
 				if element.DropDown
 				and element.DropDown.Button
 				then
-					aObj:skinStdButton{obj=element.DropDown.Button, fType=ftype, clr="grey", ignoreHLTex=true, sechk=true, x1=10, y1=-4, x2=-10, y2=4}
+					aObj:skinStdButton{obj=element.DropDown.Button, fType=ftype, ignoreHLTex=true, sechk=true, x1=10, y1=-4, x2=-10, y2=4}
 				end
 			end
 			if aObj.modBtnBs
 			and element.DropDown
 			and element.DropDown.DecrementButton
 			then
-				aObj:addButtonBorder{obj=element.DropDown.IncrementButton, fType=ftype, clr="grey", ofs=-2, y1=-3}
-				aObj:addButtonBorder{obj=element.DropDown.DecrementButton, fType=ftype, clr="grey", ofs=-2, y1=-3}
+				aObj:addButtonBorder{obj=element.DropDown.IncrementButton, fType=ftype, ofs=-2, y1=-3, sechk=true}
+				aObj:addButtonBorder{obj=element.DropDown.DecrementButton, fType=ftype, ofs=-2, y1=-3, sechk=true}
 			end
 			if aObj.modChkBtns
 			and element.CheckBox
@@ -2885,7 +2889,7 @@ aObj.blizzFrames[ftype].Settings = function(self)
 			and element.DropDown.Button
 			and element.DropDown.Button.Popout
 			then
-				aObj:skinObject("frame", {obj=element.DropDown.Button.Popout.Border, fType=ftype, kfs=true, x1=7, y1=0, x2=-12, y2=20, clr="grey"})
+				aObj:skinObject("frame", {obj=element.DropDown.Button.Popout.Border, fType=ftype, kfs=true, x1=7, y1=0, x2=-12, y2=20})
 			end
 			if element.SliderWithSteppers then
 				aObj:skinObject("slider", {obj=element.SliderWithSteppers.Slider, fType=ftype, y1=-12, y2=12})
@@ -2954,7 +2958,7 @@ aObj.blizzFrames[ftype].Settings = function(self)
 					skinCommonElements(element)
 				end
 				if element.VUMeter then
-					aObj:skinObject("frame", {obj=element.VUMeter, fType=ftype, kfs=true, rns=true, fb=true, clr="grey"})
+					aObj:skinObject("frame", {obj=element.VUMeter, fType=ftype, kfs=true, rns=true, fb=true})
 				end
 			end
 		end

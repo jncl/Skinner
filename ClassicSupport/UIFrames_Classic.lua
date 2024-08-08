@@ -63,17 +63,17 @@ aObj.SetupClassic_UIFrames = function()
 						self:skinStdButton{obj=button}
 					end
 				end)
-					self:SecureHook("KeyBindingFrame_Update", function()
-						for _, row in _G.pairs(_G.KeyBindingFrame.keyBindingRows) do
-							self:clrBtnBdr(row.key2Button)
-							row.key1Button.sb:SetAlpha(row.key1Button:GetAlpha())
-							row.key2Button.sb:SetAlpha(row.key2Button:GetAlpha())
-						end
-					end)
-					self:SecureHook("KeyBindingFrame_UpdateUnbindKey", function()
-						self:clrBtnBdr(_G.KeyBindingFrame.unbindButton)
-					end)
-				end
+				self:SecureHook("KeyBindingFrame_Update", function()
+					for _, row in _G.pairs(_G.KeyBindingFrame.keyBindingRows) do
+						self:clrBtnBdr(row.key2Button)
+						row.key1Button.sb:SetAlpha(row.key1Button:GetAlpha())
+						row.key2Button.sb:SetAlpha(row.key2Button:GetAlpha())
+					end
+				end)
+				self:SecureHook("KeyBindingFrame_UpdateUnbindKey", function()
+					self:clrBtnBdr(_G.KeyBindingFrame.unbindButton)
+				end)
+			end
 			if self.modChkBtns then
 				self:skinCheckButton{obj=this.characterSpecificButton}
 			end
@@ -89,19 +89,19 @@ aObj.SetupClassic_UIFrames = function()
 
 		if self.modBtnBs then
 			for i = 1, _G.NUM_CHAT_WINDOWS do
-				self:addButtonBorder{obj=_G["ChatFrame" .. i].buttonFrame.bottomButton, ofs=-2, x1=1, clr="grey"}
-				self:addButtonBorder{obj=_G["ChatFrame" .. i].buttonFrame.downButton, ofs=-2, x1=1, clr="grey"}
-				self:addButtonBorder{obj=_G["ChatFrame" .. i].buttonFrame.upButton, ofs=-2, x1=1, clr="grey"}
+				self:addButtonBorder{obj=_G["ChatFrame" .. i].buttonFrame.bottomButton, ofs=-2, x1=1}
+				self:addButtonBorder{obj=_G["ChatFrame" .. i].buttonFrame.downButton, ofs=-2, x1=1}
+				self:addButtonBorder{obj=_G["ChatFrame" .. i].buttonFrame.upButton, ofs=-2, x1=1}
 				if not aObj.isClsc then
-					self:addButtonBorder{obj=_G["ChatFrame" .. i].buttonFrame.minimizeButton, ofs=-2, x=1, clr="grey"}
+					self:addButtonBorder{obj=_G["ChatFrame" .. i].minimizeButton, ofs=-2, x=1}
 				end
 				self:addButtonBorder{obj=_G["ChatFrame" .. i].ScrollToBottomButton, ofs=-1}
 			end
-			self:addButtonBorder{obj=_G.ChatFrameChannelButton, fType=ftype, ofs=1, clr="grey"}
-			self:addButtonBorder{obj=_G.ChatFrameMenuButton, fType=ftype, ofs=-2, x1=1, clr="grey"}
-			self:addButtonBorder{obj=_G.TextToSpeechButton, fType=ftype, ofs=1, clr="grey"}
+			self:addButtonBorder{obj=_G.ChatFrameChannelButton, fType=ftype, ofs=1}
+			self:addButtonBorder{obj=_G.ChatFrameMenuButton, fType=ftype, ofs=-2, x1=1}
+			self:addButtonBorder{obj=_G.TextToSpeechButton, fType=ftype, ofs=1}
 			if self.isClsc then
-				self:addButtonBorder{obj=_G.FriendsMicroButton, fType=ftype, x1=1, x2=-2, clr="grey"}
+				self:addButtonBorder{obj=_G.FriendsMicroButton, fType=ftype, x1=1, x2=-2}
 			end
 		end
 
@@ -195,23 +195,23 @@ aObj.SetupClassic_UIFrames = function()
 				skinMultiBarBtns("Right")
 				skinMultiBarBtns("Left")
 				for _, bName in _G.pairs(_G.MICRO_BUTTONS) do
-					self:addButtonBorder{obj=_G[bName], es=24, ofs=2, y1=-18, reParent={_G[bName].QuickKeybindHighlightTexture}, clr="grey"}
+					self:addButtonBorder{obj=_G[bName], es=24, ofs=2, y1=-18, reParent={_G[bName].QuickKeybindHighlightTexture}}
 				end
 				local function abb2Bag(bag)
 					aObj:addButtonBorder{obj=bag, fType=ftype, ibt=true, ofs=3}
-				 	bag.sbb:SetBackdropBorderColor(bag.icon:GetVertexColor())
+					bag.sbb:SetBackdropBorderColor(bag.icon:GetVertexColor())
 				end
 				abb2Bag(_G.MainMenuBarBackpackButton)
 				for i = 0, 3 do
 					abb2Bag(_G["CharacterBag" .. i .. "Slot"])
 				end
-				self:addButtonBorder{obj=_G.KeyRingButton, ofs=2, clr="grey"}
+				self:addButtonBorder{obj=_G.KeyRingButton, ofs=2}
 			end
 		end
 
 		-- this is done here as other AddOns may require it to be skinned
 		if self.modBtnBs then
-			self:addButtonBorder{obj=_G.MainMenuBarVehicleLeaveButton, clr="grey"}
+			self:addButtonBorder{obj=_G.MainMenuBarVehicleLeaveButton}
 		end
 
 	end

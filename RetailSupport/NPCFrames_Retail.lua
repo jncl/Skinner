@@ -36,7 +36,7 @@ aObj.SetupRetail_NPCFrames = function()
 				ability.Text:SetTextColor(self.BT:GetRGB())
 				self:getRegion(ability, 3):SetTexture(nil) -- Border texture
 				if self.modBtnBs then
-					self:addButtonBorder{obj=ability, relTo=ability.Icon, clr="grey"}
+					self:addButtonBorder{obj=ability, relTo=ability.Icon}
 				end
 			end
 		end)
@@ -81,9 +81,9 @@ aObj.SetupRetail_NPCFrames = function()
 				self:skinObject("editbox", {obj=fObj.FilterButton.LevelRangeFrame.MinLevel, fType=ftype})
 				self:skinObject("editbox", {obj=fObj.FilterButton.LevelRangeFrame.MaxLevel, fType=ftype})
 				if self.modBtns then
-					self:skinStdButton{obj=fObj.FavoritesSearchButton, fType=ftype, ofs=-2, clr="grey"}
 					self:skinCloseButton{obj=fObj.FilterButton.ClearFiltersButton, fType=ftype, noSkin=true}
 					self:skinStdButton{obj=fObj.FilterButton, fType=ftype, clr="grey"}
+					self:skinStdButton{obj=fObj.FavoritesSearchButton, fType=ftype, ofs=-2}
 					self:skinStdButton{obj=fObj.SearchButton, fType=ftype}
 				end
 
@@ -338,7 +338,7 @@ aObj.SetupRetail_NPCFrames = function()
 		self.initialized.AzeriteRespecUI = true
 
 		self:SecureHookScript(_G.AzeriteRespecFrame, "OnShow", function(this)
-			self.modUIBtns:addButtonBorder{obj=this.ItemSlot, clr="grey"} -- use module function
+			self.modUIBtns:addButtonBorder{obj=this.ItemSlot} -- use module function
 			this.ButtonFrame:DisableDrawLayer("BORDER")
 			self:removeMagicBtnTex(this.ButtonFrame.AzeriteRespecButton)
 			this.ButtonFrame.MoneyFrameEdge:DisableDrawLayer("BACKGROUND")
@@ -376,7 +376,7 @@ aObj.SetupRetail_NPCFrames = function()
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true, cb=true})
 			self:keepFontStrings(_G.BankSlotsFrame)
 			if self.modBtnBs then
-				self:addButtonBorder{obj=_G.BankItemAutoSortButton, ofs=0, y1=1, clr="grey"}
+				self:addButtonBorder{obj=_G.BankItemAutoSortButton, ofs=0, y1=1}
 				-- add button borders to bank items
 				local btn
 				for i = 1, _G.NUM_BANKGENERIC_SLOTS do
@@ -553,7 +553,7 @@ aObj.SetupRetail_NPCFrames = function()
 			for btn in this.SoulbindButtonsPool:EnumerateActive() do
 				btn.Border:SetTexture(nil)
 				if self.modBtnBs then
-					self:addButtonBorder{obj=btn, ofs=-8, clr="grey"}
+					self:addButtonBorder{obj=btn, ofs=-8}
 				end
 			end
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true})
@@ -799,7 +799,7 @@ aObj.SetupRetail_NPCFrames = function()
 					if aObj.modBtnBs
 					and elementData.isItemInfo
 					then
-						aObj:addButtonBorder{obj=element.ContentsContainer, relTo=element.ContentsContainer.Icon, fType=ftype, clr="grey"}
+						aObj:addButtonBorder{obj=element.ContentsContainer, relTo=element.ContentsContainer.Icon, fType=ftype}
 					end
 				end
 			end
@@ -810,15 +810,15 @@ aObj.SetupRetail_NPCFrames = function()
 			this.ThemeContainer.ProductList:DisableDrawLayer("BACKGROUND")
 			this.ThemeContainer.ProductDetails:DisableDrawLayer("BACKGROUND")
 			if self.modBtns then
-				self:skinStdButton{obj=this.ProductsFrame.PerksProgramFilter.FilterDropDownButton, fType=ftype, ofs=-5, y2=8, clr="grey"}
+				-- self:skinStdButton{obj=this.ProductsFrame.PerksProgramFilter.FilterDropDownButton, fType=ftype, ofs=-5, y2=8}
 				self:skinStdButton{obj=this.FooterFrame.LeaveButton, fType=ftype, ofs=-4}
 				self:skinStdButton{obj=this.FooterFrame.PurchaseButton, fType=ftype, sechk=true, ofs=0, y2=-1}
 				self:skinStdButton{obj=this.FooterFrame.RefundButton, fType=ftype, ofs=-4}
 			end
 			if self.modBtnBs then
-				self:addButtonBorder{obj=this.ProductsFrame.PerksProgramCurrencyFrame, fType=ftype, relTo=this.ProductsFrame.PerksProgramCurrencyFrame.Icon, clr="grey"}
-				self:addButtonBorder{obj=this.FooterFrame.RotateButtonContainer.RotateLeftButton, fType=ftype, ofs=-3, clr="grey"}
-				self:addButtonBorder{obj=this.FooterFrame.RotateButtonContainer.RotateRightButton, fType=ftype, ofs=-3, clr="grey"}
+				self:addButtonBorder{obj=this.ProductsFrame.PerksProgramCurrencyFrame, fType=ftype, relTo=this.ProductsFrame.PerksProgramCurrencyFrame.Icon}
+				self:addButtonBorder{obj=this.FooterFrame.RotateButtonContainer.RotateLeftButton, fType=ftype, ofs=-3}
+				self:addButtonBorder{obj=this.FooterFrame.RotateButtonContainer.RotateRightButton, fType=ftype, ofs=-3}
 			end
 			if self.modChkBtns then
 				self:skinCheckButton{obj=this.FooterFrame.TogglePlayerPreview, fType=ftype}
@@ -888,7 +888,7 @@ aObj.SetupRetail_NPCFrames = function()
 				self:skinStdButton{obj=this.ReleasePetButton, fType=ftype, schk=true, sechk=true}
 			end
 			if self.modBtnBs then
-				self:addButtonBorder{obj=this.PetModelScene.PetInfo.NameBox.EditButton, fType=ftype, clr="grey", ofs=-1}
+				self:addButtonBorder{obj=this.PetModelScene.PetInfo.NameBox.EditButton, fType=ftype, ofs=-1}
 			end
 
 			local function changePetButton(btn, active)
@@ -926,7 +926,7 @@ aObj.SetupRetail_NPCFrames = function()
 				_G.ScrollUtil.AddAcquiredFrameCallback(fObj.ScrollBox, skinStabledPet, aObj, true)
 				self:skinObject("editbox", {obj=fObj.FilterBar.SearchBox, fType=ftype, si=true})
 				if self.modBtns then
-					self:skinStdButton{obj=fObj.FilterBar.FilterButton, fType=ftype, clr="grey"}
+					self:skinStdButton{obj=fObj.FilterBar.FilterButton, fType=ftype}
 				end
 
 				self:Unhook(fObj, "OnShow")
@@ -1040,12 +1040,12 @@ aObj.SetupRetail_NPCFrames = function()
 			if self.modBtnBs then
 				local VOID_DEPOSIT_MAX = 9
 				for i = 1, VOID_DEPOSIT_MAX do
-					self:addButtonBorder{obj=_G["VoidStorageDepositButton" .. i], fType=ftype, clr="grey"}
-					self:addButtonBorder{obj=_G["VoidStorageWithdrawButton" .. i], fType=ftype, clr="grey"}
+					self:addButtonBorder{obj=_G["VoidStorageDepositButton" .. i], fType=ftype}
+					self:addButtonBorder{obj=_G["VoidStorageWithdrawButton" .. i], fType=ftype}
 				end
 				local VOID_STORAGE_MAX = 80
 				for i = 1, VOID_STORAGE_MAX do
-					self:addButtonBorder{obj=_G["VoidStorageStorageButton" .. i], fType=ftype, clr="grey"}
+					self:addButtonBorder{obj=_G["VoidStorageStorageButton" .. i], fType=ftype}
 				end
 			end
 			self:skinObject("frame", {obj=_G.VoidStoragePurchaseFrame, fType=ftype, kfs=true, ofs=0})

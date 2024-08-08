@@ -456,7 +456,7 @@ aObj.SetupRetail_PlayerFrames = function()
 				if new ~= false then
 					aObj:nilTexture(element.Background, true)
 					if aObj.modBtnBs then
-						aObj:addButtonBorder{obj=element, relTo=element.Icon, reParent={element.IconCover, element.Glow, element.Glow2, element.Glow3}, clr="grey"}
+						aObj:addButtonBorder{obj=element, relTo=element.Icon, reParent={element.IconCover, element.Glow, element.Glow2, element.Glow3}}
 					end
 				else
 					if aObj.modBtnBs then
@@ -850,7 +850,7 @@ aObj.SetupRetail_PlayerFrames = function()
 				aObj:skinObject("editbox", {obj=_G.BagItemSearchBox, fType=ftype, si=true, ca=true})
 				frame.MoneyFrame.Border:DisableDrawLayer("BACKGROUND")
 				if aObj.modBtnBs then
-					aObj:addButtonBorder{obj=_G.BagItemAutoSortButton, ofs=0, y1=1, clr="grey"}
+					aObj:addButtonBorder{obj=_G.BagItemAutoSortButton, ofs=0, y1=1}
 				end
 			end
 		end
@@ -907,7 +907,7 @@ aObj.SetupRetail_PlayerFrames = function()
 				self:skinStdButton{obj=this.LinkButton, x1=4}
 			end
 			if self.modBtnBs then
-				self:addButtonBorder{obj=this.ToggleOutfitDetailsButton, fType=ftype, clr="grey"}
+				self:addButtonBorder{obj=this.ToggleOutfitDetailsButton, fType=ftype}
 			end
 
 			self:Unhook(this, "OnShow")
@@ -1314,7 +1314,7 @@ aObj.SetupRetail_PlayerFrames = function()
 				btn:DisableDrawLayer("BACKGROUND")
 				if self.modBtnBs then
 					if btn ~= _G.InspectPaperDollItemsFrame.InspectTalents then
-						self:addButtonBorder{obj=btn, fType=ftype, ibt=true--[[, clr="grey"--]]}
+						self:addButtonBorder{obj=btn, fType=ftype, ibt=true--[[--]]}
 					else
 						self:skinStdButton{obj=btn, fType=ftype, sechk=true}
 					end
@@ -1907,11 +1907,8 @@ aObj.SetupRetail_PlayerFrames = function()
 			skinRecraftSlot(frame.recraftSlot)
 			aObj:removeRegions(frame.RecipeLevelBar, {1, 2, 3})
 			aObj:skinObject("statusbar", {obj=frame.RecipeLevelBar, fi=0})
-			aObj:skinObject("frame", {obj=frame.Details.QualityMeter.Border, fType=ftype, kfs=true, fb=true, clr="grey", x2=0, y2=3})
-			aObj:skinObject("frame", {obj=frame.Details, fType=ftype, kfs=true, fb=true, x1=3, y1=-14, x2=-5, y2=21, clr="grey"})
-			if aObj.modBtns then
-				aObj:skinStdButton{obj=frame.RecipeLevelSelector, fType=ftype, ofs=0, clr="grey"}
-			end
+			aObj:skinObject("frame", {obj=frame.Details.QualityMeter.Border, fType=ftype, kfs=true, fb=true, x2=0, y2=3})
+			aObj:skinObject("frame", {obj=frame.Details, fType=ftype, kfs=true, fb=true, x1=3, y1=-14, x2=-5, y2=21})
 			if aObj.modBtnBs then
 				aObj:SecureHook(frame, "Init", function(fObj, _)
 					skinReagentBtns(fObj)
@@ -1968,19 +1965,17 @@ aObj.SetupRetail_PlayerFrames = function()
 				self:skinObject("scrollbar", {obj=fObj.GuildFrame.Container.ScrollBar, fType=ftype})
 				self:skinObject("frame", {obj=fObj.GuildFrame.Container, fType=ftype, kfs=true, rns=true, fb=true})
 				if self.modBtns then
-					self:skinStdButton{obj=fObj.RecipeList.FilterButton, fType=ftype, ofs=0, clr="grey"}
-					self:skinCloseButton{obj=fObj.RecipeList.FilterButton.ResetButton, fType=ftype, noSkin=true}
 					self:skinStdButton{obj=fObj.CreateAllButton, fType=ftype, sechk=true}
 					self:skinStdButton{obj=fObj.CreateButton, fType=ftype, sechk=true}
 					self:skinStdButton{obj=fObj.ViewGuildCraftersButton, fType=ftype, sechk=true}
 				end
 				if self.modBtnBs then
+					self:addButtonBorder{obj=fObj.LinkButton, fType=ftype, ofs=-2, x1=0, y1=-4}
 					for _, btn in _G.pairs(fObj.InventorySlots) do
 						btn.NormalTexture:SetTexture(nil)
 						self:addButtonBorder{obj=btn, fType=ftype, ibt=true}
 						self:clrButtonFromBorder(btn)
 					end
-					self:addButtonBorder{obj=fObj.LinkButton, fType=ftype, clr="grey", ofs=-2, x1=0, y1=-4}
 				end
 
 				self:Unhook(fObj, "OnShow")
@@ -2116,7 +2111,6 @@ aObj.SetupRetail_PlayerFrames = function()
 					_G.ScrollUtil.AddAcquiredFrameCallback(frame.RecipeList.ScrollBox, skinRecipeElement, aObj, true)
 					if self.modBtns then
 						self:skinCloseButton{obj=frame.RecipeList.FilterButton.ResetButton, fType=ftype, noSkin=true}
-						self:skinStdButton{obj=frame.RecipeList.FilterButton, fType=ftype, clr="grey"}
 						self:skinStdButton{obj=frame.FavoritesSearchButton, fType=ftype, ofs=-2, clr="gold"}
 						self:skinStdButton{obj=frame.SearchButton, fType=ftype}
 						self:skinStdButton{obj=frame.BackButton, fType=ftype}
@@ -2207,7 +2201,7 @@ aObj.SetupRetail_PlayerFrames = function()
 				self:skinObject("dropdown", {obj=fObj.MinimumQuality.DropDown, fType=ftype})
 				self:skinObject("dropdown", {obj=fObj.OrderRecipientDropDown, fType=ftype})
 				self:skinObject("editbox", {obj=fObj.OrderRecipientTarget, fType=ftype})
-				self:skinObject("frame", {obj=fObj.PaymentContainer.NoteEditBox, fType=ftype, kfs=true, fb=true, clr="grey", ofs=-16})
+				self:skinObject("frame", {obj=fObj.PaymentContainer.NoteEditBox, fType=ftype, kfs=true, fb=true, ofs=-16})
 				self:skinObject("editbox", {obj=fObj.PaymentContainer.TipMoneyInputFrame.CopperBox, fType=ftype, y2=4})
 				self:skinObject("editbox", {obj=fObj.PaymentContainer.TipMoneyInputFrame.SilverBox, fType=ftype, y2=4})
 				self:skinObject("editbox", {obj=fObj.PaymentContainer.TipMoneyInputFrame.GoldBox, fType=ftype, y2=4})
@@ -2217,7 +2211,7 @@ aObj.SetupRetail_PlayerFrames = function()
 					self:skinStdButton{obj=fObj.PaymentContainer.ListOrderButton, fType=ftype}
 				end
 				if self.modBtnBs then
-					self:addButtonBorder{obj=fObj.OrderRecipientDisplay.SocialDropdownButton, fType=ftype, ofs=1, x1=-1, clr="grey"}
+					self:addButtonBorder{obj=fObj.OrderRecipientDisplay.SocialDropdown, fType=ftype, ofs=1, x1=-1}
 					skinRecraftSlot(fObj.RecraftSlot)
 					self:SecureHook(fObj, "UpdateReagentSlots", function(frame)
 						skinReagentBtns(frame)
@@ -2269,10 +2263,9 @@ aObj.SetupRetail_PlayerFrames = function()
 				self:skinObject("editbox", {obj=fObj.SearchBar.FilterButton.LevelRangeFrame.MinLevel, fType=ftype})
 				self:skinObject("editbox", {obj=fObj.SearchBar.FilterButton.LevelRangeFrame.MaxLevel, fType=ftype})
 				if self.modBtns then
-					self:skinStdButton{obj=fObj.SearchBar.FavoritesSearchButton, fType=ftype, ofs=-2, clr="grey"}
-					self:skinStdButton{obj=fObj.SearchBar.FilterButton, fType=ftype, clr="grey"}
 					self:skinCloseButton{obj=fObj.SearchBar.FilterButton.ClearFiltersButton, fType=ftype, noSkin=true}
 					self:skinStdButton{obj=fObj.SearchBar.SearchButton, fType=ftype}
+					self:skinStdButton{obj=fObj.SearchBar.FavoritesSearchButton, fType=ftype, ofs=-2}
 				end
 
 				self:SecureHook(fObj, "SetupTable", function(frame, _)
@@ -2504,7 +2497,7 @@ aObj.SetupRetail_PlayerFrames = function()
 					element.Bg:SetTexture(nil)
 					element.Border:SetTexture(nil)
 					if aObj.modBtnBs then
-						aObj:addButtonBorder{obj=element, fType=ftype, relTo=element.Icon, clr="grey"}
+						aObj:addButtonBorder{obj=element, fType=ftype, relTo=element.Icon}
 					end
 				end
 			end

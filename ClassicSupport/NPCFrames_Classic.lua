@@ -175,7 +175,7 @@ aObj.SetupClassic_NPCFrames = function()
 					self:resizeEmptyTexture(self:getRegion(_G.AuctionsItemButton, 2))
 				else
 					self:getRegion(_G.AuctionsItemButton, 2):SetAlpha(0) -- texture is changed in blizzard code
-					self:addButtonBorder{obj=_G.AuctionsItemButton, clr="grey"}
+					self:addButtonBorder{obj=_G.AuctionsItemButton}
 				end
 				if self:isAddOnLoaded("Leatrix_Plus")
 				and _G.LeaPlusDB["AhExtras"] == "On"
@@ -267,7 +267,7 @@ aObj.SetupClassic_NPCFrames = function()
 				local btn
 				for i = 1, _G.NUM_PET_STABLE_SLOTS do
 					btn = _G["PetStableStabledPet" .. i]
-					self:addButtonBorder{obj=btn, clr="grey", ca=0.85}
+					self:addButtonBorder{obj=btn, ca=0.85}
 					self:SecureHook(_G["PetStableStabledPet" .. i .. "Background"], "SetVertexColor", function(tObj, ...)
 						tObj:GetParent().sbb:SetBackdropBorderColor(...)
 					end)

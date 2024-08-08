@@ -629,12 +629,12 @@ function module:skinPartyTooltip()
 			for i = 1, _G.MAX_PARTY_TOOLTIP_DEBUFFS do
 				_G["PartyMemberBuffTooltipDebuff" .. i]:DisableDrawLayer("OVERLAY")
 				if aObj.modBtnBs then
-					aObj:addButtonBorder{obj=_G["PartyMemberBuffTooltipDebuff" .. i], relTo=_G["PartyMemberBuffTooltipDebuff" .. i .. "Icon"], ofs=3, clr="grey", ca=0.85}
+					aObj:addButtonBorder{obj=_G["PartyMemberBuffTooltipDebuff" .. i], relTo=_G["PartyMemberBuffTooltipDebuff" .. i .. "Icon"], ofs=3, ca=0.85}
 				end
 			end
 			if aObj.modBtnBs then
 				for i = 1, _G.MAX_PARTY_TOOLTIP_BUFFS do
-					aObj:addButtonBorder{obj=_G["PartyMemberBuffTooltipBuff" .. i], relTo=_G["PartyMemberBuffTooltipBuff" .. i .. "Icon"], ofs=3, clr="grey", ca=0.85}
+					aObj:addButtonBorder{obj=_G["PartyMemberBuffTooltipBuff" .. i], relTo=_G["PartyMemberBuffTooltipBuff" .. i .. "Icon"], ofs=3, ca=0.85}
 				end
 			end
 		end
