@@ -1,3 +1,18 @@
+beta11.55960.1
+Jncl:
+	Updated ToDo.txt files
+	Updated version numbers
+	TWW pre-expansion changes, closes #87, closes #88, closes #89, closes #90, closes #91
+	Don't colour objects grey unless absolutely necessary
+	Removed Retail checks from Retail code file
+	Removed FramesResized checks as skin is now obsolete
+	Updated Classic PVPFrame
+	Updated Classic QuestLogFrame
+	Removed Classic QuestTimerFrame skin
+	Removed Retail checks from Classic code file
+	Updated Classic SpellBookFrame
+	Updated Ace3, Baganator, BetterBags & ElvUI skines, closes #86, closes #92, closes #93
+	
 beta10.55664.1
 Jncl:
 	Updated ToDo.txt files
