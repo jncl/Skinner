@@ -2,7 +2,7 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("BetterBags") then return end
 local _G = _G
 
-aObj.addonsToSkin.BetterBags = function(self) -- v 0.1.70
+aObj.addonsToSkin.BetterBags = function(self) -- v0.1.89
 
 	local bBag = _G.LibStub("AceAddon-3.0"):GetAddon("BetterBags", true)
 	if not bBag then return end
@@ -52,6 +52,9 @@ aObj.addonsToSkin.BetterBags = function(self) -- v 0.1.70
 		and frame.TitleContainer.TitleBg
 		then
 			frame.TitleContainer.TitleBg:SetTexture(nil)
+		end
+		if frame.search then
+			aObj:skinObject("editbox", {obj=frame.search.textBox, si=true})
 		end
 		aObj:skinObject("frame", {obj=frame, kfs=true, cb=true, bg=true})
 	end
@@ -134,10 +137,15 @@ aObj.addonsToSkin.BetterBags = function(self) -- v 0.1.70
 	handleBag(bBag.Bags.Backpack)
 	handleBag(bBag.Bags.Bank)
 
-	local search = bBag:GetModule("Search", true)
-	self:SecureHookScript(search.searchFrame.frame, "OnShow", function(this)
-		this:DisableDrawLayer("BORDER")
-		self:skinObject("frame", {obj=this, kfs=true, ofs=0})
+	local searchBox = bBag:GetModule("SearchBox", true)
+	self:SecureHook(searchBox, "CreateBox", function(this)
+		self:skinObject("editbox", {obj=this.textBox, si=true})
+
+		self:Unhook(this, "OnShow")
+	end)
+
+	self:SecureHookScript(_G.BetterBagsSearchFrame, "OnShow", function(this)
+		self:skinObject("frame", {obj=this})
 
 		self:Unhook(this, "OnShow")
 	end)

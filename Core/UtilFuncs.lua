@@ -1404,16 +1404,6 @@ function aObj:setupTextures()
 
 end
 
-function aObj:skinAceDropdown(obj, x2, y2)
-
-	self:skinObject("dropdown", {obj=obj.dropdown, x2=x2, y2=y2})
-	self:skinObject("frame", {obj=obj.pullout.frame, kfs=true})
-	self:secureHook(obj, "SetDisabled", function(this, disabled)
-		self:checkDisabledDD(this.dropdown, disabled)
-	end)
-
-end
-
 function aObj:skinColumnDisplay(frame)
 
 	frame:DisableDrawLayer("BACKGROUND")

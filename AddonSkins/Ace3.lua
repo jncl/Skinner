@@ -38,6 +38,16 @@ if aObj.ACD then
 	end)
 end
 
+function aObj:skinAceDropdown(obj, x2, y2)
+
+	self:skinObject("dropdown", {obj=obj.dropdown, x2=x2, y2=y2})
+	self:skinObject("frame", {obj=obj.pullout.frame, kfs=true})
+	self:secureHook(obj, "SetDisabled", function(this, disabled)
+		self:checkDisabledDD(this.dropdown, disabled)
+	end)
+
+end
+
 -- expose function to skin already created Ace3 GUI objects
 -- used by ExtendedCharacterStats, JackJack, Questie & TLDRMissions AddOns
 function aObj:skinAceOptions(fObj)
@@ -82,7 +92,7 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 		-- and not obj.sknd
 		-- and not (objType:find("TSM") and obj.sknrTSM) -- check objType as TSM overlays existing objects
 		then
-			aObj:Debug("skinAceGUI: [%s, %s]", obj, objType)
+			-- aObj:Debug("skinAceGUI: [%s, %s]", obj, objType)
 
 			if objType == "Button" then
 				if aObj.modBtns then
