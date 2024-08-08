@@ -1396,11 +1396,174 @@ aObj.SetupClassic_PlayerFrames = function()
 
 	end
 
-	if aObj.isClscERA then
 		aObj.blizzFrames[ftype].SpellBookFrame = function(self)
 			if not self.prdb.SpellBookFrame or self.initialized.SpellBookFrame then return end
 			self.initialized.SpellBookFrame = true
 
+		if aObj.isClsc then
+			self:SecureHookScript(_G.SpellBookFrame, "OnShow", function(this)
+				this.numTabs = 5
+				self:skinObject("tabs", {obj=this, prefix=this:GetName(), suffix="Button", fType=ftype, track=false})
+				if self.isTT then
+					local function setTab(bookType)
+						local tab
+						for i = 1, this.numTabs do
+							tab = _G["SpellBookFrameTabButton" .. i]
+							if tab.bookType == bookType then
+								self:setActiveTab(tab.sf)
+							else
+								self:setInactiveTab(tab.sf)
+							end
+						end
+					end
+					-- hook to handle tabs
+					self:SecureHook("ToggleSpellBook", function(bookType)
+						setTab(bookType)
+					end)
+					-- set correct tab
+					setTab(this.bookType)
+				end
+				-- Spellbook Panel
+				local bName, spellString, subSpellString
+				local function updBtn(btn)
+					-- handle in combat
+					if _G.InCombatLockdown() then
+					    aObj:add2Table(aObj.oocTab, {updBtn, {btn}})
+					    return
+					end
+					bName = btn:GetName()
+					spellString, subSpellString = _G[bName .. "SpellName"], _G[bName .. "SubSpellName"]
+					if _G[bName .. "IconTexture"]:IsDesaturated() then -- player level too low, see Trainer, or offSpec
+						spellString:SetTextColor(_G.DISABLED_FONT_COLOR:GetRGB())
+						subSpellString:SetTextColor(_G.DISABLED_FONT_COLOR:GetRGB())
+						btn.RequiredLevelString:SetTextColor(_G.DISABLED_FONT_COLOR:GetRGB())
+						btn.SeeTrainerString:SetTextColor(_G.DISABLED_FONT_COLOR:GetRGB())
+					else
+						spellString:SetTextColor(aObj.HT:GetRGB())
+						subSpellString:SetTextColor(aObj.BT:GetRGB())
+					end
+					 -- allow for not skinned during combat
+					if btn.sbb then
+						if btn:IsEnabled() then
+							btn.sbb:Show()
+						else
+							btn.sbb:Hide()
+							return
+						end
+						if _G[bName .. "IconTexture"]:IsDesaturated() then -- player level too low, see Trainer, or offSpec
+							aObj:clrBtnBdr(btn, "disabled")
+						else
+							aObj:clrBtnBdr(btn)
+						end
+					end
+				end
+				_G.SpellBookPageText:SetTextColor(self.BT:GetRGB())
+				local btn
+				for i = 1, _G.SPELLS_PER_PAGE do
+					btn = _G["SpellButton" .. i]
+					btn:DisableDrawLayer("BACKGROUND")
+					btn:DisableDrawLayer("BORDER")
+					_G["SpellButton" .. i .. "SlotFrame"]:SetAlpha(0)
+					btn.UnlearnedFrame:SetAlpha(0)
+					btn.TrainFrame:SetAlpha(0)
+					if self.modBtnBs then
+						self:addButtonBorder{obj=btn, sft=true, reParent={btn.FlyoutArrow, _G["SpellButton" .. i .. "AutoCastable"]}, ofs=3}
+						if self.isClsc then
+							btn:GetNormalTexture():SetTexture(nil)
+						end
+						btn.sbb:SetShown(btn:IsEnabled())
+					end
+					updBtn(btn)
+					self:SecureHook(btn, "UpdateButton", function(bObj)
+						updBtn(bObj)
+					end)
+				end
+				-- Tabs (side)
+				local tBtn
+				for i = 1, _G.MAX_SKILLLINE_TABS do
+					tBtn = _G["SpellBookSkillLineTab" .. i]
+					tBtn:DisableDrawLayer("BACKGROUND")
+					if self.modBtnBs then
+						self:addButtonBorder{obj=tBtn, clr=tBtn.isOffSpec and "grey"}
+					end
+					if i == 1 then
+						self:moveObject{obj=tBtn, x=2}
+					end
+				end
+
+				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, x2=2, y2=-3})
+				if self.modBtnBs then
+					self:addButtonBorder{obj=_G.SpellBookPrevPageButton, ofs=-2, y1=-3, x2=-3}
+					self:addButtonBorder{obj=_G.SpellBookNextPageButton, ofs=-2, y1=-3, x2=-3}
+					self:clrPNBtns("SpellBook")
+					self:SecureHook("SpellBookFrame_UpdatePages", function()
+						self:clrPNBtns("SpellBook")
+					end)
+					self:SecureHook("SpellBookFrame_UpdateSkillLineTabs", function()
+						for i = 1, _G.MAX_SKILLLINE_TABS do
+							self:clrBtnBdr(_G["SpellBookSkillLineTab" .. i], _G["SpellBookSkillLineTab" .. i].isOffSpec and "grey")
+						end
+					end)
+				end
+
+				self:SecureHookScript(_G.SpellBookProfessionFrame, "OnShow", function(fObj)
+					local function skinProf(type, times)
+						local objName, obj
+						for i = 1, times do
+							objName = type .. "Profession" .. i
+							obj =_G[objName]
+							if type == "Primary" then
+								_G[objName .. "IconBorder"]:Hide()
+								-- make icon square
+								aObj:makeIconSquare(obj, "icon")
+								if not obj.missingHeader:IsShown() then
+									obj.icon:SetDesaturated(nil) -- show in colour
+									if aObj.modBtnBs then
+										aObj:clrBtnBdr(obj)
+									end
+								else
+									if aObj.modBtnBs then
+										aObj:clrBtnBdr(obj, "disabled")
+									end
+								end
+							else
+								obj.missingHeader:SetTextColor(aObj.HT:GetRGB())
+							end
+							obj.missingText:SetTextColor(aObj.BT:GetRGB())
+							local pBtn
+							for j = 1, 2 do
+								pBtn = obj["SpellButton" .. j]
+								pBtn:DisableDrawLayer("BACKGROUND")
+								pBtn.subSpellString:SetTextColor(aObj.BT:GetRGB())
+								if aObj.modBtnBs then
+									aObj:addButtonBorder{obj=pBtn, sft=true}
+								end
+							end
+							aObj:removeRegions(obj.statusBar, {2, 3, 4, 5, 6})
+							aObj:skinObject("statusbar", {obj=obj.statusBar, fi=0})
+							obj.statusBar:SetStatusBarColor(0, 1, 0, 1)
+							obj.statusBar:SetHeight(12)
+							obj.statusBar.rankText:SetPoint("CENTER", 0, 0)
+							aObj:moveObject{obj=obj.statusBar, x=-12}
+						end
+					end
+					skinProf("Primary", 2)
+					skinProf("Secondary", 4)
+					if self.modBtnBs then
+						self:SecureHook("SpellBook_UpdateProfTab", function()
+							local prof1, prof2, _, _, _ = _G.GetProfessions()
+							self:clrBtnBdr(_G.PrimaryProfession1, not prof1 and "disabled")
+							self:clrBtnBdr(_G.PrimaryProfession2, not prof2 and "disabled")
+						end)
+					end
+
+					self:Unhook(fObj, "OnShow")
+				end)
+				self:checkShown(_G.SpellBookProfessionFrame)
+
+				self:Unhook(this, "OnShow")
+			end)
+		else
 			self:SecureHookScript(_G.SpellBookFrame, "OnShow", function(this)
 				this.numTabs = 3
 				self:skinObject("tabs", {obj=this, prefix=this:GetName(), suffix="Button", fType=ftype, lod=self.isTT and true, offsets={x1=13, y1=-14, x2=-13, y2=16}, regions={1, 3}, track=false})
@@ -1491,8 +1654,8 @@ aObj.SetupClassic_PlayerFrames = function()
 
 				self:Unhook(this, "OnShow")
 			end)
-
 		end
+
 	end
 
 	aObj.blizzLoDFrames[ftype].TalentUI = function(self)
@@ -1775,6 +1938,7 @@ aObj.SetupClassic_PlayerFramesOptions = function(self)
 		["Craft UI"]       = true,
 		["Engraving UI"]   = self.isClscERA and {desc = "Runes UI"} or nil,
 		["Glyph UI"]       = self.isClsc and true or nil,
+		["SpellBook Frame"] = true,
 		["Talent UI"]      = true,
 		["Token UI"]       = self.isClsc and true or nil,
 		["Trade Skill UI"] = true,
