@@ -573,20 +573,6 @@ aObj.SetupClassic_UIFrames = function()
 		end
 	end
 
-	if aObj.isClscERA then
-		aObj.blizzFrames[ftype].QuestTimer = function(self)
-			if not self.prdb.QuestTimer or self.initialized.QuestTimer then return end
-			self.initialized.QuestTimer = true
-
-			self:SecureHookScript(_G.QuestTimerFrame, "OnShow", function(this)
-				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, x1=20, y1=4, x2=-20, y2=10})
-
-				self:Unhook(this, "OnShow")
-			end)
-
-		end
-	end
-
 	aObj.blizzFrames[ftype].RaidFrame = function(self)
 		if not self.prdb.RaidFrame or self.initialized.RaidFrame then return end
 		self.initialized.RaidFrame = true
@@ -738,7 +724,6 @@ aObj.SetupClassic_UIFramesOptions = function(self)
 		["Product Choice"]          = {suff = "Frame"},
 		["PVP Frame"]               = self.isClsc and true or nil,
 		["Quest Log"]               = true,
-		["Quest Timer"]             = self.isClscERA and true or nil,
 		["World State Score Frame"] = {desc = "Battle Score Frame"},
 	}
 	self:setupFramesOptions(optTab, "UI")
