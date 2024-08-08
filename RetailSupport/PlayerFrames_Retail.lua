@@ -1375,7 +1375,7 @@ aObj.SetupRetail_PlayerFrames = function()
 				if not aObj.sbGlazed[bar.Bar] then
 					bar.Bar:DisableDrawLayer("ARTWORK")
 					if bar.Bar.Label then -- ProgressBar
-					bar.Bar.Label:SetDrawLayer("BORDER")
+						bar.Bar.Label:SetDrawLayer("BORDER")
 					else -- TimerBar
 						bar.Label:SetDrawLayer("BORDER")
 					end
@@ -2391,7 +2391,7 @@ aObj.SetupRetail_PlayerFrames = function()
 	end
 
 	aObj.blizzFrames[ftype].PVPHonorSystem = function(self)
-		if not self.prdb.PVPUI or self.initialized.PVPHonorSystem then return end
+		if not self.prdb.PVEFrame or self.initialized.PVPHonorSystem then return end
 		self.initialized.PVPHonorSystem = true
 
 		self:SecureHookScript(_G.HonorLevelUpBanner, "OnShow", function(this)
@@ -2410,7 +2410,7 @@ aObj.SetupRetail_PlayerFrames = function()
 	end
 
 	aObj.blizzLoDFrames[ftype].PVPUI = function(self)
-		if not self.prdb.PVPUI or self.initialized.PVPUI then return end
+		if not self.prdb.PVEFrame or self.initialized.PVPUI then return end
 		self.initialized.PVPUI = true
 
 		local pvpFrames = { "HonorFrame", "ConquestFrame", "LFGListPVPStub" }
@@ -2628,11 +2628,10 @@ aObj.SetupRetail_PlayerFramesOptions = function(self)
 		["Guild Control UI"]     = true,
 		["Guild Invite"]         = {suff = "Frame"},
 		["Guild UI"]             = true,
-		["Looking For Guild UI"] = {desc = "Looking for Guild UI"},
-		["Player Spells"]        = true,
-		["Professions"]          = true,
-		["Professions Book"]     = {suff = "Frame"},
-		["PVP UI"]               = {desc = "PVP Frame"},
+		["Looking For Guild UI"] = true,
+		["Player Spells"]        = {desc = "Talents & Spellbook"},
+		["Professions"]          = {desc = "Trade Skills UI"},
+		["Professions Book"]     = {desc = "Professions"},
 	}
 	self:setupFramesOptions(optTab, "Player")
 	_G.wipe(optTab)

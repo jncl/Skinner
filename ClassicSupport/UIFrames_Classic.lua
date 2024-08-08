@@ -732,7 +732,7 @@ aObj.SetupClassic_UIFramesOptions = function(self)
 		["Binding UI"]              = {desc = "Key Bindings UI"},
 		["GM Survey UI"]            = self.isClscERA and true or nil,
 		["Product Choice"]          = {suff = "Frame"},
-		["PVP Frame"]               = self.isClsc and true or nil,
+		["PVP Frame"]               = self.isClsc and {desc = "Player vs. Player"} or nil,
 		["Quest Log"]               = true,
 		["World State Score Frame"] = {desc = "Battle Score Frame"},
 	}

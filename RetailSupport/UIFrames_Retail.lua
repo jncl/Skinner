@@ -528,7 +528,7 @@ aObj.SetupRetail_UIFrames = function()
 	end
 
 	aObj.blizzLoDFrames[ftype].ChallengesUI = function(self)
-		if not self.prdb.ChallengesUI or self.initialized.ChallengesUI then return end
+		if not self.prdb.PVEFrame or self.initialized.ChallengesUI then return end
 		self.initialized.ChallengesUI = true
 
 		-- subframe of PVEFrame
@@ -3519,7 +3519,7 @@ aObj.SetupRetail_UIFrames = function()
 
 	end
 
-	aObj.blizzLoDFrames[ftype].SubscriptionInterstitialUI = function(self)
+	aObj.blizzLoDFrames[ftype].SubscriptionInterstitialUI = function(self) -- ??
 		if not self.prdb.SubscriptionInterstitialUI or self.initialized.SubscriptionInterstitialUI then return end
 		self.initialized.SubscriptionInterstitialUI = true
 
@@ -3862,10 +3862,9 @@ aObj.SetupRetail_UIFramesOptions = function(self)
 		["Anima Diversion UI"]           = true,
 		["Azerite Item Toasts"]          = true,
 		["Boss Banner Toast"]            = true,
-		["Challenges UI"]                = true,
 		["Chat Channels UI"]             = true,
 		["Class Trial"]                  = {suff = "Frames"},
-		["Console"]                      = {desc = "Developer Console Frame"},
+		["Console"]                      = {suff = "Frame"},
 		["Contribution"]                 = {suff = "Frame"},
 		["Covenant Toasts"]              = true,
 		["Death Recap"]                  = {suff = "Frame"},

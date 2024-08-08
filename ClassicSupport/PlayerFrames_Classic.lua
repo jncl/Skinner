@@ -764,8 +764,8 @@ aObj.SetupClassic_PlayerFrames = function()
 	end
 
 	if aObj.isClscERA then
-		aObj.blizzLoDFrames[ftype].EngravingUI = function(self)
-			if not self.prdb.EngravingUI or self.initialized.EngravingUI then return end
+		aObj.blizzLoDFrames[ftype].EngravingUI = function(self) -- Runes panel next to Character frame
+			if not self.prdb.CharacterFrames or self.initialized.EngravingUI then return end
 			self.initialized.EngravingUI = true
 
 			self:SecureHookScript(_G.EngravingFrame, "OnShow", function(this)
@@ -1149,7 +1149,7 @@ aObj.SetupClassic_PlayerFrames = function()
 
 	if aObj.isClsc then
 		aObj.blizzLoDFrames[ftype].GlyphUI = function(self)
-			if not self.prdb.GlyphUI or self.initialized.GlyphUI then return end
+			if not self.prdb.TalentUI or self.initialized.GlyphUI then return end
 			self.initialized.GlyphUI = true
 
 			local clrBB, fName
@@ -1790,7 +1790,7 @@ aObj.SetupClassic_PlayerFrames = function()
 
 	if aObj.isClsc then
 		aObj.blizzFrames[ftype].TokenUI = function(self) -- Currency tab on Character frame
-			if not self.prdb.TokenUI or self.initialized.TokenUI then return end
+			if not self.prdb.CharacterFrames or self.initialized.TokenUI then return end
 			self.initialized.TokenUI = true
 
 			self:SecureHookScript(_G.TokenFrame, "OnShow", function(this)
@@ -1936,12 +1936,9 @@ aObj.SetupClassic_PlayerFramesOptions = function(self)
 	local optTab = {
 		["Barber Shop UI"]  = self.isClsc and true or nil,
 		["Craft UI"]        = true,
-		["Engraving UI"]    = self.isClscERA and {desc = "Runes UI"} or nil,
-		["Glyph UI"]        = self.isClsc and true or nil,
-		["SpellBook Frame"] = true,
+		["SpellBook Frame"] = {desc = "SpellBook & Abilities"},
 		["Talent UI"]       = true,
-		["Token UI"]        = self.isClsc and true or nil,
-		["Trade Skill UI"]  = true,
+		["Trade Skill UI"]  = {desc = "Trade Skills UI"},
 		["Watch Frame"]     = self.isClsc and true or nil,
 	}
 	self:setupFramesOptions(optTab, "Player")

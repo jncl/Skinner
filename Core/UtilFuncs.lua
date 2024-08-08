@@ -1347,6 +1347,8 @@ function aObj:setupFramesOptions(optTab, framesType)
 		if _G.type(optVals) == "table" then
 			if optVals.desc then
 				oDesc = optVals.desc
+			elseif optVals.pref then
+				oDesc = _G.string.format("%s %s", optVals.pref, optName)
 			elseif optVals.suff then
 				oDesc = _G.string.format("%s %s", optName, optVals.suff)
 			end
