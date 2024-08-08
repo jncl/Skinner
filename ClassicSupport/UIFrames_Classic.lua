@@ -314,6 +314,13 @@ aObj.SetupClassic_UIFrames = function()
 				if self.modBtns then
 					self:skinStdButton{obj=_G.PVPFrameLeftButton, fType=ftype, schk=true}
 					self:skinStdButton{obj=_G.PVPFrameRightButton, fType=ftype, schk=true}
+					-- hook this to hide LeftButton when War Games panel shown
+					self:RawHook("PVPFrame_TabClicked", function(fObj)
+						self.hooks.PVPFrame_TabClicked(fObj)
+						if fObj:GetID() == 4 then -- War games
+							_G.PVPFrameLeftButton:Hide()
+						end
+					end, true)
 				end
 				if self.modChkBtns then
 					for _, name in _G.pairs{"Tank", "Healer", "DPS"} do
