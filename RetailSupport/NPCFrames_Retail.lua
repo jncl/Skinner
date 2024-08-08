@@ -13,13 +13,8 @@ aObj.SetupRetail_NPCFrames = function()
 		self.initialized.AlliedRacesUI = true
 
 		self:SecureHookScript(_G.AlliedRacesFrame, "OnShow", function(this)
-			if not aObj.isRtl then
-				this.ModelFrame:DisableDrawLayer("BORDER")
-				this.ModelFrame:DisableDrawLayer("ARTWORK")
-			else
 				this.ModelScene:DisableDrawLayer("BORDER")
 				this.ModelScene:DisableDrawLayer("ARTWORK")
-			end
 			this.RaceInfoFrame.ScrollFrame.Child.RaceDescriptionText:SetTextColor(self.BT:GetRGB())
 			this.RaceInfoFrame.ScrollFrame.Child.ObjectivesFrame.Description:SetTextColor(self.BT:GetRGB())
 			this.RaceInfoFrame.ScrollFrame.Child.RacialTraitsLabel:SetTextColor(self.HT:GetRGB())
@@ -29,13 +24,8 @@ aObj.SetupRetail_NPCFrames = function()
 			this.RaceInfoFrame.AlliedRacesRaceName:SetTextColor(self.HT:GetRGB())
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, y1=1})
 			if self.modBtnBs then
-				if not aObj.isRtl then
-					self:addButtonBorder{obj=this.ModelFrame.AlliedRacesMaleButton, ofs=0, clr="grey"}
-					self:addButtonBorder{obj=this.ModelFrame.AlliedRacesFemaleButton, ofs=0, clr="grey"}
-				else
-					self:addButtonBorder{obj=this.ModelScene.AlliedRacesMaleButton, ofs=0, clr="grey"}
-					self:addButtonBorder{obj=this.ModelScene.AlliedRacesFemaleButton, ofs=0, clr="grey"}
-				end
+				self:addButtonBorder{obj=this.ModelScene.AlliedRacesMaleButton, ofs=0}
+				self:addButtonBorder{obj=this.ModelScene.AlliedRacesFemaleButton, ofs=0}
 			end
 
 			self:Unhook(this, "OnShow")

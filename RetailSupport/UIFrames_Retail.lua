@@ -2162,16 +2162,10 @@ aObj.SetupRetail_UIFrames = function()
 				else
 					function skinABBtn(btn)
 						btn.Border:SetAlpha(0) -- texture changed in blizzard code
-						if not aObj.isRtl then
-							btn.FlyoutBorder:SetTexture(nil)
-							btn.FlyoutBorderShadow:SetTexture(nil)
-							_G[btn:GetName() .. "NormalTexture"]:SetTexture(nil)
-						else
 							btn.SlotBackground:SetTexture(nil)
 							btn.SlotArt:SetTexture(nil)
 							btn.FlyoutBorderShadow:SetTexture(nil)
 							btn.NormalTexture:SetTexture(nil)
-						end
 						if aObj.prdb.MainMenuBar.actbtns then
 							aObj:addButtonBorder{obj=btn, sabt=true, ofs=3}
 						end
@@ -2181,11 +2175,6 @@ aObj.SetupRetail_UIFrames = function()
 						for i = 1, _G.NUM_MULTIBAR_BUTTONS do
 							bName = "MultiBar" .. type .. "Button" .. i
 							skinABBtn(_G[bName])
-							if not aObj.isRtl
-							and not _G[bName].noGrid
-							then
-								_G[bName .. "FloatingBG"]:SetAlpha(0)
-							end
 						end
 					end
 				end
@@ -2253,20 +2242,10 @@ aObj.SetupRetail_UIFrames = function()
 			if self.modBtnBs then
 				skinMultiBarBtns("Right")
 				skinMultiBarBtns("Left")
-				if not self.isRtl then
-					for _, bName in _G.pairs(_G.MICRO_BUTTONS) do
-						self:addButtonBorder{obj=_G[bName], es=24, ofs=2, reParent={_G[bName].QuickKeybindHighlightTexture}, clr="grey"}
-					end
-					self:addButtonBorder{obj=_G.MainMenuBarBackpackButton, fType=ftype, ibt=true, ofs=3}
-					for i = 1, _G.NUM_BAG_FRAMES do
-						self:addButtonBorder{obj=_G["CharacterBag" .. i - 1 .. "Slot"], fType=ftype, ibt=true, ofs=3}
-					end
-				else
 					skinMultiBarBtns("5")
 					skinMultiBarBtns("6")
 					skinMultiBarBtns("7")
 				end
-			end
 
 		end
 
