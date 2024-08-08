@@ -1138,7 +1138,7 @@ function aObj:removeMagicBtnTex(btn)
 	--@end-debug@
 
 	-- Magic Button textures
-	for _, prefix in _G.pairs("Left", "Right") do
+	for _, prefix in _G.pairs{"Left", "Right"} do
 		if btn[prefix .. "Separator"] then
 			btn[prefix .. "Separator"]:SetTexture(nil)
 		end
