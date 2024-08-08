@@ -42,9 +42,6 @@ aObj.SetupClassic_UIFrames = function()
 		self.initialized.BindingUI = true
 
 		self:SecureHookScript(_G.KeyBindingFrame, "OnShow", function(this)
-			if self.isRtl then
-				self:removeNineSlice(this.BG)
-			end
 			self:skinObject("frame", {obj=this.categoryList, fType=ftype, kfs=true, fb=true})
 			self:skinObject("frame", {obj=this.bindingsContainer, fType=ftype, kfs=true, fb=true})
 			self:skinObject("slider", {obj=this.scrollFrame.ScrollBar, rpTex={"background", "border"}})
@@ -55,13 +52,6 @@ aObj.SetupClassic_UIFrames = function()
 					self:skinStdButton{obj=row.key2Button}
 					row.key1Button.sb:SetAlpha(row.key1Button:GetAlpha())
 					row.key2Button.sb:SetAlpha(row.key2Button:GetAlpha())
-					if self.isRtl then
-						self:SecureHook(row, "Update", function(fObj)
-							self:clrBtnBdr(fObj.key2Button)
-							fObj.key1Button.sb:SetAlpha(fObj.key1Button:GetAlpha())
-							fObj.key2Button.sb:SetAlpha(fObj.key2Button:GetAlpha())
-						end)
-					end
 				end
 				self:skinStdButton{obj=this.unbindButton}
 				self:skinStdButton{obj=this.okayButton}
@@ -73,13 +63,6 @@ aObj.SetupClassic_UIFrames = function()
 						self:skinStdButton{obj=button}
 					end
 				end)
-				if self.isRtl then
-					self:skinStdButton{obj=this.quickKeybindButton}
-					self:SecureHook(this, "UpdateUnbindKey", function(fObj)
-						self:clrBtnBdr(fObj.unbindButton)
-					end)
-					self:skinStdButton{obj=this.clickCastingButton, fType=ftype}
-				else
 					self:SecureHook("KeyBindingFrame_Update", function()
 						for _, row in _G.pairs(_G.KeyBindingFrame.keyBindingRows) do
 							self:clrBtnBdr(row.key2Button)
@@ -91,7 +74,6 @@ aObj.SetupClassic_UIFrames = function()
 						self:clrBtnBdr(_G.KeyBindingFrame.unbindButton)
 					end)
 				end
-			end
 			if self.modChkBtns then
 				self:skinCheckButton{obj=this.characterSpecificButton}
 			end
