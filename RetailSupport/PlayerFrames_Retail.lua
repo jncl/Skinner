@@ -1374,7 +1374,11 @@ aObj.SetupRetail_PlayerFrames = function()
 			local function skinBar(bar)
 				if not aObj.sbGlazed[bar.Bar] then
 					bar.Bar:DisableDrawLayer("ARTWORK")
+					if bar.Bar.Label then -- ProgressBar
 					bar.Bar.Label:SetDrawLayer("BORDER")
+					else -- TimerBar
+						bar.Label:SetDrawLayer("BORDER")
+					end
 					if bar.Bar.BorderLeft then
 						-- ObjectiveTrackerProgressBarTemplate/ObjectiveTrackerTimerBarTemplate
 						aObj:skinObject("statusbar", {obj=bar.Bar, fi=0, bg=aObj:getRegion(bar.Bar, bar.Bar.Label and 5 or 4)})
