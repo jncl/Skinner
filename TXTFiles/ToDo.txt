@@ -19,14 +19,10 @@ ToDos
 
 ≈		O	Refactor NewSkinFuncs in AddOn skins
 
-		O	Refactor frame children loops to use Utility function via callback
+		O	Refactor frame children loops to use Utility function 'scanChildren' via callback
 
-#94	√	I	ViewPort
 
-#95	√	I 	Missing entry for 'Professions Book Frame'
+#95	√	I	Missing localisation(s)
+#99
 
-#96	√	I	removeMagicBtnTex function
-
-#97	√	I	The guild & communities frames are not skinned at all
-
-#98	√	I	Krowi_AchievementFilter
+#100 √	I	ObjectiveTrackerTimerBar Label
