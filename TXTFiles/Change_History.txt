@@ -1,3 +1,13 @@
+beta11.55960.2
+Jncl:
+	Updated ToDo.txt files
+	Updated Change_History.txt
+	Updated ViewPort, closes #94
+	Updated UtilFuncs, closes #96
+	Updated MountJournalFrame
+	Updated AddOnFrames, closes #97
+	Updated Krowi_AchievementFilter, closes #98
+	
 beta11.55960.1
 Jncl:
 	Updated ToDo.txt files
