@@ -2,7 +2,7 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("Krowi_AchievementFilter") then return end
 local _G = _G
 
-aObj.addonsToSkin.Krowi_AchievementFilter = function(self) -- v 73.6
+aObj.addonsToSkin.Krowi_AchievementFilter = function(self) -- v 75.2
 
 	local function skinAlertFrame(frame)
 		frame.animIn:Stop()
@@ -20,7 +20,7 @@ aObj.addonsToSkin.Krowi_AchievementFilter = function(self) -- v 73.6
 		_G.C_Timer.NewTicker(0.1, function(ticker)
 			for _, afs in _G.ipairs_reverse(_G.AlertFrame.alertFrameSubSystems) do
 				if afs.alertFramePool then
-					if _G.strfind(afs.alertFramePool.frameTemplate, "KrowiAF_EventReminderAlertFrame_") then
+					if _G.strfind(afs.alertFramePool:GetTemplate(), "KrowiAF_EventReminderAlertFrame_") then
 						self:secureHook(afs, "setUpFunction", function(frame, _)
 							skinAlertFrame(frame)
 						end)
