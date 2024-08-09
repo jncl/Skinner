@@ -2677,12 +2677,14 @@ aObj.SetupRetail_UIFrames = function()
 				-- hook these to stop tooltip gradient being whiteouted !!
 				local function reParent(opts)
 					for _, f in _G.pairs(aObj.pbtt) do
+						if f.tfade then
 						f.tfade:SetParent(opts.parent or f)
 						if opts.reset then
 							-- reset Gradient alpha
 							f.tfade:SetGradient(aObj:getGradientInfo())
 						end
 					end
+				end
 				end
 				self:HookScript(this.ActiveAlly.SpeedFlash, "OnPlay", function(_)
 					reParent{parent=_G.MainMenuBar}
@@ -2738,8 +2740,10 @@ aObj.SetupRetail_UIFrames = function()
 			-- hook this to reset tooltip gradients
 			self:SecureHookScript(_G.PetBattleFrame, "OnHide", function(_)
 				for _, f in _G.pairs(aObj.pbtt) do
+					if f.tfade then
 					f.tfade:SetParent(f)
 					f.tfade:SetGradient(aObj:getGradientInfo())
+				end
 				end
 			end)
 		end
