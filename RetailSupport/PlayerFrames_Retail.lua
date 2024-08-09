@@ -561,7 +561,8 @@ aObj.SetupRetail_PlayerFrames = function()
 				end
 			end)
 			self:SecureHook(this, "UpdateAlteredFormButtons", function(fObj)
-				for btn in fObj.alteredFormsPools:EnumerateActive() do
+				local buttonPool = fObj:GetAlteredFormsButtonPool()
+				for btn in buttonPool:EnumerateActive() do
 					btn.Ring:SetTexture(nil)
 				end
 			end)
@@ -571,45 +572,27 @@ aObj.SetupRetail_PlayerFrames = function()
 				for btn in fObj.pools:GetPool("CharCustomizeCategoryButtonTemplate"):EnumerateActive() do
 					btn.Ring:SetTexture(nil)
 				end
-				for frame in fObj.pools:GetPool("CharCustomizeOptionCheckButtonTemplate"):EnumerateActive() do
-					if self.modChkBtns then
-						self:skinCheckButton{obj=frame.Button, fType=ftype}
-					end
-				end
 				for btn in fObj.pools:GetPool("CharCustomizeConditionalModelButtonTemplate"):EnumerateActive() do
 					btn.Ring:SetTexture(nil)
 				end
-				for frame in fObj.selectionPopoutPool:EnumerateActive() do
-					self:removeNineSlice(frame.Button.Popout.Border)
-					self:skinObject("frame", {obj=frame.Button.Popout, fType=ftype, kfs=true, ofs=-6, y2=10})
-					_G.RaiseFrameLevelByTwo(frame.Button.Popout) -- appear above other buttons
-					-- resize frame
-					frame.Button.Popout:Show()
-					frame.Button.Popout:Hide()
-					if self.modBtns then
-						self:skinStdButton{obj=frame.Button, ofs=-5}
-						-- ensure button skin is displayed first time
-						frame.Button:Hide()
-						frame.Button:Show()
-					end
-					if self.modBtnBs then
-						self:addButtonBorder{obj=frame.IncrementButton, ofs=-2, x1=3, y1=-3, clr="gold", sechk=true}
-						self:addButtonBorder{obj=frame.DecrementButton, ofs=-2, x1=3, y1=-3, clr="gold", sechk=true}
+				if self.modChkBtns then
+					for frame in fObj.pools:GetPool("CharCustomizeOptionCheckButtonTemplate"):EnumerateActive() do
+						self:skinCheckButton{obj=frame.Button, fType=ftype}
 					end
 				end
 			end)
 			if self.modBtns then
-				self:skinStdButton{obj=_G.BarberShopFrame.CancelButton, ofs=0}
-				self:skinStdButton{obj=_G.BarberShopFrame.ResetButton, sechk=true, ofs=0}
-				self:skinStdButton{obj=_G.BarberShopFrame.AcceptButton, sechk=true, ofs=0}
+				self:skinStdButton{obj=_G.BarberShopFrame.CancelButton, fType=ftype, ofs=0}
+				self:skinStdButton{obj=_G.BarberShopFrame.ResetButton, fType=ftype, sechk=true, ofs=0}
+				self:skinStdButton{obj=_G.BarberShopFrame.AcceptButton, fType=ftype, sechk=true, ofs=0}
 			end
 			if self.modBtnBs then
-				self:addButtonBorder{obj=this.RandomizeAppearanceButton, ofs=-4, x1=5, y2=5, clr="gold"}
-				self:addButtonBorder{obj=this.SmallButtons.ResetCameraButton, ofs=-4, x1=5, y2=5, clr="gold"}
-				self:addButtonBorder{obj=this.SmallButtons.ZoomOutButton, ofs=-4, x1=5, y2=5, clr="gold"}
-				self:addButtonBorder{obj=this.SmallButtons.ZoomInButton, ofs=-4, x1=5, y2=5, clr="gold"}
-				self:addButtonBorder{obj=this.SmallButtons.RotateLeftButton, ofs=-4, x1=5, y2=5, clr="gold"}
-				self:addButtonBorder{obj=this.SmallButtons.RotateRightButton, ofs=-4, x1=5, y2=5, clr="gold"}
+				self:addButtonBorder{obj=this.RandomizeAppearanceButton, fType=ftype, ofs=-4, x1=5, y2=5, clr="gold"}
+				self:addButtonBorder{obj=this.SmallButtons.ResetCameraButton, fType=ftype, ofs=-4, x1=5, y2=5, clr="gold"}
+				self:addButtonBorder{obj=this.SmallButtons.ZoomOutButton, fType=ftype, ofs=-4, x1=5, y2=5, clr="gold"}
+				self:addButtonBorder{obj=this.SmallButtons.ZoomInButton, fType=ftype, ofs=-4, x1=5, y2=5, clr="gold"}
+				self:addButtonBorder{obj=this.SmallButtons.RotateLeftButton, fType=ftype, ofs=-4, x1=5, y2=5, clr="gold"}
+				self:addButtonBorder{obj=this.SmallButtons.RotateRightButton, fType=ftype, ofs=-4, x1=5, y2=5, clr="gold"}
 				self:SecureHook(this, "UpdateZoomButtonStates", function(fObj)
 					self:clrBtnBdr(fObj.SmallButtons.ZoomOutButton, "gold")
 					self:clrBtnBdr(fObj.SmallButtons.ZoomInButton, "gold")
@@ -620,7 +603,6 @@ aObj.SetupRetail_PlayerFrames = function()
 		end)
 
 		_G.C_Timer.After(0.1, function()
-			self:add2Table(self.ttList, _G.CharCustomizeTooltip)
 			self:add2Table(self.ttList, _G.CharCustomizeNoHeaderTooltip)
 		end)
 
