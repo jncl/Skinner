@@ -1,3 +1,12 @@
+beta11.56014.1
+Jncl:
+	Updated ToDo.txt files
+	Updated Change_History.txt
+	Updated version numbers
+	Bugfix for MountsJournal
+	Update localisation phrases and remove redundant ones
+	Bugfix for ObjectiveTrackerTimerBar, closes #100
+	
 beta11.55960.2
 Jncl:
 	Updated ToDo.txt files
