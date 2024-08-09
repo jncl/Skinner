@@ -2990,30 +2990,24 @@ aObj.blizzFrames[ftype].Settings = function(self)
 				elseif element.ToggleTest then
 					aObj:addButtonBorder{obj=element.ToggleTest, fType=ftype, ofs=1}
 				end
-				if element.DropDown
-				and element.DropDown.Button
+				if element.Control
+				and element.Control.Dropdown
 				then
-					aObj:skinStdButton{obj=element.DropDown.Button, fType=ftype, ignoreHLTex=true, sechk=true, x1=10, y1=-4, x2=-10, y2=4}
+					aObj:skinStdButton{obj=element.Control.Dropdown, fType=ftype, ignoreHLTex=true, sechk=true, y1=1, y2=-1}
 				end
 			end
 			if aObj.modBtnBs
-			and element.DropDown
-			and element.DropDown.DecrementButton
+			and element.Control
+			and element.Control.DecrementButton
 			then
-				aObj:addButtonBorder{obj=element.DropDown.IncrementButton, fType=ftype, ofs=-2, y1=-3, sechk=true}
-				aObj:addButtonBorder{obj=element.DropDown.DecrementButton, fType=ftype, ofs=-2, y1=-3, sechk=true}
+				aObj:addButtonBorder{obj=element.Control.IncrementButton, fType=ftype, sechk=true}
+				aObj:addButtonBorder{obj=element.Control.DecrementButton, fType=ftype, sechk=true}
 			end
 			if aObj.modChkBtns
 			and element.Checkbox
 			or element.CheckBox
 			then
 				aObj:skinCheckButton{obj=element.Checkbox or element.CheckBox, fType=ftype}
-			end
-			if element.DropDown
-			and element.DropDown.Button
-			and element.DropDown.Button.Popout
-			then
-				aObj:skinObject("frame", {obj=element.DropDown.Button.Popout.Border, fType=ftype, kfs=true, x1=7, y1=0, x2=-12, y2=20})
 			end
 			if element.SliderWithSteppers then
 				aObj:skinObject("slider", {obj=element.SliderWithSteppers.Slider, fType=ftype, y1=-12, y2=12})
