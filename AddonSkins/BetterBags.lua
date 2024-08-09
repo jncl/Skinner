@@ -46,7 +46,11 @@ aObj.addonsToSkin.BetterBags = function(self) -- v0.1.89
 
 	local function skinFrame(frame)
 		if frame.Bg then
-			frame.Bg:SetTexture(nil)
+			if frame.Bg:IsObjectType("frame") then
+				frame.Bg:DisableDrawLayer("BACKGROUND")
+			else
+				frame.Bg:SetTexture(nil)
+			end
 		end
 		if frame.TitleContainer
 		and frame.TitleContainer.TitleBg

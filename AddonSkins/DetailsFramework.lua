@@ -1,3 +1,4 @@
+-- luacheck: ignore 631 (line is too long)
 local _, aObj = ...
 local _G = _G
 -- This is a Library
@@ -18,11 +19,11 @@ aObj.libsToSkin["DetailsFramework-1.0"] = function(self) -- v 367
 			local btnObj = self.hooks[this].NewButton(this, ...)
 			-- check to see if a button template is specified
 			if varCnt == 13 then
-				if btnObj.param2 == "param2" then
+				if btnObj.param2 == "param2" then -- luacheck: ignore 542 (empty if branch)
 					-- colour pick button
 				elseif _G.select(5, ...) == 20
 				or _G.select(5, ...) == 21
-				then
+				then -- luacheck: ignore 542 (empty if branch)
 					-- icon button
 				else
 					self:skinStdButton{obj=btnObj.button}
@@ -42,7 +43,9 @@ aObj.libsToSkin["DetailsFramework-1.0"] = function(self) -- v 367
 			or _G.select(4, ...):find("Switch"))
 			then
 				self:skinStdButton{obj=btnObj.button}
-				btnObj.button.sb.tfade:SetTexture(nil)
+				if btnObj.button.sb.tfade then
+					btnObj.button.sb.tfade:SetTexture(nil)
+				end
 			end
 			return btnObj
 		end, true)
@@ -112,7 +115,7 @@ aObj.libsToSkin["DetailsFramework-1.0"] = function(self) -- v 367
 	-- 1pxpanel (parent, w, h, title, name, config, title_anchor, no_special_frame)
 
 	-- prompt_panel (message, func_true, func_false, no_repeated, width)
-	self:SecureHook(DF, "ShowPromptPanel", function(this, ...)
+	self:SecureHook(DF, "ShowPromptPanel", function(this, _)
 		if not DF.prompt_panel then
 			DF.prompt_panel = DF.promtp_panel -- N.B. TYPO!!
 		end
@@ -123,7 +126,7 @@ aObj.libsToSkin["DetailsFramework-1.0"] = function(self) -- v 367
 	end)
 
 	-- text_prompt_panel (message, callback)
-	self:SecureHook(DF, "ShowTextPromptPanel", function(this, ...)
+	self:SecureHook(DF, "ShowTextPromptPanel", function(this, _)
 		self:removeBackdrop(DF.text_prompt_panel.TitleBar)
 		self:skinObject("frame", {obj=DF.text_prompt_panel, kfs=true})
 
