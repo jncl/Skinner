@@ -1256,12 +1256,11 @@ aObj.SetupRetail_UIFrames = function()
 		if not self.prdb.ExpansionLandingPage or self.initialized.ExpansionLandingPage then return end
 		self.initialized.ExpansionLandingPage = true
 
-		local function skinOverlay()
-			local oFrame = aObj:getChild(_G.ExpansionLandingPage.Overlay, 1)
+		local function skinOverlay(_, oFrame)
+			oFrame = oFrame or _G.ExpansionLandingPage.overlayFrame
 			oFrame.Header.TitleDivider:SetTexture(nil)
-			if oFrame.ScrollFadeOverlay then
+			if oFrame.MajorFactionList then
 				oFrame.ScrollFadeOverlay:DisableDrawLayer("ARTWORK")
-			end
 			aObj:skinObject("scrollbar", {obj=oFrame.MajorFactionList.ScrollBar, fType=ftype})
 			local function skinElement(...)
 				local _, element, new
@@ -1275,8 +1274,7 @@ aObj.SetupRetail_UIFrames = function()
 				if new ~= false then
 					element.LockedState:DisableDrawLayer("BACKGROUND")
 					element.UnlockedState:DisableDrawLayer("BACKGROUND")
-					-- TODO: change colour to match Faction colour
-					aObj:skinObject("frame", {obj=element, fType=ftype, fb=true, x1=29, x2=-29, y2=0, clr="blue", ca=0.35})
+						aObj:skinObject("frame", {obj=element, fType=ftype, fb=true, x1=29, x2=-29, y2=0, ca=0.35})
 					if aObj.modChkBtns then
 						aObj:skinCheckButton{obj=element.UnlockedState.WatchFactionButton, fType=ftype}
 						element.UnlockedState.WatchFactionButton:SetSize(20, 20)
@@ -1284,17 +1282,19 @@ aObj.SetupRetail_UIFrames = function()
 				end
 			end
 			_G.ScrollUtil.AddAcquiredFrameCallback(oFrame.MajorFactionList.ScrollBox, skinElement, aObj, true)
-			-- N.B. keep background visible
+			end
+			if oFrame.DragonridingPanel then
 			aObj:skinObject("frame", {obj=oFrame.DragonridingPanel, fType=ftype, fb=true, y1=-1, x2=-1, y2=11})
-			aObj:skinObject("frame", {obj=oFrame, fType=ftype, kfs=true, rns=true, cbns=true, ofs=-4, y1=-11, clr="gold_df"})
 			if aObj.modBtns then
 				aObj:skinStdButton{obj=oFrame.DragonridingPanel.SkillsButton, fType=ftype}
 			end
 		end
+			aObj:skinObject("frame", {obj=oFrame, fType=ftype, kfs=true, cbns=true})
+		end
 		_G.EventRegistry:RegisterCallback("ExpansionLandingPage.OverlayChanged", skinOverlay, aObj)
 
 		self:SecureHookScript(_G.ExpansionLandingPage, "OnShow", function(this)
-			skinOverlay(self, this.Overlay)
+			skinOverlay(self, this.overlayFrame)
 
 			self:Unhook(this, "OnShow")
 		end)
@@ -2089,6 +2089,21 @@ aObj.SetupRetail_UIFrames = function()
 			end
 
 		end)
+
+	end
+
+	aObj.blizzLoDFrames[ftype].GenericTraitUI = function(self) -- used by DragonridingPanelSkills & MountJournalOpenDynamicFlightSkillTree
+		if self.initialized.GenericTraitUI then return end
+		self.initialized.GenericTraitUI = true
+
+		self:SecureHookScript(_G.GenericTraitFrame, "OnShow", function(this)
+			this.Header.TitleDivider:SetAlpha(0)
+			this.Currency:DisableDrawLayer("BACKGROUND")
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cbns=true, ofs=-10})
+
+			self:Unhook(this, "OnShow")
+		end)
+		self:checkShown(_G.GenericTraitFrame)
 
 	end
 

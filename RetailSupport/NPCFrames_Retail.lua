@@ -779,21 +779,6 @@ aObj.SetupRetail_NPCFrames = function()
 
 	end
 
-	aObj.blizzLoDFrames[ftype].GenericTraitUI = function(self)
-		if not self.prdb.GenericTraitUI or self.initialized.GenericTraitUI then return end
-		self.initialized.GenericTraitUI = true
-
-		self:SecureHookScript(_G.GenericTraitFrame, "OnShow", function(this)
-			-- TODO: Keep background visible ?
-			this.Header.TitleDivider:SetAlpha(0)
-			this.Currency:DisableDrawLayer("BACKGROUND")
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cbns=true, ofs=-4, y1=-11})
-
-			self:Unhook(this, "OnShow")
-		end)
-
-	end
-
 	aObj.blizzLoDFrames[ftype].ItemInteractionUI = function(self) -- a.k.a. Titanic Purification/Runecarver reclaim soulessence/Creation Catalyst
 		if not self.prdb.ItemInteractionUI or self.initialized.ItemInteractionUI then return end
 		self.initialized.ItemInteractionUI = true
@@ -1171,7 +1156,6 @@ aObj.SetupRetail_NPCFramesOptions = function(self)
 		["Covenant Renown"]             = true,
 		["Covenant Sanctum"]            = true,
 		["Flight Map"]                  = true,
-		["Generic Trait UI"]            = {desc = "Trait UI"},
 		["Item Interaction UI"]         = true,
 		["Item Upgrade UI"]             = true,
 		["New Player Experience Guide"] = {suff = "Frame"},
