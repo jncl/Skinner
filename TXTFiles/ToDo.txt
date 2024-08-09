@@ -21,8 +21,17 @@ ToDos
 
 		O	Refactor frame children loops to use Utility function 'scanChildren' via callback
 
+#101 √	I	BetterBags
 
-#95	√	I	Missing localisation(s)
-#99
+#102 √	I 	Missing localisation "Looking For Guild UI"
 
-#100 √	I	ObjectiveTrackerTimerBar Label
+#103 √	I 	Missing selectionPopoutPool
+
+#104 √	N	MountsJournal
+
+#105 √	N	BetterWardrobe
+
+#106 √	I	DetailsFramework
+
+#107 √	I	PetBattle missing .tfade object
+#108
