@@ -2610,7 +2610,6 @@ aObj.SetupRetail_PlayerFramesOptions = function(self)
 		["Guild Control UI"]     = true,
 		["Guild Invite"]         = {suff = "Frame"},
 		["Guild UI"]             = true,
-		["Looking For Guild UI"] = true,
 		["Player Spells"]        = {desc = "Talents & Spellbook"},
 		["Professions"]          = {desc = "Trade Skills UI"},
 		["Professions Book"]     = {desc = "Professions"},
