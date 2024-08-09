@@ -973,77 +973,79 @@ aObj.SetupRetail_UIFrames = function()
 
 	end
 
-	aObj.blizzFrames[ftype].DelvesCompanionConfiguration = function(self)
-		if not self.prdb.DelvesUI or self.initialized.DelvesCompanionConfiguration then return end
-		self.initialized.DelvesCompanionConfiguration = true
+	if _G.GetExpansionLevel() >= _G.LE_EXPANSION_WAR_WITHIN then
+		aObj.blizzFrames[ftype].DelvesCompanionConfiguration = function(self)
+			if not self.prdb.DelvesUI or self.initialized.DelvesCompanionConfiguration then return end
+			self.initialized.DelvesCompanionConfiguration = true
 
-		self:SecureHookScript(_G.DelvesCompanionAbilityListFrame, "OnShow", function(this)
-			self:skinObject("ddbutton", {obj=this.DelvesCompanionRoleDropdown, fType=ftype})
-			-- .DelvesCompanionAbilityListPagingControls
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true})
+			self:SecureHookScript(_G.DelvesCompanionAbilityListFrame, "OnShow", function(this)
+				self:skinObject("ddbutton", {obj=this.DelvesCompanionRoleDropdown, fType=ftype})
+				-- .DelvesCompanionAbilityListPagingControls
+				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true})
 
-			self:Unhook(this, "OnShow")
-		end)
+				self:Unhook(this, "OnShow")
+			end)
 
-		self:SecureHookScript(_G.DelvesCompanionConfigurationFrame, "OnShow", function(this)
-			-- .CompanionPortraitFrame
-			-- .CompanionExperienceRingFrame
-			-- .CompanionLevelFrame
-			-- .CompanionInfoFrame
-			-- .CompanionCombatRoleSlot
-			--. CompanionCombatTrinketSlot
-			-- .CompanionUtilityTrinketSlot
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, cb=true})
-			if self.modBtns then
-				self:skinStdButton{obj=this.CompanionConfigShowAbilitiesButton, fType=ftype, schk=true, sechk=true}
-			end
+			self:SecureHookScript(_G.DelvesCompanionConfigurationFrame, "OnShow", function(this)
+				-- .CompanionPortraitFrame
+				-- .CompanionExperienceRingFrame
+				-- .CompanionLevelFrame
+				-- .CompanionInfoFrame
+				-- .CompanionCombatRoleSlot
+				--. CompanionCombatTrinketSlot
+				-- .CompanionUtilityTrinketSlot
+				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, cb=true})
+				if self.modBtns then
+					self:skinStdButton{obj=this.CompanionConfigShowAbilitiesButton, fType=ftype, schk=true, sechk=true}
+				end
 
-			self:Unhook(this, "OnShow")
-		end)
+				self:Unhook(this, "OnShow")
+			end)
 
-	end
-
-	aObj.blizzLoDFrames[ftype].DelvesDashboardUI = function(self)
-		if not self.prdb.DelvesUI
-		or not self.prdb.PVEFrame
-		or self.initialized.DelvesDashboardUI
-		then
-			return
 		end
-		self.initialized.DelvesDashboardUI = true
 
-		self:SecureHookScript(_G.DelvesDashboardFrame, "OnShow", function(this)
-			self:skinObject("statusbar", {obj=this.ThresholdBar, fi=0, bg=this.ThresholdBar.BarBackground})
-			-- .thresholdFrames
-			local bplf = this.ButtonPanelLayoutFrame
-			self:skinObject("frame", {obj=bplf.CompanionConfigButtonPanel, fType=ftype, kfs=true, fb=true, ofs=0, clr="sepia"})
-			self:skinObject("frame", {obj=bplf.GreatVaultButtonPanel, fType=ftype, kfs=true, fb=true, ofs=0, clr=_G.HasActiveSeason and "sepia" or "disabled"})
-			if self.modBtns then
-				self:skinStdButton{obj=bplf.CompanionConfigButtonPanel.CompanionConfigButton, fType=ftype, sechk=true}
+		aObj.blizzLoDFrames[ftype].DelvesDashboardUI = function(self)
+			if not self.prdb.DelvesUI
+			or not self.prdb.PVEFrame
+			or self.initialized.DelvesDashboardUI
+			then
+				return
 			end
+			self.initialized.DelvesDashboardUI = true
 
-			self:Unhook(this, "OnShow")
-		end)
+			self:SecureHookScript(_G.DelvesDashboardFrame, "OnShow", function(this)
+				self:skinObject("statusbar", {obj=this.ThresholdBar, fi=0, bg=this.ThresholdBar.BarBackground})
+				-- .thresholdFrames
+				local bplf = this.ButtonPanelLayoutFrame
+				self:skinObject("frame", {obj=bplf.CompanionConfigButtonPanel, fType=ftype, kfs=true, fb=true, ofs=0, clr="sepia"})
+				self:skinObject("frame", {obj=bplf.GreatVaultButtonPanel, fType=ftype, kfs=true, fb=true, ofs=0, clr=_G.HasActiveSeason and "sepia" or "disabled"})
+				if self.modBtns then
+					self:skinStdButton{obj=bplf.CompanionConfigButtonPanel.CompanionConfigButton, fType=ftype, sechk=true}
+				end
 
-	end
+				self:Unhook(this, "OnShow")
+			end)
 
-	aObj.blizzLoDFrames[ftype].DelvesDifficultyPicker = function(self)
-		if not self.prdb.DelvesUI or self.initialized.DelvesDifficultyPicker then return end
-		self.initialized.DelvesDifficultyPicker = true
+		end
 
-		self:SecureHookScript(_G.DelvesDifficultyPickerFrame, "OnShow", function(this)
-			self:skinObject("ddbutton", {obj=this.Dropdown, fType=ftype})
-			-- .DelveModifiersWidgetContainer
-			-- .DelveBackgroundWidgetContainer
-			-- .DelveRewardsContainerFrame
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, cb=true})
-			if self.modBtns then
-				self:skinStdButton{obj=this.EnterDelveButton, fType=ftype}
-			end
+		aObj.blizzLoDFrames[ftype].DelvesDifficultyPicker = function(self)
+			if not self.prdb.DelvesUI or self.initialized.DelvesDifficultyPicker then return end
+			self.initialized.DelvesDifficultyPicker = true
 
-			self:Unhook(this, "OnShow")
-		end)
+			self:SecureHookScript(_G.DelvesDifficultyPickerFrame, "OnShow", function(this)
+				self:skinObject("ddbutton", {obj=this.Dropdown, fType=ftype})
+				-- .DelveModifiersWidgetContainer
+				-- .DelveBackgroundWidgetContainer
+				-- .DelveRewardsContainerFrame
+				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, cb=true})
+				if self.modBtns then
+					self:skinStdButton{obj=this.EnterDelveButton, fType=ftype}
+				end
 
+				self:Unhook(this, "OnShow")
+			end)
+
+		end
 	end
 
 	aObj.blizzFrames[ftype].DestinyFrame = function(self)
@@ -1261,34 +1263,34 @@ aObj.SetupRetail_UIFrames = function()
 			oFrame.Header.TitleDivider:SetTexture(nil)
 			if oFrame.MajorFactionList then
 				oFrame.ScrollFadeOverlay:DisableDrawLayer("ARTWORK")
-			aObj:skinObject("scrollbar", {obj=oFrame.MajorFactionList.ScrollBar, fType=ftype})
-			local function skinElement(...)
-				local _, element, new
-				if _G.select("#", ...) == 2 then
-					element, _ = ...
-				elseif _G.select("#", ...) == 3 then
-					element, _, new = ...
-				else
-					_, element, _, new = ...
-				end
-				if new ~= false then
-					element.LockedState:DisableDrawLayer("BACKGROUND")
-					element.UnlockedState:DisableDrawLayer("BACKGROUND")
+				aObj:skinObject("scrollbar", {obj=oFrame.MajorFactionList.ScrollBar, fType=ftype})
+				local function skinElement(...)
+					local _, element, new
+					if _G.select("#", ...) == 2 then
+						element, _ = ...
+					elseif _G.select("#", ...) == 3 then
+						element, _, new = ...
+					else
+						_, element, _, new = ...
+					end
+					if new ~= false then
+						element.LockedState:DisableDrawLayer("BACKGROUND")
+						element.UnlockedState:DisableDrawLayer("BACKGROUND")
 						aObj:skinObject("frame", {obj=element, fType=ftype, fb=true, x1=29, x2=-29, y2=0, ca=0.35})
-					if aObj.modChkBtns then
-						aObj:skinCheckButton{obj=element.UnlockedState.WatchFactionButton, fType=ftype}
-						element.UnlockedState.WatchFactionButton:SetSize(20, 20)
+						if aObj.modChkBtns then
+							aObj:skinCheckButton{obj=element.UnlockedState.WatchFactionButton, fType=ftype}
+							element.UnlockedState.WatchFactionButton:SetSize(20, 20)
+						end
 					end
 				end
-			end
-			_G.ScrollUtil.AddAcquiredFrameCallback(oFrame.MajorFactionList.ScrollBox, skinElement, aObj, true)
+				_G.ScrollUtil.AddAcquiredFrameCallback(oFrame.MajorFactionList.ScrollBox, skinElement, aObj, true)
 			end
 			if oFrame.DragonridingPanel then
-			aObj:skinObject("frame", {obj=oFrame.DragonridingPanel, fType=ftype, fb=true, y1=-1, x2=-1, y2=11})
-			if aObj.modBtns then
-				aObj:skinStdButton{obj=oFrame.DragonridingPanel.SkillsButton, fType=ftype}
+				aObj:skinObject("frame", {obj=oFrame.DragonridingPanel, fType=ftype, fb=true, y1=-1, x2=-1, y2=11})
+				if aObj.modBtns then
+					aObj:skinStdButton{obj=oFrame.DragonridingPanel.SkillsButton, fType=ftype}
+				end
 			end
-		end
 			aObj:skinObject("frame", {obj=oFrame, fType=ftype, kfs=true, cbns=true})
 		end
 		_G.EventRegistry:RegisterCallback("ExpansionLandingPage.OverlayChanged", skinOverlay, aObj)
@@ -2693,13 +2695,13 @@ aObj.SetupRetail_UIFrames = function()
 				local function reParent(opts)
 					for _, f in _G.pairs(aObj.pbtt) do
 						if f.tfade then
-						f.tfade:SetParent(opts.parent or f)
-						if opts.reset then
-							-- reset Gradient alpha
-							f.tfade:SetGradient(aObj:getGradientInfo())
+							f.tfade:SetParent(opts.parent or f)
+							if opts.reset then
+								-- reset Gradient alpha
+								f.tfade:SetGradient(aObj:getGradientInfo())
+							end
 						end
 					end
-				end
 				end
 				self:HookScript(this.ActiveAlly.SpeedFlash, "OnPlay", function(_)
 					reParent{parent=_G.MainMenuBar}
@@ -2756,9 +2758,9 @@ aObj.SetupRetail_UIFrames = function()
 			self:SecureHookScript(_G.PetBattleFrame, "OnHide", function(_)
 				for _, f in _G.pairs(aObj.pbtt) do
 					if f.tfade then
-					f.tfade:SetParent(f)
-					f.tfade:SetGradient(aObj:getGradientInfo())
-				end
+						f.tfade:SetParent(f)
+						f.tfade:SetGradient(aObj:getGradientInfo())
+					end
 				end
 			end)
 		end
@@ -3887,7 +3889,7 @@ aObj.SetupRetail_UIFramesOptions = function(self)
 		["Contribution"]                 = {suff = "Frame"},
 		["Covenant Toasts"]              = true,
 		["Death Recap"]                  = {suff = "Frame"},
-		["Delves UI"]                    = true,
+		["Delves UI"]                    = _G.GetExpansionLevel() >= _G.LE_EXPANSION_WAR_WITHIN and true or nil,
 		["Destiny Frame"]                = true,
 		["Edit Mode"]                    = true,
 		["Event Toast Manager"]          = {suff = "Frame"},
