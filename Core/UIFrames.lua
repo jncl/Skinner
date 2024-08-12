@@ -141,7 +141,6 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 		local tbl = alertType[type]
 		--@debug@
 		if not dontDebug[type] then
-			-- _G.Spew("", frame)
 			_G.Spew("AlertFrames", tbl)
 		end
 		--@end-debug@
