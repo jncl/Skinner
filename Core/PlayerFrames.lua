@@ -885,31 +885,20 @@ if not aObj.isClscERA then
 						_, element, elementData, new = ...
 					end
 					if new ~= false then
-						if aObj.isRtl then
-							if elementData.isHeader
-							and not elementData.isHeaderWithRep
-							then
+						if not elementData.isHeader then -- Entry
+							element.Content.ReputationBar.LeftTexture:SetAlpha(0)
+							element.Content.ReputationBar.RightTexture:SetAlpha(0)
+							aObj:skinObject("statusbar", {obj=element.Content.ReputationBar, fi=0})
+						else
+							if not elementData.isChild then -- TopLevelHeader
 								aObj:keepFontStrings(element)
 								aObj:changeHdrExpandTex(element.Right)
 								-- TODO: change HighlightTexture
 								element:Initialize(elementData) -- force texture change
-							else -- Entry
-								element.Content.ReputationBar.LeftTexture:SetAlpha(0)
-								element.Content.ReputationBar.RightTexture:SetAlpha(0)
-								aObj:skinObject("statusbar", {obj=element.Content.ReputationBar, fi=0})
-								if element.ToggleCollapseButton -- SubHeader
-								and aObj.modBtns
-								then
+							else -- SubHeader
+								if aObj.modBtns then
 									aObj:skinExpandButton{obj=element.ToggleCollapseButton, fType=ftype, onSB=true}
 								end
-							end
-						else
-							element.Container.Background:SetAlpha(0)
-							element.Container.ReputationBar.LeftTexture:SetAlpha(0)
-							element.Container.ReputationBar.RightTexture:SetAlpha(0)
-							aObj:skinObject("statusbar", {obj=element.Container.ReputationBar, fi=0})
-							if aObj.modBtns then
-								aObj:skinExpandButton{obj=element.Container.ExpandOrCollapseButton, fType=ftype, onSB=true}
 							end
 						end
 					end
