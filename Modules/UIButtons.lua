@@ -71,14 +71,13 @@ local texNumbers = {
 	[130838] = "plus",
 }
 local texSuffixes = {
-	["PlusButton"]    = "plus",
-	["ZoomInButton"]  = "plus",
-	["_Closed"]       = "plus",
-	["MinusButton"]   = "minus",
-	["ZoomOutButton"] = "minus",
-	["_Open"]         = "minus",
+	["plusbutton"]    = "plus",
+	["zoominbutton"]  = "plus",
+	["_closed"]       = "plus",
+	["minusbutton"]   = "minus",
+	["zoomoutbutton"] = "minus",
+	["_open"]         = "minus",
 }
-
 local btn, nTex
 local function __checkTex(opts)
 --[[
@@ -120,7 +119,7 @@ local function __checkTex(opts)
 			end
 		else
 			for str, type in _G.pairs(texSuffixes) do
-				if nTex:find(str) then
+				if nTex:find(str:lower()) then
 					btn:SetText(module[type])
 					btn:Show()
 					header = true
