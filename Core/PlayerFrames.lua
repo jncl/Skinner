@@ -1025,7 +1025,6 @@ if not aObj.isClscERA then
 			self:Unhook(this, "OnShow")
 		end)
 
-		local btn
 		self:SecureHookScript(_G.MountJournal, "OnShow", function(this)
 			self:removeInset(this.LeftInset)
 			self:removeInset(this.RightInset)
@@ -1095,7 +1094,7 @@ if not aObj.isClscERA then
 						self:addButtonBorder{obj=fObj.OpenDynamicFlightSkillTreeButton, fType=ftype}
 						self:moveObject{obj=fObj.OpenDynamicFlightSkillTreeButton, x=1}
 						self:addButtonBorder{obj=fObj.DynamicFlightModeButton, fType=ftype}
-						self:moveObject{obj=fObj.DynamicFlightModeButtonf, x=1}
+						self:moveObject{obj=fObj.DynamicFlightModeButton, x=1}
 					end
 
 					self:Unhook(fObj, "OnShow")
