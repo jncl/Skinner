@@ -39,7 +39,6 @@ local addonSkins = {
 	"Notes",
 	"OneBag3", "OneBank3",
 	"Quartz", "QuickMark",
-	"SorhaQuestLog",
 	"TooManyAddons",
 	"Vendomatic",
 	"XLoot", "xMerchant",
@@ -215,10 +214,6 @@ function aObj:PLAYER_LEVEL_CHANGED(...)
 		8 : Shadowlands (60), start @ 50
 		9 : Dragonflight (70)
 --]]
-
-	-- local newPLevel = _G.select(3, ...)
-	-- if new level < old level then just started shadowlands expansion
-	-- if newPLevel < _G.MAX_PLAYER_LEVEL then return end
 
 	if not _G.IsPlayerAtEffectiveMaxLevel() then
 		return

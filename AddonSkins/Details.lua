@@ -4,11 +4,12 @@ local _G = _G
 
 -- used by all contained functions
 local Details = _G.LibStub:GetLibrary("AceAddon-3.0"):GetAddon("_detalhes", true)
+aObj.addonsToSkin.Details = function(self) -- v Details.12829.159
 
-aObj.addonsToSkin.Details = function(self) -- v 10.0.7.10737.148/1.14.3.223.142
-
-	-- -- Player Details Window
-	-- self:skinObject("frame", {obj=_G.DetailsPlayerDetailsWindow, kfs=true, ofs=4})
+	-- Plugins
+	for _, v in _G.pairs{"DmgRank", "DpsTuning", "TimeAttack", "Vanguard"} do
+		self:checkAndRunAddOn("Details_" .. v, "Details_" .. v)
+	end
 
 	-- Report Window
 	local function skinReportWindow()
@@ -114,11 +115,6 @@ aObj.addonsToSkin.Details = function(self) -- v 10.0.7.10737.148/1.14.3.223.142
 		end)
 	end
 
-	-- Plugins
-	for _, v in _G.pairs{"DmgRank", "DpsTuning", "TimeAttack", "Vanguard"} do
-		self:checkAndRunAddOn("Details_" .. v, "Details_" .. v)
-	end
-
 	self:skinObject("frame", {obj=_G.DetailsYesNoWindow, kfs=true})
 
 	if self.modBtns then
@@ -191,18 +187,10 @@ function aObj:Details_Vanguard()
 		return
 	end
 
-	if not Vanguard.db.first_run then
-		self:SecureHook(Vanguard, "OnDetailsEvent", function(this, event, _)
-			-- help frame displayed on 1st show
-			if event == "SHOW" then
-				local frame = self:findFrame2(_G.UIParent, "Frame", 175, 400)
-				if frame then
-					self:skinObject("frame", {obj=frame, kfs=true, ofs=4})
-				end
-			end
-
-			self:Unhook(this, "OnDetailsEvent")
-		end)
+	-- skin Welcome frame if it exists
+	local frame = aObj:findFrame2("UIParent", "Frame", 400, 200)
+	if frame then
+		aObj:skinObject("frame", {obj=frame, kfs=true, ofs=4})
 	end
 
 end

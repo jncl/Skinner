@@ -1,8 +1,9 @@
+-- luacheck: ignore 631 (line is too long)
 local _, aObj = ...
 if not aObj:isAddonEnabled("LiteBag") then return end
 local _G = _G
 
-aObj.addonsToSkin.LiteBag = function(self) -- v 10.1.0-3
+aObj.addonsToSkin.LiteBag = function(self) -- v 11.0.0-7
 
 	local function skinFrame(frame)
 		for _, btn in _G.pairs(_G[frame].panels[1].bagButtons) do
@@ -10,8 +11,7 @@ aObj.addonsToSkin.LiteBag = function(self) -- v 10.1.0-3
 			btn.icon:SetAlpha(1)
 		end
 		_G[frame .. "PanelMoneyFrame"].Border:DisableDrawLayer("BACKGROUND")
-		_G[frame].numTabs = 2
-		aObj:skinObject("tabs", {obj=_G[frame], prefix=frame, lod=self.isTT and true})
+		aObj:skinObject("tabs", {obj=_G[frame], tabs=_G[frame].Tabs, lod=self.isTT and true})
 		aObj:skinObject("frame", {obj=_G[frame], kfs=true, ri=true, cb=true})
 	end
 
@@ -28,16 +28,7 @@ aObj.addonsToSkin.LiteBag = function(self) -- v 10.1.0-3
 
 	self:SecureHookScript(_G.LiteBagBank, "OnShow", function(this)
 		self:skinObject("editbox", {obj=_G.BankItemSearchBox, si=true})
-		_G.ReagentBankFrame:DisableDrawLayer("ARTWORK") -- bank slots texture
-		_G.ReagentBankFrame:DisableDrawLayer("BACKGROUND") -- bank slots shadow texture
-		_G.ReagentBankFrame:DisableDrawLayer("BORDER") -- shadow textures
-		_G.ReagentBankFrame.UnlockInfo:DisableDrawLayer("BORDER")
-		_G.RaiseFrameLevelByTwo(_G.ReagentBankFrame.UnlockInfo) -- hide the slot button textures
 		skinFrame("LiteBagBank")
-		if self.modBtns then
-			self:skinStdButton{obj=_G.ReagentBankFrameUnlockInfoPurchaseButton}
-			self:skinStdButton{obj=_G.ReagentBankFrame.DespositButton, schk=true}
-		end
 		if self.modBtnBs then
 			self:addButtonBorder{obj=_G.BankItemAutoSortButton}
 		end
@@ -63,23 +54,6 @@ aObj.addonsToSkin.LiteBag = function(self) -- v 10.1.0-3
 				aObj:setBtnClr(btn, quality)
 			end)
 		end
-		self:SecureHookScript(_G.ReagentBankFrame, "OnShow", function(fObj)
-			local btn
-			for i = 1, fObj.size do
-				btn = fObj["Item" .. i]
-				self:addButtonBorder{obj=btn, ibt=true}
-				-- force quality border update
-				_G.BankFrameItemButton_Update(btn)
-			end
-
-			self:Unhook(fObj, "OnShow")
-		end)
-		self:SecureHook("BankFrameItemButton_Update", function(btn)
-			if btn.sbb -- ReagentBank buttons may not be skinned yet
-			and not btn.hasItem then
-				self:clrBtnBdr(btn, "grey")
-			end
-		end)
 	end
 
 end

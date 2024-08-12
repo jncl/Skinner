@@ -2,7 +2,7 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("TipTac") then return end
 local _G = _G
 
-aObj.addonsToSkin.TipTac = function(self) -- v 23.02.06
+aObj.addonsToSkin.TipTac = function(self) -- v 24.08.05
 
 	-- Anchor frame
 	self:SecureHookScript(_G.TipTac, "OnShow", function(this)
@@ -27,7 +27,11 @@ aObj.addonsToSkin.TipTac = function(self) -- v 23.02.06
 
 end
 
-aObj.lodAddons.TipTacOptions = function(self)
+aObj.lodAddons.TipTacOptions = function(self) -- v 24.08.05
+
+	if self.prdb.DisabledSkins["TipTac"] then
+		return
+	end
 
 	-- hook this to skin the dropdown menu (also used by Examiner skin)
 	if not self:IsHooked(_G.AzDropDown, "ToggleMenu") then
@@ -78,8 +82,16 @@ aObj.lodAddons.TipTacOptions = function(self)
 		self:skinObject("frame", {obj=this, kfs=true})
 		if self.modBtns then
 			self:skinStdButton{obj=this.btnAnchor}
-			self:skinStdButton{obj=this.btnReset}
+			self:skinStdButton{obj=this.btnMisc}
+			self:skinStdButton{obj=this.btnReport}
 			self:skinStdButton{obj=this.btnClose}
+		end
+		if self.modChkBtns then
+			for _, child in _G.ipairs_reverse{this.outline:GetChildren()} do
+				if child.check then
+					self:skinCheckButton{obj=child.check}
+				end
+			end
 		end
 
 		self:Unhook(this, "OnShow")

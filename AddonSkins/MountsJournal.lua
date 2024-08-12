@@ -3,7 +3,7 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("MountsJournal") then return end
 local _G = _G
 
-aObj.addonsToSkin.MountsJournal = function(self) -- v 11.0.9/4.4.14
+aObj.addonsToSkin.MountsJournal = function(self) -- v 11.0.10/4.4.15
 
 	if self.isClsc
 	and self.modChkBtns
@@ -28,12 +28,25 @@ aObj.addonsToSkin.MountsJournal = function(self) -- v 11.0.9/4.4.14
 			self:skinStdButton{obj=mjFrame.filtersButton}
 		end
 
+		local skinMountBtn = _G.nop
+		if self.modBtnBs then
+			function skinMountBtn(btn)
+				-- aObj:Debug("skinMountBtn#1: [%s, %s, %s]", btn, btn.sbb, btn.icon:GetAlpha())
+				-- _G.C_Timer.After(0.5, function()
+					aObj:addButtonBorder{obj=btn, relTo=btn.icon, reParent={btn.mountWeight, btn.mountWeightBG, btn.favorite}}
+					btn.sbb:SetAlpha(1)
+					btn.sbb:SetBackdropBorderColor(btn.qualityBorder:GetVertexColor())
+					btn.sbb:SetAlpha(btn.icon:GetAlpha())
+					btn.qualityBorder:Hide()
+				-- end)
+			end
+		end
 		self:SecureHookScript(mjFrame.bgFrame, "OnShow", function(this)
 			self:removeInset(this.mountCount)
 			if self.isRtl then
+				this.slotButton:DisableDrawLayer("BACKGROUND")
 				this.achiev:DisableDrawLayer("BACKGROUND")
 				this.achiev.highlight:SetTexture(nil)
-				this.slotButton:DisableDrawLayer("BACKGROUND")
 			end
 			this.navBar:DisableDrawLayer("BACKGROUND")
 			this.navBar:DisableDrawLayer("BORDER")
@@ -52,7 +65,6 @@ aObj.addonsToSkin.MountsJournal = function(self) -- v 11.0.9/4.4.14
 				end)
 			end})
 			self:skinObject("frame", {obj=this.filtersPanel.filtersBar, kfs=true,})
-			self:removeInset(this.shownPanel)
 			self:removeInset(this.leftInset)
 			self:skinObject("scrollbar", {obj=this.leftInset.scrollBar})
 			local function skinMount(...)
@@ -60,41 +72,37 @@ aObj.addonsToSkin.MountsJournal = function(self) -- v 11.0.9/4.4.14
 				if _G.select("#", ...) == 2 then
 					element, _ = ...
 				elseif _G.select("#", ...) == 3 then
-					element, _, new = ...
+					_, element, _ = ...
 				else
 					_, element, _, new = ...
 				end
 				if new ~= false then
-					if element.mounts then
-						if self.modBtnBs then
-							for _, btn in _G.pairs(element.mounts) do
-								self:addButtonBorder{obj=btn, relTo=btn.icon, reParent={btn.favorite}}
-							end
-						end
-					else
+					if element.background then
 						element.background:SetTexture(nil)
-						if self.modBtnBs then
-							self:addButtonBorder{obj=element.dragButton, relTo=element.dragButton.Icon, reParent={element.dragButton.favorite}}
-						end
 					end
+					-- TODO: skin button borders
 				end
 			end
 			_G.ScrollUtil.AddAcquiredFrameCallback(this.leftInset.scrollBox, skinMount, aObj, true)
+
 			self:removeInset(this.rightInset)
 			this.mountDisplay:DisableDrawLayer("BACKGROUND")
 			this.mountDisplay.shadowOverlay:DisableDrawLayer("OVERLAY")
 			self:skinObject("dropdown", {obj=this.mountDisplay.modelScene.animationsCombobox, x1=1, y1=2, x2=-1, y2=0})
+			local psb = this.mountDisplay.info.petSelectionBtn
 			if self.isRtl then
 				this.mountDisplay.modelScene.playerToggle.border:SetTexture(nil)
-				this.mountDisplay.info.petSelectionBtn.infoFrame.levelBG:SetTexture(nil)
+				psb.infoFrame.levelBG:SetTexture(nil)
 			end
-			this.mountDisplay.info.petSelectionBtn.bg:SetTexture(nil)
-			this.mountDisplay.info.petSelectionBtn.border:SetTexture(nil)
-			self:SecureHookScript(this.mountDisplay.info.petSelectionBtn, "onClick", function(fObj)
+			psb.bg:SetTexture(nil)
+			psb.border:SetTexture(nil)
+			self:SecureHookScript(psb, "onClick", function(fObj)
 				local psl = fObj.petSelectionList
 				self:removeInset(psl.controlPanel)
 				self:skinObject("editbox", {obj=psl.searchBox, si=true})
-				self:removeInset(psl.filtersPanel)
+				if self.isRtl then
+					self:removeInset(psl.filtersPanel)
+				end
 				self:removeInset(psl.controlButtons)
 				psl.randomFavoritePet.background:SetTexture(nil)
 				psl.randomPet.background:SetTexture(nil)
@@ -120,16 +128,12 @@ aObj.addonsToSkin.MountsJournal = function(self) -- v 11.0.9/4.4.14
 
 				self:Unhook(fObj, "oOnClick")
 			end)
-			-- if self.isClsc then
-			-- 	self:skinObject("editbox", {obj=this.mountsWeight.edit})
-			-- 	self:skinObject("slider", {obj=this.mountsWeight.slider})
-			-- end
 			self:skinObject("slider", {obj=this.percentSlider.slider})
 			-- TODO: skin tabs
 			self:skinObject("tabs", {obj=this, tabs=this.Tabs, lod=self.isTT and true, selectedTab=3})
 			self:skinObject("frame", {obj=this, kfs=true, cb=true, x2=3, y2=-1})
 			if self.modBtns then
-				self:skinStdButton{obj=this.summonButton}
+				self:skinStdButton{obj=this.summonButton, schk=true, sechk=true}
 				self:skinStdButton{obj=this.mountSpecial}
 				self:skinStdButton{obj=this.profilesMenu}
 				local function skinFilterBtn(btn)
@@ -150,17 +154,17 @@ aObj.addonsToSkin.MountsJournal = function(self) -- v 11.0.9/4.4.14
 			end
 			if self.modBtnBs then
 				if self.isRtl then
+					self:addButtonBorder{obj=this.slotButton, relTo=this.slotButton.ItemIcon, reParent={this.slotButton.SlotBorder, this.slotButton.SlotBorderOpen}}
 					self:addButtonBorder{obj=this.OpenDynamicFlightSkillTreeButton, ofs=3}
 					self:addButtonBorder{obj=this.DynamicFlightModeButton, ofs=3}
 					self:addButtonBorder{obj=this.mountDisplay.info.mountDescriptionToggle, ofs=0}
-					self:addButtonBorder{obj=this.slotButton, relTo=this.slotButton.ItemIcon, reParent={this.slotButton.SlotBorder, this.slotButton.SlotBorderOpen}, ca=0.85}
 				end
 				self:addButtonBorder{obj=this.summon2, sabt=true, ofs=3}
 				self:addButtonBorder{obj=this.summon1, sabt=true, ofs=3}
 				self:addButtonBorder{obj=this.filtersPanel.btnToggle, ofs=1}
 				self:addButtonBorder{obj=this.filtersPanel.gridToggleButton, ofs=1}
 				self:addButtonBorder{obj=this.mountDisplay.info, relTo=this.mountDisplay.info.icon, clr="white"}
-				self:addButtonBorder{obj=this.mountDisplay.info.petSelectionBtn, relTo=this.mountDisplay.info.petSelectionBtn}
+				self:addButtonBorder{obj=psb.infoFrame, relTo=psb.infoFrame.icon, reParent={psb.infoFrame.isDead, psb.infoFrame.level, psb.infoFrame.favorite}}
 			end
 			if self.modChkBtns then
 				if self.isRtl then
@@ -302,11 +306,9 @@ aObj.addonsToSkin.MountsJournal = function(self) -- v 11.0.9/4.4.14
 					self:Unhook(frame, "OnShow")
 				end)
 				self:SecureHook(_G.MountsJournalConfigClasses, "showClassSettings", function(frame, _)
-					if self.isRtl then
-						-- N.B. no sliders currently used
-						-- for slider in frame.sliderPool:EnumerateActive() do
-						-- end
-					end
+					-- N.B. no sliders currently used (Retail ONLY)
+					-- for slider in frame.sliderPool:EnumerateActive() do
+					-- end
 					for cBox in frame.checkPool:EnumerateActive() do
 						if self.modChkBtns then
 							self:skinCheckButton{obj=cBox}
@@ -332,6 +334,19 @@ aObj.addonsToSkin.MountsJournal = function(self) -- v 11.0.9/4.4.14
 
 		self:Unhook(this, "OnShow")
 	end)
+
+	if self.isRtl then
+		self:SecureHookScript(_G.MountsJournal.summonPanel, "OnShow", function(this)
+			self:skinObject("frame", {obj=this, kfs=true, fb=true})
+			if self.modBtns then
+				self:addButtonBorder{obj=this.summon1, ofs=3, reParent={this.summon1.FlyoutArrowNormal, this.summon1.FlyoutArrowPushed, this.summon1.FlyoutArrowHighlight}}
+				self:addButtonBorder{obj=this.summon2, ofs=3, reParent={this.summon2.FlyoutArrowNormal, this.summon2.FlyoutArrowPushed, this.summon2.FlyoutArrowHighlight}}
+			end
+
+			self:Unhook(this, "OnShow")
+		end)
+		self:checkShown(_G.MountsJournal.summonPanel)
+	end
 
 	local pCnt = 0
 	self.RegisterCallback("MountsJournal", "IOFPanel_Before_Skinning", function(_, panel)
