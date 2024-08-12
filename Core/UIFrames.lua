@@ -200,7 +200,7 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 				if frame.isCurrency then
 					itemQuality = _G.C_CurrencyInfo.GetCurrencyInfoFromLink(frame.hyperlink).quality
 				else
-					itemQuality = _G.select(3, _G.GetItemInfo(frame.hyperlink))
+					itemQuality = _G.select(3, _G.C_Item.GetItemInfo(frame.hyperlink))
 				end
 			elseif type == "NewPet" then
 				itemQuality = _G.select(5, _G.C_PetJournal.GetPetStats(frame.petID)) - 1 -- rarity value - 1

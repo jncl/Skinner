@@ -1444,10 +1444,10 @@ aObj.SetupRetail_UIFrames = function()
 			skinFollowerList(this.FollowerList, "grey")
 			skinFollowerPage(this.FollowerTab)
 
-			if this.garrTypeID == _G.Enum.GarrisonType.Type_6_0 and _G.C_Garrison.HasShipyard() then
+			if this.garrTypeID == _G.Enum.GarrisonType.Type_6_0_Garrison and _G.C_Garrison.HasShipyard() then
 				skinFollowerList(this.ShipFollowerList, "grey")
 				skinFollowerTraitsAndEquipment(this.ShipFollowerTab)
-			elseif _G.C_Garrison.GetLandingPageGarrisonType() == _G.Enum.GarrisonType.Type_9_0 then -- Covenant
+			elseif _G.C_Garrison.GetLandingPageGarrisonType() == _G.Enum.GarrisonType.Type_9_0_Garrison then -- Covenant
 				local function skinPanelBtns(panel)
 					panel:DisableDrawLayer("BACKGROUND")
 					aObj:skinObject("frame", {obj=panel.RenownButton, fType=ftype, regions={3, 5, 6}, ofs=-4, y1=-5, y2=3, clr="turq", ca=0.25})
@@ -3764,11 +3764,6 @@ aObj.SetupRetail_UIFrames = function()
 				end
 				-- .ItemFrame
 				-- .UnselectedFrame
-				-- FIXME: Why hook this?
-				-- self:SecureHook(frame, "Refresh", function(this)
-				-- 	if this.unlocked or this.hasRewards then
-				-- 	end
-				-- end)
 			end
 			-- .ConcessionFrame
 				-- .RewardsFrame

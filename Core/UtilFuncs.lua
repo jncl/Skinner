@@ -465,13 +465,12 @@ function aObj:checkAndRunAddOn(addonName, addonFunc, LoD)
 
 end
 
-local getAddOnInfo = _G.GetAddOnInfo or _G.C_AddOns.GetAddOnInfo
 function aObj:checkLoadable(addonName)
 	--@debug@
 	_G.assert(addonName, "Unknown object checkLoadable\n" .. _G.debugstack(2, 3, 2))
 	--@end-debug@
 
-	local _, _, _, loadable, reason, _, _ = getAddOnInfo(addonName)
+	local _, _, _, loadable, reason, _, _ = _G.C_AddOns.GetAddOnInfo(addonName)
 	if not loadable then
 		if self.prdb.Warnings then
 			self:CustomPrint(1, 0, 0, addonName, "not skinned, flagged as:", reason, "(cL)")
@@ -870,7 +869,7 @@ function aObj:isAddOnLoaded(addonName)
 	_G.assert(addonName, "Unknown object isAddOnLoaded\n" .. _G.debugstack(2, 3, 2))
 	--@end-debug@
 
-	return _G.IsAddOnLoaded and _G.IsAddOnLoaded(addonName) or _G.C_AddOns.IsAddOnLoaded(addonName)
+	return _G.C_AddOns.IsAddOnLoaded(addonName)
 
 end
 
@@ -879,7 +878,7 @@ function aObj:isAddOnLoadOnDemand(addonName)
 	_G.assert(addonName, "Unknown object isAddOnLoadOnDemand\n" .. _G.debugstack(2, 3, 2))
 	--@end-debug@
 
-	return _G.IsAddOnLoadOnDemand and _G.IsAddOnLoadOnDemand(addonName) or _G.C_AddOns.IsAddOnLoadOnDemand(addonName)
+	return _G.C_AddOns.IsAddOnLoadOnDemand(addonName)
 
 end
 
@@ -888,7 +887,7 @@ function aObj:isAddonEnabled(addonName)
 	_G.assert(addonName, "Unknown object isAddonEnabled\n" .. _G.debugstack(2, 3, 2))
 	--@end-debug@
 
-	return _G.GetAddOnEnableState and (_G.GetAddOnEnableState(self.uName, addonName) == 2 and true or false) or (_G.C_AddOns.GetAddOnEnableState(addonName, self.uName) == 2 and true or false)
+	return _G.C_AddOns.GetAddOnEnableState(addonName, self.uName) == 2 and true or false
 
 end
 
@@ -1179,36 +1178,6 @@ function aObj:removeRegions(obj, regions)
 			end
 			--@end-debug@
 		end
-	end
-
-end
-
-function aObj:resizeTabs(frame)
-	--@debug@
-	_G.assert(frame, "Unknown object resizeTabs\n" .. _G.debugstack(2, 3, 2))
-	--@end-debug@
-
-	local tabName, nT, tTW, fW, tLW
-	tabName = frame:GetName() .. "Tab"
-	-- get the number of tabs
-	nT = ((frame == _G.CharacterFrame and not _G.CharacterFrameTab2:IsShown()) and 4 or frame.numTabs)
-	-- accumulate the tab text widths
-	tTW = 0
-	for i = 1, nT do
-		tTW = tTW + _G[tabName .. i .. "Text"]:GetWidth()
-	end
-	-- add the tab side widths
-	tTW = tTW + (40 * nT)
-	-- get the frame width
-	fW = frame:GetWidth()
-	-- calculate the Tab left width
-	tLW = (tTW > fW and (40 - (tTW - fW) / nT) / 2 or 20)
-	-- set minimum left width
-	tLW = ("%.2f"):format(tLW >= 6 and tLW or 5.5)
-	-- update each tab
-	for i = 1, nT do
-		_G[tabName .. i .. "Left"]:SetWidth(tLW)
-		_G.PanelTemplates_TabResize(_G[tabName .. i], 0)
 	end
 
 end
@@ -1676,9 +1645,9 @@ function aObj:SetupCmds()
 	self:RegisterChatCommand("gp", function() _G.print(_G.GetMouseFocus():GetPoint()) end)
 	self:RegisterChatCommand("gpp", function() _G.print(_G.GetMouseFocus():GetParent():GetPoint()) end)
 	self:RegisterChatCommand("lo", function() _G.UIErrorsFrame:AddMessage("Use /camp instead of /lo", 1.0, 0.1, 0.1, 1.0) end)
-	self:RegisterChatCommand("pii", function(msg) _G.print(_G.GetItemInfo(msg)) end)
+	self:RegisterChatCommand("pii", function(msg) _G.print(_G.C_Item.GetItemInfo(msg)) end)
 	self:RegisterChatCommand("pil", function(msg) _G.print(_G.gsub(msg, "\124", "\124\124")) end)
-	self:RegisterChatCommand("pin", function(msg) _G.print(msg, "is item:", (_G.GetItemInfoFromHyperlink(msg))) end)
+	self:RegisterChatCommand("pin", function(msg) _G.print(msg, "is item:", (_G.C_Item.GetItemInfoFromHyperlink(msg))) end)
 	-- self:RegisterChatCommand("rl", function() _G.C_UI.Reload() end)
 	self:RegisterChatCommand("si1", function(msg) showInfo(getObj(msg), true, true) end) -- 1 level only
 	self:RegisterChatCommand("si1p", function(msg) showInfo(getObjP(msg), true, true) end) -- 1 level only

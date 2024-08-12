@@ -93,12 +93,13 @@ local function changeUFOpacity()
 		if _G.ArenaEnemyBackground.sf then
 			_G.ArenaEnemyBackground.sf:SetAlpha(db.alpha)
 		end
-		for i = 1, _G.MAX_ARENA_ENEMIES do
-			if _G["ArenaEnemyFrame" .. i].sf then
-				_G["ArenaEnemyFrame" .. i].sf:SetAlpha(db.alpha)
-				_G["ArenaEnemyFrame" .. i .. "PetFrame"].sf:SetAlpha(db.alpha)
-			end
-		end
+		-- MAX_ARENA_ENEMIES is Deprecated
+		-- for i = 1, _G.MAX_ARENA_ENEMIES do
+		-- 	if _G["ArenaEnemyFrame" .. i].sf then
+		-- 		_G["ArenaEnemyFrame" .. i].sf:SetAlpha(db.alpha)
+		-- 		_G["ArenaEnemyFrame" .. i .. "PetFrame"].sf:SetAlpha(db.alpha)
+		-- 	end
+		-- end
 	end
 
 end
@@ -282,6 +283,24 @@ function module:skinPlayerF()
 	end
 
 end
+
+-- copied from Blizzard_Deprecated/Deprecated_10_1_5.lua
+local function 	GetTexCoordsForRole(role)
+	local textureHeight, textureWidth = 256, 256
+	local roleHeight, roleWidth = 67, 67
+	if ( role == "GUIDE" ) then
+		return _G.GetTexCoordsByGrid(1, 1, textureWidth, textureHeight, roleWidth, roleHeight)
+	elseif ( role == "TANK" ) then
+		return _G.GetTexCoordsByGrid(1, 2, textureWidth, textureHeight, roleWidth, roleHeight)
+	elseif ( role == "HEALER" ) then
+		return _G.GetTexCoordsByGrid(2, 1, textureWidth, textureHeight, roleWidth, roleHeight);
+	elseif ( role == "DAMAGER" ) then
+		return _G.GetTexCoordsByGrid(2, 2, textureWidth, textureHeight, roleWidth, roleHeight);
+	else
+		error("Unknown role: "..tostring(role));
+	end
+end
+
 function module:skinPetF()
 
 	if not (aObj.uCls == "HUNTER" or aObj.uCls == "WARLOCK") then
@@ -357,7 +376,7 @@ function module:skinPetF()
 					local function setSpec()
 						local petSpec = _G.GetSpecialization(nil, true)
 						if petSpec then
-							_G.PetFrame.roleIcon:SetTexCoord(_G.GetTexCoordsForRole(_G.GetSpecializationRole(petSpec, nil, true)))
+							_G.PetFrame.roleIcon:SetTexCoord(GetTexCoordsForRole(_G.GetSpecializationRole(petSpec, nil, true)))
 						end
 					end
 					-- get Pet's Specialization Role to set roleIcon TexCoord
