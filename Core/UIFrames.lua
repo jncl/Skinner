@@ -1069,10 +1069,13 @@ aObj.blizzFrames[ftype].ChatMenus = function(self)
 	if not self.prdb.ChatMenus or self.initialized.ChatMenus then return end
 	self.initialized.ChatMenus = true
 
+	if not aObj.isRtlPTR then
 		self:skinObject("frame", {obj=_G.ChatMenu, fType=ftype, rns=true, ofs=0})
 		self:skinObject("frame", {obj=_G.EmoteMenu, fType=ftype, rns=true, ofs=0})
 		self:skinObject("frame", {obj=_G.LanguageMenu, fType=ftype, rns=true, ofs=0})
 		self:skinObject("frame", {obj=_G.VoiceMacroMenu, fType=ftype, rns=true, ofs=0})
+	else
+	end
 	self:skinObject("frame", {obj=_G.GeneralDockManagerOverflowButtonList, fType=ftype, rns=true, ofs=0})
 
 end

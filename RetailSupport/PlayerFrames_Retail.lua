@@ -2442,7 +2442,9 @@ aObj.SetupRetail_PlayerFrames = function()
 					end
 				end)
 			end
+			if not aObj.isRtlPTR then
 				this.HonorInset.RatedPanel.WeeklyChest.FlairTexture:SetTexture(nil)
+			end
 			local srf =this.HonorInset.RatedPanel.SeasonRewardFrame
 			srf.Ring:SetTexture(nil)
 			if self.modBtnBs then
