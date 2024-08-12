@@ -128,6 +128,7 @@ function module:adjustUnitFrames(opt)
 	end
 
 end
+
 function module:skinUnitButton(opts)
 
 	-- setup offset values
@@ -155,6 +156,7 @@ function module:skinUnitButton(opts)
 	end
 
 end
+
 function module:skinPlayerF()
 
 	if db.player
@@ -400,6 +402,8 @@ function module:skinPetF()
 	end
 
 end
+
+local hBar, mBar
 function module:skinCommon(fName, adjSB)
 
 	local fo = _G[fName]
@@ -410,24 +414,25 @@ function module:skinCommon(fName, adjSB)
 		if fo.TargetFrameContainer then
 			aObj:nilTexture(fo.TargetFrameContainer.FrameTexture, true)
 			fo.TargetFrameContent.TargetFrameContentMain.ReputationColor:SetTexture(nil)
+			fo.TargetFrameContent.TargetFrameContentMain.HealthBar.HealthBarTexture.SetAtlas = _G.nop
 		else
 			fo.FrameTexture:SetAlpha(0)
 		end
 	end
 
-	aObj:skinObject("statusbar", {obj=fo.healthbar, fi=0, other={fo.myHealPredictionBar, fo.otherHealPredictionBar}})
-	aObj:skinObject("statusbar", {obj=fo.manabar, fi=0, hookFunc=true})
+	hBar = aObj.isRtl and fo.HealthBar or _G[fName .. "HealthBar"]
+	mBar = aObj.isRtl and fo.ManaBar or _G[fName .. "ManaBar"]
+	-- Retail also has a .TempMaxHealthLoss statusbar
+	aObj:skinObject("statusbar", {obj=hBar, fi=0, other=aObj.isClsc and {fo.MyHealPredictionBar, fo.OtherHealPredictionBar} or nil})
+	aObj:skinObject("statusbar", {obj=mBar, fi=0, hookFunc=true})
 	if not aObj.isRtl then
 		if adjSB then
-			module:adjustStatusBarPosn(fo.healthbar)
-		end
-	else
-		if fo.TargetFrameContent then
-			fo.TargetFrameContent.TargetFrameContentMain.HealthBar.HealthBarTexture.SetAtlas = _G.nop
+			module:adjustStatusBarPosn(hBar)
 		end
 	end
 
 end
+
 function module:skinButton(fName, ti)
 
 	local fObj = _G[fName]
@@ -486,6 +491,7 @@ function module:skinButton(fName, ti)
 	-- PowerBarAlt handled in MainMenuBar function (UIF)
 
 end
+
 function module:skinTargetF()
 
 	if db.target
@@ -547,6 +553,7 @@ function module:skinTargetF()
 	end
 
 end
+
 function module:skinFocusF()
 
 	if db.focus
@@ -573,6 +580,7 @@ function module:skinFocusF()
 	end
 
 end
+
 function module:skinPartyF()
 
 	if db.party
@@ -634,6 +642,7 @@ function module:skinPartyF()
 	end
 
 end
+
 function module:skinPartyTooltip()
 
 	if db.pet
