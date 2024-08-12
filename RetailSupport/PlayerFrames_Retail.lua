@@ -490,12 +490,12 @@ aObj.SetupRetail_PlayerFrames = function()
 				end
 				if btn.symbol then
 					-- handle DebuffButtonTemplate
-					aObj:addButtonBorder{obj=btn, relTo=btn.Icon, reParent={btn.count, btn.duration, btn.symbol}, ofs=3}
+					aObj:addButtonBorder{obj=btn, fType=ftype, relTo=btn.Icon, reParent={btn.count, btn.duration, btn.symbol}, ofs=3}
 				elseif btn.count then
-					aObj:addButtonBorder{obj=btn, relTo=btn.Icon, reParent={btn.count, btn.duration}, ofs=3}
+					aObj:addButtonBorder{obj=btn, fType=ftype, relTo=btn.Icon, reParent={btn.count, btn.duration}, ofs=3}
 				else
 					-- handle ExampleAuraTemplate buttons
-					aObj:addButtonBorder{obj=btn, relTo=btn.Icon, reParent={btn.duration}, ofs=3}
+					aObj:addButtonBorder{obj=btn, fType=ftype, relTo=btn.Icon, reParent={btn.duration}, ofs=3}
 				end
 				-- TempEnchant, Debuff
 				if btn.Border then

@@ -562,7 +562,7 @@ aObj.SetupRetail_UIFrames = function()
 			this.WeeklyInfo.Child:DisableDrawLayer("BACKGROUND")
 			if self.modBtnBs then
 				for _, dungeon in _G.ipairs(this.DungeonIcons) do
-					self:addButtonBorder{obj=dungeon, ofs=3, clr="disabled"}
+					self:addButtonBorder{obj=dungeon, fType=ftype, ofs=3, clr="disabled"}
 					self:SecureHook(dungeon, "SetUp", function(bObj, mapInfo, _)
 						if mapInfo.level > 0 then
 							bObj.sbb:SetBackdropBorderColor(bObj.HighestLevel:GetTextColor())
@@ -2259,7 +2259,7 @@ aObj.SetupRetail_UIFrames = function()
 						btn.FlyoutBorderShadow:SetTexture(nil)
 						btn.NormalTexture:SetTexture(nil)
 						if aObj.prdb.MainMenuBar.actbtns then
-							aObj:addButtonBorder{obj=btn, sabt=true, ofs=3}
+							aObj:addButtonBorder{obj=btn, fType=ftype, sabt=true, ofs=3}
 						end
 					end
 					function skinMultiBarBtns(type)
@@ -2392,7 +2392,7 @@ aObj.SetupRetail_UIFrames = function()
 						btn.SlotArt:SetTexture(nil)
 						btn.Border:SetTexture(nil)
 						if aObj.prdb.MainMenuBar.actbtns then
-							aObj:addButtonBorder{obj=btn, abt=true, sft=true, ofs=3}
+							aObj:addButtonBorder{obj=btn, fType=ftype, abt=true, sft=true, ofs=3}
 						end
 					end
 				end
@@ -2669,11 +2669,11 @@ aObj.SetupRetail_UIFrames = function()
 					updBBClr()
 				end)
 				for _, bName in _G.pairs{"SwitchPetButton", "CatchButton", "ForfeitButton"} do
-					self:addButtonBorder{obj=this.BottomFrame[bName], reParent={this.BottomFrame[bName].BetterIcon}, ofs=3, x2=2, y2=-2}
+					self:addButtonBorder{obj=this.BottomFrame[bName], fType=ftype, reParent={this.BottomFrame[bName].BetterIcon}, ofs=3, x2=2, y2=-2}
 				end
 				_G.C_Timer.After(0.1, function()
 					for _, btn in _G.pairs(this.BottomFrame.abilityButtons) do
-						self:addButtonBorder{obj=btn, reParent={btn.BetterIcon}, ofs=3, x2=2, y2=-2}
+						self:addButtonBorder{obj=btn, fType=ftype, reParent={btn.BetterIcon}, ofs=3, x2=2, y2=-2}
 					end
 				end)
 				-- hook this for pet ability buttons

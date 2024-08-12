@@ -1083,10 +1083,10 @@ if not aObj.isClscERA then
 			end
 			if self.modBtnBs then
 				if self.isRtl then
-					self:addButtonBorder{obj=this.SlotButton, relTo=this.SlotButton.ItemIcon, reParent={this.SlotButton.SlotBorder, this.SlotButton.SlotBorderOpen}, ca=0.85}
-					btn = this.ToggleDynamicFlightFlyoutButton
-					self:addButtonBorder{obj=btn, ofs=3, reParent={btn.FlyoutArrowNormal, btn.FlyoutArrowPushed, btn.FlyoutArrowHighlight}}
-					self:addButtonBorder{obj=this.SummonRandomFavoriteButton, ofs=3}
+					self:addButtonBorder{obj=this.SlotButton, fType=ftype, relTo=this.SlotButton.ItemIcon, reParent={this.SlotButton.SlotBorder, this.SlotButton.SlotBorderOpen}}
+					local btn = this.ToggleDynamicFlightFlyoutButton
+					self:addButtonBorder{obj=btn, fType=ftype, ofs=3, reParent={btn.FlyoutArrowNormal, btn.FlyoutArrowPushed, btn.FlyoutArrowHighlight}}
+					self:addButtonBorder{obj=this.SummonRandomFavoriteButton, fType=ftype, ofs=3}
 				else
 					self:addButtonBorder{obj=this.MountDisplay.ModelScene.RotateLeftButton, ofs=-3}
 					self:addButtonBorder{obj=this.MountDisplay.ModelScene.RotateRightButton, ofs=-3}
@@ -1203,7 +1203,7 @@ if not aObj.isClscERA then
 				for i = 1, 6 do
 					pc["spell" .. i].BlackCover:SetAlpha(0) -- N.B. texture is changed in code
 					if self.modBtnBs then
-						self:addButtonBorder{obj=pc["spell" .. i], relTo=pc["spell" .. i].icon, ca=0.85}
+						self:addButtonBorder{obj=pc["spell" .. i], relTo=pc["spell" .. i].icon}
 					end
 				end
 				if self.modBtnBs then
@@ -1224,8 +1224,8 @@ if not aObj.isClscERA then
 					self:skinStdButton{obj=this.SummonButton, sechk=true}
 				end
 				if self.modBtnBs then
-					self:addButtonBorder{obj=this.HealPetButton, sft=true, ca=1}
-					self:addButtonBorder{obj=this.SummonRandomFavoritePetButton, ofs=3, ca=1}
+					self:addButtonBorder{obj=this.HealPetButton, fType=ftype, sft=true, ca=1}
+					self:addButtonBorder{obj=this.SummonRandomFavoritePetButton, fType=ftype, ofs=3, ca=1}
 				end
 			else
 				this.PetCard.PetBackground:SetAlpha(0)

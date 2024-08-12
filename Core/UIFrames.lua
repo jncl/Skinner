@@ -1413,7 +1413,7 @@ aObj.blizzLoDFrames[ftype].GuildBankUI = function(self)
 		for _, tab in _G.pairs(this.BankTabs) do
 			tab:DisableDrawLayer("BACKGROUND")
 			if self.modBtnBs then
-				 self:addButtonBorder{obj=tab.Button, relTo=tab.Button.IconTexture, ofs=3, x2=2}
+				 self:addButtonBorder{obj=tab.Button, fType=ftype, relTo=tab.Button.IconTexture, ofs=3, x2=2}
 			end
 		end
 		if self.isRtl then
@@ -2020,7 +2020,7 @@ aObj.blizzLoDFrames[ftype].MacroUI = function(self)
 			self:skinStdButton{obj=_G.MacroExitButton, fType=ftype, x1=2}
 		end
 		if self.modBtnBs then
-			self:addButtonBorder{obj=_G.MacroFrameSelectedMacroButton, relTo=_G.MacroFrameSelectedMacroButtonIcon, ca=0.85}
+			self:addButtonBorder{obj=_G.MacroFrameSelectedMacroButton, fType=ftype, relTo=_G.MacroFrameSelectedMacroButtonIcon}
 		end
 
 		self:Unhook(this, "OnShow")

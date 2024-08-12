@@ -148,7 +148,7 @@ aObj.SetupClassic_UIFrames = function()
 					btn.Border:SetAlpha(0) -- texture changed in blizzard code
 					btn.FlyoutBorder:SetTexture(nil)
 					btn.FlyoutBorderShadow:SetTexture(nil)
-					aObj:addButtonBorder{obj=btn, sabt=true, ofs=3}
+					aObj:addButtonBorder{obj=btn, fType=ftype, sabt=true, ofs=3}
 					_G[btn:GetName() .. "NormalTexture"]:SetTexture(nil)
 				end
 				function skinMultiBarBtns(type)
@@ -230,7 +230,7 @@ aObj.SetupClassic_UIFrames = function()
 				self:keepFontStrings(this)
 				if self.modBtnBs then
 					for _, btn in _G.pairs(this.StanceButtons) do
-						self:addButtonBorder{obj=btn, abt=true, sft=true, ofs=3, x1=-4}
+						self:addButtonBorder{obj=btn, fType=ftype, abt=true, sft=true, ofs=3, x1=-4}
 					end
 				end
 
@@ -244,7 +244,7 @@ aObj.SetupClassic_UIFrames = function()
 					local bName
 					for i = 1, _G.NUM_PET_ACTION_SLOTS do
 						bName = "PetActionButton" .. i
-						self:addButtonBorder{obj=_G[bName], abt=true, sft=true, reParent={_G[bName .. "AutoCastable"], _G[bName .. "Shine"]}, ofs=3, x2=2}
+						self:addButtonBorder{obj=_G[bName], fType=ftype, abt=true, sft=true, reParent={_G[bName .. "AutoCastable"], _G[bName .. "Shine"]}, ofs=3, x2=2}
 						_G[bName .. "NormalTexture2"]:SetTexture(nil)
 					end
 				end
@@ -257,7 +257,7 @@ aObj.SetupClassic_UIFrames = function()
 					self:keepFontStrings(this)
 					if self.modBtnBs then
 						for i = 1, _G.NUM_POSSESS_SLOTS do
-							self:addButtonBorder{obj=_G["PossessButton" .. i], abt=true, sft=true, ofs=3}
+							self:addButtonBorder{obj=_G["PossessButton" .. i], fType=ftype, abt=true, sft=true, ofs=3}
 						end
 					end
 

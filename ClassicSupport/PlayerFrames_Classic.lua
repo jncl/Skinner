@@ -363,7 +363,7 @@ aObj.SetupClassic_PlayerFrames = function()
 				if btn
 				and not btn.sbb
 				then
-					aObj:addButtonBorder{obj=btn, reParent={btn.count, btn.duration}, ofs=3}
+					aObj:addButtonBorder{obj=btn, fType=ftype, reParent={btn.count, btn.duration}, ofs=3}
 				end
 			end
 			-- skin current Buffs
@@ -1467,7 +1467,7 @@ aObj.SetupClassic_PlayerFrames = function()
 					btn.UnlearnedFrame:SetAlpha(0)
 					btn.TrainFrame:SetAlpha(0)
 					if self.modBtnBs then
-						self:addButtonBorder{obj=btn, sft=true, reParent={btn.FlyoutArrow, _G["SpellButton" .. i .. "AutoCastable"]}, ofs=3}
+						self:addButtonBorder{obj=btn, fType=ftype, sft=true, reParent={btn.FlyoutArrow, _G["SpellButton" .. i .. "AutoCastable"]}, ofs=3}
 						if self.isClsc then
 							btn:GetNormalTexture():SetTexture(nil)
 						end

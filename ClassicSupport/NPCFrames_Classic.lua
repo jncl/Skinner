@@ -267,7 +267,7 @@ aObj.SetupClassic_NPCFrames = function()
 				local btn
 				for i = 1, _G.NUM_PET_STABLE_SLOTS do
 					btn = _G["PetStableStabledPet" .. i]
-					self:addButtonBorder{obj=btn, ca=0.85}
+					self:addButtonBorder{obj=btn}
 					self:SecureHook(_G["PetStableStabledPet" .. i .. "Background"], "SetVertexColor", function(tObj, ...)
 						tObj:GetParent().sbb:SetBackdropBorderColor(...)
 					end)
