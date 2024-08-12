@@ -267,7 +267,7 @@ aObj.blizzFrames[ftype].QuestFrame = function(self)
 	end
 	self:skinObject("frame", {obj=modelObj, fType=ftype, kfs=true, ofs=0, y1=-24, y2=-24})
 	if not aObj.isRtlPTR then
-	self:keepFontStrings(_G.QuestNPCModelTextFrame)
+		self:keepFontStrings(_G.QuestNPCModelTextFrame)
 	end
 
 	self:RawHook("QuestFrame_SetTitleTextColor", function(fontString, _)

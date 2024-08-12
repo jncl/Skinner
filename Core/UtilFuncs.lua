@@ -203,6 +203,11 @@ function aObj:applyGradient(obj, fh, invert, rotate)
 end
 
 function aObj:applyTooltipGradient(obj)
+	--@debug@
+	if obj:IsForbidden() then
+		aObj:CustomPrint(1, 0, 0, "Object is flagged as Forbidden, aTG", obj)
+	end
+	--@end-debug@
 
 	if obj:IsForbidden() then return end
 
