@@ -5,15 +5,6 @@ local _G = _G
 
 local module = aObj:NewModule("UIButtons", "AceEvent-3.0", "AceHook-3.0")
 
-local db
-local defaults = {
-	profile = {
-		UIButtons     = false,
-		ButtonBorders = false,
-		CheckButtons  = false,
-		Quality		  = {file = "None", texture = "Blizzard Tooltip"},
-	}
-}
 
 do
 	-- characters used on buttons
@@ -1066,6 +1057,15 @@ function module:skinCheckButton(...)
 
 end
 
+local db
+local defaults = {
+	profile = {
+		UIButtons     = false,
+		ButtonBorders = false,
+		CheckButtons  = false,
+		Quality		  = {file = "None", texture = "Blizzard Tooltip"},
+	}
+}
 function module:OnInitialize()
 
 	self.db = aObj.db:RegisterNamespace("UIButtons", defaults)
