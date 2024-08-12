@@ -1161,35 +1161,9 @@ aObj.blizzLoDFrames[ftype].DebugTools = function(self)
 	if not self.prdb.DebugTools or self.initialized.DebugTools then return end
 	self.initialized.DebugTools = true
 
-	local makeWider, makeKeyWider = _G.nop, _G.nop
-	--@debug@
-	local wOfs, hOfs, w, h = 750, 200
-	function makeWider(obj, height)
-		w, h = obj:GetSize()
-		if not obj.wider then
-			obj:SetSize(w+ wOfs, h + (height and hOfs or 0))
-			obj.wider = true
-		end
-	end
-	local kwOfs = 120
-	function makeKeyWider(obj)
-		w, h = obj:GetSize()
-		if not obj.wider then
-			obj:SetSize(w + kwOfs, h)
-			obj.wider = true
-		end
-	end
-	--@end-debug@
-	
 	local function skinTAD(frame)
-		makeWider(frame, true)
-		makeWider(frame.FilterBox)
 		aObj:skinObject("editbox", {obj=frame.FilterBox, fType=ftype, si=true})
-		makeWider(frame.TitleButton)
-		makeWider(frame.TitleButton.Text)
 		aObj:skinObject("scrollbar", {obj=frame.LinesScrollFrame.ScrollBar, fType=ftype, x1=aObj.isClsc and 1 or nil, x2=not aObj.isRtl and 5 or nil})
-		makeWider(frame.LinesScrollFrame, true)
-		makeWider(frame.LinesScrollFrame.LinesContainer)
 		aObj:skinObject("frame", {obj=frame.ScrollFrameArt, fType=ftype, rns=true, fb=true, x2=not self.isRtl and -10})
 		aObj:skinObject("frame", {obj=frame, fType=ftype, kfs=true, cb=true, ofs=-2, x1=5, x2=-1})
 		if aObj.modBtns then
@@ -1227,28 +1201,6 @@ aObj.blizzLoDFrames[ftype].DebugTools = function(self)
 			aObj:skinCheckButton{obj=frame.HighlightButton}
 			aObj:skinCheckButton{obj=frame.DynamicUpdateButton}
 		end
-
-		aObj:SecureHook(frame, "UpdateLines", function(fObj)
-			for _, line in _G.pairs(fObj.lines) do
-				makeWider(line)
-				if line.Key then
-					makeKeyWider(line.Key)
-					makeKeyWider(line.Key.Text)
-				end
-				if line.Text then
-					makeWider(line.Text)
-				end
-				if line.Value
-				and line.Value:IsObjectType("FontString")
-				then
-					makeWider(line.Value)
-				end
-				if line.ValueButton then
-					makeWider(line.ValueButton)
-					makeWider(line.ValueButton.Text)
-				end
-			end
-		end)
 	end
 	self:SecureHookScript(_G.TableAttributeDisplay, "OnShow", function(this)
 		skinTAD(this)
