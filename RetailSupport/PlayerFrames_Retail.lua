@@ -1479,7 +1479,8 @@ aObj.SetupRetail_PlayerFrames = function()
 					then
 						for _, frame in _G.pairs(module.usedRightEdgeFrames) do
 							if frame.template:find("ItemButton") then
-								aObj:addButtonBorder{obj=frame, fType=ftype}
+								-- TODO: see if the ItemButton can be skinned without causing ADDON_ACTION_FORBIDDEN
+								_G.nop()
 							elseif frame.template:find("FindGroupButton") then
 								aObj:addButtonBorder{obj=frame, fType=ftype, ofs=-1, x1=0, clr="gold"}
 							end
