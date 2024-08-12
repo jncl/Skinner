@@ -3145,14 +3145,17 @@ aObj.blizzFrames[ftype].StaticPopups = function(self)
 	for i = 1, _G.STATICPOPUP_NUMDIALOGS do
 		self:SecureHookScript(_G["StaticPopup" .. i], "OnShow", function(this)
 			local objName = this:GetName()
+			this.Separator:SetTexture(nil)
 			if self.isRtl then
 				self:removeNineSlice(this.Border)
 			end
-			this.Separator:SetTexture(nil)
 			self:skinObject("editbox", {obj=_G[objName .. "EditBox"], fType=ftype, ofs=0, y1=-4, y2=4})
+			if self.isRtl then
+				self:skinObject("ddbutton", {obj=this.Dropdown, fType=ftype})
+			end
 			self:skinObject("moneyframe", {obj=_G[objName .. "MoneyInputFrame"], moveIcon=true})
 			_G[objName .. "ItemFrameNameFrame"]:SetTexture(nil)
-			self:skinObject("frame", {obj=this, fType=ftype, rb=not self.isRtl and true, ofs=-6})
+			self:skinObject("frame", {obj=this, fType=ftype, rb=not self.isRtl and true, ofs=-6}) -- N.B. Close Button handled above
 			if self.modBtns then
 				self:skinStdButton{obj=this.button1, fType=ftype, schk=true, sechk=true, y1=2}
 				self:skinStdButton{obj=this.button2, fType=ftype, schk=true, sechk=true, y1=2}
