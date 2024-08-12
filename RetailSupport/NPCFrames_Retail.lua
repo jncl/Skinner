@@ -851,13 +851,12 @@ aObj.SetupRetail_NPCFrames = function()
 
 	end
 
-	-- Trading Post Frame
-	aObj.blizzLoDFrames[ftype].PerksProgram = function(self)
+	aObj.blizzLoDFrames[ftype].PerksProgram = function(self) -- a.k.a. Trading Post Frame
 		if not self.prdb.PerksProgram or self.initialized.PerksProgram then return end
 		self.initialized.PerksProgram = true
 
 		self:SecureHookScript(_G.PerksProgramFrame, "OnShow", function(this)
-			self:skinObject("ddbutton", {obj=this.ProductsFrame.PerksProgramFilter, fType=ftype})
+			self:skinObject("ddbutton", {obj=this.ProductsFrame.PerksProgramFilter, fType=ftype, filter=true})
 			self:removeNineSlice(this.ProductsFrame.ProductsScrollBoxContainer.Border)
 			self:skinObject("frame", {obj=this.ProductsFrame.ProductsScrollBoxContainer, fType=ftype, kfs=true, x1=-4})
 			self:skinObject("scrollbar", {obj=this.ProductsFrame.ProductsScrollBoxContainer.ScrollBar, fType=ftype})
