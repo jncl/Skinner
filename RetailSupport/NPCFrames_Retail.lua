@@ -812,18 +812,10 @@ aObj.SetupRetail_NPCFrames = function()
 			if self.modBtns then
 				self:skinStdButton{obj=this.UpgradeButton, fType=ftype, sechk=true}
 			end
-			if self.modBtnBs then
-				self:addButtonBorder{obj=this.UpgradeItemButton, fType=ftype}
-			end
+			-- TODO: see if the .UpgradeItemButton can be skinned without causing ADDON_ACTION_FORBIDDEN
 
 			self:Unhook(this, "OnShow")
 		end)
-		if self.modBtnBs then
-			-- hook this to reset UpgradeItemButton border colour
-			self:SecureHookScript(_G.ItemUpgradeFrame, "OnHide", function(this)
-				self:clrBtnBdr(this.UpgradeItemButton)
-			end)
-		end
 
 	end
 
