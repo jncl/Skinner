@@ -447,15 +447,17 @@ local function skinDDButton(tbl)
 	end
 
 	if tbl.filter then
-		-- skin the WowStyle1FilterDropdownTemplate
-		aObj:skinStdButton{obj=tbl.obj, fType=tbl.ftype, bd=5, sechk=true, y2=-2}
-		aObj.modUIBtns:skinCloseButton{obj=tbl.obj[tbl.filtercb or "ResetButton"], fType=tbl.ftype, noSkin=true}
-		tbl.obj.arrow = tbl.obj:CreateTexture(nil, "ARTWORK", nil, 5)
-		tbl.obj.arrow:SetTexture(aObj.tFDIDs.cfEA)
-		tbl.obj.arrow:SetSize(16, 16)
-		tbl.obj.arrow:SetPoint("RIGHT", -2, -1)
+		-- skin the WowStyle1FilterDropdownTemplate/WowStyle2DropdownTemplate
+		aObj:skinStdButton{obj=tbl.obj, fType=tbl.ftype, bd=5, sechk=true--[[, y2=-2--]]}
+		if tbl.obj.ResetButton then -- WowStyle1FilterDropdownTemplate ONLY
+			aObj.modUIBtns:skinCloseButton{obj=tbl.obj[tbl.filtercb or "ResetButton"], fType=tbl.ftype, noSkin=true}
+			tbl.obj.arrow = tbl.obj:CreateTexture(nil, "ARTWORK", nil, 5)
+			tbl.obj.arrow:SetTexture(aObj.tFDIDs.cfEA)
+			tbl.obj.arrow:SetSize(16, 16)
+			tbl.obj.arrow:SetPoint("RIGHT", -2, -1)
+		end
 	else
-		-- skin the WowStyle1DropdownTemplate/WowStyle2DropdownTemplate & other DropdownButtons
+		-- skin the WowStyle1DropdownTemplate & other DropdownButtons
 		if tbl.obj.Background then
 			tbl.obj.Background:SetTexture(nil)
 		end
@@ -476,7 +478,6 @@ local function skinDDButton(tbl)
 			aObj:addButtonBorder{obj=tbl.obj, fType=tbl.ftype, relTo=tbl.obj.Arrow, clr=tbl.clr, sechk=tbl.sechk, ofs=tbl.ofs, x1=tbl.x1, y1=tbl.y1, x2=tbl.x2, y2=tbl.y2}
 		end
 	end
-	-- tbl.obj:RegisterCallback(_G.DropdownButtonMixin.Event.OnMenuOpen, aObj.OnMenuOpen, aObj)
 
 end
 skinFuncs.ddbutton = function(table) skinDDButton(table) end
