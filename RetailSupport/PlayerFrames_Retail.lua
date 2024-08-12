@@ -1332,6 +1332,20 @@ aObj.SetupRetail_PlayerFrames = function()
 		end
 		self.initialized.ObjectiveTracker = true
 
+		local skinAutoPopUp = _G.nop
+		if self.prdb.ObjectiveTracker.popups then
+			function skinAutoPopUp(block)
+				aObj:skinObject("frame", {obj=block.Contents, fType=ftype, kfs=true})
+				block.Contents.Exclamation:SetAlpha(1)
+				block.Contents.QuestionMark:SetAlpha(1)
+				if block.popUpType == "COMPLETE" then
+					block.Contents.QuestionMark:Show()
+				else
+					block.Contents.Exclamation:Show()
+				end
+			end
+		end
+
 		self:SecureHookScript(_G.ObjectiveTrackerFrame, "OnShow", function(this)
 			if self.prdb.ObjectiveTracker.headers then
 				this.Header.Background:SetTexture(nil)
@@ -1342,7 +1356,9 @@ aObj.SetupRetail_PlayerFrames = function()
 			-- .FilterButton
 			if self.modBtnBs then
 				self:skinExpandButton{obj=this.Header.MinimizeButton, onSB=true}
-				this.Header.MinimizeButton.sb:SetText(this.isCollapsed and self.modUIBtns.plus or self.modUIBtns.minus)
+				if this.Header.MinimizeButton.sb then -- handle not exists yet (ooc)
+					this.Header.MinimizeButton.sb:SetText(this.isCollapsed and self.modUIBtns.plus or self.modUIBtns.minus)
+				end
 				self:SecureHook(this.Header, "SetCollapsed", function(fObj, collapsed)
 					if collapsed then
 						fObj.MinimizeButton.sb:SetText(self.modUIBtns.plus)
@@ -1383,7 +1399,7 @@ aObj.SetupRetail_PlayerFrames = function()
 
 					if module.Block then -- UIWidgetObjectiveTracker
 						--@debug@
-						_G.Spew("mod Block", module.Block)
+						-- _G.Spew("mod Block", module.Block)
 						--@end-debug@
 					end
 
@@ -1443,23 +1459,11 @@ aObj.SetupRetail_PlayerFrames = function()
 							end
 						end
 					end
-					if aObj.prdb.ObjectiveTracker.popups then
-						local function skinAutoPopUp(block)
-							aObj:skinObject("frame", {obj=block.Contents, fType=ftype, kfs=true})
-							block.Contents.Exclamation:SetAlpha(1)
-							block.Contents.QuestionMark:SetAlpha(1)
-							if block.popUpType == "COMPLETE" then
-								block.Contents.QuestionMark:Show()
-							else
-								block.Contents.Exclamation:Show()
-							end
-						end
-						if module.usedBlocks then
-							for template, blocks in _G.pairs(module.usedBlocks) do
-								if template:find("AutoQuestPopUp") then
-									for _, block in _G.pairs(blocks) do
-										skinAutoPopUp(block)
-									end
+					if module.usedBlocks then
+						for template, blocks in _G.pairs(module.usedBlocks) do
+							if template:find("AutoQuestPopUp") then
+								for _, block in _G.pairs(blocks) do
+									skinAutoPopUp(block)
 								end
 							end
 						end
