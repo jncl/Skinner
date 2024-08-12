@@ -992,11 +992,11 @@ if not aObj.isClscERA then
 
 				self:SecureHookScript(_G.TokenFramePopup, "OnShow", function(fObj)
 					fObj.Border:DisableDrawLayer("BACKGROUND")
-					self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, ofs=-3, x1=0})
+					self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, cb=not self.isRtl and true, ofs=-3, x1=0})
 					if self.modBtns then
-						-- FIXME: CloseButton skinned here as it has a prefix of $parent, bug in Blizzard XML file
-						self:skinCloseButton{obj=self:getPenultimateChild(fObj), fType=ftype}
 						if self.isRtl then
+							-- FIXME: CloseButton skinned here as it has a prefix of '$parent.', bug in XML file
+							self:skinCloseButton{obj=self:getPenultimateChild(fObj), fType=ftype}
 							self:skinStdButton{obj=fObj.CurrencyTransferToggleButton, fType=ftype}
 						end
 					end
