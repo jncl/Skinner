@@ -3421,34 +3421,41 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 
 end
 
-if not aObj.isRtl then
-	aObj.blizzFrames[ftype].UIDropDownMenu = function(self)
-		if not self.prdb.UIDropDownMenu or self.initialized.UIDropDownMenu then return end
-		self.initialized.UIDropDownMenu = true
+-- These DropDownMenus are still used by TipTac amongst other AddOns
+aObj.blizzFrames[ftype].UIDropDownMenu = function(self)
+	if not self.prdb.UIDropDownMenu or self.initialized.UIDropDownMenu then return end
+	self.initialized.UIDropDownMenu = true
 
-		local function skinDDList(frame)
-			local fName = frame:GetName()
-			aObj:removeBackdrop(_G[fName .. "Backdrop"])
-			aObj:removeBackdrop(_G[fName .. "MenuBackdrop"])
-			aObj:removeNineSlice(_G[fName .. "MenuBackdrop"].NineSlice)
-			aObj:skinObject("frame", {obj=frame, fType=ftype, kfs=true, ofs=self.isRtl and -4 or -6})
-		end
-
-		for i = 1, _G.UIDROPDOWNMENU_MAXLEVELS do
-			self:SecureHookScript(_G["DropDownList" .. i], "OnShow", function(this)
-				skinDDList(this)
-
-				self:Unhook(this, "OnShow")
-			end)
-		end
-
-		self:SecureHook("UIDropDownMenu_CreateFrames", function(_)
-			if not _G["DropDownList" .. _G.UIDROPDOWNMENU_MAXLEVELS].sf then
-				skinDDList(_G["DropDownList" .. _G.UIDROPDOWNMENU_MAXLEVELS])
-			end
-		end)
-
+	local function skinDDList(frame)
+		local fName = frame:GetName()
+		aObj:removeBackdrop(_G[fName .. "Backdrop"])
+		aObj:removeBackdrop(_G[fName .. "MenuBackdrop"])
+		aObj:removeNineSlice(_G[fName .. "MenuBackdrop"].NineSlice)
+		aObj:skinObject("frame", {obj=frame, fType=ftype, kfs=true, ofs=self.isRtl and -4 or -6})
 	end
+
+	for i = 1, _G.UIDROPDOWNMENU_MAXLEVELS do
+		self:SecureHookScript(_G["DropDownList" .. i], "OnShow", function(this)
+			skinDDList(this)
+
+			self:Unhook(this, "OnShow")
+		end)
+	end
+
+	self:SecureHook("UIDropDownMenu_CreateFrames", function(_)
+		if not _G["DropDownList" .. _G.UIDROPDOWNMENU_MAXLEVELS].sf then
+			skinDDList(_G["DropDownList" .. _G.UIDROPDOWNMENU_MAXLEVELS])
+		end
+	end)
+
+	-- hook these to colour Dropdowns when Disabled/Enabled
+	self:SecureHook("UIDropDownMenu_DisableDropDown", function(dropDown)
+		self:checkDisabledDD(dropDown, true)
+	end)
+	self:SecureHook("UIDropDownMenu_EnableDropDown", function(dropDown)
+		self:checkDisabledDD(dropDown, false)
+	end)
+
 end
 
 aObj.blizzFrames[ftype].UIWidgets = function(self)

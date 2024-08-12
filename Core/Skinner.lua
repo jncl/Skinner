@@ -239,14 +239,6 @@ function aObj:OnInitialize()
 	-- table to hold StatusBars that have been glazed, with weak keys
 	self.sbGlazed = _G.setmetatable({}, {__mode = "k"})
 
-	-- hook these to colour Dropdowns when Disabled/Enabled
-	self:SecureHook("UIDropDownMenu_DisableDropDown", function(dropDown)
-		self:checkDisabledDD(dropDown, true)
-	end)
-	self:SecureHook("UIDropDownMenu_EnableDropDown", function(dropDown)
-		self:checkDisabledDD(dropDown, false)
-	end)
-
 	if self.isRtl then
 		-- Load Retail Support, if required (done here for ElvUI/TukUI)
 		self:checkAndRun("SetupRetail_NPCFrames", "opt", nil, true)

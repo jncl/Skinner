@@ -1344,7 +1344,7 @@ aObj.SetupOptions = function(self)
 		["Text To Speech Frame"]  = true,
 		["Time Manager"]          = {suff = "Frame"},
 		["Tutorial"]              = {suff = "Frame"},
-		["UI DropDown Menu"]      = not self.isRtl and {desc = "DropDown Panels"} or nil,
+		["UI DropDown Menu"]      = {desc = "DropDown Panels"},
 		["UI Widgets"]            = true,
 		["UnitPopup"]             = {desc = "Unit Popups"},
 	}
