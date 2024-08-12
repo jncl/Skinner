@@ -591,48 +591,53 @@ end
 
 function aObj:findFrame2(parent, objType, ...)
 	--@debug@
-	_G.assert(parent, "Unknown object findFrame2\n" .. _G.debugstack(2, 3, 2))
+	_G.assert(_G.type(parent) == "string", "Parent MUST be a string findFrame2\n" .. _G.debugstack(2, 3, 2))
+	_G.assert(_G[parent], "Unknown Parent object findFrame2\n" .. _G.debugstack(2, 3, 2))
 	--@end-debug@
 
-	if not parent then return end
+	if not _G[parent] then return end
 
+	local vcnt = _G.select("#", ...)
+	local varg1, varg2, varg3, varg4, varg5 = ...
 	local point, relativeTo, relativePoint, xOfs, yOfs
 	local frame, cKey
 	local height, width
+	local exitNow
 
-	for k, child in _G.ipairs{parent:GetChildren()} do
-		-- check for forbidden objects (StoreUI components)
-		if not child:IsForbidden() then
+	self.RegisterCallback("findFrame2", parent .. "_GetChildren", function(_, child, key)
 			if child:GetName() == nil then
 				if child:IsObjectType(objType) then
-					if _G.select("#", ...) > 2 then
+				if vcnt > 2 then
 						-- base checks on position
 						point, relativeTo, relativePoint, xOfs, yOfs = child:GetPoint()
 						xOfs = xOfs and _G.Round(xOfs) or 0
 						yOfs = yOfs and _G.Round(yOfs) or 0
-						if	point		  == _G.select(1, ...)
-						and relativeTo	  == _G.select(2, ...)
-						and relativePoint == _G.select(3, ...)
-						and xOfs		  == _G.select(4, ...)
-						and yOfs		  == _G.select(5, ...)
+					if	point		  == varg1
+					and relativeTo	  == varg2
+					and relativePoint == varg3
+					and xOfs		  == varg4
+					and yOfs		  == varg5
 						then
-							frame, cKey = child, k
-							break
+						frame, cKey = child, key
+						exitNow = true
 						end
 					else
 						-- base checks on size
-						height, width = _G.Round(child:GetHeight()), _G.Round(child:GetWidth())
-						if	height == _G.select(1, ...)
-						and width  == _G.select(2, ...)
+					width, height  = _G.Round(child:GetWidth()), _G.Round(child:GetHeight())
+					if width   == varg1
+					and	height == varg2
 						then
-							frame, cKey = child, k
-							break
-						end
+						frame, cKey = child, key
+						exitNow = true
 					end
 				end
 			end
 		end
+		if exitNow then
+			self.UnregisterCallback("findFrame2", parent .. "_GetChildren")
 	end
+	end)
+	self:scanChildren(parent)
 
 	return frame, cKey
 
@@ -1226,6 +1231,7 @@ function aObj:scanChildren(obj)
 	aObj.callbacks.events[obj .. "_GetChildren"] = nil
 
 end
+
 function aObj:scanUIParentsChildren()
 
 	self:scanChildren("UIParent")
