@@ -173,11 +173,10 @@ aObj.SetupRetail_NPCFrames = function()
 					self:Unhook(frame, "OnShow")
 				end)
 				self:removeRegions(fObj.TokenDisplay, {3}) -- background texture
+				self:skinObject("scrollbar", {obj=fObj.DummyScrollBar, fType=ftype})
 				if self.modBtns then
 					self:skinStdButton{obj=fObj.Buyout, fType=ftype, sechk=true}
 				end
-				fObj.DummyScrollBar:DisableDrawLayer("BACKGROUND")
-				fObj.DummyScrollBar.Background:DisableDrawLayer("ARTWORK")
 
 				self:Unhook(fObj, "OnShow")
 			end)
