@@ -587,7 +587,7 @@ aObj.blizzFrames[ftype].ChatBubbles = function(self)
 	local function skinChatBubbles()
 		_G.C_Timer.After(0.1, function()
 			-- get all ChatBubbles NOT including Forbidden ones
-			for _, cBubble in _G.pairs(_G.C_ChatBubbles.GetAllChatBubbles()) do
+			for _, cBubble in _G.pairs(_G.C_ChatBubbles.GetAllChatBubbles(false)) do
 				cBubble = aObj:getChild(cBubble, 1)
 				aObj:skinObject("frame", {obj=cBubble, fType=ftype, kfs=true, ba=aObj.prdb.ChatBubbles.alpha, ng=true, ofs=-8})
 				-- make text visible
