@@ -1,4 +1,4 @@
--- luacheck: ignore 542 631 (empty if branch|line is too long)
+-- luacheck: ignore 631 (line is too long)
 local _, aObj = ...
 -- This is a Framework
 local _G = _G
@@ -478,6 +478,7 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 			or objType == "EasyMenuDropDown"
 			then
 				-- aObj:Debug("Ignoring: [%s]", objType)
+				_G.nop()
 			-- any other types
 			else
 				aObj:Debug("AceGUI, unmatched type - %s", objType)

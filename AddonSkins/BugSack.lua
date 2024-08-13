@@ -3,7 +3,7 @@ if not aObj:isAddonEnabled("BugSack") then return end
 local _G = _G
 -- luacheck: ignore 631 (line is too long)
 
-aObj.addonsToSkin.BugSack = function(self) -- v10.2.3
+aObj.addonsToSkin.BugSack = function(self) -- v10.2.7
 
 	if not _G.BugGrabber then
 		return
@@ -16,7 +16,7 @@ aObj.addonsToSkin.BugSack = function(self) -- v10.2.3
 		self:skinObject("slider", {obj=_G.BugSackScroll.ScrollBar})
 		self:moveObject{obj=self:getRegion(_G.BugSackFrame, 11), y=-8} -- countLabel
 		_G.BugSackFrame.Tabs = {_G.BugSackTabAll, _G.BugSackTabSession, _G.BugSackTabLast}
-		self:skinObject("tabs", {obj=this, tabs=_G.BugSackFrame.Tabs, lod=self.isTT and true, offsets={x1=7, y1=self.isTT and 2 or -3, x2=-7, y2=2}, track=false, func=self.isTT and function(tab)
+		self:skinObject("tabs", {obj=_G.BugSackFrame, tabs=_G.BugSackFrame.Tabs, lod=self.isTT and true, offsets={x1=7, y1=self.isTT and 2 or -3, x2=-7, y2=2}, track=false, func=self.isTT and function(tab)
 			self:SecureHookScript(tab, "OnClick", function(tObj)
 				for _, tabObj in _G.pairs(tObj:GetParent().Tabs) do
 					if tabObj == tObj then

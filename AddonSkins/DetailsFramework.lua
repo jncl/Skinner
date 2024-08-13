@@ -19,12 +19,14 @@ aObj.libsToSkin["DetailsFramework-1.0"] = function(self) -- v 367
 			local btnObj = self.hooks[this].NewButton(this, ...)
 			-- check to see if a button template is specified
 			if varCnt == 13 then
-				if btnObj.param2 == "param2" then -- luacheck: ignore 542 (empty if branch)
+				if btnObj.param2 == "param2" then
 					-- colour pick button
+					_G.nop()
 				elseif _G.select(5, ...) == 20
 				or _G.select(5, ...) == 21
-				then -- luacheck: ignore 542 (empty if branch)
+				then
 					-- icon button
+					_G.nop()
 				else
 					self:skinStdButton{obj=btnObj.button}
 				end
