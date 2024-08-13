@@ -484,36 +484,51 @@ aObj.SetupRetail_PlayerFrames = function()
 
 		if self.modBtnBs then
 			local function skinBuffBtn(btn)
+				-- handle in combat
+				if _G.InCombatLockdown() then
+				    aObj:add2Table(aObj.oocTab, {skinBuffBtn, {btn}})
+				    return
+				end
+
 				-- ignore privateAuraAnchor(s)
 				if not btn:GetDebugName():find("AuraContainer") then
 					return
 				end
-				if btn.symbol then
-					-- handle DebuffButtonTemplate
-					aObj:addButtonBorder{obj=btn, fType=ftype, relTo=btn.Icon, reParent={btn.count, btn.duration, btn.symbol}, ofs=3}
-				elseif btn.count then
-					aObj:addButtonBorder{obj=btn, fType=ftype, relTo=btn.Icon, reParent={btn.count, btn.duration}, ofs=3}
-				else
-					-- handle ExampleAuraTemplate buttons
-					aObj:addButtonBorder{obj=btn, fType=ftype, relTo=btn.Icon, reParent={btn.duration}, ofs=3}
+				if btn.auraType == "Debuff"
+				or btn.auraType == "DeadlyDebuff"
+				then
+					-- handle Debuff Button
+					aObj:addButtonBorder{obj=btn, fType=ftype, relTo=btn.Icon, reParent={btn.Count, btn.Duration, btn.Symbol}, ofs=3}
+					-- handle Buff Button
+				elseif btn.auraType == "Buff" then
+					aObj:addButtonBorder{obj=btn, fType=ftype, relTo=btn.Icon, reParent={btn.Count, btn.Duration}, ofs=3}
+					-- handle TempEnchant Button
+				elseif btn.auraType == "TempEnchant" then
+					aObj:addButtonBorder{obj=btn, fType=ftype, relTo=btn.Icon, reParent={btn.Count, btn.Duration}, ofs=3}
 				end
 				-- TempEnchant, Debuff
 				if btn.Border then
-					btn.sbb:SetBackdropBorderColor(btn.Border:GetVertexColor())
 					btn.Border:SetAlpha(0)
+					btn.sbb:SetBackdropBorderColor(btn.Border:GetVertexColor())
 				else
-					aObj:clrBtnBdr(btn, "grey")
+					if btn.sbb then
+						aObj:clrBtnBdr(btn, "grey")
+					end
 				end
 			end
 			local function skinBuffs(frame)
 				for _, buff in _G.pairs(frame.auraFrames) do
-					skinBuffBtn(buff)
+					if frame.auraInfo then
+						skinBuffBtn(buff)
+					end
 				end
 			end
 			for _, frame in _G.pairs{_G.BuffFrame, _G.DebuffFrame} do
 				skinBuffs(frame)
 				self:SecureHook(frame, "UpdateAuraButtons", function(this)
-					skinBuffs(this)
+					if not this.hasInitializedForEditMode then
+						skinBuffs(this)
+					end
 				end)
 			end
 			self:SecureHookScript(_G.DeadlyDebuffFrame, "OnShow", function(this)
