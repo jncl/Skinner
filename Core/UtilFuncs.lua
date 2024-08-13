@@ -221,7 +221,7 @@ function aObj:applyTooltipGradient(obj)
 
 end
 
-function aObj:canSkin(callingfunc, opts)
+function aObj:canSkin(callingfunc, opts, checkCombat)
 
 	if not opts.obj then
 		return false
@@ -234,9 +234,12 @@ function aObj:canSkin(callingfunc, opts)
 		return false
 	end
 
+	checkCombat = checkCombat or true
 	-- handle in combat
-	if _G.InCombatLockdown() then
-		aObj:add2Table(aObj.oocTab, {callingfunc, {opts}})
+	if checkCombat
+	and _G.InCombatLockdown()
+	then
+		self:add2Table(self.oocTab, {callingfunc, {opts}})
 		return false
 	end
 
@@ -356,30 +359,35 @@ function aObj:changeTex2SB(obj)
 end
 
 local errorhandler = _G.geterrorhandler()
+local success, err
 local function safecall(funcName, funcObj, LoD, quiet)
 	--@debug@
 	_G.assert(funcObj, "Unknown object safecall\n" .. _G.debugstack(2, 3, 2))
 	local beginTime = _G.debugprofilestop()
 	--@end-debug@
+
 	-- handle errors from internal functions
-	local success, err = _G.xpcall(function() return funcObj(aObj, LoD) end, errorhandler)
+	success, err = _G.xpcall(funcObj, errorhandler, aObj, LoD)
+
 	--@debug@
 	local timeUsed = _G.Round(_G.debugprofilestop() - beginTime)
 	if timeUsed > 5 then
 		 _G.print("Took " .. timeUsed .. " milliseconds to load " .. funcName)
 	end
 	--@end-debug@
-	if quiet then
-		return success, err
-	end
-	if not success then
+
+	if not success
+	and not quiet
+	then
 		if aObj.prdb.Errors then
 			aObj:CustomPrint(1, 0, 0, "Error running", funcName)
 		end
 	end
+	return success, err
 end
 
 local hadWarning = {}
+local tObj
 function aObj:checkAndRun(funcName, funcType, LoD, quiet)
 	--@debug@
 	_G.assert(funcName, "Unknown functionName checkAndRun\n" .. _G.debugstack(2, 3, 2))
@@ -395,7 +403,6 @@ function aObj:checkAndRun(funcName, funcType, LoD, quiet)
 	end
 
 	-- setup function's table object to use
-	local tObj
 	if funcType		== "s" then tObj = self
 	elseif funcType == "l" then tObj = self.libsToSkin
 	elseif funcType == "o" then tObj = self.otherAddons
