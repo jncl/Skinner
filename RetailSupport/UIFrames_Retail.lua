@@ -3798,7 +3798,7 @@ aObj.SetupRetail_UIFrames = function()
 				-- FloorNavigation
 				if oFrame.Arrow then
 					self:skinObject("ddbutton", {obj=oFrame, fType=ftype})
-					-- Tracking Options/Pin Button
+				-- Tracking Options/Pin Button
 				elseif oFrame.IconOverlay then
 					oFrame:DisableDrawLayer("BACKGROUND")
 					oFrame.Border:SetTexture(nil)
@@ -3835,7 +3835,11 @@ aObj.SetupRetail_UIFrames = function()
 						self:addButtonBorder{obj=oFrame.SpellButton}
 					end
 				-- ZoneTimer
+				elseif oFrame.TimeLabel then
+					_G.nop()
 				-- ThreatFrame
+				elseif oFrame.Eye then
+					_G.nop()
 				-- ActivityTracker overlay (BLHC)
 				elseif oFrame.BountyDropdown then
 					oFrame.IconBorder:SetTexture(nil)
