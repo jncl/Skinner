@@ -129,13 +129,13 @@ function aObj:createAddOn(makeGlobal)
 
 end
 
-function aObj:add2Table(table, value)
+function aObj:add2Table(tab, val)
 	--@debug@
-	_G.assert(table, "Unknown table add2Table\n" .. _G.debugstack(2, 3, 2))
-	_G.assert(value, "Missing value add2Table\n" .. _G.debugstack(2, 3, 2))
+	_G.assert(tab, "Unknown table add2Table\n" .. _G.debugstack(2, 3, 2))
+	_G.assert(val, "Missing value add2Table\n" .. _G.debugstack(2, 3, 2))
 	--@end-debug@
 
-	table[#table + 1] = value
+	tab[#tab + 1] = val
 
 end
 function aObj:setupOptions(optNames, optIgnore, preLoadFunc, postLoadFunc)
