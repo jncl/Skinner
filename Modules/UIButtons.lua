@@ -227,13 +227,14 @@ function module:clrBtnBdr(bObj, clrName, alpha)
 
 end
 
+local bType
 function module:isButton(obj)
 
 	-- ignore named/AceConfig/XConfig/AceGUI objects
 	if aObj:hasAnyTextInName(obj, {"AceConfig", "XConfig", "AceGUI"}) then return end
-	if obj.OrigSetText then return end -- Cork ui-tab buttons
-
-	local bType
+	if obj.OrigSetText then -- Cork ui-tab buttons
+		return
+	end
 
 	if (obj.Left or obj.leftArrow or obj.GetNormalTexture) -- is it a true button
 	and not obj.GetChecked -- and not a checkbutton
@@ -241,8 +242,7 @@ function module:isButton(obj)
 	and not obj.SetSlot -- and not a lootbutton
 	then
 		local oW, oH, nR = _G.Round(obj:GetWidth()), _G.Round(obj:GetHeight()), obj:GetNumRegions()
-		if oH == 18 and oW == 18 and nR == 3 -- BNToast close button
-		then
+		if oH == 18 and oW == 18 and nR == 3 then -- BNToast close button
 			bType = "toast"
 		-- standard close button is 32x32 and has 4 regions
 		-- RolePollPopup has 3 regions
@@ -309,7 +309,7 @@ function module:skinCloseButton(opts)
 	--@debug@
 	_G.assert(opts.obj, "Missing object skinCloseButton\n" .. _G.debugstack(2, 3, 2))
 	if opts.obj:GetParent().GlowTop then
-		 _G.assert(opts.noSkin, "GlowBox should be skinned" .. _G.debugstack(2, 3, 2))
+		 _G.assert(opts.noSkin, "GlowBox should be skinned\n" .. _G.debugstack(2, 3, 2))
 	end
 	--@end-debug@
 
@@ -559,6 +559,7 @@ function module:skinStdButton(opts)
 		bd			= backdrop type
 --]]
 	--@debug@
+	_G.assert(opts, "Missing options table skinStdButton\n" .. _G.debugstack(2, 3, 2))
 	_G.assert(opts.obj, "Missing object skinStdButton\n" .. _G.debugstack(2, 3, 2))
 	if opts.seca then
 		aObj:CustomPrint(1, 0, 0, "Using deprecated option - seca, use sabt instead", opts.obj)
@@ -714,7 +715,6 @@ local function __skinAllButtons(opts, bgen)
 			end
 		end
 	end
-
 end
 function module:skinAllButtons(...)
 
@@ -932,9 +932,9 @@ local function __addButtonBorder(opts)
 			module:clrBtnBdr(bObj, bObj.sbb.clr, bObj.sbb.ca)
 		end)
 	end
-
 end
 function module:addButtonBorder(...)
+
 
 	local opts = _G.select(1, ...)
 
@@ -956,9 +956,6 @@ function module:addButtonBorder(...)
 	if aObj:canSkin(self.addButtonBorder, opts) then
 		__addButtonBorder(opts)
 	end
-
-end
-
 
 end
 
@@ -1018,7 +1015,6 @@ local function __skinCheckButton(opts)
 			module:clrBtnBdr(bObj, bObj.sb.clr, bObj.sb.ca)
 		end)
 	end
-
 end
 function module:skinCheckButton(...)
 
