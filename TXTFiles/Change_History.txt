@@ -1,3 +1,16 @@
+beta11.56014.2
+Jncl:
+	Updated ToDo.txt files
+	Updated Change_History.txt
+	Updated version numbers
+	Updated DelvesUI code to only work in TWW expansion
+	Updated ExpansionLandingPage skin
+	Updated Settigns skin to handle Dropdown buttons correctly
+	Removed missing localisation entry, closes #102
+	Bugfix for CharacterCustomizationFrame, closes #103
+	Bugfix for missing .tfade objects, closes #107 & closes #108
+	Updated Ace3, BetterBags closes #101, BetterWardrobe closes #105, DetailsFramework closes #106 & MountsJournal skins closes #104
+	
 beta11.56014.1
 Jncl:
 	Updated ToDo.txt files
