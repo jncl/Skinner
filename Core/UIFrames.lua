@@ -1,4 +1,4 @@
--- luacheck: ignore 542 631 (empty if branch|line is too long)
+-- luacheck: ignore 631 (line is too long)
 local _, aObj = ...
 
 local _G = _G
@@ -1074,7 +1074,6 @@ aObj.blizzFrames[ftype].ChatMenus = function(self)
 		self:skinObject("frame", {obj=_G.EmoteMenu, fType=ftype, rns=true, ofs=0})
 		self:skinObject("frame", {obj=_G.LanguageMenu, fType=ftype, rns=true, ofs=0})
 		self:skinObject("frame", {obj=_G.VoiceMacroMenu, fType=ftype, rns=true, ofs=0})
-	else
 	end
 	self:skinObject("frame", {obj=_G.GeneralDockManagerOverflowButtonList, fType=ftype, rns=true, ofs=0})
 
@@ -3491,8 +3490,10 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 
 		if wFrame.widgetType == 0 then -- IconAndText (World State: ICONS at TOP)
 			-- N.B. DON'T add buttonborder to Icon(s)
+			_G.nop()
 		elseif wFrame.widgetType == 1 then -- CaptureBar (World State: Capture bar on RHS)
 			-- DON'T change textures as it doesn't really improve it
+			_G.nop()
 		elseif wFrame.widgetType == 2 then -- StatusBar
 			local regs
 			-- background & border textures
@@ -3510,6 +3511,7 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 			aObj:skinObject("statusbar", {obj=wFrame.LeftBar, regions={2, 3, 4}, fi=0, bg=wFrame.LeftBar.BG, nilFuncs=true})
 			aObj:skinObject("statusbar", {obj=wFrame.RightBar, regions={2, 3, 4}, fi=0, bg=wFrame.RightBar.BG, nilFuncs=true})
 		elseif wFrame.widgetType == 4 then -- IconTextAndBackground (Island Expedition Totals)
+			_G.nop()
 		elseif wFrame.widgetType == 5 then -- DoubleIconAndText
 			if aObj.modBtnBs then
 				aObj:addButtonBorder{obj=wFrame.Left, relTo=wFrame.Left.Icon}
@@ -3557,6 +3559,7 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 			end
 		elseif wFrame.widgetType == 14 then -- DoubleStateIconRow
 			-- TODO: add button borders if required
+			_G.nop()
 		elseif wFrame.widgetType == 15 then -- TextureAndTextRow
 			for entryFrame in wFrame.entryPool:EnumerateActive() do
 				-- .Background
@@ -3564,15 +3567,22 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 				setTextColor(entryFrame.Text)
 			end
 		elseif wFrame.widgetType == 16 then -- ZoneControl
+			_G.nop()
 		elseif wFrame.widgetType == 17 then -- CaptureZone
+			_G.nop()
 		elseif wFrame.widgetType == 18 then -- TextureWithAnimation
+			_G.nop()
 		elseif wFrame.widgetType == 19 then -- DiscreteProgressSteps
+			_G.nop()
 		elseif wFrame.widgetType == 20 then -- ScenarioHeaderTimer
 			aObj:nilTexture(wFrame.Frame, true)
 			aObj:skinObject("statusbar", {obj=wFrame.TimerBar, fi=0, bg=wFrame.TimerBar.BG})
 		elseif wFrame.widgetType == 21 then -- TextColumnRow
+			_G.nop()
 		elseif wFrame.widgetType == 22 then -- Spacer
+			_G.nop()
 		elseif wFrame.widgetType == 23 then -- UnitPowerBar
+			_G.nop()
 		elseif wFrame.widgetType == 24 then -- FillUpFrames (Dragonriding Vigor)
 			wFrame.DecorLeft:SetAlpha(0)
 			wFrame.DecorRight:SetAlpha(0)
@@ -3580,6 +3590,7 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 				sBar.Frame:SetAlpha(0)
 			end
 		elseif wFrame.widgetType == 25 then -- TextWithSubtext
+			_G.nop()
 		end
 	end
 
