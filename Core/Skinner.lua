@@ -381,20 +381,21 @@ function aObj:OnEnable()
 	self.gearcog             = self.modBtns and self.modUIBtns.gearcog or _G.nop
 	self.checkTex            = self.modBtns and self.modUIBtns.checkTex or _G.nop
 	self.isButton            = self.modBtns and self.modUIBtns.isButton or _G.nop
+
 	self.skinAllButtons      = self.modBtns and self.modUIBtns.skinAllButtons or _G.nop
 	self.skinButton          = self.modBtns and self.modUIBtns.skinButton or _G.nop
+	self.skinCheckButton       = self.modChkBtns and self.modUIBtns.skinCheckButton or _G.nop
 	self.skinCloseButton     = self.modBtns and self.modUIBtns.skinCloseButton or _G.nop
 	self.skinExpandButton    = self.modBtns and self.modUIBtns.skinExpandButton or _G.nop
 	self.skinOtherButton     = self.modBtns and self.modUIBtns.skinOtherButton or _G.nop
 	self.skinStdButton       = self.modBtns and self.modUIBtns.skinStdButton or _G.nop
 
 	self.addButtonBorder     = self.modBtnBs and self.modUIBtns.addButtonBorder or _G.nop
-	self.clrButtonFromBorder = self.modBtnBs and self.modUIBtns.clrButtonFromBorder or _G.nop
 
+	self.clrButtonFromBorder   = self.modBtnBs and self.modUIBtns.clrButtonFromBorder or _G.nop
 	self.clrBtnBdr           = (self.modBtns or self.modBtnBs) and self.modUIBtns.clrBtnBdr or _G.nop
 	self.setBtnClr           = (self.modBtns or self.modBtnBs) and self.modUIBtns.setBtnClr or _G.nop
 
-	self.skinCheckButton     = self.modChkBtns and self.modUIBtns.skinCheckButton or _G.nop
 
 	-- register for event after a slight delay as registering ADDON_LOADED any earlier causes it not to be registered if LoD modules are loaded on startup (e.g. SimpleSelfRebuff/LightHeaded)
 	_G.C_Timer.After(0.5, function()

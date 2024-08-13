@@ -57,6 +57,7 @@ do
 	module.fontDS:SetFont(module.fontS:GetFont())
 	module.fontDS:SetTextColor(_G.DISABLED_FONT_COLOR:GetRGB())
 end
+
 local texNumbers = {
 	[130821] = "minus",
 	[130838] = "plus",
@@ -80,12 +81,6 @@ local function __checkTex(opts)
 	--@debug@
 	 _G.assert(opts.obj, "Missing object __cT\n" .. _G.debugstack(2, 3, 2))
 	 --@end-debug@
-
-	 -- handle in combat
-	 if _G.InCombatLockdown() then
-		 aObj:add2Table(aObj.oocTab, {__checkTex, {opts}})
-		 return
-	 end
 
 	-- hide existing textures if they exist (Armory/GupCharacter requires this)
 	if opts.obj.GetNormalTexture and opts.obj:GetNormalTexture() then opts.obj:GetNormalTexture():SetAlpha(0) end
@@ -136,21 +131,23 @@ function module:checkTex(...)
 	-- handle missing object (usually when addon changes)
 	if not opts then return end
 
-	if _G.type(_G.rawget(opts, 0)) == "userdata" and _G.type(opts.GetObjectType) == "function" then
+	if _G.type(_G.rawget(opts, 0)) == "userdata"
+	and _G.type(opts.GetObjectType) == "function"
+	then
 		-- old style call
 		opts = {}
 		opts.obj = _G.select(1, ...) and _G.select(1, ...) or nil
 		opts.nTex = _G.select(2, ...) and _G.select(2, ...) or nil
 		opts.mp2 = _G.select(3, ...) and _G.select(3, ...) or nil
 	end
-	__checkTex(opts)
+
+	if aObj:canSkin(self.__checkTex, opts) then
+		__checkTex(opts)
+	end
 
 end
 
-local function clrTex(clr, hTex)
-	local r, g, b, _ = aObj:getColourByName(clr)
-	hTex:SetColorTexture(r, g, b, 0.25)
-end
+local r, g, b, _
 function module:chgHLTex(obj, hTex)
 
 	-- handle in combat
@@ -184,7 +181,8 @@ function module:chgHLTex(obj, hTex)
 				end
 			end
 			if clr then
-				clrTex(clr, hTex)
+				r, g, b, _ = aObj:getColourByName(clr)
+				hTex:SetColorTexture(r, g, b, 0.25)
 				-- inset colour
 				if obj.sb then
 					hTex:ClearAllPoints()
@@ -198,6 +196,7 @@ function module:chgHLTex(obj, hTex)
 end
 
 function module:clrButtonFromBorder(bObj, texture)
+
 	-- handle in combat
 	if _G.InCombatLockdown() then
 		aObj:add2Table(aObj.oocTab, {self.clrButtonFromBorder, {self, bObj, texture}})
@@ -210,7 +209,7 @@ function module:clrButtonFromBorder(bObj, texture)
 
 	local iBdr = bObj[texture] or bObj.IconBorder or bObj.iconBorder
 	iBdr:SetAlpha(1) -- ensure alpha is 1 otherwise btn.sbb isn't displayed
-	-- use the colour of the quality border as the BackdropBorderColor if shown
+	-- use the colour of the item's border as the BackdropBorderColor if shown
 	if iBdr:IsShown() then
 		bObj.sbb:SetBackdropBorderColor(iBdr:GetVertexColor())
 	else
@@ -270,14 +269,6 @@ function module:isButton(obj)
 
 end
 
-function module:secureHook(obj, method, func)
-
-	if not module:IsHooked(obj, method) then
-		module:SecureHook(obj, method, func)
-	end
-
-end
-
 local common = _G.Enum.ItemQuality.Common or _G.Enum.ItemQuality.Standard
 function module:setBtnClr(bObj, quality)
 
@@ -317,22 +308,16 @@ function module:skinCloseButton(opts)
 --]]
 	--@debug@
 	_G.assert(opts.obj, "Missing object skinCloseButton\n" .. _G.debugstack(2, 3, 2))
-	--@end-debug@
-
-	-- handle in combat
-	if _G.InCombatLockdown() then
-	    aObj:add2Table(aObj.oocTab, {self.skinCloseButton, {self, opts}})
-	    return
-	end
-
-	aObj:keepFontStrings(opts.obj)
-
-	--@debug@
-	-- skin GlowBox frame
 	if opts.obj:GetParent().GlowTop then
 		 _G.assert(opts.noSkin, "GlowBox should be skinned" .. _G.debugstack(2, 3, 2))
 	end
 	--@end-debug@
+
+	if not aObj:canSkin(self.skinCloseButton, opts) then
+		return
+	end
+
+	aObj:keepFontStrings(opts.obj)
 
 	-- don't skin button if required
 	if not opts.noSkin then
@@ -365,10 +350,10 @@ function module:skinCloseButton(opts)
 		aObj:moveObject{obj=text, x=-1, y=-1}
 	end
 	if opts.schk then
-		module:secureHook(opts.obj, "Disable", function(bObj, _)
+		aObj:secureHook(opts.obj, "Disable", function(bObj, _)
 			module:clrBtnBdr(bObj)
 		end)
-		module:secureHook(opts.obj, "Enable", function(bObj, _)
+		aObj:secureHook(opts.obj, "Enable", function(bObj, _)
 			module:clrBtnBdr(bObj, bObj.sb.clr or bObj.clr, bObj.sb.ca or bObj.ca)
 		end)
 	end
@@ -412,10 +397,8 @@ function module:skinExpandButton(opts)
 	_G.assert(opts.obj, "Missing object skinExpandButton\n" .. _G.debugstack(2, 3, 2))
 	--@end-debug@
 
-	-- handle in combat
-	if _G.InCombatLockdown() then
-	    aObj:add2Table(aObj.oocTab, {self.skinExpandButton, {self, opts}})
-	    return
+	if not aObj:canSkin(self.skinExpandButton, opts) then
+		return
 	end
 
 	-- don't skin it twice (BUGFIX)
@@ -493,10 +476,8 @@ function module:skinOtherButton(opts)
 	_G.assert(opts.text, "Missing text to use skinOtherButton\n" .. _G.debugstack(2, 3, 2))
 	--@end-debug@
 
-	-- handle in combat
-	if _G.InCombatLockdown() then
-	    aObj:add2Table(aObj.oocTab, {self.skinOtherButton, {self, opts}})
-	    return
+	if not aObj:canSkin(self.skinOtherButton, opts) then
+		return
 	end
 
 	opts.obj:DisableDrawLayer("BACKGROUND")
@@ -579,14 +560,12 @@ function module:skinStdButton(opts)
 --]]
 	--@debug@
 	_G.assert(opts.obj, "Missing object skinStdButton\n" .. _G.debugstack(2, 3, 2))
-	--@end-debug@
 	if opts.seca then
 		aObj:CustomPrint(1, 0, 0, "Using deprecated option - seca, use sabt instead", opts.obj)
 	end
+	--@end-debug@
 
-	-- handle in combat
-	if _G.InCombatLockdown() then
-		aObj:add2Table(aObj.oocTab, {self.skinStdButton, {self, opts}})
+	if not aObj:canSkin(self.skinStdButton, opts) then
 		return
 	end
 
@@ -628,15 +607,15 @@ function module:skinStdButton(opts)
 	module:clrBtnBdr(opts.obj, opts.clr, opts.ca)
 
 	if opts.schk then
-		module:secureHook(opts.obj, "Disable", function(bObj, _)
+		aObj:secureHook(opts.obj, "Disable", function(bObj, _)
 			module:clrBtnBdr(bObj)
 		end)
-		module:secureHook(opts.obj, "Enable", function(bObj, _)
+		aObj:secureHook(opts.obj, "Enable", function(bObj, _)
 			module:clrBtnBdr(bObj, bObj.sb.clr or bObj.clr, bObj.sb.ca or bObj.ca)
 		end)
 	end
 	if opts.sechk then
-		module:secureHook(opts.obj, "SetEnabled", function(bObj)
+		aObj:secureHook(opts.obj, "SetEnabled", function(bObj)
 			module:clrBtnBdr(bObj, bObj.sb.clr or bObj.clr, bObj.sb.ca or bObj.ca)
 		end)
 	end
@@ -750,11 +729,14 @@ function module:skinAllButtons(...)
 	-- handle missing object (usually when addon changes)
 	if not opts then return end
 
-	if _G.type(_G.rawget(opts, 0)) == "userdata" and _G.type(opts.GetObjectType) == "function" then
+	if _G.type(_G.rawget(opts, 0)) == "userdata"
+	and _G.type(opts.GetObjectType) == "function"
+	then
 		-- old style call
 		opts = {}
 		opts.obj = _G.select(1, ...) and _G.select(1, ...) or nil
 	end
+
 	__skinAllButtons(opts)
 
 end
@@ -792,19 +774,17 @@ local function __addButtonBorder(opts)
 		ignTex	 = ignore changes to Normal & Pushed textures
 --]]
 	--@debug@
-	 _G.assert(opts.obj, "Missing object__aBB\n" .. _G.debugstack(2, 3, 2))
+	_G.assert(opts.obj, "Missing object__aBB\n" .. _G.debugstack(2, 3, 2))
 	-- handle AddOn skins using deprecated options
 	 if opts.seca
 	 or opts.secu
 	 then
-		aObj:CustomPrint(1, 0, 0, "Using deprecated options - seca,secu, use sabt or subt instead", opts.obj)
+		aObj:CustomPrint(1, 0, 0, "Using deprecated options - seca,secu, use sabt or subt instead, __aBB", opts.obj)
 	 elseif opts.sec then
-		aObj:CustomPrint(1, 0, 0, "Using deprecated options - sec, use sft instead", opts.obj)
+		aObj:CustomPrint(1, 0, 0, "Using deprecated options - sec, use sft instead, __aBB", opts.obj)
 	end
 	--@end-debug@
-	if not opts.obj then
-		return
-	end
+
 	-- don't skin it twice unless required
 	if opts.obj.sbb
 	and not opts.nc
@@ -918,7 +898,9 @@ local function __addButtonBorder(opts)
 		opts.obj.Border:SetParent(opts.obj.sbb)
 		opts.obj.NewActionTexture:SetParent(opts.obj.sbb)
 		opts.obj.SpellHighlightTexture:SetParent(opts.obj.sbb)
-		opts.obj.AutoCastable:SetParent(opts.obj.sbb)
+		if opts.obj.AutoCastable then
+			opts.obj.AutoCastable:SetParent(opts.obj.sbb)
+		end
 		if opts.obj.LevelLinkLockIcon then
 			opts.obj.LevelLinkLockIcon:SetParent(opts.obj.sbb)
 		end
@@ -932,13 +914,13 @@ local function __addButtonBorder(opts)
 		module:clrBtnBdr(opts.obj, opts.clr, opts.ca)
 	end
 	if opts.schk then
-		module:secureHook(opts.obj, "Disable", function(bObj, _)
+		aObj:secureHook(opts.obj, "Disable", function(bObj, _)
 			module:clrBtnBdr(bObj)
 		end)
 		-- store colour and alpha values with the skin button
 		opts.obj.sbb.clr = opts.clr
 		opts.obj.sbb.ca = opts.ca
-		module:secureHook(opts.obj, "Enable", function(bObj, _)
+		aObj:secureHook(opts.obj, "Enable", function(bObj, _)
 			module:clrBtnBdr(bObj, bObj.sbb.clr, bObj.sbb.ca)
 		end)
 	end
@@ -946,7 +928,7 @@ local function __addButtonBorder(opts)
 		-- store colour and alpha values with the skin button
 		opts.obj.sbb.clr = opts.clr
 		opts.obj.sbb.ca = opts.ca
-		module:secureHook(opts.obj, "SetEnabled", function(bObj)
+		aObj:secureHook(opts.obj, "SetEnabled", function(bObj)
 			module:clrBtnBdr(bObj, bObj.sbb.clr, bObj.sbb.ca)
 		end)
 	end
@@ -957,18 +939,26 @@ function module:addButtonBorder(...)
 	local opts = _G.select(1, ...)
 
 	--@debug@
-	 _G.assert(opts, "Missing object sAB\n" .. _G.debugstack(2, 3, 2))
-	 --@end-debug@
+	_G.assert(opts, "Missing object aBB\n" .. _G.debugstack(2, 3, 2))
+	--@end-debug@
 
 	-- handle missing object (usually when addon changes)
 	if not opts then return end
 
-	if _G.type(_G.rawget(opts, 0)) == "userdata" and _G.type(opts.GetObjectType) == "function" then
+	if _G.type(_G.rawget(opts, 0)) == "userdata"
+	and _G.type(opts.GetObjectType) == "function"
+	then
 		-- old style call
 		opts = {}
 		opts.obj = _G.select(1, ...) and _G.select(1, ...) or nil
 	end
-	__addButtonBorder(opts)
+
+	if aObj:canSkin(self.addButtonBorder, opts) then
+		__addButtonBorder(opts)
+	end
+
+end
+
 
 end
 
@@ -981,15 +971,9 @@ local function __skinCheckButton(opts)
 		sechk = set enabled check for colour changes
 --]]
 	--@debug@
-	 _G.assert(opts.obj, "Missing object __sCB\n" .. _G.debugstack(2, 3, 2))
-	 _G.assert(opts.obj.IsObjectType and opts.obj:IsObjectType("CheckButton"), "NOT a CheckButton __sCB\n" .. _G.debugstack(2, 3, 2))
-	 --@end-debug@
-
-	 -- handle in combat
-	 if _G.InCombatLockdown() then
-	     aObj:add2Table(aObj.oocTab, {__skinCheckButton, {opts}})
-	     return
-	 end
+	_G.assert(opts.obj, "Missing object __sCB\n" .. _G.debugstack(2, 3, 2))
+	_G.assert(opts.obj.IsObjectType and opts.obj:IsObjectType("CheckButton"), "NOT a CheckButton __sCB\n" .. _G.debugstack(2, 3, 2))
+	--@end-debug@
 
 	-- don't skin it twice unless required
 	if not opts.nc
@@ -1030,7 +1014,7 @@ local function __skinCheckButton(opts)
 		-- store colour and alpha values with the skin button
 		opts.obj.sb.clr = opts.clr
 		opts.obj.sb.ca = opts.ca
-		module:secureHook(opts.obj, "SetEnabled", function(bObj)
+		aObj:secureHook(opts.obj, "SetEnabled", function(bObj)
 			module:clrBtnBdr(bObj, bObj.sb.clr, bObj.sb.ca)
 		end)
 	end
@@ -1053,7 +1037,9 @@ function module:skinCheckButton(...)
 		opts.obj = _G.select(1, ...) and _G.select(1, ...) or nil
 	end
 
-	__skinCheckButton(opts)
+	if aObj:canSkin(self.skinCheckButton, opts) then
+		__skinCheckButton(opts)
+	end
 
 end
 

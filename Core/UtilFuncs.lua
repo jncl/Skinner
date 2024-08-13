@@ -221,6 +221,29 @@ function aObj:applyTooltipGradient(obj)
 
 end
 
+function aObj:canSkin(callingfunc, opts)
+
+	if not opts.obj then
+		return false
+	end
+
+	if opts.obj:IsForbidden() then
+		-- @debug@
+		aObj:CustomPrint(1, 0, 0, "ERROR: object is flagged as Forbidden, canSkin", opts.obj)
+		--@end-debug@
+		return false
+	end
+
+	-- handle in combat
+	if _G.InCombatLockdown() then
+		aObj:add2Table(aObj.oocTab, {callingfunc, {opts}})
+		return false
+	end
+
+	return true
+
+end
+
 function aObj:capitStr(str)
 
 	return str:sub(1,1):upper() .. str:sub(2):lower()
@@ -610,28 +633,28 @@ function aObj:findFrame2(parent, objType, ...)
 	local exitNow
 
 	self.RegisterCallback("findFrame2", parent .. "_GetChildren", function(_, child, key)
-			if child:GetName() == nil then
-				if child:IsObjectType(objType) then
+		if child:GetName() == nil then
+			if child:IsObjectType(objType) then
 				if vcnt > 2 then
-						-- base checks on position
-						point, relativeTo, relativePoint, xOfs, yOfs = child:GetPoint()
-						xOfs = xOfs and _G.Round(xOfs) or 0
-						yOfs = yOfs and _G.Round(yOfs) or 0
+					-- base checks on position
+					point, relativeTo, relativePoint, xOfs, yOfs = child:GetPoint()
+					xOfs = xOfs and _G.Round(xOfs) or 0
+					yOfs = yOfs and _G.Round(yOfs) or 0
 					if	point		  == varg1
 					and relativeTo	  == varg2
 					and relativePoint == varg3
 					and xOfs		  == varg4
 					and yOfs		  == varg5
-						then
+					then
 						frame, cKey = child, key
 						exitNow = true
-						end
-					else
-						-- base checks on size
+					end
+				else
+					-- base checks on size
 					width, height  = _G.Round(child:GetWidth()), _G.Round(child:GetHeight())
 					if width   == varg1
 					and	height == varg2
-						then
+					then
 						frame, cKey = child, key
 						exitNow = true
 					end
@@ -640,7 +663,7 @@ function aObj:findFrame2(parent, objType, ...)
 		end
 		if exitNow then
 			self.UnregisterCallback("findFrame2", parent .. "_GetChildren")
-	end
+		end
 	end)
 	self:scanChildren(parent)
 

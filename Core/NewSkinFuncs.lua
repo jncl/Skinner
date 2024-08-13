@@ -169,16 +169,17 @@ aObj.skinTPLs = {
 	tooltip = {
 		-- ofs         = 2, -- skin frame offset to object
 	},
-	new = function(type, table)
-		_G.setmetatable(table, {__index = function(_, key) return aObj.skinTPLs[type][key] end})
-		return table
+	new = function(objType, objTable)
+		_G.setmetatable(objTable, {__index = function(_, key) return aObj.skinTPLs[objType][key] end})
+		return objTable
 	end,
 }
 do
-	for name, table in _G.pairs(aObj.skinTPLs) do
-		if _G.type(table) == "table" then
-			table.type = name
-			table.ftype = "a"
+	for name, optsTable in _G.pairs(aObj.skinTPLs) do
+		if _G.type(optsTable) == "table" then
+			optsTable.type = name
+			optsTable.ftype = "a"
+			optsTable.ooc = optsTable.ooc or "false"
 		end
 	end
 end
@@ -247,26 +248,32 @@ end
 
 -- Add skinning functions to this table
 local skinFuncs = {}
+local objType, objTable, optsTable
 function aObj:skinObject(...)
 	aObj:Debug2("skinObject: [%s, %s]", ...)
 	-- handle called with both a type and a table or just a table
-	local type, table
 	if _G.select('#', ...) == 2 then
-		type, table = ...
+		objType, objTable = ...
 		--@debug@
-		_G.assert(self.skinTPLs[type], "Unknown type (skinObject)\n" .. _G.debugstack(2, 3, 2))
+		_G.assert(self.skinTPLs[objType], "Unknown type (skinObject)\n" .. _G.debugstack(2, 3, 2))
 		--@end-debug@
 	else
-		table = ...
+		objType = nil
+		objTable = ...
 	end
 	--@debug@
-	_G.assert(table and _G.type(table) == "table", "Missing table (skinObject)\n" .. _G.debugstack(2, 3, 2))
+	_G.assert(objTable and _G.type(objTable) == "table", "Missing table (skinObject)\n" .. _G.debugstack(2, 3, 2))
 	--@end-debug@
 
-	if type then
-		skinFuncs[type](self.skinTPLs.new(type, table))
+	if objType then
+		optsTable = self.skinTPLs.new(objType, objTable)
+		if aObj:canSkin(skinFuncs[objType], optsTable, optsTable.ooc) then
+			skinFuncs[objType](optsTable)
+		end
 	else
-		skinFuncs[table.type](table)
+		if aObj:canSkin(skinFuncs[objTable.type], objTable, optsTable.ooc) then
+			skinFuncs[objTable.type](objTable)
+		end
 	end
 
 end
@@ -478,7 +485,6 @@ local function skinDDButton(tbl)
 			aObj:addButtonBorder{obj=tbl.obj, fType=tbl.ftype, relTo=tbl.obj.Arrow, clr=tbl.clr, sechk=tbl.sechk, ofs=tbl.ofs, x1=tbl.x1, y1=tbl.y1, x2=tbl.x2, y2=tbl.y2}
 		end
 	end
-
 end
 skinFuncs.ddbutton = function(table) skinDDButton(table) end
 local function skinDropDown(tbl)
@@ -719,6 +725,7 @@ local function skinGlowBox(tbl)
 	aObj:skinObject("frame", {obj=tbl.obj, fType=tbl.fType, cbns=true, clr="gold"})
 end
 skinFuncs.glowbox = function(table) skinGlowBox(table) end
+local skinnedMFs = {}
 local function skinMoneyFrame(tbl)
 	--@debug@
 	_G.assert(tbl.obj, "Missing object (skinMoneyFrame)\n" .. _G.debugstack(2, 3, 2))
@@ -726,10 +733,10 @@ local function skinMoneyFrame(tbl)
 	aObj:Debug2("skinMoneyFrame: [%s]", tbl)
 
 	-- don't skin it twice
-	if tbl.obj.sknd then
+	if skinnedMFs[tbl.obj] then
 		return
 	else
-		tbl.obj.sknd = true
+		skinnedMFs[tbl.obj] = true
 	end
 
 	local mfObj
@@ -874,13 +881,14 @@ local function skinTabs(tbl)
 	end
 	--@end-debug@
 	aObj:Debug2("skinTabs: [%s]", tbl)
+
 	-- don't skin it twice unless required (Ace3)
-	if tbl.obj.sknd
+	if _G.tContains(aObj.tabFrames, tbl.obj)
 	and not tbl.noCheck
 	then
 		return
 	end
-	tbl.obj.sknd = true
+
 	if not tbl.pool then
 		-- create table of tab objects if not supplied
 		if not tbl.tabs then
