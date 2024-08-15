@@ -2609,11 +2609,6 @@ if not aObj.isClscERA then
 					else
 						skinFilterBtn(frame.difficulty)
 					end
-					frame.reset:GetNormalTexture():SetTexture(nil)
-					frame.reset:GetPushedTexture():SetTexture(nil)
-					if self.modBtns then
-						self:skinStdButton{obj=frame.reset, y2=2, clr="gold"}
-					end
 					self:skinObject("scrollbar", {obj=frame.detailsScroll.ScrollBar, fType=ftype})
 					frame.detailsScroll.child.description:SetTextColor(self.BT:GetRGB())
 					frame.overviewScroll.child.overviewDescription.Text:SetTextColor("P", self.BT:GetRGB())
