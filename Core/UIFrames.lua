@@ -2512,7 +2512,9 @@ aObj.blizzFrames[ftype].MovieFrame = function(self)
 	self.initialized.MovieFrame = true
 
 	self:SecureHookScript(_G.MovieFrame, "OnShow", function(this)
-		self:removeNineSlice(this.CloseDialog.Border)
+		if self.isRtl then
+			self:removeNineSlice(this.CloseDialog.Border)
+		end
 		self:skinObject("frame", {obj=this.CloseDialog, fType=ftype})
 		if self.modBtns then
 			self:skinStdButton{obj=this.CloseDialog.ConfirmButton}
