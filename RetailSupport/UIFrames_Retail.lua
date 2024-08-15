@@ -3560,22 +3560,15 @@ aObj.SetupRetail_UIFrames = function()
 			self:nilTexture(this.BackgroundFrame.TextBackground, true)
 			self:nilTexture(this.PortraitFrame.Portrait, true)
 			self:nilTexture(this.MainFrame.Model.PortraitBg, true)
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, bd=11, ng=true, ofs=-15, y2=14})
-			if self.modBtns then
-				self:skinCloseButton{obj=this.MainFrame.CloseButton, noSkin=true}
-				-- remove textures here to stop them reappearing when Animated
-				this.MainFrame.CloseButton:GetNormalTexture():SetTexture(nil)
-				this.MainFrame.CloseButton:GetDisabledTexture():SetTexture(nil)
-				this.MainFrame.CloseButton:GetPushedTexture():SetTexture(nil)
-			end
+			self:skinObject("frame", {obj=this.MainFrame, fType=ftype, kfs=true, bd=11, ng=true, cbns=true, ofs=-15, y2=14})
 
 			local function clrFrame(...)
 				local r, _,_,_ = ...
 				if r == 0 then -- use light background (Island Expeditions, Voldun Quest, Dark Iron intro)
-					_G.TalkingHeadFrame.sf:SetBackdropColor(.75, .75, .75, .75)
+					_G.TalkingHeadFrame.MainFrame.sf:SetBackdropColor(.75, .75, .75, .75)
 					_G.TalkingHeadFrame.MainFrame.CloseButton:SetNormalFontObject(self.modUIBtns.fontBX)
 				else
-					_G.TalkingHeadFrame.sf:SetBackdropColor(.1, .1, .1, .75)
+					_G.TalkingHeadFrame.MainFrame.sf:SetBackdropColor(.1, .1, .1, .75)
 					_G.TalkingHeadFrame.MainFrame.CloseButton:SetNormalFontObject(self.modUIBtns.fontX)
 				end
 			end
