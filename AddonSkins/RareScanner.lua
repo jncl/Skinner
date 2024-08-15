@@ -2,75 +2,148 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("RareScanner") then return end
 local _G = _G
 
-aObj.addonsToSkin.RareScanner = function(self) -- v 10.1.0.10/3.4.1
+aObj.addonsToSkin.RareScanner = function(self) -- v 11.0.2.2/4.4.0.5
 
-	if self.isRtl then
-		-- EditBox on WorldMapFrame
-		for _, child in _G.pairs{_G.WorldMapFrame:GetChildren()} do
-			if child.EditBox then
-				self:skinObject("editbox", {obj=child.EditBox, ofs=0})
-				self:adjHeight{obj=child.EditBox, adj=-10}
-				break
+	-- EditBox on WorldMapFrame
+	self.RegisterCallback("RareScanner", "WorldMapFrame_GetChildren", function(_, child, _)
+		if child.EditBox then
+			self:skinObject("editbox", {obj=child.EditBox, ofs=0})
+			self:adjHeight{obj=child.EditBox, adj=-10}
+			if self.isRtl then
+				self:moveObject{obj=child.EditBox, y=10}
 			end
+			self.UnregisterCallback("RareScanner", "WorldMapFrame_GetChildren")
 		end
-		self:SecureHookScript(_G.RSExplorerFrame, "OnShow", function(this)
-			this.OverlayElements.CloseButtonBorder:SetTexture(nil)
-			self:removeNineSlice(this.RaisedBorder)
-			local function initFrames(frame)
-				aObj:skinObject("dropdown", {obj=frame.Filters.FilterDropDown})
-				aObj:skinObject("dropdown", {obj=frame.Filters.ContinentDropDown})
-				for _, btn in _G.pairs(frame.RareNPCList.listScroll.buttons) do
-					btn.RareNPC.BG:SetTexture(nil)
-					btn.RareNPC.NameBG:SetTexture(nil)
-				end
-			end
-			if not this.Filters.FilterDropDown then
-				self:SecureHook(this, "Initialize", function(fObj)
-					initFrames(fObj)
-					self:Unhook(fObj, "Initialize")
-				end)
+	end)
+	self:scanChildren("WorldMapFrame")
+
+	self:SecureHookScript(_G.RSExplorerFrame, "OnShow", function(this)
+		if self.isRtl then
+			this.Border:DisableDrawLayer("OVERLAY")
+		end
+		this.OverlayElements.CloseButtonBorder:SetTexture(nil)
+		self:skinObject("frame", {obj=this, kfs=true, cb=true, ofs=self.isRtl and 0 or 2})
+		if self.modBtns then
+			self:skinStdButton{obj=this.ScanRequired.StartScanningButton}
+		end
+
+		self:SecureHookScript(this.Filters, "OnShow", function(fObj)
+			if self.isRtl then
+				aObj:skinObject("ddbutton", {obj=fObj.FilterDropDown, filter=true})
+				aObj:skinObject("ddbutton", {obj=fObj.ContinentDropDown})
 			else
-				initFrames(this)
+				aObj:skinObject("dropdown", {obj=fObj.FilterDropDown})
+				aObj:skinObject("dropdown", {obj=fObj.ContinentDropDown})
 			end
-			this.RareNPCList.background:SetTexture(nil)
-			self:skinObject("slider", {obj=this.RareNPCList.listScroll.scrollBar})
-			this.RareNPCList.ElevatedFrame:DisableDrawLayer("OVERLAY")
-			self:skinObject("frame", {obj=this.RareNPCList, fb=true, ofs=0})
-			this.RareInfo:DisableDrawLayer("BORDER")
-			this.RareInfo.RaisedFrameEdges:DisableDrawLayer("BORDER")
-			for _, type	in _G.pairs{"Mounts", "Pets", "Toys", "Drakewatcher", "Appearances"} do
-				this.RareInfo[type].Background1:SetTexture(nil)
-				this.RareInfo[type].NoItems:SetTextColor(self.BT:GetRGB())
-			end
-			self:skinObject("frame", {obj=this.RareInfo, fb=true, x1=-5, y1=6, x2=4, y2=-9})
-			self:skinObject("frame", {obj=this.ScanRequired, kfs=true, cb=true})
-			self:skinObject("frame", {obj=this, kfs=true, cb=true})
 			if self.modBtns then
-				self:skinStdButton{obj=this.Filters.RestartScanningButton}
-				self:skinStdButton{obj=this.Control.ApplyFiltersButton}
-				self:skinStdButton{obj=this.ScanRequired.StartScanningButton}
+				self:skinStdButton{obj=fObj.RestartScanningButton}
+			end
+			if self.modChkBtns then
+				self:skinCheckButton{obj=this.Filters.LockCurrentZoneCheckButton}
+			end
+
+			self:Unhook(fObj, "OnShow")
+		end)
+		self:checkShown(this.Filters)
+
+		self:SecureHookScript(this.RareNPCList, "OnShow", function(fObj)
+			fObj.background:SetTexture(nil)
+			self:skinObject("slider", {obj=fObj.listScroll.scrollBar})
+			fObj.ElevatedFrame:DisableDrawLayer("OVERLAY")
+			self:skinObject("frame", {obj=fObj, fb=true, ofs=0})
+			for _, btn in _G.pairs(fObj.listScroll.buttons) do
+				btn.RareNPC.BG:SetTexture(nil)
+				btn.RareNPC.NameBG:SetTexture(nil)
 			end
 			if self.modBtnBs then
-				local function skinBtns(frame)
-					for btn in frame.lootItemsPool:EnumerateActive() do
-						aObj:addButtonBorder{obj=btn, clr="grey"}
+				local function skinLIBtns()
+					for btn in this.lootItemsPool:EnumerateActive() do
+						aObj:addButtonBorder{obj=btn}
+						-- TODO: Colour the button border ?
 					end
 				end
-				self:SecureHook(this.RareNPCList, "SelectNpc", function(fObj, _)
-					skinBtns(fObj:GetParent())
+				self:SecureHook(fObj, "SelectNpc", function(_, _)
+					skinLIBtns()
 				end)
-				skinBtns(this)
+				skinLIBtns()
+			end
+
+			self:Unhook(fObj, "OnShow")
+		end)
+		self:checkShown(this.RareNPCList)
+
+		self:SecureHookScript(this.RareInfo, "OnShow", function(fObj)
+			fObj:DisableDrawLayer("BORDER")
+			local rareTypes = {"Mounts", "Pets", "Toys", "Custom", "Appearances"}
+			if self.isRtl then
+				fObj.Border:DisableDrawLayer("OVERLAY")
+				self:add2Table(rareTypes, "Drakewatcher")
+			else
+				fObj.Header:SetPoint("TOPLEFT", 4, 0)
+			end
+			for _, type	in _G.pairs(rareTypes) do
+				fObj[type].Background1:SetTexture(nil)
+			end
+			self:skinObject("frame", {obj=fObj, fb=true, ofs=self.isClsc and 1 or 0, x2=self.isClsc and 5 or nil})
+
+			self:Unhook(fObj, "OnShow")
+		end)
+		self:checkShown(this.RareInfo)
+
+		self:SecureHookScript(this.Control, "OnShow", function(fObj)
+			if self.modBtns then
+				self:skinStdButton{obj=this.Control.ApplyFiltersButton}
 			end
 			if self.modChkBtns then
 				self:skinCheckButton{obj=this.Control.AutoFilterCheckButton}
 				self:skinCheckButton{obj=this.Control.CreateProfilesBackupCheckButton}
 			end
 
-			self:Unhook(this, "OnShow")
+			self:Unhook(fObj, "OnShow")
 		end)
-	end
+		self:checkShown(this.Control)
 
-	self:SecureHookScript(_G.scanner_button, "OnShow", function(this)
+		self:SecureHookScript(this.CustomLoot, "OnShow", function(fObj)
+			if self.isRtl then
+				fObj.Border:DisableDrawLayer("OVERLAY")
+				self:skinObject("ddbutton", {obj=fObj.ControlFrame.LootGroupDropDown})
+			else
+				self:skinObject("dropdown", {obj=fObj.ControlFrame.LootGroupDropDown})
+			end
+			self:skinObject("editbox", {obj=fObj.ControlFrame.NewGroup})
+			self:skinObject("editbox", {obj=fObj.ControlFrame.ItemList})
+			self:skinObject("slider", {obj=fObj.GroupList.listScroll.scrollBar})
+			-- TODO: skin the scroll buttons ?
+			fObj.GroupList.ElevatedFrame:DisableDrawLayer("OVERLAY")
+			fObj.GroupInfo.BG:SetTexture(nil)
+			fObj.GroupInfo.NoItems:SetTextColor(self.BT:GetRGB())
+			self:skinObject("editbox", {obj=fObj.GroupInfo.EditGroupName})
+			self:skinObject("frame", {obj=fObj, kfs=true, fb=true})
+			if self.modBtns then
+				self:skinStdButton{obj=fObj.GroupInfo.DeleteGroup}
+			end
+			if self.modBtnBs then
+				local function skinGLBtns()
+					for btn in fObj.GroupInfo.lootItemsPool:EnumerateActive() do
+						aObj:addButtonBorder{obj=btn}
+						-- TODO: Colour the button border ?
+					end
+				end
+				self:SecureHook(fObj, "SelectGroup", function(_, _)
+					skinGLBtns()
+				end)
+				skinGLBtns()
+			end
+
+			self:Unhook(fObj, "OnShow")
+		end)
+		self:checkShown(this.CustomLoot)
+
+		self:Unhook(this, "OnShow")
+	end)
+
+	local scanner_button = _G.RARESCANNER_BUTTON or _G.scanner_button
+	self:SecureHookScript(scanner_button, "OnShow", function(this)
 		self:skinObject("frame", {obj=this, kfs=true, sft=true, cbns=true})
 		if self.modBtns then
 			self:skinOtherButton{obj=this.FilterEntityButton, text=self.modUIBtns.minus, noSkin=true}
@@ -80,15 +153,17 @@ aObj.addonsToSkin.RareScanner = function(self) -- v 10.1.0.10/3.4.1
 
 		self:Unhook(this, "OnShow")
 	end)
-	self:checkShown(_G.scanner_button)
+	self:checkShown(scanner_button)
 
 	_G.C_Timer.After(0.1, function()
 		if self.isRtl then
 			self:add2Table(self.ttList, _G.RSExplorerFrame.Tooltip)
+		else
+			self:add2Table(self.ttList, _G.ExplorerTooltip)
 		end
-		self:add2Table(self.ttList, _G.scanner_button.LootBar.LootBarToolTip)
-		self:add2Table(self.ttList, _G.scanner_button.LootBar.LootBarToolTipComp1)
-		self:add2Table(self.ttList, _G.scanner_button.LootBar.LootBarToolTipComp2)
+		self:add2Table(self.ttList, scanner_button.LootBar.LootBarToolTip)
+		self:add2Table(self.ttList, scanner_button.LootBar.LootBarToolTipComp1)
+		self:add2Table(self.ttList, scanner_button.LootBar.LootBarToolTipComp2)
 		self:add2Table(self.ttList, _G.RSMapItemToolTip)
 		self:add2Table(self.ttList, _G.RSMapItemToolTipComp1)
 		self:add2Table(self.ttList, _G.RSMapItemToolTipComp2)
