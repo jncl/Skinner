@@ -483,12 +483,6 @@ aObj.SetupRetail_PlayerFrames = function()
 
 		if self.modBtnBs then
 			local function skinBuffBtn(btn)
-				-- handle in combat
-				if _G.InCombatLockdown() then
-				    aObj:add2Table(aObj.oocTab, {skinBuffBtn, {btn}})
-				    return
-				end
-
 				-- ignore privateAuraAnchor(s)
 				if not btn:GetDebugName():find("AuraContainer") then
 					return
@@ -497,18 +491,20 @@ aObj.SetupRetail_PlayerFrames = function()
 				or btn.auraType == "DeadlyDebuff"
 				then
 					-- handle Debuff Button
-					aObj:addButtonBorder{obj=btn, fType=ftype, relTo=btn.Icon, reParent={btn.Count, btn.Duration, btn.Symbol}, ofs=3}
+					aObj:addButtonBorder{obj=btn, fType=ftype, relTo=btn.Icon, reParent={btn.Count, btn.Duration, btn.Symbol}, ooc=true, ofs=3}
 					-- handle Buff Button
 				elseif btn.auraType == "Buff" then
-					aObj:addButtonBorder{obj=btn, fType=ftype, relTo=btn.Icon, reParent={btn.Count, btn.Duration}, ofs=3}
+					aObj:addButtonBorder{obj=btn, fType=ftype, relTo=btn.Icon, reParent={btn.Count, btn.Duration}, ooc=true, ofs=3}
 					-- handle TempEnchant Button
 				elseif btn.auraType == "TempEnchant" then
-					aObj:addButtonBorder{obj=btn, fType=ftype, relTo=btn.Icon, reParent={btn.Count, btn.Duration}, ofs=3}
+					aObj:addButtonBorder{obj=btn, fType=ftype, relTo=btn.Icon, reParent={btn.Count, btn.Duration}, ooc=true, ofs=3}
 				end
 				-- TempEnchant, Debuff
 				if btn.Border then
 					btn.Border:SetAlpha(0)
-					btn.sbb:SetBackdropBorderColor(btn.Border:GetVertexColor())
+					if btn.sbb then
+						btn.sbb:SetBackdropBorderColor(btn.Border:GetVertexColor())
+					end
 				else
 					if btn.sbb then
 						aObj:clrBtnBdr(btn, "grey")
@@ -1415,45 +1411,49 @@ aObj.SetupRetail_PlayerFrames = function()
 						--@debug@
 						-- _G.Spew("mod Block", module.Block)
 						--@end-debug@
+						_G.nop()
 					end
 
 					if module.FixedBlocks then -- ScenarioObjectiveTracker
 						for _, block in _G.pairs(module.FixedBlocks) do
-							if block.HeaderButton then -- ObjectivesBlock
+							if block == module.ObjectivesBlock then
 								if block.spellFramePool
 								and aObj.modBtnBs
 								then
 									for spell in block.spellFramePool:EnumerateActive() do
-										aObj:addButtonBorder{obj=spell, fType=ftype, relTo=spell.Icon, reParent={spell.cooldown}}
+										aObj:addButtonBorder{obj=spell, fType=ftype, relTo=spell.Icon, reParent={spell.cooldown}, ooc=true}
 									end
 								end
-							elseif block.NormalBG then -- StageBlock
+							elseif block == module.StageBlock then
 								aObj:skinObject("frame", {obj=block, fType=ftype, kfs=true, ofs=0, clr="sepia"})
-							elseif block.WidgetContainer then -- TopWidgetContainerBlock/BottomWidgetContainerBlock
+							elseif block == module.TopWidgetContainerBlock
+							or block == module.BottomWidgetContainerBlock
+							then
 								--@debug@
 								-- _G.Spew("block WidgetContainer", block.WidgetContainer)
 								--@end-debug@
 								if block.widgetPools then
-									for widget in block.widgetPools:EnumerateActive() do
+									-- for widget in block.widgetPools:EnumerateActive() do
 										--@debug@
-										_G.Spew("block widget", widget)
+										-- _G.Spew("block widget", widget)
 										--@end-debug@
-									end
+									-- end
+									_G.nop()
 								end
-							elseif block.Container then -- MawBuffsBlock
+							elseif	block == module.MawBuffsBlock then
 								if aObj.prdb.ObjectiveTracker.animapowers then
 									--@debug@
 									-- _G.Spew("block Container", block.Container)
 									--@end-debug@
-									aObj.modUIBtns:skinStdButton{obj=block.Container, ignoreHLTex=true, ofs=-9, x1=12, x2=-2} -- use module, treat like a frame
+									aObj.modUIBtns:skinStdButton{obj=block.Container, fType=ftype, ignoreHLTex=true, ofs=-9, x1=12, x2=-2, clr="turq", ca=0.65} -- use module, treat like a frame
 									block.Container.SetWidth = _G.nop
 									block.Container.SetHighlightAtlas = _G.nop
 									aObj:secureHook(block.Container, "UpdateListState", function(bObj, _)
 										aObj:clrBtnBdr(bObj)
 									end)
-									aObj:skinObject("frame", {obj=block.Container.List, fType=ftype, kfs=true, ofs=-4, y1=-10, y2=10})
+									aObj:skinObject("frame", {obj=block.Container.List, fType=ftype, kfs=true, ofs=-4, y1=-9, y2=10, clr="turq", ca=0.65})
 								end
-							elseif block.StartedDepleted then -- ChallengeModeBlock
+							elseif block == module.ChallengeModeBlock then
 								aObj:skinObject("statusbar", {obj=block.StatusBar, fi=0, bg=block.TimerBG, other={block.TimerBGBack}})
 								aObj:removeRegions(block, {3}) -- challengemode-timer atlas
 								aObj:skinObject("frame", {obj=block, fType=ftype, y2=7})
@@ -1462,7 +1462,7 @@ aObj.SetupRetail_PlayerFrames = function()
 										affix.Border:SetTexture(nil)
 									end
 								end)
-							elseif block.CountdownAnimFrame then -- ProvingGroundsBlock
+							elseif block == module.ProvingGroundsBlock then
 								block.BG:SetTexture(nil)
 								block.GoldCurlies:SetTexture(nil)
 								aObj:skinObject("statusbar", {obj=block.StatusBar, fi=0})
@@ -1555,45 +1555,6 @@ aObj.SetupRetail_PlayerFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
-
-	-- 	-- remove Glow/Sheen textures from WorldQuest modules
-	-- 	local function updTrackerModules()
-	-- 		skinMinBtn(_G.ObjectiveTrackerFrame.HeaderMenu.MinimizeButton)
-	-- 		for _, module in _G.pairs(_G.ObjectiveTrackerFrame.MODULES) do
-	-- 			if module.ShowWorldQuests then
-	-- 				for _, blk in _G.pairs(module.usedBlocks) do
-	-- 					if blk.ScrollContents then
-	-- 						for _, child in _G.pairs{blk.ScrollContents:GetChildren()} do
-	-- 							if child.Glow then
-	-- 								child.Glow:SetTexture(nil)
-	-- 								child.Sheen:SetTexture(nil)
-	-- 							end
-	-- 						end
-	-- 					end
-	-- 				end
-	-- 			end
-	-- 			if aObj.modBtnBs then
-	-- 				if module.Header
-	-- 				and module.Header.MinimizeButton
-	-- 				then
-	-- 					skinMinBtn(module.Header.MinimizeButton)
-	-- 				end
-	-- 			end
-	-- 		end
-	-- 	end
-
-	-- 	-- remove Shadow texture
-	-- 	_G.BONUS_OBJECTIVE_TRACKER_MODULE.Header:DisableDrawLayer("BACKGROUND")
-	-- 	_G.WORLD_QUEST_TRACKER_MODULE.Header:DisableDrawLayer("BACKGROUND")
-
-	-- 	_G.ObjectiveTrackerBonusRewardsFrame:DisableDrawLayer("ARTWORK")
-	-- 	_G.ObjectiveTrackerBonusRewardsFrame.RewardsShadow:SetTexture(nil)
-
-	-- 	_G.ObjectiveTrackerWorldQuestRewardsFrame:DisableDrawLayer("ARTWORK")
-	-- 	_G.ObjectiveTrackerWorldQuestRewardsFrame.RewardsShadow:SetTexture(nil)
-
-	-- 	_G.ObjectiveTrackerBonusBannerFrame.BG1:SetTexture(nil)
-	-- 	_G.ObjectiveTrackerBonusBannerFrame.BG2:SetTexture(nil)
 
 	end
 
