@@ -11,11 +11,11 @@ function aObj:addBackdrop(obj)
 end
 
 local function __adjHeight(opts)
---[[
-	Calling parameters:
-		obj = object (Mandatory)
-		adj = value to adjust height by
---]]
+	--[[
+		Calling parameters:
+			obj = object (Mandatory)
+			adj = value to adjust height by
+	--]]
 	--@debug@
 	_G.assert(opts.obj, "Missing object aH\n" .. _G.debugstack(2, 3, 2))
 	--@end-debug@
@@ -28,7 +28,6 @@ local function __adjHeight(opts)
 		opts.adj = opts.adj * -1 -- make it positive
 		opts.obj:SetHeight(opts.obj:GetHeight() - opts.adj)
 	end
-
 end
 function aObj:adjHeight(...)
 
@@ -52,24 +51,23 @@ function aObj:adjHeight(...)
 end
 
 local function __adjWidth(opts)
---[[
-	Calling parameters:
-		obj = object (Mandatory)
-		adj = value to adjust width by
---]]
-	--@debug@
-	_G.assert(opts.obj, "Missing object aW\n" .. _G.debugstack(2, 3, 2))
-	--@end-debug@
+	--[[
+		Calling parameters:
+			obj = object (Mandatory)
+			adj = value to adjust width by
+	--]]
+		--@debug@
+		_G.assert(opts.obj, "Missing object aW\n" .. _G.debugstack(2, 3, 2))
+		--@end-debug@
 
-	if opts.adj == 0 then return end
+		if opts.adj == 0 then return end
 
-	if not _G.strfind(_G.tostring(opts.adj), "+") then -- if not negative value
-		opts.obj:SetWidth(opts.obj:GetWidth() + opts.adj)
-	else
-		opts.adj = opts.adj * -1 -- make it positive
-		opts.obj:SetWidth(opts.obj:GetWidth() - opts.adj)
-	end
-
+		if not _G.strfind(_G.tostring(opts.adj), "+") then -- if not negative value
+			opts.obj:SetWidth(opts.obj:GetWidth() + opts.adj)
+		else
+			opts.adj = opts.adj * -1 -- make it positive
+			opts.obj:SetWidth(opts.obj:GetWidth() - opts.adj)
+		end
 end
 function aObj:adjWidth(...)
 
@@ -1023,13 +1021,13 @@ function aObj:makeIconSquare(obj, iconObjName, clr, rpArray)
 end
 
 local function __moveObject(opts)
---[[
-	Calling parameters:
-		obj = object (Mandatory)
-		x = left/right adjustment
-		y = up/down adjustment
-		relTo = object to move relative to
---]]
+	--[[
+		Calling parameters:
+			obj = object (Mandatory)
+			x = left/right adjustment
+			y = up/down adjustment
+			relTo = object to move relative to
+	--]]
 
 	--@debug@
 	if opts.obj:GetNumPoints() > 1 then
@@ -1063,7 +1061,6 @@ local function __moveObject(opts)
 	-- now move it
 	opts.obj:ClearAllPoints()
 	opts.obj:SetPoint(point, relTo, relPoint, xOfs, yOfs)
-
 end
 function aObj:moveObject(...)
 
@@ -1252,17 +1249,17 @@ function aObj:round2(num, idp)
 
 end
 
-function aObj:scanChildren(obj)
+function aObj:scanChildren(objName)
 
-	for idx, child in _G.ipairs_reverse{_G[obj]:GetChildren()} do
+	for idx, child in _G.ipairs_reverse{_G[objName]:GetChildren()} do
 		-- check for forbidden objects (StoreUI components etc.)
 		if not child:IsForbidden() then
-			aObj.callbacks:Fire(obj .. "_GetChildren", child, idx)
+			aObj.callbacks:Fire(objName .. "_GetChildren", child, idx)
 		end
 	end
 
 	-- remove all callbacks for this event
-	aObj.callbacks.events[obj .. "_GetChildren"] = nil
+	aObj.callbacks.events[objName .. "_GetChildren"] = nil
 
 end
 
@@ -1387,16 +1384,14 @@ function aObj:setupFramesOptions(optTab, framesType)
 end
 
 function aObj:setupTextures()
---[[
-	N.B. Texture paths replaced by FileDataIDs
-	These can be found here: https://wow.tools/files/#search=&page=1&sort=0&desc=asc
-
-		-- 136509 - ui-backpack-emptyslot
-		-- 4701874 - bagitemslot2x
-		-- 651080 - whiteiconframe
-		-- 130841 - ui-quickslot2
-
---]]
+	--[[
+		N.B. Texture paths replaced by FileDataIDs
+		These can be found here: https://wow.tools/files/#search=&page=1&sort=0&desc=asc
+			-- 136509 - ui-backpack-emptyslot
+			-- 4701874 - bagitemslot2x
+			-- 651080 - whiteiconframe
+			-- 130841 - ui-quickslot2
+	--]]
 	self.tFDIDs = {
 		["bHLS"]      = _G.GetFileIDFromPath([[Interface\Buttons\ButtonHilight-Square]]), -- blue highlight
 		["bHLSQ"]     = _G.GetFileIDFromPath([[Interface\Buttons\ButtonHilight-SquareQuickslot]]), -- smaller & lighter blue highlight
