@@ -1,5 +1,5 @@
 local aName, _ = ...
-local silent = false -- luacheck: ignore 311 (value overwritten before being used)
+local silent = false
 --@debug@
 silent = true
 --@end-debug@

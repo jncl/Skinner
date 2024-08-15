@@ -1,4 +1,3 @@
--- luacheck: ignore 212 311 631 (unused argument|value is unused|line is too long)
 local aName, aObj = ...
 
 local _G = _G

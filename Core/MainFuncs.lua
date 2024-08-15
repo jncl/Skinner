@@ -1,4 +1,3 @@
--- luacheck: ignore 212 631 (unused argument|line is too long)
 --[===[@non-debug@
 
 local _, aObj = ...

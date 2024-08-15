@@ -1,4 +1,3 @@
--- luacheck: ignore 631 (line is too long)
 local _, aObj = ...
 -- This is a Framework
 local _G = _G
