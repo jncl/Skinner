@@ -63,8 +63,7 @@ function module:OnDisable()
 	_G.CinematicFrame_OnHide = CinematicFrame_OnHide
 
 	aObj:UnregisterEvent("CINEMATIC_STOP")
-	aObj:Unhook("MovieFrame_StopMovie")
-	aObj:Unhook("MovieFrame_OnMovieFinished")
+	aObj:UnregisterEvent("STOP_MOVIE")
 
 	resetWF()
 
@@ -83,10 +82,7 @@ function module:OnEnable()
 	aObj:RegisterEvent("CINEMATIC_STOP", function(_, _)
 		module:adjustViewPort("shown")
 	end)
-	aObj:SecureHook("MovieFrame_StopMovie", function(_)
-		module:adjustViewPort("shown")
-	end)
-	aObj:SecureHook("MovieFrame_OnMovieFinished", function(_)
+	aObj:RegisterEvent("STOP_MOVIE", function(_, _)
 		module:adjustViewPort("shown")
 	end)
 
