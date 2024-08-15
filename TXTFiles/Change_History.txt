@@ -1,3 +1,42 @@
+beta11.56014.3
+Jncl:
+	Updated ToDo.txt files
+	Updated SharedFuncs add2Table function
+	Updated Buffs skin to handle InCombat
+	Updated UIButtons skin
+	Updated UtilFuncs code for skin xpcall
+	Updated OOC table handling
+	Updated UIFrames skins to remove luacheck 542 (empty if banch) warnings
+	Updated Ace3, BugSack & DetailsFramework skins
+	Updated WorldMap skin
+	Updated NSF & UIButtons code to handle InCombat more consistently
+	Added Sublime Text support files
+	Updated UIButtons to move DB default definitions code
+	Updated comments and debug checks
+	Reinstated Retail UIDropDownMenu skinning as it is still used by some AddOns
+	RetailPTR changes
+	Updated findFrame2 utility function
+	Updated UIButtons checkTex function
+	Updated ObjectiveTracker skin
+	Updated TargetFrame skin
+	Updated AlertFrame skin
+	Updated TokenFramePopup skin
+	Removed/Updated deprecated functions
+	Updated Classic WowTokenGameTimeTutorial skin
+	Updated NSF for DropdownButtons
+	Updated QuestObjectiveItemButton skin closes #111
+	Updated ItemUpgradeUI skin closes #113
+	Updated TradingPost skin
+	Updated BankFrame skin
+	Updated AuctionHouse skin closes #115
+	Updated MountJournal skin closes #117
+	Updated ReputationFrame skin closes #112, closes #118
+	Updated StaticPopups skin
+	Updated DebugTools skin
+	Updated ChatBubbles skin
+	Updates to Button skinning code is several places
+	Updated Details, LiteBag, MountsJournal closes #109, SorhaQuestLog closes #114 & TipTac closes #116
+
 beta11.56014.2
 Jncl:
 	Updated ToDo.txt files
