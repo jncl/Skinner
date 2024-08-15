@@ -1738,6 +1738,45 @@ aObj.SetupRetail_PlayerFrames = function()
 			self:Unhook(this, "OnShow")
 		end)
 
+		self:SecureHookScript(_G.ClassTalentLoadoutCreateDialog, "OnShow", function(fObj)
+			self:removeNineSlice(fObj.Border)
+			self:skinObject("editbox", {obj=fObj.NameControl.EditBox, fType=ftype, y1=-10, y2=10})
+			self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, ofs=-3})
+			if self.modBtns then
+				self:skinStdButton{obj=fObj.AcceptButton, fType=ftype, sechk=true}
+				self:skinStdButton{obj=fObj.CancelButton, fType=ftype}
+			end
+
+			self:Unhook(fObj, "OnShow")
+		end)
+
+		self:SecureHookScript(_G.ClassTalentLoadoutImportDialog, "OnShow", function(fObj)
+			self:removeNineSlice(fObj.Border)
+			self:skinObject("frame", {obj=fObj.ImportControl.InputContainer, fType=ftype, kfs=true, fb=true, ofs=6})
+			self:skinObject("editbox", {obj=fObj.NameControl.EditBox, fType=ftype, y1=-10, y2=10})
+			self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, ofs=-3})
+			if self.modBtns then
+				self:skinStdButton{obj=fObj.AcceptButton, fType=ftype, sechk=true}
+				self:skinStdButton{obj=fObj.CancelButton, fType=ftype}
+			end
+
+			self:Unhook(fObj, "OnShow")
+		end)
+
+		self:SecureHookScript(_G.ClassTalentLoadoutEditDialog, "OnShow", function(fObj)
+			self:removeNineSlice(fObj.Border)
+			self:skinObject("editbox", {obj=fObj.NameControl.EditBox, fType=ftype, y1=-10, y2=10})
+			self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, ofs=-3})
+			if self.modBtns then
+				self:skinStdButton{obj=fObj.AcceptButton, fType=ftype, sechk=true}
+				self:skinStdButton{obj=fObj.DeleteButton, fType=ftype}
+				self:skinStdButton{obj=fObj.CancelButton, fType=ftype}
+			end
+			if self.modChkBtns then
+				self:skinCheckButton{obj=fObj.UsesSharedActionBars.CheckButton, fType=ftype}
+			end
+			self:Unhook(fObj, "OnShow")
+		end)
 	end
 
 	local skinHdrs, skinNISpinner, skinQualityDialog, skinReagentBtn, skinReagentBtns, skinRecraftSlot = _G.nop, _G.nop, _G.nop, _G.nop, _G.nop, _G.nop
