@@ -2410,6 +2410,20 @@ aObj.SetupRetail_PlayerFrames = function()
 
 	end
 
+	local function skinHonorLevelDisplay(hld)
+		hld:DisableDrawLayer("BORDER")
+		aObj:removeRegions(hld.NextRewardLevel, {2, 4}) -- IconCover & RingBorder
+		if aObj.modBtnBs then
+			aObj:addButtonBorder{obj=hld.NextRewardLevel, relTo=hld.NextRewardLevel.RewardIcon, clr="gold"}
+			aObj:SecureHook(hld, "Update", function(fObj)
+				if fObj.NextRewardLevel.RewardIcon:IsDesaturated() then
+					aObj:clrBtnBdr(fObj.NextRewardLevel, "disabled")
+				else
+					aObj:clrBtnBdr(fObj.NextRewardLevel, "gold")
+				end
+			end)
+		end
+	end
 	aObj.blizzLoDFrames[ftype].PVPUI = function(self)
 		if not self.prdb.PVEFrame or self.initialized.PVPUI then return end
 		self.initialized.PVPUI = true
@@ -2443,22 +2457,9 @@ aObj.SetupRetail_PlayerFrames = function()
 			_G.PVPQueueFrame_SelectButton(1) -- select Honor button
 			self:removeInset(this.HonorInset)
 			this.HonorInset:DisableDrawLayer("BACKGROUND")
-			local hld = this.HonorInset.CasualPanel.HonorLevelDisplay
-			hld:DisableDrawLayer("BORDER")
-			self:removeRegions(hld.NextRewardLevel, {2, 4}) -- IconCover & RingBorder
-			if self.modBtnBs then
-				self:addButtonBorder{obj=hld.NextRewardLevel, relTo=hld.NextRewardLevel.RewardIcon, clr="gold"}
-				self:SecureHook(hld, "Update", function(fObj)
-					if fObj.NextRewardLevel.RewardIcon:IsDesaturated() then
-						self:clrBtnBdr(fObj.NextRewardLevel, "disabled")
-					else
-						self:clrBtnBdr(fObj.NextRewardLevel, "gold")
-					end
-				end)
-			end
-			if not aObj.isRtlPTR then
-				this.HonorInset.RatedPanel.WeeklyChest.FlairTexture:SetTexture(nil)
-			end
+			skinHonorLevelDisplay(this.HonorInset.CasualPanel.HonorLevelDisplay)
+			skinHonorLevelDisplay(this.HonorInset.RatedPanel.HonorLevelDisplay)
+			-- this.HonorInset.RatedPanel.Tier
 			local srf =this.HonorInset.RatedPanel.SeasonRewardFrame
 			srf.Ring:SetTexture(nil)
 			if self.modBtnBs then
