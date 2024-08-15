@@ -135,14 +135,16 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 		alertType["Loot"].ib                = true
 		alertType["StorePurchase"]          = {ofs = -12, ddl = {"background"}}
 	end
+	local tbl, itemQuality
 	local function skinAlertFrame(type, frame)
-		-- aObj:Debug("skinAlertFrame: [%s, %s, %s]", type, frame)
-		local tbl = alertType[type]
+		aObj:Debug("skinAlertFrame: [%s, %s, %s]", type, frame)
+		tbl = alertType[type]
 		--@debug@
 		if not dontDebug[type] then
 			_G.Spew("AlertFrames", tbl)
 		end
 		--@end-debug@
+
 		-- Stop animations
 		if frame.animIn then
 			frame.animIn:Stop()
@@ -193,7 +195,7 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 		aObj:skinObject("frame", {obj=frame, fType=ftype, x1=tbl.x1, y1=tbl.y1, x2=tbl.x2, y2=tbl.y2})
 		-- add button border if required
 		if aObj.modBtnBs then
-			local itemQuality = tbl.iq
+			itemQuality = tbl.iq
 			if frame.hyperlink then -- Loot Won & Loot Upgrade Alerts
 				if frame.isCurrency then
 					itemQuality = _G.C_CurrencyInfo.GetCurrencyInfoFromLink(frame.hyperlink).quality
@@ -206,7 +208,9 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 				itemQuality = _G.select(6, _G.C_ToyBox.GetToyInfo(frame.toyID))
 				-- TODO: Item has a quality iconborder atlas
 			elseif type == "Item" then
+				--@debug@
 				aObj:Debug("Item Alert Border Atlas: [%s, %s]", frame.IconBorder:GetAtlas())
+				--@end-debug@
 			end
 			if not tbl.icon then
 				frame.Icon:SetDrawLayer("BORDER")
@@ -214,7 +218,7 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 					frame.IconBorder:SetTexture(nil)
 				end
 				if not tbl.nis then
-					aObj:addButtonBorder{obj=frame, relTo=frame.Icon}
+					aObj:addButtonBorder{obj=frame, fType=ftype, relTo=frame.Icon}
 				end
 			else
 				if tbl.icon.ddl then
