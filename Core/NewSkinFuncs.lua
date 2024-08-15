@@ -178,7 +178,7 @@ do
 		if _G.type(optsTable) == "table" then
 			optsTable.type = name
 			optsTable.ftype = "a"
-			optsTable.ooc = optsTable.ooc or "false"
+			optsTable.ooc = optsTable.ooc or "false" -- DON'T check for InCombat status
 		end
 	end
 end
@@ -249,7 +249,11 @@ end
 local skinFuncs = {}
 local objType, objTable, optsTable
 function aObj:skinObject(...)
+	--@debug@
+	_G.assert(..., "Missing arguments (skinObject)\n" .. _G.debugstack(2, 3, 2))
+	--@end-debug@
 	aObj:Debug2("skinObject: [%s, %s]", ...)
+
 	-- handle called with both a type and a table or just a table
 	if _G.select('#', ...) == 2 then
 		objType, objTable = ...
@@ -580,6 +584,7 @@ end
 skinFuncs.editbox = function(table) skinEditBox(table) end
 local function skinFrame(tbl)
 	--@debug@
+	_G.assert(tbl, "Missing options table (skinFrame)\n" .. _G.debugstack(2, 3, 2))
 	_G.assert(tbl.obj, "Missing object (skinFrame)\n" .. _G.debugstack(2, 3, 2))
 	if tbl.sec then
 		-- handle AddOn skins using deprecated options
