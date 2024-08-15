@@ -2723,8 +2723,13 @@ if not aObj.isClscERA then
 					fObj:DisableDrawLayer("BACKGROUND")
 					fObj:DisableDrawLayer("BORDER")
 					fObj.HelpButton.Ring:SetTexture(nil)
-					fObj.ThresholdBar:DisableDrawLayer("BORDER")
-					-- TODO: Remove RewardItem border
+					fObj.ThresholdBar:DisableDrawLayer("OVERLAY")
+					for _, frame in _G.pairs(fObj.thresholdFrames) do
+						frame.RewardItem.CircleMask:SetShown(false)
+						if self.modBtnBs then
+							self:addButtonBorder{obj=frame.RewardItem, fType=ftype, relTo=frame.RewardItem.Icon, ibt=true, clr="gold"}
+						end
+					end
 					fObj.FilterList:DisableDrawLayer("BACKGROUND")
 					self:skinObject("scrollbar", {obj=fObj.ScrollBar, fType=ftype})
 					self:skinObject("scrollbar", {obj=fObj.ScrollBar, fType=ftype})
