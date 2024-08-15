@@ -258,16 +258,6 @@ aObj.blizzFrames[ftype].QuestFrame = function(self)
 			end, true)
 		end
 	end
-	local modelObj
-	if self.isClscERA then
-		modelObj = _G.QuestNPCModel
-	else
-		modelObj = _G.QuestModelScene
-	end
-	self:skinObject("frame", {obj=modelObj, fType=ftype, kfs=true, ofs=0, y1=-24, y2=-24})
-	if not aObj.isRtlPTR then
-		self:keepFontStrings(_G.QuestNPCModelTextFrame)
-	end
 
 	self:RawHook("QuestFrame_SetTitleTextColor", function(fontString, _)
 		fontString:SetTextColor(self.HT:GetRGB())
@@ -282,6 +272,13 @@ aObj.blizzFrames[ftype].QuestFrame = function(self)
 		if r < 0.2 then
 			_G.QuestProgressRequiredMoneyText:SetTextColor(br - r, bg - g, bb - b)
 		end
+	end)
+
+	self:SecureHookScript(_G.QuestModelScene or _G.QuestNPCModel , "OnShow", function(this)
+		self:keepFontStrings(this.ModelTextFrame or _G.QuestNPCModelTextFrame)
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ofs=0, y1=-24, y2=-24})
+
+		self:Unhook(this, "OnShow")
 	end)
 
 end
