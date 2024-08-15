@@ -3740,36 +3740,43 @@ aObj.SetupRetail_UIFrames = function()
 
 	end
 
-	-- accessed via the Great Vault in Oribos or the Great Vault button on the PVPUI
+	-- accessed via the Great Vault in Oribos & Valdrakken
 	aObj.blizzLoDFrames[ftype].WeeklyRewards = function(self)
 		if not self.prdb.WeeklyRewards or self.initialized.WeeklyRewards then return end
 		self.initialized.WeeklyRewards = true
 
 		self:SecureHookScript(_G.WeeklyRewardsFrame, "OnShow", function(this)
-			self:skinObject("frame", {obj=this.HeaderFrame, fType=ftype, kfs=true, fb=true, clr="topaz"})
-			for _, frame in _G.pairs{"RaidFrame", "MythicFrame", "PVPFrame"} do
-				self:skinObject("frame", {obj=this[frame], fType=ftype, kfs=true, fb=true, ofs=3, clr="topaz"})
-				this[frame].Background:SetAlpha(1)
+			self:keepFontStrings(this.BorderContainer)
+			-- .Blackout
+			self:skinObject("frame", {obj=this.HeaderFrame, fType=ftype, kfs=true, fb=true, ofs=1, clr="topaz"})
+			for _, frame in _G.pairs{"RaidFrame", "MythicFrame", "PVPFrame", "WorldFrame"} do
+				this[frame].Border:SetTexture(nil)
+				self:skinObject("frame", {obj=this[frame], fType=ftype, fb=true, ofs=14, clr="topaz"})
 			end
-			for _, frame in _G.pairs(this.Activities) do
-				self:skinObject("frame", {obj=frame, fType=ftype, kfs=true, fb=true, ofs=-3, x2=1, y2=-1})
-				-- show required textures
-				if frame.Background then
-					frame.Background:SetAlpha(1)
-					frame.Orb:SetAlpha(1)
-					frame.LockIcon:SetAlpha(1)
-				end
+			-- .ModelScene
+			for _, frame in _G.pairs(this.Activities) do -- .ConcessionFrame contents
+				self:skinObject("frame", {obj=frame, fType=ftype, kfs=true, fb=true, ofs=-1, x1=0, y1=0, clr="grey"})
+				-- TODO: change border colour when selected or has reward available
+				frame.Background:SetAlpha(1)
+				-- .RewardGenerated
 				-- .ItemFrame
 				-- .UnselectedFrame
-			end
-			-- .ConcessionFrame
-				-- .RewardsFrame
-				-- .UnselectedFrame
+				-- .SelectionGlow
+				-- .ConcessionFrame entry has this frame
+					-- .RewardsFrame
 
+			end
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true, cbns=true, ofs=-5, clr="sepia"})
 			if self.modBtns then
 				self:skinStdButton{obj=this.SelectRewardButton}
 			end
+
+			self:Unhook(this, "OnShow")
+		end)
+
+		self:SecureHookScript(_G.WeeklyRewardExpirationWarningDialog, "OnShow", function(this)
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true, ofs=0})
+			this.WarningIcon:SetAlpha(1)
 
 			self:Unhook(this, "OnShow")
 		end)
