@@ -3786,9 +3786,8 @@ aObj.SetupRetail_UIFrames = function()
 			then
 				self:keepFontStrings(this)
 				self:moveObject{obj=this.BorderFrame.CloseButton, x=-2.5}
-				self:skinObject("frame", {obj=this.BorderFrame, fType=ftype, kfs=true, rns=true, cb=true, ofs=2, x1=-3, x2=0})
-				-- make sure map textures are displayed
-				this.BorderFrame.sf:SetFrameStrata("LOW")
+				-- make sure map textures are displayed by setting Frame Strata to "LOW"
+				self:skinObject("frame", {obj=this.BorderFrame, fType=ftype, kfs=true, bg=true, sfs="LOW", rns=true, cb=true, ofs=2, x1=-3, x2=0})
 			end
 			this.BorderFrame.Tutorial.Ring:SetTexture(nil)
 			for _, oFrame in _G.pairs(this.overlayFrames) do

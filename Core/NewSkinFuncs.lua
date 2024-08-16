@@ -69,7 +69,8 @@ aObj.skinTPLs = {
 	},
 	frame = {
 		name		= false, -- use a name if required (VuhDo Options)
-		-- bg          = true, -- put into Background FrameStrata
+		-- bg          = true, -- put into specified FrameStrata
+		sfs 		= "BACKGROUND", -- set the Frame Strata, (WorldMap uses "LOW")
 		-- cb          = true, -- skin close button
 		-- cbns        = true, -- use noSkin otion when skinning the close button
 		-- hat         = true, -- hide all textures except font strings
@@ -458,7 +459,7 @@ local function skinDDButton(tbl)
 
 	if tbl.filter then
 		-- skin the WowStyle1FilterDropdownTemplate/WowStyle2DropdownTemplate
-		aObj:skinStdButton{obj=tbl.obj, fType=tbl.ftype, bd=5, sechk=true--[[, y2=-2--]]}
+		aObj:skinStdButton{obj=tbl.obj, fType=tbl.ftype, bd=5, sechk=true, y2=-2}
 		if tbl.obj.ResetButton then -- WowStyle1FilterDropdownTemplate ONLY
 			aObj.modUIBtns:skinCloseButton{obj=tbl.obj[tbl.filtercb or "ResetButton"], fType=tbl.ftype, noSkin=true}
 			tbl.obj.arrow = tbl.obj:CreateTexture(nil, "ARTWORK", nil, 5)
@@ -638,7 +639,7 @@ local function skinFrame(tbl)
 	tbl.obj.sf.SetFrameLevel = tbl.obj.SetFrameLevel
 	 -- make sure it's lower than its parent's Frame Strata
 	if tbl.bg then
-		tbl.obj.sf:SetFrameStrata("BACKGROUND")
+		tbl.obj.sf:SetFrameStrata(tbl.sfs)
 	end
 	-- skin the CloseButton
 	if aObj.modBtns
