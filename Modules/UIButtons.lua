@@ -774,6 +774,7 @@ local function __addButtonBorder(opts)
 			sechk    = set enabled check for colour changes
 			ignTex	 = ignore changes to Normal & Pushed textures
 			ooc 	 = DON'T skin in combat
+			hide 	 = Hide if required (Better Bags)
 	--]]
 	--@debug@
 	_G.assert(opts.obj, "Missing object__aBB\n" .. _G.debugstack(2, 3, 2))
@@ -824,6 +825,7 @@ local function __addButtonBorder(opts)
 	-- DON'T lower the frame level otherwise the border appears below the frame
 	-- setup and apply the backdrop
 	opts.obj.sbb:SetBackdrop({edgeFile = aObj.Backdrop[1].edgeFile, edgeSize = opts.es or aObj.Backdrop[1].edgeSize})
+	opts.obj.sbb:SetShown(not opts.hide)
 	-- position the frame
 	opts.ofs = opts.ofs or 2
 	opts.x1 = opts.x1 or opts.ofs * -1

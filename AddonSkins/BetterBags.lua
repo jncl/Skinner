@@ -2,7 +2,7 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("BetterBags") then return end
 local _G = _G
 
-aObj.addonsToSkin.BetterBags = function(self) -- v0.1.89
+aObj.addonsToSkin.BetterBags = function(self) -- v0.1.96
 
 	local bBag = _G.LibStub("AceAddon-3.0"):GetAddon("BetterBags", true)
 	if not bBag then return end
@@ -106,13 +106,12 @@ aObj.addonsToSkin.BetterBags = function(self) -- v0.1.89
 				local info
 				local function skinCurBtns(frame)
 					for _, cell in _G.ipairs(frame.content.cells) do
-						aObj:addButtonBorder{obj=cell.frame, relTo=cell.icon, clr="grey"}
 						if aObj.isRtl then
 							info = _G.C_CurrencyInfo.GetCurrencyListInfo(cell.index)
 						else
 							info = {_G.GetCurrencyListInfo(cell.index)}
 						end
-						cell.frame.sbb:SetShown(not (info.isHeader or info[2]))
+						aObj:addButtonBorder{obj=cell.frame, relTo=cell.icon, clr="grey", hide=info.isHeader or info[2]}
 					end
 				end
 				aObj:SecureHook(bagObj.currencyFrame, "Update", function(this)
