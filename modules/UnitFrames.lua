@@ -298,7 +298,9 @@ local function 	GetTexCoordsForRole(role)
 	elseif ( role == "DAMAGER" ) then
 		return _G.GetTexCoordsByGrid(2, 2, textureWidth, textureHeight, roleWidth, roleHeight);
 	else
-		error("Unknown role: "..tostring(role));
+		--@debug@
+		_G.assert(false, "Unknown Role UnitFrames - GetTexCoordsForRole: " .. role)
+		--@end-debug@
 	end
 end
 
