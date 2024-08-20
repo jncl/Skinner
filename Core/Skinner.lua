@@ -270,7 +270,7 @@ function aObj:OnEnable()
 		for _, entry in _G.ipairs(self.oocTab) do
 			entry[1](_G.unpack(entry[2]))
 		end
-		self.oocTab = {}
+		_G.wipe(self.oocTab)
 	end)
 
 	-- add support for UIButton skinning
