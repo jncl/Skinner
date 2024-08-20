@@ -818,7 +818,10 @@ aObj.SetupRetail_NPCFrames = function()
 			if self.modBtns then
 				self:skinStdButton{obj=this.UpgradeButton, fType=ftype, sechk=true}
 			end
-			-- TODO: see if the .UpgradeItemButton can be skinned without causing ADDON_ACTION_FORBIDDEN
+			if self.modBtnBs then
+				-- N.B.: can cause ADDON_ACTION_FORBIDDEN when clicked
+				self:addButtonBorder{obj=this.UpgradeItemButton, fType=ftype, ibt=true}
+			end
 
 			self:Unhook(this, "OnShow")
 		end)
