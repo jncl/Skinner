@@ -88,7 +88,7 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 	--@end-debug@
 
 	local alertType = {
-		["Achievement"]           = {ofs = 0, nt = {"Background"}, stc = "Unlocked", icon = {obj = "Icon", ddl = {"border", "overlay"}, tex ="Texture"}},
+		["Achievement"]           = {ofs = 0, nt = {"Background"}, stc = "Unlocked", icon = {obj = "Icon", ddl = {"border", "overlay"}, tex = "Texture"}},
 		["Criteria"]              = {ofs = -8, y1 = -6, nt = {"Background"}, stc = "Unlocked", icon = {obj = "Icon", ddl = {"border", "overlay"}, tex ="Texture"}},
 		["DigsiteComplete"]       = {ofs = -10, ddl = {"background"}},
 		["DungeonCompletion"]     = {ofs = -8, ddl = {"background", "border", "overlay"}, sdla = "dungeonTexture", icon = {tex = "dungeonTexture"}},
@@ -117,16 +117,16 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 	if self.isRtl then
 		alertType["Achievement"].y1         = -15
 		alertType["Achievement"].y2         = 12
-		alertType["Scenario"].y1            = -8
-		alertType["Scenario"].y2            = 8
 		alertType["EntitlementDelivered"]   = {ofs = -10}
 		alertType["Loot"].icon              = {obj = "lootItem", stn = {"SpecRing"}, ib = true, tex =  "Icon"}
+		alertType["MonthlyActivity"]        = {ofs = 0, nt = {"Background"}, stc = "Unlocked", icon = {obj = "Icon", ddl = {"border", "overlay"}, tex ="Texture"}}
 		alertType["NewCosmetic"]            = {ofs = -8, y1 = -12, ddl = {"background"}, ib = true, iq = _G.Enum.ItemQuality.Epic}
 		alertType["NewRuneforgePower"]      = {ofs = -8, ddl = {"background"}, ib = true, iq = _G.Enum.ItemQuality.Legendary}
 		alertType["NewToy"]                 = {ofs = -8, y1 = -12, ddl = {"background"}, ib = true}
 		alertType["RafRewardDelivered"]     = {ofs = -10}
+		alertType["Scenario"].y1            = -8
+		alertType["Scenario"].y2            = 8
 		alertType["SkillLineSpecsUnlocked"] = {ofs = 0, ddl = {"background"}}
-		alertType["MonthlyActivity"]        = {ofs = 0, nt = {"Background"}, stc = "Unlocked", icon = {obj = "Icon", ddl = {"border", "overlay"}, tex ="Texture"}}
 	else
 		alertType["Achievement"].y1         = -10
 		alertType["Achievement"].y2         = 10
@@ -137,7 +137,7 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 	end
 	local tbl, itemQuality
 	local function skinAlertFrame(type, frame)
-		aObj:Debug("skinAlertFrame: [%s, %s, %s]", type, frame)
+		-- aObj:Debug("skinAlertFrame: [%s, %s, %s]", type, frame)
 		tbl = alertType[type]
 		--@debug@
 		if not dontDebug[type] then
@@ -235,9 +235,7 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 					frame[tbl.icon.obj or "Icon"].IconBorder:SetTexture(nil)
 				end
 				-- change Icon object here, used for button border and quality colour
-				if tbl.icon.obj then
-					frame = frame[tbl.icon.obj]
-				end
+				frame = frame[tbl.icon.obj or "Icon"]
 				aObj:addButtonBorder{obj=frame, fType=ftype, relTo=frame[tbl.icon.tex]}
 			end
 			if itemQuality then
