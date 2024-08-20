@@ -1503,10 +1503,14 @@ if not aObj.isClscERA then
 	local skinRoleBtns
 	if _G.PVEFrame then
 		-- The following function is used by the LFDFrame & RaidFinder functions
-		function skinRoleBtns(frame)
-			local roleBtn
-			for _, type in _G.pairs{"Tank", "Healer", "DPS", "Leader"} do
-				roleBtn = _G[frame .. "QueueFrameRoleButton" .. type]
+		local roles, roleBtn
+		function skinRoleBtns(frame, leaderReqd)
+			roles = {"Tank", "Healer", "DPS"}
+			if leaderReqd then
+				aObj:add2Table(roles, "Leader")
+			end
+			for _, type in _G.pairs(roles) do
+				roleBtn = _G[frame .. "RoleButton" .. type]
 				if roleBtn.background then
 					roleBtn.background:SetTexture(nil)
 				end
@@ -1528,14 +1532,16 @@ if not aObj.isClscERA then
 
 		self:SecureHookScript(_G.LFDRoleCheckPopup, "OnShow", function(this)
 			self:removeNineSlice(this.Border)
+			skinRoleBtns("LFDRoleCheckPopup")
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true})
 			if self.modBtns then
-				self:skinStdButton{obj=_G.LFDRoleCheckPopupAcceptButton}
+				self:skinStdButton{obj=_G.LFDRoleCheckPopupAcceptButton, schk=true}
 				self:skinStdButton{obj=_G.LFDRoleCheckPopupDeclineButton}
 			end
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.LFDRoleCheckPopup)
 
 		self:SecureHookScript(_G.LFDReadyCheckPopup, "OnShow", function(this)
 			self:removeNineSlice(this.Border)
@@ -1554,7 +1560,7 @@ if not aObj.isClscERA then
 			self:keepFontStrings(this)
 			self:removeInset(this.Inset)
 			-- LFD Queue Frame
-			skinRoleBtns("LFD")
+			skinRoleBtns("LFDQueueFrame", true)
 			_G.LFDQueueFrameBackground:SetAlpha(0)
 			if self.isRtl then
 				self:skinObject("ddbutton", {obj=_G.LFDQueueFrame.TypeDropdown, fType=ftype})
