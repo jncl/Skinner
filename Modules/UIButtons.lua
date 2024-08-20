@@ -140,13 +140,13 @@ function module:checkTex(...)
 		opts.mp2 = _G.select(3, ...) and _G.select(3, ...) or nil
 	end
 
-	if aObj:canSkin(self.__checkTex, opts, false) then
+	if aObj:canSkin(__checkTex, opts, false) then
 		__checkTex(opts)
 	end
 
 end
 
-local r, g, b, _
+local hTexFile, clr, r, g, b, _
 function module:chgHLTex(obj, hTex)
 
 	-- handle in combat
@@ -156,9 +156,8 @@ function module:chgHLTex(obj, hTex)
 	end
 
 	if hTex then
-		local hTexFile = hTex:GetTexture()
+		hTexFile = hTex:GetTexture()
 		if hTexFile then
-			local clr
 			if _G.tonumber(hTexFile) then
 				if _G.tonumber(hTexFile) == 3046538 then -- auctionhouse-nav-button
 					clr = "grey"
@@ -203,7 +202,7 @@ function module:clrButtonFromBorder(bObj, texture)
 	end
 
 	--@debug@
-	 _G.assert(bObj.sbb, "Missing object__cBB\n" .. _G.debugstack(2, 3, 2))
+	 _G.assert(bObj and bObj.sbb, "Missing object cBFB\n" .. _G.debugstack(2, 3, 2))
 	--@end-debug@
 
 	local iBdr = bObj[texture] or bObj.IconBorder or bObj.iconBorder
@@ -219,6 +218,12 @@ function module:clrButtonFromBorder(bObj, texture)
 end
 
 function module:clrBtnBdr(bObj, clrName, alpha)
+
+	-- handle in combat
+	if _G.InCombatLockdown() then
+	    aObj:add2Table(aObj.oocTab, {self.clrBtnBdr, {self, bObj, clrName, alpha}})
+	    return
+	end
 
 	-- check button state and alter colour accordingly
 	clrName = bObj.IsEnabled and not bObj:IsEnabled() and "disabled" or clrName
@@ -270,12 +275,19 @@ end
 
 function module:setBtnClr(bObj, quality)
 
+	-- handle in combat
+	if _G.InCombatLockdown() then
+	    aObj:add2Table(aObj.oocTab, {self.setBtnClr, {self, bObj, quality}})
+	    return
+	end
+
 	if bObj.sbb then
 		if quality then
 			if quality >= _G.Enum.ItemQuality.Common or _G.Enum.ItemQuality.Standard
 			and _G.BAG_ITEM_QUALITY_COLORS[quality]
 			then
-				bObj.sbb:SetBackdropBorderColor(_G.BAG_ITEM_QUALITY_COLORS[quality].r, _G.BAG_ITEM_QUALITY_COLORS[quality].g, _G.BAG_ITEM_QUALITY_COLORS[quality].b, 1)
+				bObj.sbb:SetBackdropBorderColor(_G.BAG_ITEM_QUALITY_COLORS[quality]:GetRGBA())
+				-- bObj.sbb:SetBackdropBorderColor(_G.BAG_ITEM_QUALITY_COLORS[quality].r, _G.BAG_ITEM_QUALITY_COLORS[quality].g, _G.BAG_ITEM_QUALITY_COLORS[quality].b, 1)
 			else
 				module:clrBtnBdr(bObj, "grey", 0.75)
 			end
@@ -292,7 +304,7 @@ function module:setBtnClr(bObj, quality)
 
 end
 
-function module:skinCloseButton(opts)
+local function __skinCloseButton(opts)
 	--[[
 		Calling parameters:
 			obj     = object (Mandatory)
@@ -305,15 +317,12 @@ function module:skinCloseButton(opts)
 			ooc 	= DON'T skin in combat
 	--]]
 	--@debug@
-	_G.assert(opts.obj, "Missing object skinCloseButton\n" .. _G.debugstack(2, 3, 2))
+	_G.assert(opts and _G.type(opts) == "table", "Missing options table __sCB\n" .. _G.debugstack(2, 3, 2))
+	_G.assert(opts.obj, "Missing object __sCB\n" .. _G.debugstack(2, 3, 2))
 	if opts.obj:GetParent().GlowTop then
-		 _G.assert(opts.noSkin, "GlowBox should be skinned\n" .. _G.debugstack(2, 3, 2))
+		 _G.assert(opts.noSkin, "GlowBox should be skinned __sCB\n" .. _G.debugstack(2, 3, 2))
 	end
 	--@end-debug@
-
-	if not aObj:canSkin(self.skinCloseButton, opts, opts.ooc) then
-		return
-	end
 
 	aObj:keepFontStrings(opts.obj)
 
@@ -355,31 +364,33 @@ function module:skinCloseButton(opts)
 			module:clrBtnBdr(bObj, bObj.sb.clr or bObj.clr, bObj.sb.ca or bObj.ca)
 		end)
 	end
+end
+function module:skinCloseButton(...)
+
+	local opts = _G.select(1, ...)
+
+	--@debug@
+	_G.assert(opts, "Missing object sCB\n" .. _G.debugstack(2, 3, 2))
+	--@end-debug@
+
+	-- handle missing object (usually when addon changes)
+	if not opts then return end
+
+	if _G.type(_G.rawget(opts, 0)) == "userdata"
+	and _G.type(opts.GetObjectType) == "function"
+	then
+		-- old style call
+		opts = {}
+		opts.obj = _G.select(1, ...) and _G.select(1, ...) or nil
+	end
+
+	if aObj:canSkin(__skinCloseButton, opts, opts.ncc) then
+		__skinCloseButton(opts)
+	end
 
 end
-function module:skinCloseButton1(opts)
--- text on button
-	opts.cb = nil
-	module:skinCloseButton(opts)
 
-end
-function module:skinCloseButton2(opts)
--- text on skinButton
-	opts.cb2 = nil
-	opts.onSB = true
-	module:skinCloseButton(opts)
-
-end
-function module:skinCloseButton3(opts)
--- small text on skinButton (used by Details)
-	opts.font = module.fontSBX
-	opts.cb3 = nil
-	opts.onSB = true
-	module:skinCloseButton(opts)
-
-end
-
-function module:skinExpandButton(opts)
+local function __skinExpandButton(opts)
 	--[[
 		Calling parameters:
 			obj    = object (Mandatory)
@@ -393,12 +404,9 @@ function module:skinExpandButton(opts)
 			ooc    = DON'T skin in combat
 	--]]
 	--@debug@
-	_G.assert(opts.obj, "Missing object skinExpandButton\n" .. _G.debugstack(2, 3, 2))
+	_G.assert(opts and _G.type(opts) == "table", "Missing options table __sEB\n" .. _G.debugstack(2, 3, 2))
+	_G.assert(opts.obj, "Missing object __sEB\n" .. _G.debugstack(2, 3, 2))
 	--@end-debug@
-
-	if not aObj:canSkin(self.skinExpandButton, opts, opts.ooc) then
-		return
-	end
 
 	-- don't skin it twice (BUGFIX)
 	if opts.obj
@@ -444,22 +452,34 @@ function module:skinExpandButton(opts)
 		opts.obj.sb:SetAllPoints(opts.obj:GetNormalTexture())
 		opts.obj.sb:SetText(opts.plus and module.plus or module.minus)
 	end
+end
+function module:skinExpandButton(...)
+
+	local opts = _G.select(1, ...)
+
+	--@debug@
+	_G.assert(opts, "Missing object sEB\n" .. _G.debugstack(2, 3, 2))
+	--@end-debug@
+
+	-- handle missing object (usually when addon changes)
+	if not opts then return end
+
+	if _G.type(_G.rawget(opts, 0)) == "userdata"
+	and _G.type(opts.GetObjectType) == "function"
+	then
+		-- old style call
+		opts = {}
+		opts.obj = _G.select(1, ...) and _G.select(1, ...) or nil
+	end
+
+	if aObj:canSkin(__skinExpandButton, opts, opts.ncc) then
+		__skinExpandButton(opts)
+	end
 
 end
-function module:skinExpandButton1(opts)
--- text on skinButton
-	opts.onSB = true
-	module:skinExpandButton(opts)
 
-end
-function module:skinExpandButton2(opts)
--- text on button
-	opts.sap = true
-	module:skinExpandButton(opts)
-
-end
-
-function module:skinOtherButton(opts)
+local bW, bH
+local function __skinOtherButton(opts)
 	--[[
 		Calling parameters:
 			obj     = object (Mandatory)
@@ -472,13 +492,10 @@ function module:skinOtherButton(opts)
 			ooc 	= DON'T skin in combat
 	--]]
 	--@debug@
-	_G.assert(opts.obj, "Missing object skinOtherButton\n" .. _G.debugstack(2, 3, 2))
-	_G.assert(opts.text, "Missing text to use skinOtherButton\n" .. _G.debugstack(2, 3, 2))
+	_G.assert(opts and _G.type(opts) == "table", "Missing options table __sOB\n" .. _G.debugstack(2, 3, 2))
+	_G.assert(opts.obj, "Missing object __sOB\n" .. _G.debugstack(2, 3, 2))
+	_G.assert(opts.text, "Missing text to use __sOB\n" .. _G.debugstack(2, 3, 2))
 	--@end-debug@
-
-	if not aObj:canSkin(self.skinOtherButton, opts, opts.ooc) then
-		return
-	end
 
 	opts.obj:DisableDrawLayer("BACKGROUND")
 	aObj:keepFontStrings(opts.obj)
@@ -495,7 +512,7 @@ function module:skinOtherButton(opts)
 		if opts.sap then
 			aObj:skinObject("button", {obj=opts.obj, fType=opts.ftype, sap=true, aso=opts.aso})
 		else
-			local bW = _G.Round(opts.obj:GetWidth())
+			bW = _G.Round(opts.obj:GetWidth())
 			opts.x1 = opts.x1 or bW == 32 and 6 or 4
 			opts.y1 = opts.y1 or bW == 32 and -6 or -4
 			opts.x2 = opts.x2 or bW == 32 and -6 or -4
@@ -503,47 +520,33 @@ function module:skinOtherButton(opts)
 			aObj:skinObject("button", {obj=opts.obj, fType=opts.ftype, bd=5, aso=opts.aso, x1=opts.x1, y1=opts.y1, x2=opts.x2, y2=opts.y2})
 		end
 	end
-
 end
-function module:skinOtherButton1(opts)
--- text on button
-	opts.font = module.fontP
-	opts.text = opts.ob
-	opts.ob = nil
-	module:skinOtherButton(opts)
+function module:skinOtherButton(...)
 
-end
-function module:skinOtherButton2(opts)
--- small text on button
-	opts.size = 18
-	opts.sap = true
-	opts.font = module.fontSB
-	opts.text = opts.ob2
-	opts.ob2 = nil
-	module:skinOtherButton(opts)
+	local opts = _G.select(1, ...)
 
-end
-function module:skinOtherButton3(opts)
--- sizeUp/Down text on button
+	--@debug@
+	_G.assert(opts, "Missing object sOB\n" .. _G.debugstack(2, 3, 2))
+	--@end-debug@
 
-	opts.font = module.fontS
-	opts.text = opts.ob3
-	opts.ob3 = nil
-	module:skinOtherButton(opts)
+	-- handle missing object (usually when addon changes)
+	if not opts then return end
 
-end
-function module:skinOtherButton4(opts)
--- Normal text on button
+	if _G.type(_G.rawget(opts, 0)) == "userdata"
+	and _G.type(opts.GetObjectType) == "function"
+	then
+		-- old style call
+		opts = {}
+		opts.obj = _G.select(1, ...) and _G.select(1, ...) or nil
+	end
 
-	opts.font = "GameFontNormal"
-	opts.text = opts.ob4
-	opts.ob4 = nil
-	module:skinOtherButton(opts)
+	if aObj:canSkin(__skinOtherButton, opts, opts.ncc) then
+		__skinOtherButton(opts)
+	end
 
 end
 
--- standard panel button
-function module:skinStdButton(opts)
+local function __skinStdButton(opts)
 	--[[
 		Calling parameters:
 			obj         = object (Mandatory)
@@ -560,16 +563,12 @@ function module:skinStdButton(opts)
 			ooc 	 	= DON'T skin in combat
 	--]]
 	--@debug@
-	_G.assert(opts, "Missing options table skinStdButton\n" .. _G.debugstack(2, 3, 2))
-	_G.assert(opts.obj, "Missing object skinStdButton\n" .. _G.debugstack(2, 3, 2))
+	_G.assert(opts and _G.type(opts) == "table", "Missing options table __sSB\n" .. _G.debugstack(2, 3, 2))
+	_G.assert(opts.obj, "Missing object __sSB\n" .. _G.debugstack(2, 3, 2))
 	if opts.seca then
 		aObj:CustomPrint(1, 0, 0, "Using deprecated option - seca, use sabt instead", opts.obj)
 	end
 	--@end-debug@
-
-	if not aObj:canSkin(self.skinStdButton, opts, opts.ooc) then
-		return
-	end
 
 	opts.obj:DisableDrawLayer("BACKGROUND")
 	if opts.obj:GetNormalTexture() then
@@ -582,7 +581,7 @@ function module:skinStdButton(opts)
 		opts.obj:GetDisabledTexture():SetAlpha(0)
 	end
 
-	local bW, bH = _G.Round(opts.obj:GetWidth()), _G.Round(opts.obj:GetHeight())
+	bW, bH = _G.Round(opts.obj:GetWidth()), _G.Round(opts.obj:GetHeight())
 
 	opts.bd = opts.bd or bH > 18 and 5 or 7 -- use narrower backdrop if required
 	if not opts.as then
@@ -621,9 +620,350 @@ function module:skinStdButton(opts)
 			module:clrBtnBdr(bObj, bObj.sb.clr or bObj.clr, bObj.sb.ca or bObj.ca)
 		end)
 	end
+end
+function module:skinStdButton(...)
+
+	local opts = _G.select(1, ...)
+
+	--@debug@
+	_G.assert(opts, "Missing object sSB\n" .. _G.debugstack(2, 3, 2))
+	--@end-debug@
+
+	-- handle missing object (usually when addon changes)
+	if not opts then return end
+
+	if _G.type(_G.rawget(opts, 0)) == "userdata"
+	and _G.type(opts.GetObjectType) == "function"
+	then
+		-- old style call
+		opts = {}
+		opts.obj = _G.select(1, ...) and _G.select(1, ...) or nil
+	end
+
+	if aObj:canSkin(__skinStdButton, opts, opts.ncc) then
+		__skinStdButton(opts)
+	end
 
 end
 
+local template, relTo, rpObj
+local function __addButtonBorder(opts)
+	--[[
+		Calling parameters:
+			obj      = object (Mandatory)
+			relTo    = object to position relative to
+			ofs      = global offset
+			abt      = Action Button template
+			ibt      = Item Button template
+			tibt     = Talent Item Button template
+			libt     = Large Item Button template
+			sibt     = Small Item Button template
+			gibt     = Giant Item Button template
+			cgibt    = Circular Giant Item Button template
+			auit     = auction item template(s)
+			bmit     = blackmarket item template
+			sft      = requires SecureFrameTemplate
+			sabt     = requires SecureActionButtonTemplate
+			subt     = requires SecureUnitButtonTemplate
+			reParent = table of objects to reparent to the border frame
+			es       = edgeSize, used for small icons
+			ofs      = offset value to use
+			x1       = X offset for TOPLEFT
+			y1       = Y offset for TOPLEFT
+			x2       = X offset for BOTTOMRIGHT
+			y2       = Y offset for BOTTOMRIGHT
+			nc       = don't check to see if already skinned
+			clr      = set colour
+			ca       = set colour alpha
+			schk     = state check for colour changes
+			sechk    = set enabled check for colour changes
+			ignTex	 = ignore changes to Normal & Pushed textures
+			ooc 	 = DON'T skin in combat
+			hide 	 = Hide if required (Better Bags)
+	--]]
+	--@debug@
+	_G.assert(opts and _G.type(opts) == "table", "Missing options table __addButtonBorder\n" .. _G.debugstack(2, 3, 2))
+	_G.assert(opts.obj, "Missing object__aBB\n" .. _G.debugstack(2, 3, 2))
+	-- handle AddOn skins using deprecated options
+	if opts.seca
+	or opts.secu
+	then
+	aObj:CustomPrint(1, 0, 0, "Using deprecated options - seca,secu, use sabt or subt instead, __aBB", opts.obj)
+	elseif opts.sec then
+		aObj:CustomPrint(1, 0, 0, "Using deprecated options - sec, use sft instead, __aBB", opts.obj)
+	end
+	--@end-debug@
+
+	-- don't skin it twice unless required
+	if opts.obj.sbb
+	and not opts.nc
+	then
+		return
+	end
+
+	-- remove Normal/Pushed textures if required (vertex colour changed in blizzard code)
+	if not opts.ignTex then -- ProfessionCraftingPageRecipe slots [isModifyingRequired]
+		if opts.ibt
+		or opts.abt
+		or opts.auit
+		or opts.bmit
+		then
+			if opts.obj.GetNormalTexture
+			and opts.obj:GetNormalTexture()
+			then
+				opts.obj:GetNormalTexture():SetTexture(nil)
+			end
+			if opts.obj.GetPushedTexture
+			and opts.obj:GetPushedTexture()
+			then
+				opts.obj:GetPushedTexture():SetTexture(nil)
+			end
+		end
+	end
+	if opts.gibt then
+		opts.obj.EmptyBackground:SetTexture(nil)
+	end
+
+	-- create the button border object
+	opts.sft = opts.sft or opts.sec or nil
+	template = opts.sft and "SecureFrameTemplate" or opts.sabt and "SecureActionButtonTemplate" or opts.subt and "SecureUnitButtonTemplate"
+	opts.obj.sbb = _G.CreateFrame(opts.obj:GetObjectType(), nil, opts.obj, template)
+	opts.obj.sbb:EnableMouse(false) -- enable clickthrough
+	aObj:addBackdrop(opts.obj.sbb)
+	-- DON'T lower the frame level otherwise the border appears below the frame
+	-- setup and apply the backdrop
+	opts.obj.sbb:SetBackdrop({edgeFile = aObj.Backdrop[1].edgeFile, edgeSize = opts.es or aObj.Backdrop[1].edgeSize})
+	opts.obj.sbb:SetShown(not opts.hide)
+	-- position the frame
+	opts.ofs = opts.ofs or 2
+	opts.x1 = opts.x1 or opts.ofs * -1
+	opts.y1 = opts.y1 or opts.ofs
+	opts.x2 = opts.x2 or opts.ofs
+	opts.y2 = opts.y2 or opts.ofs * -1
+	-- Large Item Button templates have an IconTexture to position to
+	relTo = opts.relTo or opts.libt and opts.obj.Icon or nil
+	opts.obj.sbb:SetPoint("TOPLEFT", relTo or opts.obj, "TOPLEFT", opts.x1, opts.y1)
+	opts.obj.sbb:SetPoint("BOTTOMRIGHT", relTo or opts.obj, "BOTTOMRIGHT", opts.x2, opts.y2)
+
+	-- reparent objects
+	if opts.reParent then
+		for _, obj in _G.pairs(opts.reParent) do
+			if obj then
+				obj:SetParent(opts.obj.sbb)
+			end
+		end
+	end
+	-- reparent these textures so they are displayed above the border
+	-- & colour the button border
+	if opts.obj.Flash
+	and opts.obj.Flash:GetObjectType() == "Texture" -- N.B. ignore Bagnon AnimationGroup
+	then
+		opts.obj.Flash:SetParent(opts.obj.sbb)
+	end
+	if opts.obj.Name
+	or opts.obj:GetName() and _G[opts.obj:GetName() .. "Name"]
+	then
+		rpObj = opts.obj.Name or _G[opts.obj:GetName() .. "Name"]
+		rpObj:SetParent(opts.obj.sbb)
+	end
+	if opts.obj.Count then
+		opts.obj.Count:SetParent(opts.obj.sbb)
+	end
+	if opts.obj.ItemOverlay then
+		opts.obj.ItemOverlay:SetParent(opts.obj.sbb)
+	end
+	if opts.obj.ItemOverlay2 then
+		opts.obj.ItemOverlay2:SetParent(opts.obj.sbb)
+	end
+	if opts.obj.ProfessionQualityOverlay then
+		opts.obj.ProfessionQualityOverlay:SetParent(opts.obj.sbb)
+	end
+	if opts.ibt
+	or opts.libt
+	then -- Item Buttons & Large Item Buttons
+		if opts.obj.Stock
+		or opts.obj:GetName() and _G[opts.obj:GetName() .. "Stock"]
+		then
+			rpObj = opts.obj.Stock or _G[opts.obj:GetName() .. "Stock"]
+			rpObj:SetParent(opts.obj.sbb)
+		end
+		if opts.obj.searchOverlay then
+			opts.obj.searchOverlay:SetParent(opts.obj.sbb)
+		end
+		if opts.obj.ItemContextOverlay then
+			opts.obj.ItemContextOverlay:SetParent(opts.obj.sbb)
+		end
+		if opts.obj.IconQuestTexture then
+			opts.obj.IconQuestTexture:SetParent(opts.obj.sbb)
+		end
+		-- N.B. leave subicon/SubIconTexture below .sbb (Classic ERA Engraving)
+		if aObj.isRtl
+		and opts.obj.IconBorder -- NB: Delves Ability button's DON'T have an IconBorder
+		then
+			module:clrButtonFromBorder(opts.obj)
+		else
+			module:clrBtnBdr(opts.obj, opts.clr or "common", opts.ca or 1)
+		end
+	elseif opts.abt then -- Action Buttons
+		if opts.obj.FlyoutArrow then
+			opts.obj.FlyoutArrow:SetParent(opts.obj.sbb)
+		end
+		opts.obj.HotKey:SetParent(opts.obj.sbb)
+		opts.obj.Border:SetParent(opts.obj.sbb)
+		opts.obj.NewActionTexture:SetParent(opts.obj.sbb)
+		opts.obj.SpellHighlightTexture:SetParent(opts.obj.sbb)
+		if opts.obj.AutoCastable then
+			opts.obj.AutoCastable:SetParent(opts.obj.sbb)
+		end
+		if opts.obj.LevelLinkLockIcon then
+			opts.obj.LevelLinkLockIcon:SetParent(opts.obj.sbb)
+		end
+		if opts.obj.AutoCastShine then
+			opts.obj.AutoCastShine:SetParent(opts.obj.sbb)
+		end
+		module:clrBtnBdr(opts.obj, opts.clr, opts.ca)
+	elseif opts.gibt  -- Giant Item Buttons
+	or opts.cgibt -- Circular Giant Item Buttons
+	then
+		module:clrButtonFromBorder(opts.obj)
+	else
+		module:clrBtnBdr(opts.obj, opts.clr, opts.ca)
+	end
+
+	-- hook these as required
+	if opts.schk then
+		aObj:secureHook(opts.obj, "Disable", function(bObj, _)
+			module:clrBtnBdr(bObj)
+		end)
+		-- store colour and alpha values with the skin button
+		opts.obj.sbb.clr = opts.clr
+		opts.obj.sbb.ca = opts.ca
+		aObj:secureHook(opts.obj, "Enable", function(bObj, _)
+			module:clrBtnBdr(bObj, bObj.sbb.clr, bObj.sbb.ca)
+		end)
+	end
+	if opts.sechk then
+		-- store colour and alpha values with the skin button
+		opts.obj.sbb.clr = opts.clr
+		opts.obj.sbb.ca = opts.ca
+		aObj:secureHook(opts.obj, "SetEnabled", function(bObj)
+			module:clrBtnBdr(bObj, bObj.sbb.clr, bObj.sbb.ca)
+		end)
+	end
+end
+function module:addButtonBorder(...)
+
+	local opts = _G.select(1, ...)
+
+	--@debug@
+	_G.assert(opts, "Missing object aBB\n" .. _G.debugstack(2, 3, 2))
+	--@end-debug@
+
+	-- handle missing object (usually when addon changes)
+	if not opts then return end
+
+	if _G.type(_G.rawget(opts, 0)) == "userdata"
+	and _G.type(opts.GetObjectType) == "function"
+	then
+		-- old style call
+		opts = {}
+		opts.obj = _G.select(1, ...) and _G.select(1, ...) or nil
+	end
+
+	if aObj:canSkin(__addButtonBorder, opts, opts.ncc) then
+		__addButtonBorder(opts)
+	end
+
+end
+
+local bd, ofs, yOfs
+local function __skinCheckButton(opts)
+	--[[
+		Calling parameters:
+			obj   = object (Mandatory)
+			nc    = don't check to see if already skinned
+			hf    = hook show/hide functions
+			sechk = set enabled check for colour changes
+	--]]
+	--@debug@
+	_G.assert(opts.obj, "Missing object __sCB\n" .. _G.debugstack(2, 3, 2))
+	_G.assert(opts.obj.IsObjectType and opts.obj:IsObjectType("CheckButton"), "NOT a CheckButton __sCB\n" .. _G.debugstack(2, 3, 2))
+	--@end-debug@
+
+	-- don't skin it twice unless required
+	if not opts.nc
+	and opts.obj.sb
+	then
+		return
+	end
+
+	-- check to see if it's a 'real' CheckButton
+	if not opts.obj.GetNormalTexture
+	or not aObj:hasTextInTexture(opts.obj:GetNormalTexture(), "CheckBox")
+	and not aObj:hasTextInTexture(opts.obj:GetNormalTexture(), aObj.tFDIDs.cbUP)
+	and not aObj:hasTextInTexture(opts.obj:GetNormalTexture(), aObj.tFDIDs.cbMin) -- Settings CheckButton
+	then
+		return
+	end
+
+	if not aObj.isClscERA then
+		opts.obj:GetNormalTexture():SetTexture(nil)
+		opts.obj:GetPushedTexture():SetTexture(nil)
+	else
+		opts.obj:GetNormalTexture():SetTexture("")
+		opts.obj:GetPushedTexture():SetTexture("")
+	end
+
+	-- handle small check buttons (e.g. GuildControlUI - Rank Permissions)
+	bd, ofs, yOfs = 5, opts.ofs or -4, opts.yOfs or opts.ofs and opts.ofs * -1 + 1 or 5
+	if opts.obj:GetWidth() < 23 then
+		bd = 12
+		if aObj:hasTextInName(opts.obj, "AchievementFrame") then
+			ofs = -2
+			yOfs = nil
+		end
+	end
+	aObj:skinObject("button", {obj=opts.obj, fType=opts.ftype, bd=bd, ng=true, ofs=ofs, y2=yOfs})
+	module:clrBtnBdr(opts.obj, opts.clr, opts.ca)
+	if opts.sechk then
+		-- store colour and alpha values with the skin button
+		opts.obj.sb.clr = opts.clr
+		opts.obj.sb.ca = opts.ca
+		aObj:secureHook(opts.obj, "SetEnabled", function(bObj)
+			module:clrBtnBdr(bObj, bObj.sb.clr, bObj.sb.ca)
+		end)
+	end
+end
+function module:skinCheckButton(...)
+
+	local opts = _G.select(1, ...)
+
+	--@debug@
+	 _G.assert(opts, "Missing object sCB\n" .. _G.debugstack(2, 3, 2))
+	 --@end-debug@
+
+	-- handle missing object (usually when addon changes)
+	if not opts then return end
+
+	if _G.type(_G.rawget(opts, 0)) == "userdata"
+	and _G.type(opts.GetObjectType) == "function"
+	then
+		-- old style call
+		opts = {}
+		opts.obj = _G.select(1, ...) and _G.select(1, ...) or nil
+	end
+
+	if aObj:canSkin(__skinCheckButton, opts, opts.ncc) then
+		__skinCheckButton(opts)
+	end
+
+end
+
+--[===[@non-debug@
+--[[
+	The following functions are ONLY used by the Main.lua file, which has been deprecated,
+	and are only used in AddOn skins that haven't been updated
+--]]
 function module:skinButton(opts)
 	--[[
 		Calling parameters:
@@ -677,7 +1017,75 @@ function module:skinButton(opts)
 	end
 
 end
+function module:skinCloseButton1(opts)
+-- text on button
+	opts.cb = nil
+	module:skinCloseButton(opts)
 
+end
+function module:skinCloseButton2(opts)
+-- text on skinButton
+	opts.cb2 = nil
+	opts.onSB = true
+	module:skinCloseButton(opts)
+
+end
+function module:skinCloseButton3(opts)
+-- small text on skinButton (used by Details)
+	opts.font = module.fontSBX
+	opts.cb3 = nil
+	opts.onSB = true
+	module:skinCloseButton(opts)
+
+end
+function module:skinExpandButton1(opts)
+-- text on skinButton
+	opts.onSB = true
+	module:skinExpandButton(opts)
+
+end
+function module:skinExpandButton2(opts)
+-- text on button
+	opts.sap = true
+	module:skinExpandButton(opts)
+
+end
+function module:skinOtherButton1(opts)
+-- text on button
+	opts.font = module.fontP
+	opts.text = opts.ob
+	opts.ob = nil
+	module:skinOtherButton(opts)
+
+end
+function module:skinOtherButton2(opts)
+-- small text on button
+	opts.size = 18
+	opts.sap = true
+	opts.font = module.fontSB
+	opts.text = opts.ob2
+	opts.ob2 = nil
+	module:skinOtherButton(opts)
+
+end
+function module:skinOtherButton3(opts)
+-- sizeUp/Down text on button
+
+	opts.font = module.fontS
+	opts.text = opts.ob3
+	opts.ob3 = nil
+	module:skinOtherButton(opts)
+
+end
+function module:skinOtherButton4(opts)
+-- Normal text on button
+
+	opts.font = "GameFontNormal"
+	opts.text = opts.ob4
+	opts.ob4 = nil
+	module:skinOtherButton(opts)
+
+end
 local function __skinAllButtons(opts, bgen)
 	--[[
 		Calling parameters:
@@ -741,308 +1149,7 @@ function module:skinAllButtons(...)
 	__skinAllButtons(opts)
 
 end
-
-local function __addButtonBorder(opts)
-	--[[
-		Calling parameters:
-			obj      = object (Mandatory)
-			relTo    = object to position relative to
-			ofs      = global offset
-			abt      = Action Button template
-			ibt      = Item Button template
-			tibt     = Talent Item Button template
-			libt     = Large Item Button template
-			sibt     = Small Item Button template
-			gibt     = Giant Item Button template
-			cgibt    = Circular Giant Item Button template
-			auit     = auction item template(s)
-			bmit     = blackmarket item template
-			sft      = requires SecureFrameTemplate
-			sabt     = requires SecureActionButtonTemplate
-			subt     = requires SecureUnitButtonTemplate
-			reParent = table of objects to reparent to the border frame
-			es       = edgeSize, used for small icons
-			ofs      = offset value to use
-			x1       = X offset for TOPLEFT
-			y1       = Y offset for TOPLEFT
-			x2       = X offset for BOTTOMRIGHT
-			y2       = Y offset for BOTTOMRIGHT
-			nc       = don't check to see if already skinned
-			clr      = set colour
-			ca       = set colour alpha
-			schk     = state check for colour changes
-			sechk    = set enabled check for colour changes
-			ignTex	 = ignore changes to Normal & Pushed textures
-			ooc 	 = DON'T skin in combat
-			hide 	 = Hide if required (Better Bags)
-	--]]
-	--@debug@
-	_G.assert(opts.obj, "Missing object__aBB\n" .. _G.debugstack(2, 3, 2))
-	-- handle AddOn skins using deprecated options
-	 if opts.seca
-	 or opts.secu
-	 then
-		aObj:CustomPrint(1, 0, 0, "Using deprecated options - seca,secu, use sabt or subt instead, __aBB", opts.obj)
-	 elseif opts.sec then
-		aObj:CustomPrint(1, 0, 0, "Using deprecated options - sec, use sft instead, __aBB", opts.obj)
-	end
-	--@end-debug@
-
-	-- don't skin it twice unless required
-	if opts.obj.sbb
-	and not opts.nc
-	then
-		return
-	end
-	-- remove Normal/Pushed textures if required (vertex colour changed in blizzard code)
-	if not opts.ignTex then -- ProfessionCraftingPageRecipe slots [isModifyingRequired]
-		if opts.ibt
-		or opts.abt
-		or opts.auit
-		or opts.bmit
-		then
-			if opts.obj.GetNormalTexture
-			and opts.obj:GetNormalTexture()
-			then
-				opts.obj:GetNormalTexture():SetTexture(nil)
-			end
-			if opts.obj.GetPushedTexture
-			and opts.obj:GetPushedTexture()
-			then
-				opts.obj:GetPushedTexture():SetTexture(nil)
-			end
-		end
-	end
-	if opts.gibt then
-		opts.obj.EmptyBackground:SetTexture(nil)
-	end
-	-- create the button border object
-	opts.sft = opts.sft or opts.sec or nil
-	local template = opts.sft and "SecureFrameTemplate" or opts.sabt and "SecureActionButtonTemplate" or opts.subt and "SecureUnitButtonTemplate"
-	opts.obj.sbb = _G.CreateFrame(opts.obj:GetObjectType(), nil, opts.obj, template)
-	opts.obj.sbb:EnableMouse(false) -- enable clickthrough
-	aObj:addBackdrop(opts.obj.sbb)
-	-- DON'T lower the frame level otherwise the border appears below the frame
-	-- setup and apply the backdrop
-	opts.obj.sbb:SetBackdrop({edgeFile = aObj.Backdrop[1].edgeFile, edgeSize = opts.es or aObj.Backdrop[1].edgeSize})
-	opts.obj.sbb:SetShown(not opts.hide)
-	-- position the frame
-	opts.ofs = opts.ofs or 2
-	opts.x1 = opts.x1 or opts.ofs * -1
-	opts.y1 = opts.y1 or opts.ofs
-	opts.x2 = opts.x2 or opts.ofs
-	opts.y2 = opts.y2 or opts.ofs * -1
-	-- Large Item Button templates have an IconTexture to position to
-	local relTo = opts.relTo or opts.libt and opts.obj.Icon or nil
-	opts.obj.sbb:SetPoint("TOPLEFT", relTo or opts.obj, "TOPLEFT", opts.x1, opts.y1)
-	opts.obj.sbb:SetPoint("BOTTOMRIGHT", relTo or opts.obj, "BOTTOMRIGHT", opts.x2, opts.y2)
-	-- reparent objects
-	if opts.reParent then
-		for _, obj in _G.pairs(opts.reParent) do
-			if obj then
-				obj:SetParent(opts.obj.sbb)
-			end
-		end
-	end
-	-- reparent these textures so they are displayed above the border
-	-- & colour the button border
-	if opts.obj.Flash
-	and opts.obj.Flash:GetObjectType() == "Texture" -- N.B. ignore Bagnon AnimationGroup
-	then
-		opts.obj.Flash:SetParent(opts.obj.sbb)
-	end
-	local rpObj
-	if opts.obj.Name
-	or opts.obj:GetName() and _G[opts.obj:GetName() .. "Name"]
-	then
-		rpObj = opts.obj.Name or _G[opts.obj:GetName() .. "Name"]
-		rpObj:SetParent(opts.obj.sbb)
-	end
-	if opts.obj.Count then
-		opts.obj.Count:SetParent(opts.obj.sbb)
-	end
-	if opts.obj.ItemOverlay then
-		opts.obj.ItemOverlay:SetParent(opts.obj.sbb)
-	end
-	if opts.obj.ItemOverlay2 then
-		opts.obj.ItemOverlay2:SetParent(opts.obj.sbb)
-	end
-	if opts.obj.ProfessionQualityOverlay then
-		opts.obj.ProfessionQualityOverlay:SetParent(opts.obj.sbb)
-	end
-	if opts.ibt
-	or opts.libt
-	then -- Item Buttons & Large Item Buttons
-		if opts.obj.Stock
-		or opts.obj:GetName() and _G[opts.obj:GetName() .. "Stock"]
-		then
-			rpObj = opts.obj.Stock or _G[opts.obj:GetName() .. "Stock"]
-			rpObj:SetParent(opts.obj.sbb)
-		end
-		if opts.obj.searchOverlay then
-			opts.obj.searchOverlay:SetParent(opts.obj.sbb)
-		end
-		if opts.obj.ItemContextOverlay then
-			opts.obj.ItemContextOverlay:SetParent(opts.obj.sbb)
-		end
-		if opts.obj.IconQuestTexture then
-			opts.obj.IconQuestTexture:SetParent(opts.obj.sbb)
-		end
-		-- N.B. leave subicon/SubIconTexture below .sbb (Classic ERA Engraving)
-		if aObj.isRtl then
-			module:clrButtonFromBorder(opts.obj)
-		else
-			module:clrBtnBdr(opts.obj, opts.clr or "common", opts.ca or 1)
-		end
-	elseif opts.abt then -- Action Buttons
-		if opts.obj.FlyoutArrow then
-			opts.obj.FlyoutArrow:SetParent(opts.obj.sbb)
-		end
-		opts.obj.HotKey:SetParent(opts.obj.sbb)
-		opts.obj.Border:SetParent(opts.obj.sbb)
-		opts.obj.NewActionTexture:SetParent(opts.obj.sbb)
-		opts.obj.SpellHighlightTexture:SetParent(opts.obj.sbb)
-		if opts.obj.AutoCastable then
-			opts.obj.AutoCastable:SetParent(opts.obj.sbb)
-		end
-		if opts.obj.LevelLinkLockIcon then
-			opts.obj.LevelLinkLockIcon:SetParent(opts.obj.sbb)
-		end
-		opts.obj.AutoCastShine:SetParent(opts.obj.sbb)
-		module:clrBtnBdr(opts.obj, opts.clr, opts.ca)
-	elseif opts.gibt  -- Giant Item Buttons
-	or opts.cgibt -- Circular Giant Item Buttons
-	then
-		module:clrButtonFromBorder(opts.obj)
-	else
-		module:clrBtnBdr(opts.obj, opts.clr, opts.ca)
-	end
-	if opts.schk then
-		aObj:secureHook(opts.obj, "Disable", function(bObj, _)
-			module:clrBtnBdr(bObj)
-		end)
-		-- store colour and alpha values with the skin button
-		opts.obj.sbb.clr = opts.clr
-		opts.obj.sbb.ca = opts.ca
-		aObj:secureHook(opts.obj, "Enable", function(bObj, _)
-			module:clrBtnBdr(bObj, bObj.sbb.clr, bObj.sbb.ca)
-		end)
-	end
-	if opts.sechk then
-		-- store colour and alpha values with the skin button
-		opts.obj.sbb.clr = opts.clr
-		opts.obj.sbb.ca = opts.ca
-		aObj:secureHook(opts.obj, "SetEnabled", function(bObj)
-			module:clrBtnBdr(bObj, bObj.sbb.clr, bObj.sbb.ca)
-		end)
-	end
-end
-function module:addButtonBorder(...)
-
-	local opts = _G.select(1, ...)
-
-	--@debug@
-	_G.assert(opts, "Missing object aBB\n" .. _G.debugstack(2, 3, 2))
-	--@end-debug@
-
-	-- handle missing object (usually when addon changes)
-	if not opts then return end
-
-	if _G.type(_G.rawget(opts, 0)) == "userdata"
-	and _G.type(opts.GetObjectType) == "function"
-	then
-		-- old style call
-		opts = {}
-		opts.obj = _G.select(1, ...) and _G.select(1, ...) or nil
-	end
-
-	if aObj:canSkin(__addButtonBorder, opts, opts.ooc) then
-		__addButtonBorder(opts)
-	end
-
-end
-
-local function __skinCheckButton(opts)
-	--[[
-		Calling parameters:
-			obj   = object (Mandatory)
-			nc    = don't check to see if already skinned
-			hf    = hook show/hide functions
-			sechk = set enabled check for colour changes
-	--]]
-	--@debug@
-	_G.assert(opts.obj, "Missing object __sCB\n" .. _G.debugstack(2, 3, 2))
-	_G.assert(opts.obj.IsObjectType and opts.obj:IsObjectType("CheckButton"), "NOT a CheckButton __sCB\n" .. _G.debugstack(2, 3, 2))
-	--@end-debug@
-
-	-- don't skin it twice unless required
-	if not opts.nc
-	and opts.obj.sb
-	then
-		return
-	end
-
-	-- check to see if it's a 'real' CheckButton
-	if not opts.obj.GetNormalTexture
-	or not aObj:hasTextInTexture(opts.obj:GetNormalTexture(), "CheckBox")
-	and not aObj:hasTextInTexture(opts.obj:GetNormalTexture(), aObj.tFDIDs.cbUP)
-	and not aObj:hasTextInTexture(opts.obj:GetNormalTexture(), aObj.tFDIDs.cbMin) -- Settings CheckButton
-	then
-		return
-	end
-
-	if not aObj.isClscERA then
-		opts.obj:GetNormalTexture():SetTexture(nil)
-		opts.obj:GetPushedTexture():SetTexture(nil)
-	else
-		opts.obj:GetNormalTexture():SetTexture("")
-		opts.obj:GetPushedTexture():SetTexture("")
-	end
-
-	-- handle small check buttons (e.g. GuildControlUI - Rank Permissions)
-	local bd, ofs, yOfs = 5, opts.ofs or -4, opts.yOfs or opts.ofs and opts.ofs * -1 + 1 or 5
-	if opts.obj:GetWidth() < 23 then
-		bd = 12
-		if aObj:hasTextInName(opts.obj, "AchievementFrame") then
-			ofs = -2
-			yOfs = nil
-		end
-	end
-	aObj:skinObject("button", {obj=opts.obj, fType=opts.ftype, bd=bd, ng=true, ofs=ofs, y2=yOfs})
-	module:clrBtnBdr(opts.obj, opts.clr, opts.ca)
-	if opts.sechk then
-		-- store colour and alpha values with the skin button
-		opts.obj.sb.clr = opts.clr
-		opts.obj.sb.ca = opts.ca
-		aObj:secureHook(opts.obj, "SetEnabled", function(bObj)
-			module:clrBtnBdr(bObj, bObj.sb.clr, bObj.sb.ca)
-		end)
-	end
-end
-function module:skinCheckButton(...)
-
-	local opts = _G.select(1, ...)
-
-	--@debug@
-	 _G.assert(opts, "Missing object sCB\n" .. _G.debugstack(2, 3, 2))
-	 --@end-debug@
-
-	-- handle missing object (usually when addon changes)
-	if not opts then return end
-
-	if _G.type(_G.rawget(opts, 0)) == "userdata"
-	and _G.type(opts.GetObjectType) == "function"
-	then
-		-- old style call
-		opts = {}
-		opts.obj = _G.select(1, ...) and _G.select(1, ...) or nil
-	end
-
-	if aObj:canSkin(__skinCheckButton, opts, opts.ooc) then
-		__skinCheckButton(opts)
-	end
-
-end
+--@end-non-debug@]===]
 
 local db
 local defaults = {
