@@ -2354,7 +2354,7 @@ aObj.SetupRetail_PlayerFrames = function()
 							_, element, _ = ...
 						end
 						if element.isSpacer then
-							for _, region in ipairs(element.spacerRegions) do
+							for _, region in _G.ipairs(element.spacerRegions) do
 								region:SetShown(false)
 							end
 							return
