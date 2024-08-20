@@ -557,7 +557,7 @@ if not aObj.isClscERA then
 			if self.isRtl then
 				self:SecureHookScript(this.SearchPreviewContainer, "OnShow", function(fObj)
 					self:adjHeight{obj=fObj, adj=((4 * 27) + 30)}
-					for _, btn in pairs(fObj.searchPreviews) do
+					for _, btn in _G.ipairs(fObj.searchPreviews) do
 						self:removeRegions(btn, {5, 6})
 						btn.IconFrame:SetTexture(nil)
 						if self.modBtnBs then
@@ -884,21 +884,23 @@ if not aObj.isClscERA then
 						_, element, elementData, new = ...
 					end
 					if new ~= false then
-						if not elementData.isHeader then -- Entry
+						if elementData.isHeader
+						and not elementData.isChild
+						then
+							aObj:keepFontStrings(element)
+							aObj:changeHdrExpandTex(element.Right)
+							-- TODO: change HighlightTexture
+							element:Initialize(elementData) -- force texture change
+						elseif elementData.isHeader
+						and elementData.isChild
+						then
+							if aObj.modBtns then
+								aObj:skinExpandButton{obj=element.ToggleCollapseButton, fType=ftype, onSB=true}
+							end
+						else
 							element.Content.ReputationBar.LeftTexture:SetAlpha(0)
 							element.Content.ReputationBar.RightTexture:SetAlpha(0)
 							aObj:skinObject("statusbar", {obj=element.Content.ReputationBar, fi=0})
-						else
-							if not elementData.isChild then -- TopLevelHeader
-								aObj:keepFontStrings(element)
-								aObj:changeHdrExpandTex(element.Right)
-								-- TODO: change HighlightTexture
-								element:Initialize(elementData) -- force texture change
-							else -- SubHeader
-								if aObj.modBtns then
-									aObj:skinExpandButton{obj=element.ToggleCollapseButton, fType=ftype, onSB=true}
-								end
-							end
 						end
 					end
 				end
