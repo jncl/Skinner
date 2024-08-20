@@ -1378,25 +1378,24 @@ aObj.SetupRetail_PlayerFrames = function()
 				end)
 			end
 
-
-			local function skinBar(bar)
+			local function skinBar(bar, type)
 				if not aObj.sbGlazed[bar.Bar] then
-					bar.Bar:DisableDrawLayer("ARTWORK")
-					if bar.Bar.Label then -- ProgressBar
-						bar.Bar.Label:SetDrawLayer("BORDER")
-					else -- TimerBar
-						bar.Label:SetDrawLayer("BORDER")
-					end
-					if bar.Bar.BorderLeft then
-						-- ObjectiveTrackerProgressBarTemplate/ObjectiveTrackerTimerBarTemplate
+					if bar.Bar.BorderLeft then -- ObjectiveTrackerProgressBarTemplate/ObjectiveTrackerTimerBarTemplate
+						aObj:removeRegions(bar.Bar, {1, 2, 3})
 						aObj:skinObject("statusbar", {obj=bar.Bar, fi=0, bg=aObj:getRegion(bar.Bar, bar.Bar.Label and 5 or 4)})
 					else
-						-- BonusTrackerProgressBarTemplate/ScenarioProgressBarTemplate
-						bar.Bar:DisableDrawLayer("OVERLAY")
-						aObj:skinObject("statusbar", {obj=bar.Bar, fi=0, bg=bar.Bar.BarBG})
+						aObj:removeRegions(bar.Bar, {1, 2 ,4, 5, 8, 9, 10}) -- all except Bar, Label, BarBG & Icon
+						bar.Flare1:DisableDrawLayer("ARTWORK")
+						bar.Flare2:DisableDrawLayer("ARTWORK")
+						if bar.BarFrame then -- BonusTrackerProgressBarTemplate
+							aObj:skinObject("statusbar", {obj=bar.Bar, fi=0, bg=bar.Bar.BarBG})
+						else --ScenarioProgressBarTemplate
+							aObj:skinObject("statusbar", {obj=bar.Bar, fi=0})
+						end
 					end
 				end
 			end
+			local layoutChildren
 			local function skinModule(module)
 				if aObj.prdb.ObjectiveTracker.headers then
 					module.Header.Background:SetTexture(nil)
@@ -1415,8 +1414,14 @@ aObj.SetupRetail_PlayerFrames = function()
 					end
 
 					if module.FixedBlocks then -- ScenarioObjectiveTracker
+						--@debug@
+						-- _G.Spew("mod FB", module.FixedBlocks)
+						--@end-debug@
 						for _, block in _G.pairs(module.FixedBlocks) do
 							if block == module.ObjectivesBlock then
+								--@debug@
+								-- _G.Spew("mod FB Objectives", block)
+								--@end-debug@
 								if block.spellFramePool
 								and aObj.modBtnBs
 								then
@@ -1426,13 +1431,27 @@ aObj.SetupRetail_PlayerFrames = function()
 								end
 							elseif block == module.StageBlock then
 								aObj:skinObject("frame", {obj=block, fType=ftype, kfs=true, ofs=0, clr="sepia"})
+								--@debug@
+								-- _G.Spew("mod FB Stage", block)
+								-- _G.Spew("mod FB Stage WC", block.WidgetContainer)
+								--@end-debug@
+								layoutChildren = block.WidgetContainer:GetLayoutChildren()
+								for _, widget in _G.ipairs(layoutChildren) do
+									--@debug@
+									-- _G.Spew("mod FB Stage WC LC" .. i, widget)
+									--@end-debug@
+									if widget.widgetType == 29 then -- ScenarioHeaderDelves
+										aObj:skinObject("frame", {obj=widget, fType=ftype, kfs=true, ofs=-4, x1=7, x2=-7, clr="sepia"})
+									end
+								end
 							elseif block == module.TopWidgetContainerBlock
 							or block == module.BottomWidgetContainerBlock
 							then
 								--@debug@
-								-- _G.Spew("block WidgetContainer", block.WidgetContainer)
+								-- _G.Spew("mod FB WC", block)
+								-- _G.Spew("mod FB WC WidgetContainer", block.WidgetContainer)
 								--@end-debug@
-								if block.widgetPools then
+								if block.widgetPools then -- Delves
 									-- for widget in block.widgetPools:EnumerateActive() do
 										--@debug@
 										-- _G.Spew("block widget", widget)
@@ -1474,6 +1493,9 @@ aObj.SetupRetail_PlayerFrames = function()
 						end
 					end
 					if module.usedBlocks then
+						--@debug@
+						-- _G.Spew("mod usedBlocks", module.usedBlocks)
+						--@end-debug@
 						for template, blocks in _G.pairs(module.usedBlocks) do
 							if template:find("AutoQuestPopUp") then
 								for _, block in _G.pairs(blocks) do
@@ -1484,12 +1506,12 @@ aObj.SetupRetail_PlayerFrames = function()
 					end
 					if module.usedProgressBars then
 						for _, pBar in _G.pairs(module.usedProgressBars) do
-							skinBar(pBar)
+							skinBar(pBar, "p")
 						end
 					end
 					if module.usedTimerBars then
 						for _, tBar in _G.pairs(module.usedTimerBars) do
-							skinBar(tBar)
+							skinBar(tBar, "t")
 						end
 					end
 					if module.usedRightEdgeFrames
@@ -1497,8 +1519,8 @@ aObj.SetupRetail_PlayerFrames = function()
 					then
 						for _, frame in _G.pairs(module.usedRightEdgeFrames) do
 							if frame.template:find("ItemButton") then
-								-- TODO: see if the ItemButton can be skinned without causing ADDON_ACTION_FORBIDDEN
-								_G.nop()
+								-- N.B.: can cause ADDON_ACTION_FORBIDDEN when clicked
+								aObj:addButtonBorder{obj=frame, fType=ftype}
 							elseif frame.template:find("FindGroupButton") then
 								aObj:addButtonBorder{obj=frame, fType=ftype, ofs=-1, x1=0, clr="gold"}
 							end
