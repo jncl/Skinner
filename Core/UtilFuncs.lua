@@ -218,7 +218,7 @@ function aObj:applyTooltipGradient(obj)
 
 end
 
-function aObj:canSkin(callingfunc, opts, checkCombat)
+function aObj:canSkin(callingFunc, opts, dontCheckCombat)
 
 	if not opts.obj then
 		return false
@@ -231,12 +231,12 @@ function aObj:canSkin(callingfunc, opts, checkCombat)
 		return false
 	end
 
-	checkCombat = checkCombat or true
+	dontCheckCombat = dontCheckCombat or false
 	-- handle in combat
-	if checkCombat
+	if not dontCheckCombat
 	and _G.InCombatLockdown()
 	then
-		self:add2Table(self.oocTab, {callingfunc, {opts}})
+		self:add2Table(self.oocTab, {callingFunc, {opts}})
 		return false
 	end
 
@@ -577,104 +577,6 @@ function aObj:clrPNBtns(framePrefix, isObj)
 
 end
 
-function aObj:findFrame(height, width, children)
-	-- find frame by matching children's object types
-
-	local matched, frame
-	local obj = _G.EnumerateFrames()
-
-	while obj do
-
-		if obj.IsObjectType -- handle object not being a frame !?
-		and obj:IsObjectType("Frame")
-		then
-			if obj:GetName() == nil then
-				if obj:GetParent() == nil then
-					if _G.Round(obj:GetHeight()) == height
-					and _G.Round(obj:GetWidth()) == width
-					then
-						local tmpTab = {}
-						for _, child in _G.ipairs{obj:GetChildren()} do
-							tmpTab[#tmpTab + 1] = child:GetObjectType()
-						end
-						matched = 0
-						for _, c in _G.pairs(children) do
-							for _, t in _G.pairs(tmpTab) do
-								if c == t then
-									matched = matched + 1
-								end
-							end
-						end
-						if matched == #children then
-							frame = obj
-							break
-						end
-					end
-				end
-			end
-		end
-
-		obj = _G.EnumerateFrames(obj)
-	end
-
-	return frame
-
-end
-
-function aObj:findFrame2(parent, objType, ...)
-	--@debug@
-	_G.assert(_G.type(parent) == "string", "Parent MUST be a string findFrame2\n" .. _G.debugstack(2, 3, 2))
-	_G.assert(_G[parent], "Unknown Parent object findFrame2\n" .. _G.debugstack(2, 3, 2))
-	--@end-debug@
-
-	if not _G[parent] then return end
-
-	local vcnt = _G.select("#", ...)
-	local varg1, varg2, varg3, varg4, varg5 = ...
-	local point, relativeTo, relativePoint, xOfs, yOfs
-	local frame, cKey
-	local height, width
-	local exitNow
-
-	self.RegisterCallback("findFrame2", parent .. "_GetChildren", function(_, child, key)
-		if child:GetName() == nil then
-			if child:IsObjectType(objType) then
-				if vcnt > 2 then
-					-- base checks on position
-					point, relativeTo, relativePoint, xOfs, yOfs = child:GetPoint()
-					xOfs = xOfs and _G.Round(xOfs) or 0
-					yOfs = yOfs and _G.Round(yOfs) or 0
-					if	point		  == varg1
-					and relativeTo	  == varg2
-					and relativePoint == varg3
-					and xOfs		  == varg4
-					and yOfs		  == varg5
-					then
-						frame, cKey = child, key
-						exitNow = true
-					end
-				else
-					-- base checks on size
-					width, height  = _G.Round(child:GetWidth()), _G.Round(child:GetHeight())
-					if width   == varg1
-					and	height == varg2
-					then
-						frame, cKey = child, key
-						exitNow = true
-					end
-				end
-			end
-		end
-		if exitNow then
-			self.UnregisterCallback("findFrame2", parent .. "_GetChildren")
-		end
-	end)
-	self:scanChildren(parent)
-
-	return frame, cKey
-
-end
-
 function aObj:getChild(obj, childNo)
 	--@debug@
 	_G.assert(obj, "Unknown object getChild\n" .. _G.debugstack(2, 3, 2))
@@ -708,20 +610,19 @@ local clrTab = {
 	white       = _G.HIGHLIGHT_FONT_COLOR,
 	yellow      = _G.YELLOW_FONT_COLOR,
 }
+-- handle missing entries
+_G.setmetatable(clrTab, {__index = function(t, k)
+	if k == "slider" then
+		return aObj.prdb.SliderBorder
+	elseif k == "unused" then
+		return t["red"]
+	else
+		return aObj.bbClr
+	end
+end})
 function aObj:getColourByName(clrName)
 
-	if not clrTab.slider then
-		clrTab.slider = _G.CopyTable(self.prdb.SliderBorder)
-	end
-	if not clrTab.unused then
-		clrTab.unused = clrTab["red"]
-	end
-
-	if clrTab[clrName] then
-		return clrTab[clrName]:GetRGBA()
-	else
-		return self.bbClr:GetRGBA()
-	end
+	return clrTab[clrName]:GetRGBA()
 
 end
 
@@ -1570,6 +1471,14 @@ end
 --@debug@
 function aObj:SetupCmds()
 
+	local function getMouseFocus()
+		if aObj.isRtl then
+			return _G.GetMouseFoci()[1]:GetParent()
+		else
+			return _G.GetMouseFocus()
+		end
+	end
+
 	local function makeString(obj)
 		if _G.type(obj) == "table" then
 			if _G.type(_G.rawget(obj, 0)) == "userdata"
@@ -1636,33 +1545,33 @@ function aObj:SetupCmds()
 		return _G.assert(_G.loadstring("return " .. objString)())
 	end
 	local function getObj(input)
-		-- _G.print("getObj", input, _G[input], GetMouseFocus())
+		 _G.print("getObj", input, _G[input], getMouseFocus())
 		if not input or input:trim() == "" then
-			return _G.GetMouseFocus()
+			return getMouseFocus()
 		else
 			return getObjFromString(input)
 		end
 	end
 	local function getObjP(input)
-		-- _G.print("getObjP", input, _G[input], GetMouseFocus():GetParent())
+		-- _G.print("getObjP", input, _G[input], getMouseFocus():GetParent())
 		if not input or input:trim() == "" then
-			return _G.GetMouseFocus():GetParent()
+			return getMouseFocus():GetParent()
 		else
 			return getObjFromString(input)
 		end
 	end
 	local function getObjGP(input)
-		-- _G.print("getObjGP", input, _G[input], GetMouseFocus():GetParent():GetParent())
+		-- _G.print("getObjGP", input, _G[input], getMouseFocus():GetParent():GetParent())
 		if not input or input:trim() == "" then
-			return _G.GetMouseFocus():GetParent():GetParent()
+			return getMouseFocus():GetParent():GetParent()
 		else
 			return getObjFromString(input)
 		end
 	end
 	local function showInfo(obj, showKids, noDepth)
-		_G.print("showInfo:", obj, showKids, noDepth, obj:IsForbidden())
+		_G.print("showInfo:", obj, showKids, noDepth, obj.IsForbidden and obj:IsForbidden())
 		_G.assert(obj, "Unknown object showInfo\n" .. _G.debugstack(2, 3, 2))
-		if obj:IsForbidden() then return end
+		if obj.IsForbidden and obj:IsForbidden() then return end
 		showKids = showKids or false
 		local function showIt(...)
 			aObj:Debug3(...)
@@ -1698,10 +1607,10 @@ function aObj:SetupCmds()
 		showIt("Finished Children")
 	end
 
-	self:RegisterChatCommand("ft", function() print_family_tree(_G.GetMouseFocus()) end)
-	self:RegisterChatCommand("ftp", function() print_family_tree(_G.GetMouseFocus():GetParent()) end)
-	self:RegisterChatCommand("gp", function() _G.print(_G.GetMouseFocus():GetPoint()) end)
-	self:RegisterChatCommand("gpp", function() _G.print(_G.GetMouseFocus():GetParent():GetPoint()) end)
+	self:RegisterChatCommand("ft", function() print_family_tree(getMouseFocus()) end)
+	self:RegisterChatCommand("ftp", function() print_family_tree(getMouseFocus():GetParent()) end)
+	self:RegisterChatCommand("gp", function() _G.print(getMouseFocus():GetPoint()) end)
+	self:RegisterChatCommand("gpp", function() _G.print(getMouseFocus():GetParent():GetPoint()) end)
 	self:RegisterChatCommand("lo", function() _G.UIErrorsFrame:AddMessage("Use /camp instead of /lo", 1.0, 0.1, 0.1, 1.0) end)
 	self:RegisterChatCommand("pii", function(msg) _G.print(_G.C_Item.GetItemInfo(msg)) end)
 	self:RegisterChatCommand("pil", function(msg) _G.print(_G.gsub(msg, "\124", "\124\124")) end)
@@ -1716,7 +1625,7 @@ function aObj:SetupCmds()
 	self:RegisterChatCommand("sir", function(msg) showInfo(getObj(msg), false, false) end) -- regions only
 	self:RegisterChatCommand("sirp", function(msg) showInfo(getObjP(msg), false, false) end) -- regions only
 	self:RegisterChatCommand("sirgp", function(msg) showInfo(getObjGP(msg), false, false) end) -- regions only
-	self:RegisterChatCommand("mspew", function(_) return _G.Spew and _G.Spew("", _G.GetMouseFocus()) end)
+	self:RegisterChatCommand("mspew", function(_) return _G.Spew and _G.Spew("", getMouseFocus()) end)
 	self:RegisterChatCommand("sspew", function(msg) return _G.Spew and _G.Spew(msg, getObj(msg)) end)
 	self:RegisterChatCommand("sspewp", function(msg) return _G.Spew and _G.Spew(msg, getObjP(msg)) end)
 	self:RegisterChatCommand("sspewgp", function(msg) return _G.Spew and _G.Spew(msg, getObjGP(msg)) end)
@@ -1730,7 +1639,7 @@ function aObj:SetupCmds()
 	end)
 
 	local loadAddOn = _G.LoadAddOn or _G.C_AddOns.LoadAddOn
-	self:RegisterChatCommand("tad", function(frame) loadAddOn("Blizzard_DebugTools"); _G.TableAttributeDisplay:InspectTable(_G[frame] or _G.GetMouseFocus()); _G.TableAttributeDisplay:Show() end)
+	self:RegisterChatCommand("tad", function(frame) loadAddOn("Blizzard_DebugTools"); _G.TableAttributeDisplay:InspectTable(_G[frame] or _G.getMouseFocus()); _G.TableAttributeDisplay:Show() end)
 
 end
 --@end-debug@
