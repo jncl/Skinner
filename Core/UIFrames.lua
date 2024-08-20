@@ -3176,8 +3176,6 @@ aObj.blizzFrames[ftype].StaticPopups = function(self)
 			if self.modBtnBs then
 				self:addButtonBorder{obj=_G[objName .. "ItemFrame"], fType=ftype, ibt=true}
 			end
-			-- prevent FrameLevel from being changed (LibRock does this)
-			this.sf.SetFrameLevel = _G.nop
 
 			self:Unhook(this, "OnShow")
 		end)
