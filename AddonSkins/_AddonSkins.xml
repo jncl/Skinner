@@ -18,7 +18,6 @@
 <Script file="Annene.lua"/>
 <Script file="AnnounceTargetPH.lua"/>
 <Script file="AppearanceTooltip.lua"/>
-<Script file="ArkDewdrop.lua"/>
 <Script file="ArkInventory.lua"/>
 <Script file="Armory.lua"/>
 <Script file="Atlas.lua"/>
@@ -83,7 +82,6 @@
 <Script file="DejaClassicStats.lua"/>
 <Script file="Details.lua"/>
 <Script file="DetailsFramework.lua"/>
-<Script file="DockingStation.lua"/>
 <Script file="Dominos.lua"/>
 <Script file="EasyMail.lua"/>
 <Script file="ElvUI.lua"/>
