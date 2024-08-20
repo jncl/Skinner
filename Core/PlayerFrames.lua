@@ -955,6 +955,7 @@ if not aObj.isClscERA then
 		self:checkShown(_G.ReputationFrame)
 
 		 -- Currency Tab
+
 		if self.isRtl then
 			self:SecureHookScript(_G.TokenFrame, "OnShow", function(this)
 				self:keepFontStrings(this)
@@ -976,6 +977,12 @@ if not aObj.isClscERA then
 							aObj:changeHdrExpandTex(element.Right)
 							-- TODO: change HighlightTexture
 							element:RefreshCollapseIcon() -- force texture change
+						elseif elementData.isHeader
+						and elementData.currencyListDepth > 0
+						then
+							if aObj.modBtns then
+								aObj:skinExpandButton{obj=element.ToggleCollapseButton, fType=ftype, onSB=true}
+							end
 						end
 					end
 				end
@@ -998,7 +1005,7 @@ if not aObj.isClscERA then
 						if self.isRtl then
 							-- FIXME: CloseButton skinned here as it has a prefix of '$parent.', bug in XML file
 							self:skinCloseButton{obj=self:getPenultimateChild(fObj), fType=ftype}
-							self:skinStdButton{obj=fObj.CurrencyTransferToggleButton, fType=ftype}
+							self:skinStdButton{obj=fObj.CurrencyTransferToggleButton, fType=ftype, sechk=true}
 						end
 					end
 					if self.modChkBtns then
