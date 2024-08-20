@@ -975,25 +975,74 @@ aObj.SetupRetail_UIFrames = function()
 			if not self.prdb.DelvesUI or self.initialized.DelvesCompanionConfiguration then return end
 			self.initialized.DelvesCompanionConfiguration = true
 
-			self:SecureHookScript(_G.DelvesCompanionAbilityListFrame, "OnShow", function(this)
-				self:skinObject("ddbutton", {obj=this.DelvesCompanionRoleDropdown, fType=ftype})
-				-- .DelvesCompanionAbilityListPagingControls
-				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true})
+			self:SecureHookScript(_G.DelvesCompanionConfigurationFrame, "OnShow", function(this)
+				self:keepFontStrings(this.Border)
+				this.CompanionPortraitFrame.Border:SetTexture(nil)
+				-- .CompanionExperienceRingFrame
+				self:keepFontStrings(this.CompanionLevelFrame)
+				this.CompanionInfoFrame.InfoFrameShadow:SetTexture(nil)
+				-- this.CompanionInfoFrame.CompanionInfoGLine:SetTexture(nil)
+				_G.CompanionInfoGLine:SetTexture(nil) -- FIXME: Blizzard bug? using name instead of parentKey
+				self:skinObject("frame", {obj=this.CompanionCombatRoleSlot.OptionsList, kfs=true, ofs=4})
+				self:skinObject("frame", {obj=this.CompanionCombatTrinketSlot.OptionsList, kfs=true, ofs=4})
+				self:skinObject("frame", {obj=this.CompanionUtilityTrinketSlot.OptionsList, kfs=true, ofs=4})
+				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, ofs=4})
+				self:moveObject{obj=this.CloseButton, x=-3, y=-4}
+				if self.modBtns then
+					self:skinStdButton{obj=this.CompanionConfigShowAbilitiesButton, fType=ftype, schk=true, sechk=true}
+				end
 
 				self:Unhook(this, "OnShow")
 			end)
 
-			self:SecureHookScript(_G.DelvesCompanionConfigurationFrame, "OnShow", function(this)
-				-- .CompanionPortraitFrame
-				-- .CompanionExperienceRingFrame
-				-- .CompanionLevelFrame
-				-- .CompanionInfoFrame
-				-- .CompanionCombatRoleSlot
-				--. CompanionCombatTrinketSlot
-				-- .CompanionUtilityTrinketSlot
-				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, cb=true})
+			self:SecureHookScript(_G.DelvesCompanionAbilityListFrame, "OnShow", function(this)
+				self:skinObject("ddbutton", {obj=this.DelvesCompanionRoleDropdown, fType=ftype})
+				self:skinPagingControls(this.DelvesCompanionAbilityListPagingControls)
+				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true})
+				if self.modBtnBs then
+					local function skinAbilityButtons()
+						for _, btn in _G.ipairs(this.buttons) do
+							aObj:addButtonBorder{obj=btn, fType=ftype, libt=true, clr=btn.nodeInfo.activeRank > 0 and "white"}
+						end
+					end
+					self:SecureHook(this, "Refresh", function(_, _, _)
+						skinAbilityButtons()
+					end)
+					skinAbilityButtons()
+				end
+
+				self:Unhook(this, "OnShow")
+			end)
+
+		end
+
+		aObj.blizzLoDFrames[ftype].DelvesDifficultyPicker = function(self)
+			if not self.prdb.DelvesUI or self.initialized.DelvesDifficultyPicker then return end
+			self.initialized.DelvesDifficultyPicker = true
+
+			self:SecureHookScript(_G.DelvesDifficultyPickerFrame, "OnShow", function(this)
+				self:keepFontStrings(this.Border)
+				self:skinObject("ddbutton", {obj=this.Dropdown, fType=ftype})
+				-- .DelveModifiersWidgetContainer
+				-- .DelveBackgroundWidgetContainer
+				local function skinRewardBtns()
+					for btn in this.DelveRewardsContainerFrame.rewardPool:EnumerateActive() do
+						btn.NameFrame:SetTexture(nil)
+						if self.modBtnBs then
+							self:addButtonBorder{obj=btn, libt=true, relTo=btn.Icon}
+						end
+					end
+				end
+				self:SecureHook(this.DelveRewardsContainerFrame, "SetRewards", function(fObj)
+					skinRewardBtns()
+				end)
+				_G.C_Timer.After(0.5, function() -- wait for buttons to be setup
+					skinRewardBtns()
+				end)
+				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, cb=true, ofs=4})
+				self:moveObject{obj=this.CloseButton, x=-3, y=-1}
 				if self.modBtns then
-					self:skinStdButton{obj=this.CompanionConfigShowAbilitiesButton, fType=ftype, schk=true, sechk=true}
+					self:skinStdButton{obj=this.EnterDelveButton, fType=ftype, sechk=true}
 				end
 
 				self:Unhook(this, "OnShow")
@@ -1025,24 +1074,6 @@ aObj.SetupRetail_UIFrames = function()
 
 		end
 
-		aObj.blizzLoDFrames[ftype].DelvesDifficultyPicker = function(self)
-			if not self.prdb.DelvesUI or self.initialized.DelvesDifficultyPicker then return end
-			self.initialized.DelvesDifficultyPicker = true
-
-			self:SecureHookScript(_G.DelvesDifficultyPickerFrame, "OnShow", function(this)
-				self:skinObject("ddbutton", {obj=this.Dropdown, fType=ftype})
-				-- .DelveModifiersWidgetContainer
-				-- .DelveBackgroundWidgetContainer
-				-- .DelveRewardsContainerFrame
-				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, cb=true})
-				if self.modBtns then
-					self:skinStdButton{obj=this.EnterDelveButton, fType=ftype}
-				end
-
-				self:Unhook(this, "OnShow")
-			end)
-
-		end
 	end
 
 	aObj.blizzFrames[ftype].DestinyFrame = function(self)
@@ -1257,6 +1288,9 @@ aObj.SetupRetail_UIFrames = function()
 
 		local function skinOverlay(_, oFrame)
 			oFrame = oFrame or _G.ExpansionLandingPage.overlayFrame
+			if oFrame.Border then
+				oFrame.Border:DisableDrawLayer("OVERLAY")
+			end
 			oFrame.Header.TitleDivider:SetTexture(nil)
 			if oFrame.MajorFactionList then
 				oFrame.ScrollFadeOverlay:DisableDrawLayer("ARTWORK")
@@ -3799,7 +3833,7 @@ aObj.SetupRetail_UIFrames = function()
 					oFrame:DisableDrawLayer("BACKGROUND")
 					oFrame.Border:SetTexture(nil)
 					if self.modBtns then
-						self:skinStdButton{obj=oFrame, ofs=-2, clr="gold"}
+						self:skinStdButton{obj=oFrame, fType=ftype, ofs=-2, clr="gold"}
 						if oFrame.ActiveTexture then -- TrackingPin
 							self:SecureHook(oFrame, "Refresh", function(bObj)
 								self:clrBtnBdr(bObj, "gold")
@@ -3812,7 +3846,7 @@ aObj.SetupRetail_UIFrames = function()
 					oFrame.Border:SetTexture(nil)
 					aObj.modUIBtns:skinCloseButton{obj=oFrame.ResetButton, fType=ftype, noSkin=true}
 					if self.modBtns then
-						self:skinStdButton{obj=oFrame, ofs=-2, clr="gold"}
+						self:skinStdButton{obj=oFrame, fType=ftype, ofs=-2, clr="gold"}
 					end
 				-- BountyBoard overlay
 				elseif oFrame.bountyObjectivePool then
@@ -3828,7 +3862,7 @@ aObj.SetupRetail_UIFrames = function()
 				elseif oFrame.ActionFrameTexture then
 					oFrame.ActionFrameTexture:SetTexture(nil)
 					if self.modBtnBs then
-						self:addButtonBorder{obj=oFrame.SpellButton}
+						self:addButtonBorder{obj=oFrame.SpellButton, fType=ftype}
 					end
 				-- ZoneTimer
 				elseif oFrame.TimeLabel then
@@ -3847,11 +3881,11 @@ aObj.SetupRetail_UIFrames = function()
 					oFrame:DisableDrawLayer("BORDER")
 					oFrame.overlay:DisableDrawLayer("OVERLAY")
 				-- SidePanelToggle
-				elseif oFrame.CloseButton
-				and self.modBtnBs
-				then
-					self:addButtonBorder{obj=oFrame.CloseButton, clr="gold"}
-					self:addButtonBorder{obj=oFrame.OpenButton, clr="gold"}
+				elseif oFrame.CloseButton then
+					if self.modBtnBs then
+						self:addButtonBorder{obj=oFrame.CloseButton, fType=ftype, clr="gold"}
+						self:addButtonBorder{obj=oFrame.OpenButton, fType=ftype, clr="gold"}
+					end
 				--@debug@
 				else
 					aObj:Debug("Unhandled WMF overlayFrame: [%s, %s]", oFrame)

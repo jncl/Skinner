@@ -1664,15 +1664,28 @@ aObj.SetupRetail_PlayerFrames = function()
 			self:SecureHookScript(this.TalentsFrame, "OnShow", function(fObj)
 				fObj.BlackBG:SetTexture(nil)
 				fObj.BottomBar:SetTexture(nil)
-				-- TODO: skin .HeroTalentsContainer
 				local htc = fObj.HeroTalentsContainer
 				htc.HeroSpecButton.Border:SetTexture(nil)
-					-- .CurrencyFrame
-					-- .CollapseButton
-					-- .PreviewContainer
-					-- .ExpandedContainer
-					-- .CollapsedContainer
-					-- .HeroTalentsUnlockedAnimFrame
+				htc.HeroSpecButton.BorderHover:SetTexture(nil)
+				-- TODO: Only hide these textures when a spec is selected
+				if not htc:IsDisplayingHeroSpecChoices() then
+					htc.HeroSpecButton.ChoiceBorder:SetTexture(nil)
+					htc.HeroSpecButton.ChoiceBorderHover:SetTexture(nil)
+				else
+					self:SecureHook(htc, "UpdateHeroSpecButton", function(frame)
+						if not htc:IsDisplayingHeroSpecChoices() then
+							htc.HeroSpecButton.ChoiceBorder:SetTexture(nil)
+							htc.HeroSpecButton.ChoiceBorderHover:SetTexture(nil)
+						end
+						self:Unhook(frame, "UpdateHeroSpecButton")
+					end)
+				end
+				self:changeTandC( htc.CurrencyFrame.Background)
+				-- .CollapseButton is displayed when Hero Spec hasn't been selected
+				self:skinObject("frame", {obj=htc.PreviewContainer, fType=ftype, kfs=true, fb=true, ofs=-20, y1=-45, clr="grey"})
+				self:skinObject("frame", {obj=htc.ExpandedContainer, fType=ftype, kfs=true, fb=true, ofs=-20, y1=-45})
+				self:skinObject("frame", {obj=htc.CollapsedContainer, fType=ftype, kfs=true, fb=true, ofs=-20, y1=-45})
+				-- .HeroTalentsUnlockedAnimFrame
 
 				self:skinObject("ddbutton", {obj=fObj.LoadSystem.Dropdown, fType=ftype})
 				self:skinObject("editbox", {obj=fObj.SearchBox, fType=ftype, si=true, y1=-4, y2=4})
@@ -1705,6 +1718,28 @@ aObj.SetupRetail_PlayerFrames = function()
 					end
 					_G.ScrollUtil.AddAcquiredFrameCallback(frame.ScrollBox, skinElement, aObj, true)
 					self:skinObject("frame", {obj=frame, fType=ftype, kfs=true, ofs=6})
+
+					self:Unhook(frame, "OnShow")
+				end)
+
+				self:SecureHookScript(_G.HeroTalentsSelectionDialog, "OnShow", function(frame)
+					for spec in frame.SpecContentFramePool:EnumerateActive() do
+						spec.ColumnDivider:SetTexture(nil)
+						-- TODO: make the SpecImage square ?
+						spec.SpecImageBorder:SetTexture(nil)
+						spec.SpecImageBorderSelected:SetTexture(nil)
+						for _, texArray in _G.pairs{"ActivatedLeftFrames", "ActivatedRightFrames"} do
+							for _, tex in _G.ipairs(spec[texArray]) do
+								tex:SetTexture(nil)
+							end
+						end
+						self:skinObject("frame", {obj=spec, fType=ftype, fb=true})
+						if self.modBtns then
+							self:skinStdButton{obj=spec.ActivateButton, fType=ftype}
+							self:skinStdButton{obj=spec.ApplyChangesButton, fType=ftype, sechk=true}
+						end
+					end
+					self:skinObject("frame", {obj=frame, fType=ftype, kfs=true, cb=true, x1=2})
 
 					self:Unhook(frame, "OnShow")
 				end)

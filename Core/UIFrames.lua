@@ -3479,6 +3479,7 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 		return textObject:SetTextColor(textObject:GetTextColor())
 	end
 	-- Documentation in UIWidgetManagerSharedDocumentation.lua (UIWidgetVisualizationType)
+	local regs, tcr
 	local function skinWidget(wFrame, wInfo)
 		-- handle in combat
 		if _G.InCombatLockdown() then
@@ -3494,9 +3495,8 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 			-- DON'T change textures as it doesn't really improve it
 			_G.nop()
 		elseif wFrame.widgetType == 2 then -- StatusBar
-			local regs
 			-- background & border textures
-			if self.isRtl then
+			if aObj.isRtl then
 				regs = {2, 3, 4, 8, 9, 10}
 			else
 				regs = {1, 2, 3, 5, 6 ,7}
@@ -3524,9 +3524,9 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 			if aObj.modBtnBs then
 				aObj:addButtonBorder{obj=wFrame, relTo=wFrame.Icon}
 				if wInfo.visInfoDataFunction(wFrame.widgetID) then
-					self:clrBtnBdr(wFrame, "grey")
+					aObj:clrBtnBdr(wFrame, "grey")
 				else
-					self:clrBtnBdr(wFrame)
+					aObj:clrBtnBdr(wFrame)
 				end
 			end
 		elseif wFrame.widgetType == 8 then -- TextWithState
@@ -3549,7 +3549,7 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 		-- N.B. Classic ONLY has 12 UIWidgets
 		elseif wFrame.widgetType == 13 then -- SpellDisplay
 			wFrame.Spell.Border:SetTexture(nil)
-			local tcr = setTextColor(wFrame.Spell.Text)
+			tcr = setTextColor(wFrame.Spell.Text)
 			if aObj.modBtnBs then
 				aObj:addButtonBorder{obj=wFrame.Spell, relTo=wFrame.Spell.Icon, reParent={wFrame.Spell.StackCount}}
 				if tcr == 0.5 then
@@ -3589,6 +3589,14 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 				sBar.Frame:SetAlpha(0)
 			end
 		elseif wFrame.widgetType == 25 then -- TextWithSubtext
+			_G.nop()
+		elseif wFrame.widgetType == 26 then -- MapPinAnimation
+			_G.nop()
+		elseif wFrame.widgetType == 27 then -- ItemDisplay
+			_G.nop()
+		elseif wFrame.widgetType == 28 then -- TugOfWar
+			_G.nop()
+		elseif wFrame.widgetType == 29 then -- ScenarioHeaderDelves
 			_G.nop()
 		end
 	end

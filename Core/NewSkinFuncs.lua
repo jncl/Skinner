@@ -177,9 +177,9 @@ aObj.skinTPLs = {
 do
 	for name, optsTable in _G.pairs(aObj.skinTPLs) do
 		if _G.type(optsTable) == "table" then
-			optsTable.type = name
+			optsTable.type  = name
 			optsTable.ftype = "a"
-			optsTable.ooc = optsTable.ooc or "false" -- DON'T check for InCombat status
+			optsTable.ncc   = optsTable.ncc or false -- DON'T check for InCombat status
 		end
 	end
 end
@@ -271,11 +271,11 @@ function aObj:skinObject(...)
 
 	if objType then
 		optsTable = self.skinTPLs.new(objType, objTable)
-		if aObj:canSkin(skinFuncs[objType], optsTable, optsTable.ooc) then
+		if aObj:canSkin(skinFuncs[objType], optsTable, optsTable.ncc) then
 			skinFuncs[objType](optsTable)
 		end
 	else
-		if aObj:canSkin(skinFuncs[objTable.type], objTable, optsTable.ooc) then
+		if aObj:canSkin(skinFuncs[objTable.type], objTable, optsTable.ncc) then
 			skinFuncs[objTable.type](objTable)
 		end
 	end
@@ -822,6 +822,7 @@ local function skinSlider(tbl)
 	tbl.obj:GetThumbTexture():SetAlpha(1)
 end
 skinFuncs.slider = function(table) skinSlider(table) end
+local sbG
 local function skinStatusBar(tbl)
 	--@debug@
 	_G.assert(tbl.obj, "Missing object __sSB\n" .. _G.debugstack(2, 3, 2))
@@ -838,7 +839,7 @@ local function skinStatusBar(tbl)
 		return
 	end
 	-- create local object
-	local sbG = aObj.sbGlazed[tbl.obj]
+	sbG = aObj.sbGlazed[tbl.obj]
 	-- remove texture regions
 	aObj:removeRegions(tbl.obj, tbl.regions)
 	-- create background texture if required
@@ -859,7 +860,7 @@ local function skinStatusBar(tbl)
 		for _, tex in _G.pairs(tbl.other) do
 			tex:SetTexture(aObj.sbTexture)
 			tex:SetVertexColor(aObj.sbClr:GetRGBA())
-			sbG[#sbG + 1] = tex
+			aObj:add2Table(sbG, tex)
 		end
 	end
 	-- nop Atlas functions
