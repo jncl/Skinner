@@ -2,7 +2,18 @@
 	"folders":
 	[
 		{
-			"path": "."
+			"path": ".",
+            "folder_exclude_patterns": [
+            	".github/",
+            	"Fonts/",
+            	"Libs/",
+            	"Locales/",
+            	"ObsoleteSkins/",
+            	"Textures/",
+            ],
+			"file_exclude_patterns": [
+				".*",
+			],
 		}
 	]
 }
