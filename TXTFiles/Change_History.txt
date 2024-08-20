@@ -1,3 +1,26 @@
+beta11.56110.1
+Jncl:
+	Updated ToDo txt files
+	Updated Change_History.txt
+	Updated version numbers
+	Updated TalkingHeadFrame skin, hopefully closes #119
+	Updated TOC
+	Updated NSF code
+	Updated UtilFuncs code
+	Updated UIButtons code
+	Updated PVPUI frame
+	Re-added code to skin ClassTalent Dialog frames
+	Updated BuffsFrame skin & ObjectiveTracker skin, closes #123
+	Updated AlertFrames skin
+	Bugfix for MovieFRame skin
+	Updated MonthlyActivitiesFrame
+	Updated EncounterJournal skin, closes #126
+	Updated WeeklyRewardsFRame skin, closes #121
+	Updated QuestFrame skin, closes #120, closes #125
+	Updated ViewPort code, closes #122
+	Removed luacheck comment lines
+	Updated LibDialog, LibUIDropDownMenu & RareScanner skins, closes #124
+
 beta11.56014.3
 Jncl:
 	Updated ToDo.txt files
