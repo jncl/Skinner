@@ -1067,6 +1067,7 @@ aObj.SetupRetail_NPCFrames = function()
 				end
 				if new ~= false then
 					element:GetNormalTexture():SetTexture(nil)
+					element.disabledBG:SetTexture(nil)
 					if aObj.modBtnBs then
 						aObj:addButtonBorder{obj=element, relTo=element.icon}
 					end
