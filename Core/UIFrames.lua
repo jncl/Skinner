@@ -2724,8 +2724,8 @@ if _G.PTR_IssueReporter then
 			skinFrame(_G.PTR_IssueReporter.StandaloneSurvey, 2) -- header frame
 			skinFrame(_G.PTR_IssueReporter.StandaloneSurvey.SurveyFrame)
 			if self.modBtns then
-				self:skinCloseButton{obj=self:getChild(_G.PTR_IssueReporter.StandaloneSurvey.SurveyFrame, 2), noSkin=true}
-				self:skinStdButton{obj=self:getChild(_G.PTR_IssueReporter.StandaloneSurvey.SurveyFrame, 3), ofs=-1, clr="blue"}
+				self:skinCloseButton{obj=self:getChild(_G.PTR_IssueReporter.StandaloneSurvey.SurveyFrame, 2), fType=ftype, noSkin=true}
+				self:skinStdButton{obj=self:getChild(_G.PTR_IssueReporter.StandaloneSurvey.SurveyFrame, 3), fType=ftype, ofs=-1, clr="blue"}
 			end
 
 			self:Unhook(_G.PTR_IssueReporter, "GetStandaloneSurveyFrame")
@@ -2746,7 +2746,7 @@ if _G.PTR_IssueReporter then
 				if frame.FrameType == "MultipleChoice"
 				and self.modChkBtns then
 					for _, checkBox in _G.pairs(frame.Checkboxes) do
-						self:skinCheckButton{obj=checkBox}
+						self:skinCheckButton{obj=checkBox, fType=ftype, clr="blue"}
 					end
 				-- elseif frame.FrameType == "StandaloneQuestion" then
 				-- elseif frame.FrameType == "ModelViewer" then
