@@ -432,10 +432,17 @@ aObj.SetupRetail_NPCFrames = function()
 			skinSideTabs(fObj)
 			if self.modBtnBs then
 				self:addButtonBorder{obj=fObj.PurchaseTab, relTo=fObj.PurchaseTab.Icon}
-				for btn in fObj.itemButtonPool:EnumerateActive() do
-					btn.Background:SetTexture(nil)
-					self:addButtonBorder{obj=btn, fType=ftype, ibt=true}
+				local function skinItemSlots()
+					for btn in fObj.itemButtonPool:EnumerateActive() do
+						btn.Background:SetTexture(nil)
+						aObj:addButtonBorder{obj=btn, fType=ftype, ibt=true}
+					end
 				end
+				self:SecureHook(fObj, "GenerateItemSlotsForSelectedTab", function(frame)
+					skinItemSlots()
+					self:Unhook(frame, "GenerateItemSlotsForSelectedTab")
+				end)
+				skinItemSlots()
 			end
 
 			self:SecureHookScript(fObj.MoneyFrame, "OnShow", function(frame)
