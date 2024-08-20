@@ -1442,6 +1442,29 @@ function aObj:skinColumnDisplay(frame)
 
 end
 
+local fName, bdObj
+function aObj:skinDDList(frame, ftype)
+
+	if frame then
+		fName = frame:GetName()
+		for _, backdrop in _G.pairs{"Border", "Backdrop", "MenuBackdrop"} do
+			bdObj = frame[backdrop] or _G[fName .. backdrop]
+			if bdObj then
+				if bdObj.ApplyBackdrop then
+					aObj:removeBackdrop(bdObj)
+				else
+					aObj:keepFontStrings(bdObj)
+				end
+				if bdObj.NineSlice then
+					aObj:removeNineSlice(bdObj.NineSlice)
+				end
+			end
+		end
+		aObj:skinObject("frame", {obj=frame, fType=ftype or nil, kfs=true, ofs=-4})
+	end
+
+end
+
 function aObj:skinIconSelector(frame, ftype)
 
 	self:removeNineSlice(frame.BorderBox)

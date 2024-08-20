@@ -2,26 +2,6 @@ local _, aObj = ...
 local _G = _G
 -- This is a Library
 
-local fName, bdObj
-local function skinDDL(frame)
-	if frame then
-		fName = frame:GetName()
-		for _, backdrop in _G.pairs{"Border", "Backdrop", "MenuBackdrop"} do
-			bdObj = frame[backdrop] or _G[fName .. backdrop]
-			if bdObj then
-				if bdObj.ApplyBackdrop then
-					aObj:removeBackdrop(bdObj)
-				else
-					aObj:keepFontStrings(bdObj)
-				end
-				if bdObj.NineSlice then
-					aObj:removeNineSlice(bdObj.NineSlice)
-				end
-			end
-		end
-		aObj:skinObject("frame", {obj=frame, kfs=true, ofs=-4})
-	end
-end
 local ddPrefix
 local function skinAndHook(lDD, lVer)
 	if lVer == 90117 then -- Questie uses this
@@ -33,15 +13,15 @@ local function skinAndHook(lDD, lVer)
 	else
 		ddPrefix = "L_DropDownList"
 	end
-	aObj:Debug("skinAndHook: [%s, %s]", ddPrefix)
+	-- aObj:Debug("skinAndHook: [%s, %s]", ddPrefix)
 	for i = 1, 3 do
 		if _G[ddPrefix .. i] then
-			skinDDL(_G[ddPrefix .. i])
+			aObj:skinDDList(_G[ddPrefix .. i])
 		end
 	end
 	aObj:SecureHook(lDD, "UIDropDownMenu_CreateFrames", function(_, level, _)
 		for i = 1, level do
-			skinDDL(_G[ddPrefix .. i])
+			aObj:skinDDList(_G[ddPrefix .. i])
 		end
 	end)
 end
@@ -58,7 +38,7 @@ do
 			if self.initialized[lib] then return end
 			self.initialized[lib] = true
 			local lDD, lVer = _G.LibStub:GetLibrary(lib, true)
-			aObj:Debug("LibUIDropDownMenu: [%s, %s, %s]", lib, lDD, lVer)
+			-- aObj:Debug("LibUIDropDownMenu: [%s, %s, %s]", lib, lDD, lVer)
 			if lDD then
 				skinAndHook(lDD, lVer)
 			end

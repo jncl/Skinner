@@ -52,8 +52,7 @@ aObj.libsToSkin["LibDropDown"] = function(self) -- v LibDropDown, 6
 	local lDD = _G.LibStub:GetLibrary("LibDropDown", true)
 	if lDD then
 		local function skinDD(menu)
-			aObj:removeBackdrop(menu.Backdrop)
-			aObj:skinObject("frame", {obj=menu, kfs=true, ofs=6})
+			aObj:skinDDList(menu)
 			_G.RaiseFrameLevelByTwo(menu)
 		end
 		for menu, _ in _G.pairs(lDD.dropdowns) do

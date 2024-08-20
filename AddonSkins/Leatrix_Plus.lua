@@ -85,6 +85,7 @@ aObj.addonsToSkin.Leatrix_Plus = function(self) -- v 10.2.26/1.15.30/4.0.05
 					dd.Button = aObj:getChild(dd, 1)
 					aObj:skinObject("dropdown", {obj=dd})
 					aObj:skinObject("frame", {obj=aObj:getChild(child, 2), kfs=true, ofs=0}) -- dropdown list
+				-- TODO: skin DropdownButtons
 				elseif child:IsObjectType("Frame")
 				and child.scroll -- MuteCustomSounds
 				then

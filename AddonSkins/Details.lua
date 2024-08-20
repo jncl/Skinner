@@ -4,6 +4,7 @@ local _G = _G
 
 -- used by all contained functions
 local Details = _G.LibStub:GetLibrary("AceAddon-3.0"):GetAddon("_detalhes", true)
+
 aObj.addonsToSkin.Details = function(self) -- v Details.12829.159
 
 	-- Plugins
@@ -188,9 +189,20 @@ function aObj:Details_Vanguard()
 	end
 
 	-- skin Welcome frame if it exists
-	local frame = aObj:findFrame2("UIParent", "Frame", 400, 200)
-	if frame then
-		aObj:skinObject("frame", {obj=frame, kfs=true, ofs=4})
-	end
+	local width, height
+	self.RegisterCallback("Details_Vanguard", "UIParent_GetChildren", function(_, child, key)
+		if child:GetName() == nil then
+			if child:IsObjectType("Frame") then
+				width, height  = _G.Round(child:GetWidth()), _G.Round(child:GetHeight())
+				if width   == 400
+				and	height == 200
+				then
+					aObj:skinObject("frame", {obj=child, kfs=true, ofs=4})
+					self.UnregisterCallback("Details_Vanguard", "UIParent_GetChildren")
+				end
+			end
+		end
+	end)
+	self:scanChildren("UIParent")
 
 end

@@ -3430,17 +3430,9 @@ aObj.blizzFrames[ftype].UIDropDownMenu = function(self)
 	if not self.prdb.UIDropDownMenu or self.initialized.UIDropDownMenu then return end
 	self.initialized.UIDropDownMenu = true
 
-	local function skinDDList(frame)
-		local fName = frame:GetName()
-		aObj:removeBackdrop(_G[fName .. "Backdrop"])
-		aObj:removeBackdrop(_G[fName .. "MenuBackdrop"])
-		aObj:removeNineSlice(_G[fName .. "MenuBackdrop"].NineSlice)
-		aObj:skinObject("frame", {obj=frame, fType=ftype, kfs=true, ofs=self.isRtl and -4 or -6})
-	end
-
 	for i = 1, _G.UIDROPDOWNMENU_MAXLEVELS do
 		self:SecureHookScript(_G["DropDownList" .. i], "OnShow", function(this)
-			skinDDList(this)
+			self:skinDDList(this, ftype)
 
 			self:Unhook(this, "OnShow")
 		end)
@@ -3448,7 +3440,7 @@ aObj.blizzFrames[ftype].UIDropDownMenu = function(self)
 
 	self:SecureHook("UIDropDownMenu_CreateFrames", function(_)
 		if not _G["DropDownList" .. _G.UIDROPDOWNMENU_MAXLEVELS].sf then
-			skinDDList(_G["DropDownList" .. _G.UIDROPDOWNMENU_MAXLEVELS])
+			self:skinDDList(_G["DropDownList" .. _G.UIDROPDOWNMENU_MAXLEVELS], ftype)
 		end
 	end)
 
