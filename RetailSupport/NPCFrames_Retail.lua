@@ -1042,7 +1042,7 @@ aObj.SetupRetail_NPCFrames = function()
 			_G.ClassTrainerStatusBarMiddle:SetAlpha(0)
 			_G.ClassTrainerStatusBarSkillRank:SetPoint("CENTER", _G.ClassTrainerStatusBar) -- Blizzard bug
 			self:skinObject("statusbar", {obj=_G.ClassTrainerStatusBar, fi=0, bg=_G.ClassTrainerStatusBarBackground})
-			self:skinObject("ddbutton", {obj=this.FilterDropdown, fType=ftype})
+			self:skinObject("ddbutton", {obj=this.FilterDropdown, fType=ftype, filter=true})
 			self:removeMagicBtnTex(_G.ClassTrainerTrainButton)
 			this.skillStepButton:GetNormalTexture():SetTexture(nil)
 			self:skinObject("scrollbar", {obj=this.ScrollBar, fType=ftype})
