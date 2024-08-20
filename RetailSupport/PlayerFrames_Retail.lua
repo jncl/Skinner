@@ -289,7 +289,7 @@ aObj.SetupRetail_PlayerFrames = function()
 
 			self:SecureHookScript(this.SearchPreviewContainer, "OnShow", function(fObj)
 				self:adjHeight{obj=fObj, adj=((4 * 27) + 30)}
-				for _, btn in pairs(fObj.searchPreviews) do
+				for _, btn in _G.pairs(fObj.searchPreviews) do
 					self:removeRegions(btn, {5, 6})
 					btn.IconFrame:SetTexture(nil)
 					if self.modBtnBs then
