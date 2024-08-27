@@ -724,7 +724,7 @@ aObj.SetupRetail_PlayerFrames = function()
 		end)
 
 		self:SecureHookScript(_G.DressUpFrame, "OnShow", function(this)
-			self:skinObject("ddbutton", {obj=this.OutfitDropdown, fType=ftype, y2=-4})
+			self:skinObject("ddbutton", {obj=this.OutfitDropdown, fType=ftype})
 			self:skinObject("frame", {obj=this.OutfitDetailsPanel, fType=ftype, kfs=true, ofs=-7})
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, y2=-4})
 			if self.prdb.DUTexture then
