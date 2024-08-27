@@ -235,7 +235,9 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 					frame[tbl.icon.obj or "Icon"].IconBorder:SetTexture(nil)
 				end
 				-- change Icon object here, used for button border and quality colour
-				frame = frame[tbl.icon.obj or "Icon"]
+				if tbl.icon.obj then
+					frame = frame[tbl.icon.obj or "Icon"]
+				end
 				aObj:addButtonBorder{obj=frame, fType=ftype, relTo=frame[tbl.icon.tex]}
 			end
 			if itemQuality then
