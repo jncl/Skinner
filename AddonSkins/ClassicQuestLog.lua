@@ -4,7 +4,7 @@ local _G = _G
 
 aObj.addonsToSkin["Classic Quest Log"] = function(self)
 
-	local v1, _, _ = _G.GetAddOnMetadata("Classic Quest Log","Version"):match("^(%d+)%.(%d+)%.(%d+)")
+	local v1, _, _ = _G.C_AddOns.GetAddOnMetadata("Classic Quest Log","Version"):match("^(%d+)%.(%d+)%.(%d+)")
 	v1 = _G.tonumber(v1)
 
 	if v1 == 2 then -- v 2.3.12
@@ -73,7 +73,7 @@ aObj.addonsToSkin["Classic Quest Log"] = function(self)
 				self:checkShown(this)
 			end
 		end)
-	elseif v1 == 3 then -- v 3.0.2
+	elseif v1 == 3 then -- v 3.1.6
 		self:SecureHookScript(_G.ClassicQuestLog, "OnShow", function(this)
 			self:removeInset(this.Chrome.CountFrame)
 			self:removeInset(this.Log)
@@ -104,6 +104,11 @@ aObj.addonsToSkin["Classic Quest Log"] = function(self)
 				fObj.ScrollFrame.Content.StatusText:SetTextColor(self.BT:GetRGB())
 				fObj.ScrollFrame.Content.RewardsFrame.Header:SetTextColor(self.HT:GetRGB())
 				--TODO: fObj.ScrollFrame.Content.SealFrame
+			end)
+			self:SecureHook(this.Detail, "ShowTypeFrame", function(fObj, _)
+				for _, btn in pairs(fObj.ScrollFrame.Content.TypeFrame.Buttons) do
+					btn.Text:SetTextColor(self.BT:GetRGB())
+				end
 			end)
 			self:SecureHook(this.Detail, "ShowObjectives", function(fObj, _)
 				for _, objective in _G.pairs(fObj.ScrollFrame.Content.ObjectivesFrame.Objectives) do
@@ -151,7 +156,12 @@ aObj.addonsToSkin["Classic Quest Log"] = function(self)
 			self:SecureHookScript(this.Options, "OnShow", function(fObj)
 				self:removeInset(fObj)
 				self:skinObject("scrollbar", {obj=fObj.ScrollFrame.ScrollBar})
-				-- TODO: skin pseudo check buttons
+				if self.modChkBtns then
+					for _, cBtn in _G.pairs(fObj.ScrollFrame.Content.CheckButtons) do
+						cBtn.CheckButton:SetTexture(nil)
+						self:addButtonBorder{obj=cBtn, relTo=cBtn.CheckButton, reParent={cBtn.CheckMark}, ofs=-1}
+					end
+				end
 
 				self:add2Table(self.ttList, this.Log.CampaignTooltip)
 

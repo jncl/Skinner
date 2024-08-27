@@ -3434,7 +3434,7 @@ aObj.blizzFrames[ftype].UIDropDownMenu = function(self)
 
 	for i = 1, _G.UIDROPDOWNMENU_MAXLEVELS do
 		self:SecureHookScript(_G["DropDownList" .. i], "OnShow", function(this)
-			self:skinDDList(this, ftype)
+			self:skinObject("ddlist", {obj=this, fType=ftype})
 
 			self:Unhook(this, "OnShow")
 		end)
@@ -3442,7 +3442,7 @@ aObj.blizzFrames[ftype].UIDropDownMenu = function(self)
 
 	self:SecureHook("UIDropDownMenu_CreateFrames", function(_)
 		if not _G["DropDownList" .. _G.UIDROPDOWNMENU_MAXLEVELS].sf then
-			self:skinDDList(_G["DropDownList" .. _G.UIDROPDOWNMENU_MAXLEVELS], ftype)
+			self:skinObject("ddlist", {obj=_G["DropDownList" .. _G.UIDROPDOWNMENU_MAXLEVELS], fType=ftype})
 		end
 	end)
 

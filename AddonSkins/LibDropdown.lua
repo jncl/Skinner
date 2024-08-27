@@ -52,14 +52,14 @@ aObj.libsToSkin["LibDropDown"] = function(self) -- v LibDropDown, 6
 	local lDD = _G.LibStub:GetLibrary("LibDropDown", true)
 	if lDD then
 		local function skinDD(menu)
-			aObj:skinDDList(menu)
+			aObj:skinObject("ddlist", {obj=menu, ofs=10})
 			_G.RaiseFrameLevelByTwo(menu)
 		end
 		for menu, _ in _G.pairs(lDD.dropdowns) do
 			skinDD(menu)
 		end
-		self:RawHook(lDD, "NewMenu", function(this, parent, name)
-			local menu = self.hooks[this].NewMenu(this, parent, name)
+		self:RawHook(lDD, "NewMenu", function(...)
+			local menu = self.hooks[lDD].NewMenu(...)
 			skinDD(menu)
 			return menu
 		end, true)

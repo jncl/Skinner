@@ -16,12 +16,12 @@ local function skinAndHook(lDD, lVer)
 	-- aObj:Debug("skinAndHook: [%s, %s]", ddPrefix)
 	for i = 1, 3 do
 		if _G[ddPrefix .. i] then
-			aObj:skinDDList(_G[ddPrefix .. i])
+			aObj:skinObject("ddlist", {obj=_G[ddPrefix .. i]})
 		end
 	end
 	aObj:SecureHook(lDD, "UIDropDownMenu_CreateFrames", function(_, level, _)
 		for i = 1, level do
-			aObj:skinDDList(_G[ddPrefix .. i])
+			aObj:skinObject("ddlist", {obj=_G[ddPrefix .. i]})
 		end
 	end)
 end

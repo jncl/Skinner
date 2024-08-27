@@ -118,6 +118,7 @@
 <Script file="LibDBIcon.lua"/>
 <Script file="LibDialog.lua"/>
 <Script file="LibDropdown.lua"/>
+<Script file="LibElioteDropDownMenu.lua"/>
 <Script file="LibKeyBound.lua"/>
 <Script file="LibKrowiProgressBar.lua"/>
 <Script file="LibMSATutorials.lua"/>
@@ -200,6 +201,7 @@
 <Script file="ServerHop.lua"/>
 <Script file="SexyMap.lua"/>
 <Script file="SilverDragon.lua"/>
+<Script file="SimpleAddonManager.lua"/>
 <Script file="Simulationcraft.lua"/>
 <Script file="SinStats.lua"/>
 <Script file="Skada.lua"/>

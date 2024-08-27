@@ -9,11 +9,11 @@ aObj.libsToSkin["MSA-DropDownMenu-1.0"] = function(self) -- v 1.0.18
 	local msaDD = _G.LibStub:GetLibrary("MSA-DropDownMenu-1.0", true)
 
 	if msaDD then
-		aObj:skinDDList("MSA_DropDownList1")
-		aObj:skinDDList("MSA_DropDownList2")
+		aObj:skinObject("ddlist", {obj=_G.MSA_DropDownList1})
+		aObj:skinObject("ddlist", {obj=_G.MSA_DropDownList2})
 		self:SecureHook("MSA_DropDownMenu_CreateFrames", function(_, _)
 			for i = 1, _G.MSA_DROPDOWNMENU_MAXLEVELS do
-				aObj:skinDDList("MSA_DropDownList" .. i)
+				aObj:skinObject("ddlist", {obj=_G["MSA_DropDownList" .. i]})
 			end
 		end)
 	end

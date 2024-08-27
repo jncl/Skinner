@@ -32,6 +32,11 @@ aObj.skinTPLs = {
 		-- x2       = nil,
 		y2          = 4,
 	},
+	ddlist = {
+		nop         = false, -- stop backdrop textures being updated (ZygorGuides)
+		kfs         = true,
+		ofs         = -4,
+	},
 	dropdown = {
 		lrgTpl      = false,
 		noBB        = false,
@@ -491,6 +496,31 @@ local function skinDDButton(tbl)
 	end
 end
 skinFuncs.ddbutton = function(table) skinDDButton(table) end
+local fName, bdObj
+local function skinDDList(tbl)
+	--@debug@
+	_G.assert(tbl.obj, "Missing object sDDL\n" .. _G.debugstack(2, 3, 2))
+	--@end-debug@
+
+	aObj:Debug2("skinDDList: [%s]", tbl)
+
+	fName = tbl.obj:GetName()
+	for _, backdrop in _G.pairs{"Border", "Backdrop", "MenuBackdrop"} do
+		bdObj = tbl.obj[backdrop] or _G[fName .. backdrop]
+		if bdObj then
+			if bdObj.ApplyBackdrop then
+				aObj:removeBackdrop(bdObj, tbl.nop)
+			else
+				aObj:keepFontStrings(bdObj)
+			end
+			if bdObj.NineSlice then
+				aObj:removeNineSlice(bdObj.NineSlice)
+			end
+		end
+	end
+	aObj:skinObject("frame", {obj=tbl.obj, fType=tbl.ftype, kfs=tbl.kfs, ofs=tbl.ofs})
+end
+skinFuncs.ddlist = function(table) skinDDList(table) end
 local function skinDropDown(tbl)
 	--@debug@
 	_G.assert(tbl.obj, "Missing object (skinDropDown)\n" .. _G.debugstack(2, 3, 2))
