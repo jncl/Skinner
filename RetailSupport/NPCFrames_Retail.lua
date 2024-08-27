@@ -1000,9 +1000,7 @@ aObj.SetupRetail_NPCFrames = function()
 				end
 				_G.ScrollUtil.AddAcquiredFrameCallback(fObj.ScrollBox, skinStabledPet, aObj, true)
 				self:skinObject("editbox", {obj=fObj.FilterBar.SearchBox, fType=ftype, si=true})
-				if self.modBtns then
-					self:skinStdButton{obj=fObj.FilterBar.FilterButton, fType=ftype}
-				end
+				self:skinObject("ddbutton", {obj=fObj.FilterBar.FilterDropdown, fType=ftype, filter=true})
 
 				self:Unhook(fObj, "OnShow")
 			end)
