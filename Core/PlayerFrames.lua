@@ -891,16 +891,15 @@ if not aObj.isClscERA then
 							aObj:changeHdrExpandTex(element.Right)
 							-- TODO: change HighlightTexture
 							element:Initialize(elementData) -- force texture change
-						elseif elementData.isHeader
-						and elementData.isChild
-						then
-							if aObj.modBtns then
-								aObj:skinExpandButton{obj=element.ToggleCollapseButton, fType=ftype, onSB=true}
-							end
 						else
 							element.Content.ReputationBar.LeftTexture:SetAlpha(0)
 							element.Content.ReputationBar.RightTexture:SetAlpha(0)
 							aObj:skinObject("statusbar", {obj=element.Content.ReputationBar, fi=0})
+							if elementData.isHeader
+							and aObj.modBtns
+							then
+								aObj:skinExpandButton{obj=element.ToggleCollapseButton, fType=ftype, onSB=true}
+							end
 						end
 					end
 				end
