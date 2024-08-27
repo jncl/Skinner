@@ -954,7 +954,6 @@ if not aObj.isClscERA then
 		self:checkShown(_G.ReputationFrame)
 
 		 -- Currency Tab
-
 		if self.isRtl then
 			self:SecureHookScript(_G.TokenFrame, "OnShow", function(this)
 				self:keepFontStrings(this)
@@ -975,7 +974,8 @@ if not aObj.isClscERA then
 							aObj:keepFontStrings(element)
 							aObj:changeHdrExpandTex(element.Right)
 							-- TODO: change HighlightTexture
-							element:RefreshCollapseIcon() -- force texture change
+							-- force texture change
+							element.Right:SetAtlas(element:IsCollapsed() and "Options_ListExpand_Right" or "Options_ListExpand_Right_Expanded", _G.TextureKitConstants.UseAtlasSize)
 						elseif elementData.isHeader
 						and elementData.currencyListDepth > 0
 						then
@@ -1017,6 +1017,7 @@ if not aObj.isClscERA then
 
 				self:Unhook(_G.TokenFrame, "OnShow")
 			end)
+			self:checkShown(_G.TokenFrame)
 		end
 
 	end
