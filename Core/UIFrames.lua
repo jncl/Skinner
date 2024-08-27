@@ -3588,7 +3588,8 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 			wFrame.DecorLeft:SetAlpha(0)
 			wFrame.DecorRight:SetAlpha(0)
 			for sBar in wFrame.fillUpFramePool:EnumerateActive() do
-				sBar.Frame:SetAlpha(0)
+				sBar.Frame:SetAtlas(nil)
+				sBar.Frame.SetAtlas = _G.nop
 			end
 		elseif wFrame.widgetType == 25 then -- TextWithSubtext
 			_G.nop()
