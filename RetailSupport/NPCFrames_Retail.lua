@@ -820,7 +820,7 @@ aObj.SetupRetail_NPCFrames = function()
 			end
 			if self.modBtnBs then
 				-- N.B.: can cause ADDON_ACTION_FORBIDDEN when clicked
-				self:addButtonBorder{obj=this.UpgradeItemButton, fType=ftype, ibt=true}
+				self:addButtonBorder{obj=this.UpgradeItemButton, fType=ftype, ibt=true, ignTex=true, ofs=5}
 			end
 
 			self:Unhook(this, "OnShow")
