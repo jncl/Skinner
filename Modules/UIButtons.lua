@@ -204,16 +204,21 @@ function module:clrButtonFromBorder(bObj, texture)
 	--@debug@
 	 _G.assert(bObj and bObj.sbb, "Missing object cBFB\n" .. _G.debugstack(2, 3, 2))
 	--@end-debug@
-
 	local iBdr = bObj[texture] or bObj.IconBorder or bObj.iconBorder
-	iBdr:SetAlpha(1) -- ensure alpha is 1 otherwise btn.sbb isn't displayed
-	-- use the colour of the item's border as the BackdropBorderColor if shown
-	if iBdr:IsShown() then
-		bObj.sbb:SetBackdropBorderColor(iBdr:GetVertexColor())
-	else
-		module:clrBtnBdr(bObj, "common")
+	--@debug@
+	 _G.assert(iBdr, "Missing border Texture cBFB\n" .. _G.debugstack(2, 3, 2))
+	--@end-debug@
+
+	if iBdr then
+		iBdr:SetAlpha(1) -- ensure alpha is 1 otherwise btn.sbb isn't displayed
+		-- use the colour of the item's border as the BackdropBorderColor if shown
+		if iBdr:IsShown() then
+			bObj.sbb:SetBackdropBorderColor(iBdr:GetVertexColor())
+		else
+			module:clrBtnBdr(bObj, "common")
+		end
+		iBdr:SetAlpha(0)
 	end
-	iBdr:SetAlpha(0)
 
 end
 
@@ -612,12 +617,12 @@ local function __skinStdButton(opts)
 			module:clrBtnBdr(bObj)
 		end)
 		aObj:secureHook(opts.obj, "Enable", function(bObj, _)
-			module:clrBtnBdr(bObj, bObj.sb.clr or bObj.clr, bObj.sb.ca or bObj.ca)
+			module:clrBtnBdr(bObj, bObj.sb and bObj.sb.clr or bObj.clr, bObj.sb and bObj.sb.ca or bObj.ca)
 		end)
 	end
 	if opts.sechk then
 		aObj:secureHook(opts.obj, "SetEnabled", function(bObj)
-			module:clrBtnBdr(bObj, bObj.sb.clr or bObj.clr, bObj.sb.ca or bObj.ca)
+			module:clrBtnBdr(bObj, bObj.sb and bObj.sb.clr or bObj.clr, bObj.sb and bObj.sb.ca or bObj.ca)
 		end)
 	end
 end
