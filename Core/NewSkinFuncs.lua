@@ -104,6 +104,7 @@ aObj.skinTPLs = {
 		-- invert      = true, -- invert Gradient
 		-- rotate      = true, -- rotate Gradient
 		-- fb          = true, -- frame border [bd=10, ng=true, ofs=0]
+		-- ckbfb       = true, -- frame border [bd=10, ng=true, ofs=0], check aObj.prdb.FrameBorders option
 		sft         = false, -- use SecureFrameTemplate
 	},
 	glowbox = {
@@ -258,6 +259,7 @@ function aObj:skinObject(...)
 	--@debug@
 	_G.assert(..., "Missing arguments (skinObject)\n" .. _G.debugstack(2, 3, 2))
 	--@end-debug@
+
 	aObj:Debug2("skinObject: [%s, %s]", ...)
 
 	-- handle called with both a type and a table or just a table
@@ -626,6 +628,14 @@ local function skinFrame(tbl)
 
 	-- don't skin it twice
 	if tbl.obj.sf then return end
+
+	-- DON'T add a frame border if not required
+	if tbl.chkfb
+	and not aObj.prdb.FrameBorders
+	then
+		return
+	end
+
 	-- make all textures transparent
 	if tbl.kfs
 	or tbl.hat
@@ -697,9 +707,7 @@ local function skinFrame(tbl)
 		aObj:SecureHook(tbl.obj, "Hide", function(this) this.sf:Hide() end)
 	end
 	-- setup Frame Border options
-	if tbl.fb
-	and aObj.prdb.FrameBorders
-	then
+	if tbl.fb then
 		tbl.bd  = 10
 		tbl.ng  = true
 		tbl.ofs = tbl.ofs or 0

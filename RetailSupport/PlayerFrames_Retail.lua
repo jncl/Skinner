@@ -763,7 +763,7 @@ aObj.SetupRetail_PlayerFrames = function()
 		self.initialized.FriendsFrame = true
 
 		local function addTabBorder(frame)
-			aObj:skinObject("frame", {obj=frame, fType=ftype, fb=true, x1=0, y1=-81, x2=1, y2=0})
+			aObj:skinObject("frame", {obj=frame, fType=ftype, chkfb=true, x1=0, y1=-81, x2=1, y2=0})
 		end
 		self:SecureHookScript(_G.FriendsFrame, "OnShow", function(this)
 			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true})
@@ -1630,13 +1630,17 @@ aObj.SetupRetail_PlayerFrames = function()
 						specContentFrame:DisableDrawLayer("OVERLAY")
 						-- add border around SpecImage
 						aObj.modUIBtns:addButtonBorder{obj=specContentFrame, fType=ftype, relTo=specContentFrame.SpecImage}
-						self:skinObject("frame", {obj=specContentFrame, fType=ftype, fb=true, y2=-4})
+						self:skinObject("frame", {obj=specContentFrame, fType=ftype, chkfb=true, y2=-4})
 						if specContentFrame.specIndex == fObj:GetCurrentSpecIndex() then
 							self:clrBtnBdr(specContentFrame, "orange")
-							self:clrBBC(specContentFrame.sf, "orange")
+							if specContentFrame.sf then
+								self:clrBBC(specContentFrame.sf, "orange")
+							end
 						else
 							self:clrBtnBdr(specContentFrame, "grey")
-							self:clrBBC(specContentFrame.sf, "grey")
+							if specContentFrame.sf then
+								self:clrBBC(specContentFrame.sf, "grey")
+							end
 						end
 						if aObj.modBtns then
 							aObj:skinStdButton{obj=specContentFrame.ActivateButton, fType=ftype, schk=true}
