@@ -1239,10 +1239,6 @@ aObj.SetupRetail_UIFrames = function()
 				return
 			end
 			local toast = frame.currentDisplayingToast
-			--@debug@
-			-- _G.Spew("skinToast#2", toast)
-			-- _G.Spew("skinToast#3", toast.toastInfo)
-			--@end-debug@
 			toast:DisableDrawLayer("BACKGROUND")
 			toast:DisableDrawLayer("BORDER")
 			if toast.BannerFrame then
@@ -1252,12 +1248,6 @@ aObj.SetupRetail_UIFrames = function()
 				if toast.BannerFrame.MedalIcon then -- ChallengeMode
 					toast.BannerFrame.MedalIcon:SetDrawLayer("ARTWORK", 2)
 				end
-			end
-			if toast.Icon
-			and aObj.modBtnBs
-			then
-				aObj:addButtonBorder{obj=toast, fType=ftype, relTo=toast.Icon, reParent={toast.SubIcon, toast.SubIconRight}}
-				aObj:clrButtonFromBorder(toast)
 			end
 		end
 		skinToast(_G.EventToastManagerFrame)
