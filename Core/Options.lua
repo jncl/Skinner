@@ -380,7 +380,7 @@ aObj.SetupOptions = function(self)
 					order = 8,
 					name = self.L["Border Inset"],
 					desc = self.L["Set Border Inset"],
-					min = 0, max = 8, step = 1,
+					min = 0, max = 16, step = 1,
 				},
 			},
 		},
