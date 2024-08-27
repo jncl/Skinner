@@ -2923,10 +2923,19 @@ aObj.blizzLoDFrames[ftype].ItemSocketingUI = function(self)
 		gemTypeInfo["PunchcardYellow"] = {textureKit = "punchcard-yellow", r = 0.97, g = 0.82, b = 0.29}
 		gemTypeInfo["PunchcardBlue"]   = {textureKit = "punchcard-blue", r = 0.47, g = 0.67, b = 1}
 		gemTypeInfo["Domination"]      = {textureKit = "domination", r = 1, g = 1, b = 1}
-		gemTypeInfo["Cypher"]          = {textureKit = "meta", r = 1, g = 1, b = 1}
+		-- gemTypeInfo["Cypher"]          = {textureKit = "meta", r = 1, g = 1, b = 1}
 		gemTypeInfo["Tinker"]          = {textureKit = "punchcard-red", r = 1, g = 0.47, b = 0.47}
-		gemTypeInfo["Primordial"]      = {textureKit = "meta", r = 1, g = 1, b = 1}
+		-- gemTypeInfo["Primordial"]      = {textureKit = "meta", r = 1, g = 1, b = 1}
+		gemTypeInfo["Fragrance"]       = {textureKit = "hydraulic", r = 1, g = 1, b = 1}
 	end
+	-- setup default for missing entry
+	_G.setmetatable(gemTypeInfo, {__index = function(t, k)
+		--@debug@
+		_G.assert(false, "Missing GEM_TYPE_INFO entry for ", k)
+		--@end-debug@
+		return t["Meta"]
+	end})
+
 	self:SecureHookScript(_G.ItemSocketingFrame, "OnShow", function(this)
 		if self.isRtl then
 			self:skinObject("scrollbar", {obj=_G.ItemSocketingScrollFrame.ScrollBar, fType=ftype})
