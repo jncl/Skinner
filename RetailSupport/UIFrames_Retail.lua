@@ -2792,6 +2792,24 @@ aObj.SetupRetail_UIFrames = function()
 		if not self.prdb.PlayerChoice or self.initialized.PlayerChoice then return end
 		self.initialized.PlayerChoice = true
 
+		-- info from Blizzard_PlayerChoice.lua
+		-- local customTextureKits = {
+			-- neutral, -- default
+			-- alliance,
+			-- horde,
+			-- marine,
+			-- mechagon,
+			-- jailerstower,
+			-- cypherchoice,
+			-- Oribos,
+			-- NightFae,
+			-- Venthyr,
+			-- Kyrian,
+			-- Dragonflight,
+			-- genericplayerchoice,
+			-- thewarwithin,
+		-- }
+
 		-- choiceID
 		local optOfs = {
 			[0]   = {-5, 0, 5, -30}, -- defaults
@@ -2822,12 +2840,12 @@ aObj.SetupRetail_UIFrames = function()
 			frame.sf:ClearAllPoints()
 			frame.sf:SetPoint("TOPLEFT",frame, "TOPLEFT", x1Ofs, y1Ofs)
 			frame.sf:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", x2Ofs, y2Ofs)
-			x1Ofs, y1Ofs, x2Ofs, y2Ofs = nil, nil, nil, nil
 		end
 		local function skinOptions(frame, source)
 			-- aObj:Debug("skinOptions PCUI: [%s, %s, %s, %s]", source, frame.uiTextureKit, frame.optionFrameTemplate)
 			if not frame.optionFrameTemplate then return end
-			if frame.uiTextureKit == "jailerstower"
+			if frame.sf
+			and frame.uiTextureKit == "jailerstower"
 			or frame.uiTextureKit == "cypherchoice"
 			then
 				frame.sf:Hide()
@@ -2882,10 +2900,10 @@ aObj.SetupRetail_UIFrames = function()
 
 						aObj:Unhook(opt, "OnUpdate")
 					end)
-					aObj:secureHook(opt, "OnEnter", function(_)
+					aObj:SecureHook(opt, "OnEnter", function(_)
 						resizeSF(opt, 998)
 					end)
-					aObj:secureHook(opt, "OnLeave", function(_)
+					aObj:SecureHook(opt, "OnLeave", function(_)
 						resizeSF(opt, 999)
 					end)
 				elseif frame.optionFrameTemplate == "PlayerChoiceTorghastOptionTemplate" then
@@ -2896,18 +2914,22 @@ aObj.SetupRetail_UIFrames = function()
 							reg:SetTexture(nil)
 						end
 					end
-					aObj:skinObject("frame", {obj=opt, fType=ftype})
-					if opt.optionInfo.rarityColor then
-						opt.sf:SetBackdropBorderColor(opt.optionInfo.rarityColor:GetRGBA())
-					else
-						opt.sf:SetBackdropBorderColor(aObj:getColourByName("gold_df"))
-					end
+					aObj:skinObject("frame", {obj=opt, fType=ftype, clr=opt.optionInfo.rarityColor and {opt.optionInfo.rarityColor:GetRGBA()} or {aObj:getColourByName("gold_df")}})
 					resizeSF(opt, 0)
 					if aObj.modBtns then
 						_G.CypherPlayerChoiceToggleButton:DisableDrawLayer("ARTWORK")
 						_G.CypherPlayerChoiceToggleButton:GetHighlightTexture():SetAlpha(0) -- texture changed in code
 						_G.CypherPlayerChoiceToggleButton.Text:SetDrawLayer("OVERLAY")
 						aObj:skinStdButton{obj=_G.CypherPlayerChoiceToggleButton, fType=ftype, ofs=-8, x1=30, x2=-30, clr="gold"}
+					end
+				elseif frame.optionFrameTemplate == "PlayerChoiceGenericPowerChoiceOptionTemplate" then
+					opt.BackgroundContainer:DisableDrawLayer("BACKGROUND")
+					aObj:skinObject("frame", {obj=opt, fType=ftype, clr=opt.optionInfo.rarityColor and {opt.optionInfo.rarityColor:GetRGBA()} or {aObj:getColourByName("gold_df")}})
+					resizeSF(opt, 0)
+					if aObj.modBtns then
+						_G.GenericPlayerChoiceToggleButton:DisableDrawLayer("ARTWORK")
+						_G.GenericPlayerChoiceToggleButton.Text:SetDrawLayer("OVERLAY")
+						aObj:skinStdButton{obj=_G.GenericPlayerChoiceToggleButton, fType=ftype, ofs=-8, x1=30, x2=-30, clr="silver"}
 					end
 				end
 			end
