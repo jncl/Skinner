@@ -1,3 +1,32 @@
+beta11.56162.1
+Jncl:
+	Updated ToDo.txt files
+	Updated version numbers
+	Updated sublime-project file
+	Added check for WoW version
+	Updated UIButtons code, closes #129, closes #130, closes #131
+	Beta changes
+	Updated ProfessionsCustomerOrders skin
+	Updated ObjectiveTracker skin, closes #132
+	Updated AchievementUI skin
+	Updated UtilFuncs code
+	Updated StaticPopups skin
+	Updated PTRFeedbackFrame skin
+	Updated LFDRolePoll skin
+	Updated AlertFrame skin
+	Use wipe function to clear table
+	Updated TokenFrame skin
+	Updated ReputationFrame skin
+	Updated UnitFrames skin
+	Updated TrainerUI skin
+	Updated ItemUpgradeUI skin
+	Updated BankFrame skin
+	Updated ClassTrainerUI skin
+	Updated Baganator, Details, Leatrix_Plus, LibDropDown, LibUIDropDownMenu & MSA-DropDownMenu skins Updated UIDropDownMenu
+	Obsoleted ArkDewdrop & DockingStation skins
+	Bugfix for WorldMapFrame
+	Updated BetterBags skin, closes #127
+
 beta11.56110.1
 Jncl:
 	Updated ToDo txt files
