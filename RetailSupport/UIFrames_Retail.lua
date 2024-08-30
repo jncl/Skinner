@@ -3587,6 +3587,11 @@ aObj.SetupRetail_UIFrames = function()
 			self:skinObject("frame", {obj=this.MainFrame, fType=ftype, kfs=true, bd=11, ng=true, cbns=true, ofs=-15, y2=14})
 
 			local function clrFrame(...)
+				-- handle in combat
+				if _G.InCombatLockdown() then
+				    aObj:add2Table(aObj.oocTab, {clrFrame, {...}})
+				    return
+				end
 				local r, _,_,_ = ...
 				if r == 0 then -- use light background (Island Expeditions, Voldun Quest, Dark Iron intro)
 					_G.TalkingHeadFrame.MainFrame.sf:SetBackdropColor(.75, .75, .75, .75)
