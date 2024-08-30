@@ -758,6 +758,7 @@ local function __addButtonBorder(opts)
 			end
 		end
 	end
+
 	-- reparent these textures so they are displayed above the border
 	-- & colour the button border
 	if opts.obj.Flash
@@ -832,7 +833,11 @@ local function __addButtonBorder(opts)
 	then
 		module:clrButtonFromBorder(opts.obj)
 	else
-		module:clrBtnBdr(opts.obj, opts.clr, opts.ca)
+		if _G.type(opts.clr) == "table" then
+			opts.obj.sbb:SetBackdropBorderColor(_G.unpack(opts.clr))
+		else
+			module:clrBtnBdr(opts.obj, opts.clr, opts.ca)
+		end
 	end
 
 	-- hook these as required

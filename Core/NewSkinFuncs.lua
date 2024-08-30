@@ -106,6 +106,7 @@ aObj.skinTPLs = {
 		-- fb          = true, -- frame border [bd=10, ng=true, ofs=0]
 		-- ckbfb       = true, -- frame border [bd=10, ng=true, ofs=0], check aObj.prdb.FrameBorders option
 		sft         = false, -- use SecureFrameTemplate
+		-- bbc         = {} -- colour the .sf's BackdropBorder using these values
 	},
 	glowbox = {
 	},
@@ -354,7 +355,11 @@ local function applySkin(tbl)
 	tbl.obj:SetBackdrop(aObj.Backdrop[tbl.bd])
 	r, g, b, a = aObj.bClr:GetRGBA()
 	tbl.obj:SetBackdropColor(r, g, b, tbl.ba or a)
-	aObj:clrBBC(tbl.obj, tbl.bbclr, tbl.bba)
+	if _G.type(tbl.bbclr) == "table" then
+		tbl.obj:SetBackdropBorderColor(_G.unpack(tbl.bbclr))
+	else
+		aObj:clrBBC(tbl.obj, tbl.bbclr, tbl.bba)
+	end
 	if not tbl.ng then
 		aObj:applyGradient(tbl.obj, tbl.fh, tbl.invert, tbl.rotate)
 		aObj.gradFrames[tbl.fType or "a"][tbl.obj] = true
@@ -691,6 +696,7 @@ local function skinFrame(tbl)
 			aObj:skinCloseButton{obj=cBtn, fType=tbl.ftype, noSkin=tbl.cbns}
 		end
 	end
+
 	-- reverse parent child relationship
 	if tbl.rpc
 	and not tbl.obj.SetParent_orig

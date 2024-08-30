@@ -128,8 +128,7 @@ if not aObj.isClscERA then
 				btn:DisableDrawLayer("BACKGROUND")
 				btn:DisableDrawLayer("BORDER")
 				btn:DisableDrawLayer("ARTWORK")
-				aObj:skinObject("frame", {obj=btn, fType=ftype, rns=true, fb=true, ofs=0})
-				btn.sf:SetBackdropBorderColor(btn:GetBackdropBorderColor())
+				aObj:skinObject("frame", {obj=btn, fType=ftype, rns=true, fb=true, ofs=0, clr={btn:GetBackdropBorderColor()}})
 				if aObj.isRtl then
 					if btn.HiddenDescription then
 						btn.HiddenDescription:SetTextColor(_G.HIGHLIGHT_FONT_COLOR:GetRGB())
@@ -143,8 +142,7 @@ if not aObj.isClscERA then
 					end
 					aObj:nilTexture(btn.Icon.frame, true)
 					if aObj.modBtnBs then
-						aObj:addButtonBorder{obj=btn.Icon, fType=ftype, ofs=-3, y1=0, y2=6}
-						btn.Icon.sbb:SetBackdropBorderColor(btn:GetBackdropBorderColor())
+						aObj:addButtonBorder{obj=btn.Icon, fType=ftype, ofs=-3, y1=0, y2=6, clr={btn:GetBackdropBorderColor()}}
 					end
 				else
 					bName = btn:GetName()
