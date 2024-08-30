@@ -641,7 +641,7 @@ local function skinFrame(tbl)
 		return
 	end
 
-	-- make all textures transparent
+	-- hide all textures
 	if tbl.kfs
 	or tbl.hat
 	then
@@ -649,31 +649,38 @@ local function skinFrame(tbl)
 	else
 		aObj:removeRegions(tbl.obj, tbl.regions)
 	end
+
 	if tbl.rb then
 		aObj:removeBackdrop(tbl.obj, tbl.rb=="nop" and true)
 	end
+
 	if tbl.ri
 	and tbl.obj.Inset or (tbl.obj.inset and _G.type(tbl.obj.inset) ~= "number")
 	then
 		aObj:removeInset(tbl.obj.Inset or tbl.obj.inset)
 	end
+
 	if tbl.rns
 	and tbl.obj.NineSlice
 	then
 		aObj:removeNineSlice(tbl.obj.NineSlice)
 	end
+
 	if tbl.rp
 	and tbl.obj.PortraitContainer
 	and tbl.obj.PortraitContainer.portrait
 	then
 		tbl.obj.PortraitContainer.portrait:SetAlpha(0) -- texture changed in code
 	end
+
 	if tbl.hdr then
 		hideHeader(tbl.obj)
 	end
+
 	if tbl.name then
 		tbl.name = tbl.obj:GetName() .. "~sf~"
 	end
+
 	-- add a frame to the object
 	tbl.sft = tbl.sft or tbl.sec or nil
 	tbl.obj.sf = _G.CreateFrame("Frame", tbl.name, tbl.obj, tbl.sft and "SecureFrameTemplate")
@@ -682,10 +689,20 @@ local function skinFrame(tbl)
 	-- adjust frame level & make it mirror its parent's
 	tbl.obj.sf:SetFrameLevel(tbl.obj:GetFrameLevel())
 	tbl.obj.sf.SetFrameLevel = tbl.obj.SetFrameLevel
-	 -- make sure it's lower than its parent's Frame Strata
+	-- position around the original frame
+	tbl.x1  = tbl.x1 or tbl.ofs * -1
+	tbl.y1  = tbl.y1 or tbl.ofs
+	tbl.x2  = tbl.x2 or tbl.ofs
+	tbl.y2  = tbl.y2 or tbl.ofs * -1
+	tbl.obj.sf:ClearAllPoints()
+	tbl.obj.sf:SetPoint("TOPLEFT", tbl.obj, "TOPLEFT", tbl.x1, tbl.y1)
+	tbl.obj.sf:SetPoint("BOTTOMRIGHT", tbl.obj, "BOTTOMRIGHT", tbl.x2, tbl.y2)
+
+	-- make sure it's lower than its parent's Frame Strata
 	if tbl.bg then
 		tbl.obj.sf:SetFrameStrata(tbl.sfs)
 	end
+
 	-- skin the CloseButton
 	if aObj.modBtns
 	and tbl.cb
@@ -712,20 +729,25 @@ local function skinFrame(tbl)
 		aObj:SecureHook(tbl.obj, "Show", function(this) this.sf:Show() end)
 		aObj:SecureHook(tbl.obj, "Hide", function(this) this.sf:Hide() end)
 	end
+
+	-- change border colour when disabled/enabled
+	if tbl.sechk then
+		-- save colour info on object
+		tbl.obj.sf.clr = tbl.clr
+		tbl.obj.sf.ca = tbl.ca
+		aObj:clrFrameBdr(tbl.obj, tbl.clr, tbl.ca)
+		aObj:SecureHook(tbl.obj, "SetEnabled", function(fObj)
+			aObj:clrFrameBdr(fObj, fObj.sf.clr, fObj.sf.ca)
+		end)
+	end
+
 	-- setup Frame Border options
 	if tbl.fb then
 		tbl.bd  = 10
 		tbl.ng  = true
 		tbl.ofs = tbl.ofs or 0
 	end
-	-- position around the original frame
-	tbl.x1  = tbl.x1 or tbl.ofs * -1
-	tbl.y1  = tbl.y1 or tbl.ofs
-	tbl.x2  = tbl.x2 or tbl.ofs
-	tbl.y2  = tbl.y2 or tbl.ofs * -1
-	tbl.obj.sf:ClearAllPoints()
-	tbl.obj.sf:SetPoint("TOPLEFT", tbl.obj, "TOPLEFT", tbl.x1, tbl.y1)
-	tbl.obj.sf:SetPoint("BOTTOMRIGHT", tbl.obj, "BOTTOMRIGHT", tbl.x2, tbl.y2)
+
 	-- setup applySkin options
 	local so  = aObj.skinTPLs.new("skin", tbl.aso)
 	so.obj    = tbl.obj.sf
@@ -738,17 +760,10 @@ local function skinFrame(tbl)
 	so.fh     = tbl.fh
 	so.invert = tbl.invert
 	so.rotate = tbl.rotate
+
 	-- apply the 'Skinner effect' to the frame
 	aObj:skinObject(so)
-	if tbl.sechk then
-		-- save colour info on object
-		tbl.obj.sf.clr = tbl.clr
-		tbl.obj.sf.ca = tbl.ca
-		aObj:clrFrameBdr(tbl.obj, tbl.clr, tbl.ca)
-		aObj:secureHook(tbl.obj, "SetEnabled", function(fObj)
-			aObj:clrFrameBdr(fObj, fObj.sf.clr, fObj.sf.ca)
-		end)
-	end
+
 	return tbl.obj.sf
 end
 skinFuncs.frame = function(table) skinFrame(table) end
