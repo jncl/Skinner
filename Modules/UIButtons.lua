@@ -3,7 +3,7 @@ local aName, aObj = ...
 local _G = _G
 
 local module = aObj:NewModule("UIButtons", "AceEvent-3.0", "AceHook-3.0")
-
+local db
 
 do
 	-- characters used on buttons
@@ -306,6 +306,7 @@ function module:setBtnClr(bObj, quality)
 
 end
 
+local text
 local function __skinCloseButton(opts)
 	--[[
 		Calling parameters:
@@ -326,10 +327,17 @@ local function __skinCloseButton(opts)
 	end
 	--@end-debug@
 
+	-- DON'T skin it twice
+	if opts.obj.sb then
+		return
+	end
+
 	aObj:keepFontStrings(opts.obj)
 
 	-- don't skin button if required
-	if not opts.noSkin then
+	if not opts.noSkin
+	and db.FrameControls
+	then
 		if opts.sap then
 			aObj:skinObject("button", {obj=opts.obj, fType=opts.ftype, sap=true})
 		else
@@ -341,30 +349,33 @@ local function __skinCloseButton(opts)
 			aObj:skinObject("button", {obj=opts.obj, fType=opts.ftype, bd=5, x1=opts.x1, y1=opts.y1, x2=opts.x2, y2=opts.y2})
 		end
 		module:clrBtnBdr(opts.obj, opts.clr, opts.ca)
+		if opts.schk then
+			opts.obj.sb.clr = opts.clr
+			opts.obj.sb.ca = opts.ca
+			aObj:SecureHook(opts.obj, "Disable", function(bObj, _)
+				module:clrBtnBdr(bObj)
+			end)
+			aObj:SecureHook(opts.obj, "Enable", function(bObj, _)
+				module:clrBtnBdr(bObj, bObj.sb.clr, bObj.sb.ca)
+			end)
+		end
+		if opts.onSB then -- Ace3, ArkInventory & BNToastFrame
+			opts.obj.sb:SetNormalFontObject(opts.font or module.fontX)
+			opts.obj.sb:SetDisabledFontObject(opts.disfont or module.fontDX)
+			opts.obj.sb:SetText(module.mult)
+		end
 	end
 	if not opts.onSB then
 		opts.obj:SetNormalFontObject(opts.font or module.fontX)
 		opts.obj:SetDisabledFontObject(opts.disfont or module.fontDX)
 		opts.obj:SetText(module.mult)
 		opts.obj:SetPushedTextOffset(-1, -1)
-	else -- Ace3, ArkInventory & BNToastFrame
-		opts.obj.sb:SetNormalFontObject(opts.font or module.fontX)
-		opts.obj.sb:SetDisabledFontObject(opts.disfont or module.fontDX)
-		opts.obj.sb:SetText(module.mult)
 	end
 
 	if aObj.isRtl then
-		local text = aObj:getLastRegion(opts.obj)
+		text = aObj:getLastRegion(opts.obj)
 		text:SetDrawLayer("OVERLAY")
 		aObj:moveObject{obj=text, x=-1, y=-1}
-	end
-	if opts.schk then
-		aObj:secureHook(opts.obj, "Disable", function(bObj, _)
-			module:clrBtnBdr(bObj)
-		end)
-		aObj:secureHook(opts.obj, "Enable", function(bObj, _)
-			module:clrBtnBdr(bObj, bObj.sb.clr or bObj.clr, bObj.sb.ca or bObj.ca)
-		end)
 	end
 end
 function module:skinCloseButton(...)
@@ -499,6 +510,11 @@ local function __skinOtherButton(opts)
 	_G.assert(opts.text, "Missing text to use __sOB\n" .. _G.debugstack(2, 3, 2))
 	--@end-debug@
 
+	-- DON'T skin it twice
+	if opts.obj.sb then
+		return
+	end
+
 	opts.obj:DisableDrawLayer("BACKGROUND")
 	aObj:keepFontStrings(opts.obj)
 
@@ -510,7 +526,10 @@ local function __skinOtherButton(opts)
 	opts.obj:SetDisabledFontObject(opts.disfont or module.fontDP)
 	opts.obj:SetText(opts.text)
 	opts.obj:SetPushedTextOffset(-1, -1)
-	if not opts.noSkin then
+
+	if not opts.noSkin
+	and db.FrameControls
+	then
 		if opts.sap then
 			aObj:skinObject("button", {obj=opts.obj, fType=opts.ftype, sap=true, aso=opts.aso})
 		else
@@ -572,6 +591,13 @@ local function __skinStdButton(opts)
 	end
 	--@end-debug@
 
+	-- DON'T skin it twice
+	if opts.obj.sb
+	or opts.obj.clr
+	then
+		return
+	end
+
 	opts.obj:DisableDrawLayer("BACKGROUND")
 	if opts.obj:GetNormalTexture() then
 		opts.obj:GetNormalTexture():SetAlpha(0)
@@ -610,15 +636,15 @@ local function __skinStdButton(opts)
 	module:clrBtnBdr(opts.obj, opts.clr, opts.ca)
 
 	if opts.schk then
-		aObj:secureHook(opts.obj, "Disable", function(bObj, _)
+		aObj:SecureHook(opts.obj, "Disable", function(bObj, _)
 			module:clrBtnBdr(bObj)
 		end)
-		aObj:secureHook(opts.obj, "Enable", function(bObj, _)
+		aObj:SecureHook(opts.obj, "Enable", function(bObj, _)
 			module:clrBtnBdr(bObj, bObj.sb and bObj.sb.clr or bObj.clr, bObj.sb and bObj.sb.ca or bObj.ca)
 		end)
 	end
 	if opts.sechk then
-		aObj:secureHook(opts.obj, "SetEnabled", function(bObj)
+		aObj:SecureHook(opts.obj, "SetEnabled", function(bObj)
 			module:clrBtnBdr(bObj, bObj.sb and bObj.sb.clr or bObj.clr, bObj.sb and bObj.sb.ca or bObj.ca)
 		end)
 	end
@@ -1158,12 +1184,12 @@ function module:skinAllButtons(...)
 end
 --@end-non-debug@]===]
 
-local db
 local defaults = {
 	profile = {
 		UIButtons     = false,
 		ButtonBorders = false,
 		CheckButtons  = false,
+		FrameControls = true,
 		Quality		  = {file = "None", texture = "Blizzard Tooltip"},
 	}
 }
@@ -1249,6 +1275,13 @@ function module:GetOptions()
 				order = 3,
 				name = aObj.L["Check Buttons"],
 				desc = _G.strjoin(" ", aObj.L["Toggle the skinning of"], aObj.L["the"], aObj.L["Check Buttons"], aObj.L["(reload required)"]),
+			},
+			FrameControls = {
+				type = "toggle",
+				order = 4,
+				width = "full",
+				name = _G.strjoin(" ", aObj.L["Frame Control Buttons"], aObj.L["Border"]),
+				desc = _G.strjoin(" ", aObj.L["Toggle the border of"], aObj.L["the"], aObj.L["Frame Control Buttons"], aObj.L["(reload required)"]),
 			},
 			Quality = {
 				type = "group",

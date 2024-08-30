@@ -1183,7 +1183,9 @@ aObj.blizzLoDFrames[ftype].DebugTools = function(self)
 				else
 					frame.OpenParentButton:SetText("x")
 				end
-				aObj:clrBtnBdr(frame.OpenParentButton)
+				if aObj.modFCBtns then
+					aObj:clrBtnBdr(frame.OpenParentButton)
+				end
 			end)
 			aObj:SecureHook(frame, "UpdateTableNavigation", function(_, _)
 				if frame.NavigateBackwardButton:IsEnabled() then
@@ -1196,8 +1198,10 @@ aObj.blizzLoDFrames[ftype].DebugTools = function(self)
 				else
 					frame.NavigateForwardButton:SetText("x")
 				end
-				aObj:clrBtnBdr(frame.NavigateBackwardButton)
-				aObj:clrBtnBdr(frame.NavigateForwardButton)
+				if aObj.modFCBtns then
+					aObj:clrBtnBdr(frame.NavigateBackwardButton)
+					aObj:clrBtnBdr(frame.NavigateForwardButton)
+				end
 			end)
 		end
 		if aObj.modChkBtns then

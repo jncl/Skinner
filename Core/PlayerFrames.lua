@@ -1574,7 +1574,9 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 			if self.modBtns then
 				self:skinOtherButton{obj=fObj.MaximizeButton, font=self.fontS, text=self.nearrow}
 				self:skinOtherButton{obj=fObj.MinimizeButton, font=self.fontS, disfont=self.fontDS, text=self.swarrow}
-				if self.isRtl then
+				if self.isRtl
+				and self.modFCBtns
+				then
 					self:SecureHook(this, "UpdateMaximizeMinimizeButton", function(frame)
 						self:clrBtnBdr(frame.MaximizeMinimizeFrame.MinimizeButton)
 					end)

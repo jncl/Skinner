@@ -354,6 +354,9 @@ function aObj:OnEnable()
 		if btnModDB.profile.CheckButtons then
 			self.modChkBtns = true
 		end
+		if btnModDB.profile.FrameControls then
+			self.modFCBtns = true
+		end
 	else
 		self.modBtns = false
 		self.modBtnBs = false
