@@ -201,25 +201,17 @@ if not aObj.isClscERA then
 		end
 
 		self:SecureHookScript(_G.AchievementFrame, "OnShow", function(this)
-			local function skinSB(statusBar, moveText)
-				if moveText then
-					aObj:moveObject{obj=_G[statusBar].Label or _G[statusBar .. "Label"] or _G[statusBar .. "Title"], y=-3}
-					aObj:moveObject{obj=_G[statusBar].Text or _G[statusBar .. "Text"], y=-3}
-				end
-				aObj:skinObject("statusbar", {obj=_G[statusBar], regions={3, 4, 5}, fi=0, bg=_G[statusBar .. "FillBar"]})
-			end
-			if self.modBtnBs then
-				self:addButtonBorder{obj=_G.AchievementFrameFilterDropDownButton, fType=ftype, es=12, ofs=-2, x1=1}
-			end
+			self:moveObject{obj=_G.AchievementFrameCloseButton, x=1, y=8}
+			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true, ignoreHLTex=false, regions={7, 8, 9, 10}, offsets={x1=6, x2=-2, y2=-7}})
 			if self.isRtl then
 				self:skinObject("editbox", {obj=this.SearchBox, fType=ftype, si=true, y1=-4, y2=4})
 				self:moveObject{obj=this.SearchBox, y=-8}
 				self:skinObject("statusbar", {obj=this.searchProgressBar, fi=0, bg=this.searchProgressBar.bg})
-			end
-			self:moveObject{obj=_G.AchievementFrameCloseButton, x=1, y=8}
-			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true, ignoreHLTex=false, regions={7, 8, 9, 10}, offsets={x1=6, x2=-2, y2=-7}})
-			if self.isRtl then
 				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, y1=7, x2=0, y2=-1})
+				if self.modBtnBs then
+					self:moveObject{obj=_G.AchievementFrameFilterDropdown, y=-6}
+					self:skinObject("ddbutton", {obj=_G.AchievementFrameFilterDropdown, fType=ftype, filter=true})
+				end
 			else
 				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, y1=9, x2=1, y2=-2})
 			end
@@ -413,6 +405,13 @@ if not aObj.isClscERA then
 					skinAchievement(btn)
 				end
 			end
+			local function skinSB(statusBar, moveText)
+				if moveText then
+					aObj:moveObject{obj=_G[statusBar].Label or _G[statusBar .. "Label"] or _G[statusBar .. "Title"], y=-3}
+					aObj:moveObject{obj=_G[statusBar].Text or _G[statusBar .. "Text"], y=-3}
+				end
+				aObj:skinObject("statusbar", {obj=_G[statusBar], regions={3, 4, 5}, fi=0, bg=_G[statusBar .. "FillBar"]})
+			end
 			self:SecureHookScript(_G.AchievementFrameSummary, "OnShow", function(fObj)
 				fObj:DisableDrawLayer("BACKGROUND")
 				self:skinObject("frame", {obj=self:getChild(fObj, 1), fType=ftype, kfs=true, fb=true, ofs=0, x1=-2, y2=-2})
@@ -538,22 +537,6 @@ if not aObj.isClscERA then
 			end)
 			self:checkShown(_G.AchievementFrameComparison)
 
-			self:SecureHookScript(_G.AchievementFrameFilterDropDown, "OnShow", function(fObj)
-				self:moveObject{obj=fObj, y=-7}
-				if self.prdb.TabDDTextures.textureddd then
-					fObj.ddTex = fObj:CreateTexture(nil, "ARTWORK", nil, -5)
-					fObj.ddTex:SetTexture(self.itTex)
-					fObj.ddTex:SetSize(110, 19)
-					fObj.ddTex:SetPoint("RIGHT", fObj, "RIGHT", -3, 4)
-					self:skinObject("frame", {obj=fObj, fType=ftype, ng=true, x1=-7, y1=1, x2=1, y2=7})
-					if self.modBtnBs then
-					    self:addButtonBorder{obj=_G.AchievementFrameFilterDropDownButton, es=12, ofs=-2, x1=1}
-					end
-				end
-
-				self:Unhook(fObj, "OnShow")
-			end)
-
 			if self.isRtl then
 				self:SecureHookScript(this.SearchPreviewContainer, "OnShow", function(fObj)
 					self:adjHeight{obj=fObj, adj=((4 * 27) + 30)}
@@ -594,6 +577,22 @@ if not aObj.isClscERA then
 					_G.ScrollUtil.AddAcquiredFrameCallback(fObj.ScrollBox, skinElement, aObj, true)
 
 					self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, cb=true, x1=-8, y1=-1, x2=4})
+
+					self:Unhook(fObj, "OnShow")
+				end)
+			else
+				self:SecureHookScript(_G.AchievementFrameFilterDropDown, "OnShow", function(fObj)
+					self:moveObject{obj=fObj, y=-7}
+					if self.prdb.TabDDTextures.textureddd then
+						fObj.ddTex = fObj:CreateTexture(nil, "ARTWORK", nil, -5)
+						fObj.ddTex:SetTexture(self.itTex)
+						fObj.ddTex:SetSize(110, 19)
+						fObj.ddTex:SetPoint("RIGHT", fObj, "RIGHT", -3, 4)
+						self:skinObject("frame", {obj=fObj, fType=ftype, ng=true, x1=-7, y1=1, x2=1, y2=7})
+						if self.modBtnBs then
+						    self:addButtonBorder{obj=_G.AchievementFrameFilterDropDownButton, es=12, ofs=-2, x1=1}
+						end
+					end
 
 					self:Unhook(fObj, "OnShow")
 				end)
