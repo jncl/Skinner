@@ -35,7 +35,6 @@ local addonSkins = {
 	"FlaresThatWork", "FramesResized",
 	"Livestock", "ls_Toasts",
 	"MogIt",
-	"Notes",
 	"OneBag3", "OneBank3",
 	"Quartz", "QuickMark",
 	"TooManyAddons",
