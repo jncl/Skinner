@@ -2,7 +2,7 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("Baganator") then return end
 local _G = _G
 
-aObj.addonsToSkin.Baganator = function(self) -- v 430
+aObj.addonsToSkin.Baganator = function(self) -- v 455
 
 	local skinBtns, skinReagents, skinViewBtns, skinBagSlots = _G.nop, _G.nop, _G.nop, _G.nop
 	if self.modBtnBs then
@@ -265,8 +265,8 @@ aObj.addonsToSkin.Baganator = function(self) -- v 430
 	if _G.Baganator_WelcomeFrame then
 		self:skinObject("frame", {obj=_G.Baganator_WelcomeFrame, kfs=true, cb=true})
 		if self.modBtns then
-			self:skinStdButton{obj=self:getChild(_G.Baganator_WelcomeFrame, 6)}
-			self:skinStdButton{obj=self:getChild(_G.Baganator_WelcomeFrame, 7)}
+			self:skinStdButton{obj=self:getChild(_G.Baganator_WelcomeFrame, _G.Baganator_WelcomeFrame:GetNumChildren() - 2)}
+			self:skinStdButton{obj=self:getChild(_G.Baganator_WelcomeFrame, _G.Baganator_WelcomeFrame:GetNumChildren() - 1)}
 		end
 	end
 
