@@ -288,11 +288,8 @@ function module:setBtnClr(bObj, quality)
 
 	if bObj.sbb then
 		if quality then
-			if quality >= _G.Enum.ItemQuality.Common or _G.Enum.ItemQuality.Standard
-			and _G.BAG_ITEM_QUALITY_COLORS[quality]
-			then
-				bObj.sbb:SetBackdropBorderColor(_G.BAG_ITEM_QUALITY_COLORS[quality]:GetRGBA())
-				-- bObj.sbb:SetBackdropBorderColor(_G.BAG_ITEM_QUALITY_COLORS[quality].r, _G.BAG_ITEM_QUALITY_COLORS[quality].g, _G.BAG_ITEM_QUALITY_COLORS[quality].b, 1)
+			if _G.BAG_ITEM_QUALITY_COLORS[quality] then
+				bObj.sbb:SetBackdropBorderColor(_G.BAG_ITEM_QUALITY_COLORS[quality].r, _G.BAG_ITEM_QUALITY_COLORS[quality].g, _G.BAG_ITEM_QUALITY_COLORS[quality].b, 1)
 			else
 				module:clrBtnBdr(bObj, "grey", 0.75)
 			end
