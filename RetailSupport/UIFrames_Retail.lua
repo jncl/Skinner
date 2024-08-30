@@ -3809,7 +3809,7 @@ aObj.SetupRetail_UIFrames = function()
 			and not self:isAddOnLoaded("AlleyMap")
 			then
 				self:keepFontStrings(this)
-				self:moveObject{obj=this.BorderFrame.CloseButton, x=-2.5}
+				self:moveObject{obj=this.BorderFrame.CloseButton, x=-2}
 				-- make sure map textures are displayed by setting Frame Strata to "LOW"
 				self:skinObject("frame", {obj=this.BorderFrame, fType=ftype, kfs=true, bg=true, sfs="LOW", rns=true, cb=true, ofs=2, x1=-3, x2=0})
 			end
