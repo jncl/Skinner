@@ -1,12 +1,12 @@
 ToDos
 ±±±±±
  
-	√ is Alt+v		- indicates completed
-	≈ is Alt+x		- indicates partially completed or dry-coded
-	x				- indicates nothing to change
-	¶ is Alt+7		- indicates localisation changes required
-	#nnn			- Indicates Issue number
-	S/N/I/U/O/E/C/R	- Skin request/New Version/Issue(Bug)/Unobsolete Skin/Other changes/Classic Era/Cata Classic/Retail
+	√ is Alt+v			- indicates completed
+	≈ is Alt+x			- indicates partially completed or dry-coded
+	x					- indicates nothing to change
+	¶ is Alt+7			- indicates localisation changes required
+	#nnn				- Indicates Issue number
+	S/N/I/U/O/E/C/R/FR	- Skin request/New Version/Issue(Bug)/Unobsolete Skin/Other changes/Classic Era/Cata Classic/Retail/Feature Request
 
 ≈		O	Rework how AddOn skins are handled
 			- replace table in AddonFrames with individual entries in each skin file
@@ -21,12 +21,28 @@ ToDos
 
 		O	Refactor frame children loops to use Utility function 'scanChildren' via callback
 
-#127 √	I/R BetterBags
+#133 √	I/R	MSA-DropDownMenu
+#138
 
-#128 x	I 	WorldMapFrame
+#134 √	I/R	Classic Quest Log
 
-#129 √	I 	UIButtons functions need OoC checks
-#130
-#131
+#135 √	FR 	Allow bigger (more than 8) border inset in backdrop settings
 
-#132 √	I 	ObjectiveTracker ProgressBars
+#136 √	S/A	Simple Addon Manager
+
+#137 √	FR 	Option to hide inner border in Friends,Ignored,Recruit a Friend frames. Option to hide inner border in Spec frame
+
+#139 √	I/R	ZygorGuidesViewer
+
+#140 √	I/R AlertFrames
+#141
+
+#142 √	I/R	EventToastManager
+
+#143 √	I/R	ItemSocketingUI
+
+#144 √	I/R PlayerChoice
+
+#145 √	I/R Notes
+
+#146 √	FR  Option to allow small buttons, e.g. close, resize, to have no border
