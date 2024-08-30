@@ -8,9 +8,9 @@ local buildInfo = {
 	wow_classic_era     = {"1.15.3", 55917, "Classic Era"}, -- a.k.a. Season of Discovery
 	wow_classic_era_ptr = {"1.15.3", 55917, "Classic Era PTR"},
 	wow_classic_ptr     = {"4.4.0",  55639, "Classic PTR"},
-	wow_beta            = {"11.0.2", 56110, "Retail Beta"}, -- a.k.a. The War Within
-	wow_ptr             = {"11.0.2", 56162, "Retail PTR"},
-	wow                 = {"11.0.2", 56162, "Retail"},
+	wow_beta            = {"11.0.2", 56263, "Retail Beta"}, -- a.k.a. The War Within
+	wow_ptr             = {"11.0.2", 56263, "Retail PTR"},
+	wow                 = {"11.0.2", 56313, "Retail"},
 	wow_ptr_x           = {"11.0.0", 55960, "Retail PTRX"},
 	curr                = {_G.GetBuildInfo()},
 }
