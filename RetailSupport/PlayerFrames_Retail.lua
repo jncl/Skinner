@@ -1210,7 +1210,7 @@ aObj.SetupRetail_PlayerFrames = function()
 			for btn in reward.framePool:EnumerateActive() do
 				if aObj.modBtnBs then
 					aObj:addButtonBorder{obj=btn, fType=ftype, reParent={btn.ItemOverlay, btn.Count}}
-					aObj:clrButtonFromBorder(btn. btn.ItemBorder)
+					aObj:clrButtonFromBorder(btn)
 				end
 			end
 		end
