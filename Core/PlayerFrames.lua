@@ -2804,6 +2804,10 @@ if not aObj.isClscERA then
 
 				self:SecureHookScript(this.LootJournal, "OnShow", function(fObj)
 					self:skinObject("scrollbar", {obj=fObj.ScrollBar, fType=ftype})
+					if not self.isRtl then
+						skinFilterBtn(fObj.ClassDropDownButton)
+						skinFilterBtn(fObj.RuneforgePowerFilterDropDownButton)
+					end
 					local function skinElement(...)
 						local _, element, new
 						if _G.select("#", ...) == 2 then
@@ -2820,8 +2824,6 @@ if not aObj.isClscERA then
 					end
 					_G.ScrollUtil.AddAcquiredFrameCallback(fObj.ScrollBox, skinElement, aObj, true)
 					self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, fb=true, x1=-8, y1=6, x2=8, y2=-5})
-					-- skinFilterBtn(fObj.ClassDropDownButton)
-					-- skinFilterBtn(fObj.RuneforgePowerFilterDropDownButton)
 
 					self:Unhook(fObj, "OnShow")
 				end)
@@ -2829,6 +2831,11 @@ if not aObj.isClscERA then
 
 				self:SecureHookScript(this.LootJournalItems, "OnShow", function(fObj)
 					fObj:DisableDrawLayer("BACKGROUND")
+					if self.isRtl then
+						self:skinObject("ddbutton", {obj=fObj.ItemSetsFrame.ClassDropdown, fType=ftype})
+					else
+						skinFilterBtn(fObj.ItemSetsFrame.ClassButton)
+					end
 					self:skinObject("scrollbar", {obj=fObj.ItemSetsFrame.ScrollBar, fType=ftype})
 					local function skinElement(...)
 						local _, element, new
@@ -2845,7 +2852,6 @@ if not aObj.isClscERA then
 					end
 					_G.ScrollUtil.AddAcquiredFrameCallback(fObj.ItemSetsFrame.ScrollBox, skinElement, aObj, true)
 					self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, fb=true, x1=-8, y1=6, x2=8, y2=-5})
-					-- skinFilterBtn(fObj.ItemSetsFrame.ClassButton)
 
 					self:Unhook(fObj, "OnShow")
 				end)
