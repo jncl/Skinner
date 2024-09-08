@@ -3470,7 +3470,7 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 			-- aObj:Debug("SetTextColor: [%s, %s, %s, %s, %s]", this, tcr, tcg, tcb)
 			if (tcr == 0.41 or tcr == 0.28 and tcg == 0.02 and tcb == 0.02) -- Red
 			or (tcr == 0.08 and tcg == 0.17 or tcg == 0.16 and tcb == 0.37) -- Blue
-			or (tcr == 0.19 and tcg == 0.05 and tcb == 0.01) -- WarboardUI/Ally choicee in Nazjatar (Horde)
+			or (tcr == 0.19 and tcg == 0.05 and tcb == 0.01) -- WarboardUI/Ally choice in Nazjatar (Horde)
 			then
 				aObj.hooks[this].SetTextColor(this, aObj.BT:GetRGBA())
 			elseif (tcr == 0 and tcg == 0 and tcb == 0) then -- Black
@@ -3552,7 +3552,7 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 			setTextColor(wFrame.Text)
 		-- N.B. Classic ONLY has 12 UIWidgets
 		elseif wFrame.widgetType == 13 then -- SpellDisplay
-			wFrame.Spell.Border:SetTexture(nil)
+			aObj:nilTexture(wFrame.Spell.Border, true)
 			tcr = setTextColor(wFrame.Spell.Text)
 			if aObj.modBtnBs then
 				aObj:addButtonBorder{obj=wFrame.Spell, relTo=wFrame.Spell.Icon, reParent={wFrame.Spell.StackCount}}
@@ -3590,8 +3590,7 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 			wFrame.DecorLeft:SetAlpha(0)
 			wFrame.DecorRight:SetAlpha(0)
 			for sBar in wFrame.fillUpFramePool:EnumerateActive() do
-				sBar.Frame:SetAtlas(nil)
-				sBar.Frame.SetAtlas = _G.nop
+				sBar.Frame:SetAlpha(0)
 			end
 		elseif wFrame.widgetType == 25 then -- TextWithSubtext
 			_G.nop()
