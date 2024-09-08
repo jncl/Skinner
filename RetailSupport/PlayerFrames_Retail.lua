@@ -1185,7 +1185,7 @@ aObj.SetupRetail_PlayerFrames = function()
 			for rewardsToast in this.rewardsToastPool:EnumerateActive() do
 				rewardsToast:DisableDrawLayer("ARTWORK")
 				rewardsToast:DisableDrawLayer("BORDER")
-				self:skinObject("frame", {obj=rewardsToast, fType=ftype, kfs=true})
+				-- self:skinObject("frame", {obj=rewardsToast, fType=ftype, kfs=true})
 				skinRewards(rewardsToast)
 			end
 		end)
