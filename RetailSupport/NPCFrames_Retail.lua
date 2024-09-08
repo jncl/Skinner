@@ -793,6 +793,7 @@ aObj.SetupRetail_NPCFrames = function()
 			-- use module to make button slot visible
 			self.modUIBtns:addButtonBorder{obj=this.ItemSlot, relTo=this.ItemSlot.Icon}
 			this.ItemConversionFrame.ItemConversionInputSlot.ButtonFrame:SetAlpha(0) -- N.B. Texture changed in code
+			this.ItemConversionFrame.ItemConversionOutputSlot.ButtonFrame:SetAlpha(0) -- N.B. Texture changed in code
 			this.ButtonFrame:DisableDrawLayer("BORDER")
 			this.ButtonFrame.MoneyFrameEdge:DisableDrawLayer("BACKGROUND")
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, cb=true, x2=3})
@@ -801,6 +802,11 @@ aObj.SetupRetail_NPCFrames = function()
 				self:SecureHook(this, "UpdateActionButtonState", function(fObj)
 					self:clrBtnBdr(fObj.ButtonFrame.ActionButton)
 				end)
+			end
+			if self.modBtnBs then
+				-- N.B.: can cause ADDON_ACTION_FORBIDDEN when clicked
+				self:addButtonBorder{obj=this.ItemConversionFrame.ItemConversionInputSlot, fType=ftype, ibt=true, ignTex=true, ofs=5}
+				self:addButtonBorder{obj=this.ItemConversionFrame.ItemConversionOutputSlot, fType=ftype, ibt=true, ignTex=true, ofs=5}
 			end
 
 			self:Unhook(this, "OnShow")
