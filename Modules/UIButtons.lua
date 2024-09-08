@@ -193,6 +193,7 @@ function module:chgHLTex(obj, hTex)
 
 end
 
+local iBdr
 function module:clrButtonFromBorder(bObj, texture)
 
 	-- handle in combat
@@ -204,7 +205,7 @@ function module:clrButtonFromBorder(bObj, texture)
 	--@debug@
 	 _G.assert(bObj and bObj.sbb, "Missing object cBFB\n" .. _G.debugstack(2, 3, 2))
 	--@end-debug@
-	local iBdr = bObj[texture] or bObj.IconBorder or bObj.iconBorder
+	iBdr = bObj[texture] or bObj.IconBorder or bObj.iconBorder
 	--@debug@
 	 _G.assert(iBdr, "Missing border Texture cBFB\n" .. _G.debugstack(2, 3, 2))
 	--@end-debug@
@@ -215,7 +216,7 @@ function module:clrButtonFromBorder(bObj, texture)
 		if iBdr:IsShown() then
 			bObj.sbb:SetBackdropBorderColor(iBdr:GetVertexColor())
 		else
-			module:clrBtnBdr(bObj, "common")
+			module:clrBtnBdr(bObj, "grey", 0.75)
 		end
 		iBdr:SetAlpha(0)
 	end
@@ -294,12 +295,13 @@ function module:setBtnClr(bObj, quality)
 				module:clrBtnBdr(bObj, "grey", 0.75)
 			end
 		else
-			module:clrBtnBdr(bObj, "grey", 0.75)
 			if _G.TradeSkillFrame
 			and _G.TradeSkillFrame.DetailsFrame
 			and bObj == _G.TradeSkillFrame.DetailsFrame.Contents.ResultIcon
 			then
 				module:clrBtnBdr(bObj, "normal", 1)
+			else
+				module:clrBtnBdr(bObj, "grey", 0.75)
 			end
 		end
 	end
