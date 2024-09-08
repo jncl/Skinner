@@ -58,7 +58,6 @@ aObj.addonsToSkin.ZygorGuidesViewer = function(self) -- v 9.5.32183
 		end)
 	end
 
-	_G.ZygorGuidesViewerMapIcon:SetSize(32, 32)
 	self.mmButs["ZygorGuidesViewer"] = _G.ZygorGuidesViewerMapIcon
 
 	-- skin frame buttons here as required

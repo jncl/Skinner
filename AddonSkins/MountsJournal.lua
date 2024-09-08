@@ -3,7 +3,7 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("MountsJournal") then return end
 local _G = _G
 
-aObj.addonsToSkin.MountsJournal = function(self) -- v 11.0.10/4.4.15
+aObj.addonsToSkin.MountsJournal = function(self) -- v 11.0.24/4.4.15
 
 	if self.isClsc
 	and self.modChkBtns
@@ -28,19 +28,6 @@ aObj.addonsToSkin.MountsJournal = function(self) -- v 11.0.10/4.4.15
 			self:skinStdButton{obj=mjFrame.filtersButton}
 		end
 
-		local skinMountBtn = _G.nop
-		if self.modBtnBs then
-			function skinMountBtn(btn)
-				-- aObj:Debug("skinMountBtn#1: [%s, %s, %s]", btn, btn.sbb, btn.icon:GetAlpha())
-				-- _G.C_Timer.After(0.5, function()
-					aObj:addButtonBorder{obj=btn, relTo=btn.icon, reParent={btn.mountWeight, btn.mountWeightBG, btn.favorite}}
-					btn.sbb:SetAlpha(1)
-					btn.sbb:SetBackdropBorderColor(btn.qualityBorder:GetVertexColor())
-					btn.sbb:SetAlpha(btn.icon:GetAlpha())
-					btn.qualityBorder:Hide()
-				-- end)
-			end
-		end
 		self:SecureHookScript(mjFrame.bgFrame, "OnShow", function(this)
 			self:removeInset(this.mountCount)
 			if self.isRtl then
@@ -336,8 +323,8 @@ aObj.addonsToSkin.MountsJournal = function(self) -- v 11.0.10/4.4.15
 	end)
 
 	if self.isRtl then
-		self:SecureHookScript(_G.MountsJournal.summonPanel, "OnShow", function(this)
-			self:skinObject("frame", {obj=this, kfs=true, fb=true})
+		self:SecureHookScript(_G.MountsJournalFrame.summonPanel, "OnShow", function(this)
+			self:skinObject("frame", {obj=this, kfs=true, fb=true, ofs=6})
 			if self.modBtns then
 				self:addButtonBorder{obj=this.summon1, ofs=3, reParent={this.summon1.FlyoutArrowNormal, this.summon1.FlyoutArrowPushed, this.summon1.FlyoutArrowHighlight}}
 				self:addButtonBorder{obj=this.summon2, ofs=3, reParent={this.summon2.FlyoutArrowNormal, this.summon2.FlyoutArrowPushed, this.summon2.FlyoutArrowHighlight}}
@@ -345,7 +332,7 @@ aObj.addonsToSkin.MountsJournal = function(self) -- v 11.0.10/4.4.15
 
 			self:Unhook(this, "OnShow")
 		end)
-		self:checkShown(_G.MountsJournal.summonPanel)
+		self:checkShown(_G.MountsJournalFrame.summonPanel)
 	end
 
 	local pCnt = 0

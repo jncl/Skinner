@@ -13,6 +13,7 @@ aObj.libsToSkin["LibSFDropDown-1.5"] = function(self) -- v LibSFDropDown-1.5, 5
 			for _, style in _G.pairs(menu.styles) do
 				-- aObj:Debug("IterateMenus: [%s, %s]", style)
 				self:skinObject("frame", {obj=style, kfs=true, rns=true})
+				style:SetScript("OnUpdate", nil) -- Bugfix for MountsJournal
 			end
 		end
 		for name, _ in _G.pairs(lSFdd._v.menuStyles) do
@@ -21,6 +22,7 @@ aObj.libsToSkin["LibSFDropDown-1.5"] = function(self) -- v LibSFDropDown-1.5, 5
 				-- aObj:Debug("menuStyles style: [%s, %s]", parent)
 				local frame = _G.CreateFrame("FRAME", nil, parent, "BackdropTemplate")
 				aObj:skinObject("frame", {obj=frame, kfs=true, rns=true})
+				frame:SetScript("OnUpdate", nil) -- Bugfix for MountsJournal
 				return frame
 			end
 		end
@@ -56,7 +58,7 @@ aObj.libsToSkin["LibSFDropDown-1.5"] = function(self) -- v LibSFDropDown-1.5, 5
 
 		if self.modBtns then
 			local function skinStretchBtn(btn)
-				aObj:skinStdButton{obj=btn, clr="grey"}
+				aObj:skinStdButton{obj=btn}
 			end
 			for _, btn in lSFdd:IterateCreatedStretchButtons() do
 				skinStretchBtn(btn)
@@ -67,6 +69,7 @@ aObj.libsToSkin["LibSFDropDown-1.5"] = function(self) -- v LibSFDropDown-1.5, 5
 				return btn
 			end, true)
 		end
+
 	end
 
 end
