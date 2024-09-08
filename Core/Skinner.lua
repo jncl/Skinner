@@ -285,7 +285,7 @@ function aObj:OnEnable()
 			-- hook these to colour container item borders (inc. Bags, Bank, GuildBank, ReagentBank, Professions etc)
 			if self.isRtl then
 				local function setItemButtonQuality(button, quality, itemIDOrLink)
-					-- aObj:Debug("SetItemButtonQuality: [%s, %s, %s, %s, %s]", button, button.IconBorder, button.sbb, quality, itemIDOrLink)
+					-- aObj:Debug("SetItemButtonQuality: [%s, %s, %s, %s, %s]", button, quality, itemIDOrLink, button.IconBorder, button.sbb)
 					-- aObj:Debug("SIBQ: [%s, %s]", button.IconBorder:IsShown(), button.IconOverlay:IsShown())
 					-- show Artifact Relic Item border
 					if itemIDOrLink
@@ -329,11 +329,8 @@ function aObj:OnEnable()
 				self:SecureHook("SetItemButtonQuality", function(button, quality, _, _)
 					-- aObj:Debug("SetItemButtonQuality: [%s, %s]", button, quality)
 					button.IconBorder:SetAlpha(0)
-					if quality
-					and _G.type(quality) ~= "table" -- N.B. returned from EquipmentFlyout
-					then
-						self:setBtnClr(button, quality)
-					end
+					-- N.B. a table is returned from EquipmentFlyout
+					self:setBtnClr(button, _G.type(quality) ~= "table" and quality or nil)
 				end)
 				-- table to hold button objects to ignore, e.g. ContainerFrame items
 				self.btnIgnore = {}
