@@ -21,28 +21,16 @@ ToDos
 
 		O	Refactor frame children loops to use Utility function 'scanChildren' via callback
 
-#133 √	I/R	MSA-DropDownMenu
-#138
+#147 √	I 	Missing localisation 'Toggle the border of'
+#151
+#154
 
-#134 √	I/R	Classic Quest Log
+#148 √	I 	BTWLoadOut
 
-#135 √	FR 	Allow bigger (more than 8) border inset in backdrop settings
+#149 √	I 	ZygorGuidesViwer, don't resize minimap button
 
-#136 √	S/A	Simple Addon Manager
+#150 √	I 	Baganator
 
-#137 √	FR 	Option to hide inner border in Friends,Ignored,Recruit a Friend frames. Option to hide inner border in Spec frame
+#152	S   !KalielsTracker
 
-#139 √	I/R	ZygorGuidesViewer
-
-#140 √	I/R AlertFrames
-#141
-
-#142 √	I/R	EventToastManager
-
-#143 √	I/R	ItemSocketingUI
-
-#144 √	I/R PlayerChoice
-
-#145 √	I/R Notes
-
-#146 √	FR  Option to allow small buttons, e.g. close, resize, to have no border
+#153 √	I 	MountsJournal
