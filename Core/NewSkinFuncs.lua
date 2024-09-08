@@ -2,10 +2,74 @@ local _, aObj = ...
 
 local _G = _G
 
+local function setScrollTrackOffsets(tbl, type)
+	local h, w, o = _G.Round(tbl.obj:GetHeight()), _G.Round(tbl.obj:GetWidth())
+	if type == "slider" then
+		o = tbl.obj:GetOrientation()
+	else
+		if tbl.obj.isHorizontal then
+			o = "HORIZONTAL"
+		else
+			o = "VERTICAL"
+		end
+	end
+	-- aObj:Debug("setScrollTrackOffsets#1 O/H/W: [%s, %s, %s, %s, %s]", type, o, h, w)
+	-- setup offsets based on Orientation/Height/Width
+	if o == "HORIZONTAL" then
+		if h <= 16 then
+			tbl.y1 = _G.rawget(tbl, "y1") or -1
+			tbl.y2 = _G.rawget(tbl, "y2") or 2
+		elseif h <= 18 then
+			tbl.y1 = _G.rawget(tbl, "y1") or -2
+			tbl.y2 = _G.rawget(tbl, "y2") or 3
+		elseif h <= 20 then
+			tbl.y1 = _G.rawget(tbl, "y1") or -3
+			tbl.y2 = _G.rawget(tbl, "y2") or 4
+		elseif h <= 22 then
+			tbl.y1 = _G.rawget(tbl, "y1") or -4
+			tbl.y2 = _G.rawget(tbl, "y2") or 5
+		elseif h == 25 then
+			tbl.y1 = _G.rawget(tbl, "y1") or -4
+			tbl.y2 = _G.rawget(tbl, "y2") or 5
+		end
+		tbl.x1 = _G.rawget(tbl, "x1") or 0
+		tbl.x2 = _G.rawget(tbl, "x2") or 0
+	else
+		if w <= 10 then -- OribosScrollTemplate/WowTrimScrollBar/MinimalScrollBar
+			tbl.x1 = _G.rawget(tbl, "x1") or -1
+			tbl.x2 = _G.rawget(tbl, "x2") or 1
+		elseif w <= 12 then
+			tbl.x1 = _G.rawget(tbl, "x1") or -2
+			tbl.x2 = _G.rawget(tbl, "x2") or -1
+		elseif w <= 16 then
+			tbl.x1 = _G.rawget(tbl, "x1") or 0
+			tbl.x2 = _G.rawget(tbl, "x2") or -1
+		elseif w <= 20 then
+			tbl.x1 = _G.rawget(tbl, "x1") or 3
+			tbl.x2 = _G.rawget(tbl, "x2") or -4
+			tbl.y1 = _G.rawget(tbl, "y1") or -2
+			tbl.y2 = _G.rawget(tbl, "y2") or 2
+		elseif w == 22 then
+			tbl.x1 = _G.rawget(tbl, "x1") or 3
+			tbl.x2 = _G.rawget(tbl, "x2") or -3
+			tbl.y1 = _G.rawget(tbl, "y1") or -1
+			tbl.y2 = _G.rawget(tbl, "y2") or 1
+		elseif w == 25 then
+			tbl.x1 = _G.rawget(tbl, "x1") or aObj.isClsc and 2 or 0
+			tbl.x2 = _G.rawget(tbl, "x2") or aObj.isClsc and 4 or 0
+		end
+		tbl.y1 = _G.rawget(tbl, "y1") or 0
+		tbl.y2 = _G.rawget(tbl, "y2") or 0
+	end
+	-- aObj:Debug("setScrollTrackOffsets#2: [%s, %s, %s, %s, %s]", tbl.x1, tbl.x2, tbl.y1, tbl.y2)
+end
+
 -- skin Templates
 aObj.skinTPLs = {
 	button = {
 		name		= false, -- use a name if required (VuhDo Options)
+		-- bg          = true, -- put into specified FrameStrata
+		sfs 		= "BACKGROUND", -- set the Frame Strata
 		aso         = {},-- applySkin options,
 		hide        = false, -- hide skin
 		ofs         = 4, -- skin frame offset to object
@@ -117,10 +181,10 @@ aObj.skinTPLs = {
 		-- moveSEB   = false, -- move the Silver edit box left
 	},
 	skin = {
-		bd          = 1,
 		-- ba          = 1, -- backdrop alpha
 		-- bbclr       = "default", -- backdrop border colour
 		-- bba         = 1, -- backdrop border alpha
+		bd          = 1,
 		ng          = false,
 		-- fh          =,
 		-- invert      =,
@@ -176,85 +240,25 @@ aObj.skinTPLs = {
 	tooltip = {
 		-- ofs         = 2, -- skin frame offset to object
 	},
-	new = function(objType, objTable)
+}
+-- add type value for each table entry
+do
+	for name, optsTable in _G.pairs(aObj.skinTPLs) do
+		optsTable.type  = name
+	end
+end
+-- use a metatable to return default values and handle the initialisation of the passed options table
+_G.setmetatable(aObj.skinTPLs, {
+	__call = function(_, objType, objTable)
 		_G.setmetatable(objTable, {__index = function(_, key) return aObj.skinTPLs[objType][key] end})
 		return objTable
 	end,
-}
-do
-	for name, optsTable in _G.pairs(aObj.skinTPLs) do
-		if _G.type(optsTable) == "table" then
-			optsTable.type  = name
-			optsTable.ftype = "a"
-			optsTable.ncc   = optsTable.ncc or false -- DON'T check for InCombat status
-		end
-	end
-end
-
-local function setScrollTrackOffsets(tbl, type)
-	local h, w, o = _G.Round(tbl.obj:GetHeight()), _G.Round(tbl.obj:GetWidth())
-	if type == "slider" then
-		o = tbl.obj:GetOrientation()
-	else
-		if tbl.obj.isHorizontal then
-			o = "HORIZONTAL"
-		else
-			o = "VERTICAL"
-		end
-	end
-	-- aObj:Debug("setScrollTrackOffsets#1 O/H/W: [%s, %s, %s, %s, %s]", type, o, h, w)
-	-- setup offsets based on Orientation/Height/Width
-	if o == "HORIZONTAL" then
-		if h <= 16 then
-			tbl.y1 = _G.rawget(tbl, "y1") or -1
-			tbl.y2 = _G.rawget(tbl, "y2") or 2
-		elseif h <= 18 then
-			tbl.y1 = _G.rawget(tbl, "y1") or -2
-			tbl.y2 = _G.rawget(tbl, "y2") or 3
-		elseif h <= 20 then
-			tbl.y1 = _G.rawget(tbl, "y1") or -3
-			tbl.y2 = _G.rawget(tbl, "y2") or 4
-		elseif h <= 22 then
-			tbl.y1 = _G.rawget(tbl, "y1") or -4
-			tbl.y2 = _G.rawget(tbl, "y2") or 5
-		elseif h == 25 then
-			tbl.y1 = _G.rawget(tbl, "y1") or -4
-			tbl.y2 = _G.rawget(tbl, "y2") or 5
-		end
-		tbl.x1 = _G.rawget(tbl, "x1") or 0
-		tbl.x2 = _G.rawget(tbl, "x2") or 0
-	else
-		if w <= 10 then -- OribosScrollTemplate/WowTrimScrollBar/MinimalScrollBar
-			tbl.x1 = _G.rawget(tbl, "x1") or -1
-			tbl.x2 = _G.rawget(tbl, "x2") or 1
-		elseif w <= 12 then
-			tbl.x1 = _G.rawget(tbl, "x1") or -2
-			tbl.x2 = _G.rawget(tbl, "x2") or -1
-		elseif w <= 16 then
-			tbl.x1 = _G.rawget(tbl, "x1") or 0
-			tbl.x2 = _G.rawget(tbl, "x2") or -1
-		elseif w <= 20 then
-			tbl.x1 = _G.rawget(tbl, "x1") or 3
-			tbl.x2 = _G.rawget(tbl, "x2") or -4
-			tbl.y1 = _G.rawget(tbl, "y1") or -2
-			tbl.y2 = _G.rawget(tbl, "y2") or 2
-		elseif w == 22 then
-			tbl.x1 = _G.rawget(tbl, "x1") or 3
-			tbl.x2 = _G.rawget(tbl, "x2") or -3
-			tbl.y1 = _G.rawget(tbl, "y1") or -1
-			tbl.y2 = _G.rawget(tbl, "y2") or 1
-		elseif w == 25 then
-			tbl.x1 = _G.rawget(tbl, "x1") or aObj.isClsc and 2 or 0
-			tbl.x2 = _G.rawget(tbl, "x2") or aObj.isClsc and 4 or 0
-		end
-		tbl.y1 = _G.rawget(tbl, "y1") or 0
-		tbl.y2 = _G.rawget(tbl, "y2") or 0
-	end
-	-- aObj:Debug("setScrollTrackOffsets#2: [%s, %s, %s, %s, %s]", tbl.x1, tbl.x2, tbl.y1, tbl.y2)
-end
-
--- Add skinning functions to this table
+	ftype = "a",
+	ncc   = false,
+})
+-- add skinning functions to this table
 local skinFuncs = {}
+
 local objType, objTable, optsTable
 function aObj:skinObject(...)
 	--@debug@
@@ -278,7 +282,7 @@ function aObj:skinObject(...)
 	--@end-debug@
 
 	if objType then
-		optsTable = self.skinTPLs.new(objType, objTable)
+		optsTable = self.skinTPLs(objType, objTable)
 		if aObj:canSkin(skinFuncs[objType], optsTable, optsTable.ncc) then
 			skinFuncs[objType](optsTable)
 		end
@@ -290,40 +294,6 @@ function aObj:skinObject(...)
 
 end
 
-local hOfs = -7
-local function hideHeader(obj)
-	-- remove Header textures and move text
-	if obj.header then -- Classic
-		obj.header:DisableDrawLayer("BACKGROUND")
-		obj.header:DisableDrawLayer("BORDER")
-		if obj.header.text
-		then
-			aObj:moveObject{obj=obj.header.text, y=hOfs}
-		else
-			aObj:moveObject{obj=aObj:getRegion(obj.header, obj.header:GetNumRegions()), y=hOfs}
-		end
-		return
-	end
-	if obj.Header then
-		aObj:removeRegions(obj.Header, {1, 2, 3})
-		aObj:moveObject{obj=obj.Header.Text, y=hOfs}
-		return
-	end
-	if obj:GetName() then
-		for _, suffix in _G.pairs{"Header", "_Header", "_HeaderBox", "_FrameHeader", "FrameHeader", "HeaderTexture", "HeaderFrame"} do
-			local hObj = _G[obj:GetName() .. suffix]
-			if hObj then
-				hObj:SetPoint("TOP", obj, "TOP", 0, hOfs * -1)
-				if aObj:hasTextInTexture(hObj, 131080) -- FileDataID
-				or aObj:hasTextInTexture(hObj, "UI-DialogBox-Header")
-				then
-					hObj:SetAlpha(0)
-				end
-				break
-			end
-		end
-	end
-end
 local r, g, b, a
 local function applySkin(tbl)
 	--@debug@
@@ -399,9 +369,9 @@ local function skinButton(tbl)
 	if not success then
 		_G.RaiseFrameLevel(tbl.obj)
 	end
-	 -- make sure it's lower than its parent's Frame Strata
+	-- make sure it's lower than its parent's Frame Strata
 	if tbl.bg then
-		tbl.obj.sb:SetFrameStrata("BACKGROUND")
+		tbl.obj.sb:SetFrameStrata(tbl.sfs)
 	end
 	if tbl.hide then
 		tbl.obj.sb:Hide()
@@ -442,7 +412,7 @@ local function skinButton(tbl)
 	tbl.obj.sb:SetPoint("TOPLEFT", tbl.obj, "TOPLEFT", tbl.x1, tbl.y1)
 	tbl.obj.sb:SetPoint("BOTTOMRIGHT", tbl.obj, "BOTTOMRIGHT", tbl.x2, tbl.y2)
 	-- setup applySkin options
-	local so = aObj.skinTPLs.new("skin", tbl.aso)
+	local so = aObj.skinTPLs("skin", tbl.aso)
 	so.obj   = tbl.obj.sb
 	so.fType = tbl.fType
 	so.ba    = tbl.ba
@@ -620,6 +590,7 @@ local function skinEditBox(tbl)
 	aObj:getRegion(tbl.obj, 2):SetAlpha(1) -- cursor texture
 end
 skinFuncs.editbox = function(table) skinEditBox(table) end
+local hOfs, hObj = -7
 local function skinFrame(tbl)
 	--@debug@
 	_G.assert(tbl, "Missing options table (skinFrame)\n" .. _G.debugstack(2, 3, 2))
@@ -631,16 +602,15 @@ local function skinFrame(tbl)
 	--@end-debug@
 	aObj:Debug2("skinFrame [%s]", tbl)
 
-	-- don't skin it twice
-	if tbl.obj.sf then return end
-
+	if tbl.obj.sf then
+		return
+	end
 	-- DON'T add a frame border if not required
 	if tbl.chkfb
 	and not aObj.prdb.FrameBorders
 	then
 		return
 	end
-
 	-- hide all textures
 	if tbl.kfs
 	or tbl.hat
@@ -649,38 +619,59 @@ local function skinFrame(tbl)
 	else
 		aObj:removeRegions(tbl.obj, tbl.regions)
 	end
-
 	if tbl.rb then
 		aObj:removeBackdrop(tbl.obj, tbl.rb=="nop" and true)
 	end
-
 	if tbl.ri
 	and tbl.obj.Inset or (tbl.obj.inset and _G.type(tbl.obj.inset) ~= "number")
 	then
 		aObj:removeInset(tbl.obj.Inset or tbl.obj.inset)
 	end
-
 	if tbl.rns
 	and tbl.obj.NineSlice
 	then
 		aObj:removeNineSlice(tbl.obj.NineSlice)
 	end
-
 	if tbl.rp
 	and tbl.obj.PortraitContainer
 	and tbl.obj.PortraitContainer.portrait
 	then
 		tbl.obj.PortraitContainer.portrait:SetAlpha(0) -- texture changed in code
 	end
-
 	if tbl.hdr then
-		hideHeader(tbl.obj)
+		-- remove Header textures and move text
+		if tbl.obj.header then -- Classic
+			tbl.obj.header:DisableDrawLayer("BACKGROUND")
+			tbl.obj.header:DisableDrawLayer("BORDER")
+			if tbl.obj.header.text
+			then
+				aObj:moveObject{obj=tbl.obj.header.text, y=hOfs}
+			else
+				aObj:moveObject{obj=aObj:getRegion(tbl.obj.header, tbl.obj.header:GetNumRegions()), y=hOfs}
+			end
+			-- return
+		elseif tbl.obj.Header then
+			aObj:removeRegions(tbl.obj.Header, {1, 2, 3})
+			aObj:moveObject{obj=tbl.obj.Header.Text, y=hOfs}
+			-- return
+		else tbl.obj:GetName()
+			for _, suffix in _G.pairs{"Header", "_Header", "_HeaderBox", "_FrameHeader", "FrameHeader", "HeaderTexture", "HeaderFrame"} do
+				hObj = _G[tbl.obj:GetName() .. suffix]
+				if hObj then
+					hObj:SetPoint("TOP", tbl.obj, "TOP", 0, hOfs * -1)
+					if aObj:hasTextInTexture(hObj, 131080) -- FileDataID
+					or aObj:hasTextInTexture(hObj, "UI-DialogBox-Header")
+					then
+						hObj:SetAlpha(0)
+					end
+					break
+				end
+			end
+		end
 	end
-
 	if tbl.name then
 		tbl.name = tbl.obj:GetName() .. "~sf~"
 	end
-
 	-- add a frame to the object
 	tbl.sft = tbl.sft or tbl.sec or nil
 	tbl.obj.sf = _G.CreateFrame("Frame", tbl.name, tbl.obj, tbl.sft and "SecureFrameTemplate")
@@ -697,12 +688,10 @@ local function skinFrame(tbl)
 	tbl.obj.sf:ClearAllPoints()
 	tbl.obj.sf:SetPoint("TOPLEFT", tbl.obj, "TOPLEFT", tbl.x1, tbl.y1)
 	tbl.obj.sf:SetPoint("BOTTOMRIGHT", tbl.obj, "BOTTOMRIGHT", tbl.x2, tbl.y2)
-
 	-- make sure it's lower than its parent's Frame Strata
 	if tbl.bg then
 		tbl.obj.sf:SetFrameStrata(tbl.sfs)
 	end
-
 	-- skin the CloseButton
 	if aObj.modBtns
 	and tbl.cb
@@ -713,7 +702,6 @@ local function skinFrame(tbl)
 			aObj:skinCloseButton{obj=cBtn, fType=tbl.ftype, noSkin=tbl.cbns}
 		end
 	end
-
 	-- reverse parent child relationship
 	if tbl.rpc
 	and not tbl.obj.SetParent_orig
@@ -729,7 +717,6 @@ local function skinFrame(tbl)
 		aObj:SecureHook(tbl.obj, "Show", function(this) this.sf:Show() end)
 		aObj:SecureHook(tbl.obj, "Hide", function(this) this.sf:Hide() end)
 	end
-
 	-- change border colour when disabled/enabled
 	if tbl.sechk then
 		-- save colour info on object
@@ -740,30 +727,26 @@ local function skinFrame(tbl)
 			aObj:clrFrameBdr(fObj, fObj.sf.clr, fObj.sf.ca)
 		end)
 	end
-
 	-- setup Frame Border options
 	if tbl.fb then
 		tbl.bd  = 10
 		tbl.ng  = true
 		tbl.ofs = tbl.ofs or 0
 	end
-
 	-- setup applySkin options
-	local so  = aObj.skinTPLs.new("skin", tbl.aso)
+	local so  = aObj.skinTPLs("skin", tbl.aso)
 	so.obj    = tbl.obj.sf
 	so.fType  = tbl.fType
-	so.bd     = tbl.noBdr and 11 or tbl.bd
 	so.ba     = tbl.ba
 	so.bbclr  = tbl.clr
 	so.bba    = tbl.ca
+	so.bd     = tbl.noBdr and 11 or tbl.bd
 	so.ng     = tbl.ng
 	so.fh     = tbl.fh
 	so.invert = tbl.invert
 	so.rotate = tbl.rotate
-
 	-- apply the 'Skinner effect' to the frame
 	aObj:skinObject(so)
-
 	return tbl.obj.sf
 end
 skinFuncs.frame = function(table) skinFrame(table) end
