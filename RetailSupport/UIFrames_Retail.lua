@@ -181,7 +181,7 @@ aObj.SetupRetail_UIFrames = function()
 				end
 			end
 		end
-		function skinMissionFrame(frame)
+		function skinMissionFrame(frame, colour)
 			local x1Ofs, y1Ofs, x2Ofs, y2Ofs = 2, 2, 1, -4
 			if frame == _G.CovenantMissionFrame then
 				x1Ofs = -2
@@ -194,13 +194,9 @@ aObj.SetupRetail_UIFrames = function()
 				y2Ofs = -3
 			end
 			frame.GarrCorners:DisableDrawLayer("BACKGROUND")
-			-- if frame == _G.GarrisonMissionFrame then
-			-- 	x2Ofs, y2Ofs = -11, 2
-			-- else
-			-- 	x2Ofs, y2Ofs = -10, 7
-			-- end
 			aObj:skinObject("tabs", {obj=frame, prefix=frame:GetName(), fType=ftype, selectedTab=frame.selectedTab, lod=aObj.isTT and true, regions={7, 8, 9, 10}})
-			aObj:skinObject("frame", {obj=frame, fType=ftype, kfs=true, cbns=true, x1=x1Ofs, y1=y1Ofs, x2=x2Ofs, y2=y2Ofs})
+			-- set FrameStrata to allow map textures to be visible
+			aObj:skinObject("frame", {obj=frame, fType=ftype, kfs=true, bg=true, sfs="LOW", cbns=true, x1=x1Ofs, y1=y1Ofs, x2=x2Ofs, y2=y2Ofs, clr=colour})
 		end
 		function skinCompleteDialog(frame, naval)
 			if not naval then
@@ -321,9 +317,9 @@ aObj.SetupRetail_UIFrames = function()
 		    aObj:removeRegions(frame.Stage.MissionInfo, naval and {1, 2, 3, 4, 5, 8, 9, 10} or {1, 2, 3, 4, 5, 11, 12, 13})
 			aObj:nilTexture(frame.Stage.MissionInfo.IconBG, true)
 		end
-		function skinMissionList(ml, tabOfs)
+		function skinMissionList(ml, tabOfs, colour)
 			ml.MaterialFrame:DisableDrawLayer("BACKGROUND")
-			aObj:skinObject("frame", {obj=ml, fType=ftype, kfs=true, fb=true, ofs=1, x2=4})
+			aObj:skinObject("frame", {obj=ml, fType=ftype, kfs=true, fb=true, ofs=1, x2=4, clr=colour})
 			if ml.RaisedFrameEdges then -- CovenantMissions
 				ml.RaisedFrameEdges:DisableDrawLayer("BORDER")
 				ml.MaterialFrame.LeftFiligree:SetTexture(nil)
@@ -984,9 +980,9 @@ aObj.SetupRetail_UIFrames = function()
 			this.CompanionInfoFrame.InfoFrameShadow:SetTexture(nil)
 			-- this.CompanionInfoFrame.CompanionInfoGLine:SetTexture(nil)
 			_G.CompanionInfoGLine:SetTexture(nil) -- FIXME: Blizzard bug? using name instead of parentKey
-			self:skinObject("frame", {obj=this.CompanionCombatRoleSlot.OptionsList, kfs=true, ofs=4})
-			self:skinObject("frame", {obj=this.CompanionCombatTrinketSlot.OptionsList, kfs=true, ofs=4})
-			self:skinObject("frame", {obj=this.CompanionUtilityTrinketSlot.OptionsList, kfs=true, ofs=4})
+			self:skinObject("frame", {obj=this.CompanionCombatRoleSlot.OptionsList, kfs=true, ofs=4, y2=-5})
+			self:skinObject("frame", {obj=this.CompanionCombatTrinketSlot.OptionsList, kfs=true, ofs=4, y2=-5})
+			self:skinObject("frame", {obj=this.CompanionUtilityTrinketSlot.OptionsList, kfs=true, ofs=4, y2=-5})
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, ofs=4})
 			self:moveObject{obj=this.CloseButton, x=-3, y=-4}
 			if self.modBtns then
@@ -1845,7 +1841,6 @@ aObj.SetupRetail_UIFrames = function()
 		self:SecureHookScript(_G.OrderHallMissionFrame, "OnShow", function(this)
 			skinMissionFrame(this)
 			this.ClassHallIcon:DisableDrawLayer("OVERLAY") -- this hides the frame
-			this.sf:SetFrameStrata("LOW") -- allow map textures to be visible
 
 			self:SecureHookScript(this.FollowerList, "OnShow", function(fObj)
 				skinFollowerList(fObj, "grey")
@@ -1908,7 +1903,6 @@ aObj.SetupRetail_UIFrames = function()
 			this.TitleScroll:DisableDrawLayer("ARTWORK")
 			this.TitleText:SetTextColor(self.HT:GetRGB())
 			skinMissionFrame(this)
-			this.sf:SetFrameStrata("LOW") -- allow map textures to be visible
 			self:SecureHookScript(this.FollowerList, "OnShow", function(fObj)
 				skinFollowerList(fObj, "grey")
 
@@ -1969,9 +1963,7 @@ aObj.SetupRetail_UIFrames = function()
 			end
 			frame.OverlayElements.CloseButtonBorder:SetTexture(nil)
 			aObj:keepFontStrings(frame.RaisedBorder)
-			skinMissionFrame(frame)
-			aObj:clrBBC(frame.sf, "sepia")
-			frame.sf:SetFrameStrata("LOW") -- allow map textures to be visible
+			skinMissionFrame(frame, "sepia")
 			aObj:SecureHookScript(frame.FollowerList, "OnShow", function(this)
 				skinFollowerList(this, "sepia")
 				if aObj.modBtns then
@@ -1984,12 +1976,10 @@ aObj.SetupRetail_UIFrames = function()
 				aObj:Unhook(this, "OnShow")
 			end)
 			aObj:SecureHookScript(frame.MissionTab, "OnShow", function(this)
-				skinMissionList(this.MissionList)
-				aObj:clrBBC(this.MissionList.sf, "grey")
+				skinMissionList(this.MissionList, nil, "grey")
 				-- ZoneSupportMissionPage
-				skinMissionPage(this.MissionPage)
+				skinMissionPage(this.MissionPage, "grey")
 				aObj:skinObject("frame", {obj=this.MissionPage.StartMissionFrame, fType=ftype, kfs=true, ng=true, x1=40, y1=-8, x2=-30, y2=10})
-				aObj:clrBBC(this.MissionPage.sf, "grey")
 				skinBoard(this.MissionPage.Board)
 
 				aObj:Unhook(this, "OnShow")
@@ -2065,16 +2055,8 @@ aObj.SetupRetail_UIFrames = function()
 				skinBoard(this.Board)
 				aObj:skinObject("frame", {obj=this.CompleteFrame, fType=ftype, kfs=true, ng=true, x1=40, y1=-8, x2=-40, y2=10})
 				if aObj.modBtns then
-					aObj:skinStdButton{obj=this.CompleteFrame.ContinueButton}
-					aObj:skinStdButton{obj=this.CompleteFrame.SpeedButton}
-					aObj:SecureHook(this, "DisableCompleteFrameButtons", function(fObj)
-						aObj:clrBtnBdr(fObj.CompleteFrame.ContinueButton)
-						aObj:clrBtnBdr(fObj.CompleteFrame.SpeedButton)
-					end)
-					aObj:SecureHook(this, "EnableCompleteFrameButtons", function(fObj)
-						aObj:clrBtnBdr(fObj.CompleteFrame.ContinueButton)
-						aObj:clrBtnBdr(fObj.CompleteFrame.SpeedButton)
-					end)
+					aObj:skinStdButton{obj=this.CompleteFrame.ContinueButton, schk=true}
+					aObj:skinStdButton{obj=this.CompleteFrame.SpeedButton, schk=true}
 				end
 
 				aObj:Unhook(this, "OnShow")
