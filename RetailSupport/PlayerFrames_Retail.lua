@@ -1045,50 +1045,40 @@ aObj.SetupRetail_PlayerFrames = function()
 				end)
 			end
 
-			local function skinBar(bar, type)
-				if not aObj.sbGlazed[bar.Bar] then
-					if bar.Bar.BorderLeft then -- ObjectiveTrackerProgressBarTemplate/ObjectiveTrackerTimerBarTemplate
-						aObj:removeRegions(bar.Bar, {1, 2, 3})
-						aObj:skinObject("statusbar", {obj=bar.Bar, fi=0, bg=aObj:getRegion(bar.Bar, bar.Bar.Label and 5 or 4)})
-					else
-						aObj:removeRegions(bar.Bar, {1, 2 ,4, 5, 8, 9, 10}) -- all except Bar, Label, BarBG & Icon
-						bar.Flare1:DisableDrawLayer("ARTWORK")
-						bar.Flare2:DisableDrawLayer("ARTWORK")
-						if bar.BarFrame then -- BonusTrackerProgressBarTemplate
-							aObj:skinObject("statusbar", {obj=bar.Bar, fi=0, bg=bar.Bar.BarBG})
-						else --ScenarioProgressBarTemplate
-							aObj:skinObject("statusbar", {obj=bar.Bar, fi=0})
+			local function skinBar(bar)
+				if bar.template == "BonusTrackerProgressBarTemplate"
+				or bar.template == "ScenarioProgressBarTemplate"
+				then
+					for _, frame in _G.pairs(bar.AnimatableFrames) do
+						if frame ~= bar.Bar then
+							frame:DisableDrawLayer("ARTWORK")
 						end
 					end
+					bar.Bar:DisableDrawLayer("ARTWORK")
+					bar.Bar:DisableDrawLayer("OVERLAY")
+					bar.Bar.Label:SetDrawLayer("BORDER")
+					aObj:skinObject("statusbar", {obj=bar.Bar, fi=0, bg=bar.Bar.BarBG})
+				elseif bar.template == "ObjectiveTrackerProgressBarTemplate"
+				or bar.template == "ObjectiveTrackerTimerBarTemplate"
+				then
+					aObj:removeRegions(bar.Bar, {1, 2, 3}) -- Border textures
+					aObj:skinObject("statusbar", {obj=bar.Bar, fi=0, bg=aObj:getRegion(bar.Bar, bar.template:find("Progress") and 5 or 4)})
 				end
 			end
 			local layoutChildren
-			local function skinModule(module)
+			local function skinModule(module, hooked)
 				if aObj.prdb.ObjectiveTracker.headers then
 					module.Header.Background:SetTexture(nil)
 				end
 				if module.hasContents then
-					--@debug@
-					-- _G.Spew("mod", module)
-					-- _G.Spew("mod CF", module.ContentsFrame)
-					--@end-debug@
 
 					if module.Block then -- UIWidgetObjectiveTracker
-						--@debug@
-						-- _G.Spew("mod Block", module.Block)
-						--@end-debug@
 						_G.nop()
 					end
 
 					if module.FixedBlocks then -- ScenarioObjectiveTracker
-						--@debug@
-						-- _G.Spew("mod FB", module.FixedBlocks)
-						--@end-debug@
 						for _, block in _G.pairs(module.FixedBlocks) do
 							if block == module.ObjectivesBlock then
-								--@debug@
-								-- _G.Spew("mod FB Objectives", block)
-								--@end-debug@
 								if block.spellFramePool
 								and aObj.modBtnBs
 								then
@@ -1098,15 +1088,8 @@ aObj.SetupRetail_PlayerFrames = function()
 								end
 							elseif block == module.StageBlock then
 								aObj:skinObject("frame", {obj=block, fType=ftype, kfs=true, ofs=0, clr="sepia"})
-								--@debug@
-								-- _G.Spew("mod FB Stage", block)
-								-- _G.Spew("mod FB Stage WC", block.WidgetContainer)
-								--@end-debug@
 								layoutChildren = block.WidgetContainer:GetLayoutChildren()
 								for _, widget in _G.ipairs(layoutChildren) do
-									--@debug@
-									-- _G.Spew("mod FB Stage WC LC" .. i, widget)
-									--@end-debug@
 									if widget.widgetType == 29 then -- ScenarioHeaderDelves
 										aObj:skinObject("frame", {obj=widget, fType=ftype, kfs=true, ofs=-4, x1=7, x2=-7, clr="sepia"})
 									end
@@ -1114,23 +1097,11 @@ aObj.SetupRetail_PlayerFrames = function()
 							elseif block == module.TopWidgetContainerBlock
 							or block == module.BottomWidgetContainerBlock
 							then
-								--@debug@
-								-- _G.Spew("mod FB WC", block)
-								-- _G.Spew("mod FB WC WidgetContainer", block.WidgetContainer)
-								--@end-debug@
 								if block.widgetPools then -- Delves
-									-- for widget in block.widgetPools:EnumerateActive() do
-										--@debug@
-										-- _G.Spew("block widget", widget)
-										--@end-debug@
-									-- end
 									_G.nop()
 								end
 							elseif	block == module.MawBuffsBlock then
 								if aObj.prdb.ObjectiveTracker.animapowers then
-									--@debug@
-									-- _G.Spew("block Container", block.Container)
-									--@end-debug@
 									aObj.modUIBtns:skinStdButton{obj=block.Container, fType=ftype, ignoreHLTex=true, ofs=-9, x1=12, x2=-2, clr="turq", ca=0.65} -- use module, treat like a frame
 									block.Container.SetWidth = _G.nop
 									block.Container.SetHighlightAtlas = _G.nop
@@ -1160,9 +1131,6 @@ aObj.SetupRetail_PlayerFrames = function()
 						end
 					end
 					if module.usedBlocks then
-						--@debug@
-						-- _G.Spew("mod usedBlocks", module.usedBlocks)
-						--@end-debug@
 						for template, blocks in _G.pairs(module.usedBlocks) do
 							if template:find("AutoQuestPopUp") then
 								for _, block in _G.pairs(blocks) do
@@ -1173,12 +1141,12 @@ aObj.SetupRetail_PlayerFrames = function()
 					end
 					if module.usedProgressBars then
 						for _, pBar in _G.pairs(module.usedProgressBars) do
-							skinBar(pBar, "p")
+							skinBar(pBar)
 						end
 					end
 					if module.usedTimerBars then
 						for _, tBar in _G.pairs(module.usedTimerBars) do
-							skinBar(tBar, "t")
+							skinBar(tBar)
 						end
 					end
 					if module.usedRightEdgeFrames
@@ -1209,13 +1177,11 @@ aObj.SetupRetail_PlayerFrames = function()
 		local function skinRewards(reward)
 			for btn in reward.framePool:EnumerateActive() do
 				if aObj.modBtnBs then
-					aObj:addButtonBorder{obj=btn, fType=ftype, reParent={btn.ItemOverlay, btn.Count}}
-					aObj:clrButtonFromBorder(btn)
+					aObj:addButtonBorder{obj=btn, fType=ftype, relTo=btn.ItemIcon, reParent={btn.ItemOverlay, btn.Count}}
 				end
 			end
 		end
 		self:SecureHook(_G.ObjectiveTrackerManager, "ShowRewardsToast", function(this, rewards, module, block, headerText, callback)
-			aObj:Debug("OTM ShowRewardsToast: [%s, %s, %s, %s, %s, %s, %s]", this, rewards, module, block, headerText, callback)
 			for rewardsToast in this.rewardsToastPool:EnumerateActive() do
 				rewardsToast:DisableDrawLayer("ARTWORK")
 				rewardsToast:DisableDrawLayer("BORDER")
