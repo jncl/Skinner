@@ -9,27 +9,29 @@ aObj.blizzFrames[ftype].GossipFrame = function(self)
 	self.initialized.GossipFrame = true
 
 	local skinGossip = _G.nop
-	if not (self:isAddonEnabled("Quester") and _G.QuesterDB.gossipColor) then
+	if not (self:isAddonEnabled("Quester")
+	and _G.QuesterDB.gossipColor)
+	then
 		function skinGossip(...)
-				local _, element, elementData
-				if _G.select("#", ...) == 2 then
-					element, elementData = ...
-				elseif _G.select("#", ...) == 3 then
-					_, element, elementData = ...
-				end
-				if elementData.buttonType == 1 then -- Greeting
-					element.GreetingText:SetTextColor(aObj.HT:GetRGB())
-				elseif elementData.buttonType == 3 then -- Gossip
-					element:GetFontString():SetTextColor(aObj.BT:GetRGB())
-				elseif elementData.buttonType == 4 -- Quest
-				or elementData.buttonType == 5 -- Campaign Quest
-				then
-					_G.C_Timer.After(0.05, function()
-						element:SetText(elementData.info.title)
-						element:GetFontString():SetTextColor(aObj.BT:GetRGB())
-					end)
-				end
+			local _, element, elementData
+			if _G.select("#", ...) == 2 then
+				element, elementData = ...
+			elseif _G.select("#", ...) == 3 then
+				_, element, elementData = ...
 			end
+			if elementData.buttonType == 1 then -- Greeting
+				element.GreetingText:SetTextColor(aObj.HT:GetRGB())
+			elseif elementData.buttonType == 3 then -- Gossip
+				element:GetFontString():SetTextColor(aObj.BT:GetRGB())
+			elseif elementData.buttonType == 4 -- Quest
+			or elementData.buttonType == 5 -- Campaign Quest
+			then
+				_G.C_Timer.After(0.05, function()
+					element:SetText(elementData.info.title)
+					element:GetFontString():SetTextColor(aObj.BT:GetRGB())
+				end)
+			end
+		end
 	end
 
 	self:SecureHookScript(_G.GossipFrame, "OnShow", function(this)
