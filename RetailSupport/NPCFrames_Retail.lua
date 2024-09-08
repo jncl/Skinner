@@ -767,17 +767,21 @@ aObj.SetupRetail_NPCFrames = function()
 		if not self.prdb.FlightMap or self.initialized.FlightMap then return end
 		self.initialized.FlightMap = true
 
-		self:skinObject("frame", {obj=_G.FlightMapFrame.BorderFrame, fType=ftype, kfs=true, rns=true, cb=true, ofs=3, y1=2})
-		_G.FlightMapFrame.BorderFrame.sf:SetFrameStrata("LOW") -- allow map textures to be visible
-
-		-- remove ZoneLabel background texture
-		for dP, _ in _G.pairs(_G.FlightMapFrame.dataProviders) do
-			if dP.ZoneLabel then
-				dP.ZoneLabel.TextBackground:SetTexture(nil)
-				dP.ZoneLabel.TextBackground.SetTexture = _G.nop
-				break
+		self:SecureHookScript(_G.FlightMapFrame, "OnShow", function(this)
+			-- remove ZoneLabel background texture
+			for dP, _ in _G.pairs(this.dataProviders) do
+				if dP.ZoneLabel then
+					dP.ZoneLabel.TextBackground:SetTexture(nil)
+					dP.ZoneLabel.TextBackground.SetTexture = _G.nop
+					break
+				end
 			end
-		end
+			 -- set frame starata to 'LOW' to allow map textures to be visible
+			self:skinObject("frame", {obj=this.BorderFrame, fType=ftype, kfs=true, bg=true, sfs="LOW", rns=true, cb=true, ofs=3, y1=2})
+
+			self:Unhook(this, "OnShow")
+		end)
+		self:checkShown(_G.FlightMapFrame)
 
 	end
 
