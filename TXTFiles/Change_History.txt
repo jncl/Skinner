@@ -1,3 +1,37 @@
+beta11.56313.1
+Jncl:
+	Updated ToDo.txt files
+	Updated Change_History.txt
+	Updated version numbers
+	Updated PlayerChoice skin
+	Updated TalkingHead skin
+	Updated WorldMap skin
+	Added option to NOT add Borders to Frame Control Buttons, closes #146
+	Updated Quality colouring code
+	Updated NSF
+	Updated code to handle Border Colour value being a table
+	Updated EncounterJournal skin
+	Bugfix for ObjectiveTracker Rewards
+	Removed duplicate code for AchievementUI skin
+	Updated Notes skin, close #145
+	Updated Baganator skin
+	Updated UIButtons code to handle missing objects, closes #142
+	Updated UIWidgetsUI
+	Updated Frames to allow selection of FrameBorders, closes #137
+	Bugfix for TexturedTabs selection
+	Updated AlertFrame skin, closes #140, closes #141
+	Updated ItemSocketingUI, closes #143
+	Updated TokenFrame skin
+	Updated ReputationFrame skin
+	Updated EventToastManager skin
+	Updated Retail DelvesDashboardUI
+	Updated Retail DressUpFrame
+	Updated Retail ItemUpgradeUI
+	Updated Retail StableUI
+	Updated Options to allow a bigger border inset, closes #135
+	Updated ClassicQuestLog, closes #134, LibDropDown, LibUIDropDownMenu, MSA_DropDowmMenu, closes #133, closes #138 & ZygorGuidesViewer, closes #139
+	Skinned LibElioteDropDownMenu & SimpleAddonManager, closes #136
+
 beta11.56162.1
 Jncl:
 	Updated ToDo.txt files
