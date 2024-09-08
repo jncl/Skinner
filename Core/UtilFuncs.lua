@@ -583,8 +583,7 @@ local clrTab = {
 	blue        = _G.BLUE_FONT_COLOR,
 	bright_blue = _G.BRIGHTBLUE_FONT_COLOR,
 	light_blue  = _G.LIGHTBLUE_FONT_COLOR,
-	common      = _G.LIGHTGRAY_FONT_COLOR,
-	-- default is bbClr
+	common      = _G.COMMON_GRAY_COLOR,
 	disabled    = _G.DISABLED_FONT_COLOR,
 	gold_df     = _G.GOLD_FONT_COLOR,
 	gold        = _G.PASSIVE_SPELL_FONT_COLOR,
@@ -598,7 +597,6 @@ local clrTab = {
 	silver      = _G.QUEST_OBJECTIVE_FONT_COLOR,
 	topaz       = _G.CreateColor(0.6, 0.31, 0.24),
 	turq        = _G.ADVENTURES_BUFF_BLUE,
-	-- unused      = _G.DULL_RED_FONT_COLOR,
 	white       = _G.HIGHLIGHT_FONT_COLOR,
 	yellow      = _G.YELLOW_FONT_COLOR,
 }
