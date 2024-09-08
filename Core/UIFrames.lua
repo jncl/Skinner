@@ -2268,7 +2268,6 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 		ignBtn["MiniMapLFGFrame"]             = true
 		ignBtn["MinimapZoomIn"]               = true
 		ignBtn["MinimapZoomOut"]              = true
-		-- ignBtn["QueueStatusMinimapButton"] = true
 	else
 		ignBtn["ExpansionLandingPageMinimapButton"] = true
 		ignBtn[_G.Minimap.ZoomIn]                   = true
@@ -2443,7 +2442,6 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 	end
 	if self.isClsc then
 		self:skinObject("frame", {obj=_G.MiniMapLFGFrame, fType=ftype, kfs=true, ofs=0})
-		-- self:skinObject("frame", {obj=_G.MiniMapLFGFrameDropDown, fType=ftype})
 	end
 
 	-- skin Minimap children, allow for delayed addons to be loaded (e.g. Baggins)
