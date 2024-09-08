@@ -1,6 +1,9 @@
 ﻿## Interface: 11502, 110002, 40400
 
 ## Title: Skinner
+## Author: Jncl
+## Version: @project-version@
+
 ## IconTexture: Interface\Icons\INV_Misc_Pelt_Wolf_01
 ## AddonCompartmentFunc: Skinner_OnAddonCompartmentClick
 
@@ -8,8 +11,6 @@
 ## Notes-esES: Cambia el aspecto del UI predeterminado
 ## Notes-zhCN: 更改默认用户界面的视觉样式。
 ## Notes-zhTW: 更改預設用戶介面的視覺樣式。
-## Author: Jncl
-## Version: @project-version@
 
 ## DefaultState: Enabled
 ## LoadOnDemand: 0
@@ -17,9 +18,10 @@
 ## OptionalDeps: Ace3, LibSharedMedia-3.0, AceGUI-3.0-SharedMediaWidgets
 ## Globe: check-classic
 
+## X-Category: Interface Enhancements
+## X-Website: https://www.curseforge.com/wow/addons/skinner
 ## X-Curse-Project-ID: 14661
 ## X-Wago-ID: aN0YXL6j
-## X-Category: Miscellaneous
 
 Libs\_RequiredLibs.xml
 Libs\_OptionalLibs.xml
