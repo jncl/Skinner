@@ -2813,6 +2813,11 @@ aObj.SetupRetail_UIFrames = function()
 
 		local x1Ofs, y1Ofs, x2Ofs, y2Ofs
 		local function resizeSF(frame, idx)
+			-- handle in combat
+			if _G.InCombatLockdown() then
+			    aObj:add2Table(aObj.oocTab, {resizeSF, {frame, idx}})
+			    return
+			end
 			-- aObj:Debug("resizeSF: [%s, %s]", frame, idx)
 			x1Ofs, y1Ofs, x2Ofs, y2Ofs = _G.unpack(optOfs[idx])
 			-- aObj:Debug("PCUI offsets: [%s, %s, %s, %s]", x1Ofs, y1Ofs, x2Ofs, y2Ofs)
@@ -2839,7 +2844,7 @@ aObj.SetupRetail_UIFrames = function()
 					for btn in opt.OptionButtonsContainer.buttonPool:EnumerateActive() do
 						-- DON'T skin magnifying glass button
 						if btn:GetText() ~= "Preview Covenant" then
-							aObj:skinStdButton{obj=btn, fType=ftype, schk=true}
+							aObj:skinStdButton{obj=btn, fType=ftype, schk=true, sechk=true}
 						end
 					end
 				end
@@ -2893,7 +2898,7 @@ aObj.SetupRetail_UIFrames = function()
 							reg:SetTexture(nil)
 						end
 					end
-					aObj:skinObject("frame", {obj=opt, fType=ftype, clr=opt.optionInfo.rarityColor and {opt.optionInfo.rarityColor:GetRGBA()} or {aObj:getColourByName("gold_df")}})
+					aObj:skinObject("frame", {obj=opt, fType=ftype, clr=opt.optionInfo.rarityColor and {opt.optionInfo.rarityColor:GetRGBA()} or "gold_df"})
 					resizeSF(opt, 0)
 					if aObj.modBtns then
 						_G.CypherPlayerChoiceToggleButton:DisableDrawLayer("ARTWORK")
@@ -2901,9 +2906,9 @@ aObj.SetupRetail_UIFrames = function()
 						_G.CypherPlayerChoiceToggleButton.Text:SetDrawLayer("OVERLAY")
 						aObj:skinStdButton{obj=_G.CypherPlayerChoiceToggleButton, fType=ftype, ofs=-8, x1=30, x2=-30, clr="gold"}
 					end
-				elseif frame.optionFrameTemplate == "PlayerChoiceGenericPowerChoiceOptionTemplate" then
+				elseif frame.optionFrameTemplate == "PlayerChoiceGenericPowerChoiceOptionTemplate" then -- Delves Power Choice
 					opt.BackgroundContainer:DisableDrawLayer("BACKGROUND")
-					aObj:skinObject("frame", {obj=opt, fType=ftype, clr=opt.optionInfo.rarityColor and {opt.optionInfo.rarityColor:GetRGBA()} or {aObj:getColourByName("gold_df")}})
+					aObj:skinObject("frame", {obj=opt, fType=ftype, clr=opt.optionInfo.rarityColor and {opt.optionInfo.rarityColor:GetRGBA()} or "silver"})
 					resizeSF(opt, 0)
 					if aObj.modBtns then
 						_G.GenericPlayerChoiceToggleButton:DisableDrawLayer("ARTWORK")
