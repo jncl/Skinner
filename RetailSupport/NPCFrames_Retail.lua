@@ -903,6 +903,7 @@ aObj.SetupRetail_NPCFrames = function()
 				self:skinCheckButton{obj=this.FooterFrame.TogglePlayerPreview, fType=ftype}
 				self:skinCheckButton{obj=this.FooterFrame.ToggleMountSpecial, fType=ftype}
 				self:skinCheckButton{obj=this.FooterFrame.ToggleHideArmor, fType=ftype}
+				self:skinCheckButton{obj=this.FooterFrame.ToggleAttackAnimation, fType=ftype}
 			end
 
 			self:Unhook(this, "OnShow")
