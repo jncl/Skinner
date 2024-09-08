@@ -1325,38 +1325,35 @@ aObj.SetupRetail_UIFrames = function()
 		if self.initialized.ExtraAbilityContainer then return end
 		self.initialized.ExtraAbilityContainer = true
 
-		local function skinBtn(btn)
-			if btn:IsForbidden() then return end
-			-- handle in combat
-			if _G.InCombatLockdown() then
-			    aObj:add2Table(aObj.oocTab, {skinBtn, {btn}})
-			    return
-			end
-			if btn.NormalTexture then
-				btn:GetNormalTexture():SetTexture(nil)
+		local function skinBtn(opts)
+			if opts.obj.NormalTexture then
+				opts.obj:GetNormalTexture():SetTexture(nil)
 			end
 			if aObj.modBtnBs then
-				aObj:addButtonBorder{obj=btn, sabt=true, reParent={btn.HotKey, btn.Count, btn.Flash, btn.style, btn.cooldown}, ofs=2}
+				aObj:addButtonBorder{obj=opts.obj, sabt=true, reParent={opts.obj.HotKey, opts.obj.Count, opts.obj.Flash, opts.obj.style, opts.obj.cooldown}, ofs=2}
 			end
 		end
 		if self.prdb.MainMenuBar.extraab then
 			self:SecureHookScript(_G.ExtraActionBarFrame.intro, "OnFinished", function(_)
 				_G.ExtraActionBarFrame.button.style:SetAlpha(0)
 			end)
-			skinBtn(_G.ExtraActionBarFrame.button)
+			if self:canSkin(skinBtn, {obj=_G.ExtraActionBarFrame.button}) then
+				skinBtn({obj=_G.ExtraActionBarFrame.button})
+			end
 		end
 		if self.prdb.ZoneAbility then
 			local function getAbilities(frame)
+				frame.Style:SetAlpha(0)
 				for btn in frame.SpellButtonContainer:EnumerateActive() do
-					skinBtn(btn)
+					if aObj:canSkin(skinBtn, {obj=btn}) then
+						skinBtn({obj=btn})
+					end
 				end
 			end
 			self:SecureHook(_G.ZoneAbilityFrame, "UpdateDisplayedZoneAbilities", function(this)
-				this.Style:SetAlpha(0)
 				getAbilities(this)
 			end)
 			if _G.ZoneAbilityFrame:IsShown() then
-				_G.ZoneAbilityFrame.Style:SetAlpha(0)
 				getAbilities(_G.ZoneAbilityFrame)
 			end
 		end
