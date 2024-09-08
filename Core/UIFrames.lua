@@ -192,7 +192,7 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 		tbl.y1  = tbl.y1 or tbl.ofs
 		tbl.x2  = tbl.x2 or tbl.ofs
 		tbl.y2  = tbl.y2 or tbl.ofs * -1
-		aObj:skinObject("frame", {obj=frame, fType=ftype, x1=tbl.x1, y1=tbl.y1, x2=tbl.x2, y2=tbl.y2})
+		aObj:skinObject("frame", {obj=frame, fType=ftype, x1=tbl.x1, y1=tbl.y1, x2=tbl.x2, y2=tbl.y2, ncc=true})
 		-- add button border if required
 		if aObj.modBtnBs then
 			itemQuality = tbl.iq
