@@ -912,7 +912,7 @@ if not aObj.isClscERA then
 					end
 					if self.modChkBtns then
 						self:skinCheckButton{obj=fObj.AtWarCheckbox}
-						self:skinCheckButton{obj=fObj.MakeInactiveCheckbox}
+						self:skinCheckButton{obj=fObj.MakeInactiveCheckbox, sechk=true}
 						self:skinCheckButton{obj=fObj.WatchFactionCheckbox}
 					end
 
