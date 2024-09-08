@@ -1724,7 +1724,6 @@ aObj.SetupRetail_PlayerFrames = function()
 						aObj:addButtonBorder{obj=element.ItemContainer.Item, fType=ftype, ibt=true}
 					end
 				end
-				-- _G.ScrollUtil.AddInitializedFrameCallback(frame.ScrollBox, skinLine, aObj, true)
 				_G.ScrollUtil.AddAcquiredFrameCallback(frame.ScrollBox, skinLine, aObj, true)
 				self:skinObject("frame", {obj=frame, fType=ftype, kfs=true, rns=true})
 				if self.modBtns then
@@ -1853,9 +1852,11 @@ aObj.SetupRetail_PlayerFrames = function()
 				self:checkShown(fObj.BrowseFrame)
 
 				self:SecureHookScript(fObj.OrderView, "OnShow", function(frame)
+					self:skinObject("ddbutton", {obj=frame.RankBar.ExpansionDropdownButton, fType=ftype, noSF=true, x1=-5, y1=3, x2=1, y2=-3})
 					self:removeNineSlice(frame.OrderInfo.NineSlice)
 					frame.OrderInfo.NoteBox.Background.Border:SetTexture(nil)
 					self:skinObject("frame", {obj=frame.OrderInfo.NoteBox, fType=ftype, fb=true, y1=-18})
+					frame.OrderInfo.NPCRewardsFrame.Background:SetTexture(nil)
 					self:skinObject("frame", {obj=frame.OrderInfo, fType=ftype, kfs=true, fb=true, x1=-5})
 					self:removeNineSlice(frame.OrderDetails.NineSlice)
 					skinSchematicForm(frame.OrderDetails.SchematicForm)
@@ -1871,12 +1872,20 @@ aObj.SetupRetail_PlayerFrames = function()
 						self:skinStdButton{obj=frame.OrderInfo.StartOrderButton, fType=ftype}
 						self:skinStdButton{obj=frame.OrderInfo.DeclineOrderButton, fType=ftype}
 						self:skinStdButton{obj=frame.OrderInfo.ReleaseOrderButton, fType=ftype}
+						self:skinStdButton{obj=frame.CreateButton, fType=ftype, schk=true, sechk=true}
+						self:skinStdButton{obj=frame.CompleteOrderButton, fType=ftype,}
+						self:skinStdButton{obj=frame.StartRecraftButton, fType=ftype}
+						self:skinStdButton{obj=frame.StopRecraftButton, fType=ftype}
 						self:skinStdButton{obj=frame.DeclineOrderDialog.CancelButton, fType=ftype}
 						self:skinStdButton{obj=frame.DeclineOrderDialog.ConfirmButton, fType=ftype}
 						self:skinCloseButton{obj=frame.CraftingOutputLog.ClosePanelButton, fType=ftype}
 					end
 					if self.modBtnBs then
+						self:addButtonBorder{obj=frame.ConcentrationDisplay, fType=ftype, relTo=frame.ConcentrationDisplay.Icon, ofs=3}
 						self:addButtonBorder{obj=frame.OrderInfo.SocialDropdown, fType=ftype, clr="gold", y1=1, y2=-1}
+						for _, btn in pairs(frame.OrderInfo.NPCRewardsFrame.RewardItems) do
+							self:addButtonBorder{obj=btn, fType=ftype, ibt=true}
+						end
 					end
 
 					self:Unhook(frame, "OnShow")
