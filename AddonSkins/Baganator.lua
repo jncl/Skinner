@@ -2,9 +2,9 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("Baganator") then return end
 local _G = _G
 
-aObj.addonsToSkin.Baganator = function(self) -- v 463
+aObj.addonsToSkin.Baganator = function(self) -- v 479
 
-	local skinBtns, skinReagents, skinViewBtns, skinBagSlots = _G.nop, _G.nop, _G.nop, _G.nop
+	local skinBtns, skinReagentBtns, skinReagents, skinViewBtns, skinBagSlots = _G.nop, _G.nop, _G.nop, _G.nop, _G.nop
 	if self.modBtnBs then
 		function skinBtns(frame)
 			for _, btn in _G.ipairs(frame.buttons) do
@@ -12,14 +12,23 @@ aObj.addonsToSkin.Baganator = function(self) -- v 463
 			end
 			-- N.B. DON'T hide SlotBackground/ItemTexture as the AddOn does that. [Theme -> Hide icon backgrounds]
 		end
-		function skinReagents(frame)
-			-- N.B. use pairs NOT ipairs otherwise bank reagents DON'T get skinned
-			for _, array in _G.pairs{frame.CollapsingBags, frame.CollapsingBankBags} do
-				for _, layout in _G.pairs(array) do
-					if layout.key == "reagentBag" then
-						skinBtns(layout.live)
-						skinBtns(layout.cached)
-						aObj:skinStdButton{obj=layout.button, ofs=0} -- Show Reagents button
+		if self.isRtl then
+			function skinReagentBtns(layout)
+				if layout.key == "reagentBag" then
+					skinBtns(layout.live)
+					skinBtns(layout.cached)
+					aObj:skinStdButton{obj=layout.button, ofs=0} -- Show Reagents button
+				end
+			end
+			function skinReagents(frame, type)
+				if frame.CollapsingBags then
+					for _, layout in _G.pairs(frame.CollapsingBags) do
+						skinReagentBtns(layout)
+					end
+				end
+				if frame.CollapsingBankBags then
+					for _, layout in _G.pairs(frame.CollapsingBankBags) do
+						skinReagentBtns(layout)
 					end
 				end
 			end
@@ -27,28 +36,35 @@ aObj.addonsToSkin.Baganator = function(self) -- v 463
 		local containerTypes = {
 			Backpack = {"BagLive", "BagCached"},
 			Bank     = {"BankLive", "BankCached"},
+			Guild    = {"GuildLive", "GuildCached"},
 			Warband  = {"BankTabLive", "BankTabCached", "BankUnifiedLive", "BankUnifiedCached"},
 		}
 		local method, ctype
 		function skinViewBtns(frame, type)
-			method = type:find("SV") and "RebuildLayout" or "ShowGroup"
-			ctype = aObj:hasTextInDebugNameRE(frame, "Backpack") and containerTypes.Backpack
-			     or aObj:hasTextInDebugNameRE(frame, "Warband") and containerTypes.Warband -- N.B. put Warband before Bank
-			     or aObj:hasTextInDebugNameRE(frame, "Bank") and containerTypes.Bank
-			for _, view in _G.pairs(ctype) do
-				aObj:SecureHook(frame.Container[view], method, function(vObj)
-					skinBtns(vObj)
-				end)
+			if type:find("SV") then
+				method = "RebuildLayout"
+				ctype = aObj:hasTextInDebugNameRE(frame, "Backpack") and containerTypes.Backpack
+				     or aObj:hasTextInDebugNameRE(frame, "Warband") and containerTypes.Warband -- N.B. put Warband before Bank
+				     or aObj:hasTextInDebugNameRE(frame, "Bank") and containerTypes.Bank
+				     or aObj:hasTextInDebugNameRE(frame, "Guild") and containerTypes.Guild
+				for _, view in _G.pairs(ctype) do
+					aObj:SecureHook(frame[view] or frame.Container[view], method, function(vObj) -- N.B. Guild View DOESN'T have a Container frame
+						skinBtns(vObj)
+					end)
+				end
+			else
+				method = "ShowGroup"
+				for _, layout in _G.pairs(frame.Container.Layouts) do
+					aObj:secureHook(layout, method, function(vObj)
+						skinBtns(vObj)
+					end)
+				end
 			end
 		end
 		function skinBagSlots(frame)
 			for _, array in _G.pairs{frame.BagSlots.liveBagSlots, frame.BagSlots.cachedBagSlots} do
 				for _, btn in _G.pairs(array) do
-					aObj:addButtonBorder{obj=btn, ibt=true}
-					-- aObj:clrButtonFromBorder(btn)
-					if btn.needPurchase then
-						aObj:clrBBC(btn.sbb, "red")
-					end
+					aObj:addButtonBorder{obj=btn, ibt=true, clr=btn.needPurchase and "red" or nil}
 				end
 			end
 		end
@@ -77,9 +93,12 @@ aObj.addonsToSkin.Baganator = function(self) -- v 463
 			aObj:skinStdButton{obj=frame.SearchWidget.HelpButton}
 		end
 	end
-
 	local function skinBag(frame, type)
 		skinFrame(frame, type)
+		skinBagSlots(frame)
+		aObj:SecureHook(frame, "RefreshTabs", function(fObj)
+			aObj:skinObject("tabs", {obj=fObj, tabs=fObj.Tabs, lod=self.isTT and true})
+		end)
 		if aObj.modBtns then
 			for _, array in _G.ipairs{frame.AllFixedButtons, frame.TopButtons} do
 				for _, btn in _G.ipairs(array) do
@@ -87,14 +106,16 @@ aObj.addonsToSkin.Baganator = function(self) -- v 463
 				end
 			end
 		end
-		skinBagSlots(frame)
-		aObj:SecureHook(frame, "RefreshTabs", function(fObj)
-			aObj:skinObject("tabs", {obj=fObj, tabs=fObj.Tabs, lod=self.isTT and true})
-		end)
 	end
 	self:SecureHookScript(_G.Baganator_SingleViewBackpackViewFrame, "OnShow", function(this)
 		self:SecureHook(this, "UpdateForCharacter", function(fObj, _)
-			skinReagents(fObj)
+			skinReagents(fObj, "SVBags")
+			-- N.B. done here to skin KeyRing button
+			if self.isClscERA then
+				for _, btn in _G.ipairs(fObj.AllButtons) do
+					aObj:skinStdButton{obj=btn, schk=true, sechk=true}
+				end
+			end
 		end)
 		skinBag(this,"SVBags")
 		skinViewBtns(this, "SVBags")
@@ -104,12 +125,15 @@ aObj.addonsToSkin.Baganator = function(self) -- v 463
 
 	self:SecureHookScript(_G.Baganator_CategoryViewBackpackViewFrame, "OnShow", function(this)
 		self:SecureHook(this, "UpdateForCharacter", function(fObj, ...)
-			self:Unhook(this, "UpdateForCharacter") -- N.B.: moved up here as the function is called lower down
 			skinViewBtns(fObj, "CVBags")
-			-- force button update to show borders
-			fObj.UpdateForCharacter(fObj, ...)
 		end)
 		skinBag(this,"CVBags")
+		-- wait for layouts to be created
+		_G.C_Timer.After(0.05, function()
+			for _, layout in _G.pairs(this.Container.Layouts) do
+				skinBtns(layout)
+			end
+		end)
 
 		self:Unhook(this, "OnShow")
 	end)
@@ -136,20 +160,15 @@ aObj.addonsToSkin.Baganator = function(self) -- v 463
 
 			if this.UpdateForCharacter then
 				aObj:SecureHook(this, "UpdateForCharacter", function(fObj, ...)
-					aObj:Unhook(this, "UpdateForCharacter") -- N.B.: moved up here as the function is called lower down
 					if aObj.modBtns then
-						for _, array in _G.pairs{fObj:GetParent().AllButtons} do
-							for _, btn in _G.pairs(array) do
-								aObj:skinStdButton{obj=btn, schk=true, sechk=true}
-							end
+						for _, btn in _G.pairs(fObj:GetParent().AllButtons) do
+							aObj:skinStdButton{obj=btn, schk=true, sechk=true}
 						end
 					end
 					if type:find("SV") then
-						skinReagents(fObj)
+						skinReagents(fObj, type)
 					else
 						skinViewBtns(fObj, type)
-						-- force button update to show borders
-						fObj.UpdateForCharacter(fObj, ...)
 					end
 				end)
 			end
@@ -191,7 +210,6 @@ aObj.addonsToSkin.Baganator = function(self) -- v 463
 
 				aObj:SecureHookScript(this.TabSettingsMenu, "OnShow", function(fObj)
 					aObj:skinIconSelector(fObj)
-					-- frame.DepositSettingsMenu.Separator:SetTexture(nil)
 					aObj:removeRegions(fObj.DepositSettingsMenu, {4}) -- Separator texture
 					aObj:skinObject("ddbutton", {obj=fObj.DepositSettingsMenu.ExpansionFilterDropdown})
 					aObj:skinObject("frame", {obj=fObj, kfs=true})

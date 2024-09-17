@@ -2,7 +2,7 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("Dominos") then return end
 local _G = _G
 
-aObj.lodAddons.Dominos_Config = function(self) -- v 10.2.36
+aObj.lodAddons.Dominos_Config = function(self) -- v 11.0.2
 
 	local Options = _G.LibStub:GetLibrary("AceAddon-3.0"):GetAddon("Dominos_Config", true)
 	if not Options then return end
@@ -11,7 +11,16 @@ aObj.lodAddons.Dominos_Config = function(self) -- v 10.2.36
 		self:removeRegions(this, {10}) -- header texture
 		self:moveObject{obj=self:getRegion(this, 11), y=-6}
 		self:skinObject("slider", {obj=self:getLastChild(this), rpTex="background"})
-		self:skinObject("frame", {obj=this, kfs=true, hdr=true, ofs=0})
+		-- remove header box texture
+		for _, reg in _G.ipairs{this:GetRegions()} do
+			if reg.GetTextureFileID
+			and reg:GetTextureFileID() == 131080
+			then
+				reg:SetTexture(nil)
+				break
+			end
+		end
+		self:skinObject("frame", {obj=this, kfs=true, ofs=0})
 		if self.modBtns then
 			self:skinStdButton{obj=this.exitButton}
 		end
@@ -21,7 +30,7 @@ aObj.lodAddons.Dominos_Config = function(self) -- v 10.2.36
 
 		self:Unhook(this, "OnShow")
 	end)
-
+	self:checkShown(Options.HelpDialog)
 	-- hook this to skin first menu displayed and its dropdown
 	self:RawHook(Options.Menu, "New", function(this, parent)
 		local menu = self.hooks[this].New(this, parent)

@@ -1,123 +1,127 @@
-local aName, aObj = ...
-if not (aObj:isAddonEnabled("RCLootCouncil") or aObj:isAddonEnabled("RCLootCouncil_Classic")) then return end
+local _, aObj = ...
+if not aObj:isAddonEnabled("RCLootCouncil")
+and not aObj:isAddonEnabled("RCLootCouncil_Classic")
+then
+	return
+end
 local _G = _G
 
-local skinFunction = function(self) -- v 2.19.3/3.0.0/0.11.2
+local function skinFunction() -- v 3.13.3/0.23.0
 
 	-- hook this to skin buttons
-	if self.modBtns then
-		self:RawHook(_G.RCLootCouncil, "CreateButton", function(this, ...)
-			local btn = self.hooks[this].CreateButton(this, ...)
-			self:skinStdButton{obj=btn, ofs=0}
+	if aObj.modBtns then
+		aObj:RawHook(_G.RCLootCouncil, "CreateButton", function(this, ...)
+			local btn = aObj.hooks[this].CreateButton(this, ...)
+			aObj:skinStdButton{obj=btn, ofs=0}
 			return btn
 		end, true)
 	end
-	local function skinFrame(frame, noTitleMove)
+	local function skinFrame(frame, yOfs)
 		frame.title:SetBackdrop(nil)
-		if not noTitleMove then
+		if yOfs == nil then
 			aObj:moveObject{obj=frame.title, y=-10}
 		end
 		frame.content:SetBackdrop(nil)
-		aObj:addSkinFrame{obj=frame, ft="a", kfs=true, nb=true}
+		aObj:skinObject("frame", {obj=frame, kfs=true, ofs=0, y1=yOfs})
 	end
 
 	-- Loot frame
 	local RCLF = _G.RCLootCouncil:GetModule("RCLootFrame", true)
-	self:SecureHook(RCLF, "OnEnable", function(this)
+	aObj:SecureHook(RCLF, "OnEnable", function(this)
 		-- return nil to prevent errors with noteEditbox
 		this.frame.title.GetBackdrop = function() return nil end
 		this.frame.title.GetBackdropColor = function() return nil end
 		this.frame.title.GetBackdropBorderColor = function() return nil end
-		skinFrame(this.frame, true)
+		skinFrame(this.frame, 10)
 		this.frame:SetFrameLevel(this.frame:GetFrameLevel() + 10) -- ensure the frame appears above the voting frame
 		-- tooltip
 		_G.C_Timer.After(0.1, function()
-			self:add2Table(self.ttList, this.frame.itemTooltip)
+			aObj:add2Table(aObj.ttList, this.frame.itemTooltip)
 		end)
 		-- hook this to skin entries
-		self:SecureHook(this, "Update", function(this)
-			for i = 1, #this.EntryManager.entries do
-				local entry = this.EntryManager.entries[i]
-				self:skinEditBox{obj=entry.noteEditbox, regs={6}} -- 6 is text
-				self:skinStatusBar{obj=entry.timeoutBar, fi=0}
+		aObj:SecureHook(this, "Update", function(fObj)
+			for _, entry in _G.pairs(fObj.EntryManager.entries) do
+				entry.noteEditbox.eb = aObj:skinObject("editbox", {obj=entry.noteEditbox, ofs=-1})
+				-- Add a frame around the editbox #163
+				entry.noteEditbox.sf = nil
+				aObj:skinObject("frame", {obj=entry.noteEditbox, fb=true, ofs=4})
+				aObj:skinObject("statusbar", {obj=entry.timeoutBar, fi=0})
 			end
-			if not self.isRtl then
-				this.frame:SetHeight(this.frame.content:GetHeight())
+			if not aObj.isRtl then
+				fObj.frame:SetHeight(fObj.frame.content:GetHeight())
 			end
 		end)
 
-		self:Unhook(this, "OnEnable")
+		aObj:Unhook(this, "OnEnable")
 	end)
 
 	-- Loot History frame
 	local RCLHF = _G.RCLootCouncil:GetModule("RCLootHistory", true)
-	self:SecureHook(RCLHF, "OnEnable", function(this)
+	aObj:SecureHook(RCLHF, "OnEnable", function(this)
 		this.frame.moreInfoBtn:DisableDrawLayer("BACKGROUND")
 		skinFrame(this.frame)
-		if self.modBtnBs then
-			self:addButtonBorder{obj=this.frame.moreInfoBtn, ofs=-1, x1=0, clr="gold"}
+		if aObj.modBtnBs then
+			aObj:addButtonBorder{obj=this.frame.moreInfoBtn, ofs=-1, x1=0, clr="gold"}
 		end
 		-- tooltip
 		_G.C_Timer.After(0.1, function()
-			self:add2Table(self.ttList, this.moreInfo)
+			aObj:add2Table(aObj.ttList, this.moreInfo)
 		end)
 
-		self:Unhook(this, "OnEnable")
+		aObj:Unhook(this, "OnEnable")
 	end)
 
 	-- Session frame
 	local RCSF = _G.RCLootCouncil:GetModule("RCSessionFrame", true)
-	self:SecureHook(RCSF, "Show", function(this, ...)
+	aObj:SecureHook(RCSF, "Show", function(this, ...)
 		skinFrame(this.frame)
-		if self.modChkBtns then
-			self:skinCheckButton{obj=this.frame.toggle}
+		if aObj.modChkBtns then
+			aObj:skinCheckButton{obj=this.frame.toggle}
 		end
 
-		self:Unhook(this, "Show")
+		aObj:Unhook(this, "Show")
 	end)
 
 	-- Version Check frame
 	local RCVCF = _G.RCLootCouncil:GetModule("RCVersionCheck", true) or _G.RCLootCouncil:GetModule("VersionCheck", true) -- ver 3
-	self:SecureHook(RCVCF, "OnEnable", function(this)
+	aObj:SecureHook(RCVCF, "OnEnable", function(this)
 		skinFrame(this.frame)
 
-		self:Unhook(this, "OnEnable")
+		aObj:Unhook(this, "OnEnable")
 	end)
 
 	-- Voting frame
 	local RCVF = _G.RCLootCouncil:GetModule("RCVotingFrame", true)
-	self:SecureHook(RCVF, "OnEnable", function(this)
+	aObj:SecureHook(RCVF, "OnEnable", function(this)
 		this.frame.moreInfoBtn:DisableDrawLayer("BACKGROUND")
 		skinFrame(this.frame)
-		if self.modBtnBs then
-			self:addButtonBorder{obj=this.frame.moreInfoBtn, ofs=-1, x1=0, clr="gold"}
+		if aObj.modBtnBs then
+			aObj:addButtonBorder{obj=this.frame.moreInfoBtn, ofs=-1, x1=0, clr="gold"}
 		end
 		-- tooltip
 		_G.C_Timer.After(0.1, function()
-			self:add2Table(self.ttList, this.frame.itemTooltip)
-			self:add2Table(self.ttList, this.frame.moreInfo)
+			aObj:add2Table(aObj.ttList, this.frame.itemTooltip)
+			aObj:add2Table(aObj.ttList, this.frame.moreInfo)
 		end)
 
-		self:Unhook(this, "OnEnable")
+		aObj:Unhook(this, "OnEnable")
 	end)
 
 	-- TradeUI
 	local RCTUI = _G.RCLootCouncil:GetModule("RCTradeUI", true) or _G.RCLootCouncil:GetModule("TradeUI", true) -- ver 3
-	self:SecureHook(RCTUI, "OnEnable", function(this)
+	aObj:SecureHook(RCTUI, "OnEnable", function(this)
 		skinFrame(this.frame)
 
-		self:Unhook(this, "OnEnable")
+		aObj:Unhook(this, "OnEnable")
 	end)
 
 	-- Syncroniser frame
-	self:SecureHook(_G.RCLootCouncil.Sync, "Spawn", function(this)
-		self:skinStatusBar{obj=this.frame.statusBar, fi=0}
-		skinFunction(this.frame)
+	aObj:SecureHook(_G.RCLootCouncil.Sync, "Spawn", function(this)
+		aObj:skinObject("statusbar", {obj=this.frame.statusBar, fi=0})
+		skinFrame(this.frame)
 
-		self:Unhook(this, "Spawn")
+		aObj:Unhook(this, "Spawn")
 	end)
-
-	RCLF, RCLHF, RCSF, RCVCF, RCVF, RCTUI = nil, nil, nil, nil, nil, nil
 
 end
 

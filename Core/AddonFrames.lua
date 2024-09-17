@@ -29,7 +29,7 @@ end
 --@end-debug@
 
 local addonSkins = {
-	"BindPad", "BossNotes", "BossNotes_PersonalNotes", "BuyEmAll",
+	"BindPad", "BossNotes", "BossNotes_PersonalNotes",
 	"CensusPlus", "Chatter",
 	"Examiner",
 	"FlaresThatWork", "FramesResized",

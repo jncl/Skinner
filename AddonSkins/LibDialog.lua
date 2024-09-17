@@ -63,6 +63,18 @@ aObj.libsToSkin["LibDialog-1.0"] = function(self) -- v 8
 
 end
 
+-- N.B. handle version used by RCLootCouncil
+aObj.libsToSkin["LibDialog-1.1"] = function(self) -- v 9
+	if self.initialized.LibDialog then return end
+	self.initialized.LibDialog = true
+
+	LibDialog = _G.LibStub:GetLibrary("LibDialog-1.1", true)
+	if LibDialog then
+		skinLibDialog(LibDialog)
+	end
+
+end
+
 aObj.libsToSkin["LibDialog-1.0RS"] = function(self) -- v 8
 	if self.initialized.LibDialogRS then return end
 	self.initialized.LibDialogRS = true
