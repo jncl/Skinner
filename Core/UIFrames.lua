@@ -2135,7 +2135,7 @@ if aObj.isRtl then
 				self:RawHook(_G[mixin], "Generate", function(menu)
 					if not _G.tContains(ddMenus, menu) then
 						aObj:skinObject("scrollbar", {obj=menu.ScrollBar, fType=ftype})
-						aObj:skinObject("frame", {obj=menu, fType=ftype, ofs=3, y1=-1, y2=6})
+						aObj:skinObject("frame", {obj=menu, fType=ftype, ofs=3})
 						aObj:add2Table(ddMenus, menu)
 					end
 				end, true)
