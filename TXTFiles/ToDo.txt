@@ -21,16 +21,16 @@ ToDos
 
 		O	Refactor frame children loops to use Utility function 'scanChildren' via callback
 
-#147 √	I 	Missing localisation 'Toggle the border of'
-#151
-#154
+#155 √	I 	Baganator
+#160
 
-#148 √	I 	BTWLoadOut
+#156 √	I   Dominos
+	 ?	I 	FlightMap
 
-#149 √	I 	ZygorGuidesViwer, don't resize minimap button
+#158 √	I 	ObjectiveTracker -> ScenarioProgressBar
 
-#150 √	I 	Baganator
+#159 √	I 	BuyEmAll
 
-#152	S   !KalielsTracker
+#162 √	I 	ChatConfig
 
-#153 √	I 	MountsJournal
+#163 √	I 	RCLootCouncil, Add Note editbox doesn't have a frame around it

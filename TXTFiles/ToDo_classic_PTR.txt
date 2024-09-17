@@ -10,4 +10,21 @@ ToDo_classic_PTR
 		- Added
 √			- PVPTeamManagementFrame
 		- Updated
+√			- Dropdown frames now using MenuStyle?Mixin
+			- DropDown buttons are now using WowStyle1DropdownTemplate
+√				- ArchaeologyUI
+				- Calendar
+√					- CalendarCreateEventFrame
+√					- CalendarMassInviteFrame
+				- PaperDollFrame
+√				- TextToSpeechFrame
+√				- WardrobeCollectionFrame
+√					- .ItemsCollectionFrame
+√				- WardrobeTransmogFrame
+√				- TradeSkillFrame
+√				- FriendsFrame
+√				- WhoFrame
+√				- FriendsFriendsFrame
+			- CheckBox renamed to Checkbox
+√				- ChatConfig
 		- Deleted
