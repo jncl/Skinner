@@ -3184,7 +3184,8 @@ aObj.blizzFrames[ftype].StaticPopups = function(self)
 			end
 			self:skinObject("moneyframe", {obj=_G[objName .. "MoneyInputFrame"], moveIcon=true})
 			_G[objName .. "ItemFrameNameFrame"]:SetTexture(nil)
-			self:skinObject("frame", {obj=this, fType=ftype, rb=not self.isRtl and true, ofs=-6}) -- N.B. Close Button handled above
+			 -- N.B. Close Button handled above, offset is to allow DarkOverlay to overlay skin frame border as well
+			self:skinObject("frame", {obj=this, fType=ftype, rb=not self.isRtl and true, ofs=-9})
 			if self.modBtns then
 				self:skinStdButton{obj=this.button1, fType=ftype, schk=true, sechk=true, y1=2}
 				self:skinStdButton{obj=this.button2, fType=ftype, schk=true, sechk=true, y1=2}
