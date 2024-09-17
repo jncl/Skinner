@@ -1140,23 +1140,25 @@ function aObj:round2(num, idp)
 
 end
 
-function aObj:scanChildren(objName)
+function aObj:scanChildren(opts)
 
-	for idx, child in _G.ipairs_reverse{_G[objName]:GetChildren()} do
+	for idx, child in _G.ipairs_reverse{opts.obj:GetChildren()} do
 		-- check for forbidden objects (StoreUI components etc.)
 		if not child:IsForbidden() then
-			aObj.callbacks:Fire(objName .. "_GetChildren", child, idx)
+			aObj.callbacks:Fire(opts.cbstr, child, idx)
 		end
 	end
-
 	-- remove all callbacks for this event
-	aObj.callbacks.events[objName .. "_GetChildren"] = nil
+	aObj.callbacks.events[opts.cbstr] = nil
 
 end
 
 function aObj:scanUIParentsChildren()
+	--@debug@
+	_G.assert(false, "Replace this function call with aObj:scanChildren{obj=_G.UIParent, cbstr=\"UIParent_GetChildren\"}")
+	--@end-debug@
 
-	self:scanChildren("UIParent")
+	self:scanChildren{obj=_G.UIParent, cbstr="UIParent_GetChildren"}
 
 end
 

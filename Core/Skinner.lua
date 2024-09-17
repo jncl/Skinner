@@ -483,7 +483,9 @@ function aObj:OnEnable()
 	-- skin the loaded AddOns frames
 	_G.C_Timer.After(self.prdb.Delay.Init + self.prdb.Delay.Addons, function() self:AddonFrames() end)
 	-- schedule scan of UIParent's Children after all AddOns have been loaded
-	_G.C_Timer.After(self.prdb.Delay.Init + self.prdb.Delay.Addons + 1, function() self:scanUIParentsChildren() end)
+	_G.C_Timer.After(self.prdb.Delay.Init + self.prdb.Delay.Addons + 1, function()
+		self:scanChildren{obj=_G.UIParent, cbstr="UIParent_GetChildren"}
+	end)
 
 	if self.isRtl then
 		-- hook this (used by Blizzard_OrderHallTalents, PVPMatchResults, PVPMatchScoreboard & Blizzard_WarboardUI)
