@@ -336,6 +336,7 @@ aObj.SetupClassic_UIFrames = function()
 					_G.PVPHonorFrameInfoScrollFrame.scrollBarArtTop:SetTexture(nil)
 					_G.PVPHonorFrameInfoScrollFrame.scrollBarArtBottom:SetTexture(nil)
 					_G.PVPHonorFrameInfoScrollFrameChildFrameDescription:SetTextColor(self.BT:GetRGB())
+					_G.PVPHonorFrameInfoScrollFrameChildFrameRewardsInfoDescription:SetTextColor(self.BT:GetRGB())
 
 					self:Unhook(fObj, "OnShow")
 				end)
