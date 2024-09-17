@@ -3131,6 +3131,7 @@ aObj.SetupRetail_UIFrames = function()
 				self:keepFontStrings(fObj)
 				self:keepFontStrings(fObj.BorderFrame)
 				self:keepFontStrings(fObj.BackFrame)
+				self:skinObject("scrollbar", {obj=fObj.ScrollFrame.ScrollBar, fType=ftype})
 				self:keepFontStrings(fObj.RewardsFrameContainer.RewardsFrame)
 				fObj.RewardsFrameContainer.RewardsFrame.Label:SetTextColor(self.HT:GetRGB())
 				self:adjWidth{obj=fObj.AbandonButton, adj=-2} -- moves buttons to the right slightly
