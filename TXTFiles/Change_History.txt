@@ -1,3 +1,29 @@
+beta11.56461.1
+Jncl:
+	Updated ToDo.txt files
+	Updated Change_History.txt
+	Updated version numbers
+	Updated rewardsToasts to not skin frame
+	Updated TOC, changed Category to Interface Enhancements
+	Updated code to colour button borders by their quality
+	Updated ObjectiveTracker skin
+	Updated PlayerChoice skin
+	Updated ExtraAbilityContainer skin
+	Updated GarrisonUI skins
+	Updated Professions skin
+	Updated ItemInteractionUI skin
+	Updated Trading Post Frame skin
+	Updated FlightMap skin
+	Updated UIButtons code
+	Updated UIWidgets skin
+	Updated MinimapButtons skin
+	Updated AlertFrame skin
+	Updated ReputationFrame skin
+	Updated NSF
+	Updated clrTab entries
+	Updated GossipFrame skin
+	Updated Baganator, closes #150, btWLoadouts, closes #148, LibSFDropDown, MountsJournal, closes #153 & ZygorGuidesViewer, closes #149
+
 beta11.56313.1
 Jncl:
 	Updated ToDo.txt files
