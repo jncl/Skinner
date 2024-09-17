@@ -182,11 +182,21 @@ aObj.SetupRetail_UIFrames = function()
 			end
 		end
 		function skinMissionFrame(frame, colour)
+			--@debug@
+			-- _G.Spew("skinMissionFrame", frame)
+			--@end-debug@
 			local x1Ofs, y1Ofs, x2Ofs, y2Ofs = 2, 2, 1, -4
 			if frame == _G.CovenantMissionFrame then
-				x1Ofs = -2
-				y1Ofs = 6
-				y2Ofs = -5
+				if frame.textureKit == "thewarwithin" then
+					x1Ofs = 5
+					y1Ofs = -5
+					x2Ofs = -5
+					y2Ofs = 4
+				else
+					x1Ofs = -2
+					y1Ofs = 6
+					y2Ofs = -5
+				end
 			elseif frame == _G.BFAMissionFrame then
 				y1Ofs = 1
 				y2Ofs = -5
@@ -195,7 +205,7 @@ aObj.SetupRetail_UIFrames = function()
 			end
 			frame.GarrCorners:DisableDrawLayer("BACKGROUND")
 			aObj:skinObject("tabs", {obj=frame, prefix=frame:GetName(), fType=ftype, selectedTab=frame.selectedTab, lod=aObj.isTT and true, regions={7, 8, 9, 10}})
-			-- set FrameStrata to allow map textures to be visible
+			-- set FrameStrata to "LOW" to allow map textures to be visible
 			aObj:skinObject("frame", {obj=frame, fType=ftype, kfs=true, bg=true, sfs="LOW", cbns=true, x1=x1Ofs, y1=y1Ofs, x2=x2Ofs, y2=y2Ofs, clr=colour})
 		end
 		function skinCompleteDialog(frame, naval)
