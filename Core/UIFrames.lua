@@ -701,18 +701,17 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 				end
 			end
 			-- Top Tabs
-			local tabSkin = self.skinTPLs.new("tabs", {obj=fObj, fType=ftype, upwards=true, ignoreHLTex=false, offsets={x1=0, y1=self.isTT and -10 or -12, x2=0, y2=self.isTT and -5 or 0}, regions={8, 9, 10, 11}, noCheck=true, func=setTabState})
+			local ctmtabs = {}
 			local function skinTabs(ctm)
-				tabSkin.tabs = {}
 				for tab in ctm.tabPool:EnumerateActive() do
-					aObj:add2Table(tabSkin.tabs, tab)
+					aObj:add2Table(ctmtabs, tab)
 					if tab:GetID() == _G.CURRENT_CHAT_FRAME_ID then
 						tab:GetFontString():SetTextColor(1, 1, 1)
 					else
 						tab:GetFontString():SetTextColor(_G.NORMAL_FONT_COLOR.r, _G.NORMAL_FONT_COLOR.g, _G.NORMAL_FONT_COLOR.b)
 					end
 				end
-				aObj:skinObject(tabSkin)
+				aObj:skinObject("tabs", {obj=ctm, tabs=ctmtabs, fType=ftype, upwards=true, ignoreHLTex=false, offsets={x1=0, y1=aObj.isTT and -10 or -12, x2=0, y2=aObj.isTT and -5 or 0}, regions={8, 9, 10, 11}, noCheck=true, func=setTabState})
 			end
 			skinTabs(fObj)
 			self:SecureHook(fObj, "UpdateSelection", function(frame, _)
