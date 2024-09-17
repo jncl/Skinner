@@ -3602,6 +3602,9 @@ aObj.SetupRetail_UIFrames = function()
 			self:nilTexture(this.PortraitFrame.Portrait, true)
 			self:nilTexture(this.MainFrame.Model.PortraitBg, true)
 			self:skinObject("frame", {obj=this.MainFrame, fType=ftype, kfs=true, bd=11, ng=true, cbns=true, ofs=-15, y2=14})
+			if self.modBtns then
+				self:nilTexture(this.MainFrame.CloseButton:GetNormalTexture()) -- Animations cause this to be shown
+			end
 
 			local function clrFrame(...)
 				-- handle in combat
