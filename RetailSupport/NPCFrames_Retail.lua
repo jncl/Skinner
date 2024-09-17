@@ -789,8 +789,6 @@ aObj.SetupRetail_NPCFrames = function()
 		self.initialized.ItemInteractionUI = true
 
 		self:SecureHookScript(_G.ItemInteractionFrame, "OnShow", function(this)
-			-- use module to make button slot visible
-			self.modUIBtns:addButtonBorder{obj=this.ItemSlot, relTo=this.ItemSlot.Icon}
 			this.ItemConversionFrame.ItemConversionInputSlot.ButtonFrame:SetAlpha(0) -- N.B. Texture changed in code
 			this.ItemConversionFrame.ItemConversionOutputSlot.ButtonFrame:SetAlpha(0) -- N.B. Texture changed in code
 			this.ButtonFrame:DisableDrawLayer("BORDER")
@@ -804,8 +802,9 @@ aObj.SetupRetail_NPCFrames = function()
 			end
 			if self.modBtnBs then
 				-- N.B.: can cause ADDON_ACTION_FORBIDDEN when clicked
-				self:addButtonBorder{obj=this.ItemConversionFrame.ItemConversionInputSlot, fType=ftype, ibt=true, ignTex=true, ofs=5}
-				self:addButtonBorder{obj=this.ItemConversionFrame.ItemConversionOutputSlot, fType=ftype, ibt=true, ignTex=true, ofs=5}
+				self:addButtonBorder{obj=this.ItemConversionFrame.ItemConversionInputSlot, fType=ftype, ibt=true, ignTex=true}
+				self:addButtonBorder{obj=this.ItemConversionFrame.ItemConversionOutputSlot, fType=ftype, ibt=true, ignTex=true}
+				-- TODO: colour button borders based upon item quality ?
 			end
 
 			self:Unhook(this, "OnShow")
