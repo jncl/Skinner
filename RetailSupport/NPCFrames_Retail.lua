@@ -771,12 +771,11 @@ aObj.SetupRetail_NPCFrames = function()
 			-- remove ZoneLabel background texture
 			for dP, _ in _G.pairs(this.dataProviders) do
 				if dP.ZoneLabel then
-					dP.ZoneLabel.TextBackground:SetTexture(nil)
-					dP.ZoneLabel.TextBackground.SetTexture = _G.nop
+					self:nilTexture(dP.ZoneLabel.TextBackground)
 					break
 				end
 			end
-			 -- set frame starata to 'LOW' to allow map textures to be visible
+			 -- set frame strata to 'LOW' to allow map textures to be visible
 			self:skinObject("frame", {obj=this.BorderFrame, fType=ftype, kfs=true, bg=true, sfs="LOW", rns=true, cb=true, ofs=3, y1=2})
 
 			self:Unhook(this, "OnShow")
