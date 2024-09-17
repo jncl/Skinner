@@ -2958,18 +2958,31 @@ aObj.blizzFrames[ftype].Settings = function(self)
 				elseif element.ToggleTest then
 					aObj:addButtonBorder{obj=element.ToggleTest, fType=ftype, ofs=1}
 				end
-				if element.Control
+				if element.Control -- N.B. Retail
 				and element.Control.Dropdown
 				then
 					aObj:skinStdButton{obj=element.Control.Dropdown, fType=ftype, ignoreHLTex=true, sechk=true, y1=1, y2=-1}
+					-- N.B. Popouts are Dropdown Menu list frames
+				elseif element.DropDown -- N.B. Classic & ClassicERA
+				and element.DropDown.Button
+				then
+					aObj:skinStdButton{obj=element.DropDown.Button, fType=ftype, ignoreHLTex=true, sechk=true, ofs=-6}
+					aObj:removeNineSlice(element.DropDown.Button.Popout.Border)
+					aObj:skinObject("frame", {obj=element.DropDown.Button.Popout, fType=ftype, kfs=true, ofs=0, y2=20})
 				end
 			end
-			if aObj.modBtnBs
-			and element.Control
-			and element.Control.DecrementButton
-			then
-				aObj:addButtonBorder{obj=element.Control.IncrementButton, fType=ftype, sechk=true}
-				aObj:addButtonBorder{obj=element.Control.DecrementButton, fType=ftype, sechk=true}
+			if aObj.modBtnBs then
+				if element.Control -- N.B. Retail
+				and element.Control.DecrementButton
+				then
+					aObj:addButtonBorder{obj=element.Control.IncrementButton, fType=ftype, sechk=true}
+					aObj:addButtonBorder{obj=element.Control.DecrementButton, fType=ftype, sechk=true}
+				elseif element.DropDown
+				and element.DropDown.DecrementButton
+				then
+					aObj:addButtonBorder{obj=element.DropDown.IncrementButton, fType=ftype, sechk=true, ofs=-2, y1=-3}
+					aObj:addButtonBorder{obj=element.DropDown.DecrementButton, fType=ftype, sechk=true, ofs=-2, y1=-3}
+				end
 			end
 			if aObj.modChkBtns
 			and element.Checkbox
