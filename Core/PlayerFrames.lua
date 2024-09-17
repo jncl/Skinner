@@ -1433,18 +1433,18 @@ if not aObj.isClscERA then
 								end
 								local displayData = elementData
 								if elementData.hiddenUntilCollected and not elementData.collected then
-									local variantSets = _G.C_TransmogSets.GetVariantSets(elementData.setID);
+									local variantSets = _G.C_TransmogSets.GetVariantSets(elementData.setID)
 									if variantSets then
 										displayData = variantSets[1]
 									end
 								end
 								local topSourcesCollected, topSourcesTotal = SetsDataProvider:GetSetSourceTopCounts(displayData.setID)
 								local setCollected = displayData.collected or topSourcesCollected == topSourcesTotal
-								if element.sbb then
+								if element.IconFrame.sbb then
 									if setCollected then
-										aObj:clrBtnBdr(element, "gold")
+										aObj:clrBtnBdr(element.IconFrame, "gold")
 									else
-										aObj:clrBtnBdr(element, topSourcesCollected == 0 and "grey")
+										aObj:clrBtnBdr(element.IconFrame, topSourcesCollected == 0 and "grey")
 									end
 								end
 							end
