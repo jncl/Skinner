@@ -1594,6 +1594,9 @@ if not aObj.isClscERA then
 				end
 			end
 			_G.ScrollUtil.AddAcquiredFrameCallback(_G.LFDQueueFrame.Specific.ScrollBox, skinDungeonLine, aObj, true)
+			self:getRegion(_G.LFDQueueFrame.Follower, 3):SetTexture(nil) -- divider line
+			self:skinObject("scrollbar", {obj=_G.LFDQueueFrame.Follower.ScrollBar, fType=ftype})
+			_G.ScrollUtil.AddAcquiredFrameCallback(_G.LFDQueueFrame.Follower.ScrollBox, skinDungeonLine, aObj, true)
 			if self.modBtns then
 				self:skinStdButton{obj=_G.LFDQueueFrameFindGroupButton, schk=true}
 			end
