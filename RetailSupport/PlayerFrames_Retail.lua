@@ -1049,14 +1049,12 @@ aObj.SetupRetail_PlayerFrames = function()
 				if bar.template == "BonusTrackerProgressBarTemplate"
 				or bar.template == "ScenarioProgressBarTemplate"
 				then
-					for _, frame in _G.pairs(bar.AnimatableFrames) do
-						if frame ~= bar.Bar then
-							frame:DisableDrawLayer("ARTWORK")
-						end
+					for _, tex in _G.pairs{"IconBG", "BarFrame", "BarFrame2", "BarFrame3", "BarGlow", "Sheen", "Starburst"} do
+						bar.Bar[tex]:SetTexture(nil)
 					end
-					bar.Bar:DisableDrawLayer("ARTWORK")
-					bar.Bar:DisableDrawLayer("OVERLAY")
-					bar.Bar.Label:SetDrawLayer("BORDER")
+					for _, frame in _G.pairs{"Flare1", "Flare2", "SmallFlare1", "SmallFlare2", "FullBarFlare1", 'FullBarFlare2'} do
+						bar[frame]:DisableDrawLayer("ARTWORK")
+					end
 					aObj:skinObject("statusbar", {obj=bar.Bar, fi=0, bg=bar.Bar.BarBG})
 				elseif bar.template == "ObjectiveTrackerProgressBarTemplate"
 				or bar.template == "ObjectiveTrackerTimerBarTemplate"
