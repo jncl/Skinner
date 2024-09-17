@@ -827,7 +827,7 @@ if not aObj.isClscERA then
 			local function skinSlot(btn)
 				btn:DisableDrawLayer("BACKGROUND")
 				if aObj.modBtnBs then
-					aObj:addButtonBorder{obj=btn, fType=ftype, ibt=true, reParent={btn.ignoreTexture}--[[--]]}
+					aObj:addButtonBorder{obj=btn, fType=ftype, ibt=true, reParent={btn.ignoreTexture}}
 					-- force quality border update
 					_G.PaperDollItemSlotButton_Update(btn)
 					if self.isRtl then
