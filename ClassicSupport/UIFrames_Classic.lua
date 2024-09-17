@@ -680,9 +680,18 @@ aObj.SetupClassic_UIFrames = function()
 				end
 			end
 
-			self:skinObject("dropdown", {obj=_G.WorldMapContinentDropDown, fType=ftype})
-			self:skinObject("dropdown", {obj=_G.WorldMapZoneDropDown, fType=ftype})
-			self:skinObject("dropdown", {obj=_G.WorldMapZoneMinimapDropDown, fType=ftype})
+			if aObj.isClscERAPTR
+			or aObj.isClscPTR
+			then
+				self:skinObject("ddbutton", {obj=this.ContinentDropdown, fType=ftype})
+				self:skinObject("ddbutton", {obj=this.ZoneDropdown, fType=ftype})
+				self:skinObject("ddbutton", {obj=this.MinimapDropdown, fType=ftype})
+				self:skinObject("ddbutton", {obj=this.WorldMapLevelDropDown, fType=ftype})
+			else
+				self:skinObject("dropdown", {obj=_G.WorldMapContinentDropDown, fType=ftype})
+				self:skinObject("dropdown", {obj=_G.WorldMapZoneDropDdown, fType=ftype})
+				self:skinObject("dropdown", {obj=_G.WorldMapMinimapDropDdown, fType=ftype})
+			end
 			if self.modBtns then
 				self:skinCloseButton{obj=_G.WorldMapFrameCloseButton, fType=ftype}
 				self:skinStdButton{obj=_G.WorldMapZoomOutButton, fType=ftype, schk=true}

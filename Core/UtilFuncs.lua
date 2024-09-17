@@ -1337,22 +1337,25 @@ end
 
 function aObj:skinIconSelector(frame, ftype)
 
+	ftype = ftype or "a"
 	self:removeNineSlice(frame.BorderBox)
 	frame.BorderBox.SelectedIconArea.SelectedIconButton:DisableDrawLayer("BACKGROUND")
-	self:skinObject("editbox", {obj=frame.BorderBox.IconSelectorEditBox, fType=ftype or "a"})
-	if self.isRtl then
-		self:skinObject("ddbutton", {obj=frame.BorderBox.IconTypeDropdown, fType=ftype or "a"})
+	self:skinObject("editbox", {obj=frame.BorderBox.IconSelectorEditBox, fType=ftype})
+	if self.isRtl
+	or self.isClscPTR
+	then
+		self:skinObject("ddbutton", {obj=frame.BorderBox.IconTypeDropdown, fType=ftype})
 	else
-		self:skinObject("dropdown", {obj=frame.BorderBox.IconTypeDropDown.DropDownMenu, fType=ftype or "a"})
+		self:skinObject("dropdown", {obj=frame.BorderBox.IconTypeDropDown.DropDownMenu, fType=ftype})
 	end
-	self:skinObject("scrollbar", {obj=frame.IconSelector.ScrollBar, fType=ftype or "a"})
-	self:skinObject("frame", {obj=frame, fType=ftype or "a", ofs=-3, x1=-2})
+	self:skinObject("scrollbar", {obj=frame.IconSelector.ScrollBar, fType=ftype})
+	self:skinObject("frame", {obj=frame, fType=ftype, ofs=-3, x1=-2})
 	if self.modBtns then
-		self:skinStdButton{obj=frame.BorderBox.CancelButton, fType=ftype or "a"}
-		self:skinStdButton{obj=frame.BorderBox.OkayButton, fType=ftype or "a", schk=true}
+		self:skinStdButton{obj=frame.BorderBox.CancelButton, fType=ftype}
+		self:skinStdButton{obj=frame.BorderBox.OkayButton, fType=ftype, schk=true}
 	end
 	if self.modBtnBs then
-		self:addButtonBorder{obj=frame.BorderBox.SelectedIconArea.SelectedIconButton, fType=ftype or "a", relTo=frame.BorderBox.SelectedIconArea.SelectedIconButton.Icon}
+		self:addButtonBorder{obj=frame.BorderBox.SelectedIconArea.SelectedIconButton, fType=ftype, relTo=frame.BorderBox.SelectedIconArea.SelectedIconButton.Icon}
 		local function skinElement(...)
 			local _, element, new
 			if _G.select("#", ...) == 2 then
@@ -1364,7 +1367,7 @@ function aObj:skinIconSelector(frame, ftype)
 			end
 			if new ~= false then
 				element:DisableDrawLayer("BACKGROUND")
-				aObj:addButtonBorder{obj=element, fType=ftype or "a", relTo=element.Icon}
+				aObj:addButtonBorder{obj=element, fType=ftype, relTo=element.Icon}
 			end
 		end
 		_G.ScrollUtil.AddAcquiredFrameCallback(frame.IconSelector.ScrollBox, skinElement, aObj, true)

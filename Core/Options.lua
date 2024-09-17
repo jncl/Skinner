@@ -1324,7 +1324,7 @@ aObj.SetupOptions = function(self)
 		["Item Text"]             = {suff = "Frame"},
 		["Macro UI"]              = {desc = "Macros UI"},
 		["Mail Frame"]            = true,
-		["Menu"]                  = self.isRtl and {desc = "Dropdown Frames"} or nil,
+		["Menu"]                  = self.isRtl or self.isClscERAPTR or self.isClscPTR and {desc = "Dropdown Frames"} or nil,
 		["Menu Frames"]           = true,
 		["Move Pad"]              = true,
 		["Movie Frame"]           = true,

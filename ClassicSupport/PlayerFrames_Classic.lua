@@ -519,8 +519,14 @@ aObj.SetupClassic_PlayerFrames = function()
 				_G.FriendsFrameBattlenetFrame.BroadcastFrame:DisableDrawLayer("BACKGROUND")
 				self:skinObject("frame", {obj=_G.FriendsFrameBattlenetFrame.BroadcastFrame, fType=ftype, ofs=-10})
 				self:skinObject("frame", {obj=_G.FriendsFrameBattlenetFrame.UnavailableInfoFrame, fType=ftype})
-				self:skinObject("dropdown", {obj=_G.FriendsFrameStatusDropDown, fType=ftype})
-				_G.FriendsFrameStatusDropDownStatus:SetAlpha(1) -- display status icon
+				if aObj.isClscERAPTR
+				or aObj.isClscPTR
+				then
+					self:skinObject("ddbutton", {obj=fObj.StatusDropdown, fType=ftype})
+				else
+					self:skinObject("dropdown", {obj=_G.FriendsFrameStatusDropDown, fType=ftype})
+					_G.FriendsFrameStatusDropDownStatus:SetAlpha(1) -- display status icon
+				end
 				self:skinObject("editbox", {obj=_G.FriendsFrameBroadcastInput, fType=ftype})
 				_G.FriendsFrameBroadcastInputFill:SetTextColor(self.BT:GetRGB())
 				-- Top Tabs
@@ -591,13 +597,27 @@ aObj.SetupClassic_PlayerFrames = function()
 				self:removeInset(_G.WhoFrameListInset)
 				for i = 1, 4 do
 					_G["WhoFrameColumnHeader" .. i]:DisableDrawLayer("BACKGROUND")
-					if i ~= 2 then -- column 2 is really a dropdown
-						self:skinObject("frame", {obj=_G["WhoFrameColumnHeader" .. i], fType=ftype, ofs=0})
+					if i == 2 then
+						if aObj.isClscERAPTR
+						or aObj.isClscPTR
+						then
+							_G.WhoFrameDropdown.Background:SetTexture(nil)
+							self:skinObject("ddbutton", {obj=_G.WhoFrameDropdown, fType=ftype})
+							self:moveObject{obj=_G.WhoFrameDropdown, x=20}
+						else
+							self:skinObject("dropdown", {obj=_G.WhoFrameDropDown, fType=ftype})
+						end
+					else
+						if aObj.isClscERAPTR
+						or aObj.isClscPTR
+						then
+							self:skinObject("frame", {obj=_G["WhoFrameColumnHeader" .. i], fType=ftype, y2=-2})
+						else
+							self:skinObject("frame", {obj=_G["WhoFrameColumnHeader" .. i], fType=ftype, ofs=0, y2=-1})
+						end
 					end
 				end
 				self:moveObject{obj=_G.WhoFrameColumnHeader4, x=4}
-				self:skinObject("dropdown", {obj=_G.WhoFrameDropDown, fType=ftype})
-				self:moveObject{obj=_G.WhoFrameDropDown, y=1}
 				self:removeInset(_G.WhoFrameEditBoxInset)
 				self:skinObject("editbox", {obj=_G.WhoFrameEditBox, fType=ftype})
 				self:adjHeight{obj=_G.WhoFrameEditBox, adj=-10}
@@ -660,8 +680,14 @@ aObj.SetupClassic_PlayerFrames = function()
 			end)
 
 			self:SecureHookScript(_G.GuildControlPopupFrame, "OnShow", function(fObj)
-				self:skinObject("dropdown", {obj=_G.GuildControlPopupFrameDropDown, fType=ftype})
-				_G.UIDropDownMenu_SetButtonWidth(_G.GuildControlPopupFrameDropDown, 24)
+				if aObj.isClscERAPTR
+				or aObj.isClscPTR
+				then
+					self:skinObject("ddbutton", {obj=_G.GuildControlPopupFrameDropdown, fType=ftype})
+				else
+					self:skinObject("dropdown", {obj=_G.GuildControlPopupFrameDropDown, fType=ftype})
+					_G.UIDropDownMenu_SetButtonWidth(_G.GuildControlPopupFrameDropDown, 24)
+				end
 				self:skinObject("editbox", {obj=_G.GuildControlPopupFrameEditBox, fType=ftype, regions={3, 4}, y1=-4, y2=4})
 				if self.isClsc then
 					self:skinObject("editbox", {obj=_G.GuildControlWithdrawGoldEditBox, fType=ftype, y1=-4, y2=4})
@@ -772,7 +798,13 @@ aObj.SetupClassic_PlayerFrames = function()
 		end)
 
 		self:SecureHookScript(_G.FriendsFriendsFrame, "OnShow", function(this)
-			self:skinObject("dropdown", {obj=_G.FriendsFriendsFrameDropDown, fType=ftype})
+			if aObj.isClscERAPTR
+			or aObj.isClscPTR
+			then
+				self:skinObject("ddbutton", {obj=this.FriendsDropdown, fType=ftype})
+			else
+				self:skinObject("dropdown", {obj=_G.FriendsFriendsFrameDropDown, fType=ftype})
+			end
 			self:skinObject("frame", {obj=_G.FriendsFriendsList, fType=ftype, fb=true})
 			self:skinObject("slider", {obj=_G.FriendsFriendsScrollFrame.ScrollBar, fType=ftype})
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true})
@@ -878,7 +910,11 @@ aObj.SetupClassic_PlayerFrames = function()
 				self:keepFontStrings(this)
 				self:removeInset(this.sideInset)
 				self:skinObject("editbox", {obj=_G[fName .. "SearchBox"], fType=ftype, si=true})
-				self:skinObject("dropdown", {obj=_G[fName .. "FilterDropDown"], fType=ftype})
+				if not aObj.isClscPTR then
+					self:skinObject("dropdown", {obj=_G[fName .. "FilterDropDown"], fType=ftype})
+				else
+					self:skinObject("ddbutton", {obj=this.FilterDropdown, fType=ftype})
+				end
 				self:skinObject("slider", {obj=_G[fName .. "ScrollFrameScrollBar"], fType=ftype, rpTex="background", x1=2, x2=-3})
 				for i = 1, #_G.GLYPH_TYPE_INFO do
 					self:removeRegions(_G[fName .. "Header" .. i], {1, 2, 3})
@@ -1572,8 +1608,15 @@ aObj.SetupClassic_PlayerFrames = function()
 				x1, y1, x2, y2 = 10, -11, -32, 70
 			end
 			if not self:isAddOnLoaded("alaTradeSkill") then
-				self:skinObject("dropdown", {obj=_G.TradeSkillInvSlotDropDown, fType=ftype})
-				self:skinObject("dropdown", {obj=_G.TradeSkillSubClassDropDown, fType=ftype})
+				if aObj.isClscERAPTR
+				or aObj.isClscPTR
+				then
+					self:skinObject("ddbutton", {obj=this.InvSlotDropdown, fType=ftype})
+					self:skinObject("ddbutton", {obj=this.SubClassDropdown, fType=ftype})
+				else
+					self:skinObject("dropdown", {obj=_G.TradeSkillInvSlotDropDown, fType=ftype})
+					self:skinObject("dropdown", {obj=_G.TradeSkillSubClassDropDown, fType=ftype})
+				end
 				self:skinObject("slider", {obj=_G.TradeSkillListScrollFrame.ScrollBar, fType=ftype, rpTex="background"})
 				self:skinObject("slider", {obj=_G.TradeSkillDetailScrollFrame.ScrollBar, fType=ftype, rpTex="background"})
 				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=x1, y1=y1, x2=x2, y2=y2})

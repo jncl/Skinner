@@ -45,7 +45,13 @@ aObj.blizzFrames[ftype].AddonList = function(self)
 				end
 			end
 			self:skinObject("slider", {obj=_G.AddonListScrollFrame.ScrollBar, fType=ftype, rpTex="background"})
-			self:skinObject("dropdown", {obj=_G.AddonCharacterDropDown, fType=ftype, x2=109})
+			if aObj.isClscERAPTR
+			or aObj.isClscPTR
+			then
+				self:skinObject("ddbutton", {obj=this.Dropdown, fType=ftype})
+			else
+				self:skinObject("dropdown", {obj=_G.AddonCharacterDropDown, fType=ftype, x2=109})
+			end
 		end
 		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, x2=self.isClsc and 1})
 		if self.modBtns then
@@ -406,7 +412,9 @@ if not aObj.isClscERA then
 
 		self:SecureHookScript(_G.CalendarFrame, "OnShow", function(this)
 			_G.CalendarTodayFrame:DisableDrawLayer("BORDER")
-			if self.isRtl then
+			if self.isRtl
+			or self.isClscPTR
+			then
 				self:skinObject("ddbutton", {obj=this.FilterButton, fType=ftype, filter=true})
 			else
 				self:keepFontStrings(_G.CalendarFilterFrame)
@@ -480,7 +488,9 @@ if not aObj.isClscERA then
 			self:removeNineSlice(this.Border)
 			_G.CalendarCreateEventIcon:SetAlpha(1) -- show event icon
 			self:skinObject("editbox", {obj=_G.CalendarCreateEventTitleEdit, fType=ftype})
-			if self.isRtl then
+			if self.isRtl
+			or aObj.isClscPTR
+			then
 				self:skinObject("ddbutton", {obj=this.EventTypeDropdown, fType=ftype})
 				self:skinObject("ddbutton", {obj=this.HourDropdown, fType=ftype})
 				self:skinObject("ddbutton", {obj=this.MinuteDropdown, fType=ftype})
@@ -522,7 +532,9 @@ if not aObj.isClscERA then
 
 		self:SecureHookScript(_G.CalendarMassInviteFrame, "OnShow", function(this)
 			self:removeNineSlice(this.Border)
-			if self.isRtl then
+			if self.isRtl
+			or aObj.isClscPTR
+			then
 				self:skinObject("ddbutton", {obj=this.CommunityDropdown, fType=ftype})
 				self:skinObject("ddbutton", {obj=this.RankDropdown, fType=ftype})
 			else
@@ -621,7 +633,10 @@ aObj.blizzFrames[ftype].ChatBubbles = function(self)
 		registerEvents()
 		skinChatBubbles()
 	end
-	if not aObj.isRtl then
+	if not aObj.isRtl
+	and not aObj.isClscERAPTR
+	and not aObj.isClscPTR
+	then
 		local func
 		if not self.isClsc then
 			func = "InterfaceOptionsDisplayPanelChatBubblesDropDown_SetValue"
@@ -730,7 +745,10 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 		self:checkShown(_G.ChatConfigBackgroundFrame)
 
 		local function skinCB(cBox)
-			if aObj.isRtl then
+			if aObj.isRtl
+			or aObj.isClscERAPTR
+			or aObj.isClscPTR
+			then
 				cBox = cBox:gsub("CheckBox", "Checkbox")
 			end
 			if _G[cBox].NineSlice then
@@ -1567,7 +1585,9 @@ if not aObj.isClscERA then
 			-- LFD Queue Frame
 			skinRoleBtns("LFDQueueFrame", true)
 			_G.LFDQueueFrameBackground:SetAlpha(0)
-			if self.isRtl then
+			if self.isRtl
+			or self.isClscPTR
+			then
 				self:skinObject("ddbutton", {obj=_G.LFDQueueFrame.TypeDropdown, fType=ftype})
 			else
 				self:skinObject("dropdown", {obj=_G.LFDQueueFrameTypeDropDown, fType=ftype})
@@ -1878,14 +1898,16 @@ if not aObj.isClscERA then
 				self:skinObject("editbox", {obj=fObj.PvpItemLevel.EditBox, fType=ftype})
 				self:skinObject("editbox", {obj=fObj.PVPRating.EditBox, fType=ftype})
 				self:skinObject("editbox", {obj=fObj.MythicPlusRating.EditBox, fType=ftype})
-				if self.isRtl then
+				if self.isRtl
+				or self.isClscPTR
+				then
 					self:skinObject("ddbutton", {obj=fObj.GroupDropdown, fType=ftype})
 					self:skinObject("ddbutton", {obj=fObj.ActivityDropdown, fType=ftype})
 					self:skinObject("ddbutton", {obj=fObj.PlayStyleDropdown, fType=ftype})
 				else
-					self:skinObject("dropdown", {obj=fObj.PlayStyleDropdown, fType=ftype})
 					self:skinObject("dropdown", {obj=fObj.GroupDropDown, fType=ftype})
 					self:skinObject("dropdown", {obj=fObj.ActivityDropDown, fType=ftype})
+					self:skinObject("dropdown", {obj=fObj.PlayStyleDropdown, fType=ftype})
 				end
 				self:skinObject("frame", {obj=fObj.Description, fType=ftype, kfs=true, fb=true, ofs=6})
 				self:skinObject("editbox", {obj=fObj.ItemLevel.EditBox, fType=ftype})
@@ -2125,7 +2147,10 @@ aObj.blizzFrames[ftype].MailFrame = function(self)
 
 end
 
-if aObj.isRtl then
+if aObj.isRtl
+or aObj.isClscERAPTR
+or aObj.isClscPTR
+then
 	aObj.blizzFrames[ftype].Menu = function(self) -- Dropdown Menus
 		if not self.prdb.Menu or self.initialized.Menu then return end
 		self.initialized.Menu = true
@@ -2348,9 +2373,13 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 			_G.GameTimeFrame_Update(_G.GameTimeFrame)
 		end)
 		_G.MiniMapTrackingBorder:SetTexture(nil)
-		self:moveObject{obj=_G.MiniMapTrackingFrame, x=-15}
-		if not minBtn then
-			self:skinObject("frame", {obj=_G.MiniMapTrackingFrame, fType=ftype, bd=10, x1=3, y1=-3, x2=4, y2=-2})
+		if not aObj.isClscERAPTR
+		and not aObj.isClscPTR
+		then
+			self:moveObject{obj=_G.MiniMapTrackingFrame, x=-15}
+			if not minBtn then
+				self:skinObject("frame", {obj=_G.MiniMapTrackingFrame, fType=ftype, bd=10, x1=3, y1=-3, x2=4, y2=-2})
+			end
 		end
 	else
 		if self.isClsc then
@@ -3239,7 +3268,10 @@ aObj.blizzFrames[ftype].TextToSpeechFrame = function(self)
 	self.initialized.TextToSpeechFrame = true
 
 	self:SecureHookScript(_G.TextToSpeechFrame, "OnShow", function(this)
-		if self.isRtl then
+		if self.isRtl
+		or aObj.isClscERAPTR
+		or aObj.isClscPTR
+		then
 			self:skinObject("ddbutton", {obj=_G.TextToSpeechFrameTtsVoiceDropdown, fType=ftype})
 			self:skinObject("ddbutton", {obj=_G.TextToSpeechFrameTtsVoiceAlternateDropdown, fType=ftype})
 		else
@@ -3280,7 +3312,10 @@ aObj.blizzFrames[ftype].TimeManager = function(self)
 	self:SecureHookScript(_G.TimeManagerFrame, "OnShow", function(this)
 		_G.TimeManagerFrameTicker:Hide()
 		self:keepFontStrings(_G.TimeManagerStopwatchFrame)
-		if self.isRtl then
+		if self.isRtl
+		or aObj.isClscERAPTR
+		or aObj.isClscPTR
+		then
 			self:skinObject("ddbutton", {obj=this.AlarmTimeFrame.HourDropdown, fType=ftype})
 			self:skinObject("ddbutton", {obj=this.AlarmTimeFrame.MinuteDropdown, fType=ftype})
 			self:skinObject("ddbutton", {obj=this.AlarmTimeFrame.AMPMDropdown, fType=ftype})
@@ -3672,7 +3707,10 @@ aObj.blizzFrames[ftype].UnitPopup = function(self)
 	if not self.prdb.UnitPopup or self.initialized.UnitPopup then return end
 	self.initialized.UnitPopup = true
 
-	if not aObj.isRtl then
+	if not self.isRtl
+	and not aObj.isClscERAPTR
+	and not aObj.isClscPTR
+	then
 		self:skinObject("slider", {obj=_G.UnitPopupVoiceSpeakerVolume.Slider, fType=ftype})
 		self:skinObject("slider", {obj=_G.UnitPopupVoiceMicrophoneVolume.Slider, fType=ftype})
 		self:skinObject("slider", {obj=_G.UnitPopupVoiceUserVolume.Slider, fType=ftype})

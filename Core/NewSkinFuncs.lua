@@ -89,12 +89,12 @@ aObj.skinTPLs = {
 		-- filtercb = "ResetButton",
 		-- noBB     = false, -- don't skin button
 		-- noSF     = false, -- don't skin frame
-		ofs         = -1,
+		ofs         = aObj.isRtl and -1 or 1,
 		-- sechk    = false,
 		-- x1       = nil,
-		y1          = 2,
+		y1          = aObj.isRtl and 2 or nil,
 		-- x2       = nil,
-		y2          = 4,
+		y2          = aObj.isRtl and 4 or nil,
 	},
 	ddlist = {
 		nop         = false, -- stop backdrop textures being updated (ZygorGuides)
@@ -654,7 +654,7 @@ local function skinFrame(tbl)
 			aObj:removeRegions(tbl.obj.Header, {1, 2, 3})
 			aObj:moveObject{obj=tbl.obj.Header.Text, y=hOfs}
 			-- return
-		else tbl.obj:GetName()
+		elseif tbl.obj:GetName() ~= nil then
 			for _, suffix in _G.pairs{"Header", "_Header", "_HeaderBox", "_FrameHeader", "FrameHeader", "HeaderTexture", "HeaderFrame"} do
 				hObj = _G[tbl.obj:GetName() .. suffix]
 				if hObj then

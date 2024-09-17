@@ -211,12 +211,16 @@ if not aObj.isClscERA then
 				self:moveObject{obj=this.SearchBox, y=-8}
 				self:skinObject("statusbar", {obj=this.searchProgressBar, fi=0, bg=this.searchProgressBar.bg})
 				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, y1=7, x2=0, y2=-1})
+			else
+				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, y1=9, x2=1, y2=-2})
+			end
+			if self.isRtl
+			or self.isClscPTR
+			then
 				if self.modBtnBs then
 					self:moveObject{obj=_G.AchievementFrameFilterDropdown, y=-6}
 					self:skinObject("ddbutton", {obj=_G.AchievementFrameFilterDropdown, fType=ftype, filter=true})
 				end
-			else
-				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, y1=9, x2=1, y2=-2})
 			end
 
 			self:SecureHookScript(this.Header or _G.AchievementFrameHeader, "OnShow", function(fObj)
@@ -583,7 +587,7 @@ if not aObj.isClscERA then
 
 					self:Unhook(fObj, "OnShow")
 				end)
-			else
+			elseif not self.isClscPTR then
 				self:SecureHookScript(_G.AchievementFrameFilterDropDown, "OnShow", function(fObj)
 					self:moveObject{obj=fObj, y=-7}
 					if self.prdb.TabDDTextures.textureddd then
@@ -617,7 +621,9 @@ if not aObj.isClscERA then
 
 		self:SecureHookScript(_G.ArchaeologyFrame, "OnShow", function(this)
 			self:moveObject{obj=this.infoButton, x=-25}
-			if self.isRtl then
+			if self.isRtl
+			or self.isClscPTR
+			then
 				self:skinObject("ddbutton", {obj=this.RaceFilterDropdown, fType=ftype})
 			else
 				self:skinObject("dropdown", {obj=this.raceFilterDropDown, fType=ftype})
@@ -1041,6 +1047,10 @@ if not aObj.isClscERA then
 			if self.isRtl then
 				self:removeInset(this.BottomLeftInset)
 				self:removeRegions(this.SlotButton, {1, 3})
+			end
+			if self.isRtl
+			or self.isClscPTR
+			then
 				self:skinObject("ddbutton", {obj=this.FilterDropdown, fType=ftype, filter=true})
 			end
 			self:skinObject("editbox", {obj=this.searchBox, fType=ftype, si=true})
@@ -1122,9 +1132,13 @@ if not aObj.isClscERA then
 				self:skinMainHelpBtn(this)
 				_G.PetJournalHealPetButtonBorder:SetTexture(nil)
 				self:removeInset(this.PetCardInset)
-				self:skinObject("ddbutton", {obj=this.FilterDropdown, fType=ftype, filter=true})
 			else
 				self:removeMagicBtnTex(this.SummonButton)
+			end
+			if self.isRtl
+			or self.isClscPTR
+			then
+				self:skinObject("ddbutton", {obj=this.FilterDropdown, fType=ftype, filter=true})
 			end
 			self:skinObject("editbox", {obj=this.searchBox, fType=ftype, si=true})
 			if self.modBtns then
@@ -1274,7 +1288,9 @@ if not aObj.isClscERA then
 			self:removeRegions(this.progressBar, {2, 3})
 			self:skinObject("statusbar", {obj=this.progressBar, fi=0})
 			self:skinObject("editbox", {obj=this.searchBox, fType=ftype, si=true})
-			if self.isRtl then
+			if self.isRtl
+			or self.isClscPTR
+			then
 				self:skinObject("ddbutton", {obj=this.FilterDropdown, fType=ftype, filter=true})
 			end
 			self:removeInset(this.iconsFrame)
@@ -1289,7 +1305,9 @@ if not aObj.isClscERA then
 				end
 			end
 			if self.modBtns then
-				if not self.isRtl then
+				if not self.isRtl
+				and not self.isClscPTR
+				then
 					self:skinStdButton{obj=_G.ToyBoxFilterButton, ftype=ftype}
 				end
 			end
@@ -1307,7 +1325,9 @@ if not aObj.isClscERA then
 			self:skinObject("statusbar", {obj=this.progressBar, fi=0})
 			self:removeRegions(this.progressBar, {2, 3})
 			self:skinObject("editbox", {obj=this.SearchBox, fType=ftype, si=true})
-			if self.isRtl then
+			if self.isRtl
+			or self.isClscPTR
+			then
 				self:skinObject("ddbutton", {obj=this.FilterDropdown, fType=ftype, filter=true})
 				self:skinObject("ddbutton", {obj=this.ClassDropdown, fType=ftype})
 			else
@@ -1355,6 +1375,10 @@ if not aObj.isClscERA then
 			self:SecureHookScript(_G.WardrobeCollectionFrame, "OnShow", function(this)
 				if self.isRtl then
 					this.InfoButton.Ring:SetTexture(nil)
+				end
+				if self.isRtl
+				or self.isClscPTR
+				then
 					self:skinObject("ddbutton", {obj=this.FilterButton, fType=ftype, filter=true})
 					self:skinObject("ddbutton", {obj=this.ClassDropdown, fType=ftype})
 				end
@@ -1385,7 +1409,9 @@ if not aObj.isClscERA then
 						end
 					end
 					self:SecureHookScript(this.ItemsCollectionFrame, "OnShow", function(fObj)
-						if self.isRtl then
+						if self.isRtl
+						or self.isClscPTR
+						then
 							self:skinObject("ddbutton", {obj=fObj.WeaponDropdown, fType=ftype})
 						else
 							self:skinObject("dropdown", {obj=fObj.WeaponDropDown, fType=ftype})
@@ -1451,15 +1477,8 @@ if not aObj.isClscERA then
 							_G.ScrollUtil.AddAcquiredFrameCallback(fObj.ListContainer.ScrollBox, skinElement, aObj, true)
 							fObj.DetailsFrame:DisableDrawLayer("BACKGROUND")
 							fObj.DetailsFrame:DisableDrawLayer("BORDER")
-							if self.isRtl then
-								self:skinObject("ddbutton", {obj=fObj.DetailsFrame.VariantSetsDropdown, fType=ftype})
-							end
+							self:skinObject("ddbutton", {obj=fObj.DetailsFrame.VariantSetsDropdown, fType=ftype})
 							self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, fb=true, x1=x1Ofs, y1=y1Ofs, x2=x2Ofs, y2=y2Ofs})
-							if self.modBtns then
-								if not self.isRtl then
-									 self:skinStdButton{obj=fObj.DetailsFrame.VariantSetsButton, fType=ftype}
-								end
-							end
 
 							self:Unhook(fObj, "OnShow")
 						end)
@@ -2556,7 +2575,9 @@ if not aObj.isClscERA then
 
 			self:SecureHookScript(this.instanceSelect, "OnShow", function(fObj)
 				fObj.bg:SetAlpha(0)
-				if self.isRtl then
+				if self.isRtl
+				or self.isClscPTR
+				then
 					self:skinObject("ddbutton", {obj=fObj.ExpansionDropdown, fType=ftype})
 				else
 					self:skinObject("dropdown", {obj=fObj.tierDropDown, fType=ftype})
@@ -2617,7 +2638,9 @@ if not aObj.isClscERA then
 						end
 					end
 					_G.ScrollUtil.AddAcquiredFrameCallback(frame.BossesScrollBox, skinBossesElement, aObj, true)
-					if self.isRtl then
+					if self.isRtl
+					or self.isClscPTR
+					then
 						self:skinObject("ddbutton", {obj=frame.difficulty, fType=ftype})
 					else
 						skinFilterBtn(frame.difficulty)
@@ -2658,7 +2681,9 @@ if not aObj.isClscERA then
 					end)
 					-- Loot Frame
 					self:skinObject("scrollbar", {obj=frame.LootContainer.ScrollBar, fType=ftype})
-					if self.isRtl then
+					if self.isRtl
+					or self.isClscPTR
+					then
 						self:skinObject("ddbutton", {obj=frame.LootContainer.filter, fType=ftype})
 						self:skinObject("ddbutton", {obj=frame.LootContainer.slotFilter, fType=ftype})
 					else
