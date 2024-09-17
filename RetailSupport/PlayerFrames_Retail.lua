@@ -1317,9 +1317,9 @@ aObj.SetupRetail_PlayerFrames = function()
 				end
 				self:changeTandC( htc.CurrencyFrame.Background)
 				-- .CollapseButton is displayed when Hero Spec hasn't been selected
-				self:skinObject("frame", {obj=htc.PreviewContainer, fType=ftype, kfs=true, fb=true, ofs=-20, y1=-45, clr="grey"})
-				self:skinObject("frame", {obj=htc.ExpandedContainer, fType=ftype, kfs=true, fb=true, ofs=-20, y1=-45})
-				self:skinObject("frame", {obj=htc.CollapsedContainer, fType=ftype, kfs=true, fb=true, ofs=-20, y1=-45})
+				self:skinObject("frame", {obj=htc.PreviewContainer, fType=ftype, kfs=true, fb=true, ofs=-26, y1=-45, clr="grey"})
+				self:skinObject("frame", {obj=htc.ExpandedContainer, fType=ftype, kfs=true, fb=true, ofs=-26, y1=-45})
+				self:skinObject("frame", {obj=htc.CollapsedContainer, fType=ftype, kfs=true, fb=true, ofs=-26, y1=-45})
 				-- .HeroTalentsUnlockedAnimFrame
 
 				self:skinObject("ddbutton", {obj=fObj.LoadSystem.Dropdown, fType=ftype})
