@@ -124,6 +124,11 @@ if not aObj.isClscERA then
 		end
 		local bName
 		local function skinAchievement(btn)
+			-- handle in combat
+			if _G.InCombatLockdown() then
+			    aObj:add2Table(aObj.oocTab, {skinAchievement, {btn}})
+			    return
+			end
 			if not btn.sf then
 				btn:DisableDrawLayer("BACKGROUND")
 				btn:DisableDrawLayer("BORDER")
