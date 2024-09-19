@@ -347,8 +347,7 @@ function aObj:changeTex2SB(obj)
 
 end
 
-local errorhandler = _G.geterrorhandler()
-local success, err
+local errorhandler, success, err = _G.geterrorhandler()
 local function safecall(funcName, funcObj, LoD, quiet)
 	--@debug@
 	_G.assert(funcObj, "Unknown object safecall\n" .. _G.debugstack(2, 3, 2))
@@ -375,8 +374,7 @@ local function safecall(funcName, funcObj, LoD, quiet)
 	return success, err
 end
 
-local hadWarning = {}
-local tObj
+local hadWarning, tObj = {}
 function aObj:checkAndRun(funcName, funcType, LoD, quiet)
 	--@debug@
 	_G.assert(funcName, "Unknown functionName checkAndRun\n" .. _G.debugstack(2, 3, 2))
