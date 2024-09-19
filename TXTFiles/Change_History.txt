@@ -1,3 +1,31 @@
+beta11.56574.1
+Jncl:
+	Updated ToDo files
+	Updated Change_History.txt
+	Updated version numbers
+	Classic & Classic ERA PTR changes
+	Updated LFDQueueFrame skin
+	Updated PVPHonorFrame Classic skin
+	Updated TalkingHeadFrame skin
+	Updated QuestMap skin
+	Updated skinMissionFrame skin
+	Updated PaperDollFrame skin
+	Updated TalentsFrame skin
+	Updated ObjectiveTracker skin, closes #158
+	Updated ItemUpgradeUI skin
+	Updated ItemInteraction skin
+	Updated FlightMap skin
+	Updated skinChildren function
+	Updated StaticPopups skin
+	Updated Settings skin
+	Updated Menu skin
+	Updated LFDQueueFrame skin
+	Updated ChatTabManager skin, closes #162
+	Updated ItemCollections skin
+	Added InCombat check to AchievementUI skin
+	Updated MerchantFrame skin
+	Updated Baganator, closes #155, closes #160, BuyEmAll, Dominos, closes #156, LibDialog, LibScrollingTable & RCLootCouncil, closes #163
+
 beta11.56461.1
 Jncl:
 	Updated ToDo.txt files
