@@ -87,9 +87,8 @@ local function skinBLoD(addon)
 	-- skin Blizzard LoD AddOns, either by passed name or if it is already loaded
 	for fType, fTab in _G.pairs(aObj.blizzLoDFrames) do
 		for fName, _ in _G.pairs(fTab) do
-			if addon
-			and addon == "Blizzard_" .. fName
-			or aObj:isAddOnLoaded("Blizzard_" .. fName)
+			if (addon and addon == "Blizzard_" .. fName)
+			or (aObj:isAddOnLoaded("Blizzard_" .. fName) and not aObj.initialized[fName]) -- bugfix for #156 & #164
 			then
 				aObj:checkAndRun(fName, fType, true)
 			end
