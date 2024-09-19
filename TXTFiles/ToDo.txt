@@ -21,16 +21,10 @@ ToDos
 
 		O	Refactor frame children loops to use Utility function 'scanChildren' via callback
 
-#155 √	I 	Baganator
-#160
+#164 √	I   Menu Missing localisation
 
-#156 √	I   Dominos
-	 ?	I 	FlightMap
+#165 √	I 	RareScanner
 
-#158 √	I 	ObjectiveTracker -> ScenarioProgressBar
+#166 √	I 	Details
 
-#159 √	I 	BuyEmAll
-
-#162 √	I 	ChatConfig
-
-#163 √	I 	RCLootCouncil, Add Note editbox doesn't have a frame around it
+#167 √	I   FlightMap
