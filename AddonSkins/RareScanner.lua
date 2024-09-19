@@ -15,7 +15,7 @@ aObj.addonsToSkin.RareScanner = function(self) -- v 11.0.2.2/4.4.0.5
 			self.UnregisterCallback("RareScanner", "WorldMapFrame_GetChildren")
 		end
 	end)
-	self:scanChildren("WorldMapFrame")
+	self:scanChildren{obj=_G.WorldMapFrame, cbstr="WorldMapFrame_GetChildren"}
 
 	self:SecureHookScript(_G.RSExplorerFrame, "OnShow", function(this)
 		if self.isRtl then

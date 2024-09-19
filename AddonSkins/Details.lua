@@ -203,6 +203,6 @@ function aObj:Details_Vanguard()
 			end
 		end
 	end)
-	self:scanChildren("UIParent")
+	self:scanChildren{obj=_G.UIParent, cbstr="UIParent_GetChildren"}
 
 end
