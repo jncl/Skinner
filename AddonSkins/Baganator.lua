@@ -2,9 +2,9 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("Baganator") then return end
 local _G = _G
 
-aObj.addonsToSkin.Baganator = function(self) -- v 479
+aObj.addonsToSkin.Baganator = function(self) -- v 491
 
-	local skinBtns, skinReagentBtns, skinReagents, skinViewBtns, skinBagSlots = _G.nop, _G.nop, _G.nop, _G.nop, _G.nop
+	local skinBtns, skinSpecialistBtns, skinSpecialistBags, skinViewBtns, skinBagSlots = _G.nop, _G.nop, _G.nop, _G.nop, _G.nop
 	if self.modBtnBs then
 		function skinBtns(frame)
 			for _, btn in _G.ipairs(frame.buttons) do
@@ -12,24 +12,25 @@ aObj.addonsToSkin.Baganator = function(self) -- v 479
 			end
 			-- N.B. DON'T hide SlotBackground/ItemTexture as the AddOn does that. [Theme -> Hide icon backgrounds]
 		end
-		if self.isRtl then
-			function skinReagentBtns(layout)
-				if layout.key == "reagentBag" then
-					skinBtns(layout.live)
-					skinBtns(layout.cached)
-					aObj:skinStdButton{obj=layout.button, ofs=0} -- Show Reagents button
+		function skinSpecialistBtns(layout)
+			skinBtns(layout.live)
+			skinBtns(layout.cached)
+			if layout.button then
+				aObj:skinStdButton{obj=layout.button, ofs=0} -- Specialist bag button in BLHC
+			end
+			if layout.divider then
+				layout.divider.Divider:SetTexture(nil)
+			end
+		end
+		function skinSpecialistBags(frame, type)
+			if frame.CollapsingBags then
+				for _, layout in _G.pairs(frame.CollapsingBags) do
+					skinSpecialistBtns(layout)
 				end
 			end
-			function skinReagents(frame, type)
-				if frame.CollapsingBags then
-					for _, layout in _G.pairs(frame.CollapsingBags) do
-						skinReagentBtns(layout)
-					end
-				end
-				if frame.CollapsingBankBags then
-					for _, layout in _G.pairs(frame.CollapsingBankBags) do
-						skinReagentBtns(layout)
-					end
+			if frame.CollapsingBankBags then
+				for _, layout in _G.pairs(frame.CollapsingBankBags) do
+					skinSpecialistBtns(layout)
 				end
 			end
 		end
@@ -109,7 +110,7 @@ aObj.addonsToSkin.Baganator = function(self) -- v 479
 	end
 	self:SecureHookScript(_G.Baganator_SingleViewBackpackViewFrame, "OnShow", function(this)
 		self:SecureHook(this, "UpdateForCharacter", function(fObj, _)
-			skinReagents(fObj, "SVBags")
+			skinSpecialistBags(fObj, "SVBags")
 			-- N.B. done here to skin KeyRing button
 			if self.isClscERA then
 				for _, btn in _G.ipairs(fObj.AllButtons) do
@@ -166,7 +167,7 @@ aObj.addonsToSkin.Baganator = function(self) -- v 479
 						end
 					end
 					if type:find("SV") then
-						skinReagents(fObj, type)
+						skinSpecialistBags(fObj, type)
 					else
 						skinViewBtns(fObj, type)
 					end
