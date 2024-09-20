@@ -1395,7 +1395,7 @@ if not aObj.isClscERA then
 				end
 				local x1Ofs, y1Ofs, x2Ofs, y2Ofs = -4, 2, 7, -5
 
-				if self:isAddOnLoaded("BetterWardrobe") then
+				if _G.C_AddOns.IsAddOnLoaded("BetterWardrobe") then
 					self.callbacks:Fire("WardrobeCollectionFrame_OnShow")
 				else
 					local function updBtnClr(btn)
@@ -1542,7 +1542,7 @@ if not aObj.isClscERA then
 		end
 
 		if self.isClsc
-		and self:isAddOnLoaded("MountsJournal")
+		and _G.C_AddOns.IsAddOnLoaded("MountsJournal")
 		then
 			self.callbacks:Fire("Collections_Skinned")
 		end
@@ -2348,8 +2348,8 @@ aObj.blizzFrames[ftype].CompactFrames = function(self)
 	if not self.prdb.CompactFrames or self.initialized.CompactFrames then return end
 	self.initialized.CompactFrames = true
 
-	if self:isAddOnLoaded("Tukui")
-	or self:isAddOnLoaded("ElvUI")
+	if _G.C_AddOns.IsAddOnLoaded("Tukui")
+	or _G.C_AddOns.IsAddOnLoaded("ElvUI")
 	then
 		self.blizzFrames[ftype].CompactFrames = nil
 		return

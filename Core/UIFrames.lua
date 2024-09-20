@@ -271,7 +271,7 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 
 	-- hook this to stop gradient texture whiteout
 	self:RawHook(_G.AlertFrame, "AddAlertFrame", function(this, frame)
-		if self:isAddOnLoaded("Overachiever") then
+		if _G.C_AddOns.IsAddOnLoaded("Overachiever") then
 			local ocScript = frame:GetScript("OnClick")
 			if ocScript
 			and ocScript == _G.OverachieverAlertFrame_OnClick
@@ -347,11 +347,11 @@ aObj.blizzLoDFrames[ftype].BattlefieldMap = function(self)
 			end)
 		end)
 
-		if self:isAddOnLoaded("Capping") then
+		if _G.C_AddOns.IsAddOnLoaded("Capping") then
 			if _G.type(self["Capping_ModMap"]) == "function" then self:Capping_ModMap() end
 		end
 
-		if self:isAddOnLoaded("Mapster") then
+		if _G.C_AddOns.IsAddOnLoaded("Mapster") then
 			local mBM = _G.LibStub:GetLibrary("AceAddon-3.0", true):GetAddon("Mapster", true):GetModule("BattleMap", true)
 			if mBM then
 				local function updBMVisibility(db)
@@ -1018,9 +1018,9 @@ aObj.blizzFrames[ftype].ChatEditBox = function(self)
 	if not self.prdb.ChatEditBox.skin or self.initialized.ChatEditBox then return end
 	self.initialized.ChatEditBox = true
 
-	if self:isAddOnLoaded("NeonChat")
-	or self:isAddOnLoaded("Chatter")
-	or self:isAddOnLoaded("Prat-3.0")
+	if _G.C_AddOns.IsAddOnLoaded("NeonChat")
+	or _G.C_AddOns.IsAddOnLoaded("Chatter")
+	or _G.C_AddOns.IsAddOnLoaded("Prat-3.0")
 	then
 		self.blizzFrames[ftype].ChatEditBox = nil
 		return
@@ -2212,8 +2212,8 @@ aObj.blizzFrames[ftype].Minimap = function(self)
 	if not self.prdb.Minimap.skin or self.initialized.Minimap then return end
 	self.initialized.Minimap = true
 
-	if self:isAddOnLoaded("SexyMap")
-	or self:isAddOnLoaded("BasicMinimap")
+	if _G.C_AddOns.IsAddOnLoaded("SexyMap")
+	or _G.C_AddOns.IsAddOnLoaded("BasicMinimap")
 	then
 		self.blizzFrames[ftype].Minimap = nil
 		return
@@ -2397,11 +2397,11 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 			_G.MiniMapBattlefieldFrame:SetSize(28, 28)
 		end
 		-- skin any moved Minimap buttons if required
-		if self:isAddOnLoaded("MinimapButtonFrame") then
+		if _G.C_AddOns.IsAddOnLoaded("MinimapButtonFrame") then
 			mmKids(_G.MinimapButtonFrame)
 		end
 		-- show the Bongos minimap icon if required
-		if self:isAddOnLoaded("Bongos") then
+		if _G.C_AddOns.IsAddOnLoaded("Bongos") then
 			_G.Bongos3MinimapButton.icon:SetDrawLayer("ARTWORK")
 		end
 	end
@@ -2416,7 +2416,7 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 		_G.MiniMapWorldMapButton:ClearAllPoints()
 		_G.MiniMapWorldMapButton:SetPoint("LEFT", _G.MinimapZoneTextButton, "RIGHT", -4, 0)
 		self:skinOtherButton{obj=_G.MiniMapWorldMapButton, font=self.fontP, text="M", noSkin=minBtn}
-		if self:isAddOnLoaded("SexyMap")
+		if _G.C_AddOns.IsAddOnLoaded("SexyMap")
 		or self.isClsc
 		then
 			_G.MiniMapWorldMapButton:DisableDrawLayer("OVERLAY") -- border texture
@@ -2470,7 +2470,7 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 	end
 	_G.TimeManagerClockButton:DisableDrawLayer("BORDER")
 	_G.TimeManagerClockButton:SetSize(36, 14)
-	if not self:isAddOnLoaded("SexyMap") then
+	if not _G.C_AddOns.IsAddOnLoaded("SexyMap") then
 		self:moveObject{obj=_G.TimeManagerClockTicker, x=-3, y=-1}
 	end
 	if self.isClsc then
@@ -2502,7 +2502,7 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 	-- wait until all AddOn skins have been loaded
 	_G.C_Timer.After(1.0, function()
 		for addon, obj in _G.pairs(self.mmButs) do
-			if self:isAddOnLoaded(addon) then
+			if _G.C_AddOns.IsAddOnLoaded(addon) then
 				skinMMBtn("Loaded Addons btns", obj)
 			end
 		end
@@ -2575,7 +2575,7 @@ aObj.blizzFrames[ftype].Nameplates = function(self)
 	if not self.prdb.Nameplates or self.initialized.Nameplates then return end
 	self.initialized.Nameplates = true
 
-	if self:isAddOnLoaded("Plater") then
+	if _G.C_AddOns.IsAddOnLoaded("Plater") then
 		self.blizzFrames[ftype].Nameplates = nil
 		return
 	end
@@ -2698,8 +2698,8 @@ if not aObj.isClscERA then
 		if not self.prdb.OverrideActionBar or self.initialized.OverrideActionBar then return end
 		self.initialized.OverrideActionBar = true
 
-		if self:isAddOnLoaded("Dominos")
-		or self:isAddOnLoaded("Bartender4")
+		if _G.C_AddOns.IsAddOnLoaded("Dominos")
+		or _G.C_AddOns.IsAddOnLoaded("Bartender4")
 		then
 			self.blizzFrames[ftype].OverrideActionBar = nil
 			return
@@ -2865,7 +2865,7 @@ aObj.blizzFrames[ftype].QueueStatusFrame = function(self)
 		clrEntry(this)
 
 		-- handle SexyMap's use of AnimationGroups to show and hide frames
-		if self:isAddOnLoaded("SexyMap") then
+		if _G.C_AddOns.IsAddOnLoaded("SexyMap") then
 			local rtEvt
 			local function checkForAnimGrp()
 				if _G.QueueStatusMinimapButton
@@ -3364,7 +3364,7 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 	if not self.prdb.Tooltips.skin or self.initialized.Tooltips then return end
 	self.initialized.Tooltips = true
 
-	if self:isAddOnLoaded("TinyTooltip")
+	if _G.C_AddOns.IsAddOnLoaded("TinyTooltip")
 	and not self.prdb.DisabledSkins["TinyTooltip"]
 	then
 		_G.setmetatable(self.ttList, {__newindex = function(_, _, tTip)

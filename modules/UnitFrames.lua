@@ -85,7 +85,7 @@ local function changeUFOpacity()
 		_G.PartyMemberBackground:SetAlpha(db.alpha)
 	end
 
-	if aObj:isAddOnLoaded("Blizzard_ArenaUI") then
+	if _G.C_AddOns.IsAddOnLoaded("Blizzard_ArenaUI") then
 		if _G.ArenaPrepBackground.sf then
 			_G.ArenaPrepBackground.sf:SetAlpha(db.alpha)
 		end
@@ -681,8 +681,8 @@ end
 function module:OnInitialize()
 
 	-- disable ourself if another unitframe addon is loaded
-	if aObj:isAddOnLoaded("Perl_Config")
-	or aObj:isAddOnLoaded("XPerl")
+	if _G.C_AddOns.IsAddOnLoaded("Perl_Config")
+	or _G.C_AddOns.IsAddOnLoaded("XPerl")
 	then
 		self:SetEnabledState(false)
 	end

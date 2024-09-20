@@ -135,7 +135,7 @@ aObj.SetupClassic_UIFrames = function()
 		if self.initialized.MainMenuBar then return end
 		self.initialized.MainMenuBar = true
 
-		if self:isAddOnLoaded("Dominos") then
+		if _G.C_AddOns.IsAddOnLoaded("Dominos") then
 			self.blizzFrames[ftype].MainMenuBar = nil
 			return
 		end
@@ -219,7 +219,7 @@ aObj.SetupClassic_UIFrames = function()
 		if self.initialized.MainMenuBarCommon then return end
 		self.initialized.MainMenuBarCommon = true
 
-		if self:isAddOnLoaded("Bartender4") then
+		if _G.C_AddOns.IsAddOnLoaded("Bartender4") then
 			self.blizzFrames[ftype].MainMenuBarCommon = nil
 			return
 		end
@@ -463,7 +463,7 @@ aObj.SetupClassic_UIFrames = function()
 		if not self.prdb.QuestLog or self.initialized.QuestLog then return end
 		self.initialized.QuestLog = true
 
-		if self:isAddOnLoaded("QuestLogEx") then
+		if _G.C_AddOns.IsAddOnLoaded("QuestLogEx") then
 			self.blizzFrames[ftype].QuestLog = nil
 			return
 		end
@@ -662,8 +662,8 @@ aObj.SetupClassic_UIFrames = function()
 		self.initialized.WorldMap = true
 
 		self:SecureHookScript(_G.WorldMapFrame, "OnShow", function(this)
-			if not self:isAddOnLoaded("Mapster")
-			and not self:isAddOnLoaded("AlleyMap")
+			if not _G.C_AddOns.IsAddOnLoaded("Mapster")
+			and not _G.C_AddOns.IsAddOnLoaded("AlleyMap")
 			then
 				self:skinObject("frame", {obj=_G.WorldMapFrame.BorderFrame, fType=ftype, kfs=true, ofs=1})
 				self:skinObject("frame", {obj=_G.WorldMapFrame.MiniBorderFrame, fType=ftype, kfs=true, ofs=-4, y1=-25, x1=16})

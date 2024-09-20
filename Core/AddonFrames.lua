@@ -88,7 +88,7 @@ local function skinBLoD(addon)
 	for fType, fTab in _G.pairs(aObj.blizzLoDFrames) do
 		for fName, _ in _G.pairs(fTab) do
 			if (addon and addon == "Blizzard_" .. fName)
-			or (aObj:isAddOnLoaded("Blizzard_" .. fName) and not aObj.initialized[fName]) -- bugfix for #156 & #164
+			or (_G.C_AddOns.IsAddOnLoaded("Blizzard_" .. fName) and not aObj.initialized[fName]) -- bugfix for #156 & #164
 			then
 				aObj:checkAndRun(fName, fType, true)
 			end
@@ -109,7 +109,7 @@ function aObj:AddonFrames()
 	_G.C_Timer.After(0.2, function()
 		skinBLoD()
 		for addonName, skinFunc in _G.pairs(self.lodAddons) do
-			if self:isAddOnLoaded(addonName) then
+			if _G.C_AddOns.IsAddOnLoaded(addonName) then
 				self:checkAndRunAddOn(addonName, skinFunc, true)
 			end
 		end

@@ -66,7 +66,7 @@ aObj.SetupRetail_NPCFrames = function()
 							self:setActiveTab(tab.sf)
 						end
 					end
-					if self:isAddOnLoaded("Auctionator") then
+					if _G.C_AddOns.IsAddOnLoaded("Auctionator") then
 						for _, tab in _G.ipairs(_G.AuctionatorAHTabsContainer.Tabs) do
 							self:setInactiveTab(tab.sf)
 						end
@@ -355,7 +355,7 @@ aObj.SetupRetail_NPCFrames = function()
 		if not self.prdb.BankFrame or self.initialized.BankFrame then return end
 		self.initialized.BankFrame = true
 
-		if not self:isAddOnLoaded("LiteBag") then
+		if not _G.C_AddOns.IsAddOnLoaded("LiteBag") then
 			self:SecureHookScript(_G.BankFrame, "OnShow", function(this)
 				self:skinObject("editbox", {obj=_G.BankItemSearchBox, fType=ftype, si=true})
 				if self.modBtns then
@@ -1085,7 +1085,7 @@ aObj.SetupRetail_NPCFrames = function()
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true})
 			if self.modBtns then
 				self:skinStdButton{obj=_G.ClassTrainerTrainButton, fType=ftype, sechk=true}
-				if self:isAddOnLoaded("Leatrix_Plus")
+				if _G.C_AddOns.IsAddOnLoaded("Leatrix_Plus")
 				and _G.LeaPlusDB["ShowTrainAllButton"] == "On"
 				then
 					self:skinStdButton{obj=_G.LeaPlusGlobalTrainAllButton, fType=ftype, sechk=true} -- Train All button

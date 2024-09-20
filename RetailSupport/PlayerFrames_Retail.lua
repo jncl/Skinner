@@ -206,8 +206,8 @@ aObj.SetupRetail_PlayerFrames = function()
 		if not self.prdb.CastingBar.skin or self.initialized.CastingBar then return end
 		self.initialized.CastingBar = true
 
-		if self:isAddOnLoaded("Quartz")
-		or self:isAddOnLoaded("Dominos_Cast")
+		if _G.C_AddOns.IsAddOnLoaded("Quartz")
+		or _G.C_AddOns.IsAddOnLoaded("Dominos_Cast")
 		then
 			self.blizzFrames[ftype].CastingBar = nil
 			return
@@ -289,7 +289,7 @@ aObj.SetupRetail_PlayerFrames = function()
 		if not self.prdb.ContainerFrames.skin or self.initialized.ContainerFrames then return end
 		self.initialized.ContainerFrames = true
 
-		if self:isAddOnLoaded("LiteBag") then
+		if _G.C_AddOns.IsAddOnLoaded("LiteBag") then
 			self.blizzFrames[ftype].ContainerFrames = nil
 			return
 		end
@@ -374,7 +374,7 @@ aObj.SetupRetail_PlayerFrames = function()
 		if not self.prdb.DressUpFrame or self.initialized.DressUpFrame then return end
 		self.initialized.DressUpFrame = true
 
-		if self:isAddOnLoaded("DressUp") then
+		if _G.C_AddOns.IsAddOnLoaded("DressUp") then
 			self.blizzFrames[ftype].DressUpFrame = nil
 			return
 		end

@@ -471,12 +471,12 @@ aObj.SetupOptions = function(self)
 					db[info[#info]] = r
 					if r then
 						db.BackdropBorder:SetRGBA(c[1], c[2], c[3], 1)
-						if self:isAddOnLoaded("Baggins") then
+						if _G.C_AddOns.IsAddOnLoaded("Baggins") then
 							db.BagginsBBC:SetRGBA(c[1], c[2], c[3], 1)
 						end
 					else
 						db.BackdropBorder:SetRGBA(dflts.BackdropBorder:GetRGBA())
-						if self:isAddOnLoaded("Baggins") then
+						if _G.C_AddOns.IsAddOnLoaded("Baggins") then
 							db.BagginsBBC:SetRGBA(dflts.BagginsBBC:GetRGBA())
 						end
 					end
@@ -617,7 +617,7 @@ aObj.SetupOptions = function(self)
 					name = self.L["Baggins Bank Bags Colour"],
 					desc = _G.strjoin(" ", self.L["Set"], self.L["Baggins Bank Bags Colour"]),
 					hasAlpha = true,
-					hidden = function() return self:isAddOnLoaded("Baggins") and false or true end,
+					hidden = function() return _G.C_AddOns.IsAddOnLoaded("Baggins") and false or true end,
 				},
 			},
 		},
@@ -716,7 +716,7 @@ aObj.SetupOptions = function(self)
 				db[info[#info]] = value
 				-- handle Blizzard LoD Addons
 				if self.blizzLoDFrames.n[info[#info]] then
-					if self:isAddOnLoaded("Blizzard_" .. info[#info]) then
+					if _G.C_AddOns.IsAddOnLoaded("Blizzard_" .. info[#info]) then
 						self:checkAndRun(info[#info], "n", true)
 					end
 				else self:checkAndRun(info[#info], "n") end
@@ -778,7 +778,7 @@ aObj.SetupOptions = function(self)
 				db[info[#info]] = value
 				-- handle Blizzard LoD Addons
 				if self.blizzLoDFrames.p[info[#info]] then
-					if self:isAddOnLoaded("Blizzard_" .. info[#info]) then
+					if _G.C_AddOns.IsAddOnLoaded("Blizzard_" .. info[#info]) then
 						self:checkAndRun(info[#info], "p", true)
 					end
 				else self:checkAndRun(info[#info], "p") end
@@ -810,7 +810,7 @@ aObj.SetupOptions = function(self)
 					get = function(info) return db.AchievementUI[info[#info]] end,
 					set = function(info, value)
 						db.AchievementUI[info[#info]] = value
-						if self:isAddOnLoaded("Blizzard_AchievementUI") then self:checkAndRun("AchievementUI", "p", true) end
+						if _G.C_AddOns.IsAddOnLoaded("Blizzard_AchievementUI") then self:checkAndRun("AchievementUI", "p", true) end
 					end,
 					args = {
 						skin = {
@@ -947,7 +947,7 @@ aObj.SetupOptions = function(self)
 				elseif info[#info] == "ChatTabsFade" then return
 				-- handle Blizzard LoD Addons
 				elseif self.blizzLoDFrames.u[info[#info]] then
-					if self:isAddOnLoaded("Blizzard_" .. info[#info]) then
+					if _G.C_AddOns.IsAddOnLoaded("Blizzard_" .. info[#info]) then
 						self:checkAndRun(info[#info], "u", true)
 					end
 				-- treat GossipFrame, QuestFrame, QuestInfo & QuestLog/QuestMap as one

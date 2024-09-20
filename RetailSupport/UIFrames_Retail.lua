@@ -216,7 +216,7 @@ aObj.SetupRetail_UIFrames = function()
 				aObj:moveObject{obj=frame, x=4, y=20}
 				_G.RaiseFrameLevelByTwo(frame) -- raise above markers on mission frame
 			end
-			frame:SetSize(naval and 935 or 948, aObj:isAddOnLoaded("GarrisonCommander") and 640 or naval and 648 or 630)
+			frame:SetSize(naval and 935 or 948, _G.C_AddOns.IsAddOnLoaded("GarrisonCommander") and 640 or naval and 648 or 630)
 			aObj:removeRegions(frame.BorderFrame.Stage, {1, 2, 3, 4, 5, 6})
 			aObj:skinObject("frame", {obj=frame.BorderFrame, fType=ftype, kfs=true, y2=-2})
 			if aObj.modBtns then
@@ -267,7 +267,7 @@ aObj.SetupRetail_UIFrames = function()
 			if frame.FollowerModel then
 				aObj:moveObject{obj=frame.FollowerModel, x=-6, y=0}
 			end
-			if not aObj:isAddOnLoaded("MasterPlan") then
+			if not _G.C_AddOns.IsAddOnLoaded("MasterPlan") then
 				frame.CloseButton:SetSize(28, 28) -- make button smaller
 			end
 			local y1Ofs, x2Ofs, y2Ofs = 5, 3, -20
@@ -2248,8 +2248,8 @@ aObj.SetupRetail_UIFrames = function()
 			self:addButtonBorder{obj=_G.MainMenuBarVehicleLeaveButton}
 		end
 
-		if self:isAddOnLoaded("Dominos")
-		or self:isAddOnLoaded("Bartender4")
+		if _G.C_AddOns.IsAddOnLoaded("Dominos")
+		or _G.C_AddOns.IsAddOnLoaded("Bartender4")
 		then
 			self.blizzFrames[ftype].MainMenuBar = nil
 			return
@@ -2387,8 +2387,8 @@ aObj.SetupRetail_UIFrames = function()
 		if self.initialized.MainMenuBarCommon then return end
 		self.initialized.MainMenuBarCommon = true
 
-		if self:isAddOnLoaded("Dominos")
-		or self:isAddOnLoaded("Bartender4")
+		if _G.C_AddOns.IsAddOnLoaded("Dominos")
+		or _G.C_AddOns.IsAddOnLoaded("Bartender4")
 		then
 			self.blizzFrames[ftype].MainMenuBarCommon = nil
 			return
@@ -3093,7 +3093,7 @@ aObj.SetupRetail_UIFrames = function()
 		if not self.prdb.QuestMap or self.initialized.QuestMap then return end
 		self.initialized.QuestMap = true
 
-		if self:isAddOnLoaded("EQL3") then
+		if _G.C_AddOns.IsAddOnLoaded("EQL3") then
 			self.blizzFrames[ftype].QuestMap = nil
 			return
 		end
@@ -3830,8 +3830,8 @@ aObj.SetupRetail_UIFrames = function()
 		self.initialized.WorldMap = true
 
 		self:SecureHookScript(_G.WorldMapFrame, "OnShow", function(this)
-			if not self:isAddOnLoaded("Mapster")
-			and not self:isAddOnLoaded("AlleyMap")
+			if not _G.C_AddOns.IsAddOnLoaded("Mapster")
+			and not _G.C_AddOns.IsAddOnLoaded("AlleyMap")
 			then
 				self:keepFontStrings(this)
 				self:moveObject{obj=this.BorderFrame.CloseButton, x=-2}

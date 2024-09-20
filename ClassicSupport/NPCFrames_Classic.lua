@@ -170,7 +170,7 @@ aObj.SetupClassic_NPCFrames = function()
 					self:SecureHook("AuctionFrameAuctions_Update", function()
 						self:clrBtnBdr(_G.AuctionsCancelAuctionButton)
 					end)
-					if self:isAddOnLoaded("Leatrix_Plus")
+					if _G.C_AddOns.IsAddOnLoaded("Leatrix_Plus")
 					and _G.LeaPlusDB["AhExtras"] == "On"
 					then
 						self:skinStdButton{obj=self:getLastChild(_G.AuctionFrameAuctions)}
@@ -182,7 +182,7 @@ aObj.SetupClassic_NPCFrames = function()
 					self:getRegion(_G.AuctionsItemButton, 2):SetAlpha(0) -- texture is changed in blizzard code
 					self:addButtonBorder{obj=_G.AuctionsItemButton}
 				end
-				if self:isAddOnLoaded("Leatrix_Plus")
+				if _G.C_AddOns.IsAddOnLoaded("Leatrix_Plus")
 				and _G.LeaPlusDB["AhExtras"] == "On"
 				and self.modChkBtns
 				then
@@ -338,7 +338,7 @@ aObj.SetupClassic_NPCFrames = function()
 			self:skinObject("slider", {obj=_G.ClassTrainerListScrollFrame.ScrollBar, fType=ftype, rpTex="background"})
 			self:skinObject("slider", {obj=_G.ClassTrainerDetailScrollFrame.ScrollBar, fType=ftype, rpTex="background"})
 			local x2, y2 = -32, 71
-			if self:isAddOnLoaded("Leatrix_Plus")
+			if _G.C_AddOns.IsAddOnLoaded("Leatrix_Plus")
 			and _G.LeaPlusDB["EnhanceTrainers"] == "On"
 			then
 				x2, y2 = -33, 49

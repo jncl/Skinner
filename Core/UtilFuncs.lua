@@ -458,9 +458,9 @@ function aObj:checkAndRunAddOn(addonName, addonFunc, LoD)
 		return
 	end
 
-	self:Debug2("checkAndRunAddOn #2: [%s, %s, %s, %s]", self:isAddOnLoaded(addonName), self:isAddOnLoadOnDemand(addonName), addonFunc, _G.type(addonFunc))
+	self:Debug2("checkAndRunAddOn #2: [%s, %s, %s, %s]", _G.C_AddOns.IsAddOnLoaded(addonName), self:isAddOnLoadOnDemand(addonName), addonFunc, _G.type(addonFunc))
 
-	if not self:isAddOnLoaded(addonName) then
+	if not _G.C_AddOns.IsAddOnLoaded(addonName) then
 		-- deal with Addons under the control of an LoadManager
 		if self:isAddOnLoadOnDemand(addonName)
 		and not LoD
@@ -793,6 +793,8 @@ end
 function aObj:isAddOnLoaded(addonName)
 	--@debug@
 	_G.assert(addonName, "Unknown object isAddOnLoaded\n" .. _G.debugstack(2, 3, 2))
+	-- handle AddOn skins still using this code rather than _G.C_AddOns.IsAddOnLoaded
+	aObj:CustomPrint(1, 0, 0, "Using deprecated function - isAddOnLoaded, use _G.C_AddOns.IsAddOnLoaded instead", _G.debugstack(2, 3, 2))
 	--@end-debug@
 
 	return _G.C_AddOns.IsAddOnLoaded(addonName)
@@ -879,7 +881,7 @@ function aObj:makeMFRotatable(modelFrame)
 	--@end-debug@
 
 	-- Don't make Model Frames Rotatable if CloseUp is loaded
-	if self:isAddOnLoaded("CloseUp") then return end
+	if _G.C_AddOns.IsAddOnLoaded("CloseUp") then return end
 
 	-- hide rotation buttons
 	for _, child in _G.ipairs{modelFrame:GetChildren()} do
