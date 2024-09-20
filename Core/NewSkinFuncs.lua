@@ -159,6 +159,7 @@ aObj.skinTPLs = {
 		aso         = {}, -- applySkin options
 		bd          = 1, -- backdrop to use
 		-- hdr         = true, -- header texture(s)
+		hOfs 		= -7, -- header text offset
 		-- noBdr       = true, -- equivalent to bd=11 when true
 		-- ba          = 1, -- backdrop alpha
 		-- clr         = "default", -- backdrop border colour
@@ -590,7 +591,7 @@ local function skinEditBox(tbl)
 	aObj:getRegion(tbl.obj, 2):SetAlpha(1) -- cursor texture
 end
 skinFuncs.editbox = function(table) skinEditBox(table) end
-local hOfs, hObj = -7
+local hObj
 local function skinFrame(tbl)
 	--@debug@
 	_G.assert(tbl, "Missing options table (skinFrame)\n" .. _G.debugstack(2, 3, 2))
@@ -645,20 +646,20 @@ local function skinFrame(tbl)
 			tbl.obj.header:DisableDrawLayer("BORDER")
 			if tbl.obj.header.text
 			then
-				aObj:moveObject{obj=tbl.obj.header.text, y=hOfs}
+				aObj:moveObject{obj=tbl.obj.header.text, y=tbl.hOfs}
 			else
-				aObj:moveObject{obj=aObj:getRegion(tbl.obj.header, tbl.obj.header:GetNumRegions()), y=hOfs}
+				aObj:moveObject{obj=aObj:getRegion(tbl.obj.header, tbl.obj.header:GetNumRegions()), y=tbl.hOfs}
 			end
 			-- return
 		elseif tbl.obj.Header then
 			aObj:removeRegions(tbl.obj.Header, {1, 2, 3})
-			aObj:moveObject{obj=tbl.obj.Header.Text, y=hOfs}
+			aObj:moveObject{obj=tbl.obj.Header.Text, y=tbl.hOfs}
 			-- return
 		elseif tbl.obj:GetName() ~= nil then
 			for _, suffix in _G.pairs{"Header", "_Header", "_HeaderBox", "_FrameHeader", "FrameHeader", "HeaderTexture", "HeaderFrame"} do
 				hObj = _G[tbl.obj:GetName() .. suffix]
 				if hObj then
-					hObj:SetPoint("TOP", tbl.obj, "TOP", 0, hOfs * -1)
+					hObj:SetPoint("TOP", tbl.obj, "TOP", 0, tbl.hOfs * -1)
 					if aObj:hasTextInTexture(hObj, 131080) -- FileDataID
 					or aObj:hasTextInTexture(hObj, "UI-DialogBox-Header")
 					then
