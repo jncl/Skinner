@@ -2256,28 +2256,23 @@ aObj.SetupRetail_UIFrames = function()
 		end
 
 		if self.prdb.MainMenuBar.skin then
-			local skinABBtn, skinMultiBarBtns
+			local skinABBtn, skinMultiBarBtns = _G.nop, _G.nop
 			if self.modBtnBs then
-				if self:isAddOnLoaded("Bartender4") then
-					skinABBtn = _G.nop
-					skinMultiBarBtns = _G.nop
-				else
-					function skinABBtn(btn)
-						btn.Border:SetAlpha(0) -- texture changed in blizzard code
-						btn.SlotBackground:SetTexture(nil)
-						btn.SlotArt:SetTexture(nil)
-						btn.FlyoutBorderShadow:SetTexture(nil)
-						btn.NormalTexture:SetTexture(nil)
-						if aObj.prdb.MainMenuBar.actbtns then
-							aObj:addButtonBorder{obj=btn, fType=ftype, sabt=true, ofs=3}
-						end
+				function skinABBtn(btn)
+					btn.Border:SetAlpha(0) -- texture changed in blizzard code
+					btn.SlotBackground:SetTexture(nil)
+					btn.SlotArt:SetTexture(nil)
+					btn.FlyoutBorderShadow:SetTexture(nil)
+					btn.NormalTexture:SetTexture(nil)
+					if aObj.prdb.MainMenuBar.actbtns then
+						aObj:addButtonBorder{obj=btn, fType=ftype, sabt=true, ofs=3}
 					end
-					function skinMultiBarBtns(type)
-						local bName
-						for i = 1, _G.NUM_MULTIBAR_BUTTONS do
-							bName = "MultiBar" .. type .. "Button" .. i
-							skinABBtn(_G[bName])
-						end
+				end
+				function skinMultiBarBtns(type)
+					local bName
+					for i = 1, _G.NUM_MULTIBAR_BUTTONS do
+						bName = "MultiBar" .. type .. "Button" .. i
+						skinABBtn(_G[bName])
 					end
 				end
 			end
