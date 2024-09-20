@@ -367,7 +367,7 @@ function aObj:OnEnable()
 
 	if self.isRtl then
 		-- hook this (used by Blizzard_OrderHallTalents, PVPMatchResults, PVPMatchScoreboard & Blizzard_WarboardUI)
-		-- N.B. use SecureHook as RawHook cause taint and causes INTERFACE_ACTION_BLOCKED message to be displayed
+		-- N.B. use SecureHook as RawHook causes taint and INTERFACE_ACTION_BLOCKED message to be displayed
 		self:SecureHook("UIPanelCloseButton_SetBorderAtlas", function(this, _, _, _, _)
 			this.Border:SetTexture(nil)
 		end)

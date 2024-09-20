@@ -633,7 +633,7 @@ function aObj:getInt(num)
 	_G.assert(num, "Missing number\n" .. _G.debugstack(2, 3, 2))
 	-- handle AddOn skins still using this code rather than _G.Round
 	aObj:CustomPrint(1, 0, 0, "Using deprecated function - getInt, use _G.Round instead", _G.debugstack(2, 3, 2))
-		--@end-debug@
+	--@end-debug@
 
 	return _G.math.floor(num + 0.5)
 
