@@ -146,7 +146,7 @@ function module:checkTex(...)
 
 end
 
-local hTexFile, clr, r, g, b, _
+local hTexFile, clr, r, g ,b, _
 function module:chgHLTex(obj, hTex)
 
 	-- handle in combat
@@ -179,7 +179,7 @@ function module:chgHLTex(obj, hTex)
 				end
 			end
 			if clr then
-				r, g, b, _ = aObj:getColourByName(clr)
+				r, g, b, _ = self:getColourByName(clr)
 				hTex:SetColorTexture(r, g, b, 0.25)
 				-- inset colour
 				if obj.sb then

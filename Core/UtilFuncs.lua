@@ -529,10 +529,11 @@ function aObj:checkDisabledDD(obj, disabled)
 
 end
 
+local r, g, b, _
 function aObj:clrBBC(obj, clrName, alpha)
 
-	local r, g, b, a = self:getColourByName(clrName)
-	obj:SetBackdropBorderColor(r, g, b, alpha or a)
+	r, g, b, _ = self:getColourByName(clrName)
+	obj:SetBackdropBorderColor(r, g, b, alpha or 1)
 
 end
 
@@ -540,12 +541,12 @@ function aObj:clrFrameBdr(fObj, clrName, alpha)
 
 	-- check frame state and alter colour accordingly
 	clrName = fObj.IsEnabled and not fObj:IsEnabled() and "disabled" or clrName
-	aObj:clrBBC(fObj.sf, clrName, alpha)
+	self:clrBBC(fObj.sf, clrName, alpha)
 
 end
 
 -- colour Frame border based upon Covenant
-local tKit, r, g, b
+local tKit
 function aObj:clrCovenantBdr(frame, uiTextureKit)
 
 	tKit = uiTextureKit or _G.C_Covenants.GetCovenantData(_G.C_Covenants.GetActiveCovenantID()).textureKit
