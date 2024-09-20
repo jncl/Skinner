@@ -189,36 +189,3 @@ function aObj:PLAYER_ENTERING_WORLD()
 	self:UnregisterEvent("PLAYER_ENTERING_WORLD")
 
 end
-
-function aObj:PLAYER_LEVEL_CHANGED(...)
---[[
-	arg1 - event name
-	arg2 - old player level
-	arg3 - new player level
-	...
-
-	Expansion Level number: (Level cap)
-		0 : Classic (60)
-		1 : Burning Crusade (70)
-		2 : Wrath of the Lich King (80)
-		3 : Cataclysm (85)
-		4 : Mists of Pandaria (90)
-		5 : Warlords of Draenor (100)
-		6 : Legion (110)
-		7 : Battle for Azeroth (120)
-		8 : Shadowlands (60), start @ 50
-		9 : Dragonflight (70)
---]]
-
-	if not _G.IsPlayerAtEffectiveMaxLevel() then
-		return
-	end
-
-	-- Max XP level reached, adjust watchbar positions
-	for _, bar in _G.pairs{_G.ReputationWatchBar, _G.ArtifactWatchBar, _G.HonorWatchBar} do
-		bar.SetPoint = bar.OrigSetPoint
-		aObj:moveObject{obj=bar, y=2}
-		bar.SetPoint = _G.nop
-	end
-
-end

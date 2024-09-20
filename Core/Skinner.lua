@@ -399,12 +399,6 @@ function aObj:OnEnable()
 	self:RegisterEvent("AUCTION_HOUSE_SHOW")
 	-- track when Player enters World (used for texture updates and UIParent child processing)
 	self:RegisterEvent("PLAYER_ENTERING_WORLD")
-	-- track when player changes level, to manage MainMenuBars' WatchBars' placement
-	if not _G.IsPlayerAtEffectiveMaxLevel()
-	and not _G.IsTrialAccount()
-	then
-		self:RegisterEvent("PLAYER_LEVEL_CHANGED")
-	end
 
 	-- handle statusbar changes
 	self.LSM:RegisterCallback("LibSharedMedia_SetGlobal", function(mtype, override)
