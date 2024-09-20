@@ -1,3 +1,12 @@
+beta11.56647.1
+Jncl:
+	Updated Change_History.txt
+	Updated version numbers
+	Updated UtilFuncs code
+	Bugfix for Options, closes #164
+	Bugfix for Blizzard LoD AddOns, closes #167
+	Updated Details, closes #166 & RareScanner, closes #165, skins
+
 beta11.56574.1
 Jncl:
 	Updated ToDo files
