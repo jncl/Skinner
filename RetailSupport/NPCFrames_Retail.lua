@@ -767,6 +767,12 @@ aObj.SetupRetail_NPCFrames = function()
 		if not self.prdb.FlightMap or self.initialized.FlightMap then return end
 		self.initialized.FlightMap = true
 
+		-- this AddOn changes the FlightMapFrame reference to point to the WorldMapFrame
+		if _G.C_AddOns.IsAddOnLoaded("WorldFlightMap") then
+			self.blizzLoDFrames[ftype].FlightMap = nil
+			return
+		end
+
 		self:SecureHookScript(_G.FlightMapFrame, "OnShow", function(this)
 			-- remove ZoneLabel background texture
 			for dP, _ in _G.pairs(this.dataProviders) do
