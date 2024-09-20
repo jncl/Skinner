@@ -1210,6 +1210,7 @@ function module:OnInitialize()
 	if not db.UIButtons
 	and not db.ButtonBorders
 	and not db.CheckButtons
+	and not db.FrameControls
 	then
 		self:Disable()
 	end
@@ -1217,6 +1218,108 @@ function module:OnInitialize()
 end
 
 function module:OnEnable()
+
+	-- add support for UIButton skinning
+	aObj.modUIBtns  		 = module
+	aObj.modBtns    		 = db.UIButtons
+	aObj.modBtnBs   		 = db.ButtonBorders
+	aObj.modChkBtns 		 = db.CheckButtons
+	aObj.modFCBtns  		 = db.FrameControls
+	aObj.fontDP              = aObj.modBtns and aObj.modUIBtns.fontDP
+	aObj.fontDS              = aObj.modBtns and aObj.modUIBtns.fontDS
+	aObj.fontP               = aObj.modBtns and aObj.modUIBtns.fontP
+	aObj.fontS               = aObj.modBtns and aObj.modUIBtns.fontS
+	aObj.fontSBX             = aObj.modBtns and aObj.modUIBtns.fontSBX
+	aObj.downarrow           = aObj.modBtns and aObj.modUIBtns.darrow
+	aObj.larrow              = aObj.modBtns and aObj.modUIBtns.larrow
+	aObj.nearrow             = aObj.modBtns and aObj.modUIBtns.nearrow
+	aObj.nwarrow             = aObj.modBtns and aObj.modUIBtns.nwarrow
+	aObj.rarrow              = aObj.modBtns and aObj.modUIBtns.rarrow
+	aObj.searrow             = aObj.modBtns and aObj.modUIBtns.searrow
+	aObj.swarrow             = aObj.modBtns and aObj.modUIBtns.swarrow
+	aObj.uparrow             = aObj.modBtns and aObj.modUIBtns.uarrow
+	aObj.gearcog             = aObj.modBtns and aObj.modUIBtns.gearcog
+	aObj.checkTex            = aObj.modBtns and aObj.modUIBtns.checkTex or _G.nop
+	aObj.isButton            = aObj.modBtns and aObj.modUIBtns.isButton or _G.nop
+	aObj.skinAllButtons      = aObj.modBtns and aObj.modUIBtns.skinAllButtons or _G.nop
+	aObj.skinButton          = aObj.modBtns and aObj.modUIBtns.skinButton or _G.nop
+	aObj.skinCloseButton     = aObj.modBtns and aObj.modUIBtns.skinCloseButton or _G.nop
+	aObj.skinExpandButton    = aObj.modBtns and aObj.modUIBtns.skinExpandButton or _G.nop
+	aObj.skinOtherButton     = aObj.modBtns and aObj.modUIBtns.skinOtherButton or _G.nop
+	aObj.skinStdButton       = aObj.modBtns and aObj.modUIBtns.skinStdButton or _G.nop
+	aObj.addButtonBorder     = aObj.modBtnBs and aObj.modUIBtns.addButtonBorder or _G.nop
+	aObj.clrButtonFromBorder = aObj.modBtnBs and aObj.modUIBtns.clrButtonFromBorder or _G.nop
+	aObj.clrBtnBdr           = (aObj.modBtns or aObj.modBtnBs) and aObj.modUIBtns.clrBtnBdr or _G.nop
+	aObj.setBtnClr           = (aObj.modBtns or aObj.modBtnBs) and aObj.modUIBtns.setBtnClr or _G.nop
+	aObj.skinCheckButton     = aObj.modChkBtns and aObj.modUIBtns.skinCheckButton or _G.nop
+
+	if aObj.modBtnBs then
+		-- hook these to colour container item borders (inc. Bags, Bank, GuildBank, ReagentBank, Professions etc)
+		if aObj.isRtl then
+			local function setItemButtonQuality(button, quality, itemIDOrLink)
+				-- aObj:Debug("SetItemButtonQuality: [%s, %s, %s, %s, %s]", button, quality, itemIDOrLink, button.IconBorder, button.sbb)
+				-- aObj:Debug("SIBQ: [%s, %s]", button.IconBorder:IsShown(), button.IconOverlay:IsShown())
+				-- show Artifact Relic Item border
+				if itemIDOrLink
+				and _G.IsArtifactRelicItem
+				and _G.IsArtifactRelicItem(itemIDOrLink)
+				then
+					button.IconBorder:SetAlpha(1)
+				else
+					button.IconBorder:SetAlpha(0)
+				end
+				aObj:setBtnClr(button, quality)
+			end
+			aObj:SecureHook("SetItemButtonQuality", function(button, quality, itemIDOrLink, _, _)
+				setItemButtonQuality(button, quality, itemIDOrLink)
+			end)
+			aObj:SecureHook(_G.ItemButtonMixin, "SetItemButtonQuality", function(button, quality, itemIDOrLink, _, _)
+				setItemButtonQuality(button, quality, itemIDOrLink)
+			end)
+			aObj:SecureHook(_G.CircularGiantItemButtonMixin, "SetItemButtonQuality", function(button, quality, _, _, _)
+				setItemButtonQuality(button, quality)
+			end)
+			aObj:SecureHook(_G.ItemButtonMixin, "SetItemButtonBorderVertexColor", function(button, r, g, b)
+				-- aObj:Debug("IBM SetItemButtonBorderVertexColor: [%s, %s, %s, %s]", btn, r ,g, b)
+				if button.sbb
+				and r
+				then
+					button.sbb:SetBackdropBorderColor(r, g, b)
+				end
+			end)
+			aObj:SecureHook(_G.ItemButtonMixin, "UpdateCraftedProfessionsQualityShown", function(button)
+				if not button.ProfessionQualityOverlay then
+					return
+				end
+				if button.sbb then
+					if button.ProfessionQualityOverlay then
+						button.ProfessionQualityOverlay:SetParent(button.sbb)
+					end
+				end
+			end)
+		else
+			aObj:SecureHook("SetItemButtonQuality", function(button, quality, _, _)
+				-- aObj:Debug("SetItemButtonQuality: [%s, %s]", button, quality)
+				button.IconBorder:SetAlpha(0)
+				-- N.B. a table is returned from EquipmentFlyout
+				aObj:setBtnClr(button, _G.type(quality) ~= "table" and quality or nil)
+			end)
+			-- table to hold button objects to ignore, e.g. ContainerFrame items
+			aObj.btnIgnore = {}
+			-- hook this to colour buttons e.g. TradeSkill reagents
+			aObj:SecureHook("SetItemButtonTextureVertexColor", function(button, r, g, b)
+				-- aObj:Debug("SetItemButtonTextureVertexColor: [%s, %s, %s, %s]", button, r, g, b)
+				if _G.tContains(aObj.btnIgnore, button) then
+					return
+				end
+				if button.sbb
+				and r
+				then
+					button.sbb:SetBackdropBorderColor(r, g, b)
+				end
+			end)
+		end
+	end
 
 	-- bypass the Item Quality Border Texture changes if the specified addons aren't loaded
 	if not _G.C_AddOns.IsAddOnLoaded("AdiBags")
