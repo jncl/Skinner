@@ -141,7 +141,7 @@ aObj.SetupClassic_UIFrames = function()
 		end
 
 		if self.prdb.MainMenuBar.skin then
-			local skinABBtn, skinMultiBarBtns
+			local skinABBtn, skinMultiBarBtns = _G.nop, _G.nop
 			if self.modBtnBs then
 				function skinABBtn(btn)
 					btn.Border:SetAlpha(0) -- texture changed in blizzard code
