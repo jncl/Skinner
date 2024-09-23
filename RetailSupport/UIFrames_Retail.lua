@@ -2256,15 +2256,15 @@ aObj.SetupRetail_UIFrames = function()
 		end
 
 		if self.prdb.MainMenuBar.skin then
-			local skinABBtn, skinMultiBarBtns = _G.nop, _G.nop
+			local skinActionBtns, skinMultiBarBtns = _G.nop, _G.nop
 			if self.modBtnBs then
-				function skinABBtn(btn)
+				function skinActionBtns(btn)
 					btn.Border:SetAlpha(0) -- texture changed in blizzard code
 					btn.SlotBackground:SetTexture(nil)
 					btn.SlotArt:SetTexture(nil)
 					btn.FlyoutBorderShadow:SetTexture(nil)
 					btn.NormalTexture:SetTexture(nil)
-					if aObj.prdb.MainMenuBar.actbtns then
+					if aObj:canSkinActionBtns() then
 						aObj:addButtonBorder{obj=btn, fType=ftype, sabt=true, ofs=3}
 					end
 				end
@@ -2272,7 +2272,7 @@ aObj.SetupRetail_UIFrames = function()
 					local bName
 					for i = 1, _G.NUM_MULTIBAR_BUTTONS do
 						bName = "MultiBar" .. type .. "Button" .. i
-						skinABBtn(_G[bName])
+						skinActionBtns(_G[bName])
 					end
 				end
 			end
@@ -2390,13 +2390,14 @@ aObj.SetupRetail_UIFrames = function()
 		end
 
 		if self.prdb.MainMenuBar.skin then
-			local function skinActionBtns(frame)
-				if aObj.modBtnBs then
+			local skinActionBtns = _G.nop
+			if self.modBtnBs then
+				function skinActionBtns(frame)
 					for _, btn in _G.pairs(frame.actionButtons) do
 						btn.SlotBackground:SetTexture(nil)
 						btn.SlotArt:SetTexture(nil)
 						btn.Border:SetTexture(nil)
-						if aObj.prdb.MainMenuBar.actbtns then
+						if aObj:canSkinActionBtns() then
 							aObj:addButtonBorder{obj=btn, fType=ftype, abt=true, sft=true, ofs=3}
 						end
 					end

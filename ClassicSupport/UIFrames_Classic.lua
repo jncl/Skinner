@@ -135,6 +135,11 @@ aObj.SetupClassic_UIFrames = function()
 		if self.initialized.MainMenuBar then return end
 		self.initialized.MainMenuBar = true
 
+		-- this is done here as other AddOns may require it to be skinned
+		if self.modBtnBs then
+			self:addButtonBorder{obj=_G.MainMenuBarVehicleLeaveButton}
+		end
+
 		if _G.C_AddOns.IsAddOnLoaded("Dominos") then
 			self.blizzFrames[ftype].MainMenuBar = nil
 			return
@@ -147,8 +152,10 @@ aObj.SetupClassic_UIFrames = function()
 					btn.Border:SetAlpha(0) -- texture changed in blizzard code
 					btn.FlyoutBorder:SetTexture(nil)
 					btn.FlyoutBorderShadow:SetTexture(nil)
-					aObj:addButtonBorder{obj=btn, fType=ftype, sabt=true, ofs=3}
-					_G[btn:GetName() .. "NormalTexture"]:SetTexture(nil)
+					if aObj:canSkinActionBtns() then
+						_G[btn:GetName() .. "NormalTexture"]:SetTexture(nil)
+						aObj:addButtonBorder{obj=btn, fType=ftype, sabt=true, ofs=3}
+					end
 				end
 				function skinMultiBarBtns(type)
 					local bName
@@ -190,6 +197,7 @@ aObj.SetupClassic_UIFrames = function()
 				self:Unhook(this, "OnShow")
 			end)
 			self:checkShown(_G.MainMenuBar)
+
 			if self.modBtnBs then
 				skinMultiBarBtns("Right")
 				skinMultiBarBtns("Left")
@@ -206,11 +214,6 @@ aObj.SetupClassic_UIFrames = function()
 				end
 				self:addButtonBorder{obj=_G.KeyRingButton, ofs=2}
 			end
-		end
-
-		-- this is done here as other AddOns may require it to be skinned
-		if self.modBtnBs then
-			self:addButtonBorder{obj=_G.MainMenuBarVehicleLeaveButton}
 		end
 
 	end
@@ -238,13 +241,13 @@ aObj.SetupClassic_UIFrames = function()
 			self:checkShown(_G.StanceBarFrame)
 			-- TODO: change button references when PetActionButtonTemplate & ActionButtonTemplate are fixed
 			self:SecureHookScript(_G.PetActionBarFrame, "OnShow", function(this)
-				self:keepFontStrings(_G.PetActionBarFrame)
+				self:keepFontStrings(this)
 				if self.modBtnBs then
 					local bName
 					for i = 1, _G.NUM_PET_ACTION_SLOTS do
 						bName = "PetActionButton" .. i
-						self:addButtonBorder{obj=_G[bName], fType=ftype, abt=true, sft=true, reParent={_G[bName .. "AutoCastable"], _G[bName .. "Shine"]}, ofs=3, x2=2}
 						_G[bName .. "NormalTexture2"]:SetTexture(nil)
+						self:addButtonBorder{obj=_G[bName], fType=ftype, abt=true, sft=true, reParent={_G[bName .. "AutoCastable"], _G[bName .. "Shine"]}, ofs=3, x2=2}
 					end
 				end
 

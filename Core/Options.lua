@@ -1104,13 +1104,14 @@ aObj.SetupOptions = function(self)
 							name = self.L["Glaze Status Bar"],
 							desc = _G.strjoin(" ", self.L["Toggle the glazing of the"], self.L["Status Bar"])
 						},
-						actbtns = self.isRtl and {
+						actbtns = {
+							hidden = self:canSkinActionBtns(),
 							type = "toggle",
 							order = 3,
 							width = "double",
 							name = _G.strjoin(" ", self.L["Skin"], self.L["Action Buttons"]),
 							desc = _G.strjoin(" ", self.L["Toggle the skinning of"], self.L["the"], self.L["Action Buttons"])
-						} or nil,
+						},
 					},
 				},
 				Minimap = {

@@ -236,6 +236,12 @@ function aObj:canSkin(callingFunc, opts, dontCheckCombat)
 
 end
 
+function aObj:canSkinActionBtns()
+
+	return self.isRtl and false or true
+
+end
+
 function aObj:capitStr(str)
 
 	return str:sub(1,1):upper() .. str:sub(2):lower()

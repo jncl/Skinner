@@ -2720,7 +2720,7 @@ if not aObj.isClscERA then
 				self:addButtonBorder{obj=this.PitchUpButton, clr="sepia"}
 				self:addButtonBorder{obj=this.PitchDownButton, clr="sepia"}
 				self:addButtonBorder{obj=this.LeaveButton, clr="sepia"}
-				if aObj.prdb.MainMenuBar.actbtns then
+				if self:canSkinActionBtns() then
 					local MAX_ALT_SPELLBUTTONS = 6
 					for i = 1, MAX_ALT_SPELLBUTTONS do
 						self:addButtonBorder{obj=this["SpellButton" .. i], sabt=true}
