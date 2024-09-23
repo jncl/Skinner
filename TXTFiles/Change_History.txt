@@ -1,3 +1,19 @@
+beta11.56647.2
+Jncl:
+	Updated ToDo.txt files
+	Updated Change_History.txt
+	Updated Baganator skin, closes #169
+	Updated FlightMap skin, closes #168
+	Updated BackdropColour code
+	Updated comment lines
+	Updated Retail MainMenuBar skin
+	Moved UIButton module setup code
+	Updated NSF frame code
+	Removed redundant code
+	Don't remove callbacks
+	Initialize local functions
+	Replaced internal function with external Blizzard function
+
 beta11.56647.1
 Jncl:
 	Updated Change_History.txt
