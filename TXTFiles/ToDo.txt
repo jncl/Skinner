@@ -21,6 +21,11 @@ ToDos
 
 ≈		O	Refactor frame children loops to use Utility function 'scanChildren' via callback
 
-#168 √	I 	Attempting to rehook already active hook OnShow, FlightMap
+#170 √	I 	Missing UIButtons methods
 
-#169 √	I 	Baganator, missing button borders on Specialist bags
+#171 ?	I 	Viewport causes computer to freeze
+	 x	I 	ActionBars not skinned
+
+#172 √	I 	UIButtons error
+
+#173 √	S 	BetterCharacterPanel
