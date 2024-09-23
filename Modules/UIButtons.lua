@@ -1206,25 +1206,16 @@ function module:OnInitialize()
 		aObj.db.profile.Buttons = nil
 	end
 
-	 -- disable ourself if required
-	if not db.UIButtons
-	and not db.ButtonBorders
-	and not db.CheckButtons
-	and not db.FrameControls
-	then
-		self:Disable()
-	end
-
 end
 
 function module:OnEnable()
 
 	-- add support for UIButton skinning
 	aObj.modUIBtns  		 = module
-	aObj.modBtns    		 = db.UIButtons
-	aObj.modBtnBs   		 = db.ButtonBorders
-	aObj.modChkBtns 		 = db.CheckButtons
-	aObj.modFCBtns  		 = db.FrameControls
+	aObj.modBtns    		 = aObj:makeBoolean(db.UIButtons)
+	aObj.modBtnBs   		 = aObj:makeBoolean(db.ButtonBorders)
+	aObj.modChkBtns 		 = aObj:makeBoolean(db.CheckButtons)
+	aObj.modFCBtns  		 = aObj:makeBoolean(db.FrameControls)
 	aObj.fontDP              = aObj.modBtns and aObj.modUIBtns.fontDP
 	aObj.fontDS              = aObj.modBtns and aObj.modUIBtns.fontDS
 	aObj.fontP               = aObj.modBtns and aObj.modUIBtns.fontP
@@ -1252,6 +1243,15 @@ function module:OnEnable()
 	aObj.clrBtnBdr           = (aObj.modBtns or aObj.modBtnBs) and aObj.modUIBtns.clrBtnBdr or _G.nop
 	aObj.setBtnClr           = (aObj.modBtns or aObj.modBtnBs) and aObj.modUIBtns.setBtnClr or _G.nop
 	aObj.skinCheckButton     = aObj.modChkBtns and aObj.modUIBtns.skinCheckButton or _G.nop
+
+	 -- disable ourself if required
+	if not db.UIButtons
+	and not db.ButtonBorders
+	and not db.CheckButtons
+	and not db.FrameControls
+	then
+		self:Disable()
+	end
 
 	if aObj.modBtnBs then
 		-- hook these to colour container item borders (inc. Bags, Bank, GuildBank, ReagentBank, Professions etc)
@@ -1320,6 +1320,7 @@ function module:OnEnable()
 			end)
 		end
 	end
+
 
 	-- bypass the Item Quality Border Texture changes if the specified addons aren't loaded
 	if not _G.C_AddOns.IsAddOnLoaded("AdiBags")

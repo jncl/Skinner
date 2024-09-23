@@ -138,6 +138,12 @@ function aObj:add2Table(tab, val)
 
 end
 
+function aObj:makeBoolean(var)
+
+	return not not var
+
+end
+
 function aObj:setupOptions(optNames, optIgnore, preLoadFunc, postLoadFunc)
 	local _
 	local db = self.db.profile
