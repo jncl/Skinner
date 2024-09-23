@@ -1409,10 +1409,10 @@ aObj.SetupRetail_PlayerFrames = function()
 								spell.SubName:SetTextColor(aObj.BT:GetRGB())
 								spell.RequiredLevel:SetTextColor(aObj.BT:GetRGB())
 								btn = spell.Button
-								btn.Border:SetTexture(nil)
+								aObj:nilTexture(btn.Border, true) -- texture changed in code
 								btn.BorderSheen:SetTexture(nil)
 								if aObj.modBtnBs then
-									aObj:addButtonBorder{obj=btn, fType=ftype, relTo=btn.Icon, reParent={btn.ActionBarHighlight, btn.FlyoutArrow, btn.AutoCastOverlay}}
+									aObj:addButtonBorder{obj=btn, fType=ftype, relTo=btn.Icon, reParent={btn.ActionBarHighlight, btn.FlyoutArrow, btn.AutoCastOverlay}, ofs=3}
 									btn.sbb:SetAlpha(btn.isUnlearned and btn.unlearnedIconAlpha or 1)
 								end
 							end
@@ -1426,7 +1426,7 @@ aObj.SetupRetail_PlayerFrames = function()
 				self:skinObject("tabs", {obj=fObj.CategoryTabSystem,  pool=true, fType=ftype, ignoreSize=true, track=false})
 				self:skinObject("editbox", {obj=fObj.SearchBox, fType=ftype, si=true, y1=-4, y2=4})
 				skinSearchPreviewContainer(fObj.SearchPreviewContainer)
-				self:skinObject("frame", {obj=fObj.PagedSpellsFrame, fType=ftype, kfs=true, fb=true, ofs=1, y1=8, y2=-4})
+				self:skinObject("frame", {obj=fObj.PagedSpellsFrame, fType=ftype, kfs=true, fb=true, x1=0, y1=8, x2=3, y2=-4})
 				skinSpells()
 				fObj.PagedSpellsFrame:RegisterCallback(_G.PagedContentFrameBaseMixin.Event.OnUpdate, skinSpells, aObj)
 				self:skinPagingControls(fObj.PagedSpellsFrame.PagingControls)
