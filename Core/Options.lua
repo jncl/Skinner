@@ -1411,7 +1411,13 @@ aObj.SetupOptions = function(self)
 			aObj.ACR:NotifyChange("Disabled Skins")
 		end
 	end
-	self:setupOptions({"Backdrop", "Background", "Colours", "Gradient", "Modules", "NPC Frames", "Player Frames", "UI Frames", "Disabled Skins"}, {"Backdrop", "Modules", "Disabled Skins"}, preLoadFunc, postLoadFunc)
+	-- create array of option keys
+	local optKeys = _G.GetKeysArray(self.optTables)
+	-- remove General entry
+	_G.tDeleteItem(optKeys, "General")
+	-- sort into alpha order
+	_G.table.sort(optKeys)
+	self:setupOptions(optKeys, {"Backdrop", "Modules", "Disabled Skins"}, preLoadFunc, postLoadFunc)
 
 	local function chatCommand(input)
 		aObj.callbacks:Fire("Options_Selected")
