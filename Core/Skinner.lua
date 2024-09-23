@@ -45,8 +45,8 @@ function aObj:OnInitialize()
 
 	-- disable functions/modules which cause ADDON_ACTION_BLOCKED/ADDON_ACTION_FORBIDDEN errors (Dragonflight onwards changes)
 	if self.isRtl then
-		self.prdb.MainMenuBar.actbtns     = false
-		self.prdb.Nameplates              = false
+		self.prdb.MainMenuBar.actbtns = false
+		self.prdb.Nameplates          = false
 		self:DisableModule("UnitFrames")
 	end
 
