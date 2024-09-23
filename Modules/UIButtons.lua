@@ -179,7 +179,7 @@ function module:chgHLTex(obj, hTex)
 				end
 			end
 			if clr then
-				r, g, b, _ = self:getColourByName(clr)
+				r, g, b, _ = aObj:getColourByName(clr)
 				hTex:SetColorTexture(r, g, b, 0.25)
 				-- inset colour
 				if obj.sb then
