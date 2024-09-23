@@ -2,7 +2,7 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("Bartender4") then return end
 local _G = _G
 
-aObj.addonsToSkin.Bartender4 = function(self) -- v 4.14.9
+aObj.addonsToSkin.Bartender4 = function(self) -- v 4.15.0
 
 	self:SecureHook(_G.Bartender4, "ShowUnlockDialog", function(this)
 		self:skinObject("frame", {obj=this.unlock_dialog, kfs=true, y1=6})
@@ -17,7 +17,8 @@ aObj.addonsToSkin.Bartender4 = function(self) -- v 4.14.9
 	end)
 
 	local mod
-	if not self:isAddOnLoaded("Masque") then
+	if not _G.C_AddOns.IsAddOnLoaded("Masque")
+		then
 		if self.modBtns then
 			mod = _G.Bartender4:GetModule("ActionBars", true)
 			if mod then
