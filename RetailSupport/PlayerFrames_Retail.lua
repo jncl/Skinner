@@ -795,16 +795,27 @@ aObj.SetupRetail_PlayerFrames = function()
 			_G.InspectModelFrame:DisableDrawLayer("BORDER")
 			_G.InspectModelFrame:DisableDrawLayer("OVERLAY")
 			_G.InspectModelFrame.controlFrame:DisableDrawLayer("BACKGROUND")
-			for _, btn in _G.ipairs{_G.InspectPaperDollItemsFrame:GetChildren()} do
-				btn:DisableDrawLayer("BACKGROUND")
-				if self.modBtnBs then
-					if btn ~= _G.InspectPaperDollItemsFrame.InspectTalents then
-						self:addButtonBorder{obj=btn, fType=ftype, ibt=true--[[--]]}
-					else
-						self:skinStdButton{obj=btn, fType=ftype, sechk=true}
+			self.RegisterCallback("IPDF", "IPDIF_GetChildren", function(_, child, key)
+				if self:hasTextInName(child, "Slot")
+				and self.modBtnBs
+				then
+					child:DisableDrawLayer("BACKGROUND")
+					self:addButtonBorder{obj=child, fType=ftype, ibt=true}
+				elseif self:hasTextInDebugNameRE(child, "InspectTalents$")
+				and self.modBtns
+				then
+					self:skinStdButton{obj=child, fType=ftype, sechk=true}
+					if _G.C_AddOns.IsAddOnLoaded("BetterCharacterPanel") then
+						child:SetSize(102, 24)
+						child.Text:SetPoint("CENTER", 0, 0)
+						self:moveObject{obj=child, x=-15, y=35}
+						child.LeftHighlight:SetTexture(nil)
+						child.RightHighlight:SetTexture(nil)
+						child.MiddleHighlight:SetTexture(nil)
 					end
 				end
-			end
+			end)
+			self:scanChildren{obj=_G.InspectPaperDollItemsFrame, cbstr="IPDIF_GetChildren"}
 			if self.modBtns then
 				self:skinStdButton{obj=this.ViewButton}
 			end
