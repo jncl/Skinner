@@ -718,12 +718,11 @@ local function skinFrame(tbl)
 		aObj:SecureHook(tbl.obj, "Show", function(this) this.sf:Show() end)
 		aObj:SecureHook(tbl.obj, "Hide", function(this) this.sf:Hide() end)
 	end
-	-- change border colour when disabled/enabled
+	-- add hook to change border colour when disabled/enabled
 	if tbl.sechk then
 		-- save colour info on object
 		tbl.obj.sf.clr = tbl.clr
 		tbl.obj.sf.ca = tbl.ca
-		aObj:clrFrameBdr(tbl.obj, tbl.clr, tbl.ca)
 		aObj:SecureHook(tbl.obj, "SetEnabled", function(fObj)
 			aObj:clrFrameBdr(fObj, fObj.sf.clr, fObj.sf.ca)
 		end)
