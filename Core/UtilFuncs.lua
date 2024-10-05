@@ -1155,7 +1155,7 @@ function aObj:scanChildren(opts)
 			aObj.callbacks:Fire(opts.cbstr, child, idx)
 		end
 	end
-	-- remove all callbacks for this event
+	-- remove callback
 	aObj.callbacks.events[opts.cbstr] = nil
 
 end
