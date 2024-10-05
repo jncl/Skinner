@@ -1,3 +1,20 @@
+beta11.56708.1
+Jncl:
+	Updated ToDo files
+	Updated Change_History.txt
+	Updated version numbers
+	Code layout changed
+	Updated Retail PlayerChoiceFrame
+	Updated Retail SpellBookFrame
+	Updated InspectUI, closes #173"
+	Updated UIButtons function, closes #172
+	Updated UIButtons code, closes #170
+	Updated ActionButton checks and options in both Classic & Retail
+	Bugfix for skinFrame NSF
+	Updated optTables setupOptions code
+	Revert change for #156 & #164
+	Updated Bartender4 skin
+
 beta11.56647.2
 Jncl:
 	Updated ToDo.txt files
