@@ -2773,7 +2773,6 @@ if not aObj.isClscERA then
 					self:skinObject("scrollbar", {obj=fObj.ScrollBar, fType=ftype})
 					self:keepFontStrings(fObj.ThemeContainer)
 					local function skinActivities(...)
-						-- aObj:Debug("skinActivities: [%s, %s, %s, %s]", ...)
 						local _, element
 						if _G.select("#", ...) == 2 then
 							element, _ = ...
