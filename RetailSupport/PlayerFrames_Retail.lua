@@ -704,6 +704,7 @@ aObj.SetupRetail_PlayerFrames = function()
 
 				self:Unhook(fObj, "OnShow")
 			end)
+			self:checkShown(this.orderFrame)
 
 			self:SecureHookScript(this.bankTabFrame, "OnShow", function(fObj)
 				self:skinObject("ddbutton", {obj=fObj.dropdown, fType=ftype})
