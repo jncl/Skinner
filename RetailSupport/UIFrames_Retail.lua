@@ -3501,38 +3501,40 @@ aObj.SetupRetail_UIFrames = function()
 		self.initialized.SpellFlyout = true
 
 		local offsets = {
-			["RIGHT"] = {x1 = 0},
+			["RIGHT"] = {x1 = -6},
 			["LEFT"] = {x2 = -1},
 			["UP"] = {y2 = -1},
 			["DOWN"] = {y1 = -1},
 		}
+		local defOfs, ofs = 6
 		local function posnSkin(frame)
-			local ofs = offsets[frame.direction]
-			frame.Background.sf:ClearAllPoints()
-			frame.Background.sf:SetPoint("TOPLEFT", frame.Background, "TOPLEFT", ofs.x1 or -8, ofs.y1 or 8)
-			frame.Background.sf:SetPoint("BOTTOMRIGHT", frame.Background, "BOTTOMRIGHT", ofs.x2 or 8, ofs.y2 or -8)
+			frame:SetFrameStrata(frame:GetParent():GetFrameStrata())
+			ofs = offsets[frame.direction]
+			frame.sf:ClearAllPoints()
+			frame.sf:SetPoint("TOPLEFT", frame, "TOPLEFT", ofs.x1 or defOfs * -1, ofs.y1 or defOfs)
+			frame.sf:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", ofs.x2 or defOfs, ofs.y2 or defOfs * -1)
 		end
-		local skinBtns
-		self:SecureHookScript(_G.SpellFlyout, "OnShow", function(this)
-			self:skinObject("frame", {obj=this.Background, fType=ftype, kfs=true, sft=true})
-			posnSkin(this)
-			if self.modBtnBs then
-				function skinBtns()
-					local i = 1
-					local button = _G["SpellFlyoutButton" .. i]
-					while (button and button:IsShown()) do
-						aObj:addButtonBorder{obj=button, fType=ftype, abt=true, sft=true}
-						i = i + 1
-						button = _G["SpellFlyoutButton" .. i]
-					end
+		local skinBtns = _G.nop
+		if self.modBtnBs then
+			local i, button
+			function skinBtns()
+				i = 1
+				button = _G["SpellFlyoutButton" .. i]
+				while (button and button:IsShown()) do
+					aObj:addButtonBorder{obj=button, fType=ftype, abt=true, sft=true}
+					i = i + 1
+					button = _G["SpellFlyoutButton" .. i]
 				end
-				skinBtns()
 			end
+		end
+		self:SecureHookScript(_G.SpellFlyout, "OnShow", function(this)
+			self:keepFontStrings(this.Background)
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, sft=true, fb=true})
+			posnSkin(this)
+			skinBtns()
 			self:SecureHook(this, "Toggle", function(fObj, _)
 				posnSkin(fObj)
-				if self.modBtnBs then
-					skinBtns()
-				end
+				skinBtns()
 			end)
 
 			self:Unhook(this, "OnShow")
