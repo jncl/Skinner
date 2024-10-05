@@ -3786,36 +3786,37 @@ aObj.SetupRetail_UIFrames = function()
 
 	end
 
-	-- accessed via the Great Vault in Oribos & Valdrakken
+	-- accessed via the Great Vault in Oribos/Valdrakken & Dornogal
 	aObj.blizzLoDFrames[ftype].WeeklyRewards = function(self)
 		if not self.prdb.WeeklyRewards or self.initialized.WeeklyRewards then return end
 		self.initialized.WeeklyRewards = true
 
 		self:SecureHookScript(_G.WeeklyRewardsFrame, "OnShow", function(this)
 			self:keepFontStrings(this.BorderContainer)
-			-- .Blackout
 			self:skinObject("frame", {obj=this.HeaderFrame, fType=ftype, kfs=true, fb=true, ofs=1, clr="topaz"})
 			for _, frame in _G.pairs{"RaidFrame", "MythicFrame", "PVPFrame", "WorldFrame"} do
 				this[frame].Border:SetTexture(nil)
 				self:skinObject("frame", {obj=this[frame], fType=ftype, fb=true, ofs=14, clr="topaz"})
 			end
-			-- .ModelScene
-			for _, frame in _G.pairs(this.Activities) do -- .ConcessionFrame contents
-				self:skinObject("frame", {obj=frame, fType=ftype, kfs=true, fb=true, ofs=-1, x1=0, y1=0, clr="grey"})
-				-- TODO: change border colour when selected or has reward available
-				frame.Background:SetAlpha(1)
-				-- .RewardGenerated
-				-- .ItemFrame
-				-- .UnselectedFrame
-				-- .SelectionGlow
-				-- .ConcessionFrame entry has this frame
-					-- .RewardsFrame
-
+			if this.Overlay then
+				self:skinObject("frame", {obj=this.Overlay, fType=ftype, kfs=true, rns=true})
 			end
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true, cbns=true, ofs=-5, clr="sepia"})
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true, cbns=true, ofs=-5, y2=-5, clr="sepia"})
 			if self.modBtns then
-				self:skinStdButton{obj=this.SelectRewardButton}
+				self:skinStdButton{obj=this.SelectRewardButton, sechk=true}
 			end
+			self:SecureHook(this, "Refresh", function(fObj, _)
+				for _, frame in _G.pairs(fObj.Activities) do -- .ConcessionFrame contents
+					if frame.ItemFrame then
+						frame.ItemFrame:DisableDrawLayer("BORDER")
+						if self.modBtnBs then
+							self:addButtonBorder{obj=frame.ItemFrame, fType=ftype, relTo=frame.ItemFrame.Icon, clr={_G.EPIC_PURPLE_COLOR:GetRGBA()}}
+						end
+					end
+					self:skinObject("frame", {obj=frame, fType=ftype, kfs=true, fb=true, ofs=-1, x1=0, y1=0})
+					self:clrBBC(frame.sf, frame.unlocked or frame.hasRewards and "sepia" or "grey")
+				end
+			end)
 
 			self:Unhook(this, "OnShow")
 		end)
