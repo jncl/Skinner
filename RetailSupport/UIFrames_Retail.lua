@@ -2286,7 +2286,7 @@ aObj.SetupRetail_UIFrames = function()
 				this.EndCaps:DisableDrawLayer("OVERLAY")
 				if self.modBtnBs then
 					for i = 1, _G.NUM_ACTIONBAR_BUTTONS do
-						skinABBtn(_G["ActionButton" .. i])
+						skinActionBtns(_G["ActionButton" .. i])
 					end
 					skinMultiBarBtns("BottomLeft")
 					skinMultiBarBtns("BottomRight")
