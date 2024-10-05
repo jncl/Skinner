@@ -2460,11 +2460,13 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 		end
 	else
 		_G.MiniMapMailIcon:SetPoint("CENTER", _G.MinimapCluster.MailFrame)
-		-- ExpansionLandingPageMinimapButton
 		_G.ExpansionLandingPageMinimapButton.AlertBG:SetTexture(nil)
 		local anchor = _G.AnchorUtil.CreateAnchor("TOPLEFT", "MinimapBackdrop", "TOPLEFT", -10, -200)
 		anchor:SetPoint(_G.ExpansionLandingPageMinimapButton, true)
 		self:SecureHook(_G.ExpansionLandingPageMinimapButton, "UpdateIconForGarrison", function(this)
+			anchor:SetPoint(this, true)
+		end)
+		self:SecureHook(_G.ExpansionLandingPageMinimapButton, "SetLandingPageIconOffset", function(this, _)
 			anchor:SetPoint(this, true)
 		end)
 	end
