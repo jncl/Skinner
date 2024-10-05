@@ -565,16 +565,9 @@ aObj.SetupRetail_UIFrames = function()
 			_G.ChallengesFrameInset.Bg:SetTexture(nil)
 			self:removeNineSlice(_G.ChallengesFrameInset.NineSlice)
 			this.WeeklyInfo.Child:DisableDrawLayer("BACKGROUND")
-			if self.modBtnBs then
-				for _, dungeon in _G.ipairs(this.DungeonIcons) do
-					self:addButtonBorder{obj=dungeon, fType=ftype, ofs=3, clr="disabled"}
-					self:SecureHook(dungeon, "SetUp", function(bObj, mapInfo, _)
-						if mapInfo.level > 0 then
-							bObj.sbb:SetBackdropBorderColor(bObj.HighestLevel:GetTextColor())
-						else
-							self:clrBtnBdr(bObj, "disabled")
-						end
-					end)
+			if this.WeeklyInfo.Child.AffixesContainer.Affixes then
+				for _, affix in _G.pairs(this.WeeklyInfo.Child.AffixesContainer.Affixes) do
+					affix.Border:SetTexture(nil)
 				end
 			end
 			local scnf = this.SeasonChangeNoticeFrame
@@ -587,6 +580,18 @@ aObj.SetupRetail_UIFrames = function()
 			self:RaiseFrameLevelByFour(scnf)
 			if self.modBtns then
 				self:skinStdButton{obj=scnf.Leave}
+			end
+			if self.modBtnBs then
+				for _, dungeon in _G.ipairs(this.DungeonIcons) do
+					self:addButtonBorder{obj=dungeon, fType=ftype, ofs=3, clr="disabled"}
+					self:SecureHook(dungeon, "SetUp", function(bObj, mapInfo, _)
+						if mapInfo.level > 0 then
+							bObj.sbb:SetBackdropBorderColor(bObj.HighestLevel:GetTextColor())
+						else
+							self:clrBtnBdr(bObj, "disabled")
+						end
+					end)
+				end
 			end
 
 			self:Unhook(this, "OnShow")
