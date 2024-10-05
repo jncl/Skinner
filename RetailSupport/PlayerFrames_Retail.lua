@@ -2209,10 +2209,9 @@ aObj.SetupRetail_PlayerFrames = function()
 			aObj:removeInset(frame.Inset)
 			frame.ConquestBar:DisableDrawLayer("BORDER")
 			aObj:skinObject("statusbar", {obj=frame.ConquestBar, fi=0, bg=frame.ConquestBar.Background})
-			local btn = frame.ConquestBar.Reward
-			btn.Ring:SetTexture(nil)
+			frame.ConquestBar.Reward.Ring:SetTexture(nil)
 			if aObj.modBtnBs then
-				aObj:addButtonBorder{obj=btn, relTo=btn.Icon, reParent={btn.CheckMark}, clr="gold"}
+				aObj:addButtonBorder{obj=frame.ConquestBar.Reward, relTo=frame.ConquestBar.Reward.Icon, reParent={frame.ConquestBar.Reward.CheckMark}, clr="gold"}
 			end
 			if aObj.modChkBtns then
 				aObj:skinCheckButton{obj=frame.HealerIcon.checkButton}
