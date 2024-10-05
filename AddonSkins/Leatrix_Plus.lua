@@ -54,8 +54,8 @@ aObj.addonsToSkin.Leatrix_Plus = function(self) -- v 10.2.26/1.15.30/4.0.05
 	}
 
 	self:SecureHookScript(_G.LeaPlusGlobalPanel, "OnShow", function(this)
-		local function skinKids(frame)
-			for _, child in _G.ipairs{frame:GetChildren()} do
+		local function skinKids(frame, panel)
+			aObj.RegisterCallback("LeatrixPlus", frame:GetDebugName() .. "_GetChildren", function(_, child, key)
 				if child:IsObjectType("Slider") then
 					aObj:skinObject("slider", {obj=child})
 				elseif child:IsObjectType("ScrollFrame") then
@@ -75,26 +75,18 @@ aObj.addonsToSkin.Leatrix_Plus = function(self) -- v 10.2.26/1.15.30/4.0.05
 					if not child.t then
 						aObj:skinStdButton{obj=child}
 					end
-				elseif child:IsObjectType("Frame")
-				and child:GetNumChildren() == 2
-				and aObj:getChild(child, 1):GetNumRegions() == 5
-				then
-					local dd = aObj:getChild(child, 1) -- dropdown frame
-					dd.Left = aObj:getRegion(dd, 1)
-					dd.Right = aObj:getRegion(dd, 2)
-					dd.Button = aObj:getChild(dd, 1)
-					aObj:skinObject("dropdown", {obj=dd})
-					aObj:skinObject("frame", {obj=aObj:getChild(child, 2), kfs=true, ofs=0}) -- dropdown list
 				-- TODO: skin DropdownButtons
 				elseif child:IsObjectType("Frame")
 				and child.scroll -- MuteCustomSounds
 				then
+					aObj:skinObject("scrollbar", {obj=child.scroll.ScrollBar})
 					aObj:skinObject("frame", {obj=child, rb=true, fb=true, ofs=0})
-					skinKids(child)
 				end
-			end
+			end)
+			aObj:scanChildren{obj=frame, cbstr=frame:GetDebugName() .. "_GetChildren"}
 		end
 		skinKids(this)
+
 		-- LeaPlusScrollFrame
 		this.t:SetTexture(nil)
 		self:skinObject("frame", {obj=this, kfs=true, ofs=-1})
@@ -110,7 +102,7 @@ aObj.addonsToSkin.Leatrix_Plus = function(self) -- v 10.2.26/1.15.30/4.0.05
 		for _, frameRef in _G.pairs(lpPanels) do
 			sideF = _G["LeaPlusGlobalPanel_" .. frameRef]
 			if sideF then
-				skinKids(sideF)
+				skinKids(sideF, frameRef)
 				-- if scrolling
 				if sideF.backFrame then
 					self:removeBackdrop(sideF.backFrame)
@@ -165,6 +157,7 @@ aObj.addonsToSkin.Leatrix_Plus = function(self) -- v 10.2.26/1.15.30/4.0.05
 	then
 		self:skinObject("slider", {obj=_G.LeaPlusGlobalSliderLeaPlusMaxVol})
 	end
+
 	-- Auction Controls (changes in AuctionUI)
 
 	-- Durability status (PaperDollFrame)

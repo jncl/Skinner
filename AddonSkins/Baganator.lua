@@ -248,6 +248,17 @@ aObj.addonsToSkin.Baganator = function(self) -- v 491
 	end)
 
 	self:SecureHookScript(_G.Baganator_SingleViewGuildViewFrame, "OnShow", function(this)
+		self:SecureHook(this, "UpdateForGuild", function(fObj, _, _)
+			for _, view in _G.ipairs(fObj.Layouts) do
+				skinBtns(view)
+			end
+			self:Unhook(this, "UpdateForGuild")
+		end)
+
+		skinSideTabs(this)
+		self:SecureHook(this, "UpdateTabs", function(fObj)
+			skinSideTabs(fObj)
+		end)
 		skinFrame(this, "SVGuild")
 		if self.modBtns then
 			for _, array in _G.pairs{"AllFixedButtons", "LiveButtons"} do
@@ -256,17 +267,7 @@ aObj.addonsToSkin.Baganator = function(self) -- v 491
 				end
 			end
 		end
-		skinSideTabs(this)
-
 		skinViewBtns(this, "SVGuild")
-		for _, view in _G.ipairs(this.Layouts) do
-			skinBtns(view)
-		end
-
-		self:SecureHook(this, "UpdateTabs", function(fObj)
-			skinSideTabs(fObj)
-
-		end)
 
 		self:SecureHookScript(this.LogsFrame, "OnShow", function(fObj)
 			skinFrame(fObj)
