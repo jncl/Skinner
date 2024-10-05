@@ -1072,12 +1072,13 @@ aObj.SetupRetail_UIFrames = function()
 		self.initialized.DelvesDashboardUI = true
 
 		self:SecureHookScript(_G.DelvesDashboardFrame, "OnShow", function(this)
+			this.DashboardBackground:SetPoint("TOPLEFT", this, 0, -20)
 			this.ThresholdBar.BarBorder:SetTexture(nil)
 			self:skinObject("statusbar", {obj=this.ThresholdBar, fi=0, bg=this.ThresholdBar.BarBackground})
-			-- .thresholdFrames
+			this.ThresholdBar.Threshold10.Reward.IconBorder:SetTexture(nil)
 			local bplf = this.ButtonPanelLayoutFrame
-			self:skinObject("frame", {obj=bplf.CompanionConfigButtonPanel, fType=ftype, kfs=true, fb=true, ofs=0, clr="sepia"})
-			self:skinObject("frame", {obj=bplf.GreatVaultButtonPanel, fType=ftype, kfs=true, fb=true, ofs=0, clr=_G.HasActiveSeason and "sepia" or "disabled"})
+			self:skinObject("frame", {obj=bplf.CompanionConfigButtonPanel, fType=ftype, kfs=true, fb=true, ofs=0})
+			self:skinObject("frame", {obj=bplf.GreatVaultButtonPanel, fType=ftype, kfs=true, fb=true, ofs=0})
 			if self.modBtns then
 				self:skinStdButton{obj=bplf.CompanionConfigButtonPanel.CompanionConfigButton, fType=ftype, sechk=true}
 			end
