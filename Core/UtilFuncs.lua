@@ -1534,7 +1534,7 @@ function aObj:SetupCmds()
 		end
 	end
 	local function getObjP(input)
-		-- _G.print("getObjP", input, _G[input], getMouseFocus():GetParent())
+		_G.print("getObjP", input, _G[input], getMouseFocus():GetParent())
 		if not input or input:trim() == "" then
 			return getMouseFocus():GetParent()
 		else
@@ -1549,42 +1549,59 @@ function aObj:SetupCmds()
 			return getObjFromString(input)
 		end
 	end
+	local function showIt(...)
+		aObj:Debug3(...)
+	end
+	local function getRegions(cObj, lvl)
+		for k, reg in _G.ipairs{cObj:GetRegions()} do
+			showIt("[lvl%sr%s : %s : %s : %s : %s : %s]", lvl, k, reg, reg:GetObjectType() or "nil", reg.GetWidth and _G.Round(reg:GetWidth()) or "nil", reg.GetHeight and _G.Round(reg:GetHeight()) or "nil", reg:GetObjectType() == "Texture" and ("%s : %s"):format(reg:GetTexture() or "nil", reg:GetDrawLayer() or "nil") or "nil")
+		end
+	end
+	local function getChildren(frame, lvl, showKids, noDepth)
+		if not showKids then return end
+		if lvl > 1 and noDepth then return end
+
+		self.RegisterCallback("UTFgC", frame:GetDebugName() .. "_getChildren_" .. _G.tostring(lvl), function(_, child, key)
+			showIt("[lvl%sc%s : %s : %s : %s : %s : %s]", lvl, key, child, child.GetWidth and _G.Round(child:GetWidth()) or "nil", child.GetHeight and _G.Round(child:GetHeight()) or "nil", child:GetFrameLevel() or "nil", child:GetFrameStrata() or "nil")
+			local objType = child:GetObjectType()
+			if objType == "Frame"
+			or objType == "Button"
+			or objType == "StatusBar"
+			or objType == "Slider"
+			or objType == "ScrollFrame"
+			then
+				getRegions(child, lvl .. "c" .. key)
+				getChildren(child, lvl + key, showKids, noDepth)
+			end
+		end)
+		self:scanChildren{obj=frame, cbstr=frame:GetDebugName() .. "_getChildren_" .. _G.tostring(lvl), reversed=false}
+
+		-- for k, child in _G.ipairs{frame:GetChildren()} do
+		-- 	showIt("[lvl%sc%s : %s : %s : %s : %s : %s]", lvl, k, child, child.GetWidth and _G.Round(child:GetWidth()) or "nil", child.GetHeight and _G.Round(child:GetHeight()) or "nil", child:GetFrameLevel() or "nil", child:GetFrameStrata() or "nil")
+		-- 	local objType = child:GetObjectType()
+		-- 	if objType == "Frame"
+		-- 	or objType == "Button"
+		-- 	or objType == "StatusBar"
+		-- 	or objType == "Slider"
+		-- 	or objType == "ScrollFrame"
+		-- 	then
+		-- 		getRegions(child, lvl .. "c" .. k)
+		-- 		getChildren(child, lvl + k, showKids, noDepth)
+		-- 	end
+		-- end
+	end
 	local function showInfo(obj, showKids, noDepth)
 		_G.print("showInfo:", obj, showKids, noDepth, obj.IsForbidden and obj:IsForbidden())
 		_G.assert(obj, "Unknown object showInfo\n" .. _G.debugstack(2, 3, 2))
 		if obj.IsForbidden and obj:IsForbidden() then return end
 		showKids = showKids or false
-		local function showIt(...)
-			aObj:Debug3(...)
-		end
-		local function getRegions(cObj, lvl)
-			for k, reg in _G.ipairs{cObj:GetRegions()} do
-				showIt("[lvl%sr%s : %s : %s : %s : %s : %s]", lvl, k, reg, reg:GetObjectType() or "nil", reg.GetWidth and _G.Round(reg:GetWidth()) or "nil", reg.GetHeight and _G.Round(reg:GetHeight()) or "nil", reg:GetObjectType() == "Texture" and ("%s : %s"):format(reg:GetTexture() or "nil", reg:GetDrawLayer() or "nil") or "nil")
-			end
-		end
-		local function getChildren(frame, lvl)
-			if not showKids then return end
-			if lvl > 1 and noDepth then return end
-			for k, child in _G.ipairs{frame:GetChildren()} do
-				local objType = child:GetObjectType()
-				showIt("[lvl%sc%s : %s : %s : %s : %s : %s]", lvl, k, child, child.GetWidth and _G.Round(child:GetWidth()) or "nil", child.GetHeight and _G.Round(child:GetHeight()) or "nil", child:GetFrameLevel() or "nil", child:GetFrameStrata() or "nil")
-				if objType == "Frame"
-				or objType == "Button"
-				or objType == "StatusBar"
-				or objType == "Slider"
-				or objType == "ScrollFrame"
-				then
-					getRegions(child, lvl .. "c" .. k)
-					getChildren(child, lvl + k)
-				end
-			end
-		end
+		noDepth = noDepth or false
 		showIt("%s : %s : %s : %s : %s : %s : %s", obj, _G.Round(obj:GetWidth()) or "nil", _G.Round(obj:GetHeight()) or "nil", obj:GetFrameLevel() or "nil", obj:GetFrameStrata() or "nil", obj:GetNumRegions(), obj:GetNumChildren())
 		showIt("Started Regions")
-		getRegions(obj, 0)
+		getRegions(obj)
 		showIt("Finished Regions")
 		showIt("Started Children")
-		getChildren(obj, 0)
+		getChildren(obj, 0, showKids, noDepth)
 		showIt("Finished Children")
 	end
 
@@ -1620,7 +1637,7 @@ function aObj:SetupCmds()
 	end)
 
 	local loadAddOn = _G.LoadAddOn or _G.C_AddOns.LoadAddOn
-	self:RegisterChatCommand("tad", function(frame) loadAddOn("Blizzard_DebugTools"); _G.TableAttributeDisplay:InspectTable(_G[frame] or _G.getMouseFocus()); _G.TableAttributeDisplay:Show() end)
+	self:RegisterChatCommand("tad", function(frame) loadAddOn("Blizzard_DebugTools"); _G.TableAttributeDisplay:InspectTable(_G[frame] or getMouseFocus()); _G.TableAttributeDisplay:Show() end)
 
 end
 --@end-debug@
