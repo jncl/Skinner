@@ -99,9 +99,7 @@ aObj.SetupClassic_UIFrames = function()
 			self:addButtonBorder{obj=_G.ChatFrameChannelButton, fType=ftype, ofs=1}
 			self:addButtonBorder{obj=_G.ChatFrameMenuButton, fType=ftype, ofs=-2, x1=1}
 			self:addButtonBorder{obj=_G.TextToSpeechButton, fType=ftype, ofs=1}
-			if self.isClsc then
-				self:addButtonBorder{obj=_G.FriendsMicroButton, fType=ftype, x1=1, x2=-2}
-			end
+			self:addButtonBorder{obj=_G.FriendsMicroButton, fType=ftype, x1=1, x2=-2}
 		end
 
 	end
@@ -683,18 +681,10 @@ aObj.SetupClassic_UIFrames = function()
 				end
 			end
 
-			if aObj.isClscERAPTR
-			or aObj.isClscPTR
-			then
-				self:skinObject("ddbutton", {obj=this.ContinentDropdown, fType=ftype})
-				self:skinObject("ddbutton", {obj=this.ZoneDropdown, fType=ftype})
-				self:skinObject("ddbutton", {obj=this.MinimapDropdown, fType=ftype})
-				self:skinObject("ddbutton", {obj=this.WorldMapLevelDropDown, fType=ftype})
-			else
-				self:skinObject("dropdown", {obj=_G.WorldMapContinentDropDown, fType=ftype})
-				self:skinObject("dropdown", {obj=_G.WorldMapZoneDropDdown, fType=ftype})
-				self:skinObject("dropdown", {obj=_G.WorldMapMinimapDropDdown, fType=ftype})
-			end
+			self:skinObject("ddbutton", {obj=this.ContinentDropdown, fType=ftype})
+			self:skinObject("ddbutton", {obj=this.ZoneDropdown, fType=ftype})
+			self:skinObject("ddbutton", {obj=this.MinimapDropdown, fType=ftype})
+			self:skinObject("ddbutton", {obj=this.WorldMapLevelDropDown, fType=ftype})
 			if self.modBtns then
 				self:skinCloseButton{obj=_G.WorldMapFrameCloseButton, fType=ftype}
 				self:skinStdButton{obj=_G.WorldMapZoomOutButton, fType=ftype, schk=true}

@@ -45,13 +45,7 @@ aObj.blizzFrames[ftype].AddonList = function(self)
 				end
 			end
 			self:skinObject("slider", {obj=_G.AddonListScrollFrame.ScrollBar, fType=ftype, rpTex="background"})
-			if aObj.isClscERAPTR
-			or aObj.isClscPTR
-			then
-				self:skinObject("ddbutton", {obj=this.Dropdown, fType=ftype})
-			else
-				self:skinObject("dropdown", {obj=_G.AddonCharacterDropDown, fType=ftype, x2=109})
-			end
+			self:skinObject("ddbutton", {obj=this.Dropdown, fType=ftype})
 		end
 		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, x2=self.isClsc and 1})
 		if self.modBtns then
@@ -633,35 +627,14 @@ aObj.blizzFrames[ftype].ChatBubbles = function(self)
 		registerEvents()
 		skinChatBubbles()
 	end
-	if not aObj.isRtl
-	and not aObj.isClscERAPTR
-	and not aObj.isClscPTR
-	then
-		local func
-		if not self.isClsc then
-			func = "InterfaceOptionsDisplayPanelChatBubblesDropDown_SetValue"
-		else
-			func = "InterfaceOptionsSocialPanelChatBubblesDropDown_SetValue"
+	local function OnValueChanged(_, _, value)
+		unRegisterEvents()
+		if value ~= 2 then -- either All or ExcludeParty
+			registerEvents()
+			skinChatBubbles()
 		end
-		-- hook this to handle changes
-		self:SecureHook(func, function(_, value)
-			-- unregister events
-			unRegisterEvents()
-			if value ~= 2 then -- either All or ExcludeParty
-				registerEvents()
-				skinChatBubbles()
-			end
-		end)
-	else
-		local function OnValueChanged(_, _, value)
-			unRegisterEvents()
-			if value ~= 2 then -- either All or ExcludeParty
-				registerEvents()
-				skinChatBubbles()
-			end
-		end
-		_G.Settings.SetOnValueChangedCallback("PROXY_CHAT_BUBBLES", OnValueChanged)
 	end
+	_G.Settings.SetOnValueChangedCallback("PROXY_CHAT_BUBBLES", OnValueChanged)
 
 end
 
@@ -745,12 +718,7 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 		self:checkShown(_G.ChatConfigBackgroundFrame)
 
 		local function skinCB(cBox)
-			if aObj.isRtl
-			or aObj.isClscERAPTR
-			or aObj.isClscPTR
-			then
-				cBox = cBox:gsub("CheckBox", "Checkbox")
-			end
+			cBox = cBox:gsub("CheckBox", "Checkbox")
 			if _G[cBox].NineSlice then
 				aObj:removeNineSlice(_G[cBox].NineSlice)
 			end
@@ -2147,28 +2115,22 @@ aObj.blizzFrames[ftype].MailFrame = function(self)
 
 end
 
-if aObj.isRtl
-or aObj.isClscERAPTR
-or aObj.isClscPTR
-then
-	aObj.blizzFrames[ftype].Menu = function(self) -- Dropdown Menus
-		if not self.prdb.Menu or self.initialized.Menu then return end
-		self.initialized.Menu = true
+aObj.blizzFrames[ftype].Menu = function(self) -- Dropdown Menus
+	if not self.prdb.Menu or self.initialized.Menu then return end
+	self.initialized.Menu = true
 
-		local ddMenus, mixin = {}
-		for i = 1, 10 do
-			mixin = "MenuStyle" .. i .. "Mixin"
-			if _G[mixin] then
-				self:RawHook(_G[mixin], "Generate", function(menu)
-					if not _G.tContains(ddMenus, menu) then
-						aObj:skinObject("scrollbar", {obj=menu.ScrollBar, fType=ftype})
-						aObj:skinObject("frame", {obj=menu, fType=ftype, ofs=3})
-						aObj:add2Table(ddMenus, menu)
-					end
-				end, true)
-			end
+	local ddMenus, mixin = {}
+	for i = 1, 10 do
+		mixin = "MenuStyle" .. i .. "Mixin"
+		if _G[mixin] then
+			self:RawHook(_G[mixin], "Generate", function(menu)
+				if not _G.tContains(ddMenus, menu) then
+					aObj:skinObject("scrollbar", {obj=menu.ScrollBar, fType=ftype})
+					aObj:skinObject("frame", {obj=menu, fType=ftype, ofs=3})
+					aObj:add2Table(ddMenus, menu)
+				end
+			end, true)
 		end
-
 	end
 
 end
@@ -2373,14 +2335,6 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 			_G.GameTimeFrame_Update(_G.GameTimeFrame)
 		end)
 		_G.MiniMapTrackingBorder:SetTexture(nil)
-		if not aObj.isClscERAPTR
-		and not aObj.isClscPTR
-		then
-			self:moveObject{obj=_G.MiniMapTrackingFrame, x=-15}
-			if not minBtn then
-				self:skinObject("frame", {obj=_G.MiniMapTrackingFrame, fType=ftype, bd=10, x1=3, y1=-3, x2=4, y2=-2})
-			end
-		end
 	else
 		if self.isClsc then
 			-- Calendar button
@@ -3281,23 +3235,8 @@ aObj.blizzFrames[ftype].TextToSpeechFrame = function(self)
 	self.initialized.TextToSpeechFrame = true
 
 	self:SecureHookScript(_G.TextToSpeechFrame, "OnShow", function(this)
-		if self.isRtl
-		or aObj.isClscERAPTR
-		or aObj.isClscPTR
-		then
-			self:skinObject("ddbutton", {obj=_G.TextToSpeechFrameTtsVoiceDropdown, fType=ftype})
-			self:skinObject("ddbutton", {obj=_G.TextToSpeechFrameTtsVoiceAlternateDropdown, fType=ftype})
-		else
-			self:skinObject("dropdown", {obj=_G.TextToSpeechFrameTtsVoiceDropdown, fType=ftype})
-			self:skinObject("dropdown", {obj=_G.TextToSpeechFrameTtsVoiceAlternateDropdown, fType=ftype})
-			self:removeNineSlice(self:getChild(_G.TextToSpeechFrameTtsVoicePicker, 1).NineSlice)
-			self:skinObject("scrollbar", {obj=_G.TextToSpeechFrameTtsVoicePicker.ScrollBar, fType=ftype})
-			self:SecureHook("TextToSpeechFrame_UpdateAlternate", function()
-				self:checkDisabledDD(_G.TextToSpeechFrameTtsVoiceAlternateDropdown)
-			end)
-			self:removeNineSlice(self:getChild(_G.TextToSpeechFrameTtsVoiceAlternatePicker, 1).NineSlice)
-			self:skinObject("scrollbar", {obj=_G.TextToSpeechFrameTtsVoiceAlternatePicker.ScrollBar, fType=ftype})
-		end
+		self:skinObject("ddbutton", {obj=_G.TextToSpeechFrameTtsVoiceDropdown, fType=ftype})
+		self:skinObject("ddbutton", {obj=_G.TextToSpeechFrameTtsVoiceAlternateDropdown, fType=ftype})
 		self:skinObject("slider", {obj=_G.TextToSpeechFrameAdjustRateSlider, fType=ftype})
 		self:skinObject("slider", {obj=_G.TextToSpeechFrameAdjustVolumeSlider, fType=ftype})
 		if self.modBtns then
@@ -3325,18 +3264,9 @@ aObj.blizzFrames[ftype].TimeManager = function(self)
 	self:SecureHookScript(_G.TimeManagerFrame, "OnShow", function(this)
 		_G.TimeManagerFrameTicker:Hide()
 		self:keepFontStrings(_G.TimeManagerStopwatchFrame)
-		if self.isRtl
-		or aObj.isClscERAPTR
-		or aObj.isClscPTR
-		then
-			self:skinObject("ddbutton", {obj=this.AlarmTimeFrame.HourDropdown, fType=ftype})
-			self:skinObject("ddbutton", {obj=this.AlarmTimeFrame.MinuteDropdown, fType=ftype})
-			self:skinObject("ddbutton", {obj=this.AlarmTimeFrame.AMPMDropdown, fType=ftype})
-		else
-			self:skinObject("dropdown", {obj=_G.TimeManagerAlarmHourDropDown, fType=ftype, x2=-6})
-			self:skinObject("dropdown", {obj=_G.TimeManagerAlarmMinuteDropDown, fType=ftype, x2=-6})
-			self:skinObject("dropdown", {obj=_G.TimeManagerAlarmAMPMDropDown, fType=ftype, x2=-6})
-		end
+		self:skinObject("ddbutton", {obj=this.AlarmTimeFrame.HourDropdown, fType=ftype})
+		self:skinObject("ddbutton", {obj=this.AlarmTimeFrame.MinuteDropdown, fType=ftype})
+		self:skinObject("ddbutton", {obj=this.AlarmTimeFrame.AMPMDropdown, fType=ftype})
 		self:skinObject("editbox", {obj=_G.TimeManagerAlarmMessageEditBox, fType=ftype})
 		if self.isRtl then
 			self:removeRegions(_G.TimeManagerAlarmEnabledButton, {4, 5})
@@ -3712,21 +3642,6 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 		self:SecureHook(_G.UIWidgetManager, "CreateWidget", function(this, widgetID, _, widgetType)
 			skinWidget(this.widgetIdToFrame[widgetID], this.widgetVisTypeInfo[widgetType].visInfoDataFunction(widgetID))
 		end)
-	end
-
-end
-
-aObj.blizzFrames[ftype].UnitPopup = function(self)
-	if not self.prdb.UnitPopup or self.initialized.UnitPopup then return end
-	self.initialized.UnitPopup = true
-
-	if not self.isRtl
-	and not aObj.isClscERAPTR
-	and not aObj.isClscPTR
-	then
-		self:skinObject("slider", {obj=_G.UnitPopupVoiceSpeakerVolume.Slider, fType=ftype})
-		self:skinObject("slider", {obj=_G.UnitPopupVoiceMicrophoneVolume.Slider, fType=ftype})
-		self:skinObject("slider", {obj=_G.UnitPopupVoiceUserVolume.Slider, fType=ftype})
 	end
 
 end

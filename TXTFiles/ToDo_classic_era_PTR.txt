@@ -9,16 +9,5 @@ ToDo_classic_era_PTR
 	Classic_Era_PTR (1.14.4)
 		- Added
 		- Updated
-√			- Dropdown frames now using MenuStyle?Mixin
-			- DropDown buttons are now using WowStyle1DropdownTemplate
-√				- AddOnList
-√				- TimeManager
-√				- WorldMap
-√				- AuctionUI
-√				- TextToSpeechFrame
-√				- TradeSkillFrame
-√				- FriendsFrame
-√				- WhoFrame
-√				- FriendsFriendsFrame
 		- Deleted
 			

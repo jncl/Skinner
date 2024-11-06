@@ -1325,7 +1325,7 @@ aObj.SetupOptions = function(self)
 		["Item Text"]             = {suff = "Frame"},
 		["Macro UI"]              = {desc = "Macros UI"},
 		["Mail Frame"]            = true,
-		["Menu"]                  = (self.isRtl or self.isClscERAPTR or self.isClscPTR) and {desc = "Dropdown Frames"} or nil,
+		["Menu"]                  = {desc = "Dropdown Frames"},
 		["Menu Frames"]           = true,
 		["Move Pad"]              = true,
 		["Movie Frame"]           = true,
@@ -1346,7 +1346,6 @@ aObj.SetupOptions = function(self)
 		["Tutorial"]              = {suff = "Frame"},
 		["UI DropDown Menu"]      = {desc = "DropDown Panels"},
 		["UI Widgets"]            = true,
-		["UnitPopup"]             = {desc = "Unit Popups"},
 	}
 	self:setupFramesOptions(uiOptTab, "UI")
 	_G.wipe(uiOptTab)

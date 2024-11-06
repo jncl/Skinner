@@ -276,9 +276,9 @@ aObj.SetupClassic_PlayerFrames = function()
 					self:skinCloseButton{obj=_G.ReputationDetailCloseButton, fType=ftype}
 				end
 				if self.modChkBtns then
-					self:skinCheckButton{obj=_G.ReputationDetailAtWarCheckBox, fType=ftype}
-					self:skinCheckButton{obj=_G.ReputationDetailInactiveCheckBox, fType=ftype}
-					self:skinCheckButton{obj=_G.ReputationDetailMainScreenCheckBox, fType=ftype}
+					self:skinCheckButton{obj=_G.ReputationDetailAtWarCheckbox, fType=ftype}
+					self:skinCheckButton{obj=_G.ReputationDetailInactiveCheckbox, fType=ftype}
+					self:skinCheckButton{obj=_G.ReputationDetailMainScreenCheckbox, fType=ftype}
 				end
 
 				self:Unhook(this, "OnShow")
@@ -519,14 +519,7 @@ aObj.SetupClassic_PlayerFrames = function()
 				_G.FriendsFrameBattlenetFrame.BroadcastFrame:DisableDrawLayer("BACKGROUND")
 				self:skinObject("frame", {obj=_G.FriendsFrameBattlenetFrame.BroadcastFrame, fType=ftype, ofs=-10})
 				self:skinObject("frame", {obj=_G.FriendsFrameBattlenetFrame.UnavailableInfoFrame, fType=ftype})
-				if aObj.isClscERAPTR
-				or aObj.isClscPTR
-				then
-					self:skinObject("ddbutton", {obj=fObj.StatusDropdown, fType=ftype})
-				else
-					self:skinObject("dropdown", {obj=_G.FriendsFrameStatusDropDown, fType=ftype})
-					_G.FriendsFrameStatusDropDownStatus:SetAlpha(1) -- display status icon
-				end
+				self:skinObject("ddbutton", {obj=fObj.StatusDropdown, fType=ftype})
 				self:skinObject("editbox", {obj=_G.FriendsFrameBroadcastInput, fType=ftype})
 				_G.FriendsFrameBroadcastInputFill:SetTextColor(self.BT:GetRGB())
 				-- Top Tabs
@@ -598,23 +591,11 @@ aObj.SetupClassic_PlayerFrames = function()
 				for i = 1, 4 do
 					_G["WhoFrameColumnHeader" .. i]:DisableDrawLayer("BACKGROUND")
 					if i == 2 then
-						if aObj.isClscERAPTR
-						or aObj.isClscPTR
-						then
-							_G.WhoFrameDropdown.Background:SetTexture(nil)
-							self:skinObject("ddbutton", {obj=_G.WhoFrameDropdown, fType=ftype})
-							self:moveObject{obj=_G.WhoFrameDropdown, x=20}
-						else
-							self:skinObject("dropdown", {obj=_G.WhoFrameDropDown, fType=ftype})
-						end
+						_G.WhoFrameDropdown.Background:SetTexture(nil)
+						self:skinObject("ddbutton", {obj=_G.WhoFrameDropdown, fType=ftype})
+						self:moveObject{obj=_G.WhoFrameDropdown, x=20}
 					else
-						if aObj.isClscERAPTR
-						or aObj.isClscPTR
-						then
-							self:skinObject("frame", {obj=_G["WhoFrameColumnHeader" .. i], fType=ftype, y2=-2})
-						else
-							self:skinObject("frame", {obj=_G["WhoFrameColumnHeader" .. i], fType=ftype, ofs=0, y2=-1})
-						end
+						self:skinObject("frame", {obj=_G["WhoFrameColumnHeader" .. i], fType=ftype, y2=-2})
 					end
 				end
 				self:moveObject{obj=_G.WhoFrameColumnHeader4, x=4}
@@ -680,14 +661,7 @@ aObj.SetupClassic_PlayerFrames = function()
 			end)
 
 			self:SecureHookScript(_G.GuildControlPopupFrame, "OnShow", function(fObj)
-				if aObj.isClscERAPTR
-				or aObj.isClscPTR
-				then
-					self:skinObject("ddbutton", {obj=_G.GuildControlPopupFrameDropdown, fType=ftype})
-				else
-					self:skinObject("dropdown", {obj=_G.GuildControlPopupFrameDropDown, fType=ftype})
-					_G.UIDropDownMenu_SetButtonWidth(_G.GuildControlPopupFrameDropDown, 24)
-				end
+				self:skinObject("ddbutton", {obj=_G.GuildControlPopupFrameDropdown, fType=ftype})
 				self:skinObject("editbox", {obj=_G.GuildControlPopupFrameEditBox, fType=ftype, regions={3, 4}, y1=-4, y2=4})
 				if self.isClsc then
 					self:skinObject("editbox", {obj=_G.GuildControlWithdrawGoldEditBox, fType=ftype, y1=-4, y2=4})
@@ -798,13 +772,7 @@ aObj.SetupClassic_PlayerFrames = function()
 		end)
 
 		self:SecureHookScript(_G.FriendsFriendsFrame, "OnShow", function(this)
-			if aObj.isClscERAPTR
-			or aObj.isClscPTR
-			then
-				self:skinObject("ddbutton", {obj=this.FriendsDropdown, fType=ftype})
-			else
-				self:skinObject("dropdown", {obj=_G.FriendsFriendsFrameDropDown, fType=ftype})
-			end
+			self:skinObject("ddbutton", {obj=this.FriendsDropdown, fType=ftype})
 			self:skinObject("frame", {obj=_G.FriendsFriendsList, fType=ftype, fb=true})
 			self:skinObject("slider", {obj=_G.FriendsFriendsScrollFrame.ScrollBar, fType=ftype})
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true})
@@ -1337,7 +1305,7 @@ aObj.SetupClassic_PlayerFrames = function()
 					end)
 				end
 				if self.modChkBtns then
-					self:skinCheckButton{obj=_G.ShowAllSpellRanksCheckBox, fType=ftype}
+					self:skinCheckButton{obj=_G.ShowAllSpellRanksCheckbox, fType=ftype}
 				end
 
 				local function updBtn(btn)
@@ -1551,8 +1519,8 @@ aObj.SetupClassic_PlayerFrames = function()
 				end
 				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, ofs=-6})
 				if self.modChkBtns then
-					self:skinCheckButton{obj=_G.TokenFramePopupInactiveCheckBox, fType=ftype}
-					self:skinCheckButton{obj=_G.TokenFramePopupBackpackCheckBox, fType=ftype}
+					self:skinCheckButton{obj=_G.TokenFramePopupInactiveCheckbox, fType=ftype}
+					self:skinCheckButton{obj=_G.TokenFramePopupBackpackCheckbox, fType=ftype}
 				end
 
 				self:Unhook(this, "OnShow")
@@ -1608,15 +1576,8 @@ aObj.SetupClassic_PlayerFrames = function()
 				x1, y1, x2, y2 = 10, -11, -32, 70
 			end
 			if not _G.C_AddOns.IsAddOnLoaded("alaTradeSkill") then
-				if aObj.isClscERAPTR
-				or aObj.isClscPTR
-				then
-					self:skinObject("ddbutton", {obj=this.InvSlotDropdown, fType=ftype})
-					self:skinObject("ddbutton", {obj=this.SubClassDropdown, fType=ftype})
-				else
-					self:skinObject("dropdown", {obj=_G.TradeSkillInvSlotDropDown, fType=ftype})
-					self:skinObject("dropdown", {obj=_G.TradeSkillSubClassDropDown, fType=ftype})
-				end
+				self:skinObject("ddbutton", {obj=this.InvSlotDropdown, fType=ftype})
+				self:skinObject("ddbutton", {obj=this.SubClassDropdown, fType=ftype})
 				self:skinObject("slider", {obj=_G.TradeSkillListScrollFrame.ScrollBar, fType=ftype, rpTex="background"})
 				self:skinObject("slider", {obj=_G.TradeSkillDetailScrollFrame.ScrollBar, fType=ftype, rpTex="background"})
 				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=x1, y1=y1, x2=x2, y2=y2})
