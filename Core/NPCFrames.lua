@@ -277,8 +277,9 @@ aObj.blizzFrames[ftype].QuestFrame = function(self)
 	end)
 
 	self:SecureHookScript(_G.QuestModelScene or _G.QuestNPCModel , "OnShow", function(this)
-		self:keepFontStrings(this.ModelTextFrame or _G.QuestNPCModelTextFrame)
-		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ofs=0, y1=-24, y2=-24})
+		self:skinObject("scrollbar", {obj=_G.QuestNPCModelTextScrollFrame.ScrollBar, fType=ftype})
+		self:skinObject("frame", {obj=this.ModelTextFrame or _G.QuestNPCModelTextFrame, fType=ftype, kfs=true, ofs=7, x1=-4, y1=1})
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ofs=5, y1=-24, y2=-24})
 
 		self:Unhook(this, "OnShow")
 	end)
