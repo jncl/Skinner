@@ -2411,6 +2411,11 @@ aObj.SetupRetail_UIFrames = function()
 			end
 			for _, frame in _G.pairs{_G.StanceBar, _G.PetActionBar, _G.PossessActionBar} do
 				self:SecureHookScript(frame, "OnShow", function(this)
+					-- handle in combat
+					if _G.InCombatLockdown() then
+					    self:add2Table(self.oocTab, {skinActionBtns, {this}})
+					    return
+					end
 					skinActionBtns(this)
 
 					self:Unhook(this, "OnShow")
