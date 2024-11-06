@@ -2760,15 +2760,17 @@ if not aObj.isClscERA then
 					fObj:DisableDrawLayer("BACKGROUND")
 					fObj:DisableDrawLayer("BORDER")
 					fObj.HelpButton.Ring:SetTexture(nil)
-					fObj.ThresholdBar:DisableDrawLayer("OVERLAY")
+					fObj.ThresholdContainer:DisableDrawLayer("OVERLAY")
 					for _, frame in _G.pairs(fObj.thresholdFrames) do
 						frame.RewardItem.CircleMask:SetShown(false)
-						if self.modBtnBs then
-							self:addButtonBorder{obj=frame.RewardItem, fType=ftype, relTo=frame.RewardItem.Icon, ibt=true, clr="gold"}
+						if frame:GetParentKey() == "Threshold5"
+						and self.modBtnBs
+						then
+							self:addButtonBorder{obj=frame.RewardItem, fType=ftype, relTo=frame.RewardItem.Icon, reParent={frame.RewardCurrency}, ibt=true}
 						end
 					end
 					fObj.FilterList:DisableDrawLayer("BACKGROUND")
-					self:skinObject("scrollbar", {obj=fObj.ScrollBar, fType=ftype})
+					self:skinObject("scrollbar", {obj=fObj.FilterList.ScrollBar, fType=ftype})
 					self:skinObject("scrollbar", {obj=fObj.ScrollBar, fType=ftype})
 					self:keepFontStrings(fObj.ThemeContainer)
 					local function skinActivities(...)
