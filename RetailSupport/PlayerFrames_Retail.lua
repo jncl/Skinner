@@ -989,9 +989,9 @@ aObj.SetupRetail_PlayerFrames = function()
 			self:removeRegions(this, {1, 2, 3, 5})
 			self:skinObject("statusbar", {obj=this.PromptFrame.Timer, fi=0})
 			self:skinObject("frame", {obj=this, fType=ftype, bg=true})
-			if self.modBtnBs then
-				 self:addButtonBorder{obj=this.PromptFrame, fType=ftype, relTo=this.PromptFrame.Icon, reParent={this.SpecIcon}}
-			end
+			-- if self.modBtnBs then
+			-- 	 self:addButtonBorder{obj=this.PromptFrame, fType=ftype, relTo=this.PromptFrame.Icon, reParent={this.SpecIcon}}
+			-- end
 
 			self:Unhook(this, "OnShow")
 		end)
@@ -1000,7 +1000,7 @@ aObj.SetupRetail_PlayerFrames = function()
 			self:removeRegions(this.Item, {2, 3, 4, 5})
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true})
 			if self.modBtns then
-				 self:skinCloseButton{obj=self:getChild(this, 3), fType=ftype} -- unamed close button
+				 self:skinCloseButton{obj=self:getChild(this, 4), fType=ftype} -- unamed close button
 			end
 			if self.modBtnBs then
 				self:addButtonBorder{obj=this.Item, fType=ftype, relTo=this.Item.Icon}
