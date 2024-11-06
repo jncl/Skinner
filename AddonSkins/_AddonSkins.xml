@@ -200,6 +200,7 @@
 <Script file="SecureTabs.lua"/>
 <Script file="ServerHop.lua"/>
 <Script file="SexyMap.lua"/>
+<Script file="ShadowedUnitFrames.lua"/>
 <Script file="SilverDragon.lua"/>
 <Script file="SimpleAddonManager.lua"/>
 <Script file="Simulationcraft.lua"/>
