@@ -249,26 +249,27 @@ function aObj:capitStr(str)
 end
 
 local coords
-function aObj:changeHdrExpandTex(reg, type)
+function aObj:changeHdrExpandTex(reg)
 	--@debug@
 	_G.assert(reg, "Unknown region changeHdrExpandTex\n" .. _G.debugstack(2, 3, 2))
 	--@end-debug@
 
+	reg:ClearAllPoints()
+	reg:SetPoint("RIGHT")
 	reg:SetAlpha(1)
-	reg:SetDesaturated(1) -- make texture desaturated
-	aObj:RawHook(reg, "SetAtlas", function(eReg, tex, useAtlasSize)
+	self:RawHook(reg, "SetAtlas", function(eReg, tex, useAtlasSize)
 		-- aObj:Debug("changeHdrExpandTex SetAtlas: [%s, %s]", reg, tex)
 		if tex == "Options_ListExpand_Right_Expanded" then -- minus
-			tex = aObj.isRtl and "ui-hud-minimap-zoom-out" or aObj.tFDIDs.mpTex
-			coords = not aObj.isRtl and {0.29687500, 0.54687500, 0.00781250, 0.13281250}
+			tex = self.isRtl and "ui-hud-minimap-zoom-out" or self.tFDIDs.mpTex
+			coords = not self.isRtl and {0.29687500, 0.54687500, 0.00781250, 0.13281250}
 		else
-			tex = aObj.isRtl and "ui-hud-minimap-zoom-in" or aObj.tFDIDs.mpTex
-			coords = not aObj.isRtl and {0.57812500, 0.82812500, 0.14843750, 0.27343750}
+			tex = self.isRtl and "ui-hud-minimap-zoom-in" or self.tFDIDs.mpTex
+			coords = not self.isRtl and {0.57812500, 0.82812500, 0.14843750, 0.27343750}
 		end
-		if aObj.isRtl then
-			aObj.hooks[eReg].SetAtlas(eReg, tex, useAtlasSize)
+		if self.isRtl then
+			self.hooks[eReg].SetAtlas(eReg, tex, useAtlasSize)
 		else
-			eReg:SetTexture(tex) -- N.B. use SetTexture instead of SetAtlas otherwise the texture isn't dosplay correctly
+			eReg:SetTexture(tex) -- N.B. use SetTexture instead of SetAtlas otherwise the texture doesn't display correctly
 			eReg:SetTexCoord(coords[1], coords[2], coords[3], coords[4])
 			eReg:SetScale(0.75)
 		end
