@@ -965,6 +965,7 @@ if not aObj.isClscERA then
 		if self.isRtl then
 			self:SecureHookScript(_G.TokenFrame, "OnShow", function(this)
 				self:keepFontStrings(this)
+				self:skinObject("ddbutton", {obj=this.filterDropdown, fType=ftype})
 				self:skinObject("scrollbar", {obj=this.ScrollBar, fType=ftype})
 				local function skinElement(...)
 					local _, element, elementData, new
@@ -976,19 +977,16 @@ if not aObj.isClscERA then
 						_, element, elementData, new = ...
 					end
 					if new ~= false then
-						if elementData.isHeader
-						and elementData.currencyListDepth == 0
-						then
-							aObj:keepFontStrings(element)
-							aObj:changeHdrExpandTex(element.Right)
-							-- TODO: change HighlightTexture
-							-- force texture change
-							element.Right:SetAtlas(element:IsCollapsed() and "Options_ListExpand_Right" or "Options_ListExpand_Right_Expanded", _G.TextureKitConstants.UseAtlasSize)
-						elseif elementData.isHeader
-						and elementData.currencyListDepth > 0
-						then
-							if aObj.modBtns then
-								aObj:skinExpandButton{obj=element.ToggleCollapseButton, fType=ftype, onSB=true}
+						if elementData.isHeader then
+							if elementData.currencyListDepth == 0 then
+								aObj:keepFontStrings(element)
+								aObj:changeHdrExpandTex(element.Right)
+								-- TODO: change HighlightTexture
+								element:RefreshCollapseIcon() -- force texture change
+							else
+								if aObj.modBtns then
+									aObj:skinExpandButton{obj=element.ToggleCollapseButton, fType=ftype, onSB=true}
+								end
 							end
 						end
 					end
