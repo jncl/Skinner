@@ -1519,6 +1519,7 @@ if not aObj.isClscERA then
 						 self:addButtonBorder{obj=btn, fType=ftype, ofs=-2}
 					end
 				end
+				self:skinObject("ddbutton", {obj=this.SpecDropdown, fType=ftype, noSF=true, ofs=1, y1=1, y2=0})
 				if self.modBtns then
 					if self.isRtl then
 						self:skinStdButton{obj=this.OutfitDropdown.SaveButton, sechk=true}
