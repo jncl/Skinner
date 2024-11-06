@@ -21,14 +21,22 @@ ToDos
 
 ≈		O	Refactor frame children loops to use Utility function 'scanChildren' via callback
 
-#174 √	I   UIFrames_Retail, attempt to call global 'skinABBtn' (a nil value)
-
-#176 √	I 	Baganator, GuildBank
-
 #177 	I 	AddOn 'Skinner' tried to call the protected function 'CastSpellByID()'
 			- Clicking on the Mythic+ Portal/Spell icon causes the error
+			- Clicking on Button in the SpellBook also causes this error, e.g. GuildBank
+	 ≈	I	AddOn 'Skinner' tried to call the protected function 'Button:SetPassThroughButtons()'
 
 #178	O 	add easier custom textures
 			- Is there a possibility of adding the ability to add more custom textures for backgrounds, borders, or buttons?
 			- An easier way to add those would be phenomenal.
 			- A way to add pixel borders without using a texture (which doesn’t always scale nicely) would be great, too.
+
+#179 √	I 	Baganator - Guild Bank #3
+
+#180 √	I 	AdventureGuide, attempt to index field 'ThresholdBar' (a nil value)
+
+#181 x	I 	BonusRollFrame
+
+#182 √	I   QuestLog, Warband line
+
+#183 x	I 	TokenUI
