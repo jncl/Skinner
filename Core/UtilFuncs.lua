@@ -1150,7 +1150,8 @@ end
 
 function aObj:scanChildren(opts)
 
-	for idx, child in _G.ipairs_reverse{opts.obj:GetChildren()} do
+	local method = not opts.reversed and _G.ipairs or _G.ipairs_reverse
+	for idx, child in method{opts.obj:GetChildren()} do
 		-- check for forbidden objects (StoreUI components etc.)
 		if not child:IsForbidden() then
 			aObj.callbacks:Fire(opts.cbstr, child, idx)
