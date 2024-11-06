@@ -358,9 +358,10 @@ aObj.SetupRetail_PlayerFrames = function()
 
 		self:SecureHookScript(_G.CurrencyTransferMenu, "OnShow", function(this)
 			self:skinObject("ddbutton", {obj=this.SourceSelector.Dropdown, fType=ftype})
-			self:skinObject("editbox", {obj=this.AmountSelector.InputBox, fType=ftype})
+			self:skinObject("editbox", {obj=this.AmountSelector.InputBox, fType=ftype, y2=4})
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true})
 			if self.modBtns then
+				self:skinStdButton{obj=this.AmountSelector.MaxQuantityButton, fType=ftype}
 				self:skinStdButton{obj=this.ConfirmButton, fType=ftype, sechk=true}
 				self:skinStdButton{obj=this.CancelButton, fType=ftype}
 			end
