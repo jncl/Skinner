@@ -2,7 +2,7 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("Leatrix_Plus") then return end
 local _G = _G
 
-aObj.addonsToSkin.Leatrix_Plus = function(self) -- v 10.2.26/1.15.30/4.0.05
+aObj.addonsToSkin.Leatrix_Plus = function(self) -- v 11.0.14/1.15.56/4.0.30
 
 	local lpPanels = {
 		-- All versions
@@ -137,7 +137,8 @@ aObj.addonsToSkin.Leatrix_Plus = function(self) -- v 10.2.26/1.15.30/4.0.05
 	end
 
 	-- Enhanced QuestLog
-	if _G.LeaPlusDB["EnhanceQuestTaller"] == "On"
+	if _G.LeaPlusDB["EnhanceQuestLog"] == "On"
+	and _G.LeaPlusDB["EnhanceQuestTaller"] == "On"
 	and self.prdb.QuestLog
 	then
 		if self.isClscERA
