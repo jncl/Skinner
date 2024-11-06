@@ -1,3 +1,22 @@
+beta11.56819.1
+Jncl:
+	Updated ToDo files
+	Updated Change_History.txt
+	Updated Version Numbers
+	Updated TOC
+	Updated comment line
+	Removed debug line
+	Updated StaticPopups skin
+	Updated MinimapButtons skin
+	Updated WeeklyRewards skin
+	Updated SpellFlyout skin
+	Updated MainMenuBar skin, closes #174
+	Updated DelvesDashboardUI skin
+	Updated ChallengesUI skin
+	Updated PVPUI skin
+	Updated GuildControlUI skin
+	Updated Baganator, closes #176, & LeatrixPlus skins
+
 beta11.56708.1
 Jncl:
 	Updated ToDo files
