@@ -710,6 +710,7 @@ local function __addButtonBorder(opts)
 			ignTex	 = ignore changes to Normal & Pushed textures
 			ooc 	 = DON'T skin in combat
 			hide 	 = Hide if required (Better Bags)
+			sba 	 = Set button Alpha function
 	--]]
 	--@debug@
 	_G.assert(opts and _G.type(opts) == "table", "Missing options table __addButtonBorder\n" .. _G.debugstack(2, 3, 2))
@@ -774,6 +775,9 @@ local function __addButtonBorder(opts)
 	relTo = opts.relTo or opts.libt and opts.obj.Icon or nil
 	opts.obj.sbb:SetPoint("TOPLEFT", relTo or opts.obj, "TOPLEFT", opts.x1, opts.y1)
 	opts.obj.sbb:SetPoint("BOTTOMRIGHT", relTo or opts.obj, "BOTTOMRIGHT", opts.x2, opts.y2)
+	if opts.sba then
+		opts.obj.sbb:SetAlpha(opts.sba)
+	end
 
 	-- reparent objects
 	if opts.reParent then
