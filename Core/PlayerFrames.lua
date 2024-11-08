@@ -1758,7 +1758,7 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 
 		self:SecureHookScript(this.CommunitiesControlFrame, "OnShow", function(fObj)
 			if self.modBtns then
-				self:skinStdButton{obj=fObj.CommunitiesSettingsButton, fType=ftype}
+				self:skinStdButton{obj=fObj.CommunitiesSettingsButton, fType=ftype, sechk=true}
 				if self.isRtl then
 					self:skinStdButton{obj=fObj.GuildRecruitmentButton, fType=ftype, sechk=true}
 					self:skinStdButton{obj=fObj.GuildControlButton, fType=ftype}
@@ -1994,7 +1994,7 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 			self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, ofs=0})
 			if self.modBtns then
 				self:skinStdButton{obj=fObj.AcceptButton, fType=ftype}
-				self:skinStdButton{obj=fObj.ApplyButton, fType=ftype}
+				self:skinStdButton{obj=fObj.ApplyButton, fType=ftype, sechk=true}
 				self:skinStdButton{obj=fObj.DeclineButton, fType=ftype}
 			end
 
