@@ -3064,8 +3064,11 @@ aObj.blizzFrames[ftype].Settings = function(self)
 			local frame = layout:GetFrame()
 			-- aObj:Debug("SP DisplayCategory#2: [%s, %s]", frame.name, frame.parent)
 			-- let AddOn skins know when the panel is displayed
+			self.callbacks:Fire("SettingsPanel_DisplayCategory", frame, category)
+			--[===[@non-debug@
 			self.callbacks:Fire("IOFPanel_Before_Skinning", frame, category)
 			self.callbacks:Fire("IOFPanel_After_Skinning", frame, category)
+			--@end-non-debug@]===]
 		end
 	end)
 

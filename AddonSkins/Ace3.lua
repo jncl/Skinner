@@ -14,13 +14,19 @@ end
 
 local skinAceGUI
 
+--[===[@non-debug@
 aObj.iofSkinnedPanels = {}
+--@end-non-debug@]===]
+aObj.spSkinnedPanels = {}
 aObj.ACD = _G.LibStub:GetLibrary("AceConfigDialog-3.0", true)
 if aObj.ACD then
 	-- hook this to manage IOF panels that have already been skinned by Ace3 skin
 	aObj:RawHook(aObj.ACD, "AddToBlizOptions", function(this, ...)
 		local frame, name = aObj.hooks[this].AddToBlizOptions(this, ...)
+		aObj.spSkinnedPanels[frame] = true
+		--[===[@non-debug@
 		aObj.iofSkinnedPanels[frame] = true
+		--@end-non-debug@]===]
 		return frame, name
 	end, true)
 	aObj:SecureHookScript(aObj.ACD.popup, "OnShow", function(this)

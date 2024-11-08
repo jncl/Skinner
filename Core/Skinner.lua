@@ -377,6 +377,27 @@ function aObj:OnEnable()
 	self:SetupCmds()
 	--@end-debug@
 
+	--@debug@
+	-- Check to see which AddOns are using the deprecated IOFPanel_ callbacks
+	_G.C_Timer.After(self.prdb.Delay.Init + self.prdb.Delay.Addons + 0.5, function()
+		local depTab, cnt = {}, 0
+		for event, evttable in _G.pairs(aObj.callbacks.events) do
+			if event:find("IOFPanel_") then
+				cnt = cnt + 1
+				for addon, _ in _G.pairs(evttable) do
+					depTab[addon] = event
+				end
+			end
+		end
+		if cnt > 0 then
+			_G.message(cnt .. " AddOns found using deprecated IOFPanel_ functions, please fix them")
+			for addon, iofevent in _G.pairs(depTab) do
+				_G.print(addon .. " is using a deprecated function: " .. iofevent .. " please update it")
+			end
+		end
+	end)
+	--@end-debug@
+
 end
 
 function aObj:OnDisable()
