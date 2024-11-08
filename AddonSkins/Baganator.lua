@@ -2,7 +2,7 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("Baganator") then return end
 local _G = _G
 
-aObj.addonsToSkin.Baganator = function(self) -- v 502
+aObj.addonsToSkin.Baganator = function(self) -- v 504
 
 	local skinBtns, skinSpecialistBtns, skinSpecialistBags, skinViewBtns, skinBagSlots = _G.nop, _G.nop, _G.nop, _G.nop, _G.nop
 	if self.modBtnBs then
@@ -163,12 +163,6 @@ aObj.addonsToSkin.Baganator = function(self) -- v 502
 
 			if this.UpdateForCharacter then
 				aObj:SecureHook(this, "UpdateForCharacter", function(fObj, ...)
-					if type:find("SV")
-					and this.lastCharacter ~= character
-					then
-						return
-					end
-
 					if type:find("CV")
 					and fObj.BankMissingHint:IsShown()
 					then
