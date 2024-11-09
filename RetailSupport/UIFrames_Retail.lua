@@ -1045,7 +1045,7 @@ aObj.SetupRetail_UIFrames = function()
 					end
 				end
 			end
-			self:SecureHook(this.DelveRewardsContainerFrame, "SetRewards", function(fObj)
+			self:SecureHook(this.DelveRewardsContainerFrame, "SetRewards", function(_)
 				skinRewardBtns()
 			end)
 			_G.C_Timer.After(0.5, function() -- wait for buttons to be setup
@@ -2333,8 +2333,16 @@ aObj.SetupRetail_UIFrames = function()
 				if self.modBtnBs then
 					self:addButtonBorder{obj=_G.MultiCastSummonSpellButton, sabt=true, ofs=5}
 					self:addButtonBorder{obj=_G.MultiCastRecallSpellButton, sabt=true, ofs=5}
+					local btn
 					for i = 1, _G.NUM_MULTI_CAST_PAGES * _G.NUM_MULTI_CAST_BUTTONS_PER_PAGE do
-						skinABBtn(_G["MultiCastActionButton" .. i])
+						btn = _G["MultiCastActionButton" .. i]
+						btn.Border:SetAlpha(0) -- texture changed in blizzard code
+						btn.FlyoutBorder:SetTexture(nil)
+						btn.FlyoutBorderShadow:SetTexture(nil)
+						if aObj:canSkinActionBtns() then
+							_G[btn:GetName() .. "NormalTexture"]:SetTexture(nil)
+							aObj:addButtonBorder{obj=btn, fType=ftype, sabt=true, ofs=3}
+						end
 					end
 				end
 
@@ -2681,7 +2689,7 @@ aObj.SetupRetail_UIFrames = function()
 				self:SecureHook("PetBattleFrame_InitSpeedIndicators", function(_)
 					updBBClr()
 				end)
-				-- use hooksecurefunc as function hooked for tooltips lower down
+				-- N.B. using hooksecurefunc as function hooked for tooltips lower down
 				_G.hooksecurefunc("PetBattleFrame_UpdateSpeedIndicators", function(_)
 					updBBClr()
 				end)
@@ -2842,8 +2850,7 @@ aObj.SetupRetail_UIFrames = function()
 			frame.sf:SetPoint("TOPLEFT",frame, "TOPLEFT", x1Ofs, y1Ofs)
 			frame.sf:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", x2Ofs, y2Ofs)
 		end
-		local function skinOptions(frame, source)
-			-- aObj:Debug("skinOptions PCUI: [%s, %s, %s, %s]", source, frame.uiTextureKit, frame.optionFrameTemplate)
+		local function skinOptions(frame, _)
 			if not frame.optionFrameTemplate then return end
 			if frame.sf
 			and frame.uiTextureKit == "jailerstower"

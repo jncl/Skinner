@@ -51,7 +51,7 @@ aObj.lodAddons.MasterPlan = function(self) -- v 0.138
 				if not child.lineTex then
 					child.lineTex = child:CreateTexture(nil, "OVERLAY", nil, -2)
 					child.lineTex:SetAllPoints(child)
-					child.lineTex:SetTexture (0.6, 0.6, 0.6)
+					child.lineTex:SetColorTexture(0.6, 0.6, 0.6)
 					child.lineTex:SetBlendMode("ADD")
 					child.lineTex:SetGradient("VERTICAL", _G.CreateColor(0.1, 0.3, 0.3, 1), _G.CreateColor(0.1, 0.1, 0.1, 1))
 				end

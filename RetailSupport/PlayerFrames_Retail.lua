@@ -797,7 +797,7 @@ aObj.SetupRetail_PlayerFrames = function()
 			_G.InspectModelFrame:DisableDrawLayer("BORDER")
 			_G.InspectModelFrame:DisableDrawLayer("OVERLAY")
 			_G.InspectModelFrame.controlFrame:DisableDrawLayer("BACKGROUND")
-			self.RegisterCallback("IPDF", "IPDIF_GetChildren", function(_, child, key)
+			self.RegisterCallback("IPDF", "IPDIF_GetChildren", function(_, child, _)
 				if self:hasTextInName(child, "Slot")
 				and self.modBtnBs
 				then
@@ -1077,7 +1077,7 @@ aObj.SetupRetail_PlayerFrames = function()
 				end
 			end
 			local layoutChildren
-			local function skinModule(module, hooked)
+			local function skinModule(module, _)
 				if aObj.prdb.ObjectiveTracker.headers then
 					module.Header.Background:SetTexture(nil)
 				end
@@ -1192,7 +1192,7 @@ aObj.SetupRetail_PlayerFrames = function()
 				end
 			end
 		end
-		self:SecureHook(_G.ObjectiveTrackerManager, "ShowRewardsToast", function(this, rewards, module, block, headerText, callback)
+		self:SecureHook(_G.ObjectiveTrackerManager, "ShowRewardsToast", function(this, _, _, _, _, _)
 			for rewardsToast in this.rewardsToastPool:EnumerateActive() do
 				rewardsToast:DisableDrawLayer("ARTWORK")
 				rewardsToast:DisableDrawLayer("BORDER")
@@ -1859,7 +1859,7 @@ aObj.SetupRetail_PlayerFrames = function()
 					if self.modBtnBs then
 						self:addButtonBorder{obj=frame.ConcentrationDisplay, fType=ftype, relTo=frame.ConcentrationDisplay.Icon, ofs=3}
 						self:addButtonBorder{obj=frame.OrderInfo.SocialDropdown, fType=ftype, clr="gold", y1=1, y2=-1}
-						for _, btn in pairs(frame.OrderInfo.NPCRewardsFrame.RewardItems) do
+						for _, btn in _G.pairs(frame.OrderInfo.NPCRewardsFrame.RewardItems) do
 							self:addButtonBorder{obj=btn, fType=ftype, ibt=true}
 						end
 					end

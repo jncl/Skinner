@@ -30,7 +30,7 @@ aObj.addonsToSkin.EasyMail = function(self) -- v 4.4.6.b
 			self:clrBtnBdr(_G.EasyMail_CheckPageButton)
 			self:clrBtnBdr(_G.EasyMail_ClearPageButton)
 		end)
-		-- hook this to colour buttons on update, already hooked so use hooksecurefunc
+		-- N.B. using hooksecurefunc as already hooked so hook this to colour buttons on update
 		_G.hooksecurefunc("InboxFrame_Update", function()
 			_G.EasyMail.InboxUpdate()
 		end)

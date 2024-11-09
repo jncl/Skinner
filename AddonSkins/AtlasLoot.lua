@@ -136,14 +136,14 @@ local function skinAtlasLoot()
 			aObj:SecureHook(iTT, "ShowQuickDressUp", function(itemLink, ttFrame)
 				if aObj.isRtl then
 					if not itemLink
-					or not _G.IsEquippableItem(itemLink)
+					or not _G.C_Item.IsEquippableItem(itemLink)
 					then
 						return
 					end
 				else
 					if not itemLink
 					or not ttFrame
-					or (not _G.IsEquippableItem(itemLink) and not _G.AtlasLoot.Data.Companion.IsCompanion(itemLink))
+					or (not _G.C_Item.IsEquippableItem(itemLink) and not _G.AtlasLoot.Data.Companion.IsCompanion(itemLink))
 					then
 						return
 					end

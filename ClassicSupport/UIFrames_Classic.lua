@@ -715,8 +715,7 @@ aObj.SetupClassic_UIFrames = function()
 
 	end
 
-	-- TODO:
-		-- UnitPopup
+	-- TODO: UnitPopup
 
 	-- VideoOptionsFrame, wait for variable to be populated
 	if aObj.modBtns then

@@ -54,8 +54,8 @@ aObj.addonsToSkin.Leatrix_Plus = function(self) -- v 11.0.14/1.15.56/4.0.30
 	}
 
 	self:SecureHookScript(_G.LeaPlusGlobalPanel, "OnShow", function(this)
-		local function skinKids(frame, panel)
-			aObj.RegisterCallback("LeatrixPlus", frame:GetDebugName() .. "_GetChildren", function(_, child, key)
+		local function skinKids(frame, _)
+			aObj.RegisterCallback("LeatrixPlus", frame:GetDebugName() .. "_GetChildren", function(_, child, _)
 				if child:IsObjectType("Slider") then
 					aObj:skinObject("slider", {obj=child})
 				elseif child:IsObjectType("ScrollFrame") then

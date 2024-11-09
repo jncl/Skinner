@@ -22,7 +22,7 @@ aObj.addonsToSkin.Baganator = function(self) -- v 504
 				layout.divider.Divider:SetTexture(nil)
 			end
 		end
-		function skinSpecialistBags(frame, type)
+		function skinSpecialistBags(frame, _)
 			if frame.CollapsingBags then
 				for _, layout in _G.pairs(frame.CollapsingBags) do
 					skinSpecialistBtns(layout)
@@ -127,7 +127,7 @@ aObj.addonsToSkin.Baganator = function(self) -- v 504
 	end)
 
 	self:SecureHookScript(_G.Baganator_CategoryViewBackpackViewFrame, "OnShow", function(this)
-		self:SecureHook(this, "UpdateForCharacter", function(fObj, ...)
+		self:SecureHook(this, "UpdateForCharacter", function(fObj, _)
 			skinViewBtns(fObj, "CVBags")
 		end)
 		skinBag(this,"CVBags")
@@ -155,14 +155,14 @@ aObj.addonsToSkin.Baganator = function(self) -- v 504
 		skinFrame(frame, type)
 		aObj:skinObject("tabs", {obj=frame, tabs=frame.Tabs, lod=aObj.isTT and true})
 
-		aObj:SecureHookScript(frame.Character, "OnShow", function(this, character, _)
+		aObj:SecureHookScript(frame.Character, "OnShow", function(this, _, _)
 			skinBagSlots(this)
 			if type:find("SV") then
 				skinViewBtns(this, type)
 			end
 
 			if this.UpdateForCharacter then
-				aObj:SecureHook(this, "UpdateForCharacter", function(fObj, ...)
+				aObj:SecureHook(this, "UpdateForCharacter", function(fObj, _)
 					if type:find("CV")
 					and fObj.BankMissingHint:IsShown()
 					then

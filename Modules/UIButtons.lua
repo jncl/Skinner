@@ -119,7 +119,7 @@ local function __checkTex(opts)
 	end
 
 end
-function module:checkTex(...)
+function module.checkTex(_, ...)
 
 	local opts = _G.select(1, ...)
 
@@ -238,7 +238,7 @@ function module:clrBtnBdr(bObj, clrName, alpha)
 end
 
 local bType
-function module:isButton(obj)
+function module.isButton(_, obj)
 
 	-- ignore named/AceConfig/XConfig/AceGUI objects
 	if aObj:hasAnyTextInName(obj, {"AceConfig", "XConfig", "AceGUI"}) then return end
@@ -380,7 +380,7 @@ local function __skinCloseButton(opts)
 		aObj:moveObject{obj=text, x=-1, y=-1}
 	end
 end
-function module:skinCloseButton(...)
+function module.skinCloseButton(_, ...)
 
 	local opts = _G.select(1, ...)
 
@@ -440,7 +440,7 @@ local function __skinExpandButton(opts)
 		if not opts.noHook then
 			if aObj.isRtl then
 				nTex = opts.obj:GetNormalTexture()
-				module:SecureHook(nTex, "SetAtlas", function(this, tObj)
+				module:SecureHook(nTex, "SetAtlas", function(_, tObj)
 					module:checkTex{obj=opts.obj, nTex=tObj}
 				end)
 			else
@@ -468,7 +468,7 @@ local function __skinExpandButton(opts)
 		opts.obj.sb:SetText(opts.plus and module.plus or module.minus)
 	end
 end
-function module:skinExpandButton(...)
+function module.skinExpandButton(_, ...)
 
 	local opts = _G.select(1, ...)
 
@@ -544,7 +544,7 @@ local function __skinOtherButton(opts)
 		end
 	end
 end
-function module:skinOtherButton(...)
+function module.skinOtherButton(_, ...)
 
 	local opts = _G.select(1, ...)
 
@@ -651,7 +651,7 @@ local function __skinStdButton(opts)
 		end)
 	end
 end
-function module:skinStdButton(...)
+function module.skinStdButton(_, ...)
 
 	local opts = _G.select(1, ...)
 
@@ -890,7 +890,7 @@ local function __addButtonBorder(opts)
 		end)
 	end
 end
-function module:addButtonBorder(...)
+function module.addButtonBorder(_, ...)
 
 	local opts = _G.select(1, ...)
 
@@ -973,7 +973,7 @@ local function __skinCheckButton(opts)
 		end)
 	end
 end
-function module:skinCheckButton(...)
+function module.skinCheckButton(_, ...)
 
 	local opts = _G.select(1, ...)
 
@@ -1283,12 +1283,12 @@ function module:OnEnable()
 			aObj:SecureHook(_G.CircularGiantItemButtonMixin, "SetItemButtonQuality", function(button, quality, _, _, _)
 				setItemButtonQuality(button, quality)
 			end)
-			aObj:SecureHook(_G.ItemButtonMixin, "SetItemButtonBorderVertexColor", function(button, r, g, b)
+			aObj:SecureHook(_G.ItemButtonMixin, "SetItemButtonBorderVertexColor", function(button, red, grn, blu)
 				-- aObj:Debug("IBM SetItemButtonBorderVertexColor: [%s, %s, %s, %s]", btn, r ,g, b)
 				if button.sbb
-				and r
+				and red
 				then
-					button.sbb:SetBackdropBorderColor(r, g, b)
+					button.sbb:SetBackdropBorderColor(red, grn, blu)
 				end
 			end)
 			aObj:SecureHook(_G.ItemButtonMixin, "UpdateCraftedProfessionsQualityShown", function(button)
@@ -1311,15 +1311,15 @@ function module:OnEnable()
 			-- table to hold button objects to ignore, e.g. ContainerFrame items
 			aObj.btnIgnore = {}
 			-- hook this to colour buttons e.g. TradeSkill reagents
-			aObj:SecureHook("SetItemButtonTextureVertexColor", function(button, r, g, b)
+			aObj:SecureHook("SetItemButtonTextureVertexColor", function(button, red, grn, blu)
 				-- aObj:Debug("SetItemButtonTextureVertexColor: [%s, %s, %s, %s]", button, r, g, b)
 				if _G.tContains(aObj.btnIgnore, button) then
 					return
 				end
 				if button.sbb
-				and r
+				and red
 				then
-					button.sbb:SetBackdropBorderColor(r, g, b)
+					button.sbb:SetBackdropBorderColor(red, grn, blu)
 				end
 			end)
 		end
@@ -1356,7 +1356,7 @@ function module:OnEnable()
 
 end
 
-function module:GetOptions()
+function module.GetOptions(_)
 
 	local options = {
 		type = "group",

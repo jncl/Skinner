@@ -96,7 +96,7 @@ function aObj:checkWoWVersion()
 
 end
 
-function aObj:checkLibraries(extraLibs)
+function aObj.checkLibraries(_, extraLibs)
 
 	if not _G.assert(_G.LibStub, aName .. " requires LibStub") then return false end
 
@@ -114,7 +114,7 @@ function aObj:checkLibraries(extraLibs)
 
 end
 
-function aObj:createAddOn(makeGlobal)
+function aObj.createAddOn(_, makeGlobal)
 	_G.LibStub:GetLibrary("AceAddon-3.0"):NewAddon(aObj, aName, "AceConsole-3.0", "AceEvent-3.0", "AceHook-3.0")
 	-- add to Global namespace if required
 	if makeGlobal then
@@ -128,7 +128,7 @@ function aObj:createAddOn(makeGlobal)
 
 end
 
-function aObj:add2Table(tab, val)
+function aObj.add2Table(_, tab, val)
 	--@debug@
 	_G.assert(tab, "Unknown table add2Table\n" .. _G.debugstack(2, 3, 2))
 	_G.assert(val, "Missing value add2Table\n" .. _G.debugstack(2, 3, 2))
@@ -138,7 +138,7 @@ function aObj:add2Table(tab, val)
 
 end
 
-function aObj:makeBoolean(var)
+function aObj.makeBoolean(_, var)
 
 	return not not var
 
@@ -261,7 +261,7 @@ end
 local function printIt(text, frame, r, g, b)
 	(frame or _G.DEFAULT_CHAT_FRAME):AddMessage(text, r, g, b)
 end
-function aObj:CustomPrint(r, g, b, ...)
+function aObj.CustomPrint(_, r, g, b, ...)
 
 	printIt(_G.strjoin(" ", _G.WrapTextInColorCode(aName, "ffffff78"), makeText(...)), nil, r, g, b)
 
