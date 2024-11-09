@@ -1023,19 +1023,6 @@ function aObj:removeBackdrop(obj, nop)
 
 end
 
---@debug@
---luacheck: ignore fromhex tohex
-local function fromhex(str)
-	return (str:gsub('..', function (cc)
-		return _G.string.char(_G.tonumber(cc, 16))
-	end))
-end
-local function tohex(str)
-	return (str:gsub('.', function (c)
-		return _G.string.format('%02X', _G.string.byte(c))
-	end))
-end
---@end-debug@
 function aObj:removeColourCodes(text)
 
 	-- N.B. codes checked for are ASCII
