@@ -257,6 +257,7 @@ function aObj:changeHdrExpandTex(reg)
 	reg:ClearAllPoints()
 	reg:SetPoint("RIGHT")
 	reg:SetAlpha(1)
+	reg:SetDesaturated(1) -- make the texture grey
 	self:RawHook(reg, "SetAtlas", function(eReg, tex, useAtlasSize)
 		-- aObj:Debug("changeHdrExpandTex SetAtlas: [%s, %s]", reg, tex)
 		if tex == "Options_ListExpand_Right_Expanded" then -- minus
