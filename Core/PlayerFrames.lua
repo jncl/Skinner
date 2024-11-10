@@ -897,7 +897,6 @@ if not aObj.isClscERA then
 						then
 							aObj:keepFontStrings(element)
 							aObj:changeHdrExpandTex(element.Right)
-							-- TODO: change HighlightTexture
 							element:Initialize(elementData) -- force texture change
 						else
 							element.Content.ReputationBar.LeftTexture:SetAlpha(0)
@@ -967,7 +966,8 @@ if not aObj.isClscERA then
 				self:keepFontStrings(this)
 				self:skinObject("ddbutton", {obj=this.filterDropdown, fType=ftype})
 				self:skinObject("scrollbar", {obj=this.ScrollBar, fType=ftype})
-				local function skinElement(...)
+				local function skinCurrency(...)
+					aObj:Debug("skinCurrency: [%s, %s, %s, %s]", ...)
 					local _, element, elementData, new
 					if _G.select("#", ...) == 2 then
 						element, elementData = ...
@@ -981,8 +981,9 @@ if not aObj.isClscERA then
 							if elementData.currencyListDepth == 0 then
 								aObj:keepFontStrings(element)
 								aObj:changeHdrExpandTex(element.Right)
-								-- TODO: change HighlightTexture
-								element:RefreshCollapseIcon() -- force texture change
+								if element.elementData then -- BUGFIX: #183
+									element:RefreshCollapseIcon() -- force texture change
+								end
 							else
 								if aObj.modBtns then
 									aObj:skinExpandButton{obj=element.ToggleCollapseButton, fType=ftype, onSB=true}
@@ -991,7 +992,7 @@ if not aObj.isClscERA then
 						end
 					end
 				end
-				_G.ScrollUtil.AddAcquiredFrameCallback(this.ScrollBox, skinElement, aObj, true)
+				_G.ScrollUtil.AddAcquiredFrameCallback(this.ScrollBox, skinCurrency, aObj, true)
 				if self.modBtnBs then
 					self:addButtonBorder{obj=this.CurrencyTransferLogToggleButton, fType=ftype}
 				end
