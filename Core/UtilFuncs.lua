@@ -1338,13 +1338,7 @@ function aObj:skinIconSelector(frame, ftype)
 	self:removeNineSlice(frame.BorderBox)
 	frame.BorderBox.SelectedIconArea.SelectedIconButton:DisableDrawLayer("BACKGROUND")
 	self:skinObject("editbox", {obj=frame.BorderBox.IconSelectorEditBox, fType=ftype})
-	if self.isRtl
-	or self.isClscPTR
-	then
-		self:skinObject("ddbutton", {obj=frame.BorderBox.IconTypeDropdown, fType=ftype})
-	else
-		self:skinObject("dropdown", {obj=frame.BorderBox.IconTypeDropDown.DropDownMenu, fType=ftype})
-	end
+	self:skinObject("ddbutton", {obj=frame.BorderBox.IconTypeDropdown, fType=ftype})
 	self:skinObject("scrollbar", {obj=frame.IconSelector.ScrollBar, fType=ftype})
 	self:skinObject("frame", {obj=frame, fType=ftype, ofs=-3, x1=-2})
 	if self.modBtns then

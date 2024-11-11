@@ -878,11 +878,7 @@ aObj.SetupClassic_PlayerFrames = function()
 				self:keepFontStrings(this)
 				self:removeInset(this.sideInset)
 				self:skinObject("editbox", {obj=_G[fName .. "SearchBox"], fType=ftype, si=true})
-				if not aObj.isClscPTR then
-					self:skinObject("dropdown", {obj=_G[fName .. "FilterDropDown"], fType=ftype})
-				else
-					self:skinObject("ddbutton", {obj=this.FilterDropdown, fType=ftype})
-				end
+				self:skinObject("ddbutton", {obj=this.FilterDropdown, fType=ftype})
 				self:skinObject("slider", {obj=_G[fName .. "ScrollFrameScrollBar"], fType=ftype, rpTex="background", x1=2, x2=-3})
 				for i = 1, #_G.GLYPH_TYPE_INFO do
 					self:removeRegions(_G[fName .. "Header" .. i], {1, 2, 3})

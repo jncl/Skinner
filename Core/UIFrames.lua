@@ -406,15 +406,7 @@ if not aObj.isClscERA then
 
 		self:SecureHookScript(_G.CalendarFrame, "OnShow", function(this)
 			_G.CalendarTodayFrame:DisableDrawLayer("BORDER")
-			if self.isRtl
-			or self.isClscPTR
-			then
-				self:skinObject("ddbutton", {obj=this.FilterButton, fType=ftype, filter=true})
-			else
-				self:keepFontStrings(_G.CalendarFilterFrame)
-				self:skinObject("frame", {obj=_G.CalendarContextMenu, fType=ftype}) -- pseudo tooltip
-				self:skinObject("frame", {obj=_G.CalendarInviteStatusContextMenu, fType=ftype}) -- pseudo tooltip
-			end
+			self:skinObject("ddbutton", {obj=this.FilterButton, fType=ftype, filter=true})
 			self:moveObject{obj=_G.CalendarCloseButton, y=14}
 			self:adjHeight{obj=_G.CalendarCloseButton, adj=-2}
 			-- remove texture from day buttons
@@ -482,23 +474,12 @@ if not aObj.isClscERA then
 			self:removeNineSlice(this.Border)
 			_G.CalendarCreateEventIcon:SetAlpha(1) -- show event icon
 			self:skinObject("editbox", {obj=_G.CalendarCreateEventTitleEdit, fType=ftype})
-			if self.isRtl
-			or aObj.isClscPTR
-			then
-				self:skinObject("ddbutton", {obj=this.EventTypeDropdown, fType=ftype})
-				self:skinObject("ddbutton", {obj=this.HourDropdown, fType=ftype})
-				self:skinObject("ddbutton", {obj=this.MinuteDropdown, fType=ftype})
-				self:skinObject("ddbutton", {obj=this.AMPMDropdown, fType=ftype})
-				self:skinObject("ddbutton", {obj=this.DifficultyOptionDropdown, fType=ftype})
-				self:skinObject("ddbutton", {obj=this.CommunityDropdown, fType=ftype})
-			else
-				self:skinObject("dropdown", {obj=_G.CalendarCreateEventCommunityDropDown, fType=ftype})
-				self:skinObject("dropdown", {obj=_G.CalendarCreateEventTypeDropDown, fType=ftype})
-				self:skinObject("dropdown", {obj=_G.CalendarCreateEventHourDropDown, fType=ftype, x2=-6})
-				self:skinObject("dropdown", {obj=_G.CalendarCreateEventMinuteDropDown, fType=ftype, x2=-6})
-				self:skinObject("dropdown", {obj=_G.CalendarCreateEventAMPMDropDown, fType=ftype})
-				self:skinObject("dropdown", {obj=_G.CalendarCreateEventDifficultyOptionDropDown, fType=ftype})
-			end
+			self:skinObject("ddbutton", {obj=this.EventTypeDropdown, fType=ftype})
+			self:skinObject("ddbutton", {obj=this.HourDropdown, fType=ftype})
+			self:skinObject("ddbutton", {obj=this.MinuteDropdown, fType=ftype})
+			self:skinObject("ddbutton", {obj=this.AMPMDropdown, fType=ftype})
+			self:skinObject("ddbutton", {obj=this.DifficultyOptionDropdown, fType=ftype})
+			self:skinObject("ddbutton", {obj=this.CommunityDropdown, fType=ftype})
 			self:skinObject("frame", {obj=_G.CalendarCreateEventDescriptionContainer, fType=ftype, fb=true})
 			self:skinObject("scrollbar", {obj=_G.CalendarCreateEventDescriptionContainer.ScrollBar, fType=ftype})
 			self:keepFontStrings(_G.CalendarCreateEventInviteListSection)
@@ -526,15 +507,8 @@ if not aObj.isClscERA then
 
 		self:SecureHookScript(_G.CalendarMassInviteFrame, "OnShow", function(this)
 			self:removeNineSlice(this.Border)
-			if self.isRtl
-			or aObj.isClscPTR
-			then
-				self:skinObject("ddbutton", {obj=this.CommunityDropdown, fType=ftype})
-				self:skinObject("ddbutton", {obj=this.RankDropdown, fType=ftype})
-			else
-				self:skinObject("dropdown", {obj=_G.CalendarMassInviteCommunityDropDown, fType=ftype})
-				self:skinObject("dropdown", {obj=_G.CalendarMassInviteRankMenu, fType=ftype})
-			end
+			self:skinObject("ddbutton", {obj=this.CommunityDropdown, fType=ftype})
+			self:skinObject("ddbutton", {obj=this.RankDropdown, fType=ftype})
 			self:skinObject("editbox", {obj=_G.CalendarMassInviteMinLevelEdit, fType=ftype})
 			self:skinObject("editbox", {obj=_G.CalendarMassInviteMaxLevelEdit, fType=ftype})
 			self:removeRegions(_G.CalendarMassInviteCloseButton, {5})
@@ -1553,13 +1527,7 @@ if not aObj.isClscERA then
 			-- LFD Queue Frame
 			skinRoleBtns("LFDQueueFrame", true)
 			_G.LFDQueueFrameBackground:SetAlpha(0)
-			if self.isRtl
-			or self.isClscPTR
-			then
-				self:skinObject("ddbutton", {obj=_G.LFDQueueFrame.TypeDropdown, fType=ftype})
-			else
-				self:skinObject("dropdown", {obj=_G.LFDQueueFrameTypeDropDown, fType=ftype})
-			end
+			self:skinObject("ddbutton", {obj=_G.LFDQueueFrame.TypeDropdown, fType=ftype})
 			_G.LFDQueueFrameRandomScrollFrameChildFrame.MoneyReward.NameFrame:SetTexture(nil)
 			self:removeMagicBtnTex(_G.LFDQueueFrameFindGroupButton)
 			self:skinObject("scrollbar", {obj=_G.LFDQueueFrame.Specific.ScrollBar, fType=ftype})
@@ -1866,17 +1834,9 @@ if not aObj.isClscERA then
 				self:skinObject("editbox", {obj=fObj.PvpItemLevel.EditBox, fType=ftype})
 				self:skinObject("editbox", {obj=fObj.PVPRating.EditBox, fType=ftype})
 				self:skinObject("editbox", {obj=fObj.MythicPlusRating.EditBox, fType=ftype})
-				if self.isRtl
-				or self.isClscPTR
-				then
-					self:skinObject("ddbutton", {obj=fObj.GroupDropdown, fType=ftype})
-					self:skinObject("ddbutton", {obj=fObj.ActivityDropdown, fType=ftype})
-					self:skinObject("ddbutton", {obj=fObj.PlayStyleDropdown, fType=ftype})
-				else
-					self:skinObject("dropdown", {obj=fObj.GroupDropDown, fType=ftype})
-					self:skinObject("dropdown", {obj=fObj.ActivityDropDown, fType=ftype})
-					self:skinObject("dropdown", {obj=fObj.PlayStyleDropdown, fType=ftype})
-				end
+				self:skinObject("ddbutton", {obj=fObj.GroupDropdown, fType=ftype})
+				self:skinObject("ddbutton", {obj=fObj.ActivityDropdown, fType=ftype})
+				self:skinObject("ddbutton", {obj=fObj.PlayStyleDropdown, fType=ftype})
 				self:skinObject("frame", {obj=fObj.Description, fType=ftype, kfs=true, fb=true, ofs=6})
 				self:skinObject("editbox", {obj=fObj.ItemLevel.EditBox, fType=ftype})
 				self:skinObject("editbox", {obj=fObj.VoiceChat.EditBox, fType=ftype})
