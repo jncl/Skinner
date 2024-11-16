@@ -2,7 +2,7 @@ local aName, aObj = ...
 
 local _G = _G
 
-function aObj:addBackdrop(obj)
+function aObj.addBackdrop(_, obj)
 
 	if not obj.ApplyBackdrop then
 		_G.Mixin(obj, _G.BackdropTemplateMixin)
@@ -29,7 +29,7 @@ local function __adjHeight(opts)
 		opts.obj:SetHeight(opts.obj:GetHeight() - opts.adj)
 	end
 end
-function aObj:adjHeight(...)
+function aObj.adjHeight(_, ...)
 
 	local opts = _G.select(1, ...)
 
@@ -69,7 +69,7 @@ local function __adjWidth(opts)
 			opts.obj:SetWidth(opts.obj:GetWidth() - opts.adj)
 		end
 end
-function aObj:adjWidth(...)
+function aObj.adjWidth(_, ...)
 
 	local opts = _G.select(1, ...)
 
@@ -242,7 +242,7 @@ function aObj:canSkinActionBtns()
 
 end
 
-function aObj:capitStr(str)
+function aObj.capitStr(_, str)
 
 	return str:sub(1,1):upper() .. str:sub(2):lower()
 
@@ -511,7 +511,7 @@ function aObj:checkLoadable(addonName)
 
 end
 
-function aObj:checkShown(frame)
+function aObj.checkShown(_, frame)
 
 	if frame:IsShown() then
 		frame:Hide()
@@ -555,7 +555,7 @@ end
 
 -- colour Frame border based upon Covenant
 local tKit
-function aObj:clrCovenantBdr(frame, uiTextureKit)
+function aObj.clrCovenantBdr(_, frame, uiTextureKit)
 
 	tKit = uiTextureKit or _G.C_Covenants.GetCovenantData(_G.C_Covenants.GetActiveCovenantID()).textureKit
 	r, g, b = _G.COVENANT_COLORS[tKit]:GetRGB()
@@ -576,7 +576,7 @@ function aObj:clrPNBtns(framePrefix, isObj)
 
 end
 
-function aObj:getChild(obj, childNo)
+function aObj.getChild(_, obj, childNo)
 	--@debug@
 	_G.assert(obj, "Unknown object getChild\n" .. _G.debugstack(2, 3, 2))
 	--@end-debug@
@@ -617,7 +617,7 @@ _G.setmetatable(clrTab, {__index = function(t, k)
 		return aObj.bbClr
 	end
 end})
-function aObj:getColourByName(clrName)
+function aObj.getColourByName(_, clrName)
 
 	return clrTab[clrName]:GetRGBA()
 
@@ -637,7 +637,7 @@ function aObj:getGradientInfo(invert, rotate)
 
 end
 
-function aObj:getInt(num)
+function aObj.getInt(_, num)
 	--@debug@
 	_G.assert(num, "Missing number\n" .. _G.debugstack(2, 3, 2))
 	-- handle AddOn skins still using this code rather than _G.Round
@@ -666,7 +666,7 @@ function aObj:getLastRegion(obj)
 
 end
 
-function aObj:getRegion(obj, regNo)
+function aObj.getRegion(_, obj, regNo)
 	--@debug@
 	_G.assert(obj, "Unknown object getRegion\n" .. _G.debugstack(2, 3, 2))
 	_G.assert(regNo, "Missing value getRegion\n" .. _G.debugstack(2, 3, 2))
@@ -676,7 +676,7 @@ function aObj:getRegion(obj, regNo)
 
 end
 
-function aObj:hasTextInName(obj, text)
+function aObj.hasTextInName(_, obj, text)
 	--@debug@
 	_G.assert(obj, "Unknown object hasTextInName\n" .. _G.debugstack(2, 3, 2))
 	_G.assert(text, "Missing value hasTextInName\n" .. _G.debugstack(2, 3, 2))
@@ -687,7 +687,7 @@ function aObj:hasTextInName(obj, text)
 
 end
 
-function aObj:hasTextInDebugNameRE(obj, text)
+function aObj.hasTextInDebugNameRE(_, obj, text)
 	--@debug@
 	_G.assert(obj, "Unknown object hasTextInName\n" .. _G.debugstack(2, 3, 2))
 	_G.assert(text, "Missing value hasTextInName\n" .. _G.debugstack(2, 3, 2))
@@ -697,7 +697,7 @@ function aObj:hasTextInDebugNameRE(obj, text)
 
 end
 
-function aObj:hasAnyTextInName(obj, tab)
+function aObj.hasAnyTextInName(_, obj, tab)
 	--@debug@
 	_G.assert(obj, "Unknown object hasAnyTextInName\n" .. _G.debugstack(2, 3, 2))
 	_G.assert(tab and _G.type(tab) == "table", "Missing text table hasAnyTextInName\n" .. _G.debugstack(2, 3, 2))
@@ -719,7 +719,7 @@ function aObj:hasAnyTextInName(obj, tab)
 
 end
 
-function aObj:hasTextInTexture(obj, text)
+function aObj.hasTextInTexture(_, obj, text)
 	--@debug@
 	_G.assert(obj, "Unknown object hasTextInTexture\n" .. _G.debugstack(2, 3, 2))
 	_G.assert(text, "Missing value hasTextInTexture\n" .. _G.debugstack(2, 3, 2))
@@ -799,7 +799,7 @@ function aObj:hookScript(obj, method, func)
 
 end
 
-function aObj:isAddOnLoaded(addonName)
+function aObj.isAddOnLoaded(_, addonName)
 	--@debug@
 	_G.assert(addonName, "Unknown object isAddOnLoaded\n" .. _G.debugstack(2, 3, 2))
 	-- handle AddOn skins still using this code rather than _G.C_AddOns.IsAddOnLoaded
@@ -810,7 +810,7 @@ function aObj:isAddOnLoaded(addonName)
 
 end
 
-function aObj:isAddOnLoadOnDemand(addonName)
+function aObj.isAddOnLoadOnDemand(_, addonName)
 	--@debug@
 	_G.assert(addonName, "Unknown object isAddOnLoadOnDemand\n" .. _G.debugstack(2, 3, 2))
 	--@end-debug@
@@ -847,7 +847,7 @@ function aObj:isDropDown(obj)
 
 end
 
-function aObj:keepFontStrings(obj, hide)
+function aObj.keepFontStrings(_, obj, hide)
 	--@debug@
 	_G.assert(obj, "Missing object kFS\n" .. _G.debugstack(2, 3, 2))
 	--@end-debug@
@@ -962,7 +962,7 @@ local function __moveObject(opts)
 	opts.obj:ClearAllPoints()
 	opts.obj:SetPoint(point, relTo, relPoint, xOfs, yOfs)
 end
-function aObj:moveObject(...)
+function aObj.moveObject(_, ...)
 
 	local opts = _G.select(1, ...)
 
@@ -988,7 +988,7 @@ function aObj:moveObject(...)
 
 end
 
-function aObj:nilTexture(obj, nop)
+function aObj.nilTexture(_, obj, nop)
 
 	obj:SetTexture(nil)
 	obj:SetAtlas(nil)
@@ -1008,7 +1008,7 @@ function aObj:rawHook(obj, method, func, sec)
 
 end
 
-function aObj:removeBackdrop(obj, nop)
+function aObj.removeBackdrop(_, obj, nop)
 
 	if obj.ClearBackdrop then
 		obj:ClearBackdrop()
@@ -1024,7 +1024,7 @@ function aObj:removeBackdrop(obj, nop)
 
 end
 
-function aObj:removeColourCodes(text)
+function aObj.removeColourCodes(_, text)
 
 	-- N.B. codes checked for are ASCII
 	if text then
@@ -1062,7 +1062,7 @@ function aObj:removeInset(frame)
 
 end
 
-function aObj:removeMagicBtnTex(btn)
+function aObj.removeMagicBtnTex(_, btn)
 	--@debug@
 	_G.assert(btn, "Unknown object removeMagicBtnTex\n" .. _G.debugstack(2, 3, 2))
 	--@end-debug@
@@ -1076,7 +1076,7 @@ function aObj:removeMagicBtnTex(btn)
 
 end
 
-function aObj:removeNineSlice(frame)
+function aObj.removeNineSlice(_, frame)
 	--@debug@
 	_G.assert(frame, "Unknown object removeNineSlice\n" .. _G.debugstack(2, 3, 2))
 	--@end-debug@
@@ -1127,7 +1127,7 @@ function aObj:rmRegionsTex(obj, regions)
 
 end
 
-function aObj:round2(num, idp)
+function aObj.round2(_, num, idp)
 	--@debug@
 	_G.assert(num, "Missing number\n" .. _G.debugstack(2, 3, 2))
 	--@end-debug@
@@ -1136,7 +1136,7 @@ function aObj:round2(num, idp)
 
 end
 
-function aObj:scanChildren(opts)
+function aObj.scanChildren(_, opts)
 
 	local method = not opts.reversed and _G.ipairs or _G.ipairs_reverse
 	for idx, child in method{opts.obj:GetChildren()} do
@@ -1373,7 +1373,7 @@ function aObj:skinMainHelpBtn(frame)
 
 end
 
-function aObj:skinNavBarButton(btn)
+function aObj.skinNavBarButton(_, btn)
 
 	btn:DisableDrawLayer("OVERLAY")
 	btn:GetNormalTexture():SetAlpha(0)
@@ -1412,7 +1412,7 @@ function aObj:updateSBTexture()
 
 end
 
-function aObj:unwrapTextFromColourCode(text, sOfs, eOfs)
+function aObj.unwrapTextFromColourCode(_, text, sOfs, eOfs)
 
 	local newText = _G.gsub(text, "\124", "\124\124") -- turn Hex string into text
 
@@ -1425,7 +1425,7 @@ function aObj:unwrapTextFromColourCode(text, sOfs, eOfs)
 
 end
 
-function aObj:RaiseFrameLevelByFour(frame)
+function aObj.RaiseFrameLevelByFour(_, frame)
 
 	frame:SetFrameLevel(frame:GetFrameLevel() + 4)
 
