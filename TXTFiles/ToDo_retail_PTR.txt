@@ -6,52 +6,42 @@
 	x				- indicates nothing to change
 	¶ is Alt+7		- indicates localisation changes required
 
-	Retail_PTR (TWW 11.0.2)
+	Retail_PTR (TWW 11.0.7)
 		- Added
-			- UIWidgetTemplateScenarioHeaderDelves
+			- MainMenuBarMicroButtons
+				- SocialsMicroButton
+			- PVEFrame
+				- PlunderstormQueueTutorialFrame
+			- PVPHelper
+				- PlunderstormFramePopup
+			- QuestOfferDataProvider
+			- SuperTrackWaypointDataProvider
 		- Updated
-			- ChallengesUI
+			- Blizzard_AchievementUI
+			- PingKeybindReminder
+			- AD_WorldQuestDataProvider
+			- ArrowCalloutFrame
+			- Blizzard_Calendar
 			- FloatingChatFrame
-			- ClubFinderApplicantList
+			- Blizzard_Wardrobe
+			- CommunitiesFrame
+			- CommunitiesStreams
+			- Blizzard_CompactRaidFrameContainer
 			- Blizzard_CompactRaidFrameManager
-			- DelvesCompanionConfiguration
-			- DelvesDashboardUI
-			- AdventuresFollowerTooltip
-			- CharacterSelect
-			- CharacterServices
-			- EncounterJournal
-			- EventToastManager
-			- FontStyles
-			- GluePartyPoseUI
-			- PlunderstormLobby
-			- LFGFrame
+			- Blizzard_DelvesDashboardUI
+			- FM_QuestDataProvider
+			- FM_WorldQuestDataProvider
+			- Bindings_WoWLabs
+			- GameMenuFrame
 			- MenuTemplates
-			- ScenarioObjectiveTracker
-			- PVPUI
-			- PlayerChoiceNormalOptionTemplate
-			- PlayerSpellsFrame
-			- HeroTalentsSelectionDialog
-			- SpellBookFrame
-			- SpellBookItem
-			- PrivateAurasUI
-			- ProfessionsCrafterOrderPage
-			- ProfessionsCrafterOrderView
-			- ProfessionsTemplates
-			- SettingsPanel
-			- AreaPOIEventDataProvider
-			- DelveEntranceDataProvider
-			- StorylineQuestDataProvider
-			- ColorSwatch
-			- SoulbindsViewer
+			- Blizzard_ObjectiveTrackerShared
+			- Blizzard_PVPUI
+			- Blizzard_PerksProgramElements
+			- Blizzard_PlunderstormBasics
+			- VignetteDataProvider
+			- SpectateFrame
 			- UIPanelTemplates
-			- BankFrame
-			- MapLegendFrame
-			- QuestFrame
-			- ReputationFrame
-			- UIWidgetTemplateBase
-			- WeeklyRewards
+			- PlayerFrame
+			- WM_WorldQuestDataProvider
 		- Deleted
-			- FloatingChatFrameMenus
-			- MoneyFrame
-			- MoneyInputFrame
-			
+			- StorylineQuestDataProvider

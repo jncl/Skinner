@@ -6,8 +6,36 @@ ToDo_classic_era_PTR
 	x				- indicates nothing to change
 	¶ is Alt+7		- indicates localisation changes required
 
-	Classic_Era_PTR (1.14.4)
+	Classic_Era_PTR (1.15.5)
 		- Added
+			- MainMenuBarMicroButtons
+				- SocialsMicroButton
 		- Updated
+			- Blizzard_AchievementUI
+			- Blizzard_BarberShopUI
+			- Blizzard_Calendar
+			- ChannelButton
+			- RosterButton
+			- Blizzard_MountCollection
+			- Blizzard_PetCollection
+			- Blizzard_ToyBox
+			- Blizzard_CommentatorScoreboard
+			- Blizzard_CommentatorSpell
+			- Blizzard_CommentatorSpellTray
+			- Blizzard_EngravingUI
+			- FontStyles
+			- GlowEmitter
+			- AlertFrameSystems
+			- LFGList
+			- Blizzard_ItemSocketingUI
+			- Blizzard_MacroUI
+			- Minimap
+			- WorldQuestDataProvider
+			- Blizzard_ScrollBoxSelector
+			- SharedUIPanelTemplates
+			- GuildRegistrarFrame
+			- BankFrame
+			- Blizzard_WorldMap
+			- Blizzard_WorldMapTemplates
 		- Deleted
 			
