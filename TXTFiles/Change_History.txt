@@ -1,3 +1,25 @@
+beta11.57388.1
+Jncl:
+	Updated ToDo*.txt files
+	Updated Change_History.txt
+	Updated Version numbers
+	Updated TOC
+	Applied Classic & ClassicERA PTR changes
+	Bugfix for PetActionBar
+	Updated LootFrame skin
+	Updated Currency Frame
+	Updated PerksProgram skin
+	Bugfix for PlayerSpellsFrame
+	Updated debug functions
+	Updated scanChildren function
+	Updated changeHdrExpandTex function
+	Updated MonthlyActivitiesFrame, closes #180
+	Updated WardrobeTransmogFrame
+	Updated TokenUI
+	Updated QuestLog detail, closes #182
+	Updated QuestModelScene Frame(s)
+	Updated Baganator, closes #179, Leatrix_Plus & SavedInstances skins
+	Skinned ShadowedUnitFrames
 beta11.56819.1
 Jncl:
 	Updated ToDo files
