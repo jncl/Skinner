@@ -676,7 +676,21 @@ function module.skinStdButton(_, ...)
 
 end
 
-local template, relTo, rpObj
+local rpRegions = {
+	"AutoCastable", "AutoCastShine", "Border", "Count", "Flash", "FlyoutArrow", "HotKey", "IconBorder", "IconQuestTexture", "ItemContextOverlay", "ItemOverlay", "ItemOverlay2", "LevelLinkLockIcon", "Name", "NewActionTexture", "ProfessionQualityOverlay", "searchOverlay", "SpellHighlightTexture", "Stock"
+}
+local function reparentRegion(region, parent)
+	if region
+	and region:GetParent() ~= parent
+	then
+		if region:IsObjectType("Texture")
+		or region:IsObjectType("FontString")
+		then
+			region:SetParent(parent)
+		end
+	end
+end
+local template, relTo
 local function __addButtonBorder(opts)
 	--[[
 		Calling parameters:
@@ -779,58 +793,22 @@ local function __addButtonBorder(opts)
 		opts.obj.sbb:SetAlpha(opts.sba)
 	end
 
-	-- reparent objects
+	-- reparent regions so they are displayed above the button border
+	for _, rpReg in _G.pairs(rpRegions) do
+		reparentRegion(opts.obj[rpReg], opts.obj.sbb)
+	end
+	reparentRegion(opts.obj:GetName() and _G[opts.obj:GetName() .. "Name"], opts.obj.sbb)
+	reparentRegion(opts.obj:GetName() and _G[opts.obj:GetName() .. "Stock"], opts.obj.sbb)
 	if opts.reParent then
-		for _, obj in _G.pairs(opts.reParent) do
-			if obj then
-				obj:SetParent(opts.obj.sbb)
-			end
+		for _, rpObj in _G.pairs(opts.reParent) do
+			reparentRegion(rpObj, opts.obj.sbb)
 		end
 	end
 
-	-- reparent these textures so they are displayed above the border
-	-- & colour the button border
-	if opts.obj.Flash
-	and opts.obj.Flash:GetObjectType() == "Texture" -- N.B. ignore Bagnon AnimationGroup
-	then
-		opts.obj.Flash:SetParent(opts.obj.sbb)
-	end
-	if opts.obj.Name
-	or opts.obj:GetName() and _G[opts.obj:GetName() .. "Name"]
-	then
-		rpObj = opts.obj.Name or _G[opts.obj:GetName() .. "Name"]
-		rpObj:SetParent(opts.obj.sbb)
-	end
-	if opts.obj.Count then
-		opts.obj.Count:SetParent(opts.obj.sbb)
-	end
-	if opts.obj.ItemOverlay then
-		opts.obj.ItemOverlay:SetParent(opts.obj.sbb)
-	end
-	if opts.obj.ItemOverlay2 then
-		opts.obj.ItemOverlay2:SetParent(opts.obj.sbb)
-	end
-	if opts.obj.ProfessionQualityOverlay then
-		opts.obj.ProfessionQualityOverlay:SetParent(opts.obj.sbb)
-	end
+	-- colour the button border
 	if opts.ibt
 	or opts.libt
 	then -- Item Buttons & Large Item Buttons
-		if opts.obj.Stock
-		or opts.obj:GetName() and _G[opts.obj:GetName() .. "Stock"]
-		then
-			rpObj = opts.obj.Stock or _G[opts.obj:GetName() .. "Stock"]
-			rpObj:SetParent(opts.obj.sbb)
-		end
-		if opts.obj.searchOverlay then
-			opts.obj.searchOverlay:SetParent(opts.obj.sbb)
-		end
-		if opts.obj.ItemContextOverlay then
-			opts.obj.ItemContextOverlay:SetParent(opts.obj.sbb)
-		end
-		if opts.obj.IconQuestTexture then
-			opts.obj.IconQuestTexture:SetParent(opts.obj.sbb)
-		end
 		-- N.B. leave subicon/SubIconTexture below .sbb (Classic ERA Engraving)
 		if aObj.isRtl
 		and opts.obj.IconBorder -- NB: Delves Ability button's DON'T have an IconBorder
@@ -840,22 +818,6 @@ local function __addButtonBorder(opts)
 			module:clrBtnBdr(opts.obj, opts.clr or "common", opts.ca or 1)
 		end
 	elseif opts.abt then -- Action Buttons
-		if opts.obj.FlyoutArrow then
-			opts.obj.FlyoutArrow:SetParent(opts.obj.sbb)
-		end
-		opts.obj.HotKey:SetParent(opts.obj.sbb)
-		opts.obj.Border:SetParent(opts.obj.sbb)
-		opts.obj.NewActionTexture:SetParent(opts.obj.sbb)
-		opts.obj.SpellHighlightTexture:SetParent(opts.obj.sbb)
-		if opts.obj.AutoCastable then
-			opts.obj.AutoCastable:SetParent(opts.obj.sbb)
-		end
-		if opts.obj.LevelLinkLockIcon then
-			opts.obj.LevelLinkLockIcon:SetParent(opts.obj.sbb)
-		end
-		if opts.obj.AutoCastShine then
-			opts.obj.AutoCastShine:SetParent(opts.obj.sbb)
-		end
 		module:clrBtnBdr(opts.obj, opts.clr, opts.ca)
 	elseif opts.gibt  -- Giant Item Buttons
 	or opts.cgibt -- Circular Giant Item Buttons
@@ -997,6 +959,7 @@ function module.skinCheckButton(_, ...)
 	end
 
 end
+
 
 --[===[@non-debug@
 --[[
