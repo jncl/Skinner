@@ -2262,31 +2262,22 @@ aObj.SetupRetail_UIFrames = function()
 		end
 
 		if self.prdb.MainMenuBar.skin then
-			local skinActionBtns, skinMultiBarBtns = _G.nop, _G.nop
+			local skinMultiBarBtns = _G.nop
 			if self.modBtnBs then
-				function skinActionBtns(btn)
-					btn.Border:SetAlpha(0) -- texture changed in blizzard code
-					btn.SlotBackground:SetTexture(nil)
-					btn.SlotArt:SetTexture(nil)
-					btn.FlyoutBorderShadow:SetTexture(nil)
-					btn.NormalTexture:SetTexture(nil)
-					if aObj:canSkinActionBtns() then
-						aObj:addButtonBorder{obj=btn, fType=ftype, sabt=true, ofs=3}
-					end
-				end
 				function skinMultiBarBtns(type)
 					local bName
 					for i = 1, _G.NUM_MULTIBAR_BUTTONS do
 						bName = "MultiBar" .. type .. "Button" .. i
-						skinActionBtns(_G[bName])
+						aObj:skinActionBtns(_G[bName], ftype)
 					end
 				end
 			end
 			self:SecureHookScript(_G.MainMenuBar, "OnShow", function(this)
+				this.BorderArt:SetTexture(nil)
 				this.EndCaps:DisableDrawLayer("OVERLAY")
 				if self.modBtnBs then
 					for i = 1, _G.NUM_ACTIONBAR_BUTTONS do
-						skinActionBtns(_G["ActionButton" .. i])
+						self:skinActionBtns(_G["ActionButton" .. i], ftype)
 					end
 					skinMultiBarBtns("BottomLeft")
 					skinMultiBarBtns("BottomRight")
@@ -2333,16 +2324,9 @@ aObj.SetupRetail_UIFrames = function()
 				if self.modBtnBs then
 					self:addButtonBorder{obj=_G.MultiCastSummonSpellButton, sabt=true, ofs=5}
 					self:addButtonBorder{obj=_G.MultiCastRecallSpellButton, sabt=true, ofs=5}
-					local btn
+					-- local btn
 					for i = 1, _G.NUM_MULTI_CAST_PAGES * _G.NUM_MULTI_CAST_BUTTONS_PER_PAGE do
-						btn = _G["MultiCastActionButton" .. i]
-						btn.Border:SetAlpha(0) -- texture changed in blizzard code
-						btn.FlyoutBorder:SetTexture(nil)
-						btn.FlyoutBorderShadow:SetTexture(nil)
-						if aObj:canSkinActionBtns() then
-							_G[btn:GetName() .. "NormalTexture"]:SetTexture(nil)
-							aObj:addButtonBorder{obj=btn, fType=ftype, sabt=true, ofs=3}
-						end
+						self:skinActionBtns(_G["MultiCastActionButton" .. i], ftype)
 					end
 				end
 
@@ -2357,7 +2341,6 @@ aObj.SetupRetail_UIFrames = function()
 				skinMultiBarBtns("6")
 				skinMultiBarBtns("7")
 			end
-
 		end
 
 		-- UnitPowerBarAlt (inc. PlayerPowerBarAlt)
@@ -2404,27 +2387,15 @@ aObj.SetupRetail_UIFrames = function()
 		end
 
 		if self.prdb.MainMenuBar.skin then
-			local skinActionBtns = _G.nop
-			if self.modBtnBs then
-				function skinActionBtns(frame)
-					for _, btn in _G.pairs(frame.actionButtons) do
-						btn.SlotBackground:SetTexture(nil)
-						btn.SlotArt:SetTexture(nil)
-						btn.Border:SetTexture(nil)
-						if aObj:canSkinActionBtns() then
-							aObj:addButtonBorder{obj=btn, fType=ftype, abt=true, sft=true, ofs=3}
-						end
-					end
-				end
-			end
 			for _, frame in _G.pairs{_G.StanceBar, _G.PetActionBar, _G.PossessActionBar} do
 				self:SecureHookScript(frame, "OnShow", function(this)
-					-- handle in combat
 					if _G.InCombatLockdown() then
-					    self:add2Table(self.oocTab, {skinActionBtns, {this}})
+					    self:add2Table(self.oocTab, {self.skinActionBtns, {self, this, ftype}})
 					    return
 					end
-					skinActionBtns(this)
+					for _, btn in _G.pairs(this.actionButtons) do
+						self:skinActionBtns(btn, ftype)
+					end
 
 					self:Unhook(this, "OnShow")
 				end)

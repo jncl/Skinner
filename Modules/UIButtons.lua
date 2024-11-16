@@ -308,6 +308,26 @@ function module:setBtnClr(bObj, quality)
 
 end
 
+function module.skinActionBtns(_, bObj, ftype)
+
+	bObj.SlotBackground:SetTexture(nil)
+	bObj.SlotArt:SetTexture(nil)
+	bObj.FlyoutBorderShadow:SetTexture(nil)
+	bObj.Border:SetAlpha(0) -- texture changed in blizzard code
+	if bObj.FlyoutBorder then
+		bObj.FlyoutBorder:SetTexture(nil)
+	end
+	if aObj:canSkinActionBtns() then
+		if bObj.NormalTexture then
+			bObj.NormalTexture:SetTexture(nil)
+		else
+			_G[bObj:GetName() .. "NormalTexture"]:SetTexture(nil)
+		end
+		module:addButtonBorder{obj=bObj, fType=ftype, sabt=true, ofs=3}
+	end
+
+end
+
 local text
 local function __skinCloseButton(opts)
 	--[[
@@ -1207,6 +1227,7 @@ function module:OnEnable()
 	aObj.skinStdButton       = aObj.modBtns and aObj.modUIBtns.skinStdButton or _G.nop
 	aObj.addButtonBorder     = aObj.modBtnBs and aObj.modUIBtns.addButtonBorder or _G.nop
 	aObj.clrButtonFromBorder = aObj.modBtnBs and aObj.modUIBtns.clrButtonFromBorder or _G.nop
+	aObj.skinActionBtns      = aObj.modBtnBs and aObj.modUIBtns.skinActionBtns or _G.nop
 	aObj.clrBtnBdr           = (aObj.modBtns or aObj.modBtnBs) and aObj.modUIBtns.clrBtnBdr or _G.nop
 	aObj.setBtnClr           = (aObj.modBtns or aObj.modBtnBs) and aObj.modUIBtns.setBtnClr or _G.nop
 	aObj.skinCheckButton     = aObj.modChkBtns and aObj.modUIBtns.skinCheckButton or _G.nop

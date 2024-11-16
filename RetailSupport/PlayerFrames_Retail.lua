@@ -1059,6 +1059,7 @@ aObj.SetupRetail_PlayerFrames = function()
 			end
 
 			local function skinBar(bar)
+				aObj:Debug("skinBar: [%s, %s]", bar, bar.template)
 				if bar.template == "BonusTrackerProgressBarTemplate"
 				or bar.template == "ScenarioProgressBarTemplate"
 				then
