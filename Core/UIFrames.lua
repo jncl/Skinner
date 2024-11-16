@@ -71,6 +71,7 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 	local dontDebug = {
 		["Achievement"]            = true,
 		["Criteria"]               = true,
+		["DungeonCompletion"]      = true,
 		["GarrisonFollower"]       = true,
 		["GarrisonTalent"]         = true,
 		["Loot"]                   = true,

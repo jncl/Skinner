@@ -941,7 +941,6 @@ if not aObj.isClscERA then
 				self:skinObject("ddbutton", {obj=this.filterDropdown, fType=ftype})
 				self:skinObject("scrollbar", {obj=this.ScrollBar, fType=ftype})
 				local function skinCurrency(...)
-					aObj:Debug("skinCurrency: [%s, %s, %s, %s]", ...)
 					local _, element, elementData, new
 					if _G.select("#", ...) == 2 then
 						element, elementData = ...
