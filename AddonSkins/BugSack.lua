@@ -41,9 +41,9 @@ aObj.addonsToSkin.BugSack = function(self) -- v10.2.7
 		self:Unhook(this, "OpenSack")
 	end)
 
-	self.RegisterCallback("BugSack", "IOFPanel_Before_Skinning", function(_, panel)
+	self.RegisterCallback("BugSack", "SettingsPanel_DisplayCategory", function(_, panel)
 		if panel.name ~= "BugSack" then return end
-		self.iofSkinnedPanels[panel] = true
+		self.spSkinnedPanels[panel] = true
 
 		for _, child in _G.ipairs_reverse{panel:GetChildren()} do
 			if child:IsObjectType("CheckButton")
@@ -59,7 +59,7 @@ aObj.addonsToSkin.BugSack = function(self) -- v10.2.7
 			end
 		end
 
-		self.UnregisterCallback("BugSack", "IOFPanel_Before_Skinning")
+		self.UnregisterCallback("BugSack", "SettingsPanel_DisplayCategory")
 	end)
 
 end
