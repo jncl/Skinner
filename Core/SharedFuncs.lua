@@ -89,9 +89,9 @@ function aObj:checkWoWVersion()
 
 	--@debug@
 	self:Printf("%s, %d, %d, %s, %d, %s, %d, %s", buildInfo[agentUID][1], buildInfo[agentUID][2], self.tocVer, buildInfo.curr[1], buildInfo.curr[2], buildInfo.curr[3], buildInfo.curr[4] , agentUID)
-	local vType = _G.strjoin(" ", buildInfo[agentUID][3], "version", self.isPatch and "(Patched)" or "")
-	_G.DEFAULT_CHAT_FRAME:AddMessage(_G.strjoin(" ", aName, ": Detected that we're running on a", vType), 0.75, 0.5, 0.25, nil, true)
-	self:Debug(_G.strjoin(" ", "detected", vType))
+	local vType = _G.strjoin(" ", agentUID, self.isPatch and "(Patched)" or "")
+	_G.DEFAULT_CHAT_FRAME:AddMessage(_G.strjoin(" ", aName, ": Game version is:", buildInfo[agentUID][3]), 0.75, 0.5, 0.25, nil, true)
+	-- _G.DEFAULT_CHAT_FRAME:AddMessage(_G.strjoin(" ", aName, ": Game version is:", vType), 0.75, 0.5, 0.25, nil, true)
 	--@end-debug@
 
 end
