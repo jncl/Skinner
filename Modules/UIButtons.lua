@@ -104,7 +104,7 @@ local function __checkTex(opts)
 			end
 		else
 			for str, type in _G.pairs(texSuffixes) do
-				if nTex:find(str:lower()) then
+				if nTex:lower():find(str) then
 					btn:SetText(module[type])
 					btn:Show()
 					header = true
