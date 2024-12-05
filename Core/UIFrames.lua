@@ -2275,18 +2275,18 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 	local ignBtn = {
 		["OQ_MinimapButton"] = true,
 	}
-	if not self.isRtl then
-		ignBtn["GameTimeFrame"]               = true
-		ignBtn["MiniMapTrackingFrame"]        = true -- ClassicERA
-		ignBtn["MiniMapTracking"]             = true -- Classic
-		ignBtn["MiniMapWorldMapButton"]       = true
-		ignBtn["MiniMapLFGFrame"]             = true
-		ignBtn["MinimapZoomIn"]               = true
-		ignBtn["MinimapZoomOut"]              = true
-	else
+	if self.isRtl then
 		ignBtn["ExpansionLandingPageMinimapButton"] = true
 		ignBtn[_G.Minimap.ZoomIn]                   = true
 		ignBtn[_G.Minimap.ZoomOut]                  = true
+	else
+		ignBtn["MinimapZoomIn"]                     = true
+		ignBtn["MinimapZoomOut"]                    = true
+		ignBtn["GameTimeFrame"]                     = true
+		ignBtn["MiniMapTracking"]                   = true
+		ignBtn["MiniMapWorldMapButton"]             = true
+		ignBtn["LFGMinimapFrame"]                   = true -- ClassicERA
+		ignBtn["MiniMapLFGFrame"]                   = true -- Classic
 	end
 	local function mmKids(mmObj)
 		local objName, objType
@@ -2333,72 +2333,26 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 			end
 		end
 	end
-	local function makeBtnSquare(obj, x1, y1, x2, y2)
-		obj:SetSize(26, 26)
-		obj:GetNormalTexture():SetTexCoord(x1, y1, x2, y2)
-		obj:GetPushedTexture():SetTexCoord(x1, y1, x2, y2)
-		obj:SetHighlightTexture(aObj.tFDIDs.bHLS)
-		obj:SetHitRectInsets(-5, -5, -5, -5)
-		if not minBtn then
-			aObj:skinObject("button", {obj=obj, fType=ftype, ng=true, bd=obj==_G.GameTimeFrame and 10 or 1, ofs=4})
-		end
-	end
-
-	if self.isClscERA then
-		-- remove ring from GameTimeFrame texture
-		self:RawHook(_G.GameTimeTexture, "SetTexCoord", function(this, minx, maxx, miny, maxy)
-			self.hooks[this].SetTexCoord(this, minx + 0.075, maxx - 0.075, miny + 0.175, maxy - 0.2)
-		end, true)
-		_G.C_Timer.After(0.25, function()
-			_G.GameTimeFrame:SetSize(28, 28)
-			self:moveObject{obj=_G.GameTimeFrame, x=-6, y=-2}
-			_G.GameTimeFrame.timeOfDay = 0
-			if not minBtn then
-				self:skinObject("frame", {obj=_G.GameTimeFrame, fType=ftype, ng=true, ofs=4})
-			end
-			_G.GameTimeFrame_Update(_G.GameTimeFrame)
-		end)
-		_G.MiniMapTrackingBorder:SetTexture(nil)
-	else
-		if self.isClsc then
-			-- Calendar button
-			makeBtnSquare(_G.GameTimeFrame, 0.1, 0.31, 0.16, 0.6)
-			_G.GameTimeFrame:SetNormalFontObject(_G.GameFontWhite) -- allow for font OUTLINE to be seen
-			_G.MiniMapTrackingBackground:SetTexture(nil)
-			_G.MiniMapTrackingButtonBorder:SetTexture(nil)
-			self:moveObject{obj=_G.MiniMapTracking, x=-4}
-			if not minBtn then
-				_G.MiniMapTracking:SetScale(0.9)
-				self:skinObject("frame", {obj=_G.MiniMapTrackingButton, fType=ftype, bd=10, ofs=0})
-				-- TODO: Background alpha is 0
-			end
-			_G.MiniMapBattlefieldFrame:SetSize(28, 28)
-		end
-		-- skin any moved Minimap buttons if required
-		if _G.C_AddOns.IsAddOnLoaded("MinimapButtonFrame") then
-			mmKids(_G.MinimapButtonFrame)
-		end
-		-- show the Bongos minimap icon if required
-		if _G.C_AddOns.IsAddOnLoaded("Bongos") then
-			_G.Bongos3MinimapButton.icon:SetDrawLayer("ARTWORK")
-		end
-	end
 
 	_G.MiniMapMailIcon:SetTexture(self.tFDIDs.tMB)
 	_G.MiniMapMailIcon:ClearAllPoints()
-	if not self.isRtl then
+	if self.isRtl then
+		_G.MiniMapMailIcon:SetPoint("CENTER", _G.MinimapCluster.MailFrame)
+		_G.ExpansionLandingPageMinimapButton.AlertBG:SetTexture(nil)
+		local anchor = _G.AnchorUtil.CreateAnchor("TOPLEFT", "MinimapBackdrop", "TOPLEFT", -10, -200)
+		anchor:SetPoint(_G.ExpansionLandingPageMinimapButton, true)
+		self:SecureHook(_G.ExpansionLandingPageMinimapButton, "UpdateIconForGarrison", function(this)
+			anchor:SetPoint(this, true)
+		end)
+		self:SecureHook(_G.ExpansionLandingPageMinimapButton, "SetLandingPageIconOffset", function(this, _)
+			anchor:SetPoint(this, true)
+		end)
+	else
 		_G.MiniMapMailIcon:SetPoint("CENTER", _G.MiniMapMailFrame)
 		_G.MiniMapMailFrame:SetSize(26, 26)
 		self:moveObject{obj=_G.MiniMapMailFrame, y=-4}
-		_G.MiniMapWorldBorder:SetTexture(nil)
-		_G.MiniMapWorldMapButton:ClearAllPoints()
-		_G.MiniMapWorldMapButton:SetPoint("LEFT", _G.MinimapZoneTextButton, "RIGHT", -4, 0)
-		self:skinOtherButton{obj=_G.MiniMapWorldMapButton, font=self.fontP, text="M", noSkin=minBtn}
-		if _G.C_AddOns.IsAddOnLoaded("SexyMap")
-		or self.isClsc
-		then
-			_G.MiniMapWorldMapButton:DisableDrawLayer("OVERLAY") -- border texture
-		end
+		_G.MiniMapBattlefieldFrame:SetSize(28, 28)
+		self:moveObject{obj=_G.MiniMapTracking, x=-8}
 		-- Zoom Buttons
 		local btn, txt, xOfs, yOfs
 		for _, suff in _G.pairs{"In", "Out"} do
@@ -2436,25 +2390,60 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 				self:RegisterEvent("MINIMAP_UPDATE_ZOOM", clrZoomBtns)
 			end
 		end
-	else
-		_G.MiniMapMailIcon:SetPoint("CENTER", _G.MinimapCluster.MailFrame)
-		_G.ExpansionLandingPageMinimapButton.AlertBG:SetTexture(nil)
-		local anchor = _G.AnchorUtil.CreateAnchor("TOPLEFT", "MinimapBackdrop", "TOPLEFT", -10, -200)
-		anchor:SetPoint(_G.ExpansionLandingPageMinimapButton, true)
-		self:SecureHook(_G.ExpansionLandingPageMinimapButton, "UpdateIconForGarrison", function(this)
-			anchor:SetPoint(this, true)
-		end)
-		self:SecureHook(_G.ExpansionLandingPageMinimapButton, "SetLandingPageIconOffset", function(this, _)
-			anchor:SetPoint(this, true)
-		end)
+		if self.isClscERA then
+			-- remove ring from GameTimeFrame texture
+			self:RawHook(_G.GameTimeTexture, "SetTexCoord", function(this, minx, maxx, miny, maxy)
+				self.hooks[this].SetTexCoord(this, minx + 0.075, maxx - 0.075, miny + 0.175, maxy - 0.2)
+			end, true)
+			_G.C_Timer.After(0.25, function()
+				_G.GameTimeFrame:SetSize(28, 28)
+				self:moveObject{obj=_G.GameTimeFrame, x=-6, y=-2}
+				_G.GameTimeFrame.timeOfDay = 0
+				if not minBtn then
+					self:skinObject("frame", {obj=_G.GameTimeFrame, fType=ftype, ng=true, ofs=4})
+				end
+				_G.GameTimeFrame_Update(_G.GameTimeFrame)
+			end)
+			_G.MiniMapTrackingBorder:SetTexture(nil)
+			self:addButtonBorder{obj=_G.MiniMapTracking, fType=ftype, bd=10, ofs=1, x1=3, y1=-3}
+			self:moveObject{obj=_G.MiniMapTracking, x=-2}
+			self:skinObject("frame", {obj=_G.LFGMinimapFrame, fType=ftype, kfs=true, ofs=-1})
+			self:moveObject{obj=_G.LFGMinimapFrame, x=-30, y=6}
+		else
+			if self.isClsc then
+				local function makeBtnSquare(obj, x1, y1, x2, y2)
+					obj:SetSize(26, 26)
+					obj:GetNormalTexture():SetTexCoord(x1, y1, x2, y2)
+					obj:GetPushedTexture():SetTexCoord(x1, y1, x2, y2)
+					obj:SetHighlightTexture(aObj.tFDIDs.bHLS)
+					obj:SetHitRectInsets(-5, -5, -5, -5)
+					if not minBtn then
+						aObj:skinObject("button", {obj=obj, fType=ftype, ng=true, bd=obj==_G.GameTimeFrame and 10 or 1, ofs=4})
+					end
+				end
+				-- Calendar button
+				makeBtnSquare(_G.GameTimeFrame, 0.1, 0.31, 0.16, 0.6)
+				_G.GameTimeFrame:SetNormalFontObject(_G.GameFontWhite) -- allow for font OUTLINE to be seen
+				_G.MiniMapTrackingBackground:SetTexture(nil)
+				_G.MiniMapTrackingButtonBorder:SetTexture(nil)
+				if not minBtn then
+					_G.MiniMapTracking:SetScale(0.9)
+					self:skinObject("frame", {obj=_G.MiniMapTrackingButton, fType=ftype, bd=10, ofs=0})
+					-- TODO: Background alpha is 0
+				end
+				self:skinObject("frame", {obj=_G.MiniMapLFGFrame, fType=ftype, kfs=true, ofs=0})
+				_G.MiniMapWorldBorder:SetTexture(nil)
+				_G.MiniMapWorldMapButton:DisableDrawLayer("OVERLAY") -- border texture
+				_G.MiniMapWorldMapButton:ClearAllPoints()
+				_G.MiniMapWorldMapButton:SetPoint("LEFT", _G.MinimapZoneTextButton, "RIGHT", -4, 0)
+				self:skinOtherButton{obj=_G.MiniMapWorldMapButton, font=self.fontP, text="M", noSkin=minBtn}
+			end
+		end
 	end
 	_G.TimeManagerClockButton:DisableDrawLayer("BORDER")
 	_G.TimeManagerClockButton:SetSize(36, 14)
 	if not _G.C_AddOns.IsAddOnLoaded("SexyMap") then
 		self:moveObject{obj=_G.TimeManagerClockTicker, x=-3, y=-1}
-	end
-	if self.isClsc then
-		self:skinObject("frame", {obj=_G.MiniMapLFGFrame, fType=ftype, kfs=true, ofs=0})
 	end
 
 	-- skin Minimap children, allow for delayed addons to be loaded (e.g. Baggins)
@@ -2487,6 +2476,15 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 			end
 		end
 	end)
+
+	-- skin any moved Minimap buttons if required
+	if _G.C_AddOns.IsAddOnLoaded("MinimapButtonFrame") then
+		mmKids(_G.MinimapButtonFrame)
+	end
+	-- show the Bongos minimap icon if required
+	if _G.C_AddOns.IsAddOnLoaded("Bongos") then
+		_G.Bongos3MinimapButton.icon:SetDrawLayer("ARTWORK")
+	end
 
 	local function skinDBI(_, dbiBtn, name)
 		dbiBtn:SetSize(24, 24)
