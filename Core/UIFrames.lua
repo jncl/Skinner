@@ -1896,6 +1896,96 @@ if not aObj.isClscERA then
 		end)
 
 	end
+elseif _G.C_LFGList.GetPremadeGroupFinderStyle
+and _G.C_LFGList.GetPremadeGroupFinderStyle() == _G.Enum.PremadeGroupFinderStyle.Vanilla then
+	aObj.blizzFrames[ftype].GroupFinder = function(self)
+		if not self.prdb.PVEFrame or self.initialized.LFGList then return end
+		self.initialized.LFGList = true
+
+		self:SecureHookScript(_G.LFGParentFrame, "OnShow", function(this)
+			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, ignoreSize=true, lod=self.isTT and true})
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ofs=-11, x2=-29, y2=70})
+			if self.modBtns then
+				self:skinCloseButton{obj=self:getChild(this, 1), fType=ftype}
+			end
+
+			self:Unhook(this, "OnShow")
+		end)
+
+		self:SecureHookScript(_G.LFGListingFrame, "OnShow", function(this)
+			self:keepFontStrings(this)
+			for _, btn in _G.pairs(this.SoloRoleButtons.RoleButtons) do
+				btn.Background:SetTexture(nil)
+				if self.modChkBtns then
+					self:skinCheckButton{obj=btn.CheckButton, fType=ftype}
+				end
+				self:skinCheckButton{obj=this.NewPlayerFriendlyButton.CheckButton, fType=ftype}
+			end
+			this.GroupRoleButtons.RoleIcon.Background:SetTexture(nil)
+			-- .RoleDropDown
+			if self.modBtns then
+				self:skinStdButton{obj=this.BackButton, fType=ftype, sechk=true}
+				self:skinStdButton{obj=this.PostButton, fType=ftype, sechk=true}
+				self:skinStdButton{obj=this.GroupRoleButtons.RolePollButton, fType=ftype, schk=true}
+			end
+
+			self:SecureHookScript(this.CategoryView, "OnShow", function(fObj)
+				for _, btn in _G.pairs(fObj.CategoryButtons) do
+					btn.Cover:SetTexture(nil)
+				end
+
+				self:Unhook(fObj, "OnShow")
+			end)
+			self:checkShown(this.CategoryView)
+
+			self:SecureHookScript(this.ActivityView, "OnShow", function(fObj)
+				fObj:DisableDrawLayer("OVERLAY")
+				self:skinObject("scrollbar", {obj=fObj.ScrollBar, fType=ftype})
+				local function skinElement(...)
+					local _, element
+					if _G.select("#", ...) == 2 then
+						element, _ = ...
+					else
+						_, element, _ = ...
+					end
+					if aObj.modBtns then
+						aObj:skinExpandButton{obj=element.ExpandOrCollapseButton, fType=ftype, onSB=true}
+					end
+					if aObj.modChkBtns then
+						aObj:skinCheckButton{obj=element.CheckButton, fType=ftype}
+					end
+				end
+				_G.ScrollUtil.AddInitializedFrameCallback(fObj.ScrollBox, skinElement, aObj, true)
+				self:skinObject("frame", {obj=fObj.Comment, fType=ftype, kfs=true, fb=true, ofs=6})
+				fObj.Comment.EditBox.Instructions:SetTextColor(self.BT:GetRGB())
+
+				self:Unhook(fObj, "OnShow")
+			end)
+
+			self:Unhook(this, "OnShow")
+		end)
+
+		self:SecureHookScript(_G.LFGBrowseFrame, "OnShow", function(this)
+			self:keepFontStrings(this)
+			self:skinObject("dropdown", {obj=this.CategoryDropDown, fType=ftype})
+			self:skinObject("dropdown", {obj=this.ActivityDropDown, fType=ftype})
+			self:skinObject("scrollbar", {obj=this.ScrollBar, fType=ftype})
+			if self.modBtns then
+				self:skinStdButton{obj=this.SendMessageButton, fType=ftype, sechk=true}
+				self:skinStdButton{obj=this.GroupInviteButton, fType=ftype, sechk=true}
+			end
+			if self.modBtnBs then
+				self:addButtonBorder{obj=this.RefreshButton, fType=ftype, clr="gold", ofs=-2, x1=1}
+			end
+			-- tooltip
+			_G.C_Timer.After(0.1, function()
+			    self:add2Table(self.ttList, _G.LFGBrowseSearchEntryTooltip)
+			end)
+
+			self:Unhook(this, "OnShow")
+		end)
+
+	end
 end
 
 aObj.blizzLoDFrames[ftype].MacroUI = function(self)

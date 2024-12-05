@@ -1333,7 +1333,7 @@ aObj.SetupOptions = function(self)
 		["Navigation Bar"]        = not self.isClscERA and true or nil,
 		["Override Action Bar"]   = not self.isClscERA and {desc = "Vehicle UI"} or nil,
 		["PTR Feedback"]          = _G.PTR_IssueReporter and {suff = "Frames"} or nil,
-		["PVE Frame"]             = not self.isClscERA and {desc = "Group Finder Frame"} or nil,
+		["PVE Frame"]             = self.isClscERA and {desc = "Looking for Group"} or {desc = "Group Finder Frame"},
 		["Queue Status Frame"]    = true,
 		["Raid Frame"]            = true,
 		["Report Frame"]          = true,
