@@ -833,6 +833,7 @@ local function __skinCheckButton(opts)
 			nc    = don't check to see if already skinned
 			hf    = hook show/hide functions
 			sechk = set enabled check for colour changes
+			ignNT = ignore NormalTexture checks (WoWPro uses bespoke textures)
 	--]]
 	--@debug@
 	_G.assert(opts.obj, "Missing object __sCB\n" .. _G.debugstack(2, 3, 2))
@@ -847,12 +848,14 @@ local function __skinCheckButton(opts)
 	end
 
 	-- check to see if it's a 'real' CheckButton
-	if not opts.obj.GetNormalTexture
-	or not aObj:hasTextInTexture(opts.obj:GetNormalTexture(), "CheckBox")
-	and not aObj:hasTextInTexture(opts.obj:GetNormalTexture(), aObj.tFDIDs.cbUP)
-	and not aObj:hasTextInTexture(opts.obj:GetNormalTexture(), aObj.tFDIDs.cbMin) -- Settings CheckButton
-	then
-		return
+	if not opts.ignNT then
+		if not opts.obj.GetNormalTexture
+		or not aObj:hasTextInTexture(opts.obj:GetNormalTexture(), "CheckBox")
+		and not aObj:hasTextInTexture(opts.obj:GetNormalTexture(), aObj.tFDIDs.cbUP)
+		and not aObj:hasTextInTexture(opts.obj:GetNormalTexture(), aObj.tFDIDs.cbMin) -- Settings CheckButton
+		then
+			return
+		end
 	end
 
 	if not aObj.isClscERA then
