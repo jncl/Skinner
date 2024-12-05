@@ -1695,7 +1695,7 @@ aObj.SetupRetail_PlayerFrames = function()
 					else
 						_, element, _ = ...
 					end
-					element.ItemContainer.NameFrame:SetTexture(nil)
+					element.ItemContainer.NameFrame:SetAlpha(0)
 					element.ItemContainer.BorderFrame:SetAlpha(0)
 					if aObj.modBtnBs then
 						aObj:addButtonBorder{obj=element.ItemContainer.Item, fType=ftype, ibt=true}
