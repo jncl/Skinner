@@ -10,6 +10,8 @@ ToDo_classic_era_PTR
 		- Added
 			- MainMenuBarMicroButtons
 				- SocialsMicroButton
+√			- GuildEventLogFrame
+√			- GroupFinder
 		- Updated
 			- Blizzard_AchievementUI
 			- Blizzard_BarberShopUI
@@ -26,10 +28,10 @@ ToDo_classic_era_PTR
 			- FontStyles
 			- GlowEmitter
 			- AlertFrameSystems
-			- LFGList
+√			- LFGList
 			- Blizzard_ItemSocketingUI
-			- Blizzard_MacroUI
-			- Minimap
+x			- Blizzard_MacroUI
+√			- Minimap
 			- WorldQuestDataProvider
 			- Blizzard_ScrollBoxSelector
 			- SharedUIPanelTemplates

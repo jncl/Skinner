@@ -29,6 +29,7 @@
 			- Blizzard_CompactRaidFrameContainer
 			- Blizzard_CompactRaidFrameManager
 			- Blizzard_DelvesDashboardUI
+√			- ItemSocketingUI
 			- FM_QuestDataProvider
 			- FM_WorldQuestDataProvider
 			- Bindings_WoWLabs

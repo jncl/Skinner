@@ -30,7 +30,8 @@ ToDos
 
 #181 ?	I 	BonusRollFrame, SavedInstances BonusRollFrame
 
-#183 √	I 	TokenUI collapsed category error
+#186 √	I/C	QuestInfo
 
-#184 √	I/C	GuildMemberDetailFrame error
-#185 √	I/C CalendarFrame error
+#187 √	I/E GuildEventLogFrame is not being skinned.
+
+#188 √	I/E LFGParentFrame is not being skinned.
