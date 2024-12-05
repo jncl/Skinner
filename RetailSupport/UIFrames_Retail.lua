@@ -2295,13 +2295,13 @@ aObj.SetupRetail_UIFrames = function()
 					elseif bar.priority == 1 then -- Rep bar
 						bar.StatusBar:SetStatusBarColor(aObj:getColourByName("light_blue"))
 					elseif bar.priority == 2 then -- Honor bar
-						bar.StatusBar:SetStatusBarColor(self:getColourByName("blue"))
+						bar.StatusBar:SetStatusBarColor(aObj:getColourByName("blue"))
 					elseif bar.priority == 3 then -- XP bar
 						bar.ExhaustionTick:GetNormalTexture():SetTexture(nil)
 						bar.ExhaustionTick:GetHighlightTexture():SetTexture(nil)
 						bar.ExhaustionLevelFillBar:SetTexture(aObj.sbTexture)
 						bar.ExhaustionLevelFillBar:SetVertexColor(aObj:getColourByName("bright_blue"))
-						bar.StatusBar:SetStatusBarColor(self:getColourByName("blue"))
+						bar.StatusBar:SetStatusBarColor(aObj:getColourByName("blue"))
 					elseif bar.priority == 4 then -- Artifact bar
 						bar.Tick:GetNormalTexture():SetTexture(nil)
 						bar.Tick:GetHighlightTexture():SetTexture(nil)

@@ -2,14 +2,16 @@
 ../../FrameXML/UI.xsd">
 
 <Script file="SharedFuncs.lua"/>
-<Script file="UtilFuncs.lua"/>
 <Script file="Skinner.lua"/>
+
+<Script file="AddonFrames.lua"/>
+<Script file="ColourFuncs.lua"/>
 <Script file="MainFuncs.lua"/>
 <Script file="NewSkinFuncs.lua"/>
-<Script file="Options.lua"/>
-<Script file="AddonFrames.lua"/>
 <Script file="NPCFrames.lua"/>
+<Script file="Options.lua"/>
 <Script file="PlayerFrames.lua"/>
 <Script file="UIFrames.lua"/>
+<Script file="UtilFuncs.lua"/>
 
 </Ui>

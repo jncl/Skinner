@@ -193,50 +193,6 @@ function module:chgHLTex(obj, hTex)
 
 end
 
-local iBdr
-function module:clrButtonFromBorder(bObj, texture)
-
-	-- handle in combat
-	if _G.InCombatLockdown() then
-		aObj:add2Table(aObj.oocTab, {self.clrButtonFromBorder, {self, bObj, texture}})
-		return
-	end
-
-	--@debug@
-	 _G.assert(bObj and bObj.sbb, "Missing object cBFB\n" .. _G.debugstack(2, 3, 2))
-	--@end-debug@
-	iBdr = bObj[texture] or bObj.IconBorder or bObj.iconBorder
-	--@debug@
-	 _G.assert(iBdr, "Missing border Texture cBFB\n" .. _G.debugstack(2, 3, 2))
-	--@end-debug@
-
-	if iBdr then
-		iBdr:SetAlpha(1) -- ensure alpha is 1 otherwise btn.sbb isn't displayed
-		-- use the colour of the item's border as the BackdropBorderColor if shown
-		if iBdr:IsShown() then
-			bObj.sbb:SetBackdropBorderColor(iBdr:GetVertexColor())
-		else
-			module:clrBtnBdr(bObj, "grey", 0.75)
-		end
-		iBdr:SetAlpha(0)
-	end
-
-end
-
-function module:clrBtnBdr(bObj, clrName, alpha)
-
-	-- handle in combat
-	if _G.InCombatLockdown() then
-	    aObj:add2Table(aObj.oocTab, {self.clrBtnBdr, {self, bObj, clrName, alpha}})
-	    return
-	end
-
-	-- check button state and alter colour accordingly
-	clrName = bObj.IsEnabled and not bObj:IsEnabled() and "disabled" or clrName
-	aObj:clrBBC(bObj.sbb or bObj.sb or bObj, clrName, alpha)
-
-end
-
 local bType
 function module.isButton(_, obj)
 
@@ -276,35 +232,6 @@ function module.isButton(_, obj)
 	end
 
 	return bType
-
-end
-
-function module:setBtnClr(bObj, quality)
-
-	-- handle in combat
-	if _G.InCombatLockdown() then
-	    aObj:add2Table(aObj.oocTab, {self.setBtnClr, {self, bObj, quality}})
-	    return
-	end
-
-	if bObj.sbb then
-		if quality then
-			if _G.BAG_ITEM_QUALITY_COLORS[quality] then
-				bObj.sbb:SetBackdropBorderColor(_G.BAG_ITEM_QUALITY_COLORS[quality].r, _G.BAG_ITEM_QUALITY_COLORS[quality].g, _G.BAG_ITEM_QUALITY_COLORS[quality].b, 1)
-			else
-				module:clrBtnBdr(bObj, "grey", 0.75)
-			end
-		else
-			if _G.TradeSkillFrame
-			and _G.TradeSkillFrame.DetailsFrame
-			and bObj == _G.TradeSkillFrame.DetailsFrame.Contents.ResultIcon
-			then
-				module:clrBtnBdr(bObj, "normal", 1)
-			else
-				module:clrBtnBdr(bObj, "grey", 0.75)
-			end
-		end
-	end
 
 end
 
@@ -370,15 +297,15 @@ local function __skinCloseButton(opts)
 			opts.y2 = opts.y2 or bW == 32 and 6 or 4
 			aObj:skinObject("button", {obj=opts.obj, fType=opts.ftype, bd=5, x1=opts.x1, y1=opts.y1, x2=opts.x2, y2=opts.y2})
 		end
-		module:clrBtnBdr(opts.obj, opts.clr, opts.ca)
+		aObj:clrBtnBdr(opts.obj, opts.clr, opts.ca)
 		if opts.schk then
 			opts.obj.sb.clr = opts.clr
 			opts.obj.sb.ca = opts.ca
 			aObj:SecureHook(opts.obj, "Disable", function(bObj, _)
-				module:clrBtnBdr(bObj)
+				aObj:clrBtnBdr(bObj)
 			end)
 			aObj:SecureHook(opts.obj, "Enable", function(bObj, _)
-				module:clrBtnBdr(bObj, bObj.sb.clr, bObj.sb.ca)
+				aObj:clrBtnBdr(bObj, bObj.sb.clr, bObj.sb.ca)
 			end)
 		end
 		if opts.onSB then -- Ace3, ArkInventory & BNToastFrame
@@ -655,19 +582,19 @@ local function __skinStdButton(opts)
 		module:chgHLTex(opts.obj, opts.obj:GetHighlightTexture())
 	end
 
-	module:clrBtnBdr(opts.obj, opts.clr, opts.ca)
+	aObj:clrBtnBdr(opts.obj, opts.clr, opts.ca)
 
 	if opts.schk then
 		aObj:SecureHook(opts.obj, "Disable", function(bObj, _)
-			module:clrBtnBdr(bObj)
+			aObj:clrBtnBdr(bObj)
 		end)
 		aObj:SecureHook(opts.obj, "Enable", function(bObj, _)
-			module:clrBtnBdr(bObj, bObj.sb and bObj.sb.clr or bObj.clr, bObj.sb and bObj.sb.ca or bObj.ca)
+			aObj:clrBtnBdr(bObj, bObj.sb and bObj.sb.clr or bObj.clr, bObj.sb and bObj.sb.ca or bObj.ca)
 		end)
 	end
 	if opts.sechk then
 		aObj:SecureHook(opts.obj, "SetEnabled", function(bObj)
-			module:clrBtnBdr(bObj, bObj.sb and bObj.sb.clr or bObj.clr, bObj.sb and bObj.sb.ca or bObj.ca)
+			aObj:clrBtnBdr(bObj, bObj.sb and bObj.sb.clr or bObj.clr, bObj.sb and bObj.sb.ca or bObj.ca)
 		end)
 	end
 end
@@ -833,34 +760,34 @@ local function __addButtonBorder(opts)
 		if aObj.isRtl
 		and opts.obj.IconBorder -- NB: Delves Ability button's DON'T have an IconBorder
 		then
-			module:clrButtonFromBorder(opts.obj)
+			aObj:clrButtonFromBorder(opts.obj)
 		else
-			module:clrBtnBdr(opts.obj, opts.clr or "common", opts.ca or 1)
+			aObj:clrBtnBdr(opts.obj, opts.clr or "common", opts.ca or 1)
 		end
 	elseif opts.abt then -- Action Buttons
-		module:clrBtnBdr(opts.obj, opts.clr, opts.ca)
+		aObj:clrBtnBdr(opts.obj, opts.clr, opts.ca)
 	elseif opts.gibt  -- Giant Item Buttons
 	or opts.cgibt -- Circular Giant Item Buttons
 	then
-		module:clrButtonFromBorder(opts.obj)
+		aObj:clrButtonFromBorder(opts.obj)
 	else
 		if _G.type(opts.clr) == "table" then
 			opts.obj.sbb:SetBackdropBorderColor(_G.unpack(opts.clr))
 		else
-			module:clrBtnBdr(opts.obj, opts.clr, opts.ca)
+			aObj:clrBtnBdr(opts.obj, opts.clr, opts.ca)
 		end
 	end
 
 	-- hook these as required
 	if opts.schk then
 		aObj:secureHook(opts.obj, "Disable", function(bObj, _)
-			module:clrBtnBdr(bObj)
+			aObj:clrBtnBdr(bObj)
 		end)
 		-- store colour and alpha values with the skin button
 		opts.obj.sbb.clr = opts.clr
 		opts.obj.sbb.ca = opts.ca
 		aObj:secureHook(opts.obj, "Enable", function(bObj, _)
-			module:clrBtnBdr(bObj, bObj.sbb.clr, bObj.sbb.ca)
+			aObj:clrBtnBdr(bObj, bObj.sbb.clr, bObj.sbb.ca)
 		end)
 	end
 	if opts.sechk then
@@ -868,7 +795,7 @@ local function __addButtonBorder(opts)
 		opts.obj.sbb.clr = opts.clr
 		opts.obj.sbb.ca = opts.ca
 		aObj:secureHook(opts.obj, "SetEnabled", function(bObj)
-			module:clrBtnBdr(bObj, bObj.sbb.clr, bObj.sbb.ca)
+			aObj:clrBtnBdr(bObj, bObj.sbb.clr, bObj.sbb.ca)
 		end)
 	end
 end
@@ -945,13 +872,13 @@ local function __skinCheckButton(opts)
 		end
 	end
 	aObj:skinObject("button", {obj=opts.obj, fType=opts.ftype, bd=bd, ng=true, ofs=ofs, y2=yOfs})
-	module:clrBtnBdr(opts.obj, opts.clr, opts.ca)
+	aObj:clrBtnBdr(opts.obj, opts.clr, opts.ca)
 	if opts.sechk then
 		-- store colour and alpha values with the skin button
 		opts.obj.sb.clr = opts.clr
 		opts.obj.sb.ca = opts.ca
 		aObj:secureHook(opts.obj, "SetEnabled", function(bObj)
-			module:clrBtnBdr(bObj, bObj.sb.clr, bObj.sb.ca)
+			aObj:clrBtnBdr(bObj, bObj.sb.clr, bObj.sb.ca)
 		end)
 	end
 end
@@ -1226,10 +1153,7 @@ function module:OnEnable()
 	aObj.skinOtherButton     = aObj.modBtns and aObj.modUIBtns.skinOtherButton or _G.nop
 	aObj.skinStdButton       = aObj.modBtns and aObj.modUIBtns.skinStdButton or _G.nop
 	aObj.addButtonBorder     = aObj.modBtnBs and aObj.modUIBtns.addButtonBorder or _G.nop
-	aObj.clrButtonFromBorder = aObj.modBtnBs and aObj.modUIBtns.clrButtonFromBorder or _G.nop
-	aObj.skinActionBtns      = aObj.modBtnBs and aObj.modUIBtns.skinActionBtns or _G.nop
-	aObj.clrBtnBdr           = (aObj.modBtns or aObj.modBtnBs) and aObj.modUIBtns.clrBtnBdr or _G.nop
-	aObj.setBtnClr           = (aObj.modBtns or aObj.modBtnBs) and aObj.modUIBtns.setBtnClr or _G.nop
+	aObj.skinActionBtn       = aObj.modBtnBs and aObj.modUIBtns.skinActionBtn or _G.nop
 	aObj.skinCheckButton     = aObj.modChkBtns and aObj.modUIBtns.skinCheckButton or _G.nop
 
 	 -- disable ourself if required

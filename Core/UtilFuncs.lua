@@ -537,89 +537,12 @@ function aObj:checkDisabledDD(obj, disabled)
 
 end
 
-local r, g, b, _
-function aObj:clrBBC(obj, clrName, alpha)
-
-	r, g, b, _ = self:getColourByName(clrName)
-	obj:SetBackdropBorderColor(r, g, b, alpha or 1)
-
-end
-
-function aObj:clrFrameBdr(fObj, clrName, alpha)
-
-	-- check frame state and alter colour accordingly
-	clrName = fObj.IsEnabled and not fObj:IsEnabled() and "disabled" or clrName
-	self:clrBBC(fObj.sf, clrName, alpha)
-
-end
-
--- colour Frame border based upon Covenant
-local tKit
-function aObj.clrCovenantBdr(_, frame, uiTextureKit)
-
-	tKit = uiTextureKit or _G.C_Covenants.GetCovenantData(_G.C_Covenants.GetActiveCovenantID()).textureKit
-	r, g, b = _G.COVENANT_COLORS[tKit]:GetRGB()
-	frame.sf:SetBackdropBorderColor(r, g, b, 0.75)
-
-end
-
-function aObj:clrPNBtns(framePrefix, isObj)
-
-	local ppb, npb
-	if isObj then
-		ppb, npb = framePrefix.PrevPageButton, framePrefix.NextPageButton
-	else
-		ppb, npb = _G[framePrefix .. "PrevPageButton"], _G[framePrefix .. "NextPageButton"]
-	end
-	self:clrBtnBdr(ppb, "gold")
-	self:clrBtnBdr(npb, "gold")
-
-end
-
 function aObj.getChild(_, obj, childNo)
 	--@debug@
 	_G.assert(obj, "Unknown object getChild\n" .. _G.debugstack(2, 3, 2))
 	--@end-debug@
 
 	if obj and childNo then return (_G.select(childNo, obj:GetChildren())) end
-
-end
-
-local clrTab = {
-	black       = _G.BLACK_FONT_COLOR,
-	blue        = _G.BLUE_FONT_COLOR,
-	bright_blue = _G.BRIGHTBLUE_FONT_COLOR,
-	light_blue  = _G.LIGHTBLUE_FONT_COLOR,
-	common      = _G.COMMON_GRAY_COLOR,
-	disabled    = _G.DISABLED_FONT_COLOR,
-	gold_df     = _G.GOLD_FONT_COLOR,
-	gold        = _G.PASSIVE_SPELL_FONT_COLOR,
-	green       = _G.GREEN_FONT_COLOR,
-	grey        = _G.GRAY_FONT_COLOR,
-	normal      = _G.NORMAL_FONT_COLOR,
-	orange      = _G.ORANGE_FONT_COLOR,
-	red         = aObj.isRtl and _G.DULL_RED_FONT_COLOR or _G.CreateColor(0.75, 0.15, 0.15),
-	selected    = _G.PAPER_FRAME_EXPANDED_COLOR,
-	sepia       = _G.SEPIA_COLOR,
-	silver      = _G.QUEST_OBJECTIVE_FONT_COLOR,
-	topaz       = _G.CreateColor(0.6, 0.31, 0.24),
-	turq        = _G.ADVENTURES_BUFF_BLUE,
-	white       = _G.HIGHLIGHT_FONT_COLOR,
-	yellow      = _G.YELLOW_FONT_COLOR,
-}
--- handle missing entries
-_G.setmetatable(clrTab, {__index = function(t, k)
-	if k == "slider" then
-		return aObj.prdb.SliderBorder
-	elseif k == "unused" then
-		return t["red"]
-	else
-		return aObj.bbClr
-	end
-end})
-function aObj.getColourByName(_, clrName)
-
-	return clrTab[clrName]:GetRGBA()
 
 end
 
