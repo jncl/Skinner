@@ -732,19 +732,17 @@ aObj.SetupClassic_PlayerFrames = function()
 				self:Unhook(fObj, "OnShow")
 			end)
 
-			if self.isClsc then
-				self:SecureHookScript(_G.GuildEventLogFrame, "OnShow", function(fObj)
-					self:skinObject("frame", {obj=_G.GuildEventFrame, fType=ftype, kfs=true, fb=true, ofs=0})
-					self:skinObject("slider", {obj=_G.GuildEventLogScrollFrame.ScrollBar, fType=ftype})
-					self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, rns=true, ofs=-6})
-					if self.modBtns then
-						self:skinCloseButton{obj=_G.GuildEventLogCloseButton, fType=ftype}
-						self:skinStdButton{obj=_G.GuildEventLogCancelButton, fType=ftype}
-					end
+			self:SecureHookScript(_G.GuildEventLogFrame, "OnShow", function(fObj)
+				self:skinObject("frame", {obj=_G.GuildEventFrame, fType=ftype, kfs=true, fb=true, ofs=0})
+				self:skinObject("slider", {obj=_G.GuildEventLogScrollFrame.ScrollBar, fType=ftype})
+				self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, rns=true, ofs=-6})
+				if self.modBtns then
+					self:skinCloseButton{obj=_G.GuildEventLogCloseButton, fType=ftype}
+					self:skinStdButton{obj=_G.GuildEventLogCancelButton, fType=ftype}
+				end
 
-					self:Unhook(fObj, "OnShow")
-				end)
-			end
+				self:Unhook(fObj, "OnShow")
+			end)
 
 			-- tooltip
 			_G.C_Timer.After(0.1, function()
