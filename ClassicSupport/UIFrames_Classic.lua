@@ -523,6 +523,12 @@ aObj.SetupClassic_UIFrames = function()
 
 				self:Unhook(this, "OnShow")
 			end)
+			self:SecureHookScript(_G.QuestTimerFrame, "OnShow", function(this)
+				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true})
+
+				self:Unhook(this, "OnShow")
+			end)
+			self:checkShown(_G.QuestTimerFrame)
 		else
 			if self.modBtns then
 				self:SecureHookScript(_G.QuestLogControlPanel, "OnShow", function(this)
