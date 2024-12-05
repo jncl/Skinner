@@ -2628,22 +2628,40 @@ if not aObj.isClscERA then
 					self:skinObject("scrollbar", {obj=fObj.FilterList.ScrollBar, fType=ftype})
 					self:skinObject("scrollbar", {obj=fObj.ScrollBar, fType=ftype})
 					self:keepFontStrings(fObj.ThemeContainer)
+					local currentTime, frameClr
 					local function skinActivities(...)
-						local _, element
+						local _, element, elementData
 						if _G.select("#", ...) == 2 then
-							element, _ = ...
+							element, elementData = ...
 						elseif _G.select("#", ...) == 3 then
-							_, element, _ = ...
+							_, element, elementData = ...
 						end
-						element:GetNormalTexture():SetAlpha(0)
-						element.TextContainer.NameText:SetTextColor(aObj.BT:GetRGB())
 						if element.HeaderCollapseIndicator then
 							changeHCI(element)
 							aObj:secureHook(element, "UpdateButtonState", function(bObj)
 								changeHCI(bObj)
 							end)
 						end
-						aObj:skinObject("frame", {obj=element, fType=ftype, ofs=-3, y2=4, fb=true})
+						element:GetNormalTexture():SetAlpha(0)
+						frameClr = "default"
+						if elementData.data.eventStartTime ~= nil
+						and elementData.data.eventEndTime ~= nil
+						then
+							currentTime = _G.GetServerTime()
+							if currentTime < elementData.data.eventStartTime
+							or currentTime > elementData.data.eventEndTime
+							then
+								frameClr = "disabled"
+							else
+								element.TextContainer.NameText:SetTextColor(aObj.BT:GetRGB())
+							end
+						end
+						if elementData.data.completed then
+							element.TextContainer.NameText:SetTextColor(aObj.BT:GetRGB())
+							element.TextContainer.ConditionsText:SetTextColor(aObj.BT:GetRGB())
+						end
+						aObj:skinObject("frame", {obj=element, fType=ftype, ofs=-2, y2=4, fb=true})
+						aObj:clrBBC(element.sf, frameClr)
 					end
 					_G.ScrollUtil.AddInitializedFrameCallback(fObj.ScrollBox, skinActivities, aObj, true)
 
