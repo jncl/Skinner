@@ -162,11 +162,16 @@ aObj.addonsToSkin.Baganator = function(self) -- v 505
 		skinFrame(frame, bankType)
 		skinBagSlots(frame.Character)
 		aObj:skinObject("tabs", {obj=frame, tabs=frame.Tabs, lod=aObj.isTT and true})
+		if aObj.modBtns then
+			for _, btn in _G.pairs(frame.AllFixedButtons) do
+				aObj:skinStdButton{obj=btn, schk=true, sechk=true}
+			end
+		end
 
 		if frame.Character.UpdateForCharacter then
 			aObj:SecureHook(frame.Character, "UpdateForCharacter", function(fObj, _)
 				if aObj.modBtns then
-					for _, btn in _G.pairs(fObj:GetParent().AllButtons) do
+					for _, btn in _G.pairs(fObj.TopButtons) do
 						aObj:skinStdButton{obj=btn, schk=true, sechk=true}
 					end
 				end
@@ -175,6 +180,12 @@ aObj.addonsToSkin.Baganator = function(self) -- v 505
 				and fObj.BankMissingHint:IsShown()
 				then
 					return
+				end
+
+				if aObj.modBtns then
+					for _, btn in _G.pairs(fObj:GetParent().AllButtons) do
+						aObj:skinStdButton{obj=btn, schk=true, sechk=true}
+					end
 				end
 
 				skinCVBtnsAfterDelay(fObj, type)

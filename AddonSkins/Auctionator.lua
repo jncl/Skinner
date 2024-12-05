@@ -50,7 +50,7 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 10.2.29
 						end)
 					else
 						aObj:SecureHook(_G.LibStub:GetLibrary("LibAHTab-1-0", true), "SetSelected", function(lObj, tabID)
-						    for _, tab in ipairs(lObj.internalState.Tabs) do
+						    for _, tab in _G.ipairs(lObj.internalState.Tabs) do
 								aObj:setInactiveTab(tab.sf)
 								if lObj:GetButton(tabID) == tab then
 									aObj:setActiveTab(tab.sf)
@@ -523,9 +523,9 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 10.2.29
 				aObj:removeInset(aObj:getChild(this, 1))
 			end
 			this:DisableDrawLayer("BACKGROUND")
+			aObj:skinObject("editbox", {obj=this.ContributeLink.InputBox})
 			aObj:skinObject("editbox", {obj=this.DiscordLink.InputBox})
 			aObj:skinObject("editbox", {obj=this.BugReportLink.InputBox})
-			-- aObj:skinObject("editbox", {obj=this.TechnicalRoadmap.InputBox})
 			if aObj.modBtns then
 				aObj:skinStdButton{obj=this.ScanButton}
 				aObj:skinStdButton{obj=this.OptionsButton}

@@ -481,6 +481,9 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 			-- KongConfig
 			or objType == "CollapsibleGroup"
 			or objType == "EasyMenuDropDown"
+			-- WoWPro objects
+			or objType == "WoWPro_CurrentGuideWidget"
+			or objType == "WoWPro_GuideListWidget"
 			then
 				-- aObj:Debug("Ignoring: [%s]", objType)
 				_G.nop()

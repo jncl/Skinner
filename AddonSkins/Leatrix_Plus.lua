@@ -2,7 +2,7 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("Leatrix_Plus") then return end
 local _G = _G
 
-aObj.addonsToSkin.Leatrix_Plus = function(self) -- v 11.0.14/1.15.56/4.0.30
+aObj.addonsToSkin.Leatrix_Plus = function(self) -- v 11.0.17/4.0.34/1.15.59
 
 	local lpPanels = {
 		-- All versions
@@ -75,7 +75,10 @@ aObj.addonsToSkin.Leatrix_Plus = function(self) -- v 11.0.14/1.15.56/4.0.30
 					if not child.t then
 						aObj:skinStdButton{obj=child}
 					end
-				-- TODO: skin DropdownButtons
+				elseif child:IsObjectType("Button")
+				and child.intrinsic == "DropdownButton"
+				then
+					aObj:skinObject("ddbutton", {obj=child})
 				elseif child:IsObjectType("Frame")
 				and child.scroll -- MuteCustomSounds
 				then
