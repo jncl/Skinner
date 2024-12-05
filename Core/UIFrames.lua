@@ -1467,39 +1467,12 @@ aObj.blizzFrames[ftype].ItemText = function(self)
 end
 
 if not aObj.isClscERA then
-	local skinRoleBtns
-	if _G.PVEFrame then
-		-- The following function is used by the LFDFrame & RaidFinder functions
-		local roles, roleBtn
-		function skinRoleBtns(frame, leaderReqd)
-			roles = {"Tank", "Healer", "DPS"}
-			if leaderReqd then
-				aObj:add2Table(roles, "Leader")
-			end
-			for _, type in _G.pairs(roles) do
-				roleBtn = _G[frame .. "RoleButton" .. type]
-				if roleBtn.background then
-					roleBtn.background:SetTexture(nil)
-				end
-				if roleBtn.shortageBorder then
-					roleBtn.shortageBorder:SetTexture(nil)
-				end
-				if roleBtn.incentiveIcon then
-					roleBtn.incentiveIcon.border:SetTexture(nil)
-				end
-				if aObj.modChkBtns then
-					aObj:skinCheckButton{obj=roleBtn.checkButton}
-				end
-			end
-		end
-	end
 	aObj.blizzFrames[ftype].LFDFrame = function(self)
 		if not self.prdb.PVEFrame or self.initialized.LFDFrame then return end
 		self.initialized.LFDFrame = true
 
 		self:SecureHookScript(_G.LFDRoleCheckPopup, "OnShow", function(this)
 			self:removeNineSlice(this.Border)
-			skinRoleBtns("LFDRoleCheckPopup")
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true})
 			if self.modBtns then
 				self:skinStdButton{obj=_G.LFDRoleCheckPopupAcceptButton, schk=true}
@@ -1527,7 +1500,6 @@ if not aObj.isClscERA then
 			self:keepFontStrings(this)
 			self:removeInset(this.Inset)
 			-- LFD Queue Frame
-			skinRoleBtns("LFDQueueFrame", true)
 			_G.LFDQueueFrameBackground:SetAlpha(0)
 			self:skinObject("ddbutton", {obj=_G.LFDQueueFrame.TypeDropdown, fType=ftype})
 			_G.LFDQueueFrameRandomScrollFrameChildFrame.MoneyReward.NameFrame:SetTexture(nil)
