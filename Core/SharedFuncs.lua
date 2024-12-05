@@ -6,12 +6,12 @@ local buildInfo = {
 	-- wow_classic_beta    = {"4.4.0",  54737, "Cataclysm Classic Beta"},
 	-- wow_beta            = {"11.0.2", 56263, "The War Within Beta"},
 	wow_classic_ptr     = {"4.4.1",  57141, "PTR (Cataclysm Classic)"},
-	wow_classic_era_ptr = {"1.15.5", 57537, "PTR (Classic Era)"},
-	wow_ptr             = {"11.0.7", 57528, "PTR (TWW 11.0.7"},
+	wow_classic_era_ptr = {"1.15.5", 57807, "PTR (Classic Era)"},
+	wow_ptr             = {"11.0.7", 57788, "PTR (TWW 11.0.7"},
 	wow_ptr_x           = {"11.0.5", 57171, "PTR (TWW 11.0.5)"},
-	wow_classic_era     = {"1.15.4", 57134, "World of Warcraft Classic"}, -- a.k.a. Season of Discovery
+	wow_classic_era     = {"1.15.5", 57917, "World of Warcraft Classic"},
 	wow_classic         = {"4.4.1",  57564, "Cataclysm Classic"},
-	wow                 = {"11.0.5", 57534, "World of Warcraft"},
+	wow                 = {"11.0.5", 57689, "World of Warcraft"},
 	curr                = {_G.GetBuildInfo()},
 }
 
