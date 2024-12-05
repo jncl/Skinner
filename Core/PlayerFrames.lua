@@ -1398,7 +1398,9 @@ if not aObj.isClscERA then
 									end
 								end
 								local displayData = elementData
-								if elementData.hiddenUntilCollected and not elementData.collected then
+								if elementData.hiddenUntilCollected
+								and not elementData.collected
+								then
 									local variantSets = _G.C_TransmogSets.GetVariantSets(elementData.setID)
 									if variantSets then
 										displayData = variantSets[1]
