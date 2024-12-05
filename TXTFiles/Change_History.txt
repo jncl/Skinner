@@ -1,3 +1,24 @@
+beta11.57564.1
+Jncl:
+	Updated ToDo*.txt files
+	Updated Change_History.txt
+	Updated Version numbers
+	Updated checks to handle PTR patch changes
+	dbg code
+	Updated debug code
+	Updated VehicleLeaveButton to indicate when clicked
+	Updated Action Buttons skinning code
+	Updated UIButtons addButtonBorder code
+	Updated UtilFuncs to correct luacheck warnings
+	Updated Baganator, BugSack & TomTom skins
+	Applied ClassicPTR changes, closes #184, closes #185
+	Updated changeHdrExpandTex function
+	Updated TokenFrame, closes #183
+	Removed redundant utility functions
+	Updated files to correct Globe issues
+	Updated code to replace deprecated callbacks
+	Updated Baganator skin to ignore non change of character
+	Updated CommunitiesUI with button checks
 beta11.57388.1
 Jncl:
 	Updated ToDo*.txt files
