@@ -336,6 +336,7 @@ aObj.blizzFrames[ftype].QuestInfo = function(self)
 			end
 		end
 	end
+	local br, bg, bb, r, g, b, newText, upd
 	local function updateQIDisplay(_)
 		_G.QuestInfoTitleHeader:SetTextColor(aObj.HT:GetRGB())
 		_G.QuestInfoDescriptionHeader:SetTextColor(aObj.HT:GetRGB())
@@ -343,13 +344,13 @@ aObj.blizzFrames[ftype].QuestInfo = function(self)
 		_G.QuestInfoQuestType:SetTextColor(aObj.BT:GetRGB())
 		_G.QuestInfoObjectivesText:SetTextColor(aObj.BT:GetRGB())
 		_G.QuestInfoRewardText:SetTextColor(aObj.BT:GetRGB())
-		local br, bg, bb = aObj.BT:GetRGB()
-		local r, g, b = _G.QuestInfoRequiredMoneyText:GetTextColor()
+		br, bg, bb = aObj.BT:GetRGB()
+		r, g, b = _G.QuestInfoRequiredMoneyText:GetTextColor()
 		_G.QuestInfoRequiredMoneyText:SetTextColor(br - r, bg - g, bb - b)
 		_G.QuestInfoGroupSize:SetTextColor(aObj.BT:GetRGB())
 		_G.QuestInfoAnchor:SetTextColor(aObj.BT:GetRGB())
 		-- remove any embedded colour codes
-		local newText, upd = aObj:removeColourCodes(_G.QuestInfoDescriptionText:GetText())
+		newText, upd = aObj:removeColourCodes(_G.QuestInfoDescriptionText:GetText())
 		if upd then
 			_G.QuestInfoDescriptionText:SetText(newText)
 		end
@@ -369,15 +370,13 @@ aObj.blizzFrames[ftype].QuestInfo = function(self)
 		if aObj.modBtnBs then
 			 aObj:addButtonBorder{obj=_G.QuestInfoSpellObjectiveFrame, relTo=_G.QuestInfoSpellObjectiveFrame.Icon}
 		end
-		-- TODO: can this be replaced with removeColourCodes function ?
 		if self.isRtl then -- Warband text
 			_G.QuestInfoAccountCompletedNotice:SetTextColor(aObj.BT:GetRGB())
 		end
 		if _G.QuestInfoSealFrame:IsShown()
 		and _G.QuestInfoSealFrame.theme
 		then
-			local sealText = aObj:unwrapTextFromColourCode(_G.QuestInfoSealFrame.theme.signature)
-			_G.QuestInfoSealFrame.Text:SetText(aObj.HT:WrapTextInColorCode(sealText)) -- re-colour text
+			_G.QuestInfoSealFrame.Text:SetText(aObj.HT:WrapTextInColorCode(aObj:removeColourCodes(_G.QuestInfoSealFrame.theme.signature)))
 		end
 		skinRewards(_G.QuestInfoFrame.rewardsFrame)
 	end
