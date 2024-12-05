@@ -624,7 +624,7 @@ function module.skinStdButton(_, ...)
 end
 
 local rpRegions = {
-	"AutoCastable", "AutoCastShine", "Border", "Count", "Flash", "FlyoutArrow", "HotKey", "IconBorder", "IconQuestTexture", "ItemContextOverlay", "ItemOverlay", "ItemOverlay2", "LevelLinkLockIcon", "Name", "NewActionTexture", "ProfessionQualityOverlay", "searchOverlay", "SpellHighlightTexture", "Stock"
+	"AutoCastable", "AutoCastShine", "Border", "Count", "Flash", "FlyoutArrow", "FlyoutArrowNormal", "FlyoutArrowPushed", "FlyoutArrowHighlight", "HotKey", "IconBorder", "IconQuestTexture", "ItemContextOverlay", "ItemOverlay", "ItemOverlay2", "LevelLinkLockIcon", "Name", "NewActionTexture", "ProfessionQualityOverlay", "searchOverlay", "SlotBorder", "SlotBorderOpen", "SpellHighlightTexture", "Stock"
 }
 local function reparentRegion(region, parent)
 	if region
@@ -655,6 +655,7 @@ local function __addButtonBorder(opts)
 			bmit     = blackmarket item template
 			sft      = requires SecureFrameTemplate
 			sabt     = requires SecureActionButtonTemplate
+			iabt     = requires InsecureActionButtonTemplate
 			subt     = requires SecureUnitButtonTemplate
 			reParent = table of objects to reparent to the border frame
 			es       = edgeSize, used for small icons
@@ -718,7 +719,7 @@ local function __addButtonBorder(opts)
 
 	-- create the button border object
 	opts.sft = opts.sft or opts.sec or nil
-	template = opts.sft and "SecureFrameTemplate" or opts.sabt and "SecureActionButtonTemplate" or opts.subt and "SecureUnitButtonTemplate"
+	template = opts.sft and "SecureFrameTemplate" or opts.sabt and "SecureActionButtonTemplate" or opts.iabt and "InsecureActionButtonTemplate" or opts.subt and "SecureUnitButtonTemplate"
 	opts.obj.sbb = _G.CreateFrame(opts.obj:GetObjectType(), nil, opts.obj, template)
 	opts.obj.sbb:EnableMouse(false) -- enable clickthrough
 	aObj:addBackdrop(opts.obj.sbb)
