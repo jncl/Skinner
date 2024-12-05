@@ -656,8 +656,9 @@ local function skinFrame(tbl)
 			aObj:moveObject{obj=tbl.obj.Header.Text, y=tbl.hOfs}
 			-- return
 		elseif tbl.obj:GetName() ~= nil then
+			local oName = tbl.obj:GetName()
 			for _, suffix in _G.pairs{"Header", "_Header", "_HeaderBox", "_FrameHeader", "FrameHeader", "HeaderTexture", "HeaderFrame"} do
-				hObj = _G[tbl.obj:GetName() .. suffix]
+				hObj = _G[oName .. suffix] or _G[oName:sub(1, -6) .. suffix] -- try without "Frame" in the name
 				if hObj then
 					hObj:SetPoint("TOP", tbl.obj, "TOP", 0, tbl.hOfs * -1)
 					if aObj:hasTextInTexture(hObj, 131080) -- FileDataID
