@@ -1358,11 +1358,7 @@ end
 function aObj:SetupCmds()
 
 	local function getMouseFocus()
-		if aObj.isRtl then
-			return _G.GetMouseFoci()[1]:GetParent()
-		else
-			return _G.GetMouseFocus()
-		end
+		return _G.GetMouseFoci()[1]:GetParent()
 	end
 
 	local function makeString(obj)
