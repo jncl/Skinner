@@ -1471,11 +1471,11 @@ aObj.SetupRetail_UIFrames = function()
 			end)
 			self:checkShown(this.Report)
 
-			skinFollowerList(this.FollowerList, "grey")
+			skinFollowerList(this.FollowerList)
 			skinFollowerPage(this.FollowerTab)
 
 			if this.garrTypeID == _G.Enum.GarrisonType.Type_6_0_Garrison and _G.C_Garrison.HasShipyard() then
-				skinFollowerList(this.ShipFollowerList, "grey")
+				skinFollowerList(this.ShipFollowerList)
 				skinFollowerTraitsAndEquipment(this.ShipFollowerTab)
 			elseif _G.C_Garrison.GetLandingPageGarrisonType() == _G.Enum.GarrisonType.Type_9_0_Garrison then -- Covenant
 				local function skinPanelBtns(panel)
@@ -1668,7 +1668,7 @@ aObj.SetupRetail_UIFrames = function()
 			skinMissionFrame(this)
 
 			self:SecureHookScript(this.FollowerList, "OnShow", function(fObj)
-				skinFollowerList(fObj, "grey")
+				skinFollowerList(fObj)
 
 				self:Unhook(fObj, "OnShow")
 			end)
@@ -1734,7 +1734,7 @@ aObj.SetupRetail_UIFrames = function()
 				self:Unhook(fObj, "OnShow")
 			end)
 
-			skinFollowerList(this.FollowerList, "grey")
+			skinFollowerList(this.FollowerList)
 			self:SecureHookScript(this.FollowerTab, "OnShow", function(fObj)
 				skinFollowerTraitsAndEquipment(fObj)
 				self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, fb=true, ofs=-1, clr="sepia"})
@@ -1833,7 +1833,7 @@ aObj.SetupRetail_UIFrames = function()
 		end)
 
 		self:SecureHookScript(_G.GarrisonRecruitSelectFrame, "OnShow", function(this)
-			skinFollowerList(this.FollowerList, "grey")
+			skinFollowerList(this.FollowerList)
 			for i = 1, 3 do
 				self:nilTexture(this.FollowerSelection["Recruit" .. i].PortraitFrame.PortraitRing, true)
 				self:nilTexture(this.FollowerSelection["Recruit" .. i].PortraitFrame.LevelBorder, true)
@@ -1856,7 +1856,7 @@ aObj.SetupRetail_UIFrames = function()
 			this.ClassHallIcon:DisableDrawLayer("OVERLAY") -- this hides the frame
 
 			self:SecureHookScript(this.FollowerList, "OnShow", function(fObj)
-				skinFollowerList(fObj, "grey")
+				skinFollowerList(fObj)
 
 				self:Unhook(fObj, "OnShow")
 			end)
@@ -1917,7 +1917,7 @@ aObj.SetupRetail_UIFrames = function()
 			this.TitleText:SetTextColor(self.HT:GetRGB())
 			skinMissionFrame(this)
 			self:SecureHookScript(this.FollowerList, "OnShow", function(fObj)
-				skinFollowerList(fObj, "grey")
+				skinFollowerList(fObj)
 
 				self:Unhook(fObj, "OnShow")
 			end)
