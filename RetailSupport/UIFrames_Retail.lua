@@ -2268,7 +2268,9 @@ aObj.SetupRetail_UIFrames = function()
 					local bName
 					for i = 1, _G.NUM_MULTIBAR_BUTTONS do
 						bName = "MultiBar" .. type .. "Button" .. i
-						aObj:skinActionBtns(_G[bName], ftype)
+						if _G[bName] then
+							aObj:skinActionBtn(_G[bName], ftype)
+						end
 					end
 				end
 			end
@@ -2277,7 +2279,7 @@ aObj.SetupRetail_UIFrames = function()
 				this.EndCaps:DisableDrawLayer("OVERLAY")
 				if self.modBtnBs then
 					for i = 1, _G.NUM_ACTIONBAR_BUTTONS do
-						self:skinActionBtns(_G["ActionButton" .. i], ftype)
+						self:skinActionBtn(_G["ActionButton" .. i], ftype)
 					end
 					skinMultiBarBtns("BottomLeft")
 					skinMultiBarBtns("BottomRight")
@@ -2324,9 +2326,8 @@ aObj.SetupRetail_UIFrames = function()
 				if self.modBtnBs then
 					self:addButtonBorder{obj=_G.MultiCastSummonSpellButton, sabt=true, ofs=5}
 					self:addButtonBorder{obj=_G.MultiCastRecallSpellButton, sabt=true, ofs=5}
-					-- local btn
 					for i = 1, _G.NUM_MULTI_CAST_PAGES * _G.NUM_MULTI_CAST_BUTTONS_PER_PAGE do
-						self:skinActionBtns(_G["MultiCastActionButton" .. i], ftype)
+						self:skinActionBtn(_G["MultiCastActionButton" .. i], ftype)
 					end
 				end
 
@@ -2389,12 +2390,8 @@ aObj.SetupRetail_UIFrames = function()
 		if self.prdb.MainMenuBar.skin then
 			for _, frame in _G.pairs{_G.StanceBar, _G.PetActionBar, _G.PossessActionBar} do
 				self:SecureHookScript(frame, "OnShow", function(this)
-					if _G.InCombatLockdown() then
-					    self:add2Table(self.oocTab, {self.skinActionBtns, {self, this, ftype}})
-					    return
-					end
 					for _, btn in _G.pairs(this.actionButtons) do
-						self:skinActionBtns(btn, ftype)
+						self:skinActionBtn(btn, ftype)
 					end
 
 					self:Unhook(this, "OnShow")
