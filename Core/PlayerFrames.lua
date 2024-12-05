@@ -3014,7 +3014,7 @@ aObj.blizzFrames[ftype].TradeFrame = function(self)
 		self:removeInset(_G.TradePlayerEnchantInset)
 		self:removeInset(_G.TradePlayerInputMoneyInset)
 		self:removeInset(_G.TradeRecipientMoneyInset)
-		self:skinObject("moneyframe", {obj=_G.TradePlayerInputMoneyFrame, moveGEB=true})
+		self:skinObject("moneyframe", {obj=_G.TradePlayerInputMoneyFrame, moveIcon=true})
 		_G.TradeRecipientMoneyBg:DisableDrawLayer("BACKGROUND")
 		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, x2=1})
 		if self.modBtns then

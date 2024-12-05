@@ -48,23 +48,18 @@ aObj.SetupClassic_NPCFrames = function()
 					self:skinObject("editbox", {obj=_G["Browse" .. type], fType=ftype})
 					self:moveObject{obj=_G["Browse" .. type], x=type == "MaxLevel" and -6 or -4, y=type ~= "MaxLevel" and 3 or 0}
 				end
-				self:skinObject("ddbutton", {obj=_G.BrowseDropdown, fType=ftype, x2=109})
-				self:skinObject("moneyframe", {obj=_G.BrowseBidPrice, moveSEB=true})
+				self:skinObject("ddbutton", {obj=_G.BrowseDropdown, fType=ftype--[[, x2=109]]})
+				self:skinObject("moneyframe", {obj=_G.BrowseBidPrice, moveIcon=true})
 				_G.BrowseBidButton:DisableDrawLayer("BORDER")
 				_G.BrowseBuyoutButton:DisableDrawLayer("BORDER")
 				_G.BrowseCloseButton:DisableDrawLayer("BORDER")
 				if self.modBtns then
 					self:skinStdButton{obj=_G.BrowseSearchButton, fType=ftype, schk=true}
-					self:skinStdButton{obj=self:getPenultimateChild(_G.BrowsePriceOptionsFrame), fType=ftype}
-					if self.isClscERA then
-						self:skinStdButton{obj=_G.BrowseResetButton, fType=ftype, schk=true}
-					end
+					self:skinStdButton{obj=self:getPenultimateChild(_G.BrowsePriceOptionsFrame), fType=ftype} -- Done button
 					self:skinStdButton{obj=_G.BrowseCloseButton, fType=ftype}
 					self:skinStdButton{obj=_G.BrowseBuyoutButton, fType=ftype, schk=true}
 					self:skinStdButton{obj=_G.BrowseBidButton, fType=ftype, schk=true}
-					if self.isClsc then
-						self:skinStdButton{obj=_G.BrowseResetButton, fType=ftype, schk=true}
-					end
+					self:skinStdButton{obj=_G.BrowseResetButton, fType=ftype, schk=true}
 				end
 				if self.modBtnBs then
 					self:addButtonBorder{obj=_G.BrowsePriceOptionsButtonFrame.Button, fType=ftype, ofs=-2, x1=1, clr="gold"}
@@ -124,7 +119,7 @@ aObj.SetupClassic_NPCFrames = function()
 					skinBtn("BidButton", i)
 				end
 				self:skinObject("slider", {obj=_G.BidScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
-				self:skinObject("moneyframe", {obj=_G.BidBidPrice, moveSEB=true})
+				self:skinObject("moneyframe", {obj=_G.BidBidPrice, moveIcon=true})
 				_G.BidCloseButton:DisableDrawLayer("BORDER")
 				_G.BidBuyoutButton:DisableDrawLayer("BORDER")
 				_G.BidBidButton:DisableDrawLayer("BORDER")
@@ -153,8 +148,8 @@ aObj.SetupClassic_NPCFrames = function()
 				self:skinObject("editbox", {obj=_G.AuctionsStackSizeEntry, fType=ftype, ofs=0})
 				self:skinObject("editbox", {obj=_G.AuctionsNumStacksEntry, fType=ftype, ofs=0})
 				self:skinObject("dropdown", {obj=_G.PriceDropDown})
-				self:skinObject("moneyframe", {obj=_G.StartPrice, moveSEB=true})
-				self:skinObject("moneyframe", {obj=_G.BuyoutPrice, moveSEB=true})
+				self:skinObject("moneyframe", {obj=_G.StartPrice, moveIcon=true})
+				self:skinObject("moneyframe", {obj=_G.BuyoutPrice, moveIcon=true})
 				if self.modBtns then
 					self:skinStdButton{obj=_G.AuctionsStackSizeMaxButton, fType=ftype}
 					self:skinStdButton{obj=_G.AuctionsNumStacksMaxButton, fType=ftype}
@@ -325,7 +320,7 @@ aObj.SetupClassic_NPCFrames = function()
 		self.initialized.TrainerUI = true
 
 		self:SecureHookScript(_G.ClassTrainerFrame, "OnShow", function(this)
-			self:skinObject("dropdown", {obj=_G.ClassTrainerFrameFilterDropDown, fType=ftype})
+			self:skinObject("ddbutton", {obj=this.FilterDropdown, fType=ftype, filter=true})
 			self:removeMagicBtnTex(_G.ClassTrainerTrainButton)
 			self:keepFontStrings(_G.ClassTrainerExpandButtonFrame)
 			_G.ClassTrainerSkillIcon:DisableDrawLayer("BACKGROUND")

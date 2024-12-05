@@ -472,6 +472,7 @@ aObj.SetupClassic_PlayerFrames = function()
 
 			self:SecureHookScript(_G.EngravingFrame, "OnShow", function(this)
 				self:removeInset(this.sideInset)
+				self:skinObject("ddbutton", {obj=this.FilterDropdown, fType=ftype})
 				self:skinObject("editbox", {obj=_G.EngravingFrameSearchBox, fType=ftype, si=true})
 				self:skinObject("dropdown", {obj=_G.EngravingFrameFilterDropDown, fType=ftype})
 				self:skinObject("slider", {obj=_G.EngravingFrameScrollFrameScrollBar, fType=ftype})
@@ -538,17 +539,7 @@ aObj.SetupClassic_PlayerFrames = function()
 					btn = _G["FriendsFrameFriendsScrollFrameButton" .. i]
 					btn.background:SetAlpha(0)
 					if self.modBtnBs then
-						self:addButtonBorder{obj=btn, relTo=btn.gameIcon, ofs=0}
-						self:SecureHook(btn.gameIcon, "Show", function(bObj)
-							bObj:GetParent().sbb:Show()
-						end)
-						self:SecureHook(btn.gameIcon, "Hide", function(bObj)
-							bObj:GetParent().sbb:Hide()
-						end)
-						self:SecureHook(btn.gameIcon, "SetShown", function(bObj, show)
-							bObj:GetParent().sbb:SetShown(bObj, show)
-						end)
-						btn.sbb:SetShown(btn.gameIcon:IsShown())
+						-- N.B. DON'T skin btn.gameIcon
 						self:addButtonBorder{obj=btn.travelPassButton, fType=ftype, schk=true, ofs=0, y1=3, y2=-2}
 						self:addButtonBorder{obj=btn.summonButton, fType=ftype, schk=true}
 					end
@@ -994,7 +985,7 @@ aObj.SetupClassic_PlayerFrames = function()
 					self:addButtonBorder{obj=_G["LootButton" .. i]}
 				end
 			end
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true})
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, x2=1})
 			if self.modBtnBs then
 				self:SecureHook("LootFrame_Update", function()
 					for i = 1, _G.LOOTFRAME_NUMBUTTONS do
