@@ -73,12 +73,13 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 		["Criteria"]               = true,
 		["DungeonCompletion"]      = true,
 		["GarrisonFollower"]       = true,
+		["GarrisonMission"]        = true,
 		["GarrisonTalent"]         = true,
 		["Loot"]                   = true,
 		["LootUpgrade"]            = true,
 		["MoneyWon"]               = true,
 		["MonthlyActivity"]        = true,
-		["NewCosmetic"]            = true,
+		-- ["NewCosmetic"]            = true,
 		["NewMount"]               = true,
 		["NewPet"]                 = true,
 		["NewRecipeLearned"]       = true,
@@ -95,7 +96,7 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 		["DungeonCompletion"]     = {ofs = -8, ddl = {"background", "border", "overlay"}, sdla = "dungeonTexture", icon = {tex = "dungeonTexture"}},
 		["GarrisonBuilding"]      = {ofs = -10, ddl = {"background", "border", "overlay"}},
 		["GarrisonFollower"]      = {ofs = -8, ddl = {"background"}, nt = {"FollowerBG"}, nt2 = {PortraitFrame = "LevelBorder"}, stn2 = {PortraitFrame = "PortraitRing"}},
-		["GarrisonMission"]       = {ofs = -10, ddl = {"background", "border"}},
+		["GarrisonMission"]       = {ofs = -10, y1=-6, ddl = {"background", "border"}},
 		["GarrisonRandomMission"] = {ofs = -10, ddl = {"background"}, sdlb = "MissionType"},
 		["GarrisonShipFollower"]  = {ofs = -8, ddl = {"background"}, nt = {"FollowerBG"}},
 		["GarrisonShipMission"]   = {ofs = -10, ddl = {"background"}},
@@ -138,7 +139,7 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 	end
 	local tbl, itemQuality
 	local function skinAlertFrame(type, frame)
-		-- aObj:Debug("skinAlertFrame: [%s, %s, %s]", type, frame)
+		aObj:Debug("skinAlertFrame: [%s, %s, %s]", type, frame)
 		tbl = alertType[type]
 		--@debug@
 		if not dontDebug[type] then
