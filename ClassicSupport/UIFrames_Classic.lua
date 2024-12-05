@@ -672,8 +672,9 @@ aObj.SetupClassic_UIFrames = function()
 			if not _G.C_AddOns.IsAddOnLoaded("Mapster")
 			and not _G.C_AddOns.IsAddOnLoaded("AlleyMap")
 			then
-				self:skinObject("frame", {obj=_G.WorldMapFrame.BorderFrame, fType=ftype, kfs=true, ofs=1})
-				self:skinObject("frame", {obj=_G.WorldMapFrame.MiniBorderFrame, fType=ftype, kfs=true, ofs=-4, y1=-25, x1=16})
+				self:skinObject("frame", {obj=_G.WorldMapFrame.BorderFrame, fType=ftype, kfs=true, ofs=1}) -- full screen
+				self:skinObject("frame", {obj=_G.WorldMapFrame.MiniBorderFrame, fType=ftype, kfs=true, x1=15, y1=2, x2=-5, y2=24}) -- minimized
+				-- self:skinObject("frame", {obj=_G.WorldMapFrame.MiniBorderFrame, fType=ftype, kfs=true, ofs=-4, y1=-25, x1=16})
 				if self.modBtns then
 					self:skinOtherButton{obj=this.MaximizeMinimizeFrame.MaximizeButton, font=self.fontS, text=self.nearrow}
 					self:skinOtherButton{obj=this.MaximizeMinimizeFrame.MinimizeButton, font=self.fontS, disfont=self.fontDS, text=self.swarrow}
