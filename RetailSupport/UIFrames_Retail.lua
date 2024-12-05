@@ -2341,6 +2341,7 @@ aObj.SetupRetail_UIFrames = function()
 				skinMultiBarBtns("5")
 				skinMultiBarBtns("6")
 				skinMultiBarBtns("7")
+				skinMultiBarBtns("8")
 			end
 		end
 
