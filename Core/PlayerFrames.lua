@@ -1059,9 +1059,9 @@ if not aObj.isClscERA then
 			end
 			if self.modBtnBs then
 				if self.isRtl then
-					self:addButtonBorder{obj=this.SlotButton, fType=ftype, relTo=this.SlotButton.ItemIcon, reParent={this.SlotButton.SlotBorder, this.SlotButton.SlotBorderOpen}}
-					local btn = this.ToggleDynamicFlightFlyoutButton
-					self:addButtonBorder{obj=btn, fType=ftype, ofs=3, reParent={btn.FlyoutArrowNormal, btn.FlyoutArrowPushed, btn.FlyoutArrowHighlight}}
+					self:addButtonBorder{obj=this.SlotButton, fType=ftype, relTo=this.SlotButton.ItemIcon}
+					self:addButtonBorder{obj=this.ToggleDynamicFlightFlyoutButton, fType=ftype, ofs=3}
+					this.ToggleDynamicFlightFlyoutButton:SetFrameLevel(10)
 					self:addButtonBorder{obj=this.SummonRandomFavoriteButton, fType=ftype, ofs=3}
 				else
 					self:addButtonBorder{obj=this.MountDisplay.ModelScene.RotateLeftButton, ofs=-3}
@@ -1080,9 +1080,9 @@ if not aObj.isClscERA then
 					self:skinObject("frame", {obj=fObj.Background, fType=ftype, kfs=true, ofs=0, y1=4})
 					if self.modBtnBs then
 						self:addButtonBorder{obj=fObj.OpenDynamicFlightSkillTreeButton, fType=ftype}
-						self:moveObject{obj=fObj.OpenDynamicFlightSkillTreeButton, x=1}
+						self:moveObject{obj=fObj.OpenDynamicFlightSkillTreeButton, x=1.5}
 						self:addButtonBorder{obj=fObj.DynamicFlightModeButton, fType=ftype}
-						self:moveObject{obj=fObj.DynamicFlightModeButton, x=1}
+						self:moveObject{obj=fObj.DynamicFlightModeButton, x=1.5}
 					end
 
 					self:Unhook(fObj, "OnShow")
