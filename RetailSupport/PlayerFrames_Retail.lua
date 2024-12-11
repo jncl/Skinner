@@ -1412,7 +1412,8 @@ aObj.SetupRetail_PlayerFrames = function()
 								spell.SubName:SetTextColor(aObj.BT:GetRGB())
 								spell.RequiredLevel:SetTextColor(aObj.BT:GetRGB())
 								btn = spell.Button
-								aObj:nilTexture(btn.Border, true) -- texture changed in code
+								--aObj:nilTexture(btn.Border, true) -- texture changed in code * CAUSES ADDON_ACTION_FORBIDDEN: AddOn 'Skinner' tried to call the protected function 'CastSpellByID()'. *
+								btn.Border:Hide()
 								btn.BorderSheen:SetTexture(nil)
 								if aObj.modBtnBs then
 									aObj:addButtonBorder{obj=btn, fType=ftype, relTo=btn.Icon, reParent={btn.ActionBarHighlight, btn.FlyoutArrow, btn.AutoCastOverlay}, ofs=3, sba=btn.isUnlearned and btn.unlearnedIconAlpha or 1}
