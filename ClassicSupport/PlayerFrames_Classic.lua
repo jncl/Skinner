@@ -582,7 +582,7 @@ aObj.SetupClassic_PlayerFrames = function()
 				for i = 1, 4 do
 					_G["WhoFrameColumnHeader" .. i]:DisableDrawLayer("BACKGROUND")
 					if i == 2 then
-						_G.WhoFrameDropdown.Background:SetTexture(nil)
+						_G.WhoFrameDropdown:DisableDrawLayer("BACKGROUND")
 						self:skinObject("ddbutton", {obj=_G.WhoFrameDropdown, fType=ftype})
 						self:moveObject{obj=_G.WhoFrameDropdown, x=20}
 					else
