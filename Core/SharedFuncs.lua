@@ -9,8 +9,8 @@ local buildInfo = {
 	wow_classic_era_ptr = {"1.15.5", 57807, "PTR (Classic Era)"},
 	wow_ptr             = {"11.0.7", 57788, "PTR (TWW 11.0.7"},
 	wow_ptr_x           = {"11.0.5", 57171, "PTR (TWW 11.0.5)"},
-	wow_classic_era     = {"1.15.5", 57917, "World of Warcraft Classic"},
-	wow_classic         = {"4.4.1",  57564, "Cataclysm Classic"},
+	wow_classic_era     = {"1.15.5", 57979, "World of Warcraft Classic"},
+	wow_classic         = {"4.4.1",  57916, "Cataclysm Classic"},
 	wow                 = {"11.0.5", 57689, "World of Warcraft"},
 	curr                = {_G.GetBuildInfo()},
 }
