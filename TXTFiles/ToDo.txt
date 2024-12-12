@@ -23,13 +23,9 @@ ToDos
 
 ≈		O 	Replace Callbacks to "IOFPanel_Before_Skinning" & "IOFPanel_After_Skinning" with "SettingsPanel_DisplayCategory"
 
-#177 	I 	AddOn 'Skinner' tried to call the protected function 'CastSpellByID()'
-	 √		- Clicking on a button in the SpellBook causes the error
+#177 ?	I 	AddOn 'Skinner' tried to call the protected function 'CastSpellByID()'
 			- Clicking on the Mythic+ Portal/Spell icon causes the error (What/Where is this?)
-	 	I	AddOn 'Skinner' tried to call the protected function 'Button:SetPassThroughButtons()'
 
 #181 ?	I 	BonusRollFrame, SavedInstances BonusRollFrame
 
-#190 √	I 	Baganator, Bag frame not skinned at all
-
-#191 x	O	phrasing supplied a Patch for #177 issue in SpellBook
+#192 	I	AddOn 'Skinner' tried to call the protected function 'Button:SetPassThroughButtons()'
