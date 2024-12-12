@@ -13,7 +13,7 @@ local function setScrollTrackOffsets(tbl, type)
 			o = "VERTICAL"
 		end
 	end
-	-- aObj:Debug("setScrollTrackOffsets#1 O/H/W: [%s, %s, %s, %s, %s]", type, o, h, w)
+	-- aObj:Debug("setScrollTrackOffsets#1 O/H/W: [%s, %s, %s, %s]", type, o, w, h)
 	-- setup offsets based on Orientation/Height/Width
 	if o == "HORIZONTAL" then
 		if h <= 16 then
@@ -55,13 +55,13 @@ local function setScrollTrackOffsets(tbl, type)
 			tbl.y1 = _G.rawget(tbl, "y1") or -1
 			tbl.y2 = _G.rawget(tbl, "y2") or 1
 		elseif w == 25 then
-			tbl.x1 = _G.rawget(tbl, "x1") or not aObj.isRtl and 2 or 0
-			tbl.x2 = _G.rawget(tbl, "x2") or not aObj.isRtl and 4 or 0
+			tbl.x1 = _G.rawget(tbl, "x1") or --[[not aObj.isRtl and 2 or]] 0
+			tbl.x2 = _G.rawget(tbl, "x2") or --[[not aObj.isRtl and 4 or]] 0
 		end
 		tbl.y1 = _G.rawget(tbl, "y1") or 0
 		tbl.y2 = _G.rawget(tbl, "y2") or 0
 	end
-	-- aObj:Debug("setScrollTrackOffsets#2: [%s, %s, %s, %s, %s]", tbl.x1, tbl.x2, tbl.y1, tbl.y2)
+	-- aObj:Debug("setScrollTrackOffsets#2: [%s, %s, %s, %s]", tbl.x1, tbl.x2, tbl.y1, tbl.y2)
 end
 
 -- skin Templates
