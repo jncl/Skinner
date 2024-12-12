@@ -1,3 +1,21 @@
+beta11.57979.1
+Jncl:
+	Updated ToDo*.txt files
+	Updated Change_History.txt
+	Updated Version numbers
+	Updated NSF setScrollTrackOffsets function
+	Updated UtilFuncs function which finds some text strings in object name
+	Blizzard func change
+	Moved some skin functions from UtilFuncs to NSF
+	Added more regions to reparent for ActionButtons
+	Removed redundant code fragment
+	Updated Classic MainMenuBarVehicleLeaveButton
+	Replaced UtilFunc function with Blizzard function
+	Bugfix for Classic CraftUI
+	Updated Classic WhoFrame code
+	Updated Retail RaidFinder & LFD frame skins
+	Updated SpellBook code, fixes #177 (SpellBook), many thanks to phrasing for identifying the issue
+	Updated Baganator, closes #190
 beta11.57917.1
 Jncl:
 	Updated ToDo*.txt files
