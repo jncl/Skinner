@@ -733,15 +733,6 @@ function aObj.isAddOnLoaded(_, addonName)
 
 end
 
-function aObj.isAddOnLoadOnDemand(_, addonName)
-	--@debug@
-	_G.assert(addonName, "Unknown object isAddOnLoadOnDemand\n" .. _G.debugstack(2, 3, 2))
-	--@end-debug@
-
-	return _G.C_AddOns.IsAddOnLoadOnDemand(addonName)
-
-end
-
 function aObj:isAddonEnabled(addonName)
 	--@debug@
 	_G.assert(addonName, "Unknown object isAddonEnabled\n" .. _G.debugstack(2, 3, 2))
