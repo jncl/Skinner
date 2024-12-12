@@ -2,7 +2,7 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("Baganator") then return end
 local _G = _G
 
-aObj.addonsToSkin.Baganator = function(self) -- v 505
+aObj.addonsToSkin.Baganator = function(self) -- v 541
 
 	local skinBtns, skinSpecialistBtns, skinSpecialistBags, skinViewBtns, skinBagSlots = _G.nop, _G.nop, _G.nop, _G.nop, _G.nop
 	if self.modBtnBs then
@@ -17,9 +17,6 @@ aObj.addonsToSkin.Baganator = function(self) -- v 505
 			skinBtns(layout.cached)
 			if layout.button then
 				aObj:skinStdButton{obj=layout.button, ofs=0} -- Specialist bag button in BLHC
-			end
-			if layout.divider then
-				layout.divider.Divider:SetTexture(nil)
 			end
 		end
 		function skinSpecialistBags(frame, _)
@@ -76,6 +73,12 @@ aObj.addonsToSkin.Baganator = function(self) -- v 505
 			end
 		end
 	end
+	-- Remove divider lines
+	_G.Baganator.API.Skins.RegisterListener(function(obj)
+		if obj.regionType == "Divider" then
+			obj.region:SetTexture(nil)
+		end
+	end)
 
 	local sBox
 	local function skinFrame(frame, _)
@@ -90,7 +93,7 @@ aObj.addonsToSkin.Baganator = function(self) -- v 505
 			aObj:skinObject("editbox", {obj=sBox, si=true})
 		end
 		if frame.ScrollBar then
-			self:skinObject("scrollbar", {obj=frame.ScrollBar})
+			aObj:skinObject("scrollbar", {obj=frame.ScrollBar})
 		end
 		aObj:skinObject("frame", {obj=frame, kfs=true, ri=true, cb=true, ofs=3, x2=1, y2=-2})
 		if frame.SearchWidget
@@ -99,55 +102,31 @@ aObj.addonsToSkin.Baganator = function(self) -- v 505
 			aObj:skinStdButton{obj=frame.SearchWidget.GlobalSearchButton, sechk=true}
 			aObj:skinStdButton{obj=frame.SearchWidget.HelpButton}
 		end
+		if aObj.modBtns then
+			for _, array in _G.pairs{"AllFixedButtons", "TopButtons", "LiveButtons"} do
+				if frame[array] then
+					for _, btn in _G.pairs(frame[array]) do
+						aObj:skinStdButton{obj=btn, schk=true, sechk=true}
+					end
+				end
+			end
+			if frame.CurrencyButton then
+				aObj:skinStdButton{obj=frame.CurrencyButton, schk=true, sechk=true}
+			end
+		end
 	end
 	local function skinBag(frame, bagType)
 		skinFrame(frame, bagType)
 		skinBagSlots(frame)
-		aObj:SecureHook(frame, "RefreshTabs", function(fObj)
+		aObj:secureHook(frame, "RefreshTabs", function(fObj)
 			aObj:skinObject("tabs", {obj=fObj, tabs=fObj.Tabs, lod=self.isTT and true})
 		end)
 	end
-	local type
-	self:SecureHookScript(_G.Baganator_SingleViewBackpackViewFrame, "OnShow", function(this)
-		type = "SVBags"
-
-		skinBag(this,type)
-		skinViewBtns(this, type)
-
-		self:SecureHook(this, "UpdateForCharacter", function(fObj, _)
-			skinSpecialistBags(fObj, type)
-			if aObj.modBtns then
-				for _, btn in _G.ipairs(fObj.AllButtons) do
-					aObj:skinStdButton{obj=btn, schk=true, sechk=true}
-				end
-			end
-		end)
-
-		self:Unhook(this, "OnShow")
-	end)
-
 	local function skinCVBtnsAfterDelay(frame, cvType)
 		_G.C_Timer.After(_G.CountTable(frame.Container.Layouts) == 0 and 1 or 0, function()
 			skinViewBtns(frame, cvType)
 		end)
 	end
-	self:SecureHookScript(_G.Baganator_CategoryViewBackpackViewFrame, "OnShow", function(this)
-		type = "CVBags"
-
-		skinBag(this,type)
-
-		self:SecureHook(this, "UpdateForCharacter", function(fObj, _)
-			if aObj.modBtns then
-				for _, btn in _G.ipairs(fObj.AllButtons) do
-					aObj:skinStdButton{obj=btn, schk=true, sechk=true}
-				end
-			end
-			skinCVBtnsAfterDelay(fObj, type)
-		end)
-
-		self:Unhook(this, "OnShow")
-	end)
-
 	local function skinSideTabs(fObj)
 		if fObj.Tabs then
 			for _, tab in _G.pairs(fObj.Tabs) do
@@ -188,7 +167,7 @@ aObj.addonsToSkin.Baganator = function(self) -- v 505
 					end
 				end
 
-				skinCVBtnsAfterDelay(fObj, type)
+				skinCVBtnsAfterDelay(fObj, bankType)
 
 				if bankType:find("SV") then
 					skinSpecialistBags(fObj, bankType)
@@ -208,15 +187,15 @@ aObj.addonsToSkin.Baganator = function(self) -- v 505
 						aObj:skinStdButton{obj=btn}
 					end
 				end
-				if type:find("SV") then
+				if bankType:find("SV") then
 					skinViewBtns(this, bankType)
 				end
 
 				aObj:SecureHook(this, "ShowTab", function(fObj, _)
 					aObj:Unhook(fObj, "ShowTab") -- N.B.: moved up here as the function is called lower down
 					skinSideTabs(fObj)
-					if type:find("CV") then
-						skinCVBtnsAfterDelay(fObj, type)
+					if bankType:find("CV") then
+						skinCVBtnsAfterDelay(fObj, bankType)
 					end
 				end)
 
@@ -251,70 +230,83 @@ aObj.addonsToSkin.Baganator = function(self) -- v 505
 			aObj:checkShown(frame.Warband)
 		end
 	end
-	self:SecureHookScript(_G.Baganator_SingleViewBankViewFrame, "OnShow", function(this)
-		skinBank(this, "SVBank")
-
-		self:Unhook(this, "OnShow")
-	end)
-
-	self:SecureHookScript(_G.Baganator_CategoryViewBankViewFrame, "OnShow", function(this)
-		skinBank(this, "CVBank")
-
-		self:Unhook(this, "OnShow")
-	end)
-
-	self:SecureHookScript(_G.Baganator_SingleViewGuildViewFrame, "OnShow", function(this)
-		skinSideTabs(this)
-		self:SecureHook(this, "UpdateTabs", function(fObj)
-			skinSideTabs(fObj)
-		end)
-		skinFrame(this, "SVGuild")
-		if self.modBtns then
-			for _, array in _G.pairs{"AllFixedButtons", "LiveButtons"} do
-				for _, btn in _G.pairs(this[array]) do
-					aObj:skinStdButton{obj=btn, schk=true, sechk=true}
+	local frameData = {
+		SVBag = { name = "Baganator_SingleViewBackpackViewFrame", func = function(this, type)
+			skinBag(this, type)
+			skinViewBtns(this, type)
+			skinSpecialistBags(this, type)
+			aObj:secureHook(this, "UpdateForCharacter", function(fObj, _)
+				skinSpecialistBags(fObj, type)
+			end)
+		end},
+		SVBank = { name = "Baganator_SingleViewBankViewFrame", func = function(this, type)
+			skinBank(this, type)
+		end},
+		SVGuild = { name = "Baganator_SingleViewGuildViewFrame", func = function(this, type)
+			skinFrame(this, type)
+			skinViewBtns(this, type)
+			skinSideTabs(this)
+			aObj:secureHook(this, "UpdateTabs", function(fObj)
+				skinSideTabs(fObj)
+			end)
+			-- wait for layouts to be created
+			_G.C_Timer.After(0.05, function()
+				for _, layout in _G.pairs(this.Container.Layouts) do
+					skinBtns(layout)
 				end
+			end)
+			aObj:secureHookScript(this.LogsFrame, "OnShow", function(fObj)
+				skinFrame(fObj)
+				aObj:Unhook(fObj, "OnShow")
+			end)
+			aObj:secureHookScript(this.TabTextFrame, "OnShow", function(fObj)
+				skinFrame(fObj)
+				if aObj.modBtns then
+					aObj:skinStdButton{obj=fObj.SaveButton}
+				end
+				aObj:Unhook(fObj, "OnShow")
+			end)
+		end},
+		CVBag = { name = "Baganator_CategoryViewBackpackViewFrame", func = function(this, type)
+			skinBag(this, type)
+			skinCVBtnsAfterDelay(this, type)
+			aObj:secureHook(this, "UpdateForCharacter", function(fObj, _)
+				skinCVBtnsAfterDelay(fObj, type)
+			end)
+		end},
+		CVBank = { name = "Baganator_CategoryViewBankViewFrame", func = function(this, type)
+			skinBank(this, type)
+		end},
+		csFrame = { name = "Baganator_CharacterSelectFrame", func = function(this, _)
+			skinFrame(this)
+			if aObj.modBtns then
+				aObj:skinStdButton{obj=this.ManageCharactersButton}
 			end
+		end},
+		cpFrame = { name = "Baganator_CurrencyPanelFrame", func = function(this, _)
+			aObj:skinObject("scrollbar", {obj=aObj:getChild(this, 10)})
+			skinFrame(this)
+		end},
+	}
+	local function setupFrameHooks(currentSkin)
+		-- aObj:Debug("setupFrameHooks: [%s]", currentSkin)
+		for type, tbl in _G.pairs(frameData) do
+			aObj:secureHookScript(_G[tbl.name .. currentSkin], "OnShow", function(this)
+				tbl.func(this, type)
+				aObj:Unhook(this, "OnShow")
+			end)
+			aObj:checkShown(_G[tbl.name .. currentSkin])
 		end
-		skinViewBtns(this, "SVGuild")
-		-- wait for layouts to be created
+	end
+
+	-- hook current frame names
+	setupFrameHooks(_G.Baganator.API.Skins.GetCurrentSkin())
+
+	-- track Theme changes
+	_G.Baganator.CallbackRegistry:RegisterCallback("FrameGroupSwapped", function()
 		_G.C_Timer.After(0.05, function()
-			for _, layout in _G.pairs(this.Container.Layouts) do
-				skinBtns(layout)
-			end
+			setupFrameHooks(_G.Baganator.API.Skins.GetCurrentSkin())
 		end)
-
-		self:SecureHookScript(this.LogsFrame, "OnShow", function(fObj)
-			skinFrame(fObj)
-
-			self:Unhook(fObj, "OnShow")
-		end)
-		self:SecureHookScript(this.TabTextFrame, "OnShow", function(fObj)
-			skinFrame(fObj)
-			if self.modBtns then
-				self:skinStdButton{obj=fObj.SaveButton}
-			end
-
-			self:Unhook(fObj, "OnShow")
-		end)
-
-		self:Unhook(this, "OnShow")
-	end)
-
-	self:SecureHookScript(_G.Baganator_CharacterSelectFrame, "OnShow", function(fObj)
-		skinFrame(fObj)
-		if self.modBtns then
-			self:skinStdButton{obj=fObj.ManageCharactersButton}
-		end
-
-		self:Unhook(fObj, "OnShow")
-	end)
-
-	self:SecureHookScript(_G.Baganator_CurrencyPanelFrame, "OnShow", function(this)
-		self:skinObject("scrollbar", {obj=self:getChild(this, 10)})
-		skinFrame(this)
-
-		self:Unhook(this, "OnShow")
 	end)
 
 	if _G.Baganator_WelcomeFrame then
@@ -325,10 +317,14 @@ aObj.addonsToSkin.Baganator = function(self) -- v 505
 		end
 	end
 
-	_G.Baganator.CallbackRegistry:RegisterCallback("ShowCustomise", function()
-		local this = _G.BaganatorCustomiseDialogFrame
-		this.Bg:SetTexture(nil)
-		this.TopTileStreaks:SetTexture(nil)
+	local function skinCustomiseFrame()
+		local this = _G["BaganatorCustomiseDialogFrame" .. _G.Baganator.API.Skins.GetCurrentSkin()]
+		this:DisableDrawLayer("BACKGROUND")
+		this:DisableDrawLayer("BORDER")
+		this:DisableDrawLayer("OVERLAY")
+		if this.TitleText then
+			this.TitleText:SetDrawLayer("ARTWORK")
+		end
 		local function skinKids(frame)
 			for _, child in _G.ipairs{frame:GetChildren()} do
 				if child:IsObjectType("CheckButton")
@@ -385,8 +381,11 @@ aObj.addonsToSkin.Baganator = function(self) -- v 505
 		end
 		self:skinObject("tabs", {obj=this, tabs=this.Tabs, ignoreSize=true, lod=self.isTT and true, upwards=true, offsets={x1=8, y1=-4, x2=-8, y2=-2}})
 		self:skinObject("frame", {obj=this, kfs=true, ri=true, cb=true, ofs=self.isRTl and 0 or 1, y1=self.isRtl and -1 or 2})
-
-		_G.Baganator.CallbackRegistry:UnregisterCallback("ShowCustomise", aObj)
+	end
+	_G.Baganator.CallbackRegistry:RegisterCallback("ShowCustomise", function()
+		_G.C_Timer.After(0.05, function()
+			skinCustomiseFrame()
+		end)
 	end)
 
 	self.RegisterCallback("Baganator", "SettingsPanel_DisplayCategory", function(_, panel, category)
@@ -402,7 +401,7 @@ aObj.addonsToSkin.Baganator = function(self) -- v 505
 
 end
 
-aObj.addonsToSkin.Syndicator = function(self) -- v 133
+aObj.addonsToSkin.Syndicator = function(self) -- v 140
 	self:SecureHook(_G.Syndicator.API, "GetSearchKeywords", function(this)
 		_G.C_Timer.After(0.05, function()
 			self:skinObject("scrollbar", {obj=_G.Baganator_SearchHelpFrame.ScrollBar})
@@ -428,7 +427,9 @@ aObj.addonsToSkin.Syndicator = function(self) -- v 133
 					if child.thumbAnchor then
 						self:skinObject("scrollbar", {obj=child})
 					end
-					if child.layoutType == "InsetFrameTemplate"	then
+					if child.layoutType == "InsetFrameTemplate"
+					or child.InsetBorderTop
+					then
 						aObj:skinObject("frame", {obj=child, kfs=true, ri=true, rns=true, fb=true})
 					end
 					skinKids(child)
