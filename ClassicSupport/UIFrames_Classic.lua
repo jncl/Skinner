@@ -135,7 +135,7 @@ aObj.SetupClassic_UIFrames = function()
 
 		-- this is done here as other AddOns may require it to be skinned
 		if self.modBtnBs then
-			self:addButtonBorder{obj=_G.MainMenuBarVehicleLeaveButton}
+			self:addButtonBorder{obj=_G.MainMenuBarVehicleLeaveButton, schk=true}
 		end
 
 		if _G.C_AddOns.IsAddOnLoaded("Dominos") then
