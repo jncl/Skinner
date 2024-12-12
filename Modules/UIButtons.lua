@@ -754,7 +754,9 @@ local function __addButtonBorder(opts)
 	end
 
 	-- colour the button border
-	if opts.ibt
+	if _G.type(opts.clr) == "table" then
+		opts.obj.sbb:SetBackdropBorderColor(_G.unpack(opts.clr))
+	elseif opts.ibt
 	or opts.libt
 	then -- Item Buttons & Large Item Buttons
 		-- N.B. leave subicon/SubIconTexture below .sbb (Classic ERA Engraving)
@@ -772,11 +774,7 @@ local function __addButtonBorder(opts)
 	then
 		aObj:clrButtonFromBorder(opts.obj)
 	else
-		if _G.type(opts.clr) == "table" then
-			opts.obj.sbb:SetBackdropBorderColor(_G.unpack(opts.clr))
-		else
-			aObj:clrBtnBdr(opts.obj, opts.clr, opts.ca)
-		end
+		aObj:clrBtnBdr(opts.obj, opts.clr, opts.ca)
 	end
 
 	-- hook these as required

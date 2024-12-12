@@ -407,8 +407,7 @@ aObj.SetupClassic_PlayerFrames = function()
 					btnName = "CraftReagent" .. i
 					_G[btnName].NameFrame:SetTexture(nil)
 					if self.modBtnBs then
-						self:addButtonBorder{obj=_G[btnName], fType=ftype, libt=true}
-						_G[btnName].sbb:SetBackdropBorderColor(_G[btnName .. "IconTexture"]:GetVertexColor())
+						self:addButtonBorder{obj=_G[btnName], fType=ftype, libt=true, clr={_G[btnName .. "IconTexture"]:GetVertexColor()}}
 					end
 				end
 				if self.modBtns then
