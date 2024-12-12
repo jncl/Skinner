@@ -1068,3 +1068,26 @@ local function skinTooltip(tbl)
 	aObj:applyTooltipGradient(tbl.obj.sf)
 end
 skinFuncs.tooltip = function(table) skinTooltip(table) end
+
+aObj.skinRoleBtns = _G.nop
+if _G.PVEFrame then
+	-- The following function is used by the LFD & RaidFinder skinning functions
+	local roleBtn
+	function aObj:skinRoleBtns(frame)
+		for _, type in _G.pairs{"Tank", "Healer", "DPS", "Leader"} do
+			roleBtn = _G[frame .. "QueueFrameRoleButton" .. type]
+			if roleBtn.background then
+				roleBtn.background:SetTexture(nil)
+			end
+			if roleBtn.shortageBorder then
+				roleBtn.shortageBorder:SetTexture(nil)
+			end
+			if roleBtn.incentiveIcon then
+				roleBtn.incentiveIcon.border:SetTexture(nil)
+			end
+			if self.modChkBtns then
+				self:skinCheckButton{obj=roleBtn.checkButton}
+			end
+		end
+	end
+end

@@ -1501,6 +1501,7 @@ if not aObj.isClscERA then
 			self:removeInset(this.Inset)
 			-- LFD Queue Frame
 			_G.LFDQueueFrameBackground:SetAlpha(0)
+			self:skinRoleBtns("LFD")
 			self:skinObject("ddbutton", {obj=_G.LFDQueueFrame.TypeDropdown, fType=ftype})
 			_G.LFDQueueFrameRandomScrollFrameChildFrame.MoneyReward.NameFrame:SetTexture(nil)
 			self:removeMagicBtnTex(_G.LFDQueueFrameFindGroupButton)

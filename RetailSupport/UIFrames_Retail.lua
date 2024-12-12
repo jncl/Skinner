@@ -3281,28 +3281,6 @@ aObj.SetupRetail_UIFrames = function()
 
 	end
 
-	local skinRoleBtns
-	if _G.PVEFrame then
-		-- The following function is used by the LFDFrame & RaidFinder functions
-		function skinRoleBtns(frame)
-			local roleBtn
-			for _, type in _G.pairs{"Tank", "Healer", "DPS", "Leader"} do
-				roleBtn = _G[frame .. "QueueFrameRoleButton" .. type]
-				if roleBtn.background then
-					roleBtn.background:SetTexture(nil)
-				end
-				if roleBtn.shortageBorder then
-					roleBtn.shortageBorder:SetTexture(nil)
-				end
-				if roleBtn.incentiveIcon then
-					roleBtn.incentiveIcon.border:SetTexture(nil)
-				end
-				if aObj.modChkBtns then
-					aObj:skinCheckButton{obj=roleBtn.checkButton}
-				end
-			end
-		end
-	end
 	aObj.blizzFrames[ftype].RaidFinder = function(self)
 		if not self.prdb.PVEFrame or self.initialized.RaidFinder then return end
 		self.initialized.RaidFinder = true
@@ -3311,36 +3289,29 @@ aObj.SetupRetail_UIFrames = function()
 			this:DisableDrawLayer("BACKGROUND")
 			this:DisableDrawLayer("BORDER")
 			self:removeInset(_G.RaidFinderFrameRoleInset)
+			self:nilTexture(_G.RaidFinderQueueFrameBackground, true)
+			self:skinRoleBtns("RaidFinder")
+			self:skinObject("ddbutton", {obj=_G.RaidFinderQueueFrameSelectionDropdown, fType=ftype})
+			self:skinObject("scrollbar", {obj=_G.RaidFinderQueueFrameScrollFrame.ScrollBar, fType=ftype, rpTex={"background", "artwork"}})
 			self:removeInset(_G.RaidFinderFrameBottomInset)
-			if self.modBtnBs then
-				self:addButtonBorder{obj=_G.RaidFinderQueueFrameScrollFrameChildFrameItem1, fType=ftype, libt=true}
-				self:addButtonBorder{obj=_G.RaidFinderQueueFrameScrollFrameChildFrame.MoneyReward, fType=ftype, libt=true}
-			end
-			_G.RaidFinderQueueFrameScrollFrameChildFrameItem1NameFrame:SetTexture(nil)
-			if _G.RaidFinderQueueFrameScrollFrameChildFrameItem2 then
-				if self.modBtnBs then
-					self:addButtonBorder{obj=_G.RaidFinderQueueFrameScrollFrameChildFrameItem2, fType=ftype, libt=true}
+			local btn
+			for i = 1, 3 do
+				btn = _G["RaidFinderQueueFrameScrollFrameChildFrameItem" .. i]
+				if btn then
+					btn.NameFrame:SetTexture(nil)
+					if self.modBtnBs then
+						self:addButtonBorder{obj=btn, fType=ftype, libt=true}
+					end
 				end
-				_G.RaidFinderQueueFrameScrollFrameChildFrameItem2NameFrame:SetTexture(nil)
-			end
-			if _G.RaidFinderQueueFrameScrollFrameChildFrameItem3 then
-				if self.modBtnBs then
-					self:addButtonBorder{obj=_G.RaidFinderQueueFrameScrollFrameChildFrameItem3, fType=ftype, libt=true}
-				end
-				_G.RaidFinderQueueFrameScrollFrameChildFrameItem3NameFrame:SetTexture(nil)
 			end
 			_G.RaidFinderQueueFrameScrollFrameChildFrame.MoneyReward.NameFrame:SetTexture(nil)
 			self:removeMagicBtnTex(_G.RaidFinderFrameFindRaidButton)
 			if self.modBtns then
 				self:skinStdButton{obj=_G.RaidFinderFrameFindRaidButton}
 			end
-
-			-- TODO texture is present behind frame
-			-- RaidFinderQueueFrame
-			self:nilTexture(_G.RaidFinderQueueFrameBackground, true)
-			skinRoleBtns("RaidFinder")
-			self:skinObject("ddbutton", {obj=_G.RaidFinderQueueFrameSelectionDropdown, fType=ftype})
-			self:skinObject("scrollbar", {obj=_G.RaidFinderQueueFrameScrollFrame.ScrollBar, fType=ftype, rpTex={"background", "artwork"}})
+			if self.modBtnBs then
+				self:addButtonBorder{obj=_G.RaidFinderQueueFrameScrollFrameChildFrame.MoneyReward, fType=ftype, libt=true}
+			end
 
 			self:Unhook(this, "OnShow")
 		end)
