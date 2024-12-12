@@ -1,3 +1,4 @@
+---
 # based upon: https://github.com/BigWigsMods/packager/wiki/GitHub-Actions-workflow
 
 # description of this workflow, can be anything you want
@@ -20,13 +21,14 @@ jobs:
   release:
 
     # we can run our steps on pretty much anything, but the "ubuntu-latest" image is a safe bet
-    runs-on: ubuntu-latest
+    # ubuntu-24.04 a.k.a. ubuntu-latest has removed support for SVN, therefore the build breaks when fetching Ace3 externals
+    runs-on: ubuntu-22.04
 
     # specify the environment variables used by the packager, matching the secrets from the project on GitHub
     env:
-       CF_API_KEY: ${{ secrets.CF_API_KEY }}
-       GITHUB_OAUTH: ${{ secrets.GITHUB_TOKEN }}
-       WAGO_API_TOKEN: ${{ secrets.WAGO_API_TOKEN }}
+      CF_API_KEY: ${{ secrets.CF_API_KEY }}
+      GITHUB_OAUTH: ${{ secrets.GITHUB_TOKEN }}
+      WAGO_API_TOKEN: ${{ secrets.WAGO_API_TOKEN }}
 
     # "steps" holds a list of all the steps needed to package and release our AddOn
     steps:
