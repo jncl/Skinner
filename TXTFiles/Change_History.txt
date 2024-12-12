@@ -1,3 +1,36 @@
+beta11.57917.1
+Jncl:
+	Updated ToDo*.txt files
+	Updated Change_History.txt
+	Updated Version numbers
+	Updated TOC
+	Retail PTR change
+	Updated debug code
+	Updated CheckButton skin
+	Updated ButtonBorder skin
+	Updated CraftingOutputLog skin
+	Skin MultiBar8 buttons
+	Removed "grey" border from several garrison frames
+	Updated ActionBar button skinning code
+	Moved All Colour functions together in their own file
+	Updated UIButtons to fix minus/plus buttons texture check
+	Updated ScriptErrorsFrame skin
+	Updated MinimapButtons skin
+	Updated LFD frames skin
+	Updated AlertFrame skin
+	Updated MonthlyActivitiesFrame skin
+	Updated WardrobeCollection skin
+	Updated MountsCollection skin
+	Updated NSF scrollBar widths
+	Updated NSF skinFrame code
+	Updated QuestInfo skin
+	Updated ClassicERA DropdownButtons and MoneyFrame objects skins
+	Updated Classic WorldMapFrame skin
+	Skinned ClassicERA QuestTimerFrame
+	Updated Ace3, Auctionator, Baganator, Leatrix_Plus & WoWPro skins
+	Skinned GroupFinder & Associated frames for ClassicERA, closes #188
+	Updated GuildEventLog version check, closes #187
+	Bugfix for QuestInfo, closes #186
 beta11.57564.1
 Jncl:
 	Updated ToDo*.txt files
