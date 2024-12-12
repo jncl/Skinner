@@ -466,11 +466,11 @@ function aObj:checkAndRunAddOn(addonName, addonFunc, LoD)
 		return
 	end
 
-	self:Debug2("checkAndRunAddOn #2: [%s, %s, %s, %s]", _G.C_AddOns.IsAddOnLoaded(addonName), self:isAddOnLoadOnDemand(addonName), addonFunc, _G.type(addonFunc))
+	self:Debug2("checkAndRunAddOn #2: [%s, %s, %s, %s]", _G.C_AddOns.IsAddOnLoaded(addonName), _G.C_AddOns.IsAddOnLoadOnDemand(addonName), addonFunc, _G.type(addonFunc))
 
 	if not _G.C_AddOns.IsAddOnLoaded(addonName) then
 		-- deal with Addons under the control of an LoadManager
-		if self:isAddOnLoadOnDemand(addonName)
+		if _G.C_AddOns.IsAddOnLoadOnDemand(addonName)
 		and not LoD
 		then
 			self.lmAddons[addonName:lower()] = addonFunc -- store with lowercase addonname (AddonLoader fix)
