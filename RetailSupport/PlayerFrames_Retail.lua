@@ -221,7 +221,7 @@ aObj.SetupRetail_PlayerFrames = function()
 			self:changeShield(cbFrame.BorderShield, cbFrame.Icon)
 			self:nilTexture(cbFrame.Border, true)
 			self:nilTexture(cbFrame.Flash, true)
-			self:skinObject("statusbar", {obj=cbFrame--[[, fi=0]], bg=cbFrame.Background, hookFunc=true})
+			self:skinObject("statusbar", {obj=cbFrame, bg=cbFrame.Background, hookFunc=true})
 		end
 
 	end
