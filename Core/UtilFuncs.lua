@@ -620,21 +620,15 @@ function aObj.hasTextInDebugNameRE(_, obj, text)
 
 end
 
-function aObj.hasAnyTextInName(_, obj, tab)
+function aObj:hasAnyTextInName(obj, tab)
 	--@debug@
 	_G.assert(obj, "Unknown object hasAnyTextInName\n" .. _G.debugstack(2, 3, 2))
 	_G.assert(tab and _G.type(tab) == "table", "Missing text table hasAnyTextInName\n" .. _G.debugstack(2, 3, 2))
 	--@end-debug@
 
-	if obj
-	and obj.GetName
-	and obj:GetName()
-	then
-		local oName = obj:GetName()
-		for _, text in _G.ipairs(tab) do
-			if oName:find(text, 1, true) then
-				return true
-			end
+	for _, text in _G.ipairs(tab) do
+		if self:hasTextInName(obj, text) then
+			return true
 		end
 	end
 
