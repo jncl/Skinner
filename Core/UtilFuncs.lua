@@ -236,9 +236,14 @@ function aObj:canSkin(callingFunc, opts, dontCheckCombat)
 
 end
 
-function aObj:canSkinActionBtns()
+function aObj.canSkinActionBtns()
 
-	return self.isRtl and false or true
+	--@debug@
+	return true
+	--@end-debug@
+	--[===[@non-debug@
+	return aObj.isRtl and false or true
+	--@end-non-debug@]===]
 
 end
 
@@ -897,6 +902,9 @@ function aObj.moveObject(_, ...)
 end
 
 function aObj.nilTexture(_, obj, nop)
+	--@debug@
+	_G.assert(false, "calling nilTexture function" .. _G.debugstack(2, 3, 2))
+	--@end-debug@
 
 	obj:SetTexture(nil)
 	obj:SetAtlas(nil)
