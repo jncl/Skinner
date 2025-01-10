@@ -624,7 +624,7 @@ function module.skinStdButton(_, ...)
 end
 
 local rpRegions = {
-	"ActionBarHighlight", "AutoCastable", "AutoCastOverlay", "AutoCastShine", "Border", "Count", "Flash", "FlyoutArrow", "FlyoutArrowNormal", "FlyoutArrowPushed", "FlyoutArrowHighlight", "HotKey", "IconBorder", "IconQuestTexture", "ItemContextOverlay", "ItemOverlay", "ItemOverlay2", "LevelLinkLockIcon", "Name", "NewActionTexture", "ProfessionQualityOverlay", "searchOverlay", "SlotBorder", "SlotBorderOpen", "SpellHighlightTexture", "Stock"
+	"ActionBarHighlight", "AutoCastable", "AutoCastOverlay", "AutoCastShine", "Border", "Count", "Flash", "FlyoutArrow", "FlyoutArrowNormal", "FlyoutArrowPushed", "FlyoutArrowHighlight", "Glow", "HotKey", "IconBorder", "IconQuestTexture", "ItemContextOverlay", "ItemOverlay", "ItemOverlay2", "LevelLinkLockIcon", "Name", "NewActionTexture", "ProfessionQualityOverlay", "searchOverlay", "SlotBorder", "SlotBorderOpen", "SpellHighlightTexture", "Stock"
 }
 local function reparentRegion(region, parent)
 	if region
