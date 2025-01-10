@@ -400,8 +400,8 @@ aObj.blizzFrames[ftype].QuestInfo = function(self)
 
 	self:SecureHookScript(_G.QuestInfoRequiredMoneyFrame, "OnShow", function(this)
 		self:SecureHook("QuestInfo_ShowRequiredMoney", function()
-			local br, bg, bb = self.BT:GetRGB()
-			local r, g ,b = _G.QuestInfoRequiredMoneyText:GetTextColor()
+			br, bg, bb = self.BT:GetRGB()
+			r, g ,b = _G.QuestInfoRequiredMoneyText:GetTextColor()
 			-- if red value is less than 0.2 then it needs to be coloured
 			if r < 0.2 then
 				_G.QuestInfoRequiredMoneyText:SetTextColor(br - r, bg - g, bb - b)
@@ -411,22 +411,31 @@ aObj.blizzFrames[ftype].QuestInfo = function(self)
 		self:Unhook(this, "OnShow")
 	end)
 
+	local function skinRewardsTypes(frame, type)
+		type = type .. "Frame"
+		if frame[type].NameFrame then
+			frame[type].NameFrame:SetTexture(nil)
+		elseif type == "TitleFrame" then
+			aObj:removeRegions(frame[type].TitleFrame, {2, 3, 4}) -- NameFrame textures
+		end
+		if frame[type].ReceiveText then
+			frame[type].ReceiveText:SetTextColor(aObj.BT:GetRGB())
+		end
+		if aObj.modBtnBs then
+			aObj:addButtonBorder{obj=frame[type], fType=ftype, sibt=true, relTo=frame[type].Icon, reParent=type == "SkillPointFrame" and {frame[type].CircleBackground, frame[type].CircleBackgroundGlow, frame[type].ValueText} or nil}
+		end
+	end
 	self:SecureHookScript(_G.QuestInfoRewardsFrame, "OnShow", function(this)
-		this.XPFrame.ReceiveText:SetTextColor(self.BT:GetRGB())
-		self:removeRegions(_G.QuestInfoPlayerTitleFrame, {2, 3, 4}) -- NameFrame textures
-		if self.isClsc then
-			this.TalentFrame.ReceiveText:SetTextColor(self.BT:GetRGB())
+		for _, type in _G.pairs{"SkillPoint", "ArtifactXP", aObj.isRtl and "WarModeBonus" or nil} do
+			skinRewardsTypes(this, type)
 		end
 
 		self:Unhook(this, "OnShow")
 	end)
 
 	self:SecureHookScript(_G.MapQuestInfoRewardsFrame, "OnShow", function(this)
-		for _, type in _G.pairs{"XPFrame", "MoneyFrame"} do
-			this[type].NameFrame:SetTexture(nil)
-			if self.modBtnBs then
-				self:addButtonBorder{obj=this[type], fType=ftype, sibt=true, relTo=this[type].Icon}
-			end
+		for _, type in _G.pairs{"XP", "Honor", "ArtifactXP", "Money", "SkillPoint", "Title", aObj.isRtl and "WarModeBonus" or nil} do
+			skinRewardsTypes(this, type)
 		end
 
 		self:Unhook(this, "OnShow")
