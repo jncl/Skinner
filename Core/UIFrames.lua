@@ -2636,43 +2636,6 @@ aObj.blizzFrames[ftype].Nameplates = function(self)
 end
 
 if not aObj.isClscERA then
-	aObj.blizzFrames[ftype].NavigationBar = function(self)
-		if not self.prdb.NavigationBar or self.initialized.NavigationBar then return end
-		self.initialized.NavigationBar = true
-		-- Helper function, used by several frames
-
-		-- hook this to handle navbar buttons
-		self:SecureHook("NavBar_AddButton", function(this, _)
-			for _, btn in _G.pairs(this.navList) do
-				self:skinNavBarButton(btn)
-				if self.modBtnBs
-				and btn.MenuArrowButton -- Home button doesn't have one
-				and not btn.MenuArrowButton.sbb
-				then
-					self:addButtonBorder{obj=btn.MenuArrowButton, ofs=-2, x1=-1, x2=0, clr="gold", ca=0.75}
-					if btn.MenuArrowButton.sbb then
-						btn.MenuArrowButton.sbb:SetAlpha(0) -- hide button border
-					end
-					-- handle in combat hooking
-					self:hookScript(btn.MenuArrowButton, "OnEnter", function(bObj)
-						bObj.sbb:SetAlpha(1)
-					end)
-					self:hookScript(btn.MenuArrowButton, "OnLeave", function(bObj)
-						bObj.sbb:SetAlpha(0)
-					end)
-				end
-			end
-			-- overflow Button
-			this.overflowButton:GetNormalTexture():SetAlpha(0)
-			this.overflowButton:GetPushedTexture():SetAlpha(0)
-			this.overflowButton:GetHighlightTexture():SetAlpha(0)
-			this.overflowButton:SetText("<<")
-			this.overflowButton:SetNormalFontObject(self.modUIBtns.fontP) -- use module name instead of shortcut
-
-		end)
-
-	end
-
 	aObj.blizzFrames[ftype].OverrideActionBar = function(self) -- a.k.a. Vehicle UI
 		if not self.prdb.OverrideActionBar or self.initialized.OverrideActionBar then return end
 		self.initialized.OverrideActionBar = true

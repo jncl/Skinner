@@ -3848,10 +3848,7 @@ aObj.SetupRetail_UIFrames = function()
 					self:skinObject("ddbutton", {obj=oFrame.BountyDropdown, fType=ftype, noSF=true, y1=-2, x2=-2, y2=2, clr="gold"})
 				-- NavBar
 				elseif oFrame.home then
-					self:skinNavBarButton(oFrame.home)
-					oFrame:DisableDrawLayer("BACKGROUND")
-					oFrame:DisableDrawLayer("BORDER")
-					oFrame.overlay:DisableDrawLayer("OVERLAY")
+					self:skinNavBar(oFrame)
 				-- SidePanelToggle
 				elseif oFrame.CloseButton then
 					if self.modBtnBs then

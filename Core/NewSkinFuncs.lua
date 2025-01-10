@@ -1123,13 +1123,47 @@ function aObj:skinMainHelpBtn(frame)
 
 end
 
-function aObj.skinNavBarButton(_, btn)
-
+local function skinNavBarButton(btn)
 	btn:DisableDrawLayer("OVERLAY")
 	btn:GetNormalTexture():SetAlpha(0)
 	btn:GetPushedTexture():SetAlpha(0)
+	if aObj.modBtnBs
+	and btn.MenuArrowButton -- Home button doesn't have one
+	and not btn.MenuArrowButton.sbb
+	then
+		aObj:addButtonBorder{obj=btn.MenuArrowButton, ofs=-2, x1=-1, x2=0, clr="gold", ca=0.75}
+		if btn.MenuArrowButton.sbb then
+			btn.MenuArrowButton.sbb:SetAlpha(0) -- hide button border
+		end
+		-- handle in combat hooking
+		aObj:hookScript(btn.MenuArrowButton, "OnEnter", function(bObj)
+			bObj.sbb:SetAlpha(1)
+		end)
+		aObj:hookScript(btn.MenuArrowButton, "OnLeave", function(bObj)
+			bObj.sbb:SetAlpha(0)
+		end)
+	end
+end
+function aObj:skinNavBar(navBar)
+
+	navBar:DisableDrawLayer("BACKGROUND")
+	navBar:DisableDrawLayer("BORDER")
+	navBar.overlay:DisableDrawLayer("OVERLAY")
+
+	for _, btn in _G.pairs(navBar.navList) do
+		skinNavBarButton(btn)
+	end
+	navBar.overflowButton:GetNormalTexture():SetAlpha(0)
+	navBar.overflowButton:GetPushedTexture():SetAlpha(0)
+	navBar.overflowButton:GetHighlightTexture():SetAlpha(0)
+	navBar.overflowButton:SetText("<<")
+	navBar.overflowButton:SetNormalFontObject(self.modUIBtns.fontP) -- use module name instead of shortcut
 
 end
+-- hook this to skin new buttons (Encounter Journal uses this)
+aObj:SecureHook("NavBar_AddButton", function(this, _)
+	skinNavBarButton(this.navList[#this.navList])
+end)
 
 function aObj:skinPagingControls(frame)
 

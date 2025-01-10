@@ -2383,10 +2383,8 @@ if not aObj.isClscERA then
 			aObj.modUIBtns:skinStdButton{obj=btn, x1=-11, y1=-2, x2=11, y2=2, clr="gold"} -- use module function so button appears
 		end
 		self:SecureHookScript(_G.EncounterJournal, "OnShow", function(this)
-			this.navBar:DisableDrawLayer("BACKGROUND")
-			this.navBar:DisableDrawLayer("BORDER")
-			this.navBar.overlay:DisableDrawLayer("OVERLAY")
-			self:skinNavBarButton(this.navBar.home)
+
+			self:skinNavBar(this.navBar)
 			this.navBar.home.text:SetPoint("RIGHT", -20, 0)
 			self:skinObject("editbox", {obj=this.searchBox, fType=ftype, si=true})
 			self:skinObject("ddbutton", {obj=this.LootJournalViewDropdown, fType=ftype})
