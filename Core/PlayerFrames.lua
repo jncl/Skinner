@@ -2829,15 +2829,13 @@ aObj.blizzLoDFrames[ftype].ItemSocketingUI = function(self)
 		gemTypeInfo["PunchcardYellow"] = {textureKit = "punchcard-yellow", r = 0.97, g = 0.82, b = 0.29}
 		gemTypeInfo["PunchcardBlue"]   = {textureKit = "punchcard-blue", r = 0.47, g = 0.67, b = 1}
 		gemTypeInfo["Domination"]      = {textureKit = "domination", r = 1, g = 1, b = 1}
-		-- gemTypeInfo["Cypher"]          = {textureKit = "meta", r = 1, g = 1, b = 1}
-		gemTypeInfo["Tinker"]          = {textureKit = "punchcard-red", r = 1, g = 0.47, b = 0.47}
-		-- gemTypeInfo["Primordial"]      = {textureKit = "meta", r = 1, g = 1, b = 1}
-		gemTypeInfo["Fragrance"]       = {textureKit = "hydraulic", r = 1, g = 1, b = 1}
-	end
-	if aObj.isRtlPTR then
-		gemTypeInfo["SingingThunder"]  = {textureKit="yellow", r=0.97, g=0.82, b=0.29}
-		gemTypeInfo["SingingSea"]      = {textureKit="blue",r=0.47, g=0.67, b=1}
-		gemTypeInfo["SingingWind"]     = {textureKit="red", r=1, g=0.47, b=0.47}
+		gemTypeInfo["Cypher"]          = _G.CopyTable(gemTypeInfo["Meta"], true)
+		gemTypeInfo["Tinker"]          = _G.CopyTable(gemTypeInfo["PunchcardRed"], true)
+		gemTypeInfo["Primordial"]      = _G.CopyTable(gemTypeInfo["Meta"], true)
+		gemTypeInfo["Fragrance"]       = _G.CopyTable(gemTypeInfo["Hydraulic"], true)
+		gemTypeInfo["SingingThunder"]  = _G.CopyTable(gemTypeInfo["Yellow"], true)
+		gemTypeInfo["SingingSea"]      = _G.CopyTable(gemTypeInfo["Blue"], true)
+		gemTypeInfo["SingingWind"]     = _G.CopyTable(gemTypeInfo["Red"], true)
 	end
 	-- setup default for missing entry
 	_G.setmetatable(gemTypeInfo, {__index = function(t, k)
