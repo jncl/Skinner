@@ -115,6 +115,7 @@
 <Script file="LibAboutPanel.lua"/>
 <Script file="LibAddonDropDownTemplates.lua"/>
 <Script file="LibBlueOption.lua"/>
+<Script file="LibCandyBar.lua"/>
 <Script file="LibDBIcon.lua"/>
 <Script file="LibDialog.lua"/>
 <Script file="LibDropdown.lua"/>
