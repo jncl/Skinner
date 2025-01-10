@@ -57,7 +57,7 @@ if not aObj.isClscERA then
 				if btn.hiddenDescription then
 					btn.hiddenDescription:SetTextColor(aObj.BT:GetRGB())
 				end
-				aObj:nilTexture(btn.icon.frame, true)
+				btn.icon.frame:SetAlpha(0)
 				-- if aObj.modBtns then
 					-- TODO: PlusMinus is really a texture NOT a button
 					-- aObj:SecureHook("AchievementButton_UpdatePlusMinusTexture", function(btn)
@@ -145,7 +145,7 @@ if not aObj.isClscERA then
 							btn.Description:SetTextColor(.6, .6, .6, 1)
 						end
 					end
-					aObj:nilTexture(btn.Icon.frame, true)
+					btn.Icon.frame:SetAlpha(0)
 					if aObj.modBtnBs then
 						aObj:addButtonBorder{obj=btn.Icon, fType=ftype, ofs=-3, y1=0, y2=6, clr={btn:GetBackdropBorderColor()}}
 					end
@@ -2911,8 +2911,7 @@ aObj.blizzFrames[ftype].MirrorTimers = function(self)
 	else
 		for _, timer in _G.pairs(_G.MirrorTimerContainer.mirrorTimers) do
 			if timer.StatusBar then
-				self:nilTexture(timer.TextBorder, true)
-				self:nilTexture(timer.Border, true)
+				self:removeRegions(timer, {1, 4}) -- TextBorder & Border
 				if self.prdb.MirrorTimers.glaze then
 					self:skinObject("statusbar", {obj=timer.StatusBar, fi=0, bg=self:getRegion(timer, 2), hookFunc=true})
 				end

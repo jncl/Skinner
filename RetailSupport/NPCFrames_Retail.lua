@@ -635,10 +635,10 @@ aObj.SetupRetail_NPCFrames = function()
 			this.InfoPanel.Location:SetTextColor(self.BT:GetRGB())
 			this.InfoPanel.Description:SetTextColor(self.BT:GetRGB())
 			this.InfoPanel.AbilitiesFrame.AbilitiesLabel:SetTextColor(self.HT:GetRGB())
-			self:nilTexture(this.InfoPanel.AbilitiesFrame.Border, true)
+			this.InfoPanel.AbilitiesFrame.Border:SetTexture(nil)
 			this.InfoPanel.SoulbindsFrame.SoulbindsLabel:SetTextColor(self.HT:GetRGB())
 			this.InfoPanel.CovenantFeatureFrame.Label:SetTextColor(self.HT:GetRGB())
-			self:nilTexture(this.InfoPanel.CovenantFeatureFrame.CovenantFeatureButton:GetNormalTexture(), true)
+			this.InfoPanel.CovenantFeatureFrame.CovenantFeatureButton:GetNormalTexture():SetTexture(nil)
 			for btn in this.AbilityButtonsPool:EnumerateActive() do
 				btn.IconBorder:SetTexture(nil)
 				if self.modBtnBs then
@@ -735,7 +735,7 @@ aObj.SetupRetail_NPCFrames = function()
 			skinTalents(list)
 			for _, frame in _G.pairs(this.UpgradesTab.Upgrades) do
 				if frame.Border then
-					self:nilTexture(frame.Border, true)
+					frame.Border:SetTexture(nil)
 				end
 				if frame.TierBorder then
 					self:changeTandC(frame.TierBorder)
@@ -777,7 +777,7 @@ aObj.SetupRetail_NPCFrames = function()
 			-- remove ZoneLabel background texture
 			for dP, _ in _G.pairs(this.dataProviders) do
 				if dP.ZoneLabel then
-					self:nilTexture(dP.ZoneLabel.TextBackground)
+					dP.ZoneLabel.TextBackground:SetTexture(nil)
 					break
 				end
 			end
@@ -907,8 +907,7 @@ aObj.SetupRetail_NPCFrames = function()
 			self:checkShown(this.ProductsFrame)
 
 			self:SecureHookScript(this.ModelSceneContainerFrame, "OnShow", function(fObj)
-				self:nilTexture(fObj.ToyOverlayFrame.toyBackground, true)
-				self:nilTexture(fObj.ToyOverlayFrame.IconBorder, true)
+				self:removeRegions(fObj.ToyOverlayFrame, {1, 3})
 				self:skinObject("frame", {obj=fObj.ToyOverlayFrame, fType=ftype, x1=785, y1=-295, x2=-625, y2=295})
 				if self.modBtnBs then
 					self:addButtonBorder{obj=fObj.ToyOverlayFrame, fType=ftype, relTo=fObj.ToyOverlayFrame.Icon, clr="gold", es=24, ofs=3}

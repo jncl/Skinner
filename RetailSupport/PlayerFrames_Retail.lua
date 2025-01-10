@@ -105,7 +105,7 @@ aObj.SetupRetail_PlayerFrames = function()
 					_, element, _, new = ...
 				end
 				if new ~= false then
-					aObj:nilTexture(element.Background, true)
+					element.Background:SetTexture(nil)
 					if aObj.modBtnBs then
 						aObj:addButtonBorder{obj=element, relTo=element.Icon, reParent={element.IconCover, element.Glow, element.Glow2, element.Glow3}}
 					end
@@ -217,11 +217,12 @@ aObj.SetupRetail_PlayerFrames = function()
 		-- OverlayPlayerCastingBarFrame used by ClassTalents
 		for _, type in _G.pairs{"Player", "Pet", "OverlayPlayer"} do
 			cbFrame = _G[type .. "CastingBarFrame"]
-			self:nilTexture(cbFrame.TextBorder, true)
+			cbFrame.TextBorder:SetTexture(nil)
+			cbFrame.Border:SetTexture(nil)
+			cbFrame.Flash:SetTexture(nil)
 			self:changeShield(cbFrame.BorderShield, cbFrame.Icon)
-			self:nilTexture(cbFrame.Border, true)
-			self:nilTexture(cbFrame.Flash, true)
 			self:skinObject("statusbar", {obj=cbFrame, bg=cbFrame.Background, hookFunc=true})
+			cbFrame.Background:SetAllPoints(cbFrame)
 		end
 
 	end
@@ -592,7 +593,7 @@ aObj.SetupRetail_PlayerFrames = function()
 
 		self:SecureHookScript(_G.RecruitAFriendFrame, "OnShow", function(this)
 			this.RewardClaiming:DisableDrawLayer("BACKGROUND")
-			self:nilTexture(this.RewardClaiming.NextRewardButton.IconBorder, true)
+			this.RewardClaiming.NextRewardButton.IconBorder:SetTexture(nil)
 			self:removeInset(this.RewardClaiming.Inset)
 			this.RecruitList.Header:DisableDrawLayer("BACKGROUND")
 			self:removeInset(this.RecruitList.ScrollFrameInset)

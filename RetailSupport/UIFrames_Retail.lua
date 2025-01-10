@@ -20,7 +20,7 @@ aObj.SetupRetail_UIFrames = function()
 			if frame.PuckBorder then -- CovenantMissions
 				frame.TroopStackBorder1:SetTexture(nil)
 				frame.TroopStackBorder2:SetTexture(nil)
-				aObj:nilTexture(frame.PuckBorder, true)
+				frame.PuckBorder:SetTexture(nil)
 				frame.PortraitRingQuality:SetTexture(nil)
 				frame.PortraitRingCover:SetTexture(nil)
 				aObj:changeTandC(frame.LevelCircle)
@@ -325,7 +325,7 @@ aObj.SetupRetail_UIFrames = function()
 				end
 			end
 		    aObj:removeRegions(frame.Stage.MissionInfo, naval and {1, 2, 3, 4, 5, 8, 9, 10} or {1, 2, 3, 4, 5, 11, 12, 13})
-			aObj:nilTexture(frame.Stage.MissionInfo.IconBG, true)
+			frame.Stage.MissionInfo.IconBG:SetTexture(nil)
 		end
 		function skinMissionList(ml, tabOfs, colour)
 			ml.MaterialFrame:DisableDrawLayer("BACKGROUND")
@@ -359,7 +359,7 @@ aObj.SetupRetail_UIFrames = function()
 				if new ~= false then
 					element:DisableDrawLayer("BACKGROUND")
 					element:DisableDrawLayer("BORDER")
-					aObj:nilTexture(element.LocBG, true)
+					element.LocBG:SetTexture(nil)
 					if element.RareOverlay then
 						element.RareOverlay:SetTexture(nil)
 						-- extend the top & bottom highlight texture
@@ -1496,11 +1496,10 @@ aObj.SetupRetail_UIFrames = function()
 				else
 					skinPanelBtns(this.SoulbindPanel)
 				end
-				self:nilTexture(this.CovenantCallings.Background, true)
-				self:nilTexture(this.CovenantCallings.Decor, true)
+				self:removeRegions(this.CovenantCallings, {1, 2})
 				if _G.C_ArdenwealdGardening.IsGardenAccessible() then
-					self:nilTexture(self:getRegion(this.ArdenwealdGardeningPanel, 1), true)
-					self:nilTexture(self:getChild(this.ArdenwealdGardeningPanel, 1).Border, true)
+					self:getRegion(this.ArdenwealdGardeningPanel, 1):SetTexture(nil)
+					self:getChild(this.ArdenwealdGardeningPanel, 1).Border:SetTexture(nil)
 				end
 			end
 
@@ -1835,8 +1834,7 @@ aObj.SetupRetail_UIFrames = function()
 		self:SecureHookScript(_G.GarrisonRecruitSelectFrame, "OnShow", function(this)
 			skinFollowerList(this.FollowerList)
 			for i = 1, 3 do
-				self:nilTexture(this.FollowerSelection["Recruit" .. i].PortraitFrame.PortraitRing, true)
-				self:nilTexture(this.FollowerSelection["Recruit" .. i].PortraitFrame.LevelBorder, true)
+				self:removeRegions(this.FollowerSelection["Recruit" .. i].PortraitFrame, {1, 4})
 				this.FollowerSelection["Recruit" .. i].PortraitFrame.PortraitRingQuality:SetVertexColor(this.FollowerSelection["Recruit" .. i].PortraitFrame.LevelBorder:GetVertexColor())
 				self:removeMagicBtnTex(this.FollowerSelection["Recruit" .. i].HireRecruits)
 				if self.modBtns then
@@ -1952,8 +1950,7 @@ aObj.SetupRetail_UIFrames = function()
 		-- Shadowlandds
 		local function skinCovenantMissionFrame(frame)
 			local function skinPuck(btn)
-				aObj:nilTexture(btn.PuckShadow, true)
-				aObj:nilTexture(btn.PuckBorder, true)
+				aObj:removeRegions(btn, {1, 4})
 				for _, aBtn in _G.pairs(btn.AbilityButtons) do
 					aBtn.Border:SetTexture(nil)
 				end
@@ -2063,7 +2060,7 @@ aObj.SetupRetail_UIFrames = function()
 				aObj:skinObject("frame", {obj=this.AdventuresCombatLog, fType=ftype, kfs=true, fb=true, clr="sepia", x2=10})
 				-- MissionInfo (RHS)
 				this.MissionInfo.Header:SetTexture(nil)
-				aObj:nilTexture(this.MissionInfo.IconBG, true)
+				this.MissionInfo.IconBG:SetTexture(nil)
 				aObj:skinObject("frame", {obj=this.MissionInfo, fType=ftype, kfs=true, fb=true, ofs=4, y2=-303})
 				skinBoard(this.Board)
 				aObj:skinObject("frame", {obj=this.CompleteFrame, fType=ftype, kfs=true, ng=true, x1=40, y1=-8, x2=-40, y2=10})
@@ -2076,8 +2073,7 @@ aObj.SetupRetail_UIFrames = function()
 			end)
 			-- Follower as mouse pointer when dragging
 			aObj:SecureHook(frame, "GetPlacerFrame", function(this)
-				aObj:nilTexture(_G.CovenantFollowerPlacer.PuckShadow, true)
-				aObj:nilTexture(_G.CovenantFollowerPlacer.PuckBorder, true)
+				self:removeRegions(_G.CovenantFollowerPlacer, {1, 4})
 				for _, btn in _G.pairs(_G.CovenantFollowerPlacer.AbilityButtons) do
 					btn.Border:SetTexture(nil)
 				end
@@ -2152,8 +2148,8 @@ aObj.SetupRetail_UIFrames = function()
 		function skinPartyPoseFrame(frame)
 			frame.Border:DisableDrawLayer("BORDER") -- PartyPose NineSliceLayout
 			frame.RewardAnimations.RewardFrame.NameFrame:SetTexture(nil)
-			aObj:nilTexture(frame.RewardAnimations.RewardFrame.IconBorder, true)
-			aObj:nilTexture(frame.OverlayElements.Topper, true)
+			frame.RewardAnimations.RewardFrame.IconBorder:SetTexture(nil)
+			frame.OverlayElements.Topper:SetTexture(nil)
 			frame.ModelScene.Bg:SetTexture(nil)
 			frame.ModelScene:DisableDrawLayer("BORDER")
 			frame.ModelScene:DisableDrawLayer("OVERLAY")
@@ -2495,7 +2491,7 @@ aObj.SetupRetail_UIFrames = function()
 			for _, ft in _G.pairs(this.FrameTick) do
 				ft:SetTextColor(self.BT:GetRGB())
 			end
-			self:nilTexture(this.OverlayElements.CornerLogo, true)
+			this.OverlayElements.CornerLogo:SetTexture(nil)
 			this.Currency.Icon:SetAlpha(1) -- show currency icon
 			if self.modBtnBs then
 				self:addButtonBorder{obj=this.Currency, relTo=this.Currency.Icon}
@@ -2958,9 +2954,9 @@ aObj.SetupRetail_UIFrames = function()
 		self:SecureHookScript(_G.PVPReadyDialog, "OnShow", function(this)
 			self:removeNineSlice(this.Border)
 			if not self.prdb.LFGTexture then
-				self:nilTexture(this.background, true)
+				this.background:SetTexture(nil)
 			end
-			self:nilTexture(this.bottomArt, true)
+			this.bottomArt:SetTexture(nil)
 			this.instanceInfo.underline:SetTexture(nil)
 			self:skinObject("frame", {obj=this, fType=ftype, ofs=-1, y1=-5, x2=-4})
 			if self.modBtns then
@@ -3088,7 +3084,7 @@ aObj.SetupRetail_UIFrames = function()
 
 			self:SecureHookScript(this.QuestsFrame, "OnShow", function(fObj) -- a.k.a. QuestScrollFrame
 				self:skinObject("scrollbar", {obj=fObj.ScrollBar, fType=ftype})
-				self:nilTexture(fObj.Background, true)
+				fObj.Background:SetTexture(nil)
 				fObj.Edge:SetTexture(nil)
 				fObj.Contents.Separator.Divider:SetTexture(nil)
 				fObj.Contents.StoryHeader.Background:SetTexture(nil)
@@ -3289,7 +3285,7 @@ aObj.SetupRetail_UIFrames = function()
 			this:DisableDrawLayer("BACKGROUND")
 			this:DisableDrawLayer("BORDER")
 			self:removeInset(_G.RaidFinderFrameRoleInset)
-			self:nilTexture(_G.RaidFinderQueueFrameBackground, true)
+			_G.RaidFinderQueueFrameBackground:SetTexture(nil)
 			self:skinRoleBtns("RaidFinder")
 			self:skinObject("ddbutton", {obj=_G.RaidFinderQueueFrameSelectionDropdown, fType=ftype})
 			self:skinObject("scrollbar", {obj=_G.RaidFinderQueueFrameScrollFrame.ScrollBar, fType=ftype, rpTex={"background", "artwork"}})
@@ -3404,7 +3400,7 @@ aObj.SetupRetail_UIFrames = function()
 			this.Background:SetTexture(nil)
 			this.ItemSlots:DisableDrawLayer("ARTWORK")
 			for slot in this.ItemSlots.scrapButtons:EnumerateActive() do
-				self:nilTexture(slot.IconBorder, true)
+				slot.IconBorder:SetTexture(nil)
 				self.modUIBtns:addButtonBorder{obj=slot, relTo=slot.Icon} -- use module function to force button border
 				-- hook this to reset sbb colour
 				self:SecureHook(slot, "ClearSlot", function(bObj)
@@ -3554,13 +3550,20 @@ aObj.SetupRetail_UIFrames = function()
 		self.initialized.TalkingHead = true
 
 		self:SecureHookScript(_G.TalkingHeadFrame, "OnShow", function(this)
-			self:nilTexture(this.BackgroundFrame.TextBackground, true)
-			self:nilTexture(this.PortraitFrame.Portrait, true)
-			self:nilTexture(this.MainFrame.Model.PortraitBg, true)
+			this.BackgroundFrame.TextBackground:SetTexture(nil)
+			this.PortraitFrame.Portrait:SetTexture(nil)
+			this.MainFrame.Model.PortraitBg:SetTexture(nil)
 			self:skinObject("frame", {obj=this.MainFrame, fType=ftype, kfs=true, bd=11, ng=true, cbns=true, ofs=-15, y2=14})
 			if self.modBtns then
-				self:nilTexture(this.MainFrame.CloseButton:GetNormalTexture()) -- Animations cause this to be shown
+				this.MainFrame.CloseButton:GetNormalTexture():SetTexture(nil)
 			end
+
+			self:SecureHook(this, "UpdateShownState", function(fObj)
+				fObj.BackgroundFrame.TextBackground:SetTexture(nil)
+				fObj.PortraitFrame.Portrait:SetTexture(nil)
+				fObj.MainFrame.Model.PortraitBg:SetTexture(nil)
+				fObj.MainFrame.CloseButton:GetNormalTexture():SetTexture(nil)
+			end)
 
 			local function clrFrame(...)
 				-- handle in combat

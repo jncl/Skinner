@@ -159,12 +159,12 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 		end
 		if tbl.nt then
 			for _, tex in _G.pairs(tbl.nt) do
-				aObj:nilTexture(frame[tex], true)
+				frame[tex]:SetAlpha(0)
 			end
 		end
 		if tbl.nt2 then
 			for key, tex in _G.pairs(tbl.nt2) do
-				aObj:nilTexture(frame[key][tex], true)
+				frame[key][tex]:SetAlpha(0)
 			end
 		end
 		if tbl.stn then
@@ -3524,14 +3524,14 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 				setTextColor(lineFrame.Text)
 			end
 		elseif wFrame.widgetType == 11 then -- ScenarioHeaderCurrenciesAndBackground
-			aObj:nilTexture(wFrame.Frame, true)
+			wFrame.Frame:SetTexture(nil)
 		elseif wFrame.widgetType == 12 then -- TextureAndText
 			-- .Background
 			wFrame.Foreground:SetTexture(nil)
 			setTextColor(wFrame.Text)
 		-- N.B. Classic ONLY has 12 UIWidgets
 		elseif wFrame.widgetType == 13 then -- SpellDisplay
-			aObj:nilTexture(wFrame.Spell.Border, true)
+			wFrame.Spell.Border:SetTexture(nil)
 			tcr = setTextColor(wFrame.Spell.Text)
 			if aObj.modBtnBs then
 				aObj:addButtonBorder{obj=wFrame.Spell, relTo=wFrame.Spell.Icon, reParent={wFrame.Spell.StackCount}}
@@ -3557,7 +3557,7 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 		elseif wFrame.widgetType == 19 then -- DiscreteProgressSteps
 			_G.nop()
 		elseif wFrame.widgetType == 20 then -- ScenarioHeaderTimer
-			aObj:nilTexture(wFrame.Frame, true)
+			wFrame.Frame:SetTexture(nil)
 			aObj:skinObject("statusbar", {obj=wFrame.TimerBar, fi=0, bg=wFrame.TimerBar.BG})
 		elseif wFrame.widgetType == 21 then -- TextColumnRow
 			_G.nop()
