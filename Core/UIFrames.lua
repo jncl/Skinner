@@ -3536,7 +3536,11 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 		elseif wFrame.widgetType == 26 then -- MapPinAnimation
 			_G.nop()
 		elseif wFrame.widgetType == 27 then -- ItemDisplay
-			_G.nop()
+			wFrame.Item.NameFrame:SetTexture(nil)
+			if aObj.modBtnBs then
+				aObj:addButtonBorder{obj=wFrame.Item, relTo=wFrame.Item.Icon, reParent={wFrame.Item.Count}}
+				aObj:clrButtonFromBorder(wFrame.Item)
+			end
 		elseif wFrame.widgetType == 28 then -- TugOfWar
 			_G.nop()
 		elseif wFrame.widgetType == 29 then -- ScenarioHeaderDelves
