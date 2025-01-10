@@ -1280,7 +1280,7 @@ aObj.blizzLoDFrames[ftype].GMChatUI = function(self)
 		this:DisableDrawLayer("BORDER")
 		if self.prdb.ChatEditBox.skin then
 			if self.prdb.ChatEditBox.style == 1 then -- Frame
-				local kRegions = _G.CopyTable(self.ebRgns)
+				local kRegions = _G.CopyTable(self.ebRgns, true)
 				self:add2Table(kRegions, 12)
 				self:keepRegions(this.editBox, kRegions)
 				self:skinObject("frame", {obj=this.editBox, fType=ftype, ofs=2, y2=0})

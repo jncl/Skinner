@@ -105,48 +105,48 @@ function aObj:OnInitialize()
 	self:setupBackdrop()
 
 	self.Backdrop = {}
-	self.Backdrop[1] = _G.CopyTable(self.backdrop)
+	self.Backdrop[1] = _G.CopyTable(self.backdrop, true)
 	-- -- wide backdrop for ScrollBars & EditBoxes (16,16,4)
-	-- self.Backdrop[2] = _G.CopyTable(self.backdrop)
+	-- self.Backdrop[2] = _G.CopyTable(self.backdrop, true)
 	-- -- medium backdrop for ScrollBars & EditBoxes (12,12,3)
-	-- self.Backdrop[3] = _G.CopyTable(self.backdrop)
+	-- self.Backdrop[3] = _G.CopyTable(self.backdrop, true)
 	-- self.Backdrop[3].tileSize = 12
 	-- self.Backdrop[3].edgeSize = 12
 	-- self.Backdrop[3].insets = {left = 3, right = 3, top = 3, bottom = 3}
 	-- narrow backdrop for ScrollBars & EditBoxes (8,8,2)
-	self.Backdrop[4] = _G.CopyTable(self.backdrop)
+	self.Backdrop[4] = _G.CopyTable(self.backdrop, true)
 	self.Backdrop[4].tileSize = 8
 	self.Backdrop[4].edgeSize = 8
 	self.Backdrop[4].insets = {left = 2, right = 2, top = 2, bottom = 2}
 	-- these backdrops are for small UI buttons, e.g. minus/plus in QuestLog/IOP/Skills etc
-	self.Backdrop[5] =_G. CopyTable(self.backdrop)
+	self.Backdrop[5] =_G. CopyTable(self.backdrop, true)
 	self.Backdrop[5].tileSize = 12
 	self.Backdrop[5].edgeSize = 12
 	self.Backdrop[5].insets = {left = 3, right = 3, top = 3, bottom = 3}
-	self.Backdrop[6] = _G.CopyTable(self.Backdrop[5])
+	self.Backdrop[6] = _G.CopyTable(self.Backdrop[5], true)
 	self.Backdrop[6].tileSize = 10
 	self.Backdrop[6].edgeSize = 10
-	self.Backdrop[7] = _G.CopyTable(self.Backdrop[4])
+	self.Backdrop[7] = _G.CopyTable(self.Backdrop[4], true)
 	self.Backdrop[7].insets = {left = 4, right = 4, top = 4, bottom = 4}
 	-- this backdrop is for the BattlefieldMinimap/Minimap/Pet LoadOut frames
-	self.Backdrop[8] = _G.CopyTable(self.backdrop)
+	self.Backdrop[8] = _G.CopyTable(self.backdrop, true)
 	self.Backdrop[8].bgFile = nil
 	self.Backdrop[8].tile = false
 	self.Backdrop[8].tileSize = 0
 	-- this backdrop is for vertical sliders frame
-	self.Backdrop[9] = _G.CopyTable(self.backdrop)
+	self.Backdrop[9] = _G.CopyTable(self.backdrop, true)
 	self.Backdrop[9].bgFile = nil
 	self.Backdrop[9].tile = false
 	self.Backdrop[9].tileSize = 0
 	self.Backdrop[9].edgeSize = 12
 	-- this backdrop has no background
-	self.Backdrop[10] = _G.CopyTable(self.backdrop)
+	self.Backdrop[10] = _G.CopyTable(self.backdrop, true)
 	self.Backdrop[10].bgFile = nil
 	-- this backdrop has no border
-	self.Backdrop[11] = _G.CopyTable(self.backdrop)
+	self.Backdrop[11] = _G.CopyTable(self.backdrop, true)
 	self.Backdrop[11].edgeFile = nil
 	-- this backdrop is for smaller CheckButtons
-	self.Backdrop[12] = _G.CopyTable(self.backdrop)
+	self.Backdrop[12] = _G.CopyTable(self.backdrop, true)
 	self.Backdrop[12].tile = false
 	self.Backdrop[12].tileSize = 9
 	self.Backdrop[12].edgeSize = 9
