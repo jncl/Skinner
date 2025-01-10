@@ -265,7 +265,8 @@ Jncl:
 	Updated ItemUpgradeUI skin
 	Updated BankFrame skin
 	Updated ClassTrainerUI skin
-	Updated Baganator, Details, Leatrix_Plus, LibDropDown, LibUIDropDownMenu & MSA-DropDownMenu skins Updated UIDropDownMenu
+	Updated Baganator, Details, Leatrix_Plus, LibDropDown, LibUIDropDownMenu & MSA-DropDownMenu skins
+	Updated UIDropDownMenu
 	Obsoleted ArkDewdrop & DockingStation skins
 	Bugfix for WorldMapFrame
 	Updated BetterBags skin, closes #127
