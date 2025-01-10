@@ -3925,13 +3925,9 @@ aObj.SetupRetail_UIFramesOptions = function(self)
 	self:setupFramesOptions(optTab, "UI")
 	_G.wipe(optTab)
 
-	self.db.defaults.profile.MainMenuBar.extraab = true
-	if self.db.profile.MainMenuBar.extraab == nil then
-		self.db.profile.MainMenuBar.extraab = true
-	end
 	self.optTables["UI Frames"].args.MainMenuBar.args.altpowerbar = {
 		type = "toggle",
-		order = 4,
+		order = 3,
 		name = self.L["Alternate Power Bars"],
 		desc = _G.strjoin(" ", self.L["Toggle the skin of the"], self.L["Alternate Power Bars"]),
 	}
@@ -3945,5 +3941,9 @@ aObj.SetupRetail_UIFramesOptions = function(self)
 		name = self.L["Extra Action Button"],
 		desc = _G.strjoin(" ", self.L["Toggle the skin of the"], self.L["Extra Action Button"]),
 	}
+	self.db.defaults.profile.MainMenuBar.extraab = true
+	if self.db.profile.MainMenuBar.extraab == nil then
+		self.db.profile.MainMenuBar.extraab = true
+	end
 
 end
