@@ -1100,15 +1100,13 @@ aObj.SetupOptions = function(self)
 						glazesb = {
 							type = "toggle",
 							order = 2,
-							width = "double",
 							name = self.L["Glaze Status Bar"],
 							desc = _G.strjoin(" ", self.L["Toggle the glazing of the"], self.L["Status Bar"])
 						},
 						actbtns = {
-							hidden = self:canSkinActionBtns(),
+							hidden = not self:canSkinActionBtns(),
 							type = "toggle",
-							order = 3,
-							width = "double",
+							order = 4,
 							name = _G.strjoin(" ", self.L["Skin"], self.L["Action Buttons"]),
 							desc = _G.strjoin(" ", self.L["Toggle the skinning of"], self.L["the"], self.L["Action Buttons"])
 						},
