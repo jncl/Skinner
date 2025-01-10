@@ -2443,7 +2443,7 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 	_G.TimeManagerClockButton:DisableDrawLayer("BORDER")
 	_G.TimeManagerClockButton:SetSize(36, 14)
 	if not _G.C_AddOns.IsAddOnLoaded("SexyMap") then
-		self:moveObject{obj=_G.TimeManagerClockTicker, x=-3, y=-1}
+		self:moveObject{obj=_G.TimeManagerClockTicker, x=-1, y=1}
 	end
 
 	-- skin Minimap children, allow for delayed addons to be loaded (e.g. Baggins)
