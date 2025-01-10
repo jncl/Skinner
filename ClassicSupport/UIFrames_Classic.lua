@@ -170,8 +170,9 @@ aObj.SetupClassic_UIFrames = function()
 				_G.ExhaustionTick:GetNormalTexture():SetTexture(nil)
 				_G.ExhaustionTick:GetHighlightTexture():SetTexture(nil)
 				_G.MainMenuExpBar:DisableDrawLayer("OVERLAY")
-				_G.MainMenuExpBar:SetSize(self.isClsc and 1032 or 1012, 13)
+				_G.MainMenuExpBar:SetSize(self.isClsc and 1032 or 1012, 14)
 				self:moveObject{obj=_G.MainMenuExpBar, x=1, y=2}
+				self:moveObject{obj=_G.MainMenuBarExpText, y=-2}
 				self:skinObject("statusbar", {obj=_G.MainMenuExpBar, bg=self:getRegion(_G.MainMenuExpBar, 6), other={_G.ExhaustionLevelFillBar}})
 				_G.MainMenuBarMaxLevelBar:DisableDrawLayer("BACKGROUND")
 				_G.MainMenuBarArtFrame:DisableDrawLayer("BACKGROUND")
