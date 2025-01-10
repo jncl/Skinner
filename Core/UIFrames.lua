@@ -79,7 +79,7 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 		["LootUpgrade"]            = true,
 		["MoneyWon"]               = true,
 		["MonthlyActivity"]        = true,
-		-- ["NewCosmetic"]            = true,
+		["NewCosmetic"]            = true,
 		["NewMount"]               = true,
 		["NewPet"]                 = true,
 		["NewRecipeLearned"]       = true,
@@ -132,7 +132,6 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 	else
 		alertType["Achievement"].y1         = -10
 		alertType["Achievement"].y2         = 10
-		alertType["Achievement"].stn        = {"OldAchievement"}
 		alertType["Loot"].stn               = {"SpecRing"}
 		alertType["Loot"].ib                = true
 		alertType["StorePurchase"]          = {ofs = -12, ddl = {"background"}}
