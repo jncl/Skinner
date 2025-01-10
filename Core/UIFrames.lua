@@ -2550,89 +2550,50 @@ aObj.blizzFrames[ftype].MovieFrame = function(self)
 
 end
 
-aObj.blizzFrames[ftype].Nameplates = function(self)
-	if not self.prdb.Nameplates or self.initialized.Nameplates then return end
-	self.initialized.Nameplates = true
+if not aObj.isRtl then
+	aObj.blizzFrames[ftype].Nameplates = function(self)
+		if not self.prdb.Nameplates or self.initialized.Nameplates then return end
+		self.initialized.Nameplates = true
 
-	if _G.C_AddOns.IsAddOnLoaded("Plater") then
-		self.blizzFrames[ftype].Nameplates = nil
-		return
-	end
-
-	local function skinNamePlate(frame)
-		-- aObj:Debug("skinNamePlate: [%s, %s]", frame, frame:IsForbidden())
-		if not frame -- happens when called again after combat and frame doesn't exist any more
-		or frame:IsForbidden()
-		then
+		if _G.C_AddOns.IsAddOnLoaded("Plater") then
+			self.blizzFrames[ftype].Nameplates = nil
 			return
 		end
-		if _G.InCombatLockdown() then
-		    aObj:add2Table(aObj.oocTab, {skinNamePlate, {frame}})
-		    return
-		end
-		local nP = frame.UnitFrame or aObj:getChild(frame, 1)
-		if nP
-		and nP.healthBar
-		and not nP.classNamePlatePowerBar
-		then
-			local nHb, nCb = nP.healthBar, nP.castBar or nP.CastBar
-			nHb.border:DisableDrawLayer("ARTWORK")
-			if not aObj.isRtl then
+
+		local function skinNamePlate(frame)
+			-- aObj:Debug("skinNamePlate: [%s, %s]", frame, frame:IsForbidden())
+			if not frame -- happens when called again after combat and frame doesn't exist any more
+			or frame:IsForbidden()
+			then
+				return
+			end
+			if _G.InCombatLockdown() then
+			    aObj:add2Table(aObj.oocTab, {skinNamePlate, {frame}})
+			    return
+			end
+			local nP = frame.UnitFrame or aObj:getChild(frame, 1)
+			if nP
+			and nP.healthBar
+			and not nP.classNamePlatePowerBar
+			then
+				local nHb, nCb = nP.healthBar, nP.castBar or nP.CastBar
+				nHb.border:DisableDrawLayer("ARTWORK")
 				aObj:skinObject("statusbar", {obj=nHb, bg=nHb.background})
 				if aObj.isClsc then
-					aObj:nilTexture(nCb.Border, true)
-					aObj:nilTexture(nCb.BorderShield, true)
+					aObj:removeRegions(nCb, {2, 3})
 					aObj:skinObject("statusbar", {obj=nCb, bg=aObj:getRegion(nCb, 1)})
 				end
-			else
-				aObj:skinObject("statusbar", {obj=nHb, bg=nHb.background, other={nHb.myHealPrediction, nHb.otherHealPrediction}})
-				if nCb then
-					aObj:skinObject("statusbar", {obj=nCb, bg=nCb.Background, hookFunc=true})
-				end
+				-- N.B. WidgetContainer objects managed in UIWidgets code
 			end
-			-- N.B. WidgetContainer objects managed in UIWidgets code
 		end
-	end
-	self:SecureHook(_G.NamePlateDriverFrame, "OnNamePlateAdded", function(_, namePlateUnitToken)
-		local namePlate = _G.C_NamePlate.GetNamePlateForUnit(namePlateUnitToken, _G.issecure())
-		if namePlate then
-			skinNamePlate(namePlate)
+		self:SecureHook(_G.NamePlateDriverFrame, "OnNamePlateAdded", function(_, namePlateUnitToken)
+			skinNamePlate(_G.C_NamePlate.GetNamePlateForUnit(namePlateUnitToken, _G.issecure()))
+		end)
+		for _, frame in _G.pairs(_G.C_NamePlate.GetNamePlates(_G.issecure())) do
+			skinNamePlate(frame)
 		end
-	end)
-	for _, frame in _G.pairs(_G.C_NamePlate.GetNamePlates(_G.issecure())) do
-		skinNamePlate(frame)
-	end
 
-	-- Class Nameplate Frames
-	if self.isRtl then
-		local mF = _G.ClassNameplateManaBarFrame
-		if mF then
-			mF.Border:DisableDrawLayer("BACKGROUND")
-			self:skinObject("statusbar", {obj=mF, bg=mF.background, other={mF.ManaCostPredictionBar, mF.FeedbackFrame.BarTexture}})
-		end
-		for _, chi in _G.pairs(_G.ClassNameplateBarWindwalkerMonkFrame.Chi) do
-			chi:DisableDrawLayer("BACKGROUND")
-		end
-		self:skinObject("statusbar", {obj=_G.ClassNameplateBrewmasterBarFrame, fi=0})
-		for _, rune in _G.pairs(_G.ClassNameplateBarPaladinFrame.Runes) do
-			rune.OffTexture:SetTexture(nil)
-		end
-		for _, rune in _G.pairs(_G.DeathKnightResourceOverlayFrame.Runes) do
-			rune.EmptyRune:SetTexture(nil)
-		end
-		-- ClassNameplateBarDracthyrFrame
-		for combo in _G.ClassNameplateBarDruidFrame.classResourceButtonPool:EnumerateActive() do
-			combo:DisableDrawLayer("BACKGROUND")
-		end
-		-- ClassNameplateBarMageFrame
-		for combo in _G.ClassNameplateBarRogueFrame.classResourceButtonPool:EnumerateActive() do
-			combo:DisableDrawLayer("BACKGROUND")
-		end
-		for shard in _G.ClassNameplateBarWarlockFrame.classResourceButtonPool:EnumerateActive() do
-			shard.ShardOff:SetTexture(nil)
-		end
 	end
-
 end
 
 if not aObj.isClscERA then
