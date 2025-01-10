@@ -116,7 +116,8 @@ aObj.SetupClassic_PlayerFrames = function()
 			end
 		end
 
-		local function setLook(castBar, look)
+		-- hook this to handle the CastingBar being attached to the Unitframe and then reset
+		self:SecureHook("CastingBarFrame_SetLook", function(castBar, look)
 			castBar.Border:SetAlpha(0)
 			castBar.Flash:SetAllPoints()
 			castBar.Flash:SetTexture(self.tFDIDs.w8x8)
@@ -124,10 +125,6 @@ aObj.SetupClassic_PlayerFrames = function()
 				castBar.Text:SetPoint("TOP", 0, 2)
 				castBar.Spark.offsetY = -1
 			end
-		end
-		-- hook this to handle the CastingBar being attached to the Unitframe and then reset
-		self:SecureHook("CastingBarFrame_SetLook", function(castBar, look)
-			setLook(castBar, look)
 		end)
 
 	end
