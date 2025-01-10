@@ -2,7 +2,7 @@ local _, aObj = ...
 local _G = _G
 -- This is a Library
 
-aObj.libsToSkin["LibSFDropDown-1.5"] = function(self) -- v LibSFDropDown-1.5, 5
+aObj.libsToSkin["LibSFDropDown-1.5"] = function(self) -- v LibSFDropDown-1.5, 17
 	if self.initialized.LibSFDropDown then return end
 	self.initialized.LibSFDropDown = true
 
@@ -41,6 +41,7 @@ aObj.libsToSkin["LibSFDropDown-1.5"] = function(self) -- v LibSFDropDown-1.5, 5
 		end})
 
 		local function skinDD(btn)
+			aObj:Debug("skinDD: [%s, %s]", btn)
 			aObj:skinObject("dropdown", {obj=btn, initState=not btn.Button:IsEnabled() ,x1=1, y1=2, x2=-1, y2=0})
 			aObj:SecureHook(btn.Button, "SetEnabled", function(this, enabled)
 				aObj:clrBBC(this:GetParent().sf, not enabled and "disabled")
@@ -52,6 +53,14 @@ aObj.libsToSkin["LibSFDropDown-1.5"] = function(self) -- v LibSFDropDown-1.5, 5
 		end
 		self:RawHook(lSFdd, "CreateButton", function(this, ...)
 			local btn = self.hooks[this].CreateButton(this, ...)
+			skinDD(btn)
+			return btn
+		end, true)
+		for _, btn in lSFdd:IterateCreatedModernButtons() do
+			skinDD(btn)
+		end
+		self:RawHook(lSFdd, "CreateModernButton", function(this, ...)
+			local btn = self.hooks[this].CreateModernButton(this, ...)
 			skinDD(btn)
 			return btn
 		end, true)

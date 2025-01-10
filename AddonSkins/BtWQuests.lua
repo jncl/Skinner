@@ -2,7 +2,7 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("BtWQuests") then return end
 local _G = _G
 
-aObj.addonsToSkin.BtWQuests = function(self) -- v 2.35.0
+aObj.addonsToSkin.BtWQuests = function(self) -- v 2.50.2
 
 	local function hookDDList(frame)
 		aObj:RawHook(frame, "GetListFrame", function(this)
@@ -40,11 +40,8 @@ aObj.addonsToSkin.BtWQuests = function(self) -- v 2.35.0
 		self:skinObject("frame", {obj=this.SearchResults, kfs=true, cb=true, x1=-4, y1=1, x2=6, y2=-3})
 		self:skinObject("dropdown", {obj=this.CharacterDropDown, ddtx1=-4, ddty1=4, ddtx2=12, ddty2=4, x2=11})
 		self:moveObject{obj=this.CharacterDropDown.Button, y=-1}
+		self:skinNavBar(this.navBar)
 		hookDDList(this.CharacterDropDown)
-		this.navBar:DisableDrawLayer("BACKGROUND")
-		this.navBar:DisableDrawLayer("BORDER")
-		this.navBar.overlay:DisableDrawLayer("OVERLAY")
-		self:skinNavBarButton(this.navBar.home)
 		hookDDList(this.navBar.dropDown)
 		hookDDList(this.ExpansionDropDown)
 		self:removeInset(this.Inset)

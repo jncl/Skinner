@@ -1,19 +1,23 @@
--- luacheck: ignore 631 (line is too long)
 local _, aObj = ...
 if not aObj:isAddonEnabled("MountsJournal") then return end
 local _G = _G
 
-aObj.addonsToSkin.MountsJournal = function(self) -- v 11.0.24/4.4.15
+aObj.addonsToSkin.MountsJournal = function(self) -- v 11.0.47/4.4.15
 
-	if self.isClsc
-	and self.modChkBtns
-	then
-		self.RegisterCallback("MountsJournal", "Collections_Skinned", function(_, _)
-			-- wait for check button to be created
-			_G.C_Timer.After(0.05, function()
-				self:skinCheckButton{obj=_G.MountsJournalFrame.useMountsJournalButton}
-			end)
-			self.UnregisterCallback("MountsJournal", "Collections_Skinned")
+	-- TODO: skin the dropdowns
+
+	if self.modChkBtns then
+		self.RegisterCallback("MountsJournal", "AddOn_Loaded", function(_, addonName)
+			if addonName == "Blizzard_Collections"
+			and _G.select(2, _G.C_AddOns.IsAddOnLoaded("MountsJournal"))
+			or addonName == "MountsJournal"
+			and _G.select(2, _G.C_AddOns.IsAddOnLoaded("Blizzard_Collections"))
+			then
+				_G.C_Timer.After(0.05, function()
+					self:skinCheckButton{obj=_G.MountsJournalFrame.useMountsJournalButton}
+					self.UnregisterCallback("MountsJournal", "AddOn_Loaded")
+				end)
+			end
 		end)
 	end
 
@@ -35,10 +39,7 @@ aObj.addonsToSkin.MountsJournal = function(self) -- v 11.0.24/4.4.15
 				this.achiev:DisableDrawLayer("BACKGROUND")
 				this.achiev.highlight:SetTexture(nil)
 			end
-			this.navBar:DisableDrawLayer("BACKGROUND")
-			this.navBar:DisableDrawLayer("BORDER")
-			this.navBar.overlay:DisableDrawLayer("OVERLAY")
-			self:skinNavBarButton(this.navBar.homeButton)
+			self:skinNavBar(this.navBar)
 			this.navBar.homeButton.text:SetPoint("RIGHT", -20, 0)
 			self:removeInset(this.filtersPanel)
 			self:skinObject("editbox", {obj=this.filtersPanel.searchBox, si=true})
@@ -75,13 +76,14 @@ aObj.addonsToSkin.MountsJournal = function(self) -- v 11.0.24/4.4.15
 			self:removeInset(this.rightInset)
 			this.mountDisplay:DisableDrawLayer("BACKGROUND")
 			this.mountDisplay.shadowOverlay:DisableDrawLayer("OVERLAY")
-			self:skinObject("dropdown", {obj=this.mountDisplay.modelScene.animationsCombobox, x1=1, y1=2, x2=-1, y2=0})
+			-- self:skinObject("dropdown", {obj=this.mountDisplay.modelScene.animationsCombobox, regions={1, 2}, noBB=true, x1=1, y1=2, x2=-1, y2=0})
 			local psb = this.mountDisplay.info.petSelectionBtn
 			if self.isRtl then
 				this.mountDisplay.modelScene.playerToggle.border:SetTexture(nil)
 				psb.infoFrame.levelBG:SetTexture(nil)
 			end
 			psb.bg:SetTexture(nil)
+			self.modUIBtns:addButtonBorder{obj=psb} -- use module to display button border
 			psb.border:SetTexture(nil)
 			self:SecureHookScript(psb, "onClick", function(fObj)
 				local psl = fObj.petSelectionList
@@ -153,11 +155,6 @@ aObj.addonsToSkin.MountsJournal = function(self) -- v 11.0.24/4.4.15
 				self:addButtonBorder{obj=this.mountDisplay.info, relTo=this.mountDisplay.info.icon, clr="white"}
 				self:addButtonBorder{obj=psb.infoFrame, relTo=psb.infoFrame.icon, reParent={psb.infoFrame.isDead, psb.infoFrame.level, psb.infoFrame.favorite}}
 			end
-			if self.modChkBtns then
-				if self.isRtl then
-					self:skinCheckButton{obj=mjFrame.useMountsJournalButton}
-				end
-			end
 
 			self:SecureHookScript(this.worldMap, "OnShow", function(fObj)
 				self:removeInset(this.worldMap)
@@ -202,12 +199,13 @@ aObj.addonsToSkin.MountsJournal = function(self) -- v 11.0.24/4.4.15
 				self:Unhook(fObj, "OnShow")
 			end)
 			self:SecureHookScript(this.settingsBackground, "OnShow", function(fObj)
-				self:skinObject("tabs", {obj=fObj, tabs=fObj.Tabs, lod=self.isTT and true--[[, selectedTab=3--]], offsets={x1=3, y1=-1, x2=-3, y2=-4}})
+				self:skinObject("tabs", {obj=fObj, tabs=fObj.Tabs, lod=self.isTT and true, offsets={x1=3, y1=-1, x2=-3, y2=-4}})
 				self:skinObject("frame", {obj=fObj, kfs=true, ri=true, fb=true})
 
 				self:SecureHookScript(_G.MountsJournalConfig, "OnShow", function(frame)
 					-- Global settings
 					self:skinObject("frame", {obj=frame.leftPanel, kfs=true, fb=true})
+					self:skinObject("scrollbar", {obj=frame.rightPanelScroll.ScrollBar})
 					self:skinObject("frame", {obj=frame.rightPanel, kfs=true, fb=true})
 					if self.isRtl then
 						self:skinObject("frame", {obj=frame.herbGroup, kfs=true, fb=true})
@@ -227,6 +225,10 @@ aObj.addonsToSkin.MountsJournal = function(self) -- v 11.0.24/4.4.15
 					self:skinObject("frame", {obj=frame.rightPanel, kfs=true, fb=true})
 					self:skinObject("frame", {obj=frame.rightPanel, kfs=true, fb=true})
 					if self.modBtns then
+						self:skinStdButton{obj=frame.bindSummon1Key1}
+						self:skinStdButton{obj=frame.bindSummon1Key2}
+						self:skinStdButton{obj=frame.bindSummon2Key1}
+						self:skinStdButton{obj=frame.bindSummon2Key2}
 						self:skinStdButton{obj=frame.bindMount}
 						self:skinStdButton{obj=frame.bindSecondMount}
 						if self.isRtl then
@@ -237,6 +239,10 @@ aObj.addonsToSkin.MountsJournal = function(self) -- v 11.0.24/4.4.15
 						end
 						self:skinStdButton{obj=frame.cancelBtn, schk=true}
 						self:skinStdButton{obj=frame.applyBtn, schk=true}
+					end
+					if self.modBtnBs then
+						self:addButtonBorder{obj=frame.summon1Icon, ofs=3}
+						self:addButtonBorder{obj=frame.summon2Icon, ofs=3}
 					end
 					if self.modChkBtns then
 						self:skinCheckButton{obj=frame.waterJump}
@@ -292,6 +298,16 @@ aObj.addonsToSkin.MountsJournal = function(self) -- v 11.0.24/4.4.15
 
 					self:Unhook(frame, "OnShow")
 				end)
+				self:SecureHookScript(_G.MountsJournalConfigRules, "OnShow", function(frame)
+					self:skinObject("editbox", {obj=frame.searchBox, si=true})
+					if self.modBtns then
+						self:skinStdButton{obj=frame.ruleSets}
+						self:skinStdButton{obj=frame.addRuleBtn}
+						self:skinStdButton{obj=frame.resetRulesBtn}
+					end
+
+					self:Unhook(frame, "OnShow")
+				end)
 				self:SecureHook(_G.MountsJournalConfigClasses, "showClassSettings", function(frame, _)
 					-- N.B. no sliders currently used (Retail ONLY)
 					-- for slider in frame.sliderPool:EnumerateActive() do
@@ -334,110 +350,5 @@ aObj.addonsToSkin.MountsJournal = function(self) -- v 11.0.24/4.4.15
 		end)
 		self:checkShown(_G.MountsJournalFrame.summonPanel)
 	end
-
-	local pCnt = 0
-	self.RegisterCallback("MountsJournal", "IOFPanel_Before_Skinning", function(_, panel)
-		if panel:GetName() ~= "MountsJournalConfig"
-		and panel:GetName() ~= "MountsJournalConfigClasses"
-		then
-			return
-		end
-		if not self.iofSkinnedPanels[panel] then
-			self.iofSkinnedPanels[panel] = true
-			pCnt = pCnt + 1
-			if panel:GetName() == "MountsJournalConfig" then
-				local leftFrame = self:getChild(panel, 1)
-				local rightFrame = self:getChild(panel, 2)
-				self:skinObject("frame", {obj=leftFrame, kfs=true, fb=true})
-				local rightPanelScroll = self:getChild(rightFrame, 1)
-				self:skinObject("scrollbar", {obj=rightPanelScroll.ScrollBar})
-				self:skinObject("frame", {obj=rightFrame, kfs=true, fb=true})
-				if self.modBtns then
-					self:skinStdButton{obj=panel.createMacroBtn}
-					self:skinStdButton{obj=panel.bindMount}
-					self:skinStdButton{obj=panel.createSecondMacroBtn}
-					self:skinStdButton{obj=panel.bindSecondMount}
-					if self.isRtl then
-						self:skinStdButton{obj=panel.createThirdMacroBtn}
-						self:skinStdButton{obj=panel.bindThirdMount}
-						self:skinStdButton{obj=panel.resetHelp, schk=true}
-					end
-					self:skinStdButton{obj=panel.applyBtn, schk=true}
-					self:skinStdButton{obj=panel.cancelBtn, schk=true}
-				end
-				if self.modChkBtns then
-					if self.isRtl then
-						self:skinCheckButton{obj=panel.useHerbMounts}
-						self:skinCheckButton{obj=panel.herbMountsOnZones}
-						self:skinCheckButton{obj=panel.useUnderlightAngler}
-						self:skinCheckButton{obj=panel.autoUseUnderlightAngler}
-					else
-						self:skinCheckButton{obj=panel.showMinimapButton}
-						self:skinCheckButton{obj=panel.lockMinimapButton}
-					end
-					self:skinCheckButton{obj=panel.waterJump}
-					self:skinCheckButton{obj=panel.useRepairMounts}
-					self:skinCheckButton{obj=panel.repairFlyable}
-					self:skinCheckButton{obj=panel.useMagicBroom}
-					self:skinCheckButton{obj=panel.summonPetEvery}
-					self:skinCheckButton{obj=panel.summonPetOnlyFavorites}
-					self:skinCheckButton{obj=panel.noPetInRaid}
-					self:skinCheckButton{obj=panel.noPetInGroup}
-					self:skinCheckButton{obj=panel.copyMountTarget}
-					self:skinCheckButton{obj=panel.arrowButtons}
-					self:skinCheckButton{obj=panel.openLinks}
-					self:skinCheckButton{obj=panel.showWowheadLink}
-				end
-			elseif panel:GetName() == "MountsJournalConfigClasses" then
-				local leftFrame = self:getChild(panel, 1)
-				self:skinObject("frame", {obj=leftFrame, kfs=true, fb=true})
-				local rightPanelScroll = self:getChild(panel.rightPanel, 1)
-				self:skinObject("scrollbar", {obj=rightPanelScroll.ScrollBar})
-				self:skinObject("scrollbar", {obj=panel.moveFallMF.scrollBar})
-				self:skinObject("frame", {obj=panel.moveFallMF.background, kfs=true, fb=true})
-				self:skinObject("frame", {obj=panel.combatMF.background, kfs=true, fb=true})
-				self:skinObject("frame", {obj=panel.rightPanel, kfs=true, fb=true})
-				if self.isRtl then
-					for frame in panel.sliderPool:EnumerateActive() do
-						self:skinObject("editbox", {obj=frame.edit})
-						self:skinObject("slider", {obj=frame.slider})
-					end
-				end
-				self:SecureHook(panel, "showClassSettings", function(this, _)
-					if self.isRtl then
-						for frame in this.sliderPool:EnumerateActive() do
-							self:skinObject("editbox", {obj=frame.edit})
-							self:skinObject("slider", {obj=frame.slider})
-						end
-					end
-					if self.modChkBtns then
-						for cBtn in this.checkPool:EnumerateActive() do
-							self:skinCheckButton{obj=cBtn}
-						end
-					end
-				end)
-				if self.modBtns then
-					self:skinStdButton{obj=panel.moveFallMF.defaultBtn}
-					self:skinStdButton{obj=panel.moveFallMF.saveBtn, schk=true}
-					self:skinStdButton{obj=panel.moveFallMF.cancelBtn, schk=true}
-					self:skinStdButton{obj=panel.combatMF.defaultBtn}
-					self:skinStdButton{obj=panel.combatMF.saveBtn, schk=true}
-					self:skinStdButton{obj=panel.combatMF.cancelBtn, schk=true}
-				end
-				if self.modChkBtns then
-					self:skinCheckButton{obj=panel.moveFallMF.enable}
-					self:skinCheckButton{obj=panel.combatMF.enable}
-					for cBtn in panel.checkPool:EnumerateActive() do
-						self:skinCheckButton{obj=cBtn}
-					end
-					self:skinCheckButton{obj=panel.charCheck}
-				end
-			end
-		end
-
-		if pCnt == 2 then
-			self.UnregisterCallback("MountsJournal", "IOFPanel_Before_Skinning")
-		end
-	end)
 
 end
