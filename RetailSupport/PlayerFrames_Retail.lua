@@ -1038,13 +1038,24 @@ aObj.SetupRetail_PlayerFrames = function()
 		end
 
 		self:SecureHookScript(_G.ObjectiveTrackerFrame, "OnShow", function(this)
+			--[[
+				AchievementObjectiveTracker
+				AdventureObjectiveTracker
+				BonusObjectiveTracker
+				CampaignQuestObjectiveTracker
+				MonthlyActivitiesObjectiveTracker
+				ProfessionsRecipeTracker
+				QuestObjectiveTracker
+				ScenarioObjectiveTracker
+				UIWidgetObjectiveTracker
+				WorldQuestObjectiveTracker
+			]]
 			if self.prdb.ObjectiveTracker.headers then
 				this.Header.Background:SetTexture(nil)
 			end
 			if self.prdb.ObjectiveTracker.skin then
 				self:skinObject("frame", {obj=this, fType=ftype, kfs=true})
 			end
-			-- .FilterButton
 			if self.modBtnBs then
 				self:skinExpandButton{obj=this.Header.MinimizeButton, onSB=true}
 				if this.Header.MinimizeButton.sb then -- handle not exists yet (ooc)
@@ -1060,7 +1071,7 @@ aObj.SetupRetail_PlayerFrames = function()
 			end
 
 			local function skinBar(bar)
-				aObj:Debug("skinBar: [%s, %s]", bar, bar.template)
+				-- aObj:Debug("skinBar: [%s, %s]", bar, bar.template)
 				if bar.template == "BonusTrackerProgressBarTemplate"
 				or bar.template == "ScenarioProgressBarTemplate"
 				then
@@ -1078,18 +1089,17 @@ aObj.SetupRetail_PlayerFrames = function()
 					aObj:skinObject("statusbar", {obj=bar.Bar, fi=0, bg=aObj:getRegion(bar.Bar, bar.template:find("Progress") and 5 or 4)})
 				end
 			end
-			local layoutChildren
+			local modName, layoutChildren
 			local function skinModule(module, _)
+				modName = module:GetName()
+
 				if aObj.prdb.ObjectiveTracker.headers then
 					module.Header.Background:SetTexture(nil)
 				end
+
 				if module.hasContents then
 
-					if module.Block then -- UIWidgetObjectiveTracker
-						_G.nop()
-					end
-
-					if module.FixedBlocks then -- ScenarioObjectiveTracker
+					if modName == "ScenarioObjectiveTracker" then
 						for _, block in _G.pairs(module.FixedBlocks) do
 							if block == module.ObjectivesBlock then
 								if block.spellFramePool
@@ -1143,6 +1153,7 @@ aObj.SetupRetail_PlayerFrames = function()
 							end
 						end
 					end
+
 					if module.usedBlocks then
 						for template, blocks in _G.pairs(module.usedBlocks) do
 							if template:find("AutoQuestPopUp") then
@@ -1167,8 +1178,8 @@ aObj.SetupRetail_PlayerFrames = function()
 					then
 						for _, frame in _G.pairs(module.usedRightEdgeFrames) do
 							if frame.template:find("ItemButton") then
-								-- N.B.: can cause ADDON_ACTION_FORBIDDEN when clicked
-								aObj:addButtonBorder{obj=frame, fType=ftype}
+								-- N.B.: can cause ADDON_ACTION_FORBIDDEN when clickedf
+								aObj:addButtonBorder{obj=frame, fType=ftype, ofs=4, clr="gold"}
 							elseif frame.template:find("FindGroupButton") then
 								aObj:addButtonBorder{obj=frame, fType=ftype, ofs=-1, x1=0, clr="gold"}
 							end
@@ -1413,11 +1424,12 @@ aObj.SetupRetail_PlayerFrames = function()
 								spell.SubName:SetTextColor(aObj.BT:GetRGB())
 								spell.RequiredLevel:SetTextColor(aObj.BT:GetRGB())
 								btn = spell.Button
+								btn.Border:SetAtlas(nil)
+								btn.BorderSheen:SetTexture(nil)
 								-- fix for #177 ADDON_ACTION_FORBIDDEN AddOn 'Skinner' tried to call the protected function 'CastSpellByID()'
 								aObj:secureHook(spell, "UpdateVisuals", function(sObj)
 									sObj.Button.Border:SetAtlas(nil)
 								end)
-								btn.BorderSheen:SetTexture(nil)
 								if aObj.modBtnBs then
 									aObj:addButtonBorder{obj=btn, fType=ftype, relTo=btn.Icon, ofs=3, sba=btn.isUnlearned and btn.unlearnedIconAlpha or 1}
 								end
