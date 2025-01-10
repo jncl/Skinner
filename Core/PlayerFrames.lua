@@ -2237,14 +2237,20 @@ aObj.blizzFrames[ftype].CompactFrames = function(self)
 
 	-- Compact RaidFrame Manager
 	self:SecureHookScript(_G.CompactRaidFrameManager, "OnShow", function(this)
-		self:moveObject{obj=this.toggleButton, x=5}
-		this.toggleButton:SetSize(12, 32)
-		this.toggleButton.nt = this.toggleButton:GetNormalTexture()
-		this.toggleButton.nt:SetTexCoord(0.22, 0.5, 0.33, 0.67)
-		-- hook this to trim the texture
-		self:RawHook(this.toggleButton.nt, "SetTexCoord", function(tObj, x1, x2, _)
-			self.hooks[tObj].SetTexCoord(tObj, x1 == 0 and x1 + 0.22 or x1 + 0.26, x2, 0.33, 0.67)
-		end, true)
+		if aObj.isRtl then
+			-- TODO: skin Toggle button texture
+			-- .toggleButtonForward
+			-- .toggleButtonBack
+		else
+			self:moveObject{obj=this.toggleButton, x=5}
+			this.toggleButton:SetSize(12, 32)
+			this.toggleButton.nt = this.toggleButton:GetNormalTexture()
+			this.toggleButton.nt:SetTexCoord(0.22, 0.5, 0.33, 0.67)
+			-- hook this to trim the texture
+			self:RawHook(this.toggleButton.nt, "SetTexCoord", function(tObj, x1, x2, _)
+				self.hooks[tObj].SetTexCoord(tObj, x1 == 0 and x1 + 0.22 or x1 + 0.26, x2, 0.33, 0.67)
+			end, true)
+		end
 		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ofs=0, y2=-40})
 
 		self:SecureHookScript(this.displayFrame, "OnShow", function(fObj)
