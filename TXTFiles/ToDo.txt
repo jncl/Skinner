@@ -30,4 +30,6 @@ ToDos
 
 #192 	I	AddOn 'Skinner' tried to call the protected function 'Button:SetPassThroughButtons()'
 
-#193	I 	Can't use Quest Items in the Quest List (Objective Tracker)
+#194 √	I 	WeakAurasOptions
+
+#195 √	I 	Auctionator
