@@ -2,7 +2,7 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("Baganator") then return end
 local _G = _G
 
-aObj.addonsToSkin.Baganator = function(self) -- v 600
+aObj.addonsToSkin.Baganator = function(self) -- v 627
 
 	local skinBtns, skinSpecialistBtns, skinSpecialistBags, skinViewBtns, skinBagSlots = _G.nop, _G.nop, _G.nop, _G.nop, _G.nop
 	if self.modBtnBs then
@@ -99,15 +99,9 @@ aObj.addonsToSkin.Baganator = function(self) -- v 600
 		if frame.SearchWidget
 		and aObj.modBtns
 		then
-			aObj:skinStdButton{obj=frame.SearchWidget.SavedSearchesButton, sechk=true}
+			aObj:skinStdButton{obj=frame.SearchWidget.SavedSearchesButton}
 			aObj:skinStdButton{obj=frame.SearchWidget.GlobalSearchButton, sechk=true}
 			aObj:skinStdButton{obj=frame.SearchWidget.HelpButton}
-			aObj:SecureHookScript(frame.SearchWidget.HelpButton, "OnClick", function(this)
-				aObj:skinObject("scrollbar", {obj=_G.Baganator_SearchHelpFrame.ScrollBar})
-				aObj:skinObject("frame", {obj=_G.Baganator_SearchHelpFrame, kfs=true, cb=true, x2=1})
-
-				aObj:Unhook(this, "OnClick")
-			end)
 		end
 		if aObj.modBtns then
 			for _, array in _G.pairs{"AllFixedButtons", "TopButtons", "LiveButtons"} do
@@ -324,6 +318,7 @@ aObj.addonsToSkin.Baganator = function(self) -- v 600
 		end
 	end
 
+	local gChild, x2Ofs
 	local function skinCustomiseFrame()
 		local this = _G["BaganatorCustomiseDialogFrame" .. _G.Baganator.API.Skins.GetCurrentSkin()]
 		this:DisableDrawLayer("BACKGROUND")
@@ -349,34 +344,37 @@ aObj.addonsToSkin.Baganator = function(self) -- v 600
 				elseif child.Popout then
 					self:skinObject("frame", {obj=child.Popout.Border, kfs=true, x1=7, y1=0, x2=-12, y2=20})
 				elseif child.ScrollBar then
-					aObj:Debug("skinKids: [%s, %s]", child:GetNumChildren())
-					if child:GetNumChildren() == 3 then -- Categories frame
-						self:getChild(child, 1):Hide() -- ContainerForDragAndDrop
-						self:skinObject("scrollbar", {obj=child.ScrollBar})
+					self:skinObject("scrollbar", {obj=child.ScrollBar})
+					-- check if the child is the CategoryContainer
+					gChild = self:getChild(child, 1)
+					if gChild.Bg then
+						gChild.Bg:SetTexture(nil)
+						self:removeInset(gChild)
+						x2Ofs = -13
+					else
+						x2Ofs = nil
 					end
-					self:skinObject("frame", {obj=child, kfs=true, rns=true, fb=true, x2=-12})
+					self:skinObject("frame", {obj=child, fb=true, x2=x2Ofs})
 				elseif child.Slider then
 					self:skinObject("slider", {obj=child.Slider})
 				elseif child:IsObjectType("Button")
-				and child.Count -- Corners central button
 				and self.modBtnBs
 				then
-					self:addButtonBorder{obj=child}
-				elseif child:IsObjectType("Button")
-				and child.Middle -- check it's a button
-				and self.modBtns
-				then
-					self:skinStdButton{obj=child, schk=true, sechk=true}
+					if child.Count then -- Corners central button
+						self:addButtonBorder{obj=child}
+					else
+						self:skinStdButton{obj=child, schk=true, sechk=true}
+					end
 				elseif child:IsObjectType("Frame") then
+					-- skin General Tab Header panel
 					if child.Bg then
 						child.Bg:SetTexture(nil)
-					end
-					if child.InsetBorderTop then
-						child:DisableDrawLayer("BORDER")
+						if child.NineSlice then
+							self:removeNineSlice(child.NineSlice)
+						else
+							child:DisableDrawLayer("BORDER")
+						end
 						self:skinObject("frame", {obj=child, fb=true})
-					end
-					if child.NineSlice then
-						self:skinObject("frame", {obj=child, rns=true, fb=true})
 					end
 					skinKids(child)
 				end
@@ -400,20 +398,29 @@ aObj.addonsToSkin.Baganator = function(self) -- v 600
 		end)
 	end)
 
-	self.RegisterCallback("Baganator", "SettingsPanel_DisplayCategory", function(_, panel, category)
-		if category.name ~= "Baganator" then return end
-		self.spSkinnedPanels[panel] = true
+	-- skin Settings Panel button
+	if self.modBtns then
+		self.RegisterCallback("Baganator", "SettingsPanel_DisplayCategory", function(_, panel, category)
+			if category.name ~= "Baganator" then return end
+			self.spSkinnedPanels[panel] = true
 
-		if self.modBtns then
 			self:skinStdButton{obj=self:getChild(panel, 1)}
-		end
 
-		self.UnregisterCallback("Baganator", "SettingsPanel_DisplayCategory")
-	end)
+			self.UnregisterCallback("Baganator", "SettingsPanel_DisplayCategory")
+		end)
+	end
 
 end
 
-aObj.addonsToSkin.Syndicator = function(self) -- v 149
+aObj.addonsToSkin.Syndicator = function(self) -- v 163
+	self:SecureHook(_G.Syndicator.API, "GetSearchKeywords", function(this)
+		_G.C_Timer.After(0.05, function()
+			self:skinObject("scrollbar", {obj=_G.Baganator_SearchHelpFrame.ScrollBar})
+			self:skinObject("frame", {obj=_G.Baganator_SearchHelpFrame, kfs=true, cb=true, x2=1})
+		end)
+
+		self:Unhook(this, "GetSearchKeywords")
+	end)
 
 	self.RegisterCallback("Syndicator", "SettingsPanel_DisplayCategory", function(_, panel, category)
 		if category.name ~= "Syndicator" then return end

@@ -253,6 +253,7 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 			or objType == "LSM30_Font"
 			or objType == "LSM30_Sound"
 			or objType == "LSM30_Statusbar"
+			or objType == "WA_LSM30_StatusbarAtlas"
 			or objType == "RS_Markers" -- RareScanner
 			then
 				if not aObj.db.profile.TabDDTextures.textureddd then
@@ -267,6 +268,7 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 					elseif objType == "LSM30_Font"
 					or objType == "LSM30_Sound"
 					or objType == "LSM30_Statusbar"
+					or objType == "WA_LSM30_StatusbarAtlas"
 					then
 						xOfs1, yOfs1, xOfs2, yOfs2 = 0, -19, 1, 1
 					elseif objType == "RS_Markers" then
@@ -340,6 +342,9 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 				if aObj.modBtnBs then
 					aObj:addButtonBorder{obj=obj.deleteButton, es=10, ofs=-1, x1=2.5, y2=3.5}
 				end
+
+			elseif objType == "WeakAurasSpinBox" then
+				aObj:skinObject("editbox", {obj=obj.editbox, x1=-5,y1=0, y2=0})
 
 			-- AuctionMaster objects
 			elseif objType == "ScrollableSimpleHTML" then
@@ -444,6 +449,8 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 			or objType == "WeakAurasIconButton"
 			or objType == "WeakAurasImportButton"
 			or objType == "WeakAurasInput"
+			or objType == "WeakAurasMediaSound"
+			or objType == "WeakAurasMiniTalent"
 			or objType == "WeakAurasMiniTalent_Dragonflight"
 			or objType == "WeakAurasMiniTalent_Wrath"
 			or objType == "WeakAurasPendingInstallButton"
@@ -455,7 +462,6 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 			or objType == "WeakAurasTwoColumnDropdown"
 			or objType == "WeakAurasScrollArea"
 			or objType == "WeakAurasExpand"
-			or objType == "WeakAurasSpinBox"
 			-- ReagentRestocker object
 			or objType == "DragDropTarget"
 			-- CollectMe objects
