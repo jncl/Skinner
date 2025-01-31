@@ -2,7 +2,7 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("WeakAuras") then return end
 local _G = _G
 
-aObj.addonsToSkin.WeakAuras = function(self) -- v 5.15.0
+aObj.addonsToSkin.WeakAuras = function(self) -- v 5.19.0
 
 	if _G.WeakAuras.ShowDisplayTooltip then
 		-- hook this to skin the WeakAuras added elements
@@ -98,7 +98,7 @@ aObj.addonsToSkin.WeakAuras = function(self) -- v 5.15.0
 
 end
 
-aObj.lodAddons.WeakAurasOptions = function(self) -- v 5.15.0
+aObj.lodAddons.WeakAurasOptions = function(self) -- v 5.19.0
 
 	-- wait until frame is created
 	if not _G.WeakAurasOptions then
@@ -108,23 +108,19 @@ aObj.lodAddons.WeakAurasOptions = function(self) -- v 5.15.0
 		return
 	end
 
-	self:SecureHookScript(_G.WeakAurasOptions, "OnShow", function(this)
-		self:skinObject("editbox", {obj=this.filterInput, si=true, ca=true})
-		this.moversizer:SetBackdropBorderColor(self.bbClr:GetRGB())
-		self:skinObject("frame", {obj=this, kfs=true, ofs=self.isRtl and -1 or 2, x2=self.isRtl and 0 or 1})
-		if self.modBtns then
-			self:skinCloseButton{obj=this.CloseButton}
-			self:skinOtherButton{obj=this.MaxMinButtonFrame.MaximizeButton, font=self.fontS, text=self.nearrow}
-			self:skinOtherButton{obj=this.MaxMinButtonFrame.MinimizeButton, font=self.fontS, text=self.swarrow}
-		end
-		-- hide the frame skin around the RHS InlineGroup
-		if this.container.content:GetParent().sf then
-			this.container.content:GetParent().sf:Hide()
-		end
-
-		self:Unhook(this, "OnShow")
-	end)
-	self:checkShown(_G.WeakAurasOptions)
+	-- N.B. Hooking the OnShow script caused issue #194
+	self:skinObject("editbox", {obj=_G.WeakAurasOptions.filterInput, si=true, ca=true})
+	_G.WeakAurasOptions.moversizer:SetBackdropBorderColor(self.bbClr:GetRGB())
+	self:skinObject("frame", {obj=_G.WeakAurasOptions, kfs=true, ofs=self.isRtl and -1 or 2, x2=self.isRtl and 0 or 1})
+	if self.modBtns then
+		self:skinCloseButton{obj=_G.WeakAurasOptions.CloseButton}
+		self:skinOtherButton{obj=_G.WeakAurasOptions.MaxMinButtonFrame.MaximizeButton, font=self.fontS, text=self.nearrow}
+		self:skinOtherButton{obj=_G.WeakAurasOptions.MaxMinButtonFrame.MinimizeButton, font=self.fontS, text=self.swarrow}
+	end
+	-- hide the frame skin around the RHS InlineGroup
+	if _G.WeakAurasOptions.container.content:GetParent().sf then
+		_G.WeakAurasOptions.container.content:GetParent().sf:Hide()
+	end
 
 	local function skinKids(frame)
 		for _, child in _G.ipairs_reverse{frame:GetChildren()} do
