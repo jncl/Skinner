@@ -3,7 +3,7 @@ if not aObj:isAddonEnabled("Auctionator") then return end
 local _G = _G
 -- luacheck: ignore 631 (line is too long)
 
-aObj.addonsToSkin.Auctionator = function(self) -- v 10.2.29
+aObj.addonsToSkin.Auctionator = function(self) -- v 258
 
 	local function skinAuctionatorFrames()
 		if not _G.AuctionatorSellingFrame then
@@ -121,15 +121,15 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 10.2.29
 					aObj:removeInset(aObj:getChild(this.Inset, 1))
 				end
 				aObj:skinObject("editbox", {obj=this.SearchContainer.SearchString})
-				aObj:skinObject("dropdown", {obj=this.FilterKeySelector})
+				aObj:skinObject("ddbutton", {obj=this.FilterKeySelector.DropDown})
 				for _, level in _G.pairs{"LevelRange", "ItemLevelRange", "PriceRange", "CraftedLevelRange"} do
 					aObj:skinObject("editbox", {obj=this[level].MinBox})
 					aObj:skinObject("editbox", {obj=this[level].MaxBox})
 				end
 				aObj:skinObject("editbox", {obj=this.PurchaseQuantity.InputBox, y1=4})
-				aObj:skinObject("dropdown", {obj=this.QualityContainer.DropDown.DropDown})
-				aObj:skinObject("dropdown", {obj=this.ExpansionContainer.DropDown.DropDown})
-				aObj:skinObject("dropdown", {obj=this.TierContainer.DropDown.DropDown})
+				aObj:skinObject("ddbutton", {obj=this.QualityContainer.DropDown.DropDown})
+				aObj:skinObject("ddbutton", {obj=this.ExpansionContainer.DropDown.DropDown})
+				aObj:skinObject("ddbutton", {obj=this.TierContainer.DropDown.DropDown})
 				aObj:skinObject("frame", {obj=this, kfs=true, ri=true, rns=true})
 				if aObj.modBtns then
 					aObj:skinStdButton{obj=this.Finished}
