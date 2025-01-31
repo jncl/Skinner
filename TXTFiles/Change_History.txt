@@ -1,3 +1,9 @@
+beta11.57979.2
+Jncl:
+	Updated ToDo*.txt files
+	Updated Change_History.txt
+	Updated release workflow to use ubuntu-22.04 as ubuntu-latest has dropped support for SVN
+
 beta11.57979.1
 Jncl:
 	Updated ToDo*.txt files
@@ -16,6 +22,7 @@ Jncl:
 	Updated Retail RaidFinder & LFD frame skins
 	Updated SpellBook code, fixes #177 (SpellBook), many thanks to phrasing for identifying the issue
 	Updated Baganator, closes #190
+
 beta11.57917.1
 Jncl:
 	Updated ToDo*.txt files
@@ -49,6 +56,7 @@ Jncl:
 	Skinned GroupFinder & Associated frames for ClassicERA, closes #188
 	Updated GuildEventLog version check, closes #187
 	Bugfix for QuestInfo, closes #186
+
 beta11.57564.1
 Jncl:
 	Updated ToDo*.txt files
@@ -70,6 +78,7 @@ Jncl:
 	Updated code to replace deprecated callbacks
 	Updated Baganator skin to ignore non change of character
 	Updated CommunitiesUI with button checks
+
 beta11.57388.1
 Jncl:
 	Updated ToDo*.txt files
@@ -92,6 +101,7 @@ Jncl:
 	Updated QuestModelScene Frame(s)
 	Updated Baganator, closes #179, Leatrix_Plus & SavedInstances skins
 	Skinned ShadowedUnitFrames
+
 beta11.56819.1
 Jncl:
 	Updated ToDo files
