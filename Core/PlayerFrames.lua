@@ -1479,25 +1479,27 @@ if not aObj.isClscERA then
 
 		end
 
-		-- a.k.a. Campsites
-		self:SecureHookScript(_G.WarbandSceneJournal, "OnShow", function(this)
-			self:removeInset(this.IconsFrame)
-			self:keepFontStrings(this.IconsFrame)
-			for _, view in _G.pairs(this.IconsFrame.Icons.ViewFrames) do
-				for _, child in _G.ipairs_reverse{view:GetChildren()} do
-					child.Border:SetTexture(nil)
-					self:skinObject("frame", {obj=child, fType=ftype, fb=true, ofs=4, x1=-3, clr="grey"})
+		if aObj.isRtl then
+			-- a.k.a. Campsites
+			self:SecureHookScript(_G.WarbandSceneJournal, "OnShow", function(this)
+				self:removeInset(this.IconsFrame)
+				self:keepFontStrings(this.IconsFrame)
+				for _, view in _G.pairs(this.IconsFrame.Icons.ViewFrames) do
+					for _, child in _G.ipairs_reverse{view:GetChildren()} do
+						child.Border:SetTexture(nil)
+						self:skinObject("frame", {obj=child, fType=ftype, fb=true, ofs=4, x1=-3, clr="grey"})
+					end
 				end
-			end
-			self:skinPagingControls(this.IconsFrame.Icons.Controls.PagingControls)
-			if self.modChkBtns then
-				this.IconsFrame.Icons.Controls.ShowOwned.Checkbox:SetSize(24, 24)
-				self:skinCheckButton{obj=this.IconsFrame.Icons.Controls.ShowOwned.Checkbox, fType=ftype}
-			end
+				self:skinPagingControls(this.IconsFrame.Icons.Controls.PagingControls)
+				if self.modChkBtns then
+					this.IconsFrame.Icons.Controls.ShowOwned.Checkbox:SetSize(24, 24)
+					self:skinCheckButton{obj=this.IconsFrame.Icons.Controls.ShowOwned.Checkbox, fType=ftype}
+				end
 
 
-			self:Unhook(this, "OnShow")
-		end)
+				self:Unhook(this, "OnShow")
+			end)
+		end
 
 		if self.isClsc
 		and _G.C_AddOns.IsAddOnLoaded("MountsJournal")
