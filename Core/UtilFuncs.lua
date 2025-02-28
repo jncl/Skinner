@@ -1199,12 +1199,12 @@ function aObj:setupTextures()
 			-- 130841 - ui-quickslot2
 	--]]
 	self.tFDIDs = {
-		["bHLS"]      = _G.GetFileIDFromPath([[Interface\Buttons\ButtonHilight-Square]]), -- blue highlight
-		["bHLSQ"]     = _G.GetFileIDFromPath([[Interface\Buttons\ButtonHilight-SquareQuickslot]]), -- smaller & lighter blue highlight
-		["cbH"]       = _G.GetFileIDFromPath([[Interface\Buttons\CheckButtonHilight]]), -- yellow highlight
-		["cfEA"]      = _G.GetFileIDFromPath([[Interface/ChatFrame/ChatFrameExpandArrow]]),
+		["bHLS"]      = _G.GetFileIDFromPath([[Interface\Buttons\ButtonHilight-Square]]), -- blue highlight with black background
+		["bHLSQ"]     = _G.GetFileIDFromPath([[Interface\Buttons\ButtonHilight-SquareQuickslot]]), -- smaller & lighter blue highlight with black background
+		["cbH"]       = _G.GetFileIDFromPath([[Interface\Buttons\CheckButtonHilight]]), -- yellow highlight with black background
+		["cfEA"]      = _G.GetFileIDFromPath([[Interface\ChatFrame\ChatFrameExpandArrow]]),
 		["hfHB"]      = _G.GetFileIDFromPath([[Interface\HelpFrame\HelpButtons]]),
-		["cbMin"]     = _G.GetFileIDFromPath([[interface\Common\minimalcheckbox.blp]]),
+		["cbMin"]     = _G.GetFileIDFromPath([[interface\Common\MinimalCheckbox.blp]]),
 		["cbSC"]      = _G.GetFileIDFromPath([[Interface\Buttons\UI-Checkbox-SwordCheck]]),
 		["cbUP"]      = _G.GetFileIDFromPath([[interface\Buttons\UI-CheckBox-Up]]),
 		["ccLF"]      = _G.GetFileIDFromPath([[Interface\Glues\CharacterCreate\CharacterCreate-LabelFrame]]),
