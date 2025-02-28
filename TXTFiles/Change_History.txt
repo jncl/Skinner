@@ -1,3 +1,17 @@
+beta11.59347.1
+Jncl:
+	Updated ToDo*.txt files
+	Updated Change_History.txt
+	Updated Version numbers
+	Added option to not skin CompactFrames StatusBars, closes #196
+	Updated TOC file
+	Made PTRX changes live, closes #197, closes #198, closes #199, closes #200, closes #201, closes #202
+	Removed commented out lines Updated Professions
+	Updated UtilFuncs
+	Bugfix for PagingControls
+	Updated ColourFuncs
+	Updated Classic RaidFrame
+
 beta11.58867.1
 Jncl:
 	Updated ToDo*.txt files
