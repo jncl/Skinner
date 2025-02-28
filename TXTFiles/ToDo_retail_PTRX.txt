@@ -6,8 +6,7 @@ ToDo_retail_PTRX
 	x				- indicates nothing to change
 	¶ is Alt+7		- indicates localisation changes required
 
-	Retail_PTRX (Dragonflight 10.1.5)
+	Retail_PTRX (TWW 11.1.0)
 		- Added
 		- Updated
 		- Deleted
-		

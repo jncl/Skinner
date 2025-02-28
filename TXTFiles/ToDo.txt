@@ -8,28 +8,18 @@ ToDos
 	#nnn				- Indicates Issue number
 	S/N/I/U/O/E/C/R/FR	- Skin request/New Version/Issue(Bug)/Unobsolete Skin/Other changes/Classic Era/Cata Classic/Retail/Feature Request
 
-≈		O	Rework how AddOn skins are handled
-			- replace table in AddonFrames with individual entries in each skin file
-
-≈		O	Rename variables and use function for colours
-			- self.bColour to self.bClr
-			- self.bbColour to self.bbClr
-
-≈		O	Add checks for Button state as required
-
-≈		O	Refactor NewSkinFuncs in AddOn skins
-
-≈		O	Refactor frame children loops to use Utility function 'scanChildren' via callback
-
-≈		O 	Replace Callbacks to "IOFPanel_Before_Skinning" & "IOFPanel_After_Skinning" with "SettingsPanel_DisplayCategory"
-
-#177 ?	I 	AddOn 'Skinner' tried to call the protected function 'CastSpellByID()'
-			- Clicking on the Mythic+ Portal/Spell icon causes the error (What/Where is this?)
-
 #181 ?	I 	BonusRollFrame, SavedInstances BonusRollFrame
 
-#192 	I	AddOn 'Skinner' tried to call the protected function 'Button:SetPassThroughButtons()'
+#193 	I 	Can't use Quest Items in the Quest List
 
-#194 √	I 	WeakAurasOptions
+#196 √	I/C Party Frames, add option to skin status bars
 
-#195 √	I 	Auctionator
+#197 √	I/C attempt to index field 'RaidInfoScrollFrame'
+
+#198 √	I 	QuestMapFrame
+#199 √
+
+#200 √	I 	QuestInfo
+
+#201 √	I 	PowerChoiceFrame
+#202 √
