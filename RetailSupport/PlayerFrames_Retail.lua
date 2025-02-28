@@ -990,9 +990,6 @@ aObj.SetupRetail_PlayerFrames = function()
 			self:removeRegions(this, {1, 2, 3, 5})
 			self:skinObject("statusbar", {obj=this.PromptFrame.Timer, fi=0})
 			self:skinObject("frame", {obj=this, fType=ftype, bg=true})
-			-- if self.modBtnBs then
-			-- 	 self:addButtonBorder{obj=this.PromptFrame, fType=ftype, relTo=this.PromptFrame.Icon, reParent={this.SpecIcon}}
-			-- end
 
 			self:Unhook(this, "OnShow")
 		end)
@@ -1178,7 +1175,7 @@ aObj.SetupRetail_PlayerFrames = function()
 					then
 						for _, frame in _G.pairs(module.usedRightEdgeFrames) do
 							if frame.template:find("ItemButton") then
-								-- N.B.: can cause ADDON_ACTION_FORBIDDEN when clickedf
+								-- N.B.: can cause ADDON_ACTION_FORBIDDEN when clicked
 								aObj:addButtonBorder{obj=frame, fType=ftype, ofs=4, clr="gold"}
 							elseif frame.template:find("FindGroupButton") then
 								aObj:addButtonBorder{obj=frame, fType=ftype, ofs=-1, x1=0, clr="gold"}
@@ -1682,8 +1679,6 @@ aObj.SetupRetail_PlayerFrames = function()
 				self:skinObject("scrollbar", {obj=fObj.GuildFrame.Container.ScrollBar, fType=ftype})
 				self:skinObject("frame", {obj=fObj.GuildFrame.Container, fType=ftype, kfs=true, rns=true, fb=true})
 				if self.modBtns then
-					-- self:skinStdButton{obj=fObj.RecipeList.FilterButton, fType=ftype, ofs=0}
-					-- self:skinCloseButton{obj=fObj.RecipeList.FilterButton.ResetButton, fType=ftype, noSkin=true}
 					self:skinStdButton{obj=fObj.CreateAllButton, fType=ftype, sechk=true}
 					self:skinStdButton{obj=fObj.CreateButton, fType=ftype, sechk=true}
 					self:skinStdButton{obj=fObj.ViewGuildCraftersButton, fType=ftype, sechk=true}
@@ -1725,6 +1720,7 @@ aObj.SetupRetail_PlayerFrames = function()
 
 				self:Unhook(frame, "OnShow")
 			end)
+			self:checkShown(this.CraftingPage.CraftingOutputLog)
 
 			self:SecureHookScript(this.CraftingPage.SchematicForm.QualityDialog, "OnShow", function(frame)
 				skinQualityDialog(frame)
@@ -1862,7 +1858,7 @@ aObj.SetupRetail_PlayerFrames = function()
 					self:skinObject("frame", {obj=frame.CraftingOutputLog, fType=ftype, kfs=true})
 					if self.modBtns then
 						self:skinStdButton{obj=frame.OrderInfo.BackButton, fType=ftype}
-						self:skinStdButton{obj=frame.OrderInfo.StartOrderButton, fType=ftype}
+						self:skinStdButton{obj=frame.OrderInfo.StartOrderButton, fType=ftypeb, sechk=true}
 						self:skinStdButton{obj=frame.OrderInfo.DeclineOrderButton, fType=ftype}
 						self:skinStdButton{obj=frame.OrderInfo.ReleaseOrderButton, fType=ftype}
 						self:skinStdButton{obj=frame.CreateButton, fType=ftype, schk=true, sechk=true}
