@@ -1,4 +1,4 @@
-﻿## Interface: 110007, 40401, 11506
+﻿## Interface: 110007, 40402, 11506
 
 ## Title: Skinner
 ## Author: Jncl
