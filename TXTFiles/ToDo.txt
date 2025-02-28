@@ -11,15 +11,3 @@ ToDos
 #181 ?	I 	BonusRollFrame, SavedInstances BonusRollFrame
 
 #193 	I 	Can't use Quest Items in the Quest List
-
-#196 √	I/C Party Frames, add option to skin status bars
-
-#197 √	I/C attempt to index field 'RaidInfoScrollFrame'
-
-#198 √	I 	QuestMapFrame
-#199 √
-
-#200 √	I 	QuestInfo
-
-#201 √	I 	PowerChoiceFrame
-#202 √
