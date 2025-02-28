@@ -74,10 +74,10 @@ function aObj.clrCovenantBdr(_, frame, uiTextureKit)
 end
 
 local ppb, npb
-function aObj:clrPNBtns(framePrefix, isObj)
+function aObj:clrPNBtns(btnPrefix, isObj)
 
-	ppb = isObj and framePrefix.PrevPageButton or _G[framePrefix .. "PrevPageButton"]
-	npb = isObj and framePrefix.NextPageButton or _G[framePrefix .. "NextPageButton"]
+	ppb = isObj and btnPrefix.PrevPageButton or _G[btnPrefix .. "PrevPageButton"]
+	npb = isObj and btnPrefix.NextPageButton or _G[btnPrefix .. "NextPageButton"]
 	self:clrBtnBdr(ppb, "gold")
 	self:clrBtnBdr(npb, "gold")
 
