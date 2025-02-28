@@ -1060,7 +1060,7 @@ if not aObj.isClscERA then
 			if self.modBtnBs then
 				if self.isRtl then
 					self:addButtonBorder{obj=this.SlotButton, fType=ftype, relTo=this.SlotButton.ItemIcon}
-					self:addButtonBorder{obj=this.ToggleDynamicFlightFlyoutButton, fType=ftype, ofs=3}
+					self:addButtonBorder{obj=this.ToggleDynamicFlightFlyoutButton, fType=ftype, ofs=4}
 					this.ToggleDynamicFlightFlyoutButton:SetFrameLevel(10)
 					self:addButtonBorder{obj=this.SummonRandomFavoriteButton, fType=ftype, ofs=3}
 				else
@@ -1076,13 +1076,11 @@ if not aObj.isClscERA then
 			end
 
 			if self.isRtl then
-				self:SecureHookScript(this.DynamicFlightFlyout, "OnShow", function(fObj)
-					self:skinObject("frame", {obj=fObj.Background, fType=ftype, kfs=true, ofs=0, y1=4})
+				self:SecureHookScript(this.DynamicFlightFlyoutPopup, "OnShow", function(fObj)
+					self:skinObject("frame", {obj=fObj.Background, fType=ftype, kfs=true, ofs=5, y1=-2, y2=0})
 					if self.modBtnBs then
 						self:addButtonBorder{obj=fObj.OpenDynamicFlightSkillTreeButton, fType=ftype}
-						self:moveObject{obj=fObj.OpenDynamicFlightSkillTreeButton, x=1.5}
 						self:addButtonBorder{obj=fObj.DynamicFlightModeButton, fType=ftype}
-						self:moveObject{obj=fObj.DynamicFlightModeButton, x=1.5}
 					end
 
 					self:Unhook(fObj, "OnShow")
@@ -1230,9 +1228,7 @@ if not aObj.isClscERA then
 		local skinPageBtns, skinCollectionBtn
 		if self.modBtnBs then
 			function skinPageBtns(frame)
-				aObj:addButtonBorder{obj=frame.PagingFrame.PrevPageButton, ofs=-2, y1=-3, x2=-3}
-				aObj:addButtonBorder{obj=frame.PagingFrame.NextPageButton, ofs=-2, y1=-3, x2=-3}
-				aObj:clrPNBtns(frame.PagingFrame, true)
+				aObj:skinPagingControls(frame.PagingFrame)
 				aObj:SecureHook(frame.PagingFrame, "Update", function(this)
 					aObj:clrPNBtns(this, true)
 				end)
@@ -1321,6 +1317,7 @@ if not aObj.isClscERA then
 			self:Unhook(this, "OnShow")
 		end)
 
+		-- a.k.a. Appearances
 		if not self.isClscERA then
 			self:SecureHookScript(_G.WardrobeCollectionFrame, "OnShow", function(this)
 				if self.isRtl then
@@ -1463,7 +1460,7 @@ if not aObj.isClscERA then
 						 self:addButtonBorder{obj=btn, fType=ftype, ofs=-2}
 					end
 				end
-				self:skinObject("ddbutton", {obj=this.SpecDropdown, fType=ftype, noSF=true, ofs=1, y1=1, y2=0})
+				self:skinObject("ddbutton", {obj=this.SpecDropdown, fType=ftype, noSF=true})
 				if self.modBtns then
 					self:skinStdButton{obj=this.OutfitDropdown.SaveButton, sechk=true}
 					self:skinStdButton{obj=this.ApplyButton, fType=ftype, ofs=0, sechk=true}
@@ -1481,6 +1478,26 @@ if not aObj.isClscERA then
 			end)
 
 		end
+
+		-- a.k.a. Campsites
+		self:SecureHookScript(_G.WarbandSceneJournal, "OnShow", function(this)
+			self:removeInset(this.IconsFrame)
+			self:keepFontStrings(this.IconsFrame)
+			for _, view in _G.pairs(this.IconsFrame.Icons.ViewFrames) do
+				for _, child in _G.ipairs_reverse{view:GetChildren()} do
+					child.Border:SetTexture(nil)
+					self:skinObject("frame", {obj=child, fType=ftype, fb=true, ofs=4, x1=-3, clr="grey"})
+				end
+			end
+			self:skinPagingControls(this.IconsFrame.Icons.Controls.PagingControls)
+			if self.modChkBtns then
+				this.IconsFrame.Icons.Controls.ShowOwned.Checkbox:SetSize(24, 24)
+				self:skinCheckButton{obj=this.IconsFrame.Icons.Controls.ShowOwned.Checkbox, fType=ftype}
+			end
+
+
+			self:Unhook(this, "OnShow")
+		end)
 
 		if self.isClsc
 		and _G.C_AddOns.IsAddOnLoaded("MountsJournal")
@@ -2220,7 +2237,7 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 end
 
 aObj.blizzFrames[ftype].CompactFrames = function(self)
-	if not self.prdb.CompactFrames or self.initialized.CompactFrames then return end
+	if not self.prdb.CompactFrames.skin or self.initialized.CompactFrames then return end
 	self.initialized.CompactFrames = true
 
 	if _G.C_AddOns.IsAddOnLoaded("Tukui")
@@ -2238,6 +2255,7 @@ aObj.blizzFrames[ftype].CompactFrames = function(self)
 	-- Compact RaidFrame Manager
 	self:SecureHookScript(_G.CompactRaidFrameManager, "OnShow", function(this)
 		if aObj.isRtl then
+			_G.nop()
 			-- TODO: skin Toggle button texture
 			-- .toggleButtonForward
 			-- .toggleButtonBack
@@ -2328,8 +2346,10 @@ aObj.blizzFrames[ftype].CompactFrames = function(self)
 			unit.horizBottomBorder:SetTexture(nil)
 			unit.vertLeftBorder:SetTexture(nil)
 			unit.vertRightBorder:SetTexture(nil)
-			aObj:skinObject("statusbar", {obj=unit.healthBar, fi=0, bg=unit.healthBar.background})
-			aObj:skinObject("statusbar", {obj=unit.powerBar, fi=0, bg=unit.powerBar.background})
+			if aObj.prdb.CompactFrames.sbars then
+				aObj:skinObject("statusbar", {obj=unit.healthBar, fi=0, bg=unit.healthBar.background})
+				aObj:skinObject("statusbar", {obj=unit.powerBar, fi=0, bg=unit.powerBar.background})
+			end
 		end
 	end
 	local grpName

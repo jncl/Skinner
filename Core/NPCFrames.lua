@@ -370,9 +370,6 @@ aObj.blizzFrames[ftype].QuestInfo = function(self)
 		if aObj.modBtnBs then
 			 aObj:addButtonBorder{obj=_G.QuestInfoSpellObjectiveFrame, relTo=_G.QuestInfoSpellObjectiveFrame.Icon}
 		end
-		if self.isRtl then -- Warband text
-			_G.QuestInfoAccountCompletedNotice:SetTextColor(aObj.BT:GetRGB())
-		end
 		if _G.QuestInfoSealFrame:IsShown()
 		and _G.QuestInfoSealFrame.theme
 		then

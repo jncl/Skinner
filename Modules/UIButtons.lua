@@ -239,7 +239,6 @@ function module:skinActionBtn(bObj, ftype)
 
 	bObj.SlotBackground:SetTexture(nil)
 	bObj.SlotArt:SetTexture(nil)
-	bObj.FlyoutBorderShadow:SetTexture(nil)
 	bObj.Border:SetAlpha(0) -- texture changed in blizzard code
 	if bObj.FlyoutBorder then
 		bObj.FlyoutBorder:SetTexture(nil)
@@ -624,7 +623,9 @@ function module.skinStdButton(_, ...)
 end
 
 local rpRegions = {
-	"ActionBarHighlight", "AutoCastable", "AutoCastOverlay", "AutoCastShine", "Border", "Count", "Flash", "FlyoutArrow", "FlyoutArrowNormal", "FlyoutArrowPushed", "FlyoutArrowHighlight", "Glow", "HotKey", "IconBorder", "IconQuestTexture", "ItemContextOverlay", "ItemOverlay", "ItemOverlay2", "LevelLinkLockIcon", "Name", "NewActionTexture", "ProfessionQualityOverlay", "searchOverlay", "SlotBorder", "SlotBorderOpen", "SpellHighlightTexture", "Stock"
+	"ActionBarHighlight", "Arrow", "AutoCastable", "AutoCastOverlay", "AutoCastShine", "Border", "Count", "Flash", "Glow", "HotKey",
+	"IconBorder","IconQuestTexture", "ItemContextOverlay", "ItemOverlay", "ItemOverlay2", "LevelLinkLockIcon", "Name", "NewActionTexture",
+	"ProfessionQualityOverlay", "searchOverlay", "SlotBorder", "SlotBorderOpen", "SpellHighlightTexture", "Stock"
 }
 local function reparentRegion(region, parent)
 	if region
@@ -908,7 +909,6 @@ function module.skinCheckButton(_, ...)
 	end
 
 end
-
 
 --[===[@non-debug@
 --[[

@@ -2826,14 +2826,14 @@ aObj.SetupRetail_UIFrames = function()
 				frame.sf:Show()
 			end
 			for opt in frame.optionPools:EnumerateActiveByTemplate(frame.optionFrameTemplate) do
-				-- aObj:Debug("PCF skinOptions: [%s, %s]", frame.optionFrameTemplate)
+				aObj:Debug("PCF skinOptions: [%s, %s]", frame.optionFrameTemplate)
 				opt.OptionText.String:SetTextColor(aObj.BT:GetRGB())
 				opt.OptionText.HTML:SetTextColor("P", aObj.BT:GetRGB())
 				if aObj.modBtns then
-					for btn in opt.OptionButtonsContainer.buttonPool:EnumerateActive() do
+					for fObj in opt.OptionButtonsContainer.buttonFramePool:EnumerateActive() do
 						-- DON'T skin magnifying glass button
-						if btn:GetText() ~= "Preview Covenant" then
-							aObj:skinStdButton{obj=btn, fType=ftype, schk=true, sechk=true}
+						if fObj.Button:GetText() ~= "Preview Covenant" then
+							aObj:skinStdButton{obj=fObj.Button, fType=ftype, schk=true, sechk=true}
 						end
 					end
 				end
@@ -3082,19 +3082,114 @@ aObj.SetupRetail_UIFrames = function()
 			this.VerticalSeparator:SetTexture(nil)
 			-- .SettingsDropdown
 
-			self:SecureHookScript(this.QuestsFrame, "OnShow", function(fObj) -- a.k.a. QuestScrollFrame
-				self:skinObject("scrollbar", {obj=fObj.ScrollBar, fType=ftype})
-				fObj.Background:SetTexture(nil)
-				fObj.Edge:SetTexture(nil)
-				fObj.Contents.Separator.Divider:SetTexture(nil)
-				fObj.Contents.StoryHeader.Background:SetTexture(nil)
-				fObj.Contents.StoryHeader.Divider:SetTexture(nil)
-				self:skinObject("editbox", {obj=fObj.SearchBox, fType=ftype, si=true})
-				self:keepFontStrings(fObj.BorderFrame)
+			-- Side Tabs
+			for _, tab in _G.pairs(this.TabButtons) do
+				tab.Background:SetTexture(nil)
+				-- TODO: change selected & highlight textures
+				self:skinObject("button", {obj=tab, fType=ftype, ofs=-1, x1=-1, y2=2})
+			end
+			-- ContentsAnchor
+
+			self:SecureHookScript(this.QuestsFrame, "OnShow", function(fObj) -- a.k.a. QuestScrollFrame (NOT PTRX)
+				self:skinObject("scrollbar", {obj=fObj.ScrollFrame.ScrollBar, fType=ftype})
+				fObj.ScrollFrame.Background:SetAlpha(0)
+				fObj.ScrollFrame.Edge:SetTexture(nil)
+				fObj.ScrollFrame.Contents.Separator.Divider:SetTexture(nil)
+				fObj.ScrollFrame.Contents.StoryHeader.Background:SetTexture(nil)
+				fObj.ScrollFrame.Contents.StoryHeader.Divider:SetTexture(nil)
+				self:keepFontStrings(fObj.ScrollFrame.BorderFrame)
+				self:skinObject("editbox", {obj=fObj.ScrollFrame.SearchBox, fType=ftype, si=true})
+
+				self:SecureHookScript(fObj.DetailsFrame, "OnShow", function(frame)
+					self:keepFontStrings(frame)
+					self:keepFontStrings(frame.BorderFrame)
+					self:keepFontStrings(frame.BackFrame)
+					frame.BackFrame.AccountCompletedNotice.Text:SetTextColor(aObj.BT:GetRGB())
+					self:skinObject("scrollbar", {obj=frame.ScrollFrame.ScrollBar, fType=ftype})
+					self:keepFontStrings(frame.RewardsFrameContainer.RewardsFrame)
+					frame.RewardsFrameContainer.RewardsFrame.Label:SetTextColor(self.HT:GetRGB())
+					self:adjWidth{obj=frame.AbandonButton, adj=-2} -- moves buttons to the right slightly
+					self:moveObject{obj=frame.AbandonButton, y=2}
+					frame.ShareButton:DisableDrawLayer("OVERLAY") -- divider textures
+					if self.modBtns then
+						self:skinStdButton{obj=frame.BackFrame.BackButton}
+						-- .DestinationMapButton
+						-- .WaypointMapButton
+						self:skinStdButton{obj=frame.AbandonButton}
+						self:skinStdButton{obj=frame.ShareButton}
+						self:skinStdButton{obj=frame.TrackButton, x2=-2}
+					end
+
+					self:Unhook(frame, "OnShow")
+				end)
+				self:checkShown(fObj.DetailsFrame)
+
+				self:SecureHookScript(fObj.CampaignOverview, "OnShow", function(frame)
+					self:keepFontStrings(frame.BorderFrame)
+					self:keepFontStrings(frame.Header)
+					self:skinObject("scrollbar", {obj=frame.ScrollFrame.ScrollBar, fType=ftype})
+					frame.BG:SetTexture(nil)
+					frame.ScrollFrame:DisableDrawLayer("OVERLAY")
+
+					self:Unhook(frame, "OnShow")
+				end)
+				self:checkShown(fObj.CampaignOverview)
+				self:SecureHook(_G.QuestMapFrame.QuestsFrame.CampaignOverview, "UpdateCampaignLoreText", function(fObj, _, _)
+					for tex in fObj.texturePool:EnumerateActive() do
+						tex:SetTexture(nil) -- divider lines
+					end
+				end)
+
+				_G.C_Timer.After(0.1, function()
+					local wct = fObj.ScrollFrame.CampaignTooltip
+					wct.ItemTooltip.FollowerTooltip.PortraitFrame.PortraitRing:SetTexture(nil)
+					wct.ItemTooltip.FollowerTooltip.PortraitFrame.LevelBorder:SetAlpha(0)
+					wct.ofs = -2
+					self.ttHook[wct] = "Show"
+					self:add2Table(self.ttList, wct)
+					self:add2Table(self.ttList, fObj.ScrollFrame.StoryTooltip)
+				end)
 
 				self:Unhook(fObj, "OnShow")
 			end)
 			self:checkShown(this.QuestsFrame)
+
+			self:SecureHookScript(this.EventsFrame, "OnShow", function(fObj)
+				self:keepFontStrings(fObj)
+				self:keepFontStrings(fObj.BorderFrame)
+				fObj.ScrollBox.Background:SetTexture(nil)
+				self:skinObject("scrollbar", {obj=fObj.ScrollBar, fType=ftype})
+				local function skinEvents(...)
+					local _, element, elementData, new
+					if _G.select("#", ...) == 2 then
+						element, elementData = ...
+					elseif _G.select("#", ...) == 3 then
+						element, elementData, new = ...
+					else
+						_, element, elementData, new = ...
+					end
+					if new ~= false then
+						if elementData.data.entryType == 1 then -- OngoingHeader
+							element.Background:SetTexture(nil)
+						elseif elementData.data.entryType == 2 then -- OngoingEvent
+							element.Background:SetAlpha(0)
+						elseif elementData.data.entryType == 3 then -- ScheduledHeader
+							element.Background:SetTexture(nil)
+						elseif elementData.data.entryType == 4 then -- ScheduledEvent
+							_G.nop()
+						elseif elementData.data.entryType == 5 then -- Date
+							_G.nop()
+						elseif elementData.data.entryType == 6 then -- HiddenEventsLabel
+							_G.nop()
+						elseif elementData.data.entryType == 7 then -- NoEventsLabel
+							_G.nop()
+						end
+					end
+				end
+				_G.ScrollUtil.AddAcquiredFrameCallback(fObj.ScrollBox, skinEvents, aObj, true)
+
+				self:Unhook(fObj, "OnShow")
+			end)
 
 			self:SecureHookScript(this.QuestSessionManagement, "OnShow", function(fObj)
 				fObj.BG:SetTexture(nil)
@@ -3105,40 +3200,6 @@ aObj.SetupRetail_UIFrames = function()
 				self:Unhook(fObj, "OnShow")
 			end)
 			self:checkShown(this.QuestSessionManagement)
-
-			self:SecureHookScript(this.DetailsFrame, "OnShow", function(fObj)
-				self:keepFontStrings(fObj)
-				self:keepFontStrings(fObj.BorderFrame)
-				self:keepFontStrings(fObj.BackFrame)
-				self:skinObject("scrollbar", {obj=fObj.ScrollFrame.ScrollBar, fType=ftype})
-				self:keepFontStrings(fObj.RewardsFrameContainer.RewardsFrame)
-				fObj.RewardsFrameContainer.RewardsFrame.Label:SetTextColor(self.HT:GetRGB())
-				self:adjWidth{obj=fObj.AbandonButton, adj=-2} -- moves buttons to the right slightly
-				self:moveObject{obj=fObj.AbandonButton, y=2}
-				fObj.ShareButton:DisableDrawLayer("OVERLAY") -- divider textures
-				if self.modBtns then
-					self:skinStdButton{obj=fObj.BackFrame.BackButton}
-					-- .DestinationMapButton
-					-- .WaypointMapButton
-					self:skinStdButton{obj=fObj.AbandonButton}
-					self:skinStdButton{obj=fObj.ShareButton}
-					self:skinStdButton{obj=fObj.TrackButton, x2=-2}
-				end
-
-				self:Unhook(fObj, "OnShow")
-			end)
-			self:checkShown(this.DetailsFrame)
-
-			self:SecureHookScript(this.CampaignOverview, "OnShow", function(fObj)
-				self:keepFontStrings(fObj.BorderFrame)
-				self:keepFontStrings(fObj.Header)
-				self:skinObject("scrollbar", {obj=fObj.ScrollFrame.ScrollBar, fType=ftype})
-				fObj.BG:SetTexture(nil)
-				fObj.ScrollFrame:DisableDrawLayer("OVERLAY")
-
-				self:Unhook(fObj, "OnShow")
-			end)
-			self:checkShown(this.CampaignOverview)
 
 			self:SecureHookScript(this.MapLegend, "OnShow", function(fObj)
 				self:keepFontStrings(fObj.BorderFrame)
@@ -3151,16 +3212,6 @@ aObj.SetupRetail_UIFrames = function()
 				self:Unhook(fObj, "OnShow")
 			end)
 			self:checkShown(this.MapLegend)
-
-			_G.C_Timer.After(0.1, function()
-				local wct = this.QuestsFrame.CampaignTooltip
-				wct.ItemTooltip.FollowerTooltip.PortraitFrame.PortraitRing:SetTexture(nil)
-				wct.ItemTooltip.FollowerTooltip.PortraitFrame.LevelBorder:SetAlpha(0)
-				wct.ofs = -2
-				self.ttHook[wct] = "Show"
-				self:add2Table(self.ttList, wct)
-				self:add2Table(self.ttList, this.QuestsFrame.StoryTooltip)
-			end)
 
 			self:Unhook(this, "OnShow")
 		end)
@@ -3202,11 +3253,6 @@ aObj.SetupRetail_UIFrames = function()
 			for hdr in _G.QuestScrollFrame.covenantCallingsHeaderFramePool:EnumerateActive() do
 				self:keepFontStrings(hdr)
 				hdr.HighlightTexture:SetTexture(self.tFDIDs.qltHL)
-			end
-		end)
-		self:SecureHook(_G.QuestMapFrame.CampaignOverview, "UpdateCampaignLoreText", function(fObj, _, _)
-			for tex in fObj.texturePool:EnumerateActive() do
-				tex:SetTexture(nil) -- divider lines
 			end
 		end)
 		if self.modBtns then
@@ -3448,40 +3494,24 @@ aObj.SetupRetail_UIFrames = function()
 		if not self.prdb.SpellFlyout or self.initialized.SpellFlyout then return end
 		self.initialized.SpellFlyout = true
 
-		local offsets = {
-			["RIGHT"] = {x1 = -6},
-			["LEFT"] = {x2 = -1},
-			["UP"] = {y2 = -1},
-			["DOWN"] = {y1 = -1},
-		}
-		local defOfs, ofs = 6
-		local function posnSkin(frame)
-			frame:SetFrameStrata(frame:GetParent():GetFrameStrata())
-			ofs = offsets[frame.direction]
-			frame.sf:ClearAllPoints()
-			frame.sf:SetPoint("TOPLEFT", frame, "TOPLEFT", ofs.x1 or defOfs * -1, ofs.y1 or defOfs)
-			frame.sf:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", ofs.x2 or defOfs, ofs.y2 or defOfs * -1)
-		end
 		local skinBtns = _G.nop
 		if self.modBtnBs then
-			local i, button
+			local btnPrefix, i, button = "SpellFlyoutPopupButton"
 			function skinBtns()
 				i = 1
-				button = _G["SpellFlyoutButton" .. i]
+				button = _G[btnPrefix .. i]
 				while (button and button:IsShown()) do
 					aObj:addButtonBorder{obj=button, fType=ftype, abt=true, sft=true}
 					i = i + 1
-					button = _G["SpellFlyoutButton" .. i]
+					button = _G[btnPrefix .. i]
 				end
 			end
 		end
 		self:SecureHookScript(_G.SpellFlyout, "OnShow", function(this)
 			self:keepFontStrings(this.Background)
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, sft=true, fb=true})
-			posnSkin(this)
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, sft=true, fb=true, ofs=1})
 			skinBtns()
-			self:SecureHook(this, "Toggle", function(fObj, _)
-				posnSkin(fObj)
+			self:SecureHook(this, "Toggle", function(_, _)
 				skinBtns()
 			end)
 

@@ -1002,6 +1002,7 @@ aObj.SetupRetail_NPCFrames = function()
 			this.PetModelScene:DisableDrawLayer("ARTWORK")
 			self:removeInset(this.PetModelScene.Inset)
 			this.PetModelScene.PetModelSceneShadow:DisableDrawLayer("OVERLAY")
+			self:skinObject("ddbutton", {obj=this.PetModelScene.PetInfo.Specialization, fType=ftype})
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true})
 			if self.modBtns then
 				self:skinStdButton{obj=this.StableTogglePetButton, fType=ftype, schk=true, sechk=true}

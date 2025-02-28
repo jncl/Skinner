@@ -3440,7 +3440,7 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 		elseif wFrame.widgetType == 2 then -- StatusBar
 			-- background & border textures
 			if aObj.isRtl then
-				regs = {2, 3, 4, 8, 9, 10}
+				regs = {2, 3, 4, 5, 6, 7}
 			else
 				regs = {1, 2, 3, 5, 6 ,7}
 			end
