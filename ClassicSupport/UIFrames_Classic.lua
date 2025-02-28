@@ -603,19 +603,23 @@ aObj.SetupClassic_UIFrames = function()
 		end)
 
 		self:SecureHookScript(_G.RaidFrame, "OnShow", function(this)
-			self:skinObject("slider", {obj=_G.RaidInfoScrollFrame.ScrollBar, fType=ftype})
+			self:skinObject("scrollbar", {obj=_G.RaidInfoFrame.ScrollBox.ScrollBar, fType=ftype})
 			self:skinObject("frame", {obj=_G.RaidInfoFrame, fType=ftype, kfs=true, hdr=true})
 			if self.modBtns then
 				self:skinCloseButton{obj=_G.RaidInfoCloseButton, fType=ftype}
-				self:skinStdButton{obj=_G.RaidFrameConvertToRaidButton, fType=ftype}
+				self:skinStdButton{obj=_G.RaidFrameConvertToRaidButton, fType=ftype, schk=true}
 				self:skinStdButton{obj=_G.RaidFrameRaidInfoButton, fType=ftype, schk=true}
-				self:SecureHook("RaidFrame_Update", function()
-					self:clrBtnBdr(_G.RaidFrameConvertToRaidButton)
-				end)
 			end
 			if self.modChkBtns then
 				self:skinCheckButton{obj=_G.RaidFrameAllAssistCheckButton, fType=ftype}
 			end
+
+			-- hook this to stop title text being displayed twice
+			self:SecureHook("FriendsFrame_ShowSubFrame", function(fName)
+				if fName == "RaidFrame" then
+					_G.FriendsFrame.TitleText:Hide()
+				end
+			end)
 
 			self:Unhook(this, "OnShow")
 		end)
