@@ -57,6 +57,7 @@ aObj.SetupDefaults = function(self)
 			DisableAllP                = false,
 			AchievementUI              = not aObj.isClscERA and {skin = true, style = 2} or nil,
 			CastingBar                 = {skin = true, glaze = true},
+			CompactFrames              = {skin = true, sbars = true},
 			ContainerFrames            = {skin = false, itmbtns = false, fheight = 100},
 			LootFrames                 = {skin = true, size = 1},
 			MirrorTimers               = {skin = true, glaze = true},
@@ -804,8 +805,8 @@ aObj.SetupOptions = function(self)
 				},
 				AchievementUI = not self.isClscERA and {
 					type = "group",
-					order = -1,
 					inline = true,
+					order = -1,
 					name = self.L["Achievement UI"],
 					get = function(info) return db.AchievementUI[info[#info]] end,
 					set = function(info, value)
@@ -848,6 +849,31 @@ aObj.SetupOptions = function(self)
 							order = 2,
 							name = self.L["Glaze Frames"],
 							desc = _G.strjoin(" ", self.L["Toggle the glazing of the"], self.L["Casting Bar Frames"])
+						},
+					},
+				},
+				CompactFrames = {
+					type = "group",
+					inline = true,
+					order = -1,
+					name = self.L["Compact Frames"],
+					get = function(info) return db.CompactFrames[info[#info]] end,
+					set = function(info, value)
+						db.CompactFrames[info[#info]] = value
+						self:checkAndRun("CompactFrames", "p")
+					end,
+					args = {
+						skin = {
+							type = "toggle",
+							order = 1,
+							name = self.L["Skin Frames"],
+							desc = _G.strjoin(" ", self.L["Toggle the skin of the"], self.L["Compact Frames"]),
+						},
+						sbars = {
+							type = "toggle",
+							order = 1,
+							name = _G.strjoin(" ", self.L["Skin"], self.L["Status Bars"]),
+							desc = _G.strjoin(" ", self.L["Toggle the skin of the"], self.L["Status Bars"]),
 						},
 					},
 				},
@@ -1289,7 +1315,6 @@ aObj.SetupOptions = function(self)
 		["Character Frames"]  = true,
 		["Collections"]       = self.isRtl and {pref = "Warband"} or self.isClsc and {suff = "Journal"} or nil,
 		["Communities"]       = {pref = "Guild &"},
-		["Compact Frames"]    = true,
 		["Dress Up Frame"]    = true,
 		["Encounter Journal"] = self.isRtl and {desc = "Adventure Guide"} or self.isClsc and {desc = "Dungeon Journal"} or nil,
 		["Equipment Flyout"]  = not self.isClscERA and true or nil,
