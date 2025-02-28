@@ -1,3 +1,13 @@
+beta11.58867.1
+Jncl:
+	Updated ToDo*.txt files
+	Updated Change_History.txt
+	Updated Version numbers
+	Updated TOC
+	Updated Ace3 & Baganator skins
+	Updated Auctionator skin, closes #195
+	Updated WeakAuras skin, closes #194
+
 beta11.57979.2
 Jncl:
 	Updated ToDo*.txt files
