@@ -1167,7 +1167,9 @@ end)
 
 function aObj:skinPagingControls(frame)
 
-	frame.PageText:SetTextColor(self.BT:GetRGB())
+	if frame.PageText then
+		frame.PageText:SetTextColor(self.BT:GetRGB())
+	end
 	if self.modBtnBs then
 		self:addButtonBorder{obj=frame.PrevPageButton, ofs=-2, x1=1, clr="gold", sechk=true}
 		self:addButtonBorder{obj=frame.NextPageButton, ofs=-2, x1=1, clr="gold", sechk=true}
