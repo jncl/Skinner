@@ -326,7 +326,12 @@ aObj.blizzFrames[ftype].GossipFrame = function(self)
 	self:SecureHookScript(_G.GossipFrame, "OnShow", function(this)
 		self:keepFontStrings(this.GreetingPanel)
 		self:skinObject("scrollbar", {obj=this.GreetingPanel.ScrollBar, fType=ftype})
-		_G.ScrollUtil.AddInitializedFrameCallback(this.GreetingPanel.ScrollBox, skinGossip, aObj, true)
+		if not aObj.isMnlnPTR then
+			_G.ScrollUtil.AddInitializedFrameCallback(this.GreetingPanel.ScrollBox, skinGossip, aObj, true)
+		else
+			_G.SetCVar("questTextContrast", 4) -- Set Quest Text to white
+			this:UpdateScrollBox()
+		end
 		local sBar = self.isMnln and this.FriendshipStatusBar or _G.NPCFriendshipStatusBar
 		self:removeRegions(sBar, {1, 2, 5, 6, 7, 8 ,9})
 		self:skinObject("statusbar", {obj=sBar, fi=0, bg=self:getRegion(sBar, 10)})
