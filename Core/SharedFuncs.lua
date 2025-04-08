@@ -6,12 +6,12 @@ local buildInfo = {
 	-- wow_classic_beta    = {"4.4.0",  54737, "Cataclysm Classic Beta"},
 	-- wow_beta            = {"11.0.2", 56263, "The War Within Beta"},
 	wow_classic_ptr     = {"4.4.2",  59185, "PTR (Cataclysm Classic)"},
-	wow_classic_era_ptr = {"1.15.6", 58797, "PTR (Classic Era)"},
-	wow_ptr             = {"11.0.7", 58533, "PTR (TWW 11.0.7"},
+	wow_classic_era_ptr = {"1.15.7", 60141, "PTR (Classic Era)"},
+	wow_ptr             = {"11.1.5", 60067, "PTR (TWW 11.1.5"},
 	wow_ptr_x           = {"11.1.0", 59347, "PTR (TWW 11.1.0)"},
 	wow_classic_era     = {"1.15.6", 59415, "World of Warcraft Classic"},
-	wow_classic         = {"4.4.2",  59346, "Cataclysm Classic"},
-	wow                 = {"11.1.0", 59347, "World of Warcraft"},
+	wow_classic         = {"4.4.2",  60142, "Cataclysm Classic"},
+	wow                 = {"11.1.0", 60037, "World of Warcraft"},
 	curr                = {_G.GetBuildInfo()},
 }
 
@@ -36,7 +36,6 @@ function aObj:checkWoWVersion()
 
 	local agentUID = _G.C_CVar.GetCVar("agentUID")
 	-- handle different country versions, e.g. wow_enus
-	-- WOW_PROJECT_BURNING_CRUSADE_CLASSIC [Unused ?]
 	if not buildInfo[agentUID] then
 		if _G.WOW_PROJECT_ID == _G.WOW_PROJECT_MAINLINE then
 			agentUID = "wow"
@@ -164,6 +163,7 @@ function aObj.makeBoolean(_, var)
 end
 
 function aObj:setupOptions(optNames, optIgnore, preLoadFunc, postLoadFunc)
+
 	local _
 	local db = self.db.profile
 	local dflts = self.db.defaults.profile
