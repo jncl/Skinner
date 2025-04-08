@@ -2407,37 +2407,37 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 			_G.MiniMapTrackingBorder:SetTexture(nil)
 			self:addButtonBorder{obj=_G.MiniMapTracking, fType=ftype, bd=10, ofs=1, x1=3, y1=-3}
 			self:moveObject{obj=_G.MiniMapTracking, x=-2}
-			self:skinObject("frame", {obj=_G.LFGMinimapFrame, fType=ftype, kfs=true, ofs=-1})
-			self:moveObject{obj=_G.LFGMinimapFrame, x=-30, y=6}
-		else
-			if self.isClsc then
-				local function makeBtnSquare(obj, x1, y1, x2, y2)
-					obj:SetSize(26, 26)
-					obj:GetNormalTexture():SetTexCoord(x1, y1, x2, y2)
-					obj:GetPushedTexture():SetTexCoord(x1, y1, x2, y2)
-					obj:SetHighlightTexture(aObj.tFDIDs.bHLS)
-					obj:SetHitRectInsets(-5, -5, -5, -5)
-					if not minBtn then
-						aObj:skinObject("button", {obj=obj, fType=ftype, ng=true, bd=obj==_G.GameTimeFrame and 10 or 1, ofs=4})
-					end
-				end
-				-- Calendar button
-				makeBtnSquare(_G.GameTimeFrame, 0.1, 0.31, 0.16, 0.6)
-				_G.GameTimeFrame:SetNormalFontObject(_G.GameFontWhite) -- allow for font OUTLINE to be seen
-				_G.MiniMapTrackingBackground:SetTexture(nil)
-				_G.MiniMapTrackingButtonBorder:SetTexture(nil)
-				if not minBtn then
-					_G.MiniMapTracking:SetScale(0.9)
-					self:skinObject("frame", {obj=_G.MiniMapTrackingButton, fType=ftype, bd=10, ofs=0})
-					-- TODO: Background alpha is 0
-				end
-				self:skinObject("frame", {obj=_G.MiniMapLFGFrame, fType=ftype, kfs=true, ofs=0})
-				_G.MiniMapWorldBorder:SetTexture(nil)
-				_G.MiniMapWorldMapButton:DisableDrawLayer("OVERLAY") -- border texture
-				_G.MiniMapWorldMapButton:ClearAllPoints()
-				_G.MiniMapWorldMapButton:SetPoint("LEFT", _G.MinimapZoneTextButton, "RIGHT", -4, 0)
-				self:skinOtherButton{obj=_G.MiniMapWorldMapButton, font=self.fontP, text="M", noSkin=minBtn}
+			if _G.LFGMinimapFrame then
+				self:skinObject("frame", {obj=_G.LFGMinimapFrame, fType=ftype, kfs=true, ofs=-1})
+				self:moveObject{obj=_G.LFGMinimapFrame, x=-30, y=6}
 			end
+		elseif self.isClsc then
+			local function makeBtnSquare(obj, x1, y1, x2, y2)
+				obj:SetSize(26, 26)
+				obj:GetNormalTexture():SetTexCoord(x1, y1, x2, y2)
+				obj:GetPushedTexture():SetTexCoord(x1, y1, x2, y2)
+				obj:SetHighlightTexture(aObj.tFDIDs.bHLS)
+				obj:SetHitRectInsets(-5, -5, -5, -5)
+				if not minBtn then
+					aObj:skinObject("button", {obj=obj, fType=ftype, ng=true, bd=obj==_G.GameTimeFrame and 10 or 1, ofs=4})
+				end
+			end
+			-- Calendar button
+			makeBtnSquare(_G.GameTimeFrame, 0.1, 0.31, 0.16, 0.6)
+			_G.GameTimeFrame:SetNormalFontObject(_G.GameFontWhite) -- allow for font OUTLINE to be seen
+			_G.MiniMapTrackingBackground:SetTexture(nil)
+			_G.MiniMapTrackingButtonBorder:SetTexture(nil)
+			if not minBtn then
+				_G.MiniMapTracking:SetScale(0.9)
+				self:skinObject("frame", {obj=_G.MiniMapTrackingButton, fType=ftype, bd=10, ofs=0})
+				-- TODO: Background alpha is 0
+			end
+			self:skinObject("frame", {obj=_G.MiniMapLFGFrame, fType=ftype, kfs=true, ofs=0})
+			_G.MiniMapWorldBorder:SetTexture(nil)
+			_G.MiniMapWorldMapButton:DisableDrawLayer("OVERLAY") -- border texture
+			_G.MiniMapWorldMapButton:ClearAllPoints()
+			_G.MiniMapWorldMapButton:SetPoint("LEFT", _G.MinimapZoneTextButton, "RIGHT", -4, 0)
+			self:skinOtherButton{obj=_G.MiniMapWorldMapButton, font=self.fontP, text="M", noSkin=minBtn}
 		end
 	end
 	_G.TimeManagerClockButton:DisableDrawLayer("BORDER")
