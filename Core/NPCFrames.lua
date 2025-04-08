@@ -4,6 +4,294 @@ local _G = _G
 
 local ftype = "n"
 
+if not aObj.isClscERA then
+	aObj.blizzLoDFrames[ftype].AuctionHouseUI = function(self)
+		if not self.prdb.AuctionHouseUI or self.initialized.AuctionHouseUI then return end
+
+		if not _G.AuctionHouseFrame then
+			_G.C_Timer.After(0.1, function()
+				self.blizzLoDFrames[ftype].AuctionHouseUI(self)
+			end)
+			return
+		end
+
+		self.initialized.AuctionHouseUI = true
+
+		self:SecureHookScript(_G.AuctionHouseFrame, "OnShow", function(this)
+			self:removeInset(this.MoneyFrameInset) -- MerchantMoneyInset
+			self:removeNineSlice(this.MoneyFrameBorder)
+			self:skinObject("tabs", {obj=this, tabs=this.Tabs, fType=ftype, lod=self.isTT and true, track=false})
+			if self.isTT then
+				self:SecureHook(this, "SetDisplayMode", function(fObj, displayMode)
+					for i, tab in _G.ipairs(fObj.Tabs) do
+						self:setInactiveTab(tab.sf)
+						if i == fObj.tabsForDisplayMode[displayMode] then
+							self:setActiveTab(tab.sf)
+						end
+					end
+					if _G.C_AddOns.IsAddOnLoaded("Auctionator") then
+						for _, tab in _G.ipairs(_G.AuctionatorAHTabsContainer.Tabs) do
+							self:setInactiveTab(tab.sf)
+						end
+					end
+				end)
+			end
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true, cb=true, x2=3, y2=0})
+
+			self:SecureHookScript(this.SearchBar, "OnShow", function(fObj)
+				self:skinObject("editbox", {obj=fObj.SearchBox, fType=ftype, si=true})
+				self:skinObject("ddbutton", {obj=fObj.FilterButton, fType=ftype, filter=true, filtercb="ClearFiltersButton"})
+				if self.modBtns then
+					self:skinStdButton{obj=fObj.FavoritesSearchButton, fType=ftype, ofs=-2}
+					self:skinStdButton{obj=fObj.SearchButton, fType=ftype}
+				end
+
+				self:Unhook(fObj, "OnShow")
+			end)
+
+			self:SecureHookScript(this.CategoriesList, "OnShow", function(fObj)
+				fObj:DisableDrawLayer("BACKGROUND")
+				self:removeNineSlice(fObj.NineSlice)
+				self:skinObject("scrollbar", {obj=fObj.ScrollBar, fType=ftype})
+				local function skinElement(...)
+					local _, element, new
+					if _G.select("#", ...) == 2 then
+						element, _ = ...
+					elseif _G.select("#", ...) == 3 then
+						element, _, new = ...
+					else
+						_, element, _, new = ...
+					end
+					if new ~= false then
+						aObj:keepRegions(element, {3, 4, 5}) -- N.B. region 3 is highlight, 4 is selected, 5 is text
+						aObj.modUIBtns:skinStdButton{obj=element, fType=ftype, ignoreHLTex=true}
+					end
+					element.sb:Show()
+					element.sb:ClearAllPoints()
+					if element.type == "category" then
+						element.sb:SetPoint("TOPLEFT", element, "TOPLEFT", -1, 1)
+						element.sb:SetPoint("BOTTOMRIGHT", element, "BOTTOMRIGHT", -4, -1)
+					elseif element.type == "subCategory" then
+						element.sb:SetPoint("TOPLEFT", element, "TOPLEFT", 10, 1)
+						element.sb:SetPoint("BOTTOMRIGHT", element, "BOTTOMRIGHT", -4, -1)
+					elseif element.type == "subSubCategory" then
+						element.sb:Hide()
+					end
+				end
+				_G.ScrollUtil.AddAcquiredFrameCallback(fObj.ScrollBox, skinElement, aObj, true)
+
+				self:Unhook(fObj, "OnShow")
+			end)
+
+			local function skinItemList(frame)
+				aObj:removeNineSlice(frame.NineSlice)
+				frame.Background:SetTexture(nil)
+				local function skinHeaders(fObj)
+					if fObj.tableBuilder then
+						for hdr in fObj.tableBuilder.headerPoolCollection:EnumerateActive() do
+							aObj:removeRegions(hdr, {1, 2, 3})
+							aObj:skinObject("frame", {obj=hdr, fType=ftype, ofs=1})
+						end
+					end
+				end
+				skinHeaders(frame)
+				aObj:SecureHook(frame, "RefreshScrollFrame", function(fObj)
+					skinHeaders(fObj)
+				end)
+				aObj:skinObject("scrollbar", {obj=frame.ScrollBar, fType=ftype})
+				if aObj.modBtns then
+					aObj:skinStdButton{obj=frame.RefreshFrame.RefreshButton, fType=ftype, ofs=-2, clr="gold"}
+				end
+			end
+			local function skinBidAmt(frame)
+				aObj:skinObject("editbox", {obj=frame.gold, fType=ftype, ofs=0})
+				aObj:skinObject("editbox", {obj=frame.silver, fType=ftype, ofs=0})
+				aObj:skinObject("editbox", {obj=frame.copper, fType=ftype, ofs=0})
+				frame.silver:SetWidth(38)
+				aObj:moveObject{obj=frame.silver.texture, x=10}
+				frame.copper:SetWidth(38)
+				aObj:moveObject{obj=frame.copper.texture, x=10}
+			end
+			self:SecureHookScript(this.BrowseResultsFrame, "OnShow", function(fObj)
+				skinItemList(fObj.ItemList)
+
+				self:Unhook(fObj, "OnShow")
+			end)
+
+			self:SecureHookScript(this.WoWTokenResults, "OnShow", function(fObj)
+				fObj.Background:SetTexture(nil)
+				self:removeNineSlice(fObj.NineSlice)
+				self:SecureHookScript(fObj.GameTimeTutorial, "OnShow", function(frame)
+					self:removeInset(frame.Inset)
+					frame.LeftDisplay.Label:SetTextColor(self.HT:GetRGB())
+					frame.LeftDisplay.Tutorial1:SetTextColor(self.BT:GetRGB())
+					frame.RightDisplay.Label:SetTextColor(self.HT:GetRGB())
+					frame.RightDisplay.Tutorial1:SetTextColor(self.BT:GetRGB())
+					self:skinObject("frame", {obj=frame, fType=ftype, kfs=true, cb=true, y2=220})
+					if self.modBtns then
+						self:skinStdButton{obj=frame.RightDisplay.StoreButton, fType=ftype, x1=14, y1=2, x2=-14, y2=2, clr="gold"}
+					end
+
+					self:Unhook(frame, "OnShow")
+				end)
+				self:removeRegions(fObj.TokenDisplay, {3}) -- background texture
+				self:skinObject("scrollbar", {obj=fObj.DummyScrollBar, fType=ftype})
+				if self.modBtns then
+					self:skinStdButton{obj=fObj.Buyout, fType=ftype, sechk=true}
+				end
+
+				self:Unhook(fObj, "OnShow")
+			end)
+
+			self:SecureHookScript(this.CommoditiesBuyFrame, "OnShow", function(fObj)
+				self:removeNineSlice(fObj.BuyDisplay.NineSlice)
+				fObj.BuyDisplay.Background:SetTexture(nil)
+				self:removeRegions(fObj.BuyDisplay.ItemDisplay, {3})
+				self:skinObject("editbox", {obj=fObj.BuyDisplay.QuantityInput.InputBox, fType=ftype, ofs=-2})
+				self:adjHeight{obj=fObj.BuyDisplay.QuantityInput.InputBox, adj=-3}
+				skinItemList(fObj.ItemList)
+				if self.modBtns then
+					self:skinStdButton{obj=fObj.BackButton, fType=ftype}
+					self:skinStdButton{obj=fObj.BuyDisplay.QuantityInput.MaxButton, fType=ftype}
+					self:skinStdButton{obj=fObj.BuyDisplay.BuyButton, fType=ftype, sechk=true}
+				end
+
+				self:Unhook(fObj, "OnShow")
+			end)
+
+			self:SecureHookScript(this.ItemBuyFrame, "OnShow", function(fObj)
+				self:removeNineSlice(fObj.ItemDisplay.NineSlice)
+				self:removeRegions(fObj.ItemDisplay, {1})
+				skinBidAmt(fObj.BidFrame.BidAmount)
+				skinItemList(fObj.ItemList)
+				if self.modBtns then
+					self:skinStdButton{obj=fObj.BackButton, fType=ftype}
+					self:skinStdButton{obj=fObj.BuyoutFrame.BuyoutButton, fType=ftype, sechk=true}
+					self:skinStdButton{obj=fObj.BidFrame.BidButton, fType=ftype, sechk=true}
+				end
+
+				self:Unhook(fObj, "OnShow")
+			end)
+
+			local function skinPriceInp(frame)
+				aObj:skinObject("editbox", {obj=frame.CopperBox, fType=ftype, ofs=0})
+				aObj:skinObject("editbox", {obj=frame.SilverBox, fType=ftype, ofs=0})
+				aObj:skinObject("editbox", {obj=frame.GoldBox, fType=ftype, ofs=0})
+			end
+			local function skinSellFrame(frame)
+				aObj:removeNineSlice(frame.NineSlice)
+				frame.Background:SetTexture(nil)
+				aObj:keepFontStrings(frame)
+				aObj:removeNineSlice(frame.ItemDisplay.NineSlice)
+				aObj:removeRegions(frame.ItemDisplay, {3})
+				aObj:skinObject("editbox", {obj=frame.QuantityInput.InputBox, fType=ftype, ofs=0})
+				skinPriceInp(frame.PriceInput.MoneyInputFrame)
+				aObj:skinObject("ddbutton", {obj=frame.Duration.Dropdown, fType=ftype})
+				if aObj.modBtns then
+					aObj:skinStdButton{obj=frame.QuantityInput.MaxButton, fType=ftype, sechk=true}
+					aObj:skinStdButton{obj=frame.PostButton, fType=ftype, sechk=true}
+				end
+				if aObj.modBtnBs then
+					aObj:addButtonBorder{obj=frame.ItemDisplay.ItemButton, ftype=ftype, gibt=true, ofs=0}
+				end
+			end
+			self:SecureHookScript(this.ItemSellFrame, "OnShow", function(fObj)
+				skinSellFrame(fObj)
+				if self.modChkBtns then
+					self:skinCheckButton{obj=fObj.BuyoutModeCheckButton}
+				end
+				skinPriceInp(fObj.SecondaryPriceInput.MoneyInputFrame)
+
+				self:Unhook(fObj, "OnShow")
+			end)
+
+			self:SecureHookScript(this.ItemSellList, "OnShow", function(fObj)
+				skinItemList(fObj)
+
+				self:Unhook(fObj, "OnShow")
+			end)
+
+			self:SecureHookScript(this.CommoditiesSellFrame, "OnShow", function(fObj)
+				skinSellFrame(fObj)
+
+				self:Unhook(fObj, "OnShow")
+			end)
+
+			self:SecureHookScript(this.CommoditiesSellList, "OnShow", function(fObj)
+				skinItemList(fObj)
+
+				self:Unhook(fObj, "OnShow")
+			end)
+
+			self:SecureHookScript(this.WoWTokenSellFrame, "OnShow", function(fObj)
+				self:removeNineSlice(fObj.ItemDisplay.NineSlice)
+				self:removeRegions(fObj.ItemDisplay, {3})
+				self:removeNineSlice(fObj.DummyItemList.NineSlice)
+				fObj.DummyItemList.Background:SetTexture(nil)
+				fObj.DummyItemList.DummyScrollBar:DisableDrawLayer("BACKGROUND")
+				fObj.DummyItemList.DummyScrollBar.Background:DisableDrawLayer("ARTWORK")
+				if self.modBtns then
+					self:skinStdButton{obj=fObj.PostButton, fType=ftype, sechk=true}
+				end
+
+				self:Unhook(fObj, "OnShow")
+			end)
+
+			self:SecureHookScript(this.AuctionsFrame, "OnShow", function(fObj)
+				-- Top Tabs
+				self:skinObject("tabs", {obj=fObj, tabs=fObj.Tabs, fType=ftype, lod=self.isTT and true, upwards=true, offsets={x1=4, y1=-8, x2=-4,  y2=-1}, track=false})
+				if self.isTT then
+					self:SecureHook(fObj, "SetDisplayMode", function(frame, displayMode)
+						for i, tab in _G.pairs(frame.Tabs) do
+							if i == displayMode then
+								self:setActiveTab(tab.sf)
+							else
+								self:setInactiveTab(tab.sf)
+							end
+						end
+					end)
+				end
+				skinBidAmt(fObj.BidFrame.BidAmount)
+				self:removeInset(fObj.SummaryList)
+				self:removeNineSlice(fObj.SummaryList.NineSlice)
+				fObj.SummaryList.Background:SetTexture(nil)
+				self:skinObject("scrollbar", {obj=fObj.SummaryList.ScrollBar, fType=ftype})
+				self:removeNineSlice(fObj.ItemDisplay.NineSlice)
+				self:removeRegions(fObj.ItemDisplay, {3})
+				skinItemList(fObj.AllAuctionsList)
+				skinItemList(fObj.BidsList)
+				skinItemList(fObj.ItemList)
+				skinItemList(fObj.CommoditiesList)
+				self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, fb=true, x1=-5, y1=-28, x2=0, y2=-25})
+				-- N.B. workaround for BidsTab having 'useParentLevel' attribute set to true
+				_G.RaiseFrameLevelByTwo(fObj)
+				_G.LowerFrameLevel(fObj.sf)
+				if self.modBtns then
+					self:skinStdButton{obj=fObj.CancelAuctionButton, fType=ftype, sechk=true}
+					self:skinStdButton{obj=fObj.BuyoutFrame.BuyoutButton, fType=ftype, sechk=true}
+					self:skinStdButton{obj=fObj.BidFrame.BidButton, fType=ftype, sechk=true}
+				end
+
+				self:Unhook(fObj, "OnShow")
+			end)
+
+			self:SecureHookScript(this.BuyDialog, "OnShow", function(fObj)
+				self:skinObject("frame", {obj=fObj.Border, fType=ftype, kfs=true, ofs=-10})
+				if self.modBtns then
+					self:skinStdButton{obj=fObj.BuyNowButton, fType=ftype, sechk=true}
+					self:skinStdButton{obj=fObj.CancelButton, fType=ftype, sechk=true}
+				end
+
+				self:Unhook(fObj, "OnShow")
+			end)
+
+			self:Unhook(this, "OnShow")
+		end)
+		self:checkShown(_G.AuctionHouseFrame)
+
+	end
+
+end
 aObj.blizzFrames[ftype].GossipFrame = function(self)
 	if not self.prdb.GossipFrame or self.initialized.GossipFrame then return end
 	self.initialized.GossipFrame = true
@@ -11,6 +299,7 @@ aObj.blizzFrames[ftype].GossipFrame = function(self)
 	local skinGossip = _G.nop
 	if not (self:isAddonEnabled("Quester")
 	and _G.QuesterDB.gossipColor)
+	and not self.isMnlnPTR
 	then
 		function skinGossip(...)
 			local _, element, elementData
