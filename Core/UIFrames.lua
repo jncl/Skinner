@@ -2786,7 +2786,6 @@ aObj.blizzFrames[ftype].Settings = function(self)
 			this.tabsGroup:RegisterCallback(_G.ButtonGroupBaseMixin.Event.Selected, setTabState, aObj)
 		end
 		self:skinObject("editbox", {obj=this.SearchBox, fType=ftype, si=true})
-
 		self:skinObject("scrollbar", {obj=this.CategoryList.ScrollBar, fType=ftype})
 		local function skinCategory(...)
 			local _, element, new
@@ -2818,7 +2817,6 @@ aObj.blizzFrames[ftype].Settings = function(self)
 		end
 		_G.ScrollUtil.AddAcquiredFrameCallback(this.CategoryList.ScrollBox, skinCategory, aObj, true)
 		self:skinObject("frame", {obj=this.CategoryList, fType=ftype, fb=true, ofs=4, y1=12, y2=-7})
-
 		self:getRegion(this.Container.SettingsList.Header, 2):SetTexture(nil)
 		self:skinObject("scrollbar", {obj=this.Container.SettingsList.ScrollBar, fType=ftype})
 		local function skinCommonElements(element)
@@ -2942,6 +2940,14 @@ aObj.blizzFrames[ftype].Settings = function(self)
 			self:skinStdButton{obj=this.Container.SettingsList.Header.DefaultsButton, fType=ftype}
 			self:skinStdButton{obj=this.CloseButton, fType=ftype}
 			self:skinStdButton{obj=this.ApplyButton, fType=ftype, sechk=true}
+		end
+
+		if self.isMnln then
+			self:SecureHookScript(this.QuestTextPreview, "OnShow", function(fObj)
+				self:skinObject("frame", {obj=fObj, fType=ftype})
+
+				self:Unhook(fObj, "OnShow")
+			end)
 		end
 
 		self:Unhook(this, "OnShow")
