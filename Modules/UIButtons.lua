@@ -320,7 +320,7 @@ local function __skinCloseButton(opts)
 		opts.obj:SetPushedTextOffset(-1, -1)
 	end
 
-	if aObj.isRtl then
+	if aObj.isMnln then
 		text = aObj:getLastRegion(opts.obj)
 		text:SetDrawLayer("OVERLAY")
 		aObj:moveObject{obj=text, x=-1, y=-1}
@@ -384,7 +384,7 @@ local function __skinExpandButton(opts)
 	if not opts.as then
 		aObj:skinObject("button", {obj=opts.obj, fType=opts.ftype, sap=opts.sap, bd=6, ofs=opts.ofs, clr=opts.clr})
 		if not opts.noHook then
-			if aObj.isRtl then
+			if aObj.isMnln then
 				nTex = opts.obj:GetNormalTexture()
 				module:SecureHook(nTex, "SetAtlas", function(_, tObj)
 					module:checkTex{obj=opts.obj, nTex=tObj}
@@ -761,7 +761,7 @@ local function __addButtonBorder(opts)
 	or opts.libt
 	then -- Item Buttons & Large Item Buttons
 		-- N.B. leave subicon/SubIconTexture below .sbb (Classic ERA Engraving)
-		if aObj.isRtl
+		if aObj.isMnln
 		and opts.obj.IconBorder -- NB: Delves Ability button's DON'T have an IconBorder
 		then
 			aObj:clrButtonFromBorder(opts.obj)
@@ -1169,7 +1169,7 @@ function module:OnEnable()
 
 	if aObj.modBtnBs then
 		-- hook these to colour container item borders (inc. Bags, Bank, GuildBank, ReagentBank, Professions etc)
-		if aObj.isRtl then
+		if aObj.isMnln then
 			local function setItemButtonQuality(button, quality, itemIDOrLink)
 				-- aObj:Debug("SetItemButtonQuality: [%s, %s, %s, %s, %s]", button, quality, itemIDOrLink, button.IconBorder, button.sbb)
 				-- aObj:Debug("SIBQ: [%s, %s]", button.IconBorder:IsShown(), button.IconOverlay:IsShown())

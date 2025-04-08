@@ -101,7 +101,7 @@ aObj.SetupOptions = function(self)
 	local function reskinIOFBackdrop()
 		-- show changes by reskinning the Interface Options Frame with the new settings
 		aObj:setupBackdrop()
-		if not aObj.isRtl then
+		if not aObj.isMnln then
 			_G.InterfaceOptionsFrame.sf:SetBackdrop(aObj.backdrop)
 			_G.InterfaceOptionsFrame.sf:SetBackdropColor(aObj.bClr:GetRGBA())
 			_G.InterfaceOptionsFrame.sf:SetBackdropBorderColor(aObj.bbClr:GetRGBA())
@@ -462,7 +462,7 @@ aObj.SetupOptions = function(self)
 			set = function(info, r, g, b, a)
 				local c
 				if info[#info]:find("ClassClr") then
-					if self.isRtl then
+					if self.isMnln then
 						c = {_G.C_ClassColor.GetClassColor(self.uCls):GetRGBA()}
 					else
 						c = {_G.GetClassColorObj(self.uCls):GetRGBA()}
@@ -726,7 +726,7 @@ aObj.SetupOptions = function(self)
 				if info[#info] == "GossipFrame" then
 					db.QuestFrame = value
 					db.QuestInfo = value
-					if not self.isRtl then
+					if not self.isMnln then
 						db.QuestLog = value
 					else
 						db.QuestMap = value
@@ -734,7 +734,7 @@ aObj.SetupOptions = function(self)
 				elseif info[#info] == "QuestFrame" then
 					db.GossipFrame = value
 					db.QuestInfo = value
-					if not self.isRtl then
+					if not self.isMnln then
 						db.QuestLog = value
 					else
 						db.QuestMap = value
@@ -742,7 +742,7 @@ aObj.SetupOptions = function(self)
 				elseif info[#info] == "QuestInfo" then
 					db.GossipFrame = value
 					db.QuestFrame = value
-					if not self.isRtl then
+					if not self.isMnln then
 						db.QuestLog = value
 					else
 						db.QuestMap = value
@@ -894,7 +894,7 @@ aObj.SetupOptions = function(self)
 							name = self.L["Skin Frames"],
 							desc = _G.strjoin(" ", self.L["Toggle the skin of the"], self.L["Container Frames"]),
 						},
-						itmbtns = self.isRtl and {
+						itmbtns = self.isMnln and {
 							type = "toggle",
 							order = 2,
 							name = _G.strjoin(" ", self.L["Skin"], self.L["Item Buttons"]),
@@ -978,7 +978,7 @@ aObj.SetupOptions = function(self)
 					end
 				-- treat GossipFrame, QuestFrame, QuestInfo & QuestLog/QuestMap as one
 				-- as they all change the quest text colours
-				elseif info[#info] == not self.isRtl and "QuestLog" or "QuestMap" then
+				elseif info[#info] == not self.isMnln and "QuestLog" or "QuestMap" then
 					db.GossipFrame = value
 					db.QuestFrame = value
 					db.QuestInfo = value
@@ -1313,10 +1313,10 @@ aObj.SetupOptions = function(self)
 		["Archaeology UI"]    = not self.isClscERA and true or nil,
 		["Buffs"]             = {desc = "Buffs Buttons"},
 		["Character Frames"]  = true,
-		["Collections"]       = self.isRtl and {pref = "Warband"} or self.isClsc and {suff = "Journal"} or nil,
+		["Collections"]       = self.isMnln and {pref = "Warband"} or self.isClsc and {suff = "Journal"} or nil,
 		["Communities"]       = {pref = "Guild &"},
 		["Dress Up Frame"]    = true,
-		["Encounter Journal"] = self.isRtl and {desc = "Adventure Guide"} or self.isClsc and {desc = "Dungeon Journal"} or nil,
+		["Encounter Journal"] = self.isMnln and {desc = "Adventure Guide"} or self.isClsc and {desc = "Dungeon Journal"} or nil,
 		["Equipment Flyout"]  = not self.isClscERA and true or nil,
 		["Friends Frame"]     = {desc = "Social Frame"},
 		["Inspect UI"]        = true,
@@ -1416,7 +1416,7 @@ aObj.SetupOptions = function(self)
 	end
 	local function postLoadFunc()
 		local method
-		if not aObj.isRtl then
+		if not aObj.isMnln then
 			method = "default"
 		else
 			method = "OnDefault"
@@ -1456,7 +1456,7 @@ aObj.SetupOptions = function(self)
 	self:RegisterChatCommand(self.L[aName], chatCommand)
 	self:RegisterChatCommand(self.L["Skin"], chatCommand)
 
-	if not self.isRtl then
+	if not self.isMnln then
 		local DBObj = _G.LibStub:GetLibrary("LibDataBroker-1.1", true):NewDataObject(aName, {
 			type = "launcher",
 			icon = aObj.tFDIDs.mpw01,

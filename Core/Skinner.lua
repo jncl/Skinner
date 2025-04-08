@@ -44,7 +44,7 @@ function aObj:OnInitialize()
 	local dflts = self.db.defaults.profile
 
 	-- disable functions/modules which cause ADDON_ACTION_BLOCKED/ADDON_ACTION_FORBIDDEN errors (Dragonflight onwards changes)
-	if self.isRtl then
+	if self.isMnln then
 		self.prdb.MainMenuBar.actbtns = false
 		self.prdb.Nameplates          = false
 		self:DisableModule("UnitFrames")
@@ -72,10 +72,10 @@ function aObj:OnInitialize()
 	self:checkAndRun("SetupOptions", "opt")
 
 	-- setup Retail/Classic Options as required
-	if self.isRtl then
-		self:SetupRetail_NPCFramesOptions()
-		self:SetupRetail_PlayerFramesOptions()
-		self:SetupRetail_UIFramesOptions()
+	if self.isMnln then
+		self:SetupMainline_NPCFramesOptions()
+		self:SetupMainline_PlayerFramesOptions()
+		self:SetupMainline_UIFramesOptions()
 	else
 		self:SetupClassic_NPCFramesOptions()
 		self:SetupClassic_PlayerFramesOptions()
@@ -238,11 +238,11 @@ function aObj:OnInitialize()
 	-- table to hold StatusBars that have been glazed, with weak keys
 	self.sbGlazed = _G.setmetatable({}, {__mode = "k"})
 
-	if self.isRtl then
+	if self.isMnln then
 		-- Load Retail Support, if required (done here for ElvUI/TukUI)
-		self:checkAndRun("SetupRetail_NPCFrames", "opt", nil, true)
-		self:checkAndRun("SetupRetail_PlayerFrames", "opt", nil, true)
-		self:checkAndRun("SetupRetail_UIFrames", "opt", nil, true)
+		self:checkAndRun("SetupMainline_NPCFrames", "opt", nil, true)
+		self:checkAndRun("SetupMainline_PlayerFrames", "opt", nil, true)
+		self:checkAndRun("SetupMainline_UIFrames", "opt", nil, true)
 	else
 		-- Load Classic Support, if required (done here for ElvUI/TukUI)
 		self:checkAndRun("SetupClassic", "opt", nil, true)
@@ -365,7 +365,7 @@ function aObj:OnEnable()
 		self:scanChildren{obj=_G.UIParent, cbstr="UIParent_GetChildren"}
 	end)
 
-	if self.isRtl then
+	if self.isMnln then
 		-- hook this (used by Blizzard_OrderHallTalents, PVPMatchResults, PVPMatchScoreboard & Blizzard_WarboardUI)
 		-- N.B. use SecureHook as RawHook causes taint and INTERFACE_ACTION_BLOCKED message to be displayed
 		self:SecureHook("UIPanelCloseButton_SetBorderAtlas", function(this, _, _, _, _)

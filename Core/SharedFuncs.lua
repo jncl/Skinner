@@ -56,26 +56,26 @@ function aObj:checkWoWVersion()
 	self.isClsc       = agentUID == "wow_classic" and true
 	self.isClscERAPTR = agentUID == "wow_classic_era_ptr" and true
 	self.isClscERA    = agentUID == "wow_classic_era" and true
-	self.isRtlBeta    = agentUID == "wow_beta" and true
-	self.isRtlPTR     = agentUID == "wow_ptr" and true
-	self.isRtlPTRX    = agentUID == "wow_ptr_x" and true
-	self.isRtl        = agentUID == "wow" and true
+	self.isMnlnBeta    = agentUID == "wow_beta" and true
+	self.isMnlnPTR     = agentUID == "wow_ptr" and true
+	self.isMnlnPTRX    = agentUID == "wow_ptr_x" and true
+	self.isMnln        = agentUID == "wow" and true
 	--@debug@
-	self:Debug("checkVersion#2: [%s, %s, %s, %s, %s, %s, %s, %s, %s]", self.isClscBeta, self.isClscPTR, self.isClsc, self.isClscERAPTR, self.isClscERA, self.isRtlBeta, self.isRtlPTR, self.isRtlPTRX, self.isRtl)
+	self:Debug("checkVersion#2: [%s, %s, %s, %s, %s, %s, %s, %s, %s]", self.isClscBeta, self.isClscPTR, self.isClsc, self.isClscERAPTR, self.isClscERA, self.isMnlnBeta, self.isMnlnPTR, self.isMnlnPTRX, self.isMnln)
 	--@end-debug@
 
 	-- handle PTR and Beta versions
 	self.isClscPTR    = self.isClscPTR or self.isClscBeta
 	self.isClsc       = self.isClsc or self.isClscPTR
 	self.isClscERA    = self.isClscERA  or self.isClscERAPTR
-	self.isRtlPTR     = self.isRtlPTR or self.isRtlBeta
-	self.isRtl        = self.isRtl or self.isRtlPTR or self.isRtlPTRX
+	self.isMnlnPTR     = self.isMnlnPTR or self.isMnlnBeta
+	self.isMnln        = self.isMnln or self.isMnlnPTR or self.isMnlnPTRX
 
 	self.isPatch = not compareBuildInfo(agentUID, "curr", true)
 	if self.isPatch then
-		if self.isRtl then
-			self.isRtlPTR = compareBuildInfo(agentUID, "wow_ptr",false)
-			self.isRtlPTRX = compareBuildInfo(agentUID, "wow_ptr_x", false)
+		if self.isMnln then
+			self.isMnlnPTR = compareBuildInfo(agentUID, "wow_ptr",false)
+			self.isMnlnPTRX = compareBuildInfo(agentUID, "wow_ptr_x", false)
 		elseif self.isClsc then
 			self.isClscPTR = compareBuildInfo(agentUID, "wow_classic_ptr", false)
 		elseif self.isClscERA then
@@ -84,15 +84,17 @@ function aObj:checkWoWVersion()
 	end
 
 	--@debug@
-	self:Debug("checkVersion#3: [%s, %s, %s, %s, %s, %s, %s, %s, %s, %s]", self.isClscBeta, self.isClscPTR, self.isClsc, self.isClscERAPTR, self.isClscERA, self.isRtlBeta, self.isRtlPTR, self.isRtlPTRX, self.isRtl, self.isPatch)
+	self:Debug("checkVersion#3: [%s, %s, %s, %s, %s, %s, %s, %s, %s, %s]", self.isClscBeta, self.isClscPTR, self.isClsc, self.isClscERAPTR, self.isClscERA, self.isMnlnBeta, self.isMnlnPTR, self.isMnlnPTRX, self.isMnln, self.isPatch)
 	--@end-debug@
 
 	--@debug@
 	self:Printf("%s, %d, %d, %s, %d, %s, %d, %s", buildInfo[agentUID][1], buildInfo[agentUID][2], self.tocVer, buildInfo.curr[1], buildInfo.curr[2], buildInfo.curr[3], buildInfo.curr[4] , agentUID)
-	local vType = _G.strjoin(" ", agentUID, self.isPatch and "(Patched)" or "")
 	_G.DEFAULT_CHAT_FRAME:AddMessage(_G.strjoin(" ", aName, ": Game version is:", buildInfo[agentUID][3]), 0.75, 0.5, 0.25, nil, true)
-	-- _G.DEFAULT_CHAT_FRAME:AddMessage(_G.strjoin(" ", aName, ": Game version is:", vType), 0.75, 0.5, 0.25, nil, true)
 	--@end-debug@
+
+	-- --[===[@non-debug@
+	-- self.isRtl = self.isMnln
+	-- --@end-non-debug@]===]
 
 end
 
@@ -125,6 +127,23 @@ function aObj.createAddOn(_, makeGlobal)
 	aObj.callbacks = _G.LibStub:GetLibrary("CallbackHandler-1.0", true):New(aObj)
 
 	aObj:checkWoWVersion()
+
+	-- metatable added to track AddOn skin usage of renamed variable
+	local mt = {}
+	mt.__index = function(table, key)
+		if key == "isRtl" then
+			--@debug@
+			_G.assert(false, "Using old variable (isRtl)\n" .. _G.debugstack(2, 3, 2))
+			--@end-debug@
+			return _G.rawget(table, "isMnln")
+		else
+			return _G.rawget(table, key)
+		end
+	end
+	-- protect the metatable
+	mt.__metatable = true
+
+	_G.setmetatable(aObj, mt)
 
 end
 

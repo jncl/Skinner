@@ -85,7 +85,7 @@ aObj.addonsToSkin.Baganator = function(self) -- v 627
 		frame:DisableDrawLayer("BACKGROUND")
 		frame:DisableDrawLayer("BORDER")
 		frame:DisableDrawLayer("OVERLAY")
-		if not aObj.isRtl then
+		if not aObj.isMnln then
 			frame.TitleText:SetDrawLayer("ARTWORK")
 		end
 		sBox = frame.SearchBox or frame.searchBox or frame.SearchWidget and frame.SearchWidget.SearchBox
@@ -176,7 +176,7 @@ aObj.addonsToSkin.Baganator = function(self) -- v 627
 			end)
 		end
 
-		if aObj.isRtl then
+		if aObj.isMnln then
 			aObj:SecureHookScript(frame.Warband, "OnShow", function(this)
 				for _, btn in _G.pairs(this.LiveButtons) do
 					if btn:IsObjectType("CheckButton")
@@ -390,7 +390,7 @@ aObj.addonsToSkin.Baganator = function(self) -- v 627
 			self:skinObject("frame", {obj=frame, kfs=true, fb=true, ofs=-2, y1=23})
 		end
 		self:skinObject("tabs", {obj=this, tabs=this.Tabs, ignoreSize=true, lod=self.isTT and true, upwards=true, offsets={x1=8, y1=-4, x2=-8, y2=-2}})
-		self:skinObject("frame", {obj=this, kfs=true, ri=true, cb=true, ofs=self.isRTl and 0 or 1, y1=self.isRtl and -1 or 2})
+		self:skinObject("frame", {obj=this, kfs=true, ri=true, cb=true, ofs=self.isMnln and 0 or 1, y1=self.isMnln and -1 or 2})
 	end
 	_G.Baganator.CallbackRegistry:RegisterCallback("ShowCustomise", function()
 		_G.C_Timer.After(0.05, function()

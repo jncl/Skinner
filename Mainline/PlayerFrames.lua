@@ -4,7 +4,7 @@ local _, aObj = ...
 
 local _G = _G
 
-aObj.SetupRetail_PlayerFrames = function()
+aObj.SetupMainline_PlayerFrames = function()
 	local ftype = "p"
 
 	-- N.B. ArenaUI managed in UnitFrames module
@@ -221,7 +221,9 @@ aObj.SetupRetail_PlayerFrames = function()
 			cbFrame.Border:SetTexture(nil)
 			cbFrame.Flash:SetTexture(nil)
 			self:changeShield(cbFrame.BorderShield, cbFrame.Icon)
-			self:skinObject("statusbar", {obj=cbFrame, bg=cbFrame.Background, hookFunc=true})
+			if self.prdb.CastingBar.glaze then
+				self:skinObject("statusbar", {obj=cbFrame, bg=cbFrame.Background, hookFunc=true})
+			end
 			cbFrame.Background:SetAllPoints(cbFrame)
 		end
 
@@ -1858,7 +1860,7 @@ aObj.SetupRetail_PlayerFrames = function()
 					self:skinObject("frame", {obj=frame.CraftingOutputLog, fType=ftype, kfs=true})
 					if self.modBtns then
 						self:skinStdButton{obj=frame.OrderInfo.BackButton, fType=ftype}
-						self:skinStdButton{obj=frame.OrderInfo.StartOrderButton, fType=ftypeb, sechk=true}
+						self:skinStdButton{obj=frame.OrderInfo.StartOrderButton, fType=ftype, sechk=true}
 						self:skinStdButton{obj=frame.OrderInfo.DeclineOrderButton, fType=ftype}
 						self:skinStdButton{obj=frame.OrderInfo.ReleaseOrderButton, fType=ftype}
 						self:skinStdButton{obj=frame.CreateButton, fType=ftype, schk=true, sechk=true}
@@ -2345,7 +2347,7 @@ aObj.SetupRetail_PlayerFrames = function()
 
 end
 
-aObj.SetupRetail_PlayerFramesOptions = function(self)
+aObj.SetupMainline_PlayerFramesOptions = function(self)
 
 	local optTab = {
 		["Artifact UI"]          = true,

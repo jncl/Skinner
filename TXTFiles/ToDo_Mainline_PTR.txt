@@ -1,0 +1,34 @@
+ ToDo_retail_PTR
+±±±±±±±±±±±±±±±
+
+	√ is Alt+v		- indicates completed
+	≈ is Alt+x		- indicates partially completed or dry-coded
+	x				- indicates nothing to change
+	¶ is Alt+7		- indicates localisation changes required
+
+	Retail_PTR (TWW 11.0.7)
+		- Added
+≈			- TOC changes
+≈			- ColorManager function to get ItemQuality colours etc
+x			- Blizzard_CooldownViewer
+				- EssentialCooldownViewer
+				- UtilityCooldownViewer
+				- BuffIconCooldownViewer
+				- BuffBarCooldownViewer
+		- Updated
+			- Blizzard_Wardrobe
+			- EditModeManager
+≈			- Blizzard_MonthlyActivities
+			- EventToastManager
+x			- EditModeManager
+			- Blizzard_PerksProgram
+			- Blizzard_PerksProgramElements
+			- StaticPopup
+				- Accessiblility ("QuestTextContrast")
+≈					- GossipFrame ("questTextContrast")
+x					- ItemTextFrame ("questTextContrast")
+					- QuestFrame ("questTextContrast")
+					- QuestInfo ("questTextContrast")
+			- Blizzard_UIWidgetTemplateBase
+			- EclipseBarFrame
+		- Deleted

@@ -4,7 +4,7 @@ local _, aObj = ...
 
 local _G = _G
 
-aObj.SetupRetail_UIFrames = function()
+aObj.SetupMainline_UIFrames = function()
 	local ftype = "u"
 
 	-- The following functions are used by the GarrisonUI & OrderHallUI
@@ -1239,6 +1239,12 @@ aObj.SetupRetail_UIFrames = function()
 
 			self:Unhook(fObj, "OnShow")
 		end)
+
+		-- Blizzard_CooldownViewer
+			-- EssentialCooldownViewer
+			-- UtilityCooldownViewer
+			-- BuffIconCooldownViewer
+			-- BuffBarCooldownViewer
 
 	end
 
@@ -3134,7 +3140,7 @@ aObj.SetupRetail_UIFrames = function()
 					self:Unhook(frame, "OnShow")
 				end)
 				self:checkShown(fObj.CampaignOverview)
-				self:SecureHook(_G.QuestMapFrame.QuestsFrame.CampaignOverview, "UpdateCampaignLoreText", function(fObj, _, _)
+				self:SecureHook(fObj.CampaignOverview, "UpdateCampaignLoreText", function(_, _, _)
 					for tex in fObj.texturePool:EnumerateActive() do
 						tex:SetTexture(nil) -- divider lines
 					end
@@ -3907,7 +3913,7 @@ aObj.SetupRetail_UIFrames = function()
 
 end
 
-aObj.SetupRetail_UIFramesOptions = function(self)
+aObj.SetupMainline_UIFramesOptions = function(self)
 
 	local optTab = {
 		["Adventure Map"]                = true,

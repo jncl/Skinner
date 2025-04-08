@@ -14,7 +14,7 @@ local function skinSkillet(self)
 		self:skinObject("editbox", {obj=_G.SkilletSearchBox, ofs=1})
 		self:skinObject("slider", {obj=_G.SkilletSkillList.ScrollBar})
 		self:skinObject("frame", {obj=_G.SkilletSkillListParent, fb=true})
-		if self.isRtl then
+		if self.isMnln then
 			-- hook this to skin SkillBars
 			self:SecureHook(this, "UpdateTradeSkillWindow", function(this)
 				local bar
@@ -39,7 +39,7 @@ local function skinSkillet(self)
 			_G.SkilletShowOptionsButton:SetSize(28, 28)
 			_G.SkilletShowOptionsButton:GetHighlightTexture():SetTexture([[Interface\Buttons\UI-Panel-MinimizeButton-Highlight]])
 			self:moveObject{obj=_G.SkilletShowOptionsButton, x=0, y=-6}
-			if self.isRtl then
+			if self.isMnln then
 				self:skinStdButton{obj=_G.SkilletPluginButton}
 			end
 			self:skinStdButton{obj=_G.SkilletIgnoredMatsButton}
@@ -82,7 +82,7 @@ local function skinSkillet(self)
 		end
 		if self.modBtnBs then
 			self:addButtonBorder{obj=_G.SkilletRecipeGroupOperations, ofs=0, clr="gold"}
-			if self.isRtl then
+			if self.isMnln then
 				self:addButtonBorder{obj=_G.SkilletFilterOperations, ofs=0, clr="gold"}
 			end
 			self:addButtonBorder{obj=_G.SkilletSearchClear, ofs=-4, x1=6, y2=7, clr="grey"}
@@ -111,7 +111,7 @@ local function skinSkillet(self)
 		end
 		if self.modChkBtns then
 			self:skinCheckButton{obj=_G.SkilletShowQueuesFromAllAlts}
-			if self.isRtl then
+			if self.isMnln then
 				self:skinCheckButton{obj=_G.SkilletShowQueuesFromSameFaction}
 				self:skinCheckButton{obj=_G.SkilletShowQueuesIncludeGuild}
 			end

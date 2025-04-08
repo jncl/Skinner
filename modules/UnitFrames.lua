@@ -660,7 +660,7 @@ aObj.blizzLoDFrames[ftype].ArenaUI = function(_)
 				aObj:moveObject{obj=_G[fName], x=-17} -- align under ArenaEnemy Health/Mana bars
 			end
 		end
-		if not aObj.isRtl then
+		if not aObj.isMnln then
 			for i = 1, _G.MAX_ARENA_ENEMIES do
 				skinArenaFrame("ArenaPrepFrame" .. i)
 				skinArenaFrame("ArenaEnemyFrame" .. i)

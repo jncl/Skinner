@@ -16,7 +16,7 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 258
 		if _G.Auctionator.State.SplashScreenRef then
 			aObj:SecureHookScript(_G.Auctionator.State.SplashScreenRef, "OnShow", function(this)
 				aObj:removeNineSlice(this.Border)
-				if aObj.isRtl then
+				if aObj.isMnln then
 					this.Bg:SetTexture(nil)
 				else
 					aObj:removeInset(aObj:getChild(this.Inset, 1))
@@ -34,12 +34,12 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 258
 
 		if _G.Auctionator.State.TabFrameRef then
 			aObj:SecureHookScript(_G.Auctionator.State.TabFrameRef, "OnShow", function(this)
-				aObj:skinObject("tabs", {obj=this, tabs=this.Tabs, track=not aObj.isRtl and false})
+				aObj:skinObject("tabs", {obj=this, tabs=this.Tabs, track=not aObj.isMnln and false})
 				if aObj.isTT then
 					for _, tab in _G.ipairs(this.Tabs) do
 						aObj:setInactiveTab(tab.sf)
 					end
-					if not aObj.isRtl then
+					if not aObj.isMnln then
 						aObj:SecureHook("AuctionFrameTab_OnClick", function(tabButton, _)
 						    for _, tab in _G.ipairs(this.Tabs) do
 								aObj:setInactiveTab(tab.sf)
@@ -79,19 +79,19 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 258
 			aObj:removeInset(this.ListsContainer.Inset)
 			aObj:skinObject("scrollbar", {obj=this.ListsContainer.ScrollBar})
 			aObj:removeInset(this.RecentsContainer.Inset)
-			if not aObj.isRtl then
+			if not aObj.isMnln then
 				aObj:getChild(this.RecentsContainer.Inset, 1):DisableDrawLayer("BORDER")
 			end
 			aObj:skinObject("scrollbar", {obj=this.RecentsContainer.ScrollBar})
 			aObj:skinObject("frame", {obj=this.ListsContainer, kfs=true, fb=true, x1=0, x2=1})
-			if not aObj.isRtl then
+			if not aObj.isMnln then
 				aObj:getChild(this.ListsContainer.Inset, 1):DisableDrawLayer("BORDER")
 			end
 			aObj:removeInset(this.ShoppingResultsInset)
 			aObj:skinObject("scrollbar", {obj=this.ResultsListing.ScrollArea.ScrollBar})
 			aObj:skinObject("frame", {obj=this.RecentsContainer, kfs=true, fb=true, x2=1})
 			aObj:skinObject("tabs", {obj=this.ContainerTabs, tabs=this.ContainerTabs.Tabs, lod=aObj.isTT and true, offsets={y1=-6, y2=-2}})
-			if not aObj.isRtl then
+			if not aObj.isMnln then
 				aObj:removeInset(aObj:getChild(this.ShoppingResultsInset, 1))
 			else
 				aObj:removeInset(this.ShoppingResultsInset)
@@ -146,7 +146,7 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 258
 		if asFrame.exportDialog then
 			aObj:SecureHookScript(asFrame.exportDialog, "OnShow", function(this)
 				aObj:removeNineSlice(this.Border)
-				if not aObj.isRtl then
+				if not aObj.isMnln then
 					aObj:removeInset(aObj:getChild(this.Inset, 1))
 				end
 				aObj:skinObject("scrollbar", {obj=this.ScrollBar, rpTex="artwork"})
@@ -173,7 +173,7 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 258
 			end)
 			aObj:SecureHookScript(asFrame.exportDialog.copyTextDialog, "OnShow", function(this)
 				aObj:removeNineSlice(this.Border)
-				if not aObj.isRtl then
+				if not aObj.isMnln then
 					aObj:removeInset(aObj:getChild(this.Inset, 1))
 				end
 				aObj:skinObject("scrollbar", {obj=this.ScrollBar})
@@ -188,7 +188,7 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 258
 		if asFrame.importDialog then
 			aObj:SecureHookScript(asFrame.importDialog, "OnShow", function(this)
 				aObj:removeNineSlice(this.Border)
-				if not aObj.isRtl then
+				if not aObj.isMnln then
 					aObj:removeInset(aObj:getChild(this.Inset, 1))
 				end
 				aObj:skinObject("scrollbar", {obj=this.ScrollBar, rpTex="artwork"})
@@ -204,7 +204,7 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 258
 		if asFrame.exportCSVDialog then
 			aObj:SecureHookScript(asFrame.exportCSVDialog, "OnShow", function(this)
 				aObj:removeNineSlice(this.Border)
-				if not aObj.isRtl then
+				if not aObj.isMnln then
 					aObj:removeInset(aObj:getChild(this.Inset, 1))
 				end
 				aObj:skinObject("scrollbar", {obj=this.ScrollBar})
@@ -219,7 +219,7 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 258
 		if asFrame.itemHistoryDialog then
 			aObj:SecureHookScript(asFrame.itemHistoryDialog, "OnShow", function(this)
 				aObj:removeNineSlice(this.Border)
-				if not aObj.isRtl then
+				if not aObj.isMnln then
 					aObj:removeInset(aObj:getChild(this.Inset, 1))
 				end
 				for _, child in _G.ipairs{this.ResultsListing.HeaderContainer:GetChildren()} do
@@ -248,7 +248,7 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 258
 			if aObj.modBtns then
 				aObj:skinStdButton{obj=frame.HistoryButton, schk=true}
 			end
-			if not aObj.isRtl then
+			if not aObj.isMnln then
 				frame.HistoryPrices.Inset.Bg:SetTexture(nil)
 				aObj:removeInset(aObj:getChild(frame.HistoryPrices.Inset, 1))
 				aObj:skinObject("scrollbar", {obj=frame.HistoryPrices.RealmHistoryResultsListing.ScrollArea.ScrollBar})
@@ -351,7 +351,7 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 258
 			aObj:SecureHook(blv, "UpdateFromExisting", function(fObj)
 				skinView(fObj)
 			end)
-			if not aObj.isRtl then
+			if not aObj.isMnln then
 				aObj:skinObject("editbox", {obj=asi.UnitPrice.MoneyInput.GoldBox, ofs=-4, y2=8})
 				aObj:skinObject("editbox", {obj=asi.UnitPrice.MoneyInput.SilverBox, ofs=-4, y2=8})
 				aObj:skinObject("editbox", {obj=asi.UnitPrice.MoneyInput.CopperBox, ofs=-4, y2=8})
@@ -492,7 +492,7 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 258
 			aObj:skinObject("editbox", {obj=this.SearchFilter, si=true})
 			self:skinObject("scrollbar", {obj=this.ResultsListing.ScrollArea.ScrollBar})
 			skinHeaders(this.ResultsListing)
-			if aObj.isRtl then
+			if aObj.isMnln then
 				local frame = aObj:getPenultimateChild(this) -- UndercutScan
 				if aObj.modBtns then
 					aObj:skinStdButton{obj=frame.StartScanButton, sechk=true}
@@ -516,7 +516,7 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 258
 		end)
 
 		aObj:SecureHookScript(_G.AuctionatorConfigFrame, "OnShow", function(this)
-			if aObj.isRtl then
+			if aObj.isMnln then
 				aObj:removeInset(this)
 			else
 				this.Bg:SetTexture(nil)
@@ -555,7 +555,7 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 258
 				if _G.Round(child:GetHeight()) == 33 then
 					aObj:skinObject("editbox", {obj=child, ofs=-4, y2=8})
 				else
-					aObj:skinObject("editbox", {obj=child, ofs=-12, y1=aObj.isRtl and 4 or 0, y2=0})
+					aObj:skinObject("editbox", {obj=child, ofs=-12, y1=aObj.isMnln and 4 or 0, y2=0})
 				end
 			elseif aObj:isDropDown(child) then
 				aObj:skinObject("dropdown", {obj=child})
@@ -586,7 +586,7 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 258
 	    "Profile",
 	    "Advanced",
 	}
-	if self.isRtl then
+	if self.isMnln then
 		self:add2Table(frameList, "Quantities")
 	end
 	for _, name in _G.pairs(frameList) do

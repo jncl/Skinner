@@ -10,7 +10,7 @@ if not aObj.isClscERA then
 		self.initialized.AchievementUI = true
 
 		local skinAchievementsObjectives, skinCategories, skinBtn, cleanButtons
-		if aObj.isRtl then
+		if aObj.isMnln then
 			function skinAchievementsObjectives()
 				local afao = _G.AchievementFrameAchievementsObjectives
 				for frame in afao.pools:EnumerateActiveByTemplate("AchievementCriteriaTemplate") do
@@ -134,7 +134,7 @@ if not aObj.isClscERA then
 				btn:DisableDrawLayer("BORDER")
 				btn:DisableDrawLayer("ARTWORK")
 				aObj:skinObject("frame", {obj=btn, fType=ftype, rns=true, fb=true, ofs=0, clr={btn:GetBackdropBorderColor()}})
-				if aObj.isRtl then
+				if aObj.isMnln then
 					if btn.HiddenDescription then
 						btn.HiddenDescription:SetTextColor(_G.HIGHLIGHT_FONT_COLOR:GetRGB())
 					end
@@ -165,7 +165,7 @@ if not aObj.isClscERA then
 					if bObj.sf then
 						bObj.sf:SetBackdropBorderColor(bObj:GetBackdropBorderColor())
 					end
-					if aObj.isRtl then
+					if aObj.isMnln then
 						if bObj.Icon.sbb then
 							bObj.Icon.sbb:SetBackdropBorderColor(bObj:GetBackdropBorderColor())
 						end
@@ -175,7 +175,7 @@ if not aObj.isClscERA then
 					if bObj.sf then
 						bObj.sf:SetBackdropBorderColor(bObj:GetBackdropBorderColor())
 					end
-					if aObj.isRtl then
+					if aObj.isMnln then
 						if bObj.Icon.sbb then
 							bObj.Icon.sbb:SetBackdropBorderColor(bObj:GetBackdropBorderColor())
 						end
@@ -206,7 +206,7 @@ if not aObj.isClscERA then
 		self:SecureHookScript(_G.AchievementFrame, "OnShow", function(this)
 			self:moveObject{obj=_G.AchievementFrameCloseButton, x=1, y=8}
 			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true, ignoreHLTex=false, regions={7, 8, 9, 10}, offsets={x1=6, x2=-2, y2=-7}})
-			if self.isRtl then
+			if self.isMnln then
 				self:skinObject("editbox", {obj=this.SearchBox, fType=ftype, si=true, y1=-4, y2=4})
 				self:moveObject{obj=this.SearchBox, y=-8}
 				self:skinObject("statusbar", {obj=this.searchProgressBar, fi=0, bg=this.searchProgressBar.bg})
@@ -221,7 +221,7 @@ if not aObj.isClscERA then
 
 			self:SecureHookScript(this.Header or _G.AchievementFrameHeader, "OnShow", function(fObj)
 				self:keepFontStrings(fObj)
-				if aObj.isRtl then
+				if aObj.isMnln then
 					self:moveObject{obj=fObj.Title, x=-60, y=-25}
 					self:moveObject{obj=fObj.Points, x=40, y=-5}
 					fObj.Shield:SetAlpha(1)
@@ -236,7 +236,7 @@ if not aObj.isClscERA then
 			self:checkShown(this.Header or _G.AchievementFrameHeader)
 
 			self:SecureHookScript(this.Categories or _G.AchievementFrameCategories, "OnShow", function(fObj)
-				if self.isRtl then
+				if self.isMnln then
 					self:skinObject("scrollbar", {obj=fObj.ScrollBar, fType=ftype})
 					local function skinElement(...)
 						local _, element, new
@@ -266,7 +266,7 @@ if not aObj.isClscERA then
 			self:checkShown(this.Categories or _G.AchievementFrameCategories)
 
 			self:SecureHookScript(_G.AchievementFrameAchievements, "OnShow", function(fObj)
-				if self.isRtl then
+				if self.isMnln then
 					fObj.Background:SetTexture(nil)
 					self:removeNineSlice(self:getChild(fObj, 3).NineSlice)
 					self:skinObject("scrollbar", {obj=fObj.ScrollBar, fType=ftype})
@@ -361,7 +361,7 @@ if not aObj.isClscERA then
 			self:checkShown(_G.AchievementFrameAchievements)
 
 			self:SecureHookScript(_G.AchievementFrameStats, "OnShow", function(fObj)
-				if self.isRtl then
+				if self.isMnln then
 					self:getChild(fObj, 1):DisableDrawLayer("BACKGROUND")
 					self:skinObject("scrollbar", {obj=fObj.ScrollBar, fType=ftype})
 					local function skinElement(...)
@@ -432,7 +432,7 @@ if not aObj.isClscERA then
 				self:moveObject{obj=_G[catName .. "StatusBarTitle"], y=-3}
 				self:moveObject{obj=_G[catName .. "StatusBarText"], y=-3}
 				skinSB(catName .. "StatusBar")
-				for i = 1, self.isRtl and 12 or 8 do
+				for i = 1, self.isMnln and 12 or 8 do
 					skinSB(catName .. "Category" .. i, true)
 				end
 
@@ -443,7 +443,7 @@ if not aObj.isClscERA then
 			self:SecureHookScript(_G.AchievementFrameComparison, "OnShow", function(fObj)
 				fObj:DisableDrawLayer("BACKGROUND")
 				fObj:DisableDrawLayer("ARTWORK")
-				if self.isRtl then
+				if self.isMnln then
 					self:removeRegions(_G.AchievementFrameComparisonHeader, {1, 2, 3})
 					_G.AchievementFrameComparisonHeader.Shield:ClearAllPoints()
 					_G.AchievementFrameComparisonHeader.Shield:SetPoint("RIGHT", _G.AchievementFrameCloseButton, "LEFT", -10, -3)
@@ -540,7 +540,7 @@ if not aObj.isClscERA then
 			end)
 			self:checkShown(_G.AchievementFrameComparison)
 
-			if self.isRtl then
+			if self.isMnln then
 				self:SecureHookScript(this.SearchPreviewContainer, "OnShow", function(fObj)
 					self:adjHeight{obj=fObj, adj=((4 * 27) + 30)}
 					for _, btn in _G.ipairs(fObj.searchPreviews) do
@@ -696,7 +696,7 @@ if not aObj.isClscERA then
 			self:Unhook(this, "OnShow")
 		end)
 
-		if self.isRtl then
+		if self.isMnln then
 			-- other adddons reparent this (e.g. DejaCharacterStats)
 			self:SecureHookScript(_G.CharacterStatsPane, "OnShow", function(this)
 				this.ClassBackground:SetTexture(nil)
@@ -810,7 +810,7 @@ if not aObj.isClscERA then
 					aObj:addButtonBorder{obj=btn, fType=ftype, ibt=true, reParent={btn.ignoreTexture}}
 					-- force quality border update
 					_G.PaperDollItemSlotButton_Update(btn)
-					if self.isRtl then
+					if self.isMnln then
 						-- RankFrame
 						aObj:changeTandC(btn.RankFrame.Texture)
 						btn.RankFrame.Texture:SetSize(20, 20)
@@ -853,7 +853,7 @@ if not aObj.isClscERA then
 
 		self:SecureHookScript(_G.ReputationFrame, "OnShow", function(this)
 			self:keepFontStrings(this)
-			if self.isRtl then
+			if self.isMnln then
 				self:skinObject("ddbutton", {obj=this.filterDropdown, fType=ftype})
 				self:skinObject("scrollbar", {obj=this.ScrollBar, fType=ftype})
 				local function skinElement(...)
@@ -935,7 +935,7 @@ if not aObj.isClscERA then
 		self:checkShown(_G.ReputationFrame)
 
 		 -- Currency Tab
-		if self.isRtl then
+		if self.isMnln then
 			self:SecureHookScript(_G.TokenFrame, "OnShow", function(this)
 				self:keepFontStrings(this)
 				self:skinObject("ddbutton", {obj=this.filterDropdown, fType=ftype})
@@ -979,9 +979,9 @@ if not aObj.isClscERA then
 
 				self:SecureHookScript(_G.TokenFramePopup, "OnShow", function(fObj)
 					fObj.Border:DisableDrawLayer("BACKGROUND")
-					self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, cb=not self.isRtl and true, ofs=-3, x1=0})
+					self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, cb=not self.isMnln and true, ofs=-3, x1=0})
 					if self.modBtns then
-						if self.isRtl then
+						if self.isMnln then
 							-- FIXME: CloseButton skinned here as it has a prefix of '$parent.', bug in XML file
 							self:skinCloseButton{obj=self:getPenultimateChild(fObj), fType=ftype}
 							self:skinStdButton{obj=fObj.CurrencyTransferToggleButton, fType=ftype, sechk=true}
@@ -1016,7 +1016,7 @@ if not aObj.isClscERA then
 		self:SecureHookScript(_G.MountJournal, "OnShow", function(this)
 			self:removeInset(this.LeftInset)
 			self:removeInset(this.RightInset)
-			if self.isRtl then
+			if self.isMnln then
 				self:removeInset(this.BottomLeftInset)
 				self:removeRegions(this.SlotButton, {1, 3})
 			end
@@ -1050,7 +1050,7 @@ if not aObj.isClscERA then
 			_G.ScrollUtil.AddAcquiredFrameCallback(this.ScrollBox, skinElement, aObj, true)
 			self:removeMagicBtnTex(this.MountButton)
 			if self.modBtns then
-				if self.isRtl then
+				if self.isMnln then
 					self:skinStdButton{obj=this.BottomLeftInset.SuppressedMountEquipmentButton, fType=ftype}
 				else
 					self:skinStdButton{obj=_G.MountJournalFilterButton, fType=ftype}
@@ -1058,7 +1058,7 @@ if not aObj.isClscERA then
 				self:skinStdButton{obj=this.MountButton, fType=ftype, sechk=true}
 			end
 			if self.modBtnBs then
-				if self.isRtl then
+				if self.isMnln then
 					self:addButtonBorder{obj=this.SlotButton, fType=ftype, relTo=this.SlotButton.ItemIcon}
 					self:addButtonBorder{obj=this.ToggleDynamicFlightFlyoutButton, fType=ftype, ofs=4}
 					this.ToggleDynamicFlightFlyoutButton:SetFrameLevel(10)
@@ -1070,12 +1070,12 @@ if not aObj.isClscERA then
 				self:addButtonBorder{obj=this.MountDisplay.InfoButton, relTo=this.MountDisplay.InfoButton.Icon, clr="white"}
 			end
 			if self.modChkBtns
-			and self.isRtl
+			and self.isMnln
 			then
 				self:skinCheckButton{obj=this.MountDisplay.ModelScene.TogglePlayer}
 			end
 
-			if self.isRtl then
+			if self.isMnln then
 				self:SecureHookScript(this.DynamicFlightFlyoutPopup, "OnShow", function(fObj)
 					self:skinObject("frame", {obj=fObj.Background, fType=ftype, kfs=true, ofs=5, y1=-2, y2=0})
 					if self.modBtnBs then
@@ -1094,7 +1094,7 @@ if not aObj.isClscERA then
 			self:removeInset(this.PetCount)
 			self:removeInset(this.LeftInset)
 			self:removeInset(this.RightInset)
-			if self.isRtl then
+			if self.isMnln then
 				self:skinMainHelpBtn(this)
 				_G.PetJournalHealPetButtonBorder:SetTexture(nil)
 				self:removeInset(this.PetCardInset)
@@ -1104,7 +1104,7 @@ if not aObj.isClscERA then
 			self:skinObject("ddbutton", {obj=this.FilterDropdown, fType=ftype, filter=true})
 			self:skinObject("editbox", {obj=this.searchBox, fType=ftype, si=true})
 			if self.modBtns then
-				if not self.isRtl then
+				if not self.isMnln then
 					self:skinStdButton{obj=_G.PetJournalFilterButton, fType=ftype}
 					self:skinStdButton{obj=this.SummonButton}
 				end
@@ -1122,11 +1122,11 @@ if not aObj.isClscERA then
 				end
 				if new ~= false then
 					aObj:removeRegions(element, {1, 4}) -- background, iconBorder
-					if aObj.isRtl then
+					if aObj.isMnln then
 						aObj:changeTandC(element.dragButton.levelBG)
 					end
 					if aObj.modBtnBs then
-						if aObj.isRtl then
+						if aObj.isMnln then
 							aObj:addButtonBorder{obj=element, relTo=element.icon, reParent={element.dragButton.levelBG, element.dragButton.level, element.dragButton.favorite}}
 						else
 							aObj:addButtonBorder{obj=element, relTo=element.icon}
@@ -1140,7 +1140,7 @@ if not aObj.isClscERA then
 				end
 			end
 			_G.ScrollUtil.AddAcquiredFrameCallback(this.ScrollBox, skinElement, aObj, true)
-			if self.isRtl then
+			if self.isMnln then
 				self:keepFontStrings(this.loadoutBorder)
 				self:moveObject{obj=this.loadoutBorder, y=8} -- battle pet slots title
 				-- Pet LoadOut Plates
@@ -1214,7 +1214,7 @@ if not aObj.isClscERA then
 			self:Unhook(this, "OnShow")
 		end)
 
-		if self.isRtl then
+		if self.isMnln then
 			local function skinTTip(tip)
 				tip.Delimiter1:SetTexture(nil)
 				tip.Delimiter2:SetTexture(nil)
@@ -1298,13 +1298,13 @@ if not aObj.isClscERA then
 				end
 			end)
 			if self.modBtns then
-				if not self.isRtl then
+				if not self.isMnln then
 					self:skinStdButton{obj=this.FilterButton, ftype=ftype}
 				end
 			end
 			if self.modBtnBs then
 				skinPageBtns(this)
-				if self.isRtl then
+				if self.isMnln then
 					self:SecureHook(this, "UpdateButton", function(_, button)
 						skinCollectionBtn(button)
 						if button.levelBackground:GetAtlas() == "collections-levelplate-black" then
@@ -1320,7 +1320,7 @@ if not aObj.isClscERA then
 		-- a.k.a. Appearances
 		if not self.isClscERA then
 			self:SecureHookScript(_G.WardrobeCollectionFrame, "OnShow", function(this)
-				if self.isRtl then
+				if self.isMnln then
 					this.InfoButton.Ring:SetTexture(nil)
 				end
 				self:skinObject("ddbutton", {obj=this.FilterButton, fType=ftype, filter=true})
@@ -1331,7 +1331,7 @@ if not aObj.isClscERA then
 				self:skinObject("statusbar", {obj=this.progressBar, fi=0})
 				self:removeRegions(this.progressBar, {2, 3})
 				if self.modBtns then
-					if not self.isRtl then
+					if not self.isMnln then
 						self:skinStdButton{obj=this.FilterButton, ftype=ftype}
 						_G.RaiseFrameLevelByTwo(this.FilterButton) -- raise above SetsCollectionFrame when displayed on it
 					end
@@ -1372,7 +1372,7 @@ if not aObj.isClscERA then
 					end)
 					self:checkShown(this.ItemsCollectionFrame)
 
-					if self.isRtl then
+					if self.isMnln then
 						local SetsDataProvider = _G.CreateFromMixins(_G.WardrobeSetsDataProviderMixin)
 						self:SecureHookScript(this.SetsCollectionFrame, "OnShow", function(fObj)
 							self:removeInset(fObj.LeftInset)
@@ -1451,7 +1451,7 @@ if not aObj.isClscERA then
 				this:DisableDrawLayer("ARTWORK")
 				self:removeInset(this.Inset)
 				self:skinObject("ddbutton", {obj=this.OutfitDropdown, fType=ftype})
-				if self.isRtl then
+				if self.isMnln then
 					this.ModelScene.ControlFrame:DisableDrawLayer("BACKGROUND")
 				end
 				for _, btn in _G.pairs(this.SlotButtons) do
@@ -1466,7 +1466,7 @@ if not aObj.isClscERA then
 					self:skinStdButton{obj=this.ApplyButton, fType=ftype, ofs=0, sechk=true}
 				end
 				if self.modBtnBs then
-					if self.isRtl then
+					if self.isMnln then
 						self:addButtonBorder{obj=this.ModelScene.ClearAllPendingButton, fType=ftype, relTo=this.ModelScene.ClearAllPendingButton.Icon, ofs=5}
 					end
 				end
@@ -1479,7 +1479,7 @@ if not aObj.isClscERA then
 
 		end
 
-		if aObj.isRtl then
+		if aObj.isMnln then
 			-- a.k.a. Campsites
 			self:SecureHookScript(_G.WarbandSceneJournal, "OnShow", function(this)
 				self:removeInset(this.IconsFrame)
@@ -1684,7 +1684,7 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 			self:skinObject("ddbutton", {obj=fObj.CommunitiesListDropdown, fType=ftype})
 			self:skinObject("scrollbar", {obj=fObj.ScrollFrame.ScrollBar, fType=ftype})
 			self:removeNineSlice(fObj.Selector)
-			self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, ofs=-6, x2=self.isRtl and -4 or 2})
+			self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, ofs=-6, x2=self.isMnln and -4 or 2})
 			if self.modBtns then
 				self:skinStdButton{obj=fObj.ScrollFrame.Child.NoneButton}
 				self:skinStdButton{obj=fObj.ScrollFrame.Child.AllButton}
@@ -2256,7 +2256,7 @@ aObj.blizzFrames[ftype].CompactFrames = function(self)
 
 	-- Compact RaidFrame Manager
 	self:SecureHookScript(_G.CompactRaidFrameManager, "OnShow", function(this)
-		if aObj.isRtl then
+		if aObj.isMnln then
 			_G.nop()
 			-- TODO: skin Toggle button texture
 			-- .toggleButtonForward
@@ -2276,7 +2276,7 @@ aObj.blizzFrames[ftype].CompactFrames = function(self)
 		self:SecureHookScript(this.displayFrame, "OnShow", function(fObj)
 			self:keepFontStrings(fObj)
 			fObj.filterOptions:DisableDrawLayer("BACKGROUND")
-			if self.isRtl then
+			if self.isMnln then
 				self:skinObject("ddbutton", {obj=fObj.ModeControlDropdown, fType=ftype})
 				self:skinObject("ddbutton", {obj=fObj.RestrictPingsDropdown, fType=ftype})
 			else
@@ -2291,7 +2291,7 @@ aObj.blizzFrames[ftype].CompactFrames = function(self)
 				for i = 1, _G.MAX_RAID_GROUPS do
 					self:skinStdButton{obj=fObj.filterOptions["filterGroup" .. i]}
 				end
-				if self.isRtl then
+				if self.isMnln then
 					for _, type in _G.pairs{"Tank", "Healer", "Damager"} do
 						self:skinStdButton{obj=fObj.filterOptions["filterRole" .. type]}
 					end
@@ -2329,7 +2329,7 @@ aObj.blizzFrames[ftype].CompactFrames = function(self)
 	self:checkShown(_G.CompactRaidFrameManager)
 
 	-- Don't skin Group & Unit frames as it causes errors
-	if self.isRtl then
+	if self.isMnln then
 		return
 	end
 
@@ -2416,7 +2416,7 @@ if not aObj.isClscERA then
 			this.navBar.home.text:SetPoint("RIGHT", -20, 0)
 			self:skinObject("editbox", {obj=this.searchBox, fType=ftype, si=true})
 			self:skinObject("ddbutton", {obj=this.LootJournalViewDropdown, fType=ftype})
-			self:skinObject("tabs", {obj=this, tabs=this.Tabs, selectedTab=this.selectedTab, fType=ftype, lod=self.isTT and true, offsets={x1=-1, y1=2, x2=1, y2=1}, regions=self.isRtl and {7, 8, 9, 10, 11} or {10, 21}, track=false, func=function(tab) tab:SetFrameLevel(20) end})
+			self:skinObject("tabs", {obj=this, tabs=this.Tabs, selectedTab=this.selectedTab, fType=ftype, lod=self.isTT and true, offsets={x1=-1, y1=2, x2=1, y2=1}, regions=self.isMnln and {7, 8, 9, 10, 11} or {10, 21}, track=false, func=function(tab) tab:SetFrameLevel(20) end})
 			if self.isTT then
 				self:SecureHook("EJ_ContentTab_Select", function(id)
 					for i, tab in _G.pairs(this.Tabs) do
@@ -2628,7 +2628,7 @@ if not aObj.isClscERA then
 			end)
 			self:checkShown(this.encounter)
 
-			if self.isRtl then
+			if self.isMnln then
 				-- a.k.a. Traveler's Log
 				local function changeHCI(bObj)
 					if bObj:GetElementData():IsCollapsed() then
@@ -2647,7 +2647,8 @@ if not aObj.isClscERA then
 						if frame:GetParentKey() == "Threshold5"
 						and self.modBtnBs
 						then
-							self:addButtonBorder{obj=frame.RewardItem, fType=ftype, relTo=frame.RewardItem.Icon, reParent={frame.RewardCurrency}, ibt=true}
+							self:addButtonBorder{obj=frame.RewardItem, fType=ftype, relTo=frame.RewardItem.Icon, ibt=true, ncc=true}
+							frame.RewardCurrency:SetParent(frame.RewardItem.sbb)
 						end
 					end
 					fObj.FilterList:DisableDrawLayer("BACKGROUND")
@@ -2733,7 +2734,7 @@ if not aObj.isClscERA then
 
 				self:SecureHookScript(this.LootJournal, "OnShow", function(fObj)
 					self:skinObject("scrollbar", {obj=fObj.ScrollBar, fType=ftype})
-					if not self.isRtl then
+					if not self.isMnln then
 						skinFilterBtn(fObj.ClassDropDownButton)
 						skinFilterBtn(fObj.RuneforgePowerFilterDropDownButton)
 					end
@@ -2760,7 +2761,7 @@ if not aObj.isClscERA then
 
 				self:SecureHookScript(this.LootJournalItems, "OnShow", function(fObj)
 					fObj:DisableDrawLayer("BACKGROUND")
-					if self.isRtl then
+					if self.isMnln then
 						self:skinObject("ddbutton", {obj=fObj.ItemSetsFrame.ClassDropdown, fType=ftype})
 					else
 						skinFilterBtn(fObj.ItemSetsFrame.ClassButton)
@@ -2850,7 +2851,7 @@ aObj.blizzLoDFrames[ftype].ItemSocketingUI = function(self)
 		["Meta"]            = {textureKit = "meta", r = 1, g = 1, b = 1},
 		["Prismatic"]       = {textureKit = "prismatic", r = 1, g = 1, b = 1},
 	}
-	if self.isRtl then
+	if self.isMnln then
 		gemTypeInfo["Hydraulic"]       = {textureKit = "hydraulic", r = 1, g = 1, b = 1}
 		gemTypeInfo["Cogwheel"]        = {textureKit = "cogwheel", r = 1, g = 1, b = 1}
 		gemTypeInfo["PunchcardRed"]    = {textureKit = "punchcard-red", r = 1, g = 0.47, b = 0.47}
@@ -2874,7 +2875,7 @@ aObj.blizzLoDFrames[ftype].ItemSocketingUI = function(self)
 	end})
 
 	self:SecureHookScript(_G.ItemSocketingFrame, "OnShow", function(this)
-		if self.isRtl then
+		if self.isMnln then
 			self:skinObject("scrollbar", {obj=_G.ItemSocketingScrollFrame.ScrollBar, fType=ftype})
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, x2=3})
 		else
@@ -2918,7 +2919,7 @@ aObj.blizzFrames[ftype].MirrorTimers = function(self)
 	self.initialized.MirrorTimers = true
 
 	local objName, obj, objBG, objSB
-	if not self.isRtl then
+	if not self.isMnln then
 		local numMirrorTimerTypes = 3
 		for i = 1, numMirrorTimerTypes do
 			objName = "MirrorTimer" .. i
@@ -2995,7 +2996,7 @@ aObj.blizzLoDFrames[ftype].RaidUI = function(self)
 	end
 	-- Raid Group Buttons
 	for i = 1, _G.MAX_RAID_GROUPS * 5 do
-		if not self.isRtl then
+		if not self.isMnln then
 			_G["RaidGroupButton" .. i]:SetNormalTexture("")
 		else
 			_G["RaidGroupButton" .. i]:GetNormalTexture():SetTexture(nil)
@@ -3007,7 +3008,7 @@ aObj.blizzLoDFrames[ftype].RaidUI = function(self)
 		self:removeRegions(_G["RaidClassButton" .. i], {1}) -- 2 is icon, 3 is text
 	end
 
-	if not self.isRtl then
+	if not self.isMnln then
 		if self.modBtns then
 			self:skinStdButton{obj=_G.RaidFrameReadyCheckButton, fType=ftype}
 		end
@@ -3052,7 +3053,7 @@ aObj.blizzFrames[ftype].TradeFrame = function(self)
 	self.initialized.TradeFrame = true
 
 	self:SecureHookScript(_G.TradeFrame, "OnShow", function(this)
-		if self.isRtl then
+		if self.isMnln then
 			this.RecipientOverlay.portrait:SetAlpha(0)
 			this.RecipientOverlay.portraitFrame:SetTexture(nil)
 		end

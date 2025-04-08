@@ -30,7 +30,7 @@ if aObj.ACD then
 		return frame, name
 	end, true)
 	aObj:SecureHookScript(aObj.ACD.popup, "OnShow", function(this)
-		if aObj.isRtl then
+		if aObj.isMnln then
 			aObj:keepFontStrings(aObj:getChild(this, 1))
 		end
 		aObj:skinObject("frame", {obj=this, kfs=true, ofs=-4})
@@ -137,7 +137,7 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 				and aObj.modBtns
 				then
 					aObj:secureHook(obj, "BuildTabs", function(this)
-						aObj:skinObject("tabs", {obj=this.frame, tabs=obj.tabs, lod=self.isTT and true, upwards=true, regions=aObj.isRtl and {7} or nil, noCheck=true, track=false, offsets={x1=6, x2=-6, y2=-5}})
+						aObj:skinObject("tabs", {obj=this.frame, tabs=obj.tabs, lod=self.isTT and true, upwards=true, regions=aObj.isMnln and {7} or nil, noCheck=true, track=false, offsets={x1=6, x2=-6, y2=-5}})
 						aObj:Unhook(this, "BuildTabs")
 					end)
 					if aObj.isTT then

@@ -55,8 +55,8 @@ local function setScrollTrackOffsets(tbl, type)
 			tbl.y1 = _G.rawget(tbl, "y1") or -1
 			tbl.y2 = _G.rawget(tbl, "y2") or 1
 		elseif w == 25 then
-			tbl.x1 = _G.rawget(tbl, "x1") or --[[not aObj.isRtl and 2 or]] 0
-			tbl.x2 = _G.rawget(tbl, "x2") or --[[not aObj.isRtl and 4 or]] 0
+			tbl.x1 = _G.rawget(tbl, "x1") or --[[not aObj.isMnln and 2 or]] 0
+			tbl.x2 = _G.rawget(tbl, "x2") or --[[not aObj.isMnln and 4 or]] 0
 		end
 		tbl.y1 = _G.rawget(tbl, "y1") or 0
 		tbl.y2 = _G.rawget(tbl, "y2") or 0
@@ -89,12 +89,12 @@ aObj.skinTPLs = {
 		-- filtercb = "ResetButton",
 		-- noBB     = false, -- don't skin button
 		-- noSF     = false, -- don't skin frame
-		ofs         = aObj.isRtl and -1 or 1,
+		ofs         = aObj.isMnln and -1 or 1,
 		-- sechk    = false,
 		-- x1       = nil,
-		y1          = aObj.isRtl and 2 or nil,
+		y1          = aObj.isMnln and 2 or nil,
 		-- x2       = nil,
-		y2          = aObj.isRtl and 4 or nil,
+		y2          = aObj.isMnln and 4 or nil,
 	},
 	ddlist = {
 		nop         = false, -- stop backdrop textures being updated (ZygorGuides)
@@ -226,7 +226,7 @@ aObj.skinTPLs = {
 		numTabs     = 1,
 		selectedTab = 1,
 		suffix      = "",
-		regions     = aObj.isRtl and {10} or {7, 8},
+		regions     = aObj.isMnln and {10} or {7, 8},
 		-- ng			= nil,
 		ignoreSize  = true,
 		lod         = false,
@@ -925,7 +925,7 @@ skinFuncs.statusbar = function(table) skinStatusBar(table) end
 local function skinTabs(tbl)
 	--@debug@
 	_G.assert(tbl.obj, "Missing Tab Object (skinTabs)\n" .. _G.debugstack(2, 3, 2))
-	if not aObj.isRtl then
+	if not aObj.isMnln then
 		_G.assert(_G.type(tbl.tabs) == "table" or tbl.prefix, "Missing Tabs Table or Tab Prefix (skinTabs)\n" .. _G.debugstack(2, 3, 2))
 	end
 	--@end-debug@
@@ -954,7 +954,7 @@ local function skinTabs(tbl)
 			tbl.offsets.y1 = 3
 		end
 	end
-	if aObj.isRtl then
+	if aObj.isMnln then
 		if not tbl.offsets.x1
 		or tbl.offsets.x1 == 8
 		then
@@ -997,7 +997,7 @@ local function skinTabs(tbl)
 		tab.sf.up = tbl.upwards
 		-- change highlight texture
 		if tbl.ignoreHLTex then
-			if not aObj.isRtl then
+			if not aObj.isMnln then
 				local ht = tab:GetHighlightTexture()
 				if ht then
 					ht:SetTexture(aObj.tFDIDs.ctabHL)
@@ -1017,7 +1017,7 @@ local function skinTabs(tbl)
 			tbl.func(tab)
 		end
 	end
-	if aObj.isRtl
+	if aObj.isMnln
 	and tbl.pool
 	then
 		local idx = 0

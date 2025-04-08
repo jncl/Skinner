@@ -270,6 +270,50 @@ aObj.SetupClassic_UIFrames = function()
 
 	end
 
+	aObj.blizzFrames[ftype].Nameplates = function(self)
+		if not self.prdb.Nameplates or self.initialized.Nameplates then return end
+		self.initialized.Nameplates = true
+
+		if _G.C_AddOns.IsAddOnLoaded("Plater") then
+			self.blizzFrames[ftype].Nameplates = nil
+			return
+		end
+
+		local function skinNamePlate(frame)
+			-- aObj:Debug("skinNamePlate: [%s, %s]", frame, frame:IsForbidden())
+			if not frame -- happens when called again after combat and frame doesn't exist any more
+			or frame:IsForbidden()
+			then
+				return
+			end
+			if _G.InCombatLockdown() then
+			    aObj:add2Table(aObj.oocTab, {skinNamePlate, {frame}})
+			    return
+			end
+			local nP = frame.UnitFrame or aObj:getChild(frame, 1)
+			if nP
+			and nP.healthBar
+			and not nP.classNamePlatePowerBar
+			then
+				local nHb, nCb = nP.healthBar, nP.castBar or nP.CastBar
+				nHb.border:DisableDrawLayer("ARTWORK")
+				aObj:skinObject("statusbar", {obj=nHb, bg=nHb.background})
+				if aObj.isClsc then
+					aObj:removeRegions(nCb, {2, 3})
+					aObj:skinObject("statusbar", {obj=nCb, bg=aObj:getRegion(nCb, 1)})
+				end
+				-- N.B. WidgetContainer objects managed in UIWidgets code
+			end
+		end
+		self:SecureHook(_G.NamePlateDriverFrame, "OnNamePlateAdded", function(_, namePlateUnitToken)
+			skinNamePlate(_G.C_NamePlate.GetNamePlateForUnit(namePlateUnitToken, _G.issecure()))
+		end)
+		for _, frame in _G.pairs(_G.C_NamePlate.GetNamePlates(_G.issecure())) do
+			skinNamePlate(frame)
+		end
+
+	end
+
 	aObj.blizzFrames[ftype].ProductChoice = function(self)
 		if not self.prdb.ProductChoice or self.initialized.ProductChoice then return end
 		self.initialized.ProductChoice = true
@@ -525,7 +569,7 @@ aObj.SetupClassic_UIFrames = function()
 				self:Unhook(this, "OnShow")
 			end)
 			self:SecureHookScript(_G.QuestTimerFrame, "OnShow", function(this)
-				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true})
+				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true, ofs=0, x1=10, x2=-10})
 
 				self:Unhook(this, "OnShow")
 			end)
@@ -741,9 +785,9 @@ end
 aObj.SetupClassic_UIFramesOptions = function(self)
 
 	local optTab = {
-		["Battlefield Frame"]       = true,
+		["Battlefield Frame"]       = self.isClscERA and true or nil,
 		["Binding UI"]              = {desc = "Key Bindings UI"},
-		["GM Survey UI"]            = self.isClscERA and true or nil,
+		["Nameplates"]              = true,
 		["Product Choice"]          = {suff = "Frame"},
 		["PVP Frame"]               = self.isClsc and {desc = "Player vs. Player"} or nil,
 		["Quest Log"]               = true,

@@ -242,7 +242,7 @@ function aObj.canSkinActionBtns()
 	return true
 	--@end-debug@
 	--[===[@non-debug@
-	return aObj.isRtl and false or true
+	return aObj.isMnln and false or true
 	--@end-non-debug@]===]
 
 end
@@ -266,13 +266,13 @@ function aObj:changeHdrExpandTex(reg)
 	self:RawHook(reg, "SetAtlas", function(eReg, tex, useAtlasSize)
 		-- aObj:Debug("changeHdrExpandTex SetAtlas: [%s, %s]", reg, tex)
 		if tex == "Options_ListExpand_Right_Expanded" then -- minus
-			tex = self.isRtl and "ui-hud-minimap-zoom-out" or self.tFDIDs.mpTex
-			coords = not self.isRtl and {0.29687500, 0.54687500, 0.00781250, 0.13281250}
+			tex = self.isMnln and "ui-hud-minimap-zoom-out" or self.tFDIDs.mpTex
+			coords = not self.isMnln and {0.29687500, 0.54687500, 0.00781250, 0.13281250}
 		else
-			tex = self.isRtl and "ui-hud-minimap-zoom-in" or self.tFDIDs.mpTex
-			coords = not self.isRtl and {0.57812500, 0.82812500, 0.14843750, 0.27343750}
+			tex = self.isMnln and "ui-hud-minimap-zoom-in" or self.tFDIDs.mpTex
+			coords = not self.isMnln and {0.57812500, 0.82812500, 0.14843750, 0.27343750}
 		end
-		if self.isRtl then
+		if self.isMnln then
 			self.hooks[eReg].SetAtlas(eReg, tex, useAtlasSize)
 		else
 			eReg:SetTexture(tex) -- N.B. use SetTexture instead of SetAtlas otherwise the texture doesn't display correctly
