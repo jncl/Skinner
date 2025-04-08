@@ -299,7 +299,6 @@ aObj.blizzFrames[ftype].GossipFrame = function(self)
 	local skinGossip = _G.nop
 	if not (self:isAddonEnabled("Quester")
 	and _G.QuesterDB.gossipColor)
-	and not self.isMnlnPTR
 	then
 		function skinGossip(...)
 			local _, element, elementData
