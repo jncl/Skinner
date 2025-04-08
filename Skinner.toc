@@ -19,19 +19,32 @@
 ## Globe: check-classic
 
 ## X-Category: Interface Enhancements
-## X-Website: https://www.curseforge.com/wow/addons/skinner
 ## X-Curse-Project-ID: 14661
 ## X-Wago-ID: aN0YXL6j
+## X-Website: https://www.curseforge.com/wow/addons/skinner
 
-Libs\_RequiredLibs.xml
-Libs\_OptionalLibs.xml
+## Category-enUS: UI Overhaul
+## Category-deDE: UI-Überholung
+## Category-esES: Renovación de la Interfaz de Usuario
+## Category-esMX: Renovación de la Interfaz de Usuario
+## Category-frFR: Révision de l'Interface Utilisateur
+## Category-itIT:
+## Category-koKR:
+## Category-ptBR: Reformulação da Interface do Usuário
+## Category-ruRU: Переработка UI
+## Category-zhCN: UI整合
+## Category-zhTW: UI整合包
+
+Libs\_Required.xml
+Libs\_Optional.xml
 
 Locales\_Locales.xml
 
 Core\_Core.xml
 
-RetailSupport\_RetailSupport.xml
-ClassicSupport\_ClassicSupport.xml
+# [Family]\_Support.xml
+Classic\_Support.xml
+Mainline\_Support.xml
 
 Modules\_Modules.xml
 
