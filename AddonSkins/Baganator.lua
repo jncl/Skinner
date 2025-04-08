@@ -2,13 +2,15 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("Baganator") then return end
 local _G = _G
 
-aObj.addonsToSkin.Baganator = function(self) -- v 627
+aObj.addonsToSkin.Baganator = function(self) -- v 665
+
+	-- TODO: handle warband bank being purchased
 
 	local skinBtns, skinSpecialistBtns, skinSpecialistBags, skinViewBtns, skinBagSlots = _G.nop, _G.nop, _G.nop, _G.nop, _G.nop
 	if self.modBtnBs then
 		function skinBtns(frame)
 			for _, btn in _G.ipairs(frame.buttons) do
-				aObj:addButtonBorder{obj=btn, ibt=true, reParent={btn.ItemLevel, btn.BindingText, btn.UpgradeArrow}}
+				aObj:addButtonBorder{obj=btn, ibt=true, reParent={btn.ItemLevel, btn.BindingText, btn.UpgradeArrow}, ofs=3}
 			end
 			-- N.B. DON'T hide SlotBackground/ItemTexture as the AddOn does that. [Theme -> Hide icon backgrounds]
 		end
@@ -185,7 +187,7 @@ aObj.addonsToSkin.Baganator = function(self) -- v 627
 						aObj:skinCheckButton{obj=btn}
 						btn:SetSize(24, 24)
 					else
-						aObj:skinStdButton{obj=btn}
+						aObj:skinStdButton{obj=btn, sechk=true}
 					end
 				end
 				if bankType:find("SV") then
@@ -362,6 +364,8 @@ aObj.addonsToSkin.Baganator = function(self) -- v 627
 				then
 					if child.Count then -- Corners central button
 						self:addButtonBorder{obj=child}
+					elseif child.AddButton then
+						self:skinOtherButton{obj=child.AddButton, text="+"}
 					else
 						self:skinStdButton{obj=child, schk=true, sechk=true}
 					end
@@ -412,7 +416,7 @@ aObj.addonsToSkin.Baganator = function(self) -- v 627
 
 end
 
-aObj.addonsToSkin.Syndicator = function(self) -- v 163
+aObj.addonsToSkin.Syndicator = function(self) -- v 180
 	self:SecureHook(_G.Syndicator.API, "GetSearchKeywords", function(this)
 		_G.C_Timer.After(0.05, function()
 			self:skinObject("scrollbar", {obj=_G.Baganator_SearchHelpFrame.ScrollBar})

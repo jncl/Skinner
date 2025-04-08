@@ -12,7 +12,7 @@ if AceGUI then
 	end, true)
 end
 
-local skinAceGUI
+local skinAceGUI = _G.nop
 
 --[===[@non-debug@
 aObj.iofSkinnedPanels = {}

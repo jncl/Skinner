@@ -2,12 +2,16 @@ local _, aObj = ...
 local _G = _G
 
 local function skinSkillet(self)
-	if not self.db.profile.TradeSkillUI then return end
+	if not self.prdb.TradeFrame
+	and not self.prdb.TradeSkillUI
+	then
+		return
+	end
 
 	self:SecureHook(_G.Skillet, "ShowTradeSkillWindow", function(this)
 		this.tradeSkillFrame:DisableDrawLayer("BACKGROUND") -- title textures
 		_G.SkilletRankFrameBorder:Hide()
-		self:skinStatusBar{obj=_G.SkilletRankFrame, fi=0, bgTex=_G.SkilletRankFrameBackground}
+		self:skinObject("statusbar", {obj=_G.SkilletRankFrame, fi=0, bg=_G.SkilletRankFrameBackground})
 		self:skinObject("dropdown", {obj=_G.SkilletRecipeGroupDropdown, x2=109})
 		self:skinObject("dropdown", {obj=_G.SkilletSortDropdown, x2=109})
 		self:skinObject("dropdown", {obj=_G.SkilletFilterDropdown, x2=109})
@@ -16,14 +20,13 @@ local function skinSkillet(self)
 		self:skinObject("frame", {obj=_G.SkilletSkillListParent, fb=true})
 		if self.isMnln then
 			-- hook this to skin SkillBars
-			self:SecureHook(this, "UpdateTradeSkillWindow", function(this)
+			self:SecureHook(this, "UpdateTradeSkillWindow", function(_)
 				local bar
 				for i = 1, this.button_count do
 					bar = _G["SkilletScrollButton" .. i].SubSkillRankBar
 					self:removeRegions(bar, {1, 2, 3}) -- border textures
-					self:skinStatusBar{obj=bar, fi=0}
+					self:skinObject("statusbar", {obj=bar, fi=0})
 				end
-				bar = nil
 			end)
 		end
 		self:skinObject("frame", {obj=_G.SkilletReagentParent, fb=true})
@@ -43,6 +46,7 @@ local function skinSkillet(self)
 				self:skinStdButton{obj=_G.SkilletPluginButton}
 			end
 			self:skinStdButton{obj=_G.SkilletIgnoredMatsButton}
+			self:skinStdButton{obj=_G.SkilletIgnoreListButton}
 			self:skinStdButton{obj=_G.SkilletQueueManagementButton}
 			self:skinStdButton{obj=_G.SkilletRecipeNotesButton}
 			self:skinStdButton{obj=_G.SkilletQueueLoadButton}
@@ -57,7 +61,7 @@ local function skinSkillet(self)
 			self:skinStdButton{obj=_G.SkilletQueueOnlyButton}
 			self:adjWidth{obj=_G.SkilletQueueOnlyButton, adj=4}
 			self:skinStdButton{obj=_G.SkilletShoppingListButton}
-			self:SecureHook(this, "ConfigureRecipeControls", function(this, _)
+			self:SecureHook(this, "ConfigureRecipeControls", function(_, _)
 				self:clrBtnBdr(_G.SkilletStartQueueButton)
 				self:clrBtnBdr(_G.SkilletCreateAllButton)
 				self:clrBtnBdr(_G.SkilletCreateButton)
@@ -72,7 +76,7 @@ local function skinSkillet(self)
 				self:clrBtnBdr(_G.SkilletStartQueueButton)
 				self:clrBtnBdr(_G.SkilletEmptyQueueButton)
 			end)
-			self:SecureHook(_G.Skillet, "PluginButton_OnClick", function(this, button)
+			self:SecureHook(_G.Skillet, "PluginButton_OnClick", function(_, _)
 				if _G.SkilletFrame.added_buttons then
 					for i = 1, #_G.SkilletFrame.added_buttons do
 						self:skinStdButton{obj=_G["SkilletPluginDropdown" .. i]}
@@ -112,6 +116,7 @@ local function skinSkillet(self)
 		if self.modChkBtns then
 			self:skinCheckButton{obj=_G.SkilletShowQueuesFromAllAlts}
 			if self.isMnln then
+				self:skinCheckButton{obj=_G.SkilletShowQueuesIgnoreOnHand}
 				self:skinCheckButton{obj=_G.SkilletShowQueuesFromSameFaction}
 				self:skinCheckButton{obj=_G.SkilletShowQueuesIncludeGuild}
 			end
@@ -133,7 +138,7 @@ local function skinSkillet(self)
 	end)
 
 	self:SecureHook(_G.Skillet, "RecipeNote_OnClick", function(this, button)
-		self:skinObject("editbox", {obj=self:getChild(button, 2)})
+		self:skinObject("editbox", {obj=self:getChild(button, 2), y1=-4, y2=4})
 
 		self:Unhook(this, "RecipeNote_OnClick")
 	end)
@@ -160,18 +165,21 @@ local function skinSkillet(self)
 		self:add2Table(self.ttList, _G.SkilletTradeskillTooltip)
 	end)
 
+	if _G.Skillet.NewsFrame then
+		_G.C_Timer.After(0.05, function()
+			self:skinAceOptions(_G.Skillet.NewsFrame)
+		end)
+	end
+
 end
 
-if aObj.isRtl then
-	if aObj:isAddonEnabled("Skillet") then
-		aObj.addonsToSkin.Skillet = function(self) -- v 4.26
-			skinSkillet(aObj)
-		end
+if aObj:isAddonEnabled("Skillet") then
+	aObj.addonsToSkin.Skillet = function(_) -- v 5.38
+		skinSkillet(aObj)
 	end
-else
-	if aObj:isAddonEnabled("Skillet-Classic") then
-		aObj.addonsToSkin["Skillet-Classic"] = function(self) -- v
-			skinSkillet(aObj)
-		end
+end
+if aObj:isAddonEnabled("Skillet-Classic") then
+	aObj.addonsToSkin["Skillet-Classic"] = function(_) -- v 2.09
+		skinSkillet(aObj)
 	end
 end

@@ -2,7 +2,7 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("WoWPro") then return end
 local _G = _G
 
-aObj.addonsToSkin.WoWPro = function(self) -- v 2024.11.23.A/2.5.2.-A0/1.14.0.A0
+aObj.addonsToSkin.WoWPro = function(self) -- v 2025.03.04.A
 
 	self:SecureHookScript(_G.WoWPro.MainFrame, "OnShow", function(this)
 		_G.WoWPro.BackgroundSet = _G.nop
@@ -84,7 +84,12 @@ aObj.addonsToSkin.WoWPro = function(self) -- v 2024.11.23.A/2.5.2.-A0/1.14.0.A0
 		self:removeBackdrop(self:getChild(this.scrollbar, 3))
 		self:skinObject("slider", {obj=this.scrollbar})
 		self:skinObject("frame", {obj=this.box, kfs=true, fb=true})
-		-- TODO: skin checkbuttons
+		if self.modChkBtns then
+			for _, row in _G.pairs(this.rows) do
+				self:skinCheckButton{obj=row.check, ignNT=true}
+				row.check:SetSize(22, 22)
+			end
+		end
 
 		self:Unhook(this, "OnShow")
 	end)

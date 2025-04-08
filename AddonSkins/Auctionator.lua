@@ -1,9 +1,8 @@
 local _, aObj = ...
 if not aObj:isAddonEnabled("Auctionator") then return end
 local _G = _G
--- luacheck: ignore 631 (line is too long)
 
-aObj.addonsToSkin.Auctionator = function(self) -- v 258
+aObj.addonsToSkin.Auctionator = function(self) -- v 268
 
 	local function skinAuctionatorFrames()
 		if not _G.AuctionatorSellingFrame then
@@ -116,10 +115,6 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 258
 		local asFrame = _G.AuctionatorShoppingFrame
 		if asFrame.itemDialog then
 			aObj:SecureHookScript(asFrame.itemDialog, "OnShow", function(this)
-				aObj:removeNineSlice(this.Border)
-				if not aObj.isRtl then
-					aObj:removeInset(aObj:getChild(this.Inset, 1))
-				end
 				aObj:skinObject("editbox", {obj=this.SearchContainer.SearchString})
 				aObj:skinObject("ddbutton", {obj=this.FilterKeySelector.DropDown})
 				for _, level in _G.pairs{"LevelRange", "ItemLevelRange", "PriceRange", "CraftedLevelRange"} do
@@ -130,7 +125,7 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 258
 				aObj:skinObject("ddbutton", {obj=this.QualityContainer.DropDown.DropDown})
 				aObj:skinObject("ddbutton", {obj=this.ExpansionContainer.DropDown.DropDown})
 				aObj:skinObject("ddbutton", {obj=this.TierContainer.DropDown.DropDown})
-				aObj:skinObject("frame", {obj=this, kfs=true, ri=true, rns=true})
+				aObj:skinObject("frame", {obj=this, kfs=true, ri=true, rns=true, cb=true})
 				if aObj.modBtns then
 					aObj:skinStdButton{obj=this.Finished}
 					aObj:skinStdButton{obj=this.Cancel}
@@ -337,6 +332,10 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 258
 			fObj:UpdateGroupHeights()
 		end
 		aObj:SecureHookScript(_G.AuctionatorSellingFrame, "OnShow", function(this)
+			aObj:skinObject("scrollbar", {obj=this.BagListing.View.ScrollBar})
+			aObj:SecureHook(this.BagListing.View, "UpdateFromExisting", function(fObj)
+				skinView(fObj)
+			end)
 			local asi = this.AuctionatorSaleItem
 			asi.Icon.EmptySlot:SetTexture(nil)
 			aObj.modUIBtns:addButtonBorder{obj=asi.Icon, relTo=asi.Icon.Icon, clr="white"}
@@ -346,11 +345,6 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 258
 			if aObj.modBtns then
 				aObj:skinStdButton{obj=asi.PostButton, schk=true, sechk=true}
 			end
-			local blv = this.BagListing.View
-			aObj:skinObject("scrollbar", {obj=blv.ScrollBar})
-			aObj:SecureHook(blv, "UpdateFromExisting", function(fObj)
-				skinView(fObj)
-			end)
 			if not aObj.isMnln then
 				aObj:skinObject("editbox", {obj=asi.UnitPrice.MoneyInput.GoldBox, ofs=-4, y2=8})
 				aObj:skinObject("editbox", {obj=asi.UnitPrice.MoneyInput.SilverBox, ofs=-4, y2=8})
