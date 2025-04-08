@@ -1353,7 +1353,6 @@ aObj.SetupOptions = function(self)
 		["Menu Frames"]           = true,
 		["Move Pad"]              = true,
 		["Movie Frame"]           = true,
-		["Nameplates"]            = not self.isRtl and true or nil,
 		["Navigation Bar"]        = not self.isClscERA and true or nil,
 		["Override Action Bar"]   = not self.isClscERA and {desc = "Vehicle UI"} or nil,
 		["PTR Feedback"]          = _G.PTR_IssueReporter and {suff = "Frames"} or nil,

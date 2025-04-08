@@ -2549,52 +2549,6 @@ aObj.blizzFrames[ftype].MovieFrame = function(self)
 
 end
 
-if not aObj.isRtl then
-	aObj.blizzFrames[ftype].Nameplates = function(self)
-		if not self.prdb.Nameplates or self.initialized.Nameplates then return end
-		self.initialized.Nameplates = true
-
-		if _G.C_AddOns.IsAddOnLoaded("Plater") then
-			self.blizzFrames[ftype].Nameplates = nil
-			return
-		end
-
-		local function skinNamePlate(frame)
-			-- aObj:Debug("skinNamePlate: [%s, %s]", frame, frame:IsForbidden())
-			if not frame -- happens when called again after combat and frame doesn't exist any more
-			or frame:IsForbidden()
-			then
-				return
-			end
-			if _G.InCombatLockdown() then
-			    aObj:add2Table(aObj.oocTab, {skinNamePlate, {frame}})
-			    return
-			end
-			local nP = frame.UnitFrame or aObj:getChild(frame, 1)
-			if nP
-			and nP.healthBar
-			and not nP.classNamePlatePowerBar
-			then
-				local nHb, nCb = nP.healthBar, nP.castBar or nP.CastBar
-				nHb.border:DisableDrawLayer("ARTWORK")
-				aObj:skinObject("statusbar", {obj=nHb, bg=nHb.background})
-				if aObj.isClsc then
-					aObj:removeRegions(nCb, {2, 3})
-					aObj:skinObject("statusbar", {obj=nCb, bg=aObj:getRegion(nCb, 1)})
-				end
-				-- N.B. WidgetContainer objects managed in UIWidgets code
-			end
-		end
-		self:SecureHook(_G.NamePlateDriverFrame, "OnNamePlateAdded", function(_, namePlateUnitToken)
-			skinNamePlate(_G.C_NamePlate.GetNamePlateForUnit(namePlateUnitToken, _G.issecure()))
-		end)
-		for _, frame in _G.pairs(_G.C_NamePlate.GetNamePlates(_G.issecure())) do
-			skinNamePlate(frame)
-		end
-
-	end
-end
-
 if not aObj.isClscERA then
 	aObj.blizzFrames[ftype].OverrideActionBar = function(self) -- a.k.a. Vehicle UI
 		if not self.prdb.OverrideActionBar or self.initialized.OverrideActionBar then return end
