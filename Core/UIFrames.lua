@@ -2748,11 +2748,7 @@ aObj.blizzFrames[ftype].ReportFrame = function(self)
 
 	self:SecureHookScript(_G.ReportFrame, "OnShow", function(this)
 		self:removeNineSlice(this.Border)
-		if self.isRtl then
-			self:skinObject("ddbutton", {obj=this.ReportingMajorCategoryDropdown, fType=ftype})
-		else
-			self:skinObject("dropdown", {obj=this.ReportingMajorCategoryDropdown, fType=ftype})
-		end
+		self:skinObject("ddbutton", {obj=this.ReportingMajorCategoryDropdown, fType=ftype})
 		self:skinObject("frame", {obj=this.Comment, fType=ftype, kfs=true, fb=true, ofs=6})
 		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, cb=true, ofs=-3})
 		if self.modBtns then
