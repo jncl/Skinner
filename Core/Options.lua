@@ -1445,9 +1445,9 @@ aObj.SetupOptions = function(self)
 	local function chatCommand(input)
 		aObj.callbacks:Fire("Options_Selected")
 		if not input or input:trim() == "" then
-			_G.Settings.OpenToCategory(aName)
+			_G.Settings.OpenToCategory(aObj.L[aName])
 		elseif aObj.optCheck[input:lower()] then
-			_G.Settings.OpenToCategory(aName)
+			_G.Settings.OpenToCategory(aObj.L[aName], aObj.optCheck[input:lower()])
 		else
 			_G.LibStub:GetLibrary("AceConfigCmd-3.0", true):HandleCommand(aName, aObj.L[aName], input)
 		end
@@ -1462,7 +1462,7 @@ aObj.SetupOptions = function(self)
 			icon = aObj.tFDIDs.mpw01,
 			OnClick = function()
 				aObj.callbacks:Fire("Options_Selected")
-				_G.Settings.OpenToCategory(aName)
+				_G.Settings.OpenToCategory(aName, aObj.L[aName])
 			end,
 			OnTooltipShow = function(tooltip)
 				tooltip:AddLine(aObj.L[aName])
