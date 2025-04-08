@@ -622,8 +622,10 @@ function module.skinStdButton(_, ...)
 
 end
 
+-- N.B. removed following texture to allow Dropdown button texture to be below button border
+-- , "Arrow"
 local rpRegions = {
-	"ActionBarHighlight", "Arrow", "AutoCastable", "AutoCastOverlay", "AutoCastShine", "Border", "Count", "Flash", "Glow", "HotKey",
+	"ActionBarHighlight", "AutoCastable", "AutoCastOverlay", "AutoCastShine", "Border", "Count", "Flash", "Glow", "HotKey",
 	"IconBorder","IconQuestTexture", "ItemContextOverlay", "ItemOverlay", "ItemOverlay2", "LevelLinkLockIcon", "Name", "NewActionTexture",
 	"ProfessionQualityOverlay", "searchOverlay", "SlotBorder", "SlotBorderOpen", "SpellHighlightTexture", "Stock"
 }
