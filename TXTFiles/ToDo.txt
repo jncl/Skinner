@@ -6,7 +6,7 @@ ToDos
 	x					- indicates nothing to change
 	¶ is Alt+7			- indicates localisation changes required
 	#nnn				- Indicates Issue number
-	S/N/I/U/O/E/C/R/FR	- Skin request/New Version/Issue(Bug)/Unobsolete Skin/Other changes/Classic Era/Cata Classic/Retail/Feature Request
+	S/N/I/U/O/E/C/R/FR	- Skin request/New Version/Issue(Bug)/Unobsolete Skin/Other changes/Classic Era/Wrath Classic/Retail/Feature Request
 
 √		O 	Change all references to Retail to Mainline (isRtl --> isMnln)
 
@@ -17,5 +17,6 @@ ToDos
 #204 ?	I/C UI Frames options have a blank toggle entry
 	 ?	i/E
 
-#205 √  I/C ReportFrame
-	 √  I/E
+#206 √	I 	calling 'GetObjectType' on bad self (Usage: local objectType = self:GetObjectType())
+
+#207 √	S/E	Ranker

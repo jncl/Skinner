@@ -6,11 +6,11 @@
 	x				- indicates nothing to change
 	¶ is Alt+7		- indicates localisation changes required
 
-	Retail_PTR (TWW 11.0.7)
+	Retail_PTR (TWW 11.1.5)
 		- Added
 ≈			- TOC changes
 ≈			- ColorManager function to get ItemQuality colours etc
-x			- Blizzard_CooldownViewer
+≈			- Blizzard_CooldownViewer
 				- EssentialCooldownViewer
 				- UtilityCooldownViewer
 				- BuffIconCooldownViewer
