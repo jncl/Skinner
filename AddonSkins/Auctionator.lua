@@ -2,7 +2,7 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("Auctionator") then return end
 local _G = _G
 
-aObj.addonsToSkin.Auctionator = function(self) -- v 268
+aObj.addonsToSkin.Auctionator = function(self) -- v 272
 
 	local function skinAuctionatorFrames()
 		if not _G.AuctionatorSellingFrame then
@@ -551,14 +551,16 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 268
 				else
 					aObj:skinObject("editbox", {obj=child, ofs=-12, y1=aObj.isMnln and 4 or 0, y2=0})
 				end
-			elseif aObj:isDropDown(child) then
-				aObj:skinObject("dropdown", {obj=child})
+			elseif child.DropDown then
+				aObj:skinObject("ddbutton", {obj=child.DropDown})
+			elseif child.minThumbExtent then
+				aObj:skinObject("scrollbar", {obj=child})
 			elseif child:IsObjectType("CheckButton")
 			and aObj.modChkBtns
 			and child.GetPushedTexture
 			and child:GetPushedTexture()
 			then
-				aObj:skinCheckButton{obj=child}
+				aObj:skinCheckButton{obj=child, ofs=-6}
 			elseif child:IsObjectType("Button")
 			and not child:IsObjectType("CheckButton")
 			and aObj.modBtns
@@ -574,8 +576,8 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 268
 	    "Tooltips",
 		"ShoppingAlt",
 	    "Selling",
-	    "SellingShortcuts",
 	    "SellingAllItems",
+	    "SellingShortcuts",
 	    "Cancelling",
 	    "Profile",
 	    "Advanced",
