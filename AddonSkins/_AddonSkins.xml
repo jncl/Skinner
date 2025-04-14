@@ -183,6 +183,7 @@
 <Script file="QuickMark.lua"/>
 <Script file="RaidAchievement.lua"/>
 <Script file="RaiderIO.lua"/>
+<Script file="Ranker.lua"/>
 <Script file="RareScanner.lua"/>
 <Script file="Rarity.lua"/>
 <Script file="RCLootCouncil.lua"/>
