@@ -939,6 +939,70 @@ aObj.SetupMainline_UIFrames = function()
 
 	end
 
+	if aObj.isMnlnPTR then
+		aObj.blizzFrames[ftype].CooldownViewer = function(self)
+			if not self.prdb.CooldownViewer or self.initialized.CooldownViewer then return end
+			self.initialized.CooldownViewer = true
+
+			local BarBackground
+			local function skinItemFrame(itemFrame)
+				if aObj.modBtnBs then
+					aObj:addButtonBorder{obj=itemFrame, relTo=itemFrame.Icon, clr="grey"}
+				end
+				if itemFrame.Bar then
+					BarBackground = aObj:getRegion(itemFrame.Bar, 1)
+					aObj:skinObject("statusbar", {obj=itemFrame.Bar, fi=0, bg=BarBackground})
+					BarBackground:SetHeight(26)
+					BarBackground:ClearAllPoints()
+					BarBackground:SetPoint("LEFT", itemFrame.Bar, 0, 0)
+					BarBackground:SetPoint("RIGHT", itemFrame.Bar, 0, 0)
+				end
+			end
+			local function skinItemFrames(frame)
+				for itemFrame in frame.itemFramePool:EnumerateActive() do
+					skinItemFrame(itemFrame)
+				end
+				aObj:RawHook(frame.itemFramePool, "Acquire", function(this)
+					local itemFrame = aObj.hooks[this].Acquire(this)
+					skinItemFrame(itemFrame)
+					return itemFrame
+				end, true)
+			end
+			self:SecureHookScript(_G.EssentialCooldownViewer, "OnShow", function(this)
+
+				skinItemFrames(this)
+
+				self:Unhook(this, "OnShow")
+			end)
+			self:checkShown(_G.EssentialCooldownViewer)
+
+			self:SecureHookScript(_G.UtilityCooldownViewer, "OnShow", function(this)
+
+				skinItemFrames(this)
+
+				self:Unhook(this, "OnShow")
+			end)
+			self:checkShown(_G.UtilityCooldownViewer)
+
+			self:SecureHookScript(_G.BuffIconCooldownViewer, "OnShow", function(this)
+
+				skinItemFrames(this)
+
+				self:Unhook(this, "OnShow")
+			end)
+			self:checkShown(_G.BuffIconCooldownViewer)
+
+			self:SecureHookScript(_G.BuffBarCooldownViewer, "OnShow", function(this)
+
+				skinItemFrames(this)
+
+				self:Unhook(this, "OnShow")
+			end)
+			self:checkShown(_G.BuffBarCooldownViewer)
+
+		end
+	end
+
 	aObj.blizzFrames[ftype].CovenantToasts = function(self)
 		if not self.prdb.CovenantToasts or self.initialized.CovenantToasts then return end
 		self.initialized.CovenantToasts = true
