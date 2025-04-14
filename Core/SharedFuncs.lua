@@ -269,7 +269,7 @@ local function makeText(fStr, ...)
 		end
 		output = _G.strjoin(" ", fStr:format(_G.unpack(tmpTab)))
 	else
-		tmpTab[1] = fStr and _G.type(fStr) == "table" and makeString(fStr) or fStr or ""
+		tmpTab[1] = fStr and makeString(fStr) or ""
 		for _, str in _G.ipairs{...} do
 			tmpTab[#tmpTab + 1] = makeString(str)
 		end
