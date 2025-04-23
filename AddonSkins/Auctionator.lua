@@ -64,12 +64,14 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 272
 			aObj:checkShown(_G.Auctionator.State.TabFrameRef)
 		end
 
-		if _G.Auctionator.State.PageStatusFrameRef then
-			aObj:SecureHookScript(_G.Auctionator.State.PageStatusFrameRef, "OnShow", function(this)
-				aObj:skinObject("frame", {obj=this, kfs=true, rns=true})
+		for _, name in _G.pairs{"PageStatus", "ThrottlingTimeout"} do
+			if _G.Auctionator.State[name .. "FrameRef"] then
+				aObj:SecureHookScript(_G.Auctionator.State[name .. "FrameRef"], "OnShow", function(this)
+					aObj:skinObject("frame", {obj=this, kfs=true, rns=true, ofs=-4})
 
-				aObj:Unhook(this, "OnShow")
-			end)
+					aObj:Unhook(this, "OnShow")
+				end)
+			end
 		end
 
 		aObj:SecureHookScript(_G.AuctionatorShoppingFrame, "OnShow", function(this)
