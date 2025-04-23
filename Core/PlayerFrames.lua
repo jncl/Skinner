@@ -9,7 +9,7 @@ if not aObj.isClscERA then
 		if not self.prdb.AchievementUI.skin or self.initialized.AchievementUI then return end
 		self.initialized.AchievementUI = true
 
-		local skinAchievementsObjectives, skinCategories, skinBtn, cleanButtons
+		local skinAchievementsObjectives, skinCategories, skinBtn, cleanButtons = _G.nop, _G.nop, _G.nop, _G.nop
 		if aObj.isMnln then
 			function skinAchievementsObjectives()
 				local afao = _G.AchievementFrameAchievementsObjectives
@@ -37,9 +37,6 @@ if not aObj.isClscERA then
 					end
 				end
 			end
-			skinCategories = _G.nop
-			-- skinBtn = _G.nop
-			cleanButtons = _G.nop
 		else
 			skinAchievementsObjectives = _G.nop
 			function skinCategories()
@@ -145,7 +142,8 @@ if not aObj.isClscERA then
 							btn.Description:SetTextColor(.6, .6, .6, 1)
 						end
 					end
-					btn.Icon.frame:SetAlpha(0)
+					btn.Icon:DisableDrawLayer("BORDER")
+					btn.Icon:DisableDrawLayer("OVERLAY")
 					if aObj.modBtnBs then
 						aObj:addButtonBorder{obj=btn.Icon, fType=ftype, ofs=-3, y1=0, y2=6, clr={btn:GetBackdropBorderColor()}}
 					end
