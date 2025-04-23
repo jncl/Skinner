@@ -2176,8 +2176,9 @@ aObj.SetupMainline_UIFrames = function()
 
 	end
 
-	aObj.blizzLoDFrames[ftype].GenericTraitUI = function(self) -- used by DragonridingPanelSkills & MountJournalOpenDynamicFlightSkillTree
-		if self.initialized.GenericTraitUI then return end
+	-- used by DragonridingPanelSkills/MountJournalOpenDynamicFlightSkillTree/VisionUpgrades
+	aObj.blizzLoDFrames[ftype].GenericTraitUI = function(self)
+		if not self.prdb.GenericTraitUI or self.initialized.GenericTraitUI then return end
 		self.initialized.GenericTraitUI = true
 
 		self:SecureHookScript(_G.GenericTraitFrame, "OnShow", function(this)
@@ -3996,6 +3997,7 @@ aObj.SetupMainline_UIFramesOptions = function(self)
 		["Event Toast Manager"]          = {suff = "Frame"},
 		["Expansion Landing Page"]       = true,
 		["Garrison UI"]                  = true,
+		["Generic Trait UI"]             = true,
 		["Help Tip"]                     = {desc = "Help Tips"},
 		["Islands Party Pose UI"]        = true,
 		["Islands Queue UI"]             = true,
