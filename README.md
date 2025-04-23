@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Skinner changes the look of the default UI (Retail & Classic)
+Skinner changes the look of the default UI for ALL game versions
 
 ### To disable AddOn skinning
 
