@@ -1088,16 +1088,13 @@ aObj.SetupMainline_PlayerFrames = function()
 					aObj:skinObject("statusbar", {obj=bar.Bar, fi=0, bg=aObj:getRegion(bar.Bar, bar.template:find("Progress") and 5 or 4)})
 				end
 			end
-			local modName, layoutChildren
+			local modName
 			local function skinModule(module, _)
 				modName = module:GetName()
-
 				if aObj.prdb.ObjectiveTracker.headers then
 					module.Header.Background:SetTexture(nil)
 				end
-
 				if module.hasContents then
-
 					if modName == "ScenarioObjectiveTracker" then
 						for _, block in _G.pairs(module.FixedBlocks) do
 							if block == module.ObjectivesBlock then
@@ -1110,12 +1107,7 @@ aObj.SetupMainline_PlayerFrames = function()
 								end
 							elseif block == module.StageBlock then
 								aObj:skinObject("frame", {obj=block, fType=ftype, kfs=true, ofs=0, clr="sepia"})
-								layoutChildren = block.WidgetContainer:GetLayoutChildren()
-								for _, widget in _G.ipairs(layoutChildren) do
-									if widget.widgetType == 29 then -- ScenarioHeaderDelves
-										aObj:skinObject("frame", {obj=widget, fType=ftype, kfs=true, ofs=-4, x1=7, x2=-7, clr="sepia"})
-									end
-								end
+								-- N.B. widgets skinned in UIWidgets skinWidget function
 							elseif block == module.TopWidgetContainerBlock
 							or block == module.BottomWidgetContainerBlock
 							then
@@ -1152,7 +1144,6 @@ aObj.SetupMainline_PlayerFrames = function()
 							end
 						end
 					end
-
 					if module.usedBlocks then
 						for template, blocks in _G.pairs(module.usedBlocks) do
 							if template:find("AutoQuestPopUp") then

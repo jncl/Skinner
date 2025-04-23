@@ -3441,7 +3441,7 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 				setTextColor(lineFrame.Text)
 			end
 		elseif wFrame.widgetType == 11 then -- ScenarioHeaderCurrenciesAndBackground
-			wFrame.Frame:SetTexture(nil)
+			aObj:skinObject("frame", {obj=wFrame, fType=ftype, kfs=true, ofs=-4, x1=7, x2=-7, clr="red"})
 		elseif wFrame.widgetType == 12 then -- TextureAndText
 			-- .Background
 			wFrame.Foreground:SetTexture(nil)
@@ -3501,7 +3501,7 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 		elseif wFrame.widgetType == 28 then -- TugOfWar
 			_G.nop()
 		elseif wFrame.widgetType == 29 then -- ScenarioHeaderDelves
-			_G.nop()
+			aObj:skinObject("frame", {obj=wFrame, fType=ftype, kfs=true, ofs=-4, x1=7, x2=-7, clr="sepia"})
 		end
 	end
 
