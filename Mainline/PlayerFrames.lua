@@ -29,7 +29,9 @@ aObj.SetupMainline_PlayerFrames = function()
 				this.PerksTab.CrestFrame["CrestRune" .. i]:SetAtlas(nil)
 			end
 			-- hook this to stop Background being Refreshed
-			_G.ArtifactPerksMixin.RefreshBackground = _G.nop
+			self:RawHook(_G.ArtifactPerksMixin, "RefreshBackground", function(_)
+				_G.nop()
+			end, true)
 			local function skinPowerBtns()
 				if this.PerksTab.PowerButtons then
 					for _, btn in _G.pairs(this.PerksTab.PowerButtons) do
