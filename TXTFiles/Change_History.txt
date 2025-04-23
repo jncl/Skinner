@@ -1,3 +1,14 @@
+beta11.60257.1
+Jncl:
+	Updated ToDo*.txt files
+	Updated Change_History.txt
+	Updated Version numbers
+	Updated TOC
+	Retail PTR changes
+	Bugfix for CustomPrint error, closes #2106
+	Updated Auctionator skin
+	Skinned Ranker, closes #207
+
 beta11.60142.1
 Jncl:
 	Updated ToDo*.txt files
