@@ -297,7 +297,8 @@ aObj.blizzFrames[ftype].GossipFrame = function(self)
 	self.initialized.GossipFrame = true
 
 	local skinGossip = _G.nop
-	if not (self:isAddonEnabled("Quester")
+	if not self.isMnln
+	and not (self:isAddonEnabled("Quester")
 	and _G.QuesterDB.gossipColor)
 	then
 		function skinGossip(...)
@@ -325,10 +326,10 @@ aObj.blizzFrames[ftype].GossipFrame = function(self)
 	self:SecureHookScript(_G.GossipFrame, "OnShow", function(this)
 		self:keepFontStrings(this.GreetingPanel)
 		self:skinObject("scrollbar", {obj=this.GreetingPanel.ScrollBar, fType=ftype})
-		if not aObj.isMnlnPTR then
+		if not self.isMnln then
 			_G.ScrollUtil.AddInitializedFrameCallback(this.GreetingPanel.ScrollBox, skinGossip, aObj, true)
 		else
-			_G.SetCVar("questTextContrast", 4) -- Set Quest Text to white
+			_G.SetCVar("questTextContrast", 4) -- Set Quest Text to white on black
 			this:UpdateScrollBox()
 		end
 		local sBar = self.isMnln and this.FriendshipStatusBar or _G.NPCFriendshipStatusBar
