@@ -7,11 +7,11 @@ local buildInfo = {
 	-- wow_beta            = {"11.0.2", 56263, "The War Within Beta"},
 	wow_classic_ptr     = {"4.4.2",  59185, "PTR (Cataclysm Classic)"},
 	wow_classic_era_ptr = {"1.15.7", 60141, "PTR (Classic Era)"},
-	wow_ptr             = {"11.1.5", 60253, "PTR (TWW 11.1.5"},
+	wow_ptr             = {"11.1.5", 60428, "PTR (TWW 11.1.5"},
 	wow_ptr_x           = {"11.1.0", 59347, "PTR (TWW 11.1.0)"},
-	wow_classic_era     = {"1.15.7", 60249, "World of Warcraft Classic"},
+	wow_classic_era     = {"1.15.7", 60277, "World of Warcraft Classic"},
 	wow_classic         = {"4.4.2",  60192, "Cataclysm Classic"},
-	wow                 = {"11.1.0", 60257, "World of Warcraft"},
+	wow                 = {"11.1.5", 60428, "World of Warcraft"},
 	curr                = {_G.GetBuildInfo()},
 }
 
