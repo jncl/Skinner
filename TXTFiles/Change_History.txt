@@ -1,3 +1,22 @@
+beta11.60428.1
+Jncl:
+	Updated ToDo.txt files
+	Updated Change_History.txt
+	Updated version numbers
+	Updated Viewport code
+	Updated TOC
+	Updated README file
+	Updated GossipFrame colour text code, closes #208
+	Updated SpellButton skinning code
+	Updated ArtifactUI skin
+	Removed incorrect MainlinePTR check
+	Skinned CooldownViewer
+	Updated GenericTraitUI skin & added option for it
+	Updated ObjectiveTracker & UIWidgets skins
+	Updated OverrideActionBar skin
+	Updated CompactRaidFrameManager skin
+	Updated AchievementUI skin
+	Updated Auctionator skin
 beta11.60257.1
 Jncl:
 	Updated ToDo*.txt files
