@@ -1340,7 +1340,6 @@ aObj.SetupOptions = function(self)
 		["Cinematic Frame"]       = true,
 		["Coin Pickup"]           = {suff = "Frame"},
 		["Color Picker"]          = {suff = "Frame"},
-		["Cooldown Viewer"]       = self.isMnlnPTR and true or nil,
 		["Debug Tools"]           = {suff = "Frames"},
 		["Event Trace"]           = true,
 		["Ghost Frame"]           = not self.isClscERA and true or nil,
