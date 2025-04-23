@@ -56,11 +56,11 @@ function module:OnInitialize()
 
 end
 
-local CinematicFrame_OnShow, CinematicFrame_OnHide
-function module:OnDisable()
+local CF_OnShow, CF_OnHide
+function module.OnDisable(_)
 
-	_G.CinematicFrame_OnShow = CinematicFrame_OnShow
-	_G.CinematicFrame_OnHide = CinematicFrame_OnHide
+	_G.CinematicFrame_OnShow = CF_OnShow
+	_G.CinematicFrame_OnHide = CF_OnHide
 
 	aObj:UnregisterEvent("CINEMATIC_STOP")
 	aObj:UnregisterEvent("STOP_MOVIE")
@@ -73,8 +73,8 @@ local uiP
 function module:OnEnable()
 
 	-- Store the existing functions
-	CinematicFrame_OnShow = _G.CinematicFrame_OnShow
-	CinematicFrame_OnHide = _G.CinematicFrame_OnHide
+	CF_OnShow = _G.CinematicFrame_OnShow
+	CF_OnHide = _G.CinematicFrame_OnHide
 	_G.CinematicFrame_OnShow = _G.nop
 	_G.CinematicFrame_OnHide = _G.nop
 
@@ -86,7 +86,7 @@ function module:OnEnable()
 		module:adjustViewPort("shown")
 	end)
 
-	uiP = _G.UIParent or _G.C_UI.GetUIParent and _G.C_UI:GetUIParent()
+	uiP = _G.C_UI.GetUIParent and _G.C_UI:GetUIParent() or _G.UIParent
 	self:adjustViewPort("init")
 
 end
@@ -171,7 +171,7 @@ function module:adjustViewPort(opt)
 
 end
 
-function module:GetOptions()
+function module.GetOptions(_)
 
 	local c
 	local options = {
