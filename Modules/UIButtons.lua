@@ -675,7 +675,7 @@ local function __addButtonBorder(opts)
 			ignTex	 = ignore changes to Normal & Pushed textures
 			ooc 	 = DON'T skin in combat
 			hide 	 = Hide if required (Better Bags)
-			sba 	 = Set button Alpha function
+			sba 	 = set button Alpha
 	--]]
 	--@debug@
 	_G.assert(opts and _G.type(opts) == "table", "Missing options table __addButtonBorder\n" .. _G.debugstack(2, 3, 2))
@@ -740,9 +740,6 @@ local function __addButtonBorder(opts)
 	relTo = opts.relTo or opts.libt and opts.obj.Icon or nil
 	opts.obj.sbb:SetPoint("TOPLEFT", relTo or opts.obj, "TOPLEFT", opts.x1, opts.y1)
 	opts.obj.sbb:SetPoint("BOTTOMRIGHT", relTo or opts.obj, "BOTTOMRIGHT", opts.x2, opts.y2)
-	if opts.sba then
-		opts.obj.sbb:SetAlpha(opts.sba)
-	end
 
 	-- reparent regions so they are displayed above the button border
 	for _, rpReg in _G.pairs(rpRegions) do
@@ -778,6 +775,14 @@ local function __addButtonBorder(opts)
 		aObj:clrButtonFromBorder(opts.obj)
 	else
 		aObj:clrBtnBdr(opts.obj, opts.clr, opts.ca)
+	end
+
+	-- hook button icon's alpha function if required (SpellBook)
+	if opts.sba then
+		aObj:SecureHook(opts.obj.Icon, "SetAlpha", function(this, alpha)
+			this:GetParent().sbb:SetAlpha(alpha)
+		end)
+		opts.obj.sbb:SetAlpha(opts.obj.Icon:GetAlpha())
 	end
 
 	-- hook these as required

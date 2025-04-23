@@ -1423,7 +1423,7 @@ aObj.SetupMainline_PlayerFrames = function()
 									sObj.Button.Border:SetAtlas(nil)
 								end)
 								if aObj.modBtnBs then
-									aObj:addButtonBorder{obj=btn, fType=ftype, relTo=btn.Icon, ofs=3, sba=btn.isUnlearned and btn.unlearnedIconAlpha or 1}
+									aObj:addButtonBorder{obj=btn, fType=ftype, relTo=btn.Icon, ofs=3, sba=true}
 								end
 							end
 						end
