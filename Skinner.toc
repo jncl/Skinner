@@ -1,4 +1,4 @@
-﻿## Interface: 110100, 40402, 11507
+﻿## Interface: 110105, 40402, 11507
 
 ## Title: Skinner
 ## Author: Jncl
@@ -42,9 +42,13 @@ Locales\_Locales.xml
 
 Core\_Core.xml
 
-# [Family]\_Support.xml
+#@version-retail@
+[Family]\_Support.xml
+#@end-version-retail@
+
+#@version-classic@
 Classic\_Support.xml
-Mainline\_Support.xml
+#@end-version-classic@
 
 Modules\_Modules.xml
 
