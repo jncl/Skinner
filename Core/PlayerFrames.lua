@@ -2253,8 +2253,21 @@ aObj.blizzFrames[ftype].CompactFrames = function(self)
 	end
 
 	-- Compact RaidFrame Manager
+	local function getBGHeightAdj()
+		if self.isMnln then
+			for _, bg in _G.ipairs(_G.CompactRaidFrameManager.backgrounds) do
+				-- aObj:Debug("CRFM.bg: [%s, %s]", bg, bg:IsShown())
+				if bg:IsShown() then
+					-- aObj:Debug("CRFM bg height: [%s, %s]", _G.Round(bg:GetHeight()))
+					return _G.Round(_G.CompactRaidFrameManager:GetHeight() - bg:GetHeight())
+				end
+			end
+		else
+			return -40
+		end
+	end
 	self:SecureHookScript(_G.CompactRaidFrameManager, "OnShow", function(this)
-		if aObj.isMnln then
+		if self.isMnln then
 			_G.nop()
 			-- TODO: skin Toggle button texture
 			-- .toggleButtonForward
@@ -2269,7 +2282,17 @@ aObj.blizzFrames[ftype].CompactFrames = function(self)
 				self.hooks[tObj].SetTexCoord(tObj, x1 == 0 and x1 + 0.22 or x1 + 0.26, x2, 0.33, 0.67)
 			end, true)
 		end
-		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ofs=0, y2=-40})
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ofs=0, y2=getBGHeightAdj()})
+		if self.isMnln then
+			local point, relativeTo, relativePoint, offsetX, offsetY, hAdj
+			self:SecureHook("CompactRaidFrameManager_UpdateOptionsFlowContainer", function()
+				point, relativeTo, relativePoint, offsetX, offsetY = _G.CompactRaidFrameManager.sf:GetPoint(2)
+				hAdj = getBGHeightAdj()
+				if _G.Round(offsetY) ~=  hAdj then
+					_G.CompactRaidFrameManager.sf:SetPoint(point, relativeTo, relativePoint, offsetX, hAdj)
+				end
+			end)
+		end
 
 		self:SecureHookScript(this.displayFrame, "OnShow", function(fObj)
 			self:keepFontStrings(fObj)
