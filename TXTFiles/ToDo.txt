@@ -16,5 +16,3 @@ ToDos
 
 #204 ?	I/C UI Frames options have a blank toggle entry
 	 ?	i/E
-
-#208 √	I/M Quest Text unreadable
