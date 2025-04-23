@@ -2586,6 +2586,7 @@ if not aObj.isClscERA then
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.OverrideActionBar)
 
 	end
 end
