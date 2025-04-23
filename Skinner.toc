@@ -42,13 +42,9 @@ Locales\_Locales.xml
 
 Core\_Core.xml
 
-#@version-retail@
-[Family]\_Support.xml
-#@end-version-retail@
-
-#@version-classic@
+# [Family]\_Support.xml
 Classic\_Support.xml
-#@end-version-classic@
+Mainline\_Support.xml
 
 Modules\_Modules.xml
 
