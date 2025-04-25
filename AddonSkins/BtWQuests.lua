@@ -85,9 +85,13 @@ aObj.addonsToSkin.BtWQuests = function(self) -- v 2.50.2
 		self:Unhook(this, "OnShow")
 	end)
 
-	-- tooltip
 	_G.C_Timer.After(0.1, function()
 		self:add2Table(self.ttList, _G.BtWQuestsTooltip)
 	end)
+
+	self.mmButs["BtWQuests"] = _G.BtWQuestsMinimapButton
+	_G.BtWQuestsMinimapButton:SetSize(24, 24)
+	_G.BtWQuestsMinimapButtonIcon:SetDrawLayer("ARTWORK")
+	self:moveObject{obj=_G.BtWQuestsMinimapButtonIcon, x=-5, y=5}
 
 end
