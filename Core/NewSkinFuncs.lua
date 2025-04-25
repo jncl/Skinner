@@ -161,6 +161,7 @@ aObj.skinTPLs = {
 		-- hdr         = true, -- header texture(s)
 		hOfs 		= -7, -- header text offset
 		-- noBdr       = true, -- equivalent to bd=11 when true
+		-- bclr        = "backdrop", -- backdrop colour
 		-- ba          = 1, -- backdrop alpha
 		-- clr         = "default", -- backdrop border colour
 		-- ca          = 1, -- backdrop border alpha
@@ -295,7 +296,6 @@ function aObj:skinObject(...)
 
 end
 
-local r, g, b, a
 local function applySkin(tbl)
 	--@debug@
 	_G.assert(tbl.obj, "Missing object (applySkin)\n" .. _G.debugstack(2, 3, 2))
@@ -324,8 +324,11 @@ local function applySkin(tbl)
 	end
 	aObj:addBackdrop(tbl.obj)
 	tbl.obj:SetBackdrop(aObj.Backdrop[tbl.bd])
-	r, g, b, a = aObj.bClr:GetRGBA()
-	tbl.obj:SetBackdropColor(r, g, b, tbl.ba or a)
+	if _G.type(tbl.bclr) == "table" then
+		tbl.obj:SetBackdropColor(_G.unpack(tbl.bclr))
+	else
+		aObj:clrBC(tbl.obj, tbl.bclr, tbl.ba)
+	end
 	if _G.type(tbl.bbclr) == "table" then
 		tbl.obj:SetBackdropBorderColor(_G.unpack(tbl.bbclr))
 	else
@@ -738,6 +741,7 @@ local function skinFrame(tbl)
 	local so  = aObj.skinTPLs("skin", tbl.aso)
 	so.obj    = tbl.obj.sf
 	so.fType  = tbl.fType
+	so.bclr   = tbl.bclr
 	so.ba     = tbl.ba
 	so.bbclr  = tbl.clr
 	so.bba    = tbl.ca
