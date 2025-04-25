@@ -138,6 +138,7 @@
 <Script file="Mapster.lua"/>
 <Script file="MasterPlan.lua"/>
 <Script file="MinimalArchaeology.lua"/>
+<Script file="MinimapButtonButton.lua"/>
 <Script file="MinimapButtonFrame.lua"/>
 <Script file="MissingTradeSkillsList.lua"/>
 <Script file="ModernCharacterFrame.lua"/>
