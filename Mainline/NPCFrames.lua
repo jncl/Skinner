@@ -505,6 +505,28 @@ aObj.SetupMainline_NPCFrames = function()
 	end
 
 	aObj.blizzFrames[ftype].GuildRenameFrame = function(self)
+		if not self.prdb.GuildRegistrar or self.initialized.GuildRenameFrame then return end
+		self.initialized.GuildRenameFrame = true
+
+		self:SecureHookScript(_G.GuildRenameFrame, "OnShow", function(this)
+			this.TitleFlow.Description:SetTextColor(aObj.BT:GetRGB())
+			self:skinObject("editbox", {obj=this.RenameFlow.NameBox, fType=ftype})
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true})
+			if self.modBtns then
+				self:skinStdButton{obj=this.ContextButton, fType=ftype, sechk=true}
+			end
+
+			self:Unhook(this, "OnShow")
+		end)
+
+		self:SecureHook(_G.GuildRenameFrame, "UpdateFontStrings", function(this, _)
+			for fontString in _G.pairs(this.fontStrings) do
+				fontString:SetTextColor(aObj.BT:GetRGB())
+			end
+		end)
+
+	end
+
 	aObj.blizzLoDFrames[ftype].ItemInteractionUI = function(self) -- a.k.a. Titanic Purification/Runecarver reclaim soulessence/Creation Catalyst
 		if not self.prdb.ItemInteractionUI or self.initialized.ItemInteractionUI then return end
 		self.initialized.ItemInteractionUI = true
