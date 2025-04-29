@@ -48,7 +48,6 @@ function aObj:OnInitialize()
 		self.prdb.MainMenuBar.actbtns = false
 		self.prdb.Nameplates          = false
 		self:DisableModule("UnitFrames")
-		self.prdb.CastingBar.skin     = false
 	end
 
 	-- handle changes to TabDDTextures options
