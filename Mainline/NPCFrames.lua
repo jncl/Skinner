@@ -504,6 +504,7 @@ aObj.SetupMainline_NPCFrames = function()
 
 	end
 
+	aObj.blizzFrames[ftype].GuildRenameFrame = function(self)
 	aObj.blizzLoDFrames[ftype].ItemInteractionUI = function(self) -- a.k.a. Titanic Purification/Runecarver reclaim soulessence/Creation Catalyst
 		if not self.prdb.ItemInteractionUI or self.initialized.ItemInteractionUI then return end
 		self.initialized.ItemInteractionUI = true
