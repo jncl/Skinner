@@ -611,33 +611,72 @@ aObj.SetupMainline_NPCFrames = function()
 
 			self:SecureHookScript(this.ProductsFrame, "OnShow", function(fObj)
 				self:skinObject("ddbutton", {obj=fObj.PerksProgramFilter, fType=ftype, filter=true})
-				self:removeNineSlice(fObj.ProductsScrollBoxContainer.Border)
-				self:skinObject("frame", {obj=fObj.ProductsScrollBoxContainer, fType=ftype, kfs=true, x1=-4})
-				self:skinObject("scrollbar", {obj=fObj.ProductsScrollBoxContainer.ScrollBar, fType=ftype})
-				local function skinProduct(...)
-					local _, element, elementData, new
-					if _G.select("#", ...) == 2 then
-						element, elementData = ...
-					elseif _G.select("#", ...) == 3 then
-						element, elementData, new = ...
-					else
-						_, element, elementData, new = ...
-					end
-					if new ~= false then
-						if aObj.modBtnBs
-						and elementData.isItemInfo
-						then
-							aObj:addButtonBorder{obj=element.ContentsContainer, relTo=element.ContentsContainer.Icon, fType=ftype}
-						end
-					end
-				end
-				_G.ScrollUtil.AddAcquiredFrameCallback(fObj.ProductsScrollBoxContainer.ScrollBox, skinProduct, aObj, true)
-				self:removeNineSlice(fObj.ProductsScrollBoxContainer.PerksProgramHoldFrame.NineSlice)
-				self:removeNineSlice(fObj.PerksProgramProductDetailsContainerFrame.Border)
-				self:skinObject("frame", {obj=fObj.PerksProgramProductDetailsContainerFrame, fType=ftype, kfs=true})
 				if self.modBtnBs then
 					self:addButtonBorder{obj=fObj.PerksProgramCurrencyFrame, fType=ftype, relTo=fObj.PerksProgramCurrencyFrame.Icon}
 				end
+
+				self:SecureHookScript(fObj.ProductsScrollBoxContainer, "OnShow", function(frame)
+					self:removeNineSlice(frame.Border)
+					self:skinObject("frame", {obj=frame, fType=ftype, kfs=true, x1=-4})
+					self:skinObject("scrollbar", {obj=frame.ScrollBar, fType=ftype})
+					local function skinProduct(...)
+						local _, element, elementData, new
+						if _G.select("#", ...) == 2 then
+							element, elementData = ...
+						elseif _G.select("#", ...) == 3 then
+							element, elementData, new = ...
+						else
+							_, element, elementData, new = ...
+						end
+						if new ~= false then
+							if aObj.modBtnBs
+							and elementData.isItemInfo
+							then
+								aObj:addButtonBorder{obj=element.ContentsContainer, relTo=element.ContentsContainer.Icon, fType=ftype}
+								aObj:addButtonBorder{obj=element.ContentsContainer.CartToggleButton, fType=ftype, es=28, ofs=3, clr="grey"}
+							end
+						end
+					end
+					_G.ScrollUtil.AddAcquiredFrameCallback(frame.ScrollBox, skinProduct, aObj, true)
+					self:removeNineSlice(frame.PerksProgramHoldFrame.NineSlice)
+
+					self:Unhook(frame, "OnShow")
+				end)
+				self:checkShown(fObj.ProductsScrollBoxContainer)
+
+				self:SecureHookScript(fObj.PerksProgramProductDetailsContainerFrame, "OnShow", function(frame)
+					self:removeNineSlice(frame.Border)
+					self:skinObject("frame", {obj=frame, fType=ftype, kfs=true})
+
+					self:skinObject("scrollbar", {obj=frame.SetDetailsScrollBoxContainer.ScrollBar, fType=ftype})
+					-- TODO: skin details entries
+					-- local function skinDetails(...)
+					-- 	local _, element, elementData
+					-- 	if _G.select("#", ...) == 2 then
+					-- 		element, elementData = ...
+					-- 	else
+					-- 		_, element, elementData = ...
+					-- 	end
+					-- end
+					-- _G.ScrollUtil.AddInitializedFrameCallback(frame.SetDetailsScrollBoxContainer.ScrollBox, skinDetails, aObj, true)
+
+					self:Unhook(frame, "OnShow")
+				end)
+				self:checkShown(fObj.PerksProgramProductDetailsContainerFrame)
+
+				self:SecureHookScript(fObj.PerksProgramShoppingCartFrame, "OnShow", function(frame)
+					-- TODO: skin ItemList entries
+					self:skinObject("frame", {obj=frame, fType=ftype, kfs=true, cb=true})
+					if self.modBtns then
+						frame.CloseButton:SetFrameLevel(1001)
+						self:skinStdButton{obj=frame.PurchaseCartButton, fType=ftype, ofs=-4}
+					end
+					if self.modBtnBs then
+						self:addButtonBorder{obj=frame.ClearCartButton, fType=ftype, es=36, x1=-3, x2=3}
+					end
+
+					self:Unhook(frame, "OnShow")
+				end)
 
 				self:Unhook(fObj, "OnShow")
 			end)
@@ -659,10 +698,15 @@ aObj.SetupMainline_NPCFrames = function()
 					self:skinStdButton{obj=fObj.LeaveButton, fType=ftype, ofs=-4}
 					self:skinStdButton{obj=fObj.PurchaseButton, fType=ftype, sechk=true, ofs=0, y2=-1}
 					self:skinStdButton{obj=fObj.RefundButton, fType=ftype, ofs=-4}
+					self:skinStdButton{obj=fObj.AddToCartButton, fType=ftype, ofs=-4}
+					self:skinStdButton{obj=fObj.RemoveFromCartButton, fType=ftype, ofs=-4}
 				end
 				if self.modBtnBs then
 					self:addButtonBorder{obj=fObj.RotateButtonContainer.RotateLeftButton, fType=ftype, ofs=-3}
 					self:addButtonBorder{obj=fObj.RotateButtonContainer.RotateRightButton, fType=ftype, ofs=-3}
+					self:addButtonBorder{obj=fObj.ViewCartButton, fType=ftype, reParent={fObj.ViewCartButton.ItemCountBG, fObj.ViewCartButton.ItemCountText}, es=28, sechk=true}
+					self:changeTandC(fObj.ViewCartButton.ItemCountBG)
+					self:moveObject{obj=fObj.ViewCartButton.ItemCountText, y=-3}
 				end
 				if self.modChkBtns then
 					self:skinCheckButton{obj=fObj.TogglePlayerPreview, fType=ftype}
@@ -670,10 +714,13 @@ aObj.SetupMainline_NPCFrames = function()
 					self:skinCheckButton{obj=fObj.ToggleHideArmor, fType=ftype}
 					self:skinCheckButton{obj=fObj.ToggleAttackAnimation, fType=ftype}
 				end
+				-- ErrorIndicator
+				-- PurchasedHistoryFrame
 
 				self:Unhook(fObj, "OnShow")
 			end)
 			self:checkShown(this.FooterFrame)
+
 
 			self:SecureHookScript(this.ThemeContainer, "OnShow", function(fObj)
 				fObj.ProductList:DisableDrawLayer("BACKGROUND")
