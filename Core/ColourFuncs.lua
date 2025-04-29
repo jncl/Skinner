@@ -3,12 +3,6 @@ local _, aObj = ...
 local _G = _G
 
 local r, g, b, _
-function aObj:clrBC(obj, clrName, alpha)
-
-	r, g, b, _ = self:getColourByName(clrName or "backdrop")
-	obj:SetBackdropColor(r, g, b, alpha or 1)
-
-end
 function aObj:clrBBC(obj, clrName, alpha)
 
 	r, g, b, _ = self:getColourByName(clrName)
@@ -90,7 +84,6 @@ function aObj:clrPNBtns(btnPrefix, isObj)
 end
 
 local clrTab = {
-	-- backdrop    = aObj.bbClr, [N.B. not populated when table is created]
 	black       = _G.BLACK_FONT_COLOR,
 	blue        = _G.BLUE_FONT_COLOR,
 	bright_blue = _G.BRIGHTBLUE_FONT_COLOR,
@@ -119,10 +112,6 @@ _G.setmetatable(clrTab, {__index = function(t, k)
 		return aObj.prdb.SliderBorder
 	elseif k == "unused" then
 		return t["red"]
-	elseif k == "backdrop" then
-		return aObj.bClr
-	elseif k == "class" then
-		return _G.RAID_CLASS_COLORS[aObj.uCls]
 	else
 		return aObj.bbClr
 	end
