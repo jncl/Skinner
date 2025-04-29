@@ -297,40 +297,50 @@ aObj.blizzFrames[ftype].GossipFrame = function(self)
 	self.initialized.GossipFrame = true
 
 	local skinGossip = _G.nop
-	if not self.isMnln
-	and not (self:isAddonEnabled("Quester")
+	if not (self:isAddonEnabled("Quester")
 	and _G.QuesterDB.gossipColor)
 	then
-		function skinGossip(...)
-			local _, element, elementData
-			if _G.select("#", ...) == 2 then
-				element, elementData = ...
-			elseif _G.select("#", ...) == 3 then
-				_, element, elementData = ...
-			end
-			if elementData.buttonType == 1 then -- Greeting
-				element.GreetingText:SetTextColor(aObj.HT:GetRGB())
-			elseif elementData.buttonType == 3 then -- Gossip
-				element:GetFontString():SetTextColor(aObj.BT:GetRGB())
-			elseif elementData.buttonType == 4 -- Quest
-			or elementData.buttonType == 5 -- Campaign Quest
-			then
-				_G.C_Timer.After(0.05, function()
-					element:SetText(elementData.info.title)
+		local text, hasCC
+		if not self.isMnln then
+			function skinGossip(...)
+				local _, element, elementData
+				if _G.select("#", ...) == 2 then
+					element, elementData = ...
+				elseif _G.select("#", ...) == 3 then
+					_, element, elementData = ...
+				end
+				if elementData.buttonType == 1 then -- Greeting
+					element.GreetingText:SetTextColor(aObj.HT:GetRGB())
+				elseif elementData.buttonType ~= 2 then -- Divider
+					text, hasCC = self:removeColourCodes(element:GetFontString():GetText())
+					if hasCC then
+						element:GetFontString():SetText(text)
+					end
 					element:GetFontString():SetTextColor(aObj.BT:GetRGB())
-				end)
+				end
 			end
+		else
+			self:SecureHook(_G.GossipFrame, "UpdateFontStrings", function(this, _)
+				for fontString in _G.pairs(this.fontStrings) do
+					if fontString:GetParentKey() == "GreetingText" then
+						fontString:SetTextColor(aObj.HT:GetRGB())
+					else
+						text, hasCC = self:removeColourCodes(fontString:GetText())
+						if hasCC then
+							fontString:SetText(text)
+						end
+						fontString:SetTextColor(aObj.BT:GetRGB())
+					end
+				end
+			end)
 		end
 	end
 
 	self:SecureHookScript(_G.GossipFrame, "OnShow", function(this)
 		self:keepFontStrings(this.GreetingPanel)
 		self:skinObject("scrollbar", {obj=this.GreetingPanel.ScrollBar, fType=ftype})
-		if not self.isMnln then
+		if not aObj.isMnln then
 			_G.ScrollUtil.AddInitializedFrameCallback(this.GreetingPanel.ScrollBox, skinGossip, aObj, true)
-		else
-			_G.SetCVar("questTextContrast", 4) -- Set Quest Text to white on black
-			this:UpdateScrollBox()
 		end
 		local sBar = self.isMnln and this.FriendshipStatusBar or _G.NPCFriendshipStatusBar
 		self:removeRegions(sBar, {1, 2, 5, 6, 7, 8 ,9})

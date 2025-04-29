@@ -122,6 +122,27 @@ function aObj.getColourByName(_, clrName)
 
 end
 
+local newText
+function aObj.removeColourCodes(_, text)
+
+	-- N.B. codes checked for are ASCII
+	if text then
+		newText = text
+		for _, aCode in _G.pairs{"\124\99", "\124\67"} do -- if string contains colour prefix [7C 63/43] |c & |C
+			if text:find(aCode) then
+				if text:match("n%D+_COLOR:") then -- if string contains a color name, e.g. nPURE_BLUE_COLOR:
+					newText = text:gsub(aCode .. "n%D+_COLOR:", "") -- remove colour name
+				else
+					newText = text:gsub(aCode .. "%x%x%x%x%x%x%x%x", "") -- remove hex digits
+				end
+				newText = newText:gsub("\124\114", "") -- remove colour suffix [7C 72] |r
+			end
+		end
+		return newText, newText ~= text
+	end
+
+end
+
 function aObj:setBtnClr(bObj, quality)
 
 	-- handle in combat
