@@ -1394,19 +1394,6 @@ function aObj:SetupCmds()
 		end)
 		self:scanChildren{obj=frame, cbstr=frame:GetDebugName() .. "_getChildren_" .. _G.tostring(lvl), reversed=false}
 
-		-- for k, child in _G.ipairs{frame:GetChildren()} do
-		-- 	showIt("[lvl%sc%s : %s : %s : %s : %s : %s]", lvl, k, child, child.GetWidth and _G.Round(child:GetWidth()) or "nil", child.GetHeight and _G.Round(child:GetHeight()) or "nil", child:GetFrameLevel() or "nil", child:GetFrameStrata() or "nil")
-		-- 	local objType = child:GetObjectType()
-		-- 	if objType == "Frame"
-		-- 	or objType == "Button"
-		-- 	or objType == "StatusBar"
-		-- 	or objType == "Slider"
-		-- 	or objType == "ScrollFrame"
-		-- 	then
-		-- 		getRegions(child, lvl .. "c" .. k)
-		-- 		getChildren(child, lvl + k, showKids, noDepth)
-		-- 	end
-		-- end
 	end
 	local function showInfo(obj, showKids, noDepth)
 		_G.print("showInfo:", obj, showKids, noDepth, obj.IsForbidden and obj:IsForbidden())
