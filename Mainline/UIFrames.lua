@@ -3574,6 +3574,7 @@ aObj.SetupMainline_UIFrames = function()
 				end
 			end
 		end
+		-- TODO: Ensure frame appears below button border
 		self:SecureHookScript(_G.SpellFlyout, "OnShow", function(this)
 			self:keepFontStrings(this.Background)
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, sft=true, fb=true, ofs=1})
