@@ -28,12 +28,12 @@
 ## Category-esES: Renovación de la Interfaz de Usuario
 ## Category-esMX: Renovación de la Interfaz de Usuario
 ## Category-frFR: Révision de l'Interface Utilisateur
-## Category-itIT:
-## Category-koKR:
+## Category-itIT: Revisione dell'interfaccia utent
+## Category-koKR: UI 개편
 ## Category-ptBR: Reformulação da Interface do Usuário
 ## Category-ruRU: Переработка UI
 ## Category-zhCN: UI整合
-## Category-zhTW: UI整合包
+## Category-zhTW: UI大改
 
 Libs\_Required.xml
 Libs\_Optional.xml
