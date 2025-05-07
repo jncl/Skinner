@@ -137,6 +137,7 @@
 <Script file="LUI.lua"/>
 <Script file="Mapster.lua"/>
 <Script file="MasterPlan.lua"/>
+<Script file="MDungeonTeleports.lua"/>
 <Script file="MinimalArchaeology.lua"/>
 <Script file="MinimapButtonButton.lua"/>
 <Script file="MinimapButtonFrame.lua"/>
