@@ -2486,7 +2486,10 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 
 	local function skinDBI(_, dbiBtn, name)
 		dbiBtn:SetSize(24, 24)
-		aObj:moveObject{obj=dbiBtn.icon, x=-3, y=3}
+		-- DON'T move icons with multiple points
+		if dbiBtn.icon:GetNumPoints() == 1 then
+			aObj:moveObject{obj=dbiBtn.icon, x=-3, y=3}
+		end
 		-- FIXME: this is to move button off the minimap, required until LibDBIcon is fixed
 		if aObj.isMnln then
 			aObj:moveObject{obj=dbiBtn, x=-36, y=0}
@@ -2851,17 +2854,17 @@ aObj.blizzFrames[ftype].Settings = function(self)
 					aObj:skinObject("frame", {obj=element.DropDown.Button.Popout, fType=ftype, kfs=true, ofs=0, y2=20})
 				end
 			end
-			if aObj.modBtnBs then
+			if aObj.modBtns then
 				if element.Control -- N.B. Retail
 				and element.Control.DecrementButton
 				then
-					aObj:addButtonBorder{obj=element.Control.IncrementButton, fType=ftype, sechk=true}
-					aObj:addButtonBorder{obj=element.Control.DecrementButton, fType=ftype, sechk=true}
+					aObj:skinStdButton{obj=element.Control.IncrementButton, fType=ftype, sechk=true, ofs=1}
+					aObj:skinStdButton{obj=element.Control.DecrementButton, fType=ftype, sechk=true, ofs=1}
 				elseif element.DropDown
 				and element.DropDown.DecrementButton
 				then
-					aObj:addButtonBorder{obj=element.DropDown.IncrementButton, fType=ftype, sechk=true, ofs=-2, y1=-3}
-					aObj:addButtonBorder{obj=element.DropDown.DecrementButton, fType=ftype, sechk=true, ofs=-2, y1=-3}
+					aObj:skinStdButton{obj=element.DropDown.IncrementButton, fType=ftype, sechk=true, ofs=1}
+					aObj:skinStdButton{obj=element.DropDown.DecrementButton, fType=ftype, sechk=true, ofs=1}
 				end
 			end
 			if aObj.modChkBtns
