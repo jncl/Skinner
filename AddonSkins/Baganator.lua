@@ -303,7 +303,10 @@ aObj.addonsToSkin.Baganator = function(self) -- v 665
 	end
 
 	-- hook current frame names
-	setupFrameHooks(_G.Baganator.API.Skins.GetCurrentSkin())
+	-- added a short delay, fixes #217
+	_G.C_Timer.After(0.5, function()
+		setupFrameHooks(_G.Baganator.API.Skins.GetCurrentSkin())
+	end)
 
 	-- track Theme changes
 	_G.Baganator.CallbackRegistry:RegisterCallback("FrameGroupSwapped", function()
