@@ -1,12 +1,20 @@
 beta11.60428.2
 Jncl:
-	Updated ToDo.txt files
+	Updated ToDo*.txt files
+	Updated Change_History.txt
+	Added ability to colour skin Background
+	Updated BtWQuests skin
+	Skinned MinimapButtonButton, closes #209
+
+beta11.60428.2
+Jncl:
+	Updated ToDo*.txt files
 	Updated Change_History.txt
 	Updated TOC to revert version keywords entries
 
 beta11.60428.1
 Jncl:
-	Updated ToDo.txt files
+	Updated ToDo*.txt files
 	Updated Change_History.txt
 	Updated version numbers
 	Updated Viewport code
