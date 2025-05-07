@@ -249,7 +249,7 @@ function module:skinActionBtn(bObj, ftype)
 		else
 			_G[bObj:GetName() .. "NormalTexture"]:SetTexture(nil)
 		end
-		self:addButtonBorder{obj=bObj, fType=ftype, sabt=true, ofs=3}
+		self:addButtonBorder{obj=bObj, fType=ftype, sabt=true, rpA=true, ofs=3}
 	end
 
 end
@@ -622,8 +622,8 @@ function module.skinStdButton(_, ...)
 
 end
 
--- N.B. removed following texture to allow Dropdown button texture to be below button border
--- , "Arrow"
+-- N.B. removed "Arrow" texture to allow Dropdown button texture to be below button border
+-- therefore need to add rpA=true to buttons which have a Flyout capability
 local rpRegions = {
 	"ActionBarHighlight", "AutoCastable", "AutoCastOverlay", "AutoCastShine", "Border", "Count", "Flash", "Glow", "HotKey",
 	"IconBorder","IconQuestTexture", "ItemContextOverlay", "ItemOverlay", "ItemOverlay2", "LevelLinkLockIcon", "Name", "NewActionTexture",
@@ -676,6 +676,7 @@ local function __addButtonBorder(opts)
 			ooc 	 = DON'T skin in combat
 			hide 	 = Hide if required (Better Bags)
 			sba 	 = set button Alpha
+			rpA 	 = reParent Arrow Texture
 	--]]
 	--@debug@
 	_G.assert(opts and _G.type(opts) == "table", "Missing options table __addButtonBorder\n" .. _G.debugstack(2, 3, 2))
@@ -725,11 +726,11 @@ local function __addButtonBorder(opts)
 	template = opts.sft and "SecureFrameTemplate" or opts.sabt and "SecureActionButtonTemplate" or opts.iabt and "InsecureActionButtonTemplate" or opts.subt and "SecureUnitButtonTemplate"
 	opts.obj.sbb = _G.CreateFrame(opts.obj:GetObjectType(), nil, opts.obj, template)
 	opts.obj.sbb:EnableMouse(false) -- enable clickthrough
+	opts.obj.sbb:SetShown(not opts.hide)
 	aObj:addBackdrop(opts.obj.sbb)
 	-- DON'T lower the frame level otherwise the border appears below the frame
 	-- setup and apply the backdrop
 	opts.obj.sbb:SetBackdrop({edgeFile = aObj.Backdrop[1].edgeFile, edgeSize = opts.es or aObj.Backdrop[1].edgeSize})
-	opts.obj.sbb:SetShown(not opts.hide)
 	-- position the frame
 	opts.ofs = opts.ofs or 2
 	opts.x1 = opts.x1 or opts.ofs * -1
@@ -744,6 +745,9 @@ local function __addButtonBorder(opts)
 	-- reparent regions so they are displayed above the button border
 	for _, rpReg in _G.pairs(rpRegions) do
 		reparentRegion(opts.obj[rpReg], opts.obj.sbb)
+	end
+	if opts.rpA then
+		reparentRegion(opts.obj.Arrow, opts.obj.sbb)
 	end
 	reparentRegion(opts.obj:GetName() and _G[opts.obj:GetName() .. "Name"], opts.obj.sbb)
 	reparentRegion(opts.obj:GetName() and _G[opts.obj:GetName() .. "Stock"], opts.obj.sbb)

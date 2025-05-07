@@ -1058,7 +1058,7 @@ if not aObj.isClscERA then
 			if self.modBtnBs then
 				if self.isMnln then
 					self:addButtonBorder{obj=this.SlotButton, fType=ftype, relTo=this.SlotButton.ItemIcon}
-					self:addButtonBorder{obj=this.ToggleDynamicFlightFlyoutButton, fType=ftype, ofs=4}
+					self:addButtonBorder{obj=this.ToggleDynamicFlightFlyoutButton, fType=ftype, rpA=true, ofs=4}
 					this.ToggleDynamicFlightFlyoutButton:SetFrameLevel(10)
 					self:addButtonBorder{obj=this.SummonRandomFavoriteButton, fType=ftype, ofs=3}
 				else

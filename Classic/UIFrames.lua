@@ -152,7 +152,7 @@ aObj.SetupClassic_UIFrames = function()
 					btn.FlyoutBorderShadow:SetTexture(nil)
 					if aObj:canSkinActionBtns() then
 						_G[btn:GetName() .. "NormalTexture"]:SetTexture(nil)
-						aObj:addButtonBorder{obj=btn, fType=ftype, sabt=true, ofs=3}
+						aObj:addButtonBorder{obj=btn, fType=ftype, sabt=true, rpA=true, ofs=3}
 					end
 				end
 				function skinMultiBarBtns(type)
