@@ -2956,7 +2956,7 @@ aObj.blizzFrames[ftype].Settings = function(self)
 	end)
 
 	-- tooltip
-	_G.C_Timer.After(0.1, function()
+	_G.C_Timer.After(0.5, function()
 		self:add2Table(self.ttList, _G.SettingsTooltip)
 	end)
 
