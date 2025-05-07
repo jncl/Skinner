@@ -1223,14 +1223,8 @@ if not aObj.isClscERA then
 			skinTTip(_G.PetJournalSecondaryAbilityTooltip)
 		end
 
-		local skinPageBtns, skinCollectionBtn
+		local skinCollectionBtn
 		if self.modBtnBs then
-			function skinPageBtns(frame)
-				aObj:skinPagingControls(frame.PagingFrame)
-				aObj:SecureHook(frame.PagingFrame, "Update", function(this)
-					aObj:clrPNBtns(this, true)
-				end)
-			end
 			function skinCollectionBtn(btn)
 				if btn.sbb then
 					if btn.slotFrameUncollected:IsShown() then
@@ -1262,7 +1256,7 @@ if not aObj.isClscERA then
 				self:skinStdButton{obj=_G.ToyBoxFilterButton, ftype=ftype}
 			end
 			if self.modBtnBs then
-				skinPageBtns(this)
+				self:skinPageBtns(this)
 				self:SecureHook("ToySpellButton_UpdateButton", function(fObj)
 					skinCollectionBtn(fObj)
 				end)
@@ -1301,7 +1295,7 @@ if not aObj.isClscERA then
 				end
 			end
 			if self.modBtnBs then
-				skinPageBtns(this)
+				self:skinPageBtns(this)
 				if self.isMnln then
 					self:SecureHook(this, "UpdateButton", function(_, button)
 						skinCollectionBtn(button)
@@ -1353,7 +1347,7 @@ if not aObj.isClscERA then
 						self:skinObject("ddbutton", {obj=fObj.WeaponDropdown, fType=ftype})
 						self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, rns=true, fb=true, x1=x1Ofs, y1=y1Ofs, x2=x2Ofs, y2=y2Ofs})
 						if self.modBtnBs then
-							skinPageBtns(fObj)
+							self:skinPageBtns(fObj)
 							for _, btn in _G.pairs(fObj.Models) do
 								self:removeRegions(btn, {2}) -- background & border
 								self:addButtonBorder{obj=btn, reParent={btn.NewString, btn.Favorite.Icon, btn.HideVisual.Icon}, ofs=6}
@@ -1422,7 +1416,7 @@ if not aObj.isClscERA then
 						self:SecureHookScript(this.SetsTransmogFrame, "OnShow", function(fObj)
 							self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, rns=true, fb=true, x1=x1Ofs, y1=y1Ofs, x2=x2Ofs, y2=y2Ofs})
 							if self.modBtnBs then
-								skinPageBtns(fObj)
+								self:skinPageBtns(fObj)
 								for _, btn in _G.pairs(fObj.Models) do
 									self:removeRegions(btn, {2}) -- background & border
 									self:addButtonBorder{obj=btn, fType=ftype, reParent={btn.Favorite.Icon}, ofs=6}
@@ -1488,12 +1482,11 @@ if not aObj.isClscERA then
 						self:skinObject("frame", {obj=child, fType=ftype, fb=true, ofs=4, x1=-3, clr="grey"})
 					end
 				end
-				self:skinPagingControls(this.IconsFrame.Icons.Controls.PagingControls)
+				self:skinPageBtns(this.IconsFrame.Icons.Controls)
 				if self.modChkBtns then
 					this.IconsFrame.Icons.Controls.ShowOwned.Checkbox:SetSize(24, 24)
 					self:skinCheckButton{obj=this.IconsFrame.Icons.Controls.ShowOwned.Checkbox, fType=ftype}
 				end
-
 
 				self:Unhook(this, "OnShow")
 			end)

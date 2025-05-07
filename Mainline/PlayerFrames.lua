@@ -1439,9 +1439,9 @@ aObj.SetupMainline_PlayerFrames = function()
 				self:skinObject("frame", {obj=fObj.PagedSpellsFrame, fType=ftype, kfs=true, fb=true, x1=0, y1=8, x2=3, y2=-4})
 				skinSpells()
 				fObj.PagedSpellsFrame:RegisterCallback(_G.PagedContentFrameBaseMixin.Event.OnUpdate, skinSpells, aObj)
-				self:skinPagingControls(fObj.PagedSpellsFrame.PagingControls)
 				if self.modChkBtns then
 					self:skinCheckButton{obj=fObj.HidePassivesCheckButton.Button, fType=ftype}
+				self:skinPageBtns(fObj.PagedSpellsFrame)
 				end
 
 				self:Unhook(fObj, "OnShow")

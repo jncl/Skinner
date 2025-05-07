@@ -1216,6 +1216,21 @@ function aObj:setupTextures()
 
 end
 
+local fObj, method
+function aObj:skinPageBtns(frame)
+	if frame.PagingControls then
+		fObj = frame.PagingControls
+		method = "UpdateControls"
+	else
+		fObj = frame.PagingFrame
+		method = "Update"
+	end
+	self:skinPagingControls(fObj)
+	self:SecureHook(fObj, method, function(this)
+		self:clrPNBtns(this, true)
+	end)
+end
+
 function aObj:updateSBTexture()
 
 	-- get updated colour/texture

@@ -1068,7 +1068,8 @@ aObj.SetupMainline_UIFrames = function()
 
 		self:SecureHookScript(_G.DelvesCompanionAbilityListFrame, "OnShow", function(this)
 			self:skinObject("ddbutton", {obj=this.DelvesCompanionRoleDropdown, fType=ftype})
-			self:skinPagingControls(this.DelvesCompanionAbilityListPagingControls)
+			this.PagingControls = this.DelvesCompanionAbilityListPagingControls
+			self:skinPageBtns(this)
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true})
 			if self.modBtnBs then
 				local function skinAbilityButtons()
