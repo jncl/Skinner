@@ -134,7 +134,6 @@
 <Script file="LiteBag.lua"/>
 <Script file="Livestock.lua"/>
 <Script file="ls_Toasts.lua"/>
-<Script file="LUI.lua"/>
 <Script file="Mapster.lua"/>
 <Script file="MasterPlan.lua"/>
 <Script file="MDungeonTeleports.lua"/>
