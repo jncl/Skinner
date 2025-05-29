@@ -1055,7 +1055,7 @@ local function skinTooltip(tbl)
 			ttSB = tbl.obj.SetBackdrop
 			tbl.obj.SetBackdrop = _G.nop
 		end
-		aObj:skinObject("frame", {obj=tbl.obj, fType=tbl.ftype, kfs=true, rns=true, ng=true, ofs=tbl.ofs or 0})
+		aObj:skinObject("frame", {obj=tbl.obj, fType=tbl.ftype, kfs=true, rb=true, ofs=tbl.ofs or 0})
 		if aObj.isElvUI then
 			tbl.obj.SetBackdrop = ttSB
 		end
