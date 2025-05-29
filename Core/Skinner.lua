@@ -113,13 +113,16 @@ function aObj:OnInitialize()
 	-- self.Backdrop[3].tileSize = 12
 	-- self.Backdrop[3].edgeSize = 12
 	-- self.Backdrop[3].insets = {left = 3, right = 3, top = 3, bottom = 3}
+	-- backdrop with alternate backdrop texture
+	self.Backdrop[3] = _G.CopyTable(self.backdrop, true)
+	self.Backdrop[3].bgFile = self.LSM:Fetch("background", self.bdTexName2 or self.bdTexName)
 	-- narrow backdrop for ScrollBars & EditBoxes (8,8,2)
-	self.Backdrop[4] = _G.CopyTable(self.backdrop, true)
+	self.Backdrop[4] = _G.CopyTable(self.Backdrop[3], true)
 	self.Backdrop[4].tileSize = 8
 	self.Backdrop[4].edgeSize = 8
 	self.Backdrop[4].insets = {left = 2, right = 2, top = 2, bottom = 2}
 	-- these backdrops are for small UI buttons, e.g. minus/plus in QuestLog/IOP/Skills etc
-	self.Backdrop[5] =_G. CopyTable(self.backdrop, true)
+	self.Backdrop[5] =_G. CopyTable(self.Backdrop[3], true)
 	self.Backdrop[5].tileSize = 12
 	self.Backdrop[5].edgeSize = 12
 	self.Backdrop[5].insets = {left = 3, right = 3, top = 3, bottom = 3}

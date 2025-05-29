@@ -1120,6 +1120,12 @@ function aObj:setupBackdrop()
 		else
 			self.bdTexName = self.prdb.BdTexture
 		end
+		if self.prdb.BdFile2
+		and self.prdb.BdFile2 ~= "None"
+		then
+			self.bdTexName2 = aName .. " User BTES Backdrop"
+			self.LSM:Register("background", self.bdTexName2, self.prdb.BdFile2)
+		end
 		if self.prdb.BdEdgeFile
 		and self.prdb.BdEdgeFile ~= "None"
 		then

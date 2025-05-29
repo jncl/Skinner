@@ -119,7 +119,7 @@ aObj.skinTPLs = {
 		rpc			= false, -- reverse parent child relationship
 	},
 	editbox = {
-		-- bd          = 3, -- medium
+		bd          = 4,
 		-- clr         = "darkgrey", -- backdrop border colour [aso]
 		-- ca          = 0.5, -- backdrop border alpha
 		-- ng          = true, -- no Gradient texture
@@ -221,6 +221,7 @@ aObj.skinTPLs = {
 		-- hookFuncs = false, -- raw hook SetStatusBarTexture function
 	},
 	tabs = {
+		bd          = 13, -- alternate version of 1
 		-- prefix      = "",
 		-- tabs        = {},
 		numTabs     = 1,
@@ -562,7 +563,7 @@ local function skinEditBox(tbl)
 	-- don't skin it twice
 	if tbl.obj.sf then return end
 	aObj:removeRegions(tbl.obj, tbl.regions)
-	aObj:skinObject("frame", {obj=tbl.obj, fType=tbl.fType, bd=4, ng=true, ofs=tbl.ofs, x1=tbl.x1, y1=tbl.y1, x2=tbl.x2, y2=tbl.y2, clr="slider"})
+	aObj:skinObject("frame", {obj=tbl.obj, fType=tbl.fType, bd=tbl.bd, ng=true, ofs=tbl.ofs, x1=tbl.x1, y1=tbl.y1, x2=tbl.x2, y2=tbl.y2, clr="slider"})
 	-- move the search icon
 	if tbl.si then
 		local sIcon = tbl.obj.SearchIcon or tbl.obj.searchIcon or tbl.obj.icon or tbl.obj:GetName() and _G[tbl.obj:GetName() .. "SearchIcon"]
@@ -975,9 +976,9 @@ local function skinTabs(tbl)
 	local function skinTabObject(tab, idx)
 		aObj:keepRegions(tab, tbl.regions)
 		if not aObj.isTT then
-			aObj:skinObject("frame", {obj=tab, fType=tbl.fType, ng=tbl.ng, x1=tbl.offsets.x1, y1=tbl.offsets.y1, x2=tbl.offsets.x2, y2=tbl.offsets.y2})
+			aObj:skinObject("frame", {obj=tab, fType=tbl.fType, bd=tbl.bd, ng=tbl.ng, x1=tbl.offsets.x1, y1=tbl.offsets.y1, x2=tbl.offsets.x2, y2=tbl.offsets.y2})
 		else
-			aObj:skinObject("frame", {obj=tab, fType=tbl.fType, noBdr=true, x1=tbl.offsets.x1, y1=tbl.offsets.y1, x2=tbl.offsets.x2, y2=tbl.offsets.y2})
+			aObj:skinObject("frame", {obj=tab, fType=tbl.fType, bd=tbl.bd, noBdr=true, x1=tbl.offsets.x1, y1=tbl.offsets.y1, x2=tbl.offsets.x2, y2=tbl.offsets.y2})
 			if tbl.lod then
 				if idx == (tbl.obj.selectedTab or tbl.selectedTab) then
 					aObj:setActiveTab(tab.sf)
