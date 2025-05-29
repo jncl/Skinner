@@ -244,7 +244,7 @@ end
 
 local function makeString(obj)
 	if _G.type(obj) == "table" then
-		return ("<%s:%s:%s>"):format(_G.tostring(obj), obj.GetObjectType and obj:GetObjectType() or _G.type(obj), obj.GetName and obj:GetName() or "(Anon)")
+		return ("<%s:%s:%s>"):format(_G.tostring(obj), not obj:IsForbidden() and obj.GetObjectType and obj:GetObjectType() or _G.type(obj), obj.GetName and obj:GetName() or "(Anon)")
 	elseif _G.type(obj) ~= "string" then
 		return _G.tostring(obj)
 	else
