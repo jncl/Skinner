@@ -2,7 +2,7 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("WoWPro") then return end
 local _G = _G
 
-aObj.addonsToSkin.WoWPro = function(self) -- v 2025.03.04.A
+aObj.addonsToSkin.WoWPro = function(self) -- v 2025.04.24.A
 
 	self:SecureHookScript(_G.WoWPro.MainFrame, "OnShow", function(this)
 		_G.WoWPro.BackgroundSet = _G.nop
@@ -16,27 +16,27 @@ aObj.addonsToSkin.WoWPro = function(self) -- v 2025.03.04.A
 	end)
 	self:checkShown(_G.WoWPro.MainFrame)
 
-	_G.C_Timer.After(0.5, function()
-		for _, row in _G.pairs(_G.WoWPro.rows) do
-			self:add2Table(self.ttList, row.action.tooltip)
-			-- .step
-			-- .note
-			-- .track
-			if self.modBtnBs then
-				self:addButtonBorder{obj=row.itembutton, iabt=true, ofs=3}
-				-- .itembuttonSecured
-				self:addButtonBorder{obj=row.targetbutton, iabt=true, ofs=3}
-				-- .targetbuttonSecured
-				self:addButtonBorder{obj=row.lootsbutton, ofs=3}
-				-- .jumpbutton
-				-- .eabutton
-				-- .eabuttonSecured
+	local function skinRows(parent)
+		for _, row in _G.pairs(parent.rows) do
+			aObj:add2Table(aObj.ttList, row.action.tooltip)
+			if aObj.modBtnBs then
+				aObj:addButtonBorder{obj=row.itembutton}
+				aObj:addButtonBorder{obj=row.itembuttonSecured, sabt=true, hide=true}
+				aObj:addButtonBorder{obj=row.targetbutton}
+				aObj:addButtonBorder{obj=row.targetbuttonSecured, sabt=true}
+				aObj:addButtonBorder{obj=row.eabutton}
+				aObj:addButtonBorder{obj=row.eabuttonSecured, sabt=true}
+				aObj:addButtonBorder{obj=row.lootsbutton}
+				aObj:addButtonBorder{obj=row.jumpbutton}
 			end
-			if self.modChkBtns then
-				self:skinCheckButton{obj=row.check, ignNT=true}
+			if aObj.modChkBtns then
+				aObj:skinCheckButton{obj=row.check, ignNT=true}
 				row.check:SetSize(22, 22)
 			end
 		end
+	end
+	_G.C_Timer.After(0.5, function()
+		skinRows(_G.WoWPro)
 		for _, row in _G.ipairs(_G.WoWPro.mousenotes) do
 			self:skinObject("frame", {obj=row, kfs=true})
 		end
@@ -84,12 +84,8 @@ aObj.addonsToSkin.WoWPro = function(self) -- v 2025.03.04.A
 		self:removeBackdrop(self:getChild(this.scrollbar, 3))
 		self:skinObject("slider", {obj=this.scrollbar})
 		self:skinObject("frame", {obj=this.box, kfs=true, fb=true})
-		if self.modChkBtns then
-			for _, row in _G.pairs(this.rows) do
-				self:skinCheckButton{obj=row.check, ignNT=true}
-				row.check:SetSize(22, 22)
-			end
-		end
+		skinRows(this)
+		-- TODO: skin row tooltip
 
 		self:Unhook(this, "OnShow")
 	end)

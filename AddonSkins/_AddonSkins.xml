@@ -228,7 +228,7 @@
 <Script file="TomTom.lua"/>
 <Script file="TooManyAddons.lua"/>
 <Script file="TradeSkillDW.lua"/>
-<Script file="Tukui.lua"/>
+<Script file="TukUI.lua"/>
 <Script file="Vendomatic.lua"/>
 <Script file="VenturePlan.lua"/>
 <Script file="VuhDo.lua"/>

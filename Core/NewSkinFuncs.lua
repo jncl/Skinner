@@ -966,6 +966,12 @@ local function skinTabs(tbl)
 			tbl.offsets.x2 = 0
 		end
 	end
+	if aObj.isTukUI then
+		tbl.offsets.x1 = (tbl.offsets.x1 or 0) + 4
+		tbl.offsets.y1 = (tbl.offsets.y1 or 0) - 3
+		tbl.offsets.x2 = (tbl.offsets.x2 or 0) - 4
+		tbl.offsets.y2 = (tbl.offsets.y2 or 0) + 3
+	end
 	local function skinTabObject(tab, idx)
 		aObj:keepRegions(tab, tbl.regions)
 		if not aObj.isTT then
@@ -1045,12 +1051,12 @@ local function skinTooltip(tbl)
 	if not tbl.obj.sf then
 		-- Bugfix for ElvUI
 		local ttSB
-		if _G.C_AddOns.IsAddOnLoaded("ElvUI") then
+		if aObj.isElvUI then
 			ttSB = tbl.obj.SetBackdrop
 			tbl.obj.SetBackdrop = _G.nop
 		end
 		aObj:skinObject("frame", {obj=tbl.obj, fType=tbl.ftype, kfs=true, rns=true, ng=true, ofs=tbl.ofs or 0})
-		if _G.C_AddOns.IsAddOnLoaded("ElvUI") then
+		if aObj.isElvUI then
 			tbl.obj.SetBackdrop = ttSB
 		end
 	end

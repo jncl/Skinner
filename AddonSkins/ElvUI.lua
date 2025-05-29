@@ -1,14 +1,16 @@
--- luacheck: ignore 631 (line is too long)
 local _, aObj = ...
-if not aObj:isAddonEnabled("ElvUI") then return end
 local _G = _G
 
+if not aObj:isAddonEnabled("ElvUI") then
+	return
+end
+
 -- The following code handles the Initial setup of Skinner when the ElvUI is loaded
-aObj.otherAddons.ElvUIInit = function(self) -- v 13.72
+aObj.otherAddons.ElvUIInit = function(self) -- v 13.90
 
 	local E
 	local borderr, borderg, borderb, backdropr, backdropg, backdropb
-	if self:isAddOnLoaded("ElvUI") then
+	if _G.C_AddOns.IsAddOnLoaded("ElvUI") then
 		E, _, _, _, _ = _G.unpack(_G.ElvUI)
 		borderr, borderg, borderb = _G.unpack(E.media.bordercolor)
 		backdropr, backdropg, backdropb = _G.unpack(E.media.backdropcolor)
@@ -40,7 +42,8 @@ aObj.otherAddons.ElvUIInit = function(self) -- v 13.72
 
 		local dbProfile = self.db:GetCurrentProfile()
 		if dbProfile ~= profName then
-			self.db:SetProfile(profName) -- create new profile or use existing one
+			self.db:SetProfile(profName) -- create new profile
+			self.db:CopyProfile(dbProfile) -- use settings from previous profile
 
 			prdb = self.db.profile
 
@@ -70,6 +73,9 @@ aObj.otherAddons.ElvUIInit = function(self) -- v 13.72
 		-- run the function
 		self.hooks[this].OnInitialize(this)
 
+		-- remove skinning code for CompactFrames
+		self.blizzFrames.p.CompactFrames = nil
+
 		-- remove skinning code for LFGFrame as it causes errors
 		self.blizzFrames.u.LFGFrame = nil
 
@@ -82,17 +88,23 @@ aObj.otherAddons.ElvUIInit = function(self) -- v 13.72
 	end)
 
 	local modUIBtns = self:GetModule("UIButtons", true)
-	if modUIBtns and modUIBtns:IsEnabled() then
-		-- disable minus/plus button skinning
+	if modUIBtns
+	and modUIBtns:IsEnabled()
+	then
+		-- disable minus/plus button skinning functions
 		modUIBtns.skinExpandButton = _G.nop
 		modUIBtns.checkTex = _G.nop
-		-- hook to ignore Shapeshift button skinning
-		self:RawHook(modUIBtns, "skinStdButton", function(mod, opts)
-			if self:hasTextInName(opts.obj, "ShapeshiftButton(%d)$") then
-				return
-			end
-			return self.hooks[mod].skinStdButton(mod, opts)
-		end, true)
+		-- hook this as UIButton code is now in a module
+		self:SecureHook(modUIBtns, "OnEnable", function(this)
+			-- hook to ignore Shapeshift button skinning
+			self:RawHook(modUIBtns, "skinStdButton", function(fObj, opts)
+				if aObj:hasTextInName(opts.obj, "ShapeshiftButton(%d)$") then
+					return
+				end
+				return aObj.hooks[fObj].skinStdButton(fObj, opts)
+			end, true)
+			self:Unhook(this, "OnEnable")
+		end)
 	end
 
 end

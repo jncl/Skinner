@@ -2233,13 +2233,6 @@ aObj.blizzFrames[ftype].CompactFrames = function(self)
 	if not self.prdb.CompactFrames.skin or self.initialized.CompactFrames then return end
 	self.initialized.CompactFrames = true
 
-	if _G.C_AddOns.IsAddOnLoaded("Tukui")
-	or _G.C_AddOns.IsAddOnLoaded("ElvUI")
-	then
-		self.blizzFrames[ftype].CompactFrames = nil
-		return
-	end
-
 	-- handle AddOn being disabled
 	if not self:checkLoadable("Blizzard_CompactRaidFrames") then
 		return
