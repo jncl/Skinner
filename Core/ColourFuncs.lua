@@ -13,12 +13,6 @@ end
 local iBdr
 function aObj:clrButtonFromBorder(bObj, texture)
 
-	-- handle in combat
-	if _G.InCombatLockdown() then
-		self:add2Table(self.oocTab, {self.clrButtonFromBorder, {self, bObj, texture}})
-		return
-	end
-
 	--@debug@
 	 _G.assert(bObj and bObj.sbb, "Missing object cBFB\n" .. _G.debugstack(2, 3, 2))
 	--@end-debug@
@@ -41,12 +35,6 @@ function aObj:clrButtonFromBorder(bObj, texture)
 end
 
 function aObj:clrBtnBdr(bObj, clrName, alpha)
-
-	-- handle in combat
-	if _G.InCombatLockdown() then
-	    self:add2Table(self.oocTab, {self.clrBtnBdr, {self, bObj, clrName, alpha}})
-	    return
-	end
 
 	-- check button state and alter colour accordingly
 	clrName = bObj.IsEnabled and not bObj:IsEnabled() and "disabled" or clrName
