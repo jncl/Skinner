@@ -609,8 +609,7 @@ aObj.blizzFrames[ftype].QuestInfo = function(self)
 		for _, btn in _G.pairs(frame.RewardButtons) do
 			btn.NameFrame:SetTexture(nil)
 			if aObj.modBtnBs then
-				aObj:addButtonBorder{obj=btn, fType=ftype, libt=true}
-				aObj:clrButtonFromBorder(btn)
+				aObj:addButtonBorder{obj=btn, fType=ftype, libt=true, clr=btn.IconBorder:GetVertexColor()}
 			end
 		end
 		for spellBtn in frame.spellRewardPool:EnumerateActive() do

@@ -893,8 +893,7 @@ aObj.SetupClassic_PlayerFrames = function()
 			tName = fName .. "Talent" .. i
 			_G[tName .. "Slot"]:SetTexture(nil)
 			aObj:changeTandC(_G[tName .. "RankBorder"])
-			aObj:addButtonBorder{obj=_G[tName], fType=ftype, ibt=true, reParent={_G[tName .. "RankBorder"], _G[tName .. "Rank"]}}
-			_G[tName].sbb:SetBackdropBorderColor(_G[tName .. "Slot"]:GetVertexColor())
+			aObj:addButtonBorder{obj=_G[tName], fType=ftype, ibt=true, reParent={_G[tName .. "RankBorder"], _G[tName .. "Rank"]}, clr=_G[tName .. "Slot"]:GetVertexColor()}
 		end
 	end
 	aObj.blizzLoDFrames[ftype].InspectUI = function(self)
