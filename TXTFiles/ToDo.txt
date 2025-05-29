@@ -19,22 +19,11 @@ ToDos
 #193 	I 	Can't use Quest Items in the Quest List
 
 #204 ?	I/C UI Frames options have a blank toggle entry
-	 ?	i/E
+	 ?	I/E "
 
-#210 √	I/M Gossip Frame Text Colour
+#215 √	FR 	Different Backdrop & Color for Buttons/Tabs/EditBox
 
-#211 √	I/M CastingBar not skinned anymore
-
-#212 √	I 	Background Transparency missing
-
-#213 x	I/M Viewport causes 3D model viewer to blur
-
-#214 √	FR 	Option to skin Next & Previous buttons
-			- need to change atlas textures as textures contains both background & icon
-
-#215 ≈	FR 	Different Backdrop & Color for Buttons/Tabs/EditBox
-			- need to change atlas textures for dropdown buttons as textures contains both background & icon
-
-#216 √	S 	M+ Dungeon Teleports
-
-#217 √	I 	Baganator
+#218 √	I/M ElvUI & Skinner installed in parallel
+			- 8x Skinner/AddonSkins/ElvUI.lua:94: attempt to index field '?' (a nil value)
+				[Skinner/AddonSkins/ElvUI.lua]:94: in function <Skinner/AddonSkins/ElvUI.lua:90>
+			- Getting the error when navigating to settings
