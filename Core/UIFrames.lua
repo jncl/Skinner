@@ -138,9 +138,9 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 	end
 	local tbl, itemQuality
 	local function skinAlertFrame(type, frame)
-		aObj:Debug("skinAlertFrame: [%s, %s, %s]", type, frame)
 		tbl = alertType[type]
 		--@debug@
+		aObj:Debug("skinAlertFrame: [%s, %s, %s]", type, frame)
 		if not dontDebug[type] then
 			_G.Spew("AlertFrames", tbl)
 		end
@@ -214,12 +214,14 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 				--@end-debug@
 			end
 			if not tbl.icon then
-				frame.Icon:SetDrawLayer("BORDER")
+				if frame.Icon then
+					frame.Icon:SetDrawLayer("BORDER")
+					if not tbl.nis then
+						aObj:addButtonBorder{obj=frame, fType=ftype, relTo=frame.Icon}
+					end
+				end
 				if tbl.ib then
 					frame.IconBorder:SetTexture(nil)
-				end
-				if not tbl.nis then
-					aObj:addButtonBorder{obj=frame, fType=ftype, relTo=frame.Icon}
 				end
 			else
 				if tbl.icon.ddl then
