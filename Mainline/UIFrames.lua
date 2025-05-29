@@ -565,11 +565,6 @@ aObj.SetupMainline_UIFrames = function()
 			_G.ChallengesFrameInset.Bg:SetTexture(nil)
 			self:removeNineSlice(_G.ChallengesFrameInset.NineSlice)
 			this.WeeklyInfo.Child:DisableDrawLayer("BACKGROUND")
-			if this.WeeklyInfo.Child.AffixesContainer.Affixes then
-				for _, affix in _G.pairs(this.WeeklyInfo.Child.AffixesContainer.Affixes) do
-					affix.Border:SetTexture(nil)
-				end
-			end
 			local scnf = this.SeasonChangeNoticeFrame
 			scnf.NewSeason:SetTextColor(self.HT:GetRGB())
 			scnf.SeasonDescription:SetTextColor(self.BT:GetRGB())
@@ -593,6 +588,12 @@ aObj.SetupMainline_UIFrames = function()
 					end)
 				end
 			end
+
+			self:SecureHook(this.WeeklyInfo.Child.AffixesContainer, "Layout", function(fObj)
+				for _, affix in _G.pairs(fObj.Affixes) do
+					affix.Border:SetTexture(nil)
+				end
+			end)
 
 			self:Unhook(this, "OnShow")
 		end)
