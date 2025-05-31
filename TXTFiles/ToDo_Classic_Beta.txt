@@ -1,0 +1,32 @@
+ToDo_Classic_Beta
+±±±±±±±±±±±±±±±±±
+
+	√ is Alt+v		- indicates completed
+	≈ is Alt+x		- indicates partially completed or dry-coded
+	x				- indicates nothing to change
+	¶ is Alt+7		- indicates localisation changes required
+
+	Classic_Beta (MOP 5.5.0)
+		- Added
+√			- PVPUI
+√			- ScenarioFinderFrame
+√			- TalentMicroButtonAlert
+		- Updated
+√			- AuctionHouseUI
+√			- BankFrame
+√			- EncounterJournal
+√			- GossipFrame
+√			- GuildBankFrame
+√			- PetJournal
+√			- PlayerTalentFrame
+√			- PVPFrame
+√			- QuestFrame
+√			- QuestLogFrame
+√			- QuestLogDetailFrame
+√			- QuestModelScene
+√			- SpellBookFrame
+√			- TabardFrame
+√			- TradeSkillFrame
+√			- WardrobeCollectionFrame
+√			- WorldMapFrame
+		- Deleted

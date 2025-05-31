@@ -215,6 +215,15 @@ aObj.SetupClassic_UIFrames = function()
 			end
 		end
 
+		if aObj.isClscBeta then
+			self:SecureHookScript(_G.TalentMicroButtonAlert, "OnShow", function(this)
+
+				self:skinObject("glowbox", {obj=this, fType=ftype})
+
+				self:Unhook(this, "OnShow")
+			end)
+		end
+
 	end
 
 	aObj.blizzFrames[ftype].MainMenuBarCommon = function(self)
@@ -343,7 +352,7 @@ aObj.SetupClassic_UIFrames = function()
 
 	end
 
-	if aObj.isClsc then
+	if not aObj.isClscBeta then
 		aObj.blizzFrames[ftype].PVPFrame = function(self)
 			if not self.prdb.PVPFrame or self.initialized.PVPFrame then return end
 			self.initialized.PVPFrame = true
@@ -518,8 +527,13 @@ aObj.SetupClassic_UIFrames = function()
 			self:SecureHookScript(_G.QuestLogFrame, "OnShow", function(this)
 				_G.QuestLogCollapseAllButton:DisableDrawLayer("BACKGROUND")
 				self:keepFontStrings(_G.EmptyQuestLogFrame)
-				self:skinObject("slider", {obj=_G.QuestLogListScrollFrame.ScrollBar, fType=ftype})
-				self:skinObject("slider", {obj=_G.QuestLogDetailScrollFrame.ScrollBar, fType=ftype})
+				if not aObj.isClscBeta then
+					self:skinObject("slider", {obj=_G.QuestLogListScrollFrame.ScrollBar, fType=ftype})
+					self:skinObject("slider", {obj=_G.QuestLogDetailScrollFrame.ScrollBar, fType=ftype})
+				else
+					self:skinObject("scrollbar", {obj=_G.QuestLogListScrollFrame.ScrollBar, fType=ftype})
+					self:skinObject("scrollbar", {obj=_G.QuestLogDetailScrollFrame.ScrollBar, fType=ftype})
+				end
 				_G.QuestLogQuestTitle:SetTextColor(self.HT:GetRGB())
 				_G.QuestLogObjectivesText:SetTextColor(self.BT:GetRGB())
 				_G.QuestLogTimerText:SetTextColor(self.BT:GetRGB())
@@ -586,17 +600,29 @@ aObj.SetupClassic_UIFrames = function()
 				self:checkShown(_G.QuestLogControlPanel)
 			end
 			self:SecureHookScript(_G.QuestLogDetailFrame, "OnShow", function(this)
-				self:skinObject("slider", {obj=_G.QuestLogDetailScrollFrame.ScrollBar, fType=ftype, rpTex="background"})
-				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, ofs=1, y1=-11})
+				if not aObj.isClscBeta then
+					self:skinObject("slider", {obj=_G.QuestLogDetailScrollFrame.ScrollBar, fType=ftype, rpTex="background"})
+					self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, ofs=1, y1=-11})
+				else
+					self:skinObject("slider", {obj=_G.QuestLogDetailScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
+					self:removeInset(_G.QuestLogDetailInset)
+					self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true})
+				end
 
 				self:Unhook(this, "OnShow")
 			end)
 			self:SecureHookScript(_G.QuestLogFrame, "OnShow", function(this)
 				self:keepFontStrings(_G.EmptyQuestLogFrame)
 				self:keepFontStrings(_G.QuestLogCount)
-				self:skinObject("slider", {obj=_G.QuestLogListScrollFrame.scrollBar, fType=ftype})
-				self:skinObject("slider", {obj=_G.QuestLogDetailScrollFrame.ScrollBar, fType=ftype, rpTex="background"})
-				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=10, y1=-11, x2=0, y2=4})
+				if not aObj.isClscBeta then
+					self:skinObject("slider", {obj=_G.QuestLogListScrollFrame.scrollBar, fType=ftype})
+					self:skinObject("slider", {obj=_G.QuestLogDetailScrollFrame.ScrollBar, fType=ftype, rpTex="background"})
+					self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=10, y1=-11, x2=0, y2=4})
+				else
+					self:skinObject("slider", {obj=_G.QuestLogListScrollFrame.scrollBar, fType=ftype, rpTex="background"})
+					self:skinObject("slider", {obj=_G.QuestLogDetailScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
+					self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true})
+				end
 				if self.modBtns then
 					for _, btn in _G.pairs(_G.QuestLogListScrollFrame.buttons) do
 						self:skinExpandButton{obj=btn, fType=ftype, noddl=true, onSB=true}
@@ -722,8 +748,11 @@ aObj.SetupClassic_UIFrames = function()
 			and not _G.C_AddOns.IsAddOnLoaded("AlleyMap")
 			then
 				self:skinObject("frame", {obj=_G.WorldMapFrame.BorderFrame, fType=ftype, kfs=true, ofs=1}) -- full screen
-				self:skinObject("frame", {obj=_G.WorldMapFrame.MiniBorderFrame, fType=ftype, kfs=true, x1=15, y1=2, x2=-5, y2=24}) -- minimized
-				-- self:skinObject("frame", {obj=_G.WorldMapFrame.MiniBorderFrame, fType=ftype, kfs=true, ofs=-4, y1=-25, x1=16})
+				if not aObj.isClscBeta then
+					self:skinObject("frame", {obj=_G.WorldMapFrame.MiniBorderFrame, fType=ftype, kfs=true, x1=15, y1=2, x2=-5, y2=24}) -- minimized
+				else
+					self:skinObject("frame", {obj=_G.WorldMapFrame.MiniBorderFrame, fType=ftype, kfs=true, x1=15, x2=-5}) -- minimized
+				end
 				if self.modBtns then
 					self:skinOtherButton{obj=this.MaximizeMinimizeFrame.MaximizeButton, font=self.fontS, text=self.nearrow}
 					self:skinOtherButton{obj=this.MaximizeMinimizeFrame.MinimizeButton, font=self.fontS, disfont=self.fontDS, text=self.swarrow}

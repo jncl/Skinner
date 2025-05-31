@@ -344,10 +344,14 @@ aObj.blizzFrames[ftype].GossipFrame = function(self)
 		if not aObj.isMnln then
 			_G.ScrollUtil.AddInitializedFrameCallback(this.GreetingPanel.ScrollBox, skinGossip, aObj, true)
 		end
-		local sBar = self.isMnln and this.FriendshipStatusBar or _G.NPCFriendshipStatusBar
-		self:removeRegions(sBar, {1, 2, 5, 6, 7, 8 ,9})
-		self:skinObject("statusbar", {obj=sBar, fi=0, bg=self:getRegion(sBar, 10)})
-		if self.isMnln then
+		if not aObj.isClscBeta then
+			local sBar = self.isMnln and this.FriendshipStatusBar or _G.NPCFriendshipStatusBar
+			self:removeRegions(sBar, {1, 2, 5, 6, 7, 8 ,9})
+			self:skinObject("statusbar", {obj=sBar, fi=0, bg=self:getRegion(sBar, 10)})
+		end
+		if self.isMnln
+		or aObj.isClscBeta
+		then
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, x2=3})
 		else
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=14, y1=-18, x2=-29, y2=66})
@@ -528,7 +532,6 @@ aObj.blizzFrames[ftype].QuestFrame = function(self)
 		end
 		if self.isMnln then
 			self:skinObject("scrollbar", {obj=_G.QuestGreetingScrollFrame.ScrollBar, fType=ftype})
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true})
 		else
 			self:skinObject("slider", {obj=_G.QuestGreetingScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
 			for i = 1, _G.MAX_NUM_QUESTS do
@@ -536,6 +539,12 @@ aObj.blizzFrames[ftype].QuestFrame = function(self)
 			end
 			-- force recolouring of quest text
 			self:checkShown(_G.QuestFrameGreetingPanel)
+		end
+		if self.isMnln
+			or aObj.isClscBeta
+		then
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true})
+		else
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, x1=10, y1=-18, x2=-29, y2=65})
 		end
 		if self.modBtns then
@@ -583,9 +592,13 @@ aObj.blizzFrames[ftype].QuestFrame = function(self)
 	end)
 
 	self:SecureHookScript(_G.QuestModelScene or _G.QuestNPCModel , "OnShow", function(this)
-		self:skinObject("scrollbar", {obj=_G.QuestNPCModelTextScrollFrame.ScrollBar, fType=ftype})
-		self:skinObject("frame", {obj=this.ModelTextFrame or _G.QuestNPCModelTextFrame, fType=ftype, kfs=true, ofs=7, x1=-3.5, y1=1, x2=6.5})
-		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ofs=5, y1=-24, y2=-24})
+		if not aObj.isClscBeta then
+			self:skinObject("scrollbar", {obj=_G.QuestNPCModelTextScrollFrame.ScrollBar, fType=ftype})
+		else
+			self:skinObject("slider", {obj=_G.QuestNPCModelTextScrollFrame.ScrollBar, fType=ftype})
+		end
+		self:skinObject("frame", {obj=this.ModelTextFrame or _G.QuestNPCModelTextFrame, fType=ftype, kfs=true, x1=-3, y1=1, x2=5, y2=7})
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, x1=-3, y1=-24, x2=5, y2=-24})
 
 		self:Unhook(this, "OnShow")
 	end)
@@ -759,7 +772,9 @@ aObj.blizzFrames[ftype].Tabard = function(self)
 				self:addButtonBorder{obj=_G["TabardFrameCustomization" .. i .. "RightButton"], ofs=-3, x1=1, clr="gold"}
 			end
 		end
-		if self.isMnln then
+		if self.isMnln
+		or aObj.isClscBeta
+		then
 			self:removeInset(_G.TabardFrameMoneyInset)
 			_G.TabardFrameMoneyBg:DisableDrawLayer("BACKGROUND")
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true})

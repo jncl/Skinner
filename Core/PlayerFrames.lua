@@ -1057,13 +1057,19 @@ if not aObj.isClscERA then
 			end
 			if self.modBtnBs then
 				if self.isMnln then
-					self:addButtonBorder{obj=this.SlotButton, fType=ftype, relTo=this.SlotButton.ItemIcon}
 					self:addButtonBorder{obj=this.ToggleDynamicFlightFlyoutButton, fType=ftype, rpA=true, ofs=4}
 					this.ToggleDynamicFlightFlyoutButton:SetFrameLevel(10)
-					self:addButtonBorder{obj=this.SummonRandomFavoriteButton, fType=ftype, ofs=3}
+					self:addButtonBorder{obj=this.SlotButton, fType=ftype, relTo=this.SlotButton.ItemIcon}
 				else
 					self:addButtonBorder{obj=this.MountDisplay.ModelScene.RotateLeftButton, ofs=-3}
 					self:addButtonBorder{obj=this.MountDisplay.ModelScene.RotateRightButton, ofs=-3}
+				end
+				if aObj.isMnlnPTR
+				or aObj.isClscBeta
+				then
+					self:addButtonBorder{obj=this.SummonRandomFavoriteSpellFrame.Button, fType=ftype, sft=true, ofs=3}
+				else
+					self:addButtonBorder{obj=this.SummonRandomFavoriteButton, fType=ftype, sft=true, ofs=3}
 				end
 				self:addButtonBorder{obj=this.MountDisplay.InfoButton, relTo=this.MountDisplay.InfoButton.Icon, clr="white"}
 			end
@@ -1092,20 +1098,22 @@ if not aObj.isClscERA then
 			self:removeInset(this.PetCount)
 			self:removeInset(this.LeftInset)
 			self:removeInset(this.RightInset)
-			if self.isMnln then
+			if self.isMnln
+			or aObj.isClscBeta
+			then
 				self:skinMainHelpBtn(this)
-				_G.PetJournalHealPetButtonBorder:SetTexture(nil)
 				self:removeInset(this.PetCardInset)
-			else
-				self:removeMagicBtnTex(this.SummonButton)
+			end
+			if self.isMnln
+			and not aObj.isMnlnPTR
+			then
+				_G.PetJournalHealPetButtonBorder:SetTexture(nil)
 			end
 			self:skinObject("ddbutton", {obj=this.FilterDropdown, fType=ftype, filter=true})
 			self:skinObject("editbox", {obj=this.searchBox, fType=ftype, si=true})
+			self:removeMagicBtnTex(this.SummonButton)
 			if self.modBtns then
-				if not self.isMnln then
-					self:skinStdButton{obj=_G.PetJournalFilterButton, fType=ftype}
-					self:skinStdButton{obj=this.SummonButton}
-				end
+				self:skinStdButton{obj=this.SummonButton, sechk=true}
 			end
 			-- PetList
 			self:skinObject("scrollbar", {obj=this.ScrollBar, fType=ftype})
@@ -1138,7 +1146,9 @@ if not aObj.isClscERA then
 				end
 			end
 			_G.ScrollUtil.AddAcquiredFrameCallback(this.ScrollBox, skinElement, aObj, true)
-			if self.isMnln then
+			if self.isMnln
+			or aObj.isClscBeta
+			then
 				self:keepFontStrings(this.loadoutBorder)
 				self:moveObject{obj=this.loadoutBorder, y=8} -- battle pet slots title
 				-- Pet LoadOut Plates
@@ -1165,20 +1175,31 @@ if not aObj.isClscERA then
 				local pc = this.PetCard
 				self:changeTandC(pc.PetInfo.levelBG)
 				pc.PetInfo.qualityBorder:SetAlpha(0)
-				if self.modBtnBs then
-					self:addButtonBorder{obj=pc.PetInfo, relTo=pc.PetInfo.icon, reParent={pc.PetInfo.levelBG, pc.PetInfo.level, pc.PetInfo.favorite}}
-				end
 				self:skinObject("statusbar", {obj=pc.HealthFrame.healthBar, regions={1, 2, 3}, fi=0})
 				self:skinObject("statusbar", {obj=pc.xpBar, regions={2, 3, 4, 5, 6, 7, 8, 9, 10, 11}, fi=0})
-				self:keepFontStrings(pc)
-				self:skinObject("frame", {obj=pc, fType=ftype, fb=true, ofs=4})
+				self:skinObject("frame", {obj=pc, fType=ftype, kfs=true, fb=true, ofs=4})
 				for i = 1, 6 do
 					pc["spell" .. i].BlackCover:SetAlpha(0) -- N.B. texture is changed in code
 					if self.modBtnBs then
 						self:addButtonBorder{obj=pc["spell" .. i], relTo=pc["spell" .. i].icon}
 					end
 				end
+				self:removeMagicBtnTex(this.FindBattleButton)
+				self:removeRegions(this.AchievementStatus, {1, 2})
+				if self.modBtns then
+					self:skinStdButton{obj=this.FindBattleButton}
+				end
 				if self.modBtnBs then
+					self:addButtonBorder{obj=pc.PetInfo, relTo=pc.PetInfo.icon, reParent={pc.PetInfo.levelBG, pc.PetInfo.level, pc.PetInfo.favorite}}
+					if aObj.isMnlnPTR
+					or aObj.isClscBeta
+					then
+						self:addButtonBorder{obj=this.HealPetSpellFrame.Button, fType=ftype, sft=true, ofs=4}
+						self:addButtonBorder{obj=this.SummonRandomPetSpellFrame.Button, fType=ftype, sft=true, ofs=4}
+					else
+						self:addButtonBorder{obj=this.HealPetButton, fType=ftype, sft=true, ca=1}
+						self:addButtonBorder{obj=this.SummonRandomFavoritePetButton, fType=ftype, ofs=3, ca=1}
+					end
 					self:SecureHook("PetJournal_UpdatePetLoadOut", function()
 						for i = 1, 3 do
 							self:clrButtonFromBorder(_G.PetJournal.Loadout["Pet" .. i], "qualityBorder")
@@ -1187,17 +1208,6 @@ if not aObj.isClscERA then
 					self:SecureHook("PetJournal_UpdatePetCard", function(fObj)
 						self:clrButtonFromBorder(fObj.PetInfo, "qualityBorder")
 					end)
-				end
-				self:removeMagicBtnTex(this.FindBattleButton)
-				self:removeMagicBtnTex(this.SummonButton)
-				self:removeRegions(this.AchievementStatus, {1, 2})
-				if self.modBtns then
-					self:skinStdButton{obj=this.FindBattleButton}
-					self:skinStdButton{obj=this.SummonButton, sechk=true}
-				end
-				if self.modBtnBs then
-					self:addButtonBorder{obj=this.HealPetButton, fType=ftype, sft=true, ca=1}
-					self:addButtonBorder{obj=this.SummonRandomFavoritePetButton, fType=ftype, ofs=3, ca=1}
 				end
 			else
 				this.PetCard.PetBackground:SetAlpha(0)
@@ -1212,7 +1222,9 @@ if not aObj.isClscERA then
 			self:Unhook(this, "OnShow")
 		end)
 
-		if self.isMnln then
+		if self.isMnln
+		or aObj.isClscBeta
+		then
 			local function skinTTip(tip)
 				tip.Delimiter1:SetTexture(nil)
 				tip.Delimiter2:SetTexture(nil)
@@ -1364,7 +1376,9 @@ if not aObj.isClscERA then
 					end)
 					self:checkShown(this.ItemsCollectionFrame)
 
-					if self.isMnln then
+					if self.isMnln
+					or aObj.isClscBeta
+					then
 						local SetsDataProvider = _G.CreateFromMixins(_G.WardrobeSetsDataProviderMixin)
 						self:SecureHookScript(this.SetsCollectionFrame, "OnShow", function(fObj)
 							self:removeInset(fObj.LeftInset)
@@ -1468,10 +1482,9 @@ if not aObj.isClscERA then
 
 				self:Unhook(this, "OnShow")
 			end)
-
 		end
 
-		if aObj.isMnln then
+		if self.isMnln then
 			-- a.k.a. Campsites
 			self:SecureHookScript(_G.WarbandSceneJournal, "OnShow", function(this)
 				self:removeInset(this.IconsFrame)
@@ -2423,7 +2436,7 @@ if not aObj.isClscERA then
 			this.navBar.home.text:SetPoint("RIGHT", -20, 0)
 			self:skinObject("editbox", {obj=this.searchBox, fType=ftype, si=true})
 			self:skinObject("ddbutton", {obj=this.LootJournalViewDropdown, fType=ftype})
-			self:skinObject("tabs", {obj=this, tabs=this.Tabs, selectedTab=this.selectedTab, fType=ftype, lod=self.isTT and true, offsets={x1=-1, y1=2, x2=1, y2=1}, regions=self.isMnln and {7, 8, 9, 10, 11} or {10, 21}, track=false, func=function(tab) tab:SetFrameLevel(20) end})
+			self:skinObject("tabs", {obj=this, tabs=this.Tabs, selectedTab=this.selectedTab, fType=ftype, lod=self.isTT and true, offsets=not aObj.isClscBeta and {x1=-1, y1=2, x2=1, y2=1} or nil, regions=(self.isMnln or aObj.isClscBeta) and {7, 8, 9, 10, 11} or {10, 21}, track=false, func=function(tab) tab:SetFrameLevel(20) end})
 			if self.isTT then
 				self:SecureHook("EJ_ContentTab_Select", function(id)
 					for i, tab in _G.pairs(this.Tabs) do
@@ -2625,7 +2638,9 @@ if not aObj.isClscERA then
 					end)
 					-- Tabs (side)
 					self:skinObject("tabs", {obj=frame, tabs={frame.overviewTab, frame.lootTab, frame.bossTab, frame.modelTab}, fType=ftype, ignoreHLTex=false, ng=true, regions={4, 5, 6}, offsets={x1=9, y1=-6, x2=-6, y2=6}, track=false})
-					self:moveObject{obj=frame.overviewTab, x=7}
+					if not aObj.isClscBeta then
+						self:moveObject{obj=frame.overviewTab, x=7}
+					end
 
 					self:Unhook(frame, "OnShow")
 				end)

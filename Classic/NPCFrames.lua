@@ -204,7 +204,14 @@ aObj.SetupClassic_NPCFrames = function()
 
 		self:SecureHookScript(_G.BankFrame, "OnShow", function(this)
 			self:keepFontStrings(_G.BankSlotsFrame)
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ofs=-11, x2=self.isClsc and 16 or -33, y2=90})
+			if not aObj.isClscBeta then
+				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ofs=-11, x2=self.isClsc and 16 or -33, y2=90})
+			else
+				self:skinObject("editbox", {obj=_G.BankItemSearchBox, fType=ftype, si=true})
+				self:removeInset(_G.BankFrameMoneyFrameInset)
+				_G.BankFrameMoneyFrameBorder:DisableDrawLayer("BACKGROUND")
+				self:skinObject("frame", {obj=this, fType=ftype, kfs=true,cb=true})
+			end
 			if self.modBtns then
 				self:skinCloseButton{obj=_G.BankCloseButton, fType=ftype}
 				self:skinStdButton{obj=_G.BankFramePurchaseButton, fType=ftype}

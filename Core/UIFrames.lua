@@ -1325,7 +1325,9 @@ aObj.blizzLoDFrames[ftype].GuildBankUI = function(self)
 				end
 			end)
 		end
-		if self.isMnln then
+		if self.isMnln
+		or aObj.isClscBeta
+		then
 			self:skinObject("editbox", {obj=_G.GuildItemSearchBox, fType=ftype, si=true})
 			this.MoneyFrameBG:DisableDrawLayer("BACKGROUND")
 		end
@@ -1339,12 +1341,20 @@ aObj.blizzLoDFrames[ftype].GuildBankUI = function(self)
 		end
 		if self.isMnln then
 			self:skinObject("scrollbar", {obj=_G.GuildBankInfo.ScrollFrame.ScrollBar, fType=ftype})
+			self:skinObject("scrollbar", {obj=this.Log.ScrollBar, fType=ftype})
 		else
 			self:skinObject("slider", {obj=_G.GuildBankInfo.ScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
+			self:skinObject("slider", {obj=this.Log.ScrollBar, fType=ftype, rpTex="artwork"})
 		end
-		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true, cb=true, y1=self.isClsc and -11, x2=self.isClsc and 1, y2=self.isClsc and 3 or -2})
+		if not aObj.isClscBeta then
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true, cb=true, y1=self.isClsc and -11, x2=self.isClsc and 1, y2=self.isClsc and 3 or -2})
+		else
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true, cb=true, x2=1, y2=-2})
+		end
 		if self.modBtns then
-			if self.isClsc then
+			if self.isClsc
+			and not aObj.isClscBeta
+			then
 				self:skinCloseButton{obj=self:getChild(this, 11), fType=ftype}
 			end
 			self:skinStdButton{obj=this.DepositButton, fType=ftype, x1=0} -- don't overlap withdraw button
@@ -2667,10 +2677,15 @@ if not aObj.isClscERA then
 		else
 			groupFrames = { "LFDParentFrame", "RaidFinderFrame", "LFGListPVEStub" }
 		end
+		if aObj.isClscBeta then
+			groupFrames[4] = "ScenarioFinderFrame"
+		end
 
 		self:SecureHookScript(_G.PVEFrame, "OnShow", function(this)
 			self:keepFontStrings(this.shadows)
-			if self.isMnln then
+			if self.isMnln
+			or aObj.isClscBeta
+			then
 				self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype})
 			end
 			-- GroupFinder Frame
@@ -2689,6 +2704,7 @@ if not aObj.isClscERA then
 					else
 						_G.GroupFinderFrame["groupButton" .. i].bg:SetTexture(nil)
 					end
+					-- self:clrBtnBdr(_G.GroupFinderFrame["groupButton" .. i], "gold")
 				end
 			end)
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, x1=-4, x2=3})
@@ -2696,7 +2712,7 @@ if not aObj.isClscERA then
 				-- hook this to change button border colour
 				self:SecureHook("GroupFinderFrame_EvaluateButtonVisibility", function(_, _)
 					for i = 1, #groupFrames do
-						self:clrBtnBdr(_G.GroupFinderFrame["groupButton" .. i])
+						self:clrBtnBdr(_G.GroupFinderFrame["groupButton" .. i], "gold")
 					end
 				end)
 			end
@@ -2768,6 +2784,68 @@ aObj.blizzFrames[ftype].ReportFrame = function(self)
 		self:Unhook(this, "OnShow")
 	end)
 
+end
+
+if aObj.isMnln
+or aObj.isClscBeta
+then
+	aObj.blizzFrames[ftype].ScenarioFinderFrame = function(self)
+		if not self.prdb.PVEFrame or self.initialized.ScenarioFinderFrame then return end
+		self.initialized.ScenarioFinderFrame = true
+
+		self:SecureHookScript(_G.ScenarioFinderFrame, "OnShow", function(this)
+			self:removeInset(this.Inset)
+			this.Queue.Bg:SetAlpha(0)
+			self:skinObject("ddbutton", {obj=this.Queue.Dropdown, fType=ftype})
+			self:skinObject("scrollbar", {obj=this.Queue.Random.ScrollFrame.ScrollBar, fType=ftype})
+			-- .Queue.PartyBackfill
+			-- .Queue.CooldownFrame
+			if aObj.isClscBeta then
+				self:removeMagicBtnTex(_G.ScenarioQueueFrameFindGroupButton)
+			end
+			if self.modBtns then
+				self:skinStdButton{obj=_G.ScenarioQueueFrameFindGroupButton, fType=ftype}
+			end
+			if not aObj.isClscBeta then
+				self:skinObject("slider", {obj=this.Queue.Specific.ScrollFrame.ScrollBar, fType=ftype, rpTex={"background"}})
+				local btn
+				self:SecureHook("ScenarioQueueFrameSpecific_Update", function()
+					for i = 1, _G.NUM_SCENARIO_CHOICE_BUTTONS do
+						btn = this.Queue.Specific["Button" .. i]
+						if btn then
+							if self.modBtns then
+								self:skinExpandButton{obj=btn.expandOrCollapseButton, sap=true}
+							end
+							if self.modChkBtns then
+								self:skinCheckButton{obj=btn.enableButton}
+							end
+						end
+					end
+				end)
+			else
+				self:skinObject("scrollbar", {obj=this.Queue.Specific.ScrollBar, fType=ftype})
+				local function skinElement(...)
+					local _, element
+					if _G.select("#", ...) == 2 then
+						element, _ = ...
+					else
+						_, element, _ = ...
+					end
+					if aObj.modBtns then
+						aObj:skinExpandButton{obj=element.expandOrCollapseButton, sap=true}
+					end
+					if aObj.modChkBtns then
+						aObj:skinCheckButton{obj=element.enableButton}
+					end
+
+				end
+				_G.ScrollUtil.AddInitializedFrameCallback(this.Queue.Specific.ScrollFrame, skinElement, aObj, true)
+			end
+
+			self:Unhook(this, "OnShow")
+		end)
+
+	end
 end
 
 aObj.blizzFrames[ftype].Settings = function(self)

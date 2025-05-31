@@ -1,4 +1,4 @@
-﻿## Interface: 110105, 40402, 11507
+﻿## Interface: 110105, 40402, 11507, 110107, 50500
 
 ## Title: Skinner
 ## Author: Jncl
@@ -42,6 +42,8 @@ Locales\_Locales.xml
 
 Core\_Core.xml
 
+# NOT supported in ClassicERA 1.15.7 & Classic 4.4.2
+# Supported in Mainline 11.1.0+ & MOP Classic Beta 5.5.0
 # [Family]\_Support.xml
 Classic\_Support.xml
 Mainline\_Support.xml
