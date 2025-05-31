@@ -625,7 +625,7 @@ end
 -- N.B. removed "Arrow" texture to allow Dropdown button texture to be below button border
 -- therefore need to add rpA=true to buttons which have a Flyout capability
 local rpRegions = {
-	"ActionBarHighlight", "AutoCastable", "AutoCastOverlay", "AutoCastShine", "Border", "Count", "Flash", "Glow", "HotKey",
+	"ActionBarHighlight", "AutoCastable", "AutoCastOverlay", "AutoCastShine", "Count", "Flash", "Glow", "HotKey",
 	"IconBorder","IconQuestTexture", "ItemContextOverlay", "ItemOverlay", "ItemOverlay2", "LevelLinkLockIcon", "Name", "NewActionTexture",
 	"ProfessionQualityOverlay", "searchOverlay", "SlotBorder", "SlotBorderOpen", "SpellHighlightTexture", "Stock"
 }
