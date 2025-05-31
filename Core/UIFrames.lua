@@ -35,6 +35,7 @@ aObj.blizzFrames[ftype].AddonList = function(self)
 			end
 			_G.ScrollUtil.AddAcquiredFrameCallback(this.ScrollBox, skinElement, aObj, true)
 			self:skinObject("ddbutton", {obj=this.Dropdown, fType=ftype})
+			self:skinObject("editbox", {obj=this.SearchBox, fType=ftype, si=true})
 		else
 			for i = 1, _G.MAX_ADDONS_DISPLAYED do
 				if self.modBtns then
