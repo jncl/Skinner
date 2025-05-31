@@ -38,7 +38,7 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 272
 					for _, tab in _G.ipairs(this.Tabs) do
 						aObj:setInactiveTab(tab.sf)
 					end
-					if not aObj.isMnln then
+					if aObj.isClscERA then
 						aObj:SecureHook("AuctionFrameTab_OnClick", function(tabButton, _)
 						    for _, tab in _G.ipairs(this.Tabs) do
 								aObj:setInactiveTab(tab.sf)
@@ -347,7 +347,7 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 272
 			if aObj.modBtns then
 				aObj:skinStdButton{obj=asi.PostButton, schk=true, sechk=true}
 			end
-			if not aObj.isMnln then
+			if aObj.isClscERA then
 				aObj:skinObject("editbox", {obj=asi.UnitPrice.MoneyInput.GoldBox, ofs=-4, y2=8})
 				aObj:skinObject("editbox", {obj=asi.UnitPrice.MoneyInput.SilverBox, ofs=-4, y2=8})
 				aObj:skinObject("editbox", {obj=asi.UnitPrice.MoneyInput.CopperBox, ofs=-4, y2=8})
@@ -367,13 +367,14 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 272
 				aObj:skinObject("editbox", {obj=asi.Quantity.InputBox, y2=4})
 				aObj:skinObject("editbox", {obj=asi.Price.MoneyInput.GoldBox, ofs=-4, y2=8})
 				aObj:skinObject("editbox", {obj=asi.Price.MoneyInput.SilverBox, ofs=-4, y2=8})
-				for _, list in _G.pairs{"CurrentPricesListing", "HistoricalPriceListing", "PostingHistoryListing"} do
-					self:skinObject("scrollbar", {obj=this[list].ScrollArea.ScrollBar})
-					skinHdrs(this[list])
-					aObj:skinObject("frame", {obj=this[list], fb=true, ofs=-2, x1=-10, x2=0, y2=-6})
+				aObj:skinObject("editbox", {obj=asi.Price.MoneyInput.CopperBox, ofs=-4, y2=8})
+				for _, list in _G.pairs{"CurrentPrices", "HistoricalPrice", "PostingHistory"} do
+					self:skinObject("scrollbar", {obj=this[list .. "Listing"].ScrollArea.ScrollBar})
+					skinHdrs(this[list .. "Listing"])
+					aObj:skinObject("frame", {obj=this[list .. "Listing"], fb=true, ofs=-2, x1=-10, x2=0, y2=-6})
 				end
 				aObj:removeInset(this.HistoricalPriceInset)
-				aObj:skinObject("tabs", {obj=this.PricesTabsContainer, tabs=this.PricesTabsContainer.Tabs, ignoreSize=true, lod=true, upwards=true, offsets={y1=-3, y2=2}})
+				aObj:skinObject("tabs", {obj=this.PricesTabsContainer, tabs=this.PricesTabsContainer.Tabs, regions={10}, ignoreSize=true, lod=true, upwards=true, offsets={y1=-3, y2=2}})
 				if aObj.modBtns then
 					aObj:skinStdButton{obj=asi.MaxButton, schk=true, sechk=true}
 					aObj:skinStdButton{obj=aObj:getPenultimateChild(asi), ofs=-2, clr="gold"} -- RefreshButton
