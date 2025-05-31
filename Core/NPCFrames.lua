@@ -107,9 +107,11 @@ if not aObj.isClscERA then
 				aObj:skinObject("editbox", {obj=frame.gold, fType=ftype, ofs=0})
 				aObj:skinObject("editbox", {obj=frame.silver, fType=ftype, ofs=0})
 				aObj:skinObject("editbox", {obj=frame.copper, fType=ftype, ofs=0})
-				frame.silver:SetWidth(38)
+				if self.isClscERA then
+					frame.silver:SetWidth(38)
+					frame.copper:SetWidth(38)
+				end
 				aObj:moveObject{obj=frame.silver.texture, x=10}
-				frame.copper:SetWidth(38)
 				aObj:moveObject{obj=frame.copper.texture, x=10}
 			end
 			self:SecureHookScript(this.BrowseResultsFrame, "OnShow", function(fObj)
@@ -174,9 +176,9 @@ if not aObj.isClscERA then
 			end)
 
 			local function skinPriceInp(frame)
-				aObj:skinObject("editbox", {obj=frame.CopperBox, fType=ftype, ofs=0})
-				aObj:skinObject("editbox", {obj=frame.SilverBox, fType=ftype, ofs=0})
-				aObj:skinObject("editbox", {obj=frame.GoldBox, fType=ftype, ofs=0})
+				aObj:skinObject("editbox", {obj=frame.CopperBox, fType=ftype, ofs=0, y1=-4, y2=4})
+				aObj:skinObject("editbox", {obj=frame.SilverBox, fType=ftype, ofs=0, y1=-4, y2=4})
+				aObj:skinObject("editbox", {obj=frame.GoldBox, fType=ftype, ofs=0, y1=-4, y2=4})
 			end
 			local function skinSellFrame(frame)
 				aObj:removeNineSlice(frame.NineSlice)
@@ -184,7 +186,7 @@ if not aObj.isClscERA then
 				aObj:keepFontStrings(frame)
 				aObj:removeNineSlice(frame.ItemDisplay.NineSlice)
 				aObj:removeRegions(frame.ItemDisplay, {3})
-				aObj:skinObject("editbox", {obj=frame.QuantityInput.InputBox, fType=ftype, ofs=0})
+				aObj:skinObject("editbox", {obj=frame.QuantityInput.InputBox, fType=ftype, ofs=0, y1=-4, y2=4})
 				skinPriceInp(frame.PriceInput.MoneyInputFrame)
 				aObj:skinObject("ddbutton", {obj=frame.Duration.Dropdown, fType=ftype})
 				if aObj.modBtns then
@@ -290,8 +292,8 @@ if not aObj.isClscERA then
 		self:checkShown(_G.AuctionHouseFrame)
 
 	end
-
 end
+
 aObj.blizzFrames[ftype].GossipFrame = function(self)
 	if not self.prdb.GossipFrame or self.initialized.GossipFrame then return end
 	self.initialized.GossipFrame = true
