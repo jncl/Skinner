@@ -1,12 +1,12 @@
- ToDo_retail_PTR
-±±±±±±±±±±±±±±±
+ ToDo_Mainline_PTR
+±±±±±±±±±±±±±±±±±±
 
 	√ is Alt+v		- indicates completed
 	≈ is Alt+x		- indicates partially completed or dry-coded
 	x				- indicates nothing to change
 	¶ is Alt+7		- indicates localisation changes required
 
-	Retail_PTR (TWW 11.1.5)
+	Mainline_PTR (TWW 11.1.7)
 		- Added
 √			- TOC changes
 ≈			- ColorManager function to get ItemQuality colours etc

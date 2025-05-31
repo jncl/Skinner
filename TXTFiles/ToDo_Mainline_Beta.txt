@@ -1,16 +1,12 @@
-ToDo_retail_Beta
-±±±±±±±±±±±±±±±±
+ToDo_Mainline_Beta
+±±±±±±±±±±±±±±±±±±
 
 	√ is Alt+v		- indicates completed
 	≈ is Alt+x		- indicates partially completed or dry-coded
 	x				- indicates nothing to change
 	¶ is Alt+7		- indicates localisation changes required
 
-	Retail_Beta (The War Within 11.0.2)
+	Mainline_Beta (The War Within 11.0.2)
 		- Added
-√			- DelvesUI
-√			- TheWarWithinLandingPageOverlay
-√			- Warband Bank Tab + Panel(s)
-√			- UIWidgetTemplateScenarioHeaderDelves
 		- Updated
 		- Deleted

@@ -1,4 +1,4 @@
-ToDo_classic_PTR
+ToDo_Classic_PTR
 ±±±±±±±±±±±±±±±±
 
 	√ is Alt+v		- indicates completed

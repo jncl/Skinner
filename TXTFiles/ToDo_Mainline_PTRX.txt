@@ -1,12 +1,12 @@
-ToDo_retail_PTRX
-±±±±±±±±±±±±±±±±
+ToDo_Mainline_PTRX
+±±±±±±±±±±±±±±±±±±
 
 	√ is Alt+v		- indicates completed
 	≈ is Alt+x		- indicates partially completed or dry-coded
 	x				- indicates nothing to change
 	¶ is Alt+7		- indicates localisation changes required
 
-	Retail_PTRX (TWW 11.1.0)
+	Mainline_PTRX (TWW 11.1.0)
 		- Added
 		- Updated
 		- Deleted
