@@ -854,6 +854,17 @@ if not aObj.isClscERA then
 			self:Unhook(this, "OnShow")
 		end)
 
+		if self.isClsc then
+			self:SecureHookScript(_G.PetPaperDollFrame, "OnShow", function(_)
+				self:skinObject("statusbar", {obj=_G.PetPaperDollFrameExpBar, fType=ftype, regions={1, 2}, fi=0})
+				_G.PetModelFrameShadowOverlay:DisableDrawLayer("OVERLAY")
+				self:makeMFRotatable(_G.PetModelFrame)
+				if self.modBtnBs then
+					self:addButtonBorder{obj=_G.PetPaperDollPetInfo, fType=ftype, ofs=1, x2=0, clr="gold"}
+				end
+			end)
+		end
+
 		self:SecureHookScript(_G.ReputationFrame, "OnShow", function(this)
 			self:keepFontStrings(this)
 			if self.isMnln then
