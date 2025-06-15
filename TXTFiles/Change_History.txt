@@ -1,3 +1,15 @@
+beta11.61208.1
+Jncl:
+	Updated ToDo*.txt files
+	Updated Change_History.txt
+	Updated Version numbers
+	MOP Classic Beta changes
+	Updated Auctionator skin
+	Updated UIButtons code
+	Updated AddonList skin
+	Updated AuctionHouseUI skin
+	Updated NSF, closes #219
+
 beta11.61048.1
 Jncl:
 	Updated ToDo*.txt files
