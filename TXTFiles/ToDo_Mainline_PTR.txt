@@ -9,68 +9,34 @@
 	Mainline_PTR (TWW 11.1.7)
 		- Added
 √			- TOC changes
-≈			- ColorManager function to get ItemQuality colours etc
+			- ActionButtonSpellAlerts
 ¶			- Blizzard_CooldownViewer
 √				- EssentialCooldownViewer
 √				- UtilityCooldownViewer
 √				- BuffIconCooldownViewer
 √				- BuffBarCooldownViewer
 		- Updated
-x			- MainMenuBarMicroButtons
 x			- ActionButtonTemplate
+x			- MainMenuBarMicroButtons
 x			- MultiActionBars
-x			- PetActionBar
-x			- StanceBar
-x			- Blizzard_BarberShopUI
-x			- Blizzard_CharacterCreate
-x			- TextToSpeech
-x			- Blizzard_Wardrobe
-x			- Blizzard_CustomizationTemplates
-x			- EditModeManager
-x			- EditModeSystemTemplates
-x			- Blizzard_LootJournal
-≈			- Blizzard_MonthlyActivities
-x			- Flyout
-x			- BattlePetTooltip
-x			- Blizzard_TalentUITemplates
-x			- EventToastManager
-x			- FloatingPetBattleTooltip
-x			- AlertFrameSystems
-x			- ColorPickerFrame
-x			- FriendsFrame
-x			- GameMenuFrame
-x			- MoneyFrame
-x			- MoneyInputFrame
-x			- Blizzard_PTRFeedback_FrameTemplates
-x			- Blizzard_PerksProgram
-x			- Blizzard_PerksProgramElements
-x			- Blizzard_SpellBookItem
-x			- Blizzard_ProfessionsTemplates
-x			- Blizzard_CategoryList
-x			- Blizzard_SettingControls
-x			- Blizzard_SettingsPanel
-x			- SharedUIPanelTemplates
-x			- NewFeatureLabel
-x			- ScrollingMessageFrame
-x			- Spinner
-x			- ColorSwatch
-			- StaticPopup
-				- Accessiblility ("QuestTextContrast")
-≈					- GossipFrame ("questTextContrast")
-x					- ItemTextFrame ("questTextContrast")
-					- QuestFrame ("questTextContrast")
-					- QuestInfo ("questTextContrast")
-x			- Blizzard_Shared_StoreUITemplates
-x			- Blizzard_Subtitles
-x			- Blizzard_TalentUI
-x			- UIPanelTemplates
-x			- ExtraAbilityContainer
-≈			- GossipFrame
-x			- LootFrame
-x			- UIParent
-x			- Blizzard_UIWidgetManager
-√			- Blizzard_UIWidgetTemplateBase
-x			- Blizzard_UIWidgetTemplateStatusBar
-x			- EclipseBarFrame
-x			- TargetFrame
+x			- BuffFrame
+			- Blizzard_CharacterCustomize
+			- CharacterSelectNavBar
+√			- Blizzard_MountCollection
+√			- Blizzard_PetCollection
+			- Blizzard_Wardrobe
+			- CooldownViewer
+√			- Blizzard_DelvesDifficultyPicker
+			- Blizzard_GarrisonLandingPage
+			- Blizzard_IslandsQueueUI
+√			- Blizzard_SpellBookFrame
+√			- HelpPlateTooltip
+			- LayoutFrame
+			- SharedUIPanelTemplates
+			- ScaleToFitFrame
+			- EventScheduler
+			- QuestMapFrame
+			- WorldFrame
+			- Blizzard_UIWidgetTemplateBase
+			- TargetFrame
 		- Deleted

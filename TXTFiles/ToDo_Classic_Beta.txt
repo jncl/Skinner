@@ -8,15 +8,21 @@ ToDo_Classic_Beta
 
 	Classic_Beta (MOP 5.5.0)
 		- Added
+√			- BlackMarketUI
 √			- PVPUI
 √			- ScenarioFinderFrame
 √			- TalentMicroButtonAlert
 		- Updated
 √			- AuctionHouseUI
 √			- BankFrame
+√			- ContainerFrames
+√			- DressUpFrame
 √			- EncounterJournal
 √			- GossipFrame
-√			- GuildBankFrame
+√			- GuildBankFramec
+√			- HelpPlateTooltip
+√			- ItemTextFrame
+√			- PaperDollFrame
 √			- PetJournal
 √			- PlayerTalentFrame
 √			- PVPFrame
@@ -26,7 +32,9 @@ ToDo_Classic_Beta
 √			- QuestModelScene
 √			- SpellBookFrame
 √			- TabardFrame
+√			- TimeManagerFrame
 √			- TradeSkillFrame
 √			- WardrobeCollectionFrame
+≈			- WatchFrame
 √			- WorldMapFrame
 		- Deleted
