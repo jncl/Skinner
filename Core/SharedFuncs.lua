@@ -3,33 +3,33 @@ local aName, aObj = ...
 local _G = _G
 
 local buildInfo = {
-	wow_classic_beta    = {"5.5.0",  61208, "MOP Classic Beta"},
-	wow_beta            = {"11.0.2", 56313, "The War Within Beta"},
-	wow_classic_ptr     = {"4.4.2",  59185, "PTR (Cataclysm Classic)"},
-	wow_classic_era_ptr = {"1.15.7", 60141, "PTR (Classic Era)"},
-	wow_ptr             = {"11.1.7", 61131, "PTR (TWW 11.1.7"},
-	wow_ptr_x           = {"11.1.0", 59347, "PTR (TWW 11.1.0)"},
-	wow_classic_era     = {"1.15.7", 61124, "World of Warcraft Classic"},
-	wow_classic         = {"4.4.2",  60895, "Cataclysm Classic"},
-	wow                 = {"11.1.5", 61122, "World of Warcraft"},
-	curr                = {_G.GetBuildInfo()},
+	wow_classic_beta    = {"MOP Classic Beta",          "5.5.0",  61411},
+	wow_beta            = {"The War Within Beta",       "11.0.2", 56313},
+	wow_classic_ptr     = {"PTR (Cataclysm Classic)",   "4.4.2",  59185},
+	wow_classic_era_ptr = {"PTR (Classic Era)",         "1.15.7", 60141},
+	wow_ptr             = {"PTR (TWW 11.1.7)",          "11.1.7", 61406},
+	wow_ptr_x           = {"PTR (TWW 11.1.0)",          "11.1.0", 59347},
+	wow_classic_era     = {"World of Warcraft Classic", "1.15.7", 61257},
+	wow_classic         = {"Cataclysm Classic",         "4.4.2",  60895},
+	wow                 = {"World of Warcraft",         "11.1.5", 61265},
+	curr                = {"curr", _G.GetBuildInfo()},
 }
 
 local function getTOCVer(ver)
-	local n1, n2, n3 = _G.string.match(buildInfo[ver][1], "(%d+).(%d+).(%d)")
+	local n1, n2, n3 = _G.string.match(buildInfo[ver][2], "(%d+).(%d+).(%d)")
 	return n1 * 10000 + n2 * 100 + n3
 end
 local function compareBuildInfo(ver1, ver2, exact)
 	if exact then
 		--@debug@
-		aObj:Debug("cBI#1: [%s, %s, %d, %d, %d, %d]", ver1, ver2, getTOCVer(ver1), getTOCVer(ver2), _G.tonumber(buildInfo[ver1][2]), _G.tonumber(buildInfo[ver2][2]))
+		aObj:Debug("cBI#1: [%s, %s, %d, %d, %d, %d]", ver1, ver2, getTOCVer(ver1), getTOCVer(ver2), _G.tonumber(buildInfo[ver1][3]), _G.tonumber(buildInfo[ver2][3]))
 		--@end-debug@
-		return (getTOCVer(ver1) == getTOCVer(ver2) and _G.tonumber(buildInfo[ver1][2]) == _G.tonumber(buildInfo[ver2][2]))
+		return (getTOCVer(ver1) == getTOCVer(ver2) and _G.tonumber(buildInfo[ver1][3]) == _G.tonumber(buildInfo[ver2][3]))
 	else
 		--@debug@
-		aObj:Debug("cBI#2: [%s, %s, %d, %d, %d, %d]", ver1, ver2, getTOCVer(ver1), getTOCVer(ver2), _G.tonumber(buildInfo[ver1][2]), _G.tonumber(buildInfo[ver2][2]))
+		aObj:Debug("cBI#2: [%s, %s, %d, %d, %d, %d]", ver1, ver2, getTOCVer(ver1), getTOCVer(ver2), _G.tonumber(buildInfo[ver1][3]), _G.tonumber(buildInfo[ver2][3]))
 		--@end-debug@
-		return (getTOCVer(ver1) >= getTOCVer(ver2) and _G.tonumber(buildInfo[ver1][2]) >= _G.tonumber(buildInfo[ver2][2]))
+		return (getTOCVer(ver1) >= getTOCVer(ver2) and _G.tonumber(buildInfo[ver1][3]) >= _G.tonumber(buildInfo[ver2][3]))
 	end
 end
 function aObj:checkWoWVersion()
@@ -87,8 +87,8 @@ function aObj:checkWoWVersion()
 	--@end-debug@
 
 	--@debug@
-	self:Printf("%s, %d, %d, %s, %d, %s, %d, %s", buildInfo[agentUID][1], buildInfo[agentUID][2], self.tocVer, buildInfo.curr[1], buildInfo.curr[2], buildInfo.curr[3], buildInfo.curr[4] , agentUID)
-	_G.DEFAULT_CHAT_FRAME:AddMessage(_G.strjoin(" ", aName, ": Game version is:", buildInfo[agentUID][3]), 0.75, 0.5, 0.25, nil, true)
+	self:Printf("%s, %d, %s, %d, %s, %d, %s", buildInfo[agentUID][2], buildInfo[agentUID][3], buildInfo.curr[2], buildInfo.curr[3], buildInfo.curr[4], buildInfo.curr[5] , agentUID)
+	_G.DEFAULT_CHAT_FRAME:AddMessage(_G.strjoin(" ", aName, ": Game version is:", buildInfo[agentUID][1]), 0.75, 0.5, 0.25, nil, true)
 	--@end-debug@
 
 	-- --[===[@non-debug@
