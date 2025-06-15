@@ -54,7 +54,8 @@ if not aObj.isClscERA then
 				if btn.hiddenDescription then
 					btn.hiddenDescription:SetTextColor(aObj.BT:GetRGB())
 				end
-				btn.icon.frame:SetAlpha(0)
+				-- btn.icon.frame:SetAlpha(0)
+				btn.icon.frame:SetTexture(nil)
 				-- if aObj.modBtns then
 					-- TODO: PlusMinus is really a texture NOT a button
 					-- aObj:SecureHook("AchievementButton_UpdatePlusMinusTexture", function(btn)
@@ -68,8 +69,8 @@ if not aObj.isClscERA then
 					-- end)
 				-- end
 				if aObj.modBtnBs then
-					aObj:addButtonBorder{obj=btn.icon, relTo=btn.texture, x1=3, y1=0, x2=-3, y2=6}
-					aObj:addButtonBorder{obj=btn, ofs=0}
+					aObj:addButtonBorder{obj=btn.icon, fType=ftype, relTo=btn.texture, x1=3, y1=0, x2=-3, y2=6}
+					aObj:addButtonBorder{obj=btn, fType=ftype, ofs=0}
 				end
 				if aObj.modChkBtns
 				and btn.tracked
@@ -148,9 +149,13 @@ if not aObj.isClscERA then
 						aObj:addButtonBorder{obj=btn.Icon, fType=ftype, ofs=-3, y1=0, y2=6, clr={btn:GetBackdropBorderColor()}}
 					end
 				else
+					btn.icon.frame:SetTexture(nil)
 					bName = btn:GetName()
 					if _G[bName .. "Description"] then
 						_G[bName .. "Description"]:SetTextColor(.6, .6, .6, 1)
+					end
+					if aObj.modBtnBs then
+						aObj:addButtonBorder{obj=btn.icon, fType=ftype, relTo=btn.texture, x1=3, y1=0, x2=-3, y2=6, clr={btn:GetBackdropBorderColor()}}
 					end
 				end
 				if aObj.modChkBtns
@@ -207,7 +212,7 @@ if not aObj.isClscERA then
 			if self.isMnln then
 				self:skinObject("editbox", {obj=this.SearchBox, fType=ftype, si=true, y1=-4, y2=4})
 				self:moveObject{obj=this.SearchBox, y=-8}
-				self:skinObject("statusbar", {obj=this.searchProgressBar, fi=0, bg=this.searchProgressBar.bg})
+				self:skinObject("statusbar", {obj=this.searchProgressBar, fType=ftype, fi=0, bg=this.searchProgressBar.bg})
 				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, y1=7, x2=0, y2=-1})
 			else
 				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, y1=9, x2=1, y2=-2})
