@@ -244,7 +244,11 @@ end
 
 local function makeString(obj)
 	if _G.type(obj) == "table" then
-		return ("<%s:%s:%s>"):format(_G.tostring(obj), not obj:IsForbidden() and obj.GetObjectType and obj:GetObjectType() or _G.type(obj), obj.GetName and obj:GetName() or "(Anon)")
+		if obj.IsForbidden then
+			return ("<%s:%s:%s>"):format(_G.tostring(obj), not obj:IsForbidden() and obj.GetObjectType and obj:GetObjectType() or _G.type(obj), not obj:IsForbidden() and obj.GetDebugName and obj:GetDebugName() or "(Forbidden)")
+		else
+			return ("<%s:%s:%s>"):format(_G.tostring(obj), obj.GetObjectType and obj:GetObjectType() or _G.type(obj), obj.GetDebugName and obj:GetDebugName() or "(Anon)")
+		end
 	elseif _G.type(obj) ~= "string" then
 		return _G.tostring(obj)
 	else
