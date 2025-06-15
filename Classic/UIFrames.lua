@@ -599,6 +599,9 @@ aObj.SetupClassic_UIFrames = function()
 				end)
 				self:checkShown(_G.QuestLogControlPanel)
 			end
+			if self.modBtnBs then
+				self:addButtonBorder{obj=_G.QuestLogFrameShowMapButton, fType=ftype, relTo=_G.QuestLogFrameShowMapButton.texture, ofs=0, x1=2, x2=-2}
+			end
 			self:SecureHookScript(_G.QuestLogDetailFrame, "OnShow", function(this)
 				if not aObj.isClscBeta then
 					self:skinObject("slider", {obj=_G.QuestLogDetailScrollFrame.ScrollBar, fType=ftype, rpTex="background"})
@@ -634,9 +637,6 @@ aObj.SetupClassic_UIFrames = function()
 						end
 					end)
 					self:skinStdButton{obj=_G.QuestLogFrameCancelButton, fType=ftype, x1=2, x2=-2}
-				end
-				if self.modBtnBs then
-					self:addButtonBorder{obj=_G.QuestLogFrameShowMapButton, fType=ftype, relTo=_G.QuestLogFrameShowMapButton.texture, ofs=0, x1=2, x2=-2}
 				end
 
 				self:Unhook(this, "OnShow")
