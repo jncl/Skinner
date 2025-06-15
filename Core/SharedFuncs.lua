@@ -115,34 +115,36 @@ function aObj.checkLibraries(_, extraLibs)
 
 end
 
-function aObj.createAddOn(_, makeGlobal)
-	_G.LibStub:GetLibrary("AceAddon-3.0"):NewAddon(aObj, aName, "AceConsole-3.0", "AceEvent-3.0", "AceHook-3.0")
+function aObj:createAddOn(makeGlobal)
+	_G.LibStub:GetLibrary("AceAddon-3.0"):NewAddon(self, aName, "AceConsole-3.0", "AceEvent-3.0", "AceHook-3.0")
 	-- add to Global namespace if required
 	if makeGlobal then
-		_G[aName] = aObj
+		_G[aName] = self
 	end
 
 	-- setup callback registry
-	aObj.callbacks = _G.LibStub:GetLibrary("CallbackHandler-1.0", true):New(aObj)
+	self.callbacks = _G.LibStub:GetLibrary("CallbackHandler-1.0", true):New(self)
 
-	aObj:checkWoWVersion()
+	self:checkWoWVersion()
 
-	-- metatable added to track AddOn skin usage of renamed variable
-	local mt = {}
-	mt.__index = function(table, key)
-		if key == "isRtl" then
-			--@debug@
-			_G.assert(false, "Using old variable (isRtl)\n" .. _G.debugstack(2, 3, 2))
-			--@end-debug@
-			return _G.rawget(table, "isMnln")
-		else
-			return _G.rawget(table, key)
+	if self.isMnln then
+		-- metatable added to track AddOn skin usage of renamed variable
+		local mt = {}
+		mt.__index = function(table, key)
+			if key == "isRtl" then
+				--@debug@
+				_G.assert(false, "Using old variable (isRtl)\n" .. _G.debugstack(2, 3, 2))
+				--@end-debug@
+				return _G.rawget(table, "isMnln")
+			else
+				return _G.rawget(table, key)
+			end
 		end
-	end
-	-- protect the metatable
-	mt.__metatable = true
+		-- protect the metatable
+		mt.__metatable = true
 
-	_G.setmetatable(aObj, mt)
+		_G.setmetatable(self, mt)
+	end
 
 end
 
