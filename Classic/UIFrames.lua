@@ -748,7 +748,7 @@ aObj.SetupClassic_UIFrames = function()
 			and not _G.C_AddOns.IsAddOnLoaded("AlleyMap")
 			then
 				self:skinObject("frame", {obj=_G.WorldMapFrame.BorderFrame, fType=ftype, kfs=true, ofs=1}) -- full screen
-				if not aObj.isClscBeta then
+				if self.isClscERA then
 					self:skinObject("frame", {obj=_G.WorldMapFrame.MiniBorderFrame, fType=ftype, kfs=true, x1=15, y1=2, x2=-5, y2=24}) -- minimized
 				else
 					self:skinObject("frame", {obj=_G.WorldMapFrame.MiniBorderFrame, fType=ftype, kfs=true, x1=15, x2=-5}) -- minimized
