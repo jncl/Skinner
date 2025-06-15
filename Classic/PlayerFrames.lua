@@ -1585,6 +1585,7 @@ aObj.SetupClassic_PlayerFrames = function()
 					end
 					if self.modBtnBs then
 						for i = 1, _G.GetNumSpecializations(nil, frame.isPet) do
+							self:removeRegions(frame["specButton" .. i], {1, 2, 3, 8})
 							if frame["specButton" .. i].sbb then
 								self:clrBBC(frame["specButton" .. i].sbb, frame["specButton" .. i].disabled and "disabled" or "gold")
 							end
@@ -1618,7 +1619,7 @@ aObj.SetupClassic_PlayerFrames = function()
 						frame.MainHelpButton.Ring:SetTexture(nil)
 						aObj:removeMagicBtnTex(frame.learnButton)
 						for i = 1, _G.GetNumSpecializations(nil, frame.isPet) do
-							aObj:removeRegions(frame["specButton" .. i], {1, 2, 3})
+							aObj:removeRegions(frame["specButton" .. i], {1, 2, 3, 8})
 							aObj:makeIconSquare(frame["specButton" .. i], "specIcon", frame["specButton" .. i].disabled and "disabled" or "gold")
 						end
 						aObj:skinObject("slider", {obj=frame.spellsScroll.ScrollBar, fType=ftype, rpTex="artwork"})
@@ -1648,6 +1649,7 @@ aObj.SetupClassic_PlayerFrames = function()
 							self:keepFontStrings(frame["tier" .. i])
 							for j = 1, _G.NUM_TALENT_COLUMNS do
 								btn = frame["tier" .. i]["talent" .. j]
+								btn.knownSelection:SetTexture(nil)
 								if btn.knownSelection:IsShown() then
 									self:skinObject("frame", {obj=btn, fType=ftype, fb=true, clr="gold"})
 								end
