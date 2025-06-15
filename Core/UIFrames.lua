@@ -246,10 +246,6 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 			end
 			if itemQuality then
 				aObj:setBtnClr(frame, itemQuality)
-			else
-				if not tbl.nis then
-					aObj:clrBtnBdr(frame)
-				end
 			end
 		end
 	end
