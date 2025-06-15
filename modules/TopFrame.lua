@@ -99,7 +99,6 @@ function module:GetOptions()
 		type = "group",
 		order = 2,
 		name = aObj.L["Top Frame"],
-		desc = aObj.L["Change the TopFrame settings"],
 		get = function(info) return module.db.profile[info[#info]] end,
 		set = function(info, value)
 			if not module:IsEnabled() then module:Enable() end
@@ -112,34 +111,29 @@ function module:GetOptions()
 				type = "toggle",
 				order = 1,
 				name = aObj.L["TopFrame Show"],
-				desc = aObj.L["Toggle the TopFrame"],
 			},
 			height = {
 				type = "range",
 				order = 6,
 				name = aObj.L["TF Height"],
-				desc = aObj.L["Change Height of the TopFrame"],
 				min = 0, max = 500, step = 1,
 			},
 			width = {
 				type = "range",
 				order = 7,
 				name = aObj.L["TF Width"],
-				desc = aObj.L["Change Width of the TopFrame"],
 				min = 0, max = 2600, step = 1,
 			},
 			fheight = {
 				type = "range",
 				order = 9,
 				name = aObj.L["TF Fade Height"],
-				desc = aObj.L["Change the Height of the Fade Effect"],
 				min = 0, max = 500, step = 1,
 			},
 			fixedfh = {
 				type = "toggle",
 				order = 10,
 				name = aObj.L["Fixed Fade Height"],
-				desc = aObj.L["Fix the Height of the Fade Effect"],
 			},
 			xyOff = {
 				type = "toggle",
@@ -152,26 +146,22 @@ function module:GetOptions()
 				type = "toggle",
 				order = 3,
 				name = aObj.L["TF Toggle Border"],
-				desc = aObj.L["Toggle the Border"],
 			},
 			alpha = {
 				type = "range",
 				order = 8,
 				name = aObj.L["TF Alpha"],
-				desc = aObj.L["Change Alpha value of the TopFrame"],
 				min = 0, max = 1, step = 0.1,
 			},
 			invert = {
 				type = "toggle",
 				order = 4,
 				name = aObj.L["TF Invert Gradient"],
-				desc = aObj.L["Toggle the Inversion of the Gradient"],
 			},
 			rotate = {
 				type = "toggle",
 				order = 5,
 				name = aObj.L["TF Rotate Gradient"],
-				desc = aObj.L["Toggle the Rotation of the Gradient"],
 			},
 		},
 	}

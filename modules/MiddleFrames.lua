@@ -177,7 +177,6 @@ function module:GetOptions()
 		type = "group",
 		order = 3,
 		name = aObj.L["Middle Frame(s)"],
-		desc = aObj.L["Change the MiddleFrame(s) settings"],
 		get = function(info) return module.db.profile[info[#info]]	end,
 		set = function(info, value)
 			if not module:IsEnabled() then module:Enable() end
@@ -188,23 +187,19 @@ function module:GetOptions()
 			fheight = {
 				type = "range",
 				name = aObj.L["MF Fade Height"],
-				desc = aObj.L["Change the Height of the Fade Effect"],
 				min = 0, max = 500, step = 1,
 			},
 			fixedfh = {
 				type = "toggle",
 				name = aObj.L["Fixed Fade Height"],
-				desc = aObj.L["Fix the Height of the Fade Effect"],
 			},
 			borderOff = {
 				type = "toggle",
 				name = aObj.L["MF Toggle Border"],
-				desc = aObj.L["Toggle the Border"],
 			},
 			colour = {
 				type = "color",
 				name = aObj.L["MF Colour"],
-				desc = aObj.L["Change the Colour of the MiddleFrame(s)"],
 				hasAlpha = true,
 				get = function(info)
 					local c = module.db.profile[info[#info]]
@@ -221,12 +216,10 @@ function module:GetOptions()
 				type = "toggle",
 				order = 1,
 				name = aObj.L["MF Lock Frames"],
-				desc = aObj.L["Toggle the Frame Lock"],
 			},
 			name = {
 				type = "toggle",
 				name = aObj.L["MF Names"],
-				desc = aObj.L["Toggle the Frame Name(s)"],
 			},
 		},
 	}
@@ -248,7 +241,6 @@ function module:GetOptions()
 		mfkey.type = "group"
 		mfkey.inline = true
 		mfkey.name = aObj.L["Middle Frame" .. i]
-		mfkey.desc = aObj.L["Change MiddleFrame" .. i .. " settings"]
 		mfkey.get = function(info)
 			return module.db.profile[info[#info - 1]][info[#info]]
 		end
@@ -263,23 +255,19 @@ function module:GetOptions()
 		mfkey.args.shown.type = "toggle"
 		mfkey.args.shown.order = 1
 		mfkey.args.shown.name = aObj.L["MiddleFrame" .. i .. " Show"]
-		mfkey.args.shown.desc = aObj.L["Toggle the MiddleFrame" .. i]
 		mfkey.args.flevel = {}
 		mfkey.args.flevel.type = "range"
 		mfkey.args.flevel.name = aObj.L["MF" .. i .. " Frame Level"]
-		mfkey.args.flevel.desc = aObj.L["Change the MF" .. i .. " Frame Level"]
 		mfkey.args.flevel.min = 0
 		mfkey.args.flevel.max = 20
 		mfkey.args.flevel.step = 1
 		mfkey.args.fstrata = {}
 		mfkey.args.fstrata.type = "select"
 		mfkey.args.fstrata.name = aObj.L["MF" .. i .. " Frame Strata"]
-		mfkey.args.fstrata.desc = aObj.L["Change the MF" .. i .. " Frame Strata"]
 		mfkey.args.fstrata.values = FrameStrata
 		mfkey.args.reset = {}
 		mfkey.args.reset.type = "execute"
 		mfkey.args.reset.name = aObj.L["Reset"]
-		mfkey.args.reset.desc = aObj.L["Reset to default position"]
 		mfkey.args.reset.width = 0.4
 		mfkey.args.reset.func = function(info, _)
 			module.db.profile[info[#info - 1]].xOfs = defaults.profile[info[#info - 1]].xOfs

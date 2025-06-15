@@ -178,7 +178,6 @@ function module.GetOptions(_)
 		type = "group",
 		order = 1,
 		name = aObj.L["View Port"],
-		desc = aObj.L["Change the ViewPort settings"],
 		get = function(info)
 			if info[#info] == "colour" then
 				c = module.db.profile[info[#info]]
@@ -220,13 +219,11 @@ function module.GetOptions(_)
 				type = "toggle",
 				order = 1,
 				name = aObj.L["ViewPort Show"],
-				desc = aObj.L["Toggle the ViewPort"],
 			},
 			overlay = {
 				type = "toggle",
 				order = 3,
 				name = aObj.L["ViewPort Overlay"],
-				desc = aObj.L["Toggle the ViewPort Overlay"],
 			},
 			overlaysettings = {
 				type = "group",
@@ -239,7 +236,6 @@ function module.GetOptions(_)
 						type = "color",
 						order = 1,
 						name = aObj.L["ViewPort Colour"],
-						desc = aObj.L["Set ViewPort Colour"],
 						hasAlpha = true,
 					},
 					texfile = {
@@ -247,14 +243,12 @@ function module.GetOptions(_)
 						order = 3,
 						width = "full",
 						name = aObj.L["Viewport Texture File"],
-						desc = aObj.L["Set Viewport Texture Filename"],
 					},
 					texture = _G.AceGUIWidgetLSMlists and {
 						type = "select",
 						order = 5,
 						width = "double",
 						name = aObj.L["Viewport Texture"],
-						desc = aObj.L["Choose the Texture for the Viewport"],
 						dialogControl = "LSM30_Background",
 						values = _G.AceGUIWidgetLSMlists.background,
 					},
@@ -262,7 +256,6 @@ function module.GetOptions(_)
 						type = "select",
 						order = 7,
 						name = "  " .. aObj.L["Tile Type"],
-						desc = aObj.L["Tile or Stretch the Texture"],
 						values = {["None"] = aObj.L["No Tiling"], ["Mirror"] = aObj.L["Mirror Texture"], ["Repeat"] = aObj.L["Repeat Texture"]},
 					},
 				},
@@ -271,28 +264,24 @@ function module.GetOptions(_)
 				type = "range",
 				order = 10,
 				name = aObj.L["VP Top"],
-				desc = aObj.L["Change Height of the Top Band"],
 				min = 0, max = 256, step = 1,
 			},
 			bottom = {
 				type = "range",
 				order = 11,
 				name = aObj.L["VP Bottom"],
-				desc = aObj.L["Change Height of the Bottom Band"],
 				min = 0, max = 256, step = 1,
 			},
 			left = {
 				type = "range",
 				order = 12,
 				name = aObj.L["VP Left"],
-				desc = aObj.L["Change Width of the Left Band"],
 				min = 0, max = 1800, step = 1,
 			},
 			right = {
 				type = "range",
 				order = 13,
 				name = aObj.L["VP Right"],
-				desc = aObj.L["Change Width of the Right Band"],
 				min = 0, max = 1800, step = 1,
 			},
 		}

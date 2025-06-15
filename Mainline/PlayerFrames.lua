@@ -2398,25 +2398,21 @@ aObj.SetupMainline_PlayerFramesOptions = function(self)
 				type = "toggle",
 				order = 1,
 				name = self.L["Skin Frame"],
-				desc = _G.strjoin(" ", self.L["Toggle the skin of the"], self.L["ObjectiveTracker Frame"]),
 			},
 			popups = {
 				type = "toggle",
 				order = 2,
 				name = self.L["AutoPopUp Frames"],
-				desc = _G.strjoin(" ", self.L["Toggle the skin of the"], self.L["AutoPopUp Frames"]),
 			},
 			headers = {
 				type = "toggle",
 				order = 3,
 				name = self.L["Header Blocks"],
-				desc = _G.strjoin(" ", self.L["Toggle the skin of the"], self.L["Header Blocks"]),
 			},
 			animapowers = {
 				type = "toggle",
 				order = 4,
 				name = self.L["Anima Powers"],
-				desc = _G.strjoin(" ", self.L["Toggle the skin of the"], self.L["Anima Powers"]),
 			},
 		},
 	}
