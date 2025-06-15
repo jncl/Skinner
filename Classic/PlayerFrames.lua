@@ -107,7 +107,7 @@ aObj.SetupClassic_PlayerFrames = function()
 			cbFrame.Flash:SetAllPoints()
 			cbFrame.Flash:SetTexture(self.tFDIDs.w8x8)
 			if self.prdb.CastingBar.glaze then
-				self:skinObject("statusbar", {obj=cbFrame, fi=0, bg=self:getRegion(cbFrame, 1), nilFuncs=true})
+				self:skinObject("statusbar", {obj=cbFrame, fType=ftype, fi=0, bg=self:getRegion(cbFrame, 1), nilFuncs=true})
 			end
 			-- adjust text and spark in Classic mode
 			if not cbFrame.ignoreFramePositionManager then
@@ -314,10 +314,10 @@ aObj.SetupClassic_PlayerFrames = function()
 			aObj:keepFontStrings(parent.frame.TextureBackground)
 			parent.frame.TabFrame:ClearAllPoints()
 			parent.frame.TabFrame:SetPoint("BOTTOM", parent, "TOP", 0, -13)
-			aObj:skinObject("frame", {obj=parent.frame.TabFrame, fb=true})
-			aObj:skinObject("frame", {obj=parent.frame.ProfitFrame, kfs=true, ofs=0})
-			aObj:skinObject("frame", {obj=parent.frame.SetFrame, kfs=true, ofs=0, y1=2})
-			aObj:skinObject("slider", {obj=parent.frame.SetFrame.PhaseSlider})
+			aObj:skinObject("frame", {obj=parent.frame.TabFrame, fType=ftype, fb=true})
+			aObj:skinObject("frame", {obj=parent.frame.ProfitFrame, fType=ftype, kfs=true, ofs=0})
+			aObj:skinObject("frame", {obj=parent.frame.SetFrame, fType=ftype, kfs=true, ofs=0, y1=2})
+			aObj:skinObject("slider", {obj=parent.frame.SetFrame.PhaseSlider, fType=ftype})
 		end
 	end
 	aObj.blizzLoDFrames[ftype].CraftUI = function(self)
@@ -331,7 +331,7 @@ aObj.SetupClassic_PlayerFrames = function()
 					self:skinCheckButton{obj=_G.CraftFrameAvailableFilterCheckButton, fType=ftype}
 				end
 			end
-			self:skinObject("statusbar", {obj=_G.CraftRankFrame, fi=0, bg=_G.CraftRankFrameBackground})
+			self:skinObject("statusbar", {obj=_G.CraftRankFrame, fType=ftype, fi=0, bg=_G.CraftRankFrameBackground})
 			_G.CraftRankFrameBorder:GetNormalTexture():SetTexture(nil)
 			self:keepFontStrings(_G.CraftExpandButtonFrame)
 			self:keepFontStrings(_G.CraftDetailScrollChildFrame)
@@ -345,7 +345,7 @@ aObj.SetupClassic_PlayerFrames = function()
 			end
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, x1=x1, y1=y1, x2=x2, y2=y2})
 			if self.modBtnBs then
-				self:addButtonBorder{obj=_G.CraftIcon, clr="gold"}
+				self:addButtonBorder{obj=_G.CraftIcon, fType=ftype, clr="gold"}
 			end
 			if not _G.C_AddOns.IsAddOnLoaded("alaTradeSkill") then
 				self:skinObject("slider", {obj=_G.CraftListScrollFrameScrollBar, fType=ftype, rpTex="background"})
@@ -460,7 +460,7 @@ aObj.SetupClassic_PlayerFrames = function()
 				_G.FriendsFrameBattlenetFrame:DisableDrawLayer("BACKGROUND")
 				self:skinObject("frame", {obj=_G.FriendsFrameBattlenetFrame.BroadcastFrame.ScrollFrame, fType=ftype, kfs=true, fb=true, ofs=4})
 				if self.modBtns then
-					self:addButtonBorder{obj=_G.FriendsFrameBattlenetFrame.BroadcastButton, ofs=-2, x1=1, y1=-1}
+					self:addButtonBorder{obj=_G.FriendsFrameBattlenetFrame.BroadcastButton, fType=ftype, ofs=-2, x1=1, y1=-1}
 					self:skinStdButton{obj=_G.FriendsFrameBattlenetFrame.BroadcastFrame.ScrollFrame.UpdateButton, fType=ftype}
 					self:skinStdButton{obj=_G.FriendsFrameBattlenetFrame.BroadcastFrame.ScrollFrame.CancelButton, fType=ftype}
 				end
@@ -589,7 +589,7 @@ aObj.SetupClassic_PlayerFrames = function()
 					self:skinStdButton{obj=_G.GuildFrameGuildInformationButton, fType=ftype}
 				end
 				if self.modBtnBs then
-					self:addButtonBorder{obj=_G.GuildFrameGuildListToggleButton, ofs=-2, clr="gold"}
+					self:addButtonBorder{obj=_G.GuildFrameGuildListToggleButton, fType=ftype, ofs=-2, clr="gold"}
 				end
 				if self.modChkBtns then
 					self:skinCheckButton{obj=_G.GuildFrameLFGButton, fType=ftype}
@@ -642,7 +642,7 @@ aObj.SetupClassic_PlayerFrames = function()
 			self:SecureHookScript(_G.GuildInfoFrame, "OnShow", function(fObj)
 				self:moveObject{obj=fObj, y=-2}
 				self:skinObject("slider", {obj=_G.GuildInfoFrameScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
-				self:skinObject("frame", {obj=_G.GuildInfoTextBackground, fb=true})
+				self:skinObject("frame", {obj=_G.GuildInfoTextBackground, fType=ftype, fb=true})
 				self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, ofs=-2})
 				if self.modBtns then
 					self:skinCloseButton{obj=_G.GuildInfoCloseButton, fType=ftype}
@@ -940,8 +940,8 @@ aObj.SetupClassic_PlayerFrames = function()
 						end
 					end
 				end)
-				self:addButtonBorder{obj=_G.LootFrameDownButton, ofs=-2, clr="gold"}
-				self:addButtonBorder{obj=_G.LootFrameUpButton, ofs=-2, clr="gold"}
+				self:addButtonBorder{obj=_G.LootFrameDownButton, fType=ftype, ofs=-2, clr="gold"}
+				self:addButtonBorder{obj=_G.LootFrameUpButton, fType=ftype, ofs=-2, clr="gold"}
 			end
 
 			self:Unhook(this, "OnShow")
@@ -956,9 +956,9 @@ aObj.SetupClassic_PlayerFrames = function()
 			_G[fName .. "Corner"]:SetAlpha(0)
 			frame.Timer:DisableDrawLayer("ARTWORK")
 			if aObj.modBtnBs then
-				aObj:addButtonBorder{obj=frame, relTo=frame.Icon}
+				aObj:addButtonBorder{obj=frame, fType=ftype, relTo=frame.Icon}
 			end
-			aObj:skinObject("statusbar", {obj=frame.Timer, fi=0, bg=frame.Timer.Background})
+			aObj:skinObject("statusbar", {obj=frame.Timer, fType=ftype, fi=0, bg=frame.Timer.Background})
 			frame:SetScale(aObj.prdb.LootFrames.size ~= 1 and 0.75 or 1)
 			if aObj.modBtns then
 				aObj:skinCloseButton{obj=frame.PassButton}
@@ -1000,10 +1000,10 @@ aObj.SetupClassic_PlayerFrames = function()
 			this.Item.IconBorder:SetTexture(nil)
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true})
 			if self.modBtns then
-				 self:skinCloseButton{obj=self:getChild(this, 3)} -- unamed close button
+				 self:skinCloseButton{obj=self:getChild(this, 3), fType=ftype} -- unamed close button
 			end
 			if self.modBtnBs then
-				self:addButtonBorder{obj=this.Item, relTo=this.Item.Icon}
+				self:addButtonBorder{obj=this.Item, fType=ftype, relTo=this.Item.Icon}
 			end
 
 			self:Unhook(this, "OnShow")
@@ -1074,9 +1074,9 @@ aObj.SetupClassic_PlayerFrames = function()
 						self:addButtonBorder{obj=fObj.BonusFrame.DiceButton, fType=ftype, clr="gold"}
 					end
 					if self.modChkBtns then
-						self:skinCheckButton{obj=fObj.RoleInset.TankIcon.checkButton}
-						self:skinCheckButton{obj=fObj.RoleInset.HealerIcon.checkButton}
-						self:skinCheckButton{obj=fObj.RoleInset.DPSIcon.checkButton}
+						self:skinCheckButton{obj=fObj.RoleInset.TankIcon.checkButton, fType=ftype}
+						self:skinCheckButton{obj=fObj.RoleInset.HealerIcon.checkButton, fType=ftype}
+						self:skinCheckButton{obj=fObj.RoleInset.DPSIcon.checkButton, fType=ftype}
 					end
 
 					self:Unhook(fObj, "OnShow")
@@ -1214,7 +1214,7 @@ aObj.SetupClassic_PlayerFrames = function()
 					btn:DisableDrawLayer("BACKGROUND")
 					btn:GetNormalTexture():SetTexture(nil)
 					if self.modBtnBs then
-						self:addButtonBorder{obj=btn, sft=true, reParent={_G["SpellButton" .. i .. "AutoCastable"]}}
+						self:addButtonBorder{obj=btn, fType=ftype, sft=true, reParent={_G["SpellButton" .. i .. "AutoCastable"]}}
 					end
 					updBtn(btn)
 				end
@@ -1226,7 +1226,7 @@ aObj.SetupClassic_PlayerFrames = function()
 				for i = 1, _G.MAX_SKILLLINE_TABS do
 					self:removeRegions(_G["SpellBookSkillLineTab" .. i], {1}) -- N.B. other regions are icon and highlight
 					if self.modBtnBs then
-						self:addButtonBorder{obj=_G["SpellBookSkillLineTab" .. i]}
+						self:addButtonBorder{obj=_G["SpellBookSkillLineTab" .. i], fType=ftype}
 					end
 				end
 
@@ -1728,7 +1728,7 @@ aObj.SetupClassic_PlayerFrames = function()
 				end
 				self:skinObject("editbox", {obj=_G.TradeSkillFrameEditBox, fType=ftype})
 			end
-			self:skinObject("statusbar", {obj=_G.TradeSkillRankFrame, fi=0, bg=_G.TradeSkillRankFrameBackground})
+			self:skinObject("statusbar", {obj=_G.TradeSkillRankFrame, fType=ftype, fi=0, bg=_G.TradeSkillRankFrameBackground})
 			if self.isClscERA then
 				_G.TradeSkillRankFrameBorder:GetNormalTexture():SetTexture(nil)
 			else
@@ -1751,7 +1751,7 @@ aObj.SetupClassic_PlayerFrames = function()
 				self:skinObject("ddbutton", {obj=this.FilterDropdown, fType=ftype, filter=true})
 			end
 			if self.modBtnBs then
-				self:addButtonBorder{obj=_G.TradeSkillSkillIcon, clr="gold"}
+				self:addButtonBorder{obj=_G.TradeSkillSkillIcon, fType=ftype, clr="gold"}
 			end
 			local x1, y1, x2, y2
 			if _G.C_AddOns.IsAddOnLoaded("Leatrix_Plus")
@@ -1770,7 +1770,7 @@ aObj.SetupClassic_PlayerFrames = function()
 				if self.modBtns then
 					self:skinExpandButton{obj=_G.TradeSkillCollapseAllButton, fType=ftype, onSB=true}
 					for i = 1, _G.TRADE_SKILLS_DISPLAYED do
-						self:skinExpandButton{obj=_G["TradeSkillSkill" .. i], onSB=true}
+						self:skinExpandButton{obj=_G["TradeSkillSkill" .. i], fType=ftype, onSB=true}
 						self:checkTex{obj=_G["TradeSkillSkill" .. i]}
 					end
 					self:SecureHook("TradeSkillFrame_Update", function()
@@ -1787,8 +1787,8 @@ aObj.SetupClassic_PlayerFrames = function()
 					end)
 				end
 				if self.modBtnBs then
-					self:addButtonBorder{obj=_G.TradeSkillDecrementButton, ofs=0, clr="gold"}
-					self:addButtonBorder{obj=_G.TradeSkillIncrementButton, ofs=0, clr="gold"}
+					self:addButtonBorder{obj=_G.TradeSkillDecrementButton, fType=ftype, ofs=0, clr="gold"}
+					self:addButtonBorder{obj=_G.TradeSkillIncrementButton, fType=ftype, ofs=0, clr="gold"}
 				end
 			else
 				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, x1=4, y1=y1, x2=x2, y2=y2})
