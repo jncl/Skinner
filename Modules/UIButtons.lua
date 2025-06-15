@@ -747,7 +747,7 @@ local function __addButtonBorder(opts)
 		reparentRegion(opts.obj[rpReg], opts.obj.sbb)
 	end
 	if opts.rpA then
-		reparentRegion(opts.obj.Arrow, opts.obj.sbb)
+		reparentRegion(opts.obj.FlyoutArrow or opts.obj.Arrow, opts.obj.sbb)
 	end
 	reparentRegion(opts.obj:GetName() and _G[opts.obj:GetName() .. "Name"], opts.obj.sbb)
 	reparentRegion(opts.obj:GetName() and _G[opts.obj:GetName() .. "Stock"], opts.obj.sbb)
