@@ -489,7 +489,9 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 272
 			aObj:skinObject("editbox", {obj=this.SearchFilter, si=true})
 			self:skinObject("scrollbar", {obj=this.ResultsListing.ScrollArea.ScrollBar})
 			skinHeaders(this.ResultsListing)
-			if aObj.isMnln then
+			if aObj.isMnln
+			or aObj.isClsc
+			then
 				local frame = aObj:getPenultimateChild(this) -- UndercutScan
 				if aObj.modBtns then
 					aObj:skinStdButton{obj=frame.StartScanButton, sechk=true}
