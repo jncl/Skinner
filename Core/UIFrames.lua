@@ -1472,13 +1472,17 @@ aObj.blizzFrames[ftype].ItemText = function(self)
 	local function skinITFrame(frame)
 		aObj:skinObject("statusbar", {obj=_G.ItemTextStatusBar, fi=0})
 		if aObj.isMnln then
-			aObj:skinObject("scrollbar", {obj=_G.ItemTextScrollFrame.ScrollBar, fType=ftype, rpTex=not aObj.isMnln and {"background", "artwork"} or nil})
+			aObj:skinObject("scrollbar", {obj=_G.ItemTextScrollFrame.ScrollBar, fType=ftype})
 			aObj:skinObject("frame", {obj=frame, fType=ftype, kfs=true, ri=true, rns=true, cb=true, x2=3})
 		else
 			aObj:skinObject("slider", {obj=_G.ItemTextScrollFrame.ScrollBar, fType=ftype, rpTex={"background", "artwork"}})
-			aObj:skinObject("frame", {obj=frame, fType=ftype, kfs=true, x1=10, y1=-12, x2=-31, y2=60})
-			if aObj.modBtns then
-				aObj:skinCloseButton{obj=_G.ItemTextCloseButton}
+			if not aObj.isClscBeta then
+				aObj:skinObject("frame", {obj=frame, fType=ftype, kfs=true, x1=10, y1=-12, x2=-31, y2=60})
+				if aObj.modBtns then
+					aObj:skinCloseButton{obj=_G.ItemTextCloseButton}
+				end
+			else
+				aObj:skinObject("frame", {obj=frame, fType=ftype, kfs=true, cb=true, x2=1})
 			end
 		end
 		if aObj.modBtnBs then
@@ -2469,7 +2473,9 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 				-- TODO: Background alpha is 0
 			end
 			self:skinObject("frame", {obj=_G.MiniMapLFGFrame, fType=ftype, kfs=true, ofs=0})
-			_G.MiniMapWorldBorder:SetTexture(nil)
+			if not aObj.isClscBeta then
+				_G.MiniMapWorldBorder:SetTexture(nil)
+			end
 			_G.MiniMapWorldMapButton:DisableDrawLayer("OVERLAY") -- border texture
 			_G.MiniMapWorldMapButton:ClearAllPoints()
 			_G.MiniMapWorldMapButton:SetPoint("LEFT", _G.MinimapZoneTextButton, "RIGHT", -4, 0)

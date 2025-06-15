@@ -1478,8 +1478,12 @@ if not aObj.isClscERA then
 				end
 				for _, btn in _G.pairs(this.SlotButtons) do
 					btn.Border:SetTexture(nil)
+					if aObj.isClscBeta then
+						btn.StatusBorder:SetTexture(nil)
+						btn.HiddenVisualCover:SetScale(0.8) -- make it fit within button border
+					end
 					if self.modBtnBs then
-						 self:addButtonBorder{obj=btn, fType=ftype, ofs=-2}
+						 self:addButtonBorder{obj=btn, fType=ftype, ofs=-1}
 					end
 				end
 				self:skinObject("ddbutton", {obj=this.SpecDropdown, fType=ftype, noSF=true})
@@ -1490,6 +1494,8 @@ if not aObj.isClscERA then
 				if self.modBtnBs then
 					if self.isMnln then
 						self:addButtonBorder{obj=this.ModelScene.ClearAllPendingButton, fType=ftype, relTo=this.ModelScene.ClearAllPendingButton.Icon, ofs=5}
+					elseif aObj.isClscBeta then
+						self:addButtonBorder{obj=this.Model.ClearAllPendingButton, fType=ftype, relTo=this.Model.ClearAllPendingButton.Icon}
 					end
 				end
 				if self.modChkBtns then

@@ -291,6 +291,11 @@ aObj.SetupClassic_PlayerFrames = function()
 				-- update Button quality borders
 				_G.ContainerFrame_Update(frame)
 			end
+			if aObj.isClscBeta then
+				if objName == "ContainerFrame1" then
+					aObj:skinObject("editbox", {obj=_G.BagItemSearchBox, fType=ftype, si=true, ca=true})
+				end
+			end
 		end
 		self:SecureHook("ContainerFrame_GenerateFrame", function(fObj, id)
 			-- skin the frame if required
@@ -397,11 +402,19 @@ aObj.SetupClassic_PlayerFrames = function()
 		self:SecureHookScript(_G.DressUpFrame, "OnShow", function(this)
 			self:makeMFRotatable(_G.DressUpModelFrame)
 			if self.prdb.DUTexture then
-				self:removeRegions(this, {1, 2, 3 ,4, 5})
+				if not aObj.isClscBeta then
+					self:removeRegions(this, {1, 2, 3 ,4, 5})
+				else
+					self:keepRegions(this, {8, 19, 20, 21, 22, 23, 24})
+				end
 			else
 				self:keepFontStrings(this)
 			end
-			self:skinObject("frame", {obj=this, fType=ftype, cb=true, x1=10, y1=-11, x2=-33, y2=71})
+			if not aObj.isClscBeta then
+				self:skinObject("frame", {obj=this, fType=ftype, cb=true, x1=10, y1=-11, x2=-33, y2=71})
+			else
+				self:skinObject("frame", {obj=this, fType=ftype, cb=true, x2=1})
+			end
 			if self.modBtns then
 				self:skinStdButton{obj=_G.DressUpFrameCancelButton, fType=ftype}
 				self:skinStdButton{obj=this.ResetButton, fType=ftype}
@@ -1399,47 +1412,48 @@ aObj.SetupClassic_PlayerFrames = function()
 				end)
 				self:checkShown(_G.SpellBookProfessionFrame)
 
-				self:SecureHookScript(_G.SpellBookCoreAbilitiesFrame, "OnShow", function(fObj)
-					fObj.SpecName:SetTextColor(self.HT:GetRGB())
-					self:SecureHook(fObj, "UpdateTabs", function(frame)
-						for _, sTab in _G.pairs(frame.SpecTabs) do
-							sTab:DisableDrawLayer("BACKGROUND")
-							if self.modBtnBs then
-								self:addButtonBorder{obj=sTab, clr=sTab.isOffSpec and "grey"}
+				if self.isClscBeta then
+					self:SecureHookScript(_G.SpellBookCoreAbilitiesFrame, "OnShow", function(fObj)
+						fObj.SpecName:SetTextColor(self.HT:GetRGB())
+						self:SecureHook(fObj, "UpdateTabs", function(frame)
+							for _, sTab in _G.pairs(frame.SpecTabs) do
+								sTab:DisableDrawLayer("BACKGROUND")
+								if self.modBtnBs then
+									self:addButtonBorder{obj=sTab, clr=sTab.isOffSpec and "grey"}
+								end
 							end
-						end
-					end)
-					self:SecureHook("SpellBook_UpdateCoreAbilitiesTab", function()
-						for _, sBtn in _G.pairs(fObj.Abilities) do
-							sBtn.EmptySlot:SetTexture(nil)
-							sBtn.ActiveTexture:SetTexture(nil)
-							sBtn.FutureTexture:SetTexture(nil)
-							sBtn.Name:SetTextColor(self.HT:GetRGB())
-							sBtn.InfoText:SetTextColor(self.BT:GetRGB())
-							sBtn.RequiredLevel:SetTextColor(self.BT:GetRGB())
-							if self.modBtnBs then
-								self:addButtonBorder{obj=sBtn, fType=ftype, sft=true, clr="gold"}
+						end)
+						self:SecureHook("SpellBook_UpdateCoreAbilitiesTab", function()
+							for _, sBtn in _G.pairs(fObj.Abilities) do
+								sBtn.EmptySlot:SetTexture(nil)
+								sBtn.ActiveTexture:SetTexture(nil)
+								sBtn.FutureTexture:SetTexture(nil)
+								sBtn.Name:SetTextColor(self.HT:GetRGB())
+								sBtn.InfoText:SetTextColor(self.BT:GetRGB())
+								sBtn.RequiredLevel:SetTextColor(self.BT:GetRGB())
+								if self.modBtnBs then
+									self:addButtonBorder{obj=sBtn, fType=ftype, sft=true, clr="gold"}
+								end
 							end
-						end
+						end)
+
+						self:Unhook(fObj, "OnShow")
 					end)
+					self:SecureHookScript(_G.SpellBookWhatHasChanged, "OnShow", function(fObj)
+						fObj.ClassName:SetTextColor(self.HT:GetRGB())
+						self:SecureHook("SpellBook_UpdateWhatHasChangedTab", function()
+							for _, item in _G.pairs(fObj.ChangedItems) do
+								item:DisableDrawLayer("BACKGROUND")
+								item.Ring:SetTexture(nil)
+								item.Title:SetTextColor(self.HT:GetRGB())
+								item:SetTextColor("P", self.BT:GetRGB())
+							end
 
-					self:Unhook(fObj, "OnShow")
-				end)
+						end)
 
-				self:SecureHookScript(_G.SpellBookWhatHasChanged, "OnShow", function(fObj)
-					fObj.ClassName:SetTextColor(self.HT:GetRGB())
-					self:SecureHook("SpellBook_UpdateWhatHasChangedTab", function()
-						for _, item in _G.pairs(fObj.ChangedItems) do
-							item:DisableDrawLayer("BACKGROUND")
-							item.Ring:SetTexture(nil)
-							item.Title:SetTextColor(self.HT:GetRGB())
-							item:SetTextColor("P", self.BT:GetRGB())
-						end
-
+						self:Unhook(fObj, "OnShow")
 					end)
-
-					self:Unhook(fObj, "OnShow")
-				end)
+				end
 
 				self:Unhook(this, "OnShow")
 			end)
@@ -1807,18 +1821,52 @@ aObj.SetupClassic_PlayerFrames = function()
 			if not self.prdb.WatchFrame or self.initialized.WatchFrame then return end
 			self.initialized.WatchFrame = true
 
-			if self.modBtnBs then
-				self:addButtonBorder{obj=_G.WatchFrameCollapseExpandButton, es=12, ofs=0, x1=-1}
-				local function skinQuestBtns()
-					local bName
-					for i = 1, _G.WATCHFRAME_NUM_ITEMS do
-						bName = "WatchFrameItem" .. i
-						self:addButtonBorder{obj=_G[bName], fType=ftype, reParent={_G[bName .. "HotKey"], _G[bName .. "Count"], _G[bName .. "Stock"]}}
-					end
-					return 0, 0, 0
+			self:SecureHookScript(_G.WatchFrame, "OnShow", function(this)
+				if not aObj.isClscBeta then
+					_G.WatchFrameLines.AutoQuestShadow:SetTexture(nil)
+				else
+					_G.WatchFrameLines.Shadow:SetTexture(nil)
 				end
-				_G.WatchFrame_AddObjectiveHandler(skinQuestBtns)
+				if self.modBtnBs then
+					self:addButtonBorder{obj=_G.WatchFrameCollapseExpandButton, fType=ftype, es=12, ofs=0, x1=-1}
+				end
+
+				self:Unhook(this, "OnShow")
+			end)
+			self:checkShown(_G.WatchFrame)
+
+			local aqPopup
+			local function skinWatchFrameObjects(_, nextAnchor, _, _)
+				for i = 1, _G.GetNumAutoQuestPopUps() do
+					aqPopup =_G["WatchFrameAutoQuestPopUp" .. i]
+					aObj:skinObject("frame", {obj=aqPopup.ScrollChild, fType=ftype, kfs=true})
+					aqPopup.ScrollChild.Exclamation:SetAlpha(1)
+					aqPopup.ScrollChild.QuestionMark:SetAlpha(1)
+					if aqPopup.type == "COMPLETE" then
+						aqPopup.ScrollChild.QuestionMark:Show()
+					else
+						aqPopup.ScrollChild.Exclamation:Show()
+					end
+				end
+				if not aObj.isClscBeta then
+					-- Timers, Achievements, Quests
+					for line in _G.WatchFrame.linePool:EnumerateActive() do
+						aObj:getRegion(line, 4):SetTexture(nil)
+					end
+				else
+					_G.WatchFrameScenarioFrame.ScrollChild.BlockHeader:DisableDrawLayer("BACKGROUND")
+					_G.WatchFrameScenarioFrame.ScrollChild.BlockHeader:DisableDrawLayer("BORDER")
+					_G.WatchFrameScenarioBonusHeader:DisableDrawLayer("BACKGROUND")
+					_G.WatchFrameScenarioBonusHeader:DisableDrawLayer("BORDER")
+				end
+				if aObj.modBtnBs then
+					for i = 1, _G.WATCHFRAME_NUM_ITEMS do
+						aObj:addButtonBorder{obj=_G["WatchFrameItem" .. i], fType=ftype}
+					end
+				end
+				return nextAnchor, 0, 0, 0
 			end
+			_G.WatchFrame_AddObjectiveHandler(skinWatchFrameObjects)
 
 		end
 	end
