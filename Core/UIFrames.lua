@@ -1441,6 +1441,34 @@ aObj.blizzFrames[ftype].HelpFrame = function(self)
 
 end
 
+aObj.blizzFrames[ftype].HelpPlate = function(self)
+	if not self.prdb.Tutorial or self.initialized.HelpPlate then return end
+	self.initialized.HelpPlate = true
+
+	self:SecureHookScript(_G.HelpPlateTooltip, "OnShow", function(this)
+		this:DisableDrawLayer("BORDER") -- hide Arrow glow textures
+		self:skinObject("glowbox", {obj=this, fType=ftype})
+		-- move Arrow textures to align with frame border
+		if not aObj.isMnlnPTR
+		or not aObj.isClscBeta
+		then
+			self:moveObject{obj=this.ArrowUP, y=-2}
+			self:moveObject{obj=this.ArrowDOWN, y=2}
+			self:moveObject{obj=this.ArrowRIGHT, x=-2}
+			self:moveObject{obj=this.ArrowLEFT, x=2}
+		else
+			self:moveObject{obj=this.ArrowUp, y=-2}
+			self:moveObject{obj=this.ArrowDown, y=2}
+			self:moveObject{obj=this.ArrowRight, x=-2}
+			self:moveObject{obj=this.ArrowLeft, x=2}
+		end
+
+		self:Unhook(this, "OnShow")
+	end)
+	self:checkShown(_G.HelpPlateTooltip)
+
+end
+
 aObj.blizzFrames[ftype].ItemText = function(self)
 	if not self.prdb.ItemText or self.initialized.ItemText then return end
 	self.initialized.ItemText = true

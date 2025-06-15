@@ -3743,19 +3743,6 @@ aObj.SetupMainline_UIFrames = function()
 			self:Unhook(this, "OnShow")
 		end)
 
-		self:SecureHookScript(_G.HelpPlateTooltip, "OnShow", function(this)
-			this:DisableDrawLayer("BORDER") -- hide Arrow glow textures
-			self:skinObject("glowbox", {obj=this, fType=ftype})
-			-- move Arrow textures to align with frame border
-			self:moveObject{obj=this.ArrowUP, y=-2}
-			self:moveObject{obj=this.ArrowDOWN, y=2}
-			self:moveObject{obj=this.ArrowRIGHT, x=-2}
-			self:moveObject{obj=this.ArrowLEFT, x=2}
-
-			self:Unhook(this, "OnShow")
-		end)
-		self:checkShown(_G.HelpPlateTooltip)
-
 		self:SecureHookScript(_G.PingSystemTutorial, "OnShow", function(this)
 			this.Bg:SetAlpha(0)
 			self:skinObject("frame", {obj=this, fType=ftype, cb=true, bg=true, ofs=0, y1=-1, y2=-2})
