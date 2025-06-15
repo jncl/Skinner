@@ -1328,6 +1328,9 @@ aObj.SetupMainline_UIFrames = function()
 					toast.BannerFrame.MedalIcon:SetDrawLayer("ARTWORK", 2)
 				end
 			end
+			if aObj.modBtns then
+				aObj:skinStdButton{obj=toast.CloseButton, fType=ftype}
+			end
 		end
 		skinToast(_G.EventToastManagerFrame)
 
