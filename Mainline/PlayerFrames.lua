@@ -1435,6 +1435,9 @@ aObj.SetupMainline_PlayerFrames = function()
 				fObj.HelpPlateButton.Ring:SetTexture(nil)
 				self:skinObject("tabs", {obj=fObj.CategoryTabSystem,  pool=true, fType=ftype, ignoreSize=true, track=false})
 				-- SettingsDropdown
+				if aObj.isMnlnPTR then
+					self:getRegion(fObj.AssistedCombatRotationSpellFrame, 2):SetTexture(nil)
+				end
 				self:skinObject("editbox", {obj=fObj.SearchBox, fType=ftype, si=true, y1=-4, y2=4})
 				skinSearchPreviewContainer(fObj.SearchPreviewContainer)
 				self:skinObject("frame", {obj=fObj.PagedSpellsFrame, fType=ftype, kfs=true, fb=true, x1=0, y1=8, x2=3, y2=-4})
@@ -1447,7 +1450,7 @@ aObj.SetupMainline_PlayerFrames = function()
 					end
 				else
 					if self.modBtnBs then
-						self:addButtonBorder{obj=fObj.AssistedCombatRotationSpellFrame.Button, fType=ftype, sft=true}
+						self:addButtonBorder{obj=fObj.AssistedCombatRotationSpellFrame.Button, fType=ftype, sft=true, ofs=4}
 					end
 				end
 

@@ -1080,11 +1080,9 @@ if not aObj.isClscERA then
 					self:addButtonBorder{obj=this.MountDisplay.ModelScene.RotateLeftButton, ofs=-3}
 					self:addButtonBorder{obj=this.MountDisplay.ModelScene.RotateRightButton, ofs=-3}
 				end
-				if aObj.isMnlnPTR
-				or aObj.isClscBeta
-				then
+				if aObj.isMnlnPTR then
 					self:addButtonBorder{obj=this.SummonRandomFavoriteSpellFrame.Button, fType=ftype, sft=true, ofs=3}
-				else
+				elseif self.isMnln then
 					self:addButtonBorder{obj=this.SummonRandomFavoriteButton, fType=ftype, sft=true, ofs=3}
 				end
 				self:addButtonBorder{obj=this.MountDisplay.InfoButton, relTo=this.MountDisplay.InfoButton.Icon, clr="white"}

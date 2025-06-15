@@ -1097,22 +1097,44 @@ aObj.SetupMainline_UIFrames = function()
 			self:keepFontStrings(this.Border)
 			self:skinObject("ddbutton", {obj=this.Dropdown, fType=ftype})
 			-- .DelveModifiersWidgetContainer
-			-- .DelveBackgroundWidgetContainer
-			local function skinRewardBtns()
-				for btn in this.DelveRewardsContainerFrame.rewardPool:EnumerateActive() do
-					btn.NameFrame:SetTexture(nil)
-					if self.modBtnBs then
-						self:addButtonBorder{obj=btn, libt=true, relTo=btn.Icon}
+			-- make Background visible
+			this.DelveBackgroundWidgetContainer:SetFrameStrata("MEDIUM")
+			if not aObj.isMnlnPTR then
+				local function skinRewardBtns()
+					for btn in this.DelveRewardsContainerFrame.rewardPool:EnumerateActive() do
+						btn.NameFrame:SetTexture(nil)
+						if self.modBtnBs then
+							self:addButtonBorder{obj=btn, libt=true, relTo=btn.Icon}
+						end
 					end
 				end
+				self:SecureHook(this.DelveRewardsContainerFrame, "SetRewards", function(_)
+					skinRewardBtns()
+				end)
+				_G.C_Timer.After(0.5, function() -- wait for buttons to be setup
+					skinRewardBtns()
+				end)
+			else
+				self:skinObject("scrollbar", {obj=this.DelveRewardsContainerFrame.ScrollBar, fType=ftype})
+				local function skinRewards(...)
+					local _, element, new
+					if _G.select("#", ...) == 2 then
+						element, _ = ...
+					elseif _G.select("#", ...) == 3 then
+						element, _, new = ...
+					else
+						_, element, _, new = ...
+					end
+					if new ~= false then
+						element.NameFrame:SetTexture(nil)
+						if aObj.modBtnBs then
+							aObj:addButtonBorder{obj=element, fType=ftype, relTo=element.Icon}
+						end
+					end
+				end
+				_G.ScrollUtil.AddAcquiredFrameCallback(this.DelveRewardsContainerFrame.ScrollBox, skinRewards, aObj, true)
 			end
-			self:SecureHook(this.DelveRewardsContainerFrame, "SetRewards", function(_)
-				skinRewardBtns()
-			end)
-			_G.C_Timer.After(0.5, function() -- wait for buttons to be setup
-				skinRewardBtns()
-			end)
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, cb=true, ofs=4})
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, bg=true, ri=true, cb=true, ofs=4})
 			self:moveObject{obj=this.CloseButton, x=-3, y=-1}
 			if self.modBtns then
 				self:skinStdButton{obj=this.EnterDelveButton, fType=ftype, sechk=true}
