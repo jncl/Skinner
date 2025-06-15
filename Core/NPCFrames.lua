@@ -292,6 +292,48 @@ if not aObj.isClscERA then
 		self:checkShown(_G.AuctionHouseFrame)
 
 	end
+
+	aObj.blizzLoDFrames[ftype].BlackMarketUI = function(self)
+		if not self.prdb.BlackMarketUI or self.initialized.BlackMarketUI then return end
+		self.initialized.BlackMarketUI = true
+
+		self:SecureHookScript(_G.BlackMarketFrame, "OnShow", function(this)
+			self:moveObject{obj=self:getRegion(this, 22), y=-4} -- title
+			self:keepFontStrings(this.HotDeal)
+			for _, type in _G.pairs{"Name", "Level", "Type", "Duration", "HighBidder", "CurrentBid"} do
+				self:skinObject("frame", {obj=this["Column" .. type], fType=ftype, kfs=true, bd=5, ofs=0})
+			end
+			self:skinObject("scrollbar", {obj=this.ScrollBar, fType=ftype})
+			local function skinItem(...)
+				local _, element
+				if _G.select("#", ...) == 2 then
+					element, _ = ...
+				else
+					_, element, _ = ...
+				end
+				aObj:removeRegions(element, {1, 2, 3})
+				element.Item:GetNormalTexture():SetTexture(nil)
+				element.Item:GetPushedTexture():SetTexture(nil)
+				if aObj.modBtnBs then
+					aObj:addButtonBorder{obj=element.Item, clr=element.Item.IconBorder:GetVertexColor()}
+				end
+			end
+			_G.ScrollUtil.AddInitializedFrameCallback(this.ScrollBox, skinItem, aObj, true)
+			this.MoneyFrameBorder:DisableDrawLayer("BACKGROUND")
+			self:skinObject("moneyframe", {obj=_G.BlackMarketBidPrice})
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, cb=true, x2=1})
+			if self.modBtns then
+				self:skinStdButton{obj=this.BidButton, sechk=true}
+			end
+			if self.modBtnBs then
+				self:addButtonBorder{obj=this.HotDeal.Item, clr=this.HotDeal.Item.IconBorder:GetVertexColor()}
+			end
+
+			self:Unhook(this, "OnShow")
+		end)
+
+	end
+
 end
 
 aObj.blizzFrames[ftype].GossipFrame = function(self)

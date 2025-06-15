@@ -246,48 +246,6 @@ aObj.SetupMainline_NPCFrames = function()
 
 	end
 
-	aObj.blizzLoDFrames[ftype].BlackMarketUI = function(self)
-		if not self.prdb.BlackMarketUI or self.initialized.BlackMarketUI then return end
-		self.initialized.BlackMarketUI = true
-
-		self:SecureHookScript(_G.BlackMarketFrame, "OnShow", function(this)
-			self:moveObject{obj=self:getRegion(this, 22), y=-4} -- title
-			for _, type in _G.pairs{"Name", "Level", "Type", "Duration", "HighBidder", "CurrentBid"} do
-				self:skinObject("frame", {obj=this["Column" .. type], fType=ftype, kfs=true, bd=5, ofs=0})
-			end
-			self:skinObject("scrollbar", {obj=this.ScrollBar, fType=ftype})
-			local function skinElement(...)
-				local _, element
-				if _G.select("#", ...) == 2 then
-					element, _ = ...
-				else
-					_, element, _ = ...
-				end
-				aObj:removeRegions(element, {1, 2, 3})
-				element.Item:GetNormalTexture():SetTexture(nil)
-				element.Item:GetPushedTexture():SetTexture(nil)
-				if aObj.modBtnBs then
-					aObj:addButtonBorder{obj=element.Item, reParent={element.Item.Count, element.Item.Stock, element.Item.IconOverlay}}
-					aObj:clrButtonFromBorder(element.Item)
-				end
-			end
-			_G.ScrollUtil.AddInitializedFrameCallback(this.ScrollBox, skinElement, aObj, true)
-			this.MoneyFrameBorder:DisableDrawLayer("BACKGROUND")
-			self:skinObject("moneyframe", {obj=_G.BlackMarketBidPrice})
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, cb=true, x2=1})
-			if self.modBtns then
-				self:skinStdButton{obj=this.BidButton}
-			end
-			self:keepFontStrings(this.HotDeal)
-			if self.modBtnBs then
-				self:addButtonBorder{obj=this.HotDeal.Item, reParent={this.HotDeal.Item.Count, this.HotDeal.Item.Stock, this.HotDeal.Item.IconOverlay}}
-			end
-
-			self:Unhook(this, "OnShow")
-		end)
-
-	end
-
 	aObj.blizzLoDFrames[ftype].ChromieTimeUI = function(self)
 		if not self.prdb.ChromieTimeUI or self.initialized.ChromieTimeUI then return end
 		self.initialized.ChromieTimeUI = true
@@ -974,7 +932,6 @@ aObj.SetupMainline_NPCFramesOptions = function(self)
 	local optTab = {
 		["Allied Races UI"]             = true,
 		["Azerite Respec UI"]           = true,
-		["Black Market UI"]             = true,
 		["Chromie Time UI"]             = true,
 		["Covenant Preview UI"]         = true,
 		["Covenant Renown"]             = true,

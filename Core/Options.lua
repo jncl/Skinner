@@ -1304,6 +1304,7 @@ aObj.SetupOptions = function(self)
 	local npcOptTab = {
 		["Auction House UI"] = not self.isClscERA and true or nil,
 		["Bank Frame"]       = true,
+		["Black Market UI"]  = not self.isClscERA and true or nil,
 		["Gossip Frame"]     = true,
 		["Guild Registrar"]  = {suff = "Frame"},
 		["Merchant Frame"]   = true,
