@@ -1911,6 +1911,7 @@ and _G.C_LFGList.GetPremadeGroupFinderStyle() == _G.Enum.PremadeGroupFinderStyle
 		self.initialized.LFGList = true
 
 		self:SecureHookScript(_G.LFGParentFrame, "OnShow", function(this)
+			_G.LFGParentFramePortraitIcon:SetTexture(nil)
 			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, ignoreSize=true, lod=self.isTT and true})
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ofs=-11, x2=-29, y2=70})
 			if self.modBtns then
