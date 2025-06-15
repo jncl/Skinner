@@ -3159,7 +3159,7 @@ aObj.SetupMainline_UIFrames = function()
 				-- TODO: change selected & highlight textures
 				self:skinObject("button", {obj=tab, fType=ftype, ofs=-1, x1=-1, y2=2})
 			end
-			-- ContentsAnchor
+			self:moveObject{obj=this.QuestsTab, x=-3}
 
 			self:SecureHookScript(this.QuestsFrame, "OnShow", function(fObj) -- a.k.a. QuestScrollFrame (NOT PTRX)
 				self:skinObject("scrollbar", {obj=fObj.ScrollFrame.ScrollBar, fType=ftype})
@@ -3205,8 +3205,8 @@ aObj.SetupMainline_UIFrames = function()
 					self:Unhook(frame, "OnShow")
 				end)
 				self:checkShown(fObj.CampaignOverview)
-				self:SecureHook(fObj.CampaignOverview, "UpdateCampaignLoreText", function(_, _, _)
-					for tex in fObj.texturePool:EnumerateActive() do
+				self:SecureHook(fObj.CampaignOverview, "UpdateCampaignLoreText", function(frame, _, _)
+					for tex in frame.texturePool:EnumerateActive() do
 						tex:SetTexture(nil) -- divider lines
 					end
 				end)
