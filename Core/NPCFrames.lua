@@ -627,9 +627,12 @@ aObj.blizzFrames[ftype].QuestFrame = function(self)
 	self:SecureHook("QuestFrameProgressItems_Update", function()
 		local br, bg, bb = self.BT:GetRGB()
 		local r, g ,b = _G.QuestProgressRequiredMoneyText:GetTextColor()
+		-- aObj:Debug("QFPT_U: [%s, %s, %s]", r, g, b)
 		-- if red colour is less than 0.2 then it needs to be coloured
 		if r < 0.2 then
 			_G.QuestProgressRequiredMoneyText:SetTextColor(br - r, bg - g, bb - b)
+		else
+			_G.QuestProgressRequiredMoneyText:SetTextColor(self.BT:GetRGB())
 		end
 	end)
 
@@ -717,9 +720,12 @@ aObj.blizzFrames[ftype].QuestInfo = function(self)
 		_G.QuestInfoDescriptionText:SetTextColor(aObj.BT:GetRGB())
 		for _, obj in _G.pairs(_G.QuestInfoObjectivesFrame.Objectives) do
 			r, g ,b = obj:GetTextColor()
+			-- aObj:Debug("updateQIDisplay: [%s, %s, %s]", r, g, b)
 			-- if red colour is less than 0.25 then it needs to be coloured
 			if r < 0.25 then
 				obj:SetTextColor(br - r, bg - g, bb - b)
+			else
+				obj:SetTextColor(aObj.BT:GetRGB())
 			end
 		end
 		_G.QuestInfoSpellObjectiveLearnLabel:SetTextColor(aObj.BT:GetRGB())
