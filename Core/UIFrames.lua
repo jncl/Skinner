@@ -2825,12 +2825,6 @@ then
 			self:skinObject("scrollbar", {obj=this.Queue.Random.ScrollFrame.ScrollBar, fType=ftype})
 			-- .Queue.PartyBackfill
 			-- .Queue.CooldownFrame
-			if aObj.isClscBeta then
-				self:removeMagicBtnTex(_G.ScenarioQueueFrameFindGroupButton)
-			end
-			if self.modBtns then
-				self:skinStdButton{obj=_G.ScenarioQueueFrameFindGroupButton, fType=ftype}
-			end
 			if not aObj.isClscBeta then
 				self:skinObject("slider", {obj=this.Queue.Specific.ScrollFrame.ScrollBar, fType=ftype, rpTex={"background"}})
 				local btn
@@ -2862,9 +2856,16 @@ then
 					if aObj.modChkBtns then
 						aObj:skinCheckButton{obj=element.enableButton}
 					end
-
 				end
 				_G.ScrollUtil.AddInitializedFrameCallback(this.Queue.Specific.ScrollFrame, skinElement, aObj, true)
+				this.Queue.Random.ScrollFrame.Child.MoneyReward.NameFrame:SetTexture(nil)
+				self:removeMagicBtnTex(_G.ScenarioQueueFrameFindGroupButton)
+				if self.modBtnBs then
+					self:addButtonBorder{obj=this.Queue.Random.ScrollFrame.Child.MoneyReward, fType=ftype, libt=true}
+				end
+			end
+			if self.modBtns then
+				self:skinStdButton{obj=_G.ScenarioQueueFrameFindGroupButton, fType=ftype}
 			end
 
 			self:Unhook(this, "OnShow")
