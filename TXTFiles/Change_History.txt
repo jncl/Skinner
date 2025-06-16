@@ -1,3 +1,32 @@
+beta11.61411.1
+Jncl:
+	Updated ToDo*.txt files
+	Updated Change_History.txt
+	Updated SharedFuncs version Info table layout and version numbers
+	Updated SharedFuncs createAddOn code
+	Updated Localisation strings, closes #204
+	Bugfix for makeString function when handling Forbidden Objects
+	MainlinePTR changes
+	ClassicBeta changes
+	Updated Mainline QuestFrame skin
+	Updated Mainline EventToastManager skin
+	Updated UIButtons code for FlyoutArrow texture
+	Updated Classic PlayerTalentFrame skin
+	Added missing frametype values
+	Updated Classic CharacterFrames code
+	Updated Core CharacterFrames code
+	Updated AchievementUI skin
+	Updated TimeManager skin
+	Updated ScenarioQueueFrame skin
+	Updated LFGParentFrame skin
+	Bugfix for AlertFrames
+	Updated QuestFrame & QuestInfoFrame text colours
+	Moved BlackMarketUI code to Core
+	Moved HelpPlateTooltip code to Core
+	Updated Classic QuestLogFrame skin
+	Updated Classic WorldMap skin
+	Updated Auctionator skin
+
 beta11.61208.1
 Jncl:
 	Updated ToDo*.txt files
