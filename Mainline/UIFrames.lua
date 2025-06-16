@@ -3992,7 +3992,7 @@ aObj.SetupMainline_UIFramesOptions = function(self)
 		["Soulbinds"]                    = {suff = "Frame"},
 		["Spell Flyout"]                 = true,
 		["Splash Frame"]                 = {desc = "What's New Frame"},
-		["Subscription Interstitial UI"] = {width = "double"},
+		["Subscription Interstitial UI"] = true,
 		["Talking Head"]                 = true,
 		["Torghast Level Picker"]        = {suff = "Frame"},
 		["Tutorial Manager"]             = true,

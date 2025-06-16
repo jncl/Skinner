@@ -26,6 +26,10 @@ function aObj:OnInitialize()
 
 	self:Debug("debugging is enabled")
 
+	--@debug@
+	self.addonLocaleStrings = _G.SkinnerLocaleStrings or {}
+	--@end-debug@
+
 	-- get Locale
 	self.L = _G.LibStub:GetLibrary("AceLocale-3.0"):GetLocale(aName)
 	-- pointer to LibDBIcon-1.0 library
@@ -286,6 +290,11 @@ function aObj:OnEnable()
 
 	-- track when Player enters World (used for texture updates and UIParent child processing)
 	self:RegisterEvent("PLAYER_ENTERING_WORLD")
+
+	--@debug@
+	-- track when Player leaves World (to save locale strings table)
+	self:RegisterEvent("PLAYER_LEAVING_WORLD")
+	--@end-debug@
 
 	-- handle statusbar changes
 	self.LSM:RegisterCallback("LibSharedMedia_SetGlobal", function(mtype, override)

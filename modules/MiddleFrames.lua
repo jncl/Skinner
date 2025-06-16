@@ -186,20 +186,24 @@ function module:GetOptions()
 		args = {
 			fheight = {
 				type = "range",
-				name = aObj.L["MF Fade Height"],
+				order = 5,
+				name = aObj.L["Fade Height"],
 				min = 0, max = 500, step = 1,
 			},
 			fixedfh = {
 				type = "toggle",
+				order = 4,
 				name = aObj.L["Fixed Fade Height"],
 			},
 			borderOff = {
 				type = "toggle",
-				name = aObj.L["MF Toggle Border"],
+				order = 3,
+				name = aObj.L["Toggle Border"],
 			},
 			colour = {
 				type = "color",
-				name = aObj.L["MF Colour"],
+				order = 6,
+				name = aObj.L["Colour"],
 				hasAlpha = true,
 				get = function(info)
 					local c = module.db.profile[info[#info]]
@@ -215,24 +219,25 @@ function module:GetOptions()
 			lock = {
 				type = "toggle",
 				order = 1,
-				name = aObj.L["MF Lock Frames"],
+				name = aObj.L["Lock Frames"],
 			},
 			name = {
 				type = "toggle",
-				name = aObj.L["MF Names"],
+				order = 2,
+				name = aObj.L["Name Frames"],
 			},
 		},
 	}
 
 	local FrameStrata = {
-		BACKGROUND = "Background",
-		LOW = "Low",
-		MEDIUM = "Medium",
-		HIGH = "High",
-		DIALOG = "Dialog",
-		FULLSCREEN = "Fullscreen",
-		FULLSCREEN_DIALOG = "Fullscreen_Dialog",
-		TOOLTIP = "Tooltip",
+		BACKGROUND        = aObj.L["2. BACKGROUND"],
+		LOW               = aObj.L["3. LOW"],
+		MEDIUM            = aObj.L["4. MEDIUM"],
+		HIGH              = aObj.L["5. HIGH"],
+		DIALOG            = aObj.L["6. DIALOG"],
+		FULLSCREEN        = aObj.L["7. FULLSCREEN"],
+		FULLSCREEN_DIALOG = aObj.L["8. FULLSCREEN_DIALOG"],
+		TOOLTIP           = aObj.L["9. TOOLTIP"],
 	}
 
 	-- setup middleframe(s) options
@@ -240,7 +245,7 @@ function module:GetOptions()
 		local mfkey = {}
 		mfkey.type = "group"
 		mfkey.inline = true
-		mfkey.name = aObj.L["Middle Frame" .. i]
+		mfkey.name = aObj.L["Middle Frame"] .. " " .. i
 		mfkey.get = function(info)
 			return module.db.profile[info[#info - 1]][info[#info]]
 		end
@@ -254,16 +259,16 @@ function module:GetOptions()
 		mfkey.args.shown = {}
 		mfkey.args.shown.type = "toggle"
 		mfkey.args.shown.order = 1
-		mfkey.args.shown.name = aObj.L["MiddleFrame" .. i .. " Show"]
+		mfkey.args.shown.name = aObj.L["Show"]
 		mfkey.args.flevel = {}
 		mfkey.args.flevel.type = "range"
-		mfkey.args.flevel.name = aObj.L["MF" .. i .. " Frame Level"]
+		mfkey.args.flevel.name = aObj.L["Frame Level"]
 		mfkey.args.flevel.min = 0
 		mfkey.args.flevel.max = 20
 		mfkey.args.flevel.step = 1
 		mfkey.args.fstrata = {}
 		mfkey.args.fstrata.type = "select"
-		mfkey.args.fstrata.name = aObj.L["MF" .. i .. " Frame Strata"]
+		mfkey.args.fstrata.name = aObj.L["Frame Strata"]
 		mfkey.args.fstrata.values = FrameStrata
 		mfkey.args.reset = {}
 		mfkey.args.reset.type = "execute"

@@ -14,7 +14,12 @@
 
 ## DefaultState: Enabled
 ## LoadOnDemand: 0
+#@non-debug@
 ## SavedVariables: SkinnerDB
+#@end-non-debug@
+#@debug@
+## SavedVariables: SkinnerDB, SkinnerLocaleStrings
+#@end-debug@
 ## OptionalDeps: Ace3, LibSharedMedia-3.0, AceGUI-3.0-SharedMediaWidgets
 ## Globe: check-classic
 

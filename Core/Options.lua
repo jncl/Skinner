@@ -978,7 +978,7 @@ aObj.SetupOptions = function(self)
 						ChatButtons = {
 							type = "toggle",
 							order = 6,
-							name = self.L["Chat Buttons"],
+							name = self.L["Skin Buttons"],
 						},
 						CombatLogQBF = not self.isClscERA and {
 							type = "toggle",
@@ -1002,7 +1002,7 @@ aObj.SetupOptions = function(self)
 						skin = {
 							type = "toggle",
 							order = 1,
-							name = self.L["Chat Bubbles Skin"],
+							name = self.L["Skin Frames"],
 						},
 						alpha = {
 							type = "range",
@@ -1233,7 +1233,7 @@ aObj.SetupOptions = function(self)
 
 	local pfOptTab = {
 		["Archaeology UI"]    = not self.isClscERA and true or nil,
-		["Buffs"]             = {desc = "Buffs Buttons"},
+		["Buffs"]             = {suff = "Buttons"},
 		["Character Frames"]  = true,
 		["Collections"]       = self.isMnln and {pref = "Warband"} or self.isClsc and {suff = "Journal"} or nil,
 		["Communities"]       = {pref = "Guild &"},

@@ -93,24 +93,24 @@ function module:GetOptions()
 			shown = {
 				type = "toggle",
 				order = 1,
-				name = aObj.L["BottomFrame Show"],
+				name = aObj.L["Show"],
 			},
 			height = {
 				type = "range",
 				order = 6,
-				name = aObj.L["BF Height"],
+				name = aObj.L["Height"],
 				min = 0, max = 500, step = 1,
 			},
 			width = {
 				type = "range",
 				order = 7,
-				name = aObj.L["BF Width"],
+				name = aObj.L["Width"],
 				min = 0, max = 2600, step = 1,
 			},
 			fheight = {
 				type = "range",
 				order = 9,
-				name = aObj.L["BF Fade Height"],
+				name = aObj.L["Fade Height"],
 				min = 0, max = 500, step = 1,
 			},
 			fixedfh = {
@@ -122,28 +122,29 @@ function module:GetOptions()
 				type = "toggle",
 				order = 2,
 				width = "double",
-				name = aObj.L["BF Move Origin offscreen"],
+				name = aObj.L["Move Origin offscreen"],
+				desc = aObj.L["Hide Border on Right and Bottom"],
 			},
 			borderOff = {
 				type = "toggle",
 				order = 3,
-				name = aObj.L["BF Toggle Border"],
+				name = aObj.L["Toggle Border"],
 			},
 			alpha = {
 				type = "range",
 				order = 8,
-				name = aObj.L["BF Alpha"],
+				name = aObj.L["Alpha"],
 				min = 0, max = 1, step = 0.1,
 			},
 			invert = {
 				type = "toggle",
 				order = 4,
-				name = aObj.L["BF Invert Gradient"],
+				name = aObj.L["Invert Gradient"],
 			},
 			rotate = {
 				type = "toggle",
 				order = 5,
-				name = aObj.L["BF Rotate Gradient"],
+				name = aObj.L["Rotate Gradient"],
 			},
 		},
 	}

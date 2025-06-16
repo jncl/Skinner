@@ -218,12 +218,12 @@ function module.GetOptions(_)
 			shown = {
 				type = "toggle",
 				order = 1,
-				name = aObj.L["ViewPort Show"],
+				name = aObj.L["Show"],
 			},
 			overlay = {
 				type = "toggle",
 				order = 3,
-				name = aObj.L["ViewPort Overlay"],
+				name = aObj.L["Overlay"],
 			},
 			overlaysettings = {
 				type = "group",
@@ -235,20 +235,20 @@ function module.GetOptions(_)
 					colour = {
 						type = "color",
 						order = 1,
-						name = aObj.L["ViewPort Colour"],
+						name = aObj.L["Colour"],
 						hasAlpha = true,
 					},
 					texfile = {
 						type = "input",
 						order = 3,
 						width = "full",
-						name = aObj.L["Viewport Texture File"],
+						name = aObj.L["Texture File"],
 					},
 					texture = _G.AceGUIWidgetLSMlists and {
 						type = "select",
 						order = 5,
 						width = "double",
-						name = aObj.L["Viewport Texture"],
+						name = aObj.L["Texture"],
 						dialogControl = "LSM30_Background",
 						values = _G.AceGUIWidgetLSMlists.background,
 					},
@@ -263,25 +263,25 @@ function module.GetOptions(_)
 			top = {
 				type = "range",
 				order = 10,
-				name = aObj.L["VP Top"],
+				name = aObj.L["Top"],
 				min = 0, max = 256, step = 1,
 			},
 			bottom = {
 				type = "range",
 				order = 11,
-				name = aObj.L["VP Bottom"],
+				name = aObj.L["Bottom"],
 				min = 0, max = 256, step = 1,
 			},
 			left = {
 				type = "range",
 				order = 12,
-				name = aObj.L["VP Left"],
+				name = aObj.L["Left"],
 				min = 0, max = 1800, step = 1,
 			},
 			right = {
 				type = "range",
 				order = 13,
-				name = aObj.L["VP Right"],
+				name = aObj.L["Right"],
 				min = 0, max = 1800, step = 1,
 			},
 		}
