@@ -12,5 +12,6 @@ ToDos
 
 #193 	I 	Can't use Quest Items in the Quest List
 
-#204 ?	I/C UI Frames options have a blank toggle entry
-	 ?	I/E "
+#221 √	I/R Missing Localizations
+		I/E "
+		i/C "
