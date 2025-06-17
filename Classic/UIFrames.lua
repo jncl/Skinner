@@ -43,23 +43,23 @@ aObj.SetupClassic_UIFrames = function()
 		self:SecureHookScript(_G.KeyBindingFrame, "OnShow", function(this)
 			self:skinObject("frame", {obj=this.categoryList, fType=ftype, kfs=true, fb=true})
 			self:skinObject("frame", {obj=this.bindingsContainer, fType=ftype, kfs=true, fb=true})
-			self:skinObject("slider", {obj=this.scrollFrame.ScrollBar, rpTex={"background", "border"}})
+			self:skinObject("slider", {obj=this.scrollFrame.ScrollBar, fType=ftype, rpTex={"background", "border"}})
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true})
 			if self.modBtns then
 				for _, row in _G.pairs(this.keyBindingRows) do
-					self:skinStdButton{obj=row.key1Button}
-					self:skinStdButton{obj=row.key2Button}
+					self:skinStdButton{obj=row.key1Button, fType=ftype}
+					self:skinStdButton{obj=row.key2Button, fType=ftype}
 					row.key1Button.sb:SetAlpha(row.key1Button:GetAlpha())
 					row.key2Button.sb:SetAlpha(row.key2Button:GetAlpha())
 				end
-				self:skinStdButton{obj=this.unbindButton}
-				self:skinStdButton{obj=this.okayButton}
-				self:skinStdButton{obj=this.cancelButton}
-				self:skinStdButton{obj=this.defaultsButton}
+				self:skinStdButton{obj=this.unbindButton, fType=ftype}
+				self:skinStdButton{obj=this.okayButton, fType=ftype}
+				self:skinStdButton{obj=this.cancelButton, fType=ftype}
+				self:skinStdButton{obj=this.defaultsButton, fType=ftype}
 				-- hook this to handle custom buttons (e.g. Voice Chat: Push to Talk)
 				self:SecureHook("BindingButtonTemplate_SetupBindingButton", function(_, button)
 					if button.GetCustomBindingType then
-						self:skinStdButton{obj=button}
+						self:skinStdButton{obj=button, fType=ftype}
 					end
 				end)
 				self:SecureHook("KeyBindingFrame_Update", function()
@@ -74,7 +74,7 @@ aObj.SetupClassic_UIFrames = function()
 				end)
 			end
 			if self.modChkBtns then
-				self:skinCheckButton{obj=this.characterSpecificButton}
+				self:skinCheckButton{obj=this.characterSpecificButton, fType=ftype}
 			end
 
 			self:Unhook(this, "OnShow")
@@ -88,13 +88,13 @@ aObj.SetupClassic_UIFrames = function()
 
 		if self.modBtnBs then
 			for i = 1, _G.NUM_CHAT_WINDOWS do
-				self:addButtonBorder{obj=_G["ChatFrame" .. i].buttonFrame.bottomButton, ofs=-2, x1=1}
-				self:addButtonBorder{obj=_G["ChatFrame" .. i].buttonFrame.downButton, ofs=-2, x1=1}
-				self:addButtonBorder{obj=_G["ChatFrame" .. i].buttonFrame.upButton, ofs=-2, x1=1}
+				self:addButtonBorder{obj=_G["ChatFrame" .. i].buttonFrame.bottomButton, fType=ftype, ofs=-2, x1=1}
+				self:addButtonBorder{obj=_G["ChatFrame" .. i].buttonFrame.downButton, fType=ftype, ofs=-2, x1=1}
+				self:addButtonBorder{obj=_G["ChatFrame" .. i].buttonFrame.upButton, fType=ftype, ofs=-2, x1=1}
 				if not aObj.isClsc then
-					self:addButtonBorder{obj=_G["ChatFrame" .. i].minimizeButton, ofs=-2, x=1}
+					self:addButtonBorder{obj=_G["ChatFrame" .. i].minimizeButton, fType=ftype, ofs=-2, x=1}
 				end
-				self:addButtonBorder{obj=_G["ChatFrame" .. i].ScrollToBottomButton, ofs=-1}
+				self:addButtonBorder{obj=_G["ChatFrame" .. i].ScrollToBottomButton, fType=ftype, ofs=-1}
 			end
 			self:addButtonBorder{obj=_G.ChatFrameChannelButton, fType=ftype, ofs=1}
 			self:addButtonBorder{obj=_G.ChatFrameMenuButton, fType=ftype, ofs=-2, x1=1}
@@ -112,8 +112,8 @@ aObj.SetupClassic_UIFrames = function()
 			self:skinObject("slider", {obj=_G.OpacitySliderFrame, fType=ftype})
 			self:skinObject("frame", {obj=this, fType=ftype, hdr=true, ofs=0})
 			if self.modBtns then
-				self:skinStdButton{obj=_G.ColorPickerOkayButton}
-				self:skinStdButton{obj=_G.ColorPickerCancelButton}
+				self:skinStdButton{obj=_G.ColorPickerOkayButton, fType=ftype}
+				self:skinStdButton{obj=_G.ColorPickerCancelButton, fType=ftype}
 			end
 
 			self:Unhook(this, "OnShow")
@@ -135,7 +135,7 @@ aObj.SetupClassic_UIFrames = function()
 
 		-- this is done here as other AddOns may require it to be skinned
 		if self.modBtnBs then
-			self:addButtonBorder{obj=_G.MainMenuBarVehicleLeaveButton, schk=true}
+			self:addButtonBorder{obj=_G.MainMenuBarVehicleLeaveButton, fType=ftype, schk=true}
 		end
 
 		if _G.C_AddOns.IsAddOnLoaded("Dominos") then
@@ -170,10 +170,10 @@ aObj.SetupClassic_UIFrames = function()
 				_G.ExhaustionTick:GetNormalTexture():SetTexture(nil)
 				_G.ExhaustionTick:GetHighlightTexture():SetTexture(nil)
 				_G.MainMenuExpBar:DisableDrawLayer("OVERLAY")
-				_G.MainMenuExpBar:SetSize(self.isClsc and 1032 or 1012, 14)
-				self:moveObject{obj=_G.MainMenuExpBar, x=1, y=2}
+				_G.MainMenuExpBar:SetSize(aObj.isClscBeta and 1014 or self.isClsc and 1032 or 1012, 14)
+				self:moveObject{obj=_G.MainMenuExpBar, x=aObj.isClscBeta and 2 or 1, y=2}
 				self:moveObject{obj=_G.MainMenuBarExpText, y=-2}
-				self:skinObject("statusbar", {obj=_G.MainMenuExpBar, bg=self:getRegion(_G.MainMenuExpBar, 6), other={_G.ExhaustionLevelFillBar}})
+				self:skinObject("statusbar", {obj=_G.MainMenuExpBar, fType=ftype, bg=self:getRegion(_G.MainMenuExpBar, 6), other={_G.ExhaustionLevelFillBar}})
 				_G.MainMenuBarMaxLevelBar:DisableDrawLayer("BACKGROUND")
 				_G.MainMenuBarArtFrame:DisableDrawLayer("BACKGROUND")
 				_G.MainMenuBarLeftEndCap:SetTexture(nil)
@@ -182,13 +182,13 @@ aObj.SetupClassic_UIFrames = function()
 				self:removeRegions(rwbSB, {1, 2, 3, 4, 5, 6, 7, 8, 9})
 				rwbSB:SetSize(1011, 8)
 				self:moveObject{obj=rwbSB, x=1, y=2}
-				self:skinObject("statusbar", {obj=rwbSB, bg=rwbSB.Background, other={rwbSB.Underlay, rwbSB.Overlay}})
+				self:skinObject("statusbar", {obj=rwbSB, fType=ftype, bg=rwbSB.Background, other={rwbSB.Underlay, rwbSB.Overlay}})
 				if self.modBtnBs then
 					for i = 1, _G.NUM_ACTIONBAR_BUTTONS do
 						skinABBtn(_G["ActionButton" .. i])
 					end
-					self:addButtonBorder{obj=_G.ActionBarUpButton, ofs=-4, clr="gold"}
-					self:addButtonBorder{obj=_G.ActionBarDownButton, ofs=-4, clr="gold"}
+					self:addButtonBorder{obj=_G.ActionBarUpButton, fType=ftype, ofs=-4, clr="gold"}
+					self:addButtonBorder{obj=_G.ActionBarDownButton, fType=ftype, ofs=-4, clr="gold"}
 					skinMultiBarBtns("BottomLeft")
 					skinMultiBarBtns("BottomRight")
 				end
@@ -201,17 +201,16 @@ aObj.SetupClassic_UIFrames = function()
 				skinMultiBarBtns("Right")
 				skinMultiBarBtns("Left")
 				for _, bName in _G.pairs(_G.MICRO_BUTTONS) do
-					self:addButtonBorder{obj=_G[bName], es=24, ofs=2, y1=-18, reParent={_G[bName].QuickKeybindHighlightTexture}}
+					self:addButtonBorder{obj=_G[bName], fType=ftype, es=24, ofs=2, y1=-18, reParent={_G[bName].QuickKeybindHighlightTexture}}
 				end
 				local function abb2Bag(bag)
-					aObj:addButtonBorder{obj=bag, fType=ftype, ibt=true, ofs=3}
-					bag.sbb:SetBackdropBorderColor(bag.icon:GetVertexColor())
+					aObj:addButtonBorder{obj=bag, fType=ftype, ibt=true, ofs=3, clr=bag.icon:GetVertexColor()}
 				end
 				abb2Bag(_G.MainMenuBarBackpackButton)
 				for i = 0, 3 do
 					abb2Bag(_G["CharacterBag" .. i .. "Slot"])
 				end
-				self:addButtonBorder{obj=_G.KeyRingButton, ofs=2}
+				self:addButtonBorder{obj=_G.KeyRingButton, fType=ftype, ofs=2}
 			end
 		end
 
@@ -306,10 +305,10 @@ aObj.SetupClassic_UIFrames = function()
 			then
 				local nHb, nCb = nP.healthBar, nP.castBar or nP.CastBar
 				nHb.border:DisableDrawLayer("ARTWORK")
-				aObj:skinObject("statusbar", {obj=nHb, bg=nHb.background})
+				aObj:skinObject("statusbar", {obj=nHb, fType=ftype, bg=nHb.background})
 				if aObj.isClsc then
 					aObj:removeRegions(nCb, {2, 3})
-					aObj:skinObject("statusbar", {obj=nCb, bg=aObj:getRegion(nCb, 1)})
+					aObj:skinObject("statusbar", {obj=nCb, fType=ftype, bg=aObj:getRegion(nCb, 1)})
 				end
 				-- N.B. WidgetContainer objects managed in UIWidgets code
 			end
@@ -417,7 +416,7 @@ aObj.SetupClassic_UIFrames = function()
 						for i = 1, 5 do
 							self:removeRegions(_G["PVPTeamDetailsFrameColumnHeader" .. i], {1, 2, 3})
 							if self.modBtns then
-								 self:skinStdButton{obj=_G["PVPTeamDetailsFrameColumnHeader" .. i]}
+								 self:skinStdButton{obj=_G["PVPTeamDetailsFrameColumnHeader" .. i], fType=ftype}
 							end
 						end
 						self:skinObject("frame", {obj=frame, fType=ftype, kfs=true, cb=true, ofs=-2})
@@ -489,12 +488,12 @@ aObj.SetupClassic_UIFrames = function()
 			self:skinObject("frame", {obj=this, fType=ftype, ofs=0})
 			if self.modBtns then
 				if self.isClscERA then
-					self:skinOtherButton{obj=this.closeButton, text=self.modUIBtns.minus}
+					self:skinOtherButton{obj=this.closeButton, fType=ftype, text=self.modUIBtns.minus}
 				else
-					self:skinOtherButton{obj=this.minimizeButton, text=self.modUIBtns.minus}
+					self:skinOtherButton{obj=this.minimizeButton, fType=ftype, text=self.modUIBtns.minus}
 				end
-				self:skinStdButton{obj=_G.PVPFramePopupAcceptButton}
-				self:skinStdButton{obj=_G.PVPFramePopupDeclineButton}
+				self:skinStdButton{obj=_G.PVPFramePopupAcceptButton, fType=ftype}
+				self:skinStdButton{obj=_G.PVPFramePopupDeclineButton, fType=ftype}
 			end
 
 			self:Unhook(this, "OnShow")
@@ -504,8 +503,8 @@ aObj.SetupClassic_UIFrames = function()
 			this.Separator:SetTexture(nil)
 			self:skinObject("frame", {obj=this, fType=ftype, ofs=0})
 			if self.modBtns then
-				self:skinStdButton{obj=this.enterButton}
-				self:skinStdButton{obj=this.hideButton}
+				self:skinStdButton{obj=this.enterButton, fType=ftype}
+				self:skinStdButton{obj=this.hideButton, fType=ftype}
 			end
 
 			self:Unhook(this, "OnShow")
@@ -743,8 +742,8 @@ aObj.SetupClassic_UIFrames = function()
 					self:skinObject("frame", {obj=_G.WorldMapFrame.MiniBorderFrame, fType=ftype, kfs=true, x1=15, x2=-5}) -- minimized
 				end
 				if self.modBtns then
-					self:skinOtherButton{obj=this.MaximizeMinimizeFrame.MaximizeButton, font=self.fontS, text=self.nearrow}
-					self:skinOtherButton{obj=this.MaximizeMinimizeFrame.MinimizeButton, font=self.fontS, disfont=self.fontDS, text=self.swarrow}
+					self:skinOtherButton{obj=this.MaximizeMinimizeFrame.MaximizeButton, fType=ftype, font=self.fontS, text=self.nearrow}
+					self:skinOtherButton{obj=this.MaximizeMinimizeFrame.MinimizeButton, fType=ftype, font=self.fontS, disfont=self.fontDS, text=self.swarrow}
 				end
 				if self.isClsc then
 					if self.modChkBtns then
