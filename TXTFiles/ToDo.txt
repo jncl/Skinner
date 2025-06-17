@@ -12,6 +12,4 @@ ToDos
 
 #193 	I 	Can't use Quest Items in the Quest List
 
-#221 √	I/R Missing Localizations
-		I/E "
-		i/C "
+#222 √	I/C Missing Localizations, again!!
