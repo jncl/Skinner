@@ -3,11 +3,11 @@ local aName, aObj = ...
 local _G = _G
 
 local buildInfo = {
-	wow_classic_beta    = {"MOP Classic Beta",          "5.5.0",  61411},
+	wow_classic_beta    = {"MOP Classic Beta",          "5.5.0",  61496},
 	wow_beta            = {"The War Within Beta",       "11.0.2", 56313},
 	wow_classic_ptr     = {"PTR (Cataclysm Classic)",   "4.4.2",  59185},
 	wow_classic_era_ptr = {"PTR (Classic Era)",         "1.15.7", 60141},
-	wow_ptr             = {"PTR (TWW 11.1.7)",          "11.1.7", 61406},
+	wow_ptr             = {"PTR (TWW 11.1.7)",          "11.1.7", 61491},
 	wow_ptr_x           = {"PTR (TWW 11.1.0)",          "11.1.0", 59347},
 	wow_classic_era     = {"World of Warcraft Classic", "1.15.7", 61257},
 	wow_classic         = {"Cataclysm Classic",         "4.4.2",  60895},
