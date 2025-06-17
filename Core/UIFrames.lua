@@ -3282,15 +3282,6 @@ aObj.blizzFrames[ftype].TimeManager = function(self)
 		self:skinObject("ddbutton", {obj=this.AlarmTimeFrame.MinuteDropdown, fType=ftype})
 		self:skinObject("ddbutton", {obj=this.AlarmTimeFrame.AMPMDropdown, fType=ftype})
 		self:skinObject("editbox", {obj=_G.TimeManagerAlarmMessageEditBox, fType=ftype})
-		if self.isMnln then
-			self:removeRegions(_G.TimeManagerAlarmEnabledButton, {4, 5})
-		-- elseif aObj.isClsc
-		-- or aObj.isClscBeta
-		-- then
-			-- _G.nop()
-		-- else
-			-- self:removeRegions(_G.TimeManagerAlarmEnabledButton, {6, 7})
-		end
 		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, x2=self.isMnln and 3 or 1})
 		if self.modBtnBs then
 			self:addButtonBorder{obj=_G.TimeManagerStopwatchCheck, fType=ftype, y1=2, y2=-4}
