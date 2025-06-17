@@ -1,10 +1,6 @@
 local aName, _ = ...
-local silent = false
---@debug@
-silent = true
---@end-debug@
 
-local L = _G.LibStub:GetLibrary("AceLocale-3.0", true):NewLocale(aName, "enUS", true, silent)
+local L = _G.LibStub:GetLibrary("AceLocale-3.0", true):NewLocale(aName, "enUS", true, true)
 
 if not L then return end
 

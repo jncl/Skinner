@@ -190,12 +190,3 @@ function aObj:PLAYER_ENTERING_WORLD()
 	self:UnregisterEvent("PLAYER_ENTERING_WORLD")
 
 end
-
---@debug@
-function aObj:PLAYER_LEAVING_WORLD()
-	-- self:Debug("PLAYER_LEAVING_WORLD")
-
-	_G.SkinnerLocaleStrings = aObj.addonLocaleStrings
-
-end
---@end-debug@

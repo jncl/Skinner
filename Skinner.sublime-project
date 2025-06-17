@@ -7,12 +7,12 @@
             	".github/",
             	"Fonts/",
             	"Libs/",
-            	"Locales/",
+            	// "Locales/",
             	"ObsoleteSkins/",
             	"Textures/",
             ],
 			"file_exclude_patterns": [
-				".*",
+				// ".*",
 			],
 		}
 	]

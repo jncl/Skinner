@@ -26,12 +26,28 @@ function aObj:OnInitialize()
 
 	self:Debug("debugging is enabled")
 
+	-- get Locale entries
+	self.L = _G.LibStub:GetLibrary("AceLocale-3.0"):GetLocale(aName)
+
 	--@debug@
-	self.addonLocaleStrings = _G.SkinnerLocaleStrings or {}
+	local missingLocaleMessage = false
+	_G.setmetatable(_G.LibStub:GetLibrary("AceLocale-3.0").apps[aName], {
+		__index = function(t, k)
+			-- ensure error only reported once
+			_G.rawset(t, k, k)
+			-- report if not in Master localisations table
+			if not self.locale_enUS[k] then
+				_G.print(_G.WrapTextInColorCode(">> Locale entry missing: ", "ffff0000"),  k)
+				if not missingLocaleMessage then
+					_G.message("Missing Locale entry, please add to Locales/enUS_Locale_Strings.lua and then import them")
+					missingLocaleMessage = true
+				end
+			end
+			return k
+		end
+	})
 	--@end-debug@
 
-	-- get Locale
-	self.L = _G.LibStub:GetLibrary("AceLocale-3.0"):GetLocale(aName)
 	-- pointer to LibDBIcon-1.0 library
 	self.DBIcon = _G.LibStub:GetLibrary("LibDBIcon-1.0")
 	-- store player class as English Spelling
@@ -290,11 +306,6 @@ function aObj:OnEnable()
 
 	-- track when Player enters World (used for texture updates and UIParent child processing)
 	self:RegisterEvent("PLAYER_ENTERING_WORLD")
-
-	--@debug@
-	-- track when Player leaves World (to save locale strings table)
-	self:RegisterEvent("PLAYER_LEAVING_WORLD")
-	--@end-debug@
 
 	-- handle statusbar changes
 	self.LSM:RegisterCallback("LibSharedMedia_SetGlobal", function(mtype, override)

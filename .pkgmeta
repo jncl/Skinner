@@ -27,6 +27,8 @@ externals:
 ignore:
     - TXTFiles
     - ObsoleteSkins
+    - Locales/_Locales_debug.xml
+    - Locales/enUS_Locale_Strings.lua
 
 tools-used:
     - findglobals

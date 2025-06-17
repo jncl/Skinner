@@ -44,6 +44,9 @@ Libs\_Required.xml
 Libs\_Optional.xml
 
 Locales\_Locales.xml
+#@debug@
+Locales\_Locales_debug.xml
+#@end-debug@
 
 Core\_Core.xml
 

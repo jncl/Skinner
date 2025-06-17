@@ -1170,9 +1170,6 @@ function aObj:setupFramesOptions(optTab, framesType)
 			name = self.L[oDesc],
 			width = oDesc:len() > 21 and "double" or nil,
 		}
-		--@debug@
-		self.addonLocaleStrings[oDesc] = true
-		--@end-debug@
 	end
 
 end
