@@ -608,7 +608,9 @@ aObj.SetupClassic_UIFrames = function()
 					self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, ofs=1, y1=-11})
 				else
 					self:skinObject("slider", {obj=_G.QuestLogDetailScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
-					self:removeInset(_G.QuestLogDetailInset)
+					if not aObj.isClscBeta then
+						self:removeInset(_G.QuestLogDetailInset)
+					end
 					self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true})
 				end
 
