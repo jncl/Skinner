@@ -5,11 +5,9 @@ ToDos
 	≈ is Alt+x			- indicates partially completed or dry-coded
 	x					- indicates nothing to change
 	¶ is Alt+7			- indicates localisation changes required
-	#nnn				- Indicates Issue number
+	#nnn				- isndicates Issue number
 	S/N/I/U/O/E/C/M/FR	- Skin request/New Version/Issue(Bug)/Unobsolete Skin/Other changes/Classic Era/Wrath Classic/Mainline/Feature Request
 
 #181 ?	I 	BonusRollFrame, SavedInstances BonusRollFrame
 
 #193 	I 	Can't use Quest Items in the Quest List
-
-#222 √	I/C Missing Localizations, again!!
