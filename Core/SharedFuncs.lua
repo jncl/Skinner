@@ -11,7 +11,7 @@ local buildInfo = {
 	wow_ptr_x           = {"PTR (TWW 11.1.0)",          "11.1.0", 59347},
 	wow_classic_era     = {"World of Warcraft Classic", "1.15.7", 61257},
 	wow_classic         = {"Cataclysm Classic",         "4.4.2",  60895},
-	wow                 = {"World of Warcraft",         "11.1.5", 61265},
+	wow                 = {"World of Warcraft",         "11.1.7", 61491},
 	curr                = {"curr", _G.GetBuildInfo()},
 }
 
