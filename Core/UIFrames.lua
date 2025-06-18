@@ -1445,7 +1445,7 @@ aObj.blizzFrames[ftype].HelpPlate = function(self)
 		this:DisableDrawLayer("BORDER") -- hide Arrow glow textures
 		self:skinObject("glowbox", {obj=this, fType=ftype})
 		-- move Arrow textures to align with frame border
-		if not aObj.isMnlnPTR
+		if not self.isMnln
 		or not aObj.isClscBeta
 		then
 			self:moveObject{obj=this.ArrowUP, y=-2}

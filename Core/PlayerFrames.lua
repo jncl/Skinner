@@ -1080,10 +1080,8 @@ if not aObj.isClscERA then
 					self:addButtonBorder{obj=this.MountDisplay.ModelScene.RotateLeftButton, ofs=-3}
 					self:addButtonBorder{obj=this.MountDisplay.ModelScene.RotateRightButton, ofs=-3}
 				end
-				if aObj.isMnlnPTR then
-					self:addButtonBorder{obj=this.SummonRandomFavoriteSpellFrame.Button, fType=ftype, sft=true, ofs=3}
-				elseif self.isMnln then
-					self:addButtonBorder{obj=this.SummonRandomFavoriteButton, fType=ftype, sft=true, ofs=3}
+				if self.isMnln then
+				self:addButtonBorder{obj=this.SummonRandomFavoriteSpellFrame.Button, fType=ftype, sft=true, ofs=3}
 				end
 				self:addButtonBorder{obj=this.MountDisplay.InfoButton, relTo=this.MountDisplay.InfoButton.Icon, clr="white"}
 			end
@@ -1117,11 +1115,6 @@ if not aObj.isClscERA then
 			then
 				self:skinMainHelpBtn(this)
 				self:removeInset(this.PetCardInset)
-			end
-			if self.isMnln
-			and not aObj.isMnlnPTR
-			then
-				_G.PetJournalHealPetButtonBorder:SetTexture(nil)
 			end
 			self:skinObject("ddbutton", {obj=this.FilterDropdown, fType=ftype, filter=true})
 			self:skinObject("editbox", {obj=this.searchBox, fType=ftype, si=true})
@@ -1205,7 +1198,7 @@ if not aObj.isClscERA then
 				end
 				if self.modBtnBs then
 					self:addButtonBorder{obj=pc.PetInfo, relTo=pc.PetInfo.icon, reParent={pc.PetInfo.levelBG, pc.PetInfo.level, pc.PetInfo.favorite}}
-					if aObj.isMnlnPTR
+					if self.isMnln
 					or aObj.isClscBeta
 					then
 						self:addButtonBorder{obj=this.HealPetSpellFrame.Button, fType=ftype, sft=true, ofs=4}
