@@ -73,12 +73,12 @@ function aObj:checkWoWVersion()
 	self.isPatch = not compareBuildInfo(agentUID, "curr", true)
 	if self.isPatch then
 		if self.isMnln then
-			self.isMnlnPTR = compareBuildInfo(agentUID, "wow_ptr",false)
-			self.isMnlnPTRX = compareBuildInfo(agentUID, "wow_ptr_x", false)
+			self.isMnlnPTR = compareBuildInfo("curr", "wow_ptr",false)
+			self.isMnlnPTRX = compareBuildInfo("curr", "wow_ptr_x", false)
 		elseif self.isClsc then
-			self.isClscPTR = compareBuildInfo(agentUID, "wow_classic_ptr", false)
+			self.isClscPTR = compareBuildInfo("curr", "wow_classic_ptr", false)
 		elseif self.isClscERA then
-			self.isClscERAPTR = compareBuildInfo(agentUID, "wow_classic_era_ptr", false)
+			self.isClscERAPTR = compareBuildInfo("curr", "wow_classic_era_ptr", false)
 		end
 	end
 
