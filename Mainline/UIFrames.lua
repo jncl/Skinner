@@ -1097,8 +1097,8 @@ aObj.SetupMainline_UIFrames = function()
 			self:keepFontStrings(this.Border)
 			self:skinObject("ddbutton", {obj=this.Dropdown, fType=ftype})
 			-- .DelveModifiersWidgetContainer
-			-- make Background visible
-			this.DelveBackgroundWidgetContainer:SetFrameStrata("MEDIUM")
+			-- make Background visible but still allow widgets to be displayed
+			this.DelveBackgroundWidgetContainer:SetFrameStrata("LOW")
 			self:skinObject("scrollbar", {obj=this.DelveRewardsContainerFrame.ScrollBar, fType=ftype})
 			local function skinRewards(...)
 				local _, element, new
