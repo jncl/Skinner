@@ -1,22 +1,25 @@
-local aName, aObj = ...
+local _, aObj = ...
 if not aObj:isAddonEnabled("Simulationcraft") then return end
 local _G = _G
 
-aObj.addonsToSkin.Simulationcraft = function(self) -- v1.8.2/9.0.1-alpha-10
+aObj.addonsToSkin.Simulationcraft = function(self) -- v 11.1.7-01
 
-	if _G.SimcCopyFrame then
-		self:skinSlider{obj=_G.SimcCopyFrameScroll.ScrollBar}
-		self:addSkinFrame{obj=_G.SimcCopyFrame, x2=2}
-	else
-		self:SecureHook(_G.LibStub:GetLibrary("AceAddon-3.0"):GetAddon("Simulationcraft", true), "PrintSimcProfile", function(this, ...)
-			self:skinSlider{obj=_G.SimcScrollFrame.ScrollBar}
-			self:addSkinFrame{obj=_G.SimcFrame, ft="a", kfs=true, nb=true}
+	local sc = _G.LibStub:GetLibrary("AceAddon-3.0"):GetAddon("Simulationcraft", true)
+
+	if sc then
+		self:RawHook(sc, "GetMainFrame", function(this, text)
+			local frame = self.hooks[this].GetMainFrame(this, text)
+			self:skinObject("slider", {obj=_G.SimcScrollFrame.ScrollBar})
+			self:skinObject("frame", {obj=frame, kfs=true})
 			if self.modBtns then
 				self:skinStdButton{obj=_G.SimcFrameButton}
 			end
-
-			self:Unhook(this, "PrintSimcProfile")
-		end)
+			if self.modChkBtns then
+				self:skinCheckButton{obj=_G.AutomaticClose}
+			end
+			self:Unhook(this, "GetMainFrame")
+			return frame
+		end, true)
 	end
 
 end
