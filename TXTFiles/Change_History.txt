@@ -1,3 +1,11 @@
+beta11.61496.2
+Jncl:
+	Updated ToDo*.txt files
+	Updated Change_History.txt
+	Updated Version numbers
+	Applied MainlinePTR changes
+	Bugfix for version patch detection
+
 beta11.61496.1
 Jncl:
 	Updated ToDo*.txt files
