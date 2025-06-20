@@ -2,7 +2,7 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("Krowi_AchievementFilter") then return end
 local _G = _G
 
-aObj.addonsToSkin.Krowi_AchievementFilter = function(self) -- v 75.2
+aObj.addonsToSkin.Krowi_AchievementFilter = function(self) -- v 84.0
 
 	local function skinAlertFrame(frame)
 		frame.animIn:Stop()
@@ -58,7 +58,7 @@ aObj.addonsToSkin.Krowi_AchievementFilter = function(self) -- v 75.2
 			sTmr:Cancel()
 		end)
 
-		local function skinAchievevment(btn)
+		local function skinAchievement(btn)
 			btn:DisableDrawLayer("BACKGROUND")
 			btn:DisableDrawLayer("BORDER")
 			btn:DisableDrawLayer("ARTWORK")
@@ -74,7 +74,17 @@ aObj.addonsToSkin.Krowi_AchievementFilter = function(self) -- v 75.2
 					aObj.hooks[tObj].SetTextColor(tObj, aObj.BT:GetRGB())
 				end, true)
 			end
-			aObj:nilTexture(btn.Icon.Border, true)
+			-- Summary Achievement
+			if btn.Icon.Border then
+				btn.Icon.Border:SetTexture(nil)
+			end
+			-- MiniAchievement/MetaCriteria
+			if btn.Border then
+				aObj:nilTexture(btn.Icon.Border, true)
+			end
+			if btn.Glow then
+				btn.Glow:SetTexture(nil)
+			end
 			aObj:secureHook(btn, "SetBackdropBorderColor", function(bObj, _)
 				if bObj.sbb then
 					bObj.sbb:SetBackdropBorderColor(bObj:GetBackdropBorderColor())
@@ -82,8 +92,8 @@ aObj.addonsToSkin.Krowi_AchievementFilter = function(self) -- v 75.2
 				end
 			end)
 			if aObj.modBtnBs then
-				aObj:addButtonBorder{obj=btn.Icon, relTo=btn.Texture, x1=3, y1=0, x2=-3, y2=6}
-				aObj:addButtonBorder{obj=btn, ofs=0}
+				aObj:addButtonBorder{obj=btn.Icon, relTo=btn.Texture, ofs=-3, y1=0, y2=6, clr=btn:GetBackdropBorderColor()}
+				aObj:addButtonBorder{obj=btn, ofs=0, clr=btn:GetBackdropBorderColor()}
 			end
 			if aObj.modChkBtns
 			and btn.Tracked
@@ -93,7 +103,7 @@ aObj.addonsToSkin.Krowi_AchievementFilter = function(self) -- v 75.2
 			end
 		end
 		-- hook these to skin the Achievement objectives
-		for _, method in pairs{"GetTextCriteria", "GetMeta", "GetProgressBar"} do
+		for _, method in _G.pairs{"GetTextCriteria", "GetMeta", "GetProgressBar"} do
 			self:RawHook(_G.KrowiAF_AchievementsObjectives, method, function(this, index)
 				local frame = self.hooks[this][method](this, index)
 				if method ~= "GetProgressBar" then
@@ -122,9 +132,16 @@ aObj.addonsToSkin.Krowi_AchievementFilter = function(self) -- v 75.2
 			self:moveObject{obj=_G.AchievementFrameHeaderTitle, x=-20}
 		end
 		self:moveObject{obj=_G.KrowiAF_AchievementFrameFilterButton, x=0, y=-5}
+		_G.KrowiAF_AchievementFrameCalendarButton:GetNormalTexture():SetAtlas("ui-hud-calendar-1-up")
+		_G.KrowiAF_AchievementFrameCalendarButton:GetNormalTexture():SetTexCoord(0, 1, 0, 1)
+		_G.KrowiAF_AchievementFrameCalendarButton:GetPushedTexture():SetAtlas("ui-hud-calendar-1-down")
+		_G.KrowiAF_AchievementFrameCalendarButton:GetPushedTexture():SetTexCoord(0, 1, 0, 1)
+		_G.KrowiAF_AchievementFrameCalendarButton:GetHighlightTexture():SetAtlas("ui-hud-calendar-1-mouseover")
+		_G.KrowiAF_AchievementFrameCalendarButton:SetSize(19, 18)
+		self:moveObject{obj=_G.KrowiAF_AchievementFrameCalendarButton, x=7, y=-5}
 		if self.modBtns then
-			self:skinStdButton{obj=_G.KrowiAF_AchievementFrameFilterButton, ofs=0, clr="grey"}
-			self:skinStdButton{obj=_G.KrowiAF_SearchOptionsMenuButton, ofs=0, clr="grey"}
+			self:skinStdButton{obj=_G.KrowiAF_AchievementFrameFilterButton, ofs=0, y2=-2, clr="grey"}
+			self:skinStdButton{obj=_G.KrowiAF_SearchOptionsMenuButton, ofs=0, x1=-1, clr="grey"}
 		end
 		self:moveObject{obj=_G.KrowiAF_AchievementFrameCalendarButton, x=10, y=0}
 		self:moveObject{obj=_G.KrowiAF_AchievementFrameBrowsingHistoryNextAchievementButton, x=0, y=20}
@@ -194,7 +211,7 @@ aObj.addonsToSkin.Krowi_AchievementFilter = function(self) -- v 75.2
 					_, element, _, new = ...
 				end
 				if new ~= false then
-					skinAchievevment(element)
+					skinAchievement(element)
 				end
 			end
 			_G.ScrollUtil.AddAcquiredFrameCallback(this.AchievementsFrame.ScrollBox, skinCSF, aObj, true)
@@ -262,7 +279,7 @@ aObj.addonsToSkin.Krowi_AchievementFilter = function(self) -- v 75.2
 					_, element, _, new = ...
 				end
 				if new ~= false then
-					skinAchievevment(element)
+					skinAchievement(element)
 				end
 			end
 			_G.ScrollUtil.AddAcquiredFrameCallback(this.ScrollBox, skinElement, aObj, true)
@@ -291,7 +308,7 @@ aObj.addonsToSkin.Krowi_AchievementFilter = function(self) -- v 75.2
 
 		local function skinStatusBar(sBar)
 			aObj:removeRegions(sBar, {1, 2, 3, 4, 5, 6, 7, 8, 9})
-			for _, ftex in pairs(sBar.Fill) do
+			for _, ftex in _G.pairs(sBar.Fill) do
 				ftex:SetTexture(aObj.sbTexture)
 			end
 			sBar.Background:SetTexture(aObj.sbTexture)
@@ -310,7 +327,7 @@ aObj.addonsToSkin.Krowi_AchievementFilter = function(self) -- v 75.2
 				elseif _G.select("#", ...) == 3 then
 					_, element, _ = ...
 				end
-				skinAchievevment(element)
+				skinAchievement(element)
 				element.Description:SetTextColor(self.BT:GetRGB())
 				if element.sbb then
 					element.sbb:SetBackdropBorderColor(element:GetBackdropBorderColor())
