@@ -909,9 +909,9 @@ if not aObj.isClscERA then
 						-- .ToggleCollapseButton
 					end
 					if self.modChkBtns then
-						self:skinCheckButton{obj=fObj.AtWarCheckbox}
-						self:skinCheckButton{obj=fObj.MakeInactiveCheckbox, sechk=true}
-						self:skinCheckButton{obj=fObj.WatchFactionCheckbox}
+						self:skinCheckButton{obj=fObj.AtWarCheckbox, fType=ftype}
+						self:skinCheckButton{obj=fObj.MakeInactiveCheckbox, fType=ftype, sechk=true}
+						self:skinCheckButton{obj=fObj.WatchFactionCheckbox, fType=ftype}
 					end
 
 					self:Unhook(fObj, "OnShow")
@@ -932,7 +932,7 @@ if not aObj.isClscERA then
 					self:removeNineSlice(fObj.Border)
 					self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, ofs=-3})
 					if self.modBtns then
-						self:skinCloseButton{obj=_G.ReputationDetailCloseButton}
+						self:skinCloseButton{obj=_G.ReputationDetailCloseButton, fType=ftype}
 					end
 					if self.modChkBtns then
 						self:skinCheckButton{obj=_G.ReputationDetailAtWarCheckbox or _G.ReputationDetailAtWarCheckBox, fType=ftype}
