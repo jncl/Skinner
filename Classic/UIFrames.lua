@@ -170,8 +170,8 @@ aObj.SetupClassic_UIFrames = function()
 				_G.ExhaustionTick:GetNormalTexture():SetTexture(nil)
 				_G.ExhaustionTick:GetHighlightTexture():SetTexture(nil)
 				_G.MainMenuExpBar:DisableDrawLayer("OVERLAY")
-				_G.MainMenuExpBar:SetSize(aObj.isClscBeta and 1014 or self.isClsc and 1032 or 1012, 14)
-				self:moveObject{obj=_G.MainMenuExpBar, x=aObj.isClscBeta and 2 or 1, y=2}
+				_G.MainMenuExpBar:SetSize(aObj.isClscPTR and 1014 or self.isClsc and 1032 or 1012, 14)
+				self:moveObject{obj=_G.MainMenuExpBar, x=aObj.isClscPTR and 2 or 1, y=2}
 				self:moveObject{obj=_G.MainMenuBarExpText, y=-2}
 				self:skinObject("statusbar", {obj=_G.MainMenuExpBar, fType=ftype, bg=self:getRegion(_G.MainMenuExpBar, 6), other={_G.ExhaustionLevelFillBar}})
 				_G.MainMenuBarMaxLevelBar:DisableDrawLayer("BACKGROUND")
@@ -214,7 +214,7 @@ aObj.SetupClassic_UIFrames = function()
 			end
 		end
 
-		if aObj.isClscBeta then
+		if aObj.isClscPTR then
 			self:SecureHookScript(_G.TalentMicroButtonAlert, "OnShow", function(this)
 
 				self:skinObject("glowbox", {obj=this, fType=ftype})
@@ -351,7 +351,7 @@ aObj.SetupClassic_UIFrames = function()
 
 	end
 
-	if not aObj.isClscBeta then
+	if not aObj.isClscPTR then
 		aObj.blizzFrames[ftype].PVPFrame = function(self)
 			if not self.prdb.PVPFrame or self.initialized.PVPFrame then return end
 			self.initialized.PVPFrame = true
@@ -526,7 +526,7 @@ aObj.SetupClassic_UIFrames = function()
 			self:SecureHookScript(_G.QuestLogFrame, "OnShow", function(this)
 				_G.QuestLogCollapseAllButton:DisableDrawLayer("BACKGROUND")
 				self:keepFontStrings(_G.EmptyQuestLogFrame)
-				if not aObj.isClscBeta then
+				if not aObj.isClscPTR then
 					self:skinObject("slider", {obj=_G.QuestLogListScrollFrame.ScrollBar, fType=ftype})
 					self:skinObject("slider", {obj=_G.QuestLogDetailScrollFrame.ScrollBar, fType=ftype})
 				else
@@ -602,12 +602,12 @@ aObj.SetupClassic_UIFrames = function()
 				self:addButtonBorder{obj=_G.QuestLogFrameShowMapButton, fType=ftype, relTo=_G.QuestLogFrameShowMapButton.texture, ofs=0, x1=2, x2=-2}
 			end
 			self:SecureHookScript(_G.QuestLogDetailFrame, "OnShow", function(this)
-				if not aObj.isClscBeta then
+				if not aObj.isClscPTR then
 					self:skinObject("slider", {obj=_G.QuestLogDetailScrollFrame.ScrollBar, fType=ftype, rpTex="background"})
 					self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, ofs=1, y1=-11})
 				else
 					self:skinObject("slider", {obj=_G.QuestLogDetailScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
-					if not aObj.isClscBeta then
+					if not aObj.isClscPTR then
 						self:removeInset(_G.QuestLogDetailInset)
 					end
 					self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true})
@@ -618,7 +618,7 @@ aObj.SetupClassic_UIFrames = function()
 			self:SecureHookScript(_G.QuestLogFrame, "OnShow", function(this)
 				self:keepFontStrings(_G.EmptyQuestLogFrame)
 				self:keepFontStrings(_G.QuestLogCount)
-				if not aObj.isClscBeta then
+				if not aObj.isClscPTR then
 					self:skinObject("slider", {obj=_G.QuestLogListScrollFrame.scrollBar, fType=ftype})
 					self:skinObject("slider", {obj=_G.QuestLogDetailScrollFrame.ScrollBar, fType=ftype, rpTex="background"})
 					self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=10, y1=-11, x2=0, y2=4})

@@ -386,13 +386,13 @@ aObj.blizzFrames[ftype].GossipFrame = function(self)
 		if not aObj.isMnln then
 			_G.ScrollUtil.AddInitializedFrameCallback(this.GreetingPanel.ScrollBox, skinGossip, aObj, true)
 		end
-		if not aObj.isClscBeta then
+		if not aObj.isClscPTR then
 			local sBar = self.isMnln and this.FriendshipStatusBar or _G.NPCFriendshipStatusBar
 			self:removeRegions(sBar, {1, 2, 5, 6, 7, 8 ,9})
 			self:skinObject("statusbar", {obj=sBar, fi=0, bg=self:getRegion(sBar, 10)})
 		end
 		if self.isMnln
-		or aObj.isClscBeta
+		or aObj.isClscPTR
 		then
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, x2=3})
 		else
@@ -583,7 +583,7 @@ aObj.blizzFrames[ftype].QuestFrame = function(self)
 			self:checkShown(_G.QuestFrameGreetingPanel)
 		end
 		if self.isMnln
-			or aObj.isClscBeta
+			or aObj.isClscPTR
 		then
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true})
 		else
@@ -637,7 +637,7 @@ aObj.blizzFrames[ftype].QuestFrame = function(self)
 	end)
 
 	self:SecureHookScript(_G.QuestModelScene or _G.QuestNPCModel , "OnShow", function(this)
-		if not aObj.isClscBeta then
+		if not aObj.isClscPTR then
 			self:skinObject("scrollbar", {obj=_G.QuestNPCModelTextScrollFrame.ScrollBar, fType=ftype})
 		else
 			self:skinObject("slider", {obj=_G.QuestNPCModelTextScrollFrame.ScrollBar, fType=ftype})
@@ -821,7 +821,7 @@ aObj.blizzFrames[ftype].Tabard = function(self)
 			end
 		end
 		if self.isMnln
-		or aObj.isClscBeta
+		or aObj.isClscPTR
 		then
 			self:removeInset(_G.TabardFrameMoneyInset)
 			_G.TabardFrameMoneyBg:DisableDrawLayer("BACKGROUND")

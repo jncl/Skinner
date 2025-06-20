@@ -204,7 +204,7 @@ aObj.SetupClassic_NPCFrames = function()
 
 		self:SecureHookScript(_G.BankFrame, "OnShow", function(this)
 			self:keepFontStrings(_G.BankSlotsFrame)
-			if not aObj.isClscBeta then
+			if not aObj.isClscPTR then
 				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ofs=-11, x2=self.isClsc and 16 or -33, y2=90})
 			else
 				self:skinObject("editbox", {obj=_G.BankItemSearchBox, fType=ftype, si=true})

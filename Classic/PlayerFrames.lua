@@ -291,7 +291,7 @@ aObj.SetupClassic_PlayerFrames = function()
 				-- update Button quality borders
 				_G.ContainerFrame_Update(frame)
 			end
-			if aObj.isClscBeta then
+			if aObj.isClscPTR then
 				if objName == "ContainerFrame1" then
 					aObj:skinObject("editbox", {obj=_G.BagItemSearchBox, fType=ftype, si=true, ca=true})
 				end
@@ -402,7 +402,7 @@ aObj.SetupClassic_PlayerFrames = function()
 		self:SecureHookScript(_G.DressUpFrame, "OnShow", function(this)
 			self:makeMFRotatable(_G.DressUpModelFrame)
 			if self.prdb.DUTexture then
-				if not aObj.isClscBeta then
+				if not aObj.isClscPTR then
 					self:removeRegions(this, {1, 2, 3 ,4, 5})
 				else
 					self:keepRegions(this, {8, 19, 20, 21, 22, 23, 24})
@@ -410,7 +410,7 @@ aObj.SetupClassic_PlayerFrames = function()
 			else
 				self:keepFontStrings(this)
 			end
-			if not aObj.isClscBeta then
+			if not aObj.isClscPTR then
 				self:skinObject("frame", {obj=this, fType=ftype, cb=true, x1=10, y1=-11, x2=-33, y2=71})
 			else
 				self:skinObject("frame", {obj=this, fType=ftype, cb=true, x2=1})
@@ -1046,7 +1046,7 @@ aObj.SetupClassic_PlayerFrames = function()
 
 	end
 
-	if aObj.isClscBeta then
+	if aObj.isClscPTR then
 		aObj.blizzLoDFrames[ftype].PVPUI = function(self)
 			if not self.prdb.PVEFrame or self.initialized.PVPUI then return end
 			self.initialized.PVPUI = true
@@ -1341,7 +1341,7 @@ aObj.SetupClassic_PlayerFrames = function()
 					self:addButtonBorder{obj=_G.SpellBookPrevPageButton, fType=ftype, ofs=-2, y1=-3, x2=-3}
 					self:addButtonBorder{obj=_G.SpellBookNextPageButton, fType=ftype, ofs=-2, y1=-3, x2=-3}
 					self:clrPNBtns("SpellBook")
-					if not aObj.isClscBeta then
+					if not aObj.isClscPTR then
 						self:SecureHook("SpellBookFrame_UpdatePages", function()
 							self:clrPNBtns("SpellBook")
 						end)
@@ -1412,7 +1412,7 @@ aObj.SetupClassic_PlayerFrames = function()
 				end)
 				self:checkShown(_G.SpellBookProfessionFrame)
 
-				if self.isClscBeta then
+				if self.isClscPTR then
 					self:SecureHookScript(_G.SpellBookCoreAbilitiesFrame, "OnShow", function(fObj)
 						fObj.SpecName:SetTextColor(self.HT:GetRGB())
 						self:SecureHook(fObj, "UpdateTabs", function(frame)
@@ -1497,7 +1497,7 @@ aObj.SetupClassic_PlayerFrames = function()
 				self:Unhook(this, "OnShow")
 			end)
 		else
-			if not aObj.isClscBeta then
+			if not aObj.isClscPTR then
 				self:SecureHookScript(_G.PlayerTalentFrame, "OnShow", function(this)
 					self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true})
 					-- PlayerSpecTab1/2
@@ -1762,7 +1762,7 @@ aObj.SetupClassic_PlayerFrames = function()
 				end
 			end
 			self:skinObject("editbox", {obj=_G.TradeSkillInputBox, fType=ftype})
-			if aObj.isClscBeta then
+			if aObj.isClscPTR then
 				self:skinObject("editbox", {obj=_G.TradeSkillFrameSearchBox, fType=ftype, si=true})
 				self:skinObject("ddbutton", {obj=this.FilterDropdown, fType=ftype, filter=true})
 			end
@@ -1822,7 +1822,7 @@ aObj.SetupClassic_PlayerFrames = function()
 			self.initialized.WatchFrame = true
 
 			self:SecureHookScript(_G.WatchFrame, "OnShow", function(this)
-				if not aObj.isClscBeta then
+				if not aObj.isClscPTR then
 					_G.WatchFrameLines.AutoQuestShadow:SetTexture(nil)
 				else
 					_G.WatchFrameLines.Shadow:SetTexture(nil)
@@ -1848,7 +1848,7 @@ aObj.SetupClassic_PlayerFrames = function()
 						aqPopup.ScrollChild.Exclamation:Show()
 					end
 				end
-				if not aObj.isClscBeta then
+				if not aObj.isClscPTR then
 					-- Timers, Achievements, Quests
 					for line in _G.WatchFrame.linePool:EnumerateActive() do
 						aObj:getRegion(line, 4):SetTexture(nil)

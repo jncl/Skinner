@@ -1322,7 +1322,7 @@ aObj.blizzLoDFrames[ftype].GuildBankUI = function(self)
 			end)
 		end
 		if self.isMnln
-		or aObj.isClscBeta
+		or aObj.isClscPTR
 		then
 			self:skinObject("editbox", {obj=_G.GuildItemSearchBox, fType=ftype, si=true})
 			this.MoneyFrameBG:DisableDrawLayer("BACKGROUND")
@@ -1342,14 +1342,14 @@ aObj.blizzLoDFrames[ftype].GuildBankUI = function(self)
 			self:skinObject("slider", {obj=_G.GuildBankInfo.ScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
 			self:skinObject("slider", {obj=this.Log.ScrollBar, fType=ftype, rpTex="artwork"})
 		end
-		if not aObj.isClscBeta then
+		if not aObj.isClscPTR then
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true, cb=true, y1=self.isClsc and -11, x2=self.isClsc and 1, y2=self.isClsc and 3 or -2})
 		else
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true, cb=true, x2=1, y2=-2})
 		end
 		if self.modBtns then
 			if self.isClsc
-			and not aObj.isClscBeta
+			and not aObj.isClscPTR
 			then
 				self:skinCloseButton{obj=self:getChild(this, 11), fType=ftype}
 			end
@@ -1446,7 +1446,7 @@ aObj.blizzFrames[ftype].HelpPlate = function(self)
 		self:skinObject("glowbox", {obj=this, fType=ftype})
 		-- move Arrow textures to align with frame border
 		if not self.isMnln
-		or not aObj.isClscBeta
+		or not aObj.isClscPTR
 		then
 			self:moveObject{obj=this.ArrowUP, y=-2}
 			self:moveObject{obj=this.ArrowDOWN, y=2}
@@ -1476,7 +1476,7 @@ aObj.blizzFrames[ftype].ItemText = function(self)
 			aObj:skinObject("frame", {obj=frame, fType=ftype, kfs=true, ri=true, rns=true, cb=true, x2=3})
 		else
 			aObj:skinObject("slider", {obj=_G.ItemTextScrollFrame.ScrollBar, fType=ftype, rpTex={"background", "artwork"}})
-			if not aObj.isClscBeta then
+			if not aObj.isClscPTR then
 				aObj:skinObject("frame", {obj=frame, fType=ftype, kfs=true, x1=10, y1=-12, x2=-31, y2=60})
 				if aObj.modBtns then
 					aObj:skinCloseButton{obj=_G.ItemTextCloseButton}
@@ -2473,7 +2473,7 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 				-- TODO: Background alpha is 0
 			end
 			self:skinObject("frame", {obj=_G.MiniMapLFGFrame, fType=ftype, kfs=true, ofs=0})
-			if not aObj.isClscBeta then
+			if not aObj.isClscPTR then
 				_G.MiniMapWorldBorder:SetTexture(nil)
 			end
 			_G.MiniMapWorldMapButton:DisableDrawLayer("OVERLAY") -- border texture
@@ -2708,14 +2708,14 @@ if not aObj.isClscERA then
 		else
 			groupFrames = { "LFDParentFrame", "RaidFinderFrame", "LFGListPVEStub" }
 		end
-		if aObj.isClscBeta then
+		if aObj.isClscPTR then
 			groupFrames[4] = "ScenarioFinderFrame"
 		end
 
 		self:SecureHookScript(_G.PVEFrame, "OnShow", function(this)
 			self:keepFontStrings(this.shadows)
 			if self.isMnln
-			or aObj.isClscBeta
+			or aObj.isClscPTR
 			then
 				self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype})
 			end
@@ -2818,7 +2818,7 @@ aObj.blizzFrames[ftype].ReportFrame = function(self)
 end
 
 if aObj.isMnln
-or aObj.isClscBeta
+or aObj.isClscPTR
 then
 	aObj.blizzFrames[ftype].ScenarioFinderFrame = function(self)
 		if not self.prdb.PVEFrame or self.initialized.ScenarioFinderFrame then return end
@@ -2831,7 +2831,7 @@ then
 			self:skinObject("scrollbar", {obj=this.Queue.Random.ScrollFrame.ScrollBar, fType=ftype})
 			-- .Queue.PartyBackfill
 			-- .Queue.CooldownFrame
-			if not aObj.isClscBeta then
+			if not aObj.isClscPTR then
 				self:skinObject("slider", {obj=this.Queue.Specific.ScrollFrame.ScrollBar, fType=ftype, rpTex={"background"}})
 				local btn
 				self:SecureHook("ScenarioQueueFrameSpecific_Update", function()
