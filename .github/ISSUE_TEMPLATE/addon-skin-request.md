@@ -1,7 +1,7 @@
 ---
 name: AddOn skin request
 about: Skinning request for an AddOn
-title: ''
+title: '[Skin Request]: '
 labels: enhancement
 assignees: jncl
 
