@@ -26,26 +26,11 @@ function aObj:OnInitialize()
 
 	self:Debug("debugging is enabled")
 
-	-- get Locale entries
+	-- get Locale strings
 	self.L = _G.LibStub:GetLibrary("AceLocale-3.0"):GetLocale(aName)
 
 	--@debug@
-	local missingLocaleMessage = false
-	_G.setmetatable(_G.LibStub:GetLibrary("AceLocale-3.0").apps[aName], {
-		__index = function(t, k)
-			-- ensure error only reported once
-			_G.rawset(t, k, k)
-			-- report if not in Master localisations table
-			if not self.locale_enUS[k] then
-				_G.print(_G.WrapTextInColorCode(">> Locale entry missing: ", "ffff0000"),  k)
-				if not missingLocaleMessage then
-					_G.message("Missing Locale entry, please add to Locales/enUS_Locale_Strings.lua and then import them")
-					missingLocaleMessage = true
-				end
-			end
-			return k
-		end
-	})
+	self:checkLocaleStrings()
 	--@end-debug@
 
 	-- pointer to LibDBIcon-1.0 library
@@ -346,39 +331,6 @@ function aObj:OnEnable()
 		end)
 	end
 
-	-- handle profile changes
-	_G.StaticPopupDialogs[aName .. "_Reload_UI"] = {
-		text = aObj.L["Confirm reload of UI to activate profile changes"],
-		button1 = _G.OKAY,
-		button2 = _G.CANCEL,
-		OnAccept = function(_)
-			_G.C_UI.Reload()
-		end,
-		OnCancel = function(_, _, reason)
-			if reason == "timeout"
-			or reason == "clicked"
-			then
-				aObj:CustomPrint(1, 1, 0, aObj.L["The profile"] .. " '" .. aObj.db:GetCurrentProfile() .. "' " .. aObj.L["will be activated next time you Login or Reload the UI"])
-				_G.UIErrorsFrame:AddMessage(aObj.L["The profile"] .. " '" .. aObj.db:GetCurrentProfile() .. "' " .. aObj.L["will be activated next time you Login or Reload the UI"], 1, 1, 0)
-			end
-		end,
-		timeout = 0,
-		whileDead = 1,
-		exclusive = 1,
-		hideOnEscape = 1
-	}
-	local function reloadAddon()
-		-- setup defaults for new profile
-		aObj:checkAndRun("SetupDefaults", "opt", false, true)
-		-- store shortcut
-		aObj.prdb = aObj.db.profile
-		-- prompt for reload
-		_G.StaticPopup_Show(aName .. "_Reload_UI")
-	end
-	self.db:RegisterCallback("OnProfileChanged", reloadAddon)
-	self.db:RegisterCallback("OnProfileCopied", reloadAddon)
-	self.db:RegisterCallback("OnProfileReset", reloadAddon)
-
 	-- skin the Blizzard frames
 	_G.C_Timer.After(self.prdb.Delay.Init, function() self:BlizzardFrames() end)
 	-- skin the loaded AddOns frames
@@ -396,11 +348,11 @@ function aObj:OnEnable()
 		end)
 	end
 
-	--@debug@
-	self:SetupCmds()
-	--@end-debug@
+	self:handleProfileChanges()
 
 	--@debug@
+	self:SetupCmds()
+
 	-- Check to see which AddOns are using the deprecated IOFPanel_ callbacks
 	_G.C_Timer.After(self.prdb.Delay.Init + self.prdb.Delay.Addons + 0.5, function()
 		local depTab, cnt = {}, 0
@@ -418,6 +370,11 @@ function aObj:OnEnable()
 				_G.print(addon .. " is using a deprecated function: " .. iofevent .. " please update it")
 			end
 		end
+	end)
+
+	-- Register PLAYER_LOGOUT to save LocaleStrings
+	self:RegisterEvent("PLAYER_LOGOUT", function()
+		_G[aName .. "LocaleStrings"] = self.localeStrings
 	end)
 	--@end-debug@
 

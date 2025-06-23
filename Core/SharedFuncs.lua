@@ -88,7 +88,7 @@ function aObj:checkWoWVersion()
 
 	--@debug@
 	self:Printf("%s, %d, %s, %d, %s, %d, %s", buildInfo[agentUID][2], buildInfo[agentUID][3], buildInfo.curr[2], buildInfo.curr[3], buildInfo.curr[4], buildInfo.curr[5] , agentUID)
-	_G.DEFAULT_CHAT_FRAME:AddMessage(_G.strjoin(" ", aName, ": Game version is:", buildInfo[agentUID][1]), 0.75, 0.5, 0.25, nil, true)
+	_G.DEFAULT_CHAT_FRAME:AddMessage(_G.strjoin(": ", aName , "Game version is", buildInfo[agentUID][1]), 0.75, 0.5, 0.25, nil, true)
 	--@end-debug@
 
 	-- --[===[@non-debug@
@@ -102,9 +102,7 @@ function aObj.checkLibraries(_, extraLibs)
 	if not _G.assert(_G.LibStub, aName .. " requires LibStub") then return false end
 
 	local lTab = {"AceAddon-3.0", "AceConfig-3.0", "AceConfigCmd-3.0", "AceConfigDialog-3.0", "AceConfigRegistry-3.0", "AceConsole-3.0", "AceDB-3.0", "AceDBOptions-3.0", "AceEvent-3.0", "AceGUI-3.0", "AceHook-3.0", "AceLocale-3.0", "CallbackHandler-1.0", "LibDataBroker-1.1"}
-	for _, lib in _G.pairs(extraLibs) do
-		lTab[#lTab + 1] = lib
-	end
+	_G.tAppendAll(lTab, extraLibs)
 
 	local hasError
 	for _, lib in _G.pairs(lTab) do
@@ -292,6 +290,46 @@ function aObj.CustomPrint(_, r, g, b, ...)
 
 end
 
+function aObj:handleProfileChanges()
+
+	_G.StaticPopupDialogs[aName .. "_Reload_UI"] = {
+		text = aObj.L["Confirm reload of UI to activate profile changes"],
+		button1 = _G.OKAY,
+		button2 = _G.CANCEL,
+		OnAccept = function(_)
+			_G.C_UI.Reload()
+		end,
+		OnCancel = function(_, _, reason)
+			if reason == "timeout"
+			or reason == "clicked"
+			then
+				aObj:CustomPrint(1, 1, 0, aObj.L["The profile"] .. " '" .. aObj.db:GetCurrentProfile() .. "' " .. aObj.L["will be activated next time you Login or Reload the UI"])
+				_G.UIErrorsFrame:AddMessage(aObj.L["The profile"] .. " '" .. aObj.db:GetCurrentProfile() .. "' " .. aObj.L["will be activated next time you Login or Reload the UI"], 1, 1, 0)
+			end
+		end,
+		timeout = 0,
+		whileDead = 1,
+		exclusive = 1,
+		hideOnEscape = 1
+	}
+	local function reloadAddon()
+		-- setup defaults for new profile
+		if aName == "Skinner" then
+			aObj:checkAndRun("SetupDefaults", "opt", false, true)
+		else
+			aObj:SetupDefaults()
+		end
+		-- store shortcut
+		aObj.prdb = aObj.db.profile
+		-- prompt for reload
+		_G.StaticPopup_Show(aName .. "_Reload_UI")
+	end
+	self.db:RegisterCallback("OnProfileChanged", reloadAddon)
+	self.db:RegisterCallback("OnProfileCopied", reloadAddon)
+	self.db:RegisterCallback("OnProfileReset", reloadAddon)
+
+end
+
 --@debug@
 aObj.debugFrame = _G.ChatFrame10
 function aObj:Debug(...)
@@ -311,6 +349,29 @@ end
 function aObj:Debug3(...)
 	-- used by showCmds function
 	printIt("dbg3: " .. makeText(...), self.debugFrame)
+
+end
+
+function aObj:checkLocaleStrings()
+
+	self.localeStrings = _G[aName .. "LocaleStrings"] or {}
+	local missingLocaleMessage = false
+	_G.setmetatable(_G.LibStub:GetLibrary("AceLocale-3.0").apps[aName], {
+		__index = function(t, k)
+			-- ensure error only reported once
+			_G.rawset(t, k, k)
+			-- report if not in Master localisations table
+			if not aObj.locale_enUS[k] then
+				_G.print(_G.WrapTextInColorCode(">> Locale entry missing: ", "ffff0000"),  k)
+				if not missingLocaleMessage then
+					_G.message("Missing Locale entry, please add to Locales/enUS_Locale_Strings.lua and then import them")
+					missingLocaleMessage = true
+				end
+				self.localeStrings[k] = true
+			end
+			return k
+		end
+	})
 
 end
 --@end-debug@
