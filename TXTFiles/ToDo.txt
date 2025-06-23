@@ -12,8 +12,5 @@ ToDos
 
 #193 	I 	Can't use Quest Items in the Quest List
 
-#223 √	I/M DelveUI, BackgroundWidget obscures ModifiersWidget contents
-
-#224 √	I 	SimulationCraft
-			- Skinner/AddonSkins/Simulationcraft.lua:12: attempt to index field 'SimcScrollFrame' (a nil value)
-			[Skinner/AddonSkins/Simulationcraft.lua]:12: in function <Skinner/AddonSkins/Simulationcraft.lua:11>
+#225 x	S 	Krowi's Achievement Filter
+	 √	I 	Krowi's Achievement Filter
