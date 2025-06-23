@@ -1,3 +1,10 @@
+beta11.61496.3
+Jncl:
+	Updated ToDo*.txt files
+	Updated Change_History.txt
+	Updated DelvesDifficultyPickerFrame skin, closes #223
+	Updated Simulationcraft skin, closes #224
+
 beta11.61496.2
 Jncl:
 	Updated ToDo*.txt files
