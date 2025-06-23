@@ -1386,12 +1386,15 @@ if not aObj.isClscERA then
 					if self.isMnln
 					or aObj.isClscPTR
 					then
+						-- colour code copied from Blizzard_Wardrobe_Sets.lua
+						local IN_PROGRESS_FONT_COLOR = _G.CreateColor(0.251, 0.753, 0.251)
 						local SetsDataProvider = _G.CreateFromMixins(_G.WardrobeSetsDataProviderMixin)
 						self:SecureHookScript(this.SetsCollectionFrame, "OnShow", function(fObj)
 							self:removeInset(fObj.LeftInset)
 							self:keepFontStrings(fObj.RightInset)
 							self:removeNineSlice(fObj.RightInset.NineSlice)
 							self:skinObject("scrollbar", {obj=fObj.ListContainer.ScrollBar, fType=ftype})
+							local displayData, variantSets, topSourcesCollected, topSourcesTotal, setCollected, colour
 							local function skinElement(...)
 								local _, element, elementData, new
 								if _G.select("#", ...) == 2 then
@@ -1407,22 +1410,25 @@ if not aObj.isClscERA then
 										 aObj:addButtonBorder{obj=element.IconFrame, fType=ftype, relTo=element.IconFrame.Icon, reParent={element.IconFrame.Favorite}}
 									end
 								end
-								local displayData = elementData
+								displayData = elementData
 								if elementData.hiddenUntilCollected
 								and not elementData.collected
 								then
-									local variantSets = _G.C_TransmogSets.GetVariantSets(elementData.setID)
+									variantSets = _G.C_TransmogSets.GetVariantSets(elementData.setID)
 									if variantSets then
 										displayData = variantSets[1]
 									end
 								end
-								local topSourcesCollected, topSourcesTotal = SetsDataProvider:GetSetSourceTopCounts(displayData.setID)
-								local setCollected = displayData.collected or topSourcesCollected == topSourcesTotal
+								topSourcesCollected, topSourcesTotal = SetsDataProvider:GetSetSourceTopCounts(displayData.setID)
+								setCollected = displayData.collected or topSourcesCollected == topSourcesTotal
+								colour = topSourcesCollected == 0 and _G.GRAY_FONT_COLOR or IN_PROGRESS_FONT_COLOR
 								if element.IconFrame.sbb then
 									if setCollected then
 										aObj:clrBtnBdr(element.IconFrame, "gold")
+										element.Label:SetTextColor(aObj.BT:GetRGB())
 									else
 										aObj:clrBtnBdr(element.IconFrame, topSourcesCollected == 0 and "grey")
+										element.Label:SetTextColor(colour.r, colour.g, colour.b)
 									end
 								end
 							end
