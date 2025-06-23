@@ -2164,7 +2164,9 @@ aObj.SetupMainline_PlayerFrames = function()
 			if self.modBtnBs then
 				-- hook this to change button border colour
 				self:SecureHook("PVPQueueFrame_SetCategoryButtonState", function(btn, _)
-					self:clrBtnBdr(btn)
+					if btn.sbb then
+						self:clrBtnBdr(btn)
+					end
 				end)
 			end
 			-- hook this to change selected texture
