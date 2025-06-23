@@ -3161,7 +3161,7 @@ aObj.blizzFrames[ftype].StaticPopups = function(self)
 		-- hook this to handle close button texture changes
 		self:SecureHook("StaticPopup_Show", function(_)
 			local nTex
-			for i = 1, _G.STATICPOPUP_NUMDIALOGS do
+			for i = 1, not aObj.isMnlnPTRX and _G.STATICPOPUP_NUMDIALOGS or 4 do
 				nTex = _G["StaticPopup" .. i .. "CloseButton"]:GetNormalTexture()
 				if self:hasTextInTexture(nTex, "HideButton") then
 					_G["StaticPopup" .. i .. "CloseButton"]:SetText(self.modUIBtns.minus)
@@ -3172,16 +3172,20 @@ aObj.blizzFrames[ftype].StaticPopups = function(self)
 		end)
 	end
 
-	for i = 1, _G.STATICPOPUP_NUMDIALOGS do
+	for i = 1, not aObj.isMnlnPTRX and _G.STATICPOPUP_NUMDIALOGS or 4 do
 		self:SecureHookScript(_G["StaticPopup" .. i], "OnShow", function(this)
 			local objName = this:GetName()
 			this.Separator:SetTexture(nil)
-			if self.isMnln then
+			if aObj.isMnlnPTRX then
+				self:keepFontStrings(this.BG)
+				-- .ProgressBarBorder
+				self:skinObject("editbox", {obj=_G[objName .. "EditBox"], fType=ftype, mi=true, mix=12, regions={}, ofs=0})
+				this.ItemFrame.NameFrame:SetTexture(nil)
+			elseif self.isMnln then
 				self:removeNineSlice(this.Border)
-			end
-			self:skinObject("editbox", {obj=_G[objName .. "EditBox"], fType=ftype, ofs=0, y1=-4, y2=4})
-			if self.isMnln then
+				self:skinObject("editbox", {obj=_G[objName .. "EditBox"], fType=ftype, ofs=0, y1=-4, y2=4})
 				self:skinObject("ddbutton", {obj=this.Dropdown, fType=ftype})
+				_G[objName .. "ItemFrameNameFrame"]:SetTexture(nil)
 			end
 			if this.insertedFrame then
 				this.insertedFrame.ItemFrame.NameFrame:SetTexture(nil)
@@ -3195,18 +3199,29 @@ aObj.blizzFrames[ftype].StaticPopups = function(self)
 				end
 			end
 			self:skinObject("moneyframe", {obj=_G[objName .. "MoneyInputFrame"], moveIcon=true})
-			_G[objName .. "ItemFrameNameFrame"]:SetTexture(nil)
 			 -- N.B. Close Button handled above, offset is to allow DarkOverlay to overlay skin frame border as well
-			self:skinObject("frame", {obj=this, fType=ftype, rb=not self.isMnln and true, ofs=-9})
+			self:skinObject("frame", {obj=this, fType=ftype, rb=not self.isMnln and true, ofs=-4})
 			if self.modBtns then
-				self:skinStdButton{obj=this.button1, fType=ftype, schk=true, sechk=true, y1=2}
-				self:skinStdButton{obj=this.button2, fType=ftype, schk=true, sechk=true, y1=2}
-				self:skinStdButton{obj=this.button3, fType=ftype, schk=true, y1=2}
-				self:skinStdButton{obj=this.button4, fType=ftype, schk=true, y1=2}
-				self:skinStdButton{obj=this.extraButton, fType=ftype, schk=true, y1=2}
+				if not aObj.isMnlnPTRX then
+					self:skinStdButton{obj=this.button1, fType=ftype, schk=true, sechk=true, y1=2}
+					self:skinStdButton{obj=this.button2, fType=ftype, schk=true, sechk=true, y1=2}
+					self:skinStdButton{obj=this.button3, fType=ftype, schk=true, y1=2}
+					self:skinStdButton{obj=this.button4, fType=ftype, schk=true, y1=2}
+					self:skinStdButton{obj=this.extraButton, fType=ftype, schk=true, y1=2}
+				else
+					self:skinStdButton{obj=this.ButtonContainer.Button1, fType=ftype, schk=true, sechk=true, y1=2}
+					self:skinStdButton{obj=this.ButtonContainer.Button2, fType=ftype, schk=true, sechk=true, y1=2}
+					self:skinStdButton{obj=this.ButtonContainer.Button3, fType=ftype, schk=true, y1=2}
+					self:skinStdButton{obj=this.ButtonContainer.Button4, fType=ftype, schk=true, y1=2}
+					self:skinStdButton{obj=this.ExtraButton, fType=ftype, schk=true, y1=2}
+				end
 			end
 			if self.modBtnBs then
-				self:addButtonBorder{obj=_G[objName .. "ItemFrame"], fType=ftype, ibt=true}
+				if not aObj.isMnlnPTRX then
+					self:addButtonBorder{obj=_G[objName .. "ItemFrame"], fType=ftype, ibt=true}
+				else
+					self:addButtonBorder{obj=this.ItemFrame.Item, fType=ftype, ibt=true}
+				end
 			end
 
 			self:Unhook(this, "OnShow")

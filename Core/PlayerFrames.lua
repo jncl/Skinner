@@ -901,6 +901,9 @@ if not aObj.isClscERA then
 				_G.ScrollUtil.AddAcquiredFrameCallback(this.ScrollBox, skinElement, aObj, true)
 				self:SecureHookScript(this.ReputationDetailFrame, "OnShow", function(fObj)
 					self:removeNineSlice(fObj.Border)
+					if aObj.isMnlnPTRX then
+						self:skinObject("scrollbar", {obj=fObj.ScrollingDescriptionScrollBar, fType=ftype})
+					end
 					self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, ofs=-3})
 					if self.modBtns then
 						self:skinCloseButton{obj=fObj.CloseButton}
@@ -2272,7 +2275,9 @@ aObj.blizzFrames[ftype].CompactFrames = function(self)
 
 	-- Compact RaidFrame Manager
 	local function getBGHeightAdj()
-		if self.isMnln then
+		if self.isMnln
+		and not aObj.isMnlnPTRX
+		then
 			for _, bg in _G.ipairs(_G.CompactRaidFrameManager.backgrounds) do
 				-- aObj:Debug("CRFM.bg: [%s, %s]", bg, bg:IsShown())
 				if bg:IsShown() then
@@ -2906,6 +2911,9 @@ aObj.blizzLoDFrames[ftype].ItemSocketingUI = function(self)
 		gemTypeInfo["SingingThunder"]  = _G.CopyTable(gemTypeInfo["Yellow"], true)
 		gemTypeInfo["SingingSea"]      = _G.CopyTable(gemTypeInfo["Blue"], true)
 		gemTypeInfo["SingingWind"]     = _G.CopyTable(gemTypeInfo["Red"], true)
+	end
+	if aObj.isMnlnPTRX then
+		gemTypeInfo["Fiber"]           = _G.CopyTable(gemTypeInfo["Hydraulic"], true)
 	end
 	-- setup default for missing entry
 	_G.setmetatable(gemTypeInfo, {__index = function(t, k)

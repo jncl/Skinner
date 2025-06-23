@@ -362,13 +362,24 @@ aObj.SetupMainline_PlayerFrames = function()
 		self.initialized.CurrencyTransfer = true
 
 		self:SecureHookScript(_G.CurrencyTransferMenu, "OnShow", function(this)
-			self:skinObject("ddbutton", {obj=this.SourceSelector.Dropdown, fType=ftype})
-			self:skinObject("editbox", {obj=this.AmountSelector.InputBox, fType=ftype, y2=4})
+			if not aObj.isMnlnPTRX then
+				self:skinObject("ddbutton", {obj=this.SourceSelector.Dropdown, fType=ftype})
+				self:skinObject("editbox", {obj=this.AmountSelector.InputBox, fType=ftype, y2=4})
+			else
+				self:skinObject("ddbutton", {obj=this.Content.SourceSelector.Dropdown, fType=ftype})
+				self:skinObject("editbox", {obj=this.Content.AmountSelector.InputBox, fType=ftype, y2=4})
+			end
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true})
 			if self.modBtns then
-				self:skinStdButton{obj=this.AmountSelector.MaxQuantityButton, fType=ftype}
-				self:skinStdButton{obj=this.ConfirmButton, fType=ftype, sechk=true}
-				self:skinStdButton{obj=this.CancelButton, fType=ftype}
+				if not aObj.isMnlnPTRX then
+					self:skinStdButton{obj=this.AmountSelector.MaxQuantityButton, fType=ftype}
+					self:skinStdButton{obj=this.ConfirmButton, fType=ftype, sechk=true}
+					self:skinStdButton{obj=this.CancelButton, fType=ftype}
+				else
+					self:skinStdButton{obj=this.Content.AmountSelector.MaxQuantityButton, fType=ftype}
+					self:skinStdButton{obj=this.Content.ConfirmButton, fType=ftype, sechk=true}
+					self:skinStdButton{obj=this.Content.CancelButton, fType=ftype}
+				end
 			end
 
 			self:Unhook(this, "OnShow")
@@ -530,16 +541,21 @@ aObj.SetupMainline_PlayerFrames = function()
 				for i = 1, 4 do
 					_G["WhoFrameColumnHeader" .. i]:DisableDrawLayer("BACKGROUND")
 					if i == 2 then
-						self:skinObject("ddbutton", {obj=_G.WhoFrameDropdown, fType=ftype})
+						self:skinObject("ddbutton", {obj=_G.WhoFrameDropdown, fType=ftype, ofs=aObj.isMnlnPTRX and 0 or nil})
 					else
 						self:skinObject("frame", {obj=_G["WhoFrameColumnHeader" .. i], fType=ftype, y2=-3})
 					end
 				end
 				self:moveObject{obj=_G.WhoFrameColumnHeader4, x=2}
-				self:removeInset(_G.WhoFrameEditBoxInset)
-				self:skinObject("editbox", {obj=_G.WhoFrameEditBox, fType=ftype})
-				self:adjHeight{obj=_G.WhoFrameEditBox, adj=-8}
-				self:moveObject{obj=_G.WhoFrameEditBox, y=6}
+				if aObj.isMnlnPTRX then
+					_G.WhoFrameEditBox.Backdrop:SetTexture(nil)
+					self:skinObject("editbox", {obj=_G.WhoFrameEditBox, fType=ftype, mi=true, mix=12, x1=-5, y1=-4, y2=4})
+				else
+					self:removeInset(_G.WhoFrameEditBoxInset)
+					self:moveObject{obj=_G.WhoFrameEditBox, y=6}
+					self:adjHeight{obj=_G.WhoFrameEditBox, adj=-8}
+					self:skinObject("editbox", {obj=_G.WhoFrameEditBox, fType=ftype})
+				end
 				self:skinObject("scrollbar", {obj=fObj.ScrollBar, fType=ftype})
 				if self.modBtns then
 					self:skinStdButton{obj=_G.WhoFrameGroupInviteButton, fType=ftype, schk=true}
