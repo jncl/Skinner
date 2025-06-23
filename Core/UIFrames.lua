@@ -3623,6 +3623,8 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.UIWidgetCenterDisplayFrame)
+
 		local function hookAndSkinWidgets(widgetContainer)
 			-- aObj:Debug("hookAndSkinWidgets: [%s, %s, %s]", widgetContainer:IsForbidden(), widgetContainer:IsForbidden() or widgetContainer:GetDebugName())
 			-- DON'T skin NamePlate[n].* widgets as they cause Clamping Errors if they are initially skinned
