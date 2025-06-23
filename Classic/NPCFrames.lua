@@ -49,7 +49,7 @@ aObj.SetupClassic_NPCFrames = function()
 						self:skinObject("editbox", {obj=_G["Browse" .. type], fType=ftype})
 						self:moveObject{obj=_G["Browse" .. type], x=type == "MaxLevel" and -6 or -4, y=type ~= "MaxLevel" and 3 or 0}
 					end
-					self:skinObject("ddbutton", {obj=_G.BrowseDropdown, fType=ftype--[[, x2=109]]})
+					self:skinObject("ddbutton", {obj=_G.BrowseDropdown, fType=ftype})
 					self:skinObject("moneyframe", {obj=_G.BrowseBidPrice, moveIcon=true})
 					_G.BrowseBidButton:DisableDrawLayer("BORDER")
 					_G.BrowseBuyoutButton:DisableDrawLayer("BORDER")

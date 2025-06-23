@@ -3907,7 +3907,7 @@ aObj.SetupMainline_UIFrames = function()
 				-- ActivityTracker overlay (BLHC)
 				elseif oFrame.BountyDropdown then
 					oFrame.IconBorder:SetTexture(nil)
-					self:skinObject("ddbutton", {obj=oFrame.BountyDropdown, fType=ftype, noSF=true, y1=-2, x2=-2, y2=2, clr="gold"})
+					self:skinObject("ddbutton", {obj=oFrame.BountyDropdown, fType=ftype, noSF=true, by1=-2, bx2=-2, by2=2, clr="gold"})
 				-- NavBar
 				elseif oFrame.home then
 					self:skinNavBar(oFrame)

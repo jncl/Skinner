@@ -84,17 +84,22 @@ aObj.skinTPLs = {
 		shat		= false, -- use SecureHandlerAttributeTemplate
 	},
 	ddbutton = {
-		-- clr      = "grey",
-		-- filter   = false,
-		-- filtercb = "ResetButton",
-		-- noBB     = false, -- don't skin button
-		-- noSF     = false, -- don't skin frame
-		ofs         = aObj.isMnln and -1 or 1,
-		-- sechk    = false,
-		-- x1       = nil,
-		y1          = aObj.isMnln and 2 or nil,
-		-- x2       = nil,
-		y2          = aObj.isMnln and 4 or nil,
+		-- clr         = "grey",
+		-- filter      = false,
+		-- filtercb    = "ResetButton",
+		-- noBB        = false, -- don't skin button
+		-- noSF        = false, -- don't skin frame
+		bofs        = aObj.isMnln and -1 or 1,
+		-- bx1         = nil,
+		by1         = aObj.isMnln and 2 or nil,
+		-- bx2         = nil,
+		by2         = aObj.isMnln and 4 or nil,
+		ofs         = 2,
+		-- x1 			= -2,
+		-- y1 			= -2,
+		-- x2 			= -2,
+		-- y3 			= -2,
+		-- sechk 		= false,
 	},
 	ddlist = {
 		nop         = false, -- stop backdrop textures being updated (ZygorGuides)
@@ -457,20 +462,21 @@ local function skinDDButton(tbl)
 			tbl.obj.Background:SetTexture(nil)
 		end
 		if not tbl.noSF then
-			aObj:skinObject("frame", {obj=tbl.obj, fType=tbl.ftype, sechk=tbl.sechk})
+			aObj:skinObject("frame", {obj=tbl.obj, fType=tbl.ftype, sechk=tbl.sechk, ofs=tbl.ofs, x1=tbl.x1, y1=tbl.y1, x2=tbl.x2, y2=tbl.y2})
 			if aObj.prdb.TabDDTextures.textureddd then
 				tbl.obj.Background:SetTexture(aObj.itTex)
-				tbl.obj.Background:SetPoint("TOPLEFT", 0, 0)
-				tbl.obj.Background:SetPoint("BOTTOMRIGHT", 0, 0)
+				-- offset the background within the frame
+				tbl.obj.Background:SetPoint("TOPLEFT", tbl.ofs + 2, tbl.ofs - 2)
+				tbl.obj.Background:SetPoint("BOTTOMRIGHT", tbl.ofs - 2, tbl.ofs + 2)
 			end
 		end
 		if not tbl.noBB then
 			-- position around the original frame
-			tbl.x1  = tbl.x1 or tbl.ofs * -1
-			tbl.y1  = tbl.y1 or tbl.ofs
-			tbl.x2  = tbl.x2 or tbl.ofs
-			tbl.y2  = tbl.y2 or tbl.ofs * -1
-			aObj:addButtonBorder{obj=tbl.obj, fType=tbl.ftype, relTo=tbl.obj.Arrow, clr=tbl.clr, sechk=tbl.sechk, ofs=tbl.ofs, x1=tbl.x1, y1=tbl.y1, x2=tbl.x2, y2=tbl.y2}
+			tbl.bx1  = tbl.bx1 or tbl.bofs * -1
+			tbl.by1  = tbl.by1 or tbl.bofs
+			tbl.bx2  = tbl.bx2 or tbl.bofs
+			tbl.by2  = tbl.by2 or tbl.bofs * -1
+			aObj:addButtonBorder{obj=tbl.obj, fType=tbl.ftype, relTo=tbl.obj.Arrow, clr=tbl.clr, sechk=tbl.sechk, ofs=tbl.bofs, x1=tbl.bx1, y1=tbl.by1, x2=tbl.bx2, y2=tbl.by2}
 		end
 	end
 end
