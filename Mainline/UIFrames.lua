@@ -3659,6 +3659,7 @@ aObj.SetupMainline_UIFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.TalkingHeadFrame)
 
 	end
 
