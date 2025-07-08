@@ -292,7 +292,6 @@ aObj.addonsToSkin.Baganator = function(self) -- v 665
 		end},
 	}
 	local function setupFrameHooks(currentSkin)
-		-- aObj:Debug("setupFrameHooks: [%s]", currentSkin)
 		for type, tbl in _G.pairs(frameData) do
 			aObj:secureHookScript(_G[tbl.name .. currentSkin], "OnShow", function(this)
 				tbl.func(this, type)
