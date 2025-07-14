@@ -1,3 +1,21 @@
+beta11.61559.1
+Jncl:
+	Updated ToDo*.txt files
+	Updated Change_History.txt
+	Updated Version numbers
+	Retail PTRX changes
+	Updated TalkingHeadFrame skin
+	Bugfix for PVPVQueueFrame
+	Updated UIWidgetCenterDisplayFrame skin
+	Updated SharedFuncs to add more common functions for LocaleString checks and Profile changes
+	Updated WardrobeCollectionFrame skin
+	Updated ddButon skinning code
+	Uppercased DrawLayer string
+	Added more frame type variables
+	Classic PTR changes
+	Updated Krowi_AchievementFilter skin
+	Updated skin request template
+
 beta11.61496.3
 Jncl:
 	Updated ToDo*.txt files
