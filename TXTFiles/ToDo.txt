@@ -12,5 +12,4 @@ ToDos
 
 #193 	I 	Can't use Quest Items in the Quest List
 
-#225 x	S 	Krowi's Achievement Filter
-	 √	I 	Krowi's Achievement Filter
+#226 √	I 	Dominos_Config, right click settings dialog not appearing for any action bars
