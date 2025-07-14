@@ -1,8 +1,8 @@
 local _, aObj = ...
-if not aObj:isAddonEnabled("Dominos") then return end
+if not aObj:isAddonEnabled("Dominos_Config") then return end
 local _G = _G
 
-aObj.lodAddons.Dominos_Config = function(self) -- v 11.0.2
+aObj.lodAddons.Dominos_Config = function(self) -- v 11.1.7
 
 	local Options = _G.LibStub:GetLibrary("AceAddon-3.0"):GetAddon("Dominos_Config", true)
 	if not Options then return end
@@ -54,9 +54,9 @@ aObj.lodAddons.Dominos_Config = function(self) -- v 11.0.2
 	end, true)
 
 	self:RawHook(Options.Dropdown, "New", function(this, options)
-		local dropdown = self.hooks[this].New(this, options)
-		self:skinObject("dropdown", {obj=dropdown.dropdownMenu, x2=109})
-		return dropdown
+		local menu = self.hooks[this].New(this, options)
+		self:skinObject("ddbutton", {obj=menu.dropdownMenu})
+		return menu
 	end, true)
 
 	self:RawHook(Options.TextInput, "New", function(this, options)

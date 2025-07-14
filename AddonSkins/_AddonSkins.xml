@@ -82,7 +82,7 @@
 <Script file="DejaClassicStats.lua"/>
 <Script file="Details.lua"/>
 <Script file="DetailsFramework.lua"/>
-<Script file="Dominos.lua"/>
+<Script file="Dominos_Config.lua"/>
 <Script file="EasyMail.lua"/>
 <Script file="ElvUI.lua"/>
 <Script file="ERC.lua"/>
