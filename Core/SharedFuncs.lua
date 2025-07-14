@@ -3,15 +3,15 @@ local aName, aObj = ...
 local _G = _G
 
 local buildInfo = {
-	wow_classic_beta    = {"MOP Classic Beta",          "5.5.0",  61496},
+	wow_classic_beta    = {"MOP Classic Beta",          "5.5.0",  61916},
 	wow_beta            = {"The War Within Beta",       "11.0.2", 56313},
-	wow_classic_ptr     = {"PTR (Cataclysm Classic)",   "5.5.0",  61496},
+	wow_classic_ptr     = {"PTR (Cataclysm Classic)",   "5.5.0",  61916},
 	wow_classic_era_ptr = {"PTR (Classic Era)",         "1.15.7", 60141},
-	wow_ptr             = {"PTR (TWW 11.1.7)",          "11.1.7", 61491},
-	wow_ptr_x           = {"PTR (TWW 11.2.0)",          "11.2.0", 61476},
-	wow_classic_era     = {"World of Warcraft Classic", "1.15.7", 61257},
-	wow_classic         = {"Cataclysm Classic",         "4.4.2",  60895},
-	wow                 = {"World of Warcraft",         "11.1.7", 61559},
+	wow_ptr             = {"PTR (TWW 11.1.7)",          "11.1.7", 61609},
+	wow_ptr_x           = {"PTR (TWW 11.2.0)",          "11.2.0", 61871},
+	wow_classic_era     = {"World of Warcraft Classic", "1.15.7", 61582},
+	wow_classic         = {"Cataclysm Classic",         "5.5.0",  61916},
+	wow                 = {"World of Warcraft",         "11.1.7", 61609},
 	curr                = {"curr", _G.GetBuildInfo()},
 }
 
@@ -362,12 +362,12 @@ function aObj:checkLocaleStrings()
 			_G.rawset(t, k, k)
 			-- report if not in Master localisations table
 			if not aObj.locale_enUS[k] then
-				_G.print(_G.WrapTextInColorCode(">> Locale entry missing: ", "ffff0000"),  k)
+				_G.print(aName, _G.WrapTextInColorCode(" >> Locale entry missing: ", "ffff0000"),  k)
 				if not missingLocaleMessage then
-					_G.message("Missing Locale entry, please add to Locales/enUS_Locale_Strings.lua and then import them")
+					_G.SetBasicMessageDialogText(aName .. ": Missing Locale entry, please add to Locales/enUS_Locale_Strings.lua and then import them")
 					missingLocaleMessage = true
 				end
-				self.localeStrings[k] = true
+				aObj.localeStrings[k] = true
 			end
 			return k
 		end
