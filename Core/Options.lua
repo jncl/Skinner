@@ -72,7 +72,7 @@ aObj.SetupDefaults = function(self)
 			ChatTabs                   = false, -- (inc. ChatTemporaryWindow)
 			ChatTabsFade               = true,
 			CombatLogQBF               = not aObj.isClscERA and false or nil,
-			MainMenuBar                = {skin = true, glazesb = true, actbtns = false},
+			MainMenuBar                = {skin = true, glazesb = true, actbtns = false, altpowerbar = not aObj.isClscERA and true or nil},
 			Minimap                    = {skin = false, gloss = false},
 			MinimapButtons             = {skin = false, style = false},
 			Tooltips                   = {skin = true, style = 1, glazesb = true, border = 1},
@@ -1058,6 +1058,11 @@ aObj.SetupOptions = function(self)
 							order = 2,
 							name = self.L["Glaze Status Bar"],
 						},
+						altpowerbar = {
+							type = "toggle",
+							order = 3,
+							name = self.L["Alternate Power Bars"],
+						},
 						actbtns = {
 							hidden = not self:canSkinActionBtns(),
 							type = "toggle",
@@ -1262,6 +1267,7 @@ aObj.SetupOptions = function(self)
 		["Coin Pickup"]           = {suff = "Frame"},
 		["Color Picker"]          = {suff = "Frame"},
 		["Debug Tools"]           = {suff = "Frames"},
+		["Destiny Frame"]         = not self.isClscERA and true or nil,
 		["Event Trace"]           = true,
 		["Ghost Frame"]           = not self.isClscERA and true or nil,
 		["GM Chat UI"]            = true,
@@ -1276,6 +1282,7 @@ aObj.SetupOptions = function(self)
 		["Movie Frame"]           = true,
 		["Navigation Bar"]        = not self.isClscERA and true or nil,
 		["Override Action Bar"]   = not self.isClscERA and {desc = "Vehicle UI"} or nil,
+		["Pet Battle UI"]         = not self.isClscERA and true or nil,
 		["PTR Feedback"]          = _G.PTR_IssueReporter and {suff = "Frames"} or nil,
 		["PVE Frame"]             = self.isClscERA and {desc = "Looking for Group"} or {desc = "Group Finder Frame"},
 		["Queue Status Frame"]    = true,

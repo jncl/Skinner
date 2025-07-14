@@ -204,14 +204,10 @@ aObj.SetupClassic_NPCFrames = function()
 
 		self:SecureHookScript(_G.BankFrame, "OnShow", function(this)
 			self:keepFontStrings(_G.BankSlotsFrame)
-			if not aObj.isClscPTR then
-				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ofs=-11, x2=self.isClsc and 16 or -33, y2=90})
-			else
-				self:skinObject("editbox", {obj=_G.BankItemSearchBox, fType=ftype, si=true})
-				self:removeInset(_G.BankFrameMoneyFrameInset)
-				_G.BankFrameMoneyFrameBorder:DisableDrawLayer("BACKGROUND")
-				self:skinObject("frame", {obj=this, fType=ftype, kfs=true,cb=true})
-			end
+			self:skinObject("editbox", {obj=_G.BankItemSearchBox, fType=ftype, si=true})
+			self:removeInset(_G.BankFrameMoneyFrameInset)
+			_G.BankFrameMoneyFrameBorder:DisableDrawLayer("BACKGROUND")
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true,cb=true})
 			if self.modBtns then
 				self:skinCloseButton{obj=_G.BankCloseButton, fType=ftype}
 				self:skinStdButton{obj=_G.BankFramePurchaseButton, fType=ftype}
@@ -334,8 +330,13 @@ aObj.SetupClassic_NPCFrames = function()
 		self.initialized.TaxiFrame = true
 
 		self:SecureHookScript(_G.TaxiFrame, "OnShow", function(this)
-			self:removeRegions(this, {1, 2 ,3 ,4 ,5}) -- keep the map texture(s)
-			self:skinObject("frame", {obj=this, fType=ftype, x1=10, y1=-11, x2=-32, y2=62})
+			if not aObj.isClsc then
+				self:removeRegions(this, {1, 2, 3, 4, 5}) -- keep the map texture(s)
+				self:skinObject("frame", {obj=this, fType=ftype, x1=10, y1=-11, x2=-32, y2=62})
+			else
+				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x2=1})
+				this.InsetBg:SetAlpha(1) -- make TaxiMap Background visible
+			end
 			if self.modBtns then
 				self:skinCloseButton{obj=_G.TaxiCloseButton, fType=ftype}
 			end

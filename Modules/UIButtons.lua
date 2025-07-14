@@ -627,7 +627,7 @@ end
 local rpRegions = {
 	"ActionBarHighlight", "AutoCastable", "AutoCastOverlay", "AutoCastShine", "Count", "Flash", "Glow", "HotKey",
 	"IconBorder","IconQuestTexture", "ItemContextOverlay", "ItemOverlay", "ItemOverlay2", "LevelLinkLockIcon", "Name", "NewActionTexture",
-	"ProfessionQualityOverlay", "searchOverlay", "SlotBorder", "SlotBorderOpen", "SpellHighlightTexture", "Stock"
+	"ProfessionQualityOverlay", "rarityIcon", "searchOverlay", "SlotBorder", "SlotBorderOpen", "SpellHighlightTexture", "Stock", "subIcon", "subIconRight"
 }
 local function reparentRegion(region, parent)
 	if region

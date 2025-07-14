@@ -129,152 +129,18 @@ aObj.SetupClassic_UIFrames = function()
 
 	end
 
-	aObj.blizzFrames[ftype].MainMenuBar = function(self)
-		if self.initialized.MainMenuBar then return end
-		self.initialized.MainMenuBar = true
+	aObj.blizzFrames[ftype].LevelUpDisplay = function(self)
+		if not self.prdb.LevelUpDisplay or self.initialized.LevelUpDisplay then return end
+		self.initialized.LevelUpDisplay = true
 
-		-- this is done here as other AddOns may require it to be skinned
-		if self.modBtnBs then
-			self:addButtonBorder{obj=_G.MainMenuBarVehicleLeaveButton, fType=ftype, schk=true}
-		end
-
-		if _G.C_AddOns.IsAddOnLoaded("Dominos") then
-			self.blizzFrames[ftype].MainMenuBar = nil
-			return
-		end
-
-		if self.prdb.MainMenuBar.skin then
-			local skinABBtn, skinMultiBarBtns = _G.nop, _G.nop
+		self:SecureHookScript(_G.LevelUpDisplay, "OnShow", function(this)
+			self:keepFontStrings(this)
 			if self.modBtnBs then
-				function skinABBtn(btn)
-					btn.Border:SetAlpha(0) -- texture changed in blizzard code
-					btn.FlyoutBorder:SetTexture(nil)
-					btn.FlyoutBorderShadow:SetTexture(nil)
-					if aObj:canSkinActionBtns() then
-						_G[btn:GetName() .. "NormalTexture"]:SetTexture(nil)
-						aObj:addButtonBorder{obj=btn, fType=ftype, sabt=true, rpA=true, ofs=3}
-					end
-				end
-				function skinMultiBarBtns(type)
-					local bName
-					for i = 1, _G.NUM_MULTIBAR_BUTTONS do
-						bName = "MultiBar" .. type .. "Button" .. i
-						if not _G[bName].noGrid then
-							_G[bName .. "FloatingBG"]:SetAlpha(0)
-						end
-						skinABBtn(_G[bName])
-					end
-				end
+				self:addButtonBorder{obj=this.spellFrame, fType=ftype, relTo=this.spellFrame.icon}
 			end
-			self:SecureHookScript(_G.MainMenuBar, "OnShow", function(this)
-				_G.ExhaustionTick:GetNormalTexture():SetTexture(nil)
-				_G.ExhaustionTick:GetHighlightTexture():SetTexture(nil)
-				_G.MainMenuExpBar:DisableDrawLayer("OVERLAY")
-				_G.MainMenuExpBar:SetSize(aObj.isClscPTR and 1014 or self.isClsc and 1032 or 1012, 14)
-				self:moveObject{obj=_G.MainMenuExpBar, x=aObj.isClscPTR and 2 or 1, y=2}
-				self:moveObject{obj=_G.MainMenuBarExpText, y=-2}
-				self:skinObject("statusbar", {obj=_G.MainMenuExpBar, fType=ftype, bg=self:getRegion(_G.MainMenuExpBar, 6), other={_G.ExhaustionLevelFillBar}})
-				_G.MainMenuBarMaxLevelBar:DisableDrawLayer("BACKGROUND")
-				_G.MainMenuBarArtFrame:DisableDrawLayer("BACKGROUND")
-				_G.MainMenuBarLeftEndCap:SetTexture(nil)
-				_G.MainMenuBarRightEndCap:SetTexture(nil)
-				local rwbSB = _G.ReputationWatchBar.StatusBar
-				self:removeRegions(rwbSB, {1, 2, 3, 4, 5, 6, 7, 8, 9})
-				rwbSB:SetSize(1011, 8)
-				self:moveObject{obj=rwbSB, x=1, y=2}
-				self:skinObject("statusbar", {obj=rwbSB, fType=ftype, bg=rwbSB.Background, other={rwbSB.Underlay, rwbSB.Overlay}})
-				if self.modBtnBs then
-					for i = 1, _G.NUM_ACTIONBAR_BUTTONS do
-						skinABBtn(_G["ActionButton" .. i])
-					end
-					self:addButtonBorder{obj=_G.ActionBarUpButton, fType=ftype, ofs=-4, clr="gold"}
-					self:addButtonBorder{obj=_G.ActionBarDownButton, fType=ftype, ofs=-4, clr="gold"}
-					skinMultiBarBtns("BottomLeft")
-					skinMultiBarBtns("BottomRight")
-				end
 
-				self:Unhook(this, "OnShow")
-			end)
-			self:checkShown(_G.MainMenuBar)
-
-			if self.modBtnBs then
-				skinMultiBarBtns("Right")
-				skinMultiBarBtns("Left")
-				for _, bName in _G.pairs(_G.MICRO_BUTTONS) do
-					self:addButtonBorder{obj=_G[bName], fType=ftype, es=24, ofs=2, y1=-18, reParent={_G[bName].QuickKeybindHighlightTexture}}
-				end
-				local function abb2Bag(bag)
-					aObj:addButtonBorder{obj=bag, fType=ftype, ibt=true, ofs=3, clr=bag.icon:GetVertexColor()}
-				end
-				abb2Bag(_G.MainMenuBarBackpackButton)
-				for i = 0, 3 do
-					abb2Bag(_G["CharacterBag" .. i .. "Slot"])
-				end
-				self:addButtonBorder{obj=_G.KeyRingButton, fType=ftype, ofs=2}
-			end
-		end
-
-		if aObj.isClscPTR then
-			self:SecureHookScript(_G.TalentMicroButtonAlert, "OnShow", function(this)
-
-				self:skinObject("glowbox", {obj=this, fType=ftype})
-
-				self:Unhook(this, "OnShow")
-			end)
-		end
-
-	end
-
-	aObj.blizzFrames[ftype].MainMenuBarCommon = function(self)
-		if self.initialized.MainMenuBarCommon then return end
-		self.initialized.MainMenuBarCommon = true
-
-		if _G.C_AddOns.IsAddOnLoaded("Bartender4") then
-			self.blizzFrames[ftype].MainMenuBarCommon = nil
-			return
-		end
-
-		if self.prdb.MainMenuBar.skin then
-			self:SecureHookScript(_G.StanceBarFrame, "OnShow", function(this)
-				self:keepFontStrings(this)
-				if self.modBtnBs then
-					for _, btn in _G.pairs(this.StanceButtons) do
-						self:addButtonBorder{obj=btn, fType=ftype, abt=true, sft=true, ofs=3, x1=-4}
-					end
-				end
-
-				self:Unhook(this, "OnShow")
-			end)
-			self:checkShown(_G.StanceBarFrame)
-			-- TODO: change button references when PetActionButtonTemplate & ActionButtonTemplate are fixed
-			self:SecureHookScript(_G.PetActionBarFrame, "OnShow", function(this)
-				self:keepFontStrings(this)
-				if self.modBtnBs then
-					local bName
-					for i = 1, _G.NUM_PET_ACTION_SLOTS do
-						bName = "PetActionButton" .. i
-						_G[bName .. "NormalTexture2"]:SetTexture(nil)
-						self:addButtonBorder{obj=_G[bName], fType=ftype, abt=true, sft=true, reParent={_G[bName .. "AutoCastable"], _G[bName .. "Shine"]}, ofs=3, x2=2}
-					end
-				end
-
-				self:Unhook(this, "OnShow")
-			end)
-			self:checkShown(_G.PetActionBarFrame)
-			if not self.isClscERA then
-				self:SecureHookScript(_G.PossessBarFrame, "OnShow", function(this)
-					self:keepFontStrings(this)
-					if self.modBtnBs then
-						for i = 1, _G.NUM_POSSESS_SLOTS do
-							self:addButtonBorder{obj=_G["PossessButton" .. i], fType=ftype, abt=true, sft=true, ofs=3}
-						end
-					end
-
-					self:Unhook(this, "OnShow")
-				end)
-				self:checkShown(_G.PossessBarFrame)
-			end
-		end
+			self:Unhook(this, "OnShow")
+		end)
 
 	end
 
@@ -351,7 +217,7 @@ aObj.SetupClassic_UIFrames = function()
 
 	end
 
-	if not aObj.isClscPTR then
+	if not aObj.isClsc then
 		aObj.blizzFrames[ftype].PVPFrame = function(self)
 			if not self.prdb.PVPFrame or self.initialized.PVPFrame then return end
 			self.initialized.PVPFrame = true
@@ -526,13 +392,8 @@ aObj.SetupClassic_UIFrames = function()
 			self:SecureHookScript(_G.QuestLogFrame, "OnShow", function(this)
 				_G.QuestLogCollapseAllButton:DisableDrawLayer("BACKGROUND")
 				self:keepFontStrings(_G.EmptyQuestLogFrame)
-				if not aObj.isClscPTR then
-					self:skinObject("slider", {obj=_G.QuestLogListScrollFrame.ScrollBar, fType=ftype})
-					self:skinObject("slider", {obj=_G.QuestLogDetailScrollFrame.ScrollBar, fType=ftype})
-				else
-					self:skinObject("scrollbar", {obj=_G.QuestLogListScrollFrame.ScrollBar, fType=ftype})
-					self:skinObject("scrollbar", {obj=_G.QuestLogDetailScrollFrame.ScrollBar, fType=ftype})
-				end
+				self:skinObject("slider", {obj=_G.QuestLogListScrollFrame.ScrollBar, fType=ftype})
+				self:skinObject("slider", {obj=_G.QuestLogDetailScrollFrame.ScrollBar, fType=ftype})
 				_G.QuestLogQuestTitle:SetTextColor(self.HT:GetRGB())
 				_G.QuestLogObjectivesText:SetTextColor(self.BT:GetRGB())
 				_G.QuestLogTimerText:SetTextColor(self.BT:GetRGB())
@@ -602,31 +463,17 @@ aObj.SetupClassic_UIFrames = function()
 				self:addButtonBorder{obj=_G.QuestLogFrameShowMapButton, fType=ftype, relTo=_G.QuestLogFrameShowMapButton.texture, ofs=0, x1=2, x2=-2}
 			end
 			self:SecureHookScript(_G.QuestLogDetailFrame, "OnShow", function(this)
-				if not aObj.isClscPTR then
-					self:skinObject("slider", {obj=_G.QuestLogDetailScrollFrame.ScrollBar, fType=ftype, rpTex="background"})
-					self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, ofs=1, y1=-11})
-				else
-					self:skinObject("slider", {obj=_G.QuestLogDetailScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
-					if not aObj.isClscPTR then
-						self:removeInset(_G.QuestLogDetailInset)
-					end
-					self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true})
-				end
+				self:skinObject("slider", {obj=_G.QuestLogDetailScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
+				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true})
 
 				self:Unhook(this, "OnShow")
 			end)
 			self:SecureHookScript(_G.QuestLogFrame, "OnShow", function(this)
 				self:keepFontStrings(_G.EmptyQuestLogFrame)
 				self:keepFontStrings(_G.QuestLogCount)
-				if not aObj.isClscPTR then
-					self:skinObject("slider", {obj=_G.QuestLogListScrollFrame.scrollBar, fType=ftype})
-					self:skinObject("slider", {obj=_G.QuestLogDetailScrollFrame.ScrollBar, fType=ftype, rpTex="background"})
-					self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=10, y1=-11, x2=0, y2=4})
-				else
-					self:skinObject("slider", {obj=_G.QuestLogListScrollFrame.scrollBar, fType=ftype, rpTex="background"})
-					self:skinObject("slider", {obj=_G.QuestLogDetailScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
-					self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true})
-				end
+				self:skinObject("slider", {obj=_G.QuestLogListScrollFrame.scrollBar, fType=ftype, rpTex="background"})
+				self:skinObject("slider", {obj=_G.QuestLogDetailScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
+				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true})
 				if self.modBtns then
 					for _, btn in _G.pairs(_G.QuestLogListScrollFrame.buttons) do
 						self:skinExpandButton{obj=btn, fType=ftype, noddl=true, onSB=true}
@@ -758,6 +605,9 @@ aObj.SetupClassic_UIFrames = function()
 			self:skinObject("ddbutton", {obj=this.ZoneDropdown, fType=ftype})
 			self:skinObject("ddbutton", {obj=this.MinimapDropdown, fType=ftype})
 			self:skinObject("ddbutton", {obj=this.WorldMapLevelDropDown, fType=ftype})
+			if self.isClsc then
+				self:skinObject("ddbutton", {obj=this.WorldMapOptionsDropDown, fType=ftype})
+			end
 			if self.modBtns then
 				self:skinCloseButton{obj=_G.WorldMapFrameCloseButton, fType=ftype}
 				self:skinStdButton{obj=_G.WorldMapZoomOutButton, fType=ftype, schk=true}
@@ -804,6 +654,7 @@ aObj.SetupClassic_UIFramesOptions = function(self)
 	local optTab = {
 		["Battlefield Frame"]       = self.isClscERA and true or nil,
 		["Binding UI"]              = {desc = "Key Bindings UI"},
+		["Level Up Display"]        = self.isClsc and true or nil,
 		["Nameplates"]              = true,
 		["Product Choice"]          = {suff = "Frame"},
 		["PVP Frame"]               = self.isClsc and {desc = "Player vs. Player"} or nil,

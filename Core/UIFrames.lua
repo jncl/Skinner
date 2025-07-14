@@ -126,6 +126,7 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 		alertType["NewCosmetic"]            = {ofs = -8, y1 = -12, ddl = {"background"}, ib = true, iq = _G.Enum.ItemQuality.Epic}
 		alertType["NewRuneforgePower"]      = {ofs = -8, ddl = {"background"}, ib = true, iq = _G.Enum.ItemQuality.Legendary}
 		alertType["NewToy"]                 = {ofs = -8, y1 = -12, ddl = {"background"}, ib = true}
+		alertType["NewWarbandScene"]        = {ofs = -8, y1 = -12, ddl = {"background"}, ib = true}
 		alertType["RafRewardDelivered"]     = {ofs = -10}
 		alertType["Scenario"].y1            = -8
 		alertType["Scenario"].y2            = 8
@@ -263,22 +264,6 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 		end
 	end
 
-	-- hook this to stop gradient texture whiteout
-	self:RawHook(_G.AlertFrame, "AddAlertFrame", function(this, frame)
-		if _G.C_AddOns.IsAddOnLoaded("Overachiever") then
-			local ocScript = frame:GetScript("OnClick")
-			if ocScript
-			and ocScript == _G.OverachieverAlertFrame_OnClick
-			then
-				-- stretch icon texture
-				frame.Icon.Texture:SetTexCoord(-0.04, 0.75, 0.0, 0.555)
-				skinAlertFrame("Achievement", frame)
-			end
-		end
-		-- run the hooked function
-		self.hooks[this].AddAlertFrame(this, frame)
-	end, true)
-
 	-- hook this to remove rewardFrame rings
 	self:SecureHook("StandardRewardAlertFrame_AdjustRewardAnchors", function(frame)
 		if frame.RewardFrames then
@@ -307,6 +292,21 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 			frame.sf.tfade:SetAlpha(0)
 		end
 	end)
+
+	-- hook this to stop gradient texture whiteout
+	if _G.C_AddOns.IsAddOnLoaded("Overachiever") then
+		self:RawHook(_G.AlertFrame, "AddAlertFrame", function(this, frame)
+			local ocScript = frame:GetScript("OnClick")
+			if ocScript
+			and ocScript == _G.OverachieverAlertFrame_OnClick
+			then
+				-- stretch icon texture
+				frame.Icon.Texture:SetTexCoord(-0.04, 0.75, 0.0, 0.555)
+				skinAlertFrame("Achievement", frame)
+			end
+			self.hooks[this].AddAlertFrame(this, frame)
+		end, true)
+	end
 
 end
 
@@ -1186,6 +1186,41 @@ aObj.blizzLoDFrames[ftype].DebugTools = function(self)
 
 end
 
+if not aObj.isClscERA then
+	aObj.blizzFrames[ftype].DestinyFrame = function(self)
+		if not self.prdb.DestinyFrame or self.initialized.DestinyFrame then return end
+		self.initialized.DestinyFrame = true
+
+		self:SecureHookScript(_G.DestinyFrame, "OnShow", function(this)
+			this.alphaLayer:SetColorTexture(0, 0, 0, 0.70)
+			this.background:SetTexture(nil)
+			this.frameHeader:SetTextColor(self.HT:GetRGB())
+			_G.DestinyFrameAllianceLabel:SetTextColor(self.BT:GetRGB())
+			_G.DestinyFrameHordeLabel:SetTextColor(self.BT:GetRGB())
+			_G.DestinyFrameLeftOrnament:SetTexture(nil)
+			_G.DestinyFrameRightOrnament:SetTexture(nil)
+			this.allianceText:SetTextColor(self.BT:GetRGB())
+			this.hordeText:SetTextColor(self.BT:GetRGB())
+			_G.DestinyFrameAllianceFinalText:SetTextColor(self.BT:GetRGB())
+			_G.DestinyFrameHordeFinalText:SetTextColor(self.BT:GetRGB())
+
+			-- buttons
+			for _, type in _G.pairs{"alliance", "horde"} do
+				self:removeRegions(this[type .. "Button"], {1})
+				self:changeTex(this[type .. "Button"]:GetHighlightTexture())
+				self:adjWidth{obj=this[type .. "Button"], adj=-60}
+				self:adjHeight{obj=this[type .. "Button"], adj=-60}
+				if self.modBtns then
+					self:skinStdButton{obj=this[type .. "Button"], x1=-2, y1=2, x2=-3, y2=-1}
+				end
+			end
+
+			self:Unhook(this, "OnShow")
+		end)
+
+	end
+end
+
 aObj.blizzLoDFrames[ftype].EventTrace = function(self)
 	if not self.prdb.EventTrace or self.initialized.EventTrace then return end
 	self.initialized.EventTrace = true
@@ -1321,9 +1356,7 @@ aObj.blizzLoDFrames[ftype].GuildBankUI = function(self)
 				end
 			end)
 		end
-		if self.isMnln
-		or aObj.isClscPTR
-		then
+		if not self.isClscERA then
 			self:skinObject("editbox", {obj=_G.GuildItemSearchBox, fType=ftype, si=true})
 			this.MoneyFrameBG:DisableDrawLayer("BACKGROUND")
 		end
@@ -1342,17 +1375,12 @@ aObj.blizzLoDFrames[ftype].GuildBankUI = function(self)
 			self:skinObject("slider", {obj=_G.GuildBankInfo.ScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
 			self:skinObject("slider", {obj=this.Log.ScrollBar, fType=ftype, rpTex="artwork"})
 		end
-		if not aObj.isClscPTR then
+		if not self.isClsc then
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true, cb=true, y1=self.isClsc and -11, x2=self.isClsc and 1, y2=self.isClsc and 3 or -2})
 		else
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true, cb=true, x2=1, y2=-2})
 		end
 		if self.modBtns then
-			if self.isClsc
-			and not aObj.isClscPTR
-			then
-				self:skinCloseButton{obj=self:getChild(this, 11), fType=ftype}
-			end
 			self:skinStdButton{obj=this.DepositButton, fType=ftype, x1=0} -- don't overlap withdraw button
 			self:skinStdButton{obj=this.WithdrawButton, fType=ftype, schk=true, x2=0} -- don't overlap deposit button
 			self:skinStdButton{obj=this.BuyInfo.PurchaseButton, fType=ftype, schk=true}
@@ -1445,9 +1473,7 @@ aObj.blizzFrames[ftype].HelpPlate = function(self)
 		this:DisableDrawLayer("BORDER") -- hide Arrow glow textures
 		self:skinObject("glowbox", {obj=this, fType=ftype})
 		-- move Arrow textures to align with frame border
-		if not self.isMnln
-		or not aObj.isClscPTR
-		then
+		if self.isClscERA then
 			self:moveObject{obj=this.ArrowUP, y=-2}
 			self:moveObject{obj=this.ArrowDOWN, y=2}
 			self:moveObject{obj=this.ArrowRIGHT, x=-2}
@@ -1476,7 +1502,7 @@ aObj.blizzFrames[ftype].ItemText = function(self)
 			aObj:skinObject("frame", {obj=frame, fType=ftype, kfs=true, ri=true, rns=true, cb=true, x2=3})
 		else
 			aObj:skinObject("slider", {obj=_G.ItemTextScrollFrame.ScrollBar, fType=ftype, rpTex={"background", "artwork"}})
-			if not aObj.isClscPTR then
+			if not self.isClsc then
 				aObj:skinObject("frame", {obj=frame, fType=ftype, kfs=true, x1=10, y1=-12, x2=-31, y2=60})
 				if aObj.modBtns then
 					aObj:skinCloseButton{obj=_G.ItemTextCloseButton}
@@ -2179,6 +2205,291 @@ aObj.blizzFrames[ftype].MailFrame = function(self)
 
 end
 
+aObj.blizzFrames[ftype].MainMenuBar = function(self)
+	if self.initialized.MainMenuBar then return end
+	self.initialized.MainMenuBar = true
+
+	-- this is done here as other AddOns may require it to be skinned
+	if self.modBtnBs then
+		if self.isMnln then
+			self:addButtonBorder{obj=_G.MainMenuBar.VehicleLeaveButton, schk=true}
+		else
+			self:addButtonBorder{obj=_G.MainMenuBarVehicleLeaveButton, fType=ftype, schk=true}
+		end
+	end
+
+	if _G.C_AddOns.IsAddOnLoaded("Dominos")
+	or _G.C_AddOns.IsAddOnLoaded("Bartender4")
+	then
+		self.blizzFrames[ftype].MainMenuBar = nil
+		return
+	end
+
+	if self.prdb.MainMenuBar.skin then
+		if self.isMnln then
+			local skinMultiBarBtns = _G.nop
+			if self.modBtnBs then
+				function skinMultiBarBtns(type)
+					local bName
+					for i = 1, _G.NUM_MULTIBAR_BUTTONS do
+						bName = "MultiBar" .. type .. "Button" .. i
+						if _G[bName] then
+							aObj:skinActionBtn(_G[bName], ftype)
+						end
+					end
+				end
+			end
+			self:SecureHookScript(_G.MainMenuBar, "OnShow", function(this)
+				this.BorderArt:SetTexture(nil)
+				this.EndCaps:DisableDrawLayer("OVERLAY")
+				if self.modBtnBs then
+					for i = 1, _G.NUM_ACTIONBAR_BUTTONS do
+						self:skinActionBtn(_G["ActionButton" .. i], ftype)
+					end
+					skinMultiBarBtns("BottomLeft")
+					skinMultiBarBtns("BottomRight")
+				end
+
+				self:Unhook(this, "OnShow")
+			end)
+			self:checkShown(_G.MainMenuBar)
+
+			local function skinSTBars(container)
+				for _, bar in _G.pairs(container.bars) do
+					aObj:skinObject("statusbar", {obj=bar.StatusBar, bg=bar.StatusBar.Background, other={bar.StatusBar.Underlay, bar.StatusBar.Overlay}, hookFunc=true})
+					if bar.priority == 0 then -- Azerite bar
+						bar.StatusBar:SetStatusBarColor(aObj:getColourByName("yellow"))
+					elseif bar.priority == 1 then -- Rep bar
+						bar.StatusBar:SetStatusBarColor(aObj:getColourByName("light_blue"))
+					elseif bar.priority == 2 then -- Honor bar
+						bar.StatusBar:SetStatusBarColor(aObj:getColourByName("blue"))
+					elseif bar.priority == 3 then -- XP bar
+						bar.ExhaustionTick:GetNormalTexture():SetTexture(nil)
+						bar.ExhaustionTick:GetHighlightTexture():SetTexture(nil)
+						bar.ExhaustionLevelFillBar:SetTexture(aObj.sbTexture)
+						bar.ExhaustionLevelFillBar:SetVertexColor(aObj:getColourByName("bright_blue"))
+						bar.StatusBar:SetStatusBarColor(aObj:getColourByName("blue"))
+					elseif bar.priority == 4 then -- Artifact bar
+						bar.Tick:GetNormalTexture():SetTexture(nil)
+						bar.Tick:GetHighlightTexture():SetTexture(nil)
+						bar.StatusBar:SetStatusBarColor(aObj:getColourByName("yellow"))
+					end
+				end
+			end
+			self:SecureHookScript(_G.StatusTrackingBarManager, "OnShow", function(this)
+				this.MainStatusTrackingBarContainer:DisableDrawLayer("OVERLAY") -- status bar textures
+				this.SecondaryStatusTrackingBarContainer:DisableDrawLayer("OVERLAY") -- status bar textures
+				skinSTBars(this.MainStatusTrackingBarContainer)
+				skinSTBars(this.SecondaryStatusTrackingBarContainer)
+
+				self:Unhook(this, "OnShow")
+			end)
+			self:checkShown(_G.StatusTrackingBarManager)
+
+			self:SecureHookScript(_G.MultiCastActionBarFrame, "OnShow", function(this)
+				self:keepFontStrings(_G.MultiCastFlyoutFrame) -- Shaman's Totem Frame
+				if self.modBtnBs then
+					self:addButtonBorder{obj=_G.MultiCastSummonSpellButton, sabt=true, ofs=5}
+					self:addButtonBorder{obj=_G.MultiCastRecallSpellButton, sabt=true, ofs=5}
+					for i = 1, _G.NUM_MULTI_CAST_PAGES * _G.NUM_MULTI_CAST_BUTTONS_PER_PAGE do
+						self:skinActionBtn(_G["MultiCastActionButton" .. i], ftype)
+					end
+				end
+
+				self:Unhook(this, "OnShow")
+			end)
+			self:checkShown(_G.MultiCastActionBarFrame)
+
+			if self.modBtnBs then
+				skinMultiBarBtns("Right")
+				skinMultiBarBtns("Left")
+				skinMultiBarBtns("5")
+				skinMultiBarBtns("6")
+				skinMultiBarBtns("7")
+				skinMultiBarBtns("8")
+			end
+		else
+			local skinABBtn, skinMultiBarBtns = _G.nop, _G.nop
+			if self.modBtnBs then
+				function skinABBtn(btn)
+					btn.Border:SetAlpha(0) -- texture changed in blizzard code
+					btn.FlyoutBorder:SetTexture(nil)
+					btn.FlyoutBorderShadow:SetTexture(nil)
+					if aObj:canSkinActionBtns() then
+						_G[btn:GetName() .. "NormalTexture"]:SetTexture(nil)
+						aObj:addButtonBorder{obj=btn, fType=ftype, sabt=true, rpA=true, ofs=3}
+					end
+				end
+				function skinMultiBarBtns(type)
+					local bName
+					for i = 1, _G.NUM_MULTIBAR_BUTTONS do
+						bName = "MultiBar" .. type .. "Button" .. i
+						if not _G[bName].noGrid then
+							_G[bName .. "FloatingBG"]:SetAlpha(0)
+						end
+						skinABBtn(_G[bName])
+					end
+				end
+			end
+			self:SecureHookScript(_G.MainMenuBar, "OnShow", function(this)
+				_G.ExhaustionTick:GetNormalTexture():SetTexture(nil)
+				_G.ExhaustionTick:GetHighlightTexture():SetTexture(nil)
+				_G.MainMenuExpBar:DisableDrawLayer("OVERLAY")
+				_G.MainMenuExpBar:SetSize(self.isClsc and 1014 or 1012, 14)
+				self:moveObject{obj=_G.MainMenuExpBar, x=self.isClsc and 2 or 1, y=2}
+				self:moveObject{obj=_G.MainMenuBarExpText, y=-2}
+				self:skinObject("statusbar", {obj=_G.MainMenuExpBar, fType=ftype, bg=self:getRegion(_G.MainMenuExpBar, 6), other={_G.ExhaustionLevelFillBar}})
+				_G.MainMenuBarMaxLevelBar:DisableDrawLayer("BACKGROUND")
+				_G.MainMenuBarArtFrame:DisableDrawLayer("BACKGROUND")
+				_G.MainMenuBarLeftEndCap:SetTexture(nil)
+				_G.MainMenuBarRightEndCap:SetTexture(nil)
+				local rwbSB = _G.ReputationWatchBar.StatusBar
+				self:removeRegions(rwbSB, {1, 2, 3, 4, 5, 6, 7, 8, 9})
+				rwbSB:SetSize(1011, 8)
+				self:moveObject{obj=rwbSB, x=1, y=2}
+				self:skinObject("statusbar", {obj=rwbSB, fType=ftype, bg=rwbSB.Background, other={rwbSB.Underlay, rwbSB.Overlay}})
+				if self.modBtnBs then
+					for i = 1, _G.NUM_ACTIONBAR_BUTTONS do
+						skinABBtn(_G["ActionButton" .. i])
+					end
+					self:addButtonBorder{obj=_G.ActionBarUpButton, fType=ftype, ofs=-4, clr="gold"}
+					self:addButtonBorder{obj=_G.ActionBarDownButton, fType=ftype, ofs=-4, clr="gold"}
+					skinMultiBarBtns("BottomLeft")
+					skinMultiBarBtns("BottomRight")
+				end
+
+				self:Unhook(this, "OnShow")
+			end)
+			self:checkShown(_G.MainMenuBar)
+
+			if self.modBtnBs then
+				skinMultiBarBtns("Right")
+				skinMultiBarBtns("Left")
+				for _, bName in _G.pairs(_G.MICRO_BUTTONS) do
+					self:addButtonBorder{obj=_G[bName], fType=ftype, es=24, ofs=2, y1=-18, reParent={_G[bName].QuickKeybindHighlightTexture}}
+				end
+				local function abb2Bag(bag)
+					aObj:addButtonBorder{obj=bag, fType=ftype, ibt=true, ofs=3, clr=bag.icon:GetVertexColor()}
+				end
+				abb2Bag(_G.MainMenuBarBackpackButton)
+				for i = 0, 3 do
+					abb2Bag(_G["CharacterBag" .. i .. "Slot"])
+				end
+				self:addButtonBorder{obj=_G.KeyRingButton, fType=ftype, ofs=2}
+			end
+
+			if self.isClsc then
+				self:SecureHookScript(_G.TalentMicroButtonAlert, "OnShow", function(this)
+					self:skinObject("glowbox", {obj=this, fType=ftype})
+
+					self:Unhook(this, "OnShow")
+				end)
+			end
+		end
+	end
+
+	if not aObj.isClscERA then
+		-- UnitPowerBarAlt (inc. PlayerPowerBarAlt)
+		if self.prdb.MainMenuBar.altpowerbar then
+			local function skinUnitPowerBarAlt(upba)
+				-- Don't change the status bar texture as it changes dependant upon type of power type required
+				upba.frame:SetAlpha(0)
+				-- adjust height and TextCoord so background appears, this enables the numbers to become easier to see
+				upba.counterBar:SetHeight(26)
+				upba.counterBar.BG:SetTexCoord(0.0, 1.0, 0.35, 0.40)
+				upba.counterBar.BGL:SetAlpha(0)
+				upba.counterBar.BGR:SetAlpha(0)
+				upba.counterBar:DisableDrawLayer("ARTWORK")
+			end
+			self:SecureHook("UnitPowerBarAlt_SetUp", function(this, _)
+				skinUnitPowerBarAlt(this)
+			end)
+			-- skin PlayerPowerBarAlt if already shown
+			if _G.PlayerPowerBarAlt:IsVisible() then
+				skinUnitPowerBarAlt(_G.PlayerPowerBarAlt)
+			end
+			-- skin BuffTimers
+			local i = 1
+			local bt = _G["BuffTimer" .. i]
+			while bt do
+				skinUnitPowerBarAlt(bt)
+				i = i + 1
+				bt = _G["BuffTimer" .. i]
+			end
+			-- UIWidgetPowerBarContainerFrame
+		end
+	end
+
+end
+
+aObj.blizzFrames[ftype].MainMenuBarCommon = function(self)
+	if self.initialized.MainMenuBarCommon then return end
+	self.initialized.MainMenuBarCommon = true
+
+	if _G.C_AddOns.IsAddOnLoaded("Dominos")
+	or _G.C_AddOns.IsAddOnLoaded("Bartender4")
+	then
+		self.blizzFrames[ftype].MainMenuBarCommon = nil
+		return
+	end
+
+	if self.prdb.MainMenuBar.skin then
+		if aObj.isMnln then
+			for _, frame in _G.pairs{_G.StanceBar, _G.PetActionBar, _G.PossessActionBar} do
+				self:SecureHookScript(frame, "OnShow", function(this)
+					for _, btn in _G.pairs(this.actionButtons) do
+						self:skinActionBtn(btn, ftype)
+					end
+
+					self:Unhook(this, "OnShow")
+				end)
+				self:checkShown(frame)
+			end
+		else
+			self:SecureHookScript(_G.StanceBarFrame, "OnShow", function(this)
+				self:keepFontStrings(this)
+				if self.modBtnBs then
+					for _, btn in _G.pairs(this.StanceButtons) do
+						self:addButtonBorder{obj=btn, fType=ftype, abt=true, sft=true, ofs=3, x1=-4}
+					end
+				end
+
+				self:Unhook(this, "OnShow")
+			end)
+			self:checkShown(_G.StanceBarFrame)
+			-- TODO: change button references when PetActionButtonTemplate & ActionButtonTemplate are fixed
+			self:SecureHookScript(_G.PetActionBarFrame, "OnShow", function(this)
+				self:keepFontStrings(this)
+				if self.modBtnBs then
+					local bName
+					for i = 1, _G.NUM_PET_ACTION_SLOTS do
+						bName = "PetActionButton" .. i
+						_G[bName .. "NormalTexture2"]:SetTexture(nil)
+						self:addButtonBorder{obj=_G[bName], fType=ftype, abt=true, sft=true, reParent={_G[bName .. "AutoCastable"], _G[bName .. "Shine"]}, ofs=3, x2=2}
+					end
+				end
+
+				self:Unhook(this, "OnShow")
+			end)
+			self:checkShown(_G.PetActionBarFrame)
+			if not self.isClscERA then
+				self:SecureHookScript(_G.PossessBarFrame, "OnShow", function(this)
+					self:keepFontStrings(this)
+					if self.modBtnBs then
+						for i = 1, _G.NUM_POSSESS_SLOTS do
+							self:addButtonBorder{obj=_G["PossessButton" .. i], fType=ftype, abt=true, sft=true, ofs=3}
+						end
+					end
+
+					self:Unhook(this, "OnShow")
+				end)
+				self:checkShown(_G.PossessBarFrame)
+			end
+		end
+	end
+
+end
+
 aObj.blizzFrames[ftype].Menu = function(self) -- Dropdown Menus
 	if not self.prdb.Menu or self.initialized.Menu then return end
 	self.initialized.Menu = true
@@ -2473,7 +2784,7 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 				-- TODO: Background alpha is 0
 			end
 			self:skinObject("frame", {obj=_G.MiniMapLFGFrame, fType=ftype, kfs=true, ofs=0})
-			if not aObj.isClscPTR then
+			if not self.isClsc then
 				_G.MiniMapWorldBorder:SetTexture(nil)
 			end
 			_G.MiniMapWorldMapButton:DisableDrawLayer("OVERLAY") -- border texture
@@ -2634,6 +2945,220 @@ if not aObj.isClscERA then
 		self:checkShown(_G.OverrideActionBar)
 
 	end
+
+	-- table to hold PetBattle tooltips
+	aObj.pbtt = {}
+	aObj.blizzFrames[ftype].PetBattleUI = function(self)
+		if not self.prdb.PetBattleUI or self.initialized.PetBattleUI then return end
+		self.initialized.PetBattleUI = true
+
+		local updBBClr
+		if self.modBtnBs then
+			function updBBClr()
+				if _G.PetBattleFrame.ActiveAlly.SpeedIcon:IsShown() then
+					aObj:clrBtnBdr(_G.PetBattleFrame.ActiveAlly, "gold")
+					_G.PetBattleFrame.ActiveEnemy.sbb:SetBackdropBorderColor(_G.PetBattleFrame.ActiveEnemy.Border:GetVertexColor())
+				elseif _G.PetBattleFrame.ActiveEnemy.SpeedIcon:IsShown() then
+					aObj:clrBtnBdr(_G.PetBattleFrame.ActiveEnemy, "gold")
+					_G.PetBattleFrame.ActiveAlly.sbb:SetBackdropBorderColor(_G.PetBattleFrame.ActiveAlly.Border:GetVertexColor())
+				else
+					_G.PetBattleFrame.ActiveAlly.sbb:SetBackdropBorderColor(_G.PetBattleFrame.ActiveAlly.Border:GetVertexColor())
+					_G.PetBattleFrame.ActiveEnemy.sbb:SetBackdropBorderColor(_G.PetBattleFrame.ActiveEnemy.Border:GetVertexColor())
+				end
+			end
+		end
+		self:SecureHookScript(_G.PetBattleFrame, "OnShow", function(this)
+			this.TopArtLeft:SetTexture(nil)
+			this.TopArtRight:SetTexture(nil)
+			this.TopVersus:SetTexture(nil)
+			local tvw = this.TopVersus:GetWidth()
+			local tvh = this.TopVersus:GetHeight()
+			-- Active Allies/Enemies
+			local pbf
+			for _, type in _G.pairs{"Ally", "Enemy"} do
+				pbf = this["Active" .. type]
+				pbf.Border:SetTexture(nil)
+				if self.modBtnBs then
+					pbf.Border2:SetTexture(nil) -- speed texture
+					self:addButtonBorder{obj=pbf, relTo=pbf.Icon, ofs=1, reParent={pbf.LevelUnderlay, pbf.Level, pbf.SpeedUnderlay, pbf.SpeedIcon}}
+					self:SecureHook(pbf.Border, "SetVertexColor", function(_, _)
+						updBBClr()
+					end)
+				end
+				self:changeTandC(pbf.LevelUnderlay)
+				self:changeTandC(pbf.SpeedUnderlay)
+				self:changeTandC(pbf.HealthBarBG, self.sbTexture)
+				pbf.HealthBarBG:SetVertexColor(0.2, 0.2, 0.2, 0.8) -- black
+				self:adjWidth{obj=pbf.HealthBarBG, adj=-10}
+				self:adjHeight{obj=pbf.HealthBarBG, adj=-10}
+				self:changeTandC(pbf.ActualHealthBar, self.sbTexture)
+				pbf.ActualHealthBar:SetVertexColor(0, 1, 0) -- green
+				self:moveObject{obj=pbf.ActualHealthBar, x=type == "Ally" and -5 or 5}
+				pbf.HealthBarFrame:SetTexture(nil)
+				-- add a background frame
+				if type == "Ally" then
+					this.sfl = _G.CreateFrame("Frame", nil, this)
+					self:skinObject("frame", {obj=this.sfl, fType=ftype, ng=true, bd=11})
+					this.sfl:SetPoint("TOPRIGHT", this, "TOP", -(tvw + 25), 4)
+					this.sfl:SetSize(this.TopArtLeft:GetWidth() * 0.59, this.TopArtLeft:GetHeight() * 0.8)
+				else
+					this.sfr = _G.CreateFrame("Frame", nil, this)
+					self:skinObject("frame", {obj=this.sfr, fType=ftype, ng=true, bd=11})
+					this.sfr:SetPoint("TOPLEFT", this, "TOP", (tvw + 25), 4)
+					this.sfr:SetSize(this.TopArtRight:GetWidth() * 0.59, this.TopArtRight:GetHeight() * 0.8)
+				end
+				-- Ally2/3, Enemy2/3
+				for j = 2, 3 do
+					_G.RaiseFrameLevelByTwo(this[type .. j])
+					this[type .. j].BorderAlive:SetTexture(nil)
+					self:changeTandC(this[type .. j].BorderDead, self.tFDIDs.dpI)
+					this[type .. j].healthBarWidth = 34
+					this[type .. j].ActualHealthBar:SetWidth(34)
+					self:changeTex2SB(this[type .. j].ActualHealthBar)
+					this[type .. j].HealthDivider:SetTexture(nil)
+					if self.modBtnBs then
+						self:addButtonBorder{obj=this[type .. j], relTo=this[type .. j].Icon, reParent={this[type .. j].ActualHealthBar}}
+						this[type .. j].sbb:SetBackdropBorderColor(this[type .. j].BorderAlive:GetVertexColor())
+						self:SecureHook(this[type .. j].BorderAlive, "SetVertexColor", function(tObj, ...)
+							tObj:GetParent().sbb:SetBackdropBorderColor(...)
+						end)
+					end
+				end
+			end
+			-- create a frame behind the VS text
+			this.sfm = _G.CreateFrame("Frame", nil, this)
+			self:skinObject("frame", {obj=this.sfm, fType=ftype, ng=true, bd=11})
+			this.sfm:SetPoint("TOPLEFT", this.sfl, "TOPRIGHT", -8, 0)
+			this.sfm:SetPoint("TOPRIGHT", this.sfr, "TOPLEFT", 8, 0)
+			this.sfm:SetHeight(tvh * 0.8)
+			this.TopVersusText:SetParent(this.sfm)
+			for i = 1, _G.NUM_BATTLE_PETS_IN_BATTLE do
+				this.BottomFrame.PetSelectionFrame["Pet" .. i].Framing:SetTexture(nil)
+				self:changeTex2SB(this.BottomFrame.PetSelectionFrame["Pet" .. i].HealthBarBG)
+				this.BottomFrame.PetSelectionFrame["Pet" .. i].HealthBarBG:SetVertexColor(0.2, 0.2, 0.2, 0.8) -- dark grey
+				self:changeTex2SB(this.BottomFrame.PetSelectionFrame["Pet" .. i].ActualHealthBar)
+				this.BottomFrame.PetSelectionFrame["Pet" .. i].HealthDivider:SetTexture(nil)
+			end
+			self:keepRegions(this.BottomFrame.xpBar, {1, 5, 6, 13}) -- text and statusbar textures
+			self:skinObject("statusbar", {obj=this.BottomFrame.xpBar, fi=0})
+			this.BottomFrame.TurnTimer.TimerBG:SetTexture(nil)
+			self:changeTex2SB(this.BottomFrame.TurnTimer.Bar)
+			this.BottomFrame.TurnTimer.ArtFrame:SetTexture(nil)
+			this.BottomFrame.TurnTimer.ArtFrame2:SetTexture(nil)
+			self:removeRegions(this.BottomFrame.FlowFrame, {1, 2, 3})
+			self:getRegion(this.BottomFrame.Delimiter, 1):SetTexture(nil)
+			self:removeRegions(this.BottomFrame.MicroButtonFrame, {1, 2, 3})
+			self:skinObject("frame", {obj=this.BottomFrame, fType=ftype, kfs=true, y1=8})
+			if self.modBtns then
+				self:skinStdButton{obj=this.BottomFrame.TurnTimer.SkipButton, fType=ftype, schk=true}
+			end
+			if self.modBtnBs then
+				updBBClr()
+				self:SecureHook("PetBattleFrame_InitSpeedIndicators", function(_)
+					updBBClr()
+				end)
+				-- N.B. using hooksecurefunc as function hooked for tooltips lower down
+				_G.hooksecurefunc("PetBattleFrame_UpdateSpeedIndicators", function(_)
+					updBBClr()
+				end)
+				for _, bName in _G.pairs{"SwitchPetButton", "CatchButton", "ForfeitButton"} do
+					self:addButtonBorder{obj=this.BottomFrame[bName], fType=ftype, reParent={this.BottomFrame[bName].BetterIcon}, ofs=3, x2=2, y2=-2}
+				end
+				_G.C_Timer.After(0.1, function()
+					for _, btn in _G.pairs(this.BottomFrame.abilityButtons) do
+						self:addButtonBorder{obj=btn, fType=ftype, reParent={btn.BetterIcon}, ofs=3, x2=2, y2=-2}
+					end
+				end)
+				-- hook this for pet ability buttons
+				self:SecureHook("PetBattleActionButton_UpdateState", function(bObj)
+					if bObj.sbb then
+						if bObj.Icon
+						and bObj.Icon:IsDesaturated()
+						then
+							self:clrBtnBdr(bObj, "disabled")
+						else
+							self:clrBtnBdr(bObj)
+						end
+					end
+				end)
+			end
+			-- Tooltip frames
+			if self.prdb.Tooltips.skin then
+				-- hook these to stop tooltip gradient being whiteouted !!
+				local function reParent(opts)
+					for _, f in _G.pairs(aObj.pbtt) do
+						if f.tfade then
+							f.tfade:SetParent(opts.parent or f)
+							if opts.reset then
+								-- reset Gradient alpha
+								f.tfade:SetGradient(aObj:getGradientInfo())
+							end
+						end
+					end
+				end
+				self:HookScript(this.ActiveAlly.SpeedFlash, "OnPlay", function(_)
+					reParent{parent=_G.MainMenuBar}
+				end, true)
+				self:SecureHookScript(this.ActiveAlly.SpeedFlash, "OnFinished", function(_)
+					reParent{reset=true}
+				end)
+				self:HookScript(this.ActiveEnemy.SpeedFlash, "OnPlay", function(_)
+					reParent{parent=_G.MainMenuBar}
+				end, true)
+				self:SecureHookScript(this.ActiveEnemy.SpeedFlash, "OnFinished", function(_)
+					reParent{reset=true}
+				end)
+				-- hook this to reparent the gradient texture if pets have equal speed
+				self:SecureHook("PetBattleFrame_UpdateSpeedIndicators", function(fObj)
+					if not fObj.ActiveAlly.SpeedIcon:IsShown()
+					and not fObj.ActiveEnemy.SpeedIcon:IsShown()
+					then
+						reParent{reset=true}
+					end
+				end)
+			end
+
+			-- let AddOn skins know when frame skinned
+			self.callbacks:Fire("PetBattleUI_OnShow")
+			-- remove all callbacks for this event
+			self.callbacks.events["PetBattleUI_OnShow"] = nil
+
+			self:Unhook(this, "OnShow")
+		end)
+		self:checkShown(_G.PetBattleFrame)
+
+		if self.prdb.Tooltips.skin then
+			-- skin the tooltips
+			local tTip
+			for _, prefix in _G.pairs{"PetBattlePrimaryUnit", "PetBattlePrimaryAbility", "FloatingBattlePet", "FloatingPetBattleAbility", "BattlePet"} do
+				tTip = _G[prefix .. "Tooltip"]
+				tTip:DisableDrawLayer("BACKGROUND")
+				if tTip.Delimiter then
+				   tTip.Delimiter:SetTexture(nil)
+				end
+				if tTip.Delimiter1 then
+				   tTip.Delimiter1:SetTexture(nil)
+				end
+				if tTip.Delimiter2 then
+					tTip.Delimiter2:SetTexture(nil)
+				end
+				self:skinObject("frame", {obj=tTip, fType=ftype, cbns=true})
+			end
+			self:changeTex2SB(_G.PetBattlePrimaryUnitTooltip.ActualHealthBar)
+			self:changeTex2SB(_G.PetBattlePrimaryUnitTooltip.XPBar)
+			self:add2Table(self.pbtt, _G.PetBattlePrimaryUnitTooltip.sf)
+			-- hook this to reset tooltip gradients
+			self:SecureHookScript(_G.PetBattleFrame, "OnHide", function(_)
+				for _, f in _G.pairs(aObj.pbtt) do
+					if f.tfade then
+						f.tfade:SetParent(f)
+						f.tfade:SetGradient(aObj:getGradientInfo())
+					end
+				end
+			end)
+		end
+
+	end
 end
 
 if _G.PTR_IssueReporter then
@@ -2708,15 +3233,13 @@ if not aObj.isClscERA then
 		else
 			groupFrames = { "LFDParentFrame", "RaidFinderFrame", "LFGListPVEStub" }
 		end
-		if aObj.isClscPTR then
+		if self.isClsc then
 			groupFrames[4] = "ScenarioFinderFrame"
 		end
 
 		self:SecureHookScript(_G.PVEFrame, "OnShow", function(this)
 			self:keepFontStrings(this.shadows)
-			if self.isMnln
-			or aObj.isClscPTR
-			then
+			if not self.isClscERA then
 				self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype})
 			end
 			-- GroupFinder Frame
@@ -2735,7 +3258,6 @@ if not aObj.isClscERA then
 					else
 						_G.GroupFinderFrame["groupButton" .. i].bg:SetTexture(nil)
 					end
-					-- self:clrBtnBdr(_G.GroupFinderFrame["groupButton" .. i], "gold")
 				end
 			end)
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, x1=-4, x2=3})
@@ -2743,7 +3265,9 @@ if not aObj.isClscERA then
 				-- hook this to change button border colour
 				self:SecureHook("GroupFinderFrame_EvaluateButtonVisibility", function(_, _)
 					for i = 1, #groupFrames do
-						self:clrBtnBdr(_G.GroupFinderFrame["groupButton" .. i], "gold")
+						if _G.GroupFinderFrame["groupButton" .. i].sbb then
+							self:clrBtnBdr(_G.GroupFinderFrame["groupButton" .. i], "gold")
+						end
 					end
 				end)
 			end
@@ -2817,9 +3341,7 @@ aObj.blizzFrames[ftype].ReportFrame = function(self)
 
 end
 
-if aObj.isMnln
-or aObj.isClscPTR
-then
+if not aObj.isClscERA then
 	aObj.blizzFrames[ftype].ScenarioFinderFrame = function(self)
 		if not self.prdb.PVEFrame or self.initialized.ScenarioFinderFrame then return end
 		self.initialized.ScenarioFinderFrame = true
@@ -2831,7 +3353,7 @@ then
 			self:skinObject("scrollbar", {obj=this.Queue.Random.ScrollFrame.ScrollBar, fType=ftype})
 			-- .Queue.PartyBackfill
 			-- .Queue.CooldownFrame
-			if not aObj.isClscPTR then
+			if self.isMnln then
 				self:skinObject("slider", {obj=this.Queue.Specific.ScrollFrame.ScrollBar, fType=ftype, rpTex={"background"}})
 				local btn
 				self:SecureHook("ScenarioQueueFrameSpecific_Update", function()
@@ -3179,12 +3701,14 @@ aObj.blizzFrames[ftype].StaticPopups = function(self)
 			if aObj.isMnlnPTRX then
 				self:keepFontStrings(this.BG)
 				-- .ProgressBarBorder
-				self:skinObject("editbox", {obj=_G[objName .. "EditBox"], fType=ftype, mi=true, mix=12, regions={}, ofs=0})
+				self:skinObject("editbox", {obj=this.EditBox, fType=ftype, mi=true, mix=12, regions={}, ofs=0})
 				this.ItemFrame.NameFrame:SetTexture(nil)
 			elseif self.isMnln then
 				self:removeNineSlice(this.Border)
 				self:skinObject("editbox", {obj=_G[objName .. "EditBox"], fType=ftype, ofs=0, y1=-4, y2=4})
 				self:skinObject("ddbutton", {obj=this.Dropdown, fType=ftype})
+			end
+			if not aObj.isMnlnPTRX then
 				_G[objName .. "ItemFrameNameFrame"]:SetTexture(nil)
 			end
 			if this.insertedFrame then
@@ -3202,25 +3726,25 @@ aObj.blizzFrames[ftype].StaticPopups = function(self)
 			 -- N.B. Close Button handled above, offset is to allow DarkOverlay to overlay skin frame border as well
 			self:skinObject("frame", {obj=this, fType=ftype, rb=not self.isMnln and true, ofs=-4})
 			if self.modBtns then
-				if not aObj.isMnlnPTRX then
-					self:skinStdButton{obj=this.button1, fType=ftype, schk=true, sechk=true, y1=2}
-					self:skinStdButton{obj=this.button2, fType=ftype, schk=true, sechk=true, y1=2}
-					self:skinStdButton{obj=this.button3, fType=ftype, schk=true, y1=2}
-					self:skinStdButton{obj=this.button4, fType=ftype, schk=true, y1=2}
-					self:skinStdButton{obj=this.extraButton, fType=ftype, schk=true, y1=2}
-				else
+				if aObj.isMnlnPTRX then
 					self:skinStdButton{obj=this.ButtonContainer.Button1, fType=ftype, schk=true, sechk=true, y1=2}
 					self:skinStdButton{obj=this.ButtonContainer.Button2, fType=ftype, schk=true, sechk=true, y1=2}
 					self:skinStdButton{obj=this.ButtonContainer.Button3, fType=ftype, schk=true, y1=2}
 					self:skinStdButton{obj=this.ButtonContainer.Button4, fType=ftype, schk=true, y1=2}
 					self:skinStdButton{obj=this.ExtraButton, fType=ftype, schk=true, y1=2}
+				else
+					self:skinStdButton{obj=this.button1, fType=ftype, schk=true, sechk=true, y1=2}
+					self:skinStdButton{obj=this.button2, fType=ftype, schk=true, sechk=true, y1=2}
+					self:skinStdButton{obj=this.button3, fType=ftype, schk=true, y1=2}
+					self:skinStdButton{obj=this.button4, fType=ftype, schk=true, y1=2}
+					self:skinStdButton{obj=this.extraButton, fType=ftype, schk=true, y1=2}
 				end
 			end
 			if self.modBtnBs then
-				if not aObj.isMnlnPTRX then
-					self:addButtonBorder{obj=_G[objName .. "ItemFrame"], fType=ftype, ibt=true}
-				else
+				if aObj.isMnlnPTRX then
 					self:addButtonBorder{obj=this.ItemFrame.Item, fType=ftype, ibt=true}
+				else
+					self:addButtonBorder{obj=_G[objName .. "ItemFrame"], fType=ftype, ibt=true}
 				end
 			end
 

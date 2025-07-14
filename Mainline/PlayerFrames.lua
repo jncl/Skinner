@@ -1607,6 +1607,7 @@ aObj.SetupMainline_PlayerFrames = function()
 				skinReagentBtn(c.Button)
 				skinNISpinner(c.EditBox)
 			end
+			aObj:skinObject("frame", {obj=frame, fType=ftype, kfs=true, rns=true})
 			if aObj.modBtns then
 				aObj:skinCloseButton{obj=frame.ClosePanelButton, fType=ftype}
 				aObj:skinStdButton{obj=frame.CancelButton, fType=ftype}

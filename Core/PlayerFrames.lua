@@ -1113,12 +1113,8 @@ if not aObj.isClscERA then
 			self:removeInset(this.PetCount)
 			self:removeInset(this.LeftInset)
 			self:removeInset(this.RightInset)
-			if self.isMnln
-			or aObj.isClscPTR
-			then
-				self:skinMainHelpBtn(this)
-				self:removeInset(this.PetCardInset)
-			end
+			self:skinMainHelpBtn(this)
+			self:removeInset(this.PetCardInset)
 			self:skinObject("ddbutton", {obj=this.FilterDropdown, fType=ftype, filter=true})
 			self:skinObject("editbox", {obj=this.searchBox, fType=ftype, si=true})
 			self:removeMagicBtnTex(this.SummonButton)
@@ -1138,15 +1134,9 @@ if not aObj.isClscERA then
 				end
 				if new ~= false then
 					aObj:removeRegions(element, {1, 4}) -- background, iconBorder
-					if aObj.isMnln then
-						aObj:changeTandC(element.dragButton.levelBG)
-					end
+					aObj:changeTandC(element.dragButton.levelBG)
 					if aObj.modBtnBs then
-						if aObj.isMnln then
-							aObj:addButtonBorder{obj=element, relTo=element.icon, reParent={element.dragButton.levelBG, element.dragButton.level, element.dragButton.favorite}}
-						else
-							aObj:addButtonBorder{obj=element, relTo=element.icon}
-						end
+						aObj:addButtonBorder{obj=element, relTo=element.icon, reParent={element.dragButton.levelBG, element.dragButton.level, element.dragButton.favorite}}
 					end
 				end
 				if aObj.modBtnBs then
@@ -1156,94 +1146,71 @@ if not aObj.isClscERA then
 				end
 			end
 			_G.ScrollUtil.AddAcquiredFrameCallback(this.ScrollBox, skinElement, aObj, true)
-			if self.isMnln
-			or aObj.isClscPTR
-			then
-				self:keepFontStrings(this.loadoutBorder)
-				self:moveObject{obj=this.loadoutBorder, y=8} -- battle pet slots title
-				-- Pet LoadOut Plates
-				local lop
-				for i = 1, 3 do
-					lop = this.Loadout["Pet" .. i]
-					self:removeRegions(lop, {1, 2, 5})
-					-- use module function here to force creation
-			        self.modUIBtns:addButtonBorder{obj=lop, relTo=lop.icon, reParent={lop.levelBG, lop.level, lop.favorite}, clr="disabled"}
-					self:changeTandC(lop.levelBG)
-					self:keepFontStrings(lop.helpFrame)
-					lop.healthFrame.healthBar:DisableDrawLayer("OVERLAY")
-					self:skinObject("statusbar", {obj=lop.healthFrame.healthBar, fi=0})
-					self:skinObject("statusbar", {obj=lop.xpBar, regions={2, 3, 4, 5, 6, 7, 8, 9, 10, 11}, fi=0})
-					self:skinObject("frame", {obj=lop, fType=ftype, fb=true, x1=-4, y1=0, y2=-4})
-					for j = 1, 3 do
-						self:removeRegions(lop["spell" .. j], {1, 3}) -- background, blackcover
-						if self.modBtnBs then
-							self:addButtonBorder{obj=lop["spell" .. j], relTo=lop["spell" .. j].icon, reParent={lop["spell" .. j].FlyoutArrow}, clr="disabled"}
-						end
-					end
-				end
-				-- PetCard
-				local pc = this.PetCard
-				self:changeTandC(pc.PetInfo.levelBG)
-				pc.PetInfo.qualityBorder:SetAlpha(0)
-				self:skinObject("statusbar", {obj=pc.HealthFrame.healthBar, regions={1, 2, 3}, fi=0})
-				self:skinObject("statusbar", {obj=pc.xpBar, regions={2, 3, 4, 5, 6, 7, 8, 9, 10, 11}, fi=0})
-				self:skinObject("frame", {obj=pc, fType=ftype, kfs=true, fb=true, ofs=4})
-				for i = 1, 6 do
-					pc["spell" .. i].BlackCover:SetAlpha(0) -- N.B. texture is changed in code
+			self:keepFontStrings(this.loadoutBorder)
+			self:moveObject{obj=this.loadoutBorder, y=8} -- battle pet slots title
+			-- Pet LoadOut Plates
+			local lop
+			for i = 1, 3 do
+				lop = this.Loadout["Pet" .. i]
+				self:removeRegions(lop, {1, 2, 5})
+				-- use module function here to force creation
+		        self.modUIBtns:addButtonBorder{obj=lop, relTo=lop.icon, reParent={lop.levelBG, lop.level, lop.favorite}, clr="disabled"}
+				self:changeTandC(lop.levelBG)
+				self:keepFontStrings(lop.helpFrame)
+				lop.healthFrame.healthBar:DisableDrawLayer("OVERLAY")
+				self:skinObject("statusbar", {obj=lop.healthFrame.healthBar, fi=0})
+				self:skinObject("statusbar", {obj=lop.xpBar, regions={2, 3, 4, 5, 6, 7, 8, 9, 10, 11}, fi=0})
+				self:skinObject("frame", {obj=lop, fType=ftype, fb=true, x1=-4, y1=0, y2=-4})
+				for j = 1, 3 do
+					self:removeRegions(lop["spell" .. j], {1, 3}) -- background, blackcover
 					if self.modBtnBs then
-						self:addButtonBorder{obj=pc["spell" .. i], relTo=pc["spell" .. i].icon}
+						self:addButtonBorder{obj=lop["spell" .. j], relTo=lop["spell" .. j].icon, reParent={lop["spell" .. j].FlyoutArrow}, clr="disabled"}
 					end
 				end
-				self:removeMagicBtnTex(this.FindBattleButton)
-				self:removeRegions(this.AchievementStatus, {1, 2})
-				if self.modBtns then
-					self:skinStdButton{obj=this.FindBattleButton}
-				end
+			end
+			-- PetCard
+			local pc = this.PetCard
+			self:changeTandC(pc.PetInfo.levelBG)
+			pc.PetInfo.qualityBorder:SetAlpha(0)
+			self:skinObject("statusbar", {obj=pc.HealthFrame.healthBar, regions={1, 2, 3}, fi=0})
+			self:skinObject("statusbar", {obj=pc.xpBar, regions={2, 3, 4, 5, 6, 7, 8, 9, 10, 11}, fi=0})
+			self:skinObject("frame", {obj=pc, fType=ftype, kfs=true, fb=true, ofs=4})
+			for i = 1, 6 do
+				pc["spell" .. i].BlackCover:SetAlpha(0) -- N.B. texture is changed in code
 				if self.modBtnBs then
-					self:addButtonBorder{obj=pc.PetInfo, relTo=pc.PetInfo.icon, reParent={pc.PetInfo.levelBG, pc.PetInfo.level, pc.PetInfo.favorite}}
-					if self.isMnln
-					or aObj.isClscPTR
-					then
-						self:addButtonBorder{obj=this.HealPetSpellFrame.Button, fType=ftype, sft=true, ofs=4}
-						self:addButtonBorder{obj=this.SummonRandomPetSpellFrame.Button, fType=ftype, sft=true, ofs=4}
-					else
-						self:addButtonBorder{obj=this.HealPetButton, fType=ftype, sft=true, ca=1}
-						self:addButtonBorder{obj=this.SummonRandomFavoritePetButton, fType=ftype, ofs=3, ca=1}
+					self:addButtonBorder{obj=pc["spell" .. i], relTo=pc["spell" .. i].icon}
+				end
+			end
+			self:removeMagicBtnTex(this.FindBattleButton)
+			self:removeRegions(this.AchievementStatus, {1, 2})
+			if self.modBtns then
+				self:skinStdButton{obj=this.FindBattleButton}
+			end
+			if self.modBtnBs then
+				self:addButtonBorder{obj=pc.PetInfo, relTo=pc.PetInfo.icon, reParent={pc.PetInfo.levelBG, pc.PetInfo.level, pc.PetInfo.favorite}}
+				self:addButtonBorder{obj=this.HealPetSpellFrame.Button, fType=ftype, sft=true, ofs=4}
+				self:addButtonBorder{obj=this.SummonRandomPetSpellFrame.Button, fType=ftype, sft=true, ofs=4}
+				self:SecureHook("PetJournal_UpdatePetLoadOut", function()
+					for i = 1, 3 do
+						self:clrButtonFromBorder(_G.PetJournal.Loadout["Pet" .. i], "qualityBorder")
 					end
-					self:SecureHook("PetJournal_UpdatePetLoadOut", function()
-						for i = 1, 3 do
-							self:clrButtonFromBorder(_G.PetJournal.Loadout["Pet" .. i], "qualityBorder")
-						end
-					end)
-					self:SecureHook("PetJournal_UpdatePetCard", function(fObj)
-						self:clrButtonFromBorder(fObj.PetInfo, "qualityBorder")
-					end)
-				end
-			else
-				this.PetCard.PetBackground:SetAlpha(0)
-				this.PetCard.ShadowOverlay:SetAlpha(0)
-				if self.modBtnBs then
-					self:addButtonBorder{obj=this.PetCard.PetInfo, relTo=this.PetCard.PetInfo.icon, reParent={this.PetCard.PetInfo.favorite}}
-					self:addButtonBorder{obj=this.PetCard.modelScene.RotateLeftButton, ofs=-3}
-					self:addButtonBorder{obj=this.PetCard.modelScene.RotateRightButton, ofs=-3}
-				end
+				end)
+				self:SecureHook("PetJournal_UpdatePetCard", function(fObj)
+					self:clrButtonFromBorder(fObj.PetInfo, "qualityBorder")
+				end)
 			end
 
 			self:Unhook(this, "OnShow")
 		end)
 
-		if self.isMnln
-		or aObj.isClscPTR
-		then
-			local function skinTTip(tip)
-				tip.Delimiter1:SetTexture(nil)
-				tip.Delimiter2:SetTexture(nil)
-				tip:DisableDrawLayer("BACKGROUND")
-				aObj:skinObject("frame", {obj=tip, fType=ftype, ofs=0})
-			end
-			skinTTip(_G.PetJournalPrimaryAbilityTooltip)
-			skinTTip(_G.PetJournalSecondaryAbilityTooltip)
+		local function skinTTip(tip)
+			tip.Delimiter1:SetTexture(nil)
+			tip.Delimiter2:SetTexture(nil)
+			tip:DisableDrawLayer("BACKGROUND")
+			aObj:skinObject("frame", {obj=tip, fType=ftype, ofs=0})
 		end
+		skinTTip(_G.PetJournalPrimaryAbilityTooltip)
+		skinTTip(_G.PetJournalSecondaryAbilityTooltip)
 
 		local skinCollectionBtn
 		if self.modBtnBs then
@@ -1332,179 +1299,173 @@ if not aObj.isClscERA then
 		end)
 
 		-- a.k.a. Appearances
-		if not self.isClscERA then
-			self:SecureHookScript(_G.WardrobeCollectionFrame, "OnShow", function(this)
-				if self.isMnln then
-					this.InfoButton.Ring:SetTexture(nil)
+		self:SecureHookScript(_G.WardrobeCollectionFrame, "OnShow", function(this)
+			if self.isMnln then
+				this.InfoButton.Ring:SetTexture(nil)
+			end
+			self:skinObject("ddbutton", {obj=this.FilterButton, fType=ftype, filter=true})
+			self:skinObject("ddbutton", {obj=this.ClassDropdown, fType=ftype})
+			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true, upwards=true, offsets={x1=2, y1=-4, x2=-2, y2=-4}})
+			self:skinObject("editbox", {obj=this.searchBox, fType=ftype, si=true})
+			_G.RaiseFrameLevelByTwo(this.searchBox) -- raise above SetsCollectionFrame when displayed on it
+			self:skinObject("statusbar", {obj=this.progressBar, fi=0})
+			self:removeRegions(this.progressBar, {2, 3})
+			if self.modBtns then
+				if not self.isMnln then
+					self:skinStdButton{obj=this.FilterButton, ftype=ftype}
+					_G.RaiseFrameLevelByTwo(this.FilterButton) -- raise above SetsCollectionFrame when displayed on it
 				end
-				self:skinObject("ddbutton", {obj=this.FilterButton, fType=ftype, filter=true})
-				self:skinObject("ddbutton", {obj=this.ClassDropdown, fType=ftype})
-				self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true, upwards=true, offsets={x1=2, y1=-4, x2=-2, y2=-4}})
-				self:skinObject("editbox", {obj=this.searchBox, fType=ftype, si=true})
-				_G.RaiseFrameLevelByTwo(this.searchBox) -- raise above SetsCollectionFrame when displayed on it
-				self:skinObject("statusbar", {obj=this.progressBar, fi=0})
-				self:removeRegions(this.progressBar, {2, 3})
-				if self.modBtns then
-					if not self.isMnln then
-						self:skinStdButton{obj=this.FilterButton, ftype=ftype}
-						_G.RaiseFrameLevelByTwo(this.FilterButton) -- raise above SetsCollectionFrame when displayed on it
-					end
-				end
-				local x1Ofs, y1Ofs, x2Ofs, y2Ofs = -4, 2, 7, -5
+			end
+			local x1Ofs, y1Ofs, x2Ofs, y2Ofs = -4, 2, 7, -5
 
-				if _G.C_AddOns.IsAddOnLoaded("BetterWardrobe") then
-					self.callbacks:Fire("WardrobeCollectionFrame_OnShow")
-				else
-					local function updBtnClr(btn)
-						local atlas = btn.Border:GetAtlas()
-						if atlas:find("uncollected", 1, true) then
-							aObj:clrBtnBdr(btn, "grey")
-						elseif atlas:find("unusable", 1, true) then
-							aObj:clrBtnBdr(btn, "unused")
-						else
-							aObj:clrBtnBdr(btn, "gold", 0.75)
-						end
+			if _G.C_AddOns.IsAddOnLoaded("BetterWardrobe") then
+				self.callbacks:Fire("WardrobeCollectionFrame_OnShow")
+			else
+				local function updBtnClr(btn)
+					local atlas = btn.Border:GetAtlas()
+					if atlas:find("uncollected", 1, true) then
+						aObj:clrBtnBdr(btn, "grey")
+					elseif atlas:find("unusable", 1, true) then
+						aObj:clrBtnBdr(btn, "unused")
+					else
+						aObj:clrBtnBdr(btn, "gold", 0.75)
 					end
-					self:SecureHookScript(this.ItemsCollectionFrame, "OnShow", function(fObj)
-						self:skinObject("ddbutton", {obj=fObj.WeaponDropdown, fType=ftype})
-						self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, rns=true, fb=true, x1=x1Ofs, y1=y1Ofs, x2=x2Ofs, y2=y2Ofs})
-						if self.modBtnBs then
-							self:skinPageBtns(fObj)
-							for _, btn in _G.pairs(fObj.Models) do
-								self:removeRegions(btn, {2}) -- background & border
-								self:addButtonBorder{obj=btn, reParent={btn.NewString, btn.Favorite.Icon, btn.HideVisual.Icon}, ofs=6}
+				end
+				self:SecureHookScript(this.ItemsCollectionFrame, "OnShow", function(fObj)
+					self:skinObject("ddbutton", {obj=fObj.WeaponDropdown, fType=ftype})
+					self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, rns=true, fb=true, x1=x1Ofs, y1=y1Ofs, x2=x2Ofs, y2=y2Ofs})
+					if self.modBtnBs then
+						self:skinPageBtns(fObj)
+						for _, btn in _G.pairs(fObj.Models) do
+							self:removeRegions(btn, {2}) -- background & border
+							self:addButtonBorder{obj=btn, reParent={btn.NewString, btn.Favorite.Icon, btn.HideVisual.Icon}, ofs=6}
+							updBtnClr(btn)
+						end
+						self:SecureHook(fObj, "UpdateItems", function(icF)
+							for _, btn in _G.pairs(icF.Models) do
 								updBtnClr(btn)
 							end
-							self:SecureHook(fObj, "UpdateItems", function(icF)
-								for _, btn in _G.pairs(icF.Models) do
-									updBtnClr(btn)
-								end
-							end)
+						end)
+					end
+
+					self:Unhook(fObj, "OnShow")
+				end)
+				self:checkShown(this.ItemsCollectionFrame)
+
+				-- colour code copied from Blizzard_Wardrobe_Sets.lua
+				local IN_PROGRESS_FONT_COLOR = _G.CreateColor(0.251, 0.753, 0.251)
+				local SetsDataProvider = _G.CreateFromMixins(_G.WardrobeSetsDataProviderMixin)
+				self:SecureHookScript(this.SetsCollectionFrame, "OnShow", function(fObj)
+					self:removeInset(fObj.LeftInset)
+					self:keepFontStrings(fObj.RightInset)
+					self:removeNineSlice(fObj.RightInset.NineSlice)
+					self:skinObject("scrollbar", {obj=fObj.ListContainer.ScrollBar, fType=ftype})
+					local displayData, variantSets, topSourcesCollected, topSourcesTotal, setCollected, colour
+					local function skinElement(...)
+						local _, element, elementData, new
+						if _G.select("#", ...) == 2 then
+							element, elementData = ...
+						elseif _G.select("#", ...) == 3 then
+							element, elementData, new = ...
+						else
+							_, element, elementData, new = ...
 						end
-
-						self:Unhook(fObj, "OnShow")
-					end)
-					self:checkShown(this.ItemsCollectionFrame)
-
-					if self.isMnln
-					or aObj.isClscPTR
-					then
-						-- colour code copied from Blizzard_Wardrobe_Sets.lua
-						local IN_PROGRESS_FONT_COLOR = _G.CreateColor(0.251, 0.753, 0.251)
-						local SetsDataProvider = _G.CreateFromMixins(_G.WardrobeSetsDataProviderMixin)
-						self:SecureHookScript(this.SetsCollectionFrame, "OnShow", function(fObj)
-							self:removeInset(fObj.LeftInset)
-							self:keepFontStrings(fObj.RightInset)
-							self:removeNineSlice(fObj.RightInset.NineSlice)
-							self:skinObject("scrollbar", {obj=fObj.ListContainer.ScrollBar, fType=ftype})
-							local displayData, variantSets, topSourcesCollected, topSourcesTotal, setCollected, colour
-							local function skinElement(...)
-								local _, element, elementData, new
-								if _G.select("#", ...) == 2 then
-									element, elementData = ...
-								elseif _G.select("#", ...) == 3 then
-									element, elementData, new = ...
-								else
-									_, element, elementData, new = ...
-								end
-								if new ~= false then
-									element:DisableDrawLayer("BACKGROUND")
-									if aObj.modBtnBs then
-										 aObj:addButtonBorder{obj=element.IconFrame, fType=ftype, relTo=element.IconFrame.Icon, reParent={element.IconFrame.Favorite}}
-									end
-								end
-								displayData = elementData
-								if elementData.hiddenUntilCollected
-								and not elementData.collected
-								then
-									variantSets = _G.C_TransmogSets.GetVariantSets(elementData.setID)
-									if variantSets then
-										displayData = variantSets[1]
-									end
-								end
-								topSourcesCollected, topSourcesTotal = SetsDataProvider:GetSetSourceTopCounts(displayData.setID)
-								setCollected = displayData.collected or topSourcesCollected == topSourcesTotal
-								colour = topSourcesCollected == 0 and _G.GRAY_FONT_COLOR or IN_PROGRESS_FONT_COLOR
-								if element.IconFrame.sbb then
-									if setCollected then
-										aObj:clrBtnBdr(element.IconFrame, "gold")
-										element.Label:SetTextColor(aObj.BT:GetRGB())
-									else
-										aObj:clrBtnBdr(element.IconFrame, topSourcesCollected == 0 and "grey")
-										element.Label:SetTextColor(colour.r, colour.g, colour.b)
-									end
-								end
+						if new ~= false then
+							element:DisableDrawLayer("BACKGROUND")
+							if aObj.modBtnBs then
+								 aObj:addButtonBorder{obj=element.IconFrame, fType=ftype, relTo=element.IconFrame.Icon, reParent={element.IconFrame.Favorite}}
 							end
-							_G.ScrollUtil.AddAcquiredFrameCallback(fObj.ListContainer.ScrollBox, skinElement, aObj, true)
-							fObj.DetailsFrame:DisableDrawLayer("BACKGROUND")
-							fObj.DetailsFrame:DisableDrawLayer("BORDER")
-							self:skinObject("ddbutton", {obj=fObj.DetailsFrame.VariantSetsDropdown, fType=ftype})
-							self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, fb=true, x1=x1Ofs, y1=y1Ofs, x2=x2Ofs, y2=y2Ofs})
-
-							self:Unhook(fObj, "OnShow")
-						end)
-						self:SecureHookScript(this.SetsTransmogFrame, "OnShow", function(fObj)
-							self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, rns=true, fb=true, x1=x1Ofs, y1=y1Ofs, x2=x2Ofs, y2=y2Ofs})
-							if self.modBtnBs then
-								self:skinPageBtns(fObj)
-								for _, btn in _G.pairs(fObj.Models) do
-									self:removeRegions(btn, {2}) -- background & border
-									self:addButtonBorder{obj=btn, fType=ftype, reParent={btn.Favorite.Icon}, ofs=6}
-									updBtnClr(btn)
-								end
+						end
+						displayData = elementData
+						if elementData.hiddenUntilCollected
+						and not elementData.collected
+						then
+							variantSets = _G.C_TransmogSets.GetVariantSets(elementData.setID)
+							if variantSets then
+								displayData = variantSets[1]
 							end
-
-							self:Unhook(fObj, "OnShow")
-						end)
+						end
+						topSourcesCollected, topSourcesTotal = SetsDataProvider:GetSetSourceTopCounts(displayData.setID)
+						setCollected = displayData.collected or topSourcesCollected == topSourcesTotal
+						colour = topSourcesCollected == 0 and _G.GRAY_FONT_COLOR or IN_PROGRESS_FONT_COLOR
+						if element.IconFrame.sbb then
+							if setCollected then
+								aObj:clrBtnBdr(element.IconFrame, "gold")
+								element.Label:SetTextColor(aObj.BT:GetRGB())
+							else
+								aObj:clrBtnBdr(element.IconFrame, topSourcesCollected == 0 and "grey")
+								element.Label:SetTextColor(colour.r, colour.g, colour.b)
+							end
+						end
 					end
-				end
+					_G.ScrollUtil.AddAcquiredFrameCallback(fObj.ListContainer.ScrollBox, skinElement, aObj, true)
+					fObj.DetailsFrame:DisableDrawLayer("BACKGROUND")
+					fObj.DetailsFrame:DisableDrawLayer("BORDER")
+					self:skinObject("ddbutton", {obj=fObj.DetailsFrame.VariantSetsDropdown, fType=ftype})
+					self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, fb=true, x1=x1Ofs, y1=y1Ofs, x2=x2Ofs, y2=y2Ofs})
 
-				self:Unhook(this, "OnShow")
-			end)
-
-			self:SecureHookScript(_G.WardrobeFrame, "OnShow", function(this)
-				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true, cb=true, x2=3, y2=-1})
-
-				self:Unhook(this, "OnShow")
-			end)
-
-			-- used by Transmog as well as Appearance
-			self:SecureHookScript(_G.WardrobeTransmogFrame, "OnShow", function(this)
-				this:DisableDrawLayer("ARTWORK")
-				self:removeInset(this.Inset)
-				self:skinObject("ddbutton", {obj=this.OutfitDropdown, fType=ftype})
-				if self.isMnln then
-					this.ModelScene.ControlFrame:DisableDrawLayer("BACKGROUND")
-				end
-				for _, btn in _G.pairs(this.SlotButtons) do
-					btn.Border:SetTexture(nil)
-					if aObj.isClscPTR then
-						btn.StatusBorder:SetTexture(nil)
-						btn.HiddenVisualCover:SetScale(0.8) -- make it fit within button border
-					end
+					self:Unhook(fObj, "OnShow")
+				end)
+				self:SecureHookScript(this.SetsTransmogFrame, "OnShow", function(fObj)
+					self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, rns=true, fb=true, x1=x1Ofs, y1=y1Ofs, x2=x2Ofs, y2=y2Ofs})
 					if self.modBtnBs then
-						 self:addButtonBorder{obj=btn, fType=ftype, ofs=-1}
+						self:skinPageBtns(fObj)
+						for _, btn in _G.pairs(fObj.Models) do
+							self:removeRegions(btn, {2}) -- background & border
+							self:addButtonBorder{obj=btn, fType=ftype, reParent={btn.Favorite.Icon}, ofs=6}
+							updBtnClr(btn)
+						end
 					end
-				end
-				self:skinObject("ddbutton", {obj=this.SpecDropdown, fType=ftype, noSF=true})
-				if self.modBtns then
-					self:skinStdButton{obj=this.OutfitDropdown.SaveButton, sechk=true}
-					self:skinStdButton{obj=this.ApplyButton, fType=ftype, ofs=0, sechk=true}
+
+					self:Unhook(fObj, "OnShow")
+				end)
+			end
+
+			self:Unhook(this, "OnShow")
+		end)
+
+		self:SecureHookScript(_G.WardrobeFrame, "OnShow", function(this)
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true, cb=true, x2=3, y2=-1})
+
+			self:Unhook(this, "OnShow")
+		end)
+
+		-- used by Transmog as well as Appearance
+		self:SecureHookScript(_G.WardrobeTransmogFrame, "OnShow", function(this)
+			this:DisableDrawLayer("ARTWORK")
+			self:removeInset(this.Inset)
+			self:skinObject("ddbutton", {obj=this.OutfitDropdown, fType=ftype})
+			if self.isMnln then
+				this.ModelScene.ControlFrame:DisableDrawLayer("BACKGROUND")
+			end
+			for _, btn in _G.pairs(this.SlotButtons) do
+				btn.Border:SetTexture(nil)
+				if self.isClsc then
+					btn.StatusBorder:SetTexture(nil)
+					btn.HiddenVisualCover:SetScale(0.8) -- make it fit within button border
 				end
 				if self.modBtnBs then
-					if self.isMnln then
-						self:addButtonBorder{obj=this.ModelScene.ClearAllPendingButton, fType=ftype, relTo=this.ModelScene.ClearAllPendingButton.Icon, ofs=5}
-					elseif aObj.isClscPTR then
-						self:addButtonBorder{obj=this.Model.ClearAllPendingButton, fType=ftype, relTo=this.Model.ClearAllPendingButton.Icon}
-					end
+					 self:addButtonBorder{obj=btn, fType=ftype, ofs=-1}
 				end
-				if self.modChkBtns then
-					self:skinCheckButton{obj=this.ToggleSecondaryAppearanceCheckbox, fType=ftype}
+			end
+			self:skinObject("ddbutton", {obj=this.SpecDropdown, fType=ftype, noSF=true})
+			if self.modBtns then
+				self:skinStdButton{obj=this.OutfitDropdown.SaveButton, sechk=true}
+				self:skinStdButton{obj=this.ApplyButton, fType=ftype, ofs=0, sechk=true}
+			end
+			if self.modBtnBs then
+				if self.isMnln then
+					self:addButtonBorder{obj=this.ModelScene.ClearAllPendingButton, fType=ftype, relTo=this.ModelScene.ClearAllPendingButton.Icon, ofs=5}
+				elseif self.isClsc then
+					self:addButtonBorder{obj=this.Model.ClearAllPendingButton, fType=ftype, relTo=this.Model.ClearAllPendingButton.Icon}
 				end
+			end
+			if self.modChkBtns then
+				self:skinCheckButton{obj=this.ToggleSecondaryAppearanceCheckbox, fType=ftype}
+			end
 
-				self:Unhook(this, "OnShow")
-			end)
-		end
+			self:Unhook(this, "OnShow")
+		end)
 
 		if self.isMnln then
 			-- a.k.a. Campsites
@@ -2148,7 +2109,7 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 	end)
 
 	self:SecureHookScript(_G.CommunitiesAvatarPickerDialog, "OnShow", function(this)
-		if not aObj.isClscERA then
+		if not self.isClscERA then
 			self:removeNineSlice(this.Selector)
 			self:skinObject("scrollbar", {obj=this.ScrollBar, fType=ftype})
 			local function skinElement(...)
@@ -2460,7 +2421,7 @@ if not aObj.isClscERA then
 			this.navBar.home.text:SetPoint("RIGHT", -20, 0)
 			self:skinObject("editbox", {obj=this.searchBox, fType=ftype, si=true})
 			self:skinObject("ddbutton", {obj=this.LootJournalViewDropdown, fType=ftype})
-			self:skinObject("tabs", {obj=this, tabs=this.Tabs, selectedTab=this.selectedTab, fType=ftype, lod=self.isTT and true, offsets=not aObj.isClscPTR and {x1=-1, y1=2, x2=1, y2=1} or nil, regions=(self.isMnln or aObj.isClscPTR) and {7, 8, 9, 10, 11} or {10, 21}, track=false, func=function(tab) tab:SetFrameLevel(20) end})
+			self:skinObject("tabs", {obj=this, tabs=this.Tabs, selectedTab=this.selectedTab, fType=ftype, lod=self.isTT and true, offsets=not self.isClsc and {x1=-1, y1=2, x2=1, y2=1} or nil, regions=not self.isClscERA and {7, 8, 9, 10, 11} or {10, 21}, track=false, func=function(tab) tab:SetFrameLevel(20) end})
 			if self.isTT then
 				self:SecureHook("EJ_ContentTab_Select", function(id)
 					for i, tab in _G.pairs(this.Tabs) do
@@ -2662,7 +2623,7 @@ if not aObj.isClscERA then
 					end)
 					-- Tabs (side)
 					self:skinObject("tabs", {obj=frame, tabs={frame.overviewTab, frame.lootTab, frame.bossTab, frame.modelTab}, fType=ftype, ignoreHLTex=false, ng=true, regions={4, 5, 6}, offsets={x1=9, y1=-6, x2=-6, y2=6}, track=false})
-					if not aObj.isClscPTR then
+					if not self.isClsc then
 						self:moveObject{obj=frame.overviewTab, x=7}
 					end
 
