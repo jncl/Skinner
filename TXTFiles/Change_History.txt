@@ -1,3 +1,12 @@
+beta11.61916.1
+Jncl:
+	Updated ToDo*.txt files
+	Updated Change_History.txt
+	Updated Version numbers
+	Applied Classic PTR changes Moved some skin functions to Core and Classic
+	Renamed Dominos skin to Dominos_Config and updated it, fixes #226
+	Remove debug line from Baganator
+
 beta11.61559.1
 Jncl:
 	Updated ToDo*.txt files
