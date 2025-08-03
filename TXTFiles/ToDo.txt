@@ -12,4 +12,6 @@ ToDos
 
 #193 	I 	Can't use Quest Items in the Quest List
 
-#226 √	I 	Dominos_Config, right click settings dialog not appearing for any action bars
+#227 √	I/C DressUp Frame
+
+#228 √	I 	Bartender4, XP bar not skinned any more
