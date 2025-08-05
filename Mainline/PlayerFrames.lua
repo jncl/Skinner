@@ -1071,7 +1071,7 @@ aObj.SetupMainline_PlayerFrames = function()
 				this.Header.Background:SetTexture(nil)
 			end
 			if self.prdb.ObjectiveTracker.skin then
-				self:skinObject("frame", {obj=this, fType=ftype, kfs=true})
+				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, x1=-20, y1=4, x2=12, y2=-4})
 			end
 			if self.modBtnBs then
 				self:skinExpandButton{obj=this.Header.MinimizeButton, onSB=true}
