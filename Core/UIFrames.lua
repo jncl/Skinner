@@ -2218,6 +2218,14 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 		end
 	end
 
+	if self.isClsc then
+		self:SecureHookScript(_G.TalentMicroButtonAlert, "OnShow", function(this)
+			self:skinObject("glowbox", {obj=this, fType=ftype})
+
+			self:Unhook(this, "OnShow")
+		end)
+	end
+
 	if _G.C_AddOns.IsAddOnLoaded("Dominos")
 	or _G.C_AddOns.IsAddOnLoaded("Bartender4")
 	then
@@ -2376,14 +2384,6 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 					abb2Bag(_G["CharacterBag" .. i .. "Slot"])
 				end
 				self:addButtonBorder{obj=_G.KeyRingButton, fType=ftype, ofs=2}
-			end
-
-			if self.isClsc then
-				self:SecureHookScript(_G.TalentMicroButtonAlert, "OnShow", function(this)
-					self:skinObject("glowbox", {obj=this, fType=ftype})
-
-					self:Unhook(this, "OnShow")
-				end)
 			end
 		end
 	end
