@@ -64,10 +64,12 @@ local texNumbers = {
 local texSuffixes = {
 	["plusbutton"]    = "plus",
 	["zoominbutton"]  = "plus",
+	["expand-all"]    = "plus", -- objective tracker
 	["_closed"]       = "plus",
 	["minusbutton"]   = "minus",
 	["zoomoutbutton"] = "minus",
 	["_open"]         = "minus",
+	["collapse-all"]  = "minus", -- objective tracker
 }
 local btn, nTex
 local function __checkTex(opts)
@@ -89,7 +91,7 @@ local function __checkTex(opts)
 	btn = opts.obj.onSB and opts.obj.sb or opts.obj
 	if not btn then return end -- handle unskinned buttons
 	nTex = opts.nTex or opts.obj:GetNormalTexture() and opts.obj:GetNormalTexture():GetTexture() or nil
-	-- aObj:Debug("__checkTex: [%s, %s]", nTex)
+	-- aObj:Debug("__checkTex: [%s, %s]", opts.obj, nTex)
 
 	local header = false
 	if nTex then
@@ -104,7 +106,7 @@ local function __checkTex(opts)
 			end
 		else
 			for str, type in _G.pairs(texSuffixes) do
-				if nTex:lower():find(str) then
+				if nTex:lower():find(str, 1, true) then
 					btn:SetText(module[type])
 					btn:Show()
 					header = true

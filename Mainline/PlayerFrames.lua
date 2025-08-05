@@ -1075,16 +1075,6 @@ aObj.SetupMainline_PlayerFrames = function()
 			end
 			if self.modBtnBs then
 				self:skinExpandButton{obj=this.Header.MinimizeButton, onSB=true}
-				if this.Header.MinimizeButton.sb then -- handle not exists yet (ooc)
-					this.Header.MinimizeButton.sb:SetText(this.isCollapsed and self.modUIBtns.plus or self.modUIBtns.minus)
-				end
-				self:SecureHook(this.Header, "SetCollapsed", function(fObj, collapsed)
-					if collapsed then
-						fObj.MinimizeButton.sb:SetText(self.modUIBtns.plus)
-					else
-						fObj.MinimizeButton.sb:SetText(self.modUIBtns.minus)
-					end
-				end)
 			end
 
 			local function skinBar(bar)
