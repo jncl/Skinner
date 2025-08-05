@@ -3581,10 +3581,20 @@ aObj.blizzFrames[ftype].Settings = function(self)
 
 		if self.isMnln then
 			self:SecureHookScript(this.QuestTextPreview, "OnShow", function(fObj)
-				self:skinObject("frame", {obj=fObj, fType=ftype})
+				self:skinObject("frame", {obj=fObj, fType=ftype, ofs=-5})
+				-- N.B. make sure skin frame is behind frame textures
+				_G.RaiseFrameLevel(fObj)
+				_G.LowerFrameLevel(fObj.sf)
 
 				self:Unhook(fObj, "OnShow")
 			end)
+			if aObj.isMnlnPTRX then
+				self:SecureHookScript(this.AccessibilityFontPreview, "OnShow", function(fObj)
+					self:skinObject("frame", {obj=fObj, fType=ftype, ofs=-5})
+
+					self:Unhook(fObj, "OnShow")
+				end)
+			end
 		end
 
 		self:Unhook(this, "OnShow")
