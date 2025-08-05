@@ -864,7 +864,11 @@ aObj.SetupClassic_PlayerFrames = function()
 
 		self:SecureHookScript(_G.InspectFrame, "OnShow", function(this)
 			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true})
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=10, y1=-12, x2=-31, y2=74})
+			if not aObj.isClsc then
+				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=10, y1=-12, x2=-31, y2=74})
+			else
+				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x2=1, y2=0})
+			end
 
 			self:Unhook(this, "OnShow")
 		end)
@@ -909,21 +913,7 @@ aObj.SetupClassic_PlayerFrames = function()
 			self:SecureHookScript(_G.InspectTalentFrame, "OnShow", function(this)
 				this:DisableDrawLayer("BACKGROUND")
 				this:DisableDrawLayer("BORDER")
-				-- Top Tabs
-				self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true, offsets={x1=4, y1=-4, x2=-4, y2=-1}})
-				_G.InspectTalentFramePointsBar:DisableDrawLayer("BACKGROUND")
-				_G.InspectTalentFramePointsBar:DisableDrawLayer("BORDER")
-				self:skinObject("frame", {obj=_G.InspectTalentFrameScrollFrame, fType=ftype, kfs=true, fb=true, x1=-11, y1=10, x2=32, y2=-5})
-				self:skinObject("slider", {obj=_G.InspectTalentFrameScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
-				if self.modBtns then
-					self:skinCloseButton{obj=_G.InspectTalentFrameCloseButton, fType=ftype}
-				end
-				if self.modBtnBs then
-					skinTalentBtns(this)
-					self:SecureHook("InspectTalentFrame_Update", function()
-						skinTalentBtns(_G.InspectTalentFrame)
-					end)
-				end
+				this.InspectSpec.ring:SetTexture(nil)
 
 				self:Unhook(this, "OnShow")
 			end)
