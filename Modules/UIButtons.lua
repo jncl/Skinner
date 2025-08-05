@@ -844,6 +844,7 @@ local function __skinCheckButton(opts)
 			hf    = hook show/hide functions
 			sechk = set enabled check for colour changes
 			ignNT = ignore NormalTexture checks (WoWPro uses bespoke textures)
+			size  = set object size
 	--]]
 	--@debug@
 	_G.assert(opts.obj, "Missing object __sCB\n" .. _G.debugstack(2, 3, 2))
@@ -894,6 +895,9 @@ local function __skinCheckButton(opts)
 		aObj:secureHook(opts.obj, "SetEnabled", function(bObj)
 			aObj:clrBtnBdr(bObj, bObj.sb.clr, bObj.sb.ca)
 		end)
+	end
+	if opts.size then
+		opts.obj:SetSize(opts.size, opts.size)
 	end
 end
 function module.skinCheckButton(_, ...)

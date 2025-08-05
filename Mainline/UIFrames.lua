@@ -1353,8 +1353,7 @@ aObj.SetupMainline_UIFrames = function()
 						element.UnlockedState:DisableDrawLayer("BACKGROUND")
 						aObj:skinObject("frame", {obj=element, fType=ftype, fb=true, x1=29, x2=-29, y2=0, ca=0.35})
 						if aObj.modChkBtns then
-							aObj:skinCheckButton{obj=element.UnlockedState.WatchFactionButton, fType=ftype}
-							element.UnlockedState.WatchFactionButton:SetSize(20, 20)
+							aObj:skinCheckButton{obj=element.UnlockedState.WatchFactionButton, fType=ftype, size=20}
 						end
 					end
 				end

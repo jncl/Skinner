@@ -161,8 +161,7 @@ if not aObj.isClscERA then
 				if aObj.modChkBtns
 				and btn.Tracked
 				then
-					aObj:skinCheckButton{obj=btn.Tracked, fType=ftype}
-					btn.Tracked:SetSize(20, 20)
+					aObj:skinCheckButton{obj=btn.Tracked, fType=ftype, size=20}
 				end
 				aObj:SecureHook(btn, "Desaturate", function(bObj)
 					if bObj.sf then
@@ -1480,8 +1479,7 @@ if not aObj.isClscERA then
 				end
 				self:skinPageBtns(this.IconsFrame.Icons.Controls)
 				if self.modChkBtns then
-					this.IconsFrame.Icons.Controls.ShowOwned.Checkbox:SetSize(24, 24)
-					self:skinCheckButton{obj=this.IconsFrame.Icons.Controls.ShowOwned.Checkbox, fType=ftype}
+					self:skinCheckButton{obj=this.IconsFrame.Icons.Controls.ShowOwned.Checkbox, fType=ftype, size=24}
 				end
 
 				self:Unhook(this, "OnShow")

@@ -243,8 +243,7 @@ aObj.SetupClassic_UIFrames = function()
 				end
 				if self.modChkBtns then
 					for _, name in _G.pairs{"Tank", "Healer", "DPS"} do
-						self:skinCheckButton{obj=this[name .. "Icon"].checkButton, fType=ftype}
-						this[name .. "Icon"].checkButton:SetSize(26, 26)
+						self:skinCheckButton{obj=this[name .. "Icon"].checkButton, fType=ftype, size=26}
 					end
 				end
 
