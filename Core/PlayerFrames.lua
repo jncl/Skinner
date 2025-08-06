@@ -900,7 +900,7 @@ if not aObj.isClscERA then
 				_G.ScrollUtil.AddAcquiredFrameCallback(this.ScrollBox, skinElement, aObj, true)
 				self:SecureHookScript(this.ReputationDetailFrame, "OnShow", function(fObj)
 					self:removeNineSlice(fObj.Border)
-					if aObj.isMnlnPTRX then
+					if self.isMnln then
 						self:skinObject("scrollbar", {obj=fObj.ScrollingDescriptionScrollBar, fType=ftype})
 					end
 					self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, ofs=-3})
@@ -2234,17 +2234,7 @@ aObj.blizzFrames[ftype].CompactFrames = function(self)
 
 	-- Compact RaidFrame Manager
 	local function getBGHeightAdj()
-		if self.isMnln
-		and not aObj.isMnlnPTRX
-		then
-			for _, bg in _G.ipairs(_G.CompactRaidFrameManager.backgrounds) do
-				-- aObj:Debug("CRFM.bg: [%s, %s]", bg, bg:IsShown())
-				if bg:IsShown() then
-					-- aObj:Debug("CRFM bg height: [%s, %s]", _G.Round(bg:GetHeight()))
-					return _G.Round(_G.CompactRaidFrameManager:GetHeight() - bg:GetHeight())
-				end
-			end
-		else
+		if self.isMnln then
 			return -40
 		end
 	end
@@ -2870,8 +2860,6 @@ aObj.blizzLoDFrames[ftype].ItemSocketingUI = function(self)
 		gemTypeInfo["SingingThunder"]  = _G.CopyTable(gemTypeInfo["Yellow"], true)
 		gemTypeInfo["SingingSea"]      = _G.CopyTable(gemTypeInfo["Blue"], true)
 		gemTypeInfo["SingingWind"]     = _G.CopyTable(gemTypeInfo["Red"], true)
-	end
-	if aObj.isMnlnPTRX then
 		gemTypeInfo["Fiber"]           = _G.CopyTable(gemTypeInfo["Hydraulic"], true)
 	end
 	-- setup default for missing entry
@@ -2883,16 +2871,8 @@ aObj.blizzLoDFrames[ftype].ItemSocketingUI = function(self)
 	end})
 
 	self:SecureHookScript(_G.ItemSocketingFrame, "OnShow", function(this)
-		if self.isMnln then
-			self:skinObject("scrollbar", {obj=_G.ItemSocketingScrollFrame.ScrollBar, fType=ftype})
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, x2=3})
-		else
-			self:skinObject("slider", {obj=_G.ItemSocketingScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, x1=10, y1=-12, x2=-4, y2=30})
-			if self.modBtns then
-				self:skinCloseButton{obj=_G.ItemSocketingCloseButton, fType=ftype}
-			end
-		end
+		self:skinObject("scrollbar", {obj=_G.ItemSocketingScrollFrame.ScrollBar, fType=ftype})
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, x2=3})
 		if self.modBtns then
 			self:skinStdButton{obj=_G.ItemSocketingSocketButton, fType=ftype, schk=true}
 			this.Sockets = this.Sockets or {_G.ItemSocketingSocket1, _G.ItemSocketingSocket2, _G.ItemSocketingSocket3}

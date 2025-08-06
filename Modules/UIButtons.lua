@@ -927,6 +927,28 @@ function module.skinCheckButton(_, ...)
 
 end
 
+function module:skinItemSlots(frame, ftype)
+
+	for btn in frame.itemButtonPool:EnumerateActive() do
+		-- Bank button
+		if btn.Background then
+			btn.Background:SetTexture(nil)
+		end
+		-- Container button
+		if btn.emptyBackgroundAtlas
+		and not btn.hasItem
+			then
+			btn:SetItemButtonTexture("") -- N.B. DON'T use nil as function uses default texture if it isn't passed
+		end
+		-- Combined Bag button
+		if btn.ItemSlotBackground then
+			btn.ItemSlotBackground:SetTexture(nil)
+		end
+		module:addButtonBorder{obj=btn, fType=ftype, ibt=true}
+	end
+
+end
+
 --[===[@non-debug@
 --[[
 	The following functions are ONLY used by the Main.lua file, which has been deprecated,
@@ -1171,6 +1193,7 @@ function module:OnEnable()
 	aObj.skinExpandButton    = aObj.modBtns and aObj.modUIBtns.skinExpandButton or _G.nop
 	aObj.skinOtherButton     = aObj.modBtns and aObj.modUIBtns.skinOtherButton or _G.nop
 	aObj.skinStdButton       = aObj.modBtns and aObj.modUIBtns.skinStdButton or _G.nop
+	aObj.skinItemSlots       = aObj.modBtns and aObj.modUIBtns.skinItemSlots or _G.nop
 	aObj.addButtonBorder     = aObj.modBtnBs and aObj.modUIBtns.addButtonBorder or _G.nop
 	aObj.skinActionBtn       = aObj.modBtnBs and aObj.modUIBtns.skinActionBtn or _G.nop
 	aObj.skinCheckButton     = aObj.modChkBtns and aObj.modUIBtns.skinCheckButton or _G.nop

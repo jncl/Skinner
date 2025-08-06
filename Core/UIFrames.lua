@@ -3588,13 +3588,11 @@ aObj.blizzFrames[ftype].Settings = function(self)
 
 				self:Unhook(fObj, "OnShow")
 			end)
-			if aObj.isMnlnPTRX then
-				self:SecureHookScript(this.AccessibilityFontPreview, "OnShow", function(fObj)
-					self:skinObject("frame", {obj=fObj, fType=ftype, ofs=-5})
+			self:SecureHookScript(this.AccessibilityFontPreview, "OnShow", function(fObj)
+				self:skinObject("frame", {obj=fObj, fType=ftype, ofs=-5})
 
-					self:Unhook(fObj, "OnShow")
-				end)
-			end
+				self:Unhook(fObj, "OnShow")
+			end)
 		end
 
 		self:Unhook(this, "OnShow")
@@ -3693,7 +3691,7 @@ aObj.blizzFrames[ftype].StaticPopups = function(self)
 		-- hook this to handle close button texture changes
 		self:SecureHook("StaticPopup_Show", function(_)
 			local nTex
-			for i = 1, not aObj.isMnlnPTRX and _G.STATICPOPUP_NUMDIALOGS or 4 do
+			for i = 1, not self.isMnln and _G.STATICPOPUP_NUMDIALOGS or 4 do
 				nTex = _G["StaticPopup" .. i .. "CloseButton"]:GetNormalTexture()
 				if self:hasTextInTexture(nTex, "HideButton") then
 					_G["StaticPopup" .. i .. "CloseButton"]:SetText(self.modUIBtns.minus)
@@ -3704,21 +3702,17 @@ aObj.blizzFrames[ftype].StaticPopups = function(self)
 		end)
 	end
 
-	for i = 1, not aObj.isMnlnPTRX and _G.STATICPOPUP_NUMDIALOGS or 4 do
+	for i = 1, not self.isMnln and _G.STATICPOPUP_NUMDIALOGS or 4 do
 		self:SecureHookScript(_G["StaticPopup" .. i], "OnShow", function(this)
 			local objName = this:GetName()
 			this.Separator:SetTexture(nil)
-			if aObj.isMnlnPTRX then
+			if self.isMnln then
 				self:keepFontStrings(this.BG)
 				-- .ProgressBarBorder
 				self:skinObject("editbox", {obj=this.EditBox, fType=ftype, mi=true, mix=12, regions={}, ofs=0})
 				this.ItemFrame.NameFrame:SetTexture(nil)
-			elseif self.isMnln then
-				self:removeNineSlice(this.Border)
-				self:skinObject("editbox", {obj=_G[objName .. "EditBox"], fType=ftype, ofs=0, y1=-4, y2=4})
-				self:skinObject("ddbutton", {obj=this.Dropdown, fType=ftype})
 			end
-			if not aObj.isMnlnPTRX then
+			if not self.isMnln then
 				_G[objName .. "ItemFrameNameFrame"]:SetTexture(nil)
 			end
 			if this.insertedFrame then
@@ -3736,7 +3730,7 @@ aObj.blizzFrames[ftype].StaticPopups = function(self)
 			 -- N.B. Close Button handled above, offset is to allow DarkOverlay to overlay skin frame border as well
 			self:skinObject("frame", {obj=this, fType=ftype, rb=not self.isMnln and true, ofs=-4})
 			if self.modBtns then
-				if aObj.isMnlnPTRX then
+				if self.isMnln then
 					self:skinStdButton{obj=this.ButtonContainer.Button1, fType=ftype, schk=true, sechk=true, y1=2}
 					self:skinStdButton{obj=this.ButtonContainer.Button2, fType=ftype, schk=true, sechk=true, y1=2}
 					self:skinStdButton{obj=this.ButtonContainer.Button3, fType=ftype, schk=true, y1=2}
@@ -3751,7 +3745,7 @@ aObj.blizzFrames[ftype].StaticPopups = function(self)
 				end
 			end
 			if self.modBtnBs then
-				if aObj.isMnlnPTRX then
+				if self.isMnln then
 					self:addButtonBorder{obj=this.ItemFrame.Item, fType=ftype, ibt=true}
 				else
 					self:addButtonBorder{obj=_G[objName .. "ItemFrame"], fType=ftype, ibt=true}

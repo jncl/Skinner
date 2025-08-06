@@ -69,178 +69,120 @@ aObj.SetupMainline_NPCFrames = function()
 		if not self.prdb.BankFrame or self.initialized.BankFrame then return end
 		self.initialized.BankFrame = true
 
+		local function skinSideTabs(frame)
+			for tab in frame.bankTabPool:EnumerateActive() do
+				tab.Border:SetTexture(nil)
+				if aObj.modBtnBs then
+					 aObj:addButtonBorder{obj=tab, relTo=tab.Icon}
+				end
+			end
+		end
 		if not _G.C_AddOns.IsAddOnLoaded("LiteBag") then
+			if self.modBtnBs then
+				self:SecureHook(_G.AccountBankPanel or _G.BankFrame.BankPanel, "GenerateItemSlotsForSelectedTab", function(frame)
+					self:skinItemSlots(frame, ftype)
+				end)
+			end
 			self:SecureHookScript(_G.BankFrame, "OnShow", function(this)
+				self:skinObject("tabs", {obj=this.TabSystem,  pool=true, fType=ftype, ignoreSize=true, track=false})
 				self:skinObject("editbox", {obj=_G.BankItemSearchBox, fType=ftype, si=true})
-				if self.modBtns then
-					 self:skinStdButton{obj=_G.BankFramePurchaseButton}
-				end
-				_G.BankFrameMoneyFrameBorder:DisableDrawLayer("BACKGROUND")
-				-- Tabs (Bottom)
-				self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype})
 				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true, cb=true})
-				self:keepFontStrings(_G.BankSlotsFrame) -- bank slots textures
-				self:removeNineSlice(_G.BankSlotsFrame.NineSlice)
-				self:keepFontStrings(_G.BankSlotsFrame.EdgeShadows)
-				if self.modBtnBs then
-					self:addButtonBorder{obj=_G.BankItemAutoSortButton, ofs=0, y1=1}
-					-- add button borders to bank items
-					local btn
-					for i = 1, _G.NUM_BANKGENERIC_SLOTS do
-						btn = _G.BankSlotsFrame["Item" .. i]
-						self:addButtonBorder{obj=btn, fType=ftype, ibt=true}
-						-- force quality border update
-						_G.BankFrameItemButton_Update(btn)
+
+				self:SecureHookScript(this.BankPanel, "OnShow", function(fObj)
+					fObj.PurchaseTab.Border:SetTexture(nil)
+					self:removeNineSlice(fObj.NineSlice)
+					fObj.EdgeShadows:DisableDrawLayer("BORDER")
+
+					if self.modBtns then
+						self:skinStdButton{obj=fObj.WithdrawButton, fType=ftype}
+						self:skinStdButton{obj=fObj.DepositButton, fType=ftype}
 					end
-					-- add button borders to bags
-					for i = 1, _G.NUM_BANKBAGSLOTS do
-						self:addButtonBorder{obj=_G.BankSlotsFrame["Bag" .. i], fType=ftype, ibt=true}
+					if self.modBtnBs then
+						self:addButtonBorder{obj=fObj.AutoSortButton, fType=ftype, ofs=0}
+						self:addButtonBorder{obj=fObj.PurchaseTab, relTo=fObj.PurchaseTab.Icon}
 					end
-					-- colour button borders
-					_G.UpdateBagSlotStatus()
-				end
+
+					self:SecureHook(fObj, "RefreshBankTabs", function(frame)
+						skinSideTabs(frame)
+					end)
+
+					self:SecureHookScript(fObj.MoneyFrame, "OnShow", function(frame)
+						self:keepFontStrings(frame.Border)
+						if self.modBtns then
+							self:skinStdButton{obj=frame.WithdrawButton, fType=ftype, sechk=true}
+							self:skinStdButton{obj=frame.DepositButton, fType=ftype, sechk=true}
+						end
+
+						self:Unhook(frame, "OnShow")
+					end)
+					self:checkShown(fObj.MoneyFrame)
+					self:SecureHookScript(fObj.AutoDepositFrame, "OnShow", function(frame)
+						if self.modBtns then
+							self:skinStdButton{obj=frame.DepositButton, fType=ftype}
+						end
+						if self.modChkBtns then
+							self:skinCheckButton{obj=frame.IncludeReagentsCheckbox, fType=ftype, size=24}
+						end
+
+						self:Unhook(frame, "OnShow")
+					end)
+					self:checkShown(fObj.AutoDepositFrame)
+
+					self:SecureHookScript(fObj.PurchasePrompt, "OnShow", function(frame)
+						self:skinObject("frame", {obj=frame, fType=ftype, kfs=true, fb=true, clr="gold"})
+						if self.modBtns then
+							self:skinStdButton{obj=frame.TabCostFrame.PurchaseButton, fType=ftype}
+						end
+
+						self:Unhook(frame, "OnShow")
+					end)
+					self:checkShown(fObj.PurchasePrompt)
+
+					self:SecureHookScript(fObj.LockPrompt, "OnShow", function(frame)
+						self:skinObject("frame", {obj=fObj.LockPrompt, fType=ftype, kfs=true, fb=true, ofs=1, x1=3, x2=-3, clr="gold"})
+						fObj.LockPrompt.Background:SetAlpha(1)
+
+						self:Unhook(frame, "OnShow")
+					end)
+					self:checkShown(fObj.LockPrompt)
+
+					self:SecureHookScript(fObj.TabSettingsMenu, "OnShow", function(frame)
+						self:skinIconSelector(frame, ftype)
+						-- FIXME: the Separator texture is named rather than being a parentKey
+						self:getRegion(frame.DepositSettingsMenu, 4):SetTexture(nil) -- Separator texture
+						-- frame.DepositSettingsMenu.Separator:SetTexture(nil)
+						self:skinObject("ddbutton", {obj=frame.DepositSettingsMenu.ExpansionFilterDropdown, fType=ftype})
+						self:skinObject("frame", {obj=frame, fType=ftype, kfs=true})
+						if self.modChkBtns then
+							self:skinCheckButton{obj=frame.DepositSettingsMenu.AssignEquipmentCheckbox, fType=ftype, size=22}
+							self:skinCheckButton{obj=frame.DepositSettingsMenu.AssignConsumablesCheckbox, fType=ftype, size=22}
+							self:skinCheckButton{obj=frame.DepositSettingsMenu.AssignProfessionGoodsCheckbox, fType=ftype, size=22}
+							self:skinCheckButton{obj=frame.DepositSettingsMenu.AssignReagentsCheckbox, fType=ftype, size=22}
+							self:skinCheckButton{obj=frame.DepositSettingsMenu.AssignJunkCheckbox, fType=ftype, size=22}
+							self:skinCheckButton{obj=frame.DepositSettingsMenu.IgnoreCleanUpCheckbox, fType=ftype, size=22}
+						end
+
+						self:Unhook(frame, "OnShow")
+					end)
+
+					self:Unhook(fObj, "OnShow")
+				end)
+				self:checkShown(this.BankPanel)
 
 				self:Unhook(this, "OnShow")
 			end)
-		end
-
-		self:SecureHookScript(_G.ReagentBankFrame, "OnShow", function(fObj)
-			self:removeNineSlice(fObj.NineSlice)
-			self:keepFontStrings(fObj.EdgeShadows)
-			fObj:DisableDrawLayer("ARTWORK") -- bank slots texture
-			fObj:DisableDrawLayer("BACKGROUND") -- bank slots shadow texture
-			fObj.UnlockInfo:DisableDrawLayer("BORDER")
-			_G.RaiseFrameLevelByTwo(fObj.UnlockInfo) -- hide the slot button textures
-			if self.modBtns then
-				self:skinStdButton{obj=_G.ReagentBankFrameUnlockInfoPurchaseButton, fType=ftype}
-				self:skinStdButton{obj=fObj.DespositButton, fType=ftype, schk=true}
-			end
-			if self.modBtnBs then
-				for i = 1, fObj.size do
-					self:addButtonBorder{obj=fObj["Item" .. i], fType=ftype, ibt=true}
-					-- force quality border update
-					_G.BankFrameItemButton_Update(fObj["Item" .. i])
-				end
-			end
-
-			self:Unhook(fObj, "OnShow")
-		end)
-
-		-- Warband
-		self:SecureHookScript(_G.AccountBankPanel, "OnShow", function(fObj)
-			self:removeNineSlice(fObj.NineSlice)
-			self:keepFontStrings(fObj.EdgeShadows)
-			fObj.PurchaseTab.Border:SetTexture(nil)
-			-- Tabs (Side)
-			local function skinSideTabs(frame)
-				for tab in frame.bankTabPool:EnumerateActive() do
-					tab.Border:SetTexture(nil)
-					if aObj.modBtnBs then
-						 aObj:addButtonBorder{obj=tab, relTo=tab.Icon}
-					end
-				end
-			end
-			self:SecureHook(fObj, "RefreshBankTabs", function(frame)
-				skinSideTabs(frame)
-			end)
-			skinSideTabs(fObj)
-			if self.modBtnBs then
-				self:addButtonBorder{obj=fObj.PurchaseTab, relTo=fObj.PurchaseTab.Icon}
-				local function skinItemSlots()
-					for btn in fObj.itemButtonPool:EnumerateActive() do
-						btn.Background:SetTexture(nil)
-						aObj:addButtonBorder{obj=btn, fType=ftype, ibt=true}
-					end
-				end
-				self:SecureHook(fObj, "GenerateItemSlotsForSelectedTab", function(frame)
-					skinItemSlots()
-					self:Unhook(frame, "GenerateItemSlotsForSelectedTab")
-				end)
-				skinItemSlots()
-			end
-
-			self:SecureHookScript(fObj.MoneyFrame, "OnShow", function(frame)
-				self:keepFontStrings(frame.Border)
+			self:SecureHookScript(_G.BankCleanUpConfirmationPopup, "OnShow", function(this)
+				self:keepFontStrings(this.Border)
+				self:skinObject("frame", {obj=this, fType=ftype, ofs=-4})
 				if self.modBtns then
-					self:skinStdButton{obj=frame.WithdrawButton, fType=ftype, sechk=true}
-					self:skinStdButton{obj=frame.DepositButton, fType=ftype}
-				end
-
-				self:Unhook(frame, "OnShow")
-			end)
-			self:checkShown(fObj.MoneyFrame)
-
-			self:SecureHookScript(fObj.ItemDepositFrame, "OnShow", function(frame)
-				if self.modBtns then
-					self:skinStdButton{obj=frame.DepositButton, fType=ftype}
+					self:skinStdButton{obj=this.AcceptButton, fType=ftype}
+					self:skinStdButton{obj=this.CancelButton, fType=ftype}
 				end
 				if self.modChkBtns then
-					self:skinCheckButton{obj=frame.IncludeReagentsCheckbox, fType=ftype}
-					frame.IncludeReagentsCheckbox:SetSize(24, 24)
+					self:skinCheckButton{obj=this.HidePopupCheckbox.Checkbox, fType=ftype, size=24}
 				end
 
-				self:Unhook(frame, "OnShow")
-			end)
-			self:checkShown(fObj.ItemDepositFrame)
-
-			self:SecureHookScript(fObj.PurchasePrompt, "OnShow", function(frame)
-				self:skinObject("frame", {obj=frame, fType=ftype, kfs=true, clr="gold"})
-				if self.modBtns then
-					self:skinStdButton{obj=frame.TabCostFrame.PurchaseButton, fType=ftype}
-				end
-
-				self:Unhook(frame, "OnShow")
-			end)
-			self:checkShown(fObj.PurchasePrompt)
-
-			self:SecureHookScript(fObj.LockPrompt, "OnShow", function(frame)
-				self:skinObject("frame", {obj=fObj.LockPrompt, fType=ftype, kfs=true, fb=true, ofs=1, x1=3, x2=-3, clr="gold"})
-				fObj.LockPrompt.Background:SetAlpha(1)
-
-				self:Unhook(frame, "OnShow")
-			end)
-			self:checkShown(fObj.LockPrompt)
-
-			self:SecureHookScript(fObj.TabSettingsMenu, "OnShow", function(frame)
-				self:skinIconSelector(frame, ftype)
-				-- frame.DepositSettingsMenu.Separator:SetTexture(nil)
-				self:removeRegions(frame.DepositSettingsMenu, {4}) -- Separator texture
-				self:skinObject("ddbutton", {obj=frame.DepositSettingsMenu.ExpansionFilterDropdown, fType=ftype})
-				self:skinObject("frame", {obj=frame, fType=ftype, kfs=true})
-				if self.modChkBtns then
-					local function skinCB(cBtn)
-						aObj:skinCheckButton{obj=cBtn, fType=ftype}
-						cBtn:SetSize(20, 20)
-					end
-					skinCB(frame.DepositSettingsMenu.AssignEquipmentCheckbox)
-					skinCB(frame.DepositSettingsMenu.AssignConsumablesCheckbox)
-					skinCB(frame.DepositSettingsMenu.AssignProfessionGoodsCheckbox)
-					skinCB(frame.DepositSettingsMenu.AssignReagentsCheckbox)
-					skinCB(frame.DepositSettingsMenu.AssignJunkCheckbox)
-					skinCB(frame.DepositSettingsMenu.IgnoreCleanUpCheckbox)
-				end
-
-				self:Unhook(frame, "OnShow")
-			end)
-
-			self:Unhook(fObj, "OnShow")
-		end)
-
-		if self.modBtnBs then
-			self:SecureHook("BankFrameItemButton_Update", function(btn)
-				if btn.sbb -- ReagentBank buttons may not be skinned yet
-				and not btn.hasItem then
-					self:clrBtnBdr(btn, "grey")
-				end
-			end)
-			self:SecureHook("UpdateBagSlotStatus", function()
-				local bag
-				for i = 1, _G.NUM_BANKBAGSLOTS do
-					bag = _G.BankSlotsFrame["Bag" .. i]
-					if bag.sbb then
-						bag.sbb:SetBackdropBorderColor(bag.icon:GetVertexColor())
-					end
-				end
+				self:Unhook(this, "OnShow")
 			end)
 		end
 

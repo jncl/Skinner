@@ -310,30 +310,10 @@ aObj.SetupMainline_PlayerFrames = function()
 			cfpb.Highlight:ClearAllPoints()
 			cfpb.Highlight:SetPoint("center")
 			cfpb.Highlight:SetSize(22, 22)
-			if aObj.modBtnBs
-			and aObj.prdb.ContainerFrames.itmbtns
-			then
-				for _, btn in frame:EnumerateValidItems() do
-					aObj:addButtonBorder{obj=btn, fType=ftype, ibt=true, reParent={btn.UpgradeIcon, btn.flash, btn.NewItemTexture, btn.BattlepayItemTexture, btn.BagIndicator, btn.JunkIcon}, ofs=3}
-					btn.ExtendedSlot:SetTexture(nil)
-					btn.NormalTexture:SetAlpha(0)
-				end
-				-- remove button slot texture when empty
-				aObj:SecureHook(frame, "UpdateItems", function(fObj)
-					for _, btn in fObj:EnumerateValidItems() do
-						if not btn.hasItem then
-							btn:SetItemButtonTexture("")
-						end
-						if btn.ItemSlotBackground then
-							btn.ItemSlotBackground:SetTexture("")
-						end
-						if btn.sbb then
-							aObj:clrButtonFromBorder(btn)
-						end
-					end
-				end)
-				frame:UpdateItems()
-			end
+			aObj:SecureHook(frame, "UpdateItems", function(this)
+				aObj:skinItemSlots(frame, ftype)
+			end)
+			aObj:skinItemSlots(frame, ftype)
 			-- Backpack
 			if id == 0 then
 				aObj:skinObject("editbox", {obj=_G.BagItemSearchBox, fType=ftype, si=true, ca=true})
@@ -362,24 +342,13 @@ aObj.SetupMainline_PlayerFrames = function()
 		self.initialized.CurrencyTransfer = true
 
 		self:SecureHookScript(_G.CurrencyTransferMenu, "OnShow", function(this)
-			if not aObj.isMnlnPTRX then
-				self:skinObject("ddbutton", {obj=this.SourceSelector.Dropdown, fType=ftype})
-				self:skinObject("editbox", {obj=this.AmountSelector.InputBox, fType=ftype, y2=4})
-			else
-				self:skinObject("ddbutton", {obj=this.Content.SourceSelector.Dropdown, fType=ftype})
-				self:skinObject("editbox", {obj=this.Content.AmountSelector.InputBox, fType=ftype, y2=4})
-			end
+			self:skinObject("ddbutton", {obj=this.Content.SourceSelector.Dropdown, fType=ftype})
+			self:skinObject("editbox", {obj=this.Content.AmountSelector.InputBox, fType=ftype, y2=4})
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true})
 			if self.modBtns then
-				if not aObj.isMnlnPTRX then
-					self:skinStdButton{obj=this.AmountSelector.MaxQuantityButton, fType=ftype}
-					self:skinStdButton{obj=this.ConfirmButton, fType=ftype, sechk=true}
-					self:skinStdButton{obj=this.CancelButton, fType=ftype}
-				else
-					self:skinStdButton{obj=this.Content.AmountSelector.MaxQuantityButton, fType=ftype}
-					self:skinStdButton{obj=this.Content.ConfirmButton, fType=ftype, sechk=true}
-					self:skinStdButton{obj=this.Content.CancelButton, fType=ftype}
-				end
+				self:skinStdButton{obj=this.Content.AmountSelector.MaxQuantityButton, fType=ftype}
+				self:skinStdButton{obj=this.Content.ConfirmButton, fType=ftype, sechk=true}
+				self:skinStdButton{obj=this.Content.CancelButton, fType=ftype}
 			end
 
 			self:Unhook(this, "OnShow")
@@ -541,21 +510,14 @@ aObj.SetupMainline_PlayerFrames = function()
 				for i = 1, 4 do
 					_G["WhoFrameColumnHeader" .. i]:DisableDrawLayer("BACKGROUND")
 					if i == 2 then
-						self:skinObject("ddbutton", {obj=_G.WhoFrameDropdown, fType=ftype, ofs=aObj.isMnlnPTRX and 0 or nil})
+						self:skinObject("ddbutton", {obj=_G.WhoFrameDropdown, fType=ftype, ofs=0})
 					else
 						self:skinObject("frame", {obj=_G["WhoFrameColumnHeader" .. i], fType=ftype, y2=-3})
 					end
 				end
 				self:moveObject{obj=_G.WhoFrameColumnHeader4, x=2}
-				if aObj.isMnlnPTRX then
-					_G.WhoFrameEditBox.Backdrop:SetTexture(nil)
-					self:skinObject("editbox", {obj=_G.WhoFrameEditBox, fType=ftype, mi=true, mix=12, x1=-5, y1=-4, y2=4})
-				else
-					self:removeInset(_G.WhoFrameEditBoxInset)
-					self:moveObject{obj=_G.WhoFrameEditBox, y=6}
-					self:adjHeight{obj=_G.WhoFrameEditBox, adj=-8}
-					self:skinObject("editbox", {obj=_G.WhoFrameEditBox, fType=ftype})
-				end
+				_G.WhoFrameEditBox.Backdrop:SetTexture(nil)
+				self:skinObject("editbox", {obj=_G.WhoFrameEditBox, fType=ftype, mi=true, mix=12, x1=-5, y1=-4, y2=4})
 				self:skinObject("scrollbar", {obj=fObj.ScrollBar, fType=ftype})
 				if self.modBtns then
 					self:skinStdButton{obj=_G.WhoFrameGroupInviteButton, fType=ftype, schk=true}
@@ -1263,7 +1225,7 @@ aObj.SetupMainline_PlayerFrames = function()
 		self:SecureHookScript(_G.PlayerSpellsFrame, "OnShow", function(this)
 			this.PortraitContainer.portrait:SetAlpha(0)
 			self:skinObject("tabs", {obj=this.TabSystem,  pool=true, fType=ftype, ignoreSize=true, track=false})
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true, cb=true})
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true, cb=true, y1=0, x2=1})
 
 			self:SecureHookScript(this.MaximizeMinimizeButton, "OnShow", function(fObj)
 				fObj:DisableDrawLayer("BACKGROUND")
