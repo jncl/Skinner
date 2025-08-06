@@ -1,17 +1,20 @@
 ToDos
 ±±±±±
  
-	√ is Alt+v			- indicates completed
-	≈ is Alt+x			- indicates partially completed or dry-coded
-	x					- indicates nothing to change
-	¶ is Alt+7			- indicates localisation changes required
-	#nnn				- isndicates Issue number
-	S/N/I/U/O/E/C/M/FR	- Skin request/New Version/Issue(Bug)/Unobsolete Skin/Other changes/Classic Era/Wrath Classic/Mainline/Feature Request
+	√ is Alt+v	- indicates completed
+	≈ is Alt+x	- indicates partially completed or dry-coded
+	x			- indicates nothing to change
+	¶ is Alt+7	- indicates localisation changes required
+	#nnn		- isndicates Issue number
+	S/N/I/U/O	- Skin request/New Version/Issue(Bug)/Unobsolete Skin/Other changes
+	E/C/M/FR	- Classic Era/MoP Classic/Mainline/Feature Request
 
-#181 ?	I 	BonusRollFrame, SavedInstances BonusRollFrame
+	 	O 	ChatFrameTab for PetBattles has missing text
 
-#193 	I 	Can't use Quest Items in the Quest List
+#229 √	I/M	Objective Tracker skin too narrow
 
-#227 √	I/C DressUp Frame
+#230 √	I/C InspectUI
 
-#228 √	I 	Bartender4, XP bar not skinned any more
+#231 √	I/C ItemSocketingFrame
+
+#232 √	I/C InspectUI
