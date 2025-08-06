@@ -846,18 +846,51 @@ aObj.SetupClassic_PlayerFrames = function()
 			end)
 			self:checkShown(_G.GlyphFrame)
 		end
+
+		-- Hook this here as it is used by both the InspectUI & TalentUI
+		local talentInfoQuery, btn, colour = {}
+		aObj:SecureHook("TalentFrame_Update", function(frame, talentUnit)
+			for tier = 1, _G.MAX_NUM_TALENT_TIERS do
+				aObj:keepFontStrings(frame["tier" .. tier])
+				for column = 1, _G.NUM_TALENT_COLUMNS do
+					_G.wipe(talentInfoQuery)
+					talentInfoQuery.tier       = tier
+					talentInfoQuery.column     = column
+					talentInfoQuery.groupIndex = frame.talentGroup
+					talentInfoQuery.isInspect  = frame.inspect
+					talentInfoQuery.target     = talentUnit
+					local talentInfo = _G.C_SpecializationInfo.GetTalentInfo(talentInfoQuery)
+					--@debug@
+					_G.Spew("", talentInfo)
+					--@end-debug@
+					btn = frame["tier" .. tier]["talent" .. column]
+					if btn.knownSelection then
+						btn.knownSelection:SetTexture(nil)
+					end
+					if btn.border then
+						btn.border:SetTexture(nil)
+					end
+					colour = "default"
+					if talentInfo.selected then
+						colour = "gold"
+					elseif frame.inspect
+					or btn.disabled
+					then
+						colour = "disabled"
+					end
+					if aObj.modBtnBs then
+						if not btn.sbb then
+							aObj:addButtonBorder{obj=btn, fType=ftype, relTo=btn.icon, clr=colour, x2=frame.inspect and 3 or nil}
+						else
+							aObj:clrBBC(colour)
+						end
+					end
+				end
+			end
+		end)
+
 	end
 
-	local function skinTalentBtns(frame)
-		local fName = frame:GetName()
-		local tName
-		for i = 1, _G.MAX_NUM_TALENTS do
-			tName = fName .. "Talent" .. i
-			_G[tName .. "Slot"]:SetTexture(nil)
-			aObj:changeTandC(_G[tName .. "RankBorder"])
-			aObj:addButtonBorder{obj=_G[tName], fType=ftype, ibt=true, reParent={_G[tName .. "RankBorder"], _G[tName .. "Rank"]}, clr=_G[tName .. "Slot"]:GetVertexColor()}
-		end
-	end
 	aObj.blizzLoDFrames[ftype].InspectUI = function(self)
 		if not self.prdb.InspectUI or self.initialized.InspectUI then return end
 		self.initialized.InspectUI = true
@@ -1438,6 +1471,21 @@ aObj.SetupClassic_PlayerFrames = function()
 		self.initialized.TalentUI = true
 
 		if self.isClscERA then
+			local tName
+			local function skinTalentBtns()
+				for i = 1, _G.MAX_NUM_TALENTS do
+					tName = "PlayerTalentFrameTalent" .. i
+					_G[tName .. "Slot"]:SetTexture(nil)
+					aObj:changeTandC(_G[tName .. "RankBorder"])
+					if aObj.modBtnBs then
+						if not _G[tName].sbb then
+							aObj:addButtonBorder{obj=_G[tName], fType=ftype, ibt=true, reParent={_G[tName .. "RankBorder"], _G[tName .. "Rank"]}, clr={_G[tName .. "Slot"]:GetVertexColor()}}
+						else
+							_G[tName].sbb:SetBackdropBorderColor(_G[tName .. "Slot"]:GetVertexColor())
+						end
+					end
+				end
+			end
 			self:SecureHookScript(_G.PlayerTalentFrame, "OnShow", function(this)
 				local fName = this:GetName()
 				self:moveObject{obj=_G.PlayerTalentFrameTitleText, y=-2}
@@ -1459,12 +1507,10 @@ aObj.SetupClassic_PlayerFrames = function()
 						self:addButtonBorder{obj=_G["PlayerSpecTab" .. i]}
 					end
 				end
-				if self.modBtnBs then
-					skinTalentBtns(this)
-					self:SecureHook("TalentFrame_Update", function(fObj)
-						skinTalentBtns(fObj)
-					end)
-				end
+				skinTalentBtns()
+				self:SecureHook("TalentFrame_Update", function(fObj)
+					skinTalentBtns()
+				end)
 
 				self:Unhook(this, "OnShow")
 			end)
@@ -1538,21 +1584,6 @@ aObj.SetupClassic_PlayerFrames = function()
 					self:Unhook(fObj, "OnShow")
 				end)
 
-				self:SecureHook("TalentFrame_Update", function(frame, _)
-					for i = 1, _G.MAX_NUM_TALENT_TIERS do
-						self:keepFontStrings(frame["tier" .. i])
-						for j = 1, _G.NUM_TALENT_COLUMNS do
-							btn = frame["tier" .. i]["talent" .. j]
-							btn.knownSelection:SetTexture(nil)
-							if btn.knownSelection:IsShown() then
-								self:skinObject("frame", {obj=btn, fType=ftype, fb=true, clr="gold"})
-							end
-							if self.modBtnBs then
-								self:addButtonBorder{obj=btn, fType=ftype, relTo=btn.icon, clr=btn.disabled and "disabled" or "default"}
-							end
-						end
-					end
-				end)
 				self:SecureHookScript(_G.PlayerTalentFrameTalents, "OnShow", function(fObj)
 					self:keepFontStrings(fObj)
 					fObj.MainHelpButton.Ring:SetTexture(nil)
