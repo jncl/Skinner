@@ -53,14 +53,14 @@ if not aObj.isClscERA then
 				fObj:DisableDrawLayer("BACKGROUND")
 				self:removeNineSlice(fObj.NineSlice)
 				self:skinObject("scrollbar", {obj=fObj.ScrollBar, fType=ftype})
-				local function skinElement(...)
-					local _, element, new
+				local function skinCategories(...)
+					local _, element, elementData, new
 					if _G.select("#", ...) == 2 then
-						element, _ = ...
+						element, elementData = ...
 					elseif _G.select("#", ...) == 3 then
-						element, _, new = ...
+						element, elementData, new = ...
 					else
-						_, element, _, new = ...
+						_, element, elementData, new = ...
 					end
 					if new ~= false then
 						aObj:keepRegions(element, {3, 4, 5}) -- N.B. region 3 is highlight, 4 is selected, 5 is text
@@ -68,17 +68,16 @@ if not aObj.isClscERA then
 					end
 					element.sb:Show()
 					element.sb:ClearAllPoints()
-					if element.type == "category" then
+					element.sb:SetPoint("BOTTOMRIGHT", element, "BOTTOMRIGHT", -4, -1)
+					if elementData.type == "category" then
 						element.sb:SetPoint("TOPLEFT", element, "TOPLEFT", -1, 1)
-						element.sb:SetPoint("BOTTOMRIGHT", element, "BOTTOMRIGHT", -4, -1)
-					elseif element.type == "subCategory" then
+					elseif elementData.type == "subCategory" then
 						element.sb:SetPoint("TOPLEFT", element, "TOPLEFT", 10, 1)
-						element.sb:SetPoint("BOTTOMRIGHT", element, "BOTTOMRIGHT", -4, -1)
-					elseif element.type == "subSubCategory" then
+					elseif elementData.type == "subSubCategory" then
 						element.sb:Hide()
 					end
 				end
-				_G.ScrollUtil.AddAcquiredFrameCallback(fObj.ScrollBox, skinElement, aObj, true)
+				_G.ScrollUtil.AddAcquiredFrameCallback(fObj.ScrollBox, skinCategories, aObj, true)
 
 				self:Unhook(fObj, "OnShow")
 			end)
@@ -111,8 +110,10 @@ if not aObj.isClscERA then
 					frame.silver:SetWidth(38)
 					frame.copper:SetWidth(38)
 				end
-				aObj:moveObject{obj=frame.silver.texture, x=10}
-				aObj:moveObject{obj=frame.copper.texture, x=10}
+				if not self.isMnln then
+					aObj:moveObject{obj=frame.silver.texture, x=10}
+					aObj:moveObject{obj=frame.copper.texture, x=10}
+				end
 			end
 			self:SecureHookScript(this.BrowseResultsFrame, "OnShow", function(fObj)
 				skinItemList(fObj.ItemList)
@@ -164,12 +165,20 @@ if not aObj.isClscERA then
 			self:SecureHookScript(this.ItemBuyFrame, "OnShow", function(fObj)
 				self:removeNineSlice(fObj.ItemDisplay.NineSlice)
 				self:removeRegions(fObj.ItemDisplay, {1})
+				if self.isClsc then
+					fObj.ItemDisplay.ItemButton.EmptyBackground:SetAlpha(0) -- N.B. Texture changed in code
+				end
 				skinBidAmt(fObj.BidFrame.BidAmount)
 				skinItemList(fObj.ItemList)
 				if self.modBtns then
 					self:skinStdButton{obj=fObj.BackButton, fType=ftype}
 					self:skinStdButton{obj=fObj.BuyoutFrame.BuyoutButton, fType=ftype, sechk=true}
 					self:skinStdButton{obj=fObj.BidFrame.BidButton, fType=ftype, sechk=true}
+				end
+				if self.modBtnBs then
+					self:addButtonBorder{obj=fObj.ItemDisplay.ItemButton, fType=ftype, ibt=true, ofs=0}
+					local itemKeyInfo =_G.C_AuctionHouse.GetItemKeyInfo(fObj.ItemDisplay.itemKey)
+					self:setBtnClr(fObj.ItemDisplay.ItemButton, itemKeyInfo.quality)
 				end
 
 				self:Unhook(fObj, "OnShow")
