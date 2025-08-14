@@ -269,7 +269,11 @@ function aObj:OnEnable()
 
 	--@debug@
 	if self.isPatch then
-		_G.SetBasicMessageDialogText("Runnning as a Patched version, please update Shared_Funcs variable", true)
+		if self.isClscERA then
+			_G.message("Runnning as a Patched version, please update Shared_Funcs variable", true)
+		else
+			_G.SetBasicMessageDialogText("Runnning as a Patched version, please update Shared_Funcs variable", true)
+		end
 	end
 	--@end-debug@
 
@@ -365,7 +369,11 @@ function aObj:OnEnable()
 			end
 		end
 		if cnt > 0 then
-			_G.SetBasicMessageDialogText(cnt .. " AddOns found using deprecated IOFPanel_ functions, please fix them")
+			if self.isClscERA then
+				_G.message(cnt .. " AddOns found using deprecated IOFPanel_ functions, please fix them")
+			else
+				_G.SetBasicMessageDialogText(cnt .. " AddOns found using deprecated IOFPanel_ functions, please fix them")
+			end
 			for addon, iofevent in _G.pairs(depTab) do
 				_G.print(addon .. " is using a deprecated function: " .. iofevent .. " please update it")
 			end
