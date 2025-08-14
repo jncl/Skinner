@@ -459,7 +459,7 @@ local function skinDDButton(tbl)
 	else
 		-- skin the WowStyle1DropdownTemplate & other DropdownButtons
 		if tbl.obj.Background then
-			tbl.obj.Background:SetTexture(nil)
+			tbl.obj.Background:SetTexture("")
 		end
 		if not tbl.noSF then
 			aObj:skinObject("frame", {obj=tbl.obj, fType=tbl.ftype, sechk=tbl.sechk, ofs=tbl.ofs, x1=tbl.x1, y1=tbl.y1, x2=tbl.x2, y2=tbl.y2})
@@ -700,6 +700,8 @@ local function skinFrame(tbl)
 	-- make sure it's lower than its parent's Frame Strata
 	if tbl.bg then
 		tbl.obj.sf:SetFrameStrata(tbl.sfs)
+	else
+		tbl.obj.sf:SetFrameStrata(tbl.obj:GetFrameStrata())
 	end
 	-- skin the CloseButton
 	if aObj.modBtns
@@ -932,9 +934,7 @@ skinFuncs.statusbar = function(table) skinStatusBar(table) end
 local function skinTabs(tbl)
 	--@debug@
 	_G.assert(tbl.obj, "Missing Tab Object (skinTabs)\n" .. _G.debugstack(2, 3, 2))
-	if not aObj.isMnln then
-		_G.assert(_G.type(tbl.tabs) == "table" or tbl.prefix, "Missing Tabs Table or Tab Prefix (skinTabs)\n" .. _G.debugstack(2, 3, 2))
-	end
+	_G.assert(tbl.tabs and _G.type(tbl.tabs) == "table" or tbl.prefix or tbl.pool, "Missing Tabs Table, Tab Prefix or Tab Pool (skinTabs)\n" .. _G.debugstack(2, 3, 2))
 	--@end-debug@
 	aObj:Debug2("skinTabs: [%s]", tbl)
 
@@ -998,6 +998,7 @@ local function skinTabs(tbl)
 					aObj:setInactiveTab(tab.sf)
 				end
 				aObj:SecureHook(tab, "SetTabSelected", function(tObj, _)
+					aObj:Debug("tab SetTabSelected: [%s, %s]", tObj)
 					if tObj.isSelected then
 						aObj:setActiveTab(tObj.sf)
 					else
@@ -1030,9 +1031,7 @@ local function skinTabs(tbl)
 			tbl.func(tab)
 		end
 	end
-	if aObj.isMnln
-	and tbl.pool
-	then
+	if tbl.pool then
 		local idx = 0
 		for tab in tbl.obj.tabPool:EnumerateActive() do
 			idx = idx + 1
@@ -1098,7 +1097,7 @@ end
 function aObj:skinIconSelector(frame, ftype)
 
 	ftype = ftype or "a"
-	self:removeNineSlice(frame.BorderBox)
+	self:keepFontStrings(frame.BorderBox)
 	frame.BorderBox.SelectedIconArea.SelectedIconButton:DisableDrawLayer("BACKGROUND")
 	self:skinObject("editbox", {obj=frame.BorderBox.IconSelectorEditBox, fType=ftype})
 	self:skinObject("ddbutton", {obj=frame.BorderBox.IconTypeDropdown, fType=ftype})
@@ -1106,7 +1105,7 @@ function aObj:skinIconSelector(frame, ftype)
 	self:skinObject("frame", {obj=frame, fType=ftype, ofs=-3, x1=-2})
 	if self.modBtns then
 		self:skinStdButton{obj=frame.BorderBox.CancelButton, fType=ftype}
-		self:skinStdButton{obj=frame.BorderBox.OkayButton, fType=ftype, schk=true}
+		self:skinStdButton{obj=frame.BorderBox.OkayButton, fType=ftype, schk=true, sechk=true}
 	end
 	if self.modBtnBs then
 		self:addButtonBorder{obj=frame.BorderBox.SelectedIconArea.SelectedIconButton, fType=ftype, relTo=frame.BorderBox.SelectedIconArea.SelectedIconButton.Icon}
@@ -1210,5 +1209,28 @@ if _G.PVEFrame then
 				self:skinCheckButton{obj=roleBtn.checkButton}
 			end
 		end
+	end
+end
+
+if aObj.isMnln then
+	function aObj:skinTabSettingsMenu(frame, ftype)
+
+		self:SecureHookScript(frame.TabSettingsMenu, "OnShow", function(fObj)
+			self:skinIconSelector(fObj, ftype)
+			self:getRegion(fObj.DepositSettingsMenu, 4):SetTexture(nil) -- Separator texture
+			self:skinObject("ddbutton", {obj=fObj.DepositSettingsMenu.ExpansionFilterDropdown, fType=ftype})
+			self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true})
+			if self.modChkBtns then
+				self:skinCheckButton{obj=fObj.DepositSettingsMenu.AssignEquipmentCheckbox, fType=ftype, size=22}
+				self:skinCheckButton{obj=fObj.DepositSettingsMenu.AssignConsumablesCheckbox, fType=ftype, size=22}
+				self:skinCheckButton{obj=fObj.DepositSettingsMenu.AssignProfessionGoodsCheckbox, fType=ftype, size=22}
+				self:skinCheckButton{obj=fObj.DepositSettingsMenu.AssignReagentsCheckbox, fType=ftype, size=22}
+				self:skinCheckButton{obj=fObj.DepositSettingsMenu.AssignJunkCheckbox, fType=ftype, size=22}
+				self:skinCheckButton{obj=fObj.DepositSettingsMenu.IgnoreCleanUpCheckbox, fType=ftype, size=22}
+			end
+
+			self:Unhook(frame, "OnShow")
+		end)
+
 	end
 end
