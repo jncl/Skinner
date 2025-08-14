@@ -48,9 +48,10 @@ Locales\_Locales_debug.xml
 
 Core\_Core.xml
 
-# NOT supported in ClassicERA 1.15.7 & Classic 4.4.2
-# Supported in Mainline 11.1.0+ & MOP Classic Beta 5.5.0
+# NOT supported in ClassicERA 1.15.7
+# Supported in Mainline 11.1.0+ & MOP Classic 5.5.0+
 # [Family]\_Support.xml
+
 Classic\_Support.xml
 Mainline\_Support.xml
 
