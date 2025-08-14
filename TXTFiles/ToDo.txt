@@ -9,12 +9,14 @@ ToDos
 	S/N/I/U/O	- Skin request/New Version/Issue(Bug)/Unobsolete Skin/Other changes
 	E/C/M/FR	- Classic Era/MoP Classic/Mainline/Feature Request
 
-	 	O 	ChatFrameTab for PetBattles has missing text
+	 ?	O/?	ChatFrameTab for PetBattles has missing text
 
-#229 √	I/M	Objective Tracker skin too narrow
+	 ≈	O/M	PerksProgramProductDetailsContainerFrame, skin contents
 
-#230 √	I/C InspectUI
+#233 √	I/E Bagnon skin is not working
 
-#231 √	I/C ItemSocketingFrame
+#234 √	I/M Baganator
 
-#232 √	I/C InspectUI
+#235 √	S/M Item Splitter
+
+#236 √	I/M BetterBags
