@@ -860,9 +860,6 @@ aObj.SetupClassic_PlayerFrames = function()
 					talentInfoQuery.isInspect  = frame.inspect
 					talentInfoQuery.target     = talentUnit
 					local talentInfo = _G.C_SpecializationInfo.GetTalentInfo(talentInfoQuery)
-					--@debug@
-					_G.Spew("", talentInfo)
-					--@end-debug@
 					btn = frame["tier" .. tier]["talent" .. column]
 					if btn.knownSelection then
 						btn.knownSelection:SetTexture(nil)
