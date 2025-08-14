@@ -549,16 +549,29 @@ aObj.SetupMainline_NPCFrames = function()
 					self:skinObject("frame", {obj=frame, fType=ftype, kfs=true})
 
 					self:skinObject("scrollbar", {obj=frame.SetDetailsScrollBoxContainer.ScrollBar, fType=ftype})
-					-- TODO: skin details entries
-					-- local function skinDetails(...)
-					-- 	local _, element, elementData
-					-- 	if _G.select("#", ...) == 2 then
-					-- 		element, elementData = ...
-					-- 	else
-					-- 		_, element, elementData = ...
-					-- 	end
-					-- end
-					-- _G.ScrollUtil.AddInitializedFrameCallback(frame.SetDetailsScrollBoxContainer.ScrollBox, skinDetails, aObj, true)
+					local y1Ofs, y2Ofs
+					local function skinDetails(...)
+						local _, element, elementData
+						if _G.select("#", ...) == 2 then
+							element, elementData = ...
+						else
+							_, element, elementData = ...
+						end
+						if elementData.isFirstSetItem then
+							y1Ofs = -19
+							y2Ofs = nil
+						elseif elementData.isLastSetItem then
+							y1Ofs = nil
+							y2Ofs = 19
+						else
+							y1Ofs = nil
+							y2Ofs = 1
+						end
+						element.BackgroundTexture:SetTexture(nil)
+						aObj:skinObject("frame", {obj=element, fb=true, clr="grey", y1=y1Ofs, y2=y2Ofs})
+						-- TODO: add button border to icon
+					end
+					_G.ScrollUtil.AddInitializedFrameCallback(frame.SetDetailsScrollBoxContainer.ScrollBox, skinDetails, aObj, true)
 
 					self:Unhook(frame, "OnShow")
 				end)
