@@ -2,7 +2,7 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("BetterBags") then return end
 local _G = _G
 
-aObj.addonsToSkin.BetterBags = function(self) -- v0.1.96
+aObj.addonsToSkin.BetterBags = function(self) -- v 0.3.27
 
 	local bBag = _G.LibStub("AceAddon-3.0"):GetAddon("BetterBags", true)
 	if not bBag then return end
@@ -10,41 +10,26 @@ aObj.addonsToSkin.BetterBags = function(self) -- v0.1.96
 	local skinBtn = _G.nop
 	if self.modBtnBs then
 		function skinBtn(btn)
-			aObj:addButtonBorder{obj=btn, ibt=true}
-			aObj:clrButtonFromBorder(btn)
-		end
-		local cV
-		local function skinCVBtns(bagType)
-			cV = bBag.Bags[bagType].currentView
-			local data
-			for _, item in _G.pairs(cV.itemsByBagAndSlot) do
-				data = item.button.data or item.data
-				skinBtn(item.button.button or item.button, data.isItemEmpty)
-			end
-			if cV.freeSlot then
-				skinBtn(cV.freeSlot.button, cV.freeSlot.data.isItemEmpty)
-			end
-			if cV.freeReagentSlot then
-				skinBtn(cV.freeReagentSlot.button)
-			end
+			aObj:addButtonBorder{obj=btn, ibt=true, ofs=3}
 		end
 		local events = bBag:GetModule("Events", true)
-		events:RegisterMessage("items/RefreshBackpack/Done", function(_, _)
-			skinCVBtns("Backpack")
-		end)
-		events:RegisterMessage("items/RefreshBank/Done", function(_, _)
-			skinCVBtns("Bank")
-		end)
 		events:RegisterMessage("item/NewButton", function(_, _, button)
-			if aObj.isRtl then
+			skinBtn(button)
+			if aObj.isMnln then
 				button.ItemSlotBackground:SetAlpha(0)
 			else
 				_G.SetItemButtonTexture(button, nil)
 			end
 		end)
 	end
+	self:SecureHookScript(_G.BetterBagsEmptySlotTooltip, "OnShow", function(this)
 
-	local function skinFrame(frame)
+		self:skinObject("frame", {obj=this, kfs=true})
+
+		self:Unhook(this, "OnShow")
+	end)
+
+	local function skinFrame(frame, dontBg)
 		if frame.Bg then
 			if frame.Bg:IsObjectType("frame") then
 				frame.Bg:DisableDrawLayer("BACKGROUND")
@@ -60,7 +45,27 @@ aObj.addonsToSkin.BetterBags = function(self) -- v0.1.96
 		if frame.search then
 			aObj:skinObject("editbox", {obj=frame.search.textBox, si=true})
 		end
-		aObj:skinObject("frame", {obj=frame, kfs=true, cb=true, bg=true})
+		aObj:skinObject("frame", {obj=frame, kfs=true, cb=true, bg=not dontBg and true or nil})
+	end
+	local function skinSubFrame(fObj)
+		aObj:SecureHookScript(fObj.frame, "OnShow", function(this)
+			skinFrame(aObj:getLastChild(this)) -- decorator frame
+
+			aObj:Unhook(this, "OnShow")
+		end)
+		aObj:skinObject("scrollbar", {obj=fObj.content.ScrollBar or fObj.content.bar})
+		if fObj.content.ScrollBox then
+			local function skinContentElement(...)
+				local _, element, elementData
+				if _G.select("#", ...) == 2 then
+					element, elementData = ...
+				else
+					_, element, elementData = ...
+				end
+				aObj:removeBackdrop(element)
+			end
+			_G.ScrollUtil.AddInitializedFrameCallback(fObj.content.ScrollBox, skinContentElement, aObj, true)
+		end
 	end
 	local function handleBag(bagObj)
 		aObj:SecureHookScript(bagObj.frame, "OnShow", function(this)
@@ -95,18 +100,13 @@ aObj.addonsToSkin.BetterBags = function(self) -- v0.1.96
 			end)
 			skinBagSlots(bagObj.slots)
 		end
-
 		if bagObj.currencyFrame then
-			aObj:SecureHookScript(bagObj.currencyFrame.frame, "OnShow", function(this)
-				skinFrame(aObj:getLastChild(this)) -- decorator frame
-
-				aObj:Unhook(this, "OnShow")
-			end)
+			skinSubFrame(bagObj.currencyFrame)
 			if aObj.modBtnBs then
 				local info
 				local function skinCurBtns(frame)
 					for _, cell in _G.ipairs(frame.content.cells) do
-						if aObj.isRtl then
+						if aObj.isMnln then
 							info = _G.C_CurrencyInfo.GetCurrencyListInfo(cell.index)
 						else
 							info = {_G.GetCurrencyListInfo(cell.index)}
@@ -121,24 +121,13 @@ aObj.addonsToSkin.BetterBags = function(self) -- v0.1.96
 			end
 		end
 		if bagObj.themeConfigFrame then
-			aObj:SecureHookScript(bagObj.themeConfigFrame.frame, "OnShow", function(this)
-				skinFrame(aObj:getLastChild(this)) -- decorator frame
-
-				aObj:Unhook(this, "OnShow")
-			end)
+			skinSubFrame(bagObj.themeConfigFrame)
 		end
 		if bagObj.sectionConfigFrame then
-			aObj:SecureHookScript(bagObj.sectionConfigFrame.frame, "OnShow", function(this)
-				skinFrame(aObj:getLastChild(this)) -- decorator frame
-
-				aObj:Unhook(this, "OnShow")
-			end)
+			skinSubFrame(bagObj.sectionConfigFrame)
+			skinSubFrame(bagObj.sectionConfigFrame.itemList)
 		end
-
 	end
-
-	handleBag(bBag.Bags.Backpack)
-	handleBag(bBag.Bags.Bank)
 
 	local searchBox = bBag:GetModule("SearchBox", true)
 	self:SecureHook(searchBox, "CreateBox", function(this)
@@ -152,5 +141,54 @@ aObj.addonsToSkin.BetterBags = function(self) -- v0.1.96
 
 		self:Unhook(this, "OnShow")
 	end)
+
+	local scc = bBag:GetModule("SearchCategoryConfig")
+	self:SecureHookScript(scc.frame, "OnShow", function(this)
+		local td = aObj:getLastChild(this)
+		skinFrame(td, true) -- decorator frame
+		td.sf:SetFrameLevel(0)
+
+		self:skinObject("editbox", {obj=scc.nameBox})
+		self:skinObject("frame", {obj=scc.queryBox, kfs=true, fb=true, ofs=8})
+		self:skinObject("editbox", {obj=scc.priorityBox})
+		if self.modBtns then
+			self:skinStdButton{obj=scc.saveButton}
+			self:skinStdButton{obj=scc.cancelButton}
+		end
+
+		self:Unhook(this, "OnShow")
+	end)
+
+	local config = bBag:GetModule("Config", true)
+	local cf = config.configFrame
+	self:SecureHookScript(cf.frame, "OnShow", function(this)
+		skinFrame(aObj:getLastChild(this), true) -- decorator frame
+
+		self:skinObject("scrollbar", {obj=cf.ScrollBar})
+		local lo = cf.layout
+		if self.modChkBtns then
+			for frame, _ in _G.pairs(lo.checkboxes) do
+				self:skinCheckButton{obj=frame.checkbox, size=28}
+			end
+		end
+		for frame, _ in _G.pairs(lo.dropdowns) do
+			if not self.isMnln then
+				self:skinObject("dropdown", {obj=frame.dropdown})
+			else
+				self:skinObject("ddbutton", {obj=frame.dropdown})
+			end
+		end
+		for frame, _ in _G.pairs(lo.sliders) do
+			self:skinObject("slider", {obj=frame.slider})
+			self:skinObject("editbox", {obj=frame.input})
+		end
+
+		self:Unhook(this, "OnShow")
+	end)
+
+	handleBag(bBag.Bags.Backpack)
+	if not self.isMnln then
+		handleBag(bBag.Bags.Bank)
+	end
 
 end
