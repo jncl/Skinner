@@ -2496,7 +2496,7 @@ aObj.SetupMainline_UIFrames = function()
 				frame.sf:Show()
 			end
 			for opt in frame.optionPools:EnumerateActiveByTemplate(frame.optionFrameTemplate) do
-				aObj:Debug("PCF skinOptions: [%s, %s]", frame.optionFrameTemplate)
+				-- aObj:Debug("PCF skinOptions: [%s, %s]", frame.optionFrameTemplate)
 				opt.OptionText.String:SetTextColor(aObj.BT:GetRGB())
 				opt.OptionText.HTML:SetTextColor("P", aObj.BT:GetRGB())
 				if aObj.modBtns then
@@ -2504,6 +2504,13 @@ aObj.SetupMainline_UIFrames = function()
 						-- DON'T skin magnifying glass button
 						if fObj.Button:GetText() ~= "Preview Covenant" then
 							aObj:skinStdButton{obj=fObj.Button, fType=ftype, schk=true, sechk=true}
+							-- change button border alpha to indicate currently selected choice
+							if fObj.Button.pushed then
+								fObj.Button:SetEnabled(true)
+								fObj.Button.sb:SetAlpha(0.5)
+							else
+								fObj.Button.sb:SetAlpha(1)
+							end
 						end
 					end
 				end
