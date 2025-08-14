@@ -1,3 +1,19 @@
+beta11.62417.1
+Jncl:
+	Updated ToDo*.txt files
+	Updated Change_History.txt
+	Updated Version numbers
+	Updated Classic InspectUI & TalentUI skins closes #232
+	Applied Retail PTRX changes, closes #231
+	Updated AuctionHouseUI skin
+	Updated Classic Support to include FocusFrame skinning for MoP Classic
+	Updated skinning of ObjectiveTracker Header button
+	Updated ObjectiveTracker skin, closes #229
+	Updated InspectUI, closes #230
+	Updated Retail Settings skin
+	Updated MainMenuBar skin
+	Updated skinCheckButton function to also set button skin size
+
 beta11.62258.1
 Jncl:
 	Updated ToDo*.txt files
