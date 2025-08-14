@@ -5,13 +5,13 @@ local _G = _G
 local buildInfo = {
 	-- wow_classic_beta    = {"MOP Classic Beta",          "5.5.0",  62071},
 	-- wow_beta            = {"The War Within Beta",       "11.0.2", 56313},
-	wow_classic_ptr     = {"PTR (MoP Classic)",			"5.5.0",  62232},
+	wow_classic_ptr     = {"PTR (MoP Classic)",			"5.5.0",  62422},
 	wow_classic_era_ptr = {"PTR (Classic Era)",         "1.15.7", 60141},
 	wow_ptr             = {"PTR (TWW 11.1.7)",          "11.1.7", 61967},
-	wow_ptr_x           = {"PTR (TWW 11.2.0)",          "11.2.0", 62417},
+	wow_ptr_x           = {"PTR (TWW 11.2.0)",          "11.2.0", 62493},
 	wow_classic_era     = {"World of Warcraft Classic", "1.15.7", 61582},
-	wow_classic         = {"Mists of Panderia Classic", "5.5.0",  62258},
-	wow                 = {"World of Warcraft",         "11.2.0", 62417},
+	wow_classic         = {"Mists of Panderia Classic", "5.5.0",  62422},
+	wow                 = {"World of Warcraft",         "11.2.0", 62493},
 	curr                = {"curr", _G.GetBuildInfo()},
 }
 
@@ -364,7 +364,11 @@ function aObj:checkLocaleStrings()
 			if not aObj.locale_enUS[k] then
 				_G.print(aName, _G.WrapTextInColorCode(" >> Locale entry missing: ", "ffff0000"),  k)
 				if not missingLocaleMessage then
-					_G.SetBasicMessageDialogText(aName .. ": Missing Locale entry, please add to Locales/enUS_Locale_Strings.lua and then import them")
+					if self.isClscERA then
+						_G.message(aName .. ": Missing Locale entry, please add to Locales/enUS_Locale_Strings.lua and then import them")
+					else
+						_G.SetBasicMessageDialogText(aName .. ": Missing Locale entry, please add to Locales/enUS_Locale_Strings.lua and then import them")
+					end
 					missingLocaleMessage = true
 				end
 				aObj.localeStrings[k] = true
