@@ -107,6 +107,7 @@
 <Script file="InvenRaidFrames3.lua"/>
 <Script file="Inventorian.lua"/>
 <Script file="ItemRack.lua"/>
+<Script file="ItemSplitter.lua"/>
 <Script file="JackJack.lua"/>
 <Script file="Journalator.lua"/>
 <Script file="KongConfig.lua"/>
