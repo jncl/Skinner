@@ -842,6 +842,7 @@ aObj.SetupMainline_PlayerFrames = function()
 		self.initialized.LootFrames = true
 
 		self:SecureHookScript(_G.LootFrame, "OnShow", function(this)
+			this.Bg:DisableDrawLayer("BACKGROUND")
 			self:skinObject("scrollbar", {obj=this.ScrollBar, fType=ftype})
 			self:keepFontStrings(this.ScrollBox.Shadows)
 			local function skinElement(...)
@@ -869,7 +870,7 @@ aObj.SetupMainline_PlayerFrames = function()
 				end
 			end
 			_G.ScrollUtil.AddAcquiredFrameCallback(this.ScrollBox, skinElement, aObj, true)
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true})
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true, x1=4})
 			if self.modBtns then
 				self:skinCloseButton{obj=this.ClosePanelButton, fType=ftype}
 			end
