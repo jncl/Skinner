@@ -3419,7 +3419,7 @@ aObj.SetupMainline_UIFrames = function()
 			end
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true, cbns=true, ofs=-5, y2=-5, clr="sepia"})
 			if self.modBtns then
-				self:skinStdButton{obj=this.SelectRewardButton, sechk=true}
+				self:skinStdButton{obj=this.SelectRewardButton, sechk=true, clr="sepia"}
 			end
 			self:SecureHook(this, "Refresh", function(fObj, _)
 				for _, frame in _G.pairs(fObj.Activities) do -- .ConcessionFrame contents
@@ -3429,8 +3429,12 @@ aObj.SetupMainline_UIFrames = function()
 							self:addButtonBorder{obj=frame.ItemFrame, fType=ftype, relTo=frame.ItemFrame.Icon, clr={_G.EPIC_PURPLE_COLOR:GetRGBA()}}
 						end
 					end
-					self:skinObject("frame", {obj=frame, fType=ftype, kfs=true, fb=true, ofs=-1, x1=0, y1=0})
+					self:skinObject("frame", {obj=frame, fType=ftype, kfs=true, fb=true, ofs=frame==fObj.ConcessionFrame and 3 or 1})
 					self:clrBBC(frame.sf, frame.unlocked or frame.hasRewards and "sepia" or "grey")
+					if frame == fObj.ConcessionFrame then
+						frame.SelectedTexture:SetAlpha(1)
+					else
+					end
 				end
 			end)
 
