@@ -2,7 +2,7 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("Baganator") then return end
 local _G = _G
 
-aObj.addonsToSkin.Baganator = function(self) -- v 665
+aObj.addonsToSkin.Baganator = function(self) -- v 724
 
 	-- TODO: handle warband bank being purchased
 
@@ -35,10 +35,10 @@ aObj.addonsToSkin.Baganator = function(self) -- v 665
 		end
 		local containerTypes = {
 			Backpack = {"BagLive", "BagCached"},
-			Bank     = {"BankLive", "BankCached"},
+			Bank     = aObj.isMnln and {"BankTabLive", "BankTabCached", "BankUnifiedLive", "BankUnifiedCached"} or {"BankLive", "BankCached"},
+			Category = {"LiveLayouts", "CachedLayouts"},
 			Guild    = {"GuildLive", "GuildCached", "GuildUnifiedLive", "GuildUnifiedCached"},
 			Warband  = {"BankTabLive", "BankTabCached", "BankUnifiedLive", "BankUnifiedCached"},
-			Category = {"LiveLayouts", "CachedLayouts"},
 		}
 		local method, ctype
 		function skinViewBtns(frame, type)
@@ -135,68 +135,97 @@ aObj.addonsToSkin.Baganator = function(self) -- v 665
 			for _, tab in _G.pairs(fObj.Tabs) do
 				tab:DisableDrawLayer("BACKGROUND")
 				if aObj.modBtnBs then
-					 aObj:addButtonBorder{obj=tab, relTo=tab.Icon, ofs=3, x2=2, schk=true, sechk=true}
+					 aObj:addButtonBorder{obj=tab, relTo=tab.Icon, ofs=3--[[	, x2=2]]--[[, schk=true, sechk=true]]}
 				end
 			end
 		end
 	end
 	local function skinBank(frame, bankType)
+		aObj:skinObject("tabs", {obj=frame, pool=true, lod=aObj.isTT and true, selectedTab=frame.currentTab == frame.Character and 1 or 2})
 		skinFrame(frame, bankType)
-		skinBagSlots(frame.Character)
-		aObj:skinObject("tabs", {obj=frame, tabs=frame.Tabs, lod=aObj.isTT and true})
 		if aObj.modBtns then
 			for _, btn in _G.pairs(frame.AllFixedButtons) do
 				aObj:skinStdButton{obj=btn, schk=true, sechk=true}
 			end
 		end
+		if not aObj.isMnln then
+			skinBagSlots(frame.Character)
+			if frame.Character.UpdateForCharacter then
+				aObj:SecureHook(frame.Character, "UpdateForCharacter", function(fObj, _)
+					if aObj.modBtns then
+						for _, btn in _G.pairs(fObj.TopButtons) do
+							aObj:skinStdButton{obj=btn, schk=true, sechk=true}
+						end
+					end
 
-		if frame.Character.UpdateForCharacter then
-			aObj:SecureHook(frame.Character, "UpdateForCharacter", function(fObj, _)
+					if bankType:find("CV")
+					and fObj.BankMissingHint:IsShown()
+					then
+						return
+					end
+
+					if aObj.modBtns then
+						for _, btn in _G.pairs(fObj:GetParent().AllButtons) do
+							aObj:skinStdButton{obj=btn, schk=true, sechk=true}
+						end
+					end
+
+					skinCVBtnsAfterDelay(fObj, bankType)
+
+					if bankType:find("SV") then
+						skinSpecialistBags(fObj, bankType)
+					end
+
+				end)
+			end
+		else
+			aObj:SecureHookScript(frame.Character, "OnShow", function(this)
 				if aObj.modBtns then
-					for _, btn in _G.pairs(fObj.TopButtons) do
+					for _, btn in _G.pairs(this.TopButtons) do
 						aObj:skinStdButton{obj=btn, schk=true, sechk=true}
 					end
 				end
 
-				if bankType:find("CV")
-				and fObj.BankMissingHint:IsShown()
-				then
-					return
-				end
-
 				if aObj.modBtns then
-					for _, btn in _G.pairs(fObj:GetParent().AllButtons) do
-						aObj:skinStdButton{obj=btn, schk=true, sechk=true}
-					end
+					aObj:skinStdButton{obj=this.DepositReagentsButton}
+					aObj:skinStdButton{obj=this.BuyReagentBankButton}
 				end
 
-				skinCVBtnsAfterDelay(fObj, bankType)
+				aObj:SecureHook(this, "ShowTab", function(fObj, _)
+					if bankType:find("CV") then
+						skinCVBtnsAfterDelay(fObj, bankType)
+					end
+				end)
 
 				if bankType:find("SV") then
-					skinSpecialistBags(fObj, bankType)
+					skinSpecialistBags(this, bankType)
 				end
-			end)
-		end
 
-		if aObj.isMnln then
+				aObj:SecureHook(this, "UpdateTabs", function(fObj)
+					skinSideTabs(fObj)
+				end)
+
+				aObj:skinTabSettingsMenu(this)
+
+				aObj:Unhook(this, "OnShow")
+			end)
+			aObj:checkShown(frame.Character)
 			aObj:SecureHookScript(frame.Warband, "OnShow", function(this)
 				for _, btn in _G.pairs(this.LiveButtons) do
 					if btn:IsObjectType("CheckButton")
 					and aObj.modChkBtns
 					then
-						aObj:skinCheckButton{obj=btn}
-						btn:SetSize(24, 24)
+						aObj:skinCheckButton{obj=btn, size=24}
 					else
 						aObj:skinStdButton{obj=btn, sechk=true}
 					end
 				end
+
 				if bankType:find("SV") then
 					skinViewBtns(this, bankType)
 				end
 
 				aObj:SecureHook(this, "ShowTab", function(fObj, _)
-					aObj:Unhook(fObj, "ShowTab") -- N.B.: moved up here as the function is called lower down
-					skinSideTabs(fObj)
 					if bankType:find("CV") then
 						skinCVBtnsAfterDelay(fObj, bankType)
 					end
@@ -204,29 +233,9 @@ aObj.addonsToSkin.Baganator = function(self) -- v 665
 
 				aObj:SecureHook(this, "UpdateTabs", function(fObj)
 					skinSideTabs(fObj)
-
 				end)
 
-				aObj:SecureHookScript(this.TabSettingsMenu, "OnShow", function(fObj)
-					aObj:skinIconSelector(fObj)
-					aObj:removeRegions(fObj.DepositSettingsMenu, {4}) -- Separator texture
-					aObj:skinObject("ddbutton", {obj=fObj.DepositSettingsMenu.ExpansionFilterDropdown})
-					aObj:skinObject("frame", {obj=fObj, kfs=true})
-					if aObj.modChkBtns then
-						local function skinCB(cBtn)
-							aObj:skinCheckButton{obj=cBtn}
-							cBtn:SetSize(20, 20)
-						end
-						skinCB(fObj.DepositSettingsMenu.AssignEquipmentCheckbox)
-						skinCB(fObj.DepositSettingsMenu.AssignConsumablesCheckbox)
-						skinCB(fObj.DepositSettingsMenu.AssignProfessionGoodsCheckbox)
-						skinCB(fObj.DepositSettingsMenu.AssignReagentsCheckbox)
-						skinCB(fObj.DepositSettingsMenu.AssignJunkCheckbox)
-						skinCB(fObj.DepositSettingsMenu.IgnoreCleanUpCheckbox)
-					end
-
-					aObj:Unhook(fObj, "OnShow")
-				end)
+				aObj:skinTabSettingsMenu(this)
 
 				aObj:Unhook(this, "OnShow")
 			end)
@@ -300,7 +309,6 @@ aObj.addonsToSkin.Baganator = function(self) -- v 665
 			aObj:checkShown(_G[tbl.name .. currentSkin])
 		end
 	end
-
 	-- hook current frame names
 	-- added a short delay, fixes #217
 	_G.C_Timer.After(0.5, function()
@@ -415,6 +423,28 @@ aObj.addonsToSkin.Baganator = function(self) -- v 665
 			self.UnregisterCallback("Baganator", "SettingsPanel_DisplayCategory")
 		end)
 	end
+
+	-- hook this to skin dialog frames
+	local dialog
+	self:SecureHook(_G.NineSliceUtil, "ApplyLayoutByName", function(dObj, _, _)
+		dialog = dObj:GetParent()
+		if dObj:GetDebugName():find("Baganator") then
+			_G.C_Timer.After(0.05, function()
+				if dialog.editBox then
+					self:skinObject("editbox", {obj=dialog.editBox, y1=-4, y2=4})
+				end
+				-- MoneyInputFrame
+				self:skinObject("frame", {obj=dialog, kfs=true})
+				if self.modBtns then
+					for _, child in _G.ipairs_reverse{dialog:GetChildren()} do
+						if child:IsObjectType("Button") then
+							self:skinStdButton{obj=child}
+						end
+					end
+				end
+			end)
+		end
+	end)
 
 end
 
