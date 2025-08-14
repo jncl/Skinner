@@ -139,31 +139,15 @@ aObj.SetupMainline_NPCFrames = function()
 					self:checkShown(fObj.PurchasePrompt)
 
 					self:SecureHookScript(fObj.LockPrompt, "OnShow", function(frame)
-						self:skinObject("frame", {obj=fObj.LockPrompt, fType=ftype, kfs=true, fb=true, ofs=1, x1=3, x2=-3, clr="gold"})
-						fObj.LockPrompt.Background:SetAlpha(1)
+						self:skinObject("frame", {obj=frame, fType=ftype, kfs=true, fb=true, x1=4, y1=0, x2=-4, y2=1, clr="gold"})
+						frame.Background:SetAlpha(1)
+						frame:SetFrameLevel(4) -- ensure the AutoSort button border is hidden
 
 						self:Unhook(frame, "OnShow")
 					end)
 					self:checkShown(fObj.LockPrompt)
 
-					self:SecureHookScript(fObj.TabSettingsMenu, "OnShow", function(frame)
-						self:skinIconSelector(frame, ftype)
-						-- FIXME: the Separator texture is named rather than being a parentKey
-						self:getRegion(frame.DepositSettingsMenu, 4):SetTexture(nil) -- Separator texture
-						-- frame.DepositSettingsMenu.Separator:SetTexture(nil)
-						self:skinObject("ddbutton", {obj=frame.DepositSettingsMenu.ExpansionFilterDropdown, fType=ftype})
-						self:skinObject("frame", {obj=frame, fType=ftype, kfs=true})
-						if self.modChkBtns then
-							self:skinCheckButton{obj=frame.DepositSettingsMenu.AssignEquipmentCheckbox, fType=ftype, size=22}
-							self:skinCheckButton{obj=frame.DepositSettingsMenu.AssignConsumablesCheckbox, fType=ftype, size=22}
-							self:skinCheckButton{obj=frame.DepositSettingsMenu.AssignProfessionGoodsCheckbox, fType=ftype, size=22}
-							self:skinCheckButton{obj=frame.DepositSettingsMenu.AssignReagentsCheckbox, fType=ftype, size=22}
-							self:skinCheckButton{obj=frame.DepositSettingsMenu.AssignJunkCheckbox, fType=ftype, size=22}
-							self:skinCheckButton{obj=frame.DepositSettingsMenu.IgnoreCleanUpCheckbox, fType=ftype, size=22}
-						end
-
-						self:Unhook(frame, "OnShow")
-					end)
+					self:skinTabSettingsMenu(fObj, ftype)
 
 					self:Unhook(fObj, "OnShow")
 				end)
