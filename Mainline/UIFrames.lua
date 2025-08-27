@@ -2758,13 +2758,7 @@ aObj.SetupMainline_UIFrames = function()
 			-- this.Background:SetAlpha(0) -- N.B. Texture changed in code
 			this.VerticalSeparator:SetTexture(nil)
 			-- .SettingsDropdown
-
-			-- Side Tabs
-			for _, tab in _G.pairs(this.TabButtons) do
-				tab.Background:SetTexture(nil)
-				-- TODO: change selected & highlight textures
-				self:skinObject("button", {obj=tab, fType=ftype, ofs=-1, x1=-1, y2=2})
-			end
+			self:skinSideTabs(this, ftype)
 			self:moveObject{obj=this.QuestsTab, x=-3}
 
 			self:SecureHookScript(this.QuestsFrame, "OnShow", function(fObj) -- a.k.a. QuestScrollFrame (NOT PTRX)
