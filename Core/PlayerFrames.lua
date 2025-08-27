@@ -1920,7 +1920,7 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 				aObj:keepFontStrings(element)
 				element.Icon:SetAlpha(1)
 				if aObj.modBtnBs then
-					aObj:addButtonBorder{obj=element, fType=ftype, relTo=element.Icon}
+					aObj:addButtonBorder{obj=element, fType=ftype, relTo=element.Icon, clr="white"}
 				end
 				aObj:keepFontStrings(element.NormalBorder)
 				aObj:keepFontStrings(element.DisabledBorder)
@@ -1939,6 +1939,13 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 				element.Icon:SetAlpha(1)
 				if aObj.modBtnBs then
 					aObj:addButtonBorder{obj=element, fType=ftype, relTo=element.Icon}
+					if element.sbb then
+						if element.Icon:IsDesaturated() then
+							aObj:clrBBC(element.sbb, "disabled")
+						else
+							element.sbb:SetBackdropBorderColor(element.Icon:GetVertexColor())
+						end
+					end
 				end
 			end
 			_G.ScrollUtil.AddInitializedFrameCallback(fObj.Rewards.ScrollBox, skinReward, aObj, true)
