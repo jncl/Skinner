@@ -29,7 +29,7 @@ aObj.blizzFrames[ftype].AddonList = function(self)
 						aObj:skinStdButton{obj=element.LoadAddonButton}
 					end
 					if aObj.modChkBtns then
-						aObj:skinCheckButton{obj=element.Enabled, ofs=-1}
+						aObj:skinCheckButton{obj=element.Enabled, size=24}
 					end
 				end
 			end
@@ -42,7 +42,7 @@ aObj.blizzFrames[ftype].AddonList = function(self)
 					self:skinStdButton{obj=_G["AddonListEntry" .. i .. "Load"]}
 				end
 				if self.modChkBtns then
-					self:skinCheckButton{obj=_G["AddonListEntry" .. i .. "Enabled"], ofs=-1}
+					self:skinCheckButton{obj=_G["AddonListEntry" .. i .. "Enabled"], size=24}
 				end
 			end
 			self:skinObject("slider", {obj=_G.AddonListScrollFrame.ScrollBar, fType=ftype, rpTex="background"})
@@ -56,7 +56,7 @@ aObj.blizzFrames[ftype].AddonList = function(self)
 			self:skinStdButton{obj=this.DisableAllButton}
 		end
 		if self.modChkBtns then
-			self:skinCheckButton{obj=_G.AddonList.ForceLoad or _G.AddonListForceLoad, ofs=-1}
+			self:skinCheckButton{obj=_G.AddonList.ForceLoad or _G.AddonListForceLoad, size=24}
 		end
 
 		self:Unhook(this, "OnShow")
