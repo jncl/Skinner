@@ -2,7 +2,7 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("Baganator") then return end
 local _G = _G
 
-aObj.addonsToSkin.Baganator = function(self) -- v 724
+aObj.addonsToSkin.Baganator = function(self) -- v 731
 
 	-- TODO: handle warband bank being purchased
 
@@ -135,7 +135,7 @@ aObj.addonsToSkin.Baganator = function(self) -- v 724
 			for _, tab in _G.pairs(fObj.Tabs) do
 				tab:DisableDrawLayer("BACKGROUND")
 				if aObj.modBtnBs then
-					 aObj:addButtonBorder{obj=tab, relTo=tab.Icon, ofs=3--[[	, x2=2]]--[[, schk=true, sechk=true]]}
+					 aObj:addButtonBorder{obj=tab, relTo=tab.Icon, ofs=3}
 				end
 			end
 		end
@@ -310,10 +310,12 @@ aObj.addonsToSkin.Baganator = function(self) -- v 724
 		end
 	end
 	-- hook current frame names
-	-- added a short delay, fixes #217
-	_G.C_Timer.After(0.5, function()
-		setupFrameHooks(_G.Baganator.API.Skins.GetCurrentSkin())
-	end)
+	if _G.C_AddOns.IsAddOnLoaded("Syndicator") then
+		-- added a short delay, fixes #217
+		_G.C_Timer.After(0.5, function()
+			setupFrameHooks(_G.Baganator.API.Skins.GetCurrentSkin())
+		end)
+	end
 
 	-- track Theme changes
 	_G.Baganator.CallbackRegistry:RegisterCallback("FrameGroupSwapped", function()
@@ -425,30 +427,41 @@ aObj.addonsToSkin.Baganator = function(self) -- v 724
 	end
 
 	-- hook this to skin dialog frames
-	local dialog
-	self:SecureHook(_G.NineSliceUtil, "ApplyLayoutByName", function(dObj, _, _)
-		dialog = dObj:GetParent()
-		if dObj:GetDebugName():find("Baganator") then
-			_G.C_Timer.After(0.05, function()
-				if dialog.editBox then
-					self:skinObject("editbox", {obj=dialog.editBox, y1=-4, y2=4})
-				end
-				-- MoneyInputFrame
-				self:skinObject("frame", {obj=dialog, kfs=true})
-				if self.modBtns then
-					for _, child in _G.ipairs_reverse{dialog:GetChildren()} do
-						if child:IsObjectType("Button") then
-							self:skinStdButton{obj=child}
-						end
+	local function skinDialog(frame)
+		_G.C_Timer.After(0.05, function()
+			if frame.editBox then
+				aObj:skinObject("editbox", {obj=frame.editBox, y1=-4, y2=4})
+			end
+			-- MoneyInputFrame
+			aObj:skinObject("frame", {obj=frame, kfs=true, ofs=-4})
+			if aObj.modBtns then
+				for _, child in _G.ipairs_reverse{frame:GetChildren()} do
+					if child:IsObjectType("Button") then
+						aObj:skinStdButton{obj=child}
 					end
 				end
-			end)
+			end
+		end)
+	end
+	self:SecureHook(_G.NineSliceUtil, "ApplyLayoutByName", function(dObj, _, _)
+		if dObj:GetDebugName():find("Baganator") then
+			skinDialog(dObj:GetParent())
 		end
 	end)
+	-- do this to handle dialog frames created early
+	self.RegisterCallback("Baganator", "UIParent_GetChildren", function(_, child, _)
+		if child.GetName
+		and child:GetName()
+		and child:GetName():find("^BaganatorDialog")
+		then
+			skinDialog(child)
+		end
+	end)
+	self:scanChildren{obj=_G.UIParent, cbstr="UIParent_GetChildren"}
 
 end
 
-aObj.addonsToSkin.Syndicator = function(self) -- v 180
+aObj.addonsToSkin.Syndicator = function(self) -- v 227
 	self:SecureHook(_G.Syndicator.API, "GetSearchKeywords", function(this)
 		_G.C_Timer.After(0.05, function()
 			self:skinObject("scrollbar", {obj=_G.Baganator_SearchHelpFrame.ScrollBar})
@@ -465,14 +478,18 @@ aObj.addonsToSkin.Syndicator = function(self) -- v 180
 		local function skinKids(frame)
 			for _, child in _G.ipairs_reverse{frame:GetChildren()} do
 				if child:IsObjectType("CheckButton")
-				and self.modChkBtns
+				and aObj.modChkBtns
 				then
-					self:skinCheckButton{obj=child}
+					aObj:skinCheckButton{obj=child}
 				elseif child:IsObjectType("Slider") then
-					self:skinObject("slider", {obj=child})
+					aObj:skinObject("slider", {obj=child})
+				elseif child:IsObjectType("Button")
+				and child.Arrow
+				then
+					aObj:skinObject("ddbutton", {obj=child})
 				elseif child:IsObjectType("Frame") then
 					if child.thumbAnchor then
-						self:skinObject("scrollbar", {obj=child})
+						aObj:skinObject("scrollbar", {obj=child})
 					end
 					if child.layoutType == "InsetFrameTemplate"
 					or child.InsetBorderTop
