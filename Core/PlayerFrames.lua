@@ -2247,10 +2247,18 @@ aObj.blizzFrames[ftype].CompactFrames = function(self)
 	end
 	self:SecureHookScript(_G.CompactRaidFrameManager, "OnShow", function(this)
 		if self.isMnln then
-			_G.nop()
 			-- TODO: skin Toggle button texture
 			-- .toggleButtonForward
 			-- .toggleButtonBack
+			-- TODO: skin RaidMarkers
+			local point, relativeTo, relativePoint, offsetX, offsetY, hAdj
+			self:SecureHook("CompactRaidFrameManager_UpdateOptionsFlowContainer", function()
+				point, relativeTo, relativePoint, offsetX, offsetY = _G.CompactRaidFrameManager.sf:GetPoint(2)
+				hAdj = getBGHeightAdj()
+				if _G.Round(offsetY) ~=  hAdj then
+					_G.CompactRaidFrameManager.sf:SetPoint(point, relativeTo, relativePoint, offsetX, hAdj)
+				end
+			end)
 		else
 			self:moveObject{obj=this.toggleButton, x=5}
 			this.toggleButton:SetSize(12, 32)
@@ -2261,17 +2269,7 @@ aObj.blizzFrames[ftype].CompactFrames = function(self)
 				self.hooks[tObj].SetTexCoord(tObj, x1 == 0 and x1 + 0.22 or x1 + 0.26, x2, 0.33, 0.67)
 			end, true)
 		end
-		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ofs=0, y2=getBGHeightAdj()})
-		if self.isMnln then
-			local point, relativeTo, relativePoint, offsetX, offsetY, hAdj
-			self:SecureHook("CompactRaidFrameManager_UpdateOptionsFlowContainer", function()
-				point, relativeTo, relativePoint, offsetX, offsetY = _G.CompactRaidFrameManager.sf:GetPoint(2)
-				hAdj = getBGHeightAdj()
-				if _G.Round(offsetY) ~=  hAdj then
-					_G.CompactRaidFrameManager.sf:SetPoint(point, relativeTo, relativePoint, offsetX, hAdj)
-				end
-			end)
-		end
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ofs=0, x1=-6, y2=getBGHeightAdj()})
 
 		self:SecureHookScript(this.displayFrame, "OnShow", function(fObj)
 			self:keepFontStrings(fObj)
