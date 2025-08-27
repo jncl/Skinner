@@ -13,10 +13,11 @@ ToDos
 
 	 ≈	O/M	PerksProgramProductDetailsContainerFrame, skin contents
 
-#233 √	I/E Bagnon skin is not working
+	 √	O/C Guild Rewards button border should match reward state, Guild Perks button border colour ?
+	 √ 	O/M Guild Rewards button missing text, Guild Perks button border colour ?
 
-#234 √	I/M Baganator
+#237 √	I/M BigWigs, new /key panel
 
-#235 √	S/M Item Splitter
+#238 √	I/M	Simple Addon Manager
 
-#236 √	I/M BetterBags
+#239 √	I/M Colouring Previous/Next buttons borders
