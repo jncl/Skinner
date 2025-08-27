@@ -1381,8 +1381,10 @@ aObj.SetupMainline_PlayerFrames = function()
 							element.Border:SetTexture(nil)
 							element.Selected:SetTexture(nil)
 							element.SelectedOtherCheck:SetTexture(nil)
-							if aObj.modBtnBs then
-								aObj:addButtonBorder{obj=element, fType=ftype, relTo=element.Icon}
+						end
+						if aObj.modBtnBs then
+							aObj:addButtonBorder{obj=element, fType=ftype, relTo=element.Icon, clr=(elementData.selectedHere or elementData.selectedOther) and "yellow" or "green"}
+							if element.sbb then
 								aObj:clrBtnBdr(element, (elementData.selectedHere or elementData.selectedOther) and "yellow" or "green")
 							end
 						end
