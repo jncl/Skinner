@@ -463,8 +463,8 @@ aObj.SetupMainline_PlayerFrames = function()
 					self:adjHeight{obj=fObj.EditBox, adj=-6}
 					self:skinObject("frame", {obj=fObj, fType=ftype, ofs=-10})
 					if self.modBtns then
-						self:skinStdButton{obj=fObj.UpdateButton}
-						self:skinStdButton{obj=fObj.CancelButton}
+						self:skinStdButton{obj=fObj.UpdateButton, fType=ftype}
+						self:skinStdButton{obj=fObj.CancelButton, fType=ftype}
 					end
 
 					self:Unhook(fObj, "OnShow")
@@ -499,8 +499,8 @@ aObj.SetupMainline_PlayerFrames = function()
 						if element.background then
 							element.background:SetAlpha(0)
 							if aObj.modBtnBs then
-								aObj:addButtonBorder{obj=element.travelPassButton, schk=true, ofs=0, y1=3, y2=-2}
-								aObj:addButtonBorder{obj=element.summonButton, schk=true}
+								aObj:addButtonBorder{obj=element.travelPassButton, fType=ftype, schk=true, ofs=0, y1=3, y2=-2}
+								aObj:addButtonBorder{obj=element.summonButton, fType=ftype, schk=true}
 							end
 						end
 					end
