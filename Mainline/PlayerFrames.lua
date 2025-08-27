@@ -451,10 +451,20 @@ aObj.SetupMainline_PlayerFrames = function()
 
 			self:SecureHookScript(_G.FriendsTabHeader, "OnShow", function(fTH)
 				_G.FriendsFrameBattlenetFrame:DisableDrawLayer("BACKGROUND")
-				if self.modBtnBs then
-					self:addButtonBorder{obj=_G.FriendsFrameBattlenetFrame.BroadcastButton, ofs=-2, x1=1}
+				self:skinObject("ddbutton", {obj=_G.FriendsFrameStatusDropdown, fType=ftype})
+				-- Top Tabs
+				if not aObj.isMnlnPTR then
+					self:skinObject("tabs", {obj=fTH, prefix=fTH:GetName(), fType=ftype, lod=self.isTT and true, upwards=true, offsets={x1=1, y1=self.isTT and -4 or -8, x2=-1, y2=-4}})
+					_G.RaiseFrameLevel(fTH)
+				else
+					self:skinObject("tabs", {obj=fTH.TabSystem, pool=true, fType=ftype, lod=self.isTT and true, upwards=true, offsets={x1=1, y1=0, x2=-1, y2=-4}})
 				end
-				-- .UnavailableInfoButton
+				if self.modBtnBs then
+					self:addButtonBorder{obj=_G.FriendsFrameBattlenetFrame.BroadcastButton, fType=ftype, ofs=-2, x1=1}
+					if aObj.isMnlnPTR then
+						self:addButtonBorder{obj=_G.FriendsFrameBattlenetFrame.ContactsMenuButton, fType=ftype, clr="gold", ofs=-2, x1=1}
+					end
+				end
 				self:SecureHookScript(_G.FriendsFrameBattlenetFrame.BroadcastFrame, "OnShow", function(fObj)
 					self:keepFontStrings(fObj.Border)
 					fObj.EditBox:DisableDrawLayer("BACKGROUND")
@@ -474,11 +484,6 @@ aObj.SetupMainline_PlayerFrames = function()
 
 					self:Unhook(fObj, "OnShow")
 				end)
-				self:skinObject("ddbutton", {obj=_G.FriendsFrameStatusDropdown, fType=ftype})
-				-- _G.FriendsFrameStatusDropDownStatus:SetAlpha(1) -- display status icon
-				-- Top Tabs
-				self:skinObject("tabs", {obj=fTH, prefix=fTH:GetName(), fType=ftype, lod=self.isTT and true, upwards=true, offsets={x1=1, y1=self.isTT and -4 or -8, x2=-1, y2=-4}})
-				_G.RaiseFrameLevel(fTH)
 
 				self:Unhook(fTH, "OnShow")
 			end)
@@ -517,16 +522,37 @@ aObj.SetupMainline_PlayerFrames = function()
 			end)
 			self:checkShown(_G.FriendsListFrame)
 
-			self:SecureHookScript(_G.IgnoreListFrame, "OnShow", function(fObj)
-				self:skinObject("scrollbar", {obj=fObj.ScrollBar, fType=ftype})
-				addTabBorder(fObj)
-				if self.modBtns then
-					self:skinStdButton{obj=_G.FriendsFrameIgnorePlayerButton, fType=ftype, x1=1}
-					self:skinStdButton{obj=_G.FriendsFrameUnsquelchButton, fType=ftype, sechk=true}
-				end
+			if not aObj.isMnlnPTR then
+				self:SecureHookScript(_G.IgnoreListFrame, "OnShow", function(fObj)
+					self:skinObject("scrollbar", {obj=fObj.ScrollBar, fType=ftype})
+					addTabBorder(fObj)
+					if self.modBtns then
+						self:skinStdButton{obj=_G.FriendsFrameIgnorePlayerButton, fType=ftype, x1=1}
+						self:skinStdButton{obj=_G.FriendsFrameUnsquelchButton, fType=ftype, sechk=true}
+					end
 
-				self:Unhook(fObj, "OnShow")
-			end)
+					self:Unhook(fObj, "OnShow")
+				end)
+			else
+				self:SecureHookScript(this.IgnoreListWindow, "OnShow", function(fObj)
+					self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, rns=true, cb=true, ofs=0, y1=-1})
+					if self.modBtns then
+						self:skinStdButton{obj=fObj.UnignorePlayerButton, fType=ftype, schk=true}
+					end
+					self:skinObject("scrollbar", {obj=fObj.ScrollBar, fType=ftype})
+					local function skinElement(...)
+						local _, element, elementData
+						if _G.select("#", ...) == 2 then
+							element, elementData = ...
+						else
+							_, element, elementData = ...
+						end
+					end
+					_G.ScrollUtil.AddInitializedFrameCallback(fObj.ScrollBox, skinElement, aObj, true)
+
+					self:Unhook(fObj, "OnShow")
+				end)
+			end
 
 			self:SecureHookScript(_G.WhoFrame, "OnShow", function(fObj)
 				self:removeInset(_G.WhoFrameListInset)
@@ -2316,6 +2342,34 @@ aObj.SetupMainline_PlayerFrames = function()
 
 	end
 
+	if aObj.isMnlnPTR then
+		aObj.blizzLoDFrames[ftype].RemixArtifactUI = function(self)
+			if not self.prdb.RemixArtifactUI or self.initialized.RemixArtifactUI then return end
+
+			if not _G.RemixArtifactFrame then
+				_G.C_Timer.After(0.1, function()
+					self.blizzLoDFrames[ftype].RemixArtifactUI(self)
+				end)
+				return
+			end
+			self.initialized.RemixArtifactUI = true
+
+			self:SecureHookScript(_G.RemixArtifactFrame, "OnShow", function(this)
+				this:DisableDrawLayer("BACKGROUND")
+				this.BorderContainer:DisableDrawLayer("OVERLAY")
+				this.ButtonsParent.Overlay:DisableDrawLayer("OVERLAY")
+				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, ofs=4})
+				if self.modBtns then
+					self:skinStdButton{obj=this.CommitConfigControls.CommitButton, fType=ftype, sechk=true}
+				end
+
+				self:Unhook(this, "OnShow")
+			end)
+			self:checkShown(_G.RemixArtifactFrame)
+
+		end
+	end
+
 	aObj.blizzFrames[ftype].WardrobeOutfits = function(self)
 		if not self.prdb.Collections or self.initialized.WardrobeOutfits then return end
 		self.initialized.WardrobeOutfits = true
@@ -2352,6 +2406,7 @@ aObj.SetupMainline_PlayerFramesOptions = function(self)
 		["Player Spells"]        = {desc = "Talents & Spellbook"},
 		["Professions"]          = {desc = "Trade Skills UI"},
 		["Professions Book"]     = {desc = "Professions"},
+		["Remix Artifact UI"]    = self.isMnlnPTR and true or nil,
 	}
 	self:setupFramesOptions(optTab, "Player")
 	_G.wipe(optTab)

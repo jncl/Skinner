@@ -264,6 +264,7 @@ aObj.locale_enUS =
     ["Raid UI"] = true,
     ["Ready Check Frame"] = true,
     ["Reforging UI"] = true,
+    ["Remix Artifact UI"] = true,
     ["Repeat Texture"] = true,
     ["Report Frame"] = true,
     ["Reset"] = true,

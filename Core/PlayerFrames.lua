@@ -971,7 +971,11 @@ if not aObj.isClscERA then
 								aObj:keepFontStrings(element)
 								aObj:changeHdrExpandTex(element.Right)
 								if element.elementData then -- BUGFIX: #183
-									element:RefreshCollapseIcon() -- force texture change
+									if not aObj.isMnlnPTR then
+										element:RefreshCollapseIcon() -- force texture change
+									else
+										element:UpdateCollapsedState(element:IsCollapsed())
+									end
 								end
 							else
 								if aObj.modBtns then
@@ -2241,9 +2245,7 @@ aObj.blizzFrames[ftype].CompactFrames = function(self)
 
 	-- Compact RaidFrame Manager
 	local function getBGHeightAdj()
-		if self.isMnln then
-			return -40
-		end
+		return not aObj.isMnlnPTR and aObj.isMnln and -40 or nil
 	end
 	self:SecureHookScript(_G.CompactRaidFrameManager, "OnShow", function(this)
 		if self.isMnln then
@@ -2289,7 +2291,10 @@ aObj.blizzFrames[ftype].CompactFrames = function(self)
 				for i = 1, _G.MAX_RAID_GROUPS do
 					self:skinStdButton{obj=fObj.filterOptions["filterGroup" .. i]}
 				end
-				if self.isMnln then
+				if self.isMnlnPTR then
+					self:skinStdButton{obj=_G.CompactRaidFrameManagerLeavePartyButton, fType=ftype}
+					self:skinStdButton{obj=_G.CompactRaidFrameManagerLeaveInstanceGroupButton, fType=ftype}
+				elseif self.isMnln then
 					for _, type in _G.pairs{"Tank", "Healer", "Damager"} do
 						self:skinStdButton{obj=fObj.filterOptions["filterRole" .. type]}
 					end
