@@ -5,8 +5,11 @@ local _G = _G
 local r, g, b, _
 function aObj:clrBBC(obj, clrName, alpha)
 
-	r, g, b, _ = self:getColourByName(clrName)
-	obj:SetBackdropBorderColor(r, g, b, alpha or 1)
+	-- bugfix for #239
+	if obj.SetBackdropBorderColor then
+		r, g, b, _ = self:getColourByName(clrName)
+		obj:SetBackdropBorderColor(r, g, b, alpha or 1)
+	end
 
 end
 
