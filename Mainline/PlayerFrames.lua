@@ -398,7 +398,30 @@ aObj.SetupMainline_PlayerFrames = function()
 				self:addButtonBorder{obj=this.ToggleOutfitDetailsButton, fType=ftype}
 			end
 
-			self:Unhook(this, "OnShow")
+			self:SecureHookScript(this.SetSelectionPanel, "OnShow", function(fObj)
+				self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, ofs=-5})
+				self:skinObject("scrollbar", {obj=fObj.ScrollBar, fType=ftype})
+				local function skinSelection(...)
+					local _, element, elementData
+					if _G.select("#", ...) == 2 then
+						element, elementData = ...
+					else
+						_, element, elementData = ...
+					end
+					element.BackgroundTexture:SetTexture(nil)
+					if self.modBtnBs then
+						element.IconBorder:SetAlpha(0)
+						self:addButtonBorder{obj=element, fType=ftype, relTo=element.Icon, ofs=3}
+						if element.sbb then
+							self:setBtnClr(element, elementData.itemQuality)
+						end
+					end
+				end
+				_G.ScrollUtil.AddInitializedFrameCallback(fObj.ScrollBox, skinSelection, aObj, true)
+
+				self:Unhook(fObj, "OnShow")
+			end)
+
 		end)
 
 		self:SecureHookScript(_G.TransmogAndMountDressupFrame, "OnShow", function(this)
