@@ -1,3 +1,23 @@
+beta11.62493.1
+Jncl:
+	Updated ToDo*.txt files
+	Updated Change_History.txt
+	Updated Version numbers
+	Updated TOC comments
+	Remove Debug output
+	Updated NSF functions
+	Updated WeeklyRewardsFrame skin
+	Updated PlayerChoiceFrame
+	Updated Retail LootFrame skin
+	Updated Retail BankFrame skin
+	Updated PerksProgramFrame skin
+	Bugfix for Patch debug messages
+	Updated QuestFrame
+	Updated BetterBags, closes #236
+	Updated Bagnon, closes #233
+	Updated Baganator, closes #234
+	Skinned Item Splitter, closes #235
+
 beta11.62417.1
 Jncl:
 	Updated ToDo*.txt files
