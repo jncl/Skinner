@@ -386,17 +386,16 @@ local function __skinExpandButton(opts)
 	if not opts.as then
 		aObj:skinObject("button", {obj=opts.obj, fType=opts.ftype, sap=opts.sap, bd=6, ofs=opts.ofs, clr=opts.clr})
 		if not opts.noHook then
+			module:SecureHook(opts.obj, "SetNormalTexture", function(this, tObj)
+				module:checkTex{obj=this, nTex=tObj}
+			end)
+			module:SecureHook(opts.obj, "SetNormalAtlas", function(this, tObj)
+				module:checkTex{obj=this, nTex=tObj}
+			end)
 			if aObj.isMnln then
 				nTex = opts.obj:GetNormalTexture()
 				module:SecureHook(nTex, "SetAtlas", function(_, tObj)
 					module:checkTex{obj=opts.obj, nTex=tObj}
-				end)
-			else
-				module:SecureHook(opts.obj, "SetNormalTexture", function(this, tObj)
-					module:checkTex{obj=this, nTex=tObj}
-				end)
-				module:SecureHook(opts.obj, "SetNormalAtlas", function(this, tObj)
-					module:checkTex{obj=this, nTex=tObj}
 				end)
 			end
 		end
