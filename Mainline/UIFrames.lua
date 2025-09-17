@@ -940,32 +940,35 @@ aObj.SetupMainline_UIFrames = function()
 
 	end
 
+	local BarBackground
+	local function skinCVBar(obj, hght)
+		BarBackground = aObj:getRegion(obj.Bar, 1)
+		aObj:skinObject("statusbar", {obj=obj.Bar, fType=ftype, fi=0, bg=BarBackground})
+		BarBackground:SetHeight(hght)
+		BarBackground:ClearAllPoints()
+		BarBackground:SetPoint("LEFT", obj.Bar, 0, 0)
+		BarBackground:SetPoint("RIGHT", obj.Bar, 0, 0)
+	end
 	aObj.blizzFrames[ftype].CooldownViewer = function(self)
 		if not self.prdb.CooldownViewer or self.initialized.CooldownViewer then return end
 		self.initialized.CooldownViewer = true
 
-		local BarBackground
-		local function skinItemFrame(itemFrame)
-			if aObj.modBtnBs then
-				aObj:addButtonBorder{obj=itemFrame, relTo=itemFrame.Icon, clr="grey"}
+		local function skinItem(item)
+			if item.Bar then
+				skinCVBar(item, 26)
 			end
-			if itemFrame.Bar then
-				BarBackground = aObj:getRegion(itemFrame.Bar, 1)
-				aObj:skinObject("statusbar", {obj=itemFrame.Bar, fi=0, bg=BarBackground})
-				BarBackground:SetHeight(26)
-				BarBackground:ClearAllPoints()
-				BarBackground:SetPoint("LEFT", itemFrame.Bar, 0, 0)
-				BarBackground:SetPoint("RIGHT", itemFrame.Bar, 0, 0)
+			if aObj.modBtnBs then
+				aObj:addButtonBorder{obj=item, relTo=item.Icon, clr="grey"}
 			end
 		end
 		local function skinItemFrames(frame)
-			for itemFrame in frame.itemFramePool:EnumerateActive() do
-				skinItemFrame(itemFrame)
+			for item in frame.itemFramePool:EnumerateActive() do
+				skinItem(item)
 			end
 			local itemFrame
 			aObj:RawHook(frame.itemFramePool, "Acquire", function(this)
 				itemFrame = aObj.hooks[this].Acquire(this)
-				skinItemFrame(itemFrame)
+				skinItem(itemFrame)
 				return itemFrame
 			end, true)
 		end
@@ -1012,6 +1015,7 @@ aObj.SetupMainline_UIFrames = function()
 				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, ofs=0, y1=-1, y2=-2})
 				if self.modBtns then
 					self:skinStdButton{obj=this.SaveLayoutButton, fType=ftype, schk=true, sechk=true}
+					self:skinStdButton{obj=this.UndoButton, fType=ftype, schk=true, sechk=true}
 				end
 
 				local function skinCategories(frame)
@@ -1022,8 +1026,11 @@ aObj.SetupMainline_UIFrames = function()
 							categoryDisplay.Header:UpdateCollapsedState(categoryDisplay.Header:IsCollapsed())
 							categoryDisplay.Header.skinned = true
 						end
-						if aObj.modBtnBs then
-							for item in categoryDisplay.itemPool:EnumerateActive() do
+						for item in categoryDisplay.itemPool:EnumerateActive() do
+							if item.Bar then
+								skinCVBar(item, 19)
+							end
+							if aObj.modBtnBs then
 								aObj:addButtonBorder{obj=item, fType=ftype, relTo=item.Icon, clr=item.Icon:IsDesaturated() and "grey" or "white"}
 								if item.sbb then
 									aObj:clrBBC(item.sbb, item.Icon:IsDesaturated() and "grey" or "white")
