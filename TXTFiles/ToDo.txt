@@ -13,11 +13,10 @@ ToDos
 
 	 ≈	O/M	PerksProgramProductDetailsContainerFrame, skin contents
 
-	 √	O/C Guild Rewards button border should match reward state, Guild Perks button border colour ?
-	 √ 	O/M Guild Rewards button missing text, Guild Perks button border colour ?
+#240 √	I/M BigWigs /key panel still not being skinned
 
-#237 √	I/M BigWigs, new /key panel
+#241 √	I/E Atlas
 
-#238 √	I/M	Simple Addon Manager
+#242 √	O 	Hide Quest text behind Rewards background
 
-#239 √	I/M Colouring Previous/Next buttons borders
+#243 √	I 	Tooltip gradient overflow
