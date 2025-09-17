@@ -12,6 +12,7 @@ aObj.addonsToSkin.Atlas = function(self) -- v1.52.05/v1.49.01
 		self:skinObject("slider", {obj=_G.AtlasScrollBar.ScrollBar})
 		self:skinObject("frame", {obj=this, cb=true, x1=10, y1=-10})
 		if self.modBtns then
+			_G.AtlasFrameCloseButton:SetSize(28, 28)
 			-- TODO: skin LockButton
 			-- self:skinStdButton{obj=_G.AtlasFrameLockButton}
 			self:skinStdButton{obj=_G.AtlasFrameOptionsButton}
@@ -80,11 +81,6 @@ aObj.addonsToSkin.Atlas = function(self) -- v1.52.05/v1.49.01
 		self:Unhook(this, "OnShow")
 	end)
 
-	_G.Krowi_WorldMapButtons1.Background:SetTexture(nil)
-	_G.Krowi_WorldMapButtons1.Border:SetTexture(nil)
-	if self.modBtns then
-		self:skinStdButton{obj=_G.Krowi_WorldMapButtons1, ofs=-3, clr="gold"}
-	end
 
 	if self.modBtnBs then
 		self.RegisterCallback("Atlas", "EncounterJournal_Skinned", function(_, _)
@@ -95,6 +91,20 @@ aObj.addonsToSkin.Atlas = function(self) -- v1.52.05/v1.49.01
 				self:moveObject{obj=_G.AtlasToggleFromEncounterJournal, x=-30, y=-15}
 			end
 		end)
+	end
+
+	if self.isMnln then
+		_G.Krowi_WorldMapButtons1.Background:SetTexture(nil)
+		_G.Krowi_WorldMapButtons1.Border:SetTexture(nil)
+		if self.modBtns then
+			self:skinStdButton{obj=_G.Krowi_WorldMapButtons1, ofs=-3, clr="gold"}
+		end
+	else
+		if _G.Atlas.WorldMap
+		and _G.AtlasToggleFromWorldMap
+		then
+			_G.AtlasToggleFromWorldMap.Border:SetTexture(nil)
+		end
 	end
 
 end
