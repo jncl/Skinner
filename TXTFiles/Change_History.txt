@@ -1,3 +1,22 @@
+beta11.62801.1
+Jncl:
+	Updated ToDo*.txt files
+	Updated Change_History.txt
+	Updated Version numbers
+	Updated UIButtons code
+	Updated Retail PvPTalentList skin
+	Retail PTR changes
+	Updated Compact RaidFrame Manager skin
+	Updated GuildBenefitsFrame code
+	Updated button skinning code
+	Skinned Retail DresssUpFrame SetSelectionPanel
+	Updated ChaekButton skinning code
+	Standardised SideTab skinning function
+	Updated Baganator/Syndicator skins
+	Updated ColourFuncs, closes #239
+	Updated SimpleAddonManager skin, closes #238
+	Updated BigWigs skin, closes #237
+
 beta11.62493.1
 Jncl:
 	Updated ToDo*.txt files
