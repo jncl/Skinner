@@ -3854,7 +3854,7 @@ aObj.blizzFrames[ftype].TimeManager = function(self)
 
 end
 
-aObj.ttDelay = 0.2
+aObj.ttDelay = 0.05
 aObj.blizzFrames[ftype].Tooltips = function(self)
 	if not self.prdb.Tooltips.skin or self.initialized.Tooltips then return end
 	self.initialized.Tooltips = true
@@ -3869,6 +3869,7 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 		return
 	end
 
+	local func
 	-- using a metatable to manage tooltips when they are added in different functions
 	_G.setmetatable(self.ttList, {__newindex = function(tab, _, tTip)
 		-- get object reference for tooltip, handle either strings or objects being passed
@@ -3888,21 +3889,17 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 		-- hook Show function for tooltips as required
 		-- handle specified function if required [QuestMapFrame.QuestsFrame.CampaignTooltip uses this]
 		if self.ttHook[tTip] then
-			if self.ttHook[tTip]:find("^On%u")
-			and tTip:HasScript(self.ttHook[tTip])
+			if tTip:HasScript(self.ttHook[tTip])
 			then
-				self:SecureHookScript(tTip, self.ttHook[tTip], function(this)
-					_G.C_Timer.After(self.ttDelay, function() -- slight delay to allow for the tooltip to be populated
-						self:applyTooltipGradient(this.sf)
-					end)
-				end)
+				func = "SecureHookScript"
 			else
-				self:SecureHook(tTip, self.ttHook[tTip], function(this)
-					_G.C_Timer.After(self.ttDelay, function() -- slight delay to allow for the tooltip to be populated
-						self:applyTooltipGradient(this.sf)
-					end)
-				end)
+				func = "SecureHook"
 			end
+			self[func](self, tTip, self.ttHook[tTip], function(this)
+				_G.C_Timer.After(self.ttDelay, function() -- slight delay to allow for the tooltip to be populated
+					self:applyTooltipGradient(this.sf)
+				end)
+			end)
 		end
 		-- if it has an ItemTooltip then add a button border
 		if tTip.ItemTooltip
@@ -3954,6 +3951,10 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 			if self:hasTextInName(tTip, "ShoppingTooltip") then
 				self.ttHook[tTip] = "SetShown"
 			end
+		end
+		-- use this hook to prevent GameTooltip gradient overflow, fixes #243
+		if tTip == _G.GameTooltip then
+			self.ttHook[tTip] = "Show"
 		end
 		addTooltip(tTip)
 	end
