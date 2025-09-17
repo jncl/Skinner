@@ -2,7 +2,7 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("BigWigs") then return end
 local _G = _G
 
-aObj.addonsToSkin.BigWigs = function(self) -- v 394.3
+aObj.addonsToSkin.BigWigs = function(self) -- v 397
 
 	-- skin BigWigs statusbar on the LFGDungeonReadyPopup
 	if _G.BigWigsLoader then
@@ -30,19 +30,14 @@ aObj.addonsToSkin.BigWigs = function(self) -- v 394.3
 		aObj:skinObject("frame", {obj=frame, kfs=true, cb=true})
 	end
 	-- find keystones frame
-	aObj.RegisterCallback("BigWigs", "UIParent_GetChildren", function(self, child, _)
-		if _G.Round(child:GetWidth()) == 350
-		and child:GetFrameStrata() == "DIALOG"
-		and child.Tabs
-		and #child.Tabs == 4
-		and child.GetSourceLocation
+	aObj.RegisterCallback("BigWigs", "UIParent_GetChildren", function(_, child, _)
+		if child.GetSourceLocation
 		and child:GetSourceLocation()
-		and child:GetSourceLocation():find("BigWigs")
+		and child:GetSourceLocation():find("Keystones.lua")
 		then
 			skinKeystonesFrame(child)
 			aObj.UnregisterCallback("BigWigs", "UIParent_GetChildren")
 		end
 	end)
-	aObj:scanChildren{obj=_G.UIParent, cbstr="UIParent_GetChildren"}
 
 end
