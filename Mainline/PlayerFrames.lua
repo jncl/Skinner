@@ -1126,7 +1126,7 @@ aObj.SetupMainline_PlayerFrames = function()
 									end
 								end
 							elseif block == module.StageBlock then
-								aObj:skinObject("frame", {obj=block, fType=ftype, kfs=true, ofs=0, clr="sepia"})
+								aObj:skinObject("frame", {obj=block, fType=ftype, kfs=true, ofs=0, x2=-17, y2=6, clr="sepia"})
 								-- N.B. widgets skinned in UIWidgets skinWidget function
 							elseif block == module.TopWidgetContainerBlock
 							or block == module.BottomWidgetContainerBlock
@@ -1134,7 +1134,7 @@ aObj.SetupMainline_PlayerFrames = function()
 								if block.widgetPools then -- Delves
 									_G.nop()
 								end
-							elseif	block == module.MawBuffsBlock then
+							elseif block == module.MawBuffsBlock then
 								if aObj.prdb.ObjectiveTracker.animapowers then
 									aObj.modUIBtns:skinStdButton{obj=block.Container, fType=ftype, ignoreHLTex=true, ofs=-9, x1=12, x2=-2, clr="turq", ca=0.65} -- use module, treat like a frame
 									block.Container.SetWidth = _G.nop
