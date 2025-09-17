@@ -4154,7 +4154,7 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 		elseif wFrame.widgetType == 28 then -- TugOfWar
 			_G.nop()
 		elseif wFrame.widgetType == 29 then -- ScenarioHeaderDelves
-			aObj:skinObject("frame", {obj=wFrame, fType=ftype, kfs=true, ofs=-4, x1=7, x2=-7, clr="sepia"})
+			aObj:skinObject("frame", {obj=wFrame, fType=ftype, kfs=true, ofs=-2, x1=7, x2=-7, clr="sepia"})
 		end
 	end
 
