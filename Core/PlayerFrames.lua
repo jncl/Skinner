@@ -2243,24 +2243,12 @@ aObj.blizzFrames[ftype].CompactFrames = function(self)
 		return
 	end
 
-	-- Compact RaidFrame Manager
-	local function getBGHeightAdj()
-		return not aObj.isMnlnPTR and aObj.isMnln and -40 or nil
-	end
 	self:SecureHookScript(_G.CompactRaidFrameManager, "OnShow", function(this)
 		if self.isMnln then
 			-- TODO: skin Toggle button texture
 			-- .toggleButtonForward
 			-- .toggleButtonBack
 			-- TODO: skin RaidMarkers
-			local point, relativeTo, relativePoint, offsetX, offsetY, hAdj
-			self:SecureHook("CompactRaidFrameManager_UpdateOptionsFlowContainer", function()
-				point, relativeTo, relativePoint, offsetX, offsetY = _G.CompactRaidFrameManager.sf:GetPoint(2)
-				hAdj = getBGHeightAdj()
-				if _G.Round(offsetY) ~=  hAdj then
-					_G.CompactRaidFrameManager.sf:SetPoint(point, relativeTo, relativePoint, offsetX, hAdj)
-				end
-			end)
 		else
 			self:moveObject{obj=this.toggleButton, x=5}
 			this.toggleButton:SetSize(12, 32)
@@ -2271,7 +2259,7 @@ aObj.blizzFrames[ftype].CompactFrames = function(self)
 				self.hooks[tObj].SetTexCoord(tObj, x1 == 0 and x1 + 0.22 or x1 + 0.26, x2, 0.33, 0.67)
 			end, true)
 		end
-		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ofs=0, x1=-6, y2=getBGHeightAdj()})
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ofs=0, x1=-6, x2=-2})
 
 		self:SecureHookScript(this.displayFrame, "OnShow", function(fObj)
 			self:keepFontStrings(fObj)
@@ -2291,15 +2279,12 @@ aObj.blizzFrames[ftype].CompactFrames = function(self)
 				for i = 1, _G.MAX_RAID_GROUPS do
 					self:skinStdButton{obj=fObj.filterOptions["filterGroup" .. i]}
 				end
-				if self.isMnlnPTR then
-					self:skinStdButton{obj=_G.CompactRaidFrameManagerLeavePartyButton, fType=ftype}
-					self:skinStdButton{obj=_G.CompactRaidFrameManagerLeaveInstanceGroupButton, fType=ftype}
-				elseif self.isMnln then
+				if self.isMnln then
 					for _, type in _G.pairs{"Tank", "Healer", "Damager"} do
 						self:skinStdButton{obj=fObj.filterOptions["filterRole" .. type]}
 					end
-					self:skinStdButton{obj=_G.parentBottomButtonsLeavePartyButton, fType=ftype}
-					self:skinStdButton{obj=_G.parentBottomButtonsLeaveInstanceGroupButton, fType=ftype}
+					self:skinStdButton{obj=_G.CompactRaidFrameManagerLeavePartyButton, fType=ftype}
+					self:skinStdButton{obj=_G.CompactRaidFrameManagerLeaveInstanceGroupButton, fType=ftype}
 				else
 					self:skinStdButton{obj=fObj.hiddenModeToggle, fType=ftype}
 					self:skinStdButton{obj=fObj.convertToRaid, fType=ftype}
