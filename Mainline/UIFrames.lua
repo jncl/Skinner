@@ -2823,7 +2823,7 @@ aObj.SetupMainline_UIFrames = function()
 					self:keepFontStrings(frame.BackFrame)
 					frame.BackFrame.AccountCompletedNotice.Text:SetTextColor(aObj.BT:GetRGB())
 					self:skinObject("scrollbar", {obj=frame.ScrollFrame.ScrollBar, fType=ftype})
-					self:keepFontStrings(frame.RewardsFrameContainer.RewardsFrame)
+					self:changeTex2Black(frame.RewardsFrameContainer.RewardsFrame, {"Bottom", "Top", "Background"})
 					frame.RewardsFrameContainer.RewardsFrame.Label:SetTextColor(self.HT:GetRGB())
 					self:adjWidth{obj=frame.AbandonButton, adj=-2} -- moves buttons to the right slightly
 					self:moveObject{obj=frame.AbandonButton, y=2}

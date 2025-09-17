@@ -360,6 +360,19 @@ function aObj:changeTex2SB(obj)
 
 end
 
+function aObj:changeTex2Black(obj, regions)
+	--@debug@
+	_G.assert(obj, "Unknown object changeTex2Black\n" .. _G.debugstack(2, 3, 2))
+	_G.assert(regions, "Missing regions table changeTex2Black\n" .. _G.debugstack(2, 3, 2))
+	--@end-debug@
+
+	for _, reg in _G.pairs(regions) do
+		obj[reg]:SetTexture(self.tFDIDs.cfBg)
+		obj[reg]:SetVertexColor(0, 0, 0)
+	end
+
+end
+
 local errorhandler, success, err = _G.geterrorhandler()
 local function safecall(funcName, funcObj, LoD, quiet)
 	--@debug@
