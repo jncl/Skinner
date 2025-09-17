@@ -104,7 +104,8 @@ aObj.skinTPLs = {
 	ddlist = {
 		nop         = false, -- stop backdrop textures being updated (ZygorGuides)
 		kfs         = true,
-		ofs         = -4,
+		noddl       = false, -- DON'T use DisableDrawLayer functions
+		ofs         = 0,
 	},
 	dropdown = {
 		lrgTpl      = false,
@@ -489,6 +490,8 @@ local function skinDDList(tbl)
 
 	aObj:Debug2("skinDDList: [%s]", tbl)
 
+	aObj:removeNineSlice(tbl.obj, tbl.noddl)
+
 	fName = tbl.obj:GetName()
 	for _, backdrop in _G.pairs{"Border", "Backdrop", "MenuBackdrop"} do
 		bdObj = tbl.obj[backdrop] or _G[fName .. backdrop]
@@ -499,7 +502,7 @@ local function skinDDList(tbl)
 				aObj:keepFontStrings(bdObj)
 			end
 			if bdObj.NineSlice then
-				aObj:removeNineSlice(bdObj.NineSlice)
+				aObj:removeNineSlice(bdObj.NineSlice, tbl.noddl)
 			end
 		end
 	end

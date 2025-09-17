@@ -972,12 +972,24 @@ function aObj.removeMagicBtnTex(_, btn)
 
 end
 
-function aObj.removeNineSlice(_, frame)
+local ns_regions = {
+	"TopLeftCorner", "TopRightCorner", "BottomLeftCorner ", "BottomRightCorner", "TopEdge", "BottomEdge", "LeftEdge", "RightEdge", "Center",
+}
+function aObj.removeNineSlice(_, frame, noDDL)
 	--@debug@
 	_G.assert(frame, "Unknown object removeNineSlice\n" .. _G.debugstack(2, 3, 2))
 	--@end-debug@
 
-	ddlBBO(frame)
+	if noDDL then
+		for _, reg in _G.pairs(ns_regions) do
+			if frame[reg] then
+				frame[reg]:SetAtlas(nil)
+				frame[reg]:SetTexture(nil)
+			end
+		end
+	else
+		ddlBBO(frame)
+	end
 
 end
 

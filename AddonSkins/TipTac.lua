@@ -2,7 +2,7 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("TipTac") then return end
 local _G = _G
 
-aObj.addonsToSkin.TipTac = function(self) -- v 24.08.05
+aObj.addonsToSkin.TipTac = function(self) -- v 25.08.14
 
 	-- Anchor frame
 	self:SecureHookScript(_G.TipTac, "OnShow", function(this)
@@ -27,7 +27,7 @@ aObj.addonsToSkin.TipTac = function(self) -- v 24.08.05
 
 end
 
-aObj.lodAddons.TipTacOptions = function(self) -- v 24.08.05
+aObj.lodAddons.TipTacOptions = function(self) -- v 25.08.14
 
 	if self.prdb.DisabledSkins["TipTac"] then
 		return
@@ -37,7 +37,10 @@ aObj.lodAddons.TipTacOptions = function(self) -- v 24.08.05
 	if not self:IsHooked(_G.AzDropDown, "ToggleMenu") then
 		self:SecureHook(_G.AzDropDown, "ToggleMenu", function(this, _)
 			self:skinObject("slider", {obj=_G["AzDropDownScroll" .. this.vers].ScrollBar})
-			self:skinObject("frame", {obj=_G["AzDropDownScroll" .. this.vers]:GetParent()})
+			self:skinObject("frame", {obj=_G["AzDropDownScroll" .. this.vers]:GetParent(), kfs=true})
+
+			-- stop the backdrop being re-applied
+			_G["AzDropDownScroll" .. this.vers]:GetParent().ApplyOurBackdrop = _G.nop
 
 			self:Unhook(this, "ToggleMenu")
 		end)
@@ -68,6 +71,10 @@ aObj.lodAddons.TipTacOptions = function(self) -- v 24.08.05
 				and aObj.modChkBtns
 				then
 					aObj:skinCheckButton{obj=child}
+				elseif child.option.type == "Button"
+				and aObj.modBtns
+				then
+					aObj:skinStdButton{obj=child}
 				end
 			end
 		end
@@ -79,9 +86,11 @@ aObj.lodAddons.TipTacOptions = function(self) -- v 24.08.05
 
 	self:SecureHookScript(_G.TipTacOptions, "OnShow", function(this)
 		self:skinObject("frame", {obj=this.outline, kfs=true, fb=true})
+		self:keepFontStrings(this.btnMisc.dropDownMenu)
 		self:skinObject("frame", {obj=this, kfs=true})
 		if self.modBtns then
 			self:skinStdButton{obj=this.btnAnchor}
+			self:skinStdButton{obj=this.btnReset}
 			self:skinStdButton{obj=this.btnMisc}
 			self:skinStdButton{obj=this.btnReport}
 			self:skinStdButton{obj=this.btnClose}
