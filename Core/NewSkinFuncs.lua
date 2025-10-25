@@ -1195,7 +1195,9 @@ end
 function aObj:skinSideTabs(frame, ftype)
 
 	for _, tab in _G.pairs(frame.TabButtons) do
-		tab.Background:SetTexture(nil)
+		if tab.Background then
+			tab.Background:SetTexture(nil)
+		end
 		self:skinObject("button", {obj=tab, fType=ftype, ofs=-1, x1=-1, y2=2})
 	end
 
