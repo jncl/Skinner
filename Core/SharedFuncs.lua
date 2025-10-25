@@ -365,11 +365,7 @@ function aObj:checkLocaleStrings()
 			if not aObj.locale_enUS[k] then
 				_G.print(aName, _G.WrapTextInColorCode(" >> Locale entry missing: ", "ffff0000"),  k)
 				if not missingLocaleMessage then
-					if self.isClscERA then
-						_G.message(aName .. ": Missing Locale entry, please add to Locales/enUS_Locale_Strings.lua and then import them")
-					else
-						_G.SetBasicMessageDialogText(aName .. ": Missing Locale entry, please add to Locales/enUS_Locale_Strings.lua and then import them")
-					end
+					_G.SetBasicMessageDialogText(aName .. ": Missing Locale entry, please add to Locales/enUS_Locale_Strings.lua and then import them")
 					missingLocaleMessage = true
 				end
 				aObj.localeStrings[k] = true
