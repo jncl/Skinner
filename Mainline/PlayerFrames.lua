@@ -572,7 +572,7 @@ aObj.SetupMainline_PlayerFrames = function()
 			self:removeNineSlice(this.Border)
 			self:skinObject("editbox", {obj=_G.AddFriendNameEditBox, fType=ftype})
 			self:moveObject{obj=_G.AddFriendNameEditBoxFill, x=5}
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true})
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true})
 			if self.modBtns then
 				self:skinStdButton{obj=_G.AddFriendInfoFrameContinueButton}
 				self:skinStdButton{obj=_G.AddFriendEntryFrameAcceptButton}
