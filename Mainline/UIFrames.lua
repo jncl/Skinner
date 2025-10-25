@@ -3236,19 +3236,21 @@ aObj.SetupMainline_UIFrames = function()
 
 	end
 
-	aObj.blizzLoDFrames[ftype].SubscriptionInterstitialUI = function(self) -- ??
-		if not self.prdb.SubscriptionInterstitialUI or self.initialized.SubscriptionInterstitialUI then return end
-		self.initialized.SubscriptionInterstitialUI = true
+	if _G.IsTrialAccount() or _G.IsVeteranTrialAccount() then
+		aObj.blizzLoDFrames[ftype].SubscriptionInterstitialUI = function(self) -- TrialAccount/VeteranTrialAccount
+			if not self.prdb.SubscriptionInterstitialUI or self.initialized.SubscriptionInterstitialUI then return end
+			self.initialized.SubscriptionInterstitialUI = true
 
-		self:SecureHookScript(_G.SubscriptionInterstitialFrame, "OnShow", function(this)
-			self:skinObject("frame", {obj=this, fType=ftype, ri=true, rns=true, cb=true, ofs=1, x2=2})
-			if self.modBtns then
-				self:skinStdButton{obj=this.ClosePanelButton, fType=ftype}
-			end
+			self:SecureHookScript(_G.SubscriptionInterstitialFrame, "OnShow", function(this)
+				self:skinObject("frame", {obj=this, fType=ftype, ri=true, rns=true, cb=true, ofs=1, x2=2})
+				if self.modBtns then
+					self:skinStdButton{obj=this.ClosePanelButton, fType=ftype}
+				end
 
-			self:Unhook(this, "OnShow")
-		end)
+				self:Unhook(this, "OnShow")
+			end)
 
+		end
 	end
 
 	aObj.blizzFrames[ftype].TalkingHead = function(self)
@@ -3611,7 +3613,7 @@ aObj.SetupMainline_UIFramesOptions = function(self)
 		["Soulbinds"]                    = {suff = "Frame"},
 		["Spell Flyout"]                 = true,
 		["Splash Frame"]                 = {desc = "What's New Frame"},
-		["Subscription Interstitial UI"] = true,
+		["Subscription Interstitial UI"] = _G.IsTrialAccount() or _G.IsVeteranTrialAccount() and true or nil,
 		["Talking Head"]                 = true,
 		["Torghast Level Picker"]        = {suff = "Frame"},
 		["Tutorial Manager"]             = true,
