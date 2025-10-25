@@ -971,11 +971,7 @@ if not aObj.isClscERA then
 								aObj:keepFontStrings(element)
 								aObj:changeHdrExpandTex(element.Right)
 								if element.elementData then -- BUGFIX: #183
-									if not aObj.isMnlnPTR then
-										element:RefreshCollapseIcon() -- force texture change
-									else
-										element:UpdateCollapsedState(element:IsCollapsed())
-									end
+									element:UpdateCollapsedState(element:IsCollapsed())
 								end
 							else
 								if aObj.modBtns then

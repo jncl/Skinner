@@ -1002,52 +1002,50 @@ aObj.SetupMainline_UIFrames = function()
 
 	end
 
-	if aObj.isMnlnPTR then
-		aObj.blizzFrames[ftype].CooldownViewerSettings = function(self)
-			if not self.prdb.CooldownViewer or self.initialized.CooldownViewerSettings then return end
-			self.initialized.CooldownViewerSettings = true
+	aObj.blizzFrames[ftype].CooldownViewerSettings = function(self)
+		if not self.prdb.CooldownViewer or self.initialized.CooldownViewerSettings then return end
+		self.initialized.CooldownViewerSettings = true
 
-			self:SecureHookScript(_G.CooldownViewerSettings, "OnShow", function(this)
-				self:skinSideTabs(this, ftype)
-				self:moveObject{obj=this.SpellsTab, x=-3}
-				self:skinObject("editbox", {obj=this.SearchBox, fType=ftype, si=true, y1=-4, y2=4})
-				self:skinObject("scrollbar", {obj=this.CooldownScroll.ScrollBar, fType=ftype})
-				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, ofs=0, y1=-1, y2=-2})
-				if self.modBtns then
-					self:skinStdButton{obj=this.SaveLayoutButton, fType=ftype, schk=true, sechk=true}
-					self:skinStdButton{obj=this.UndoButton, fType=ftype, schk=true, sechk=true}
-				end
+		self:SecureHookScript(_G.CooldownViewerSettings, "OnShow", function(this)
+			self:skinSideTabs(this, ftype)
+			self:moveObject{obj=this.SpellsTab, x=-3}
+			self:skinObject("editbox", {obj=this.SearchBox, fType=ftype, si=true, y1=-4, y2=4})
+			self:skinObject("scrollbar", {obj=this.CooldownScroll.ScrollBar, fType=ftype})
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, ofs=0, y1=-1, y2=-2})
+			if self.modBtns then
+				self:skinStdButton{obj=this.SaveLayoutButton, fType=ftype, schk=true, sechk=true}
+				self:skinStdButton{obj=this.UndoButton, fType=ftype, schk=true, sechk=true}
+			end
 
-				local function skinCategories(frame)
-					for categoryDisplay in frame.categoryPool:EnumerateActive() do
-						if not categoryDisplay.Header.skinned then
-							aObj:keepFontStrings(categoryDisplay.Header)
-							aObj:changeHdrExpandTex(categoryDisplay.Header.Right)
-							categoryDisplay.Header:UpdateCollapsedState(categoryDisplay.Header:IsCollapsed())
-							categoryDisplay.Header.skinned = true
+			local function skinCategories(frame)
+				for categoryDisplay in frame.categoryPool:EnumerateActive() do
+					if not categoryDisplay.Header.skinned then
+						aObj:keepFontStrings(categoryDisplay.Header)
+						aObj:changeHdrExpandTex(categoryDisplay.Header.Right)
+						categoryDisplay.Header:UpdateCollapsedState(categoryDisplay.Header:IsCollapsed())
+						categoryDisplay.Header.skinned = true
+					end
+					for item in categoryDisplay.itemPool:EnumerateActive() do
+						if item.Bar then
+							skinCVBar(item, 19)
 						end
-						for item in categoryDisplay.itemPool:EnumerateActive() do
-							if item.Bar then
-								skinCVBar(item, 19)
-							end
-							if aObj.modBtnBs then
-								aObj:addButtonBorder{obj=item, fType=ftype, relTo=item.Icon, clr=item.Icon:IsDesaturated() and "grey" or "white"}
-								if item.sbb then
-									aObj:clrBBC(item.sbb, item.Icon:IsDesaturated() and "grey" or "white")
-								end
+						if aObj.modBtnBs then
+							aObj:addButtonBorder{obj=item, fType=ftype, relTo=item.Icon, clr=item.Icon:IsDesaturated() and "grey" or "white"}
+							if item.sbb then
+								aObj:clrBBC(item.sbb, item.Icon:IsDesaturated() and "grey" or "white")
 							end
 						end
 					end
 				end
-				self:SecureHook(this, "RefreshLayout", function(frame)
-					skinCategories(frame)
-				end)
-				skinCategories(this)
-
-				self:Unhook(this, "OnShow")
+			end
+			self:SecureHook(this, "RefreshLayout", function(frame)
+				skinCategories(frame)
 			end)
+			skinCategories(this)
 
-		end
+			self:Unhook(this, "OnShow")
+		end)
+
 	end
 
 	aObj.blizzFrames[ftype].CovenantToasts = function(self)
@@ -2465,18 +2463,6 @@ aObj.SetupMainline_UIFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
-
-		if not aObj.isMnlnPTR then
-			-- CommandBar at top of screen
-			self:SecureHookScript(_G.OrderHallCommandBar, "OnShow", function(this)
-				this:DisableDrawLayer("BACKGROUND")
-				self:skinObject("frame", {obj=this, fType=ftype, ofs=4, y2=-2}) -- N.B. Icons on command bar need to be visible
-
-				self:Unhook(this, "OnShow")
-
-			end)
-			self:checkShown(_G.OrderHallCommandBar)
-		end
 
 	end
 
