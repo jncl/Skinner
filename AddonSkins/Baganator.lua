@@ -2,7 +2,7 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("Baganator") then return end
 local _G = _G
 
-aObj.addonsToSkin.Baganator = function(self) -- v 731
+aObj.addonsToSkin.Baganator = function(self) -- v 766
 
 	-- TODO: handle warband bank being purchased
 
@@ -121,9 +121,6 @@ aObj.addonsToSkin.Baganator = function(self) -- v 731
 	local function skinBag(frame, bagType)
 		skinFrame(frame, bagType)
 		skinBagSlots(frame)
-		aObj:secureHook(frame, "RefreshTabs", function(fObj)
-			aObj:skinObject("tabs", {obj=fObj, tabs=fObj.Tabs, lod=self.isTT and true})
-		end)
 	end
 	local function skinCVBtnsAfterDelay(frame, cvType)
 		_G.C_Timer.After(_G.CountTable(frame.Container.Layouts) == 0 and 1 or 0, function()
@@ -461,7 +458,7 @@ aObj.addonsToSkin.Baganator = function(self) -- v 731
 
 end
 
-aObj.addonsToSkin.Syndicator = function(self) -- v 227
+aObj.addonsToSkin.Syndicator = function(self) -- v 245
 	self:SecureHook(_G.Syndicator.API, "GetSearchKeywords", function(this)
 		_G.C_Timer.After(0.05, function()
 			self:skinObject("scrollbar", {obj=_G.Baganator_SearchHelpFrame.ScrollBar})
