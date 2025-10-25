@@ -2865,31 +2865,45 @@ aObj.blizzLoDFrames[ftype].ItemSocketingUI = function(self)
 		return t["Meta"]
 	end})
 
+	local function skinSocket(socket)
+		socket:DisableDrawLayer("BACKGROUND")
+		socket:DisableDrawLayer("BORDER")
+		aObj:skinObject("button", {obj=socket, fType=ftype, bd=10, ng=true})
+	end
+	local numSockets, clr
+	local function colourSockets(frame)
+		if aObj.isMnln then
+			numSockets = _G.C_ItemSocketInfo.GetNumSockets()
+		else
+			numSockets = _G.GetNumSockets()
+		end
+		for i, socket in _G.ipairs(frame.SocketingContainer.SocketFrames or _G.ItemSocketingFrame.Sockets) do
+			if i <= numSockets then
+				clr = gemTypeInfo[aObj.isMnln and _G.C_ItemSocketInfo.GetSocketTypes(i) or _G.GetSocketTypes(i)]
+				socket.sb:SetBackdropBorderColor(clr.r, clr.g, clr.b)
+			end
+		end
+	end
 	self:SecureHookScript(_G.ItemSocketingFrame, "OnShow", function(this)
 		self:skinObject("scrollbar", {obj=_G.ItemSocketingScrollFrame.ScrollBar, fType=ftype})
 		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, x2=3})
 		if self.modBtns then
-			self:skinStdButton{obj=_G.ItemSocketingSocketButton, fType=ftype, schk=true}
-			this.Sockets = this.Sockets or {_G.ItemSocketingSocket1, _G.ItemSocketingSocket2, _G.ItemSocketingSocket3}
-			for _, socket in _G.ipairs(this.Sockets) do
-				socket:DisableDrawLayer("BACKGROUND")
-				socket:DisableDrawLayer("BORDER")
-				self:skinObject("button", {obj=socket, fType=ftype, bd=10, ng=true}) -- ≈ fb option for frame
-			end
-			local function colourSockets()
-				local numSockets = _G.GetNumSockets()
-				for i, socket in _G.ipairs(_G.ItemSocketingFrame.Sockets) do
-					if i <= numSockets then
-						local clr = gemTypeInfo[_G.GetSocketTypes(i)]
-						socket.sb:SetBackdropBorderColor(clr.r, clr.g, clr.b)
-					end
+			if aObj.isMnln then
+				self:skinStdButton{obj=this.SocketingContainer.ApplySocketsButton, fType=ftype, schk=true}
+				for _, socket in _G.ipairs(this.SocketingContainer.SocketFrames) do
+					skinSocket(socket)
+				end
+			else
+				self:skinStdButton{obj=_G.ItemSocketingSocketButton, fType=ftype, schk=true}
+				this.Sockets = this.Sockets or {_G.ItemSocketingSocket1, _G.ItemSocketingSocket2, _G.ItemSocketingSocket3}
+				for _, socket in _G.ipairs(this.Sockets) do
+					skinSocket(socket)
 				end
 			end
-			-- hook this to colour the button border
 			self:SecureHook("ItemSocketingFrame_Update", function()
-				colourSockets()
+				colourSockets(this)
 			end)
-			colourSockets()
+			colourSockets(this)
 		end
 
 		self:Unhook(this, "OnShow")
