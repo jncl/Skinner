@@ -205,7 +205,7 @@ function aObj:applyTooltipGradient(obj)
 	elseif self.prdb.Tooltips.style == 2 then -- Flat
 		self:applyGradient(obj)
 	elseif self.prdb.Tooltips.style == 3 then -- Custom
-		self:applyGradient(obj, self.prdb.FadeHeight.value <= _G.Round(obj:GetHeight()) and self.prdb.FadeHeight.value or _G.Round(obj:GetHeight()))
+		self:applyGradient(obj, _G.Round(obj:GetHeight()))
 	end
 
 end
