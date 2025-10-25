@@ -96,7 +96,7 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 		["DigsiteComplete"]       = {ofs = -10, ddl = {"background"}},
 		["DungeonCompletion"]     = {ofs = -8, ddl = {"background", "border", "overlay"}, sdla = "dungeonTexture", icon = {tex = "dungeonTexture"}},
 		["GarrisonBuilding"]      = {ofs = -10, ddl = {"background", "border", "overlay"}},
-		["GarrisonFollower"]      = {ofs = -8, ddl = {"background"}, nt = {"FollowerBG"}, nt2 = {PortraitFrame = "LevelBorder"}, stn2 = {PortraitFrame = "PortraitRing"}},
+		["GarrisonFollower"]      = {ofs = -8, y1 = 0, ddl = {"background"}, nt = {"FollowerBG"}, nt2 = {PortraitFrame = "LevelBorder"}, stn2 = {PortraitFrame = "PortraitRing"}},
 		["GarrisonMission"]       = {ofs = -10, y1=-6, ddl = {"background", "border"}},
 		["GarrisonRandomMission"] = {ofs = -10, ddl = {"background"}, sdlb = "MissionType"},
 		["GarrisonShipFollower"]  = {ofs = -8, ddl = {"background"}, nt = {"FollowerBG"}},
@@ -114,13 +114,14 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 		["NewRecipeLearned"]      = {ofs = -4, ddl = {"background"}, nis=true},
 		["Scenario"]              = {ofs = -12, ddl = {"background", "border", "overlay"}, sdla = "dungeonTexture", icon = {tex = "dungeonTexture"}},
 		["WorldQuestComplete"]    = {ofs = -6, ddl = {"background", "border"}, sdla = "QuestTexture", icon = {tex = "QuestTexture"}},
+		-- N.B. Appears in XML file but not in LUA file (used by NewPet, NewMount, NewToy, NewRuneforge & NewCosmetic alerts templates)
+		-- ["Item"]               = {ofs = -8, ddl = {"background"}, ib = true},
 	}
-	-- N.B. Appears in XML file but not in LUA file (used by NewPet, NewMount, NewToy, NewRuneforge & NewCosmetic alerts templates)
-	-- ["Item"]                  = {ofs = -8, ddl = {"background"}, ib = true},
 	if self.isMnln then
 		alertType["Achievement"].y1         = -15
 		alertType["Achievement"].y2         = 12
 		alertType["EntitlementDelivered"]   = {ofs = -10}
+		alertType["GuildRename"]            = {ofs = -10}
 		alertType["Loot"].icon              = {obj = "lootItem", stn = {"SpecRing"}, ib = true, tex =  "Icon"}
 		alertType["MonthlyActivity"]        = {ofs = 0, nt = {"Background"}, stc = "Unlocked", icon = {obj = "Icon", ddl = {"border", "overlay"}, tex ="Texture"}}
 		alertType["NewCosmetic"]            = {ofs = -8, y1 = -12, ddl = {"background"}, ib = true, iq = _G.Enum.ItemQuality.Epic}
@@ -138,6 +139,7 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 		alertType["Loot"].ib                = true
 		alertType["StorePurchase"]          = {ofs = -12, ddl = {"background"}}
 	end
+
 	local tbl, itemQuality
 	local function skinAlertFrame(type, frame)
 		tbl = alertType[type]
@@ -145,6 +147,7 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 		aObj:Debug("skinAlertFrame: [%s, %s, %s]", type, frame)
 		if not dontDebug[type] then
 			_G.Spew("AlertFrames", tbl)
+			_G.Spew("AlertFrames", frame)
 		end
 		--@end-debug@
 
@@ -189,6 +192,12 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 		end
 		if tbl.stc then
 			frame[tbl.stc]:SetTextColor(aObj.BT:GetRGB())
+		end
+		-- handle GuildAchievement size changes
+		if type =="Achievement"
+		and _G.select(12, _G.GetAchievementInfo(frame.id)) then
+			tbl.y1 = 0
+			tbl.y2 = 0
 		end
 		-- setup offset as required
 		tbl.x1  = tbl.x1 or tbl.ofs * -1
