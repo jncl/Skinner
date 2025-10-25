@@ -3122,7 +3122,7 @@ aObj.SetupMainline_UIFrames = function()
 			this.ItemSlots:DisableDrawLayer("ARTWORK")
 			for slot in this.ItemSlots.scrapButtons:EnumerateActive() do
 				slot.IconBorder:SetTexture(nil)
-				self.modUIBtns:addButtonBorder{obj=slot, relTo=slot.Icon} -- use module function to force button border
+				self.modUIBtns:addButtonBorder{obj=slot, relTo=slot.Icon, clr="grey"} -- use module function to force button border
 				-- hook this to reset sbb colour
 				self:SecureHook(slot, "ClearSlot", function(bObj)
 					self:clrBtnBdr(bObj, "grey")
