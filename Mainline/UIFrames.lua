@@ -571,7 +571,7 @@ aObj.SetupMainline_UIFrames = function()
 			scnf.SeasonDescription2:SetTextColor(self.BT:GetRGB())
 			scnf.SeasonDescription3:SetTextColor(self.BT:GetRGB())
 			scnf.Affix.AffixBorder:SetTexture(nil)
-			self:skinObject("frame", {obj=scnf, fType=ftype, kfs=true, ofs=-15, y2=20})
+			self:skinObject("frame", {obj=scnf, fType=ftype, kfs=true, ofs=5})
 			self:RaiseFrameLevelByFour(scnf)
 			if self.modBtns then
 				self:skinStdButton{obj=scnf.Leave}
