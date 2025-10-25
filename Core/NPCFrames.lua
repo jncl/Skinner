@@ -395,16 +395,9 @@ aObj.blizzFrames[ftype].GossipFrame = function(self)
 		if not self.isMnln then
 			_G.ScrollUtil.AddInitializedFrameCallback(this.GreetingPanel.ScrollBox, skinGossip, aObj, true)
 		end
-		if not self.isClsc then
-			local sBar = self.isMnln and this.FriendshipStatusBar or _G.NPCFriendshipStatusBar
-			self:removeRegions(sBar, {1, 2, 5, 6, 7, 8 ,9})
-			self:skinObject("statusbar", {obj=sBar, fi=0, bg=self:getRegion(sBar, 10)})
-		end
-		if not self.isClscERA then
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, x2=3})
-		else
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=14, y1=-18, x2=-29, y2=66})
-		end
+		self:removeRegions(this.FriendshipStatusBar, {1, 2, 5, 6, 7, 8 ,9})
+		self:skinObject("statusbar", {obj=this.FriendshipStatusBar, fi=0, bg=self:getRegion(this.FriendshipStatusBar, 10)})
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, x2=3})
 		if self.modBtns then
 			self:skinStdButton{obj=this.GreetingPanel.GoodbyeButton}
 		end
