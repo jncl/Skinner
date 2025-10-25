@@ -1198,8 +1198,9 @@ aObj.SetupMainline_PlayerFrames = function()
 
 		local function skinRewards(reward)
 			for btn in reward.framePool:EnumerateActive() do
+				btn.ItemBorder:SetTexture(nil)
 				if aObj.modBtnBs then
-					aObj:addButtonBorder{obj=btn, fType=ftype, relTo=btn.ItemIcon, reParent={btn.ItemOverlay, btn.Count}}
+					aObj:addButtonBorder{obj=btn, fType=ftype, relTo=btn.ItemIcon}
 				end
 			end
 		end
