@@ -1334,6 +1334,20 @@ aObj.SetupMainline_UIFrames = function()
 		if not self.prdb.EventToastManager or self.initialized.EventToastManager then return end
 		self.initialized.EventToastManager = true
 
+		self:SecureHookScript(_G.EventToastManagerFrame, "OnShow", function(this)
+			this:DisableDrawLayer("BACKGROUND")
+
+			self:Unhook(this, "OnShow")
+		end)
+		self:checkShown(_G.EventToastManagerFrame)
+
+		self:SecureHookScript(_G.EventToastManagerSideDisplay, "OnShow", function(this)
+			this.BlackBG:SetAtlas(nil)
+
+			self:Unhook(this, "OnShow")
+		end)
+		self:checkShown(_G.EventToastManagerSideDisplay)
+
 		local function skinToast(frame)
 			if not frame:IsShown() then
 				return
@@ -1349,6 +1363,9 @@ aObj.SetupMainline_UIFrames = function()
 					toast.BannerFrame.MedalIcon:SetDrawLayer("ARTWORK", 2)
 				end
 			end
+			-- TODO: skin WeeklyRewardToastUnlock/WeeklyRewardToastUpgrade
+			if toast.Contents then
+			end
 			if aObj.modBtns then
 				aObj:skinStdButton{obj=toast.CloseButton, fType=ftype}
 			end
@@ -1358,20 +1375,6 @@ aObj.SetupMainline_UIFrames = function()
 		self:SecureHook(_G.EventToastManagerFrame, "DisplayToast", function(this, _)
 			skinToast(this)
 		end)
-
-		self:SecureHookScript(_G.EventToastManagerFrame, "OnShow", function(this)
-			this:DisableDrawLayer("BACKGROUND")
-
-			self:Unhook(this, "OnShow")
-		end)
-		self:checkShown(_G.EventToastManagerFrame)
-
-		self:SecureHookScript(_G.EventToastManagerSideDisplay, "OnShow", function(this)
-			this.BlackBG:SetAtlas(nil)
-
-			self:Unhook(this, "OnShow")
-		end)
-		self:checkShown(_G.EventToastManagerSideDisplay)
 
 	end
 
