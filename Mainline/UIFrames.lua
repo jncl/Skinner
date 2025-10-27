@@ -2336,7 +2336,7 @@ aObj.SetupMainline_UIFrames = function()
 	end
 
 	aObj.blizzLoDFrames[ftype].MajorFactions = function(self)
-		if not self.prdb.MajorFactions or self.initialized.MajorFactions then return end
+		if not self.prdb.MajorFactionsUI or self.initialized.MajorFactions then return end
 		self.initialized.MajorFactions = true
 
 		self:SecureHookScript(_G.MajorFactionUnlockToast, "OnShow", function(this)
@@ -3604,7 +3604,7 @@ aObj.SetupMainline_UIFramesOptions = function(self)
 		["Islands Party Pose UI"]        = true,
 		["Islands Queue UI"]             = true,
 		["Loss Of Control"]              = {suff = "Frame"},
-		["Major Factions"]               = {suff = "UI"},
+		["Major Factions UI"]            = true,
 		["New Player Experience"]        = true,
 		["Obliterum UI"]                 = true,
 		["Order Hall UI"]                = true,
