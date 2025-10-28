@@ -13,10 +13,10 @@ ToDos
 
 	 ≈	O/M	PerksProgramProductDetailsContainerFrame, skin contents
 
-#240 √	I/M BigWigs /key panel still not being skinned
+#244 √	I/M Baganator
 
-#241 √	I/E Atlas
+#245 √	I/M ItemSocketingUI, button needs skinning again
 
-#242 √	O 	Hide Quest text behind Rewards background
+#246 x	I/M MapQuestFrame, Rewards panel has black background
 
-#243 √	I 	Tooltip gradient overflow
+#247 √	I/E GossipFrame

@@ -6,7 +6,9 @@ ToDo_Classic_PTR
 	x				- indicates nothing to change
 	¶ is Alt+7		- indicates localisation changes required
 
-	Classic_PTR (Cataclysm Classic 5.5.0)
+	Classic_PTR (Mists Classic 5.5.2)
 		- Added
 		- Updated
+			- Blizzard_ChallengesUI
+x			- Blizzard_StoreUI
 		- Deleted
