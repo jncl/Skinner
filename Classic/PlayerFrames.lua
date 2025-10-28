@@ -647,12 +647,13 @@ aObj.SetupClassic_PlayerFrames = function()
 				self:skinObject("frame", {obj=_G.GuildMemberOfficerNoteBackground, fType=ftype, fb=true})
 				self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, ofs=0})
 				if self.modBtns then
-					self:skinCloseButton{obj=_G.GuildMemberDetailCloseButton, fType=ftype}
+					self:skinCloseButton{obj=_G.GuildMemberDetailCloseButton, fType=ftype} -- N.B. name DOESN'T contain Frame
 					self:skinStdButton{obj=_G.GuildMemberRemoveButton, fType=ftype, schk=true}
 					self:skinStdButton{obj=_G.GuildMemberGroupInviteButton, fType=ftype, schk=true}
-					self:skinStdButton{obj=_G.GuildFramePromoteButton, fType=ftype, schk=true}
-					self:skinStdButton{obj=_G.GuildFrameDemoteButton, fType=ftype, schk=true}
 				end
+				-- TODO: skin small Promote/Demote buttons
+				-- GuildFramePromoteButton
+				-- GuildFrameDemoteButton
 
 				self:Unhook(fObj, "OnShow")
 			end)
@@ -662,7 +663,7 @@ aObj.SetupClassic_PlayerFrames = function()
 				self:skinObject("slider", {obj=_G.GuildEventLogScrollFrame.ScrollBar, fType=ftype})
 				self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, rns=true, ofs=-6})
 				if self.modBtns then
-					self:skinCloseButton{obj=_G.GuildEventLogCloseButton, fType=ftype}
+					self:skinCloseButton{obj=_G.GuildEventLogCloseButton, fType=ftype} -- N.B. name DOESN'T contain Frame
 					self:skinStdButton{obj=_G.GuildEventLogCancelButton, fType=ftype}
 				end
 
