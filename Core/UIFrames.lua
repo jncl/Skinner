@@ -3973,9 +3973,11 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 				self.ttHook[tTip] = "SetShown"
 			end
 		end
-		-- use this hook to prevent GameTooltip gradient overflow, fixes #243
-		if tTip == _G.GameTooltip then
-			self.ttHook[tTip] = "Show"
+		if self.isMnln then
+			-- use this hook to prevent GameTooltip gradient overflow, fixes #243
+			if tTip == _G.GameTooltip then
+				self.ttHook[tTip] = "Show"
+			end
 		end
 		addTooltip(tTip)
 	end
