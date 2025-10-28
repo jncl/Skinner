@@ -464,7 +464,7 @@ aObj.SetupMainline_NPCFrames = function()
 	end
 
 	aObj.blizzLoDFrames[ftype].NewPlayerExperienceGuide = function(self)
-		if not self.prdb.NewPlayerExperienceGuide or self.initialized.NewPlayerExperienceGuide then return end
+		if not self.prdb.TutorialUI or self.initialized.NewPlayerExperienceGuide then return end
 		self.initialized.NewPlayerExperienceGuide = true
 
 		self:SecureHookScript(_G.GuideFrame, "OnShow", function(this)
@@ -878,7 +878,6 @@ aObj.SetupMainline_NPCFramesOptions = function(self)
 		["Flight Map"]                  = true,
 		["Item Interaction UI"]         = true,
 		["Item Upgrade UI"]             = true,
-		["New Player Experience Guide"] = {suff = "Frame"},
 		["Perks Program"] 				= {desc = "Trading Post"},
 		["Rune Forge UI"]               = true,
 		["Stable UI"]                   = {desc = "Stable Frame"},

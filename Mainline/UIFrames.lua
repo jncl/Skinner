@@ -515,6 +515,10 @@ aObj.SetupMainline_UIFrames = function()
 
 	end
 
+	local function skinTutorialFrame(frame)
+		frame:DisableDrawLayer("BORDER") -- hide NineSlice UniqueCornersLayout
+		aObj:skinObject("frame", {obj=frame, fType=ftype, ofs=-30})
+	end
 	aObj.blizzFrames[ftype].BossBannerToast = function(self)
 		if not self.prdb.BossBannerToast or self.initialized.BossBannerToast then return end
 		self.initialized.BossBannerToast = true
@@ -2380,17 +2384,13 @@ aObj.SetupMainline_UIFrames = function()
 	end
 
 	aObj.blizzLoDFrames[ftype].NewPlayerExperience = function(self)
-		if not self.prdb.NewPlayerExperience or self.initialized.NewPlayerExperience then return end
+		if not self.prdb.TutorialUI or self.initialized.NewPlayerExperience then return end
 		self.initialized.NewPlayerExperience = true
 
-		local function skinFrame(frame)
-			frame:DisableDrawLayer("BORDER") -- hide NineSlice UniqueCornersLayout
-			aObj:skinObject("frame", {obj=frame, fType=ftype, ofs=-30})
+		skinTutorialFrame(_G.NPE_TutorialMainFrame_Frame)
+		skinTutorialFrame(_G.NPE_TutorialKeyboardMouseFrame_Frame)
+		skinTutorialFrame(_G.NPE_TutorialInterfaceHelp)
 		end
-		skinFrame(_G.NPE_TutorialMainFrame_Frame)
-		skinFrame(_G.NPE_TutorialSingleKey_Frame)
-		skinFrame(_G.NPE_TutorialWalk_Frame)
-		skinFrame(_G.NPE_TutorialKeyboardMouseFrame_Frame)
 
 		if self.modBtns then
 			self:skinStdButton{obj=_G.KeyboardMouseConfirmButton}
@@ -3401,13 +3401,12 @@ aObj.SetupMainline_UIFrames = function()
 	end
 
 	aObj.blizzFrames[ftype].TutorialManager = function(self)
-		if not self.prdb.TutorialManager or self.initialized.TutorialManager then return end
+		if not self.prdb.TutorialUI or self.initialized.TutorialManager then return end
 		self.initialized.TutorialManager = true
 
-		-- TutorialMainFrame_Frame
-		-- TutorialSingleKey_Frame
-		-- TutorialWalk_Frame
-		-- TutorialPointerFrame
+		skinTutorialFrame(_G.TutorialMainFrame_Frame)
+		skinTutorialFrame(_G.TutorialSingleKey_Frame)
+
 		self:RawHook(_G.TutorialPointerFrame, "_GetFrame", function(this, parentFrame)
 			local frame = aObj.hooks[this]._GetFrame(this, parentFrame)
 			self:skinObject("glowbox", {obj=frame.Content, fType=ftype})
@@ -3420,7 +3419,6 @@ aObj.SetupMainline_UIFrames = function()
 			self:skinObject("glowbox", {obj=_G.TutorialPointerFrame_1.Content, fType=ftype})
 			_G.TutorialPointerFrame_1.Glow:SetBackdrop(nil)
 		end
-		-- TutorialKeyboardMouseFrame_Frame
 
 	end
 
@@ -3605,7 +3603,6 @@ aObj.SetupMainline_UIFramesOptions = function(self)
 		["Islands Queue UI"]             = true,
 		["Loss Of Control"]              = {suff = "Frame"},
 		["Major Factions UI"]            = true,
-		["New Player Experience"]        = true,
 		["Obliterum UI"]                 = true,
 		["Order Hall UI"]                = true,
 		["Player Choice"]                = {suff = "Frame"},
@@ -3619,7 +3616,7 @@ aObj.SetupMainline_UIFramesOptions = function(self)
 		["Subscription Interstitial UI"] = _G.IsTrialAccount() or _G.IsVeteranTrialAccount() and true or nil,
 		["Talking Head"]                 = true,
 		["Torghast Level Picker"]        = {suff = "Frame"},
-		["Tutorial Manager"]             = true,
+		["Tutorial UI"]                  = true,
 		["Warfronts Party Pose UI"]      = true,
 		["Weekly Rewards"]               = {suff = "Frame"},
 		["Zone Ability"]                 = true,
