@@ -1177,7 +1177,7 @@ aObj.SetupClassic_PlayerFrames = function()
 					self:addButtonBorder{obj=_G.SpellBookPrevPageButton, fType=ftype, ofs=-2, y1=-3, x2=-3}
 					self:addButtonBorder{obj=_G.SpellBookNextPageButton, fType=ftype, ofs=-2, y1=-3, x2=-3}
 					self:clrPNBtns("SpellBook")
-					self:SecureHook("SpellBookFrame_UpdatePages", function()
+					self:SecureHook(this, "UpdatePages", function()
 						self:clrPNBtns("SpellBook")
 					end)
 				end
@@ -1222,11 +1222,11 @@ aObj.SetupClassic_PlayerFrames = function()
 						self:addButtonBorder{obj=btn, fType=ftype, sft=true, reParent={_G["SpellButton" .. i .. "AutoCastable"]}}
 					end
 					updBtn(btn)
+					-- hook self to change text colour as required
+					self:SecureHook(btn, "UpdateButton", function(bObj)
+						updBtn(bObj)
+					end)
 				end
-				-- hook self to change text colour as required
-				self:SecureHook("SpellButton_UpdateButton", function(splBtn)
-					updBtn(splBtn)
-				end)
 
 				for i = 1, _G.MAX_SKILLLINE_TABS do
 					self:removeRegions(_G["SpellBookSkillLineTab" .. i], {1}) -- N.B. other regions are icon and highlight
@@ -1305,9 +1305,7 @@ aObj.SetupClassic_PlayerFrames = function()
 					btn.TrainFrame:SetAlpha(0)
 					if self.modBtnBs then
 						self:addButtonBorder{obj=btn, fType=ftype, sft=true, reParent={btn.FlyoutArrow, _G["SpellButton" .. i .. "AutoCastable"]}, ofs=3}
-						if self.isClsc then
-							btn:GetNormalTexture():SetTexture(nil)
-						end
+						btn:GetNormalTexture():SetTexture(nil)
 						btn.sbb:SetShown(btn:IsEnabled())
 					end
 					updBtn(btn)
@@ -1323,9 +1321,6 @@ aObj.SetupClassic_PlayerFrames = function()
 					if self.modBtnBs then
 						self:addButtonBorder{obj=tBtn, clr=tBtn.isOffSpec and "grey", ofs=3}
 					end
-					-- if i == 1 then
-					-- 	self:moveObject{obj=tBtn, x=2}
-					-- end
 				end
 
 				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, x2=2, y2=-3})
@@ -1333,7 +1328,7 @@ aObj.SetupClassic_PlayerFrames = function()
 					self:addButtonBorder{obj=_G.SpellBookPrevPageButton, fType=ftype, ofs=-2, y1=-3, x2=-3}
 					self:addButtonBorder{obj=_G.SpellBookNextPageButton, fType=ftype, ofs=-2, y1=-3, x2=-3}
 					self:clrPNBtns("SpellBook")
-					self:SecureHook(_G.SpellBookFrame, "UpdatePages", function()
+					self:SecureHook(this, "UpdatePages", function()
 						self:clrPNBtns("SpellBook")
 					end)
 				end
