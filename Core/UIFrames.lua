@@ -139,6 +139,10 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 		alertType["Loot"].ib                = true
 		alertType["StorePurchase"]          = {ofs = -12, ddl = {"background"}}
 	end
+	if aObj.isMnlnPTRX then
+		-- TODO: Check on Icon Border etc
+		alertType["HousingItemEarned"]		= {ofs = -8, ddl = {"background", "border"}, stn = {"Divider"}, icon = {obj = "Icon"}}
+	end
 
 	local tbl, itemQuality
 	local function skinAlertFrame(type, frame)
@@ -261,10 +265,11 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 	end
 	for type, _ in _G.pairs(alertType) do
 		local sysName = "AlertSystem"
-		if type == "NewCosmetic" then
+		if type == "NewCosmetic"
+		or type == "HousingItemEarned"
+		then
 			sysName = "AlertFrameSystem"
 		end
-		-- aObj:Debug("AlertFrameSystem: [%s, %s]", type)
 		self:SecureHook(_G[type .. sysName], "setUpFunction", function(frame, _)
 			skinAlertFrame(type, frame)
 		end)
@@ -2240,20 +2245,23 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 
 	if self.prdb.MainMenuBar.skin then
 		if self.isMnln then
-			self:SecureHookScript(_G.MainMenuBar, "OnShow", function(this)
-				this.BorderArt:SetTexture(nil)
-				this.EndCaps:DisableDrawLayer("OVERLAY")
-				if self.modBtnBs then
-					for i = 1, _G.NUM_ACTIONBAR_BUTTONS do
-						self:skinActionBtn(_G["ActionButton" .. i], ftype)
-					end
-					skinMultiBarBtns("BottomLeft")
-					skinMultiBarBtns("BottomRight")
-				end
+			if not aObj.isMnlnPTRX then
+				self:SecureHookScript(_G.MainMenuBar, "OnShow", function(this)
+					this.BorderArt:SetTexture(nil)
+					this.EndCaps:DisableDrawLayer("OVERLAY")
 
-				self:Unhook(this, "OnShow")
-			end)
-			self:checkShown(_G.MainMenuBar)
+					self:Unhook(this, "OnShow")
+				end)
+				self:checkShown(_G.MainMenuBar)
+			else
+				self:SecureHookScript(_G.MainActionBar, "OnShow", function(this)
+					this.BorderArt:SetTexture(nil)
+					this.EndCaps:DisableDrawLayer("OVERLAY")
+
+					self:Unhook(this, "OnShow")
+				end)
+				self:checkShown(_G.MainActionBar)
+			end
 
 			local function skinSTBars(container)
 				for _, bar in _G.pairs(container.bars) do
@@ -3929,6 +3937,12 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 				self:skinObject("statusbar", {obj=tTip.statusBar2, fi=0})
 			end
 		end
+		if aObj.isMnlnPTRX then
+			-- if it has a CompareHeader then skin it
+			if tTip.CompareHeader then
+				self:skinObject("frame", {obj=tTip.CompareHeader, fType=tTip.fType, kfs=true, bd=13, noBdr=true, x1=-1, y2=-10})
+			end
+		end
 	end})
 
 	-- add tooltips to table
@@ -3982,8 +3996,6 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 			end
 		end)
 	end
-
-	-- TODO: Find out and fix why GameTooltip sometimes doesn't adjust it's gradient when it appears
 
 end
 
@@ -4162,6 +4174,13 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 			_G.nop()
 		elseif wFrame.widgetType == 29 then -- ScenarioHeaderDelves
 			aObj:skinObject("frame", {obj=wFrame, fType=ftype, kfs=true, ofs=-2, x1=7, x2=-7, clr="sepia"})
+		elseif wFrame.widgetType == 30 -- ButtonHeader
+		and aObj.isMnlnPTRX
+		then
+			wFrame:DisableDrawLayer("BORDER")
+			for btn in wFrame.buttonPool:EnumerateActive() do
+					aObj:skinStdButton{obj=btn, fType=ftype, ofs=-8, clr="grey"}
+			end
 		end
 	end
 
@@ -4203,6 +4222,15 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 		-- handle existing WidgetContainers
 		for widgetContainer, _ in _G.pairs(_G.UIWidgetManager.registeredWidgetContainers) do
 			hookAndSkinWidgets(widgetContainer)
+		end
+		if aObj.isMnlnPTRX then
+			self:SecureHookScript(_G.UIWidgetBelowMinimapContainerFrame, "OnShow", function(this)
+
+				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ofs=-2, y1=-20, x2=0, clr="gold"})
+
+				self:Unhook(this, "OnShow")
+			end)
+			self:checkShown(_G.UIWidgetBelowMinimapContainerFrame)
 		end
 	else
 		self:SecureHook(_G.UIWidgetManager, "CreateWidget", function(this, widgetID, _, widgetType)

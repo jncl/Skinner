@@ -2771,6 +2771,21 @@ if not aObj.isClscERA then
 
 					self:Unhook(fObj, "OnShow")
 				end)
+
+				if aObj.isMnlnPTRX then
+					self:SecureHookScript(this.TutorialsFrame, "OnShow", function(fObj)
+						fObj.Contents:DisableDrawLayer("BACKGROUND")
+						fObj.Contents.Header:SetTextColor(self.HT:GetRGB())
+						fObj.Contents.Divider:SetTexture(nil)
+						fObj.Contents.Description:SetTextColor(self.BT:GetRGB())
+						self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, fb=true, x1=-9, y1=6, x2=7, y2=-5})
+						if self.modBtns then
+							self:skinStdButton{obj=fObj.Contents.StartButton, fType=ftype}
+						end
+
+						self:Unhook(fObj, "OnShow")
+					end)
+				end
 			end
 			-- let AddOn skins know when when UI is skinned (used by Atlas skin)
 			self.callbacks:Fire("EncounterJournal_Skinned", self)

@@ -184,6 +184,7 @@ aObj.locale_enUS =
     ["Help Tips"] = true,
     ["Hide Border on Left and Top"] = true,
     ["Hide Border on Right and Bottom"] = true,
+    ["Housing UI"] = true,
     ["Ignored Text Colour"] = true,
     ["Inactive Tab & DropDown Texture File"] = true,
     ["Inactive Tab & DropDown Texture Settings"] = true,
