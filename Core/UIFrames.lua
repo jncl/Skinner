@@ -2220,11 +2220,7 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 
 	-- this is done here as other AddOns may require it to be skinned
 	if self.modBtnBs then
-		if self.isMnln then
-			self:addButtonBorder{obj=_G.MainMenuBar.VehicleLeaveButton, schk=true}
-		else
-			self:addButtonBorder{obj=_G.MainMenuBarVehicleLeaveButton, fType=ftype, schk=true}
-		end
+		self:addButtonBorder{obj=_G.MainMenuBarVehicleLeaveButton, fType=ftype, schk=true}
 	end
 
 	if self.isClsc then
@@ -2244,18 +2240,6 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 
 	if self.prdb.MainMenuBar.skin then
 		if self.isMnln then
-			local skinMultiBarBtns = _G.nop
-			if self.modBtnBs then
-				function skinMultiBarBtns(type)
-					local bName
-					for i = 1, _G.NUM_MULTIBAR_BUTTONS do
-						bName = "MultiBar" .. type .. "Button" .. i
-						if _G[bName] then
-							aObj:skinActionBtn(_G[bName], ftype)
-						end
-					end
-				end
-			end
 			self:SecureHookScript(_G.MainMenuBar, "OnShow", function(this)
 				this.BorderArt:SetTexture(nil)
 				this.EndCaps:DisableDrawLayer("OVERLAY")
@@ -2318,8 +2302,22 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 			self:checkShown(_G.MultiCastActionBarFrame)
 
 			if self.modBtnBs then
-				skinMultiBarBtns("Right")
+				local function skinMultiBarBtns(type)
+					local bName
+					for i = 1, _G.NUM_MULTIBAR_BUTTONS do
+						bName = "MultiBar" .. type .. "Button" .. i
+						if _G[bName] then
+							aObj:skinActionBtn(_G[bName], ftype)
+						end
+					end
+				end
+				for i = 1, _G.NUM_ACTIONBAR_BUTTONS do
+					self:skinActionBtn(_G["ActionButton" .. i], ftype)
+				end
+				skinMultiBarBtns("BottomLeft")
+				skinMultiBarBtns("BottomRight")
 				skinMultiBarBtns("Left")
+				skinMultiBarBtns("Right")
 				skinMultiBarBtns("5")
 				skinMultiBarBtns("6")
 				skinMultiBarBtns("7")
