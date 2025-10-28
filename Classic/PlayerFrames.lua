@@ -548,41 +548,17 @@ aObj.SetupClassic_PlayerFrames = function()
 					end
 				end
 				self:moveObject{obj=_G.WhoFrameColumnHeader4, x=4}
-				self:removeInset(_G.WhoFrameEditBoxInset)
-				self:skinObject("editbox", {obj=_G.WhoFrameEditBox, fType=ftype})
-				self:adjHeight{obj=_G.WhoFrameEditBox, adj=-10}
-				if not self.isElvUI then
-					_G.WhoFrameEditBox:SetWidth(_G.WhoFrameEditBox:GetWidth() + 24)
-					self:moveObject{obj=_G.WhoFrameEditBox, x=11, y=6}
-				end
+				self:skinObject("editbox", {obj=fObj.EditBox, fType=ftype, si=true, y1=-6, y2=6})
 				self:skinObject("slider", {obj=_G.WhoListScrollFrame.ScrollBar, fType=ftype, rpTex="background"})
 				if self.modBtns then
-					self:skinStdButton{obj=_G.WhoFrameGroupInviteButton, fType=ftype}
-					self:skinStdButton{obj=_G.WhoFrameAddFriendButton, fType=ftype}
+					self:skinStdButton{obj=_G.WhoFrameGroupInviteButton, fType=ftype, schk=true}
+					self:skinStdButton{obj=_G.WhoFrameAddFriendButton, fType=ftype, schk=true}
 					self:skinStdButton{obj=_G.WhoFrameWhoButton, fType=ftype}
-					self:SecureHook("WhoList_Update", function()
-						self:clrBtnBdr(_G.WhoFrameGroupInviteButton)
-						self:clrBtnBdr(_G.WhoFrameAddFriendButton)
-					end)
 				end
 
 				self:Unhook(fObj, "OnShow")
 			end)
 
-			if self.modBtns then
-				self:SecureHook("GuildStatus_Update", function()
-					if _G.GuildFrame.sf then
-						self:clrBtnBdr(_G.GuildFrameControlButton)
-						self:clrBtnBdr(_G.GuildFrameAddMemberButton)
-					end
-					if _G.GuildMemberDetailFrame.sf then
-						self:clrBtnBdr(_G.GuildMemberRemoveButton)
-						self:clrBtnBdr(_G.GuildMemberGroupInviteButton)
-						self:clrBtnBdr(_G.GuildFramePromoteButton)
-						self:clrBtnBdr(_G.GuildFrameDemoteButton)
-					end
-				end)
-			end
 			self:SecureHookScript(_G.GuildFrame, "OnShow", function(fObj)
 				self:keepFontStrings(fObj)
 				_G.GuildFrameLFGFrame:DisableDrawLayer("BACKGROUND")
