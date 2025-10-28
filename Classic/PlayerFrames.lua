@@ -1045,7 +1045,8 @@ aObj.SetupClassic_PlayerFrames = function()
 		if not self.prdb.PVEFrame or self.initialized.PVPUI then return end
 		self.initialized.PVPUI = true
 
-		local pvpFrames = { "HonorQueueFrame", "ConquestQueueFrame", "WarGamesQueueFrame" }
+		-- N.B. copied from Blizzard_PVPUI.lua [line 33]
+		local pvpFrames = { "HonorQueueFrame", "ConquestQueueFrame", "WarGamesQueueFrame", "LFGListPVPStub" }
 
 		self:SecureHookScript(_G.PVPQueueFrame, "OnShow", function(this)
 			for i = 1, #pvpFrames do
