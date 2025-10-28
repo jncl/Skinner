@@ -216,7 +216,9 @@ function aObj:canSkin(callingFunc, opts, dontCheckCombat)
 		return false
 	end
 
-	if opts.obj:IsForbidden() then
+	if opts.obj.IsForbidden
+	and opts.obj:IsForbidden()
+	then
 		--@debug@
 		aObj:CustomPrint(1, 0, 0, "ERROR: object is flagged as Forbidden, canSkin", opts.obj)
 		--@end-debug@
