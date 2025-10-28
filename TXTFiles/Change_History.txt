@@ -1,3 +1,19 @@
+beta11.63163.1
+Jncl:
+	Updated ToDo*.txt files
+	Updated Change_History.txt
+	Updated Version numbers
+	Updated ObjectiveTracker skin
+	Updated TOC
+	Updated CompactRaidFrameManager skin
+	Updated CooldownViewer skin
+	Updated UIWidgets code
+	Updated Tooltip skinning code, closes #243
+	Updated QuestMapFrame skin, closes #242
+	Updated LibDropDownMenu library skin & TipTac skin
+	Updated BigWigsskin, closes #240
+	Updated Atlas skin, closes #241
+
 beta11.62801.1
 Jncl:
 	Updated ToDo*.txt files
