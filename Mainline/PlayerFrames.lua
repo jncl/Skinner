@@ -1123,6 +1123,7 @@ aObj.SetupMainline_PlayerFrames = function()
 									_G.nop()
 								end
 							elseif block == module.MawBuffsBlock then
+								-- Blizzard_MawBuffs.xml
 								if aObj.prdb.ObjectiveTracker.animapowers then
 									aObj.modUIBtns:skinStdButton{obj=block.Container, fType=ftype, ignoreHLTex=true, ofs=-9, x1=12, x2=-2, clr="turq", ca=0.65} -- use module, treat like a frame
 									block.Container.SetWidth = _G.nop
@@ -1130,7 +1131,12 @@ aObj.SetupMainline_PlayerFrames = function()
 									aObj:secureHook(block.Container, "UpdateListState", function(bObj, _)
 										aObj:clrBtnBdr(bObj)
 									end)
-									aObj:skinObject("frame", {obj=block.Container.List, fType=ftype, kfs=true, ofs=-4, y1=-9, y2=10, clr="turq", ca=0.65})
+									aObj:skinObject("frame", {obj=block.Container.List, fType=ftype, kfs=true, ofs=-9, x1=0, x2=-16, clr="turq", ca=0.65})
+									aObj:secureHook(block.Container.List, "Update", function(this, _)
+										for mawBuff in this.buffPool:EnumerateActive() do
+											mawBuff.Border:SetTexture(nil)
+										end
+									end)
 								end
 							elseif block == module.ChallengeModeBlock then
 								aObj:skinObject("statusbar", {obj=block.StatusBar, fi=0, bg=block.TimerBG, other={block.TimerBGBack}})
