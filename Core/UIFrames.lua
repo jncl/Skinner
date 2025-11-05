@@ -3705,9 +3705,9 @@ aObj.blizzFrames[ftype].StaticPopups = function(self)
 
 	if self.modBtns then
 		-- hook this to handle close button texture changes
+		local nTex
 		self:SecureHook("StaticPopup_Show", function(_)
-			local nTex
-			for i = 1, not self.isMnln and _G.STATICPOPUP_NUMDIALOGS or 4 do
+			for i = 1, 4 do
 				nTex = _G["StaticPopup" .. i .. "CloseButton"]:GetNormalTexture()
 				if self:hasTextInTexture(nTex, "HideButton") then
 					_G["StaticPopup" .. i .. "CloseButton"]:SetText(self.modUIBtns.minus)
@@ -3718,59 +3718,44 @@ aObj.blizzFrames[ftype].StaticPopups = function(self)
 		end)
 	end
 
-	for i = 1, not self.isMnln and _G.STATICPOPUP_NUMDIALOGS or 4 do
+	-- Frame layout found in GameDialog.xml
+	for i = 1, 4 do
 		self:SecureHookScript(_G["StaticPopup" .. i], "OnShow", function(this)
-			local objName = this:GetName()
+			-- .ProgressBarBorder
+			-- .ProgressBarFill
+			self:keepFontStrings(this.BG)
+			-- .CoverFrame
 			this.Separator:SetTexture(nil)
-			if self.isMnln then
-				self:keepFontStrings(this.BG)
-				-- .ProgressBarBorder
-				self:skinObject("editbox", {obj=this.EditBox, fType=ftype, mi=true, mix=12, regions={}, ofs=0})
-				this.ItemFrame.NameFrame:SetTexture(nil)
-			end
-			if not self.isMnln then
-				_G[objName .. "ItemFrameNameFrame"]:SetTexture(nil)
-			end
-			if this.insertedFrame then
-				this.insertedFrame.ItemFrame.NameFrame:SetTexture(nil)
-				if self.modBtnBs then
-					self:addButtonBorder{obj=this.insertedFrame.ItemFrame, fType=ftype, libt=true}
-					if this.insertedFrame.AlsoItemsFrame.pool then
-						for btn in this.insertedFrame.AlsoItemsFrame.pool:EnumerateActive() do
-							self:addButtonBorder{obj=btn, fType=ftype, clr="white"}
-						end
-					end
-				end
-			end
-			self:skinObject("moneyframe", {obj=_G[objName .. "MoneyInputFrame"], moveIcon=true})
-			 -- N.B. Close Button handled above, offset is to allow DarkOverlay to overlay skin frame border as well
-			self:skinObject("frame", {obj=this, fType=ftype, rb=not self.isMnln and true, ofs=-4})
+			self:skinObject("editbox", {obj=this.EditBox, fType=ftype, mi=true, mix=12, regions={}, ofs=0})
+			-- .Dropdown
+			-- .MoneyFrame
+			self:skinObject("moneyframe", {obj=this.MoneyInputFrame, moveIcon=true})
+			this.ItemFrame.NameFrame:SetTexture(nil)
+			-- if this.insertedFrame then
+			-- 	this.insertedFrame.ItemFrame.NameFrame:SetTexture(nil)
+			-- 	if self.modBtnBs then
+			-- 		self:addButtonBorder{obj=this.insertedFrame.ItemFrame.Item, fType=ftype, libt=true}
+			-- 		if this.insertedFrame.AlsoItemsFrame.pool then
+			-- 			for btn in this.insertedFrame.AlsoItemsFrame.pool:EnumerateActive() do
+			-- 				self:addButtonBorder{obj=btn, fType=ftype, clr="white"}
+			-- 			end
+			-- 		end
+			-- 	end
+			-- end
+			-- N.B. Close Button handled above, offset is to allow DarkOverlay to overlay skin frame border as well
+			self:skinObject("frame", {obj=this, fType=ftype, ofs=-4})
 			if self.modBtns then
-				if self.isMnln then
-					self:skinStdButton{obj=this.ButtonContainer.Button1, fType=ftype, schk=true, sechk=true, y1=2}
-					self:skinStdButton{obj=this.ButtonContainer.Button2, fType=ftype, schk=true, sechk=true, y1=2}
-					self:skinStdButton{obj=this.ButtonContainer.Button3, fType=ftype, schk=true, y1=2}
-					self:skinStdButton{obj=this.ButtonContainer.Button4, fType=ftype, schk=true, y1=2}
-					self:skinStdButton{obj=this.ExtraButton, fType=ftype, schk=true, y1=2}
-				else
-					self:skinStdButton{obj=this.button1, fType=ftype, schk=true, sechk=true, y1=2}
-					self:skinStdButton{obj=this.button2, fType=ftype, schk=true, sechk=true, y1=2}
-					self:skinStdButton{obj=this.button3, fType=ftype, schk=true, y1=2}
-					self:skinStdButton{obj=this.button4, fType=ftype, schk=true, y1=2}
-					self:skinStdButton{obj=this.extraButton, fType=ftype, schk=true, y1=2}
+				for _, btn in _G.pairs(this.ButtonContainer.Buttons) do
+					self:skinStdButton{obj=btn, fType=ftype, schk=true, sechk=true, y=2}
 				end
+				self:skinStdButton{obj=this.ExtraButton, fType=ftype, schk=true, y1=2}
 			end
 			if self.modBtnBs then
-				if self.isMnln then
-					self:addButtonBorder{obj=this.ItemFrame.Item, fType=ftype, ibt=true}
-				else
-					self:addButtonBorder{obj=_G[objName .. "ItemFrame"], fType=ftype, ibt=true}
-				end
+				self:addButtonBorder{obj=this.ItemFrame.Item, fType=ftype, ibt=true}
 			end
 
 			self:Unhook(this, "OnShow")
 		end)
-		-- check to see if already being shown
 		self:checkShown(_G["StaticPopup" .. i])
 	end
 
