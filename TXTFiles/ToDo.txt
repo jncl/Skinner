@@ -7,16 +7,12 @@ ToDos
 	¶ is Alt+7	- indicates localisation changes required
 	#nnn		- isndicates Issue number
 	S/N/I/U/O	- Skin request/New Version/Issue(Bug)/Unobsolete Skin/Other changes
-	E/C/M/FR	- Classic Era/MoP Classic/Mainline/Feature Request
+	E/C/M/F 	- Classic Era/MoP Classic/Mainline/Feature Request
+
+		O 	Update ISSUE_TEMPLATE(s) when Classic version name changes
 
 	 ?	O/?	ChatFrameTab for PetBattles has missing text
 
 	 ≈	O/M	PerksProgramProductDetailsContainerFrame, skin contents
 
-#244 √	I/M Baganator
-
-#245 √	I/M ItemSocketingUI, button needs skinning again
-
-#246 x	I/M MapQuestFrame, Rewards panel has black background
-
-#247 √	I/E GossipFrame
+#248 √	I/CE StaticPopup
