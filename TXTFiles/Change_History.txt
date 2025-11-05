@@ -1,3 +1,35 @@
+beta11.64068.1
+Jncl:
+	Updated ToDo*.txt files
+	Updated Change_History.txt
+	Updated Version numbers
+	Updated Classic PVPQueueFrame skin
+	Updated Tooltip code for Retail
+	Updated Classic SpellBookFrame skin
+	Updated Classic Guild UI skins
+	Updated Classic WhoFrame skin
+	Updated TOC
+	Retail PTR 11.2.7 changes
+	Updated Tutorials & NewPlayerExperience code
+	Updated MainMenuBar code
+	Bugfix for canSkin function
+	Updated MajorFactions code
+	Updated EventToastManager skin
+	Updated AlertFrames code
+	Updated QuestsFrame skin
+	Updated ScrappingMachineUI skin
+	Updated ObjectiveTracker Rewards code
+	Updated UtilFuncs
+	Updated NSF
+	Updated AddFriendFrame skin
+	Applied ClassicERA changes
+	Updated SubscriptionInterstitialUI code
+	Updated ChallengesFrame skin
+	Applied RetailPTR changes
+	Updated GossipFrame, closes #247
+	Updated ItemSocketingUI, closes #245
+	Updated Baganator skin, closes #244
+
 beta11.63163.1
 Jncl:
 	Updated ToDo*.txt files
