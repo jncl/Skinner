@@ -1001,7 +1001,6 @@ local function skinTabs(tbl)
 					aObj:setInactiveTab(tab.sf)
 				end
 				aObj:SecureHook(tab, "SetTabSelected", function(tObj, _)
-					aObj:Debug("tab SetTabSelected: [%s, %s]", tObj)
 					if tObj.isSelected then
 						aObj:setActiveTab(tObj.sf)
 					else
