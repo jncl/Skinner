@@ -144,7 +144,7 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 		alertType["HousingItemEarned"]		= {ofs = -8, ddl = {"background", "border"}, stn = {"Divider"}, icon = {obj = "Icon"}}
 	end
 
-	local tbl, itemQuality
+	local adj, tbl, itemQuality = {}
 	local function skinAlertFrame(type, frame)
 		tbl = alertType[type]
 		--@debug@
@@ -197,18 +197,19 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 		if tbl.stc then
 			frame[tbl.stc]:SetTextColor(aObj.BT:GetRGB())
 		end
+		-- setup offset as required
+		adj.x1 = tbl.x1 or tbl.ofs * -1
+		adj.y1 = tbl.y1 or tbl.ofs
+		adj.x2 = tbl.x2 or tbl.ofs
+		adj.y2 = tbl.y2 or tbl.ofs * -1
 		-- handle GuildAchievement size changes
 		if type =="Achievement"
-		and _G.select(12, _G.GetAchievementInfo(frame.id)) then
-			tbl.y1 = 0
-			tbl.y2 = 0
+		and _G.select(12, _G.GetAchievementInfo(frame.id))
+		then
+			adj.y1 = 0
+			adj.y2 = 0
 		end
-		-- setup offset as required
-		tbl.x1  = tbl.x1 or tbl.ofs * -1
-		tbl.y1  = tbl.y1 or tbl.ofs
-		tbl.x2  = tbl.x2 or tbl.ofs
-		tbl.y2  = tbl.y2 or tbl.ofs * -1
-		aObj:skinObject("frame", {obj=frame, fType=ftype, x1=tbl.x1, y1=tbl.y1, x2=tbl.x2, y2=tbl.y2, ncc=true})
+		aObj:skinObject("frame", {obj=frame, fType=ftype, x1=adj.x1, y1=adj.y1, x2=adj.x2, y2=adj.y2, ncc=true})
 		-- add button border if required
 		if aObj.modBtnBs then
 			itemQuality = tbl.iq
