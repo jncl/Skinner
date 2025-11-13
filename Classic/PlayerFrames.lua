@@ -402,17 +402,10 @@ aObj.SetupClassic_PlayerFrames = function()
 			if not self.prdb.DUTexture then
 				self:keepFontStrings(this)
 			end
-			if aObj.isClscERA then
-				if self.prdb.DUTexture then
-					self:removeRegions(this, {1, 2, 3, 4, 5})
-				end
-				self:skinObject("frame", {obj=this, fType=ftype, cb=true, x1=10, y1=-11, x2=-33, y2=74})
-			else
-				if self.prdb.DUTexture then
-					self:keepRegions(this, {8, 19, 20, 21, 22, 23, 24})
-				end
-				self:skinObject("frame", {obj=this, fType=ftype, cb=true, x2=1})
+			if self.prdb.DUTexture then
+				self:keepRegions(this, {8, 19, 20, 21, 22, 23, 24})
 			end
+			self:skinObject("frame", {obj=this, fType=ftype, cb=true, x2=1})
 			if self.modBtns then
 				self:skinStdButton{obj=_G.DressUpFrameCancelButton, fType=ftype}
 				self:skinStdButton{obj=this.ResetButton, fType=ftype}
@@ -871,11 +864,7 @@ aObj.SetupClassic_PlayerFrames = function()
 
 		self:SecureHookScript(_G.InspectFrame, "OnShow", function(this)
 			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true})
-			if not aObj.isClsc then
-				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=10, y1=-12, x2=-31, y2=74})
-			else
-				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x2=1, y2=0})
-			end
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x2=1, y2=0})
 
 			self:Unhook(this, "OnShow")
 		end)
@@ -1462,8 +1451,8 @@ aObj.SetupClassic_PlayerFrames = function()
 				self:skinObject("tabs", {obj=this, prefix=fName, fType=ftype, lod=self.isTT and true})
 				self:skinObject("slider", {obj=_G[fName .. 'ScrollFrameScrollBar'], fType=ftype, rpTex="artwork"})
 				-- keep background Texture
+				self:removeRegions(this, {1, 2, 3, 4, 5})
 				self:skinObject("frame", {obj=this, fType=ftype, cb=true, x1=10, y1=-12, x2=-31, y2=74})
-				self:removeRegions(this, {1, 3, 4, 5, 6})
 				self:keepFontStrings(_G.PlayerTalentFramePointsBar)
 				_G.PlayerTalentFramePreviewBar:DisableDrawLayer("BORDER")
 				_G.PlayerTalentFramePreviewBarFiller:DisableDrawLayer("BACKGROUND")
