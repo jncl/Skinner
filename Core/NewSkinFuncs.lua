@@ -782,7 +782,7 @@ local function skinGlowBox(tbl)
 	end
 	tbl.obj:DisableDrawLayer("BACKGROUND")
 	-- skin the GlowBox
-	aObj:skinObject("frame", {obj=tbl.obj, fType=tbl.fType, cbns=true, clr="gold"})
+	aObj:skinObject("frame", {obj=tbl.obj, fType=tbl.fType, cbns=true, clr="gold", ofs=0, y2=2})
 end
 skinFuncs.glowbox = function(table) skinGlowBox(table) end
 local skinnedMFs = {}
