@@ -43,7 +43,7 @@ x			- Blizzard_BuffFrame
 			- Blizzard_PerformanceBar
 			- Blizzard_RPE_TurnStrafe
 			- Blizzard_SavedSets
-			- NeighborhoodMapDataProvider
+x			- NeighborhoodMapDataProvider
 			- Blizzard_TalentArmorSet
 			- Blizzard_TalentCard
 			- Blizzard_TalentFrameGrid
@@ -63,7 +63,7 @@ x			- PetActionBar
 x			- StatusTrackingBarTemplate
 			- CustomActionBarOverlays
 			- Blizzard_CatalogShop_ProductCards
-			- ChatFrame
+≈			- ChatFrame
 			- FloatingChatFrame
 			- Blizzard_CustomizationOptionTemplates
 x			- DeclensionFrame
@@ -85,7 +85,7 @@ x			- DeclensionFrame
 			- Blizzard_PagingControls
 			- Blizzard_PerksProgramElements
 			- Blizzard_QuestTimer
-			- ReportFrameShared
+≈			- ReportFrameShared
 			- Keybindings
 			- Blizzard_SettingControls
 			- Blizzard_SharedTalentFrame

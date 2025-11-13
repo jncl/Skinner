@@ -15,4 +15,8 @@ ToDos
 
 	 ≈	O/M	PerksProgramProductDetailsContainerFrame, skin contents
 
-#248 √	I/CE StaticPopup
+#249 	I/E Distorted UI display
+	 √	- TalentUI
+	 x	- TradeFrame
+	 √	- DressUpFrame
+	 √	- InspectUI
