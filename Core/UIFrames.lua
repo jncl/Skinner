@@ -141,7 +141,7 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 	end
 	if aObj.isMnlnPTRX then
 		-- TODO: Check on Icon Border etc
-		alertType["HousingItemEarned"]		= {ofs = -8, ddl = {"background", "border"}, stn = {"Divider"}, icon = {obj = "Icon"}}
+		alertType["HousingItemEarned"]		= {ofs = -8, ddl = {"background", "border"}, stn = {"Divider"}}
 	end
 
 	local adj, tbl, itemQuality = {}
@@ -3345,6 +3345,9 @@ aObj.blizzFrames[ftype].ReportFrame = function(self)
 		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, cb=true, ofs=-3})
 		if self.modBtns then
 			self:skinStdButton{obj=this.ReportButton, fType=ftype, sechk=true}
+			if aObj.isMnlnPTRX then
+				self:skinStdButton{obj=this.ScreenshotReportingFrame.TakeScreenshotButton, fType=ftype}
+			end
 			self:SecureHook(this, "MajorTypeSelected", function(fObj, _, _)
 				for catBtn in fObj.MinorCategoryButtonPool:EnumerateActive() do
 					self:skinStdButton{obj=catBtn, fType=ftype, clr="black"}

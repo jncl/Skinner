@@ -2255,23 +2255,145 @@ aObj.SetupMainline_UIFrames = function()
 		-- Housing
 		aObj.blizzLoDFrames[ftype].HouseEditor = function(self)
 			if not self.prdb.HousingUI or self.initialized.HouseEditor then return end
+
+			if not _G.HouseEditorFrame then
+				_G.C_Timer.After(0.1, function()
+					self.blizzLoDFrames[ftype].HouseEditor(self)
+				end)
+				return
+			end
+
 			self.initialized.HouseEditor = true
 
 			self:SecureHookScript(_G.HouseEditorFrame, "OnShow", function(this)
-				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true})
+				-- StorageButton (LHS of screen)
 
-				-- StorageButton
-				-- StoragePanel
-				-- ModeBar
-				-- BasicDecorModeFrame
-				-- LayoutModeFrame
-				-- CustomizeModeFrame
-				-- CleanupModeFrame
-				-- ExpertDecorModeFrame
-				-- ExteriorCustomizationModeFrame
+				self:SecureHookScript(this.StoragePanel, "OnShow", function(fObj)
+					self:keepFontStrings(fObj)
+					self:skinObject("editbox", {obj=fObj.SearchBox, fType=ftype, si=true})
+					self:skinObject("ddbutton", {obj=fObj.Filters.FilterDropdown, fType=ftype, filter=true})
+					self:keepFontStrings(fObj.Categories)
+					self:skinObject("scrollbar", {obj=fObj.OptionsContainer.ScrollBar, fType=ftype})
+					local function skinOption(...)
+						local _, element, elementData
+						if _G.select("#", ...) == 2 then
+							element, elementData = ...
+						else
+							_, element, elementData = ...
+						end
+						element.Background:SetTexture(nil)
+						element.HoverBackground:SetTexture(nil)
+						aObj:skinObject("frame", {obj=element, fType=ftype, fb=true, ofs=-1, clr="gold-df"})
+					end
+					_G.ScrollUtil.AddInitializedFrameCallback(fObj.OptionsContainer.ScrollBox, skinOption, aObj, true)
+						-- .TabSystem
+						self:skinObject("tabs", {obj=fObj.TabSystem, pool=true, fType=ftype, ignoreSize=true, lod=self.isTT and true--[[, regions={}, offsets={x1=6, y1=0, x2=-6, y2=2}]]})
+						-- TODO: skin CollapseButton, currently texture has border , background & icon
+						-- .CollapseButton
+						-- .ResizeButton
+					self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, x1=-6})
+
+					self:Unhook(fObj, "OnShow")
+				end)
+				self:checkShown(this.StoragePanel)
+
+				-- (Bottom of Screen)
+				self:SecureHookScript(this.ModeBar, "OnShow", function(fObj)
+					self:keepFontStrings(this.ModeBar)
+						-- .BasicDecorModeButton
+						-- .ExpertDecorModeButton
+						-- .CustomizeModeButton
+						-- .CleanupModeButton
+						-- .LayoutModeButton
+						-- .ExteriorCustomizationModeButton
+
+					self:Unhook(fObj, "OnShow")
+				end)
+				self:checkShown(this.ModeBar)
+
+				self:SecureHookScript(this.BasicDecorModeFrame, "OnShow", function(fObj)
+					-- .SubButtonBar
+						-- .SnapButton
+						-- .NudgeButton
+					-- .DecorMoveOverlay
+
+					self:Unhook(fObj, "OnShow")
+				end)
+				self:checkShown(this.BasicDecorModeFrame)
+
+				self:SecureHookScript(this.LayoutModeFrame, "OnShow", function(fObj)
+					-- .RoomCount
+					-- .FloorSelect
+					-- .LayoutDragUnderlay
+
+					self:Unhook(fObj, "OnShow")
+				end)
+				self:checkShown(this.LayoutModeFrame)
+
+				self:SecureHookScript(this.CustomizeModeFrame, "OnShow", function(fObj)
+					-- .DecorCustomizationsPane
+					-- .DyeSelectionPopout
+					-- .RoomComponentCustomizationsPane
+
+					self:Unhook(fObj, "OnShow")
+				end)
+				self:checkShown(this.CustomizeModeFrame)
+
+				self:SecureHookScript(this.CleanupModeFrame, "OnShow", function(fObj)
+					-- .SubmodeBar
+						-- .ResetButton
+						-- .TranslateSubmodeButton
+						-- .RotateSubmodeButton
+						-- .ScaleSubmodeButton
+					-- .PlacedDecorListButton
+					-- .PlacedDecorList
+						-- .DragBar
+						-- .ScrollBox
+
+					self:Unhook(fObj, "OnShow")
+				end)
+				self:checkShown(this.CleanupModeFrame)
+
+				self:SecureHookScript(this.ExpertDecorModeFrame, "OnShow", function(fObj)
+
+
+					self:Unhook(fObj, "OnShow")
+				end)
+				self:checkShown(this.ExpertDecorModeFrame)
+
+				self:SecureHookScript(this.ExteriorCustomizationModeFrame, "OnShow", function(fObj)
+					if self.modBtns then
+						self:skinStdButton{obj=this.ExteriorCustomizationModeFrame.CoreOptionsPanel.HouseTypeOption, fType=ftype}
+						self:skinStdButton{obj=this.ExteriorCustomizationModeFrame.CoreOptionsPanel.HouseSizeOption, fType=ftype}
+						self:skinStdButton{obj=this.ExteriorCustomizationModeFrame.CoreOptionsPanel.BaseStyleOption, fType=ftype}
+						self:skinStdButton{obj=this.ExteriorCustomizationModeFrame.CoreOptionsPanel.BaseVariantOption, fType=ftype}
+						self:skinStdButton{obj=this.ExteriorCustomizationModeFrame.CoreOptionsPanel.RoofStyleOption, fType=ftype}
+						self:skinStdButton{obj=this.ExteriorCustomizationModeFrame.CoreOptionsPanel.RoofVariantOption, fType=ftype}
+					end
+
+					self:Unhook(fObj, "OnShow")
+				end)
+				self:checkShown(this.ExteriorCustomizationModeFrame)
 
 				self:Unhook(this, "OnShow")
 			end)
+			self:checkShown(_G.HouseEditorFrame)
+
+		end
+
+		aObj.blizzLoDFrames[ftype].HouseList = function(self)
+			if not self.prdb.HousingUI or self.initialized.HouseList then return end
+
+			aObj:Debug("HouseList LoD: [%s, %s]", _G.HouseListFrame)
+
+			if not _G.HouseListFrame then
+				_G.C_Timer.After(0.1, function()
+					self.blizzLoDFrames[ftype].HouseList(self)
+				end)
+				return
+			end
+
+			self.initialized.HouseList = true
 
 			self:SecureHookScript(_G.HouseListFrame, "OnShow", function(this)
 				self:skinObject("scrollbar", {obj=this.ScrollBar, fType=ftype})
@@ -2308,10 +2430,7 @@ aObj.SetupMainline_UIFrames = function()
 			end)
 
 			self:SecureHookScript(_G.HousingBulletinBoardFrame, "OnShow", function(this)
-				-- .ResidentsTab
-				if self.modBtns then
-					self:skinStdButton{obj=this.ResidentsTab.InviteResidentButton, fType=ftype}
-				end
+				this.ResidentsTab.Background:SetTexture(nil)
 					-- .ColumnDisplay
 				self:skinObject("scrollbar", {obj=this.ResidentsTab.ScrollBar, fType=ftype})
 				local function skinRoster(...)
@@ -2324,10 +2443,12 @@ aObj.SetupMainline_UIFrames = function()
 				end
 				_G.ScrollUtil.AddInitializedFrameCallback(this.ResidentsTab.ScrollBox, skinRoster, aObj, true)
 
-				-- .RosterTabButton
+				self:skinStdButton{obj=this.RosterTabButton, fType=ftype, kfs=true}
 				self:keepFontStrings(this.FoliageDecoration)
-				-- .GearDropdown
 				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true})
+				if self.modBtns then
+					self:skinStdButton{obj=this.ResidentsTab.InviteResidentButton, fType=ftype}
+				end
 
 				self:Unhook(this, "OnShow")
 			end)
@@ -2350,7 +2471,6 @@ aObj.SetupMainline_UIFrames = function()
 			self.initialized.HousingCharter = true
 
 			self:SecureHookScript(_G.HousingCharterFrame, "OnShow", function(this)
-
 				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true})
 				if self.modBtns then
 					self:skinStdButton{obj=this.SettingsButton, fType=ftype}
@@ -2363,8 +2483,11 @@ aObj.SetupMainline_UIFrames = function()
 
 
 			self:SecureHookScript(_G.HousingCharterRequestSignatureDialog, "OnShow", function(this)
-
 				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true})
+				if self.modBtns then
+					self:skinStdButton{obj=this.ConfirmButton, fType=ftype}
+					self:skinStdButton{obj=this.CancelButton, fType=ftype}
+				end
 
 				self:Unhook(this, "OnShow")
 			end)
@@ -2376,12 +2499,7 @@ aObj.SetupMainline_UIFrames = function()
 			self.initialized.HousingControlsFrame = true
 
 			self:SecureHookScript(_G.HousingControlsFrame, "OnShow", function(this)
-				-- .HouseEditorButton
-				-- .SettingsButton
-				-- .ExitButton
-				-- .HouseInfoButton
-				-- .InspectorButton
-				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true})
+				this.Background:SetTexture(nil)
 
 				self:Unhook(this, "OnShow")
 			end)
@@ -2402,8 +2520,13 @@ aObj.SetupMainline_UIFrames = function()
 			end)
 
 			self:SecureHookScript(_G.HousingCornerstonePurchaseFrame, "OnShow", function(this)
-
+				this.ForSaleSign.WoodSign:SetTexture(nil)
+				self:moveObject{obj=this.ForSaleSign.ForSaleText, y=-10}
+				self:removeNineSlice(this.MoneyFrameBackdrop.NineSlice)
 				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true})
+				if self.modBtns then
+					self:skinStdButton{obj=this.BuyButton, fType=ftype}
+				end
 
 				self:Unhook(this, "OnShow")
 			end)
@@ -2483,46 +2606,86 @@ aObj.SetupMainline_UIFrames = function()
 			self:SecureHookScript(_G.HousingDashboardFrame, "OnShow", function(this)
 				-- TODO: skin tabs, current textures include border
 				-- self:skinSideTabs(this, ftype)
-				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=-4, x2=4, y2=-4})
+				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=0, x2=4, y2=-4})
 
-				self:SecureHookScript(this.HouseInfoContent, "OnShow", function(fObj)
-					self:skinObject("ddbutton", {obj=fObj.HouseDropdown, fType=ftype})
+				self:SecureHookScript(this.HouseInfoContent, "OnShow", function(hic)
+					self:skinObject("ddbutton", {obj=hic.HouseDropdown, fType=ftype})
 
 					if self.modBtns then
-						self:skinStdButton{obj=fObj.HouseFinderButton, fType=ftype}
+						self:skinStdButton{obj=hic.HouseFinderButton, fType=ftype}
 					end
 
-					self:SecureHookScript(fObj.DashboardNoHousesFrame, "OnShow", function(frame)
+					self:SecureHookScript(hic.DashboardNoHousesFrame, "OnShow", function(frame)
 						if self.modBtns then
 							self:skinStdButton{obj=frame.NoHouseButton, fType=ftype, ofs=0}
 						end
 
 						self:Unhook(fObj, "OnShow")
 					end)
-					self:checkShown(fObj.DashboardNoHousesFrame)
+					self:checkShown(hic.DashboardNoHousesFrame)
 
-					self:SecureHookScript(fObj.ContentFrame, "OnShow", function(frame)
-						-- .TabSystem
-						-- .EndeavorFrame
-						-- .HouseUpgradeFrame
+					self:SecureHookScript(hic.ContentFrame, "OnShow", function(cf)
+						_G.C_Timer.After(0.5, function()
+							self:skinObject("tabs", {obj=cf.TabSystem, pool=true, fType=ftype, ignoreSize=true, lod=self.isTT and true, upwards=true, offsets={y2=-4}})
+						end)
 
-						self:Unhook(frame, "OnShow")
+						self:SecureHookScript(cf.EndeavorFrame, "OnShow", function(ef)
+							aObj:Debug("EndeavorFrame: [%s, %s]", ef)
+
+							self:skinObject("frame", {obj=ef, fType=ftype, kfs=true, fb=true, x1=-2, x2=5})
+
+							self:Unhook(ef, "OnShow")
+						end)
+						self:checkShown(cf.EndeavorFrame)
+
+						self:SecureHookScript(cf.HouseUpgradeFrame, "OnShow", function(huf)
+							huf.CurrentLevelFrame.HouseBarFrame.HouseBarFrame:DisableDrawLayer("ARTWORK") -- leaves
+							huf.CurrentLevelFrame.HouseBarFrame:DisableDrawLayer("OVERLAY") -- radial background
+							huf.TrackFrame.Background:SetTexture(nil)
+
+							self:SecureHook(huf, "SetRewards", function(_, selectedLevel)
+								aObj:Debug("huf SetRewards: [%s, %s]", selectedLevel, huf.houseLevelRewardInfos[selectedLevel].rewards)
+								if huf.houseLevelRewardInfos[selectedLevel].rewards == "no rewards" then
+									return
+								end
+								for reward in huf.rewardPoolLarge:EnumerateActive() do
+									reward.Background:SetTexture(nil)
+								end
+								for reward in huf.rewardPoolSmall:EnumerateActive() do
+									reward.Background:SetTexture(nil)
+								end
+							end)
+
+							self:skinObject("frame", {obj=huf, fType=ftype, kfs=true, fb=true, x1=-2, x2=5})
+							if self.modBtnBs then
+								self:addButtonBorder{obj=huf.TeleportToHouseButton, fType=ftype, relTo=huf.TeleportToHouseButton.Icon}
+							end
+							if self.modChkBtns then
+								self:skinCheckButton{obj=huf.WatchFavorButton, fType=ftype}
+							end
+
+							self:Unhook(huf, "OnShow")
+						end)
+						self:checkShown(cf.HouseUpgradeFrame)
+
+						self:Unhook(cf, "OnShow")
 					end)
+					self:checkShown(hic.ContentFrame)
 
 
-					self:Unhook(fObj, "OnShow")
+					self:Unhook(hic, "OnShow")
 				end)
 				self:checkShown(this.HouseInfoContent)
 
-				self:SecureHookScript(this.CatalogContent, "OnShow", function(fObj)
-					fObj.Background:SetTexture(nil)
-					fObj.Divider:SetTexture(nil)
-					self:skinObject("ddbutton", {obj=fObj.Filters.FilterDropdown, fType=ftype, filter=true})
-					self:skinObject("editbox", {obj=fObj.SearchBox, fType=ftype, si=true, y1=-4, y2=4})
-					fObj.Categories.Background:SetAlpha(0)
-					fObj.Categories.TopBorder:SetTexture(nil)
-					fObj.Categories.SubcategoriesDivider:SetTexture(nil)
-					self:skinObject("scrollbar", {obj=fObj.OptionsContainer.ScrollBar, fType=ftype})
+				self:SecureHookScript(this.CatalogContent, "OnShow", function(cc)
+					cc.Background:SetTexture(nil)
+					cc.Divider:SetTexture(nil)
+					self:skinObject("ddbutton", {obj=cc.Filters.FilterDropdown, fType=ftype, filter=true})
+					self:skinObject("editbox", {obj=cc.SearchBox, fType=ftype, si=true, y1=-4, y2=4})
+					cc.Categories.Background:SetAlpha(0)
+					cc.Categories.TopBorder:SetTexture(nil)
+					cc.Categories.SubcategoriesDivider:SetTexture(nil)
+					self:skinObject("scrollbar", {obj=cc.OptionsContainer.ScrollBar, fType=ftype})
 					-- TODO: skin options ?
 					-- local function skinOption(...)
 					-- 	local _, element, elementData
@@ -2532,29 +2695,61 @@ aObj.SetupMainline_UIFrames = function()
 					-- 		_, element, elementData = ...
 					-- 	end
 					-- end
-					-- _G.ScrollUtil.AddInitializedFrameCallback(fObj.OptionsContainer.ScrollBox, skinOption, aObj, true)
-					self:keepFontStrings(fObj.PreviewFrame)
+					-- _G.ScrollUtil.AddInitializedFrameCallback(cc.OptionsContainer.ScrollBox, skinOption, aObj, true)
+					self:keepFontStrings(cc.PreviewFrame)
 
-					self:Unhook(fObj, "OnShow")
+					self:Unhook(cc, "OnShow")
 				end)
+				self:checkShown(this.CatalogContent)
 
 				self:Unhook(this, "OnShow")
 			end)
 
 		end
 
+		local function skinNeighborhoodBtns(pool)
+			for btn in pool:EnumerateActive() do
+				aObj:skinObject("frame", {obj=btn, fType=ftype, kfs=true, fb=true, ofs=-2, clr="gold_df"})
+				btn:GetHighlightTexture():SetAlpha(1)
+			end
+		end
 		aObj.blizzLoDFrames[ftype].HousingHouseFinder = function(self)
 			if not self.prdb.HousingUI or self.initialized.HouseFinder then return end
 			self.initialized.HouseFinder = true
 
 			self:SecureHookScript(_G.HouseFinderFrame, "OnShow", function(this)
-				-- .NeighborhoodListFrame
-				-- .PlotInfoFrame
-				-- .HouseFinderMapCanvasFrame
+				this.NeighborhoodListFrame.NeighborhoodListBG:SetTexture(nil)
+				this.NeighborhoodListFrame.NeighborhoodTitleBG:SetTexture(nil)
+				this.NeighborhoodListFrame.ListBottomGradient.BottomGradient:SetTexture(nil)
+				self:SecureHook(this, "PopulateNeighborhoodList", function(fObj, _)
+					skinNeighborhoodBtns(fObj.neighborhoodButtonPool)
+				end)
+				skinNeighborhoodBtns(this.neighborhoodButtonPool)
+				self:SecureHook(this, "PopulateBNetNeighborhoodList", function(fObj, _)
+					skinNeighborhoodBtns(fObj.bnetNeighborhoodButtonPool)
+				end)
+				skinNeighborhoodBtns(this.bnetNeighborhoodButtonPool)
+				self:skinObject("editbox", {obj=this.NeighborhoodListFrame.BNetFriendSearchBox, fType=ftype, cb=true})
+				self:keepFontStrings(this.PlotInfoFrame)
+				-- this.HouseFinderMapCanvasFrame.BorderFrame
 				-- .HouseFinderNotificationBanner
-				-- .WoodBorderFrame
-				-- .SelectedPlotTooltip
+				this.WoodBorderFrame.Border:SetTexture(nil)
 				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true})
+				if self.modBtns then
+					self:skinStdButton{obj=this.PlotInfoFrame.VisitHouseButton, fType=ftype}
+				end
+				if self.modBtnBs then
+					self:addButtonBorder{obj=this.NeighborhoodListFrame.RefreshButton, fType=ftype, ofs=6, x2=7, relTo=this.NeighborhoodListFrame.RefreshButton.Icon, clr="gold"}
+				end
+
+				_G.C_Timer.After(0.1, function()
+				    self:add2Table(self.ttList, _G.HouseFinderHighlightedPlotTooltip)
+				    _G.HouseFinderHighlightedPlotTooltip.Arrow:SetAlpha(1)
+				    _G.HouseFinderHighlightedPlotTooltip.CornerIcon:SetAlpha(1)
+				    self:add2Table(self.ttList, this.SelectedPlotTooltip)
+				    this.SelectedPlotTooltip.Arrow:SetAlpha(1)
+				    this.SelectedPlotTooltip.CornerIcon:SetAlpha(1)
+				end)
 
 				self:Unhook(this, "OnShow")
 			end)
@@ -2565,18 +2760,38 @@ aObj.SetupMainline_UIFrames = function()
 			if not self.prdb.HousingUI or self.initialized.HousingHouseSettings then return end
 			self.initialized.HousingHouseSettings = true
 
+			self:SecureHookScript(_G.AbandonHouseConfirmationDialog, "OnShow", function(this)
+				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, x1=-8, x2=8})
+				if self.modBtns then
+					self:skinStdButton{obj=this.ConfirmButton, fType=ftype, ofs=-4}
+					self:skinStdButton{obj=this.CancelButton, fType=ftype, ofs=-4}
+				end
+
+				self:Unhook(this, "OnShow")
+			end)
+
+
 			self:SecureHookScript(_G.HousingHouseSettingsFrame, "OnShow", function(this)
-				-- .PlotAccess
-					-- .AccessTypeDropdown
-					-- .Options
-				-- .HouseAccess
-					-- .Checkbox
 				self:skinObject("ddbutton", {obj=this.HouseOwnerDropdown, fType=ftype})
+				self:SecureHook(_G.HouseSettingsAccessOptionsMixin, "SetupOptions", function(this, ...)
+					aObj:Debug("PlotAccess SetupOptions: [%s, %s, %s, %s]", this, ...)
+
+				end)
 				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true})
 				if self.modBtns then
+					self:skinStdButton{obj=this.PlotAccess.AccessTypeDropdown, fType=ftype}
+					self:skinStdButton{obj=this.HouseAccess.AccessTypeDropdown, fType=ftype}
 					self:skinStdButton{obj=this.IgnoreListButton, fType=ftype}
 					self:skinStdButton{obj=this.SaveButton, fType=ftype}
 					self:skinStdButton{obj=this.AbandonHouseButton, fType=ftype}
+				end
+				if self.modChkBtns then
+					for _, cBtn in _G.pairs(this.PlotAccess.accessOptions) do
+						self:skinCheckButton{obj=cBtn.Checkbox, fType=ftype}
+					end
+					for _, cBtn in _G.pairs(this.HouseAccess.accessOptions) do
+						self:skinCheckButton{obj=cBtn.Checkbox, fType=ftype}
+					end
 				end
 
 				self:Unhook(this, "OnShow")
