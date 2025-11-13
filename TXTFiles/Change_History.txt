@@ -1,3 +1,15 @@
+beta11.64154.1
+Jncl:
+	Updated ToDo*.txt files
+	Updated Change_History.txt
+	Updated Version numbers
+	Updated TOC
+	Updated ObjectiveTracker MawBuffs code
+	Updated StaticPopups code, closes #248
+	Update AlertFrames code
+	Remove debug line
+	Update issue templates
+
 beta11.64068.1
 Jncl:
 	Updated ToDo*.txt files
