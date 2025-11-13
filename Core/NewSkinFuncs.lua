@@ -141,6 +141,7 @@ aObj.skinTPLs = {
 		inset		= 5,
 		mi			= true, -- move Instructions
 		mix			= 6, -- Instructions x offset
+		cb          = true -- ClearButton
 	},
 	frame = {
 		name		= false, -- use a name if required (VuhDo Options)
@@ -599,6 +600,11 @@ local function skinEditBox(tbl)
 		tbl.obj.Instructions:SetPoint("LEFT", tbl.obj, "LEFT", tbl.mix, 0)
 	end
 	aObj:getRegion(tbl.obj, 2):SetAlpha(1) -- cursor texture
+	if tbl.cb
+	and aObj.modBtnBs
+	then
+		aObj:skinCloseButton{obj=tbl.obj.ClearButton, fType=tbl.ftype, noSkin=true}
+	end
 end
 skinFuncs.editbox = function(table) skinEditBox(table) end
 local hObj
