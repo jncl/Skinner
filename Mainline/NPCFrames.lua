@@ -820,7 +820,7 @@ aObj.SetupMainline_NPCFrames = function()
 
 	if aObj.isMnlnBeta then
 		aObj.blizzLoDFrames[ftype].Transmog = function(self)
-			if not self.prdb.Collections or self.initialized.Transmog then return end
+			if not self.prdb.Transmog or self.initialized.Transmog then return end
 			self.initialized.Transmog = true
 
 			self:SecureHookScript(_G.TransmogFrame, "OnShow", function(this)
@@ -888,6 +888,17 @@ aObj.SetupMainline_NPCFrames = function()
 			    	fObj:SetTab(1)
 			    	self:keepFontStrings(fObj.TabContent)
 
+			    	local updBtnClr = _G.nop
+			    	if self.modBtnBs then
+			    		function updBtnClr(btn)
+			    			local atlas = btn.Border:GetAtlas()
+			    			if atlas:find("incomplete", 1, true) then
+			    				aObj:clrBtnBdr(btn, "grey")
+			    			else
+			    				aObj:clrBtnBdr(btn, "gold", 0.75)
+			    			end
+			    		end
+			    	end
 			    	self:SecureHookScript(fObj.TabContent.ItemsFrame, "OnShow", function(frame)
 			    		self:skinObject("ddbutton", {obj=frame.FilterButton, fType=ftype, filter=true})
 			    		self:skinObject("editbox", {obj=frame.SearchBox, fType=ftype, regions={2, 4}, mi=true, mix=16})
@@ -910,6 +921,7 @@ aObj.SetupMainline_NPCFrames = function()
 				    	    		-- .PendingFrame
 				    	    		-- .SavedFrame
 				    	    		aObj:addButtonBorder{obj=element, ofs=6}
+				    	    		updBtnClr(element)
 			    	    		end)
 			    	    	end
 		    	    		frame.PagedContent:RegisterCallback(PagedContentFrameBaseMixin.Event.OnUpdate, onItemModelUpdate, frame.PagedContent)
@@ -928,6 +940,7 @@ aObj.SetupMainline_NPCFrames = function()
 		    	    		-- .PendingFrame
 		    	    		-- .SavedFrame
 		    	    		aObj:addButtonBorder{obj=element, ofs=6}
+		    	    		updBtnClr(element)
 	    	    		end)
 	    	    	end
 			    	self:SecureHookScript(fObj.TabContent.SetsFrame, "OnShow", function(frame)
@@ -1052,6 +1065,7 @@ aObj.SetupMainline_NPCFramesOptions = function(self)
 		["Perks Program"] 				= {desc = "Trading Post"},
 		["Rune Forge UI"]               = true,
 		["Stable UI"]                   = {desc = "Stable Frame"},
+		["Transmog"]                    = {desc = "Transmogrify"},
 		["Void Storage UI"]             = true,
 	}
 	self:setupFramesOptions(optTab, "NPC")

@@ -338,6 +338,7 @@ aObj.locale_enUS =
     ["Trade Skills UI"] = true,
     ["Trading Post"] = true,
     ["Trainer UI"] = true,
+    ["Transmogrify"] = true,
     ["Tutorial Frame"] = true,
     ["Tutorial UI"] = true,
     ["UI Enhancement"] = true,
