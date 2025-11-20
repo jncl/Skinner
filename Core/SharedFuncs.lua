@@ -4,14 +4,14 @@ local _G = _G
 
 local buildInfo = {
 	-- wow_classic_beta    = {"MOP Classic Beta",          "5.5.0",  62071},
-	-- wow_beta            = {"The War Within Beta",       "11.0.2", 56313},
-	wow_classic_ptr     = {"PTR (MoP Classic)",			"5.5.3",  64308},
+	wow_beta            = {"Midnight Beta",             "12.0.0", 64507},
+	wow_classic_ptr     = {"PTR (MoP Classic)",			"5.5.3",  64400},
 	wow_classic_era_ptr = {"PTR (Classic Era)",         "1.15.8", 64057},
 	wow_ptr             = {"PTR (TWW 11.2.5)",          "11.2.5", 63660},
-	wow_ptr_x           = {"PTR (TWW 11.2.7)",          "11.2.7", 64169},
+	wow_ptr_x           = {"PTR (TWW 11.2.7)",          "11.2.7", 64438},
 	wow_classic_era     = {"World of Warcraft Classic", "1.15.8", 64272},
-	wow_classic         = {"Mists of Panderia Classic", "5.5.2",  64271},
-	wow                 = {"World of Warcraft",         "11.2.5", 64270},
+	wow_classic         = {"Mists of Panderia Classic", "5.5.2",  64481},
+	wow                 = {"World of Warcraft",         "11.2.5", 64502},
 	curr                = {"curr", _G.GetBuildInfo()},
 }
 
@@ -55,10 +55,10 @@ function aObj:checkWoWVersion()
 	self.isClsc       = agentUID == "wow_classic" and true
 	self.isClscERAPTR = agentUID == "wow_classic_era_ptr" and true
 	self.isClscERA    = agentUID == "wow_classic_era" and true
-	self.isMnlnBeta    = agentUID == "wow_beta" and true
-	self.isMnlnPTR     = agentUID == "wow_ptr" and true
-	self.isMnlnPTRX    = agentUID == "wow_ptr_x" and true
-	self.isMnln        = agentUID == "wow" and true
+	self.isMnlnBeta   = agentUID == "wow_beta" and true
+	self.isMnlnPTR    = agentUID == "wow_ptr" and true
+	self.isMnlnPTRX   = agentUID == "wow_ptr_x" and true
+	self.isMnln       = agentUID == "wow" and true
 	--@debug@
 	self:Debug("checkVersion#2: [%s, %s, %s, %s, %s, %s, %s, %s, %s]", self.isClscBeta, self.isClscPTR, self.isClsc, self.isClscERAPTR, self.isClscERA, self.isMnlnBeta, self.isMnlnPTR, self.isMnlnPTRX, self.isMnln)
 	--@end-debug@
@@ -67,8 +67,8 @@ function aObj:checkWoWVersion()
 	self.isClscPTR    = self.isClscPTR or self.isClscBeta
 	self.isClsc       = self.isClsc or self.isClscPTR
 	self.isClscERA    = self.isClscERA  or self.isClscERAPTR
-	self.isMnlnPTR     = self.isMnlnPTR or self.isMnlnBeta
-	self.isMnln        = self.isMnln or self.isMnlnPTR or self.isMnlnPTRX
+	self.isMnlnPTR    = self.isMnlnPTR or self.isMnlnBeta
+	self.isMnln       = self.isMnln or self.isMnlnPTR or self.isMnlnPTRX
 
 	self.isPatch = not compareBuildInfo(agentUID, "curr", true)
 	if self.isPatch then
