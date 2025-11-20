@@ -2,7 +2,7 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("Baganator") then return end
 local _G = _G
 
-aObj.addonsToSkin.Baganator = function(self) -- v 766
+aObj.addonsToSkin.Baganator = function(self) -- v 769
 
 	-- TODO: handle warband bank being purchased
 
@@ -341,53 +341,59 @@ aObj.addonsToSkin.Baganator = function(self) -- v 766
 		local function skinKids(frame)
 			for _, child in _G.ipairs{frame:GetChildren()} do
 				if child:IsObjectType("CheckButton")
-				and self.modChkBtns
+				and aObj.modChkBtns
 				then
-					self:skinCheckButton{obj=child}
+					aObj:skinCheckButton{obj=child}
 				elseif child.Arrow then
-					self:skinObject("ddbutton", {obj=child})
+					aObj:skinObject("ddbutton", {obj=child})
 				elseif child:IsObjectType("EditBox") then
-					self:skinObject("editbox", {obj=child, y1=-4, y2=4})
+					aObj:skinObject("editbox", {obj=child, y1=-4, y2=4})
 				elseif child.DropDown
 				and child.DropDown.Popout
 				then
-					self:skinObject("frame", {obj=child.DropDown.Popout.Border, kfs=true, x1=7, y1=0, x2=-12, y2=20})
+					aObj:skinObject("frame", {obj=child.DropDown.Popout.Border, kfs=true, x1=7, y1=0, x2=-12, y2=20})
 				elseif child.Popout then
-					self:skinObject("frame", {obj=child.Popout.Border, kfs=true, x1=7, y1=0, x2=-12, y2=20})
+					aObj:skinObject("frame", {obj=child.Popout.Border, kfs=true, x1=7, y1=0, x2=-12, y2=20})
 				elseif child.ScrollBar then
-					self:skinObject("scrollbar", {obj=child.ScrollBar})
+					aObj:skinObject("scrollbar", {obj=child.ScrollBar})
 					-- check if the child is the CategoryContainer
-					gChild = self:getChild(child, 1)
+					gChild = aObj:getChild(child, 1)
 					if gChild.Bg then
 						gChild.Bg:SetTexture(nil)
-						self:removeInset(gChild)
+						aObj:removeInset(gChild)
 						x2Ofs = -13
 					else
 						x2Ofs = nil
 					end
-					self:skinObject("frame", {obj=child, fb=true, x2=x2Ofs})
+					aObj:skinObject("frame", {obj=child, fb=true, x2=x2Ofs})
+				elseif child.Slider
+				and child.Slider.Slider
+				then
+					aObj:skinObject("slider", {obj=child.Slider.Slider})
 				elseif child.Slider then
-					self:skinObject("slider", {obj=child.Slider})
+					aObj:skinObject("slider", {obj=child.Slider})
+				elseif child.Track then
+					aObj:skinObject("scrollbar", {obj=child})
 				elseif child:IsObjectType("Button")
-				and self.modBtnBs
+				and aObj.modBtnBs
 				then
 					if child.Count then -- Corners central button
-						self:addButtonBorder{obj=child}
+						aObj:addButtonBorder{obj=child}
 					elseif child.AddButton then
-						self:skinOtherButton{obj=child.AddButton, text="+"}
+						aObj:skinOtherButton{obj=child.AddButton, text="+"}
 					else
-						self:skinStdButton{obj=child, schk=true, sechk=true}
+						aObj:skinStdButton{obj=child, schk=true, sechk=true}
 					end
 				elseif child:IsObjectType("Frame") then
-					-- skin General Tab Header panel
+					-- skin General Tab Header panel &  Inset Panels
 					if child.Bg then
 						child.Bg:SetTexture(nil)
 						if child.NineSlice then
-							self:removeNineSlice(child.NineSlice)
+							aObj:removeNineSlice(child.NineSlice)
 						else
 							child:DisableDrawLayer("BORDER")
 						end
-						self:skinObject("frame", {obj=child, fb=true})
+						aObj:skinObject("frame", {obj=child, fb=true})
 					end
 					skinKids(child)
 				end
@@ -458,7 +464,7 @@ aObj.addonsToSkin.Baganator = function(self) -- v 766
 
 end
 
-aObj.addonsToSkin.Syndicator = function(self) -- v 245
+aObj.addonsToSkin.Syndicator = function(self) -- v 247
 	self:SecureHook(_G.Syndicator.API, "GetSearchKeywords", function(this)
 		_G.C_Timer.After(0.05, function()
 			self:skinObject("scrollbar", {obj=_G.Baganator_SearchHelpFrame.ScrollBar})

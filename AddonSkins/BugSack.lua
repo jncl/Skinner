@@ -1,16 +1,12 @@
 local _, aObj = ...
 if not aObj:isAddonEnabled("BugSack") then return end
 local _G = _G
--- luacheck: ignore 631 (line is too long)
 
 aObj.addonsToSkin.BugSack = function(self) -- v10.2.7
 
 	if not _G.BugGrabber then
 		return
 	end
-
-	-- close with Esc
-	self:add2Table(_G.UISpecialFrames, "BugSackFrame")
 
 	self:SecureHook(_G.BugSack, "OpenSack", function(this)
 		self:skinObject("slider", {obj=_G.BugSackScroll.ScrollBar})
@@ -41,25 +37,7 @@ aObj.addonsToSkin.BugSack = function(self) -- v10.2.7
 		self:Unhook(this, "OpenSack")
 	end)
 
-	self.RegisterCallback("BugSack", "SettingsPanel_DisplayCategory", function(_, panel)
-		if panel.name ~= "BugSack" then return end
-		self.spSkinnedPanels[panel] = true
-
-		for _, child in _G.ipairs_reverse{panel:GetChildren()} do
-			if child:IsObjectType("CheckButton")
-			and self.modChkBtns
-			then
-				self:skinCheckButton{obj=child}
-			elseif self:isDropDown(child) then
-				self:skinObject("dropdown", {obj=child, x2=109})
-			elseif child:IsObjectType("Button")
-			and self.modBtns
-			then
-				self:skinStdButton{obj=child}
-			end
-		end
-
-		self.UnregisterCallback("BugSack", "SettingsPanel_DisplayCategory")
-	end)
+	-- add custom Settings entry for the Sound Dropdown
+	aObj.customSettings["soundDropdown"] = "DropdownButton"
 
 end

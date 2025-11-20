@@ -3421,6 +3421,9 @@ if not aObj.isClscERA then
 	end
 end
 
+aObj.customSettings = {
+	-- elementKey, elementType
+}
 aObj.blizzFrames[ftype].Settings = function(self)
 	if not self.prdb.Settings or self.initialized.Settings then return end
 	self.initialized.Settings = true
@@ -3495,7 +3498,7 @@ aObj.blizzFrames[ftype].Settings = function(self)
 				elseif element.ToggleTest then
 					aObj:addButtonBorder{obj=element.ToggleTest, fType=ftype, ofs=1}
 				end
-				if element.Control -- N.B. Retail
+				if element.Control -- N.B. Mainline
 				and element.Control.Dropdown
 				then
 					aObj:skinStdButton{obj=element.Control.Dropdown, fType=ftype, ignoreHLTex=true, sechk=true, y1=1, y2=-1}
@@ -3507,9 +3510,7 @@ aObj.blizzFrames[ftype].Settings = function(self)
 					aObj:removeNineSlice(element.DropDown.Button.Popout.Border)
 					aObj:skinObject("frame", {obj=element.DropDown.Button.Popout, fType=ftype, kfs=true, ofs=0, y2=20})
 				end
-			end
-			if aObj.modBtns then
-				if element.Control -- N.B. Retail
+				if element.Control -- N.B. Mainline
 				and element.Control.DecrementButton
 				then
 					aObj:skinStdButton{obj=element.Control.IncrementButton, fType=ftype, sechk=true, ofs=1}
@@ -3530,6 +3531,20 @@ aObj.blizzFrames[ftype].Settings = function(self)
 			if element.SliderWithSteppers then
 				aObj:skinObject("slider", {obj=element.SliderWithSteppers.Slider, fType=ftype, y1=-12, y2=12})
 			end
+			-- handle AddOn specific custom settings
+			for eKey, eType in _G.pairs(aObj.customSettings) do
+				if element[eKey] then
+					if eType == "DropdownButton" then
+						aObj:skinObject("ddbutton", {obj=element[eKey]})
+					end
+				end
+			end
+		end
+		-- add a delay to enable all elements to be initialised
+		local function sCEsWithDelay(element)
+			_G.C_Timer.After(0.1, function()
+				skinCommonElements(element)
+			end)
 		end
 		local function skinSetting(...)
 			local _, element, elementData, new
@@ -3543,9 +3558,7 @@ aObj.blizzFrames[ftype].Settings = function(self)
 			if new ~= false then
 				local name = elementData.data.name
 				if name == "Push to Talk Key" then
-					_G.C_Timer.After(0.1, function()
-						skinCommonElements(element)
-					end)
+					sCEsWithDelay(element)
 				elseif element.EvaluateVisibility then -- handle ExpandableSection(s)
 					if name == "Graphics Quality" then
 						_G.C_Timer.After(0.1, function()
@@ -3564,10 +3577,10 @@ aObj.blizzFrames[ftype].Settings = function(self)
 						end)
 						aObj:skinObject("frame", {obj=element, fType=ftype, kfs=true, fb=true, y1=-27, x2=-20})
 						for _, control in _G.pairs(element.BaseQualityControls.Controls) do
-							skinCommonElements(control)
+							sCEsWithDelay(control)
 						end
 						for _, control in _G.pairs(element.RaidQualityControls.Controls) do
-							skinCommonElements(control)
+							sCEsWithDelay(control)
 						end
 					else
 						-- keybindings
@@ -3575,12 +3588,14 @@ aObj.blizzFrames[ftype].Settings = function(self)
 						aObj:changeHdrExpandTex(element.Button.Right)
 						aObj:SecureHook(element, "EvaluateVisibility", function(eObj, _)
 							for _, control in _G.ipairs(eObj.Controls) do
-								skinCommonElements(control)
+								sCEsWithDelay(control)
 							end
 						end)
 					end
+				elseif elementData.frameTemplate == "NamePlatePreviewTemplate" then
+					aObj:skinObject("frame", {obj=element, fType=ftype, kfs=true, fb=true, ofs=0, x1=20, x2=-20})
 				else
-					skinCommonElements(element)
+					sCEsWithDelay(element)
 				end
 				if element.VUMeter then
 					aObj:skinObject("frame", {obj=element.VUMeter, fType=ftype, kfs=true, rns=true, fb=true})
