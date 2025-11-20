@@ -4205,6 +4205,11 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 					aObj:skinStdButton{obj=btn, fType=ftype, ofs=-8, clr="grey"}
 				end
 			end
+		elseif wFrame.widgetType == 31 -- PreyHuntProgress
+		and aObj.isMnlnPTRX
+		or aObj.isMnlnBeta
+		then
+			_G.nop()
 		end
 	end
 
