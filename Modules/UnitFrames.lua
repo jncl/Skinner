@@ -378,6 +378,10 @@ end
 
 function module:skinFocusF()
 
+	if aObj.isClscERA then
+		return
+	end
+
 	if db.focus
 	and not self.isSkinned["Focus"]
 	then
@@ -593,11 +597,11 @@ function module:GetOptions()
 				order = 4,
 				name = aObj.L["Target"],
 			},
-			focus = {
+			focus = not aObj.isClscERA and {
 				type = "toggle",
 				order = 5,
 				name = aObj.L["Focus"],
-			},
+			} or nil,
 			party = {
 				type = "toggle",
 				order = 6,
