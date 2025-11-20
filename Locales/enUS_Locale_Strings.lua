@@ -268,6 +268,7 @@ aObj.locale_enUS =
     ["Repeat Texture"] = true,
     ["Report Frame"] = true,
     ["Reset"] = true,
+    ["Rewards"] = true,
     ["Right"] = true,
     ["Role Poll Popup"] = true,
     ["Rotate Gradient"] = true,
