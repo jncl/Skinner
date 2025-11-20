@@ -15,8 +15,4 @@ ToDos
 
 	 ≈	O/M	PerksProgramProductDetailsContainerFrame, skin contents
 
-#249 	I/E Distorted UI display
-	 √	- TalentUI
-	 x	- TradeFrame
-	 √	- DressUpFrame
-	 √	- InspectUI
+#250 ≈	I/M Midnight Beta frame changes required
