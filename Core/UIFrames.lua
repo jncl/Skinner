@@ -2857,9 +2857,11 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 
 	local function skinDBI(_, dbiBtn, name)
 		dbiBtn:SetSize(24, 24)
-		-- DON'T move icons with multiple points
-		if dbiBtn.icon:GetNumPoints() == 1 then
-			aObj:moveObject{obj=dbiBtn.icon, x=-3, y=3}
+		if not aObj.isMnln then
+			-- DON'T move icons with multiple points
+			if dbiBtn.icon:GetNumPoints() == 1 then
+				aObj:moveObject{obj=dbiBtn.icon, x=-3, y=3}
+			end
 		end
 		-- FIXME: this is to move button off the minimap, required until LibDBIcon is fixed
 		if aObj.isMnln then
