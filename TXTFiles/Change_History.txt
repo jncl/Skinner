@@ -1,3 +1,14 @@
+beta11.64272.1
+Jncl:
+	Updated ToDo*.txt files
+	Updated Change_History.txt
+	Updated Version numbers
+	Updated TOC
+	Retail PTRX changes
+	Updated ClassicERA DressUpFrame, InspectUI & TalentUI skins, closes #249
+	Updated Editbox skin code
+	Updated GlowBox code
+
 beta11.64154.1
 Jncl:
 	Updated ToDo*.txt files
