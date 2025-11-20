@@ -2899,8 +2899,6 @@ aObj.blizzLoDFrames[ftype].MovePad = function(self)
 			self:skinStdButton{obj=_G.MovePadBackward}
 			self:skinStdButton{obj=_G.MovePadStrafeLeft}
 			self:skinStdButton{obj=_G.MovePadStrafeRight}
-			self:changeLock(_G.MovePadLock)
-			self:moveObject{obj=_G.MovePadLock, x=-6, y=7} -- move it up and left
 		end
 
 		self:Unhook(this, "OnShow")

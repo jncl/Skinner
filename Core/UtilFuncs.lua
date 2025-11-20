@@ -285,29 +285,6 @@ function aObj:changeHdrExpandTex(reg)
 
 end
 
-function aObj:changeLock(lockObj)
-	--@debug@
-	_G.assert(lockObj, "Unknown object changeLock\n" .. _G.debugstack(2, 3, 2))
-	--@end-debug@
-
-	-- Lock button, change texture
-	local tex = lockObj:GetNormalTexture()
-	tex:SetTexture(self.tFDIDs.gAOI)
-	tex:SetTexCoord(0, 0.25, 0, 1.0)
-	tex:SetAlpha(1)
-	tex = lockObj:GetPushedTexture()
-	tex:SetTexture(self.tFDIDs.gAOI)
-	tex:SetTexCoord(0.25, 0.5, 0, 1.0)
-	tex:SetAlpha(0.75)
-	if lockObj.GetCheckedTexture then
-		tex = lockObj:GetCheckedTexture()
-		tex:SetTexture(self.tFDIDs.gAOI)
-		tex:SetTexCoord(0.25, 0.5, 0, 1.0)
-		tex:SetAlpha(1)
-	end
-
-end
-
 function aObj:changeShield(shldReg, iconReg)
 	--@debug@
 	_G.assert(shldReg, "Unknown object changeShield\n" .. _G.debugstack(2, 3, 2))
