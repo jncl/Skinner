@@ -571,7 +571,10 @@ local function skinEditBox(tbl)
 	aObj:Debug2("skinEditBox: [%s]", tbl)
 
 	-- don't skin it twice
-	if tbl.obj.sf then return end
+	if tbl.obj.sf then
+		return
+	end
+
 	aObj:removeRegions(tbl.obj, tbl.regions)
 	aObj:skinObject("frame", {obj=tbl.obj, fType=tbl.fType, bd=tbl.bd, ng=true, ofs=tbl.ofs, x1=tbl.x1, y1=tbl.y1, x2=tbl.x2, y2=tbl.y2, clr="slider"})
 	-- move the search icon
@@ -601,9 +604,9 @@ local function skinEditBox(tbl)
 	end
 	aObj:getRegion(tbl.obj, 2):SetAlpha(1) -- cursor texture
 	if tbl.cb
-	and aObj.modBtnBs
+	and aObj.modBtns
 	then
-		aObj:skinCloseButton{obj=tbl.obj.ClearButton, fType=tbl.ftype, noSkin=true}
+		aObj:skinCloseButton{obj=tbl.obj.ClearButton or tbl.obj.clearButton, fType=tbl.ftype, noSkin=true}
 	end
 end
 skinFuncs.editbox = function(table) skinEditBox(table) end
