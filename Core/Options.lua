@@ -101,15 +101,9 @@ aObj.SetupOptions = function(self)
 	local function reskinIOFBackdrop()
 		-- show changes by reskinning the Interface Options Frame with the new settings
 		aObj:setupBackdrop()
-		if not aObj.isMnln then
-			_G.InterfaceOptionsFrame.sf:SetBackdrop(aObj.backdrop)
-			_G.InterfaceOptionsFrame.sf:SetBackdropColor(aObj.bClr:GetRGBA())
-			_G.InterfaceOptionsFrame.sf:SetBackdropBorderColor(aObj.bbClr:GetRGBA())
-		else
-			_G.SettingsPanel.sf:SetBackdrop(aObj.backdrop)
-			_G.SettingsPanel.sf:SetBackdropColor(aObj.bClr:GetRGBA())
-			_G.SettingsPanel.sf:SetBackdropBorderColor(aObj.bbClr:GetRGBA())
-		end
+		_G.SettingsPanel.sf:SetBackdrop(aObj.backdrop)
+		_G.SettingsPanel.sf:SetBackdropColor(aObj.bClr:GetRGBA())
+		_G.SettingsPanel.sf:SetBackdropBorderColor(aObj.bbClr:GetRGBA())
 	end
 
 	self.optTables = {
