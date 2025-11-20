@@ -4200,8 +4200,10 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 		or aObj.isMnlnBeta
 		then
 			wFrame:DisableDrawLayer("BORDER")
-			for btn in wFrame.buttonPool:EnumerateActive() do
+			if aObj.modBtns then
+				for btn in wFrame.buttonPool:EnumerateActive() do
 					aObj:skinStdButton{obj=btn, fType=ftype, ofs=-8, clr="grey"}
+				end
 			end
 		end
 	end
