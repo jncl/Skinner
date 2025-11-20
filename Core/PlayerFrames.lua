@@ -2458,6 +2458,11 @@ if not aObj.isClscERA then
 
 			self:SecureHookScript(this.instanceSelect, "OnShow", function(fObj)
 				fObj.bg:SetAlpha(0)
+				if aObj.isMnlnPTRX
+				or aObj.isMnlnBeta
+				then
+					fObj.evergreenBg:SetAlpha(0)
+				end
 				self:skinObject("ddbutton", {obj=fObj.ExpansionDropdown, fType=ftype})
 				self:skinObject("scrollbar", {obj=fObj.ScrollBar, fType=ftype})
 				local function skinElement(...)
@@ -2623,6 +2628,46 @@ if not aObj.isClscERA then
 						bObj.HeaderCollapseIndicator:SetAtlas("ui-hud-minimap-zoom-out")
 					end
 				end
+				if aObj.isMnlnPTRX
+				or aObj.isMnlnBeta
+				then
+					self:SecureHookScript(this.JourneysFrame, "OnShow", function(fObj)
+						self:skinObject("scrollbar", {obj=fObj.ScrollBar, fType=ftype})
+
+						self:SecureHookScript(fObj.JourneyProgress, "OnShow", function(frame)
+							frame.ProgressDetailsFrame.JourneyLevelBg:SetTexture(nil)
+							frame.Divider.DividerTexture:SetTexture(nil)
+							-- TODO: skin .ScrollTarget RewardCard entries
+							-- TODO: skin RewardCard entries
+							if self.modBtns then
+								self:skinStdButton{obj=frame.OverviewBtn, fType=ftype}
+							end
+
+							-- TODO: skin .RenownTrackFrame.ClipFrame entries to remove border around level #
+
+							self:SecureHookScript(frame.DelvesCompanionConfigurationFrame, "OnShow", function(dccf)
+
+								self:Unhook(dccf, "OnShow")
+							end)
+
+							self:Unhook(frame, "OnShow")
+						end)
+						self:checkShown(fObj.JourneyProgress)
+
+						self:SecureHookScript(fObj.JourneyOverview, "OnShow", function(frame)
+							if self.modBtns then
+								self:skinStdButton{obj=frame.OverviewBtn, fType=ftype}
+							end
+
+							self:Unhook(frame, "OnShow")
+						end)
+
+						self:Unhook(fObj, "OnShow")
+					end)
+					self:checkShown(this.JourneysFrame)
+				end
+
+				-- a.k.a. Traveler's Log
 				self:SecureHookScript(this.MonthlyActivitiesFrame, "OnShow", function(fObj)
 					fObj:DisableDrawLayer("BACKGROUND")
 					fObj:DisableDrawLayer("BORDER")
@@ -2641,6 +2686,7 @@ if not aObj.isClscERA then
 					self:skinObject("scrollbar", {obj=fObj.FilterList.ScrollBar, fType=ftype})
 					self:skinObject("scrollbar", {obj=fObj.ScrollBar, fType=ftype})
 					self:keepFontStrings(fObj.ThemeContainer)
+
 					local currentTime, frameClr
 					local function skinActivities(...)
 						local _, element, elementData
@@ -2770,7 +2816,9 @@ if not aObj.isClscERA then
 					self:Unhook(fObj, "OnShow")
 				end)
 
-				if aObj.isMnlnPTRX then
+				if aObj.isMnlnPTRX
+				or aObj.isMnlnBeta
+				then
 					self:SecureHookScript(this.TutorialsFrame, "OnShow", function(fObj)
 						fObj.Contents:DisableDrawLayer("BACKGROUND")
 						fObj.Contents.Header:SetTextColor(self.HT:GetRGB())

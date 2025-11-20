@@ -991,6 +991,7 @@ local function skinTabs(tbl)
 		tbl.offsets.x2 = (tbl.offsets.x2 or 0) - 4
 		tbl.offsets.y2 = (tbl.offsets.y2 or 0) + 3
 	end
+	local tabFrame = aObj.isMnlnBeta and tbl.obj:GetParent() or nil
 	local function skinTabObject(tab, idx)
 		aObj:keepRegions(tab, tbl.regions)
 		if not aObj.isTT then
@@ -1004,18 +1005,30 @@ local function skinTabs(tbl)
 					aObj:setInactiveTab(tab.sf)
 				end
 			elseif tbl.pool then
-				if tab.isSelected then
-					aObj:setActiveTab(tab.sf)
-				else
+				if aObj.isMnlnBeta
+				and tabFrame.SetTabCallback
+				then
 					aObj:setInactiveTab(tab.sf)
-				end
-				aObj:SecureHook(tab, "SetTabSelected", function(tObj, _)
-					if tObj.isSelected then
-						aObj:setActiveTab(tObj.sf)
+					tabFrame:SetTabCallback(tab.tabID, function()
+						aObj:setActiveTab(tabFrame:GetTabButton(tab.tabID).sf)
+					end)
+					tabFrame:SetTabDeselectCallback(tab.tabID, function()
+						aObj:setInactiveTab(tabFrame:GetTabButton(tab.tabID).sf)
+					end)
+				else
+					if tab.isSelected then
+						aObj:setActiveTab(tab.sf)
 					else
-						aObj:setInactiveTab(tObj.sf)
+						aObj:setInactiveTab(tab.sf)
 					end
-				end)
+					aObj:SecureHook(tab, "SetTabSelected", function(tObj, _)
+						if tObj.isSelected then
+							aObj:setActiveTab(tObj.sf)
+						else
+							aObj:setInactiveTab(tObj.sf)
+						end
+					end)
+				end
 			end
 		end
 		tab.sf.ignore = tbl.ignoreSize

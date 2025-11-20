@@ -818,6 +818,177 @@ aObj.SetupMainline_NPCFrames = function()
 
 	end
 
+	if aObj.isMnlnBeta then
+		aObj.blizzLoDFrames[ftype].Transmog = function(self)
+			if not self.prdb.Collections or self.initialized.Transmog then return end
+			self.initialized.Transmog = true
+
+			self:SecureHookScript(_G.TransmogFrame, "OnShow", function(this)
+			    self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true})
+
+			    self:SecureHookScript(this.OutfitCollection, "OnShow", function(fObj)
+			    	self:keepFontStrings(fObj)
+			    	self:keepFontStrings(fObj.OutfitList)
+			    	self:skinObject("scrollbar", {obj=fObj.OutfitList.ScrollBar, fType=ftype})
+			    	local function skinOutfitEntry(...)
+			    		local _, element, elementData
+			    		if _G.select("#", ...) == 2 then
+			    			element, elementData = ...
+			    		else
+			    			_, element, elementData = ...
+			    		end
+			    		aObj:keepFontStrings(element.OutfitButton)
+			    		element.OutfitButton.Selected:SetAlpha(1)
+			    		-- element.OutfitButton.SelectedPurple:SetAlpha(1)
+			    		if aObj.modBtnBs then
+			    			aObj:addButtonBorder{obj=element.OutfitIcon, fType=ftype, ofs=0, reParent={element.OutfitIcon.OverlayActive, element.OutfitIcon.Cooldown, element.OutfitIcon.OverlayLocked}}
+			    		end
+			    	end
+			    	_G.ScrollUtil.AddInitializedFrameCallback(fObj.OutfitList.ScrollBox, skinOutfitEntry, aObj, true)
+			    	self:keepFontStrings(fObj.MoneyFrame)
+			    	if self.modBtns then
+			    		self:skinStdButton{obj=fObj.PurchaseOutfitButton, fType=ftype, x1=2, x2=-2, y2=3}
+			    		self:skinStdButton{obj=fObj.SaveOutfitButton, fType=ftype}
+			    	end
+			    	if self.modBtnBs then
+			    		self:addButtonBorder{obj=fObj.ShowEquippedGearSpellFrame.Button, fType=ftype, sft=true, ofs=0}
+			    	end
+
+			        self:Unhook(fObj, "OnShow")
+			    end)
+			    self:checkShown(this.OutfitCollection)
+
+			    self:SecureHookScript(this.OutfitPopup, "OnShow", function(fObj)
+    				self:skinIconSelector(fObj, ftype)
+
+			        self:Unhook(fObj, "OnShow")
+			    end)
+
+			    self:SecureHookScript(this.CharacterPreview, "OnShow", function(fObj)
+			    	self:keepFontStrings(fObj)
+			    	-- .SavedFrame
+			    	self:keepFontStrings(fObj.Gradients)
+			    	-- .LeftSlots
+			    	-- .RightSlots
+			    	-- .BottomSlots
+			    	if self.modBtnBs then
+			    		self:addButtonBorder{obj=fObj.ClearAllPendingButton, fType=ftype, ofs=0, y2=2, clr="grey"}
+			    	end
+			    	if self.modChkBtns then
+			    		self:skinCheckButton{obj=fObj.HideIgnoredToggle.Checkbox, fType=ftype, size=24}
+			    	end
+
+			        self:Unhook(fObj, "OnShow")
+			    end)
+			    self:checkShown(this.CharacterPreview)
+
+			    self:SecureHookScript(this.WardrobeCollection, "OnShow", function(fObj)
+			    	self:keepFontStrings(fObj)
+			    	self:skinObject("tabs", {obj=fObj.TabHeaders, pool=true, fType=ftype, ignoreSize=true, upwards=true, track=false})
+			    	fObj:SetTab(1)
+			    	self:keepFontStrings(fObj.TabContent)
+
+			    	self:SecureHookScript(fObj.TabContent.ItemsFrame, "OnShow", function(frame)
+			    		self:skinObject("ddbutton", {obj=frame.FilterButton, fType=ftype, filter=true})
+			    		self:skinObject("editbox", {obj=frame.SearchBox, fType=ftype, regions={2, 4}, mi=true, mix=16})
+    					self:skinObject("statusbar", {obj=frame.SearchBox.ProgressFrame.ProgressBar, fi=0})
+			    		self:skinObject("ddbutton", {obj=frame.WeaponDropdown, fType=ftype})
+			    	    self:skinObject("frame", {obj=frame, fType=ftype, kfs=true, fb=true, y2=-4})
+			    	    frame.DisplayTypeUnassignedButton.IconFrame.Border:SetAlpha(0)
+			    	    frame.DisplayTypeEquippedButton.IconFrame.Border:SetAlpha(0)
+			    	    if self.modBtns then
+			    	    	self:skinStdButton{obj=frame.DisplayTypeUnassignedButton, fType=ftype, ofs=-2, y1=-1}
+			    	    	self:skinStdButton{obj=frame.DisplayTypeEquippedButton, fType=ftype, ofs=-2, y1=-1}
+			    	    end
+
+			    	    if self.modBtnBs then
+			    	    	self:skinPagingControls(frame.PagedContent.PagingControls)
+			    	    	-- using TransmogItemModelTemplate
+			    	    	local function onItemModelUpdate(pcF)
+			    	    		pcF:ForEachFrame(function(element, elementData)
+				    	    		aObj:removeRegions(element, {1, 2}) -- background & border
+				    	    		-- .PendingFrame
+				    	    		-- .SavedFrame
+				    	    		aObj:addButtonBorder{obj=element, ofs=6}
+			    	    		end)
+			    	    	end
+		    	    		frame.PagedContent:RegisterCallback(PagedContentFrameBaseMixin.Event.OnUpdate, onItemModelUpdate, frame.PagedContent)
+			    	    end
+			    	    if self.modChkBtns then
+			    	    	self:skinCheckButton{obj=frame.SecondaryAppearanceToggle.Checkbox, fType=ftype}
+			    	    end
+
+			    	    self:Unhook(frame, "OnShow")
+			    	end)
+			    	self:checkShown(fObj.TabContent.ItemsFrame)
+
+	    	    	local function onSetModelUpdate(pcF)
+	    	    		pcF:ForEachFrame(function(element, elementData)
+		    	    		aObj:removeRegions(element, {1, 3}) -- background & border
+		    	    		-- .PendingFrame
+		    	    		-- .SavedFrame
+		    	    		aObj:addButtonBorder{obj=element, ofs=6}
+	    	    		end)
+	    	    	end
+			    	self:SecureHookScript(fObj.TabContent.SetsFrame, "OnShow", function(frame)
+			    		self:skinObject("ddbutton", {obj=frame.FilterButton, fType=ftype, filter=true})
+			    		self:skinObject("editbox", {obj=frame.SearchBox, fType=ftype, regions={2, 4}, mi=true, mix=16})
+    					self:skinObject("statusbar", {obj=frame.SearchBox.ProgressFrame.ProgressBar, fi=0})
+			    	    self:skinObject("frame", {obj=frame, fType=ftype, kfs=true, fb=true, y2=-4})
+
+			    	    if self.modBtnBs then
+			    	    	self:skinPagingControls(frame.PagedContent.PagingControls)
+			    	    	-- using TransmogSetModelTemplate
+		    	    		frame.PagedContent:RegisterCallback(PagedContentFrameBaseMixin.Event.OnUpdate, onSetModelUpdate, frame.PagedContent)
+		    	    		onSetModelUpdate(frame.PagedContent)
+		    	    	end
+
+			    	    self:Unhook(frame, "OnShow")
+			    	end)
+
+			    	self:SecureHookScript(fObj.TabContent.CustomSetsFrame, "OnShow", function(frame)
+			    	    self:skinObject("frame", {obj=frame, fType=ftype, kfs=true, fb=true, y2=-4})
+
+			    	    if self.modBtns then
+			    	    	self:skinStdButton{obj=frame.NewCustomSetButton, fType=ftype}
+			    	    	self:skinPagingControls(frame.PagedContent.PagingControls)
+			    	    	-- using TransmogCustomSetModelTemplate
+		    	    		frame.PagedContent:RegisterCallback(PagedContentFrameBaseMixin.Event.OnUpdate, onSetModelUpdate, frame.PagedContent)
+		    	    		onSetModelUpdate(frame.PagedContent)
+			    	    end
+
+			    	    self:Unhook(frame, "OnShow")
+			    	end)
+
+			    	self:SecureHookScript(fObj.TabContent.SituationsFrame, "OnShow", function(frame)
+			    	    self:skinObject("frame", {obj=frame, fType=ftype, kfs=true, fb=true, y2=-4})
+						self:skinObject("frame", {obj=frame.Situations, fType=ftype, kfs=true, fb=true})
+		    	    	for situationFrame in frame.SituationFramePool:EnumerateActive() do
+		    	    		self:skinObject("ddbutton", {obj=situationFrame.Dropdown, fType=ftype})
+		    	    	end
+
+			    	    if self.modBtns then
+			    	    	self:skinStdButton{obj=frame.DefaultsButton, fType=ftype}
+			    	    	self:skinStdButton{obj=frame.ApplyButton, fType=ftype, sechk=true}
+			    	    end
+			    	    if self.modChkBtns then
+			    	    	self:skinCheckButton{obj=frame.EnabledToggle.Checkbox, fType=ftype, size=24}
+			    	    end
+
+			    	    self:Unhook(frame, "OnShow")
+			    	end)
+
+			        self:Unhook(fObj, "OnShow")
+			    end)
+			    self:checkShown(this.WardrobeCollection)
+
+			    self:Unhook(this, "OnShow")
+			end)
+			self:checkShown(_G.TransmogFrame)
+
+		end
+	end
+
 	aObj.blizzLoDFrames[ftype].VoidStorageUI = function(self)
 		if not self.prdb.VoidStorageUI or self.initialized.VoidStorageUI then return end
 		self.initialized.VoidStorageUI = true

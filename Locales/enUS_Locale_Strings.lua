@@ -117,6 +117,7 @@ aObj.locale_enUS =
     ["Ctrl-Drag to resize"] = true,
     ["Currency Transfer"] = true,
     ["Customer Support Frame"] = true,
+    ["Damage Meter"] = true,
     ["Death Recap Frame"] = true,
     ["Debug Tools Frames"] = true,
     ["Default Backdrop"] = true,

@@ -519,7 +519,9 @@ aObj.SetupMainline_UIFrames = function()
 		frame:DisableDrawLayer("BORDER") -- hide NineSlice UniqueCornersLayout
 		aObj:skinObject("frame", {obj=frame, fType=ftype, ofs=-30})
 	end
-	if aObj.isMnlnPTRX then
+	if aObj.isMnlnPTRX
+	or aObj.isMnlnBeta
+	then
 		aObj.blizzLoDFrames[ftype].BoostTutorial = function(self)
 			if not self.prdb.TutorialUI or self.initialized.BoostTutorial then return end
 			self.initialized.BoostTutorial = true
@@ -1026,6 +1028,9 @@ aObj.SetupMainline_UIFrames = function()
 			self:moveObject{obj=this.SpellsTab, x=-3}
 			self:skinObject("editbox", {obj=this.SearchBox, fType=ftype, si=true, y1=-4, y2=4})
 			self:skinObject("scrollbar", {obj=this.CooldownScroll.ScrollBar, fType=ftype})
+			if aObj.isMnlnBeta then
+				self:skinObject("ddbutton", {obj=this.LayoutDropdown, fType=ftype})
+			end
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, ofs=0, y1=-1, y2=-2})
 			if self.modBtns then
 				self:skinStdButton{obj=this.SaveLayoutButton, fType=ftype, schk=true, sechk=true}
@@ -1247,20 +1252,22 @@ aObj.SetupMainline_UIFrames = function()
 			self:Unhook(this, "OnShow")
 		end)
 
-		self:SecureHookScript(_G.EditModeNewLayoutDialog, "OnShow", function(fObj)
-			self:removeNineSlice(fObj.Border)
-			self:skinObject("editbox", {obj=fObj.LayoutNameEditBox, fType=ftype, y1=-4, y2=4})
-			self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, ofs=-6})
-			if self.modBtns then
-				self:skinStdButton{obj=fObj.AcceptButton, fType=ftype, sechk=true}
-				self:skinStdButton{obj=fObj.CancelButton, fType=ftype}
-			end
-			if self.modChkBtns then
-				self:skinCheckButton{obj=fObj.CharacterSpecificLayoutCheckButton.Button, fType=ftype}
-			end
+		if not aObj.isMnlnBeta then
+			self:SecureHookScript(_G.EditModeNewLayoutDialog, "OnShow", function(fObj)
+				self:removeNineSlice(fObj.Border)
+				self:skinObject("editbox", {obj=fObj.LayoutNameEditBox, fType=ftype, y1=-4, y2=4})
+				self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, ofs=-6})
+				if self.modBtns then
+					self:skinStdButton{obj=fObj.AcceptButton, fType=ftype, sechk=true}
+					self:skinStdButton{obj=fObj.CancelButton, fType=ftype}
+				end
+				if self.modChkBtns then
+					self:skinCheckButton{obj=fObj.CharacterSpecificLayoutCheckButton.Button, fType=ftype}
+				end
 
-			self:Unhook(fObj, "OnShow")
-		end)
+				self:Unhook(fObj, "OnShow")
+			end)
+		end
 
 		self:SecureHookScript(_G.EditModeImportLayoutDialog, "OnShow", function(fObj)
 			self:removeNineSlice(fObj.Border)
@@ -1278,20 +1285,22 @@ aObj.SetupMainline_UIFrames = function()
 			self:Unhook(fObj, "OnShow")
 		end)
 
-		self:SecureHookScript(_G.EditModeImportLayoutLinkDialog, "OnShow", function(fObj)
-			self:removeNineSlice(fObj.Border)
-			self:skinObject("editbox", {obj=fObj.LayoutNameEditBox, fType=ftype, y1=-4, y2=4})
-			self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, ofs=-6})
-			if self.modBtns then
-				self:skinStdButton{obj=fObj.AcceptButton, fType=ftype, sechk=true}
-				self:skinStdButton{obj=fObj.CancelButton, fType=ftype}
-			end
-			if self.modChkBtns then
-				self:skinCheckButton{obj=fObj.CharacterSpecificLayoutCheckButton.Button, fType=ftype}
-			end
+		if not aObj.isMnlnBeta then
+			self:SecureHookScript(_G.EditModeImportLayoutLinkDialog, "OnShow", function(fObj)
+				self:removeNineSlice(fObj.Border)
+				self:skinObject("editbox", {obj=fObj.LayoutNameEditBox, fType=ftype, y1=-4, y2=4})
+				self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, ofs=-6})
+				if self.modBtns then
+					self:skinStdButton{obj=fObj.AcceptButton, fType=ftype, sechk=true}
+					self:skinStdButton{obj=fObj.CancelButton, fType=ftype}
+				end
+				if self.modChkBtns then
+					self:skinCheckButton{obj=fObj.CharacterSpecificLayoutCheckButton.Button, fType=ftype}
+				end
 
-			self:Unhook(fObj, "OnShow")
-		end)
+				self:Unhook(fObj, "OnShow")
+			end)
+		end
 
 		self:SecureHookScript(_G.EditModeUnsavedChangesDialog, "OnShow", function(fObj)
 			self:removeNineSlice(fObj.Border)
@@ -2251,7 +2260,9 @@ aObj.SetupMainline_UIFrames = function()
 
 	end
 
-	if aObj.isMnlnPTRX then
+	if aObj.isMnlnPTRX
+	or aObj.isMnlnBeta
+	then
 		-- Housing
 		aObj.blizzLoDFrames[ftype].HouseEditor = function(self)
 			if not self.prdb.HousingUI or self.initialized.HouseEditor then return end
@@ -2601,12 +2612,20 @@ aObj.SetupMainline_UIFrames = function()
 
 		aObj.blizzLoDFrames[ftype].HousingDashboard = function(self)
 			if not self.prdb.HousingUI or self.initialized.HousingDashboard then return end
+
+			if not _G.HousingDashboardFrame then
+				_G.C_Timer.After(0.1, function()
+					self.blizzLoDFrames[ftype].HousingDashboard(self)
+				end)
+				return
+			end
+
 			self.initialized.HousingDashboard = true
 
 			self:SecureHookScript(_G.HousingDashboardFrame, "OnShow", function(this)
 				-- TODO: skin tabs, current textures include border
 				-- self:skinSideTabs(this, ftype)
-				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=0, x2=4, y2=-4})
+				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=-3, x2=3, y2=-4})
 
 				self:SecureHookScript(this.HouseInfoContent, "OnShow", function(hic)
 					self:skinObject("ddbutton", {obj=hic.HouseDropdown, fType=ftype})
@@ -2799,6 +2818,20 @@ aObj.SetupMainline_UIFrames = function()
 
 		end
 
+		aObj.blizzLoDFrames[ftype].HousingModelPreview = function(self)
+			if not self.prdb.HousingModelPreview or self.initialized.HousingModelPreview then return end
+			self.initialized.HousingModelPreview = true
+
+			self:SecureHookScript(_G.HousingModelPreviewFrame, "OnShow", function(this)
+			    self:skinObject("frame", {obj=this, fType=ftype, kfs=true})
+
+			    self:Unhook(this, "OnShow")
+			end)
+			self:checkShown(_G.HousingModelPreviewFrame)
+
+
+		end
+
 	end
 
 	-- The following function is used by the IslandsPartyPoseUI & WarfrontsPartyPoseUI functions
@@ -2951,7 +2984,9 @@ aObj.SetupMainline_UIFrames = function()
 		skinTutorialFrame(_G.NPE_TutorialMainFrame_Frame)
 		skinTutorialFrame(_G.NPE_TutorialKeyboardMouseFrame_Frame)
 		skinTutorialFrame(_G.NPE_TutorialInterfaceHelp)
-		if not aObj.isMnlnPTRX then
+		if not aObj.isMnlnPTRX
+		and not aObj.isMnlnBeta
+		then
 			skinTutorialFrame(_G.NPE_TutorialSingleKey_Frame)
 			skinTutorialFrame(_G.NPE_TutorialWalk_Frame)
 		end
@@ -3970,7 +4005,9 @@ aObj.SetupMainline_UIFrames = function()
 
 		skinTutorialFrame(_G.TutorialMainFrame_Frame)
 		skinTutorialFrame(_G.TutorialSingleKey_Frame)
-		if aObj.isMnlnPTRX then
+		if aObj.isMnlnPTRX
+		or aObj.isMnlnBeta
+		then
 			skinTutorialFrame(_G.TutorialDoubleKey_Frame)
 		end
 
@@ -4188,7 +4225,9 @@ aObj.SetupMainline_UIFramesOptions = function(self)
 		["Weekly Rewards"]               = {suff = "Frame"},
 		["Zone Ability"]                 = true,
 	}
-	if aObj.isMnlnPTRX then
+	if aObj.isMnlnPTRX
+	or aObj.isMnlnBeta
+	then
 		optTab["Housing UI"] = _G.GetExpansionLevel() >= _G.LE_EXPANSION_WAR_WITHIN and true or nil
 	end
 	self:setupFramesOptions(optTab, "UI")

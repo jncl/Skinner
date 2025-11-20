@@ -76,6 +76,7 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 		["GarrisonFollower"]       = true,
 		["GarrisonMission"]        = true,
 		["GarrisonTalent"]         = true,
+		["HousingItemEarned"]      = aObj.isMnlnPTRX or aObj.isMnlnBeta and true or nil,
 		["Loot"]                   = true,
 		["LootUpgrade"]            = true,
 		["MoneyWon"]               = true,
@@ -139,7 +140,9 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 		alertType["Loot"].ib                = true
 		alertType["StorePurchase"]          = {ofs = -12, ddl = {"background"}}
 	end
-	if aObj.isMnlnPTRX then
+	if aObj.isMnlnPTRX
+	or aObj.isMnlnBeta
+	then
 		-- TODO: Check on Icon Border etc
 		alertType["HousingItemEarned"]		= {ofs = -8, ddl = {"background", "border"}, stn = {"Divider"}}
 	end
@@ -2246,7 +2249,9 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 
 	if self.prdb.MainMenuBar.skin then
 		if self.isMnln then
-			if not aObj.isMnlnPTRX then
+			if not aObj.isMnlnPTRX
+			and not aObj.isMnlnBeta
+			then
 				self:SecureHookScript(_G.MainMenuBar, "OnShow", function(this)
 					this.BorderArt:SetTexture(nil)
 					this.EndCaps:DisableDrawLayer("OVERLAY")
@@ -3347,7 +3352,9 @@ aObj.blizzFrames[ftype].ReportFrame = function(self)
 		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, cb=true, ofs=-3})
 		if self.modBtns then
 			self:skinStdButton{obj=this.ReportButton, fType=ftype, sechk=true}
-			if aObj.isMnlnPTRX then
+			if aObj.isMnlnPTRX
+			or aObj.isMnlnBeta
+			then
 				self:skinStdButton{obj=this.ScreenshotReportingFrame.TakeScreenshotButton, fType=ftype}
 			end
 			self:SecureHook(this, "MajorTypeSelected", function(fObj, _, _)
@@ -3943,12 +3950,15 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 				self:skinObject("statusbar", {obj=tTip.statusBar2, fi=0})
 			end
 		end
-		if aObj.isMnlnPTRX then
-			-- if it has a CompareHeader then skin it
-			if tTip.CompareHeader then
-				self:skinObject("frame", {obj=tTip.CompareHeader, fType=tTip.fType, kfs=true, bd=13, noBdr=true, x1=-1, y2=-10})
-			end
-		end
+		-- N.B. DON'T skin CompareHeader as it causes the TooltipComparisonManager to error
+		-- if aObj.isMnlnPTRX
+		-- or aObj.isMnlnBeta
+		-- then
+		-- 	-- if it has a CompareHeader then skin it as a textured tab
+		-- 	if tTip.CompareHeader then
+		-- 		self:skinObject("frame", {obj=tTip.CompareHeader, fType=tTip.fType, kfs=true, bd=13, noBdr=true, x1=-1, y2=-10})
+		-- 	end
+		-- end
 	end})
 
 	-- add tooltips to table
@@ -3958,7 +3968,6 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 		aObj:add2Table(aObj.ttList, tTip)
 	end
 	local toolTips = {
-		_G.GameTooltip,
 		_G.EmbeddedItemTooltip,
 		_G.ItemRefTooltip,
 		_G.ItemRefShoppingTooltip1,
@@ -3966,10 +3975,16 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 		_G.ShoppingTooltip1,
 		_G.ShoppingTooltip2,
 	}
+	-- N.B. DON'T skin the GameTooltip as it causes the MoneyFrame to error
+	if not aObj.isMnlnBeta then
+		aObj:add2Table(toolTips, _G.GameTooltip)
+	end
 	if self.isMnln then
 		-- self:add2Table(toolTips, _G.GameNoHeaderTooltip) -- N.B. defined in GameTooltip.xml but NOT referenced in code
 		self:add2Table(toolTips, _G.GameSmallHeaderTooltip)
-		self:add2Table(toolTips, _G.NamePlateTooltip) -- N.B. Done here as Nameplate skinning function is disabled
+		if not aObj.isMnlnBeta then
+			self:add2Table(toolTips, _G.NamePlateTooltip) -- N.B. Done here as Nameplate skinning function is disabled
+		end
 	else
 		self:add2Table(toolTips, _G.SmallTextTooltip)
 	end
@@ -4184,6 +4199,7 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 			aObj:skinObject("frame", {obj=wFrame, fType=ftype, kfs=true, ofs=-2, x1=7, x2=-7, clr="sepia"})
 		elseif wFrame.widgetType == 30 -- ButtonHeader
 		and aObj.isMnlnPTRX
+		or aObj.isMnlnBeta
 		then
 			wFrame:DisableDrawLayer("BORDER")
 			for btn in wFrame.buttonPool:EnumerateActive() do
@@ -4230,15 +4246,6 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 		-- handle existing WidgetContainers
 		for widgetContainer, _ in _G.pairs(_G.UIWidgetManager.registeredWidgetContainers) do
 			hookAndSkinWidgets(widgetContainer)
-		end
-		if aObj.isMnlnPTRX then
-			self:SecureHookScript(_G.UIWidgetBelowMinimapContainerFrame, "OnShow", function(this)
-
-				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ofs=-2, y1=-20, x2=0, clr="gold"})
-
-				self:Unhook(this, "OnShow")
-			end)
-			self:checkShown(_G.UIWidgetBelowMinimapContainerFrame)
 		end
 	else
 		self:SecureHook(_G.UIWidgetManager, "CreateWidget", function(this, widgetID, _, widgetType)

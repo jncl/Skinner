@@ -187,7 +187,7 @@ aObj.SetupMainline_PlayerFrames = function()
 					end
 				end
 			end
-			for _, frame in _G.pairs{_G.BuffFrame, _G.DebuffFrame} do
+			for _, frame in _G.pairs{_G.BuffFrame, _G.DebuffFrame, aObj.isMnlnBeta and _G.ExternalDefensivesFrame or nil} do
 				skinBuffs(frame)
 				self:SecureHook(frame, "UpdateAuraButtons", function(this)
 					if not this.hasInitializedForEditMode then
@@ -355,6 +355,32 @@ aObj.SetupMainline_PlayerFrames = function()
 		end)
 
 	end
+
+	if aObj.isMnlnBeta then
+		aObj.blizzFrames[ftype].DamageMeter = function(self)
+			if not self.prdb.DamageMeter or self.initialized.DamageMeter then return end
+			self.initialized.DamageMeter = true
+
+			self:SecureHookScript(_G.DamageMeter, "OnShow", function(this)
+				--@debug@
+				_G.Spew("DamageMeter", this)
+				_G.Spew("DamageMeterPerCharacterSettings", _G.DamageMeterPerCharacterSettings)
+				--@end-debug@
+
+				-- TODO: Handle Session Windows (DamageMeterMixin:SetupSessionWindow)
+				-- local MAX_DAMAGE_METER_SESSION_WINDOWS = 3
+				-- local PRIMARY_SESSION_WINDOW_INDEX = 1
+
+				this:ForEachSessionWindow(function(sessionWindow)
+					aObj:Debug("DM FESW: [%s, %s]", sessionWindow)
+				end)
+
+			    self:Unhook(this, "OnShow")
+			end)
+
+		end
+	end
+
 
 	aObj.blizzFrames[ftype].DressUpFrame = function(self)
 		if not self.prdb.DressUpFrame or self.initialized.DressUpFrame then return end
@@ -2242,9 +2268,15 @@ aObj.SetupMainline_PlayerFrames = function()
 				aObj:addButtonBorder{obj=frame.ConquestBar.Reward, relTo=frame.ConquestBar.Reward.Icon, reParent={frame.ConquestBar.Reward.CheckMark}, clr="gold"}
 			end
 			if aObj.modChkBtns then
-				aObj:skinCheckButton{obj=frame.HealerIcon.checkButton}
-				aObj:skinCheckButton{obj=frame.TankIcon.checkButton}
-				aObj:skinCheckButton{obj=frame.DPSIcon.checkButton}
+				if not aObj.isMnlnBeta then
+					aObj:skinCheckButton{obj=frame.HealerIcon.checkButton}
+					aObj:skinCheckButton{obj=frame.TankIcon.checkButton}
+					aObj:skinCheckButton{obj=frame.DPSIcon.checkButton}
+				else
+					aObj:skinCheckButton{obj=frame.RoleList.HealerIcon.checkButton}
+					aObj:skinCheckButton{obj=frame.RoleList.TankIcon.checkButton}
+					aObj:skinCheckButton{obj=frame.RoleList.DPSIcon.checkButton}
+				end
 			end
 		end
 		self:SecureHookScript(_G.HonorFrame, "OnShow", function(this)
@@ -2365,22 +2397,24 @@ aObj.SetupMainline_PlayerFrames = function()
 
 	end
 
-	aObj.blizzFrames[ftype].WardrobeOutfits = function(self)
-		if not self.prdb.Collections or self.initialized.WardrobeOutfits then return end
-		self.initialized.WardrobeOutfits = true
+	if not aObj.isMnlnBeta then
+		aObj.blizzFrames[ftype].WardrobeOutfits = function(self)
+			if not self.prdb.Collections or self.initialized.WardrobeOutfits then return end
+			self.initialized.WardrobeOutfits = true
 
-		self:SecureHookScript(_G.WardrobeOutfitEditFrame, "OnShow", function(this)
-			self:removeNineSlice(this.Border)
-			self:skinObject("editbox", {obj=this.EditBox, fType=ftype})
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true})
-			if self.modBtns then
-				self:skinStdButton{obj=this.AcceptButton, fType=ftype, sechk=true}
-				self:skinStdButton{obj=this.CancelButton, fType=ftype}
-				self:skinStdButton{obj=this.DeleteButton, fType=ftype}
-			end
+			self:SecureHookScript(_G.WardrobeOutfitEditFrame, "OnShow", function(this)
+				self:removeNineSlice(this.Border)
+				self:skinObject("editbox", {obj=this.EditBox, fType=ftype})
+				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true})
+				if self.modBtns then
+					self:skinStdButton{obj=this.AcceptButton, fType=ftype, sechk=true}
+					self:skinStdButton{obj=this.CancelButton, fType=ftype}
+					self:skinStdButton{obj=this.DeleteButton, fType=ftype}
+				end
 
-			self:Unhook(this, "OnShow")
-		end)
+				self:Unhook(this, "OnShow")
+			end)
+		end
 
 	end
 
@@ -2394,6 +2428,7 @@ aObj.SetupMainline_PlayerFramesOptions = function(self)
 		["Azerite UI"]           = true,
 		["Character Customize"]  = {suff = "Frame"},
 		["Currency Transfer"]    = true,
+		["Damage Meter"]         = aObj.isMnlnBeta and true or nil,
 		["Equipment Flyout"]     = true,
 		["Guild Control UI"]     = true,
 		["Guild Invite"]         = {suff = "Frame"},
