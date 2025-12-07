@@ -78,6 +78,7 @@ local clrTab = {
 	black       = _G.BLACK_FONT_COLOR,
 	blue        = _G.BLUE_FONT_COLOR,
 	bright_blue = _G.BRIGHTBLUE_FONT_COLOR,
+	brownish    = _G.CreateColor(0.585, 0.5, 0.31), -- 150, 130, 80 (RewardTrackFrame element border)
 	common      = _G.COMMON_GRAY_COLOR,
 	-- default     = aObj.bbClr, [N.B. not populated when table is created]
 	disabled    = _G.DISABLED_FONT_COLOR,

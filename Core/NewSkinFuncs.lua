@@ -791,7 +791,7 @@ local function skinGlowBox(tbl)
 	end
 	tbl.obj:DisableDrawLayer("BACKGROUND")
 	-- skin the GlowBox
-	aObj:skinObject("frame", {obj=tbl.obj, fType=tbl.fType, cbns=true, clr="gold", ofs=0, y2=2})
+	aObj:skinObject("frame", {obj=tbl.obj, fType=tbl.fType, cbns=true, clr="gold", ofs=0, x2=-2, y2=2})
 end
 skinFuncs.glowbox = function(table) skinGlowBox(table) end
 local skinnedMFs = {}
@@ -1268,5 +1268,14 @@ if aObj.isMnln then
 			self:Unhook(frame, "OnShow")
 		end)
 
+	end
+
+	function aObj:skinRewardTrackFrameElements(frame, ftype)
+		for element in frame.elementPool:EnumerateActive() do
+			element.RewardCardBG:SetTexture(nil)
+			self:changeTex2Black(element, {"LevelSquare"})
+			element.LevelSquare:SetSize(18, 18)
+			self:skinObject("frame", {obj=element, fType=ftype, fb=true, ofs=-4, x2=-5, y2=5, clr="brownish"})
+		end
 	end
 end
