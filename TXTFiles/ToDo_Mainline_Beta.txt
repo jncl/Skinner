@@ -7,7 +7,7 @@ ToDo_Mainline_Beta
 	¶ is Alt+7		- indicates localisation changes required
 
 
-	-- N.B. Secret Values cause errors for Tooltips, PaperDollFrame...
+	-- N.B. Secret Values cause errors for GameTooltip, PaperDollFrame...
 
 	Mainline_Beta (Midnight 12.0.0)
 		- Added
@@ -32,7 +32,7 @@ x			- Blizzard_HousingMarketCart
 ≈			- Blizzard_HousingModelPreview
 ?			- Blizzard_HousingTemplates
 x			- Blizzard_HousingTutorials
-			- Blizzard_NamePlateAuras
+			- Blizzard_NamePlateAurasexitexit
 			- Blizzard_TalentArmorSet
 			- Blizzard_TalentCard
 			- Blizzard_TalentFrameGrid
@@ -42,7 +42,7 @@ x			- Blizzard_HousingTutorials
 			- Blizzard_Tutorials_Managed
 			- CooldownViewerSettingsAlerts
 			- CooldownViewerSettingsDialogs
-¶≈			- DamageMeter
+≈			- DamageMeter
 			- DemonHunterSoulFragmentsBar
 			- DevourerFuryBar
 			- GradualAnimatedStatusBar

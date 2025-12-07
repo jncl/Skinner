@@ -7,7 +7,7 @@ ToDos
 	¶ is Alt+7	- indicates localisation changes required
 	#nnn		- isndicates Issue number
 	S/N/I/U/O	- Skin request/New Version/Issue(Bug)/Unobsolete Skin/Other changes
-	E/C/M/F 	- Classic Era/MoP Classic/Mainline/Feature Request
+	E/C/M/F/B 	- Classic Era/MoP Classic/Mainline/Feature Request/Beta
 
 		O 	Update ISSUE_TEMPLATE(s) when Classic version name changes
 
@@ -15,4 +15,6 @@ ToDos
 
 	 ≈	O/M	PerksProgramProductDetailsContainerFrame, skin contents
 
-#250 ≈	I/M Midnight Beta frame changes required
+#252 √	I/M Housing Changes from last release
+
+#253 √	I/M Adventure Guide Tabs
