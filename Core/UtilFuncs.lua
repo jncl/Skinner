@@ -341,13 +341,12 @@ end
 
 function aObj:changeTex2Black(obj, regions)
 	--@debug@
-	_G.assert(obj, "Unknown object changeTex2Black\n" .. _G.debugstack(2, 3, 2))
-	_G.assert(regions, "Missing regions table changeTex2Black\n" .. _G.debugstack(2, 3, 2))
+	_G.assert(obj, "Missing object changeTex2Black\n" .. _G.debugstack(2, 3, 2))
+	_G.assert(regions and _G.type(regions) == 'table', "Missing regions table changeTex2Black\n" .. _G.debugstack(2, 3, 2))
 	--@end-debug@
 
 	for _, reg in _G.pairs(regions) do
-		obj[reg]:SetTexture(self.tFDIDs.cfBg)
-		obj[reg]:SetVertexColor(0, 0, 0)
+		obj[reg]:SetColorTexture(0, 0, 0, 1)
 	end
 
 end
