@@ -1,3 +1,14 @@
+beta11.64507.1
+Jncl:
+	Updated ToDo*.txt files
+	Updated Change_History.txt
+	Updated Version numbers
+	Retail PTRX & Beta changes
+	Updated Minimap Buttons code
+	Updated AdventureGuide skin
+	Updated NSF EditBox code
+	Updated Settings skinning code Updated Baganator & BugSack skins
+
 beta11.64272.1
 Jncl:
 	Updated ToDo*.txt files
