@@ -1560,6 +1560,11 @@ if not aObj.isClscERA then
 				self:skinStdButton{obj=_G.LFDRoleCheckPopupAcceptButton, schk=true}
 				self:skinStdButton{obj=_G.LFDRoleCheckPopupDeclineButton}
 			end
+			if self.modChkBtns then
+				self:skinCheckButton{obj=_G.LFDRoleCheckPopupRoleButtonTank.checkButton, fType=ftype}
+				self:skinCheckButton{obj=_G.LFDRoleCheckPopupRoleButtonHealer.checkButton, fType=ftype}
+				self:skinCheckButton{obj=_G.LFDRoleCheckPopupRoleButtonDPS.checkButton, fType=ftype}
+			end
 
 			self:Unhook(this, "OnShow")
 		end)
