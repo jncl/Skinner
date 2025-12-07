@@ -98,7 +98,7 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 		["DungeonCompletion"]     = {ofs = -8, ddl = {"background", "border", "overlay"}, sdla = "dungeonTexture", icon = {tex = "dungeonTexture"}},
 		["GarrisonBuilding"]      = {ofs = -10, ddl = {"background", "border", "overlay"}},
 		["GarrisonFollower"]      = {ofs = -8, y1 = 0, ddl = {"background"}, nt = {"FollowerBG"}, nt2 = {PortraitFrame = "LevelBorder"}, stn2 = {PortraitFrame = "PortraitRing"}},
-		["GarrisonMission"]       = {ofs = -10, y1=-6, ddl = {"background", "border"}},
+		["GarrisonMission"]       = {ofs = -10, y1 = -6, ddl = {"background", "border"}},
 		["GarrisonRandomMission"] = {ofs = -10, ddl = {"background"}, sdlb = "MissionType"},
 		["GarrisonShipFollower"]  = {ofs = -8, ddl = {"background"}, nt = {"FollowerBG"}},
 		["GarrisonShipMission"]   = {ofs = -10, ddl = {"background"}},
@@ -112,7 +112,7 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 		["MoneyWon"]              = {ofs = -8, ddl = {"background"}, ib = true},
 		["NewMount"]              = {ofs = -8, ddl = {"background"}, ib = true, iq = _G.Enum.ItemQuality.Epic},
 		["NewPet"]                = {ofs = -8, ddl = {"background"}, ib = true},
-		["NewRecipeLearned"]      = {ofs = -4, ddl = {"background"}, nis=true},
+		["NewRecipeLearned"]      = {ofs = -4, ddl = {"background"}, nis = true},
 		["Scenario"]              = {ofs = -12, ddl = {"background", "border", "overlay"}, sdla = "dungeonTexture", icon = {tex = "dungeonTexture"}},
 		["WorldQuestComplete"]    = {ofs = -6, ddl = {"background", "border"}, sdla = "QuestTexture", icon = {tex = "QuestTexture"}},
 		-- N.B. Appears in XML file but not in LUA file (used by NewPet, NewMount, NewToy, NewRuneforge & NewCosmetic alerts templates)
