@@ -361,22 +361,31 @@ aObj.SetupMainline_PlayerFrames = function()
 			if not self.prdb.DamageMeter or self.initialized.DamageMeter then return end
 			self.initialized.DamageMeter = true
 
+			local function skinSessionWindow(frame)
+				frame.Header:SetTexture(nil)
+				-- .ScrollBox
+				-- .ScrollBar
+				frame.SourceWindow.Header:SetTexture(nil)
+				-- .SourceWindow
+					-- .ScrollBox
+				if aObj.modBtnBs then
+					aObj:addButtonBorder{obj=frame.SettingsDropdown, fType=ftype, es=12, ofs=-2, y1=1, y2=5}
+					aObj:addButtonBorder{obj=frame.SessionDropdown, fType=ftype, rpA=true, es=12, ofs=4, y1=3, x2=3, y2=-3}
+					aObj:addButtonBorder{obj=frame.DamageMeterTypeDropdown, fType=ftype, es=12, ofs=-1, y1=0, y2=2}
+				end
+			end
 			self:SecureHookScript(_G.DamageMeter, "OnShow", function(this)
-				--@debug@
-				_G.Spew("DamageMeter", this)
-				_G.Spew("DamageMeterPerCharacterSettings", _G.DamageMeterPerCharacterSettings)
-				--@end-debug@
-
-				-- TODO: Handle Session Windows (DamageMeterMixin:SetupSessionWindow)
-				-- local MAX_DAMAGE_METER_SESSION_WINDOWS = 3
-				-- local PRIMARY_SESSION_WINDOW_INDEX = 1
-
 				this:ForEachSessionWindow(function(sessionWindow)
-					aObj:Debug("DM FESW: [%s, %s]", sessionWindow)
+					skinSessionWindow(sessionWindow)
+				end)
+
+				self:SecureHook(this, "SetupSessionWindow", function(fObj, windowData, windowIndex)
+					skinSessionWindow(windowData.sessionWindow)
 				end)
 
 			    self:Unhook(this, "OnShow")
 			end)
+			self:checkShown(_G.DamageMeter)
 
 		end
 	end
