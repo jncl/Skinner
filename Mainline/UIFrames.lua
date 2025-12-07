@@ -1112,115 +1112,117 @@ aObj.SetupMainline_UIFrames = function()
 
 	end
 
-	aObj.blizzFrames[ftype].DelvesCompanionConfiguration = function(self)
-		if not self.prdb.DelvesUI or self.initialized.DelvesCompanionConfiguration then return end
-		self.initialized.DelvesCompanionConfiguration = true
+	if _G.GetExpansionLevel() >= _G.LE_EXPANSION_WAR_WITHIN then
+		aObj.blizzFrames[ftype].DelvesCompanionConfiguration = function(self)
+			if not self.prdb.DelvesUI or self.initialized.DelvesCompanionConfiguration then return end
+			self.initialized.DelvesCompanionConfiguration = true
 
-		self:SecureHookScript(_G.DelvesCompanionConfigurationFrame, "OnShow", function(this)
-			self:keepFontStrings(this.Border)
-			this.CompanionPortraitFrame.Border:SetTexture(nil)
-			-- .CompanionExperienceRingFrame
-			self:keepFontStrings(this.CompanionLevelFrame)
-			this.CompanionInfoFrame.InfoFrameShadow:SetTexture(nil)
-			-- this.CompanionInfoFrame.CompanionInfoGLine:SetTexture(nil)
-			_G.CompanionInfoGLine:SetTexture(nil) -- FIXME: Blizzard bug? using name instead of parentKey
-			self:skinObject("frame", {obj=this.CompanionCombatRoleSlot.OptionsList, kfs=true, ofs=4, y2=-5})
-			self:skinObject("frame", {obj=this.CompanionCombatTrinketSlot.OptionsList, kfs=true, ofs=4, y2=-5})
-			self:skinObject("frame", {obj=this.CompanionUtilityTrinketSlot.OptionsList, kfs=true, ofs=4, y2=-5})
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, ofs=4})
-			self:moveObject{obj=this.CloseButton, x=-3, y=-4}
-			if self.modBtns then
-				self:skinStdButton{obj=this.CompanionConfigShowAbilitiesButton, fType=ftype, schk=true, sechk=true}
-			end
-
-			self:Unhook(this, "OnShow")
-		end)
-
-		self:SecureHookScript(_G.DelvesCompanionAbilityListFrame, "OnShow", function(this)
-			self:skinObject("ddbutton", {obj=this.DelvesCompanionRoleDropdown, fType=ftype})
-			this.PagingControls = this.DelvesCompanionAbilityListPagingControls
-			self:skinPageBtns(this)
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true})
-			if self.modBtnBs then
-				local function skinAbilityButtons()
-					for _, btn in _G.ipairs(this.buttons) do
-						aObj:addButtonBorder{obj=btn, fType=ftype, libt=true, clr=btn.nodeInfo.activeRank > 0 and "white"}
-					end
+			self:SecureHookScript(_G.DelvesCompanionConfigurationFrame, "OnShow", function(this)
+				self:keepFontStrings(this.Border)
+				this.CompanionPortraitFrame.Border:SetTexture(nil)
+				-- .CompanionExperienceRingFrame
+				self:keepFontStrings(this.CompanionLevelFrame)
+				this.CompanionInfoFrame.InfoFrameShadow:SetTexture(nil)
+				-- this.CompanionInfoFrame.CompanionInfoGLine:SetTexture(nil)
+				_G.CompanionInfoGLine:SetTexture(nil) -- FIXME: Blizzard bug? using name instead of parentKey
+				self:skinObject("frame", {obj=this.CompanionCombatRoleSlot.OptionsList, kfs=true, ofs=4, y2=-5})
+				self:skinObject("frame", {obj=this.CompanionCombatTrinketSlot.OptionsList, kfs=true, ofs=4, y2=-5})
+				self:skinObject("frame", {obj=this.CompanionUtilityTrinketSlot.OptionsList, kfs=true, ofs=4, y2=-5})
+				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, ofs=4})
+				self:moveObject{obj=this.CloseButton, x=-3, y=-4}
+				if self.modBtns then
+					self:skinStdButton{obj=this.CompanionConfigShowAbilitiesButton, fType=ftype, schk=true, sechk=true}
 				end
-				self:SecureHook(this, "Refresh", function(_, _, _)
+
+				self:Unhook(this, "OnShow")
+			end)
+
+			self:SecureHookScript(_G.DelvesCompanionAbilityListFrame, "OnShow", function(this)
+				self:skinObject("ddbutton", {obj=this.DelvesCompanionRoleDropdown, fType=ftype})
+				this.PagingControls = this.DelvesCompanionAbilityListPagingControls
+				self:skinPageBtns(this)
+				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true})
+				if self.modBtnBs then
+					local function skinAbilityButtons()
+						for _, btn in _G.ipairs(this.buttons) do
+							aObj:addButtonBorder{obj=btn, fType=ftype, libt=true, clr=btn.nodeInfo.activeRank > 0 and "white"}
+						end
+					end
+					self:SecureHook(this, "Refresh", function(_, _, _)
+						skinAbilityButtons()
+					end)
 					skinAbilityButtons()
-				end)
-				skinAbilityButtons()
-			end
-
-			self:Unhook(this, "OnShow")
-		end)
-
-	end
-
-	aObj.blizzLoDFrames[ftype].DelvesDifficultyPicker = function(self)
-		if not self.prdb.DelvesUI or self.initialized.DelvesDifficultyPicker then return end
-		self.initialized.DelvesDifficultyPicker = true
-
-		self:SecureHookScript(_G.DelvesDifficultyPickerFrame, "OnShow", function(this)
-			self:keepFontStrings(this.Border)
-			self:skinObject("ddbutton", {obj=this.Dropdown, fType=ftype})
-			-- .DelveModifiersWidgetContainer
-			-- make Background visible but still allow widgets to be displayed
-			this.DelveBackgroundWidgetContainer:SetFrameStrata("LOW")
-			self:skinObject("scrollbar", {obj=this.DelveRewardsContainerFrame.ScrollBar, fType=ftype})
-			local function skinRewards(...)
-				local _, element, new
-				if _G.select("#", ...) == 2 then
-					element, _ = ...
-				elseif _G.select("#", ...) == 3 then
-					element, _, new = ...
-				else
-					_, element, _, new = ...
 				end
-				if new ~= false then
-					element.NameFrame:SetTexture(nil)
-					if aObj.modBtnBs then
-						aObj:addButtonBorder{obj=element, fType=ftype, relTo=element.Icon}
+
+				self:Unhook(this, "OnShow")
+			end)
+
+		end
+
+		aObj.blizzLoDFrames[ftype].DelvesDifficultyPicker = function(self)
+			if not self.prdb.DelvesUI or self.initialized.DelvesDifficultyPicker then return end
+			self.initialized.DelvesDifficultyPicker = true
+
+			self:SecureHookScript(_G.DelvesDifficultyPickerFrame, "OnShow", function(this)
+				self:keepFontStrings(this.Border)
+				self:skinObject("ddbutton", {obj=this.Dropdown, fType=ftype})
+				-- .DelveModifiersWidgetContainer
+				-- make Background visible but still allow widgets to be displayed
+				this.DelveBackgroundWidgetContainer:SetFrameStrata("LOW")
+				self:skinObject("scrollbar", {obj=this.DelveRewardsContainerFrame.ScrollBar, fType=ftype})
+				local function skinRewards(...)
+					local _, element, new
+					if _G.select("#", ...) == 2 then
+						element, _ = ...
+					elseif _G.select("#", ...) == 3 then
+						element, _, new = ...
+					else
+						_, element, _, new = ...
+					end
+					if new ~= false then
+						element.NameFrame:SetTexture(nil)
+						if aObj.modBtnBs then
+							aObj:addButtonBorder{obj=element, fType=ftype, relTo=element.Icon}
+						end
 					end
 				end
-			end
-			_G.ScrollUtil.AddAcquiredFrameCallback(this.DelveRewardsContainerFrame.ScrollBox, skinRewards, aObj, true)
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, bg=true, ri=true, cb=true, ofs=4})
-			self:moveObject{obj=this.CloseButton, x=-3, y=-1}
-			if self.modBtns then
-				self:skinStdButton{obj=this.EnterDelveButton, fType=ftype, sechk=true}
-			end
+				_G.ScrollUtil.AddAcquiredFrameCallback(this.DelveRewardsContainerFrame.ScrollBox, skinRewards, aObj, true)
+				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, bg=true, ri=true, cb=true, ofs=4})
+				self:moveObject{obj=this.CloseButton, x=-3, y=-1}
+				if self.modBtns then
+					self:skinStdButton{obj=this.EnterDelveButton, fType=ftype, sechk=true}
+				end
 
-			self:Unhook(this, "OnShow")
-		end)
+				self:Unhook(this, "OnShow")
+			end)
 
-	end
-
-	aObj.blizzLoDFrames[ftype].DelvesDashboardUI = function(self)
-		if not self.prdb.DelvesUI
-		or not self.prdb.PVEFrame
-		or self.initialized.DelvesDashboardUI
-		then
-			return
 		end
-		self.initialized.DelvesDashboardUI = true
 
-		self:SecureHookScript(_G.DelvesDashboardFrame, "OnShow", function(this)
-			this.DashboardBackground:SetPoint("TOPLEFT", this, 0, -20)
-			this.ThresholdBar.BarBorder:SetTexture(nil)
-			self:skinObject("statusbar", {obj=this.ThresholdBar, fi=0, bg=this.ThresholdBar.BarBackground})
-			this.ThresholdBar.Threshold10.Reward.IconBorder:SetTexture(nil)
-			local bplf = this.ButtonPanelLayoutFrame
-			self:skinObject("frame", {obj=bplf.CompanionConfigButtonPanel, fType=ftype, kfs=true, fb=true, ofs=0})
-			self:skinObject("frame", {obj=bplf.GreatVaultButtonPanel, fType=ftype, kfs=true, fb=true, ofs=0})
-			if self.modBtns then
-				self:skinStdButton{obj=bplf.CompanionConfigButtonPanel.CompanionConfigButton, fType=ftype, sechk=true}
+		aObj.blizzLoDFrames[ftype].DelvesDashboardUI = function(self)
+			if not self.prdb.DelvesUI
+			or not self.prdb.PVEFrame
+			or self.initialized.DelvesDashboardUI
+			then
+				return
 			end
+			self.initialized.DelvesDashboardUI = true
 
-			self:Unhook(this, "OnShow")
-		end)
+			self:SecureHookScript(_G.DelvesDashboardFrame, "OnShow", function(this)
+				this.DashboardBackground:SetPoint("TOPLEFT", this, 0, -20)
+				this.ThresholdBar.BarBorder:SetTexture(nil)
+				self:skinObject("statusbar", {obj=this.ThresholdBar, fi=0, bg=this.ThresholdBar.BarBackground})
+				this.ThresholdBar.Threshold10.Reward.IconBorder:SetTexture(nil)
+				local bplf = this.ButtonPanelLayoutFrame
+				self:skinObject("frame", {obj=bplf.CompanionConfigButtonPanel, fType=ftype, kfs=true, fb=true, ofs=0})
+				self:skinObject("frame", {obj=bplf.GreatVaultButtonPanel, fType=ftype, kfs=true, fb=true, ofs=0})
+				if self.modBtns then
+					self:skinStdButton{obj=bplf.CompanionConfigButtonPanel.CompanionConfigButton, fType=ftype, sechk=true}
+				end
 
+				self:Unhook(this, "OnShow")
+			end)
+
+		end
 	end
 
 	aObj.blizzFrames[ftype].EditMode = function(self)
