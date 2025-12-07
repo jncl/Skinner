@@ -76,7 +76,7 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 		["GarrisonFollower"]       = true,
 		["GarrisonMission"]        = true,
 		["GarrisonTalent"]         = true,
-		["HousingItemEarned"]      = aObj.isMnlnPTRX or aObj.isMnlnBeta and true or nil,
+		["HousingItemEarned"]      = true,
 		["Loot"]                   = true,
 		["LootUpgrade"]            = true,
 		["MoneyWon"]               = true,
@@ -123,6 +123,7 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 		alertType["Achievement"].y2         = 12
 		alertType["EntitlementDelivered"]   = {ofs = -10}
 		alertType["GuildRename"]            = {ofs = -10}
+		alertType["HousingItemEarned"]		= {ofs = -8, ddl = {"background", "border"}, stn = {"Divider"}, icon = {tex = "Icon"}}
 		alertType["Loot"].icon              = {obj = "lootItem", stn = {"SpecRing"}, ib = true, tex =  "Icon"}
 		alertType["MonthlyActivity"]        = {ofs = 0, nt = {"Background"}, stc = "Unlocked", icon = {obj = "Icon", ddl = {"border", "overlay"}, tex ="Texture"}}
 		alertType["NewCosmetic"]            = {ofs = -8, y1 = -12, ddl = {"background"}, ib = true, iq = _G.Enum.ItemQuality.Epic}
@@ -139,12 +140,6 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 		alertType["Loot"].stn               = {"SpecRing"}
 		alertType["Loot"].ib                = true
 		alertType["StorePurchase"]          = {ofs = -12, ddl = {"background"}}
-	end
-	if aObj.isMnlnPTRX
-	or aObj.isMnlnBeta
-	then
-		-- TODO: Check on Icon Border etc
-		alertType["HousingItemEarned"]		= {ofs = -8, ddl = {"background", "border"}, stn = {"Divider"}}
 	end
 
 	local adj, tbl, itemQuality = {}
@@ -2254,26 +2249,13 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 
 	if self.prdb.MainMenuBar.skin then
 		if self.isMnln then
-			if not aObj.isMnlnPTRX
-			and not aObj.isMnlnBeta
-			then
-				self:SecureHookScript(_G.MainMenuBar, "OnShow", function(this)
-					this.BorderArt:SetTexture(nil)
-					this.EndCaps:DisableDrawLayer("OVERLAY")
+			self:SecureHookScript(_G.MainActionBar, "OnShow", function(this)
+				this.BorderArt:SetTexture(nil)
+				this.EndCaps:DisableDrawLayer("OVERLAY")
 
-					self:Unhook(this, "OnShow")
-				end)
-				self:checkShown(_G.MainMenuBar)
-			else
-				self:SecureHookScript(_G.MainActionBar, "OnShow", function(this)
-					this.BorderArt:SetTexture(nil)
-					this.EndCaps:DisableDrawLayer("OVERLAY")
-
-					self:Unhook(this, "OnShow")
-				end)
-				self:checkShown(_G.MainActionBar)
-			end
-
+				self:Unhook(this, "OnShow")
+			end)
+			self:checkShown(_G.MainActionBar)
 			local function skinSTBars(container)
 				for _, bar in _G.pairs(container.bars) do
 					aObj:skinObject("statusbar", {obj=bar.StatusBar, bg=bar.StatusBar.Background, other={bar.StatusBar.Underlay, bar.StatusBar.Overlay}, hookFunc=true})
@@ -3355,11 +3337,7 @@ aObj.blizzFrames[ftype].ReportFrame = function(self)
 		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, cb=true, ofs=-3})
 		if self.modBtns then
 			self:skinStdButton{obj=this.ReportButton, fType=ftype, sechk=true}
-			if aObj.isMnlnPTRX
-			or aObj.isMnlnBeta
-			then
-				self:skinStdButton{obj=this.ScreenshotReportingFrame.TakeScreenshotButton, fType=ftype}
-			end
+			self:skinStdButton{obj=this.ScreenshotReportingFrame.TakeScreenshotButton, fType=ftype}
 			self:SecureHook(this, "MajorTypeSelected", function(fObj, _, _)
 				for catBtn in fObj.MinorCategoryButtonPool:EnumerateActive() do
 					self:skinStdButton{obj=catBtn, fType=ftype, clr="black"}
@@ -3953,15 +3931,13 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 				self:skinObject("statusbar", {obj=tTip.statusBar2, fi=0})
 			end
 		end
-		-- N.B. DON'T skin CompareHeader as it causes the TooltipComparisonManager to error
-		-- if aObj.isMnlnPTRX
-		-- or aObj.isMnlnBeta
-		-- then
-		-- 	-- if it has a CompareHeader then skin it as a textured tab
-		-- 	if tTip.CompareHeader then
-		-- 		self:skinObject("frame", {obj=tTip.CompareHeader, fType=tTip.fType, kfs=true, bd=13, noBdr=true, x1=-1, y2=-10})
-		-- 	end
-		-- end
+		-- N.B. DON'T skin CompareHeader as it causes the TooltipComparisonManager to error (Beta)
+		if not aObj.isMnlnBeta then
+			-- if it has a CompareHeader then skin it as a textured tab
+			if tTip.CompareHeader then
+				self:skinObject("frame", {obj=tTip.CompareHeader, fType=tTip.fType, kfs=true, bd=13, noBdr=true, x1=-1, y2=-10})
+			end
+		end
 	end})
 
 	-- add tooltips to table
@@ -3978,7 +3954,7 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 		_G.ShoppingTooltip1,
 		_G.ShoppingTooltip2,
 	}
-	-- N.B. DON'T skin the GameTooltip as it causes the MoneyFrame to error
+	-- N.B. DON'T skin the GameTooltip as it causes the MoneyFrame to error (Midnight Beta)
 	if not aObj.isMnlnBeta then
 		aObj:add2Table(toolTips, _G.GameTooltip)
 	end
@@ -4200,19 +4176,16 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 			_G.nop()
 		elseif wFrame.widgetType == 29 then -- ScenarioHeaderDelves
 			aObj:skinObject("frame", {obj=wFrame, fType=ftype, kfs=true, ofs=-2, x1=7, x2=-7, clr="sepia"})
-		elseif wFrame.widgetType == 30 -- ButtonHeader
-		and aObj.isMnlnPTRX
-		or aObj.isMnlnBeta
-		then
+		elseif wFrame.widgetType == 30 then -- ButtonHeader
 			wFrame:DisableDrawLayer("BORDER")
 			if aObj.modBtns then
 				for btn in wFrame.buttonPool:EnumerateActive() do
 					aObj:skinStdButton{obj=btn, fType=ftype, ofs=-8, clr="grey"}
+					btn:GetHighlightTexture():SetTexture(nil)
 				end
 			end
 		elseif wFrame.widgetType == 31 -- PreyHuntProgress
-		and aObj.isMnlnPTRX
-		or aObj.isMnlnBeta
+		and aObj.isMnlnBeta
 		then
 			_G.nop()
 		end

@@ -519,17 +519,13 @@ aObj.SetupMainline_UIFrames = function()
 		frame:DisableDrawLayer("BORDER") -- hide NineSlice UniqueCornersLayout
 		aObj:skinObject("frame", {obj=frame, fType=ftype, ofs=-30})
 	end
-	if aObj.isMnlnPTRX
-	or aObj.isMnlnBeta
-	then
-		aObj.blizzLoDFrames[ftype].BoostTutorial = function(self)
-			if not self.prdb.TutorialUI or self.initialized.BoostTutorial then return end
-			self.initialized.BoostTutorial = true
+	aObj.blizzLoDFrames[ftype].BoostTutorial = function(self)
+		if not self.prdb.TutorialUI or self.initialized.BoostTutorial then return end
+		self.initialized.BoostTutorial = true
 
-			skinTutorialFrame(_G.TutorialKeyboardMouseFrame_Frame)
-			skinTutorialFrame(_G.TutorialWalk_Frame)
+		skinTutorialFrame(_G.TutorialKeyboardMouseFrame_Frame)
+		skinTutorialFrame(_G.TutorialWalk_Frame)
 
-		end
 	end
 
 	aObj.blizzFrames[ftype].BossBannerToast = function(self)
@@ -3033,12 +3029,6 @@ aObj.SetupMainline_UIFrames = function()
 		skinTutorialFrame(_G.NPE_TutorialMainFrame_Frame)
 		skinTutorialFrame(_G.NPE_TutorialKeyboardMouseFrame_Frame)
 		skinTutorialFrame(_G.NPE_TutorialInterfaceHelp)
-		if not aObj.isMnlnPTRX
-		and not aObj.isMnlnBeta
-		then
-			skinTutorialFrame(_G.NPE_TutorialSingleKey_Frame)
-			skinTutorialFrame(_G.NPE_TutorialWalk_Frame)
-		end
 
 		if self.modBtns then
 			self:skinStdButton{obj=_G.KeyboardMouseConfirmButton}
@@ -4054,9 +4044,7 @@ aObj.SetupMainline_UIFrames = function()
 
 		skinTutorialFrame(_G.TutorialMainFrame_Frame)
 		skinTutorialFrame(_G.TutorialSingleKey_Frame)
-		if aObj.isMnlnPTRX
-		or aObj.isMnlnBeta
-		then
+		if aObj.isMnlnBeta then
 			skinTutorialFrame(_G.TutorialDoubleKey_Frame)
 		end
 
