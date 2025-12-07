@@ -2,7 +2,7 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("TomTom") then return end
 local _G = _G
 
-aObj.addonsToSkin.TomTom = function(self) -- v4.0.5-release
+aObj.addonsToSkin.TomTom = function(self) -- v4.2.4-release
 
 	-- skin the Coordinate block
 	local oFs = -2
@@ -21,16 +21,15 @@ aObj.addonsToSkin.TomTom = function(self) -- v4.0.5-release
 		self:add2Table(self.ttList, _G.TomTomTooltip)
 	end)
 
-	-- skin TomTomPaste
-	self:SecureHookScript(_G.TomTomPaste, "OnShow", function(this)
+end
 
-		self:skinObject("frame", {obj=this, kfs=true})
-		if self.modBtns then
-			self:skinStdButton{obj=self:getChild(this, 2)}
-			self:skinStdButton{obj=self:getChild(this, 3)}
-		end
-
-		self:Unhook(this, "OnShow")
-	end)
-
+-- add skinning of TomTomPaste frame to repeating timer table
+aObj.repTimer["TomTomPaste"] = function(fObj)
+	aObj:keepFontStrings(fObj.TitleContainer)
+	aObj:skinObject("frame", {obj=fObj.EditBox, kfs=true, fb=true})
+	aObj:skinObject("frame", {obj=fObj, kfs=true})
+	if aObj.modBtns then
+		aObj:skinStdButton{obj=fObj.CloseButton}
+		aObj:skinStdButton{obj=fObj.PasteButton}
+	end
 end
