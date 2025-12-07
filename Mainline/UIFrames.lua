@@ -2260,10 +2260,7 @@ aObj.SetupMainline_UIFrames = function()
 
 	end
 
-	if aObj.isMnlnPTRX
-	or aObj.isMnlnBeta
-	then
-		-- Housing
+	if _G.GetExpansionLevel() >= _G.LE_EXPANSION_WAR_WITHIN then
 		aObj.blizzLoDFrames[ftype].HouseEditor = function(self)
 			if not self.prdb.HousingUI or self.initialized.HouseEditor then return end
 
@@ -2506,11 +2503,12 @@ aObj.SetupMainline_UIFrames = function()
 		end
 
 		aObj.blizzLoDFrames[ftype].HousingControls = function(self)
-			if not self.prdb.HousingUI or self.initialized.HousingControlsFrame then return end
-			self.initialized.HousingControlsFrame = true
+			if not self.prdb.HousingUI or self.initialized.HousingControls then return end
+			self.initialized.HousingControls = true
 
 			self:SecureHookScript(_G.HousingControlsFrame, "OnShow", function(this)
-				this.Background:SetTexture(nil)
+				this.OwnerControlFrame.Background:SetTexture(nil)
+				this.VisitorControlFrame.Divider:SetTexture(nil)
 
 				self:Unhook(this, "OnShow")
 			end)
@@ -2639,7 +2637,7 @@ aObj.SetupMainline_UIFrames = function()
 							self:skinStdButton{obj=frame.NoHouseButton, fType=ftype, ofs=0}
 						end
 
-						self:Unhook(fObj, "OnShow")
+						self:Unhook(frame, "OnShow")
 					end)
 					self:checkShown(hic.DashboardNoHousesFrame)
 
@@ -2648,16 +2646,10 @@ aObj.SetupMainline_UIFrames = function()
 							self:skinObject("tabs", {obj=cf.TabSystem, pool=true, fType=ftype, ignoreSize=true, lod=self.isTT and true, upwards=true, offsets={y2=-4}})
 						end)
 
-						self:SecureHookScript(cf.EndeavorFrame, "OnShow", function(ef)
-							aObj:Debug("EndeavorFrame: [%s, %s]", ef)
-
-							self:skinObject("frame", {obj=ef, fType=ftype, kfs=true, fb=true, x1=-2, x2=5})
-
-							self:Unhook(ef, "OnShow")
-						end)
-						self:checkShown(cf.EndeavorFrame)
-
+						-- House Level Tab
 						self:SecureHookScript(cf.HouseUpgradeFrame, "OnShow", function(huf)
+							huf.Background:SetTexture(nil)
+							huf.Divider:SetTexture(nil)
 							huf.CurrentLevelFrame.HouseBarFrame.HouseBarFrame:DisableDrawLayer("ARTWORK") -- leaves
 							huf.CurrentLevelFrame.HouseBarFrame:DisableDrawLayer("OVERLAY") -- radial background
 							huf.TrackFrame.Background:SetTexture(nil)
@@ -2675,7 +2667,7 @@ aObj.SetupMainline_UIFrames = function()
 								end
 							end)
 
-							self:skinObject("frame", {obj=huf, fType=ftype, kfs=true, fb=true, x1=-2, x2=5})
+							self:skinObject("frame", {obj=huf, fType=ftype, kfs=true, fb=true, x1=-6, x2=4})
 							if self.modBtnBs then
 								self:addButtonBorder{obj=huf.TeleportToHouseButton, fType=ftype, relTo=huf.TeleportToHouseButton.Icon}
 							end
@@ -2687,6 +2679,63 @@ aObj.SetupMainline_UIFrames = function()
 						end)
 						self:checkShown(cf.HouseUpgradeFrame)
 
+						-- Endeavour Tab
+						if not aObj.isMnlnBeta then
+							-- EndeavorFrame
+							_G.nop()
+						else
+							self:SecureHookScript(cf.InitiativesFrame, "OnShow", function(ef)
+								local efisf = ef.InitiativeSetFrame
+								self:removeNineSlice(efisf.NineSlice)
+								efisf.Bg:SetTexture(nil)
+								efisf.InitiativesBG:SetAlpha(0)
+								self:keepFontStrings(efisf.BorderArt)
+								efisf.InitiativeTimer.TimerBG:SetTexture(nil)
+								efisf.ProgressBar.Threshold4.Reward.IconBorder:SetTexture(nil)
+								efisf.InitiativeActiveNeighborhoodSwitcher:DisableDrawLayer("BACKGROUND")
+								efisf.InitiativeTasks:DisableDrawLayer("BACKGROUND")
+								self:changeTex2Black(efisf.InitiativeTasks.TaskListTitleContainer, {"TitleTextureL", "TitleTextureM", "TitleTextureR"})
+								self:removeRegions(efisf.InitiativeTasks.TaskListTitleContainer, {5, 6})
+								self:skinObject("scrollbar", {obj=efisf.InitiativeTasks.ScrollBar, fType=ftype})
+								local function skinTask(...)
+									local _, element, elementData
+									if _G.select("#", ...) == 2 then
+										element, elementData = ...
+									else
+										_, element, elementData = ...
+									end
+									--@debug@
+									_G.Spew("TL element", element)
+									_G.Spew("TL elementData", elementData)
+									--@end-debug@
+								end
+								_G.ScrollUtil.AddInitializedFrameCallback(efisf.InitiativeTasks.TaskList, skinTask, aObj, true)
+								efisf.InitiativeActivity:DisableDrawLayer("BACKGROUND")
+								self:changeTex2Black(efisf.InitiativeActivity.ActivityLogTitleContainer, {"TitleTextureL", "TitleTextureM", "TitleTextureR"})
+								self:removeRegions(efisf.InitiativeActivity.ActivityLogTitleContainer, {5, 6})
+								self:skinObject("scrollbar", {obj=efisf.InitiativeActivity.ScrollBar, fType=ftype})
+								local function skinActivity(...)
+									local _, element, elementData
+									if _G.select("#", ...) == 2 then
+										element, elementData = ...
+									else
+										_, element, elementData = ...
+									end
+									--@debug@
+									_G.Spew("AL element", element)
+									_G.Spew("AL elementData", elementData)
+									--@end-debug@
+								end
+								_G.ScrollUtil.AddInitializedFrameCallback(efisf.InitiativeActivity.ActivityLog, skinActivity, aObj, true)
+								self:skinObject("frame", {obj=ef, fType=ftype, kfs=true, fb=true, x1=-6, x2=4})
+								if self.modBtns then
+									self:skinStdButton{obj=efisf.InitiativeActiveNeighborhoodSwitcher.SwitchActiveNeighborhoodBtn, fType=ftype}
+								end
+
+								self:Unhook(ef, "OnShow")
+							end)
+
+						end
 						self:Unhook(cf, "OnShow")
 					end)
 					self:checkShown(hic.ContentFrame)
@@ -2829,9 +2878,7 @@ aObj.SetupMainline_UIFrames = function()
 			end)
 			self:checkShown(_G.HousingModelPreviewFrame)
 
-
 		end
-
 	end
 
 	-- The following function is used by the IslandsPartyPoseUI & WarfrontsPartyPoseUI functions
@@ -4203,6 +4250,7 @@ aObj.SetupMainline_UIFramesOptions = function(self)
 		["Garrison UI"]                  = true,
 		["Generic Trait UI"]             = true,
 		["Help Tip"]                     = {desc = "Help Tips"},
+		["Housing UI"]                   = _G.GetExpansionLevel() >= _G.LE_EXPANSION_WAR_WITHIN and true or nil,
 		["Islands Party Pose UI"]        = true,
 		["Islands Queue UI"]             = true,
 		["Loss Of Control"]              = {suff = "Frame"},
@@ -4225,11 +4273,6 @@ aObj.SetupMainline_UIFramesOptions = function(self)
 		["Weekly Rewards"]               = {suff = "Frame"},
 		["Zone Ability"]                 = true,
 	}
-	if aObj.isMnlnPTRX
-	or aObj.isMnlnBeta
-	then
-		optTab["Housing UI"] = _G.GetExpansionLevel() >= _G.LE_EXPANSION_WAR_WITHIN and true or nil
-	end
 	self:setupFramesOptions(optTab, "UI")
 	_G.wipe(optTab)
 
