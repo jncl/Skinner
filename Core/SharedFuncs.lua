@@ -45,8 +45,9 @@ function aObj:checkWoWVersion()
 			agentUID = "wow_classic"
 		end
 	end
+
 	--@debug@
-	self:Debug("checkVersion#1: [%s, %d, %d, %s, %d, %s, %d]", agentUID, _G.WOW_PROJECT_ID, _G.LE_EXPANSION_LEVEL_CURRENT, _G.GetBuildInfo())
+	self:Debug("checkVersion #1: [%s, %d, %d, %s, %d, %s, %d]", agentUID, _G.WOW_PROJECT_ID, _G.LE_EXPANSION_LEVEL_CURRENT, _G.GetBuildInfo())
 	--@end-debug@
 
 	-- check to see which WoW version we are running on
@@ -59,8 +60,9 @@ function aObj:checkWoWVersion()
 	self.isMnlnPTR    = agentUID == "wow_ptr" and true
 	self.isMnlnPTRX   = agentUID == "wow_ptr_x" and true
 	self.isMnln       = agentUID == "wow" and true
+
 	--@debug@
-	self:Debug("checkVersion#2: [%s, %s, %s, %s, %s, %s, %s, %s, %s]", self.isClscBeta, self.isClscPTR, self.isClsc, self.isClscERAPTR, self.isClscERA, self.isMnlnBeta, self.isMnlnPTR, self.isMnlnPTRX, self.isMnln)
+	self:Debug("checkVersion #2: [%s, %s, %s, %s, %s, %s, %s, %s, %s]", self.isClscBeta, self.isClscPTR, self.isClsc, self.isClscERAPTR, self.isClscERA, self.isMnlnBeta, self.isMnlnPTR, self.isMnlnPTRX, self.isMnln)
 	--@end-debug@
 
 	-- handle PTR and Beta versions
@@ -83,11 +85,10 @@ function aObj:checkWoWVersion()
 	end
 
 	--@debug@
-	self:Debug("checkVersion#3: [%s, %s, %s, %s, %s, %s, %s, %s, %s, %s]", self.isClscBeta, self.isClscPTR, self.isClsc, self.isClscERAPTR, self.isClscERA, self.isMnlnBeta, self.isMnlnPTR, self.isMnlnPTRX, self.isMnln, self.isPatch)
-	--@end-debug@
+	self:Debug("checkVersion #3: [%s, %s, %s, %s, %s, %s, %s, %s, %s, %s]", self.isClscBeta, self.isClscPTR, self.isClsc, self.isClscERAPTR, self.isClscERA, self.isMnlnBeta, self.isMnlnPTR, self.isMnlnPTRX, self.isMnln, self.isPatch)
 
-	--@debug@
 	self:Printf("%s, %d, %s, %d, %s, %d, %s", buildInfo[agentUID][2], buildInfo[agentUID][3], buildInfo.curr[2], buildInfo.curr[3], buildInfo.curr[4], buildInfo.curr[5] , agentUID)
+
 	_G.DEFAULT_CHAT_FRAME:AddMessage(_G.strjoin(": ", aName , "Game version is", buildInfo[agentUID][1]), 0.75, 0.5, 0.25, nil, true)
 	--@end-debug@
 
