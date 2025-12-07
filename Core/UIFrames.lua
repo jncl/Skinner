@@ -4224,11 +4224,24 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 			if self.modBtnBs then
 				self:skinStdButton{obj=this.CloseButton, fType=ftype}
 			end
-
 			self:Unhook(this, "OnShow")
 		end)
 		self:checkShown(_G.UIWidgetCenterDisplayFrame)
-
+		local wClr
+		self:SecureHookScript(_G.UIWidgetBelowMinimapContainerFrame, "OnShow", function(this)
+			wClr = nil
+	    	for _, wF in _G.pairs(this.widgetFrames) do
+	    		if wF.widgetType == 30 then -- ButtonHeader
+					wClr = "gold"
+				end
+	    	end
+	    	if not this.sf then
+	    		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, x1=1, y1=-20, x2=0, y2=20, clr=wClr or nil})
+	    	else
+	    		self:clrBBC(this.sf, wClr or nil)
+	    	end
+		end)
+		self:checkShown(_G.UIWidgetBelowMinimapContainerFrame)
 		local function hookAndSkinWidgets(widgetContainer)
 			-- aObj:Debug("hookAndSkinWidgets: [%s, %s, %s]", widgetContainer:IsForbidden(), widgetContainer:IsForbidden() or widgetContainer:GetDebugName())
 			-- DON'T skin NamePlate[n].* widgets as they cause Clamping Errors if they are initially skinned
