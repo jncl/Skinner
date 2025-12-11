@@ -946,7 +946,6 @@ aObj.SetupMainline_UIFrames = function()
 		end)
 		-- skin Contributions
 
-		-- tooltips
 		_G.C_Timer.After(0.1, function()
 			self:add2Table(self.ttList, _G.ContributionBuffTooltip)
 		end)
@@ -1502,7 +1501,6 @@ aObj.SetupMainline_UIFrames = function()
 		_G.FloatingGarrisonFollowerTooltip.PortraitFrame.LevelBorder:SetAlpha(0)
 		_G.FloatingGarrisonFollowerAbilityTooltip.CounterIconBorder:SetTexture(nil)
 
-		-- tooltip
 		_G.C_Timer.After(0.1, function()
 			self:add2Table(self.ttList, _G.GarrisonFollowerTooltip)
 			self:add2Table(self.ttList, _G.GarrisonFollowerAbilityTooltip)
@@ -1754,7 +1752,6 @@ aObj.SetupMainline_UIFrames = function()
 			self:Unhook(this, "OnShow")
 		end)
 
-		-- tooltips
 		_G.C_Timer.After(0.1, function()
 			self:add2Table(self.ttList, _G.GarrisonMissionMechanicTooltip)
 			self:add2Table(self.ttList, _G.GarrisonMissionMechanicFollowerCounterTooltip)
@@ -3667,7 +3664,7 @@ aObj.SetupMainline_UIFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
-		-- tooltip
+
 		_G.C_Timer.After(0.1, function()
 			self:add2Table(self.ttList, _G.QuickKeybindTooltip)
 		end)

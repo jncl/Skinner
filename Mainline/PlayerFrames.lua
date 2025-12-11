@@ -479,7 +479,7 @@ aObj.SetupMainline_PlayerFrames = function()
 		self:SecureHookScript(_G.FriendsFrame, "OnShow", function(this)
 			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true})
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, x2=3, y2=-2})
-			-- tooltip
+
 			_G.C_Timer.After(0.1, function()
 				self:add2Table(self.ttList, _G.FriendsTooltip)
 			end)

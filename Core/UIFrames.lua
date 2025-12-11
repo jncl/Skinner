@@ -327,7 +327,6 @@ aObj.blizzFrames[ftype].AutoComplete = function(self)
 	if not self.prdb.AutoComplete or self.initialized.AutoComplete then return end
 	self.initialized.AutoComplete = true
 
-	-- tooltip
 	_G.C_Timer.After(0.1, function()
 		self:add2Table(self.ttList, _G.AutoCompleteBox)
 	end)
@@ -1286,7 +1285,6 @@ aObj.blizzLoDFrames[ftype].EventTrace = function(self)
 	end
 	self:checkShown(_G.EventTrace)
 
-	-- tooltip
 	_G.C_Timer.After(0.1, function()
 		self:add2Table(self.ttList, _G.EventTraceTooltip)
 	end)
@@ -2034,7 +2032,7 @@ and _G.C_LFGList.GetPremadeGroupFinderStyle() == _G.Enum.PremadeGroupFinderStyle
 			if self.modBtnBs then
 				self:addButtonBorder{obj=this.RefreshButton, fType=ftype, clr="gold", ofs=-2, x1=1}
 			end
-			-- tooltip
+
 			_G.C_Timer.After(0.1, function()
 			    self:add2Table(self.ttList, _G.LFGBrowseSearchEntryTooltip)
 			end)

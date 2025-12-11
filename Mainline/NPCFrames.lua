@@ -630,7 +630,6 @@ aObj.SetupMainline_NPCFrames = function()
 			self:Unhook(this, "OnShow")
 		end)
 
-		-- tooltip
 		_G.C_Timer.After(0.1, function()
 			self:add2Table(self.ttList, _G.PerksProgramTooltip)
 		end)

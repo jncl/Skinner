@@ -663,7 +663,6 @@ aObj.SetupClassic_PlayerFrames = function()
 				self:Unhook(fObj, "OnShow")
 			end)
 
-			-- tooltip
 			_G.C_Timer.After(0.1, function()
 				self:add2Table(self.ttList, _G.FriendsTooltip)
 			end)
