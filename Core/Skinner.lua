@@ -20,10 +20,6 @@ do
 	-- store player name (done here to fix enabled addon check)
 	aObj.uName = _G.UnitName("player")
 
-	-- table to hold Repeating Timer entries
-	-- N.B. created here so it exists when AddOn skins can access it when they are loaded
-	aObj.repTimer = {}
-
 end
 
 function aObj:OnInitialize()
@@ -353,24 +349,6 @@ function aObj:OnEnable()
 	end
 
 	self:handleProfileChanges()
-
-	-- Start a 1 second Repeating Timer to process repTimer table entries if required
-	if _G.CountTable(self.repTimer) then
-		local myTimer = _G.C_Timer.NewTicker(1, function(self)
-			-- aObj:Debug("repTimer loop")
-			for obj, func in _G.pairs(aObj.repTimer) do
-				if _G[obj] then
-					func(_G[obj])
-					-- remove table entry here
-					aObj.repTimer[obj] = nil
-				end
-			end
-			-- cancel the timer if all entries have been processed
-			if _G.CountTable(aObj.repTimer) == 0 then
-				self:Cancel()
-			end
-		end)
-	end
 
 	--@debug@
 	self:SetupCmds()
