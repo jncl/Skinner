@@ -794,8 +794,11 @@ local function skinGlowBox(tbl)
 		tbl.obj.ArrowGlow:SetTexture(nil)
 	end
 	tbl.obj:DisableDrawLayer("BACKGROUND")
-	-- skin the GlowBox
-	aObj:skinObject("frame", {obj=tbl.obj, fType=tbl.fType, cbns=true, clr="gold", ofs=0, x2=-2, y2=2})
+	-- adjust the sf offsets so the Arrow doesn't overlap the sf edge
+	aObj:skinObject("frame", {obj=tbl.obj, fType=tbl.fType, cbns=true, clr="gold", ofs=-2, y1=0})
+	if tbl.obj.CloseButton then
+		aObj:moveObject{obj=tbl.obj.CloseButton, x=-2}
+	end
 end
 skinFuncs.glowbox = function(table) skinGlowBox(table) end
 local skinnedMFs = {}
