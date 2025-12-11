@@ -4176,6 +4176,7 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 			aObj:skinObject("frame", {obj=wFrame, fType=ftype, kfs=true, ofs=-2, x1=7, x2=-7, clr="sepia"})
 		elseif wFrame.widgetType == 30 then -- ButtonHeader
 			wFrame:DisableDrawLayer("BORDER")
+    		aObj:skinObject("frame", {obj=wFrame, fType=ftype, ofs=-2, y1=-20, clr="gold"})
 			if aObj.modBtns then
 				for btn in wFrame.buttonPool:EnumerateActive() do
 					aObj:skinStdButton{obj=btn, fType=ftype, ofs=-8, clr="grey"}
@@ -4198,21 +4199,6 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 			self:Unhook(this, "OnShow")
 		end)
 		self:checkShown(_G.UIWidgetCenterDisplayFrame)
-		local wClr
-		self:SecureHookScript(_G.UIWidgetBelowMinimapContainerFrame, "OnShow", function(this)
-			wClr = nil
-	    	for _, wF in _G.pairs(this.widgetFrames) do
-	    		if wF.widgetType == 30 then -- ButtonHeader
-					wClr = "gold"
-				end
-	    	end
-	    	if not this.sf then
-	    		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, x1=1, y1=-20, x2=0, y2=20, clr=wClr or nil})
-	    	else
-	    		self:clrBBC(this.sf, wClr or nil)
-	    	end
-		end)
-		self:checkShown(_G.UIWidgetBelowMinimapContainerFrame)
 		local function hookAndSkinWidgets(widgetContainer)
 			-- aObj:Debug("hookAndSkinWidgets: [%s, %s, %s]", widgetContainer:IsForbidden(), widgetContainer:IsForbidden() or widgetContainer:GetDebugName())
 			-- DON'T skin NamePlate[n].* widgets as they cause Clamping Errors if they are initially skinned

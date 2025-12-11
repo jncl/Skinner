@@ -696,6 +696,10 @@ local function skinFrame(tbl)
 	-- add a frame to the object
 	tbl.sft = tbl.sft or tbl.sec or nil
 	tbl.obj.sf = _G.CreateFrame("Frame", tbl.name, tbl.obj, tbl.sft and "SecureFrameTemplate")
+	-- Ensure that the skin frame is ignored in any layout changes (e.g. ResizeLayoutFrame)
+	if tbl.obj.MarkIgnoreInLayout then
+		tbl.obj:MarkIgnoreInLayout(tbl.obj.sf)
+	end
 	-- allow clickthrough
 	tbl.obj.sf:EnableMouse(false)
 	-- adjust frame level & make it mirror its parent's
