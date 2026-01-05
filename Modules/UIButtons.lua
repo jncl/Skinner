@@ -693,10 +693,10 @@ local function __addButtonBorder(opts)
 	--@end-debug@
 
 	-- don't skin it twice unless required
-	if opts.obj.sbb
-	and not opts.nc
+	if opts.nc
+	and opts.obj.sbb
 	then
-		return
+		opts.obj.sbb = nil
 	end
 
 	-- remove Normal/Pushed textures if required (vertex colour changed in blizzard code)
@@ -725,7 +725,7 @@ local function __addButtonBorder(opts)
 	-- create the button border object
 	opts.sft = opts.sft or opts.sec or nil
 	template = opts.sft and "SecureFrameTemplate" or opts.sabt and "SecureActionButtonTemplate" or opts.iabt and "InsecureActionButtonTemplate" or opts.subt and "SecureUnitButtonTemplate"
-	opts.obj.sbb = _G.CreateFrame(opts.obj:GetObjectType(), nil, opts.obj, template)
+	opts.obj.sbb = opts.obj.sbb or _G.CreateFrame(opts.obj:GetObjectType(), nil, opts.obj, template)
 	opts.obj.sbb:EnableMouse(false) -- enable clickthrough
 	opts.obj.sbb:SetShown(not opts.hide)
 	aObj:addBackdrop(opts.obj.sbb)
@@ -765,9 +765,7 @@ local function __addButtonBorder(opts)
 	or opts.libt
 	then -- Item Buttons & Large Item Buttons
 		-- N.B. leave subicon/SubIconTexture below .sbb (Classic ERA Engraving)
-		if aObj.isMnln
-		and opts.obj.IconBorder -- NB: Delves Ability button's DON'T have an IconBorder
-		then
+		if opts.obj.IconBorder then -- NB: Delves Ability button's DON'T have an IconBorder
 			aObj:clrButtonFromBorder(opts.obj)
 		else
 			aObj:clrBtnBdr(opts.obj, opts.clr or "common", opts.ca or 1)
@@ -784,7 +782,7 @@ local function __addButtonBorder(opts)
 
 	-- hook button icon's alpha function if required (SpellBook)
 	if opts.sba then
-		aObj:SecureHook(opts.obj.Icon, "SetAlpha", function(this, alpha)
+		aObj:secureHook(opts.obj.Icon, "SetAlpha", function(this, alpha)
 			this:GetParent().sbb:SetAlpha(alpha)
 		end)
 		opts.obj.sbb:SetAlpha(opts.obj.Icon:GetAlpha())
