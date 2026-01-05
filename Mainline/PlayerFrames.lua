@@ -2239,23 +2239,31 @@ aObj.SetupMainline_PlayerFrames = function()
 				end
 			end)
 			_G.PVPQueueFrame_SelectButton(1) -- select Honor button
-			self:removeInset(this.HonorInset)
-			this.HonorInset:DisableDrawLayer("BACKGROUND")
-			skinHonorLevelDisplay(this.HonorInset.CasualPanel.HonorLevelDisplay)
-			skinHonorLevelDisplay(this.HonorInset.RatedPanel.HonorLevelDisplay)
-			-- this.HonorInset.RatedPanel.Tier
-			local srf =this.HonorInset.RatedPanel.SeasonRewardFrame
-			srf.Ring:SetTexture(nil)
-			if self.modBtnBs then
-				self:addButtonBorder{obj=srf, fType=ftype, relTo=srf.Icon, clr="gold"}
-				self:SecureHook(srf, "Update", function(fObj)
-					if fObj.Icon:IsDesaturated() then
-						self:clrBtnBdr(fObj, "disabled")
-					else
-						self:clrBtnBdr(fObj, "gold")
-					end
-				end)
-			end
+
+			self:SecureHookScript(this.HonorInset, "OnShow", function(fObj)
+				self:removeInset(fObj)
+				fObj:DisableDrawLayer("BACKGROUND")
+				skinHonorLevelDisplay(fObj.CasualPanel.HonorLevelDisplay)
+				skinHonorLevelDisplay(fObj.RatedPanel.HonorLevelDisplay)
+				if aObj.isMnlnBeta then
+					skinHonorLevelDisplay(fObj.TrainingGroundsPanel.HonorLevelDisplay)
+				end
+				local srf =fObj.RatedPanel.SeasonRewardFrame
+				srf.Ring:SetTexture(nil)
+				if self.modBtnBs then
+					self:addButtonBorder{obj=srf, fType=ftype, relTo=srf.Icon, clr="gold"}
+					self:SecureHook(srf, "Update", function(fObj)
+						if fObj.Icon:IsDesaturated() then
+							self:clrBtnBdr(fObj, "disabled")
+						else
+							self:clrBtnBdr(fObj, "gold")
+						end
+					end)
+				end
+
+			    self:Unhook(fObj, "OnShow")
+			end)
+			self:checkShown(this.HonorInset)
 
 			self:SecureHookScript(this.NewSeasonPopup, "OnShow", function(fObj)
 				fObj.NewSeason:SetTextColor(self.HT:GetRGB())
@@ -2277,10 +2285,10 @@ aObj.SetupMainline_PlayerFrames = function()
 		end)
 
 		local function skinCommon(frame)
-			aObj:removeInset(frame.Inset)
 			frame.ConquestBar:DisableDrawLayer("BORDER")
 			aObj:skinObject("statusbar", {obj=frame.ConquestBar, fi=0, bg=frame.ConquestBar.Background})
 			frame.ConquestBar.Reward.Ring:SetTexture(nil)
+			aObj:removeInset(frame.Inset)
 			if aObj.modBtnBs then
 				aObj:addButtonBorder{obj=frame.ConquestBar.Reward, relTo=frame.ConquestBar.Reward.Icon, reParent={frame.ConquestBar.Reward.CheckMark}, clr="gold"}
 			end
@@ -2296,7 +2304,7 @@ aObj.SetupMainline_PlayerFrames = function()
 				end
 			end
 		end
-		self:SecureHookScript(_G.HonorFrame, "OnShow", function(this)
+		self:SecureHookScript(_G.HonorFrame, "OnShow", function(this) -- a.k.a. Quick Match
 			skinCommon(this)
 			self:skinObject("ddbutton", {obj=this.TypeDropdown, fType=ftype})
 			self:skinObject("scrollbar", {obj=this.SpecificScrollBar, fType=ftype})
