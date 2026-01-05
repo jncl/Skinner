@@ -146,6 +146,7 @@
 <Script file="MogIt.lua"/>
 <Script file="mOnArs_WardrobeHelper.lua"/>
 <Script file="MountsJournal.lua"/>
+<Script file="MountsJournalUI.lua"/>
 <Script file="MoveAnything.lua"/>
 <Script file="MSA-DropDownMenu.lua"/>
 <Script file="NickTag.lua"/>

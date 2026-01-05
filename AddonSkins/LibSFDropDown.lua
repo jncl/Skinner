@@ -30,7 +30,7 @@ aObj.libsToSkin["LibSFDropDown-1.5"] = function(self) -- v LibSFDropDown-1.5, 17
 		local function skinSearchFrame(frame)
 			-- aObj:Debug("searchFrame: [%s, %s]", frame)
 			aObj:skinObject("editbox", {obj=frame.searchBox, si=true})
-			aObj:skinObject("slider", {obj=frame.listScroll.scrollBar, rpTex="background"})
+			aObj:skinObject("scrollbar", {obj=frame.scrollBar--[[, rpTex="background"]]})
 		end
 		for _, frame in lSFdd:IterateSearchFrames() do
 			skinSearchFrame(frame)
@@ -41,7 +41,7 @@ aObj.libsToSkin["LibSFDropDown-1.5"] = function(self) -- v LibSFDropDown-1.5, 17
 		end})
 
 		local function skinDD(btn)
-			aObj:Debug("skinDD: [%s, %s]", btn)
+			-- aObj:Debug("skinDD: [%s, %s]", btn)
 			aObj:skinObject("dropdown", {obj=btn, initState=not btn.Button:IsEnabled() ,x1=1, y1=2, x2=-1, y2=0})
 			aObj:SecureHook(btn.Button, "SetEnabled", function(this, enabled)
 				aObj:clrBBC(this:GetParent().sf, not enabled and "disabled")
