@@ -2,28 +2,32 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("BetterBags") then return end
 local _G = _G
 
-aObj.addonsToSkin.BetterBags = function(self) -- v 0.3.27
+aObj.addonsToSkin.BetterBags = function(self) -- v 0.3.42
 
 	local bBag = _G.LibStub("AceAddon-3.0"):GetAddon("BetterBags", true)
 	if not bBag then return end
 
 	local skinBtn = _G.nop
 	if self.modBtnBs then
-		function skinBtn(btn)
+		function skinBtn(btn, empty)
 			aObj:addButtonBorder{obj=btn, ibt=true, ofs=3}
+			if empty then
+				if aObj.isMnln then
+					btn.ItemSlotBackground:SetTexture(nil)
+				else
+					_G.SetItemButtonTexture(btn, nil)
+				end
+			end
 		end
 		local events = bBag:GetModule("Events", true)
-		events:RegisterMessage("item/NewButton", function(_, _, button)
-			skinBtn(button)
-			if aObj.isMnln then
-				button.ItemSlotBackground:SetAlpha(0)
-			else
-				_G.SetItemButtonTexture(button, nil)
-			end
+		events:RegisterMessage("item/NewButton", function(_, item, decoration)
+			skinBtn(decoration, item.isFreeSlot)
+		end)
+		events:RegisterMessage("item/Updated", function(_, item, decoration)
+			skinBtn(decoration, item.isFreeSlot)
 		end)
 	end
 	self:SecureHookScript(_G.BetterBagsEmptySlotTooltip, "OnShow", function(this)
-
 		self:skinObject("frame", {obj=this, kfs=true})
 
 		self:Unhook(this, "OnShow")
@@ -86,13 +90,6 @@ aObj.addonsToSkin.BetterBags = function(self) -- v 0.3.27
 					if cell.canBuy then
 						aObj:clrBBC(cell.frame.sbb, "red")
 					end
-					if cell.empty then
-						if aObj.isRtl then
-							cell.frame.ItemSlotBackground:SetTexture(nil)
-						else
-							_G.SetItemButtonTexture(cell.frame, nil)
-						end
-					end
 				end
 			end
 			aObj:SecureHook(bagObj.slots, "Draw", function(fObj)
@@ -129,6 +126,11 @@ aObj.addonsToSkin.BetterBags = function(self) -- v 0.3.27
 		end
 	end
 
+	handleBag(bBag.Bags.Backpack)
+	if not self.isMnln then
+		handleBag(bBag.Bags.Bank)
+	end
+
 	local searchBox = bBag:GetModule("SearchBox", true)
 	self:SecureHook(searchBox, "CreateBox", function(this)
 		self:skinObject("editbox", {obj=this.textBox, si=true})
@@ -160,20 +162,15 @@ aObj.addonsToSkin.BetterBags = function(self) -- v 0.3.27
 	end)
 
 	local config = bBag:GetModule("Config", true)
-	local cf = config.configFrame
+	local cf, lo = config.configFrame
+	self:skinObject("scrollbar", {obj=cf.ScrollBar})
 	self:SecureHookScript(cf.frame, "OnShow", function(this)
 		skinFrame(aObj:getLastChild(this), true) -- decorator frame
 
-		self:skinObject("scrollbar", {obj=cf.ScrollBar})
-		local lo = cf.layout
-		if self.modChkBtns then
-			for frame, _ in _G.pairs(lo.checkboxes) do
-				self:skinCheckButton{obj=frame.checkbox, size=28}
-			end
-		end
+		lo = cf.layout
 		for frame, _ in _G.pairs(lo.dropdowns) do
 			if not self.isMnln then
-				self:skinObject("dropdown", {obj=frame.dropdown})
+				self:skinObject("dropdown", {obj=frame.classicDropdown, x2=-260})
 			else
 				self:skinObject("ddbutton", {obj=frame.dropdown})
 			end
@@ -182,13 +179,23 @@ aObj.addonsToSkin.BetterBags = function(self) -- v 0.3.27
 			self:skinObject("slider", {obj=frame.slider})
 			self:skinObject("editbox", {obj=frame.input})
 		end
+		for frame, _ in _G.pairs(lo.textAreas) do
+			self:skinObject("frame", {obj=self:getChild(self:getChild(frame, 1), 4), kfs=true, fb=true}) -- scrollBackground
+		end
+		if self.modBtns then
+			for frame, _ in _G.pairs(lo.buttonGroups) do
+				for _, btn in _G.pairs(frame.buttons) do
+					self:skinStdButton{obj=btn}
+				end
+			end
+		end
+		if self.modChkBtns then
+			for frame, _ in _G.pairs(lo.checkboxes) do
+				self:skinCheckButton{obj=frame.checkbox, size=28}
+			end
+		end
 
 		self:Unhook(this, "OnShow")
 	end)
-
-	handleBag(bBag.Bags.Backpack)
-	if not self.isMnln then
-		handleBag(bBag.Bags.Bank)
-	end
 
 end
