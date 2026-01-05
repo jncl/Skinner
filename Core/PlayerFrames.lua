@@ -1405,66 +1405,69 @@ if not aObj.isClscERA then
 
 					self:Unhook(fObj, "OnShow")
 				end)
-				self:SecureHookScript(this.SetsTransmogFrame, "OnShow", function(fObj)
-					self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, rns=true, fb=true, x1=x1Ofs, y1=y1Ofs, x2=x2Ofs, y2=y2Ofs})
-					if self.modBtnBs then
-						self:skinPageBtns(fObj)
-						for _, btn in _G.pairs(fObj.Models) do
-							self:removeRegions(btn, {2}) -- background & border
-							self:addButtonBorder{obj=btn, fType=ftype, reParent={btn.Favorite.Icon}, ofs=6}
-							updBtnClr(btn)
+				if not aObj.isMnlnBeta then
+					self:SecureHookScript(this.SetsTransmogFrame, "OnShow", function(fObj)
+						self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, rns=true, fb=true, x1=x1Ofs, y1=y1Ofs, x2=x2Ofs, y2=y2Ofs})
+						if self.modBtnBs then
+							self:skinPageBtns(fObj)
+							for _, btn in _G.pairs(fObj.Models) do
+								self:removeRegions(btn, {2}) -- background & border
+								self:addButtonBorder{obj=btn, fType=ftype, reParent={btn.Favorite.Icon}, ofs=6}
+								updBtnClr(btn)
+							end
 						end
+
+						self:Unhook(fObj, "OnShow")
+					end)
+				end
+			end
+
+			self:Unhook(this, "OnShow")
+		end)
+
+		if not aObj.isMnlnBeta then
+			self:SecureHookScript(_G.WardrobeFrame, "OnShow", function(this)
+				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true, cb=true, x2=3, y2=-1})
+
+				self:Unhook(this, "OnShow")
+			end)
+			-- used by Transmog as well as Appearance
+			self:SecureHookScript(_G.WardrobeTransmogFrame, "OnShow", function(this)
+				this:DisableDrawLayer("ARTWORK")
+				self:removeInset(this.Inset)
+				self:skinObject("ddbutton", {obj=this.OutfitDropdown, fType=ftype})
+				if self.isMnln then
+					this.ModelScene.ControlFrame:DisableDrawLayer("BACKGROUND")
+				end
+				for _, btn in _G.pairs(this.SlotButtons) do
+					btn.Border:SetTexture(nil)
+					if self.isClsc then
+						btn.StatusBorder:SetTexture(nil)
+						btn.HiddenVisualCover:SetScale(0.8) -- make it fit within button border
 					end
-
-					self:Unhook(fObj, "OnShow")
-				end)
-			end
-
-			self:Unhook(this, "OnShow")
-		end)
-
-		self:SecureHookScript(_G.WardrobeFrame, "OnShow", function(this)
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true, cb=true, x2=3, y2=-1})
-
-			self:Unhook(this, "OnShow")
-		end)
-
-		-- used by Transmog as well as Appearance
-		self:SecureHookScript(_G.WardrobeTransmogFrame, "OnShow", function(this)
-			this:DisableDrawLayer("ARTWORK")
-			self:removeInset(this.Inset)
-			self:skinObject("ddbutton", {obj=this.OutfitDropdown, fType=ftype})
-			if self.isMnln then
-				this.ModelScene.ControlFrame:DisableDrawLayer("BACKGROUND")
-			end
-			for _, btn in _G.pairs(this.SlotButtons) do
-				btn.Border:SetTexture(nil)
-				if self.isClsc then
-					btn.StatusBorder:SetTexture(nil)
-					btn.HiddenVisualCover:SetScale(0.8) -- make it fit within button border
+					if self.modBtnBs then
+						 self:addButtonBorder{obj=btn, fType=ftype, ofs=-1}
+					end
+				end
+				self:skinObject("ddbutton", {obj=this.SpecDropdown, fType=ftype, noSF=true})
+				if self.modBtns then
+					self:skinStdButton{obj=this.OutfitDropdown.SaveButton, sechk=true}
+					self:skinStdButton{obj=this.ApplyButton, fType=ftype, ofs=0, sechk=true}
 				end
 				if self.modBtnBs then
-					 self:addButtonBorder{obj=btn, fType=ftype, ofs=-1}
+					if self.isMnln then
+						self:addButtonBorder{obj=this.ModelScene.ClearAllPendingButton, fType=ftype, relTo=this.ModelScene.ClearAllPendingButton.Icon, ofs=5}
+					elseif self.isClsc then
+						self:addButtonBorder{obj=this.Model.ClearAllPendingButton, fType=ftype, relTo=this.Model.ClearAllPendingButton.Icon}
+					end
 				end
-			end
-			self:skinObject("ddbutton", {obj=this.SpecDropdown, fType=ftype, noSF=true})
-			if self.modBtns then
-				self:skinStdButton{obj=this.OutfitDropdown.SaveButton, sechk=true}
-				self:skinStdButton{obj=this.ApplyButton, fType=ftype, ofs=0, sechk=true}
-			end
-			if self.modBtnBs then
-				if self.isMnln then
-					self:addButtonBorder{obj=this.ModelScene.ClearAllPendingButton, fType=ftype, relTo=this.ModelScene.ClearAllPendingButton.Icon, ofs=5}
-				elseif self.isClsc then
-					self:addButtonBorder{obj=this.Model.ClearAllPendingButton, fType=ftype, relTo=this.Model.ClearAllPendingButton.Icon}
+				if self.modChkBtns then
+					self:skinCheckButton{obj=this.ToggleSecondaryAppearanceCheckbox, fType=ftype}
 				end
-			end
-			if self.modChkBtns then
-				self:skinCheckButton{obj=this.ToggleSecondaryAppearanceCheckbox, fType=ftype}
-			end
 
-			self:Unhook(this, "OnShow")
-		end)
+				self:Unhook(this, "OnShow")
+			end)
+		end
 
 		if self.isMnln then
 			-- a.k.a. Campsites
@@ -2691,6 +2694,7 @@ if not aObj.isClscERA then
 
 				if aObj.isMnlnBeta then
 					self:SecureHookScript(this.JourneysFrame, "OnShow", function(fObj)
+						self:keepFontStrings(fObj.BorderFrame)
 						self:skinObject("scrollbar", {obj=fObj.ScrollBar, fType=ftype})
 						local function skinJourney(...)
 							local _, element, elementData

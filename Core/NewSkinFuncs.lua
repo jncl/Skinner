@@ -998,7 +998,7 @@ local function skinTabs(tbl)
 		tbl.offsets.x2 = (tbl.offsets.x2 or 0) - 4
 		tbl.offsets.y2 = (tbl.offsets.y2 or 0) + 3
 	end
-	local tabFrame = aObj.isMnlnBeta and tbl.obj:GetParent() or nil
+	local tabFrame
 	local function skinTabObject(tab, idx)
 		aObj:keepRegions(tab, tbl.regions)
 		if not aObj.isTT then
@@ -1012,17 +1012,7 @@ local function skinTabs(tbl)
 					aObj:setInactiveTab(tab.sf)
 				end
 			elseif tbl.pool then
-				if aObj.isMnlnBeta
-				and tabFrame.SetTabCallback
-				then
-					aObj:setInactiveTab(tab.sf)
-					tabFrame:SetTabCallback(tab.tabID, function()
-						aObj:setActiveTab(tabFrame:GetTabButton(tab.tabID).sf)
-					end)
-					tabFrame:SetTabDeselectCallback(tab.tabID, function()
-						aObj:setInactiveTab(tabFrame:GetTabButton(tab.tabID).sf)
-					end)
-				else
+				if not aObj.isMnlnBeta then
 					if tab.isSelected then
 						aObj:setActiveTab(tab.sf)
 					else
@@ -1067,6 +1057,19 @@ local function skinTabs(tbl)
 		for tab in tbl.obj.tabPool:EnumerateActive() do
 			idx = idx + 1
 			skinTabObject(tab, idx)
+		end
+		if aObj.isMnlnBeta then
+			tbl.obj.orig_tabSelectedCallback = tbl.obj.tabSelectedCallback or _G.nop
+			tbl.obj:SetTabSelectedCallback(function(tabID, isUserAction)
+				for _, tab in _G.ipairs(tbl.obj.tabs) do
+					if tab:GetTabID() == tabID then
+						aObj:setActiveTab(tab.sf)
+					else
+						aObj:setInactiveTab(tab.sf)
+					end
+				end
+				tbl.obj.orig_tabSelectedCallback(tabID, isUserAction)
+			end)
 		end
 	else
 		for i, tab in _G.pairs(tbl.tabs) do

@@ -1563,17 +1563,19 @@ if not aObj.isClscERA then
 		end)
 		self:checkShown(_G.LFDRoleCheckPopup)
 
-		self:SecureHookScript(_G.LFDReadyCheckPopup, "OnShow", function(this)
-			self:removeNineSlice(this.Border)
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true})
-			if self.modBtns then
-				self:skinStdButton{obj=this.YesButton}
-				self:skinStdButton{obj=this.NoButton}
-			end
+		if not aObj.isMnlnBeta then
+			self:SecureHookScript(_G.LFDReadyCheckPopup, "OnShow", function(this)
+				self:removeNineSlice(this.Border)
+				self:skinObject("frame", {obj=this, fType=ftype, kfs=true})
+				if self.modBtns then
+					self:skinStdButton{obj=this.YesButton}
+					self:skinStdButton{obj=this.NoButton}
+				end
 
-			self:Unhook(this, "OnShow")
-		end)
-		self:checkShown(_G.LFDReadyCheckPopup)
+				self:Unhook(this, "OnShow")
+			end)
+			self:checkShown(_G.LFDReadyCheckPopup)
+		end
 
 		-- LFD Parent Frame (now part of PVE Frame)
 		self:SecureHookScript(_G.LFDParentFrame, "OnShow", function(this)
@@ -3930,12 +3932,12 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 			end
 		end
 		-- N.B. DON'T skin CompareHeader as it causes the TooltipComparisonManager to error (Beta)
-		if not aObj.isMnlnBeta then
+		-- if not aObj.isMnlnBeta then
 			-- if it has a CompareHeader then skin it as a textured tab
 			if tTip.CompareHeader then
 				self:skinObject("frame", {obj=tTip.CompareHeader, fType=tTip.fType, kfs=true, bd=13, noBdr=true, x1=-1, y2=-10})
 			end
-		end
+		-- end
 	end})
 
 	-- add tooltips to table
@@ -3953,13 +3955,15 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 		_G.ShoppingTooltip2,
 	}
 	-- N.B. DON'T skin the GameTooltip as it causes the MoneyFrame to error (Midnight Beta)
-	if not aObj.isMnlnBeta then
+	-- if not aObj.isMnlnBeta then
 		aObj:add2Table(toolTips, _G.GameTooltip)
-	end
+	-- end
 	if self.isMnln then
 		-- self:add2Table(toolTips, _G.GameNoHeaderTooltip) -- N.B. defined in GameTooltip.xml but NOT referenced in code
 		self:add2Table(toolTips, _G.GameSmallHeaderTooltip)
-		if not aObj.isMnlnBeta then
+		if not aObj.isMnlnBeta
+		and not aObj.isMnlnPTR
+		then
 			self:add2Table(toolTips, _G.NamePlateTooltip) -- N.B. Done here as Nameplate skinning function is disabled
 		end
 	else

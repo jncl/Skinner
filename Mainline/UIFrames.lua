@@ -1249,8 +1249,25 @@ aObj.SetupMainline_UIFrames = function()
 			self:Unhook(this, "OnShow")
 		end)
 
-		if not aObj.isMnlnBeta then
+		if not aObj.isMnlnBeta
+		and not aObj.isMnlnPTR
+		then
 			self:SecureHookScript(_G.EditModeNewLayoutDialog, "OnShow", function(fObj)
+				self:removeNineSlice(fObj.Border)
+				self:skinObject("editbox", {obj=fObj.LayoutNameEditBox, fType=ftype, y1=-4, y2=4})
+				self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, ofs=-6})
+				if self.modBtns then
+					self:skinStdButton{obj=fObj.AcceptButton, fType=ftype, sechk=true}
+					self:skinStdButton{obj=fObj.CancelButton, fType=ftype}
+				end
+				if self.modChkBtns then
+					self:skinCheckButton{obj=fObj.CharacterSpecificLayoutCheckButton.Button, fType=ftype}
+				end
+
+				self:Unhook(fObj, "OnShow")
+			end)
+		else
+			self:SecureHookScript(_G.EditModeLayoutDialog, "OnShow", function(fObj)
 				self:removeNineSlice(fObj.Border)
 				self:skinObject("editbox", {obj=fObj.LayoutNameEditBox, fType=ftype, y1=-4, y2=4})
 				self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, ofs=-6})
@@ -1282,7 +1299,9 @@ aObj.SetupMainline_UIFrames = function()
 			self:Unhook(fObj, "OnShow")
 		end)
 
-		if not aObj.isMnlnBeta then
+		if not aObj.isMnlnBeta
+		and not aObj.isMnlnPTR
+		then
 			self:SecureHookScript(_G.EditModeImportLayoutLinkDialog, "OnShow", function(fObj)
 				self:removeNineSlice(fObj.Border)
 				self:skinObject("editbox", {obj=fObj.LayoutNameEditBox, fType=ftype, y1=-4, y2=4})
@@ -2317,7 +2336,7 @@ aObj.SetupMainline_UIFrames = function()
 				self:SecureHookScript(this.BasicDecorModeFrame, "OnShow", function(fObj)
 					-- .SubButtonBar
 						-- .SnapButton
-						-- .NudgeButton
+						-- .FreePlaceButton
 					-- .DecorMoveOverlay
 
 					self:Unhook(fObj, "OnShow")
@@ -2359,7 +2378,6 @@ aObj.SetupMainline_UIFrames = function()
 
 				self:SecureHookScript(this.ExpertDecorModeFrame, "OnShow", function(fObj)
 
-
 					self:Unhook(fObj, "OnShow")
 				end)
 				self:checkShown(this.ExpertDecorModeFrame)
@@ -2377,6 +2395,8 @@ aObj.SetupMainline_UIFrames = function()
 					self:Unhook(fObj, "OnShow")
 				end)
 				self:checkShown(this.ExteriorCustomizationModeFrame)
+
+				-- MarketShoppingCartFrame
 
 				self:Unhook(this, "OnShow")
 			end)
@@ -2662,7 +2682,7 @@ aObj.SetupMainline_UIFrames = function()
 								end
 							end)
 
-							self:skinObject("frame", {obj=huf, fType=ftype, kfs=true, fb=true, x1=-6, x2=4})
+							self:skinObject("frame", {obj=huf, fType=ftype, kfs=true, fb=true, x1=-6, y1=1, x2=4})
 							if self.modBtnBs then
 								self:addButtonBorder{obj=huf.TeleportToHouseButton, fType=ftype, relTo=huf.TeleportToHouseButton.Icon}
 							end
@@ -2680,12 +2700,11 @@ aObj.SetupMainline_UIFrames = function()
 							_G.nop()
 						else
 							self:SecureHookScript(cf.InitiativesFrame, "OnShow", function(ef)
+								ef.InitiativesArt.InitiativesBG:SetTexture(nil)
+								self:keepFontStrings(ef.InitiativesArt.BorderArt)
 								local efisf = ef.InitiativeSetFrame
-								self:removeNineSlice(efisf.NineSlice)
-								efisf.Bg:SetTexture(nil)
-								efisf.InitiativesBG:SetAlpha(0)
-								self:keepFontStrings(efisf.BorderArt)
 								efisf.InitiativeTimer.TimerBG:SetTexture(nil)
+								-- TODO: skin efisf.ProgressBar
 								efisf.ProgressBar.Threshold4.Reward.IconBorder:SetTexture(nil)
 								efisf.InitiativeActiveNeighborhoodSwitcher:DisableDrawLayer("BACKGROUND")
 								efisf.InitiativeTasks:DisableDrawLayer("BACKGROUND")
@@ -2699,9 +2718,10 @@ aObj.SetupMainline_UIFrames = function()
 									else
 										_, element, elementData = ...
 									end
+									-- TODO: skin element
 									--@debug@
-									_G.Spew("TL element", element)
-									_G.Spew("TL elementData", elementData)
+									-- _G.Spew("TL element", element)
+									-- _G.Spew("TL elementData", elementData)
 									--@end-debug@
 								end
 								_G.ScrollUtil.AddInitializedFrameCallback(efisf.InitiativeTasks.TaskList, skinTask, aObj, true)
@@ -2722,7 +2742,7 @@ aObj.SetupMainline_UIFrames = function()
 									--@end-debug@
 								end
 								_G.ScrollUtil.AddInitializedFrameCallback(efisf.InitiativeActivity.ActivityLog, skinActivity, aObj, true)
-								self:skinObject("frame", {obj=ef, fType=ftype, kfs=true, fb=true, x1=-6, x2=4})
+								self:skinObject("frame", {obj=ef, fType=ftype, kfs=true, fb=true, x1=-6, y1=1, x2=4})
 								if self.modBtns then
 									self:skinStdButton{obj=efisf.InitiativeActiveNeighborhoodSwitcher.SwitchActiveNeighborhoodBtn, fType=ftype}
 								end
@@ -3001,21 +3021,23 @@ aObj.SetupMainline_UIFrames = function()
 				reward.Icon:SetAlpha(1) -- make Icon visible
 			end
 		end
-		self:SecureHookScript(_G.MajorFactionRenownFrame, "OnShow", function(this)
-			this.NineSlice:DisableDrawLayer("ARTWORK")
-			this.HeaderFrame.Background:SetAlpha(0) -- texture changed in code
-			self:SecureHook(this, "SetRewards", function(fObj, _)
-				skinRewards(fObj)
-			end)
-			skinRewards(this)
-			this.TrackFrame.Glow:SetAlpha(0) -- texture changed in code
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true, cbns=true, ofs=-2, y1=-7, clr="gold_df"})
-			if self.modBtns then
-				self:skinStdButton{obj=this.LevelSkipButton, fType=ftype, clr="gold"}
-			end
+		if not aObj.isMnlnBeta then
+			self:SecureHookScript(_G.MajorFactionRenownFrame, "OnShow", function(this)
+				this.NineSlice:DisableDrawLayer("ARTWORK")
+				this.HeaderFrame.Background:SetAlpha(0) -- texture changed in code
+				self:SecureHook(this, "SetRewards", function(fObj, _)
+					skinRewards(fObj)
+				end)
+				skinRewards(this)
+				this.TrackFrame.Glow:SetAlpha(0) -- texture changed in code
+				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true, cbns=true, ofs=-2, y1=-7, clr="gold_df"})
+				if self.modBtns then
+					self:skinStdButton{obj=this.LevelSkipButton, fType=ftype, clr="gold"}
+				end
 
-			self:Unhook(this, "OnShow")
-		end)
+				self:Unhook(this, "OnShow")
+			end)
+		end
 
 	end
 
