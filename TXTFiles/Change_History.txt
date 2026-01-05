@@ -1,3 +1,30 @@
+beta11.64743.1
+Jncl:
+	Updated ToDo*.txt files
+	Updated Change_History.txt
+	Updated Version numbers
+	Updated SharedFuncs code
+	Updated TOC
+	Applied Retail PTRX changes
+	Updated Beta DamageMeter code
+	Updated Expansion version checks for DelvesUI
+	Updated UtilFuncs code
+	Updated UIWidget skinning code
+	Updated LFDFrame skin
+	Updated AlertFrames code
+	Updated HousingUI, closes #252
+	Updated EncounterJournal skin, closes #253
+	Updated TomTom skin
+	Added RepeatingTimer facility
+	Updated NSF & ColourFuncs
+	Retail Beta updated UIWidgets code
+	Updated UIWidgets code to check for button skinning option
+	Updated Retail Beta Transmog skin
+	Updated ObjectiveTracker code, added extra options to control skinning
+	Updated UnitFrames to hide Focus Frame code for Classic ERA
+	Bugfix for MovePad skin
+	Bugfix for Options code
+
 beta11.64507.1
 Jncl:
 	Updated ToDo*.txt files
