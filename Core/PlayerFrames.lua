@@ -2326,18 +2326,20 @@ aObj.blizzFrames[ftype].CompactFrames = function(self)
 		    aObj:add2Table(aObj.oocTab, {skinUnit, {unit}})
 		    return
 		end
-		if aObj:hasTextInTexture(unit.healthBar:GetStatusBarTexture(), "RaidFrame")
-		or unit.healthBar:GetStatusBarTexture():GetTexture() == 423819 -- interface/raidframe/raid-bar-hp-fill.blp
-		then
-			unit:DisableDrawLayer("BACKGROUND")
-			unit.horizDivider:SetTexture(nil)
-			unit.horizTopBorder:SetTexture(nil)
-			unit.horizBottomBorder:SetTexture(nil)
-			unit.vertLeftBorder:SetTexture(nil)
-			unit.vertRightBorder:SetTexture(nil)
-			if aObj.prdb.CompactFrames.sbars then
-				aObj:skinObject("statusbar", {obj=unit.healthBar, fi=0, bg=unit.healthBar.background})
-				aObj:skinObject("statusbar", {obj=unit.powerBar, fi=0, bg=unit.powerBar.background})
+		if unit.healthBar then
+			if aObj:hasTextInTexture(unit.healthBar:GetStatusBarTexture(), "RaidFrame")
+			or unit.healthBar:GetStatusBarTexture():GetTexture() == 423819 -- interface/raidframe/raid-bar-hp-fill.blp
+			then
+				unit:DisableDrawLayer("BACKGROUND")
+				unit.horizDivider:SetTexture(nil)
+				unit.horizTopBorder:SetTexture(nil)
+				unit.horizBottomBorder:SetTexture(nil)
+				unit.vertLeftBorder:SetTexture(nil)
+				unit.vertRightBorder:SetTexture(nil)
+				if aObj.prdb.CompactFrames.sbars then
+					aObj:skinObject("statusbar", {obj=unit.healthBar, fi=0, bg=unit.healthBar.background})
+					aObj:skinObject("statusbar", {obj=unit.powerBar, fi=0, bg=unit.powerBar.background})
+				end
 			end
 		end
 	end
