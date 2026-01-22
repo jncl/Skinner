@@ -1,3 +1,20 @@
+beta11.65028.1
+Jncl:
+	Updated ToDo*.txt files
+	Updated Change_History.txt
+	Updated Version numbers
+	Updated TOC
+	Updated Options code
+	Retail Beta changes
+	Updated UIButtons code
+	Updated Retail PVPUI
+	Updated BetterBags skin, closes #255
+	Updated MountJournal/MountJournalUI skins, closes #256
+	Updated GlowBox skin code
+	Updated UIWidgets code, closes #254
+	Removed superfluous comment lines
+	Moved RepeatingTimer code into TomTom skin
+
 beta11.64743.1
 Jncl:
 	Updated ToDo*.txt files
