@@ -188,6 +188,10 @@ aObj.addonsToSkin.Baganator = function(self) -- v 769
 					aObj:skinStdButton{obj=this.BuyReagentBankButton}
 				end
 
+				if bankType:find("SV") then
+					skinViewBtns(this, bankType)
+				end
+
 				aObj:SecureHook(this, "ShowTab", function(fObj, _)
 					if bankType:find("CV") then
 						skinCVBtnsAfterDelay(fObj, bankType)
