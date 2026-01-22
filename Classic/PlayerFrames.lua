@@ -56,36 +56,38 @@ aObj.SetupClassic_PlayerFrames = function()
 		end
 	end
 
-	aObj.blizzFrames[ftype].Buffs = function(self)
-		if not self.prdb.Buffs or self.initialized.Buffs then return end
-		self.initialized.Buffs = true
+	if not aObj.isClscBCA then
+		aObj.blizzFrames[ftype].Buffs = function(self)
+			if not self.prdb.Buffs or self.initialized.Buffs then return end
+			self.initialized.Buffs = true
 
-		if self.modBtnBs then
-			local function skinBuffBtn(btn)
-				if btn
-				and not btn.sbb
-				then
-					aObj:addButtonBorder{obj=btn, fType=ftype, reParent={btn.count, btn.duration}, ofs=3}
+			if self.modBtnBs then
+				local function skinBuffBtn(btn)
+					if btn
+					and not btn.sbb
+					then
+						aObj:addButtonBorder{obj=btn, fType=ftype, reParent={btn.count, btn.duration}, ofs=3}
+					end
+				end
+				-- skin current Buffs
+				for i = 1, _G.BUFF_MAX_DISPLAY do
+					skinBuffBtn(_G["BuffButton" .. i])
+				end
+				-- if not all buff buttons created yet
+				if not _G.BuffButton32 then
+					-- hook this to skin new Buffs
+					self:SecureHook("AuraButton_Update", function(buttonName, index, _)
+						if buttonName == "BuffButton" then
+							skinBuffBtn(_G[buttonName .. index])
+						end
+					end)
 				end
 			end
-			-- skin current Buffs
-			for i = 1, _G.BUFF_MAX_DISPLAY do
-				skinBuffBtn(_G["BuffButton" .. i])
-			end
-			-- if not all buff buttons created yet
-			if not _G.BuffButton32 then
-				-- hook this to skin new Buffs
-				self:SecureHook("AuraButton_Update", function(buttonName, index, _)
-					if buttonName == "BuffButton" then
-						skinBuffBtn(_G[buttonName .. index])
-					end
-				end)
-			end
+
+			-- Debuffs already have a coloured border
+			-- Temp Enchants already have a coloured border
+
 		end
-
-		-- Debuffs already have a coloured border
-		-- Temp Enchants already have a coloured border
-
 	end
 
 	aObj.blizzFrames[ftype].CastingBar = function(self)
@@ -185,6 +187,10 @@ aObj.SetupClassic_PlayerFrames = function()
 					_G.PaperDollItemSlotButton_Update(btn)
 					self:addButtonBorder{obj=_G.RuneFrameControlButton, fType=ftype}
 				end
+				if self.isClscBCA then
+					self:skinObject("ddbutton", {obj=this.Attributes.LeftPlayerStatDropdown, fType=ftype})
+					self:skinObject("ddbutton", {obj=this.Attributes.RightPlayerStatDropdown, fType=ftype})
+				end
 
 				self:Unhook(this, "OnShow")
 			end)
@@ -267,12 +273,20 @@ aObj.SetupClassic_PlayerFrames = function()
 				self:Unhook(this, "OnShow")
 			end)
 
-			self:SecureHookScript(_G.HonorFrame, "OnShow", function(this)
-				self:keepFontStrings(this)
-				self:skinObject("statusbar", {obj=_G.HonorFrameProgressBar, fType=ftype, fi=0})
+			if not self.isClscBCA then
+				self:SecureHookScript(_G.HonorFrame, "OnShow", function(this)
+					self:keepFontStrings(this)
+					self:skinObject("statusbar", {obj=_G.HonorFrameProgressBar, fType=ftype, fi=0})
 
-				self:Unhook(this, "OnShow")
-			end)
+					self:Unhook(this, "OnShow")
+				end)
+			else
+				self:SecureHookScript(_G.PVPFrame, "OnShow", function(this)
+					self:keepFontStrings(this)
+
+				    self:Unhook(this, "OnShow")
+				end)
+			end
 
 		end
 	end
@@ -864,7 +878,6 @@ aObj.SetupClassic_PlayerFrames = function()
 				end
 			end
 		end)
-
 	end
 
 	aObj.blizzLoDFrames[ftype].InspectUI = function(self)
@@ -902,7 +915,9 @@ aObj.SetupClassic_PlayerFrames = function()
 			self:Unhook(this, "OnShow")
 		end)
 
-		if self.isClscERA then
+		if self.isClscERA
+		and not self.isClscBCA
+		then
 			self:SecureHookScript(_G.InspectHonorFrame, "OnShow", function(this)
 				self:removeRegions(this, {1, 2, 3, 4, 5, 6, 7, 8})
 
@@ -911,14 +926,19 @@ aObj.SetupClassic_PlayerFrames = function()
 		else
 			self:SecureHookScript(_G.InspectPVPFrame, "OnShow", function(this)
 				self:keepFontStrings(this)
-				-- TODO: skin PVPTeam buttons
 
 				self:Unhook(this, "OnShow")
 			end)
 			self:SecureHookScript(_G.InspectTalentFrame, "OnShow", function(this)
-				this:DisableDrawLayer("BACKGROUND")
-				this:DisableDrawLayer("BORDER")
-				this.InspectSpec.ring:SetTexture(nil)
+				self:keepFontStrings(this)
+				if not aObj.isClscBCA then
+					this.InspectSpec.ring:SetTexture(nil)
+				else
+					self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, ignoreSize=true, lod=self.isTT and true, upwards=true, regions={7}, offsets={x1=2, y1=-2, x2=-2, y2=0}})
+					self:skinObject("slider", {obj=_G.InspectTalentFrameScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
+					self:keepFontStrings(_G.InspectTalentFramePointsBar)
+					self:skinObject("frame", {obj=_G.InspectTalentFrameScrollFrame, fType=ftype, fb=true, x1=-8, y1=11, x2=31, y2=-7})
+				end
 
 				self:Unhook(this, "OnShow")
 			end)

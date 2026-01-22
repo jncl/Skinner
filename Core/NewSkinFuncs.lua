@@ -671,7 +671,11 @@ local function skinFrame(tbl)
 			end
 			-- return
 		elseif tbl.obj.Header then
-			aObj:removeRegions(tbl.obj.Header, {1, 2, 3})
+			if not aObj.isClscBCA then
+				aObj:removeRegions(tbl.obj.Header, {1, 2, 3})
+			else
+				aObj:removeRegions(tbl.obj.Header, {1})
+			end
 			aObj:moveObject{obj=tbl.obj.Header.Text, y=tbl.hOfs}
 			-- return
 		elseif tbl.obj:GetName() ~= nil then

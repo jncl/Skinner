@@ -35,6 +35,10 @@ end
 function aObj:checkWoWVersion()
 
 	local agentUID = _G.C_CVar.GetCVar("agentUID")
+	--@debug@
+	-- aObj:Debug("agentUID: [%s, %s]", agentUID)
+	--@end-debug@
+
 	-- handle different country versions, e.g. wow_enus
 	if not buildInfo[agentUID] then
 		if _G.WOW_PROJECT_ID == _G.WOW_PROJECT_MAINLINE then
@@ -54,6 +58,7 @@ function aObj:checkWoWVersion()
 	self.isClscBeta   = agentUID == "wow_classic_beta" and true
 	self.isClscPTR    = agentUID == "wow_classic_ptr" and true
 	self.isClsc       = agentUID == "wow_classic" and true
+	self.isClscBCA    = agentUID == "wow_classic_anniversary" and true
 	self.isClscERAPTR = agentUID == "wow_classic_era_ptr" and true
 	self.isClscERA    = agentUID == "wow_classic_era" and true
 	self.isMnlnBeta   = agentUID == "wow_beta" and true
@@ -62,13 +67,13 @@ function aObj:checkWoWVersion()
 	self.isMnln       = agentUID == "wow" and true
 
 	--@debug@
-	self:Debug("checkVersion #2: [%s, %s, %s, %s, %s, %s, %s, %s, %s]", self.isClscBeta, self.isClscPTR, self.isClsc, self.isClscERAPTR, self.isClscERA, self.isMnlnBeta, self.isMnlnPTR, self.isMnlnPTRX, self.isMnln)
+	self:Debug("checkVersion #2: [%s, %s, %s, %s, %s, %s, %s, %s, %s, %s]", self.isClscBeta, self.isClscPTR, self.isClsc, self.isClscERAPTR, self.isClscERA, self.isClscBCA, self.isMnlnBeta, self.isMnlnPTR, self.isMnlnPTRX, self.isMnln)
 	--@end-debug@
 
 	-- handle PTR and Beta versions
 	self.isClscPTR    = self.isClscPTR or self.isClscBeta
 	self.isClsc       = self.isClsc or self.isClscPTR
-	self.isClscERA    = self.isClscERA  or self.isClscERAPTR
+	self.isClscERA    = self.isClscERA  or self.isClscERAPTR or self.isClscBCA
 	self.isMnlnPTR    = self.isMnlnPTR or self.isMnlnBeta
 	self.isMnln       = self.isMnln or self.isMnlnPTR or self.isMnlnPTRX
 
@@ -85,7 +90,7 @@ function aObj:checkWoWVersion()
 	end
 
 	--@debug@
-	self:Debug("checkVersion #3: [%s, %s, %s, %s, %s, %s, %s, %s, %s, %s]", self.isClscBeta, self.isClscPTR, self.isClsc, self.isClscERAPTR, self.isClscERA, self.isMnlnBeta, self.isMnlnPTR, self.isMnlnPTRX, self.isMnln, self.isPatch)
+	self:Debug("checkVersion #3: [%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s]", self.isClscBeta, self.isClscPTR, self.isClsc, self.isClscERAPTR, self.isClscERA, self.isClscBCA, self.isMnlnBeta, self.isMnlnPTR, self.isMnlnPTRX, self.isMnln, self.isPatch)
 
 	self:Printf("%s, %d, %s, %d, %s, %d, %s", buildInfo[agentUID][2], buildInfo[agentUID][3], buildInfo.curr[2], buildInfo.curr[3], buildInfo.curr[4], buildInfo.curr[5] , agentUID)
 

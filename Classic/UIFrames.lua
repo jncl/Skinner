@@ -391,6 +391,9 @@ aObj.SetupClassic_UIFrames = function()
 			self:SecureHookScript(_G.QuestLogFrame, "OnShow", function(this)
 				_G.QuestLogCollapseAllButton:DisableDrawLayer("BACKGROUND")
 				self:keepFontStrings(_G.EmptyQuestLogFrame)
+				if self.isClscBCA then
+					self:keepFontStrings(_G.QuestLogCount)
+				end
 				self:skinObject("slider", {obj=_G.QuestLogListScrollFrame.ScrollBar, fType=ftype})
 				self:skinObject("slider", {obj=_G.QuestLogDetailScrollFrame.ScrollBar, fType=ftype})
 				_G.QuestLogQuestTitle:SetTextColor(self.HT:GetRGB())

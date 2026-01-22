@@ -582,7 +582,9 @@ aObj.blizzFrames[ftype].QuestFrame = function(self)
 			-- force recolouring of quest text
 			self:checkShown(_G.QuestFrameGreetingPanel)
 		end
-		if not self.isClscERA then
+		if not self.isClscERA
+		or self.isClscBCA
+		then
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true})
 		else
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, x1=10, y1=-18, x2=-29, y2=65})
@@ -728,7 +730,9 @@ aObj.blizzFrames[ftype].QuestInfo = function(self)
 		end
 		_G.QuestInfoSpellObjectiveLearnLabel:SetTextColor(aObj.BT:GetRGB())
 		_G.QuestInfoSpellObjectiveFrameNameFrame:SetTexture(nil)
-		if not aObj.isClsc then
+		if not aObj.isClsc
+		and not aObj.isClscBCA
+		then
 			_G.QuestInfoSpellObjectiveFrameSpellBorder:SetTexture(nil)
 		end
 		if aObj.modBtnBs then

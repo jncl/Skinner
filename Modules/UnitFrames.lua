@@ -176,9 +176,13 @@ function module:skinPlayerF()
 			aObj:skinObject("statusbar", {obj=frame.manabar, fi=0, nilFuncs=true})
 			module:adjustStatusBarPosn(frame.healthbar)
 			-- move level & rest icon down, so they are more visible
-			module:SecureHook("PlayerFrame_UpdateLevelTextAnchor", function(level)
-				_G.PlayerLevelText:SetPoint("CENTER", _G.PlayerFrameTexture, "CENTER", level == 100 and -62 or -61, -20 + lOfs)
-			end)
+			if _G.PlayerFrame_UpdateLevelTextAnchor then
+				module:SecureHook("PlayerFrame_UpdateLevelTextAnchor", function(level)
+					_G.PlayerLevelText:SetPoint("CENTER", _G.PlayerFrameTexture, "CENTER", level == 100 and -62 or -61, -20 + lOfs)
+				end)
+			else
+				-- ?
+			end
 			_G.PlayerRestIcon:SetPoint("TOPLEFT", 36, -63)
 			aObj:keepFontStrings(_G.PlayerFrameGroupIndicator)
 			if aObj.uCls == "DRUID"
@@ -193,7 +197,7 @@ function module:skinPlayerF()
 			then
 				for i = 1, _G.MAX_TOTEMS do
 					_G["TotemFrameTotem" .. i .. "Background"]:SetAlpha(0) -- texture is changed
-					aObj:getRegion(aObj:getChild(_G["TotemFrameTotem" .. i], 2), 1):SetAlpha(0) -- Totem Border texture
+					aObj:getRegion(aObj:getChild(_G["TotemFrameTotem" .. i], 2), 1):SetAlpha(0) -- T
 				end
 				aObj:moveObject{obj=_G.TotemFrameTotem1, y=lOfs} -- covers level text when active
 			end
@@ -343,9 +347,11 @@ function module:skinTargetF()
 			module:skinUnitButton{obj=frame.totFrame}
 			module:skinCommon(frame.totFrame:GetName(), true)
 			-- move level text down, so it is more visible
-			module:SecureHook("TargetFrame_UpdateLevelTextAnchor", function(fObj, targetLevel)
-				fObj.levelText:SetPoint("CENTER", targetLevel == 100 and 61 or 62, -20 + lOfs)
-			end)
+			if not aObj.isClscBCA then
+				module:SecureHook("TargetFrame_UpdateLevelTextAnchor", function(fObj, targetLevel)
+					fObj.levelText:SetPoint("CENTER", targetLevel == 100 and 61 or 62, -20 + lOfs)
+				end)
+			end
 			aObj:moveObject{obj=_G["TargetFrameToTHealthBar"], y=-2} -- move HealthBar down to match other frames
 		end
 		self:SecureHookScript(_G.TargetFrame, "OnShow", function(this)
@@ -431,14 +437,22 @@ function module:skinPartyF()
 			aObj:skinObject("statusbar", {obj=_G[pPF .. "HealthBar"], fi=0})
 		end
 		for i = 1, _G.MAX_PARTY_MEMBERS do
-			self:SecureHookScript(_G["PartyMemberFrame" .. i], "OnShow", function(this)
-				skinPartyMemberFrame(this)
+			if _G["PartyMemberFrame" .. i] then
+				self:SecureHookScript(_G["PartyMemberFrame" .. i], "OnShow", function(this)
+					skinPartyMemberFrame(this)
 
-				self:Unhook(this, "OnShow")
-			end)
-			aObj:checkShown(_G["PartyMemberFrame" .. i])
+					self:Unhook(this, "OnShow")
+				end)
+				aObj:checkShown(_G["PartyMemberFrame" .. i])
+			else
+				-- PartyMemberFramePool
+			end
 		end
-		aObj:skinObject("frame", {obj=_G.PartyMemberBackground, fType=ftype, x1=4, y2=2})
+		if _G.PartyMemberBackground then
+			aObj:skinObject("frame", {obj=_G.PartyMemberBackground, fType=ftype, x1=4, y2=2})
+		else
+			aObj:skinObject("frame", {obj=_G.PartyFrameBackground, fType=ftype, x1=4, y2=2})
+		end
 	end
 
 end
@@ -543,9 +557,13 @@ function module:OnEnable()
 			end
 		end
 		-- hook this to show/hide the elite texture
-		self:SecureHook("TargetFrame_CheckClassification", function(frame, _)
-			chgTex(frame)
-		end)
+		if _G.TargetFrame_CheckClassification then
+			self:SecureHook("TargetFrame_CheckClassification", function(frame, _)
+				chgTex(frame)
+			end)
+		else
+			-- ?
+		end
 	end
 
 	self:adjustUnitFrames("init")

@@ -13,7 +13,9 @@ aObj.blizzFrames[ftype].AddonList = function(self)
 		self:removeMagicBtnTex(this.OkayButton)
 		self:removeMagicBtnTex(this.EnableAllButton)
 		self:removeMagicBtnTex(this.DisableAllButton)
-		if self.isMnln then
+		if self.isMnln
+		or self.isClscBCA
+		then
 			self:skinObject("scrollbar", {obj=this.ScrollBar, fType=ftype})
 			local function skinElement(...)
 				local _, element, new
@@ -1233,6 +1235,156 @@ if not aObj.isClscERA then
 	end
 end
 
+if aObj.isMnln
+or aObj.isClscBCA
+then
+	aObj.blizzFrames[ftype].EditMode = function(self)
+		if not self.prdb.EditMode or self.initialized.EditMode then return end
+		self.initialized.EditMode = true
+
+		self:SecureHookScript(_G.EditModeManagerFrame, "OnShow", function(this)
+			self:removeNineSlice(this.Border)
+			this.Tutorial.Ring:SetTexture(nil)
+			self:skinObject("ddbutton", {obj=this.LayoutDropdown, fType=ftype})
+			self:skinObject("slider", {obj=this.GridSpacingSlider.Slider.Slider, fType=ftype, y1=-8, y2=8})
+			this.AccountSettings.Expander.Divider:SetTexture(nil)
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true})
+			if self.modBtns then
+				self:skinStdButton{obj=this.SaveChangesButton, fType=ftype, sechk=true}
+				self:skinStdButton{obj=this.RevertAllChangesButton, fType=ftype, sechk=true}
+			end
+			if self.modChkBtns then
+				self:skinCheckButton{obj=this.ShowGridCheckButton.Button, fType=ftype}
+				self:skinCheckButton{obj=this.EnableSnapCheckButton.Button, fType=ftype}
+				self:skinCheckButton{obj=this.EnableAdvancedOptionsCheckButton.Button, fType=ftype}
+				self:removeNineSlice(this.AccountSettings.SettingsContainer.BorderArt)
+				self:skinObject("frame", {obj=this.AccountSettings.SettingsContainer, fType=ftype, kfs=true, fb=true, ofs=3})
+				for _, frame in _G.pairs(this.AccountSettings.settingsCheckButtons) do
+					self:skinCheckButton{obj=frame.Button, fType=ftype}
+				end
+			end
+
+			self:Unhook(this, "OnShow")
+		end)
+
+		if not aObj.isMnln then
+			self:SecureHookScript(_G.EditModeNewLayoutDialog, "OnShow", function(fObj)
+				self:removeNineSlice(fObj.Border)
+				self:skinObject("editbox", {obj=fObj.LayoutNameEditBox, fType=ftype, y1=-4, y2=4})
+				self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, ofs=-6})
+				if self.modBtns then
+					self:skinStdButton{obj=fObj.AcceptButton, fType=ftype, sechk=true}
+					self:skinStdButton{obj=fObj.CancelButton, fType=ftype}
+				end
+				if self.modChkBtns then
+					self:skinCheckButton{obj=fObj.CharacterSpecificLayoutCheckButton.Button, fType=ftype}
+				end
+
+				self:Unhook(fObj, "OnShow")
+			end)
+		else
+			self:SecureHookScript(_G.EditModeLayoutDialog, "OnShow", function(fObj)
+				self:removeNineSlice(fObj.Border)
+				self:skinObject("editbox", {obj=fObj.LayoutNameEditBox, fType=ftype, y1=-4, y2=4})
+				self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, ofs=-6})
+				if self.modBtns then
+					self:skinStdButton{obj=fObj.AcceptButton, fType=ftype, sechk=true}
+					self:skinStdButton{obj=fObj.CancelButton, fType=ftype}
+				end
+				if self.modChkBtns then
+					self:skinCheckButton{obj=fObj.CharacterSpecificLayoutCheckButton.Button, fType=ftype}
+				end
+
+				self:Unhook(fObj, "OnShow")
+			end)
+		end
+
+		self:SecureHookScript(_G.EditModeImportLayoutDialog, "OnShow", function(fObj)
+			self:removeNineSlice(fObj.Border)
+			self:skinObject("frame", {obj=fObj.ImportBox, fType=ftype, kfs=true, fb=true, ofs=6})
+			self:skinObject("editbox", {obj=fObj.LayoutNameEditBox, fType=ftype, y1=-4, y2=4})
+			self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, ofs=-6})
+			if self.modBtns then
+				self:skinStdButton{obj=fObj.AcceptButton, fType=ftype, sechk=true}
+				self:skinStdButton{obj=fObj.CancelButton, fType=ftype}
+			end
+			if self.modChkBtns then
+				self:skinCheckButton{obj=fObj.CharacterSpecificLayoutCheckButton.Button, fType=ftype}
+			end
+
+			self:Unhook(fObj, "OnShow")
+		end)
+
+		if not aObj.isMnln then
+			self:SecureHookScript(_G.EditModeImportLayoutLinkDialog, "OnShow", function(fObj)
+				self:removeNineSlice(fObj.Border)
+				self:skinObject("editbox", {obj=fObj.LayoutNameEditBox, fType=ftype, y1=-4, y2=4})
+				self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, ofs=-6})
+				if self.modBtns then
+					self:skinStdButton{obj=fObj.AcceptButton, fType=ftype, sechk=true}
+					self:skinStdButton{obj=fObj.CancelButton, fType=ftype}
+				end
+				if self.modChkBtns then
+					self:skinCheckButton{obj=fObj.CharacterSpecificLayoutCheckButton.Button, fType=ftype}
+				end
+
+				self:Unhook(fObj, "OnShow")
+			end)
+		end
+
+		self:SecureHookScript(_G.EditModeUnsavedChangesDialog, "OnShow", function(fObj)
+			self:removeNineSlice(fObj.Border)
+			self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, ofs=-6})
+			if self.modBtns then
+				self:skinStdButton{obj=fObj.SaveAndProceedButton, fType=ftype}
+				self:skinStdButton{obj=fObj.ProceedButton, fType=ftype}
+				self:skinStdButton{obj=fObj.CancelButton, fType=ftype}
+			end
+
+			self:Unhook(fObj, "OnShow")
+		end)
+
+		self:SecureHookScript(_G.EditModeSystemSettingsDialog, "OnShow", function(fObj)
+			self:removeNineSlice(fObj.Border)
+			self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, cb=true, y2=14})
+			if self.modBtns then
+				self:skinStdButton{obj=fObj.Buttons.RevertChangesButton, fType=ftype, sechk=true}
+			end
+			local function skinSettingsAndButtons(frame)
+				for dropdown in frame.pools:EnumerateActiveByTemplate("EditModeSettingDropdownTemplate") do
+					aObj:skinObject("ddbutton", {obj=dropdown.Dropdown, fType=ftype})
+				end
+				for slider in frame.pools:EnumerateActiveByTemplate("EditModeSettingSliderTemplate") do
+					aObj:skinObject("slider", {obj=slider.Slider.Slider, fType=ftype, y1=-8, y2=8})
+				end
+				if aObj.modChkBtns then
+					for checkbox in frame.pools:EnumerateActiveByTemplate("EditModeSettingCheckboxTemplate") do
+						aObj:skinCheckButton{obj=checkbox.Button, fType=ftype}
+					end
+				end
+				if aObj.modBtns then
+					for button in frame.pools:EnumerateActiveByTemplate("EditModeSystemSettingsDialogExtraButtonTemplate") do
+						aObj:skinStdButton{obj=button, fType=ftype, schk=true}
+					end
+				end
+			end
+			skinSettingsAndButtons(fObj)
+			self:SecureHook(fObj, "UpdateDialog", function(frame, _)
+				skinSettingsAndButtons(frame)
+			end)
+
+			self:Unhook(fObj, "OnShow")
+		end)
+
+		-- Blizzard_CooldownViewer
+			-- EssentialCooldownViewer
+			-- UtilityCooldownViewer
+			-- BuffIconCooldownViewer
+			-- BuffBarCooldownViewer
+
+	end
+end
+
 aObj.blizzLoDFrames[ftype].EventTrace = function(self)
 	if not self.prdb.EventTrace or self.initialized.EventTrace then return end
 	self.initialized.EventTrace = true
@@ -2246,9 +2398,15 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 	end
 
 	if self.prdb.MainMenuBar.skin then
-		if self.isMnln then
+		if self.isMnln
+		or self.isClscBCA
+		then
 			self:SecureHookScript(_G.MainActionBar, "OnShow", function(this)
-				this.BorderArt:SetTexture(nil)
+				if this.BorderArt then
+					this.BorderArt:SetTexture(nil)
+				elseif _G.MainMenuBarArtFrame then
+					self:keepFontStrings(_G.MainMenuBarArtFrame)
+				end
 				this.EndCaps:DisableDrawLayer("OVERLAY")
 
 				self:Unhook(this, "OnShow")
@@ -2286,20 +2444,21 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 			end)
 			self:checkShown(_G.StatusTrackingBarManager)
 
-			self:SecureHookScript(_G.MultiCastActionBarFrame, "OnShow", function(this)
-				self:keepFontStrings(_G.MultiCastFlyoutFrame) -- Shaman's Totem Frame
-				if self.modBtnBs then
-					self:addButtonBorder{obj=_G.MultiCastSummonSpellButton, sabt=true, ofs=5}
-					self:addButtonBorder{obj=_G.MultiCastRecallSpellButton, sabt=true, ofs=5}
-					for i = 1, _G.NUM_MULTI_CAST_PAGES * _G.NUM_MULTI_CAST_BUTTONS_PER_PAGE do
-						self:skinActionBtn(_G["MultiCastActionButton" .. i], ftype)
+			if _G.MultiCastActionBarFrame then
+				self:SecureHookScript(_G.MultiCastActionBarFrame, "OnShow", function(this)
+					self:keepFontStrings(_G.MultiCastFlyoutFrame) -- Shaman's Totem Frame
+					if self.modBtnBs then
+						self:addButtonBorder{obj=_G.MultiCastSummonSpellButton, sabt=true, ofs=5}
+						self:addButtonBorder{obj=_G.MultiCastRecallSpellButton, sabt=true, ofs=5}
+						for i = 1, _G.NUM_MULTI_CAST_PAGES * _G.NUM_MULTI_CAST_BUTTONS_PER_PAGE do
+							self:skinActionBtn(_G["MultiCastActionButton" .. i], ftype)
+						end
 					end
-				end
 
-				self:Unhook(this, "OnShow")
-			end)
-			self:checkShown(_G.MultiCastActionBarFrame)
-
+					self:Unhook(this, "OnShow")
+				end)
+				self:checkShown(_G.MultiCastActionBarFrame)
+			end
 			if self.modBtnBs then
 				local function skinMultiBarBtns(type)
 					local bName
@@ -2327,8 +2486,12 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 			if self.modBtnBs then
 				function skinABBtn(btn)
 					btn.Border:SetAlpha(0) -- texture changed in blizzard code
-					btn.FlyoutBorder:SetTexture(nil)
-					btn.FlyoutBorderShadow:SetTexture(nil)
+					if btn.FlyoutBorder then
+						btn.FlyoutBorder:SetTexture(nil)
+						btn.FlyoutBorderShadow:SetTexture(nil)
+					else
+						-- ?
+					end
 					if aObj:canSkinActionBtns() then
 						_G[btn:GetName() .. "NormalTexture"]:SetTexture(nil)
 						aObj:addButtonBorder{obj=btn, fType=ftype, sabt=true, rpA=true, ofs=3}
@@ -2339,7 +2502,11 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 					for i = 1, _G.NUM_MULTIBAR_BUTTONS do
 						bName = "MultiBar" .. type .. "Button" .. i
 						if not _G[bName].noGrid then
-							_G[bName .. "FloatingBG"]:SetAlpha(0)
+							if _G[bName .. "FloatingBG"] then
+								_G[bName .. "FloatingBG"]:SetAlpha(0)
+							else
+								-- ?
+							end
 						end
 						skinABBtn(_G[bName])
 					end
@@ -2353,15 +2520,15 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 				self:moveObject{obj=_G.MainMenuExpBar, x=self.isClsc and 2 or 1, y=2}
 				self:moveObject{obj=_G.MainMenuBarExpText, y=-2}
 				self:skinObject("statusbar", {obj=_G.MainMenuExpBar, fType=ftype, bg=self:getRegion(_G.MainMenuExpBar, 6), other={_G.ExhaustionLevelFillBar}})
-				_G.MainMenuBarMaxLevelBar:DisableDrawLayer("BACKGROUND")
-				_G.MainMenuBarArtFrame:DisableDrawLayer("BACKGROUND")
-				_G.MainMenuBarLeftEndCap:SetTexture(nil)
-				_G.MainMenuBarRightEndCap:SetTexture(nil)
 				local rwbSB = _G.ReputationWatchBar.StatusBar
 				self:removeRegions(rwbSB, {1, 2, 3, 4, 5, 6, 7, 8, 9})
 				rwbSB:SetSize(1011, 8)
 				self:moveObject{obj=rwbSB, x=1, y=2}
 				self:skinObject("statusbar", {obj=rwbSB, fType=ftype, bg=rwbSB.Background, other={rwbSB.Underlay, rwbSB.Overlay}})
+				_G.MainMenuBarMaxLevelBar:DisableDrawLayer("BACKGROUND")
+				_G.MainMenuBarArtFrame:DisableDrawLayer("BACKGROUND")
+				_G.MainMenuBarLeftEndCap:SetTexture(nil)
+				_G.MainMenuBarRightEndCap:SetTexture(nil)
 				if self.modBtnBs then
 					for i = 1, _G.NUM_ACTIONBAR_BUTTONS do
 						skinABBtn(_G["ActionButton" .. i])
@@ -2379,18 +2546,22 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 			if self.modBtnBs then
 				skinMultiBarBtns("Right")
 				skinMultiBarBtns("Left")
-				for _, bName in _G.pairs(_G.MICRO_BUTTONS) do
-					self:addButtonBorder{obj=_G[bName], fType=ftype, es=24, ofs=2, y1=-18, reParent={_G[bName].QuickKeybindHighlightTexture}}
-				end
-				local function abb2Bag(bag)
-					aObj:addButtonBorder{obj=bag, fType=ftype, ibt=true, ofs=3, clr=bag.icon:GetVertexColor()}
-				end
-				abb2Bag(_G.MainMenuBarBackpackButton)
-				for i = 0, 3 do
-					abb2Bag(_G["CharacterBag" .. i .. "Slot"])
-				end
-				self:addButtonBorder{obj=_G.KeyRingButton, fType=ftype, ofs=2}
 			end
+		end
+		if self.modBtnBs
+		and not aObj.isMnln
+		then
+			for _, bName in _G.pairs(_G.MICRO_BUTTONS) do
+				self:addButtonBorder{obj=_G[bName], fType=ftype, es=24, ofs=2, y1=not self.isClscBCA and -18 or nil, reParent={_G[bName].QuickKeybindHighlightTexture}}
+			end
+			local function abb2Bag(bag)
+				aObj:addButtonBorder{obj=bag, fType=ftype, ibt=true, ofs=3, clr=bag.icon:GetVertexColor()}
+			end
+			abb2Bag(_G.MainMenuBarBackpackButton)
+			for i = 0, 3 do
+				abb2Bag(_G["CharacterBag" .. i .. "Slot"])
+			end
+			self:addButtonBorder{obj=_G.KeyRingButton, fType=ftype, ofs=2}
 		end
 	end
 
@@ -2440,7 +2611,9 @@ aObj.blizzFrames[ftype].MainMenuBarCommon = function(self)
 	end
 
 	if self.prdb.MainMenuBar.skin then
-		if aObj.isMnln then
+		if self.isMnln
+		or self.isClscBCA
+		then
 			for _, frame in _G.pairs{_G.StanceBar, _G.PetActionBar, _G.PossessActionBar} do
 				self:SecureHookScript(frame, "OnShow", function(this)
 					for _, btn in _G.pairs(this.actionButtons) do
@@ -2521,10 +2694,12 @@ aObj.blizzFrames[ftype].MenuFrames = function(self)
 	self.initialized.MenuFrames = true
 
 	self:SecureHookScript(_G.GameMenuFrame, "OnShow", function(this)
-		if self.isMnln then
+		if self.isMnln
+		or self.isClscBCA
+		then
 			self:removeNineSlice(this.Border)
 		end
-		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true, ofs=0})
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true, ofs=-2})
 		if self.modBtns then
 			for _, child in _G.ipairs{this:GetChildren()} do
 				if child:IsObjectType("Button") then
@@ -2571,7 +2746,11 @@ aObj.blizzFrames[ftype].Minimap = function(self)
 
 	-- Cluster Frame
 	if not self.isMnln then
-		_G.MinimapBorderTop:Hide()
+		if not aObj.isClscBCA then
+			_G.MinimapBorderTop:Hide()
+		else
+			_G.MinimapCluster.BorderTop:SetTexture(nil)
+		end
 		_G.MinimapZoneTextButton:ClearAllPoints()
 		_G.MinimapZoneTextButton:SetPoint("BOTTOMLEFT", _G.Minimap, "TOPLEFT", 0, 5)
 		_G.MinimapZoneTextButton:SetPoint("BOTTOMRIGHT", _G.Minimap, "TOPRIGHT", 0, 5)
@@ -2761,7 +2940,11 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 				end
 				_G.GameTimeFrame_Update(_G.GameTimeFrame)
 			end)
-			_G.MiniMapTrackingBorder:SetTexture(nil)
+			if _G.MiniMapTrackingBorder then
+				_G.MiniMapTrackingBorder:SetTexture(nil)
+			else
+				_G.MiniMapTrackingButtonBorder:SetTexture(nil)
+			end
 			self:addButtonBorder{obj=_G.MiniMapTracking, fType=ftype, bd=10, ofs=1, x1=3, y1=-3}
 			self:moveObject{obj=_G.MiniMapTracking, x=-2}
 			if _G.LFGMinimapFrame then
@@ -3957,13 +4140,7 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 		aObj:add2Table(toolTips, _G.GameTooltip)
 	-- end
 	if self.isMnln then
-		-- self:add2Table(toolTips, _G.GameNoHeaderTooltip) -- N.B. defined in GameTooltip.xml but NOT referenced in code
 		self:add2Table(toolTips, _G.GameSmallHeaderTooltip)
-		if not aObj.isMnlnBeta
-		and not aObj.isMnlnPTR
-		then
-			self:add2Table(toolTips, _G.NamePlateTooltip) -- N.B. Done here as Nameplate skinning function is disabled
-		end
 	else
 		self:add2Table(toolTips, _G.SmallTextTooltip)
 	end
