@@ -99,25 +99,7 @@ aObj.SetupClassic_PlayerFrames = function()
 			return
 		end
 
-		local cbFrame
-		for _, type in _G.pairs{"", "Pet"} do
-			cbFrame = _G[type .. "CastingBarFrame"]
-			cbFrame.Border:SetAlpha(0)
-			self:changeShield(cbFrame.BorderShield, cbFrame.Icon)
-			cbFrame.Flash:SetAllPoints()
-			cbFrame.Flash:SetTexture(self.tFDIDs.w8x8)
-			if self.prdb.CastingBar.glaze then
-				self:skinObject("statusbar", {obj=cbFrame, fType=ftype, fi=0, bg=self:getRegion(cbFrame, 1), nilFuncs=true})
-			end
-			-- adjust text and spark in Classic mode
-			if not cbFrame.ignoreFramePositionManager then
-				cbFrame.Text:SetPoint("TOP", 0, 2)
-				cbFrame.Spark.offsetY = -1
-			end
-		end
-
-		-- hook this to handle the CastingBar being attached to the Unitframe and then reset
-		self:SecureHook("CastingBarFrame_SetLook", function(castBar, look)
+		local function setLook(castBar, look)
 			castBar.Border:SetAlpha(0)
 			castBar.Flash:SetAllPoints()
 			castBar.Flash:SetTexture(self.tFDIDs.w8x8)
@@ -125,7 +107,35 @@ aObj.SetupClassic_PlayerFrames = function()
 				castBar.Text:SetPoint("TOP", 0, 2)
 				castBar.Spark.offsetY = -1
 			end
-		end)
+		end
+		local cbFrame
+		for _, type in _G.pairs{"", "Pet"} do
+			cbFrame = _G[type .. "CastingBarFrame"]
+			if cbFrame then
+				self:changeShield(cbFrame.BorderShield, cbFrame.Icon)
+				if self.prdb.CastingBar.glaze then
+					self:skinObject("statusbar", {obj=cbFrame, fType=ftype, fi=0, bg=self:getRegion(cbFrame, 1), nilFuncs=true})
+				end
+				-- adjust text and spark in Classic mode
+				if not cbFrame.ignoreFramePositionManager then
+					setLook(cbFrame)
+				else
+					setLook(cbFrame, "CLASSIC")
+				end
+				if cbFrame.SetLook then
+					self:SecureHook(cbFrame, "SetLook", function(this, look)
+						setLook(this, look)
+					end)
+				end
+			end
+		end
+
+		-- hook this to handle the CastingBar being attached to the Unitframe and then reset
+		if _G.CastingBarFrame_SetLook then
+			self:SecureHook("CastingBarFrame_SetLook", function(castBar, look)
+				setLook(castBar, look)
+			end)
+		end
 
 	end
 
