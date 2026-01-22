@@ -240,7 +240,9 @@ end
 function module:skinActionBtn(bObj, ftype)
 
 	bObj.SlotBackground:SetTexture(nil)
-	bObj.SlotArt:SetTexture(nil)
+	if bObj.SlotArt then
+		bObj.SlotArt:SetTexture(nil)
+	end
 	bObj.Border:SetAlpha(0) -- texture changed in blizzard code
 	if bObj.FlyoutBorder then
 		bObj.FlyoutBorder:SetTexture(nil)

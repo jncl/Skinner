@@ -231,8 +231,6 @@ aObj.SetupMainline_PlayerFrames = function()
 
 	end
 
-
-
 	aObj.blizzLoDFrames[ftype].CharacterCustomize = function(self)
 		if not self.prdb.CharacterCustomize or self.initialized.CharacterCustomize then return end
 
@@ -374,39 +372,31 @@ aObj.SetupMainline_PlayerFrames = function()
 
 	end
 
-	if aObj.isMnlnBeta then
-		aObj.blizzFrames[ftype].DamageMeter = function(self)
-			if not self.prdb.DamageMeter or self.initialized.DamageMeter then return end
-			self.initialized.DamageMeter = true
+	aObj.blizzFrames[ftype].DamageMeter = function(self)
+		if not self.prdb.DamageMeter or self.initialized.DamageMeter then return end
+		self.initialized.DamageMeter = true
 
-			local function skinSessionWindow(frame)
-				frame.Header:SetTexture(nil)
+		local function skinSessionWindow(frame)
+			frame.Header:SetTexture(nil)
+			-- .ScrollBox
+			-- .ScrollBar
+			-- .SourceWindow
 				-- .ScrollBox
-				-- .ScrollBar
-				-- .SourceWindow
-					-- .ScrollBox
-				if aObj.modBtnBs then
-					aObj:addButtonBorder{obj=frame.SettingsDropdown, fType=ftype, es=12, ofs=-2, y1=1, y2=5}
-					aObj:addButtonBorder{obj=frame.SessionDropdown, fType=ftype, rpA=true, es=12, ofs=4, y1=3, x2=3, y2=-3}
-					aObj:addButtonBorder{obj=frame.DamageMeterTypeDropdown, fType=ftype, es=12, ofs=-1, y1=0, y2=2}
-				end
+			if aObj.modBtnBs then
+				aObj:addButtonBorder{obj=frame.SettingsDropdown, fType=ftype, es=12, ofs=-2, y1=1, y2=5}
+				aObj:addButtonBorder{obj=frame.SessionDropdown, fType=ftype, rpA=true, es=12, x1=-3, y1=3, x2=4, y2=-3}
+				aObj:addButtonBorder{obj=frame.DamageMeterTypeDropdown, fType=ftype, es=12, ofs=-1, y1=0, y2=2}
 			end
-			self:SecureHookScript(_G.DamageMeter, "OnShow", function(this)
-				this:ForEachSessionWindow(function(sessionWindow)
-					skinSessionWindow(sessionWindow)
-				end)
-
-				self:SecureHook(this, "SetupSessionWindow", function(fObj, windowData, windowIndex)
-					skinSessionWindow(windowData.sessionWindow)
-				end)
-
-			    self:Unhook(this, "OnShow")
-			end)
-			self:checkShown(_G.DamageMeter)
-
 		end
-	end
+		_G.DamageMeter:ForEachSessionWindow(function(sessionWindow)
+			skinSessionWindow(sessionWindow)
+		end)
 
+		self:SecureHook(_G.DamageMeter, "SetupSessionWindow", function(fObj, windowData, windowIndex)
+			skinSessionWindow(windowData.sessionWindow)
+		end)
+
+	end
 
 	aObj.blizzFrames[ftype].DressUpFrame = function(self)
 		if not self.prdb.DressUpFrame or self.initialized.DressUpFrame then return end
@@ -2495,29 +2485,6 @@ aObj.SetupMainline_PlayerFrames = function()
 
 	end
 
-	if not aObj.isMnlnBeta
-	and not aObj.isMnlnPTR
-	then
-		aObj.blizzFrames[ftype].WardrobeOutfits = function(self)
-			if not self.prdb.Collections or self.initialized.WardrobeOutfits then return end
-			self.initialized.WardrobeOutfits = true
-
-			self:SecureHookScript(_G.WardrobeOutfitEditFrame, "OnShow", function(this)
-				self:removeNineSlice(this.Border)
-				self:skinObject("editbox", {obj=this.EditBox, fType=ftype})
-				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true})
-				if self.modBtns then
-					self:skinStdButton{obj=this.AcceptButton, fType=ftype, sechk=true}
-					self:skinStdButton{obj=this.CancelButton, fType=ftype}
-					self:skinStdButton{obj=this.DeleteButton, fType=ftype}
-				end
-
-				self:Unhook(this, "OnShow")
-			end)
-		end
-
-	end
-
 end
 
 aObj.SetupMainline_PlayerFramesOptions = function(self)
@@ -2528,7 +2495,7 @@ aObj.SetupMainline_PlayerFramesOptions = function(self)
 		["Azerite UI"]           = true,
 		["Character Customize"]  = {suff = "Frame"},
 		["Currency Transfer"]    = true,
-		["Damage Meter"]         = aObj.isMnlnBeta and true or nil,
+		["Damage Meter"]         = true,
 		["Equipment Flyout"]     = true,
 		["Guild Control UI"]     = true,
 		["Guild Invite"]         = {suff = "Frame"},
