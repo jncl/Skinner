@@ -5,7 +5,7 @@ ToDos
 	≈ is Alt+x	- indicates partially completed or dry-coded
 	x			- indicates nothing to change
 	¶ is Alt+7	- indicates localisation changes required
-	#nnn		- isndicates Issue number
+	#nnn		- indicates Issue number
 	S/N/I/U/O	- Skin request/New Version/Issue(Bug)/Unobsolete Skin/Other changes
 	E/C/M/F/B 	- Classic Era/MoP Classic/Mainline/Feature Request/Beta
 
@@ -15,8 +15,8 @@ ToDos
 
 	 ≈	O/M	PerksProgramProductDetailsContainerFrame, skin contents
 
-#254 √	I/M UIWidgetBelowMinimapContainerFrame skinFrame displayed when no widgetFrames
+#257 x	I/M Baganator quality borders missing
 
-#255 √	I/E BetterBags Item Textures not appearing
+#258 ≈	I/E BC Anniversary version support?
 
-#256 √	I/M MountsJournal
+#259 √	I/M MajorFactionRenownFrame
