@@ -998,7 +998,6 @@ local function skinTabs(tbl)
 		tbl.offsets.x2 = (tbl.offsets.x2 or 0) - 4
 		tbl.offsets.y2 = (tbl.offsets.y2 or 0) + 3
 	end
-	local tabFrame
 	local function skinTabObject(tab, idx)
 		aObj:keepRegions(tab, tbl.regions)
 		if not aObj.isTT then
@@ -1012,7 +1011,7 @@ local function skinTabs(tbl)
 					aObj:setInactiveTab(tab.sf)
 				end
 			elseif tbl.pool then
-				if not aObj.isMnlnBeta then
+				if not aObj.isMnln then
 					if tab.isSelected then
 						aObj:setActiveTab(tab.sf)
 					else
@@ -1058,7 +1057,10 @@ local function skinTabs(tbl)
 			idx = idx + 1
 			skinTabObject(tab, idx)
 		end
-		if aObj.isMnlnBeta then
+		if aObj.isTT
+		and aObj.isMnln
+		and tbl.obj.SetTabSelectedCallback
+		then
 			tbl.obj.orig_tabSelectedCallback = tbl.obj.tabSelectedCallback or _G.nop
 			tbl.obj:SetTabSelectedCallback(function(tabID, isUserAction)
 				for _, tab in _G.ipairs(tbl.obj.tabs) do
