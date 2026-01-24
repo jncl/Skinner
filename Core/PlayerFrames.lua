@@ -1469,7 +1469,7 @@ if not aObj.isClscERA then
 
 					self:Unhook(fObj, "OnShow")
 				end)
-				if not aObj.isMnlnBeta then
+				if not aObj.isMnln then
 					self:SecureHookScript(this.SetsTransmogFrame, "OnShow", function(fObj)
 						self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, rns=true, fb=true, x1=x1Ofs, y1=y1Ofs, x2=x2Ofs, y2=y2Ofs})
 						if self.modBtnBs then
@@ -1489,7 +1489,7 @@ if not aObj.isClscERA then
 			self:Unhook(this, "OnShow")
 		end)
 
-		if not aObj.isMnlnBeta then
+		if not aObj.isMnln then
 			self:SecureHookScript(_G.WardrobeFrame, "OnShow", function(this)
 				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true, cb=true, x2=3, y2=-1})
 
