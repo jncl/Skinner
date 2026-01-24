@@ -1506,8 +1506,8 @@ aObj.SetupMainline_PlayerFrames = function()
 		if not self.prdb.Professions or self.initialized.ProfessionsTemplates then return end
 		self.initialized.ProfessionsTemplates = true
 
-		self:RawHook("OpenProfessionsItemFlyout", function(owner, parent)
-			local flyout = self.hooks.OpenProfessionsItemFlyout(owner, parent)
+		self:RawHook("OpenProfessionsItemFlyout", function(...)
+			local flyout = self.hooks.OpenProfessionsItemFlyout(...)
 			self:skinObject("frame", {obj=flyout, fType=ftype, kfs=true, rns=true, ofs=0})
 			if self.modBtnBs then
 				local function skinElement(...)
