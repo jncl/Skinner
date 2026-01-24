@@ -2527,11 +2527,9 @@ if not aObj.isClscERA then
 
 			self:SecureHookScript(this.instanceSelect, "OnShow", function(fObj)
 				fObj.bg:SetAlpha(0)
-				if aObj.isMnlnBeta then
-					fObj.evergreenBg:SetAlpha(0)
-					if self.modBtnBs then
-						self:addButtonBorder{obj=fObj.GreatVaultButton, fType=ftype, ofs=-1, x2=-2, y2=2, relTo=fObj.GreatVaultButton.Icon}
-					end
+				fObj.evergreenBg:SetAlpha(0)
+				if self.modBtnBs then
+					self:addButtonBorder{obj=fObj.GreatVaultButton, fType=ftype, ofs=-1, x2=-2, y2=2, relTo=fObj.GreatVaultButton.Icon}
 				end
 				self:skinObject("ddbutton", {obj=fObj.ExpansionDropdown, fType=ftype})
 				self:skinObject("scrollbar", {obj=fObj.ScrollBar, fType=ftype})
@@ -2758,81 +2756,80 @@ if not aObj.isClscERA then
 				end)
 				self:checkShown(this.MonthlyActivitiesFrame)
 
-				if aObj.isMnlnBeta then
-					self:SecureHookScript(this.JourneysFrame, "OnShow", function(fObj)
-						self:keepFontStrings(fObj.BorderFrame)
-						self:skinObject("scrollbar", {obj=fObj.ScrollBar, fType=ftype})
-						local function skinJourney(...)
-							local _, element, elementData
-							if _G.select("#", ...) == 2 then
-								element, elementData = ...
-							else
-								_, element, elementData = ...
-							end
-							if elementData.category then
-								-- JourneysListCategoryNameTemplate
-								_G.nop()
-							elseif elementData.divider then
-								-- JourneysListCategoryDividerTemplate
-								element.CategoryDivider:SetTexture(nil)
-							elseif elementData.isRenownJourney then
-								-- RenownCardButtonTemplate
-								aObj:skinObject("frame", {obj=element, fType=ftype, kfs=true, fb=true, ofs=-4, x2=-7, y2=7})
-								if aObj.modChkBtns then
-									aObj:skinCheckButton{obj=element.WatchedFactionToggleFrame.WatchFactionCheckbox, fType=ftype}
-								end
-							else
-								-- JourneyCardButtonTemplate
-								aObj:skinObject("statusbar", {obj=element.JourneyCardProgressBar, fType=ftype, fi=0, bg=element.JourneyCardProgressBar.JourneyCardProgressBarBG})
-								aObj:skinObject("frame", {obj=element, fType=ftype, kfs=true, fb=true, ofs=-4, x2=-7, y2=8})
-							end
+				self:SecureHookScript(this.JourneysFrame, "OnShow", function(fObj)
+					self:keepFontStrings(fObj.BorderFrame)
+					self:skinObject("scrollbar", {obj=fObj.ScrollBar, fType=ftype})
+					local function skinJourney(...)
+						local _, element, elementData
+						if _G.select("#", ...) == 2 then
+							element, elementData = ...
+						else
+							_, element, elementData = ...
 						end
-						_G.ScrollUtil.AddInitializedFrameCallback(fObj.JourneysList, skinJourney, aObj, true)
+						if elementData.category then
+							-- JourneysListCategoryNameTemplate
+							_G.nop()
+						elseif elementData.divider then
+							-- JourneysListCategoryDividerTemplate
+							element.CategoryDivider:SetTexture(nil)
+						elseif elementData.isRenownJourney then
+							-- RenownCardButtonTemplate
+							aObj:skinObject("frame", {obj=element, fType=ftype, kfs=true, fb=true, ofs=-4, x2=-7, y2=7})
+							if aObj.modChkBtns then
+								aObj:skinCheckButton{obj=element.WatchedFactionToggleFrame.WatchFactionCheckbox, fType=ftype}
+							end
+						else
+							-- JourneyCardButtonTemplate
+							aObj:skinObject("statusbar", {obj=element.JourneyCardProgressBar, fType=ftype, fi=0, bg=element.JourneyCardProgressBar.JourneyCardProgressBarBG})
+							aObj:skinObject("frame", {obj=element, fType=ftype, kfs=true, fb=true, ofs=-4, x2=-7, y2=8})
+						end
+					end
+					_G.ScrollUtil.AddInitializedFrameCallback(fObj.JourneysList, skinJourney, aObj, true)
 
-						local function skinRewards(frame)
-							-- JourneyProgressRewardCardTemplate
-							for reward in frame.rewardPool:EnumerateActive() do
-								reward.RewardCardBG:SetTexture(nil)
-								aObj:skinObject("frame", {obj=reward, fType=ftype, fb=true, ofs=-3, y1=-1})
-							end
+					local function skinRewards(frame)
+						-- JourneyProgressRewardCardTemplate
+						for reward in frame.rewardPool:EnumerateActive() do
+							reward.RewardCardBG:SetTexture(nil)
+							aObj:skinObject("frame", {obj=reward, fType=ftype, fb=true, ofs=-3, y1=-1})
 						end
-						self:SecureHookScript(fObj.JourneyProgress, "OnShow", function(frame)
-							frame.DividerTexture:SetTexture(nil)
-							frame.ProgressDetailsFrame.JourneyLevelBg:SetTexture(nil)
-							-- .DelveRewardProgressBar
-							-- TODO: skin .RenownTrackFrame.ClipFrame entries to remove border around level #
+					end
+					self:SecureHookScript(fObj.JourneyProgress, "OnShow", function(frame)
+						frame.DividerTexture:SetTexture(nil)
+						frame.ProgressDetailsFrame.JourneyLevelBg:SetTexture(nil)
+						-- .DelveRewardProgressBar
+						-- TODO: skin .RenownTrackFrame.ClipFrame entries to remove border around level #
+						skinRewards(frame)
+						self:SecureHook(frame, "OnTrackUpdate", function(this, _, _, _, _)
 							skinRewards(frame)
-							self:SecureHook(frame, "OnTrackUpdate", function(this, _, _, _, _)
-								skinRewards(frame)
-							end)
-							if self.modBtns then
-								self:skinStdButton{obj=frame.OverviewBtn, fType=ftype}
-							end
-
-							self:skinRewardTrackFrameElements(frame.EncounterRewardProgressFrame, ftype)
-							self:SecureHook(frame, "SetupRewardTrack", function(erpf)
-								self:skinRewardTrackFrameElements(erpf, ftype)
-							end)
-							self:skinObject("frame", {obj=frame.DelvesCompanionConfigurationFrame.CompanionConfigBtn, fType=ftype, kfs=true, fb=true, x1=1, y1=-2, x2=-4, y2=6})
-							frame.DelvesCompanionConfigurationFrame.CompanionConfigBtn.Icon:SetAlpha(1)
-
-							self:Unhook(frame, "OnShow")
 						end)
-						self:checkShown(fObj.JourneyProgress)
+						if self.modBtns then
+							self:skinStdButton{obj=frame.OverviewBtn, fType=ftype}
+						end
 
-						self:SecureHookScript(fObj.JourneyOverview, "OnShow", function(frame)
-							frame.Divider:SetTexture(nil)
-							if self.modBtns then
-								self:skinStdButton{obj=frame.OverviewBtn, fType=ftype}
-							end
-
-							self:Unhook(frame, "OnShow")
+						self:skinRewardTrackFrameElements(frame.EncounterRewardProgressFrame, ftype)
+						self:SecureHook(frame, "SetupRewardTrack", function(erpf)
+							self:skinRewardTrackFrameElements(erpf, ftype)
 						end)
+						self:skinObject("frame", {obj=frame.DelvesCompanionConfigurationFrame.CompanionConfigBtn, fType=ftype, kfs=true, fb=true, x1=1, y1=-2, x2=-4, y2=6})
+						frame.DelvesCompanionConfigurationFrame.CompanionConfigBtn.Icon:SetAlpha(1)
 
-						self:Unhook(fObj, "OnShow")
+						self:Unhook(frame, "OnShow")
 					end)
-					self:checkShown(this.JourneysFrame)
-				end
+					self:checkShown(fObj.JourneyProgress)
+
+					self:SecureHookScript(fObj.JourneyOverview, "OnShow", function(frame)
+						frame.Divider:SetTexture(nil)
+						if self.modBtns then
+							self:skinStdButton{obj=frame.OverviewBtn, fType=ftype}
+						end
+
+						self:Unhook(frame, "OnShow")
+					end)
+
+					self:Unhook(fObj, "OnShow")
+				end)
+				self:checkShown(this.JourneysFrame)
+
 				self:SecureHookScript(this.suggestFrame, "OnShow", function(fObj)
 					local ejsfs
 					for i = 1, _G.AJ_MAX_NUM_SUGGESTIONS do
