@@ -1,6 +1,6 @@
 ---
 name: Bug report
-about: AddOn skin Bug report
+about: Skinner / AddOn skin Bug report
 title: "[BUG]: "
 labels: bug
 assignees: jncl
@@ -8,7 +8,7 @@ assignees: jncl
 ---
 
 **WoW Version**
-Which version of WoW this bug occurs in:  ( Retail / MoP Classic / Classic Era / All )
+Which version of WoW this bug occurs in:  ( Retail / MoP Classic / Classic Era / BC Anniversary / All )
 
 **AddOn skin name**
 Name of the AddOn skin producing this bug, if known
