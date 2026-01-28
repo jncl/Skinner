@@ -2779,7 +2779,6 @@ if not aObj.isClscERA then
 					self:SecureHookScript(fObj.JourneyProgress, "OnShow", function(frame)
 						frame.DividerTexture:SetTexture(nil)
 						frame.ProgressDetailsFrame.JourneyLevelBg:SetTexture(nil)
-						-- .DelveRewardProgressBar
 						-- TODO: skin .RenownTrackFrame.ClipFrame entries to remove border around level #
 						skinRewards(frame)
 						self:SecureHook(frame, "OnTrackUpdate", function(this, _, _, _, _)
