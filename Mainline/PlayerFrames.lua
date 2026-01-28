@@ -334,17 +334,44 @@ aObj.SetupMainline_PlayerFrames = function()
 		if not self.prdb.DamageMeter or self.initialized.DamageMeter then return end
 		self.initialized.DamageMeter = true
 
+		local function skinEntry(frame)
+			for _, tex in _G.pairs(frame.StatusBar.BackgroundRegions) do
+				tex:SetTexture(nil)
+			end
+			aObj:skinObject("statusbar", {obj=frame.StatusBar, fType=ftype, fi=0})
+		end
 		local function skinSessionWindow(frame)
 			frame.Header:SetTexture(nil)
-			-- .ScrollBox
-			-- .ScrollBar
-			-- .SourceWindow
-				-- .ScrollBox
 			if aObj.modBtnBs then
 				aObj:addButtonBorder{obj=frame.SettingsDropdown, fType=ftype, es=12, ofs=-2, y1=1, y2=5}
 				aObj:addButtonBorder{obj=frame.SessionDropdown, fType=ftype, rpA=true, es=12, x1=-3, y1=3, x2=4, y2=-3}
 				aObj:addButtonBorder{obj=frame.DamageMeterTypeDropdown, fType=ftype, es=12, ofs=-1, y1=0, y2=2}
 			end
+			self:skinObject("scrollbar", {obj=frame.ScrollBar, fType=ftype})
+			local function skinPlayerEntry(...)
+				local _, element, elementData
+				if _G.select("#", ...) == 2 then
+					element, elementData = ...
+				else
+					_, element, elementData = ...
+				end
+				skinEntry(element)
+			end
+			_G.ScrollUtil.AddInitializedFrameCallback(frame.ScrollBox, skinPlayerEntry, aObj, true)
+			skinEntry(frame.LocalPlayerEntry)
+			self:skinObject("scrollbar", {obj=frame.SourceWindow.ScrollBar, fType=ftype})
+			local function skinSpellEntry(...)
+				local _, element, elementData, new
+				if _G.select("#", ...) == 2 then
+					element, elementData = ...
+				elseif _G.select("#", ...) == 3 then
+					element, elementData, new = ...
+				else
+					_, element, elementData, new = ...
+				end
+				skinEntry(element)
+			end
+			_G.ScrollUtil.AddInitializedFrameCallback(frame.SourceWindow.ScrollBox, skinSpellEntry, aObj, true)
 		end
 		_G.DamageMeter:ForEachSessionWindow(function(sessionWindow)
 			skinSessionWindow(sessionWindow)
