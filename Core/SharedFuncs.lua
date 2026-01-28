@@ -122,6 +122,7 @@ function aObj.checkLibraries(_, extraLibs)
 end
 
 function aObj:createAddOn(makeGlobal)
+
 	_G.LibStub:GetLibrary("AceAddon-3.0"):NewAddon(self, aName, "AceConsole-3.0", "AceEvent-3.0", "AceHook-3.0")
 	-- add to Global namespace if required
 	if makeGlobal then
@@ -393,6 +394,6 @@ aObj.Debug3 = _G.nop
 if _G.WOW_PROJECT_ID == _G.WOW_PROJECT_MAINLINE then
 	_G[aName .. "_OnAddonCompartmentClick"] = function(addonName, _, _)
 		aObj.callbacks:Fire("Options_Selected")
-		_G.Settings.OpenToCategory(addonName)
+		_G.Settings.OpenToCategory(aObj.L[aName])
 	end
 end
