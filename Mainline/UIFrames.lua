@@ -2817,16 +2817,15 @@ aObj.SetupMainline_UIFrames = function()
 		self.initialized.MajorFactions = true
 
 		self:SecureHookScript(_G.MajorFactionUnlockToast, "OnShow", function(this)
-			this.ToastBG:SetTexture(nil)
-			this:DisableDrawLayer("ARTWORK") -- .GlowLineBottom
+			this:DisableDrawLayer("BACKGROUND")
+			this:DisableDrawLayer("ARTWORK")
 
 			self:Unhook(this, "OnShow")
 		end)
 
 		self:SecureHookScript(_G.MajorFactionsRenownToast, "OnShow", function(this)
-			this.ToastBG:SetTexture(nil)
-			this.GlowLineBottom:SetAlpha(0) -- texture changed in code
-			this.RewardIconRing:SetTexture(nil)
+			this:DisableDrawLayer("BACKGROUND")
+			this:DisableDrawLayer("ARTWORK")
 
 			self:Unhook(this, "OnShow")
 		end)
