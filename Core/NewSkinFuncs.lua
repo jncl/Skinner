@@ -292,11 +292,11 @@ function aObj:skinObject(...)
 
 	if objType then
 		optsTable = self.skinTPLs(objType, objTable)
-		if aObj:canSkin(skinFuncs[objType], optsTable, optsTable.ncc) then
+		if aObj:canSkin(skinFuncs[objType], optsTable) then
 			skinFuncs[objType](optsTable)
 		end
 	else
-		if aObj:canSkin(skinFuncs[objTable.type], objTable, optsTable.ncc) then
+		if aObj:canSkin(skinFuncs[objTable.type], objTable) then
 			skinFuncs[objTable.type](objTable)
 		end
 	end

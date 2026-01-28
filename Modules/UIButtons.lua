@@ -142,7 +142,7 @@ function module.checkTex(_, ...)
 		opts.mp2 = _G.select(3, ...) and _G.select(3, ...) or nil
 	end
 
-	if aObj:canSkin(__checkTex, opts, false) then
+	if aObj:canSkin(__checkTex, opts) then
 		__checkTex(opts)
 	end
 
@@ -269,7 +269,7 @@ local function __skinCloseButton(opts)
 			noSkin  = don't add skin frame
 			font    = font to use
 			disfont = disabled font to use
-			ooc 	= DON'T skin in combat
+			ncc 	= DON'T check combat state
 	--]]
 	--@debug@
 	_G.assert(opts and _G.type(opts) == "table", "Missing options table __sCB\n" .. _G.debugstack(2, 3, 2))
@@ -349,7 +349,7 @@ function module.skinCloseButton(_, ...)
 		opts.obj = _G.select(1, ...) and _G.select(1, ...) or nil
 	end
 
-	if aObj:canSkin(__skinCloseButton, opts, opts.ncc) then
+	if aObj:canSkin(__skinCloseButton, opts) then
 		__skinCloseButton(opts)
 	end
 
@@ -366,7 +366,7 @@ local function __skinExpandButton(opts)
 			onSB   = put text on skinButton
 			plus   = use plus sign
 			clr    = border colour
-			ooc    = DON'T skin in combat
+			ncc 	= DON'T check combat state
 	--]]
 	--@debug@
 	_G.assert(opts and _G.type(opts) == "table", "Missing options table __sEB\n" .. _G.debugstack(2, 3, 2))
@@ -436,7 +436,7 @@ function module.skinExpandButton(_, ...)
 		opts.obj = _G.select(1, ...) and _G.select(1, ...) or nil
 	end
 
-	if aObj:canSkin(__skinExpandButton, opts, opts.ncc) then
+	if aObj:canSkin(__skinExpandButton, opts) then
 		__skinExpandButton(opts)
 	end
 
@@ -453,7 +453,7 @@ local function __skinOtherButton(opts)
 			font    = font to use
 			disfont = disabled font to use
 			text    = text to use
-			ooc 	= DON'T skin in combat
+			ncc 	= DON'T check combat state
 	--]]
 	--@debug@
 	_G.assert(opts and _G.type(opts) == "table", "Missing options table __sOB\n" .. _G.debugstack(2, 3, 2))
@@ -512,7 +512,7 @@ function module.skinOtherButton(_, ...)
 		opts.obj = _G.select(1, ...) and _G.select(1, ...) or nil
 	end
 
-	if aObj:canSkin(__skinOtherButton, opts, opts.ncc) then
+	if aObj:canSkin(__skinOtherButton, opts) then
 		__skinOtherButton(opts)
 	end
 
@@ -532,7 +532,7 @@ local function __skinStdButton(opts)
 			schk        = state check for colour changes
 			sechk       = set enabled check for colour changes
 			bd			= backdrop type
-			ooc 	 	= DON'T skin in combat
+			ncc 		= DON'T check combat state
 	--]]
 	--@debug@
 	_G.assert(opts and _G.type(opts) == "table", "Missing options table __sSB\n" .. _G.debugstack(2, 3, 2))
@@ -619,7 +619,7 @@ function module.skinStdButton(_, ...)
 		opts.obj = _G.select(1, ...) and _G.select(1, ...) or nil
 	end
 
-	if aObj:canSkin(__skinStdButton, opts, opts.ncc) then
+	if aObj:canSkin(__skinStdButton, opts) then
 		__skinStdButton(opts)
 	end
 
@@ -676,10 +676,11 @@ local function __addButtonBorder(opts)
 			schk     = state check for colour changes
 			sechk    = set enabled check for colour changes
 			ignTex	 = ignore changes to Normal & Pushed textures
-			ooc 	 = DON'T skin in combat
+			ncc 	 = DON'T check combat state
 			hide 	 = Hide if required (Better Bags)
 			sba 	 = set button Alpha
 			rpA 	 = reParent Arrow Texture
+			ccat     = check if object can be accessed (Secret values)
 	--]]
 	--@debug@
 	_G.assert(opts and _G.type(opts) == "table", "Missing options table __addButtonBorder\n" .. _G.debugstack(2, 3, 2))
@@ -830,7 +831,7 @@ function module.addButtonBorder(_, ...)
 		opts.obj = _G.select(1, ...) and _G.select(1, ...) or nil
 	end
 
-	if aObj:canSkin(__addButtonBorder, opts, opts.ncc) then
+	if aObj:canSkin(__addButtonBorder, opts) then
 		__addButtonBorder(opts)
 	end
 
@@ -846,6 +847,7 @@ local function __skinCheckButton(opts)
 			sechk = set enabled check for colour changes
 			ignNT = ignore NormalTexture checks (WoWPro uses bespoke textures)
 			size  = set object size
+			ncc   = DON'T check combat state
 	--]]
 	--@debug@
 	_G.assert(opts.obj, "Missing object __sCB\n" .. _G.debugstack(2, 3, 2))
@@ -920,7 +922,7 @@ function module.skinCheckButton(_, ...)
 		opts.obj = _G.select(1, ...) and _G.select(1, ...) or nil
 	end
 
-	if aObj:canSkin(__skinCheckButton, opts, opts.ncc) then
+	if aObj:canSkin(__skinCheckButton, opts) then
 		__skinCheckButton(opts)
 	end
 

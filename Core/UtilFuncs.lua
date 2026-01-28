@@ -234,16 +234,25 @@ function aObj:canSkin(callingFunc, opts)
 		return false
 	end
 
-	dontCheckCombat = dontCheckCombat or false
 	-- handle in combat
-	if not dontCheckCombat
+	if not opts.ncc
 	and _G.InCombatLockdown()
 	then
-		self:add2Table(self.oocTab, {callingFunc, {opts}})
+		-- handle button border skinning of objects with Secret Values (e.g. Buff/Debuff buttons etc)
+		-- including not adding if already been in combat, as objects are reused and cause errors if skinned
+		if not opts.ccat
+		and not self.PRE
+		then
+			self:add2Table(self.oocTab, {callingFunc, {opts}})
+		--@debug@
+		else
+			aObj:Debug("canSkin not adding to oocTab: [%s, %s, %s]", opts.obj, checkCanAccessTable, aObj.PRE)
+		--@end-debug@
+		end
 		return false
+	else
+		return true
 	end
-
-	return true
 
 end
 

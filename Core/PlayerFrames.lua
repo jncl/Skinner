@@ -695,27 +695,14 @@ then
 				if not btn:GetDebugName():find("AuraContainer") then
 					return
 				end
-				if btn.auraType == "Debuff"
+				if btn.auraType == "Buff"
+				or btn.auraType == "Debuff"
 				or btn.auraType == "DeadlyDebuff"
+				or btn.auraType == "TempEnchant"
 				then
-					-- handle Debuff Button
-					aObj:addButtonBorder{obj=btn, fType=ftype, relTo=btn.Icon, reParent={btn.Count, btn.Duration, btn.Symbol}, ooc=true, ofs=3}
-					-- handle Buff Button
-				elseif btn.auraType == "Buff" then
-					aObj:addButtonBorder{obj=btn, fType=ftype, relTo=btn.Icon, reParent={btn.Count, btn.Duration}, ooc=true, ofs=3}
-					-- handle TempEnchant Button
-				elseif btn.auraType == "TempEnchant" then
-					aObj:addButtonBorder{obj=btn, fType=ftype, relTo=btn.Icon, reParent={btn.Count, btn.Duration}, ooc=true, ofs=3}
-				end
-				-- TempEnchant, Debuff
-				if btn.Border then
-					btn.Border:SetAlpha(0)
-					if btn.sbb then
-						btn.sbb:SetBackdropBorderColor(btn.Border:GetVertexColor())
-					end
-				else
-					if btn.sbb then
-						aObj:clrBtnBdr(btn, "grey")
+					aObj:addButtonBorder{obj=btn, fType=ftype, relTo=btn.Icon, ofs=3, clr=btn.Border and {btn.Border:GetVertexColor()} or "grey", ccat=true}
+					if btn.Border then
+						btn.Border:SetAlpha(0)
 					end
 				end
 			end
@@ -726,13 +713,9 @@ then
 					end
 				end
 			end
-			for _, frame in _G.pairs{_G.BuffFrame, _G.DebuffFrame, aObj.isMnlnBeta and _G.ExternalDefensivesFrame or nil} do
+			for _, frame in _G.pairs{_G.BuffFrame, _G.DebuffFrame, self.isMnln and _G.ExternalDefensivesFrame or nil} do
 				skinBuffs(frame)
-				self:SecureHook(frame, "UpdateAuraButtons", function(this)
-					if not this.hasInitializedForEditMode then
-						skinBuffs(this)
-					end
-				end)
+				-- N.B. DON'T hook the UpdateAuraButtons function as it causes many Secret Values errors
 			end
 			self:SecureHookScript(_G.DeadlyDebuffFrame, "OnShow", function(this)
 				skinBuffBtn(this.Debuff)

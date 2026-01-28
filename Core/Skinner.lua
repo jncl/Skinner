@@ -273,12 +273,14 @@ function aObj:OnEnable()
 	end
 	--@end-debug@
 
-	self.oocTab = {}
+	self.oocTab, self.PRE = {}, false
 	self:RegisterEvent("PLAYER_REGEN_ENABLED", function()
 		for _, entry in _G.ipairs(self.oocTab) do
 			entry[1](_G.unpack(entry[2]))
 		end
 		_G.wipe(self.oocTab)
+		-- indicate that combat has occurred
+		self.PRE = true
 	end)
 
 	-- register for event after a slight delay as registering ADDON_LOADED any earlier causes it not to be registered if LoD modules are loaded on startup (e.g. SimpleSelfRebuff/LightHeaded)
