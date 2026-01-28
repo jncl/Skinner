@@ -141,11 +141,16 @@ function aObj:applyGradient(obj, fh, invert, rotate)
 
 	if self.prdb.FadeHeight.enable
 	and (self.prdb.FadeHeight.force or not fh)
-	and _G.Round(obj:GetHeight()) ~= obj.hgt
+	-- and _G.Round(obj:GetHeight()) ~= obj.hgt
 	then
 		-- set the Fade Height if not already passed to this function or 'forced'
 		-- making sure that it isn't greater than the frame height
-		obj.hgt = _G.Round(obj:GetHeight())
+		if _G.canaccessvalue(obj:GetHeight()) then
+			obj.hgt = _G.Round(obj:GetHeight())
+		else
+			obj.hgt = obj:GetHeight()
+		end
+		-- _G.Round(obj:GetHeight())
 		fh = self.prdb.FadeHeight.value <= obj.hgt and self.prdb.FadeHeight.value or obj.hgt
 	end
 
@@ -205,12 +210,16 @@ function aObj:applyTooltipGradient(obj)
 	elseif self.prdb.Tooltips.style == 2 then -- Flat
 		self:applyGradient(obj)
 	elseif self.prdb.Tooltips.style == 3 then -- Custom
-		self:applyGradient(obj, _G.Round(obj:GetHeight()))
+		if _G.canaccessvalue(obj:GetHeight()) then
+			self:applyGradient(obj, _G.Round(obj:GetHeight()))
+		else
+			self:applyGradient(obj, obj:GetHeight())
+		end
 	end
 
 end
 
-function aObj:canSkin(callingFunc, opts, dontCheckCombat)
+function aObj:canSkin(callingFunc, opts)
 
 	if not opts.obj then
 		return false
