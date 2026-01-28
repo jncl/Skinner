@@ -4379,10 +4379,10 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 			-- aObj:Debug("hookAndSkinWidgets: [%s, %s, %s]", widgetContainer:IsForbidden(), widgetContainer:IsForbidden() or widgetContainer:GetDebugName())
 			-- DON'T skin NamePlate[n].* widgets as they cause Clamping Errors if they are initially skinned
 			if widgetContainer:IsForbidden()
+			or not _G.canaccessvalue(widgetContainer:GetDebugName())
 			or widgetContainer:GetDebugName():find("^NamePlate%d+%.")
 			then
-				return
-			end
+				return			end
 			aObj:SecureHook(widgetContainer, "UpdateWidgetLayout", function(this)
 				for widget in this.widgetPools:EnumerateActive() do
 					skinWidget(widget, _G.UIWidgetManager:GetWidgetTypeInfo(widget.widgetType))
