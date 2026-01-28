@@ -233,7 +233,7 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 				if frame.Icon then
 					frame.Icon:SetDrawLayer("BORDER")
 					if not tbl.nis then
-						aObj:addButtonBorder{obj=frame, fType=ftype, relTo=frame.Icon}
+						aObj:addButtonBorder{obj=frame, fType=ftype, relTo=frame.Icon, ncc=true}
 					end
 				end
 				if tbl.ib then
@@ -257,7 +257,7 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 				if tbl.icon.obj then
 					frame = frame[tbl.icon.obj or "Icon"]
 				end
-				aObj:addButtonBorder{obj=frame, fType=ftype, relTo=frame[tbl.icon.tex]}
+				aObj:addButtonBorder{obj=frame, fType=ftype, relTo=frame[tbl.icon.tex], ncc=true}
 			end
 			if itemQuality then
 				aObj:setBtnClr(frame, itemQuality)

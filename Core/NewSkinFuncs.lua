@@ -775,6 +775,7 @@ local function skinFrame(tbl)
 	so.fh     = tbl.fh
 	so.invert = tbl.invert
 	so.rotate = tbl.rotate
+	so.ncc    = tbl.ncc
 	-- apply the 'Skinner effect' to the frame
 	aObj:skinObject(so)
 	return tbl.obj.sf

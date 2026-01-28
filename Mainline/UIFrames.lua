@@ -1062,7 +1062,7 @@ aObj.SetupMainline_UIFrames = function()
 			this:DisableDrawLayer("BORDER")
 			this.Background:SetTexture(nil)
 			_G.RaiseFrameLevelByTwo(this)
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ofs=-1, y1=-2})
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ncc=true, ofs=-1, y1=-2})
 			if self.modBtns then
 				self:skinCloseButton{obj=this.CloseXButton}
 				self:skinStdButton{obj=this.CloseButton}
