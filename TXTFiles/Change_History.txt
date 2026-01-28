@@ -1,3 +1,16 @@
+beta12.65512.1
+Jncl:
+	Updated ToDo*.txt files
+	Updated Change_History.txt
+	Updated Version numbers
+	Applied BC Anniversary changes, closes #258
+	Applied Retail Midnight pre-expansion changes, closes #259
+	Updated Retail ReadyCheckPopup skin code
+	Updated NSF Tab skinning code
+	Updated Classic CastingBar code
+	Bugfix for CompactRaidFrameManager Unit frames
+	Updated Baganator skin, SV Bank buttons now skinned
+
 beta11.65028.1
 Jncl:
 	Updated ToDo*.txt files
