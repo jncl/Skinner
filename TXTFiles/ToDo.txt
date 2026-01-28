@@ -15,8 +15,14 @@ ToDos
 
 	 ≈	O/M	PerksProgramProductDetailsContainerFrame, skin contents
 
-#257 x	I/M Baganator quality borders missing
+#262 √	I/M Cooldown Manager
 
-#258 ≈	I/E BC Anniversary version support?
+#263 √	I/M Secret Value Error? (applyTooltipGradient)
 
-#259 √	I/M MajorFactionRenownFrame
+#264 √	I/M Crafting Window do not allow to insert incredience
+
+#265 √	I/M arithmetic on local 'width' (a secret value)/Error on leaving combat (Buffs/Debuffs)
+
+#267 √	I/M Adventure Guide
+
+#268 √	I/M Appearances Tab
