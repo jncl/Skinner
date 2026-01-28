@@ -628,9 +628,33 @@ end
 -- N.B. removed "Arrow" texture to allow Dropdown button texture to be below button border
 -- therefore need to add rpA=true to buttons which have a Flyout capability
 local rpRegions = {
-	"ActionBarHighlight", "AutoCastable", "AutoCastOverlay", "AutoCastShine", "Count", "Flash", "Glow", "HotKey",
-	"IconBorder","IconQuestTexture", "ItemContextOverlay", "ItemOverlay", "ItemOverlay2", "LevelLinkLockIcon", "Name", "NewActionTexture",
-	"ProfessionQualityOverlay", "rarityIcon", "searchOverlay", "SlotBorder", "SlotBorderOpen", "SpellHighlightTexture", "Stock", "subIcon", "subIconRight"
+	"ActionBarHighlight",
+	"AutoCastable",
+	"AutoCastOverlay",
+	"AutoCastShine",
+	"Count",
+	"Duration",
+	"Flash",
+	"Glow",
+	"HotKey",
+	"IconBorder",
+	"ItemContextOverlay",
+	"ItemOverlay",
+	"ItemOverlay2",
+	"IconQuestTexture",
+	"LevelLinkLockIcon",
+	"Name",
+	"NewActionTexture",
+	"ProfessionQualityOverlay",
+	"rarityIcon",
+	"searchOverlay",
+	"SlotBorder",
+	"SlotBorderOpen",
+	"SpellHighlightTexture",
+	"Stock",
+	"subIcon",
+	"subIconRight",
+	"Symbol",
 }
 local function reparentRegion(region, parent)
 	if region
@@ -732,10 +756,8 @@ local function __addButtonBorder(opts)
 	opts.obj.sbb:EnableMouse(false) -- enable clickthrough
 	opts.obj.sbb:SetShown(not opts.hide)
 	aObj:addBackdrop(opts.obj.sbb)
-	-- DON'T lower the frame level otherwise the border appears below the frame
-	-- setup and apply the backdrop
+	-- N.B. DON'T lower the frame level otherwise the border appears below the frame
 	opts.obj.sbb:SetBackdrop({edgeFile = aObj.Backdrop[1].edgeFile, edgeSize = opts.es or aObj.Backdrop[1].edgeSize})
-	-- position the frame
 	opts.ofs = opts.ofs or 2
 	opts.x1 = opts.x1 or opts.ofs * -1
 	opts.y1 = opts.y1 or opts.ofs
