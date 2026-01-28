@@ -562,7 +562,6 @@ aObj.SetupMainline_NPCFrames = function()
 				self:checkShown(fObj.PerksProgramProductDetailsContainerFrame)
 
 				self:SecureHookScript(fObj.PerksProgramShoppingCartFrame, "OnShow", function(frame)
-					-- TODO: skin ItemList entries
 					self:skinObject("frame", {obj=frame, fType=ftype, kfs=true, cb=true})
 					if self.modBtns then
 						frame.CloseButton:SetFrameLevel(1001)
@@ -571,6 +570,30 @@ aObj.SetupMainline_NPCFrames = function()
 					if self.modBtnBs then
 						self:addButtonBorder{obj=frame.ClearCartButton, fType=ftype, es=36, x1=-3, x2=3}
 					end
+
+					self:skinObject("scrollbar", {obj=frame.ItemList.ScrollBar, fType=ftype})
+					local function skinItem(...)
+						local _, element, elementData
+						if _G.select("#", ...) == 2 then
+							element, elementData = ...
+						else
+							_, element, elementData = ...
+						end
+						if elementData.isItemInfo then
+							if elementData.isSetItem
+							and elementData.isLastSetItem
+							then
+								y1Ofs = nil
+								y2Ofs = 19
+							else
+								y1Ofs = nil
+								y2Ofs = 1
+							end
+							element.BackgroundTexture:SetTexture(nil)
+							aObj:skinObject("frame", {obj=element, fb=true, clr="grey", y1=y1Ofs, y2=y2Ofs})
+						end
+					end
+					_G.ScrollUtil.AddInitializedFrameCallback(frame.ItemList.ScrollBox, skinItem, aObj, true)
 
 					self:Unhook(frame, "OnShow")
 				end)
