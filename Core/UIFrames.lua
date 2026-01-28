@@ -4109,8 +4109,8 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 				self:skinObject("statusbar", {obj=tTip.statusBar2, fi=0})
 			end
 		end
-		-- N.B. DON'T skin CompareHeader as it causes the TooltipComparisonManager to error (Beta)
-		-- if not aObj.isMnlnBeta then
+		-- N.B. DON'T skin CompareHeader as it causes the TooltipComparisonManager to error ?
+		-- if not aObj.isMnln then
 			-- if it has a CompareHeader then skin it as a textured tab
 			if tTip.CompareHeader then
 				self:skinObject("frame", {obj=tTip.CompareHeader, fType=tTip.fType, kfs=true, bd=13, noBdr=true, x1=-1, y2=-10})
@@ -4132,8 +4132,8 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 		_G.ShoppingTooltip1,
 		_G.ShoppingTooltip2,
 	}
-	-- N.B. DON'T skin the GameTooltip as it causes the MoneyFrame to error (Midnight Beta)
-	-- if not aObj.isMnlnBeta then
+	-- N.B. DON'T skin the GameTooltip as it causes the MoneyFrame to error ?
+	-- if not aObj.isMnln then
 		aObj:add2Table(toolTips, _G.GameTooltip)
 	-- end
 	if self.isMnln then
@@ -4359,9 +4359,7 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 					btn:GetHighlightTexture():SetTexture(nil)
 				end
 			end
-		elseif wFrame.widgetType == 31 -- PreyHuntProgress
-		and aObj.isMnlnBeta
-		then
+		elseif wFrame.widgetType == 31 then -- PreyHuntProgress
 			_G.nop()
 		end
 	end

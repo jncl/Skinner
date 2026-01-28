@@ -994,9 +994,7 @@ aObj.SetupMainline_UIFrames = function()
 			self:moveObject{obj=this.SpellsTab, x=-3}
 			self:skinObject("editbox", {obj=this.SearchBox, fType=ftype, si=true, y1=-4, y2=4})
 			self:skinObject("scrollbar", {obj=this.CooldownScroll.ScrollBar, fType=ftype})
-			if aObj.isMnlnBeta then
-				self:skinObject("ddbutton", {obj=this.LayoutDropdown, fType=ftype})
-			end
+			self:skinObject("ddbutton", {obj=this.LayoutDropdown, fType=ftype})
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, ofs=0, y1=-1, y2=-2})
 			if self.modBtns then
 				self:skinStdButton{obj=this.SaveLayoutButton, fType=ftype, schk=true, sechk=true}
@@ -3857,9 +3855,7 @@ aObj.SetupMainline_UIFrames = function()
 
 		skinTutorialFrame(_G.TutorialMainFrame_Frame)
 		skinTutorialFrame(_G.TutorialSingleKey_Frame)
-		if aObj.isMnlnBeta then
-			skinTutorialFrame(_G.TutorialDoubleKey_Frame)
-		end
+		skinTutorialFrame(_G.TutorialDoubleKey_Frame)
 
 		self:RawHook(_G.TutorialPointerFrame, "_GetFrame", function(this, parentFrame)
 			local frame = aObj.hooks[this]._GetFrame(this, parentFrame)
