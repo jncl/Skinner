@@ -203,23 +203,37 @@ aObj.SetupMainline_PlayerFrames = function()
 				end
 			end)
 			-- Categories
-			-- Options
-				-- TODO: skin Dropdowns as per Settings
-			self:SecureHook(this, "UpdateOptionButtons", function(fObj, _)
-				for btn in fObj.pools:GetPool("CharCustomizeCategoryButtonTemplate"):EnumerateActive() do
-					btn.Ring:SetTexture(nil)
-				end
-				-- CharCustomizeAlteredFormButtonTemplate
-				-- CharCustomizeAlteredFormSmallButtonTemplate
-				for btn in fObj.pools:GetPool("CharCustomizeConditionalModelButtonTemplate"):EnumerateActive() do
-					btn.Ring:SetTexture(nil)
-				end
-				-- CharCustomizeBodyTypeButtonTemplate
-				if not aObj.isMnlnBeta then
-					if self.modChkBtns then
-						for frame in fObj.pools:GetPool("CharCustomizeOptionCheckButtonTemplate"):EnumerateActive() do
-							self:skinCheckButton{obj=frame.Button, fType=ftype}
+			local function skinBtnTemplate(template)
+				if this.pools:GetPool(template) then
+					for btn in this.pools:GetPool(template):EnumerateActive() do
+						if btn.Ring then
+							btn.Ring:SetTexture(nil)
 						end
+					end
+				end
+			end
+			self:SecureHook(this, "UpdateOptionButtons", function(fObj, _)
+				for type in _G.pairs{"Category", "AlteredForm", "AlteredFormSmall", "ConditionalModel", "BodyType"} do
+					skinBtnTemplate("CharCustomize" .. type .. "ButtonTemplate")
+				end
+				for slider in this.sliderPool:EnumerateActive() do
+					self:skinObject("slider", {obj=slider.ScrollBar, fType=ftype})
+				end
+				if self.modBtns then
+					for ddObj in this.dropdownPool:EnumerateActive() do
+						self:skinStdButton{obj=ddObj.Dropdown, fType=ftype, ignoreHLTex=true, sechk=true, y1=1, y2=-1}
+						self:skinStdButton{obj=ddObj.IncrementButton, fType=ftype, sechk=true, ofs=1}
+						self:skinStdButton{obj=ddObj.DecrementButton, fType=ftype, sechk=true, ofs=1}
+						if ddObj.Dropdown.WarningTexture
+						and ddObj.Dropdown.WarningTexture:GetAlpha() == 0
+						then
+							ddObj.Dropdown.WarningTexture:Hide()
+						end
+					end
+				end
+				if self.modChkBtns then
+					for cBtn in this.pools:GetPool("CustomizationOptionCheckButtonTemplate"):EnumerateActive() do
+						self:skinCheckButton{obj=cBtn.Button, fType=ftype}
 					end
 				end
 			end)
@@ -230,25 +244,23 @@ aObj.SetupMainline_PlayerFrames = function()
 			end
 			if self.modBtnBs then
 				self:addButtonBorder{obj=this.RandomizeAppearanceButton, fType=ftype, ofs=-4, x1=5, y2=5, clr="gold"}
-				self:addButtonBorder{obj=this.SmallButtons.ResetCameraButton, fType=ftype, ofs=-4, x1=5, y2=5, clr="gold"}
-				self:addButtonBorder{obj=this.SmallButtons.ZoomOutButton, fType=ftype, ofs=-4, x1=5, y2=5, clr="gold"}
-				self:addButtonBorder{obj=this.SmallButtons.ZoomInButton, fType=ftype, ofs=-4, x1=5, y2=5, clr="gold"}
-				self:addButtonBorder{obj=this.SmallButtons.RotateLeftButton, fType=ftype, ofs=-4, x1=5, y2=5, clr="gold"}
-				self:addButtonBorder{obj=this.SmallButtons.RotateRightButton, fType=ftype, ofs=-4, x1=5, y2=5, clr="gold"}
+				for _, btn in _G.pairs(this.SmallButtons.ControlButtons) do
+					self:addButtonBorder{obj=btn, fType=ftype, ofs=-4, x1=5, y2=5, clr="gold"}
+				end
 				self:SecureHook(this, "UpdateZoomButtonStates", function(fObj)
 					self:clrBtnBdr(fObj.SmallButtons.ZoomOutButton, "gold")
 					self:clrBtnBdr(fObj.SmallButtons.ZoomInButton, "gold")
 				end)
 			end
 
-			self:Unhook(this, "OnShow")
-		end)
-
 		if not aObj.isMnlnBeta then
 			_G.C_Timer.After(0.1, function()
 				self:add2Table(self.ttList, _G.CharCustomizeNoHeaderTooltip)
 			end)
 		end
+
+			self:Unhook(this, "OnShow")
+		end)
 
 	end
 
