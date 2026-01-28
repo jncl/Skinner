@@ -3731,6 +3731,9 @@ aObj.SetupMainline_UIFrames = function()
 				    aObj:add2Table(aObj.oocTab, {clrFrame, {...}})
 				    return
 				end
+				if not _G.TalkingHeadFrame.MainFrame.sf then
+					return
+				end
 				local r, _,_,_ = ...
 				if r == 0 then -- use light background (Island Expeditions, Voldun Quest, Dark Iron intro)
 					_G.TalkingHeadFrame.MainFrame.sf:SetBackdropColor(.75, .75, .75, .75)
