@@ -93,6 +93,7 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 	}
 	--@end-debug@
 
+	-- AlertFrame Templates can be found in AlertFrameSystems.xml
 	local alertType = {
 		["Achievement"]           = {ofs = 0, nt = {"Background"}, stc = "Unlocked", icon = {obj = "Icon", ddl = {"border", "overlay"}, tex = "Texture"}},
 		["Criteria"]              = {ofs = -8, y1 = -6, nt = {"Background"}, stc = "Unlocked", icon = {obj = "Icon", ddl = {"border", "overlay"}, tex ="Texture"}},
@@ -125,10 +126,11 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 		alertType["Achievement"].y2         = 12
 		alertType["EntitlementDelivered"]   = {ofs = -10}
 		alertType["GuildRename"]            = {ofs = -10}
-		alertType["HousingItemEarned"]		= {ofs = -8, ddl = {"background", "border"}, stn = {"Divider"}, icon = {tex = "Icon"}}
+		alertType["HousingItemEarned"]		= {ofs = -8, ddl = {"background", "border"}, stn = {"Divider"}, icon = {tex = "Icon"}, sysType = "AlertFrameSystem"}
+		alertType["InitiativeTaskComplete"]	= {ofs = -8, ddl = {"background", "border"}, stn = {"Divider"}, sysType = "AlertFrameSystem"}
 		alertType["Loot"].icon              = {obj = "lootItem", stn = {"SpecRing"}, ib = true, tex =  "Icon"}
 		alertType["MonthlyActivity"]        = {ofs = 0, nt = {"Background"}, stc = "Unlocked", icon = {obj = "Icon", ddl = {"border", "overlay"}, tex ="Texture"}}
-		alertType["NewCosmetic"]            = {ofs = -8, y1 = -12, ddl = {"background"}, ib = true, iq = _G.Enum.ItemQuality.Epic}
+		alertType["NewCosmetic"]            = {ofs = -8, y1 = -12, ddl = {"background"}, ib = true, iq = _G.Enum.ItemQuality.Epic, sysType = "AlertFrameSystem"}
 		alertType["NewRuneforgePower"]      = {ofs = -8, ddl = {"background"}, ib = true, iq = _G.Enum.ItemQuality.Legendary}
 		alertType["NewToy"]                 = {ofs = -8, y1 = -12, ddl = {"background"}, ib = true}
 		alertType["NewWarbandScene"]        = {ofs = -8, y1 = -12, ddl = {"background"}, ib = true}
@@ -264,13 +266,8 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 			end
 		end
 	end
-	for type, _ in _G.pairs(alertType) do
-		local sysName = "AlertSystem"
-		if type == "NewCosmetic"
-		or type == "HousingItemEarned"
-		then
-			sysName = "AlertFrameSystem"
-		end
+	for type, opts in _G.pairs(alertType) do
+		local sysName = opts.sysType or "AlertSystem"
 		self:SecureHook(_G[type .. sysName], "setUpFunction", function(frame, _)
 			skinAlertFrame(type, frame)
 		end)
