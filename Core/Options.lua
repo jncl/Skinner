@@ -56,7 +56,7 @@ aObj.SetupDefaults = function(self)
 		-- Player Frames
 			DisableAllP                = false,
 			AchievementUI              = not aObj.isClscERA and {skin = true, style = 2} or nil,
-			CastingBar                 = {skin = true, glaze = true},
+			CastingBar                 = not aObj,isMnln and {skin = true, glaze = true} or nil,
 			CompactFrames              = {skin = true, sbars = true},
 			ContainerFrames            = {skin = false, itmbtns = false, fheight = 100},
 			LootFrames                 = {skin = true, size = 1},
