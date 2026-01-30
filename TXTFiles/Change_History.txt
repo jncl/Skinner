@@ -1,3 +1,14 @@
+beta12.65655.1
+Jncl:
+	Updated ToDo*.txt files
+	Updated Change_History.txt
+	Updated Version numbers
+	Updated Tooltip handling code
+	Updated StaticPopups skin
+	Updated DeathRecap skin
+	Removed unnecessary combat check
+	Bugfix for CastingBar options, closes #269
+
 beta12.65614.1
 Jncl:
 	Updated ToDo*.txt files
