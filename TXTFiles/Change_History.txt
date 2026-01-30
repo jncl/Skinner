@@ -1,3 +1,9 @@
+beta12.65655.2
+Jncl:
+	Updated ToDo*.txt files
+	Updated Change_History.txt
+	Bugfix for using SecretValues checks outside Retail versions
+
 beta12.65655.1
 Jncl:
 	Updated ToDo*.txt files
