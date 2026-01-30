@@ -141,17 +141,22 @@ function aObj:applyGradient(obj, fh, invert, rotate)
 
 	if self.prdb.FadeHeight.enable
 	and (self.prdb.FadeHeight.force or not fh)
-	-- and _G.Round(obj:GetHeight()) ~= obj.hgt
 	then
 		-- set the Fade Height if not already passed to this function or 'forced'
-		-- making sure that it isn't greater than the frame height
 		if _G.canaccessvalue(obj:GetHeight()) then
 			obj.hgt = _G.Round(obj:GetHeight())
 		else
 			obj.hgt = obj:GetHeight()
 		end
-		-- _G.Round(obj:GetHeight())
 		fh = self.prdb.FadeHeight.value <= obj.hgt and self.prdb.FadeHeight.value or obj.hgt
+	end
+
+	if _G.issecretvalue(fh) then
+		--@debug@
+		aObj:Debug("applyGradient, attempting to access a Secret Value fh: [%s, %s]", obj, fh)
+		--@end-debug@
+		obj.tfade = nil
+		return
 	end
 
 	local oFs = self.prdb.BdInset
@@ -197,13 +202,12 @@ function aObj:applyGradient(obj, fh, invert, rotate)
 end
 
 function aObj:applyTooltipGradient(obj)
-	--@debug@
 	if obj:IsForbidden() then
+		--@debug@
 		aObj:CustomPrint(1, 0, 0, "Object is flagged as Forbidden, aTG", obj)
+		--@end-debug@
+		return
 	end
-	--@end-debug@
-
-	if obj:IsForbidden() then return end
 
 	if self.prdb.Tooltips.style == 1 then -- Rounded
 		self:applyGradient(obj, 32)
@@ -239,9 +243,7 @@ function aObj:canSkin(callingFunc, opts)
 	and _G.InCombatLockdown()
 	then
 		-- handle button border skinning of objects with Secret Values (e.g. Buff/Debuff buttons etc)
-		-- including not adding if already been in combat, as objects are reused and cause errors if skinned
 		if not opts.ccat
-		and not self.PRE
 		then
 			self:add2Table(self.oocTab, {callingFunc, {opts}})
 		--@debug@
