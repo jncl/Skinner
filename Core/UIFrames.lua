@@ -4111,13 +4111,10 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 				self:skinObject("statusbar", {obj=tTip.statusBar2, fi=0})
 			end
 		end
-		-- N.B. DON'T skin CompareHeader as it causes the TooltipComparisonManager to error ?
-		-- if not aObj.isMnln then
-			-- if it has a CompareHeader then skin it as a textured tab
-			if tTip.CompareHeader then
-				self:skinObject("frame", {obj=tTip.CompareHeader, fType=tTip.fType, kfs=true, bd=13, noBdr=true, x1=-1, y2=-10})
-			end
-		-- end
+		-- if it has a CompareHeader then skin it as a textured tab
+		if tTip.CompareHeader then
+			self:skinObject("frame", {obj=tTip.CompareHeader, fType=tTip.fType, kfs=true, bd=13, noBdr=true, x1=-1, y2=-10})
+		end
 	end})
 
 	-- add tooltips to table
@@ -4128,32 +4125,28 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 	end
 	local toolTips = {
 		_G.EmbeddedItemTooltip,
+		_G.GameTooltip,
 		_G.ItemRefTooltip,
 		_G.ItemRefShoppingTooltip1,
 		_G.ItemRefShoppingTooltip2,
 		_G.ShoppingTooltip1,
 		_G.ShoppingTooltip2,
 	}
-	-- N.B. DON'T skin the GameTooltip as it causes the MoneyFrame to error ?
-	-- if not aObj.isMnln then
-		aObj:add2Table(toolTips, _G.GameTooltip)
-	-- end
-	if self.isMnln then
-		self:add2Table(toolTips, _G.GameSmallHeaderTooltip)
-	else
+	if not self.isMnln then
 		self:add2Table(toolTips, _G.SmallTextTooltip)
+	else
+		self:add2Table(toolTips, _G.GameSmallHeaderTooltip)
 	end
 	for _, tTip in _G.ipairs(toolTips) do
 		if self.isMnln then
 			if self:hasTextInName(tTip, "ShoppingTooltip") then
 				self.ttHook[tTip] = "SetShown"
 			end
-		end
-		if self.isMnln then
+			-- N.B. seems to be fixed in 12.0.0+ [29.01.26]
 			-- use this hook to prevent GameTooltip gradient overflow, fixes #243
-			if tTip == _G.GameTooltip then
-				self.ttHook[tTip] = "Show"
-			end
+			-- if tTip == _G.GameTooltip then
+				-- self.ttHook[tTip] = "Show"
+			-- end
 		end
 		addTooltip(tTip)
 	end
