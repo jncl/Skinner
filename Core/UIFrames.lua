@@ -3916,20 +3916,22 @@ aObj.blizzFrames[ftype].StaticPopups = function(self)
 			-- .Dropdown
 			-- .MoneyFrame
 			self:skinObject("moneyframe", {obj=this.MoneyInputFrame, moveIcon=true})
-			this.ItemFrame.NameFrame:SetTexture(nil)
-			-- if this.insertedFrame then
-			-- 	this.insertedFrame.ItemFrame.NameFrame:SetTexture(nil)
-			-- 	if self.modBtnBs then
-			-- 		self:addButtonBorder{obj=this.insertedFrame.ItemFrame.Item, fType=ftype, libt=true}
-			-- 		if this.insertedFrame.AlsoItemsFrame.pool then
-			-- 			for btn in this.insertedFrame.AlsoItemsFrame.pool:EnumerateActive() do
-			-- 				self:addButtonBorder{obj=btn, fType=ftype, clr="white"}
-			-- 			end
-			-- 		end
-			-- 	end
-			-- end
+			if this.ItemFrame then
+				this.ItemFrame.NameFrame:SetTexture(nil)
+			end
+			if this.insertedFrame then
+				this.insertedFrame.ItemFrame.NameFrame:SetTexture(nil)
+				if self.modBtnBs then
+					self:addButtonBorder{obj=this.insertedFrame.ItemFrame, fType=ftype, libt=true}
+					if this.insertedFrame.AlsoItemsFrame.pool then
+						for btn in this.insertedFrame.AlsoItemsFrame.pool:EnumerateActive() do
+							self:addButtonBorder{obj=btn, fType=ftype, clr="white"}
+						end
+					end
+				end
+			end
 			-- N.B. Close Button handled above, offset is to allow DarkOverlay to overlay skin frame border as well
-			self:skinObject("frame", {obj=this, fType=ftype, ofs=-4})
+			self:skinObject("frame", {obj=this, fType=ftype, ncc=true, ofs=-4})
 			if self.modBtns then
 				for _, btn in _G.pairs(this.ButtonContainer.Buttons) do
 					self:skinStdButton{obj=btn, fType=ftype, schk=true, sechk=true, y=2}
