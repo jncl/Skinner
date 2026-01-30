@@ -143,7 +143,8 @@ function aObj:applyGradient(obj, fh, invert, rotate)
 	and (self.prdb.FadeHeight.force or not fh)
 	then
 		-- set the Fade Height if not already passed to this function or 'forced'
-		if _G.canaccessvalue(obj:GetHeight()) then
+		if _G.canaccessvalue
+		and _G.canaccessvalue(obj:GetHeight()) then
 			obj.hgt = _G.Round(obj:GetHeight())
 		else
 			obj.hgt = obj:GetHeight()
@@ -151,7 +152,8 @@ function aObj:applyGradient(obj, fh, invert, rotate)
 		fh = self.prdb.FadeHeight.value <= obj.hgt and self.prdb.FadeHeight.value or obj.hgt
 	end
 
-	if _G.issecretvalue(fh) then
+	if _G.issecretvalue
+	and _G.issecretvalue(fh) then
 		--@debug@
 		aObj:Debug("applyGradient, attempting to access a Secret Value fh: [%s, %s]", obj, fh)
 		--@end-debug@
@@ -214,7 +216,8 @@ function aObj:applyTooltipGradient(obj)
 	elseif self.prdb.Tooltips.style == 2 then -- Flat
 		self:applyGradient(obj)
 	elseif self.prdb.Tooltips.style == 3 then -- Custom
-		if _G.canaccessvalue(obj:GetHeight()) then
+		if _G.canaccessvalue
+		and _G.canaccessvalue(obj:GetHeight()) then
 			self:applyGradient(obj, _G.Round(obj:GetHeight()))
 		else
 			self:applyGradient(obj, obj:GetHeight())

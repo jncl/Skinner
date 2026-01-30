@@ -4372,7 +4372,7 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 			-- aObj:Debug("hookAndSkinWidgets: [%s, %s, %s]", widgetContainer:IsForbidden(), widgetContainer:IsForbidden() or widgetContainer:GetDebugName())
 			-- DON'T skin NamePlate[n].* widgets as they cause Clamping Errors if they are initially skinned
 			if widgetContainer:IsForbidden()
-			or not _G.canaccessvalue(widgetContainer:GetDebugName())
+			or not (_G.canaccessvalue and _G.canaccessvalue(widgetContainer:GetDebugName()) or nil)
 			or widgetContainer:GetDebugName():find("^NamePlate%d+%.")
 			then
 				return			end
