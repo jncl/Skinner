@@ -5,7 +5,7 @@ local _G = _G
 local buildInfo = {
 	-- _anniversary_
 	-- wow_classic_beta    = {"MOP Classic Beta",          "5.5.0",  62071},
-	wow_beta            	= {"Midnight Beta",             "12.0.1", 65448},
+	wow_beta            	= {"Midnight Beta",             "12.0.1", 65617},
 	wow_classic_ptr     	= {"PTR (MoP Classic)",			"5.5.3",  64794},
 	wow_classic_era_ptr 	= {"PTR (Classic Era)",         "2.5.5",  65295},
 	wow_ptr             	= {"PTR (Midnight)",			"12.0.0", 65614},
@@ -13,7 +13,7 @@ local buildInfo = {
 	wow_classic_anniversary	= {"BC Anniversary", 			"2.5.5",  65534},
 	wow_classic_era     	= {"World of Warcraft Classic", "1.15.8", 65300},
 	wow_classic         	= {"Mists of Panderia Classic", "5.5.3",  65302},
-	wow                 	= {"World of Warcraft",         "12.0.0", 65560},
+	wow                 	= {"World of Warcraft",         "12.0.0", 65655},
 	curr                	= {"curr", _G.GetBuildInfo()},
 }
 
