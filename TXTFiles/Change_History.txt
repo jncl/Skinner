@@ -1,3 +1,29 @@
+beta12.65614.1
+Jncl:
+	Updated ToDo*.txt files
+	Updated Change_History.txt
+	Updated Version numbers
+	Removed comment line
+	Applied Retail Beta changes
+	Updated Retail DamageMeter skin
+	Updated CharacterCustomize skin
+	Updated PerksProgram skin
+	Bugfix for Widgets skin code
+	Updated AlertFrames skin
+	Disable skinning of CastingBars in Retail
+	Updated UIButtons code
+	Updated MajorFactionToast frame(s) skin
+	Bugfix for TalkingHeadFrame skin
+	Ensure frames are skinned during combat if required
+	Updated Buttons sKinning code, closes #265
+	Updated applyTooltipGradient & applyGradint functions, closes #263
+	Updated Retail CooldownViewer skin, closes #262
+	Updated SharedFuncs code
+	Updated Github templates to include BC Anniversary version
+	Updated EncounterJournal code, closes #267
+	Updated WardrobeCollectionFrame code, closes #268
+	Updated ProfessionsTemplates code, closes #264
+
 beta12.65512.1
 Jncl:
 	Updated ToDo*.txt files
