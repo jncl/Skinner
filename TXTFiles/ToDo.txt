@@ -12,5 +12,3 @@ ToDos
 		O 	Update ISSUE_TEMPLATE(s) when Classic version name changes
 
 	 ?	O/?	ChatFrameTab for PetBattles has missing text
-
-#269 √	I/C Classic/PlayerFrames.lua:94: attempt to index field 'CastingBar' (a boolean value)
