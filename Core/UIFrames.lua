@@ -1766,6 +1766,20 @@ if not aObj.isClscERA then
 			self:Unhook(this, "OnShow")
 		end)
 
+		if self.isClsc then
+			self:SecureHookScript(_G.LFDReadyCheckPopup, "OnShow", function(this)
+				self:removeNineSlice(this.Border)
+				self:skinObject("frame", {obj=this, fType=ftype, kfs=true})
+				if self.modBtns then
+					self:skinStdButton{obj=this.YesButton}
+					self:skinStdButton{obj=this.NoButton}
+				end
+
+				self:Unhook(this, "OnShow")
+			end)
+			self:checkShown(_G.LFDReadyCheckPopup)
+		end
+
 	end
 
 	aObj.blizzFrames[ftype].LFGFrame = function(self)
@@ -1855,17 +1869,19 @@ if not aObj.isClscERA then
 			self:Unhook(this, "OnShow")
 		end)
 
-		self:SecureHookScript(_G.LFGReadyCheckPopup, "OnShow", function(this)
-			self:removeNineSlice(this.Border)
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true})
-			if self.modBtns then
-				self:skinStdButton{obj=this.YesButton}
-				self:skinStdButton{obj=this.NoButton}
-			end
+		if not self.isClsc then
+			self:SecureHookScript(_G.LFGReadyCheckPopup, "OnShow", function(this)
+				self:removeNineSlice(this.Border)
+				self:skinObject("frame", {obj=this, fType=ftype, kfs=true})
+				if self.modBtns then
+					self:skinStdButton{obj=this.YesButton}
+					self:skinStdButton{obj=this.NoButton}
+				end
 
-			self:Unhook(this, "OnShow")
-		end)
-		self:checkShown(_G.LFGReadyCheckPopup)
+				self:Unhook(this, "OnShow")
+			end)
+			self:checkShown(_G.LFGReadyCheckPopup)
+		end
 
 	end
 
