@@ -18,6 +18,7 @@
 <Script file="Annene.lua"/>
 <Script file="AnnounceTargetPH.lua"/>
 <Script file="AppearanceTooltip.lua"/>
+<Script file="ArkDewdrop.lua"/>
 <Script file="ArkInventory.lua"/>
 <Script file="Armory.lua"/>
 <Script file="Atlas.lua"/>

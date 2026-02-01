@@ -5,6 +5,15 @@ local _G = _G
 local r, g, b, _
 function aObj:clrBBC(obj, clrName, alpha)
 
+	--@debug@
+	 _G.assert(obj, "Missing object cBBC\n" .. _G.debugstack(2, 3, 2))
+	--@end-debug@
+
+	-- handle missing objects (e.g. missing button borders etc), bugfix for #269
+	if not obj then
+		return
+	end
+
 	-- bugfix for #239
 	if obj.SetBackdropBorderColor then
 		r, g, b, _ = self:getColourByName(clrName)
@@ -19,6 +28,7 @@ function aObj:clrButtonFromBorder(bObj, texture)
 	--@debug@
 	 _G.assert(bObj and bObj.sbb, "Missing object cBFB\n" .. _G.debugstack(2, 3, 2))
 	--@end-debug@
+
 	iBdr = bObj[texture] or bObj.IconBorder or bObj.iconBorder
 	--@debug@
 	 _G.assert(iBdr, "Missing border Texture cBFB\n" .. _G.debugstack(2, 3, 2))
@@ -39,6 +49,15 @@ end
 
 function aObj:clrBtnBdr(bObj, clrName, alpha)
 
+	--@debug@
+	 _G.assert(bObj.sbb or bObj.sb or bObj, "Missing object cBB\n" .. _G.debugstack(2, 3, 2))
+	--@end-debug@
+
+	-- handle missing objects (e.g. missing button borders etc), bugfix for #269
+	if not bObj then
+		return
+	end
+
 	-- check button state and alter colour accordingly
 	clrName = bObj.IsEnabled and not bObj:IsEnabled() and "disabled" or clrName
 	self:clrBBC(bObj.sbb or bObj.sb or bObj, clrName, alpha)
@@ -47,6 +66,10 @@ end
 
 
 function aObj:clrFrameBdr(fObj, clrName, alpha)
+
+	--@debug@
+	 _G.assert(fObj and fObj.sf, "Missing object cFB\n" .. _G.debugstack(2, 3, 2))
+	--@end-debug@
 
 	-- check frame state and alter colour accordingly
 	clrName = fObj.IsEnabled and not fObj:IsEnabled() and "disabled" or clrName
