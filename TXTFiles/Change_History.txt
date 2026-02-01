@@ -1,3 +1,8 @@
+beta12.65617.1
+Jncl:
+	Updated Change_History.txt
+	Bugfix for Classic, reinstate LFDReadyCheckPopup
+
 beta12.65655.2
 Jncl:
 	Updated ToDo*.txt files
