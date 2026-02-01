@@ -12,3 +12,7 @@ ToDos
 		O 	Update ISSUE_TEMPLATE(s) when Classic version name changes
 
 	 ?	O/?	ChatFrameTab for PetBattles has missing text
+
+#269 √	I/E Arkinventory.lua: 43: attempt to index field 'ARKINV_Frame4ChangerWindowAction' (a nil value)
+
+#270 √	I/R CompactVendor, item cost text is difficult to see
