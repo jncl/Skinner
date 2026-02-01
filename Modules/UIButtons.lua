@@ -327,7 +327,9 @@ local function __skinCloseButton(opts)
 	if aObj.isMnln then
 		text = aObj:getLastRegion(opts.obj)
 		text:SetDrawLayer("OVERLAY")
-		aObj:moveObject{obj=text, x=-1, y=-1}
+		if text:GetNumPoints() == 1 then
+			aObj:moveObject{obj=text, x=-1, y=-1}
+		end
 	end
 end
 function module.skinCloseButton(_, ...)
