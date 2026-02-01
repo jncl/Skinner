@@ -420,7 +420,7 @@ aObj.SetupMainline_PlayerFrames = function()
 				self:skinStdButton{obj=this.LinkButton, fType=ftype}
 			end
 			if self.modBtnBs then
-				self:addButtonBorder{obj=this.ToggleOutfitDetailsButton, fType=ftype}
+				self:addButtonBorder{obj=this.ToggleCustomSetDetailsButton, fType=ftype}
 			end
 
 			self:SecureHookScript(this.SetSelectionPanel, "OnShow", function(fObj)
@@ -446,6 +446,13 @@ aObj.SetupMainline_PlayerFrames = function()
 
 				self:Unhook(fObj, "OnShow")
 			end)
+
+			self:SecureHookScript(this.CustomSetDetailsPanel, "OnShow", function(fObj)
+			    self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, ofs=-4})
+
+			    self:Unhook(fObj, "OnShow")
+			end)
+			self:checkShown(this.CustomSetDetailsPanel)
 
 		end)
 
