@@ -927,11 +927,11 @@ aObj.SetupMainline_NPCFrames = function()
 					self:skinObject("statusbar", {obj=frame.SearchBox.ProgressFrame.ProgressBar, fi=0})
 		    		self:skinObject("ddbutton", {obj=frame.WeaponDropdown, fType=ftype})
 		    	    self:skinObject("frame", {obj=frame, fType=ftype, kfs=true, fb=true, y2=-4})
-		    	    frame.DisplayTypeUnassignedButton.IconFrame.Border:SetAlpha(0)
-		    	    frame.DisplayTypeEquippedButton.IconFrame.Border:SetAlpha(0)
+		    	    frame.DisplayTypes.DisplayTypeUnassignedButton.IconFrame.Border:SetAlpha(0)
+		    	    frame.DisplayTypes.DisplayTypeEquippedButton.IconFrame.Border:SetAlpha(0)
 		    	    if self.modBtns then
-		    	    	self:skinStdButton{obj=frame.DisplayTypeUnassignedButton, fType=ftype, ofs=-2, y1=-1}
-		    	    	self:skinStdButton{obj=frame.DisplayTypeEquippedButton, fType=ftype, ofs=-2, y1=-1}
+		    	    	self:skinStdButton{obj=frame.DisplayTypes.DisplayTypeUnassignedButton, fType=ftype, ofs=-2, y1=-1}
+		    	    	self:skinStdButton{obj=frame.DisplayTypes.DisplayTypeEquippedButton, fType=ftype, ofs=-2, y1=-1}
 		    	    end
 
 		    	    if self.modBtnBs then
