@@ -962,7 +962,7 @@ aObj.SetupMainline_UIFrames = function()
 		BarBackground:SetPoint("RIGHT", obj.Bar, 0, 0)
 	end
 	aObj.blizzFrames[ftype].CooldownViewer = function(self)
-		if not self.prdb.CooldownViewer or self.initialized.CooldownViewer then return end
+		if not self.prdb.CooldownViewer.buttons or self.initialized.CooldownViewer then return end
 		self.initialized.CooldownViewer = true
 
 		local frame
@@ -986,7 +986,7 @@ aObj.SetupMainline_UIFrames = function()
 	end
 
 	aObj.blizzFrames[ftype].CooldownViewerSettings = function(self)
-		if not self.prdb.CooldownViewer or self.initialized.CooldownViewerSettings then return end
+		if not self.prdb.CooldownViewer.settings or self.initialized.CooldownViewerSettings then return end
 		self.initialized.CooldownViewerSettings = true
 
 		self:SecureHookScript(_G.CooldownViewerSettings, "OnShow", function(this)
@@ -4039,7 +4039,6 @@ aObj.SetupMainline_UIFramesOptions = function(self)
 		["Class Trial"]                  = {suff = "Frames"},
 		["Console"]                      = {suff = "Frame"},
 		["Contribution"]                 = {suff = "Frame"},
-		["Cooldown Viewer"]              = true,
 		["Covenant Toasts"]              = true,
 		["Death Recap"]                  = {suff = "Frame"},
 		["Delves UI"]                    = _G.GetExpansionLevel() >= _G.LE_EXPANSION_WAR_WITHIN and true or nil,
@@ -4083,5 +4082,37 @@ aObj.SetupMainline_UIFramesOptions = function(self)
 	if self.db.profile.MainMenuBar.extraab == nil then
 		self.db.profile.MainMenuBar.extraab = true
 	end
+
+	self.db.defaults.profile.CooldownViewer = {settings = true, buttons = true}
+	if self.db.profile.CooldownViewer == nil then
+		self.db.profile.CooldownViewer = {settings = true, buttons = true}
+	else
+		if self.db.profile.CooldownViewer.settings == nil then
+			self.db.profile.CooldownViewer.settings = true
+		end
+		if self.db.profile.CooldownViewer.buttons == nil then
+			self.db.profile.CooldownViewer.buttons = true
+		end
+	end
+	self.optTables["UI Frames"].args.CooldownViewer = {
+		type = "group",
+		order = -1,
+		inline = true,
+		name = self.L["Cooldown Viewer"],
+		get = function(info) return self.db.profile.CooldownViewer[info[#info]] end,
+		set = function(info, value) self.db.profile.CooldownViewer[info[#info]] = value end,
+		args = {
+			settings = {
+				type = "toggle",
+				order = 1,
+				name = self.L["Skin Settings Frame"],
+			},
+			buttons = {
+				type = "toggle",
+				order = 2,
+				name = self.L["Skin Buttons"],
+			},
+		},
+	}
 
 end

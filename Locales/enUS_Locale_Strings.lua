@@ -285,6 +285,7 @@ aObj.locale_enUS =
     ["Skin Frame"] = true,
     ["Skin Frames"] = true,
     ["Skin Item Buttons"] = true,
+    ["Skin Settings Frame"] = true,
     ["Skin Status Bars"] = true,
     ["Skin"] = true,
     ["Skinner"] = true,
