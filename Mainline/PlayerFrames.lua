@@ -146,37 +146,6 @@ aObj.SetupMainline_PlayerFrames = function()
 
 	end
 
-	-- aObj.blizzFrames[ftype].CastingBar = function(self)
-	-- 	if not self.prdb.CastingBar.skin
-	-- 	or self.initialized.CastingBar then
-	-- 		self.blizzFrames[ftype].CastingBar = nil
-	-- 		return
-	-- 	end
-	-- 	self.initialized.CastingBar = true
-
-	-- 	if _G.C_AddOns.IsAddOnLoaded("Quartz")
-	-- 	or _G.C_AddOns.IsAddOnLoaded("Dominos_Cast")
-	-- 	then
-	-- 		self.blizzFrames[ftype].CastingBar = nil
-	-- 		return
-	-- 	end
-
-	-- 	local cbFrame
-	-- 	-- OverlayPlayerCastingBarFrame used by ClassTalents
-	-- 	for _, type in _G.pairs{"Player", "Pet", "OverlayPlayer"} do
-	-- 		cbFrame = _G[type .. "CastingBarFrame"]
-	-- 		cbFrame.TextBorder:SetTexture(nil)
-	-- 		cbFrame.Border:SetTexture(nil)
-	-- 		cbFrame.Flash:SetTexture(nil)
-	-- 		self:changeShield(cbFrame.BorderShield, cbFrame.Icon)
-	-- 		if self.prdb.CastingBar.glaze then
-	-- 			self:skinObject("statusbar", {obj=cbFrame, bg=cbFrame.Background, hookFunc=true})
-	-- 		end
-	-- 		cbFrame.Background:SetAllPoints(cbFrame)
-	-- 	end
-
-	-- end
-
 	aObj.blizzLoDFrames[ftype].CharacterCustomize = function(self)
 		if not self.prdb.CharacterCustomize or self.initialized.CharacterCustomize then return end
 
@@ -1548,6 +1517,7 @@ aObj.SetupMainline_PlayerFrames = function()
 			end
 			self:Unhook(fObj, "OnShow")
 		end)
+
 	end
 
 	local skinHdrs, skinNISpinner, skinQualityDialog, skinReagentBtn, skinReagentBtns, skinRecraftSlot = _G.nop, _G.nop, _G.nop, _G.nop, _G.nop, _G.nop

@@ -773,7 +773,7 @@ aObj.SetupOptions = function(self)
 						},
 					},
 				} or nil,
-				CastingBar = {
+				CastingBar = not self.isMnln and {
 					type = "group",
 					inline = true,
 					order = -1,
@@ -795,7 +795,7 @@ aObj.SetupOptions = function(self)
 							name = self.L["Glaze Frames"],
 						},
 					},
-				},
+				} or nil,
 				CompactFrames = {
 					type = "group",
 					inline = true,
