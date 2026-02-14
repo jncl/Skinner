@@ -1016,12 +1016,12 @@ local function skinTabs(tbl)
 					aObj:setInactiveTab(tab.sf)
 				end
 			elseif tbl.pool then
+				if tab.isSelected then
+					aObj:setActiveTab(tab.sf)
+				else
+					aObj:setInactiveTab(tab.sf)
+				end
 				if not aObj.isMnln then
-					if tab.isSelected then
-						aObj:setActiveTab(tab.sf)
-					else
-						aObj:setInactiveTab(tab.sf)
-					end
 					aObj:SecureHook(tab, "SetTabSelected", function(tObj, _)
 						if tObj.isSelected then
 							aObj:setActiveTab(tObj.sf)
@@ -1057,10 +1057,8 @@ local function skinTabs(tbl)
 		end
 	end
 	if tbl.pool then
-		local idx = 0
-		for tab in tbl.obj.tabPool:EnumerateActive() do
-			idx = idx + 1
-			skinTabObject(tab, idx)
+		for i, tab in _G.ipairs(tbl.obj.tabs) do
+			skinTabObject(tab, i)
 		end
 		if aObj.isTT
 		and aObj.isMnln
