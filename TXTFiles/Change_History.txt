@@ -1,3 +1,27 @@
+beta12.65893.1
+Jncl:
+	Updated ToDo*.txt files
+	Updated Change_History.txt
+	Updated Version numbers
+	Updated TOC
+	Removed Retail CastingBar skinning code as it causes errors with secret values
+	Updated NSF, Tab skinning code
+	Updated ProfessionsFrame skin to add delay before skinning tabs
+	Updated TransmogFrame code, closes #273
+	Updated UIWidget code to skin ScenarioHeaderTimer again
+	Updated ChatFrame code to use new constants as required
+	Updated Retail CooldownViewer code to separately skin settings frame and buttons, closes #272
+	Updated SettingsPanel code, closes #271
+	Updated ToDo*.txt files
+	Updated Change_History.txt
+	Bugfix for CloseButton skin
+	Updated DressUp skin
+	Updated AddonList skin
+	Updated CompactVendor skin, closes #270
+	Updated ColourFuncs Updated ArkInventory & ArkDewdrop skins, closes #269
+	Updated Change_History.txt
+	Bugfix for Classic, reinstate LFDReadyCheckPopup
+
 beta12.65617.2
 Jncl:
 	Updated ToDo*.txt files
