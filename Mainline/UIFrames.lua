@@ -4078,22 +4078,7 @@ aObj.SetupMainline_UIFramesOptions = function(self)
 		order = 5,
 		name = self.L["Extra Action Button"],
 	}
-	self.db.defaults.profile.MainMenuBar.extraab = true
-	if self.db.profile.MainMenuBar.extraab == nil then
-		self.db.profile.MainMenuBar.extraab = true
-	end
 
-	self.db.defaults.profile.CooldownViewer = {settings = true, buttons = true}
-	if self.db.profile.CooldownViewer == nil then
-		self.db.profile.CooldownViewer = {settings = true, buttons = true}
-	else
-		if self.db.profile.CooldownViewer.settings == nil then
-			self.db.profile.CooldownViewer.settings = true
-		end
-		if self.db.profile.CooldownViewer.buttons == nil then
-			self.db.profile.CooldownViewer.buttons = true
-		end
-	end
 	self.optTables["UI Frames"].args.CooldownViewer = {
 		type = "group",
 		order = -1,
@@ -4114,5 +4099,12 @@ aObj.SetupMainline_UIFramesOptions = function(self)
 			},
 		},
 	}
+
+end
+
+aObj.SetupMainline_UIFramesDefaults = function(self)
+
+	self.db.defaults.profile.MainMenuBar.extraab = true
+	self.db.defaults.profile.CooldownViewer = {settings = true, buttons = true}
 
 end

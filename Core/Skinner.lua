@@ -44,6 +44,17 @@ function aObj:OnInitialize()
 	-- setup the default DB values and register them
 	self:checkAndRun("SetupDefaults", "opt", false, true)
 
+	-- setup Retail/Classic Defaults as required
+	if self.isMnln then
+		self:SetupMainline_NPCFramesDefaults()
+		self:SetupMainline_PlayerFramesDefaults()
+		self:SetupMainline_UIFramesDefaults()
+	else
+		self:SetupClassic_NPCFramesDefaults()
+		self:SetupClassic_PlayerFramesDefaults()
+		self:SetupClassic_UIFramesDefaults()
+	end
+
 	-- store shortcut
 	self.prdb = self.db.profile
 	local dflts = self.db.defaults.profile
@@ -54,24 +65,6 @@ function aObj:OnInitialize()
 		self.prdb.Nameplates          = false
 		self:DisableModule("UnitFrames")
 	end
-
-	-- handle changes to TabDDTextures options
-	if self.prdb.TexturedTab then
-		self.prdb.TabDDTextures.texturedtab = self.prdb.TexturedTab
-		self.prdb.TabDDTextures.textureddd  = self.prdb.TexturedDD
-		self.prdb.TabDDTextures.tabddfile   = self.prdb.TabDDFile
-		self.prdb.TabDDTextures.tabddtex    = self.prdb.TabDDTexture
-	end
-	--@debug@
-	self.prdb.TexturedTab  = nil
-	self.prdb.TexturedDD   = nil
-	self.prdb.TabDDFile    = nil
-	self.prdb.TabDDTexture = nil
-	--@end-debug@
-	--[===[@non-debug@
-	self.prdb.TexturedTab  = self.prdb.TabDDTextures.texturedtab
-	self.prdb.TexturedDD   = self.prdb.TabDDTextures.textureddd
-	--@end-non-debug@]===]
 
 	-- setup the Addon's core options
 	self:checkAndRun("SetupOptions", "opt")

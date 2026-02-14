@@ -1093,3 +1093,7 @@ aObj.SetupMainline_NPCFramesOptions = function(self)
 	_G.wipe(optTab)
 
 end
+
+aObj.SetupMainline_NPCFramesDefaults = function(self)
+
+end

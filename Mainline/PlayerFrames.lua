@@ -2451,36 +2451,13 @@ aObj.SetupMainline_PlayerFramesOptions = function(self)
 	self:setupFramesOptions(optTab, "Player")
 	_G.wipe(optTab)
 
-	local db = self.db.profile
-	local dflts = self.db.defaults.profile
-
-	dflts.ObjectiveTracker = {skin = false, popups = true, headers=true, animapowers=true, modules=true, rewards=true}
-	if db.ObjectiveTracker == nil then
-		db.ObjectiveTracker = {skin = false, popups = true, headers=true, animapowers=true, modules=true, rewards=true}
-	else
-		if db.ObjectiveTracker.popups == nil then
-			db.ObjectiveTracker.popups = true
-		end
-		if db.ObjectiveTracker.headers == nil then
-			db.ObjectiveTracker.headers = true
-		end
-		if db.ObjectiveTracker.animapowers == nil then
-			db.ObjectiveTracker.animapowers = true
-		end
-		if db.ObjectiveTracker.modules == nil then
-			db.ObjectiveTracker.modules = true
-		end
-		if db.ObjectiveTracker.rewards == nil then
-			db.ObjectiveTracker.rewards = true
-		end
-	end
 	self.optTables["Player Frames"].args.ObjectiveTracker = {
 		type = "group",
 		order = -1,
 		inline = true,
 		name = self.L["ObjectiveTracker Frame"],
-		get = function(info) return db.ObjectiveTracker[info[#info]] end,
-		set = function(info, value) db.ObjectiveTracker[info[#info]] = value end,
+		get = function(info) return self.db.profile.ObjectiveTracker[info[#info]] end,
+		set = function(info, value) self.db.profile.ObjectiveTracker[info[#info]] = value end,
 		args = {
 			skin = {
 				type = "toggle",
@@ -2514,5 +2491,11 @@ aObj.SetupMainline_PlayerFramesOptions = function(self)
 			},
 		},
 	}
+
+end
+
+aObj.SetupMainline_PlayerFramesDefaults = function(self)
+
+	self.db.defaults.profile.ObjectiveTracker = {skin = false, popups = true, headers=true, animapowers=true, modules=true, rewards=true}
 
 end

@@ -406,3 +406,7 @@ aObj.SetupClassic_NPCFramesOptions = function(self)
 	_G.wipe(optTab)
 
 end
+
+aObj.SetupClassic_NPCFramesDefaults = function(self)
+
+end

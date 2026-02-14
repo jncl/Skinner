@@ -1772,3 +1772,7 @@ aObj.SetupClassic_PlayerFramesOptions = function(self)
 	_G.wipe(optTab)
 
 end
+
+aObj.SetupClassic_PlayerFramesDefaults = function(self)
+
+end

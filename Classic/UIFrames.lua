@@ -667,3 +667,7 @@ aObj.SetupClassic_UIFramesOptions = function(self)
 	_G.wipe(optTab)
 
 end
+
+aObj.SetupClassic_UIFramesDefaults = function(self)
+
+end
