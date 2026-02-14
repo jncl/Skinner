@@ -13,8 +13,4 @@ ToDos
 
 	 ?	O/?	ChatFrameTab for PetBattles has missing text
 
-#271 √	I/M Enhance QoL Square Minimap causes errors
-
-#272 √	O/M Detach CDM settings skin from CDM buttons skinning, alter options
-
-#273 √	I/M Transmogrify Panel
+#274	I/M CooldownViewer settings error
