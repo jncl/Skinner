@@ -1,3 +1,13 @@
+beta12.65617.2
+Jncl:
+	Updated ToDo*.txt files
+	Updated Change_History.txt
+	Bugfix for CloseButton skin
+	Updated DressUp skin
+	Updated AddonList skin
+	Updated CompactVendor skin, closes #270
+	Updated ColourFuncs Updated ArkInventory & ArkDewdrop skins, closes #269
+
 beta12.65617.1
 Jncl:
 	Updated Change_History.txt
