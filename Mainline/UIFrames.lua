@@ -619,7 +619,7 @@ aObj.SetupMainline_UIFrames = function()
 
 		-- QuickJoinToastButton & frames (attached to ChatFrame)
 		if self.modBtnBs then
-			for i = 1, _G.NUM_CHAT_WINDOWS do
+			for i = 1, _G.Constants.ChatFrameConstants.MaxChatWindows do
 				self:addButtonBorder{obj=_G["ChatFrame" .. i].buttonFrame.minimizeButton, ofs=-2}
 				_G["ChatFrame" .. i].buttonFrame.sknd = true
 			end
