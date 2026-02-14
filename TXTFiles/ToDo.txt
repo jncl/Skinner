@@ -13,6 +13,8 @@ ToDos
 
 	 ?	O/?	ChatFrameTab for PetBattles has missing text
 
-#269 √	I/E Arkinventory.lua: 43: attempt to index field 'ARKINV_Frame4ChangerWindowAction' (a nil value)
+#271 √	I/M Enhance QoL Square Minimap causes errors
 
-#270 √	I/R CompactVendor, item cost text is difficult to see
+#272 √	O/M Detach CDM settings skin from CDM buttons skinning, alter options
+
+#273 √	I/M Transmogrify Panel
