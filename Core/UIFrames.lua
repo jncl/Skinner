@@ -3771,8 +3771,10 @@ aObj.blizzFrames[ftype].Settings = function(self)
 						aObj:removeRegions(element.Button, {1, 2, 3})
 						aObj:changeHdrExpandTex(element.Button.Right)
 						aObj:SecureHook(element, "EvaluateVisibility", function(eObj, _)
-							for _, control in _G.ipairs(eObj.Controls) do
-								sCEsWithDelay(control)
+							if eObj.Controls then -- Bugfix: #271
+								for _, control in _G.ipairs(eObj.Controls) do
+									sCEsWithDelay(control)
+								end
 							end
 						end)
 					end
