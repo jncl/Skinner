@@ -1690,7 +1690,9 @@ aObj.SetupMainline_PlayerFrames = function()
 		end
 		local function skinProfFrame()
 			local this = _G.ProfessionsFrame
-			self:skinObject("tabs", {obj=this.TabSystem,  pool=true, fType=ftype, ignoreSize=true, track=false})
+			_G.C_Timer.After(0.05, function()
+				self:skinObject("tabs", {obj=this.TabSystem, pool=true, fType=ftype, ignoreSize=true, selectedTab=1, track=false})
+			end)
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true})
 			if self.modBtns then
 				self:skinOtherButton{obj=this.MaximizeMinimize.MaximizeButton, font=self.fontS, text=self.nearrow}
