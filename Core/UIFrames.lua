@@ -4335,7 +4335,8 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 		elseif wFrame.widgetType == 19 then -- DiscreteProgressSteps
 			_G.nop()
 		elseif wFrame.widgetType == 20 then -- ScenarioHeaderTimer
-			wFrame.Frame:SetTexture(nil)
+			wFrame.Frame:SetAtlas(nil)
+			wFrame.Frame.SetAtlas = _G.nop
 			aObj:skinObject("statusbar", {obj=wFrame.TimerBar, fi=0, bg=wFrame.TimerBar.BG})
 		elseif wFrame.widgetType == 21 then -- TextColumnRow
 			_G.nop()
