@@ -166,12 +166,15 @@ aObj.SetupClassic_UIFrames = function()
 			end
 			local nP = frame.UnitFrame or aObj:getChild(frame, 1)
 			if nP
-			and nP.healthBar
+			and nP.healthBar or nP.HealthBarsContainer.healthBar
 			and not nP.classNamePlatePowerBar
 			then
-				local nHb, nCb = nP.healthBar, nP.castBar or nP.CastBar
-				nHb.border:DisableDrawLayer("ARTWORK")
-				aObj:skinObject("statusbar", {obj=nHb, fType=ftype, bg=nHb.background})
+				local nHb = nP.healthBar or nP.HealthBarsContainer.healthBar
+				local nb = nHb.border or nP.HealthBarsContainer.border
+				local nBg = nHb.background or nP.HealthBarsContainer.background
+				local nCb = nP.castBar or nP.CastBar
+				nb:DisableDrawLayer("ARTWORK")
+				aObj:skinObject("statusbar", {obj=nHb, fType=ftype, bg=nBg})
 				if aObj.isClsc then
 					aObj:removeRegions(nCb, {2, 3})
 					aObj:skinObject("statusbar", {obj=nCb, fType=ftype, bg=aObj:getRegion(nCb, 1)})
