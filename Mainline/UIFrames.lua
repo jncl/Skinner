@@ -953,13 +953,11 @@ aObj.SetupMainline_UIFrames = function()
 	end
 
 	local BarBackground
-	local function skinCVBar(obj, hght)
+	local function skinCVBar(obj)
 		BarBackground = aObj:getRegion(obj.Bar, 1)
 		aObj:skinObject("statusbar", {obj=obj.Bar, fType=ftype, fi=0, bg=BarBackground})
-		BarBackground:SetHeight(hght)
 		BarBackground:ClearAllPoints()
-		BarBackground:SetPoint("LEFT", obj.Bar, 0, 0)
-		BarBackground:SetPoint("RIGHT", obj.Bar, 0, 0)
+		BarBackground:SetAllPoints(obj.Bar)
 	end
 	aObj.blizzFrames[ftype].CooldownViewer = function(self)
 		if not self.prdb.CooldownViewer.buttons or self.initialized.CooldownViewer then return end
@@ -971,7 +969,7 @@ aObj.SetupMainline_UIFrames = function()
 			self:SecureHookScript(frame, "OnShow", function(this)
 				for item in this.itemFramePool:EnumerateActive() do
 					if item.Bar then
-						skinCVBar(item, 26)
+						skinCVBar(item)
 					end
 					if aObj.modBtnBs then
 						aObj:addButtonBorder{obj=item, relTo=item.Icon, clr="grey", ccat=true}
@@ -1003,17 +1001,15 @@ aObj.SetupMainline_UIFrames = function()
 
 			local function skinCategories(frame)
 				for categoryDisplay in frame.categoryPool:EnumerateActive() do
-					if not categoryDisplay.Header.skinned then
-						aObj:keepFontStrings(categoryDisplay.Header)
-						aObj:changeHdrExpandTex(categoryDisplay.Header.Right)
-						categoryDisplay.Header:UpdateCollapsedState(categoryDisplay.Header:IsCollapsed())
-						categoryDisplay.Header.skinned = true
-					end
+					aObj:keepFontStrings(categoryDisplay.Header)
+					-- N.B. DON't change the Header Expand Text as it causes secret value errors to occur
 					for item in categoryDisplay.itemPool:EnumerateActive() do
 						if item.Bar then
-							skinCVBar(item, 19)
+							skinCVBar(item)
 						end
-						if aObj.modBtnBs then
+						if aObj.modBtnBs
+						and self.prdb.CooldownViewer.buttons
+						then
 							aObj:addButtonBorder{obj=item, fType=ftype, relTo=item.Icon, clr=item.Icon:IsDesaturated() and "grey" or "white"}
 							if item.sbb then
 								aObj:clrBBC(item.sbb, item.Icon:IsDesaturated() and "grey" or "white")
