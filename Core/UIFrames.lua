@@ -2425,26 +2425,29 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 				self:Unhook(this, "OnShow")
 			end)
 			self:checkShown(_G.MainActionBar)
+			local otherSBs
 			local function skinSTBars(container)
 				for _, bar in _G.pairs(container.bars) do
-					aObj:skinObject("statusbar", {obj=bar.StatusBar, bg=bar.StatusBar.Background, other={bar.StatusBar.Underlay, bar.StatusBar.Overlay}, hookFunc=true})
-					if bar.priority == 0 then -- Azerite bar
-						bar.StatusBar:SetStatusBarColor(aObj:getColourByName("yellow"))
-					elseif bar.priority == 1 then -- Rep bar
+					otherSBs = {bar.StatusBar.Underlay}
+					if bar.barIndex == _G.StatusTrackingBarInfo.BarsEnum.Reputation then
 						bar.StatusBar:SetStatusBarColor(aObj:getColourByName("light_blue"))
-					elseif bar.priority == 2 then -- Honor bar
+					elseif bar.barIndex == _G.StatusTrackingBarInfo.BarsEnum.Honor then
 						bar.StatusBar:SetStatusBarColor(aObj:getColourByName("blue"))
-					elseif bar.priority == 3 then -- XP bar
-						bar.ExhaustionTick:GetNormalTexture():SetTexture(nil)
-						bar.ExhaustionTick:GetHighlightTexture():SetTexture(nil)
-						bar.ExhaustionLevelFillBar:SetTexture(aObj.sbTexture)
-						bar.ExhaustionLevelFillBar:SetVertexColor(aObj:getColourByName("bright_blue"))
-						bar.StatusBar:SetStatusBarColor(aObj:getColourByName("blue"))
-					elseif bar.priority == 4 then -- Artifact bar
+					elseif bar.barIndex == _G.StatusTrackingBarInfo.BarsEnum.Artifact then
 						bar.Tick:GetNormalTexture():SetTexture(nil)
 						bar.Tick:GetHighlightTexture():SetTexture(nil)
 						bar.StatusBar:SetStatusBarColor(aObj:getColourByName("yellow"))
+					elseif bar.barIndex == _G.StatusTrackingBarInfo.BarsEnum.Experience then
+						aObj:add2Table(otherSBs, bar.ExhaustionLevelFillBar)
+						bar.ExhaustionTick:GetNormalTexture():SetTexture(nil)
+						bar.ExhaustionTick:GetHighlightTexture():SetTexture(nil)
+						bar.StatusBar:SetStatusBarColor(aObj:getColourByName("blue"))
+					elseif bar.barIndex == _G.StatusTrackingBarInfo.BarsEnum.Azerite then
+						bar.StatusBar:SetStatusBarColor(aObj:getColourByName("yellow"))
+					elseif bar.barIndex == _G.StatusTrackingBarInfo.BarsEnum.HouseFavor then
+						bar.StatusBar:SetStatusBarColor(aObj:getColourByName("yellow"))
 					end
+					aObj:skinObject("statusbar", {obj=bar.StatusBar, bg=bar.StatusBar.Background, other=otherSBs, hookFunc=true})
 				end
 			end
 			self:SecureHookScript(_G.StatusTrackingBarManager, "OnShow", function(this)
@@ -3541,6 +3544,8 @@ aObj.blizzFrames[ftype].ReportFrame = function(self)
 
 		self:Unhook(this, "OnShow")
 	end)
+
+	-- TODO: ReportScreenshotModeFrame ??
 
 end
 
