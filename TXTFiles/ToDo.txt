@@ -13,4 +13,4 @@ ToDos
 
 	 ?	O/?	ChatFrameTab for PetBattles has missing text
 
-#274	I/M CooldownViewer settings error
+#274 √	I/M CooldownViewer settings error
