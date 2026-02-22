@@ -1,3 +1,13 @@
+beta12.66017.1
+Jncl:
+	Updated ToDo*.txt files
+	Updated Change_History.txt
+	Updated Version numbers
+	Updated Classic Nameplates skinning code
+	Updated TOC
+	Updated CooldownViewer StatusBar skinning code, closes #274
+	Updated MainMenuBar StatusBars code
+
 beta12.65893.2
 Jncl:
 	Updated ToDo*.txt files
