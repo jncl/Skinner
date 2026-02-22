@@ -381,7 +381,109 @@ aObj.SetupClassic_UIFrames = function()
 
 	end
 
+	aObj.blizzLoDFrames[ftype].PVPUI = function(self)
+		if not self.prdb.PVEFrame or self.initialized.PVPUI then return end
+		self.initialized.PVPUI = true
+
+		-- N.B. copied from Blizzard_PVPUI.lua [line 33]
+		local pvpFrames = { "HonorQueueFrame", "ConquestQueueFrame", "WarGamesQueueFrame", "LFGListPVPStub" }
+
+		self:SecureHookScript(_G.PVPQueueFrame, "OnShow", function(this)
+			for i = 1, #pvpFrames do
+				this["CategoryButton" .. i].Background:SetTexture(nil)
+				this["CategoryButton" .. i].Ring:SetTexture(nil)
+				self:changeTex(this["CategoryButton" .. i]:GetHighlightTexture())
+				self:makeIconSquare(this["CategoryButton" .. i], "Icon", "gold")
+			end
+
+			self:SecureHookScript(_G.HonorQueueFrame, "OnShow", function(fObj)
+				self:removeInset(fObj.RoleInset)
+				self:skinObject("dropdown", {obj=_G.HonorQueueFrameTypeDropDown, fType=ftype})
+				self:removeInset(fObj.Inset)
+				self:skinObject("slider", {obj=_G.HonorQueueFrameSpecificFrameScrollBar, fType=ftype})
+				for _, btn in _G.pairs(fObj.SpecificFrame.buttons) do
+					btn.Bg:SetTexture(nil)
+					btn.Border:SetTexture(nil)
+				end
+				self:keepFontStrings(fObj.BonusFrame)
+				self:keepFontStrings(fObj.BonusFrame.ShadowOverlay)
+				self:skinObject("dropdown", {obj=fObj.BonusFrame.IncludedBattlegroundsDropDown, fType=ftype})
+				for _, fName in _G.pairs{"CallToArmsButton", "RandomBGButton", "WorldPVP2Button", "WorldPVP1Button"} do
+					self:skinObject("frame", {obj=fObj.BonusFrame[fName], fType=ftype, kfs=true, fb=true, ofs=0})
+					fObj.BonusFrame[fName]:GetNormalTexture():SetTexture(nil)
+				end
+				self:removeMagicBtnTex(fObj.SoloQueueButton)
+				self:removeMagicBtnTex(fObj.GroupQueueButton)
+				if self.modBtns then
+					self:skinStdButton{obj=fObj.SoloQueueButton, fType=ftype, schk=true}
+					self:skinStdButton{obj=fObj.GroupQueueButton, fType=ftype, schk=true}
+				end
+				if self.modBtnBs then
+					self:addButtonBorder{obj=fObj.BonusFrame.DiceButton, fType=ftype, clr="gold"}
+				end
+				if self.modChkBtns then
+					self:skinCheckButton{obj=fObj.RoleInset.TankIcon.checkButton, fType=ftype}
+					self:skinCheckButton{obj=fObj.RoleInset.HealerIcon.checkButton, fType=ftype}
+					self:skinCheckButton{obj=fObj.RoleInset.DPSIcon.checkButton, fType=ftype}
+				end
+
+				self:Unhook(fObj, "OnShow")
+			end)
+			self:checkShown(_G.HonorQueueFrame)
+
+			self:SecureHookScript(_G.ConquestQueueFrame, "OnShow", function(fObj)
+				self:keepFontStrings(fObj)
+				self:keepFontStrings(fObj.ShadowOverlay)
+				fObj.ConquestBar:DisableDrawLayer("BORDER")
+				self:removeRegions(fObj.ConquestBar, {4, 6})
+				fObj.ConquestBar.progress:SetTexture(self.sbTexture)
+				self:removeInset(fObj.Inset)
+				for _, bName in _G.pairs{"Arena2v2", "Arena3v3", "Arena5v5", "RatedBG"} do
+					self:skinObject("frame", {obj=fObj[bName], fType=ftype, kfs=true, fb=true, ofs=0})
+				end
+				self:removeMagicBtnTex(fObj.JoinButton)
+				if self.modBtns then
+					self:skinStdButton{obj=fObj.JoinButton, fType=ftype, schk=true}
+				end
+
+				self:Unhook(fObj, "OnShow")
+			end)
+
+			self:SecureHookScript(_G.WarGamesQueueFrame, "OnShow", function(fObj)
+				fObj.InfoBG:SetTexture(nil)
+				self:removeInset(fObj.RightInset)
+				self:skinObject("slider", {obj=_G.WarGamesQueueFrameScrollFrameScrollBar, fType=ftype, rpTex={"background", "artwork"}})
+				for _, btn in _G.pairs(fObj.scrollFrame.buttons) do
+					btn.Entry.Bg:SetTexture(nil)
+					btn.Entry.Border:SetTexture(nil)
+					if self.modBtnBs then
+						self:addButtonBorder{obj=btn.Entry, fType=ftype, relTo=btn.Entry.Icon}
+					end
+					if self.modBtns then
+						self:skinExpandButton{obj=btn.Header, fType=ftype, onSB=true}
+					end
+				end
+				-- N.B. The following 2 lines refer to two different objects (should be the same one)
+				_G.WarGamesQueueFrameInfoScrollFrame.ScrollBar.Background:DisableDrawLayer("ARTWORK")
+				self:skinObject("slider", {obj=_G.WarGamesQueueFrameInfoScrollFrameScrollBar, fType=ftype})
+				fObj.HorizontalBar:DisableDrawLayer("ARTWORK")
+				self:removeMagicBtnTex(self:getLastChild(fObj)) -- WarGameStartButton
+				if self.modBtns then
+					self:skinStdButton{obj=self:getLastChild(fObj), fType=ftype} -- WarGameStartButton
+				end
+
+				self:Unhook(fObj, "OnShow")
+			end)
+
 			self:Unhook(this, "OnShow")
+		end)
+
+		_G.C_Timer.After(0.1, function()
+		    self:add2Table(self.ttList, _G.ConquestTooltip)
+		end)
+
+	end
+
 	aObj.blizzFrames[ftype].QuestLog = function(self)
 		if not self.prdb.QuestLog or self.initialized.QuestLog then return end
 		self.initialized.QuestLog = true
