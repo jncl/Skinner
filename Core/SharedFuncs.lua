@@ -12,7 +12,7 @@ local buildInfo = {
 	wow_classic_anniversary	= {"BC Anniversary", 			"2.5.5",  65895},
 	wow_classic_era     	= {"World of Warcraft Classic", "1.15.8", 65989},
 	wow_classic         	= {"Mists of Panderia Classic", "5.5.3",  65988},
-	wow                 	= {"World of Warcraft",         "12.0.1", 66017},
+	wow                 	= {"World of Warcraft",         "12.0.1", 66044},
 	curr                	= {"curr", _G.GetBuildInfo()},
 }
 
