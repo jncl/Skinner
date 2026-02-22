@@ -13,4 +13,10 @@ ToDos
 
 	 ?	O/?	ChatFrameTab for PetBattles has missing text
 
-#274 √	I/M CooldownViewer settings error
+#276 √	I/C Mists Error 1
+
+#277 √	I/C Mists Error 2
+
+#278 √	I/C Mists Error 3
+
+#279 √	I/M Baganator - Bank Skin
