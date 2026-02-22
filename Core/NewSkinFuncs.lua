@@ -1057,7 +1057,7 @@ local function skinTabs(tbl)
 		end
 	end
 	if tbl.pool then
-		for i, tab in _G.ipairs(tbl.obj.tabs) do
+		for i, tab in _G.ipairs(tbl.obj.tabs or tbl.obj.Tabs) do -- fixes #279
 			skinTabObject(tab, i)
 		end
 		if aObj.isTT
