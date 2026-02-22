@@ -381,6 +381,7 @@ aObj.SetupClassic_UIFrames = function()
 
 	end
 
+			self:Unhook(this, "OnShow")
 	aObj.blizzFrames[ftype].QuestLog = function(self)
 		if not self.prdb.QuestLog or self.initialized.QuestLog then return end
 		self.initialized.QuestLog = true
