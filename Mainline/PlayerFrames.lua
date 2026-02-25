@@ -423,6 +423,7 @@ aObj.SetupMainline_PlayerFrames = function()
 			end)
 			self:checkShown(this.CustomSetDetailsPanel)
 
+			self:Unhook(this, "OnShow")
 		end)
 
 		self:SecureHookScript(_G.TransmogAndMountDressupFrame, "OnShow", function(this)
