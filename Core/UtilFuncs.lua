@@ -154,9 +154,6 @@ function aObj:applyGradient(obj, fh, invert, rotate)
 
 	if _G.issecretvalue
 	and _G.issecretvalue(fh) then
-		--@debug@
-		aObj:Debug("applyGradient, attempting to access a Secret Value fh: [%s, %s]", obj, fh)
-		--@end-debug@
 		obj.tfade = nil
 		return
 	end
