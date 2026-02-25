@@ -1,3 +1,14 @@
+beta12.66044.1
+Jncl:
+	Updated ToDo*.txt files
+	Updated Change_History.txt
+	Updated Version numbers
+	Updated skinTabs in NSF, closes #279
+	Moved Mainline PVP frame skins from PlayerFrames file into UIFrames file
+	Moved Classic PVP frame skins from PlayerFrames file into UIFrames file
+	Bugfix for Classic PVPUI, closes #277
+	Bugfix for EncounterJournal skin, closes #276
+
 beta12.66017.1
 Jncl:
 	Updated ToDo*.txt files
