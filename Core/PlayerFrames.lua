@@ -2512,9 +2512,9 @@ if not aObj.isClscERA then
 				fObj.bg:SetAlpha(0)
 				if self.isMnln then
 					fObj.evergreenBg:SetAlpha(0)
-				end
-				if self.modBtnBs then
-					self:addButtonBorder{obj=fObj.GreatVaultButton, fType=ftype, ofs=-1, x2=-2, y2=2, relTo=fObj.GreatVaultButton.Icon}
+					if self.modBtnBs then
+						self:addButtonBorder{obj=fObj.GreatVaultButton, fType=ftype, ofs=-1, x2=-2, y2=2, relTo=fObj.GreatVaultButton.Icon}
+					end
 				end
 				self:skinObject("ddbutton", {obj=fObj.ExpansionDropdown, fType=ftype})
 				self:skinObject("scrollbar", {obj=fObj.ScrollBar, fType=ftype})
