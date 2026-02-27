@@ -3773,8 +3773,10 @@ aObj.blizzFrames[ftype].Settings = function(self)
 						end
 					else
 						-- keybindings
-						aObj:removeRegions(element.Button, {1, 2, 3})
-						aObj:changeHdrExpandTex(element.Button.Right)
+						if element.Button then -- Bugfix: #282
+							aObj:removeRegions(element.Button, {1, 2, 3})
+							aObj:changeHdrExpandTex(element.Button.Right)
+						end
 						aObj:SecureHook(element, "EvaluateVisibility", function(eObj, _)
 							if eObj.Controls then -- Bugfix: #271
 								for _, control in _G.ipairs(eObj.Controls) do
