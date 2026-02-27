@@ -127,7 +127,7 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 		alertType["EntitlementDelivered"]   = {ofs = -10}
 		alertType["GuildRename"]            = {ofs = -10}
 		alertType["HousingItemEarned"]		= {ofs = -8, ddl = {"background", "border"}, stn = {"Divider"}, icon = {tex = "Icon"}, sysType = "AlertFrameSystem"}
-		alertType["InitiativeTaskComplete"]	= {ofs = -8, ddl = {"background", "border"}, stn = {"Divider"}, sysType = "AlertFrameSystem"}
+		alertType["InitiativeTaskComplete"]	= {ofs = -12, ddl = {"background", "border"}, stn = {"Divider"}, sysType = "AlertFrameSystem"} -- a.k.a. endeavour task completion alert
 		alertType["Loot"].icon              = {obj = "lootItem", stn = {"SpecRing"}, ib = true, tex =  "Icon"}
 		alertType["MonthlyActivity"]        = {ofs = 0, nt = {"Background"}, stc = "Unlocked", icon = {obj = "Icon", ddl = {"border", "overlay"}, tex ="Texture"}}
 		alertType["NewCosmetic"]            = {ofs = -8, y1 = -12, ddl = {"background"}, ib = true, iq = _G.Enum.ItemQuality.Epic, sysType = "AlertFrameSystem"}
