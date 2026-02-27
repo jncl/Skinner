@@ -13,6 +13,4 @@ ToDos
 
 	 ?	O/?	ChatFrameTab for PetBattles has missing text
 
-#280 √	I/C Dungeon Journal
-
-#281 √	I/M Transmog
+#282 ≈	I/M Rare bug reported

@@ -6,7 +6,9 @@
 	x				- indicates nothing to change
 	¶ is Alt+7		- indicates localisation changes required
 
-	Mainline_PTR (TWW 11.2.5)
+	Mainline_PTR (Midnight)
 		- Added
 		- Updated
+			- Blizzard_HousingHouseFinder
+			- Blizzard_Transmog
 		- Deleted
