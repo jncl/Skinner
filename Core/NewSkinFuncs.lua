@@ -1286,6 +1286,9 @@ if aObj.isMnln then
 	end
 
 	function aObj:skinRewardTrackFrameElements(frame, ftype)
+		if not frame.elementPool then -- bugfix #289
+			return
+		end
 		for element in frame.elementPool:EnumerateActive() do
 			element.RewardCardBG:SetTexture(nil)
 			self:changeTex2Black(element, {"LevelSquare"})

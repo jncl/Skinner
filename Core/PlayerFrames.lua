@@ -2780,7 +2780,11 @@ if not aObj.isClscERA then
 					end
 					self:SecureHookScript(fObj.JourneyProgress, "OnShow", function(frame)
 						frame.DividerTexture:SetTexture(nil)
+						frame.ProgressDetailsFrame.JourneyLevelBar:SetTexture(nil)
 						frame.ProgressDetailsFrame.JourneyLevelBg:SetTexture(nil)
+						local drpb = frame.DelveRewardProgressBar
+						drpb.DelveRewardProgressBarFrame:SetTexture(nil)
+						self:skinObject("statusbar", {obj=drpb, fType=ftype, fi=0, bg=drpb.DelveRewardProgressBarBG})
 						-- TODO: skin .RenownTrackFrame.ClipFrame entries to remove border around level #
 						skinRewards(frame)
 						self:SecureHook(frame, "OnTrackUpdate", function(this, _, _, _, _)
@@ -2802,7 +2806,8 @@ if not aObj.isClscERA then
 					self:checkShown(fObj.JourneyProgress)
 
 					self:SecureHookScript(fObj.JourneyOverview, "OnShow", function(frame)
-						frame.Divider:SetTexture(nil)
+						frame.DividerTexture:SetTexture(nil)
+						frame.DividerGlowTexture:SetTexture(nil)
 						if self.modBtns then
 							self:skinStdButton{obj=frame.OverviewBtn, fType=ftype}
 						end
