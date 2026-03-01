@@ -2,10 +2,10 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("SimpleAddonManager") then return end
 local _G = _G
 
-aObj.addonsToSkin.SimpleAddonManager = function(self) -- v 1.54
+aObj.addonsToSkin.SimpleAddonManager = function(self) -- v 1.59
 
 	self:SecureHookScript(_G.SimpleAddonManager, "OnShow", function(this)
-		self:skinObject("dropdown", {obj=this.CharacterDropDown, x2=109})
+		self:skinObject("ddbutton", {obj=this.CharacterDropDown})
 		self:skinObject("editbox", {obj=this.SearchBox, si=true})
 		self:skinObject("frame", {obj=this, kfs=true, cb=true, ofs=0})
 		if self.modBtns then
