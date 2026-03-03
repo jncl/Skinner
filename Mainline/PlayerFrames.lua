@@ -314,31 +314,36 @@ aObj.SetupMainline_PlayerFrames = function()
 				aObj:addButtonBorder{obj=frame.SessionDropdown, fType=ftype, rpA=true, es=12, x1=-3, y1=3, x2=4, y2=-3}
 				aObj:addButtonBorder{obj=frame.DamageMeterTypeDropdown, fType=ftype, es=12, ofs=-1, y1=0, y2=2}
 			end
-			self:skinObject("scrollbar", {obj=frame.ScrollBar, fType=ftype})
+			aObj:skinObject("scrollbar", {obj=frame.ScrollBar, fType=ftype})
 			local function skinPlayerEntry(...)
-				local _, element, elementData
+				local _, element
 				if _G.select("#", ...) == 2 then
-					element, elementData = ...
+					element, _ = ...
 				else
-					_, element, elementData = ...
+					_, element, _ = ...
 				end
 				skinEntry(element)
 			end
 			_G.ScrollUtil.AddInitializedFrameCallback(frame.ScrollBox, skinPlayerEntry, aObj, true)
 			skinEntry(frame.LocalPlayerEntry)
-			self:skinObject("scrollbar", {obj=frame.SourceWindow.ScrollBar, fType=ftype})
-			local function skinSpellEntry(...)
-				local _, element, elementData, new
-				if _G.select("#", ...) == 2 then
-					element, elementData = ...
-				elseif _G.select("#", ...) == 3 then
-					element, elementData, new = ...
-				else
-					_, element, elementData, new = ...
+
+			aObj:SecureHookScript(frame.SourceWindow, "OnShow", function(sourceWindow)
+				aObj:skinObject("scrollbar", {obj=sourceWindow.ScrollBar, fType=ftype})
+				aObj:skinObject("frame", {obj=sourceWindow, fType=ftype, kfs=true, ofs=-6, y2=8})
+				local function skinSpellEntry(...)
+					local _, element
+					if _G.select("#", ...) == 2 then
+						element, _ = ...
+					else
+						_, element, _ = ...
+					end
+					skinEntry(element)
 				end
-				skinEntry(element)
-			end
-			_G.ScrollUtil.AddInitializedFrameCallback(frame.SourceWindow.ScrollBox, skinSpellEntry, aObj, true)
+				_G.ScrollUtil.AddInitializedFrameCallback(sourceWindow.ScrollBox, skinSpellEntry, aObj, true)
+
+			    aObj:Unhook(sourceWindow, "OnShow")
+			end)
+
 		end
 		_G.DamageMeter:ForEachSessionWindow(function(sessionWindow)
 			skinSessionWindow(sessionWindow)
