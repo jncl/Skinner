@@ -2810,16 +2810,22 @@ aObj.SetupMainline_UIFrames = function()
 		if not self.prdb.MajorFactionsUI or self.initialized.MajorFactions then return end
 		self.initialized.MajorFactions = true
 
+		local function skinToast(frame)
+			frame.ToastBG:SetTexture(nil)
+			frame.Glow1:SetTexture(nil)
+			frame.TopBorder:SetTexture(nil)
+			frame.GlowLineBottom:SetTexture(nil)
+			frame.Glow2:SetTexture(nil)
+		end
 		self:SecureHookScript(_G.MajorFactionUnlockToast, "OnShow", function(this)
-			this:DisableDrawLayer("BACKGROUND")
-			this:DisableDrawLayer("ARTWORK")
+			skinToast(this)
 
 			self:Unhook(this, "OnShow")
 		end)
 
 		self:SecureHookScript(_G.MajorFactionsRenownToast, "OnShow", function(this)
-			this:DisableDrawLayer("BACKGROUND")
-			this:DisableDrawLayer("ARTWORK")
+			skinToast(this)
+			this.RewardIconRing:SetTexture(nil)
 
 			self:Unhook(this, "OnShow")
 		end)
@@ -2980,21 +2986,21 @@ aObj.SetupMainline_UIFrames = function()
 				frame.sf:Show()
 			end
 			for opt in frame.optionPools:EnumerateActiveByTemplate(frame.optionFrameTemplate) do
-				-- aObj:Debug("PCF skinOptions: [%s, %s]", frame.optionFrameTemplate)
+				aObj:Debug("PCF skinOptions: [%s, %s]", frame.optionFrameTemplate)
 				opt.OptionText.String:SetTextColor(aObj.BT:GetRGB())
 				opt.OptionText.HTML:SetTextColor("P", aObj.BT:GetRGB())
 				if aObj.modBtns then
 					for fObj in opt.OptionButtonsContainer.buttonFramePool:EnumerateActive() do
 						-- DON'T skin magnifying glass button
 						if fObj.Button:GetText() ~= "Preview Covenant" then
-							aObj:skinStdButton{obj=fObj.Button, fType=ftype, schk=true, sechk=true}
+							aObj:skinStdButton{obj=fObj.Button, fType=ftype, schk=true, sechk=true, ca=fObj.Button.pushed and 0.5 or 1}
 							-- change button border alpha to indicate currently selected choice
-							if fObj.Button.pushed then
-								fObj.Button:SetEnabled(true)
-								fObj.Button.sb:SetAlpha(0.5)
-							else
-								fObj.Button.sb:SetAlpha(1)
-							end
+							-- if fObj.Button.pushed then
+							-- 	fObj.Button:SetEnabled(true)
+							-- 	fObj.Button.sb:SetAlpha(0.5)
+							-- else
+							-- 	fObj.Button.sb:SetAlpha(1)
+							-- end
 						end
 					end
 				end
