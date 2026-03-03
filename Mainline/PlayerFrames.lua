@@ -1097,7 +1097,7 @@ aObj.SetupMainline_PlayerFrames = function()
 					or bar.template == "ObjectiveTrackerTimerBarTemplate"
 					then
 						aObj:removeRegions(bar.Bar, {1, 2, 3}) -- Border textures
-						aObj:skinObject("statusbar", {obj=bar.Bar, fi=0, bg=aObj:getRegion(bar.Bar, bar.template:find("Progress") and 5 or 4)})
+						aObj:skinObject("statusbar", {obj=bar.Bar, fi=0, bg=aObj:getPenultimateRegion(bar.Bar)})
 					end
 				end
 				local modName
