@@ -4167,11 +4167,10 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 			if self:hasTextInName(tTip, "ShoppingTooltip") then
 				self.ttHook[tTip] = "SetShown"
 			end
-			-- N.B. seems to be fixed in 12.0.0+ [29.01.26]
 			-- use this hook to prevent GameTooltip gradient overflow, fixes #243
-			-- if tTip == _G.GameTooltip then
-				-- self.ttHook[tTip] = "Show"
-			-- end
+			if tTip == _G.GameTooltip then
+				self.ttHook[tTip] = "Show"
+			end
 		end
 		addTooltip(tTip)
 	end
@@ -4192,6 +4191,15 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 			end
 		end)
 	end
+
+	self:SecureHook("GameTooltip_CalculatePadding", function(tTip)
+		-- aObj:Debug("GameTooltip_CalculatePadding: [%s, %s]", tTip, tTip.sf)
+		if tTip.sf then
+			_G.C_Timer.After(self.ttDelay, function() -- slight delay to allow for the tooltip to be populated
+				self:applyTooltipGradient(tTip.sf)
+			end)
+		end
+	end)
 
 end
 
