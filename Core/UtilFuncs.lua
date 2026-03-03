@@ -593,15 +593,21 @@ function aObj:getLastChild(obj)
 
 end
 
+function aObj:getLastRegion(obj)
+
+	return self:getRegion(obj, obj:GetNumRegions())
+
+end
+
 function aObj:getPenultimateChild(obj)
 
 	return self:getChild(obj, obj:GetNumChildren() - 1)
 
 end
 
-function aObj:getLastRegion(obj)
+function aObj:getPenultimateRegion(obj)
 
-	return self:getRegion(obj, obj:GetNumRegions())
+	return self:getRegion(obj, obj:GetNumRegions() - 1)
 
 end
 
