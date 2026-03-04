@@ -570,7 +570,7 @@ aObj.SetupMainline_PlayerFrames = function()
 						self:skinObject("ddbutton", {obj=_G.WhoFrameDropdown, fType=ftype, ofs=0})
 						self:adjHeight{obj=_G.WhoFrameDropdown, adj=-4}
 					else
-						self:skinObject("frame", {obj=_G["WhoFrameColumnHeader" .. i], fType=ftype, y2=-2, y2=-3})
+						self:skinObject("frame", {obj=_G["WhoFrameColumnHeader" .. i], fType=ftype, y2=-3})
 					end
 				end
 				self:moveObject{obj=_G.WhoFrameColumnHeader4, x=2}
