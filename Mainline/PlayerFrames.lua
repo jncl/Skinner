@@ -146,6 +146,20 @@ aObj.SetupMainline_PlayerFrames = function()
 
 	end
 
+	aObj.blizzFrames[ftype].CastingBar = function(self)
+		if not self.prdb.CastingBar.skin or self.initialized.CastingBar then return end
+		self.initialized.CastingBar = true
+
+		local cBar
+		for _, prefix in _G.pairs{"Player", "OverlayPlayer"} do
+			cBar = _G[prefix .. "CastingBarFrame"]
+			cBar.TextBorder:SetTexture(nil)
+			cBar.Background:SetTexture(nil)
+			cBar.Border:SetTexture(nil)
+		end
+
+	end
+
 	aObj.blizzLoDFrames[ftype].CharacterCustomize = function(self)
 		if not self.prdb.CharacterCustomize or self.initialized.CharacterCustomize then return end
 
