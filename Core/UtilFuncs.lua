@@ -153,7 +153,8 @@ function aObj:applyGradient(obj, fh, invert, rotate)
 	end
 
 	if _G.issecretvalue
-	and _G.issecretvalue(fh) then
+	and _G.issecretvalue(fh)
+	then
 		obj.tfade = nil
 		return
 	end
