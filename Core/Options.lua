@@ -1210,7 +1210,6 @@ aObj.SetupOptions = function(self)
 				},
 			},
 		},
-
 	}
 
 	local npcOptTab = {

@@ -1221,6 +1221,7 @@ aObj.SetupMainline_UIFrames = function()
 			end
 			-- TODO: skin WeeklyRewardToastUnlock/WeeklyRewardToastUpgrade
 			if toast.Contents then
+				_G.nop()
 			end
 			if aObj.modBtns then
 				aObj:skinStdButton{obj=toast.CloseButton, fType=ftype}
@@ -2113,11 +2114,11 @@ aObj.SetupMainline_UIFrames = function()
 					self:keepFontStrings(fObj.Categories)
 					self:skinObject("scrollbar", {obj=fObj.OptionsContainer.ScrollBar, fType=ftype})
 					local function skinOption(...)
-						local _, element, elementData
+						local _, element
 						if _G.select("#", ...) == 2 then
-							element, elementData = ...
+							element, _ = ...
 						else
-							_, element, elementData = ...
+							_, element, _ = ...
 						end
 						element.Background:SetTexture(nil)
 						element.HoverBackground:SetTexture(nil)
@@ -2236,15 +2237,15 @@ aObj.SetupMainline_UIFrames = function()
 
 			self:SecureHookScript(_G.HouseListFrame, "OnShow", function(this)
 				self:skinObject("scrollbar", {obj=this.ScrollBar, fType=ftype})
-				local function skinListElement(...)
-					local _, element, elementData
-					if _G.select("#", ...) == 2 then
-						element, elementData = ...
-					else
-						_, element, elementData = ...
-					end
-				end
-				_G.ScrollUtil.AddInitializedFrameCallback(this.ScrollBox, skinListElement, aObj, true)
+				-- local function skinListElement(...)
+				-- 	local _, element, elementData
+				-- 	if _G.select("#", ...) == 2 then
+				-- 		element, elementData = ...
+				-- 	else
+				-- 		_, element, elementData = ...
+				-- 	end
+				-- end
+				-- _G.ScrollUtil.AddInitializedFrameCallback(this.ScrollBox, skinListElement, aObj, true)
 				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true})
 
 				self:Unhook(this, "OnShow")
@@ -2272,15 +2273,15 @@ aObj.SetupMainline_UIFrames = function()
 				this.ResidentsTab.Background:SetTexture(nil)
 					-- .ColumnDisplay
 				self:skinObject("scrollbar", {obj=this.ResidentsTab.ScrollBar, fType=ftype})
-				local function skinRoster(...)
-					local _, element, elementData
-					if _G.select("#", ...) == 2 then
-						element, elementData = ...
-					else
-						_, element, elementData = ...
-					end
-				end
-				_G.ScrollUtil.AddInitializedFrameCallback(this.ResidentsTab.ScrollBox, skinRoster, aObj, true)
+				-- local function skinRoster(...)
+				-- 	local _, element, elementData
+				-- 	if _G.select("#", ...) == 2 then
+				-- 		element, elementData = ...
+				-- 	else
+				-- 		_, element, elementData = ...
+				-- 	end
+				-- end
+				-- _G.ScrollUtil.AddInitializedFrameCallback(this.ResidentsTab.ScrollBox, skinRoster, aObj, true)
 
 				self:skinStdButton{obj=this.RosterTabButton, fType=ftype, kfs=true}
 				self:keepFontStrings(this.FoliageDecoration)
@@ -2522,38 +2523,38 @@ aObj.SetupMainline_UIFrames = function()
 							self:changeTex2Black(efisf.InitiativeTasks.TaskListTitleContainer, {"TitleTextureL", "TitleTextureM", "TitleTextureR"})
 							self:removeRegions(efisf.InitiativeTasks.TaskListTitleContainer, {5, 6})
 							self:skinObject("scrollbar", {obj=efisf.InitiativeTasks.ScrollBar, fType=ftype})
-							local function skinTask(...)
-								local _, element, elementData
-								if _G.select("#", ...) == 2 then
-									element, elementData = ...
-								else
-									_, element, elementData = ...
-								end
-								-- TODO: skin element
-								--@debug@
-								-- _G.Spew("TL element", element)
-								-- _G.Spew("TL elementData", elementData)
-								--@end-debug@
-							end
-							_G.ScrollUtil.AddInitializedFrameCallback(efisf.InitiativeTasks.TaskList, skinTask, aObj, true)
+							-- local function skinTask(...)
+							-- 	local _, element, elementData
+							-- 	if _G.select("#", ...) == 2 then
+							-- 		element, elementData = ...
+							-- 	else
+							-- 		_, element, elementData = ...
+							-- 	end
+							-- 	-- TODO: skin element
+							-- 	--@debug@
+							-- 	-- _G.Spew("TL element", element)
+							-- 	-- _G.Spew("TL elementData", elementData)
+							-- 	--@end-debug@
+							-- end
+							-- _G.ScrollUtil.AddInitializedFrameCallback(efisf.InitiativeTasks.TaskList, skinTask, aObj, true)
 							efisf.InitiativeActivity:DisableDrawLayer("BACKGROUND")
 							self:changeTex2Black(efisf.InitiativeActivity.ActivityLogTitleContainer, {"TitleTextureL", "TitleTextureM", "TitleTextureR"})
 							self:removeRegions(efisf.InitiativeActivity.ActivityLogTitleContainer, {5, 6})
 							self:skinObject("scrollbar", {obj=efisf.InitiativeActivity.ScrollBar, fType=ftype})
-							local function skinActivity(...)
-								local _, element, elementData
-								if _G.select("#", ...) == 2 then
-									element, elementData = ...
-								else
-									_, element, elementData = ...
-								end
-								-- TODO: skin element
-								--@debug@
-								-- _G.Spew("AL element", element)
-								-- _G.Spew("AL elementData", elementData)
-								--@end-debug@
-							end
-							_G.ScrollUtil.AddInitializedFrameCallback(efisf.InitiativeActivity.ActivityLog, skinActivity, aObj, true)
+							-- local function skinActivity(...)
+							-- 	local _, element, elementData
+							-- 	if _G.select("#", ...) == 2 then
+							-- 		element, elementData = ...
+							-- 	else
+							-- 		_, element, elementData = ...
+							-- 	end
+							-- 	-- TODO: skin element
+							-- 	--@debug@
+							-- 	-- _G.Spew("AL element", element)
+							-- 	-- _G.Spew("AL elementData", elementData)
+							-- 	--@end-debug@
+							-- end
+							-- _G.ScrollUtil.AddInitializedFrameCallback(efisf.InitiativeActivity.ActivityLog, skinActivity, aObj, true)
 							self:skinObject("frame", {obj=ef, fType=ftype, kfs=true, fb=true, x1=-6, y1=1, x2=4})
 							if self.modBtns then
 								self:skinStdButton{obj=efisf.InitiativeActiveNeighborhoodSwitcher.SwitchActiveNeighborhoodBtn, fType=ftype}
@@ -2667,8 +2668,8 @@ aObj.SetupMainline_UIFrames = function()
 
 			self:SecureHookScript(_G.HousingHouseSettingsFrame, "OnShow", function(this)
 				self:skinObject("ddbutton", {obj=this.HouseOwnerDropdown, fType=ftype})
-				self:SecureHook(_G.HouseSettingsAccessOptionsMixin, "SetupOptions", function(this, ...)
-					aObj:Debug("PlotAccess SetupOptions: [%s, %s, %s, %s]", this, ...)
+				self:SecureHook(_G.HouseSettingsAccessOptionsMixin, "SetupOptions", function(fObj, ...)
+					aObj:Debug("PlotAccess SetupOptions: [%s, %s, %s, %s]", fObj, ...)
 
 				end)
 				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true})
@@ -3313,11 +3314,11 @@ aObj.SetupMainline_UIFrames = function()
 				srf.Ring:SetTexture(nil)
 				if self.modBtnBs then
 					self:addButtonBorder{obj=srf, fType=ftype, relTo=srf.Icon, clr="gold"}
-					self:SecureHook(srf, "Update", function(fObj)
-						if fObj.Icon:IsDesaturated() then
-							self:clrBtnBdr(fObj, "disabled")
+					self:SecureHook(srf, "Update", function(frame)
+						if frame.Icon:IsDesaturated() then
+							self:clrBtnBdr(frame, "disabled")
 						else
-							self:clrBtnBdr(fObj, "gold")
+							self:clrBtnBdr(frame, "gold")
 						end
 					end)
 				end
@@ -4180,7 +4181,6 @@ aObj.SetupMainline_UIFrames = function()
 					self:clrBBC(frame.sf, frame.unlocked or frame.hasRewards and "sepia" or "grey")
 					if frame == fObj.ConcessionFrame then
 						frame.SelectedTexture:SetAlpha(1)
-					else
 					end
 				end
 			end)

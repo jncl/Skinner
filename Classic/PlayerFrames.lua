@@ -1394,7 +1394,7 @@ aObj.SetupClassic_PlayerFrames = function()
 					end
 				end
 				skinTalentBtns()
-				self:SecureHook("TalentFrame_Update", function(fObj)
+				self:SecureHook("TalentFrame_Update", function(_)
 					skinTalentBtns()
 				end)
 
@@ -1671,6 +1671,6 @@ aObj.SetupClassic_PlayerFramesOptions = function(self)
 
 end
 
-aObj.SetupClassic_PlayerFramesDefaults = function(self)
+aObj.SetupClassic_PlayerFramesDefaults = function(_)
 
 end

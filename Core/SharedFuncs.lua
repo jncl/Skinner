@@ -391,7 +391,7 @@ aObj.Debug3 = _G.nop
 
 -- Addon Compartment (Retail only)
 if _G.WOW_PROJECT_ID == _G.WOW_PROJECT_MAINLINE then
-	_G[aName .. "_OnAddonCompartmentClick"] = function(addonName, _, _)
+	_G[aName .. "_OnAddonCompartmentClick"] = function(_, _, _)
 		aObj.callbacks:Fire("Options_Selected")
 		_G.Settings.OpenToCategory(aObj.L[aName])
 	end

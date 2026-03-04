@@ -181,7 +181,7 @@ aObj.SetupMainline_PlayerFrames = function()
 					end
 				end
 			end
-			self:SecureHook(this, "UpdateOptionButtons", function(fObj, _)
+			self:SecureHook(this, "UpdateOptionButtons", function(_, _)
 				for type in _G.pairs{"Category", "AlteredForm", "AlteredFormSmall", "ConditionalModel", "BodyType"} do
 					skinBtnTemplate("CharCustomize" .. type .. "ButtonTemplate")
 				end
@@ -252,7 +252,7 @@ aObj.SetupMainline_PlayerFrames = function()
 			cfpb.Highlight:SetPoint("center")
 			cfpb.Highlight:SetSize(22, 22)
 			aObj:SecureHook(frame, "UpdateItems", function(this)
-				aObj:skinItemSlots(frame, ftype)
+				aObj:skinItemSlots(this, ftype)
 			end)
 			aObj:skinItemSlots(frame, ftype)
 			-- Backpack
@@ -349,7 +349,7 @@ aObj.SetupMainline_PlayerFrames = function()
 			skinSessionWindow(sessionWindow)
 		end)
 
-		self:SecureHook(_G.DamageMeter, "SetupSessionWindow", function(fObj, windowData, windowIndex)
+		self:SecureHook(_G.DamageMeter, "SetupSessionWindow", function(_, windowData, _)
 			skinSessionWindow(windowData.sessionWindow)
 		end)
 
@@ -535,15 +535,15 @@ aObj.SetupMainline_PlayerFrames = function()
 					self:skinStdButton{obj=fObj.UnignorePlayerButton, fType=ftype, schk=true}
 				end
 				self:skinObject("scrollbar", {obj=fObj.ScrollBar, fType=ftype})
-				local function skinElement(...)
-					local _, element, elementData
-					if _G.select("#", ...) == 2 then
-						element, elementData = ...
-					else
-						_, element, elementData = ...
-					end
-				end
-				_G.ScrollUtil.AddInitializedFrameCallback(fObj.ScrollBox, skinElement, aObj, true)
+				-- local function skinElement(...)
+				-- 	local _, element, elementData
+				-- 	if _G.select("#", ...) == 2 then
+				-- 		element, elementData = ...
+				-- 	else
+				-- 		_, element, elementData = ...
+				-- 	end
+				-- end
+				-- _G.ScrollUtil.AddInitializedFrameCallback(fObj.ScrollBox, skinElement, aObj, true)
 
 				self:Unhook(fObj, "OnShow")
 			end)
@@ -1145,8 +1145,8 @@ aObj.SetupMainline_PlayerFrames = function()
 											aObj:clrBtnBdr(bObj)
 										end)
 										aObj:skinObject("frame", {obj=block.Container.List, fType=ftype, kfs=true, ofs=-9, x1=0, x2=-16, clr="turq", ca=0.65})
-										aObj:secureHook(block.Container.List, "Update", function(this, _)
-											for mawBuff in this.buffPool:EnumerateActive() do
+										aObj:secureHook(block.Container.List, "Update", function(bObj, _)
+											for mawBuff in bObj.buffPool:EnumerateActive() do
 												mawBuff.Border:SetTexture(nil)
 											end
 										end)

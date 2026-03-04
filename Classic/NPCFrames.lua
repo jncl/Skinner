@@ -407,6 +407,6 @@ aObj.SetupClassic_NPCFramesOptions = function(self)
 
 end
 
-aObj.SetupClassic_NPCFramesDefaults = function(self)
+aObj.SetupClassic_NPCFramesDefaults = function(_)
 
 end

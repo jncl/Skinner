@@ -774,6 +774,6 @@ aObj.SetupClassic_UIFramesOptions = function(self)
 
 end
 
-aObj.SetupClassic_UIFramesDefaults = function(self)
+aObj.SetupClassic_UIFramesDefaults = function(_)
 
 end

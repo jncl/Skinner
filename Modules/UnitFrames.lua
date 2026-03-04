@@ -180,8 +180,6 @@ function module:skinPlayerF()
 				module:SecureHook("PlayerFrame_UpdateLevelTextAnchor", function(level)
 					_G.PlayerLevelText:SetPoint("CENTER", _G.PlayerFrameTexture, "CENTER", level == 100 and -62 or -61, -20 + lOfs)
 				end)
-			else
-				-- ?
 			end
 			_G.PlayerRestIcon:SetPoint("TOPLEFT", 36, -63)
 			aObj:keepFontStrings(_G.PlayerFrameGroupIndicator)
@@ -445,6 +443,7 @@ function module:skinPartyF()
 				end)
 				aObj:checkShown(_G["PartyMemberFrame" .. i])
 			else
+				_G.nop()
 				-- PartyMemberFramePool
 			end
 		end
@@ -561,8 +560,6 @@ function module:OnEnable()
 			self:SecureHook("TargetFrame_CheckClassification", function(frame, _)
 				chgTex(frame)
 			end)
-		else
-			-- ?
 		end
 	end
 

@@ -2291,6 +2291,7 @@ aObj.blizzFrames[ftype].CompactFrames = function(self)
 
 	self:SecureHookScript(_G.CompactRaidFrameManager, "OnShow", function(this)
 		if self.isMnln then
+			_G.nop()
 			-- TODO: skin Toggle button texture
 			-- .toggleButtonForward
 			-- .toggleButtonBack
@@ -2787,7 +2788,7 @@ if not aObj.isClscERA then
 						self:skinObject("statusbar", {obj=drpb, fType=ftype, fi=0, bg=drpb.DelveRewardProgressBarBG})
 						-- TODO: skin .RenownTrackFrame.ClipFrame entries to remove border around level #
 						skinRewards(frame)
-						self:SecureHook(frame, "OnTrackUpdate", function(this, _, _, _, _)
+						self:SecureHook(frame, "OnTrackUpdate", function(_, _, _, _, _)
 							skinRewards(frame)
 						end)
 						if self.modBtns then

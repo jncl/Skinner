@@ -952,24 +952,24 @@ function module.skinCheckButton(_, ...)
 
 end
 
-function module:skinItemSlots(frame, ftype)
+function module.skinItemSlots(frame, ftype)
 
-	for btn in frame.itemButtonPool:EnumerateActive() do
+	for button in frame.itemButtonPool:EnumerateActive() do
 		-- Bank button
-		if btn.Background then
-			btn.Background:SetTexture(nil)
+		if button.Background then
+			button.Background:SetTexture(nil)
 		end
 		-- Container button
-		if btn.emptyBackgroundAtlas
-		and not btn.hasItem
+		if button.emptyBackgroundAtlas
+		and not button.hasItem
 			then
-			btn:SetItemButtonTexture("") -- N.B. DON'T use nil as function uses default texture if it isn't passed
+			button:SetItemButtonTexture("") -- N.B. DON'T use nil as function uses default texture if it isn't passed
 		end
 		-- Combined Bag button
-		if btn.ItemSlotBackground then
-			btn.ItemSlotBackground:SetTexture(nil)
+		if button.ItemSlotBackground then
+			button.ItemSlotBackground:SetTexture(nil)
 		end
-		module:addButtonBorder{obj=btn, fType=ftype, ibt=true}
+		module:addButtonBorder{obj=button, fType=ftype, ibt=true}
 	end
 
 end

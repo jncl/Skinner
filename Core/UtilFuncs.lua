@@ -248,7 +248,7 @@ function aObj:canSkin(callingFunc, opts)
 			self:add2Table(self.oocTab, {callingFunc, {opts}})
 		--@debug@
 		else
-			aObj:Debug("canSkin not adding to oocTab: [%s, %s, %s]", opts.obj, checkCanAccessTable, aObj.PRE)
+			aObj:Debug("canSkin not adding to oocTab: [%s, %s, %s]", opts.obj, opts.ccat, aObj.PRE)
 		--@end-debug@
 		end
 		return false
@@ -359,7 +359,7 @@ function aObj:changeTex2SB(obj)
 
 end
 
-function aObj:changeTex2Black(obj, regions)
+function aObj.changeTex2Black(_, obj, regions)
 	--@debug@
 	_G.assert(obj, "Missing object changeTex2Black\n" .. _G.debugstack(2, 3, 2))
 	_G.assert(regions and _G.type(regions) == 'table', "Missing regions table changeTex2Black\n" .. _G.debugstack(2, 3, 2))

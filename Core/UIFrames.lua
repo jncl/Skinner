@@ -2505,8 +2505,6 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 					if btn.FlyoutBorder then
 						btn.FlyoutBorder:SetTexture(nil)
 						btn.FlyoutBorderShadow:SetTexture(nil)
-					else
-						-- ?
 					end
 					if aObj:canSkinActionBtns() then
 						_G[btn:GetName() .. "NormalTexture"]:SetTexture(nil)
@@ -2520,8 +2518,6 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 						if not _G[bName].noGrid then
 							if _G[bName .. "FloatingBG"] then
 								_G[bName .. "FloatingBG"]:SetAlpha(0)
-							else
-								-- ?
 							end
 						end
 						skinABBtn(_G[bName])
@@ -4381,7 +4377,7 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 			aObj:skinObject("frame", {obj=wFrame, fType=ftype, kfs=true, ofs=-2, x1=7, x2=-7, clr="sepia"})
 		elseif wFrame.widgetType == 30 then -- ButtonHeader
 			wFrame:DisableDrawLayer("BORDER")
-    		aObj:skinObject("frame", {obj=wFrame, fType=ftype, ofs=-2, y1=-20, clr="gold"})
+			aObj:skinObject("frame", {obj=wFrame, fType=ftype, ofs=-2, y1=-20, clr="gold"})
 			if aObj.modBtns then
 				for btn in wFrame.buttonPool:EnumerateActive() do
 					aObj:skinStdButton{obj=btn, fType=ftype, ofs=-8, clr="grey"}
@@ -4409,7 +4405,8 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 			or not (_G.canaccessvalue and _G.canaccessvalue(widgetContainer:GetDebugName()) or nil)
 			or widgetContainer:GetDebugName():find("^NamePlate%d+%.")
 			then
-				return			end
+				return
+			end
 			aObj:SecureHook(widgetContainer, "UpdateWidgetLayout", function(this)
 				for widget in this.widgetPools:EnumerateActive() do
 					skinWidget(widget, _G.UIWidgetManager:GetWidgetTypeInfo(widget.widgetType))
