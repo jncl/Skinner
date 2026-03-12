@@ -1,3 +1,11 @@
+beta12.66102.1
+Jncl:
+	Updated ToDo*.txt files
+	Updated Change_History.txt
+	Updated Version numbers
+	Updated AlertFrame system code
+	Updated Settings skin, closes #282
+
 beta12.66044.2
 Jncl:
 	Updated ToDo*.txt files
