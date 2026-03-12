@@ -954,6 +954,10 @@ end
 
 function module.skinItemSlots(frame, ftype)
 
+	if not frame.itemButtonPool then -- bugfix
+		return
+	end
+
 	for button in frame.itemButtonPool:EnumerateActive() do
 		-- Bank button
 		if button.Background then
