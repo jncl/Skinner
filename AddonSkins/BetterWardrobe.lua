@@ -3,7 +3,7 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("BetterWardrobe") then return end
 local _G = _G
 
-aObj.addonsToSkin.BetterWardrobe = function(self) -- v 4.4.9
+aObj.addonsToSkin.BetterWardrobe = function(self) -- v 5.14.2
 
 	local skinPageBtns
 	if self.modBtnBs then
@@ -23,9 +23,6 @@ aObj.addonsToSkin.BetterWardrobe = function(self) -- v 4.4.9
 			self:addButtonBorder{obj=_G.BW_LoadQueueButton, ofs=0, x1=-1, clr="gold"}
 			self:addButtonBorder{obj=_G.BW_RandomizeButton, ofs=0, x1=-1, clr="gold"}
 			self:addButtonBorder{obj=_G.BW_SlotHideButton, ofs=0, x1=-1, clr="gold"}
-		end
-		if self.modChkBtns then
-			self:skinCheckButton{obj=_G.WardrobeTransmogFrame.ToggleSecondaryAppearanceCheckbox}
 		end
 
 		self:SecureHookScript(_G.BetterWardrobeCollectionFrame, "OnShow", function(fObj)
@@ -112,49 +109,11 @@ aObj.addonsToSkin.BetterWardrobe = function(self) -- v 4.4.9
 				self:Unhook(this, "OnShow")
 			end)
 
-			self:SecureHookScript(fObj.SetsTransmogFrame, "OnShow", function(this)
-				self:skinObject("frame", {obj=this, kfs=true, rns=true, fb=true, x1=x1Ofs, y1=y1Ofs, x2=x2Ofs, y2=y2Ofs})
-				if self.modBtnBs then
-					self:addButtonBorder{obj=this.PagingFrame.PrevPageButton, ofs=-2, y1=-3, x2=-3}
-					self:addButtonBorder{obj=this.PagingFrame.NextPageButton, ofs=-2, y1=-3, x2=-3}
-					self:clrPNBtns(this.PagingFrame, true)
-					self:SecureHook(this.PagingFrame, "Update", function(frame)
-						self:clrPNBtns(frame, true)
-					end)
-					for _, btn in _G.pairs(this.Models) do
-						self:removeRegions(btn, {2}) -- background & border
-						self:addButtonBorder{obj=btn, reParent={btn.Favorite.Icon}, ofs=6}
-						local atlas = btn.Border:GetAtlas()
-						if atlas:find("uncollected", 1, true) then
-							aObj:clrBtnBdr(btn, "grey")
-						elseif atlas:find("unusable", 1, true) then
-							aObj:clrBtnBdr(btn, "unused")
-						else
-							aObj:clrBtnBdr(btn, "gold", 0.75)
-						end
-					end
-				end
-
-				self:Unhook(this, "OnShow")
-			end)
-
 			self:Unhook(fObj, "OnShow")
 		end)
 		self:checkShown(_G.BetterWardrobeCollectionFrame)
 
 		self.UnregisterCallback("BetterWardrobe", "WardrobeCollectionFrame_OnShow")
-	end)
-
-	self:SecureHookScript(_G.BW_DressingRoomFrame, "OnShow", function(this)
-		self:skinObject("ddbutton", {obj=this.OutfitDropDown})
-		self:skinObject("frame", {obj=this, cb=true})
-		if self.modBtns then
-			self:skinStdButton{obj=this.OutfitDropDown.SaveButton, sechk=true}
-		end
-		-- TODO: add button borders to preview buttons
-		-- TODO: add button borders to squareicon buttons
-
-		self:Unhook(this, "OnShow")
 	end)
 
 	-- SavedOutfits
