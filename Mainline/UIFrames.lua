@@ -1086,10 +1086,18 @@ aObj.SetupMainline_UIFrames = function()
 				self:skinCloseButton{obj=this.CloseXButton}
 				self:skinStdButton{obj=this.CloseButton}
 			end
+			self:skinObject("scrollbar", {obj=this.ScrollBar, fType=ftype})
 			if self.modBtnBs then
-				for i = 1, _G.NUM_DEATH_RECAP_EVENTS do
-					self:addButtonBorder{obj=this["Recap" .. i].SpellInfo, fType=ftype, relTo=this["Recap" .. i].SpellInfo.Icon, clr="gold"}
+				local function skinEntry(...)
+					local _, element
+					if _G.select("#", ...) == 2 then
+						element, _ = ...
+					else
+						_, element, _ = ...
+					end
+					self:addButtonBorder{obj=element.SpellInfo, fType=ftype, relTo=element.SpellInfo.Icon, clr="gold"}
 				end
+				_G.ScrollUtil.AddInitializedFrameCallback(this.ScrollBox, skinEntry, aObj, true)
 			end
 
 			self:Unhook(this, "OnShow")
