@@ -1266,64 +1266,27 @@ then
 
 		if not aObj.isMnln then
 			self:SecureHookScript(_G.EditModeNewLayoutDialog, "OnShow", function(fObj)
-				self:removeNineSlice(fObj.Border)
-				self:skinObject("editbox", {obj=fObj.LayoutNameEditBox, fType=ftype, y1=-4, y2=4})
-				self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, ofs=-6})
-				if self.modBtns then
-					self:skinStdButton{obj=fObj.AcceptButton, fType=ftype, sechk=true}
-					self:skinStdButton{obj=fObj.CancelButton, fType=ftype}
-				end
-				if self.modChkBtns then
-					self:skinCheckButton{obj=fObj.CharacterSpecificLayoutCheckButton.Button, fType=ftype}
-				end
+				self:skinLayoutDialog(fObj, ftype)
 
 				self:Unhook(fObj, "OnShow")
 			end)
 		else
 			self:SecureHookScript(_G.EditModeLayoutDialog, "OnShow", function(fObj)
-				self:removeNineSlice(fObj.Border)
-				self:skinObject("editbox", {obj=fObj.LayoutNameEditBox, fType=ftype, y1=-4, y2=4})
-				self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, ofs=-6})
-				if self.modBtns then
-					self:skinStdButton{obj=fObj.AcceptButton, fType=ftype, sechk=true}
-					self:skinStdButton{obj=fObj.CancelButton, fType=ftype}
-				end
-				if self.modChkBtns then
-					self:skinCheckButton{obj=fObj.CharacterSpecificLayoutCheckButton.Button, fType=ftype}
-				end
+				self:skinLayoutDialog(fObj, ftype)
 
 				self:Unhook(fObj, "OnShow")
 			end)
 		end
 
 		self:SecureHookScript(_G.EditModeImportLayoutDialog, "OnShow", function(fObj)
-			self:removeNineSlice(fObj.Border)
-			self:skinObject("frame", {obj=fObj.ImportBox, fType=ftype, kfs=true, fb=true, ofs=6})
-			self:skinObject("editbox", {obj=fObj.LayoutNameEditBox, fType=ftype, y1=-4, y2=4})
-			self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, ofs=-6})
-			if self.modBtns then
-				self:skinStdButton{obj=fObj.AcceptButton, fType=ftype, sechk=true}
-				self:skinStdButton{obj=fObj.CancelButton, fType=ftype}
-			end
-			if self.modChkBtns then
-				self:skinCheckButton{obj=fObj.CharacterSpecificLayoutCheckButton.Button, fType=ftype}
-			end
+			self:skinLayoutDialog(fObj, ftype)
 
 			self:Unhook(fObj, "OnShow")
 		end)
 
 		if not aObj.isMnln then
 			self:SecureHookScript(_G.EditModeImportLayoutLinkDialog, "OnShow", function(fObj)
-				self:removeNineSlice(fObj.Border)
-				self:skinObject("editbox", {obj=fObj.LayoutNameEditBox, fType=ftype, y1=-4, y2=4})
-				self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, ofs=-6})
-				if self.modBtns then
-					self:skinStdButton{obj=fObj.AcceptButton, fType=ftype, sechk=true}
-					self:skinStdButton{obj=fObj.CancelButton, fType=ftype}
-				end
-				if self.modChkBtns then
-					self:skinCheckButton{obj=fObj.CharacterSpecificLayoutCheckButton.Button, fType=ftype}
-				end
+				self:skinLayoutDialog(fObj, ftype)
 
 				self:Unhook(fObj, "OnShow")
 			end)

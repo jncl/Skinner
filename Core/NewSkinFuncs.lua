@@ -1295,5 +1295,27 @@ if aObj.isMnln then
 			element.LevelSquare:SetSize(18, 18)
 			self:skinObject("frame", {obj=element, fType=ftype, fb=true, ofs=-4, x2=-5, y2=5, clr="brownish"})
 		end
+
 	end
+
+end
+
+function aObj:skinLayoutDialog(frame, ftype)
+
+	self:removeNineSlice(frame.Border)
+	self:skinObject("editbox", {obj=frame.LayoutNameEditBox, fType=ftype, y1=-4, y2=4})
+	if frame.ImportBox then
+		self:skinObject("frame", {obj=frame.ImportBox, fType=ftype, kfs=true, fb=true, ofs=6})
+	end
+	self:skinObject("frame", {obj=frame, fType=ftype, kfs=true, ofs=-6})
+	if self.modBtns then
+		self:skinStdButton{obj=frame.AcceptButton, fType=ftype, sechk=true}
+		self:skinStdButton{obj=frame.CancelButton, fType=ftype}
+	end
+	if self.modChkBtns
+	and frame.CharacterSpecificLayoutCheckButton
+	then
+		self:skinCheckButton{obj=frame.CharacterSpecificLayoutCheckButton.Button, fType=ftype}
+	end
+
 end
