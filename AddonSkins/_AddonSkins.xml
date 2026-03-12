@@ -111,6 +111,7 @@
 <Script file="ItemSplitter.lua"/>
 <Script file="JackJack.lua"/>
 <Script file="Journalator.lua"/>
+<Script file="KerzoClassicQuestLog.lua"/>
 <Script file="KongConfig.lua"/>
 <Script file="Krowi_AchievementFilter.lua"/>
 <Script file="Leatrix_Plus.lua"/>
