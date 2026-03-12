@@ -1,9 +1,8 @@
 local _, aObj = ...
 if not aObj:isAddonEnabled("OPie") then return end
 local _G = _G
--- luacheck: ignore 631 (line is too long)
 
-aObj.addonsToSkin.OPie = function(self) -- v Zeta 4.5b
+aObj.addonsToSkin.OPie = function(self) -- v 8.2.2
 
 	-- tooltip
 	_G.C_Timer.After(0.1, function()
@@ -18,7 +17,7 @@ aObj.addonsToSkin.OPie = function(self) -- v Zeta 4.5b
 			if aObj:isDropDown(child) then
 				aObj:skinObject("dropdown", {obj=child})
 			elseif child:IsObjectType("EditBox") then
-				aObj:skinObject("editbox", {obj=child})
+				aObj:skinObject("editbox", {obj=child, regions={4, 5, 6}})
 			elseif child:IsObjectType("Slider") then
 				aObj:skinObject("slider", {obj=child})
 			elseif child:IsObjectType("CheckButton")
@@ -28,6 +27,7 @@ aObj.addonsToSkin.OPie = function(self) -- v Zeta 4.5b
 			elseif child:IsObjectType("Button")
 			and cW > 64
 			and aObj.modBtns
+			and not child.Button
 			then
 				if not child.ico then
 					aObj:skinStdButton{obj=child, schk=true, sechk=true}
@@ -46,11 +46,25 @@ aObj.addonsToSkin.OPie = function(self) -- v Zeta 4.5b
 			elseif child:IsObjectType("Button")
 			and cW <= 64
 			and aObj.modBtnBs
+			and not child.Button
 			then
+				_G.nop()
 				-- TODO: add button borders to small buttons on LHS of Custom Rings panel
 				--@debug@
 				-- _G.Spew("btn bds", child)
 				--@end-debug@
+			elseif child:IsObjectType("Button")
+			and child.Button
+			then
+				-- it's a dropdown
+				child:DisableDrawLayer("BACKGROUND")
+				aObj:skinObject("frame", {obj=child, ng=true, bd=5, x1=16, y1=-1, x2=-16, y2=7})
+				if aObj.prdb.TabDDTextures.textureddd then
+					child.ddTex = child:CreateTexture(nil, "ARTWORK", nil, -5) -- appear behind text
+					child.ddTex:SetTexture(aObj.itTex)
+					child.ddTex:SetPoint("TOPLEFT", child, "TOPLEFT", 20, -4)
+					child.ddTex:SetPoint("BOTTOMRIGHT", child, "BOTTOMRIGHT", -20, 20)
+				end
 			elseif child:IsObjectType("Frame") then
 				if child.slices then -- ringContainer
 					aObj:skinObject("frame", {obj=child, kfs=true, fb=true})
@@ -101,7 +115,22 @@ aObj.addonsToSkin.OPie = function(self) -- v Zeta 4.5b
 		end
 	end
 	self:SecureHookScript(_G.TenSettingsFrame, "OnShow", function(this)
-		local vTabs, view = {}, self:getChild(self:getChild(self:getChild(this, 4), 1), 1)
+		local topPanel = self:getChild(this.ContentArea, 1)
+		local opH = self:getChild(self:getChild(topPanel, 1), 1)
+		local opHnV = self:getChild(opH, 2)
+		local opO = self:getChild(topPanel, 2)
+		local opRB = self:getChild(topPanel, 5)
+		local opCR = self:getChild(topPanel, 7)
+		--@debug@
+		-- _G.Spew("", this)
+		-- _G.Spew("", this.ContentArea)
+		-- _G.Spew("tP", topPanel)
+		-- _G.Spew("tP c1", self:getChild(topPanel, 1)) -- .Version
+		-- _G.Spew("opH", opH) -- OptionsPanel (Home)
+		-- _G.Spew("opH", opHnV) -- OP (H) navView
+		-- _G.Spew("opH", self:getChild(opH, 2)) -- OP (H) navView
+		--@end-debug@
+		local vTabs, view = {}, topPanel
 		for _, child in _G.ipairs{view:GetChildren()} do
 			if child:IsObjectType("Button") then
 				vTabs[#vTabs + 1] = child
@@ -123,57 +152,62 @@ aObj.addonsToSkin.OPie = function(self) -- v Zeta 4.5b
 			self:skinStdButton{obj=this.Revert, sechk=true}
 		end
 
-		-- hook this to skin TenSettings FrameOverlay
-		self:SecureHookScript(this.Reset, "OnClick", function(bObj)
-			skinFrameOverlay(bObj:GetParent())
+		skinKids(opHnV)
+		skinKids(opO)
+		skinKids(opRB)
+		skinKids(opCR)
 
-			self:Unhook(bObj, "OnClick")
-		end)
+	-- 	-- hook this to skin TenSettings FrameOverlay
+	-- 	self:SecureHookScript(this.Reset, "OnClick", function(bObj)
+	-- 		skinFrameOverlay(bObj:GetParent())
 
-		self:Unhook(this, "OnShow")
-	end)
-
-	local OPieOptions = _G.OPC_Profile:GetParent()
-	self:SecureHookScript(OPieOptions, "OnShow", function(this)
-		skinKids(this)
-
-		-- hook these to skin TenSettings FrameOverlay
-		self:SecureHook(_G.OPC_Profile, "initialize", function(ddObj)
-			self:SecureHook(_G.DropDownList1Button3, "func", function(bObj, _, frame)
-				skinFrameOverlay(frame)
-
-				self:Unhook(bObj, "func")
-			end)
-
-			self:Unhook(ddObj, "initialize")
-		end)
+	-- 		self:Unhook(bObj, "OnClick")
+	-- 	end)
 
 		self:Unhook(this, "OnShow")
 	end)
 
-	local OPieBindings = _G.OBC_Profile:GetParent()
-	self:SecureHookScript(OPieBindings, "OnShow", function(this)
-		skinKids(this)
+	-- local OPieOptions = _G.OPC_Profile:GetParent()
+	-- self:SecureHookScript(OPieOptions, "OnShow", function(this)
+	-- 	skinKids(this)
 
-		-- hook these to skin TenSettings FrameOverlay
-		self:SecureHook(_G.OBC_Profile, "initialize", function(ddObj)
-			self:SecureHook(_G.DropDownList1Button3, "func", function(bObj, _, frame)
-				skinFrameOverlay(frame)
+	-- 	-- hook these to skin TenSettings FrameOverlay
+	-- 	self:SecureHook(_G.OPC_Profile, "initialize", function(ddObj)
+	-- 		self:SecureHook(_G.DropDownList1Button3, "func", function(bObj, _, frame)
+	-- 			skinFrameOverlay(frame)
 
-				self:Unhook(bObj, "func")
-			end)
+	-- 			self:Unhook(bObj, "func")
+	-- 		end)
 
-			self:Unhook(ddObj, "initialize")
-		end)
+	-- 		self:Unhook(ddObj, "initialize")
+	-- 	end)
 
-		self:Unhook(this, "OnShow")
-	end)
+	-- 	self:Unhook(this, "OnShow")
+	-- end)
 
-	local CustomRings = _G.RKC_RingSelectionDropDown:GetParent()
-	self:SecureHookScript(CustomRings, "OnShow", function(this)
-		skinKids(this)
+	-- local OPieBindings = _G.OBC_Profile:GetParent()
+	-- self:SecureHookScript(OPieBindings, "OnShow", function(this)
+	-- 	skinKids(this)
 
-		self:Unhook(this, "OnShow")
-	end)
+	-- 	-- hook these to skin TenSettings FrameOverlay
+	-- 	self:SecureHook(_G.OBC_Profile, "initialize", function(ddObj)
+	-- 		self:SecureHook(_G.DropDownList1Button3, "func", function(bObj, _, frame)
+	-- 			skinFrameOverlay(frame)
+
+	-- 			self:Unhook(bObj, "func")
+	-- 		end)
+
+	-- 		self:Unhook(ddObj, "initialize")
+	-- 	end)
+
+	-- 	self:Unhook(this, "OnShow")
+	-- end)
+
+	-- local CustomRings = _G.RKC_RingSelectionDropDown:GetParent()
+	-- self:SecureHookScript(CustomRings, "OnShow", function(this)
+	-- 	skinKids(this)
+
+	-- 	self:Unhook(this, "OnShow")
+	-- end)
 
 end
