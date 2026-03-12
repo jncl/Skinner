@@ -2766,6 +2766,7 @@ if not aObj.isClscERA then
 							end
 						else
 							-- JourneyCardButtonTemplate
+							element.JourneyCardProgressBar.JourneyCardProgressBarFrame:SetTexture(nil)
 							aObj:skinObject("statusbar", {obj=element.JourneyCardProgressBar, fType=ftype, fi=0, bg=element.JourneyCardProgressBar.JourneyCardProgressBarBG})
 							aObj:skinObject("frame", {obj=element, fType=ftype, kfs=true, fb=true, ofs=-4, x2=-7, y2=8})
 						end
