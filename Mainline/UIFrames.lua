@@ -1026,6 +1026,31 @@ aObj.SetupMainline_UIFrames = function()
 			self:Unhook(this, "OnShow")
 		end)
 
+		self:SecureHookScript(_G.CooldownViewerLayoutDialog, "OnShow", function(this)
+			self:skinLayoutDialog(this, ftype)
+
+			self:Unhook(this, "OnShow")
+		end)
+
+		self:SecureHookScript(_G.CooldownViewerImportLayoutDialog, "OnShow", function(this)
+			self:skinLayoutDialog(this, ftype)
+
+			self:Unhook(this, "OnShow")
+		end)
+
+		self:SecureHookScript(_G.CooldownViewerSettingsEditAlert, "OnShow", function(this)
+			self:keepFontStrings(this.BG)
+			self:skinObject("ddbutton", {obj=this.TypeDropdown, fType=ftype})
+			self:skinObject("ddbutton", {obj=this.EventDropdown, fType=ftype})
+			self:skinObject("ddbutton", {obj=this.PayloadDropdown, fType=ftype})
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, ofs=0})
+			if self.modBtns then
+				self:skinStdButton{obj=this.AddAlertButton, fType=ftype}
+			end
+
+			self:Unhook(this, "OnShow")
+		end)
+
 	end
 
 	aObj.blizzFrames[ftype].CovenantToasts = function(self)
