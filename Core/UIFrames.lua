@@ -79,6 +79,7 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 		["GarrisonMission"]        = true,
 		["GarrisonTalent"]         = true,
 		["HousingItemEarned"]      = true,
+		["InitiativeTaskComplete"] = true,
 		["Loot"]                   = true,
 		["LootUpgrade"]            = true,
 		["MoneyWon"]               = true,
