@@ -202,6 +202,7 @@ function aObj:applyGradient(obj, fh, invert, rotate)
 end
 
 function aObj:applyTooltipGradient(obj)
+
 	if obj:IsForbidden() then
 		--@debug@
 		aObj:CustomPrint(1, 0, 0, "Object is flagged as Forbidden, aTG", obj)
@@ -211,15 +212,8 @@ function aObj:applyTooltipGradient(obj)
 
 	if self.prdb.Tooltips.style == 1 then -- Rounded
 		self:applyGradient(obj, 32)
-	elseif self.prdb.Tooltips.style == 2 then -- Flat
+	else -- Flat, Custom
 		self:applyGradient(obj)
-	elseif self.prdb.Tooltips.style == 3 then -- Custom
-		if _G.canaccessvalue
-		and _G.canaccessvalue(obj:GetHeight()) then
-			self:applyGradient(obj, _G.Round(obj:GetHeight()))
-		else
-			self:applyGradient(obj, obj:GetHeight())
-		end
 	end
 
 end
