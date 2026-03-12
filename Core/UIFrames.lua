@@ -4108,7 +4108,6 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 		aObj:add2Table(aObj.ttList, tTip)
 	end
 	local toolTips = {
-		_G.EmbeddedItemTooltip,
 		_G.GameTooltip,
 		_G.ItemRefTooltip,
 		_G.ItemRefShoppingTooltip1,
@@ -4118,6 +4117,7 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 	}
 	if not self.isMnln then
 		self:add2Table(toolTips, _G.SmallTextTooltip)
+		self:add2Table(toolTips, _G.EmbeddedItemTooltip) -- prevent secret value errors
 	else
 		self:add2Table(toolTips, _G.GameSmallHeaderTooltip)
 	end
@@ -4222,6 +4222,12 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 		    return
 		end
 		-- aObj:Debug("skinWidget: [%s, %s, %s, %s, %s, %s, %s]", wFrame, wFrame:GetDebugName(), wFrame.widgetType, wFrame.widgetTag, wFrame.widgetSetID, wFrame.widgetID, wInfo)
+
+		if wFrame:GetDebugName():find("GameTooltip")
+		and wFrame.widgetType == 8
+		then
+			return
+		end
 
 		if wFrame.widgetType == 0 then -- IconAndText (World State: ICONS at TOP)
 			-- N.B. DON'T add buttonborder to Icon(s)
