@@ -9,8 +9,40 @@ ToDos
 	S/N/I/U/O	- Skin request/New Version/Issue(Bug)/Unobsolete Skin/Other changes
 	E/C/M/F/B 	- Classic Era/MoP Classic/Mainline/Feature Request/Beta
 
-		O 	Update ISSUE_TEMPLATE(s) when Classic version name changes
+	O 	Update ISSUE_TEMPLATE(s) when Classic version name changes
 
-	 ?	O/?	ChatFrameTab for PetBattles has missing text
+ ?	O/?	ChatFrameTab for PetBattles has missing text
 
-#282 ≈	I/M Rare bug reported
+#283 x	I/M Transmog
+
+#284 √	I/M Popup
+
+#285 ≈	I/M Opie
+
+#286 √	I/M SimpleAddonManager
+
+#288 ?	I/M Compact Unit Frame
+
+#289 √	I/M Adventure Guide - Journey frame
+
+#290 √	I/M Frame Measurement
+
+#291 ?	I/M ADDON_ACTION_BLOCKED - SetNamePlateHitTestFrame
+
+#292 √	I/M UIWidgetTemplate - textHeight
+
+#293 √	I/M Blizzard DPS Meter - Spell Breakdown
+
+#294 √	I/M UIWidget code error with secret values
+
+#295 √	I/M UIWidget code error with secret values
+
+#296 ≈	I/M Reputation Bar - Journey Tab, Adventure Guide
+
+#297 √	S   Kerzo's Classic Quest Log
+
+#298 √	I/M Better Wardrobe skin
+
+#299 √	I/M CooldownViwer - Alert Frame not skinned
+
+#300 √	I/M Baudbag
