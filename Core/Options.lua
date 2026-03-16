@@ -11,6 +11,7 @@ aObj.SetupDefaults = function(self)
 			Errors                     = true,
 			MinimapIcon                = {hide = false, minimapPos = 210, radius = 80},
 			FrameBorders               = true,
+			CompartmentIcon			   = aObj.isMnln and true or nil,
 			-- Tab and DropDown Texture settings [changed 03.10.22 to allow defaults function to reset values correctly]
 			TabDDTextures			   = {texturedtab = false, textureddd = false, tabddfile = "None", tabddtex = aName .. " Inactive Tab"},
 			Delay                      = {Init = 0.5, Addons = 0.5},
@@ -151,6 +152,18 @@ aObj.SetupOptions = function(self)
 					name = self.L["Frame Borders"],
 					desc = self.L["No Background or Gradient texture"],
 				},
+				CompartmentIcon = self.isMnln and {
+					type = "toggle",
+					order = 8,
+					width = "double",
+					name = self.L["Addon Compartment icon"],
+					get = function(_) return self.DBIcon:IsButtonInCompartment(aName) end,
+					set = function(info, value)
+						db[info[1]] = value
+						self:setupACI()
+					end,
+					hidden = function() return not self.DBIcon end,
+				} or nil,
 				TabDDTextures = {
 					type = "group",
 					order = 10,
@@ -1377,20 +1390,18 @@ aObj.SetupOptions = function(self)
 	self:RegisterChatCommand(self.L[aName], chatCommand)
 	self:RegisterChatCommand(self.L["Skin"], chatCommand)
 
-	if not self.isMnln then
-		local DBObj = _G.LibStub:GetLibrary("LibDataBroker-1.1", true):NewDataObject(aName, {
-			type = "launcher",
-			icon = aObj.tFDIDs.mpw01,
-			OnClick = function()
-				aObj.callbacks:Fire("Options_Selected")
-				_G.Settings.OpenToCategory(aObj.L[aName])
-			end,
-			OnTooltipShow = function(tooltip)
-				tooltip:AddLine(aObj.L[aName])
-				tooltip:AddLine(aObj.L["Click to open config panel"], 1, 1, 1)
-			end,
-		})
-		self.DBIcon:Register(aName, DBObj, db.MinimapIcon)
-	end
+	local DBObj = _G.LibStub:GetLibrary("LibDataBroker-1.1", true):NewDataObject(aName, {
+		type = "launcher",
+		icon = aObj.tFDIDs.mpw01,
+		OnClick = function()
+			aObj.callbacks:Fire("Options_Selected")
+			_G.Settings.OpenToCategory(aObj.L[aName])
+		end,
+		OnTooltipShow = function(tooltip)
+			tooltip:AddLine(aObj.L[aName])
+			tooltip:AddLine(aObj.L["Click to open config panel"], 1, 1, 1)
+		end,
+	})
+	self.DBIcon:Register(aName, DBObj, db.MinimapIcon, aObj.tFDIDs.mpw01)
 
 end

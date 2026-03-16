@@ -252,6 +252,9 @@ function aObj:OnInitialize()
 		self:checkAndRun("SetupClassic_UIFrames", "opt", nil, true)
 	end
 
+	-- Setup AddOn Compartment Icon
+	self:setupACI()
+
 	self.callbacks:Fire("AddOn_OnInitialize")
 	-- remove all callbacks for this event
 	self.callbacks.events["AddOn_OnInitialize"] = nil

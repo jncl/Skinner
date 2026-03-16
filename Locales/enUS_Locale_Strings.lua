@@ -18,6 +18,7 @@ aObj.locale_enUS =
     ["9. TOOLTIP"] = true,
     ["Achievement Style"] = true,
     ["Achievement UI"] = true,
+    ["Addon Compartment icon"] = true,
     ["Addon List Frame"] = true,
     ["Addons Delay"] = true,
     ["Adventure Guide"] = true,
