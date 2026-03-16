@@ -872,6 +872,7 @@ local function __skinCheckButton(opts)
 			ignNT = ignore NormalTexture checks (WoWPro uses bespoke textures)
 			size  = set object size
 			ncc   = DON'T check combat state
+			nh    = nil out highlight texture
 	--]]
 	--@debug@
 	_G.assert(opts.obj, "Missing object __sCB\n" .. _G.debugstack(2, 3, 2))
@@ -899,6 +900,9 @@ local function __skinCheckButton(opts)
 	if not aObj.isClscERA then
 		opts.obj:GetNormalTexture():SetTexture(nil)
 		opts.obj:GetPushedTexture():SetTexture(nil)
+		if opts.nh then
+			opts.obj:GetHighlightTexture():SetTexture(nil)
+		end
 	else
 		opts.obj:GetNormalTexture():SetTexture("")
 		opts.obj:GetPushedTexture():SetTexture("")

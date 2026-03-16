@@ -31,7 +31,7 @@ aObj.blizzFrames[ftype].AddonList = function(self)
 						aObj:skinStdButton{obj=element.LoadAddonButton}
 					end
 					if aObj.modChkBtns then
-						aObj:skinCheckButton{obj=element.Enabled, size=28}
+						aObj:skinCheckButton{obj=element.Enabled, size=28, nh=true}
 					end
 				end
 			end
