@@ -158,7 +158,7 @@ function module:OnEnable()
 
 end
 
-function module.adjustMiddleFrames(_, value)
+function module.adjustMiddleFrames(_, _, value)
 
 	if not value then
 		for i = 1, MAX_MIDDLEFRAMES do
@@ -171,7 +171,7 @@ function module.adjustMiddleFrames(_, value)
 
 end
 
-function module.GetOptions()
+function module.GetOptions(_)
 
 	local options = {
 		type = "group",

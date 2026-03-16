@@ -61,7 +61,7 @@ function module:OnEnable()
 end
 
 local topframe
-function module.adjustTopFrame()
+function module.adjustTopFrame(_)
 
 	if db.shown then
 		topframe = topframe or _G.CreateFrame("Frame", nil, _G.UIParent)
@@ -93,7 +93,7 @@ function module.adjustTopFrame()
 
 end
 
-function module.GetOptions()
+function module.GetOptions(_)
 
 	local options = {
 		type = "group",
