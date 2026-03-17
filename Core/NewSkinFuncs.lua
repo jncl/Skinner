@@ -734,16 +734,13 @@ local function skinFrame(tbl)
 		end
 	end
 	-- reverse parent child relationship
-	if tbl.rpc
-	and not tbl.obj.SetParent_orig
-	then
+	if tbl.rpc	then
 		tbl.obj.sf:SetParent(tbl.obj:GetParent())
 		tbl.obj:SetParent(tbl.obj.sf)
-		tbl.obj.SetParent_orig = tbl.obj.SetParent
-		tbl.obj.SetParent = function(this, parent)
-			tbl.obj.sf:SetParent(parent)
-			this:SetParent_orig(tbl.obj.sf)
-		end
+		aObj:SecureHook(tbl.obj, "SetParent", function(this, parent)
+			this.sf:SetParent(parent)
+			this:SetParent(this.sf)
+		end)
 		-- hook Show and Hide methods
 		aObj:SecureHook(tbl.obj, "Show", function(this) this.sf:Show() end)
 		aObj:SecureHook(tbl.obj, "Hide", function(this) this.sf:Hide() end)
