@@ -2,7 +2,7 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("HandyNotes") then return end
 local _G = _G
 
-aObj.addonsToSkin.HandyNotes = function(self) -- v 1.6.6
+aObj.addonsToSkin.HandyNotes = function(self) -- v1.6.28
 
 	-- thanks to Xinhuan for the pointer in the code :-)
 	local HNEditFrame = _G.LibStub("AceAddon-3.0"):GetAddon("HandyNotes"):GetModule("HandyNotes").HNEditFrame
@@ -24,22 +24,26 @@ aObj.addonsToSkin.HandyNotes = function(self) -- v 1.6.6
 
 end
 
-aObj.addonsToSkin.HandyNotes_BattleForAzeroth = function(self) -- v 10
-
-	self:skinObject("slider", {obj=_G.HandyNotes_BattleForAzerothAlphaMenuSliderOption.Slider})
-	self:skinObject("slider", {obj=_G.HandyNotes_BattleForAzerothScaleMenuSliderOption.Slider})
-
-	for _, child in _G.ipairs{_G.WorldMapFrame:GetChildren()} do
+local function skinBtns()
+	for _, child in _G.ipairs_reverse{_G.WorldMapFrame:GetChildren()} do
 		if child:IsObjectType("button")
 		and child.Border
 		and	child.relativeFrame
 		then
 			child.Border:SetTexture(nil)
-			if self.modBtns then
-				self:skinStdButton{obj=child, ofs=-1, clr="gold"}
+			if aObj.modBtns then
+				aObj:skinStdButton{obj=child, ofs=-1, clr="gold"}
 			end
 		end
 	end
+end
+
+aObj.addonsToSkin.HandyNotes_BattleForAzeroth = function(self) -- v 10
+
+	self:skinObject("slider", {obj=_G.HandyNotes_BattleForAzerothAlphaMenuSliderOption.Slider})
+	self:skinObject("slider", {obj=_G.HandyNotes_BattleForAzerothScaleMenuSliderOption.Slider})
+
+	skinBtns()
 
 end
 
@@ -48,16 +52,15 @@ aObj.addonsToSkin.HandyNotes_Shadowlands = function(self) -- v 44
 	self:skinObject("slider", {obj=_G.HandyNotes_ShadowlandsAlphaMenuSliderOption.Slider})
 	self:skinObject("slider", {obj=_G.HandyNotes_ShadowlandsScaleMenuSliderOption.Slider})
 
-	for _, child in _G.ipairs{_G.WorldMapFrame:GetChildren()} do
-		if child:IsObjectType("button")
-		and child.Border
-		and	child.relativeFrame
-		then
-			child.Border:SetTexture(nil)
-			if self.modBtns then
-				self:skinStdButton{obj=child, ofs=-1, clr="gold"}
-			end
-		end
-	end
+	skinBtns()
+
+end
+
+aObj.addonsToSkin.HandyNotes_MidnightTreasures = function(self) -- v41
+
+	self:add2Table(self.createFrames, {func = function(fObj)
+		self.ttHook[fObj] = "SetShown"
+		self:add2Table(self.ttList, fObj)
+	end}, "HandyNotes_MidnightTreasuresComparisonTooltip")
 
 end
