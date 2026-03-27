@@ -4213,13 +4213,27 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 		    aObj:add2Table(aObj.oocTab, {skinWidget, {wFrame, wInfo}})
 		    return
 		end
-		-- aObj:Debug("skinWidget: [%s, %s, %s, %s, %s, %s, %s]", wFrame, wFrame:GetDebugName(), wFrame.widgetType, wFrame.widgetTag, wFrame.widgetSetID, wFrame.widgetID, wInfo)
 
-		if wFrame:GetDebugName():find("GameTooltip")
-		and wFrame.widgetType == 8
+		if wFrame.GetParent
+		and wFrame:GetParent()
+		and wFrame:GetParent().GetSourceLocation
 		then
-			return
+			--@debug@
+			aObj:Debug("skinWidget [GSL]: [%s, %s, %s]",  wFrame:GetParent():GetSourceLocation())
+			--@end-debug@
+			-- DON'T skin NamePlate widgets as they cause Clamping Errors if they are skinned
+			if wFrame:GetParent():GetSourceLocation():find("NamePlates") -- fixes #288, #301, #302
+			-- DON'T skin any GameTooltip widgetContainers as some of them cause secret value errors
+			or wFrame:GetParent():GetSourceLocation():find("GameTooltip") -- fixes #290, #292, #294, #295, #305
+			then
+				--@debug@
+				aObj:Debug("skinWidget [GSL] - NOT skinning widget")
+				--@end-debug@
+				return
+			end
 		end
+
+		aObj:Debug("skinWidget: [%s, %s, %s, %s, %s, %s, %s]", wFrame, wFrame.widgetType, wFrame.widgetTag, wFrame.widgetSetID, wFrame.widgetID, wInfo)
 
 		if wFrame.widgetType == 0 then -- IconAndText (World State: ICONS at TOP)
 			-- N.B. DON'T add buttonborder to Icon(s)
@@ -4360,12 +4374,8 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 		end)
 		self:checkShown(_G.UIWidgetCenterDisplayFrame)
 		local function hookAndSkinWidgets(widgetContainer)
-			-- aObj:Debug("hookAndSkinWidgets: [%s, %s, %s]", widgetContainer:IsForbidden(), widgetContainer:IsForbidden() or widgetContainer:GetDebugName())
-			-- DON'T skin NamePlate[n].* widgets as they cause Clamping Errors if they are initially skinned
-			if widgetContainer:IsForbidden()
-			or not (_G.canaccessvalue and _G.canaccessvalue(widgetContainer:GetDebugName()) or nil)
-			or widgetContainer:GetDebugName():find("^NamePlate%d+%.")
-			then
+			-- aObj:Debug("hookAndSkinWidgets: [%s, %s, %s]", widgetContainer:IsForbidden())
+			if widgetContainer:IsForbidden() then
 				return
 			end
 			aObj:SecureHook(widgetContainer, "UpdateWidgetLayout", function(this)
