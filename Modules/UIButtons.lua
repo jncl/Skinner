@@ -535,6 +535,7 @@ local function __skinStdButton(opts)
 			sechk       = set enabled check for colour changes
 			bd			= backdrop type
 			ncc 		= DON'T check combat state
+			sptb        = DON'T disable SetPassThroughButtons
 	--]]
 	--@debug@
 	_G.assert(opts and _G.type(opts) == "table", "Missing options table __sSB\n" .. _G.debugstack(2, 3, 2))
@@ -599,6 +600,12 @@ local function __skinStdButton(opts)
 	if opts.sechk then
 		aObj:SecureHook(opts.obj, "SetEnabled", function(bObj)
 			aObj:clrBtnBdr(bObj, bObj.sb and bObj.sb.clr or bObj.clr, bObj.sb and bObj.sb.ca or bObj.ca)
+		end)
+	end
+	if not opts.sptb then
+		-- opts.obj.sb.SetPassThroughButtons = _G.nop -- fixes ADDON_ACTION_FORBIDDEN ??
+		aObj:SecureHook(opts.obj.sb, "SetPassThroughButtons", function(_)
+			_G.nop()
 		end)
 	end
 end
