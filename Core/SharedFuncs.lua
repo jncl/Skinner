@@ -402,13 +402,12 @@ aObj.Debug3 = _G.nop
 aObj.setupACI = _G.nop
 if _G.WOW_PROJECT_ID == _G.WOW_PROJECT_MAINLINE then
 	function aObj:setupACI()
-		aObj:Debug("setupACI#1: [%s, %s]", self.prdb.CompartmentIcon, self.DBIcon:IsButtonInCompartment(aName))
+
 		if self.prdb.CompartmentIcon then
 			self.DBIcon:AddButtonToCompartment(aName)
 		else
 			self.DBIcon:RemoveButtonFromCompartment(aName)
 		end
-		aObj:Debug("setupACI#2: [%s, %s]", self.prdb.CompartmentIcon, self.DBIcon:IsButtonInCompartment(aName))
 
 	end
 end
