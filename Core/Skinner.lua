@@ -346,6 +346,25 @@ function aObj:OnEnable()
 
 	self:handleProfileChanges()
 
+	-- table to hold frame names and functions
+	self.createFrames = {}
+	-- hook CreateFrame function to skin frames as required
+	--[[
+		self:add2Table(self.createFrames, {func = function(fObj)
+			self.ttHook[fObj] = "SetShown"
+			self:add2Table(self.ttList, fObj)
+		end}, "HandyNotes_MidnightTreasuresComparisonTooltip")
+	]]
+	self:SecureHook("CreateFrame", function(_, name, _, _)
+		if self.createFrames[name] then
+			self.createFrames[name].func(_G[name])
+			self.createFrames[name] = nil
+			if self:check4EmptyTable(self.createFrames) then
+				self:Unhook("CreateFrame")
+			end
+		end
+	end)
+
 	--@debug@
 	self:SetupCmds()
 
