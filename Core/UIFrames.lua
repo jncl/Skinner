@@ -4051,7 +4051,7 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 		-- store using tooltip object as the key
 		_G.rawset(tab, tTip, true)
 		-- skin here so tooltip initially skinned
-		self:skinObject("tooltip", {obj=tTip, ftype=tTip.ftype})
+		self:skinObject("tooltip", {obj=tTip, ftype=tTip.ftype, ofs=0})
 		-- ensure tooltip gradient updated
 		if not self.ttHook[tTip] then
 			if self.isMnln then
@@ -4109,6 +4109,7 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 		aObj:add2Table(aObj.ttList, tTip)
 	end
 	local toolTips = {
+		_G.EmbeddedItemTooltip,
 		_G.GameTooltip,
 		_G.ItemRefTooltip,
 		_G.ItemRefShoppingTooltip1,
@@ -4116,11 +4117,10 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 		_G.ShoppingTooltip1,
 		_G.ShoppingTooltip2,
 	}
-	if not self.isMnln then
-		self:add2Table(toolTips, _G.SmallTextTooltip)
-		self:add2Table(toolTips, _G.EmbeddedItemTooltip) -- prevent secret value errors
-	else
+	if self.isMnln then
 		self:add2Table(toolTips, _G.GameSmallHeaderTooltip)
+	else
+		self:add2Table(toolTips, _G.SmallTextTooltip)
 	end
 	for _, tTip in _G.ipairs(toolTips) do
 		if self.isMnln then
@@ -4151,15 +4151,6 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 			end
 		end)
 	end
-
-	self:SecureHook("GameTooltip_CalculatePadding", function(tTip)
-		-- aObj:Debug("GameTooltip_CalculatePadding: [%s, %s]", tTip, tTip.sf)
-		if tTip.sf then
-			_G.C_Timer.After(self.ttDelay, function() -- slight delay to allow for the tooltip to be populated
-				self:applyTooltipGradient(tTip.sf)
-			end)
-		end
-	end)
 
 end
 
