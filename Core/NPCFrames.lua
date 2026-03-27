@@ -642,8 +642,11 @@ aObj.blizzFrames[ftype].QuestFrame = function(self)
 		else
 			self:skinObject("slider", {obj=_G.QuestNPCModelTextScrollFrame.ScrollBar, fType=ftype})
 		end
-		self:skinObject("frame", {obj=this.ModelTextFrame or _G.QuestNPCModelTextFrame, fType=ftype, kfs=true, x1=-2, y1=1, x2=6, y2=0})
-		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ofs=4, y1=-24, y2=-24})
+		-- add a delay before skinning so that the textures are removed
+		_G.C_Timer.After(0.15, function()
+			self:skinObject("frame", {obj=this.ModelTextFrame or _G.QuestNPCModelTextFrame, fType=ftype, kfs=true, x1=-3, y1=1, x2=5, y2=-4})
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ofs=4, y1=-24, y2=-24})
+		end)
 
 		self:Unhook(this, "OnShow")
 	end)
