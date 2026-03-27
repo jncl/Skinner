@@ -603,8 +603,10 @@ aObj.SetupMainline_UIFrames = function()
 			end
 
 			self:SecureHook(this.WeeklyInfo.Child.AffixesContainer, "Layout", function(fObj)
-				for _, affix in _G.pairs(fObj.Affixes) do
-					affix.Border:SetTexture(nil)
+				if fObj.Affixes then -- bugfix #307
+					for _, affix in _G.pairs(fObj.Affixes) do
+						affix.Border:SetTexture(nil)
+					end
 				end
 			end)
 
