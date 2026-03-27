@@ -239,6 +239,7 @@
 <Script file="WarCampaignsComplete.lua"/>
 <Script file="WeakAuras.lua"/>
 <Script file="WhatsTraining.lua"/>
+<Script file="WhereLoot.lua"/>
 <Script file="Wholly.lua"/>
 <Script file="WIM.lua"/>
 <Script file="WorkOrdersComplete.lua"/>
