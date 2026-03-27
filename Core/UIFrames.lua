@@ -151,8 +151,8 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 	local function skinAlertFrame(type, frame)
 		tbl = alertType[type]
 		--@debug@
-		aObj:Debug("skinAlertFrame: [%s, %s, %s]", type, frame)
 		if not dontDebug[type] then
+			aObj:Debug("skinAlertFrame: [%s, %s, %s]", type, frame)
 			_G.Spew("AlertFrames", tbl)
 			_G.Spew("AlertFrames", frame)
 		end
