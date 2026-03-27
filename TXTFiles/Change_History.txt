@@ -1,3 +1,32 @@
+beta12.66337.1
+Jncl:
+	Updated ToDo*.txt files
+	Updated Change_History.txt
+	Updated Version numbers
+	Updated AlertFrame debug code
+	Updated Tooltip skin & UIWidgets skin, closes #290, closes #292, closes #294, closes #295
+	Bugfix for itemSlots code
+	Updated applyTooltipGradient code
+	Bugfix for DeathRecap frame
+	Created function to skin LayoutDialogs
+	Updated OPie skin, closes #285
+	Updated BaudBag skin, closes #300
+	Updated CooldownViewer skin, closes #299
+	Updated BetterWardrobe skin, closes #298
+	Skinned KerzoClassicQuestLog, closes #297
+	Updated AdventureJournal, closes #296
+	Updated FriendsFrame code
+	Re-added CastingBar skinning code for Retail
+	Updated code layout
+	Updated various bits of code to comply with luacheck & luaglobals warnings
+	Updated DamageMeter skin, closes #293
+	Updated ObjectiveTracker code to skin progress bar background texture
+	Added getPenultimateRegion function
+	Updated Tooltip code to handle GameToooltip gradient overflow
+	Updated NSF & EncounterJournal JourneyOverview code, closes #289
+	Updated SimpleAddonManager skin, closes #286
+	Updated MajorFactions Toast frames, closes #284
+
 beta12.66102.1
 Jncl:
 	Updated ToDo*.txt files
