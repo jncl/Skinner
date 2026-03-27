@@ -7,42 +7,26 @@ ToDos
 	¶ is Alt+7	- indicates localisation changes required
 	#nnn		- indicates Issue number
 	S/N/I/U/O	- Skin request/New Version/Issue(Bug)/Unobsolete Skin/Other changes
-	E/C/M/F/B 	- Classic Era/MoP Classic/Mainline/Feature Request/Beta
+	A/E/C/M/F/B - BC Anniversary/Classic Era/MoP Classic/Mainline/Feature Request/Beta
 
 	O 	Update ISSUE_TEMPLATE(s) when Classic version name changes
 
  ?	O/?	ChatFrameTab for PetBattles has missing text
 
-#283 x	I/M Transmog
+#283 ?	I/M	Transmog (Narcissus)
 
-#284 √	I/M Popup
+#288 √	I/M Compact Unit Frame
 
-#285 ≈	I/M Opie
+#301 √	i/M FrameMeasurement #2
 
-#286 √	I/M SimpleAddonManager
+#302 √	I/M TextStatusBar
 
-#288 ?	I/M Compact Unit Frame
+#303 √	I/A Typos in modules, TopFrame, MiddleFrames & BottomFrame
 
-#289 √	I/M Adventure Guide - Journey frame
+#304 √	I/M CastingBar option missing
 
-#290 √	I/M Frame Measurement
+#305 ?	I/M 2 errors while hovering over map object
 
-#291 ?	I/M ADDON_ACTION_BLOCKED - SetNamePlateHitTestFrame
+#306 √	S/M WhereLoot
 
-#292 √	I/M UIWidgetTemplate - textHeight
-
-#293 √	I/M Blizzard DPS Meter - Spell Breakdown
-
-#294 √	I/M UIWidget code error with secret values
-
-#295 √	I/M UIWidget code error with secret values
-
-#296 ≈	I/M Reputation Bar - Journey Tab, Adventure Guide
-
-#297 √	S   Kerzo's Classic Quest Log
-
-#298 √	I/M Better Wardrobe skin
-
-#299 √	I/M CooldownViwer - Alert Frame not skinned
-
-#300 √	I/M Baudbag
+#307 √	i/M Mythic+ Dungeons Tab
