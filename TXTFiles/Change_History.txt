@@ -1,3 +1,26 @@
+beta12.66666.1
+Jncl:
+	Updated ToDo*.txt files
+	Updated Change_History.txt
+	Updated TOC
+	Updated Version numbers
+	Updated UIWidgets code, closes #288, closes #301, closes #302, closes #305
+	Updated UIButtons code to hopefully fix SetPassThroughButtons errors
+	Updated HandyNotes skin
+	Updated Tooltip skinning code
+	Updated AlertFrames code
+	Added function to track when Frames get created
+	Removed Debug messages
+	Updated SharedFuncs code
+	Updated QuestFrame code
+	Updated ChallengesUI code, closes #307
+	Skinned WhereLoot, closes #306
+	Replaced overwriting of Frame function with SecureHook
+	Updated UIButtons code to hide Highlight texture for check buttons
+	Bugfix for CastingBar option, closes #304
+	Bugfix in BottomFrame, MiddleFrames & TopFrame code, closes #303
+	Added option to hide or show AddOn Compartment icon
+
 beta12.66337.1
 Jncl:
 	Updated ToDo*.txt files
