@@ -169,13 +169,18 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 					end
 				end
 
-			elseif objType == "Frame" then
-				-- status frame
-				aObj:skinObject("frame", {obj=aObj:getChild(obj.frame, 2), fb=true, ofs=0, x1=2})
+			elseif objType == "Frame"
+			or objType == "Grid2OptionsFrame"
+			or objType == "Grid2DialogFrame"
+			then
 				obj.titletext:SetPoint("TOP", obj.frame, "TOP", 0, -6)
+				aObj:skinObject("frame", {obj=aObj:getChild(obj.frame, 2), fb=true, ofs=0, x1=2}) -- status frame
 				aObj:skinObject("frame", {obj=obj.frame, kfs=true, rb=not aObj.isKC, ofs=0}) -- handle KongConfig backdrop issue
 				if aObj.modBtns then
 					aObj:skinStdButton{obj=aObj:getChild(obj.frame, 1), y1=1}
+					if aObj:getLastChild(obj.frame):IsObjectType("Button") then -- Test button
+						aObj:skinStdButton{obj=aObj:getLastChild(obj.frame)}
+					end
 				end
 
 			elseif objType == "Keybinding" then
@@ -184,7 +189,9 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 					aObj:skinStdButton{obj=obj.button, as=true}
 				end
 
-			elseif objType == "MultiLineEditBox" then
+			elseif objType == "MultiLineEditBox"
+			or objType == "Grid2ExpandedEditBox"
+			then
 				aObj:skinObject("slider", {obj=obj.scrollBar})
 				aObj:removeBackdrop(obj.scrollBG)
 				if aObj.modBtns then
@@ -490,6 +497,8 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 			-- WoWPro objects
 			or objType == "WoWPro_CurrentGuideWidget"
 			or objType == "WoWPro_GuideListWidget"
+			-- Grid@ objects
+			or objType == "Grid2Title"
 			then
 				-- aObj:Debug("Ignoring: [%s]", objType)
 				_G.nop()
@@ -516,8 +525,8 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 	end, true)
 
 	-- skin any objects created earlier
-	for obj in _G.ipairs(objectsToSkin) do
-		skinAceGUI(obj, objectsToSkin[obj])
+	for obj, objType in _G.pairs(objectsToSkin) do
+		skinAceGUI(obj, objType)
 	end
 	_G.wipe(objectsToSkin)
 

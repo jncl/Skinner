@@ -96,6 +96,7 @@
 <Script file="FlyoutButtonCustom.lua"/>
 <Script file="GarrisonCommander.lua"/>
 <Script file="GarrisonMissionManager.lua"/>
+<Script file="Grid2.lua"/>
 <Script file="GroupCalendar.lua"/>
 <Script file="GuildBankSearch.lua"/>
 <Script file="Guild_Roster_Manager.lua"/>
