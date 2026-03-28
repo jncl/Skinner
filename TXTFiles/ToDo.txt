@@ -15,18 +15,7 @@ ToDos
 
 #283 ?	I/M	Transmog (Narcissus)
 
-#288 √	I/M Compact Unit Frame
+#308 √	I/M Addon Options
+	 √	I/M Grid2 options, 1 button NOT skinned
 
-#301 √	i/M FrameMeasurement #2
-
-#302 √	I/M TextStatusBar
-
-#303 √	I/A Typos in modules, TopFrame, MiddleFrames & BottomFrame
-
-#304 √	I/M CastingBar option missing
-
-#305 ?	I/M 2 errors while hovering over map object
-
-#306 √	S/M WhereLoot
-
-#307 √	i/M Mythic+ Dungeons Tab
+#310 √	I/M WhereLoot, wishlist not skinned
