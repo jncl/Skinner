@@ -602,7 +602,10 @@ local function __skinStdButton(opts)
 			aObj:clrBtnBdr(bObj, bObj.sb and bObj.sb.clr or bObj.clr, bObj.sb and bObj.sb.ca or bObj.ca)
 		end)
 	end
-	if not opts.sptb then
+	if not opts.sptb
+	and (opts.obj.sb
+		and opts.obj.sb.SetPassThroughButtons)
+	then
 		-- opts.obj.sb.SetPassThroughButtons = _G.nop -- fixes ADDON_ACTION_FORBIDDEN ??
 		aObj:SecureHook(opts.obj.sb, "SetPassThroughButtons", function(_)
 			_G.nop()
