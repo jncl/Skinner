@@ -1,3 +1,11 @@
+beta12.66666.2
+Jncl:
+	Updated ToDo*.txt files
+	Updated Change_History.txt
+	Updated WhereLoot skin, closes #310
+	Skinned Grid2
+	Updated UIButtons code, closes #308
+
 beta12.66666.1
 Jncl:
 	Updated ToDo*.txt files
