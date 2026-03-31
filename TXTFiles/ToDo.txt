@@ -12,10 +12,3 @@ ToDos
 	O 	Update ISSUE_TEMPLATE(s) when Classic version name changes
 
  ?	O/?	ChatFrameTab for PetBattles has missing text
-
-#283 ?	I/M	Transmog (Narcissus)
-
-#308 √	I/M Addon Options
-	 √	I/M Grid2 options, 1 button NOT skinned
-
-#310 √	I/M WhereLoot, wishlist not skinned
