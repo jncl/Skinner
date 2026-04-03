@@ -1680,7 +1680,7 @@ aObj.SetupMainline_PlayerFrames = function()
 		end
 		local function skinProfFrame()
 			local this = _G.ProfessionsFrame
-			_G.C_Timer.After(0.05, function()
+			_G.RunNextFrame(function()
 				self:skinObject("tabs", {obj=this.TabSystem, pool=true, fType=ftype, ignoreSize=true, selectedTab=1, track=false})
 			end)
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true})
