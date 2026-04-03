@@ -1105,7 +1105,7 @@ if not aObj.isClscERA then
 					end
 				end
 				if aObj.modBtnBs then
-					_G.C_Timer.After(0.05, function()
+					_G.RunNextFrame(function()
 						element.sbb:SetBackdropBorderColor(element.icon:GetVertexColor())
 					end)
 				end
@@ -1186,7 +1186,7 @@ if not aObj.isClscERA then
 					end
 				end
 				if aObj.modBtnBs then
-					_G.C_Timer.After(0.05, function()
+					_G.RunNextFrame(function()
 						aObj:clrButtonFromBorder(element)
 					end)
 				end
