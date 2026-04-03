@@ -348,11 +348,11 @@ function aObj:OnEnable()
 
 	-- table to hold frame names and functions
 	self.createFrames = {}
-	-- hook CreateFrame function to skin frames as required
+	-- hook CreateFrame function to skin frames as required [cfte]
 	--[[
 		self:add2Table(self.createFrames, {func = function(fObj)
 			self.ttHook[fObj] = "SetShown"
-			self:add2Table(self.ttList, fObj)
+			self:add2Table(self.ttList, ftype, fObj)
 		end}, "HandyNotes_MidnightTreasuresComparisonTooltip")
 	]]
 	self:SecureHook("CreateFrame", function(_, name, _, _)
