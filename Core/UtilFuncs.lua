@@ -346,7 +346,7 @@ end
 
 function aObj.changeTex2Black(_, obj, regions)
 	--@debug@
-	_G.assert(obj and obj:GetObjectType() == "Texture", "Missing Texture object changeTex2Black\n" .. _G.debugstack(2, 3, 2))
+	_G.assert(obj, "Missing Texture object changeTex2Black\n" .. _G.debugstack(2, 3, 2))
 	_G.assert(regions and _G.type(regions) == 'table', "Missing regions table changeTex2Black\n" .. _G.debugstack(2, 3, 2))
 	--@end-debug@
 
