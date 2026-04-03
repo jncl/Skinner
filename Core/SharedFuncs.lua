@@ -181,7 +181,7 @@ end
 
 function aObj:setupOptions(optNames, optIgnore, preLoadFunc, postLoadFunc)
 
-	local _
+	local gFrame, catID
 	local db = self.db.profile
 	local dflts = self.db.defaults.profile
 	local acdObj = self.ACD
@@ -202,7 +202,9 @@ function aObj:setupOptions(optNames, optIgnore, preLoadFunc, postLoadFunc)
 	self.optionsFrames = {}
 	-- register the options tables and add them to the blizzard frame
 	self.ACR:RegisterOptionsTable(aName, self.optTables.General)
-	self.optionsFrames[aName], _ = self.ACD:AddToBlizOptions(aName, self.L[aName]) -- N.B. display localised name
+	gFrame, catID = acdObj:AddToBlizOptions(aName, self.L[aName]) -- N.B. display localised name
+	self.optionsFrames[aName] = gFrame
+	self.optionsFrames[aName].catID = catID
 	self.optionsFrames[aName].OnDefault = function()
 		for name, _ in _G.pairs(aObj.optTables.General.args) do
 			db[name] = dflts[name]
@@ -220,7 +222,9 @@ function aObj:setupOptions(optNames, optIgnore, preLoadFunc, postLoadFunc)
 		for _, oName in _G.ipairs(optNames) do
 			optTitle = _G.strjoin("_", aName, oName)
 			aObj.ACR:RegisterOptionsTable(optTitle, aObj.optTables[oName])
-			aObj.optionsFrames[oName], _ = acdObj.AddToBlizOptions(aObj.ACD, optTitle, aObj.L[oName], aObj.L[aName]) -- N.B. use localised name
+			gFrame, catID = acdObj.AddToBlizOptions(aObj.ACD, optTitle, aObj.L[oName], aObj.L[aName]) -- N.B. use localised name
+			aObj.optionsFrames[oName] = gFrame
+			aObj.optionsFrames[oName].catID = catID
 			if not _G.tContains(optIgnore, oName) then
 				aObj.optionsFrames[oName].OnDefault = function()
 					for name, _ in _G.pairs(aObj.optTables[oName].args) do
