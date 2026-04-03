@@ -139,24 +139,22 @@ function aObj:applyGradient(obj, fh, invert, rotate)
 		obj.tfade:SetGradient(self:getGradientInfo(invert, rotate))
 	end
 
-	if self.prdb.FadeHeight.enable
-	and (self.prdb.FadeHeight.force or not fh)
-	then
-		-- set the Fade Height if not already passed to this function or 'forced'
-		if _G.canaccessvalue
-		and _G.canaccessvalue(obj:GetHeight()) then
-			obj.hgt = _G.Round(obj:GetHeight())
+	-- If the Global Fade Height option is selected then use the supplied value if forced or the object height is larger
+	-- otherwise use the object height
+	if self.prdb.FadeHeight.enable then
+		if self.prdb.FadeHeight.force then
+			fh = self.prdb.FadeHeight.value
 		else
-			obj.hgt = obj:GetHeight()
+			if _G.canaccessvalue then
+				if _G.canaccessvalue(obj:GetHeight())
+				and _G.issecretvalue(obj:GetHeight())
+				then
+					obj.tfade = nil
+					return
+				end
+			end
+			fh = self.prdb.FadeHeight.value <= obj:GetHeight() and self.prdb.FadeHeight.value or obj:GetHeight()
 		end
-		fh = self.prdb.FadeHeight.value <= obj.hgt and self.prdb.FadeHeight.value or obj.hgt
-	end
-
-	if _G.issecretvalue
-	and _G.issecretvalue(fh)
-	then
-		obj.tfade = nil
-		return
 	end
 
 	local oFs = self.prdb.BdInset
