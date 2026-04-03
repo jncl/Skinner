@@ -626,35 +626,35 @@ aObj.SetupOptions = function(self)
 					width = "double",
 					name = self.L["Rotate Gradient"],
 				},
-				char = {
+				npc = {
 					type = "toggle",
 					order = 5,
 					width = "double",
-					name = self.L["Enable Character Frames Gradient"],
+					name = _G.strjoin(" ", self.L["Enable"], self.L["NPC Frames"], self.L["Gradient"]),
 				},
-				ui = {
+				char = {
 					type = "toggle",
 					order = 6,
 					width = "double",
-					name = self.L["Enable UserInterface Frames Gradient"],
+					name = _G.strjoin(" ", self.L["Enable"], self.L["Player Frames"], self.L["Gradient"]),
 				},
-				npc = {
+				ui = {
 					type = "toggle",
 					order = 7,
 					width = "double",
-					name = self.L["Enable NPC Frames Gradient"],
+					name = _G.strjoin(" ", self.L["Enable"], self.L["UI Frames"], self.L["Gradient"]),
 				},
 				skinner = {
 					type = "toggle",
 					order = 8,
 					width = "double",
-					name = self.L["Enable Skinner Frames Gradient"],
+					name = _G.strjoin(" ", self.L["Enable"], self.L["Skinner"], self.L["Frames"], self.L["Gradient"]),
 				},
 				addon = {
 					type = "toggle",
 					order = 9,
 					width = "double",
-					name = self.L["Enable AddOn Frames Gradient"],
+					name = _G.strjoin(" ", self.L["Enable"], self.L["AddOn"], self.L["Frames"], self.L["Gradient"]),
 				},
 			},
 		},
