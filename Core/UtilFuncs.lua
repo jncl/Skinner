@@ -332,7 +332,7 @@ end
 
 function aObj:changeTex(obj, isYellow, isUnitFrame)
 	--@debug@
-	_G.assert(obj, "Unknown object changeTex\n" .. _G.debugstack(2, 3, 2))
+	_G.assert(obj and obj:GetObjectType() == "Texture", "Missing Texture object changeTex\n" .. _G.debugstack(2, 3, 2))
 	--@end-debug@
 
 	obj:SetTexture(self.tFDIDs.hfHB)
@@ -344,25 +344,25 @@ function aObj:changeTex(obj, isYellow, isUnitFrame)
 
 end
 
-function aObj:changeTex2SB(obj)
-	--@debug@
-	_G.assert(obj, "Unknown object changeTex2SB\n" .. _G.debugstack(2, 3, 2))
-	--@end-debug@
-
-	obj:SetTexture(self.sbTexture)
-	self.sbGlazed[obj] = {}
-
-end
-
 function aObj.changeTex2Black(_, obj, regions)
 	--@debug@
-	_G.assert(obj, "Missing object changeTex2Black\n" .. _G.debugstack(2, 3, 2))
+	_G.assert(obj and obj:GetObjectType() == "Texture", "Missing Texture object changeTex2Black\n" .. _G.debugstack(2, 3, 2))
 	_G.assert(regions and _G.type(regions) == 'table', "Missing regions table changeTex2Black\n" .. _G.debugstack(2, 3, 2))
 	--@end-debug@
 
 	for _, reg in _G.pairs(regions) do
 		obj[reg]:SetColorTexture(0, 0, 0, 1)
 	end
+
+end
+
+function aObj:changeTex2SB(obj)
+	--@debug@
+	_G.assert(obj and obj:GetObjectType() == "Texture", "Missing Texture object changeTex2SB\n" .. _G.debugstack(2, 3, 2))
+	--@end-debug@
+
+	obj:SetTexture(self.sbTexture)
+	self.sbGlazed[obj] = {}
 
 end
 
