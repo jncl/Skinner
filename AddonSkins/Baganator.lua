@@ -263,7 +263,7 @@ aObj.addonsToSkin.Baganator = function(self) -- v 769
 				skinSideTabs(fObj)
 			end)
 			-- wait for layouts to be created
-			_G.C_Timer.After(0.05, function()
+			_G.RunNextFrame(function()
 				for _, layout in _G.pairs(this.Container.Layouts) do
 					skinBtns(layout)
 				end
@@ -320,7 +320,7 @@ aObj.addonsToSkin.Baganator = function(self) -- v 769
 
 	-- track Theme changes
 	_G.Baganator.CallbackRegistry:RegisterCallback("FrameGroupSwapped", function()
-		_G.C_Timer.After(0.05, function()
+		_G.RunNextFrame(function()
 			setupFrameHooks(_G.Baganator.API.Skins.GetCurrentSkin())
 		end)
 	end)
@@ -416,7 +416,7 @@ aObj.addonsToSkin.Baganator = function(self) -- v 769
 		self:skinObject("frame", {obj=this, kfs=true, ri=true, cb=true, ofs=self.isMnln and 0 or 1, y1=self.isMnln and -1 or 2})
 	end
 	_G.Baganator.CallbackRegistry:RegisterCallback("ShowCustomise", function()
-		_G.C_Timer.After(0.05, function()
+		_G.RunNextFrame(function()
 			skinCustomiseFrame()
 		end)
 	end)
@@ -435,7 +435,7 @@ aObj.addonsToSkin.Baganator = function(self) -- v 769
 
 	-- hook this to skin dialog frames
 	local function skinDialog(frame)
-		_G.C_Timer.After(0.05, function()
+		_G.RunNextFrame(function()
 			if frame.editBox then
 				aObj:skinObject("editbox", {obj=frame.editBox, y1=-4, y2=4})
 			end
@@ -470,7 +470,7 @@ end
 
 aObj.addonsToSkin.Syndicator = function(self) -- v 247
 	self:SecureHook(_G.Syndicator.API, "GetSearchKeywords", function(this)
-		_G.C_Timer.After(0.05, function()
+		_G.RunNextFrame(function()
 			self:skinObject("scrollbar", {obj=_G.Baganator_SearchHelpFrame.ScrollBar})
 			self:skinObject("frame", {obj=_G.Baganator_SearchHelpFrame, kfs=true, cb=true, x2=1})
 		end)

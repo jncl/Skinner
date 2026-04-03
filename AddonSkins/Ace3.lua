@@ -324,7 +324,7 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 				aObj:skinObject("frame", {obj=obj.scrollBG, kfs=true, fb=true})
 				if aObj.modBtns then
 					-- wait for the extra buttons to be created
-					_G.C_Timer.After(0.05, function()
+					_G.RunNextFrame(function()
 						for _, btn in _G.pairs(obj.extraButtons) do
 							aObj:skinStdButton{obj=btn}
 						end
