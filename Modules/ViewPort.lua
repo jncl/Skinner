@@ -157,7 +157,7 @@ function module:adjustViewPort(opt)
 
 	if db.shown then
 		-- N.B. add delay before resizing WorldFrame otherwise the TOPLEFT point isn't changed
-		_G.C_Timer.After(0.05, function()
+		_G.RunNextFrame(function()
 			wF:ClearAllPoints()
 			wF:SetPoint("TOPLEFT", db.left * scale, -db.top * scale)
 			wF:SetPoint("BOTTOMRIGHT", -db.right * scale, db.bottom * scale)
