@@ -348,7 +348,7 @@ aObj.blizzLoDFrames[ftype].BattlefieldMap = function(self)
 
 		-- change the skinFrame's opacity as required
 		self:SecureHook(this, "RefreshAlpha", function(fObj)
-			_G.C_Timer.After(0.05, function()
+			_G.RunNextFrame(function()
 				fObj.sf:SetAlpha(1.0 - _G.BattlefieldMapOptions.opacity)
 			end)
 		end)
