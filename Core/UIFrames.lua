@@ -327,8 +327,8 @@ aObj.blizzFrames[ftype].AutoComplete = function(self)
 	if not self.prdb.AutoComplete or self.initialized.AutoComplete then return end
 	self.initialized.AutoComplete = true
 
-	_G.C_Timer.After(0.1, function()
-		self:add2Table(self.ttList, _G.AutoCompleteBox)
+	_G.RunNextFrame(function()
+		self:add2Table(self.ttList, ftype, _G.AutoCompleteBox)
 	end)
 
 end
@@ -1190,9 +1190,9 @@ aObj.blizzLoDFrames[ftype].DebugTools = function(self)
 		self:Unhook(this, "OnShow")
 	end)
 
-	self.ttHook[_G.FrameStackTooltip] = "OnUpdate"
-	_G.C_Timer.After(0.1, function()
-		self:add2Table(self.ttList, _G.FrameStackTooltip)
+	_G.RunNextFrame(function()
+		self.ttHook[_G.FrameStackTooltip] = "OnUpdate"
+		self:add2Table(self.ttList, ftype, _G.FrameStackTooltip)
 		_G.FrameStackTooltip:SetFrameLevel(20)
 	end)
 
@@ -1398,8 +1398,8 @@ aObj.blizzLoDFrames[ftype].EventTrace = function(self)
 	end
 	self:checkShown(_G.EventTrace)
 
-	_G.C_Timer.After(0.1, function()
-		self:add2Table(self.ttList, _G.EventTraceTooltip)
+	_G.RunNextFrame(function()
+		self:add2Table(self.ttList, ftype, _G.EventTraceTooltip)
 	end)
 
 end
@@ -2162,8 +2162,8 @@ and _G.C_LFGList.GetPremadeGroupFinderStyle() == _G.Enum.PremadeGroupFinderStyle
 				self:addButtonBorder{obj=this.RefreshButton, fType=ftype, clr="gold", ofs=-2, x1=1}
 			end
 
-			_G.C_Timer.After(0.1, function()
-			    self:add2Table(self.ttList, _G.LFGBrowseSearchEntryTooltip)
+			_G.RunNextFrame(function()
+			    self:add2Table(self.ttList, ftype, _G.LFGBrowseSearchEntryTooltip)
 			end)
 
 			self:Unhook(this, "OnShow")
@@ -3785,9 +3785,8 @@ aObj.blizzFrames[ftype].Settings = function(self)
 		self:Unhook(this, "OnShow")
 	end)
 
-	-- tooltip
-	_G.C_Timer.After(0.5, function()
-		self:add2Table(self.ttList, _G.SettingsTooltip)
+	_G.RunNextFrame(function()
+		self:add2Table(self.ttList, ftype, _G.SettingsTooltip)
 	end)
 
 	-- hook this to skin AddOns Settings panels
@@ -4028,7 +4027,6 @@ aObj.blizzFrames[ftype].TimeManager = function(self)
 
 end
 
-aObj.ttDelay = 0.05
 aObj.blizzFrames[ftype].Tooltips = function(self)
 	if not self.prdb.Tooltips.skin or self.initialized.Tooltips then return end
 	self.initialized.Tooltips = true
@@ -4036,8 +4034,10 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 	if _G.C_AddOns.IsAddOnLoaded("TinyTooltip")
 	and not self.prdb.DisabledSkins["TinyTooltip"]
 	then
-		_G.setmetatable(self.ttList, {__newindex = function(_, _, tTip)
+		_G.setmetatable(self.ttList, {__newindex = function(tab, tTip, type)
 			tTip = _G.type(tTip) == "string" and _G[tTip] or tTip
+			-- store using tooltip object as the key
+			_G.rawset(tab, tTip, type)
 			self.callbacks:Fire("Tooltip_Setup", tTip, "init")
 		end})
 		return
@@ -4045,13 +4045,13 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 
 	local func
 	-- using a metatable to manage tooltips when they are added in different functions
-	_G.setmetatable(self.ttList, {__newindex = function(tab, _, tTip)
+	_G.setmetatable(self.ttList, {__newindex = function(tab, tTip, type)
 		-- get object reference for tooltip, handle either strings or objects being passed
 		tTip = _G.type(tTip) == "string" and _G[tTip] or tTip
 		-- store using tooltip object as the key
-		_G.rawset(tab, tTip, true)
+		_G.rawset(tab, tTip, type)
 		-- skin here so tooltip initially skinned
-		self:skinObject("tooltip", {obj=tTip, ftype=tTip.ftype, ofs=0})
+		self:skinObject("tooltip", {obj=tTip, ftype=type or "a", ofs=0})
 		-- ensure tooltip gradient updated
 		if not self.ttHook[tTip] then
 			if self.isMnln then
@@ -4070,7 +4070,7 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 				func = "SecureHook"
 			end
 			self[func](self, tTip, self.ttHook[tTip], function(this)
-				_G.C_Timer.After(self.ttDelay, function() -- slight delay to allow for the tooltip to be populated
+				_G.RunNextFrame(function()
 					self:applyTooltipGradient(this.sf)
 				end)
 			end)
@@ -4088,7 +4088,8 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 			then
 				local ttSB = _G[tTip:GetName() .. "StatusBar"]
 				if ttSB
-				and not ttSB.Bar then -- ignore ReputationParagonTooltip
+				and not ttSB.Bar -- ignore ReputationParagonTooltip
+				then
 					self:skinObject("statusbar", {obj=ttSB, fi=0})
 				end
 			end
@@ -4105,8 +4106,7 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 	-- add tooltips to table
 	local function addTooltip(tTip)
 		tTip:DisableDrawLayer("OVERLAY")
-		tTip.ftype = ftype
-		aObj:add2Table(aObj.ttList, tTip)
+		aObj:add2Table(aObj.ttList, ftype, tTip)
 	end
 	local toolTips = {
 		_G.EmbeddedItemTooltip,

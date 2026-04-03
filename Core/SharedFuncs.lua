@@ -154,12 +154,21 @@ function aObj:createAddOn(makeGlobal)
 
 end
 
-function aObj.add2Table(_, tab, val, key)
+function aObj:add2Table(tab, val, key)
 	--@debug@
 	_G.assert(tab, "Unknown table add2Table\n" .. _G.debugstack(2, 3, 2))
 	_G.assert(val, "Missing value add2Table\n" .. _G.debugstack(2, 3, 2))
 	--@end-debug@
 
+	if tab == self.ttList
+	and not key
+	then
+		key = val
+		val = "a"
+		--@debug@
+		aObj:Debug("add2Table missing ftype value for ttList entry\n" .. _G.debugstack(2, 3, 2))
+		--@end-debug@
+	end
 	tab[key or #tab + 1] = val
 
 end

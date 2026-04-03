@@ -236,8 +236,8 @@ aObj.SetupMainline_PlayerFrames = function()
 				end)
 			end
 
-			_G.C_Timer.After(0.1, function()
-			    self:add2Table(self.ttList, _G.CustomizationNoHeaderTooltip)
+			_G.RunNextFrame(function()
+			    self:add2Table(self.ttList, ftype, _G.CustomizationNoHeaderTooltip)
 			end)
 
 			self:Unhook(this, "OnShow")
@@ -466,8 +466,8 @@ aObj.SetupMainline_PlayerFrames = function()
 			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true})
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, x2=3, y2=-2})
 
-			_G.C_Timer.After(0.1, function()
-				self:add2Table(self.ttList, _G.FriendsTooltip)
+			_G.RunNextFrame(function()
+				self:add2Table(self.ttList, ftype, _G.FriendsTooltip)
 			end)
 
 			self:SecureHookScript(_G.FriendsTabHeader, "OnShow", function(fTH)

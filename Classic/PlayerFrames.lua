@@ -687,8 +687,8 @@ aObj.SetupClassic_PlayerFrames = function()
 				self:Unhook(fObj, "OnShow")
 			end)
 
-			_G.C_Timer.After(0.1, function()
-				self:add2Table(self.ttList, _G.FriendsTooltip)
+			_G.RunNextFrame(function()
+				self:add2Table(self.ttList, ftype, _G.FriendsTooltip)
 			end)
 
 			self:Unhook(this, "OnShow")

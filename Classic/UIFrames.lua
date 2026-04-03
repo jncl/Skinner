@@ -478,8 +478,8 @@ aObj.SetupClassic_UIFrames = function()
 			self:Unhook(this, "OnShow")
 		end)
 
-		_G.C_Timer.After(0.1, function()
-		    self:add2Table(self.ttList, _G.ConquestTooltip)
+		_G.RunNextFrame(function()
+		    self:add2Table(self.ttList, ftype, _G.ConquestTooltip)
 		end)
 
 	end
@@ -720,9 +720,10 @@ aObj.SetupClassic_UIFrames = function()
 				self:skinCloseButton{obj=_G.WorldMapFrameCloseButton, fType=ftype}
 				self:skinStdButton{obj=_G.WorldMapZoomOutButton, fType=ftype, schk=true}
 			end
-			-- tooltip
-			self.ttHook["WorldMapTooltip"] = true
-			self:add2Table(self.ttList, "WorldMapTooltip")
+
+			_G.RunNextFrame(function()
+				self:add2Table(self.ttList, ftype, "WorldMapTooltip")
+			end)
 
 			self:Unhook(this, "OnShow")
 		end)
@@ -750,7 +751,7 @@ aObj.SetupClassic_UIFrames = function()
 
 	-- VideoOptionsFrame, wait for variable to be populated
 	if aObj.modBtns then
-		_G.C_Timer.After(1, function()
+		_G.RunNextFrame(function()
 			aObj:skinStdButton{obj=_G.VideoOptionsFrameClassic, fType=ftype}
 		end)
 	end

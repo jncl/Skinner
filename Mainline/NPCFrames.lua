@@ -653,8 +653,8 @@ aObj.SetupMainline_NPCFrames = function()
 			self:Unhook(this, "OnShow")
 		end)
 
-		_G.C_Timer.After(0.1, function()
-			self:add2Table(self.ttList, _G.PerksProgramTooltip)
+		_G.RunNextFrame(function()
+			self:add2Table(self.ttList, ftype, _G.PerksProgramTooltip)
 		end)
 
 	end
@@ -685,8 +685,8 @@ aObj.SetupMainline_NPCFrames = function()
 				end)
 			end
 
-			_G.C_Timer.After(0.1, function()
-				self:add2Table(self.ttList, this.ResultTooltip)
+			_G.RunNextFrame(function()
+				self:add2Table(self.ttList, ftype, this.ResultTooltip)
 				this.ResultTooltip.TopOverlay:SetAlpha(1)
 			end)
 

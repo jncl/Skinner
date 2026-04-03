@@ -948,8 +948,8 @@ aObj.SetupMainline_UIFrames = function()
 		end)
 		-- skin Contributions
 
-		_G.C_Timer.After(0.1, function()
-			self:add2Table(self.ttList, _G.ContributionBuffTooltip)
+		_G.RunNextFrame(function()
+			self:add2Table(self.ttList, ftype, _G.ContributionBuffTooltip)
 		end)
 
 	end
@@ -1372,16 +1372,16 @@ aObj.SetupMainline_UIFrames = function()
 		_G.FloatingGarrisonFollowerTooltip.PortraitFrame.LevelBorder:SetAlpha(0)
 		_G.FloatingGarrisonFollowerAbilityTooltip.CounterIconBorder:SetTexture(nil)
 
-		_G.C_Timer.After(0.1, function()
-			self:add2Table(self.ttList, _G.GarrisonFollowerTooltip)
-			self:add2Table(self.ttList, _G.GarrisonFollowerAbilityTooltip)
-			self:add2Table(self.ttList, _G.GarrisonFollowerAbilityWithoutCountersTooltip)
-			self:add2Table(self.ttList, _G.GarrisonFollowerMissionAbilityWithoutCountersTooltip)
-			self:add2Table(self.ttList, _G.GarrisonShipyardFollowerTooltip)
-			self:add2Table(self.ttList, _G.FloatingGarrisonFollowerTooltip)
-			self:add2Table(self.ttList, _G.FloatingGarrisonShipyardFollowerTooltip)
-			self:add2Table(self.ttList, _G.FloatingGarrisonFollowerAbilityTooltip)
-			self:add2Table(self.ttList, _G.FloatingGarrisonMissionTooltip)
+		_G.RunNextFrame(function()
+			self:add2Table(self.ttList, ftype, _G.GarrisonFollowerTooltip)
+			self:add2Table(self.ttList, ftype, _G.GarrisonFollowerAbilityTooltip)
+			self:add2Table(self.ttList, ftype, _G.GarrisonFollowerAbilityWithoutCountersTooltip)
+			self:add2Table(self.ttList, ftype, _G.GarrisonFollowerMissionAbilityWithoutCountersTooltip)
+			self:add2Table(self.ttList, ftype, _G.GarrisonShipyardFollowerTooltip)
+			self:add2Table(self.ttList, ftype, _G.FloatingGarrisonFollowerTooltip)
+			self:add2Table(self.ttList, ftype, _G.FloatingGarrisonShipyardFollowerTooltip)
+			self:add2Table(self.ttList, ftype, _G.FloatingGarrisonFollowerAbilityTooltip)
+			self:add2Table(self.ttList, ftype, _G.FloatingGarrisonMissionTooltip)
 		end)
 
 	end
@@ -1618,14 +1618,16 @@ aObj.SetupMainline_UIFrames = function()
 				end
 			end)
 
-			self:add2Table(self.ttList, _G.GarrisonBuildingFrame.BuildingLevelTooltip)
+			_G.RunNextFrame(function()
+				self:add2Table(self.ttList, ftype, _G.GarrisonBuildingFrame.BuildingLevelTooltip)
+			end)
 
 			self:Unhook(this, "OnShow")
 		end)
 
-		_G.C_Timer.After(0.1, function()
-			self:add2Table(self.ttList, _G.GarrisonMissionMechanicTooltip)
-			self:add2Table(self.ttList, _G.GarrisonMissionMechanicFollowerCounterTooltip)
+		_G.RunNextFrame(function()
+			self:add2Table(self.ttList, ftype, _G.GarrisonMissionMechanicTooltip)
+			self:add2Table(self.ttList, ftype, _G.GarrisonMissionMechanicFollowerCounterTooltip)
 		end)
 
 		-- hook these to skin mission rewards & OvermaxItem
@@ -1730,9 +1732,11 @@ aObj.SetupMainline_UIFrames = function()
 				self:Unhook(fObj, "OnShow")
 			end)
 
-			self:add2Table(self.ttList, _G.GarrisonBonusAreaTooltip)
-			self:add2Table(self.ttList, _G.GarrisonShipyardMapMissionTooltip)
 			-- TODO: .ItemTooltip ?
+			_G.RunNextFrame(function()
+				self:add2Table(self.ttList, ftype, _G.GarrisonBonusAreaTooltip)
+				self:add2Table(self.ttList, ftype, _G.GarrisonShipyardMapMissionTooltip)
+			end)
 
 			self:Unhook(this, "OnShow")
 		end)
@@ -2672,11 +2676,11 @@ aObj.SetupMainline_UIFrames = function()
 					self:addButtonBorder{obj=this.NeighborhoodListFrame.RefreshButton, fType=ftype, ofs=6, x2=7, relTo=this.NeighborhoodListFrame.RefreshButton.Icon, clr="gold"}
 				end
 
-				_G.C_Timer.After(0.1, function()
-				    self:add2Table(self.ttList, _G.HouseFinderHighlightedPlotTooltip)
+				_G.RunNextFrame(function()
+				    self:add2Table(self.ttList, ftype, _G.HouseFinderHighlightedPlotTooltip)
 				    _G.HouseFinderHighlightedPlotTooltip.Arrow:SetAlpha(1)
 				    _G.HouseFinderHighlightedPlotTooltip.CornerIcon:SetAlpha(1)
-				    self:add2Table(self.ttList, this.SelectedPlotTooltip)
+				    self:add2Table(self.ttList, ftype, this.SelectedPlotTooltip)
 				    this.SelectedPlotTooltip.Arrow:SetAlpha(1)
 				    this.SelectedPlotTooltip.CornerIcon:SetAlpha(1)
 				end)
@@ -3524,8 +3528,8 @@ aObj.SetupMainline_UIFrames = function()
 
 			-- PlunderstormFrame
 
-		_G.C_Timer.After(0.1, function()
-			self:add2Table(self.ttList, _G.ConquestTooltip)
+		_G.RunNextFrame(function()
+			self:add2Table(self.ttList, ftype, _G.ConquestTooltip)
 		end)
 
 	end
@@ -3596,14 +3600,14 @@ aObj.SetupMainline_UIFrames = function()
 					end
 				end)
 
-				_G.C_Timer.After(0.1, function()
+				_G.RunNextFrame(function()
 					local wct = fObj.ScrollFrame.CampaignTooltip
 					wct.ItemTooltip.FollowerTooltip.PortraitFrame.PortraitRing:SetTexture(nil)
 					wct.ItemTooltip.FollowerTooltip.PortraitFrame.LevelBorder:SetAlpha(0)
 					wct.ofs = -2
 					self.ttHook[wct] = "Show"
-					self:add2Table(self.ttList, wct)
-					self:add2Table(self.ttList, fObj.ScrollFrame.StoryTooltip)
+					self:add2Table(self.ttList, ftype, wct)
+					self:add2Table(self.ttList, ftype, fObj.ScrollFrame.StoryTooltip)
 				end)
 
 				self:Unhook(fObj, "OnShow")
@@ -3773,8 +3777,8 @@ aObj.SetupMainline_UIFrames = function()
 			self:Unhook(this, "OnShow")
 		end)
 
-		_G.C_Timer.After(0.1, function()
-			self:add2Table(self.ttList, _G.QuickKeybindTooltip)
+		_G.RunNextFrame(function()
+			self:add2Table(self.ttList, ftype, _G.QuickKeybindTooltip)
 		end)
 
 	end
