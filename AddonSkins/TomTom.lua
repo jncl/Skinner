@@ -2,7 +2,7 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("TomTom") then return end
 local _G = _G
 
-aObj.addonsToSkin.TomTom = function(self) -- v4.2.4-release
+aObj.addonsToSkin.TomTom = function(self) -- v4.2.24-release
 
 	-- skin the Coordinate block
 	local oFs = -2
@@ -16,22 +16,21 @@ aObj.addonsToSkin.TomTom = function(self) -- v4.2.4-release
 		end)
 	end
 
-	_G.C_Timer.After(0.1, function()
-		self:add2Table(self.ttList, _G.TomTomTooltip)
+	_G.RunNextFrame(function()
+		self:add2Table(self.ttList, "a", _G.TomTomTooltip)
 	end)
 
-end
+	self:add2Table(self.createFrames, {func = function(fObj)
+		_G.RunNextFrame(function()
+			aObj:keepFontStrings(fObj.TitleContainer)
+			aObj:skinObject("frame", {obj=fObj.EditBox, kfs=true, fb=true})
+			aObj:skinObject("frame", {obj=fObj, kfs=true})
+			if aObj.modBtns then
+				aObj:skinStdButton{obj=fObj.CloseButton}
+				aObj:skinStdButton{obj=fObj.PasteButton}
+				aObj:skinStdButton{obj=fObj.ExportButton}
+			end
+		end)
+	end}, "TomTomPaste")
 
--- Start a 1 second Repeating Timer to skin the frame
-local myTimer = _G.C_Timer.NewTicker(1, function(self)
-	if _G["TomTomPaste"] then
-		aObj:keepFontStrings(_G["TomTomPaste"].TitleContainer)
-		aObj:skinObject("frame", {obj=_G["TomTomPaste"].EditBox, kfs=true, fb=true})
-		aObj:skinObject("frame", {obj=_G["TomTomPaste"], kfs=true})
-		if aObj.modBtns then
-			aObj:skinStdButton{obj=_G["TomTomPaste"].CloseButton}
-			aObj:skinStdButton{obj=_G["TomTomPaste"].PasteButton}
-		end
-		self:Cancel()
-	end
-end)
+end

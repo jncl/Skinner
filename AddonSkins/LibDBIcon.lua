@@ -2,7 +2,7 @@ local _, aObj = ...
 local _G = _G
 -- This is a Library
 
-aObj.libsToSkin["LibDBIcon-1.0"] = function(self) -- v r36
+aObj.libsToSkin["LibDBIcon-1.0"] = function(self) -- v r55
 	if self.initialized.LibDBIcon then return end
 	self.initialized.LibDBIcon = true
 
@@ -10,9 +10,8 @@ aObj.libsToSkin["LibDBIcon-1.0"] = function(self) -- v r36
 	if lDBI
 	and lDBI.tooltip
 	then
-		-- tooltip
-		_G.C_Timer.After(0.1, function()
-			self:add2Table(self.ttList, lDBI.tooltip)
+		_G.RunNextFrame(function()
+			self:add2Table(self.ttList, "s", lDBI.tooltip)
 		end)
 	end
 
