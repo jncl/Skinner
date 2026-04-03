@@ -4146,8 +4146,8 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 			end
 		end)
 		self:SecureHook("GameTooltip_AddProgressBar", function(this, _)
-			for progressBar in this.progressBarPool:EnumerateActive() do
-				self:skinObject("statusbar", {obj=progressBar.Bar, regions={1, 2, 3, 4, 5}, fi=0, bg=self:getRegion(progressBar.Bar, 7), nilFuncs=true})
+			for pBar in this.progressBarPool:EnumerateActive() do
+				self:skinObject("statusbar", {obj=pBar.Bar, regions={1, 2, 3, 4, 5}, fi=0, bg=self:getRegion(pBar.Bar, 7), nilFuncs=true})
 			end
 		end)
 	end
