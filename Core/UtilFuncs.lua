@@ -251,14 +251,9 @@ function aObj:canSkin(callingFunc, opts)
 
 end
 
-function aObj.canSkinActionBtns()
+function aObj:canSkinActionBtns()
 
-	--@debug@
-	return true
-	--@end-debug@
-	--[===[@non-debug@
-	return aObj.isMnln and false or true
-	--@end-non-debug@]===]
+	return not self.isMnln
 
 end
 
