@@ -160,6 +160,7 @@ function aObj:add2Table(tab, val, key)
 	_G.assert(val, "Missing value add2Table\n" .. _G.debugstack(2, 3, 2))
 	--@end-debug@
 
+	-- fix for Tooltip entries
 	if tab == self.ttList
 	and not key
 	then
