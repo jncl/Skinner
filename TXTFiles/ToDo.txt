@@ -12,3 +12,5 @@ ToDos
 	O 	Update ISSUE_TEMPLATE(s) when Classic version name changes
 
  ?	O/?	ChatFrameTab for PetBattles has missing text
+
+#312 √	I/M applyTooltipGradient taint
