@@ -4190,6 +4190,27 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 	if not self.prdb.UIWidgets or self.initialized.UIWidgets then return end
 	self.initialized.UIWidgets = true
 
+	local ignoreStrings = {
+		"GameTooltip",
+		"NamePlate",
+	}
+	local function check4String(text)
+		--@debug@
+		aObj:Debug("check4String: [%s, %s]", text)
+		--@end-debug@
+		if _G.canaccessvalue
+		and (not _G.canaccessvalue(text)
+			  or _G.issecretvalue(text))
+		then
+			return true
+		end
+		for _, string in _G.pairs(ignoreStrings) do
+			if text:find(string) then
+				return true
+			end
+		end
+		return false
+	end
 	local function setTextColor(textObject)
 		aObj:rawHook(textObject, "SetTextColor", function(this, r, g, b, a)
 			local tcr, tcg, tcb = aObj:round2(r, 2), aObj:round2(g, 2), aObj:round2(b, 2)
@@ -4217,26 +4238,18 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 		    return
 		end
 
-		if wFrame.GetParent
-		and wFrame:GetParent()
-		and wFrame:GetParent().GetSourceLocation
+		if check4String(wFrame:GetParent():GetSourceLocation())
+		or check4String(wFrame:GetDebugName())
 		then
 			--@debug@
-			aObj:Debug("skinWidget [GSL]: [%s, %s, %s]",  wFrame:GetParent():GetSourceLocation())
+			aObj:Debug("skinWidget [GSL/GDN] - NOT skinning widget")
 			--@end-debug@
-			-- DON'T skin NamePlate widgets as they cause Clamping Errors if they are skinned
-			if wFrame:GetParent():GetSourceLocation():find("NamePlates") -- fixes #288, #301, #302
-			-- DON'T skin any GameTooltip widgetContainers as some of them cause secret value errors
-			or wFrame:GetParent():GetSourceLocation():find("GameTooltip") -- fixes #290, #292, #294, #295, #305
-			then
-				--@debug@
-				aObj:Debug("skinWidget [GSL] - NOT skinning widget")
-				--@end-debug@
-				return
-			end
+			return
 		end
 
+		--@debug@
 		aObj:Debug("skinWidget: [%s, %s, %s, %s, %s, %s, %s]", wFrame, wFrame.widgetType, wFrame.widgetTag, wFrame.widgetSetID, wFrame.widgetID, wInfo)
+		--@end-debug@
 
 		if wFrame.widgetType == 0 then -- IconAndText (World State: ICONS at TOP)
 			-- N.B. DON'T add buttonborder to Icon(s)
