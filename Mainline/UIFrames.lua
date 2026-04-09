@@ -3037,16 +3037,17 @@ aObj.SetupMainline_UIFrames = function()
 		end
 		local function skinOptions(frame, _)
 			if not frame.optionFrameTemplate then return end
-			if frame.sf
-			and frame.uiTextureKit == "jailerstower"
-			or frame.uiTextureKit == "cypherchoice"
-			then
-				frame.sf:Hide()
-			else
-				frame.sf:Show()
+			if frame.sf then
+				if frame.uiTextureKit == "jailerstower"
+				or frame.uiTextureKit == "cypherchoice"
+				then
+					frame.sf:Hide()
+				else
+					frame.sf:Show()
+				end
 			end
 			for opt in frame.optionPools:EnumerateActiveByTemplate(frame.optionFrameTemplate) do
-				aObj:Debug("PCF skinOptions: [%s, %s]", frame.optionFrameTemplate)
+				-- aObj:Debug("PCF skinOptions: [%s, %s]", frame.optionFrameTemplate)
 				opt.OptionText.String:SetTextColor(aObj.BT:GetRGB())
 				opt.OptionText.HTML:SetTextColor("P", aObj.BT:GetRGB())
 				if aObj.modBtns then
