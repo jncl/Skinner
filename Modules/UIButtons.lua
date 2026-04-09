@@ -237,7 +237,7 @@ function module.isButton(_, obj)
 
 end
 
-function module:skinActionBtn(bObj, ftype)
+function module.skinActionBtn(_, bObj, ftype)
 
 	bObj.SlotBackground:SetTexture(nil)
 	if bObj.SlotArt then
@@ -253,7 +253,7 @@ function module:skinActionBtn(bObj, ftype)
 		else
 			_G[bObj:GetName() .. "NormalTexture"]:SetTexture(nil)
 		end
-		self:addButtonBorder{obj=bObj, fType=ftype, sabt=true, rpA=true, ofs=3}
+		aObj:addButtonBorder{obj=bObj, fType=ftype, sabt=true, rpA=true, ofs=3}
 	end
 
 end
