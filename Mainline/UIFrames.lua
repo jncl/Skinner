@@ -416,6 +416,7 @@ aObj.SetupMainline_UIFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.AdventureMapQuestChoiceDialog)
 
 		if self.modBtnBs then
 			self:SecureHook(_G.AdventureMapQuestChoiceDialog, "RefreshRewards", function(this)
@@ -444,6 +445,7 @@ aObj.SetupMainline_UIFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.AnimaDiversionFrame)
 
 	end
 
@@ -512,6 +514,7 @@ aObj.SetupMainline_UIFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.BehavioralMessagingDetails)
 
 	end
 
@@ -868,6 +871,7 @@ aObj.SetupMainline_UIFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.ClickBindingFrame)
 
 	end
 
@@ -946,7 +950,7 @@ aObj.SetupMainline_UIFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
-		-- skin Contributions
+		self:checkShown(_G.ContributionCollectionFrame)
 
 		_G.RunNextFrame(function()
 			self:add2Table(self.ttList, ftype, _G.ContributionBuffTooltip)
@@ -1110,6 +1114,7 @@ aObj.SetupMainline_UIFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.DeathRecapFrame)
 
 	end
 
@@ -1196,6 +1201,7 @@ aObj.SetupMainline_UIFrames = function()
 
 				self:Unhook(this, "OnShow")
 			end)
+			self:checkShown(_G.DelvesDifficultyPickerFrame)
 
 		end
 
@@ -1222,6 +1228,7 @@ aObj.SetupMainline_UIFrames = function()
 
 				self:Unhook(this, "OnShow")
 			end)
+			self:checkShown(_G.DelvesDashboardFrame)
 
 		end
 	end
@@ -1324,6 +1331,7 @@ aObj.SetupMainline_UIFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.ExpansionLandingPage)
 
 	end
 
@@ -2868,6 +2876,7 @@ aObj.SetupMainline_UIFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.MajorFactionUnlockToast)
 
 		self:SecureHookScript(_G.MajorFactionsRenownToast, "OnShow", function(this)
 			skinToast(this)
@@ -2875,6 +2884,7 @@ aObj.SetupMainline_UIFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.MajorFactionsRenownToast)
 
 	end
 
@@ -2909,6 +2919,7 @@ aObj.SetupMainline_UIFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.ObliterumForgeFrame)
 
 	end
 
@@ -2960,6 +2971,7 @@ aObj.SetupMainline_UIFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.OrderHallTalentFrame)
 
 	end
 
@@ -3390,6 +3402,7 @@ aObj.SetupMainline_UIFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.PVPQueueFrame)
 
 		local function skinCommon(frame)
 			frame.ConquestBar:DisableDrawLayer("BORDER")
@@ -3989,6 +4002,7 @@ aObj.SetupMainline_UIFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.SoulbindViewer)
 
 	end
 
@@ -4005,6 +4019,7 @@ aObj.SetupMainline_UIFrames = function()
 
 				self:Unhook(this, "OnShow")
 			end)
+			self:checkShown(_G.SubscriptionInterstitialFrame)
 
 		end
 	end
@@ -4086,6 +4101,7 @@ aObj.SetupMainline_UIFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.TorghastLevelPickerFrame)
 
 	end
 
@@ -4232,6 +4248,7 @@ aObj.SetupMainline_UIFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.WeeklyRewardsFrame)
 
 		self:SecureHookScript(_G.WeeklyRewardExpirationWarningDialog, "OnShow", function(this)
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true, ofs=0})
