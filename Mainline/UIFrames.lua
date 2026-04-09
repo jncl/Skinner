@@ -965,22 +965,28 @@ aObj.SetupMainline_UIFrames = function()
 		if not self.prdb.CooldownViewer.buttons or self.initialized.CooldownViewer then return end
 		self.initialized.CooldownViewer = true
 
+		local function skinEntries(frame)
+			for item in frame.itemFramePool:EnumerateActive() do
+				if item.Bar then
+					skinCVBar(item)
+				end
+				if aObj.modBtnBs then
+					aObj:addButtonBorder{obj=item, relTo=item.Icon, clr="grey", ccat=true}
+				end
+			end
+		end
 		local frame
 		for _, framePrefix in _G.pairs{"Essential", "Utility", "BuffIcon", "BuffBar"} do
 			frame = _G[framePrefix .. "CooldownViewer"]
 			self:SecureHookScript(frame, "OnShow", function(this)
-				for item in this.itemFramePool:EnumerateActive() do
-					if item.Bar then
-						skinCVBar(item)
-					end
-					if aObj.modBtnBs then
-						aObj:addButtonBorder{obj=item, relTo=item.Icon, clr="grey", ccat=true}
-					end
-				end
+				skinEntries(this)
 
 			    self:Unhook(this, "OnShow")
 			end)
 			self:checkShown(frame)
+			self:SecureHook(frame, "RefreshLayout", function(this)
+				skinEntries(this)
+			end)
 		end
 
 	end
