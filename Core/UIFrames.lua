@@ -4075,26 +4075,29 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 				end)
 			end)
 		end
-		-- if it has an ItemTooltip then add a button border
-		if tTip.ItemTooltip
-		and self.modBtnBs
-		then
-			self:addButtonBorder{obj=tTip.ItemTooltip, relTo=tTip.ItemTooltip.Icon}
-		end
-		-- glaze the Status bar(s) if required
-		if self.prdb.Tooltips.glazesb then
-			if tTip.GetName -- named tooltips only
-			and tTip:GetName()
+		if not self.isMnln then -- bugfix for secret value errors
+			-- if it has an ItemTooltip then add a button border
+			if tTip.ItemTooltip
+			and self.modBtnBs
 			then
-				local ttSB = _G[tTip:GetName() .. "StatusBar"]
-				if ttSB
-				and not ttSB.Bar -- ignore ReputationParagonTooltip
-				then
-					self:skinObject("statusbar", {obj=ttSB, fi=0})
-				end
+				self:addButtonBorder{obj=tTip.ItemTooltip, relTo=tTip.ItemTooltip.Icon}
 			end
-			if tTip.statusBar2 then
-				self:skinObject("statusbar", {obj=tTip.statusBar2, fi=0})
+			-- glaze the Status bar(s) if required
+			if self.prdb.Tooltips.glazesb
+			then
+				if tTip.GetName -- named tooltips only
+				and tTip:GetName()
+				then
+					local ttSB = _G[tTip:GetName() .. "StatusBar"]
+					if ttSB
+					and not ttSB.Bar -- ignore ReputationParagonTooltip
+					then
+						self:skinObject("statusbar", {obj=ttSB, fi=0})
+					end
+				end
+				if tTip.statusBar2 then
+					self:skinObject("statusbar", {obj=tTip.statusBar2, fi=0})
+				end
 			end
 		end
 		-- if it has a CompareHeader then skin it as a textured tab
