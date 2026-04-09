@@ -2763,7 +2763,9 @@ aObj.SetupMainline_UIFrames = function()
 
 	-- The following function is used by the IslandsPartyPoseUI & WarfrontsPartyPoseUI functions
 	local skinPartyPoseFrame
-	if _G.C_AddOns.IsAddOnLoadOnDemand("Blizzard_IslandsPartyPoseUI") then
+	if _G.C_AddOns.IsAddOnLoadOnDemand("Blizzard_IslandsPartyPoseUI")
+	or _G.C_AddOns.IsAddOnLoadOnDemand("WarfrontsPartyPoseUI")
+	then
 		function skinPartyPoseFrame(frame)
 			frame.Border:DisableDrawLayer("BORDER") -- PartyPose NineSliceLayout
 			frame.RewardAnimations.RewardFrame.NameFrame:SetTexture(nil)
