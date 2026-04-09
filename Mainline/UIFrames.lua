@@ -2779,7 +2779,7 @@ aObj.SetupMainline_UIFrames = function()
 		if not self.prdb.IslandsPartyPoseUI or self.initialized.IslandsPartyPoseUI then return end
 
 		if not _G.IslandsPartyPoseFrame then
-			_G.C_Timer.After(0.1, function()
+			_G.RunNextFrame(function()
 				self.blizzLoDFrames[ftype].IslandsPartyPoseUI(self)
 			end)
 			return
@@ -4183,7 +4183,7 @@ aObj.SetupMainline_UIFrames = function()
 		if not self.prdb.WarfrontsPartyPoseUI or self.initialized.WarfrontsPartyPoseUI then return end
 
 		if not _G.WarfrontsPartyPoseFrame then
-			_G.C_Timer.After(0.1, function()
+			_G.RunNextFrame(function()
 				self.blizzLoDFrames[ftype].WarfrontsPartyPoseUI(self)
 			end)
 			return
