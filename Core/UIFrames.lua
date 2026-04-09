@@ -2525,7 +2525,7 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 			end
 		end
 		if self.modBtnBs
-		and not aObj.isMnln
+		and not self.isMnln
 		then
 			for _, bName in _G.pairs(_G.MICRO_BUTTONS) do
 				self:addButtonBorder{obj=_G[bName], fType=ftype, es=24, ofs=2, y1=not self.isClscBCA and -18 or nil, reParent={_G[bName].QuickKeybindHighlightTexture}}
