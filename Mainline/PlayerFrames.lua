@@ -151,7 +151,7 @@ aObj.SetupMainline_PlayerFrames = function()
 		self.initialized.CastingBar = true
 
 		local cBar
-		for _, prefix in _G.pairs{"Player", "OverlayPlayer"} do
+		for _, prefix in _G.pairs{"Player",--[[ "OverlayPlayer"]]} do -- N.B. DON'T skin OverlayPlayerCastingBar, cause secret value errors in Midnight
 			cBar = _G[prefix .. "CastingBarFrame"]
 			cBar.TextBorder:SetTexture(nil)
 			cBar.Background:SetTexture(nil)
