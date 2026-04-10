@@ -7,11 +7,11 @@ local function skinQT(key, tTip)
 	-- ignore tooltips if required
 	if not aObj.ignoreQT[key] then
 		aObj:skinObject("tooltip", {obj=tTip})
-		_G.C_Timer.After(aObj.ttDelay, function() -- slight delay to allow for the tooltip to be populated
+		_G.RunNextFrame(function()
 			aObj:applyTooltipGradient(tTip.sf)
 		end)
 		tTip:SetScript("OnUpdate", function(ttObj)
-			_G.C_Timer.After(aObj.ttDelay, function() -- slight delay to allow for the tooltip to be populated
+			_G.RunNextFrame(function()
 				aObj:applyTooltipGradient(ttObj.sf)
 			end)
 		end)
