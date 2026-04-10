@@ -988,9 +988,11 @@ aObj.SetupMainline_UIFrames = function()
 			    self:Unhook(this, "OnShow")
 			end)
 			self:checkShown(frame)
-			self:SecureHook(frame, "RefreshLayout", function(this)
-				skinEntries(this)
-			end)
+
+			_G.EventRegistry:RegisterCallback("CooldownViewerSettings.OnDataChanged", function()
+				skinEntries(frame)
+			end, frame)
+
 		end
 
 	end
