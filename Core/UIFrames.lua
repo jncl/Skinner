@@ -4196,7 +4196,7 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 	}
 	local function check4String(text)
 		--@debug@
-		aObj:Debug("check4String: [%s, %s]", text)
+		-- aObj:Debug("check4String: [%s, %s]", text)
 		--@end-debug@
 		if _G.canaccessvalue
 		and (not _G.canaccessvalue(text)
@@ -4242,13 +4242,13 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 		or check4String(wFrame:GetDebugName())
 		then
 			--@debug@
-			aObj:Debug("skinWidget [GSL/GDN] - NOT skinning widget")
+			-- aObj:Debug("skinWidget [GSL/GDN] - NOT skinning widget")
 			--@end-debug@
 			return
 		end
 
 		--@debug@
-		aObj:Debug("skinWidget: [%s, %s, %s, %s, %s, %s, %s]", wFrame, wFrame.widgetType, wFrame.widgetTag, wFrame.widgetSetID, wFrame.widgetID, wInfo)
+		-- aObj:Debug("skinWidget: [%s, %s, %s, %s, %s, %s, %s]", wFrame, wFrame.widgetType, wFrame.widgetTag, wFrame.widgetSetID, wFrame.widgetID, wInfo)
 		--@end-debug@
 
 		if wFrame.widgetType == 0 then -- IconAndText (World State: ICONS at TOP)
