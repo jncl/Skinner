@@ -2162,34 +2162,49 @@ aObj.SetupMainline_UIFrames = function()
 			self:SecureHookScript(_G.HouseEditorFrame, "OnShow", function(this)
 				-- StorageButton (LHS of screen)
 
-				self:SecureHookScript(this.StoragePanel, "OnShow", function(fObj)
-					self:keepFontStrings(fObj)
-					self:skinObject("editbox", {obj=fObj.SearchBox, fType=ftype, si=true})
-					self:skinObject("ddbutton", {obj=fObj.Filters.FilterDropdown, fType=ftype, filter=true})
-					self:keepFontStrings(fObj.Categories)
-					self:skinObject("scrollbar", {obj=fObj.OptionsContainer.ScrollBar, fType=ftype})
-					local function skinOption(...)
-						local _, element
-						if _G.select("#", ...) == 2 then
-							element, _ = ...
-						else
-							_, element, _ = ...
-						end
-						element.Background:SetTexture(nil)
-						element.HoverBackground:SetTexture(nil)
-						aObj:skinObject("frame", {obj=element, fType=ftype, fb=true, ofs=-1, clr="gold-df"})
-					end
-					_G.ScrollUtil.AddInitializedFrameCallback(fObj.OptionsContainer.ScrollBox, skinOption, aObj, true)
-						-- .TabSystem
-						self:skinObject("tabs", {obj=fObj.TabSystem, pool=true, fType=ftype, ignoreSize=true, lod=self.isTT and true--[[, regions={}, offsets={x1=6, y1=0, x2=-6, y2=2}]]})
-						-- TODO: skin CollapseButton, currently texture has border , background & icon
+				-- N.B. CAN'T skin .StoragePanel as it triggers ADDON_ACTION_FORBIDDEN errors for Shop item/bundles
+				-- via the C_HousingCatalog.HousingMarketActionViewInStore and C_HousingCatalog.HousingMarketActionViewBundle functions
+
+				-- self:SecureHookScript(this.StoragePanel, "OnShow", function(fObj)
+					-- self:keepFontStrings(fObj)
+					-- self:skinObject("editbox", {obj=fObj.SearchBox, fType=ftype, si=true, y1=-4, y2=4})
+					-- self:skinObject("ddbutton", {obj=fObj.Filters.FilterDropdown, fType=ftype, filter=true})
+					-- self:keepFontStrings(fObj.Categories)
+					-- self:skinObject("scrollbar", {obj=fObj.OptionsContainer.ScrollBar, fType=ftype})
+					-- self:skinObject("tabs", {obj=fObj.TabSystem, pool=true, fType=ftype, ignoreSize=true, lod=self.isTT and true})
+					-- TODO: skin CollapseButton, currently texture has border , background & icon
 						-- .CollapseButton
 						-- .ResizeButton
-					self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, x1=-6})
+					-- self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, x1=-6, y2=-4})
+					-- local function skinOption(...)
+					-- 	local _, element, elementData
+					-- 	if _G.select("#", ...) == 2 then
+					-- 		element, elementData = ...
+					-- 	else
+					-- 		_, element, elementData = ...
+					-- 	end
+					-- 	-- CATALOG_ENTRY_DECOR
+					-- 	-- CATALOG_ENTRY_ROOM
+					-- 	-- CATALOG_ENTRY_BUNDLE
+					-- 	-- CATALOG_ENTRY_BUNDLE_DIVIDER
+					-- 	-- CATALOG_ENTRY_HEADER
+					-- 	-- CATALOG_ENTRY_INSTRUCTIONS
+					-- if elementData.templateKey == "CATALOG_ENTRY_BUNDLE" then  -- bugfix #318
+					-- 	element.Contents.BackgroundContainer.Background:SetTexture(nil)
+					-- 	element.Contents.SelectedContainer.FrameBackground:SetTexture(nil)
+					-- 	aObj:skinObject("frame", {obj=element.Contents, fType=ftype, fb=true, ofs=-7, x1=10, x2=-10, clr="gold"})
+					-- elseif elementData.templateKey == "CATALOG_ENTRY_DECOR"
+					-- or elementData.templateKey == "CATALOG_ENTRY_ROOM"
+					-- then
+					-- 	element.Background:SetTexture(nil)
+					-- 	element.HoverBackground:SetTexture(nil)
+					-- 	aObj:skinObject("frame", {obj=element, fType=ftype, fb=true, ofs=-1, clr="gold"})
+					-- end
+					-- _G.ScrollUtil.AddInitializedFrameCallback(fObj.OptionsContainer.ScrollBox, skinOption, aObj, true)
 
-					self:Unhook(fObj, "OnShow")
-				end)
-				self:checkShown(this.StoragePanel)
+					-- self:Unhook(fObj, "OnShow")
+				-- end)
+				-- self:checkShown(this.StoragePanel)
 
 				-- (Bottom of Screen)
 				self:SecureHookScript(this.ModeBar, "OnShow", function(fObj)
@@ -2205,7 +2220,78 @@ aObj.SetupMainline_UIFrames = function()
 				end)
 				self:checkShown(this.ModeBar)
 
+				self:SecureHookScript(this.MarketShoppingCartFrame, "OnShow", function(fObj)
+					self:SecureHookScript(fObj.CartVisibleContainer, "OnShow", function(frame)
+						self:skinObject("frame", {obj=frame, fType=ftype, kfs=true, cb=true})
+						if self.modBtns then
+							self:skinStdButton{obj=frame.Footer.PurchaseCartButton, fType=ftype, ofs=-4}
+						end
+						if self.modBtnBs then
+							self:addButtonBorder{obj=frame.Header.HideCartButton, fType=ftype, ofs=1}
+							self:addButtonBorder{obj=frame.Footer.ClearCartButton, fType=ftype, es=36, x1=-3, x2=3}
+						end
+
+						self:skinObject("scrollbar", {obj=frame.ScrollBar, fType=ftype})
+						local function skinItem(...)
+							local _, element, elementData
+							if _G.select("#", ...) == 2 then
+								element, elementData = ...
+							else
+								_, element, elementData = ...
+							end
+							if elementData.isBundleParent then
+								if aObj.modBtns then
+									aObj:skinCloseButton{obj=element.RemoveFromCartButtonContainer.RemoveFromListButton, fType=ftype, noSkin=true}
+								end
+							elseif elementData.isBundleChild then
+								element.VisualContainer.BackgroundTexture:SetTexture(nil)
+								aObj:skinObject("frame", {obj=element.VisualContainer, fb=true, clr="grey"})
+							else
+								element.BackgroundTexture:SetTexture(nil)
+								aObj:skinObject("frame", {obj=element, fb=true, clr="grey"})
+							end
+						end
+						_G.ScrollUtil.AddInitializedFrameCallback(frame.ScrollBox, skinItem, aObj, true)
+
+						self:Unhook(frame, "OnShow")
+					end)
+					self:checkShown(fObj.CartVisibleContainer)
+					self:SecureHookScript(fObj.CartHiddenContainer, "OnShow", function(frame)
+						if self.modBtns then
+							self:skinStdButton{obj=frame.PurchaseCartButton, fType=ftype, sechk=true, ofs=0, y2=-1}
+						end
+						if self.modBtnBs then
+							self:addButtonBorder{obj=frame.ViewCartButton, fType=ftype, reParent={frame.ViewCartButton.ItemCountBG, frame.ViewCartButton.ItemCountText}, es=28, sechk=true, ofs=1}
+							self:changeTandC(frame.ViewCartButton.ItemCountBG)
+							self:moveObject{obj=frame.ViewCartButton.ItemCountText, y=-3}
+						end
+
+						self:Unhook(frame, "OnShow")
+					end)
+					self:checkShown(fObj.CartHiddenContainer)
+
+
+					self:Unhook(fObj, "OnShow")
+				end)
+				self:checkShown(this.MarketShoppingCartFrame)
+
+
 				self:SecureHookScript(this.BasicDecorModeFrame, "OnShow", function(fObj)
+					-- .Instructions
+						-- .UnselectedInstructions
+						-- .UnselectedInstructions
+					if self.modBtns then
+						for _, frame in _G.pairs(fObj.Instructions.SelectedInstructions) do
+							if frame.layoutIndex > 2 then
+								self:skinObject("frame", {obj=frame.Control, fType=ftype, kfs=true, ofs=0, clr="grey"})
+							end
+						end
+						for _, frame in _G.pairs(fObj.Instructions.UnselectedInstructions) do
+							if frame.layoutIndex > 2 then
+								self:skinObject("frame", {obj=frame.Control, fType=ftype, kfs=true, ofs=0, clr="grey"})
+							end
+						end
+					end
 					-- .SubButtonBar
 						-- .SnapButton
 						-- .FreePlaceButton
@@ -2256,19 +2342,28 @@ aObj.SetupMainline_UIFrames = function()
 
 				self:SecureHookScript(this.ExteriorCustomizationModeFrame, "OnShow", function(fObj)
 					if self.modBtns then
-						self:skinStdButton{obj=this.ExteriorCustomizationModeFrame.CoreOptionsPanel.HouseTypeOption, fType=ftype}
-						self:skinStdButton{obj=this.ExteriorCustomizationModeFrame.CoreOptionsPanel.HouseSizeOption, fType=ftype}
-						self:skinStdButton{obj=this.ExteriorCustomizationModeFrame.CoreOptionsPanel.BaseStyleOption, fType=ftype}
-						self:skinStdButton{obj=this.ExteriorCustomizationModeFrame.CoreOptionsPanel.BaseVariantOption, fType=ftype}
-						self:skinStdButton{obj=this.ExteriorCustomizationModeFrame.CoreOptionsPanel.RoofStyleOption, fType=ftype}
-						self:skinStdButton{obj=this.ExteriorCustomizationModeFrame.CoreOptionsPanel.RoofVariantOption, fType=ftype}
+						self:skinStdButton{obj=fObj.CoreOptionsPanel.HouseTypeOption.Dropdown, fType=ftype, bd=5, sechk=true, y2=-2}
+						self:skinStdButton{obj=fObj.CoreOptionsPanel.HouseSizeOption.Dropdown, fType=ftype, bd=5, sechk=true, y2=-2}
+						self:skinStdButton{obj=fObj.CoreOptionsPanel.BaseStyleOption.Dropdown, fType=ftype, bd=5, sechk=true, y2=-2}
+						self:skinStdButton{obj=fObj.CoreOptionsPanel.BaseVariantOption.Dropdown, fType=ftype, bd=5, sechk=true, y2=-2}
+						self:skinStdButton{obj=fObj.CoreOptionsPanel.RoofStyleOption.Dropdown, fType=ftype, bd=5, sechk=true, y2=-2}
+						self:skinStdButton{obj=fObj.CoreOptionsPanel.RoofVariantOption.Dropdown, fType=ftype, bd=5, sechk=true, y2=-2}
 					end
+
+					self:SecureHookScript(fObj.FixtureOptionList, "OnShow", function(frame)
+						self:skinObject("scrollbar", {obj=frame.ScrollBar, fType=ftype})
+						self:skinObject("frame", {obj=frame, fType=ftype, kfs=true, cb=true})
+						if self.modBtns then
+							self:moveObject{obj=frame.CloseButton, x=-9, y=-5}
+						end
+
+						self:Unhook(frame, "OnShow")
+					end)
+					self:checkShown(fObj.FixtureOptionList)
 
 					self:Unhook(fObj, "OnShow")
 				end)
 				self:checkShown(this.ExteriorCustomizationModeFrame)
-
-				-- MarketShoppingCartFrame
 
 				self:Unhook(this, "OnShow")
 			end)
@@ -2279,7 +2374,7 @@ aObj.SetupMainline_UIFrames = function()
 		aObj.blizzLoDFrames[ftype].HouseList = function(self)
 			if not self.prdb.HousingUI or self.initialized.HouseList then return end
 
-			aObj:Debug("HouseList LoD: [%s, %s]", _G.HouseListFrame)
+			-- aObj:Debug("HouseList LoD: [%s, %s]", _G.HouseListFrame)
 
 			if not _G.HouseListFrame then
 				_G.RunNextFrame(function()
