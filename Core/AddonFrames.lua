@@ -181,7 +181,7 @@ function aObj:PLAYER_ENTERING_WORLD()
 	-- self:Debug("PLAYER_ENTERING_WORLD")
 
 	-- delay issuing callback to allow for code to be loaded
-	_G.C_Timer.After(0.5, function()
+	_G.RunNextFrame(function()
 		self.callbacks:Fire("Player_Entering_World")
 		-- remove all callbacks for this event
 		self.callbacks.events["Player_Entering_World"] = nil

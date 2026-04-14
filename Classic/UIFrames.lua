@@ -670,7 +670,7 @@ aObj.SetupClassic_UIFrames = function()
 		end)
 
 		if self.modBtns then
-			_G.C_Timer.After(0.5, function()
+			_G.RunNextFrame(function()
 				local btn
 				for i = 1, _G.MAX_TUTORIAL_ALERTS do
 					btn = _G["TutorialFrameAlertButton" .. i]

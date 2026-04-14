@@ -2896,7 +2896,7 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 				self:SecureHookScript(btn, "OnClick", function(_)
 					clrZoomBtns()
 				end)
-				_G.C_Timer.After(0.5, function()
+				_G.RunNextFrame(function()
 					clrZoomBtns()
 				end)
 				self:RegisterEvent("MINIMAP_UPDATE_ZOOM", clrZoomBtns)
@@ -2965,7 +2965,7 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 	end
 
 	-- skin Minimap children, allow for delayed addons to be loaded (e.g. Baggins)
-	_G.C_Timer.After(0.5, function()
+	_G.RunNextFrame(function()
 		mmKids(_G.Minimap)
 	end)
 

@@ -278,7 +278,7 @@ function aObj:OnEnable()
 	end)
 
 	-- register for event after a slight delay as registering ADDON_LOADED any earlier causes it not to be registered if LoD modules are loaded on startup (e.g. SimpleSelfRebuff/LightHeaded)
-	_G.C_Timer.After(0.5, function()
+	_G.RunNextFrame(function()
 		self:RegisterEvent("ADDON_LOADED")
 	end)
 

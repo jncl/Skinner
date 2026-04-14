@@ -389,7 +389,7 @@ aObj.SetupMainline_UIFrames = function()
 		-- N.B. fired when entering an OrderHall
 
 		if not _G.AdventureMapQuestChoiceDialog then
-			_G.C_Timer.After(0.1, function()
+			_G.RunNextFrame(function()
 				self.blizzLoDFrames[ftype].AdventureMap(self)
 			end)
 			return
@@ -495,7 +495,7 @@ aObj.SetupMainline_UIFrames = function()
 		if not self.prdb.GMChatUI or self.initialized.BehavioralMessaging then return end
 
 		if not _G.BehavioralMessagingDetails then
-			_G.C_Timer.After(0.1, function()
+			_G.RunNextFrame(function()
 				self.blizzLoDFrames[ftype].BehavioralMessaging(self)
 			end)
 			return
@@ -1408,7 +1408,7 @@ aObj.SetupMainline_UIFrames = function()
 
 		-- wait until all frames are created
 		if not _G._G.GarrisonRecruiterFrame then
-			_G.C_Timer.After(0.1, function()
+			_G.RunNextFrame(function()
 				self.blizzLoDFrames[ftype].GarrisonUI(self)
 			end)
 			return
@@ -2151,7 +2151,7 @@ aObj.SetupMainline_UIFrames = function()
 			if not self.prdb.HousingUI or self.initialized.HouseEditor then return end
 
 			if not _G.HouseEditorFrame then
-				_G.C_Timer.After(0.1, function()
+				_G.RunNextFrame(function()
 					self.blizzLoDFrames[ftype].HouseEditor(self)
 				end)
 				return
@@ -2282,7 +2282,7 @@ aObj.SetupMainline_UIFrames = function()
 			aObj:Debug("HouseList LoD: [%s, %s]", _G.HouseListFrame)
 
 			if not _G.HouseListFrame then
-				_G.C_Timer.After(0.1, function()
+				_G.RunNextFrame(function()
 					self.blizzLoDFrames[ftype].HouseList(self)
 				end)
 				return
@@ -2499,7 +2499,7 @@ aObj.SetupMainline_UIFrames = function()
 			if not self.prdb.HousingUI or self.initialized.HousingDashboard then return end
 
 			if not _G.HousingDashboardFrame then
-				_G.C_Timer.After(0.1, function()
+				_G.RunNextFrame(function()
 					self.blizzLoDFrames[ftype].HousingDashboard(self)
 				end)
 				return
@@ -2529,7 +2529,7 @@ aObj.SetupMainline_UIFrames = function()
 					self:checkShown(hic.DashboardNoHousesFrame)
 
 					self:SecureHookScript(hic.ContentFrame, "OnShow", function(cf)
-						_G.C_Timer.After(0.5, function()
+						_G.RunNextFrame(function()
 							self:skinObject("tabs", {obj=cf.TabSystem, pool=true, fType=ftype, ignoreSize=true, lod=self.isTT and true, upwards=true, offsets={y2=-4}, track=false})
 						end)
 
@@ -2808,7 +2808,7 @@ aObj.SetupMainline_UIFrames = function()
 		if not self.prdb.IslandsQueueUI or self.initialized.IslandsQueueUI then return end
 
 		if not _G.IslandsQueueFrame then
-			_G.C_Timer.After(0.1, function()
+			_G.RunNextFrame(function()
 				self.blizzLoDFrames[ftype].IslandsQueueUI(self)
 			end)
 			return
@@ -3883,7 +3883,7 @@ aObj.SetupMainline_UIFrames = function()
 		if not self.prdb.ScrappingMachineUI or self.initialized.ScrappingMachineUI then return end
 
 		if not _G.ScrappingMachineFrame then
-			_G.C_Timer.After(0.1, function()
+			_G.RunNextFrame(function()
 				self.blizzLoDFrames[ftype].ScrappingMachineUI(self)
 			end)
 			return
