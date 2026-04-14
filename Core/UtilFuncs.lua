@@ -96,6 +96,7 @@ function aObj:addFrameBorder(opts)
 
 end
 
+local hgt
 function aObj:applyGradient(obj, fh, invert, rotate)
 
 	if not self.prdb.Gradient.enable then
@@ -145,15 +146,17 @@ function aObj:applyGradient(obj, fh, invert, rotate)
 		if self.prdb.FadeHeight.force then
 			fh = self.prdb.FadeHeight.value
 		else
-			if _G.canaccessvalue then
-				if _G.canaccessvalue(obj:GetHeight())
-				and _G.issecretvalue(obj:GetHeight())
-				then
-					obj.tfade = nil
-					return
-				end
+			hgt = obj:GetHeight()
+			if _G.issecretvalue
+			and _G.issecretvalue(hgt)
+			then
+				--@debug@
+				aObj:Debug("applyGradient, secret value found, removing tfade texture")
+				--@end-debug@
+				obj.tfade = nil
+				return
 			end
-			fh = self.prdb.FadeHeight.value <= obj:GetHeight() and self.prdb.FadeHeight.value or obj:GetHeight()
+			fh = self.prdb.FadeHeight.value <= hgt and self.prdb.FadeHeight.value or hgt
 		end
 	end
 
