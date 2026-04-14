@@ -4193,6 +4193,7 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 	local ignoreStrings = {
 		"GameTooltip",
 		"NamePlate",
+		"WorldMapFrame",
 	}
 	local function check4String(text)
 		--@debug@
@@ -4238,8 +4239,15 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 		    return
 		end
 
-		if check4String(wFrame:GetParent():GetSourceLocation())
-		or check4String(wFrame:GetDebugName())
+		-- bugfix #315/#317
+		if (wFrame.GetParent
+			and wFrame:GetParent()
+			and wFrame:GetParent().GetSourceLocation
+			and wFrame:GetParent():GetSourceLocation()
+			and check4String(wFrame:GetParent():GetSourceLocation()))
+		or (wFrame.GetDebugName
+			and wFrame:GetDebugName()
+			and check4String(wFrame:GetDebugName()))
 		then
 			--@debug@
 			-- aObj:Debug("skinWidget [GSL/GDN] - NOT skinning widget")
