@@ -2428,28 +2428,24 @@ aObj.SetupMainline_UIFrames = function()
 			end)
 
 			self:SecureHookScript(_G.HousingCornerstoneVisitorFrame, "OnShow", function(this)
-
 				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, cb=true})
 
 				self:Unhook(this, "OnShow")
 			end)
 
 			self:SecureHookScript(_G.HousingCornerstoneHouseInfoFrame, "OnShow", function(this)
-
 				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true})
 
 				self:Unhook(this, "OnShow")
 			end)
 
 			self:SecureHookScript(_G.MoveHouseConfirmationDialog, "OnShow", function(this)
-
 				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true})
 
 				self:Unhook(this, "OnShow")
 			end)
 
 			self:SecureHookScript(_G.ImportHouseConfirmationDialog, "OnShow", function(this)
-
 				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true})
 
 				self:Unhook(this, "OnShow")
