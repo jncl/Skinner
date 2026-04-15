@@ -2920,6 +2920,7 @@ if not aObj.isClscERA then
 
 					self:Unhook(fObj, "OnShow")
 				end)
+				self:checkShown(this.TutorialsFrame)
 			end
 			-- let AddOn skins know when when UI is skinned (used by Atlas skin)
 			self.callbacks:Fire("EncounterJournal_Skinned", self)
