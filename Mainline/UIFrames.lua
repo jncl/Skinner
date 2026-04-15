@@ -2349,6 +2349,11 @@ aObj.SetupMainline_UIFrames = function()
 						self:skinStdButton{obj=fObj.CoreOptionsPanel.RoofStyleOption.Dropdown, fType=ftype, bd=5, sechk=true, y2=-2}
 						self:skinStdButton{obj=fObj.CoreOptionsPanel.RoofVariantOption.Dropdown, fType=ftype, bd=5, sechk=true, y2=-2}
 					end
+					if aObj.isMnlnPTR
+					and aObj.modChkBtns
+					then
+						aObj:skinCheckButton{obj=fObj.CoreOptionsPanel.HideDecorButton, fType=ftype}
+					end
 
 					self:SecureHookScript(fObj.FixtureOptionList, "OnShow", function(frame)
 						self:skinObject("scrollbar", {obj=frame.ScrollBar, fType=ftype})
@@ -2845,6 +2850,7 @@ aObj.SetupMainline_UIFrames = function()
 			self.initialized.HousingModelPreview = true
 
 			self:SecureHookScript(_G.HousingModelPreviewFrame, "OnShow", function(this)
+				-- .DyeDisplay (MPTR)
 			    self:skinObject("frame", {obj=this, fType=ftype, kfs=true})
 
 			    self:Unhook(this, "OnShow")

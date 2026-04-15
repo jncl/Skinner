@@ -315,6 +315,7 @@ aObj.SetupMainline_PlayerFrames = function()
 		if not self.prdb.DamageMeter or self.initialized.DamageMeter then return end
 		self.initialized.DamageMeter = true
 
+		local sourceWindow
 		local function skinEntry(frame)
 			for _, tex in _G.pairs(frame.StatusBar.BackgroundRegions) do
 				tex:SetTexture(nil)
@@ -323,12 +324,24 @@ aObj.SetupMainline_PlayerFrames = function()
 		end
 		local function skinSessionWindow(frame)
 			frame.Header:SetTexture(nil)
+			if aObj.isMnlnPTR
+			and aObj.modBtns
+			then
+				aObj:skinOtherButton{obj=frame.MinimizeButton, fType=ftype, text=frame.isMinimized and aObj.modUIBtns.plus or aObj.modUIBtns.minus, size=32}
+				aObj:SecureHook(frame, "SetMinimized", function(fObj, _)
+					local minimizeButton = fObj:GetMinimizeButton()
+					if fObj:IsMinimized() then
+						minimizeButton:SetText(aObj.modUIBtns.plus)
+					else
+						minimizeButton:SetText(aObj.modUIBtns.minus)
+					end
+				end)
+			end
 			if aObj.modBtnBs then
 				aObj:addButtonBorder{obj=frame.SettingsDropdown, fType=ftype, es=12, ofs=-2, y1=1, y2=5}
 				aObj:addButtonBorder{obj=frame.SessionDropdown, fType=ftype, rpA=true, es=12, x1=-3, y1=3, x2=4, y2=-3}
 				aObj:addButtonBorder{obj=frame.DamageMeterTypeDropdown, fType=ftype, es=12, ofs=-1, y1=0, y2=2}
 			end
-			aObj:skinObject("scrollbar", {obj=frame.ScrollBar, fType=ftype})
 			local function skinPlayerEntry(...)
 				local _, element
 				if _G.select("#", ...) == 2 then
@@ -338,12 +351,21 @@ aObj.SetupMainline_PlayerFrames = function()
 				end
 				skinEntry(element)
 			end
-			_G.ScrollUtil.AddInitializedFrameCallback(frame.ScrollBox, skinPlayerEntry, aObj, true)
-			skinEntry(frame.LocalPlayerEntry)
+			if not aObj.isMnlnPTR then
+				aObj:skinObject("scrollbar", {obj=frame.ScrollBar, fType=ftype})
+				_G.ScrollUtil.AddInitializedFrameCallback(frame.ScrollBox, skinPlayerEntry, aObj, true)
+				skinEntry(frame.LocalPlayerEntry)
+				sourceWindow = frame.SourceWindow
+			else
+				aObj:skinObject("scrollbar", {obj=frame.MinimizeContainer.ScrollBar, fType=ftype})
+				_G.ScrollUtil.AddInitializedFrameCallback(frame.MinimizeContainer.ScrollBox, skinPlayerEntry, aObj, true)
+				skinEntry(frame.MinimizeContainer.LocalPlayerEntry)
+				sourceWindow = frame.MinimizeContainer.SourceWindow
+			end
 
-			aObj:SecureHookScript(frame.SourceWindow, "OnShow", function(sourceWindow)
-				aObj:skinObject("scrollbar", {obj=sourceWindow.ScrollBar, fType=ftype})
-				aObj:skinObject("frame", {obj=sourceWindow, fType=ftype, kfs=true, ofs=-6, y2=8})
+			aObj:SecureHookScript(sourceWindow, "OnShow", function(srcWindow)
+				aObj:skinObject("scrollbar", {obj=srcWindow.ScrollBar, fType=ftype})
+				aObj:skinObject("frame", {obj=srcWindow, fType=ftype, kfs=true, ofs=-6, y2=8})
 				local function skinSpellEntry(...)
 					local _, element
 					if _G.select("#", ...) == 2 then
@@ -353,9 +375,9 @@ aObj.SetupMainline_PlayerFrames = function()
 					end
 					skinEntry(element)
 				end
-				_G.ScrollUtil.AddInitializedFrameCallback(sourceWindow.ScrollBox, skinSpellEntry, aObj, true)
+				_G.ScrollUtil.AddInitializedFrameCallback(srcWindow.ScrollBox, skinSpellEntry, aObj, true)
 
-			    aObj:Unhook(sourceWindow, "OnShow")
+			    aObj:Unhook(srcWindow, "OnShow")
 			end)
 
 		end
