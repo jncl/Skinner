@@ -15,14 +15,14 @@ externals:
         url: svn://svn.wowace.com/wow/ace3/mainline/trunk/AceEvent-3.0
     Libs/AceGUI-3.0:
         url: svn://svn.wowace.com/wow/ace3/mainline/trunk/AceGUI-3.0
-    Libs/AceGUI-3.0-SharedMediaWidgets:
-        url: svn://svn.wowace.com/wow/ace-gui-3-0-shared-media-widgets/mainline/trunk/AceGUI-3.0-SharedMediaWidgets
     Libs/AceHook-3.0:
         url: svn://svn.wowace.com/wow/ace3/mainline/trunk/AceHook-3.0
     Libs/AceLocale-3.0:
         url: svn://svn.wowace.com/wow/ace3/mainline/trunk/AceLocale-3.0
     Libs/LibSharedMedia-3.0:
         url: svn://svn.wowace.com/wow/libsharedmedia-3-0/mainline/trunk/LibSharedMedia-3.0
+    Libs/AceGUI-3.0-SharedMediaWidgets:
+        url: svn://svn.wowace.com/wow/ace-gui-3-0-shared-media-widgets/mainline/trunk/AceGUI-3.0-SharedMediaWidgets
 
 ignore:
     - TXTFiles
