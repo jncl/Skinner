@@ -1300,7 +1300,7 @@ end
 function aObj:SetupCmds()
 
 	local function getMouseFocus()
-		return _G.GetMouseFoci()[1]:GetParent()
+		return _G.GetMouseFoci() and _G.GetMouseFoci()[1] and _G.GetMouseFoci()[1]:GetParent() or nil
 	end
 
 	local function makeString(obj)
