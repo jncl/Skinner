@@ -422,13 +422,14 @@ aObj.SetupClassic_PlayerFrames = function()
 		end)
 
 		self:SecureHookScript(_G.DressUpFrame, "OnShow", function(this)
-			self:makeMFRotatable(_G.DressUpModelFrame)
-			if not self.prdb.DUTexture then
-				self:keepFontStrings(this)
-			end
+			self:keepFontStrings(this)
 			if self.prdb.DUTexture then
-				self:keepRegions(this, {8, 19, 20, 21, 22, 23, 24})
+				this.BGTopLeft:SetAlpha(1)
+				this.BGTopRight:SetAlpha(1)
+				this.BGBottomLeft:SetAlpha(1)
+				this.BGBottomRight:SetAlpha(1)
 			end
+			self:makeMFRotatable(_G.DressUpModelFrame)
 			self:skinObject("frame", {obj=this, fType=ftype, cb=true, x2=1})
 			if self.modBtns then
 				self:skinStdButton{obj=_G.DressUpFrameCancelButton, fType=ftype}
