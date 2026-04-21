@@ -234,19 +234,23 @@ function aObj:canSkin(callingFunc, opts)
 		return false
 	end
 
+	-- handle button border skinning of objects with Secret Values (e.g. Buff/Debuff buttons etc)
+	if opts.ccat
+	and _G.canaccesstable
+	and not _G.canaccesstable(opts.obj)
+	then
+		--@debug@
+		aObj:CustomPrint(1, 0, 0, "ERROR: access to the table contents is disallowed by taint, canSkin", opts.obj)
+		-- aObj:Debug("canSkin not adding to oocTab: [%s, %s, %s]", opts.obj, opts.ccat, aObj.PRE)
+		--@end-debug@
+		return false
+	end
+
 	-- handle in combat
 	if not opts.ncc
 	and _G.InCombatLockdown()
 	then
-		-- handle button border skinning of objects with Secret Values (e.g. Buff/Debuff buttons etc)
-		if not opts.ccat
-		then
-			self:add2Table(self.oocTab, {callingFunc, {opts}})
-		--@debug@
-		else
-			aObj:Debug("canSkin not adding to oocTab: [%s, %s, %s]", opts.obj, opts.ccat, aObj.PRE)
-		--@end-debug@
-		end
+		self:add2Table(self.oocTab, {callingFunc, {opts}})
 		return false
 	else
 		return true

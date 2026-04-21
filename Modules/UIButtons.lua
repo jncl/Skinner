@@ -716,7 +716,7 @@ local function __addButtonBorder(opts)
 			hide 	 = Hide if required (Better Bags)
 			sba 	 = set button Alpha
 			rpA 	 = reParent Arrow Texture
-			ccat     = check if object can be accessed (Secret values)
+			ccat     = check if object's table can be accessed (Secret values)
 	--]]
 	--@debug@
 	_G.assert(opts and _G.type(opts) == "table", "Missing options table __addButtonBorder\n" .. _G.debugstack(2, 3, 2))
