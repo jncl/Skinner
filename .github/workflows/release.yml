@@ -21,8 +21,7 @@ jobs:
   release:
 
     # we can run our steps on pretty much anything, but the "ubuntu-latest" image is a safe bet
-    # ubuntu-24.04 a.k.a. ubuntu-latest has removed support for SVN, therefore the build breaks when fetching Ace3 externals
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
 
     # specify the environment variables used by the packager, matching the secrets from the project on GitHub
     env:
@@ -39,6 +38,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      # once cloned, we just run the GitHub Action for the packager project (builds 1 zip file with 3 TOC files)
+      # once cloned, we just run the GitHub Action for the packager project
       - name: Package and release
         uses: BigWigsMods/packager@v2
