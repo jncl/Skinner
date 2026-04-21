@@ -684,6 +684,7 @@ end
 
 if aObj.isMnln
 or aObj.isClscBCA
+or aObj.isClscPTR
 then
 	aObj.blizzFrames[ftype].Buffs = function(self)
 		if not self.prdb.Buffs or self.initialized.Buffs then return end
@@ -722,6 +723,25 @@ then
 
 				self:Unhook(this, "OnShow")
 			end)
+		end
+
+	end
+
+	aObj.blizzFrames[ftype].CastingBar = function(self)
+		if not self.prdb.CastingBar.skin or self.initialized.CastingBar then return end
+		self.initialized.CastingBar = true
+
+		local cBar
+		 -- N.B. DON'T skin OverlayPlayerCastingBar, causes secret value errors in Midnight
+		for _, prefix in _G.pairs{"Player", aObj.isClscPTR and "OverlayPlayer" or nil} do
+			cBar = _G[prefix .. "CastingBarFrame"]
+			if aObj.isClscPTR then
+				self:skinObject("statusbar", {obj=cBar, fType=ftype, regions={2}, fi=0, bg=self:getRegion(cBar, 1)})
+			else
+				cBar.TextBorder:SetTexture(nil)
+				cBar.Background:SetTexture(nil)
+			end
+			cBar.Border:SetTexture(nil)
 		end
 
 	end
@@ -1452,7 +1472,9 @@ if not aObj.isClscERA then
 
 					self:Unhook(fObj, "OnShow")
 				end)
-				if not aObj.isMnln then
+				if not self.isMnln
+				and not aObj.isClscPTR
+				then
 					self:SecureHookScript(this.SetsTransmogFrame, "OnShow", function(fObj)
 						self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, rns=true, fb=true, x1=x1Ofs, y1=y1Ofs, x2=x2Ofs, y2=y2Ofs})
 						if self.modBtnBs then
@@ -1472,7 +1494,9 @@ if not aObj.isClscERA then
 			self:Unhook(this, "OnShow")
 		end)
 
-		if not aObj.isMnln then
+		if not self.isMnln
+		and not aObj.isClscPTR
+		then
 			self:SecureHookScript(_G.WardrobeFrame, "OnShow", function(this)
 				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true, cb=true, x2=3, y2=-1})
 

@@ -56,7 +56,9 @@ aObj.SetupClassic_PlayerFrames = function()
 		end
 	end
 
-	if not aObj.isClscBCA then
+	if not aObj.isClscBCA
+	and not aObj.isClscPTR
+	then
 		aObj.blizzFrames[ftype].Buffs = function(self)
 			if not self.prdb.Buffs or self.initialized.Buffs then return end
 			self.initialized.Buffs = true
@@ -90,55 +92,57 @@ aObj.SetupClassic_PlayerFrames = function()
 		end
 	end
 
-	aObj.blizzFrames[ftype].CastingBar = function(self)
-		if not self.prdb.CastingBar.skin or self.initialized.CastingBar then return end
-		self.initialized.CastingBar = true
+	if not aObj.isClscPTR then
+		aObj.blizzFrames[ftype].CastingBar = function(self)
+			if not self.prdb.CastingBar.skin or self.initialized.CastingBar then return end
+			self.initialized.CastingBar = true
 
-		if _G.C_AddOns.IsAddOnLoaded("Quartz")
-		or _G.C_AddOns.IsAddOnLoaded("Dominos_Cast")
-		then
-			self.blizzFrames[ftype].CastingBar = nil
-			return
-		end
-
-		local function setLook(castBar, look)
-			castBar.Border:SetAlpha(0)
-			castBar.Flash:SetAllPoints()
-			castBar.Flash:SetTexture(self.tFDIDs.w8x8)
-			if look == "CLASSIC" then
-				castBar.Text:SetPoint("TOP", 0, 2)
-				castBar.Spark.offsetY = -1
+			if _G.C_AddOns.IsAddOnLoaded("Quartz")
+			or _G.C_AddOns.IsAddOnLoaded("Dominos_Cast")
+			then
+				self.blizzFrames[ftype].CastingBar = nil
+				return
 			end
-		end
-		local cbFrame
-		for _, type in _G.pairs{"", "Pet"} do
-			cbFrame = _G[type .. "CastingBarFrame"]
-			if cbFrame then
-				self:changeShield(cbFrame.BorderShield, cbFrame.Icon)
-				if self.prdb.CastingBar.glaze then
-					self:skinObject("statusbar", {obj=cbFrame, fType=ftype, fi=0, bg=self:getRegion(cbFrame, 1), nilFuncs=true})
-				end
-				-- adjust text and spark in Classic mode
-				if not cbFrame.ignoreFramePositionManager then
-					setLook(cbFrame)
-				else
-					setLook(cbFrame, "CLASSIC")
-				end
-				if cbFrame.SetLook then
-					self:SecureHook(cbFrame, "SetLook", function(this, look)
-						setLook(this, look)
-					end)
+
+			local function setLook(castBar, look)
+				castBar.Border:SetAlpha(0)
+				castBar.Flash:SetAllPoints()
+				castBar.Flash:SetTexture(self.tFDIDs.w8x8)
+				if look == "CLASSIC" then
+					castBar.Text:SetPoint("TOP", 0, 2)
+					castBar.Spark.offsetY = -1
 				end
 			end
-		end
+			local cbFrame
+			for _, type in _G.pairs{aObj.isClscPTR and "Player" or "", "Pet"} do
+				cbFrame = _G[type .. "CastingBarFrame"]
+				if cbFrame then
+					self:changeShield(cbFrame.BorderShield, cbFrame.Icon)
+					if self.prdb.CastingBar.glaze then
+						self:skinObject("statusbar", {obj=cbFrame, fType=ftype, fi=0, bg=self:getRegion(cbFrame, 1), nilFuncs=true})
+					end
+					-- adjust text and spark in Classic mode
+					if not cbFrame.ignoreFramePositionManager then
+						setLook(cbFrame)
+					else
+						setLook(cbFrame, "CLASSIC")
+					end
+					if cbFrame.SetLook then
+						self:SecureHook(cbFrame, "SetLook", function(this, look)
+							setLook(this, look)
+						end)
+					end
+				end
+			end
 
-		-- hook this to handle the CastingBar being attached to the Unitframe and then reset
-		if _G.CastingBarFrame_SetLook then
-			self:SecureHook("CastingBarFrame_SetLook", function(castBar, look)
-				setLook(castBar, look)
-			end)
-		end
+			-- hook this to handle the CastingBar being attached to the Unitframe and then reset
+			if _G.CastingBarFrame_SetLook then
+				self:SecureHook("CastingBarFrame_SetLook", function(castBar, look)
+					setLook(castBar, look)
+				end)
+			end
 
+		end
 	end
 
 	if aObj.isClscERA then
@@ -187,7 +191,9 @@ aObj.SetupClassic_PlayerFrames = function()
 					_G.PaperDollItemSlotButton_Update(btn)
 					self:addButtonBorder{obj=_G.RuneFrameControlButton, fType=ftype}
 				end
-				if self.isClscBCA then
+				if self.isClscBCA
+				or self.isClscPTR
+				then
 					self:skinObject("ddbutton", {obj=this.Attributes.LeftPlayerStatDropdown, fType=ftype})
 					self:skinObject("ddbutton", {obj=this.Attributes.RightPlayerStatDropdown, fType=ftype})
 				end
@@ -273,7 +279,9 @@ aObj.SetupClassic_PlayerFrames = function()
 				self:Unhook(this, "OnShow")
 			end)
 
-			if not self.isClscBCA then
+			if not self.isClscBCA
+			and not self.isClscPTR
+			then
 				self:SecureHookScript(_G.HonorFrame, "OnShow", function(this)
 					self:keepFontStrings(this)
 					self:skinObject("statusbar", {obj=_G.HonorFrameProgressBar, fType=ftype, fi=0})
@@ -918,6 +926,7 @@ aObj.SetupClassic_PlayerFrames = function()
 
 		if self.isClscERA
 		and not self.isClscBCA
+		and not self.isClscPTR
 		then
 			self:SecureHookScript(_G.InspectHonorFrame, "OnShow", function(this)
 				self:removeRegions(this, {1, 2, 3, 4, 5, 6, 7, 8})
@@ -932,7 +941,9 @@ aObj.SetupClassic_PlayerFrames = function()
 			end)
 			self:SecureHookScript(_G.InspectTalentFrame, "OnShow", function(this)
 				self:keepFontStrings(this)
-				if not aObj.isClscBCA then
+				if not aObj.isClscBCA
+				and not aObj.isClscPTR
+				then
 					this.InspectSpec.ring:SetTexture(nil)
 				else
 					self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, ignoreSize=true, lod=self.isTT and true, upwards=true, regions={7}, offsets={x1=2, y1=-2, x2=-2, y2=0}})
@@ -1402,6 +1413,7 @@ aObj.SetupClassic_PlayerFrames = function()
 				self:Unhook(this, "OnShow")
 			end)
 		else
+			local specBtnRegs = self.isClscPTR and {1, 2, 3} or {1, 2, 3, 8}
 			local btn
 			self:SecureHook("PlayerTalentFrame_UpdateSpecFrame", function(frame, _)
 				for i = 1, 10 do
@@ -1412,7 +1424,7 @@ aObj.SetupClassic_PlayerFrames = function()
 				end
 				if self.modBtnBs then
 					for i = 1, _G.GetNumSpecializations(nil, frame.isPet) do
-						self:removeRegions(frame["specButton" .. i], {1, 2, 3, 8})
+						self:removeRegions(frame["specButton" .. i], specBtnRegs)
 						if frame["specButton" .. i].sbb then
 							self:clrBBC(frame["specButton" .. i].sbb, frame["specButton" .. i].disabled and "disabled" or "gold")
 						end
@@ -1446,7 +1458,7 @@ aObj.SetupClassic_PlayerFrames = function()
 					frame.MainHelpButton.Ring:SetTexture(nil)
 					aObj:removeMagicBtnTex(frame.learnButton)
 					for i = 1, _G.GetNumSpecializations(nil, frame.isPet) do
-						aObj:removeRegions(frame["specButton" .. i], {1, 2, 3, 8})
+						aObj:removeRegions(frame["specButton" .. i], specBtnRegs)
 						aObj:makeIconSquare(frame["specButton" .. i], "specIcon", frame["specButton" .. i].disabled and "disabled" or "gold")
 					end
 					aObj:skinObject("slider", {obj=frame.spellsScroll.ScrollBar, fType=ftype, rpTex="artwork"})

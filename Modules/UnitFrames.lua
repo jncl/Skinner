@@ -345,7 +345,9 @@ function module:skinTargetF()
 			module:skinUnitButton{obj=frame.totFrame}
 			module:skinCommon(frame.totFrame:GetName(), true)
 			-- move level text down, so it is more visible
-			if not aObj.isClscBCA then
+			if not aObj.isClscBCA
+			and not aObj.isClscPTR
+			then
 				module:SecureHook("TargetFrame_UpdateLevelTextAnchor", function(fObj, targetLevel)
 					fObj.levelText:SetPoint("CENTER", targetLevel == 100 and 61 or 62, -20 + lOfs)
 				end)

@@ -15,6 +15,7 @@ aObj.blizzFrames[ftype].AddonList = function(self)
 		self:removeMagicBtnTex(this.DisableAllButton)
 		if self.isMnln
 		or self.isClscBCA
+		or self.isClscPTR
 		then
 			self:skinObject("scrollbar", {obj=this.ScrollBar, fType=ftype})
 			local function skinElement(...)
@@ -1235,6 +1236,7 @@ end
 
 if aObj.isMnln
 or aObj.isClscBCA
+or aObj.isClscPTR
 then
 	aObj.blizzFrames[ftype].EditMode = function(self)
 		if not self.prdb.EditMode or self.initialized.EditMode then return end
@@ -1265,7 +1267,9 @@ then
 			self:Unhook(this, "OnShow")
 		end)
 
-		if not aObj.isMnln then
+		if not aObj.isMnln
+		and not aObj.isClscPTR
+		then
 			self:SecureHookScript(_G.EditModeNewLayoutDialog, "OnShow", function(fObj)
 				self:skinLayoutDialog(fObj, ftype)
 
@@ -1285,7 +1289,9 @@ then
 			self:Unhook(fObj, "OnShow")
 		end)
 
-		if not aObj.isMnln then
+		if not aObj.isMnln
+		and not aObj.isClscPTR
+		then
 			self:SecureHookScript(_G.EditModeImportLayoutLinkDialog, "OnShow", function(fObj)
 				self:skinLayoutDialog(fObj, ftype)
 
@@ -1342,6 +1348,46 @@ then
 			-- UtilityCooldownViewer
 			-- BuffIconCooldownViewer
 			-- BuffBarCooldownViewer
+
+	end
+
+	-- this code handles the ExtraActionBarFrame and ZoneAbilityFrame buttons
+	aObj.blizzFrames[ftype].ExtraAbilityContainer = function(self)
+		if self.initialized.ExtraAbilityContainer then return end
+		self.initialized.ExtraAbilityContainer = true
+
+		local function skinBtn(opts)
+			if opts.obj.NormalTexture then
+				opts.obj:GetNormalTexture():SetTexture(nil)
+			end
+			if aObj.modBtnBs then
+				aObj:addButtonBorder{obj=opts.obj, sabt=true, reParent={opts.obj.HotKey, opts.obj.Count, opts.obj.Flash, opts.obj.style, opts.obj.cooldown}, ofs=2}
+			end
+		end
+		if self.prdb.MainMenuBar.extraab then
+			self:SecureHookScript(_G.ExtraActionBarFrame.intro, "OnFinished", function(_)
+				_G.ExtraActionBarFrame.button.style:SetAlpha(0)
+			end)
+			if self:canSkin(skinBtn, {obj=_G.ExtraActionBarFrame.button}) then
+				skinBtn({obj=_G.ExtraActionBarFrame.button})
+			end
+		end
+		if self.prdb.ZoneAbility then
+			local function getAbilities(frame)
+				frame.Style:SetAlpha(0)
+				for btn in frame.SpellButtonContainer:EnumerateActive() do
+					if aObj:canSkin(skinBtn, {obj=btn}) then
+						skinBtn({obj=btn})
+					end
+				end
+			end
+			self:SecureHook(_G.ZoneAbilityFrame, "UpdateDisplayedZoneAbilities", function(this)
+				getAbilities(this)
+			end)
+			if _G.ZoneAbilityFrame:IsShown() then
+				getAbilities(_G.ZoneAbilityFrame)
+			end
+		end
 
 	end
 end
@@ -1615,6 +1661,31 @@ aObj.blizzFrames[ftype].HelpPlate = function(self)
 
 end
 
+if not aObj.isClscERA
+and not aObj.isClsc
+then
+	aObj.blizzFrames[ftype].HelpTip = function(self)
+		if not self.prdb.HelpTip or self.initialized.HelpTip then return end
+		self.initialized.HelpTip = true
+
+		local function skinHelpTips()
+			for hTip in _G.HelpTip.framePool:EnumerateActive() do
+				_G.RaiseFrameLevelByTwo(hTip)
+				self:skinObject("glowbox", {obj=hTip, fType=ftype})
+				if self.modBtns then
+					-- N.B. .CloseButton already skinned in skinGlowBox function
+					self:skinStdButton{obj=hTip.OkayButton, clr="gold"}
+				end
+			end
+		end
+		skinHelpTips()
+		self:SecureHook(_G.HelpTip, "Show", function(_, _)
+			skinHelpTips()
+		end)
+
+	end
+end
+
 aObj.blizzFrames[ftype].ItemText = function(self)
 	if not self.prdb.ItemText or self.initialized.ItemText then return end
 	self.initialized.ItemText = true
@@ -1730,7 +1801,9 @@ if not aObj.isClscERA then
 			self:Unhook(this, "OnShow")
 		end)
 
-		if self.isClsc then
+		if self.isClsc
+		and not aObj.isClscPTR
+		then
 			self:SecureHookScript(_G.LFDReadyCheckPopup, "OnShow", function(this)
 				self:removeNineSlice(this.Border)
 				self:skinObject("frame", {obj=this, fType=ftype, kfs=true})
@@ -2172,6 +2245,8 @@ and _G.C_LFGList.GetPremadeGroupFinderStyle() == _G.Enum.PremadeGroupFinderStyle
 	end
 end
 
+
+
 aObj.blizzLoDFrames[ftype].MacroUI = function(self)
 	if not self.prdb.MacroUI or self.initialized.MacroUI then return end
 	self.initialized.MacroUI = true
@@ -2377,6 +2452,7 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 	if self.prdb.MainMenuBar.skin then
 		if self.isMnln
 		or self.isClscBCA
+		or self.isClscPTR
 		then
 			self:SecureHookScript(_G.MainActionBar, "OnShow", function(this)
 				if this.BorderArt then
@@ -2527,8 +2603,24 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 		if self.modBtnBs
 		and not self.isMnln
 		then
-			for _, bName in _G.pairs(_G.MICRO_BUTTONS) do
-				self:addButtonBorder{obj=_G[bName], fType=ftype, es=24, ofs=2, y1=not self.isClscBCA and -18 or nil, reParent={_G[bName].QuickKeybindHighlightTexture}}
+			local microButtons = not aObj.isClscPTR and _G.MICRO_BUTTONS or {
+				"AchievementMicroButton",
+				"CharacterMicroButton",
+				"CollectionsMicroButton",
+				"EJMicroButton",
+				"GuildMicroButton",
+				"HelpMicroButton",
+				"LFGMicroButton",
+				"MainMenuMicroButton",
+				"PVPMicroButton",
+				"QuestLogMicroButton",
+				"SpellbookMicroButton",
+				"StoreMicroButton",
+				"TalentMicroButton",
+				"WorldMapMicroButton",
+			}
+			for _, bName in _G.pairs(microButtons) do
+				self:addButtonBorder{obj=_G[bName], fType=ftype, es=24, ofs=2, y1=not self.isClscBCA and not self.isClscPTR and -18 or nil, reParent={_G[bName].QuickKeybindHighlightTexture}}
 			end
 			local function abb2Bag(bag)
 				aObj:addButtonBorder{obj=bag, fType=ftype, ibt=true, ofs=3, clr=bag.icon:GetVertexColor()}
@@ -2589,9 +2681,20 @@ aObj.blizzFrames[ftype].MainMenuBarCommon = function(self)
 	if self.prdb.MainMenuBar.skin then
 		if self.isMnln
 		or self.isClscBCA
+		or self.isClscPTR
 		then
 			for _, frame in _G.pairs{_G.StanceBar, _G.PetActionBar, _G.PossessActionBar} do
 				self:SecureHookScript(frame, "OnShow", function(this)
+					if this.BackgroundArtTextures then
+						for _, tex in _G.pairs(this.BackgroundArtTextures) do
+							tex:SetTexture(nil)
+						end
+					end
+					if this.BackgroundArtLeft then
+						this.BackgroundArtLeft:SetTexture(nil)
+						this.BackgroundArtMiddle:SetTexture(nil)
+						this.BackgroundArtRight:SetTexture(nil)
+					end
 					for _, btn in _G.pairs(this.actionButtons) do
 						self:skinActionBtn(btn, ftype)
 					end
@@ -2672,6 +2775,7 @@ aObj.blizzFrames[ftype].MenuFrames = function(self)
 	self:SecureHookScript(_G.GameMenuFrame, "OnShow", function(this)
 		if self.isMnln
 		or self.isClscBCA
+		or self.isClscPTR
 		then
 			self:removeNineSlice(this.Border)
 		end
@@ -2722,7 +2826,9 @@ aObj.blizzFrames[ftype].Minimap = function(self)
 
 	-- Cluster Frame
 	if not self.isMnln then
-		if not aObj.isClscBCA then
+		if not self.isClscBCA
+		and not aObj.isClscPTR
+		then
 			_G.MinimapBorderTop:Hide()
 		else
 			_G.MinimapCluster.BorderTop:SetTexture(nil)
@@ -4388,7 +4494,9 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 		end
 	end
 
-	if self.isMnln then
+	if self.isMnln
+	or aObj.isClscPTR
+	then
 		self:SecureHookScript(_G.UIWidgetCenterDisplayFrame, "OnShow", function(this)
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true})
 			if self.modBtnBs then

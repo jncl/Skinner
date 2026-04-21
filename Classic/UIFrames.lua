@@ -182,9 +182,11 @@ aObj.SetupClassic_UIFrames = function()
 				-- N.B. WidgetContainer objects managed in UIWidgets code
 			end
 		end
-		self:SecureHook(_G.NamePlateDriverFrame, "OnNamePlateAdded", function(_, namePlateUnitToken)
-			skinNamePlate(_G.C_NamePlate.GetNamePlateForUnit(namePlateUnitToken, _G.issecure()))
-		end)
+		if not aObj.isClscPTR then
+			self:SecureHook(_G.NamePlateDriverFrame, "OnNamePlateAdded", function(_, namePlateUnitToken)
+				skinNamePlate(_G.C_NamePlate.GetNamePlateForUnit(namePlateUnitToken, _G.issecure()))
+			end)
+		end
 		for _, frame in _G.pairs(_G.C_NamePlate.GetNamePlates(_G.issecure())) do
 			skinNamePlate(frame)
 		end
@@ -497,7 +499,9 @@ aObj.SetupClassic_UIFrames = function()
 			self:SecureHookScript(_G.QuestLogFrame, "OnShow", function(this)
 				_G.QuestLogCollapseAllButton:DisableDrawLayer("BACKGROUND")
 				self:keepFontStrings(_G.EmptyQuestLogFrame)
-				if self.isClscBCA then
+				if self.isClscBCA
+				or self.isClscPTR
+				then
 					self:keepFontStrings(_G.QuestLogCount)
 				end
 				self:skinObject("slider", {obj=_G.QuestLogListScrollFrame.ScrollBar, fType=ftype})

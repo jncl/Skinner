@@ -146,20 +146,6 @@ aObj.SetupMainline_PlayerFrames = function()
 
 	end
 
-	aObj.blizzFrames[ftype].CastingBar = function(self)
-		if not self.prdb.CastingBar.skin or self.initialized.CastingBar then return end
-		self.initialized.CastingBar = true
-
-		local cBar
-		for _, prefix in _G.pairs{"Player",--[[ "OverlayPlayer"]]} do -- N.B. DON'T skin OverlayPlayerCastingBar, cause secret value errors in Midnight
-			cBar = _G[prefix .. "CastingBarFrame"]
-			cBar.TextBorder:SetTexture(nil)
-			cBar.Background:SetTexture(nil)
-			cBar.Border:SetTexture(nil)
-		end
-
-	end
-
 	aObj.blizzLoDFrames[ftype].CharacterCustomize = function(self)
 		if not self.prdb.CharacterCustomize or self.initialized.CharacterCustomize then return end
 
@@ -1159,10 +1145,6 @@ aObj.SetupMainline_PlayerFrames = function()
 										end
 									end
 								elseif block == module.StageBlock then
-									--@debug@
-									-- aObj:Debug("skinModule StageBlock: [%s, %s]", block.widgetSetID)
-									-- _G.Spew("StageBlock", block)
-									--@end-debug@
 									if block.widgetSetID ~= 842 then -- Delves
 										aObj:skinObject("frame", {obj=block, fType=ftype, kfs=true, ofs=0, x2=-17, y2=6, clr="sepia"})
 									end

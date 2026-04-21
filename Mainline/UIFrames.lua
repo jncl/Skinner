@@ -1337,46 +1337,6 @@ aObj.SetupMainline_UIFrames = function()
 
 	end
 
-	-- this code handles the ExtraActionBarFrame and ZoneAbilityFrame buttons
-	aObj.blizzFrames[ftype].ExtraAbilityContainer = function(self)
-		if self.initialized.ExtraAbilityContainer then return end
-		self.initialized.ExtraAbilityContainer = true
-
-		local function skinBtn(opts)
-			if opts.obj.NormalTexture then
-				opts.obj:GetNormalTexture():SetTexture(nil)
-			end
-			if aObj.modBtnBs then
-				aObj:addButtonBorder{obj=opts.obj, sabt=true, reParent={opts.obj.HotKey, opts.obj.Count, opts.obj.Flash, opts.obj.style, opts.obj.cooldown}, ofs=2}
-			end
-		end
-		if self.prdb.MainMenuBar.extraab then
-			self:SecureHookScript(_G.ExtraActionBarFrame.intro, "OnFinished", function(_)
-				_G.ExtraActionBarFrame.button.style:SetAlpha(0)
-			end)
-			if self:canSkin(skinBtn, {obj=_G.ExtraActionBarFrame.button}) then
-				skinBtn({obj=_G.ExtraActionBarFrame.button})
-			end
-		end
-		if self.prdb.ZoneAbility then
-			local function getAbilities(frame)
-				frame.Style:SetAlpha(0)
-				for btn in frame.SpellButtonContainer:EnumerateActive() do
-					if aObj:canSkin(skinBtn, {obj=btn}) then
-						skinBtn({obj=btn})
-					end
-				end
-			end
-			self:SecureHook(_G.ZoneAbilityFrame, "UpdateDisplayedZoneAbilities", function(this)
-				getAbilities(this)
-			end)
-			if _G.ZoneAbilityFrame:IsShown() then
-				getAbilities(_G.ZoneAbilityFrame)
-			end
-		end
-
-	end
-
 	-- N.B. The following function has been separated from the GarrisonUI skin code as it is used by several Quest Frames
 	aObj.blizzFrames[ftype].GarrisonTooltips = function(self)
 		if not self.prdb.GarrisonUI then return end
@@ -2122,27 +2082,6 @@ aObj.SetupMainline_UIFrames = function()
 			self:Unhook(this, "OnShow")
 		end)
 		self:checkShown(_G.GenericTraitFrame)
-
-	end
-
-	aObj.blizzFrames[ftype].HelpTip = function(self)
-		if not self.prdb.HelpTip or self.initialized.HelpTip then return end
-		self.initialized.HelpTip = true
-
-		local function skinHelpTips()
-			for hTip in _G.HelpTip.framePool:EnumerateActive() do
-				_G.RaiseFrameLevelByTwo(hTip)
-				self:skinObject("glowbox", {obj=hTip, fType=ftype})
-				if self.modBtns then
-					-- N.B. .CloseButton already skinned in skinGlowBox function
-					self:skinStdButton{obj=hTip.OkayButton, clr="gold"}
-				end
-			end
-		end
-		skinHelpTips()
-		self:SecureHook(_G.HelpTip, "Show", function(_, _)
-			skinHelpTips()
-		end)
 
 	end
 
@@ -4471,7 +4410,6 @@ aObj.SetupMainline_UIFramesOptions = function(self)
 		["Expansion Landing Page"]       = true,
 		["Garrison UI"]                  = true,
 		["Generic Trait UI"]             = true,
-		["Help Tip"]                     = {desc = "Help Tips"},
 		["Housing UI"]                   = _G.GetExpansionLevel() >= _G.LE_EXPANSION_WAR_WITHIN and true or nil,
 		["Islands Party Pose UI"]        = true,
 		["Islands Queue UI"]             = true,
@@ -4498,12 +4436,6 @@ aObj.SetupMainline_UIFramesOptions = function(self)
 	self:setupFramesOptions(optTab, "UI")
 	_G.wipe(optTab)
 
-	self.optTables["UI Frames"].args.MainMenuBar.args.extraab = {
-		type = "toggle",
-		order = 5,
-		name = self.L["Extra Action Button"],
-	}
-
 	self.optTables["UI Frames"].args.CooldownViewer = {
 		type = "group",
 		order = -1,
@@ -4529,7 +4461,6 @@ end
 
 aObj.SetupMainline_UIFramesDefaults = function(self)
 
-	self.db.defaults.profile.MainMenuBar.extraab = true
 	self.db.defaults.profile.CooldownViewer = {settings = true, buttons = true}
 
 end
