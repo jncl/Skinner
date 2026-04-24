@@ -1386,16 +1386,22 @@ aObj.SetupClassic_PlayerFrames = function()
 			end
 			self:SecureHookScript(_G.PlayerTalentFrame, "OnShow", function(this)
 				local fName = this:GetName()
-				self:moveObject{obj=_G.PlayerTalentFrameTitleText, y=-2}
 				self:skinObject("tabs", {obj=this, prefix=fName, fType=ftype, lod=self.isTT and true})
 				self:skinObject("slider", {obj=_G[fName .. 'ScrollFrameScrollBar'], fType=ftype, rpTex="artwork"})
+				self:moveObject{obj=_G.PlayerTalentFrameTitleText, y=-2}
 				-- keep background Texture
 				self:removeRegions(this, {1, 2, 3, 4, 5})
 				self:skinObject("frame", {obj=this, fType=ftype, cb=true, x1=10, y1=-12, x2=-31, y2=74})
+				if self.isClscBCA then
+					self:keepFontStrings(_G.PlayerTalentFrameStatusFrame)
+				end
 				self:keepFontStrings(_G.PlayerTalentFramePointsBar)
 				_G.PlayerTalentFramePreviewBar:DisableDrawLayer("BORDER")
 				_G.PlayerTalentFramePreviewBarFiller:DisableDrawLayer("BACKGROUND")
 				if self.modBtns then
+					if self.isClscBCA then
+						self:skinStdButton{obj=_G.PlayerTalentFrameCancelButton, fType=ftype}
+					end
 					self:skinStdButton{obj=_G.PlayerTalentFrameResetButton, fType=ftype, schk=true}
 					self:skinStdButton{obj=_G.PlayerTalentFrameLearnButton, fType=ftype, schk=true}
 				end
