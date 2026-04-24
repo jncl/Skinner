@@ -897,7 +897,8 @@ aObj.SetupMainline_NPCFrames = function()
 					self:addButtonBorder{obj=fObj.ClearAllPendingButton, fType=ftype, ofs=0, y2=2, clr="grey"}
 				end
 				if self.modChkBtns then
-					self:skinCheckButton{obj=fObj.HideIgnoredToggle.Checkbox, fType=ftype, nh=true}
+					self:skinCheckButton{obj=fObj.ToggleOptions.HideIgnoredToggle.Checkbox, fType=ftype, nh=true}
+					self:skinCheckButton{obj=fObj.ToggleOptions.SheatheWeaponToggle.Checkbox, fType=ftype, nh=true}
 				end
 
 		        self:Unhook(fObj, "OnShow")
