@@ -2224,8 +2224,13 @@ and _G.C_LFGList.GetPremadeGroupFinderStyle() == _G.Enum.PremadeGroupFinderStyle
 
 		self:SecureHookScript(_G.LFGBrowseFrame, "OnShow", function(this)
 			self:keepFontStrings(this)
-			self:skinObject("dropdown", {obj=this.CategoryDropDown, fType=ftype})
-			self:skinObject("dropdown", {obj=this.ActivityDropDown, fType=ftype})
+			if not self.isClscBCA then
+				self:skinObject("dropdown", {obj=this.CategoryDropDown, fType=ftype})
+				self:skinObject("dropdown", {obj=this.ActivityDropDown, fType=ftype})
+			else
+				self:skinObject("ddbutton", {obj=this.CategoryDropdown, fType=ftype})
+				self:skinObject("ddbutton", {obj=this.ActivityDropdown, fType=ftype})
+			end
 			self:skinObject("scrollbar", {obj=this.ScrollBar, fType=ftype})
 			if self.modBtns then
 				self:skinStdButton{obj=this.SendMessageButton, fType=ftype, sechk=true}
