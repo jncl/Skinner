@@ -6,9 +6,32 @@ ToDo_Classic_PTR
 	x				- indicates nothing to change
 	¶ is Alt+7		- indicates localisation changes required
 
-	Classic_PTR (Mists Classic 5.5.2)
+	Classic_PTR (MoP Classic 5.5.4)
 		- Added
+√			- EditMode
+√			- ExtraAbilityContainer
+√			- HelpTip
 		- Updated
-			- Blizzard_ChallengesUI
-x			- Blizzard_StoreUI
+√			- AddonList
+√			- Buffs
+√			- DressUpFrame
+√			- GameMenuFrame
+√			- HonorFrame
+√			- InspectHonorFrame
+√			- InspectTalentFrame
+√			- MainMenuBar
+√			- MainMenuBarCommon
+√			- Minimap
+√			- Nameplates
+√			- PaperDollFrame
+√			- QuestFrame
+√			- QuestInfoFrame
+√			- QuestLogFrame
+√			- TalentUI
+√			- TargetFrame
+√			- UIWidgets
+√			- WardrobeCollectionFrame
 		- Deleted
+√			- LFDReadyCheckPopup
+√			- WardrobeFrame
+√			- WardrobeTransmogFrame

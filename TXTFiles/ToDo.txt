@@ -13,14 +13,7 @@ ToDos
 
  ?		O/?	ChatFrameTab for PetBattles has missing text
 
-#313 ≈	I/M applyTooltipGradient
+#319 ≈	I/M CooldownViewer
+#320 ≈	I/M CooldownViewer
 
-#314 √	I/M bad argument #1 to '?' (Usage: C_Timer.After(seconds, callback))
-
-#315 √	I/M attempt to index a nil value
-
-#316 √	I/M bad argument #1 to '?' (Usage: C_Timer.After(seconds, callback))
-
-#317 √	I/M attempt to index a nil value
-
-#318 √	I/M Housing errors
+#322 √	I/M attempted to perform indexed assignment on a frozen table
