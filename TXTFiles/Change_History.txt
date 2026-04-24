@@ -1,3 +1,63 @@
+beta12.66839.1
+Jncl:
+	Updated ToDo*.txt files
+	Updated Version numbers
+	Retail PTR changes
+	Updated EncounterJournal skin
+	Updated applyGradient function, closes #313
+	Updated UIWidget skin, closes #315, closes #317
+	Updated HousingUI skin, closes #318
+	Removed blank lines
+	Replaced C_Timer.After(0.1 with RunNextFrame function
+	Comment out debug messages
+	Bugfix for CooldownViewer RefreshLayout function
+	Updated LibQTip skin, closes #314, closes #316
+
+beta12.66838.1
+Jncl:
+	Updated ToDo*.txt files
+	Updated Version numbers
+	Retail PTR changes
+	Updated EncounterJournal skin
+	Updated applyGradient function, closes #313
+	Updated UIWidget skin, closes #315, closes #317
+	Updated HousingUI skin, closes #318
+	Removed blank lines
+	Replaced C_Timer.After(0.1 with RunNextFrame function
+	Comment out debug messages
+	Bugfix for CooldownViewer RefreshLayout function
+	Updated LibQTip skin, closes #314, closes #316
+	Updated ToDo*.txt files
+	Updated Change_History.txt
+	Updated Version numbers
+	Updated CastingBar skin to prevent secret value errors
+	Update UIWidgets code to prevent secret value errors
+	Updated Tooltip skin code to prevent secret values errors
+	Added comment
+	Updated UIButtons ActionButton skin code
+	Bugfix for PlayerChoice skin
+	Updated checks for PartyPoseUI code
+	Added checks for frame is shown to LoD skin functions
+	Changed aObj to self
+	Updated ColourFuncs to correctly colour strings with multiple colour codes in them
+	Updated code to replace C_Timer.After with RunNextFrame
+	Updated CooldownViewer skin
+	Updated UtilFuncs code
+	Updated ApplyGradient function, closes #312
+	Updated comment and example code
+	Updated UtilFuncs changeTex2Black debug check
+	Updated Gradient Options text
+	Updated Tooltip skinning code
+	Updated Ace3, LibDBIcon & TomTom skins
+	Bugfix for opening options from Slash command or LDB icon
+	Updated Viewport code
+	Updated UtilFuncs code for texture changes
+	Updated BattlefieldMap code
+	Updated Profession code
+	Updated GameTooltip code
+	Updated Warbands Collections skin
+	Updated Ace3 & Baganator skins
+
 beta12.66709.1
 Jncl:
 	Updated ToDo*.txt files
