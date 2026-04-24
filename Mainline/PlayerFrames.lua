@@ -371,7 +371,7 @@ aObj.SetupMainline_PlayerFrames = function()
 			skinSessionWindow(sessionWindow)
 		end)
 
-		self:SecureHook(_G.DamageMeter, "SetupSessionWindow", function(_, windowData, _)
+		self:SecureHook(_G.DamageMeter, "SetupSessionWindow", function(_, _, windowData, _)
 			skinSessionWindow(windowData.sessionWindow)
 		end)
 
