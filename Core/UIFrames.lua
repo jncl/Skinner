@@ -2153,7 +2153,8 @@ if not aObj.isClscERA then
 
 	end
 elseif _G.C_LFGList.GetPremadeGroupFinderStyle
-and _G.C_LFGList.GetPremadeGroupFinderStyle() == _G.Enum.PremadeGroupFinderStyle.Vanilla then
+and _G.C_LFGList.GetPremadeGroupFinderStyle() == _G.Enum.PremadeGroupFinderStyle.Vanilla
+then
 	aObj.blizzFrames[ftype].GroupFinder = function(self)
 		if not self.prdb.PVEFrame or self.initialized.LFGList then return end
 		self.initialized.LFGList = true
