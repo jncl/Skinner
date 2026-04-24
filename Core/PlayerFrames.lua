@@ -2013,6 +2013,7 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 				element.Icon:SetAlpha(1)
 				if aObj.modBtnBs then
 					aObj:addButtonBorder{obj=element, fType=ftype, relTo=element.Icon}
+					-- colour based on guild reputation level
 					if element.sbb then
 						if element.Icon:IsDesaturated() then
 							aObj:clrBBC(element.sbb, "disabled")
@@ -3209,6 +3210,7 @@ aObj.blizzFrames[ftype].RolePollPopup = function(self)
 		if self.modBtns then
 			self:skinStdButton{obj=this.acceptButton, schk=true}
 		end
+		-- N.B. CAN'T skin the RoleButtons.checkButton as they use radio button textures
 
 		self:Unhook(this, "OnShow")
 	end)
