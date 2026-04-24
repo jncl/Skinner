@@ -2,7 +2,7 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("Baganator") then return end
 local _G = _G
 
-aObj.addonsToSkin.Baganator = function(self) -- v 769
+aObj.addonsToSkin.Baganator = function(self) -- v 799
 
 	-- TODO: handle warband bank being purchased
 
@@ -440,6 +440,11 @@ aObj.addonsToSkin.Baganator = function(self) -- v 769
 				aObj:skinObject("editbox", {obj=frame.editBox, y1=-4, y2=4})
 			end
 			-- MoneyInputFrame
+			if frame.moneyBox then
+				aObj:skinObject("editbox", {obj=frame.moneyBox.gold})
+				aObj:skinObject("editbox", {obj=frame.moneyBox.silver})
+				aObj:skinObject("editbox", {obj=frame.moneyBox.copper})
+			end
 			aObj:skinObject("frame", {obj=frame, kfs=true, ofs=-4})
 			if aObj.modBtns then
 				for _, child in _G.ipairs_reverse{frame:GetChildren()} do
@@ -466,17 +471,16 @@ aObj.addonsToSkin.Baganator = function(self) -- v 769
 	end)
 	self:scanChildren{obj=_G.UIParent, cbstr="UIParent_GetChildren"}
 
+	self:add2Table(self.createFrames, {func = function(fObj)
+	    _G.RunNextFrame(function()
+			self:skinObject("scrollbar", {obj=fObj.ScrollBar})
+			self:skinObject("frame", {obj=fObj, kfs=true, cb=true, x2=1})
+	    end)
+	end}, "Baganator_SearchHelpFrame")
+
 end
 
-aObj.addonsToSkin.Syndicator = function(self) -- v 247
-	self:SecureHook(_G.Syndicator.API, "GetSearchKeywords", function(this)
-		_G.RunNextFrame(function()
-			self:skinObject("scrollbar", {obj=_G.Baganator_SearchHelpFrame.ScrollBar})
-			self:skinObject("frame", {obj=_G.Baganator_SearchHelpFrame, kfs=true, cb=true, x2=1})
-		end)
-
-		self:Unhook(this, "GetSearchKeywords")
-	end)
+aObj.addonsToSkin.Syndicator = function(self) -- v 267
 
 	self.RegisterCallback("Syndicator", "SettingsPanel_DisplayCategory", function(_, panel, category)
 		if category.name ~= "Syndicator" then return end
