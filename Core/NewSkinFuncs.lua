@@ -1055,18 +1055,16 @@ local function skinTabs(tbl)
 		end
 		if aObj.isTT
 		and aObj.isMnln
-		and tbl.obj.SetTabSelectedCallback
+		and tbl.obj.SetTabVisuallySelected
 		then
-			tbl.obj.orig_tabSelectedCallback = tbl.obj.tabSelectedCallback or _G.nop
-			tbl.obj:SetTabSelectedCallback(function(tabID, isUserAction)
-				for _, tab in _G.ipairs(tbl.obj.tabs) do
+			aObj:SecureHook(tbl.obj, "SetTabVisuallySelected", function(this, tabID)
+				for _, tab in _G.ipairs(this.tabs) do
 					if tab:GetTabID() == tabID then
 						aObj:setActiveTab(tab.sf)
 					else
 						aObj:setInactiveTab(tab.sf)
 					end
 				end
-				tbl.obj.orig_tabSelectedCallback(tabID, isUserAction)
 			end)
 		end
 	else
