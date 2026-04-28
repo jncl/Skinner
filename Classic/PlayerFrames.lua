@@ -90,9 +90,7 @@ aObj.SetupClassic_PlayerFrames = function()
 			-- Temp Enchants already have a coloured border
 
 		end
-	end
 
-	if not aObj.isClscPTR then
 		aObj.blizzFrames[ftype].CastingBar = function(self)
 			if not self.prdb.CastingBar.skin or self.initialized.CastingBar then return end
 			self.initialized.CastingBar = true

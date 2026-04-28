@@ -727,24 +727,28 @@ then
 
 	end
 
-	aObj.blizzFrames[ftype].CastingBar = function(self)
-		if not self.prdb.CastingBar.skin or self.initialized.CastingBar then return end
-		self.initialized.CastingBar = true
+	if not aObj.isMnln then
+		aObj.blizzFrames[ftype].CastingBar = function(self)
+			if not self.prdb.CastingBar.skin or self.initialized.CastingBar then return end
+			self.initialized.CastingBar = true
 
-		local cBar
-		 -- N.B. DON'T skin OverlayPlayerCastingBar, causes secret value errors in Midnight
-		for _, prefix in _G.pairs{"Player", aObj.isClscPTR and "OverlayPlayer" or nil} do
-			cBar = _G[prefix .. "CastingBarFrame"]
-			if aObj.isClscPTR then
-				self:skinObject("statusbar", {obj=cBar, fType=ftype, regions={2}, fi=0, bg=self:getRegion(cBar, 1)})
-			else
-				cBar.TextBorder:SetTexture(nil)
-				cBar.Background:SetTexture(nil)
+			local cBar
+			for _, prefix in _G.pairs{"Player", aObj.isClscPTR and "OverlayPlayer" or nil} do
+				cBar = _G[prefix .. "CastingBarFrame"]
+				if aObj.isClscPTR
+				and self.prdb.CastingBar.glaze
+				then
+					self:skinObject("statusbar", {obj=cBar, fType=ftype, regions={2}, fi=0, bg=self:getRegion(cBar, 1)})
+				else
+					cBar.TextBorder:SetTexture(nil)
+					cBar.Background:SetTexture(nil)
+				end
+				cBar.Border:SetTexture(nil)
 			end
-			cBar.Border:SetTexture(nil)
-		end
 
+		end
 	end
+
 end
 
 if not aObj.isClscERA then
