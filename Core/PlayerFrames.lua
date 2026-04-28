@@ -2324,7 +2324,6 @@ aObj.blizzFrames[ftype].CompactFrames = function(self)
 			-- TODO: skin Toggle button texture
 			-- .toggleButtonForward
 			-- .toggleButtonBack
-			-- TODO: skin RaidMarkers
 		else
 			self:moveObject{obj=this.toggleButton, x=5}
 			this.toggleButton:SetSize(12, 32)
@@ -2365,16 +2364,23 @@ aObj.blizzFrames[ftype].CompactFrames = function(self)
 					self:skinStdButton{obj=fObj.hiddenModeToggle, fType=ftype}
 					self:skinStdButton{obj=fObj.convertToRaid, fType=ftype}
 					self:skinStdButton{obj=fObj.leaderOptions.readyCheckButton, fType=ftype}
-					if not self.isClscERA then
+					if not self.isClscERA
+					or self.isClscBCA
+					then
 						self:skinStdButton{obj=fObj.leaderOptions.rolePollButton, fType=ftype}
 					end
+					if self.isClscBCA then
+						self:skinStdButton{obj=fObj.editMode, fType=ftype}
+						self:skinStdButton{obj=fObj.leaderOptions.countdownButton, fType=ftype}
+					end
 					self:SecureHook("CompactRaidFrameManager_UpdateOptionsFlowContainer", function()
-						local frame = _G.CompactRaidFrameManager
 						-- handle button skin frames not being created yet
-						if frame.displayFrame.leaderOptions.readyCheckButton.sb then
-							self:clrBtnBdr(frame.displayFrame.leaderOptions.readyCheckButton)
-							if not self.isClscERA then
-								self:clrBtnBdr(frame.displayFrame.leaderOptions.rolePollButton)
+						if fObj.leaderOptions.readyCheckButton.sb then
+							self:clrBtnBdr(fObj.leaderOptions.readyCheckButton)
+							if not self.isClscERA
+							or self.isClscBCA
+							then
+								self:clrBtnBdr(fObj.leaderOptions.rolePollButton)
 							end
 						end
 					end)
