@@ -1292,7 +1292,7 @@ aObj.SetupMainline_PlayerFrames = function()
 
 		self:SecureHookScript(_G.PlayerSpellsFrame, "OnShow", function(this)
 			this.PortraitContainer.portrait:SetAlpha(0)
-			self:skinObject("tabs", {obj=this.TabSystem,  pool=true, fType=ftype, ignoreSize=true, track=false})
+			self:skinObject("tabs", {obj=this.TabSystem, pool=true, fType=ftype, ignoreSize=true, track=false})
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true, cb=true, y1=0, x2=1})
 
 			self:SecureHookScript(this.MaximizeMinimizeButton, "OnShow", function(fObj)
