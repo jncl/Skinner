@@ -4308,24 +4308,60 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 	self.initialized.UIWidgets = true
 
 	local ignoreStrings = {
+		"CompactUnitFrame",
 		"GameTooltip",
 		"NamePlate",
 		"WorldMapFrame",
 	}
-	local function check4String(text)
-		--@debug@
-		-- aObj:Debug("check4String: [%s, %s]", text)
-		--@end-debug@
-		if _G.canaccessvalue
-		and (not _G.canaccessvalue(text)
-			  or _G.issecretvalue(text))
+	local parent
+	local function getTLP(object)
+		parent = object:GetParent()
+		if parent
+		and parent ~= _G.UIParent
 		then
-			return true
+			return getTLP(parent)
+		else
+			return object
 		end
-		for _, string in _G.pairs(ignoreStrings) do
-			if text:find(string) then
+	end
+	local text
+	local function check4String(fObj, func1, funcs2)
+		--@debug@
+		-- aObj:Debug("check4String#1: [%s, %s, %s]", fObj, func1, funcs2)
+		--@end-debug@
+
+		text = nil
+		if fObj[func1] then
+			text = fObj[func1](fObj)
+			--@debug@
+			-- aObj:Debug("check4String#2: [%s, %s]", text, _G.type(text))
+			--@end-debug@
+			if _G.type(text) == "table" then
+				if funcs2 then
+					for _, f2 in _G.pairs(funcs2) do
+						if fObj[func1](fObj)[f2]
+						and fObj[func1](fObj)[f2](fObj)
+						then
+							text = fObj[func1](fObj)[f2](fObj)
+							break
+						end
+					end
+				end
+			end
+		end
+		-- @debug@
+		-- aObj:Debug("check4String#3: [%s]", text)
+		-- @end-debug@
+		if text then
+			if _G.canaccessvalue
+			and (not _G.canaccessvalue(text)
+				  or _G.issecretvalue(text))
+			then
 				return true
 			end
+			return _G.ContainsIf(ignoreStrings, function(string)
+				return text:find(string)
+			end)
 		end
 		return false
 	end
@@ -4357,17 +4393,12 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 		end
 
 		-- bugfix #315/#317
-		if (wFrame.GetParent
-			and wFrame:GetParent()
-			and wFrame:GetParent().GetSourceLocation
-			and wFrame:GetParent():GetSourceLocation()
-			and check4String(wFrame:GetParent():GetSourceLocation()))
-		or (wFrame.GetDebugName
-			and wFrame:GetDebugName()
-			and check4String(wFrame:GetDebugName()))
+		if _G.FindInTable(ignoreStrings, getTLP(wFrame):GetName())
+		or check4String(wFrame, "GetParent", {"GetName", "GetSourceLocation"})
+		or check4String(wFrame, "GetDebugName")
 		then
 			--@debug@
-			-- aObj:Debug("skinWidget [GSL/GDN] - NOT skinning widget")
+			aObj:Debug("skinWidget - ignoring widget")
 			--@end-debug@
 			return
 		end
@@ -4516,19 +4547,23 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 			self:Unhook(this, "OnShow")
 		end)
 		self:checkShown(_G.UIWidgetCenterDisplayFrame)
+
+		local function skinwidgetPools(wContainer)
+			for widget in wContainer.widgetPools:EnumerateActive() do
+				_G.RunNextFrame(function()
+					skinWidget(widget, _G.UIWidgetManager:GetWidgetTypeInfo(widget.widgetType))
+				end)
+			end
+		end
 		local function hookAndSkinWidgets(widgetContainer)
 			-- aObj:Debug("hookAndSkinWidgets: [%s, %s, %s]", widgetContainer:IsForbidden())
 			if widgetContainer:IsForbidden() then
 				return
 			end
 			aObj:SecureHook(widgetContainer, "UpdateWidgetLayout", function(this)
-				for widget in this.widgetPools:EnumerateActive() do
-					skinWidget(widget, _G.UIWidgetManager:GetWidgetTypeInfo(widget.widgetType))
-				end
+				skinwidgetPools(this)
 			end)
-			for widget in widgetContainer.widgetPools:EnumerateActive() do
-				skinWidget(widget, _G.UIWidgetManager:GetWidgetTypeInfo(widget.widgetType))
-			end
+			skinwidgetPools(widgetContainer)
 		end
 		-- hook this to skin new widgets
 		self:SecureHook(_G.UIWidgetManager, "OnWidgetContainerRegistered", function(_, widgetContainer)
