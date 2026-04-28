@@ -970,14 +970,16 @@ aObj.SetupMainline_UIFrames = function()
 		self.initialized.CooldownViewer = true
 
 		local function skinEntries(frame)
-			for item in frame.itemFramePool:EnumerateActive() do
-				if item.Bar then
-					skinCVBar(item)
+			_G.RunNextFrame(function()
+				for item in frame.itemFramePool:EnumerateActive() do
+					if item.Bar then
+						skinCVBar(item)
+					end
+					if aObj.modBtnBs then
+						aObj:addButtonBorder{obj=item, relTo=item.Icon, clr="grey", ccat=true}
+					end
 				end
-				if aObj.modBtnBs then
-					aObj:addButtonBorder{obj=item, relTo=item.Icon, clr="grey", ccat=true}
-				end
-			end
+			end)
 		end
 		local frame
 		for _, framePrefix in _G.pairs{"Essential", "Utility", "BuffIcon", "BuffBar"} do
@@ -989,9 +991,9 @@ aObj.SetupMainline_UIFrames = function()
 			end)
 			self:checkShown(frame)
 
-			_G.EventRegistry:RegisterCallback("CooldownViewerSettings.OnDataChanged", function()
-				skinEntries(frame)
-			end, frame)
+			self:SecureHook(frame, "RefreshLayout", function(this)
+				skinEntries(this)
+			end)
 
 		end
 
