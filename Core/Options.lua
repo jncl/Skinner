@@ -589,7 +589,7 @@ aObj.SetupOptions = function(self)
 					width = "double",
 					name = self.L["Baggins Bank Bags Colour"],
 					hasAlpha = true,
-					hidden = function() return _G.C_AddOns.IsAddOnLoaded("Baggins") and false or true end,
+					hidden = function() return not _G.C_AddOns.IsAddOnLoaded("Baggins") end,
 				},
 			},
 		},
