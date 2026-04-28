@@ -221,6 +221,14 @@ end
 
 function aObj:canSkin(callingFunc, opts)
 
+	-- handle in combat
+	if _G.InCombatLockdown()
+	and not opts.ncc
+	then
+		self:add2Table(self.oocTab, {self.canSkin, {self, callingFunc, opts}})
+		return false
+	end
+
 	if not opts.obj then
 		return false
 	end
@@ -246,15 +254,7 @@ function aObj:canSkin(callingFunc, opts)
 		return false
 	end
 
-	-- handle in combat
-	if not opts.ncc
-	and _G.InCombatLockdown()
-	then
-		self:add2Table(self.oocTab, {callingFunc, {opts}})
-		return false
-	else
-		return true
-	end
+	return true
 
 end
 
