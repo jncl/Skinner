@@ -2,11 +2,18 @@ local aName, aObj = ...
 
 local _G = _G
 
-function aObj.addBackdrop(_, obj)
+function aObj:addBackdrop(obj, backdrop)
 
 	if not obj.ApplyBackdrop then
 		_G.Mixin(obj, _G.BackdropTemplateMixin)
 	end
+	if obj.backdropInfo
+	and obj.backdropInfo.edgeFile == self.Backdrop[1].edgeFile
+	then
+		return
+	end
+
+	obj:SetBackdrop(backdrop)
 
 end
 

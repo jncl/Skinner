@@ -330,8 +330,7 @@ local function applySkin(tbl)
 	elseif tbl.obj.tbg then
 		tbl.obj.tbg = nil -- remove background texture if it exists
 	end
-	aObj:addBackdrop(tbl.obj)
-	tbl.obj:SetBackdrop(aObj.Backdrop[tbl.bd])
+	aObj:addBackdrop(tbl.obj, aObj.Backdrop[tbl.bd])
 	r, g, b, a = aObj.bClr:GetRGBA()
 	tbl.obj:SetBackdropColor(r, g, b, tbl.ba or a)
 	if _G.type(tbl.bbclr) == "table" then

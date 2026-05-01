@@ -767,9 +767,8 @@ local function __addButtonBorder(opts)
 	opts.obj.sbb = opts.obj.sbb or _G.CreateFrame(opts.obj:GetObjectType(), nil, opts.obj, template)
 	opts.obj.sbb:EnableMouse(false) -- enable clickthrough
 	opts.obj.sbb:SetShown(not opts.hide)
-	aObj:addBackdrop(opts.obj.sbb)
+	aObj:addBackdrop(opts.obj.sbb, {edgeFile = aObj.Backdrop[1].edgeFile, edgeSize = opts.es or aObj.Backdrop[1].edgeSize})
 	-- N.B. DON'T lower the frame level otherwise the border appears below the frame
-	opts.obj.sbb:SetBackdrop({edgeFile = aObj.Backdrop[1].edgeFile, edgeSize = opts.es or aObj.Backdrop[1].edgeSize})
 	opts.ofs = opts.ofs or 2
 	opts.x1 = opts.x1 or opts.ofs * -1
 	opts.y1 = opts.y1 or opts.ofs
