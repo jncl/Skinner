@@ -735,15 +735,11 @@ then
 			local cBar
 			for _, prefix in _G.pairs{"Player", aObj.isClscPTR and "OverlayPlayer" or nil} do
 				cBar = _G[prefix .. "CastingBarFrame"]
-				if aObj.isClscPTR
-				and self.prdb.CastingBar.glaze
-				then
-					self:skinObject("statusbar", {obj=cBar, fType=ftype, regions={2}, fi=0, bg=self:getRegion(cBar, 1)})
-				else
-					cBar.TextBorder:SetTexture(nil)
-					cBar.Background:SetTexture(nil)
-				end
 				cBar.Border:SetTexture(nil)
+				cBar.Flash:SetTexture(nil)
+				if self.prdb.CastingBar.glaze then
+					self:skinObject("statusbar", {obj=cBar, fType=ftype, regions={2}, fi=0, bg=self:getRegion(cBar, 1)})
+				end
 			end
 
 		end
