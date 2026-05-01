@@ -193,6 +193,7 @@
 <Script file="RareScanner.lua"/>
 <Script file="Rarity.lua"/>
 <Script file="RCLootCouncil.lua"/>
+<Script file="RCPT.lua"/>
 <Script file="RecipeRadarClassic.lua"/>
 <Script file="Recount.lua"/>
 <Script file="ReEnhancedStackSplit.lua"/>
