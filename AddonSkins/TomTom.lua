@@ -30,6 +30,9 @@ aObj.addonsToSkin.TomTom = function(self) -- v4.2.24-release
 				aObj:skinStdButton{obj=fObj.PasteButton}
 				aObj:skinStdButton{obj=fObj.ExportButton}
 			end
+			if aObj.modChkBtns then
+				aObj:skinCheckButton{obj=fObj.AutoCloseCheck}
+			end
 		end)
 	end}, "TomTomPaste")
 

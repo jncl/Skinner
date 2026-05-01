@@ -36,7 +36,7 @@ local addonSkins = {
 	"Livestock", "ls_Toasts",
 	"MogIt",
 	"OneBag3", "OneBank3",
-	"Quartz", "QuickMark",
+	"QuickMark",
 	"TooManyAddons",
 	"Vendomatic",
 	"XLoot", "xMerchant",
