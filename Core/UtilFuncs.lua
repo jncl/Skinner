@@ -228,7 +228,6 @@ end
 
 function aObj:canSkin(callingFunc, opts)
 
-	-- handle in combat
 	if _G.InCombatLockdown()
 	and not opts.ncc
 	then
@@ -256,7 +255,6 @@ function aObj:canSkin(callingFunc, opts)
 	then
 		--@debug@
 		aObj:CustomPrint(1, 0, 0, "ERROR: access to the table contents is disallowed by taint, canSkin", opts.obj)
-		-- aObj:Debug("canSkin not adding to oocTab: [%s, %s, %s]", opts.obj, opts.ccat, aObj.PRE)
 		--@end-debug@
 		return false
 	end
