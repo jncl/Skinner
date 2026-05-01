@@ -1040,18 +1040,6 @@ aObj.blizzFrames[ftype].ChatFrames = function(self)
 
 end
 
-aObj.blizzFrames[ftype].ChatMenus = function(self)
-	if not self.prdb.ChatMenus or self.initialized.ChatMenus then return end
-	self.initialized.ChatMenus = true
-
-	self:skinObject("frame", {obj=_G.ChatMenu, fType=ftype, rns=true, ofs=0})
-	self:skinObject("frame", {obj=_G.EmoteMenu, fType=ftype, rns=true, ofs=0})
-	self:skinObject("frame", {obj=_G.LanguageMenu, fType=ftype, rns=true, ofs=0})
-	self:skinObject("frame", {obj=_G.VoiceMacroMenu, fType=ftype, rns=true, ofs=0})
-	self:skinObject("frame", {obj=_G.GeneralDockManagerOverflowButtonList, fType=ftype, rns=true, ofs=0})
-
-end
-
 aObj.blizzFrames[ftype].ChatTabs = function(self)
 	if not self.prdb.ChatTabs or self.initialized.ChatTabs then return end
 	self.initialized.ChatTabs = true

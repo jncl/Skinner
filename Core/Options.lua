@@ -69,7 +69,6 @@ aObj.SetupDefaults = function(self)
 			ChatConfig                 = true,
 			ChatEditBox                = {skin = true, style = 3},
 			ChatFrames                 = false, -- (inc ChatMinimizedFrames)
-			ChatMenus                  = true,
 			ChatTabs                   = false, -- (inc. ChatTemporaryWindow)
 			ChatTabsFade               = true,
 			CombatLogQBF               = not aObj.isClscERA and false or nil,
@@ -957,11 +956,6 @@ aObj.SetupOptions = function(self)
 					order = -1,
 					name = self.L["Chat Sub Frames"],
 					args = {
-						ChatMenus = {
-							type = "toggle",
-							order = 1,
-							name = self.L["Chat Menus"],
-						},
 						ChatConfig = {
 							type = "toggle",
 							order = 2,
