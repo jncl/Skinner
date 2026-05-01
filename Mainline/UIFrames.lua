@@ -1192,7 +1192,7 @@ aObj.SetupMainline_UIFrames = function()
 					if new ~= false then
 						element.NameFrame:SetTexture(nil)
 						if aObj.modBtnBs then
-							aObj:addButtonBorder{obj=element, fType=ftype, relTo=element.Icon}
+							aObj:addButtonBorder{obj=element, fType=ftype, libt=true, relTo=element.Icon}
 						end
 					end
 				end
