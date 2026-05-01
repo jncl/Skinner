@@ -1243,6 +1243,9 @@ aObj.SetupMainline_UIFrames = function()
 		self.initialized.EventToastManager = true
 
 		self:SecureHookScript(_G.EventToastManagerFrame, "OnShow", function(this)
+			this.BlackBG:SetTexture(nil)
+			this.GLine:SetTexture(nil)
+			this.GLine2:SetTexture(nil)
 			this:DisableDrawLayer("BACKGROUND")
 
 			self:Unhook(this, "OnShow")
@@ -1251,6 +1254,7 @@ aObj.SetupMainline_UIFrames = function()
 
 		self:SecureHookScript(_G.EventToastManagerSideDisplay, "OnShow", function(this)
 			this.BlackBG:SetAtlas(nil)
+			this:DisableDrawLayer("BACKGROUND")
 
 			self:Unhook(this, "OnShow")
 		end)
