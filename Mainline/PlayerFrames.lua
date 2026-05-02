@@ -58,6 +58,7 @@ aObj.SetupMainline_PlayerFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.ArtifactFrame)
 
 	end
 
@@ -143,6 +144,7 @@ aObj.SetupMainline_PlayerFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.AzeriteEmpoweredItemUI)
 
 	end
 
@@ -228,6 +230,7 @@ aObj.SetupMainline_PlayerFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.CharCustomizeFrame)
 
 	end
 
@@ -268,7 +271,13 @@ aObj.SetupMainline_PlayerFrames = function()
 		self:SecureHook("ContainerFrame_GenerateFrame", function(frame, _, id)
 			-- skin the frame if required
 			if not frame.sf then
-				skinBag(frame, id)
+				-- handle in combat
+				if _G.InCombatLockdown() then
+				    self:add2Table(self.oocTab, {skinBag, {frame, id}})
+				    return
+				else
+					skinBag(frame, id)
+				end
 			end
 		end)
 
@@ -283,6 +292,11 @@ aObj.SetupMainline_PlayerFrames = function()
 		self.initialized.CurrencyTransfer = true
 
 		self:SecureHookScript(_G.CurrencyTransferMenu, "OnShow", function(this)
+			if _G.InCombatLockdown() then
+			    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+			    return
+			end
+
 			self:skinObject("ddbutton", {obj=this.Content.SourceSelector.Dropdown, fType=ftype})
 			self:skinObject("editbox", {obj=this.Content.AmountSelector.InputBox, fType=ftype, y2=4})
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true})
@@ -294,6 +308,7 @@ aObj.SetupMainline_PlayerFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.CurrencyTransferMenu)
 
 	end
 
@@ -376,6 +391,11 @@ aObj.SetupMainline_PlayerFrames = function()
 		end
 
 		self:SecureHookScript(_G.SideDressUpFrame, "OnShow", function(this)
+			if _G.InCombatLockdown() then
+			    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+			    return
+			end
+
 			self:removeRegions(_G.SideDressUpFrameCloseButton, {5}) -- corner texture
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=-3, y1=-3, x2=-2})
 			_G.LowerFrameLevel(this) -- make it appear behind parent frame
@@ -385,6 +405,7 @@ aObj.SetupMainline_PlayerFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.SideDressUpFrame)
 
 		self:SecureHookScript(_G.DressUpFrame, "OnShow", function(this)
 			self:skinObject("ddbutton", {obj=this.CustomSetDropdown, fType=ftype})
@@ -441,14 +462,21 @@ aObj.SetupMainline_PlayerFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.DressUpFrame)
 
-		self:SecureHookScript(_G.TransmogAndMountDressupFrame, "OnShow", function(this)
-			if self.modChkBtns then
+		if self.modChkBtns then
+			self:SecureHookScript(_G.TransmogAndMountDressupFrame, "OnShow", function(this)
+				if _G.InCombatLockdown() then
+				    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+				    return
+				end
+
 				self:skinCheckButton{obj=this.ShowMountCheckButton, fType=ftype}
-			end
 
-			self:Unhook(this, "OnShow")
-		end)
+				self:Unhook(this, "OnShow")
+			end)
+			self:checkShown(_G.TransmogAndMountDressupFrame)
+		end
 
 	end
 
@@ -460,6 +488,11 @@ aObj.SetupMainline_PlayerFrames = function()
 			aObj:skinObject("frame", {obj=frame, fType=ftype, chkfb=true, x1=0, y1=-81, x2=1, y2=0})
 		end
 		self:SecureHookScript(_G.FriendsFrame, "OnShow", function(this)
+			if _G.InCombatLockdown() then
+			    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+			    return
+			end
+
 			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true})
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, x2=3, y2=-2})
 
@@ -585,8 +618,14 @@ aObj.SetupMainline_PlayerFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.FriendsFrame)
 
 		self:SecureHookScript(_G.AddFriendFrame, "OnShow", function(this)
+			if _G.InCombatLockdown() then
+			    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+			    return
+			end
+
 			self:removeNineSlice(this.Border)
 			self:skinObject("editbox", {obj=_G.AddFriendNameEditBox, fType=ftype})
 			self:moveObject{obj=_G.AddFriendNameEditBoxFill, x=5}
@@ -602,8 +641,14 @@ aObj.SetupMainline_PlayerFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.AddFriendFrame)
 
 		self:SecureHookScript(_G.FriendsFriendsFrame, "OnShow", function(this)
+			if _G.InCombatLockdown() then
+			    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+			    return
+			end
+
 			self:removeNineSlice(this.Border)
 			self:skinObject("ddbutton", {obj=this.FriendsDropdown, fType=ftype})
 			self:removeBackdrop(this.ScrollFrameBorder)
@@ -616,8 +661,14 @@ aObj.SetupMainline_PlayerFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.FriendsFriendsFrame)
 
 		self:SecureHookScript(_G.BattleTagInviteFrame, "OnShow", function(this)
+			if _G.InCombatLockdown() then
+			    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+			    return
+			end
+
 			self:removeNineSlice(this.Border)
 			self:skinObject("frame", {obj=this, fType=ftype, cb=true})
 			if self.modBtns then
@@ -627,8 +678,14 @@ aObj.SetupMainline_PlayerFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.BattleTagInviteFrame)
 
 		self:SecureHookScript(_G.RecruitAFriendFrame, "OnShow", function(this)
+			if _G.InCombatLockdown() then
+			    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+			    return
+			end
+
 			this.RewardClaiming:DisableDrawLayer("BACKGROUND")
 			this.RewardClaiming.NextRewardButton.IconBorder:SetTexture(nil)
 			self:removeInset(this.RewardClaiming.Inset)
@@ -646,8 +703,14 @@ aObj.SetupMainline_PlayerFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.RecruitAFriendFrame)
 
 		self:SecureHookScript(_G.RecruitAFriendRewardsFrame, "OnShow", function(this)
+			if _G.InCombatLockdown() then
+			    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+			    return
+			end
+
 			this:DisableDrawLayer("BACKGROUND")
 			self:skinObject("frame", {obj=this.Border, fType=ftype, kfs=true, ofs=-4})
 			if self.modBtns then
@@ -661,8 +724,14 @@ aObj.SetupMainline_PlayerFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.RecruitAFriendRewardsFrame)
 
 		self:SecureHookScript(_G.RecruitAFriendRecruitmentFrame, "OnShow", function(this)
+			if _G.InCombatLockdown() then
+			    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+			    return
+			end
+
 			self:skinObject("editbox", {obj=this.EditBox, fType=ftype})
 			self:adjHeight{obj=this.EditBox, adj=-6}
 			self:skinObject("frame", {obj=this.Border, fType=ftype, kfs=true, ofs=-4})
@@ -673,8 +742,14 @@ aObj.SetupMainline_PlayerFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.RecruitAFriendRecruitmentFrame)
 
 		self:SecureHookScript(_G.QuickJoinFrame, "OnShow", function(this)
+			if _G.InCombatLockdown() then
+			    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+			    return
+			end
+
 			self:skinObject("scrollbar", {obj=this.ScrollBar, fType=ftype})
 			self:removeMagicBtnTex(this.JoinQueueButton)
 			if self.modBtns then
@@ -683,8 +758,14 @@ aObj.SetupMainline_PlayerFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.QuickJoinFrame)
 
 		self:SecureHookScript(_G.QuickJoinRoleSelectionFrame, "OnShow", function(this)
+			if _G.InCombatLockdown() then
+			    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+			    return
+			end
+
 			self:removeNineSlice(this.Border)
 			self:skinObject("frame", {obj=this, fType=ftype, cb=true, ofs=-5})
 			if self.modBtns then
@@ -699,6 +780,7 @@ aObj.SetupMainline_PlayerFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.QuickJoinRoleSelectionFrame)
 
 	end
 
@@ -795,6 +877,7 @@ aObj.SetupMainline_PlayerFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.GuildControlUI)
 
 	end
 
@@ -803,6 +886,11 @@ aObj.SetupMainline_PlayerFrames = function()
 		self.initialized.GuildInvite = true
 
 		self:SecureHookScript(_G.GuildInviteFrame, "OnShow", function(this)
+			if _G.InCombatLockdown() then
+			    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+			    return
+			end
+
 			_G.GuildInviteFrameTabardBorder:SetTexture(nil)
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true})
 			if self.modBtns then
@@ -812,6 +900,7 @@ aObj.SetupMainline_PlayerFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.GuildInviteFrame)
 
 	end
 
@@ -829,6 +918,7 @@ aObj.SetupMainline_PlayerFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.InspectFrame)
 
 		self:SecureHookScript(_G.InspectPaperDollFrame, "OnShow", function(this)
 			_G.InspectModelFrame:DisableDrawLayer("BACKGROUND")
@@ -870,6 +960,7 @@ aObj.SetupMainline_PlayerFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.InspectPaperDollFrame)
 
 		self:SecureHookScript(_G.InspectPVPFrame, "OnShow", function(this)
 			this.BG:SetTexture(nil)
@@ -880,6 +971,7 @@ aObj.SetupMainline_PlayerFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.InspectPVPFrame)
 
 		-- N.B. InspectTalentFrame now replaced by new TalentUI
 
@@ -889,6 +981,7 @@ aObj.SetupMainline_PlayerFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.InspectGuildFrame)
 
 	end
 
@@ -897,6 +990,11 @@ aObj.SetupMainline_PlayerFrames = function()
 		self.initialized.LootFrames = true
 
 		self:SecureHookScript(_G.LootFrame, "OnShow", function(this)
+			if _G.InCombatLockdown() then
+			    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+			    return
+			end
+
 			this.Bg:DisableDrawLayer("BACKGROUND")
 			self:removeNineSlice(this.NineSlice)
 			self:skinObject("scrollbar", {obj=this.ScrollBar, fType=ftype})
@@ -933,6 +1031,7 @@ aObj.SetupMainline_PlayerFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.LootFrame)
 
 		local function skinGroupLoot(frame)
 			frame:DisableDrawLayer("BACKGROUND")
@@ -973,13 +1072,24 @@ aObj.SetupMainline_PlayerFrames = function()
 		local NUM_GROUP_LOOT_FRAMES = 4
 		for i = 1, NUM_GROUP_LOOT_FRAMES do
 			self:SecureHookScript(_G["GroupLootFrame" .. i], "OnShow", function(this)
+				if _G.InCombatLockdown() then
+				    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+				    return
+				end
+
 				skinGroupLoot(this)
 
 				self:Unhook(this, "OnShow")
 			end)
+			self:checkShown(_G["GroupLootFrame" .. i])
 		end
 
 		self:SecureHookScript(_G.GroupLootHistoryFrame, "OnShow", function(this)
+			if _G.InCombatLockdown() then
+			    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+			    return
+			end
+
 			this.Bg:DisableDrawLayer("BACKGROUND")
 			self:skinObject("ddbutton", {obj=this.EncounterDropdown, fType=ftype})
 			self:skinObject("scrollbar", {obj=this.ScrollBar, fType=ftype})
@@ -1023,17 +1133,29 @@ aObj.SetupMainline_PlayerFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.GroupLootHistoryFrame)
 
 		-- BonusRollFrame
 		self:SecureHookScript(_G.BonusRollFrame, "OnShow", function(this)
+			if _G.InCombatLockdown() then
+			    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+			    return
+			end
+
 			self:removeRegions(this, {1, 2, 3, 5})
 			self:skinObject("statusbar", {obj=this.PromptFrame.Timer, fi=0})
 			self:skinObject("frame", {obj=this, fType=ftype, bg=true})
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.BonusRollFrame)
 
 		self:SecureHookScript(_G.MasterLooterFrame, "OnShow", function(this)
+			if _G.InCombatLockdown() then
+			    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+			    return
+			end
+
 			self:removeRegions(this.Item, {2, 3, 4, 5})
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true})
 			if self.modBtns then
@@ -1046,6 +1168,7 @@ aObj.SetupMainline_PlayerFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.MasterLooterFrame)
 
 	end
 
@@ -1074,6 +1197,11 @@ aObj.SetupMainline_PlayerFrames = function()
 		end
 
 		self:SecureHookScript(_G.ObjectiveTrackerFrame, "OnShow", function(this)
+			if _G.InCombatLockdown() then
+			    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+			    return
+			end
+
 			--[[
 				AchievementObjectiveTracker
 				AdventureObjectiveTracker
@@ -1236,7 +1364,6 @@ aObj.SetupMainline_PlayerFrames = function()
 				for rewardsToast in this.rewardsToastPool:EnumerateActive() do
 					rewardsToast:DisableDrawLayer("ARTWORK")
 					rewardsToast:DisableDrawLayer("BORDER")
-					-- self:skinObject("frame", {obj=rewardsToast, fType=ftype, kfs=true})
 					skinRewards(rewardsToast)
 				end
 			end)
@@ -1251,6 +1378,11 @@ aObj.SetupMainline_PlayerFrames = function()
 			end)
 
 			self:SecureHookScript(_G.ScenarioRewardsFrame, "OnShow", function(this)
+				if _G.InCombatLockdown() then
+				    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+				    return
+				end
+
 				this:DisableDrawLayer("ARTWORK")
 				this:DisableDrawLayer("BORDER")
 				self:skinObject("frame", {obj=this, fType=ftype, kfs=true})
@@ -1261,6 +1393,7 @@ aObj.SetupMainline_PlayerFrames = function()
 
 				self:Unhook(this, "OnShow")
 			end)
+			self:checkShown(_G.ScenarioRewardsFrame)
 		end
 
 	end
@@ -1490,6 +1623,7 @@ aObj.SetupMainline_PlayerFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.PlayerSpellsFrame)
 
 		self:SecureHookScript(_G.ClassTalentLoadoutCreateDialog, "OnShow", function(fObj)
 			self:removeNineSlice(fObj.Border)
@@ -1502,6 +1636,7 @@ aObj.SetupMainline_PlayerFrames = function()
 
 			self:Unhook(fObj, "OnShow")
 		end)
+		self:checkShown(_G.ClassTalentLoadoutCreateDialog)
 
 		self:SecureHookScript(_G.ClassTalentLoadoutImportDialog, "OnShow", function(fObj)
 			self:removeNineSlice(fObj.Border)
@@ -1515,6 +1650,7 @@ aObj.SetupMainline_PlayerFrames = function()
 
 			self:Unhook(fObj, "OnShow")
 		end)
+		self:checkShown(_G.ClassTalentLoadoutImportDialog)
 
 		self:SecureHookScript(_G.ClassTalentLoadoutEditDialog, "OnShow", function(fObj)
 			self:removeNineSlice(fObj.Border)
@@ -1530,6 +1666,7 @@ aObj.SetupMainline_PlayerFrames = function()
 			end
 			self:Unhook(fObj, "OnShow")
 		end)
+		self:checkShown(_G.ClassTalentLoadoutEditDialog)
 
 	end
 
@@ -1660,7 +1797,7 @@ aObj.SetupMainline_PlayerFrames = function()
 			aObj:skinObject("frame", {obj=frame.Details.QualityMeter.Border, fType=ftype, kfs=true, fb=true, x2=0, y2=3})
 			aObj:skinObject("frame", {obj=frame.Details, fType=ftype, kfs=true, fb=true, x1=3, y1=-14, x2=-5, y2=21})
 			if aObj.modBtnBs then
-				aObj:addButtonBorder{obj=frame.Details.CraftingChoicesContainer.ConcentrateContainer.ConcentrateToggleButton, fType=ftype, x2=1}
+				aObj:addButtonBorder{obj=frame.Details.CraftingChoicesContainer.ConcentrateContainer.ConcentrateToggleButton, fType=ftype, x2=1, sechk=true}
 				skinReagentBtns(frame)
 				aObj:SecureHook(frame, "Init", function(fObj, _)
 					skinReagentBtns(fObj)
@@ -1670,6 +1807,56 @@ aObj.SetupMainline_PlayerFrames = function()
 				aObj:skinCheckButton{obj=frame.TrackRecipeCheckbox, fType=ftype}
 				aObj:skinCheckButton{obj=frame.AllocateBestQualityCheckbox, fType=ftype}
 			end
+		end
+		local function skinCraftingOutputLog(frame)
+			aObj:keepFontStrings(frame.ScrollBox.Shadows)
+			aObj:skinObject("scrollbar", {obj=frame.ScrollBar, fType=ftype})
+			local function skinLine(...)
+				local _, element, _, new
+				if _G.select("#", ...) == 2 then
+					element, _ = ...
+				elseif _G.select("#", ...) == 3 then
+					element, _, new = ...
+				else
+					_, element, _, new = ...
+				end
+				if new ~= false then
+					element.ItemContainer.NameFrame:SetAlpha(0)
+					element.ItemContainer.BorderFrame:SetAlpha(0)
+					if aObj.modBtnBs then
+						aObj:addButtonBorder{obj=element.ItemContainer.Item, fType=ftype, ibt=true}
+					end
+				end
+			end
+			_G.ScrollUtil.AddAcquiredFrameCallback(frame.ScrollBox, skinLine, aObj, true)
+			aObj:skinObject("frame", {obj=frame, fType=ftype, kfs=true, rns=true})
+			if aObj.modBtns then
+				aObj:skinCloseButton{obj=frame.ClosePanelButton, fType=ftype}
+			end
+		end
+		local function skinRecipeList(rList)
+			rList.Background:SetTexture(nil)
+			aObj:removeNineSlice(rList.BackgroundNineSlice)
+			aObj:skinObject("ddbutton", {obj=rList.FilterDropdown, fType=ftype, filter=true})
+			aObj:skinObject("editbox", {obj=rList.SearchBox, fType=ftype, si=true})
+			aObj:skinObject("scrollbar", {obj=rList.ScrollBar, fType=ftype})
+			local function skinRecipeElement(...)
+				local _, element, new
+				if _G.select("#", ...) == 2 then
+					element, _ = ...
+				elseif _G.select("#", ...) == 3 then
+					element, _, new = ...
+				else
+					_, element, _, new = ...
+				end
+				if new ~= false then
+					element:DisableDrawLayer("BACKGROUND")
+					if element.RankBar then
+						aObj:skinObject("statusbar", {obj=element.RankBar, regions={1, 2, 3}, fi=0})
+					end
+				end
+			end
+			_G.ScrollUtil.AddAcquiredFrameCallback(rList.ScrollBox, skinRecipeElement, aObj, true)
 		end
 		local function skinProfFrame()
 			local this = _G.ProfessionsFrame
@@ -1686,27 +1873,7 @@ aObj.SetupMainline_PlayerFrames = function()
 				fObj.TutorialButton.Ring:SetTexture(nil)
 				fObj.GearSlotDivider:DisableDrawLayer("ARTWORK")
 				self:skinObject("ddbutton", {obj=fObj.RankBar.ExpansionDropdownButton, fType=ftype, noSF=true, bx1=-5, by1=3, bx2=1, by2=-3})
-				self:removeNineSlice(fObj.RecipeList.BackgroundNineSlice)
-				self:skinObject("editbox", {obj=fObj.RecipeList.SearchBox, fType=ftype, si=true})
-				self:skinObject("ddbutton", {obj=fObj.RecipeList.FilterDropdown, fType=ftype, filter=true})
-				self:skinObject("scrollbar", {obj=fObj.RecipeList.ScrollBar, fType=ftype})
-				local function skinElement(...)
-					local _, element, new
-					if _G.select("#", ...) == 2 then
-						element, _ = ...
-					elseif _G.select("#", ...) == 3 then
-						element, _, new = ...
-					else
-						_, element, _, new = ...
-					end
-					if new ~= false then
-						element:DisableDrawLayer("BACKGROUND")
-						if element.RankBar then
-							aObj:skinObject("statusbar", {obj=element.RankBar, regions={1, 2, 3}, fi=0})
-						end
-					end
-				end
-				_G.ScrollUtil.AddAcquiredFrameCallback(fObj.RecipeList.ScrollBox, skinElement, aObj, true)
+				skinRecipeList(fObj.RecipeList)
 				self:skinObject("frame", {obj=fObj.RecipeList, fType=ftype, kfs=true, fb=true, ofs=4, x2=0})
 				fObj.SchematicForm.Background:SetAlpha(0)
 				fObj.SchematicForm.MinimalBackground:SetAlpha(0)
@@ -1732,39 +1899,19 @@ aObj.SetupMainline_PlayerFrames = function()
 					end
 				end
 
+				self:SecureHookScript(fObj.SchematicForm.QualityDialog, "OnShow", function(frame)
+					skinQualityDialog(frame)
+
+					self:Unhook(frame, "OnShow")
+				end)
+
+				self:SecureHookScript(fObj.CraftingOutputLog, "OnShow", function(frame)
+					skinCraftingOutputLog(frame)
+
+					self:Unhook(frame, "OnShow")
+				end)
+
 				self:Unhook(fObj, "OnShow")
-			end)
-
-			self:SecureHookScript(this.CraftingPage.CraftingOutputLog, "OnShow", function(frame)
-				self:keepFontStrings(frame.ScrollBox.Shadows)
-				self:skinObject("scrollbar", {obj=frame.ScrollBar, fType=ftype})
-				local function skinLine(...)
-					local _, element
-					if _G.select("#", ...) == 2 then
-						element, _ = ...
-					else
-						_, element, _ = ...
-					end
-					element.ItemContainer.NameFrame:SetAlpha(0)
-					element.ItemContainer.BorderFrame:SetAlpha(0)
-					if aObj.modBtnBs then
-						aObj:addButtonBorder{obj=element.ItemContainer.Item, fType=ftype, ibt=true}
-					end
-				end
-				_G.ScrollUtil.AddAcquiredFrameCallback(frame.ScrollBox, skinLine, aObj, true)
-				self:skinObject("frame", {obj=frame, fType=ftype, kfs=true, rns=true})
-				if self.modBtns then
-					self:skinCloseButton{obj=frame.ClosePanelButton, fType=ftype}
-				end
-
-				self:Unhook(frame, "OnShow")
-			end)
-			self:checkShown(this.CraftingPage.CraftingOutputLog)
-
-			self:SecureHookScript(this.CraftingPage.SchematicForm.QualityDialog, "OnShow", function(frame)
-				skinQualityDialog(frame)
-
-				self:Unhook(frame, "OnShow")
 			end)
 
 			self:SecureHookScript(this.SpecPage, "OnShow", function(fObj)
@@ -1843,28 +1990,29 @@ aObj.SetupMainline_PlayerFrames = function()
 						end)
 					end
 					self:skinObject("frame", {obj=frame, fType=ftype, kfs=true, fb=true, ofs=-1, y1=-90})
-					frame.RecipeList.Background:SetTexture(nil)
-					self:removeNineSlice(frame.RecipeList.BackgroundNineSlice)
-					self:skinObject("ddbutton", {obj=frame.RecipeList.FilterDropdown, fType=ftype, filter=true})
-					self:skinObject("editbox", {obj=frame.RecipeList.SearchBox, fType=ftype, si=true})
-					self:skinObject("scrollbar", {obj=frame.RecipeList.ScrollBar, fType=ftype})
-					local function skinRecipeElement(...)
-						local _, element, new
-						if _G.select("#", ...) == 2 then
-							element, _ = ...
-						elseif _G.select("#", ...) == 3 then
-							element, _, new = ...
-						else
-							_, element, _, new = ...
-						end
-						if new ~= false then
-							element:DisableDrawLayer("BACKGROUND")
-							if element.RankBar then
-								aObj:skinObject("statusbar", {obj=element.RankBar, regions={1, 2, 3}, fi=0})
-							end
-						end
-					end
-					_G.ScrollUtil.AddAcquiredFrameCallback(frame.RecipeList.ScrollBox, skinRecipeElement, aObj, true)
+					skinRecipeList(frame.RecipeList)
+					-- frame.RecipeList.Background:SetTexture(nil)
+					-- self:removeNineSlice(frame.RecipeList.BackgroundNineSlice)
+					-- self:skinObject("ddbutton", {obj=frame.RecipeList.FilterDropdown, fType=ftype, filter=true})
+					-- self:skinObject("editbox", {obj=frame.RecipeList.SearchBox, fType=ftype, si=true})
+					-- self:skinObject("scrollbar", {obj=frame.RecipeList.ScrollBar, fType=ftype})
+					-- local function skinRecipeElement(...)
+					-- 	local _, element, new
+					-- 	if _G.select("#", ...) == 2 then
+					-- 		element, _ = ...
+					-- 	elseif _G.select("#", ...) == 3 then
+					-- 		element, _, new = ...
+					-- 	else
+					-- 		_, element, _, new = ...
+					-- 	end
+					-- 	if new ~= false then
+					-- 		element:DisableDrawLayer("BACKGROUND")
+					-- 		if element.RankBar then
+					-- 			aObj:skinObject("statusbar", {obj=element.RankBar, regions={1, 2, 3}, fi=0})
+					-- 		end
+					-- 	end
+					-- end
+					-- _G.ScrollUtil.AddAcquiredFrameCallback(frame.RecipeList.ScrollBox, skinRecipeElement, aObj, true)
 					frame.OrderList.Background:SetTexture(nil)
 					self:removeNineSlice(frame.OrderList.NineSlice)
 					self:skinObject("scrollbar", {obj=frame.OrderList.ScrollBar, fType=ftype})
@@ -1894,7 +2042,6 @@ aObj.SetupMainline_PlayerFrames = function()
 					-- DON'T skin RankBar
 					self:skinObject("frame", {obj=frame.DeclineOrderDialog.NoteEditBox, fType=ftype, kfs=true, fb=true, x1=30, y1=-28, x2=-30})
 					self:skinObject("frame", {obj=frame.DeclineOrderDialog, fType=ftype, kfs=true})
-					self:skinObject("frame", {obj=frame.CraftingOutputLog, fType=ftype, kfs=true})
 					if self.modBtns then
 						self:skinStdButton{obj=frame.OrderInfo.BackButton, fType=ftype}
 						self:skinStdButton{obj=frame.OrderInfo.StartOrderButton, fType=ftype, sechk=true}
@@ -1906,7 +2053,6 @@ aObj.SetupMainline_PlayerFrames = function()
 						self:skinStdButton{obj=frame.StopRecraftButton, fType=ftype}
 						self:skinStdButton{obj=frame.DeclineOrderDialog.CancelButton, fType=ftype}
 						self:skinStdButton{obj=frame.DeclineOrderDialog.ConfirmButton, fType=ftype}
-						self:skinCloseButton{obj=frame.CraftingOutputLog.ClosePanelButton, fType=ftype}
 					end
 					if self.modBtnBs then
 						self:addButtonBorder{obj=frame.ConcentrationDisplay, fType=ftype, relTo=frame.ConcentrationDisplay.Icon, ofs=3}
@@ -1915,6 +2061,12 @@ aObj.SetupMainline_PlayerFrames = function()
 							self:addButtonBorder{obj=btn, fType=ftype, ibt=true}
 						end
 					end
+
+					self:SecureHookScript(frame.CraftingOutputLog, "OnShow", function(col)
+						skinCraftingOutputLog(col)
+
+						self:Unhook(col, "OnShow")
+					end)
 
 					self:Unhook(frame, "OnShow")
 				end)
@@ -1988,6 +2140,7 @@ aObj.SetupMainline_PlayerFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.ProfessionsBookFrame)
 
 	end
 
@@ -2051,24 +2204,24 @@ aObj.SetupMainline_PlayerFrames = function()
 					self:skinCheckButton{obj=fObj.AllocateBestQualityCheckbox, fType=ftype}
 				end
 
-				self:Unhook(fObj, "OnShow")
-			end)
+				self:SecureHookScript(fObj.QualityDialog, "OnShow", function(frame)
+					skinQualityDialog(frame)
 
-			self:SecureHookScript(this.Form.QualityDialog, "OnShow", function(fObj)
-				skinQualityDialog(fObj)
+					self:Unhook(frame, "OnShow")
+				end)
 
-				self:Unhook(fObj, "OnShow")
-			end)
+				self:SecureHookScript(fObj.CurrentListings, "OnShow", function(frame)
+					skinHdrs(frame)
+					self:removeNineSlice(frame.OrderList.NineSlice)
+					self:skinObject("scrollbar", {obj=frame.OrderList.ScrollBar, fType=ftype})
+					frame.OrderList.Background:SetTexture(nil)
+					self:skinObject("frame", {obj=frame, fType=ftype, kfs=true, rns=true, ofs=0})
+					if self.modBtns then
+						self:skinStdButton{obj=frame.CloseButton, fType=ftype}
+					end
 
-			self:SecureHookScript(this.Form.CurrentListings, "OnShow", function(fObj)
-				skinHdrs(fObj)
-				self:skinObject("scrollbar", {obj=fObj.OrderList.ScrollBar, fType=ftype})
-				fObj.OrderList.Background:SetTexture(nil)
-				self:removeNineSlice(fObj.OrderList.NineSlice)
-				self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, rns=true, ofs=0})
-				if self.modBtns then
-					self:skinStdButton{obj=fObj.CloseButton, fType=ftype}
-				end
+					self:Unhook(frame, "OnShow")
+				end)
 
 				self:Unhook(fObj, "OnShow")
 			end)
@@ -2091,32 +2244,33 @@ aObj.SetupMainline_PlayerFrames = function()
 					self:removeNineSlice(frame.NineSlice)
 					self:skinObject("scrollbar", {obj=frame.ScrollBar, fType=ftype})
 					local function skinCategory(...)
-						local _, element
+						local _, element, elementData
 						if _G.select("#", ...) == 2 then
-							element, _ = ...
-						else
-							_, element, _ = ...
+							element, elementData = ...
+						elseif _G.select("#", ...) == 3 then
+							_, element, elementData = ...
 						end
-						if element.isSpacer then
+						aObj.modUIBtns:skinStdButton{obj=element, fType=ftype, ignoreHLTex=true}
+						element.sb:ClearAllPoints()
+						element.sb:SetShown(true)
+						if elementData.data.isSpacer then
 							for _, region in _G.ipairs(element.spacerRegions) do
 								region:SetShown(false)
 							end
-							return
-						end
-						aObj:keepRegions(element, {3, 4, 6}) -- N.B. region 3 is highlight, 4 is selected, 6 is text
-						if element.categoryInfo then
-							aObj.modUIBtns:skinStdButton{obj=element, fType=ftype, ignoreHLTex=true}
-							element.sb:ClearAllPoints()
-							if element.categoryInfo.type == _G.Enum.CraftingOrderCustomerCategoryType.Primary then
+							element.sb:SetShown(false)
+						elseif elementData.data.categoryInfo then
+							if elementData.data.categoryInfo.type == _G.Enum.CraftingOrderCustomerCategoryType.Primary then
 								element.sb:SetPoint("TOPLEFT", element, "TOPLEFT", -2, 2)
 								element.sb:SetPoint("BOTTOMRIGHT", element, "BOTTOMRIGHT", -4, -1)
-							elseif element.categoryInfo.type == _G.Enum.CraftingOrderCustomerCategoryType.Secondary  then
+							elseif elementData.data.categoryInfo.type == _G.Enum.CraftingOrderCustomerCategoryType.Secondary  then
 								element.sb:SetPoint("TOPLEFT", element, "TOPLEFT", 10, 1)
 								element.sb:SetPoint("BOTTOMRIGHT", element, "BOTTOMRIGHT", -4, -1)
+							elseif elementData.data.categoryInfo.type == _G.Enum.CraftingOrderCustomerCategoryType.Tertiary  then
+								element.sb:SetShown(false)
 							end
-							element.sb:SetShown(element.categoryInfo.type ~= _G.Enum.CraftingOrderCustomerCategoryType.Tertiary)
 						else -- Start Recrafting Order button
-							aObj.modUIBtns:skinStdButton{obj=element, fType=ftype, ignoreHLTex=true, ofs=2, x2=-4}
+							element.sb:SetPoint("TOPLEFT", element, "TOPLEFT", -2, 2)
+							element.sb:SetPoint("BOTTOMRIGHT", element, "BOTTOMRIGHT", -4, -1)
 						end
 					end
 					_G.ScrollUtil.AddInitializedFrameCallback(frame.ScrollBox, skinCategory, aObj, true)
@@ -2154,7 +2308,6 @@ aObj.SetupMainline_PlayerFrames = function()
 			self:Unhook(this, "OnShow")
 		end)
 		self:checkShown(_G.ProfessionsCustomerOrdersFrame)
-
 	end
 
 	aObj.blizzLoDFrames[ftype].RemixArtifactUI = function(self)

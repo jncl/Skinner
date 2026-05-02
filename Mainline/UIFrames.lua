@@ -457,6 +457,7 @@ aObj.SetupMainline_UIFrames = function()
 			this:DisableDrawLayer("BACKGROUND")
 			this:DisableDrawLayer("BORDER")
 			this.IconFrame:SetTexture(nil)
+
 			self:Unhook(this, "OnShow")
 		end)
 
@@ -575,6 +576,7 @@ aObj.SetupMainline_UIFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.ChallengesKeystoneFrame)
 
 		self:SecureHookScript(_G.ChallengesFrame, "OnShow", function(this)
 			this:DisableDrawLayer("BACKGROUND")
@@ -604,6 +606,7 @@ aObj.SetupMainline_UIFrames = function()
 					end)
 				end
 			end
+			self:checkShown(_G.ChallengesFrame)
 
 			self:SecureHook(this.WeeklyInfo.Child.AffixesContainer, "Layout", function(fObj)
 				if fObj.Affixes then -- bugfix #307
@@ -664,6 +667,11 @@ aObj.SetupMainline_UIFrames = function()
 		self.initialized.ChatChannelsUI = true
 
 		self:SecureHookScript(_G.ChannelFrame, "OnShow", function(this)
+			if _G.InCombatLockdown() then
+			    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+			    return
+			end
+
 			self:removeInset(this.LeftInset)
 			self:removeInset(this.RightInset)
 			if self.modBtns then
@@ -688,6 +696,7 @@ aObj.SetupMainline_UIFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.ChannelFrame)
 
 		self:SecureHook(_G.ChannelFrame.ChannelList, "Update", function(this)
 			for header in this.headerButtonPool:EnumerateActive() do
@@ -702,6 +711,11 @@ aObj.SetupMainline_UIFrames = function()
 		end)
 
 		self:SecureHookScript(_G.VoiceChatPromptActivateChannel, "OnShow", function(this)
+			if _G.InCombatLockdown() then
+			    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+			    return
+			end
+
 			self:skinObject("frame", {obj=this, fType=ftype})
 			if self.modBtns then
 				self:skinCloseButton{obj=this.CloseButton, font=self.fontSBX, noSkin=true}
@@ -711,8 +725,14 @@ aObj.SetupMainline_UIFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.VoiceChatPromptActivateChannel)
 
 		self:SecureHookScript(_G.VoiceChatChannelActivatedNotification, "OnShow", function(this)
+			if _G.InCombatLockdown() then
+			    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+			    return
+			end
+
 			self:skinObject("frame", {obj=this, fType=ftype})
 			if self.modBtns then
 				self:skinCloseButton{obj=this.CloseButton, font=self.fontSBX, noSkin=true}
@@ -721,6 +741,7 @@ aObj.SetupMainline_UIFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.VoiceChatChannelActivatedNotification)
 
 	end
 
@@ -809,6 +830,7 @@ aObj.SetupMainline_UIFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.ClassTrialThanksForPlayingDialog)
 
 		self:SecureHookScript(_G.ClassTrialTimerDisplay, "OnShow", function(this)
 			-- create a Hourglass texture as per original Artwork
@@ -821,6 +843,7 @@ aObj.SetupMainline_UIFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.ClassTrialTimerDisplay)
 
 	end
 
@@ -880,6 +903,11 @@ aObj.SetupMainline_UIFrames = function()
 		self.initialized.ColorPicker = true
 
 		self:SecureHookScript(_G.ColorPickerFrame, "OnShow", function(this)
+			if _G.InCombatLockdown() then
+			    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+			    return
+			end
+
 			self:removeNineSlice(this.Border)
 			self:skinObject("editbox", {obj=this.Content.HexBox, fType=ftype})
 			self:skinObject("frame", {obj=this, fType=ftype, hdr=true, ofs=0})
@@ -890,6 +918,7 @@ aObj.SetupMainline_UIFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.ColorPickerFrame)
 
 	end
 
@@ -898,6 +927,11 @@ aObj.SetupMainline_UIFrames = function()
 		self.initialized.Console = true
 
 		self:SecureHookScript(_G.DeveloperConsole, "OnShow", function(this)
+			if _G.InCombatLockdown() then
+			    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+			    return
+			end
+
 			local r, g, b, a = self.bbClr:GetRGBA()
 
 			self:getChild(this.EditBox, 1).BorderTop:SetColorTexture(r, g, b, a)
@@ -923,6 +957,7 @@ aObj.SetupMainline_UIFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.DeveloperConsole)
 
 	end
 
@@ -985,6 +1020,11 @@ aObj.SetupMainline_UIFrames = function()
 		for _, framePrefix in _G.pairs{"Essential", "Utility", "BuffIcon", "BuffBar"} do
 			frame = _G[framePrefix .. "CooldownViewer"]
 			self:SecureHookScript(frame, "OnShow", function(this)
+				if _G.InCombatLockdown() then
+				    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+				    return
+				end
+
 				skinEntries(this)
 
 			    self:Unhook(this, "OnShow")
@@ -1004,6 +1044,11 @@ aObj.SetupMainline_UIFrames = function()
 		self.initialized.CooldownViewerSettings = true
 
 		self:SecureHookScript(_G.CooldownViewerSettings, "OnShow", function(this)
+			if _G.InCombatLockdown() then
+			    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+			    return
+			end
+
 			self:skinSideTabs(this, ftype)
 			self:moveObject{obj=this.SpellsTab, x=-3}
 			self:skinObject("editbox", {obj=this.SearchBox, fType=ftype, si=true, y1=-4, y2=4})
@@ -1041,20 +1086,38 @@ aObj.SetupMainline_UIFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.CooldownViewerSettings)
 
 		self:SecureHookScript(_G.CooldownViewerLayoutDialog, "OnShow", function(this)
+			if _G.InCombatLockdown() then
+			    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+			    return
+			end
+
 			self:skinLayoutDialog(this, ftype)
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.CooldownViewerLayoutDialog)
 
 		self:SecureHookScript(_G.CooldownViewerImportLayoutDialog, "OnShow", function(this)
+			if _G.InCombatLockdown() then
+			    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+			    return
+			end
+
 			self:skinLayoutDialog(this, ftype)
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.CooldownViewerImportLayoutDialog)
 
 		self:SecureHookScript(_G.CooldownViewerSettingsEditAlert, "OnShow", function(this)
+			if _G.InCombatLockdown() then
+			    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+			    return
+			end
+
 			self:keepFontStrings(this.BG)
 			self:skinObject("ddbutton", {obj=this.TypeDropdown, fType=ftype})
 			self:skinObject("ddbutton", {obj=this.EventDropdown, fType=ftype})
@@ -1066,6 +1129,7 @@ aObj.SetupMainline_UIFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.CooldownViewerSettingsEditAlert)
 
 	end
 
@@ -1128,6 +1192,11 @@ aObj.SetupMainline_UIFrames = function()
 			self.initialized.DelvesCompanionConfiguration = true
 
 			self:SecureHookScript(_G.DelvesCompanionConfigurationFrame, "OnShow", function(this)
+				if _G.InCombatLockdown() then
+				    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+				    return
+				end
+
 				self:keepFontStrings(this.Border)
 				this.CompanionPortraitFrame.Border:SetTexture(nil)
 				-- .CompanionExperienceRingFrame
@@ -1146,8 +1215,14 @@ aObj.SetupMainline_UIFrames = function()
 
 				self:Unhook(this, "OnShow")
 			end)
+			self:checkShown(_G.DelvesCompanionConfigurationFrame)
 
 			self:SecureHookScript(_G.DelvesCompanionAbilityListFrame, "OnShow", function(this)
+				if _G.InCombatLockdown() then
+				    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+				    return
+				end
+
 				self:skinObject("ddbutton", {obj=this.DelvesCompanionRoleDropdown, fType=ftype})
 				this.PagingControls = this.DelvesCompanionAbilityListPagingControls
 				self:skinPageBtns(this)
@@ -1166,6 +1241,7 @@ aObj.SetupMainline_UIFrames = function()
 
 				self:Unhook(this, "OnShow")
 			end)
+			self:checkShown(_G.DelvesCompanionAbilityListFrame)
 
 		end
 
@@ -1606,6 +1682,7 @@ aObj.SetupMainline_UIFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.GarrisonBuildingFrame)
 
 		_G.RunNextFrame(function()
 			self:add2Table(self.ttList, ftype, _G.GarrisonMissionMechanicTooltip)
@@ -1667,6 +1744,7 @@ aObj.SetupMainline_UIFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.GarrisonMissionFrame)
 
 		self:SecureHookScript(_G.GarrisonFollowerPlacer, "OnShow", function(this)
 			this.PortraitRing:SetTexture(nil)
@@ -1674,6 +1752,7 @@ aObj.SetupMainline_UIFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.GarrisonFollowerPlacer)
 
 		self:SecureHookScript(_G.GarrisonShipyardFrame, "OnShow", function(this)
 			self:keepFontStrings(this.BorderFrame)
@@ -1722,6 +1801,7 @@ aObj.SetupMainline_UIFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.GarrisonShipyardFrame)
 
 		-- a.k.a. Work Order Frame
 		self:SecureHookScript(_G.GarrisonCapacitiveDisplayFrame, "OnShow", function(this)
@@ -1771,6 +1851,7 @@ aObj.SetupMainline_UIFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.GarrisonCapacitiveDisplayFrame)
 
 		self:SecureHookScript(_G.GarrisonMonumentFrame, "OnShow", function(this)
 			this.Background:SetTexture(nil)
@@ -1782,6 +1863,7 @@ aObj.SetupMainline_UIFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.GarrisonMonumentFrame)
 
 		self:SecureHookScript(_G.GarrisonRecruiterFrame, "OnShow", function(this)
 			this.Pick.Line1:SetTexture(nil)
@@ -1799,6 +1881,7 @@ aObj.SetupMainline_UIFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.GarrisonRecruiterFrame)
 
 		self:SecureHookScript(_G.GarrisonRecruitSelectFrame, "OnShow", function(this)
 			skinFollowerList(this.FollowerList)
@@ -1816,6 +1899,7 @@ aObj.SetupMainline_UIFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.GarrisonRecruitSelectFrame)
 
 		-- Legion
 		self:SecureHookScript(_G.OrderHallMissionFrame, "OnShow", function(this)
@@ -1875,6 +1959,7 @@ aObj.SetupMainline_UIFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.OrderHallMissionFrame)
 
 		-- Battle for Azeroth
 		self:SecureHookScript(_G.BFAMissionFrame, "OnShow", function(this)
@@ -1915,6 +2000,7 @@ aObj.SetupMainline_UIFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.BFAMissionFrame)
 
 		-- Shadowlandds
 		local function skinCovenantMissionFrame(frame)
@@ -2071,7 +2157,9 @@ aObj.SetupMainline_UIFrames = function()
 				self.callbacks.events["CovenantMissionFrame_Skinned"] = nil
 			end
 
+			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.CovenantMissionFrame)
 
 	end
 
@@ -2894,6 +2982,11 @@ aObj.SetupMainline_UIFrames = function()
 		self.initialized.LossOfControl = true
 
 		self:SecureHookScript(_G.LossOfControlFrame, "OnShow", function(this)
+			if _G.InCombatLockdown() then
+			    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+			    return
+			end
+
 			this.blackBg:SetTexture(nil)
 			if self.modBtnBs then
 				self:addButtonBorder{obj=this, relTo=this.Icon}
@@ -2901,6 +2994,7 @@ aObj.SetupMainline_UIFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.LossOfControlFrame)
 
 	end
 
@@ -3197,6 +3291,11 @@ aObj.SetupMainline_UIFrames = function()
 	aObj.blizzFrames[ftype].PVPHelper = function(self)
 
 		self:SecureHookScript(_G.PVPFramePopup, "OnShow", function(this)
+			if _G.InCombatLockdown() then
+			    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+			    return
+			end
+
 			self:removeNineSlice(this.Border)
 			this:DisableDrawLayer("BORDER")
 			_G.PVPFramePopupRing:SetTexture(nil)
@@ -3209,8 +3308,14 @@ aObj.SetupMainline_UIFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.PVPFramePopup)
 
 		self:SecureHookScript(_G.PVPRoleCheckPopup, "OnShow", function(this)
+			if _G.InCombatLockdown() then
+			    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+			    return
+			end
+
 			self:removeNineSlice(this.Border)
 			self:skinObject("frame", {obj=this, fType=ftype})
 			if self.modBtns then
@@ -3220,8 +3325,14 @@ aObj.SetupMainline_UIFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.PVPRoleCheckPopup)
 
 		self:SecureHookScript(_G.PVPReadyDialog, "OnShow", function(this)
+			if _G.InCombatLockdown() then
+			    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+			    return
+			end
+
 			self:removeNineSlice(this.Border)
 			if not self.prdb.LFGTexture then
 				this.background:SetTexture(nil)
@@ -3240,6 +3351,11 @@ aObj.SetupMainline_UIFrames = function()
 		self:checkShown(_G.PVPReadyDialog)
 
 		self:SecureHookScript(_G.PVPReadyPopup, "OnShow", function(this)
+			if _G.InCombatLockdown() then
+			    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+			    return
+			end
+
 			self:removeNineSlice(_G.ReadyStatus.Border)
 			self:skinObject("frame", {obj=_G.ReadyStatus, fType=ftype, kfs=true, ofs=-6, x2=-5})
 			if self.modBtns then
@@ -3248,6 +3364,8 @@ aObj.SetupMainline_UIFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.PVPReadyPopup)
+
 	end
 
 	aObj.blizzFrames[ftype].PVPHonorSystem = function(self)
@@ -3274,6 +3392,11 @@ aObj.SetupMainline_UIFrames = function()
 		self.initialized.PVPMatch = true
 
 		self:SecureHookScript(_G.PVPMatchScoreboard, "OnShow", function(this)
+			if _G.InCombatLockdown() then
+			    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+			    return
+			end
+
 			this.Content:DisableDrawLayer("BACKGROUND")
 			this.Content:DisableDrawLayer("OVERLAY")
 			this.Content.ScrollBox.Background:SetAlpha(0)
@@ -3311,8 +3434,14 @@ aObj.SetupMainline_UIFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.PVPMatchScoreboard)
 
 		self:SecureHookScript(_G.PVPMatchResults, "OnShow", function(this)
+			if _G.InCombatLockdown() then
+			    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+			    return
+			end
+
 			this.content:DisableDrawLayer("BACKGROUND")
 			this.content:DisableDrawLayer("OVERLAY")
 			this.content.scrollBox.Background:SetAlpha(0)
@@ -3354,6 +3483,7 @@ aObj.SetupMainline_UIFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.PVPMatchResults)
 
 	end
 
@@ -3548,6 +3678,7 @@ aObj.SetupMainline_UIFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.ConquestFrame)
 
 		self:SecureHookScript(_G.TrainingGroundsFrame, "OnShow", function(this)
 			skinCommon(this)
@@ -3589,6 +3720,7 @@ aObj.SetupMainline_UIFrames = function()
 
 		    self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.TrainingGroundsFrame)
 
 			-- PlunderstormFrame
 
@@ -3608,6 +3740,11 @@ aObj.SetupMainline_UIFrames = function()
 		end
 
 		self:SecureHookScript(_G.QuestMapFrame, "OnShow", function(this)
+			if _G.InCombatLockdown() then
+			    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+			    return
+			end
+
 			-- this.Background:SetAlpha(0) -- N.B. Texture changed in code
 			this.VerticalSeparator:SetTexture(nil)
 			-- .SettingsDropdown
@@ -3739,8 +3876,14 @@ aObj.SetupMainline_UIFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.QuestMapFrame)
 
 		self:SecureHookScript(_G.QuestLogPopupDetailFrame, "OnShow", function(this)
+			if _G.InCombatLockdown() then
+			    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+			    return
+			end
+
 			self:skinObject("scrollbar", {obj=this.ScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true})
 			if self.modBtns then
@@ -3754,6 +3897,7 @@ aObj.SetupMainline_UIFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.QuestLogPopupDetailFrame)
 
 		self:SecureHook("QuestLogQuests_Update", function(_)
 			for hdr in _G.QuestScrollFrame.titleFramePool:EnumerateActive() do
@@ -3802,6 +3946,11 @@ aObj.SetupMainline_UIFrames = function()
 
 		for _, frame in _G.ipairs(_G.QuestSessionManager.SessionManagementDialogs) do
 			self:SecureHookScript(frame, "OnShow", function(this)
+				if _G.InCombatLockdown() then
+				    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+				    return
+				end
+
 				this.BG:SetTexture(nil)
 				this.Border:DisableDrawLayer("BORDER")
 				this.Border.Bg:SetTexture(nil)
@@ -3817,6 +3966,7 @@ aObj.SetupMainline_UIFrames = function()
 
 				self:Unhook(this, "OnShow")
 			end)
+			self:checkShown(frame)
 		end
 
 	end
@@ -3826,6 +3976,11 @@ aObj.SetupMainline_UIFrames = function()
 		self.initialized.QuickKeybind = true
 
 		self:SecureHookScript(_G.QuickKeybindFrame, "OnShow", function(this)
+			if _G.InCombatLockdown() then
+			    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+			    return
+			end
+
 			self:removeNineSlice(this.BG)
 			this.BG.Bg:SetTexture(nil)
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true, ofs=0})
@@ -3840,6 +3995,7 @@ aObj.SetupMainline_UIFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.QuickKeybindFrame)
 
 		_G.RunNextFrame(function()
 			self:add2Table(self.ttList, ftype, _G.QuickKeybindTooltip)
@@ -3852,6 +4008,11 @@ aObj.SetupMainline_UIFrames = function()
 		self.initialized.RaidFinder = true
 
 		self:SecureHookScript(_G.RaidFinderFrame, "OnShow", function(this)
+			if _G.InCombatLockdown() then
+			    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+			    return
+			end
+
 			this:DisableDrawLayer("BACKGROUND")
 			this:DisableDrawLayer("BORDER")
 			self:removeInset(_G.RaidFinderFrameRoleInset)
@@ -3881,6 +4042,7 @@ aObj.SetupMainline_UIFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.RaidFinderFrame)
 
 	end
 
@@ -3889,13 +4051,24 @@ aObj.SetupMainline_UIFrames = function()
 		self.initialized.RaidFrame = true
 
 		self:SecureHookScript(_G.RaidParentFrame, "OnShow", function(this)
+			if _G.InCombatLockdown() then
+			    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+			    return
+			end
+
 			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true})
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true})
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.RaidParentFrame)
 
 		self:SecureHookScript(_G.RaidFrame, "OnShow", function(this)
+			if _G.InCombatLockdown() then
+			    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+			    return
+			end
+
 			-- RaidInfo Frame
 			self:skinObject("frame", {obj=_G.RaidInfoInstanceLabel, fType=ftype, kfs=true, ofs=0})
 			self:skinObject("frame", {obj=_G.RaidInfoIDLabel, fType=ftype, kfs=true, ofs=0})
@@ -3916,6 +4089,7 @@ aObj.SetupMainline_UIFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.RaidFrame)
 
 	end
 
@@ -3962,6 +4136,11 @@ aObj.SetupMainline_UIFrames = function()
 		self.initialized.SplashFrame = true
 
 		self:SecureHookScript(_G.SplashFrame, "OnShow", function(this)
+			if _G.InCombatLockdown() then
+			    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+			    return
+			end
+
 			this.Label:SetTextColor(_G.HIGHLIGHT_FONT_COLOR:GetRGB()) -- allow for font OUTLINE to be seen
 			this.RightFeature.StartQuestButton:DisableDrawLayer("BACKGROUND")
 			if self.modBtns then
@@ -3998,6 +4177,11 @@ aObj.SetupMainline_UIFrames = function()
 		end
 		-- TODO: Ensure frame appears below button border
 		self:SecureHookScript(_G.SpellFlyout, "OnShow", function(this)
+			if _G.InCombatLockdown() then
+			    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+			    return
+			end
+
 			self:keepFontStrings(this.Background)
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, sft=true, fb=true, ofs=1})
 			skinBtns()
@@ -4007,6 +4191,7 @@ aObj.SetupMainline_UIFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.SpellFlyout)
 
 	end
 
@@ -4074,6 +4259,11 @@ aObj.SetupMainline_UIFrames = function()
 		self.initialized.TalkingHead = true
 
 		self:SecureHookScript(_G.TalkingHeadFrame, "OnShow", function(this)
+			if _G.InCombatLockdown() then
+			    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+			    return
+			end
+
 			this.BackgroundFrame.TextBackground:SetTexture(nil)
 			this.PortraitFrame.Portrait:SetTexture(nil)
 			this.MainFrame.Model.PortraitBg:SetTexture(nil)
@@ -4155,6 +4345,11 @@ aObj.SetupMainline_UIFrames = function()
 		self.initialized.Tutorial = true
 
 		self:SecureHookScript(_G.TutorialFrame, "OnShow", function(this)
+			if _G.InCombatLockdown() then
+			    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+			    return
+			end
+
 			this:DisableDrawLayer("BACKGROUND")
 			_G.TutorialFrameTop:SetTexture(nil)
 			_G.TutorialFrameBottom:SetTexture(nil)
@@ -4203,17 +4398,29 @@ aObj.SetupMainline_UIFrames = function()
 
 		-- Alert button
 		self:SecureHookScript(_G.TutorialFrameAlertButton, "OnShow", function(this)
+			if _G.InCombatLockdown() then
+			    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+			    return
+			end
+
 			self:skinOtherButton{obj=this, ft=ftype, font="ZoneTextFont", text="?", x1=30, y1=-1, x2=-25, y2=10}
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.TutorialFrameAlertButton)
 
 		self:SecureHookScript(_G.PingSystemTutorial, "OnShow", function(this)
+			if _G.InCombatLockdown() then
+			    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+			    return
+			end
+
 			this.Bg:SetAlpha(0)
 			self:skinObject("frame", {obj=this, fType=ftype, cb=true, bg=true, ofs=0, y1=-1, y2=-2})
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.PingSystemTutorial)
 
 	end
 
@@ -4301,6 +4508,7 @@ aObj.SetupMainline_UIFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.WeeklyRewardExpirationWarningDialog)
 
 	end
 
@@ -4309,6 +4517,11 @@ aObj.SetupMainline_UIFrames = function()
 		self.initialized.WorldMap = true
 
 		self:SecureHookScript(_G.WorldMapFrame, "OnShow", function(this)
+			if _G.InCombatLockdown() then
+			    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+			    return
+			end
+
 			if not _G.C_AddOns.IsAddOnLoaded("Mapster")
 			and not _G.C_AddOns.IsAddOnLoaded("AlleyMap")
 			then
@@ -4391,6 +4604,7 @@ aObj.SetupMainline_UIFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.WorldMapFrame)
 
 	end
 

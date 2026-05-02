@@ -21,6 +21,11 @@ aObj.SetupClassic_NPCFrames = function()
 				end
 			end
 			self:SecureHookScript(_G.AuctionFrame, "OnShow", function(this)
+				if _G.InCombatLockdown() then
+				    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+				    return
+				end
+
 				-- hide filter texture when filter is clicked
 				self:SecureHook("FilterButton_SetUp", function(button, _)
 					_G[button:GetName() .. "NormalTexture"]:SetAlpha(0)
@@ -185,8 +190,14 @@ aObj.SetupClassic_NPCFrames = function()
 
 				self:Unhook(this, "OnShow")
 			end)
+			self:checkShown(_G.AuctionFrame)
 
 			self:SecureHookScript(_G.AuctionProgressFrame, "OnShow", function(frame)
+				if _G.InCombatLockdown() then
+				    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+				    return
+				end
+
 				frame:DisableDrawLayer("ARTWORK")
 				self:keepFontStrings(_G.AuctionProgressBar)
 				self:moveObject{obj=_G.AuctionProgressBar.Text, y=-2}
@@ -194,6 +205,7 @@ aObj.SetupClassic_NPCFrames = function()
 
 				self:Unhook(frame, "OnShow")
 			end)
+			self:checkShown(_G.AuctionProgressFrame)
 
 		end
 	end
@@ -203,6 +215,11 @@ aObj.SetupClassic_NPCFrames = function()
 		self.initialized.BankFrame = true
 
 		self:SecureHookScript(_G.BankFrame, "OnShow", function(this)
+			if _G.InCombatLockdown() then
+			    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+			    return
+			end
+
 			self:keepFontStrings(_G.BankSlotsFrame)
 			self:skinObject("editbox", {obj=_G.BankItemSearchBox, fType=ftype, si=true})
 			self:removeInset(_G.BankFrameMoneyFrameInset)
@@ -239,6 +256,7 @@ aObj.SetupClassic_NPCFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.BankFrame)
 
 	end
 
@@ -247,6 +265,11 @@ aObj.SetupClassic_NPCFrames = function()
 		self.initialized.PetStableFrame = true
 
 		self:SecureHookScript(_G.PetStableFrame, "OnShow", function(this)
+			if _G.InCombatLockdown() then
+			    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+			    return
+			end
+
 			if aObj.isClscERA then
 				self:makeMFRotatable(_G.PetStableModel)
 				_G.PetStableCurrentPetBackground:SetTexture(nil)
@@ -296,6 +319,7 @@ aObj.SetupClassic_NPCFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.PetStableFrame)
 
 	end
 
@@ -321,6 +345,7 @@ aObj.SetupClassic_NPCFrames = function()
 
 				self:Unhook(this, "OnShow")
 			end)
+			self:checkShown(_G.ReforgingFrame)
 
 		end
 	end
@@ -330,6 +355,11 @@ aObj.SetupClassic_NPCFrames = function()
 		self.initialized.TaxiFrame = true
 
 		self:SecureHookScript(_G.TaxiFrame, "OnShow", function(this)
+			if _G.InCombatLockdown() then
+			    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+			    return
+			end
+
 			if not aObj.isClsc then
 				self:removeRegions(this, {1, 2, 3, 4, 5}) -- keep the map texture(s)
 				self:skinObject("frame", {obj=this, fType=ftype, x1=10, y1=-11, x2=-32, y2=62})
@@ -343,6 +373,7 @@ aObj.SetupClassic_NPCFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.TaxiFrame)
 
 	end
 
@@ -351,6 +382,11 @@ aObj.SetupClassic_NPCFrames = function()
 		self.initialized.TrainerUI = true
 
 		self:SecureHookScript(_G.ClassTrainerFrame, "OnShow", function(this)
+			if _G.InCombatLockdown() then
+			    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+			    return
+			end
+
 			self:skinObject("ddbutton", {obj=this.FilterDropdown, fType=ftype, filter=true})
 			self:removeMagicBtnTex(_G.ClassTrainerTrainButton)
 			self:keepFontStrings(_G.ClassTrainerExpandButtonFrame)
@@ -390,6 +426,7 @@ aObj.SetupClassic_NPCFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.ClassTrainerFrame)
 
 	end
 

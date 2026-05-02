@@ -29,6 +29,7 @@ aObj.SetupMainline_NPCFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.AlliedRacesFrame)
 
 		self:SecureHook(_G.AlliedRacesFrame, "LoadRaceData", function(this, _)
 			for ability in this.abilityPool:EnumerateActive() do
@@ -62,6 +63,7 @@ aObj.SetupMainline_NPCFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.AzeriteRespecFrame)
 
 	end
 
@@ -84,6 +86,11 @@ aObj.SetupMainline_NPCFrames = function()
 				end)
 			end
 			self:SecureHookScript(_G.BankFrame, "OnShow", function(this)
+				if _G.InCombatLockdown() then
+				    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+				    return
+				end
+
 				self:skinObject("tabs", {obj=this.TabSystem,  pool=true, fType=ftype, ignoreSize=true, track=false})
 				self:skinObject("editbox", {obj=_G.BankItemSearchBox, fType=ftype, si=true})
 				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true, cb=true})
@@ -155,7 +162,13 @@ aObj.SetupMainline_NPCFrames = function()
 
 				self:Unhook(this, "OnShow")
 			end)
+			self:checkShown(_G.BankFrame)
 			self:SecureHookScript(_G.BankCleanUpConfirmationPopup, "OnShow", function(this)
+				if _G.InCombatLockdown() then
+				    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+				    return
+				end
+
 				self:keepFontStrings(this.Border)
 				self:skinObject("frame", {obj=this, fType=ftype, ofs=-4})
 				if self.modBtns then
@@ -168,6 +181,7 @@ aObj.SetupMainline_NPCFrames = function()
 
 				self:Unhook(this, "OnShow")
 			end)
+			self:checkShown(_G.BankCleanUpConfirmationPopup)
 		end
 
 	end
@@ -205,6 +219,7 @@ aObj.SetupMainline_NPCFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.ChromieTimeFrame)
 
 	end
 
@@ -259,6 +274,7 @@ aObj.SetupMainline_NPCFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.CovenantPreviewFrame)
 
 	end
 
@@ -297,6 +313,7 @@ aObj.SetupMainline_NPCFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.CovenantRenownFrame)
 
 	end
 
@@ -352,6 +369,7 @@ aObj.SetupMainline_NPCFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.CovenantSanctumFrame)
 
 		self:SecureHook(_G.CovenantSanctumFrame, "SetCovenantInfo", function(this)
 			if this.sf then
@@ -393,6 +411,11 @@ aObj.SetupMainline_NPCFrames = function()
 		self.initialized.GuildRenameFrame = true
 
 		self:SecureHookScript(_G.GuildRenameFrame, "OnShow", function(this)
+			if _G.InCombatLockdown() then
+			    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+			    return
+			end
+
 			this.TitleFlow.Description:SetTextColor(aObj.BT:GetRGB())
 			self:skinObject("editbox", {obj=this.RenameFlow.NameBox, fType=ftype})
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true})
@@ -402,6 +425,7 @@ aObj.SetupMainline_NPCFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.GuildRenameFrame)
 
 		self:SecureHook(_G.GuildRenameFrame, "UpdateFontStrings", function(this, _)
 			for fontString in _G.pairs(this.fontStrings) do
@@ -436,6 +460,7 @@ aObj.SetupMainline_NPCFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.ItemInteractionFrame)
 
 	end
 
@@ -460,6 +485,7 @@ aObj.SetupMainline_NPCFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.ItemUpgradeFrame)
 
 	end
 
@@ -484,6 +510,7 @@ aObj.SetupMainline_NPCFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.GuideFrame)
 
 	end
 
@@ -652,6 +679,7 @@ aObj.SetupMainline_NPCFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.PerksProgramFrame)
 
 		_G.RunNextFrame(function()
 			self:add2Table(self.ttList, ftype, _G.PerksProgramTooltip)
@@ -692,6 +720,7 @@ aObj.SetupMainline_NPCFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.RuneforgeFrame)
 
 	end
 
@@ -700,6 +729,11 @@ aObj.SetupMainline_NPCFrames = function()
 		self.initialized.StableUI = true
 
 		self:SecureHookScript(_G.StableFrame, "OnShow", function(this)
+			if _G.InCombatLockdown() then
+			    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+			    return
+			end
+
 			self:skinMainHelpBtn(this)
 			this.PetModelScene:DisableDrawLayer("BACKGROUND")
 			this.PetModelScene:DisableDrawLayer("ARTWORK")
@@ -769,6 +803,7 @@ aObj.SetupMainline_NPCFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.StableFrame)
 
 	end
 
@@ -777,6 +812,11 @@ aObj.SetupMainline_NPCFrames = function()
 		self.initialized.TaxiFrame = true
 
 		self:SecureHookScript(_G.TaxiFrame, "OnShow", function(this)
+			if _G.InCombatLockdown() then
+			    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+			    return
+			end
+
 			this:DisableDrawLayer("BORDER")
 			self:removeRegions(this, {1, 2, 3}) -- 1st 3 overlay textures
 			-- resize map to fit skin frame
@@ -786,6 +826,7 @@ aObj.SetupMainline_NPCFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.TaxiFrame)
 
 	end
 
@@ -837,6 +878,7 @@ aObj.SetupMainline_NPCFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.ClassTrainerFrame)
 
 	end
 
@@ -1067,6 +1109,7 @@ aObj.SetupMainline_NPCFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.VoidStorageFrame)
 
 	end
 

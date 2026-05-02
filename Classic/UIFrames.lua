@@ -13,6 +13,11 @@ aObj.SetupClassic_UIFrames = function()
 			self.initialized.BattlefieldFrame = true
 
 			self:SecureHookScript(_G.BattlefieldFrame, "OnShow", function(this)
+				if _G.InCombatLockdown() then
+				    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+				    return
+				end
+
 				if not aObj.isClsc then
 					self:skinObject("slider", {obj=_G.BattlefieldListScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
 				else
@@ -32,6 +37,7 @@ aObj.SetupClassic_UIFrames = function()
 
 				self:Unhook(this, "OnShow")
 			end)
+			self:checkShown(_G.BattlefieldFrame)
 
 		end
 	end
@@ -198,6 +204,11 @@ aObj.SetupClassic_UIFrames = function()
 		self.initialized.ProductChoice = true
 
 		self:SecureHookScript(_G.ProductChoiceFrame, "OnShow", function(this)
+			if _G.InCombatLockdown() then
+			    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+			    return
+			end
+
 			for _, btn in _G.pairs(this.Inset.Buttons) do
 				btn.IconBorder:SetTexture(nil)
 				self:skinObject("frame", {obj=btn, fType=ftype, kfs=true, fb=true})
@@ -219,6 +230,7 @@ aObj.SetupClassic_UIFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.ProductChoiceFrame)
 
 	end
 
@@ -228,6 +240,11 @@ aObj.SetupClassic_UIFrames = function()
 			self.initialized.PVPFrame = true
 
 			self:SecureHookScript(_G.PVPFrame, "OnShow", function(this)
+				if _G.InCombatLockdown() then
+				    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+				    return
+				end
+
 				-- Currency
 				self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, ignoreSize=true, lod=self.isTT and true, upwards=true, regions={7}})
 				_G.PVPFrameConquestBar:DisableDrawLayer("BORDER")
@@ -338,12 +355,19 @@ aObj.SetupClassic_UIFrames = function()
 
 				self:Unhook(this, "OnShow")
 			end)
+			self:checkShown(_G.PVPFrame)
 
 			self:SecureHookScript(_G.PVPFrame.lowLevelFrame, "OnShow", function(this)
+				if _G.InCombatLockdown() then
+				    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+				    return
+				end
+
 				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, clr="gold"})
 
 				self:Unhook(this, "OnShow")
 			end)
+			self:checkShown(_G.PVPFrame.lowLevelFrame)
 
 		end
 	end
@@ -353,6 +377,11 @@ aObj.SetupClassic_UIFrames = function()
 		self.initialized.PVPHelper = true
 
 		self:SecureHookScript(_G.PVPFramePopup, "OnShow", function(this)
+			if _G.InCombatLockdown() then
+			    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+			    return
+			end
+
 			this:DisableDrawLayer("BORDER")
 			_G.PVPFramePopupRing:SetTexture(nil)
 			self:skinObject("frame", {obj=this, fType=ftype, ofs=0})
@@ -368,8 +397,14 @@ aObj.SetupClassic_UIFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.PVPFramePopup)
 
 		self:SecureHookScript(_G.PVPReadyDialog, "OnShow", function(this)
+			if _G.InCombatLockdown() then
+			    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+			    return
+			end
+
 			this.Separator:SetTexture(nil)
 			self:skinObject("frame", {obj=this, fType=ftype, ofs=0})
 			if self.modBtns then
@@ -391,6 +426,11 @@ aObj.SetupClassic_UIFrames = function()
 		local pvpFrames = { "HonorQueueFrame", "ConquestQueueFrame", "WarGamesQueueFrame", "LFGListPVPStub" }
 
 		self:SecureHookScript(_G.PVPQueueFrame, "OnShow", function(this)
+			if _G.InCombatLockdown() then
+			    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+			    return
+			end
+
 			for i = 1, #pvpFrames do
 				this["CategoryButton" .. i].Background:SetTexture(nil)
 				this["CategoryButton" .. i].Ring:SetTexture(nil)
@@ -479,6 +519,7 @@ aObj.SetupClassic_UIFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.PVPQueueFrame)
 
 		_G.RunNextFrame(function()
 		    self:add2Table(self.ttList, ftype, _G.ConquestTooltip)
@@ -497,6 +538,11 @@ aObj.SetupClassic_UIFrames = function()
 
 		if self.isClscERA then
 			self:SecureHookScript(_G.QuestLogFrame, "OnShow", function(this)
+				if _G.InCombatLockdown() then
+				    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+				    return
+				end
+
 				_G.QuestLogCollapseAllButton:DisableDrawLayer("BACKGROUND")
 				self:keepFontStrings(_G.EmptyQuestLogFrame)
 				if self.isClscBCA
@@ -554,6 +600,8 @@ aObj.SetupClassic_UIFrames = function()
 
 				self:Unhook(this, "OnShow")
 			end)
+			self:checkShown(_G.QuestLogFrame)
+
 			self:SecureHookScript(_G.QuestTimerFrame, "OnShow", function(this)
 				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true, ofs=0, x1=10, x2=-10})
 
@@ -563,6 +611,11 @@ aObj.SetupClassic_UIFrames = function()
 		else
 			if self.modBtns then
 				self:SecureHookScript(_G.QuestLogControlPanel, "OnShow", function(this)
+					if _G.InCombatLockdown() then
+					    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+					    return
+					end
+
 					self:skinStdButton{obj=_G.QuestLogFrameAbandonButton, fType=ftype, schk=true, x1=2, x2=-2}
 					self:skinStdButton{obj=_G.QuestLogFrameTrackButton, fType=ftype, schk=true}
 					self:skinStdButton{obj=_G.QuestFramePushQuestButton, fType=ftype, schk=true, x1=2, x2=-2}
@@ -575,12 +628,23 @@ aObj.SetupClassic_UIFrames = function()
 				self:addButtonBorder{obj=_G.QuestLogFrameShowMapButton, fType=ftype, relTo=_G.QuestLogFrameShowMapButton.texture, ofs=0, x1=2, x2=-2}
 			end
 			self:SecureHookScript(_G.QuestLogDetailFrame, "OnShow", function(this)
+				if _G.InCombatLockdown() then
+				    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+				    return
+				end
+
 				self:skinObject("slider", {obj=_G.QuestLogDetailScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
 				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true})
 
 				self:Unhook(this, "OnShow")
 			end)
+			self:checkShown(_G.QuestLogDetailFrame)
 			self:SecureHookScript(_G.QuestLogFrame, "OnShow", function(this)
+				if _G.InCombatLockdown() then
+				    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+				    return
+				end
+
 				self:keepFontStrings(_G.EmptyQuestLogFrame)
 				self:keepFontStrings(_G.QuestLogCount)
 				self:skinObject("slider", {obj=_G.QuestLogListScrollFrame.scrollBar, fType=ftype, rpTex="background"})
@@ -601,6 +665,7 @@ aObj.SetupClassic_UIFrames = function()
 
 				self:Unhook(this, "OnShow")
 			end)
+			self:checkShown(_G.QuestLogFrame)
 		end
 
 	end
@@ -611,12 +676,18 @@ aObj.SetupClassic_UIFrames = function()
 			self.initialized.QuestMapFrame = true
 
 			self:SecureHookScript(_G.QuestMapFrame, "OnShow", function(this)
+				if _G.InCombatLockdown() then
+				    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+				    return
+				end
+
 				self:skinObject("dropdown", {obj=_G.QuestMapQuestOptionsDropDown, fType=ftype})
 				self:skinObject("scrollbar", {obj=this.QuestsFrame.ScrollBar, fType=ftype, x1=1, x2=5})
 				self:skinObject("slider", {obj=this.DetailsFrame.ScrollFrame.ScrollBar, fType=ftype})
 
 				self:Unhook(this, "OnShow")
 			end)
+			self:checkShown(_G.QuestMapFrame)
 
 		end
 	end
@@ -626,13 +697,24 @@ aObj.SetupClassic_UIFrames = function()
 		self.initialized.RaidFrame = true
 
 		self:SecureHookScript(_G.RaidParentFrame, "OnShow", function(this)
+			if _G.InCombatLockdown() then
+			    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+			    return
+			end
+
 			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true})
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, cb=true})
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.RaidParentFrame)
 
 		self:SecureHookScript(_G.RaidFrame, "OnShow", function(this)
+			if _G.InCombatLockdown() then
+			    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+			    return
+			end
+
 			self:skinObject("scrollbar", {obj=_G.RaidInfoFrame.ScrollBox.ScrollBar, fType=ftype})
 			self:skinObject("frame", {obj=_G.RaidInfoFrame, fType=ftype, kfs=true, hdr=true})
 			if self.modBtns then
@@ -653,6 +735,7 @@ aObj.SetupClassic_UIFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.RaidFrame)
 
 	end
 
@@ -661,6 +744,11 @@ aObj.SetupClassic_UIFrames = function()
 		self.initialized.Tutorial = true
 
 		self:SecureHookScript(_G.TutorialFrame, "OnShow", function(this)
+			if _G.InCombatLockdown() then
+			    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+			    return
+			end
+
 			this:DisableDrawLayer("BACKGROUND")
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true})
 			if self.modBtns then
@@ -672,6 +760,7 @@ aObj.SetupClassic_UIFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.TutorialFrame)
 
 		if self.modBtns then
 			_G.RunNextFrame(function()
@@ -691,6 +780,11 @@ aObj.SetupClassic_UIFrames = function()
 		self.initialized.WorldMap = true
 
 		self:SecureHookScript(_G.WorldMapFrame, "OnShow", function(this)
+			if _G.InCombatLockdown() then
+			    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+			    return
+			end
+
 			if not _G.C_AddOns.IsAddOnLoaded("Mapster")
 			and not _G.C_AddOns.IsAddOnLoaded("AlleyMap")
 			then
@@ -731,6 +825,7 @@ aObj.SetupClassic_UIFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.WorldMapFrame)
 
 	end
 
@@ -739,6 +834,11 @@ aObj.SetupClassic_UIFrames = function()
 		self.initialized.WorldStateScoreFrame = true
 
 		self:SecureHookScript(_G.WorldStateScoreFrame, "OnShow", function(this)
+			if _G.InCombatLockdown() then
+			    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+			    return
+			end
+
 			self:skinObject("slider", {obj=_G.WorldStateScoreScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
 			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true})
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=12, y1=-15, x2=-114, y2=70})
@@ -748,6 +848,7 @@ aObj.SetupClassic_UIFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.WorldStateScoreFrame)
 
 	end
 

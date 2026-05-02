@@ -390,6 +390,11 @@ aObj.blizzFrames[ftype].GossipFrame = function(self)
 	end
 
 	self:SecureHookScript(_G.GossipFrame, "OnShow", function(this)
+		if _G.InCombatLockdown() then
+		    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+		    return
+		end
+
 		self:keepFontStrings(this.GreetingPanel)
 		self:skinObject("scrollbar", {obj=this.GreetingPanel.ScrollBar, fType=ftype})
 		if not self.isMnln then
@@ -404,6 +409,7 @@ aObj.blizzFrames[ftype].GossipFrame = function(self)
 
 		self:Unhook(this, "OnShow")
 	end)
+	self:checkShown(_G.GossipFrame)
 
 end
 
@@ -412,6 +418,11 @@ aObj.blizzFrames[ftype].GuildRegistrar = function(self)
 	self.initialized.GuildRegistrar = true
 
 	self:SecureHookScript(_G.GuildRegistrarFrame, "OnShow", function(this)
+		if _G.InCombatLockdown() then
+		    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+		    return
+		end
+
 		self:keepFontStrings(_G.GuildRegistrarGreetingFrame)
 		if self.isMnln then
 			_G.AvailableServicesText:SetTextColor(self.HT:GetRGB())
@@ -435,6 +446,7 @@ aObj.blizzFrames[ftype].GuildRegistrar = function(self)
 
 		self:Unhook(this, "OnShow")
 	end)
+	self:checkShown(_G.GuildRegistrarFrame)
 
 end
 
@@ -443,6 +455,11 @@ aObj.blizzFrames[ftype].MerchantFrame = function(self)
 	self.initialized.MerchantFrame = true
 
 	self:SecureHookScript(_G.MerchantFrame, "OnShow", function(this)
+		if _G.InCombatLockdown() then
+		    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+		    return
+		end
+
 		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true})
 		self:removeInset(_G.MerchantMoneyInset)
 		_G.MerchantMoneyBg:DisableDrawLayer("BACKGROUND")
@@ -500,6 +517,7 @@ aObj.blizzFrames[ftype].MerchantFrame = function(self)
 
 		self:Unhook(this, "OnShow")
 	end)
+	self:checkShown(_G.MerchantFrame)
 
 end
 
@@ -508,6 +526,11 @@ aObj.blizzFrames[ftype].Petition = function(self)
 	self.initialized.Petition = true
 
 	self:SecureHookScript(_G.PetitionFrame, "OnShow", function(this)
+		if _G.InCombatLockdown() then
+		    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+		    return
+		end
+
 		_G.PetitionFrameCharterTitle:SetTextColor(self.HT:GetRGB())
 		_G.PetitionFrameCharterName:SetTextColor(self.BT:GetRGB())
 		_G.PetitionFrameMasterTitle:SetTextColor(self.HT:GetRGB())
@@ -531,6 +554,7 @@ aObj.blizzFrames[ftype].Petition = function(self)
 
 		self:Unhook(this, "OnShow")
 	end)
+	self:checkShown(_G.PetitionFrame)
 
 end
 
@@ -539,6 +563,11 @@ aObj.blizzFrames[ftype].QuestFrame = function(self)
 	self.initialized.QuestFrame = true
 
 	self:SecureHookScript(_G.QuestFrame, "OnShow", function(this)
+		if _G.InCombatLockdown() then
+		    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+		    return
+		end
+
 		self:keepFontStrings(_G.QuestFrameRewardPanel)
 		_G.QuestRewardScrollFrame:DisableDrawLayer("ARTWORK")
 		self:keepFontStrings(_G.QuestFrameProgressPanel)
@@ -605,6 +634,7 @@ aObj.blizzFrames[ftype].QuestFrame = function(self)
 
 		self:Unhook(this, "OnShow")
 	end)
+	self:checkShown(_G.QuestFrame)
 
 	if self.isMnln then
 		if not (self:isAddonEnabled("Quester")
@@ -637,7 +667,12 @@ aObj.blizzFrames[ftype].QuestFrame = function(self)
 		end
 	end)
 
-	self:SecureHookScript(_G.QuestModelScene or _G.QuestNPCModel , "OnShow", function(this)
+	self:SecureHookScript(_G.QuestModelScene or _G.QuestNPCModel, "OnShow", function(this)
+		if _G.InCombatLockdown() then
+		    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+		    return
+		end
+
 		if self.isMnln then
 			self:skinObject("scrollbar", {obj=_G.QuestNPCModelTextScrollFrame.ScrollBar, fType=ftype})
 		else
@@ -651,6 +686,7 @@ aObj.blizzFrames[ftype].QuestFrame = function(self)
 
 		self:Unhook(this, "OnShow")
 	end)
+	self:checkShown(_G.QuestModelScene or _G.QuestNPCModel)
 
 end
 
@@ -818,6 +854,11 @@ aObj.blizzFrames[ftype].Tabard = function(self)
 	self.initialized.Tabard = true
 
 	self:SecureHookScript(_G.TabardFrame, "OnShow", function(this)
+		if _G.InCombatLockdown() then
+		    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+		    return
+		end
+
 		self:removeNineSlice(_G.TabardFrameCostFrame.NineSlice)
 		self:keepFontStrings(_G.TabardFrameCustomizationFrame)
 		for i = 1, 5 do
@@ -845,5 +886,6 @@ aObj.blizzFrames[ftype].Tabard = function(self)
 
 		self:Unhook(this, "OnShow")
 	end)
+	self:checkShown(_G.TabardFrame)
 
 end
