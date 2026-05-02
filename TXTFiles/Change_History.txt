@@ -1,3 +1,25 @@
+beta12.67114.1
+Jncl:
+	Updated ToDo*.txt files
+	Updated Change_History.txt
+	Updated Version numbers
+	Updated GroupFinder code
+	Added comments
+	Applied Retail PTR changes
+	Bugfix for DamageMeter
+	Bugfix for TransmogFrame
+	Updated LFGBrowseFrame for BCA
+	Updated Classic TalentUI for BCA
+	Updated Baganator/Syndicator skin, closes #322
+	MoP Classic PTR changes
+	Updated ButtonBorder skinning code, hopefully closes #319 & closes #320
+	Updated debug util funcs
+	Updated NSF
+	Updated Classic DressUpFrame skin
+	Updated LibDBIcon from v45 to v56
+	Updated .pkgmeta
+	Updated github release.yaml
+
 beta12.66839.1
 Jncl:
 	Updated ToDo*.txt files
