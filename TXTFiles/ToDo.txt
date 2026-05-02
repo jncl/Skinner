@@ -13,7 +13,12 @@ ToDos
 
  ?		O/?	ChatFrameTab for PetBattles has missing text
 
-#319 ≈	I/M CooldownViewer
-#320 ≈	I/M CooldownViewer
+#324 √	I/M Options error
 
-#322 √	I/M attempted to perform indexed assignment on a frozen table
+#325 √	I/M CooldownViewer issue when changing talent build
+
+#327 √	S 	Ready Check, Pull Timer (RCPT)
+
+#328 √	C 	Frames missing backdrop during combat
+
+#329 √	I/M Crafting Order Frame unskinned Cancel button
