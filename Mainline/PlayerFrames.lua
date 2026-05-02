@@ -2035,6 +2035,7 @@ aObj.SetupMainline_PlayerFrames = function()
 				if self.modBtns then
 					self:skinStdButton{obj=fObj.BackButton, fType=ftype}
 					self:skinStdButton{obj=fObj.PaymentContainer.ListOrderButton, fType=ftype, sechk=true}
+					self:skinStdButton{obj=fObj.PaymentContainer.CancelOrderButton, fType=ftype, sechk=true}
 				end
 				if self.modBtnBs then
 					self:addButtonBorder{obj=fObj.OrderRecipientDisplay.SocialDropdown, fType=ftype, ofs=1, x1=-1}
