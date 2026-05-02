@@ -304,7 +304,13 @@ aObj.addonsToSkin.Baganator = function(self) -- v 799
 	local function setupFrameHooks(currentSkin)
 		for type, tbl in _G.pairs(frameData) do
 			aObj:secureHookScript(_G[tbl.name .. currentSkin], "OnShow", function(this)
+				if _G.InCombatLockdown() then
+				    aObj:add2Table(aObj.oocTab, {aObj.checkShown, {aObj, this}})
+				    return
+				end
+
 				tbl.func(this, type)
+
 				aObj:Unhook(this, "OnShow")
 			end)
 			aObj:checkShown(_G[tbl.name .. currentSkin])
@@ -326,15 +332,31 @@ aObj.addonsToSkin.Baganator = function(self) -- v 799
 	end)
 
 	if _G.Baganator_WelcomeFrame then
-		self:skinObject("frame", {obj=_G.Baganator_WelcomeFrame, kfs=true, cb=true})
-		if self.modBtns then
-			self:skinStdButton{obj=self:getChild(_G.Baganator_WelcomeFrame, _G.Baganator_WelcomeFrame:GetNumChildren() - 2)}
-			self:skinStdButton{obj=self:getChild(_G.Baganator_WelcomeFrame, _G.Baganator_WelcomeFrame:GetNumChildren() - 1)}
-		end
+		self:SecureHookScript(_G.Baganator_WelcomeFrame, "OnShow", function(this)
+			if _G.InCombatLockdown() then
+			    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+			    return
+			end
+
+			self:skinObject("frame", {obj=this, kfs=true, cb=true})
+			if self.modBtns then
+				self:skinStdButton{obj=self:getChild(this, this:GetNumChildren() - 2)}
+				self:skinStdButton{obj=self:getChild(this, this:GetNumChildren() - 1)}
+			end
+
+			self:Unhook(this, "OnShow")
+		end)
+		self:checkShown(_G.Baganator_WelcomeFrame)
 	end
 
 	local gChild, x2Ofs
 	local function skinCustomiseFrame()
+		-- handle in combat
+		if _G.InCombatLockdown() then
+		    aObj:add2Table(aObj.oocTab, {skinCustomiseFrame, {}})
+		    return
+		end
+
 		local this = _G["BaganatorCustomiseDialogFrame" .. _G.Baganator.API.Skins.GetCurrentSkin()]
 		this:DisableDrawLayer("BACKGROUND")
 		this:DisableDrawLayer("BORDER")
@@ -435,6 +457,12 @@ aObj.addonsToSkin.Baganator = function(self) -- v 799
 
 	-- hook this to skin dialog frames
 	local function skinDialog(frame)
+		-- handle in combat
+		if _G.InCombatLockdown() then
+		    aObj:add2Table(aObj.oocTab, {skinDialog, {frame}})
+		    return
+		end
+
 		_G.RunNextFrame(function()
 			if frame.editBox then
 				aObj:skinObject("editbox", {obj=frame.editBox, y1=-4, y2=4})
