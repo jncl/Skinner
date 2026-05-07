@@ -4556,10 +4556,10 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 			"GetSourceLocation",
 		}
 		local stringFound, text
-		function canSkinWidgetContainer(widgetContainer)
+		function canSkinWidgetContainer(frame)
 			stringFound = false
 			for _, f in _G.pairs(funcs) do
-				text = widgetContainer[f](widgetContainer)
+				text = frame[f](frame)
 				if text ~= nil then
 					if check4String(text) then
 						stringFound = true
@@ -4597,7 +4597,8 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 		    return
 		end
 
-		if not canSkinWidgetContainer(wFrame.widgetContainer)
+		if not wFrame.widgetContainer
+		or not canSkinWidgetContainer(wFrame.widgetContainer)
 		or not canSkinWidgetContainer(wFrame.widgetContainer:GetParent())
 		or not canSkinWidgetContainer(getTLP(wFrame.widgetContainer))
 		then
