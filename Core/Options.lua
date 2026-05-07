@@ -1267,6 +1267,7 @@ aObj.SetupOptions = function(self)
 		["Auto Complete"]         = {suff = "Frame"},
 		["Battlefield Map"]       = {suff = "Frame"},
 		["BN Frames"]             = {desc = "BattleNet Frames"},
+		["Binding UI"]            = {desc = "Key Bindings UI"},
 		["Calendar"]              = true,
 		["Cinematic Frame"]       = true,
 		["Coin Pickup"]           = {suff = "Frame"},

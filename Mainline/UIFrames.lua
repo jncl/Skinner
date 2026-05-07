@@ -852,7 +852,7 @@ aObj.SetupMainline_UIFrames = function()
 		self.initialized.ClickBindingUI = true
 
 		self:SecureHookScript(_G.ClickBindingFrame, "OnShow", function(this)
-			self:removeBackdrop(this.ScrollBoxBackground)
+			self:skinObject("frame", {obj=this.ScrollBoxBackground, kfs=true, fb=true})
 			self:skinObject("scrollbar", {obj=this.ScrollBar, fType=ftype})
 			local function skinElement(...)
 				local _, element, new
@@ -876,12 +876,11 @@ aObj.SetupMainline_UIFrames = function()
 				end
 			end
 			_G.ScrollUtil.AddAcquiredFrameCallback(this.ScrollBox, skinElement, aObj, true)
+			self:skinObject("ddbutton", {obj=this.MouseoverCastKeyDropdown, fType=ftype})
+			this.PlayerSpellsPortrait:DisableDrawLayer("OVERLAY")
 			this.MacrosPortrait:DisableDrawLayer("OVERLAY")
-			this.SpellbookPortrait:DisableDrawLayer("OVERLAY")
-			this.TutorialFrame.Tutorial:SetDrawLayer("ARTWORK") -- make background visible
-			this.TutorialButton.Ring:SetTexture(nil)
 			self:moveObject{obj=this.TutorialButton, y=-4}
-			self:skinObject("frame", {obj=this.TutorialFrame, fType=ftype, rns=true, cb=true, ofs=3, y1=2}) -- DON'T remove artwork
+			this.TutorialButton.Ring:SetTexture(nil)
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true, cb=true})
 			if self.modBtns then
 				self:skinStdButton{obj=this.SaveButton, fType=ftype}
@@ -891,6 +890,20 @@ aObj.SetupMainline_UIFrames = function()
 			if self.modChkBtns then
 				self:skinCheckButton{obj=this.EnableMouseoverCastCheckbox, fType=ftype}
 			end
+
+			self:SecureHookScript(this.TutorialFrame, "OnShow", function(fObj)
+				if _G.InCombatLockdown() then
+				    self:add2Table(self.oocTab, {self.checkShown, {self, fObj}})
+				    return
+				end
+
+				fObj.Tutorial:SetDrawLayer("ARTWORK") -- make background visible
+				self:skinObject("frame", {obj=fObj, fType=ftype, rns=true, cb=true, ofs=3, y1=2}) -- DON'T remove artwork
+
+				self:Unhook(fObj, "OnShow")
+			end)
+			self:checkShown(this.TutorialFrame)
+
 
 			self:Unhook(this, "OnShow")
 		end)

@@ -867,7 +867,6 @@ aObj.SetupClassic_UIFramesOptions = function(self)
 
 	local optTab = {
 		["Battlefield Frame"]       = self.isClscERA and true or nil,
-		["Binding UI"]              = {desc = "Key Bindings UI"},
 		["Level Up Display"]        = self.isClsc and true or nil,
 		["Nameplates"]              = true,
 		["Product Choice"]          = {suff = "Frame"},
