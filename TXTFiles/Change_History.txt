@@ -1,3 +1,30 @@
+beta12.67314.1
+Jncl:
+	Updated ToDo*.txt files
+	Updated Change_History.txt
+	Updated Version numbers
+	Updated Classic & Retail skins to handle OOC frame skinning, closes #328
+	Updated Baganator skin to handle OOC frame skinning
+	Updated ProfessionsCustomerOrders skin, close #329
+	Updated Quartz & TomTom skins
+	Updated EventToastManagerFrame skin
+	Updated DelvesDifficultyPicker skin
+	Removed comment lines
+	Updated addBackdrop function
+	Removed ChatMenus option & skin code
+	Updated CastingBar skin
+	Skinned RCPT, closes #327
+	Updated canSkin function
+	Updated UIWidgets code
+	Updated CooldownViewer skin, closes #325
+	Updated PlayerSpellsFrame code
+	Updated CompactRaidFrameManager skin
+	Updated Options code
+	Updated Class & Retail CastingBar skins
+	Updated NSF Tab skinning code
+	Updated MovieFrame skin
+	Bugfix for extraab option, closes #324
+
 beta12.67114.1
 Jncl:
 	Updated ToDo*.txt files
