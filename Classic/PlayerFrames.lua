@@ -258,6 +258,7 @@ aObj.SetupClassic_PlayerFrames = function()
 
 					self:Unhook(fObj, "OnShow")
 				end)
+				self:checkShown(_G.ReputationFrame)
 
 				self:SecureHookScript(_G.SkillFrame, "OnShow", function(fObj)
 					self:keepFontStrings(fObj)

@@ -154,6 +154,7 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 		alertType["StorePurchase"]          = {ofs = -12, ddl = {"background"}}
 	end
 
+	-- N.B. frames use ncc skinning option
 	local adj, tbl, itemQuality = {}
 	local function skinAlertFrame(type, frame)
 		tbl = alertType[type]
@@ -2874,6 +2875,7 @@ aObj.blizzFrames[ftype].Menu = function(self) -- Dropdown Menus
 	if not self.prdb.Menu or self.initialized.Menu then return end
 	self.initialized.Menu = true
 
+	-- N.B. frames use ncc skinning option
 	local ddMenus, mixin = {}
 	for i = 1, 10 do
 		mixin = "MenuStyle" .. i .. "Mixin"
@@ -4483,6 +4485,7 @@ aObj.blizzFrames[ftype].UIDropDownMenu = function(self)
 	if not self.prdb.UIDropDownMenu or self.initialized.UIDropDownMenu then return end
 	self.initialized.UIDropDownMenu = true
 
+	-- N.B. frames use ncc skinning option
 	for i = 1, _G.UIDROPDOWNMENU_MAXLEVELS do
 		self:SecureHookScript(_G["DropDownList" .. i], "OnShow", function(this)
 			self:skinObject("ddlist", {obj=this, fType=ftype, ncc=true})
@@ -4491,6 +4494,7 @@ aObj.blizzFrames[ftype].UIDropDownMenu = function(self)
 		end)
 	end
 
+	-- N.B. frames use ncc skinning option
 	self:SecureHook("UIDropDownMenu_CreateFrames", function(_)
 		if not _G["DropDownList" .. _G.UIDROPDOWNMENU_MAXLEVELS].sf then
 			self:skinObject("ddlist", {obj=_G["DropDownList" .. _G.UIDROPDOWNMENU_MAXLEVELS], fType=ftype, ncc=true})

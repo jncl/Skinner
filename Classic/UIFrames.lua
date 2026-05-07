@@ -85,6 +85,7 @@ aObj.SetupClassic_UIFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.KeyBindingFrame)
 
 	end
 
@@ -547,6 +548,7 @@ aObj.SetupClassic_UIFrames = function()
 				self:keepFontStrings(_G.EmptyQuestLogFrame)
 				if self.isClscBCA
 				or self.isClscPTR
+				or self.isClscERAPTR
 				then
 					self:keepFontStrings(_G.QuestLogCount)
 				end
@@ -880,5 +882,7 @@ aObj.SetupClassic_UIFramesOptions = function(self)
 end
 
 aObj.SetupClassic_UIFramesDefaults = function(_)
+
+	_G.nop()
 
 end
