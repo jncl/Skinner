@@ -13,12 +13,8 @@ ToDos
 
  ?		O/?	ChatFrameTab for PetBattles has missing text
 
-#324 √	I/M Options error
+#330 √	A 	Socketing Frame
 
-#325 √	I/M CooldownViewer issue when changing talent build
+#331 √	I/M Error widgetContainer
 
-#327 √	S 	Ready Check, Pull Timer (RCPT)
-
-#328 √	C 	Frames missing backdrop during combat
-
-#329 √	I/M Crafting Order Frame unskinned Cancel button
+#332 √	I/M release Spirit box doesn't disappear after dying in an instance
