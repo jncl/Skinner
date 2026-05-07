@@ -3110,40 +3110,32 @@ aObj.blizzLoDFrames[ftype].ItemSocketingUI = function(self)
 		return t["Meta"]
 	end})
 
-	local function skinSocket(socket)
-		socket:DisableDrawLayer("BACKGROUND")
-		socket:DisableDrawLayer("BORDER")
-		aObj:skinObject("button", {obj=socket, fType=ftype, bd=10, ng=true})
-	end
 	local numSockets, clr
 	local function colourSockets(frame)
-		if aObj.isMnln then
-			numSockets = _G.C_ItemSocketInfo.GetNumSockets()
-		else
-			numSockets = _G.GetNumSockets()
-		end
-		for i, socket in _G.ipairs(frame.SocketingContainer.SocketFrames or _G.ItemSocketingFrame.Sockets) do
-			if i <= numSockets then
-				clr = gemTypeInfo[aObj.isMnln and _G.C_ItemSocketInfo.GetSocketTypes(i) or _G.GetSocketTypes(i)]
+		numSockets = _G.C_ItemSocketInfo.GetNumSockets()
+		for i, socket in _G.ipairs(frame.SocketingContainer.SocketFrames) do
+			if socket.sb
+			and i <= numSockets
+			then
+				clr = gemTypeInfo[_G.C_ItemSocketInfo.GetSocketTypes(i)]
 				socket.sb:SetBackdropBorderColor(clr.r, clr.g, clr.b)
 			end
 		end
 	end
 	self:SecureHookScript(_G.ItemSocketingFrame, "OnShow", function(this)
+		if _G.InCombatLockdown() then
+		    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+		    return
+		end
+
 		self:skinObject("scrollbar", {obj=_G.ItemSocketingScrollFrame.ScrollBar, fType=ftype})
 		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, x2=3})
 		if self.modBtns then
-			if aObj.isMnln then
-				self:skinStdButton{obj=this.SocketingContainer.ApplySocketsButton, fType=ftype, schk=true}
-				for _, socket in _G.ipairs(this.SocketingContainer.SocketFrames) do
-					skinSocket(socket)
-				end
-			else
-				self:skinStdButton{obj=_G.ItemSocketingSocketButton, fType=ftype, schk=true}
-				this.Sockets = this.Sockets or {_G.ItemSocketingSocket1, _G.ItemSocketingSocket2, _G.ItemSocketingSocket3}
-				for _, socket in _G.ipairs(this.Sockets) do
-					skinSocket(socket)
-				end
+			self:skinStdButton{obj=this.SocketingContainer.ApplySocketsButton, fType=ftype, schk=true}
+			for _, socket in _G.ipairs(this.SocketingContainer.SocketFrames) do
+				socket:DisableDrawLayer("BACKGROUND")
+				socket:DisableDrawLayer("BORDER")
+				self:skinObject("button", {obj=socket, fType=ftype, bd=10, ng=true})
 			end
 			self:SecureHook("ItemSocketingFrame_Update", function()
 				colourSockets(this)
