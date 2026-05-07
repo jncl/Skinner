@@ -4188,14 +4188,10 @@ aObj.blizzFrames[ftype].StaticPopups = function(self)
 		end)
 	end
 
+	-- N.B. frames use ncc skinning option
 	-- Frame layout found in GameDialog.xml
 	for i = 1, 4 do
 		self:SecureHookScript(_G["StaticPopup" .. i], "OnShow", function(this)
-			if _G.InCombatLockdown() then
-			    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
-			    return
-			end
-
 			-- .ProgressBarBorder
 			-- .ProgressBarFill
 			self:keepFontStrings(this.BG)
@@ -4233,7 +4229,6 @@ aObj.blizzFrames[ftype].StaticPopups = function(self)
 
 			self:Unhook(this, "OnShow")
 		end)
-		self:checkShown(_G["StaticPopup" .. i])
 	end
 
 	if self.isMnln then
