@@ -63,6 +63,7 @@ aObj.SetupClassic_PlayerFrames = function()
 
 	if not aObj.isClscBCA
 	and not aObj.isClscPTR
+	and not aObj.isClscERAPTR
 	then
 		aObj.blizzFrames[ftype].Buffs = function(self)
 			if not self.prdb.Buffs or self.initialized.Buffs then return end
@@ -197,6 +198,7 @@ aObj.SetupClassic_PlayerFrames = function()
 					end
 					if self.isClscBCA
 					or self.isClscPTR
+					or self.isClscERAPTR
 					then
 						self:skinObject("ddbutton", {obj=fObj.Attributes.LeftPlayerStatDropdown, fType=ftype})
 						self:skinObject("ddbutton", {obj=fObj.Attributes.RightPlayerStatDropdown, fType=ftype})
@@ -288,6 +290,7 @@ aObj.SetupClassic_PlayerFrames = function()
 
 				if not self.isClscBCA
 				and not self.isClscPTR
+				and not self.isClscERAPTR
 				then
 					self:SecureHookScript(_G.HonorFrame, "OnShow", function(fObj)
 						self:keepFontStrings(fObj)
@@ -384,6 +387,7 @@ aObj.SetupClassic_PlayerFrames = function()
 
 			if self.isClsc
 			or self.isClscBCA
+			or self.isClscERAPTR
 			then
 				self:skinObject("dropdown", {obj=_G.CraftFrameFilterDropDown, fType=ftype})
 				if self.modChkBtns then
@@ -975,6 +979,7 @@ aObj.SetupClassic_PlayerFrames = function()
 			if self.isClscERA
 			and not self.isClscBCA
 			and not self.isClscPTR
+			and not self.isClscERAPTR
 			then
 				self:SecureHookScript(_G.InspectHonorFrame, "OnShow", function(fObj)
 					self:keepFontStrings(fObj)
@@ -992,6 +997,7 @@ aObj.SetupClassic_PlayerFrames = function()
 					self:keepFontStrings(fObj)
 					if not aObj.isClscBCA
 					and not aObj.isClscPTR
+					and not aObj.isClscERAPTR
 					then
 						fObj.InspectSpec.ring:SetTexture(nil)
 					else
@@ -1481,14 +1487,18 @@ aObj.SetupClassic_PlayerFrames = function()
 				-- keep background Texture
 				self:removeRegions(this, {1, 2, 3, 4, 5})
 				self:skinObject("frame", {obj=this, fType=ftype, cb=true, x1=10, y1=-12, x2=-31, y2=74})
-				if self.isClscBCA then
+				if self.isClscBCA
+				or self.isClscERAPTR
+				then
 					self:keepFontStrings(_G.PlayerTalentFrameStatusFrame)
 				end
 				self:keepFontStrings(_G.PlayerTalentFramePointsBar)
 				_G.PlayerTalentFramePreviewBar:DisableDrawLayer("BORDER")
 				_G.PlayerTalentFramePreviewBarFiller:DisableDrawLayer("BACKGROUND")
 				if self.modBtns then
-					if self.isClscBCA then
+					if self.isClscBCA
+					or self.isClscERAPTR
+					then
 						self:skinStdButton{obj=_G.PlayerTalentFrameCancelButton, fType=ftype}
 					end
 					self:skinStdButton{obj=_G.PlayerTalentFrameResetButton, fType=ftype, schk=true}
@@ -1651,6 +1661,7 @@ aObj.SetupClassic_PlayerFrames = function()
 		self:SecureHookScript(_G.TradeSkillFrame, "OnShow", function(this)
 			if self.isClsc
 			or self.isClscBCA
+			or self.isClscERAPTR
 			then
 				if self.modChkBtns then
 					self:skinCheckButton{obj=_G.TradeSkillFrameAvailableFilterCheckButton, fType=ftype}

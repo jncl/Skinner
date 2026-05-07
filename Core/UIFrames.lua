@@ -21,6 +21,7 @@ aObj.blizzFrames[ftype].AddonList = function(self)
 		if self.isMnln
 		or self.isClscBCA
 		or self.isClscPTR
+		or self.isClscERAPTR
 		then
 			self:skinObject("scrollbar", {obj=this.ScrollBar, fType=ftype})
 			local function skinElement(...)
@@ -1273,6 +1274,7 @@ end
 if aObj.isMnln
 or aObj.isClscBCA
 or aObj.isClscPTR
+or aObj.isClscERAPTR
 then
 	aObj.blizzFrames[ftype].EditMode = function(self)
 		if not self.prdb.EditMode or self.initialized.EditMode then return end
@@ -2333,7 +2335,9 @@ then
 
 			self:SecureHookScript(_G.LFGBrowseFrame, "OnShow", function(fObj)
 				self:keepFontStrings(fObj)
-				if not self.isClscBCA then
+				if not self.isClscBCA
+				and not self.isClscERAPTR
+				then
 					self:skinObject("dropdown", {obj=fObj.CategoryDropDown, fType=ftype})
 					self:skinObject("dropdown", {obj=fObj.ActivityDropDown, fType=ftype})
 				else
@@ -2576,6 +2580,7 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 		if self.isMnln
 		or self.isClscBCA
 		or self.isClscPTR
+		or self.isClscERAPTR
 		then
 			self:SecureHookScript(_G.MainActionBar, "OnShow", function(this)
 				if this.BorderArt then
@@ -2743,7 +2748,7 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 				"WorldMapMicroButton",
 			}
 			for _, bName in _G.pairs(microButtons) do
-				self:addButtonBorder{obj=_G[bName], fType=ftype, es=24, ofs=2, y1=not self.isClscBCA and not self.isClscPTR and -18 or nil, reParent={_G[bName].QuickKeybindHighlightTexture}}
+				self:addButtonBorder{obj=_G[bName], fType=ftype, es=24, ofs=2, y1=not self.isClscBCA and not self.isClscPTR and not self.isClscERAPTR and -18 or nil, reParent={_G[bName].QuickKeybindHighlightTexture}}
 			end
 			local function abb2Bag(bag)
 				aObj:addButtonBorder{obj=bag, fType=ftype, ibt=true, ofs=3, clr=bag.icon:GetVertexColor()}
@@ -2805,6 +2810,7 @@ aObj.blizzFrames[ftype].MainMenuBarCommon = function(self)
 		if self.isMnln
 		or self.isClscBCA
 		or self.isClscPTR
+		or self.isClscERAPTR
 		then
 			for _, frame in _G.pairs{_G.StanceBar, _G.PetActionBar, _G.PossessActionBar} do
 				self:SecureHookScript(frame, "OnShow", function(this)
@@ -2905,6 +2911,7 @@ aObj.blizzFrames[ftype].MenuFrames = function(self)
 		if self.isMnln
 		or self.isClscBCA
 		or self.isClscPTR
+		or self.isClscERAPTR
 		then
 			self:removeNineSlice(this.Border)
 		end
@@ -2958,6 +2965,7 @@ aObj.blizzFrames[ftype].Minimap = function(self)
 	if not self.isMnln then
 		if not self.isClscBCA
 		and not aObj.isClscPTR
+		and not aObj.isClscERAPTR
 		then
 			_G.MinimapBorderTop:Hide()
 		else

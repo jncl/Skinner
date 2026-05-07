@@ -685,6 +685,7 @@ end
 if aObj.isMnln
 or aObj.isClscBCA
 or aObj.isClscPTR
+or aObj.isClscERAPTR
 then
 	aObj.blizzFrames[ftype].Buffs = function(self)
 		if not self.prdb.Buffs or self.initialized.Buffs then return end
@@ -2422,10 +2423,13 @@ aObj.blizzFrames[ftype].CompactFrames = function(self)
 					self:skinStdButton{obj=fObj.leaderOptions.readyCheckButton, fType=ftype}
 					if not self.isClscERA
 					or self.isClscBCA
+					or self.isClscERAPTR
 					then
 						self:skinStdButton{obj=fObj.leaderOptions.rolePollButton, fType=ftype}
 					end
-					if self.isClscBCA then
+					if self.isClscBCA
+					or self.isClscERAPTR
+					then
 						self:skinStdButton{obj=fObj.editMode, fType=ftype}
 						self:skinStdButton{obj=fObj.leaderOptions.countdownButton, fType=ftype}
 					end
@@ -2435,6 +2439,7 @@ aObj.blizzFrames[ftype].CompactFrames = function(self)
 							self:clrBtnBdr(fObj.leaderOptions.readyCheckButton)
 							if not self.isClscERA
 							or self.isClscBCA
+							or self.isClscERAPTR
 							then
 								self:clrBtnBdr(fObj.leaderOptions.rolePollButton)
 							end
