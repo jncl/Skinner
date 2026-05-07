@@ -618,6 +618,12 @@ aObj.SetupMainline_NPCFrames = function()
 							end
 							element.BackgroundTexture:SetTexture(nil)
 							aObj:skinObject("frame", {obj=element, fb=true, clr="grey", y1=y1Ofs, y2=y2Ofs})
+							if element.RemoveFromCartItemButton
+							and aObj.modBtns
+							then
+								aObj:skinCloseButton{obj=element.RemoveFromCartItemButton.RemoveFromListButton, fType=ftype, noSkin=true}
+							end
+							aObj:moveObject{obj=element.RemoveFromCartItemButton.RemoveFromListButton, x=3, y=8}
 						end
 					end
 					_G.ScrollUtil.AddInitializedFrameCallback(frame.ItemList.ScrollBox, skinItem, aObj, true)
