@@ -1366,7 +1366,9 @@ aObj.SetupMainline_UIFrames = function()
 			end
 			-- TODO: skin WeeklyRewardToastUnlock/WeeklyRewardToastUpgrade
 			if toast.Contents then
-				_G.nop()
+				toast.Contents:DisableDrawLayer("BACKGROUND")
+				toast.Contents:DisableDrawLayer("BORDER")
+				toast.Contents:DisableDrawLayer("OVERLAY")
 			end
 			if aObj.modBtns then
 				aObj:skinStdButton{obj=toast.CloseButton, fType=ftype}
