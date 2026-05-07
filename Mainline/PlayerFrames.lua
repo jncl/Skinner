@@ -1262,8 +1262,16 @@ aObj.SetupMainline_PlayerFrames = function()
 										end
 									end
 								elseif block == module.StageBlock then
-									if block.widgetSetID ~= 842 then -- Delves
+									--@debug@
+									aObj:Debug("skinModule wSID: [%s, %s]", block.widgetSetID)
+									--@end-debug@
+									if block.widgetSetID ~= 842 -- Delves
+									and block.widgetSetID ~= 2102 -- Ritual Roles
+									then
 										aObj:skinObject("frame", {obj=block, fType=ftype, kfs=true, ofs=0, x2=-17, y2=6, clr="sepia"})
+										block.sf:Show()
+									elseif block.sf then
+										block.sf:Hide()
 									end
 									-- N.B. widgets skinned in UIWidgets skinWidget function
 								elseif block == module.TopWidgetContainerBlock
@@ -1286,6 +1294,8 @@ aObj.SetupMainline_PlayerFrames = function()
 											end
 										end)
 									end
+								elseif block == module.TieredEntranceTraitsBlock then
+									aObj:skinObject("frame", {obj=block.Container, fType=ftype, kfs=true, ofs=0, clr="grey"})
 								elseif block == module.ChallengeModeBlock then
 									aObj:skinObject("statusbar", {obj=block.StatusBar, fi=0, bg=block.TimerBG, other={block.TimerBGBack}})
 									aObj:removeRegions(block, {3}) -- challengemode-timer atlas
