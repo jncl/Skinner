@@ -66,6 +66,7 @@ end
 
 -- skin Templates
 aObj.skinTPLs = {
+	-- ncc = false, check InCombatLockdown() value
 	button = {
 		name		= false, -- use a name if required (VuhDo Options)
 		-- bg          = true, -- put into specified FrameStrata
@@ -253,7 +254,7 @@ aObj.skinTPLs = {
 -- add type value for each table entry
 do
 	for name, optsTable in _G.pairs(aObj.skinTPLs) do
-		optsTable.type  = name
+		optsTable.type = name
 	end
 end
 -- use a metatable to return default values and handle the initialisation of the passed options table
@@ -575,7 +576,7 @@ local function skinEditBox(tbl)
 	end
 
 	aObj:removeRegions(tbl.obj, tbl.regions)
-	aObj:skinObject("frame", {obj=tbl.obj, fType=tbl.fType, bd=tbl.bd, ng=true, ofs=tbl.ofs, x1=tbl.x1, y1=tbl.y1, x2=tbl.x2, y2=tbl.y2, clr="slider"})
+	aObj:skinObject("frame", {obj=tbl.obj, fType=tbl.fType, bd=tbl.bd, ng=true, ncc=tbl.ncc, ofs=tbl.ofs, x1=tbl.x1, y1=tbl.y1, x2=tbl.x2, y2=tbl.y2, clr="slider"})
 	-- move the search icon
 	if tbl.si then
 		local sIcon = tbl.obj.SearchIcon or tbl.obj.searchIcon or tbl.obj.icon or tbl.obj:GetName() and _G[tbl.obj:GetName() .. "SearchIcon"]
@@ -815,7 +816,7 @@ local function skinMoneyFrame(tbl)
 	local mfObj
 	for key, type in _G.ipairs{"Gold", "Silver", "Copper"} do
 		mfObj = _G[tbl.obj:GetName() .. type]
-		aObj:skinObject("editbox", {obj=mfObj, ofs=0})
+		aObj:skinObject("editbox", {obj=mfObj, ncc=tbl.ncc, ofs=0})
 		if key ~= 1 then
 			if tbl.moveIcon then
 				aObj:moveObject{obj=mfObj.texture, x=10}
@@ -859,7 +860,7 @@ local function skinScrollBar(tbl)
 		child:DisableDrawLayer("ARTWORK")
 	end
 	setScrollTrackOffsets(tbl, "scrollbar")
-	aObj:skinObject("frame", {obj=tbl.obj.Track, fType=tbl.fType, bd=4, ng=true, x1=tbl.x1, y1=tbl.y1, x2=tbl.x2, y2=tbl.y2, clr="slider"})
+	aObj:skinObject("frame", {obj=tbl.obj.Track, fType=tbl.fType, ncc=tbl.ncc, bd=4, ng=true, x1=tbl.x1, y1=tbl.y1, x2=tbl.x2, y2=tbl.y2, clr="slider"})
 end
 skinFuncs.scrollbar = function(table) skinScrollBar(table) end
 local function skinSlider(tbl)

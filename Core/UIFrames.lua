@@ -221,7 +221,7 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 			adj.y1 = 0
 			adj.y2 = 0
 		end
-		aObj:skinObject("frame", {obj=frame, fType=ftype, x1=adj.x1, y1=adj.y1, x2=adj.x2, y2=adj.y2, ncc=true})
+		aObj:skinObject("frame", {obj=frame, fType=ftype, ncc=true, x1=adj.x1, y1=adj.y1, x2=adj.x2, y2=adj.y2})
 		-- add button border if required
 		if aObj.modBtnBs then
 			itemQuality = tbl.iq
@@ -245,7 +245,7 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 				if frame.Icon then
 					frame.Icon:SetDrawLayer("BORDER")
 					if not tbl.nis then
-						aObj:addButtonBorder{obj=frame, fType=ftype, relTo=frame.Icon, ncc=true}
+						aObj:addButtonBorder{obj=frame, fType=ftype, ncc=true, relTo=frame.Icon}
 					end
 				end
 				if tbl.ib then
@@ -269,7 +269,7 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 				if tbl.icon.obj then
 					frame = frame[tbl.icon.obj or "Icon"]
 				end
-				aObj:addButtonBorder{obj=frame, fType=ftype, relTo=frame[tbl.icon.tex], ncc=true}
+				aObj:addButtonBorder{obj=frame, fType=ftype, ncc=true, relTo=frame[tbl.icon.tex]}
 			end
 			if itemQuality then
 				aObj:setBtnClr(frame, itemQuality)
@@ -2888,8 +2888,8 @@ aObj.blizzFrames[ftype].Menu = function(self) -- Dropdown Menus
 		if _G[mixin] then
 			self:RawHook(_G[mixin], "Generate", function(menu)
 				if not _G.tContains(ddMenus, menu) then
-					aObj:skinObject("scrollbar", {obj=menu.ScrollBar, fType=ftype})
-					aObj:skinObject("frame", {obj=menu, fType=ftype, ofs=3, ncc=true})
+					aObj:skinObject("scrollbar", {obj=menu.ScrollBar, fType=ftype, ncc=true})
+					aObj:skinObject("frame", {obj=menu, fType=ftype, ncc=true, ofs=3})
 					aObj:add2Table(ddMenus, menu)
 				end
 			end, true)
@@ -4198,7 +4198,7 @@ aObj.blizzFrames[ftype].StaticPopups = function(self)
 		end)
 	end
 
-	-- N.B. frames use ncc skinning option
+	-- N.B. skinObjects use ncc skinning option
 	-- Frame layout found in GameDialog.xml
 	for i = 1, 4 do
 		self:SecureHookScript(_G["StaticPopup" .. i], "OnShow", function(this)
@@ -4207,20 +4207,20 @@ aObj.blizzFrames[ftype].StaticPopups = function(self)
 			self:keepFontStrings(this.BG)
 			-- .CoverFrame
 			this.Separator:SetTexture(nil)
-			self:skinObject("editbox", {obj=this.EditBox, fType=ftype, mi=true, mix=12, regions={}, ofs=0})
+			self:skinObject("editbox", {obj=this.EditBox, fType=ftype, ncc=true, mi=true, mix=12, regions={}, ofs=0})
 			-- .Dropdown
 			-- .MoneyFrame
-			self:skinObject("moneyframe", {obj=this.MoneyInputFrame, moveIcon=true})
+			self:skinObject("moneyframe", {obj=this.MoneyInputFrame, ncc=true, moveIcon=true})
 			if this.ItemFrame then
 				this.ItemFrame.NameFrame:SetTexture(nil)
 			end
 			if this.insertedFrame then
 				this.insertedFrame.ItemFrame.NameFrame:SetTexture(nil)
 				if self.modBtnBs then
-					self:addButtonBorder{obj=this.insertedFrame.ItemFrame, fType=ftype, libt=true}
+					self:addButtonBorder{obj=this.insertedFrame.ItemFrame, fType=ftype, ncc=true, libt=true}
 					if this.insertedFrame.AlsoItemsFrame.pool then
 						for btn in this.insertedFrame.AlsoItemsFrame.pool:EnumerateActive() do
-							self:addButtonBorder{obj=btn, fType=ftype, clr="white"}
+							self:addButtonBorder{obj=btn, fType=ftype, ncc=true, clr="white"}
 						end
 					end
 				end
@@ -4229,12 +4229,12 @@ aObj.blizzFrames[ftype].StaticPopups = function(self)
 			self:skinObject("frame", {obj=this, fType=ftype, ncc=true, ofs=-4})
 			if self.modBtns then
 				for _, btn in _G.pairs(this.ButtonContainer.Buttons) do
-					self:skinStdButton{obj=btn, fType=ftype, schk=true, sechk=true, y=2}
+					self:skinStdButton{obj=btn, fType=ftype, ncc=true, schk=true, sechk=true, y=2}
 				end
-				self:skinStdButton{obj=this.ExtraButton, fType=ftype, schk=true, y1=2}
+				self:skinStdButton{obj=this.ExtraButton, fType=ftype, ncc=true, schk=true, y1=2}
 			end
 			if self.modBtnBs then
-				self:addButtonBorder{obj=this.ItemFrame.Item, fType=ftype, ibt=true}
+				self:addButtonBorder{obj=this.ItemFrame.Item, fType=ftype, ncc=true, ibt=true}
 			end
 
 			self:Unhook(this, "OnShow")

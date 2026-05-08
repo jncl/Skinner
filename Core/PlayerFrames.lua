@@ -2788,7 +2788,7 @@ if not aObj.isClscERA then
 						if frame:GetParentKey() == "Threshold5"
 						and self.modBtnBs
 						then
-							self:addButtonBorder{obj=frame.RewardItem, fType=ftype, relTo=frame.RewardItem.Icon, ibt=true, ncc=true}
+							self:addButtonBorder{obj=frame.RewardItem, fType=ftype, ncc=true, relTo=frame.RewardItem.Icon, ibt=true}
 							frame.RewardCurrency:SetParent(frame.RewardItem.sbb)
 						end
 					end
