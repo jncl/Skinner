@@ -1269,7 +1269,6 @@ aObj.SetupMainline_PlayerFrames = function()
 									and block.widgetSetID ~= 2102 -- Ritual Roles
 									then
 										aObj:skinObject("frame", {obj=block, fType=ftype, kfs=true, ofs=0, x2=-17, y2=6, clr="sepia"})
-										block.sf:Show()
 									elseif block.sf then
 										block.sf:Hide()
 									end
