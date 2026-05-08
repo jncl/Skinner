@@ -13,8 +13,4 @@ ToDos
 
  ?		O/?	ChatFrameTab for PetBattles has missing text
 
-#330 √	A 	Socketing Frame
-
-#331 √	I/M Error widgetContainer
-
-#332 √	I/M release Spirit box doesn't disappear after dying in an instance
+#333	I/M StaticPopups, buttons not skinning
