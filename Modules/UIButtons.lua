@@ -573,8 +573,13 @@ local function __skinStdButton(opts)
 		opts.x2  = opts.x2 or opts.ofs
 		opts.y2  = opts.y2 or opts.ofs * -1
 		aObj:skinObject("button", {obj=opts.obj, fType=opts.ftype, name=opts.name, sabt=opts.sabt, bd=opts.bd, x1=opts.x1, y1=opts.y1, x2=opts.x2, y2=opts.y2})
-		opts.obj.sb.clr = opts.clr
-		opts.obj.sb.ca = opts.ca
+		if opts.obj.sb then
+			opts.obj.sb.clr = opts.clr
+			opts.obj.sb.ca = opts.ca
+		else
+			opts.obj.clr = opts.clr
+			opts.obj.ca = opts.ca
+		end
 	else
 		if bH < 16 then opts.obj:SetHeight(16) end -- set minimum button height (DBM option buttons)
 		if bW < 16 then opts.obj:SetWidth(16) end -- set minimum button width (oQueue remove buttons)
