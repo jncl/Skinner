@@ -1103,7 +1103,8 @@ if not aObj.isClscERA then
 
 				self:SecureHookScript(_G.TokenFramePopup, "OnShow", function(fObj)
 					fObj.Border:DisableDrawLayer("BACKGROUND")
-					self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, cb=not self.isMnln and true, ofs=-3, x1=0})
+					fObj.Border:DisableDrawLayer("BORDER")
+					self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, cb=not self.isMnln and true, ofs=-3})
 					if self.modBtns then
 						if self.isMnln then
 							-- FIXME: CloseButton skinned here as it has a prefix of '$parent.', bug in XML file
