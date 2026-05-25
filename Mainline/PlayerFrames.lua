@@ -1263,7 +1263,7 @@ aObj.SetupMainline_PlayerFrames = function()
 									end
 								elseif block == module.StageBlock then
 									--@debug@
-									aObj:Debug("skinModule wSID: [%s, %s]", block.widgetSetID)
+									-- aObj:Debug("skinModule wSID: [%s, %s]", block.widgetSetID)
 									--@end-debug@
 									if block.widgetSetID ~= 842 -- Delves
 									and block.widgetSetID ~= 2102 -- Ritual Roles
