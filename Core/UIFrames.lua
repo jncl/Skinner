@@ -3313,14 +3313,14 @@ aObj.blizzFrames[ftype].MovieFrame = function(self)
 		if this.CloseDialog.Border then
 			self:removeNineSlice(this.CloseDialog.Border)
 		end
-		self:skinObject("frame", {obj=this.CloseDialog, fType=ftype})
+		self:skinObject("frame", {obj=this.CloseDialog, fType=ftype, kfs=true})
 		if self.modBtns then
-			if not aObj.isClscPTR then
-				self:skinStdButton{obj=this.CloseDialog.ConfirmButton}
-				self:skinStdButton{obj=this.CloseDialog.ResumeButton}
-			else
+			if this.CloseDialog.Buttons then
 				self:skinStdButton{obj=this.CloseDialog.Buttons.ConfirmButton}
 				self:skinStdButton{obj=this.CloseDialog.Buttons.ResumeButton}
+			else
+				self:skinStdButton{obj=this.CloseDialog.ConfirmButton}
+				self:skinStdButton{obj=this.CloseDialog.ResumeButton}
 			end
 		end
 
