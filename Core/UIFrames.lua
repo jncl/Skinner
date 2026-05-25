@@ -4382,7 +4382,7 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 		-- store using tooltip object as the key
 		_G.rawset(tab, tTip, type)
 		-- skin here so tooltip initially skinned
-		self:skinObject("tooltip", {obj=tTip, ftype=type or "a", ofs=0})
+		self:skinObject("tooltip", {obj=tTip, ftype=type, ofs=0})
 		-- ensure tooltip gradient updated
 		if not self.ttHook[tTip] then
 			if self.isMnln then
@@ -4401,9 +4401,7 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 				func = "SecureHook"
 			end
 			self[func](self, tTip, self.ttHook[tTip], function(this)
-				_G.RunNextFrame(function()
-					self:applyTooltipGradient(this.sf)
-				end)
+				self:applyTooltipGradient(this.sf)
 			end)
 		end
 		if not self.isMnln then -- bugfix for secret value errors
