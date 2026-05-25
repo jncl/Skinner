@@ -598,9 +598,13 @@ aObj.SetupMainline_PlayerFrames = function()
 					_G["WhoFrameColumnHeader" .. i]:DisableDrawLayer("BACKGROUND")
 					if i == 2 then
 						self:skinObject("ddbutton", {obj=_G.WhoFrameDropdown, fType=ftype, ofs=0})
-						self:adjHeight{obj=_G.WhoFrameDropdown, adj=-4}
+						if not aObj.isMnlnPTRX then
+							self:adjHeight{obj=_G.WhoFrameDropdown, adj=-4}
+						else
+							_G.WhoFrameDropdown:SetPoint("BOTTOMRIGHT", 0, -2)
+						end
 					else
-						self:skinObject("frame", {obj=_G["WhoFrameColumnHeader" .. i], fType=ftype, y2=-3})
+						self:skinObject("frame", {obj=_G["WhoFrameColumnHeader" .. i], fType=ftype, y2=not aObj.isMnlnPTRX and -3 or nil})
 					end
 				end
 				self:moveObject{obj=_G.WhoFrameColumnHeader4, x=2}
