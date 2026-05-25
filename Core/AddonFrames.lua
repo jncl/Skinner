@@ -107,13 +107,13 @@ function aObj:AddonFrames()
 
 	-- skin any Blizzard LoD frames or LoD addons that have already been loaded by other addons, waiting to allow them to be loaded
 	-- (Tukui does this for the PetJournal, other addons do it as well)
-	_G.C_Timer.After(0.2, function()
-		skinBLoD()
+	_G.RunNextFrame(function()
 		for addonName, skinFunc in _G.pairs(self.lodAddons) do
 			if _G.C_AddOns.IsAddOnLoaded(addonName) then
 				self:checkAndRunAddOn(addonName, skinFunc, true)
 			end
 		end
+		skinBLoD()
 	end)
 
 	-- skin library objects
@@ -132,22 +132,22 @@ function aObj:BlizzardFrames()
 
 end
 
-function aObj:LoDFrames(addon)
-	-- self:Debug("LoDFrames: [%s, %s]", addon, self.lodAddons[addon])
+local function LoDFrames(addon)
+	-- aObj:Debug("LoDFrames: [%s, %s]", addon, aObj.lodAddons[addon])
 
 	-- check to see if it's a Blizzard LoD Frame
 	skinBLoD(addon)
 
 	-- used for User LoadOnDemand Addons
-	if self.lodAddons[addon] then
-		self:checkAndRunAddOn(addon, self.lodAddons[addon], true)
+	if aObj.lodAddons[addon] then
+		aObj:checkAndRunAddOn(addon, aObj.lodAddons[addon], true)
 	end
 
 	-- deal with Addons under the control of an LoadManager
 	-- use lowercase addonname (lazyafk issue)
-	if self.lmAddons[addon:lower()] then
-		self:checkAndRunAddOn(addon, self.lmAddons[addon:lower()], true)
-		self.lmAddons[addon:lower()] = nil
+	if aObj.lmAddons[addon:lower()] then
+		aObj:checkAndRunAddOn(addon, aObj.lmAddons[addon:lower()], true)
+		aObj.lmAddons[addon:lower()] = nil
 	end
 
 	-- load library skins here as well, they may only get loaded by a LoD AddOn
@@ -160,7 +160,7 @@ end
 function aObj:ADDON_LOADED(_, addon)
 	-- self:Debug("ADDON_LOADED: [%s]", addon)
 
-	self:LoDFrames(addon)
+	LoDFrames(addon)
 
 	self.callbacks:Fire("AddOn_Loaded", addon)
 
