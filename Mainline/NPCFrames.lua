@@ -998,7 +998,7 @@ aObj.SetupMainline_NPCFrames = function()
 						frame.PagedContent:RegisterCallback(_G.PagedContentFrameBaseMixin.Event.OnUpdate, onItemModelUpdate, frame.PagedContent)
 					end
 					if self.modChkBtns then
-						self:skinCheckButton{obj=frame.SecondaryAppearanceToggle.Checkbox, fType=ftype}
+						self:skinCheckButton{obj=frame.SecondaryAppearanceToggle.Checkbox, fType=ftype, nh=true}
 					end
 
 				    self:Unhook(frame, "OnShow")
@@ -1056,7 +1056,7 @@ aObj.SetupMainline_NPCFrames = function()
 						self:skinStdButton{obj=frame.ApplyButton, fType=ftype, sechk=true}
 					end
 					if self.modChkBtns then
-						self:skinCheckButton{obj=frame.EnabledToggle.Checkbox, fType=ftype, size=24}
+						self:skinCheckButton{obj=frame.EnabledToggle.Checkbox, fType=ftype, nh=true}
 					end
 
 				    self:Unhook(frame, "OnShow")
