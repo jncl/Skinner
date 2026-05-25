@@ -2679,23 +2679,13 @@ aObj.SetupMainline_UIFrames = function()
 						self:SecureHookScript(cf.HouseUpgradeFrame, "OnShow", function(huf)
 							huf.Background:SetTexture(nil)
 							huf.Divider:SetTexture(nil)
-							huf.CurrentLevelFrame.HouseBarFrame.HouseBarFrame:DisableDrawLayer("ARTWORK") -- leaves
-							huf.CurrentLevelFrame.HouseBarFrame:DisableDrawLayer("OVERLAY") -- radial background
+							if not aObj.isMnlnPTRX then
+								huf.CurrentLevelFrame.HouseBarFrame.HouseBarFrame:DisableDrawLayer("ARTWORK") -- leaves
+								huf.CurrentLevelFrame.HouseBarFrame:DisableDrawLayer("OVERLAY") -- radial background
+							else
+								huf.CurrentLevelFrame.HouseBarFrame:DisableDrawLayer("ARTWORK")
+							end
 							huf.TrackFrame.Background:SetTexture(nil)
-
-							self:SecureHook(huf, "SetRewards", function(_, selectedLevel)
-								aObj:Debug("huf SetRewards: [%s, %s]", selectedLevel, huf.houseLevelRewardInfos[selectedLevel].rewards)
-								if huf.houseLevelRewardInfos[selectedLevel].rewards == "no rewards" then
-									return
-								end
-								for reward in huf.rewardPoolLarge:EnumerateActive() do
-									reward.Background:SetTexture(nil)
-								end
-								for reward in huf.rewardPoolSmall:EnumerateActive() do
-									reward.Background:SetTexture(nil)
-								end
-							end)
-
 							self:skinObject("frame", {obj=huf, fType=ftype, kfs=true, fb=true, x1=-6, y1=1, x2=4})
 							if self.modBtnBs then
 								self:addButtonBorder{obj=huf.TeleportToHouseButton, fType=ftype, relTo=huf.TeleportToHouseButton.Icon}
@@ -2703,6 +2693,22 @@ aObj.SetupMainline_UIFrames = function()
 							if self.modChkBtns then
 								self:skinCheckButton{obj=huf.WatchFavorButton, fType=ftype}
 							end
+
+							local function skinRewards()
+								for reward in huf.rewardPoolLarge:EnumerateActive() do
+									aObj:skinObject("frame", {obj=reward, fType=ftype, kfs=true, fb=true, ofs=-2, clr="gold"})
+								end
+								for reward in huf.rewardPoolSmall:EnumerateActive() do
+									aObj:skinObject("frame", {obj=reward, fType=ftype, kfs=true, fb=true, ofs=-2, clr="gold"})
+								end
+							end
+							self:SecureHook(huf, "SetRewards", function(_, selectedLevel)
+								if huf.houseLevelRewardInfos[selectedLevel].rewards == "no rewards" then
+									return
+								end
+								skinRewards()
+							end)
+							skinRewards()
 
 							self:Unhook(huf, "OnShow")
 						end)
