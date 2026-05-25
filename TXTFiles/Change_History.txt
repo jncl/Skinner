@@ -1,3 +1,11 @@
+beta12.67451.1
+Jncl:
+	Updated ToDo*.txt files
+	Updated Change_History.txt
+	Updated Version numbers
+	Bugfix for ScenarioObjectiveTracker skin
+	Add more ignore combat checks to skinning objects code, closes #333
+
 beta12.67314.2
 Jncl:
 	Updated ToDo*.txt files
