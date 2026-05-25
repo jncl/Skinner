@@ -339,6 +339,10 @@ local function applySkin(tbl)
 	else
 		aObj:clrBBC(tbl.obj, tbl.bbclr, tbl.bba)
 	end
+	if tbl.bbclr then
+		tbl.obj.clr = tbl.bbclr
+		tbl.obj.ca = tbl.bba
+	end
 	if not tbl.ng then
 		aObj:applyGradient(tbl.obj, tbl.fh, tbl.invert, tbl.rotate)
 		aObj.gradFrames[tbl.fType or "a"][tbl.obj] = true
@@ -426,7 +430,7 @@ local function skinButton(tbl)
 	so.fType = tbl.fType
 	so.ba    = tbl.ba
 	so.bbclr = tbl.clr
-	so.bba   = tbl.bba
+	so.bba   = tbl.ca
 	so.bd    = tbl.bd
 	so.ng    = tbl.ng
 	-- apply the 'Skinner effect' to the frame

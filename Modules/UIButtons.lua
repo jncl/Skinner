@@ -572,15 +572,11 @@ local function __skinStdButton(opts)
 		opts.y1  = opts.y1 or opts.ofs
 		opts.x2  = opts.x2 or opts.ofs
 		opts.y2  = opts.y2 or opts.ofs * -1
-		aObj:skinObject("button", {obj=opts.obj, fType=opts.ftype, name=opts.name, sabt=opts.sabt, bd=opts.bd, x1=opts.x1, y1=opts.y1, x2=opts.x2, y2=opts.y2})
-		opts.obj.sb.clr = opts.clr
-		opts.obj.sb.ca = opts.ca
+		aObj:skinObject("button", {obj=opts.obj, fType=opts.ftype, ncc=opts.ncc, name=opts.name, sabt=opts.sabt, bd=opts.bd, x1=opts.x1, y1=opts.y1, x2=opts.x2, y2=opts.y2})
 	else
 		if bH < 16 then opts.obj:SetHeight(16) end -- set minimum button height (DBM option buttons)
 		if bW < 16 then opts.obj:SetWidth(16) end -- set minimum button width (oQueue remove buttons)
-		aObj:skinObject("skin", {obj=opts.obj, fType=opts.ftype, bd=opts.bd, ng=opts.ng})
-		opts.obj.clr = opts.clr
-		opts.obj.ca = opts.ca
+		aObj:skinObject("skin", {obj=opts.obj, fType=opts.ftype, ncc=opts.ncc, bd=opts.bd, ng=opts.ng})
 	end
 
 	if not opts.ignoreHLTex then
