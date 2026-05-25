@@ -609,7 +609,7 @@ aObj.blizzFrames[ftype].ChatBubbles = function(self)
 			-- get all ChatBubbles NOT including Forbidden ones
 			for _, cBubble in _G.pairs(_G.C_ChatBubbles.GetAllChatBubbles(false)) do
 				cBubble = aObj:getChild(cBubble, 1)
-				aObj:skinObject("frame", {obj=cBubble, fType=ftype, kfs=true, ba=aObj.prdb.ChatBubbles.alpha, ng=true, ofs=-8})
+				aObj:skinObject("frame", {obj=cBubble, fType=ftype, kfs=true, ncc=true, ba=aObj.prdb.ChatBubbles.alpha, ng=true, ofs=-8})
 				-- make text visible
 				if cBubble.String then
 					cBubble.String:SetParent(cBubble.sf)
