@@ -66,7 +66,8 @@ end
 
 -- skin Templates
 aObj.skinTPLs = {
-	-- ncc = false, check InCombatLockdown() value
+	-- ftype = "a", -- default value
+	-- ncc = false, -- check InCombatLockdown() value
 	button = {
 		name		= false, -- use a name if required (VuhDo Options)
 		-- bg          = true, -- put into specified FrameStrata
