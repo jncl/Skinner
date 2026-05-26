@@ -736,6 +736,14 @@ then
 			local cBar
 			for _, prefix in _G.pairs{"Player", aObj.isClscPTR and "OverlayPlayer" or nil} do
 				cBar = _G[prefix .. "CastingBarFrame"]
+				if aObj.isClscPTR then
+					self:RawHook(cBar.Border, "SetTexture", function(this, _)
+						self.hooks[this].SetTexture(this, nil)
+					end, true)
+					self:RawHook(cBar, "SetStatusBarTexture", function(this, _)
+						self.hooks[this].SetStatusBarTexture(this, self.sbTexture)
+					end, true)
+				end
 				cBar.Border:SetTexture(nil)
 				cBar.Flash:SetTexture(nil)
 				if self.prdb.CastingBar.glaze then
