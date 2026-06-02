@@ -362,24 +362,24 @@ function aObj:handleProfileChanges()
 end
 
 --@debug@
-aObj.debugFrame = _G.ChatFrame10
-function aObj:Debug(...)
+local debugFrame = _G.ChatFrame10
+function aObj.Debug(_, ...)
 
 	local output = ("(DBG) %s:[%s.%03d]"):format(aName, _G.date("%H:%M:%S"), (_G.GetTime() % 1) * 1000)
-	printIt(_G.strjoin(" ", _G.WrapTextInColorCode(output, "ff7fff7f"), makeText(...)), self.debugFrame)
+	printIt(_G.strjoin(" ", _G.WrapTextInColorCode(output, "ff7fff7f"), makeText(...)), debugFrame)
 
 end
 local dbg2Flag = false
-function aObj:Debug2(...)
+function aObj.Debug2(_, ...)
 
 	if dbg2Flag then
-		printIt("dbg2: " .. makeText(...), self.debugFrame)
+		printIt("dbg2: " .. makeText(...), debugFrame)
 	end
 
 end
-function aObj:Debug3(...)
+function aObj.Debug3(_, ...)
 	-- used by showCmds function
-	printIt("dbg3: " .. makeText(...), self.debugFrame)
+	printIt("dbg3: " .. makeText(...), debugFrame)
 
 end
 
@@ -406,10 +406,12 @@ function aObj:checkLocaleStrings()
 
 end
 --@end-debug@
+
 --[===[@non-debug@
 aObj.Debug = _G.nop
 aObj.Debug2 = _G.nop
 aObj.Debug3 = _G.nop
+aObj.checkLocaleStrings = _G.nop
 --@end-non-debug@]===]
 
 -- Addon Compartment (Retail only)
