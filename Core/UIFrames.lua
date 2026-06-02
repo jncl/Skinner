@@ -4201,6 +4201,7 @@ aObj.blizzFrames[ftype].StaticPopups = function(self)
 	if not self.prdb.StaticPopups or self.initialized.StaticPopups then return end
 	self.initialized.StaticPopups = true
 
+	local spFrame
 	if self.modBtns then
 		-- hook this to handle close button texture changes
 		local nTex
@@ -4212,57 +4213,50 @@ aObj.blizzFrames[ftype].StaticPopups = function(self)
 				elseif self:hasTextInTexture(nTex, "MinimizeButton") then
 					_G["StaticPopup" .. i .. "CloseButton"]:SetText(self.modUIBtns.mult)
 				end
-			end
-		end)
-	end
-
-	-- N.B. skinObjects use ncc skinning option
-	-- Frame layout found in GameDialog.xml
-	for i = 1, 4 do
-		self:SecureHookScript(_G["StaticPopup" .. i], "OnShow", function(this)
-			if _G.InCombatLockdown() then
-				self:add2Table(self.oocTab, {self.checkShown, {self, this}})
-				return
-			end
-
-			-- .ProgressBarBorder
-			-- .ProgressBarFill
-			self:keepFontStrings(this.BG)
-			-- .CoverFrame
-			this.Separator:SetTexture(nil)
-			self:skinObject("editbox", {obj=this.EditBox, fType=ftype, mi=true, mix=12, regions={}, ofs=0})
-			self:skinObject("ddbutton", {obj=this.Dropdown, fType=ftype})
-			-- .MoneyFrame
-			self:skinObject("moneyframe", {obj=this.MoneyInputFrame, moveIcon=true})
-			if this.ItemFrame then
-				this.ItemFrame.NameFrame:SetTexture(nil)
-				if self.modBtnBs then
-					self:addButtonBorder{obj=this.ItemFrame.Item, fType=ftype, ibt=true}
-				end
-			end
-			if this.insertedFrame then
-				this.insertedFrame.ItemFrame.NameFrame:SetTexture(nil)
-				if self.modBtnBs then
-					self:addButtonBorder{obj=this.insertedFrame.ItemFrame, fType=ftype, libt=true}
-					if this.insertedFrame.AlsoItemsFrame.pool then
-						for btn in this.insertedFrame.AlsoItemsFrame.pool:EnumerateActive() do
-							self:addButtonBorder{obj=btn, fType=ftype, clr="white"}
+				spFrame = _G["StaticPopup" .. i]
+				if spFrame.insertedFrame then
+					spFrame.insertedFrame.ItemFrame.NameFrame:SetTexture(nil)
+					if self.modBtnBs then
+						self:addButtonBorder{obj=spFrame.insertedFrame.ItemFrame, fType=ftype, ncc=true, libt=true}
+						if spFrame.insertedFrame.AlsoItemsFrame.pool then
+							for btn in spFrame.insertedFrame.AlsoItemsFrame.pool:EnumerateActive() do
+								self:addButtonBorder{obj=btn, fType=ftype, ncc=true, clr="white"}
+							end
 						end
 					end
 				end
 			end
-			-- N.B. Close Button handled above, offset is to allow DarkOverlay to overlay skin frame border as well
-			self:skinObject("frame", {obj=this, fType=ftype, ofs=-4})
-			if self.modBtns then
-				for _, btn in _G.pairs(this.ButtonContainer.Buttons) do
-					self:skinStdButton{obj=btn, fType=ftype, schk=true, sechk=true, y=2}
-				end
-				self:skinStdButton{obj=this.ExtraButton, fType=ftype, schk=true, y1=2}
-			end
-
-			self:Unhook(this, "OnShow")
 		end)
-		self:checkShown(_G["StaticPopup" .. i])
+	end
+
+	-- N.B. skinObjects use ncc skinning option, bugfix #332
+	-- N.B. DON'T hook OnShow script, bugfix #337
+	-- Frame layout found in GameDialog.xml
+	for i = 1, 4 do
+		spFrame = _G["StaticPopup" .. i]
+		-- .ProgressBarBorder
+		-- .ProgressBarFill
+		self:keepFontStrings(spFrame.BG)
+		-- .CoverFrame
+		spFrame.Separator:SetTexture(nil)
+		self:skinObject("editbox", {obj=spFrame.EditBox, fType=ftype, ncc=true, mi=true, mix=12, regions={}, ofs=0})
+		self:skinObject("ddbutton", {obj=spFrame.Dropdown, fType=ftype, ncc=true})
+		-- .MoneyFrame
+		self:skinObject("moneyframe", {obj=spFrame.MoneyInputFrame, fType=ftype, ncc=true, moveIcon=true})
+		if spFrame.ItemFrame then
+			spFrame.ItemFrame.NameFrame:SetTexture(nil)
+			if self.modBtnBs then
+				self:addButtonBorder{obj=spFrame.ItemFrame.Item, fType=ftype, ncc=true, ibt=true}
+			end
+		end
+		-- N.B. Close Button handled above, offset is to allow DarkOverlay to overlay skin frame border as well
+		self:skinObject("frame", {obj=spFrame, fType=ftype, ncc=true, ofs=-4})
+		if self.modBtns then
+			for _, btn in _G.pairs(spFrame.ButtonContainer.Buttons) do
+				self:skinStdButton{obj=btn, fType=ftype, ncc=true, schk=true, sechk=true, y=2}
+			end
+			self:skinStdButton{obj=spFrame.ExtraButton, fType=ftype, ncc=true, schk=true, y1=2}
+		end
 
 	end
 
