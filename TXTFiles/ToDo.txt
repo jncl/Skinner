@@ -11,8 +11,16 @@ ToDos
 
 	O 	Update ISSUE_TEMPLATE(s) when Classic version name changes
 
+	O 	Change ALL occurrence of 'this' in Unhook functions to the actual hooking object, using 'this' DOESN'T remove the hook properly !!
+
  ?		O/?	ChatFrameTab for PetBattles has missing text
 
-#334 √	I/M UI Button(s) - StaticPopup(s)
+#337 √	I/M StaticPopups
 
-#336 √	S 	MailboxPlus, MailboxPlusMOP & MailboxPlusTBC
+#338 x	I 	Baganator Settings
+
+#339 √	S 	OAK LFG Sorter
+
+#340 √	I/M World Quest Tab
+
+#341 ≈	S 	Enhance QoL
