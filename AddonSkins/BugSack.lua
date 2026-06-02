@@ -38,6 +38,6 @@ aObj.addonsToSkin.BugSack = function(self) -- v10.2.7
 	end)
 
 	-- add custom Settings entry for the Sound Dropdown
-	aObj.customSettings["soundDropdown"] = "DropdownButton"
+	self:add2Table(self.customSettings, {key = "soundDropdown", type = "DropdownButton", template="SettingsListElementTemplate"})
 
 end

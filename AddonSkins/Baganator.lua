@@ -2,7 +2,7 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("Baganator") then return end
 local _G = _G
 
-aObj.addonsToSkin.Baganator = function(self) -- v 799
+aObj.addonsToSkin.Baganator = function(self) -- v 805
 
 	-- TODO: handle warband bank being purchased
 
@@ -373,7 +373,13 @@ aObj.addonsToSkin.Baganator = function(self) -- v 799
 				elseif child.Arrow then
 					aObj:skinObject("ddbutton", {obj=child})
 				elseif child:IsObjectType("EditBox") then
-					aObj:skinObject("editbox", {obj=child, y1=-4, y2=4})
+					if child:GetDebugName():find("ItemsEditor") then
+						aObj:skinObject("editbox", {obj=child})
+					elseif child:GetSourceLocation():find("Builder") then
+						aObj:skinObject("editbox", {obj=child, regions={2}})
+					else
+						aObj:skinObject("editbox", {obj=child, y1=-4, y2=4})
+					end
 				elseif child.DropDown
 				and child.DropDown.Popout
 				then
@@ -403,12 +409,14 @@ aObj.addonsToSkin.Baganator = function(self) -- v 799
 				elseif child:IsObjectType("Button")
 				and aObj.modBtnBs
 				then
-					if child.Count then -- Corners central button
-						aObj:addButtonBorder{obj=child}
-					elseif child.AddButton then
-						aObj:skinOtherButton{obj=child.AddButton, text="+"}
-					else
-						aObj:skinStdButton{obj=child, schk=true, sechk=true}
+					if child:GetParentKey() ~= "CategoryColorSwatch" then
+						if child.Count then -- Corners central button
+							aObj:addButtonBorder{obj=child}
+						elseif child.AddButton then
+							aObj:skinOtherButton{obj=child.AddButton, text="+"}
+						else
+							aObj:skinStdButton{obj=child, schk=true, sechk=true}
+						end
 					end
 				elseif child:IsObjectType("Frame") then
 					-- skin General Tab Header panel &  Inset Panels
@@ -508,7 +516,7 @@ aObj.addonsToSkin.Baganator = function(self) -- v 799
 
 end
 
-aObj.addonsToSkin.Syndicator = function(self) -- v 267
+aObj.addonsToSkin.Syndicator = function(self) -- v 268
 
 	self.RegisterCallback("Syndicator", "SettingsPanel_DisplayCategory", function(_, panel, category)
 		if category.name ~= "Syndicator" then return end

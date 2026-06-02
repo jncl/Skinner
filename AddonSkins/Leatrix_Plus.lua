@@ -51,6 +51,7 @@ aObj.addonsToSkin.Leatrix_Plus = function(self) -- v 11.0.17/4.0.34/1.15.59
 		"ControlPanel",
 		"HideChatButtonsPanel",
 		"bordersPanel",
+		"addOptPanel",
 	}
 
 	self:SecureHookScript(_G.LeaPlusGlobalPanel, "OnShow", function(this)
