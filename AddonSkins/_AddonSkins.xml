@@ -86,6 +86,7 @@
 <Script file="Dominos_Config.lua"/>
 <Script file="EasyMail.lua"/>
 <Script file="ElvUI.lua"/>
+<Script file="EnhanceQoL.lua"/>
 <Script file="ERC.lua"/>
 <Script file="EveryGoldToBanker.lua"/>
 <Script file="Examiner.lua"/>
