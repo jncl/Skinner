@@ -65,7 +65,7 @@ aObj.blizzFrames[ftype].AddonList = function(self)
 			self:skinStdButton{obj=this.DisableAllButton}
 		end
 		if self.modChkBtns then
-			self:skinCheckButton{obj=_G.AddonList.ForceLoad or _G.AddonListForceLoad, size=24}
+			self:skinCheckButton{obj=_G.AddonList.ForceLoad or _G.AddonListForceLoad, size=24, nh=true}
 		end
 
 		self:Unhook(this, "OnShow")
