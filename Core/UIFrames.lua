@@ -3860,7 +3860,7 @@ if not aObj.isClscERA then
 end
 
 aObj.customSettings = {
-	-- elementKey, elementType
+	-- ["<AddOn_Name>"] {key = elementKey, type = elementType, template = elementTemplate}
 }
 aObj.blizzFrames[ftype].Settings = function(self)
 	if not self.prdb.Settings or self.initialized.Settings then return end
@@ -3888,6 +3888,7 @@ aObj.blizzFrames[ftype].Settings = function(self)
 			this.tabsGroup:RegisterCallback(_G.ButtonGroupBaseMixin.Event.Selected, setTabState, aObj)
 		end
 		self:skinObject("editbox", {obj=this.SearchBox, fType=ftype, si=true})
+		-- LHS
 		self:skinObject("scrollbar", {obj=this.CategoryList.ScrollBar, fType=ftype})
 		local function skinCategory(...)
 			local _, element, new
@@ -3919,6 +3920,7 @@ aObj.blizzFrames[ftype].Settings = function(self)
 		end
 		_G.ScrollUtil.AddAcquiredFrameCallback(this.CategoryList.ScrollBox, skinCategory, aObj, true)
 		self:skinObject("frame", {obj=this.CategoryList, fType=ftype, fb=true, ofs=4, y1=12, y2=-7})
+		-- RHS
 		self:getRegion(this.Container.SettingsList.Header, 2):SetTexture(nil)
 		self:skinObject("scrollbar", {obj=this.Container.SettingsList.ScrollBar, fType=ftype})
 		local function skinCommonElements(element)
@@ -3941,28 +3943,25 @@ aObj.blizzFrames[ftype].Settings = function(self)
 				elseif element.ToggleTest then
 					aObj:addButtonBorder{obj=element.ToggleTest, fType=ftype, ofs=1}
 				end
-				if element.Control -- N.B. Mainline
-				and element.Control.Dropdown
-				then
-					aObj:skinStdButton{obj=element.Control.Dropdown, fType=ftype, ignoreHLTex=true, sechk=true, y1=1, y2=-1}
-					-- N.B. Popouts are Dropdown Menu list frames
-				elseif element.DropDown -- N.B. Classic & ClassicERA
-				and element.DropDown.Button
-				then
-					aObj:skinStdButton{obj=element.DropDown.Button, fType=ftype, ignoreHLTex=true, sechk=true, ofs=-6}
-					aObj:removeNineSlice(element.DropDown.Button.Popout.Border)
-					aObj:skinObject("frame", {obj=element.DropDown.Button.Popout, fType=ftype, kfs=true, ofs=0, y2=20})
-				end
-				if element.Control -- N.B. Mainline
-				and element.Control.DecrementButton
-				then
-					aObj:skinStdButton{obj=element.Control.IncrementButton, fType=ftype, sechk=true, ofs=1}
-					aObj:skinStdButton{obj=element.Control.DecrementButton, fType=ftype, sechk=true, ofs=1}
-				elseif element.DropDown
-				and element.DropDown.DecrementButton
-				then
-					aObj:skinStdButton{obj=element.DropDown.IncrementButton, fType=ftype, sechk=true, ofs=1}
-					aObj:skinStdButton{obj=element.DropDown.DecrementButton, fType=ftype, sechk=true, ofs=1}
+				if element.Control then -- N.B. Mainline
+					if element.Control.Dropdown then
+						aObj:skinStdButton{obj=element.Control.Dropdown, fType=ftype, ignoreHLTex=true, sechk=true, y1=1, y2=-1}
+						-- N.B. Popouts are Dropdown Menu list frames
+					end
+					if element.Control.DecrementButton then
+						aObj:skinStdButton{obj=element.Control.IncrementButton, fType=ftype, sechk=true, ofs=1}
+						aObj:skinStdButton{obj=element.Control.DecrementButton, fType=ftype, sechk=true, ofs=1}
+					end
+				elseif element.DropDown then -- N.B. Classic & ClassicERA
+					if element.DropDown.Button then
+						aObj:skinStdButton{obj=element.DropDown.Button, fType=ftype, ignoreHLTex=true, sechk=true, ofs=-6}
+						aObj:removeNineSlice(element.DropDown.Button.Popout.Border)
+						aObj:skinObject("frame", {obj=element.DropDown.Button.Popout, fType=ftype, kfs=true, ofs=0, y2=20})
+					end
+					if element.DropDown.DecrementButton then
+						aObj:skinStdButton{obj=element.DropDown.IncrementButton, fType=ftype, sechk=true, ofs=1}
+						aObj:skinStdButton{obj=element.DropDown.DecrementButton, fType=ftype, sechk=true, ofs=1}
+					end
 				end
 			end
 			if aObj.modChkBtns
@@ -3975,17 +3974,31 @@ aObj.blizzFrames[ftype].Settings = function(self)
 				aObj:skinObject("slider", {obj=element.SliderWithSteppers.Slider, fType=ftype, y1=-12, y2=12})
 			end
 			-- handle AddOn specific custom settings
-			for eKey, eType in _G.pairs(aObj.customSettings) do
-				if element[eKey] then
-					if eType == "DropdownButton" then
-						aObj:skinObject("ddbutton", {obj=element[eKey]})
+			for _, csTab in _G.pairs(aObj.customSettings) do
+				if element[csTab.key]
+				and element.GetElementData
+				and element.GetElementData().frameTemplate:find(csTab.template)
+				then
+					--@debug@
+					-- aObj:Debug("customSettings: [%s, %s %s]", csTab.key, csTab.type, csTab.template, element.GetElementData().frameTemplate)
+					--@end-debug@
+					if csTab.type == "DropdownButton"
+					and aObj.modBtns
+					then
+						aObj:skinObject("ddbutton", {obj=element[csTab.key]})
+					elseif csTab.type == "DropdownWithButtons"
+					and aObj.modBtns
+					then
+						aObj:skinStdButton{obj=element[csTab.key], ignoreHLTex=true, sechk=true, y1=1, y2=-1}
+					elseif csTab.type == "EditBox" then
+						aObj:skinObject("editbox", {obj=element[csTab.key]})
 					end
 				end
 			end
 		end
 		-- add a delay to enable all elements to be initialised
 		local function sCEsWithDelay(element)
-			_G.C_Timer.After(0.1, function()
+			_G.RunNextFrame(function()
 				skinCommonElements(element)
 			end)
 		end
@@ -4041,6 +4054,9 @@ aObj.blizzFrames[ftype].Settings = function(self)
 					end
 				elseif elementData.frameTemplate == "NamePlatePreviewTemplate" then
 					aObj:skinObject("frame", {obj=element, fType=ftype, kfs=true, fb=true, ofs=0, x1=20, x2=-20})
+				elseif elementData.frameTemplate == "SettingsExpandableSectionTemplate" then
+					aObj:removeRegions(element.Button, {1, 2, 3})
+					aObj:changeHdrExpandTex(element.Button.Right)
 				else
 					sCEsWithDelay(element)
 				end
@@ -4088,6 +4104,7 @@ aObj.blizzFrames[ftype].Settings = function(self)
 	self:SecureHook(_G.SettingsPanel, "DisplayCategory", function(this, category)
 		-- aObj:Debug("SP DisplayCategory#1: [%s, %s]", category, category.name)
 		local layout = this:GetLayout(category)
+		-- aObj:Debug("SP DisplayCategory#1.5: [%s, %s]", layout, layout:GetLayoutType())
 		if layout:GetLayoutType() == _G.SettingsLayoutMixin.LayoutType.Canvas then
 			local frame = layout:GetFrame()
 			-- aObj:Debug("SP DisplayCategory#2: [%s, %s]", frame.name, frame.parent)
