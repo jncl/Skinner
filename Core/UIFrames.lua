@@ -97,6 +97,7 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 		["NewPet"]                 = true,
 		["NewRecipeLearned"]       = true,
 		["NewToy"]                 = true,
+		["NewWarbandScene"]        = true,
 		["SkillLineSpecsUnlocked"] = true,
 		["WorldQuestComplete"]     = true,
 	}
@@ -142,7 +143,7 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 		alertType["NewCosmetic"]            = {ofs = -8, y1 = -12, ddl = {"background"}, ib = true, iq = _G.Enum.ItemQuality.Epic, sysType = "AlertFrameSystem"}
 		alertType["NewRuneforgePower"]      = {ofs = -8, ddl = {"background"}, ib = true, iq = _G.Enum.ItemQuality.Legendary}
 		alertType["NewToy"]                 = {ofs = -8, y1 = -12, ddl = {"background"}, ib = true}
-		alertType["NewWarbandScene"]        = {ofs = -8, y1 = -12, ddl = {"background"}, ib = true}
+		alertType["NewWarbandScene"]        = {ofs = -12, ddl = {"background"}, ib = true}
 		alertType["RafRewardDelivered"]     = {ofs = -10}
 		alertType["Scenario"].y1            = -8
 		alertType["Scenario"].y2            = 8
