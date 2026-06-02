@@ -126,6 +126,7 @@
 <Script file="LibElioteDropDownMenu.lua"/>
 <Script file="LibKeyBound.lua"/>
 <Script file="LibKrowiProgressBar.lua"/>
+<Script file="LibKrowiWorldMapButtons.lua"/>
 <Script file="LibMSATutorials.lua"/>
 <Script file="LibQTip.lua"/>
 <Script file="LibScrollingTable.lua"/>
