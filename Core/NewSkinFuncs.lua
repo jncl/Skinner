@@ -1250,7 +1250,6 @@ function aObj:skinSideTabs(frame, ftype)
 
 end
 
-
 aObj.skinRoleBtns = _G.nop
 if _G.PVEFrame then
 	-- The following function is used by the LFD & RaidFinder skinning functions
@@ -1291,7 +1290,7 @@ if aObj.isMnln then
 				self:skinCheckButton{obj=fObj.DepositSettingsMenu.IgnoreCleanUpCheckbox, fType=ftype, size=22}
 			end
 
-			self:Unhook(frame, "OnShow")
+			self:Unhook(frame.TabSettingsMenu, "OnShow")
 		end)
 
 	end
