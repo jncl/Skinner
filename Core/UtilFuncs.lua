@@ -1290,7 +1290,16 @@ function aObj.RaiseFrameLevelByFour(_, frame)
 
 end
 
+aObj.showSL = _G.nop
 --@debug@
+function aObj:showSL(frame)
+
+	for idx, child in _G.ipairs{frame:GetChildren()} do
+		self:Debug("showSL: [%s, %s]", idx, child:GetSourceLocation())
+	end
+
+end
+
 function aObj:SetupCmds()
 
 	local function getMouseFocus()
