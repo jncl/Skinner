@@ -3232,7 +3232,7 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 		end
 	end
 	-- wait until all AddOn skins have been loaded
-	_G.C_Timer.After(1.0, function()
+	_G.RunNextFrame(function()
 		for addon, obj in _G.pairs(self.mmButs) do
 			if _G.C_AddOns.IsAddOnLoaded(addon) then
 				skinMMBtn("Loaded Addons btns", obj)
