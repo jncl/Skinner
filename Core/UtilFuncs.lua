@@ -285,8 +285,8 @@ function aObj:changeHdrExpandTex(reg)
 	reg:SetPoint("RIGHT")
 	reg:SetAlpha(1)
 	reg:SetDesaturated(1) -- make the texture grey
-	self:RawHook(reg, "SetAtlas", function(eReg, tex, useAtlasSize)
-		-- aObj:Debug("changeHdrExpandTex SetAtlas: [%s, %s]", reg, tex)
+	self:rawHook(reg, "SetAtlas", function(eReg, tex, useAtlasSize)
+		-- aObj:Debug("changeHdrExpandTex SetAtlas: [%s, %s, %s]", reg, tex, useAtlasSize)
 		if tex == "Options_ListExpand_Right_Expanded" then -- minus
 			tex = self.isMnln and "ui-hud-minimap-zoom-out" or self.tFDIDs.mpTex
 			coords = not self.isMnln and {0.29687500, 0.54687500, 0.00781250, 0.13281250}
