@@ -1,3 +1,24 @@
+beta12.67669.1
+Jncl:
+	Updated ToDo*.txt files
+	Updated Change_History.txt
+	Updated Version numbers
+	Updated TOC
+	Updated NSF code
+	Retail PTR changes
+	Updated StaticPopups skin, closes #334 Updated code to store and reuse colour settings
+	Updated HousingDashboardFrame skin
+	Updated DeathRecap skin
+	Updated TransmogFrame skin
+	Updated MovieFrame skin
+	Updated AlertFrames code
+	Updated Tooltips skinning code
+	Commented debug lines
+	Updated ChatBubbles skin
+	Updated TokenFramePopup skin
+	Updated AddonFrames code
+	Skinned MailBoxPlus, closes #336
+
 beta12.67451.1
 Jncl:
 	Updated ToDo*.txt files
