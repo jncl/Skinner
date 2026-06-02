@@ -1224,6 +1224,21 @@ function aObj:skinPagingControls(frame)
 
 end
 
+local pcObj, method
+function aObj:skinPageBtns(frame)
+	if frame.PagingControls then
+		pcObj = frame.PagingControls
+		method = "UpdateControls"
+	else
+		pcObj = frame.PagingFrame
+		method = "Update"
+	end
+	self:skinPagingControls(pcObj)
+	self:SecureHook(pcObj, method, function(this)
+		self:clrPNBtns(this, true)
+	end)
+end
+
 function aObj:skinSideTabs(frame, ftype)
 
 	for _, tab in _G.pairs(frame.TabButtons) do
