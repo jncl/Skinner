@@ -2890,7 +2890,7 @@ aObj.blizzFrames[ftype].Menu = function(self) -- Dropdown Menus
 			self:RawHook(_G[mixin], "Generate", function(menu)
 				if not _G.tContains(ddMenus, menu) then
 					aObj:skinObject("scrollbar", {obj=menu.ScrollBar, fType=ftype, ncc=true})
-					aObj:skinObject("frame", {obj=menu, fType=ftype, ncc=true, ofs=3})
+					aObj:skinObject("frame", {obj=menu, fType=ftype, ncc=true, ofs=2, x1=-6, x2=6})
 					aObj:add2Table(ddMenus, menu)
 				end
 			end, true)
