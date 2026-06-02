@@ -623,12 +623,12 @@ aObj.blizzFrames[ftype].ChatBubbles = function(self)
 	local evtTab = {"CHAT_MSG_SAY", "CHAT_MSG_YELL", "CHAT_MSG_MONSTER_SAY", "CHAT_MSG_MONSTER_YELL", "CINEMATIC_START"}
 	local function registerEvents()
 		for _, event in _G.pairs(evtTab) do
-			self:RegisterEvent(event, skinChatBubbles)
+			_G.EventRegistry:RegisterFrameEventAndCallback(event, skinChatBubbles, aObj)
 		end
 	end
 	local function unRegisterEvents()
 		for _, event in _G.pairs(evtTab) do
-			self:UnregisterEvent(event)
+			_G.EventRegistry:UnregisterFrameEventAndCallback(event, aObj)
 		end
 	end
 	-- if any chat bubbles options turned on
@@ -3143,7 +3143,7 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 				_G.RunNextFrame(function()
 					clrZoomBtns()
 				end)
-				self:RegisterEvent("MINIMAP_UPDATE_ZOOM", clrZoomBtns)
+				_G.EventRegistry:RegisterFrameEventAndCallback("MINIMAP_UPDATE_ZOOM", clrZoomBtns, self)
 			end
 		end
 		if self.isClscERA then

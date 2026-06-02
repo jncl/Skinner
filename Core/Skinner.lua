@@ -270,23 +270,12 @@ function aObj:OnEnable()
 	--@end-debug@
 
 	self.oocTab = {}
-	self:RegisterEvent("PLAYER_REGEN_ENABLED", function()
+	_G.EventRegistry:RegisterFrameEventAndCallback("PLAYER_REGEN_ENABLED", function()
 		for _, entry in _G.ipairs(self.oocTab) do
 			entry[1](_G.unpack(entry[2]))
 		end
 		_G.wipe(self.oocTab)
 	end)
-
-	-- register for event after a slight delay as registering ADDON_LOADED any earlier causes it not to be registered if LoD modules are loaded on startup (e.g. SimpleSelfRebuff/LightHeaded)
-	_G.RunNextFrame(function()
-		self:RegisterEvent("ADDON_LOADED")
-	end)
-
-	-- track when Auction House is opened
-	self:RegisterEvent("AUCTION_HOUSE_SHOW")
-
-	-- track when Player enters World (used for texture updates and UIParent child processing)
-	self:RegisterEvent("PLAYER_ENTERING_WORLD")
 
 	-- handle statusbar changes
 	self.LSM:RegisterCallback("LibSharedMedia_SetGlobal", function(mtype, override)
@@ -387,8 +376,8 @@ function aObj:OnEnable()
 		end
 	end)
 
-	-- Register PLAYER_LOGOUT to save LocaleStrings
-	self:RegisterEvent("PLAYER_LOGOUT", function()
+	-- save LocaleStrings on Logout
+	_G.EventUtil.RegisterOnceFrameEventAndCallback("PLAYER_LOGOUT", function()
 		_G[aName .. "LocaleStrings"] = self.localeStrings
 	end)
 	--@end-debug@

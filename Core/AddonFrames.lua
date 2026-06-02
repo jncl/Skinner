@@ -157,36 +157,27 @@ local function LoDFrames(addon)
 end
 
 -- Event processing here
-function aObj:ADDON_LOADED(_, addon)
-	-- self:Debug("ADDON_LOADED: [%s]", addon)
+_G.RunNextFrame(function()
+	_G.EventRegistry:RegisterFrameEventAndCallback("ADDON_LOADED", function(_, addon, _)
+		-- aObj:Debug("ROFEAC ADDON_LOADED: [%s, %s, %s]", addon)
+		LoDFrames(addon)
+		aObj.callbacks:Fire("AddOn_Loaded", addon)
+	end, aObj)
+end)
 
-	LoDFrames(addon)
-
-	self.callbacks:Fire("AddOn_Loaded", addon)
-
-end
-
-function aObj:AUCTION_HOUSE_SHOW()
-	-- self:Debug("AUCTION_HOUSE_SHOW")
-
-	self.callbacks:Fire("Auction_House_Show")
+_G.EventUtil.RegisterOnceFrameEventAndCallback("AUCTION_HOUSE_SHOW", function()
+	-- aObj:Debug("ROFEAC AUCTION_HOUSE_SHOW")
+	aObj.callbacks:Fire("Auction_House_Show")
 	-- remove all callbacks for this event
-	self.callbacks.events["Auction_House_Show"] = nil
+	aObj.callbacks.events["Auction_House_Show"] = nil
+end)
 
-	self:UnregisterEvent("AUCTION_HOUSE_SHOW")
-
-end
-
-function aObj:PLAYER_ENTERING_WORLD()
-	-- self:Debug("PLAYER_ENTERING_WORLD")
-
+_G.EventUtil.RegisterOnceFrameEventAndCallback("PLAYER_ENTERING_WORLD", function(_)
+	-- aObj:Debug("ROFEAC PLAYER_ENTERING_WORLD")
 	-- delay issuing callback to allow for code to be loaded
 	_G.RunNextFrame(function()
-		self.callbacks:Fire("Player_Entering_World")
+		aObj.callbacks:Fire("Player_Entering_World")
 		-- remove all callbacks for this event
-		self.callbacks.events["Player_Entering_World"] = nil
+		aObj.callbacks.events["Player_Entering_World"] = nil
 	end)
-
-	self:UnregisterEvent("PLAYER_ENTERING_WORLD")
-
-end
+end)

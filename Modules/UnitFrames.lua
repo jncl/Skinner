@@ -251,12 +251,8 @@ function module:skinPetF()
 					end
 				end
 				-- get level when pet changes
-				module:RegisterEvent("UNIT_PET", function(_)
-					setLvl()
-				end)
-				module:RegisterEvent("UNIT_LEVEL", function(_)
-					setLvl()
-				end)
+				_G.EventRegistry:RegisterFrameEventAndCallback("UNIT_PET", setLvl, module)
+				_G.EventRegistry:RegisterFrameEventAndCallback("UNIT_LEVEL", setLvl, module)
 			end
 			if _G.PetFrameHappiness
 			and aObj.modBtnBs

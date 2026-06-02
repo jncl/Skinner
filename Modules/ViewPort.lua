@@ -79,10 +79,10 @@ function module:OnEnable()
 	_G.CinematicFrame_OnHide = _G.nop
 
 	-- handle Viewport being reset when certain cutscenes are shown
-	aObj:RegisterEvent("CINEMATIC_STOP", function(_, _)
+	_G.EventRegistry:RegisterFrameEventAndCallback("CINEMATIC_STOP", function(_)
 		module:adjustViewPort("shown")
 	end)
-	aObj:RegisterEvent("STOP_MOVIE", function(_, _)
+	_G.EventRegistry:RegisterFrameEventAndCallback("STOP_MOVIE", function(_)
 		module:adjustViewPort("shown")
 	end)
 
