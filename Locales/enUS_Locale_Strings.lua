@@ -243,6 +243,7 @@ aObj.locale_enUS =
     ["Pet Level"] = true,
     ["Pet"] = true,
     ["Petition Frame"] = true,
+    ["Photo Sharing"] = true,
     ["Player Choice Frame"] = true,
     ["Player Frames"] = true,
     ["Player vs. Player"] = true,

@@ -3134,6 +3134,61 @@ aObj.SetupMainline_UIFrames = function()
 
 	end
 
+	aObj.blizzFrames[ftype].PhotoSharing = function(self)
+		if not self.prdb.PhotoSharing or self.initialized.PhotoSharing then return end
+		self.initialized.PhotoSharing = true
+
+		self:SecureHookScript(_G.PhotoSharingFrame, "OnShow", function(this)
+			if _G.InCombatLockdown() then
+				self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+				return
+			end
+
+			this.TopInset:SetTexture(nil)
+			this.TitleFrame:DisableDrawLayer("BACKGROUND")
+			self:skinObject("editbox", {obj=_G.PhotoSharingTitleEditBox, regions={}, fType=ftype})
+			this.DescriptionFrame:DisableDrawLayer("BACKGROUND")
+			self:skinObject("editbox", {obj=_G.PhotoSharingDescriptionEditBox, regions={}, fType=ftype})
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true})
+			if self.modBtns then
+				self:skinCloseButton{obj=this.ClosePanelButton, fType=ftype}
+				self:skinStdButton{obj=this.PublishButton, fType=ftype}
+				self:skinStdButton{obj=this.CancelButton, fType=ftype}
+			end
+
+			self:Unhook(_G.PhotoSharingFrame, "OnShow")
+		end)
+		self:checkShown(_G.PhotoSharingFrame)
+
+		self:SecureHookScript(_G.PhotoSharingBrowserFrame, "OnShow", function(this)
+			if _G.InCombatLockdown() then
+				self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+				return
+			end
+
+			self:removeInset(this.Browser.BrowserInset)
+			this.GoogleSSONotice.TopInset:SetTexture(nil)
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, ofs=1, x1=3})
+
+			self:Unhook(_G.PhotoSharingBrowserFrame, "OnShow")
+		end)
+		self:checkShown(_G.PhotoSharingBrowserFrame)
+
+		self:SecureHookScript(_G.PhotoSharingBrowserPopup, "OnShow", function(this)
+			if _G.InCombatLockdown() then
+				self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+				return
+			end
+
+			self:removeInset(this.Browser.BrowserInset)
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true})
+
+			self:Unhook(_G.PhotoSharingBrowserPopup, "OnShow")
+		end)
+		self:checkShown(_G.PhotoSharingBrowserPopup)
+
+	end
+
 	aObj.blizzLoDFrames[ftype].PlayerChoice = function(self)
 		if not self.prdb.PlayerChoice or self.initialized.PlayerChoice then return end
 		self.initialized.PlayerChoice = true
@@ -4656,6 +4711,7 @@ aObj.SetupMainline_UIFramesOptions = function(self)
 		["Major Factions UI"]            = true,
 		["Obliterum UI"]                 = true,
 		["Order Hall UI"]                = true,
+		["Photo Sharing"]				 = true,
 		["Player Choice"]                = {suff = "Frame"},
 		["PVP Match"]                    = {suff = "Frame"},
 		["Quest Map"]                    = true,
