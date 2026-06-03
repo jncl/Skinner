@@ -49,6 +49,7 @@ aObj.addonsToSkin.WorldQuestTab = function(self) -- v 12.0.11
 			-- .FilterBar
 			-- .QuestScrollBox
 		self:skinObject("scrollbar", {obj=this.ScrollFrame.ScrollBar})
+		self:skinObject("frame", {obj=this, kfs=true, ofs=4, y1=34, y2=-12})
 
 		self:Unhook(this, "OnShow")
 	end)
