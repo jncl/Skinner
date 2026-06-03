@@ -587,7 +587,7 @@ if not aObj.isClscERA then
 				end)
 			end
 
-			-- let AddOn skins know when when UI is skinned (used by AchieveIt skin)
+			-- let AddOn skins know when when UI is skinned (used by AchieveIt & Krowi_AchievementFilter skins)
 			self.callbacks:Fire("AchievementUI_Skinned", self)
 			-- remove all callbacks for this event
 			self.callbacks.events["AchievementUI_Skinned"] = nil
