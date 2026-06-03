@@ -3836,6 +3836,7 @@ aObj.SetupMainline_UIFrames = function()
 				fObj.ScrollFrame.Contents.StoryHeader.Divider:SetTexture(nil)
 				self:keepFontStrings(fObj.ScrollFrame.BorderFrame)
 				self:skinObject("editbox", {obj=fObj.ScrollFrame.SearchBox, fType=ftype, si=true})
+				self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, ofs=4, y1=5, y2=-12})
 
 				self:SecureHookScript(fObj.DetailsFrame, "OnShow", function(frame)
 					self:keepFontStrings(frame)
@@ -3892,10 +3893,10 @@ aObj.SetupMainline_UIFrames = function()
 			self:checkShown(this.QuestsFrame)
 
 			self:SecureHookScript(this.EventsFrame, "OnShow", function(fObj)
-				self:keepFontStrings(fObj)
 				self:keepFontStrings(fObj.BorderFrame)
 				fObj.ScrollBox.Background:SetTexture(nil)
 				self:skinObject("scrollbar", {obj=fObj.ScrollBar, fType=ftype})
+				self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, ofs=4, y1=34, y2=-12})
 				local function skinEvents(...)
 					local _, element, elementData, new
 					if _G.select("#", ...) == 2 then
@@ -3942,6 +3943,7 @@ aObj.SetupMainline_UIFrames = function()
 				self:keepFontStrings(fObj.BorderFrame)
 				self:skinObject("scrollbar", {obj=fObj.ScrollFrame.ScrollBar, fType=ftype})
 				fObj.ScrollFrame.Background:SetTexture(nil)
+				self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, ofs=4, y1=34, y2=-12})
 				if self.modBtns then
 					self:skinStdButton{obj=fObj.BackButton, fType=ftype}
 				end
