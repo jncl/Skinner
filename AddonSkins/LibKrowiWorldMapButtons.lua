@@ -11,7 +11,9 @@ aObj.libsToSkin["Krowi_WorldMapButtons-1.4"] = function(self) -- v Krowi_WorldMa
 	if lKWMB then
 		local function skinButton(oFrame)
 			oFrame:DisableDrawLayer("BACKGROUND")
-			oFrame.Border:SetTexture(nil)
+			if oFrame.Border then -- bugfix #342
+				oFrame.Border:SetTexture(nil)
+			end
 			if oFrame.ResetButton then
 				aObj.modUIBtns:skinCloseButton{obj=oFrame.ResetButton, noSkin=true}
 			end
