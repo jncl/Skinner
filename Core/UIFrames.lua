@@ -606,7 +606,7 @@ aObj.blizzFrames[ftype].ChatBubbles = function(self)
 
 	-- N.B. ChatBubbles in Raids, Dungeons and Garrisons are forbidden and can't be skinned
 	local function skinChatBubbles()
-		_G.C_Timer.After(0.1, function()
+		_G.RunNextFrame(function()
 			-- get all ChatBubbles NOT including Forbidden ones
 			for _, cBubble in _G.pairs(_G.C_ChatBubbles.GetAllChatBubbles(false)) do
 				cBubble = aObj:getChild(cBubble, 1)
@@ -640,14 +640,14 @@ aObj.blizzFrames[ftype].ChatBubbles = function(self)
 		registerEvents()
 		skinChatBubbles()
 	end
-	local function OnValueChanged(_, _, value)
+	local function onValueChanged(_, _, value)
 		unRegisterEvents()
 		if value ~= 2 then -- either All or ExcludeParty
 			registerEvents()
 			skinChatBubbles()
 		end
 	end
-	_G.Settings.SetOnValueChangedCallback("PROXY_CHAT_BUBBLES", OnValueChanged)
+	_G.Settings.SetOnValueChangedCallback("PROXY_CHAT_BUBBLES", onValueChanged)
 
 end
 
