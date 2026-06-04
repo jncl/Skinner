@@ -1,3 +1,27 @@
+beta12.67823.1
+Jncl:
+	Updated ToDo*.txt files
+	Updated Change_History.txt
+	Updated Version numbers
+	Added debug function
+	Bugfix for UtilFuncs
+	Updated StaticPopups skin, closes #337
+	Updated Settings skin
+	Updated MinimapButtons skin
+	Updated Menu skin
+	Updated AlertFrame skin
+	Updated AddonList skin
+	Updated NSF
+	Replaced RegisterEvent functions with EventUtil & EventRegistry functions
+	Updated SharedFuncs code
+	Moved skinPagingControls function to NSF
+	Updated QuestFrame skin
+	Skinned Enhance QoL, closes #341
+	Skinned OakLFGSorter, closes #339
+	Updated WorldQuestTab skin, closes #340
+	Updated Baganator, BugSack & Leatrix_Plus skins
+	Updated CastingBar skin
+
 beta12.67669.1
 Jncl:
 	Updated ToDo*.txt files
