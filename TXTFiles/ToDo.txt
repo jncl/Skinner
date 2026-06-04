@@ -15,12 +15,6 @@ ToDos
 
  ?		O/?	ChatFrameTab for PetBattles has missing text
 
-#337 √	I/M StaticPopups
-
 #338 x	I 	Baganator Settings
 
-#339 √	S 	OAK LFG Sorter
-
-#340 √	I/M World Quest Tab
-
-#341 ≈	S 	Enhance QoL
+#342 ≈	I/M Krowi's Achievement Filter buttons not skinned
