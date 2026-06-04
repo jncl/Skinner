@@ -613,7 +613,7 @@ aObj.blizzFrames[ftype].QuestFrame = function(self)
 		end
 		if not self.isClscERA
 		or self.isClscBCA
-		or self.isClscPTR
+		or self.isClsc
 		or self.isClscERAPTR
 		then
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true})
@@ -775,7 +775,7 @@ aObj.blizzFrames[ftype].QuestInfo = function(self)
 		_G.QuestInfoSpellObjectiveFrameNameFrame:SetTexture(nil)
 		if not aObj.isClsc
 		and not aObj.isClscBCA
-		and not aObj.isClscPTR
+		and not aObj.isClsc
 		and not aObj.isClscERAPTR
 		then
 			_G.QuestInfoSpellObjectiveFrameSpellBorder:SetTexture(nil)

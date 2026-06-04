@@ -72,7 +72,7 @@ aObj.SetupDefaults = function(self)
 			ChatTabs                   = false, -- (inc. ChatTemporaryWindow)
 			ChatTabsFade               = true,
 			CombatLogQBF               = not aObj.isClscERA and false or nil,
-			MainMenuBar                = {skin = true, glazesb = true, actbtns = false, altpowerbar = not aObj.isClscERA and true or nil, extraab = (aObj.isMnln or aObj.isClscBCA or aObj.isClscPTR) and true or nil},
+			MainMenuBar                = {skin = true, glazesb = true, actbtns = false, altpowerbar = not aObj.isClscERA and true or nil, extraab = (aObj.isMnln or aObj.isClscBCA or aObj.isClsc) and true or nil},
 			Minimap                    = {skin = false, gloss = false},
 			MinimapButtons             = {skin = false, style = false},
 			Tooltips                   = {skin = true, style = 1, glazesb = true, border = 1},
@@ -1070,7 +1070,7 @@ aObj.SetupOptions = function(self)
 							order = 4,
 							name = self.L["Skin Action Buttons"],
 						},
-						extraab = (self.isMnln or self.isClscBCA or self.isClscPTR) and {
+						extraab = (self.isMnln or self.isClscBCA or self.isClsc) and {
 							type = "toggle",
 							order = 5,
 							name = self.L["Extra Action Button"],
@@ -1274,7 +1274,7 @@ aObj.SetupOptions = function(self)
 		["Color Picker"]          = {suff = "Frame"},
 		["Debug Tools"]           = {suff = "Frames"},
 		["Destiny Frame"]         = not self.isClscERA and true or nil,
-		["Edit Mode"]             = self.isMnln or self.isClscBCA or self.isClscPTR or self.isClscERAPTR and true or nil,
+		["Edit Mode"]             = self.isMnln or self.isClscBCA or self.isClsc or self.isClscERAPTR and true or nil,
 		["Event Trace"]           = true,
 		["Ghost Frame"]           = not self.isClscERA and true or nil,
 		["GM Chat UI"]            = true,

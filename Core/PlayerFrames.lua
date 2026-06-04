@@ -684,7 +684,7 @@ end
 
 if aObj.isMnln
 or aObj.isClscBCA
-or aObj.isClscPTR
+or aObj.isClsc
 or aObj.isClscERAPTR
 then
 	aObj.blizzFrames[ftype].Buffs = function(self)
@@ -734,9 +734,9 @@ then
 			self.initialized.CastingBar = true
 
 			local cBar
-			for _, prefix in _G.pairs{"Player", aObj.isClscPTR and "OverlayPlayer" or nil} do
+			for _, prefix in _G.pairs{"Player", aObj.isClsc and "OverlayPlayer" or nil} do
 				cBar = _G[prefix .. "CastingBarFrame"]
-				if aObj.isClscPTR then
+				if aObj.isClsc then
 					self:RawHook(cBar.Border, "SetTexture", function(this, _)
 						self.hooks[this].SetTexture(this, nil)
 					end, true)
@@ -1528,7 +1528,7 @@ if not aObj.isClscERA then
 					self:Unhook(fObj, "OnShow")
 				end)
 				if not self.isMnln
-				and not aObj.isClscPTR
+				and not aObj.isClsc
 				then
 					self:SecureHookScript(this.SetsTransmogFrame, "OnShow", function(fObj)
 						self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, rns=true, fb=true, x1=x1Ofs, y1=y1Ofs, x2=x2Ofs, y2=y2Ofs})
@@ -1551,7 +1551,7 @@ if not aObj.isClscERA then
 		self:checkShown(_G.WardrobeCollectionFrame)
 
 		if not self.isMnln
-		and not aObj.isClscPTR
+		and not aObj.isClsc
 		then
 			self:SecureHookScript(_G.WardrobeFrame, "OnShow", function(this)
 				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true, cb=true, x2=3, y2=-1})

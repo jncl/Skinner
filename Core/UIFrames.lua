@@ -20,7 +20,7 @@ aObj.blizzFrames[ftype].AddonList = function(self)
 		self:removeMagicBtnTex(this.DisableAllButton)
 		if self.isMnln
 		or self.isClscBCA
-		or self.isClscPTR
+		or self.isClsc
 		or self.isClscERAPTR
 		then
 			self:skinObject("scrollbar", {obj=this.ScrollBar, fType=ftype})
@@ -1274,7 +1274,7 @@ end
 
 if aObj.isMnln
 or aObj.isClscBCA
-or aObj.isClscPTR
+or aObj.isClsc
 or aObj.isClscERAPTR
 then
 	aObj.blizzFrames[ftype].EditMode = function(self)
@@ -1307,7 +1307,7 @@ then
 		end)
 
 		if not aObj.isMnln
-		and not aObj.isClscPTR
+		and not aObj.isClsc
 		then
 			self:SecureHookScript(_G.EditModeNewLayoutDialog, "OnShow", function(fObj)
 				self:skinLayoutDialog(fObj, ftype)
@@ -1329,7 +1329,7 @@ then
 		end)
 
 		if not aObj.isMnln
-		and not aObj.isClscPTR
+		and not aObj.isClsc
 		then
 			self:SecureHookScript(_G.EditModeImportLayoutLinkDialog, "OnShow", function(fObj)
 				self:skinLayoutDialog(fObj, ftype)
@@ -1732,7 +1732,7 @@ aObj.blizzFrames[ftype].HelpPlate = function(self)
 end
 
 if aObj.isMnln
-or aObj.isClscPTR
+or aObj.isClsc
 then
 	aObj.blizzFrames[ftype].HelpTip = function(self)
 		if not self.prdb.HelpTip or self.initialized.HelpTip then return end
@@ -1889,7 +1889,7 @@ if not aObj.isClscERA then
 		self:checkShown(_G.LFDParentFrame)
 
 		if self.isClsc
-		and not aObj.isClscPTR
+		and not aObj.isClsc
 		then
 			self:SecureHookScript(_G.LFDReadyCheckPopup, "OnShow", function(this)
 				if _G.InCombatLockdown() then
@@ -2580,7 +2580,7 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 	if self.prdb.MainMenuBar.skin then
 		if self.isMnln
 		or self.isClscBCA
-		or self.isClscPTR
+		or self.isClsc
 		or self.isClscERAPTR
 		then
 			self:SecureHookScript(_G.MainActionBar, "OnShow", function(this)
@@ -2732,7 +2732,7 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 		if self.modBtnBs
 		and not self.isMnln
 		then
-			local microButtons = not aObj.isClscPTR and _G.MICRO_BUTTONS or {
+			local microButtons = not aObj.isClsc and _G.MICRO_BUTTONS or {
 				"AchievementMicroButton",
 				"CharacterMicroButton",
 				"CollectionsMicroButton",
@@ -2749,7 +2749,7 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 				"WorldMapMicroButton",
 			}
 			for _, bName in _G.pairs(microButtons) do
-				self:addButtonBorder{obj=_G[bName], fType=ftype, es=24, ofs=2, y1=not self.isClscBCA and not self.isClscPTR and not self.isClscERAPTR and -18 or nil, reParent={_G[bName].QuickKeybindHighlightTexture}}
+				self:addButtonBorder{obj=_G[bName], fType=ftype, es=24, ofs=2, y1=not self.isClscBCA and not self.isClsc and not self.isClscERAPTR and -18 or nil, reParent={_G[bName].QuickKeybindHighlightTexture}}
 			end
 			local function abb2Bag(bag)
 				aObj:addButtonBorder{obj=bag, fType=ftype, ibt=true, ofs=3, clr=bag.icon:GetVertexColor()}
@@ -2810,7 +2810,7 @@ aObj.blizzFrames[ftype].MainMenuBarCommon = function(self)
 	if self.prdb.MainMenuBar.skin then
 		if self.isMnln
 		or self.isClscBCA
-		or self.isClscPTR
+		or self.isClsc
 		or self.isClscERAPTR
 		then
 			for _, frame in _G.pairs{_G.StanceBar, _G.PetActionBar, _G.PossessActionBar} do
@@ -2911,7 +2911,7 @@ aObj.blizzFrames[ftype].MenuFrames = function(self)
 
 		if self.isMnln
 		or self.isClscBCA
-		or self.isClscPTR
+		or self.isClsc
 		or self.isClscERAPTR
 		then
 			self:removeNineSlice(this.Border)
@@ -2965,7 +2965,7 @@ aObj.blizzFrames[ftype].Minimap = function(self)
 	-- Cluster Frame
 	if not self.isMnln then
 		if not self.isClscBCA
-		and not aObj.isClscPTR
+		and not aObj.isClsc
 		and not aObj.isClscERAPTR
 		then
 			_G.MinimapBorderTop:Hide()
@@ -4543,7 +4543,7 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 	local getTLP, check4String, canSkinWidgetContainer = _G.nop(), _G.nop(), _G.nop()
 	local ignoredStrings = {}
 	if self.isMnln
-	or aObj.isClscPTR
+	or aObj.isClsc
 	then
 		ignoredStrings = {
 			-- "CompactUnitFrame",
@@ -4780,7 +4780,7 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 	end
 
 	if self.isMnln
-	or aObj.isClscPTR
+	or aObj.isClsc
 	then
 		self:SecureHookScript(_G.UIWidgetCenterDisplayFrame, "OnShow", function(this)
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true})

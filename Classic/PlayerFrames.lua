@@ -62,7 +62,7 @@ aObj.SetupClassic_PlayerFrames = function()
 	end
 
 	if not aObj.isClscBCA
-	and not aObj.isClscPTR
+	and not aObj.isClsc
 	and not aObj.isClscERAPTR
 	then
 		aObj.blizzFrames[ftype].Buffs = function(self)
@@ -118,7 +118,7 @@ aObj.SetupClassic_PlayerFrames = function()
 				end
 			end
 			local cbFrame
-			for _, type in _G.pairs{aObj.isClscPTR and "Player" or "", "Pet"} do
+			for _, type in _G.pairs{aObj.isClsc and "Player" or "", "Pet"} do
 				cbFrame = _G[type .. "CastingBarFrame"]
 				if cbFrame then
 					self:changeShield(cbFrame.BorderShield, cbFrame.Icon)
@@ -197,7 +197,7 @@ aObj.SetupClassic_PlayerFrames = function()
 						self:addButtonBorder{obj=_G.RuneFrameControlButton, fType=ftype}
 					end
 					if self.isClscBCA
-					or self.isClscPTR
+					or self.isClsc
 					or self.isClscERAPTR
 					then
 						self:skinObject("ddbutton", {obj=fObj.Attributes.LeftPlayerStatDropdown, fType=ftype})
@@ -289,7 +289,7 @@ aObj.SetupClassic_PlayerFrames = function()
 				self:checkShown(_G.SkillFrame)
 
 				if not self.isClscBCA
-				and not self.isClscPTR
+				and not self.isClsc
 				and not self.isClscERAPTR
 				then
 					self:SecureHookScript(_G.HonorFrame, "OnShow", function(fObj)
@@ -978,7 +978,7 @@ aObj.SetupClassic_PlayerFrames = function()
 
 			if self.isClscERA
 			and not self.isClscBCA
-			and not self.isClscPTR
+			and not self.isClsc
 			and not self.isClscERAPTR
 			then
 				self:SecureHookScript(_G.InspectHonorFrame, "OnShow", function(fObj)
@@ -996,7 +996,7 @@ aObj.SetupClassic_PlayerFrames = function()
 				self:SecureHookScript(_G.InspectTalentFrame, "OnShow", function(fObj)
 					self:keepFontStrings(fObj)
 					if not aObj.isClscBCA
-					and not aObj.isClscPTR
+					and not aObj.isClsc
 					and not aObj.isClscERAPTR
 					then
 						fObj.InspectSpec.ring:SetTexture(nil)
@@ -1519,7 +1519,7 @@ aObj.SetupClassic_PlayerFrames = function()
 			end)
 			self:checkShown(_G.PlayerTalentFrame)
 		else
-			local specBtnRegs = self.isClscPTR and {1, 2, 3} or {1, 2, 3, 8}
+			local specBtnRegs = self.isClsc and {1, 2, 3} or {1, 2, 3, 8}
 			local btn
 			self:SecureHook("PlayerTalentFrame_UpdateSpecFrame", function(frame, _)
 				for i = 1, 10 do

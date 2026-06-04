@@ -189,7 +189,7 @@ aObj.SetupClassic_UIFrames = function()
 				-- N.B. WidgetContainer objects managed in UIWidgets code
 			end
 		end
-		if not aObj.isClscPTR then
+		if not aObj.isClsc then
 			self:SecureHook(_G.NamePlateDriverFrame, "OnNamePlateAdded", function(_, namePlateUnitToken)
 				skinNamePlate(_G.C_NamePlate.GetNamePlateForUnit(namePlateUnitToken, _G.issecure()))
 			end)
@@ -547,7 +547,7 @@ aObj.SetupClassic_UIFrames = function()
 				_G.QuestLogCollapseAllButton:DisableDrawLayer("BACKGROUND")
 				self:keepFontStrings(_G.EmptyQuestLogFrame)
 				if self.isClscBCA
-				or self.isClscPTR
+				or self.isClsc
 				or self.isClscERAPTR
 				then
 					self:keepFontStrings(_G.QuestLogCount)
