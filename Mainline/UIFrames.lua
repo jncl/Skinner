@@ -1388,10 +1388,14 @@ aObj.SetupMainline_UIFrames = function()
 
 		local function skinOverlay(_, oFrame)
 			oFrame = oFrame or _G.ExpansionLandingPage.overlayFrame
-			if oFrame.Border then
+			if oFrame.Border
+			and oFrame.Border:IsObjectType("Frame")
+			then
 				oFrame.Border:DisableDrawLayer("OVERLAY")
 			end
-			oFrame.Header.TitleDivider:SetTexture(nil)
+			if oFrame.Header.TitleDivider then
+				oFrame.Header.TitleDivider:SetTexture(nil)
+			end
 			if oFrame.MajorFactionList then
 				oFrame.ScrollFadeOverlay:DisableDrawLayer("ARTWORK")
 				aObj:skinObject("scrollbar", {obj=oFrame.MajorFactionList.ScrollBar, fType=ftype})
@@ -1414,13 +1418,13 @@ aObj.SetupMainline_UIFrames = function()
 					end
 				end
 				_G.ScrollUtil.AddAcquiredFrameCallback(oFrame.MajorFactionList.ScrollBox, skinElement, aObj, true)
-			end
-			if oFrame.DragonridingPanel then
+			elseif oFrame.DragonridingPanel then
 				aObj:skinObject("frame", {obj=oFrame.DragonridingPanel, fType=ftype, fb=true, y1=-1, x2=-1, y2=11})
 				if aObj.modBtns then
 					aObj:skinStdButton{obj=oFrame.DragonridingPanel.SkillsButton, fType=ftype}
 				end
 			end
+			-- .RunesOfPowerFrame
 			aObj:skinObject("frame", {obj=oFrame, fType=ftype, kfs=true, cbns=true})
 		end
 		_G.EventRegistry:RegisterCallback("ExpansionLandingPage.OverlayChanged", skinOverlay, aObj)
@@ -1428,7 +1432,7 @@ aObj.SetupMainline_UIFrames = function()
 		self:SecureHookScript(_G.ExpansionLandingPage, "OnShow", function(this)
 			skinOverlay(self, this.overlayFrame)
 
-			self:Unhook(this, "OnShow")
+			self:Unhook(_G.ExpansionLandingPage, "OnShow")
 		end)
 		self:checkShown(_G.ExpansionLandingPage)
 
