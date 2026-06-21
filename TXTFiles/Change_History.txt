@@ -1,3 +1,16 @@
+beta12.67969.1
+Jncl:
+	Updated ToDo*.txt files
+	Updated Change_History.txt
+	Updated Version numbers
+	Applied Classic PTR changes
+	Updated LibKrowiWorldMapButton skin, closes #342
+	Updated WorldQuestTab skin
+	Updated QuestMapFrame skin
+	Updated ChatBubbles skin
+	Skinned PhotoSharing frames
+	Updated comment
+
 beta12.67823.1
 Jncl:
 	Updated ToDo*.txt files
