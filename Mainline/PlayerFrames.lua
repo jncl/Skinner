@@ -667,22 +667,24 @@ aObj.SetupMainline_PlayerFrames = function()
 		end)
 		self:checkShown(_G.FriendsFriendsFrame)
 
-		self:SecureHookScript(_G.BattleTagInviteFrame, "OnShow", function(this)
-			if _G.InCombatLockdown() then
-			    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
-			    return
-			end
+		if not aObj.isMnlnPTR then
+			self:SecureHookScript(_G.BattleTagInviteFrame, "OnShow", function(this)
+				if _G.InCombatLockdown() then
+				    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+				    return
+				end
 
-			self:removeNineSlice(this.Border)
-			self:skinObject("frame", {obj=this, fType=ftype, cb=true})
-			if self.modBtns then
-				self:skinStdButton{obj=self:getChild(this, 2)} -- SEND_REQUEST
-				self:skinStdButton{obj=self:getChild(this, 3)} -- CANCEL
-			end
+				self:removeNineSlice(this.Border)
+				self:skinObject("frame", {obj=this, fType=ftype, cb=true})
+				if self.modBtns then
+					self:skinStdButton{obj=self:getChild(this, 2)} -- SEND_REQUEST
+					self:skinStdButton{obj=self:getChild(this, 3)} -- CANCEL
+				end
 
-			self:Unhook(this, "OnShow")
-		end)
-		self:checkShown(_G.BattleTagInviteFrame)
+				self:Unhook(this, "OnShow")
+			end)
+			self:checkShown(_G.BattleTagInviteFrame)
+		end
 
 		self:SecureHookScript(_G.RecruitAFriendFrame, "OnShow", function(this)
 			if _G.InCombatLockdown() then

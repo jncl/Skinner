@@ -975,6 +975,9 @@ aObj.SetupMainline_NPCFrames = function()
 					self:skinObject("editbox", {obj=frame.SearchBox, fType=ftype, regions={2, 4}, si=true, six=0})
 					self:skinObject("statusbar", {obj=frame.SearchBox.ProgressFrame.ProgressBar, fi=0})
 					self:skinObject("ddbutton", {obj=frame.WeaponDropdown, fType=ftype})
+					if aObj.isMnlnPTR then
+						self:skinObject("ddbutton", {obj=frame.WeaponSheatheDropdown, fType=ftype})
+					end
 					self:skinObject("frame", {obj=frame, fType=ftype, kfs=true, fb=true, y2=-4})
 					frame.DisplayTypes.DisplayTypeUnassignedButton.IconFrame.Border:SetAlpha(0)
 					frame.DisplayTypes.DisplayTypeEquippedButton.IconFrame.Border:SetAlpha(0)
