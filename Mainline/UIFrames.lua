@@ -1075,7 +1075,7 @@ aObj.SetupMainline_UIFrames = function()
 
 			local function skinCategories(frame)
 				for categoryDisplay in frame.categoryPool:EnumerateActive() do
-					aObj:keepFontStrings(categoryDisplay.Header)
+					aObj:changeHdrExpandTex(categoryDisplay.Header)
 					-- N.B. DON't change the Header Expand Text as it causes secret value errors to occur
 					for item in categoryDisplay.itemPool:EnumerateActive() do
 						if item.Bar then

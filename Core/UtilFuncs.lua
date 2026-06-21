@@ -275,17 +275,26 @@ function aObj.capitStr(_, str)
 
 end
 
-local coords
-function aObj:changeHdrExpandTex(reg)
+-- this functions relies on regions sourced from:
+	-- SettingsExpandableSectionTemplate
+	-- ListHeaderThreeSliceTemplate
+	-- ReputationHeaderTemplate
+local rReg, coords
+function aObj:changeHdrExpandTex(hReg, func, args)
 	--@debug@
-	_G.assert(reg, "Unknown region changeHdrExpandTex\n" .. _G.debugstack(2, 3, 2))
+	_G.assert(hReg, "Unknown region changeHdrExpandTex\n" .. _G.debugstack(2, 3, 2))
 	--@end-debug@
 
-	reg:ClearAllPoints()
-	reg:SetPoint("RIGHT")
-	reg:SetAlpha(1)
-	reg:SetDesaturated(1) -- make the texture grey
-	self:rawHook(reg, "SetAtlas", function(eReg, tex, useAtlasSize)
+	self:keepFontStrings(hReg)
+
+	-- .BGRight for WorldQuestTab
+	rReg = hReg.Right or hReg.BGRight or hReg
+
+	rReg:ClearAllPoints()
+	rReg:SetPoint("RIGHT")
+	rReg:SetAlpha(1)
+	rReg:SetDesaturated(1) -- make the texture grey
+	self:rawHook(rReg, "SetAtlas", function(eReg, tex, useAtlasSize)
 		-- aObj:Debug("changeHdrExpandTex SetAtlas: [%s, %s, %s]", reg, tex, useAtlasSize)
 		if tex == "Options_ListExpand_Right_Expanded" then -- minus
 			tex = self.isMnln and "ui-hud-minimap-zoom-out" or self.tFDIDs.mpTex
@@ -302,6 +311,16 @@ function aObj:changeHdrExpandTex(reg)
 			eReg:SetScale(0.75)
 		end
 	end, true)
+
+	-- ListTemplates function and arguments are the defaults
+	func = func or "UpdateCollapsedState"
+	args = args or rReg.collapsed
+
+	if func
+	and hReg[func]
+	then
+		hReg[func](hReg, args)
+	end
 
 end
 

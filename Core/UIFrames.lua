@@ -4041,8 +4041,7 @@ aObj.blizzFrames[ftype].Settings = function(self)
 					else
 						-- keybindings
 						if element.Button then -- Bugfix: #282
-							aObj:removeRegions(element.Button, {1, 2, 3})
-							aObj:changeHdrExpandTex(element.Button.Right)
+							aObj:changeHdrExpandTex(element.Button)
 						end
 						aObj:SecureHook(element, "EvaluateVisibility", function(eObj, _)
 							if eObj.Controls then -- Bugfix: #271
@@ -4055,8 +4054,7 @@ aObj.blizzFrames[ftype].Settings = function(self)
 				elseif elementData.frameTemplate == "NamePlatePreviewTemplate" then
 					aObj:skinObject("frame", {obj=element, fType=ftype, kfs=true, fb=true, ofs=0, x1=20, x2=-20})
 				elseif elementData.frameTemplate == "SettingsExpandableSectionTemplate" then
-					aObj:removeRegions(element.Button, {1, 2, 3})
-					aObj:changeHdrExpandTex(element.Button.Right)
+					aObj:changeHdrExpandTex(element.Button)
 				else
 					sCEsWithDelay(element)
 				end

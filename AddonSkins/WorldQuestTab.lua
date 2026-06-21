@@ -2,7 +2,7 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("WorldQuestTab") then return end
 local _G = _G
 
-aObj.addonsToSkin.WorldQuestTab = function(self) -- v 12.0.11
+aObj.addonsToSkin.WorldQuestTab = function(self) -- v 12.0.12
 
 	local frame, btn
 	for _, name in _G.pairs{"OldTaxi", "Flight", "World"} do
@@ -72,12 +72,7 @@ aObj.addonsToSkin.WorldQuestTab = function(self) -- v 12.0.11
 				_, element, elementData = ...
 			end
 			if elementData.template == "WQT_SettingCategoryTemplate" then
-				aObj:removeRegions(element, {1, 2, 3, 5, 6, 7})
-				aObj:changeHdrExpandTex(element.BGRight)
-				-- force the change
-				if element.UpdateState then
-					element:UpdateState()
-				end
+				aObj:changeHdrExpandTex(element, "UpdateState", nil)
 			elseif elementData.template == "WQT_SettingSubCategoryTemplate" then
 				aObj:removeRegions(element, {1, 4})
 			elseif elementData.template == "WQT_SettingsQuestListPreviewTemplate" then

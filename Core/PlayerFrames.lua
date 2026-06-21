@@ -993,8 +993,7 @@ if not aObj.isClscERA then
 						if elementData.isHeader
 						and not elementData.isChild
 						then
-							aObj:keepFontStrings(element)
-							aObj:changeHdrExpandTex(element.Right)
+							aObj:changeHdrExpandTex(element)
 							element:Initialize(elementData) -- force texture change
 						else
 							element.Content.ReputationBar.LeftTexture:SetAlpha(0)
@@ -1084,8 +1083,7 @@ if not aObj.isClscERA then
 					if new ~= false then
 						if elementData.isHeader then
 							if elementData.currencyListDepth == 0 then
-								aObj:keepFontStrings(element)
-								aObj:changeHdrExpandTex(element.Right)
+								aObj:changeHdrExpandTex(element)
 								if element.elementData then -- BUGFIX: #183
 									element:UpdateCollapsedState(element:IsCollapsed())
 								end
