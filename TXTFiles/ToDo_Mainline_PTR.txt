@@ -6,9 +6,44 @@
 	x				- indicates nothing to change
 	¶ is Alt+7		- indicates localisation changes required
 
-	Mainline_PTR (Midnight)
+	Mainline_PTR (Midnight 12.1.0) [Screen Narrator functionality added]
 		- Added
+√			- Transmog.WardrobeCollection.TabContent.ItemsFrame.WeaponSheatheDropdown
 		- Updated
+			- Blizzard_AccessibilityTemplates
+				- UserScaledElementTemplates
+			- ActionButtonTemplate
+			- ExtraActionBar
+			- Blizzard_CharacterCustomize
+			- ChatConfigFrame
+√			- CooldownViewerSettings
+√			- CooldownViewerSettingsAlerts
+			- EditModeManager
+			- EditModeSystemTemplates
+			- LFGList
+			- Blizzard_GuildControlUI
+			- Blizzard_HouseEditorCustomizationDyeTemplates
+			- Blizzard_HouseEditorCustomizeMode
+			- Blizzard_HouseEditorLayoutModePin
+			- Blizzard_HouseEditorStorageFrame
+			- Blizzard_HouseEditorTemplates
+			- Blizzard_HousingControlButton
+			- Blizzard_HousingControls
+≈			- Blizzard_HousingDashboard
+			- Blizzard_HousingDashboardHouseUpgrade
 			- Blizzard_HousingHouseFinder
-			- Blizzard_Transmog
+			- Blizzard_HousingHouseSettings
+			- Blizzard_PingUI
+			- Blizzard_SpellBookTemplates
+			- Blizzard_RecentAlliesTemplates
+			- RecruitAFriendFrame
+			- SharedUIPanelTemplates
+			- SecureUIPanelTemplates
+			- InputBoxTemplates
+			- SharedTooltipTemplates
+			- Blizzard_SimpleCheckout
+			- UIPanelTemplates
+			- CastingBarFrame
+			- CompactUnitFrame
 		- Deleted
+√			- BattleTagInviteFrame
