@@ -3,7 +3,7 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("Outfitter") then return end
 local _G = _G
 
-aObj.addonsToSkin.Outfitter = function(self) -- v 10.2.7.0
+aObj.addonsToSkin.Outfitter = function(self) -- v 12.0.0.4
 
 	self:SecureHook(_G.Outfitter, "PlayerEnteringWorld", function(this)
 		local function skinOutfitBars(fObj)
@@ -19,7 +19,7 @@ aObj.addonsToSkin.Outfitter = function(self) -- v 10.2.7.0
 			end
 			-- N.B. NOT skinning the drag bars
 		end
-		_G.C_Timer.After(0.1, function()
+		_G.RunNextFrame(function()
 			skinOutfitBars(_G.Outfitter.OutfitBar)
 		end)
 		self:SecureHook(_G.Outfitter.OutfitBar, "ShowBackground", function(fObj, showBG)
@@ -62,7 +62,7 @@ aObj.addonsToSkin.Outfitter = function(self) -- v 10.2.7.0
 			_G.OutfitterMainFrame:DisableDrawLayer("BACKGROUND")
 			_G.OutfitterMainFrameScrollbarTrench:DisableDrawLayer("OVERLAY")
 			self:skinObject("slider", {obj=_G.OutfitterMainFrameScrollFrame.ScrollBar})
-			self:skinObject("tabs", {obj=fObj, prefix=fObj:GetName(), numTabs=3, lod=true, offsets={x1=8, y1=0, x2=-8, y2=2}})
+			self:skinObject("tabs", {obj=fObj, prefix=fObj:GetName(), numTabs=3, lod=self.isTT and true, offsets={x1=8, y1=0, x2=-8, y2=2}})
 			self:skinObject("frame", {obj=fObj, kfs=true, x1=-1, y2=-6})
 			if self.modBtns then
 				self:skinCloseButton{obj=_G.OutfitterCloseButton}
@@ -87,11 +87,6 @@ aObj.addonsToSkin.Outfitter = function(self) -- v 10.2.7.0
 
 			self:Unhook(fObj, "OnShow")
 		end)
-		-- hook this to ignore original function's frame level change
-		self:RawHook(_G.Outfitter, "OnShow", function(fObj)
-			fObj:ShowPanel(1)
-		end, true)
-
 		-- skin objects added to the PaperDollFrame
 		if self.modBtns then
 			self:adjHeight{obj=_G.OutfitterEnableAll, adj=2}
