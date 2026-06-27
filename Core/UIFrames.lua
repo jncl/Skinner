@@ -3891,6 +3891,7 @@ aObj.blizzFrames[ftype].Settings = function(self)
 				end
 			end
 			this.tabsGroup:RegisterCallback(_G.ButtonGroupBaseMixin.Event.Selected, setTabState, aObj)
+			setTabState(aObj, nil, 1)
 		end
 		self:skinObject("editbox", {obj=this.SearchBox, fType=ftype, si=true})
 		-- LHS
