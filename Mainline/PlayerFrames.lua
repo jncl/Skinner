@@ -163,12 +163,14 @@ aObj.SetupMainline_PlayerFrames = function()
 		self.initialized.CharacterCustomize = true
 
 		self:SecureHookScript(_G.CharCustomizeFrame, "OnShow", function(this)
-			self:SecureHook(_G.BarberShopFrame, "UpdateSex", function(fObj)
-				for btn in fObj.sexButtonPool:EnumerateActive() do
-					btn.Ring:SetTexture(nil)
-					btn.BlackBG:SetTexture(nil)
-				end
-			end)
+			if not aObj.isMnlnPTR then
+				self:SecureHook(_G.BarberShopFrame, "UpdateSex", function(fObj)
+					for btn in fObj.sexButtonPool:EnumerateActive() do
+						btn.Ring:SetTexture(nil)
+						btn.BlackBG:SetTexture(nil)
+					end
+				end)
+			end
 			self:SecureHook(this, "UpdateAlteredFormButtons", function(fObj)
 				local buttonPool = fObj:GetAlteredFormsButtonPool()
 				for btn in buttonPool:EnumerateActive() do
@@ -600,7 +602,9 @@ aObj.SetupMainline_PlayerFrames = function()
 					_G["WhoFrameColumnHeader" .. i]:DisableDrawLayer("BACKGROUND")
 					if i == 2 then
 						self:skinObject("ddbutton", {obj=_G.WhoFrameDropdown, fType=ftype, ofs=0})
-						if not aObj.isMnlnPTRX then
+						if not aObj.isMnlnPTR
+						and not aObj.isMnlnPTRX
+						then
 							self:adjHeight{obj=_G.WhoFrameDropdown, adj=-4}
 						else
 							_G.WhoFrameDropdown:SetPoint("BOTTOMRIGHT", 0, -2)

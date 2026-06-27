@@ -2590,6 +2590,18 @@ aObj.SetupMainline_UIFrames = function()
 				self:Unhook(this, "OnShow")
 			end)
 
+			if aObj.isMnlnPTR then
+				self:SecureHookScript(_G.BuyHouseConfirmationDialog, "OnShow", function(this)
+					self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, ofs=0})
+					if self.modBtns then
+						self:skinStdButton{obj=this.AcceptButton, fType=ftype}
+						self:skinStdButton{obj=this.CancelButton, fType=ftype}
+					end
+
+					self:Unhook(this, "OnShow")
+				end)
+			end
+
 			self:SecureHookScript(_G.MoveHouseConfirmationDialog, "OnShow", function(this)
 				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, ofs=0})
 				if self.modBtns then
@@ -2664,7 +2676,9 @@ aObj.SetupMainline_UIFrames = function()
 
 			self:SecureHookScript(_G.HousingDashboardFrame, "OnShow", function(this)
 				-- TODO: skin side tabs N.B. current textures include border
-				-- self:skinSideTabs(this, ftype)
+				if aObj.isMnlnPTR then
+					self:skinSideTabs(this, ftype)
+				end
 				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=-3, x2=3, y2=-4})
 
 				self:SecureHookScript(this.HouseInfoContent, "OnShow", function(hic)
