@@ -19,4 +19,4 @@ ToDos
 
 #343 √	I 	PlayerChoice
 
-#344 √	I/M New "Omnium Folio" Frame
+#345 √	I 	Outfitter opens to wrong tab
