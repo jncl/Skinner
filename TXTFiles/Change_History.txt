@@ -1,3 +1,13 @@
+beta12.68256.1
+Jncl:
+	Updated ToDo*.txt files
+	Updated Change_History.txt
+	Updated Version numbers
+	Retail PTR changes
+	Updated NSF skinSideTabs
+	Updated changeHdrExpandTex function
+	Updated ExpansionLandingPage skin, closes #344
+
 beta12.67969.1
 Jncl:
 	Updated ToDo*.txt files
