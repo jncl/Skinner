@@ -292,67 +292,18 @@ function aObj:OnEnable()
 		self:updateSBTexture()
 	end)
 
-	-- hook to handle textured tabs on Blizzard & other Frames
-	self.tabFrames = {}
-	if self.isTT then
-		self:SecureHook("PanelTemplates_UpdateTabs", function(frame)
-			-- self:Debug("PanelTemplates_UpdateTabs: [%s, %s, %s, %s]", frame, frame.selectedTab, frame.numTabs, _G.rawget(self.tabFrames, frame))
-			if not self.tabFrames[frame] then -- ignore frame if not monitored
-				return
-			end
-			if frame.selectedTab then
-				local tab
-				for i = 1, frame.numTabs do
-					tab = frame.Tabs and frame.Tabs[i] or _G[frame:GetName() .. "Tab" .. i]
-					if tab.sf then
-						if i == frame.selectedTab then
-							self:setActiveTab(tab.sf)
-						else
-							self:setInactiveTab(tab.sf)
-						end
-					end
-				end
-			end
-		end)
-	end
-
 	-- skin the Blizzard frames
 	_G.C_Timer.After(self.prdb.Delay.Init, function() self:BlizzardFrames() end)
+
 	-- skin the loaded AddOns frames
 	_G.C_Timer.After(self.prdb.Delay.Init + self.prdb.Delay.Addons, function() self:AddonFrames() end)
+
 	-- schedule scan of UIParent's Children after all AddOns have been loaded
 	_G.C_Timer.After(self.prdb.Delay.Init + self.prdb.Delay.Addons + 1, function()
 		self:scanChildren{obj=_G.UIParent, cbstr="UIParent_GetChildren"}
 	end)
 
-	if self.isMnln then
-		-- hook this (used by Blizzard_OrderHallTalents, PVPMatchResults, PVPMatchScoreboard & Blizzard_WarboardUI)
-		-- N.B. use SecureHook as RawHook causes taint and INTERFACE_ACTION_BLOCKED message to be displayed
-		self:SecureHook("UIPanelCloseButton_SetBorderAtlas", function(this, _, _, _, _)
-			this.Border:SetTexture(nil)
-		end)
-	end
-
 	self:handleProfileChanges()
-
-	-- table to hold frame names and functions
-	self.createFrames = {}
-	-- hook CreateFrame function to skin frames as required [cfte]
-	--[[
-		self:add2Table(self.createFrames, {func = function(fObj)
-			self.ttHook[fObj] = "SetShown"
-			self:add2Table(self.ttList, ftype, fObj)
-		end}, "HandyNotes_MidnightTreasuresComparisonTooltip")
-	]]
-	self:SecureHook("CreateFrame", function(_, name, _, _)
-		if self.createFrames[name] then
-			self.createFrames[name].func(_G[name])
-			self.createFrames[name] = nil
-			if self:check4EmptyTable(self.createFrames) then
-				self:Unhook("CreateFrame")
-			end
-		end
-	end)
 
 	--@debug@
 	self:SetupCmds()

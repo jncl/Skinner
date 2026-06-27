@@ -1001,7 +1001,7 @@ local function skinTabs(tbl)
 		tbl.offsets.x2 = (tbl.offsets.x2 or 0) - 4
 		tbl.offsets.y2 = (tbl.offsets.y2 or 0) + 3
 	end
-	local function skinTabObject(tab, idx)
+	local function skinTabObject(tab, _)
 		aObj:keepRegions(tab, tbl.regions)
 		if not aObj.isTT then
 			aObj:skinObject("frame", {obj=tab, fType=tbl.fType, ng=tbl.ng, x1=tbl.offsets.x1, y1=tbl.offsets.y1, x2=tbl.offsets.x2, y2=tbl.offsets.y2})
@@ -1330,5 +1330,54 @@ function aObj:skinLayoutDialog(frame, ftype)
 	end
 
 end
+
+-- the following code has been moved from Skinner.lua OnEnable function
+_G.RunNextFrame(function()
+
+	-- table to hold frame names and functions
+	aObj.createFrames = {}
+	-- hook CreateFrame function to skin frames as required [cfte]
+	aObj:SecureHook("CreateFrame", function(_, name, _, _)
+		if aObj.createFrames[name] then
+			aObj.createFrames[name].func(_G[name])
+			aObj.createFrames[name] = nil
+			if aObj:check4EmptyTable(aObj.createFrames) then
+				aObj:Unhook("CreateFrame")
+			end
+		end
+	end)
+
+	if aObj.isMnln then
+		-- hook this (used by Blizzard_OrderHallTalents, PVPMatchResults, PVPMatchScoreboard & Blizzard_WarboardUI)
+		-- N.B. use SecureHook as RawHook causes taint and INTERFACE_ACTION_BLOCKED message to be displayed
+		aObj:SecureHook("UIPanelCloseButton_SetBorderAtlas", function(this, _, _, _, _)
+			this.Border:SetTexture(nil)
+		end)
+	end
+
+	-- hook to handle textured tabs on Blizzard & other Frames
+	aObj.tabFrames = {}
+	if aObj.isTT then
+		local tab
+		aObj:SecureHook("PanelTemplates_UpdateTabs", function(frame)
+			-- aObj:Debug("PanelTemplates_UpdateTabs: [%s, %s, %s, %s]", frame, frame.selectedTab, frame.numTabs, _G.rawget(aObj.tabFrames, frame))
+			if not aObj.tabFrames[frame] then -- ignore frame if not monitored
+				return
+			end
+			if frame.selectedTab then
+				for i = 1, frame.numTabs do
+					tab = frame.Tabs and frame.Tabs[i] or _G[frame:GetName() .. "Tab" .. i]
+					if tab.sf then
 						-- N.B. use tab:GetID() instead of using index value, fixes #345
 						if tab:GetID() == frame.selectedTab then
+							aObj:setActiveTab(tab.sf)
+						else
+							aObj:setInactiveTab(tab.sf)
+						end
+					end
+				end
+			end
+		end)
+	end
+
+end)
