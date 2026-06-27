@@ -2676,19 +2676,14 @@ aObj.SetupMainline_UIFrames = function()
 
 					self:SecureHookScript(hic.ContentFrame, "OnShow", function(cf)
 						_G.RunNextFrame(function()
-							self:skinObject("tabs", {obj=cf.TabSystem, pool=true, fType=ftype, ignoreSize=true, lod=self.isTT and true, upwards=true, offsets={y2=-4}, track=false})
+							self:skinObject("tabs", {obj=cf.TabSystem, pool=true, fType=ftype, ignoreSize=true, upwards=true, offsets={y2=-4}, track= false})
 						end)
 
 						-- House Level Tab
 						self:SecureHookScript(cf.HouseUpgradeFrame, "OnShow", function(huf)
 							huf.Background:SetTexture(nil)
 							huf.Divider:SetTexture(nil)
-							if not aObj.isMnlnPTRX then
-								huf.CurrentLevelFrame.HouseBarFrame.HouseBarFrame:DisableDrawLayer("ARTWORK") -- leaves
-								huf.CurrentLevelFrame.HouseBarFrame:DisableDrawLayer("OVERLAY") -- radial background
-							else
-								huf.CurrentLevelFrame.HouseBarFrame:DisableDrawLayer("ARTWORK")
-							end
+							huf.CurrentLevelFrame.HouseBarFrame:DisableDrawLayer("ARTWORK")
 							huf.TrackFrame.Background:SetTexture(nil)
 							self:skinObject("frame", {obj=huf, fType=ftype, kfs=true, fb=true, x1=-6, y1=1, x2=4})
 							if self.modBtnBs then
