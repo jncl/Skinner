@@ -151,7 +151,9 @@ aObj.SetupMainline_PlayerFrames = function()
 	aObj.blizzLoDFrames[ftype].CharacterCustomize = function(self)
 		if not self.prdb.CharacterCustomize or self.initialized.CharacterCustomize then return end
 
-		if not _G.CharCustomizeFrame then
+		if not _G.CharCustomizeFrame
+		or not _G.BarberShopFrame
+		then
 			_G.C_Timer.After(0.1, function()
 				self.blizzLoDFrames[ftype].CharacterCustomize(self)
 			end)
