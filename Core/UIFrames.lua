@@ -2483,9 +2483,14 @@ aObj.blizzFrames[ftype].MailFrame = function(self)
 					self:addButtonBorder{obj=btn, reParent={btn.Count, btn.IconOverlay, btn.IconOverlay2 and btn.IconOverlay2}}
 				end
 			end
-			self:skinObject("editbox", {obj=_G.SendMailNameEditBox, fType=ftype, regions={4, 5, 6}})
+			self:skinObject("editbox", {obj=_G.SendMailNameEditBox, fType=ftype, regions={4, 5, 6}, y1=-2, y2=2})
 			self:skinObject("editbox", {obj=_G.SendMailSubjectEditBox, fType=ftype, regions={4, 5, 6}})
-			self:skinObject("moneyframe", {obj=_G.SendMailMoney, moveIcon=true, moveGEB=true, moveSEB=true})
+			-- TODO: Move silver & copper icons for ClassicERA, Classic & ClassicBCA
+			-- if aObj.isClsc then
+			-- 	self:skinObject("moneyframe", {obj=_G.SendMailMoney, moveIcon=true})
+			-- else
+				self:skinObject("moneyframe", {obj=_G.SendMailMoney})
+			-- end
 			self:removeInset(_G.SendMailMoneyInset)
 			_G.SendMailMoneyBg:DisableDrawLayer("BACKGROUND")
 			if self.modBtns then
