@@ -506,7 +506,7 @@ aObj.SetupMainline_PlayerFrames = function()
 				_G.FriendsFrameBattlenetFrame:DisableDrawLayer("BACKGROUND")
 				self:skinObject("ddbutton", {obj=_G.FriendsFrameStatusDropdown, fType=ftype})
 				-- Top Tabs
-				self:skinObject("tabs", {obj=fTH.TabSystem, pool=true, fType=ftype,upwards=true, offsets={x1=1, y1=0, x2=-1, y2=-4}})
+				self:skinObject("tabs", {obj=fTH.TabSystem, pool=true, fType=ftype,upwards=true, offsets={x1=1, y1=0, x2=-1, y2=-4, track=false}})
 				if self.modBtnBs then
 					self:addButtonBorder{obj=_G.FriendsFrameBattlenetFrame.BroadcastButton, fType=ftype, ofs=-2, x1=1}
 					self:addButtonBorder{obj=_G.FriendsFrameBattlenetFrame.ContactsMenuButton, fType=ftype, clr="gold", ofs=-2, x1=1}
