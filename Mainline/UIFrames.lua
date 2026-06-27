@@ -2223,7 +2223,7 @@ aObj.SetupMainline_UIFrames = function()
 					-- self:skinObject("ddbutton", {obj=fObj.Filters.FilterDropdown, fType=ftype, filter=true})
 					-- self:keepFontStrings(fObj.Categories)
 					-- self:skinObject("scrollbar", {obj=fObj.OptionsContainer.ScrollBar, fType=ftype})
-					-- self:skinObject("tabs", {obj=fObj.TabSystem, pool=true, fType=ftype, ignoreSize=true, lod=self.isTT and true})
+					-- self:skinObject("tabs", {obj=fObj.TabSystem, pool=true, fType=ftype, ignoreSize=true, track=false})
 					-- TODO: skin CollapseButton, currently texture has border , background & icon
 						-- .CollapseButton
 						-- .ResizeButton
@@ -2516,7 +2516,8 @@ aObj.SetupMainline_UIFrames = function()
 			self.initialized.HousingCharter = true
 
 			self:SecureHookScript(_G.HousingCharterFrame, "OnShow", function(this)
-				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true})
+				self:skinObject("frame", {obj=this.SignaturesFrame, fType=ftype, kfs=true, fb=true})
+				self:skinObject("frame", {obj=this, fType=ftype, kfs=true})
 				if self.modBtns then
 					self:skinStdButton{obj=this.SettingsButton, fType=ftype}
 					self:skinStdButton{obj=this.RequestButton, fType=ftype}
@@ -2569,7 +2570,7 @@ aObj.SetupMainline_UIFrames = function()
 				this.ForSaleSign.WoodSign:SetTexture(nil)
 				self:moveObject{obj=this.ForSaleSign.ForSaleText, y=-10}
 				self:removeNineSlice(this.MoneyFrameBackdrop.NineSlice)
-				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true})
+				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, ofs=5})
 				if self.modBtns then
 					self:skinStdButton{obj=this.BuyButton, fType=ftype}
 				end
@@ -2578,7 +2579,7 @@ aObj.SetupMainline_UIFrames = function()
 			end)
 
 			self:SecureHookScript(_G.HousingCornerstoneVisitorFrame, "OnShow", function(this)
-				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, cb=true})
+				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, cb=true, ofs=5})
 
 				self:Unhook(this, "OnShow")
 			end)
@@ -2590,13 +2591,21 @@ aObj.SetupMainline_UIFrames = function()
 			end)
 
 			self:SecureHookScript(_G.MoveHouseConfirmationDialog, "OnShow", function(this)
-				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true})
+				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, ofs=0})
+				if self.modBtns then
+					self:skinStdButton{obj=this.ConfirmButton, fType=ftype}
+					self:skinStdButton{obj=this.CancelButton, fType=ftype}
+				end
 
 				self:Unhook(this, "OnShow")
 			end)
 
 			self:SecureHookScript(_G.ImportHouseConfirmationDialog, "OnShow", function(this)
-				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true})
+				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, ofs=0})
+				if self.modBtns then
+					self:skinStdButton{obj=this.ConfirmButton, fType=ftype}
+					self:skinStdButton{obj=this.CancelButton, fType=ftype}
+				end
 
 				self:Unhook(this, "OnShow")
 			end)
