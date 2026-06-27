@@ -818,11 +818,11 @@ local function skinMoneyFrame(tbl)
 		skinnedMFs[tbl.obj] = true
 	end
 
-	local mfObj
+	local mfName, mfObj = tbl.obj:GetName()
 	for key, type in _G.ipairs{"Gold", "Silver", "Copper"} do
-		mfObj = _G[tbl.obj:GetName() .. type]
+		mfObj =  _G[mfName .. type]
 		aObj:skinObject("editbox", {obj=mfObj, ncc=tbl.ncc, ofs=0})
-		if key ~= 1 then
+		if key ~= 1 then -- ignore Gold
 			if tbl.moveIcon then
 				aObj:moveObject{obj=mfObj.texture, x=10}
 				aObj:moveObject{obj=mfObj.label, x=10}
