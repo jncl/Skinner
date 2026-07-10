@@ -4550,7 +4550,7 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 	if not self.prdb.UIWidgets or self.initialized.UIWidgets then return end
 	self.initialized.UIWidgets = true
 
-	local getTLP, check4String, canSkinWidgetContainer = _G.nop(), _G.nop(), _G.nop()
+	local getTLP, check4String, canSkinWidgetContainer = _G.nop, _G.nop, _G.nop
 	local ignoredStrings = {}
 	if self.isMnln
 	or aObj.isClsc
@@ -4652,7 +4652,6 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 		-- aObj:Debug("skinWidget#0.5: [%s, %s]", wFrame, wFrame.HasSecretValues and wFrame:HasSecretValues())
 		-- aObj:Debug("skinWidget#0.75: [%s, %s]", wFrame.widgetContainer, wFrame.widgetContainer.HasSecretValues and wFrame.widgetContainer:HasSecretValues())
 		-- aObj:Debug("skinWidget#1: [%s, %s, %s, %s, %s, %s]", wFrame, wFrame.widgetID, wFrame.widgetSetID, wFrame.widgetTag, wFrame.widgetType, wInfo)
-		--@debug@
 		-- _G.Spew("wFrame", wFrame)
 		-- _G.Spew("widgetContainer", wFrame.widgetContainer)
 		-- _G.Spew("wInfo", wInfo)
@@ -4773,9 +4772,9 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 			_G.nop()
 		elseif wFrame.widgetType == 29 then -- ScenarioHeaderDelves
 			aObj:skinObject("frame", {obj=wFrame, fType=ftype, kfs=true, ofs=-2, x1=7, x2=-7, clr="sepia"})
-		elseif wFrame.widgetType == 30 then -- ButtonHeader
+		elseif wFrame.widgetType == 30 then -- ButtonHeader (used by UIWidgetBelowMinimapContainerFrame)
 			wFrame:DisableDrawLayer("BORDER")
-			aObj:skinObject("frame", {obj=wFrame, fType=ftype, ofs=-2, y1=-20, clr="gold"})
+			aObj:skinObject("frame", {obj=wFrame, fType=ftype, ofs=-4, y1=-20, clr="gold"})
 			if aObj.modBtns then
 				for btn in wFrame.buttonPool:EnumerateActive() do
 					aObj:skinStdButton{obj=btn, fType=ftype, ofs=-8, clr="grey"}
