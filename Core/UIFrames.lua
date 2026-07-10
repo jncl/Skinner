@@ -18,9 +18,7 @@ aObj.blizzFrames[ftype].AddonList = function(self)
 		self:removeMagicBtnTex(this.OkayButton)
 		self:removeMagicBtnTex(this.EnableAllButton)
 		self:removeMagicBtnTex(this.DisableAllButton)
-		if self.isMnln
-		or self.isClscBCA
-		or self.isClsc
+		if not self.isClscERA
 		or self.isClscERAPTR
 		then
 			self:skinObject("scrollbar", {obj=this.ScrollBar, fType=ftype})
@@ -70,9 +68,7 @@ aObj.blizzFrames[ftype].AddonList = function(self)
 
 		self:Unhook(this, "OnShow")
 	end)
-	self:checkShown(_G.AddonList)
-
-end
+	self:checkShown(_G.AddonList)end
 
 aObj.blizzFrames[ftype].AlertFrames = function(self)
 	if not self.prdb.AlertFrames or self.initialized.AlertFrames then return end
@@ -301,11 +297,11 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 		if frame.sf
 		and frame.sf.tfade
 		then
-			if self.isClscERA then
-				frame.sf.tfade:SetGradientAlpha(self:getGradientInfo())
-			else
+			-- if self.isClscERA then
+			-- 	frame.sf.tfade:SetGradientAlpha(self:getGradientInfo())
+			-- else
 				frame.sf.tfade:SetGradient(self:getGradientInfo())
-			end
+			-- end
 		end
 	end)
 	self:SecureHook("AlertFrame_ResumeOutAnimation", function(frame)
@@ -432,7 +428,9 @@ aObj.blizzFrames[ftype].BNFrames = function(self)
 
 end
 
-if not aObj.isClscERA then
+if aObj.isMnln
+or aObj.isClsc
+then
 	aObj.blizzLoDFrames[ftype].Calendar = function(self)
 		if not self.prdb.Calendar or self.initialized.Calendar then return end
 		self.initialized.Calendar = true
@@ -1243,7 +1241,9 @@ aObj.blizzLoDFrames[ftype].DebugTools = function(self)
 
 end
 
-if not aObj.isClscERA then
+if aObj.isMnln
+or aObj.isClsc
+then
 	aObj.blizzFrames[ftype].DestinyFrame = function(self)
 		if not self.prdb.DestinyFrame or self.initialized.DestinyFrame then return end
 		self.initialized.DestinyFrame = true
@@ -1278,9 +1278,7 @@ if not aObj.isClscERA then
 	end
 end
 
-if aObj.isMnln
-or aObj.isClscBCA
-or aObj.isClsc
+if not aObj.isClscERA
 or aObj.isClscERAPTR
 then
 	aObj.blizzFrames[ftype].EditMode = function(self)
@@ -1314,6 +1312,7 @@ then
 
 		if not aObj.isMnln
 		and not aObj.isClsc
+		and not aObj.isClscBCA
 		then
 			self:SecureHookScript(_G.EditModeNewLayoutDialog, "OnShow", function(fObj)
 				self:skinLayoutDialog(fObj, ftype)
@@ -1336,6 +1335,7 @@ then
 
 		if not aObj.isMnln
 		and not aObj.isClsc
+		and not aObj.isClscBCA
 		then
 			self:SecureHookScript(_G.EditModeImportLayoutLinkDialog, "OnShow", function(fObj)
 				self:skinLayoutDialog(fObj, ftype)
@@ -1502,7 +1502,9 @@ aObj.blizzLoDFrames[ftype].EventTrace = function(self)
 
 end
 
-if not aObj.isClscERA then
+if aObj.isMnln
+or aObj.isClsc
+then
 	aObj.blizzFrames[ftype].GhostFrame = function(self)
 		if not self.prdb.GhostFrame or self.initialized.GhostFrame then return end
 		self.initialized.GhostFrame = true
@@ -1807,7 +1809,9 @@ aObj.blizzFrames[ftype].ItemText = function(self)
 
 end
 
-if not aObj.isClscERA then
+if aObj.isMnln
+or aObj.isClsc
+then
 	aObj.blizzFrames[ftype].LFDFrame = function(self)
 		if not self.prdb.PVEFrame or self.initialized.LFDFrame then return end
 		self.initialized.LFDFrame = true
@@ -2639,7 +2643,6 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 				self:Unhook(this, "OnShow")
 			end)
 			self:checkShown(_G.StatusTrackingBarManager)
-
 			if _G.MultiCastActionBarFrame then
 				self:SecureHookScript(_G.MultiCastActionBarFrame, "OnShow", function(this)
 					self:keepFontStrings(_G.MultiCastFlyoutFrame) -- Shaman's Totem Frame
@@ -2729,47 +2732,36 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 					self:addButtonBorder{obj=_G.ActionBarDownButton, fType=ftype, ofs=-4, clr="gold"}
 					skinMultiBarBtns("BottomLeft")
 					skinMultiBarBtns("BottomRight")
+					skinMultiBarBtns("Right")
+					skinMultiBarBtns("Left")
 				end
 
 				self:Unhook(this, "OnShow")
 			end)
 			self:checkShown(_G.MainMenuBar)
-
-			if self.modBtnBs then
-				skinMultiBarBtns("Right")
-				skinMultiBarBtns("Left")
-			end
 		end
-		if self.modBtnBs
-		and not self.isMnln
-		then
-			local microButtons = not aObj.isClsc and _G.MICRO_BUTTONS or {
-				"AchievementMicroButton",
-				"CharacterMicroButton",
-				"CollectionsMicroButton",
-				"EJMicroButton",
-				"GuildMicroButton",
-				"HelpMicroButton",
-				"LFGMicroButton",
-				"MainMenuMicroButton",
-				"PVPMicroButton",
-				"QuestLogMicroButton",
-				"SpellbookMicroButton",
-				"StoreMicroButton",
-				"TalentMicroButton",
-				"WorldMapMicroButton",
-			}
-			for _, bName in _G.pairs(microButtons) do
-				self:addButtonBorder{obj=_G[bName], fType=ftype, es=24, ofs=2, y1=not self.isClscBCA and not self.isClsc and not self.isClscERAPTR and -18 or nil, reParent={_G[bName].QuickKeybindHighlightTexture}}
+		if self.modBtnBs then
+			if self.isClscERA
+			and not self.isClscBCA
+			then
+				for _, bName in _G.pairs(_G.MICRO_BUTTONS) do
+					self:addButtonBorder{obj=_G[bName], fType=ftype, es=24, ofs=2, y1=-18, reParent={_G[bName].QuickKeybindHighlightTexture}}
+				end
+			elseif not self.isMnln then
+				for _, bInfo in _G.pairs(_G.MicroMenu:GenerateButtonInfos()) do
+					self:addButtonBorder{obj=bInfo.button, fType=ftype, es=24, ofs=2, reParent={bInfo.button.QuickKeybindHighlightTexture}}
+				end
 			end
-			local function abb2Bag(bag)
-				aObj:addButtonBorder{obj=bag, fType=ftype, ibt=true, ofs=3, clr=bag.icon:GetVertexColor()}
+			if not self.isMnln then
+				local function abb2Bag(bag)
+					aObj:addButtonBorder{obj=bag, fType=ftype, ibt=true, ofs=3, clr=bag.icon:GetVertexColor()}
+				end
+				abb2Bag(_G.MainMenuBarBackpackButton)
+				for i = 0, 3 do
+					abb2Bag(_G["CharacterBag" .. i .. "Slot"])
+				end
+				self:addButtonBorder{obj=_G.KeyRingButton, fType=ftype, ofs=2}
 			end
-			abb2Bag(_G.MainMenuBarBackpackButton)
-			for i = 0, 3 do
-				abb2Bag(_G["CharacterBag" .. i .. "Slot"])
-			end
-			self:addButtonBorder{obj=_G.KeyRingButton, fType=ftype, ofs=2}
 		end
 	end
 
@@ -3053,8 +3045,8 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 		ignBtn["GameTimeFrame"]                     = true
 		ignBtn["MiniMapTracking"]                   = true
 		ignBtn["MiniMapWorldMapButton"]             = true
-		ignBtn["LFGMinimapFrame"]                   = true -- ClassicERA
-		ignBtn["MiniMapLFGFrame"]                   = true -- Classic
+		ignBtn["LFGMinimapFrame"]                   = self.isClscERA and true or nil
+		ignBtn["MiniMapLFGFrame"]                   = self.isClsc and true or nil
 	end
 	local function mmKids(mmObj)
 		local objName, objType
@@ -3127,17 +3119,17 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 			btn = _G["MinimapZoom" .. suff]
 			if suff == "In" then
 				txt = self.modUIBtns.plus
-				if self.isClscERA then
-					xOfs, yOfs = 9, -24
-				else
+				if self.isClsc then
 					xOfs, yOfs = 14, -12
+				else
+					xOfs, yOfs = 9, -24
 				end
 			else
 				txt = self.modUIBtns.minus
-				if self.isClscERA then
-					xOfs, yOfs = 19, -12
-				else
+				if self.isClsc then
 					xOfs, yOfs = 20, -10
+				else
+					xOfs, yOfs = 19, -12
 				end
 			end
 			self:moveObject{obj=btn, x=xOfs, y=yOfs}
@@ -3158,7 +3150,36 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 				_G.EventRegistry:RegisterFrameEventAndCallback("MINIMAP_UPDATE_ZOOM", clrZoomBtns, self)
 			end
 		end
-		if self.isClscERA then
+		if self.isClsc then
+			local function makeBtnSquare(obj, x1, y1, x2, y2)
+				obj:SetSize(26, 26)
+				obj:GetNormalTexture():SetTexCoord(x1, y1, x2, y2)
+				obj:GetPushedTexture():SetTexCoord(x1, y1, x2, y2)
+				obj:SetHighlightTexture(aObj.tFDIDs.bHLS)
+				obj:SetHitRectInsets(-5, -5, -5, -5)
+				if not minBtn then
+					aObj:skinObject("button", {obj=obj, fType=ftype, ng=true, bd=obj==_G.GameTimeFrame and 10 or 1, ofs=4})
+				end
+			end
+			-- Calendar button
+			makeBtnSquare(_G.GameTimeFrame, 0.1, 0.31, 0.16, 0.6)
+			_G.GameTimeFrame:SetNormalFontObject(_G.GameFontWhite) -- allow for font OUTLINE to be seen
+			_G.MiniMapTrackingBackground:SetTexture(nil)
+			_G.MiniMapTrackingButtonBorder:SetTexture(nil)
+			if not minBtn then
+				_G.MiniMapTracking:SetScale(0.9)
+				self:skinObject("frame", {obj=_G.MiniMapTrackingButton, fType=ftype, bd=10, ofs=0})
+				-- TODO: Background alpha is 0
+			end
+			self:skinObject("frame", {obj=_G.MiniMapLFGFrame, fType=ftype, kfs=true, ofs=0})
+			-- if not self.isClsc then
+			-- 	_G.MiniMapWorldBorder:SetTexture(nil)
+			-- end
+			_G.MiniMapWorldMapButton:DisableDrawLayer("OVERLAY") -- border texture
+			_G.MiniMapWorldMapButton:ClearAllPoints()
+			_G.MiniMapWorldMapButton:SetPoint("LEFT", _G.MinimapZoneTextButton, "RIGHT", -4, 0)
+			self:skinOtherButton{obj=_G.MiniMapWorldMapButton, font=self.fontP, text="M", noSkin=minBtn}
+		else
 			-- remove ring from GameTimeFrame texture
 			self:RawHook(_G.GameTimeTexture, "SetTexCoord", function(this, minx, maxx, miny, maxy)
 				self.hooks[this].SetTexCoord(this, minx + 0.075, maxx - 0.075, miny + 0.175, maxy - 0.2)
@@ -3183,35 +3204,7 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 				self:skinObject("frame", {obj=_G.LFGMinimapFrame, fType=ftype, kfs=true, ofs=-1})
 				self:moveObject{obj=_G.LFGMinimapFrame, x=-30, y=6}
 			end
-		elseif self.isClsc then
-			local function makeBtnSquare(obj, x1, y1, x2, y2)
-				obj:SetSize(26, 26)
-				obj:GetNormalTexture():SetTexCoord(x1, y1, x2, y2)
-				obj:GetPushedTexture():SetTexCoord(x1, y1, x2, y2)
-				obj:SetHighlightTexture(aObj.tFDIDs.bHLS)
-				obj:SetHitRectInsets(-5, -5, -5, -5)
-				if not minBtn then
-					aObj:skinObject("button", {obj=obj, fType=ftype, ng=true, bd=obj==_G.GameTimeFrame and 10 or 1, ofs=4})
-				end
-			end
-			-- Calendar button
-			makeBtnSquare(_G.GameTimeFrame, 0.1, 0.31, 0.16, 0.6)
-			_G.GameTimeFrame:SetNormalFontObject(_G.GameFontWhite) -- allow for font OUTLINE to be seen
-			_G.MiniMapTrackingBackground:SetTexture(nil)
-			_G.MiniMapTrackingButtonBorder:SetTexture(nil)
-			if not minBtn then
-				_G.MiniMapTracking:SetScale(0.9)
-				self:skinObject("frame", {obj=_G.MiniMapTrackingButton, fType=ftype, bd=10, ofs=0})
-				-- TODO: Background alpha is 0
-			end
-			self:skinObject("frame", {obj=_G.MiniMapLFGFrame, fType=ftype, kfs=true, ofs=0})
-			if not self.isClsc then
-				_G.MiniMapWorldBorder:SetTexture(nil)
-			end
-			_G.MiniMapWorldMapButton:DisableDrawLayer("OVERLAY") -- border texture
-			_G.MiniMapWorldMapButton:ClearAllPoints()
-			_G.MiniMapWorldMapButton:SetPoint("LEFT", _G.MinimapZoneTextButton, "RIGHT", -4, 0)
-			self:skinOtherButton{obj=_G.MiniMapWorldMapButton, font=self.fontP, text="M", noSkin=minBtn}
+
 		end
 	end
 	_G.TimeManagerClockButton:DisableDrawLayer("BORDER")
@@ -3262,16 +3255,15 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 
 	local function skinDBI(_, dbiBtn, name)
 		dbiBtn:SetSize(24, 24)
-		if not aObj.isMnln then
-			-- DON'T move icons with multiple points
-			if dbiBtn.icon:GetNumPoints() == 1 then
-				aObj:moveObject{obj=dbiBtn.icon, x=-3, y=3}
-			end
-		end
 		-- FIXME: this is to move button off the minimap, required until LibDBIcon is fixed
 		if aObj.isMnln then
 			aObj:moveObject{obj=dbiBtn, x=-36, y=0}
 			dbiBtn.SetPoint = _G.nop
+		else
+			-- DON'T move icons with multiple points
+			if dbiBtn.icon:GetNumPoints() == 1 then
+				aObj:moveObject{obj=dbiBtn.icon, x=-3, y=3}
+			end
 		end
 		skinMMBtn("LibDBIcon btn", dbiBtn, name)
 	end
@@ -3342,7 +3334,9 @@ aObj.blizzFrames[ftype].MovieFrame = function(self)
 
 end
 
-if not aObj.isClscERA then
+if aObj.isMnln
+or aObj.isClsc
+then
 	aObj.blizzFrames[ftype].OverrideActionBar = function(self) -- a.k.a. Vehicle UI
 		if not self.prdb.OverrideActionBar or self.initialized.OverrideActionBar then return end
 		self.initialized.OverrideActionBar = true
@@ -3669,19 +3663,17 @@ if _G.PTR_IssueReporter then
 	end
 end
 
-if not aObj.isClscERA then
+if aObj.isMnln
+or aObj.isClsc
+then
 	aObj.blizzFrames[ftype].PVEFrame = function(self)
 		if not self.prdb.PVEFrame or self.initialized.PVEFrame then return end
 		self.initialized.PVEFrame = true
 
-		local groupFrames
-		if _G.PVEFrame.ScenariosEnabled and _G.PVEFrame:ScenariosEnabled() then
-			groupFrames = { "LFDParentFrame", "ScenarioFinderFrame", "RaidFinderFrame", "LFGListPVEStub" }
-		else
-			groupFrames = { "LFDParentFrame", "RaidFinderFrame", "LFGListPVEStub" }
-		end
-		if self.isClsc then
-			groupFrames[4] = "ScenarioFinderFrame"
+		local groupFrames = { "LFDParentFrame", "RaidFinderFrame", "LFGListPVEStub" }
+		if _G.PVEFrame.ScenariosEnabled and _G.PVEFrame:ScenariosEnabled()
+		or self.isClsc then
+			aObj:add2Table(groupFrames, "ScenarioFinderFrame")
 		end
 
 		self:SecureHookScript(_G.PVEFrame, "OnShow", function(this)
@@ -3691,9 +3683,9 @@ if not aObj.isClscERA then
 			end
 
 			self:keepFontStrings(this.shadows)
-			if not self.isClscERA then
+			-- if not self.isClscERA then
 				self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype})
-			end
+			-- end
 			-- GroupFinder Frame
 			for i = 1, #groupFrames do
 				_G.GroupFinderFrame["groupButton" .. i].bg:SetTexture(nil)
@@ -3796,7 +3788,7 @@ aObj.blizzFrames[ftype].ReportFrame = function(self)
 			self:skinStdButton{obj=this.ScreenshotReportingFrame.TakeScreenshotButton, fType=ftype}
 			self:SecureHook(this, "MajorTypeSelected", function(fObj, _, _)
 				for catBtn in fObj.MinorCategoryButtonPool:EnumerateActive() do
-					self:skinStdButton{obj=catBtn, fType=ftype, clr="black"}
+					self:skinStdButton{obj=catBtn, fType=ftype}
 				end
 			end)
 		end
@@ -3809,7 +3801,9 @@ aObj.blizzFrames[ftype].ReportFrame = function(self)
 
 end
 
-if not aObj.isClscERA then
+if aObj.isMnln
+or aObj.isClsc
+then
 	aObj.blizzFrames[ftype].ScenarioFinderFrame = function(self)
 		if not self.prdb.PVEFrame or self.initialized.ScenarioFinderFrame then return end
 		self.initialized.ScenarioFinderFrame = true
@@ -4790,6 +4784,7 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 
 	if self.isMnln
 	or aObj.isClsc
+	or aObj.isClscBCA
 	then
 		self:SecureHookScript(_G.UIWidgetCenterDisplayFrame, "OnShow", function(this)
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true})

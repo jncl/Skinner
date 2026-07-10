@@ -74,7 +74,7 @@ function aObj:checkWoWVersion()
 	-- handle PTR and Beta versions
 	self.isClscPTR    = self.isClscPTR or self.isClscBeta
 	self.isClsc       = self.isClsc or self.isClscPTR
-	self.isClscERA    = self.isClscERA  or self.isClscERAPTR or self.isClscBCA
+	self.isClscERA    = self.isClscERA  or self.isClscERAPTR--[[ or self.isClscBCA]]
 	self.isMnlnPTR    = self.isMnlnPTR or self.isMnlnBeta
 	self.isMnln       = self.isMnln or self.isMnlnPTR or self.isMnlnPTRX
 

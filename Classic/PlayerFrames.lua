@@ -61,8 +61,7 @@ aObj.SetupClassic_PlayerFrames = function()
 		end
 	end
 
-	if not aObj.isClscBCA
-	and not aObj.isClsc
+	if aObj.isClscERA
 	and not aObj.isClscERAPTR
 	then
 		aObj.blizzFrames[ftype].Buffs = function(self)
@@ -149,7 +148,7 @@ aObj.SetupClassic_PlayerFrames = function()
 		end
 	end
 
-	if aObj.isClscERA then
+	if not aObj.isClsc then
 		aObj.blizzFrames[ftype].CharacterFrames = function(self)
 			if not self.prdb.CharacterFrames or self.initialized.CharacterFrames then return end
 			self.initialized.CharacterFrames = true
@@ -196,8 +195,7 @@ aObj.SetupClassic_PlayerFrames = function()
 						_G.PaperDollItemSlotButton_Update(btn)
 						self:addButtonBorder{obj=_G.RuneFrameControlButton, fType=ftype}
 					end
-					if self.isClscBCA
-					or self.isClsc
+					if not self.isClscERA
 					or self.isClscERAPTR
 					then
 						self:skinObject("ddbutton", {obj=fObj.Attributes.LeftPlayerStatDropdown, fType=ftype})
@@ -231,20 +229,13 @@ aObj.SetupClassic_PlayerFrames = function()
 					local awc
 					for i = 1, _G.NUM_FACTIONS_DISPLAYED do
 						if self.modBtns then
-							if self.isClscERA then
-								self:skinExpandButton{obj=_G["ReputationHeader" .. i], fType=ftype, onSB=true}
-								self.modUIBtns:checkTex{obj=_G["ReputationHeader" .. i]}
-								self:skinObject("statusbar", {obj=_G["ReputationBar" .. i], fType=ftype, regions={1, 2}, fi=0})
-								awc = self:getRegion(_G["ReputationBar" .. i .. "AtWarCheck"], 1)
-								awc:SetTexture(self.tFDIDs.cbSC)
-								awc:SetTexCoord(0, 1, 0, 1)
-								awc:SetSize(32, 32)
-							else
-								self:skinExpandButton{obj=_G["ReputationBar" .. i .. "ExpandOrCollapseButton"], fType=ftype, onSB=true}
-								self.modUIBtns:checkTex{obj=_G["ReputationBar" .. i .. "ExpandOrCollapseButton"]}
-								self:skinObject("statusbar", {obj=_G["ReputationBar" .. i .. "ReputationBar"], fType=ftype, regions={3, 4}, fi=0})
-								self:removeRegions(_G["ReputationBar" .. i], {1, 2, 3})
-							end
+							self:skinExpandButton{obj=_G["ReputationHeader" .. i], fType=ftype, onSB=true}
+							self.modUIBtns:checkTex{obj=_G["ReputationHeader" .. i]}
+							self:skinObject("statusbar", {obj=_G["ReputationBar" .. i], fType=ftype, regions={1, 2}, fi=0})
+							awc = self:getRegion(_G["ReputationBar" .. i .. "AtWarCheck"], 1)
+							awc:SetTexture(self.tFDIDs.cbSC)
+							awc:SetTexCoord(0, 1, 0, 1)
+							awc:SetSize(32, 32)
 						end
 					end
 					self:skinObject("slider", {obj=_G.ReputationListScrollFrame.ScrollBar, fType=ftype, rpTex="background"})
@@ -288,10 +279,7 @@ aObj.SetupClassic_PlayerFrames = function()
 				end)
 				self:checkShown(_G.SkillFrame)
 
-				if not self.isClscBCA
-				and not self.isClsc
-				and not self.isClscERAPTR
-				then
+				if self.isClscERA then
 					self:SecureHookScript(_G.HonorFrame, "OnShow", function(fObj)
 						self:keepFontStrings(fObj)
 						self:skinObject("statusbar", {obj=_G.HonorFrameProgressBar, fType=ftype, fi=0})
@@ -385,8 +373,7 @@ aObj.SetupClassic_PlayerFrames = function()
 			    return
 			end
 
-			if self.isClsc
-			or self.isClscBCA
+			if not self.isClscERA
 			or self.isClscERAPTR
 			then
 				self:skinObject("dropdown", {obj=_G.CraftFrameFilterDropDown, fType=ftype})
@@ -977,8 +964,6 @@ aObj.SetupClassic_PlayerFrames = function()
 			self:checkShown(_G.InspectPaperDollFrame)
 
 			if self.isClscERA
-			and not self.isClscBCA
-			and not self.isClsc
 			and not self.isClscERAPTR
 			then
 				self:SecureHookScript(_G.InspectHonorFrame, "OnShow", function(fObj)
@@ -995,8 +980,7 @@ aObj.SetupClassic_PlayerFrames = function()
 				end)
 				self:SecureHookScript(_G.InspectTalentFrame, "OnShow", function(fObj)
 					self:keepFontStrings(fObj)
-					if not aObj.isClscBCA
-					and not aObj.isClsc
+					if aObj.isClscERA
 					and not aObj.isClscERAPTR
 					then
 						fObj.InspectSpec.ring:SetTexture(nil)
@@ -1158,104 +1142,7 @@ aObj.SetupClassic_PlayerFrames = function()
 		if not self.prdb.SpellBookFrame or self.initialized.SpellBookFrame then return end
 		self.initialized.SpellBookFrame = true
 
-		if aObj.isClscERA then
-			self:SecureHookScript(_G.SpellBookFrame, "OnShow", function(this)
-				if _G.InCombatLockdown() then
-				    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
-				    return
-				end
-
-				this.numTabs = 3
-				self:skinObject("tabs", {obj=this, prefix=this:GetName(), suffix="Button", fType=ftype, lod=self.isTT and true, offsets={x1=13, y1=-14, x2=-13, y2=16}, regions={1, 3}, track=false})
-				if self.isTT then
-					local function setTab(bookType)
-						local tab
-						for i = 1, this.numTabs do
-							tab = _G["SpellBookFrameTabButton" .. i]
-							if tab.bookType == bookType then
-								self:setActiveTab(tab.sf)
-							else
-								self:setInactiveTab(tab.sf)
-							end
-						end
-					end
-					-- hook to handle tabs
-					self:SecureHook("ToggleSpellBook", function(bookType)
-						setTab(bookType)
-					end)
-					-- set correct tab
-					setTab(this.bookType)
-				end
-				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, x1=10, y1=-12, x2=-31, y2=73})
-				if self.modBtns then
-					self:skinCloseButton{obj=_G.SpellBookCloseButton, fType=ftype}
-				end
-				if self.modBtnBs then
-					self:addButtonBorder{obj=_G.SpellBookPrevPageButton, fType=ftype, ofs=-2, y1=-3, x2=-3}
-					self:addButtonBorder{obj=_G.SpellBookNextPageButton, fType=ftype, ofs=-2, y1=-3, x2=-3}
-					self:clrPNBtns("SpellBook")
-					self:SecureHook(this, "UpdatePages", function()
-						self:clrPNBtns("SpellBook")
-					end)
-				end
-				if self.modChkBtns then
-					self:skinCheckButton{obj=_G.ShowAllSpellRanksCheckbox, fType=ftype}
-				end
-
-				local function updBtn(btn)
-					-- handle in combat
-					if _G.InCombatLockdown() then
-					    aObj:add2Table(aObj.oocTab, {updBtn, {btn}})
-					    return
-					end
-					if aObj.modBtnBs
-					and btn.sbb -- allow for not skinned during combat
-					then
-						if not btn:IsEnabled() then
-							btn.sbb:Hide()
-						else
-							btn.sbb:Show()
-						end
-						aObj:clrBtnBdr(btn)
-					end
-					local spellString, subSpellString = _G[btn:GetName() .. "SpellName"], _G[btn:GetName() .. "SubSpellName"]
-					if _G[btn:GetName() .. "IconTexture"]:IsDesaturated() then -- player level too low, see Trainer, or offSpec
-						spellString:SetTextColor(_G.DISABLED_FONT_COLOR:GetRGB())
-						subSpellString:SetTextColor(_G.DISABLED_FONT_COLOR:GetRGB())
-						btn.RequiredLevelString:SetTextColor(_G.DISABLED_FONT_COLOR:GetRGB())
-						btn.SeeTrainerString:SetTextColor(_G.DISABLED_FONT_COLOR:GetRGB())
-					else
-						spellString:SetTextColor(aObj.HT:GetRGB())
-						subSpellString:SetTextColor(aObj.BT:GetRGB())
-					end
-				end
-				_G.SpellBookPageText:SetTextColor(self.BT:GetRGB())
-				local btn
-				for i = 1, _G.SPELLS_PER_PAGE do
-					btn = _G["SpellButton" .. i]
-					btn:DisableDrawLayer("BACKGROUND")
-					btn:GetNormalTexture():SetTexture(nil)
-					if self.modBtnBs then
-						self:addButtonBorder{obj=btn, fType=ftype, sft=true, reParent={_G["SpellButton" .. i .. "AutoCastable"]}}
-					end
-					updBtn(btn)
-					-- hook self to change text colour as required
-					self:SecureHook(btn, "UpdateButton", function(bObj)
-						updBtn(bObj)
-					end)
-				end
-
-				for i = 1, _G.MAX_SKILLLINE_TABS do
-					self:removeRegions(_G["SpellBookSkillLineTab" .. i], {1}) -- N.B. other regions are icon and highlight
-					if self.modBtnBs then
-						self:addButtonBorder{obj=_G["SpellBookSkillLineTab" .. i], fType=ftype}
-					end
-				end
-
-				self:Unhook(this, "OnShow")
-			end)
-			self:checkShown(_G.SpellBookFrame)
-		else
+		if aObj.isClsc then
 			self:SecureHookScript(_G.SpellBookFrame, "OnShow", function(this)
 				if _G.InCombatLockdown() then
 				    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
@@ -1455,6 +1342,103 @@ aObj.SetupClassic_PlayerFrames = function()
 				self:Unhook(this, "OnShow")
 			end)
 			self:checkShown(_G.SpellBookFrame)
+		else
+			self:SecureHookScript(_G.SpellBookFrame, "OnShow", function(this)
+				if _G.InCombatLockdown() then
+				    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+				    return
+				end
+
+				this.numTabs = 3
+				self:skinObject("tabs", {obj=this, prefix=this:GetName(), suffix="Button", fType=ftype, lod=self.isTT and true, offsets={x1=13, y1=-14, x2=-13, y2=16}, regions={1, 3}, track=false})
+				if self.isTT then
+					local function setTab(bookType)
+						local tab
+						for i = 1, this.numTabs do
+							tab = _G["SpellBookFrameTabButton" .. i]
+							if tab.bookType == bookType then
+								self:setActiveTab(tab.sf)
+							else
+								self:setInactiveTab(tab.sf)
+							end
+						end
+					end
+					-- hook to handle tabs
+					self:SecureHook("ToggleSpellBook", function(bookType)
+						setTab(bookType)
+					end)
+					-- set correct tab
+					setTab(this.bookType)
+				end
+				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, x1=10, y1=-12, x2=-31, y2=73})
+				if self.modBtns then
+					self:skinCloseButton{obj=_G.SpellBookCloseButton, fType=ftype}
+				end
+				if self.modBtnBs then
+					self:addButtonBorder{obj=_G.SpellBookPrevPageButton, fType=ftype, ofs=-2, y1=-3, x2=-3}
+					self:addButtonBorder{obj=_G.SpellBookNextPageButton, fType=ftype, ofs=-2, y1=-3, x2=-3}
+					self:clrPNBtns("SpellBook")
+					self:SecureHook(this, "UpdatePages", function()
+						self:clrPNBtns("SpellBook")
+					end)
+				end
+				if self.modChkBtns then
+					self:skinCheckButton{obj=_G.ShowAllSpellRanksCheckbox, fType=ftype}
+				end
+
+				local function updBtn(btn)
+					-- handle in combat
+					if _G.InCombatLockdown() then
+					    aObj:add2Table(aObj.oocTab, {updBtn, {btn}})
+					    return
+					end
+					if aObj.modBtnBs
+					and btn.sbb -- allow for not skinned during combat
+					then
+						if not btn:IsEnabled() then
+							btn.sbb:Hide()
+						else
+							btn.sbb:Show()
+						end
+						aObj:clrBtnBdr(btn)
+					end
+					local spellString, subSpellString = _G[btn:GetName() .. "SpellName"], _G[btn:GetName() .. "SubSpellName"]
+					if _G[btn:GetName() .. "IconTexture"]:IsDesaturated() then -- player level too low, see Trainer, or offSpec
+						spellString:SetTextColor(_G.DISABLED_FONT_COLOR:GetRGB())
+						subSpellString:SetTextColor(_G.DISABLED_FONT_COLOR:GetRGB())
+						btn.RequiredLevelString:SetTextColor(_G.DISABLED_FONT_COLOR:GetRGB())
+						btn.SeeTrainerString:SetTextColor(_G.DISABLED_FONT_COLOR:GetRGB())
+					else
+						spellString:SetTextColor(aObj.HT:GetRGB())
+						subSpellString:SetTextColor(aObj.BT:GetRGB())
+					end
+				end
+				_G.SpellBookPageText:SetTextColor(self.BT:GetRGB())
+				local btn
+				for i = 1, _G.SPELLS_PER_PAGE do
+					btn = _G["SpellButton" .. i]
+					btn:DisableDrawLayer("BACKGROUND")
+					btn:GetNormalTexture():SetTexture(nil)
+					if self.modBtnBs then
+						self:addButtonBorder{obj=btn, fType=ftype, sft=true, reParent={_G["SpellButton" .. i .. "AutoCastable"]}}
+					end
+					updBtn(btn)
+					-- hook self to change text colour as required
+					self:SecureHook(btn, "UpdateButton", function(bObj)
+						updBtn(bObj)
+					end)
+				end
+
+				for i = 1, _G.MAX_SKILLLINE_TABS do
+					self:removeRegions(_G["SpellBookSkillLineTab" .. i], {1}) -- N.B. other regions are icon and highlight
+					if self.modBtnBs then
+						self:addButtonBorder{obj=_G["SpellBookSkillLineTab" .. i], fType=ftype}
+					end
+				end
+
+				self:Unhook(this, "OnShow")
+			end)
+			self:checkShown(_G.SpellBookFrame)
 		end
 
 	end
@@ -1463,62 +1447,7 @@ aObj.SetupClassic_PlayerFrames = function()
 		if not self.prdb.TalentUI or self.initialized.TalentUI then return end
 		self.initialized.TalentUI = true
 
-		if self.isClscERA then
-			local tName
-			local function skinTalentBtns()
-				for i = 1, _G.MAX_NUM_TALENTS do
-					tName = "PlayerTalentFrameTalent" .. i
-					_G[tName .. "Slot"]:SetTexture(nil)
-					aObj:changeTandC(_G[tName .. "RankBorder"])
-					if aObj.modBtnBs then
-						if not _G[tName].sbb then
-							aObj:addButtonBorder{obj=_G[tName], fType=ftype, ibt=true, reParent={_G[tName .. "RankBorder"], _G[tName .. "Rank"]}, clr={_G[tName .. "Slot"]:GetVertexColor()}}
-						else
-							_G[tName].sbb:SetBackdropBorderColor(_G[tName .. "Slot"]:GetVertexColor())
-						end
-					end
-				end
-			end
-			self:SecureHookScript(_G.PlayerTalentFrame, "OnShow", function(this)
-				local fName = this:GetName()
-				self:skinObject("tabs", {obj=this, prefix=fName, fType=ftype, lod=self.isTT and true})
-				self:skinObject("slider", {obj=_G[fName .. 'ScrollFrameScrollBar'], fType=ftype, rpTex="artwork"})
-				self:moveObject{obj=_G.PlayerTalentFrameTitleText, y=-2}
-				-- keep background Texture
-				self:removeRegions(this, {1, 2, 3, 4, 5})
-				self:skinObject("frame", {obj=this, fType=ftype, cb=true, x1=10, y1=-12, x2=-31, y2=74})
-				if self.isClscBCA
-				or self.isClscERAPTR
-				then
-					self:keepFontStrings(_G.PlayerTalentFrameStatusFrame)
-				end
-				self:keepFontStrings(_G.PlayerTalentFramePointsBar)
-				_G.PlayerTalentFramePreviewBar:DisableDrawLayer("BORDER")
-				_G.PlayerTalentFramePreviewBarFiller:DisableDrawLayer("BACKGROUND")
-				if self.modBtns then
-					if self.isClscBCA
-					or self.isClscERAPTR
-					then
-						self:skinStdButton{obj=_G.PlayerTalentFrameCancelButton, fType=ftype}
-					end
-					self:skinStdButton{obj=_G.PlayerTalentFrameResetButton, fType=ftype, schk=true}
-					self:skinStdButton{obj=_G.PlayerTalentFrameLearnButton, fType=ftype, schk=true}
-				end
-				for i = 1, 3 do
-					self:removeRegions(_G["PlayerSpecTab" .. i], {1}) -- N.B. other regions are icon and highlight
-					if self.modBtnBs then
-						self:addButtonBorder{obj=_G["PlayerSpecTab" .. i]}
-					end
-				end
-				skinTalentBtns()
-				self:SecureHook("TalentFrame_Update", function(_)
-					skinTalentBtns()
-				end)
-
-				self:Unhook(this, "OnShow")
-			end)
-			self:checkShown(_G.PlayerTalentFrame)
-		else
+		if self.isClsc then
 			local specBtnRegs = self.isClsc and {1, 2, 3} or {1, 2, 3, 8}
 			local btn
 			self:SecureHook("PlayerTalentFrame_UpdateSpecFrame", function(frame, _)
@@ -1603,6 +1532,61 @@ aObj.SetupClassic_PlayerFrames = function()
 				self:Unhook(this, "OnShow")
 			end)
 			self:checkShown(_G.PlayerTalentFrame)
+		else
+			local tName
+			local function skinTalentBtns()
+				for i = 1, _G.MAX_NUM_TALENTS do
+					tName = "PlayerTalentFrameTalent" .. i
+					_G[tName .. "Slot"]:SetTexture(nil)
+					aObj:changeTandC(_G[tName .. "RankBorder"])
+					if aObj.modBtnBs then
+						if not _G[tName].sbb then
+							aObj:addButtonBorder{obj=_G[tName], fType=ftype, ibt=true, reParent={_G[tName .. "RankBorder"], _G[tName .. "Rank"]}, clr={_G[tName .. "Slot"]:GetVertexColor()}}
+						else
+							_G[tName].sbb:SetBackdropBorderColor(_G[tName .. "Slot"]:GetVertexColor())
+						end
+					end
+				end
+			end
+			self:SecureHookScript(_G.PlayerTalentFrame, "OnShow", function(this)
+				local fName = this:GetName()
+				self:skinObject("tabs", {obj=this, prefix=fName, fType=ftype, lod=self.isTT and true})
+				self:skinObject("slider", {obj=_G[fName .. 'ScrollFrameScrollBar'], fType=ftype, rpTex="artwork"})
+				self:moveObject{obj=_G.PlayerTalentFrameTitleText, y=-2}
+				-- keep background Texture
+				self:removeRegions(this, {1, 2, 3, 4, 5})
+				self:skinObject("frame", {obj=this, fType=ftype, cb=true, x1=10, y1=-12, x2=-31, y2=74})
+				if not self.isClscERA
+				or self.isClscERAPTR
+				then
+					self:keepFontStrings(_G.PlayerTalentFrameStatusFrame)
+				end
+				self:keepFontStrings(_G.PlayerTalentFramePointsBar)
+				_G.PlayerTalentFramePreviewBar:DisableDrawLayer("BORDER")
+				_G.PlayerTalentFramePreviewBarFiller:DisableDrawLayer("BACKGROUND")
+				if self.modBtns then
+					if not self.isClscERA
+					or self.isClscERAPTR
+					then
+						self:skinStdButton{obj=_G.PlayerTalentFrameCancelButton, fType=ftype}
+					end
+					self:skinStdButton{obj=_G.PlayerTalentFrameResetButton, fType=ftype, schk=true}
+					self:skinStdButton{obj=_G.PlayerTalentFrameLearnButton, fType=ftype, schk=true}
+				end
+				for i = 1, 3 do
+					self:removeRegions(_G["PlayerSpecTab" .. i], {1}) -- N.B. other regions are icon and highlight
+					if self.modBtnBs then
+						self:addButtonBorder{obj=_G["PlayerSpecTab" .. i]}
+					end
+				end
+				skinTalentBtns()
+				self:SecureHook("TalentFrame_Update", function(_)
+					skinTalentBtns()
+				end)
+
+				self:Unhook(this, "OnShow")
+			end)
+			self:checkShown(_G.PlayerTalentFrame)
 		end
 
 	end
@@ -1659,8 +1643,7 @@ aObj.SetupClassic_PlayerFrames = function()
 		self.initialized.TradeSkillUI = true
 
 		self:SecureHookScript(_G.TradeSkillFrame, "OnShow", function(this)
-			if self.isClsc
-			or self.isClscBCA
+			if not self.isClscERA
 			or self.isClscERAPTR
 			then
 				if self.modChkBtns then
@@ -1669,10 +1652,10 @@ aObj.SetupClassic_PlayerFrames = function()
 				self:skinObject("editbox", {obj=_G.TradeSkillFrameEditBox, fType=ftype})
 			end
 			self:skinObject("statusbar", {obj=_G.TradeSkillRankFrame, fType=ftype, fi=0, bg=_G.TradeSkillRankFrameBackground})
-			if self.isClscERA then
-				_G.TradeSkillRankFrameBorder:GetNormalTexture():SetTexture(nil)
-			else
+			if self.isClsc then
 				_G.TradeSkillRankFrameBorder:SetTexture(nil)
+			else
+				_G.TradeSkillRankFrameBorder:GetNormalTexture():SetTexture(nil)
 			end
 			self:keepFontStrings(_G.TradeSkillExpandButtonFrame)
 			self:keepFontStrings(_G.TradeSkillDetailScrollChildFrame)

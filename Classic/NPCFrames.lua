@@ -7,7 +7,7 @@ local _G = _G
 aObj.SetupClassic_NPCFrames = function()
 	local ftype = "n"
 
-	if aObj.isClscERA then
+	if not aObj.isClsc then
 		aObj.blizzLoDFrames[ftype].AuctionUI = function(self)
 			if not self.prdb.AuctionUI or self.initialized.AuctionUI then return end
 			self.initialized.AuctionUI = true
@@ -435,7 +435,7 @@ end
 aObj.SetupClassic_NPCFramesOptions = function(self)
 
 	local optTab = {
-		["Auction UI"]            = self.isClscERA and true or nil,
+		["Auction UI"]            = not self.isClsc and true or nil,
 		["PetStableFrame"]        = {desc = "Stable Frame"},
 		["Reforging UI"]		  = self.isClsc and true or nil,
 	}

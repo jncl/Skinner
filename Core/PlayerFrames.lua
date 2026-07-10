@@ -4,7 +4,9 @@ local _G = _G
 
 local ftype = "p"
 
-if not aObj.isClscERA then
+if aObj.isMnln
+or aObj.isClsc
+then
 	aObj.blizzLoDFrames[ftype].AchievementUI = function(self)
 		if not self.prdb.AchievementUI.skin or self.initialized.AchievementUI then return end
 		self.initialized.AchievementUI = true
@@ -682,9 +684,7 @@ if not aObj.isClscERA then
 	end
 end
 
-if aObj.isMnln
-or aObj.isClscBCA
-or aObj.isClsc
+if not aObj.isClscERA
 or aObj.isClscERAPTR
 then
 	aObj.blizzFrames[ftype].Buffs = function(self)
@@ -756,7 +756,9 @@ then
 
 end
 
-if not aObj.isClscERA then
+if aObj.isMnln
+or aObj.isClsc
+then
 	aObj.blizzFrames[ftype].CharacterFrames = function(self)
 		if not self.prdb.CharacterFrames or self.initialized.CharacterFrames then return end
 		self.initialized.CharacterFrames = true
@@ -2537,7 +2539,9 @@ aObj.blizzFrames[ftype].CompactFrames = function(self)
 
 end
 
-if not aObj.isClscERA then
+if aObj.isMnln
+or aObj.isClsc
+then
 	aObj.blizzLoDFrames[ftype].EncounterJournal = function(self) -- a.k.a. Adventure Guide/Dungeon Journal
 		if not self.prdb.EncounterJournal or self.initialized.EncounterJournal then return end
 		self.initialized.EncounterJournal = true

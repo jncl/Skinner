@@ -905,7 +905,9 @@ local function __skinCheckButton(opts)
 		end
 	end
 
-	if not aObj.isClscERA then
+	if not aObj.isClscERA
+	or aObj.isClscBCA
+	then
 		opts.obj:GetNormalTexture():SetTexture(nil)
 		opts.obj:GetPushedTexture():SetTexture(nil)
 		if opts.nh then

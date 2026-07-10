@@ -2409,6 +2409,21 @@ aObj.SetupMainline_UIFrames = function()
 					end)
 					self:checkShown(fObj.DecorCustomizationsPane)
 
+					if aObj.isMnlnPTR then
+						self:SecureHookScript(fObj.PetCustomizationsPane, "OnShow", function(pcp)
+							self:keepFontStrings(pcp)
+							self:skinObject("editbox", {obj=pcp.SearchBox, fType=ftype, si=true, y1=-4, y2=4})
+							self:skinObject("ddbutton", {obj=pcp.Filters, fType=ftype, filter=true})
+							self:skinObject("scrollbar", {obj=pcp.OptionsContainer.ScrollBar, fType=ftype})
+							-- TODO: skin CollapseButton, currently texture has border , background & icon
+								-- .CollapseButton
+							self:skinObject("frame", {obj=pcp, fType=ftype, kfs=true, cb=true})
+
+							self:Unhook(fObj.PetCustomizationsPane, "OnShow")
+						end)
+						self:checkShown(fObj.PetCustomizationsPane)
+					end
+
 					self:SecureHookScript(_G.DyeSelectionPopout, "OnShow", function(dsp)
 						self:skinObject("scrollbar", {obj=dsp.DyeSlotScrollBar, fType=ftype})
 						self:skinObject("frame", {obj=dsp, fType=ftype, kfs=true, ofs=0})
@@ -2920,6 +2935,33 @@ aObj.SetupMainline_UIFrames = function()
 				end)
 				self:checkShown(this.CatalogContent)
 
+				if aObj.isMnlnPTR then
+					self:SecureHookScript(this.CollectionContent, "OnShow", function(coll)
+						coll.Background:SetTexture(nil)
+						coll.Divider:SetTexture(nil)
+						coll.Categories.Background:SetAlpha(0)
+						coll.Categories.TopBorder:SetTexture(nil)
+						coll.Categories.SubcategoriesDivider:SetTexture(nil)
+						self:skinObject("scrollbar", {obj=coll.BlueprintCollection.ScrollBar, fType=ftype})
+						-- TODO: skin entries
+						-- local function skinEntry(...)
+						-- 	local _, element, elementData
+						-- 	if _G.select("#", ...) == 2 then
+						-- 		element, elementData = ...
+						-- 	else
+						-- 		_, element, elementData = ...
+						-- 	end
+						-- end
+						-- .Header (change texture?)
+						-- _G.ScrollUtil.AddInitializedFrameCallback(coll.BlueprintCollection.ScrollBox, skinEntry, aObj, true)
+						-- .BlueprintDetails
+						self:keepFontStrings(coll.BlueprintDetails)
+
+						self:Unhook(this.CollectionContent, "OnShow")
+					end)
+					self:checkShown(this.CollectionContent)
+				end
+
 				self:Unhook(this, "OnShow")
 			end)
 			self:checkShown(_G.HousingDashboardFrame)
@@ -2999,6 +3041,9 @@ aObj.SetupMainline_UIFrames = function()
 				if self.modBtns then
 					self:skinStdButton{obj=this.PlotAccess.AccessTypeDropdown, fType=ftype}
 					self:skinStdButton{obj=this.HouseAccess.AccessTypeDropdown, fType=ftype}
+					if aObj.isMnlnPTR then
+						self:skinStdButton{obj=this.BlueprintExport.AccessTypeDropdown, fType=ftype}
+					end
 					self:skinStdButton{obj=this.IgnoreListButton, fType=ftype}
 					self:skinStdButton{obj=this.SaveButton, fType=ftype}
 					self:skinStdButton{obj=this.AbandonHouseButton, fType=ftype}
@@ -3009,6 +3054,11 @@ aObj.SetupMainline_UIFrames = function()
 					end
 					for _, cBtn in _G.pairs(this.HouseAccess.accessOptions) do
 						self:skinCheckButton{obj=cBtn.Checkbox, fType=ftype}
+					end
+					if aObj.isMnlnPTR then
+						for _, cBtn in _G.pairs(this.BlueprintExport.accessOptions) do
+							self:skinCheckButton{obj=cBtn.Checkbox, fType=ftype}
+						end
 					end
 				end
 
@@ -3918,7 +3968,7 @@ aObj.SetupMainline_UIFrames = function()
 		end)
 		self:checkShown(_G.TrainingGroundsFrame)
 
-			-- PlunderstormFrame
+		-- PlunderstormFrame
 
 		_G.RunNextFrame(function()
 			self:add2Table(self.ttList, ftype, _G.ConquestTooltip)

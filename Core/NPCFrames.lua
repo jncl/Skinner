@@ -4,7 +4,9 @@ local _G = _G
 
 local ftype = "n"
 
-if not aObj.isClscERA then
+if aObj.isMnln
+or aObj.isClsc
+then
 	aObj.blizzLoDFrames[ftype].AuctionHouseUI = function(self)
 		if not self.prdb.AuctionHouseUI or self.initialized.AuctionHouseUI then return end
 
@@ -106,11 +108,13 @@ if not aObj.isClscERA then
 				aObj:skinObject("editbox", {obj=frame.gold, fType=ftype, ofs=0})
 				aObj:skinObject("editbox", {obj=frame.silver, fType=ftype, ofs=0})
 				aObj:skinObject("editbox", {obj=frame.copper, fType=ftype, ofs=0})
-				if self.isClscERA then
+				if aObj.isMnln
+				or aObj.isClsc
+				then
 					frame.silver:SetWidth(38)
 					frame.copper:SetWidth(38)
 				end
-				if not self.isMnln then
+				if not aObj.isMnln then
 					aObj:moveObject{obj=frame.silver.texture, x=10}
 					aObj:moveObject{obj=frame.copper.texture, x=10}
 				end
@@ -611,8 +615,7 @@ aObj.blizzFrames[ftype].QuestFrame = function(self)
 			-- force recolouring of quest text
 			self:checkShown(_G.QuestFrameGreetingPanel)
 		end
-		if not self.isClscERA
-		or self.isClscBCA
+		if self.isMnln
 		or self.isClsc
 		or self.isClscERAPTR
 		then
@@ -773,10 +776,8 @@ aObj.blizzFrames[ftype].QuestInfo = function(self)
 		end
 		_G.QuestInfoSpellObjectiveLearnLabel:SetTextColor(aObj.BT:GetRGB())
 		_G.QuestInfoSpellObjectiveFrameNameFrame:SetTexture(nil)
-		if not aObj.isClsc
-		and not aObj.isClscBCA
+		if not aObj.isMnln
 		and not aObj.isClsc
-		and not aObj.isClscERAPTR
 		then
 			_G.QuestInfoSpellObjectiveFrameSpellBorder:SetTexture(nil)
 		end
@@ -872,12 +873,14 @@ aObj.blizzFrames[ftype].Tabard = function(self)
 				self:addButtonBorder{obj=_G["TabardFrameCustomization" .. i .. "RightButton"], ofs=-3, x1=1, clr="gold"}
 			end
 		end
-		if self.isClscERA then
+		if aObj.isMnln
+		or aObj.isClsc
+		then
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=10, y1=-11, x2=-32, y2=71})
+		else
 			self:removeInset(_G.TabardFrameMoneyInset)
 			_G.TabardFrameMoneyBg:DisableDrawLayer("BACKGROUND")
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true})
-		else
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=10, y1=-11, x2=-32, y2=71})
 		end
 		if self.modBtns then
 			self:skinStdButton{obj=_G.TabardFrameAcceptButton}
