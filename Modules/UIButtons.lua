@@ -713,6 +713,7 @@ local function __addButtonBorder(opts)
 			sba 	 = set button Alpha
 			rpA 	 = reParent Arrow Texture
 			ccat     = check if object's table can be accessed (Secret values)
+			nilHT    = nil the Highlight texture
 	--]]
 	--@debug@
 	_G.assert(opts and _G.type(opts) == "table", "Missing options table __addButtonBorder\n" .. _G.debugstack(2, 3, 2))
@@ -753,6 +754,9 @@ local function __addButtonBorder(opts)
 			end
 		end
 	end
+	if opts.nilHT then
+		opts.obj:GetHighlightTexture():SetTexture(nil)
+	end
 	if opts.gibt then
 		opts.obj.EmptyBackground:SetTexture(nil)
 	end
@@ -789,7 +793,6 @@ local function __addButtonBorder(opts)
 			reparentRegion(rpObj, opts.obj.sbb)
 		end
 	end
-
 	-- colour the button border
 	if _G.type(opts.clr) == "table" then
 		opts.obj.sbb:SetBackdropBorderColor(_G.unpack(opts.clr))
