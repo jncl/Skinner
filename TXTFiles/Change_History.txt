@@ -1,3 +1,19 @@
+beta12.68317.1
+Jncl:
+	Updated ToDo*.txt files
+	Updated Change_History.txt
+	Updated Version numbers
+	Retail PTR changes
+	Updated HousingUI code
+	Updated HousingDashboard skin
+	Updated FriendsFrame skin
+	Updated CharacterCustomize skin
+	Updated Settings skin
+	Updated MailFrame skin
+	Updated MoneyFrame code
+	Moved code from Skinner.lua to NSF
+	Updated Outfitter skin, closes #345
+
 beta12.68256.1
 Jncl:
 	Updated ToDo*.txt files
