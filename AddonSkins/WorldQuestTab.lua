@@ -2,7 +2,7 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("WorldQuestTab") then return end
 local _G = _G
 
-aObj.addonsToSkin.WorldQuestTab = function(self) -- v 12.0.12
+aObj.addonsToSkin.WorldQuestTab = function(self) -- v 12.0.14
 
 	local frame, btn
 	for _, name in _G.pairs{"OldTaxi", "Flight", "World"} do
@@ -50,10 +50,24 @@ aObj.addonsToSkin.WorldQuestTab = function(self) -- v 12.0.12
 			-- .QuestScrollBox
 		self:skinObject("scrollbar", {obj=this.ScrollFrame.ScrollBar})
 		self:skinObject("frame", {obj=this, kfs=true, ofs=4, y1=34, y2=-12})
+		-- only show skinframe when on QuestMap frame
+		if this.anchor ~= 2 then
+			this.sf:Hide()
+		end
 
 		self:Unhook(this, "OnShow")
 	end)
 	self:checkShown(_G.WQT_WorldQuestFrame)
+	-- only show skinframe when on QuestMap frame
+	_G.	WQT_CallbackRegistry:RegisterCallback("WQT.CoreFrame.AnchorUpdated", function(_, anchor)
+		if _G.WQT_WorldQuestFrame.sf then
+			if anchor == 2 then
+				_G.WQT_WorldQuestFrame.sf:Show()
+			else
+				_G.WQT_WorldQuestFrame.sf:Hide()
+			end
+		end
+	end, self)
 
 	self:SecureHookScript(_G.WQT_SettingsFrame, "OnShow", function(this)
 		if _G.InCombatLockdown() then
