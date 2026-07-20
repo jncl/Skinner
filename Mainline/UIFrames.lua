@@ -3410,17 +3410,18 @@ aObj.SetupMainline_UIFrames = function()
 
 		local x1Ofs, y1Ofs, x2Ofs, y2Ofs
 		local function resizeSF(frame, idx)
-			-- handle in combat
 			if _G.InCombatLockdown() then
 			    aObj:add2Table(aObj.oocTab, {resizeSF, {frame, idx}})
 			    return
 			end
-			-- aObj:Debug("resizeSF: [%s, %s]", frame, idx)
 			x1Ofs, y1Ofs, x2Ofs, y2Ofs = _G.unpack(optOfs[idx])
-			-- aObj:Debug("PCUI offsets: [%s, %s, %s, %s]", x1Ofs, y1Ofs, x2Ofs, y2Ofs)
-			frame.sf:ClearAllPoints()
-			frame.sf:SetPoint("TOPLEFT",frame, "TOPLEFT", x1Ofs, y1Ofs)
-			frame.sf:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", x2Ofs, y2Ofs)
+			-- aObj:Debug("resizeSF: [%s, %s, %d, %d, %d, %d]", frame, idx, x1Ofs, y1Ofs, x2Ofs, y2Ofs)
+			-- check to see if skinframe exists, fixes #343
+			if frame.sf then
+				frame.sf:ClearAllPoints()
+				frame.sf:SetPoint("TOPLEFT",frame, "TOPLEFT", x1Ofs, y1Ofs)
+				frame.sf:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", x2Ofs, y2Ofs)
+			end
 		end
 		local function skinOptions(frame, _)
 			if not frame.optionFrameTemplate then return end
