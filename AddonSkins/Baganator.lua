@@ -2,7 +2,7 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("Baganator") then return end
 local _G = _G
 
-aObj.addonsToSkin.Baganator = function(self) -- v 805
+aObj.addonsToSkin.Baganator = function(self) -- v 812
 
 	-- TODO: handle warband bank being purchased
 
@@ -351,12 +351,6 @@ aObj.addonsToSkin.Baganator = function(self) -- v 805
 
 	local gChild, x2Ofs
 	local function skinCustomiseFrame()
-		-- handle in combat
-		if _G.InCombatLockdown() then
-		    aObj:add2Table(aObj.oocTab, {skinCustomiseFrame, {}})
-		    return
-		end
-
 		local this = _G["BaganatorCustomiseDialogFrame" .. _G.Baganator.API.Skins.GetCurrentSkin()]
 		this:DisableDrawLayer("BACKGROUND")
 		this:DisableDrawLayer("BORDER")
@@ -436,14 +430,16 @@ aObj.addonsToSkin.Baganator = function(self) -- v 805
 		for _, frame in _G.ipairs(this.Views) do
 			skinKids(frame)
 			if frame.ResetFramePositions
-			and self.modBtns
+			and aObj.modBtns
 			then
-				self:skinStdButton{obj=frame.ResetFramePositions}
+				aObj:skinStdButton{obj=frame.ResetFramePositions}
 			end
-			self:skinObject("frame", {obj=frame, kfs=true, fb=true, ofs=-2, y1=23})
+			aObj:skinObject("frame", {obj=frame, kfs=true, fb=true, ofs=-2, y1=23})
 		end
-		self:skinObject("tabs", {obj=this, tabs=this.Tabs, ignoreSize=true, lod=self.isTT and true, upwards=true, offsets={x1=8, y1=-4, x2=-8, y2=-2}})
-		self:skinObject("frame", {obj=this, kfs=true, ri=true, cb=true, ofs=self.isMnln and 0 or 1, y1=self.isMnln and -1 or 2})
+		aObj:skinObject("tabs", {obj=this, tabs=this.Tabs, ignoreSize=true, lod=aObj.isTT and true, upwards=true, offsets={x1=8, y1=-4, x2=-8, y2=-2}})
+		aObj:skinObject("frame", {obj=this, kfs=true, ri=true, cb=true, ofs=aObj.isMnln and 0 or 1, y1=aObj.isMnln and -1 or 2})
+		-- show frame if not already shown, fixes #338
+		this:SetShown(not this:IsShown())
 	end
 	_G.Baganator.CallbackRegistry:RegisterCallback("ShowCustomise", function()
 		_G.RunNextFrame(function()
