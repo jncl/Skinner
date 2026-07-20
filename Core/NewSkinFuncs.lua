@@ -1246,7 +1246,7 @@ function aObj:skinSideTabs(frame, ftype)
 		if tab.Background then
 			tab.Background:SetTexture(nil)
 		end
-		self:skinObject("button", {obj=tab, fType=ftype, ofs=-1, x1=-1, x2=-3, y2=2})
+		self:skinObject("button", {obj=tab, fType=ftype, ofs=-1, x1=-1, y2=2})
 	end
 
 end
@@ -1358,7 +1358,7 @@ _G.RunNextFrame(function()
 	-- hook to handle textured tabs on Blizzard & other Frames
 	aObj.tabFrames = {}
 	if aObj.isTT then
-		local tab
+		local tab, chkVal
 		aObj:SecureHook("PanelTemplates_UpdateTabs", function(frame)
 			-- aObj:Debug("PanelTemplates_UpdateTabs: [%s, %s, %s, %s]", frame, frame.selectedTab, frame.numTabs, _G.rawget(aObj.tabFrames, frame))
 			if not aObj.tabFrames[frame] then -- ignore frame if not monitored
@@ -1369,7 +1369,8 @@ _G.RunNextFrame(function()
 					tab = frame.Tabs and frame.Tabs[i] or _G[frame:GetName() .. "Tab" .. i]
 					if tab.sf then
 						-- N.B. use tab:GetID() instead of using index value, fixes #345
-						if tab:GetID() == frame.selectedTab then
+						chkVal = tab:GetID() ~= 0 and tab:GetID() or i
+						if chkVal == frame.selectedTab then
 							aObj:setActiveTab(tab.sf)
 						else
 							aObj:setInactiveTab(tab.sf)
