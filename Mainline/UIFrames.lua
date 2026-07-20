@@ -3364,21 +3364,26 @@ aObj.SetupMainline_UIFrames = function()
 		self.initialized.PlayerChoice = true
 
 		-- info from Blizzard_PlayerChoice.lua
-		-- local customTextureKits = {
+		-- local customTextureKitInfo = {
+			-- Normal texture kit options (using PlayerChoiceNormalOptionTemplate, inherited from defaultTextureKitInfo)
 			-- neutral, -- default
 			-- alliance,
 			-- horde,
 			-- marine,
 			-- mechagon,
-			-- jailerstower,
-			-- cypherchoice,
-			-- Oribos,
 			-- NightFae,
 			-- Venthyr,
 			-- Kyrian,
 			-- Dragonflight,
-			-- genericplayerchoice,
 			-- thewarwithin,
+			-- midnight,
+			-- Texture Kits below here use custom templates
+				-- Oribos is a special texture kit type, used for the covenant choice UI in Shadowlands
+			-- Oribos,
+			-- The remaining textures kits are variants of the Torghast-style power choice (genericplayerchoice is the evergreen version)
+			-- genericplayerchoice,
+			-- jailerstower,
+			-- cypherchoice,
 		-- }
 
 		-- choiceID
@@ -3437,13 +3442,6 @@ aObj.SetupMainline_UIFrames = function()
 						-- DON'T skin magnifying glass button
 						if fObj.Button:GetText() ~= "Preview Covenant" then
 							aObj:skinStdButton{obj=fObj.Button, fType=ftype, schk=true, sechk=true, ca=fObj.Button.pushed and 0.5 or 1}
-							-- change button border alpha to indicate currently selected choice
-							-- if fObj.Button.pushed then
-							-- 	fObj.Button:SetEnabled(true)
-							-- 	fObj.Button.sb:SetAlpha(0.5)
-							-- else
-							-- 	fObj.Button.sb:SetAlpha(1)
-							-- end
 						end
 					end
 				end
