@@ -15,8 +15,6 @@ ToDos
 
  ?		O/?	ChatFrameTab for PetBattles has missing text
 
-#338 x	I 	Baganator Settings
+#338 √	I 	Baganator Settings
 
-#343 √	I 	PlayerChoice
-
-#345 √	I 	Outfitter opens to wrong tab
+#343 ?	I 	PlayerChoice

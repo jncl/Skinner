@@ -23,13 +23,13 @@ x			- EditModeManager
 x			- EditModeSystemTemplates
 x			- LFGList
 ?			- Blizzard_GuildControlUI
-?			- Blizzard_HouseEditorCustomizationDyeTemplates
-?			- Blizzard_HouseEditorCustomizeMode
-?			- Blizzard_HouseEditorLayoutModePin
-?			- Blizzard_HouseEditorStorageFrame
-?			- Blizzard_HouseEditorTemplates
-?			- Blizzard_HousingControlButton
-?			- Blizzard_HousingControls
+≈			- Blizzard_HouseEditorCustomizationDyeTemplates
+≈			- Blizzard_HouseEditorCustomizeMode
+≈			- Blizzard_HouseEditorLayoutModePin
+≈			- Blizzard_HouseEditorStorageFrame
+≈			- Blizzard_HouseEditorTemplates
+≈			- Blizzard_HousingControlButton
+≈			- Blizzard_HousingControls
 ≈			- Blizzard_HousingDashboard
 ≈			- Blizzard_HousingDashboardHouseUpgrade
 x			- Blizzard_HousingHouseFinder
@@ -46,5 +46,6 @@ x			- Blizzard_SimpleCheckout
 ?			- UIPanelTemplates
 x			- CastingBarFrame
 ?			- CompactUnitFrame
+√			- UIWidgetBelowMinimapContainerFrame
 		- Deleted
 √			- BattleTagInviteFrame
