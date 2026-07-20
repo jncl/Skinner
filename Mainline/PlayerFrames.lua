@@ -1214,11 +1214,13 @@ aObj.SetupMainline_PlayerFrames = function()
 			    return
 			end
 
+			-- search for [inherits="ObjectiveTrackerModuleTemplate]
 			--[[
 				AchievementObjectiveTracker
 				AdventureObjectiveTracker
 				BonusObjectiveTracker
 				CampaignQuestObjectiveTracker
+				InitiativeTasksObjectiveTracker (stripped down version of Monthly Activities Objective Tracker) [C_NeighborhoodInitiative]
 				MonthlyActivitiesObjectiveTracker
 				ProfessionsRecipeTracker
 				QuestObjectiveTracker
