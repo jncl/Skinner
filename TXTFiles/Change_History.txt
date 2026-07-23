@@ -1,3 +1,21 @@
+beta12.68749.1
+Jncl:
+	Updated ToDo*.txt files
+	Updated Change_History.txt
+	Updated Version numbers
+	Separate BC Classic from Classic ERA checks
+	Updated Player Choice skin, closes #343
+	Updated PlayerChoice comment
+	Updated ObjectiveTracker comment
+	Updated Tab skinning code in NSF
+	Updated WorldQuestTab skin
+	Updated Baganator skin, closes #338
+	Updated TOC
+	Changed game version checks to standardise code
+	Updated UIButtons code
+	Updated HousingUI code
+	Updated UIWidgets skin
+
 beta12.68317.1
 Jncl:
 	Updated ToDo*.txt files
