@@ -684,76 +684,71 @@ then
 	end
 end
 
-if not aObj.isClscERA
-or aObj.isClscERAPTR
-then
-	aObj.blizzFrames[ftype].Buffs = function(self)
-		if not self.prdb.Buffs or self.initialized.Buffs then return end
-		self.initialized.Buffs = true
+aObj.blizzFrames[ftype].Buffs = function(self)
+	if not self.prdb.Buffs or self.initialized.Buffs then return end
+	self.initialized.Buffs = true
 
-		if self.modBtnBs then
-			local function skinBuffBtn(btn)
-				-- ignore privateAuraAnchor(s)
-				if not btn:GetDebugName():find("AuraContainer") then
-					return
-				end
-				if btn.auraType == "Buff"
-				or btn.auraType == "Debuff"
-				or btn.auraType == "DeadlyDebuff"
-				or btn.auraType == "TempEnchant"
-				then
-					aObj:addButtonBorder{obj=btn, fType=ftype, relTo=btn.Icon, ofs=3, clr=btn.Border and {btn.Border:GetVertexColor()} or "grey", ccat=true}
-					if btn.Border then
-						btn.Border:SetAlpha(0)
-					end
-				end
+	if self.modBtnBs then
+		local function skinBuffBtn(btn)
+			-- ignore privateAuraAnchor(s)
+			if not btn:GetDebugName():find("AuraContainer") then
+				return
 			end
-			local function skinBuffs(frame)
-				for _, buff in _G.pairs(frame.auraFrames) do
-					if frame.auraInfo then
-						skinBuffBtn(buff)
-					end
+			if btn.auraType == "Buff"
+			or btn.auraType == "Debuff"
+			or btn.auraType == "DeadlyDebuff"
+			or btn.auraType == "TempEnchant"
+			then
+				aObj:addButtonBorder{obj=btn, fType=ftype, relTo=btn.Icon, ofs=3, clr=btn.Border and {btn.Border:GetVertexColor()} or "grey", ccat=true}
+				if btn.Border then
+					btn.Border:SetAlpha(0)
 				end
 			end
-			for _, frame in _G.pairs{_G.BuffFrame, _G.DebuffFrame, self.isMnln and _G.ExternalDefensivesFrame or nil} do
-				skinBuffs(frame)
-				-- N.B. DON'T hook the UpdateAuraButtons function as it causes many Secret Values errors
+		end
+		local function skinBuffs(frame)
+			for _, buff in _G.pairs(frame.auraFrames) do
+				if frame.auraInfo then
+					skinBuffBtn(buff)
+				end
 			end
-			self:SecureHookScript(_G.DeadlyDebuffFrame, "OnShow", function(this)
-				skinBuffBtn(this.Debuff)
+		end
+		for _, frame in _G.pairs{_G.BuffFrame, _G.DebuffFrame, self.isMnln and _G.ExternalDefensivesFrame or nil} do
+			skinBuffs(frame)
+			-- N.B. DON'T hook the UpdateAuraButtons function as it causes many Secret Values errors
+		end
+		self:SecureHookScript(_G.DeadlyDebuffFrame, "OnShow", function(this)
+			skinBuffBtn(this.Debuff)
 
-				self:Unhook(this, "OnShow")
-			end)
+			self:Unhook(this, "OnShow")
+		end)
+	end
+
+end
+
+if not aObj.isMnln then
+	aObj.blizzFrames[ftype].CastingBar = function(self)
+		if not self.prdb.CastingBar.skin or self.initialized.CastingBar then return end
+		self.initialized.CastingBar = true
+
+		local cBar
+		for _, prefix in _G.pairs{"Player", aObj.isClsc and "OverlayPlayer" or nil} do
+			cBar = _G[prefix .. "CastingBarFrame"]
+			if aObj.isClsc then
+				self:RawHook(cBar.Border, "SetTexture", function(this, _)
+					self.hooks[this].SetTexture(this, nil)
+				end, true)
+				self:RawHook(cBar, "SetStatusBarTexture", function(this, _)
+					self.hooks[this].SetStatusBarTexture(this, self.sbTexture)
+				end, true)
+			end
+			cBar.Border:SetTexture(nil)
+			cBar.Flash:SetTexture(nil)
+			if self.prdb.CastingBar.glaze then
+				self:skinObject("statusbar", {obj=cBar, fType=ftype, regions={2}, fi=0, bg=self:getRegion(cBar, 1)})
+			end
 		end
 
 	end
-
-	if not aObj.isMnln then
-		aObj.blizzFrames[ftype].CastingBar = function(self)
-			if not self.prdb.CastingBar.skin or self.initialized.CastingBar then return end
-			self.initialized.CastingBar = true
-
-			local cBar
-			for _, prefix in _G.pairs{"Player", aObj.isClsc and "OverlayPlayer" or nil} do
-				cBar = _G[prefix .. "CastingBarFrame"]
-				if aObj.isClsc then
-					self:RawHook(cBar.Border, "SetTexture", function(this, _)
-						self.hooks[this].SetTexture(this, nil)
-					end, true)
-					self:RawHook(cBar, "SetStatusBarTexture", function(this, _)
-						self.hooks[this].SetStatusBarTexture(this, self.sbTexture)
-					end, true)
-				end
-				cBar.Border:SetTexture(nil)
-				cBar.Flash:SetTexture(nil)
-				if self.prdb.CastingBar.glaze then
-					self:skinObject("statusbar", {obj=cBar, fType=ftype, regions={2}, fi=0, bg=self:getRegion(cBar, 1)})
-				end
-			end
-
-		end
-	end
-
 end
 
 if aObj.isMnln
@@ -2430,28 +2425,14 @@ aObj.blizzFrames[ftype].CompactFrames = function(self)
 					self:skinStdButton{obj=fObj.hiddenModeToggle, fType=ftype}
 					self:skinStdButton{obj=fObj.convertToRaid, fType=ftype}
 					self:skinStdButton{obj=fObj.leaderOptions.readyCheckButton, fType=ftype}
-					if not self.isClscERA
-					or self.isClscBCA
-					or self.isClscERAPTR
-					then
-						self:skinStdButton{obj=fObj.leaderOptions.rolePollButton, fType=ftype}
-					end
-					if self.isClscBCA
-					or self.isClscERAPTR
-					then
-						self:skinStdButton{obj=fObj.editMode, fType=ftype}
-						self:skinStdButton{obj=fObj.leaderOptions.countdownButton, fType=ftype}
-					end
+					self:skinStdButton{obj=fObj.leaderOptions.rolePollButton, fType=ftype}
+					self:skinStdButton{obj=fObj.editMode, fType=ftype}
+					self:skinStdButton{obj=fObj.leaderOptions.countdownButton, fType=ftype}
 					self:SecureHook("CompactRaidFrameManager_UpdateOptionsFlowContainer", function()
 						-- handle button skin frames not being created yet
 						if fObj.leaderOptions.readyCheckButton.sb then
 							self:clrBtnBdr(fObj.leaderOptions.readyCheckButton)
-							if not self.isClscERA
-							or self.isClscBCA
-							or self.isClscERAPTR
-							then
-								self:clrBtnBdr(fObj.leaderOptions.rolePollButton)
-							end
+							self:clrBtnBdr(fObj.leaderOptions.rolePollButton)
 						end
 					end)
 				end

@@ -1274,7 +1274,7 @@ aObj.SetupOptions = function(self)
 		["Color Picker"]          = {suff = "Frame"},
 		["Debug Tools"]           = {suff = "Frames"},
 		["Destiny Frame"]         = (self.isMnln or self.isClsc) and true or nil,
-		["Edit Mode"]             = not (self.isClscERA or self.isClscERAPTR) and true or nil,
+		["Edit Mode"]             = true,
 		["Event Trace"]           = true,
 		["Ghost Frame"]           = (self.isMnln or self.isClsc) and true or nil,
 		["GM Chat UI"]            = true,

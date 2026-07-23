@@ -340,14 +340,6 @@ function module:skinTargetF()
 			module:skinButton(frame:GetName())
 			module:skinUnitButton{obj=frame.totFrame}
 			module:skinCommon(frame.totFrame:GetName(), true)
-			-- move level text down, so it is more visible
-			if not aObj.isClscBCA
-			and not aObj.isClsc
-			then
-				module:SecureHook("TargetFrame_UpdateLevelTextAnchor", function(fObj, targetLevel)
-					fObj.levelText:SetPoint("CENTER", targetLevel == 100 and 61 or 62, -20 + lOfs)
-				end)
-			end
 			aObj:moveObject{obj=_G["TargetFrameToTHealthBar"], y=-2} -- move HealthBar down to match other frames
 		end
 		self:SecureHookScript(_G.TargetFrame, "OnShow", function(this)

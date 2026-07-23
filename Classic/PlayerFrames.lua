@@ -61,93 +61,6 @@ aObj.SetupClassic_PlayerFrames = function()
 		end
 	end
 
-	if aObj.isClscERA
-	and not aObj.isClscERAPTR
-	then
-		aObj.blizzFrames[ftype].Buffs = function(self)
-			if not self.prdb.Buffs or self.initialized.Buffs then return end
-			self.initialized.Buffs = true
-
-			if self.modBtnBs then
-				local function skinBuffBtn(btn)
-					if btn
-					and not btn.sbb
-					then
-						aObj:addButtonBorder{obj=btn, fType=ftype, reParent={btn.count, btn.duration}, ofs=3}
-					end
-				end
-				-- skin current Buffs
-				for i = 1, _G.BUFF_MAX_DISPLAY do
-					skinBuffBtn(_G["BuffButton" .. i])
-				end
-				-- if not all buff buttons created yet
-				if not _G.BuffButton32 then
-					-- hook this to skin new Buffs
-					self:SecureHook("AuraButton_Update", function(buttonName, index, _)
-						if buttonName == "BuffButton" then
-							skinBuffBtn(_G[buttonName .. index])
-						end
-					end)
-				end
-			end
-
-			-- Debuffs already have a coloured border
-			-- Temp Enchants already have a coloured border
-
-		end
-
-		aObj.blizzFrames[ftype].CastingBar = function(self)
-			if not self.prdb.CastingBar.skin or self.initialized.CastingBar then return end
-			self.initialized.CastingBar = true
-
-			if _G.C_AddOns.IsAddOnLoaded("Quartz")
-			or _G.C_AddOns.IsAddOnLoaded("Dominos_Cast")
-			then
-				self.blizzFrames[ftype].CastingBar = nil
-				return
-			end
-
-			local function setLook(castBar, look)
-				castBar.Border:SetAlpha(0)
-				castBar.Flash:SetAllPoints()
-				castBar.Flash:SetTexture(self.tFDIDs.w8x8)
-				if look == "CLASSIC" then
-					castBar.Text:SetPoint("TOP", 0, 2)
-					castBar.Spark.offsetY = -1
-				end
-			end
-			local cbFrame
-			for _, type in _G.pairs{aObj.isClsc and "Player" or "", "Pet"} do
-				cbFrame = _G[type .. "CastingBarFrame"]
-				if cbFrame then
-					self:changeShield(cbFrame.BorderShield, cbFrame.Icon)
-					if self.prdb.CastingBar.glaze then
-						self:skinObject("statusbar", {obj=cbFrame, fType=ftype, fi=0, bg=self:getRegion(cbFrame, 1), nilFuncs=true})
-					end
-					-- adjust text and spark in Classic mode
-					if not cbFrame.ignoreFramePositionManager then
-						setLook(cbFrame)
-					else
-						setLook(cbFrame, "CLASSIC")
-					end
-					if cbFrame.SetLook then
-						self:SecureHook(cbFrame, "SetLook", function(this, look)
-							setLook(this, look)
-						end)
-					end
-				end
-			end
-
-			-- hook this to handle the CastingBar being attached to the Unitframe and then reset
-			if _G.CastingBarFrame_SetLook then
-				self:SecureHook("CastingBarFrame_SetLook", function(castBar, look)
-					setLook(castBar, look)
-				end)
-			end
-
-		end
-	end
-
 	if not aObj.isClsc then
 		aObj.blizzFrames[ftype].CharacterFrames = function(self)
 			if not self.prdb.CharacterFrames or self.initialized.CharacterFrames then return end
@@ -196,7 +109,6 @@ aObj.SetupClassic_PlayerFrames = function()
 						self:addButtonBorder{obj=_G.RuneFrameControlButton, fType=ftype}
 					end
 					if not self.isClscERA
-					or self.isClscERAPTR
 					then
 						self:skinObject("ddbutton", {obj=fObj.Attributes.LeftPlayerStatDropdown, fType=ftype})
 						self:skinObject("ddbutton", {obj=fObj.Attributes.RightPlayerStatDropdown, fType=ftype})
@@ -374,7 +286,6 @@ aObj.SetupClassic_PlayerFrames = function()
 			end
 
 			if not self.isClscERA
-			or self.isClscERAPTR
 			then
 				self:skinObject("dropdown", {obj=_G.CraftFrameFilterDropDown, fType=ftype})
 				if self.modChkBtns then
@@ -963,9 +874,7 @@ aObj.SetupClassic_PlayerFrames = function()
 			end)
 			self:checkShown(_G.InspectPaperDollFrame)
 
-			if self.isClscERA
-			and not self.isClscERAPTR
-			then
+			if self.isClscERA then
 				self:SecureHookScript(_G.InspectHonorFrame, "OnShow", function(fObj)
 					self:keepFontStrings(fObj)
 					_G.InspectHonorFramePvPIcon:SetAlpha(1)
@@ -980,16 +889,10 @@ aObj.SetupClassic_PlayerFrames = function()
 				end)
 				self:SecureHookScript(_G.InspectTalentFrame, "OnShow", function(fObj)
 					self:keepFontStrings(fObj)
-					if aObj.isClscERA
-					and not aObj.isClscERAPTR
-					then
-						fObj.InspectSpec.ring:SetTexture(nil)
-					else
-						self:skinObject("tabs", {obj=fObj, prefix=fObj:GetName(), fType=ftype, ignoreSize=true, lod=self.isTT and true, upwards=true, regions={7}, offsets={x1=2, y1=-2, x2=-2, y2=0}})
-						self:skinObject("slider", {obj=_G.InspectTalentFrameScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
-						self:keepFontStrings(_G.InspectTalentFramePointsBar)
-						self:skinObject("frame", {obj=_G.InspectTalentFrameScrollFrame, fType=ftype, fb=true, x1=-8, y1=11, x2=31, y2=-7})
-					end
+					self:skinObject("tabs", {obj=fObj, prefix=fObj:GetName(), fType=ftype, ignoreSize=true, lod=self.isTT and true, upwards=true, regions={7}, offsets={x1=2, y1=-2, x2=-2, y2=0}})
+					self:skinObject("slider", {obj=_G.InspectTalentFrameScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
+					self:keepFontStrings(_G.InspectTalentFramePointsBar)
+					self:skinObject("frame", {obj=_G.InspectTalentFrameScrollFrame, fType=ftype, fb=true, x1=-8, y1=11, x2=31, y2=-7})
 
 					self:Unhook(fObj, "OnShow")
 				end)
@@ -1556,20 +1459,12 @@ aObj.SetupClassic_PlayerFrames = function()
 				-- keep background Texture
 				self:removeRegions(this, {1, 2, 3, 4, 5})
 				self:skinObject("frame", {obj=this, fType=ftype, cb=true, x1=10, y1=-12, x2=-31, y2=74})
-				if not self.isClscERA
-				or self.isClscERAPTR
-				then
-					self:keepFontStrings(_G.PlayerTalentFrameStatusFrame)
-				end
+				self:keepFontStrings(_G.PlayerTalentFrameStatusFrame)
 				self:keepFontStrings(_G.PlayerTalentFramePointsBar)
 				_G.PlayerTalentFramePreviewBar:DisableDrawLayer("BORDER")
 				_G.PlayerTalentFramePreviewBarFiller:DisableDrawLayer("BACKGROUND")
 				if self.modBtns then
-					if not self.isClscERA
-					or self.isClscERAPTR
-					then
-						self:skinStdButton{obj=_G.PlayerTalentFrameCancelButton, fType=ftype}
-					end
+					self:skinStdButton{obj=_G.PlayerTalentFrameCancelButton, fType=ftype}
 					self:skinStdButton{obj=_G.PlayerTalentFrameResetButton, fType=ftype, schk=true}
 					self:skinStdButton{obj=_G.PlayerTalentFrameLearnButton, fType=ftype, schk=true}
 				end
@@ -1643,16 +1538,12 @@ aObj.SetupClassic_PlayerFrames = function()
 		self.initialized.TradeSkillUI = true
 
 		self:SecureHookScript(_G.TradeSkillFrame, "OnShow", function(this)
-			if not self.isClscERA
-			or self.isClscERAPTR
-			then
+			self:skinObject("statusbar", {obj=_G.TradeSkillRankFrame, fType=ftype, fi=0, bg=_G.TradeSkillRankFrameBackground})
+			if self.isClsc then
 				if self.modChkBtns then
 					self:skinCheckButton{obj=_G.TradeSkillFrameAvailableFilterCheckButton, fType=ftype}
 				end
 				self:skinObject("editbox", {obj=_G.TradeSkillFrameEditBox, fType=ftype})
-			end
-			self:skinObject("statusbar", {obj=_G.TradeSkillRankFrame, fType=ftype, fi=0, bg=_G.TradeSkillRankFrameBackground})
-			if self.isClsc then
 				_G.TradeSkillRankFrameBorder:SetTexture(nil)
 			else
 				_G.TradeSkillRankFrameBorder:GetNormalTexture():SetTexture(nil)

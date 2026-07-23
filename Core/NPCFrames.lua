@@ -615,14 +615,7 @@ aObj.blizzFrames[ftype].QuestFrame = function(self)
 			-- force recolouring of quest text
 			self:checkShown(_G.QuestFrameGreetingPanel)
 		end
-		if self.isMnln
-		or self.isClsc
-		or self.isClscERAPTR
-		then
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true})
-		else
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, x1=10, y1=-18, x2=-29, y2=65})
-		end
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true})
 		if self.modBtns then
 			self:skinCloseButton{obj=_G.QuestFrameCloseButton, fType=ftype, schk=true}
 			self:skinStdButton{obj=_G.QuestFrameCompleteQuestButton, fType=ftype, schk=true}
