@@ -14,7 +14,3 @@ ToDos
 	O 	Change ALL occurrence of 'this' in Unhook functions to the actual hooking object, using 'this' DOESN'T remove the hook properly !!
 
  ?		O/?	ChatFrameTab for PetBattles has missing text
-
-#338 √	I 	Baganator Settings
-
-#343 ?	I 	PlayerChoice
