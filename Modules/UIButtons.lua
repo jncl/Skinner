@@ -905,17 +905,10 @@ local function __skinCheckButton(opts)
 		end
 	end
 
-	if not aObj.isMnln
-	and not aObj.isClsc
-	then
-		opts.obj:GetNormalTexture():SetTexture(nil)
-		opts.obj:GetPushedTexture():SetTexture(nil)
-		if opts.nh then
-			opts.obj:GetHighlightTexture():SetTexture(nil)
-		end
-	else
-		opts.obj:GetNormalTexture():SetTexture("")
-		opts.obj:GetPushedTexture():SetTexture("")
+	opts.obj:GetNormalTexture():SetTexture(nil)
+	opts.obj:GetPushedTexture():SetTexture(nil)
+	if opts.nh then
+		opts.obj:GetHighlightTexture():SetTexture(nil)
 	end
 
 	-- handle small check buttons (e.g. GuildControlUI - Rank Permissions)

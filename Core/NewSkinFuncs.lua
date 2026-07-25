@@ -54,9 +54,9 @@ local function setScrollTrackOffsets(tbl, type)
 			tbl.x2 = _G.rawget(tbl, "x2") or -3
 			tbl.y1 = _G.rawget(tbl, "y1") or -1
 			tbl.y2 = _G.rawget(tbl, "y2") or 1
-		elseif w == 25 then
-			tbl.x1 = _G.rawget(tbl, "x1") or --[[not aObj.isMnln and 2 or]] 0
-			tbl.x2 = _G.rawget(tbl, "x2") or --[[not aObj.isMnln and 4 or]] 0
+		elseif w == 25 then -- EditMode ImportLayout ScrollFrame
+			tbl.x1 = _G.rawget(tbl, "x1") or not aObj.isMnln and 2 or 0
+			tbl.x2 = _G.rawget(tbl, "x2") or not aObj.isMnln and 4 or 0
 		end
 		tbl.y1 = _G.rawget(tbl, "y1") or 0
 		tbl.y2 = _G.rawget(tbl, "y2") or 0
@@ -1316,7 +1316,10 @@ function aObj:skinLayoutDialog(frame, ftype)
 	self:removeNineSlice(frame.Border)
 	self:skinObject("editbox", {obj=frame.LayoutNameEditBox, fType=ftype, y1=-4, y2=4})
 	if frame.ImportBox then
-		self:skinObject("frame", {obj=frame.ImportBox, fType=ftype, kfs=true, fb=true, ofs=6})
+		if frame.ImportBox.ScrollBar then
+			self:skinObject("scrollbar", {obj=frame.ImportBox.ScrollBar, fType=ftype})
+		end
+		self:skinObject("frame", {obj=frame.ImportBox, fType=ftype, kfs=true, fb=true, ofs=7, x2=not self.isMnln and -3 or nil})
 	end
 	self:skinObject("frame", {obj=frame, fType=ftype, kfs=true, ofs=-6})
 	if self.modBtns then

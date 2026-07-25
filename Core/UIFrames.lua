@@ -1353,46 +1353,46 @@ aObj.blizzFrames[ftype].EditMode = function(self)
 		-- UtilityCooldownViewer
 		-- BuffIconCooldownViewer
 		-- BuffBarCooldownViewer
+end
 
-	-- this code handles the ExtraActionBarFrame and ZoneAbilityFrame buttons
-	aObj.blizzFrames[ftype].ExtraAbilityContainer = function(self)
-		if self.initialized.ExtraAbilityContainer then return end
-		self.initialized.ExtraAbilityContainer = true
+-- this code handles the ExtraActionBarFrame and ZoneAbilityFrame buttons
+aObj.blizzFrames[ftype].ExtraAbilityContainer = function(self)
+	if self.initialized.ExtraAbilityContainer then return end
+	self.initialized.ExtraAbilityContainer = true
 
-		local function skinBtn(opts)
-			if opts.obj.NormalTexture then
-				opts.obj:GetNormalTexture():SetTexture(nil)
-			end
-			if aObj.modBtnBs then
-				aObj:addButtonBorder{obj=opts.obj, sabt=true, reParent={opts.obj.HotKey, opts.obj.Count, opts.obj.Flash, opts.obj.style, opts.obj.cooldown}, ofs=2}
-			end
+	local function skinBtn(opts)
+		if opts.obj.NormalTexture then
+			opts.obj:GetNormalTexture():SetTexture(nil)
 		end
-		if self.prdb.MainMenuBar.extraab then
-			self:SecureHookScript(_G.ExtraActionBarFrame.intro, "OnFinished", function(_)
-				_G.ExtraActionBarFrame.button.style:SetAlpha(0)
-			end)
-			if self:canSkin(skinBtn, {obj=_G.ExtraActionBarFrame.button}) then
-				skinBtn({obj=_G.ExtraActionBarFrame.button})
-			end
+		if aObj.modBtnBs then
+			aObj:addButtonBorder{obj=opts.obj, sabt=true, reParent={opts.obj.HotKey, opts.obj.Count, opts.obj.Flash, opts.obj.style, opts.obj.cooldown}, ofs=2}
 		end
-		if self.prdb.ZoneAbility then
-			local function getAbilities(frame)
-				frame.Style:SetAlpha(0)
-				for btn in frame.SpellButtonContainer:EnumerateActive() do
-					if aObj:canSkin(skinBtn, {obj=btn}) then
-						skinBtn({obj=btn})
-					end
+	end
+	if self.prdb.MainMenuBar.extraab then
+		self:SecureHookScript(_G.ExtraActionBarFrame.intro, "OnFinished", function(_)
+			_G.ExtraActionBarFrame.button.style:SetAlpha(0)
+		end)
+		if self:canSkin(skinBtn, {obj=_G.ExtraActionBarFrame.button}) then
+			skinBtn({obj=_G.ExtraActionBarFrame.button})
+		end
+	end
+	if self.prdb.ZoneAbility then
+		local function getAbilities(frame)
+			frame.Style:SetAlpha(0)
+			for btn in frame.SpellButtonContainer:EnumerateActive() do
+				if aObj:canSkin(skinBtn, {obj=btn}) then
+					skinBtn({obj=btn})
 				end
 			end
-			self:SecureHook(_G.ZoneAbilityFrame, "UpdateDisplayedZoneAbilities", function(this)
-				getAbilities(this)
-			end)
-			if _G.ZoneAbilityFrame:IsShown() then
-				getAbilities(_G.ZoneAbilityFrame)
-			end
 		end
-
+		self:SecureHook(_G.ZoneAbilityFrame, "UpdateDisplayedZoneAbilities", function(this)
+			getAbilities(this)
+		end)
+		if _G.ZoneAbilityFrame:IsShown() then
+			getAbilities(_G.ZoneAbilityFrame)
+		end
 	end
+
 end
 
 aObj.blizzLoDFrames[ftype].EventTrace = function(self)
@@ -4597,51 +4597,42 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 		end
 	end
 
-	-- if self.isMnln
-	-- or aObj.isClsc
-	-- or aObj.isClscBCA
-	-- then
-		self:SecureHookScript(_G.UIWidgetCenterDisplayFrame, "OnShow", function(this)
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true})
-			if self.modBtnBs then
-				self:skinStdButton{obj=this.CloseButton, fType=ftype}
-			end
-			self:Unhook(this, "OnShow")
-		end)
-		self:checkShown(_G.UIWidgetCenterDisplayFrame)
+	self:SecureHookScript(_G.UIWidgetCenterDisplayFrame, "OnShow", function(this)
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true})
+		if self.modBtnBs then
+			self:skinStdButton{obj=this.CloseButton, fType=ftype}
+		end
+		self:Unhook(this, "OnShow")
+	end)
+	self:checkShown(_G.UIWidgetCenterDisplayFrame)
 
-		local function skinwidgetPools(wContainer)
-			for widget in wContainer.widgetPools:EnumerateActive() do
-				_G.RunNextFrame(function()
-					skinWidget(widget, _G.UIWidgetManager:GetWidgetTypeInfo(widget.widgetType))
-				end)
-			end
-		end
-		local function hookAndSkinWidgets(widgetContainer)
-			-- aObj:Debug("hookAndSkinWidgets: [%s, %s, %s]", widgetContainer:IsForbidden())
-			if widgetContainer:IsForbidden() then
-				return
-			end
-			aObj:SecureHook(widgetContainer, "UpdateWidgetLayout", function(this)
-				skinwidgetPools(this)
+	local function skinwidgetPools(wContainer)
+		for widget in wContainer.widgetPools:EnumerateActive() do
+			_G.RunNextFrame(function()
+				skinWidget(widget, _G.UIWidgetManager:GetWidgetTypeInfo(widget.widgetType))
 			end)
-			skinwidgetPools(widgetContainer)
 		end
-		-- hook this to skin new widgets
-		self:SecureHook(_G.UIWidgetManager, "OnWidgetContainerRegistered", function(_, widgetContainer)
-			hookAndSkinWidgets(widgetContainer)
-		end)
-		self:SecureHook(_G.UIWidgetManager, "OnWidgetContainerUnregistered", function(_, widgetContainer)
-			self:Unhook(widgetContainer, "UpdateWidgetLayout")
-		end)
-		-- handle existing WidgetContainers
-		for widgetContainer, _ in _G.pairs(_G.UIWidgetManager.registeredWidgetContainers) do
-			hookAndSkinWidgets(widgetContainer)
+	end
+	local function hookAndSkinWidgets(widgetContainer)
+		-- aObj:Debug("hookAndSkinWidgets: [%s, %s, %s]", widgetContainer:IsForbidden())
+		if widgetContainer:IsForbidden() then
+			return
 		end
-	-- else
-	-- 	self:SecureHook(_G.UIWidgetManager, "CreateWidget", function(this, widgetID, _, widgetType)
-	-- 		skinWidget(this.widgetIdToFrame[widgetID], this.widgetVisTypeInfo[widgetType].visInfoDataFunction(widgetID))
-	-- 	end)
-	-- end
+		aObj:SecureHook(widgetContainer, "UpdateWidgetLayout", function(this)
+			skinwidgetPools(this)
+		end)
+		skinwidgetPools(widgetContainer)
+	end
+	-- hook this to skin new widgets
+	self:SecureHook(_G.UIWidgetManager, "OnWidgetContainerRegistered", function(_, widgetContainer)
+		hookAndSkinWidgets(widgetContainer)
+	end)
+	self:SecureHook(_G.UIWidgetManager, "OnWidgetContainerUnregistered", function(_, widgetContainer)
+		self:Unhook(widgetContainer, "UpdateWidgetLayout")
+	end)
+	-- handle existing WidgetContainers
+	for widgetContainer, _ in _G.pairs(_G.UIWidgetManager.registeredWidgetContainers) do
+		hookAndSkinWidgets(widgetContainer)
+	end
 
 end
