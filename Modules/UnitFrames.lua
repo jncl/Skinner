@@ -31,21 +31,15 @@ local unitFrames = {
 module.isSkinned = _G.setmetatable({}, {__index = function(t, k) t[k] = true end})
 
 -- N.B. handle bug in XML & lua which places mana bar 1 pixel too high
-function module:adjustStatusBarPosn(sBar, yAdj)
+local oPnt
+function module.adjustStatusBarPosn(_, sBar, yAdj)
 
-	local oPnt
 	yAdj = yAdj or 1
+	oPnt = {sBar:GetPoint()}
+	sBar:SetPoint(oPnt[1], oPnt[2], oPnt[3], oPnt[4], oPnt[5] + yAdj)
 	if sBar.TextString then
 		oPnt = {sBar.TextString:GetPoint()}
 		sBar.TextString:SetPoint(oPnt[1], oPnt[2], oPnt[3], oPnt[4], oPnt[5] + yAdj)
-	end
-	if sBar == _G.PlayerFrame.healthbar then
-		self:RawHook(sBar, "SetPoint", function(this, posn, xOfs, yOfs)
-			self.hooks[this].SetPoint(this, posn, xOfs, yOfs + yAdj)
-		end, true)
-	else
-		oPnt = {sBar:GetPoint()}
-		sBar:SetPoint(oPnt[1], oPnt[2], oPnt[3], oPnt[4], oPnt[5] + yAdj)
 	end
 
 end
