@@ -3648,7 +3648,7 @@ aObj.SetupMainline_UIFrames = function()
 			self:skinObject("scrollbar", {obj=this.Content.ScrollBar, fType=ftype})
 			self:skinObject("scrollbar", {obj=this.Content.ScrollBar, fType=ftype})
 			-- TODO: skin elements
-			local function skinElement(_)
+			-- local function skinElement(_)
 			-- 	local _, element, elementData, new
 			-- 	if _G.select("#", ...) == 2 then
 			-- 		element, elementData = ...
@@ -3659,8 +3659,8 @@ aObj.SetupMainline_UIFrames = function()
 			-- 	end
 			-- 	if new ~= false then
 			-- 	end
-			end
-			_G.ScrollUtil.AddAcquiredFrameCallback(this.Content.ScrollBox, skinElement, aObj, true)
+			-- end
+			-- _G.ScrollUtil.AddAcquiredFrameCallback(this.Content.ScrollBox, skinElement, aObj, true)
 			self:keepFontStrings(this.TabContainer)
 			self:skinObject("tabs", {obj=this.TabGroup, tabs=this.Tabs, fType=ftype, lod=self.isTT and true, track=false})
 			if self.isTT then
@@ -3692,7 +3692,7 @@ aObj.SetupMainline_UIFrames = function()
 			this.content.scrollBox.Background:SetAlpha(0)
 			self:skinObject("scrollbar", {obj=this.content.scrollBar, fType=ftype})
 			-- TODO: skin elements
-			local function skinElement(_)
+			-- local function skinElement(_)
 				-- local _, element, elementData, new
 				-- if _G.select("#", ...) == 2 then
 				-- 	element, elementData = ...
@@ -3703,8 +3703,8 @@ aObj.SetupMainline_UIFrames = function()
 				-- end
 				-- if new ~= false then
 				-- end
-			end
-			_G.ScrollUtil.AddAcquiredFrameCallback(this.content.scrollBox, skinElement, aObj, true)
+			-- end
+			-- _G.ScrollUtil.AddAcquiredFrameCallback(this.content.scrollBox, skinElement, aObj, true)
 			self:keepFontStrings(this.content.tabContainer)
 			self:skinObject("tabs", {obj=this.tabGroup, tabs=this.Tabs, fType=ftype, lod=self.isTT and true, track=false})
 			if self.isTT then
