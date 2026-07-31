@@ -13,7 +13,9 @@ local function setScrollTrackOffsets(tbl, type)
 			o = "VERTICAL"
 		end
 	end
+	--@debug@
 	-- aObj:Debug("setScrollTrackOffsets#1 O/H/W: [%s, %s, %s, %s]", type, o, w, h)
+	--@end-debug@
 	-- setup offsets based on Orientation/Height/Width
 	if o == "HORIZONTAL" then
 		if h <= 16 then
@@ -54,14 +56,16 @@ local function setScrollTrackOffsets(tbl, type)
 			tbl.x2 = _G.rawget(tbl, "x2") or -3
 			tbl.y1 = _G.rawget(tbl, "y1") or -1
 			tbl.y2 = _G.rawget(tbl, "y2") or 1
-		elseif w == 25 then -- EditMode ImportLayout ScrollFrame
-			tbl.x1 = _G.rawget(tbl, "x1") or not aObj.isMnln and 2 or 0
-			tbl.x2 = _G.rawget(tbl, "x2") or not aObj.isMnln and 4 or 0
+		elseif w == 25 then -- EditModeImportLayout ScrollFrame
+			tbl.x1 = _G.rawget(tbl, "x1") or --[[not aObj.isMnln and 2 or]] 0
+			tbl.x2 = _G.rawget(tbl, "x2") or --[[not aObj.isMnln and 4 or]] 0
 		end
 		tbl.y1 = _G.rawget(tbl, "y1") or 0
 		tbl.y2 = _G.rawget(tbl, "y2") or 0
 	end
+	--@debug@
 	-- aObj:Debug("setScrollTrackOffsets#2: [%s, %s, %s, %s]", tbl.x1, tbl.x2, tbl.y1, tbl.y2)
+	--@end-debug@
 end
 
 -- skin Templates
@@ -1082,6 +1086,7 @@ local function skinTabs(tbl)
 	aObj.tabFrames[tbl.obj] = tbl.track
 end
 skinFuncs.tabs = function(table) skinTabs(table) end
+local ttSB, kid1
 local function skinTooltip(tbl)
 	if not aObj.prdb.Tooltips.skin then return end
 	--@debug@
@@ -1092,7 +1097,6 @@ local function skinTooltip(tbl)
 	if not tbl.obj then return end
 	if not tbl.obj.sf then
 		-- Bugfix for ElvUI
-		local ttSB
 		if aObj.isElvUI then
 			ttSB = tbl.obj.SetBackdrop
 			tbl.obj.SetBackdrop = _G.nop
@@ -1104,7 +1108,7 @@ local function skinTooltip(tbl)
 	end
 	tbl.obj.sf:SetBackdropBorderColor(aObj.tbClr:GetRGBA())
 	if aObj.isClscERA then
-		local kid1 = aObj:getChild(tbl.obj, 1)
+		kid1 = aObj:getChild(tbl.obj, 1)
 		if kid1:GetNumRegions() == 9 then
 			aObj:removeNineSlice(kid1)
 		end
@@ -1378,7 +1382,7 @@ _G.RunNextFrame(function()
 				for i = 1, frame.numTabs do
 					tab = frame.Tabs and frame.Tabs[i] or _G[frame:GetName() .. "Tab" .. i]
 					if tab.sf then
-						-- N.B. use tab:GetID() instead of using index value, fixes #345
+						-- N.B. use tab:GetID() or index value, fixes #345
 						chkVal = tab:GetID() ~= 0 and tab:GetID() or i
 						if chkVal == frame.selectedTab then
 							aObj:setActiveTab(tab.sf)
