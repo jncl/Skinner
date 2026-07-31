@@ -4424,6 +4424,11 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 		end, true)
 		return textObject:SetTextColor(textObject:GetTextColor())
 	end
+	-- height offsets for UIWidgetBelowMinimapContainerFrame
+	local hghtOfs = {
+		[7039] = -20, -- Leave Catch Up
+		[7527] = -4, -- Stay a While
+	}
 	-- Documentation in UIWidgetManagerSharedDocumentation.lua (UIWidgetVisualizationType)
 	local regs, tcr
 	local function skinWidget(wFrame, wInfo)
@@ -4571,7 +4576,7 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 			aObj:skinObject("frame", {obj=wFrame, fType=ftype, kfs=true, ofs=-2, x1=7, x2=-7, clr="sepia"})
 		elseif wFrame.widgetType == 30 then -- ButtonHeader (used by UIWidgetBelowMinimapContainerFrame)
 			wFrame:DisableDrawLayer("BORDER")
-			aObj:skinObject("frame", {obj=wFrame, fType=ftype, ofs=-4, y1=-20, clr="gold"})
+			aObj:skinObject("frame", {obj=wFrame, fType=ftype, ofs=-4, y1=hghtOfs[wFrame.widgetID] or 0, clr="gold"})
 			if aObj.modBtns then
 				for btn in wFrame.buttonPool:EnumerateActive() do
 					aObj:skinStdButton{obj=btn, fType=ftype, ofs=-8, clr="grey"}
