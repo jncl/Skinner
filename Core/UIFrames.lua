@@ -282,11 +282,7 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 		if frame.sf
 		and frame.sf.tfade
 		then
-			-- if self.isClscERA then
-			-- 	frame.sf.tfade:SetGradientAlpha(self:getGradientInfo())
-			-- else
-				frame.sf.tfade:SetGradient(self:getGradientInfo())
-			-- end
+			frame.sf.tfade:SetGradient(self:getGradientInfo())
 		end
 	end)
 	self:SecureHook("AlertFrame_ResumeOutAnimation", function(frame)
@@ -1697,29 +1693,25 @@ aObj.blizzFrames[ftype].HelpPlate = function(self)
 
 end
 
-if aObj.isMnln
-or aObj.isClsc
-then
-	aObj.blizzFrames[ftype].HelpTip = function(self)
-		if not self.prdb.HelpTip or self.initialized.HelpTip then return end
-		self.initialized.HelpTip = true
+aObj.blizzFrames[ftype].HelpTip = function(self)
+	if not self.prdb.HelpTip or self.initialized.HelpTip then return end
+	self.initialized.HelpTip = true
 
-		local function skinHelpTips()
-			for hTip in _G.HelpTip.framePool:EnumerateActive() do
-				_G.RaiseFrameLevelByTwo(hTip)
-				self:skinObject("glowbox", {obj=hTip, fType=ftype})
-				if self.modBtns then
-					-- N.B. .CloseButton already skinned in skinGlowBox function
-					self:skinStdButton{obj=hTip.OkayButton}
-				end
+	local function skinHelpTips()
+		for hTip in _G.HelpTip.framePool:EnumerateActive() do
+			_G.RaiseFrameLevelByTwo(hTip)
+			self:skinObject("glowbox", {obj=hTip, fType=ftype})
+			if self.modBtns then
+				-- N.B. .CloseButton already skinned in skinGlowBox function
+				self:skinStdButton{obj=hTip.OkayButton}
 			end
 		end
-		skinHelpTips()
-		self:SecureHook(_G.HelpTip, "Show", function(_, _, _)
-			skinHelpTips()
-		end)
-
 	end
+	skinHelpTips()
+	self:SecureHook(_G.HelpTip, "Show", function(_, _, _)
+		skinHelpTips()
+	end)
+
 end
 
 aObj.blizzFrames[ftype].ItemText = function(self)
@@ -2643,7 +2635,7 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 		end
 	end
 
-	if not aObj.isClscERA then
+	if not self.isClscERA then
 		-- UnitPowerBarAlt (inc. PlayerPowerBarAlt)
 		if self.prdb.MainMenuBar.altpowerbar then
 			local function skinUnitPowerBarAlt(upba)
@@ -2829,14 +2821,12 @@ aObj.blizzFrames[ftype].Minimap = function(self)
 				-- .Instance
 			-- .ChallengeMode
 				-- .Border
-	else
-		if self.isClscERA then
-			if self.modBtns then
-				_G.RaiseFrameLevelByTwo(_G.MinimapToggleButton)
-				self:moveObject{obj=_G.MinimapToggleButton, x=-8, y=1}
-				self:skinCloseButton{obj=_G.MinimapToggleButton, noSkin=true}
-			end
-		end
+	elseif self.isClscERA
+	and self.modBtns
+	then
+		_G.RaiseFrameLevelByTwo(_G.MinimapToggleButton)
+		self:moveObject{obj=_G.MinimapToggleButton, x=-8, y=1}
+		self:skinCloseButton{obj=_G.MinimapToggleButton, noSkin=true}
 	end
 
 	self:keepFontStrings(_G.MinimapBackdrop)
@@ -3498,9 +3488,7 @@ then
 			end
 
 			self:keepFontStrings(this.shadows)
-			-- if not self.isClscERA then
-				self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype})
-			-- end
+			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype})
 			-- GroupFinder Frame
 			for i = 1, #groupFrames do
 				_G.GroupFinderFrame["groupButton" .. i].bg:SetTexture(nil)

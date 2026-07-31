@@ -1280,7 +1280,7 @@ aObj.SetupOptions = function(self)
 		["GM Chat UI"]            = true,
 		["Guild Bank UI"]         = true,
 		["Help Frame"]            = {desc = "Customer Support Frame"},
-		["Help Tip"]              = (self.isMnln or self.isClsc) and {desc = "Help Tips"} or nil,
+		["Help Tip"]              = {desc = "Help Tips"},
 		["Item Text"]             = {suff = "Frame"},
 		["Macro UI"]              = {desc = "Macros UI"},
 		["Mail Frame"]            = true,

@@ -2244,7 +2244,20 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 	self:checkShown(_G.CommunitiesSettingsDialog)
 
 	self:SecureHookScript(_G.CommunitiesAvatarPickerDialog, "OnShow", function(this)
-		if not self.isClscERA then
+		if self.isClscERA then
+			this.ScrollFrame:DisableDrawLayer("BACKGROUND")
+			if self.modBtnBs then
+				for i = 1, 5 do
+					for j = 1, 6 do
+						self:addButtonBorder{obj=this.ScrollFrame.avatarButtons[i][j], fType=ftype}
+					end
+				end
+			end
+			if self.modBtns then
+				self:skinStdButton{obj=this.CancelButton}
+				self:skinStdButton{obj=this.OkayButton}
+			end
+		else
 			self:removeNineSlice(this.Selector)
 			self:skinObject("scrollbar", {obj=this.ScrollBar, fType=ftype})
 			local function skinElement(...)
@@ -2262,19 +2275,6 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 			if self.modBtns then
 				self:skinStdButton{obj=this.Selector.CancelButton}
 				self:skinStdButton{obj=this.Selector.OkayButton}
-			end
-		else
-			this.ScrollFrame:DisableDrawLayer("BACKGROUND")
-			if self.modBtnBs then
-				for i = 1, 5 do
-					for j = 1, 6 do
-						self:addButtonBorder{obj=this.ScrollFrame.avatarButtons[i][j], fType=ftype}
-					end
-				end
-			end
-			if self.modBtns then
-				self:skinStdButton{obj=this.CancelButton}
-				self:skinStdButton{obj=this.OkayButton}
 			end
 		end
 		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ofs=-4})

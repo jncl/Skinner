@@ -717,21 +717,13 @@ function aObj:hookSocialToastFuncs(frame)
 		and this.sf.tfade
 		then
 			this.sf.tfade:SetParent(_G.MainMenuBar)
-			if self.isClscERA then
-				this.sf.tfade:SetGradientAlpha(self:getGradientInfo())
-			else
-				this.sf.tfade:SetGradient(self:getGradientInfo())
-			end
+			this.sf.tfade:SetGradient(self:getGradientInfo())
 		end
 		if this.cb
 		and this.cb.tfade
 		then
 			this.cb.tfade:SetParent(_G.MainMenuBar)
-			if self.isClscERA then
-				this.cb.tfade:SetGradientAlpha(self:getGradientInfo())
-			else
-				this.cb.tfade:SetGradient(self:getGradientInfo())
-			end
+			this.cb.tfade:SetGradient(self:getGradientInfo())
 		end
 	end)
 	self:SecureHook(frame.waitAndAnimOut, "Play", function(this)

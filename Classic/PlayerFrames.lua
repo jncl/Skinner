@@ -108,8 +108,7 @@ aObj.SetupClassic_PlayerFrames = function()
 						_G.PaperDollItemSlotButton_Update(btn)
 						self:addButtonBorder{obj=_G.RuneFrameControlButton, fType=ftype}
 					end
-					if not self.isClscERA
-					then
+					if not self.isClscERA then
 						self:skinObject("ddbutton", {obj=fObj.Attributes.LeftPlayerStatDropdown, fType=ftype})
 						self:skinObject("ddbutton", {obj=fObj.Attributes.RightPlayerStatDropdown, fType=ftype})
 					end
@@ -285,8 +284,7 @@ aObj.SetupClassic_PlayerFrames = function()
 			    return
 			end
 
-			if not self.isClscERA
-			then
+			if not self.isClscERA then
 				self:skinObject("dropdown", {obj=_G.CraftFrameFilterDropDown, fType=ftype})
 				if self.modChkBtns then
 					self:skinCheckButton{obj=_G.CraftFrameAvailableFilterCheckButton, fType=ftype}
@@ -462,7 +460,11 @@ aObj.SetupClassic_PlayerFrames = function()
 
 			self:SecureHookScript(_G.FriendsListFrame, "OnShow", function(fObj)
 				_G.FriendsFrameFriendsScrollFrame.PendingInvitesHeaderButton.BG:SetTexture(nil)
-				self:skinObject("slider", {obj=_G.FriendsFrameFriendsScrollFrame.scrollBar, fType=ftype, rpTex="background"})
+				if not self.isClsc then
+					self:skinObject("slider", {obj=_G.FriendsFrameFriendsScrollFrame.scrollBar, fType=ftype, rpTex="background", x1=-4, x2=3})
+				else
+					self:skinObject("slider", {obj=_G.FriendsFrameFriendsScrollFrame.scrollBar, fType=ftype, rpTex="background"})
+				end
 				local btn
 				for i = 1, _G.FRIENDS_FRIENDS_TO_DISPLAY do
 					btn = _G["FriendsFrameFriendsScrollFrameButton" .. i]

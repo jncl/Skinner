@@ -270,7 +270,7 @@ aObj.SetupClassic_NPCFrames = function()
 			    return
 			end
 
-			if aObj.isClscERA then
+			if self.isClscERA then
 				self:makeMFRotatable(_G.PetStableModel)
 				_G.PetStableCurrentPetBackground:SetTexture(nil)
 				_G.PetStableStabledPet1Background:SetTexture(nil)

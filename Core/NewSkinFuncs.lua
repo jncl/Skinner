@@ -1317,7 +1317,14 @@ function aObj:skinLayoutDialog(frame, ftype)
 	self:skinObject("editbox", {obj=frame.LayoutNameEditBox, fType=ftype, y1=-4, y2=4})
 	if frame.ImportBox then
 		if frame.ImportBox.ScrollBar then
-			self:skinObject("scrollbar", {obj=frame.ImportBox.ScrollBar, fType=ftype})
+			if (self.isClscERA
+			or self.isClscBCA)
+			and frame == _G.EditModeImportLayoutDialog
+			then
+				self:skinObject("scrollbar", {obj=frame.ImportBox.ScrollBar, fType=ftype, x1=2, x2=4})
+			else
+				self:skinObject("scrollbar", {obj=frame.ImportBox.ScrollBar, fType=ftype})
+			end
 		end
 		self:skinObject("frame", {obj=frame.ImportBox, fType=ftype, kfs=true, fb=true, ofs=7, x2=not self.isMnln and -3 or nil})
 	end
