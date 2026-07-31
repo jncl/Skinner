@@ -240,6 +240,8 @@ function aObj:OnInitialize()
 	self.sbGlazed = _G.setmetatable({}, {__mode = "k"})
 
 	if self.isMnln then
+		-- Setup AddOn Compartment Icon
+		self:setupACI()
 		-- Load Retail Support, if required (done here for ElvUI/TukUI)
 		self:checkAndRun("SetupMainline_NPCFrames", "opt", nil, true)
 		self:checkAndRun("SetupMainline_PlayerFrames", "opt", nil, true)
@@ -251,9 +253,6 @@ function aObj:OnInitialize()
 		self:checkAndRun("SetupClassic_PlayerFrames", "opt", nil, true)
 		self:checkAndRun("SetupClassic_UIFrames", "opt", nil, true)
 	end
-
-	-- Setup AddOn Compartment Icon
-	self:setupACI()
 
 	self.callbacks:Fire("AddOn_OnInitialize")
 	-- remove all callbacks for this event
@@ -268,6 +267,23 @@ function aObj:OnEnable()
 		_G.SetBasicMessageDialogText("Runnning as a Patched version, please update Shared_Funcs variable", true)
 	end
 	--@end-debug@
+
+	_G.EventUtil.RegisterOnceFrameEventAndCallback("AUCTION_HOUSE_SHOW", function()
+		-- aObj:Debug("ROFEAC AUCTION_HOUSE_SHOW")
+		aObj.callbacks:Fire("Auction_House_Show")
+		-- remove all callbacks for this event
+		aObj.callbacks.events["Auction_House_Show"] = nil
+	end)
+
+	_G.EventUtil.RegisterOnceFrameEventAndCallback("PLAYER_ENTERING_WORLD", function(_)
+		-- aObj:Debug("ROFEAC PLAYER_ENTERING_WORLD")
+		-- delay issuing callback to allow for code to be loaded
+		_G.RunNextFrame(function()
+			aObj.callbacks:Fire("Player_Entering_World")
+			-- remove all callbacks for this event
+			aObj.callbacks.events["Player_Entering_World"] = nil
+		end)
+	end)
 
 	self.oocTab = {}
 	_G.EventRegistry:RegisterFrameEventAndCallback("PLAYER_REGEN_ENABLED", function()
@@ -288,6 +304,7 @@ function aObj:OnEnable()
 			self.prdb.BdBorderTexture = override
 		end
 	end)
+
 	self.RegisterCallback("OnEnable", "Player_Entering_World", function(_)
 		self:updateSBTexture()
 	end)
@@ -333,9 +350,17 @@ function aObj:OnEnable()
 	end)
 	--@end-debug@
 
+	self.callbacks:Fire("AddOn_OnEnable")
+	-- remove all callbacks for this event
+	self.callbacks.events["AddOn_OnEnable"] = nil
+
 end
 
 function aObj:OnDisable()
+
+	self.callbacks:Fire("AddOn_OnDisable")
+	-- remove all callbacks for this event
+	self.callbacks.events["AddOn_OnDisable"] = nil
 
 	self:UnregisterAllEvents()
 	self.LSM.UnregisterAllCallbacks(self)

@@ -164,20 +164,3 @@ _G.RunNextFrame(function()
 		aObj.callbacks:Fire("AddOn_Loaded", addon)
 	end, aObj)
 end)
-
-_G.EventUtil.RegisterOnceFrameEventAndCallback("AUCTION_HOUSE_SHOW", function()
-	-- aObj:Debug("ROFEAC AUCTION_HOUSE_SHOW")
-	aObj.callbacks:Fire("Auction_House_Show")
-	-- remove all callbacks for this event
-	aObj.callbacks.events["Auction_House_Show"] = nil
-end)
-
-_G.EventUtil.RegisterOnceFrameEventAndCallback("PLAYER_ENTERING_WORLD", function(_)
-	-- aObj:Debug("ROFEAC PLAYER_ENTERING_WORLD")
-	-- delay issuing callback to allow for code to be loaded
-	_G.RunNextFrame(function()
-		aObj.callbacks:Fire("Player_Entering_World")
-		-- remove all callbacks for this event
-		aObj.callbacks.events["Player_Entering_World"] = nil
-	end)
-end)
