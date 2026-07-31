@@ -2791,6 +2791,7 @@ aObj.SetupMainline_UIFrames = function()
 				-- TODO: skin side tabs N.B. current textures include border
 				if aObj.isMnlnPTR then
 					self:skinSideTabs(this, ftype)
+					self:skinObject("ddbutton", {obj=this.HouseDropdown.Dropdown, fType=ftype})
 				end
 				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=-3, x2=3, y2=-4})
 
@@ -2855,7 +2856,9 @@ aObj.SetupMainline_UIFrames = function()
 							local efisf = ef.InitiativeSetFrame
 							efisf.InitiativeTimer.TimerBG:SetTexture(nil)
 							-- TODO: skin efisf.ProgressBar
-							efisf.ProgressBar.Threshold4.Reward.IconBorder:SetTexture(nil)
+							_G.RunNextFrame(function()
+								efisf.ProgressBar.Threshold4.Reward.IconBorder:SetTexture(nil)
+							end)
 							efisf.InitiativeActiveNeighborhoodSwitcher:DisableDrawLayer("BACKGROUND")
 							efisf.InitiativeTasks:DisableDrawLayer("BACKGROUND")
 							self:changeTex2Black(efisf.InitiativeTasks.TaskListTitleContainer, {"TitleTextureL", "TitleTextureM", "TitleTextureR"})
@@ -2992,7 +2995,7 @@ aObj.SetupMainline_UIFrames = function()
 				skinNeighborhoodBtns(this.bnetNeighborhoodButtonPool)
 				self:skinObject("editbox", {obj=this.NeighborhoodListFrame.BNetFriendSearchBox, fType=ftype, cb=true})
 				self:keepFontStrings(this.PlotInfoFrame)
-				-- this.HouseFinderMapCanvasFrame.BorderFrame
+				-- .HouseFinderMapCanvasFrame.BorderFrame
 				-- .HouseFinderNotificationBanner
 				this.WoodBorderFrame.Border:SetTexture(nil)
 				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true})
