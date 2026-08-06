@@ -94,7 +94,7 @@ aObj.SetupClassic_UIFrames = function()
 		self.initialized.ChatButtons = true
 
 		if self.modBtnBs then
-			for i = 1, _G.NUM_CHAT_WINDOWS do
+			for i = 1, _G.Constants.ChatFrameConstants.MaxChatWindows do
 				self:addButtonBorder{obj=_G["ChatFrame" .. i].buttonFrame.bottomButton, fType=ftype, ofs=-2, x1=1}
 				self:addButtonBorder{obj=_G["ChatFrame" .. i].buttonFrame.downButton, fType=ftype, ofs=-2, x1=1}
 				self:addButtonBorder{obj=_G["ChatFrame" .. i].buttonFrame.upButton, fType=ftype, ofs=-2, x1=1}
