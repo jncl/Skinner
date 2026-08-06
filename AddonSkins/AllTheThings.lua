@@ -1,48 +1,54 @@
 local _, aObj = ...
-if not aObj:isAddonEnabled("AllTheThings")
-and not aObj:isAddonEnabled("ATT-Classic")
-then
+if not aObj:isAddonEnabled("AllTheThings") then
 	return
 end
 local _G = _G
 
-local function skinThings(app, appName)
+aObj.addonsToSkin.AllTheThings = function(_) -- v 5.2.13
 
 	local function skinFrame(frame)
-		if appName == "ATT-Classic" then
-			aObj:skinObject("scrollbar", {obj=frame.ScrollBar, x1=2, x2=4})
-		else
-			aObj:skinObject("slider", {obj=frame.ScrollBar})
+		aObj:skinObject("slider", {obj=frame.ScrollBar})
+		aObj:removeNineSlice(frame)
+		aObj:skinObject("frame", {obj=frame, rb=true, cb=true, ofs=0})
+		if aObj.modBtns then
+			frame.CloseButton:SetSize(24, 24)
 		end
-		aObj:skinObject("frame", {obj=frame, kfs=true, cbns=true, ofs=0, x2=1, y2=-2})
 	end
 	-- hook this to skin new frames
-	aObj:RawHook(app, "GetWindow", function(this, suffix, ...)
-		local frame = aObj.hooks[this].GetWindow(this, suffix, ...)
-		if not frame.sf then
-			skinFrame(frame)
-		end
+	aObj:RawHook(_G.AllTheThings, "GetWindow", function(this, suffix, passive)
+		local frame = aObj.hooks[this].GetWindow(this, suffix, passive)
+		_G.RunNextFrame(function()
+			if frame
+			and not frame.sf then
+				skinFrame(frame)
+			end
+		end)
 		return frame
 	end, true)
 	-- skin existing frames
-	for _, frame in _G.pairs(app.Windows) do
+	for _, frame in _G.pairs(_G.AllTheThings.Windows) do
 		skinFrame(frame)
 	end
 
 	aObj:skinObject("frame", {obj=_G.ATTGameTooltipModel1:GetParent(), kfs=true, ofs=0})
 
 	-- minimap button
-	if _G[appName .. "-Minimap"] then
-		aObj.mmButs[appName] = _G[appName .. "-Minimap"]
-		_G[appName .. "-Minimap"].texture:SetDrawLayer("OVERLAY") -- make logo appear
+	if _G["AllTheThings-Minimap"] then
+		aObj.mmButs["AllTheThings"] = _G["AllTheThings-Minimap"]
+		_G["AllTheThings-Minimap"].texture:SetDrawLayer("OVERLAY") -- make logo appear
 	end
 
-	aObj.RegisterCallback("AllTheThings", "IOFPanel_Before_Skinning", function(_, panel)
-		if panel.name ~= appName then
+	local pName
+	aObj.RegisterCallback("AllTheThings", "SettingsPanel_DisplayCategory", function(_, panel)
+		pName = panel:GetName() or ""
+		if not pName:find("AllTheThings")
+		or aObj.spSkinnedPanels[panel]
+		then
 			return
 		end
-		aObj.iofSkinnedPanels[panel] = true
+		aObj.spSkinnedPanels[panel] = true
 
+		local x1Ofs, x2Ofs
 		local function skinObjects(frame)
 			for _, obj in _G.pairs(frame.Objects) do
 				if obj:IsObjectType("EditBox") then
@@ -59,10 +65,16 @@ local function skinThings(app, appName)
 					aObj:skinStdButton{obj=obj, schk=true}
 				elseif obj:IsObjectType("Frame") then
 					if obj.ScrollContainer then
-						aObj:skinObject("frame", {obj=obj.ScrollContainer, kfs=true, fb=true, y1=8})
+						-- FIXME: this handles Classic ScrollBar having a zero width
+						if aObj.isClsc then
+							x1Ofs, x2Ofs = 2, 15
+						end
+						aObj:skinObject("scrollbar", {obj=obj.ScrollContainer.ScrollBar, x1=x1Ofs, x2=x2Ofs})
+						aObj:skinObject("frame", {obj=obj.ScrollContainer, kfs=true, fb=true, ofs=0})
 						if aObj.modChkBtns then
-							aObj:RawHook(obj, "CreateCheckBoxWithCount", function(this, ...)
-								local cBox = aObj.hooks[this].CreateCheckBoxWithCount(this, ...)
+							local cBox
+							aObj:RawHook(obj, "CreateCheckBoxWithCount", function(fObj, ...)
+								cBox = aObj.hooks[fObj].CreateCheckBoxWithCount(fObj, ...)
 								aObj:skinCheckButton{obj=cBox}
 								return cBox
 							end, true)
@@ -75,21 +87,23 @@ local function skinThings(app, appName)
 			end
 		end
 		skinObjects(panel)
-		aObj:skinObject("dropdown", {obj=_G.dropdownSoundpack})
+		-- handle outliers
+		if pName:find("General") then
+			aObj:skinObject("ddbutton", {obj=aObj:getChild(panel, 2), noSF=true, bx1=-1, by1=0, bx2=0, by2=0})
+		elseif pName:find("Audio") then
+			aObj:skinObject("dropdown", {obj=_G.dropdownSoundpack})
+		elseif pName:find("Windows")
+		or pName:find("Style")
+		then
+			for _, child in _G.ipairs_reverse{panel:GetChildren()} do
+				if child:IsObjectType("Button")
+				and aObj.modBtns
+				then
+					aObj:skinStdButton{obj=child}
+				end
+			end
+		end
 
-		aObj.UnregisterCallback("AllTheThings", "IOFPanel_Before_Skinning")
 	end)
-
-end
-
-aObj.addonsToSkin.AllTheThings = function(_) -- v DF-3.9.4a
-
-	skinThings(_G.AllTheThings, "AllTheThings")
-
-end
-
-aObj.addonsToSkin["ATT-Classic"] = function(_) -- v 1.5.1
-
-	skinThings(_G.ATTC, "ATT-Classic")
 
 end
