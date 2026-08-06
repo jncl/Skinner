@@ -7,8 +7,6 @@ local _G = _G
 aObj.SetupMainline_PlayerFrames = function()
 	local ftype = "p"
 
-	-- N.B. ArenaUI managed in UnitFrames module
-
 	aObj.blizzLoDFrames[ftype].ArtifactUI = function(self)
 		if not self.prdb.ArtifactUI or self.initialized.ArtifactUI then return end
 		self.initialized.ArtifactUI = true

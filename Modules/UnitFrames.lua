@@ -76,22 +76,6 @@ local function changeUFOpacity()
 		_G.PartyMemberBackground:SetAlpha(db.alpha)
 	end
 
-	if _G.C_AddOns.IsAddOnLoaded("Blizzard_ArenaUI") then
-		if _G.ArenaPrepBackground.sf then
-			_G.ArenaPrepBackground.sf:SetAlpha(db.alpha)
-		end
-		if _G.ArenaEnemyBackground.sf then
-			_G.ArenaEnemyBackground.sf:SetAlpha(db.alpha)
-		end
-		-- MAX_ARENA_ENEMIES is Deprecated
-		-- for i = 1, _G.MAX_ARENA_ENEMIES do
-		-- 	if _G["ArenaEnemyFrame" .. i].sf then
-		-- 		_G["ArenaEnemyFrame" .. i].sf:SetAlpha(db.alpha)
-		-- 		_G["ArenaEnemyFrame" .. i .. "PetFrame"].sf:SetAlpha(db.alpha)
-		-- 	end
-		-- end
-	end
-
 end
 function module:adjustUnitFrames(opt)
 
@@ -511,8 +495,6 @@ function module:OnDisable()
 
 	self:UnhookAll()
 
-	aObj.blizzLoDFrames[ftype].ArenaUI = _G.nop
-
 end
 
 function module:OnEnable()
@@ -606,11 +588,6 @@ function module:GetOptions()
 				order = 6,
 				name = aObj.L["Party"],
 			},
-			arena = {
-				type = "toggle",
-				order = 8,
-				name = aObj.L["Arena"],
-			},
 			alpha = {
 				type = "range",
 				order = 10,
@@ -621,55 +598,5 @@ function module:GetOptions()
 		},
 	}
 	return options
-
-end
-
-aObj.blizzLoDFrames[ftype].ArenaUI = function(_)
-
-	if db.arena then
-		local function skinArenaFrame(fName)
-			if _G.InCombatLockdown() then
-			    aObj:add2Table(aObj.oocTab, {skinArenaFrame, {fName}})
-			    return
-			end
-			module:skinUnitButton{obj=_G[fName], x1=-3, x2=3, y2=-6}
-			_G[fName .. "Background"]:SetTexture(nil)
-			_G[fName .. "Texture"]:SetTexture(nil)
-			_G[fName .. "Status"]:SetTexture(nil)
-			_G[fName .. "SpecBorder"]:SetTexture(nil)
-			aObj:skinObject("statusbar", {obj=_G[fName .. "HealthBar"], fi=0})
-			aObj:skinObject("statusbar", {obj=_G[fName .. "ManaBar"], fi=0, nilFuncs=true})
-			local cBar = fName .. "CastingBar"
-			aObj:adjHeight{obj=_G[cBar], adj=2}
-			aObj:moveObject{obj=_G[cBar].Text, y=-1}
-			_G[cBar].Flash:SetAllPoints()
-			aObj:skinObject("statusbar", {obj=_G[cBar], fi=0, bg=aObj:getRegion(_G[cBar], 1), other={_G[cBar].Flash}})
-			-- _G[cBar]:SetStatusBarColor(0, 1, 0)
-			if _G[fName].petFrame then
-				fName = fName .. "PetFrame"
-				module:skinUnitButton{obj=_G[fName], y1=1, x2=1, y2=2}
-				_G[fName .. "Flash"]:SetTexture(nil)
-				_G[fName .. "Texture"]:SetTexture(nil)
-				aObj:skinObject("statusbar", {obj=_G[fName .. "HealthBar"], fi=0})
-				aObj:skinObject("statusbar", {obj=_G[fName .. "ManaBar"], fi=0, nilFuncs=true})
-				aObj:moveObject{obj=_G[fName], x=-17} -- align under ArenaEnemy Health/Mana bars
-			end
-		end
-		if not aObj.isMnln then
-			for i = 1, _G.MAX_ARENA_ENEMIES do
-				skinArenaFrame("ArenaPrepFrame" .. i)
-				skinArenaFrame("ArenaEnemyFrame" .. i)
-			end
-		else
-			for _, frame in _G.pairs(_G.ArenaEnemyPrepFramesContainer.UnitFrames) do
-				skinArenaFrame(frame:GetName())
-			end
-			for _, frame in _G.pairs(_G.ArenaEnemyMatchFramesContainer.UnitFrames) do
-				skinArenaFrame(frame:GetName())
-			end
-		end
-		aObj:skinObject("frame", {obj=_G.ArenaPrepBackground, fType=ftype})
-		aObj:skinObject("frame", {obj=_G.ArenaEnemyBackground, fType=ftype})
-	end
 
 end
