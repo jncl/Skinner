@@ -138,7 +138,15 @@ aObj.addonsToSkin.Baganator = function(self) -- v 812
 		end
 	end
 	local function skinBank(frame, bankType)
-		aObj:skinObject("tabs", {obj=frame, pool=true, lod=aObj.isTT and true, selectedTab=frame.currentTab == frame.Character and 1 or 2})
+		aObj:skinObject("tabs", {obj=frame, pool=true, lod=aObj.isTT and true, selectedTab=frame.currentTab == frame.Character and 1 or 2, func=self.isMnln and self.isTT and function(tab)
+			if (frame.currentTab == frame.Character
+				and tab:GetText() == "Character")
+			or (frame.currentTab == frame.Warband
+				and tab:GetText() == "Warband")
+			then
+				self:setActiveTab(tab.sf)
+			end
+		end or nil})
 		skinFrame(frame, bankType)
 		if aObj.modBtns then
 			for _, btn in _G.pairs(frame.AllFixedButtons) do
