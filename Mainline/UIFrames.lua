@@ -1084,8 +1084,9 @@ aObj.SetupMainline_UIFrames = function()
 						if aObj.modBtnBs
 						and self.prdb.CooldownViewer.buttons
 						then
-							aObj:addButtonBorder{obj=item, fType=ftype, relTo=item.Icon, clr=item.Icon:IsDesaturated() and "grey" or "white"}
-							if item.sbb then
+							if not item.sbb then
+								aObj:addButtonBorder{obj=item, fType=ftype, relTo=item.Icon, clr=item.Icon:IsDesaturated() and "grey" or "white"}
+							else
 								aObj:clrBBC(item.sbb, item.Icon:IsDesaturated() and "grey" or "white")
 							end
 						end
