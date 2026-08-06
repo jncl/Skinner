@@ -14,7 +14,7 @@ local function setScrollTrackOffsets(tbl, type)
 		end
 	end
 	--@debug@
-	-- aObj:Debug("setScrollTrackOffsets#1 O/H/W: [%s, %s, %s, %s]", type, o, w, h)
+	-- aObj:Debug("setScrollTrackOffsets#1 O/H/W: [%s, %s, %d, %d]", type, o, w, h)
 	--@end-debug@
 	-- setup offsets based on Orientation/Height/Width
 	if o == "HORIZONTAL" then
@@ -64,7 +64,7 @@ local function setScrollTrackOffsets(tbl, type)
 		tbl.y2 = _G.rawget(tbl, "y2") or 0
 	end
 	--@debug@
-	-- aObj:Debug("setScrollTrackOffsets#2: [%s, %s, %s, %s]", tbl.x1, tbl.x2, tbl.y1, tbl.y2)
+	-- aObj:Debug("setScrollTrackOffsets#2: [%d %d, %d, %d]", tbl.x1, tbl.x2, tbl.y1, tbl.y2)
 	--@end-debug@
 end
 
@@ -483,11 +483,11 @@ local function skinDDButton(tbl)
 		end
 		if not tbl.noBB then
 			-- position around the original frame
-			tbl.bx1  = tbl.bx1 or tbl.bofs * -1
-			tbl.by1  = tbl.by1 or tbl.bofs
-			tbl.bx2  = tbl.bx2 or tbl.bofs
-			tbl.by2  = tbl.by2 or tbl.bofs * -1
-			aObj:addButtonBorder{obj=tbl.obj, fType=tbl.ftype, relTo=tbl.obj.Arrow, clr=tbl.clr, sechk=tbl.sechk, ofs=tbl.bofs, x1=tbl.bx1, y1=tbl.by1, x2=tbl.bx2, y2=tbl.by2}
+			tbl.bx1 = tbl.bx1 or tbl.bofs * -1
+			tbl.by1 = tbl.by1 or tbl.bofs
+			tbl.bx2 = tbl.bx2 or tbl.bofs
+			tbl.by2 = tbl.by2 or tbl.bofs * -1
+			aObj:addButtonBorder{obj=tbl.obj, fType=tbl.ftype, relTo=tbl.obj.Arrow, clr=tbl.clr, sechk=tbl.sechk--[[, ofs=tbl.bofs]], x1=tbl.bx1, y1=tbl.by1, x2=tbl.bx2, y2=tbl.by2}
 		end
 	end
 end
