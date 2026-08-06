@@ -1,9 +1,8 @@
--- luacheck: ignore 631 (line is too long)
 local _, aObj = ...
 if not aObj:isAddonEnabled("Outfitter") then return end
 local _G = _G
 
-aObj.addonsToSkin.Outfitter = function(self) -- v 12.0.0.4
+aObj.addonsToSkin.Outfitter = function(self) -- v 12.1.0.1
 
 	self:SecureHook(_G.Outfitter, "PlayerEnteringWorld", function(this)
 		local function skinOutfitBars(fObj)
@@ -30,8 +29,9 @@ aObj.addonsToSkin.Outfitter = function(self) -- v 12.0.0.4
 		self:SecureHook(_G.Outfitter.OutfitBar, "UpdateBar", function(fObj, _)
 			skinOutfitBars(fObj)
 		end)
+		local obsd
 		self:SecureHook(_G.Outfitter.OutfitBar, "DragBar_OnClick", function(_)
-			local obsd = _G.OutfitBarSettingsDialog
+			obsd = _G.OutfitBarSettingsDialog
 			if obsd then
 				self:skinObject("slider", {obj=obsd.SizeSlider})
 				self:skinObject("slider", {obj=obsd.AlphaSlider})
@@ -84,6 +84,9 @@ aObj.addonsToSkin.Outfitter = function(self) -- v 12.0.0.4
 				self:skinCheckButton{obj=_G.OutfitterTooltipInfo}
 				self:skinCheckButton{obj=_G.OutfitterItemComparisons}
 			end
+
+			-- bugfix: stops text on skinframes disappearing, fixes #347
+			this.SetFrameLevel = _G.nop
 
 			self:Unhook(fObj, "OnShow")
 		end)
