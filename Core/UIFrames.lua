@@ -2822,6 +2822,7 @@ aObj.blizzFrames[ftype].Minimap = function(self)
 			-- .ChallengeMode
 				-- .Border
 	elseif self.isClscERA
+	or self.isClscBCA
 	and self.modBtns
 	then
 		_G.RaiseFrameLevelByTwo(_G.MinimapToggleButton)
