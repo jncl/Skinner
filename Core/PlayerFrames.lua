@@ -733,7 +733,9 @@ if not aObj.isMnln then
 		local cBar
 		for _, prefix in _G.pairs{"Player", aObj.isClsc and "OverlayPlayer" or nil} do
 			cBar = _G[prefix .. "CastingBarFrame"]
-			if aObj.isClsc then
+			if aObj.isClsc
+			or aObj.isClscBCA
+			then
 				self:RawHook(cBar.Border, "SetTexture", function(this, _)
 					self.hooks[this].SetTexture(this, nil)
 				end, true)
