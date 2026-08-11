@@ -268,6 +268,8 @@ function aObj:OnEnable()
 	end
 	--@end-debug@
 
+	self:handleOOCEvent()
+
 	_G.EventUtil.RegisterOnceFrameEventAndCallback("AUCTION_HOUSE_SHOW", function()
 		-- aObj:Debug("ROFEAC AUCTION_HOUSE_SHOW")
 		aObj.callbacks:Fire("Auction_House_Show")
@@ -283,14 +285,6 @@ function aObj:OnEnable()
 			-- remove all callbacks for this event
 			aObj.callbacks.events["Player_Entering_World"] = nil
 		end)
-	end)
-
-	self.oocTab = {}
-	_G.EventRegistry:RegisterFrameEventAndCallback("PLAYER_REGEN_ENABLED", function()
-		for _, entry in _G.ipairs(self.oocTab) do
-			entry[1](_G.unpack(entry[2]))
-		end
-		_G.wipe(self.oocTab)
 	end)
 
 	-- handle statusbar changes
