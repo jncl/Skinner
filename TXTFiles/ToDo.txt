@@ -14,3 +14,7 @@ ToDos
 	O 	Change ALL occurrence of 'this' in Unhook functions to the actual hooking object, using 'this' DOESN'T remove the hook properly !!
 
  ?		O/?	ChatFrameTab for PetBattles has missing text
+
+#346 √	N/R AllTheThings
+
+#347 √	N/R Outfitter

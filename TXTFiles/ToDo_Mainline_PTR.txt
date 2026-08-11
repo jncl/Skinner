@@ -10,19 +10,22 @@
 		- Added
 √			- Transmog.WardrobeCollection.TabContent.ItemsFrame.WeaponSheatheDropdown
 √			- BuyHouseConfirmationDialog
+√			- WorldMapCoordsPanelTemplate
 		- Updated
+≈			- AchievementUI
 x			- Blizzard_AccessibilityTemplates
 ?				- UserScaledElementTemplates
 ?			- ActionButtonTemplate
 ?			- ExtraActionBar
 √			- Blizzard_CharacterCustomize
 √			- ChatConfigFrame
-√			- CooldownViewerSettings
+≈			- CooldownViewerSettings
 √			- CooldownViewerSettingsAlerts
 x			- EditModeManager
-x			- EditModeSystemTemplates
+≈			- EditModeSystemTemplates
 x			- LFGList
 ?			- Blizzard_GuildControlUI
+≈			- Blizzard_HousingBlueprint
 ≈			- Blizzard_HouseEditorCustomizationDyeTemplates
 ≈			- Blizzard_HouseEditorCustomizeMode
 ≈			- Blizzard_HouseEditorLayoutModePin
@@ -40,12 +43,12 @@ x			- Blizzard_HousingHouseSettings
 ?			- RecruitAFriendFrame
 ?			- SharedUIPanelTemplates
 ?			- SecureUIPanelTemplates
-?			- InputBoxTemplates
+≈			- InputBoxTemplates
 ?			- SharedTooltipTemplates
 x			- Blizzard_SimpleCheckout
 ?			- UIPanelTemplates
 x			- CastingBarFrame
 ?			- CompactUnitFrame
-√			- UIWidgetBelowMinimapContainerFrame
+≈			- UIWidgetBelowMinimapContainerFrame
 		- Deleted
 √			- BattleTagInviteFrame
