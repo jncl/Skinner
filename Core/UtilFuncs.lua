@@ -1480,8 +1480,19 @@ function aObj:SetupCmds()
 		return
 	end)
 
-	local loadAddOn = _G.LoadAddOn or _G.C_AddOns.LoadAddOn
-	self:RegisterChatCommand("tad", function(frame) loadAddOn("Blizzard_DebugTools"); _G.TableAttributeDisplay:InspectTable(_G[frame] or getMouseFocus()); _G.TableAttributeDisplay:Show() end)
+	if not aObj.isMnlnPTR then
+		self:RegisterChatCommand("tad", function(frame)
+			_G.C_AddOns.LoadAddOn("Blizzard_DebugTools")
+			_G.TableAttributeDisplay:InspectTable(_G[frame] or getMouseFocus())
+			_G.TableAttributeDisplay:Show()
+		end)
+	else
+		self:RegisterChatCommand("tad", function(frame)
+			_G.LoadAddOnWithErrorHandling("Blizzard_DebugTools")
+			_G.TableAttributeDisplay:InspectTable(_G[frame] or getMouseFocus())
+			_G.TableAttributeDisplay:Show()
+		end)
+	end
 
 end
 --@end-debug@

@@ -1250,7 +1250,11 @@ function aObj:skinSideTabs(frame, ftype)
 		if tab.Background then
 			tab.Background:SetTexture(nil)
 		end
-		self:skinObject("button", {obj=tab, fType=ftype, ofs=-1, x1=-1, y2=2})
+		if aObj.isMnlnPTR then
+			self:skinObject("button", {obj=tab, fType=ftype, x1=-3, y1=-2, x2=-4, y2=2})
+		else
+			self:skinObject("button", {obj=tab, fType=ftype, ofs=-1, x1=-1, y2=2})
+		end
 	end
 
 end
