@@ -798,12 +798,10 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 				skinCB("ChatConfigOtherSettingsPVPCheckBox" .. i)
 			end
 			self:skinObject("frame", {obj=_G.ChatConfigOtherSettingsPVP, fType=ftype, kfs=true, rns=true, fb=true, ofs=0})
-			if aObj.isMnlnPTR then
-				for i = 1, #_G.CHAT_CONFIG_ADDITIONAL_COLORS do
-					self:removeNineSlice(_G["ChatConfigOtherSettingsAdditionalColorsSwatch" .. i].NineSlice)
-				end
-				self:skinObject("frame", {obj=_G.ChatConfigOtherSettingsAdditionalColors, fType=ftype, kfs=true, rns=true, fb=true, ofs=0})
+			for i = 1, #_G.CHAT_CONFIG_ADDITIONAL_COLORS do
+				self:removeNineSlice(_G["ChatConfigOtherSettingsAdditionalColorsSwatch" .. i].NineSlice)
 			end
+			self:skinObject("frame", {obj=_G.ChatConfigOtherSettingsAdditionalColors, fType=ftype, kfs=true, rns=true, fb=true, ofs=0})
 			for i = 1, #_G.CHAT_CONFIG_OTHER_SYSTEM do
 				skinCB("ChatConfigOtherSettingsSystemCheckBox" .. i)
 			end

@@ -1098,23 +1098,21 @@ aObj.SetupMainline_UIFrames = function()
 			end)
 			skinCategories(this)
 
-			if aObj.isMnlnPTR then
-				self:skinObject("scrollbar", {obj=this.GroupBuffFilter.Scroll.ScrollBar, fType=ftype})
-				local sectionObj
-				for _, type in _G.pairs{"shown", "hidden"} do
-					sectionObj = this.GroupBuffFilter[type .. "Section"]
-					self:changeHdrExpandTex(sectionObj.Header)
-					if self.modBtnBs then
-						self:SecureHook(sectionObj, "RefreshLayout", function(fObj, _)
-							for btn in fObj.itemPool:EnumerateActive() do
-								if not btn.sbb then
-									self:addButtonBorder{obj=btn, fType=ftype, relTo=btn.Icon, clr=btn.Icon:IsDesaturated() and "grey" or "white"}
-								else
-									self:clrBBC(btn.sbb, btn.Icon:IsDesaturated() and "grey" or "white")
-								end
+			self:skinObject("scrollbar", {obj=this.GroupBuffFilter.Scroll.ScrollBar, fType=ftype})
+			local sectionObj
+			for _, type in _G.pairs{"shown", "hidden"} do
+				sectionObj = this.GroupBuffFilter[type .. "Section"]
+				self:changeHdrExpandTex(sectionObj.Header)
+				if self.modBtnBs then
+					self:SecureHook(sectionObj, "RefreshLayout", function(fObj, _)
+						for btn in fObj.itemPool:EnumerateActive() do
+							if not btn.sbb then
+								self:addButtonBorder{obj=btn, fType=ftype, relTo=btn.Icon, clr=btn.Icon:IsDesaturated() and "grey" or "white"}
+							else
+								self:clrBBC(btn.sbb, btn.Icon:IsDesaturated() and "grey" or "white")
 							end
-						end)
-					end
+						end
+					end)
 				end
 
 			end
@@ -2256,19 +2254,17 @@ aObj.SetupMainline_UIFrames = function()
 					self:skinObject("ddbutton", {obj=fObj.Filters.FilterDropdown, fType=ftype, filter=true})
 					self:keepFontStrings(fObj.Categories)
 					self:skinObject("scrollbar", {obj=fObj.OptionsContainer.ScrollBar, fType=ftype})
-					if aObj.isMnlnPTR then
-						self:skinObject("scrollbar", {obj=fObj.BlueprintCollection.ScrollBar, fType=ftype})
-						-- TODO: skin elements
-						-- local function skinElement(...)
-						-- 	local _, element, elementData
-						-- 	if _G.select("#", ...) == 2 then
-						-- 		element, elementData = ...
-						-- 	else
-						-- 		_, element, elementData = ...
-						-- 	end
-						-- end
-						-- _G.ScrollUtil.AddInitializedFrameCallback(fObj.BlueprintCollection.ScrollBox, skinElement, aObj, true)
-					end
+					self:skinObject("scrollbar", {obj=fObj.BlueprintCollection.ScrollBar, fType=ftype})
+					-- TODO: skin elements
+					-- local function skinElement(...)
+					-- 	local _, element, elementData
+					-- 	if _G.select("#", ...) == 2 then
+					-- 		element, elementData = ...
+					-- 	else
+					-- 		_, element, elementData = ...
+					-- 	end
+					-- end
+					-- _G.ScrollUtil.AddInitializedFrameCallback(fObj.BlueprintCollection.ScrollBox, skinElement, aObj, true)
 					self:skinObject("tabs", {obj=fObj.TabSystem, pool=true, fType=ftype, ignoreSize=true, track=false})
 					-- TODO: skin CollapseButton, currently texture has border , background & icon
 						-- .CollapseButton
@@ -2417,20 +2413,18 @@ aObj.SetupMainline_UIFrames = function()
 					self:SecureHookScript(fObj.DecorCustomizationsPane, "OnShow", function(dcp)
 						dcp.ButtonFrame.Divider:SetTexture(nil)
 
-						if aObj.isMnlnPTR then
-							-- .CustomizeComponentContainer
-							local pp = dcp.CustomizeComponentContainer.PetPane
-							pp.AssignPetContainer.PetIconSlot:SetTexture(nil)
-							if self.modBtns then
-								self:skinStdButton{obj=pp.BehaviorDropdown, fType=ftype}
-							end
-							if self.modBtnBs then
-								self:addButtonBorder{obj=pp.AssignPetContainer, fType=ftype, relTo=pp.AssignPetContainer.PetIcon, clr="grey"}
-							end
-								-- .DyePane
-									-- .DyeSlotContainer
-									-- .DyeCostContainer
+						-- .CustomizeComponentContainer
+						local pp = dcp.CustomizeComponentContainer.PetPane
+						pp.AssignPetContainer.PetIconSlot:SetTexture(nil)
+						if self.modBtns then
+							self:skinStdButton{obj=pp.BehaviorDropdown, fType=ftype}
 						end
+						if self.modBtnBs then
+							self:addButtonBorder{obj=pp.AssignPetContainer, fType=ftype, relTo=pp.AssignPetContainer.PetIcon, clr="grey"}
+						end
+							-- .DyePane
+								-- .DyeSlotContainer
+								-- .DyeCostContainer
 						self:skinObject("frame", {obj=dcp, fType=ftype, kfs=true, cbns=true})
 						self:moveObject{obj=dcp.CloseButton, x=-6, y=-4}
 						if self.modBtns then
@@ -2442,20 +2436,18 @@ aObj.SetupMainline_UIFrames = function()
 					end)
 					self:checkShown(fObj.DecorCustomizationsPane)
 
-					if aObj.isMnlnPTR then
-						self:SecureHookScript(fObj.PetCustomizationsPane, "OnShow", function(pcp)
-							self:keepFontStrings(pcp)
-							self:skinObject("editbox", {obj=pcp.SearchBox, fType=ftype, si=true, y1=-4, y2=4})
-							self:skinObject("ddbutton", {obj=pcp.Filters, fType=ftype, filter=true})
-							self:skinObject("scrollbar", {obj=pcp.OptionsContainer.ScrollBar, fType=ftype})
-							-- TODO: skin CollapseButton, currently texture has border , background & icon
-								-- .CollapseButton
-							self:skinObject("frame", {obj=pcp, fType=ftype, kfs=true, cb=true})
+					self:SecureHookScript(fObj.PetCustomizationsPane, "OnShow", function(pcp)
+						self:keepFontStrings(pcp)
+						self:skinObject("editbox", {obj=pcp.SearchBox, fType=ftype, si=true, y1=-4, y2=4})
+						self:skinObject("ddbutton", {obj=pcp.Filters, fType=ftype, filter=true})
+						self:skinObject("scrollbar", {obj=pcp.OptionsContainer.ScrollBar, fType=ftype})
+						-- TODO: skin CollapseButton, currently texture has border , background & icon
+							-- .CollapseButton
+						self:skinObject("frame", {obj=pcp, fType=ftype, kfs=true, cb=true})
 
-							self:Unhook(fObj.PetCustomizationsPane, "OnShow")
-						end)
-						self:checkShown(fObj.PetCustomizationsPane)
-					end
+						self:Unhook(fObj.PetCustomizationsPane, "OnShow")
+					end)
+					self:checkShown(fObj.PetCustomizationsPane)
 
 					self:SecureHookScript(_G.DyeSelectionPopout, "OnShow", function(dsp)
 						self:skinObject("scrollbar", {obj=dsp.DyeSlotScrollBar, fType=ftype})
@@ -2731,17 +2723,15 @@ aObj.SetupMainline_UIFrames = function()
 				self:Unhook(this, "OnShow")
 			end)
 
-			if aObj.isMnlnPTR then
-				self:SecureHookScript(_G.BuyHouseConfirmationDialog, "OnShow", function(this)
-					self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, ofs=0})
-					if self.modBtns then
-						self:skinStdButton{obj=this.AcceptButton, fType=ftype}
-						self:skinStdButton{obj=this.CancelButton, fType=ftype}
-					end
+			self:SecureHookScript(_G.BuyHouseConfirmationDialog, "OnShow", function(this)
+				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, ofs=0})
+				if self.modBtns then
+					self:skinStdButton{obj=this.AcceptButton, fType=ftype}
+					self:skinStdButton{obj=this.CancelButton, fType=ftype}
+				end
 
-					self:Unhook(this, "OnShow")
-				end)
-			end
+				self:Unhook(this, "OnShow")
+			end)
 
 			self:SecureHookScript(_G.MoveHouseConfirmationDialog, "OnShow", function(this)
 				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, ofs=0})
@@ -2821,11 +2811,8 @@ aObj.SetupMainline_UIFrames = function()
 					return
 				end
 
-				-- TODO: skin side tabs N.B. current textures include border
-				if aObj.isMnlnPTR then
-					self:skinSideTabs(this, ftype)
-					self:skinObject("ddbutton", {obj=this.HouseDropdown.Dropdown, fType=ftype})
-				end
+				self:skinSideTabs(this, ftype)
+				self:skinObject("ddbutton", {obj=this.HouseDropdown.Dropdown, fType=ftype})
 				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=-3, x2=3, y2=-4})
 
 				self:SecureHookScript(this.HouseInfoContent, "OnShow", function(hi)
@@ -2972,36 +2959,34 @@ aObj.SetupMainline_UIFrames = function()
 				end)
 				self:checkShown(this.CatalogContent)
 
-				if aObj.isMnlnPTR then
-					self:SecureHookScript(this.CollectionContent, "OnShow", function(coll)
-						coll.Background:SetTexture(nil)
-						coll.Divider:SetTexture(nil)
-						coll.Categories.Background:SetAlpha(0)
-						coll.Categories.TopBorder:SetTexture(nil)
-						coll.Categories.SubcategoriesDivider:SetTexture(nil)
-						self:skinObject("scrollbar", {obj=coll.BlueprintCollection.ScrollBar, fType=ftype})
-						local function skinCollectionEntry(...)
-							local _, element
-							if _G.select("#", ...) == 2 then
-								element, _ = ...
-							else
-								_, element, _ = ...
-							end
-							if element.Header then
-								aObj:changeHdrExpandTex(element.Header)
-							end
+				self:SecureHookScript(this.CollectionContent, "OnShow", function(coll)
+					coll.Background:SetTexture(nil)
+					coll.Divider:SetTexture(nil)
+					coll.Categories.Background:SetAlpha(0)
+					coll.Categories.TopBorder:SetTexture(nil)
+					coll.Categories.SubcategoriesDivider:SetTexture(nil)
+					self:skinObject("scrollbar", {obj=coll.BlueprintCollection.ScrollBar, fType=ftype})
+					local function skinCollectionEntry(...)
+						local _, element
+						if _G.select("#", ...) == 2 then
+							element, _ = ...
+						else
+							_, element, _ = ...
 						end
-						_G.ScrollUtil.AddInitializedFrameCallback(coll.BlueprintCollection.ScrollBox, skinCollectionEntry, aObj, true)
-						coll.BlueprintDetails.PreviewBackground:SetTexture(nil)
-						coll.BlueprintDetails.ContentSummary.BudgetsContainer.Background:SetTexture(nil)
-						if self.modBtns then
-							self:skinStdButton{obj=coll.BlueprintDetails.ContentSummary.ContentsListButton, fType=ftype}
+						if element.Header then
+							aObj:changeHdrExpandTex(element.Header)
 						end
+					end
+					_G.ScrollUtil.AddInitializedFrameCallback(coll.BlueprintCollection.ScrollBox, skinCollectionEntry, aObj, true)
+					coll.BlueprintDetails.PreviewBackground:SetTexture(nil)
+					coll.BlueprintDetails.ContentSummary.BudgetsContainer.Background:SetTexture(nil)
+					if self.modBtns then
+						self:skinStdButton{obj=coll.BlueprintDetails.ContentSummary.ContentsListButton, fType=ftype}
+					end
 
-						self:Unhook(this.CollectionContent, "OnShow")
-					end)
-					self:checkShown(this.CollectionContent)
-				end
+					self:Unhook(this.CollectionContent, "OnShow")
+				end)
+				self:checkShown(this.CollectionContent)
 
 				self:Unhook(this, "OnShow")
 			end)
@@ -3082,9 +3067,7 @@ aObj.SetupMainline_UIFrames = function()
 				if self.modBtns then
 					self:skinStdButton{obj=this.PlotAccess.AccessTypeDropdown, fType=ftype}
 					self:skinStdButton{obj=this.HouseAccess.AccessTypeDropdown, fType=ftype}
-					if aObj.isMnlnPTR then
-						self:skinStdButton{obj=this.BlueprintExport.AccessTypeDropdown, fType=ftype}
-					end
+					self:skinStdButton{obj=this.BlueprintExport.AccessTypeDropdown, fType=ftype}
 					self:skinStdButton{obj=this.IgnoreListButton, fType=ftype}
 					self:skinStdButton{obj=this.SaveButton, fType=ftype}
 					self:skinStdButton{obj=this.AbandonHouseButton, fType=ftype}
@@ -3096,10 +3079,8 @@ aObj.SetupMainline_UIFrames = function()
 					for _, cBtn in _G.pairs(this.HouseAccess.accessOptions) do
 						self:skinCheckButton{obj=cBtn.Checkbox, fType=ftype}
 					end
-					if aObj.isMnlnPTR then
-						for _, cBtn in _G.pairs(this.BlueprintExport.accessOptions) do
-							self:skinCheckButton{obj=cBtn.Checkbox, fType=ftype}
-						end
+					for _, cBtn in _G.pairs(this.BlueprintExport.accessOptions) do
+						self:skinCheckButton{obj=cBtn.Checkbox, fType=ftype}
 					end
 				end
 
@@ -3122,86 +3103,84 @@ aObj.SetupMainline_UIFrames = function()
 
 		end
 
-		if aObj.isMnlnPTR then
-			aObj.blizzLoDFrames[ftype].HousingBlueprint = function(self)
-				if not self.prdb.HousingUI or self.initialized.HousingBlueprint then return end
-				self.initialized.HousingBlueprint = true
+		aObj.blizzLoDFrames[ftype].HousingBlueprint = function(self)
+			if not self.prdb.HousingUI or self.initialized.HousingBlueprint then return end
+			self.initialized.HousingBlueprint = true
 
-				self:SecureHookScript(_G.HousingBlueprintContentListFrame, "OnShow", function(this)
-					self:skinObject("scrollbar", {obj=this.ScrollBar, fType=ftype})
-					local function skinElement(...)
-						local _, element
-						if _G.select("#", ...) == 2 then
-							element, _ = ...
-						else
-							_, element, _ = ...
-						end
-						if element.Header then
-							aObj:changeHdrExpandTex(element.Header)
-						end
+			self:SecureHookScript(_G.HousingBlueprintContentListFrame, "OnShow", function(this)
+				self:skinObject("scrollbar", {obj=this.ScrollBar, fType=ftype})
+				local function skinElement(...)
+					local _, element
+					if _G.select("#", ...) == 2 then
+						element, _ = ...
+					else
+						_, element, _ = ...
 					end
-					_G.ScrollUtil.AddInitializedFrameCallback(this.ScrollBox, skinElement, aObj, true)
-					self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true})
-					if self.modBtns then
-						self:moveObject{obj=this.CloseButton, x=-9, y=-5}
-						self:skinStdButton{obj=this.BottomCloseButton, fType=ftype}
+					if element.Header then
+						aObj:changeHdrExpandTex(element.Header)
 					end
-					if self.modChkBtns then
-						self:skinCheckButton{obj=this.MissingOnlyCheckbox.Checkbox, fType=ftype, ofs=-2, nh=true}
-					end
+				end
+				_G.ScrollUtil.AddInitializedFrameCallback(this.ScrollBox, skinElement, aObj, true)
+				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true})
+				if self.modBtns then
+					self:moveObject{obj=this.CloseButton, x=-9, y=-5}
+					self:skinStdButton{obj=this.BottomCloseButton, fType=ftype}
+				end
+				if self.modChkBtns then
+					self:skinCheckButton{obj=this.MissingOnlyCheckbox.Checkbox, fType=ftype, ofs=-2, nh=true}
+				end
 
-					self:Unhook(_G.HousingBlueprintContentListFrame, "OnShow")
-				end)
-				self:checkShown(_G.HousingBlueprintContentListFrame)
+				self:Unhook(_G.HousingBlueprintContentListFrame, "OnShow")
+			end)
+			self:checkShown(_G.HousingBlueprintContentListFrame)
 
 
-				self:SecureHookScript(_G.HousingBlueprintExportFrame, "OnShow", function(this)
-					self:skinObject("ddbutton", {obj=this.InputContent.TypeDropdown, fType=ftype, sechk=true})
-					self:skinObject("editbox", {obj=this.InputContent.NameInputBox, fType=ftype})
-					-- N.B. skin as if an EditBox
-					self:skinObject("frame", {obj=this.SuccessContent.ShareCodeBox, fType=ftype, kfs=true, bd=4, fb=true, ofs=6, clr="grey"})
-					self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true})
-					if self.modBtns then
-						self:moveObject{obj=this.CloseButton, x=-9, y=-5}
-						self:skinStdButton{obj=this.InputContent.SaveButton, fType=ftype, schk=true}
-						self:skinStdButton{obj=this.SuccessContent.BlueprintsCollectionButton, fType=ftype}
-						self:skinStdButton{obj=this.SuccessContent.ChatLinkButton, fType=ftype}
-						self:skinStdButton{obj=this.SuccessContent.ClipboardButton, fType=ftype}
-					end
+			self:SecureHookScript(_G.HousingBlueprintExportFrame, "OnShow", function(this)
+				self:skinObject("ddbutton", {obj=this.InputContent.TypeDropdown, fType=ftype, sechk=true})
+				self:skinObject("editbox", {obj=this.InputContent.NameInputBox, fType=ftype})
+				-- N.B. skin as if an EditBox
+				self:skinObject("frame", {obj=this.SuccessContent.ShareCodeBox, fType=ftype, kfs=true, bd=4, fb=true, ofs=6, clr="grey"})
+				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true})
+				if self.modBtns then
+					self:moveObject{obj=this.CloseButton, x=-9, y=-5}
+					self:skinStdButton{obj=this.InputContent.SaveButton, fType=ftype, schk=true}
+					self:skinStdButton{obj=this.SuccessContent.BlueprintsCollectionButton, fType=ftype}
+					self:skinStdButton{obj=this.SuccessContent.ChatLinkButton, fType=ftype}
+					self:skinStdButton{obj=this.SuccessContent.ClipboardButton, fType=ftype}
+				end
 
-					self:Unhook(_G.HousingBlueprintExportFrame, "OnShow")
-				end)
-				self:checkShown(_G.HousingBlueprintExportFrame)
+				self:Unhook(_G.HousingBlueprintExportFrame, "OnShow")
+			end)
+			self:checkShown(_G.HousingBlueprintExportFrame)
 
-				self:SecureHookScript(_G.HousingBlueprintImportFrame, "OnShow", function(this)
-					-- N.B. skin as if an EditBox
-					self:skinObject("frame", {obj=this.InputContent.ShareCodeBox, fType=ftype, kfs=true, bd=4, fb=true, ofs=6, clr="grey"})
-					this.ValidationContent.ContentSummary.BudgetsContainer.Background:SetTexture(nil)
-					self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true})
-					if self.modBtns then
-						self:moveObject{obj=this.CloseButton, x=-9, y=-5}
-						self:skinStdButton{obj=this.InputContent.NextButton, fType=ftype, sechk=true}
-						self:skinStdButton{obj=this.ValidationContent.ContentSummary.ContentsListButton, fType=ftype}
-						self:skinStdButton{obj=this.ValidationContent.ImportButton, fType=ftype, schk=true}
-					end
+			self:SecureHookScript(_G.HousingBlueprintImportFrame, "OnShow", function(this)
+				-- N.B. skin as if an EditBox
+				self:skinObject("frame", {obj=this.InputContent.ShareCodeBox, fType=ftype, kfs=true, bd=4, fb=true, ofs=6, clr="grey"})
+				this.ValidationContent.ContentSummary.BudgetsContainer.Background:SetTexture(nil)
+				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true})
+				if self.modBtns then
+					self:moveObject{obj=this.CloseButton, x=-9, y=-5}
+					self:skinStdButton{obj=this.InputContent.NextButton, fType=ftype, sechk=true}
+					self:skinStdButton{obj=this.ValidationContent.ContentSummary.ContentsListButton, fType=ftype}
+					self:skinStdButton{obj=this.ValidationContent.ImportButton, fType=ftype, schk=true}
+				end
 
-					self:Unhook(_G.HousingBlueprintImportFrame, "OnShow")
-				end)
-				self:checkShown(_G.HousingBlueprintImportFrame)
+				self:Unhook(_G.HousingBlueprintImportFrame, "OnShow")
+			end)
+			self:checkShown(_G.HousingBlueprintImportFrame)
 
-				self:SecureHookScript(_G.HousingBlueprintRenameFrame, "OnShow", function(this)
-					self:skinObject("editbox", {obj=this.NameInputBox, fType=ftype})
-					self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true})
-					if self.modBtns then
-						self:moveObject{obj=this.CloseButton, x=-9, y=-5}
-						self:skinStdButton{obj=this.SaveButton, fType=ftype, schk=true}
-					end
+			self:SecureHookScript(_G.HousingBlueprintRenameFrame, "OnShow", function(this)
+				self:skinObject("editbox", {obj=this.NameInputBox, fType=ftype})
+				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true})
+				if self.modBtns then
+					self:moveObject{obj=this.CloseButton, x=-9, y=-5}
+					self:skinStdButton{obj=this.SaveButton, fType=ftype, schk=true}
+				end
 
-					self:Unhook(_G.HousingBlueprintRenameFrame, "OnShow")
-				end)
-				self:checkShown(_G.HousingBlueprintRenameFrame)
+				self:Unhook(_G.HousingBlueprintRenameFrame, "OnShow")
+			end)
+			self:checkShown(_G.HousingBlueprintRenameFrame)
 
-			end
 		end
 	end
 
@@ -4961,9 +4940,7 @@ aObj.SetupMainline_UIFrames = function()
 						self:addButtonBorder{obj=oFrame.OpenButton, fType=ftype, clr="gold"}
 					end
 				-- CoordsPanel
-				elseif self.isMnlnPTR
-				and oFrame.neighbors
-				then
+				elseif oFrame.neighbors then
 					_G.nop()
 				--@debug@
 				else

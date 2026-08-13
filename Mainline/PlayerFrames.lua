@@ -161,14 +161,6 @@ aObj.SetupMainline_PlayerFrames = function()
 		self.initialized.CharacterCustomize = true
 
 		self:SecureHookScript(_G.CharCustomizeFrame, "OnShow", function(this)
-			if not aObj.isMnlnPTR then
-				self:SecureHook(_G.BarberShopFrame, "UpdateSex", function(fObj)
-					for btn in fObj.sexButtonPool:EnumerateActive() do
-						btn.Ring:SetTexture(nil)
-						btn.BlackBG:SetTexture(nil)
-					end
-				end)
-			end
 			self:SecureHook(this, "UpdateAlteredFormButtons", function(fObj)
 				local buttonPool = fObj:GetAlteredFormsButtonPool()
 				for btn in buttonPool:EnumerateActive() do
@@ -600,15 +592,9 @@ aObj.SetupMainline_PlayerFrames = function()
 					_G["WhoFrameColumnHeader" .. i]:DisableDrawLayer("BACKGROUND")
 					if i == 2 then
 						self:skinObject("ddbutton", {obj=_G.WhoFrameDropdown, fType=ftype, ofs=0})
-						if not aObj.isMnlnPTR
-						and not aObj.isMnlnPTRX
-						then
-							self:adjHeight{obj=_G.WhoFrameDropdown, adj=-4}
-						else
-							_G.WhoFrameDropdown:SetPoint("BOTTOMRIGHT", 0, -2)
-						end
+						_G.WhoFrameDropdown:SetPoint("BOTTOMRIGHT", 0, -2)
 					else
-						self:skinObject("frame", {obj=_G["WhoFrameColumnHeader" .. i], fType=ftype, y2=not aObj.isMnlnPTRX and -3 or nil})
+						self:skinObject("frame", {obj=_G["WhoFrameColumnHeader" .. i], fType=ftype, y2=-3})
 					end
 				end
 				self:moveObject{obj=_G.WhoFrameColumnHeader4, x=2}
@@ -670,25 +656,6 @@ aObj.SetupMainline_PlayerFrames = function()
 			self:Unhook(this, "OnShow")
 		end)
 		self:checkShown(_G.FriendsFriendsFrame)
-
-		if not aObj.isMnlnPTR then
-			self:SecureHookScript(_G.BattleTagInviteFrame, "OnShow", function(this)
-				if _G.InCombatLockdown() then
-				    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
-				    return
-				end
-
-				self:removeNineSlice(this.Border)
-				self:skinObject("frame", {obj=this, fType=ftype, cb=true})
-				if self.modBtns then
-					self:skinStdButton{obj=self:getChild(this, 2)} -- SEND_REQUEST
-					self:skinStdButton{obj=self:getChild(this, 3)} -- CANCEL
-				end
-
-				self:Unhook(this, "OnShow")
-			end)
-			self:checkShown(_G.BattleTagInviteFrame)
-		end
 
 		self:SecureHookScript(_G.RecruitAFriendFrame, "OnShow", function(this)
 			if _G.InCombatLockdown() then
