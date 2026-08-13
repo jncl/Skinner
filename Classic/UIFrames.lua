@@ -162,7 +162,8 @@ aObj.SetupClassic_UIFrames = function()
 			return
 		end
 
-		local function skinNamePlate(frame)
+		local nHb, nCb
+		local function skinNamePlate(frame, action)
 			-- aObj:Debug("skinNamePlate: [%s, %s]", frame, frame:IsForbidden())
 			if not frame -- happens when called again after combat and frame doesn't exist any more
 			or frame:IsForbidden()
@@ -170,35 +171,30 @@ aObj.SetupClassic_UIFrames = function()
 				return
 			end
 			if _G.InCombatLockdown() then
-			    aObj:add2Table(aObj.oocTab, {skinNamePlate, {frame}})
+			    aObj:add2Table(aObj.oocTab, {skinNamePlate, {frame, action}})
 			    return
 			end
-			local nP = frame.UnitFrame or aObj:getChild(frame, 1)
-			if nP
-			and nP.healthBar or nP.HealthBarsContainer.healthBar
-			and not nP.classNamePlatePowerBar
+
+			if frame.UnitFrame
+			and frame.UnitFrame.HealthBarsContainer.healthBar
 			then
-				local nHb = nP.healthBar or nP.HealthBarsContainer.healthBar
-				local nb = nHb.border or nP.HealthBarsContainer.border
-				local nBg = nHb.background or nP.HealthBarsContainer.background
-				local nCb = nP.castBar or nP.CastBar
-				nb:DisableDrawLayer("ARTWORK")
-				aObj:skinObject("statusbar", {obj=nHb, fType=ftype, bg=nBg})
-				if aObj.isClsc then
-					aObj:removeRegions(nCb, {2, 3})
-					aObj:skinObject("statusbar", {obj=nCb, fType=ftype, bg=aObj:getRegion(nCb, 1)})
-				end
+				nHb = frame.UnitFrame.HealthBarsContainer.healthBar
+				nCb = frame.UnitFrame.CastBarsContainer.castBar
+				nHb.bgTexture:SetAlpha(0)
+				nCb.Border:SetAlpha(0)
+				aObj:skinObject("statusbar", {obj=nHb, fType=ftype, fi=0})
+				aObj:skinObject("statusbar", {obj=nCb, fType=ftype, fi=0, bg=nCb.Background})
 				-- N.B. WidgetContainer objects managed in UIWidgets code
 			end
 		end
-		if not aObj.isClsc then
-			self:SecureHook(_G.NamePlateDriverFrame, "OnNamePlateAdded", function(_, namePlateUnitToken)
-				skinNamePlate(_G.C_NamePlate.GetNamePlateForUnit(namePlateUnitToken, _G.issecure()))
+		self:SecureHook(_G.NamePlateDriverFrame, "OnNamePlateAdded", function(npdf, namePlateUnitToken)
+			-- wait before changing textures
+			_G.C_Timer.After(0.25, function()
+				skinNamePlate(npdf:GetNamePlateForUnit(namePlateUnitToken))
 			end)
-		end
-		for _, frame in _G.pairs(_G.C_NamePlate.GetNamePlates(_G.issecure())) do
-			skinNamePlate(frame)
-		end
+		end)
+		-- skin existing nameplates
+		_G.NamePlateDriverMixin:ForEachNamePlate(skinNamePlate)
 
 	end
 
