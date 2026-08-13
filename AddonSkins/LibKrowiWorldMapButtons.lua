@@ -27,7 +27,10 @@ aObj.libsToSkin["Krowi_WorldMapButtons-1.4"] = function(self) -- v Krowi_WorldMa
 			return btn
 		end, true)
 		for _, btn in _G.pairs(lKWMB.Buttons) do
-			skinButton(btn)
+			-- ignore non-button objects (Classic)
+			if btn:IsObjectType("Button") then
+				skinButton(btn)
+			end
 		end
 	end
 
