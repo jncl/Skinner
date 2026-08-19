@@ -959,7 +959,7 @@ function module.skinCheckButton(_, ...)
 
 end
 
-function module.skinItemSlots(frame, ftype)
+function module.skinItemSlots(_, frame, ftype)
 
 	if not frame.itemButtonPool then -- bugfix
 		return
