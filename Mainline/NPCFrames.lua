@@ -71,6 +71,11 @@ aObj.SetupMainline_NPCFrames = function()
 		if not self.prdb.BankFrame or self.initialized.BankFrame then return end
 		self.initialized.BankFrame = true
 
+		if _G.C_AddOns.IsAddOnLoaded("LiteBag") then
+			self.blizzFrames[ftype].BankFrame = nil
+			return
+		end
+
 		local function skinSideTabs(frame)
 			for tab in frame.bankTabPool:EnumerateActive() do
 				tab.Border:SetTexture(nil)
@@ -79,110 +84,110 @@ aObj.SetupMainline_NPCFrames = function()
 				end
 			end
 		end
-		if not _G.C_AddOns.IsAddOnLoaded("LiteBag") then
-			if self.modBtnBs then
-				self:SecureHook(_G.AccountBankPanel or _G.BankFrame.BankPanel, "GenerateItemSlotsForSelectedTab", function(frame)
-					self:skinItemSlots(frame, ftype)
-				end)
-			end
-			self:SecureHookScript(_G.BankFrame, "OnShow", function(this)
-				if _G.InCombatLockdown() then
-				    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
-				    return
-				end
-
-				self:skinObject("tabs", {obj=this.TabSystem,  pool=true, fType=ftype, ignoreSize=true, track=false})
-				self:skinObject("editbox", {obj=_G.BankItemSearchBox, fType=ftype, si=true})
-				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true, cb=true})
-
-				self:SecureHookScript(this.BankPanel, "OnShow", function(fObj)
-					fObj.PurchaseTab.Border:SetTexture(nil)
-					self:removeNineSlice(fObj.NineSlice)
-					fObj.EdgeShadows:DisableDrawLayer("BORDER")
-
-					if self.modBtns then
-						self:skinStdButton{obj=fObj.WithdrawButton, fType=ftype}
-						self:skinStdButton{obj=fObj.DepositButton, fType=ftype}
-					end
-					if self.modBtnBs then
-						self:addButtonBorder{obj=fObj.AutoSortButton, fType=ftype, ofs=0}
-						self:addButtonBorder{obj=fObj.PurchaseTab, relTo=fObj.PurchaseTab.Icon}
-					end
-
-					self:SecureHook(fObj, "RefreshBankTabs", function(frame)
-						skinSideTabs(frame)
-					end)
-
-					self:SecureHookScript(fObj.MoneyFrame, "OnShow", function(frame)
-						self:keepFontStrings(frame.Border)
-						if self.modBtns then
-							self:skinStdButton{obj=frame.WithdrawButton, fType=ftype, sechk=true}
-							self:skinStdButton{obj=frame.DepositButton, fType=ftype, sechk=true}
-						end
-
-						self:Unhook(frame, "OnShow")
-					end)
-					self:checkShown(fObj.MoneyFrame)
-					self:SecureHookScript(fObj.AutoDepositFrame, "OnShow", function(frame)
-						if self.modBtns then
-							self:skinStdButton{obj=frame.DepositButton, fType=ftype}
-						end
-						if self.modChkBtns then
-							self:skinCheckButton{obj=frame.IncludeReagentsCheckbox, fType=ftype, size=24}
-						end
-
-						self:Unhook(frame, "OnShow")
-					end)
-					self:checkShown(fObj.AutoDepositFrame)
-
-					self:SecureHookScript(fObj.PurchasePrompt, "OnShow", function(frame)
-						self:skinObject("frame", {obj=frame, fType=ftype, kfs=true, fb=true, clr="gold"})
-						if self.modBtns then
-							self:skinStdButton{obj=frame.TabCostFrame.PurchaseButton, fType=ftype}
-						end
-
-						self:Unhook(frame, "OnShow")
-					end)
-					self:checkShown(fObj.PurchasePrompt)
-
-					self:SecureHookScript(fObj.LockPrompt, "OnShow", function(frame)
-						self:skinObject("frame", {obj=frame, fType=ftype, kfs=true, fb=true, x1=4, y1=0, x2=-4, y2=1, clr="gold"})
-						frame.Background:SetAlpha(1)
-						frame:SetFrameLevel(4) -- ensure the AutoSort button border is hidden
-
-						self:Unhook(frame, "OnShow")
-					end)
-					self:checkShown(fObj.LockPrompt)
-
-					self:skinTabSettingsMenu(fObj, ftype)
-
-					self:Unhook(fObj, "OnShow")
-				end)
-				self:checkShown(this.BankPanel)
-
-				self:Unhook(this, "OnShow")
+		if self.modBtnBs then
+			self:SecureHook(_G.BankFrame.BankPanel, "GenerateItemSlotsForSelectedTab", function(frame)
+				self:skinItemSlots(frame, ftype)
 			end)
-			self:checkShown(_G.BankFrame)
-			self:SecureHookScript(_G.BankCleanUpConfirmationPopup, "OnShow", function(this)
-				if _G.InCombatLockdown() then
-				    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
-				    return
-				end
-
-				self:keepFontStrings(this.Border)
-				self:skinObject("frame", {obj=this, fType=ftype, ofs=-4})
-				if self.modBtns then
-					self:skinStdButton{obj=this.AcceptButton, fType=ftype}
-					self:skinStdButton{obj=this.CancelButton, fType=ftype}
-				end
-				if self.modChkBtns then
-					self:skinCheckButton{obj=this.HidePopupCheckbox.Checkbox, fType=ftype, size=24}
-				end
-
-				self:Unhook(this, "OnShow")
-			end)
-			self:checkShown(_G.BankCleanUpConfirmationPopup)
 		end
+		self:SecureHookScript(_G.BankFrame, "OnShow", function(this)
+			if _G.InCombatLockdown() then
+			    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+			    return
+			end
+
+			self:skinObject("tabs", {obj=this.TabSystem,  pool=true, fType=ftype, ignoreSize=true, track=false})
+			self:skinObject("editbox", {obj=_G.BankItemSearchBox, fType=ftype, si=true})
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true, cb=true})
+
+			self:SecureHookScript(this.BankPanel, "OnShow", function(fObj)
+				fObj.PurchaseTab.Border:SetTexture(nil)
+				self:removeNineSlice(fObj.NineSlice)
+				fObj.EdgeShadows:DisableDrawLayer("BORDER")
+
+				if self.modBtns then
+					self:skinStdButton{obj=fObj.WithdrawButton, fType=ftype}
+					self:skinStdButton{obj=fObj.DepositButton, fType=ftype}
+				end
+				if self.modBtnBs then
+					self:addButtonBorder{obj=fObj.AutoSortButton, fType=ftype, ofs=0}
+					self:addButtonBorder{obj=fObj.PurchaseTab, relTo=fObj.PurchaseTab.Icon}
+				end
+
+				self:SecureHook(fObj, "RefreshBankTabs", function(frame)
+					skinSideTabs(frame)
+				end)
+
+				self:SecureHookScript(fObj.MoneyFrame, "OnShow", function(frame)
+					self:keepFontStrings(frame.Border)
+					if self.modBtns then
+						self:skinStdButton{obj=frame.WithdrawButton, fType=ftype, sechk=true}
+						self:skinStdButton{obj=frame.DepositButton, fType=ftype, sechk=true}
+					end
+
+					self:Unhook(frame, "OnShow")
+				end)
+				self:checkShown(fObj.MoneyFrame)
+
+				self:SecureHookScript(fObj.AutoDepositFrame, "OnShow", function(frame)
+					if self.modBtns then
+						self:skinStdButton{obj=frame.DepositButton, fType=ftype}
+					end
+					if self.modChkBtns then
+						self:skinCheckButton{obj=frame.IncludeReagentsCheckbox, fType=ftype, size=24}
+					end
+
+					self:Unhook(frame, "OnShow")
+				end)
+				self:checkShown(fObj.AutoDepositFrame)
+
+				self:SecureHookScript(fObj.PurchasePrompt, "OnShow", function(frame)
+					self:skinObject("frame", {obj=frame, fType=ftype, kfs=true, fb=true, clr="gold"})
+					if self.modBtns then
+						self:skinStdButton{obj=frame.TabCostFrame.PurchaseButton, fType=ftype}
+					end
+
+					self:Unhook(frame, "OnShow")
+				end)
+				self:checkShown(fObj.PurchasePrompt)
+
+				self:SecureHookScript(fObj.LockPrompt, "OnShow", function(frame)
+					self:skinObject("frame", {obj=frame, fType=ftype, kfs=true, fb=true, x1=4, y1=0, x2=-4, y2=1, clr="gold"})
+					frame.Background:SetAlpha(1)
+					frame:SetFrameLevel(4) -- ensure the AutoSort button border is hidden
+
+					self:Unhook(frame, "OnShow")
+				end)
+				self:checkShown(fObj.LockPrompt)
+
+				self:skinTabSettingsMenu(fObj, ftype)
+
+				self:Unhook(fObj, "OnShow")
+			end)
+			self:checkShown(this.BankPanel)
+
+			self:Unhook(this, "OnShow")
+		end)
+		self:checkShown(_G.BankFrame)
+
+		self:SecureHookScript(_G.BankCleanUpConfirmationPopup, "OnShow", function(this)
+			if _G.InCombatLockdown() then
+			    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+			    return
+			end
+
+			self:keepFontStrings(this.Border)
+			self:skinObject("frame", {obj=this, fType=ftype, ofs=-4})
+			if self.modBtns then
+				self:skinStdButton{obj=this.AcceptButton, fType=ftype}
+				self:skinStdButton{obj=this.CancelButton, fType=ftype}
+			end
+			if self.modChkBtns then
+				self:skinCheckButton{obj=this.HidePopupCheckbox.Checkbox, fType=ftype, size=24}
+			end
+
+			self:Unhook(this, "OnShow")
+		end)
+		self:checkShown(_G.BankCleanUpConfirmationPopup)
 
 	end
 
