@@ -22,16 +22,18 @@ local defaults = {
 	}
 }
 
+local UIPtopOfs, topOfs = _G.GetUIPanelLayoutAttribute("TOP_OFFSET")
 local function adjustTFOffset(dB, reset)
 
-	--	Adjust the UIParent TOP-OFFSET attribute if required
+	--	Adjust the UIPanelLayoutFrame TOP_OFFSET attribute if required
 	if dB.shown then
-		local topOfs = -dB.height
-		local UIPtopOfs = -104
-		if topOfs < UIPtopOfs and not reset then
-			_G.UIParent:SetAttribute("TOP_OFFSET", topOfs)
-		elseif _G.UIParent:GetAttribute("TOP_OFFSET") < UIPtopOfs then
-			_G.UIParent:SetAttribute("TOP_OFFSET", UIPtopOfs)
+		topOfs = -dB.height
+		if topOfs < UIPtopOfs
+		and not reset
+		then
+			_G.SetUIPanelLayoutAttribute("TOP_OFFSET", topOfs)
+		elseif _G.GetUIPanelLayoutAttribute("TOP_OFFSET") < UIPtopOfs then
+			_G.SetUIPanelLayoutAttribute("TOP_OFFSET", UIPtopOfs)
 		end
 	end
 
