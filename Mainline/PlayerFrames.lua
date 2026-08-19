@@ -1150,10 +1150,12 @@ aObj.SetupMainline_PlayerFrames = function()
 	end
 
 	aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
-		if not self.prdb.ObjectiveTracker.skin
-		and not self.prdb.ObjectiveTracker.popups
-		and not self.prdb.ObjectiveTracker.animapowers
+		if  not self.prdb.ObjectiveTracker.popups
 		and not self.prdb.ObjectiveTracker.headers
+		and not self.prdb.ObjectiveTracker.skin
+		and not self.prdb.ObjectiveTracker.modules
+		and not self.prdb.ObjectiveTracker.animapowers
+		and not self.prdb.ObjectiveTracker.rewards
 		then
 			return
 		end
@@ -1179,6 +1181,16 @@ aObj.SetupMainline_PlayerFrames = function()
 			    return
 			end
 
+			if self.prdb.ObjectiveTracker.headers then
+				this.Header.Background:SetTexture(nil)
+				if self.modBtnBs then
+					self:skinExpandButton{obj=this.Header.MinimizeButton, onSB=true}
+				end
+			end
+			if self.prdb.ObjectiveTracker.skin then
+				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, x1=-20, y1=4, x2=12, y2=-4})
+			end
+
 			-- search for [inherits="ObjectiveTrackerModuleTemplate]
 			--[[
 				AchievementObjectiveTracker
@@ -1193,146 +1205,136 @@ aObj.SetupMainline_PlayerFrames = function()
 				UIWidgetObjectiveTracker
 				WorldQuestObjectiveTracker
 			]]
-			if self.prdb.ObjectiveTracker.headers then
-				this.Header.Background:SetTexture(nil)
-			end
-			if self.prdb.ObjectiveTracker.skin then
-				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, x1=-20, y1=4, x2=12, y2=-4})
-			end
-			if self.modBtnBs then
-				self:skinExpandButton{obj=this.Header.MinimizeButton, onSB=true}
-			end
-
-			if self.prdb.ObjectiveTracker.modules then
-				local function skinBar(bar)
-					-- aObj:Debug("skinBar: [%s, %s]", bar, bar.template)
-					if bar.template == "BonusTrackerProgressBarTemplate"
-					or bar.template == "ScenarioProgressBarTemplate"
-					then
-						for _, tex in _G.pairs{"IconBG", "BarFrame", "BarFrame2", "BarFrame3", "BarGlow", "Sheen", "Starburst"} do
-							bar.Bar[tex]:SetTexture(nil)
-						end
-						for _, frame in _G.pairs{"Flare1", "Flare2", "SmallFlare1", "SmallFlare2", "FullBarFlare1", 'FullBarFlare2'} do
-							bar[frame]:DisableDrawLayer("ARTWORK")
-						end
-						aObj:skinObject("statusbar", {obj=bar.Bar, fi=0, bg=bar.Bar.BarBG})
-					elseif bar.template == "ObjectiveTrackerProgressBarTemplate"
-					or bar.template == "ObjectiveTrackerTimerBarTemplate"
-					then
-						aObj:removeRegions(bar.Bar, {1, 2, 3}) -- Border textures
-						aObj:skinObject("statusbar", {obj=bar.Bar, fi=0, bg=aObj:getPenultimateRegion(bar.Bar)})
+			local function skinBar(bar)
+				-- aObj:Debug("skinBar: [%s, %s]", bar, bar.template)
+				if bar.template == "BonusTrackerProgressBarTemplate"
+				or bar.template == "ScenarioProgressBarTemplate"
+				then
+					for _, tex in _G.pairs{"IconBG", "BarFrame", "BarFrame2", "BarFrame3", "BarGlow", "Sheen", "Starburst"} do
+						bar.Bar[tex]:SetTexture(nil)
 					end
+					for _, frame in _G.pairs{"Flare1", "Flare2", "SmallFlare1", "SmallFlare2", "FullBarFlare1", 'FullBarFlare2'} do
+						bar[frame]:DisableDrawLayer("ARTWORK")
+					end
+					aObj:skinObject("statusbar", {obj=bar.Bar, fi=0, bg=bar.Bar.BarBG})
+				elseif bar.template == "ObjectiveTrackerProgressBarTemplate"
+				or bar.template == "ObjectiveTrackerTimerBarTemplate"
+				then
+					aObj:removeRegions(bar.Bar, {1, 2, 3}) -- Border textures
+					aObj:skinObject("statusbar", {obj=bar.Bar, fi=0, bg=aObj:getPenultimateRegion(bar.Bar)})
 				end
-				local modName
-				local function skinModule(module, _)
-					modName = module:GetName()
-					if aObj.prdb.ObjectiveTracker.headers then
-						module.Header.Background:SetTexture(nil)
-					end
-					if module.hasContents then
-						if modName == "ScenarioObjectiveTracker" then
-							for _, block in _G.pairs(module.FixedBlocks) do
-								if block == module.ObjectivesBlock then
-									if block.spellFramePool
-									and aObj.modBtnBs
-									then
-										for spell in block.spellFramePool:EnumerateActive() do
-											aObj:addButtonBorder{obj=spell, fType=ftype, relTo=spell.Icon, reParent={spell.cooldown}, ccat=true}
-										end
-									end
-								elseif block == module.StageBlock then
-									--@debug@
-									-- aObj:Debug("skinModule wSID: [%s, %s]", block.widgetSetID)
-									--@end-debug@
-									if block.widgetSetID ~= 842 -- Delves
-									and block.widgetSetID ~= 2102 -- Ritual Roles
-									then
-										aObj:skinObject("frame", {obj=block, fType=ftype, kfs=true, ofs=0, x2=-17, y2=6, clr="sepia"})
-									elseif block.sf then
-										block.sf:Hide()
-									end
-									-- N.B. widgets skinned in UIWidgets skinWidget function
-								elseif block == module.TopWidgetContainerBlock
-								or block == module.BottomWidgetContainerBlock
+			end
+			local modName
+			local function skinModule(module, _)
+				modName = module:GetName()
+				if aObj.prdb.ObjectiveTracker.headers then
+					module.Header.Background:SetTexture(nil)
+				end
+				if module.hasContents
+				and self.prdb.ObjectiveTracker.modules
+				then
+					if modName == "ScenarioObjectiveTracker" then
+						for _, block in _G.pairs(module.FixedBlocks) do
+							if block == module.ObjectivesBlock then
+								if block.spellFramePool
+								and aObj.modBtnBs
 								then
-									_G.nop()
-								elseif block == module.MawBuffsBlock then
-									-- Blizzard_MawBuffs.xml
-									if aObj.prdb.ObjectiveTracker.animapowers then
-										aObj.modUIBtns:skinStdButton{obj=block.Container, fType=ftype, ignoreHLTex=true, ofs=-9, x1=12, x2=-2, clr="turq", ca=0.65} -- use module, treat like a frame
-										block.Container.SetWidth = _G.nop
-										block.Container.SetHighlightAtlas = _G.nop
-										aObj:secureHook(block.Container, "UpdateListState", function(bObj, _)
-											aObj:clrBtnBdr(bObj)
-										end)
-										aObj:skinObject("frame", {obj=block.Container.List, fType=ftype, kfs=true, ofs=-9, x1=0, x2=-16, clr="turq", ca=0.65})
-										aObj:secureHook(block.Container.List, "Update", function(bObj, _)
-											for mawBuff in bObj.buffPool:EnumerateActive() do
-												mawBuff.Border:SetTexture(nil)
-											end
-										end)
+									for spell in block.spellFramePool:EnumerateActive() do
+										aObj:addButtonBorder{obj=spell, fType=ftype, relTo=spell.Icon, reParent={spell.cooldown}, ccat=true}
 									end
-								elseif block == module.TieredEntranceTraitsBlock then
-									aObj:skinObject("frame", {obj=block.Container, fType=ftype, kfs=true, ofs=0, clr="grey"})
-								elseif block == module.ChallengeModeBlock then
-									aObj:skinObject("statusbar", {obj=block.StatusBar, fi=0, bg=block.TimerBG, other={block.TimerBGBack}})
-									aObj:removeRegions(block, {3}) -- challengemode-timer atlas
-									aObj:skinObject("frame", {obj=block, fType=ftype, y2=7})
-									aObj:secureHook(block, "SetUpAffixes", function(blk, _)
-										for affix in blk.affixPool:EnumerateActive() do
-											affix.Border:SetTexture(nil)
+								end
+							elseif block == module.StageBlock then
+								--@debug@
+								-- aObj:Debug("skinModule wSID: [%s, %s]", block.widgetSetID)
+								--@end-debug@
+								if block.widgetSetID ~= 842 -- Delves
+								and block.widgetSetID ~= 2102 -- Ritual Roles
+								then
+									aObj:skinObject("frame", {obj=block, fType=ftype, kfs=true, ofs=0, x2=-17, y2=6, clr="sepia"})
+								elseif block.sf then
+									block.sf:Hide()
+								end
+								-- N.B. widgets skinned in UIWidgets skinWidget function
+							elseif block == module.TopWidgetContainerBlock
+							or block == module.BottomWidgetContainerBlock
+							then
+								_G.nop()
+							elseif block == module.MawBuffsBlock then
+								-- Blizzard_MawBuffs.xml
+								if aObj.prdb.ObjectiveTracker.animapowers then
+									aObj.modUIBtns:skinStdButton{obj=block.Container, fType=ftype, ignoreHLTex=true, ofs=-9, x1=12, x2=-2, clr="turq", ca=0.65} -- use module, treat like a frame
+									block.Container.SetWidth = _G.nop
+									block.Container.SetHighlightAtlas = _G.nop
+									aObj:secureHook(block.Container, "UpdateListState", function(bObj, _)
+										aObj:clrBtnBdr(bObj)
+									end)
+									aObj:skinObject("frame", {obj=block.Container.List, fType=ftype, kfs=true, ofs=-9, x1=0, x2=-16, clr="turq", ca=0.65})
+									aObj:secureHook(block.Container.List, "Update", function(bObj, _)
+										for mawBuff in bObj.buffPool:EnumerateActive() do
+											mawBuff.Border:SetTexture(nil)
 										end
 									end)
-								elseif block == module.ProvingGroundsBlock then
-									block.BG:SetTexture(nil)
-									block.GoldCurlies:SetTexture(nil)
-									aObj:skinObject("statusbar", {obj=block.StatusBar, fi=0})
-									aObj:removeRegions(block.StatusBar, {1}) -- border
-									block.CountdownAnimFrame.BGAnim:SetTexture(nil)
-									block.CountdownAnimFrame.BorderAnim:SetTexture(nil)
-									aObj:skinObject("frame", {obj=block, fType=ftype, x2=41})
 								end
-							end
-						end
-						if module.usedBlocks then
-							for template, blocks in _G.pairs(module.usedBlocks) do
-								if template:find("AutoQuestPopUp") then
-									for _, block in _G.pairs(blocks) do
-										skinAutoPopUp(block)
+							elseif block == module.TieredEntranceTraitsBlock then
+								aObj:skinObject("frame", {obj=block.Container, fType=ftype, kfs=true, ofs=0, clr="grey"})
+							elseif block == module.ChallengeModeBlock then
+								aObj:skinObject("statusbar", {obj=block.StatusBar, fi=0, bg=block.TimerBG, other={block.TimerBGBack}})
+								aObj:removeRegions(block, {3}) -- challengemode-timer atlas
+								aObj:skinObject("frame", {obj=block, fType=ftype, y2=7})
+								aObj:secureHook(block, "SetUpAffixes", function(blk, _)
+									for affix in blk.affixPool:EnumerateActive() do
+										affix.Border:SetTexture(nil)
 									end
-								end
+								end)
+							elseif block == module.ProvingGroundsBlock then
+								block.BG:SetTexture(nil)
+								block.GoldCurlies:SetTexture(nil)
+								aObj:skinObject("statusbar", {obj=block.StatusBar, fi=0})
+								aObj:removeRegions(block.StatusBar, {1}) -- border
+								block.CountdownAnimFrame.BGAnim:SetTexture(nil)
+								block.CountdownAnimFrame.BorderAnim:SetTexture(nil)
+								aObj:skinObject("frame", {obj=block, fType=ftype, x2=41})
 							end
 						end
-						if module.usedProgressBars then
-							for _, pBar in _G.pairs(module.usedProgressBars) do
-								skinBar(pBar)
-							end
-						end
-						if module.usedTimerBars then
-							for _, tBar in _G.pairs(module.usedTimerBars) do
-								skinBar(tBar)
-							end
-						end
-						if module.usedRightEdgeFrames
-						and aObj.modBtnBs
-						then
-							for _, frame in _G.pairs(module.usedRightEdgeFrames) do
-								if frame.template:find("ItemButton") then
-									-- N.B.: can cause ADDON_ACTION_FORBIDDEN when clicked
-									aObj:addButtonBorder{obj=frame, fType=ftype, ofs=4, clr="gold"}
-								elseif frame.template:find("FindGroupButton") then
-									aObj:addButtonBorder{obj=frame, fType=ftype, ofs=-1, x1=0, clr="gold"}
+					end
+					if module.usedBlocks then
+						for template, blocks in _G.pairs(module.usedBlocks) do
+							if template:find("AutoQuestPopUp") then
+								for _, block in _G.pairs(blocks) do
+									skinAutoPopUp(block)
 								end
 							end
 						end
 					end
+					if module.usedProgressBars then
+						for _, pBar in _G.pairs(module.usedProgressBars) do
+							skinBar(pBar)
+						end
+					end
+					if module.usedTimerBars then
+						for _, tBar in _G.pairs(module.usedTimerBars) do
+							skinBar(tBar)
+						end
+					end
+					if module.usedRightEdgeFrames
+					and aObj.modBtnBs
+					then
+						for _, frame in _G.pairs(module.usedRightEdgeFrames) do
+							if frame.template:find("ItemButton") then
+								-- N.B.: can cause ADDON_ACTION_FORBIDDEN when clicked
+								aObj:addButtonBorder{obj=frame, fType=ftype, ofs=4, clr="gold"}
+							elseif frame.template:find("FindGroupButton") then
+								aObj:addButtonBorder{obj=frame, fType=ftype, ofs=-1, x1=0, clr="gold"}
+							end
+						end
+					end
 				end
-				for _, module in _G.pairs(this.modules) do
-					skinModule(module)
-					self:SecureHook(module, "LayoutContents", function(fObj)
-						skinModule(fObj, true)
-					end)
-				end
+			end
+			for _, module in _G.pairs(this.modules) do
+				skinModule(module)
+				self:SecureHook(module, "LayoutContents", function(fObj)
+					skinModule(fObj, true)
+				end)
 			end
 
 			self:Unhook(this, "OnShow")
@@ -2370,15 +2372,15 @@ aObj.SetupMainline_PlayerFramesOptions = function(self)
 				order = 3,
 				name = self.L["Header Blocks"],
 			},
-			animapowers = {
-				type = "toggle",
-				order = 5,
-				name = self.L["Anima Powers"],
-			},
 			modules = {
 				type = "toggle",
 				order = 4,
 				name = self.L["Modules"],
+			},
+			animapowers = {
+				type = "toggle",
+				order = 5,
+				name = self.L["Anima Powers"],
 			},
 			rewards = {
 				type = "toggle",
