@@ -981,14 +981,14 @@ aObj.SetupMainline_NPCFrames = function()
 					self:skinObject("statusbar", {obj=frame.SearchBox.ProgressFrame.ProgressBar, fi=0})
 					self:skinObject("ddbutton", {obj=frame.WeaponDropdown, fType=ftype})
 					self:skinObject("ddbutton", {obj=frame.WeaponSheatheDropdown, fType=ftype})
-					self:skinObject("frame", {obj=frame, fType=ftype, kfs=true, fb=true, y2=-4})
 					frame.DisplayTypes.DisplayTypeUnassignedButton.IconFrame.Border:SetAlpha(0)
 					frame.DisplayTypes.DisplayTypeEquippedButton.IconFrame.Border:SetAlpha(0)
+					self:skinObject("frame", {obj=frame, fType=ftype, kfs=true, fb=true, y1=0, y2=-4})
+
 					if self.modBtns then
 						self:skinStdButton{obj=frame.DisplayTypes.DisplayTypeUnassignedButton, fType=ftype, ofs=-2, y1=-1}
 						self:skinStdButton{obj=frame.DisplayTypes.DisplayTypeEquippedButton, fType=ftype, ofs=-2, y1=-1}
 					end
-
 					if self.modBtnBs then
 						self:skinPagingControls(frame.PagedContent.PagingControls)
 						-- using TransmogItemModelTemplate
@@ -1024,7 +1024,7 @@ aObj.SetupMainline_NPCFrames = function()
 					self:skinObject("ddbutton", {obj=frame.FilterButton, fType=ftype, filter=true})
 					self:skinObject("editbox", {obj=frame.SearchBox, fType=ftype, regions={2, 4}, si=true, six=0})
 					self:skinObject("statusbar", {obj=frame.SearchBox.ProgressFrame.ProgressBar, fi=0})
-					self:skinObject("frame", {obj=frame, fType=ftype, kfs=true, fb=true, y2=-4})
+					self:skinObject("frame", {obj=frame, fType=ftype, kfs=true, fb=true, y1=0, y2=-4})
 
 					if self.modBtnBs then
 						self:skinPagingControls(frame.PagedContent.PagingControls)
@@ -1037,7 +1037,7 @@ aObj.SetupMainline_NPCFrames = function()
 				end)
 
 				self:SecureHookScript(fObj.TabContent.CustomSetsFrame, "OnShow", function(frame)
-				    self:skinObject("frame", {obj=frame, fType=ftype, kfs=true, fb=true, y2=-4})
+				    self:skinObject("frame", {obj=frame, fType=ftype, kfs=true, fb=true, y1=0, y2=-4})
 
 					if self.modBtns then
 						self:skinStdButton{obj=frame.NewCustomSetButton, fType=ftype}
@@ -1051,7 +1051,7 @@ aObj.SetupMainline_NPCFrames = function()
 				end)
 
 				self:SecureHookScript(fObj.TabContent.SituationsFrame, "OnShow", function(frame)
-				    self:skinObject("frame", {obj=frame, fType=ftype, kfs=true, fb=true, y2=-4})
+				    self:skinObject("frame", {obj=frame, fType=ftype, kfs=true, fb=true, y1=0, y2=-4})
 					self:skinObject("frame", {obj=frame.Situations, fType=ftype, kfs=true, fb=true})
 					for situationFrame in frame.SituationFramePool:EnumerateActive() do
 						self:skinObject("ddbutton", {obj=situationFrame.Dropdown, fType=ftype})
