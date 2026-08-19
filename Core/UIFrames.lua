@@ -3863,6 +3863,11 @@ aObj.blizzFrames[ftype].Settings = function(self)
 					aObj:skinObject("frame", {obj=element, fType=ftype, kfs=true, fb=true, ofs=0, x1=20, x2=-20})
 				elseif elementData.frameTemplate == "SettingsExpandableSectionTemplate" then
 					aObj:changeHdrExpandTex(element.Button)
+				--> bugfix, fixes #351 <--
+				elseif elementData.data.newTagID
+				and elementData.data.newTagID:find("DISCORD")
+				then
+					_G.nop()
 				else
 					sCEsWithDelay(element)
 				end
