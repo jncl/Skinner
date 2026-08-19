@@ -1234,11 +1234,11 @@ aObj.SetupMainline_UIFrames = function()
 				-- .CompanionExperienceRingFrame
 				self:keepFontStrings(this.CompanionLevelFrame)
 				this.CompanionInfoFrame.InfoFrameShadow:SetTexture(nil)
-				-- this.CompanionInfoFrame.CompanionInfoGLine:SetTexture(nil)
 				_G.CompanionInfoGLine:SetTexture(nil) -- FIXME: Blizzard bug? using name instead of parentKey
-				self:skinObject("frame", {obj=this.CompanionCombatRoleSlot.OptionsList, kfs=true, ofs=4, y2=-5})
-				self:skinObject("frame", {obj=this.CompanionCombatTrinketSlot.OptionsList, kfs=true, ofs=4, y2=-5})
-				self:skinObject("frame", {obj=this.CompanionUtilityTrinketSlot.OptionsList, kfs=true, ofs=4, y2=-5})
+				self:skinObject("frame", {obj=this.CompanionSlots.CompanionCombatRoleSlot.OptionsList, kfs=true, ofs=4, y2=-5})
+				self:skinObject("frame", {obj=this.CompanionSlots.CompanionFlavorSlot.OptionsList, kfs=true, ofs=4, y2=-5})
+				self:skinObject("frame", {obj=this.CompanionSlots.CompanionCombatTrinketSlot.OptionsList, kfs=true, ofs=4, y2=-5})
+				self:skinObject("frame", {obj=this.CompanionSlots.CompanionUtilityTrinketSlot.OptionsList, kfs=true, ofs=4, y2=-5})
 				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, ofs=4})
 				self:moveObject{obj=this.CloseButton, x=-3, y=-4}
 				if self.modBtns then
