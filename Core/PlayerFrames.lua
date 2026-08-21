@@ -2462,7 +2462,7 @@ aObj.blizzFrames[ftype].CompactFrames = function(self)
 	end)
 	self:checkShown(_G.CompactRaidFrameManager)
 
-	-- Don't skin Group & Unit frames as it causes errors
+	-- Don't skin Group & Unit frames as they causes errors
 	if self.isMnln then
 		return
 	end
