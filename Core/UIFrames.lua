@@ -53,7 +53,9 @@ aObj.blizzFrames[ftype].AddonList = function(self)
 
 		self:Unhook(this, "OnShow")
 	end)
-	self:checkShown(_G.AddonList)end
+	self:checkShown(_G.AddonList)
+
+end
 
 aObj.blizzFrames[ftype].AlertFrames = function(self)
 	if not self.prdb.AlertFrames or self.initialized.AlertFrames then return end
