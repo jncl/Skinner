@@ -1288,6 +1288,7 @@ aObj.SetupOptions = function(self)
 		["Menu Frames"]           = true,
 		["Move Pad"]              = true,
 		["Movie Frame"]           = true,
+		["Nameplates"]            = true,
 		["Navigation Bar"]        = (self.isMnln or self.isClsc) and true or nil,
 		["Override Action Bar"]   = (self.isMnln or self.isClsc) and {desc = "Vehicle UI"} or nil,
 		["Pet Battle UI"]         = (self.isMnln or self.isClsc) and true or nil,

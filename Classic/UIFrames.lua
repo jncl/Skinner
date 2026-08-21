@@ -153,51 +153,6 @@ aObj.SetupClassic_UIFrames = function()
 		end
 	end
 
-	aObj.blizzFrames[ftype].Nameplates = function(self)
-		if not self.prdb.Nameplates or self.initialized.Nameplates then return end
-		self.initialized.Nameplates = true
-
-		if _G.C_AddOns.IsAddOnLoaded("Plater") then
-			self.blizzFrames[ftype].Nameplates = nil
-			return
-		end
-
-		local nHb, nCb
-		local function skinNamePlate(frame, action)
-			-- aObj:Debug("skinNamePlate: [%s, %s]", frame, frame:IsForbidden())
-			if not frame -- happens when called again after combat and frame doesn't exist any more
-			or frame:IsForbidden()
-			then
-				return
-			end
-			if _G.InCombatLockdown() then
-			    aObj:add2Table(aObj.oocTab, {skinNamePlate, {frame, action}})
-			    return
-			end
-
-			if frame.UnitFrame
-			and frame.UnitFrame.HealthBarsContainer.healthBar
-			then
-				nHb = frame.UnitFrame.HealthBarsContainer.healthBar
-				nCb = frame.UnitFrame.CastBarsContainer.castBar
-				nHb.bgTexture:SetAlpha(0)
-				nCb.Border:SetAlpha(0)
-				aObj:skinObject("statusbar", {obj=nHb, fType=ftype, fi=0})
-				aObj:skinObject("statusbar", {obj=nCb, fType=ftype, fi=0, bg=nCb.Background})
-				-- N.B. WidgetContainer objects managed in UIWidgets code
-			end
-		end
-		self:SecureHook(_G.NamePlateDriverFrame, "OnNamePlateAdded", function(npdf, namePlateUnitToken)
-			-- wait before changing textures
-			_G.C_Timer.After(0.25, function()
-				skinNamePlate(npdf:GetNamePlateForUnit(namePlateUnitToken))
-			end)
-		end)
-		-- skin existing nameplates
-		_G.NamePlateDriverMixin:ForEachNamePlate(skinNamePlate)
-
-	end
-
 	aObj.blizzFrames[ftype].ProductChoice = function(self)
 		if not self.prdb.ProductChoice or self.initialized.ProductChoice then return end
 		self.initialized.ProductChoice = true
@@ -865,7 +820,6 @@ aObj.SetupClassic_UIFramesOptions = function(self)
 	local optTab = {
 		["Battlefield Frame"]       = not self.isClsc and true or nil,
 		["Level Up Display"]        = self.isClsc and true or nil,
-		["Nameplates"]              = true,
 		["Product Choice"]          = {suff = "Frame"},
 		-- ["PVP Frame"]               = self.isClsc and {desc = "Player vs. Player"} or nil,
 		["Quest Log"]               = true,
