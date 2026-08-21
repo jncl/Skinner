@@ -968,17 +968,30 @@ function aObj.removeBackdrop(_, obj, nop)
 
 end
 
-local function ddlBBO(frame)
-	frame:DisableDrawLayer("BACKGROUND")
-	frame:DisableDrawLayer("BORDER")
-	frame:DisableDrawLayer("OVERLAY")
-end
+local inset_regions = {
+	"BorderTopRight", "BorderBottomRight", "BorderRightMiddle", "BorderTopLeft", "BorderBottomLeft", "BorderLeftMiddle", "BorderTopMiddle", "BorderBottomMiddle", "TopLeftCorner", "TopRightCorner", "BotLeftCorner", "BotRightCorner", "TopBorder", "BottomBorder", "LeftBorder", "RightBorder",
+}
+
 function aObj:removeInset(frame)
 	--@debug@
 	_G.assert(frame, "Unknown object removeInset\n" .. _G.debugstack(2, 3, 2))
 	--@end-debug@
 
-	ddlBBO(frame)
+	if frame.Bg	then
+		frame.Bg:SetAlpha(0)
+	end
+	if frame.Background	then
+		frame.Background:SetAlpha(0)
+	end
+	if frame.InsetBg then
+		frame.InsetBg:SetAlpha(0)
+	end
+	for _, reg in _G.pairs(inset_regions) do
+		if frame[reg] then
+			frame[reg]:SetAlpha(0)
+		end
+	end
+
 	-- InsetFrameTemplate can have a NineSlice child
 	if frame.NineSlice then
 		self:removeNineSlice(frame.NineSlice)
@@ -1001,22 +1014,17 @@ function aObj.removeMagicBtnTex(_, btn)
 end
 
 local ns_regions = {
-	"TopLeftCorner", "TopRightCorner", "BottomLeftCorner ", "BottomRightCorner", "TopEdge", "BottomEdge", "LeftEdge", "RightEdge", "Center",
+	"TopLeftCorner", "TopRightCorner", "BottomLeftCorner", "BottomRightCorner", "TopEdge", "BottomEdge", "LeftEdge", "RightEdge", "Center",
 }
-function aObj.removeNineSlice(_, frame, noDDL)
+function aObj.removeNineSlice(_, frame)
 	--@debug@
 	_G.assert(frame, "Unknown object removeNineSlice\n" .. _G.debugstack(2, 3, 2))
 	--@end-debug@
 
-	if noDDL then
-		for _, reg in _G.pairs(ns_regions) do
-			if frame[reg] then
-				frame[reg]:SetAtlas(nil)
-				frame[reg]:SetTexture(nil)
-			end
+	for _, reg in _G.pairs(ns_regions) do
+		if frame[reg] then
+			frame[reg]:SetAlpha(0)
 		end
-	else
-		ddlBBO(frame)
 	end
 
 end
