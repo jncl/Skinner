@@ -104,13 +104,6 @@ function aObj:OnInitialize()
 
 	self.Backdrop = {}
 	self.Backdrop[1] = _G.CopyTable(self.backdrop, true)
-	-- -- wide backdrop for ScrollBars & EditBoxes (16,16,4)
-	-- self.Backdrop[2] = _G.CopyTable(self.backdrop, true)
-	-- -- medium backdrop for ScrollBars & EditBoxes (12,12,3)
-	-- self.Backdrop[3] = _G.CopyTable(self.backdrop, true)
-	-- self.Backdrop[3].tileSize = 12
-	-- self.Backdrop[3].edgeSize = 12
-	-- self.Backdrop[3].insets = {left = 3, right = 3, top = 3, bottom = 3}
 	-- backdrop with alternate backdrop texture
 	self.Backdrop[3] = _G.CopyTable(self.backdrop, true)
 	self.Backdrop[3].bgFile = self.LSM:Fetch("background", self.bdTexName2 or self.bdTexName)
