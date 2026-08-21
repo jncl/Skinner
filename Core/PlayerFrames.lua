@@ -720,7 +720,9 @@ aObj.blizzFrames[ftype].Buffs = function(self)
 			end
 		end
 		for _, frame in _G.pairs{_G.BuffFrame, _G.DebuffFrame, self.isMnln and _G.ExternalDefensivesFrame or nil} do
-			skinBuffs(frame)
+			_G.RunNextFrame(function()
+				skinBuffs(frame)
+			end)
 			-- N.B. DON'T hook the UpdateAuraButtons function as it causes many Secret Values errors
 		end
 		self:SecureHookScript(_G.DeadlyDebuffFrame, "OnShow", function(this)
@@ -729,6 +731,8 @@ aObj.blizzFrames[ftype].Buffs = function(self)
 			self:Unhook(this, "OnShow")
 		end)
 	end
+
+	-- N.B.The AuraButtonTooltip cannot be skinned as it has a ScopeModifier forbidden=true
 
 end
 
