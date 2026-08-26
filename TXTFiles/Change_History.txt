@@ -1,3 +1,29 @@
+beta12.69110.1
+Jncl:
+	Updated ToDo*.txt files
+	Updated Change_History.txt
+	Updated Version numbers
+	Retail PTR changes
+	Updated Minimap skin for Classic BCA version
+	Moved OOC event handling into SharedFuncs
+	Updated CastingBar skin for Classic versions
+	Updated Outfitter skin, closes #347
+	Updated AllTheThings skin, closes #346
+	Updated to remove deprecated code
+	Updated CooldownViewer skin
+	Removed AreanaUI skin code
+	NSF code update
+	Updated Baganator skin
+	Updated NSF
+	Updated HousingUI
+	Updated PVPMatch skin
+	Updated UnitFrames code
+	Updated UIWidgets code
+	More Classic ERA/BCA changes
+	Rearranged Event callbacks etc
+	Updated sublime-project
+	More Classic ERA update changes
+
 beta12.68887.1
 Jncl:
 	Updated ToDo*.txt files
