@@ -4406,9 +4406,9 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 	or aObj.isClsc
 	then
 		ignoredStrings = {
-			-- "CompactUnitFrame",
 			"GameTooltip",
 			"NamePlate",
+			"ObjectiveTrackerFrame",
 			"WorldMapFrame",
 		}
 		local parent
