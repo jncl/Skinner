@@ -1247,12 +1247,12 @@ aObj.SetupMainline_PlayerFrames = function()
 								--@debug@
 								-- aObj:Debug("skinModule wSID: [%s, %s]", block.widgetSetID)
 								--@end-debug@
-								if block.widgetSetID ~= 842 -- Delves
-								and block.widgetSetID ~= 2102 -- Ritual Roles
-								then
-									aObj:skinObject("frame", {obj=block, fType=ftype, kfs=true, ofs=0, x2=-17, y2=6, clr="sepia"})
-								elseif block.sf then
-									block.sf:Hide()
+								aObj:skinObject("frame", {obj=block, fType=ftype, kfs=true, ofs=0, x2=-17, y2=6, clr="sepia"})
+								-- N.B. DON'T show block's skin frame if WidgetContainer is shown
+								if block.sf then
+									if block.WidgetContainer then
+										block.sf:SetShown(not block.WidgetContainer:IsShown())
+									end
 								end
 								-- N.B. widgets skinned in UIWidgets skinWidget function
 							elseif block == module.TopWidgetContainerBlock
