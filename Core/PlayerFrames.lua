@@ -720,7 +720,8 @@ aObj.blizzFrames[ftype].Buffs = function(self)
 			end
 		end
 		for _, frame in _G.pairs{_G.BuffFrame, _G.DebuffFrame, self.isMnln and _G.ExternalDefensivesFrame or nil} do
-			_G.RunNextFrame(function()
+			-- allow time for buffs to appear
+			_G.C_Timer.After(0.25, function()
 				skinBuffs(frame)
 			end)
 			-- N.B. DON'T hook the UpdateAuraButtons function as it causes many Secret Values errors
