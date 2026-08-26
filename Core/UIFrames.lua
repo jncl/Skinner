@@ -4628,6 +4628,7 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 		elseif wFrame.widgetType == 29 then -- ScenarioHeaderDelves
 			aObj:skinObject("frame", {obj=wFrame, fType=ftype, kfs=true, ofs=-2, x1=7, x2=-7, clr="sepia"})
 		elseif wFrame.widgetType == 30 then -- ButtonHeader (used by UIWidgetBelowMinimapContainerFrame)
+			_G.RaiseFrameLevelByTwo(wFrame)
 			wFrame:DisableDrawLayer("BORDER")
 			aObj:skinObject("frame", {obj=wFrame, fType=ftype, ofs=-4, y1=hghtOfs[wFrame.widgetID] or 0, clr="gold"})
 			if aObj.modBtns then
