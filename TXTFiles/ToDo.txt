@@ -15,6 +15,16 @@ ToDos
 
  ?		O/?	ChatFrameTab for PetBattles has missing text
 
-#346 √	N/R AllTheThings
+#348 √	I/E Atlas
 
-#347 √	N/R Outfitter
+#349 √	I/E Nameplates
+
+#350 √	I/M TopFrame
+
+#351 √	I/M [ADDON_ACTION_FORBIDDEN] AddOn 'Skinner' tried to call the protected function 'IsUserOAuthed()'
+
+#352	I/M AddOn 'Skinner' tried to call the protected function 'Frame:SetPropagateMouseClicks()'
+
+#353 √ 	I/M GetAuraDataByIndex(): Auras cannot be accessed when secret while tainted by 'Skinner'
+
+#354  	I/M Blizzard_SharedXML/LayoutFrame.lua:491: attempt to compare a secret number value (execution tainted by 'Skinner')
