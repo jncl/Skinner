@@ -7,39 +7,22 @@ local ftype = "s"
 local module = aObj:NewModule("TopFrame")
 
 local db
-local defaults = {
-	profile = {
-		shown = false,
-		height = 64,
-		width = 1920,
-		fheight = 64,
-		fixedfh = false,
-		xyOff = true,
-		borderOff = false,
-		alpha = 0.9,
-		invert = false,
-		rotate = false,
-	}
-}
-
-local UIPtopOfs, topOfs = _G.GetUIPanelLayoutAttribute("TOP_OFFSET")
-local function adjustTFOffset(dB, reset)
-
-	--	Adjust the UIPanelLayoutFrame TOP_OFFSET attribute if required
-	if dB.shown then
-		topOfs = -dB.height
-		if topOfs < UIPtopOfs
-		and not reset
-		then
-			_G.SetUIPanelLayoutAttribute("TOP_OFFSET", topOfs)
-		elseif _G.GetUIPanelLayoutAttribute("TOP_OFFSET") < UIPtopOfs then
-			_G.SetUIPanelLayoutAttribute("TOP_OFFSET", UIPtopOfs)
-		end
-	end
-
-end
-
 function module:OnInitialize()
+
+	local defaults = {
+		profile = {
+			shown     = false,
+			height    = 64,
+			width     = 1920,
+			fheight   = 64,
+			fixedfh   = false,
+			xyOff     = true,
+			borderOff = false,
+			alpha     = 0.9,
+			invert    = false,
+			rotate    = false,
+		}
+	}
 
 	self.db = aObj.db:RegisterNamespace("TopFrame", defaults)
 	db = self.db.profile
@@ -62,7 +45,8 @@ function module:OnEnable()
 
 end
 
-local topframe
+local topframe, fh
+local UIPtopOfs, topOfs = aObj.isMnln and _G.GetUIPanelLayoutAttribute("TOP_OFFSET") or _G.UIParent:GetAttribute("TOP_OFFSET")
 function module.adjustTopFrame(_)
 
 	if db.shown then
@@ -79,15 +63,31 @@ function module.adjustTopFrame(_)
 			topframe:SetPoint("TOPLEFT", _G.UIParent, "TOPLEFT", -3, 3)
 		end
 		-- set the fade height
-		local fh = nil
 		if not aObj.db.profile.FadeHeight.enable
 		and db.fixedfh
 		then
-			fh = db.fheight <= aObj:getInt(topframe:GetHeight()) and db.fheight or aObj:getInt(topframe:GetHeight())
+			fh = db.fheight <= _G.Round(topframe:GetHeight()) and db.fheight or _G.Round(topframe:GetHeight())
 		end
 		aObj:skinObject("skin", {obj=topframe, fType=ftype, bba=db.borderOff and 0 or 1, ba=db.alpha, fh=fh, invert=db.invert or nil, rotate=db.rotate or nil})
 		-- adjust the TopFrame offset
-		adjustTFOffset(db)
+		topOfs = -db.height
+		if topOfs < UIPtopOfs then
+			if aObj.isMnln then
+				_G.SetUIPanelLayoutAttribute("TOP_OFFSET", topOfs)
+			else
+				_G.UIParent:SetAttribute("TOP_OFFSET", topOfs)
+			end
+		else
+			if aObj.isMnln then
+				if _G.GetUIPanelLayoutAttribute("TOP_OFFSET") < UIPtopOfs then
+					_G.SetUIPanelLayoutAttribute("TOP_OFFSET", UIPtopOfs)
+				end
+			else
+				if _G.UIParent:GetAttribute("TOP_OFFSET") < UIPtopOfs then
+					_G.UIParent:SetAttribute("TOP_OFFSET", UIPtopOfs)
+				end
+			end
+		end
 		topframe:Show()
 	elseif topframe then
 		topframe:Hide()
