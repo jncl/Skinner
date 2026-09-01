@@ -33,7 +33,7 @@ local addonSkins = {
 	"CensusPlus", "Chatter",
 	"Examiner",
 	"FlaresThatWork", "FramesResized",
-	"Livestock", "ls_Toasts",
+	"Livestock",
 	"MogIt",
 	"OneBag3", "OneBank3",
 	"QuickMark",

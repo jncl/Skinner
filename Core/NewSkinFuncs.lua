@@ -146,7 +146,7 @@ aObj.skinTPLs = {
 		inset		= 5,
 		mi			= true, -- move Instructions
 		mix			= 6, -- Instructions x offset
-		cb          = true -- ClearButton
+		cb          = true, -- ClearButton
 	},
 	frame = {
 		name		= false, -- use a name if required (VuhDo Options)

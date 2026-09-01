@@ -433,6 +433,13 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 					aObj:skinStdButton{obj=obj.frame, schk=true}
 				end
 
+			-- LSWidgets
+			elseif objType == "LSPreviewBoxItem" then
+				aObj:skinObject("editbox", {obj=obj.editbox, x1=-4, y1=-2, y2=2})
+				if aObj.modBtns then
+					aObj:skinStdButton{obj=obj.button}
+				end
+
 			-- ignore these types for now
 			elseif objType == "BlizOptionsGroup"
 			or objType == "Dropdown-Item-Execute"

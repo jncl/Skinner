@@ -1,56 +1,80 @@
 local _, aObj = ...
-if not aObj:isAddonEnabled("ls_Toasts") then return end
+if not aObj:isAddonEnabled("ls_Toasts")
+and not aObj:isAddonEnabled("ls_Toasts_Classic")
+then
+	return
+end
 local _G = _G
 
-function aObj:ls_Toasts() -- v 100100.03
 
+local function skinToasts(addonName)
+
+	local vc
 	local function getColour(obj)
-		local vc = {obj["TOP"]:GetVertexColor()}
-		vc[1] = aObj:round2(vc[1], 5)
-		vc[2] = aObj:round2(vc[2], 5)
-		vc[3] = aObj:round2(vc[3], 5)
+		vc = {obj["TOP"]:GetVertexColor()}
+		vc[1] = _G.Round(vc[1])
+		vc[2] = _G.Round(vc[2])
+		vc[3] = _G.Round(vc[3])
 		vc[4] = 1
 		return vc
 	end
-	local toast_E = _G.ls_Toasts[1]
-	toast_E.RegisterCallback("ls_Toasts", "ToastSpawned", function(_, toast)
+
+	_G[addonName][1].RegisterCallback("ls_Toasts", "ToastSpawned", function(_, toast)
 		toast.BG:SetTexture(nil)
 		toast.TextBG:SetTexture(nil)
 		for _, tex in _G.pairs{"TOPLEFT", "TOPRIGHT", "BOTTOMLEFT", "BOTTOMRIGHT", "TOP", "BOTTOM", "LEFT", "RIGHT"} do
 			toast.Border[tex]:SetTexture(nil)
 			toast.IconBorder[tex]:SetTexture(nil)
 		end
-		aObj:skinObject("frame", {obj=toast, ofs=3})
-		for i = 1, #toast.Leaves do
-			toast.Leaves[i]:SetParent(toast.sf)
-			toast.Leaves[i]:SetDrawLayer("OVERLAY")
+		aObj:skinObject("frame", {obj=toast, ofs=3, clr=_G.unpack(getColour(toast.Border))})
+		-- handle in combat
+		if not _G.InCombatLockdown() then
+			for i = 1, #toast.Leaves do
+				toast.Leaves[i]:SetParent(toast.sf)
+				toast.Leaves[i]:SetDrawLayer("OVERLAY")
+			end
 		end
-		toast.sf:SetBackdropBorderColor(_G.unpack(getColour(toast.Border)))
 		if aObj.modBtnBs then
 			aObj:addButtonBorder{obj=toast.IconParent, relTo=toast.Icon, reParent={toast.Dragon}}
 			toast.Dragon:SetDrawLayer("OVERLAY")
-			if toast.IconBorder then
-				if toast.IconBorder["TOP"]:IsShown() then
-					toast.IconParent.sbb:SetBackdropBorderColor(_G.unpack(getColour(toast.IconBorder)))
-					toast.IconParent.sbb:Show()
+			if not _G.InCombatLockdown() then
+				if toast.IconBorder then
+					if toast.IconBorder["TOP"]:IsShown() then
+						toast.IconParent.sbb:SetBackdropBorderColor(_G.unpack(getColour(toast.IconBorder)))
+						toast.IconParent.sbb:Show()
+					else
+						toast.IconParent.sbb:Hide()
+					end
 				else
 					toast.IconParent.sbb:Hide()
 				end
-			else
-				toast.IconParent.sbb:Hide()
 			end
 		end
 	end)
 
 	-- Config
-	self.RegisterCallback("ls_Toasts", "IOFPanel_Before_Skinning", function(this, panel)
-		if panel ~= _G.LSTConfigPanel then
+	aObj.RegisterCallback("ls_Toasts", "SettingsPanel_DisplayCategory", function(_, panel)
+		if panel ~= _G.LSToastsConfigPanel
+		or aObj.spSkinnedPanels[panel]
+		then
 			return
 		end
-		self.iofSkinnedPanels[panel] = true
-		self:skinStdButton{obj=self:getChild(_G.LSTConfigPanel, 1)}
+		aObj.spSkinnedPanels[panel] = true
+		aObj:skinStdButton{obj=aObj:getChild(_G.LSToastsConfigPanel, 1)}
 
-		self.UnregisterCallback("ls_Toasts", "IOFPanel_Before_Skinning")
+		aObj.UnregisterCallback("ls_Toasts", "SettingsPanel_DisplayCategory")
 	end)
+
+end
+
+aObj.addonsToSkin.ls_Toasts = function(_) -- v 120100.01
+
+	skinToasts("ls_Toasts")
+
+end
+
+aObj.addonsToSkin.ls_Toasts_Classic = function(_) -- v 20506.01
+
+	skinToasts("ls_Toasts_Classic")
 
 end
