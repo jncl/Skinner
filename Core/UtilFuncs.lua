@@ -595,6 +595,13 @@ function aObj:getGradientInfo(invert, rotate)
 
 end
 
+--@debug@
+-- handle AddOn skins still using this code rather than _G.Round
+function aObj.getInt(_, _)
+	aObj:CustomPrint(1, 0, 0, "Using deprecated function - getInt, use _G.Round instead", _G.debugstack(2, 3, 2))
+end
+--@end-debug@
+--[===[@non-debug@
 function aObj.getInt(_, num)
 	--@debug@
 	_G.assert(num, "Missing number\n" .. _G.debugstack(2, 3, 2))
@@ -605,6 +612,7 @@ function aObj.getInt(_, num)
 	return _G.math.floor(num + 0.5)
 
 end
+--@end-non-debug@]===]
 
 function aObj:getLastChild(obj)
 
