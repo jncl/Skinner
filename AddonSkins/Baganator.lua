@@ -2,7 +2,7 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("Baganator") then return end
 local _G = _G
 
-aObj.addonsToSkin.Baganator = function(self) -- v 812
+aObj.addonsToSkin.Baganator = function(self) -- v 822
 
 	-- TODO: handle warband bank being purchased
 
@@ -446,13 +446,9 @@ aObj.addonsToSkin.Baganator = function(self) -- v 812
 		end
 		aObj:skinObject("tabs", {obj=this, tabs=this.Tabs, ignoreSize=true, lod=aObj.isTT and true, upwards=true, offsets={x1=8, y1=-4, x2=-8, y2=-2}})
 		aObj:skinObject("frame", {obj=this, kfs=true, ri=true, cb=true, ofs=aObj.isMnln and 0 or 1, y1=aObj.isMnln and -1 or 2})
-		-- show frame if not already shown, fixes #338
-		this:SetShown(not this:IsShown())
 	end
 	_G.Baganator.CallbackRegistry:RegisterCallback("ShowCustomise", function()
-		_G.RunNextFrame(function()
-			skinCustomiseFrame()
-		end)
+		skinCustomiseFrame()
 	end)
 
 	-- skin Settings Panel button
@@ -520,7 +516,7 @@ aObj.addonsToSkin.Baganator = function(self) -- v 812
 
 end
 
-aObj.addonsToSkin.Syndicator = function(self) -- v 268
+aObj.addonsToSkin.Syndicator = function(self) -- v 277
 
 	self.RegisterCallback("Syndicator", "SettingsPanel_DisplayCategory", function(_, panel, category)
 		if category.name ~= "Syndicator" then return end
