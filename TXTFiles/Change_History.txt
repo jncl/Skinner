@@ -1,3 +1,33 @@
+beta12.69497.1
+Jncl:
+	Updated ToDo*.txt files
+	Updated Change_History.txt
+	Updated Version numbers
+	Show UIWidget above LandingPage icon
+	Updated ObjectiveTracker skin
+	Updated TOC
+	Updated UIWidgets skin, closes #353
+	Updated Tooltips skin
+	Updated Buffs skin
+	Remove redundant code
+	Updated comment
+	Updated Buffs skin
+	Updated NineSlice & Inset skinning code
+	Code layout updated
+	Moved Nameplate skinning to Core/UIFrames
+	Bugfix for skinItemSLots function
+	Updated DelvesCompanionConfigurationFrame
+	Updated ObjectiveTracker skinning code
+	Updated WhoFrame skin
+	Updated Transmog skin
+	Updated Retail BankFrame skin
+	Updated Settings skin, closes #351
+	Updated TopFrame skinning code, closes #350
+	Bugfix for LibKrowiWorldMapButtons skin
+	Updated Atlas skin, closes #348
+	Updated Nameplates skin, closes #349
+	Applied Retail PTR changes
+
 beta12.69110.1
 Jncl:
 	Updated ToDo*.txt files
