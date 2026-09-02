@@ -7,12 +7,12 @@ local buildInfo = {
 	-- wow_beta            	= {"Midnight Beta",             	"12.0.1", 66220},
 	wow_classic_ptr     	= {"PTR (MoP Classic)",				"5.5.4",  67849},
 	wow_classic_era_ptr 	= {"PTR (Classic Era)",         	"2.5.6",  69110},
-	wow_ptr             	= {"PTR (Midnight 12.1.0)",			"12.1.0", 69497},
-	wow_ptr_x           	= {"PTR (Midnight 12.1.5",      	"12.0.7", 68887},
-	wow_classic_anniversary	= {"Burning Crusade Anniversary",	"2.5.6",  69110},
-	wow_classic_era     	= {"World of Warcraft Classic", 	"1.15.9", 69109},
-	wow_classic         	= {"Mists of Panderia Classic", 	"5.5.4",  69383},
-	wow                 	= {"World of Warcraft",         	"12.1.0", 69497},
+	wow_ptr             	= {"PTR (Midnight 12.1.0)",			"12.1.0", 69587},
+	wow_ptr_x           	= {"PTR (Midnight 12.1.5",      	"12.1.5", 69594},
+	wow_classic_anniversary	= {"Burning Crusade Anniversary",	"2.5.6",  69546},
+	wow_classic_era     	= {"World of Warcraft Classic", 	"1.15.9", 69547},
+	wow_classic         	= {"Mists of Panderia Classic", 	"5.5.4",  69585},
+	wow                 	= {"World of Warcraft",         	"12.1.0", 69814},
 	curr                	= {"curr", _G.GetBuildInfo()},
 }
 
