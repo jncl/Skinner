@@ -3000,7 +3000,9 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 				end
 				_G.GameTimeFrame_Update(_G.GameTimeFrame)
 			end)
-			if self.isClscBCA then
+			if self.isClscBCA
+			or aObj.isClscERAPTR
+			then
 				_G.MiniMapTrackingButtonBorder:SetTexture(nil)
 			else
 				_G.MiniMapTrackingBorder:SetTexture(nil)
