@@ -9,4 +9,8 @@ ToDo_Mainline_PTRX
 	Mainline_PTRX (Midnight 12.0.1)
 		- Added
 		- Updated
+			- HouseEditor
+			- Minimap
+			- SpellBookItem
 		- Deleted
+			- Blizzard_TutorialPointerFrame
