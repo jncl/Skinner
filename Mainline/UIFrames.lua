@@ -2875,9 +2875,8 @@ aObj.SetupMainline_UIFrames = function()
 							self:keepFontStrings(ef.InitiativesArt.BorderArt)
 							local efisf = ef.InitiativeSetFrame
 							efisf.InitiativeTimer.TimerBG:SetTexture(nil)
-							-- TODO: skin efisf.ProgressBar
 							-- N.B. make sure reward is loaded
-							_G.C_Timer.After(0.2, function()
+							_G.C_Timer.After(0.5, function()
 								efisf.ProgressBar.Threshold4.Reward.IconBorder:SetTexture(nil)
 							end)
 							efisf.InitiativeActiveNeighborhoodSwitcher:DisableDrawLayer("BACKGROUND")
