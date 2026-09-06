@@ -4410,7 +4410,7 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 		ignoredStrings = {
 			"GameTooltip",
 			"NamePlate",
-			"ObjectiveTrackerFrame",
+			"ObjectiveTrackerFrame", -- fixes #353
 			"WorldMapFrame",
 		}
 		local parent
