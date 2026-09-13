@@ -2879,6 +2879,7 @@ then
 						-- JourneyProgressRewardCardTemplate
 						for reward in frame.rewardPool:EnumerateActive() do
 							reward.RewardCardBG:SetTexture(nil)
+							reward.RewardCardBGGlow:SetTexture(nil)
 							aObj:skinObject("frame", {obj=reward, fType=ftype, fb=true, ofs=-3, y1=-1})
 						end
 					end
@@ -2896,6 +2897,7 @@ then
 						end)
 						if self.modBtns then
 							self:skinStdButton{obj=frame.OverviewBtn, fType=ftype}
+							self:skinStdButton{obj=frame.LevelSkipButton, fType=ftype, clr="gold"}
 						end
 
 						self:skinRewardTrackFrameElements(frame.EncounterRewardProgressFrame, ftype)
