@@ -1027,7 +1027,7 @@ then
 					self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, ofs=-3})
 					if self.modBtns then
 						self:skinCloseButton{obj=fObj.CloseButton}
-						self:skinStdButton{obj=fObj.ViewRenownButton, fType=ftype, clr="gold", sechk=true}
+						self:skinStdButton{obj=fObj.ViewRenownButton, fType=ftype, sechk=true}
 						self:adjHeight{obj=fObj.ViewRenownButton, adj=4}
 						-- .ToggleCollapseButton
 					end
