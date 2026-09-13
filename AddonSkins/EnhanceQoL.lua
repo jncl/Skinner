@@ -1053,30 +1053,39 @@ local function ReloadFrame(self)
 end
 local function Reminder(self)
 	local aCBR = addon.ClassBuffReminder
-
-	local function skinReminderFrame()
-		frame = aCBR.frame
-		self:skinObject("frame", {obj=frame, kfs=true})
-		if self.modBtnBs then
-			self:SecureHook(aCBR, "Render", function(_)
-				for _, btn in _G.pairs(frame.missingIcons) do
-					btn.border:SetTexture(nil)
-					self:addButtonBorder{obj=btn, relTo=btn.icon}
-					-- TODO: colour button border from border
+	local function skinReminderFrame(fEntry)
+		frame = aCBR[fEntry]
+		if frame == aCBR.frame then
+			aObj:SecureHook(aCBR, "RenderSelfMissingIcons", function(this, _)
+				for _, btn in _G.pairs(this.frame.missingIcons) do
+					aObj:removeBackdrop(btn.border, true)
+					aObj:addButtonBorder{obj=btn, relTo=btn.icon, ofs=1, y1=2, y2=-2}
 				end
-				self:Unhook(aCBR, "Render")
 			end)
 			for _, btn in _G.pairs(frame.sampleIcons) do
-				self:addButtonBorder{obj=btn, relTo=btn.icon}
+				aObj:removeBackdrop(btn.border, true)
+				aObj:addButtonBorder{obj=btn, relTo=btn.icon}
 			end
+		else
+			aObj:keepFontStrings(frame.border)
+			aObj:skinObject("frame", {obj=frame, kfs=true, ncc=true, ofs=4, y1=5, y2=-5})
+			frame.icon:SetAlpha(1)
 		end
 	end
 	if aCBR.frame then
-		skinReminderFrame()
+		skinReminderFrame("frame")
 	else
 		self:SecureHook(aCBR, "EnsureFrame", function(_)
-			skinReminderFrame()
+			skinReminderFrame("frame")
 			self:Unhook(aCBR, "EnsureFrame")
+		end)
+	end
+	if aCBR.petHealthReminderFrame then
+		skinReminderFrame("petHealthReminderFrame")
+	else
+		self:SecureHook(aCBR, "EnsurePetHealthReminderFrame", function(_)
+			skinReminderFrame("petHealthReminderFrame")
+			self:Unhook(aCBR, "EnsurePetHealthReminderFrame")
 		end)
 	end
 end
@@ -1173,7 +1182,7 @@ local function WorldMarkerCycler(self)
 		self:addButtonBorder{obj=wmcButton, sabt=true}
 	end
 end
-aObj.addonsToSkin.EnhanceQoL = function(self) -- v 10.24.0
+aObj.addonsToSkin.EnhanceQoL = function(self) -- v 12.9.11
 
 	ActionTracker(self)
 	Aura(self) -- WIP:
@@ -1193,15 +1202,16 @@ aObj.addonsToSkin.EnhanceQoL = function(self) -- v 10.24.0
 	MountActions(self)
 	MythicPlus(self)
 	ReloadFrame(self)
-	Reminder(self) -- WIP:
 	TradeMailLog(self)
 	Vendor(self)
 
 	if self.modBtns then
 		TrainAllButton(self)
 	end
+
 	if self.modBtnBs then
 		InstantCatalyst(self)
+		Reminder(self)
 		WorldMarkerCycler(self)
 	end
 
@@ -1210,5 +1220,3 @@ aObj.addonsToSkin.EnhanceQoL = function(self) -- v 10.24.0
 	self:add2Table(self.customSettings, {key = "Input", type = "EditBox", template="_InputControlTemplate"})
 
 end
-
--- EQOLUFDebugCopyFrame (according to the code this is a temporary frame)
