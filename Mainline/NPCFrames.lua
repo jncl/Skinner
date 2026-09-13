@@ -314,6 +314,9 @@ aObj.SetupMainline_NPCFrames = function()
 			end)
 			skinRewards(this)
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true, cbns=true, ofs=0})
+			if self.modBtns then
+				self:skinStdButton{obj=this.LevelSkipButton, fType=ftype, clr="gold"}
+			end
 			self:clrCovenantBdr(this)
 
 			self:Unhook(this, "OnShow")
