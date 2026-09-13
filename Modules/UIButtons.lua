@@ -659,6 +659,7 @@ local rpRegions = {
 	"SlotBorder",
 	"SlotBorderOpen",
 	"SpellHighlightTexture",
+	"StackCount",
 	"Stock",
 	"subIcon",
 	"subIconRight",

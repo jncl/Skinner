@@ -4579,7 +4579,7 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 			if wFrame.Spell.spellInfo.iconDisplayType ~= _G.Enum.SpellDisplayIconDisplayType.Circular then
 				wFrame.Spell.Border:SetTexture(nil)
 				if aObj.modBtnBs then
-					aObj:addButtonBorder{obj=wFrame.Spell, relTo=wFrame.Spell.Icon, reParent={wFrame.Spell.StackCount}, clr=tcr == 0.5 and "grey" or nil}
+					aObj:addButtonBorder{obj=wFrame.Spell, relTo=wFrame.Spell.Icon, clr=tcr == 0.5 and "grey" or nil}
 				end
 			end
 		elseif wFrame.widgetType == 14 then -- DoubleStateIconRow
@@ -4622,7 +4622,7 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 		elseif wFrame.widgetType == 27 then -- ItemDisplay
 			wFrame.Item.NameFrame:SetTexture(nil)
 			if aObj.modBtnBs then
-				aObj:addButtonBorder{obj=wFrame.Item, relTo=wFrame.Item.Icon, reParent={wFrame.Item.Count}}
+				aObj:addButtonBorder{obj=wFrame.Item, relTo=wFrame.Item.Icon}
 				aObj:clrButtonFromBorder(wFrame.Item)
 			end
 		elseif wFrame.widgetType == 28 then -- TugOfWar
