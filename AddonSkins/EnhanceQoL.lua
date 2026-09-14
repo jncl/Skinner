@@ -32,7 +32,10 @@ local function Aura(self)
 		frame = CastBar._state.castBar
 		self:skinObject("statusbar", {obj=frame, fi=0})
 	end
-	if CastBar._state.frame then
+	if CastBar
+	and CastBar._state
+	and CastBar._state.frame
+	then
 		skinCastFrame()
 	else
 		self:add2Table(self.createFrames, {func = function(_)
@@ -58,45 +61,44 @@ local function Aura(self)
 	end
 
 	local UF = aA.UF
-	local gaiEditor = _G.EQOL_UF_GlobalAuraIgnoreEditor
-	local function skinGAIEditor()
-		frame = gaiEditor
-		self:skinObject("slider", {obj=frame.ScrollFrame.ScrollBar})
-		self:skinObject("frame", {obj=frame, kfs=true})
-		if self.modBtns then
-			self:skinCloseButton{obj=frame.CloseButton}
-			for _, btn in _G.pairs(frame.ContextButtons) do
-				self:skinStdButton{obj=btn}
-			end
-		end
-		if self.modChkBtns then
-			self:skinCheckButton{obj=frame.EnabledCheck}
-			for _, cBtn in _G.pairs(frame.SpecialChecks) do
-				self:skinCheckButton{obj=cBtn}
-			end
-			local function skinFRChecks()
-				for _, cBtn in _G.pairs(frame.FamilyRows) do
-					self:skinCheckButton{obj=cBtn}
-				end
-			end
-			self:SecureHook(UF.GlobalAuraIgnore, "ResetFamilyCache", function(_)
-				skinFRChecks()
-			end)
-			skinFRChecks()
-		end
-	end
-	if gaiEditor then
-		skinGAIEditor()
-	else
-		self:SecureHook(UF.GlobalAuraIgnore, "ToggleEditor", function(_)
-			skinGAIEditor()
-			self:Unhook(UF.GlobalAuraIgnore, "ToggleEditor")
-		end)
-	end
+	-- local gaiEditor = _G.EQOL_UF_GlobalAuraIgnoreEditor
+	-- local function skinGAIEditor()
+	-- 	frame = gaiEditor
+	-- 	self:skinObject("slider", {obj=frame.ScrollFrame.ScrollBar})
+	-- 	self:skinObject("frame", {obj=frame, kfs=true})
+	-- 	if self.modBtns then
+	-- 		self:skinCloseButton{obj=frame.CloseButton}
+	-- 		for _, btn in _G.pairs(frame.ContextButtons) do
+	-- 			self:skinStdButton{obj=btn}
+	-- 		end
+	-- 	end
+	-- 	if self.modChkBtns then
+	-- 		self:skinCheckButton{obj=frame.EnabledCheck}
+	-- 		for _, cBtn in _G.pairs(frame.SpecialChecks) do
+	-- 			self:skinCheckButton{obj=cBtn}
+	-- 		end
+	-- 		local function skinFRChecks()
+	-- 			for _, cBtn in _G.pairs(frame.FamilyRows) do
+	-- 				self:skinCheckButton{obj=cBtn}
+	-- 			end
+	-- 		end
+	-- 		self:SecureHook(UF.GlobalAuraIgnore, "ResetFamilyCache", function(_)
+	-- 			skinFRChecks()
+	-- 		end)
+	-- 		skinFRChecks()
+	-- 	end
+	-- end
+	-- if gaiEditor then
+	-- 	skinGAIEditor()
+	-- else
+	-- 	self:SecureHook(UF.GlobalAuraIgnore, "ToggleEditor", function(_)
+	-- 		skinGAIEditor()
+	-- 		self:Unhook(UF.GlobalAuraIgnore, "ToggleEditor")
+	-- 	end)
+	-- end
 
-	local gfhbEditor = UF.GroupFramesHealerBuffEditor
 	local function skinGFHBEditor()
-		frame = gfhbEditor.frame
+		frame = UF.GroupFramesHealerBuffEditor.frame
 		self:moveObject{obj=frame.CloseButton, x=-20, y=-12}
 		self:skinObject("frame", {obj=frame.GroupPanel, kfs=true, fb=true})
 		self:skinObject("frame", {obj=frame.RulePanel, kfs=true, fb=true})
@@ -151,60 +153,65 @@ local function Aura(self)
 			self:skinCheckButton{obj=controls.RuleAppliesRaid, size=26}
 		end
 	end
-	if gfhbEditor.frame then
-		skinGFHBEditor()
-	else
-		self:SecureHook(gfhbEditor, "EnsureFrame", function(_)
+	if UF then
+		if UF.GroupFramesHealerBuffEditor
+		and UF.GroupFramesHealerBuffEditor.frame
+		then
 			skinGFHBEditor()
-			self:Unhook(gfhbEditor, "EnsureFrame")
-		end)
-	end
-
-	local GF = UF.GroupFrames
-	local function skinGroupBorderFrame()
-		frame = _G.EQOLUFPartyGroupBorder
-		self:skinObject("frame", {obj=frame, kfs=true, ofs=0})
-	end
-	if _G.EQOLUFPartyGroupBorder then
-		skinGroupBorderFrame()
-	else
-		self:SecureHook(GF, "EnsureGroupBorderFrame", function(_, _)
-			skinGroupBorderFrame()
-			self:Unhook(GF, "EnsureGroupBorderFrame")
-		end)
-	end
-
-	local function skinGroupDropdown()
-		frame = GF._dropdown
-		self:skinObject("dropdown", {obj=frame})
-	end
-	if GF._dropdown then
-		skinGroupDropdown()
-	else
-		self:SecureHook(GF, "OpenUnitMenu", function(_)
-			skinGroupDropdown()
-			self:Unhook(GF, "OpenUnitMenu")
-		end)
-	end
-
-	if self.modChkBtns then
-		self:SecureHook(GF, "_ensureGroupCopySectionCheckbox", function(_, dialog, index)
-			self:skinCheckButton{obj=dialog.eqolGroupCopySectionRows[index]}
-			self:Unhook(GF, "_ensureGroupCopySectionCheckbox")
-		end)
-		self:SecureHook(GF, "_ensureGroupCopyAllCheckbox", function(_, dialog)
-			self:skinCheckButton{obj=dialog.eqolGroupCopyAllRow}
-			self:Unhook(GF, "_ensureGroupCopyAllCheckbox")
-		end)
+		else
+			self:SecureHook(UF.GroupFramesHealerBuffEditor, "EnsureFrame", function(_)
+				skinGFHBEditor()
+				self:Unhook(UF.GroupFramesHealerBuffEditor, "EnsureFrame")
+			end)
+		end
+		local function skinGroupBorderFrame()
+			frame = _G.EQOLUFPartyGroupBorder
+			self:skinObject("frame", {obj=frame, kfs=true, ofs=0})
+		end
+		if UF.GroupFrames then
+			if _G.EQOLUFPartyGroupBorder then
+				skinGroupBorderFrame()
+			else
+				self:SecureHook(UF.GroupFrames, "EnsureGroupBorderFrame", function(_, _)
+					skinGroupBorderFrame()
+					self:Unhook(UF.GroupFrames, "EnsureGroupBorderFrame")
+				end)
+			end
+			local function skinGroupDropdown()
+				frame = UF.GroupFrames._dropdown
+				self:skinObject("dropdown", {obj=frame})
+			end
+			if UF.GroupFrames._dropdown then
+				skinGroupDropdown()
+			else
+				self:SecureHook(UF.GroupFrames, "OpenUnitMenu", function(_)
+					skinGroupDropdown()
+					self:Unhook(UF.GroupFrames, "OpenUnitMenu")
+				end)
+			end
+			if self.modChkBtns then
+				self:SecureHook(UF.GroupFrames, "_ensureGroupCopySectionCheckbox", function(_, dialog, index)
+					self:skinCheckButton{obj=dialog.eqolGroupCopySectionRows[index]}
+					self:Unhook(UF.GroupFrames, "_ensureGroupCopySectionCheckbox")
+				end)
+				self:SecureHook(UF.GroupFrames, "_ensureGroupCopyAllCheckbox", function(_, dialog)
+					self:skinCheckButton{obj=dialog.eqolGroupCopyAllRow}
+					self:Unhook(UF.GroupFrames, "_ensureGroupCopyAllCheckbox")
+				end)
+			end
+		end
 	end
 
 	if self.modBtnBs then
 		local fiTracker = aA.FocusInterruptTracker
 		local function skinFITrackerFrame()
 			frame = fiTracker._state.frame
-			self:addButtonBorder{obj=frame.border, relTo=frame.icon}
+			aObj:addButtonBorder{obj=frame.border, relTo=frame.icon}
 		end
-		if fiTracker._state.frame then
+		if fiTracker
+		and fiTracker._state
+		and fiTracker._state.frame
+		then
 			skinFITrackerFrame()
 		else
 			self:SecureHook(fiTracker, "EnsureFrame", function(_)
@@ -218,7 +225,9 @@ local function Aura(self)
 			frame = taTrackerFrame
 			self:addButtonBorder{obj=frame.border, relTo=frame.icon}
 		end
-		if taTrackerFrame then
+		if taTracker
+		and taTrackerFrame
+		then
 			skinTATrackerFrame()
 		else
 			self:SecureHook(taTracker, "EnsureFrame", function(_)
@@ -508,14 +517,12 @@ end
 local function ButtonSink(self)
 	local bsFrame = addon.variables.buttonSink
 	local function skinButtonSink()
-		frame = addon.variables.buttonSink
-		self:skinObject("frame", {obj=frame, kfs=true, cb=true, ofs=0})
+		self:skinObject("frame", {obj=bsFrame, kfs=true, cb=true, ofs=0})
 	end
 	if bsFrame then
 		skinButtonSink()
 	end
 	self:SecureHook(addon.functions, "toggleButtonSink", function(_, _)
-		frame = addon.variables.buttonSink
 		if addon.db["enableMinimapButtonBin"]
 		or bsFrame
 		then
@@ -910,8 +917,7 @@ end
 local function LootspecFrame(self)
 	local lsFrame = addon.variables.lootSpec
 	local function skinLootSpecFrame()
-		frame = addon.variables.lootSpec
-		self:skinObject("frame", {obj=frame, kfs=true, ofs=0})
+		self:skinObject("frame", {obj=lsFrame, kfs=true, ofs=0})
 	end
 	if lsFrame then
 		skinLootSpecFrame()
@@ -920,8 +926,7 @@ local function LootspecFrame(self)
 		skinLootSpecFrame()
 	end)
 	self:RawHook(addon.functions, "removeLootspecframe", function()
-		frame = addon.variables.lootSpec
-		frame.sf = nil
+		lsFrame.sf = nil
 		self.hooks[addon.functions].removeLootspecframe()
 	end)
 end
@@ -1045,7 +1050,7 @@ local function ReloadFrame(self)
 	else
 		self:SecureHook(addon.functions, "checkReloadFrame", function(_, _)
 			if addon.variables.requireReload then
-				skinReloadFrame(_G.ReloadUIPopup)
+				skinReloadFrame(rlFrame)
 				self:Unhook(addon.functions, "checkReloadFrame")
 			end
 		end)
@@ -1184,26 +1189,57 @@ local function WorldMarkerCycler(self)
 end
 aObj.addonsToSkin.EnhanceQoL = function(self) -- v 12.9.11
 
-	ActionTracker(self)
-	Aura(self) -- WIP:
-	Bags(self) -- WIP:
 	ButtonSink(self)
-	ChannelHistory(self)
-	CooldownPanels(self)
-	DamageMeter(self)
-	DataPanels(self)
-	EditModeLib(self)
-	GemHelper(self)
-	Ignore(self)
 	InventoryFilterPanel(self)
-	ItemInventory(self)
 	LootspecFrame(self)
-	Mailbox(self)
 	MountActions(self)
-	MythicPlus(self)
 	ReloadFrame(self)
-	TradeMailLog(self)
 	Vendor(self)
+
+	if addon.ActionTracker then
+		ActionTracker(self)
+	end
+	if addon.Aura then
+		Aura(self) -- WIP:
+		if addon.Aura.CooldownPanels then
+			CooldownPanels(self)
+		end
+	end
+	if addon.Bags then
+		Bags(self) -- WIP:
+	end
+	if addon.ChatIM
+	and addon.ChatIM.ChannelHistory
+	then
+		ChannelHistory(self)
+	end
+	if addon.DamageMeter then
+		DamageMeter(self)
+	end
+	if addon.DataPanel then
+		DataPanels(self)
+	end
+	if addon.EditModeLib then
+		EditModeLib(self)
+	end
+	if addon.GemHelper then
+		GemHelper(self)
+	end
+	if addon.Ignore then
+		Ignore(self)
+	end
+	if addon.DurabilityWarning then
+		ItemInventory(self)
+	end
+	if addon.Mailbox then
+		Mailbox(self)
+	end
+	if addon.MythicPlus then
+		MythicPlus(self)
+	end
+	if addon.TradeMailLog then
+		TradeMailLog(self)
+	end
 
 	if self.modBtns then
 		TrainAllButton(self)
@@ -1211,7 +1247,9 @@ aObj.addonsToSkin.EnhanceQoL = function(self) -- v 12.9.11
 
 	if self.modBtnBs then
 		InstantCatalyst(self)
-		Reminder(self)
+		if addon.ClassBuffReminder then
+			Reminder(self)
+		end
 		WorldMarkerCycler(self)
 	end
 
