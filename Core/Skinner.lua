@@ -349,9 +349,14 @@ function aObj:OnDisable()
 	-- remove all callbacks for this event
 	self.callbacks.events["AddOn_OnDisable"] = nil
 
-	self:UnregisterAllEvents()
-	self.LSM.UnregisterAllCallbacks(self)
+	self:UnregisterChatCommand(self.L[aName])
+	self:UnregisterChatCommand(self.L["Skin"])
 	self.UnregisterAllCallbacks(self)
+	self.LSM.UnregisterAllCallbacks(self)
 	self.db.UnregisterAllCallbacks(self)
+	self:UnregisterAllEvents()
+	self:UnhookAll()
+
+	self = nil
 
 end
