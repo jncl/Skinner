@@ -1317,7 +1317,6 @@ function module:OnEnable()
 		end
 	end
 
-
 	-- bypass the Item Quality Border Texture changes if the specified addons aren't loaded
 	if not _G.C_AddOns.IsAddOnLoaded("AdiBags")
 	and not _G.C_AddOns.IsAddOnLoaded("Fizzle")
@@ -1356,7 +1355,7 @@ function module.GetOptions(_)
 		order = 1,
 		get = function(info) return db[info[#info]] end,
 		set = function(info, value)
-			if info[#info] == "ButtonBorders" and not module:IsEnabled() then module:Enable() end
+			if not module:IsEnabled() then module:Enable() end
 			db[info[#info]] = value
 		end,
 		args = {
