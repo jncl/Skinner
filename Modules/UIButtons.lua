@@ -899,6 +899,7 @@ local function __skinCheckButton(opts)
 	if not opts.ignNT then
 		if not opts.obj.GetNormalTexture
 		or not aObj:hasTextInTexture(opts.obj:GetNormalTexture(), "CheckBox")
+		and not aObj:hasTextInAtlas(opts.obj:GetNormalTexture(), "checkbox")
 		and not aObj:hasTextInTexture(opts.obj:GetNormalTexture(), aObj.tFDIDs.cbUP)
 		and not aObj:hasTextInTexture(opts.obj:GetNormalTexture(), aObj.tFDIDs.cbMin) -- Settings CheckButton
 		then
