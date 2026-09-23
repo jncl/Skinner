@@ -57,6 +57,20 @@ function aObj:OnInitialize()
 	self.prdb = self.db.profile
 	local dflts = self.db.defaults.profile
 
+	-- change old settings
+	if self.prdb.TexturedDD then
+		if not	self.prdb.TabDDTextures.textureddd then
+			self.prdb.TabDDTextures.textureddd = self.prdb.TexturedDD
+		end
+		self.prdb.TexturedDD = nil
+	end
+	if self.prdb.TexturedTab then
+		if not	self.prdb.TabDDTextures.texturedtab then
+			self.prdb.TabDDTextures.texturedtab = self.prdb.TexturedTab
+		end
+		self.prdb.TexturedTab = nil
+	end
+
 	-- disable functions/modules which cause ADDON_ACTION_BLOCKED/ADDON_ACTION_FORBIDDEN errors (Dragonflight onwards changes)
 	if self.isMnln then
 		self.prdb.MainMenuBar.actbtns = false
