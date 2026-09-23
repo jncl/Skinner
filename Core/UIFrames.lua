@@ -3417,6 +3417,28 @@ then
 	end
 end
 
+if aObj.isMorF then
+	aObj.blizzFrames[ftype].PingSystem = function(self)
+		if not self.prdb.PingSystem or self.initialized.PingSystem then return end
+		self.initialized.PingSystem = true
+
+		self:SecureHookScript(_G.PingSystemTutorial, "OnShow", function(this)
+			if _G.InCombatLockdown() then
+			    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+			    return
+			end
+
+			this.Bg:SetAlpha(0)
+			self:skinObject("frame", {obj=this, fType=ftype, cb=true, bg=true, ofs=0, y1=-1, y2=-2})
+
+			self:Unhook(this, "OnShow")
+		end)
+		self:checkShown(_G.PingSystemTutorial)
+
+	end
+
+end
+
 if _G.PTR_IssueReporter then
 	aObj.blizzFrames[ftype].PTRFeedback = function(self)
 		if not self.prdb.PTRFeedback or self.initialized.PTRFeedback then return end

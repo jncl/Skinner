@@ -4510,19 +4510,6 @@ aObj.SetupMainline_UIFrames = function()
 		end)
 		self:checkShown(_G.TutorialFrameAlertButton)
 
-		self:SecureHookScript(_G.PingSystemTutorial, "OnShow", function(this)
-			if _G.InCombatLockdown() then
-			    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
-			    return
-			end
-
-			this.Bg:SetAlpha(0)
-			self:skinObject("frame", {obj=this, fType=ftype, cb=true, bg=true, ofs=0, y1=-1, y2=-2})
-
-			self:Unhook(this, "OnShow")
-		end)
-		self:checkShown(_G.PingSystemTutorial)
-
 	end
 
 	aObj.blizzFrames[ftype].TutorialManager = function(self)

@@ -1291,6 +1291,7 @@ aObj.SetupOptions = function(self)
 		["Navigation Bar"]        = (self.isMnln or self.isClsc) and true or nil,
 		["Override Action Bar"]   = (self.isMnln or self.isClsc) and {desc = "Vehicle UI"} or nil,
 		["Pet Battle UI"]         = (self.isMnln or self.isClsc) and true or nil,
+		["Ping System"]           = self.isMorF and {suff = "Tutorial"} or nil,
 		["PTR Feedback"]          = _G.PTR_IssueReporter and {suff = "Frames"} or nil,
 		["PVE Frame"]             = (self.isClscERA or self.isClscBCA) and {desc = "Looking for Group"} or {desc = "Group Finder Frame"},
 		["Queue Status Frame"]    = true,
