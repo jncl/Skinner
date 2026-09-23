@@ -265,7 +265,7 @@ end
 
 function aObj:canSkinActionBtns()
 
-	return not self.isMnln
+	return self.prdb.MainMenuBar.actbtns
 
 end
 
@@ -682,6 +682,16 @@ function aObj:hasAnyTextInName(obj, tab)
 	end
 
 	return false
+
+end
+
+function aObj.hasTextInAtlas(_, obj, text)
+	--@debug@
+	_G.assert(obj, "Unknown object hasTextInAtlas\n" .. _G.debugstack(2, 3, 2))
+	_G.assert(text, "Missing value hasTextInAtlas\n" .. _G.debugstack(2, 3, 2))
+	--@end-debug@
+
+	return obj and obj.GetAtlas and obj:GetAtlas() and _G.tostring(obj:GetAtlas()):find(text, 1, true) and true or false
 
 end
 
