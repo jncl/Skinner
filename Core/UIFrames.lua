@@ -2528,6 +2528,13 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 				end
 				aObj:skinObject("statusbar", {obj=bar.StatusBar, bg=bar.StatusBar.Background, other=otherSBs, hookFunc=true})
 			end
+			if self.isMorF then
+				for element in container.HorizontalDividersPool:EnumerateActive() do
+					if element.BarDividerTexture then
+						element.BarDividerTexture:SetTexture(nil)
+					end
+				end
+			end
 		end
 		self:SecureHookScript(_G.StatusTrackingBarManager, "OnShow", function(this)
 			for _, barContainer in _G.pairs(this.barContainers) do
