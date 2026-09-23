@@ -2530,14 +2530,15 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 			end
 		end
 		self:SecureHookScript(_G.StatusTrackingBarManager, "OnShow", function(this)
-			this.MainStatusTrackingBarContainer:DisableDrawLayer("OVERLAY") -- status bar textures
-			this.SecondaryStatusTrackingBarContainer:DisableDrawLayer("OVERLAY") -- status bar textures
-			skinSTBars(this.MainStatusTrackingBarContainer)
-			skinSTBars(this.SecondaryStatusTrackingBarContainer)
+			for _, barContainer in _G.pairs(this.barContainers) do
+				barContainer:DisableDrawLayer("OVERLAY")
+				skinSTBars(barContainer)
+			end
 
 			self:Unhook(this, "OnShow")
 		end)
 		self:checkShown(_G.StatusTrackingBarManager)
+
 		if _G.MultiCastActionBarFrame then
 			self:SecureHookScript(_G.MultiCastActionBarFrame, "OnShow", function(this)
 				self:keepFontStrings(_G.MultiCastFlyoutFrame) -- Shaman's Totem Frame
