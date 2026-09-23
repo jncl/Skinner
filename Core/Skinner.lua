@@ -75,6 +75,8 @@ function aObj:OnInitialize()
 	if self.isMnln then
 		self.prdb.MainMenuBar.actbtns = false
 		-- self.prdb.Nameplates          = false
+	end
+	if self.isMorF then
 		self:DisableModule("UnitFrames")
 	end
 
@@ -244,9 +246,12 @@ function aObj:OnInitialize()
 	-- table to hold StatusBars that have been glazed, with weak keys
 	self.sbGlazed = _G.setmetatable({}, {__mode = "k"})
 
-	if self.isMnln then
+	if self.isMorF then
 		-- Setup AddOn Compartment Icon
 		self:setupACI()
+	end
+
+	if self.isMnln then
 		-- Load Retail Support, if required (done here for ElvUI/TukUI)
 		self:checkAndRun("SetupMainline_NPCFrames", "opt", nil, true)
 		self:checkAndRun("SetupMainline_PlayerFrames", "opt", nil, true)

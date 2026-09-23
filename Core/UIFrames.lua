@@ -1184,9 +1184,7 @@ aObj.blizzLoDFrames[ftype].DebugTools = function(self)
 
 end
 
-if aObj.isMnln
-or aObj.isClsc
-then
+if aObj.isMorC then
 	aObj.blizzFrames[ftype].DestinyFrame = function(self)
 		if not self.prdb.DestinyFrame or self.initialized.DestinyFrame then return end
 		self.initialized.DestinyFrame = true
@@ -1413,9 +1411,7 @@ aObj.blizzLoDFrames[ftype].EventTrace = function(self)
 
 end
 
-if aObj.isMnln
-or aObj.isClsc
-then
+if aObj.isMorC then
 	aObj.blizzFrames[ftype].GhostFrame = function(self)
 		if not self.prdb.GhostFrame or self.initialized.GhostFrame then return end
 		self.initialized.GhostFrame = true
@@ -1580,7 +1576,7 @@ aObj.blizzFrames[ftype].HelpFrame = function(self)
 		    return
 		end
 
-		if not self.isMnln then
+		if not self.isMorF then
 			this.TitleContainer.TitleBg:SetTexture(nil)
 		end
 		self:removeInset(this.Browser.BrowserInset)
@@ -1716,9 +1712,7 @@ aObj.blizzFrames[ftype].ItemText = function(self)
 
 end
 
-if aObj.isMnln
-or aObj.isClsc
-then
+if aObj.isMorC then
 	aObj.blizzFrames[ftype].LFDFrame = function(self)
 		if not self.prdb.PVEFrame or self.initialized.LFDFrame then return end
 		self.initialized.LFDFrame = true
@@ -2304,7 +2298,7 @@ aObj.blizzLoDFrames[ftype].MacroUI = function(self)
 			end
 			_G.ScrollUtil.AddAcquiredFrameCallback(this.MacroSelector.ScrollBox, skinElement, aObj, true)
 		end
-		if self.isMnln then
+		if self.isMorF then
 			self:skinObject("scrollbar", {obj=_G.MacroFrameScrollFrame.ScrollBar, fType=ftype})
 		else
 			self:skinObject("slider", {obj=_G.MacroFrameScrollFrame.ScrollBar, fType=ftype})
@@ -2504,6 +2498,7 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 			self:Unhook(this, "OnShow")
 		end)
 		self:checkShown(_G.MainActionBar)
+
 		local otherSBs
 		local function skinSTBars(container)
 			for _, bar in _G.pairs(container.bars) do
@@ -2752,7 +2747,7 @@ aObj.blizzFrames[ftype].Minimap = function(self)
 	end
 
 	-- Cluster Frame
-	if not self.isMnln then
+	if self.isMorF then
 		_G.MinimapCluster.BorderTop:SetTexture(nil)
 		_G.MinimapZoneTextButton:ClearAllPoints()
 		_G.MinimapZoneTextButton:SetPoint("BOTTOMLEFT", _G.Minimap, "TOPLEFT", 0, 5)
@@ -2874,7 +2869,7 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 
 	_G.MiniMapMailIcon:SetTexture(self.tFDIDs.tMB)
 	_G.MiniMapMailIcon:ClearAllPoints()
-	if self.isMnln then
+	if self.isMorF then
 		_G.MiniMapMailIcon:SetPoint("CENTER", _G.MinimapCluster.MailFrame)
 		_G.ExpansionLandingPageMinimapButton.AlertBG:SetTexture(nil)
 		local anchor = _G.AnchorUtil.CreateAnchor("TOPLEFT", "MinimapBackdrop", "TOPLEFT", -10, -200)
@@ -3159,9 +3154,7 @@ aObj.blizzFrames[ftype].Nameplates = function(self)
 
 end
 
-if aObj.isMnln
-or aObj.isClsc
-then
+if aObj.isMorC then
 	aObj.blizzFrames[ftype].OverrideActionBar = function(self) -- a.k.a. Vehicle UI
 		if not self.prdb.OverrideActionBar or self.initialized.OverrideActionBar then return end
 		self.initialized.OverrideActionBar = true
@@ -3486,7 +3479,7 @@ if _G.PTR_IssueReporter then
 		self:SecureHook(_G.PTR_IssueReporter, "BuildSurveyFrameFromSurveyData", function(surveyFrame, _, _)
 			skinFrame(surveyFrame)
 			for _, frame in _G.ipairs(surveyFrame.FrameComponents) do
-				if not aObj.isMnln then
+				if not aObj.isMorF then
 					skinFrame(frame, 2, true)
 				else
 					if frame.IsObjectType
@@ -3510,9 +3503,7 @@ if _G.PTR_IssueReporter then
 	end
 end
 
-if aObj.isMnln
-or aObj.isClsc
-then
+if aObj.isMorC then
 	aObj.blizzFrames[ftype].PVEFrame = function(self)
 		if not self.prdb.PVEFrame or self.initialized.PVEFrame then return end
 		self.initialized.PVEFrame = true
@@ -3864,9 +3855,7 @@ aObj.blizzFrames[ftype].ReportFrame = function(self)
 
 end
 
-if aObj.isMnln
-or aObj.isClsc
-then
+if aObj.isMorC then
 	aObj.blizzFrames[ftype].ScenarioFinderFrame = function(self)
 		if not self.prdb.PVEFrame or self.initialized.ScenarioFinderFrame then return end
 		self.initialized.ScenarioFinderFrame = true
@@ -4428,7 +4417,7 @@ aObj.blizzFrames[ftype].StaticPopups = function(self)
 
 	end
 
-	if self.isMnln then
+	if self.isMorC then
 		self:SecureHookScript(_G.PetBattleQueueReadyFrame, "OnShow", function(this)
 			if _G.InCombatLockdown() then
 			    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
@@ -4445,7 +4434,8 @@ aObj.blizzFrames[ftype].StaticPopups = function(self)
 			self:Unhook(this, "OnShow")
 		end)
 		self:checkShown(_G.PetBattleQueueReadyFrame)
-	else
+	end
+	if not self.isMorF then
 		self:SecureHook(_G.PlayerReportFrame, "InitiateReport", function(this, _)
 			if _G.InCombatLockdown() then
 			    self:add2Table(self.oocTab, {self.checkShown, {self, this}})

@@ -11,7 +11,7 @@ aObj.SetupDefaults = function(self)
 			Errors                     = true,
 			MinimapIcon                = {hide = false, minimapPos = 210, radius = 80},
 			FrameBorders               = true,
-			CompartmentIcon			   = aObj.isMnln and true or nil,
+			CompartmentIcon			   = aObj.isMorF and true or nil,
 			-- Tab and DropDown Texture settings [changed 03.10.22 to allow defaults function to reset values correctly]
 			TabDDTextures			   = {texturedtab = false, textureddd = false, tabddfile = "None", tabddtex = aName .. " Inactive Tab"},
 			Delay                      = {Init = 0.5, Addons = 0.5},
@@ -1225,9 +1225,9 @@ aObj.SetupOptions = function(self)
 	}
 
 	local npcOptTab = {
-		["Auction House UI"] = (self.isMnln or self.isClsc) and true or nil,
+		["Auction House UI"] = self.isMorC and true or nil,
 		["Bank Frame"]       = true,
-		["Black Market UI"]  = (self.isMnln or self.isClsc) and true or nil,
+		["Black Market UI"]  = self.isMorC and true or nil,
 		["Gossip Frame"]     = true,
 		["Guild Registrar"]  = {suff = "Frame"},
 		["Merchant Frame"]   = true,
@@ -1242,20 +1242,20 @@ aObj.SetupOptions = function(self)
 	_G.wipe(npcOptTab)
 
 	local pfOptTab = {
-		["Archaeology UI"]    = (self.isMnln or self.isClsc) and true or nil,
+		["Archaeology UI"]    = self.isMorC and true or nil,
 		["Buffs"]             = {suff = "Buttons"},
 		["Character Frames"]  = true,
 		["Collections"]       = self.isMnln and {pref = "Warband"} or self.isClsc and {suff = "Journal"} or nil,
 		["Communities"]       = {pref = "Guild &"},
 		["Dress Up Frame"]    = true,
 		["Encounter Journal"] = self.isMnln and {desc = "Adventure Guide"} or self.isClsc and {desc = "Dungeon Journal"} or nil,
-		["Equipment Flyout"]  = (self.isMnln or self.isClsc) and true or nil,
+		["Equipment Flyout"]  = self.isMorC and true or nil,
 		["Friends Frame"]     = {desc = "Social Frame"},
 		["Inspect UI"]        = true,
 		["Item Socketing UI"] = true,
 		["Raid UI"]           = true,
 		["Ready Check"]       = {suff = "Frame"},
-		["Role Poll Popup"]   = (self.isMnln or self.isClsc) and true or nil,
+		["Role Poll Popup"]   = self.isMorC and true or nil,
 		["Trade Frame"]       = true,
 	}
 	self:setupFramesOptions(pfOptTab, "Player")
@@ -1272,10 +1272,10 @@ aObj.SetupOptions = function(self)
 		["Coin Pickup"]           = {suff = "Frame"},
 		["Color Picker"]          = {suff = "Frame"},
 		["Debug Tools"]           = {suff = "Frames"},
-		["Destiny Frame"]         = (self.isMnln or self.isClsc) and true or nil,
+		["Destiny Frame"]         = self.isMorC and true or nil,
 		["Edit Mode"]             = true,
 		["Event Trace"]           = true,
-		["Ghost Frame"]           = (self.isMnln or self.isClsc) and true or nil,
+		["Ghost Frame"]           = self.isMorC and true or nil,
 		["GM Chat UI"]            = true,
 		["Guild Bank UI"]         = true,
 		["Help Frame"]            = {desc = "Customer Support Frame"},
@@ -1288,9 +1288,9 @@ aObj.SetupOptions = function(self)
 		["Move Pad"]              = true,
 		["Movie Frame"]           = true,
 		["Nameplates"]            = true,
-		["Navigation Bar"]        = (self.isMnln or self.isClsc) and true or nil,
-		["Override Action Bar"]   = (self.isMnln or self.isClsc) and {desc = "Vehicle UI"} or nil,
-		["Pet Battle UI"]         = (self.isMnln or self.isClsc) and true or nil,
+		["Navigation Bar"]        = self.isMorC and true or nil,
+		["Override Action Bar"]   = self.isMorC and {desc = "Vehicle UI"} or nil,
+		["Pet Battle UI"]         = self.isMorC and true or nil,
 		["Ping System"]           = self.isMorF and {suff = "Tutorial"} or nil,
 		["PTR Feedback"]          = _G.PTR_IssueReporter and {suff = "Frames"} or nil,
 		["PVE Frame"]             = (self.isClscERA or self.isClscBCA) and {desc = "Looking for Group"} or {desc = "Group Finder Frame"},

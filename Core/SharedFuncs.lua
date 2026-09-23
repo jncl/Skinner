@@ -99,6 +99,11 @@ function aObj:checkWoWVersion()
 	_G.DEFAULT_CHAT_FRAME:AddMessage(_G.strjoin(": ", aName , "Game version is", buildInfo[agentUID][1]), 0.75, 0.5, 0.25, nil, true)
 	--@end-debug@
 
+	-- create shorthand variables for Mainline, Forever & Classic version similarities
+	self.isMorF    = self.isMnln or self.isFrvr and true
+	self.isMorC    = self.isMnln or self.isClsc and true
+	self.isMorCorF = self.isMorC or self.isFrvr and true
+
 	-- --[===[@non-debug@
 	-- self.isRtl = self.isMnln
 	-- --@end-non-debug@]===]

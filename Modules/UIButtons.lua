@@ -1251,7 +1251,7 @@ function module:OnEnable()
 
 	if db.ButtonBorders then
 		-- hook these to colour container item borders (inc. Bags, Bank, GuildBank, ReagentBank, Professions etc)
-		if aObj.isMnln then
+		if aObj.isMorF then
 			local function setItemButtonQuality(button, quality, itemIDOrLink)
 				-- aObj:Debug("SetItemButtonQuality: [%s, %s, %s, %s, %s]", button, quality, itemIDOrLink, button.IconBorder, button.sbb)
 				-- aObj:Debug("SIBQ: [%s, %s]", button.IconBorder:IsShown(), button.IconOverlay:IsShown())

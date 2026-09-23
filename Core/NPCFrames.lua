@@ -4,9 +4,7 @@ local _G = _G
 
 local ftype = "n"
 
-if aObj.isMnln
-or aObj.isClsc
-then
+if aObj.isMorC then
 	aObj.blizzLoDFrames[ftype].AuctionHouseUI = function(self)
 		if not self.prdb.AuctionHouseUI or self.initialized.AuctionHouseUI then return end
 

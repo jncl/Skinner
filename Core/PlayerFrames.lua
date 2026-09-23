@@ -4,9 +4,7 @@ local _G = _G
 
 local ftype = "p"
 
-if aObj.isMnln
-or aObj.isClsc
-then
+if aObj.isMorC then
 	aObj.blizzLoDFrames[ftype].AchievementUI = function(self)
 		if not self.prdb.AchievementUI.skin or self.initialized.AchievementUI then return end
 		self.initialized.AchievementUI = true
@@ -765,9 +763,7 @@ if not aObj.isMnln then
 	end
 end
 
-if aObj.isMnln
-or aObj.isClsc
-then
+if aObj.isMorC then
 	aObj.blizzFrames[ftype].CharacterFrames = function(self)
 		if not self.prdb.CharacterFrames or self.initialized.CharacterFrames then return end
 		self.initialized.CharacterFrames = true
@@ -2464,7 +2460,7 @@ aObj.blizzFrames[ftype].CompactFrames = function(self)
 	self:checkShown(_G.CompactRaidFrameManager)
 
 	-- Don't skin Group & Unit frames as they causes errors
-	if self.isMnln then
+	if self.isMorF then
 		return
 	end
 
@@ -2534,9 +2530,7 @@ aObj.blizzFrames[ftype].CompactFrames = function(self)
 
 end
 
-if aObj.isMnln
-or aObj.isClsc
-then
+if aObj.isMorC then
 	aObj.blizzLoDFrames[ftype].EncounterJournal = function(self) -- a.k.a. Adventure Guide/Dungeon Journal
 		if not self.prdb.EncounterJournal or self.initialized.EncounterJournal then return end
 		self.initialized.EncounterJournal = true
@@ -3167,7 +3161,7 @@ aObj.blizzFrames[ftype].MirrorTimers = function(self)
 	self.initialized.MirrorTimers = true
 
 	local objName, obj, objBG, objSB
-	if not self.isMnln then
+	if not self.isMorF then
 		local numMirrorTimerTypes = 3
 		for i = 1, numMirrorTimerTypes do
 			objName = "MirrorTimer" .. i
