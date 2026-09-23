@@ -3540,6 +3540,224 @@ then
 	end
 end
 
+if aObj.isMorF then
+	aObj.blizzFrames[ftype].QuestMap = function(self)
+		if not self.prdb.QuestMap or self.initialized.QuestMap then return end
+		self.initialized.QuestMap = true
+
+		if _G.C_AddOns.IsAddOnLoaded("EQL3") then
+			self.blizzFrames[ftype].QuestMap = nil
+			return
+		end
+
+		self:SecureHookScript(_G.QuestMapFrame, "OnShow", function(this)
+			if _G.InCombatLockdown() then
+			    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+			    return
+			end
+
+			-- this.Background:SetAlpha(0) -- N.B. Texture changed in code
+			this.VerticalSeparator:SetTexture(nil)
+			-- .SettingsDropdown
+			self:skinSideTabs(this, ftype)
+			self:moveObject{obj=this.QuestsTab, x=-3}
+
+			self:SecureHookScript(this.QuestsFrame, "OnShow", function(fObj) -- a.k.a. QuestScrollFrame (NOT PTRX)
+				self:skinObject("scrollbar", {obj=fObj.ScrollFrame.ScrollBar, fType=ftype})
+				fObj.ScrollFrame.Background:SetAlpha(0)
+				fObj.ScrollFrame.Edge:SetTexture(nil)
+				fObj.ScrollFrame.Contents.Separator.Divider:SetTexture(nil)
+				fObj.ScrollFrame.Contents.StoryHeader.Background:SetTexture(nil)
+				fObj.ScrollFrame.Contents.StoryHeader.Divider:SetTexture(nil)
+				self:keepFontStrings(fObj.ScrollFrame.BorderFrame)
+				self:skinObject("editbox", {obj=fObj.ScrollFrame.SearchBox, fType=ftype, si=true})
+				if _G.QuestLogCount then
+					self:keepFontStrings(_G.QuestLogCount)
+				end
+				self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, ofs=4, y1=5, y2=-12})
+
+				self:SecureHookScript(fObj.DetailsFrame, "OnShow", function(frame)
+					self:keepFontStrings(frame)
+					self:keepFontStrings(frame.BorderFrame)
+					self:keepFontStrings(frame.BackFrame)
+					frame.BackFrame.AccountCompletedNotice.Text:SetTextColor(aObj.BT:GetRGB())
+					self:skinObject("scrollbar", {obj=frame.ScrollFrame.ScrollBar, fType=ftype})
+					self:changeTex2Black(frame.RewardsFrameContainer.RewardsFrame, {"Bottom", "Top", "Background"}) -- closes #242
+					frame.RewardsFrameContainer.RewardsFrame.Label:SetTextColor(self.HT:GetRGB())
+					self:adjWidth{obj=frame.AbandonButton, adj=-2} -- moves buttons to the right slightly
+					self:moveObject{obj=frame.AbandonButton, y=2}
+					frame.ShareButton:DisableDrawLayer("OVERLAY") -- divider textures
+					if self.modBtns then
+						self:skinStdButton{obj=frame.BackFrame.BackButton}
+						-- .DestinationMapButton
+						-- .WaypointMapButton
+						self:skinStdButton{obj=frame.AbandonButton}
+						self:skinStdButton{obj=frame.ShareButton}
+						self:skinStdButton{obj=frame.TrackButton, x2=-2}
+					end
+
+					self:Unhook(frame, "OnShow")
+				end)
+				self:checkShown(fObj.DetailsFrame)
+
+				self:SecureHookScript(fObj.CampaignOverview, "OnShow", function(frame)
+					self:keepFontStrings(frame.BorderFrame)
+					self:keepFontStrings(frame.Header)
+					self:skinObject("scrollbar", {obj=frame.ScrollFrame.ScrollBar, fType=ftype})
+					frame.BG:SetTexture(nil)
+					frame.ScrollFrame:DisableDrawLayer("OVERLAY")
+
+					self:Unhook(frame, "OnShow")
+				end)
+				self:checkShown(fObj.CampaignOverview)
+				self:SecureHook(fObj.CampaignOverview, "UpdateCampaignLoreText", function(frame, _, _)
+					for tex in frame.texturePool:EnumerateActive() do
+						tex:SetTexture(nil) -- divider lines
+					end
+				end)
+
+				_G.RunNextFrame(function()
+					local wct = fObj.ScrollFrame.CampaignTooltip
+					wct.ItemTooltip.FollowerTooltip.PortraitFrame.PortraitRing:SetTexture(nil)
+					wct.ItemTooltip.FollowerTooltip.PortraitFrame.LevelBorder:SetAlpha(0)
+					wct.ofs = -2
+					self.ttHook[wct] = "Show"
+					self:add2Table(self.ttList, ftype, wct)
+					self:add2Table(self.ttList, ftype, fObj.ScrollFrame.StoryTooltip)
+				end)
+
+				self:Unhook(fObj, "OnShow")
+			end)
+			self:checkShown(this.QuestsFrame)
+
+			self:SecureHookScript(this.EventsFrame, "OnShow", function(fObj)
+				self:keepFontStrings(fObj.BorderFrame)
+				fObj.ScrollBox.Background:SetTexture(nil)
+				self:skinObject("scrollbar", {obj=fObj.ScrollBar, fType=ftype})
+				self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, ofs=4, y1=34, y2=-12})
+				local function skinEvents(...)
+					local _, element, elementData, new
+					if _G.select("#", ...) == 2 then
+						element, elementData = ...
+					elseif _G.select("#", ...) == 3 then
+						element, elementData, new = ...
+					else
+						_, element, elementData, new = ...
+					end
+					if new ~= false then
+						if elementData.data.entryType == 1 then -- OngoingHeader
+							element.Background:SetTexture(nil)
+						elseif elementData.data.entryType == 2 then -- OngoingEvent
+							element.Background:SetAlpha(0)
+						elseif elementData.data.entryType == 3 then -- ScheduledHeader
+							element.Background:SetTexture(nil)
+						elseif elementData.data.entryType == 4 then -- ScheduledEvent
+							_G.nop()
+						elseif elementData.data.entryType == 5 then -- Date
+							_G.nop()
+						elseif elementData.data.entryType == 6 then -- HiddenEventsLabel
+							_G.nop()
+						elseif elementData.data.entryType == 7 then -- NoEventsLabel
+							_G.nop()
+						end
+					end
+				end
+				_G.ScrollUtil.AddAcquiredFrameCallback(fObj.ScrollBox, skinEvents, aObj, true)
+
+				self:Unhook(fObj, "OnShow")
+			end)
+
+			self:SecureHookScript(this.QuestSessionManagement, "OnShow", function(fObj)
+				fObj.BG:SetTexture(nil)
+				if self.modBtnBs then
+					self:addButtonBorder{obj=fObj.ExecuteSessionCommand, ofs=1, clr="gold"}
+				end
+
+				self:Unhook(fObj, "OnShow")
+			end)
+			self:checkShown(this.QuestSessionManagement)
+
+			self:SecureHookScript(this.MapLegend, "OnShow", function(fObj)
+				self:keepFontStrings(fObj.BorderFrame)
+				self:skinObject("scrollbar", {obj=fObj.ScrollFrame.ScrollBar, fType=ftype})
+				fObj.ScrollFrame.Background:SetTexture(nil)
+				self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, ofs=4, y1=34, y2=-12})
+				if self.modBtns then
+					self:skinStdButton{obj=fObj.BackButton, fType=ftype}
+				end
+
+				self:Unhook(fObj, "OnShow")
+			end)
+			self:checkShown(this.MapLegend)
+
+			self:Unhook(this, "OnShow")
+		end)
+		self:checkShown(_G.QuestMapFrame)
+
+		self:SecureHookScript(_G.QuestLogPopupDetailFrame, "OnShow", function(this)
+			if _G.InCombatLockdown() then
+			    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+			    return
+			end
+
+			self:skinObject("scrollbar", {obj=this.ScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true})
+			if self.modBtns then
+				self:skinStdButton{obj=this.AbandonButton}
+				self:skinStdButton{obj=this.TrackButton}
+				self:skinStdButton{obj=this.ShareButton}
+			end
+			if self.modBtnBs then
+				self:addButtonBorder{obj=this.ShowMapButton, relTo=this.ShowMapButton.Texture, x1=2, y1=-1, x2=-2, y2=1}
+			end
+
+			self:Unhook(this, "OnShow")
+		end)
+		self:checkShown(_G.QuestLogPopupDetailFrame)
+
+		self:SecureHook("QuestLogQuests_Update", function(_)
+			for hdr in _G.QuestScrollFrame.titleFramePool:EnumerateActive() do
+				self:keepFontStrings(hdr)
+				if self.modChkBtns then
+					self:removeRegions(hdr.Checkbox, {1, 3})
+					self:skinObject("button", {obj=hdr.Checkbox, fType=ftype, bd=12, ng=true, ofs=0})
+				end
+			end
+			-- .objectiveFramePool
+			for hdr in _G.QuestScrollFrame.headerFramePool:EnumerateActive() do
+				self:keepFontStrings(hdr)
+			end
+			for hdr in _G.QuestScrollFrame.campaignHeaderFramePool:EnumerateActive() do
+				self:keepFontStrings(hdr)
+				hdr.HighlightTexture:SetAtlas("CampaignHeader_SelectedGlow")
+			end
+			for hdr in _G.QuestScrollFrame.campaignHeaderMinimalFramePool:EnumerateActive() do
+				self:keepFontStrings(hdr)
+			end
+			for hdr in _G.QuestScrollFrame.covenantCallingsHeaderFramePool:EnumerateActive() do
+				self:keepFontStrings(hdr)
+				hdr.HighlightTexture:SetTexture(self.tFDIDs.qltHL)
+			end
+		end)
+		if self.modBtns then
+			self:SecureHook("QuestMapFrame_UpdateQuestDetailsButtons", function()
+				if _G.QuestMapFrame.DetailsFrame.AbandonButton.sb then
+					self:clrBtnBdr(_G.QuestMapFrame.DetailsFrame.AbandonButton)
+					self:clrBtnBdr(_G.QuestMapFrame.DetailsFrame.TrackButton)
+					self:clrBtnBdr(_G.QuestMapFrame.DetailsFrame.ShareButton)
+					if _G.QuestLogPopupDetailFrame.AbandonButton.sb then
+						self:clrBtnBdr(_G.QuestLogPopupDetailFrame.AbandonButton)
+						self:clrBtnBdr(_G.QuestLogPopupDetailFrame.TrackButton)
+						self:clrBtnBdr(_G.QuestLogPopupDetailFrame.ShareButton)
+					end
+				end
+			end)
+		end
+
+	end
+
+end
+
 aObj.blizzFrames[ftype].QueueStatusFrame = function(self)
 	if not self.prdb.QueueStatusFrame or self.initialized.QueueStatusFrame then return end
 	self.initialized.QueueStatusFrame = true

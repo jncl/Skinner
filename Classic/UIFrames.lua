@@ -628,7 +628,7 @@ aObj.SetupClassic_UIFrames = function()
 
 	if aObj.isClsc then
 		aObj.blizzFrames[ftype].QuestMapFrame = function(self)
-			if not self.prdb.WorldMap.skin or self.initialized.QuestMapFrame then return end
+			if not self.prdb.QuestMap or self.initialized.QuestMapFrame then return end
 			self.initialized.QuestMapFrame = true
 
 			self:SecureHookScript(_G.QuestMapFrame, "OnShow", function(this)

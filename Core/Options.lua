@@ -1295,6 +1295,7 @@ aObj.SetupOptions = function(self)
 		["PVE Frame"]             = (self.isClscERA or self.isClscBCA) and {desc = "Looking for Group"} or {desc = "Group Finder Frame"},
 		["Queue Status Frame"]    = true,
 		["Raid Frame"]            = true,
+		["Quest Map"]             = self.isMorCorF and true or nil,
 		["Report Frame"]          = true,
 		["Settings"]              = {desc = "Options Frame"} or nil,
 		["Shared Basic Controls"] = {desc = "Script Errors Frame"},
