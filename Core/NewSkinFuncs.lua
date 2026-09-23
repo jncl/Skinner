@@ -1208,7 +1208,7 @@ function aObj:skinNavBar(navBar)
 	navBar.overflowButton:GetPushedTexture():SetAlpha(0)
 	navBar.overflowButton:GetHighlightTexture():SetAlpha(0)
 	navBar.overflowButton:SetText("<<")
-	navBar.overflowButton:SetNormalFontObject(self.modUIBtns.fontP) -- use module name instead of shortcut
+	navBar.overflowButton:SetNormalFontObject(self.fontP) -- use module name instead of shortcut
 
 end
 -- hook this to skin new buttons (Encounter Journal uses this)

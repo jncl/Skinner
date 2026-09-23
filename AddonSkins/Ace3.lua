@@ -423,7 +423,7 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 				if aObj.modBtns
 				and obj.hidebutton
 				then
-					aObj:skinOtherButton{obj=obj.hidebutton, text=self.modUIBtns.minus}
+					aObj:skinOtherButton{obj=obj.hidebutton, text=self.minus}
 				end
 
 			elseif objType == "IconButton" then

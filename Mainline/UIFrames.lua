@@ -3652,7 +3652,7 @@ aObj.SetupMainline_UIFrames = function()
 			this.instanceInfo.underline:SetTexture(nil)
 			self:skinObject("frame", {obj=this, fType=ftype, ofs=-1, y1=-5, x2=-4})
 			if self.modBtns then
-				self:skinOtherButton{obj=_G.PVPReadyDialogCloseButton, text=self.modUIBtns.minus}
+				self:skinOtherButton{obj=_G.PVPReadyDialogCloseButton, text=self.minus}
 				self:skinStdButton{obj=this.enterButton}
 				self:skinStdButton{obj=this.leaveButton}
 			end
@@ -3670,7 +3670,7 @@ aObj.SetupMainline_UIFrames = function()
 			self:removeNineSlice(_G.ReadyStatus.Border)
 			self:skinObject("frame", {obj=_G.ReadyStatus, fType=ftype, kfs=true, ofs=-6, x2=-5})
 			if self.modBtns then
-				self:skinOtherButton{obj=_G.ReadyStatus.CloseButton, fType=ftype, text=self.modUIBtns.minus}
+				self:skinOtherButton{obj=_G.ReadyStatus.CloseButton, fType=ftype, text=self.minus}
 			end
 
 			self:Unhook(this, "OnShow")
@@ -4061,7 +4061,7 @@ aObj.SetupMainline_UIFrames = function()
 					self:skinStdButton{obj=this.ButtonContainer.Confirm}
 					self:skinStdButton{obj=this.ButtonContainer.Decline}
 					if this.MinimizeButton then
-						self:skinOtherButton{obj=this.MinimizeButton, text=self.modUIBtns.minus}
+						self:skinOtherButton{obj=this.MinimizeButton, text=self.minus}
 					end
 				end
 
@@ -4392,10 +4392,10 @@ aObj.SetupMainline_UIFrames = function()
 				local r, _,_,_ = ...
 				if r == 0 then -- use light background (Island Expeditions, Voldun Quest, Dark Iron intro)
 					_G.TalkingHeadFrame.MainFrame.sf:SetBackdropColor(.75, .75, .75, .75)
-					_G.TalkingHeadFrame.MainFrame.CloseButton:SetNormalFontObject(self.modUIBtns.fontBX)
+					_G.TalkingHeadFrame.MainFrame.CloseButton:SetNormalFontObject(self.fontBX)
 				else
 					_G.TalkingHeadFrame.MainFrame.sf:SetBackdropColor(.1, .1, .1, .75)
-					_G.TalkingHeadFrame.MainFrame.CloseButton:SetNormalFontObject(self.modUIBtns.fontX)
+					_G.TalkingHeadFrame.MainFrame.CloseButton:SetNormalFontObject(self.fontX)
 				end
 			end
 			clrFrame(this.TextFrame.Text:GetTextColor())

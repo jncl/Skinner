@@ -1202,38 +1202,42 @@ end
 
 function module:OnEnable()
 
-	-- add support for UIButton skinning
-	aObj.modUIBtns  		 = module
-	aObj.modBtns    		 = aObj:makeBoolean(db.UIButtons)
-	aObj.modBtnBs   		 = aObj:makeBoolean(db.ButtonBorders)
-	aObj.modChkBtns 		 = aObj:makeBoolean(db.CheckButtons)
-	aObj.modFCBtns  		 = aObj:makeBoolean(db.FrameControls)
-	aObj.fontDP              = aObj.modBtns and aObj.modUIBtns.fontDP
-	aObj.fontDS              = aObj.modBtns and aObj.modUIBtns.fontDS
-	aObj.fontP               = aObj.modBtns and aObj.modUIBtns.fontP
-	aObj.fontS               = aObj.modBtns and aObj.modUIBtns.fontS
-	aObj.fontSBX             = aObj.modBtns and aObj.modUIBtns.fontSBX
-	aObj.downarrow           = aObj.modBtns and aObj.modUIBtns.darrow
-	aObj.larrow              = aObj.modBtns and aObj.modUIBtns.larrow
-	aObj.nearrow             = aObj.modBtns and aObj.modUIBtns.nearrow
-	aObj.nwarrow             = aObj.modBtns and aObj.modUIBtns.nwarrow
-	aObj.rarrow              = aObj.modBtns and aObj.modUIBtns.rarrow
-	aObj.searrow             = aObj.modBtns and aObj.modUIBtns.searrow
-	aObj.swarrow             = aObj.modBtns and aObj.modUIBtns.swarrow
-	aObj.uparrow             = aObj.modBtns and aObj.modUIBtns.uarrow
-	aObj.gearcog             = aObj.modBtns and aObj.modUIBtns.gearcog
-	aObj.checkTex            = aObj.modBtns and aObj.modUIBtns.checkTex or _G.nop
-	aObj.isButton            = aObj.modBtns and aObj.modUIBtns.isButton or _G.nop
-	aObj.skinAllButtons      = aObj.modBtns and aObj.modUIBtns.skinAllButtons or _G.nop
-	aObj.skinButton          = aObj.modBtns and aObj.modUIBtns.skinButton or _G.nop
-	aObj.skinCloseButton     = aObj.modBtns and aObj.modUIBtns.skinCloseButton or _G.nop
-	aObj.skinExpandButton    = aObj.modBtns and aObj.modUIBtns.skinExpandButton or _G.nop
-	aObj.skinOtherButton     = aObj.modBtns and aObj.modUIBtns.skinOtherButton or _G.nop
-	aObj.skinStdButton       = aObj.modBtns and aObj.modUIBtns.skinStdButton or _G.nop
-	aObj.skinItemSlots       = aObj.modBtns and aObj.modUIBtns.skinItemSlots or _G.nop
-	aObj.addButtonBorder     = aObj.modBtnBs and aObj.modUIBtns.addButtonBorder or _G.nop
-	aObj.skinActionBtn       = aObj.modBtnBs and aObj.modUIBtns.skinActionBtn or _G.nop
-	aObj.skinCheckButton     = aObj.modChkBtns and aObj.modUIBtns.skinCheckButton or _G.nop
+	aObj.modUIBtns        = module
+	aObj.modBtns          = aObj:makeBoolean(db.UIButtons)
+	aObj.modBtnBs         = aObj:makeBoolean(db.ButtonBorders)
+	aObj.modChkBtns       = aObj:makeBoolean(db.CheckButtons)
+	aObj.modFCBtns        = aObj:makeBoolean(db.FrameControls)
+	aObj.fontDP           = aObj.modBtns and aObj.modUIBtns.fontDP
+	aObj.fontDS           = aObj.modBtns and aObj.modUIBtns.fontDS
+	aObj.fontP            = aObj.modBtns and aObj.modUIBtns.fontP
+	aObj.fontS            = aObj.modBtns and aObj.modUIBtns.fontS
+	aObj.fontSBX          = aObj.modBtns and aObj.modUIBtns.fontSBX
+	aObj.fontX            = aObj.modBtns and aObj.modUIBtns.fontBX
+	aObj.fontX            = aObj.modBtns and aObj.modUIBtns.fontX
+	aObj.downarrow        = aObj.modBtns and aObj.modUIBtns.darrow
+	aObj.larrow           = aObj.modBtns and aObj.modUIBtns.larrow
+	aObj.nearrow          = aObj.modBtns and aObj.modUIBtns.nearrow
+	aObj.nwarrow          = aObj.modBtns and aObj.modUIBtns.nwarrow
+	aObj.rarrow           = aObj.modBtns and aObj.modUIBtns.rarrow
+	aObj.searrow          = aObj.modBtns and aObj.modUIBtns.searrow
+	aObj.swarrow          = aObj.modBtns and aObj.modUIBtns.swarrow
+	aObj.uparrow          = aObj.modBtns and aObj.modUIBtns.uarrow
+	aObj.gearcog          = aObj.modBtns and aObj.modUIBtns.gearcog
+	aObj.minus            = aObj.modBtns and aObj.modUIBtns.minus
+	aObj.plus             = aObj.modBtns and aObj.modUIBtns.plus
+	aObj.mult             = aObj.modBtns and aObj.modUIBtns.mult
+	aObj.checkTex         = aObj.modBtns and aObj.modUIBtns.checkTex or _G.nop
+	aObj.isButton         = aObj.modBtns and aObj.modUIBtns.isButton or _G.nop
+	aObj.skinAllButtons   = aObj.modBtns and aObj.modUIBtns.skinAllButtons or _G.nop
+	aObj.skinButton       = aObj.modBtns and aObj.modUIBtns.skinButton or _G.nop
+	aObj.skinCloseButton  = aObj.modBtns and aObj.modUIBtns.skinCloseButton or _G.nop
+	aObj.skinExpandButton = aObj.modBtns and aObj.modUIBtns.skinExpandButton or _G.nop
+	aObj.skinOtherButton  = aObj.modBtns and aObj.modUIBtns.skinOtherButton or _G.nop
+	aObj.skinStdButton    = aObj.modBtns and aObj.modUIBtns.skinStdButton or _G.nop
+	aObj.skinItemSlots    = aObj.modBtns and aObj.modUIBtns.skinItemSlots or _G.nop
+	aObj.addButtonBorder  = aObj.modBtnBs and aObj.modUIBtns.addButtonBorder or _G.nop
+	aObj.skinActionBtn    = aObj.modBtnBs and aObj.modUIBtns.skinActionBtn or _G.nop
+	aObj.skinCheckButton  = aObj.modChkBtns and aObj.modUIBtns.skinCheckButton or _G.nop
 
 	 -- disable ourself if required
 	if not db.UIButtons
@@ -1244,7 +1248,7 @@ function module:OnEnable()
 		self:Disable()
 	end
 
-	if aObj.modBtnBs then
+	if db.ButtonBorders then
 		-- hook these to colour container item borders (inc. Bags, Bank, GuildBank, ReagentBank, Professions etc)
 		if aObj.isMnln then
 			local function setItemButtonQuality(button, quality, itemIDOrLink)

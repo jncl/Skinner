@@ -1842,7 +1842,7 @@ then
 				self:removeNineSlice(fObj.Border)
 				self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, ofs=0})
 				if self.modBtns then
-					self:skinOtherButton{obj=_G.LFGDungeonReadyStatusCloseButton, text=self.modUIBtns.minus, noSkin=true}
+					self:skinOtherButton{obj=_G.LFGDungeonReadyStatusCloseButton, text=self.minus, noSkin=true}
 				end
 
 				self:Unhook(fObj, "OnShow")
@@ -1855,7 +1855,7 @@ then
 				fObj.instanceInfo:DisableDrawLayer("BACKGROUND")
 				self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, rpc=true, ofs=-5, y2=10}) -- use rpc=true to make background visible
 				if self.modBtns then
-					self:skinOtherButton{obj=_G.LFGDungeonReadyDialogCloseButton, text=self.modUIBtns.minus, noSkin=true}
+					self:skinOtherButton{obj=_G.LFGDungeonReadyDialogCloseButton, text=self.minus, noSkin=true}
 					self:skinStdButton{obj=fObj.enterButton}
 					self:skinStdButton{obj=fObj.leaveButton}
 				end
@@ -2888,14 +2888,14 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 		for _, suff in _G.pairs{"In", "Out"} do
 			btn = _G["MinimapZoom" .. suff]
 			if suff == "In" then
-				txt = self.modUIBtns.plus
+				txt = self.plus
 				if self.isClsc then
 					xOfs, yOfs = 14, -12
 				else
 					xOfs, yOfs = 9, -24
 				end
 			else
-				txt = self.modUIBtns.minus
+				txt = self.minus
 				if self.isClsc then
 					xOfs, yOfs = 20, -10
 				else
@@ -3971,9 +3971,9 @@ aObj.blizzFrames[ftype].Settings = function(self)
 						aObj:skinExpandButton{obj=element.Toggle, fType=ftype, noddl=true, noHook=true, plus=true, ofs=-2}
 						aObj:SecureHook(element, "SetExpanded", function(bObj, expanded)
 							if expanded then
-								bObj.Toggle:SetText(aObj.modUIBtns.minus)
+								bObj.Toggle:SetText(aObj.minus)
 							else
-								bObj.Toggle:SetText(aObj.modUIBtns.plus)
+								bObj.Toggle:SetText(aObj.plus)
 							end
 						end)
 					end
@@ -4370,9 +4370,9 @@ aObj.blizzFrames[ftype].StaticPopups = function(self)
 			for i = 1, 4 do
 				nTex = _G["StaticPopup" .. i .. "CloseButton"]:GetNormalTexture()
 				if self:hasTextInTexture(nTex, "HideButton") then
-					_G["StaticPopup" .. i .. "CloseButton"]:SetText(self.modUIBtns.minus)
+					_G["StaticPopup" .. i .. "CloseButton"]:SetText(self.minus)
 				elseif self:hasTextInTexture(nTex, "MinimizeButton") then
-					_G["StaticPopup" .. i .. "CloseButton"]:SetText(self.modUIBtns.mult)
+					_G["StaticPopup" .. i .. "CloseButton"]:SetText(self.mult)
 				end
 				spFrame = _G["StaticPopup" .. i]
 				if spFrame.insertedFrame then

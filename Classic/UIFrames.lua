@@ -339,9 +339,9 @@ aObj.SetupClassic_UIFrames = function()
 			self:skinObject("frame", {obj=this, fType=ftype, ofs=0})
 			if self.modBtns then
 				if self.isClscERA then
-					self:skinOtherButton{obj=this.closeButton, fType=ftype, text=self.modUIBtns.minus}
+					self:skinOtherButton{obj=this.closeButton, fType=ftype, text=self.minus}
 				else
-					self:skinOtherButton{obj=this.minimizeButton, fType=ftype, text=self.modUIBtns.minus}
+					self:skinOtherButton{obj=this.minimizeButton, fType=ftype, text=self.minus}
 				end
 				self:skinStdButton{obj=_G.PVPFramePopupAcceptButton, fType=ftype}
 				self:skinStdButton{obj=_G.PVPFramePopupDeclineButton, fType=ftype}

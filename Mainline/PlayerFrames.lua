@@ -317,13 +317,13 @@ aObj.SetupMainline_PlayerFrames = function()
 		local function skinSessionWindow(frame)
 			frame.Header:SetTexture(nil)
 			if aObj.modBtns then
-				aObj:skinOtherButton{obj=frame.MinimizeButton, fType=ftype, text=frame.isMinimized and aObj.modUIBtns.plus or aObj.modUIBtns.minus, size=32}
+				aObj:skinOtherButton{obj=frame.MinimizeButton, fType=ftype, text=frame.isMinimized and aObj.plus or aObj.minus, size=32}
 				aObj:SecureHook(frame, "SetMinimized", function(fObj, _)
 					local minimizeButton = fObj:GetMinimizeButton()
 					if fObj:IsMinimized() then
-						minimizeButton:SetText(aObj.modUIBtns.plus)
+						minimizeButton:SetText(aObj.plus)
 					else
-						minimizeButton:SetText(aObj.modUIBtns.minus)
+						minimizeButton:SetText(aObj.minus)
 					end
 				end)
 			end
