@@ -1222,6 +1222,9 @@ aObj.SetupMainline_PlayerFrames = function()
 					aObj:skinObject("statusbar", {obj=bar.Bar, fi=0, bg=aObj:getPenultimateRegion(bar.Bar)})
 				end
 			end
+			local ignoredStageBlocks = {
+				[842] = true, -- Delves
+			}
 			local modName
 			local function skinModule(module, _)
 				modName = module:GetName()
@@ -1242,17 +1245,11 @@ aObj.SetupMainline_PlayerFrames = function()
 									end
 								end
 							elseif block == module.StageBlock then
-								--@debug@
 								-- aObj:Debug("skinModule wSID: [%s, %s]", block.widgetSetID)
-								--@end-debug@
-								aObj:skinObject("frame", {obj=block, fType=ftype, kfs=true, ofs=0, x2=-17, y2=6, clr="sepia"})
-								-- N.B. DON'T show block's skin frame if WidgetContainer is shown
-								if block.sf then
-									if block.WidgetContainer then
-										block.sf:SetShown(not block.WidgetContainer:IsShown())
-									end
+								if not ignoredStageBlocks[block.widgetSetID] then
+									aObj:skinObject("frame", {obj=block, fType=ftype, kfs=true, ofs=0, x2=-12, y2=8, clr="sepia"})
 								end
-								-- N.B. widgets skinned in UIWidgets skinWidget function
+								-- N.B. widgets skinned in UIWidgets function
 							elseif block == module.TopWidgetContainerBlock
 							or block == module.BottomWidgetContainerBlock
 							then
