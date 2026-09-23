@@ -2588,7 +2588,10 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 				for i = 0, 3 do
 					abb2Bag(_G["CharacterBag" .. i .. "Slot"])
 				end
-				self:addButtonBorder{obj=_G.KeyRingButton, fType=ftype, ofs=2}
+				if _G.CharacterReagentBag0Slot then
+					abb2Bag(_G.CharacterReagentBag0Slot)
+				end
+				self:addButtonBorder{obj=_G.KeyRingButton, fType=ftype, ofs=2, x2=self.isFrvr and 1 or nil, y2=self.isFrvr and -1 or nil}
 			end
 		end
 	end
