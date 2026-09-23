@@ -4696,65 +4696,6 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 	if not self.prdb.UIWidgets or self.initialized.UIWidgets then return end
 	self.initialized.UIWidgets = true
 
-	local getTLP, check4String, canSkinWidgetContainer = _G.nop, _G.nop, _G.nop
-	local ignoredStrings = {}
-	if self.isMnln
-	or aObj.isClsc
-	then
-		ignoredStrings = {
-			"GameTooltip",
-			"NamePlate",
-			"ObjectiveTrackerFrame", -- fixes #353
-			"WorldMapFrame",
-		}
-		local parent
-		function getTLP(object)
-			parent = object:GetParent()
-			if parent
-			and parent ~= _G.UIParent
-			then
-				return getTLP(parent)
-			else
-				--@debug@
-				-- aObj:Debug("getTLP: [%s, %s]", object, object:GetName())
-				--@end-debug@
-				return object
-			end
-		end
-		function check4String(text)
-			if _G.issecretvalue
-			and _G.issecretvalue(text)
-			then
-				return true
-			end
-			return _G.ContainsIf(ignoredStrings, function(string)
-				--@debug@
-				-- aObj:Debug("check4String: [%s, %s]", string, (text:find(string)))
-				--@end-debug@
-				return (text:find(string))
-			end)
-		end
-		-- DON'T skin specified widget pools as they cause secret value errors
-		local funcs = {
-			"GetName",
-			"GetDebugName",
-			"GetSourceLocation",
-		}
-		local stringFound, text
-		function canSkinWidgetContainer(frame)
-			stringFound = false
-			for _, f in _G.pairs(funcs) do
-				text = frame[f](frame)
-				if text ~= nil then
-					if check4String(text) then
-						stringFound = true
-						break
-					end
-				end
-			end
-			return not stringFound
-		end
-	end
 	local function setTextColor(textObject)
 		aObj:rawHook(textObject, "SetTextColor", function(this, r, g, b, a)
 			local tcr, tcg, tcb = aObj:round2(r, 2), aObj:round2(g, 2), aObj:round2(b, 2)
@@ -4785,17 +4726,6 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 		if _G.InCombatLockdown() then
 		    aObj:add2Table(aObj.oocTab, {skinWidget, {wFrame, wInfo}})
 		    return
-		end
-
-		if not wFrame.widgetContainer
-		or not canSkinWidgetContainer(wFrame.widgetContainer)
-		or not canSkinWidgetContainer(wFrame.widgetContainer:GetParent())
-		or not canSkinWidgetContainer(getTLP(wFrame.widgetContainer))
-		then
-			--@debug@
-			-- aObj:Debug("skinWidget - ignoring widgetContainer")
-			--@end-debug@
-			return
 		end
 
 		--@debug@
@@ -4949,6 +4879,69 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 	end)
 	self:checkShown(_G.UIWidgetCenterDisplayFrame)
 
+	-- DON'T skin specified Widget Container(s) as they cause secret value errors
+	local getTLP, canSkinWidgetContainer = _G.nop, _G.nop
+	if self.isMnln then
+		local parent
+		function getTLP(object)
+			parent = object:GetParent()
+			if parent
+			and parent ~= _G.UIParent
+			then
+				return getTLP(parent)
+			else
+				--@debug@
+				-- aObj:Debug("getTLP: [%s, %s]", object, object:GetName())
+				--@end-debug@
+				return object
+			end
+		end
+		local ignoredStrings = {
+			"GameTooltip",
+			"NamePlate",
+			"WorldMapFrame",
+		}
+		local function check4String(text)
+			if _G.issecretvalue
+			and _G.issecretvalue(text)
+			then
+				return true
+			end
+			return _G.ContainsIf(ignoredStrings, function(string)
+				--@debug@
+				-- aObj:Debug("check4String: [%s, %s]", string, (text:find(string)))
+				--@end-debug@
+				return (text:find(string))
+			end)
+		end
+		local funcs = {
+			"GetName",
+			"GetDebugName",
+			"GetSourceLocation",
+		}
+		local stringFound, text
+		function canSkinWidgetContainer(frame)
+			stringFound = false
+			for _, f in _G.pairs(funcs) do
+				text = frame[f](frame)
+				if text ~= nil then
+					if check4String(text) then
+						stringFound = true
+						break
+					end
+				end
+			end
+			return not stringFound
+		end
+		-- bugfix for #353
+		aObj:RawHook("ShouldShowMawBuffs", function()
+			if not _G.IsInJailersTower() then
+				return false
+			else
+				return aObj.hooks.ShouldShowMawBuffs()
+			end
+		end, true)
+	end
 	local function skinwidgetPools(wContainer)
 		for widget in wContainer.widgetPools:EnumerateActive() do
 			_G.RunNextFrame(function()
@@ -4957,8 +4950,15 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 		end
 	end
 	local function hookAndSkinWidgets(widgetContainer)
-		-- aObj:Debug("hookAndSkinWidgets: [%s, %s, %s]", widgetContainer:IsForbidden())
+		-- aObj:Debug("hookAndSkinWidgets: [%s, %s]", widgetContainer)
 		if widgetContainer:IsForbidden() then
+			return
+		end
+		if not canSkinWidgetContainer(widgetContainer)
+		or not canSkinWidgetContainer(widgetContainer:GetParent())
+		or not canSkinWidgetContainer(getTLP(widgetContainer))
+		then
+			-- aObj:Debug("hookAndSkinWidgets - ignoring widgetContainer: [%s]", widgetContainer)
 			return
 		end
 		aObj:SecureHook(widgetContainer, "UpdateWidgetLayout", function(this)
