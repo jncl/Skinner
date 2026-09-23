@@ -64,7 +64,6 @@ aObj.SetupClassic_PlayerFrames = function()
 			if not self.prdb.CharacterFrames or self.initialized.CharacterFrames then return end
 			self.initialized.CharacterFrames = true
 
-
 			self:SecureHookScript(_G.CharacterFrame, "OnShow", function(this)
 				if _G.InCombatLockdown() then
 				    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
