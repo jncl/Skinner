@@ -557,8 +557,12 @@ aObj.SetupClassic_UIFrames = function()
 
 				_G.QuestLogCollapseAllButton:DisableDrawLayer("BACKGROUND")
 				self:keepFontStrings(_G.EmptyQuestLogFrame)
-				for _, tName in _G.pairs{"Left", "Middle", "Right"} do
-					_G["QuestLogCount" .. tName]:SetTexture(nil)
+				if self.isClscBCA then
+					self:keepFontStrings(_G.QuestLogCount)
+				else
+					for _, tSuff in _G.pairs{"Left", "Middle", "Right"} do
+						_G["QuestLogCount" .. tSuff]:SetTexture(nil)
+					end
 				end
 				self:skinObject("slider", {obj=_G.QuestLogListScrollFrame.ScrollBar, fType=ftype})
 				self:skinObject("slider", {obj=_G.QuestLogDetailScrollFrame.ScrollBar, fType=ftype})
