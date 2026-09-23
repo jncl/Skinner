@@ -1306,11 +1306,6 @@ aObj.blizzFrames[ftype].EditMode = function(self)
 		self:Unhook(fObj, "OnShow")
 	end)
 
-	-- Blizzard_CooldownViewer
-		-- EssentialCooldownViewer
-		-- UtilityCooldownViewer
-		-- BuffIconCooldownViewer
-		-- BuffBarCooldownViewer
 end
 
 -- this code handles the ExtraActionBarFrame and ZoneAbilityFrame buttons
