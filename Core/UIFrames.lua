@@ -375,45 +375,7 @@ aObj.blizzLoDFrames[ftype].BattlefieldMap = function(self)
 
 end
 
-aObj.blizzFrames[ftype].BNFrames = function(self)
-	if not self.prdb.BNFrames or self.initialized.BNFrames then return end
-	self.initialized.BNFrames = true
-
-	self:SecureHookScript(_G.BNToastFrame, "OnShow", function(this)
-		if _G.InCombatLockdown() then
-		    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
-		    return
-		end
-
-		self:skinObject("frame", {obj=this, fType=ftype, ofs=0})
-		if self.modBtns then
-			self:skinCloseButton{obj=this.CloseButton, font=self.fontSBX, noSkin=true}
-			this.CloseButton.cb = this.CloseButton.sb
-		end
-		self:hookSocialToastFuncs(this)
-		self:skinObject("frame", {obj=this.TooltipFrame, fType=ftype, kfs=true})
-		this.TooltipFrame:SetScript("OnLoad", nil)
-
-		self:Unhook(this, "OnShow")
-	end)
-	self:checkShown(_G.BNToastFrame)
-
-	self:SecureHookScript(_G.TimeAlertFrame, "OnShow", function(this)
-		self:skinObject("frame", {obj=this, fType=ftype, ofs=0})
-		if self.modBtns then
-			self:skinCloseButton{obj=this.CloseButton, font=self.fontSBX, noSkin=true}
-			this.CloseButton.cb = this.CloseButton.sb
-		end
-		self:hookSocialToastFuncs(this)
-
-	self:Unhook(this, "OnShow")
-	end)
-
-end
-
-if aObj.isMnln
-or aObj.isClsc
-then
+if aObj.isMorCorF then
 	aObj.blizzLoDFrames[ftype].Calendar = function(self)
 		if not self.prdb.Calendar or self.initialized.Calendar then return end
 		self.initialized.Calendar = true
@@ -4029,6 +3991,102 @@ aObj.blizzFrames[ftype].SharedBasicControls = function(self)
 	end)
 	self:checkShown(_G.ScriptErrorsFrame)
 
+end
+
+if aObj.isMorCorF then
+	aObj.blizzFrames[ftype].SocialToast = function(self)
+		if not self.prdb.SocialToast or self.initialized.SocialToast then return end
+		self.initialized.SocialToast = true
+
+		local function hookSocialToastFuncs(frame)
+			aObj:SecureHook(frame.animIn, "Play", function(this)
+				if this.sf
+				and this.sf.tfade
+				then
+					this.sf.tfade:SetParent(_G.MainMenuBar)
+					this.sf.tfade:SetGradient(aObj:getGradientInfo())
+				end
+				if this.cb
+				and this.cb.tfade
+				then
+					this.cb.tfade:SetParent(_G.MainMenuBar)
+					this.cb.tfade:SetGradient(aObj:getGradientInfo())
+				end
+			end)
+			aObj:SecureHook(frame.waitAndAnimOut, "Play", function(this)
+				if this.sf
+				and this.sf.tfade
+				then
+					this.sf.tfade:SetParent(this.sf)
+				end
+				if this.cb
+				and this.cb.tfade
+				then
+					this.cb.tfade:SetParent(this.cb)
+				end
+			end)
+		end
+		local function skinSocialToastFrame(frame)
+			aObj:skinObject("frame", {obj=frame, fType=ftype, ofs=0})
+			if aObj.modBtns then
+				aObj:skinCloseButton{obj=frame.CloseButton, font=aObj.fontSBX, noSkin=true}
+				frame.CloseButton.cb = frame.CloseButton.sb
+			end
+			hookSocialToastFuncs(frame)
+		end
+		self:SecureHookScript(_G.BNToastFrame, "OnShow", function(this)
+			if _G.InCombatLockdown() then
+			    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+			    return
+			end
+
+			skinSocialToastFrame(this)
+
+			self:skinObject("frame", {obj=this.TooltipFrame, fType=ftype, kfs=true})
+			this.TooltipFrame:SetScript("OnLoad", nil)
+
+			self:Unhook(_G.BNToastFrame, "OnShow")
+		end)
+		self:checkShown(_G.BNToastFrame)
+
+		self:SecureHookScript(_G.TimeAlertFrame, "OnShow", function(this)
+			if _G.InCombatLockdown() then
+			    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+			    return
+			end
+
+			skinSocialToastFrame(this)
+
+			self:Unhook(_G.TimeAlertFrame, "OnShow")
+		end)
+		self:checkShown(_G.TimeAlertFrame)
+
+		self:SecureHookScript(_G.VoiceChatPromptActivateChannel, "OnShow", function(this)
+			if _G.InCombatLockdown() then
+			    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+			    return
+			end
+
+			skinSocialToastFrame(this)
+
+			self:Unhook(_G.VoiceChatPromptActivateChannel, "OnShow")
+		end)
+		self:checkShown(_G.VoiceChatPromptActivateChannel)
+
+		self:SecureHookScript(_G.VoiceChatChannelActivatedNotification, "OnShow", function(this)
+			if _G.InCombatLockdown() then
+			    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+			    return
+			end
+
+			skinSocialToastFrame(this)
+
+			self:Unhook(_G.VoiceChatChannelActivatedNotification, "OnShow")
+		end)
+		self:checkShown(_G.VoiceChatChannelActivatedNotification)
+
+
+	end
 end
 
 aObj.blizzFrames[ftype].StackSplit = function(self)

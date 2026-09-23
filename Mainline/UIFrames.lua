@@ -708,39 +708,6 @@ aObj.SetupMainline_UIFrames = function()
 			-- end
 		end)
 
-		self:SecureHookScript(_G.VoiceChatPromptActivateChannel, "OnShow", function(this)
-			if _G.InCombatLockdown() then
-			    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
-			    return
-			end
-
-			self:skinObject("frame", {obj=this, fType=ftype})
-			if self.modBtns then
-				self:skinCloseButton{obj=this.CloseButton, font=self.fontSBX, noSkin=true}
-				self:skinStdButton{obj=this.AcceptButton}
-			end
-			self:hookSocialToastFuncs(this)
-
-			self:Unhook(this, "OnShow")
-		end)
-		self:checkShown(_G.VoiceChatPromptActivateChannel)
-
-		self:SecureHookScript(_G.VoiceChatChannelActivatedNotification, "OnShow", function(this)
-			if _G.InCombatLockdown() then
-			    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
-			    return
-			end
-
-			self:skinObject("frame", {obj=this, fType=ftype})
-			if self.modBtns then
-				self:skinCloseButton{obj=this.CloseButton, font=self.fontSBX, noSkin=true}
-			end
-			self:hookSocialToastFuncs(this)
-
-			self:Unhook(this, "OnShow")
-		end)
-		self:checkShown(_G.VoiceChatChannelActivatedNotification)
-
 	end
 
 	aObj.blizzFrames[ftype].ChatMinimizedFrames = function(self)

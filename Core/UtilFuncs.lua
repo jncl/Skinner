@@ -728,37 +728,6 @@ function aObj:hookQuestText(btn)
 
 end
 
-function aObj:hookSocialToastFuncs(frame)
-
-	self:SecureHook(frame.animIn, "Play", function(this)
-		if this.sf
-		and this.sf.tfade
-		then
-			this.sf.tfade:SetParent(_G.MainMenuBar)
-			this.sf.tfade:SetGradient(self:getGradientInfo())
-		end
-		if this.cb
-		and this.cb.tfade
-		then
-			this.cb.tfade:SetParent(_G.MainMenuBar)
-			this.cb.tfade:SetGradient(self:getGradientInfo())
-		end
-	end)
-	self:SecureHook(frame.waitAndAnimOut, "Play", function(this)
-		if this.sf
-		and this.sf.tfade
-		then
-			this.sf.tfade:SetParent(this.sf)
-		end
-		if this.cb
-		and this.cb.tfade
-		then
-			this.cb.tfade:SetParent(this.cb)
-		end
-	end)
-
-end
-
 function aObj:hookScript(obj, method, func)
 
 	if not self:IsHooked(obj, method) then

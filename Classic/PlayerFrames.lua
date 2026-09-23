@@ -731,23 +731,6 @@ aObj.SetupClassic_PlayerFrames = function()
 			-- end
 		end)
 
-		self:SecureHookScript(_G.VoiceChatPromptActivateChannel, "OnShow", function(this)
-			self:skinObject("frame", {obj=this, fType=ftype, cbns=true})
-			if self.modBtns then
-				self:skinStdButton{obj=this.AcceptButton, fType=ftype}
-			end
-			self:hookSocialToastFuncs(this)
-
-			self:Unhook(this, "OnShow")
-		end)
-
-		self:SecureHookScript(_G.VoiceChatChannelActivatedNotification, "OnShow", function(this)
-			self:skinObject("frame", {obj=this, fType=ftype, cbns=true})
-			self:hookSocialToastFuncs(this)
-
-			self:Unhook(this, "OnShow")
-		end)
-
 	end
 
 	if aObj.isClsc then
