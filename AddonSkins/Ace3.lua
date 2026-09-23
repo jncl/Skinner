@@ -130,27 +130,25 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 
 			elseif objType == "DropdownGroup"
 			or objType == "InlineGroup"
-			or objType == "TabGroup"
 			then
 				aObj:skinObject("frame", {obj=obj.border or obj.content:GetParent(), kfs=true, fb=true, ofs=0})
-				if objType == "TabGroup"
-				and aObj.modBtns
-				then
-					aObj:secureHook(obj, "BuildTabs", function(this)
-						aObj:skinObject("tabs", {obj=this.frame, tabs=obj.tabs, lod=self.isTT and true, upwards=true, regions=aObj.isMnln and {7} or nil, noCheck=true, track=false, offsets={x1=6, x2=-6, y2=-5}})
-						aObj:Unhook(this, "BuildTabs")
-					end)
-					if aObj.isTT then
-						aObj:secureHook(obj, "SelectTab", function(tgObj, value)
-							for _, tab in _G.ipairs(tgObj.tabs) do
-								if tab.value == value then
-									aObj:setActiveTab(tab.sf)
-								else
-									aObj:setInactiveTab(tab.sf)
-								end
+
+			elseif objType == "TabGroup" then
+				aObj:skinObject("frame", {obj=obj.border or obj.content:GetParent(), kfs=true, fb=true, ofs=0})
+				aObj:secureHook(obj, "BuildTabs", function(this)
+					aObj:skinObject("tabs", {obj=this.frame, tabs=obj.tabs, lod=self.isTT and true, upwards=true, regions=aObj.isMorF and {7} or nil, noCheck=true, track=false, offsets={x1=6, x2=-6, y2=-5}})
+					aObj:Unhook(this, "BuildTabs")
+				end)
+				if aObj.isTT then
+					aObj:secureHook(obj, "SelectTab", function(tgObj, value)
+						for _, tab in _G.ipairs(tgObj.tabs) do
+							if tab.value == value then
+								aObj:setActiveTab(tab.sf)
+							else
+								aObj:setInactiveTab(tab.sf)
 							end
-						end)
-					end
+						end
+					end)
 				end
 
 			elseif objType == "EditBox"
