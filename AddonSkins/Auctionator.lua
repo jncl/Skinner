@@ -287,6 +287,7 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 272
 				aObj:Unhook(fObj, "OnShow")
 			end)
 		end
+
 		local function skinHdrs(frame)
 			aObj:SecureHook(frame, "UpdateTable", function(this)
 				if this.tableBuilder then
@@ -298,6 +299,7 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 272
 				end
 			end)
 		end
+
 		local function skinView(fObj)
 			for group in fObj.groupPool:EnumerateActive() do
 				local hdr = group.GroupTitle
@@ -333,6 +335,7 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 272
 			end
 			fObj:UpdateGroupHeights()
 		end
+
 		aObj:SecureHookScript(_G.AuctionatorSellingFrame, "OnShow", function(this)
 			aObj:skinObject("scrollbar", {obj=this.BagListing.View.ScrollBar})
 			aObj:SecureHook(this.BagListing.View, "UpdateFromExisting", function(fObj)

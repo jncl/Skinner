@@ -29,11 +29,6 @@ if aObj.isMorC then
 							self:setActiveTab(tab.sf)
 						end
 					end
-					if _G.C_AddOns.IsAddOnLoaded("Auctionator") then
-						for _, tab in _G.ipairs(_G.AuctionatorAHTabsContainer.Tabs) do
-							self:setInactiveTab(tab.sf)
-						end
-					end
 				end)
 			end
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true, cb=true, x2=3, y2=0})
