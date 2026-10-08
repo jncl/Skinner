@@ -401,7 +401,7 @@ aObj.SetupClassic_UIFrames = function()
 						btn.Border:SetTexture(nil)
 					end
 					self:keepFontStrings(fObj.BonusFrame)
-					self:keepFontStrings(fObj.BonusFrame.ShadowOverlay)
+					fObj.BonusFrame.ShadowOverlay:DisableDrawLayer("OVERLAY")
 					self:skinObject("dropdown", {obj=fObj.BonusFrame.IncludedBattlegroundsDropDown, fType=ftype})
 					for _, fName in _G.pairs{"CallToArmsButton", "RandomBGButton", "WorldPVP2Button", "WorldPVP1Button"} do
 						self:skinObject("frame", {obj=fObj.BonusFrame[fName], fType=ftype, kfs=true, fb=true, ofs=0})
@@ -428,7 +428,7 @@ aObj.SetupClassic_UIFrames = function()
 
 				self:SecureHookScript(_G.ConquestQueueFrame, "OnShow", function(fObj)
 					self:keepFontStrings(fObj)
-					self:keepFontStrings(fObj.ShadowOverlay)
+					fObj.ShadowOverlay:DisableDrawLayer("OVERLAY")
 					fObj.ConquestBar:DisableDrawLayer("BORDER")
 					self:removeRegions(fObj.ConquestBar, {4, 6})
 					fObj.ConquestBar.progress:SetTexture(self.sbTexture)
