@@ -1167,6 +1167,36 @@ function aObj:skinIconSelector(frame, ftype)
 
 end
 
+function aObj:skinLayoutDialog(frame, ftype)
+
+	self:removeNineSlice(frame.Border)
+	self:skinObject("editbox", {obj=frame.LayoutNameEditBox, fType=ftype, y1=-4, y2=4})
+	if frame.ImportBox then
+		if frame.ImportBox.ScrollBar then
+			if (self.isClscERA
+			or self.isClscBCA)
+			and frame == _G.EditModeImportLayoutDialog
+			then
+				self:skinObject("scrollbar", {obj=frame.ImportBox.ScrollBar, fType=ftype, x1=2, x2=4})
+			else
+				self:skinObject("scrollbar", {obj=frame.ImportBox.ScrollBar, fType=ftype})
+			end
+		end
+		self:skinObject("frame", {obj=frame.ImportBox, fType=ftype, kfs=true, fb=true, ofs=7, x2=not self.isMnln and -3 or nil})
+	end
+	self:skinObject("frame", {obj=frame, fType=ftype, kfs=true, ofs=-6})
+	if self.modBtns then
+		self:skinStdButton{obj=frame.AcceptButton, fType=ftype, sechk=true}
+		self:skinStdButton{obj=frame.CancelButton, fType=ftype}
+	end
+	if self.modChkBtns
+	and frame.CharacterSpecificLayoutCheckButton
+	then
+		self:skinCheckButton{obj=frame.CharacterSpecificLayoutCheckButton.Button, fType=ftype}
+	end
+
+end
+
 function aObj:skinMainHelpBtn(frame)
 
 	frame.MainHelpButton.Ring:SetTexture(nil)
@@ -1278,6 +1308,40 @@ if _G.PVEFrame then
 end
 
 if aObj.isMnln then
+-- N.B. code used in MainMenuBar & Bartender4 code
+local otherSBs
+function aObj:skinStatusTrackingBars(container)
+	for _, bar in _G.pairs(container.bars) do
+		otherSBs = {bar.StatusBar.Underlay}
+		if bar.barIndex == _G.StatusTrackingBarInfo.BarsEnum.Experience then
+			self:add2Table(otherSBs, bar.ExhaustionLevelFillBar)
+			bar.ExhaustionTick:GetNormalTexture():SetTexture(nil)
+			bar.ExhaustionTick:GetHighlightTexture():SetTexture(nil)
+			bar.StatusBar:SetStatusBarColor(aObj:getColourByName("blue"))
+		elseif bar.barIndex == _G.StatusTrackingBarInfo.BarsEnum.Reputation then
+			bar.StatusBar:SetStatusBarColor(aObj:getColourByName("light_blue"))
+		-- Mainline only
+		elseif bar.barIndex == _G.StatusTrackingBarInfo.BarsEnum.Artifact then
+			bar.Tick:GetNormalTexture():SetTexture(nil)
+			bar.Tick:GetHighlightTexture():SetTexture(nil)
+			bar.StatusBar:SetStatusBarColor(aObj:getColourByName("yellow"))
+		elseif bar.barIndex == _G.StatusTrackingBarInfo.BarsEnum.Azerite then
+			bar.StatusBar:SetStatusBarColor(aObj:getColourByName("yellow"))
+		elseif bar.barIndex == _G.StatusTrackingBarInfo.BarsEnum.Honor then
+			bar.StatusBar:SetStatusBarColor(aObj:getColourByName("blue"))
+		elseif bar.barIndex == _G.StatusTrackingBarInfo.BarsEnum.HouseFavor then
+			bar.StatusBar:SetStatusBarColor(aObj:getColourByName("yellow"))
+		end
+		self:skinObject("statusbar", {obj=bar.StatusBar, bg=bar.StatusBar.Background, other=otherSBs, hookFunc=true})
+	end
+	if self.isFrvr then
+		for element in container.HorizontalDividersPool:EnumerateActive() do
+			if element.BarDividerTexture then
+				element.BarDividerTexture:SetTexture(nil)
+			end
+		end
+	end
+end
 	function aObj:skinTabSettingsMenu(frame, ftype)
 
 		self:SecureHookScript(frame.TabSettingsMenu, "OnShow", function(fObj)
@@ -1311,37 +1375,6 @@ if aObj.isMnln then
 		end
 
 	end
-
-end
-
-function aObj:skinLayoutDialog(frame, ftype)
-
-	self:removeNineSlice(frame.Border)
-	self:skinObject("editbox", {obj=frame.LayoutNameEditBox, fType=ftype, y1=-4, y2=4})
-	if frame.ImportBox then
-		if frame.ImportBox.ScrollBar then
-			if (self.isClscERA
-			or self.isClscBCA)
-			and frame == _G.EditModeImportLayoutDialog
-			then
-				self:skinObject("scrollbar", {obj=frame.ImportBox.ScrollBar, fType=ftype, x1=2, x2=4})
-			else
-				self:skinObject("scrollbar", {obj=frame.ImportBox.ScrollBar, fType=ftype})
-			end
-		end
-		self:skinObject("frame", {obj=frame.ImportBox, fType=ftype, kfs=true, fb=true, ofs=7, x2=not self.isMnln and -3 or nil})
-	end
-	self:skinObject("frame", {obj=frame, fType=ftype, kfs=true, ofs=-6})
-	if self.modBtns then
-		self:skinStdButton{obj=frame.AcceptButton, fType=ftype, sechk=true}
-		self:skinStdButton{obj=frame.CancelButton, fType=ftype}
-	end
-	if self.modChkBtns
-	and frame.CharacterSpecificLayoutCheckButton
-	then
-		self:skinCheckButton{obj=frame.CharacterSpecificLayoutCheckButton.Button, fType=ftype}
-	end
-
 end
 
 -- the following code has been moved from Skinner.lua OnEnable function
