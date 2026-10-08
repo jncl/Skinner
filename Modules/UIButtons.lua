@@ -274,7 +274,9 @@ local function __skinCloseButton(opts)
 	--@debug@
 	_G.assert(opts and _G.type(opts) == "table", "Missing options table __sCB\n" .. _G.debugstack(2, 3, 2))
 	_G.assert(opts.obj, "Missing object __sCB\n" .. _G.debugstack(2, 3, 2))
-	if opts.obj:GetParent().GlowTop then
+	if opts.obj:GetParent()
+	and opts.obj:GetParent().GlowTop
+		then
 		 _G.assert(opts.noSkin, "GlowBox should be skinned __sCB\n" .. _G.debugstack(2, 3, 2))
 	end
 	--@end-debug@
