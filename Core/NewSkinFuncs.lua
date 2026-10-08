@@ -213,6 +213,10 @@ aObj.skinTPLs = {
 		-- x2          = -3,
 		-- y2          = 3,
 	},
+	sidetabs = {
+		-- tabs        = "Tabs|TabButtons",
+		pool		= false,
+	},
 	slider = {
 		-- bd          = 4, -- narrow
 		-- clr         = "darkgrey", -- backdrop border colour
@@ -871,6 +875,30 @@ local function skinScrollBar(tbl)
 	aObj:skinObject("frame", {obj=tbl.obj.Track, fType=tbl.fType, ncc=tbl.ncc, bd=4, ng=true, x1=tbl.x1, y1=tbl.y1, x2=tbl.x2, y2=tbl.y2, clr="slider"})
 end
 skinFuncs.scrollbar = function(table) skinScrollBar(table) end
+local function skinSideTabs(tbl)
+	--@debug@
+	_G.assert(tbl.obj, "Missing Tab Object (skinSideTabs)\n" .. _G.debugstack(2, 3, 2))
+	_G.assert(tbl.obj[tbl.tabs] and _G.type(tbl.obj[tbl.tabs]) == "table" or tbl.pool, "Missing Tabs Table or Tab Pool (skinSideTabs)\n" .. _G.debugstack(2, 3, 2))
+	--@end-debug@
+	aObj:Debug2("skinSideTabs: [%s]", tbl)
+
+	local function skinSideTabObject(tab)
+		if tab.Background then
+			tab.Background:SetTexture(nil)
+		end
+		aObj:skinObject("button", {obj=tab, fType=tbl.fType, x1=-3, y1=-2, x2=-4, y2=2})
+	end
+	if tbl.pool then
+		for tab in tbl.obj[tbl.tabs]:EnumerateActive() do
+			skinSideTabObject(tab)
+		end
+	else
+		for _, tab in _G.pairs(tbl.obj[tbl.tabs]) do
+			skinSideTabObject(tab)
+		end
+	end
+end
+skinFuncs.sidetabs = function(table) skinSideTabs(table) end
 local function skinSlider(tbl)
 	--@debug@
 	_G.assert(tbl.obj, "Missing object (skinSlider)\n" .. _G.debugstack(2, 3, 2))
@@ -1271,17 +1299,6 @@ function aObj:skinPageBtns(frame)
 	self:SecureHook(pcObj, method, function(this)
 		self:clrPNBtns(this, true)
 	end)
-end
-
-function aObj:skinSideTabs(frame, ftype)
-
-	for _, tab in _G.pairs(frame.TabButtons) do
-		if tab.Background then
-			tab.Background:SetTexture(nil)
-		end
-		self:skinObject("button", {obj=tab, fType=ftype, x1=-3, y1=-2, x2=-4, y2=2})
-	end
-
 end
 
 aObj.skinRoleBtns = _G.nop

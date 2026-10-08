@@ -3578,7 +3578,7 @@ if aObj.isMorF then
 			-- this.Background:SetAlpha(0) -- N.B. Texture changed in code
 			this.VerticalSeparator:SetTexture(nil)
 			-- .SettingsDropdown
-			self:skinSideTabs(this, ftype)
+			self:skinObject("sidetabs", {obj=this, tabs="TabButtons", fType=ftype})
 			self:moveObject{obj=this.QuestsTab, x=-3}
 
 			self:SecureHookScript(this.QuestsFrame, "OnShow", function(fObj) -- a.k.a. QuestScrollFrame (NOT PTRX)
