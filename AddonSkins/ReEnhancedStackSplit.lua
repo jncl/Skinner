@@ -55,7 +55,7 @@ local function skinEnhancedStackSplit()
 			end)
 			-- DON'T skin _G.EnhancedStackSplitXLModeButton so it keeps its textures
 		end
-		if _G.EnhancedStackSplit_Options.XLmode then
+		if _G.ReEnhancedStackSplit_Options.XLmode then
 			_G.StackSplitFrame.sf:SetPoint("BOTTOMRIGHT", _G.StackSplitFrame, "BOTTOMRIGHT", 0, -45)
 		else
 			_G.StackSplitFrame.sf:SetPoint("BOTTOMRIGHT", _G.StackSplitFrame, "BOTTOMRIGHT", 0, -24)
@@ -76,7 +76,7 @@ local function skinEnhancedStackSplit()
 end
 
 if aObj:isAddonEnabled("ReEnhancedStackSplit") then
-	aObj.addonsToSkin.ReEnhancedStackSplit = function(self) -- v 9.0.2
+	aObj.addonsToSkin.ReEnhancedStackSplit = function(self) -- v 12.1.0-1
 		if not self.db.profile.StackSplit then return end
 
 		skinEnhancedStackSplit()
