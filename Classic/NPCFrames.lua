@@ -163,24 +163,12 @@ aObj.SetupClassic_NPCFrames = function()
 						self:SecureHook("AuctionFrameAuctions_Update", function()
 							self:clrBtnBdr(_G.AuctionsCancelAuctionButton)
 						end)
-						if _G.C_AddOns.IsAddOnLoaded("Leatrix_Plus")
-						and _G.LeaPlusDB["AhExtras"] == "On"
-						then
-							self:skinStdButton{obj=self:getLastChild(_G.AuctionFrameAuctions)}
-						end
 					end
 					if not self.modBtnBs then
 						self:resizeEmptyTexture(self:getRegion(_G.AuctionsItemButton, 2))
 					else
 						self:getRegion(_G.AuctionsItemButton, 2):SetAlpha(0) -- texture is changed in blizzard code
 						self:addButtonBorder{obj=_G.AuctionsItemButton}
-					end
-					if _G.C_AddOns.IsAddOnLoaded("Leatrix_Plus")
-					and _G.LeaPlusDB["AhExtras"] == "On"
-					and self.modChkBtns
-					then
-						self:skinCheckButton{obj=self:getPenultimateChild(_G.AuctionFrameAuctions)}
-						self:skinCheckButton{obj=self:getChild(_G.AuctionFrameAuctions, _G.AuctionFrameAuctions:GetNumChildren() - 2)}
 					end
 
 					self:Unhook(fObj, "OnShow")
@@ -391,16 +379,9 @@ aObj.SetupClassic_NPCFrames = function()
 			_G.ClassTrainerSkillIcon:DisableDrawLayer("BACKGROUND")
 			self:skinObject("slider", {obj=_G.ClassTrainerListScrollFrame.ScrollBar, fType=ftype, rpTex="background"})
 			self:skinObject("slider", {obj=_G.ClassTrainerDetailScrollFrame.ScrollBar, fType=ftype, rpTex="background"})
-			local x2, y2 = -32, 71
-			if _G.C_AddOns.IsAddOnLoaded("Leatrix_Plus")
-			and _G.LeaPlusDB["EnhanceTrainers"] == "On"
-			then
-				x2, y2 = -33, 49
-				if self.isClscERA
-				and self.modBtns
-				then
-					self:skinStdButton{obj=_G.LeaPlusGlobalTrainAllButton, sechk=true} -- Train All button
-				end
+			local x2, y2 = -33, 71
+			if _G.LeaPlusGlobalTrainAllButton then
+				y2 = 49
 			end
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=10, y1=-11, x2=x2, y2=y2})
 			if self.modBtns then

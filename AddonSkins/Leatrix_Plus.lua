@@ -2,56 +2,58 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("Leatrix_Plus") then return end
 local _G = _G
 
-aObj.addonsToSkin.Leatrix_Plus = function(self) -- v 11.0.17/4.0.34/1.15.59
+aObj.addonsToSkin.Leatrix_Plus = function(self) -- v 12.1.08/5.1.58/1.15.125
 
 	local lpPanels = {
 		-- All versions
-		"SoundPanel",
-		"WowheadPanel",
-		"QuestPanel",
-		"SellJunkFrame",
-		"RepairPanel",
+		"AcceptResPanel",
 		"ChainPanel",
+		"ChatFilterPanel",
 		"ClassFrame",
-		"QuestTextPanel",
+		"CooldownPanel",
+		"DressupPanel",
+		"ExcludedButtonsPanel",
+		"InvPanel",
+		"LayoutPanel",
 		"MailTextPanel",
 		"MuteCustomPanel",
-		"SideMinimap",
-		"ExcludedButtonsPanel",
-		"ChatFilterPanel",
-		"AcceptResPanel",
-		"DressupPanel",
+		"QuestPanel",
+		"QuestTextPanel",
 		"ReleasePanel",
-		"weatherPanel",
-		"CooldownPanel",
+		"RepairPanel",
+		"SellJunkFrame",
+		"SideMinimap",
 		"SideTip",
-		"InvPanel",
+		"SoundPanel",
+		"weatherPanel",
+		"WowheadPanel",
 		-- ClassicERA only
 		"FlightPanel",
 		-- Classic only
-		"VehiclePanel",
 		"FocusPanel",
+		"TaxiPanel",
+		"VehiclePanel",
 		-- ClassicERA/Classic only
 		"BookTextPanel",
+		"BuffPanel",
+		"DismountFrame",
 		"DurabilityPanel",
+		"EnhanceQuestPanel",
+		"SideFrames",
+		"SideViewport",
 		"TimerPanel",
 		"TrainerPanel",
-		"EnhanceQuestPanel",
-		"DismountFrame",
-		"BuffPanel",
-		"SideFrames",
 		"WidgetPanel",
-		"SideViewport",
 		-- Retail only
-		"MountPanel",
-		"FasterLootPanel",
+		"addOptPanel",
+		"bordersPanel",
 		"ChatFontSizePanel",
+		"ControlPanel",
+		"FasterLootPanel",
+		"HideChatButtonsPanel",
+		"MountPanel",
 		"transPanel",
 		"WidgetTopPanel",
-		"ControlPanel",
-		"HideChatButtonsPanel",
-		"bordersPanel",
-		"addOptPanel",
 	}
 
 	self:SecureHookScript(_G.LeaPlusGlobalPanel, "OnShow", function(this)
@@ -154,7 +156,13 @@ aObj.addonsToSkin.Leatrix_Plus = function(self) -- v 11.0.17/4.0.34/1.15.59
 
 	-- Enhanced Professions (changes in CraftUI & TradeSkillUI)
 
-	-- Enhanced Trainers [handled in ClassTrainerFrame skin code]
+	-- Enhanced Trainers
+	if _G.LeaPlusDB["EnhanceTrainers"] == "On"
+	and self.isClscERA
+	and self.modBtns
+	then
+		self:skinStdButton{obj=_G.LeaPlusGlobalTrainAllButton, sechk=true} -- Train All button
+	end
 
 	-- Volume slider (Character frame)
 	if _G.LeaPlusDB["ShowVolume"] == "On"
@@ -163,7 +171,14 @@ aObj.addonsToSkin.Leatrix_Plus = function(self) -- v 11.0.17/4.0.34/1.15.59
 		self:skinObject("slider", {obj=_G.LeaPlusGlobalSliderLeaPlusMaxVol})
 	end
 
-	-- Auction Controls (changes in AuctionUI)
+	-- Auction Controls
+	if _G.LeaPlusDB["AhExtras"] == "On" then
+		self:skinStdButton{obj=self:getLastChild(_G.AuctionFrameAuctions)}
+		if self.modChkBtns then
+			self:skinCheckButton{obj=self:getPenultimateChild(_G.AuctionFrameAuctions)}
+			self:skinCheckButton{obj=self:getChild(_G.AuctionFrameAuctions, _G.AuctionFrameAuctions:GetNumChildren() - 2)}
+		end
+	end
 
 	-- Durability status (PaperDollFrame)
 	if _G.LeaPlusDB["DurabilityStatus"] == "On"

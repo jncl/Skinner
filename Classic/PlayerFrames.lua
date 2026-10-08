@@ -291,13 +291,9 @@ aObj.SetupClassic_PlayerFrames = function()
 			_G.CraftRankFrameBorder:GetNormalTexture():SetTexture(nil)
 			self:keepFontStrings(_G.CraftExpandButtonFrame)
 			self:keepFontStrings(_G.CraftDetailScrollChildFrame)
-			local x1, y1, x2, y2
-			if _G.C_AddOns.IsAddOnLoaded("Leatrix_Plus")
-			and _G.LeaPlusDB["EnhanceProfessions"] == "On"
-			then
-				x1, y1, x2, y2 = 10, -11, -33, 49
-			else
-				x1, y1, x2, y2 = 10, -11, -31, 71
+			local x1, y1, x2, y2  = 10, -11, -33, 70
+			if _G.TRADE_SKILLS_DISPLAYED > 8 then -- LeatrixPlus has adjusted the height
+				y2 = 49
 			end
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, x1=x1, y1=y1, x2=x2, y2=y2})
 			if self.modBtnBs then
@@ -1547,13 +1543,9 @@ aObj.SetupClassic_PlayerFrames = function()
 			if self.modBtnBs then
 				self:addButtonBorder{obj=_G.TradeSkillSkillIcon, fType=ftype, clr="gold"}
 			end
-			local x1, y1, x2, y2
-			if _G.C_AddOns.IsAddOnLoaded("Leatrix_Plus")
-			and _G.LeaPlusDB["EnhanceProfessions"] == "On"
-			then
-				x1, y1, x2, y2 = 10, -11, -33, 49
-			else
-				x1, y1, x2, y2 = 10, -11, -32, 70
+			local x1, y1, x2, y2  = 10, -11, -33, 70
+			if _G.TRADE_SKILLS_DISPLAYED > 8 then -- LeatrixPlus has adjusted the height
+				y2 = 49
 			end
 			if not _G.C_AddOns.IsAddOnLoaded("alaTradeSkill") then
 				self:skinObject("ddbutton", {obj=this.InvSlotDropdown, fType=ftype})
