@@ -26,7 +26,7 @@ aObj.addonsToSkin.Bartender4 = function(self) -- v 4.16.0
 					for _, bar in mObj:GetAll() do
 						for _, btn in bar:GetAll() do
 							btn.NormalTexture:SetAlpha(0)
-							aObj:addButtonBorder{obj=btn, sabt=true}
+							aObj:addButtonBorder{obj=btn, sabt=true, rpA=true}
 						end
 					end
 				end
@@ -84,34 +84,11 @@ aObj.addonsToSkin.Bartender4 = function(self) -- v 4.16.0
 
 	mod = _G.Bartender4:GetModule("StatusTrackingBar", true)
 	if mod then
-		-- N.B. following function copied from UIF-R MainMenuBar
-		local function skinSTBars(container)
-			for _, bar in _G.pairs(container.bars) do
-				aObj:skinObject("statusbar", {obj=bar.StatusBar, bg=bar.StatusBar.Background, other={bar.StatusBar.Underlay, bar.StatusBar.Overlay}, hookFunc=true})
-				if bar.priority == 0 then -- Azerite bar
-					bar.StatusBar:SetStatusBarColor(aObj:getColourByName("yellow"))
-				elseif bar.priority == 1 then -- Rep bar
-					bar.StatusBar:SetStatusBarColor(aObj:getColourByName("light_blue"))
-				elseif bar.priority == 2 then -- Honor bar
-					bar.StatusBar:SetStatusBarColor(self:getColourByName("blue"))
-				elseif bar.priority == 3 then -- XP bar
-					bar.ExhaustionTick:GetNormalTexture():SetTexture(nil)
-					bar.ExhaustionTick:GetHighlightTexture():SetTexture(nil)
-					bar.ExhaustionLevelFillBar:SetTexture(aObj.sbTexture)
-					bar.ExhaustionLevelFillBar:SetVertexColor(aObj:getColourByName("bright_blue"))
-					bar.StatusBar:SetStatusBarColor(self:getColourByName("blue"))
-				elseif bar.priority == 4 then -- Artifact bar
-					bar.Tick:GetNormalTexture():SetTexture(nil)
-					bar.Tick:GetHighlightTexture():SetTexture(nil)
-					bar.StatusBar:SetStatusBarColor(aObj:getColourByName("yellow"))
-				end
-			end
-		end
 		local function skinStatusBars(mObj)
 			mObj.bar.manager.MainStatusTrackingBarContainer:DisableDrawLayer("OVERLAY") -- status bar textures
 			mObj.bar.manager.SecondaryStatusTrackingBarContainer:DisableDrawLayer("OVERLAY") -- status bar textures
-			skinSTBars(mObj.bar.manager.MainStatusTrackingBarContainer)
-			skinSTBars(mObj.bar.manager.SecondaryStatusTrackingBarContainer)
+			self:skinStatusTrackingBars(mObj.bar.manager.MainStatusTrackingBarContainer)
+			self:skinStatusTrackingBars(mObj.bar.manager.SecondaryStatusTrackingBarContainer)
 		end
 		if mod.enabledState then
 			skinStatusBars(mod)
@@ -144,18 +121,21 @@ aObj.addonsToSkin.Bartender4 = function(self) -- v 4.16.0
 			mod = _G.Bartender4:GetModule("BagBar", true)
 			if mod then
 				local function abb2Bag(bag)
-					aObj:addButtonBorder{obj=bag, ibt=true, ofs=3, clr=bag.icon:GetVertexColor()}
+					aObj:addButtonBorder{obj=bag, ibt=true, ofs=aObj.isFrvr and 2 or 3, clr=bag.icon:GetVertexColor()}
 				end
 				abb2Bag(_G.MainMenuBarBackpackButton)
 				for i = 0, 3 do
 					abb2Bag(_G["CharacterBag" .. i .. "Slot"])
 				end
-				self:addButtonBorder{obj=_G.KeyRingButton, ofs=2}
+				self:addButtonBorder{obj=_G.KeyRingButton, ofs=2, x2=aObj.isFrvr and 0}
+				if _G.CharacterReagentBag0Slot then
+					abb2Bag(_G.CharacterReagentBag0Slot)
+				end
 			end
 			mod = _G.Bartender4:GetModule("MicroMenu", true)
 			if mod then
-				for _, bName in _G.pairs(_G.MICRO_BUTTONS) do
-					self:addButtonBorder{obj=_G[bName], es=24, ofs=2, y1=-18, reParent={_G[bName].QuickKeybindHighlightTexture}}
+				for _, bInfo in _G.pairs(_G.MicroMenu:GenerateButtonInfos()) do
+					self:addButtonBorder{obj=bInfo.button, es=24, ofs=2, y2=self.isFrvr and 0 or nil}
 				end
 			end
 		end
