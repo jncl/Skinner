@@ -723,7 +723,9 @@ function aObj:hookQuestText(btn)
 		elseif fmtString == _G.IGNORED_QUEST_DISPLAY then
 			fmtString = self.IT:WrapTextInColorCode("%s (ignored)|r")
 		end
-		return self.hooks[this].SetFormattedText(this, fmtString, text)
+		_G.RunNextFrame(function()
+			return self.hooks[this].SetFormattedText(this, fmtString, text)
+		end)
 	end, true)
 
 end
