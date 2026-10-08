@@ -447,11 +447,7 @@ aObj.SetupOptions = function(self)
 			set = function(info, r, g, b, a)
 				local c
 				if info[#info]:find("ClassClr") then
-					if self.isMnln then
-						c = {_G.C_ClassColor.GetClassColor(self.uCls):GetRGBA()}
-					else
-						c = {_G.GetClassColorObj(self.uCls):GetRGBA()}
-					end
+					c = {_G.C_ClassColor.GetClassColor(self.uCls):GetRGBA()}
 				end
 				if info[#info] == "ClassClrBd" then
 					db[info[#info]] = r
