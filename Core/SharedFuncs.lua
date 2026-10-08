@@ -23,12 +23,12 @@ end
 local function compareBuildInfo(ver1, ver2, exact)
 	if exact then
 		--@debug@
-		aObj:Debug("cBI#1: [%s, %s, %d, %d, %d, %d]", ver1, ver2, getTOCVer(ver1), getTOCVer(ver2), _G.tonumber(buildInfo[ver1][3]), _G.tonumber(buildInfo[ver2][3]))
+		aObj:Debug2("cBI#1: [%s, %s, %d, %d, %d, %d]", ver1, ver2, getTOCVer(ver1), getTOCVer(ver2), _G.tonumber(buildInfo[ver1][3]), _G.tonumber(buildInfo[ver2][3]))
 		--@end-debug@
 		return (getTOCVer(ver1) == getTOCVer(ver2) and _G.tonumber(buildInfo[ver1][3]) == _G.tonumber(buildInfo[ver2][3]))
 	else
 		--@debug@
-		aObj:Debug("cBI#2: [%s, %s, %d, %d, %d, %d]", ver1, ver2, getTOCVer(ver1), getTOCVer(ver2), _G.tonumber(buildInfo[ver1][3]), _G.tonumber(buildInfo[ver2][3]))
+		aObj:Debug2("cBI#2: [%s, %s, %d, %d, %d, %d]", ver1, ver2, getTOCVer(ver1), getTOCVer(ver2), _G.tonumber(buildInfo[ver1][3]), _G.tonumber(buildInfo[ver2][3]))
 		--@end-debug@
 		return (getTOCVer(ver1) >= getTOCVer(ver2) and _G.tonumber(buildInfo[ver1][3]) >= _G.tonumber(buildInfo[ver2][3]))
 	end
@@ -68,7 +68,7 @@ function aObj:checkWoWVersion()
 	self.isMnln       = agentUID == "wow" and true
 
 	--@debug@
-	self:Debug("checkVersion #2: [%s, %s, %s, %s, %s, %s, %s, %s, %s, %s]", self.isClscBeta, self.isClscPTR, self.isClsc, self.isClscERAPTR, self.isClscERA, self.isClscBCA, self.isMnlnBeta, self.isMnlnPTR, self.isMnlnPTRX, self.isMnln)
+	self:Debug2("checkVersion #2: [%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s]", self.isClscBeta, self.isClscPTR, self.isClsc, self.isClscERAPTR, self.isClscERA, self.isClscBCA, self.isMnlnBeta, self.isMnlnPTR, self.isMnlnPTRX, self.isMnln, self.isFrvr)
 	--@end-debug@
 
 	-- handle PTR and Beta versions
@@ -92,7 +92,7 @@ function aObj:checkWoWVersion()
 	end
 
 	--@debug@
-	self:Debug("checkVersion #3: [%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s]", self.isClscBeta, self.isClscPTR, self.isClsc, self.isClscERAPTR, self.isClscERA, self.isClscBCA, self.isMnlnBeta, self.isMnlnPTR, self.isMnlnPTRX, self.isMnln, self.isPatch)
+	self:Debug2("checkVersion #3: [%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s]", self.isClscBeta, self.isClscPTR, self.isClsc, self.isClscERAPTR, self.isClscERA, self.isClscBCA, self.isMnlnBeta, self.isMnlnPTR, self.isMnlnPTRX, self.isMnln, self.isFrvr, self.isPatch)
 
 	self:Printf("%s, %d, %s, %d, %s, %d, %s", buildInfo[agentUID][2], buildInfo[agentUID][3], buildInfo.curr[2], buildInfo.curr[3], buildInfo.curr[4], buildInfo.curr[5] , agentUID)
 
