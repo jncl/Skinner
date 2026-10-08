@@ -49,6 +49,12 @@ local function Aura(self)
 	local function skinBossContainer(panel)
 		frame = ufBossContainer or panel
 		self:skinObject("frame", {obj=frame, kfs=true})
+		-- fix for #360-1
+		self:SecureHook(frame, "SetAlpha", function(fObj, alpha)
+			if fObj.sf then
+				fObj.sf:SetAlpha(alpha)
+			end
+		end)
 	end
 	if ufBossContainer then
 		skinBossContainer()
@@ -61,42 +67,6 @@ local function Aura(self)
 	end
 
 	local UF = aA.UF
-	-- local gaiEditor = _G.EQOL_UF_GlobalAuraIgnoreEditor
-	-- local function skinGAIEditor()
-	-- 	frame = gaiEditor
-	-- 	self:skinObject("slider", {obj=frame.ScrollFrame.ScrollBar})
-	-- 	self:skinObject("frame", {obj=frame, kfs=true})
-	-- 	if self.modBtns then
-	-- 		self:skinCloseButton{obj=frame.CloseButton}
-	-- 		for _, btn in _G.pairs(frame.ContextButtons) do
-	-- 			self:skinStdButton{obj=btn}
-	-- 		end
-	-- 	end
-	-- 	if self.modChkBtns then
-	-- 		self:skinCheckButton{obj=frame.EnabledCheck}
-	-- 		for _, cBtn in _G.pairs(frame.SpecialChecks) do
-	-- 			self:skinCheckButton{obj=cBtn}
-	-- 		end
-	-- 		local function skinFRChecks()
-	-- 			for _, cBtn in _G.pairs(frame.FamilyRows) do
-	-- 				self:skinCheckButton{obj=cBtn}
-	-- 			end
-	-- 		end
-	-- 		self:SecureHook(UF.GlobalAuraIgnore, "ResetFamilyCache", function(_)
-	-- 			skinFRChecks()
-	-- 		end)
-	-- 		skinFRChecks()
-	-- 	end
-	-- end
-	-- if gaiEditor then
-	-- 	skinGAIEditor()
-	-- else
-	-- 	self:SecureHook(UF.GlobalAuraIgnore, "ToggleEditor", function(_)
-	-- 		skinGAIEditor()
-	-- 		self:Unhook(UF.GlobalAuraIgnore, "ToggleEditor")
-	-- 	end)
-	-- end
-
 	local function skinGFHBEditor()
 		frame = UF.GroupFramesHealerBuffEditor.frame
 		self:moveObject{obj=frame.CloseButton, x=-20, y=-12}
@@ -758,6 +728,11 @@ local function DataPanels(self)
 	local aDP = addon.DataPanel
 	local function skinDataPanel(panel)
 		self:skinObject("frame", {obj=panel, kfs=true})
+		-- fix #360-2
+		self:SecureHook(panel, "ApplyBackdropAlpha", function(fObj, inCombat)
+			local alpha = fObj:GetTextAlpha(inCombat)
+			fObj.sf:SetAlpha(alpha)
+		end)
 	end
 
 	self:RawHook(aDP, "Create", function(...)
@@ -1187,7 +1162,9 @@ local function WorldMarkerCycler(self)
 		self:addButtonBorder{obj=wmcButton, sabt=true}
 	end
 end
-aObj.addonsToSkin.EnhanceQoL = function(self) -- v 12.9.11
+aObj.addonsToSkin.EnhanceQoL = function(self) -- v 13.1.0
+
+	-- TODO: skin SpellGroupsEditor, DamageMeterTooltip
 
 	ButtonSink(self)
 	InventoryFilterPanel(self)
