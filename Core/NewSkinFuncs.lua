@@ -184,6 +184,7 @@ aObj.skinTPLs = {
 		-- ckbfb       = true, -- frame border [bd=10, ng=true, ofs=0], check aObj.prdb.FrameBorders option
 		sft         = false, -- use SecureFrameTemplate
 		-- bbc         = {} -- colour the .sf's BackdropBorder using these values
+		sa          = false, -- match the parent's alpha value
 	},
 	glowbox = {
 	},
@@ -783,6 +784,10 @@ local function skinFrame(tbl)
 	so.ncc    = tbl.ncc
 	-- apply the 'Skinner effect' to the frame
 	aObj:skinObject(so)
+	-- alter the alpha value if required
+	if tbl.sa then
+		tbl.obj.sf:SetAlpha(tbl.obj:GetAlpha())
+	end
 	return tbl.obj.sf
 end
 skinFuncs.frame = function(table) skinFrame(table) end

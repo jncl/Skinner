@@ -968,9 +968,8 @@ aObj.blizzFrames[ftype].ChatEditBox = function(self)
 		elseif aObj.prdb.ChatEditBox.style == 2 then -- Editbox
 			aObj:skinObject("editbox", {obj=obj, fType=ftype, regions={}, ofs=-4})
 		else -- Borderless
-			aObj:skinObject("frame", {obj=obj, fType=ftype, noBdr=true, ofs=-5, y=2})
+			aObj:skinObject("frame", {obj=obj, fType=ftype, noBdr=true, sa=true, ofs=-5, y=2})
 		end
-		obj.sf:SetAlpha(obj:GetAlpha())
 	end
 	for i = 1, _G.Constants.ChatFrameConstants.MaxChatWindows do
 		skinChatEB(_G["ChatFrame" .. i].editBox)
