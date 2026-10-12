@@ -282,9 +282,8 @@ local objType, objTable, optsTable
 function aObj:skinObject(...)
 	--@debug@
 	_G.assert(..., "Missing arguments (skinObject)\n" .. _G.debugstack(2, 3, 2))
-	--@end-debug@
-
 	aObj:Debug2("skinObject: [%s, %s]", ...)
+	--@end-debug@
 
 	-- handle called with both a type and a table or just a table
 	if _G.select('#', ...) == 2 then
@@ -317,8 +316,8 @@ local r, g, b, a
 local function applySkin(tbl)
 	--@debug@
 	_G.assert(tbl.obj, "Missing object (applySkin)\n" .. _G.debugstack(2, 3, 2))
-	--@end-debug@
 	aObj:Debug2("applySkin: [%s]", tbl)
+	--@end-debug@
 
 	if tbl.kfs then
 		aObj:keepFontStrings(tbl.obj)
@@ -365,8 +364,8 @@ local function skinButton(tbl)
 	-- handle AddOn skins using deprecated options
 		aObj:CustomPrint(1, 0, 0, "Using deprecated options - sec, use sft instead", tbl.obj)
 	end
-	--@end-debug@
 	aObj:Debug2("skinButton [%s]", tbl)
+	--@end-debug@
 
 	if tbl.obj.sb
 	or tbl.noSkin
@@ -450,9 +449,8 @@ skinFuncs.button = function(table) skinButton(table) end
 local function skinDDButton(tbl)
 	--@debug@
 	_G.assert(tbl.obj, "Missing object (skinDDButton)\n" .. _G.debugstack(2, 3, 2))
-	--@end-debug@
-
 	aObj:Debug2("skinDDButton: [%s]", tbl)
+	--@end-debug@
 
 	-- don't skin it twice
 	if tbl.obj.sf
@@ -500,9 +498,8 @@ local fName, bdObj
 local function skinDDList(tbl)
 	--@debug@
 	_G.assert(tbl.obj, "Missing object sDDL\n" .. _G.debugstack(2, 3, 2))
-	--@end-debug@
-
 	aObj:Debug2("skinDDList: [%s]", tbl)
+	--@end-debug@
 
 	aObj:removeNineSlice(tbl.obj)
 
@@ -526,9 +523,8 @@ skinFuncs.ddlist = function(table) skinDDList(table) end
 local function skinDropDown(tbl)
 	--@debug@
 	_G.assert(tbl.obj, "Missing object (skinDropDown)\n" .. _G.debugstack(2, 3, 2))
-	--@end-debug@
-
 	aObj:Debug2("skinDropDown: [%s]", tbl)
+	--@end-debug@
 
 	-- don't skin it twice
 	if tbl.obj.sf then return end
@@ -580,8 +576,8 @@ local function skinEditBox(tbl)
 	--@debug@
 	_G.assert(tbl.obj, "Missing object (skinEditBox)\n" .. _G.debugstack(2, 3, 2))
 	_G.assert(tbl.obj:IsObjectType("EditBox"), "Not an EditBox (skinEditBox)\n" .. _G.debugstack(2, 3, 2))
-	--@end-debug@
 	aObj:Debug2("skinEditBox: [%s]", tbl)
+	--@end-debug@
 
 	-- don't skin it twice
 	if tbl.obj.sf then
@@ -632,8 +628,8 @@ local function skinFrame(tbl)
 		-- handle AddOn skins using deprecated options
 		aObj:CustomPrint(1, 0, 0, "Using deprecated options - sec, use sft instead", tbl.obj)
 	end
-	--@end-debug@
 	aObj:Debug2("skinFrame [%s]", tbl)
+	--@end-debug@
 
 	if tbl.obj.sf then
 		return
@@ -794,8 +790,8 @@ skinFuncs.frame = function(table) skinFrame(table) end
 local function skinGlowBox(tbl)
 	--@debug@
 	_G.assert(tbl.obj, "Missing object (skinGlowBox)\n" .. _G.debugstack(2, 3, 2))
-	--@end-debug@
 	aObj:Debug2("skinGlowBox: [%s]", tbl)
+	--@end-debug@
 
 	-- don't skin it twice
 	if tbl.obj.sf then return end
@@ -820,8 +816,8 @@ local skinnedMFs = {}
 local function skinMoneyFrame(tbl)
 	--@debug@
 	_G.assert(tbl.obj, "Missing object (skinMoneyFrame)\n" .. _G.debugstack(2, 3, 2))
-	--@end-debug@
 	aObj:Debug2("skinMoneyFrame: [%s]", tbl)
+	--@end-debug@
 
 	-- don't skin it twice
 	if skinnedMFs[tbl.obj] then
@@ -860,8 +856,8 @@ local function skinScrollBar(tbl)
 	--@debug@
 	_G.assert(tbl.obj, "Missing object (skinScrollBar)\n" .. _G.debugstack(2, 3, 2))
 	_G.assert(tbl.obj.Track, "Not a ScrollBarBase (skinScrollBar)\n" .. _G.debugstack(2, 3, 2))
-	--@end-debug@
 	aObj:Debug2("skinScrollBar: [%s, %s]", tbl)
+	--@end-debug@
 
 	-- don't skin it twice
 	if tbl.obj.sf then return end
@@ -884,14 +880,14 @@ local function skinSideTabs(tbl)
 	--@debug@
 	_G.assert(tbl.obj, "Missing Tab Object (skinSideTabs)\n" .. _G.debugstack(2, 3, 2))
 	_G.assert(tbl.obj[tbl.tabs] and _G.type(tbl.obj[tbl.tabs]) == "table" or tbl.pool, "Missing Tabs Table or Tab Pool (skinSideTabs)\n" .. _G.debugstack(2, 3, 2))
-	--@end-debug@
 	aObj:Debug2("skinSideTabs: [%s]", tbl)
+	--@end-debug@
 
 	local function skinSideTabObject(tab)
 		if tab.Background then
 			tab.Background:SetTexture(nil)
 		end
-		aObj:skinObject("button", {obj=tab, fType=tbl.fType, x1=-3, y1=-2, x2=-4, y2=2})
+		aObj:skinObject("button", {obj=tab, fType=tbl.fType, x1=-3, y1=-2, x2=-5, y2=2})
 	end
 	if tbl.pool then
 		for tab in tbl.obj[tbl.tabs]:EnumerateActive() do
@@ -908,8 +904,8 @@ local function skinSlider(tbl)
 	--@debug@
 	_G.assert(tbl.obj, "Missing object (skinSlider)\n" .. _G.debugstack(2, 3, 2))
 	_G.assert(tbl.obj:IsObjectType("Slider"), "Not a Slider (skinSlider)\n" .. _G.debugstack(2, 3, 2))
-	--@end-debug@
 	aObj:Debug2("skinSlider: [%s, %s]", tbl)
+	--@end-debug@
 
 	-- don't skin it twice
 	if tbl.obj.sf then return end
@@ -937,8 +933,8 @@ local function skinStatusBar(tbl)
 	--@debug@
 	_G.assert(tbl.obj, "Missing object __sSB\n" .. _G.debugstack(2, 3, 2))
 	_G.assert(tbl.obj:IsObjectType("StatusBar"), "Not a StatusBar (skinStatusBar)\n" .. _G.debugstack(2, 3, 2))
-	--@end-debug@
 	aObj:Debug2("skinStatusBar: [%s, %s]", tbl)
+	--@end-debug@
 
 	-- apply StatusBar texture
 	tbl.obj:SetStatusBarTexture(aObj.sbTexture)
@@ -993,8 +989,8 @@ local function skinTabs(tbl)
 	--@debug@
 	_G.assert(tbl.obj, "Missing Tab Object (skinTabs)\n" .. _G.debugstack(2, 3, 2))
 	_G.assert(tbl.tabs and _G.type(tbl.tabs) == "table" or tbl.prefix or tbl.pool, "Missing Tabs Table, Tab Prefix or Tab Pool (skinTabs)\n" .. _G.debugstack(2, 3, 2))
-	--@end-debug@
 	aObj:Debug2("skinTabs: [%s]", tbl)
+	--@end-debug@
 
 	-- don't skin it twice unless required (Ace3)
 	if _G.tContains(aObj.tabFrames, tbl.obj)
@@ -1123,8 +1119,8 @@ local function skinTooltip(tbl)
 	if not aObj.prdb.Tooltips.skin then return end
 	--@debug@
 	_G.assert(tbl.obj, "Missing object (skinTooltip)\n" .. _G.debugstack(2, 3, 2))
-	--@end-debug@
 	aObj:Debug2("skinTooltip: [%s]", tbl.obj)
+	--@end-debug@
 
 	if not tbl.obj then return end
 	if not tbl.obj.sf then

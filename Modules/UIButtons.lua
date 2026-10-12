@@ -279,6 +279,7 @@ local function __skinCloseButton(opts)
 		then
 		 _G.assert(opts.noSkin, "GlowBox should be skinned __sCB\n" .. _G.debugstack(2, 3, 2))
 	end
+	aObj:Debug2("skinCloseButton [%s]", opts)
 	--@end-debug@
 
 	-- DON'T skin it twice
@@ -375,6 +376,7 @@ local function __skinExpandButton(opts)
 	--@debug@
 	_G.assert(opts and _G.type(opts) == "table", "Missing options table __sEB\n" .. _G.debugstack(2, 3, 2))
 	_G.assert(opts.obj, "Missing object __sEB\n" .. _G.debugstack(2, 3, 2))
+	aObj:Debug2("skinExpandButton [%s]", opts)
 	--@end-debug@
 
 	-- don't skin it twice (BUGFIX)
@@ -463,6 +465,7 @@ local function __skinOtherButton(opts)
 	_G.assert(opts and _G.type(opts) == "table", "Missing options table __sOB\n" .. _G.debugstack(2, 3, 2))
 	_G.assert(opts.obj, "Missing object __sOB\n" .. _G.debugstack(2, 3, 2))
 	_G.assert(opts.text, "Missing text to use __sOB\n" .. _G.debugstack(2, 3, 2))
+	aObj:Debug2("skinOtherButton [%s]", opts)
 	--@end-debug@
 
 	-- DON'T skin it twice
@@ -545,6 +548,7 @@ local function __skinStdButton(opts)
 	if opts.seca then
 		aObj:CustomPrint(1, 0, 0, "Using deprecated option - seca, use sabt instead", opts.obj)
 	end
+	aObj:Debug2("skinStdButton [%s]", opts)
 	--@end-debug@
 
 	-- DON'T skin it twice
@@ -729,6 +733,7 @@ local function __addButtonBorder(opts)
 	elseif opts.sec then
 		aObj:CustomPrint(1, 0, 0, "Using deprecated options - sec, use sft instead, __aBB", opts.obj)
 	end
+	aObj:Debug2("addButtonBorder [%s]", opts)
 	--@end-debug@
 
 	-- don't skin it twice unless required
@@ -888,6 +893,7 @@ local function __skinCheckButton(opts)
 	--@debug@
 	_G.assert(opts.obj, "Missing object __sCB\n" .. _G.debugstack(2, 3, 2))
 	_G.assert(opts.obj.IsObjectType and opts.obj:IsObjectType("CheckButton"), "NOT a CheckButton __sCB\n" .. _G.debugstack(2, 3, 2))
+	aObj:Debug2("skinCheckButton [%s]", opts)
 	--@end-debug@
 
 	-- don't skin it twice unless required
