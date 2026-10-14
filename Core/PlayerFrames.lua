@@ -1261,13 +1261,8 @@ if aObj.isMorC then
 					aObj:removeRegions(element, {1, 4}) -- background, iconBorder
 					aObj:changeTandC(element.dragButton.levelBG)
 					if aObj.modBtnBs then
-						aObj:addButtonBorder{obj=element, relTo=element.icon, reParent={element.dragButton.levelBG, element.dragButton.level, element.dragButton.favorite}}
+						aObj:addButtonBorder{obj=element, relTo=element.icon, reParent={element.dragButton.levelBG, element.dragButton.level, element.dragButton.favorite}, clr=element.iconBorder:GetVertexColor()}
 					end
-				end
-				if aObj.modBtnBs then
-					_G.RunNextFrame(function()
-						aObj:clrButtonFromBorder(element)
-					end)
 				end
 			end
 			_G.ScrollUtil.AddAcquiredFrameCallback(this.ScrollBox, skinElement, aObj, true)
