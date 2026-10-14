@@ -2348,7 +2348,7 @@ aObj.blizzFrames[ftype].MailFrame = function(self)
 			self:keepFontStrings(_G[miName])
 			miBtn:DisableDrawLayer("BACKGROUND")
 			if self.modBtnBs then
-				self:addButtonBorder{obj=miBtn, relTo=miBtn.Icon, reParent={_G[miName .. "ButtonCODBackground"], _G[miName .. "ButtonCount"], miBtn.IconOverlay, miBtn.IconOverlay2 and miBtn.IconOverlay2}}
+				self:addButtonBorder{obj=miBtn, relTo=miBtn.Icon, reParent={_G[miName .. "ButtonCODBackground"], _G[miName .. "ButtonCount"]}}
 			end
 		end
 		self:moveObject{obj=_G.InboxTooMuchMail, y=-24} -- move icon down
