@@ -1,32 +1,37 @@
 ToDos
 ±±±±±
  
-	√ is Alt+v	- indicates completed
-	≈ is Alt+x	- indicates partially completed or dry-coded
-	x			- indicates nothing to change
-	¶ is Alt+7	- indicates localisation changes required
-	#nnn		- indicates Issue number
-	S/N/I/U/O	- Skin request/New Version/Issue(Bug)/Unobsolete Skin/Other changes
-	A/E/C/M/F/B - BC Anniversary/Classic Era/MoP Classic/Mainline/Feature Request/Beta
+	√ is Alt+v	      - indicates completed
+	≈ is Alt+x	      - indicates partially completed or dry-coded
+	x			      - indicates nothing to change
+	¶ is Alt+7	      - indicates localisation changes required
+	#nnn		      - indicates Issue number
+	S/N/I/U/O	      - Skin request/New Version/Issue(Bug)/Unobsolete Skin/Other changes
+	A/B/C/E/F/M/R     - BC Anniversary/Beta/Classic/Classic Era/Forever/Mainline/Request Feature
 
 	O 	Update ISSUE_TEMPLATE(s) when Classic version name changes
 
 	O 	Change ALL occurrence of 'this' in Unhook functions to the actual hooking object, using 'this' DOESN'T remove the hook properly !!
 
- ?		O/?	ChatFrameTab for PetBattles has missing text
+?	O/?	ChatFrameTab for PetBattles has missing text
+
+? 	O   Prevent ADDON_ACTION_BLOCKED caused by BUTTON:SetPassThroughButtons()
 
 #352	I/M AddOn 'Skinner' tried to call the protected function 'Frame:SetPropagateMouseClicks()'
 
-#353	I/M Auras cannot be accessed when secret while tainted by 'Skinner'
+#353 √	I/M Auras cannot be accessed when secret while tainted by 'Skinner'
 
 #354  	I/M Blizzard_SharedXML/LayoutFrame.lua:491: attempt to compare a secret number value (execution tainted by 'Skinner')
 
-#355 √	I/C Interface/AddOns/Skinner/Modules/TopFrame.lua:25: attempt to call a nil value
+#360 ≈	I/M EQoL, BossFrames DON'T hide after they've been skinned
+#360 ≈	I/M EQoL, DON'T skin DataBars as transparancy can no longer be adjusted
 
-#356 √	I/E Skinner/AddonSkins/ls_Toasts.lua:28: attempt to index field 'sf' (a nil value)
+#361 √	N 	BugSack
 
-#357 √	I/M Skinner/EQOL/Class Buff reminder
+#362 √	I/M ReEnhancedStackSplit.lua:58: attempt to index field 'EnhancedStackSplit_Options' (a nil value)
 
-#358 √	I/M Skinner/Journalator
+#363 ≈	I/F Support WoW Forever
 
-#359 √	I 	Baganator Settings blocked
+#364 ≈?	R   Automatically match skinner to Ellesmere UI style (similar to what you have for ElvUI)
+
+#365 √	I   BugSack, attempt to index field 'BugSackScroll'
