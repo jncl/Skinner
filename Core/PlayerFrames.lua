@@ -230,36 +230,38 @@ if aObj.isMorC then
 			end)
 			self:checkShown(this.Header or _G.AchievementFrameHeader)
 
-			self:SecureHookScript(this.HeaderDetails, "OnShow", function(fObj)
-				self:keepFontStrings(fObj)
-				self:moveObject{obj=fObj.Filters.FilterDropdown, y=-6}
-				self:skinObject("ddbutton", {obj=fObj.Filters.FilterDropdown, fType=ftype, filter=true})
-				self:skinObject("editbox", {obj=fObj.Filters.SearchBox, fType=ftype, si=true, y1=-4, y2=4})
-				self:skinObject("statusbar", {obj=fObj.Filters.SearchBox.SearchProgressBar, fType=ftype, fi=0, bg=fObj.Filters.SearchBox.SearchProgressBar.bg})
-				if self.modBtns then
-					self:skinStdButton{obj=fObj.Back, fType=ftype, sechk=true}
-				end
-
-				self:SecureHookScript(fObj.Filters.SearchBox.SearchPreviewContainer, "OnShow", function(frame)
-					self:adjHeight{obj=frame, adj=((4 * 27) + 30)}
-					for _, btn in _G.ipairs(frame.searchPreviews) do
-						self:removeRegions(btn, {5, 6})
-						btn.IconFrame:SetTexture(nil)
-						if self.modBtnBs then
-							self:addButtonBorder{obj=btn, relTo=btn.Icon}
-						end
+			if self.isMnln then
+				self:SecureHookScript(this.HeaderDetails, "OnShow", function(fObj)
+					self:keepFontStrings(fObj)
+					self:moveObject{obj=fObj.Filters.FilterDropdown, y=-6}
+					self:skinObject("ddbutton", {obj=fObj.Filters.FilterDropdown, fType=ftype, filter=true})
+					self:skinObject("editbox", {obj=fObj.Filters.SearchBox, fType=ftype, si=true, y1=-4, y2=4})
+					self:skinObject("statusbar", {obj=fObj.Filters.SearchBox.SearchProgressBar, fType=ftype, fi=0, bg=fObj.Filters.SearchBox.SearchProgressBar.bg})
+					if self.modBtns then
+						self:skinStdButton{obj=fObj.Back, fType=ftype, sechk=true}
 					end
-					frame.ShowAllSearchResults:SetNormalTexture("")
-					frame.ShowAllSearchResults:SetPushedTexture("")
-					self:skinObject("frame", {obj=frame, fType=ftype, kfs=true, ofs=4, y2=2})
-					_G.LowerFrameLevel(frame.sf)
 
-					self:Unhook(fObj.Filters.SearchBox.SearchPreviewContainer, "OnShow")
+					self:SecureHookScript(fObj.Filters.SearchBox.SearchPreviewContainer, "OnShow", function(frame)
+						self:adjHeight{obj=frame, adj=((4 * 27) + 30)}
+						for _, btn in _G.ipairs(frame.searchPreviews) do
+							self:removeRegions(btn, {5, 6})
+							btn.IconFrame:SetTexture(nil)
+							if self.modBtnBs then
+								self:addButtonBorder{obj=btn, relTo=btn.Icon}
+							end
+						end
+						frame.ShowAllSearchResults:SetNormalTexture("")
+						frame.ShowAllSearchResults:SetPushedTexture("")
+						self:skinObject("frame", {obj=frame, fType=ftype, kfs=true, ofs=4, y2=2})
+						_G.LowerFrameLevel(frame.sf)
+
+						self:Unhook(fObj.Filters.SearchBox.SearchPreviewContainer, "OnShow")
+					end)
+
+					self:Unhook(this.HeaderDetails, "OnShow")
 				end)
-
-				self:Unhook(this.HeaderDetails, "OnShow")
-			end)
-			self:checkShown(this.HeaderDetails)
+				self:checkShown(this.HeaderDetails)
+			end
 
 			self:SecureHookScript(this.Categories or _G.AchievementFrameCategories, "OnShow", function(fObj)
 				if self.isMnln then
