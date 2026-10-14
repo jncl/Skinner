@@ -619,97 +619,6 @@ aObj.SetupMainline_UIFrames = function()
 
 	end
 
-	aObj.blizzFrames[ftype].ChatButtons = function(self)
-		if not self.prdb.ChatButtons or self.initialized.ChatButtons then return end
-		self.initialized.ChatButtons = true
-
-		-- QuickJoinToastButton & frames (attached to ChatFrame)
-		if self.modBtnBs then
-			for i = 1, _G.Constants.ChatFrameConstants.MaxChatWindows do
-				self:addButtonBorder{obj=_G["ChatFrame" .. i].buttonFrame.minimizeButton, ofs=-2}
-				_G["ChatFrame" .. i].buttonFrame.sknd = true
-			end
-			self:addButtonBorder{obj=_G.ChatFrameChannelButton, ofs=0}
-			self:addButtonBorder{obj=_G.ChatFrameToggleVoiceDeafenButton, ofs=0}
-			self:addButtonBorder{obj=_G.ChatFrameToggleVoiceMuteButton, ofs=0}
-			self:addButtonBorder{obj=_G.ChatFrameMenuButton, ofs=-2, x1=1}
-			self:addButtonBorder{obj=_G.TextToSpeechButton, ofs=1}
-			-- QuickJoinToastButton(s)
-			self:addButtonBorder{obj=_G.QuickJoinToastButton, x1=1, y1=2, x2=-2, y2=-2}
-			for _, type in _G.pairs{"Toast", "Toast2"} do
-				_G.QuickJoinToastButton[type]:DisableDrawLayer("BACKGROUND")
-				self:moveObject{obj=_G.QuickJoinToastButton[type], x=7}
-				_G.QuickJoinToastButton[type]:Hide()
-				self:skinObject("frame", {obj=_G.QuickJoinToastButton[type], fType=ftype})
-			end
-			-- hook the animations to show or hide the QuickJoinToastButton frame(s)
-			_G.QuickJoinToastButton.FriendToToastAnim:SetScript("OnPlay", function()
-				_G.QuickJoinToastButton.Toast.sf:Show()
-				_G.QuickJoinToastButton.Toast2.sf:Hide()
-
-			end)
-			_G.QuickJoinToastButton.ToastToToastAnim:SetScript("OnPlay", function()
-				_G.QuickJoinToastButton.Toast.sf:Hide()
-				_G.QuickJoinToastButton.Toast2.sf:Show()
-			end)
-			_G.QuickJoinToastButton.ToastToFriendAnim:SetScript("OnPlay", function()
-				_G.QuickJoinToastButton.Toast.sf:Hide()
-				_G.QuickJoinToastButton.Toast2.sf:Hide()
-			end)
-		end
-
-	end
-
-	aObj.blizzFrames[ftype].ChatChannelsUI = function(self)
-		if not self.prdb.ChatChannelsUI or self.initialized.ChatChannelsUI then return end
-		self.initialized.ChatChannelsUI = true
-
-		self:SecureHookScript(_G.ChannelFrame, "OnShow", function(this)
-			if _G.InCombatLockdown() then
-			    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
-			    return
-			end
-
-			self:removeInset(this.LeftInset)
-			self:removeInset(this.RightInset)
-			if self.modBtns then
-				self:skinStdButton{obj=this.NewButton}
-				self:skinStdButton{obj=this.SettingsButton}
-			end
-			self:skinObject("scrollbar", {obj=this.ChannelList.ScrollBar, fType=ftype})
-			self:skinObject("scrollbar", {obj=this.ChannelRoster.ScrollBar, fType=ftype})
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, x1=-5, y2=-1})
-			-- Create Channel Popup
-			self:removeNineSlice(_G.CreateChannelPopup.BG)
-			self:skinObject("editbox", {obj=_G.CreateChannelPopup.Name, fType=ftype, ofs=3})
-			self:skinObject("editbox", {obj=_G.CreateChannelPopup.Password, fType=ftype, ofs=3})
-			if self.modChkBtns then
-				self:skinCheckButton{obj=_G.CreateChannelPopup.UseVoiceChat}
-			end
-			if self.modBtns then
-				self:skinStdButton{obj=_G.CreateChannelPopup.OKButton}
-				self:skinStdButton{obj=_G.CreateChannelPopup.CancelButton}
-			end
-			self:skinObject("frame", {obj=_G.CreateChannelPopup, fType=ftype, kfs=true, hdr=true, cb=true})
-
-			self:Unhook(this, "OnShow")
-		end)
-		self:checkShown(_G.ChannelFrame)
-
-		self:SecureHook(_G.ChannelFrame.ChannelList, "Update", function(this)
-			for header in this.headerButtonPool:EnumerateActive() do
-				header:GetNormalTexture():SetTexture(nil)
-			end
-			-- for textChannel in this.textChannelButtonPool:EnumerateActive() do
-			-- end
-			-- for voiceChannel in this.voiceChannelButtonPool:EnumerateActive() do
-			-- end
-			-- for communityChannel in this.communityChannelButtonPool:EnumerateActive() do
-			-- end
-		end)
-
-	end
-
 	aObj.blizzFrames[ftype].ChatMinimizedFrames = function(self)
 
 		-- minimized chat frames
@@ -780,7 +689,7 @@ aObj.SetupMainline_UIFrames = function()
 		if not self.prdb.ClassTrial or self.initialized.ClassTrial then return end
 		self.initialized.ClassTrial = true
 
-		-- N.B. ClassTrialSecureFrame can't be skinned, as the XML has a ScopedModifier element saying forbidden=""
+		-- N.B. ClassTrialSecureFrame can't be skinned, as the XML has a ScopedModifier element saying forbidden="true"
 
 		self:SecureHookScript(_G.ClassTrialThanksForPlayingDialog, "OnShow", function(this)
 			this.ThanksText:SetTextColor(self.HT:GetRGB())
@@ -876,30 +785,6 @@ aObj.SetupMainline_UIFrames = function()
 
 	end
 
-	aObj.blizzFrames[ftype].ColorPicker = function(self)
-		if not self.prdb.ColorPicker or self.initialized.ColorPicker then return end
-		self.initialized.ColorPicker = true
-
-		self:SecureHookScript(_G.ColorPickerFrame, "OnShow", function(this)
-			if _G.InCombatLockdown() then
-			    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
-			    return
-			end
-
-			self:removeNineSlice(this.Border)
-			self:skinObject("editbox", {obj=this.Content.HexBox, fType=ftype})
-			self:skinObject("frame", {obj=this, fType=ftype, hdr=true, ofs=0})
-			if self.modBtns then
-				self:skinStdButton{obj=this.Footer.CancelButton}
-				self:skinStdButton{obj=this.Footer.OkayButton}
-			end
-
-			self:Unhook(this, "OnShow")
-		end)
-		self:checkShown(_G.ColorPickerFrame)
-
-	end
-
 	aObj.blizzFrames[ftype].Console = function(self)
 		if not self.prdb.Console or self.initialized.Console then return end
 		self.initialized.Console = true
@@ -971,165 +856,6 @@ aObj.SetupMainline_UIFrames = function()
 
 	end
 
-	local BarBackground
-	local function skinCVBar(obj)
-		BarBackground = aObj:getRegion(obj.Bar, 1)
-		aObj:skinObject("statusbar", {obj=obj.Bar, fType=ftype, fi=0, bg=BarBackground})
-		BarBackground:ClearAllPoints()
-		BarBackground:SetAllPoints(obj.Bar)
-	end
-	aObj.blizzFrames[ftype].CooldownViewer = function(self)
-		if not self.prdb.CooldownViewer.buttons or self.initialized.CooldownViewer then return end
-		self.initialized.CooldownViewer = true
-
-		local function skinEntries(frame)
-			_G.RunNextFrame(function()
-				for item in frame.itemFramePool:EnumerateActive() do
-					if item.Bar then
-						skinCVBar(item)
-					end
-					if aObj.modBtnBs then
-						aObj:addButtonBorder{obj=item, relTo=item.Icon, clr="grey", ccat=true}
-					end
-				end
-			end)
-		end
-		local frame
-		for _, framePrefix in _G.pairs{"Essential", "Utility", "BuffIcon", "BuffBar"} do
-			frame = _G[framePrefix .. "CooldownViewer"]
-			self:SecureHookScript(frame, "OnShow", function(this)
-				if _G.InCombatLockdown() then
-				    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
-				    return
-				end
-
-				skinEntries(this)
-
-			    self:Unhook(this, "OnShow")
-			end)
-			self:checkShown(frame)
-
-			self:SecureHook(frame, "RefreshLayout", function(this)
-				skinEntries(this)
-			end)
-
-		end
-
-	end
-
-	aObj.blizzFrames[ftype].CooldownViewerSettings = function(self)
-		if not self.prdb.CooldownViewer.settings or self.initialized.CooldownViewerSettings then return end
-		self.initialized.CooldownViewerSettings = true
-
-		self:SecureHookScript(_G.CooldownViewerSettings, "OnShow", function(this)
-			if _G.InCombatLockdown() then
-			    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
-			    return
-			end
-
-			self:skinSideTabs(this, ftype)
-			self:moveObject{obj=this.SpellsTab, x=-3}
-			self:skinObject("editbox", {obj=this.SearchBox, fType=ftype, si=true, y1=-4, y2=4})
-			self:skinObject("scrollbar", {obj=this.CooldownScroll.ScrollBar, fType=ftype})
-			self:skinObject("ddbutton", {obj=this.LayoutDropdown, fType=ftype})
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, ofs=0, y1=-1, y2=-2})
-			if self.modBtns then
-				self:skinStdButton{obj=this.SaveLayoutButton, fType=ftype, schk=true, sechk=true}
-				self:skinStdButton{obj=this.UndoButton, fType=ftype, schk=true, sechk=true}
-			end
-
-			local function skinCategories(frame)
-				for categoryDisplay in frame.categoryPool:EnumerateActive() do
-					aObj:changeHdrExpandTex(categoryDisplay.Header)
-					-- N.B. DON't change the Header Expand Text as it causes secret value errors to occur
-					for item in categoryDisplay.itemPool:EnumerateActive() do
-						if item.Bar then
-							skinCVBar(item)
-						end
-						if aObj.modBtnBs
-						and self.prdb.CooldownViewer.buttons
-						then
-							if not item.sbb then
-								aObj:addButtonBorder{obj=item, fType=ftype, relTo=item.Icon, clr=item.Icon:IsDesaturated() and "grey" or "white"}
-							else
-								aObj:clrBBC(item.sbb, item.Icon:IsDesaturated() and "grey" or "white")
-							end
-						end
-					end
-				end
-			end
-			self:SecureHook(this, "RefreshLayout", function(frame)
-				skinCategories(frame)
-			end)
-			skinCategories(this)
-
-			self:skinObject("scrollbar", {obj=this.GroupBuffFilter.Scroll.ScrollBar, fType=ftype})
-			local sectionObj
-			for _, type in _G.pairs{"shown", "hidden"} do
-				sectionObj = this.GroupBuffFilter[type .. "Section"]
-				self:changeHdrExpandTex(sectionObj.Header)
-				if self.modBtnBs then
-					self:SecureHook(sectionObj, "RefreshLayout", function(fObj, _)
-						for btn in fObj.itemPool:EnumerateActive() do
-							if not btn.sbb then
-								self:addButtonBorder{obj=btn, fType=ftype, relTo=btn.Icon, clr=btn.Icon:IsDesaturated() and "grey" or "white"}
-							else
-								self:clrBBC(btn.sbb, btn.Icon:IsDesaturated() and "grey" or "white")
-							end
-						end
-					end)
-				end
-
-			end
-			self:Unhook(this, "OnShow")
-		end)
-		self:checkShown(_G.CooldownViewerSettings)
-
-		self:SecureHookScript(_G.CooldownViewerLayoutDialog, "OnShow", function(this)
-			if _G.InCombatLockdown() then
-			    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
-			    return
-			end
-
-			self:skinLayoutDialog(this, ftype)
-
-			self:Unhook(this, "OnShow")
-		end)
-		self:checkShown(_G.CooldownViewerLayoutDialog)
-
-		self:SecureHookScript(_G.CooldownViewerImportLayoutDialog, "OnShow", function(this)
-			if _G.InCombatLockdown() then
-			    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
-			    return
-			end
-
-			self:skinLayoutDialog(this, ftype)
-
-			self:Unhook(this, "OnShow")
-		end)
-		self:checkShown(_G.CooldownViewerImportLayoutDialog)
-
-		self:SecureHookScript(_G.CooldownViewerSettingsEditAlert, "OnShow", function(this)
-			if _G.InCombatLockdown() then
-			    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
-			    return
-			end
-
-			self:keepFontStrings(this.BG)
-			self:skinObject("ddbutton", {obj=this.TypeDropdown, fType=ftype})
-			self:skinObject("ddbutton", {obj=this.EventDropdown, fType=ftype})
-			self:skinObject("ddbutton", {obj=this.PayloadDropdown, fType=ftype})
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, ofs=0})
-			if self.modBtns then
-				self:skinStdButton{obj=this.AddAlertButton, fType=ftype}
-			end
-
-			self:Unhook(this, "OnShow")
-		end)
-		self:checkShown(_G.CooldownViewerSettingsEditAlert)
-
-	end
-
 	aObj.blizzFrames[ftype].CovenantToasts = function(self)
 		if not self.prdb.CovenantToasts or self.initialized.CovenantToasts then return end
 		self.initialized.CovenantToasts = true
@@ -1147,39 +873,6 @@ aObj.SetupMainline_UIFrames = function()
 
 			self:Unhook(this, "OnShow")
 		end)
-
-	end
-
-	aObj.blizzLoDFrames[ftype].DeathRecap = function(self)
-		if not self.prdb.DeathRecap or self.initialized.DeathRecap then return end
-		self.initialized.DeathRecap = true
-
-		self:SecureHookScript(_G.DeathRecapFrame, "OnShow", function(this)
-			this:DisableDrawLayer("BORDER")
-			this.Background:SetTexture(nil)
-			_G.RaiseFrameLevelByTwo(this)
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ofs=0, x2=1})
-			if self.modBtns then
-				self:skinCloseButton{obj=this.CloseXButton}
-				self:skinStdButton{obj=this.CloseButton}
-			end
-			self:skinObject("scrollbar", {obj=this.ScrollBar, fType=ftype})
-			if self.modBtnBs then
-				local function skinEntry(...)
-					local _, element
-					if _G.select("#", ...) == 2 then
-						element, _ = ...
-					else
-						_, element, _ = ...
-					end
-					self:addButtonBorder{obj=element.SpellInfo, fType=ftype, relTo=element.SpellInfo.Icon, clr="gold"}
-				end
-				_G.ScrollUtil.AddInitializedFrameCallback(this.ScrollBox, skinEntry, aObj, true)
-			end
-
-			self:Unhook(this, "OnShow")
-		end)
-		self:checkShown(_G.DeathRecapFrame)
 
 	end
 
@@ -1308,62 +1001,6 @@ aObj.SetupMainline_UIFrames = function()
 			self:checkShown(_G.DelvesDashboardFrame)
 
 		end
-	end
-
-
-	aObj.blizzFrames[ftype].EventToastManager = function(self)
-		if not self.prdb.EventToastManager or self.initialized.EventToastManager then return end
-		self.initialized.EventToastManager = true
-
-		self:SecureHookScript(_G.EventToastManagerFrame, "OnShow", function(this)
-			this.BlackBG:SetTexture(nil)
-			this.GLine:SetTexture(nil)
-			this.GLine2:SetTexture(nil)
-			this:DisableDrawLayer("BACKGROUND")
-
-			self:Unhook(this, "OnShow")
-		end)
-		self:checkShown(_G.EventToastManagerFrame)
-
-		self:SecureHookScript(_G.EventToastManagerSideDisplay, "OnShow", function(this)
-			this.BlackBG:SetAtlas(nil)
-			this:DisableDrawLayer("BACKGROUND")
-
-			self:Unhook(this, "OnShow")
-		end)
-		self:checkShown(_G.EventToastManagerSideDisplay)
-
-		local function skinToast(frame)
-			if not frame:IsShown() then
-				return
-			end
-			local toast = frame.currentDisplayingToast
-			toast:DisableDrawLayer("BACKGROUND")
-			toast:DisableDrawLayer("BORDER")
-			if toast.BannerFrame then
-				toast.BannerFrame:DisableDrawLayer("BACKGROUND")
-				toast.BannerFrame:DisableDrawLayer("BORDER")
-				toast.BannerFrame:DisableDrawLayer("OVERLAY")
-				if toast.BannerFrame.MedalIcon then -- ChallengeMode
-					toast.BannerFrame.MedalIcon:SetDrawLayer("ARTWORK", 2)
-				end
-			end
-			-- TODO: skin WeeklyRewardToastUnlock/WeeklyRewardToastUpgrade
-			if toast.Contents then
-				toast.Contents:DisableDrawLayer("BACKGROUND")
-				toast.Contents:DisableDrawLayer("BORDER")
-				toast.Contents:DisableDrawLayer("OVERLAY")
-			end
-			if aObj.modBtns then
-				aObj:skinStdButton{obj=toast.CloseButton, fType=ftype}
-			end
-		end
-		skinToast(_G.EventToastManagerFrame)
-
-		self:SecureHook(_G.EventToastManagerFrame, "DisplayToast", function(this, _)
-			skinToast(this)
-		end)
-
 	end
 
 	aObj.blizzLoDFrames[ftype].ExpansionLandingPage = function(self)
@@ -2776,7 +2413,7 @@ aObj.SetupMainline_UIFrames = function()
 					return
 				end
 
-				self:skinSideTabs(this, ftype)
+				self:skinObject("sidetabs", {obj=this, tabs="TabButtons", fType=ftype})
 				self:skinObject("ddbutton", {obj=this.HouseDropdown.Dropdown, fType=ftype})
 				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=-3, x2=3, y2=-4})
 
@@ -3231,27 +2868,6 @@ aObj.SetupMainline_UIFrames = function()
 			self:Unhook(this, "OnShow")
 		end)
 		self:checkShown(_G.IslandsQueueFrame)
-
-	end
-
-	aObj.blizzFrames[ftype].LossOfControl = function(self)
-		if not self.prdb.LossOfControl or self.initialized.LossOfControl then return end
-		self.initialized.LossOfControl = true
-
-		self:SecureHookScript(_G.LossOfControlFrame, "OnShow", function(this)
-			if _G.InCombatLockdown() then
-			    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
-			    return
-			end
-
-			this.blackBg:SetTexture(nil)
-			if self.modBtnBs then
-				self:addButtonBorder{obj=this, relTo=this.Icon}
-			end
-
-			self:Unhook(this, "OnShow")
-		end)
-		self:checkShown(_G.LossOfControlFrame)
 
 	end
 
@@ -4147,53 +3763,6 @@ aObj.SetupMainline_UIFrames = function()
 
 	end
 
-	aObj.blizzFrames[ftype].RaidFrame = function(self)
-		if not self.prdb.RaidFrame or self.initialized.RaidFrame then return end
-		self.initialized.RaidFrame = true
-
-		self:SecureHookScript(_G.RaidParentFrame, "OnShow", function(this)
-			if _G.InCombatLockdown() then
-			    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
-			    return
-			end
-
-			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true})
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true})
-
-			self:Unhook(this, "OnShow")
-		end)
-		self:checkShown(_G.RaidParentFrame)
-
-		self:SecureHookScript(_G.RaidFrame, "OnShow", function(this)
-			if _G.InCombatLockdown() then
-			    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
-			    return
-			end
-
-			-- RaidInfo Frame
-			self:skinObject("frame", {obj=_G.RaidInfoInstanceLabel, fType=ftype, kfs=true, ofs=0})
-			self:skinObject("frame", {obj=_G.RaidInfoIDLabel, fType=ftype, kfs=true, ofs=0})
-			self:skinObject("scrollbar", {obj=_G.RaidInfoFrame.ScrollBar, fType=ftype})
-			self:removeNineSlice(_G.RaidInfoFrame.Border)
-			self:moveObject{obj=_G.RaidInfoFrame.Header, y=-2}
-			self:skinObject("frame", {obj=_G.RaidInfoFrame, fType=ftype, kfs=true, hdr=true, ofs=-5, y1=-6})
-			if self.modBtns then
-				self:skinCloseButton{obj=_G.RaidInfoCloseButton, fType=ftype}
-				self:skinStdButton{obj=_G.RaidFrameConvertToRaidButton, fType=ftype, sechk=true}
-				self:skinStdButton{obj=_G.RaidFrameRaidInfoButton, fType=ftype, schk=true}
-				self:skinStdButton{obj=_G.RaidInfoExtendButton, fType=ftype, schk=true, sechk=true}
-				self:skinStdButton{obj=_G.RaidInfoCancelButton, fType=ftype}
-			end
-			if self.modChkBtns then
-				self:skinCheckButton{obj=_G.RaidFrameAllAssistCheckButton, fType=ftype}
-			end
-
-			self:Unhook(this, "OnShow")
-		end)
-		self:checkShown(_G.RaidFrame)
-
-	end
-
 	aObj.blizzLoDFrames[ftype].ScrappingMachineUI = function(self)
 		if not self.prdb.ScrappingMachineUI or self.initialized.ScrappingMachineUI then return end
 
@@ -4256,43 +3825,6 @@ aObj.SetupMainline_UIFrames = function()
 			self:Unhook(this, "OnShow")
 		end)
 		self:checkShown(_G.SplashFrame)
-
-	end
-
-	aObj.blizzFrames[ftype].SpellFlyout = function(self)
-		if not self.prdb.SpellFlyout or self.initialized.SpellFlyout then return end
-		self.initialized.SpellFlyout = true
-
-		local skinBtns = _G.nop
-		if self.modBtnBs then
-			local btnPrefix, i, button = "SpellFlyoutPopupButton"
-			function skinBtns()
-				i = 1
-				button = _G[btnPrefix .. i]
-				while (button and button:IsShown()) do
-					aObj:addButtonBorder{obj=button, fType=ftype, abt=true, sft=true}
-					i = i + 1
-					button = _G[btnPrefix .. i]
-				end
-			end
-		end
-		-- TODO: Ensure frame appears below button border
-		self:SecureHookScript(_G.SpellFlyout, "OnShow", function(this)
-			if _G.InCombatLockdown() then
-			    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
-			    return
-			end
-
-			self:keepFontStrings(this.Background)
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, sft=true, fb=true, ofs=1})
-			skinBtns()
-			self:SecureHook(this, "Toggle", function(_, _)
-				skinBtns()
-			end)
-
-			self:Unhook(this, "OnShow")
-		end)
-		self:checkShown(_G.SpellFlyout)
 
 	end
 
@@ -4600,105 +4132,6 @@ aObj.SetupMainline_UIFrames = function()
 
 	end
 
-	aObj.blizzFrames[ftype].WorldMap = function(self)
-		if not self.prdb.WorldMap.skin or self.initialized.WorldMap then return end
-		self.initialized.WorldMap = true
-
-		self:SecureHookScript(_G.WorldMapFrame, "OnShow", function(this)
-			if _G.InCombatLockdown() then
-			    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
-			    return
-			end
-
-			if not _G.C_AddOns.IsAddOnLoaded("Mapster")
-			and not _G.C_AddOns.IsAddOnLoaded("AlleyMap")
-			then
-				self:keepFontStrings(this)
-				self:moveObject{obj=this.BorderFrame.CloseButton, x=-2}
-				-- make sure map textures are displayed by setting Frame Strata to "LOW"
-				self:skinObject("frame", {obj=this.BorderFrame, fType=ftype, kfs=true, bg=true, sfs="LOW", rns=true, cb=true, ofs=2, x1=-3, x2=0})
-			end
-			this.BorderFrame.Tutorial.Ring:SetTexture(nil)
-			for _, oFrame in _G.pairs(this.overlayFrames) do
-				-- FloorNavigation
-				if oFrame.Arrow then
-					self:skinObject("ddbutton", {obj=oFrame, fType=ftype})
-				-- Tracking Options/Pin Button
-				elseif oFrame.IconOverlay then
-					oFrame:DisableDrawLayer("BACKGROUND")
-					oFrame.Border:SetTexture(nil)
-					if self.modBtns then
-						self:skinStdButton{obj=oFrame, fType=ftype, ofs=-2, clr="gold"}
-						if oFrame.ActiveTexture then -- TrackingPin
-							self:SecureHook(oFrame, "Refresh", function(bObj)
-								self:clrBtnBdr(bObj, "gold")
-							end)
-						end
-					end
-				-- ShowLegend
-				elseif oFrame.ResetButton then
-					oFrame:DisableDrawLayer("BACKGROUND")
-					oFrame.Border:SetTexture(nil)
-					aObj.modUIBtns:skinCloseButton{obj=oFrame.ResetButton, fType=ftype, noSkin=true}
-					if self.modBtns then
-						self:skinStdButton{obj=oFrame, fType=ftype, ofs=-2, clr="gold"}
-					end
-				-- BountyBoard overlay
-				elseif oFrame.bountyObjectivePool then
-					oFrame:DisableDrawLayer("BACKGROUND")
-					self:SecureHook(oFrame, "RefreshBountyTabs", function(fObj)
-						for tab in fObj.bountyTabPool:EnumerateActive() do
-							if tab.objectiveCompletedBackground then
-								tab.objectiveCompletedBackground:SetTexture(nil)
-							end
-						end
-					end)
-				-- ActionButton overlay
-				elseif oFrame.ActionFrameTexture then
-					oFrame.ActionFrameTexture:SetTexture(nil)
-					if self.modBtnBs then
-						self:addButtonBorder{obj=oFrame.SpellButton, fType=ftype}
-					end
-				-- ZoneTimer
-				elseif oFrame.TimeLabel then
-					_G.nop()
-				-- ThreatFrame
-				elseif oFrame.Eye then
-					_G.nop()
-				-- ActivityTracker overlay (BLHC)
-				elseif oFrame.BountyDropdown then
-					oFrame.IconBorder:SetTexture(nil)
-					self:skinObject("ddbutton", {obj=oFrame.BountyDropdown, fType=ftype, noSF=true, by1=-2, bx2=-2, by2=2, clr="gold"})
-				-- NavBar
-				elseif oFrame.home then
-					self:skinNavBar(oFrame)
-				-- SidePanelToggle
-				elseif oFrame.CloseButton then
-					if self.modBtnBs then
-						self:addButtonBorder{obj=oFrame.CloseButton, fType=ftype, clr="gold"}
-						self:addButtonBorder{obj=oFrame.OpenButton, fType=ftype, clr="gold"}
-					end
-				-- CoordsPanel
-				elseif oFrame.neighbors then
-					_G.nop()
-				--@debug@
-				else
-					aObj:Debug("Unhandled WMF overlayFrame: [%s, %s]", oFrame)
-					_G.Spew("overlayFrames", oFrame)
-				--@end-debug@
-				end
-			end
-			if self.modBtns then
-				self:skinOtherButton{obj=this.BorderFrame.MaximizeMinimizeFrame.MaximizeButton, font=self.fontS, text=self.nearrow}
-				self:skinOtherButton{obj=this.BorderFrame.MaximizeMinimizeFrame.MinimizeButton, font=self.fontS, text=self.swarrow}
-			end
-
-			self:Unhook(this, "OnShow")
-		end)
-		self:checkShown(_G.WorldMapFrame)
-
-	end
-
 end
 
 aObj.SetupMainline_UIFramesOptions = function(self)
@@ -4708,21 +4141,17 @@ aObj.SetupMainline_UIFramesOptions = function(self)
 		["Anima Diversion UI"]           = true,
 		["Azerite Item Toasts"]          = true,
 		["Boss Banner Toast"]            = true,
-		["Chat Channels UI"]             = true,
 		["Class Trial"]                  = {suff = "Frames"},
 		["Console"]                      = {suff = "Frame"},
 		["Contribution"]                 = {suff = "Frame"},
 		["Covenant Toasts"]              = true,
-		["Death Recap"]                  = {suff = "Frame"},
 		["Delves UI"]                    = _G.GetExpansionLevel() >= _G.LE_EXPANSION_WAR_WITHIN and true or nil,
-		["Event Toast Manager"]          = {suff = "Frame"},
 		["Expansion Landing Page"]       = true,
 		["Garrison UI"]                  = true,
 		["Generic Trait UI"]             = true,
 		["Housing UI"]                   = _G.GetExpansionLevel() >= _G.LE_EXPANSION_WAR_WITHIN and true or nil,
 		["Islands Party Pose UI"]        = true,
 		["Islands Queue UI"]             = true,
-		["Loss Of Control"]              = {suff = "Frame"},
 		["Major Factions UI"]            = true,
 		["Obliterum UI"]                 = true,
 		["Order Hall UI"]                = true,
@@ -4732,7 +4161,6 @@ aObj.SetupMainline_UIFramesOptions = function(self)
 		["Quest Session"]                = {suff = "Frames"},
 		["Scrapping Machine UI"]         = true,
 		["Soulbinds"]                    = {suff = "Frame"},
-		["Spell Flyout"]                 = true,
 		["Splash Frame"]                 = {desc = "What's New Frame"},
 		["Subscription Interstitial UI"] = _G.IsTrialAccount() or _G.IsVeteranTrialAccount() and true or nil,
 		["Talking Head"]                 = true,
@@ -4745,31 +4173,8 @@ aObj.SetupMainline_UIFramesOptions = function(self)
 	self:setupFramesOptions(optTab, "UI")
 	_G.wipe(optTab)
 
-	self.optTables["UI Frames"].args.CooldownViewer = {
-		type = "group",
-		order = -1,
-		inline = true,
-		name = self.L["Cooldown Viewer"],
-		get = function(info) return self.db.profile.CooldownViewer[info[#info]] end,
-		set = function(info, value) self.db.profile.CooldownViewer[info[#info]] = value end,
-		args = {
-			settings = {
-				type = "toggle",
-				order = 1,
-				name = self.L["Skin Settings Frame"],
-			},
-			buttons = {
-				type = "toggle",
-				order = 2,
-				name = self.L["Skin Buttons"],
-			},
-		},
-	}
-
 end
 
-aObj.SetupMainline_UIFramesDefaults = function(self)
-
-	self.db.defaults.profile.CooldownViewer = {settings = true, buttons = true}
+aObj.SetupMainline_UIFramesDefaults = function(_)
 
 end

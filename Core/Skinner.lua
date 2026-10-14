@@ -47,6 +47,10 @@ function aObj:OnInitialize()
 		self:SetupMainline_NPCFramesDefaults()
 		self:SetupMainline_PlayerFramesDefaults()
 		self:SetupMainline_UIFramesDefaults()
+	elseif self.isFrvr then
+		self:SetupForever_NPCFramesDefaults()
+		self:SetupForever_PlayerFramesDefaults()
+		self:SetupForever_UIFramesDefaults()
 	else
 		self:SetupClassic_NPCFramesDefaults()
 		self:SetupClassic_PlayerFramesDefaults()
@@ -72,12 +76,10 @@ function aObj:OnInitialize()
 	end
 
 	-- disable functions/modules which cause ADDON_ACTION_BLOCKED/ADDON_ACTION_FORBIDDEN errors (Dragonflight onwards changes)
-	if self.isMnln then
-		self.prdb.MainMenuBar.actbtns = false
-		-- self.prdb.Nameplates          = false
-	end
 	if self.isMorF then
-		self:DisableModule("UnitFrames")
+		self.prdb.MainMenuBar.actbtns = false
+	elseif self.isMnln then
+		self.prdb.Nameplates = false
 	end
 
 	-- setup the Addon's core options
@@ -88,6 +90,10 @@ function aObj:OnInitialize()
 		self:SetupMainline_NPCFramesOptions()
 		self:SetupMainline_PlayerFramesOptions()
 		self:SetupMainline_UIFramesOptions()
+	elseif self.isFrvr then
+		self:SetupForever_NPCFramesOptions()
+		self:SetupForever_PlayerFramesOptions()
+		self:SetupForever_UIFramesOptions()
 	else
 		self:SetupClassic_NPCFramesOptions()
 		self:SetupClassic_PlayerFramesOptions()
@@ -256,6 +262,11 @@ function aObj:OnInitialize()
 		self:checkAndRun("SetupMainline_NPCFrames", "opt", nil, true)
 		self:checkAndRun("SetupMainline_PlayerFrames", "opt", nil, true)
 		self:checkAndRun("SetupMainline_UIFrames", "opt", nil, true)
+	elseif self.isFrvr then
+		-- Load Forever Support, if required (done here for ElvUI/TukUI)
+		self:checkAndRun("SetupForever_NPCFrames", "opt", nil, true)
+		self:checkAndRun("SetupForever_PlayerFrames", "opt", nil, true)
+		self:checkAndRun("SetupForever_UIFrames", "opt", nil, true)
 	else
 		-- Load Classic Support, if required (done here for ElvUI/TukUI)
 		self:checkAndRun("SetupClassic", "opt", nil, true)

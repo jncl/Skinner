@@ -240,12 +240,12 @@ aObj.skinTPLs = {
 		numTabs     = 1,
 		selectedTab = 1,
 		suffix      = "",
-		regions     = aObj.isMorF and {10} or {7, 8},
+		regions     = aObj.isMorF and {10, 15} or {7, 8},
 		-- ng			= nil,
 		ignoreSize  = true,
 		lod         = false,
 		upwards     = false,
-		offsets     = {x1=8, y1=2, x2=-8, y2=2},
+		offsets     = aObj.isMorF and {x1=0, y1=2, x2=-2, y2=0} or {x1=8, y1=2, x2=-8, y2=2},
 		ignoreHLTex = true,
 		track       = true,
 		noCheck     = false,
@@ -993,18 +993,6 @@ local function skinTabs(tbl)
 			tbl.offsets.y1 = 3
 		end
 	end
-	if aObj.isMnln then
-		if not tbl.offsets.x1
-		or tbl.offsets.x1 == 8
-		then
-			tbl.offsets.x1 = 0
-		end
-		if not tbl.offsets.x2
-		or tbl.offsets.x2 == -8
-		then
-			tbl.offsets.x2 = 0
-		end
-	end
 	if aObj.isTukUI then
 		tbl.offsets.x1 = (tbl.offsets.x1 or 0) + 4
 		tbl.offsets.y1 = (tbl.offsets.y1 or 0) - 3
@@ -1360,6 +1348,8 @@ function aObj:skinStatusTrackingBars(container)
 		end
 	end
 end
+
+if aObj.isMorF then
 	function aObj:skinTabSettingsMenu(frame, ftype)
 
 		self:SecureHookScript(frame.TabSettingsMenu, "OnShow", function(fObj)

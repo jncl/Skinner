@@ -112,6 +112,7 @@ local clrTab = {
 	light_blue  = _G.LIGHTBLUE_FONT_COLOR,
 	normal      = _G.NORMAL_FONT_COLOR,
 	orange      = _G.ORANGE_FONT_COLOR,
+	purple      = _G.CreateColor(0.75, 0.24, 0.675),
 	red         = aObj.isMnln and _G.DULL_RED_FONT_COLOR or _G.CreateColor(0.75, 0.15, 0.15),
 	selected    = _G.PAPER_FRAME_EXPANDED_COLOR,
 	sepia       = _G.SEPIA_COLOR,

@@ -1,0 +1,77 @@
+ToDo_Forever_Beta
+±±±±±±±±±±±±±±±±±
+
+	√ is Alt+v		- indicates completed
+	≈ is Alt+x		- indicates partially completed or dry-coded
+	x				- indicates nothing to change
+	¶ is Alt+7		- indicates localisation changes required
+
+	Forever_Beta (1.60.1)
+		N.B. may needs to check if Gamepad is being used as it may affect skinning with ADDON_ACTION_FORBIDDEN issues
+			(InputUtil.IsGamepadUIEnabled())
+
+		- Added
+?			- GamePadUI
+√			- ShardTransferImminentFrame
+v			- ShardTransferImminentMinimizeButton
+¶~			- LegacySystem
+
+		- Updated
+√			- Checkbox default settings
+√			- Dropdown buttons default settings
+√			- Tab regions
+
+x			- AddonList
+≈			- AlertFrames
+x			- AuctionHouseUI
+√			- BankFrame [moved to Core from Mainline]
+x			- Calendar
+√			- CharacterFrames [moved to Core from Mainline & Classic NOT ClassicERA]
+√			- CharacterCustomize [moved to Core from Mainline]
+√			- ChatButtons [moved to Core from Mainline]
+¶√			- Collections [moved to Core from Mainline] (renamed to Account Collections)
+√			- ColorPicker [moved to Core from Mainline]
+√			- ContainerFrames [moved to Core from Mainline]
+√			- CooldownViewer [moved to Core from Mainline]
+√			- CooldownViewerSettings [moved to Core from Mainline]
+√			- DeathRecap [moved to Core from Mainline]
+x			- EquipmentFlyout
+√			- EventToastManager [moved to Core from Mainline]
+√			- GossipFrame
+≈			- GroupFinder [moved to Core from Mainline]
+√			- GuildInvite [moved to Core from Mainline]
+x			- GuildRegistrar
+√			- LossOfControl [moved to Core from Mainline]
+≈			- MailFrame
+≈			- MainMenuBar
+√			- Minimap
+x			- MirrorTimers
+√			- ObjectiveTracker [moved to Core from Mainline]
+¶√			- PlayerSpells [moved to Core from Mainline] (renamed to Spellbook)
+√			- StableUI
+≈			- PetJournal
+√			- PingSystem [moved to Core from Mainline]
+≈			- Professions [moved to Core from Mainline]
+≈			- ProfessionsTemplates [moved to Core from Mainline]
+≈			- ProfessionsCustomerOrders [moved to Core from Mainline]
+x			- QuestFrame
+√			- QuestMap [moved to Core from Mainline]
+√			- QuestTimer [moved to Core from Classic]
+√			- RaidFrame [moved to Core from Mainline]
+√			- SpellFlyout [moved to Core from Mainline]
+≈			- SocialToast [moved to Core from Mainline & Classic]
+x			- StaticPopups
+¶√			- SwingTimer [moved to Core from Mainline]
+x			- Tabard
+√			- TaxiFrame [moved to Core from Mainline]
+x			- Tooltips
+√			- TradeFrame
+√			- TrainerUI [moved to Core from Mainline]
+√			- Transmog [moved to Core from Mainline]
+x			- Tutorial
+x			- TimeManager
+√			- WorldMapFrame [moved to Core from Mainline]
+
+		- Deleted
+√			- BattlefieldMap [Core UIFrames]
+

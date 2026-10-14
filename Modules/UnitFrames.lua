@@ -9,11 +9,12 @@ local module = aObj:NewModule("UnitFrames", "AceEvent-3.0", "AceHook-3.0")
 local db
 local defaults = {
 	profile = {
-		alpha = 0.25,
-		arena = false,
-		focus = false,
-		party = false,
-		pet = (aObj.uCls == "HUNTER" or aObj.uCls == "WARLOCK") and true or nil,
+		alpha  = 0.25,
+		arena  = false,
+		focus  = false,
+		party  = false,
+		pet    = (aObj.uCls == "HUNTER" or aObj.uCls == "WARLOCK") and true or nil,
+		petlvl = (aObj.uCls == "HUNTER") and true or nil,
 		player = false,
 		target = false,
 	}
@@ -132,58 +133,63 @@ end
 
 function module:skinPlayerF()
 
+	local skinPlayerFrame
 	if db.player
 	and not self.isSkinned["Player"]
 	then
-		local function skinPlayerFrame(frame)
-			if _G.InCombatLockdown() then
-			    aObj:add2Table(aObj.oocTab, {skinPlayerFrame, {frame}})
-			    return
-			end
-			-- PowerBarAlt handled in MainMenuBar function (UIF)
-			-- casting bar handled in CastingBar function (PF)
-			_G.PlayerFrameBackground:SetTexture(nil)
-			_G.PlayerFrameTexture:SetAlpha(0) -- texture file is changed dependant upon in vehicle or not
-			_G.PlayerFrameVehicleTexture:SetAlpha(0) -- texture file is changed dependant upon in vehicle or not
-			_G.PlayerStatusTexture:SetTexture(nil)
-			_G.PlayerRestGlow:SetTexture(nil)
-			_G.PlayerAttackGlow:SetTexture(nil)
-			_G.PlayerAttackBackground:SetTexture(nil)
-			frame.threatIndicator = _G.PlayerAttackBackground
-			aObj:skinObject("statusbar", {obj=frame.healthbar, fi=0})
-			aObj:skinObject("statusbar", {obj=frame.manabar, fi=0, nilFuncs=true})
-			module:adjustStatusBarPosn(frame.healthbar)
-			-- move level & rest icon down, so they are more visible
-			if _G.PlayerFrame_UpdateLevelTextAnchor then
-				module:SecureHook("PlayerFrame_UpdateLevelTextAnchor", function(level)
-					_G.PlayerLevelText:SetPoint("CENTER", _G.PlayerFrameTexture, "CENTER", level == 100 and -62 or -61, -20 + lOfs)
-				end)
-			end
-			_G.PlayerRestIcon:SetPoint("TOPLEFT", 36, -63)
-			aObj:keepFontStrings(_G.PlayerFrameGroupIndicator)
-			if aObj.uCls == "DRUID"
-			or aObj.uCls == "ROGUE"
-			then
-				for _, cp in _G.pairs(_G.ComboFrame.ComboPoints) do
-					cp:DisableDrawLayer("BACKGROUND")
+		if aObj.isMorF then
+			skinPlayerFrame = _G.nop
+		else
+			function skinPlayerFrame(frame)
+				if _G.InCombatLockdown() then
+				    aObj:add2Table(aObj.oocTab, {skinPlayerFrame, {frame}})
+				    return
+				end
+				-- PowerBarAlt handled in MainMenuBar function (UIF)
+				-- casting bar handled in CastingBar function (PF)
+				_G.PlayerFrameBackground:SetTexture(nil)
+				_G.PlayerFrameTexture:SetAlpha(0) -- texture file is changed dependant upon in vehicle or not
+				_G.PlayerFrameVehicleTexture:SetAlpha(0) -- texture file is changed dependant upon in vehicle or not
+				_G.PlayerStatusTexture:SetTexture(nil)
+				_G.PlayerRestGlow:SetTexture(nil)
+				_G.PlayerAttackGlow:SetTexture(nil)
+				_G.PlayerAttackBackground:SetTexture(nil)
+				frame.threatIndicator = _G.PlayerAttackBackground
+				aObj:skinObject("statusbar", {obj=frame.healthbar, fi=0})
+				aObj:skinObject("statusbar", {obj=frame.manabar, fi=0, nilFuncs=true})
+				module:adjustStatusBarPosn(frame.healthbar)
+				-- move level & rest icon down, so they are more visible
+				if _G.PlayerFrame_UpdateLevelTextAnchor then
+					module:SecureHook("PlayerFrame_UpdateLevelTextAnchor", function(level)
+						_G.PlayerLevelText:SetPoint("CENTER", _G.PlayerFrameTexture, "CENTER", level == 100 and -62 or -61, -20 + lOfs)
+					end)
+				end
+				_G.PlayerRestIcon:SetPoint("TOPLEFT", 36, -63)
+				aObj:keepFontStrings(_G.PlayerFrameGroupIndicator)
+				if aObj.uCls == "DRUID"
+				or aObj.uCls == "ROGUE"
+				then
+					for _, cp in _G.pairs(_G.ComboFrame.ComboPoints) do
+						cp:DisableDrawLayer("BACKGROUND")
+					end
+				end
+				if aObj.uCls == "SHAMAN"
+				or aObj.uCls == "DEATHKNIGHT"
+				then
+					for i = 1, _G.MAX_TOTEMS do
+						_G["TotemFrameTotem" .. i .. "Background"]:SetAlpha(0) -- texture is changed
+						aObj:getRegion(aObj:getChild(_G["TotemFrameTotem" .. i], 2), 1):SetAlpha(0) -- T
+					end
+					aObj:moveObject{obj=_G.TotemFrameTotem1, y=lOfs} -- covers level text when active
 				end
 			end
-			if aObj.uCls == "SHAMAN"
-			or aObj.uCls == "DEATHKNIGHT"
-			then
-				for i = 1, _G.MAX_TOTEMS do
-					_G["TotemFrameTotem" .. i .. "Background"]:SetAlpha(0) -- texture is changed
-					aObj:getRegion(aObj:getChild(_G["TotemFrameTotem" .. i], 2), 1):SetAlpha(0) -- T
-				end
-				aObj:moveObject{obj=_G.TotemFrameTotem1, y=lOfs} -- covers level text when active
-			end
-		end
-		self:SecureHookScript(_G.PlayerFrame, "OnShow", function(this)
-			skinPlayerFrame(this)
+			self:SecureHookScript(_G.PlayerFrame, "OnShow", function(this)
+				skinPlayerFrame(this)
 
-			self:Unhook(this, "OnShow")
-		end)
-		aObj:checkShown(_G.PlayerFrame)
+				self:Unhook(this, "OnShow")
+			end)
+			aObj:checkShown(_G.PlayerFrame)
+		end
 	end
 
 end
@@ -196,46 +202,29 @@ function module:skinPetF()
 
 	-- aObj:Debug("skinPetFrame[ %s, %s, %s]", aObj.uCls, db.pet, not _G.rawget(module.isSkinned, "Pet"))
 
+	local skinPetFrame
 	if db.pet
 	and not self.isSkinned["Pet"]
 	then
-		local function skinPetFrame(frame)
-			if _G.InCombatLockdown() then
-			    aObj:add2Table(aObj.oocTab, {skinPetFrame, {frame}})
-			    return
-			end
-			module:skinUnitButton{obj=frame, ti=true, x1=1}
-			-- casting bar handled in CastingBar function
-			_G.PetPortrait:SetDrawLayer("BORDER") -- move portrait to BORDER layer, so it is displayed
-			-- N.B. DON'T move the frame as it causes taint
-			_G.PetFrameTexture:SetAlpha(0) -- texture file is changed dependant upon in vehicle or not
-			_G.PetAttackModeTexture:SetTexture(nil)
-			-- status bars
-			aObj:skinObject("statusbar", {obj=_G.PetFrameHealthBar, fi=0})
-			aObj:skinObject("statusbar", {obj=_G.PetFrameManaBar, fi=0, nilFuncs=true})
-			module:adjustStatusBarPosn(_G.PetFrameHealthBar, 0)
-			module:adjustStatusBarPosn(_G.PetFrameManaBar, -1)
-			if db.petlvl
-			and aObj.uCls == "HUNTER"
-			then
-				-- Add pet level to pet frame, if required
-				frame.level = frame:CreateFontString(nil, "artwork", "GameNormalNumberFont")
-				frame.level:SetPoint("bottomleft", 5, 5)
-				frame.level:SetText(_G.UnitLevel("pet"))
-				-- get Pet's Level when changed
-				local function setLvl()
-					if _G.UnitIsVisible("pet") then
-						_G.PetFrame.level:SetText(_G.UnitLevel("pet"))
-					end
+		if aObj.isMorF then
+			skinPetFrame = _G.nop
+		else
+			function skinPetFrame(frame)
+				if _G.InCombatLockdown() then
+				    aObj:add2Table(aObj.oocTab, {skinPetFrame, {frame}})
+				    return
 				end
-				-- get level when pet changes
-				_G.EventRegistry:RegisterFrameEventAndCallback("UNIT_PET", setLvl, module)
-				_G.EventRegistry:RegisterFrameEventAndCallback("UNIT_LEVEL", setLvl, module)
-			end
-			if _G.PetFrameHappiness
-			and aObj.modBtnBs
-			then
-				aObj:addButtonBorder{obj=_G.PetFrameHappiness, ofs=1, clr="gold"}
+				module:skinUnitButton{obj=frame, ti=true, x1=1}
+				-- casting bar handled in CastingBar function
+				_G.PetPortrait:SetDrawLayer("BORDER") -- move portrait to BORDER layer, so it is displayed
+				-- N.B. DON'T move the frame as it causes taint
+				_G.PetFrameTexture:SetAlpha(0) -- texture file is changed dependant upon in vehicle or not
+				_G.PetAttackModeTexture:SetTexture(nil)
+				-- status bars
+				aObj:skinObject("statusbar", {obj=_G.PetFrameHealthBar, fi=0})
+				aObj:skinObject("statusbar", {obj=_G.PetFrameManaBar, fi=0, nilFuncs=true})
+				module:adjustStatusBarPosn(_G.PetFrameHealthBar, 0)
+				module:adjustStatusBarPosn(_G.PetFrameManaBar, -1)
 			end
 		end
 		self:SecureHookScript(_G.PetFrame, "OnShow", function(this)
@@ -244,6 +233,28 @@ function module:skinPetF()
 			self:Unhook(this, "OnShow")
 		end)
 		aObj:checkShown(_G.PetFrame)
+		if db.petlvl
+		and aObj.uCls == "HUNTER"
+		then
+			-- Add pet level to pet frame, if required
+			_G.PetFrame.level = _G.PetFrame:CreateFontString(nil, "artwork", "GameNormalNumberFont")
+			_G.PetFrame.level:SetPoint("bottomleft", 5, 5)
+			_G.PetFrame.level:SetText(_G.UnitLevel("pet"))
+			-- get Pet's Level when changed
+			local function setLvl()
+				if _G.UnitIsVisible("pet") then
+					_G.PetFrame.level:SetText(_G.UnitLevel("pet"))
+				end
+			end
+			-- get level when pet changes
+			_G.EventRegistry:RegisterFrameEventAndCallback("UNIT_PET", setLvl, module)
+			_G.EventRegistry:RegisterFrameEventAndCallback("UNIT_LEVEL", setLvl, module)
+		end
+		if _G.PetFrameHappiness
+		and aObj.modBtnBs
+		then
+			aObj:addButtonBorder{obj=_G.PetFrameHappiness, ofs=1, clr="gold"}
+		end
 	end
 
 end
@@ -307,41 +318,46 @@ end
 
 function module:skinTargetF()
 
+	local skinTargetFrame, skinBossTargetFrame
 	if db.target
 	and not self.isSkinned["Target"]
 	then
-		local function skinTargetFrame(frame)
-			if _G.InCombatLockdown() then
-			    aObj:add2Table(aObj.oocTab, {skinTargetFrame, {frame}})
-			    return
+		if aObj.isMorF then
+			skinTargetFrame = _G.nop
+			skinBossTargetFrame = _G.nop
+		else
+			function skinTargetFrame(frame)
+				if _G.InCombatLockdown() then
+				    aObj:add2Table(aObj.oocTab, {skinTargetFrame, {frame}})
+				    return
+				end
+				module:skinButton(frame:GetName())
+				module:skinUnitButton{obj=frame.totFrame}
+				module:skinCommon(frame.totFrame:GetName(), true)
+				aObj:moveObject{obj=_G["TargetFrameToTHealthBar"], y=-2} -- move HealthBar down to match other frames
 			end
-			module:skinButton(frame:GetName())
-			module:skinUnitButton{obj=frame.totFrame}
-			module:skinCommon(frame.totFrame:GetName(), true)
-			aObj:moveObject{obj=_G["TargetFrameToTHealthBar"], y=-2} -- move HealthBar down to match other frames
-		end
-		self:SecureHookScript(_G.TargetFrame, "OnShow", function(this)
-			skinTargetFrame(this)
-
-			self:Unhook(this, "OnShow")
-		end)
-		aObj:checkShown(_G.TargetFrame)
-
-		local function skinBossTargetFrame(frame)
-			if _G.InCombatLockdown() then
-			    aObj:add2Table(aObj.oocTab, {skinBossTargetFrame, {frame}})
-			    return
-			end
-			module:skinButton(frame:GetName(), false)
-			frame.ucTex:SetTexture(aObj.tFDIDs.enI)
-		end
-		for i = 1, _G.MAX_BOSS_FRAMES do
-			self:SecureHookScript(_G["Boss" .. i .. "TargetFrame"], "OnShow", function(this)
-				skinBossTargetFrame(this)
+			self:SecureHookScript(_G.TargetFrame, "OnShow", function(this)
+				skinTargetFrame(this)
 
 				self:Unhook(this, "OnShow")
 			end)
-			aObj:checkShown(_G["Boss" .. i .. "TargetFrame"])
+			aObj:checkShown(_G.TargetFrame)
+			function skinBossTargetFrame(frame)
+				if _G.InCombatLockdown() then
+				    aObj:add2Table(aObj.oocTab, {skinBossTargetFrame, {frame}})
+				    return
+				end
+				module:skinButton(frame:GetName(), false)
+				frame.ucTex:SetTexture(aObj.tFDIDs.enI)
+			end
+			for i = 1, _G.MAX_BOSS_FRAMES do
+				self:SecureHookScript(_G["Boss" .. i .. "TargetFrame"], "OnShow", function(this)
+					skinBossTargetFrame(this)
+
+					self:Unhook(this, "OnShow")
+				end)
+				aObj:checkShown(_G["Boss" .. i .. "TargetFrame"])
+			end
 		end
 
 	end
@@ -354,71 +370,81 @@ function module:skinFocusF()
 		return
 	end
 
+	local skinFocusFrame
 	if db.focus
 	and not self.isSkinned["Focus"]
 	then
-		local function skinFocusFrame(frame)
-			if _G.InCombatLockdown() then
-			    aObj:add2Table(aObj.oocTab, {skinFocusFrame, {frame}})
-			    return
+		if aObj.isMorF then
+			skinFocusFrame = _G.nop
+		else
+			function skinFocusFrame(frame)
+				if _G.InCombatLockdown() then
+				    aObj:add2Table(aObj.oocTab, {skinFocusFrame, {frame}})
+				    return
+				end
+				module:skinButton(frame:GetName(), false)
+				module:skinUnitButton{obj=frame.totFrame, x2=4, y2=4}
+				module:skinCommon(frame.totFrame:GetName(), true)
+				aObj:moveObject{obj=_G["FocusFrameToTHealthBar"], y=-2} -- move HealthBar down to match other frames
 			end
-			module:skinButton(frame:GetName(), false)
-			module:skinUnitButton{obj=frame.totFrame, x2=4, y2=4}
-			module:skinCommon(frame.totFrame:GetName(), true)
-			aObj:moveObject{obj=_G["FocusFrameToTHealthBar"], y=-2} -- move HealthBar down to match other frames
-		end
-		self:SecureHookScript(_G.FocusFrame, "OnShow", function(this)
-			skinFocusFrame(this)
+			self:SecureHookScript(_G.FocusFrame, "OnShow", function(this)
+				skinFocusFrame(this)
 
-			self:Unhook(this, "OnShow")
-		end)
-		aObj:checkShown(_G.FocusFrame)
+				self:Unhook(this, "OnShow")
+			end)
+			aObj:checkShown(_G.FocusFrame)
+		end
 	end
 
 end
 
 function module:skinPartyF()
 
+	local skinPartyMemberFrame
 	if db.party
 	and not self.isSkinned["Party"]
 	then
-		local function skinPartyMemberFrame(frame)
-			if _G.InCombatLockdown() then
-			    aObj:add2Table(aObj.oocTab, {skinPartyMemberFrame, {frame}})
-			    return
-			end
-			module:skinUnitButton{obj=frame, ti=true, x1=2, y1=5, x2=-1}
-			local pMF = frame:GetName()
-			_G[pMF .. "Background"]:SetTexture(nil)
-			_G[pMF .. "Texture"]:SetAlpha(0) -- texture file is changed dependant upon in vehicle or not
-			_G[pMF .. "VehicleTexture"]:SetAlpha(0) -- texture file is changed dependant upon in vehicle or not
-			_G[pMF .. "Status"]:SetTexture(nil)
-			aObj:skinObject("statusbar", {obj=_G[pMF .. "HealthBar"], fi=0})
-			aObj:skinObject("statusbar", {obj=_G[pMF .. "ManaBar"], fi=0, nilFuncs=true})
-			-- PowerBarAlt handled in MainMenuBar function (UIFrames.lua)
-			-- pet frame
-			local pPF = pMF .. "PetFrame"
-			module:skinUnitButton{obj=_G[pPF], ti=true, x1=-2, y1=1, y2=1}
-			_G[pPF .. "Texture"]:SetAlpha(0) -- texture file is changed dependant upon in vehicle or not
-			aObj:skinObject("statusbar", {obj=_G[pPF .. "HealthBar"], fi=0})
-		end
-		for i = 1, _G.MAX_PARTY_MEMBERS do
-			if _G["PartyMemberFrame" .. i] then
-				self:SecureHookScript(_G["PartyMemberFrame" .. i], "OnShow", function(this)
-					skinPartyMemberFrame(this)
-
-					self:Unhook(this, "OnShow")
-				end)
-				aObj:checkShown(_G["PartyMemberFrame" .. i])
-			else
-				_G.nop()
-				-- PartyMemberFramePool
-			end
-		end
-		if _G.PartyMemberBackground then
-			aObj:skinObject("frame", {obj=_G.PartyMemberBackground, fType=ftype, x1=4, y2=2})
+		if aObj.isMorF then
+			skinPartyMemberFrame = _G.nop
 		else
-			aObj:skinObject("frame", {obj=_G.PartyFrameBackground, fType=ftype, x1=4, y2=2})
+			function skinPartyMemberFrame(frame)
+				if _G.InCombatLockdown() then
+				    aObj:add2Table(aObj.oocTab, {skinPartyMemberFrame, {frame}})
+				    return
+				end
+				module:skinUnitButton{obj=frame, ti=true, x1=2, y1=5, x2=-1}
+				local pMF = frame:GetName()
+				_G[pMF .. "Background"]:SetTexture(nil)
+				_G[pMF .. "Texture"]:SetAlpha(0) -- texture file is changed dependant upon in vehicle or not
+				_G[pMF .. "VehicleTexture"]:SetAlpha(0) -- texture file is changed dependant upon in vehicle or not
+				_G[pMF .. "Status"]:SetTexture(nil)
+				aObj:skinObject("statusbar", {obj=_G[pMF .. "HealthBar"], fi=0})
+				aObj:skinObject("statusbar", {obj=_G[pMF .. "ManaBar"], fi=0, nilFuncs=true})
+				-- PowerBarAlt handled in MainMenuBar function (UIFrames.lua)
+				-- pet frame
+				local pPF = pMF .. "PetFrame"
+				module:skinUnitButton{obj=_G[pPF], ti=true, x1=-2, y1=1, y2=1}
+				_G[pPF .. "Texture"]:SetAlpha(0) -- texture file is changed dependant upon in vehicle or not
+				aObj:skinObject("statusbar", {obj=_G[pPF .. "HealthBar"], fi=0})
+			end
+			for i = 1, _G.MAX_PARTY_MEMBERS do
+				if _G["PartyMemberFrame" .. i] then
+					self:SecureHookScript(_G["PartyMemberFrame" .. i], "OnShow", function(this)
+						skinPartyMemberFrame(this)
+
+						self:Unhook(this, "OnShow")
+					end)
+					aObj:checkShown(_G["PartyMemberFrame" .. i])
+				else
+					_G.nop()
+					-- PartyMemberFramePool
+				end
+			end
+			if _G.PartyMemberBackground then
+				aObj:skinObject("frame", {obj=_G.PartyMemberBackground, fType=ftype, x1=4, y2=2})
+			else
+				aObj:skinObject("frame", {obj=_G.PartyFrameBackground, fType=ftype, x1=4, y2=2})
+			end
 		end
 	end
 
@@ -484,6 +510,7 @@ function module:OnInitialize()
 	and not db.focus
 	and not db.party
 	and not db.pet
+	and not db.petlvl
 	and not db.arena
 	then
 		self:SetEnabledState(false)
@@ -558,43 +585,43 @@ function module:GetOptions()
 			self:adjustUnitFrames(info[#info])
 		end,
 		args = {
-			player = {
+			player = not aObj.isMorF and {
 				type = "toggle",
 				order = 1,
 				name = aObj.L["Player"],
-			},
-			pet = (aObj.uCls == "HUNTER" or aObj.uCls == "WARLOCK") and {
+			} or nil,
+			pet = not aObj.isMorF and (aObj.uCls == "HUNTER" or aObj.uCls == "WARLOCK") and {
 				type = "toggle",
 				order = 2,
 				name = aObj.L["Pet"],
 			} or nil,
-			petlvl = aObj.uCls == "HUNTER" and {
+			petlvl = not aObj.isMnln and aObj.uCls == "HUNTER" and {
 				type = "toggle",
 				order = 4,
 				name = aObj.L["Pet Level"],
 			} or nil,
-			target = {
+			target = not aObj.isMorF and {
 				type = "toggle",
 				order = 4,
 				name = aObj.L["Target"],
-			},
-			focus = not aObj.isClscERA and {
+			} or nil,
+			focus = not aObj.isMorF and not aObj.isClscERA and {
 				type = "toggle",
 				order = 5,
 				name = aObj.L["Focus"],
 			} or nil,
-			party = {
+			party = not aObj.isMorF and {
 				type = "toggle",
 				order = 6,
 				name = aObj.L["Party"],
-			},
-			alpha = {
+			} or nil,
+			alpha = not aObj.isMorF and {
 				type = "range",
 				order = 10,
 				width = "double",
 				name = aObj.L["Unit Frame Background Opacity"],
 				min = 0, max = 1, step = 0.05,
-			},
+			} or nil,
 		},
 	}
 	return options

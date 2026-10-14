@@ -615,13 +615,6 @@ aObj.SetupClassic_UIFrames = function()
 				self:Unhook(this, "OnShow")
 			end)
 			self:checkShown(_G.QuestLogFrame)
-
-			self:SecureHookScript(_G.QuestTimerFrame, "OnShow", function(this)
-				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true, ofs=0, x1=10, x2=-10})
-
-				self:Unhook(this, "OnShow")
-			end)
-			self:checkShown(_G.QuestTimerFrame)
 		end
 
 	end
@@ -833,7 +826,5 @@ aObj.SetupClassic_UIFramesOptions = function(self)
 end
 
 aObj.SetupClassic_UIFramesDefaults = function(_)
-
-	_G.nop()
 
 end

@@ -3,7 +3,7 @@ local aName, aObj = ...
 local _G = _G
 
 local buildInfo = {
-	-- wow_classic_beta    	= {"MOP Classic Beta",          	"5.5.0",  62071},
+	wow_classic_beta    	= {"Forever Beta",					"1.60.1", 70374},
 	-- wow_beta            	= {"Midnight Beta",             	"12.0.1", 66220},
 	wow_classic_ptr     	= {"PTR (MoP Classic)",				"5.5.4",  67849},
 	wow_classic_era_ptr 	= {"PTR (Classic Era)",         	"2.5.6",  69110},
@@ -66,6 +66,9 @@ function aObj:checkWoWVersion()
 	self.isMnlnPTR    = agentUID == "wow_ptr" and true
 	self.isMnlnPTRX   = agentUID == "wow_ptr_x" and true
 	self.isMnln       = agentUID == "wow" and true
+
+	-- check for Forever Beta (Camelot) as it uses the same directory as Classic Beta
+	self.isClscBeta = not self.isFrvr and self.isClscBeta or false
 
 	--@debug@
 	self:Debug2("checkVersion #2: [%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s]", self.isClscBeta, self.isClscPTR, self.isClsc, self.isClscERAPTR, self.isClscERA, self.isClscBCA, self.isMnlnBeta, self.isMnlnPTR, self.isMnlnPTRX, self.isMnln, self.isFrvr)
