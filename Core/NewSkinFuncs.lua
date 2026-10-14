@@ -1305,7 +1305,27 @@ if _G.PVEFrame then
 	end
 end
 
-if aObj.isMnln then
+function aObj:skinSearchPreviewContainer(frame, ftype)
+	local function skinSearch(...)
+		local _, element, new
+		if _G.select("#", ...) == 2 then
+			element, _ = ...
+		elseif _G.select("#", ...) == 3 then
+			element, _, new = ...
+		else
+			_, element, _, new = ...
+		end
+		if new ~= false then
+			element.IconFrame:SetTexture(nil)
+			if aObj.modBtnBs then
+				aObj:addButtonBorder{obj=element, fType=ftype, relTo=element.Icon}
+			end
+		end
+	end
+	_G.ScrollUtil.AddAcquiredFrameCallback(frame.ScrollBox, skinSearch, aObj, true)
+	self:skinObject("frame", {obj=frame, fType=ftype, kfs=true, ofs=5, y2=-2})
+end
+
 -- N.B. code used in MainMenuBar & Bartender4 code
 local otherSBs
 function aObj:skinStatusTrackingBars(container)
