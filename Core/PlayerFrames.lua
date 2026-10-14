@@ -1657,6 +1657,9 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 		end
 		self:moveObject{obj=this.ChatTab, x=1}
 		self:skinObject("ddbutton", {obj=this.StreamDropdown, fType=ftype})
+		self:skinObject("ddbutton", {obj=this.GuildMemberListDropdown, fType=ftype})
+		self:skinObject("ddbutton", {obj=this.CommunityMemberListDropdown, fType=ftype})
+		-- .CommunitiesCalendarButton
 		self:skinObject("ddbutton", {obj=this.CommunitiesListDropdown, fType=ftype})
 		self:skinObject("editbox", {obj=this.ChatEditBox, fType=ftype, y1=-6, y2=6})
 		self:moveObject{obj=this.AddToChatButton, x=-6, y=-6}
@@ -1666,6 +1669,7 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 		end
 		if self.modBtnBs then
 			self:addButtonBorder{obj=this.AddToChatButton, ofs=1, clr="gold"}
+			self:skinStdButton{obj=this.GuildLogButton, fType=ftype}
 		end
 
 		self:SecureHookScript(this.MaximizeMinimizeFrame, "OnShow", function(fObj)
@@ -1829,12 +1833,6 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 			self:Unhook(fObj, "OnShow")
 		end)
 		self:checkShown(this.CommunitiesControlFrame)
-
-		self:skinObject("ddbutton", {obj=this.GuildMemberListDropdown, fType=ftype})
-		self:skinObject("ddbutton", {obj=this.CommunityMemberListDropdown, fType=ftype})
-		if self.modBtns then
-			self:skinStdButton{obj=this.GuildLogButton, fType=ftype}
-		end
 
 		self:SecureHookScript(this.ApplicantList, "OnShow", function(fObj)
 			fObj:DisableDrawLayer("BACKGROUND")
@@ -2038,7 +2036,6 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 			end
 
 			self:Unhook(fObj, "OnShow")
-
 		end)
 
 		self:SecureHookScript(this.GuildBenefitsFrame, "OnShow", function(fObj)
