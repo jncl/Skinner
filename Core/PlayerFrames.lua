@@ -3038,7 +3038,7 @@ if aObj.isMorC then
 		if not self.prdb.EquipmentFlyout or self.initialized.EquipmentFlyout then return end
 		self.initialized.EquipmentFlyout = true
 
-		-- Used by RuneForgeUI/ItemUpgrades/EquipmentFlyoutuipmentManager
+		-- Used by RuneForgeUI/ItemUpgrades/EquipmentManager
 		self:SecureHook("EquipmentFlyout_UpdateItems", function(_)
 			for i = 1, _G.EquipmentFlyoutFrame.buttonFrame.numBGs do
 				_G.EquipmentFlyoutFrame.buttonFrame["bg" .. i]:SetAlpha(0)
