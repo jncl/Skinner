@@ -1165,7 +1165,7 @@ if aObj.isMorC then
 			self:skinObject("editbox", {obj=this.searchBox, fType=ftype, si=true})
 			self:removeInset(this.MountCount)
 			self:keepFontStrings(this.MountDisplay)
-			self:keepFontStrings(this.MountDisplay.ShadowOverlay)
+			this.MountDisplay.ShadowOverlay:DisableDrawLayer("OVERLAY")
 			self:skinObject("scrollbar", {obj=this.ScrollBar, fType=ftype})
 			local function skinElement(...)
 				local _, element, new
