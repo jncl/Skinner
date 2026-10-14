@@ -1,3 +1,23 @@
+beta12.69814.1
+Jncl:
+	Updated ToDo*.txt files
+	Updated Version numbers
+	Updated Change_History.txt
+	Updated CovenantRenownFrame
+	Updated UIWidgets skin
+	Updated EncounterJournalJourneysFrame skin
+	Updated Reputations skin
+	Updated Journalator skin, close #358
+	Updated EQol skin, closes #357
+	Added comment
+	Updated HousingDashboardFrame skin to allow progress bar reward to appear
+	Show UIWidget above LandingPage icon
+	Classic ERA PTR change
+	Updated UtilFuncs code
+	Updated Baganator skin, closes #359
+	Updated TopFrame skin, closes #355
+	Updated ls_Toasts skin, closes #356
+
 beta12.69497.1
 Jncl:
 	Updated ToDo*.txt files
