@@ -3115,30 +3115,25 @@ aObj.blizzFrames[ftype].Nameplates = function(self)
 		then
 			return
 		end
-		-- if _G.InCombatLockdown() then
-		--     aObj:add2Table(aObj.oocTab, {skinNamePlate, {frame, action}})
-		--     return
-		-- end
 
-		--@debug@
-		-- aObj:Debug("skinNamePlate: [%s, %s]", frame)
-		--@end-debug@
-		if frame.UnitFrame
-		and frame.UnitFrame.HealthBarsContainer.healthBar
-		then
-			nHb = frame.UnitFrame.HealthBarsContainer.healthBar
-			nCb = frame.UnitFrame.CastBarsContainer.castBar
-			nHb.bgTexture:SetAlpha(0)
-			nHb.selectedBorder:SetAlpha(0)
-			nCb.Border:SetAlpha(0)
-			-- nCb.Border:SetTexture(nil)
-			aObj:skinObject("statusbar", {obj=nHb, fType=ftype, ncc=true, fi=0})
-			aObj:skinObject("statusbar", {obj=nCb, fType=ftype, ncc=true, fi=0, bg=nCb.Background})
-			-- N.B. WidgetContainer objects managed in UIWidgets code
+		if frame.UnitFrame then
+			if frame.UnitFrame.HealthBarsContainer.healthBar then
+				nHb = frame.UnitFrame.HealthBarsContainer.healthBar
+				nCb = frame.UnitFrame.CastBarsContainer.castBar
+				nHb.bgTexture:SetAlpha(0)
+				nHb.selectedBorder:SetAlpha(0)
+				nCb.Border:SetAlpha(0) -- texture changed in code
+				aObj:skinObject("statusbar", {obj=nHb, fType=ftype, ncc=true, fi=0})
+				aObj:skinObject("statusbar", {obj=nCb, fType=ftype, ncc=true, fi=0, bg=nCb.Background})
+				-- N.B. WidgetContainer objects managed in UIWidgets code
+			end
+			if frame.UnitFrame.PlayerLevelDiffFrame then
+				aObj:keepFontStrings(frame.UnitFrame.PlayerLevelDiffFrame)
+			end
 		end
 	end
 	self:SecureHook(_G.NamePlateDriverFrame, "OnNamePlateAdded", function(npdf, namePlateUnitToken)
-		-- wait before changing textures
+		-- N.B. wait a while before changing textures
 		_G.C_Timer.After(0.25, function()
 			skinNamePlate(npdf:GetNamePlateForUnit(namePlateUnitToken))
 		end)
