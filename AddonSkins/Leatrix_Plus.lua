@@ -2,129 +2,108 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("Leatrix_Plus") then return end
 local _G = _G
 
-aObj.addonsToSkin.Leatrix_Plus = function(self) -- v 12.1.08/5.1.58/1.15.125
+aObj.addonsToSkin.Leatrix_Plus = function(self) -- v 12.1.09/5.1.59/2.5.44/1.60.19/1.15.160
 
-	local lpPanels = {
-		-- All versions
-		"AcceptResPanel",
-		"ChainPanel",
-		"ChatFilterPanel",
-		"ClassFrame",
-		"CooldownPanel",
-		"DressupPanel",
-		"ExcludedButtonsPanel",
-		"InvPanel",
-		"LayoutPanel",
-		"MailTextPanel",
-		"MuteCustomPanel",
-		"QuestPanel",
-		"QuestTextPanel",
-		"ReleasePanel",
-		"RepairPanel",
-		"SellJunkFrame",
-		"SideMinimap",
-		"SideTip",
-		"SoundPanel",
-		"weatherPanel",
-		"WowheadPanel",
-		-- ClassicERA only
-		"FlightPanel",
-		-- Classic only
-		"FocusPanel",
-		"TaxiPanel",
-		"VehiclePanel",
-		-- ClassicERA/Classic only
-		"BookTextPanel",
-		"BuffPanel",
-		"DismountFrame",
-		"DurabilityPanel",
-		"EnhanceQuestPanel",
-		"SideFrames",
-		"SideViewport",
-		"TimerPanel",
-		"TrainerPanel",
-		"WidgetPanel",
-		-- Retail only
-		"addOptPanel",
-		"bordersPanel",
-		"ChatFontSizePanel",
-		"ControlPanel",
-		"FasterLootPanel",
-		"HideChatButtonsPanel",
-		"MountPanel",
-		"transPanel",
-		"WidgetTopPanel",
-	}
-
-	self:SecureHookScript(_G.LeaPlusGlobalPanel, "OnShow", function(this)
-		local function skinKids(frame, _)
-			aObj.RegisterCallback("LeatrixPlus", frame:GetDebugName() .. "_GetChildren", function(_, child, _)
-				if child:IsObjectType("Slider") then
-					aObj:skinObject("slider", {obj=child})
-				elseif child:IsObjectType("ScrollFrame") then
-					aObj:skinObject("scrollbar", {obj=child.ScrollBar, x1=2, x2=4})
-				elseif child:IsObjectType("EditBox") then
-					aObj:skinObject("editbox", {obj=child})
-					child.f:SetBackdrop(nil)
-				elseif child:IsObjectType("CheckButton")
-				and aObj.modChkBtns
-				then
-					aObj:skinCheckButton{obj=child}
-				elseif child:IsObjectType("Button")
-				and child.tiptext
-				and aObj.modBtns
-				then
-					-- ignore Sell Junk Exclusions Help button
-					if not child.t then
-						aObj:skinStdButton{obj=child}
-					end
-				elseif child:IsObjectType("Button")
-				and child.intrinsic == "DropdownButton"
-				then
-					aObj:skinObject("ddbutton", {obj=child})
-				elseif child:IsObjectType("Frame")
-				and child.scroll -- MuteCustomSounds
-				then
-					aObj:skinObject("scrollbar", {obj=child.scroll.ScrollBar})
-					aObj:skinObject("frame", {obj=child, rb=true, fb=true, ofs=0})
-				end
-			end)
-			aObj:scanChildren{obj=frame, cbstr=frame:GetDebugName() .. "_GetChildren"}
+	local cnt, configPanels, MainPanel = 0, {}
+	self.RegisterCallback("Leatrix_Plus", "UIParent_GetChildren", function(_, child, _)
+		if (child.t
+			and child.mt
+			and child.v)
+		then
+			cnt = cnt + 1
+			MainPanel = child
+		elseif (child.t
+			and child.c
+			and child.r
+			and child.h
+			and child.b)
+		then
+			cnt = cnt + 1
+			self:add2Table(configPanels, child)
 		end
-		skinKids(this)
-
-		-- LeaPlusScrollFrame
-		this.t:SetTexture(nil)
-		self:skinObject("frame", {obj=this, kfs=true, ofs=-1})
-		if self.modBtns then
-			self:skinCloseButton{obj=self:getChild(this, 2), noSkin=true}
+		--@debug@
+		_G.print("LP kids", cnt)
+		--@end-debug@
+		if (self.isMnln and cnt == 2)
+		or (self.isClscBCA and cnt == 13)
+		or (self.isClscERA and cnt == 14)
+		or (self.isClsc and cnt == 15)
+		or (self.isFrvr and cnt == 17)
+		then
+			self.UnregisterCallback("Leatrix_Plus", "UIParent_GetChildren")
 		end
-		for _, frame in _G.ipairs{this:GetChildren()} do
-			if frame:IsObjectType("Frame") then
-				skinKids(frame)
-			end
-		end
-		local sideF
-		for _, frameRef in _G.pairs(lpPanels) do
-			sideF = _G["LeaPlusGlobalPanel_" .. frameRef]
-			if sideF then
-				skinKids(sideF, frameRef)
-				-- if scrolling
-				if sideF.backFrame then
-					self:removeBackdrop(sideF.backFrame)
-					aObj:skinObject("scrollbar", {obj=sideF.scrollFrame.ScrollBar})
-					skinKids(sideF.scrollChild)
-				end
-				sideF.t:SetTexture(nil)
-				self:skinObject("frame", {obj=sideF, kfs=true, ofs=-1})
-				if self.modBtns then
-					self:skinCloseButton{obj=sideF.c, noSkin=true}
-				end
-			end
-		end
-
-		self:Unhook(this, "OnShow")
 	end)
+	self:scanChildren{obj=_G.UIParent, cbstr="UIParent_GetChildren", reversed=true}
+
+	local function skinKids(frame)
+		for _, child in _G.ipairs_reverse{frame:GetChildren()} do
+			if child:IsObjectType("Slider") then
+				aObj:skinObject("slider", {obj=child})
+			elseif child:IsObjectType("ScrollFrame") then
+				aObj:skinObject("scrollbar", {obj=child.ScrollBar})
+			elseif child:IsObjectType("EditBox") then
+				aObj:skinObject("editbox", {obj=child, x1=-4, x2=4})
+				child.f:SetBackdrop(nil)
+			elseif child:IsObjectType("CheckButton")
+			and aObj.modChkBtns
+			then
+				aObj:skinCheckButton{obj=child}
+			elseif child:IsObjectType("Button")
+			and child.tiptext
+			and aObj.modBtns
+			then
+				-- ignore Sell Junk Exclusions Help button
+				if not child.t then
+					aObj:skinStdButton{obj=child}
+				end
+			elseif child:IsObjectType("Button")
+			and child.intrinsic == "DropdownButton"
+			then
+				aObj:skinObject("ddbutton", {obj=child})
+			elseif child:IsObjectType("Frame")
+			and child.scroll -- MuteCustomSounds
+			then
+				aObj:skinObject("scrollbar", {obj=child.scroll.ScrollBar})
+				aObj:skinObject("frame", {obj=child, rb=true, fb=true, ofs=0})
+			end
+		end
+	end
+
+	-- Main Panel
+	self:skinObject("editbox", {obj=self:getLastChild(MainPanel)})
+	self:keepFontStrings(MainPanel, true) -- hide textures as alpha values are changed in code
+	self:skinObject("frame", {obj=MainPanel, ofs=-1})
+	if self.modBtns then
+		self:skinStdButton{obj=self:getChild(MainPanel, 1)} -- reload button
+		self:skinCloseButton{obj=self:getChild(MainPanel, 2)} -- close button
+	end
+	-- skin results frame
+	local results = self:getChild(MainPanel, 23)
+	local backFrame = self:getChild(results, 1)
+	self:removeBackdrop(backFrame)
+	self:skinObject("scrollbar", {obj=self:getChild(backFrame, 1).ScrollBar})
+	skinKids(self:getChild(self:getChild(backFrame, 1), 1))
+	-- skin Page0..9 frames
+	for i = 3, 23, 2 do
+		skinKids(self:getChild(MainPanel, i))
+	end
+
+	-- configuration panels
+	for _, cPanel in _G.pairs(configPanels) do
+		skinKids(cPanel)
+		if cPanel.backFrame then
+			self:removeBackdrop(cPanel.backFrame)
+			self:skinObject("scrollbar", {obj=cPanel.scrollFrame.ScrollBar})
+			skinKids(cPanel.scrollChild)
+		end
+		self:keepFontStrings(cPanel, true) -- hide textures as alpha values are changed in code
+		self:skinObject("frame", {obj=cPanel, kfs=true, ofs=-1})
+		if cPanel.c
+		and self.modBtns
+		then
+			self:skinCloseButton{obj=cPanel.c}
+		end
+	end
 
 	-- Enhanced Dressup (changes in DressUp frames)
 	if _G.LeaPlusDB["EnhanceDressup"] == "On"
