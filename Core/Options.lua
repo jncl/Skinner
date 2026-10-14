@@ -58,7 +58,7 @@ aObj.SetupDefaults = function(self)
 			DisableAllP                = false,
 			AchievementUI              = not self.isClscERA and {skin = true, style = 2} or nil,
 			CastingBar                 = not self.isMnln and {skin = true, glaze = true} or nil,
-			CompactFrames              = not self:checkLoadable("Blizzard_CompactRaidFrames") and {skin = true, sbars = true} or nil,
+			CompactFrames              = self:checkLoadable("Blizzard_CompactRaidFrames") and {skin = true, sbars = true} or nil,
 			ContainerFrames            = not _G.C_AddOns.IsAddOnLoaded("LiteBag") and {skin = false, itmbtns = false, fheight = 100} or nil,
 			LootFrames                 = {skin = true, size = 1},
 			MirrorTimers               = {skin = true, glaze = true},
