@@ -9,7 +9,7 @@ if aObj.isMorC then
 		if not self.prdb.AuctionHouseUI or self.initialized.AuctionHouseUI then return end
 
 		if not _G.AuctionHouseFrame then
-			_G.C_Timer.After(0.1, function()
+			_G.RunNextFrame(function()
 				self.blizzLoDFrames[ftype].AuctionHouseUI(self)
 			end)
 			return

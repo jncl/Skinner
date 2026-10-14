@@ -1641,7 +1641,7 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 		-- CommunitiesCreateDialog
 
 	if not _G.CommunitiesFrame then
-		_G.C_Timer.After(0.1, function()
+		_G.RunNextFrame(function()
 			self.blizzLoDFrames[ftype].Communities(self)
 		end)
 		return
