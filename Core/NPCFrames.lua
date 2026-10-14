@@ -301,13 +301,13 @@ end
 
 if aObj.isMorF then
 	aObj.blizzFrames[ftype].BankFrame = function(self)
-		if not self.prdb.BankFrame or self.initialized.BankFrame then return end
-		self.initialized.BankFrame = true
-
 		if _G.C_AddOns.IsAddOnLoaded("LiteBag") then
 			self.blizzFrames[ftype].BankFrame = nil
 			return
 		end
+
+		if not self.prdb.BankFrame or self.initialized.BankFrame then return end
+		self.initialized.BankFrame = true
 
 		-- hook these here so objects are skinned when frame is shown
 		if self.modBtnBs then

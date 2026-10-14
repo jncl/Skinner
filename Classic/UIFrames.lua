@@ -482,13 +482,13 @@ aObj.SetupClassic_UIFrames = function()
 	end
 
 	aObj.blizzFrames[ftype].QuestLog = function(self)
-		if not self.prdb.QuestLog or self.initialized.QuestLog then return end
-		self.initialized.QuestLog = true
-
 		if _G.C_AddOns.IsAddOnLoaded("QuestLogEx") then
 			self.blizzFrames[ftype].QuestLog = nil
 			return
 		end
+
+		if not self.prdb.QuestLog or self.initialized.QuestLog then return end
+		self.initialized.QuestLog = true
 
 		if self.isClsc then
 			if self.modBtns then

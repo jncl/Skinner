@@ -66,13 +66,13 @@ aObj.SetupMainline_NPCFrames = function()
 	end
 
 	aObj.blizzFrames[ftype].BankFrame = function(self)
-		if not self.prdb.BankFrame or self.initialized.BankFrame then return end
-		self.initialized.BankFrame = true
-
 		if _G.C_AddOns.IsAddOnLoaded("LiteBag") then
 			self.blizzFrames[ftype].BankFrame = nil
 			return
 		end
+
+		if not self.prdb.BankFrame or self.initialized.BankFrame then return end
+		self.initialized.BankFrame = true
 
 		local function skinSideTabs(frame)
 			for tab in frame.bankTabPool:EnumerateActive() do
@@ -386,14 +386,14 @@ aObj.SetupMainline_NPCFrames = function()
 	end
 
 	aObj.blizzLoDFrames[ftype].FlightMap = function(self)
-		if not self.prdb.FlightMap or self.initialized.FlightMap then return end
-		self.initialized.FlightMap = true
-
 		-- this AddOn changes the FlightMapFrame reference to point to the WorldMapFrame
 		if _G.C_AddOns.IsAddOnLoaded("WorldFlightMap") then
 			self.blizzLoDFrames[ftype].FlightMap = nil
 			return
 		end
+
+		if not self.prdb.FlightMap or self.initialized.FlightMap then return end
+		self.initialized.FlightMap = true
 
 		self:SecureHookScript(_G.FlightMapFrame, "OnShow", function(this)
 			-- remove ZoneLabel background texture

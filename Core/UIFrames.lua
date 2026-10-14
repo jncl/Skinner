@@ -1046,9 +1046,6 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 end
 
 aObj.blizzFrames[ftype].ChatEditBox = function(self)
-	if not self.prdb.ChatEditBox.skin or self.initialized.ChatEditBox then return end
-	self.initialized.ChatEditBox = true
-
 	if _G.C_AddOns.IsAddOnLoaded("NeonChat")
 	or _G.C_AddOns.IsAddOnLoaded("Chatter")
 	or _G.C_AddOns.IsAddOnLoaded("Prat-3.0")
@@ -1056,6 +1053,9 @@ aObj.blizzFrames[ftype].ChatEditBox = function(self)
 		self.blizzFrames[ftype].ChatEditBox = nil
 		return
 	end
+
+	if not self.prdb.ChatEditBox.skin or self.initialized.ChatEditBox then return end
+	self.initialized.ChatEditBox = true
 
 	local function skinChatEB(obj)
 		aObj:keepFontStrings(obj)
@@ -2917,6 +2917,13 @@ aObj.blizzFrames[ftype].MailFrame = function(self)
 end
 
 aObj.blizzFrames[ftype].MainMenuBar = function(self)
+	if _G.C_AddOns.IsAddOnLoaded("Dominos")
+	or _G.C_AddOns.IsAddOnLoaded("Bartender4")
+	then
+		self.blizzFrames[ftype].MainMenuBar = nil
+		return
+	end
+
 	if self.initialized.MainMenuBar then return end
 	self.initialized.MainMenuBar = true
 
@@ -2931,13 +2938,6 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 
 			self:Unhook(this, "OnShow")
 		end)
-	end
-
-	if _G.C_AddOns.IsAddOnLoaded("Dominos")
-	or _G.C_AddOns.IsAddOnLoaded("Bartender4")
-	then
-		self.blizzFrames[ftype].MainMenuBar = nil
-		return
 	end
 
 	if self.prdb.MainMenuBar.skin then
@@ -3076,15 +3076,15 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 end
 
 aObj.blizzFrames[ftype].MainMenuBarCommon = function(self)
-	if not self.prdb.MainMenuBar.skin or self.initialized.MainMenuBarCommon then return end
-	self.initialized.MainMenuBarCommon = true
-
 	if _G.C_AddOns.IsAddOnLoaded("Dominos")
 	or _G.C_AddOns.IsAddOnLoaded("Bartender4")
 	then
 		self.blizzFrames[ftype].MainMenuBarCommon = nil
 		return
 	end
+
+	if not self.prdb.MainMenuBar.skin or self.initialized.MainMenuBarCommon then return end
+	self.initialized.MainMenuBarCommon = true
 
 	if self.prdb.MainMenuBar.skin then
 		for _, frame in _G.pairs{_G.StanceBar, _G.PetActionBar, _G.PossessActionBar} do
@@ -3172,15 +3172,15 @@ aObj.blizzFrames[ftype].MenuFrames = function(self)
 end
 
 aObj.blizzFrames[ftype].Minimap = function(self)
-	if not self.prdb.Minimap.skin or self.initialized.Minimap then return end
-	self.initialized.Minimap = true
-
 	if _G.C_AddOns.IsAddOnLoaded("SexyMap")
 	or _G.C_AddOns.IsAddOnLoaded("BasicMinimap")
 	then
 		self.blizzFrames[ftype].Minimap = nil
 		return
 	end
+
+	if not self.prdb.Minimap.skin or self.initialized.Minimap then return end
+	self.initialized.Minimap = true
 
 	-- hook this to handle Jostle Library
 	if _G.LibStub:GetLibrary("LibJostle-3.0", true) then
@@ -3560,13 +3560,13 @@ aObj.blizzFrames[ftype].MovieFrame = function(self)
 end
 
 aObj.blizzFrames[ftype].Nameplates = function(self)
-	if not self.prdb.Nameplates or self.initialized.Nameplates then return end
-	self.initialized.Nameplates = true
-
 	if _G.C_AddOns.IsAddOnLoaded("Plater") then
 		self.blizzFrames[ftype].Nameplates = nil
 		return
 	end
+
+	if not self.prdb.Nameplates or self.initialized.Nameplates then return end
+	self.initialized.Nameplates = true
 
 	local nHb, nCb
 	local function skinNamePlate(frame, _)
@@ -3605,15 +3605,15 @@ end
 
 if aObj.isMorC then
 	aObj.blizzFrames[ftype].OverrideActionBar = function(self) -- a.k.a. Vehicle UI
-		if not self.prdb.OverrideActionBar or self.initialized.OverrideActionBar then return end
-		self.initialized.OverrideActionBar = true
-
 		if _G.C_AddOns.IsAddOnLoaded("Dominos")
 		or _G.C_AddOns.IsAddOnLoaded("Bartender4")
 		then
 			self.blizzFrames[ftype].OverrideActionBar = nil
 			return
 		end
+
+		if not self.prdb.OverrideActionBar or self.initialized.OverrideActionBar then return end
+		self.initialized.OverrideActionBar = true
 
 		self:SecureHookScript(_G.OverrideActionBar, "OnShow", function(this)
 			if _G.InCombatLockdown() then
@@ -4009,13 +4009,13 @@ end
 
 if aObj.isMorF then
 	aObj.blizzFrames[ftype].QuestMap = function(self)
-		if not self.prdb.QuestMap or self.initialized.QuestMap then return end
-		self.initialized.QuestMap = true
-
 		if _G.C_AddOns.IsAddOnLoaded("EQL3") then
 			self.blizzFrames[ftype].QuestMap = nil
 			return
 		end
+
+		if not self.prdb.QuestMap or self.initialized.QuestMap then return end
+		self.initialized.QuestMap = true
 
 		self:SecureHookScript(_G.QuestMapFrame, "OnShow", function(this)
 			if _G.InCombatLockdown() then

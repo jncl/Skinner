@@ -2030,13 +2030,13 @@ end
 
 if aObj.isMorF then
 	aObj.blizzFrames[ftype].ContainerFrames = function(self)
-		if not self.prdb.ContainerFrames.skin or self.initialized.ContainerFrames then return end
-		self.initialized.ContainerFrames = true
-
 		if _G.C_AddOns.IsAddOnLoaded("LiteBag") then
 			self.blizzFrames[ftype].ContainerFrames = nil
 			return
 		end
+
+		if not self.prdb.ContainerFrames.skin or self.initialized.ContainerFrames then return end
+		self.initialized.ContainerFrames = true
 
 		local function skinBag(frame, id)
 			aObj:skinObject("frame", {obj=frame, fType=ftype, kfs=true, cbns=true})
@@ -2837,14 +2837,14 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 end
 
 aObj.blizzFrames[ftype].CompactFrames = function(self)
-	if not self.prdb.CompactFrames.skin or self.initialized.CompactFrames then return end
-	self.initialized.CompactFrames = true
-
 	-- handle AddOn being disabled
 	if not self:checkLoadable("Blizzard_CompactRaidFrames") then
 		aObj.blizzFrames[ftype].CompactFrames = nil
 		return
 	end
+
+	if not self.prdb.CompactFrames.skin or self.initialized.CompactFrames then return end
+	self.initialized.CompactFrames = true
 
 	self:SecureHookScript(_G.CompactRaidFrameManager, "OnShow", function(this)
 		if _G.InCombatLockdown() then

@@ -170,13 +170,13 @@ aObj.SetupMainline_PlayerFrames = function()
 	end
 
 	aObj.blizzFrames[ftype].DressUpFrame = function(self)
-		if not self.prdb.DressUpFrame or self.initialized.DressUpFrame then return end
-		self.initialized.DressUpFrame = true
-
 		if _G.C_AddOns.IsAddOnLoaded("DressUp") then
 			self.blizzFrames[ftype].DressUpFrame = nil
 			return
 		end
+
+		if not self.prdb.DressUpFrame or self.initialized.DressUpFrame then return end
+		self.initialized.DressUpFrame = true
 
 		self:SecureHookScript(_G.SideDressUpFrame, "OnShow", function(this)
 			if _G.InCombatLockdown() then
