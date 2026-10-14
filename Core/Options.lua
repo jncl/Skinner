@@ -58,8 +58,8 @@ aObj.SetupDefaults = function(self)
 			DisableAllP                = false,
 			AchievementUI              = not aObj.isClscERA and {skin = true, style = 2} or nil,
 			CastingBar                 = not aObj.isMnln and {skin = true, glaze = true} or nil,
-			CompactFrames              = {skin = true, sbars = true},
-			ContainerFrames            = {skin = false, itmbtns = false, fheight = 100},
+			CompactFrames              = not self:checkLoadable("Blizzard_CompactRaidFrames") and {skin = true, sbars = true} or nil,
+			ContainerFrames            = not _G.C_AddOns.IsAddOnLoaded("LiteBag") and {skin = false, itmbtns = false, fheight = 100} or nil,
 			LootFrames                 = {skin = true, size = 1},
 			MirrorTimers               = {skin = true, glaze = true},
 		-- UI Frames
@@ -67,13 +67,13 @@ aObj.SetupDefaults = function(self)
 			ChatBubbles                = {skin = true, alpha = 0.45},
 			ChatButtons                = true,
 			ChatConfig                 = true,
-			ChatEditBox                = {skin = true, style = 3},
+			ChatEditBox                = not (_G.C_AddOns.IsAddOnLoaded("NeonChat") or _G.C_AddOns.IsAddOnLoaded("Chatter") or _G.C_AddOns.IsAddOnLoaded("Prat-3.0")) and {skin = true, style = 3} or nil,
 			ChatFrames                 = false, -- (inc ChatMinimizedFrames)
 			ChatTabs                   = false, -- (inc. ChatTemporaryWindow)
 			ChatTabsFade               = true,
 			CombatLogQBF               = not aObj.isClscERA and false or nil,
 			MainMenuBar                = {skin = true, glazesb = true, actbtns = false, altpowerbar = not aObj.isClscERA and true or nil, extraab = (aObj.isMnln or aObj.isClscBCA or aObj.isClsc) and true or nil},
-			Minimap                    = {skin = false, gloss = false},
+			Minimap                    = not (_G.C_AddOns.IsAddOnLoaded("SexyMap") or _G.C_AddOns.IsAddOnLoaded("BasicMinimap")) and {skin = false, gloss = false} or nil,
 			MinimapButtons             = {skin = false, style = false},
 			Tooltips                   = {skin = true, style = 1, glazesb = true, border = 1},
 			WorldMap                   = {skin = true, size = 1},
@@ -804,7 +804,7 @@ aObj.SetupOptions = function(self)
 						},
 					},
 				} or nil,
-				CompactFrames = {
+				CompactFrames = not self:checkLoadable("Blizzard_CompactRaidFrames") and {
 					type = "group",
 					inline = true,
 					order = -1,
@@ -826,8 +826,8 @@ aObj.SetupOptions = function(self)
 							name = self.L["Skin Status Bars"],
 						},
 					},
-				},
-				ContainerFrames = {
+				} or nil,
+				ContainerFrames = not _G.C_AddOns.IsAddOnLoaded("LiteBag") and {
 					type = "group",
 					inline = true,
 					order = -1,
@@ -855,7 +855,7 @@ aObj.SetupOptions = function(self)
 							min = 0, max = 300, step = 1,
 						},
 					},
-				},
+				} or nil,
 				LootFrames = {
 					type = "group",
 					inline = true,
@@ -1009,7 +1009,7 @@ aObj.SetupOptions = function(self)
 						},
 					},
 				},
-				ChatEditBox = {
+				ChatEditBox = not (_G.C_AddOns.IsAddOnLoaded("NeonChat") or _G.C_AddOns.IsAddOnLoaded("Chatter") or _G.C_AddOns.IsAddOnLoaded("Prat-3.0")) and {
 					type = "group",
 					inline = true,
 					order = -1,
@@ -1033,8 +1033,8 @@ aObj.SetupOptions = function(self)
 							min = 1, max = 3, step = 1,
 						},
 					},
-				},
 				MainMenuBar = {
+				} or nil,
 					type = "group",
 					inline = true,
 					order = -1,
@@ -1072,8 +1072,8 @@ aObj.SetupOptions = function(self)
 							name = self.L["Extra Action Button"],
 						} or nil,
 					},
-				},
-				Minimap = {
+				} or nil,
+				Minimap = not (_G.C_AddOns.IsAddOnLoaded("SexyMap") or _G.C_AddOns.IsAddOnLoaded("BasicMinimap")) and {
 					type = "group",
 					inline = true,
 					order = -1,
@@ -1102,7 +1102,7 @@ aObj.SetupOptions = function(self)
 							order = 2,
 						},
 					},
-				},
+				} or nil,
 				MinimapButtons = {
 					type = "group",
 					inline = true,
@@ -1222,7 +1222,7 @@ aObj.SetupOptions = function(self)
 
 	local npcOptTab = {
 		["Auction House UI"] = self.isMorC and true or nil,
-		["Bank Frame"]       = true,
+		["Bank Frame"]       = not _G.C_AddOns.IsAddOnLoaded("LiteBag") and true or nil,
 		["Black Market UI"]  = self.isMorC and true or nil,
 		["Gossip Frame"]     = true,
 		["Guild Registrar"]  = {suff = "Frame"},
@@ -1243,7 +1243,6 @@ aObj.SetupOptions = function(self)
 		["Character Frames"]  = true,
 		["Collections"]       = self.isMnln and {pref = "Warband"} or self.isClsc and {suff = "Journal"} or nil,
 		["Communities"]       = {pref = "Guild &"},
-		["Dress Up Frame"]    = true,
 		["Encounter Journal"] = self.isMnln and {desc = "Adventure Guide"} or self.isClsc and {desc = "Dungeon Journal"} or nil,
 		["Equipment Flyout"]  = self.isMorC and true or nil,
 		["Friends Frame"]     = {desc = "Social Frame"},
@@ -1253,6 +1252,7 @@ aObj.SetupOptions = function(self)
 		["Ready Check"]       = {suff = "Frame"},
 		["Role Poll Popup"]   = self.isMorC and true or nil,
 		["Trade Frame"]       = true,
+		["Dress Up Frame"]      = not _G.C_AddOns.IsAddOnLoaded("DressUp") and true or nil,
 	}
 	self:setupFramesOptions(pfOptTab, "Player")
 	_G.wipe(pfOptTab)
@@ -1283,7 +1283,7 @@ aObj.SetupOptions = function(self)
 		["Menu Frames"]           = true,
 		["Move Pad"]              = true,
 		["Movie Frame"]           = true,
-		["Nameplates"]            = true,
+		["Nameplates"]            = not _G.C_AddOns.IsAddOnLoaded("Plater") and true or nil,
 		["Navigation Bar"]        = self.isMorC and true or nil,
 		["Override Action Bar"]   = self.isMorC and {desc = "Vehicle UI"} or nil,
 		["Pet Battle UI"]         = self.isMorC and true or nil,

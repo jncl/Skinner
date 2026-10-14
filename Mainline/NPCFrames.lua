@@ -1137,7 +1137,7 @@ aObj.SetupMainline_NPCFramesOptions = function(self)
 		["Covenant Preview UI"]         = true,
 		["Covenant Renown"]             = true,
 		["Covenant Sanctum"]            = true,
-		["Flight Map"]                  = true,
+		["Flight Map"]                  = not _G.C_AddOns.IsAddOnLoaded("WorldFlightMap") and true or nil,
 		["Item Interaction UI"]         = true,
 		["Item Upgrade UI"]             = true,
 		["Perks Program"] 				= {desc = "Trading Post"},
