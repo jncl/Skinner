@@ -19,7 +19,7 @@ if aObj.isMorC then
 
 		self:SecureHookScript(_G.AuctionHouseFrame, "OnShow", function(this)
 			self:removeInset(this.MoneyFrameInset) -- MerchantMoneyInset
-			self:removeNineSlice(this.MoneyFrameBorder)
+			self:keepFontStrings(this.MoneyFrameBorder)
 			self:skinObject("tabs", {obj=this, tabs=this.Tabs, fType=ftype, lod=self.isTT and true, track=false})
 			if self.isTT then
 				self:SecureHook(this, "SetDisplayMode", function(fObj, displayMode)
@@ -30,6 +30,7 @@ if aObj.isMorC then
 						end
 					end
 				end)
+				this:SetDisplayMode(_G.AuctionHouseFrameDisplayMode.Buy)
 			end
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true, cb=true, x2=3, y2=0})
 
@@ -282,6 +283,20 @@ if aObj.isMorC then
 		end)
 		self:checkShown(_G.AuctionHouseFrame)
 
+		self:SecureHookScript(_G.AuctionHouseMultisellProgressFrame, "OnShow", function(this)
+			if _G.InCombatLockdown() then
+				self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+				return
+			end
+
+			self:skinObject("statusbar", {obj=this.ProgressBar, fType=ftype, fi=0})
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ofs=0, clr="sepia"})
+
+			self:Unhook(_G.AuctionHouseMultisellProgressFrame, "OnShow")
+		end)
+		self:checkShown(_G.AuctionHouseMultisellProgressFrame)
+
+	end
 	end
 
 	aObj.blizzLoDFrames[ftype].BlackMarketUI = function(self)
