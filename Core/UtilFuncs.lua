@@ -929,7 +929,7 @@ function aObj.nilTexture(_, obj, nop)
 	--@end-debug@
 
 	obj:SetTexture(nil)
-	obj:SetAtlas(nil)
+	obj:SetAtlas("")
 
 	if nop then
 		obj.SetTexture = _G.nop
