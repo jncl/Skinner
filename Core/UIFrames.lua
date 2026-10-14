@@ -3014,7 +3014,7 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 		mmKids(_G.MinimapButtonFrame)
 	end
 	-- show the Bongos minimap icon if required
-	if _G.C_AddOns.IsAddOnLoaded("Bongos") then
+	if _G.Bongos3MinimapButton then
 		_G.Bongos3MinimapButton.icon:SetDrawLayer("ARTWORK")
 	end
 
