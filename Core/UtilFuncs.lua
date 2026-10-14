@@ -338,7 +338,7 @@ function aObj:changeShield(shldReg, iconReg)
 
 end
 
-function aObj:changeTandC(obj, tex)
+function aObj:changeTandC(obj, tex, nop)
 	--@debug@
 	_G.assert(obj, "Unknown object changeTandC\n" .. _G.debugstack(2, 3, 2))
 	if tex == self.tFDIDs.lvlBG then
@@ -350,6 +350,11 @@ function aObj:changeTandC(obj, tex)
 	obj:SetTexCoord(0, 1, 0, 1)
 	if tex == self.sbTexture then
 		self.sbGlazed[obj] = {}
+	end
+
+	if nop then
+		obj.SetTexture = _G.nop
+		obj.SetAtlas = _G.nop
 	end
 
 end
