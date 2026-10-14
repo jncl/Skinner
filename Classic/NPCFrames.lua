@@ -151,7 +151,7 @@ aObj.SetupClassic_NPCFrames = function()
 					end
 					self:skinObject("editbox", {obj=_G.AuctionsStackSizeEntry, fType=ftype, ofs=0})
 					self:skinObject("editbox", {obj=_G.AuctionsNumStacksEntry, fType=ftype, ofs=0})
-					self:skinObject("dropdown", {obj=_G.PriceDropDown})
+					self:skinObject("dropdown", {obj=_G.PriceDropDown, fType=ftype})
 					self:skinObject("moneyframe", {obj=_G.StartPrice, fType=ftype})
 					self:skinObject("moneyframe", {obj=_G.BuyoutPrice, fType=ftype})
 					if self.modBtns then
