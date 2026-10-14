@@ -1244,19 +1244,19 @@ aObj.blizzFrames[ftype].EditMode = function(self)
 			end
 		end
 
-		self:Unhook(this, "OnShow")
+		self:Unhook(_G.EditModeManagerFrame, "OnShow")
 	end)
 
 	self:SecureHookScript(_G.EditModeLayoutDialog, "OnShow", function(fObj)
 		self:skinLayoutDialog(fObj, ftype)
 
-		self:Unhook(fObj, "OnShow")
+		self:Unhook(_G.EditModeLayoutDialog, "OnShow")
 	end)
 
 	self:SecureHookScript(_G.EditModeImportLayoutDialog, "OnShow", function(fObj)
 		self:skinLayoutDialog(fObj, ftype)
 
-		self:Unhook(fObj, "OnShow")
+		self:Unhook(_G.EditModeImportLayoutDialog, "OnShow")
 	end)
 
 	self:SecureHookScript(_G.EditModeUnsavedChangesDialog, "OnShow", function(fObj)
@@ -1268,7 +1268,7 @@ aObj.blizzFrames[ftype].EditMode = function(self)
 			self:skinStdButton{obj=fObj.CancelButton, fType=ftype}
 		end
 
-		self:Unhook(fObj, "OnShow")
+		self:Unhook(_G.EditModeUnsavedChangesDialog, "OnShow")
 	end)
 
 	self:SecureHookScript(_G.EditModeSystemSettingsDialog, "OnShow", function(fObj)
@@ -1300,7 +1300,7 @@ aObj.blizzFrames[ftype].EditMode = function(self)
 			skinSettingsAndButtons(frame)
 		end)
 
-		self:Unhook(fObj, "OnShow")
+		self:Unhook(_G.EditModeSystemSettingsDialog, "OnShow")
 	end)
 
 end
