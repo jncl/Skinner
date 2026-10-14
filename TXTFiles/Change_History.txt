@@ -1,3 +1,71 @@
+beta12.70391.1
+Jncl:
+	Updated ToDo*.txt files
+	Updated Change_History.txt
+	Updated Version numbers
+	Updated nilTexture function
+	Updated changeTandC function
+	Added support for WoW Forever, closes #363
+	Updated Options to match skinning function checks
+	Updated NSF, added skinSearchPreviewContainer code
+	Updated NSF skinTabs code
+	Updated NSF skinDDButton code
+	Updated Nameplates skin
+	Updated check for Bongos3MinimapButton
+	Updated MailFrame skin
+	Updated Unhook function to use Frame name instead of a variable
+	Updated misspelt comment
+	Updated CommunitiesFrame skin
+	Updated PetJournal skin
+	Updated MountJournal skin
+	Updated AchievementsUI skin
+	Updated AuctionHouseUI skin
+	Replaced C_Timer.After by RunNextFrame
+	Add missing fType indicator
+	Updated Classic PetStable skin
+	Updated MoneyFrame skinning code
+	Updated isAddOnEnabled code
+	Moved debug2 line within debug stanza code
+	Updated NSF to add SA option to SkinFrame code
+	Updated Classic GlyphFrame skin
+	Updated Auctionator skin Removed old code from NPCFrames
+	Updated Leatrix_Plus skin Moved LP code into its skin from NPCFrames & PlayerFrames
+	Updated Options to use C_ClassColor function
+	Updated NSF to handle SideTabs
+	Updated NSF to include skinStatusTrackingBars function
+	Bugfix for UIButtons code
+	Updated UtilFuncs code
+	Reduced some common debug messages being displayed
+	Updated Classic PVPUI skin
+	Updated Bartender4 skin
+	Updated ColorPickerPlus skin
+	Updated EnhanceQol skin, closes #360
+	Updated ReEnhancedStackSplit skin, closes #362
+	Updated UIWidgets code, closes #353
+	Updated ObjectiveTracker code
+	Create & use shorthand variables for multiple version checks
+	Removed blank line
+	Updated UIButtons options checks
+	Updated CheckButton checking code
+	Updated enUS_Locale_Strings file
+	Updated StatusTrackingBarManager code again!!
+	Remove old option names from Saved Variables
+	Updated code to use AddOn variables rather than UIButton module ones
+	Updated MainMenuBar code
+	Moved PingSystemTutorial from Mainline to Core
+	Updated StatusTrackingBarManager code
+	Removed superfluous comments
+	Removed debug message
+	Moved QuestMapFrame code from Mainline to Core Moved option name to Options
+	Consolidated SocialToasts code into Core/UIFrames
+	Updated Ace3 skin
+	Updated UtilFuncs code
+	Updated Classic QuestLogFrame skin
+	Removed WOW_PROJECT_ID checks, replaced by TOC [Family] entry
+	Updated BugSack skin, closes #361, closes #365
+	Updated EnhanceQoL skin to handle disabled modules
+	Updated OnDisable function
+
 beta12.69814.1
 Jncl:
 	Updated ToDo*.txt files
