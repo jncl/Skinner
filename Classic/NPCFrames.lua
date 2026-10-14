@@ -256,47 +256,49 @@ aObj.SetupClassic_NPCFrames = function()
 			    return
 			end
 
-			if self.isClscERA then
+			if self.isClscERA
+			or self.isClscBCA
+			then
 				self:makeMFRotatable(_G.PetStableModel)
 				_G.PetStableCurrentPetBackground:SetTexture(nil)
 				_G.PetStableStabledPet1Background:SetTexture(nil)
 				_G.PetStableStabledPet2Background:SetTexture(nil)
-				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, x1=10, y1=-11, x2=-31, y2=71})
+				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=10, y1=-11, x2=-31, y2=71})
 				if self.modBtns then
-					self:skinCloseButton{obj=_G.PetStableFrameCloseButton, fType=ftype}
-					self:skinStdButton{obj=_G.PetStablePurchaseButton, fType=ftype}
-					self:SecureHook("PetStable_Update", function()
-						self:clrBtnBdr(_G.PetStablePurchaseButton)
-					end)
+					self:skinStdButton{obj=_G.PetStablePurchaseButton, fType=ftype, schk=true}
 				end
 				if self.modBtnBs then
-					self:addButtonBorder{obj=_G.PetStablePetInfo, ofs=1, x2=0, clr="gold"}
-					-- TODO: use white border
-					self:addButtonBorder{obj=_G.PetStableCurrentPet, clr="white"}
-					local btn
+					self:addButtonBorder{obj=_G.PetStablePetInfo, fType=ftype, ofs=1, x2=0, clr="gold"}
+					self:addButtonBorder{obj=_G.PetStableCurrentPet, fType=ftype, clr="gold"}
+					local bName
 					for i = 1, _G.NUM_PET_STABLE_SLOTS do
-						btn = _G["PetStableStabledPet" .. i]
-						self:addButtonBorder{obj=btn}
-						self:SecureHook(_G["PetStableStabledPet" .. i .. "Background"], "SetVertexColor", function(tObj, ...)
+						bName = "PetStableStabledPet"
+						self:addButtonBorder{obj=_G[bName .. i], fType=ftype, clr={_G[bName .. i .. "Background"]:GetVertexColor()}}
+						self:SecureHook(_G[bName .. i .. "Background"], "SetVertexColor", function(tObj, ...)
 							tObj:GetParent().sbb:SetBackdropBorderColor(...)
 						end)
 					end
 				end
 			else
-				self:removeInset(_G.PetStableLeftInset)
-				self:removeInset(_G.PetStableBottomInset)
+				self:removeInset(this.LeftInset)
+				_G.PetStableActiveBg:SetTexture(nil)
+				self:removeInset(this.BottomInset)
+				_G.PetStableFrameStableBg:SetTexture(nil)
 				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x2=1})
 				if self.modBtnBs then
-					self:addButtonBorder{obj=_G.PetStablePetInfo, relTo=_G.PetStableSelectedPetIcon, clr="grey"}
-					self:addButtonBorder{obj=_G.PetStableDiet, clr="gold", x2=1}
+					self:addButtonBorder{obj=_G.PetStablePetInfo, fType=ftype, relTo=_G.PetStableSelectedPetIcon, clr="grey"}
+					self:addButtonBorder{obj=_G.PetStableDiet, fType=ftype, clr="gold", x2=1}
+					local btn
 					for i = 1, _G.NUM_PET_ACTIVE_SLOTS do
-						_G["PetStableActivePet" .. i].Background:SetTexture(nil)
-						_G["PetStableActivePet" .. i].Border:SetTexture(nil)
-						self:addButtonBorder{obj=_G["PetStableActivePet" .. i], fType=ftype, reParent={_G["PetStableActivePet" .. i].LockIcon}, clr="gold"}
+						btn = _G["PetStableActivePet" .. i]
+						btn.Background:SetTexture(nil)
+						btn.Border:SetTexture(nil)
+						self:addButtonBorder{obj=btn, fType=ftype, reParent={btn.LockIcon}, clr="gold"}
 					end
 					for i = 1, _G.NUM_PET_STABLE_SLOTS do
-						_G["PetStableStabledPet" .. i].Background:SetTexture(nil)
-						self:addButtonBorder{obj=_G["PetStableStabledPet" .. i], fType=ftype, clr="grey"}
+						btn = _G["PetStableStabledPet" .. i]
+						btn.Background:SetTexture(nil)
+						self:addButtonBorder{obj=btn, fType=ftype, clr="grey"}
 					end
 					self:addButtonBorder{obj=_G.PetStablePrevPageButton, fType=ftype, schk=true, ofs=1, clr="grey"}
 					self:addButtonBorder{obj=_G.PetStableNextPageButton, fType=ftype, schk=true, ofs=1, clr="grey"}
