@@ -53,7 +53,7 @@ aObj.SetupClassic_NPCFrames = function()
 						self:moveObject{obj=_G["Browse" .. type], x=type == "MaxLevel" and -6 or -4, y=type ~= "MaxLevel" and 3 or 0}
 					end
 					self:skinObject("ddbutton", {obj=_G.BrowseDropdown, fType=ftype})
-					self:skinObject("moneyframe", {obj=_G.BrowseBidPrice, moveIcon=true})
+					self:skinObject("moneyframe", {obj=_G.BrowseBidPrice, fType=ftype})
 					_G.BrowseBidButton:DisableDrawLayer("BORDER")
 					_G.BrowseBuyoutButton:DisableDrawLayer("BORDER")
 					_G.BrowseCloseButton:DisableDrawLayer("BORDER")
@@ -123,7 +123,7 @@ aObj.SetupClassic_NPCFrames = function()
 						skinBtn("BidButton", i)
 					end
 					self:skinObject("slider", {obj=_G.BidScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
-					self:skinObject("moneyframe", {obj=_G.BidBidPrice, moveIcon=true})
+					self:skinObject("moneyframe", {obj=_G.BidBidPrice, fType=ftype})
 					_G.BidCloseButton:DisableDrawLayer("BORDER")
 					_G.BidBuyoutButton:DisableDrawLayer("BORDER")
 					_G.BidBidButton:DisableDrawLayer("BORDER")
@@ -152,8 +152,8 @@ aObj.SetupClassic_NPCFrames = function()
 					self:skinObject("editbox", {obj=_G.AuctionsStackSizeEntry, fType=ftype, ofs=0})
 					self:skinObject("editbox", {obj=_G.AuctionsNumStacksEntry, fType=ftype, ofs=0})
 					self:skinObject("dropdown", {obj=_G.PriceDropDown})
-					self:skinObject("moneyframe", {obj=_G.StartPrice, moveIcon=true})
-					self:skinObject("moneyframe", {obj=_G.BuyoutPrice, moveIcon=true})
+					self:skinObject("moneyframe", {obj=_G.StartPrice, fType=ftype})
+					self:skinObject("moneyframe", {obj=_G.BuyoutPrice, fType=ftype})
 					if self.modBtns then
 						self:skinStdButton{obj=_G.AuctionsStackSizeMaxButton, fType=ftype}
 						self:skinStdButton{obj=_G.AuctionsNumStacksMaxButton, fType=ftype}

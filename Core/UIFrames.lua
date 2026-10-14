@@ -2388,12 +2388,7 @@ aObj.blizzFrames[ftype].MailFrame = function(self)
 			end
 			self:skinObject("editbox", {obj=_G.SendMailNameEditBox, fType=ftype, regions={4, 5, 6}, y1=-2, y2=2})
 			self:skinObject("editbox", {obj=_G.SendMailSubjectEditBox, fType=ftype, regions={4, 5, 6}})
-			-- TODO: Move silver & copper icons for ClassicERA, Classic & ClassicBCA
-			-- if aObj.isClsc then
-			-- 	self:skinObject("moneyframe", {obj=_G.SendMailMoney, moveIcon=true})
-			-- else
-				self:skinObject("moneyframe", {obj=_G.SendMailMoney})
-			-- end
+			self:skinObject("moneyframe", {obj=_G.SendMailMoney, fType=ftype})
 			self:removeInset(_G.SendMailMoneyInset)
 			_G.SendMailMoneyBg:DisableDrawLayer("BACKGROUND")
 			if self.modBtns then
@@ -4398,7 +4393,7 @@ aObj.blizzFrames[ftype].StaticPopups = function(self)
 		self:skinObject("editbox", {obj=spFrame.EditBox, fType=ftype, ncc=true, mi=true, mix=12, regions={}, ofs=0})
 		self:skinObject("ddbutton", {obj=spFrame.Dropdown, fType=ftype, ncc=true})
 		-- .MoneyFrame
-		self:skinObject("moneyframe", {obj=spFrame.MoneyInputFrame, fType=ftype, ncc=true, moveIcon=true})
+		self:skinObject("moneyframe", {obj=spFrame.MoneyInputFrame, fType=ftype, ncc=true})
 		if spFrame.ItemFrame then
 			spFrame.ItemFrame.NameFrame:SetTexture(nil)
 			if self.modBtnBs then

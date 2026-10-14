@@ -97,21 +97,6 @@ if aObj.isMorC then
 					aObj:skinStdButton{obj=frame.RefreshFrame.RefreshButton, fType=ftype, ofs=-2, clr="gold"}
 				end
 			end
-			local function skinBidAmt(frame)
-				aObj:skinObject("editbox", {obj=frame.gold, fType=ftype, ofs=0})
-				aObj:skinObject("editbox", {obj=frame.silver, fType=ftype, ofs=0})
-				aObj:skinObject("editbox", {obj=frame.copper, fType=ftype, ofs=0})
-				if aObj.isMnln
-				or aObj.isClsc
-				then
-					frame.silver:SetWidth(38)
-					frame.copper:SetWidth(38)
-				end
-				if not aObj.isMnln then
-					aObj:moveObject{obj=frame.silver.texture, x=10}
-					aObj:moveObject{obj=frame.copper.texture, x=10}
-				end
-			end
 			self:SecureHookScript(this.BrowseResultsFrame, "OnShow", function(fObj)
 				skinItemList(fObj.ItemList)
 
@@ -165,7 +150,7 @@ if aObj.isMorC then
 				if self.isClsc then
 					fObj.ItemDisplay.ItemButton.EmptyBackground:SetAlpha(0) -- N.B. Texture changed in code
 				end
-				skinBidAmt(fObj.BidFrame.BidAmount)
+				self:skinObject("moneyframe", {obj=fObj.BidFrame.BidAmount, fType=ftype})
 				skinItemList(fObj.ItemList)
 				if self.modBtns then
 					self:skinStdButton{obj=fObj.BackButton, fType=ftype}
@@ -259,7 +244,7 @@ if aObj.isMorC then
 						end
 					end)
 				end
-				skinBidAmt(fObj.BidFrame.BidAmount)
+				self:skinObject("moneyframe", {obj=fObj.BidFrame.BidAmount, fType=ftype})
 				self:removeInset(fObj.SummaryList)
 				self:removeNineSlice(fObj.SummaryList.NineSlice)
 				fObj.SummaryList.Background:SetTexture(nil)
@@ -326,7 +311,7 @@ if aObj.isMorC then
 			end
 			_G.ScrollUtil.AddInitializedFrameCallback(this.ScrollBox, skinItem, aObj, true)
 			this.MoneyFrameBorder:DisableDrawLayer("BACKGROUND")
-			self:skinObject("moneyframe", {obj=_G.BlackMarketBidPrice})
+			self:skinObject("moneyframe", {obj=_G.BlackMarketBidPrice, fType=ftype})
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, cb=true, x2=1})
 			if self.modBtns then
 				self:skinStdButton{obj=this.BidButton, sechk=true}
