@@ -457,7 +457,7 @@ local function skinDDButton(tbl)
 
 	if tbl.filter then
 		-- skin the WowStyle1FilterDropdownTemplate/WowStyle2DropdownTemplate
-		aObj:skinStdButton{obj=tbl.obj, fType=tbl.ftype, bd=5, sechk=true, y2=-2}
+		aObj:skinStdButton{obj=tbl.obj, fType=tbl.ftype, bd=5, sechk=true, y2=-2, clr=tbl.clr}
 		if tbl.obj.ResetButton then -- WowStyle1FilterDropdownTemplate ONLY
 			aObj.modUIBtns:skinCloseButton{obj=tbl.obj[tbl.filtercb or "ResetButton"], fType=tbl.ftype, noSkin=true}
 			tbl.obj.arrow = tbl.obj:CreateTexture(nil, "ARTWORK", nil, 5)
