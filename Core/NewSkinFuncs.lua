@@ -1011,7 +1011,8 @@ local function skinTabs(tbl)
 		tbl.offsets.x2 = (tbl.offsets.x2 or 0) - 4
 		tbl.offsets.y2 = (tbl.offsets.y2 or 0) + 3
 	end
-	local function skinTabObject(tab, _)
+	local tabID
+	local function skinTabObject(tab, idx)
 		aObj:keepRegions(tab, tbl.regions)
 		if not aObj.isTT then
 			aObj:skinObject("frame", {obj=tab, fType=tbl.fType, ng=tbl.ng, x1=tbl.offsets.x1, y1=tbl.offsets.y1, x2=tbl.offsets.x2, y2=tbl.offsets.y2})
@@ -1019,7 +1020,8 @@ local function skinTabs(tbl)
 			aObj:skinObject("frame", {obj=tab, fType=tbl.fType, bd=tbl.bd, noBdr=true, x1=tbl.offsets.x1, y1=tbl.offsets.y1, x2=tbl.offsets.x2, y2=tbl.offsets.y2})
 			if tbl.lod then
 				-- N.B. use tab:GetID() instead of using index value, fixes #345
-				if tab:GetID() == (tbl.obj.selectedTab or tbl.selectedTab) then
+				tabID = tab:GetID() > 0 and tab:GetID() or idx
+				if tabID == (tbl.obj.selectedTab or tbl.selectedTab) then
 					aObj:setActiveTab(tab.sf)
 				else
 					aObj:setInactiveTab(tab.sf)
