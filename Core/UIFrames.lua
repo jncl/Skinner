@@ -5210,7 +5210,7 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 		-- store using tooltip object as the key
 		_G.rawset(tab, tTip, type)
 		-- skin here so tooltip initially skinned
-		self:skinObject("tooltip", {obj=tTip, ftype=type, ofs=0})
+		self:skinObject("tooltip", {obj=tTip, fType=type, ofs=0})
 		-- ensure tooltip gradient updated
 		if not self.ttHook[tTip] then
 			if self.isMorF then
@@ -5219,7 +5219,6 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 				self.ttHook[tTip] = "OnUpdate"
 			end
 		end
-		-- hook Show function for tooltips as required
 		-- handle specified function if required [QuestMapFrame.QuestsFrame.CampaignTooltip uses this]
 		if self.ttHook[tTip] then
 			if tTip:HasScript(self.ttHook[tTip])
@@ -5257,7 +5256,7 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 		end
 		-- if it has a CompareHeader then skin it as a textured tab
 		if tTip.CompareHeader then
-			self:skinObject("frame", {obj=tTip.CompareHeader, fType=tTip.fType, kfs=true, bd=13, noBdr=true, x1=-1, y2=-10})
+			self:skinObject("frame", {obj=tTip.CompareHeader, fType=type, kfs=true, bd=13, noBdr=true, x1=-1, y2=-10})
 		end
 	end})
 

@@ -1765,7 +1765,7 @@ if aObj.isMorCorF then
 				end
 			end
 			if self.modBtns then
-				self:skinStdButton{obj=_G.ToyBoxFilterButton, ftype=ftype}
+				self:skinStdButton{obj=_G.ToyBoxFilterButton, fType=ftype}
 			end
 			if self.modBtnBs then
 				self:skinPageBtns(this)
@@ -1804,7 +1804,7 @@ if aObj.isMorCorF then
 			end)
 			if self.modBtns then
 				if not self.isMnln then
-					self:skinStdButton{obj=this.FilterButton, ftype=ftype}
+					self:skinStdButton{obj=this.FilterButton, fType=ftype}
 				end
 			end
 			if self.modBtnBs then
@@ -1837,7 +1837,7 @@ if aObj.isMorCorF then
 			self:removeRegions(this.progressBar, {2, 3})
 			if self.modBtns then
 				if not self.isMnln then
-					self:skinStdButton{obj=this.FilterButton, ftype=ftype}
+					self:skinStdButton{obj=this.FilterButton, fType=ftype}
 					_G.RaiseFrameLevelByTwo(this.FilterButton) -- raise above SetsCollectionFrame when displayed on it
 				end
 			end

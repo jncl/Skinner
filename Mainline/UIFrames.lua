@@ -86,7 +86,7 @@ aObj.SetupMainline_UIFrames = function()
 					end
 					-- Spell buttons (Covenant Adventurers)
 					for spell in frame.autoSpellPool:EnumerateActive() do
-						aObj:addButtonBorder{obj=spell, ftype=ftype, relTo=spell.Icon, ofs=1, clr="white"}
+						aObj:addButtonBorder{obj=spell, fType=ftype, relTo=spell.Icon, ofs=1, clr="white"}
 					end
 				end)
 			end

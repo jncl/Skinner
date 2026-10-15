@@ -263,7 +263,7 @@ local function __skinCloseButton(opts)
 	--[[
 		Calling parameters:
 			obj     = object (Mandatory)
-			ft      = Frame Type (Skinner classification)
+			ftype   = Frame Type (Skinner classification)
 			sap     = set all points of skinButton to object
 			onSB    = put text on skinButton
 			noSkin  = don't add skin frame
