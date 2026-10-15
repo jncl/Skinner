@@ -1,3 +1,11 @@
+beta12.70391.2
+Jncl:
+	Updated ToDo*.txt files
+	Updated Change_History.txt
+	Updated LeatrixPlus skin, closes #368
+	Updated Options code, closes #367
+	DON'T check options which don't exist anymore, closes #366, closes #369
+
 beta12.70391.1
 Jncl:
 	Updated ToDo*.txt files
