@@ -21,15 +21,7 @@ aObj.addonsToSkin.Leatrix_Plus = function(self) -- v 12.1.09/5.1.59/2.5.44/1.60.
 			cnt = cnt + 1
 			self:add2Table(configPanels, child)
 		end
-		--@debug@
-		_G.print("LP kids", cnt)
-		--@end-debug@
-		if (self.isMnln and cnt == 2)
-		or (self.isClscBCA and cnt == 13)
-		or (self.isClscERA and cnt == 14)
-		or (self.isClsc and cnt == 15)
-		or (self.isFrvr and cnt == 17)
-		then
+		if (MainPanel and #configPanels >= 1) then
 			self.UnregisterCallback("Leatrix_Plus", "UIParent_GetChildren")
 		end
 	end)
