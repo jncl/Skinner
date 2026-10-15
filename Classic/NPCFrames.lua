@@ -180,7 +180,7 @@ aObj.SetupClassic_NPCFrames = function()
 
 			self:SecureHookScript(_G.AuctionProgressFrame, "OnShow", function(frame)
 				if _G.InCombatLockdown() then
-				    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+				    self:add2Table(self.oocTab, {self.checkShown, {self, frame}})
 				    return
 				end
 
