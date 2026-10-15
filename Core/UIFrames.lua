@@ -2357,6 +2357,13 @@ then
 
 				self:SecureHookScript(fObj.ActivityView, "OnShow", function(frame)
 					frame:DisableDrawLayer("OVERLAY")
+					self:skinObject("ddbutton", {obj=frame.PlayStyleDropdown, fType=ftype})
+					self:skinObject("frame", {obj=frame.Comment, fType=ftype, kfs=true, fb=true, ofs=6})
+					frame.Comment.EditBox.Instructions:SetTextColor(self.BT:GetRGB())
+					self:skinObject("ddbutton", {obj=frame.VoiceChatDropdown, fType=ftype})
+					if self.modChkBtns then
+						self:skinCheckButton{obj=frame.LevelRangesCheckbox.Checkbox, fType=ftype}
+					end
 					self:skinObject("scrollbar", {obj=frame.ScrollBar, fType=ftype})
 					local function skinElement(...)
 						local _, element
@@ -2373,8 +2380,6 @@ then
 						end
 					end
 					_G.ScrollUtil.AddInitializedFrameCallback(frame.ScrollBox, skinElement, aObj, true)
-					self:skinObject("frame", {obj=frame.Comment, fType=ftype, kfs=true, fb=true, ofs=6})
-					frame.Comment.EditBox.Instructions:SetTextColor(self.BT:GetRGB())
 
 					self:Unhook(frame, "OnShow")
 				end)
@@ -2393,7 +2398,7 @@ then
 				else
 					fObj.Inset.CustomBG:SetTexture(nil)
 					fObj.Inset.Border:SetTexture(nil)
-					self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true})
+					self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, ng=true})
 					self:skinObject("scrollbar", {obj=fObj.ScrollBar, fType=ftype})
 					local function skinListEntry(...)
 						local _, element
@@ -2431,7 +2436,7 @@ then
 
 					self:skinObject("editbox", {obj=fObj.EditBox, fType=ftype, si=true, y1=-4, y2=4})
 					self:skinObject("ddbutton", {obj=fObj.FilterDropdown, fType=ftype, filter=true})
-					self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true})
+					self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, ng=true})
 					if self.modBtns then
 						self:skinStdButton{obj=fObj.WhoSearch, fType=ftype, clr="gold"}
 					end
@@ -5272,6 +5277,9 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 	}
 	if self.isMorF then
 		self:add2Table(toolTips, _G.GameSmallHeaderTooltip)
+		if self.isFrvr then
+			self:add2Table(toolTips, _G.BuffFrameTooltip)
+		end
 	else
 		self:add2Table(toolTips, _G.SmallTextTooltip)
 	end

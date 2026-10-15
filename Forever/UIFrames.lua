@@ -7,7 +7,7 @@ aObj.SetupForever_UIFrames = function()
 
 end
 
-aObj.SetupForever_UIFramesOptions = function(self)
+aObj.SetupForever_UIFramesOptions = function(_)
 
 end
 

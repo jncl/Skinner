@@ -250,7 +250,8 @@ function module:skinPetF()
 			_G.EventRegistry:RegisterFrameEventAndCallback("UNIT_PET", setLvl, module)
 			_G.EventRegistry:RegisterFrameEventAndCallback("UNIT_LEVEL", setLvl, module)
 		end
-		if _G.PetFrameHappiness
+		if not aObj.isFrvr
+		and _G.PetFrameHappiness
 		and aObj.modBtnBs
 		then
 			aObj:addButtonBorder{obj=_G.PetFrameHappiness, ofs=1, clr="gold"}
