@@ -75,13 +75,6 @@ function aObj:OnInitialize()
 		self.prdb.TexturedTab = nil
 	end
 
-	-- disable functions/modules which cause ADDON_ACTION_BLOCKED/ADDON_ACTION_FORBIDDEN errors (Dragonflight onwards changes)
-	if self.isMorF then
-		self.prdb.MainMenuBar.actbtns = false
-	elseif self.isMnln then
-		self.prdb.Nameplates = false
-	end
-
 	-- setup the Addon's core options
 	self:checkAndRun("SetupOptions", "opt")
 

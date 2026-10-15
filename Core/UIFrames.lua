@@ -3560,7 +3560,9 @@ aObj.blizzFrames[ftype].MovieFrame = function(self)
 end
 
 aObj.blizzFrames[ftype].Nameplates = function(self)
-	if _G.C_AddOns.IsAddOnLoaded("Plater") then
+	if _G.C_AddOns.IsAddOnLoaded("Plater")
+	or self.isMnln
+	then
 		self.blizzFrames[ftype].Nameplates = nil
 		return
 	end
