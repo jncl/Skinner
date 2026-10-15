@@ -23,10 +23,11 @@ ToDos
 
 #364    I/M Automatically match skinner to Ellesmere UI style (similar to what you have for ElvUI)
 
-#366 √	I 	Minimap, missing options
+#370    I/F Not loading on WoW Forever (lua error)
+			- Skinner/Core/UtilFuncs.lua:1269: attempt to index field 'prdb' (a nil value)
+			- Skinner/Core/Skinner.lua:328: attempt to index field 'prdb' (a nil value)
+			- Skinner/AddonSkins/ElvUI.lua:30: attempt to index upvalue 'E' (a nil value)
 
-#367 √	I 	CompactFrames, missing options
+#371 ≈	I 	attempt to perform indexed assignment on field 'MainMenuBar' (a nil value)
 
-#368 √	N 	Leatrix_Plus
-
-#369 √	I/M Numerous startup errors
+#372	I 	LeatrixPlus attempt to index local 'obj' (a nil value)
