@@ -2,11 +2,11 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("BigWigs") then return end
 local _G = _G
 
-aObj.addonsToSkin.BigWigs = function(self) -- v 397
+aObj.addonsToSkin.BigWigs = function(self) -- v427.6
 
 	-- skin BigWigs statusbar on the LFGDungeonReadyPopup
 	if _G.BigWigsLoader then
-		_G.BigWigsLoader.RegisterMessage(self, "BigWigs_FrameCreated", function(event, frame, name)
+		_G.BigWigsLoader.RegisterMessage(self, "BigWigs_FrameCreated", function(_, frame, name)
 			if name == "QueueTimer" then
 				aObj:skinObject("statusbar", {obj=frame, regions={4}, fi=0, bg=aObj:getRegion(frame, 2)})
 				_G.BigWigsLoader.UnregisterMessage(self, "BigWigs_FrameCreated")
@@ -19,8 +19,8 @@ aObj.addonsToSkin.BigWigs = function(self) -- v 397
 		if aObj.isTT then
 			for _, tab in _G.pairs(frame.Tabs) do
 				aObj:SecureHookScript(tab, "OnClick", function(this)
-					for _, tab in _G.pairs(frame.Tabs) do
-						aObj:setInactiveTab(tab.sf)
+					for _, tabObj in _G.pairs(frame.Tabs) do
+						aObj:setInactiveTab(tabObj.sf)
 					end
 					aObj:setActiveTab(this.sf)
 				end)
@@ -30,13 +30,14 @@ aObj.addonsToSkin.BigWigs = function(self) -- v 397
 		aObj:skinObject("frame", {obj=frame, kfs=true, cb=true})
 	end
 	-- find keystones frame
-	aObj.RegisterCallback("BigWigs", "UIParent_GetChildren", function(_, child, _)
+	self.RegisterCallback("BigWigs", "UIParent_GetChildren", function(_, child, _)
 		if child.GetSourceLocation
 		and child:GetSourceLocation()
 		and child:GetSourceLocation():find("Keystones.lua")
+		and child.Tabs
 		then
 			skinKeystonesFrame(child)
-			aObj.UnregisterCallback("BigWigs", "UIParent_GetChildren")
+			self.UnregisterCallback("BigWigs", "UIParent_GetChildren")
 		end
 	end)
 
