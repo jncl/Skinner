@@ -2572,8 +2572,8 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 
 		if self.isFrvr then
 			self:SecureHookScript(this.GuildPreferredPlaySettingsFrame, "OnShow", function(fObj)
-				self:skinObject("dropdown", {obj=fObj.LocaleDropdown, fType=ftype})
-				self:skinObject("dropdown", {obj=fObj.DatacenterDropdown, fType=ftype})
+				self:skinObject("ddbutton", {obj=fObj.LocaleDropdown, fType=ftype})
+				self:skinObject("ddbutton", {obj=fObj.DatacenterDropdown, fType=ftype})
 				if self.modBtns then
 					self:skinStdButton{obj=fObj.LocaleApplyButton, fType=ftype, sechk=true}
 					self:skinStdButton{obj=fObj.DatacenterApplyButton, fType=ftype, sechk=true}

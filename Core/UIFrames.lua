@@ -3196,7 +3196,9 @@ aObj.blizzFrames[ftype].Minimap = function(self)
 
 	-- Cluster Frame
 	if self.isMorF then
-		if _G.MinimapCluster.BorderTop then
+		if self.isFrvr then
+			_G.MinimapCluster.ZoneTextButton:DisableDrawLayer("BACKGROUND")
+		else
 			aObj:removeNineSlice(_G.MinimapCluster.BorderTop)
 		end
 		_G.MinimapCluster.ZoneTextButton:ClearAllPoints()
@@ -3336,6 +3338,17 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 		self:SecureHook(_G.ExpansionLandingPageMinimapButton, "SetLandingPageIconOffset", function(this, _)
 			anchor:SetPoint(this, true)
 		end)
+		if self.isFrvr then
+			self:moveObject{obj=_G.GameTimeFrame, x=7}
+			self:moveObject{obj=_G.MinimapCluster.Tracking, y=-25}
+			self:moveObject{obj=_G.MinimapCluster.DielFrame, x=55, y=-25}
+			if not minBtn then
+				self:addButtonBorder{obj=_G.GameTimeFrame, fType=ftype, x2=1, y2=-1, clr="brownish"}
+				self:keepFontStrings(_G.AddonCompartmentFrame)
+				aObj:skinObject("button", {obj=_G.AddonCompartmentFrame, ofs=0})
+			end
+
+		end
 	else
 		_G.MiniMapMailIcon:SetPoint("CENTER", _G.MiniMapMailFrame)
 		_G.MiniMapMailFrame:SetSize(26, 26)
@@ -3431,7 +3444,6 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 				self:skinObject("frame", {obj=_G.LFGMinimapFrame, fType=ftype, kfs=true, ofs=-1})
 				self:moveObject{obj=_G.LFGMinimapFrame, x=-30, y=6}
 			end
-
 		end
 	end
 	_G.TimeManagerClockButton:DisableDrawLayer("BORDER")
@@ -3497,11 +3509,6 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 	self.DBIcon:RegisterCallback("LibDBIcon_IconCreated", skinDBI)
 	for name, button in _G.pairs(self.DBIcon.objects) do
 		skinDBI(nil, button, name)
-	end
-
-	-- DON't skin DielFrame as the border is included in the texture
-	if self.isFrvr then
-		self:moveObject{obj=_G.MinimapCluster.DielFrame, x=50, y=10}
 	end
 
 end
