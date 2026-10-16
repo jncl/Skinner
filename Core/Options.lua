@@ -69,7 +69,7 @@ aObj.SetupDefaults = function(self)
 			ChatBubbles                = {skin = true, alpha = 0.45},
 			ChatButtons                = true,
 			ChatConfig                 = true,
-			ChatEditBox                = not (_G.C_AddOns.IsAddOnLoaded("NeonChat") or _G.C_AddOns.IsAddOnLoaded("Chatter") or _G.C_AddOns.IsAddOnLoaded("Prat-3.0")) and {skin = true, style = 3} or nil,
+			ChatEditBox                = {skin = true, style = 3}, -- N.B. KEEP these settings as they are used in several skins
 			ChatFrames                 = false, -- (inc ChatMinimizedFrames)
 			ChatTabs                   = false, -- (inc. ChatTemporaryWindow)
 			ChatTabsFade               = true,
