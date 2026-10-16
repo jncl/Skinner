@@ -3,7 +3,7 @@ local aName, aObj = ...
 local _G = _G
 
 local buildInfo = {
-	wow_classic_beta    	= {"Forever Beta",					"1.60.1", 70374},
+	wow_classic_beta    	= {"Forever Beta",					"1.60.1", 70425},
 	-- wow_beta            	= {"Midnight Beta",             	"12.0.1", 66220},
 	wow_classic_ptr     	= {"PTR (MoP Classic)",				"5.5.4",  67849},
 	wow_classic_era_ptr 	= {"PTR (Classic Era)",         	"2.5.6",  70006},
