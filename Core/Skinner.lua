@@ -17,8 +17,8 @@ do
 	-- pointer to LibSharedMedia-3.0 library (done here for TukUI & ElvUI)
 	aObj.LSM = _G.LibStub:GetLibrary("LibSharedMedia-3.0")
 
-	-- store player name (done here to fix enabled addon check)
-	aObj.uName = _G.UnitName("player")
+	-- store player GUID (done here to fix enabled addon check)
+	aObj.uGUID = _G.UnitGUID("player")
 
 end
 

@@ -759,7 +759,7 @@ function aObj:isAddonEnabled(addonName)
 	_G.assert(addonName, "Unknown object isAddonEnabled\n" .. _G.debugstack(2, 3, 2))
 	--@end-debug@
 
-	return (_G.C_AddOns.GetAddOnEnableState(addonName, self.uName) == _G.Enum.AddOnEnableState.All)
+	return (_G.C_AddOns.GetAddOnEnableState(addonName, self.uGUID) == _G.Enum.AddOnEnableState.All)
 
 end
 

@@ -1,12 +1,9 @@
 local _, aObj = ...
+if not aObj:isAddonEnabled("ElvUI") then return end
 local _G = _G
 
-if not aObj:isAddonEnabled("ElvUI") then
-	return
-end
-
 -- The following code handles the Initial setup of Skinner when the ElvUI is loaded
-aObj.otherAddons.ElvUIInit = function(self) -- v 13.90
+aObj.otherAddons.ElvUIInit = function(self) -- v 16.00
 
 	local E
 	local borderr, borderg, borderb, backdropr, backdropg, backdropb
@@ -27,14 +24,14 @@ aObj.otherAddons.ElvUIInit = function(self) -- v 13.90
 		self.Defaults = nil -- only need to run this once
 
 		-- Register Textures if required
-		if not E.media.blank then
+		if not E.media.blankTex  then
 			self.LSM:Register("background","ElvUI Blank", [[Interface\BUTTONS\WHITE8X8]])
 		end
 		if not E.media.glowTex then
-			self.LSM:Register("border", "ElvUI GlowBorder", [[Interface\AddOns\ElvUI\media\textures\glowTex.tga]])
+			self.LSM:Register("border", "ElvUI GlowBorder", [[Interface\AddOns\ElvUI\Game\Shared\Media\Textures\GlowTex.tga]])
 		end
 		if not E.media.normTex then
-			self.LSM:Register("statusbar","ElvUI Norm", [[Interface\AddOns\ElvUI\media\textures\normTex.tga]])
+			self.LSM:Register("statusbar","ElvUI Norm", [[Interface\AddOns\ElvUI\Game\Shared\Media\Textures\NormTex.tga]])
 		end
 
 		local prdb = self.db.profile
