@@ -23,11 +23,11 @@ ToDos
 
 #364    I/M Automatically match skinner to Ellesmere UI style (similar to what you have for ElvUI)
 
-#370    I/F Not loading on WoW Forever (lua error)
-			- Skinner/Core/UtilFuncs.lua:1269: attempt to index field 'prdb' (a nil value)
-			- Skinner/Core/Skinner.lua:328: attempt to index field 'prdb' (a nil value)
-			- Skinner/AddonSkins/ElvUI.lua:30: attempt to index upvalue 'E' (a nil value)
+#373 √	I 	attempt to index field 'ChatEditBox' (a nil value)
 
-#371 ≈	I 	attempt to perform indexed assignment on field 'MainMenuBar' (a nil value)
+#374 √	I 	attempt to concatenate field 'prefix' (a nil value) [LeatrixPlus skin bug]
 
-#372	I 	LeatrixPlus attempt to index local 'obj' (a nil value)
+#375 √	I/F Skinner/AddonSkins/ElvUI.lua:30: attempt to index upvalue 'E' (a nil value)
+			Skinner/Core/Skinner.lua:321: attempt to index field 'prdb' (a nil value)
+			Skinner/Core/UtilFuncs.lua:1269: attempt to index field 'prdb' (a nil value)
+			Skinner/Core/UtilFuncs.lua:451: attempt to index field 'prdb' (a nil value)
