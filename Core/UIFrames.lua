@@ -3196,7 +3196,9 @@ aObj.blizzFrames[ftype].Minimap = function(self)
 
 	-- Cluster Frame
 	if self.isMorF then
-		aObj:removeNineSlice(_G.MinimapCluster.BorderTop)
+		if _G.MinimapCluster.BorderTop then
+			aObj:removeNineSlice(_G.MinimapCluster.BorderTop)
+		end
 		_G.MinimapCluster.ZoneTextButton:ClearAllPoints()
 		_G.MinimapCluster.ZoneTextButton:SetPoint("BOTTOMLEFT", _G.Minimap, "TOPLEFT", 0, 5)
 		_G.MinimapCluster.ZoneTextButton:SetPoint("BOTTOMRIGHT", _G.Minimap, "TOPRIGHT", 0, 5)
