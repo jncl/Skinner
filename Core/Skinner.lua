@@ -325,7 +325,7 @@ function aObj:OnEnable()
 
 	-- schedule scan of UIParent's Children after all AddOns have been loaded
 	_G.C_Timer.After(self.prdb.Delay.Init + self.prdb.Delay.Addons + 1, function()
-		self:scanChildren{obj=_G.UIParent, cbstr="UIParent_GetChildren"}
+		self:scanChildren{obj=_G.UIParent, cbstr="UIParent_GetChildren", reversed=true}
 	end)
 
 	self:handleProfileChanges()

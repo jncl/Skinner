@@ -4,29 +4,6 @@ local _G = _G
 
 aObj.addonsToSkin.Leatrix_Plus = function(self) -- v 12.1.09/5.1.59/2.5.44/1.60.19/1.15.160
 
-	local cnt, configPanels, MainPanel = 0, {}
-	self.RegisterCallback("Leatrix_Plus", "UIParent_GetChildren", function(_, child, _)
-		if (child.t
-			and child.mt
-			and child.v)
-		then
-			cnt = cnt + 1
-			MainPanel = child
-		elseif (child.t
-			and child.c
-			and child.r
-			and child.h
-			and child.b)
-		then
-			cnt = cnt + 1
-			self:add2Table(configPanels, child)
-		end
-		if (MainPanel and #configPanels >= 1) then
-			self.UnregisterCallback("Leatrix_Plus", "UIParent_GetChildren")
-		end
-	end)
-	self:scanChildren{obj=_G.UIParent, cbstr="UIParent_GetChildren", reversed=true}
-
 	local function skinKids(frame)
 		for _, child in _G.ipairs_reverse{frame:GetChildren()} do
 			if child:IsObjectType("Slider") then
@@ -60,42 +37,66 @@ aObj.addonsToSkin.Leatrix_Plus = function(self) -- v 12.1.09/5.1.59/2.5.44/1.60.
 			end
 		end
 	end
-
-	-- Main Panel
-	self:skinObject("editbox", {obj=self:getLastChild(MainPanel)})
-	self:keepFontStrings(MainPanel, true) -- hide textures as alpha values are changed in code
-	self:skinObject("frame", {obj=MainPanel, ofs=-1})
-	if self.modBtns then
-		self:skinStdButton{obj=self:getChild(MainPanel, 1)} -- reload button
-		self:skinCloseButton{obj=self:getChild(MainPanel, 2)} -- close button
-	end
-	-- skin results frame
-	local results = self:getChild(MainPanel, 23)
-	local backFrame = self:getChild(results, 1)
-	self:removeBackdrop(backFrame)
-	self:skinObject("scrollbar", {obj=self:getChild(backFrame, 1).ScrollBar})
-	skinKids(self:getChild(self:getChild(backFrame, 1), 1))
-	-- skin Page0..9 frames
-	for i = 3, 23, 2 do
-		skinKids(self:getChild(MainPanel, i))
-	end
-
-	-- configuration panels
-	for _, cPanel in _G.pairs(configPanels) do
-		skinKids(cPanel)
-		if cPanel.backFrame then
-			self:removeBackdrop(cPanel.backFrame)
-			self:skinObject("scrollbar", {obj=cPanel.scrollFrame.ScrollBar})
-			skinKids(cPanel.scrollChild)
+	local function skinPanels(MainPanel, configPanels)
+		-- Main Panel
+		self:skinObject("editbox", {obj=self:getLastChild(MainPanel)})
+		self:keepFontStrings(MainPanel, true) -- hide textures as alpha values are changed in code
+		self:skinObject("frame", {obj=MainPanel, ofs=-1})
+		if self.modBtns then
+			self:skinStdButton{obj=self:getChild(MainPanel, 1)} -- reload button
+			self:skinCloseButton{obj=self:getChild(MainPanel, 2)} -- close button
 		end
-		self:keepFontStrings(cPanel, true) -- hide textures as alpha values are changed in code
-		self:skinObject("frame", {obj=cPanel, kfs=true, ofs=-1})
-		if cPanel.c
-		and self.modBtns
+		-- skin results frame
+		local results = self:getChild(MainPanel, 23)
+		local backFrame = self:getChild(results, 1)
+		self:removeBackdrop(backFrame)
+		self:skinObject("scrollbar", {obj=self:getChild(backFrame, 1).ScrollBar})
+		skinKids(self:getChild(self:getChild(backFrame, 1), 1))
+		-- skin Page0..9 frames
+		for i = 3, 23, 2 do
+			skinKids(self:getChild(MainPanel, i))
+		end
+		-- configuration panels
+		for _, cPanel in _G.pairs(configPanels) do
+			skinKids(cPanel)
+			if cPanel.backFrame then
+				self:removeBackdrop(cPanel.backFrame)
+				self:skinObject("scrollbar", {obj=cPanel.scrollFrame.ScrollBar})
+				skinKids(cPanel.scrollChild)
+			end
+			self:keepFontStrings(cPanel, true) -- hide textures as alpha values are changed in code
+			self:skinObject("frame", {obj=cPanel, kfs=true, ofs=-1})
+			if cPanel.c
+			and self.modBtns
+			then
+				self:skinCloseButton{obj=cPanel.c}
+			end
+		end
+	end
+	local cnt, configPanels, MainPanel = 0, {}
+	self.RegisterCallback("Leatrix_Plus", "UIParent_GetChildren", function(_, child, _)
+		if (child.t
+			and child.mt
+			and child.v)
 		then
-			self:skinCloseButton{obj=cPanel.c}
+			cnt = cnt + 1
+			MainPanel = child
+		elseif (child.t
+			and child.c
+			and child.r
+			and child.h
+			and child.b)
+		then
+			cnt = cnt + 1
+			self:add2Table(configPanels, child)
 		end
-	end
+		if MainPanel
+		and #configPanels == (cnt - 1)
+		then
+			self.UnregisterCallback("Leatrix_Plus", "UIParent_GetChildren")
+			skinPanels(MainPanel, configPanels)
+		end
+	end)
 
 	-- Enhanced Dressup (changes in DressUp frames)
 	if _G.LeaPlusDB["EnhanceDressup"] == "On"
