@@ -2196,7 +2196,7 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 			end
 			_G.ScrollUtil.AddAcquiredFrameCallback(fObj.ScrollBox, skinElement, aObj, true)
 			if self.modChkBtns then
-				 self:skinCheckButton{obj=fObj.ShowOfflineButton, hf=true}
+				 self:skinCheckButton{obj=fObj.ShowOfflineButton}
 			end
 
 			self:SecureHookScript(fObj.ColumnDisplay, "OnShow", function(frame)

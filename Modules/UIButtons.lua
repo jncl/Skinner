@@ -884,7 +884,6 @@ local function __skinCheckButton(opts)
 		Calling parameters:
 			obj   = object (Mandatory)
 			nc    = don't check to see if already skinned
-			hf    = hook show/hide functions
 			sechk = set enabled check for colour changes
 			ignNT = ignore NormalTexture checks (WoWPro uses bespoke textures)
 			size  = set object size
