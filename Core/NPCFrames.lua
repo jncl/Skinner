@@ -42,7 +42,7 @@ if aObj.isMorCorF then
 					self:skinStdButton{obj=fObj.SearchButton, fType=ftype}
 				end
 
-				self:Unhook(fObj, "OnShow")
+				self:Unhook(this.SearchBar, "OnShow")
 			end)
 
 			self:SecureHookScript(this.CategoriesList, "OnShow", function(fObj)
@@ -75,7 +75,7 @@ if aObj.isMorCorF then
 				end
 				_G.ScrollUtil.AddAcquiredFrameCallback(fObj.ScrollBox, skinCategories, aObj, true)
 
-				self:Unhook(fObj, "OnShow")
+				self:Unhook(this.CategoriesList, "OnShow")
 			end)
 
 			local function skinItemList(frame)
@@ -101,12 +101,18 @@ if aObj.isMorCorF then
 			self:SecureHookScript(this.BrowseResultsFrame, "OnShow", function(fObj)
 				skinItemList(fObj.ItemList)
 
-				self:Unhook(fObj, "OnShow")
+				self:Unhook(this.BrowseResultsFrame, "OnShow")
 			end)
 
 			self:SecureHookScript(this.WoWTokenResults, "OnShow", function(fObj)
 				fObj.Background:SetTexture(nil)
 				self:removeNineSlice(fObj.NineSlice)
+				self:removeRegions(fObj.TokenDisplay, {3}) -- background texture
+				self:skinObject("scrollbar", {obj=fObj.DummyScrollBar, fType=ftype})
+				if self.modBtns then
+					self:skinStdButton{obj=fObj.Buyout, fType=ftype, sechk=true}
+				end
+
 				self:SecureHookScript(fObj.GameTimeTutorial, "OnShow", function(frame)
 					self:removeInset(frame.Inset)
 					frame.LeftDisplay.Label:SetTextColor(self.HT:GetRGB())
@@ -118,15 +124,10 @@ if aObj.isMorCorF then
 						self:skinStdButton{obj=frame.RightDisplay.StoreButton, fType=ftype, x1=14, y1=2, x2=-14, y2=2, clr="gold"}
 					end
 
-					self:Unhook(frame, "OnShow")
+					self:Unhook(fObj.GameTimeTutorial, "OnShow")
 				end)
-				self:removeRegions(fObj.TokenDisplay, {3}) -- background texture
-				self:skinObject("scrollbar", {obj=fObj.DummyScrollBar, fType=ftype})
-				if self.modBtns then
-					self:skinStdButton{obj=fObj.Buyout, fType=ftype, sechk=true}
-				end
 
-				self:Unhook(fObj, "OnShow")
+				self:Unhook(this.WoWTokenResults, "OnShow")
 			end)
 
 			self:SecureHookScript(this.CommoditiesBuyFrame, "OnShow", function(fObj)
@@ -142,7 +143,7 @@ if aObj.isMorCorF then
 					self:skinStdButton{obj=fObj.BuyDisplay.BuyButton, fType=ftype, sechk=true}
 				end
 
-				self:Unhook(fObj, "OnShow")
+				self:Unhook(this.CommoditiesBuyFrame, "OnShow")
 			end)
 
 			self:SecureHookScript(this.ItemBuyFrame, "OnShow", function(fObj)
@@ -164,7 +165,7 @@ if aObj.isMorCorF then
 					self:setBtnClr(fObj.ItemDisplay.ItemButton, itemKeyInfo.quality)
 				end
 
-				self:Unhook(fObj, "OnShow")
+				self:Unhook(this.ItemBuyFrame, "OnShow")
 			end)
 
 			local function skinPriceInp(frame)
@@ -196,25 +197,25 @@ if aObj.isMorCorF then
 				end
 				skinPriceInp(fObj.SecondaryPriceInput.MoneyInputFrame)
 
-				self:Unhook(fObj, "OnShow")
+				self:Unhook(this.ItemSellFrame, "OnShow")
 			end)
 
 			self:SecureHookScript(this.ItemSellList, "OnShow", function(fObj)
 				skinItemList(fObj)
 
-				self:Unhook(fObj, "OnShow")
+				self:Unhook(this.ItemSellList, "OnShow")
 			end)
 
 			self:SecureHookScript(this.CommoditiesSellFrame, "OnShow", function(fObj)
 				skinSellFrame(fObj)
 
-				self:Unhook(fObj, "OnShow")
+				self:Unhook(this.CommoditiesSellFrame, "OnShow")
 			end)
 
 			self:SecureHookScript(this.CommoditiesSellList, "OnShow", function(fObj)
 				skinItemList(fObj)
 
-				self:Unhook(fObj, "OnShow")
+				self:Unhook(this.CommoditiesSellList, "OnShow")
 			end)
 
 			self:SecureHookScript(this.WoWTokenSellFrame, "OnShow", function(fObj)
@@ -228,7 +229,7 @@ if aObj.isMorCorF then
 					self:skinStdButton{obj=fObj.PostButton, fType=ftype, sechk=true}
 				end
 
-				self:Unhook(fObj, "OnShow")
+				self:Unhook(this.WoWTokenSellFrame, "OnShow")
 			end)
 
 			self:SecureHookScript(this.AuctionsFrame, "OnShow", function(fObj)
@@ -266,7 +267,7 @@ if aObj.isMorCorF then
 					self:skinStdButton{obj=fObj.BidFrame.BidButton, fType=ftype, sechk=true}
 				end
 
-				self:Unhook(fObj, "OnShow")
+				self:Unhook(this.AuctionsFrame, "OnShow")
 			end)
 
 			self:SecureHookScript(this.BuyDialog, "OnShow", function(fObj)
@@ -276,10 +277,10 @@ if aObj.isMorCorF then
 					self:skinStdButton{obj=fObj.CancelButton, fType=ftype, sechk=true}
 				end
 
-				self:Unhook(fObj, "OnShow")
+				self:Unhook(this.BuyDialog, "OnShow")
 			end)
 
-			self:Unhook(this, "OnShow")
+			self:Unhook(_G.AuctionHouseFrame, "OnShow")
 		end)
 		self:checkShown(_G.AuctionHouseFrame)
 
@@ -368,7 +369,7 @@ if aObj.isMorF then
 						self:skinStdButton{obj=frame.DepositButton, fType=ftype, sechk=true}
 					end
 
-					self:Unhook(frame, "OnShow")
+					self:Unhook(fObj.MoneyFrame, "OnShow")
 				end)
 				self:checkShown(fObj.MoneyFrame)
 
@@ -389,7 +390,7 @@ if aObj.isMorF then
 							self:skinCheckButton{obj=frame.IncludeReagentsCheckbox, fType=ftype, size=24}
 						end
 
-						self:Unhook(frame, "OnShow")
+						self:Unhook(fObj.AutoDepositFrame, "OnShow")
 					end)
 					self:checkShown(fObj.AutoDepositFrame)
 				end
@@ -400,7 +401,7 @@ if aObj.isMorF then
 						self:skinStdButton{obj=frame.TabCostFrame.PurchaseButton, fType=ftype}
 					end
 
-					self:Unhook(frame, "OnShow")
+					self:Unhook(fObj.PurchasePrompt, "OnShow")
 				end)
 				self:checkShown(fObj.PurchasePrompt)
 
@@ -409,17 +410,17 @@ if aObj.isMorF then
 					frame.Background:SetAlpha(1)
 					frame:SetFrameLevel(4) -- ensure the AutoSort button border is hidden
 
-					self:Unhook(frame, "OnShow")
+					self:Unhook(fObj.LockPrompt, "OnShow")
 				end)
 				self:checkShown(fObj.LockPrompt)
 
 				self:skinTabSettingsMenu(fObj, ftype)
 
-				self:Unhook(fObj, "OnShow")
+				self:Unhook(this.BankPanel, "OnShow")
 			end)
 			self:checkShown(this.BankPanel)
 
-			self:Unhook(this, "OnShow")
+			self:Unhook(_G.BankFrame, "OnShow")
 		end)
 		self:checkShown(_G.BankFrame)
 
@@ -439,7 +440,7 @@ if aObj.isMorF then
 				self:skinCheckButton{obj=this.HidePopupCheckbox.Checkbox, fType=ftype, size=24}
 			end
 
-			self:Unhook(this, "OnShow")
+			self:Unhook(_G.BankCleanUpConfirmationPopu, "OnShow")
 		end)
 		self:checkShown(_G.BankCleanUpConfirmationPopup)
 
@@ -483,7 +484,7 @@ if aObj.isMorC then
 				self:addButtonBorder{obj=this.HotDeal.Item, clr=this.HotDeal.Item.IconBorder:GetVertexColor()}
 			end
 
-			self:Unhook(this, "OnShow")
+			self:Unhook(_G.BlackMarketFrame, "OnShow")
 		end)
 
 	end
@@ -551,7 +552,7 @@ aObj.blizzFrames[ftype].GossipFrame = function(self)
 			self:skinStdButton{obj=this.GreetingPanel.GoodbyeButton}
 		end
 
-		self:Unhook(this, "OnShow")
+		self:Unhook(_G.GossipFrame, "OnShow")
 	end)
 	self:checkShown(_G.GossipFrame)
 
@@ -588,7 +589,7 @@ aObj.blizzFrames[ftype].GuildRegistrar = function(self)
 			self:skinStdButton{obj=_G.GuildRegistrarFramePurchaseButton}
 		end
 
-		self:Unhook(this, "OnShow")
+		self:Unhook(_G.GuildRegistrarFrame, "OnShow")
 	end)
 	self:checkShown(_G.GuildRegistrarFrame)
 
@@ -659,7 +660,7 @@ aObj.blizzFrames[ftype].MerchantFrame = function(self)
 			_G.MerchantBuyBackItemSlotTexture:SetTexture(self.tFDIDs.esTex)
 		end
 
-		self:Unhook(this, "OnShow")
+		self:Unhook(_G.MerchantFrame, "OnShow")
 	end)
 	self:checkShown(_G.MerchantFrame)
 
@@ -696,7 +697,7 @@ aObj.blizzFrames[ftype].Petition = function(self)
 			self:skinStdButton{obj=_G.PetitionFrameRenameButton, x1=1, x2=-1}
 		end
 
-		self:Unhook(this, "OnShow")
+		self:Unhook(_G.PetitionFrame, "OnShow")
 	end)
 	self:checkShown(_G.PetitionFrame)
 
@@ -720,7 +721,7 @@ if aObj.isMorF then
 			this.InsetBg:SetPoint("BOTTOMRIGHT", 0 ,0)
 			self:skinObject("frame", {obj=this, fType=ftype, cb=true})
 
-			self:Unhook(this, "OnShow")
+			self:Unhook(_G.TaxiFrame, "OnShow")
 		end)
 		self:checkShown(_G.TaxiFrame)
 
@@ -762,14 +763,14 @@ if aObj.isMorF then
 					self:addButtonBorder{obj=fObj.ShowEquippedGearSpellFrame.Button, fType=ftype, sft=true, ofs=0}
 				end
 
-		        self:Unhook(fObj, "OnShow")
+		        self:Unhook(this.OutfitCollection, "OnShow")
 		    end)
 		    self:checkShown(this.OutfitCollection)
 
 		    self:SecureHookScript(this.OutfitPopup, "OnShow", function(fObj)
 				self:skinIconSelector(fObj, ftype)
 
-		        self:Unhook(fObj, "OnShow")
+		        self:Unhook(this.OutfitPopup, "OnShow")
 		    end)
 
 		    self:SecureHookScript(this.CharacterPreview, "OnShow", function(fObj)
@@ -788,7 +789,7 @@ if aObj.isMorF then
 					self:skinCheckButton{obj=fObj.ToggleOptions.PreviewedWeaponToggle.Checkbox, fType=ftype, nh=true}
 				end
 
-		        self:Unhook(fObj, "OnShow")
+		        self:Unhook(this.CharacterPreview, "OnShow")
 		    end)
 		    self:checkShown(this.CharacterPreview)
 
@@ -841,7 +842,7 @@ if aObj.isMorF then
 						self:skinCheckButton{obj=frame.SecondaryAppearanceToggle.Checkbox, fType=ftype, nh=true}
 					end
 
-				    self:Unhook(frame, "OnShow")
+				    self:Unhook(fObj.TabContent.ItemsFrame, "OnShow")
 				end)
 				self:checkShown(fObj.TabContent.ItemsFrame)
 
@@ -867,7 +868,7 @@ if aObj.isMorF then
 						onSetModelUpdate(frame.PagedContent)
 					end
 
-					self:Unhook(frame, "OnShow")
+					self:Unhook(fObj.TabContent.SetsFrame, "OnShow")
 				end)
 
 				self:SecureHookScript(fObj.TabContent.CustomSetsFrame, "OnShow", function(frame)
@@ -881,7 +882,7 @@ if aObj.isMorF then
 						onSetModelUpdate(frame.PagedContent)
 					end
 
-				    self:Unhook(frame, "OnShow")
+				    self:Unhook(fObj.TabContent.CustomSetsFrame, "OnShow")
 				end)
 
 				self:SecureHookScript(fObj.TabContent.SituationsFrame, "OnShow", function(frame)
@@ -899,14 +900,14 @@ if aObj.isMorF then
 						self:skinCheckButton{obj=frame.EnabledToggle.Checkbox, fType=ftype, nh=true}
 					end
 
-				    self:Unhook(frame, "OnShow")
+				    self:Unhook(fObj.TabContent.SituationsFrame, "OnShow")
 				end)
 
-		        self:Unhook(fObj, "OnShow")
+		        self:Unhook(this.WardrobeCollection, "OnShow")
 		    end)
 		    self:checkShown(this.WardrobeCollection)
 
-		    self:Unhook(this, "OnShow")
+		    self:Unhook(_G.TransmogFrame, "OnShow")
 		end)
 		self:checkShown(_G.TransmogFrame)
 
@@ -980,7 +981,7 @@ aObj.blizzFrames[ftype].QuestFrame = function(self)
 			end
 		end
 
-		self:Unhook(this, "OnShow")
+		self:Unhook(_G.QuestFrame, "OnShow")
 	end)
 	self:checkShown(_G.QuestFrame)
 
@@ -1034,7 +1035,7 @@ aObj.blizzFrames[ftype].QuestFrame = function(self)
 
 		end)
 
-		self:Unhook(this, "OnShow")
+		self:Unhook(_G.QuestModelScene or _G.QuestNPCModel, "OnShow")
 	end)
 	self:checkShown(_G.QuestModelScene or _G.QuestNPCModel)
 
@@ -1140,20 +1141,20 @@ aObj.blizzFrames[ftype].QuestInfo = function(self)
 		updateQIDisplay(...)
 	end)
 
-	self:SecureHookScript(_G.QuestInfoFrame, "OnShow", function(this)
+	self:SecureHookScript(_G.QuestInfoFrame, "OnShow", function(_)
 		updateQIDisplay()
 
-		self:Unhook(this, "OnShow")
+		self:Unhook(_G.QuestInfoFrame, "OnShow")
 	end)
 
-	self:SecureHookScript(_G.QuestInfoTimerFrame, "OnShow", function(this)
+	self:SecureHookScript(_G.QuestInfoTimerFrame, "OnShow", function(_)
 		_G.QuestInfoTimerText:SetTextColor(self.BT:GetRGB())
 		_G.QuestInfoAnchor:SetTextColor(self.BT:GetRGB())
 
-		self:Unhook(this, "OnShow")
+		self:Unhook(_G.QuestInfoTimerFrame, "OnShow")
 	end)
 
-	self:SecureHookScript(_G.QuestInfoRequiredMoneyFrame, "OnShow", function(this)
+	self:SecureHookScript(_G.QuestInfoRequiredMoneyFrame, "OnShow", function(_)
 		self:SecureHook("QuestInfo_ShowRequiredMoney", function()
 			br, bg, bb = self.BT:GetRGB()
 			r, g ,b = _G.QuestInfoRequiredMoneyText:GetTextColor()
@@ -1163,7 +1164,7 @@ aObj.blizzFrames[ftype].QuestInfo = function(self)
 			end
 		end)
 
-		self:Unhook(this, "OnShow")
+		self:Unhook(_G.QuestInfoRequiredMoneyFrame, "OnShow")
 	end)
 
 	local function skinRewardsTypes(frame, type)
@@ -1185,7 +1186,7 @@ aObj.blizzFrames[ftype].QuestInfo = function(self)
 			skinRewardsTypes(this, type)
 		end
 
-		self:Unhook(this, "OnShow")
+		self:Unhook(_G.QuestInfoRewardsFrame, "OnShow")
 	end)
 
 	self:SecureHookScript(_G.MapQuestInfoRewardsFrame, "OnShow", function(this)
@@ -1193,7 +1194,7 @@ aObj.blizzFrames[ftype].QuestInfo = function(self)
 			skinRewardsTypes(this, type)
 		end
 
-		self:Unhook(this, "OnShow")
+		self:Unhook(_G.MapQuestInfoRewardsFrame, "OnShow")
 	end)
 
 end
@@ -1233,7 +1234,7 @@ aObj.blizzFrames[ftype].Tabard = function(self)
 			self:addButtonBorder{obj=_G.TabardCharacterModelRotateRightButton, ofs=-4, y2=5, clr="gold"}
 		end
 
-		self:Unhook(this, "OnShow")
+		self:Unhook(_G.TabardFrame, "OnShow")
 	end)
 	self:checkShown(_G.TabardFrame)
 
@@ -1284,7 +1285,7 @@ if aObj.isMorF then
 				 self:addButtonBorder{obj=this.skillStepButton, fType=ftype, relTo=this.skillStepButton.icon}
 			end
 
-			self:Unhook(this, "OnShow")
+			self:Unhook(_G.ClassTrainerFrame, "OnShow")
 		end)
 		self:checkShown(_G.ClassTrainerFrame)
 

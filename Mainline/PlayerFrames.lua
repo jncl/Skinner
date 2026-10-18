@@ -307,7 +307,7 @@ aObj.SetupMainline_PlayerFrames = function()
 					self:skinStdButton{obj=fObj.dupButton}
 				end
 
-				self:Unhook(fObj, "OnShow")
+				self:Unhook(this.orderFrame, "OnShow")
 			end)
 			self:checkShown(this.orderFrame)
 
