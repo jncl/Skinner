@@ -3222,12 +3222,7 @@ aObj.blizzFrames[ftype].Minimap = function(self)
 	-- use file path for non Retail versions otherwise the minimap has a green overlay
 	_G.Minimap:SetMaskTexture(self.isMorF and self.tFDIDs.w8x8 or [[Interface\Buttons\WHITE8X8]])
 	-- use a backdrop with no Texture otherwise the map tiles are obscured
-	self:skinObject("frame", {obj=_G.Minimap, fType=ftype, bd=8, ofs=5})
-	if self.prdb.Minimap.gloss then
-		_G.RaiseFrameLevel(_G.Minimap.sf)
-	else
-		_G.LowerFrameLevel(_G.Minimap.sf)
-	end
+	self:skinObject("frame", {obj=_G.Minimap, fType=ftype, ng=not self.prdb.Minimap.gloss and true, bd=8, ofs=5, y2=-4})
 
 	if self.isMorF then
 		-- N.B. copied from SexyMap
