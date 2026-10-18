@@ -675,7 +675,7 @@ local function skinFrame(tbl)
 			then
 				aObj:moveObject{obj=tbl.obj.header.text, y=tbl.hOfs}
 			else
-				aObj:moveObject{obj=aObj:getRegion(tbl.obj.header, tbl.obj.header:GetNumRegions()), y=tbl.hOfs}
+				aObj:moveObject{obj=aObj:getLastRegion(tbl.obj.header), y=tbl.hOfs}
 			end
 			-- return
 		elseif tbl.obj.Header then
@@ -963,6 +963,7 @@ local function skinStatusBar(tbl)
 			aObj:add2Table(sbG, tex)
 		end
 	end
+	-- TODO: replace with empty Raw hooks
 	-- nop Atlas functions
 	if tbl.nilFuncs then
 		tbl.obj.SetStatusBarTexture = _G.nop
@@ -1148,7 +1149,6 @@ end
 
 function aObj:skinIconSelector(frame, ftype)
 
-	ftype = ftype or "a"
 	self:keepFontStrings(frame.BorderBox)
 	frame.BorderBox.SelectedIconArea.SelectedIconButton:DisableDrawLayer("BACKGROUND")
 	self:skinObject("editbox", {obj=frame.BorderBox.IconSelectorEditBox, fType=ftype})
