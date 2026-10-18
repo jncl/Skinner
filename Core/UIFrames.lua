@@ -14,6 +14,7 @@ aObj.blizzFrames[ftype].AddonList = function(self)
 		    return
 		end
 
+		this.Performance.Divider:SetTexture(nil)
 		self:removeMagicBtnTex(this.CancelButton)
 		self:removeMagicBtnTex(this.OkayButton)
 		self:removeMagicBtnTex(this.EnableAllButton)
