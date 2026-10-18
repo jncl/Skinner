@@ -1517,10 +1517,6 @@ if aObj.isMorF then
 				for _, btn in _G.pairs(this.SmallButtons.ControlButtons) do
 					self:addButtonBorder{obj=btn, fType=ftype, ofs=-4, x1=5, y2=5, clr=self.isFrvr and "brownish" or "gold", sechk=true}
 				end
-				-- self:SecureHook(this, "UpdateZoomButtonStates", function(fObj)
-				-- 	self:clrBtnBdr(fObj.SmallButtons.ZoomOutButton, self.isFrvr and "brownish" or "gold", sechk=true)
-				-- 	self:clrBtnBdr(fObj.SmallButtons.ZoomInButton, self.isFrvr and "brownish" or "gold", sechk=true)
-				-- end)
 			end
 			if self.isFrvr then
 				if self.modChkBtns then
