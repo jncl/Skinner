@@ -2162,7 +2162,7 @@ if aObj.isMorC then
 				end
 				if self.modBtnBs then
 					if not self.isMnln then
-						self:addButtonBorder{obj=fObj.FilterButton, ftype=ftype, ofs=1}
+						self:addButtonBorder{obj=fObj.FilterButton, fType=ftype, ofs=1}
 					end
 					self:addButtonBorder{obj=fObj.RefreshButton, ofs=-2, clr="gold"}
 				end

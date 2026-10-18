@@ -457,9 +457,9 @@ local function skinDDButton(tbl)
 
 	if tbl.filter then
 		-- skin the WowStyle1FilterDropdownTemplate/WowStyle2DropdownTemplate
-		aObj:skinStdButton{obj=tbl.obj, fType=tbl.ftype, bd=5, sechk=true, y2=-2, clr=tbl.clr}
+		aObj:skinStdButton{obj=tbl.obj, fType=tbl.fType, bd=5, sechk=true, y2=-2, clr=tbl.clr}
 		if tbl.obj.ResetButton then -- WowStyle1FilterDropdownTemplate ONLY
-			aObj.modUIBtns:skinCloseButton{obj=tbl.obj[tbl.filtercb or "ResetButton"], fType=tbl.ftype, noSkin=true}
+			aObj.modUIBtns:skinCloseButton{obj=tbl.obj[tbl.filtercb or "ResetButton"], fType=tbl.fType, noSkin=true}
 			tbl.obj.arrow = tbl.obj:CreateTexture(nil, "ARTWORK", nil, 5)
 			tbl.obj.arrow:SetTexture(aObj.tFDIDs.cfEA)
 			tbl.obj.arrow:SetSize(16, 16)
@@ -471,7 +471,7 @@ local function skinDDButton(tbl)
 			tbl.obj.Background:SetTexture("")
 		end
 		if not tbl.noSF then
-			aObj:skinObject("frame", {obj=tbl.obj, fType=tbl.ftype, sechk=tbl.sechk, ofs=tbl.ofs, x1=tbl.x1, y1=tbl.y1, x2=tbl.x2, y2=tbl.y2})
+			aObj:skinObject("frame", {obj=tbl.obj, fType=tbl.fType, sechk=tbl.sechk, ofs=tbl.ofs, x1=tbl.x1, y1=tbl.y1, x2=tbl.x2, y2=tbl.y2})
 			if aObj.prdb.TabDDTextures.textureddd then
 				tbl.obj.Background:SetTexture(aObj.itTex)
 				-- offset the background within the frame
@@ -485,7 +485,7 @@ local function skinDDButton(tbl)
 			tbl.by1 = tbl.by1 or tbl.bofs
 			tbl.bx2 = tbl.bx2 or tbl.bofs
 			tbl.by2 = tbl.by2 or tbl.bofs * -1
-			aObj:addButtonBorder{obj=tbl.obj, fType=tbl.ftype, relTo=tbl.obj.Arrow, clr=tbl.clr, sechk=tbl.sechk--[[, ofs=tbl.bofs]], x1=tbl.bx1, y1=tbl.by1, x2=tbl.bx2, y2=tbl.by2}
+			aObj:addButtonBorder{obj=tbl.obj, fType=tbl.fType, relTo=tbl.obj.Arrow, clr=tbl.clr, sechk=tbl.sechk, x1=tbl.bx1, y1=tbl.by1, x2=tbl.bx2, y2=tbl.by2}
 		end
 	end
 end
@@ -513,7 +513,7 @@ local function skinDDList(tbl)
 			end
 		end
 	end
-	aObj:skinObject("frame", {obj=tbl.obj, fType=tbl.ftype, kfs=tbl.kfs, ofs=tbl.ofs})
+	aObj:skinObject("frame", {obj=tbl.obj, fType=tbl.fType, kfs=tbl.kfs, ofs=tbl.ofs})
 end
 skinFuncs.ddlist = function(table) skinDDList(table) end
 local function skinDropDown(tbl)
@@ -611,7 +611,7 @@ local function skinEditBox(tbl)
 	if tbl.cb
 	and aObj.modBtns
 	then
-		aObj:skinCloseButton{obj=tbl.obj.ClearButton or tbl.obj.clearButton, fType=tbl.ftype, noSkin=true}
+		aObj:skinCloseButton{obj=tbl.obj.ClearButton or tbl.obj.clearButton, fType=tbl.fType, noSkin=true}
 	end
 end
 skinFuncs.editbox = function(table) skinEditBox(table) end
@@ -825,9 +825,9 @@ local function skinMoneyFrame(tbl)
 		skinnedMFs[tbl.obj] = true
 	end
 
-	aObj:skinObject("editbox", {obj=tbl.obj.gold, fType=tbl.ftype})
-	aObj:skinObject("editbox", {obj=tbl.obj.silver, fType=tbl.ftype, chginset=false, x1=-4, x2=-8})
-	aObj:skinObject("editbox", {obj=tbl.obj.copper, fType=tbl.ftype, chginset=false, x1=-4, x2=-8})
+	aObj:skinObject("editbox", {obj=tbl.obj.gold, fType=tbl.fType})
+	aObj:skinObject("editbox", {obj=tbl.obj.silver, fType=tbl.fType, chginset=false, x1=-4, x2=-8})
+	aObj:skinObject("editbox", {obj=tbl.obj.copper, fType=tbl.fType, chginset=false, x1=-4, x2=-8})
 end
 skinFuncs.moneyframe = function(table) skinMoneyFrame(table) end
 local function skinScrollBar(tbl)
@@ -1097,7 +1097,7 @@ local function skinTooltip(tbl)
 			ttSB = tbl.obj.SetBackdrop
 			tbl.obj.SetBackdrop = _G.nop
 		end
-		aObj:skinObject("frame", {obj=tbl.obj, fType=tbl.ftype, kfs=true, rb=true, ofs=tbl.ofs or 0})
+		aObj:skinObject("frame", {obj=tbl.obj, fType=tbl.fType, kfs=true, rb=true, ofs=tbl.ofs or 0, noSO=true})
 		if aObj.isElvUI then
 			tbl.obj.SetBackdrop = ttSB
 		end

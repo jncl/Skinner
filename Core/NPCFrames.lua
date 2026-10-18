@@ -186,7 +186,7 @@ if aObj.isMorCorF then
 					aObj:skinStdButton{obj=frame.PostButton, fType=ftype, sechk=true}
 				end
 				if aObj.modBtnBs then
-					aObj:addButtonBorder{obj=frame.ItemDisplay.ItemButton, ftype=ftype, gibt=true, ofs=0}
+					aObj:addButtonBorder{obj=frame.ItemDisplay.ItemButton, fType=ftype, gibt=true, ofs=0}
 				end
 			end
 			self:SecureHookScript(this.ItemSellFrame, "OnShow", function(fObj)
