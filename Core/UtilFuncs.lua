@@ -210,6 +210,9 @@ function aObj:applyGradient(obj, fh, invert, rotate)
 end
 
 function aObj:applyTooltipGradient(obj)
+	--@debug@
+	_G.assert(obj, "Missing object aTG\n" .. _G.debugstack(2, 3, 2))
+	--@end-debug@
 
 	if obj:IsForbidden() then
 		--@debug@
@@ -561,6 +564,9 @@ function aObj.checkShown(_, frame)
 end
 
 function aObj:checkDisabledDD(obj, disabled)
+	--@debug@
+	_G.assert(obj, "Missing object cDDD\n" .. _G.debugstack(2, 3, 2))
+	--@end-debug@
 
 	disabled = disabled or obj.isDisabled
 	if obj.sf then
