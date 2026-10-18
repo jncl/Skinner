@@ -883,6 +883,11 @@ local function __skinCheckButton(opts)
 	--[[
 		Calling parameters:
 			obj   = object (Mandatory)
+			ofs   = offset value to use
+			x1    = X offset for TOPLEFT
+			y1    = Y offset for TOPLEFT
+			x2    = X offset for BOTTOMRIGHT
+			y2    = Y offset for BOTTOMRIGHT
 			nc    = don't check to see if already skinned
 			sechk = set enabled check for colour changes
 			ignNT = ignore NormalTexture checks (WoWPro uses bespoke textures)
