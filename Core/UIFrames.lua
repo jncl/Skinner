@@ -1062,7 +1062,7 @@ aObj.blizzFrames[ftype].ChatEditBox = function(self)
 		aObj:keepFontStrings(obj)
 		aObj:getRegion(obj, 2):SetAlpha(1) -- cursor texture
 		if aObj.prdb.ChatEditBox.style == 1 then -- Frame
-			aObj:skinObject("frame", {obj=obj, fType=ftype, ofs=-2})
+			aObj:skinObject("frame", {obj=obj, fType=ftype, sa=true, ofs=-2})
 		elseif aObj.prdb.ChatEditBox.style == 2 then -- Editbox
 			aObj:skinObject("editbox", {obj=obj, fType=ftype, regions={}, ofs=-4})
 		else -- Borderless
