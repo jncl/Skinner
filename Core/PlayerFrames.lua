@@ -1049,15 +1049,6 @@ if aObj.isMorCorF then
 			self:checkShown(_G.PetPaperDollFrame)
 		end
 
-		local skinBar
-		if self.isFrvr then
-			function skinBar(fObj)
-				_G.RunNextFrame(function()
-					aObj:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, fb=true, ofs=0})
-					fObj.Fill:SetAlpha(1)
-				end)
-			end
-		end
 		self:SecureHookScript(_G.ReputationFrame, "OnShow", function(this)
 			if _G.InCombatLockdown() then
 			    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
@@ -1100,7 +1091,7 @@ if aObj.isMorCorF then
 							elseif element.Content
 							and element.Content.ReputationBar
 							then
-								skinBar(element.Content.ReputationBar)
+								aObj:skinObject("progressbar", {obj=element.Content.ReputationBar, fType=ftype})
 							end
 						end
 					end
@@ -1124,7 +1115,7 @@ if aObj.isMorCorF then
 						end
 					else
 						self:skinObject("scrollbar", {obj=fObj.DescriptionScrollBar, fType=ftype})
-						skinBar(fObj.StandingBar)
+						self:skinObject("progressbar", {obj=fObj.StandingBar, fType=ftype})
 					end
 					if self.modBtns then
 						self:skinStdButton{obj=fObj.ViewRenownButton, fType=ftype, sechk=true}
@@ -1351,7 +1342,7 @@ if aObj.isMorCorF then
 					self:skinObject("scrollbar", {obj=fObj.DescriptionScrollBar, fType=ftype})
 					-- .Content
 					-- .Footer
-					skinBar(fObj.RankBar)
+					self:skinObject("progressbar", {obj=fObj.RankBar, fType=ftype})
 					for row in fObj.rowPools:EnumerateActive() do
 						skinRow(row)
 					end

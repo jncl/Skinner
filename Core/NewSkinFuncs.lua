@@ -188,6 +188,11 @@ aObj.skinTPLs = {
 	},
 	moneyframe = {
 	},
+	progressbar = {
+		-- fb          = true, -- frame border [bd=10, ng=true, ofs=0]
+		-- kfs         = true, -- remove all textures except font strings
+		ofs         = 0, -- skin frame offset to object
+	},
 	skin = {
 		-- ba          = 1, -- backdrop alpha
 		-- bbclr       = "default", -- backdrop border colour
@@ -828,6 +833,19 @@ local function skinMoneyFrame(tbl)
 	aObj:skinObject("editbox", {obj=tbl.obj.copper, fType=tbl.fType, chginset=false, x1=-4, x2=-8})
 end
 skinFuncs.moneyframe = function(table) skinMoneyFrame(table) end
+local function skinProgressBar(tbl)
+	--@debug@
+	_G.assert(tbl.obj, "Missing object (skinProgressBar)\n" .. _G.debugstack(2, 3, 2))
+	aObj:Debug2("skinProgressBar: [%s, %s]", tbl)
+	--@end-debug@
+
+	-- DON'T skin it twice
+	if aObj:GetSO(tbl.obj).sf then return end
+
+	aObj:skinObject("frame", {obj=tbl.obj, fType=tbl.ftype, kfs=true, fb=true, ofs=tbl.ofs})
+	tbl.obj.Fill:SetAlpha(1)
+end
+skinFuncs.progressbar = function(table) skinProgressBar(table) end
 local function skinScrollBar(tbl)
 	--@debug@
 	_G.assert(tbl.obj, "Missing object (skinScrollBar)\n" .. _G.debugstack(2, 3, 2))
