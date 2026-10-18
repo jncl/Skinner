@@ -70,8 +70,6 @@ end
 
 -- skin Templates
 aObj.skinTPLs = {
-	-- ftype = "a", -- default value
-	-- ncc = false, -- check InCombatLockdown() value
 	button = {
 		name		= false, -- use a name if required (VuhDo Options)
 		-- bg          = true, -- put into specified FrameStrata
@@ -256,10 +254,12 @@ aObj.skinTPLs = {
 		-- ofs         = 2, -- skin frame offset to object
 	},
 }
--- add type value for each table entry
+-- add default values for each table entry
 do
 	for name, optsTable in _G.pairs(aObj.skinTPLs) do
-		optsTable.type = name
+		optsTable.type  = name
+		optsTable.ncc   = false -- check InCombatLockdown() value
+		optsTable.fType = "a"   -- default value for AddOns overridden by NPC/PF/UI functions
 	end
 end
 -- use a metatable to return default values and handle the initialisation of the passed options table
@@ -268,8 +268,6 @@ _G.setmetatable(aObj.skinTPLs, {
 		_G.setmetatable(objTable, {__index = function(_, key) return aObj.skinTPLs[objType][key] end})
 		return objTable
 	end,
-	ftype = "a",
-	ncc   = false,
 })
 -- add skinning functions to this table
 local skinFuncs = {}
