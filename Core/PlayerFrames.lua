@@ -953,8 +953,7 @@ if aObj.isMorCorF then
 			if not self.isFrvr then
 				_G.CharacterModelScene:DisableDrawLayer("OVERLAY")
 			else
-				self:skinObject("frame", {obj=_G.PetPaperDollFrameExpBar, fType=ftype, kfs=true, fb=true, ofs=-2})
-				_G.PetPaperDollFrameExpBar.Fill:SetAlpha(1)
+				self:skinObject("progressbar", {obj=_G.PetPaperDollFrameExpBar, fType=ftype, ofs=-2})
 				if self.modBtnBs then
 					self:addButtonBorder{obj=_G.PetPaperDollPetHappinessInfo, fType=ftype, clr="gold"}
 				end
