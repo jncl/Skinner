@@ -2755,7 +2755,7 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 				self:skinStdButton{obj=this.Selector.OkayButton}
 			end
 		end
-		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ofs=-4})
+		self:skinObject("frame", {obj=this.Selector, fType=ftype, kfs=true--[[, noSO=true]], ofs=-4})
 
 		self:Unhook(_G.CommunitiesAvatarPickerDialog, "OnShow")
 	end)
