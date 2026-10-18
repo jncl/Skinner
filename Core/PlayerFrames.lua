@@ -1058,7 +1058,7 @@ if aObj.isMorCorF then
 			if self.isMorF then
 				self:skinObject("ddbutton", {obj=this.filterDropdown, fType=ftype})
 				self:skinObject("scrollbar", {obj=this.ScrollBar, fType=ftype})
-				local function skinElement(...)
+				local function skinReputation(...)
 					local _, element, elementData, new
 					if _G.select("#", ...) == 2 then
 						element, elementData = ...
@@ -1087,7 +1087,8 @@ if aObj.isMorCorF then
 						else
 							if elementData.isHeader then
 								aObj:getRegion(element, 1):SetTexture(nil)
-							elseif element.Content
+							end
+							if element.Content
 							and element.Content.ReputationBar
 							then
 								aObj:skinObject("progressbar", {obj=element.Content.ReputationBar, fType=ftype})
@@ -1095,10 +1096,15 @@ if aObj.isMorCorF then
 						end
 					end
 				end
-				_G.ScrollUtil.AddAcquiredFrameCallback(this.ScrollBox, skinElement, aObj, true)
+				_G.ScrollUtil.AddAcquiredFrameCallback(this.ScrollBox, skinReputation, aObj, true)
 				if self.isFrvr then
 					self:getPenultimateChild(this.ScrollBox):DisableDrawLayer("OVERLAY") -- Top Line Texture
 					self:getLastChild(this.ScrollBox):DisableDrawLayer("OVERLAY") -- Bottom Line Texture
+					-- force refresh
+					_G.RunNextFrame(function()
+						this:Hide()
+						this:Show()
+					end)
 				end
 				self:SecureHookScript(this.ReputationDetailFrame, "OnShow", function(fObj)
 					if self.isMnln then
@@ -1113,6 +1119,7 @@ if aObj.isMorCorF then
 							-- .ToggleCollapseButton
 						end
 					else
+						fObj.Divider:SetTexture(nil)
 						self:skinObject("scrollbar", {obj=fObj.DescriptionScrollBar, fType=ftype})
 						self:skinObject("progressbar", {obj=fObj.StandingBar, fType=ftype})
 					end
@@ -1318,23 +1325,34 @@ if aObj.isMorCorF then
 
 				self:skinObject("scrollbar", {obj=this.ScrollBar, fType=ftype})
 				local function skinSkill(...)
-					local _, element, elementData
+					local _, element, elementData, new
 					if _G.select("#", ...) == 2 then
 						element, elementData = ...
+					elseif _G.select("#", ...) == 3 then
+						element, elementData, new = ...
 					else
-						_, element, elementData = ...
+						_, element, elementData, new = ...
 					end
-					if elementData.isHeader then
-						aObj:getRegion(element, 1):SetTexture(nil)
-					elseif element.Content
-					and element.Content.SkillsBar
-					then
-						skinBar(element.Content.SkillsBar)
+					if new ~= false then
+						if elementData.isHeader then
+							aObj:getRegion(element, 1):SetTexture(nil)
+						end
+						if element.Content
+						and element.Content.SkillsBar
+						then
+							aObj:skinObject("progressbar", {obj=element.Content.SkillsBar, fType=ftype})
+						end
 					end
 				end
-				_G.ScrollUtil.AddInitializedFrameCallback(this.ScrollBox, skinSkill, aObj, true)
+				_G.ScrollUtil.AddAcquiredFrameCallback(this.ScrollBox, skinSkill, aObj, true)
+				-- _G.ScrollUtil.AddInitializedFrameCallback(this.ScrollBox, skinSkill, aObj, true)
 				self:getPenultimateChild(this.ScrollBox):DisableDrawLayer("OVERLAY") -- Top Line Texture
 				self:getLastChild(this.ScrollBox):DisableDrawLayer("OVERLAY") -- Bottom Line Texture
+				-- force refresh
+				_G.RunNextFrame(function()
+					this:Hide()
+					this:Show()
+				end)
 
 				self:SecureHookScript(this.SkillDetailFrame, "OnShow", function(fObj)
 					fObj.Divider:SetTexture(nil)
@@ -1394,22 +1412,19 @@ if aObj.isMorCorF then
 
 				self:skinObject("scrollbar", {obj=this.ScrollBar, fType=ftype})
 				local function skinElement(...)
-					local _, element, elementData
+					local _, element
 					if _G.select("#", ...) == 2 then
-						element, elementData = ...
+						element, _ = ...
 					else
-						_, element, elementData = ...
+						_, element, _ = ...
 					end
 					--@debug@
 					-- _G.Spew("", element)
-					-- _G.Spew("", elementData)
 					--@end-debug@
 					if element.StateIcon then
 						aObj:getRegion(element, 1):SetTexture(nil)
-						-- .StateIcon
-					else
-						-- .ToggleCollapseButton
 					end
+					-- .ToggleCollapseButton
 				end
 				_G.ScrollUtil.AddInitializedFrameCallback(this.ScrollBox, skinElement, aObj, true)
 				self:getPenultimateChild(this.ScrollBox):DisableDrawLayer("OVERLAY") -- Top Line Texture

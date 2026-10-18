@@ -3344,8 +3344,9 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 			self:moveObject{obj=_G.MinimapCluster.DielFrame, x=55, y=-25}
 			if not minBtn then
 				self:addButtonBorder{obj=_G.GameTimeFrame, fType=ftype, x2=1, y2=-1, clr="brownish"}
+				self:addButtonBorder{obj=_G.MinimapCluster.Tracking.Button, fType=ftype, clr="brownish"}
 				self:keepFontStrings(_G.AddonCompartmentFrame)
-				aObj:skinObject("button", {obj=_G.AddonCompartmentFrame, ofs=0})
+				self:skinObject("button", {obj=_G.AddonCompartmentFrame, ofs=0})
 			end
 
 		end
@@ -4117,7 +4118,7 @@ if aObj.isMorF then
 				self:keepFontStrings(fObj.BorderFrame)
 				fObj.ScrollBox.Background:SetTexture(nil)
 				self:skinObject("scrollbar", {obj=fObj.ScrollBar, fType=ftype})
-				self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, ofs=4, y1=34, y2=-12})
+				self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, ng=true, ofs=4, y1=34, y2=-12})
 				local function skinEvents(...)
 					local _, element, elementData, new
 					if _G.select("#", ...) == 2 then
@@ -4164,7 +4165,7 @@ if aObj.isMorF then
 				self:keepFontStrings(fObj.BorderFrame)
 				self:skinObject("scrollbar", {obj=fObj.ScrollFrame.ScrollBar, fType=ftype})
 				fObj.ScrollFrame.Background:SetTexture(nil)
-				self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, ofs=4, y1=34, y2=-12})
+				self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, ng=true, ofs=4, y1=34, y2=-12})
 				if self.modBtns then
 					self:skinStdButton{obj=fObj.BackButton, fType=ftype}
 				end
