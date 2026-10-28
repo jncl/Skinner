@@ -1,3 +1,18 @@
+beta12.70425.2
+Jncl:
+	Updated BigWigs skin, closes #376
+	Forever changes
+
+beta12.70425.1
+Jncl:
+	Updated ToDo*.txt files
+	Updated Change_History.txt
+	Updated Version numbers
+	Forever change
+	Bugfix for checking if AddOn is enabled, closes #375 Updated ElvUI skin
+	Updated initial scanChildren function call & LeatrixPlus skin, closes #374
+	Updated Options, closes #373
+
 beta12.70391.3
 Jncl:
 	Updated ToDo*.txt files
