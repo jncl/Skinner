@@ -2325,7 +2325,7 @@ then
 				_G.LFGParentFramePortraitIcon:SetTexture(nil)
 				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ofs=-11, x2=-29, y2=70})
 			else
-				_G.LFGParentFramePortrait.texture:SetTexture(nil)
+				_G.LFGParentFramePortrait.Texture:SetTexture(nil)
 				this.TabButtons = {this.ListingTab, this.BrowsingTab, this.WhoListingTab}
 				self:skinObject("sidetabs", {obj=this, tabs="TabButtons", fType=ftype})
 			end
@@ -2334,11 +2334,7 @@ then
 				if self.isMnln then
 					self:keepFontStrings(fObj)
 				else
-					fObj.RolesSection:DisableDrawLayer("BACKGROUND")
-					fObj.Inset.CustomBG:SetTexture(nil)
-					fObj.Inset.Border:SetTexture(nil)
-					fObj.DividerFrame.Divider:SetTexture(nil)
-					self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true})
+					self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, ofs=-11, x2=-29, y2=70})
 				end
 				for _, btn in _G.pairs(fObj.SoloRoleButtons.RoleButtons) do
 					btn.Background:SetTexture(nil)
@@ -2370,9 +2366,6 @@ then
 					self:skinObject("frame", {obj=frame.Comment, fType=ftype, kfs=true, fb=true, ofs=6})
 					frame.Comment.EditBox.Instructions:SetTextColor(self.BT:GetRGB())
 					self:skinObject("ddbutton", {obj=frame.VoiceChatDropdown, fType=ftype})
-					if self.modChkBtns then
-						self:skinCheckButton{obj=frame.LevelRangesCheckbox.Checkbox, fType=ftype}
-					end
 					self:skinObject("scrollbar", {obj=frame.ScrollBar, fType=ftype})
 					local function skinElement(...)
 						local _, element
@@ -2405,9 +2398,6 @@ then
 				if self.isMnln then
 					self:keepFontStrings(fObj)
 				else
-					fObj.Inset.CustomBG:SetTexture(nil)
-					fObj.Inset.Border:SetTexture(nil)
-					self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, ng=true})
 					self:skinObject("scrollbar", {obj=fObj.ScrollBar, fType=ftype})
 					local function skinListEntry(...)
 						local _, element
@@ -2420,6 +2410,7 @@ then
 						element.Highlight:SetTexture(nil)
 					end
 					_G.ScrollUtil.AddInitializedFrameCallback(fObj.ScrollBox, skinListEntry, aObj, true)
+					self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, ofs=-11, x2=-29, y2=70})
 				end
 				self:skinObject("ddbutton", {obj=fObj.CategoryDropdown, fType=ftype})
 				self:skinObject("ddbutton", {obj=fObj.ActivityDropdown, fType=ftype})
@@ -2503,11 +2494,9 @@ aObj.blizzLoDFrames[ftype].GuildBankUI = function(self)
 				end
 			end)
 		end
-		if not self.isClscERA then
-			self:skinObject("editbox", {obj=_G.GuildItemSearchBox, fType=ftype, si=true})
+		if this.MoneyFrameBG then
 			this.MoneyFrameBG:DisableDrawLayer("BACKGROUND")
 		end
-		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true})
 		-- Tabs (side)
 		for _, tab in _G.pairs(this.BankTabs) do
 			tab:DisableDrawLayer("BACKGROUND")
@@ -2522,6 +2511,7 @@ aObj.blizzLoDFrames[ftype].GuildBankUI = function(self)
 			self:skinObject("slider", {obj=_G.GuildBankInfo.ScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
 			self:skinObject("slider", {obj=this.Log.ScrollBar, fType=ftype, rpTex="artwork"})
 		end
+		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true})
 		if not self.isClsc then
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true, cb=true, y1=self.isClsc and -11, x2=self.isClsc and 1, y2=self.isClsc and 3 or -2})
 		else
@@ -2562,6 +2552,10 @@ aObj.blizzLoDFrames[ftype].GuildBankUI = function(self)
 
 		self:Unhook(_G.GuildBankPopupFrame, "OnShow")
 	end)
+
+	if _G.GuildItemSearchBox then
+		self:skinObject("editbox", {obj=_G.GuildItemSearchBox, fType=ftype, si=true})
+	end
 
 end
 
@@ -4107,6 +4101,7 @@ if aObj.isMorF then
 					self:Unhook(fObj.CampaignOverview, "OnShow")
 				end)
 				self:checkShown(fObj.CampaignOverview)
+
 				self:SecureHook(fObj.CampaignOverview, "UpdateCampaignLoreText", function(frame, _, _)
 					for tex in frame.texturePool:EnumerateActive() do
 						tex:SetTexture(nil) -- divider lines

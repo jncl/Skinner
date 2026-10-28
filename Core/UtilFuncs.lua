@@ -993,6 +993,10 @@ function aObj:removeInset(frame)
 	-- 	end
 	-- end
 
+	if frame.CustomBG then
+		frame.CustomBG:SetAlpha(0)
+		frame.CustomBG.SetAlpha = _G.nop
+	end
 	-- InsetFrameTemplate can have a NineSlice child
 	if frame.NineSlice then
 		self:removeNineSlice(frame.NineSlice)
