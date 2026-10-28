@@ -968,34 +968,37 @@ function aObj.removeBackdrop(_, obj, nop)
 
 end
 
--- local inset_regions = {
--- 	"BorderTopRight", "BorderBottomRight", "BorderRightMiddle", "BorderTopLeft", "BorderBottomLeft", "BorderLeftMiddle", "BorderTopMiddle", "BorderBottomMiddle", "TopLeftCorner", "TopRightCorner", "BotLeftCorner", "BotRightCorner", "TopBorder", "BottomBorder", "LeftBorder", "RightBorder",
--- }
-
+local inset_regions = {
+	"BorderTopRight", "BorderBottomRight", "BorderRightMiddle", "BorderTopLeft", "BorderBottomLeft", "BorderLeftMiddle", "BorderTopMiddle", "BorderBottomMiddle", "TopLeftCorner", "TopRightCorner", "BotLeftCorner", "BotRightCorner", "TopBorder", "BottomBorder", "LeftBorder", "RightBorder",
+}
 function aObj:removeInset(frame)
 	--@debug@
 	_G.assert(frame, "Unknown object removeInset\n" .. _G.debugstack(2, 3, 2))
 	--@end-debug@
 
-	frame:SetAlpha(0)
-	-- if frame.Bg	then
-	-- 	frame.Bg:SetAlpha(0)
-	-- end
-	-- if frame.Background	then
-	-- 	frame.Background:SetAlpha(0)
-	-- end
-	-- if frame.InsetBg then
-	-- 	frame.InsetBg:SetAlpha(0)
-	-- end
-	-- for _, reg in _G.pairs(inset_regions) do
-	-- 	if frame[reg] then
-	-- 		frame[reg]:SetAlpha(0)
-	-- 	end
-	-- end
+	-- N.B. DON'T use SetAlpha(0) on frame, it causes issues when child frames are added later, they don't appear
 
+	if frame.Bg	then
+		frame.Bg:SetAlpha(0)
+		frame.Bg.SetAlpha = _G.nop
+	end
+	if frame.Background	then
+		frame.Background:SetAlpha(0)
+		frame.Background.SetAlpha = _G.nop
+	end
 	if frame.CustomBG then
 		frame.CustomBG:SetAlpha(0)
 		frame.CustomBG.SetAlpha = _G.nop
+	end
+	if frame.InsetBg then
+		frame.InsetBg:SetAlpha(0)
+		frame.InsetBg.SetAlpha = _G.nop
+	end
+	for _, reg in _G.pairs(inset_regions) do
+		if frame[reg] then
+			frame[reg]:SetAlpha(0)
+			frame[reg].SetAlpha = _G.nop
+		end
 	end
 	-- InsetFrameTemplate can have a NineSlice child
 	if frame.NineSlice then
@@ -1018,20 +1021,27 @@ function aObj.removeMagicBtnTex(_, btn)
 
 end
 
--- local ns_regions = {
--- 	"TopLeftCorner", "TopRightCorner", "BottomLeftCorner", "BottomRightCorner", "TopEdge", "BottomEdge", "LeftEdge", "RightEdge", "Center",
--- }
+local ns_regions = {
+	"TopLeftCorner", "TopRightCorner", "BottomLeftCorner", "BottomRightCorner", "TopEdge", "BottomEdge", "LeftEdge", "RightEdge", "Center",
+}
 function aObj.removeNineSlice(_, frame)
 	--@debug@
 	_G.assert(frame, "Unknown object removeNineSlice\n" .. _G.debugstack(2, 3, 2))
+	-- aObj:Debug("removeNineSlice: [%s, %s]", frame:GetNumChildren())
 	--@end-debug@
 
-	frame:SetAlpha(0)
-	-- for _, reg in _G.pairs(ns_regions) do
-	-- 	if frame[reg] then
-	-- 		frame[reg]:SetAlpha(0)
-	-- 	end
-	-- end
+
+	if frame:GetNumChildren() == 0 then
+		frame:SetAlpha(0)
+		frame.SetAlpha = _G.nop
+	else
+		for _, reg in _G.pairs(ns_regions) do
+			if frame[reg] then
+				frame[reg]:SetAlpha(0)
+				frame[reg].SetAlpha = _G.nop
+			end
+		end
+	end
 
 end
 
