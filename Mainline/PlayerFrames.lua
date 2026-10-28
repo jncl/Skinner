@@ -317,8 +317,35 @@ aObj.SetupMainline_PlayerFrames = function()
 				fObj.inset:DisableDrawLayer("BORDER")
 				self:skinObject("scrollbar", {obj=fObj.inset.scrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
 
-				self:Unhook(fObj, "OnShow")
+				self:Unhook(this.bankTabFrame, "OnShow")
 			end)
+
+			self:SecureHookScript(this.discordFrame, "OnShow", function(fObj)
+				self:skinObject("ddbutton", {obj=fObj.serverDropdown, fType=ftype})
+				self:skinObject("ddbutton", {obj=fObj.channelDropdown, fType=ftype})
+				if self.modBtns then
+					self:skinStdButton{obj=fObj.channelButton, fType=ftype}
+				end
+
+				self:Unhook(this.discordFrame, "OnShow")
+			end)
+			self:checkShown(this.discordFrame)
+
+			self:SecureHookScript(this.rankPermFrame, "OnShow", function(fObj)
+				fObj:DisableDrawLayer("BACKGROUND")
+				self:skinObject("ddbutton", {obj=fObj.dropdown, fType=ftype})
+				self:skinObject("editbox", {obj=fObj.goldBox, fType=ftype, y1=-4, y2=4})
+				if self.modChkBtns then
+					for _, child in _G.ipairs{fObj:GetChildren()} do
+						if child:IsObjectType("CheckButton") then
+							self:skinCheckButton{obj=child}
+						end
+					end
+				end
+
+				self:Unhook(this.rankPermFrame, "OnShow")
+			end)
+			self:checkShown(this.rankPermFrame)
 
 			-- hook this as buttons are created as required, done here as inside the HookScript function is too late
 			self:SecureHook("GuildControlUI_BankTabPermissions_Update", function(_)
@@ -343,23 +370,45 @@ aObj.SetupMainline_PlayerFrames = function()
 				end
 			end)
 
-			self:SecureHookScript(this.rankPermFrame, "OnShow", function(fObj)
-				fObj:DisableDrawLayer("BACKGROUND")
-				self:skinObject("ddbutton", {obj=fObj.dropdown, fType=ftype})
-				self:skinObject("editbox", {obj=fObj.goldBox, fType=ftype, y1=-4, y2=4})
-				if self.modChkBtns then
-					for _, child in _G.ipairs{fObj:GetChildren()} do
-						if child:IsObjectType("CheckButton") then
-							self:skinCheckButton{obj=child}
-						end
+			if self.modBtns then
+				self:SecureHook("GuildControlUI_Discord_Update", function(_)
+					if _G.DiscordLinkFrame
+					and not _G.DiscordLinkFrame.button.sb
+					then
+						self:SecureHookScript(_G.DiscordLinkFrame, "OnShow", function(fObj)
+							if self.modBtns then
+								self:skinStdButton{obj=fObj.button, fType=ftype}
+							end
+							if self.modChkBtns then
+								self:skinCheckButton{obj=fObj.SeparateStream.Button, fType=ftype}
+							end
+
+							self:Unhook(_G.DiscordLinkFrame, "OnShow")
+						end)
+						self:checkShown(_G.DiscordLinkFrame)
 					end
-				end
+					if _G.DiscordUnlinkFrame
+					and not _G.DiscordUnlinkFrame.button.sb
+					then
+						self:SecureHookScript(_G.DiscordUnlinkFrame, "OnShow", function(fObj)
+							if self.modBtns then
+								self:skinStdButton{obj=fObj.button, fType=ftype}
+							end
 
-				self:Unhook(fObj, "OnShow")
-			end)
-			self:checkShown(this.rankPermFrame)
+							self:Unhook(_G.DiscordUnlinkFrame, "OnShow")
+						end)
+						self:checkShown(_G.DiscordUnlinkFrame)
+					end
 
-			self:Unhook(this, "OnShow")
+					if _G.DiscordLinkFrame
+					and _G.DiscordUnlinkFrame
+					then
+						self:Unhook("GuildControlUI_Discord_Update")
+					end
+				end)
+			end
+
+			self:Unhook(_G.GuildControlUI, "OnShow")
 		end)
 		self:checkShown(_G.GuildControlUI)
 
