@@ -6,49 +6,10 @@
 	x				- indicates nothing to change
 	¶ is Alt+7		- indicates localisation changes required
 
-	Mainline_PTR (Midnight 12.1.0) [Screen Narrator functionality added]
+	Mainline_PTR (Midnight 12.1.7)
 		- Added
-√			- Transmog.WardrobeCollection.TabContent.ItemsFrame.WeaponSheatheDropdown
-√			- BuyHouseConfirmationDialog
-√			- WorldMapCoordsPanelTemplate
 		- Updated
-≈			- AchievementUI
-x			- Blizzard_AccessibilityTemplates
-?				- UserScaledElementTemplates
-?			- ActionButtonTemplate
-?			- ExtraActionBar
-√			- Blizzard_CharacterCustomize
-√			- ChatConfigFrame
-≈			- CooldownViewerSettings
-√			- CooldownViewerSettingsAlerts
-x			- EditModeManager
-≈			- EditModeSystemTemplates
-x			- LFGList
-?			- Blizzard_GuildControlUI
-≈			- Blizzard_HousingBlueprint
-≈			- Blizzard_HouseEditorCustomizationDyeTemplates
-≈			- Blizzard_HouseEditorCustomizeMode
-≈			- Blizzard_HouseEditorLayoutModePin
-≈			- Blizzard_HouseEditorStorageFrame
-≈			- Blizzard_HouseEditorTemplates
-≈			- Blizzard_HousingControlButton
-≈			- Blizzard_HousingControls
-≈			- Blizzard_HousingDashboard
-≈			- Blizzard_HousingDashboardHouseUpgrade
-x			- Blizzard_HousingHouseFinder
-x			- Blizzard_HousingHouseSettings
-?			- Blizzard_PingUI
-?			- Blizzard_SpellBookTemplates
-?			- Blizzard_RecentAlliesTemplates
-?			- RecruitAFriendFrame
-?			- SharedUIPanelTemplates
-?			- SecureUIPanelTemplates
-≈			- InputBoxTemplates
-?			- SharedTooltipTemplates
-x			- Blizzard_SimpleCheckout
-?			- UIPanelTemplates
-x			- CastingBarFrame
-?			- CompactUnitFrame
-≈			- UIWidgetBelowMinimapContainerFrame
+√			- ProfessionsBook
+√			- Collections
+√			- QuestMap
 		- Deleted
-√			- BattleTagInviteFrame

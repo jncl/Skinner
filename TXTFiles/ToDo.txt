@@ -21,13 +21,10 @@ ToDos
 
 #354  	I/M Blizzard_SharedXML/LayoutFrame.lua:491: attempt to compare a secret number value (execution tainted by 'Skinner')
 
-#364    I/M Automatically match skinner to Ellesmere UI style (similar to what you have for ElvUI)
+#364 ≈  I/M Automatically match Skinner to Ellesmere UI style (similar to what you have for ElvUI)
 
-#373 √	I 	attempt to index field 'ChatEditBox' (a nil value)
+#377 √	I/M EncounterJournalNavBarOverflowButton:SetNormalFontObject(): Usage: ("fontname" or fontObject)
 
-#374 √	I 	attempt to concatenate field 'prefix' (a nil value) [LeatrixPlus skin bug]
+#378 √	I/F Skinner/AddonSkins/Baganator.lua:91: attempt to index field 'TitleText' (a nil value)
 
-#375 √	I/F Skinner/AddonSkins/ElvUI.lua:30: attempt to index upvalue 'E' (a nil value)
-			Skinner/Core/Skinner.lua:321: attempt to index field 'prdb' (a nil value)
-			Skinner/Core/UtilFuncs.lua:1269: attempt to index field 'prdb' (a nil value)
-			Skinner/Core/UtilFuncs.lua:451: attempt to index field 'prdb' (a nil value)
+#379 ≈	S/M	Voidcore Advisor Reborn
