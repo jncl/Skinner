@@ -460,6 +460,7 @@ local function __skinOtherButton(opts)
 			disfont = disabled font to use
 			text    = text to use
 			ncc 	= DON'T check combat state
+			size    = set object size
 	--]]
 	--@debug@
 	_G.assert(opts and _G.type(opts) == "table", "Missing options table __sOB\n" .. _G.debugstack(2, 3, 2))
@@ -498,6 +499,9 @@ local function __skinOtherButton(opts)
 			opts.y2 = opts.y2 or bW == 32 and 6 or 4
 			aObj:skinObject("button", {obj=opts.obj, fType=opts.ftype, bd=5, aso=opts.aso, x1=opts.x1, y1=opts.y1, x2=opts.x2, y2=opts.y2})
 		end
+	end
+	if opts.size then
+		opts.obj:SetSize(opts.size, opts.size)
 	end
 end
 function module.skinOtherButton(_, ...)

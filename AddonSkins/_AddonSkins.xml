@@ -242,6 +242,7 @@
 <Script file="TukUI.lua"/>
 <Script file="Vendomatic.lua"/>
 <Script file="VenturePlan.lua"/>
+<Script file="VoidcoreAdvisorReborn.lua"/>
 <Script file="VuhDo.lua"/>
 <Script file="WarCampaignsComplete.lua"/>
 <Script file="WeakAuras.lua"/>
