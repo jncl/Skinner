@@ -51,8 +51,6 @@ Core\_Core.xml
 
 [Family]\_Support.xml
 
-Forever\_Support.xml [AllowLoadGameType camelot][ExcludeLoadGameType standard, classic]
-
 Modules\_Modules.xml
 
 AddonSkins\_AddonSkins.xml
