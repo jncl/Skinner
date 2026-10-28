@@ -85,6 +85,7 @@
 <Script file="DetailsFramework.lua"/>
 <Script file="Dominos_Config.lua"/>
 <Script file="EasyMail.lua"/>
+<Script file="EllesmereUI.lua"/>
 <Script file="ElvUI.lua"/>
 <Script file="EnhanceQoL.lua"/>
 <Script file="ERC.lua"/>
