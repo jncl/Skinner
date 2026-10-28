@@ -37,7 +37,7 @@ function aObj:checkWoWVersion()
 
 	local agentUID = _G.C_CVar.GetCVar("agentUID")
 	--@debug@
-	-- aObj:Debug("agentUID: [%s, %s]", agentUID)
+	aObj:Debug2("agentUID: [%s, %s]", agentUID)
 	--@end-debug@
 
 	-- handle different country versions, e.g. wow_enus
@@ -46,7 +46,11 @@ function aObj:checkWoWVersion()
 			agentUID = "wow"
 		elseif _G.WOW_PROJECT_ID == _G.WOW_PROJECT_CLASSIC then
 			agentUID = "wow_classic_era"
-		else
+		elseif _G.WOW_PROJECT_ID == _G.WOW_PROJECT_BURNING_CRUSADE_CLASSIC then
+			agentUID = "wow_classic_anniversary"
+		elseif _G.WOW_PROJECT_ID == _G.WOW_PROJECT_CAMELOT then
+			agentUID = "wow_forever"
+		elseif _G.WOW_PROJECT_ID == _G.WOW_PROJECT_MISTS_CLASSIC then
 			agentUID = "wow_classic"
 		end
 	end
@@ -56,36 +60,38 @@ function aObj:checkWoWVersion()
 	--@end-debug@
 
 	-- check to see which WoW version we are running on
-	self.isClscBeta   = agentUID == "wow_classic_beta" and true
-	self.isClscPTR    = agentUID == "wow_classic_ptr" and true
-	self.isClsc       = agentUID == "wow_classic" and true
+	self.isMnln       = agentUID == "wow"                     and true
+	self.isMnlnBeta   = agentUID == "wow_beta"                and true
+	self.isMnlnPTR    = agentUID == "wow_ptr"                 and true
+	self.isMnlnPTRX   = agentUID == "wow_ptr_x"               and true
+	self.isClscERA    = agentUID == "wow_classic_era"         and true
+	self.isClscERAPTR = agentUID == "wow_classic_era_ptr"     and true
 	self.isClscBCA    = agentUID == "wow_classic_anniversary" and true
-	self.isClscERAPTR = agentUID == "wow_classic_era_ptr" and true
-	self.isClscERA    = agentUID == "wow_classic_era" and true
-	self.isMnlnBeta   = agentUID == "wow_beta" and true
-	self.isMnlnPTR    = agentUID == "wow_ptr" and true
-	self.isMnlnPTRX   = agentUID == "wow_ptr_x" and true
-	self.isMnln       = agentUID == "wow" and true
-
-	-- check for Forever Beta (Camelot) as it uses the same directory as Classic Beta
-	self.isClscBeta = not self.isFrvr and self.isClscBeta or false
+	self.isClsc       = agentUID == "wow_classic"             and true
+	self.isClscBeta   = agentUID == "wow_classic_beta"        and true
+	self.isClscPTR    = agentUID == "wow_classic_ptr"         and true
+	self.isFrvr       = agentUID == "wow_forever"             and true
 
 	--@debug@
-	self:Debug2("checkVersion #2: [%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s]", self.isClscBeta, self.isClscPTR, self.isClsc, self.isClscERAPTR, self.isClscERA, self.isClscBCA, self.isMnlnBeta, self.isMnlnPTR, self.isMnlnPTRX, self.isMnln, self.isFrvr)
+	self:Debug2("checkVersion #2: [%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s]", self.isMnln,  self.isMnlnBeta, self.isMnlnPTR, self.isMnlnPTRX, self.isClscERA, self.isClscERAPTR, self.isClscBCA, self.isClsc, self.isClscBeta, self.isClscPTR, self.isFrvr)
 	--@end-debug@
 
 	-- handle PTR and Beta versions
-	self.isClscERA    = self.isClscERA  or self.isClscERAPTR
-	-- self.isClscBCA    = self.isClscBCA  or self.isClscBCAPTR
+	self.isClscERA    = self.isClscERA or self.isClscERAPTR
 	self.isClscPTR    = self.isClscPTR or self.isClscBeta
-	self.isClsc       = self.isClsc or self.isClscPTR
+	self.isClsc       = self.isClsc    or self.isClscPTR
 	self.isMnlnPTR    = self.isMnlnPTR or self.isMnlnBeta
-	self.isMnln       = self.isMnln or self.isMnlnPTR or self.isMnlnPTRX
+	self.isMnln       = self.isMnln    or self.isMnlnPTR    or self.isMnlnPTRX
+
+	-- create shorthand variables for Mainline, Forever & Classic version similarities
+	self.isMorF       = self.isMnln or self.isFrvr and true
+	self.isMorC       = self.isMnln or self.isClsc and true
+	self.isMorCorF    = self.isMorC or self.isFrvr and true
 
 	self.isPatch = not compareBuildInfo(agentUID, "curr", true)
 	if self.isPatch then
 		if self.isMnln then
-			self.isMnlnPTR = compareBuildInfo("curr", "wow_ptr",false)
+			self.isMnlnPTR = compareBuildInfo("curr", "wow_ptr", false)
 			self.isMnlnPTRX = compareBuildInfo("curr", "wow_ptr_x", false)
 		elseif self.isClsc then
 			self.isClscPTR = compareBuildInfo("curr", "wow_classic_ptr", false)
@@ -95,17 +101,11 @@ function aObj:checkWoWVersion()
 	end
 
 	--@debug@
-	self:Debug2("checkVersion #3: [%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s]", self.isClscBeta, self.isClscPTR, self.isClsc, self.isClscERAPTR, self.isClscERA, self.isClscBCA, self.isMnlnBeta, self.isMnlnPTR, self.isMnlnPTRX, self.isMnln, self.isFrvr, self.isPatch)
-
+	self:Debug2("checkVersion #3: [%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s]", self.isMnln,  self.isMnlnBeta, self.isMnlnPTR, self.isMnlnPTRX, self.isClscERA, self.isClscERAPTR, self.isClscBCA, self.isClsc, self.isClscBeta, self.isClscPTR, self.isFrvr, self.isPatch)
+	self:Debug2("checkVersion #3.5: [%s, %s, %s]", self.isMorF,  self.isMorC, self.isMorCorF)
 	self:Printf("%s, %d, %s, %d, %s, %d, %s", buildInfo[agentUID][2], buildInfo[agentUID][3], buildInfo.curr[2], buildInfo.curr[3], buildInfo.curr[4], buildInfo.curr[5] , agentUID)
-
 	_G.DEFAULT_CHAT_FRAME:AddMessage(_G.strjoin(": ", aName , "Game version is", buildInfo[agentUID][1]), 0.75, 0.5, 0.25, nil, true)
 	--@end-debug@
-
-	-- create shorthand variables for Mainline, Forever & Classic version similarities
-	self.isMorF    = self.isMnln or self.isFrvr and true
-	self.isMorC    = self.isMnln or self.isClsc and true
-	self.isMorCorF = self.isMorC or self.isFrvr and true
 
 	-- --[===[@non-debug@
 	-- self.isRtl = self.isMnln
