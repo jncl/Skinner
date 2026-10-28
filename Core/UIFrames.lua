@@ -311,6 +311,14 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 		end, true)
 	end
 
+	if self.isClsc then
+		self:SecureHookScript(_G.TalentMicroButtonAlert, "OnShow", function(this)
+			self:skinObject("glowbox", {obj=this, fType=ftype})
+
+			self:Unhook(_G.TalentMicroButtonAlert, "OnShow")
+		end)
+	end
+
 end
 
 aObj.blizzFrames[ftype].AutoComplete = function(self)
@@ -2939,14 +2947,6 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 	-- this is done here as other AddOns may require it to be skinned
 	if self.modBtnBs then
 		self:addButtonBorder{obj=_G.MainMenuBarVehicleLeaveButton, fType=ftype, schk=true}
-	end
-
-	if self.isClsc then
-		self:SecureHookScript(_G.TalentMicroButtonAlert, "OnShow", function(this)
-			self:skinObject("glowbox", {obj=this, fType=ftype})
-
-			self:Unhook(this, "OnShow")
-		end)
 	end
 
 	if self.prdb.MainMenuBar.skin then
