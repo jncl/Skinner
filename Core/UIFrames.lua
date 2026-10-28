@@ -4083,9 +4083,9 @@ if aObj.isMorF then
 						self:skinStdButton{obj=frame.BackFrame.BackButton}
 						-- .DestinationMapButton
 						-- .WaypointMapButton
-						self:skinStdButton{obj=frame.AbandonButton}
-						self:skinStdButton{obj=frame.ShareButton}
-						self:skinStdButton{obj=frame.TrackButton, x2=-2}
+						self:skinStdButton{obj=frame.AbandonButton, schk=true}
+						self:skinStdButton{obj=frame.ShareButton, sechk=true}
+						self:skinStdButton{obj=frame.TrackButton, schk=true, x2=-2}
 					end
 
 					self:Unhook(fObj.DetailsFrame, "OnShow")
@@ -4216,9 +4216,9 @@ if aObj.isMorF then
 			self:skinObject("scrollbar", {obj=this.ScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true})
 			if self.modBtns then
-				self:skinStdButton{obj=this.AbandonButton}
-				self:skinStdButton{obj=this.TrackButton}
-				self:skinStdButton{obj=this.ShareButton}
+				self:skinStdButton{obj=this.AbandonButton, schk=true}
+				self:skinStdButton{obj=this.ShareButton, sechk=true}
+				self:skinStdButton{obj=this.TrackButton, schk=true}
 			end
 			if self.modBtnBs then
 				self:addButtonBorder{obj=this.ShowMapButton, relTo=this.ShowMapButton.Texture, x1=2, y1=-1, x2=-2, y2=1}
@@ -4256,20 +4256,6 @@ if aObj.isMorF then
 				hdr.HighlightTexture:SetTexture(self.tFDIDs.qltHL)
 			end
 		end)
-		if self.modBtns then
-			self:SecureHook("QuestMapFrame_UpdateQuestDetailsButtons", function()
-				if _G.QuestMapFrame.DetailsFrame.AbandonButton.sb then
-					self:clrBtnBdr(_G.QuestMapFrame.DetailsFrame.AbandonButton)
-					self:clrBtnBdr(_G.QuestMapFrame.DetailsFrame.TrackButton)
-					self:clrBtnBdr(_G.QuestMapFrame.DetailsFrame.ShareButton)
-					if _G.QuestLogPopupDetailFrame.AbandonButton.sb then
-						self:clrBtnBdr(_G.QuestLogPopupDetailFrame.AbandonButton)
-						self:clrBtnBdr(_G.QuestLogPopupDetailFrame.TrackButton)
-						self:clrBtnBdr(_G.QuestLogPopupDetailFrame.ShareButton)
-					end
-				end
-			end)
-		end
 
 	end
 end
