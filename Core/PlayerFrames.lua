@@ -5292,7 +5292,7 @@ if aObj.isMorF then
 		if not self.prdb.Professions or self.initialized.ProfessionsCustomerOrders then return end
 
 		if not _G.ProfessionsCustomerOrdersFrame then
-			_G.C_Timer.After(0.1, function()
+			_G.RunNextFrame(function()
 				self.blizzLoDFrames[ftype].ProfessionsCustomerOrders(self)
 			end)
 			return
