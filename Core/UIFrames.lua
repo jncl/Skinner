@@ -766,7 +766,7 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 						tab:GetFontString():SetTextColor(_G.NORMAL_FONT_COLOR.r, _G.NORMAL_FONT_COLOR.g, _G.NORMAL_FONT_COLOR.b)
 					end
 				end
-				aObj:skinObject("tabs", {obj=ctm, tabs=ctmtabs, fType=ftype, upwards=true, ignoreHLTex=false, offsets={x1=0, y1=aObj.isTT and -10 or -12, x2=0, y2=aObj.isTT and -5 or 0}, regions={8, 9, 10, 11}, noCheck=true, func=setTabState})
+				aObj:skinObject("tabs", {obj=ctm, tabs=ctmtabs, fType=ftype, upwards=true, ignoreHLTex=false, offsets={x1=0, y1=aObj.isTT and -10 or -12, x2=0, y2=aObj.isTT and -5 or 0}, regions={8, 9, 10, 11}, nc=true, func=setTabState})
 			end
 			skinTabs(fObj)
 			self:SecureHook(fObj, "UpdateSelection", function(frame, _)
