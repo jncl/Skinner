@@ -1953,52 +1953,6 @@ if aObj.isMorCorF then
 		end)
 		self:checkShown(_G.WardrobeCollectionFrame)
 
-		if not self.isMorCorF then
-			self:SecureHookScript(_G.WardrobeFrame, "OnShow", function(this)
-				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true, cb=true, x2=3, y2=-1})
-
-				self:Unhook(this, "OnShow")
-			end)
-			self:checkShown(_G.WardrobeFrame)
-			-- used by Transmog as well as Appearance
-			self:SecureHookScript(_G.WardrobeTransmogFrame, "OnShow", function(this)
-				this:DisableDrawLayer("ARTWORK")
-				self:removeInset(this.Inset)
-				self:skinObject("ddbutton", {obj=this.OutfitDropdown, fType=ftype})
-				if self.isMnln then
-					this.ModelScene.ControlFrame:DisableDrawLayer("BACKGROUND")
-				end
-				for _, btn in _G.pairs(this.SlotButtons) do
-					btn.Border:SetTexture(nil)
-					if self.isClsc then
-						btn.StatusBorder:SetTexture(nil)
-						btn.HiddenVisualCover:SetScale(0.8) -- make it fit within button border
-					end
-					if self.modBtnBs then
-						 self:addButtonBorder{obj=btn, fType=ftype, ofs=-1}
-					end
-				end
-				self:skinObject("ddbutton", {obj=this.SpecDropdown, fType=ftype, noSF=true})
-				if self.modBtns then
-					self:skinStdButton{obj=this.OutfitDropdown.SaveButton, sechk=true}
-					self:skinStdButton{obj=this.ApplyButton, fType=ftype, ofs=0, sechk=true}
-				end
-				if self.modBtnBs then
-					if self.isMnln then
-						self:addButtonBorder{obj=this.ModelScene.ClearAllPendingButton, fType=ftype, relTo=this.ModelScene.ClearAllPendingButton.Icon, ofs=5}
-					elseif self.isClsc then
-						self:addButtonBorder{obj=this.Model.ClearAllPendingButton, fType=ftype, relTo=this.Model.ClearAllPendingButton.Icon}
-					end
-				end
-				if self.modChkBtns then
-					self:skinCheckButton{obj=this.ToggleSecondaryAppearanceCheckbox, fType=ftype}
-				end
-
-				self:Unhook(this, "OnShow")
-			end)
-			self:checkShown(_G.WardrobeTransmogFrame)
-		end
-
 		if self.isMnln then
 			-- a.k.a. Campsites
 			self:SecureHookScript(_G.WarbandSceneJournal, "OnShow", function(this)
