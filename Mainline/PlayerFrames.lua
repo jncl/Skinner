@@ -367,60 +367,114 @@ aObj.SetupMainline_PlayerFrames = function()
 
 	aObj.blizzLoDFrames[ftype].ProfessionsBook = function(self)
 		if not self.prdb.ProfessionsBook or self.initialized.ProfessionsBook then return end
+
+		if not _G.ProfessionsBookFrame then
+			_G.RunNextFrame(function()
+				self.blizzLoDFrames[ftype].ProfessionsBook(self)
+		    end)
+		    return
+		end
+
 		self.initialized.ProfessionsBook = true
 
 		self:SecureHookScript(_G.ProfessionsBookFrame, "OnShow", function(this)
 			self:skinMainHelpBtn(this)
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true})
 
-			local function skinProf(type, times)
-				local objName, obj
-				for i = 1, times do
-					objName = type .. "Profession" .. i
-					obj =_G[objName]
-					if type == "Primary" then
-						_G[objName .. "IconBorder"]:Hide()
-						-- make icon square
-						aObj:makeIconSquare(obj, "icon")
-						if not obj.missingHeader:IsShown() then
-							obj.icon:SetDesaturated(nil) -- show in colour
-							if aObj.modBtnBs then
-								aObj:clrBtnBdr(obj)
+			local skinProf, objName, obj, pBtn
+			if not aObj.isMnlnPTR then
+				function skinProf(type, times)
+					for i = 1, times do
+						objName = type .. "Profession" .. i
+						obj =_G[objName]
+						if type == "Primary" then
+							_G[objName .. "IconBorder"]:Hide()
+							-- make icon square
+							aObj:makeIconSquare(obj, "icon")
+							if not obj.missingHeader:IsShown() then
+								obj.icon:SetDesaturated(nil) -- show in colour
+								if aObj.modBtnBs then
+									aObj:clrBtnBdr(obj)
+								end
+							else
+								if aObj.modBtnBs then
+									aObj:clrBtnBdr(obj, "disabled")
+								end
 							end
 						else
+							obj.missingHeader:SetTextColor(aObj.HT:GetRGB())
+						end
+						obj.missingText:SetTextColor(aObj.BT:GetRGB())
+						for j = 1, 2 do
+							pBtn = obj["SpellButton" .. j]
+							pBtn:DisableDrawLayer("BACKGROUND")
+							pBtn.subSpellString:SetTextColor(aObj.BT:GetRGB())
 							if aObj.modBtnBs then
-								aObj:clrBtnBdr(obj, "disabled")
+								aObj:addButtonBorder{obj=pBtn, sft=true}
 							end
 						end
-					else
-						obj.missingHeader:SetTextColor(aObj.HT:GetRGB())
+						aObj:removeRegions(obj.statusBar, {2, 3, 4, 5, 6})
+						aObj:skinObject("statusbar", {obj=obj.statusBar, fi=0})
+						obj.statusBar:SetStatusBarColor(0, 1, 0, 1)
+						obj.statusBar:SetHeight(12)
+						obj.statusBar.rankText:SetPoint("CENTER", 0, 0)
+						aObj:moveObject{obj=obj.statusBar, x=-12}
 					end
-					obj.missingText:SetTextColor(aObj.BT:GetRGB())
-					local pBtn
-					for j = 1, 2 do
-						pBtn = obj["SpellButton" .. j]
-						pBtn:DisableDrawLayer("BACKGROUND")
-						pBtn.subSpellString:SetTextColor(aObj.BT:GetRGB())
-						if aObj.modBtnBs then
-							aObj:addButtonBorder{obj=pBtn, sft=true}
+				end
+				skinProf("Primary", 2)
+				skinProf("Secondary", 3)
+				if self.modBtnBs then
+					self:SecureHook("ProfessionsBookFrame_Update", function()
+						local prof1, prof2, _, _, _ = _G.GetProfessions()
+						self:clrBtnBdr(_G.PrimaryProfession1, not prof1 and "disabled")
+						self:clrBtnBdr(_G.PrimaryProfession2, not prof2 and "disabled")
+					end)
+				end
+			else
+				function skinProf(type, times)
+					for i = 1, times do
+						objName = type .. "Profession" .. i
+						obj = this.ProfessionsContentFrame[objName]
+						if type == "Primary" then
+							obj.IconBorder:Hide()
+							aObj:makeIconSquare(obj, "icon")
+							if not obj.missingHeader:IsShown() then
+								obj.icon:SetDesaturated(nil) -- show in colour
+								if aObj.modBtnBs then
+									aObj:clrBtnBdr(obj)
+								end
+							else
+								if aObj.modBtnBs then
+									aObj:clrBtnBdr(obj, "disabled")
+								end
+							end
+						else
+							obj.missingHeader:SetTextColor(aObj.HT:GetRGB())
+						end
+						obj.missingText:SetTextColor(aObj.BT:GetRGB())
+						for j = 1, 2 do
+							pBtn = obj["SpellButton" .. j]
+							pBtn:DisableDrawLayer("BACKGROUND")
+							pBtn.subSpellString:SetTextColor(aObj.BT:GetRGB())
+							if aObj.modBtnBs then
+								aObj:addButtonBorder{obj=pBtn, sft=true}
+							end
+							aObj:removeRegions(obj.StatusBar, {2, 3, 4, 5, 6})
+							aObj:skinObject("statusbar", {obj=obj.StatusBar, fi=0})
+							obj.StatusBar:SetStatusBarColor(0, 1, 0, 1)
+							obj.StatusBar:SetHeight(12)
+							obj.StatusBar.rankText:SetPoint("CENTER", 0, 0)
 						end
 					end
-					aObj:removeRegions(obj.statusBar, {2, 3, 4, 5, 6})
-					aObj:skinObject("statusbar", {obj=obj.statusBar, fi=0})
-					obj.statusBar:SetStatusBarColor(0, 1, 0, 1)
-					obj.statusBar:SetHeight(12)
-					obj.statusBar.rankText:SetPoint("CENTER", 0, 0)
-					aObj:moveObject{obj=obj.statusBar, x=-12}
 				end
-			end
-			skinProf("Primary", 2)
-			skinProf("Secondary", 3)
-			if self.modBtnBs then
-				self:SecureHook("ProfessionsBookFrame_Update", function()
-					local prof1, prof2, _, _, _ = _G.GetProfessions()
-					self:clrBtnBdr(_G.PrimaryProfession1, not prof1 and "disabled")
-					self:clrBtnBdr(_G.PrimaryProfession2, not prof2 and "disabled")
-				end)
+				skinProf("Primary", 2)
+				skinProf("Secondary", 3)
+				if self.modBtnBs then
+					self:SecureHook(_G.ProfessionsBookFrameMixin, "FormatProfession", function(_, frame, index)
+						aObj:Debug("PBFM FormatProfession: [%s, %s]", frame, index)
+						self:clrBtnBdr(frame, not index and "disabled")
+					end)
+				end
 			end
 
 			self:Unhook(this, "OnShow")

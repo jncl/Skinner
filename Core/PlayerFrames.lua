@@ -1544,10 +1544,14 @@ if aObj.isMorCorF then
 		self.initialized.Collections = true
 
 		self:SecureHookScript(_G.CollectionsJournal, "OnShow", function(this)
-			if self.isMorC then
-				self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true, selectedTab=this.selectedTab})
+			if not aObj.isMnlnPTR then
+				if self.isMorC then
+					self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true, selectedTab=this.selectedTab})
+				else
+					self:skinObject("sidetabs", {obj=this.TabContainer, tabs="Tabs", fType=ftype})
+				end
 			else
-				self:skinObject("sidetabs", {obj=this.TabContainer, tabs="Tabs", fType=ftype})
+				self:skinObject("tabs", {obj=this.TabContainer, prefix=this:GetName(), fType=ftype, lod=self.isTT and true, selectedTab=this.selectedTab})
 			end
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true, cb=true, x2=self.Rtl and 3 or 1, y2=-2})
 

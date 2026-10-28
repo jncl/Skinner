@@ -3201,7 +3201,7 @@ aObj.blizzFrames[ftype].Minimap = function(self)
 	if self.isMorF then
 		if self.isFrvr then
 			_G.MinimapCluster.ZoneTextButton:DisableDrawLayer("BACKGROUND")
-		else
+		elseif not self.isMnlnPTR then
 			aObj:removeNineSlice(_G.MinimapCluster.BorderTop)
 		end
 		_G.MinimapCluster.ZoneTextButton:ClearAllPoints()
