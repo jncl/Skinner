@@ -56,9 +56,9 @@ local function setScrollTrackOffsets(tbl, type)
 			tbl.x2 = _G.rawget(tbl, "x2") or -3
 			tbl.y1 = _G.rawget(tbl, "y1") or -1
 			tbl.y2 = _G.rawget(tbl, "y2") or 1
-		elseif w == 25 then -- EditModeImportLayout ScrollFrame
-			tbl.x1 = _G.rawget(tbl, "x1") or --[[not aObj.isMnln and 2 or]] 0
-			tbl.x2 = _G.rawget(tbl, "x2") or --[[not aObj.isMnln and 4 or]] 0
+		elseif w == 25 then -- EditModeImportLayout ScrollFrame or Classic CommunitiesGuildLogFrame
+			tbl.x1 = _G.rawget(tbl, "x1") or not aObj.isMnln and 2 or 0
+			tbl.x2 = _G.rawget(tbl, "x2") or not aObj.isMnln and 4 or 0
 		end
 		tbl.y1 = _G.rawget(tbl, "y1") or 0
 		tbl.y2 = _G.rawget(tbl, "y2") or 0
@@ -102,7 +102,7 @@ aObj.skinTPLs = {
 		-- x1 			= -2,
 		-- y1 			= -2,
 		-- x2 			= -2,
-		-- y3 			= -2,
+		-- y2 			= -2,
 		-- sechk 		= false,
 	},
 	ddlist = {
@@ -251,7 +251,7 @@ aObj.skinTPLs = {
 		offsets     = aObj.isMorF and {x1=0, y1=2, x2=-2, y2=0} or {x1=8, y1=2, x2=-8, y2=2},
 		ignoreHLTex = true,
 		track       = true,
-		noCheck     = false,
+		nc          = false,
 		func        = nil,
 		pool		= false, -- uses TabSystem .tabPool (DF)
 	},
@@ -366,11 +366,13 @@ local function skinButton(tbl)
 	aObj:Debug2("skinButton [%s]", tbl)
 	--@end-debug@
 
+	-- DON'T skin it twice
 	if tbl.obj.sb
 	or tbl.noSkin
 	then
 		return
 	end
+
 	if tbl.name then
 		tbl.name = tbl.obj:GetName() .. "~sb~"
 	end
@@ -451,7 +453,7 @@ local function skinDDButton(tbl)
 	aObj:Debug2("skinDDButton: [%s]", tbl)
 	--@end-debug@
 
-	-- don't skin it twice
+	-- DON'T skin it twice
 	if tbl.obj.sf
 	or tbl.obj.sb
 	then
@@ -460,7 +462,7 @@ local function skinDDButton(tbl)
 
 	if tbl.filter then
 		-- skin the WowStyle1FilterDropdownTemplate/WowStyle2DropdownTemplate
-		aObj:skinStdButton{obj=tbl.obj, fType=tbl.fType, bd=5, sechk=true, y2=-2, clr=tbl.clr}
+		aObj:skinStdButton{obj=tbl.obj, fType=tbl.fType, bd=5, sechk=true, ofs=tbl.ofs, x1=tbl.x1, y1=tbl.y1, x2=tbl.x2, y2=tbl.y2, clr=tbl.clr}
 		if tbl.obj.ResetButton then -- WowStyle1FilterDropdownTemplate ONLY
 			aObj.modUIBtns:skinCloseButton{obj=tbl.obj[tbl.filtercb or "ResetButton"], fType=tbl.fType, noSkin=true}
 			tbl.obj.arrow = tbl.obj:CreateTexture(nil, "ARTWORK", nil, 5)
@@ -525,8 +527,9 @@ local function skinDropDown(tbl)
 	aObj:Debug2("skinDropDown: [%s]", tbl)
 	--@end-debug@
 
-	-- don't skin it twice
+	-- DON'T skin it twice
 	if tbl.obj.sf then return end
+
 	-- hide textures
 	aObj:removeRegions(tbl.obj, tbl.regions)
 	-- return if not to be skinned
@@ -578,10 +581,8 @@ local function skinEditBox(tbl)
 	aObj:Debug2("skinEditBox: [%s]", tbl)
 	--@end-debug@
 
-	-- don't skin it twice
-	if tbl.obj.sf then
-		return
-	end
+	-- DON'T skin it twice
+	if tbl.obj.sf then return end
 
 	aObj:removeRegions(tbl.obj, tbl.regions)
 	aObj:skinObject("frame", {obj=tbl.obj, fType=tbl.fType, bd=tbl.bd, ng=true, ncc=tbl.ncc, ofs=tbl.ofs, x1=tbl.x1, y1=tbl.y1, x2=tbl.x2, y2=tbl.y2, clr="slider"})
@@ -630,9 +631,9 @@ local function skinFrame(tbl)
 	aObj:Debug2("skinFrame [%s]", tbl)
 	--@end-debug@
 
-	if tbl.obj.sf then
-		return
-	end
+	-- DON'T skin it twice
+	if tbl.obj.sf then return end
+
 	-- DON'T add a frame border if not required
 	if tbl.chkfb
 	and not aObj.prdb.FrameBorders
@@ -792,8 +793,9 @@ local function skinGlowBox(tbl)
 	aObj:Debug2("skinGlowBox: [%s]", tbl)
 	--@end-debug@
 
-	-- don't skin it twice
+	-- DON'T skin it twice
 	if tbl.obj.sf then return end
+
 	-- remove Arrow Glow texture
 	if tbl.obj.Glow then
 		tbl.obj.Glow:SetTexture(nil)
@@ -819,7 +821,7 @@ local function skinMoneyFrame(tbl)
 	aObj:Debug2("skinMoneyFrame: [%s]", tbl)
 	--@end-debug@
 
-	-- don't skin it twice unless required
+	-- DON'T skin it twice unless required
 	if skinnedMFs[tbl.obj]
 	and not tbl.ncc
 	then
@@ -840,7 +842,7 @@ local function skinProgressBar(tbl)
 	--@end-debug@
 
 	-- DON'T skin it twice
-	if aObj:GetSO(tbl.obj).sf then return end
+	if tbl.obj.sf then return end
 
 	aObj:skinObject("frame", {obj=tbl.obj, fType=tbl.ftype, kfs=true, fb=true, ofs=tbl.ofs})
 	tbl.obj.Fill:SetAlpha(1)
@@ -853,8 +855,9 @@ local function skinScrollBar(tbl)
 	aObj:Debug2("skinScrollBar: [%s, %s]", tbl)
 	--@end-debug@
 
-	-- don't skin it twice
+	-- DON'T skin it twice
 	if tbl.obj.sf then return end
+
 	-- remove textures
 	tbl.obj:DisableDrawLayer("BACKGROUND")
 	-- handle .Background frame being hijacked by a .Background texture
@@ -901,8 +904,9 @@ local function skinSlider(tbl)
 	aObj:Debug2("skinSlider: [%s, %s]", tbl)
 	--@end-debug@
 
-	-- don't skin it twice
+	-- DON'T skin it twice
 	if tbl.obj.sf then return end
+
 	-- remove textures
 	aObj:keepFontStrings(tbl.obj)
 	-- remove parent's textures
@@ -932,12 +936,14 @@ local function skinStatusBar(tbl)
 
 	-- apply StatusBar texture
 	tbl.obj:SetStatusBarTexture(aObj.sbTexture)
-	-- don't skin it twice
+
+	-- DON'T skin it twice
 	if not aObj.sbGlazed[tbl.obj] then
 		aObj.sbGlazed[tbl.obj] = {}
 	else
 		return
 	end
+
 	-- create local object
 	sbG = aObj.sbGlazed[tbl.obj]
 	-- remove texture regions
@@ -987,9 +993,9 @@ local function skinTabs(tbl)
 	aObj:Debug2("skinTabs: [%s]", tbl)
 	--@end-debug@
 
-	-- don't skin it twice unless required (Ace3)
+	-- DON'T skin it twice unless required (Ace3)
 	if _G.tContains(aObj.tabFrames, tbl.obj)
-	and not tbl.noCheck
+	and not tbl.nc
 	then
 		return
 	end
@@ -1108,6 +1114,7 @@ local function skinTooltip(tbl)
 	--@end-debug@
 
 	if not tbl.obj then return end
+
 	if not tbl.obj.sf then
 		-- Bugfix for ElvUI
 		if aObj.isElvUI then
