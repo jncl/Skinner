@@ -3,16 +3,17 @@ local aName, aObj = ...
 local _G = _G
 
 local buildInfo = {
-	wow_classic_beta    	= {"Forever Beta",					"1.60.1", 70425},
 	-- wow_beta            	= {"Midnight Beta",             	"12.0.1", 66220},
+	-- wow_classic_beta    	= {"Forever Beta",					"1.60.1", 70532},
 	wow_classic_ptr     	= {"PTR (MoP Classic)",				"5.5.4",  67849},
 	wow_classic_era_ptr 	= {"PTR (Classic Era)",         	"2.5.6",  70006},
-	wow_ptr             	= {"PTR (Midnight 12.1.7)",			"12.1.7", 70424},
+	wow_ptr             	= {"PTR (Midnight 12.1.7)",			"12.1.7", 70493},
 	wow_ptr_x           	= {"PTR (Midnight 12.1.5",      	"12.1.5", 70340},
-	wow_classic_anniversary	= {"Burning Crusade Anniversary",	"2.5.6",  70006},
-	wow_classic_era     	= {"World of Warcraft Classic", 	"1.15.9", 70003},
-	wow_classic         	= {"Mists of Panderia Classic", 	"5.5.4",  70268},
-	wow                 	= {"World of Warcraft",         	"12.1.5", 70391},
+	wow_classic_anniversary	= {"Burning Crusade Anniversary",	"2.5.6",  70577},
+	wow_classic_era     	= {"World of Warcraft Classic", 	"1.15.9", 70576},
+	wow_classic         	= {"Mists of Panderia Classic", 	"5.5.4",  70631},
+	wow_forever         	= {"World of Warcraft Forever", 	"1.60.1", 70685},
+	wow                 	= {"World of Warcraft",         	"12.1.5", 70575},
 	curr                	= {"curr", _G.GetBuildInfo()},
 }
 
