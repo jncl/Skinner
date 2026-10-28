@@ -3928,22 +3928,23 @@ if aObj.isMorF then
 			_G.InspectModelFrame:DisableDrawLayer("OVERLAY")
 			_G.InspectModelFrame.controlFrame:DisableDrawLayer("BACKGROUND")
 			self.RegisterCallback("IPDF", "IPDIF_GetChildren", function(_, child, _)
-				if self:hasTextInName(child, "Slot")
-				and self.modBtnBs
-				then
-					child:DisableDrawLayer("BACKGROUND")
-					self:addButtonBorder{obj=child, fType=ftype, ibt=true}
-				elseif self:hasTextInDebugNameRE(child, "InspectTalents$")
-				and self.modBtns
-				then
-					self:skinStdButton{obj=child, fType=ftype, sechk=true}
-					if _G.C_AddOns.IsAddOnLoaded("BetterCharacterPanel") then
-						child:SetSize(102, 24)
-						child.Text:SetPoint("CENTER", 0, 0)
-						self:moveObject{obj=child, x=-15, y=35}
-						child.LeftHighlight:SetTexture(nil)
-						child.RightHighlight:SetTexture(nil)
-						child.MiddleHighlight:SetTexture(nil)
+				if self.modBtnBs then
+					if self:hasTextInName(child, "Slot") then
+						child:DisableDrawLayer("BACKGROUND")
+						self:addButtonBorder{obj=child, fType=ftype, ibt=true}
+						if self.isFrvr then
+							child.BorderFrame:SetAlpha(0)
+						end
+					elseif self:hasTextInDebugNameRE(child, "InspectTalents$") then
+						self:skinStdButton{obj=child, fType=ftype, sechk=true}
+						if _G.C_AddOns.IsAddOnLoaded("BetterCharacterPanel") then
+							child:SetSize(102, 24)
+							child.Text:SetPoint("CENTER", 0, 0)
+							self:moveObject{obj=child, x=-15, y=35}
+							child.LeftHighlight:SetTexture(nil)
+							child.RightHighlight:SetTexture(nil)
+							child.MiddleHighlight:SetTexture(nil)
+						end
 					end
 				end
 			end)
