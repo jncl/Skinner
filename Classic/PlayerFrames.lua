@@ -733,7 +733,7 @@ aObj.SetupClassic_PlayerFrames = function()
 			if not self.prdb.TalentUI or self.initialized.GlyphUI then return end
 			self.initialized.GlyphUI = true
 
-			local clrBB, fName
+			local clrBB = _G.nop
 			if self.modBtnBs then
 				function clrBB(btn)
 					if btn.sbb then
@@ -749,22 +749,21 @@ aObj.SetupClassic_PlayerFrames = function()
 						clrBB(btn)
 					end
 				end)
-			else
-				clrBB = _G.nop
 			end
 			self:SecureHookScript(_G.GlyphFrame, "OnShow", function(this)
-				fName = this:GetName()
 				self:keepFontStrings(this)
 				this.levelOverlayText1:SetTextColor(self.HT:GetRGB())
 				this.levelOverlayText2:SetTextColor(self.HT:GetRGB())
 				self:removeInset(this.sideInset)
-				this.sideInset:DisableDrawLayer("BACKGROUND")
-				self:skinObject("editbox", {obj=_G[fName .. "SearchBox"], fType=ftype, si=true})
-				self:skinObject("ddbutton", {obj=this.FilterDropdown, fType=ftype})
-				self:skinObject("slider", {obj=_G[fName .. "ScrollFrameScrollBar"], fType=ftype, rpTex="background", x1=2, x2=-3})
-				for i = 1, #_G.GLYPH_TYPE_INFO do
-					self:removeRegions(_G[fName .. "Header" .. i], {1, 2, 3})
+				_G.GlyphFrameSideInsetBackground:SetTexture(nil)
+				if self.modBtnBs then
+					self:addButtonBorder{obj=this.clearInfo, fType=ftype}
 				end
+				self:skinObject("editbox", {obj=_G.GlyphFrameSearchBox, fType=ftype, si=true})
+				self:skinObject("ddbutton", {obj=this.FilterDropdown, fType=ftype})
+				self:skinObject("slider", {obj=_G.GlyphFrameScrollFrameScrollBar, fType=ftype, rpTex="background", x1=2, x2=-3})
+				self:removeRegions(_G.GlyphFrameHeader1, {1, 2, 3})
+				self:removeRegions(_G.GlyphFrameHeader2, {1, 2, 3})
 				for _, btn in _G.pairs(this.scrollFrame.buttons) do
 					btn:GetNormalTexture():SetTexture(nil)
 					btn.disabledBG:SetTexture(nil)
@@ -772,9 +771,6 @@ aObj.SetupClassic_PlayerFrames = function()
 						self:addButtonBorder{obj=btn, fType=ftype, relTo=btn.icon}
 						clrBB(btn)
 					end
-				end
-				if self.modBtnBs then
-					self:addButtonBorder{obj=this.clearInfo, fType=ftype}
 				end
 
 				self:Unhook(this, "OnShow")
