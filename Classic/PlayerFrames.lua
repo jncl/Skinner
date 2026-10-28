@@ -1329,7 +1329,7 @@ aObj.SetupClassic_PlayerFrames = function()
 		self.initialized.TalentUI = true
 
 		if self.isClsc then
-			local specBtnRegs = self.isClsc and {1, 2, 3} or {1, 2, 3, 8}
+			local specBtnRegs = {1, 2, 3, 9} -- .bg, .ring, .selectedTex, .learnedTex
 			local btn
 			self:SecureHook("PlayerTalentFrame_UpdateSpecFrame", function(frame, _)
 				for i = 1, 10 do
@@ -1349,7 +1349,6 @@ aObj.SetupClassic_PlayerFrames = function()
 						self:clrBBC(frame.spellsScroll.child.sbb, frame.disabled and "disabled" or "gold")
 					end
 				end
-
 			end)
 			self:SecureHookScript(_G.PlayerTalentFrame, "OnShow", function(this)
 				self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true})
@@ -1358,7 +1357,6 @@ aObj.SetupClassic_PlayerFrames = function()
 					if self.modBtnBs then
 						self:addButtonBorder{obj=_G["PlayerSpecTab" .. i], ofs=3}
 					end
-
 				end
 				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, y2=-4})
 				self:removeMagicBtnTex(_G.PlayerTalentFrameActivateButton)
@@ -1389,14 +1387,14 @@ aObj.SetupClassic_PlayerFrames = function()
 				self:SecureHookScript(_G.PlayerTalentFrameSpecialization, "OnShow", function(fObj)
 					skinSpecFrame(fObj)
 
-					self:Unhook(fObj, "OnShow")
+					self:Unhook(_G.PlayerTalentFrameSpecialization, "OnShow")
 				end)
 				self:checkShown(_G.PlayerTalentFrameSpecialization)
 
 				self:SecureHookScript(_G.PlayerTalentFramePetSpecialization, "OnShow", function(fObj)
 					skinSpecFrame(fObj)
 
-					self:Unhook(fObj, "OnShow")
+					self:Unhook(_G.PlayerTalentFramePetSpecialization, "OnShow")
 				end)
 
 				self:SecureHookScript(_G.PlayerTalentFrameTalents, "OnShow", function(fObj)
@@ -1407,10 +1405,10 @@ aObj.SetupClassic_PlayerFrames = function()
 						self:skinStdButton{obj=fObj.learnButton, fType=ftype, schk=true}
 					end
 
-					self:Unhook(fObj, "OnShow")
+					self:Unhook(_G.PlayerTalentFrameTalents, "OnShow")
 				end)
 
-				self:Unhook(this, "OnShow")
+				self:Unhook(_G.PlayerTalentFrame, "OnShow")
 			end)
 			self:checkShown(_G.PlayerTalentFrame)
 		else
@@ -1457,7 +1455,7 @@ aObj.SetupClassic_PlayerFrames = function()
 					skinTalentBtns()
 				end)
 
-				self:Unhook(this, "OnShow")
+				self:Unhook(_G.PlayerTalentFrame, "OnShow")
 			end)
 			self:checkShown(_G.PlayerTalentFrame)
 		end
