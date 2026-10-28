@@ -98,6 +98,9 @@ function aObj.adjWidth(_, ...)
 end
 
 function aObj:addFrameBorder(opts)
+	--@debug@
+	_G.assert(false, "addFrameBorder now replaced by skinframe's chkfb=true option" .. _G.debugstack(2, 3, 2))
+	--@end-debug@
 
 	self:skinObject("frame", {obj=opts.obj, kfs=opts.kfs, aso=opts.aso or nil, chkfb=true, ofs=opts.ofs or 0, x1=opts.x1 or nil, y1=opts.y1 or nil, x2=opts.x2 or nil, y2=opts.y2 or nil})
 
@@ -430,9 +433,8 @@ function aObj:checkAndRun(funcName, funcType, LoD, quiet)
 	--@debug@
 	_G.assert(funcName, "Unknown functionName checkAndRun\n" .. _G.debugstack(2, 3, 2))
 	_G.assert(funcType, "Unknown functionType checkAndRun\n" .. _G.debugstack(2, 3, 2))
-	--@end-debug@
-
 	self:Debug2("checkAndRun: [%s, %s, %s, %s]", funcName, funcType, LoD, quiet)
+	--@end-debug@
 
 	-- handle in combat
 	if _G.InCombatLockdown() then
@@ -481,9 +483,8 @@ end
 function aObj:checkAndRunAddOn(addonName, addonFunc, LoD)
 	--@debug@
 	_G.assert(addonName, "Unknown object checkAndRunAddOn\n" .. _G.debugstack(2, 3, 2))
-	--@end-debug@
-
 	self:Debug2("checkAndRunAddOn #1: [%s, %s, %s, %s]", addonName, addonFunc, LoD, _G.type(addonFunc))
+	--@end-debug@
 
 	-- handle in combat
 	if _G.InCombatLockdown() then
