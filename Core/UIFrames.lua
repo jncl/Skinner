@@ -2573,7 +2573,7 @@ aObj.blizzFrames[ftype].HelpFrame = function(self)
 			this.TitleContainer.TitleBg:SetTexture(nil)
 		end
 		self:removeInset(this.Browser.BrowserInset)
-		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true, ri=true, rns=true, cb=true, x1=2, x2=2, y2=0})
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true, ri=true, rns=true, cb=true, x1=3, y2=-1})
 
 		self:Unhook(_G.HelpFrame, "OnShow")
 	end)
