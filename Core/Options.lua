@@ -1323,6 +1323,7 @@ aObj.SetupOptions = function(self)
 		["Raid UI"]             = true,
 		["Ready Check"]         = {suff = "Frame"},
 		["Role Poll Popup"]     = self.isMorC and true or nil,
+		["Social UI"]           = self.isMorF and {desc = "Social Frame"} or nil,
 		["Trade Frame"]         = true,
 	}
 	self:setupFramesOptions(pfOptTab, "Player")

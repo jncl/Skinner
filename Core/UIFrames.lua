@@ -135,8 +135,8 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 	else
 		alertType["Achievement"].y1         = -10
 		alertType["Achievement"].y2         = 10
-		alertType["Loot"].stn               = {"SpecRing"}
-		alertType["Loot"].ib                = true
+		alertType["Loot"].stn               = not self.isFrvr and {"SpecRing"} or nil
+		alertType["Loot"].ib                = not self.isFrvr and true or nil
 		alertType["StorePurchase"]          = not self.isFrvr and {ofs = -12, ddl = {"background"}} or nil
 	end
 
@@ -1247,6 +1247,7 @@ if aObj.isMorF then
 		BarBackground:ClearAllPoints()
 		BarBackground:SetAllPoints(obj.Bar)
 	end
+
 	aObj.blizzFrames[ftype].CooldownViewer = function(self)
 		if not self.prdb.CooldownViewer.buttons or self.initialized.CooldownViewer then return end
 		self.initialized.CooldownViewer = true
@@ -2436,7 +2437,7 @@ then
 
 					self:skinObject("editbox", {obj=fObj.EditBox, fType=ftype, si=true, y1=-4, y2=4})
 					self:skinObject("ddbutton", {obj=fObj.FilterDropdown, fType=ftype, filter=true})
-					self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, ng=true})
+					self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true})
 					if self.modBtns then
 						self:skinStdButton{obj=fObj.WhoSearch, fType=ftype, clr="gold"}
 					end
@@ -4131,7 +4132,7 @@ if aObj.isMorF then
 				self:keepFontStrings(fObj.BorderFrame)
 				fObj.ScrollBox.Background:SetTexture(nil)
 				self:skinObject("scrollbar", {obj=fObj.ScrollBar, fType=ftype})
-				self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, ng=true, ofs=4, y1=34, y2=-12})
+				self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, ng=self.isFrvr and true or nil, ofs=4, y1=34, y2=-12})
 				local function skinEvents(...)
 					local _, element, elementData, new
 					if _G.select("#", ...) == 2 then
@@ -4189,7 +4190,7 @@ if aObj.isMorF then
 				self:keepFontStrings(fObj.BorderFrame)
 				self:skinObject("scrollbar", {obj=fObj.ScrollFrame.ScrollBar, fType=ftype})
 				fObj.ScrollFrame.Background:SetTexture(nil)
-				self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, ng=true, ofs=4, y1=34, y2=-12})
+				self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, ng=self.isFrvr and true or nil, ofs=4, y1=34, y2=-12})
 				if self.modBtns then
 					self:skinStdButton{obj=fObj.BackButton, fType=ftype}
 				end
