@@ -3897,6 +3897,11 @@ if aObj.isMorF then
 		self.initialized.InspectUI = true
 
 		self:SecureHookScript(_G.InspectFrame, "OnShow", function(this)
+			if _G.InCombatLockdown() then
+			    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+			    return
+			end
+
 			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true})
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true})
 
@@ -3909,6 +3914,11 @@ if aObj.isMorF then
 		self:checkShown(_G.InspectFrame)
 
 		self:SecureHookScript(_G.InspectPaperDollFrame, "OnShow", function(this)
+			if _G.InCombatLockdown() then
+			    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+			    return
+			end
+
 			_G.InspectModelFrame:DisableDrawLayer("BACKGROUND")
 			_G.InspectModelFrame:DisableDrawLayer("BORDER")
 			_G.InspectModelFrame:DisableDrawLayer("OVERLAY")
@@ -3955,6 +3965,11 @@ if aObj.isMorF then
 			for _, slot in _G.ipairs(this.Slots) do
 				slot.Border:SetTexture(nil)
 				self:makeIconSquare(slot, "Texture", "gold")
+			if _G.InCombatLockdown() then
+			    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+			    return
+			end
+
 			end
 
 			self:Unhook(_G.InspectPVPFrame, "OnShow")
@@ -3964,6 +3979,10 @@ if aObj.isMorF then
 		-- N.B. InspectTalentFrame now replaced by new TalentUI
 
 		self:SecureHookScript(_G.InspectGuildFrame, "OnShow", function(this)
+			if _G.InCombatLockdown() then
+			    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+			    return
+			end
 			_G.InspectGuildFrameBG:SetAlpha(0)
 			this.Points:DisableDrawLayer("BACKGROUND")
 

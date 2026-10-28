@@ -4045,6 +4045,11 @@ if aObj.isMorF then
 			self:moveObject{obj=this.QuestsTab, x=-3}
 
 			self:SecureHookScript(this.QuestsFrame, "OnShow", function(fObj) -- a.k.a. QuestScrollFrame (NOT PTRX)
+				if _G.InCombatLockdown() then
+				    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+				    return
+				end
+
 				self:skinObject("scrollbar", {obj=fObj.ScrollFrame.ScrollBar, fType=ftype})
 				fObj.ScrollFrame.Background:SetAlpha(0)
 				fObj.ScrollFrame.Edge:SetTexture(nil)
@@ -4059,6 +4064,11 @@ if aObj.isMorF then
 				self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, ofs=4, y1=5, y2=-12})
 
 				self:SecureHookScript(fObj.DetailsFrame, "OnShow", function(frame)
+					if _G.InCombatLockdown() then
+					    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+					    return
+					end
+
 					self:keepFontStrings(frame)
 					self:keepFontStrings(frame.BorderFrame)
 					self:keepFontStrings(frame.BackFrame)
@@ -4083,6 +4093,11 @@ if aObj.isMorF then
 				self:checkShown(fObj.DetailsFrame)
 
 				self:SecureHookScript(fObj.CampaignOverview, "OnShow", function(frame)
+					if _G.InCombatLockdown() then
+					    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+					    return
+					end
+
 					self:keepFontStrings(frame.BorderFrame)
 					self:keepFontStrings(frame.Header)
 					self:skinObject("scrollbar", {obj=frame.ScrollFrame.ScrollBar, fType=ftype})
@@ -4113,6 +4128,11 @@ if aObj.isMorF then
 			self:checkShown(this.QuestsFrame)
 
 			self:SecureHookScript(this.EventsFrame, "OnShow", function(fObj)
+				if _G.InCombatLockdown() then
+				    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+				    return
+				end
+
 				self:keepFontStrings(fObj.BorderFrame)
 				fObj.ScrollBox.Background:SetTexture(nil)
 				self:skinObject("scrollbar", {obj=fObj.ScrollBar, fType=ftype})
@@ -4151,6 +4171,11 @@ if aObj.isMorF then
 			self:checkShown(this.EventsFrame)
 
 			self:SecureHookScript(this.QuestSessionManagement, "OnShow", function(fObj)
+				if _G.InCombatLockdown() then
+				    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+				    return
+				end
+
 				fObj.BG:SetTexture(nil)
 				if self.modBtnBs then
 					self:addButtonBorder{obj=fObj.ExecuteSessionCommand, ofs=1, clr="gold"}
@@ -4161,6 +4186,11 @@ if aObj.isMorF then
 			self:checkShown(this.QuestSessionManagement)
 
 			self:SecureHookScript(this.MapLegend, "OnShow", function(fObj)
+				if _G.InCombatLockdown() then
+				    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+				    return
+				end
+
 				self:keepFontStrings(fObj.BorderFrame)
 				self:skinObject("scrollbar", {obj=fObj.ScrollFrame.ScrollBar, fType=ftype})
 				fObj.ScrollFrame.Background:SetTexture(nil)
@@ -4199,6 +4229,10 @@ if aObj.isMorF then
 		self:checkShown(_G.QuestLogPopupDetailFrame)
 
 		self:SecureHook("QuestLogQuests_Update", function(_)
+			if _G.InCombatLockdown() then
+			    return
+			end
+
 			for hdr in _G.QuestScrollFrame.titleFramePool:EnumerateActive() do
 				self:keepFontStrings(hdr)
 				if self.modChkBtns then
@@ -4248,6 +4282,11 @@ then
 		self.initialized.QuestTimer = true
 
 		self:SecureHookScript(_G.QuestTimerFrame, "OnShow", function(this)
+			if _G.InCombatLockdown() then
+			    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+			    return
+			end
+
 			if this.Border then
 				self:keepFontStrings(this.Border)
 			end
