@@ -344,7 +344,12 @@ local function applySkin(tbl)
 	if _G.type(tbl.bbclr) == "table" then
 		tbl.obj:SetBackdropBorderColor(_G.unpack(tbl.bbclr))
 	else
-		aObj:clrBBC(tbl.obj, tbl.bbclr, tbl.bba)
+		-- ensure disabled state is displayed properly
+		if tbl.obj:IsObjectType("Button") then
+			aObj:clrBtnBdr(tbl.obj:GetParent(), tbl.bbclr, tbl.bba)
+		else
+			aObj:clrFrameBdr(tbl.obj:GetParent(), tbl.bbclr, tbl.bba)
+		end
 	end
 	if tbl.bbclr then
 		tbl.obj.clr = tbl.bbclr
