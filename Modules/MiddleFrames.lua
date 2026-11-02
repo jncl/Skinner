@@ -110,8 +110,9 @@ local function adjustFrame(key)
 		then
 			fh = db.fheight <= _G.Round(frame:GetHeight()) and db.fheight or _G.Round(frame:GetHeight())
 		end
-		aObj:skinObject("skin", {obj=frame, fType=ftype, bba=db.borderOff and 0 or 1, fh=fh})
+		aObj:skinObject("skin", {obj=frame, fType=ftype, fh=fh, ncb=true})
 		frame:SetBackdropColor(db.colour.r, db.colour.g, db.colour.b, db.colour.a)
+		aObj:clrBBC(frame, "default", db.borderOff and 0 or 1)
 		frame:Show()
 		frames[key] = frame
 	elseif frames[key] then

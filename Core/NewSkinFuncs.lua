@@ -202,6 +202,7 @@ aObj.skinTPLs = {
 		-- fh          =,
 		-- invert      =,
 		-- rotate      =,
+		ncb         = false, -- DON'T colour the frame border [bugfix #380]
 	},
 	scrollbar = {
 		-- bd          = 4, -- narrow
@@ -343,7 +344,7 @@ local function applySkin(tbl)
 	tbl.obj:SetBackdropColor(r, g, b, tbl.ba or a)
 	if _G.type(tbl.bbclr) == "table" then
 		tbl.obj:SetBackdropBorderColor(_G.unpack(tbl.bbclr))
-	else
+	elseif not tbl.ncb then -- bugfix #380
 		-- ensure disabled state is displayed properly
 		if tbl.obj:IsObjectType("Button") then
 			aObj:clrBtnBdr(tbl.obj:GetParent(), tbl.bbclr, tbl.bba)

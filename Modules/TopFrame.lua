@@ -68,7 +68,8 @@ function module.adjustTopFrame(_)
 		then
 			fh = db.fheight <= _G.Round(topframe:GetHeight()) and db.fheight or _G.Round(topframe:GetHeight())
 		end
-		aObj:skinObject("skin", {obj=topframe, fType=ftype, bba=db.borderOff and 0 or 1, ba=db.alpha, fh=fh, invert=db.invert or nil, rotate=db.rotate or nil})
+		aObj:skinObject("skin", {obj=topframe, fType=ftype, ba=db.alpha, fh=fh, ncb=true, invert=db.invert or nil, rotate=db.rotate or nil})
+		aObj:clrBBC(topframe, "default", db.borderOff and 0 or 1)
 		-- adjust the TopFrame offset
 		topOfs = -db.height
 		if topOfs < UIPtopOfs then

@@ -68,7 +68,8 @@ function module.adjustBottomFrame(_)
 		then
 			fh = db.fheight <= _G.Round(btmframe:GetHeight()) and db.fheight or _G.Round(btmframe:GetHeight())
 		end
-		aObj:skinObject("skin", {obj=btmframe, fType=ftype, bba=db.borderOff and 0 or 1, ba=db.alpha, fh=fh, invert=db.invert or nil, rotate=db.rotate or nil})
+		aObj:skinObject("skin", {obj=btmframe, fType=ftype, ba=db.alpha, fh=fh, ncb=true, invert=db.invert or nil, rotate=db.rotate or nil})
+		aObj:clrBBC(btmframe, "default", db.borderOff and 0 or 1)
 		btmframe:Show()
 	elseif btmframe then
 		btmframe:Hide()
