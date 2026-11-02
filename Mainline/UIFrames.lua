@@ -3180,21 +3180,10 @@ aObj.SetupMainline_UIFrames = function()
 					end
 					aObj:skinObject("frame", {obj=opt, fType=ftype, clr=opt.optionInfo.rarityColor and {opt.optionInfo.rarityColor:GetRGBA()} or "gold_df"})
 					resizeSF(opt, 0)
-					if aObj.modBtns then
-						_G.CypherPlayerChoiceToggleButton:DisableDrawLayer("ARTWORK")
-						_G.CypherPlayerChoiceToggleButton:GetHighlightTexture():SetAlpha(0) -- texture changed in code
-						_G.CypherPlayerChoiceToggleButton.Text:SetDrawLayer("OVERLAY")
-						aObj:skinStdButton{obj=_G.CypherPlayerChoiceToggleButton, fType=ftype, ofs=-8, x1=30, x2=-30, clr="gold"}
-					end
 				elseif frame.optionFrameTemplate == "PlayerChoiceGenericPowerChoiceOptionTemplate" then -- Delves Power Choice
 					opt.BackgroundContainer:DisableDrawLayer("BACKGROUND")
 					aObj:skinObject("frame", {obj=opt, fType=ftype, clr=opt.optionInfo.rarityColor and {opt.optionInfo.rarityColor:GetRGBA()} or "silver"})
 					resizeSF(opt, 0)
-					if aObj.modBtns then
-						_G.GenericPlayerChoiceToggleButton:DisableDrawLayer("ARTWORK")
-						_G.GenericPlayerChoiceToggleButton.Text:SetDrawLayer("OVERLAY")
-						aObj:skinStdButton{obj=_G.GenericPlayerChoiceToggleButton, fType=ftype, ofs=-8, x1=30, x2=-30, clr="silver"}
-					end
 				end
 			end
 		end
@@ -3212,6 +3201,21 @@ aObj.SetupMainline_UIFrames = function()
 			self:Unhook(this, "OnShow")
 		end)
 		self:checkShown(_G.PlayerChoiceFrame)
+
+		-- skin the Toggle buttons here
+		if self.modBtns then
+			local function skinToggleBtn(btn)
+				btn.Text:SetDrawLayer("OVERLAY")
+				btn:DisableDrawLayer("ARTWORK")
+				if btn:GetHighlightTexture() then -- N.B. Torghast button DOESN'T
+					btn:GetHighlightTexture():SetAlpha(0) -- texture changed in code
+				end
+				aObj:skinStdButton{obj=btn, fType=ftype, ofs=-4, x1=20, x2=-20, clr="gold"}
+			end
+			for _, prefix in _G.pairs{"Torghast", "Cypher", "Generic"} do
+				skinToggleBtn(_G[prefix .. "PlayerChoiceToggleButton"])
+			end
+		end
 
 	end
 
