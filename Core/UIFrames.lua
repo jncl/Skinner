@@ -132,7 +132,7 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 		alertType["Scenario"].y1            = -8
 		alertType["Scenario"].y2            = 8
 		alertType["SkillLineSpecsUnlocked"] = {ofs = 0, ddl = {"background"}}
-	else
+	elseif self.isCorBorE then
 		alertType["Achievement"].y1         = -10
 		alertType["Achievement"].y2         = 10
 		alertType["Loot"].stn               = not self.isFrvr and {"SpecRing"} or nil
@@ -5066,7 +5066,7 @@ aObj.blizzFrames[ftype].StaticPopups = function(self)
 		end)
 		self:checkShown(_G.PetBattleQueueReadyFrame)
 	end
-	if not self.isMorF then
+	if self.isCorBorE then
 		self:SecureHook(_G.PlayerReportFrame, "InitiateReport", function(this, _)
 			if _G.InCombatLockdown() then
 			    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
@@ -5309,7 +5309,7 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 		if self.isFrvr then
 			self:add2Table(toolTips, _G.BuffFrameTooltip)
 		end
-	else
+	elseif self.isCorBorE then
 		self:add2Table(toolTips, _G.SmallTextTooltip)
 	end
 	for _, tTip in _G.ipairs(toolTips) do

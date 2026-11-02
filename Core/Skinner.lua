@@ -51,7 +51,7 @@ function aObj:OnInitialize()
 		self:SetupForever_NPCFramesDefaults()
 		self:SetupForever_PlayerFramesDefaults()
 		self:SetupForever_UIFramesDefaults()
-	else
+	elseif self.isCorBorE then
 		self:SetupClassic_NPCFramesDefaults()
 		self:SetupClassic_PlayerFramesDefaults()
 		self:SetupClassic_UIFramesDefaults()
@@ -87,7 +87,7 @@ function aObj:OnInitialize()
 		self:SetupForever_NPCFramesOptions()
 		self:SetupForever_PlayerFramesOptions()
 		self:SetupForever_UIFramesOptions()
-	else
+	elseif self.isCorBorE then
 		self:SetupClassic_NPCFramesOptions()
 		self:SetupClassic_PlayerFramesOptions()
 		self:SetupClassic_UIFramesOptions()
@@ -260,7 +260,7 @@ function aObj:OnInitialize()
 		self:checkAndRun("SetupForever_NPCFrames", "opt", nil, true)
 		self:checkAndRun("SetupForever_PlayerFrames", "opt", nil, true)
 		self:checkAndRun("SetupForever_UIFrames", "opt", nil, true)
-	else
+	elseif self.isCorBorE then
 		-- Load Classic Support, if required (done here for ElvUI/TukUI)
 		self:checkAndRun("SetupClassic", "opt", nil, true)
 		self:checkAndRun("SetupClassic_NPCFrames", "opt", nil, true)

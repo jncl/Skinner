@@ -88,6 +88,7 @@ function aObj:checkWoWVersion()
 	self.isMorF       = self.isMnln or self.isFrvr and true
 	self.isMorC       = self.isMnln or self.isClsc and true
 	self.isMorCorF    = self.isMorC or self.isFrvr and true
+	self.isCorBorE    = self.isClsc or self.isClscBCA or self.isClscERA and true
 
 	self.isPatch = not compareBuildInfo(agentUID, "curr", true)
 	if self.isPatch then

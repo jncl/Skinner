@@ -4309,7 +4309,7 @@ aObj.blizzFrames[ftype].MirrorTimers = function(self)
 	self.initialized.MirrorTimers = true
 
 	local objName, obj, objBG, objSB
-	if not self.isMorF then
+	if self.isCorBorE then
 		local numMirrorTimerTypes = 3
 		for i = 1, numMirrorTimerTypes do
 			objName = "MirrorTimer" .. i
