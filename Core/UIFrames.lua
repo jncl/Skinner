@@ -135,9 +135,9 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 	elseif self.isCorBorE then
 		alertType["Achievement"].y1         = -10
 		alertType["Achievement"].y2         = 10
-		alertType["Loot"].stn               = not self.isFrvr and {"SpecRing"} or nil
-		alertType["Loot"].ib                = not self.isFrvr and true or nil
-		alertType["StorePurchase"]          = not self.isFrvr and {ofs = -12, ddl = {"background"}} or nil
+		alertType["Loot"].stn               = {"SpecRing"}
+		alertType["Loot"].ib                = true
+		alertType["StorePurchase"]          = {ofs = -12, ddl = {"background"}}
 	end
 
 	-- N.B. frames use ncc skinning option
@@ -263,6 +263,7 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 	end
 	for type, opts in _G.pairs(alertType) do
 		local sysName = opts.sysType or "AlertSystem"
+		-- aObj:Debug("skinAlertFrame: [%s, %s]", type, sysName)
 		self:SecureHook(_G[type .. sysName], "setUpFunction", function(frame, _)
 			skinAlertFrame(type, frame)
 		end)
