@@ -4468,13 +4468,20 @@ if aObj.isMorF then
 									end
 								end
 							elseif block == module.StageBlock then
+								--@debug@
 								-- aObj:Debug("skinModule wSID: [%s, %s]", block.widgetSetID)
-								if not ignoredStageBlocks[block.widgetSetID] then
-									aObj:skinObject("frame", {obj=block, fType=ftype, kfs=true, ofs=0, x2=-12, y2=8, clr="sepia"})
+								--@end-debug@
+								aObj:skinObject("frame", {obj=block, fType=ftype, kfs=true, ncc=true, ofs=0, x2=-12, y2=8, clr="sepia"})
+								if block.sf then
+									if not ignoredStageBlocks[block.widgetSetID] then
+										block.sf:Show(block:IsShown())
+									else
+										block.sf:Hide()
+									end
 								end
 								-- N.B. widgets skinned in UIWidgets function
 							elseif block == module.TopWidgetContainerBlock
-							or block == module.BottomWidgetContainerBlock
+							    or block == module.BottomWidgetContainerBlock
 							then
 								_G.nop()
 							elseif block == module.MawBuffsBlock then
