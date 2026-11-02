@@ -191,7 +191,7 @@ aObj.SetupForever_PlayerFramesOptions = function(self)
 	local optTab = {
 		["Legacy System"] = true,
 	}
-	self:setupFramesOptions(optTab, "UI")
+	self:setupFramesOptions(optTab, "Player")
 	_G.wipe(optTab)
 
 end

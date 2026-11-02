@@ -45,7 +45,7 @@ Locales\_Locales.xml
 Locales\_Locales_debug.xml
 #@end-debug@
 
-Forever\Forever.lua [AllowLoadGameType camelot][ExcludeLoadGameType standard, classic]
+Forever\Forever.lua [AllowLoadGameType camelot] [ExcludeLoadGameType standard, classic]
 
 Core\_Core.xml
 
