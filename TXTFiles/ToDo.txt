@@ -20,5 +20,3 @@ ToDos
 #352	I/M AddOn 'Skinner' tried to call the protected function 'Frame:SetPropagateMouseClicks()'
 
 #354  	I/M Blizzard_SharedXML/LayoutFrame.lua:491: attempt to compare a secret number value (execution tainted by 'Skinner')
-
-#380 √	I/M No longer apply "Backdrop Border Colour" setting in modules (Top/Middle/Bottom)
