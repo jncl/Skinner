@@ -1,3 +1,55 @@
+beta12.70631.1
+Jncl:
+	Updated ToDo*.txt files
+	Updated Change_History.txt
+	Updated Version numbers
+	Ensure disabled frames are coloured correctly
+	Updated CommunitiesUI
+	Updated TOC to remove duplicated line
+	Updated GuildControlUI to skin Discord Link/Unlink panels
+	Updated SharedFuncs to better identify game versions
+	Updated Baganator skin, closes #378
+	Added skin for Voidcore Advisor Reborn, closes #379
+	Added skin for EllesmereUI, closes #364
+	Forever changes
+	Updated UtilFuncs debug lines
+	Updated UtilFuncs to manage Insets and NineSlice textures properly
+	Updated HelpFrame skin
+	Updated ChatTabManager tab skinning
+	Updated InspectUI to handle button skinning properly
+	Classic bugfixes for LFG frames
+	Moved skinning of TalentMicroButtonAlert so it gets skinned when required
+	Updated QuestMapFrame to handle skinned buttons colour changes better
+	Retail PTR changes
+	Added In Combat checks
+	Updated NSF to correct typos and standardise comments
+	Updated NSF NavBar skinning code, closes #377
+	Updated Ace3 skin
+	Replaced C_Timer.After with RunNextFrame
+	Removed WardrobeFrame & WardrobeTransmogFrame skins as they are no longer used
+	Updated Classic TalentUI skin
+	Updated Classic InspectTalentFrame skin
+	Updated Classic GlyphFrame skin
+	Removed unused option
+	Updated CommunitiesAvatarPickerDialog skin
+	Updated UIButtons to add more detailed comments
+	Updated UtilFuncs to add debug statements
+	Updated UtilFuncs to removeInset & NineSlice textures by setting their alpha value
+	Updated Minimap skin
+	Updated ChatEditBox skin
+	Updated AddonList skin
+	Removed commented out code
+	Updated CommunitiesAvatarPickerDialog skin
+	Removed unused option
+	Updated Core files to replace "this" or "fObj" with actual object names on Unhook "OnShow" functions
+	Forever changes
+	Updated PetPaperDollFrame skin to use new progressbar skinning function
+	Updated NSF
+	Updated NSF, added new function skinProgressBar Updated code to use the new function
+	Updated NSF to correctly setup function options table
+	Correct capitalisation of variable names
+	Removed space lines in ColourFuncs
+
 beta12.70425.2
 Jncl:
 	Updated BigWigs skin, closes #376
