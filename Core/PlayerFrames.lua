@@ -83,13 +83,13 @@ if aObj.isMorC then
 				-- remove textures etc from buttons
 				local btnName
 				for _, btn in _G.pairs(frame.buttons) do
-					aObj:SecureHook(btn, "Desaturate", function(bObj)
+					aObj:SecureHook("AchievementButton_Desaturate" or btn, "Desaturate", function(bObj)
 						if bObj.sbb then
 							bObj.sbb:SetBackdropBorderColor(bObj:GetBackdropBorderColor())
 							bObj.icon.sbb:SetBackdropBorderColor(bObj:GetBackdropBorderColor())
 						end
 					end)
-					aObj:SecureHook(btn, "Saturate", function(bObj)
+					aObj:SecureHook("AchievementButton_Saturate" or btn, "Saturate", function(bObj)
 						if bObj.sbb then
 							bObj.sbb:SetBackdropBorderColor(bObj:GetBackdropBorderColor())
 							bObj.icon.sbb:SetBackdropBorderColor(bObj:GetBackdropBorderColor())
@@ -233,7 +233,6 @@ if aObj.isMorC then
 			if self.isMnln then
 				self:SecureHookScript(this.HeaderDetails, "OnShow", function(fObj)
 					self:keepFontStrings(fObj)
-					self:moveObject{obj=fObj.Filters.FilterDropdown, y=-6}
 					self:skinObject("ddbutton", {obj=fObj.Filters.FilterDropdown, fType=ftype, filter=true})
 					self:skinObject("editbox", {obj=fObj.Filters.SearchBox, fType=ftype, si=true, y1=-4, y2=4})
 					self:skinObject("statusbar", {obj=fObj.Filters.SearchBox.SearchProgressBar, fType=ftype, fi=0, bg=fObj.Filters.SearchBox.SearchProgressBar.bg})
@@ -437,11 +436,12 @@ if aObj.isMorC then
 				end
 			end
 			local function skinSB(statusBar, moveText)
+				statusBar = _G[statusBar] or statusBar
 				if moveText then
-					aObj:moveObject{obj=_G[statusBar].Label or _G[statusBar .. "Label"] or _G[statusBar .. "Title"], y=-3}
-					aObj:moveObject{obj=_G[statusBar].Text or _G[statusBar .. "Text"], y=-3}
+						aObj:moveObject{obj=aObj:getRegion(statusBar, 1), y=-3}
+						aObj:moveObject{obj=aObj:getRegion(statusBar, 2), y=-3}
 				end
-				aObj:skinObject("statusbar", {obj=_G[statusBar], regions={3, 4, 5}, fi=0, bg=_G[statusBar .. "FillBar"]})
+				aObj:skinObject("statusbar", {obj=statusBar, regions={3, 4, 5}, fi=0, bg=aObj:getRegion(statusBar, 6)})
 			end
 			self:SecureHookScript(_G.AchievementFrameSummary, "OnShow", function(fObj)
 				fObj:DisableDrawLayer("BACKGROUND")
@@ -457,11 +457,11 @@ if aObj.isMorC then
 				_G.AchievementFrameSummaryAchievementsEmptyText:Hide()
 				local catName = "AchievementFrameSummaryCategories"
 				_G[catName .. "HeaderTexture"]:SetTexture(nil)
-				self:moveObject{obj=_G[catName .. "StatusBarTitle"], y=-3}
-				self:moveObject{obj=_G[catName .. "StatusBarText"], y=-3}
-				skinSB(catName .. "StatusBar")
+				skinSB(catName .. "StatusBar", true)
 				for i = 1, self.isMnln and 12 or 8 do
-					skinSB(catName .. "Category" .. i, true)
+					if _G[catName .. "Category" .. i] then
+						skinSB(catName .. "Category" .. i, true)
+					end
 				end
 
 				self:Unhook(_G.AchievementFrameSummary, "OnShow")
@@ -484,10 +484,7 @@ if aObj.isMorC then
 					for _, type in _G.pairs{"Player", "Friend"} do
 						self:removeNineSlice(fObj.Summary[type].NineSlice)
 						self:removeRegions(fObj.Summary[type], {1})
-						skinSB(fObj.Summary[type].StatusBar:GetName(), true)
-						-- self:moveObject{obj=fObj.Summary[type].StatusBar.Title, y=-3}
-						-- self:moveObject{obj=fObj.Summary[type].StatusBar.Text, y=-3}
-						-- self:skinObject("statusbar", {obj=fObj.Summary[type].StatusBar, regions={3, 4, 5}, fi=0})
+						skinSB(fObj.Summary[type].StatusBar, true)
 					end
 					self:skinObject("scrollbar", {obj=fObj.AchievementContainer.ScrollBar, fType=ftype})
 					local function skinAchieve(...)
@@ -593,6 +590,13 @@ if aObj.isMorC then
 					self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, cb=true, x1=-8, y1=-1, x2=4})
 
 					self:Unhook(this.SearchResults, "OnShow")
+				end)
+				self:SecureHook("AchievementFrame_SetComparisonMode", function(_)
+					if _G.AchievementFrame.isComparison then
+						self:moveObject{obj=_G.AchievementFrame.HeaderDetails.Filters.SearchBox, y=-6}
+					else
+						self:moveObject{obj=_G.AchievementFrame.HeaderDetails.Filters.SearchBox, y=-6}
+					end
 				end)
 			end
 
