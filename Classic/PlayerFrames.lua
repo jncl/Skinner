@@ -453,11 +453,7 @@ aObj.SetupClassic_PlayerFrames = function()
 
 			self:SecureHookScript(_G.FriendsListFrame, "OnShow", function(fObj)
 				_G.FriendsFrameFriendsScrollFrame.PendingInvitesHeaderButton.BG:SetTexture(nil)
-				if not self.isClsc then
-					self:skinObject("slider", {obj=_G.FriendsFrameFriendsScrollFrame.scrollBar, fType=ftype, rpTex="background", x1=-4, x2=3})
-				else
-					self:skinObject("slider", {obj=_G.FriendsFrameFriendsScrollFrame.scrollBar, fType=ftype, rpTex="background"})
-				end
+				self:skinObject("slider", {obj=_G.FriendsFrameFriendsScrollFrame.scrollBar, fType=ftype, rpTex="background", x1=-4, x2=3})
 				local btn
 				for i = 1, _G.FRIENDS_FRIENDS_TO_DISPLAY do
 					btn = _G["FriendsFrameFriendsScrollFrameButton" .. i]
