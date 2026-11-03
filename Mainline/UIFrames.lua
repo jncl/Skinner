@@ -655,7 +655,7 @@ aObj.SetupMainline_UIFrames = function()
 		local function skinTempWindow(obj)
 			if aObj.prdb.ChatTabs then
 				-- Top Tabs
-				aObj:skinObject("tabs", {obj=obj, fType=ftype, tabs={_G[obj:GetName() .. "Tab"]}, lod=self.isTT and true, upwards=true, ignoreHLTex=false, regions={7, 8, 9, 10, 11}, offsets={x1=4, y1=self.isTT and -10 or -12, x2=-4, y2=self.isTT and -3 or -1}, track=false})
+				aObj:skinObject("tabs", {obj=obj, fType=ftype, tabs={_G[obj:GetName() .. "Tab"]}, lod=self.isTT, upwards=true, ignoreHLTex=false, regions={7, 8, 9, 10, 11}, offsets={x1=4, y1=self.isTT and -10 or -12, x2=-4, y2=self.isTT and -3 or -1}, track=false})
 			end
 			if aObj.prdb.ChatFrames	then
 				aObj:skinObject("frame", {obj=obj, fType=ftype, ofs=6, x2=27, y2=-9})
@@ -1112,7 +1112,7 @@ aObj.SetupMainline_UIFrames = function()
 
 		self:SecureHookScript(_G.GarrisonLandingPage, "OnShow", function(this)
 			this.HeaderBar:SetTexture(nil)
-			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true, regions={7, 8, 9, 10}})
+			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT, regions={7, 8, 9, 10}})
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, ofs=-10, y2=18})
 
 			self:SecureHookScript(this.Report, "OnShow", function(fObj)
@@ -1141,7 +1141,7 @@ aObj.SetupMainline_UIFrames = function()
 				end
 				_G.ScrollUtil.AddAcquiredFrameCallback(fObj.List.ScrollBox, skinElement, aObj, true)
 				-- Top Tabs
-				self:skinObject("tabs", {obj=fObj, tabs={fObj.InProgress, fObj.Available}, fType=ftype, lod=self.isTT and true, upwards=true, offsets={x1=4, y1=self.isTT and -4 or -5, x2=-4, y2=self.isTT and -4 or 1}, regions={2, 3}, track=false, func=function(tab) tab:GetNormalTexture():SetAlpha(0) tab:SetFrameLevel(20) end})
+				self:skinObject("tabs", {obj=fObj, tabs={fObj.InProgress, fObj.Available}, fType=ftype, lod=self.isTT, upwards=true, offsets={x1=4, y1=self.isTT and -4 or -5, x2=-4, y2=self.isTT and -4 or 1}, regions={2, 3}, track=false, func=function(tab) tab:GetNormalTexture():SetAlpha(0) tab:SetFrameLevel(20) end})
 				if self.isTT then
 					self:SecureHook("GarrisonLandingPageReport_SetTab", function(tab)
 						self:setInactiveTab(tab:GetParent().unselectedTab.sf)
@@ -1231,7 +1231,7 @@ aObj.SetupMainline_UIFrames = function()
 				fObj.MaterialFrame:DisableDrawLayer("BACKGROUND")
 				fObj.Tabs = {fObj.Tab1, fObj.Tab2, fObj.Tab3}
 				-- Top Tabs
-				self:skinObject("tabs", {obj=fObj, tabs=fObj.Tabs, fType=ftype, lod=self.isTT and true, upwards=true, regions={1, 3}, offsets={y1=-7, y2=self.isTT and 2 or 7}, track=false, func=aObj.isTT and function(tab)
+				self:skinObject("tabs", {obj=fObj, tabs=fObj.Tabs, fType=ftype, lod=self.isTT, upwards=true, regions={1, 3}, offsets={y1=-7, y2=self.isTT and 2 or 7}, track=false, func=aObj.isTT and function(tab)
 					aObj:SecureHookScript(tab, "OnClick", function(blF)
 						for _, bTab in _G.pairs(blF:GetParent().Tabs) do
 							if bTab == this then
@@ -1400,7 +1400,7 @@ aObj.SetupMainline_UIFrames = function()
 			if self.modBtns then
 				self:skinCloseButton{obj=this.BorderFrame.CloseButton2, noSkin=true}
 			end
-			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true, ignoreHLTex=false, regions={7, 8, 9, 10}})
+			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT, ignoreHLTex=false, regions={7, 8, 9, 10}})
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=2, y1=2, x2=1, y2=-4})
 
 			self:SecureHookScript(this.MissionTab.MissionList, "OnShow", function(fObj)
@@ -3350,7 +3350,7 @@ aObj.SetupMainline_UIFrames = function()
 			-- end
 			-- _G.ScrollUtil.AddAcquiredFrameCallback(this.Content.ScrollBox, skinElement, aObj, true)
 			self:keepFontStrings(this.TabContainer)
-			self:skinObject("tabs", {obj=this.TabGroup, tabs=this.Tabs, fType=ftype, lod=self.isTT and true, track=false})
+			self:skinObject("tabs", {obj=this.TabGroup, tabs=this.Tabs, fType=ftype, lod=self.isTT, track=false})
 			if self.isTT then
 				self:SecureHook(this, "OnTabGroupClicked", function(fObj, selectedTab)
 					for _, tab in _G.pairs(fObj.Tabs) do
@@ -3394,7 +3394,7 @@ aObj.SetupMainline_UIFrames = function()
 			-- end
 			-- _G.ScrollUtil.AddAcquiredFrameCallback(this.content.scrollBox, skinElement, aObj, true)
 			self:keepFontStrings(this.content.tabContainer)
-			self:skinObject("tabs", {obj=this.tabGroup, tabs=this.Tabs, fType=ftype, lod=self.isTT and true, track=false})
+			self:skinObject("tabs", {obj=this.tabGroup, tabs=this.Tabs, fType=ftype, lod=self.isTT, track=false})
 			if self.isTT then
 				self:SecureHook(this, "OnTabGroupClicked", function(fObj, selectedTab)
 					for _, tab in _G.pairs(fObj.Tabs) do

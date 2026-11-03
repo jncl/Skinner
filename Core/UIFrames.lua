@@ -907,7 +907,7 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 
 		self:SecureHookScript(_G.ChatConfigCombatSettings, "OnShow", function(fObj)
 			-- Top Tabs
-			self:skinObject("tabs", {obj=fObj, prefix="CombatConfig", numTabs=#_G.COMBAT_CONFIG_TABS, fType=ftype, lod=self.isTT and true, upwards=true, offsets={y1=-8, y2=self.isTT and -5 or 0}, regions={4, 5}, track=false})
+			self:skinObject("tabs", {obj=fObj, prefix="CombatConfig", numTabs=#_G.COMBAT_CONFIG_TABS, fType=ftype, lod=self.isTT, upwards=true, offsets={y1=-8, y2=self.isTT and -5 or 0}, regions={4, 5}, track=false})
 			if self.isTT then
 				self:SecureHook("ChatConfig_UpdateCombatTabs", function(selectedTabID)
 					local tab
@@ -1150,7 +1150,7 @@ aObj.blizzFrames[ftype].ChatTabs = function(self)
 		end)
 	end
 	-- Top Tabs
-	self:skinObject("tabs", {obj=_G.FloatingChatFrameManager, tabs=fcfTabs, fType=ftype, lod=self.isTT and true, upwards=true, ignoreHLTex=false, regions={7, 8, 9, 10, 11}, offsets={x1=1, y1=-10, x2=-1, y2=-3}, track=false, func=function(tab) tab.sf:SetAlpha(tab:GetAlpha()) tab.sf:Hide() end})
+	self:skinObject("tabs", {obj=_G.FloatingChatFrameManager, tabs=fcfTabs, fType=ftype, lod=self.isTT, upwards=true, ignoreHLTex=false, regions={7, 8, 9, 10, 11}, offsets={x1=1, y1=-10, x2=-1, y2=-3}, track=false, func=function(tab) tab.sf:SetAlpha(tab:GetAlpha()) tab.sf:Hide() end})
 	if self.isTT then
 		self:SecureHook("FCF_Tab_OnClick", function(this, _)
 			for i = 1, _G.Constants.ChatFrameConstants.MaxChatWindows do
@@ -2319,7 +2319,7 @@ then
 			    return
 			end
 
-			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, ignoreSize=true, lod=self.isTT and true})
+			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, ignoreSize=true, lod=self.isTT})
 			if self.modBtns then
 				self:skinCloseButton{obj=self:getChild(this, 1), fType=ftype}
 			end
@@ -2513,7 +2513,7 @@ aObj.blizzLoDFrames[ftype].GuildBankUI = function(self)
 			self:skinObject("slider", {obj=_G.GuildBankInfo.ScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
 			self:skinObject("slider", {obj=this.Log.ScrollBar, fType=ftype, rpTex="artwork"})
 		end
-		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true})
+		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT})
 		if not self.isClsc then
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true, cb=true, y1=self.isClsc and -11, x2=self.isClsc and 1, y2=self.isClsc and 3 or -2})
 		else
@@ -2738,7 +2738,7 @@ aObj.blizzLoDFrames[ftype].MacroUI = function(self)
 
 	self:SecureHookScript(_G.MacroFrame, "OnShow", function(this)
 		-- Top Tabs
-		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true, upwards=true, offsets={x1=1, y1=-6, x2=-1, y2=-2}, func=function(tab) tab:SetFrameLevel(20) end})
+		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT, upwards=true, offsets={x1=1, y1=-6, x2=-1, y2=-2}, func=function(tab) tab:SetFrameLevel(20) end})
 		self:skinObject("scrollbar", {obj=this.MacroSelector.ScrollBar, fType=ftype})
 		self:skinObject("frame", {obj=this.MacroSelector, fType=ftype, kfs=true, fb=true, ofs=6, y1=10, x2=2})
 		if self.modBtnBs then
@@ -4133,7 +4133,7 @@ if aObj.isMorF then
 				self:keepFontStrings(fObj.BorderFrame)
 				fObj.ScrollBox.Background:SetTexture(nil)
 				self:skinObject("scrollbar", {obj=fObj.ScrollBar, fType=ftype})
-				self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, ng=self.isFrvr and true or nil, ofs=4, y1=34, y2=-12})
+				self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, ng=self.isFrvr, ofs=4, y1=34, y2=-12})
 				local function skinEvents(...)
 					local _, element, elementData, new
 					if _G.select("#", ...) == 2 then
@@ -4191,7 +4191,7 @@ if aObj.isMorF then
 				self:keepFontStrings(fObj.BorderFrame)
 				self:skinObject("scrollbar", {obj=fObj.ScrollFrame.ScrollBar, fType=ftype})
 				fObj.ScrollFrame.Background:SetTexture(nil)
-				self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, ng=self.isFrvr and true or nil, ofs=4, y1=34, y2=-12})
+				self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, ng=self.isFrvr, ofs=4, y1=34, y2=-12})
 				if self.modBtns then
 					self:skinStdButton{obj=fObj.BackButton, fType=ftype}
 				end
@@ -4339,7 +4339,7 @@ if aObj.isMorF then
 			    return
 			end
 
-			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true})
+			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT})
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true})
 
 			self:Unhook(_G.RaidParentFrame, "OnShow")
@@ -4488,7 +4488,7 @@ aObj.blizzFrames[ftype].Settings = function(self)
 		this.Bg:DisableDrawLayer("BACKGROUND")
 		this.NineSlice.Text:SetDrawLayer("ARTWORK")
 		-- Top tabs
-		self:skinObject("tabs", {obj=this, tabs=this.tabsGroup.buttons, fType=ftype, ignoreSize=true, lod=self.isTT and true, upwards=true, regions={4}, offsets={x1=6, y1=-10, x2=-6, y2=-6}, track=false})
+		self:skinObject("tabs", {obj=this, tabs=this.tabsGroup.buttons, fType=ftype, ignoreSize=true, lod=self.isTT, upwards=true, regions={4}, offsets={x1=6, y1=-10, x2=-6, y2=-6}, track=false})
 		if self.isTT then
 			local function setTabState(_, _, idx)
 				for key, tab in _G.pairs(this.tabsGroup.buttons) do

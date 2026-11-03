@@ -28,7 +28,7 @@ aObj.SetupClassic_NPCFrames = function()
 				self:SecureHook("FilterButton_SetUp", function(button, _)
 					_G[button:GetName() .. "NormalTexture"]:SetAlpha(0)
 				end)
-				self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true})
+				self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT})
 				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true, cb=true, x1=10, y1=-11, x2=3, y2=8})
 				self:moveObject{obj=_G.AuctionFrameCloseButton, x=3}
 

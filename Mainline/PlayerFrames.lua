@@ -13,7 +13,7 @@ aObj.SetupMainline_PlayerFrames = function()
 			self:keepFontStrings(this.BorderFrame)
 			this.ForgeBadgeFrame:DisableDrawLayer("OVERLAY") -- this hides the frame
 			this.ForgeBadgeFrame.ForgeLevelLabel:SetDrawLayer("ARTWORK") -- this shows the artifact level
-			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true})
+			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT})
 			self:skinObject("frame", {obj=this, fType=ftype, cb=true, ofs=5, y1=4, y2=-11})
 			-- Perks
 			this.PerksTab:DisableDrawLayer("BORDER")

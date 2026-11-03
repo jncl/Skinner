@@ -70,7 +70,7 @@ aObj.SetupClassic_PlayerFrames = function()
 				    return
 				end
 
-				self:skinObject("tabs", {obj=_G.CharacterFrame, prefix=_G.CharacterFrame:GetName(), fType=ftype, lod=self.isTT and true})
+				self:skinObject("tabs", {obj=_G.CharacterFrame, prefix=_G.CharacterFrame:GetName(), fType=ftype, lod=self.isTT})
 				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x1=10, y1=-12, x2=-31, y2=74})
 
 				local pdfSlots = {"Head", "Neck", "Shoulder", "Back", "Chest", "Shirt", "Tabard", "Wrist", "Hands", "Waist", "Legs", "Feet", "Finger0", "Finger1", "Trinket0", "Trinket1", "MainHand", "SecondaryHand", "Ranged"}
@@ -426,7 +426,7 @@ aObj.SetupClassic_PlayerFrames = function()
 
 			self:skinObject("dropdown", {obj=_G.FriendsDropDown, fType=ftype})
 			self:skinObject("dropdown", {obj=_G.TravelPassDropDown, fType=ftype})
-			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true})
+			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT})
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, cb=true, x2=1, y2=self.isClscERA and -1 or -2})
 
 			self:SecureHookScript(_G.FriendsTabHeader, "OnShow", function(fObj)
@@ -444,7 +444,7 @@ aObj.SetupClassic_PlayerFrames = function()
 				self:skinObject("editbox", {obj=_G.FriendsFrameBroadcastInput, fType=ftype})
 				_G.FriendsFrameBroadcastInputFill:SetTextColor(self.BT:GetRGB())
 				-- Top Tabs
-				self:skinObject("tabs", {obj=fObj, prefix=fObj:GetName(), numTabs=2, fType=ftype, lod=self.isTT and true, upwards=true, offsets={x1=0, y1=-5, x2=0, y2=-4}})
+				self:skinObject("tabs", {obj=fObj, prefix=fObj:GetName(), numTabs=2, fType=ftype, lod=self.isTT, upwards=true, offsets={x1=0, y1=-5, x2=0, y2=-4}})
 				_G.RaiseFrameLevel(fObj)
 
 				self:Unhook(fObj, "OnShow")
@@ -823,7 +823,7 @@ aObj.SetupClassic_PlayerFrames = function()
 		self.initialized.InspectUI = true
 
 		self:SecureHookScript(_G.InspectFrame, "OnShow", function(this)
-			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true})
+			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT})
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, x2=1, y2=0})
 
 			self:SecureHookScript(_G.InspectPaperDollFrame, "OnShow", function(fObj)
@@ -867,7 +867,7 @@ aObj.SetupClassic_PlayerFrames = function()
 				self:SecureHookScript(_G.InspectTalentFrame, "OnShow", function(fObj)
 					-- keep ARTWORK regions
 					fObj:DisableDrawLayer("BACKGROUND")
-					self:skinObject("tabs", {obj=fObj, prefix=fObj:GetName(), fType=ftype, ignoreSize=true, lod=self.isTT and true, upwards=true, regions={7}, offsets={x1=2, y1=-2, x2=-2, y2=0}})
+					self:skinObject("tabs", {obj=fObj, prefix=fObj:GetName(), fType=ftype, ignoreSize=true, lod=self.isTT, upwards=true, regions={7}, offsets={x1=2, y1=-2, x2=-2, y2=0}})
 					self:skinObject("slider", {obj=_G.InspectTalentFrameScrollFrame.ScrollBar, fType=ftype, rpTex="artwork"})
 					self:keepFontStrings(_G.InspectTalentFramePointsBar)
 					self:skinObject("frame", {obj=_G.InspectTalentFrameScrollFrame, fType=ftype, fb=true, x1=-8, y1=11, x2=31, y2=-7})
@@ -1231,7 +1231,7 @@ aObj.SetupClassic_PlayerFrames = function()
 				end
 
 				this.numTabs = 3
-				self:skinObject("tabs", {obj=this, prefix=this:GetName(), suffix="Button", fType=ftype, lod=self.isTT and true, offsets={x1=13, y1=-14, x2=-13, y2=16}, regions={1, 3}, track=false})
+				self:skinObject("tabs", {obj=this, prefix=this:GetName(), suffix="Button", fType=ftype, lod=self.isTT, offsets={x1=13, y1=-14, x2=-13, y2=16}, regions={1, 3}, track=false})
 				if self.isTT then
 					local function setTab(bookType)
 						local tab
@@ -1351,7 +1351,7 @@ aObj.SetupClassic_PlayerFrames = function()
 				end
 			end)
 			self:SecureHookScript(_G.PlayerTalentFrame, "OnShow", function(this)
-				self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true})
+				self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT})
 				for i = 1, _G.TalentUIUtil.GetNumSpecTabs() do
 					_G["PlayerSpecTab" .. i]:DisableDrawLayer("BACKGROUND")
 					if self.modBtnBs then
@@ -1429,7 +1429,7 @@ aObj.SetupClassic_PlayerFrames = function()
 			end
 			self:SecureHookScript(_G.PlayerTalentFrame, "OnShow", function(this)
 				local fName = this:GetName()
-				self:skinObject("tabs", {obj=this, prefix=fName, fType=ftype, lod=self.isTT and true})
+				self:skinObject("tabs", {obj=this, prefix=fName, fType=ftype, lod=self.isTT})
 				self:skinObject("slider", {obj=_G[fName .. 'ScrollFrameScrollBar'], fType=ftype, rpTex="artwork"})
 				self:moveObject{obj=_G.PlayerTalentFrameTitleText, y=-2}
 				-- keep background Texture

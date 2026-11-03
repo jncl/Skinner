@@ -207,7 +207,7 @@ if aObj.isMorC then
 
 		self:SecureHookScript(_G.AchievementFrame, "OnShow", function(this)
 			self:moveObject{obj=_G.AchievementFrameCloseButton, x=1, y=8}
-			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true, ignoreHLTex=false, regions={7, 8, 9, 10}, offsets={x1=6, x2=-2, y2=-7}})
+			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT, ignoreHLTex=false, regions={7, 8, 9, 10}, offsets={x1=8, x2=-8, y2=-7}})
 			if self.isMnln then
 				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, y1=7, x2=0, y2=-1})
 			else
@@ -778,7 +778,7 @@ if aObj.isMorCorF then
 
 			if not self.isFrvr then
 				self:removeInset(this.InsetRight)
-				self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true})
+				self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT})
 				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, rp=true, cb=true, x2=self.isClsc and 1 or 3})
 				if self.isClsc then
 					if self.modBtnBs then
@@ -1547,12 +1547,12 @@ if aObj.isMorCorF then
 		self:SecureHookScript(_G.CollectionsJournal, "OnShow", function(this)
 			if not aObj.isMnlnPTR then
 				if self.isMorC then
-					self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true, selectedTab=this.selectedTab})
+					self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT, selectedTab=this.selectedTab})
 				else
 					self:skinObject("sidetabs", {obj=this.TabContainer, tabs="Tabs", fType=ftype})
 				end
 			else
-				self:skinObject("tabs", {obj=this.TabContainer, prefix=this:GetName(), fType=ftype, lod=self.isTT and true, selectedTab=this.selectedTab})
+				self:skinObject("tabs", {obj=this.TabContainer, prefix=this:GetName(), fType=ftype, lod=self.isTT, selectedTab=this.selectedTab})
 			end
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, rns=true, cb=true, x2=self.Rtl and 3 or 1, y2=-2})
 
@@ -1869,7 +1869,7 @@ if aObj.isMorCorF then
 			end
 			self:skinObject("ddbutton", {obj=this.FilterButton, fType=ftype, filter=true})
 			self:skinObject("ddbutton", {obj=this.ClassDropdown, fType=ftype})
-			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true, upwards=true, offsets={x1=2, y1=-4, x2=-2, y2=-4}})
+			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT, upwards=true, offsets={x1=2, y1=-4, x2=-2, y2=-4}})
 			self:skinObject("editbox", {obj=this.searchBox, fType=ftype, si=true})
 			_G.RaiseFrameLevelByTwo(this.searchBox) -- raise above SetsCollectionFrame when displayed on it
 			self:skinObject("statusbar", {obj=this.progressBar, fi=0})
@@ -3076,7 +3076,7 @@ if aObj.isMorC then
 			this.navBar.home.text:SetPoint("RIGHT", -20, 0)
 			self:skinObject("editbox", {obj=this.searchBox, fType=ftype, si=true})
 			self:skinObject("ddbutton", {obj=this.LootJournalViewDropdown, fType=ftype})
-			self:skinObject("tabs", {obj=this, tabs=this.Tabs, selectedTab=this.selectedTab, fType=ftype, lod=self.isTT and true, offsets=not self.isClsc and {x1=-1, y1=2, x2=1, y2=1} or nil, regions=not self.isClscERA and {7, 8, 9, 10, 11} or {10, 21}, track=false, func=function(tab) tab:SetFrameLevel(20) end})
+			self:skinObject("tabs", {obj=this, tabs=this.Tabs, selectedTab=this.selectedTab, fType=ftype, lod=self.isTT, offsets=not self.isClsc and {x1=-1, y1=2, x2=1, y2=1} or nil, regions=not self.isClscERA and {7, 8, 9, 10, 11} or {10, 21}, track=false, func=function(tab) tab:SetFrameLevel(20) end})
 			if self.isTT then
 				self:SecureHook("EJ_ContentTab_Select", function(id)
 					for i, tab in _G.pairs(this.Tabs) do
@@ -3626,9 +3626,9 @@ if aObj.isMorF then
 			end
 
 			if self.isMnln then
-				self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true})
+				self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT})
 			else
-				self:skinObject("tabs", {obj=this, tabs=this.Tabs, fType=ftype, ignoreSize=true, lod=self.isTT and true, upwards=true})
+				self:skinObject("tabs", {obj=this, tabs=this.Tabs, fType=ftype, ignoreSize=true, lod=self.isTT, upwards=true})
 			end
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, x2=3, y2=-2})
 
@@ -3636,7 +3636,7 @@ if aObj.isMorF then
 				_G.FriendsFrameBattlenetFrame:DisableDrawLayer("BACKGROUND")
 				self:skinObject("ddbutton", {obj=_G.FriendsFrameStatusDropdown, fType=ftype})
 				-- Top Tabs
-				self:skinObject("tabs", {obj=fTH.TabSystem, pool=true, fType=ftype, upwards=true, offsets={x1=1, y1=0, x2=-1, y2=-4}, track=false, regions=self.isFrvr and {15}})
+				self:skinObject("tabs", {obj=fTH.TabSystem, pool=true, fType=ftype, upwards=true, offsets={x1=1, y1=0, x2=-1, y2=-4}, track=false, regions=self.isFrvr and {15} or nil})
 				if self.modBtnBs then
 					self:addButtonBorder{obj=_G.FriendsFrameBattlenetFrame.BroadcastButton, fType=ftype, ofs=-2, x1=1}
 					self:addButtonBorder{obj=_G.FriendsFrameBattlenetFrame.ContactsMenuButton, fType=ftype, clr="gold", ofs=-2, x1=1}
@@ -3940,7 +3940,7 @@ if aObj.isMorF then
 			    return
 			end
 
-			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT and true})
+			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT})
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true})
 			if self.isFrvr then
 				self:skinObject("sidetabs", {obj=this.ModeTabs, tabs="Tabs", fType=ftype})
@@ -5228,7 +5228,7 @@ if aObj.isMorF then
 					skinHdrs(fObj)
 
 					self:SecureHookScript(fObj.BrowseFrame, "OnShow", function(frame)
-						self:skinObject("tabs", {obj=frame, tabs=frame.orderTypeTabs, fType=ftype, ignoreSize=true, lod=self.isTT and true, offsets={y2=-4}, track=false})
+						self:skinObject("tabs", {obj=frame, tabs=frame.orderTypeTabs, fType=ftype, ignoreSize=true, lod=self.isTT, offsets={y2=-4}, track=false})
 						if self.isTT then
 							self:SecureHook(fObj, "SetCraftingOrderType", function(frmObj, orderType)
 								for _, typeTab in _G.ipairs(frmObj.BrowseFrame.orderTypeTabs) do
@@ -5372,7 +5372,7 @@ if aObj.isMorF then
 		self:SecureHookScript(_G.ProfessionsCustomerOrdersFrame, "OnShow", function(this)
 			self:removeInset(this.MoneyFrameInset)
 			self:removeNineSlice(this.MoneyFrameBorder)
-			self:skinObject("tabs", {obj=this, tabs=this.Tabs, fType=ftype, lod=self.isTT and true, track=false})
+			self:skinObject("tabs", {obj=this, tabs=this.Tabs, fType=ftype, lod=self.isTT, track=false})
 			if self.isTT then
 				self:SecureHook(this, "SelectMode", function(fObj, mode)
 					for idx, tab in _G.ipairs(fObj.Tabs) do
