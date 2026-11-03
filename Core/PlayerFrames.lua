@@ -2113,7 +2113,7 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 		self:skinObject("ddbutton", {obj=this.CommunitiesListDropdown, fType=ftype})
 		self:skinObject("editbox", {obj=this.ChatEditBox, fType=ftype, y1=-6, y2=6})
 		self:moveObject{obj=this.AddToChatButton, x=-6, y=-6}
-		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, x1=-5, x2=self.isFrvr and 4})
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, x1=-5, x2=self.isFrvr and 4 or nil})
 		if self.modBtns then
 			self:skinStdButton{obj=this.InviteButton, fType=ftype, sechk=true}
 		end

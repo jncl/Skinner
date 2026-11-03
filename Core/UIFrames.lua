@@ -41,7 +41,7 @@ aObj.blizzFrames[ftype].AddonList = function(self)
 		_G.ScrollUtil.AddAcquiredFrameCallback(this.ScrollBox, skinElement, aObj, true)
 		self:skinObject("ddbutton", {obj=this.Dropdown, fType=ftype})
 		self:skinObject("editbox", {obj=this.SearchBox, fType=ftype, si=true})
-		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, x2=self.isClsc and 1})
+		self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ri=true, rns=true, cb=true, x2=self.isClsc and 1 or nil})
 		if self.modBtns then
 			self:skinStdButton{obj=this.CancelButton}
 			self:skinStdButton{obj=this.OkayButton}
@@ -1600,7 +1600,7 @@ aObj.blizzFrames[ftype].EditMode = function(self)
 
 	self:SecureHookScript(_G.EditModeSystemSettingsDialog, "OnShow", function(fObj)
 		self:removeNineSlice(fObj.Border)
-		self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, cb=true, ofs=self.isFrvr and -1, y2=not self.isFrvr and 14})
+		self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, cb=true, ofs=self.isFrvr and -1 or nil, y2=not self.isFrvr and 14 or nil})
 		if self.modBtns then
 			self:skinStdButton{obj=fObj.Buttons.RevertChangesButton, fType=ftype, sechk=true}
 		end
@@ -2515,7 +2515,7 @@ aObj.blizzLoDFrames[ftype].GuildBankUI = function(self)
 		end
 		self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT})
 		if not self.isClsc then
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true, cb=true, y1=self.isClsc and -11, x2=self.isClsc and 1, y2=self.isClsc and 3 or -2})
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true, cb=true, y1=self.isClsc and -11 or nil, x2=self.isClsc and 1 or nil, y2=self.isClsc and 3 or -2})
 		else
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true, cb=true, x2=1, y2=-2})
 		end
