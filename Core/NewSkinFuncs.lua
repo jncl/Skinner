@@ -352,10 +352,6 @@ local function applySkin(tbl)
 			aObj:clrFrameBdr(tbl.obj:GetParent(), tbl.bbclr, tbl.bba)
 		end
 	end
-	if tbl.bbclr then
-		tbl.obj.clr = tbl.bbclr
-		tbl.obj.ca = tbl.bba
-	end
 	if not tbl.ng then
 		aObj:applyGradient(tbl.obj, tbl.fh, tbl.invert, tbl.rotate)
 		aObj.gradFrames[tbl.fType or "a"][tbl.obj] = true
@@ -758,11 +754,8 @@ local function skinFrame(tbl)
 	end
 	-- add hook to change border colour when disabled/enabled
 	if tbl.sechk then
-		-- save colour info on object
-		tbl.obj.sf.clr = tbl.clr
-		tbl.obj.sf.ca = tbl.ca
 		aObj:SecureHook(tbl.obj, "SetEnabled", function(fObj)
-			aObj:clrFrameBdr(fObj, fObj.sf.clr, fObj.sf.ca)
+			aObj:clrFrameBdr(fObj, tbl.clr, tbl.ca)
 		end)
 	end
 	-- setup Frame Border options

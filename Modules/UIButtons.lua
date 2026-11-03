@@ -305,13 +305,11 @@ local function __skinCloseButton(opts)
 		end
 		aObj:clrBtnBdr(opts.obj, opts.clr, opts.ca)
 		if opts.schk then
-			opts.obj.sb.clr = opts.clr
-			opts.obj.sb.ca = opts.ca
 			aObj:SecureHook(opts.obj, "Disable", function(bObj, _)
 				aObj:clrBtnBdr(bObj)
 			end)
 			aObj:SecureHook(opts.obj, "Enable", function(bObj, _)
-				aObj:clrBtnBdr(bObj, bObj.sb.clr, bObj.sb.ca)
+				aObj:clrBtnBdr(bObj, opts.clr, opts.ca)
 			end)
 		end
 		if opts.onSB then -- Ace3, ArkInventory & BNToastFrame
@@ -600,12 +598,12 @@ local function __skinStdButton(opts)
 			aObj:clrBtnBdr(bObj)
 		end)
 		aObj:SecureHook(opts.obj, "Enable", function(bObj, _)
-			aObj:clrBtnBdr(bObj, bObj.sb and bObj.sb.clr or bObj.clr, bObj.sb and bObj.sb.ca or bObj.ca)
+			aObj:clrBtnBdr(bObj, opts.clr, opts.ca)
 		end)
 	end
 	if opts.sechk then
 		aObj:SecureHook(opts.obj, "SetEnabled", function(bObj)
-			aObj:clrBtnBdr(bObj, bObj.sb and bObj.sb.clr or bObj.clr, bObj.sb and bObj.sb.ca or bObj.ca)
+			aObj:clrBtnBdr(bObj, opts.clr, opts.ca)
 		end)
 	end
 	if not opts.sptb
@@ -841,19 +839,13 @@ local function __addButtonBorder(opts)
 		aObj:secureHook(opts.obj, "Disable", function(bObj, _)
 			aObj:clrBtnBdr(bObj)
 		end)
-		-- store colour and alpha values with the skin button
-		opts.obj.sbb.clr = opts.clr
-		opts.obj.sbb.ca = opts.ca
 		aObj:secureHook(opts.obj, "Enable", function(bObj, _)
-			aObj:clrBtnBdr(bObj, bObj.sbb.clr, bObj.sbb.ca)
+			aObj:clrBtnBdr(bObj, opts.clr, opts.ca)
 		end)
 	end
 	if opts.sechk then
-		-- store colour and alpha values with the skin button
-		opts.obj.sbb.clr = opts.clr
-		opts.obj.sbb.ca = opts.ca
 		aObj:secureHook(opts.obj, "SetEnabled", function(bObj)
-			aObj:clrBtnBdr(bObj, bObj.sbb.clr, bObj.sbb.ca)
+			aObj:clrBtnBdr(bObj, opts.clr, opts.ca)
 		end)
 	end
 end
@@ -942,11 +934,8 @@ local function __skinCheckButton(opts)
 	aObj:skinObject("button", {obj=opts.obj, fType=opts.ftype, bd=bd, ng=true, ofs=ofs, y2=yOfs})
 	aObj:clrBtnBdr(opts.obj, opts.clr, opts.ca)
 	if opts.sechk then
-		-- store colour and alpha values with the skin button
-		opts.obj.sb.clr = opts.clr
-		opts.obj.sb.ca = opts.ca
 		aObj:secureHook(opts.obj, "SetEnabled", function(bObj)
-			aObj:clrBtnBdr(bObj, bObj.sb.clr, bObj.sb.ca)
+			aObj:clrBtnBdr(bObj, opts.clr, opts.ca)
 		end)
 	end
 	if opts.size then
