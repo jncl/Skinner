@@ -66,7 +66,10 @@ function aObj:clrFrameBdr(fObj, clrName, alpha)
 
 	if not fObj then return end
 
-	clrName = fObj.IsEnabled and not fObj:IsEnabled() and "disabled" or clrName
+	-- ignore Slider/ScrollBar colour changes
+	if clrName ~= "slider" then
+		clrName = fObj.IsEnabled and not fObj:IsEnabled() and "disabled" or clrName
+	end
 	self:clrBBC(fObj.sf, clrName, alpha)
 
 end
