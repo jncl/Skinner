@@ -1,3 +1,16 @@
+beta12.70688.1
+Jncl:
+	Updated ToDo*.txt files
+	Updated Change_History.txt
+	Updated Version numbers
+	Added debug lines
+	Updated ObjectiveTracker skin to handle StageBlock skin frame visibility
+	Skinned PlayerChoice Toggle buttons when UI is loaded
+	Updated AlertFrame skin to revert Forever changes
+	Added shorthand variable for all Classic versions Updated code to use new shorthand for All Classic version
+	Forever change
+	Updated NSF & Top/Middle/Bottom modules code, closes #380
+
 beta12.70631.1
 Jncl:
 	Updated ToDo*.txt files
