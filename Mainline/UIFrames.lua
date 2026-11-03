@@ -3117,7 +3117,9 @@ aObj.SetupMainline_UIFrames = function()
 				end
 			end
 			for opt in frame.optionPools:EnumerateActiveByTemplate(frame.optionFrameTemplate) do
+				--@debug@
 				-- aObj:Debug("PCF skinOptions: [%s, %s]", frame.optionFrameTemplate)
+				--@end-debug@
 				opt.OptionText.String:SetTextColor(aObj.BT:GetRGB())
 				opt.OptionText.HTML:SetTextColor("P", aObj.BT:GetRGB())
 				if aObj.modBtns then
