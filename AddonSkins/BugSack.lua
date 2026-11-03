@@ -29,11 +29,14 @@ aObj.addonsToSkin.BugSack = function(self) -- v12.1.7
 				end
 			end)
 		end})
-		local x1Ofs, y1Ofs, x2Ofs, y2Ofs = 2, -2, -1, 4
 		if self.isMorF then
-			x1Ofs, y1Ofs, x2Ofs, y2Ofs = nil, nil, nil, nil
+			self:skinObject("frame", {obj=frame, kfs=true, cb=true})
+		else
+			self:skinObject("frame", {obj=frame, kfs=true, x1=2, y1=-2, x2=-1, y2=4})
+			if self.modBtns then
+				self:skinCloseButton{obj=self:getChild(frame, 1)}
+			end
 		end
-		self:skinObject("frame", {obj=frame, kfs=true, cb=true, x1=x1Ofs, y1=y1Ofs, x2=x2Ofs, y2=y2Ofs})
 		frame:SetFrameStrata("FULLSCREEN_DIALOG")
 		if self.modBtns then
 			for _, name in _G.pairs{"Prev", "Send", "Next"} do
