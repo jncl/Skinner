@@ -2,65 +2,77 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("BugSack") then return end
 local _G = _G
 
-aObj.addonsToSkin.BugSack = function(self) -- v12.1.7
+aObj.addonsToSkin.BugSack = function(self) -- v12.1.9
 
 	if not _G.BugGrabber then
 		return
 	end
 
-	self:SecureHook(_G.BugSack, "OpenSack", function(_)
+	local function skinSack()
 		local frame = _G.BugSackFrame
-		local scrollBar = self:getChild(frame, frame:GetNumChildren() - 5).ScrollBar
-		local optionsFrame = self:getChild(frame, frame:GetNumChildren() - 4)
-		if self.isMorF then
-			self:skinObject("scrollbar", {obj=scrollBar})
+		local scrollBar = aObj:getChild(frame, frame:GetNumChildren() - 5).ScrollBar
+		local optionsFrame = aObj:getChild(frame, frame:GetNumChildren() - 4)
+		if aObj.isMorF then
+			aObj:skinObject("scrollbar", {obj=scrollBar})
 		else
-			self:skinObject("slider", {obj=scrollBar})
+			aObj:skinObject("slider", {obj=scrollBar})
 		end
 		frame.Tabs = frame.Tabs or {_G.BugSackTabAll, _G.BugSackTabSession, _G.BugSackTabLast, _G.BugSackTabOptions}
-		self:skinObject("tabs", {obj=frame, tabs=frame.Tabs, lod=self.isTT and true, track=false, func=self.isTT and function(tab)
-			self:SecureHookScript(tab, "OnClick", function(tObj)
+		aObj:skinObject("tabs", {obj=frame, tabs=frame.Tabs, lod=aObj.isTT, track=false, func=aObj.isTT and function(tab)
+			aObj:SecureHookScript(tab, "OnClick", function(tObj)
 				for _, tabObj in _G.pairs(frame.Tabs) do
 					if tabObj == tObj then
-						self:setActiveTab(tabObj.sf)
+						aObj:setActiveTab(tabObj.sf)
 					else
-						self:setInactiveTab(tabObj.sf)
+						aObj:setInactiveTab(tabObj.sf)
 					end
 				end
 			end)
 		end})
-		if self.isMorF then
-			self:skinObject("frame", {obj=frame, kfs=true, cb=true})
+		if aObj.isMorF then
+			aObj:skinObject("frame", {obj=frame, kfs=true, cb=true})
 		else
-			self:skinObject("frame", {obj=frame, kfs=true, x1=2, y1=-2, x2=-1, y2=4})
-			if self.modBtns then
-				self:skinCloseButton{obj=self:getChild(frame, 1)}
+			aObj:skinObject("frame", {obj=frame, kfs=true, x1=2, y1=-2, x2=-1, y2=4})
+			if aObj.modBtns then
+				aObj:skinCloseButton{obj=aObj:getChild(frame, 1)}
 			end
 		end
 		frame:SetFrameStrata("FULLSCREEN_DIALOG")
-		if self.modBtns then
+		if aObj.modBtns then
 			for _, name in _G.pairs{"Prev", "Send", "Next"} do
-				self:skinStdButton{obj=_G["BugSack" .. name .. "Button"], schk=true}
+				aObj:skinStdButton{obj=_G["BugSack" .. name .. "Button"], schk=true}
 			end
-			self:skinStdButton{obj=_G.BugSackWipeButton, sechk=true}
+			aObj:skinStdButton{obj=_G.BugSackWipeButton, sechk=true}
 		end
 
 		local kid1
 		for _, child in _G.ipairs_reverse{optionsFrame:GetChildren()} do
 			if child:IsObjectType("CheckButton")
-			and self.modChkBtns
+			and aObj.modChkBtns
 			then
-				self:skinCheckButton{obj=child}
+				aObj:skinCheckButton{obj=child}
 			elseif child:IsObjectType("Frame") then
-				kid1 = self:getChild(child, 1)
+				kid1 = aObj:getChild(child, 1)
 				if kid1
 				and kid1:IsObjectType("Button") then
-					self:skinObject("ddbutton", {obj=kid1})
+					aObj:skinObject("ddbutton", {obj=kid1})
 				end
 			end
 		end
 
+		skinSack = _G.nop
+
+	end
+
+	self:SecureHook(_G.BugSack, "OpenSack", function(_)
+		skinSack()
+
 		self:Unhook(_G.BugSack, "OpenSack")
+	end)
+	self:SecureHook(_G.BugSack, "OpenConfig", function(_)
+		skinSack()
+
+		self:Unhook(_G.BugSack, "OpenConfig")
 	end)
 
 end
