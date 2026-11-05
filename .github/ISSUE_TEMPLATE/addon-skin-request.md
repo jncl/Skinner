@@ -8,7 +8,7 @@ assignees: jncl
 ---
 
 **WoW Version**
-Which version(s) of WoW this AddOn is for: ( Retail / MoP Classic / Classic Era / BC Anniversary / All )
+Which version(s) of WoW this AddOn is for: ( Retail / MoP Classic / Classic Era / BC Anniversary / Forever / All )
 
 **AddOn Name**
 Name of the AddOn for which a skin is requested

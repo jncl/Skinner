@@ -8,7 +8,7 @@ assignees: jncl
 ---
 
 **WoW Version**
-Which version of WoW this bug occurs in:  ( Retail / MoP Classic / Classic Era / BC Anniversary / All )
+Which version of WoW this bug occurs in:  ( Retail / MoP Classic / Classic Era / BC Anniversary / Forever / All )
 
 **AddOn skin name**
 Name of the AddOn skin producing this bug, if known
