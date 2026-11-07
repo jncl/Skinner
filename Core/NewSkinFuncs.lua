@@ -830,8 +830,8 @@ local function skinMoneyFrame(tbl)
 	end
 
 	aObj:skinObject("editbox", {obj=tbl.obj.gold, fType=tbl.fType})
-	aObj:skinObject("editbox", {obj=tbl.obj.silver, fType=tbl.fType, chginset=false, x1=-4, x2=-8})
-	aObj:skinObject("editbox", {obj=tbl.obj.copper, fType=tbl.fType, chginset=false, x1=-4, x2=-8})
+	aObj:skinObject("editbox", {obj=tbl.obj.silver, fType=tbl.fType, chginset=false, x1=-4})
+	aObj:skinObject("editbox", {obj=tbl.obj.copper, fType=tbl.fType, chginset=false, x1=-4})
 end
 skinFuncs.moneyframe = function(table) skinMoneyFrame(table) end
 local function skinProgressBar(tbl)
