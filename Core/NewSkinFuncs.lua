@@ -1403,8 +1403,13 @@ if aObj.isMorF then
 			element.LevelSquare:SetSize(18, 18)
 			self:skinObject("frame", {obj=element, fType=ftype, fb=true, ofs=-4, x2=-5, y2=5, clr="brownish"})
 		end
+	function aObj.skinTutorialFrame(_, frame, ftype)
+
+		frame:DisableDrawLayer("BORDER") -- hide NineSlice UniqueCornersLayout
+		aObj:skinObject("frame", {obj=frame, fType=ftype, ofs=-30})
 
 	end
+
 end
 
 -- the following code has been moved from Skinner.lua OnEnable function

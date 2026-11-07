@@ -1380,6 +1380,7 @@ aObj.SetupOptions = function(self)
 		["Text To Speech Frame"]  = true,
 		["Time Manager"]          = {suff = "Frame"},
 		["Tutorial"]              = {suff = "Frame"},
+		["Tutorial UI"]           = self.isMorF and true or nil,
 		["UI DropDown Menu"]      = {desc = "DropDown Panels"},
 		["UI Widgets"]            = true,
 	}

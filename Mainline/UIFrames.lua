@@ -517,10 +517,6 @@ aObj.SetupMainline_UIFrames = function()
 
 	end
 
-	local function skinTutorialFrame(frame)
-		frame:DisableDrawLayer("BORDER") -- hide NineSlice UniqueCornersLayout
-		aObj:skinObject("frame", {obj=frame, fType=ftype, ofs=-30})
-	end
 	aObj.blizzLoDFrames[ftype].BoostTutorial = function(self)
 		if not self.prdb.TutorialUI or self.initialized.BoostTutorial then return end
 		self.initialized.BoostTutorial = true
@@ -4050,29 +4046,6 @@ aObj.SetupMainline_UIFrames = function()
 
 	end
 
-	aObj.blizzFrames[ftype].TutorialManager = function(self)
-		if not self.prdb.TutorialUI or self.initialized.TutorialManager then return end
-		self.initialized.TutorialManager = true
-
-		skinTutorialFrame(_G.TutorialMainFrame_Frame)
-		skinTutorialFrame(_G.TutorialSingleKey_Frame)
-		skinTutorialFrame(_G.TutorialDoubleKey_Frame)
-
-		self:RawHook(_G.TutorialPointerFrame, "_GetFrame", function(this, parentFrame)
-			local frame = aObj.hooks[this]._GetFrame(this, parentFrame)
-			self:skinObject("glowbox", {obj=frame.Content, fType=ftype})
-			frame.Glow:SetBackdrop(nil)
-			return frame
-		end, true)
-		if _G.TutorialPointerFrame_1
-		and not _G.TutorialPointerFrame_1.sf
-		then
-			self:skinObject("glowbox", {obj=_G.TutorialPointerFrame_1.Content, fType=ftype})
-			_G.TutorialPointerFrame_1.Glow:SetBackdrop(nil)
-		end
-
-	end
-
 	aObj.blizzLoDFrames[ftype].WarfrontsPartyPoseUI = function(self)
 		if not self.prdb.WarfrontsPartyPoseUI or self.initialized.WarfrontsPartyPoseUI then return end
 
@@ -4171,7 +4144,6 @@ aObj.SetupMainline_UIFramesOptions = function(self)
 		["Subscription Interstitial UI"] = _G.IsTrialAccount() or _G.IsVeteranTrialAccount() and true or nil,
 		["Talking Head"]                 = true,
 		["Torghast Level Picker"]        = {suff = "Frame"},
-		["Tutorial UI"]                  = true,
 		["Warfronts Party Pose UI"]      = true,
 		["Weekly Rewards"]               = {suff = "Frame"},
 		["Zone Ability"]                 = true,

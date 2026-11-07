@@ -5345,6 +5345,31 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 
 end
 
+if aObj.isMorF then
+	aObj.blizzFrames[ftype].TutorialManager = function(self)
+		if not self.prdb.TutorialUI or self.initialized.TutorialManager then return end
+		self.initialized.TutorialManager = true
+
+		self:skinTutorialFrame(_G.TutorialMainFrame_Frame, ftype)
+		self:skinTutorialFrame(_G.TutorialSingleKey_Frame, ftype)
+		self:skinTutorialFrame(_G.TutorialDoubleKey_Frame, ftype)
+
+		self:RawHook(_G.TutorialPointerFrame, "_GetFrame", function(this, parentFrame)
+			local frame = aObj.hooks[this]._GetFrame(this, parentFrame)
+			self:skinObject("glowbox", {obj=frame.Content, fType=ftype})
+			frame.Glow:SetBackdrop(nil)
+			return frame
+		end, true)
+		if _G.TutorialPointerFrame_1
+		and not _G.TutorialPointerFrame_1.sf
+		then
+			self:skinObject("glowbox", {obj=_G.TutorialPointerFrame_1.Content, fType=ftype})
+			_G.TutorialPointerFrame_1.Glow:SetBackdrop(nil)
+		end
+
+	end
+end
+
 -- These DropDownMenus are still used by TipTac amongst other AddOns
 aObj.blizzFrames[ftype].UIDropDownMenu = function(self)
 	if not self.prdb.UIDropDownMenu or self.initialized.UIDropDownMenu then return end
