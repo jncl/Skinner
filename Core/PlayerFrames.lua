@@ -1480,10 +1480,10 @@ if aObj.isMorF then
 					self:addButtonBorder{obj=this.RandomizeAppearanceButton, fType=ftype, ofs=-4, x1=5, y2=5, clr="gold"}
 				end
 			else
-				self:skinObject("frame", {obj=this.CustomizeOptionsContainerFrame, fType=ftype, kfs=true, ofs=0, clr="brownish"})
-				self:skinObject("frame", {obj=this.SmallButtons, fType=ftype, kfs=true, ofs=-4, clr="brownish"})
+				self:skinObject("frame", {obj=this.CustomizeOptionsContainerFrame, fType=ftype, kfs=true, ofs=0})
+				self:skinObject("frame", {obj=this.SmallButtons, fType=ftype, kfs=true, ofs=-4})
 				if self.modBtnBs then
-					self:addButtonBorder{obj=this.CustomizeOptionsContainerFrame.RandomizeAppearanceButton, fType=ftype, ofs=-4, x1=5, y2=5, clr="brownish"}
+					self:addButtonBorder{obj=this.CustomizeOptionsContainerFrame.RandomizeAppearanceButton, fType=ftype, ofs=-4, x1=5, y2=5}
 				end
 			end
 			self:SecureHook(this, "UpdateOptionButtons", function(_, _)
@@ -1520,7 +1520,7 @@ if aObj.isMorF then
 			end
 			if self.modBtnBs then
 				for _, btn in _G.pairs(this.SmallButtons.ControlButtons) do
-					self:addButtonBorder{obj=btn, fType=ftype, ofs=-4, x1=5, y2=5, clr=self.isFrvr and "brownish" or "gold", sechk=true}
+					self:addButtonBorder{obj=btn, fType=ftype, ofs=-4, x1=5, y2=5, clr=not self.isFrvr and "brownish" or nil, sechk=true}
 				end
 			end
 			if self.isFrvr then
@@ -1531,9 +1531,6 @@ if aObj.isMorF then
 
 			_G.RunNextFrame(function()
 			    self:add2Table(self.ttList, ftype, _G.CustomizationNoHeaderTooltip)
-			    if self.isFrvr then
-					self:clrBBC(_G.CustomizationNoHeaderTooltip.sf, "brownish")
-			    end
 			end)
 
 			self:Unhook(_G.CharCustomizeFrame, "OnShow")
@@ -5660,7 +5657,7 @@ if aObj.isMorF then
 				-- .Border
 				-- .Header
 			self:skinObject("ddbutton", {obj=this.BattleNetBar.ControlsContainer.OnlineStatusDropdown, fType=ftype, noSF=true})
-			self:skinObject("ddbutton", {obj=this.BattleNetBar.ControlsContainer.BattleNetMenuButton, fType=ftype, noSF=true, by1=0, by2=0, clr="brownish"})
+			self:skinObject("ddbutton", {obj=this.BattleNetBar.ControlsContainer.BattleNetMenuButton, fType=ftype, noSF=true, by1=0, by2=0})
 
 			self:skinObject("sidetabs", {obj=this, tabs="socialTabPool", pool=true, fType=ftype})
 			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true})
@@ -5677,7 +5674,7 @@ if aObj.isMorF then
 				fObj.EditBox:DisableDrawLayer("BACKGROUND")
 				self:skinObject("editbox", {obj=fObj.EditBox, fType=ftype})
 				self:moveObject{obj=fObj.EditBox.PromptText, x=6}
-				self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, cb=true, ofs=-2, clr="brownish"})
+				self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, cb=true, ofs=-2})
 				if self.modBtns then
 					self:skinStdButton{obj=fObj.UpdateButton, fType=ftype}
 					self:skinStdButton{obj=fObj.CancelButton, fType=ftype}
@@ -5693,7 +5690,7 @@ if aObj.isMorF then
 					return
 				end
 
-				self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, cb=true, clr="brownish"})
+				self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, cb=true})
 				if self.modBtns then
 					self:skinStdButton{obj=fObj.BlockButton, fType=ftype, sechk=true}
 					self:skinStdButton{obj=fObj.UnblockButton, fType=ftype, sechk=true}
@@ -5728,7 +5725,7 @@ if aObj.isMorF then
 					element.Background:SetTexture(nil)
 					-- .PresenceHolder (Icon)
 					if aObj.modBtnBs then
-						aObj:addButtonBorder{obj=element.PartyButton, fType=ftype, ofs=0, y2=1, clr="brownish"}
+						aObj:addButtonBorder{obj=element.PartyButton, fType=ftype, ofs=0, y2=1}
 					end
 					-- .GameIconHolder (Icon)
 					-- .TextHolder
@@ -5750,7 +5747,7 @@ if aObj.isMorF then
 					element.Background:SetTexture(nil)
 					-- .PresenceHolder (Icon)
 					if aObj.modBtnBs then
-						aObj:addButtonBorder{obj=element.PartyButton, fType=ftype, ofs=0, y2=1, clr="brownish"}
+						aObj:addButtonBorder{obj=element.PartyButton, fType=ftype, ofs=0, y2=1}
 					end
 					-- .StateDisplay
 						-- .PinDisplay (Icon)

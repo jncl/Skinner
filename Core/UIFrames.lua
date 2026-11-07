@@ -3337,8 +3337,8 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 			self:moveObject{obj=_G.MinimapCluster.Tracking, y=-25}
 			self:moveObject{obj=_G.MinimapCluster.DielFrame, x=55, y=-25}
 			if not minBtn then
-				self:addButtonBorder{obj=_G.GameTimeFrame, fType=ftype, x2=1, y2=-1, clr="brownish"}
-				self:addButtonBorder{obj=_G.MinimapCluster.Tracking.Button, fType=ftype, clr="brownish"}
+				self:addButtonBorder{obj=_G.GameTimeFrame, fType=ftype, x2=1, y2=-1}
+				self:addButtonBorder{obj=_G.MinimapCluster.Tracking.Button, fType=ftype}
 				self:keepFontStrings(_G.AddonCompartmentFrame)
 				self:skinObject("button", {obj=_G.AddonCompartmentFrame, ofs=0})
 			end
