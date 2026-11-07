@@ -3220,7 +3220,7 @@ aObj.blizzFrames[ftype].Minimap = function(self)
 		_G.MinimapCluster.ZoneTextButton:ClearAllPoints()
 		_G.MinimapCluster.ZoneTextButton:SetPoint("BOTTOMLEFT", _G.Minimap, "TOPLEFT", 0, 5)
 		_G.MinimapCluster.ZoneTextButton:SetPoint("BOTTOMRIGHT", _G.Minimap, "TOPRIGHT", 0, 5)
-		self:skinObject("button", {obj=_G.MinimapCluster.ZoneTextButton, fType=ftype, x1=-5, x2=5})
+		self:skinObject("button", {obj=_G.MinimapCluster.ZoneTextButton, fType=ftype, ofs=1, x1=-5, x2=5})
 	else
 		_G.MinimapCluster.BorderTop:SetTexture(nil)
 		_G.MinimapZoneTextButton:ClearAllPoints()
@@ -3235,7 +3235,7 @@ aObj.blizzFrames[ftype].Minimap = function(self)
 	-- use file path for non Retail versions otherwise the minimap has a green overlay
 	_G.Minimap:SetMaskTexture(self.isMorF and self.tFDIDs.w8x8 or [[Interface\Buttons\WHITE8X8]])
 	-- use a backdrop with no Texture otherwise the map tiles are obscured
-	self:skinObject("frame", {obj=_G.Minimap, fType=ftype, ng=not self.prdb.Minimap.gloss and true, bd=8, ofs=5, y2=-4})
+	self:skinObject("frame", {obj=_G.Minimap, fType=ftype, ng=not self.prdb.Minimap.gloss and true, bd=8, ofs=5--[[, y2=-4]]})
 
 	if self.isMorF then
 		-- N.B. copied from SexyMap
@@ -3351,7 +3351,7 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 		end)
 		if self.isFrvr then
 			self:moveObject{obj=_G.GameTimeFrame, x=7}
-			self:moveObject{obj=_G.MinimapCluster.Tracking, y=-25}
+			self:moveObject{obj=_G.MinimapCluster.Tracking, x=-6}
 			self:moveObject{obj=_G.MinimapCluster.DielFrame, x=55, y=-25}
 			if not minBtn then
 				self:addButtonBorder{obj=_G.GameTimeFrame, fType=ftype, x2=1, y2=-1}
