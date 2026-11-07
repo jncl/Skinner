@@ -521,8 +521,8 @@ aObj.SetupMainline_UIFrames = function()
 		if not self.prdb.TutorialUI or self.initialized.BoostTutorial then return end
 		self.initialized.BoostTutorial = true
 
-		skinTutorialFrame(_G.TutorialKeyboardMouseFrame_Frame)
-		skinTutorialFrame(_G.TutorialWalk_Frame)
+		self:skinTutorialFrame(_G.TutorialKeyboardMouseFrame_Frame, ftype)
+		self:skinTutorialFrame(_G.TutorialWalk_Frame, ftype)
 
 	end
 
