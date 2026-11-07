@@ -2310,8 +2310,8 @@ elseif _G.C_LFGList.GetPremadeGroupFinderStyle
 and _G.C_LFGList.GetPremadeGroupFinderStyle() == _G.Enum.PremadeGroupFinderStyle.Vanilla
 then
 	aObj.blizzFrames[ftype].GroupFinder = function(self)
-		if not self.prdb.PVEFrame or self.initialized.LFGList then return end
-		self.initialized.LFGList = true
+		if not self.prdb.PVEFrame or self.initialized.LFGParentFrame then return end
+		self.initialized.LFGParentFrame = true
 
 		self:SecureHookScript(_G.LFGParentFrame, "OnShow", function(this)
 			if _G.InCombatLockdown() then
@@ -2323,20 +2323,29 @@ then
 			if self.modBtns then
 				self:skinCloseButton{obj=self:getChild(this, 1), fType=ftype}
 			end
-			if self.isMnln then
-				_G.LFGParentFramePortraitIcon:SetTexture(nil)
-				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ofs=-11, x2=-29, y2=70})
-			else
-				_G.LFGParentFramePortrait.Texture:SetTexture(nil)
+			if self.isFrvr then
+				_G.LFGParentFramePortrait.texture:SetTexture(nil)
 				this.TabButtons = {this.ListingTab, this.BrowsingTab, this.WhoListingTab}
 				self:skinObject("sidetabs", {obj=this, tabs="TabButtons", fType=ftype})
+				-- self:skinObject("frame", {obj=this, fType=ftype, kfs=true})
+			else
+				_G.LFGParentFramePortraitIcon:SetTexture(nil)
+				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, ofs=-11, x2=-29, y2=70})
 			end
 
 			self:SecureHookScript(_G.LFGListingFrame, "OnShow", function(fObj)
-				if self.isMnln then
-					self:keepFontStrings(fObj)
+				if _G.InCombatLockdown() then
+					self:add2Table(self.oocTab, {self.checkShown, {self, fObj}})
+					return
+				end
+
+				if self.isFrvr then
+					self:getRegion(fObj.RolesSection, 1):SetTexture(nil)
+					self:removeInset(fObj.Inset)
+					fObj.DividerFrame:SetAlpha(0)
+					self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true})
 				else
-					self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, ofs=-11, x2=-29, y2=70})
+					self:keepFontStrings(fObj)
 				end
 				for _, btn in _G.pairs(fObj.SoloRoleButtons.RoleButtons) do
 					btn.Background:SetTexture(nil)
@@ -2365,6 +2374,9 @@ then
 				self:SecureHookScript(fObj.ActivityView, "OnShow", function(frame)
 					frame:DisableDrawLayer("OVERLAY")
 					self:skinObject("ddbutton", {obj=frame.PlayStyleDropdown, fType=ftype})
+					if self.modChkBtns then
+						self:skinCheckButton{obj=frame.LevelRangesCheckbox.Checkbox, fType=ftype}
+					end
 					self:skinObject("frame", {obj=frame.Comment, fType=ftype, kfs=true, fb=true, ofs=6})
 					frame.Comment.EditBox.Instructions:SetTextColor(self.BT:GetRGB())
 					self:skinObject("ddbutton", {obj=frame.VoiceChatDropdown, fType=ftype})
@@ -2397,9 +2409,12 @@ then
 			end)
 
 			self:SecureHookScript(_G.LFGBrowseFrame, "OnShow", function(fObj)
-				if self.isMnln then
-					self:keepFontStrings(fObj)
-				else
+				if _G.InCombatLockdown() then
+					self:add2Table(self.oocTab, {self.checkShown, {self, fObj}})
+					return
+				end
+
+				if self.isFrvr then
 					self:skinObject("scrollbar", {obj=fObj.ScrollBar, fType=ftype})
 					local function skinListEntry(...)
 						local _, element
@@ -2412,7 +2427,9 @@ then
 						element.Highlight:SetTexture(nil)
 					end
 					_G.ScrollUtil.AddInitializedFrameCallback(fObj.ScrollBox, skinListEntry, aObj, true)
-					self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true, ofs=-11, x2=-29, y2=70})
+					self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true})
+				else
+					self:keepFontStrings(fObj)
 				end
 				self:skinObject("ddbutton", {obj=fObj.CategoryDropdown, fType=ftype})
 				self:skinObject("ddbutton", {obj=fObj.ActivityDropdown, fType=ftype})
@@ -2440,7 +2457,7 @@ then
 					self:skinObject("ddbutton", {obj=fObj.FilterDropdown, fType=ftype, filter=true})
 					self:skinObject("frame", {obj=fObj, fType=ftype, kfs=true})
 					if self.modBtns then
-						self:skinStdButton{obj=fObj.WhoSearch, fType=ftype, clr="gold"}
+						self:skinStdButton{obj=fObj.WhoSearch, fType=ftype, ofs=-2, clr="gold"}
 					end
 					self:skinObject("scrollbar", {obj=fObj.ScrollBar, fType=ftype})
 					local function skinListEntry(...)
@@ -2452,7 +2469,7 @@ then
 						end
 						element.Background:SetTexture(nil)
 						if aObj.modBtns then
-							aObj:skinStdButton{obj=element.InviteButton, fType=ftype}
+							aObj:skinStdButton{obj=element.InviteButton, fType=ftype, ofs=-2}
 						end
 					end
 					_G.ScrollUtil.AddInitializedFrameCallback(fObj.ScrollBox, skinListEntry, aObj, true)
