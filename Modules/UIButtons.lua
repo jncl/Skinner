@@ -159,12 +159,17 @@ function module:chgHLTex(obj, hTex)
 
 	if hTex then
 		hTexFile = hTex:GetTexture()
+		--@debug@
+		-- aObj:Debug("chgHLTex Texture File: [%s, %s]", hTexFile)
+		--@end-debug@
 		if hTexFile then
 			if _G.tonumber(hTexFile) then
 				if _G.tonumber(hTexFile) == 3046538 then -- auctionhouse-nav-button
 					clr = "grey"
 				elseif _G.tonumber(hTexFile) == 1536801 then -- addonlist button highlight
 					clr = "red"
+				elseif _G.tonumber(hTexFile) == 8069106 then -- WhoList Search/Invite Button
+					clr = "yellow"
 				end
 			else
 				if hTexFile:find("UI-Panel-Button-Highlight", 1, true) -- UIPanelButtonHighlightTexture
@@ -172,8 +177,8 @@ function module:chgHLTex(obj, hTex)
 				then
 					clr = "red"
 				elseif hTexFile:find("UI-Silver-Button-Highlight", 1, true) -- UIMenuButtonStretchTemplate
-				or hTexFile:find("UI-Minimap-ZoomButton-Highlight", 1, true)
-				or hTexFile:find("HelpButtons", 1, true) -- Classic Help Buttons
+				    or hTexFile:find("UI-Minimap-ZoomButton-Highlight", 1, true)
+				    or hTexFile:find("HelpButtons", 1, true) -- Classic Help Buttons
 				then
 					clr = "blue"
 				elseif hTexFile:find("UI-Silver-Button-Select", 1, true) then -- UIMenuButtonStretchTemplate
