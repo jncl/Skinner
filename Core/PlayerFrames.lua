@@ -1364,14 +1364,11 @@ if aObj.isMorCorF then
 					-- .Content
 					-- .Footer
 					self:skinObject("progressbar", {obj=fObj.RankBar, fType=ftype})
-					for row in fObj.rowPools:EnumerateActive() do
-						skinRow(row)
-					end
-					self:RawHook(fObj, "AcquireRow", function(sPane, template)
-						local row = self.hooks[sPane].AquireRow(sPane, template)
-						skinRow(row)
-						return row
-					end, true)
+					self:SecureHook(fObj, "Refresh", function(frame)
+						for row in frame.rowPools:EnumerateActive() do
+							skinRow(row)
+						end
+					end)
 
 					self:Unhook(this.SkillDetailFrame, "OnShow")
 				end)
