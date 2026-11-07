@@ -5722,8 +5722,8 @@ if aObj.isMorF then
 				skinSocialUIContactsFrame(fObj, function(element, _)
 					element.Background:SetTexture(nil)
 					-- .PresenceHolder (Icon)
-					if aObj.modBtnBs then
-						aObj:addButtonBorder{obj=element.PartyButton, fType=ftype, ofs=0, y2=1}
+					if aObj.modBtns then
+						aObj:skinStdButton{obj=element.PartyButton, fType=ftype}
 					end
 					-- .GameIconHolder (Icon)
 					-- .TextHolder
@@ -5744,8 +5744,8 @@ if aObj.isMorF then
 				skinSocialUIContactsFrame(fObj, function(element, _)
 					element.Background:SetTexture(nil)
 					-- .PresenceHolder (Icon)
-					if aObj.modBtnBs then
-						aObj:addButtonBorder{obj=element.PartyButton, fType=ftype, ofs=0, y2=1}
+					if aObj.modBtns then
+						aObj:skinStdButton{obj=element.PartyButton, fType=ftype}
 					end
 					-- .StateDisplay
 						-- .PinDisplay (Icon)
@@ -5765,7 +5765,7 @@ if aObj.isMorF then
 				skinSocialUIContactsFrame(fObj, function(element, _)
 					element.Background:SetTexture(nil)
 					if aObj.modBtns then
-						aObj:skinStdButton{obj=element.AcceptButton, fType=ftype--[[, schk=true, sechk=true]]}
+						aObj:skinStdButton{obj=element.AcceptButton, fType=ftype}
 					end
 					-- .DeclineButton
 					-- .TextHolder
