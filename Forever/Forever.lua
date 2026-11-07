@@ -1,3 +1,0 @@
-local _, aObj = ...
-
-aObj.isFrvr = true
