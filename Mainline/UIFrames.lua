@@ -2471,53 +2471,56 @@ aObj.SetupMainline_UIFrames = function()
 						self:SecureHookScript(cf.InitiativesFrame, "OnShow", function(ef)
 							ef.InitiativesArt.InitiativesBG:SetTexture(nil)
 							self:keepFontStrings(ef.InitiativesArt.BorderArt)
-							local efisf = ef.InitiativeSetFrame
-							efisf.InitiativeTimer.TimerBG:SetTexture(nil)
-							-- N.B. make sure reward is loaded
-							_G.C_Timer.After(0.5, function()
-								efisf.ProgressBar.Threshold4.Reward.IconBorder:SetTexture(nil)
-							end)
-							efisf.InitiativeActiveNeighborhoodSwitcher:DisableDrawLayer("BACKGROUND")
-							efisf.InitiativeTasks:DisableDrawLayer("BACKGROUND")
-							self:changeTex2Black(efisf.InitiativeTasks.TaskListTitleContainer, {"TitleTextureL", "TitleTextureM", "TitleTextureR"})
-							self:removeRegions(efisf.InitiativeTasks.TaskListTitleContainer, {5, 6})
-							self:skinObject("scrollbar", {obj=efisf.InitiativeTasks.ScrollBar, fType=ftype})
-							-- local function skinTask(...)
-							-- 	local _, element, elementData
-							-- 	if _G.select("#", ...) == 2 then
-							-- 		element, elementData = ...
-							-- 	else
-							-- 		_, element, elementData = ...
-							-- 	end
-							-- 	-- TODO: skin element
-							-- 	--@debug@
-							-- 	-- _G.Spew("TL element", element)
-							-- 	-- _G.Spew("TL elementData", elementData)
-							-- 	--@end-debug@
-							-- end
-							-- _G.ScrollUtil.AddInitializedFrameCallback(efisf.InitiativeTasks.TaskList, skinTask, aObj, true)
-							efisf.InitiativeActivity:DisableDrawLayer("BACKGROUND")
-							self:changeTex2Black(efisf.InitiativeActivity.ActivityLogTitleContainer, {"TitleTextureL", "TitleTextureM", "TitleTextureR"})
-							self:removeRegions(efisf.InitiativeActivity.ActivityLogTitleContainer, {5, 6})
-							self:skinObject("scrollbar", {obj=efisf.InitiativeActivity.ScrollBar, fType=ftype})
-							-- local function skinActivity(...)
-							-- 	local _, element, elementData
-							-- 	if _G.select("#", ...) == 2 then
-							-- 		element, elementData = ...
-							-- 	else
-							-- 		_, element, elementData = ...
-							-- 	end
-							-- 	-- TODO: skin element
-							-- 	--@debug@
-							-- 	-- _G.Spew("AL element", element)
-							-- 	-- _G.Spew("AL elementData", elementData)
-							-- 	--@end-debug@
-							-- end
-							-- _G.ScrollUtil.AddInitializedFrameCallback(efisf.InitiativeActivity.ActivityLog, skinActivity, aObj, true)
 							self:skinObject("frame", {obj=ef, fType=ftype, kfs=true, fb=true, x1=-6, y1=1, x2=4})
-							if self.modBtns then
-								self:skinStdButton{obj=efisf.InitiativeActiveNeighborhoodSwitcher.SwitchActiveNeighborhoodBtn, fType=ftype}
-							end
+
+							self:SecureHookScript(ef.InitiativeSetFrame, "OnShow", function(efisf)
+								efisf.InitiativeTimer.TimerBG:SetTexture(nil)
+								efisf.ProgressBar.BarBackground:SetTexture(nil)
+								self:skinObject("statusbar", {obj=efisf.ProgressBar, fType=ftype, fi=0})
+								-- hook this to remove the final rewards IconBorder
+								self:SecureHook(ef, "SetProgressBarThresholds", function(itm)
+									itm.InitiativeSetFrame.ProgressBar.Threshold4.Reward.IconBorder:SetTexture(nil)
+									self:Unhook(ef, "SetProgressBarThresholds")
+								end)
+								efisf.InitiativeActiveNeighborhoodSwitcher:DisableDrawLayer("BACKGROUND")
+								if self.modBtns then
+									self:skinStdButton{obj=efisf.InitiativeActiveNeighborhoodSwitcher.SwitchActiveNeighborhoodBtn, fType=ftype}
+								end
+								-- Task List
+								self:skinObject("frame", {obj=efisf.InitiativeTasks, fType=ftype, kfs=true, fb=true, ofs=4, y1=8, x2=0, y2=0})
+								self:changeTex2Black(efisf.InitiativeTasks.TaskListTitleContainer, {"TitleTextureL", "TitleTextureM", "TitleTextureR"})
+								self:removeRegions(efisf.InitiativeTasks.TaskListTitleContainer, {5, 6})
+								self:skinObject("scrollbar", {obj=efisf.InitiativeTasks.ScrollBar, fType=ftype})
+								local function skinTask(...)
+									local _, element
+									if _G.select("#", ...) == 2 then
+										element, _ = ...
+									else
+										_, element, _ = ...
+									end
+									aObj:skinObject("frame", {obj=element, fType=ftype, kfs=true, fb=true, ofs=0, x1=10, x2=-10, clr="brownish"})
+									element.EntryFlag:SetAlpha(1)
+								end
+								_G.ScrollUtil.AddInitializedFrameCallback(efisf.InitiativeTasks.TaskList, skinTask, aObj, true)
+								-- Activity List
+								self:skinObject("frame", {obj=efisf.InitiativeActivity, fType=ftype, kfs=true, fb=true, ofs=4, y1=8, x2=2, y2=0})
+								self:changeTex2Black(efisf.InitiativeActivity.ActivityLogTitleContainer, {"TitleTextureL", "TitleTextureM", "TitleTextureR"})
+								self:removeRegions(efisf.InitiativeActivity.ActivityLogTitleContainer, {5, 6})
+								self:skinObject("scrollbar", {obj=efisf.InitiativeActivity.ScrollBar, fType=ftype})
+								local function skinActivity(...)
+									local _, element
+									if _G.select("#", ...) == 2 then
+										element, _ = ...
+									else
+										_, element, _ = ...
+									end
+									element.Divider:SetTexture(nil)
+								end
+								_G.ScrollUtil.AddInitializedFrameCallback(efisf.InitiativeActivity.ActivityLog, skinActivity, aObj, true)
+
+								self:Unhook(ef.InitiativeSetFrame, "OnShow")
+							end)
+							self:checkShown(ef.InitiativeSetFrame)
 
 							self:Unhook(ef, "OnShow")
 						end)
