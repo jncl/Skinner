@@ -1414,19 +1414,20 @@ if aObj.isMorCorF then
 
 				self:skinObject("scrollbar", {obj=this.ScrollBar, fType=ftype})
 				local function skinElement(...)
-					local _, element
+					local _, element, elementData
 					if _G.select("#", ...) == 2 then
-						element, _ = ...
+						element, elementData = ...
 					else
-						_, element, _ = ...
+						_, element, elementData = ...
 					end
-					--@debug@
-					-- _G.Spew("", element)
-					--@end-debug@
 					if element.StateIcon then
 						aObj:getRegion(element, 1):SetTexture(nil)
 					end
-					-- .ToggleCollapseButton
+					if elementData.data.isCategory
+					and aObj.modBtns
+					then
+						aObj:skinExpandButton{obj=element.ToggleCollapseButton, fType=ftype, onSB=true}
+					end
 				end
 				_G.ScrollUtil.AddInitializedFrameCallback(this.ScrollBox, skinElement, aObj, true)
 				self:getPenultimateChild(this.ScrollBox):DisableDrawLayer("OVERLAY") -- Top Line Texture

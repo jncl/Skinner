@@ -91,7 +91,10 @@ local function __checkTex(opts)
 	btn = opts.obj.onSB and opts.obj.sb or opts.obj
 	if not btn then return end -- handle unskinned buttons
 	nTex = opts.nTex or opts.obj:GetNormalTexture() and opts.obj:GetNormalTexture():GetTexture() or nil
-	-- aObj:Debug("__checkTex: [%s, %s]", opts.obj, nTex)
+
+	--@debug@
+	aObj:Debug("__checkTex: [%s, %s]", opts.obj, nTex)
+	--@end-debug@
 
 	local header = false
 	if nTex then
@@ -403,7 +406,7 @@ local function __skinExpandButton(opts)
 			module:SecureHook(opts.obj, "SetNormalAtlas", function(this, tObj)
 				module:checkTex{obj=this, nTex=tObj}
 			end)
-			if aObj.isMnln then
+			if aObj.isMorF then
 				nTex = opts.obj:GetNormalTexture()
 				module:SecureHook(nTex, "SetAtlas", function(_, tObj)
 					module:checkTex{obj=opts.obj, nTex=tObj}
