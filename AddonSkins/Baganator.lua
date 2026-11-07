@@ -198,7 +198,9 @@ aObj.addonsToSkin.Baganator = function(self) -- v 838
 			end
 		else
 			aObj:SecureHookScript(frame.Character, "OnShow", function(this)
-				aObj:Debug("SHS f.C: [%s, %s]", this, bankType)
+				--@debug@
+				-- aObj:Debug("SHS f.C: [%s, %s]", this, bankType)
+				--@end-debug@
 				if aObj.modBtns then
 					for _, btn in _G.pairs(this.TopButtons) do
 						aObj:skinStdButton{obj=btn, schk=true, sechk=true}
