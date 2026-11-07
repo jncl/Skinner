@@ -1372,6 +1372,19 @@ function aObj:skinStatusTrackingBars(container)
 end
 
 if aObj.isMorF then
+	function aObj:skinRewardTrackFrameElements(frame, ftype)
+		if not frame.elementPool then -- bugfix #289
+			return
+		end
+		for element in frame.elementPool:EnumerateActive() do
+			element.RewardCardBG:SetTexture(nil)
+			self:changeTex2Black(element, {"LevelSquare"})
+			element.LevelSquare:SetSize(18, 18)
+			self:skinObject("frame", {obj=element, fType=ftype, fb=true, ofs=-4, x2=-5, y2=5, clr="brownish"})
+		end
+
+	end
+
 	function aObj:skinTabSettingsMenu(frame, ftype)
 
 		self:SecureHookScript(frame.TabSettingsMenu, "OnShow", function(fObj)
@@ -1393,16 +1406,6 @@ if aObj.isMorF then
 
 	end
 
-	function aObj:skinRewardTrackFrameElements(frame, ftype)
-		if not frame.elementPool then -- bugfix #289
-			return
-		end
-		for element in frame.elementPool:EnumerateActive() do
-			element.RewardCardBG:SetTexture(nil)
-			self:changeTex2Black(element, {"LevelSquare"})
-			element.LevelSquare:SetSize(18, 18)
-			self:skinObject("frame", {obj=element, fType=ftype, fb=true, ofs=-4, x2=-5, y2=5, clr="brownish"})
-		end
 	function aObj.skinTutorialFrame(_, frame, ftype)
 
 		frame:DisableDrawLayer("BORDER") -- hide NineSlice UniqueCornersLayout
