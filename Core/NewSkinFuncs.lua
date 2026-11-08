@@ -57,8 +57,8 @@ local function setScrollTrackOffsets(tbl, type)
 			tbl.y1 = _G.rawget(tbl, "y1") or -1
 			tbl.y2 = _G.rawget(tbl, "y2") or 1
 		elseif w == 25 then -- EditModeImportLayout ScrollFrame or Classic CommunitiesGuildLogFrame
-			tbl.x1 = _G.rawget(tbl, "x1") or not aObj.isMnln and 2 or 0
-			tbl.x2 = _G.rawget(tbl, "x2") or not aObj.isMnln and 4 or 0
+			tbl.x1 = _G.rawget(tbl, "x1") or not aObj.isMorF and 2 or 0
+			tbl.x2 = _G.rawget(tbl, "x2") or not aObj.isMorF and 4 or 0
 		end
 		tbl.y1 = _G.rawget(tbl, "y1") or 0
 		tbl.y2 = _G.rawget(tbl, "y2") or 0
