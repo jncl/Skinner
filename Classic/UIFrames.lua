@@ -817,7 +817,6 @@ aObj.SetupClassic_UIFramesOptions = function(self)
 		["Level Up Display"]        = self.isClsc and true or nil,
 		["Product Choice"]          = {suff = "Frame"},
 		-- ["PVP Frame"]               = self.isClsc and {desc = "Player vs. Player"} or nil,
-		["Quest Log"]               = not _G.C_AddOns.IsAddOnLoaded("QuestLogEx") and true or nil,
 		["World State Score Frame"] = {desc = "Battle Score Frame"},
 	}
 	self:setupFramesOptions(optTab, "UI")

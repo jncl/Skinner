@@ -1367,6 +1367,7 @@ aObj.SetupOptions = function(self)
 		["PTR Feedback"]          = _G.PTR_IssueReporter and {suff = "Frames"} or nil,
 		["PVE Frame"]             = (self.isClscERA or self.isClscBCA) and {desc = "Looking for Group"} or {desc = "Group Finder Frame"},
 		["Queue Status Frame"]    = true,
+		["Quest Log"]             = not _G.C_AddOns.IsAddOnLoaded("QuestLogEx") and (self.isClsc or self.isFrvr) and true or nil,
 		["Quest Map"]             = not _G.C_AddOns.IsAddOnLoaded("EQL3") and self.isMorCorF and true or nil,
 		["Raid Frame"]            = true,
 		["Report Frame"]          = true,

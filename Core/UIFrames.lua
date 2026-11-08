@@ -4290,7 +4290,10 @@ then
 			if this.Border then
 				self:keepFontStrings(this.Border)
 			end
-			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true, ofs=0, x1=10, x2=-10})
+			if this.Header then
+				self:keepFontStrings(this.Header)
+			end
+			self:skinObject("frame", {obj=this, fType=ftype, kfs=true, hdr=true, ofs=-10, y1=0})
 
 			self:Unhook(_G.QuestTimerFrame, "OnShow")
 		end)
