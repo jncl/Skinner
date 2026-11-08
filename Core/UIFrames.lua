@@ -4926,12 +4926,12 @@ if aObj.isMorCorF then
 					-- make button appear larger
 					this:SetSize(32, 32)
 					self:skinOtherButton{obj=this, font=self.fontS, text=self.nearrow}
+					this:GetNormalTexture():SetTexture(nil)
 				end
 
 				self:Unhook(_G.ShardTransferImminentMinimizeButton, "OnShow")
 			end)
 			self:checkShown(_G.ShardTransferImminentMinimizeButton)
-
 		end
 
 	end
