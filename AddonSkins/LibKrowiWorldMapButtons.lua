@@ -18,7 +18,7 @@ aObj.libsToSkin["Krowi_WorldMapButtons-1.4"] = function(self) -- v Krowi_WorldMa
 				aObj.modUIBtns:skinCloseButton{obj=oFrame.ResetButton, noSkin=true}
 			end
 			if aObj.modBtns then
-				aObj:skinStdButton{obj=oFrame, ofs=-2, clr="gold"}
+				aObj:skinStdButton{obj=oFrame, ofs=-1, x1=2, x2=0, clr="gold"}
 			end
 		end
 		self:RawHook(lKWMB, "Add", function(this, ...)
@@ -26,10 +26,12 @@ aObj.libsToSkin["Krowi_WorldMapButtons-1.4"] = function(self) -- v Krowi_WorldMa
 			skinButton(btn)
 			return btn
 		end, true)
-		for _, btn in _G.pairs(lKWMB.Buttons) do
-			-- ignore non-button objects (Classic)
-			if btn:IsObjectType("Button") then
-				skinButton(btn)
+		if lKWMB.Buttons then
+			for _, btn in _G.pairs(lKWMB.Buttons) do
+				-- ignore non-button objects (Classic)
+				if btn:IsObjectType("Button") then
+					skinButton(btn)
+				end
 			end
 		end
 	end
