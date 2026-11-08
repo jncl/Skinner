@@ -153,6 +153,7 @@ if aObj.isMorCorF then
 					fObj.ItemDisplay.ItemButton.EmptyBackground:SetAlpha(0) -- N.B. Texture changed in code
 				end
 				self:skinObject("moneyframe", {obj=fObj.BidFrame.BidAmount, fType=ftype})
+				self:moveObject{obj=fObj.BidFrame.BidButton, x=10}
 				skinItemList(fObj.ItemList)
 				if self.modBtns then
 					self:skinStdButton{obj=fObj.BackButton, fType=ftype}
