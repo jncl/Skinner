@@ -3276,6 +3276,11 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 	local minBtn = self.prdb.MinimapButtons.style
 	local ignBtn = {
 		["OQ_MinimapButton"] = true,
+		["TTMinimapButton1"] = true,
+		["TTMinimapButton2"] = true,
+		["TTMinimapButton3"] = true,
+		["TTMinimapButton4"] = true,
+		["TTMinimapButton5"] = true,
 	}
 	if self.isMorF then
 		ignBtn["ExpansionLandingPageMinimapButton"] = true
@@ -3294,8 +3299,10 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 		local objName, objType
 		for _, obj in _G.ipairs{mmObj:GetChildren()} do
 			objName, objType = obj:GetName(), obj:GetObjectType()
+			--@debug@
 			-- aObj:Debug("mmKids: [%s, %s, %s, %s]", obj, objName, objType)
-			if not ignBtn[obj]
+			--@end-debug@
+			if not ignBtn[objName]
 			and obj ~= obj:GetParent().sf -- skinFrame
 			and obj ~= obj:GetParent().sb -- skinButton
 			and not obj.point -- TomTom waypoint
@@ -3468,6 +3475,10 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 	_G.RunNextFrame(function()
 		mmKids(_G.Minimap)
 	end)
+	-- skin any moved Minimap buttons if required
+	if _G.C_AddOns.IsAddOnLoaded("MinimapButtonFrame") then
+		mmKids(_G.MinimapButtonFrame)
+	end
 
 	-- skin other minimap buttons
 	local function skinMMBtn(_, mmBtn, _)
@@ -3495,10 +3506,6 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 		end
 	end)
 
-	-- skin any moved Minimap buttons if required
-	if _G.C_AddOns.IsAddOnLoaded("MinimapButtonFrame") then
-		mmKids(_G.MinimapButtonFrame)
-	end
 	-- show the Bongos minimap icon if required
 	if _G.Bongos3MinimapButton then
 		_G.Bongos3MinimapButton.icon:SetDrawLayer("ARTWORK")
