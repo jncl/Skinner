@@ -4,7 +4,7 @@ local _G = _G
 
 local ddPrefix
 local function skinAndHook(lDD, lVer)
-	if lVer == 90117 then -- Questie uses this
+	if lVer == 90147 then -- Questie uses this
 		ddPrefix = "L_DropDownListQuestie"
 	elseif lVer == 90096 then -- TLDRMissions uses this
 		ddPrefix = "L_TLDR_DropDownList"
