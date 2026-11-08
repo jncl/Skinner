@@ -461,16 +461,19 @@ function module:skinPartyTooltip()
 			    aObj:add2Table(aObj.oocTab, {skinPartyMemberBuffTooltip, {frame}})
 			    return
 			end
+
 			aObj:skinObject("frame", {obj=frame, fType=ftype, kfs=true, ofs=-1, x1=2, y1=-2})
-			for i = 1, _G.MAX_PARTY_TOOLTIP_DEBUFFS do
-				_G["PartyMemberBuffTooltipDebuff" .. i]:DisableDrawLayer("OVERLAY")
-				if aObj.modBtnBs then
-					aObj:addButtonBorder{obj=_G["PartyMemberBuffTooltipDebuff" .. i], fType=ftype, relTo=_G["PartyMemberBuffTooltipDebuff" .. i .. "Icon"], ofs=3}
+			if not aObj.isMorF then
+				for i = 1, _G.MAX_PARTY_TOOLTIP_DEBUFFS do
+					_G["PartyMemberBuffTooltipDebuff" .. i]:DisableDrawLayer("OVERLAY")
+					if aObj.modBtnBs then
+						aObj:addButtonBorder{obj=_G["PartyMemberBuffTooltipDebuff" .. i], fType=ftype, relTo=_G["PartyMemberBuffTooltipDebuff" .. i .. "Icon"], ofs=3}
+					end
 				end
-			end
-			if aObj.modBtnBs then
-				for i = 1, _G.MAX_PARTY_TOOLTIP_BUFFS do
-					aObj:addButtonBorder{obj=_G["PartyMemberBuffTooltipBuff" .. i], fType=ftype, relTo=_G["PartyMemberBuffTooltipBuff" .. i .. "Icon"], ofs=3}
+				if aObj.modBtnBs then
+					for i = 1, _G.MAX_PARTY_TOOLTIP_BUFFS do
+						aObj:addButtonBorder{obj=_G["PartyMemberBuffTooltipBuff" .. i], fType=ftype, relTo=_G["PartyMemberBuffTooltipBuff" .. i .. "Icon"], ofs=3}
+					end
 				end
 			end
 		end
