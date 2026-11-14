@@ -620,7 +620,7 @@ aObj.blizzFrames[ftype].MerchantFrame = function(self)
 			end
 		end
 		_G.MerchantBuyBackItemNameFrame:SetTexture(nil)
-		if self.isMnln then
+		if self.isMorF then
 			self:skinObject("ddbutton", {obj=this.FilterDropdown, fType=ftype})
 			self:removeInset(_G.MerchantExtraCurrencyInset)
 			_G.MerchantExtraCurrencyBg:DisableDrawLayer("BACKGROUND")
