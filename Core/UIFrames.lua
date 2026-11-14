@@ -2732,14 +2732,9 @@ if aObj.isMorF then
 		self.initialized.LossOfControl = true
 
 		self:SecureHookScript(_G.LossOfControlFrame, "OnShow", function(this)
-			if _G.InCombatLockdown() then
-			    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
-			    return
-			end
-
 			this.blackBg:SetTexture(nil)
 			if self.modBtnBs then
-				self:addButtonBorder{obj=this, relTo=this.Icon}
+				self:addButtonBorder{obj=this, relTo=this.Icon, ncc=true}
 			end
 
 			self:Unhook(_G.LossOfControlFrame, "OnShow")
