@@ -141,6 +141,11 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 				end)
 				if aObj.isTT then
 					aObj:secureHook(obj, "SelectTab", function(tgObj, value)
+						-- handle in combat
+						if _G.InCombatLockdown() then
+						    aObj:add2Table(aObj.oocTab, {obj.SelectTab, {tgObj, value}})
+						    return
+						end
 						for _, tab in _G.ipairs(tgObj.tabs) do
 							if tab.value == value then
 								aObj:setActiveTab(tab.sf)
