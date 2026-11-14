@@ -22,9 +22,10 @@ v			- ShardTransferImminentMinimizeButton
 √			- Tab regions
 
 x			- AddonList
-≈			- AlertFrames
+√			- AlertFrames
 x			- AuctionHouseUI
 √			- BankFrame [moved to Core from Mainline]
+√			- BoostTutorial [moved to Core from Mainline]
 x			- Calendar
 √			- CharacterFrames [moved to Core from Mainline & Classic NOT ClassicERA]
 √			- CharacterCustomize [moved to Core from Mainline]
@@ -38,29 +39,31 @@ x			- Calendar
 x			- EquipmentFlyout
 √			- EventToastManager [moved to Core from Mainline]
 √			- GossipFrame
-≈			- GroupFinder [moved to Core from Mainline]
+√			- GroupFinder [moved to Core from Mainline]
 √			- GuildInvite [moved to Core from Mainline]
 x			- GuildRegistrar
 √			- LossOfControl [moved to Core from Mainline]
-≈			- MailFrame
-≈			- MainMenuBar
+√			- MailFrame
+√			- MainMenuBar
 √			- Minimap
+√			- MinimapButtons
 x			- MirrorTimers
+√			- NewPlayerExperience
 √			- ObjectiveTracker [moved to Core from Mainline]
 ¶√			- PlayerSpells [moved to Core from Mainline] (renamed to Spellbook)
 √			- StableUI
-≈			- PetJournal
+√			- PetJournal
 √			- PingSystem [moved to Core from Mainline]
-≈			- Professions [moved to Core from Mainline]
-≈			- ProfessionsTemplates [moved to Core from Mainline]
-≈			- ProfessionsCustomerOrders [moved to Core from Mainline]
+√			- Professions [moved to Core from Mainline]
+√			- ProfessionsTemplates [moved to Core from Mainline]
+√			- ProfessionsCustomerOrders [moved to Core from Mainline]
 x			- QuestFrame
 √			- QuestMap [moved to Core from Mainline]
 √			- QuestTimer [moved to Core from Classic]
 √			- RaidFrame [moved to Core from Mainline]
 √			- SpellFlyout [moved to Core from Mainline]
-≈			- SocialToast [moved to Core from Mainline & Classic]
-≈			- SocialUI
+√			- SocialToast [moved to Core from Mainline & Classic]
+√			- SocialUI
 x			- StaticPopups
 ¶√			- SwingTimer [moved to Core from Mainline]
 x			- Tabard
@@ -69,10 +72,9 @@ x			- Tooltips
 √			- TradeFrame
 √			- TrainerUI [moved to Core from Mainline]
 √			- Transmog [moved to Core from Mainline]
-x			- Tutorial
+√			- TutorialManager [moved to Core from Mainline]
 x			- TimeManager
 √			- WorldMapFrame [moved to Core from Mainline]
 
 		- Deleted
 √			- BattlefieldMap [Core UIFrames]
-

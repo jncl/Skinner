@@ -20,3 +20,8 @@ ToDos
 #352	I/M AddOn 'Skinner' tried to call the protected function 'Frame:SetPropagateMouseClicks()'
 
 #354  	I/M Blizzard_SharedXML/LayoutFrame.lua:491: attempt to compare a secret number value (execution tainted by 'Skinner')
+
+#381 √	I/F Skinner wont load
+#382 √
+
+#383 √	I/M Skinner/Mainline/UIFrames.lua:2482: attempt to index field 'Threshold4' (a nil value)
