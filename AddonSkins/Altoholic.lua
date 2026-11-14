@@ -2,20 +2,47 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("Altoholic") then return end
 local _G = _G
 
-if aObj.isRtl then
-	aObj.addonsToSkin.Altoholic = function(self) -- v 9.1.007
+_G.RunNextFrame(function()
+	aObj.mmButs["Altoholic"] = _G.AltoholicMinimapButton
+	_G.AltoholicMinimapButton:SetSize(26, 26)
+	_G.AltoholicMinimapButton.Icon:ClearAllPoints()
+	_G.AltoholicMinimapButton.Icon:SetAllPoints()
+end)
+
+if aObj.isMorF then
+	aObj.addonsToSkin.Altoholic = function(self) -- v 12.1.007/1.60.005
 
 		self:SecureHookScript(_G.AltoholicFrame, "OnShow", function(this)
+			if _G.InCombatLockdown() then
+			    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+			    return
+			end
+
 			self:skinObject("editbox", {obj=this.SearchBox, si=true})
-			self:skinObject("tabs", {obj=this, tabs=this.Tabs, lod=self.isTT and true})
+			self:skinObject("tabs", {obj=this, tabs=this.Tabs, lod=self.isTT, track=false})
+			if self.isTT then
+				self:SecureHook(this, "SwitchToTab", function(frame, id)
+					for _, tab in _G.pairs(frame.Tabs) do
+						if tab:GetID() == id then
+							self:setActiveTab(tab.sf)
+						else
+							self:setInactiveTab(tab.sf)
+						end
+					end
+				end)
+			end
 			self:skinObject("frame", {obj=this, kfs=true, ri=true, rns=true, cb=true, x2=3, y2=-1})
 
 			self:Unhook(this, "OnShow")
 		end)
-
-		self.mmButs["Altoholic"] = _G.AltoholicMinimapButton
+		self:checkShown(_G.AltoholicFrame)
 
 		self:SecureHookScript(_G.AltoMessageBox, "OnShow", function(this)
+			if _G.InCombatLockdown() then
+			    self:add2Table(self.oocTab, {self.checkShown, {self, this}})
+			    return
+			end
+
 			self:skinObject("editbox", {obj=this.UserInput})
 			self:skinObject("frame", {obj=this, kfs=true, rb=true})
 			if self.modBtns then
@@ -25,6 +52,7 @@ if aObj.isRtl then
 
 			self:Unhook(this, "OnShow")
 		end)
+		self:checkShown(_G.AltoMessageBox)
 
 	end
 
@@ -33,6 +61,7 @@ if aObj.isRtl then
 		frame:DisableDrawLayer("BORDER")
 		aObj:skinObject("slider", {obj=frame.ScrollBar})
 	end
+	-- TODO: adjust skinFrame inset for sub category entries
 	local function skinMenuList(frame)
 		if aObj.modBtns then
 			for _, btn in _G.pairs(frame.Buttons) do
@@ -292,7 +321,7 @@ if aObj.isRtl then
 			this.Background:DisableDrawLayer("BACKGROUND")
 			-- ContextualMenu (DropDown?)
 			-- TODO: try to skin dropdown list(s) when displayed
-			self:add2Table(self.ttList, this.BuildingLevelTooltip)
+			self:add2Table(self.ttList, "a", this.BuildingLevelTooltip)
 			skinSlider(this.Panels.Grids.ScrollFrame)
 			if self.modBtnBs then
 				skinRowItems(this.Panels.Grids)
@@ -403,36 +432,37 @@ else
 		frame.Button:SetWidth(width)
 		frame.noResize = 1
 	end
+	-- TODO: skin DropdownMenuLists
 	local function skinDDMLists()
-		local frame = _G.EnumerateFrames()
-		while frame do
-			if frame.IsObjectType -- handle object not being a frame !?
-			and frame:IsObjectType("Button")
-			and frame:GetName() == nil
-			and frame:GetParent() == nil
-			and frame:GetFrameStrata("FULLSCREEN_DIALOG")
-			then
-				if frame.maxWidth
-				and frame.numButtons
-				then
-					-- remove old backdrops
-					aObj:getChild(frame, 1):SetBackdrop(nil)
-					aObj:getChild(frame, 2):SetBackdrop(nil)
-					aObj:skinObject("frame", {obj=frame, kfs=true})
+		-- local frame = _G.EnumerateFrames()
+		-- while frame do
+		-- 	if frame.IsObjectType -- handle object not being a frame !?
+		-- 	and frame:IsObjectType("Button")
+		-- 	and frame:GetName() == nil
+		-- 	and frame:GetParent() == nil
+		-- 	and frame:GetFrameStrata("FULLSCREEN_DIALOG")
+		-- 	then
+		-- 		if frame.maxWidth
+		-- 		and frame.numButtons
+		-- 		then
+		-- 			-- remove old backdrops
+		-- 			aObj:getChild(frame, 1):SetBackdrop(nil)
+		-- 			aObj:getChild(frame, 2):SetBackdrop(nil)
+		-- 			aObj:skinObject("frame", {obj=frame, kfs=true})
 
-					-- hook the list toggle function
-					if not aObj:IsHooked(frame, "Toggle") then
-						aObj:SecureHook(frame, "Toggle", function(_, _, _, _)
-							skinDDMLists()
-						end)
-					end
-				end
-			end
-			frame = _G.EnumerateFrames(frame)
-		end
+		-- 			-- hook the list toggle function
+		-- 			if not aObj:IsHooked(frame, "Toggle") then
+		-- 				aObj:SecureHook(frame, "Toggle", function(_, _, _, _)
+		-- 					skinDDMLists()
+		-- 				end)
+		-- 			end
+		-- 		end
+		-- 	end
+		-- 	frame = _G.EnumerateFrames(frame)
+		-- end
 	end
 
-	aObj.addonsToSkin.Altoholic = function(self) -- v 2.5.007/r191
+	aObj.addonsToSkin.Altoholic = function(self) -- v 5.5.009
 
 		-- Main Frame
 		self:skinObject("editbox", {obj=_G.AltoholicFrame_SearchEditBox})
@@ -451,11 +481,8 @@ else
 
 		-- Tooltip
 		_G.C_Timer.After(0.1, function()
-			self:add2Table(self.ttList, _G.AltoTooltip)
+			self:add2Table(self.ttList, "a", _G.AltoTooltip)
 		end)
-
-		-- minimap button
-		self.mmButs["Altoholic"] = _G.AltoholicMinimapButton
 
 		-- Account Sharing option menu panel (buttons and panels)
 		-- make sure icons are visible by changing their draw layer
@@ -689,15 +716,6 @@ else
 		skinScrollBar(_G.AltoholicTabAchievements.ScrollFrame)
 		skinScrollBar(_G.AltoholicTabAchievements.Achievements.ScrollFrame)
 		skinDDMLists()
-		if self.modBtnBs then
-			self:addButtonBorder{obj=_G.AltoholicTabAchievements.PrevPage, ofs=-2, x1=1}
-			self:addButtonBorder{obj=_G.AltoholicTabAchievements.NextPage, ofs=-2, x1=1}
-			self:SecureHook(_G.AltoholicTabAchievements, "SetPage", function(this, _)
-				self:clrBtnBdr(this.PrevPage, "gold")
-				self:clrBtnBdr(this.NextPage, "gold")
-			end)
-			_G.AltoholicTabAchievements:SetPage(1)
-		end
 
 	end
 
@@ -722,4 +740,6 @@ else
 		skinDDMLists()
 
 	end
+
+	-- TODO: skin Options frame
 end
