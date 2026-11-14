@@ -3212,10 +3212,13 @@ aObj.blizzFrames[ftype].Minimap = function(self)
 		elseif not self.isMnlnPTR then
 			aObj:removeNineSlice(_G.MinimapCluster.BorderTop)
 		end
-		_G.MinimapCluster.ZoneTextButton:ClearAllPoints()
-		_G.MinimapCluster.ZoneTextButton:SetPoint("BOTTOMLEFT", _G.Minimap, "TOPLEFT", 0, 5)
-		_G.MinimapCluster.ZoneTextButton:SetPoint("BOTTOMRIGHT", _G.Minimap, "TOPRIGHT", 0, 5)
-		self:skinObject("button", {obj=_G.MinimapCluster.ZoneTextButton, fType=ftype, ofs=1, x1=-5, x2=5})
+		if self.isMnln then
+			self:skinObject("button", {obj=_G.MinimapCluster.ZoneTextButton, fType=ftype, ofs=6, x1=-5, x2=37})
+		elseif aObj.isMnlnPTR then
+			self:skinObject("button", {obj=_G.MinimapCluster.ZoneTextButton, fType=ftype})
+		else
+			self:skinObject("button", {obj=_G.MinimapCluster.ZoneTextButton, fType=ftype, ofs=0})
+		end
 	else
 		_G.MinimapCluster.BorderTop:SetTexture(nil)
 		_G.MinimapZoneTextButton:ClearAllPoints()
@@ -5745,11 +5748,18 @@ if aObj.isMorF then
 					self:skinObject("ddbutton", {obj=oFrame, fType=ftype})
 				-- Tracking Options Button (Forever)
 				elseif oFrame.buttonContext == "ButtonContext_WorldMapTrackingButton" then
+					if not aObj.isMnlnPTR then
+						self:addButtonBorder{obj=oFrame, fType=ftype, ofs=0, y1=2, y2=4, relTo=oFrame.Icon, clr="gold"}
+					else
+						oFrame.Border:SetTexture(nil)
+						oFrame.FilterCounterBanner:SetTexture(nil)
+						oFrame.Background:SetTexture(nil)
+						if self.modBtnBs then
+							self:addButtonBorder{obj=oFrame, fType=ftype--[[, relTo=oFrame.Icon]], ofs=-2, clr="gold"}
+						end
+					end
 					if self.modBtns then
 						self:skinCloseButton{obj=oFrame.ResetButton, fType=ftype, noSkin=true}
-					end
-					if self.modBtnBs then
-						self:addButtonBorder{obj=oFrame, fType=ftype, ofs=0, y1=2, y2=4, relTo=oFrame.Icon, clr="gold"}
 					end
 				-- Tracking Options/Pin Button
 				elseif oFrame.IconOverlay then

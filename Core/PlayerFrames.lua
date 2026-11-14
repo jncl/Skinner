@@ -207,7 +207,11 @@ if aObj.isMorC then
 
 		self:SecureHookScript(_G.AchievementFrame, "OnShow", function(this)
 			self:moveObject{obj=_G.AchievementFrameCloseButton, x=1, y=8}
-			self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT, ignoreHLTex=false, regions={7, 8, 9, 10}, offsets={x1=8, x2=-8, y2=-7}})
+			if not aObj.isMnlnPTR then
+				self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT, ignoreHLTex=false, regions={7, 8, 9, 10}, offsets={x1=8, x2=-8, y2=-7}})
+			else
+				self:skinObject("tabs", {obj=this, prefix=this:GetName(), fType=ftype, lod=self.isTT, ignoreHLTex=false, regions={7, 8, 9, 10}, offsets={x1=8, x2=-4, y2=-7}})
+			end
 			if self.isMnln then
 				self:skinObject("frame", {obj=this, fType=ftype, kfs=true, cb=true, y1=7, x2=0, y2=-1})
 			else
@@ -1252,6 +1256,7 @@ if aObj.isMorCorF then
 					end)
 				else
 					self:SecureHookScript(_G.TokenDetailFrame, "OnShow", function(frame)
+						-- TODO: remove header divider texture
 						if self.modBtnBs then
 							self:addButtonBorder{obj=frame.CurrencyTransferLogToggleButton, fType=ftype}
 						end
