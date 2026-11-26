@@ -3300,7 +3300,8 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 			--@debug@
 			-- aObj:Debug("mmKids: [%s, %s, %s, %s]", obj, objName, objType)
 			--@end-debug@
-			if not ignBtn[objName]
+			if not ignBtn[obj]
+			and not ignBtn[objName]
 			and obj ~= obj:GetParent().sf -- skinFrame
 			and obj ~= obj:GetParent().sb -- skinButton
 			and not obj.point -- TomTom waypoint
@@ -3496,7 +3497,7 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 		end
 	end
 	-- wait until all AddOn skins have been loaded
-	_G.RunNextFrame(function()
+	_G.C_Timer.After(0.15, function()
 		for addon, obj in _G.pairs(self.mmButs) do
 			if _G.C_AddOns.IsAddOnLoaded(addon) then
 				skinMMBtn("Loaded Addons btns", obj)
