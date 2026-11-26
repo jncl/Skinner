@@ -23,6 +23,7 @@
 <Script file="Armory.lua"/>
 <Script file="Atlas.lua"/>
 <Script file="AtlasLoot.lua"/>
+<Script file="Attune.lua"/>
 <Script file="AucAdvanced.lua"/>
 <Script file="Auctionator.lua"/>
 <Script file="AuctionLite.lua"/>
@@ -96,8 +97,10 @@
 <Script file="Fizzle.lua"/>
 <Script file="FlaresThatWork.lua"/>
 <Script file="FlyoutButtonCustom.lua"/>
+<Script file="ForeverBestiaryPetHunter.lua"/>
 <Script file="GarrisonCommander.lua"/>
 <Script file="GarrisonMissionManager.lua"/>
+<Script file="GearQuestForever.lua"/>
 <Script file="Grid2.lua"/>
 <Script file="GroupCalendar.lua"/>
 <Script file="GuildBankSearch.lua"/>
@@ -106,6 +109,7 @@
 <Script file="HealBot.lua"/>
 <Script file="Healium.lua"/>
 <Script file="honorspy.lua"/>
+<Script file="HuntersFieldGuide.lua"/>
 <Script file="Immersion.lua"/>
 <Script file="InstanceBoostTracker.lua"/>
 <Script file="InvenRaidFrames3.lua"/>
@@ -239,6 +243,7 @@
 <Script file="TomTom.lua"/>
 <Script file="TooManyAddons.lua"/>
 <Script file="TradeSkillDW.lua"/>
+<Script file="TrueshotLodge.lua"/>
 <Script file="TukUI.lua"/>
 <Script file="Vendomatic.lua"/>
 <Script file="VenturePlan.lua"/>
