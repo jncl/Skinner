@@ -1363,9 +1363,15 @@ function aObj:skinStatusTrackingBars(container)
 		self:skinObject("statusbar", {obj=bar.StatusBar, bg=bar.StatusBar.Background, other=otherSBs, hookFunc=true})
 	end
 	if self.isFrvr then
-		for element in container.HorizontalDividersPool:EnumerateActive() do
-			if element.BarDividerTexture then
-				element.BarDividerTexture:SetTexture(nil)
+		if container.HorizontalDividersPool then
+			for element in container.HorizontalDividersPool:EnumerateActive() do
+				if element.BarDividerTexture then
+					element.BarDividerTexture:SetTexture(nil)
+				end
+			end
+		elseif container.dividers then
+			for _, div in _G.pairs(container.dividers) do
+				div:SetAlpha(0)
 			end
 		end
 	end
