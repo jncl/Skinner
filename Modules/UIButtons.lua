@@ -93,7 +93,7 @@ local function __checkTex(opts)
 	nTex = opts.nTex or opts.obj:GetNormalTexture() and opts.obj:GetNormalTexture():GetTexture() or nil
 
 	--@debug@
-	aObj:Debug("__checkTex: [%s, %s]", opts.obj, nTex)
+	-- aObj:Debug("__checkTex: [%s, %s]", opts.obj, nTex)
 	--@end-debug@
 
 	local header = false
