@@ -76,7 +76,7 @@ aObj.addonsToSkin.Baganator = function(self) -- v 838
 				end
 			end
 		end
-		if aObj.isFrvr then
+		if self.isFrvr then
 			function skinBagSlotPools(fObj)
 				for btn in fObj.cachedPool:EnumerateActive() do
 					aObj:addButtonBorder{obj=btn, ibt=true}
@@ -119,15 +119,23 @@ aObj.addonsToSkin.Baganator = function(self) -- v 838
 				aObj:skinStdButton{obj=frame.SearchWidget.GlobalSearchButton, sechk=true}
 				aObj:skinStdButton{obj=frame.SearchWidget.HelpButton}
 			end
-			for _, array in _G.pairs{"AllFixedButtons", "TopButtons", "LiveButtons"} do
-				if frame[array] then
-					for _, btn in _G.pairs(frame[array]) do
-						aObj:skinStdButton{obj=btn, schk=true, sechk=true}
-					end
-				end
-			end
 			if frame.CurrencyButton then
 				aObj:skinStdButton{obj=frame.CurrencyButton, schk=true, sechk=true}
+			end
+			if frame.ButtonsManager then
+				_G.RunNextFrame(function()
+					for _, btn in _G.pairs(frame.ButtonsManager.cache) do
+						aObj:skinStdButton{obj=btn, schk=true, sechk=true}
+					end
+				end)
+			else -- SingleViewGuildView
+				for _, array in _G.pairs{"AllFixedButtons", "TopButtons", "LiveButtons"} do
+					if frame[array] then
+						for _, btn in _G.pairs(frame[array]) do
+							aObj:skinStdButton{obj=btn, schk=true, sechk=true}
+						end
+					end
+				end
 			end
 		end
 	end
@@ -161,16 +169,13 @@ aObj.addonsToSkin.Baganator = function(self) -- v 838
 			end
 		end or nil})
 		skinFrame(frame, bankType)
-		if aObj.modBtns then
-			for _, btn in _G.pairs(frame.AllFixedButtons) do
-				aObj:skinStdButton{obj=btn, schk=true, sechk=true}
-			end
-		end
 		if not aObj.isMorF then
 			skinBagSlots(frame.Character)
 			if frame.Character.UpdateForCharacter then
 				aObj:SecureHook(frame.Character, "UpdateForCharacter", function(fObj, _)
-					if aObj.modBtns then
+					if aObj.modBtns
+					and fObj.TopButtons -- SingleView
+					then
 						for _, btn in _G.pairs(fObj.TopButtons) do
 							aObj:skinStdButton{obj=btn, schk=true, sechk=true}
 						end
@@ -198,12 +203,11 @@ aObj.addonsToSkin.Baganator = function(self) -- v 838
 			end
 		else
 			aObj:SecureHookScript(frame.Character, "OnShow", function(this)
-				--@debug@
-				-- aObj:Debug("SHS f.C: [%s, %s]", this, bankType)
-				--@end-debug@
 				if aObj.modBtns then
-					for _, btn in _G.pairs(this.TopButtons) do
-						aObj:skinStdButton{obj=btn, schk=true, sechk=true}
+					if this.TopButtons then -- SingleView
+						for _, btn in _G.pairs(this.TopButtons) do
+							aObj:skinStdButton{obj=btn, schk=true, sechk=true}
+						end
 					end
 					aObj:skinStdButton{obj=this.DepositReagentsButton}
 					aObj:skinStdButton{obj=this.BuyReagentBankButton}
