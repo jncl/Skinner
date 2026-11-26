@@ -2,7 +2,7 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("Bartender4") then return end
 local _G = _G
 
-aObj.addonsToSkin.Bartender4 = function(self) -- v 4.16.0
+aObj.addonsToSkin.Bartender4 = function(self) -- v 4.19.2
 
 	self:SecureHook(_G.Bartender4, "ShowUnlockDialog", function(this)
 		self:skinObject("frame", {obj=this.unlock_dialog, kfs=true, y1=6})
@@ -85,18 +85,18 @@ aObj.addonsToSkin.Bartender4 = function(self) -- v 4.16.0
 	mod = _G.Bartender4:GetModule("StatusTrackingBar", true)
 	if mod then
 		local function skinStatusBars(mObj)
-			mObj.bar.manager.MainStatusTrackingBarContainer:DisableDrawLayer("OVERLAY") -- status bar textures
-			mObj.bar.manager.SecondaryStatusTrackingBarContainer:DisableDrawLayer("OVERLAY") -- status bar textures
-			self:skinStatusTrackingBars(mObj.bar.manager.MainStatusTrackingBarContainer)
-			self:skinStatusTrackingBars(mObj.bar.manager.SecondaryStatusTrackingBarContainer)
+			for _, bCntr in _G.pairs(mObj.barContainers) do
+				bCntr:DisableDrawLayer("OVERLAY") -- status bar textures
+				aObj:skinStatusTrackingBars(bCntr)
+			end
 		end
 		if mod.enabledState then
-			skinStatusBars(mod)
+			skinStatusBars(mod.bar.manager)
 		else
 			self:SecureHook(mod, "OnEnable", function(this)
-				skinStatusBars(this)
+				skinStatusBars(this.bar.manager)
 
-				self:Unhook(this, "OnEnable")
+				self:Unhook(mod, "OnEnable")
 			end)
 		end
 	end
@@ -107,11 +107,11 @@ aObj.addonsToSkin.Bartender4 = function(self) -- v 4.16.0
 			-- disable Art
 			mod:ToggleModule(nil, false)
 		else
-			self:SecureHook(mod, "OnEnable", function(this)
+			self:SecureHook(mod, "OnEnable", function(_)
 				-- disable Art
 				mod:ToggleModule(nil, false)
 
-				self:Unhook(this, "OnEnable")
+				self:Unhook(mod, "OnEnable")
 			end)
 		end
 	end
