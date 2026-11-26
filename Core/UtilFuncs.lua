@@ -1015,17 +1015,6 @@ function aObj.removeNineSlice(_, frame)
 	--@end-debug@
 
 
-	-- if frame:GetNumChildren() == 0 then
-	-- 	frame:SetAlpha(0)
-	-- 	frame.SetAlpha = _G.nop
-	-- else
-	-- 	for _, reg in _G.pairs(ns_regions) do
-	-- 		if frame[reg] then
-	-- 			frame[reg]:SetAlpha(0)
-	-- 			frame[reg].SetAlpha = _G.nop
-	-- 		end
-	-- 	end
-	-- end
 	for _, reg in _G.pairs{frame:GetRegions()} do
 		if reg and reg:IsObjectType("Texture") then
 			reg:SetAlpha(0)
