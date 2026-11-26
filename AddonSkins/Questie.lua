@@ -70,6 +70,17 @@ if aObj:isAddonEnabled("Questie") then
 			end)
 		end
 
+		if qMods.WaypointHover then
+			self:SecureHook(qMods.WaypointHover, "Set", function(_)
+				aObj:Debug("WaypointHover: [%s, %s]", _G.QuestieWaypointMinimapTooltip)
+				if _G.QuestieWaypointMinimapTooltip then
+					self:removeNineSlice(_G.QuestieWaypointMinimapTooltip.NineSlice)
+				    self:add2Table(self.ttList, "a", _G.QuestieWaypointMinimapTooltip)
+					self:Unhook(qMods.WaypointHover, "Set")
+				end
+			end)
+		end
+
 		-- TODO: skin questie options, standalone & Settings
 
 	end
