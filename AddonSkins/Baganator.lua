@@ -123,11 +123,12 @@ aObj.addonsToSkin.Baganator = function(self) -- v 838
 				aObj:skinStdButton{obj=frame.CurrencyButton, schk=true, sechk=true}
 			end
 			if frame.ButtonsManager then
-				_G.RunNextFrame(function()
+				_G.Baganator.CallbackRegistry:RegisterCallback("SetButtonsShown", function(_, shown)
+					aObj:Debug("SetButtonsShown: [%s, %s]", shown)
 					for _, btn in _G.pairs(frame.ButtonsManager.cache) do
 						aObj:skinStdButton{obj=btn, schk=true, sechk=true}
 					end
-				end)
+				end, aObj)
 			else -- SingleViewGuildView
 				for _, array in _G.pairs{"AllFixedButtons", "TopButtons", "LiveButtons"} do
 					if frame[array] then
