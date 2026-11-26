@@ -5144,7 +5144,11 @@ if aObj.isMorF then
 				end
 				if self.modBtnBs then
 					self:addButtonBorder{obj=fObj.ConcentrationDisplay, fType=ftype, relTo=fObj.ConcentrationDisplay.Icon, ofs=3}
-					self:addButtonBorder{obj=fObj.LinkButton, fType=ftype--[[, ofs=-2, x1=0, y1=-4]]}
+					if self.isMnln then
+						self:addButtonBorder{obj=fObj.LinkButton, fType=ftype, ofs=-2, x1=0, y1=-4}
+					else
+						self:addButtonBorder{obj=fObj.LinkButton, fType=ftype}
+					end
 					for _, btn in _G.pairs(fObj.InventorySlots) do
 						btn.NormalTexture:SetTexture(nil)
 						self:addButtonBorder{obj=btn, fType=ftype, ibt=true}
