@@ -4921,6 +4921,7 @@ if aObj.isMorCorF then
 				end
 
 				hookSocialToastFuncs(this)
+				self:removeBackdrop(this)
 				if self.modBtnBs then
 					-- make button appear larger
 					this:SetSize(32, 32)
