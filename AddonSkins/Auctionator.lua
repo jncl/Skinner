@@ -2,7 +2,7 @@ local _, aObj = ...
 if not aObj:isAddonEnabled("Auctionator") then return end
 local _G = _G
 
-aObj.addonsToSkin.Auctionator = function(self) -- v 341
+aObj.addonsToSkin.Auctionator = function(self) -- v 354
 
 	local function skinAuctionatorFrames()
 		if not _G.AuctionatorSellingFrame then
@@ -439,7 +439,7 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 341
 
 		if _G.Auctionator.State.BuyCommodityFrameRef then
 			aObj:SecureHookScript(_G.Auctionator.State.BuyCommodityFrameRef, "OnShow", function(this)
-				aObj:skinObject("editbox", {obj=this.DetailsContainer.Quantity})
+				aObj:skinObject("editbox", {obj=this.DetailsContainer.Quantity, y1=3, y2=3})
 				skinHeaders(this.ResultsListing)
 				aObj:skinObject("scrollbar", {obj=this.ResultsListing.ScrollArea.ScrollBar})
 				aObj:removeInset(this.Inset)
@@ -540,6 +540,33 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 341
 				aObj:skinObject("frame", {obj=_G.AuctionatorSellingPopupFrame, ofs=-4})
 
 				aObj:Unhook(this, "ShowPopup")
+			end)
+		end
+
+		if _G.Auctionator.CraftingInfo then
+			aObj:SecureHook(_G.Auctionator.CraftingInfo, "InitializeProfessionsFrame", function(_)
+				if _G.AuctionatorCraftingInfoProfessionsFrame then
+					aObj:skinObject("editbox", {obj=_G.AuctionatorCraftingInfoProfessionsFrame.CustomQuantity.Quantity.InputBox})
+					if aObj.modBtns then
+						aObj:skinStdButton{obj=_G.AuctionatorCraftingInfoProfessionsFrame.SearchButton}
+						aObj:skinStdButton{obj=_G.AuctionatorCraftingInfoProfessionsFrame.CustomQuantity.SearchButton}
+					end
+				end
+				-- AuctionatorCraftingInfoProfessionsOrderFrame
+				aObj:Unhook(_G.Auctionator.CraftingInfo, "InitializeProfessionsFrame")
+			end)
+			if _G.AuctionatorCraftingInfoObjectiveTrackerFrame
+			and aObj.modBtns
+			then
+				aObj:skinStdButton{obj=_G.AuctionatorCraftingInfoObjectiveTrackerFrame.SearchButton}
+			end
+		end
+		if _G.Auctionator.EnchantInfo
+		and aObj.modBtns
+		then
+			aObj:SecureHook(_G.Auctionator.EnchantInfo, "Initialize", function(_)
+				aObj:skinStdButton{obj=_G.AuctionatorEnchantInfoFrame.SearchButton}
+				aObj:Unhook(_G.Auctionator.EnchantInfo, "Initialize")
 			end)
 		end
 
