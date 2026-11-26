@@ -2498,7 +2498,7 @@ aObj.SetupMainline_UIFrames = function()
 									else
 										_, element, _ = ...
 									end
-									aObj:skinObject("frame", {obj=element, fType=ftype, kfs=true, fb=true, ofs=0, x1=10, x2=-10, clr="brownish"})
+									aObj:skinObject("frame", {obj=element, fType=ftype, kfs=true, fb=true, ofs=0, x1=10, x2=-10, clr="bronze"})
 									element.EntryFlag:SetAlpha(1)
 								end
 								_G.ScrollUtil.AddInitializedFrameCallback(efisf.InitiativeTasks.TaskList, skinTask, aObj, true)

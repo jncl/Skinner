@@ -1380,7 +1380,7 @@ if aObj.isMorF then
 			element.RewardCardBG:SetTexture(nil)
 			self:changeTex2Black(element, {"LevelSquare"})
 			element.LevelSquare:SetSize(18, 18)
-			self:skinObject("frame", {obj=element, fType=ftype, fb=true, ofs=-4, x2=-5, y2=5, clr="brownish"})
+			self:skinObject("frame", {obj=element, fType=ftype, fb=true, ofs=-4, x2=-5, y2=5, clr="bronze"})
 		end
 
 	end

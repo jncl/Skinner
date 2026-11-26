@@ -1523,7 +1523,7 @@ if aObj.isMorF then
 			end
 			if self.modBtnBs then
 				for _, btn in _G.pairs(this.SmallButtons.ControlButtons) do
-					self:addButtonBorder{obj=btn, fType=ftype, ofs=-4, x1=5, y2=5, clr=not self.isFrvr and "brownish" or nil, sechk=true}
+					self:addButtonBorder{obj=btn, fType=ftype, ofs=-4, x1=5, y2=5, clr=not self.isFrvr and "bronze" or nil, sechk=true}
 				end
 			end
 			if self.isFrvr then
