@@ -45,8 +45,8 @@ aObj.addonsToSkin.TrueshotLodge = function(self) -- v 1.60.1.47
 							and child:GetWidth() < 269
 							then
 								abilityList = child
-							elseif child:GetNumPoints() == 2
-							and child:GetPoint(2) == "BOTTOMRIGHT"
+							elseif child:GetNumChildren() >= 7
+							and child:GetNumRegions() == 6
 							then
 								details = child
 								if self:getLastChild(details).Check then
