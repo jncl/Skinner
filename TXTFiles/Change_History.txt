@@ -1,3 +1,20 @@
+beta12.71139.1
+Jncl:
+	Updated ToDo*.txt files
+	Updated Change_History.txt
+	Updated Version numbers
+	Commented out debug line
+	Updated removeNineSlice utility function
+	Updated SocialToast skin
+	Updated MinimapButton skinning code
+	Forever changes
+	Changed Brownish colour name to bronze
+	Updated Bartender4 skin
+	Updated Baganator skin, closes #389
+	Skinned Attune, ForeverBestiaryPetHunter, GearQuestForever, HuntersFieldGuide & TrueshotLodge, closes #384
+	Updated ToDo*.txt files
+	Updated AddonFactory & Altoholic skins, closes #385
+
 beta12.70938.1
 Jncl:
 	Updated ToDo*.txt files
