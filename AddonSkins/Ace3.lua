@@ -147,10 +147,12 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 41
 						    return
 						end
 						for _, tab in _G.ipairs(tgObj.tabs) do
-							if tab.value == value then
-								aObj:setActiveTab(tab.sf)
-							else
-								aObj:setInactiveTab(tab.sf)
+							if tab.sf then -- Bugfix
+								if tab.value == value then
+									aObj:setActiveTab(tab.sf)
+								else
+									aObj:setInactiveTab(tab.sf)
+								end
 							end
 						end
 					end)
